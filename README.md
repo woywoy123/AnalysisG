@@ -1,2 +1,2 @@
 # FourTops
-A four tops repository trialing the UpRoot as the main IO engine. 
+This repo will be used to test the read and write of the FourTops data samples that were created using the Beyond Standard Model group. 
