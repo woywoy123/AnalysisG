@@ -7,16 +7,10 @@ def ListSampleDirectories(root):
         splitted = i.split("/")
         x = len(splitted)
         filename = splitted[x-2]
-       
+        
         out[filename] = []
-    
-        x = 0
         for t in glob(str(root + "/" + filename + "/*")):
             out[filename].append(t)
-
-            if x == 1:
-                break
-            x += 1
 
     return out
 
