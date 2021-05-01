@@ -15,8 +15,7 @@ def ReadLeafsFromResonance(file_dir):
             print("Searched: " + File)
 
 
-    Files = ListSampleDirectories(file_dir)
-    Entry_Objects = ObjectsFromFile(Files, "nominal", ["top_FromRes", "truth_top_pt"])
+    Entry_Objects = ObjectsFromFile(file_dir, "nominal", ["top_FromRes", "truth_top_pt"])
    
     threads = []
     for key in Entry_Objects:
@@ -40,27 +39,7 @@ def ReadLeafsFromResonance(file_dir):
 
                     if len(threads) != 4:
                         break
-        
-
-
-
-
-
-
-
-
-
-
-
-            #if (top_FromRes_obj.num_entries == truth_top_pt_obj.num_entries):
-            #    for i, j in zip(top_FromRes_obj.iterate(step_size = 1), truth_top_pt_obj.iterate(step_size = 1)):
-            #        list_Res = i[0]["top_FromRes"]
-            #        list_topPt = j[0]["truth_top_pt"]
-            #        if list(set(list_Res)) != [0]:
-            #            print(list_Res, list_topPt)
-            #        
-
-
+       
         
 
 

@@ -1,20 +1,31 @@
 from glob import glob 
+import os 
 import uproot
 
 def ListSampleDirectories(root):
     out = {}
-
+    
     if root[len(root)-1] == "/":
         root = root[0: len(root) -1]
 
-    for i in glob(str(root + "/*/")):
-        splitted = i.split("/")
-        x = len(splitted)
-        filename = splitted[x-2]
-        
-        out[filename] = []
-        for t in glob(str(root + "/" + filename + "/*")):
-            out[filename].append(t)
+    # Case where the given directory has other subdirectories
+    if len(glob(str(root + "/*/"))) != 0: 
+        for i in glob(str(root + "/*/")):
+            splitted = i.split("/")
+            x = len(splitted)
+            filename = splitted[x-2]
+            
+            out[filename] = []
+            for t in glob(str(root + "/" + filename + "/*")):
+                if ".root" in t:
+                    out[filename].append(t)
+                    print(t)
+    
+    # Case the given directory has files 
+    if len(glob(str(root + "/*"))) != 0:
+        out[root] = [] 
+        for i in glob(str(root + "/*")):
+            out[root].append(i) 
 
     return out
 
@@ -38,6 +49,9 @@ def ObjectsFromFile(*args, **kwds):
         Trees = args[1]
         Branches = args[2]
 
+    if os.path.isdir(Files):
+        Files = ListSampleDirectories(Files)
+    
     if isinstance(Files, dict):
         for i in Files:
             d = Files[i]
@@ -58,7 +72,7 @@ def ObjectsFromFile(*args, **kwds):
 
     if isinstance(Files, str):
         output[Files] = ReturnTreeFromFile(Files, Trees, Branches)
-    
+   
     return output
 
 
@@ -108,6 +122,5 @@ def ReturnTreeFromFile(file_dir, trees = [], branches = []):
                 branch = tree_obj[found[f]][rb] 
                 branch_dict[rb] = branch
         Output_dict[original[f]] = [tree_obj[found[f]], branch_dict]
-
     
     return Output_dict
