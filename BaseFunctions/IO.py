@@ -3,6 +3,10 @@ import uproot
 
 def ListSampleDirectories(root):
     out = {}
+
+    if root[len(root)-1] == "/":
+        root = root[0: len(root) -1]
+
     for i in glob(str(root + "/*/")):
         splitted = i.split("/")
         x = len(splitted)
@@ -74,10 +78,12 @@ def ReturnTreeFromFile(file_dir, trees = [], branches = []):
    
     # Find the tree keys requested in the ROOT File. 
     found = []
+    original = []
     tree_obj = {}
     for t in trees:
         
         # Add the versioning tag in the ROOT file 
+        original.append(t) 
         if ";1" not in t:
             t = t + ";1"
 
@@ -88,7 +94,7 @@ def ReturnTreeFromFile(file_dir, trees = [], branches = []):
     # Case 1: the user has only requested the trees to be returned 
     if len(branches) == 0:
         for i in range(len(found)):
-            Output_dict[found[i]] = tree_obj[found[i]]
+            Output_dict[original[i]] = tree_obj[found[i]]
         return Ouput; 
 
     
@@ -101,7 +107,7 @@ def ReturnTreeFromFile(file_dir, trees = [], branches = []):
             if rb in b_keys:
                 branch = tree_obj[found[f]][rb] 
                 branch_dict[rb] = branch
-        Output_dict[found[f]] = [tree_obj[found[f]], branch_dict]
+        Output_dict[original[f]] = [tree_obj[found[f]], branch_dict]
 
     
     return Output_dict
