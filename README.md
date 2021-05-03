@@ -5,7 +5,7 @@ This repo will be used to test the read and write of the FourTops data samples t
 Below is a list of tags for each signal sample each of the samples have different mass points as shown below:  
 
 ```
-DSID	    Mass	      Width	    Cross-section for ct=1 [pb]
+DSID	    Mass        Width       Cross-section for ct=1 [pb]
 310845	  1 TeV       auto               3.99e-03	 
 313346	  1.25 TeV    auto               1.2703e-03	 
 310846	  1.5 TeV     auto               4.49e-04	 
