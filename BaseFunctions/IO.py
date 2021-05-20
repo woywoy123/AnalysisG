@@ -124,3 +124,33 @@ def ReturnTreeFromFile(file_dir, trees = [], branches = []):
         Output_dict[original[f]] = [tree_obj[found[f]], branch_dict]
     
     return Output_dict
+
+def SpeedOptimization(files):
+    
+    def SafeCheck(key, uproot_obj):
+        Avail = False
+        try:
+            root_f[key]
+            Avail = True
+        except uproot.exceptions.KeyInFileError:
+            Avail = False
+        return Avail
+
+
+
+
+    folder_files_dict = ListSampleDirectories(files)
+    
+    root_dir = ["nominal"]
+    leaves = ["top_FromRes", "truth_top_charge", "truth_top_e", "truth_top_pt", "truth_top_child_e"]
+     
+    Found_In_File = {}
+
+    for i in folder_files_dict:
+        root_files = folder_files_dict[i]
+        for x in root_files:
+            root_f = uproot.open(x)
+                
+            for r in root_dir:
+                if SafeCheck("nominal", root_f):
+                    print(type(root_f[r]))

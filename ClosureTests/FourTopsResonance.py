@@ -28,7 +28,7 @@ def PlottingResonance():
 def TestAssociateSignalTopsToDetectorJets():
 
     files = "/CERN/Grid/SignalSamples/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root"
-    #files = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r9364_p3980.bsm4t-21.2.164-1-0-mc16a_output_root"
+    #files = "/dev/shm/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root"
     SignalMass, IndividualParticles, ParticlePID, TopMass = AssociateSignalTopsToDetectorJets(files)
    
     #Create a simple sub-plot 

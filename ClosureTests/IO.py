@@ -1,4 +1,4 @@
-from BaseFunctions.IO import ListSampleDirectories, ObjectsFromFile
+from BaseFunctions.IO import ListSampleDirectories, ObjectsFromFile, SpeedOptimization
 
 def TestDirectoryList(entry_dir):
 
@@ -65,6 +65,11 @@ def TestObjectsFromFile(entry_dir):
     Assessment(out, "ROOT_Folder+ROOT_Files+MultipleTree+MultipleBranch (one of the branches isnt actually there)")
 
 
+def TestSpeedOptimization():
+    files = "/dev/shm/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root"
+    SpeedOptimization(files)
+
+    
         
 
 

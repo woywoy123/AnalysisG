@@ -49,7 +49,7 @@ def AssociateSignalTopsToDetectorJets(file_dir):
     TruthJet_Objects = FileObjectsToArrays(ObjectsFromFile(file_dir, "nominal", ["truthjet_flavour"]))["nominal"]
     
     # ===== Child Objects from Branch 
-    Child_Objects = ObjectsFromFile(file_dir, "nominal", ["top_initialState_child_pdgid", "truth_top_initialState_child_e", "truth_top_initialState_child_eta", "truth_top_initialState_child_phi", "truth_top_initialState_child_pt"])[file_dir]
+    Child_Objects = ObjectsFromFile(file_dir, "nominal", ["truth_top_child_pdgid", "truth_top_child_e", "truth_top_child_eta", "truth_top_child_phi", "truth_top_child_pt"])[file_dir]
 
     SignalMass = []
     SpectatorMass = []
@@ -57,11 +57,11 @@ def AssociateSignalTopsToDetectorJets(file_dir):
     ParticlePID = []
     TopMass = []
     for files in Child_Objects:
-        ChildPDGID = Child_Objects[files]["nominal"][1]["top_initialState_child_pdgid"].array()
-        Child_E = Child_Objects[files]["nominal"][1]["truth_top_initialState_child_e"].array()
-        Child_ETA = Child_Objects[files]["nominal"][1]["truth_top_initialState_child_eta"].array()
-        Child_PHI = Child_Objects[files]["nominal"][1]["truth_top_initialState_child_phi"].array()
-        Child_PT = Child_Objects[files]["nominal"][1]["truth_top_initialState_child_pt"].array() 
+        ChildPDGID = Child_Objects[files]["nominal"][1]["truth_top_child_pdgid"].array()
+        Child_E = Child_Objects[files]["nominal"][1]["truth_top_child_e"].array()
+        Child_ETA = Child_Objects[files]["nominal"][1]["truth_top_child_eta"].array()
+        Child_PHI = Child_Objects[files]["nominal"][1]["truth_top_child_phi"].array()
+        Child_PT = Child_Objects[files]["nominal"][1]["truth_top_child_pt"].array() 
 
         FromRes = TruthTop_Objects["top_FromRes"]
         
