@@ -1,4 +1,4 @@
-from BaseFunctions.IO import ListSampleDirectories, ObjectsFromFile, SpeedOptimization
+from BaseFunctions.IO import ListSampleDirectories, ObjectsFromFile, FastReading
 
 def TestDirectoryList(entry_dir):
 
@@ -66,14 +66,34 @@ def TestObjectsFromFile(entry_dir):
 
 
 def TestSpeedOptimization():
-    files = "/dev/shm/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root"
-    SpeedOptimization(files)
-
+    files = "/CERN/Grid/SignalSamples/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root"
+    files = "/CERN/Grid/SignalSamples"
+    test1 = FastReading(files)
     
-        
+    #print("")
+    #files = "/CERN/Grid/SignalSamples/"
+    #test2 = FastReading(files) 
+    #
+    #print("")
+    #files = "/CERN/Grid/SignalSamples/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/user.pgadow.24765302._000001.output.root"
+    #test3 = FastReading(files)  
+    #
+    #print("")
+    #files = "/CERN/Grid/SignalSamples"
+    #test4 = FastReading(files) 
 
 
-            
-        
+    # Example Tree and Branches
+    root_dir = ["nominal"]
+    #leaves = ["top_FromRes"]
+    leaves = ["top_FromRes", "truth_top_charge", "truth_top_e", "truth_top_pt"]#, "truth_top_child_e"]
+    
+    #test1.ReadTree(root_dir)
+    #print(test1.OutputTree)
+    #print(test1.FilesTree)
+    
+    test1.ReadBranchFromTree(root_dir, leaves)
+    test1.ConvertBranchesToArray()
 
-        
+    print(test1.OutputBranchFromTree)
+    

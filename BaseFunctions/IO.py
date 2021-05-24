@@ -1,6 +1,8 @@
 from glob import glob 
 import os 
 import uproot
+import threading
+from time import sleep
 
 def ListSampleDirectories(root):
     out = {}
@@ -125,32 +127,299 @@ def ReturnTreeFromFile(file_dir, trees = [], branches = []):
     
     return Output_dict
 
-def SpeedOptimization(files):
+
+# This class is going to implement multithreading to solve the horrible reading speeds of uproot 
+class FastReading():
+    def __init__(self, File_dir):
+        self.File_dir = File_dir
+        self.OutputTree = []
+        self.FilesTree = []
+        self.OutputBranchFromTree = []
+        self.FilesBranchFromTree = []
+        self.ActiveThreads = []
+        self.FindFilesInDir()
+
+    def GetFilesInDir(self, direct):
+        files = [] 
+        for i in glob(direct + "/*"):
+            files.append(i)
+        return files
     
-    def SafeCheck(key, uproot_obj):
+    def GetFilesInSubDir(self, direct):
+        files = []
+        for i in self.GetFilesInDir(direct):
+            if ".root" in i:
+                files.append(i)
+        return files
+
+    def FindFilesInDir(self):
+        Output = {}
+        direct = "" 
+        if self.File_dir[len(self.File_dir) -1:len(self.File_dir)] == "/":
+            direct = self.File_dir[0:len(self.File_dir)-1]
+        else:
+            direct = self.File_dir
+        
+        # Check if the given dir is really a directory:
+        isDir = False
+        if len(self.GetFilesInDir(direct)) > 0:
+            isDir = True
+        else:
+            isDir = False
+
+        # Check if given dir has subdirectories
+        if isDir:
+            for i in self.GetFilesInDir(direct):
+                inSub = self.GetFilesInSubDir(i)
+                if len(inSub) > 0: 
+                    Output[i] = []
+                elif ".root" in i:
+                    Output[direct] = self.GetFilesInSubDir(direct)
+                    break
+                for x in inSub:
+                    Output[i].append(x)
+        
+        else:
+            Output["File"] = direct
+        
+        self.FilesDict = Output
+        return Output   
+    
+    def ReadTree(self, Tree):
+        for i in self.FilesDict:
+            for f in self.FilesDict[i]:
+                x = UPROOT_Reader(f)
+                self.OutputTree.append(x.ReadBranchesOrTree(Tree = Tree))
+                self.FilesTree.append(str(i+"/"+f))
+
+    def ReadBranchFromTree(self, Tree, Branch):
+        for i in self.FilesDict:
+            for f in self.FilesDict[i]:
+                x = UPROOT_Reader(f)
+                self.OutputBranchFromTree.append(x.ReadBranchesOrTree(Tree, Branch))
+                self.FilesBranchFromTree.append(str(i+"/"+f)) 
+
+    def ConvertBranchesToArray(self, Branch = [], core = 12):
+        def StartThreads( File_Index, Branch):
+            for tr in self.OutputBranchFromTree[File_Index]:
+                for k in range(len(self.OutputBranchFromTree[i][tr])):
+                    br = self.OutputBranchFromTree[i][tr][k]
+                    if isinstance(br, str):
+                        continue
+                    if str(br.name) in Branch:
+                        x = threading.Thread(target = self.ConvertToArray, args=(File_Index, tr, k))
+                        self.ActiveThreads.append(x)
+
+                    elif len(Branch) == 0:
+                        x = threading.Thread(target = self.ConvertToArray, args=(File_Index, tr, k))
+                        self.ActiveThreads.append(x)
+
+        if len(self.OutputBranchFromTree) == 0:
+            return "No Branches Selected!"
+
+        # Get from list of each file 
+        for i in range(len(self.OutputBranchFromTree)): 
+            if isinstance(Branch, list) and len(self.OutputBranchFromTree) != 0:
+                StartThreads(i, Branch)    
+            elif isinstance(Branch, str):
+                StartThreads(i, [Branch])
+        
+            
+        for th in self.ActiveThreads:
+            if len(threading.enumerate()) > core:
+                while True:
+                    if len(threading.enumerate()) < core:
+                        break
+                    
+                    sleep(1)
+            th.start()
+
+        while true:
+            if len(threading.enumerate()) == 1:
+                break
+
+    def ConvertToArray(self, File_Index, Tree, Branch):
+        # Check that the Branch doesnt contain "NotFound" entries
+        
+        while True:
+            try:
+                self.OutputBranchFromTree[File_Index][Tree][Branch] = self.OutputBranchFromTree[File_Index][Tree][Branch].array()
+                break 
+            except: 
+
+                print(self.OutputBranchFromTree[File_Index][Tree][Branch])
+                print(File_Index, Tree, Branch)
+                continue
+        return 0
+
+
+
+
+class UPROOT_Reader():
+    def __init__(self, File = ""):
+        self.ROOT_Original = ""
+        self.ROOT_Original = uproot.open(File)
+        self.FoundTrees = {}
+        self.FoundBranchesInTrees = {}
+        self.CurrentTree = ""
+        self.CurrentBranch = ""
+        self.ROOT_F_Current = self.ROOT_Original
+        self.OutputState = {}
+
+    def SafeCheck(self, key, Uproot):
         Avail = False
         try:
-            root_f[key]
+            Uproot[key]
             Avail = True
         except uproot.exceptions.KeyInFileError:
             Avail = False
         return Avail
-
-
-
-
-    folder_files_dict = ListSampleDirectories(files)
     
-    root_dir = ["nominal"]
-    leaves = ["top_FromRes", "truth_top_charge", "truth_top_e", "truth_top_pt", "truth_top_child_e"]
-     
-    Found_In_File = {}
+    def ReadBranchesOrTree(self, Tree = -1, Branch = -1):
 
-    for i in folder_files_dict:
-        root_files = folder_files_dict[i]
-        for x in root_files:
-            root_f = uproot.open(x)
-                
-            for r in root_dir:
-                if SafeCheck("nominal", root_f):
-                    print(type(root_f[r]))
+        # Case 1.1: Only a Tree is given but a list
+        if isinstance(Tree, list) and Branch == -1:
+            for i in Tree:
+                self.CurrentTree = i
+                self.OutputState[i] = self.ReadObject()
+      
+        # Case 1.2: Only a Tree is given but is string 
+        elif isinstance(Tree, str) and Branch == -1:
+            self.CurrentTree = Tree
+            self.OutputState[Tree] = self.ReadObject()
+        
+        # Case 2.1 : Tree and Branch are both given in list format
+        elif isinstance(Tree, list) and isinstance(Branch, list):
+            for i in Tree:
+                self.OutputState[i] = []
+                for j in Branch:
+                    self.CurrentTree = i
+                    self.CurrentBranch = j
+                    self.OutputState[i].append(self.ReadObject())
+        
+        #Case 2.2 : Tree is string and Branch is List
+        elif isinstance(Tree, str) and isinstance(Branch, list):
+            self.CurrentTree = Tree
+            self.OutputState[Tree] = []
+            for i in Branch:
+                self.CurrentBranch = i
+                self.OutputState[Tree].apppend(self.ReadObject())
+
+        #Case 2.3 : Tree is List and Branch is string 
+        elif isinstance(Tree, list) and isinstance(Branch, str):
+            self.CurrentBranch = Branch
+            for i in Tree:
+                self.CurrentTree = i
+                self.OutputState[i].append(self.ReadObject())
+
+        #Case 2.4 : Both Tree and Branch are string 
+        elif isinstance(Tree, str) and isinstance(Branch, str):
+            self.CurrentBranch = Branch
+            self.CurrentTree = Tree
+            self.OutputState[Branch] = self.ReadObject()
+
+        return self.OutputState 
+
+    def ReadObject(self):
+        passed = False 
+        if self.SafeCheck(self.CurrentTree, self.ROOT_Original):
+            self.ROOT_F_Current = self.ROOT_Original[self.CurrentTree]
+            passed = True
+        
+        if self.CurrentBranch == "":
+            return self.ROOT_F_Current
+
+        if passed and self.SafeCheck(self.CurrentBranch, self.ROOT_F_Current):
+            self.ROOT_F_Current = self.ROOT_F_Current[self.CurrentBranch]
+            passed = True
+        else:
+            passed = False
+        
+        if passed: 
+            return self.ROOT_F_Current
+        else: 
+            return "NotFound"
+
+         
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#def SpeedOptimization(files):
+#    
+#    def SafeCheck(key, uproot_obj):
+#        Avail = False
+#        try:
+#            uproot_obj[key]
+#            Avail = True
+#        except uproot.exceptions.KeyInFileError:
+#            Avail = False
+#        return Avail
+#    
+#    def ToArray(key, Found_In_File):
+#        print("Start", key)
+#        Found_In_File[key].array()
+#        print("Finish", key)
+#
+#    folder_files_dict = ListSampleDirectories(files)
+#    
+#    root_dir = ["nominal"]
+#    leaves = ["top_FromRes", "truth_top_charge", "truth_top_e", "truth_top_pt", "truth_top_child_e"]
+#    
+#    # This is going to be a container 
+#    Found_In_File = {}
+#    RunThre = []
+#    # Iterate through all the folders found from the given directory
+#    for i in folder_files_dict:
+#        root_files = folder_files_dict[i]
+#        Found_In_File[i] = {}
+#
+#        # Go through individual root files in the directory
+#        for x in root_files:
+#            root_f = uproot.open(x)
+#            Found_In_File[i][x] = {}
+#            
+#            # Iterate through the requested Tree of the file 
+#            for r in root_dir:
+#
+#                # Check if the given Tree key is in the file (returns false if not found)
+#                if SafeCheck(r, root_f) and "uproot.models.TTree" in str(type(root_f[r])):
+#                    
+#                    Found_In_File[i][x][r] = {}
+#                    # See if the given leaves can be found in the root file
+#                    for l in leaves:
+#                        if SafeCheck(l, root_f[r]) and "uproot.models.TBranch" in str(type(root_f[r][l])):  
+#                            Found_In_File[i][x][r][l] = root_f[r][l]
+#                            th = threading.Thread(target = ToArray, args = (l, Found_In_File[i][x][r]))
+#                            th.start() 
+#                            RunThre.append(th) 
+#                            if len(RunThre) > 4:
+#                                for t in RunThre:
+#                                    t.join()
+#    
+#
+#    print(Found_In_File)
