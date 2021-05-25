@@ -1,15 +1,9 @@
-from glob import glob
-from ClosureTests.IO import TestDirectoryList, TestObjectsFromFile, TestSpeedOptimization
-from ClosureTests.FourTopsResonance import PlottingResonance, TestAssociateSignalTopsToDetectorJets
-from ClosureTests.UpRootFunctions import TestFileObjectsToArrays
+from ClosureTests.IO import *
+from ClosureTests.FourTopsResonance import *
 
 if __name__ == "__main__":
-     
-    #TestObjectsFromFile(entry_dir)
-    #PlottingResonance()
-    #TestFileObjectsToArrays()
-    #TestAssociateSignalTopsToDetectorJets()
     
-    TestSpeedOptimization()
-    
+    #TestSpeedOptimization()
+    #TestResonanceFromTruthTops()
+    TestSignalTopsFromChildren()
     
