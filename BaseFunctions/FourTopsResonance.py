@@ -41,56 +41,39 @@ def ResonanceFromTruthTops(file_dir):
     return TopMass, SignMass, SpecMass
 
 
-def AssociateSignalTopsToDetectorJets(file_dir):
+def SignalTopsFromChildren(file_dir):
     
-    # The purpose of this function is to find the jets that belong to the signal tops. Signal being Z' -> t t~
+    tree = "nominal"
+    mask = ["top_FromRes"]
+    child = ["truth_top_child_pdgid", "truth_top_child_eta", "truth_top_child_phi", "truth_top_child_pt", "truth_top_child_e"]
     
-    # ===== Get the resonance top information
-    TruthTop_Objects = FileObjectsToArrays(ObjectsFromFile(file_dir, "nominal", ["top_FromRes"]))["nominal"]
-    TruthJet_Objects = FileObjectsToArrays(ObjectsFromFile(file_dir, "nominal", ["truthjet_flavour"]))["nominal"]
-    
-    # ===== Child Objects from Branch 
-    Child_Objects = ObjectsFromFile(file_dir, "nominal", ["truth_top_child_pdgid", "truth_top_child_e", "truth_top_child_eta", "truth_top_child_phi", "truth_top_child_pt"])[file_dir]
+    child_initState = ["top_initialState_child_pdgid", "truth_top_initialState_child_eta", "truth_top_initialState_child_phi", "truth_top_initialState_child_pt", "truth_top_initialState_child_e"]
 
+    
     SignalMass = []
-    SpectatorMass = []
-    IndividualParticles = []
-    ParticlePID = []
+    SignalDaughterPDGs = []
+    SignalDaughterMass = []
     TopMass = []
-    for files in Child_Objects:
-        ChildPDGID = Child_Objects[files]["nominal"][1]["truth_top_child_pdgid"].array()
-        Child_E = Child_Objects[files]["nominal"][1]["truth_top_child_e"].array()
-        Child_ETA = Child_Objects[files]["nominal"][1]["truth_top_child_eta"].array()
-        Child_PHI = Child_Objects[files]["nominal"][1]["truth_top_child_phi"].array()
-        Child_PT = Child_Objects[files]["nominal"][1]["truth_top_child_pt"].array() 
-
-        FromRes = TruthTop_Objects["top_FromRes"]
-        
-        for e in range(len(ChildPDGID)):
-            sig_t = []
-            spec_t = []
-            
-            for t in range(len(FromRes[e])):
-                if FromRes[e][t] == 1:
-                    sig_t.append(MultiParticleVector(Child_PT[e][t], Child_ETA[e][t], Child_PHI[e][t], Child_E[e][t]))
-                    for v in range(len(Child_PT[e][t])):
-                        IndividualParticles.append(ParticleVector(Child_PT[e][t][v], Child_ETA[e][t][v], Child_PHI[e][t][v], Child_E[e][t][v]).mass())
-                        #if abs(ChildPDGID[e][t][v]) == 3 or abs(ChildPDGID[e][t][v]) == 4:
-                        #    print(ParticleVector(Child_PT[e][t][v], Child_ETA[e][t][v], Child_PHI[e][t][v], Child_E[e][t][v]).M(), ChildPDGID[e][t][v])
-
-                        ParticlePID.append(ChildPDGID[e][t][v])
-                else:
-                    spec_t.append(MultiParticleVector(Child_PT[e][t], Child_ETA[e][t], Child_PHI[e][t], Child_E[e][t]))
+  
+    res = SignalSpectator(mask, tree, child, file_dir)
+    for i in res.EventContainer:
+        Z_ = Particle()
+        dic = i["FakeParents"]
+        for t in dic:
+            TopMass.append(dic[t].Mass)
                 
-                TopMass.append(MultiParticleVector(Child_PT[e][t], Child_ETA[e][t], Child_PHI[e][t], Child_E[e][t]).mass() / 1000)
-
-            if (len(sig_t) != 2):
-                continue
-
-            delta = sig_t[0] + sig_t[1]
-            SignalMass.append(delta.M()/ 1000)
-
-    return SignalMass, IndividualParticles, ParticlePID, TopMass
+            if dic[t].IsSignal == 1:
+                Z_.AddProduct(dic[t])
+                
+                for h in dic[t].DecayProducts:
+                    SignalDaughterPDGs.append(h.PDGID)
+                    SignalDaughterMass.append(h.Mass * 1000)
+        
+        Z_.ReconstructFourVectorFromProducts()
+        SignalMass.append(Z_.Mass)
+    
+        
+    return SignalMass, SignalDaughterMass, SignalDaughterPDGs, TopMass
 
 
 

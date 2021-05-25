@@ -115,15 +115,15 @@ class FastReading():
     def ConvertToArray(self, File_Index, Tree, Branch):
         # Check that the Branch doesnt contain "NotFound" entries
         
-        name = "Failed"
+        name = "NaFailed"
         try:
             name = self.OutputBranchFromTree[File_Index][Tree][Branch].name
         except: 
             pass    
 
-        conv = "Failed"
+        conv = "BrFailed"
         try:
-            conv = self.OutputBranchFromTree[File_Index][Tree][Branch].array(library = "np")
+            conv = np.array(self.OutputBranchFromTree[File_Index][Tree][Branch].array(library = "np"))
         except:
             pass
 
@@ -140,10 +140,6 @@ class FastReading():
         diction = {}
         diction[name] = conv
         self.OutputBranchFromTree[File_Index][Tree][Branch] = diction
-
-
-
-
 
 
 class UPROOT_Reader():
@@ -232,4 +228,3 @@ class UPROOT_Reader():
             return "NotFound"
 
          
-
