@@ -3,6 +3,7 @@ import os
 import uproot
 import threading
 import numpy as np
+import pickle
 
 class FastReading():
     def __init__(self, File_dir):
@@ -14,11 +15,17 @@ class FastReading():
         self.ActiveThreads = []
         self.ArrayBranches = {}
         self.FindFilesInDir()
-
+        self.Verbose = True
+        self.a = 0
+        self.i = 0
+        self.Interval = 10
+        
     def GetFilesInDir(self, direct):
+        print("INFO::Reading Files and Directories from: " + direct) 
         files = [] 
         for i in glob(direct + "/*"):
             files.append(i)
+        
         return files
     
     def GetFilesInSubDir(self, direct):
@@ -69,6 +76,8 @@ class FastReading():
                 self.FilesTree.append(str(f))
 
     def ReadBranchFromTree(self, Tree, Branch):
+        print("INFO::Reading given branches from trees")
+        
         for i in self.FilesDict:
             for f in self.FilesDict[i]:
                 x = UPROOT_Reader(f)
@@ -76,6 +85,8 @@ class FastReading():
                 self.FilesBranchFromTree.append(str(f)) 
 
     def ConvertBranchesToArray(self, Branch = [], core = 4):
+        print("INFO::Converting branch objects to arrays")
+        
         def StartThreads( File_Index, Branch):
             for tr in self.OutputBranchFromTree[File_Index]:
                 for k in range(len(self.OutputBranchFromTree[i][tr])):
@@ -89,17 +100,17 @@ class FastReading():
                     elif len(Branch) == 0:
                         x = threading.Thread(target = self.ConvertToArray, args=(File_Index, tr, k))
                         self.ActiveThreads.append(x)
-
+            
         if len(self.OutputBranchFromTree) == 0:
             return "No Branches Selected!"
-
+        
         # Get from list of each file 
         for i in range(len(self.OutputBranchFromTree)): 
             if isinstance(Branch, list) and len(self.OutputBranchFromTree) != 0:
                 StartThreads(i, Branch)    
             elif isinstance(Branch, str):
                 StartThreads(i, [Branch])
-         
+        
         for th in self.ActiveThreads:
             if len(threading.enumerate()) >= core:
                 while True:
@@ -111,6 +122,8 @@ class FastReading():
         while True:
             if len(threading.enumerate()) == 1:
                 break
+
+        print("INFO::Finished Converting Branches to Arrays")
 
     def ConvertToArray(self, File_Index, Tree, Branch):
         # Check that the Branch doesnt contain "NotFound" entries
@@ -136,10 +149,31 @@ class FastReading():
             self.ArrayBranches[Tree][name] = np.concatenate((self.ArrayBranches[Tree][name], conv))
         except KeyError:
             self.ArrayBranches[Tree][name] = conv
-
+        
         diction = {}
         diction[name] = conv
         self.OutputBranchFromTree[File_Index][Tree][Branch] = diction
+
+        self.i = self.i + 1
+        self.ProgressAlert()
+
+    def ProgressAlert(self):
+
+        if self.Verbose == True:
+            
+            per = round(float(self.i) / float(len(self.ActiveThreads))*100)
+            if  per > self.a:
+                print("INFO::Progress " + str(per) + "%")
+                self.a = self.a + self.Interval
+
+
+
+
+
+
+
+
+
 
 
 class UPROOT_Reader():
@@ -227,4 +261,16 @@ class UPROOT_Reader():
         else: 
             return "NotFound"
 
-         
+
+def PickleObject(obj, filename):
+    
+    outfile = open("./PickledObjects/"+filename, "wb")
+    pickle.dump(obj, outfile)
+    outfile.close()
+
+def UnpickleObject(filename):
+
+    infile = open("./PickledObjects/"+filename, "rb")
+    obj = pickle.load(infile)
+    infile.close()
+    return obj

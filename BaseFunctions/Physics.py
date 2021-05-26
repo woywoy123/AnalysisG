@@ -1,6 +1,8 @@
 import ROOT
 import numpy as np
+from particle import Particle as hep_particle
 from BaseFunctions.IO import *
+
 
 def ParticleVector(pt, eta, phi, en):
 
@@ -37,6 +39,10 @@ class Particle:
         self.DecayProducts = []
         self.IsSignal = ""
         self.Index = "" 
+        
+        if self.PDGID != "":
+            x = hep_particle.from_pdgid(self.PDGID)
+            self.Name = x.name
     
     def SetKinematics(self, E, Pt, Phi, Eta):
         self.E = float(E)
@@ -49,10 +55,6 @@ class Particle:
 
     def CalculateFourVector(self):
         self.FourVector = ParticleVector(self.Pt, self.Eta, self.Phi, self.E)
-    
-    def GetSymbol(self, PDG):
-        self.PDGID = PDG
-        self.Symbol = ROOT.TDatabasePDG.GetParticle(self.PDGID)
     
     def AddProduct(self, ParticleDaughter):
         self.DecayProducts.append(ParticleDaughter)
@@ -79,12 +81,17 @@ class SignalSpectator:
         self.Tree = Tree
         self.file_dir = file_dir
         self.EventContainer = {}
-
+        self.Verbose = True
+        self.Interval = 10
+        self.a = 0
+        
         self.ReadArrays()
         self.SortBranchMap()
         self.EventLoop()
 
     def ReadArrays(self):
+
+        print("INFO::Reading Branches and Trees")
         reader = FastReading(self.file_dir)
         reader.ReadBranchFromTree(self.Tree, self.Search)
         reader.ConvertBranchesToArray(core = len(self.Search))
@@ -162,7 +169,6 @@ class SignalSpectator:
     def EventLoop(self):
         print("INFO::Entering the EventLoop Function")
         self.EventContainer = []
-        notify = False
         for i in range(len(self.Mask)):
             self.pl_mk = self.Mask[i]
             self.pl_phi = self.Phi[i]
@@ -172,10 +178,11 @@ class SignalSpectator:
             self.pl_pdg = self.PDG[i]
             self.ProcessLoop()
             self.EventContainer.append(self.Map)
+            
+            self.NLoop = i
+            self.ProgressAlert()
 
-            if float(i)/float(len(self.Mask)) >= 0.5 and notify == False:
-                print("INFO::Half Way through the EventLoop")
-                notify = True
+
         print("INFO::Finished EventLoop")               
     
     def ParticleParent(self):
@@ -194,5 +201,16 @@ class SignalSpectator:
             s[i].ReconstructFourVectorFromProducts()
 
         self.Map["FakeParents"] = s
+
+    def ProgressAlert(self):
+
+        if self.Verbose == True:
+            
+            per = round(float(self.NLoop) / float(len(self.Mask))* 100)
+            if  per > self.a:
+                print("INFO::Progress " + str(per) + "%")
+                self.a = self.a + self.Interval
+                 
+
 
 

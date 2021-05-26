@@ -35,32 +35,36 @@ def TestSignalTopsFromChildren():
 
     files = "/CERN/Grid/SignalSamples/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root"
     files = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/user.pgadow.24765302._000001.output.root" 
-    SignalMass, IndividualParticles, ParticlePID, TopMass = SignalTopsFromChildren(files)
-   
+    Output = SignalTopsFromChildren(files)
+    
     #Create a simple sub-plot 
     plt.figure(figsize=(32, 8), dpi=100) 
     
     plt.subplot(141)
     plt.title("Invariant Child Mass") 
-    plt.hist(IndividualParticles, align="left", bins=1300, range=(0, 4000), density=True)
+    plt.hist(Output["SGDaughterM"], align="left", bins=1300, range=(0, 4000), density=True)
+    plt.hist(Output["SGDaughterM_init"], align="left", bins=1300, range=(0, 4000), density=True)
     plt.xlabel("Invariant Mass (MeV)")
     plt.ylabel("Events")
     
     plt.subplot(142)    
     plt.title("Resonance From Children") 
-    plt.hist(SignalMass, align="left", bins= 1300, range=(200, 1500), density=True)
+    plt.hist(Output["SGMass"], align="left", bins= 1300, range=(200, 1500), density=True)
+    plt.hist(Output["SGMass_init"], align="left", bins= 1300, range=(200, 1500), density=True)
     plt.xlabel("Invariant Mass (GeV)")
     plt.ylabel("Events")
 
     plt.subplot(143)    
     plt.title("PID of Particles Contributing to Resonance") 
-    plt.hist(ParticlePID, align="left", bins=40, range=(-20, 20), density=True)
+    plt.hist(Output["SGDaughterPDG"], align="left", bins=40, range=(-20, 20), density=True)
+    plt.hist(Output["SGDaughterPDG_init"], align="left", bins=40, range=(-20, 20), density=True)
     plt.xlabel("PID of Particles")
     plt.ylabel("Events")
 
     plt.subplot(144)    
     plt.title("Mass Spectrum of Top Particle (From Children)") 
-    plt.hist(TopMass, align="left", bins=20, range=(100, 200), density=True)
+    plt.hist(Output["TopMass"], align="left", bins=20, range=(100, 200), density=True)
+    plt.hist(Output["TopMass_init"], align="left", bins=20, range=(100, 200), density=True)
     plt.xlabel("Mass in GeV")
     plt.ylabel("Events")
 
