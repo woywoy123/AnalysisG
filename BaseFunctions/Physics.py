@@ -94,7 +94,7 @@ class SignalSpectator:
         print("INFO::Reading Branches and Trees")
         reader = FastReading(self.file_dir)
         reader.ReadBranchFromTree(self.Tree, self.Search)
-        reader.ConvertBranchesToArray(core = len(self.Search))
+        reader.ConvertBranchesToArray()
         
         self.Internal = reader.ArrayBranches[self.Tree]
         self.Mask = reader.ArrayBranches[self.Tree][self.Mask]
@@ -115,20 +115,19 @@ class SignalSpectator:
             if "pdgid" == kin:
                 self.PDG = self.Internal[i]
   
-    def CreateParticles(self):
-        for i in range(len(self.it_e)):
-
+    def CreateParticles(self, e, pt, phi, eta, index, sig, pdg, Map): #, sender):
+        for i in range(len(e)):
             P = Particle()
-            P.SetKinematics(self.it_e[i], self.it_pt[i], self.it_phi[i], self.it_eta[i])
-            P.IsSignal = self.it_sig[i]
-            P.PDGID = self.it_pdg[i]
-            P.Index = self.index
-            if self.index == -1:
+            P.SetKinematics(e[i], pt[i], phi[i], eta[i])
+            P.IsSignal = sig[i]
+            P.PDGID = pdg[i]
+            P.Index = index
+            if index == -1:
                 P.Index = i
 
-            if self.it_sig[i] == 1:
+            if sig[i] == 1:
                 self.Map["Signal"].append(P)
-            if self.it_sig[i] == 0:
+            if sig[i] == 0:
                 self.Map["Spectator"].append(P)
             self.Map["All"].append(P)
 
@@ -138,32 +137,27 @@ class SignalSpectator:
         self.Map["All"] = []
         self.Map["Signal"] = []
         self.Map["Spectator"] = []
+
+        params = []
+        pipes = []
         for i in range(len(self.pl_mk)):
             
             if isinstance(self.pl_e[i], np.float32) == True:
                 parent = True
                 break
             
-            self.it_e = self.pl_e[i]
-            self.it_pt = self.pl_pt[i]
-            self.it_phi = self.pl_phi[i]
-            self.it_eta = self.pl_eta[i]
-            self.it_sig = [self.pl_mk[i]]*len(self.pl_eta[i])
-            self.it_pdg = self.pl_pdg[i]
-            self.index = i
-            self.CreateParticles()
-       
-        if parent:
-            self.it_e = self.pl_e
-            self.it_pt = self.pl_pt
-            self.it_phi = self.pl_phi
-            self.it_eta = self.pl_eta
-            self.it_sig = self.pl_mk
-            self.it_pdg = self.pl_pdg
-            self.index = -1
-            self.CreateParticles()
+            self.CreateParticles(self.pl_e[i], self.pl_pt[i], 
+                          self.pl_phi[i], self.pl_eta[i], 
+                          i, [self.pl_mk[i]]*len(self.pl_eta[i]), 
+                          self.pl_pdg, self.Map)
 
-        else:
+        if parent:
+            self.CreateParticles((self.pl_e, self.pl_pt, 
+                           self.pl_phi, self.pl_eta, 
+                           i, self.pl_mk, 
+                           self.pl_pdg, self.Map))
+        
+        if parent == False:
             self.ParticleParent()
 
     def EventLoop(self):

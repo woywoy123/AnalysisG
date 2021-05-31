@@ -1,9 +1,10 @@
 from glob import glob 
 import os 
 import uproot
-import threading
+import multiprocessing
 import numpy as np
 import pickle
+from time import sleep
 
 class FastReading():
     def __init__(self, File_dir):
@@ -12,16 +13,20 @@ class FastReading():
         self.FilesTree = []
         self.OutputBranchFromTree = []
         self.FilesBranchFromTree = []
-        self.ActiveThreads = []
-        self.ArrayBranches = {}
         self.FindFilesInDir()
         self.Verbose = True
         self.a = 0
         self.i = 0
+        
+        self.ActiveThreads = []
+        self.ConvertedArray = {}
+        self.ArrayBranches = {}
+
         self.Interval = 10
         
-    def GetFilesInDir(self, direct):
-        print("INFO::Reading Files and Directories from: " + direct) 
+    def GetFilesInDir(self, direct, verb = False):
+        if verb:
+            print("FASTREADING::INFO::Reading Files and Directories from: " + direct) 
         files = [] 
         for i in glob(direct + "/*"):
             files.append(i)
@@ -42,14 +47,14 @@ class FastReading():
             direct = self.File_dir[0:len(self.File_dir)-1]
         else:
             direct = self.File_dir
-        
+       
         # Check if the given dir is really a directory:
         isDir = False
-        if len(self.GetFilesInDir(direct)) > 0:
+        if len(self.GetFilesInDir(direct, True)) > 0:
             isDir = True
         else:
             isDir = False
-
+        
         # Check if given dir has subdirectories
         if isDir:
             for i in self.GetFilesInDir(direct):
@@ -58,7 +63,7 @@ class FastReading():
                     Output[i] = []
                 elif ".root" in i:
                     Output[direct] = self.GetFilesInSubDir(direct)
-                    break
+                    print("FASTREADING::INFO::Found Files: " + i)
                 for x in inSub:
                     Output[i].append(x)
         
@@ -76,7 +81,7 @@ class FastReading():
                 self.FilesTree.append(str(f))
 
     def ReadBranchFromTree(self, Tree, Branch):
-        print("INFO::Reading given branches from trees")
+        print("FASTREADING::INFO::Reading given branches from trees")
         
         for i in self.FilesDict:
             for f in self.FilesDict[i]:
@@ -84,94 +89,87 @@ class FastReading():
                 self.OutputBranchFromTree.append(x.ReadBranchesOrTree(Tree, Branch))
                 self.FilesBranchFromTree.append(str(f)) 
 
-    def ConvertBranchesToArray(self, Branch = [], core = 4):
-        print("INFO::Converting branch objects to arrays")
+    def ConvertBranchesToArray(self, Branch = []):
+        print("FASTREADING::INFO::Converting branch objects to arrays")
         
-        def StartThreads( File_Index, Branch):
-            for tr in self.OutputBranchFromTree[File_Index]:
-                for k in range(len(self.OutputBranchFromTree[i][tr])):
-                    br = self.OutputBranchFromTree[i][tr][k]
-                    if isinstance(br, str):
-                        continue
-                    if str(br.name) in Branch:
-                        x = threading.Thread(target = self.ConvertToArray, args=(File_Index, tr, k))
-                        self.ActiveThreads.append(x)
+        def Convert(sender, obj):
+            ret = obj.array(library = "np")
+            sender.send(ret) 
 
-                    elif len(Branch) == 0:
-                        x = threading.Thread(target = self.ConvertToArray, args=(File_Index, tr, k))
-                        self.ActiveThreads.append(x)
+        def InterfaceHandler(B, objb):
+            # Skip the case where there was an error with the reading
+            skip = False 
+            if isinstance(objb, str):
+                skip = True
             
-        if len(self.OutputBranchFromTree) == 0:
-            return "No Branches Selected!"
+            # Skip all Branches not quoted by given string 
+            if isinstance(B, str):
+                if str(objb.name != B):
+                    skip = True
+            
+            # Skip all Branches not in list
+            if isinstance(B, list):
+            
+                if len(B) != 0:
+                    if str(objb.name) not in B:
+                        skip = True
+
+            return skip 
         
-        # Get from list of each file 
-        for i in range(len(self.OutputBranchFromTree)): 
-            if isinstance(Branch, list) and len(self.OutputBranchFromTree) != 0:
-                StartThreads(i, Branch)    
-            elif isinstance(Branch, str):
-                StartThreads(i, [Branch])
-        
-        for th in self.ActiveThreads:
-            if len(threading.enumerate()) >= core:
-                while True:
-                    if len(threading.enumerate()) < core:
-                        break
+        def SafeDict(dic, key, cntr = {}):
+            try:
+                dic[key]
+            except KeyError:
+                dic[key] = cntr
+
+        for f_i in range(len(self.OutputBranchFromTree)):
+            for tree in self.OutputBranchFromTree[f_i]:
+                SafeDict(self.ConvertedArray, tree)
+                
+                for branch in self.OutputBranchFromTree[f_i][tree]:
+                    SafeDict(self.ConvertedArray[tree], str(branch.name), [])
+                   
+                    if InterfaceHandler(Branch, branch):
+                        continue
+
+                    recv, send = multiprocessing.Pipe(False)
+                    p = multiprocessing.Process(target = Convert, args = (send, branch, ))
+                    self.ActiveThreads.append(p) 
                     
-            th.start()
+                    self.ConvertedArray[tree][str(branch.name)].append(recv)
+       
+        for p in self.ActiveThreads:
+            p.start()
 
-        while True:
-            if len(threading.enumerate()) == 1:
-                break
+        for tr in self.ConvertedArray:
+            SafeDict(self.ArrayBranches, tr)
+            for br in self.ConvertedArray[tr]:
+                SafeDict(self.ArrayBranches[tr], br)
+                for i in self.ConvertedArray[tr][br]:
+                    array = i.recv()
+                    if isinstance(self.ArrayBranches[tr][br], list):
+                        self.ArrayBranches[tr][br] = array
+                    else:
+                        x = list(self.ArrayBranches[tr][br])
+                        y = list(array)
+                        self.ArrayBranches[tr][br] = np.vstack([x, y])
+                    self.i += 1
+                    self.ProgressAlert()
+         
+        for i in self.ActiveThreads:
+            i.join()
 
-        print("INFO::Finished Converting Branches to Arrays")
-
-    def ConvertToArray(self, File_Index, Tree, Branch):
-        # Check that the Branch doesnt contain "NotFound" entries
-        
-        name = "NaFailed"
-        try:
-            name = self.OutputBranchFromTree[File_Index][Tree][Branch].name
-        except: 
-            pass    
-
-        conv = "BrFailed"
-        try:
-            conv = np.array(self.OutputBranchFromTree[File_Index][Tree][Branch].array(library = "np"))
-        except:
-            pass
-
-        try: 
-            self.ArrayBranches[Tree]
-        except KeyError:
-            self.ArrayBranches[Tree] = {}
-
-        try:
-            self.ArrayBranches[Tree][name] = np.concatenate((self.ArrayBranches[Tree][name], conv))
-        except KeyError:
-            self.ArrayBranches[Tree][name] = conv
-        
-        diction = {}
-        diction[name] = conv
-        self.OutputBranchFromTree[File_Index][Tree][Branch] = diction
-
-        self.i = self.i + 1
-        self.ProgressAlert()
-
+        print("FASTREADING::INFO::Finished Converting Branches to Arrays")
     def ProgressAlert(self):
 
         if self.Verbose == True:
             
+            if len(self.ActiveThreads) == 0:
+                return 
             per = round(float(self.i) / float(len(self.ActiveThreads))*100)
             if  per > self.a:
                 print("INFO::Progress " + str(per) + "%")
                 self.a = self.a + self.Interval
-
-
-
-
-
-
-
 
 
 

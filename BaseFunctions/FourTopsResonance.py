@@ -9,7 +9,7 @@ def ResonanceFromTruthTops(file_dir):
     branches = ["truth_top_pt", "truth_top_eta", "truth_top_phi", "truth_top_e", "top_FromRes"]
     fi = FastReading(file_dir)
     fi.ReadBranchFromTree(tree, branches)
-    fi.ConvertBranchesToArray(core = 12)
+    fi.ConvertBranchesToArray()
     
     truth_top = fi.ArrayBranches
     
@@ -49,14 +49,14 @@ def SignalTopsFromChildren(file_dir):
     child = ["truth_top_child_pdgid", "truth_top_child_eta", "truth_top_child_phi", "truth_top_child_pt", "truth_top_child_e"]
     child_initState = ["top_initialState_child_pdgid", "truth_top_initialState_child_eta", "truth_top_initialState_child_phi", "truth_top_initialState_child_pt", "truth_top_initialState_child_e"]
 
-    res_s = SignalSpectator(mask, tree, child, file_dir)
-    res_init_s = SignalSpectator(mask, tree, child_initState, file_dir)
+    res = SignalSpectator(mask, tree, child, file_dir)
+    res_init = SignalSpectator(mask, tree, child_initState, file_dir)
 
-    PickleObject(res_s, "top_child")
-    PickleObject(res_init_s, "top_child_initState")
-    
-    res = UnpickleObject("top_child")
-    res_init = UnpickleObject("top_child_initState")
+    #PickleObject(res_s, "top_child")
+    #PickleObject(res_init_s, "top_child_initState")
+    #
+    #res = UnpickleObject("top_child")
+    #res_init = UnpickleObject("top_child_initState")
 
     SignalMass = []
     SignalDaughterPDGs = []

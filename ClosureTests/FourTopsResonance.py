@@ -34,9 +34,11 @@ def TestResonanceFromTruthTops():
 def TestSignalTopsFromChildren():
 
     files = "/CERN/Grid/SignalSamples/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root"
-    files = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/user.pgadow.24765302._000001.output.root" 
+    #files = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/user.pgadow.24765302._000001.output.root" 
     Output = SignalTopsFromChildren(files)
-    
+   
+    print("Entering the Matplot stuff")
+
     #Create a simple sub-plot 
     plt.figure(figsize=(32, 8), dpi=100) 
     
