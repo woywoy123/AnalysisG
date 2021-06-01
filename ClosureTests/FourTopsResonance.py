@@ -1,6 +1,7 @@
 from BaseFunctions.FourTopsResonance import *
 import matplotlib.pyplot as plt
-
+from particle import Particle
+import numpy as np
 
 def TestResonanceFromTruthTops():
 
@@ -40,22 +41,23 @@ def TestSignalTopsFromChildren():
     print("Entering the Matplot stuff")
 
     #Create a simple sub-plot 
-    plt.figure(figsize=(32, 8), dpi=100) 
+    plt.figure(figsize=(32, 8), dpi=500) 
     
     plt.subplot(141)
     plt.title("Invariant Child Mass") 
-    plt.hist(Output["SGDaughterM"], align="left", bins=1300, range=(0, 4000), density=True)
-    plt.hist(Output["SGDaughterM_init"], align="left", bins=1300, range=(0, 4000), density=True)
+    plt.ylim(0, 0.2)
+    plt.hist(Output["SGDaughterM"], align="left", bins=4200, range=(-200, 4000), density=True)
+    plt.hist(Output["SGDaughterM_init"], align="left", bins=4200, range=(-200, 4000), density=True)
     plt.xlabel("Invariant Mass (MeV)")
     plt.ylabel("Events")
     
     plt.subplot(142)    
     plt.title("Resonance From Children") 
-    plt.hist(Output["SGMass"], align="left", bins= 1300, range=(200, 1500), density=True)
-    plt.hist(Output["SGMass_init"], align="left", bins= 1300, range=(200, 1500), density=True)
+    plt.hist(Output["SGMass"], align="left", bins= 300, range=(0, 1500), density=True)
+    plt.hist(Output["SGMass_init"], align="left", bins= 300, range=(0, 1500), density=True)
     plt.xlabel("Invariant Mass (GeV)")
     plt.ylabel("Events")
-
+   
     plt.subplot(143)    
     plt.title("PID of Particles Contributing to Resonance") 
     plt.hist(Output["SGDaughterPDG"], align="left", bins=40, range=(-20, 20), density=True)
@@ -65,13 +67,64 @@ def TestSignalTopsFromChildren():
 
     plt.subplot(144)    
     plt.title("Mass Spectrum of Top Particle (From Children)") 
-    plt.hist(Output["TopMass"], align="left", bins=20, range=(100, 200), density=True)
-    plt.hist(Output["TopMass_init"], align="left", bins=20, range=(100, 200), density=True)
+    plt.hist(Output["TopMass"], align="left", bins=200, range=(0, 200), density=True)
+    plt.hist(Output["TopMass_init"], align="left", bins=200, range=(0, 200), density=True)
     plt.xlabel("Mass in GeV")
     plt.ylabel("Events")
-
+        
     plt.savefig("./ExamplePlots/Tops_Resonance_FromChildren.png")
+    plt.close()
+    plt.clf()
 
 
 
+    #Create a simple sub-plot 
+    plt.figure(figsize=(32, 8), dpi=500) 
+    
+    plt.subplot(131)
+    plt.title("Invariant Child Mass of Spectator Tops") 
+    plt.ylim(0, 0.2)
+    plt.hist(Output["SpecDaughterM"], align="left", bins=4200, range=(-200, 4000), density=True)
+    plt.hist(Output["SpecDaughterM_init"], align="left", bins=4200, range=(-200, 4000), density=True)
+    plt.xlabel("Invariant Mass (MeV)")
+    plt.ylabel("Events")
+    
+    plt.subplot(132)    
+    plt.title("PID of Child Particles of Spectators") 
+    plt.hist(Output["SpecDaughterPDG"], align="left", bins=40, range=(-20, 20), density=True)
+    plt.hist(Output["SpecDaughterPDG_init"], align="left", bins=40, range=(-20, 20), density=True)
+    plt.xlabel("PID of Particles")
+    plt.ylabel("Events")
 
+    plt.subplot(133)    
+    plt.title("Mass Spectrum of Top Particle (From Children)") 
+    plt.hist(Output["SpecTopMass"], align="left", bins=200, range=(0, 200), density=True)
+    plt.hist(Output["SpecTopMass_init"], align="left", bins=200, range=(0, 200), density=True)
+    plt.xlabel("Mass in GeV")
+    plt.ylabel("Events")
+        
+    plt.savefig("./ExamplePlots/Spectator_Tops_FromChildren.png")
+    plt.close()
+    plt.clf()
+
+    def PlotSpectra(Output, key, Subdir):
+        for i in Output[key]:
+            plt.figure(figsize=(8,8), dpi=500)
+            name = Particle.from_pdgid(i).name
+            print(name) 
+            data = np.asarray(Output[key][i])
+            min_ = data.min(axis =0)
+            max_ = data.max(axis =0)
+            plt.title("Invariant Mass Spectrum of: " + name + " PDGID: " + str(i))
+            plt.hist(data, align = "left", bins = int(max_ - min_), range=(min_, max_), density=True)
+            plt.xlabel("Invariant Mass in MeV")
+            plt.savefig("./ExamplePlots/"+ Subdir+ "/" + name + ".png")
+            plt.close()
+            plt.clf()
+
+
+    
+    PlotSpectra(Output, "SGDMassPDG", "MassSpec")
+    PlotSpectra(Output, "SGDMassPDG_init", "MassSpec_init")
+    PlotSpectra(Output, "SpecMassPDG", "MassSpectator")
+    PlotSpectra(Output, "SpecMassPDG_init", "MassSpectator_init")

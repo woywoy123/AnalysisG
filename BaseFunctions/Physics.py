@@ -1,7 +1,8 @@
 import ROOT
 import numpy as np
-from particle import Particle as hep_particle
+from particle import Particle as hep_P
 from BaseFunctions.IO import *
+import multiprocessing
 
 
 def ParticleVector(pt, eta, phi, en):
@@ -39,10 +40,7 @@ class Particle:
         self.DecayProducts = []
         self.IsSignal = ""
         self.Index = "" 
-        
-        if self.PDGID != "":
-            x = hep_particle.from_pdgid(self.PDGID)
-            self.Name = x.name
+        self.Name = "NAN" 
     
     def SetKinematics(self, E, Pt, Phi, Eta):
         self.E = float(E)
@@ -70,7 +68,16 @@ class Particle:
 
     def KinematicDifference(self, Particle):
         pass
+    
+    def SetPDG(self, PDG = ""):
+        if PDG != "":
+            self.PDGID = PDG
 
+        if self.PDGID != "":
+            try:
+                self.Name = hep_P.from_pdgid(self.PDGID)
+            except NameError:
+                self.Name = "NotFound"
 
 class SignalSpectator:
     
@@ -80,10 +87,11 @@ class SignalSpectator:
         self.Mask = ResMask[0]
         self.Tree = Tree
         self.file_dir = file_dir
-        self.EventContainer = {}
+        self.EventContainer = []
         self.Verbose = True
         self.Interval = 10
         self.a = 0
+        self.NLoop = 0
         
         self.ReadArrays()
         self.SortBranchMap()
@@ -115,7 +123,7 @@ class SignalSpectator:
             if "pdgid" == kin:
                 self.PDG = self.Internal[i]
   
-    def CreateParticles(self, e, pt, phi, eta, index, sig, pdg, Map): #, sender):
+    def CreateParticles(self, e, pt, phi, eta, index, sig, pdg, Map):
         for i in range(len(e)):
             P = Particle()
             P.SetKinematics(e[i], pt[i], phi[i], eta[i])
@@ -126,63 +134,41 @@ class SignalSpectator:
                 P.Index = i
 
             if sig[i] == 1:
-                self.Map["Signal"].append(P)
+                Map["Signal"].append(P)
             if sig[i] == 0:
-                self.Map["Spectator"].append(P)
-            self.Map["All"].append(P)
+                Map["Spectator"].append(P)
+            Map["All"].append(P)
+        
+        return Map
 
-    def ProcessLoop(self):
+    def ProcessLoop(self, e, pt, phi, eta, mk, pdg):
         parent = False 
-        self.Map = {}
-        self.Map["All"] = []
-        self.Map["Signal"] = []
-        self.Map["Spectator"] = []
+        Map = {}
+        Map["All"] = []
+        Map["Signal"] = []
+        Map["Spectator"] = []
 
         params = []
         pipes = []
-        for i in range(len(self.pl_mk)):
+        for i in range(len(mk)):
             
-            if isinstance(self.pl_e[i], np.float32) == True:
+            if isinstance(e[i], np.float32) == True:
                 parent = True
                 break
-            
-            self.CreateParticles(self.pl_e[i], self.pl_pt[i], 
-                          self.pl_phi[i], self.pl_eta[i], 
-                          i, [self.pl_mk[i]]*len(self.pl_eta[i]), 
-                          self.pl_pdg, self.Map)
+
+            Map = self.CreateParticles(e[i], pt[i], phi[i], eta[i], i, [mk[i]]*len(eta[i]), pdg[i], Map)
 
         if parent:
-            self.CreateParticles((self.pl_e, self.pl_pt, 
-                           self.pl_phi, self.pl_eta, 
-                           i, self.pl_mk, 
-                           self.pl_pdg, self.Map))
+            Map = self.CreateParticles(e, pt, phi, eta, -1, mk, pdg, Map)
         
         if parent == False:
-            self.ParticleParent()
+            Map = self.ParticleParent(Map)
+        return Map
 
-    def EventLoop(self):
-        print("INFO::Entering the EventLoop Function")
-        self.EventContainer = []
-        for i in range(len(self.Mask)):
-            self.pl_mk = self.Mask[i]
-            self.pl_phi = self.Phi[i]
-            self.pl_eta = self.Eta[i]
-            self.pl_pt = self.Pt[i]
-            self.pl_e = self.E[i]
-            self.pl_pdg = self.PDG[i]
-            self.ProcessLoop()
-            self.EventContainer.append(self.Map)
-            
-            self.NLoop = i
-            self.ProgressAlert()
-
-
-        print("INFO::Finished EventLoop")               
-    
-    def ParticleParent(self):
+    def ParticleParent(self, Map):
         
         s = {}
-        for i in self.Map["All"]:
+        for i in Map["All"]:
             try:
                 s[i.Index].AddProduct(i)
                 s[i.Index].IsSignal = i.IsSignal
@@ -194,8 +180,56 @@ class SignalSpectator:
         for i in s:
             s[i].ReconstructFourVectorFromProducts()
 
-        self.Map["FakeParents"] = s
+        Map["FakeParents"] = s
+        return Map
 
+    def BulkRunning(self, inst, sender):
+        
+        EventContainer = []
+        for i in inst:
+            Map = self.ProcessLoop(i[0], i[1], i[2], i[3], i[4], i[5])
+            EventContainer.append(Map)
+        sender.send(EventContainer)
+
+
+    def EventLoop(self):
+        print("INFO::Entering the EventLoop Function")
+            
+        Params = []
+        Pipe = []
+        processes = []
+        bundle_s = 4000
+        for i in range(len(self.Mask)):
+            inst = [self.E[i], self.Pt[i], self.Phi[i], self.Eta[i], self.Mask[i], self.PDG[i]]
+            Params.append(inst)
+            
+            if len(Params) == bundle_s:
+                recv, send = multiprocessing.Pipe(False)
+                p = multiprocessing.Process(target = self.BulkRunning, args = (Params, send, ))
+                processes.append(p)
+                Pipe.append(recv)
+                Params = []
+        
+        if len(Params) != 0:
+            recv, send = multiprocessing.Pipe(False)
+            p = multiprocessing.Process(target = self.BulkRunning, args = (Params, send, ))
+            processes.append(p)
+            Pipe.append(recv)
+            Params = []
+       
+        for i in processes:
+            i.start()
+
+        for i, j in zip(processes, Pipe):
+            con = j.recv()
+            i.join() 
+            for t in con:
+                self.EventContainer.append(t)
+            self.NLoop += len(con)
+            self.ProgressAlert()
+
+        print("INFO::Finished EventLoop")               
+    
     def ProgressAlert(self):
 
         if self.Verbose == True:
