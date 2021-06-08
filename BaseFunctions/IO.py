@@ -152,7 +152,8 @@ class FastReading():
                     else:
                         x = list(self.ArrayBranches[tr][br])
                         y = list(array)
-                        self.ArrayBranches[tr][br] = np.vstack([x, y])
+                        z = x + y
+                        self.ArrayBranches[tr][br] = np.array(z)
                     self.i += 1
                     self.ProgressAlert()
          

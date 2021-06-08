@@ -2,6 +2,7 @@ import ROOT
 import numpy as np
 from particle import Particle as hep_P
 from BaseFunctions.IO import *
+from BaseFunctions.Alerting import *
 import multiprocessing
 
 
@@ -40,7 +41,7 @@ class Particle:
         self.DecayProducts = []
         self.IsSignal = ""
         self.Index = "" 
-        self.Name = "NAN" 
+        self.Name = "NAN"
     
     def SetKinematics(self, E, Pt, Phi, Eta):
         self.E = float(E)
@@ -79,12 +80,68 @@ class Particle:
             except NameError:
                 self.Name = "NotFound"
 
-class SignalSpectator:
+class GenerateEventParticles:
+    def __init__(self, FileDir = [], Tree = [], Branches = [], Mask =  []):
+        self.__Mask = Mask
+        self.__Branches = Branches
+        self.__Tree = Tree
+        self.__Search = self.__Mask + self.__Branches
+        self.__FileDir = FileDir
+
+    def ReadArray(self):
+        
+        print("INFO::Reading Branches and Trees")
+        reader = FastReading(self.__FileDir)
+        reader.ReadBranchFromTree(self.__Tree, self.__Search)
+        reader.ConvertBranchesToArray()
+        self.__Internal = reader.ArrayBranches[self.__Tree]
+
+        if len(self.__Mask) != 0:
+            self.Mask = reader.ArrayBranches[self.__Tree][self.__Mask[0]]
+    
+    def SortBranchMap(self):
+         
+        for i in self.__Branches:
+            string = i.split("_")
+            kin = string[len(string)-1]
+            if "phi" == kin:
+                self.Phi = self.__Internal[i]
+            if "eta" == kin:
+                self.Eta = self.__Internal[i]
+            if "pt" == kin:
+                self.Pt = self.__Internal[i]
+            if "e" == kin:
+                self.E = self.__Internal[i]
+            if "pdgid" == kin:
+                self.PDG = self.__Internal[i]
+            if "flavour" == kin:
+                self.Flavour = self.__Internal[i]
+    
+    def CreateEventParticles(self, e = [], pt = [], phi = [], eta = [], pdg = [], index = "", sig = []):
+        Output = [] 
+        for i in range(len(e)):
+            P = Particle()
+            P.SetKinematics(e[i], pt[i], phi[i], eta[i])
+            if len(sig) == len(e):
+                P.IsSignal = sig[i]
+
+            if len(pdg) == len(e):
+                P.PDGID = pdg[i]
+            
+            if isinstance(index, str) == False:
+                P.Index = index
+                if index == -1:
+                    P.Index = i
+
+            Output.append(P)
+
+        return Output
+
+
+class SignalSpectator(GenerateEventParticles):
     
     def __init__(self, ResMask, Tree, Branches, file_dir):
-        self.Branches = Branches
-        self.Search = Branches + ResMask
-        self.Mask = ResMask[0]
+        super().__init__(file_dir, Tree, Branches, ResMask)
         self.Tree = Tree
         self.file_dir = file_dir
         self.EventContainer = []
@@ -92,54 +149,10 @@ class SignalSpectator:
         self.Interval = 10
         self.a = 0
         self.NLoop = 0
-        
-        self.ReadArrays()
+
+        self.ReadArray()
         self.SortBranchMap()
         self.EventLoop()
-
-    def ReadArrays(self):
-
-        print("INFO::Reading Branches and Trees")
-        reader = FastReading(self.file_dir)
-        reader.ReadBranchFromTree(self.Tree, self.Search)
-        reader.ConvertBranchesToArray()
-        
-        self.Internal = reader.ArrayBranches[self.Tree]
-        self.Mask = reader.ArrayBranches[self.Tree][self.Mask]
-        print("INFO::Finished Reading the Files")
-        
-    def SortBranchMap(self):
-        for i in self.Branches:
-            string = i.split("_")
-            kin = string[len(string)-1]
-            if "phi" == kin:
-                self.Phi = self.Internal[i]
-            if "eta" == kin:
-                self.Eta = self.Internal[i]
-            if "pt" == kin:
-                self.Pt = self.Internal[i]
-            if "e" == kin:
-                self.E = self.Internal[i]
-            if "pdgid" == kin:
-                self.PDG = self.Internal[i]
-  
-    def CreateParticles(self, e, pt, phi, eta, index, sig, pdg, Map):
-        for i in range(len(e)):
-            P = Particle()
-            P.SetKinematics(e[i], pt[i], phi[i], eta[i])
-            P.IsSignal = sig[i]
-            P.PDGID = pdg[i]
-            P.Index = index
-            if index == -1:
-                P.Index = i
-
-            if sig[i] == 1:
-                Map["Signal"].append(P)
-            if sig[i] == 0:
-                Map["Spectator"].append(P)
-            Map["All"].append(P)
-        
-        return Map
 
     def ProcessLoop(self, e, pt, phi, eta, mk, pdg):
         parent = False 
@@ -156,11 +169,19 @@ class SignalSpectator:
                 parent = True
                 break
 
-            Map = self.CreateParticles(e[i], pt[i], phi[i], eta[i], i, [mk[i]]*len(eta[i]), pdg[i], Map)
+            part = self.CreateEventParticles(e[i], pt[i], phi[i], eta[i], pdg[i], i, [mk[i]]*len(eta[i]))
+            for z in part:
+                if z.IsSignal == 1:
+                    Map["Signal"].append(z)
+                if z.IsSignal == 0:
+                    Map["Spectator"].append(z)
+                Map["All"].append(z)
 
         if parent:
-            Map = self.CreateParticles(e, pt, phi, eta, -1, mk, pdg, Map)
-        
+            part = self.CreateEventParticles(e, pt, phi, eta, pdg, -1, mk)
+            for z in part:
+                Map["All"].append(z)
+
         if parent == False:
             Map = self.ParticleParent(Map)
         return Map
@@ -240,5 +261,21 @@ class SignalSpectator:
                 self.a = self.a + self.Interval
                  
 
+class EventJetCompiler(GenerateEventParticles, Alerting):
+    def __init__(self, Tree, Branches, file_dir):
+        super().__init__(file_dir, Tree, Branches)
+        self.ReadArray()
+        self.SortBranchMap()
+        self.EventLoop()
+    
+    def EventLoop(self):
+        Event = {}
+        Al = Alerting(self.Phi)
+        for i in range(len(self.Phi)):
+            self.iter = len(self.Phi[i])
+            P = self.CreateEventParticles(self.E[i], self.Pt[i], self.Phi[i], self.Eta[i], self.Flavour[i])
+            Event[i] = P
 
-
+            Al.current = i
+            Al.ProgressAlert()
+        

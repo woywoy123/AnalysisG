@@ -55,7 +55,7 @@ def SignalTopsFromChildren(file_dir):
             FP = i["FakeParents"]
             SIG = i["Signal"]
             SPEC = i["Spectator"]
-            
+             
             Z_ = Particle()
             for j in FP:
     
@@ -87,11 +87,11 @@ def SignalTopsFromChildren(file_dir):
     child = ["truth_top_child_pdgid", "truth_top_child_eta", "truth_top_child_phi", "truth_top_child_pt", "truth_top_child_e"]
     child_initState = ["top_initialState_child_pdgid", "truth_top_initialState_child_eta", "truth_top_initialState_child_phi", "truth_top_initialState_child_pt", "truth_top_initialState_child_e"]
 
-    #res = SignalSpectator(mask, tree, child, file_dir)
-    #res_init = SignalSpectator(mask, tree, child_initState, file_dir)
+    res = SignalSpectator(mask, tree, child, file_dir)
+    res_init = SignalSpectator(mask, tree, child_initState, file_dir)
 
-    #PickleObject(res, "top_child")
-    #PickleObject(res_init, "top_child_initState")
+    PickleObject(res, "top_child")
+    PickleObject(res_init, "top_child_initState")
     
     res = UnpickleObject("top_child")
     res_init = UnpickleObject("top_child_initState")
@@ -125,6 +125,36 @@ def SignalTopsFromChildren(file_dir):
     Output["SpecMassPDG"] = SpecDaughterMassPDG
     Output["SpecMassPDG_init"] = init_SpecDaughterMassPDG
     return Output
+
+def ChildToTruthJet(file_dir):
+    
+    tree = "nominal"
+    mask = ["top_FromRes"]
+    child_initState = ["top_initialState_child_pdgid", "truth_top_initialState_child_eta", "truth_top_initialState_child_phi", "truth_top_initialState_child_pt", "truth_top_initialState_child_e"]
+    truth_jets = ["truthjet_flavour", "truthjet_e", "truthjet_phi", "truthjet_eta", "truthjet_pt", "met_met"] 
+    
+    jet_tF = EventJetCompiler(tree, truth_jets, file_dir)
+
+
+
+    #jet_tF = FastReading(file_dir)
+    #jet_tF.ReadBranchFromTree(tree, truth_jets)
+    #jet_tF.ConvertBranchesToArray() 
+    #
+    #jet = jet_tF.ArrayBranches["nominal"]["truthjet_flavour"]
+    #for i in range(len(jet)):
+    #    print(jet[i])
+
+        #fl = flavour[i]
+        #
+        #e = jet_e[i]
+        #phi = jet_phi[i]
+        #eta = jet_eta[i]
+        #pt = jet_pt[i]
+
+        #met = met_met[i]
+
+        #print(fl) #, e, phi, eta, pt)
 
 
 
