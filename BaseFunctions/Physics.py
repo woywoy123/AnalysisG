@@ -3,6 +3,8 @@ import numpy as np
 from particle import Particle as hep_P
 from BaseFunctions.IO import *
 from BaseFunctions.Alerting import *
+from BaseFunctions.ParticlesManager import Particle, CreateParticles
+from BaseFunctions.VariableManager import BranchVariable
 import multiprocessing
 
 
@@ -33,54 +35,7 @@ def SumVectors(vector):
         v += i
     return v
 
-class Particle:
-    def __init__(self):
-        self.Charge = ""
-        self.PDGID = ""
-        self.FourVector = ""
-        self.DecayProducts = []
-        self.IsSignal = ""
-        self.Index = "" 
-        self.Name = "NAN"
-    
-    def SetKinematics(self, E, Pt, Phi, Eta):
-        self.E = float(E)
-        self.Pt = float(Pt)
-        self.Phi = float(Phi)
-        self.Eta = float(Eta)
-        
-        self.CalculateFourVector()
-        self.Mass = self.FourVector.mass() / 1000.
-
-    def CalculateFourVector(self):
-        self.FourVector = ParticleVector(self.Pt, self.Eta, self.Phi, self.E)
-    
-    def AddProduct(self, ParticleDaughter):
-        self.DecayProducts.append(ParticleDaughter)
-
-    def ReconstructFourVectorFromProducts(self):
-        
-        vectors = []
-        for i in self.DecayProducts:
-            vectors.append(i.FourVector)
-        self.ReconstructedFourVector = SumVectors(vectors)
-        self.FourVector = self.ReconstructedFourVector
-        self.Mass = self.ReconstructedFourVector.mass() / 1000.
-
-    def KinematicDifference(self, Particle):
-        pass
-    
-    def SetPDG(self, PDG = ""):
-        if PDG != "":
-            self.PDGID = PDG
-
-        if self.PDGID != "":
-            try:
-                self.Name = hep_P.from_pdgid(self.PDGID)
-            except NameError:
-                self.Name = "NotFound"
-
-class GenerateEventParticles:
+class GenerateEventParticles(BranchVariable):
     def __init__(self, FileDir = [], Tree = [], Branches = [], Mask =  []):
         self.__Mask = Mask
         self.__Branches = Branches
@@ -116,42 +71,15 @@ class GenerateEventParticles:
                 self.PDG = self.__Internal[i]
             if "flavour" == kin:
                 self.Flavour = self.__Internal[i]
+            if "eventNumber" == string:
+                self.EventNumber = self.__Internal[i]
     
-    def CreateEventParticles(self, e = [], pt = [], phi = [], eta = [], pdg = [], index = "", sig = []):
-        Output = [] 
-        for i in range(len(e)):
-            P = Particle()
-            P.SetKinematics(e[i], pt[i], phi[i], eta[i])
-            if len(sig) == len(e):
-                P.IsSignal = sig[i]
 
-            if len(pdg) == len(e):
-                P.PDGID = pdg[i]
-            
-            if isinstance(index, str) == False:
-                P.Index = index
-                if index == -1:
-                    P.Index = i
-
-            Output.append(P)
-
-        return Output
-
-
-class SignalSpectator(GenerateEventParticles):
+class SignalSpectator(BranchVariable):
     
     def __init__(self, ResMask, Tree, Branches, file_dir):
-        super().__init__(file_dir, Tree, Branches, ResMask)
-        self.Tree = Tree
-        self.file_dir = file_dir
+        super().__init__(file_dir, Tree, Branches)
         self.EventContainer = []
-        self.Verbose = True
-        self.Interval = 10
-        self.a = 0
-        self.NLoop = 0
-
-        self.ReadArray()
-        self.SortBranchMap()
         self.EventLoop()
 
     def ProcessLoop(self, e, pt, phi, eta, mk, pdg):
@@ -169,7 +97,7 @@ class SignalSpectator(GenerateEventParticles):
                 parent = True
                 break
 
-            part = self.CreateEventParticles(e[i], pt[i], phi[i], eta[i], pdg[i], i, [mk[i]]*len(eta[i]))
+            part = CreateParticles(e[i], pt[i], phi[i], eta[i], pdg[i], i, [mk[i]]*len(eta[i]))
             for z in part:
                 if z.IsSignal == 1:
                     Map["Signal"].append(z)
@@ -178,7 +106,7 @@ class SignalSpectator(GenerateEventParticles):
                 Map["All"].append(z)
 
         if parent:
-            part = self.CreateEventParticles(e, pt, phi, eta, pdg, -1, mk)
+            part = CreateParticles(e, pt, phi, eta, pdg, -1, mk)
             for z in part:
                 Map["All"].append(z)
 
@@ -220,8 +148,11 @@ class SignalSpectator(GenerateEventParticles):
         Pipe = []
         processes = []
         bundle_s = 4000
+        
+        print(self.Mask)
         for i in range(len(self.Mask)):
             inst = [self.E[i], self.Pt[i], self.Phi[i], self.Eta[i], self.Mask[i], self.PDG[i]]
+            print(inst) 
             Params.append(inst)
             
             if len(Params) == bundle_s:
@@ -240,42 +171,17 @@ class SignalSpectator(GenerateEventParticles):
        
         for i in processes:
             i.start()
+            sleep(10)
 
+        al = Alerting(len(processes))
         for i, j in zip(processes, Pipe):
             con = j.recv()
             i.join() 
             for t in con:
                 self.EventContainer.append(t)
-            self.NLoop += len(con)
-            self.ProgressAlert()
+
+                al.current += 1
+                al.ProgressAlert() 
 
         print("INFO::Finished EventLoop")               
     
-    def ProgressAlert(self):
-
-        if self.Verbose == True:
-            
-            per = round(float(self.NLoop) / float(len(self.Mask))* 100)
-            if  per > self.a:
-                print("INFO::Progress " + str(per) + "%")
-                self.a = self.a + self.Interval
-                 
-
-class EventJetCompiler(GenerateEventParticles, Alerting):
-    def __init__(self, Tree, Branches, file_dir):
-        super().__init__(file_dir, Tree, Branches)
-        self.ReadArray()
-        self.SortBranchMap()
-        self.EventLoop()
-    
-    def EventLoop(self):
-        Event = {}
-        Al = Alerting(self.Phi)
-        for i in range(len(self.Phi)):
-            self.iter = len(self.Phi[i])
-            P = self.CreateEventParticles(self.E[i], self.Pt[i], self.Phi[i], self.Eta[i], self.Flavour[i])
-            Event[i] = P
-
-            Al.current = i
-            Al.ProgressAlert()
-        
