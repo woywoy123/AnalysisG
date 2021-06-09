@@ -5,6 +5,7 @@ import multiprocessing
 import numpy as np
 import pickle
 from time import sleep
+from BaseFunctions.Alerting import ErrorAlert
 
 class FastReading():
     def __init__(self, File_dir):
@@ -175,8 +176,10 @@ class FastReading():
 
 
 
-class UPROOT_Reader():
+class UPROOT_Reader(ErrorAlert):
     def __init__(self, File):
+        ErrorAlert.__init__(self)
+
         self.ROOT_Original = ""
         self.ROOT_Original = uproot.open(File)
         self.FoundTrees = {}
@@ -258,8 +261,7 @@ class UPROOT_Reader():
         if passed: 
             return self.ROOT_F_Current
         else: 
-            return "NotFound"
-
+            self.MissingBranch(self.CurrentBranch, "MISSING BRANCH") 
 
 def PickleObject(obj, filename):
     

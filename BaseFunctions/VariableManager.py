@@ -1,49 +1,38 @@
 from BaseFunctions.IO import FastReading
+from BaseFunctions.Alerting import WarningAlert
 
-class BranchVariable:
+class BranchVariable(WarningAlert):
     def __init__(self, FileDir, Tree, Branches):
-        self.Phi = "x"
-        self.Eta = ""
-        self.Pt = ""
-        self.E = ""
-        self.PDGID = ""
-        self.Flavour = ""
-        self.EventNumber = ""
-        self.RunNumber = ""
-        self.Charge = ""
-        self.MET = ""
-        self.Mask = ""
-        self.__Branches = Branches
-        self.ObjectType = ""
+        WarningAlert.__init__(self) 
 
-
-        assert(Tree, str)
         reader = FastReading(FileDir)
         reader.ReadBranchFromTree(Tree, Branches)
         reader.ConvertBranchesToArray()
         self.__Reader = reader.ArrayBranches[Tree]
+        self.__Branches = Branches
             
         self.AssignBranchToVariable()
 
     def AssignBranchToVariable(self):
-        
+         
         for i in self.__Branches:
             self.__bI = i
-            if i.count("_") == 0:
-                self.EventObjectProperties()
+            
+            var = i.split("_")
+            self.__Variable = var[len(var) -1]
+            self.Type = "_".join(var[0:len(var) -1])
+            self.EventObjectProperties()
+            self.DetectorObjectProperties()
 
-            if i.count("_") == 1:
-                self.__Variable = i.split("_")[1]
-                self.Type = i.split("_")[0]
-                self.DetectorObjectProperties()
-        print(self.Phi) 
+            self.MixingTypes(self.Type)
+
+            
     
     def EventObjectProperties(self):
         if self.__Variable == "eventNumber":
             self.EventNumber = self.__Reader[self.__bI]
+            self.Type = self.__Variable
 
-        if self.__Variable == "flavour":
-            self.Flavour = self.__Reader[self.__bI]
 
     def DetectorObjectProperties(self):
         if self.__Variable == "phi":
@@ -64,6 +53,14 @@ class BranchVariable:
         if self.__Variable == "FromRes":
             self.Mask = self.__Reader[self.__bI]
 
+        if self.__Variable == "flavour":
+            self.Flavour = self.__Reader[self.__bI]
+
+        if self.__Variable == "met":
+            self.MET = self.__Reader[self.__bI]
+
+        if self.__Variable == "charge":
+            self.Charge = self.__Reader[self.__bI]
 
 
 

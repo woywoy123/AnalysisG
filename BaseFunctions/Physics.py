@@ -35,49 +35,9 @@ def SumVectors(vector):
         v += i
     return v
 
-class GenerateEventParticles(BranchVariable):
-    def __init__(self, FileDir = [], Tree = [], Branches = [], Mask =  []):
-        self.__Mask = Mask
-        self.__Branches = Branches
-        self.__Tree = Tree
-        self.__Search = self.__Mask + self.__Branches
-        self.__FileDir = FileDir
-
-    def ReadArray(self):
-        
-        print("INFO::Reading Branches and Trees")
-        reader = FastReading(self.__FileDir)
-        reader.ReadBranchFromTree(self.__Tree, self.__Search)
-        reader.ConvertBranchesToArray()
-        self.__Internal = reader.ArrayBranches[self.__Tree]
-
-        if len(self.__Mask) != 0:
-            self.Mask = reader.ArrayBranches[self.__Tree][self.__Mask[0]]
-    
-    def SortBranchMap(self):
-         
-        for i in self.__Branches:
-            string = i.split("_")
-            kin = string[len(string)-1]
-            if "phi" == kin:
-                self.Phi = self.__Internal[i]
-            if "eta" == kin:
-                self.Eta = self.__Internal[i]
-            if "pt" == kin:
-                self.Pt = self.__Internal[i]
-            if "e" == kin:
-                self.E = self.__Internal[i]
-            if "pdgid" == kin:
-                self.PDG = self.__Internal[i]
-            if "flavour" == kin:
-                self.Flavour = self.__Internal[i]
-            if "eventNumber" == string:
-                self.EventNumber = self.__Internal[i]
-    
-
 class SignalSpectator(BranchVariable):
     
-    def __init__(self, ResMask, Tree, Branches, file_dir):
+    def __init__(self, Tree, Branches, file_dir):
         super().__init__(file_dir, Tree, Branches)
         self.EventContainer = []
         self.EventLoop()
@@ -96,7 +56,7 @@ class SignalSpectator(BranchVariable):
             if isinstance(e[i], np.float32) == True:
                 parent = True
                 break
-
+            
             part = CreateParticles(e[i], pt[i], phi[i], eta[i], pdg[i], i, [mk[i]]*len(eta[i]))
             for z in part:
                 if z.IsSignal == 1:
@@ -149,10 +109,8 @@ class SignalSpectator(BranchVariable):
         processes = []
         bundle_s = 4000
         
-        print(self.Mask)
         for i in range(len(self.Mask)):
-            inst = [self.E[i], self.Pt[i], self.Phi[i], self.Eta[i], self.Mask[i], self.PDG[i]]
-            print(inst) 
+            inst = [self.E[i], self.Pt[i], self.Phi[i], self.Eta[i], self.Mask[i], self.PDGID[i]]
             Params.append(inst)
             
             if len(Params) == bundle_s:
@@ -171,7 +129,6 @@ class SignalSpectator(BranchVariable):
        
         for i in processes:
             i.start()
-            sleep(10)
 
         al = Alerting(len(processes))
         for i, j in zip(processes, Pipe):
@@ -180,8 +137,7 @@ class SignalSpectator(BranchVariable):
             for t in con:
                 self.EventContainer.append(t)
 
-                al.current += 1
-                al.ProgressAlert() 
+            al.ProgressAlert() 
 
         print("INFO::Finished EventLoop")               
     

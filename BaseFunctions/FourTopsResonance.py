@@ -1,5 +1,6 @@
 from BaseFunctions.IO import *
 from BaseFunctions.Physics import *
+from BaseFunctions.EventsManager import *
 import numpy as np
 import pickle
 
@@ -83,18 +84,17 @@ def SignalTopsFromChildren(file_dir):
 
 
     tree = "nominal"
-    mask = ["top_FromRes"]
-    child = ["truth_top_child_pdgid", "truth_top_child_eta", "truth_top_child_phi", "truth_top_child_pt", "truth_top_child_e"]
-    child_initState = ["top_initialState_child_pdgid", "truth_top_initialState_child_eta", "truth_top_initialState_child_phi", "truth_top_initialState_child_pt", "truth_top_initialState_child_e"]
+    child = ["top_FromRes", "truth_top_child_pdgid", "truth_top_child_eta", "truth_top_child_phi", "truth_top_child_pt", "truth_top_child_e"]
+    child_initState = ["top_FromRes", "top_initialState_child_pdgid", "truth_top_initialState_child_eta", "truth_top_initialState_child_phi", "truth_top_initialState_child_pt", "truth_top_initialState_child_e"]
 
-    res = SignalSpectator(mask, tree, child, file_dir)
-    res_init = SignalSpectator(mask, tree, child_initState, file_dir)
+    res = SignalSpectator(tree, child, file_dir)
+    res_init = SignalSpectator(tree, child_initState, file_dir)
 
-    PickleObject(res, "top_child")
-    PickleObject(res_init, "top_child_initState")
-    
-    res = UnpickleObject("top_child")
-    res_init = UnpickleObject("top_child_initState")
+    #PickleObject(res, "top_child")
+    #PickleObject(res_init, "top_child_initState")
+    #
+    #res = UnpickleObject("top_child")
+    #res_init = UnpickleObject("top_child_initState")
 
     SignalMass, SignalDaughterPDGs, SignalDaughterMass, TopMass, DaughterMassPDG = FillMaps(res, 1)
     init_SignalMass, init_SignalDaughterPDGs, init_SignalDaughterMass, init_TopMass, init_DaughterMassPDG = FillMaps(res_init, 1)
@@ -129,12 +129,20 @@ def SignalTopsFromChildren(file_dir):
 def ChildToTruthJet(file_dir):
     
     tree = "nominal"
-    mask = ["top_FromRes"]
+   
+    #truth_tops = ["top_FromRes", "truth_top_pt", "truth_top_eta", "truth_top_phi", "truth_top_e", "truth_top_charge"] 
+    #truth_4t = TruthCompiler(file_dir, tree, truth_tops)
+    #truth_4t.GenerateEvents()
+
     child_initState = ["top_initialState_child_pdgid", "truth_top_initialState_child_eta", "truth_top_initialState_child_phi", "truth_top_initialState_child_pt", "truth_top_initialState_child_e"]
-    truth_jets = ["truthjet_flavour", "truthjet_e", "truthjet_phi", "truthjet_eta", "truthjet_pt", "met_met"] 
+    children_4t = EventCompiler(file_dir, tree, child_initState)
+    children_4t.GenerateEvents()
     
-    #jet_tF = EventJetCompiler(tree, truth_jets, file_dir)
+    #truth_4t.MatchParticles(children_4t.EventDictionary)
 
 
-
-
+    truth_jets = ["truthjet_flavour", "truthjet_e", "truthjet_phi", "truthjet_eta", "truthjet_pt", "met_met"] 
+   
+    jet_tF = EventCompiler(file_dir, tree, truth_jets)
+    jet_tF.GenerateEvents()
+ 
