@@ -82,3 +82,7 @@ class Debugging:
         self.__iter += 1
         if self.__iter >= self.__Events:
             self.DebugKill = True
+
+    def ResetCounter(self):
+        self.__iter = 0
+        self.DebugKill = False

@@ -1,4 +1,5 @@
 from BaseFunctions.FourTopsResonance import *
+from BaseFunctions.Plotting import *
 import matplotlib.pyplot as plt
 from particle import Particle
 import numpy as np
@@ -30,7 +31,7 @@ def TestResonanceFromTruthTops():
     plt.ylabel("Events")
 
     plt.suptitle("Invariant Mass Distribution: Top (Left) Resonance (Middle) Spectator (Right)")
-    plt.savefig("./ExamplePlots/Tops_Resonance.png")
+    plt.savefig("./ExamplePlots/TestResonanceFromTruthTops/Tops_Resonance.png")
 
 def TestSignalTopsFromChildren():
 
@@ -68,7 +69,7 @@ def TestSignalTopsFromChildren():
     plt.xlabel("Mass in GeV")
     plt.ylabel("Events")
         
-    plt.savefig("./ExamplePlots/Tops_Resonance_FromChildren.png")
+    plt.savefig("./ExamplePlots/TestSignalTopsFromChildren/Tops_Resonance_FromChildren.png")
     plt.close()
     plt.clf()
     
@@ -100,7 +101,7 @@ def TestSignalTopsFromChildren():
     plt.xlabel("Mass in GeV")
     plt.ylabel("Events")
         
-    plt.savefig("./ExamplePlots/Tops_Resonance_FromChildren_init.png")
+    plt.savefig("./ExamplePlots/TestSignalTopsFromChildren/Tops_Resonance_FromChildren_init.png")
     plt.close()
     plt.clf()
 
@@ -127,7 +128,7 @@ def TestSignalTopsFromChildren():
     plt.xlabel("Mass in GeV")
     plt.ylabel("Events")
         
-    plt.savefig("./ExamplePlots/Spectator_Tops_FromChildren.png")
+    plt.savefig("./ExamplePlots/TestSignalTopsFromChildren/Spectator_Tops_FromChildren.png")
     plt.close()
     plt.clf()
     
@@ -153,7 +154,7 @@ def TestSignalTopsFromChildren():
     plt.xlabel("Mass in GeV")
     plt.ylabel("Events")
         
-    plt.savefig("./ExamplePlots/Spectator_Tops_FromChildren_Init.png")
+    plt.savefig("./ExamplePlots/TestSignalTopsFromChildren/Spectator_Tops_FromChildren_Init.png")
     plt.close()
     plt.clf()
     
@@ -174,13 +175,54 @@ def TestSignalTopsFromChildren():
 
 
     
-    PlotSpectra(Output, "SGDMassPDG", "MassSpec")
-    PlotSpectra(Output, "SGDMassPDG_init", "MassSpec_init")
-    PlotSpectra(Output, "SpecMassPDG", "MassSpectator")
-    PlotSpectra(Output, "SpecMassPDG_init", "MassSpectator_init")
+    PlotSpectra(Output, "SGDMassPDG", "TestSignalTopsFromChildren/MassSpec")
+    PlotSpectra(Output, "SGDMassPDG_init", "TestSignalTopsFromChildren/MassSpec_init")
+    PlotSpectra(Output, "SpecMassPDG", "TestSignalTopsFromChildren/MassSpectator")
+    PlotSpectra(Output, "SpecMassPDG_init", "TestSignalTopsFromChildren/MassSpectator_init")
 
 
 def TestChildToTruthJet():
     files = "/CERN/Grid/SignalSamples/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root"
-    ChildToTruthJet(files)
+    files = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/user.pgadow.24765302._000001.output.root" 
+    Output = ChildToTruthJet(files)
+
+    # Plot the Mass spectra of the Resonance using: 1.Truth, 2. Truth Children (init) 3. Children of Children
+    Title = ["Truth Tops Branches", "Resonance From Children (init)", "Resonance From Truth Jets"]
+    Data = [Output["Mass_Resonance_Truth"], Output["Mass_Resonance_Child"], Output["Mass_Resonance_Child_of_Child"]]
+    Bins = 10000
+    Ranges = [0, 10000]
+    X_Labels = "Invarian Mass (GeV)"
+    
+    plt = Plotting(Title, Data, Bins, Ranges, X_Labels)
+    plt.savefig("./ExamplePlots/TestChildToTruthJet/Resonance.png")
+    plt.clf()
+    
+    # Plot the mass spectrum of tops originating from Signal Tops
+    Title = ["Mass of Tops from Signal", "Mass of Signal Tops from (init) Children", "Mass of Signal Tops from Truth Jets"]
+    Data = [Output["Mass_Signal_Tops_Truth"], Output["Mass_Signal_Tops_Child"], Output["Mass_Signal_Tops_Child_of_Child"]]
+    Bins = 100
+    Ranges = [100, 200]
+    X_Lables = "Invariant Mass (GeV)"
+
+    plt = Plotting(Title, Data, Bins, Ranges, X_Labels)
+    plt.savefig("./ExamplePlots/TestChildToTruthJet/Signal_Tops.png")
+    plt.clf()
+
+    # Plot the mass spectrum of tops originating from Spectator Tops
+    Title = ["Mass of Tops from Spectator", "Mass of Spectator Tops from (init) Children", "Mass of Spectator Tops from Truth Jets"]
+    Data = [Output["Mass_Spectator_Tops_Truth"], Output["Mass_Spectator_Tops_Child"], Output["Mass_Spectator_Tops_Child_of_Child"]]
+    Bins = 100
+    Ranges = [100, 200]
+    X_Lables = "Invariant Mass (GeV)"
+
+    plt = Plotting(Title, Data, Bins, Ranges, X_Labels)
+    plt.savefig("./ExamplePlots/TestChildToTruthJet/Spectator_Tops.png")
+    plt.clf()
+
+
+    # Add the rest later
+
+
+
+
 

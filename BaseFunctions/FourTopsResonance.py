@@ -1,6 +1,7 @@
 from BaseFunctions.IO import *
 from BaseFunctions.Physics import *
 from BaseFunctions.EventsManager import *
+from BaseFunctions.VariableManager import *
 import numpy as np
 import pickle
 
@@ -129,20 +130,182 @@ def SignalTopsFromChildren(file_dir):
 def ChildToTruthJet(file_dir):
     
     tree = "nominal"
-   
-    #truth_tops = ["top_FromRes", "truth_top_pt", "truth_top_eta", "truth_top_phi", "truth_top_e", "truth_top_charge"] 
-    #truth_4t = TruthCompiler(file_dir, tree, truth_tops)
-    #truth_4t.GenerateEvents()
+    
+    Event_Branches = ["eventNumber", "met_met", "met_phi"] 
+    Map = BranchVariable(file_dir, tree, Event_Branches).EventObjectMap
+
+    truth_tops = ["truth_top_pt", "truth_top_eta", "truth_top_phi", "truth_top_e", "truth_top_charge"] 
+    truth_4t = TruthCompiler(file_dir, tree, truth_tops)
+    truth_4t.GenerateEvents()
 
     child_initState = ["top_initialState_child_pdgid", "truth_top_initialState_child_eta", "truth_top_initialState_child_phi", "truth_top_initialState_child_pt", "truth_top_initialState_child_e"]
     children_4t = EventCompiler(file_dir, tree, child_initState)
     children_4t.GenerateEvents()
-    
-    #truth_4t.MatchParticles(children_4t.EventDictionary)
 
-
-    truth_jets = ["truthjet_flavour", "truthjet_e", "truthjet_phi", "truthjet_eta", "truthjet_pt", "met_met"] 
-   
+    truth_jets = ["truthjet_flavour", "truthjet_e", "truthjet_phi", "truthjet_eta", "truthjet_pt", "truthjet_flavour"] 
     jet_tF = EventCompiler(file_dir, tree, truth_jets)
     jet_tF.GenerateEvents()
- 
+
+    truth_4t.MatchChildrenParticles(children_4t.EventDictionary)
+    truth_4t.EventObjectMap = Map
+    truth_4t.MatchToTruthJets(jet_tF.EventDictionary)
+    
+
+    #============== Now we test if the matching produces consistent output
+    def SafeDict(Particle, Dict):
+        try:
+            Dict[Particle.PDGID].append(Particle.Mass)
+        except KeyError:
+            Dict[Particle.PDGID] = []
+            Dict[Particle.PDGID].append(Particle.Mass)
+        return Dict 
+
+    def SafeDictFlavour(Particle, Dict):
+        try:
+            Dict[Particle.Flavour].append(Particle.Mass)
+        except KeyError:
+            Dict[Particle.Flavour] = []
+            Dict[Particle.Flavour].append(Particle.Mass)
+        return Dict 
+
+
+
+
+    #=== Build the mass of the resonance and the truth tops
+    Mass_Resonance_Truth = []
+    Mass_Signal_Tops_Truth = []
+    Mass_Spectator_Tops_Truth = []
+    for i in truth_4t.EventDictionary:
+        p_tops = truth_4t.EventDictionary[i]
+        
+        Z_ = Particle()
+        Z_.Name = "Z'"
+        for p_t in p_tops:
+            if p_t.IsSignal == 1:
+                Z_.DecayProducts.append(p_t)
+                Mass_Signal_Tops_Truth.append(p_t.Mass)
+            else:
+                Mass_Spectator_Tops_Truth.append(p_t.Mass)
+        
+        Z_.ReconstructFourVectorFromProducts()
+        Mass_Resonance_Truth.append(Z_.Mass)
+
+    
+    #=== Build the mass of the resonance from top decayed children 
+    Mass_Resonance_Child = []
+    Mass_Signal_Tops_Child = []
+    Mass_Spectator_Tops_Child = []
+    C_Mass_Signal_Child = {}
+    C_Mass_Spectator_Child = {}
+    for i in truth_4t.EventDictionary:
+        p_tops = truth_4t.EventDictionary[i]
+        
+        Z_ = Particle()
+        Z_.Name = "Z'"
+        for p_t in p_tops:
+            
+            T_ = Particle()
+            T_.Name = "t_recon"
+
+            for c_t in p_t.DecayProducts:
+                if p_t.IsSignal == 1:
+                    T_.DecayProducts.append(c_t)
+                    C_Mass_Signal_Child = SafeDict(c_t, C_Mass_Signal_Child) 
+                else: 
+                    T_.DecayProducts.append(c_t)
+                    C_Mass_Spectator_Child = SafeDict(c_t, C_Mass_Spectator_Child)
+            
+            T_.ReconstructFourVectorFromProducts()
+            
+            if p_t.IsSignal == 1:
+                Mass_Signal_Tops_Child.append(T_.Mass)
+                Z_.DecayProducts.append(T_)
+            else:
+                Mass_Spectator_Tops_Child.append(T_.Mass)
+        
+        Z_.ReconstructFourVectorFromProducts()
+        Mass_Resonance_Child.append(Z_.Mass)
+        
+    #=== Build the mass of the resonance from top decayed children of children 
+    Mass_Resonance_Child_of_Child = []
+    Mass_Signal_Tops_Child_of_Child = []
+    Mass_Spectator_Tops_Child_of_Child = []
+
+    C_C_Mass_Signal_Child = []
+    C_C_Mass_Spectator_Child = []
+
+    Mass_Signal_Child_Child = {}
+    Mass_Spectator_Child_Child = {}
+    for i in truth_4t.EventDictionary:
+        p_tops = truth_4t.EventDictionary[i]
+        
+        Z_ = Particle()
+        Z_.Name = "Z'"
+        for p_t in p_tops:
+            
+            T_ = Particle()
+            T_.Name = "t_recon"
+            for c_t in p_t.DecayProducts:
+                
+                D_ = Particle()
+                D_.Name = "D_ recon"
+                
+                for cct in c_t.DecayProducts:
+                    D_.DecayProducts.append(cct)
+                    
+                    if p_t.IsSignal == 1:
+                        Mass_Signal_Child_Child = SafeDictFlavour(cct, Mass_Signal_Child_Child)
+                    else:
+                        Mass_Spectator_Child_Child = SafeDictFlavour(cct, Mass_Spectator_Child_Child)
+
+                # This is done to capture neutrinos and leptons not recorded in the truth_jet
+                if len(D_.DecayProducts) == 0:
+                    D_.DecayProducts.append(c_t)
+
+                    if p_t.IsSignal == 1:
+                        Mass_Signal_Child_Child = SafeDict(c_t, Mass_Signal_Child_Child)
+                    else:
+                        Mass_Spectator_Child_Child = SafeDict(c_t, Mass_Spectator_Child_Child)
+              
+                D_.ReconstructFourVectorFromProducts()
+                if p_t.IsSignal == 1:
+                    C_C_Mass_Signal_Child.append(D_.Mass)
+                else:
+                    C_C_Mass_Spectator_Child.append(D_.Mass)
+
+                T_.DecayProducts.append(D_)
+
+            
+            T_.ReconstructFourVectorFromProducts()
+            if p_t.IsSignal == 1:
+                Mass_Signal_Tops_Child_of_Child.append(T_.Mass)
+                Z_.DecayProducts.append(T_)
+            else:
+                Mass_Spectator_Tops_Child_of_Child.append(T_.Mass)
+
+        Z_.ReconstructFourVectorFromProducts()
+        Mass_Resonance_Child_of_Child.append(Z_.Mass)
+    
+    Output = {}
+    Output["Mass_Resonance_Truth"] = Mass_Resonance_Truth
+    Output["Mass_Resonance_Child"] = Mass_Resonance_Child
+    Output["Mass_Resonance_Child_of_Child"] = Mass_Resonance_Child_of_Child
+
+    Output["Mass_Signal_Tops_Truth"] = Mass_Signal_Tops_Truth
+    Output["Mass_Signal_Tops_Child"] = Mass_Signal_Tops_Child
+    Output["Mass_Signal_Tops_Child_of_Child"] = Mass_Signal_Tops_Child_of_Child
+    
+    Output["Mass_Spectator_Tops_Truth"] = Mass_Spectator_Tops_Truth
+    Output["Mass_Spectator_Tops_Child"] = Mass_Spectator_Tops_Child
+    Output["Mass_Spectator_Tops_Child_of_Child"] = Mass_Spectator_Tops_Child_of_Child
+    
+    Output["C_Mass_Signal_Child"] = C_Mass_Signal_Child
+    Output["C_C_Mass_Signal_Child"] = C_C_Mass_Signal_Child 
+    
+    Output["C_Mass_Spectator_Child"] = C_Mass_Spectator_Child
+    Output["C_C_Mass_Spectator_Child"] = C_C_Mass_Spectator_Child
+    
+    Output["Mass_Signal_Child_Child"] = Mass_Signal_Child_Child
+    Output["Mass_Spectator_Child_Child"] = Mass_Spectator_Child_Child
+    
+    return Output

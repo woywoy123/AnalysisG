@@ -11,6 +11,8 @@ class BranchVariable(WarningAlert):
         self.__Reader = reader.ArrayBranches[Tree]
         self.__Branches = Branches
             
+        self.EventObjectMap = {}
+        
         self.AssignBranchToVariable()
 
     def AssignBranchToVariable(self):
@@ -21,17 +23,33 @@ class BranchVariable(WarningAlert):
             var = i.split("_")
             self.__Variable = var[len(var) -1]
             self.Type = "_".join(var[0:len(var) -1])
+           
             self.EventObjectProperties()
             self.DetectorObjectProperties()
 
             self.MixingTypes(self.Type)
 
-            
-    
     def EventObjectProperties(self):
-        if self.__Variable == "eventNumber":
+        def CreateEventMap():
+            for i in self.EventNumber:
+                self.EventObjectMap[i] = {}
+
+        def FillEventMap(EventObject):
+            for i in range(len(self.EventNumber)):
+                self.EventObjectMap[self.EventNumber[i]][self.__bI] = EventObject[i]
+
+        
+        if self.__bI == "eventNumber":
             self.EventNumber = self.__Reader[self.__bI]
-            self.Type = self.__Variable
+            CreateEventMap()
+
+        if self.__bI == "met_met":
+            self.MET = self.__Reader[self.__bI]
+            FillEventMap(self.MET)
+
+        if self.__bI == "ttbar_type_truthjets":
+            self.ttbar_truthjets = self.__Reader[self.__bI]
+            FillEventMap(self.ttbar_truthjets)
 
 
     def DetectorObjectProperties(self):
@@ -52,15 +70,26 @@ class BranchVariable(WarningAlert):
 
         if self.__Variable == "FromRes":
             self.Mask = self.__Reader[self.__bI]
-
+        
         if self.__Variable == "flavour":
             self.Flavour = self.__Reader[self.__bI]
 
-        if self.__Variable == "met":
-            self.MET = self.__Reader[self.__bI]
-
         if self.__Variable == "charge":
             self.Charge = self.__Reader[self.__bI]
+
+        if self.__Variable == "truthflav":
+            self.TruthFlavour = self.__Reader[self.__bI]
+
+        if self.__Variable == "extended":
+            self.Extended = self.__Reader[self.__bI]
+
+        if self.__Variable == "nCHad":
+            self.nCHad = self.__Reader[self.__bI]
+
+        if self.__Variable == "nBHad":
+            self.nBHad = self.__Reader[self.__bI]
+
+
 
 
 

@@ -1,6 +1,5 @@
 import ROOT
 import numpy as np
-from particle import Particle as hep_P
 from BaseFunctions.IO import *
 from BaseFunctions.Alerting import *
 from BaseFunctions.ParticlesManager import Particle, CreateParticles
@@ -35,6 +34,11 @@ def SumVectors(vector):
         v += i
     return v
 
+
+
+
+
+# ______ Legacy Code! ________ #
 class SignalSpectator(BranchVariable):
     
     def __init__(self, Tree, Branches, file_dir):

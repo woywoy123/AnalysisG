@@ -3,7 +3,7 @@ from ClosureTests.FourTopsResonance import *
 
 if __name__ == "__main__":
     
-    #TestSpeedOptimization()
-    #TestResonanceFromTruthTops()
-    #TestSignalTopsFromChildren()
+    TestSpeedOptimization()
+    TestResonanceFromTruthTops()
+    TestSignalTopsFromChildren()
     TestChildToTruthJet()

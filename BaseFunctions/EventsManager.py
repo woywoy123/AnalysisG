@@ -4,8 +4,8 @@ from BaseFunctions.ParticlesManager import *
 import multiprocessing
 
 class EventCompiler(ErrorAlert, BranchVariable, Debugging):
-    def __init__(self, FileDir, Tree, Branches):
-        Branches += ["eventNumber"]
+    def __init__(self, FileDir, Tree, Branches, Debug = False):
+        Branches.insert(0, "eventNumber")
         
         ErrorAlert.__init__(self)
         self.expected = str
@@ -16,7 +16,7 @@ class EventCompiler(ErrorAlert, BranchVariable, Debugging):
         BranchVariable.__init__(self, FileDir, Tree, Branches)
         self.EventDictionary = {}
         
-        Debugging.__init__(self, events = 100)
+        Debugging.__init__(self, events = 100, debug = Debug)
 
     def GenerateEvents(self):
         al = Alerting(self.EventNumber)
@@ -25,7 +25,7 @@ class EventCompiler(ErrorAlert, BranchVariable, Debugging):
         for i in range(len(self.EventNumber)):
                 
             P = CreateParticleObjects(self.E[i], self.Pt[i], self.Phi[i], self.Eta[i])
-            
+            P.Type = self.Type 
             try: 
                 P.PDGID = self.PDGID[i]
             except AttributeError:
@@ -86,7 +86,7 @@ class EventCompiler(ErrorAlert, BranchVariable, Debugging):
             Prz.append(P)
        
         al = Alerting(Prz)
-        al.Notice("-> COMPILING PARTICLES")
+        al.Notice("COMPILING PARTICLES")
         for i in Prz:
             i.start()
         
@@ -96,7 +96,7 @@ class EventCompiler(ErrorAlert, BranchVariable, Debugging):
             for t in con:
                 self.EventDictionary[t] = con[t]
             al.ProgressAlert()
-        al.Notice("-> COMPILING COMPLETE")
+        al.Notice("COMPILING COMPLETE")
 
 
 class TruthCompiler(EventCompiler):
@@ -105,22 +105,44 @@ class TruthCompiler(EventCompiler):
             Branches += ["top_FromRes"]
         
         EventCompiler.__init__(self, FileDir, Tree, Branches)
+        
 
-
-    def MatchParticles(self, Incoming):
+    def MatchChildrenParticles(self, Incoming):
         self.expected = dict
         self.given = Incoming
         self.WrongInputType("EXPECTED DICTIONARY OF EVENTS")
-        p = 0 
         for i in self.EventDictionary:
             self.FindCommonIndex(Incoming[i], self.EventDictionary[i])
+
+    def MatchToTruthJets(self, Incoming):
+        for i in self.EventDictionary: 
+            truth = self.EventDictionary[i]
+            jets = Incoming[i]
             
-            if p == 5:
-                break
-            p += 1
-    
+            ClosestPair = {}
+            for j in truth:
+                for t in j.DecayProducts:
+                    for p in jets:
+                        delR = t.KinematicDifference(p)
+                        ClosestPair[delR] = [p, t]
+            
+            sort = sorted(ClosestPair.items()) 
+            used = []
+            for k in sort:
+                ch = k[1][0]
+                pa = k[1][1]
+
+                if ch in used:
+                    continue
+                else:
+                    pa.DecayProducts.append(ch)
+                    used.append(ch)
+ 
     def FindCommonIndex(self, incom, truth):
         for i in range(len(truth)):
             for j in range(len(incom)):
                 if truth[i].Index == incom[j].Index:
                     truth[i].AddProduct(incom[j])
+
+
+

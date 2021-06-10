@@ -1,3 +1,4 @@
+from particle import Particle as hep_P
 
 class Particle:
     def __init__(self):
@@ -9,6 +10,10 @@ class Particle:
         self.IsSignal = ""
         self.Index = "" 
         self.Name = "NAN"
+        self.Type = ""
+
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__ 
     
     def SetKinematics(self, E, Pt, Phi, Eta):
         self.E = float(E)
@@ -27,7 +32,6 @@ class Particle:
         self.DecayProducts.append(ParticleDaughter)
 
     def ReconstructFourVectorFromProducts(self):
-        
         vectors = []
         for i in self.DecayProducts:
             vectors.append(i.FourVector)
@@ -38,8 +42,11 @@ class Particle:
         self.Mass = self.ReconstructedFourVector.mass() / 1000.
 
     def KinematicDifference(self, Particle):
-        pass
-    
+        self.DeltaPhi = self.Phi - Particle.Phi
+        self.DeltaEta = self.Eta - Particle.Eta
+        DeltaR = pow( pow(self.DeltaPhi, 2) + pow(self.DeltaEta, 2) , 0.5)
+        return DeltaR 
+
     def SetPDG(self, PDG = ""):
         if PDG != "":
             self.PDGID = PDG
@@ -61,6 +68,7 @@ class CreateParticleObjects:
         self.Pt = Pt
         self.Phi = Phi
         self.Eta = Eta
+        self.Type = ""
 
     def CompileParticles(self):
         Output = [] 
@@ -80,6 +88,7 @@ class CreateParticleObjects:
             P = Particle()
             P.SetKinematics(self.E[i][j], self.Pt[i][j], self.Phi[i][j], self.Eta[i][j])
             P.Index = i
+            P.Type = self.Type
     
             if isinstance(self.Charge, str) == False:
                 P.Charge = self.Charge[i][j]
@@ -97,7 +106,8 @@ class CreateParticleObjects:
         P = Particle()
         P.SetKinematics(self.E[i], self.Pt[i], self.Phi[i], self.Eta[i])
         P.Index = i
-
+        P.Type = self.Type
+        
         if isinstance(self.Charge, str) == False:
             P.Charge = self.Charge[i]
         if isinstance(self.PDGID, str) == False:
@@ -110,6 +120,11 @@ class CreateParticleObjects:
         Output.append(P)
         return Output
 
+
+
+
+
+# ______ Legacy Code! ________ #
 def CreateParticles(e, pt, phi, eta, pdg = [], index = "", sig = [], flavour = []):
     Output = [] 
 
