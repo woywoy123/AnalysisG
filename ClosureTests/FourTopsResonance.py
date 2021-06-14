@@ -1,7 +1,6 @@
 from BaseFunctions.FourTopsResonance import *
 from BaseFunctions.Plotting import *
 import matplotlib.pyplot as plt
-from particle import Particle
 import numpy as np
 
 def TestResonanceFromTruthTops():
@@ -36,7 +35,7 @@ def TestResonanceFromTruthTops():
 def TestSignalTopsFromChildren():
 
     files = "/CERN/Grid/SignalSamples/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root"
-    #files = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/user.pgadow.24765302._000001.output.root" 
+    files = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/user.pgadow.24765302._000001.output.root" 
     Output = SignalTopsFromChildren(files)
    
     print("Entering the Matplot stuff")
@@ -158,23 +157,6 @@ def TestSignalTopsFromChildren():
     plt.close()
     plt.clf()
     
-    def PlotSpectra(Output, key, Subdir):
-        for i in Output[key]:
-            plt.figure(figsize=(8,8), dpi=500)
-            name = Particle.from_pdgid(i).name
-            print(name) 
-            data = np.asarray(Output[key][i])
-            min_ = data.min(axis =0)
-            max_ = data.max(axis =0)
-            plt.title("Invariant Mass Spectrum of: " + name + " PDGID: " + str(i))
-            plt.hist(data, align = "left", bins = int(max_ - min_), range=(min_, max_), density=True)
-            plt.xlabel("Invariant Mass in MeV")
-            plt.savefig("./ExamplePlots/"+ Subdir+ "/" + name + ".png")
-            plt.close()
-            plt.clf()
-
-
-    
     PlotSpectra(Output, "SGDMassPDG", "TestSignalTopsFromChildren/MassSpec")
     PlotSpectra(Output, "SGDMassPDG_init", "TestSignalTopsFromChildren/MassSpec_init")
     PlotSpectra(Output, "SpecMassPDG", "TestSignalTopsFromChildren/MassSpectator")
@@ -183,15 +165,14 @@ def TestSignalTopsFromChildren():
 
 def TestChildToTruthJet():
     files = "/CERN/Grid/SignalSamples/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root"
-    files = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/user.pgadow.24765302._000001.output.root" 
     Output = ChildToTruthJet(files)
 
     # Plot the Mass spectra of the Resonance using: 1.Truth, 2. Truth Children (init) 3. Children of Children
     Title = ["Truth Tops Branches", "Resonance From Children (init)", "Resonance From Truth Jets"]
     Data = [Output["Mass_Resonance_Truth"], Output["Mass_Resonance_Child"], Output["Mass_Resonance_Child_of_Child"]]
-    Bins = 10000
-    Ranges = [0, 10000]
-    X_Labels = "Invarian Mass (GeV)"
+    Bins = 1100
+    Ranges = [300, 1400]
+    X_Labels = "Invariant Mass (GeV)"
     
     plt = Plotting(Title, Data, Bins, Ranges, X_Labels)
     plt.savefig("./ExamplePlots/TestChildToTruthJet/Resonance.png")
@@ -200,8 +181,8 @@ def TestChildToTruthJet():
     # Plot the mass spectrum of tops originating from Signal Tops
     Title = ["Mass of Tops from Signal", "Mass of Signal Tops from (init) Children", "Mass of Signal Tops from Truth Jets"]
     Data = [Output["Mass_Signal_Tops_Truth"], Output["Mass_Signal_Tops_Child"], Output["Mass_Signal_Tops_Child_of_Child"]]
-    Bins = 100
-    Ranges = [100, 200]
+    Bins = 130
+    Ranges = [120, 240]
     X_Lables = "Invariant Mass (GeV)"
 
     plt = Plotting(Title, Data, Bins, Ranges, X_Labels)
@@ -211,17 +192,47 @@ def TestChildToTruthJet():
     # Plot the mass spectrum of tops originating from Spectator Tops
     Title = ["Mass of Tops from Spectator", "Mass of Spectator Tops from (init) Children", "Mass of Spectator Tops from Truth Jets"]
     Data = [Output["Mass_Spectator_Tops_Truth"], Output["Mass_Spectator_Tops_Child"], Output["Mass_Spectator_Tops_Child_of_Child"]]
-    Bins = 100
-    Ranges = [100, 200]
+    Bins = 130
+    Ranges = [120, 240]
     X_Lables = "Invariant Mass (GeV)"
 
     plt = Plotting(Title, Data, Bins, Ranges, X_Labels)
     plt.savefig("./ExamplePlots/TestChildToTruthJet/Spectator_Tops.png")
     plt.clf()
 
+    # Plot the mass spectrum of Children (init) from Signal/Spectator tops
+    Title = ["Mass Spectrum from Children of Children from Spectator Tops"]
+    Data = [Output["C_C_Mass_Spectator_Child"]]
+    Bins = 3000
+    Ranges = [-10, 20]
+    X_Lables = "Invariant Mass (GeV)"
 
-    # Add the rest later
+    plt = Plotting(Title, Data, Bins, Ranges, X_Labels)
+    plt.savefig("./ExamplePlots/TestChildToTruthJet/ChildrenOfChildren_Spectator_Tops.png")
+    plt.clf()
 
+    Title = ["Mass Spectrum from Children of Children from Signal Tops"]
+    Data = [Output["C_C_Mass_Signal_Child"]]
+    Bins = 6000
+    Ranges = [-1, 50]
+    X_Lables = "Invariant Mass (GeV)"
+
+    plt = Plotting(Title, Data, Bins, Ranges, X_Labels)
+    plt.savefig("./ExamplePlots/TestChildToTruthJet/ChildrenOfChildren_Signal_Tops.png")
+    plt.clf()
+
+    # Individual spectra
+    PlotSpectra(Output, "C_Mass_Signal_Child", "TestChildToTruthJet/Signal_MassOfChildren_init")
+    PlotSpectra(Output, "C_Mass_Spectator_Child", "TestChildToTruthJet/Spectator_MassOfChildren_init")
+
+    PlotSpectra(Output, "Mass_Signal_Child_Child", "TestChildToTruthJet/Signal_MassTruthJetParticles")
+    PlotSpectra(Output, "Mass_Spectator_Child_Child", "TestChildToTruthJet/Spectator_MassTruthJetParticles")
+
+
+def TestChildToDetectorParticles():
+
+    files = "/CERN/Grid/SignalSamples/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root"
+    Output = ChildToDetectorParticles(files)
 
 
 

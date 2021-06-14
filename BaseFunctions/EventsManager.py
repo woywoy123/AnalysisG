@@ -1,18 +1,22 @@
 from BaseFunctions.VariableManager import *
 from BaseFunctions.Alerting import ErrorAlert, Alerting, Debugging
 from BaseFunctions.ParticlesManager import * 
+import BaseFunctions
 import multiprocessing
 
 class EventCompiler(ErrorAlert, BranchVariable, Debugging):
     def __init__(self, FileDir, Tree, Branches, Debug = False):
-        Branches.insert(0, "eventNumber")
         
         ErrorAlert.__init__(self)
         self.expected = str
         self.given = Tree
         self.WrongInputType("GAVE LIST EXPECTED STRING FOR TREE!")
 
-        self.Exclude = ["eventNumber"]
+        try: 
+            self.ExcludeAlert += ["eventNumber"]
+        except AttributeError:
+            self.ExcludeAlert = ["eventNumber"]
+
         BranchVariable.__init__(self, FileDir, Tree, Branches)
         self.EventDictionary = {}
         
@@ -89,7 +93,7 @@ class EventCompiler(ErrorAlert, BranchVariable, Debugging):
         al.Notice("COMPILING PARTICLES")
         for i in Prz:
             i.start()
-        
+            
         for i, j in zip(Prz, Pipe):
             con = j.recv()
             i.join()
@@ -103,11 +107,13 @@ class TruthCompiler(EventCompiler):
     def __init__(self, FileDir, Tree, Branches):
         if "top_FromRes" not in Branches:
             Branches += ["top_FromRes"]
-        
+        self.ExcludeAlert = ["top_FromRes"]
         EventCompiler.__init__(self, FileDir, Tree, Branches)
-        
 
     def MatchChildrenParticles(self, Incoming):
+        if isinstance(Incoming, BaseFunctions.EventsManager.EventCompiler):
+            Incoming = Incoming.EventDictionary
+
         self.expected = dict
         self.given = Incoming
         self.WrongInputType("EXPECTED DICTIONARY OF EVENTS")
@@ -115,6 +121,9 @@ class TruthCompiler(EventCompiler):
             self.FindCommonIndex(Incoming[i], self.EventDictionary[i])
 
     def MatchToTruthJets(self, Incoming):
+        if isinstance(Incoming, BaseFunctions.EventsManager.EventCompiler):
+            Incoming = Incoming.EventDictionary
+
         for i in self.EventDictionary: 
             truth = self.EventDictionary[i]
             jets = Incoming[i]
@@ -136,13 +145,30 @@ class TruthCompiler(EventCompiler):
                     continue
                 else:
                     pa.DecayProducts.append(ch)
+                    pa.PurgeChildrendR(0.1)
                     used.append(ch)
- 
+
+
+    def MatchClosestParticles(self, Pairs):
+        sort = sorted(Pairs.items())
+        used = []
+        for k in sort:
+            ch = k[1][0]
+            pa = k[1][1]
+
+            if ch in used:
+                continue
+            else:
+                pa.DecayProducts.append(ch)
+                used.append(ch)
+
+
     def FindCommonIndex(self, incom, truth):
         for i in range(len(truth)):
             for j in range(len(incom)):
                 if truth[i].Index == incom[j].Index:
                     truth[i].AddProduct(incom[j])
+    
 
 
 

@@ -1,7 +1,8 @@
 from BaseFunctions.IO import *
-from BaseFunctions.Physics import *
 from BaseFunctions.EventsManager import *
 from BaseFunctions.VariableManager import *
+from BaseFunctions.LegacyCode import *
+from BaseFunctions.ParticlesManager import *
 import numpy as np
 import pickle
 
@@ -24,22 +25,29 @@ def ResonanceFromTruthTops(file_dir):
             eta = truth_top[i][branches[1]][x]
             phi = truth_top[i][branches[2]][x]
             e = truth_top[i][branches[3]][x]
-            bv = BulkParticleVector(pt, eta, phi, e) 
-            Res = truth_top[i][branches[4]][x]
+            Res = np.array(truth_top[i][branches[4]][x])
             
-            masked = np.ma.masked_array(bv, mask = Res) 
-            signals = masked[masked.mask == True]     
-            spectator = masked[masked.mask == False] 
-            signals.mask = np.ma.nomask
+            P = CreateParticleObjects(e, pt, phi, eta)
+            tops = P.CompileParticles()
+            t = np.array(tops)
 
-            VecRes = SumVectors(signals)
-            VecSpec = SumVectors(spectator)
+            signals = t[Res == 1]
+            spectator = t[Res == 0]
+
+            Z_ = Particle()
+            Z_.AddProduct(signals)
+            Z_.ReconstructFourVectorFromProducts()
+
+            SP_ = Particle()
+            SP_.AddProduct(spectator)
+            SP_.ReconstructFourVectorFromProducts()
+
+
+            SpecMass.append(SP_.Mass)
+            SignMass.append(Z_.Mass)
             
-            SpecMass.append(VecSpec.mass() / 1000.)
-            SignMass.append(VecRes.mass() / 1000.)
-            
-            for p in bv:
-                TopMass.append(p.mass() / 1000.)
+            for p in tops:
+                TopMass.append(p.Mass)
     
     return TopMass, SignMass, SpecMass
 
@@ -90,12 +98,6 @@ def SignalTopsFromChildren(file_dir):
 
     res = SignalSpectator(tree, child, file_dir)
     res_init = SignalSpectator(tree, child_initState, file_dir)
-
-    #PickleObject(res, "top_child")
-    #PickleObject(res_init, "top_child_initState")
-    #
-    #res = UnpickleObject("top_child")
-    #res_init = UnpickleObject("top_child_initState")
 
     SignalMass, SignalDaughterPDGs, SignalDaughterMass, TopMass, DaughterMassPDG = FillMaps(res, 1)
     init_SignalMass, init_SignalDaughterPDGs, init_SignalDaughterMass, init_TopMass, init_DaughterMassPDG = FillMaps(res_init, 1)
@@ -248,7 +250,7 @@ def ChildToTruthJet(file_dir):
             for c_t in p_t.DecayProducts:
                 
                 D_ = Particle()
-                D_.Name = "D_ recon"
+                D_.PDGID= c_t.PDGID
                 
                 for cct in c_t.DecayProducts:
                     D_.DecayProducts.append(cct)
@@ -309,3 +311,53 @@ def ChildToTruthJet(file_dir):
     Output["Mass_Spectator_Child_Child"] = Mass_Spectator_Child_Child
     
     return Output
+
+def ChildToDetectorParticles(file_dir):
+    
+    tree = "nominal"
+    EventProperties = ["met_met", "met_phi"]
+
+    # Truth Branches
+    init_c = "truth_top_initialState_child"
+    el_true = ["el_true_type", "el_true_origin", "el_true_isPrompt"] 
+    mu_true = ["mu_true_type", "mu_true_origin", "mu_true_isPrompt"]
+    jet_truth = ["truthjet_pt", "truthjet_eta", "truthjet_phi", "truthjet_e", "truthjet_flavour"]
+    top_truth = ["truth_top_pt", "truth_top_eta", "truth_top_phi", "truth_top_e", "truth_top_charge"]
+    top_truth_child = [init_c+"_pt", init_c+"_eta", init_c+"_phi", init_c+"_e", "top_initialState_child_pdgid"]
+
+    # Detector Measurements
+    el = ["el_pt", "el_eta", "el_phi", "el_e", "el_charge"]
+    mu = ["mu_pt", "mu_eta", "mu_phi", "mu_e", "mu_charge"]
+    jet = ["jet_pt", "jet_eta", "jet_phi", "jet_e"]
+    
+
+    evnt = BranchVariable(file_dir, tree, EventProperties)
+
+    # Event Generator for Measurements
+    el_m = EventCompiler(file_dir, tree, el, True)
+    mu_m = EventCompiler(file_dir, tree, mu, True)
+    jet_m = EventCompiler(file_dir, tree, jet, True)
+   
+    # Branch Variable Generators
+    el_tru = BranchVariable(file_dir, tree, el_true, True)
+    mu_tru = BranchVariable(file_dir, tree, mu_true, True)
+    Event = BranchVariable(file_dir, tree, EventProperties, True) 
+    
+    # Event Generator for truth
+    jet_tru = EventCompiler(file_dir, tree, jet_truth, True)
+    top_tru_child = EventCompiler(file_dir, tree, top_truth_child, True)
+
+    top_tru = TruthCompiler(file_dir, tree, top_truth, True)
+    top_tru.T_Children = top_tru_child
+    top_tru.T_Jet = jet_tru
+    top_tru.T_Electron = el_tru
+    top_tru.T_Muon = mu_tru
+    
+    top_tru.D_Electron = el_m
+    top_tru.D_Muon = mu_m
+    top_tru.D_Jet = jet_m
+
+
+    
+
+

@@ -1,7 +1,7 @@
 import numpy
 
 class Alerting:
-    def __init__(self, endlen = [], verbose = True, Step = 10, INFO = "INFO::Process "):
+    def __init__(self, endlen = [], verbose = True, Step = 10, INFO = "INFO::Progress "):
         self.__Verbose = verbose
         self.__Step = Step 
         self.current = 0
@@ -28,7 +28,7 @@ class Alerting:
     
     def Notice(self, message):
         if self.__Verbose == True:
-            print(self.__INFO + " -> "+message)
+            print(self.__INFO + "-> "+message)
 
 
 class WarningAlert:
@@ -36,12 +36,11 @@ class WarningAlert:
         self.__Type = ""
 
     def MixingTypes(self, current, message = "WARNING::MIXING OBJECT TYPES"):
-        if self.__Type == "":
-            self.__Type = current
-        
         try:
-            if current in self.Exclude:
+            if current in self.ExcludeAlert:
                 pass
+            elif self.__Type == "":
+                self.__Type = current
             else:
                 raise AttributeError
         except AttributeError:
