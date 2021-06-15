@@ -1,5 +1,7 @@
 from ClosureTests.IO import *
 from ClosureTests.FourTopsResonance import *
+from ClosureTests.EventCompilerTest import *
+
 
 if __name__ == "__main__":
     
@@ -8,3 +10,5 @@ if __name__ == "__main__":
     #TestSignalTopsFromChildren()
     #TestChildToTruthJet()
     TestChildToDetectorParticles()
+
+    #TestObjectVariableAssignment()

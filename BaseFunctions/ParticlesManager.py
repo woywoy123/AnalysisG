@@ -1,6 +1,6 @@
-from particle import Particle as hep_P
 from BaseFunctions.Physics import ParticleVector
 from BaseFunctions.Physics import SumVectors
+from BaseFunctions.VariableManager import VariableObjectProxy
 import numpy as np
 
 class Particle:
@@ -10,6 +10,7 @@ class Particle:
         self.Flavour = ""
         self.FourVector = ""
         self.DecayProducts = []
+        self.init_DecayProducts = []
         self.IsSignal = ""
         self.Index = "" 
         self.Name = "NAN"
@@ -30,14 +31,23 @@ class Particle:
     def CalculateFourVector(self):
         self.FourVector = ParticleVector(self.Pt, self.Eta, self.Phi, self.E)
     
-    def AddProduct(self, ParticleDaughter):
+    def AddProduct(self, ParticleDaughter, init = True):
+        
+        if init == True:
+            if isinstance(ParticleDaughter, list):
+                self.init_DecayProducts += ParticleDaughter
+            elif isinstance(ParticleDaughter, np.ndarray):
+                self.init_DecayProducts += list(ParticleDaughter)
+            else:
+                self.init_DecayProducts.append(ParticleDaughter)
 
-        if isinstance(ParticleDaughter, list):
-            self.DecayProducts += ParticleDaughter
-        elif isinstance(ParticleDaughter, np.ndarray):
-            self.DecayProducts += list(ParticleDaughter)
-        else:
-            self.DecayProducts.append(ParticleDaughter)
+        if init == False:
+            if isinstance(ParticleDaughter, list):
+                self.init_DecayProducts += ParticleDaughter
+            elif isinstance(ParticleDaughter, np.ndarray):
+                self.init_DecayProducts += list(ParticleDaughter)
+            else:
+                self.init_DecayProducts.append(ParticleDaughter)
 
     def ReconstructFourVectorFromProducts(self):
         vectors = []
@@ -61,27 +71,17 @@ class Particle:
                 update.append(i)
         self.DecayProducts = update
 
-    def SetPDG(self, PDG = ""):
-        if PDG != "":
-            self.PDGID = PDG
-
-        if self.PDGID != "":
-            try:
-                self.Name = hep_P.from_pdgid(self.PDGID)
-            except NameError:
-                self.Name = "NotFound"
-
-
 class Lepton(Particle):
     def __init__(self):
-        super().__init__(self)
+        Particle.__init__(self)
         
         # Detector Measurements
         self.topoetcone20 = ""
         self.ptvarcone20 = ""
+        self.ptvarcone30 = ""
         self.CF = ""
         self.d0sig = ""
-        self.deltaz0sintheta = ""
+        self.delta_z0_sintheta = ""
 
         # Monte Carlo Truth 
         self.true_type = ""
@@ -93,19 +93,47 @@ class Lepton(Particle):
         self.true_isPrompt = ""
         self.true_isChargeFl = ""
 
+class Jet(Particle):
+    def __init__(self):
+        Particle.__init__(self)
+        self.nChad = ""
+        self.nBhad = ""
+        self.truthflav = ""
+        self.truthPartonLabel = ""
+        self.isTrueHS = ""
+        self.jvt = ""
 
-class CreateParticleObjects:
-    def __init__(self, E, Pt, Phi, Eta):
-       
-        self.Charge = ""
-        self.PDGID = ""
-        self.Flavour = ""
-        self.Mask = ""
+        self.DL1r = ""
+        self.DL1r_60 = ""
+        self.DL1r_70 = ""
+        self.DL1r_77 = ""
+        self.DL1r_85 = ""
+        self.DL1r_pb = ""
+        self.DL1r_pc = ""
+        self.DL1r_pu = ""
+
+        self.DL1 = ""
+        self.DL1_60 = ""
+        self.DL1_70 = ""
+        self.DL1_77 = ""
+        self.DL1_85 = ""
+        self.DL1_pb = ""
+        self.DL1_pc = ""
+        self.DL1_pu = ""
+
+class CreateParticleObjects(Lepton, Jet, Particle):
+    def __init__(self, E, Pt, Phi, Eta, Type = ""):
+        if Type == "Muon" or Type == "Electron":
+            Lepton.__init__(self)
+        elif Type == "Jet" or Type == "RCJet" or Type == "TruthJet":
+            Jet.__init__(self)
+        else:
+            Particle.__init__(self)
         self.E = E
         self.Pt = Pt
         self.Phi = Phi
         self.Eta = Eta
-        self.Type = ""
+        self.Type = Type
 
     def CompileParticles(self):
         Output = [] 
@@ -121,38 +149,36 @@ class CreateParticleObjects:
     def MultiParticles(self, i):
         Output = []
         for j in range(len(self.E[i])):
-            P = Particle()
+            if self.Type == "Muon" or self.Type == "Electron":
+                P = Lepton()
+            elif self.Type == "Jet" or self.Type == "RCJet" or self.Type == "TruthJet":
+                P = Jet()
+            else:
+                P = Particle()
             P.SetKinematics(self.E[i][j], self.Pt[i][j], self.Phi[i][j], self.Eta[i][j])
             P.Index = i
             P.Type = self.Type
-    
-            if isinstance(self.Charge, str) == False:
-                P.Charge = self.Charge[i][j]
-            if isinstance(self.PDGID, str) == False:
-                P.PDGID = self.PDGID[i][j]
-            if isinstance(self.Mask, str) == False:
-                P.IsSignal = self.Mask[i]
-            if isinstance(self.Flavour, str) == False:
-                P.Flavour = self.Flavour[i][j]
+
+            if isinstance(self.IsSignal, str) == False:
+                P.IsSignal = self.IsSignal[i]
+            
+            VariableObjectProxy(self, P, i, j)
             Output.append(P)
         return Output
 
     def SingleParticles(self, i):
         Output = []
-        P = Particle()
+        if self.Type == "Muon" or self.Type == "Electron":
+            P = Lepton()
+        elif self.Type == "Jet" or self.Type == "RCJet" or self.Type == "TruthJet":
+            P = Jet()
+        else:
+            P = Particle()
         P.SetKinematics(self.E[i], self.Pt[i], self.Phi[i], self.Eta[i])
         P.Index = i
         P.Type = self.Type
-        
-        if isinstance(self.Charge, str) == False:
-            P.Charge = self.Charge[i]
-        if isinstance(self.PDGID, str) == False:
-            P.PDGID = self.PDGID[i]
-        if isinstance(self.Mask, str) == False:
-            P.IsSignal = self.Mask[i]
-        if isinstance(self.Flavour, str) == False:
-            P.Flavour = self.Flavour[i]
-        
+
+        VariableObjectProxy(self, P, i)
         Output.append(P)
         return Output
 

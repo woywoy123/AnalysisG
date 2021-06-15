@@ -314,50 +314,8 @@ def ChildToTruthJet(file_dir):
 
 def ChildToDetectorParticles(file_dir):
     
-    tree = "nominal"
-    EventProperties = ["met_met", "met_phi"]
-
-    # Truth Branches
-    init_c = "truth_top_initialState_child"
-    el_true = ["el_true_type", "el_true_origin", "el_true_isPrompt"] 
-    mu_true = ["mu_true_type", "mu_true_origin", "mu_true_isPrompt"]
-    jet_truth = ["truthjet_pt", "truthjet_eta", "truthjet_phi", "truthjet_e", "truthjet_flavour"]
-    top_truth = ["truth_top_pt", "truth_top_eta", "truth_top_phi", "truth_top_e", "truth_top_charge"]
-    top_truth_child = [init_c+"_pt", init_c+"_eta", init_c+"_phi", init_c+"_e", "top_initialState_child_pdgid"]
-
-    # Detector Measurements
-    el = ["el_pt", "el_eta", "el_phi", "el_e", "el_charge"]
-    mu = ["mu_pt", "mu_eta", "mu_phi", "mu_e", "mu_charge"]
-    jet = ["jet_pt", "jet_eta", "jet_phi", "jet_e"]
+    Events = TruthCompiler(file_dir).EventDictionary
     
-
-    evnt = BranchVariable(file_dir, tree, EventProperties)
-
-    # Event Generator for Measurements
-    el_m = EventCompiler(file_dir, tree, el, True)
-    mu_m = EventCompiler(file_dir, tree, mu, True)
-    jet_m = EventCompiler(file_dir, tree, jet, True)
-   
-    # Branch Variable Generators
-    el_tru = BranchVariable(file_dir, tree, el_true, True)
-    mu_tru = BranchVariable(file_dir, tree, mu_true, True)
-    Event = BranchVariable(file_dir, tree, EventProperties, True) 
-    
-    # Event Generator for truth
-    jet_tru = EventCompiler(file_dir, tree, jet_truth, True)
-    top_tru_child = EventCompiler(file_dir, tree, top_truth_child, True)
-
-    top_tru = TruthCompiler(file_dir, tree, top_truth, True)
-    top_tru.T_Children = top_tru_child
-    top_tru.T_Jet = jet_tru
-    top_tru.T_Electron = el_tru
-    top_tru.T_Muon = mu_tru
-    
-    top_tru.D_Electron = el_m
-    top_tru.D_Muon = mu_m
-    top_tru.D_Jet = jet_m
-
-
-    
-
+    for i in Events:
+        print(i, Events[i].EventNumber, len(Events[i].TruthMatch))
 
