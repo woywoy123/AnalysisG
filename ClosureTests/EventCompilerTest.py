@@ -32,7 +32,6 @@ def TestObjectVariableAssignment():
     # Test if the Branches are in the files:
     b = BranchVariable(files, "nominal", electron_branch)
     ev = EventCompiler(files, "nominal", electron_branch)
-    ev.GenerateEvents()
     ev_d = ev.EventDictionary
 
     for i in range(len(b.EventNumber)):
@@ -55,13 +54,11 @@ def TestObjectVariableAssignment():
 
     # Test if the Branches are in the files:
     b = BranchVariable(files, "nominal", muon_branch)
-    ev = EventCompiler(files, "nominal", muon_branch)
-    ev.GenerateEvents()
-    ev_d = ev.EventDictionary
+    ev = EventCompiler(files, "nominal", muon_branch).EventDictionary
 
     for i in range(len(b.EventNumber)):
         nr = b.EventNumber[i]
-        p_list = ev_d[nr]
+        p_list = ev[nr]
        
         assert(Attest(p_list, b, "Phi", i))
         assert(Attest(p_list, b, "E", i))
@@ -80,7 +77,6 @@ def TestObjectVariableAssignment():
     # Test if the Branches are in the files:
     b = BranchVariable(files, "nominal", jet_branch)
     ev = EventCompiler(files, "nominal", jet_branch)
-    ev.GenerateEvents()
     ev_d = ev.EventDictionary
 
     for i in range(len(b.EventNumber)):
@@ -103,7 +99,6 @@ def TestObjectVariableAssignment():
     # Test if the Branches are in the files:
     b = BranchVariable(files, "nominal", truthjet_branch)
     ev = EventCompiler(files, "nominal", truthjet_branch)
-    ev.GenerateEvents()
     ev_d = ev.EventDictionary
 
     for i in range(len(b.EventNumber)):
@@ -122,7 +117,6 @@ def TestObjectVariableAssignment():
     truthtop_branch = ["truth_top_pt", "truth_top_eta", "truth_top_phi", "truth_top_e", "truth_top_charge", "top_FromRes"]  
     b = BranchVariable(files, "nominal", truthtop_branch)
     ev = EventCompiler(files, "nominal", truthtop_branch)
-    ev.GenerateEvents()
     ev_d = ev.EventDictionary
 
     for i in range(len(b.EventNumber)):
@@ -135,7 +129,7 @@ def TestObjectVariableAssignment():
         assert(Attest(p_list, b, "Eta", i))
         assert(Attest(p_list, b, "Charge", i))
             
-        for j in range(len(p_list)):
+        for j in range(len(b.IsSignal[i])):
             assert(b.IsSignal[i][j] == p_list[j].IsSignal)
     print("TRUTH TOP::PASSED")
     
@@ -143,18 +137,18 @@ def TestObjectVariableAssignment():
     truthtop_branch = ["top_FromRes", init_c+"_pt", init_c+"_eta", init_c+"_phi", init_c+"_e", "top_initialState_child_pdgid"] 
 
     b = BranchVariable(files, "nominal", truthtop_branch)
-    ev = TruthCompiler(files).T_TopD
+    ev = TruthCompiler(files).EventDictionary
 
     for i in range(len(b.EventNumber)):
         nr = b.EventNumber[i]
-        p_list = ev[nr]
+        p_list = ev[nr].TruthMatch
     
-        for k in range(len(p_list)):
+        for k in range(len(b.IsSignal[i])):
             p = p_list[k]
             assert(p.IsSignal == b.IsSignal[i][k])
             
-            for pc in range(len(p.DecayProducts)):
-                px = p.DecayProducts[pc] 
+            for pc in range(len(b.Eta[i][k])):
+                px = p.init_DecayProducts[pc] 
 
                 assert(round(float(px.Eta), 5) == round(float(b.Eta[i][k][pc]), 5))
                 assert(round(float(px.Pt), 5) == round(float(b.Pt[i][k][pc]), 5))
@@ -162,3 +156,24 @@ def TestObjectVariableAssignment():
                 assert(round(float(px.E), 5) == round(float(b.E[i][k][pc]), 5))
 
     print("TRUTH WITH CHILD MATCHING::PASSED")
+
+def VisualizeParticleMatching():
+    from BaseFunctions.Plotting import PlotADetector
+
+    files = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root"
+    te = TruthCompiler(files, Debug = True).EventDictionary
+    me = DetectorCompiler(files, Debug = True).EventDictionary
+
+    for i in me:
+        #print(me[i].DetectorParticles)
+        #print(te[i].TruthMatch)
+        assert me[i].EventNumber == te[i].EventNumber
+        
+        print("")
+        PlotADetector(me[i].DetectorParticles, te[i].TruthMatch)
+
+        break
+
+        
+
+

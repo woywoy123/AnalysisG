@@ -3,6 +3,7 @@ from BaseFunctions.Alerting import ErrorAlert, Alerting, Debugging
 from BaseFunctions.ParticlesManager import * 
 import BaseFunctions
 import multiprocessing
+from BaseFunctions.Misc import Threading
 from time import sleep
 
 class Event:
@@ -25,13 +26,14 @@ class EventCompiler(ErrorAlert, BranchVariable, Debugging):
         self.EventDictionary = {}
         self.__Verbose = Verbose
         Debugging.__init__(self, events = 100, debug = Debug)
-
+        self.GenerateEvents()
+    
     def GenerateEvents(self):
         al = Alerting(self.EventNumber, self.__Verbose)
 
         al.Notice("ENTERING EVENT GENERATOR")
         for i in range(len(self.EventNumber)):
-                
+            
             P = CreateParticleObjects(self.E[i], self.Pt[i], self.Phi[i], self.Eta[i], self.Type)
             VariableObjectProxy(self, P, i) 
 
@@ -41,55 +43,73 @@ class EventCompiler(ErrorAlert, BranchVariable, Debugging):
             self.BreakCounter()
             if self.DebugKill:
                 break
-
+                
         al.Notice("FINISHED EVENT GENERATOR")
-        self.MultiThreadingCompiler()
+        
 
-    def MultiThreadingCompiler(self):
-        def Running(Pieces, Sender):
+        def Compiler(Pieces):
             out = {}
             for x in Pieces:
-                P = Pieces[x].CompileParticles()
+                P = self.EventDictionary[x].CompileParticles()
                 out[x] = P
-            Sender.send(out)
-        
-        batch_s = float(len(self.EventDictionary)) / float(12)
-        Pipe = []
-        Prz = []
-        
-        bundle = {}
-        for ev in self.EventDictionary:
-            bundle[ev] = self.EventDictionary[ev]
-
-            if len(bundle) == batch_s:
-                recv, send = multiprocessing.Pipe(False)
-                P = multiprocessing.Process(target = Running, args = (bundle, send, ))
-                Pipe.append(recv)
-                Prz.append(P)
-                bundle = {}
-        
-        if len(bundle) != 0:
-            recv, send = multiprocessing.Pipe(False)
-            P = multiprocessing.Process(target = Running, args = (bundle, send, ))
-            Pipe.append(recv)
-            Prz.append(P)
+            return out
        
-        al = Alerting(Prz, self.__Verbose)
-        al.Notice("COMPILING PARTICLES")
-        for i in Prz:
-            i.start()
+        x = Threading(verb = self.__Verbose)
+        x.MultiThreading(self.EventDictionary, Compiler, self.EventDictionary)
         
-        for i, j in zip(Prz, Pipe):
-            con = j.recv()
-            i.join()
-            for t in con:
-                self.EventDictionary[t] = con[t]
-            al.ProgressAlert()
-        al.Notice("COMPILING COMPLETE")
+class DetectorCompiler(EventCompiler, ):
+    def __init__(self, FileDir, Full = False, Debug = False):
 
+        tree = "nominal"
+        el = ["el_pt", "el_eta", "el_phi", "el_e", "el_charge"]
+        mu = ["mu_pt", "mu_eta", "mu_phi", "mu_e", "mu_charge"]
+        jet = ["jet_pt", "jet_eta", "jet_phi", "jet_e"]
+        rc_jet = ["rcjet_pt", "rcjet_eta", "rcjet_phi", "rcjet_e"]
+        rc_jet_sub = ["rcjetsub_pt", "rcjetsub_eta", "rcjetsub_phi", "rcjetsub_e"]
+        event = ["met_met", "met_phi"]
+        if Full:
+            el += ["el_topoetcone20", "el_ptvarcone20", "el_CF", "el_d0sig", "el_delta_z0_sintheta"]
+            mu += ["mu_topoetcone20", "mu_ptvarcone30", "mu_d0sig", "mu_delta_z0_sintheta"] 
+            jet += ["jet_jvt", "jet_isbtagged_DL1_60", "jet_isbtagged_DL1_70", "jet_isbtagged_DL1_77", "jet_isbtagged_DL1_85", "jet_DL1", "jet_DL1_pb", "jet_DL1_pc", "jet_DL1_pu"]
+            jet += ["jet_isbtagged_DL1r_60", "jet_isbtagged_DL1r_70", "jet_isbtagged_DL1r_77", "jet_isbtagged_DL1r_85", "jet_DL1r", "jet_DL1r_pb", "jet_DL1r_pc", "jet_DL1r_pu"]
+        
+        self.__el = EventCompiler(FileDir, tree, el, Verbose = False, Debug = Debug).EventDictionary
+        self.__mu = EventCompiler(FileDir, tree, mu, Verbose = False, Debug = Debug).EventDictionary
+        self.__jet = EventCompiler(FileDir, tree, jet, Verbose = False, Debug = Debug).EventDictionary
+        self.__rc_jet = EventCompiler(FileDir, tree, rc_jet, Verbose = False, Debug = Debug).EventDictionary
+        self.__rc_jet_sub = EventCompiler(FileDir, tree, rc_jet_sub, Verbose = False, Debug = Debug).EventDictionary
+        self.__event = BranchVariable(FileDir, tree, event).EventObjectMap
+        self.EventDictionary = {}
+        
+        x = Threading()
+        x.MultiThreading(self.__rc_jet, self.Compiler, self.EventDictionary)
+
+    def Compiler(self, Runs):
+        
+        Output = {}
+        for i in Runs:
+            E = Event()
+            E.MET = self.__event[i]["met_met"]
+            E.MET_Phi = self.__event[i]["met_phi"]
+            E.EventNumber = i
+            self.FindCommonIndex(self.__rc_jet_sub[i], self.__rc_jet[i])
+
+            #E.DetectorParticles += self.__rc_jet[i]
+            E.DetectorParticles += self.__el[i]
+            E.DetectorParticles += self.__mu[i]
+            E.DetectorParticles += self.__jet[i]
+            
+            Output[i] = E
+        return Output
+
+    def FindCommonIndex(self, subjet, jet):
+       for i in range(len(jet)):
+           for j in range(len(subjet)):
+               if jet[i].Index == subjet[j].Index:
+                   jet[i].Sub_Jets += [subjet[j]]
 
 class TruthCompiler(EventCompiler):
-    def __init__(self, FileDir, Debug = False):
+    def __init__(self, FileDir, Debug = False, Verbose = False):
 
         tree = "nominal"
         init_c = "truth_top_initialState_child"
@@ -115,21 +135,13 @@ class TruthCompiler(EventCompiler):
         self.__EventProperties = BranchVariable(FileDir, tree, EventProperties)
         self.EVNT = self.__EventProperties.EventObjectMap
         
-        self.__T_Top = EventCompiler(FileDir, tree, top_truth, Verbose = False, Debug = Debug)
-        self.__T_init_Children = EventCompiler(FileDir, tree, top_truth_init_child, Verbose = False, Debug = Debug)
-        self.__T_Children = EventCompiler(FileDir, tree, top_truth_child, Verbose = False, Debug = Debug)
-        self.__T_Jet = EventCompiler(FileDir, tree, jet_truth, Verbose = False, Debug = Debug)
-        self.__D_Electron = EventCompiler(FileDir, tree, el, Verbose = False, Debug = Debug)
-        self.__D_Muon = EventCompiler(FileDir, tree, mu, Verbose = False, Debug = Debug)
-        self.__D_Jet = EventCompiler(FileDir, tree, jet, Verbose = False, Debug = Debug)
-
-        self.__T_Top.GenerateEvents()
-        self.__T_init_Children.GenerateEvents()
-        self.__T_Children.GenerateEvents()
-        self.__T_Jet.GenerateEvents()
-        self.__D_Electron.GenerateEvents()
-        self.__D_Muon.GenerateEvents()
-        self.__D_Jet.GenerateEvents()
+        self.__T_Top = EventCompiler(FileDir, tree, top_truth, Verbose = Verbose, Debug = Debug)
+        self.__T_init_Children = EventCompiler(FileDir, tree, top_truth_init_child, Verbose = Verbose, Debug = Debug)
+        self.__T_Children = EventCompiler(FileDir, tree, top_truth_child, Verbose = Verbose, Debug = Debug)
+        self.__T_Jet = EventCompiler(FileDir, tree, jet_truth, Verbose = Verbose, Debug = Debug)
+        self.__D_Electron = EventCompiler(FileDir, tree, el, Verbose = Verbose, Debug = Debug)
+        self.__D_Muon = EventCompiler(FileDir, tree, mu, Verbose = Verbose, Debug = Debug)
+        self.__D_Jet = EventCompiler(FileDir, tree, jet, Verbose = Verbose, Debug = Debug)
 
         self.T_TopD = self.__T_Top.EventDictionary
         self.T_init_ChildD = self.__T_init_Children.EventDictionary
@@ -141,8 +153,10 @@ class TruthCompiler(EventCompiler):
 
         self.EventDictionary = {}
         self.__Verbose = True
-        self.MultiThreading()
-
+        
+        x = Threading(verb = self.__Verbose)
+        x.MultiThreading(self.T_TopD, self.MatchToTruth, self.EventDictionary)
+            
     def FindCommonIndex(self, incom, truth, init = True):
         for i in range(len(truth)):
             for j in range(len(incom)):
@@ -156,7 +170,7 @@ class TruthCompiler(EventCompiler):
             
             E = Event()
             
-            self.FindCommonIndex(self.T_ChildD[i], self.T_TopD[i], True)
+            self.FindCommonIndex(self.T_init_ChildD[i], self.T_TopD[i], True)
             self.FindCommonIndex(self.T_ChildD[i], self.T_TopD[i], False)
 
             init_C = self.T_init_ChildD[i]
@@ -176,7 +190,7 @@ class TruthCompiler(EventCompiler):
             self.MatchClosestParticles(jet_T, jet_D, False)
             self.MatchClosestParticles(init_C, ad, True)
             self.MatchClosestParticles(C, ad, False)
-            
+           
             E.TruthMatch += self.T_TopD[i]
             E.DetectorParticles += jet_D
             E.DetectorParticles += el_D
@@ -186,6 +200,7 @@ class TruthCompiler(EventCompiler):
             E.MET_Phi = self.__EventProperties.EventObjectMap[i]["met_phi"]
 
             Output[i] = E 
+
         return Output
 
     def MatchClosestParticles(self, Parent, Children, init = True, TH = 0.1):
@@ -210,44 +225,5 @@ class TruthCompiler(EventCompiler):
                     pa.init_DecayProducts.append(ch)
                 else:
                     pa.DecayProducts.append(ch)
-    
-
-    def MultiThreading(self):
-        def Running(Runs, Sender):
-            Out = self.MatchToTruth(Runs)
-            Sender.send(Out)
-
-        batch_S = float(len(self.T_TopD)) / float(12)
-        Pipe = []
-        Prz = []
-
-        Bundle = []
-        for i in self.T_TopD:
-            Bundle.append(i)
-
-            if len(Bundle) == batch_S:
-                recv, send = multiprocessing.Pipe(False)
-                P = multiprocessing.Process(target = Running, args = (Bundle, send, ))
-                Pipe.append(recv)
-                Prz.append(P)
-                Bundle = []
-
-        if len(Bundle) != 0:
-            recv, send = multiprocessing.Pipe(False)
-            P = multiprocessing.Process(target = Running, args = (Bundle, send, ))
-            Pipe.append(recv)
-            Prz.append(P)
-
-        al = Alerting(Prz, self.__Verbose)
-        al.Notice("COMPILING EVENTS AND MATCHING TRUTH")
-        for i in Prz:
-            i.start()
-        
-        for i, j in zip(Prz, Pipe):
-            con = j.recv()
-            i.join()
-            for t in con:
-                self.EventDictionary[t] = con[t]
-            al.ProgressAlert()
-        al.Notice("COMPILING COMPLETE")
+   
 

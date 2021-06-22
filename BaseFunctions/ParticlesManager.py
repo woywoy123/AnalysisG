@@ -1,5 +1,4 @@
-from BaseFunctions.Physics import ParticleVector
-from BaseFunctions.Physics import SumVectors
+from BaseFunctions.Physics import ParticleVector, SumVectors
 from BaseFunctions.VariableManager import VariableObjectProxy
 import numpy as np
 
@@ -24,8 +23,9 @@ class Particle:
         self.Pt = float(Pt)
         self.Phi = float(Phi)
         self.Eta = float(Eta)
-        
         self.CalculateFourVector()
+        
+        self.Theta = self.FourVector.theta()
         self.Mass = self.FourVector.mass / 1000.
 
     def CalculateFourVector(self):
@@ -40,14 +40,14 @@ class Particle:
                 self.init_DecayProducts += list(ParticleDaughter)
             else:
                 self.init_DecayProducts.append(ParticleDaughter)
-
+        
         if init == False:
             if isinstance(ParticleDaughter, list):
-                self.init_DecayProducts += ParticleDaughter
+                self.DecayProducts += ParticleDaughter
             elif isinstance(ParticleDaughter, np.ndarray):
-                self.init_DecayProducts += list(ParticleDaughter)
+                self.DecayProducts += list(ParticleDaughter)
             else:
-                self.init_DecayProducts.append(ParticleDaughter)
+                self.DecayProducts.append(ParticleDaughter)
 
     def ReconstructFourVectorFromProducts(self):
         vectors = []
@@ -120,6 +120,8 @@ class Jet(Particle):
         self.DL1_pb = ""
         self.DL1_pc = ""
         self.DL1_pu = ""
+
+        self.Sub_Jets = []
 
 class CreateParticleObjects(Lepton, Jet, Particle):
     def __init__(self, E, Pt, Phi, Eta, Type = ""):

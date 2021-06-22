@@ -31,7 +31,6 @@ class FastReading():
         files = [] 
         for i in glob(direct + "/*"):
             files.append(i)
-        
         return files
     
     def GetFilesInSubDir(self, direct):

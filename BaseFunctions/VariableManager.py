@@ -1,6 +1,12 @@
 from BaseFunctions.IO import FastReading
 from BaseFunctions.Alerting import WarningAlert
 
+def Init():
+    global ConvertedBranches
+    global FilesConverted 
+    FilesConverted = []
+    ConvertedBranches= {}
+
 class BranchVariable(WarningAlert):
     def __init__(self, FileDir, Tree, Branches):
         WarningAlert.__init__(self) 
@@ -8,15 +14,36 @@ class BranchVariable(WarningAlert):
         Branches = list(set(Branches))
         if "eventNumber" not in Branches:
             Branches.insert(0, "eventNumber")
+        
+        if FileDir not in FilesConverted:
+            FilesConverted.append(FileDir)
+            ConvertedBranches.clear()
 
+        self.__Reader = {}
+        R_B = []
+        for i in Branches:
+            s = str(Tree + "/" + i)
+            
+            try:
+                self.__Reader[i] = ConvertedBranches[s]
+            except KeyError:
+                R_B.append(i)
+
+        if len(R_B) != 0:
+            reader = FastReading(FileDir)
+            reader.ReadBranchFromTree(Tree, R_B)
+            reader.ConvertBranchesToArray()
+            
+            for i in R_B:
+                ConvertedBranches[str(Tree + "/" + i)] = reader.ArrayBranches[Tree][i]
+                self.__Reader[i] = reader.ArrayBranches[Tree][i]
+
+
+        self.__Branches = []
+        for i in self.__Reader:
+            self.__Branches.append(i)
+        
         self.EventObjectMap = {}
-        
-        reader = FastReading(FileDir)
-        reader.ReadBranchFromTree(Tree, Branches)
-        reader.ConvertBranchesToArray()
-        self.__Reader = reader.ArrayBranches[Tree]
-        self.__Branches = Branches
-        
         self.AssignBranchToVariable()
 
     def AssignBranchToVariable(self):
@@ -229,7 +256,7 @@ def VariableObjectProxy(self, P, i, j = -1):
             pass
 
 
-    if self.Type == "Jet" or self.Type == "TruthJet":
+    if self.Type == "Jet" or self.Type == "TruthJet" or self.Type == "RCJet":
         AssignVariableToObject(self, P, "Flavour", i, j)
         AssignVariableToObject(self, P, "nChad", i, j)
         AssignVariableToObject(self, P, "nBhad", i, j)
