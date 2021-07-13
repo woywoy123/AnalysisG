@@ -25,6 +25,7 @@ def ResonanceFromTruthTops(file_dir):
             eta = truth_top[i][branches[1]][x]
             phi = truth_top[i][branches[2]][x]
             e = truth_top[i][branches[3]][x]
+
             Res = np.array(truth_top[i][branches[4]][x])
             
             P = CreateParticleObjects(e, pt, phi, eta)
@@ -33,6 +34,8 @@ def ResonanceFromTruthTops(file_dir):
 
             signals = t[Res == 1]
             spectator = t[Res == 0]
+            
+            print(tops[0].E, float(e[0]))
 
             Z_ = Particle()
             Z_.AddProduct(signals)
@@ -41,7 +44,6 @@ def ResonanceFromTruthTops(file_dir):
             SP_ = Particle()
             SP_.AddProduct(spectator)
             SP_.ReconstructFourVectorFromProducts()
-
 
             SpecMass.append(SP_.Mass)
             SignMass.append(Z_.Mass)

@@ -5,7 +5,7 @@ import numpy as np
 
 def TestResonanceFromTruthTops():
 
-    files = "/CERN/Grid/SignalSamples/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root"
+    files = "/CERN/Grid/SignalSamples/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/user.pgadow.24765302._000001.output.root"
     InvTopMass, InvResonanceMass, SpectatorMass = ResonanceFromTruthTops(files)
   
     #Create a simple sub-plot 
@@ -19,7 +19,7 @@ def TestResonanceFromTruthTops():
     
     plt.subplot(132)    
     plt.title("Resonance") 
-    plt.hist(InvResonanceMass, align="left", bins=1000, range=(500, 1500), density=True)
+    plt.hist(InvResonanceMass, align="left", bins=500, range=(200, 1800), density=True)
     plt.xlabel("Invariant Mass (GeV)")
     plt.ylabel("Events")
 

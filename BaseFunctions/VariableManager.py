@@ -60,12 +60,14 @@ class BranchVariable(WarningAlert):
                 self.Type = "Electron"
             elif "mu_" in self.__bI:
                 self.Type = "Muon"
+            elif "rcjet_" in self.__bI:
+                self.Type = "RCJet"
+            elif "rcjetsub_" in self.__bI:
+                self.Type = "RCJetSub"
             elif "jet_" in self.__bI:
                 self.Type = "Jet"
             elif "top_" in self.__bI:
                 self.Type = "Top"
-            elif "rcjet" in self.__bI:
-                self.Type = "RCJet"
             else:
                 self.Type = var[0]
            
@@ -189,6 +191,15 @@ class BranchVariable(WarningAlert):
         if self.__Variable == "isTrueHS":
             self.isTrueHS = self.__Reader[self.__bI]
 
+        if self.__Variable == "truthflavExtended":
+            self.truthflavExtended = self.__Reader[self.__bI]
+
+        if self.__Variable == "d12":
+            self.d12 = self.__Reader[self.__bI]
+
+        if self.__Variable == "d23":
+            self.d23 = self.__Reader[self.__bI]
+
         if "DL1r" in self.__bI:
 
             if self.__Variable == "60":
@@ -256,12 +267,14 @@ def VariableObjectProxy(self, P, i, j = -1):
             pass
 
 
-    if self.Type == "Jet" or self.Type == "TruthJet" or self.Type == "RCJet":
+    if self.Type == "Jet" or self.Type == "TruthJet":
         AssignVariableToObject(self, P, "Flavour", i, j)
         AssignVariableToObject(self, P, "nChad", i, j)
         AssignVariableToObject(self, P, "nBhad", i, j)
         AssignVariableToObject(self, P, "truthflav", i, j)
+        AssignVariableToObject(self, P, "truthflavExtended", i, j)
         AssignVariableToObject(self, P, "truthPartonLabel", i, j)
+        AssignVariableToObject(self, P, "Extended", i, j)
         AssignVariableToObject(self, P, "isTrueHS", i, j)
         AssignVariableToObject(self, P, "DL1r", i, j)
         AssignVariableToObject(self, P, "DL1r_60", i, j)
@@ -280,7 +293,10 @@ def VariableObjectProxy(self, P, i, j = -1):
         AssignVariableToObject(self, P, "DL1_pc", i, j)
         AssignVariableToObject(self, P, "DL1_pu", i, j)
         AssignVariableToObject(self, P, "jvt", i, j)
-
+    
+    elif self.Type == "RCJet" or self.Type == "RCJetSub":
+        AssignVariableToObject(self, P, "d12", i, j)
+        AssignVariableToObject(self, P, "d23", i, j)
 
     
     elif self.Type == "Muon" or self.Type == "Electron":
@@ -300,7 +316,6 @@ def VariableObjectProxy(self, P, i, j = -1):
         AssignVariableToObject(self, P, "true_IFFclass", i, j)
         AssignVariableToObject(self, P, "true_isPrompt", i, j)
         AssignVariableToObject(self, P, "true_isChargeFl", i, j)
-
     else: 
         AssignVariableToObject(self, P, "Charge", i, j)
         AssignVariableToObject(self, P, "PDGID", i, j)

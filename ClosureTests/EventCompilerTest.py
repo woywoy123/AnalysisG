@@ -159,21 +159,71 @@ def TestObjectVariableAssignment():
 
 def VisualizeParticleMatching():
     from BaseFunctions.Plotting import PlotADetector
+    from BaseFunctions.IO import PickleObject, UnpickleObject
 
-    files = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root"
-    te = TruthCompiler(files, Debug = True).EventDictionary
-    me = DetectorCompiler(files, Debug = True).EventDictionary
+    #files = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root"
+    #TC = TruthCompiler(files, Debug = True)
+    #PickleObject(TC.EventDictionary, "TruthCompiler")
 
-    for i in me:
-        #print(me[i].DetectorParticles)
-        #print(te[i].TruthMatch)
-        assert me[i].EventNumber == te[i].EventNumber
+    te = UnpickleObject("TruthCompiler")
+    
+    for i in te:
         
-        print("")
-        PlotADetector(me[i].DetectorParticles, te[i].TruthMatch)
+        print("===============")
 
-        break
+        #assert me[i].EventNumber == te[i].EventNumber
+        E = te[i]
+        
+        
+        l = 0 
+        for k in E.RCJets:
+            l += len(k.Sub_Jets)
+
+        print(len(E.TruthJets), len(E.Jets), len(E.RCJets), l, len(E.Leptons))
+        if len(E.TruthJets) < len(E.Jets):
+            print("!!!!!!!!!!")
+
+
+        dct = {}
+        for x in E.Jets:
+            for j in E.TruthJets:
+                dct[j.KinematicDifference(x)] = [j, x]
+
+
+        Used = []
+        for p in sorted(dct.items()):
+            tj = p[1][0]
+            j = p[1][1]
+            if j not in Used:
+                tj.Sub_Jets.append(j)
+                Used.append(j)
+                print(p[0], j.Index, tj.Index, [j.truthflavExtended, j.truthflav], [tj.Flavour, tj.Extended] )
+       
+        dct.clear()
+        Used.clear()
+        for p in E.RCJets:
+            for k in p.Sub_Jets:
+                for j in E.Jets:
+                    dct[j.KinematicDifference(k)] = [k, j]
+        
+        for p in sorted(dct.items()):
+            if p[1][0] not in Used:
+                p[1][1].Sub_Jets.append(p[1][0])
+                Used.append(p[1][0])
+
+        #for p in E.TruthJets:
+        #    print(p.Type)
+        #    for g in p.Sub_Jets:
+        #        print(g.Type)
+        #        for k in g.Sub_Jets:
+        #            print(k.Type)
+ 
+
+
 
         
+        
+        #PlotADetector(te[i].DetectorParticles, te[i].TruthMatch)
+
 
 

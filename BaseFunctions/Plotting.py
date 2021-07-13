@@ -88,30 +88,27 @@ def PlotADetector(Detector, Truth):
         ax.scatter(x_L, y_L, z_L, marker = "o", cmap = "red")
 
     for i in Truth:
-        x = 5*np.cos(i.Phi)*np.sin(i.Theta)
-        y = 5*np.sin(i.Phi)*np.sin(i.Theta)
-        z = 5*np.cos(i.Theta)
+        x = 20*np.cos(i.Phi)*np.sin(i.Theta)
+        y = 20*np.sin(i.Phi)*np.sin(i.Theta)
+        z = 20*np.cos(i.Theta)
         ax.plot([0, x], [0, y], [0, z], linestyle="solid", linewidth=1)
         ax.scatter(x, y, z, marker = "^", color="gray")
         
         for c in i.DecayProducts:
-            x_c = 10*np.cos(c.Phi)*np.sin(c.Theta)
-            y_c = 10*np.sin(c.Phi)*np.sin(c.Theta)
-            z_c = 10*np.cos(c.Theta)
+            x_c = 10*np.cos(c.Phi)*np.sin(c.Theta) + x
+            y_c = 10*np.sin(c.Phi)*np.sin(c.Theta) + y
+            z_c = 10*np.cos(c.Theta) + z
             ax.plot([x, x_c], [y, y_c], [z, z_c], linestyle="--", linewidth=1, color = "black")
             ax.scatter(x_c, y_c, z_c, marker="*", color="blue")
 
             for k in c.DecayProducts:
-                x_k = 20*np.cos(k.Phi)*np.sin(c.Theta)
-                y_k = 20*np.sin(k.Phi)*np.sin(c.Theta)
-                z_k = 20*np.cos(k.Theta)
+                x_k = 10*np.cos(k.Phi)*np.sin(c.Theta) + x_c
+                y_k = 10*np.sin(k.Phi)*np.sin(c.Theta) + y_c
+                z_k = 10*np.cos(k.Theta) + z_c
                 ax.plot([x_c, x_k], [y_c, y_k], [z_c, z_k], linestyle="solid", linewidth=1, color = "green")
                 ax.scatter(x_k, y_k, z_k, marker="^", color="orange")
 
-           
-
-
-
+          
     ax.set_xlabel("x")
     ax.set_ylabel("y")
     ax.set_zlabel("z")

@@ -2,7 +2,7 @@ import multiprocessing
 from BaseFunctions.Alerting import Alerting
 
 class Threading:
-    def __init__(self, threads = 6, verb = False):
+    def __init__(self, threads = 4, verb = False):
         self.__threads = threads
         self.__verbose = verb
 

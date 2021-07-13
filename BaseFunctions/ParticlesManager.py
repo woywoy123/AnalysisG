@@ -51,12 +51,13 @@ class Particle:
 
     def ReconstructFourVectorFromProducts(self):
         vectors = []
-        for i in self.DecayProducts:
-            vectors.append(i.FourVector)
 
+        for i in self.init_DecayProducts:
+            vectors.append(i.FourVector)
+        
         self.ReconstructedFourVector = SumVectors(vectors)
         self.FourVector = self.ReconstructedFourVector
-        self.Mass = self.ReconstructedFourVector.mass / 1000.
+        self.Mass = self.FourVector.mass / 1000.
 
     def KinematicDifference(self, Particle):
         DeltaPhi = self.Phi - Particle.Phi
@@ -99,9 +100,11 @@ class Jet(Particle):
         self.nChad = ""
         self.nBhad = ""
         self.truthflav = ""
+        self.truthflavExtended = ""
         self.truthPartonLabel = ""
         self.isTrueHS = ""
         self.jvt = ""
+        self.Extended = ""
 
         self.DL1r = ""
         self.DL1r_60 = ""
@@ -123,12 +126,22 @@ class Jet(Particle):
 
         self.Sub_Jets = []
 
-class CreateParticleObjects(Lepton, Jet, Particle):
+
+class RCJet(Particle):
+    def __init__(self):
+        Particle.__init__(self)
+        self.d12 = ""
+        self.d23 = ""
+        self.Sub_Jets = []
+
+class CreateParticleObjects(Lepton, Jet, RCJet, Particle):
     def __init__(self, E, Pt, Phi, Eta, Type = ""):
         if Type == "Muon" or Type == "Electron":
             Lepton.__init__(self)
-        elif Type == "Jet" or Type == "RCJet" or Type == "TruthJet":
+        elif Type == "Jet" or Type == "TruthJet":
             Jet.__init__(self)
+        elif Type == "RCJet" or Type == "RCJetSub":
+            RCJet.__init__(self)
         else:
             Particle.__init__(self)
         self.E = E
@@ -153,10 +166,13 @@ class CreateParticleObjects(Lepton, Jet, Particle):
         for j in range(len(self.E[i])):
             if self.Type == "Muon" or self.Type == "Electron":
                 P = Lepton()
-            elif self.Type == "Jet" or self.Type == "RCJet" or self.Type == "TruthJet":
+            elif self.Type == "Jet" or self.Type == "TruthJet":
                 P = Jet()
+            elif self.Type == "RCJet" or self.Type == "RCJetSub":
+                P = RCJet()
             else:
                 P = Particle()
+
             P.SetKinematics(self.E[i][j], self.Pt[i][j], self.Phi[i][j], self.Eta[i][j])
             P.Index = i
             P.Type = self.Type
@@ -172,10 +188,13 @@ class CreateParticleObjects(Lepton, Jet, Particle):
         Output = []
         if self.Type == "Muon" or self.Type == "Electron":
             P = Lepton()
-        elif self.Type == "Jet" or self.Type == "RCJet" or self.Type == "TruthJet":
+        elif self.Type == "Jet" or self.Type == "TruthJet":
             P = Jet()
+        elif self.Type == "RCJet" or self.Type == "RCJetSub":
+            P = RCJet()
         else:
             P = Particle()
+
         P.SetKinematics(self.E[i], self.Pt[i], self.Phi[i], self.Eta[i])
         P.Index = i
         P.Type = self.Type
