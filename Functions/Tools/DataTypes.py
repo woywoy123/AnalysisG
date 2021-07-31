@@ -28,7 +28,7 @@ class Threading:
         sub_p = []
         res = []
         for i in range(len(self.__lists)):
-            P = Process(target = self.__lists[i].Runner, args=(q,))
+            P = Process(target = self.__lists[i].Runner, args=(q,i))
             Processes.append(P)
             sub_p.append(P) 
 
@@ -44,8 +44,10 @@ class Threading:
             re = q.get()
             res.append(re)
         
-        for i in range(len(res)):
-            self.__lists[i].SetResults(res[i])
+        for i in range(len(self.__lists)):
+            for j in res:
+                if i in j:
+                    self.__lists[i].SetResults(j[i])
         
         for p in Processes:
             p.join()
@@ -62,9 +64,14 @@ class TemplateThreading:
         self.__source_value = source_value
         self.__function = function
 
-    def Runner(self, q):
+    def Runner(self, q, index):
         self.__result = self.__function(self.__source_value)
-        q.put(self.__result)
+        out = {}
+        out[index] = self.__result
+        q.put(out)
+    
+    def TestRun(self):
+        self.__result = self.__function(self.__source_value)
     
     def SetResults(self, res):
         self.__result = res
