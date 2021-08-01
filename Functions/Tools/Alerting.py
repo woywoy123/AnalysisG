@@ -45,5 +45,5 @@ class Debugging:
     
     def TimeOut(self):
         if self.__Threshold == self.iter:
-            exit()
+            return True
         self.iter +=1

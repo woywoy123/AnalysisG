@@ -17,6 +17,8 @@ class Directories(Notification):
         for i in glob("*"):
             if os.path.isdir(i):
                 self.Files[os.getcwd()+"/"+i] = []
+            else:
+                self.Files[os.getcwd()] = []
         os.chdir(self.__pwd)
 
     def ListFilesInDir(self, dir):
@@ -29,7 +31,10 @@ class Directories(Notification):
         return Output
 
     def GetFilesInDir(self):
-        self.ListDirs()
-        for dir in self.Files:
-            self.Files[dir] = self.ListFilesInDir(dir)
+        if os.path.isfile(self.__Dir) == False:
+            self.ListDirs()
+            for dir in self.Files:
+                self.Files[dir] = self.ListFilesInDir(dir)
+        else:
+            self.Files[os.path.dirname(self.__Dir)] = [os.path.basename(self.__Dir)]
 

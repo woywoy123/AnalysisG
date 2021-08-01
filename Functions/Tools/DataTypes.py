@@ -1,4 +1,5 @@
 from multiprocessing import Process, Queue
+import numpy as np
 
 class DataTypeCheck:
 
@@ -12,9 +13,16 @@ class DataTypeCheck:
         if isinstance(obj, list):
             output += obj
         return output
-
+    
+    def DictToList(self, dic):
+        Out = []
+        for i in dic:
+            if isinstance(dic[i], list):
+                Out += self.AddToList(dic[i])
+        return Out
+    
 class Threading:
-    def __init__(self, lists, threads = 16):
+    def __init__(self, lists, threads = 32):
         self.__threads = threads
         self.__lists = lists
         self.Result = []

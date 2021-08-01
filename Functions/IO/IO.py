@@ -121,6 +121,7 @@ class UpROOT_Reader(Directories, DataTypeCheck):
         for i in self.Files:
             for j in self.Files[i]:
                 r = i + "/" +j
+                print(r)
                 x = File(r, j, self.Verbose)
                 x.Trees = self.__Trees
                 x.Leaves = self.__Leaves

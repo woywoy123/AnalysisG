@@ -1,17 +1,35 @@
 from Functions.Tools.Variables import VariableManager
+from Functions.Tools.DataTypes import DataTypeCheck
 import copy
+import math
+from skhep.math.vectors import LorentzVector
+from ROOT import Math
 
-class Particle(VariableManager):
+class Particle(VariableManager, DataTypeCheck):
     def __init__(self):
         VariableManager.__init__(self)
+        DataTypeCheck.__init__(self)
         self.pt = self.Type + "_pt"
         self.eta = self.Type + "_eta"
         self.phi = self.Type + "_phi"
         self.e = self.Type + "_e"
         self.Index = -1
         self.Signal = -1
+        self.CompileKeyMap()
         self.ListAttributes()
-        self.DecayParticles = {}
+        self.Decay_init = []
+        self.Decay = []
+    
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
+
+    def DeltaR(self, P):
+        return math.sqrt(math.pow(P.eta-self.eta, 2) + math.pow(P.phi-self.phi, 2)) 
+
+    def CalculateMass(self):
+        v = LorentzVector()
+        v.setptetaphie(self.pt, self.eta, self.phi, self.e)
+        self.Mass = v.mass
 
 class Lepton(Particle):
     def __init__(self):
@@ -106,15 +124,13 @@ class CompileParticles:
         self.__len = -1
         self.__Part = Particles
         self.__Keys = {}
+        
+        for key in self.__Dictionary:
+            val = self.__Dictionary[key]
 
-        for i in Particles.__dict__.keys():
-            val = Particles.__dict__[i]
-            try:
-                if val in self.__Dictionary:
-                    self.__Keys[i] = self.__Dictionary[val]
-                    self.__len = len(self.__Dictionary[val])
-            except TypeError:
-                pass
+            if key in self.__Part.KeyMap:
+                self.__Keys[self.__Part.KeyMap[key]] = val
+                self.__len = len(val)
 
     def Compile(self):
         Output = {}
@@ -123,7 +139,6 @@ class CompileParticles:
             Output[i] = []
             for k in self.__Keys:
                 val = self.__Keys[k][i]
-                
                 try:
                     __sub = len(val)
                     if len(Output[i]) == 0:
@@ -139,8 +154,8 @@ class CompileParticles:
                         P.Index = i
                         Output[i].append(P)
                     Output[i][0].SetAttribute(k, val)
-
         return Output
+    
 
                  
                

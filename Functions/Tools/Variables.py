@@ -13,4 +13,17 @@ class VariableManager:
     def SetAttribute(self, key, val):
         setattr(self, key, val)
 
+    def CompileKeyMap(self):
+        self.KeyMap = {}
+        for i in self.__dict__.keys():
+            val = self.__dict__[i]
+            if isinstance(val, str) and self.Type != val:
+                self.KeyMap[val] = i
+
+    def GetAttributeFromKeyMap(self, key):
+        obj = getattr(self, self.KeyMap[key])
+        return obj
+        
+        
+
 

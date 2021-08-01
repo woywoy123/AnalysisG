@@ -2,6 +2,7 @@ from Functions.IO.IO import UpROOT_Reader
 from Functions.Tools.Alerting import Debugging
 from Functions.Particles.Particles import *
 from Functions.Tools.Variables import VariableManager
+from Functions.Tools.DataTypes import DataTypeCheck
 
 class EventVariables:
     def __init__(self):
@@ -16,82 +17,168 @@ class EventVariables:
         self.MinimalBranch += Truth_Top_Child().Branches
         self.MinimalBranch += Truth_Top_Child_Init().Branches
 
-class Event(VariableManager):
+class Event(VariableManager, DataTypeCheck):
     def __init__(self):
         VariableManager.__init__(self)
+        DataTypeCheck.__init__(self)
         self.runNumber = "runNumber"
         self.eventNumber = "eventNumber"
         self.mu = "mu"
+        self.met = "met_met"
+        self.phi = "met_phi"
         self.mu_actual = "mu_actual"
 
         self.Type = "Event"
         self.ListAttributes()
+        self.CompileKeyMap()
         self.iter = -1
         self.Tree = ""
         
-        self.__TruthTops = {}
-        self.__TruthChildren_init = {}
-        self.__TruthChildren = {}
-        self.__TruthJets = {}
-        self.__Jets = {}
-        self.__Muons = {}
-        self.__Electrons = {}
+        self.TruthTops = {}
+        self.TruthChildren_init = {}
+        self.TruthChildren = {}
+        self.TruthJets = {}
+        self.Jets = {}
+        self.Muons = {}
+        self.Electrons = {}
+
+        self.Release = False
     
     def ParticleProxy(self, File):
         self.ListAttributes()
+        el = Electron()
+        mu = Muon()
+        truthjet = TruthJet()
+        jet = Jet()
+        top = Top()
+        child = Truth_Top_Child()
+        child_init = Truth_Top_Child_Init()
+        event = Event()
+
         for i in File.ArrayBranches:
             if self.Tree in i:
                 var = i.replace(self.Tree + "/", "")
                 val = File.ArrayBranches[i][self.iter]
-                if "truthjet_" in var:
-                    self.__TruthJets[var] = val 
-                elif "jet_" in var:
-                    self.__Jets[var] = val
-                elif "el_" in var:
-                    self.__Electrons[var] = val
-                elif "mu_" in var:
-                    self.__Muons[var] = val
-                elif "top_child_" in var:
-                    self.__TruthChildren[var] = val
-                elif "top_initialState_child" in var:
-                    self.__TruthChildren_init[var] = val
-                elif "top_" in var:
-                    self.__TruthTops[var] = val
+                if var in truthjet.KeyMap:
+                    self.TruthJets[var] = val 
+                elif var in jet.KeyMap:
+                    self.Jets[var] = val
+                elif var in el.KeyMap:
+                    self.Electrons[var] = val
+                elif var in mu.KeyMap:
+                    self.Muons[var] = val
+                elif var in child.KeyMap:
+                    self.TruthChildren[var] = val
+                elif var in child_init.KeyMap:
+                    self.TruthChildren_init[var] = val
+                elif var in top.KeyMap:
+                    self.TruthTops[var] = val
+                elif var in event.KeyMap:
+                    self.SetAttribute(self.KeyMap[var], val)
     
-
-
     def CompileEvent(self):
-        self.__TruthTops = CompileParticles(self.__TruthTops, Top()).Compile() 
-        self.__TruthChildren_init = CompileParticles(self.__TruthChildren_init, Truth_Top_Child_Init()).Compile()
-        self.__TruthChildren = CompileParticles(self.__TruthChildren, Truth_Top_Child()).Compile()
-        self.__TruthJets = CompileParticles(self.__TruthJets, TruthJet()).Compile()
-        self.__Jets = CompileParticles(self.__Jets, Jet()).Compile()
-        self.__Muons = CompileParticles(self.__Muons, Muon()).Compile()
-        self.__Electrons = CompileParticles(self.__Electrons, Electron()).Compile()
+        self.TruthTops = CompileParticles(self.TruthTops, Top()).Compile() 
+        self.TruthChildren_init = CompileParticles(self.TruthChildren_init, Truth_Top_Child_Init()).Compile()
+        self.TruthChildren = CompileParticles(self.TruthChildren, Truth_Top_Child()).Compile()
+        self.TruthJets = CompileParticles(self.TruthJets, TruthJet()).Compile()
+        self.Jets = CompileParticles(self.Jets, Jet()).Compile()
+        self.Muons = CompileParticles(self.Muons, Muon()).Compile()
+        self.Electrons = CompileParticles(self.Electrons, Electron()).Compile()
 
-        for i in self.__TruthTops:
-            self.__TruthTops[i][0].DecayParticles["init_child"] = self.__TruthChildren_init[i]
-            self.__TruthTops[i][0].DecayParticles["child"] = self.__TruthChildren[i]
+        for i in self.TruthTops:
+            self.TruthTops[i][0].Decay_init = self.TruthChildren_init[i]
+            self.TruthTops[i][0].Decay = self.TruthChildren[i]
+
+        All = []
+        All += self.DictToList(self.Muons)
+        All += self.DictToList(self.Electrons)
+        All += self.DictToList(self.TruthJets)
         
-        All = [] 
-        for i in self.__Muons:
-            All += self.__Muons[i]
+        Truth_init = self.DictToList(self.TruthChildren_init)
+        Truth = self.DictToList(self.TruthChildren) 
+
+        self.DeltaRMatrix(All, Truth)
+        self.__All = All
+        self.__init = True
+        self.MatchingEngine()
+
+
+        if self.Release:
+            self.TruthTops = self.DictToList(self.TruthTops)
+            self.TruthJets = self.DictToList(self.TruthJets)
+            self.Jets = self.DictToList(self.Jets)
+            self.Muons = self.DictToList(self.Muons)
+            self.Electrons = self.DictToList(self.Electrons)
+
+    def MatchingEngine(self):
         
-        for i in self.__Jets:
-            All += self.__Jets[i]
+        # Remove Neutrinos 
+        veto_Nu = [12, 14, 16]
+        
+        captured = []
+        remainder = []
+        print(">>>>>>>========== New Event ==========")
+        print("    --- All Particles ---  ")
+        for i in self.__All:
+            i.CalculateMass()
+            if i.Type == "truthjet":
+                print(i.flavour, "--", i.flavour_extended, "---", i.Mass)
+            else:
+                print(i.Type, "---", i.Mass)
 
-        for i in self.__Electrons:
-            All += self.__Electrons[i]
-
-        for i in All:
-            print(i.Type, i.pt, i.phi, i.eta, i.e)
 
 
 
+        for dR in self.__Matrix:
+            tc = dR[1][0]
+            al = dR[1][1]
+            dR = dR[0]
+            
+            if abs(tc.pdgid) in veto_Nu:
+                continue
+            if al in captured or dR > 0.1:
+                continue
+
+            if al.Type == "truthjet":
+                if al.flavour == al.flavour_extended and al.flavour == abs(tc.pdgid):
+                    print(tc.pdgid, "-> ", al.flavour, round(dR, 4))
+                    if self.__init:
+                        tc.Decay_init.append(al)
+                    else:
+                        tc.Decay.append(al)
+                    captured.append(al)
+                
+                elif al.flavour == al.flavour_extended and al.flavour == 0 and abs(tc.pdgid) < 4:
+                    print(tc.pdgid, " +---> ", al.flavour, round(dR, 4))
+                    captured.append(al)
+
+                #elif al.flavour != al.flavour_extended:
+                #     print(tc.pdgid, "!!-> ", al.flavour, " ", al.flavour_extended, " ",round(dR, 4))
+
+                   
+            
+            if al.Type == "mu" or al.Type == "el":
+                if al.true_isPrompt != 1:
+                    continue
+                print(">>>>>", tc.pdgid, "-> ", al.Type, round(dR, 4))
+                if self.__init:
+                    tc.Decay_init.append(al)
+                else:
+                    tc.Decay.append(al)
+                captured.append(al)               
 
 
 
 
+
+    def DeltaRMatrix(self, List1, List2): 
+        delR = {}
+        for i in List1:
+            for c in List2:
+                delR[c.DeltaR(i)] = [c, i]
+        self.__Matrix = sorted(delR.items())
+
+   
 class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
     def __init__(self, dir, Verbose = True, DebugThresh = -1):
         UpROOT_Reader.__init__(self, dir, Verbose)
@@ -100,27 +187,38 @@ class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
         self.Events = []
         
     def SpawnEvents(self, Full = False):
-        self.GetFilesInDir()
         self.Read()
         
 
         for f in self.FileObjects:
-            Trees = []
+            Trees = ["nominal"] # Tree = []
             Branches = []
             self.Notify("Reading -> " + f)
-            F = self.FileObjects[f]
-            
-            if Full:
-                F.ScanFull()
-                Trees = F.AllTrees
-                Branches = F.AllBranches
-            else:
-                Trees = self.MinimalTree
-                Branches = self.MinimalBranch
-            F.Trees = Trees
-            F.Branches = Branches
-            F.CheckKeys()
-            F.ConvertToArray()
+            #F = self.FileObjects[f]
+            #
+            #if Full:
+            #    F.ScanFull()
+            #    Trees = F.AllTrees
+            #    Branches = F.AllBranches
+            #else:
+            #    Trees = self.MinimalTree
+            #    Branches = self.MinimalBranch
+            #F.Trees = Trees
+            #F.Branches = Branches
+            #F.CheckKeys()
+            #F.ConvertToArray()
+                
+
+            ## =====!!!! TEMP!!!! DELETE!!!!! ======#
+            import pickle
+            #outfile = open("./File", "wb")
+            #pickle.dump(F, outfile)
+            #outfile.close()
+
+            infile = open("./File", "rb")
+            F = pickle.load(infile)
+            infile.close()
+
             
             for i in range(len(F.ArrayBranches["nominal/eventNumber"])):
                 pairs = {}
@@ -131,6 +229,9 @@ class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
                     E.ParticleProxy(F)
                     E.CompileEvent()
                     pairs[k] = E
-                break 
+                
                 self.Events.append(pairs) 
+                if self.TimeOut():
+                    break 
+            
             break
