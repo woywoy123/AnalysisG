@@ -210,5 +210,5 @@ def TestParticleAssignment():
     Comparison(dir, "nominal", "top_initialState_child_pdgid", Events, x.Events)
 
 def TestEvent():
-    x = EventGenerator(dir, DebugThresh = 10)
+    x = EventGenerator(dir, DebugThresh = 20)
     x.SpawnEvents()

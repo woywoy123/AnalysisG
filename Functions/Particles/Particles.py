@@ -19,6 +19,8 @@ class Particle(VariableManager, DataTypeCheck):
         self.ListAttributes()
         self.Decay_init = []
         self.Decay = []
+        self.ParentPDGID = ""
+
     
     def __eq__(self, other):
         return self.__dict__ == other.__dict__

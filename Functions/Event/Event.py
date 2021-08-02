@@ -17,10 +17,11 @@ class EventVariables:
         self.MinimalBranch += Truth_Top_Child().Branches
         self.MinimalBranch += Truth_Top_Child_Init().Branches
 
-class Event(VariableManager, DataTypeCheck):
+class Event(VariableManager, DataTypeCheck, Debugging):
     def __init__(self):
         VariableManager.__init__(self)
         DataTypeCheck.__init__(self)
+        Debugging.__init__(self)
         self.runNumber = "runNumber"
         self.eventNumber = "eventNumber"
         self.mu = "mu"
@@ -41,6 +42,10 @@ class Event(VariableManager, DataTypeCheck):
         self.Jets = {}
         self.Muons = {}
         self.Electrons = {}
+
+        self.TruthAssignedToChild_init = []
+        self.TruthAssignedToChild = []
+        self.TruthNotAssigned = []
 
         self.Release = False
     
@@ -75,7 +80,50 @@ class Event(VariableManager, DataTypeCheck):
                     self.TruthTops[var] = val
                 elif var in event.KeyMap:
                     self.SetAttribute(self.KeyMap[var], val)
-    
+
+
+    def MatchingRule(self, P1, P2, dR):
+        
+        if P1.Type == "truthjet" and P2.Type == "jet":
+
+            if P1.flavour == P2.truthflav and P1.flavour_extended == P2.truthflavExtended:
+                return True
+        
+        # Truth child to truthjet matching conditions
+        if "child" in P1.Type and P2.Type == "truthjet":
+
+            # No B or C Hadrons: MC u, d, s are considered 0 flavoured for some reason
+            if P2.nCHad == P2.nBHad == 0 and P2.flavour == P2.flavour_extended:
+                
+                # Coverage for u, d, s quark jets
+                if abs(P1.pdgid) < 4 and P2.flavour == 0:
+                    return True 
+                
+                # Coverage for tau lepton truth jets (?) 
+                if abs(P1.pdgid) == P2.flavour:
+                    return True
+
+            if abs(P1.pdgid) == P2.flavour and abs(P1.pdgid) == P2.flavour_extended and P2.nCHad == P2.nBHad == 1:
+                return True
+
+            if abs(P1.pdgid) == P2.flavour and abs(P1.pdgid) == P2.flavour_extended and P2.nCHad == 1 and P2.nBHad == 0:
+                return True
+
+        # Truth Child to Detector lepton matching conditions
+        if "child" in P1.Type and (P2.Type == "mu" or P2.Type == "el"):
+            if P2.true_isPrompt == 1:
+                return True
+
+
+    def DeltaRMatrix(self, List1, List2): 
+        delR = {}
+        for i in List1:
+            for c in List2:
+                delR[c.DeltaR(i)] = [c, i]
+        self.dRMatrix = sorted(delR.items())
+
+
+
     def CompileEvent(self):
         self.TruthTops = CompileParticles(self.TruthTops, Top()).Compile() 
         self.TruthChildren_init = CompileParticles(self.TruthChildren_init, Truth_Top_Child_Init()).Compile()
@@ -93,15 +141,20 @@ class Event(VariableManager, DataTypeCheck):
         All += self.DictToList(self.Muons)
         All += self.DictToList(self.Electrons)
         All += self.DictToList(self.TruthJets)
+        self.__All = All
         
         Truth_init = self.DictToList(self.TruthChildren_init)
         Truth = self.DictToList(self.TruthChildren) 
 
-        self.DeltaRMatrix(All, Truth)
-        self.__All = All
+        self.DeltaRMatrix(Truth_init, All)
         self.__init = True
-        self.MatchingEngine()
+        self.TruthMatchingEngine()
 
+        self.DeltaRMatrix(All, Truth)
+        self.__init = False
+        self.TruthMatchingEngine()
+
+        self.DetectorMatchingEngine()
 
         if self.Release:
             self.TruthTops = self.DictToList(self.TruthTops)
@@ -110,73 +163,47 @@ class Event(VariableManager, DataTypeCheck):
             self.Muons = self.DictToList(self.Muons)
             self.Electrons = self.DictToList(self.Electrons)
 
-    def MatchingEngine(self):
-        
-        # Remove Neutrinos 
-        veto_Nu = [12, 14, 16]
-        
-        captured = []
-        remainder = []
-        print(">>>>>>>========== New Event ==========")
-        print("    --- All Particles ---  ")
-        for i in self.__All:
-            i.CalculateMass()
-            if i.Type == "truthjet":
-                print(i.flavour, "--", i.flavour_extended, "---", i.Mass)
+    def TruthMatchingEngine(self):
+        def AppendToParent(particle, truth):
+            if self.__init:
+                truth.Decay_init.append(particle)
+                self.TruthAssignedToChild_init.append(particle)
             else:
-                print(i.Type, "---", i.Mass)
-
-
-
-
-        for dR in self.__Matrix:
-            tc = dR[1][0]
-            al = dR[1][1]
+                truth.Decay.append(particle)
+                self.TruthAssignedToChild.append(particle)
+            particle.ParentPDGID = tc.pdgid       
+        
+        AllParticles = []
+        AllParticles += self.__All
+        AllParticles += self.DictToList(self.TruthChildren_init)
+        
+        #self.DebugTruthDetectorMatch(AllParticles) 
+        captured = []
+        for dR in self.dRMatrix:
+            tjet = dR[1][0]
+            tc = dR[1][1]
             dR = dR[0]
+ 
+            if self.MatchingRule(tc, tjet, dR):
+                AppendToParent(tjet, tc)
+                captured.append(tjet) 
             
-            if abs(tc.pdgid) in veto_Nu:
-                continue
-            if al in captured or dR > 0.1:
+            if tjet in captured:
                 continue
 
-            if al.Type == "truthjet":
-                if al.flavour == al.flavour_extended and al.flavour == abs(tc.pdgid):
-                    print(tc.pdgid, "-> ", al.flavour, round(dR, 4))
-                    if self.__init:
-                        tc.Decay_init.append(al)
-                    else:
-                        tc.Decay.append(al)
-                    captured.append(al)
-                
-                elif al.flavour == al.flavour_extended and al.flavour == 0 and abs(tc.pdgid) < 4:
-                    print(tc.pdgid, " +---> ", al.flavour, round(dR, 4))
-                    captured.append(al)
+    def DetectorMatchingEngine(self):
+        DetectorParticles = []
+        DetectorParticles += self.DictToList(self.Jets)
+        DetectorParticles += self.DictToList(self.Electrons)
+        DetectorParticles += self.DictToList(self.Muons)
+        TruthJets = self.DictToList(self.TruthJets)
+        self.DeltaRMatrix(TruthJets, DetectorParticles)
 
-                #elif al.flavour != al.flavour_extended:
-                #     print(tc.pdgid, "!!-> ", al.flavour, " ", al.flavour_extended, " ",round(dR, 4))
+        DetectorParticles += TruthJets
+        self.DebugTruthDetectorMatch(DetectorParticles)
 
-                   
-            
-            if al.Type == "mu" or al.Type == "el":
-                if al.true_isPrompt != 1:
-                    continue
-                print(">>>>>", tc.pdgid, "-> ", al.Type, round(dR, 4))
-                if self.__init:
-                    tc.Decay_init.append(al)
-                else:
-                    tc.Decay.append(al)
-                captured.append(al)               
+    
 
-
-
-
-
-    def DeltaRMatrix(self, List1, List2): 
-        delR = {}
-        for i in List1:
-            for c in List2:
-                delR[c.DeltaR(i)] = [c, i]
-        self.__Matrix = sorted(delR.items())
 
    
 class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
@@ -191,33 +218,33 @@ class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
         
 
         for f in self.FileObjects:
-            Trees = ["nominal"] # Tree = []
+            Tree = []
             Branches = []
             self.Notify("Reading -> " + f)
-            #F = self.FileObjects[f]
-            #
-            #if Full:
-            #    F.ScanFull()
-            #    Trees = F.AllTrees
-            #    Branches = F.AllBranches
-            #else:
-            #    Trees = self.MinimalTree
-            #    Branches = self.MinimalBranch
-            #F.Trees = Trees
-            #F.Branches = Branches
-            #F.CheckKeys()
-            #F.ConvertToArray()
+            F = self.FileObjects[f]
+            
+            if Full:
+                F.ScanFull()
+                Trees = F.AllTrees
+                Branches = F.AllBranches
+            else:
+                Trees = self.MinimalTree
+                Branches = self.MinimalBranch
+            F.Trees = Trees
+            F.Branches = Branches
+            F.CheckKeys()
+            F.ConvertToArray()
                 
 
             ## =====!!!! TEMP!!!! DELETE!!!!! ======#
-            import pickle
+            #import pickle
             #outfile = open("./File", "wb")
             #pickle.dump(F, outfile)
             #outfile.close()
 
-            infile = open("./File", "rb")
-            F = pickle.load(infile)
-            infile.close()
+            #infile = open("./File", "rb")
+            #F = pickle.load(infile)
+            #infile.close()
 
             
             for i in range(len(F.ArrayBranches["nominal/eventNumber"])):
