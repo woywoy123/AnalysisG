@@ -2,11 +2,12 @@ from Functions.IO.IO import UpROOT_Reader
 from Functions.Tools.Alerting import Debugging
 from Functions.Particles.Particles import *
 from Functions.Tools.Variables import VariableManager
-from Functions.Tools.DataTypes import DataTypeCheck
+from Functions.Tools.DataTypes import DataTypeCheck, TemplateThreading, Threading
+import math
 
 class EventVariables:
     def __init__(self):
-        self.MinimalTree = ["nominal"] #, "MUON_SCALE__1up"]
+        self.MinimalTree = ["nominal", "MUON_SCALE__1up"]
         self.MinimalBranch = []
         self.MinimalBranch += Event().Branches
         self.MinimalBranch += TruthJet().Branches
@@ -18,7 +19,7 @@ class EventVariables:
         self.MinimalBranch += Truth_Top_Child_Init().Branches
 
 class Event(VariableManager, DataTypeCheck, Debugging):
-    def __init__(self):
+    def __init__(self, Debug = False):
         VariableManager.__init__(self)
         DataTypeCheck.__init__(self)
         Debugging.__init__(self)
@@ -42,11 +43,9 @@ class Event(VariableManager, DataTypeCheck, Debugging):
         self.Jets = {}
         self.Muons = {}
         self.Electrons = {}
-
-        self.TruthAssignedToChild_init = []
-        self.TruthAssignedToChild = []
-        self.TruthNotAssigned = []
-
+        self.Anomaly = {}
+        
+        self.BrokenEvent = False
         self.Release = False
     
     def ParticleProxy(self, File):
@@ -63,7 +62,12 @@ class Event(VariableManager, DataTypeCheck, Debugging):
         for i in File.ArrayBranches:
             if self.Tree in i:
                 var = i.replace(self.Tree + "/", "")
-                val = File.ArrayBranches[i][self.iter]
+                try: 
+                    val = File.ArrayBranches[i][self.iter]
+                except:
+                    self.BrokenEvent = True
+                    continue
+
                 if var in truthjet.KeyMap:
                     self.TruthJets[var] = val 
                 elif var in jet.KeyMap:
@@ -85,8 +89,7 @@ class Event(VariableManager, DataTypeCheck, Debugging):
     def MatchingRule(self, P1, P2, dR):
         
         if P1.Type == "truthjet" and P2.Type == "jet":
-
-            if P1.flavour == P2.truthflav and P1.flavour_extended == P2.truthflavExtended:
+            if P1.flavour == P2.truthflav and P1.flavour_extended == P2.truthflavExtended and dR < 0.1:
                 return True
         
         # Truth child to truthjet matching conditions
@@ -108,6 +111,8 @@ class Event(VariableManager, DataTypeCheck, Debugging):
 
             if abs(P1.pdgid) == P2.flavour and abs(P1.pdgid) == P2.flavour_extended and P2.nCHad == 1 and P2.nBHad == 0:
                 return True
+            if dR < 0.1:
+                return True
 
         # Truth Child to Detector lepton matching conditions
         if "child" in P1.Type and (P2.Type == "mu" or P2.Type == "el"):
@@ -119,10 +124,40 @@ class Event(VariableManager, DataTypeCheck, Debugging):
         delR = {}
         for i in List1:
             for c in List2:
-                delR[c.DeltaR(i)] = [c, i]
+                dR = c.DeltaR(i)
+                delR[str(dR) + "_" + str(c.Index) +"_"+str(i.Index)] = [c, i, dR]
         self.dRMatrix = sorted(delR.items())
 
+    def DeltaRLoop(self):
+        def AppendToParent(particle, truth):
+            if self.__init:
+                truth.Decay_init.append(particle)
+            else:
+                truth.Decay.append(particle)
 
+        captured = []
+        All_c = []
+        nu = [12, 14, 16]
+        for dR in self.dRMatrix:
+            j = dR[1][0]
+            t = dR[1][1]
+            dR = dR[1][2]
+                
+            if j not in All_c:
+                if "child" in j.Type:
+                    # veto neutrinos 
+                    if abs(j.pdgid) in nu:
+                        continue
+                All_c.append(j)
+
+            if j in captured:
+                continue
+            if self.MatchingRule(t, j, dR):
+                AppendToParent(j, t)
+                captured.append(j)
+        
+        if len(captured) != len(All_c):
+            self.Anomaly[self.CallLoop] = [captured, All_c]
 
     def CompileEvent(self):
         self.TruthTops = CompileParticles(self.TruthTops, Top()).Compile() 
@@ -136,25 +171,18 @@ class Event(VariableManager, DataTypeCheck, Debugging):
         for i in self.TruthTops:
             self.TruthTops[i][0].Decay_init = self.TruthChildren_init[i]
             self.TruthTops[i][0].Decay = self.TruthChildren[i]
-
-        All = []
-        All += self.DictToList(self.Muons)
-        All += self.DictToList(self.Electrons)
-        All += self.DictToList(self.TruthJets)
-        self.__All = All
         
-        Truth_init = self.DictToList(self.TruthChildren_init)
-        Truth = self.DictToList(self.TruthChildren) 
-
-        self.DeltaRMatrix(Truth_init, All)
+        # Very important to have this one first since the 
+        # truth partons contains information about the pdgid (truth partons)
+        self.__init = False
+        self.DetectorMatchingEngine()
+        
         self.__init = True
         self.TruthMatchingEngine()
 
-        self.DeltaRMatrix(All, Truth)
         self.__init = False
         self.TruthMatchingEngine()
 
-        self.DetectorMatchingEngine()
 
         if self.Release:
             self.TruthTops = self.DictToList(self.TruthTops)
@@ -163,33 +191,6 @@ class Event(VariableManager, DataTypeCheck, Debugging):
             self.Muons = self.DictToList(self.Muons)
             self.Electrons = self.DictToList(self.Electrons)
 
-    def TruthMatchingEngine(self):
-        def AppendToParent(particle, truth):
-            if self.__init:
-                truth.Decay_init.append(particle)
-                self.TruthAssignedToChild_init.append(particle)
-            else:
-                truth.Decay.append(particle)
-                self.TruthAssignedToChild.append(particle)
-            particle.ParentPDGID = tc.pdgid       
-        
-        AllParticles = []
-        AllParticles += self.__All
-        AllParticles += self.DictToList(self.TruthChildren_init)
-        
-        #self.DebugTruthDetectorMatch(AllParticles) 
-        captured = []
-        for dR in self.dRMatrix:
-            tjet = dR[1][0]
-            tc = dR[1][1]
-            dR = dR[0]
- 
-            if self.MatchingRule(tc, tjet, dR):
-                AppendToParent(tjet, tc)
-                captured.append(tjet) 
-            
-            if tjet in captured:
-                continue
 
     def DetectorMatchingEngine(self):
         DetectorParticles = []
@@ -197,28 +198,50 @@ class Event(VariableManager, DataTypeCheck, Debugging):
         DetectorParticles += self.DictToList(self.Electrons)
         DetectorParticles += self.DictToList(self.Muons)
         TruthJets = self.DictToList(self.TruthJets)
+        self.CallLoop = "DetectorMatchingEngine"
+        
         self.DeltaRMatrix(TruthJets, DetectorParticles)
+        if self.Debug:
+            DetectorParticles += TruthJets
+            self.DebugTruthDetectorMatch(DetectorParticles)
+        self.DeltaRLoop()
 
-        DetectorParticles += TruthJets
-        self.DebugTruthDetectorMatch(DetectorParticles)
 
-    
+    def TruthMatchingEngine(self):
+        Truth = []
+        if self.__init:
+            Truth += self.DictToList(self.TruthChildren_init)
+            self.CallLoop = "TruthMatchingEngine_init"       
+        else:
+            Truth += self.DictToList(self.TruthChildren)
+            self.CallLoop = "TruthMatchingEngine"       
+       
+        All = []
+        All += self.DictToList(self.TruthJets)
+        All += self.DictToList(self.Electrons)
+        All += self.DictToList(self.Muons)
+        
+        self.DeltaRMatrix(Truth, All)       
+        if self.Debug:
+            All += Truth
+            self.DebugTruthDetectorMatch(All) 
+        self.DeltaRLoop() 
 
-
+        
    
 class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
     def __init__(self, dir, Verbose = True, DebugThresh = -1):
         UpROOT_Reader.__init__(self, dir, Verbose)
         Debugging.__init__(self, Threshold = DebugThresh)
         EventVariables.__init__(self)
-        self.Events = []
+        self.Events = {}
         
     def SpawnEvents(self, Full = False):
-        self.Read()
-        
 
+        self.Read()
         for f in self.FileObjects:
-            Tree = []
+
+            Trees = []
             Branches = []
             self.Notify("Reading -> " + f)
             F = self.FileObjects[f]
@@ -234,19 +257,8 @@ class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
             F.Branches = Branches
             F.CheckKeys()
             F.ConvertToArray()
-                
 
-            ## =====!!!! TEMP!!!! DELETE!!!!! ======#
-            #import pickle
-            #outfile = open("./File", "wb")
-            #pickle.dump(F, outfile)
-            #outfile.close()
-
-            #infile = open("./File", "rb")
-            #F = pickle.load(infile)
-            #infile.close()
-
-            
+            self.Events[F.FileName] = []
             for i in range(len(F.ArrayBranches["nominal/eventNumber"])):
                 pairs = {}
                 for k in Trees:
@@ -254,11 +266,57 @@ class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
                     E.Tree = k
                     E.iter = i
                     E.ParticleProxy(F)
-                    E.CompileEvent()
                     pairs[k] = E
                 
-                self.Events.append(pairs) 
+                self.Events[F.FileName].append(pairs)
+                
                 if self.TimeOut():
                     break 
+    
+    def CompileEvent(self):
+        
+        def function(Entries):
+            for k in Entries:
+                for j in k:
+                    k[j].CompileEvent()
+            return Entries
+  
+        self.Caller = "EVENTCOMPILER"
+
+        threads = 6
+        for f in self.Events:
+            self.Notify("COMPILING FILE -> " + f)
             
-            break
+            Events = self.Events[f]
+            entries_percpu = math.ceil(len(Events) / threads)
+
+            self.Batches = {}
+            Thread = []
+            for k in range(threads):
+                self.Batches[k] = [] 
+                for i in Events[k*entries_percpu : (k+1)*entries_percpu]:
+                    self.Batches[k].append(i)
+                Thread.append(TemplateThreading(k, "", "Batches", self.Batches[k], function))
+            
+            th = Threading(Thread, threads)
+            th.StartWorkers()
+            res = th.Result
+
+            for i in res:
+                i.SetAttribute(self)
+            
+            self.Events[f] = []
+            for k in self.Batches:
+                self.Events[f].append(j) 
+            self.Batches = {}
+            Thread = []
+       
+        if len(self.Events):
+            for i in self.Events:
+                TEMP = self.Events[i]
+                
+                self.Events = {}
+                for k in range(len(TEMP)):
+                    self.Events[k] = TEMP[k]
+
+                break

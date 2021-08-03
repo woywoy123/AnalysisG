@@ -106,6 +106,7 @@ def TestParticleAssignment():
     Events = -1
     x = EventGenerator(dir, DebugThresh = Events)
     x.SpawnEvents()
+    x.CompileEvent()
     
     #Electrons 
     Comparison(dir, "nominal", "el_pt", Events, x.Events)
@@ -210,5 +211,6 @@ def TestParticleAssignment():
     Comparison(dir, "nominal", "top_initialState_child_pdgid", Events, x.Events)
 
 def TestEvent():
-    x = EventGenerator(dir, DebugThresh = 20)
+    x = EventGenerator(dir) #, DebugThresh = 20)
     x.SpawnEvents()
+    x.CompileEvent()
