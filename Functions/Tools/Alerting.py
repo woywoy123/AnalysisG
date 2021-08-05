@@ -54,12 +54,10 @@ class Debugging:
 
     def DebugTruthDetectorMatch(self, All):
         
-
-
         truthjet_l = []
         jet_l = []
         child = []
-        print(">>>>>>>========== New Event ==========")
+        print(">>>>>>>========== " + self.CallLoop + " ==========")
         print("    --- All Particles ---  ")
         for i in All:
             if i.Type == "jet":

@@ -7,7 +7,7 @@ import math
 
 class EventVariables:
     def __init__(self):
-        self.MinimalTree = ["nominal", "MUON_SCALE__1up"]
+        self.MinimalTree = ["nominal"]
         self.MinimalBranch = []
         self.MinimalBranch += Event().Branches
         self.MinimalBranch += TruthJet().Branches
@@ -46,7 +46,6 @@ class Event(VariableManager, DataTypeCheck, Debugging):
         self.Anomaly = {}
         
         self.BrokenEvent = False
-        self.Release = False
     
     def ParticleProxy(self, File):
         self.ListAttributes()
@@ -174,6 +173,9 @@ class Event(VariableManager, DataTypeCheck, Debugging):
         
         # Very important to have this one first since the 
         # truth partons contains information about the pdgid (truth partons)
+        if self.Debug:
+            print(">>>>>>>========== New Event ==========")
+
         self.__init = False
         self.DetectorMatchingEngine()
         
@@ -184,12 +186,11 @@ class Event(VariableManager, DataTypeCheck, Debugging):
         self.TruthMatchingEngine()
 
 
-        if self.Release:
-            self.TruthTops = self.DictToList(self.TruthTops)
-            self.TruthJets = self.DictToList(self.TruthJets)
-            self.Jets = self.DictToList(self.Jets)
-            self.Muons = self.DictToList(self.Muons)
-            self.Electrons = self.DictToList(self.Electrons)
+        self.TruthTops = self.DictToList(self.TruthTops)
+        self.TruthJets = self.DictToList(self.TruthJets)
+        self.Jets = self.DictToList(self.Jets)
+        self.Muons = self.DictToList(self.Muons)
+        self.Electrons = self.DictToList(self.Electrons)
 
 
     def DetectorMatchingEngine(self):
@@ -204,7 +205,8 @@ class Event(VariableManager, DataTypeCheck, Debugging):
         if self.Debug:
             DetectorParticles += TruthJets
             self.DebugTruthDetectorMatch(DetectorParticles)
-        self.DeltaRLoop()
+        else:
+            self.DeltaRLoop()
 
 
     def TruthMatchingEngine(self):
@@ -224,8 +226,9 @@ class Event(VariableManager, DataTypeCheck, Debugging):
         self.DeltaRMatrix(Truth, All)       
         if self.Debug:
             All += Truth
-            self.DebugTruthDetectorMatch(All) 
-        self.DeltaRLoop() 
+            self.DebugTruthDetectorMatch(All)
+        else:
+            self.DeltaRLoop() 
 
         
    
@@ -235,6 +238,10 @@ class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
         Debugging.__init__(self, Threshold = DebugThresh)
         EventVariables.__init__(self)
         self.Events = {}
+        if DebugThresh > -1:
+            self.__Debug = True
+        else: 
+            self.__Debug = False
         
     def SpawnEvents(self, Full = False):
 
@@ -263,6 +270,9 @@ class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
                 pairs = {}
                 for k in Trees:
                     E = Event()
+                    if self.__Debug == True:
+                        E.Debug = True
+
                     E.Tree = k
                     E.iter = i
                     E.ParticleProxy(F)
@@ -273,7 +283,7 @@ class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
                 if self.TimeOut():
                     break 
     
-    def CompileEvent(self):
+    def CompileEvent(self, SingleThread = False):
         
         def function(Entries):
             for k in Entries:
@@ -299,24 +309,25 @@ class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
                 Thread.append(TemplateThreading(k, "", "Batches", self.Batches[k], function))
             
             th = Threading(Thread, threads)
-            th.StartWorkers()
+            if SingleThread:
+                th.TestWorker()
+            else:
+                th.StartWorkers()
             res = th.Result
-
             for i in res:
                 i.SetAttribute(self)
             
-            self.Events[f] = []
+            self.Events[f] = {}
+            it = 0
             for k in self.Batches:
-                self.Events[f].append(j) 
+                for j in self.Batches[k]:
+                    self.Events[f][it] = j
+                    it += 1
+            
             self.Batches = {}
             Thread = []
-       
-        if len(self.Events):
+        
+        if len(self.Events) == 1:
             for i in self.Events:
-                TEMP = self.Events[i]
-                
-                self.Events = {}
-                for k in range(len(TEMP)):
-                    self.Events[k] = TEMP[k]
-
+                self.Events = self.Events[i]
                 break

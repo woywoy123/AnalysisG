@@ -1,4 +1,4 @@
-from multiprocessing import Process, Queue
+from multiprocessing import Process, Pipe
 import numpy as np
 
 class DataTypeCheck:
@@ -29,27 +29,27 @@ class Threading:
 
     def StartWorkers(self):
         
-        q = Queue()
         Processes = []
         self.Result = []
         
         sub_p = []
         res = []
         for i in range(len(self.__lists)):
-            P = Process(target = self.__lists[i].Runner, args=(q,i))
+            recv, send = Pipe(False)
+            P = Process(target = self.__lists[i].Runner, args=(send,i))
             Processes.append(P)
-            sub_p.append(P) 
+            sub_p.append(recv) 
 
             P.start()
 
             if len(sub_p) == self.__threads:
                 for p in sub_p:
-                    re = q.get()
+                    re = p.recv()
                     res.append(re)
                 sub_p = []
         
         for p in sub_p:
-            re = q.get()
+            re = p.recv()
             res.append(re)
         
         for i in range(len(self.__lists)):
@@ -60,6 +60,11 @@ class Threading:
         for p in Processes:
             p.join()
         
+        self.Result = self.__lists
+
+    def TestWorker(self):
+        for i in range(len(self.__lists)):
+            self.__lists[i].TestRun()
         self.Result = self.__lists
 
 
@@ -76,7 +81,7 @@ class TemplateThreading:
         self.__result = self.__function(self.__source_value)
         out = {}
         out[index] = self.__result
-        q.put(out)
+        q.send(out)
     
     def TestRun(self):
         self.__result = self.__function(self.__source_value)
