@@ -6,7 +6,10 @@ from skhep.math.vectors import LorentzVector
 from ROOT import Math
 
 class Particle(VariableManager, DataTypeCheck):
-    def __init__(self):
+    def __init__(self, Type = False):
+        if Type != False:
+            self.Type = "Particle"
+
         VariableManager.__init__(self)
         DataTypeCheck.__init__(self)
         self.pt = self.Type + "_pt"
@@ -19,8 +22,6 @@ class Particle(VariableManager, DataTypeCheck):
         self.ListAttributes()
         self.Decay_init = []
         self.Decay = []
-        self.ParentPDGID = ""
-
     
     def __eq__(self, other):
         return self.__dict__ == other.__dict__
@@ -28,10 +29,29 @@ class Particle(VariableManager, DataTypeCheck):
     def DeltaR(self, P):
         return math.sqrt(math.pow(P.eta-self.eta, 2) + math.pow(P.phi-self.phi, 2)) 
 
+    def EnergyUnits(self, mass, name):
+        setattr(self, name + "_eV", mass * 1000)
+        setattr(self, name + "_MeV", mass)
+        setattr(self, name + "_GeV", mass / 1000)
+
     def CalculateMass(self):
         v = LorentzVector()
         v.setptetaphie(self.pt, self.eta, self.phi, self.e)
-        self.Mass = v.mass
+        self.EnergyUnits(v.mass, "Mass")
+
+    def CalculateMassFromChildren(self):
+        v = self.CalculateVector(self.Decay)
+        v_init = self.CalculateVector(self.Decay_init)
+        self.EnergyUnits(v.mass, "Mass")
+        self.EnergyUnits(v_init.mass, "Mass_init")
+
+    def CalculateVector(self, lists):
+        vec = LorentzVector()
+        for i in lists:
+            v = LorentzVector()
+            v.setptetaphie(i.pt, i.eta, i.phi, i.e)
+            vec += v
+        return vec
 
 class Lepton(Particle):
     def __init__(self):

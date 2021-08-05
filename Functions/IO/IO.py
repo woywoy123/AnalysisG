@@ -1,4 +1,5 @@
 import uproot
+import pickle
 from Functions.IO.Files import Directories
 from Functions.Tools.DataTypes import DataTypeCheck, Threading, TemplateThreading
 from Functions.Tools.Alerting import Notification
@@ -126,3 +127,17 @@ class UpROOT_Reader(Directories, DataTypeCheck):
                 x.Leaves = self.__Leaves
                 x.Branches = self.__Branches
                 self.FileObjects[r] = x   
+
+
+def PickleObject(obj, filename):
+
+    outfile = open(filename, "wb")
+    pickle.dump(obj, outfile)
+    outfile.close()
+
+def UnpickleObject(filename):
+
+    infile = open(filename, "rb")
+    obj = pickle.load(infile)
+    infile.close()
+    return obj

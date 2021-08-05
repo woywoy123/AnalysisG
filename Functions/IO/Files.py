@@ -38,3 +38,18 @@ class Directories(Notification):
         else:
             self.Files[os.path.dirname(self.__Dir)] = [os.path.basename(self.__Dir)]
 
+class WriteDirectory(Notification):
+    def __init__(self):
+        self.__pwd = os.getcwd()
+
+    def MakeDir(self, dir):
+        try:
+            os.mkdir(self.__pwd + "/" + dir)
+        except FileExistsError:
+            pass
+
+    def ChangeDirToRoot(self):
+        os.chdir(self.__pwd)
+    
+    def ChangeDir(self, dir):
+        os.chdir(self.__pwd + "/" + dir)

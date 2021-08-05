@@ -44,6 +44,9 @@ class Event(VariableManager, DataTypeCheck, Debugging):
         self.Muons = {}
         self.Electrons = {}
         self.Anomaly = {}
+        self.Anomaly_TruthMatch = False
+        self.Anomaly_TruthMatch_init = False
+        self.Anomaly_Detector = False
         
         self.BrokenEvent = False
     
@@ -157,6 +160,15 @@ class Event(VariableManager, DataTypeCheck, Debugging):
         
         if len(captured) != len(All_c):
             self.Anomaly[self.CallLoop] = [captured, All_c]
+        
+            if self.CallLoop == "DetectorMatchingEngine":
+                self.Anomaly_Detector = True
+            
+            if self.CallLoop == "TruthMatchingEngine":
+                self.Anomaly_TruthMatch = True
+            
+            if self.CallLoop == "TruthMatchingEngine_init":
+                self.Anomaly_TruthMatch_init = True
 
     def CompileEvent(self):
         self.TruthTops = CompileParticles(self.TruthTops, Top()).Compile() 
@@ -233,15 +245,12 @@ class Event(VariableManager, DataTypeCheck, Debugging):
         
    
 class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
-    def __init__(self, dir, Verbose = True, DebugThresh = -1):
+    def __init__(self, dir, Verbose = True, DebugThresh = -1, Debug = False):
         UpROOT_Reader.__init__(self, dir, Verbose)
         Debugging.__init__(self, Threshold = DebugThresh)
         EventVariables.__init__(self)
         self.Events = {}
-        if DebugThresh > -1:
-            self.__Debug = True
-        else: 
-            self.__Debug = False
+        self.__Debug = Debug
         
     def SpawnEvents(self, Full = False):
 
@@ -266,6 +275,8 @@ class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
             F.ConvertToArray()
 
             self.Events[F.FileName] = []
+            
+            self.Notify("SPAWNING EVENTS IN FILE -> " + f)
             for i in range(len(F.ArrayBranches["nominal/eventNumber"])):
                 pairs = {}
                 for k in Trees:
@@ -282,7 +293,9 @@ class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
                 
                 if self.TimeOut():
                     break 
-    
+            del F
+        self.FileObjects = {}
+
     def CompileEvent(self, SingleThread = False):
         
         def function(Entries):
@@ -293,9 +306,9 @@ class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
   
         self.Caller = "EVENTCOMPILER"
 
-        threads = 6
+        threads = 12
         for f in self.Events:
-            self.Notify("COMPILING FILE -> " + f)
+            self.Notify("COMPILING EVENTS IN FILE -> " + f)
             
             Events = self.Events[f]
             entries_percpu = math.ceil(len(Events) / threads)
@@ -309,10 +322,14 @@ class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
                 Thread.append(TemplateThreading(k, "", "Batches", self.Batches[k], function))
             
             th = Threading(Thread, threads)
+            th.Verbose = True
             if SingleThread:
                 th.TestWorker()
             else:
                 th.StartWorkers()
+
+            self.Notify("FINISHED COMPILING EVENTS IN FILE -> " + f)
+            self.Notify("SORTING INTO DICTIONARY -> " + f)
             res = th.Result
             for i in res:
                 i.SetAttribute(self)
@@ -324,9 +341,10 @@ class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
                     self.Events[f][it] = j
                     it += 1
             
+            del th
             self.Batches = {}
             Thread = []
-        
+
         if len(self.Events) == 1:
             for i in self.Events:
                 self.Events = self.Events[i]

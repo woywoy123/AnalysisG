@@ -1,5 +1,5 @@
 from multiprocessing import Process, Pipe
-import numpy as np
+from Functions.Tools.Alerting import Notification
 
 class DataTypeCheck:
 
@@ -21,19 +21,23 @@ class DataTypeCheck:
                 Out += self.AddToList(dic[i])
         return Out
     
-class Threading:
-    def __init__(self, lists, threads = 32):
+class Threading(Notification):
+    def __init__(self, lists, threads = 100):
         self.__threads = threads
         self.__lists = lists
         self.Result = []
+        Notification.__init__(self)
+        self.Caller = "MULTITHREADING"
 
     def StartWorkers(self):
         
+        self.Notify("STARTING " + str(len(self.__lists)) + " WORKERS")
         Processes = []
         self.Result = []
         
         sub_p = []
         res = []
+        it = 0
         for i in range(len(self.__lists)):
             recv, send = Pipe(False)
             P = Process(target = self.__lists[i].Runner, args=(send,i))
@@ -46,12 +50,16 @@ class Threading:
                 for p in sub_p:
                     re = p.recv()
                     res.append(re)
+                    it += 1
+                    self.Notify("PROGRESS " + str(round(100*float(it) / float(len(self.__lists)), 2)) + "% COMPLETE")       
                 sub_p = []
-        
+
         for p in sub_p:
             re = p.recv()
             res.append(re)
-        
+            it += 1
+            self.Notify("PROGRESS " + str(round(100*float(it) / float(len(self.__lists)), 2)) + "% COMPLETE")       
+
         for i in range(len(self.__lists)):
             for j in res:
                 if i in j:
