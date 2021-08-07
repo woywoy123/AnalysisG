@@ -169,6 +169,33 @@ class Event(VariableManager, DataTypeCheck, Debugging):
             
             if self.CallLoop == "TruthMatchingEngine_init":
                 self.Anomaly_TruthMatch_init = True
+    
+    def CompileSpecificParticles(self, particles = False):
+        if particles == "TruthTops":
+            self.TruthTops = CompileParticles(self.TruthTops, Top()).Compile() 
+
+        if particles == "TruthChildren":
+            self.TruthChildren_init = CompileParticles(self.TruthChildren_init, Truth_Top_Child_Init()).Compile()
+            self.TruthChildren = CompileParticles(self.TruthChildren, Truth_Top_Child()).Compile()
+
+        if particles == "TruthJets":
+            self.TruthJets = CompileParticles(self.TruthJets, TruthJet()).Compile()
+        
+        if particles == "Detector":
+            self.Jets = CompileParticles(self.Jets, Jet()).Compile()
+            self.Muons = CompileParticles(self.Muons, Muon()).Compile()
+            self.Electrons = CompileParticles(self.Electrons, Electron()).Compile()
+
+        self.TruthTops = self.DictToList(self.TruthTops)
+        self.TruthJets = self.DictToList(self.TruthJets)
+        self.Jets = self.DictToList(self.Jets)
+        self.Muons = self.DictToList(self.Muons)
+        self.Electrons = self.DictToList(self.Electrons)
+
+
+
+
+
 
     def CompileEvent(self):
         self.TruthTops = CompileParticles(self.TruthTops, Top()).Compile() 
@@ -296,13 +323,21 @@ class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
             del F
         self.FileObjects = {}
 
-    def CompileEvent(self, SingleThread = False):
+    def CompileEvent(self, SingleThread = False, particle = ""):
         
         def function(Entries):
             for k in Entries:
                 for j in k:
                     k[j].CompileEvent()
             return Entries
+
+        def Loop(Entries):
+            for k in Entries:
+                for j in k:
+                    k[j].CompileSpecificParticles(particle_)
+            return Entries
+
+
   
         self.Caller = "EVENTCOMPILER"
 
@@ -319,8 +354,13 @@ class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
                 self.Batches[k] = [] 
                 for i in Events[k*entries_percpu : (k+1)*entries_percpu]:
                     self.Batches[k].append(i)
-                Thread.append(TemplateThreading(k, "", "Batches", self.Batches[k], function))
-            
+
+                if particle == False:
+                    Thread.append(TemplateThreading(k, "", "Batches", self.Batches[k], function))
+                else: 
+                    particle_ = particle
+                    Thread.append(TemplateThreading(k, "", "Batches", self.Batches[k], Loop))
+
             th = Threading(Thread, threads)
             th.Verbose = True
             if SingleThread:
