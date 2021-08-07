@@ -3,9 +3,9 @@ import uproot
 class Notification():
     def __init__(self, Verbose = False):
         self.Verbose = Verbose
-        self.__INFO = "INFO::"
-        self.__FAIL = "FAILURE::"
-        self.__WARNING = "WARNING::"
+        self.__INFO = "INFO"
+        self.__FAIL = "FAILURE"
+        self.__WARNING = "WARNING"
         self.Caller = ""
         self.Alerted = []
 
