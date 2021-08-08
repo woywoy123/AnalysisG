@@ -24,7 +24,7 @@ class SharedMethods(WriteDirectory, Notification):
         if ".png" not in self.Filename:
             self.PLT.savefig(self.Filename + ".png")
         else: 
-            self.PLT.savefit(self.Filename)
+            self.PLT.savefig(self.Filename)
         self.ChangeDirToRoot()
 
 
