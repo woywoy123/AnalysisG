@@ -19,6 +19,7 @@ class SharedMethods(WriteDirectory, Notification):
             self.MakeDir("Plots/")
             self.ChangeDir("Plots/")
         else:
+            self.MakeDir(dir)
             self.ChangeDir(dir)
         
         if ".png" not in self.Filename:

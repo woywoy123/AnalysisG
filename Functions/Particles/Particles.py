@@ -17,7 +17,12 @@ class Particle(VariableManager, DataTypeCheck):
         self.phi = self.Type + "_phi"
         self.e = self.Type + "_e"
         self.Index = -1
-        self.Signal = -1
+
+        if hasattr(self, "FromRes"):
+            self.Signal = "top_FromRes"
+        else:
+            self.Signal = -1
+
         self.CompileKeyMap()
         self.ListAttributes()
         self.Decay_init = []
@@ -52,6 +57,11 @@ class Particle(VariableManager, DataTypeCheck):
             v.setptetaphie(i.pt, i.eta, i.phi, i.e)
             vec += v
         return vec
+    
+    def PropagateSignalLabel(self):
+        for i in self.Decay:
+            i.Signal = self.Signal
+            i.PropagateSignalLabel()
 
 class Lepton(Particle):
     def __init__(self):

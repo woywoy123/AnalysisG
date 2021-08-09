@@ -59,10 +59,7 @@ def Comparison(dir, Tree, Branch, Events,Spawned):
             
             if Branch in top.KeyMap:
                 Compare = Ev.TruthTops[x].GetAttributeFromKeyMap(Branch)
-            
 
-
-          
             try:
                 float(f[x])
                 listed = False
@@ -78,13 +75,13 @@ def Comparison(dir, Tree, Branch, Events,Spawned):
             if listed == True:
                 for k in range(len(f[x])):
                     if Branch in child.KeyMap:
-                        Compare = Ev.TruthChildren[x][k].GetAttributeFromKeyMap(Branch)
+                        Compare = Ev.TruthChildren[x + k].GetAttributeFromKeyMap(Branch)
                     
                     if Branch in child_init.KeyMap:
-                        Compare = Ev.TruthChildren_init[x][k].GetAttributeFromKeyMap(Branch)
+                        Compare = Ev.TruthChildren_init[x + k].GetAttributeFromKeyMap(Branch)
 
                     if Compare != f[x][k]:
-                        print("FAILURE::" + Branch + " " + Tree + " " + str(x) + " " + str(k) + " " + Compare)
+                        print("FAILURE::" + Branch + " " + Tree + " " + str(x) + " " + str(k) + " " + str(Compare))
                         assert Compare == f[x][k]
                     comp = True
 
@@ -197,10 +194,10 @@ def TestParticleAssignment():
     Comparison(dir, "nominal", "top_FromRes", Events, x.Events)
     
     #Child 
-    Comparison(dir, "nominal", "truth_top_child_pt", Events, x.Events)
+    Comparison(dir, "nominal", "truth_top_child_pt", Events, x.Events)# <--- Need to fix test case
     Comparison(dir, "nominal", "truth_top_child_e", Events, x.Events)
     Comparison(dir, "nominal", "truth_top_child_phi", Events, x.Events)
-    Comparison(dir, "nominal", "truth_top_child_eta", Events, x.Events)
+    Comparison(dir, "nominal", "truth_top_child_eta", Events, x.Events) 
     Comparison(dir, "nominal", "truth_top_child_pdgid", Events, x.Events)
 
     #Child  init

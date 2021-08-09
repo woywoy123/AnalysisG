@@ -173,29 +173,36 @@ class Event(VariableManager, DataTypeCheck, Debugging):
     def CompileSpecificParticles(self, particles = False):
         if particles == "TruthTops":
             self.TruthTops = CompileParticles(self.TruthTops, Top()).Compile() 
+            self.TruthTops = self.DictToList(self.TruthTops)
 
         if particles == "TruthChildren":
-            self.TruthChildren_init = CompileParticles(self.TruthChildren_init, Truth_Top_Child_Init()).Compile()
+            self.TruthTops = CompileParticles(self.TruthTops, Top()).Compile() 
             self.TruthChildren = CompileParticles(self.TruthChildren, Truth_Top_Child()).Compile()
+            self.TruthChildren_init = CompileParticles(self.TruthChildren_init, Truth_Top_Child_Init()).Compile()
+        
+            for i in self.TruthTops:
+                self.TruthTops[i][0].Decay_init = self.TruthChildren_init[i]
+                self.TruthTops[i][0].Decay = self.TruthChildren[i]
+            
+            self.TruthChildren = self.DictToList(self.TruthChildren)
+            self.TruthChildren_init = self.DictToList(self.TruthChildren_init)
+            self.TruthTops = self.DictToList(self.TruthTops)
+            for i in self.TruthTops:
+                i.PropagateSignalLabel()
+
 
         if particles == "TruthJets":
             self.TruthJets = CompileParticles(self.TruthJets, TruthJet()).Compile()
+            self.TruthJets = self.DictToList(self.TruthJets)
         
         if particles == "Detector":
             self.Jets = CompileParticles(self.Jets, Jet()).Compile()
             self.Muons = CompileParticles(self.Muons, Muon()).Compile()
             self.Electrons = CompileParticles(self.Electrons, Electron()).Compile()
-
-        self.TruthTops = self.DictToList(self.TruthTops)
-        self.TruthJets = self.DictToList(self.TruthJets)
-        self.Jets = self.DictToList(self.Jets)
-        self.Muons = self.DictToList(self.Muons)
-        self.Electrons = self.DictToList(self.Electrons)
-
-
-
-
-
+            
+            self.Jets = self.DictToList(self.Jets)
+            self.Muons = self.DictToList(self.Muons)
+            self.Electrons = self.DictToList(self.Electrons)
 
     def CompileEvent(self):
         self.TruthTops = CompileParticles(self.TruthTops, Top()).Compile() 
@@ -224,13 +231,17 @@ class Event(VariableManager, DataTypeCheck, Debugging):
         self.__init = False
         self.TruthMatchingEngine()
 
-
         self.TruthTops = self.DictToList(self.TruthTops)
+        self.TruthChildren = self.DictToList(self.TruthChildren)
+        self.TruthChildren_init = self.DictToList(self.TruthChildren_init)
+
         self.TruthJets = self.DictToList(self.TruthJets)
         self.Jets = self.DictToList(self.Jets)
         self.Muons = self.DictToList(self.Muons)
         self.Electrons = self.DictToList(self.Electrons)
-
+        
+        for i in self.TruthTops:
+            i.PropagateSignalLabel()
 
     def DetectorMatchingEngine(self):
         DetectorParticles = []
@@ -268,7 +279,6 @@ class Event(VariableManager, DataTypeCheck, Debugging):
             self.DebugTruthDetectorMatch(All)
         else:
             self.DeltaRLoop() 
-
         
    
 class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
@@ -323,7 +333,7 @@ class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
             del F
         self.FileObjects = {}
 
-    def CompileEvent(self, SingleThread = False, particle = ""):
+    def CompileEvent(self, SingleThread = False, particle = False):
         
         def function(Entries):
             for k in Entries:
