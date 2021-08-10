@@ -27,6 +27,7 @@ class SharedMethods(WriteDirectory, Notification):
         else: 
             self.PLT.savefig(self.Filename)
         self.ChangeDirToRoot()
+        self.PLT.close("all")
 
 
 class TH1F(SharedMethods):

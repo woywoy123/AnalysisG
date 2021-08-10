@@ -4,7 +4,7 @@ from Functions.GNN.GNN import GNN_Model
 from Functions.GNN.Graphs import CreateEventGraph, GenerateDataLoader
 from Functions.Plotting.Graphs import GraphPainter
 
-cache = False
+cache = True
 events = 100
 dir = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/user.pgadow.24765302._000001.output.root"
 
@@ -64,6 +64,7 @@ def TestGraphObjects():
     # Now create the truth graph of the above 
     ETG = CreateEventGraph(tops)
     ETG.NodeAttributes = ["Signal"]
+    ETG.CreateParticleNodes()
     ETG.CreateParticlesEdgesAll() 
     ETG.CalculateNodeMultiplication()
     D = EG.ConvertToData()

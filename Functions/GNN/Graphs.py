@@ -35,9 +35,7 @@ class CreateEventGraph:
         for i in self.Edges:
             i_e = i[0]
             i_j = i[1]
-
             self.G[i_e][i_j]["weight"] = self.DefaultEdgeWeight
-
     
     def CalculateEdgeAttributes(self, fx):
         

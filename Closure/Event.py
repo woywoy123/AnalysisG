@@ -42,7 +42,8 @@ def Comparison(dir, Tree, Branch, Events,Spawned):
                     assert Compare == f
 
             continue
- 
+        
+        it = 0
         for x in range(len(f)):
             Compare = ""
             if Branch in el.KeyMap:
@@ -75,11 +76,11 @@ def Comparison(dir, Tree, Branch, Events,Spawned):
             if listed == True:
                 for k in range(len(f[x])):
                     if Branch in child.KeyMap:
-                        Compare = Ev.TruthChildren[x + k].GetAttributeFromKeyMap(Branch)
-                    
+                        Compare = Ev.TruthChildren[it].GetAttributeFromKeyMap(Branch)
+                        it += 1
                     if Branch in child_init.KeyMap:
-                        Compare = Ev.TruthChildren_init[x + k].GetAttributeFromKeyMap(Branch)
-
+                        Compare = Ev.TruthChildren_init[it].GetAttributeFromKeyMap(Branch)
+                        it += 1
                     if Compare != f[x][k]:
                         print("FAILURE::" + Branch + " " + Tree + " " + str(x) + " " + str(k) + " " + str(Compare))
                         assert Compare == f[x][k]

@@ -24,3 +24,4 @@ class GraphPainter(SharedMethods):
         labels = nx.get_edge_attributes(self.G, self.DrawAttribute)
         nx.draw_networkx_edge_labels(self.G, pos, edge_labels= labels, label_pos = 0.75, font_color="red")
         self.SaveFigure(dir)
+        self.PLT.close()
