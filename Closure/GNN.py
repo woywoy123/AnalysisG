@@ -1,10 +1,10 @@
 from Functions.Event.Event import EventGenerator
 from Functions.IO.IO import PickleObject, UnpickleObject
-from Functions.GNN.GNN import GNN_Model
+from Functions.GNN.GNN import Optimizer
 from Functions.GNN.Graphs import CreateEventGraph, GenerateDataLoader
 from Functions.Plotting.Graphs import GraphPainter
 
-cache = True
+cache = False
 events = 100
 dir = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/user.pgadow.24765302._000001.output.root"
 
@@ -103,6 +103,16 @@ def TestDataImport(Compiler = "TruthTops"):
 # Closure test for the GNN being implemented in this codebase
 def TestSimple4TopGNN():
     
-    ev = UnpickleObject("ONLYTOPS")
-   
+    if cache == True:
+        Generate_Cache()
+    ev = UnpickleObject("TruthTops")
+    L = GenerateDataLoader(ev)
+    L.NodeAttributes = {"Signal" : "Multi"}
+    L.TorchDataLoader()
+    
+    Op = Optimizer()
+    Op.DataLoader = L.DataLoader
+    Op.DefineEdgeConv(1, 2)
+    Op.EpochLoop()
+    
 

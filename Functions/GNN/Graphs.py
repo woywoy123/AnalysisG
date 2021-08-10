@@ -2,6 +2,7 @@ import networkx as nx
 from torch_geometric.utils.convert import from_networkx
 from torch_geometric.data import Data, DataLoader
 from Functions.Event.Event import EventGenerator, Event
+import torch
 
 class CreateEventGraph:
 
@@ -46,17 +47,23 @@ class CreateEventGraph:
                 for k in self.Nodes:
                     if k == n and self.ExcludeSelfLoops:
                         continue
-                    
-                    self.G[n][k][d_label] = fx(self.Event[k], self.Event[n], attr)
-
+                    self.G[n][k][d_label] = [fx(self.Event[k], self.Event[n], attr)]
             self.EdgeAttributes.append(d_label)
 
+    def CalculateNodeAttributes(self):
+        for i in self.NodeAttributes:
+            l = {}
+            for n in self.Nodes:
+                l[n] = [torch.tensor(getattr(self.Event[n], i), dtype = torch.float)]
+            nx.set_node_attributes(self.G, l, name = i)
+    
     def CalculateNodeDifference(self):
         def fx(a, b, attr):
             a = getattr(a, attr)
             b = getattr(b, attr)
             return a-b
         self.CalculateEdgeAttributes(fx)
+        self.CalculateNodeAttributes()
     
     def CalculateNodeMultiplication(self):
         def fx(a, b, attr):
@@ -64,11 +71,13 @@ class CreateEventGraph:
             b = getattr(b, attr)
             return a*b        
         self.CalculateEdgeAttributes(fx)
-
+        self.CalculateNodeAttributes()
+    
     def CalculateParticledR(self):
         def fx(a, b, attr):
             return a.DeltaR(b)
         self.CalculateEdgeAttributes(fx)
+        self.CalculateNodeAttributes()
 
     def CalculateNodeMultiplicationIndex(self):
         def fx(a, b, attr):
@@ -77,6 +86,7 @@ class CreateEventGraph:
                 res = -99
             return res
         self.CalculateEdgeAttributes(fx)
+        self.CalculateNodeAttributes()
 
     def CalculationProxy(self, Dict):
         for i in Dict:
@@ -92,6 +102,8 @@ class CreateEventGraph:
 
             if Dict[i] == "dR":
                 self.CalculateParticledR()
+            if Dict[i] == "":
+                self.CalculateNodeAttributes()
 
     def ConvertToData(self):
         # Need to figure out why I cant edit input attributes as described here: 
@@ -107,7 +119,7 @@ class GenerateDataLoader:
         self.NodeAttributes = {}
         self.DataLoader = None
         self.TruthLoader = None
-        self.DefaultBatchSize = 32
+        self.DefaultBatchSize = 1
 
     def GetEventParticles(self, Ev, Branch):
         out = {}
@@ -172,23 +184,20 @@ class GenerateDataLoader:
                 self.Loader.append(self.CreateEventData(obj))   
                 self.TruthLoader.append(self.CreateEventTruth(obj)) 
 
-
             # Get truth tops
             elif self.GetEventParticles(e, "TruthTops") != False:
                 obj = e.TruthTops
                 self.Loader.append(self.CreateEventData(obj))   
                 self.TruthLoader.append(self.CreateEventTopTruth(obj)) 
- 
-
-           
-            break
-
+            
         if len(self.Loader) != 0:
+            l = []
             for i in self.Loader:
-                i.ConvertToData()
-            self.DataLoader = DataLoader(self.Loader, batch_size = self.DefaultBatchSize)
+                l.append(i.ConvertToData())
+            self.DataLoader = DataLoader(l, batch_size = self.DefaultBatchSize)
         if len(self.TruthLoader) != 0:
+            l = []
             for i in self.TruthLoader:
-                i.ConvertToData()
-            self.DataTruthLoader = DataLoader(self.TruthLoader, batch_size = self.DefaultBatchSize)
+                l.append(i.ConvertToData())
+            self.DataTruthLoader = DataLoader(l, batch_size = self.DefaultBatchSize)
 
