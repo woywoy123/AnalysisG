@@ -1,3 +1,4 @@
+from Functions.GNN.Metrics import EvaluationMetrics
 import torch 
 from torch_geometric.nn import GCNConv
 import torch.nn.functional as F
@@ -30,59 +31,44 @@ class Optimizer:
         self.Optimizer = ""
         self.Model = ""
         self.DataLoader = ""
-        self.Epochs = 10
-        self.Device = torch.device("cpu")
+        self.Epochs = 100
+        self.Device = torch.device("cuda")
         self.LearningRate = 0.01
-        self.WeightDecay = 1e-4
+        self.WeightDecay = 1e-6
     
     def Repeat(self):
 
         self.Model.train()
         self.Optimizer.zero_grad()
         Loss = torch.nn.CrossEntropyLoss()
+        x = self.Model(self.data.x, self.data.edge_index) 
 
-        edge_atr = []
-        for i in self.data.d_Signal:
-            edge_atr.append([float(i)])
-        
-        node_f = []
-        for i in self.data.Signal:
-            node_f.append([int(i)])
-        
-        node_f = torch.tensor(node_f, dtype= torch.float)
-        edge_atr = torch.tensor(edge_atr, dtype = torch.float)
-        
-
-        y = torch.tensor(self.data.Signal.T[0], dtype = torch.long)
-        
-        self.data.mask = torch.tensor([1, 1, 1, 1], dtype = torch.bool)
-
-        x = self.Model(self.data.Signal, self.data.edge_index) 
-
-        self.L = Loss(x[self.data.mask], y[self.data.mask])
+        self.L = Loss(x[self.data.mask], self.data.y[self.data.mask])
         self.L.backward()
         self.Optimizer.step()
 
 
-        _, y_p = self.Model(self.data.Signal, self.data.edge_index).max(dim = 1)
-        
-        print(y_p, y)
-
-
-
     def EpochLoop(self):
+        
+        Met = EvaluationMetrics()
 
+        #self.DataLoader.shuffle = True
         for epoch in range(self.Epochs):
             for data in self.DataLoader:
-                print(data)
-                self.data = data#.to_data_list()[0]
+                data.to(self.Device)
+                self.data = data
                 self.Repeat()
-                print(self.L)
-                #break
+            
+            print(round(float(self.L), 5), Met.Accuracy(self.Prediction(data.x, 1), data.y))
+
+    def Prediction(self, in_channel, output_dim):
+        _, y_p = self.Model(in_channel, self.data.edge_index).max(dim = output_dim)
+        return y_p
 
 
     def DefineEdgeConv(self, in_channels, out_channels):
         self.Model = EdgeConv(in_channels, out_channels)
+        self.Model.to(self.Device)
         self.Model.train()
         self.Optimizer = torch.optim.Adam(self.Model.parameters(), lr = self.LearningRate, weight_decay = self.WeightDecay)
         

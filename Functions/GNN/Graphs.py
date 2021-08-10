@@ -19,7 +19,6 @@ class CreateEventGraph:
         self.Nodes = []
         for i in range(len(self.Event)):
             self.Nodes.append(i)
-        
         self.G.add_nodes_from(self.Nodes)
 
     def CreateParticlesEdgesAll(self):
@@ -83,7 +82,7 @@ class CreateEventGraph:
         def fx(a, b, attr):
             res = a.Index
             if a.Index != b.Index:
-                res = -99
+                res = -1
             return res
         self.CalculateEdgeAttributes(fx)
         self.CalculateNodeAttributes()
@@ -102,6 +101,7 @@ class CreateEventGraph:
 
             if Dict[i] == "dR":
                 self.CalculateParticledR()
+            
             if Dict[i] == "":
                 self.CalculateNodeAttributes()
 
@@ -116,19 +116,19 @@ class GenerateDataLoader:
         if isinstance(Bundle, EventGenerator):
             self.__Events = Bundle.Events
         self.ExcludeAnomalies = False
+        
         self.NodeAttributes = {}
+        self.TruthAttribute = {}
+
         self.DataLoader = None
-        self.TruthLoader = None
-        self.DefaultBatchSize = 1
+        self.DefaultBatchSize = 20
 
     def GetEventParticles(self, Ev, Branch):
         out = {}
         if hasattr(Ev, Branch):
             out = getattr(Ev, Branch)
-
         if isinstance(out, dict):
             return False
-
         return out
 
     def CreateEventData(self, Event):
@@ -136,24 +136,33 @@ class GenerateDataLoader:
         ED.CreateParticleNodes()
         ED.CreateParticlesEdgesAll() 
         ED.CalculationProxy(self.NodeAttributes)
+        ED = ED.ConvertToData()
+        
+        Node_Merge = []
+        Edge_Merge = []
+        for i in self.NodeAttributes:
+            if hasattr(ED, i):
+                Node_Merge.append(getattr(ED,i).T[0])
+            if hasattr(ED, "d_"+i):
+                Edge_Merge.append(getattr(ED, "d_"+i).T[0])
+        
+        if len(Node_Merge) != 0:
+            ten = torch.stack(Node_Merge)
+            setattr(ED, "x", ten.T)
+        if len(Edge_Merge) != 0:
+            ten = torch.stack(Edge_Merge)
+            setattr(ED, "edge_attr", ten)
         return ED
-
-    def CreateEventTopTruth(self, Event):
-        ED = CreateEventGraph(Event)
-        ED.CreateParticleNodes()
-        ED.CreateParticlesEdgesAll() 
-        ED.CalculationProxy({"Signal" : "Multi"})
-        return ED 
-
-    def CreateEventTruth(self, Event):
-        ED = CreateEventGraph(Event)
-        ED.CreateParticleNodes()
-        ED.CreateParticlesEdgesAll()
-        ED.CalculationProxy({"Signal": "MultiIndex"})
-        for i in ED.G.edges:
-            if ED.G[i[0]][i[1]]["d_Signal"] == -99:
-                ED.G.remove_edge(i[0], i[1])
-        return ED
+    
+    def AssignTruthLabel(self, Event):
+        ET = CreateEventGraph(Event)
+        ET.CreateParticleNodes()
+        ET.CreateParticlesEdgesAll()
+        ET.CalculationProxy(self.TruthAttribute)
+        D = ET.ConvertToData()
+        for i in self.TruthAttribute:
+            at = getattr(D, i)
+            return at.T[0].long()
 
     def TorchDataLoader(self, branch = "nominal"):
         self.Loader = []
@@ -169,35 +178,27 @@ class GenerateDataLoader:
             if self.ExcludeAnomalies == "Detector" and self.Anomaly_Detector:
                 continue
             
+            obj = []
             # Means this is the truth matched detector stuff 
             if hasattr(e, "CallLoop"):
-                All = []
-                All += e.Muons
-                All += e.Electrons
-                All += e.Jets
-                self.Loader.append(self.CreateEventData(All))   
-                self.TruthLoader.append(self.CreateEventTruth(All)) 
+                obj += e.Muons
+                obj += e.Electrons
+                obj += e.Jets
  
             # Get truth Children
             elif self.GetEventParticles(e, "TruthChildren") != False:
                 obj = e.TruthChildren
-                self.Loader.append(self.CreateEventData(obj))   
-                self.TruthLoader.append(self.CreateEventTruth(obj)) 
 
             # Get truth tops
             elif self.GetEventParticles(e, "TruthTops") != False:
                 obj = e.TruthTops
-                self.Loader.append(self.CreateEventData(obj))   
-                self.TruthLoader.append(self.CreateEventTopTruth(obj)) 
+            
+            data = self.CreateEventData(obj)
+            data.y = self.AssignTruthLabel(obj)
+            data.mask = torch.ones(data.y.shape, dtype = torch.bool)
+            self.Loader.append(data)
+            data.to(torch.device("cuda"))
             
         if len(self.Loader) != 0:
-            l = []
-            for i in self.Loader:
-                l.append(i.ConvertToData())
-            self.DataLoader = DataLoader(l, batch_size = self.DefaultBatchSize)
-        if len(self.TruthLoader) != 0:
-            l = []
-            for i in self.TruthLoader:
-                l.append(i.ConvertToData())
-            self.DataTruthLoader = DataLoader(l, batch_size = self.DefaultBatchSize)
+            self.DataLoader = DataLoader(self.Loader, batch_size = self.DefaultBatchSize)
 

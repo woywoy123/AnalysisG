@@ -5,7 +5,7 @@ from Functions.GNN.Graphs import CreateEventGraph, GenerateDataLoader
 from Functions.Plotting.Graphs import GraphPainter
 
 cache = False
-events = 100
+events = -1
 dir = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/user.pgadow.24765302._000001.output.root"
 
 def Generate_Cache():
@@ -90,16 +90,6 @@ def TestDataImport(Compiler = "TruthTops"):
         GD.DrawAttribute = i
         GD.DrawAndSave("Plots/GraphDataImportTest/")
 
-
-    DataFirst = EV.TruthLoader[0]
-    DataFirstEdgeAttr = DataFirst.EdgeAttributes
-    GD = GraphPainter(DataFirst)
-    for i in DataFirstEdgeAttr:
-        GD.Title = Compiler + "->FirstEventGraphTruth: " + i
-        GD.DrawAttribute = i
-        GD.DrawAndSave("Plots/GraphDataImportTest/")
-
-
 # Closure test for the GNN being implemented in this codebase
 def TestSimple4TopGNN():
     
@@ -108,6 +98,7 @@ def TestSimple4TopGNN():
     ev = UnpickleObject("TruthTops")
     L = GenerateDataLoader(ev)
     L.NodeAttributes = {"Signal" : "Multi"}
+    L.TruthAttribute = {"Signal" : ""}
     L.TorchDataLoader()
     
     Op = Optimizer()
@@ -115,4 +106,20 @@ def TestSimple4TopGNN():
     Op.DefineEdgeConv(1, 2)
     Op.EpochLoop()
     
-
+def TestComplex4TopGNN():
+    
+    if cache == True:
+        Generate_Cache()
+    ev = UnpickleObject("TruthTops")
+    L = GenerateDataLoader(ev)
+    L.DefaultBatchSize = 20000
+    L.NodeAttributes = {"pt" : "", "eta" : "", "phi" : ""}
+    L.TruthAttribute = {"Signal" : ""}
+    L.TorchDataLoader()
+    
+    Op = Optimizer()
+    Op.Epochs = 100
+    Op.DataLoader = L.DataLoader
+    Op.DefineEdgeConv(3, 24)
+    Op.EpochLoop()
+    
