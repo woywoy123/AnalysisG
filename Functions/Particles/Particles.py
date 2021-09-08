@@ -3,7 +3,6 @@ from Functions.Tools.DataTypes import DataTypeCheck
 import copy
 import math
 from skhep.math.vectors import LorentzVector
-from ROOT import Math
 
 class Particle(VariableManager, DataTypeCheck):
     def __init__(self, Type = False):
