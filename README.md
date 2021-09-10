@@ -1,21 +1,29 @@
 # Analysis Package for the FOURTOPS Analysis
-## Introduction 
+
+## Table of Contents
+1. [Introduction](#introduction)
+2. [Folder Directory](#FolderDir)
+3. [Python Files](#FileDir)
+4. [Functions and Classes](#FunctionClasses)
+  1. [Closure - Event.py](#ClosureEvent)
+
+## Introduction <a name="introduction"></a>
 This package is dedicated for a future iteration of the *Four Tops* analysis using *Graph Neural Networks*. The package expects ROOT files, that are derived from skimmed down TOPQ DOADs, using the **BSM4topsNtuples** package (https://gitlab.cern.ch/hqt-bsm-4tops/bsm4topsntuples). In this framework, particle objects are converted into python particle object, that are then converted into a graph data structure and subsequently converted into the **DataLoader** framework, supported by *PyTorch-Geometric*. PyTorch-Geometric is a codebase, that uses the PyTorch framework as a foundation to provide an intuitive interface to construct models, which can be applied to non euclidean data structures. 
 
-## Folder Structure 
+## Folder Structure <a name="FolderDir"></a>
 The codebase has the following folder structure:
 - Closure : Used for testing and validating the individual functions associated with the framework.
 - Functions : Container used to hold sub-functions and classes 
-...- Event : Contains classes involving event generation. It reads in ROOT files and converts event objects into particles objects constituting an event 
-...- GNN : Contains classes and functions relating to Graph Neural Networks. Classes include; Basic training Optimizer, GNN Model, Events to Graph, Graphs to native PyG DataLoader and Performance metrics. 
-...- IO : Reads / Writes directories and does all the UpROOT reading including NUMPY conversion. 
-...- Particles : Definition of particles using a generic particle object that is inherited by other particle types; Jets, Leptons, Truth, etc. 
-...- Plotting : Simple plotting functions for Graphs and diagnostics histograms. 
-...- Tools : Some repetitive functions that are found to be useful throughout the code. 
+   - Event : Contains classes involving event generation. It reads in ROOT files and converts event objects into particles objects constituting an event 
+   - GNN : Contains classes and functions relating to Graph Neural Networks. Classes include; Basic training Optimizer, GNN Model, Events to Graph, Graphs to native PyG DataLoader and Performance metrics. 
+   - IO : Reads / Writes directories and does all the UpROOT reading including NUMPY conversion. 
+   - Particles : Definition of particles using a generic particle object that is inherited by other particle types; Jets, Leptons, Truth, etc. 
+   - Plotting : Simple plotting functions for Graphs and diagnostics histograms. 
+   - Tools : Some repetitive functions that are found to be useful throughout the code. 
 - Plots : Container that holds plots used for diagnostics or future histograms used for presentations 
 - logs : Debugging or other interesting output. 
 
-## Python File Index
+## Python File Index<a name="FileDir"></a>
 - Closure 
    - Event.py
    - GNN.py
@@ -57,11 +65,10 @@ The codebase has the following folder structure:
       - DataTypes.py
       - Variables.py
 
-## Python Functions and Classes
+## Python Functions and Classes<a name="FunctionClasses"></a>
 This section will be dedicated to give a brief description of what functions are in which files and how they are interfaced. 
 
-###  Event.py
-
+###  Closure - Event.py<a name="ClosureEvent"></a>
 ___
 
 ```python 
