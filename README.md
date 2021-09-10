@@ -17,45 +17,45 @@ The codebase has the following folder structure:
 
 ## Python File Index
 - Closure 
-...- Event.py
-...- GNN.py
-...- IO.py
-...- Plotting.py
+   - Event.py
+   - GNN.py
+   - IO.py
+   - Plotting.py
 - Functions
-...- Event
-......- Event.py
-...- GNN
-......- GNN.py
-......- Graphs.py
-......- Metrics.py
-...- IO
-......- Files.py
-......- IO.py
-...- Particles
-......- Particles.py
-...- Plotting 
-......- Graphs.py
-......- Histograms.py
-...- Tools
-......- Alerting.py
-......- DataTypes.py
-......- Variables.py
-...- GNN
-......- GNN.py
-......- Graphs.py
-......- Metrics.py
-...- IO
-......- Files.py
-......- IO.py
-...- Particles
-......- Particles.py
-...- Plotting 
-......- Graphs.py
-......- Histograms.py
-...- Tools
-......- Alerting.py
-......- DataTypes.py
-......- Variables.py
+   - Event
+      - Event.py
+   - GNN
+      - GNN.py
+      - Graphs.py
+      - Metrics.py
+   - IO
+      - Files.py
+      - IO.py
+   - Particles
+      - Particles.py
+   - Plotting 
+      - Graphs.py
+      - Histograms.py
+    - Tools
+      - Alerting.py
+      - DataTypes.py
+      - Variables.py
+   - GNN
+      - GNN.py
+      - Graphs.py
+      - Metrics.py
+   - IO
+      - Files.py
+      - IO.py
+   - Particles
+      - Particles.py
+   - Plotting 
+      - Graphs.py
+      - Histograms.py
+   - Tools
+      - Alerting.py
+      - DataTypes.py
+      - Variables.py
 
 ## Python Functions and Classes
 This section will be dedicated to give a brief description of what functions are in which files and how they are interfaced. 
@@ -72,7 +72,9 @@ This function uses the default UpRoot IO interface to open an arbitrary file dir
 
 #### Input: 
 `dir`: Directory pointing to a ROOT file
+
 `Tree`: Tree in ROOT file 
+
 `Branch`: Branch in ROOT file
 
 #### Returns:
@@ -87,9 +89,13 @@ This function ensures that the events and the particle floats of the ROOT file a
 
 #### Input:
 `dir`: Directory pointing to a ROOT file
+
 `Tree`: Tree in ROOT
+
 `Branch`: Branch in ROOT
+
 `Events`: Events to test. If `-1` then all events are tested. 
+
 `Spawned`: Requires an `EventGenerator` instance to be spawned with the same ROOT file. 
 
 #### Returns:
