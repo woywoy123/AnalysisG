@@ -32,11 +32,14 @@ class Optimizer:
         self.Model = ""
         self.DataLoader = ""
         self.Epochs = 100
-        self.Device = torch.device("cuda")
         self.LearningRate = 0.01
         self.WeightDecay = 1e-6
-    
-    def Repeat(self):
+        if torch.cuda.is_available():
+            self.Device = torch.device("cuda")
+        else:
+            self.Device = torch.device("cpu")
+   
+    def Learning(self):
 
         self.Model.train()
         self.Optimizer.zero_grad()
@@ -47,24 +50,21 @@ class Optimizer:
         self.L.backward()
         self.Optimizer.step()
 
-
     def EpochLoop(self):
-        
         Met = EvaluationMetrics()
 
-        #self.DataLoader.shuffle = True
+        self.DataLoader.shuffle = True
         for epoch in range(self.Epochs):
             for data in self.DataLoader:
                 data.to(self.Device)
                 self.data = data
-                self.Repeat()
+                self.Learning()
             
             print(round(float(self.L), 5), Met.Accuracy(self.Prediction(data.x, 1), data.y))
 
     def Prediction(self, in_channel, output_dim):
         _, y_p = self.Model(in_channel, self.data.edge_index).max(dim = output_dim)
         return y_p
-
 
     def DefineEdgeConv(self, in_channels, out_channels):
         self.Model = EdgeConv(in_channels, out_channels)

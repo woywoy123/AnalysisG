@@ -117,6 +117,11 @@ class GenerateDataLoader:
             self.__Events = Bundle.Events
         self.ExcludeAnomalies = False
         
+        if torch.cuda.is_available():
+            self.Device = torch.device("cuda")
+        else:
+            self.Device = torch.device("cpu")
+
         self.NodeAttributes = {}
         self.TruthAttribute = {}
 
@@ -197,7 +202,7 @@ class GenerateDataLoader:
             data.y = self.AssignTruthLabel(obj)
             data.mask = torch.ones(data.y.shape, dtype = torch.bool)
             self.Loader.append(data)
-            data.to(torch.device("cuda"))
+            data.to(self.Device)
             
         if len(self.Loader) != 0:
             self.DataLoader = DataLoader(self.Loader, batch_size = self.DefaultBatchSize)
