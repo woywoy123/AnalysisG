@@ -69,6 +69,7 @@ The codebase has the following folder structure:
 This section will be dedicated to give a brief description of what functions are in which files and how they are interfaced. 
 
 ###  Closure - Event.py<a name="ClosureEvent"></a>
+The functions listed below are all part of a closure surrounding the EventGenerator class, that converts ROOT files into Python Objects. 
 ___
 
 ```python 
@@ -134,5 +135,25 @@ None
 #### Output:
 None 
 
+### Closure - GNN.py<a name="ClosureGNN"></a>
+The functions in this python script test anything involving Graph Neural Networks. It basically tests the interoperability between the `EventGenerator` and the PyG `DataLoader` frameworks. This is demonstrated with feature creation of edges and nodes, along with a simple training example. 
+___
+```python
+Generate_Cache()
+```
 
+#### Description:
+Generates a pickle representation of the `EventGenerator` to avoid unnecessary event recompilation. The generated file can be read by the pickle framework and returns the cached object for latent use.
 
+#### Input:
+None 
+
+#### Output:
+None - But drops files: `TruthTops` , `TruthChildren`, `TruthJets`, `Detector`, `Complete`
+
+```python
+TestGraphObjects()
+```
+
+#### Description:
+... continue here ...
