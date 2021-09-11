@@ -275,48 +275,48 @@ class EventVariables
 A class that is inherited by `EventGenerator` to define all needed branches and trees to enable events to be compiled appropriately. It does not serve any functional purpose, except for being a convenient way to do book keeping of variables.
 
 #### Attributes:
-`MinimalTree` : A list that contains the default `nominal` tree to read from ROOT files. Can be expanded later to include systematic `branches`. 
-`MinimalBranch` : A list of all `branches`, that are expected to be contained in the ROOT files.
+- `MinimalTree` : A list that contains the default `nominal` tree to read from ROOT files. Can be expanded later to include systematic `branches`. 
+- `MinimalBranch` : A list of all `branches`, that are expected to be contained in the ROOT files.
 
 ```python
 class Event(VariableManager, DataTypeCheck, Debugging)
 ```
 
 #### Init Input:
-`Debug = False` : (optional) A placeholder for analysing any issues associated with truth particle matching or any other problems in the code. 
+- `Debug = False` : (optional) A placeholder for analysing any issues associated with truth particle matching or any other problems in the code. 
 
 #### Inheritance:
-`VariableManager`: A class, which assigns string based variables associated with a `branch` to a value. 
-`DataTypeCheck`: A class, which keeps data structures consistent. 
-`Debugging`: A class, which contains tools that are quite useful for debugging purposes and don't need to be rewritten multiple times in the codebase.
+- `VariableManager`: A class, which assigns string based variables associated with a `branch` to a value. 
+- `DataTypeCheck`: A class, which keeps data structures consistent. 
+- `Debugging`: A class, which contains tools that are quite useful for debugging purposes and don't need to be rewritten multiple times in the codebase.
 
 #### Standard Output Attributes:
-`runNumber`: A default string value, that is later converted to an integer by the `VariableManager`.
-`eventNumber`: Same as above, but indicating the event number found in the ROOT file. 
-`mu`: Same as above, but represents the pile-up condition of the event. 
-`met`: Same as above, but represents the missing transverse momentum.
-`phi`: Same as above, but represent the azimuthal angle of, that the missing transverse momentum is pointing to in the detector's reference frame. 
-`mu_actual`: Same as above, but represents the truth pile-up condition of the event. 
-`Type` : A string field indicating, that it is an `Event` object 
-`iter`: An integer value, that is later modified to indicate the index of the ROOT file. This is used for bookkeeping purposes. 
-`Tree`: The `Tree` string used to fill the `Event` object. It was left as a placeholder for future systematics. 
-`TruthTops`: A dictionary containing the truth tops as particle objects.
-`TruthChildren_init`: A dictionary containing the children of the top particles, but inheriting the kinematic values associated with pre-gluon emission. 
-`TruthChildren`: A dictionary containing the children of the top particles, but inheriting the kinematic values associated with post-gluon emission. 
-`TruthJets`: A dictionary containing the truth jets in the event. 
-`Jets`: A dictionary containing the jets that were measured by the detector.
-`Muons`: A dictionary containing the muons that were measured by the detector.
-`Electrons`: A dictionary containing the electrons that were measured by the detector.
-`Anomaly`: A dictionary containing anomalous particle objects, that did not match properly to truth particles or truth children. 
-`Anomaly_TruthMatch`: Truth objects (jets), that were not well matched to the `TruthChildren` particle objects. 
-`Anomaly_TruthMatch_init`: Truth objects (jets), that were not well matched to the `TruthChildren_init` particle objects. 
-`Anomaly_Detector`: Objects (jets), that were not well matched to truth jets. 
-`BrokenEvent`: A boolean flag indicating something was not well matched in the event. 
+- `runNumber`: A default string value, that is later converted to an integer by the `VariableManager`.
+- `eventNumber`: Same as above, but indicating the event number found in the ROOT file. 
+- `mu`: Same as above, but represents the pile-up condition of the event. 
+- `met`: Same as above, but represents the missing transverse momentum.
+- `phi`: Same as above, but represent the azimuthal angle of, that the missing transverse momentum is pointing to in the detector's reference frame. 
+- `mu_actual`: Same as above, but represents the truth pile-up condition of the event. 
+- `Type` : A string field indicating, that it is an `Event` object 
+- `iter`: An integer value, that is later modified to indicate the index of the ROOT file. This is used for bookkeeping purposes. 
+- `Tree`: The `Tree` string used to fill the `Event` object. It was left as a placeholder for future systematics. 
+- `TruthTops`: A dictionary containing the truth tops as particle objects.
+- `TruthChildren_init`: A dictionary containing the children of the top particles, but inheriting the kinematic values associated with pre-gluon emission. 
+- `TruthChildren`: A dictionary containing the children of the top particles, but inheriting the kinematic values associated with post-gluon emission. 
+- `TruthJets`: A dictionary containing the truth jets in the event. 
+- `Jets`: A dictionary containing the jets that were measured by the detector.
+- `Muons`: A dictionary containing the muons that were measured by the detector.
+- `Electrons`: A dictionary containing the electrons that were measured by the detector.
+- `Anomaly`: A dictionary containing anomalous particle objects, that did not match properly to truth particles or truth children. 
+- `Anomaly_TruthMatch`: Truth objects (jets), that were not well matched to the `TruthChildren` particle objects. 
+- `Anomaly_TruthMatch_init`: Truth objects (jets), that were not well matched to the `TruthChildren_init` particle objects. 
+- `Anomaly_Detector`: Objects (jets), that were not well matched to truth jets. 
+- `BrokenEvent`: A boolean flag indicating something was not well matched in the event. 
 
 #### Inherited Dynamic Attributes:
-`Branches`: An empty list that is used by the `VariableManager`.
-`KeyMap`: An empty dictionary used to match string `Branch` contained in the ROOT file to update the variable of the event (e.g. runNumber (string) -> runNumber (value in ROOT file)). 
-`Debug`: A boolean trigger, that is used as a placeholder to inspect the object.
+- `Branches`: An empty list that is used by the `VariableManager`.
+- `KeyMap`: An empty dictionary used to match string `Branch` contained in the ROOT file to update the variable of the event (e.g. runNumber (string) -> runNumber (value in ROOT file)). 
+- `Debug`: A boolean trigger, that is used as a placeholder to inspect the object.
 
 #### Class Implemented Functions: 
 ```python 
@@ -350,7 +350,7 @@ def DeltaRMatrix(self, List1, List2)
 ##### Description:
 Calculates the dR matrix between a list of particle objects. 
 ##### Affected Internal Variables:
-`dRMatrix`: (Newly Spwaned) Sorted list with smaller dR pairs placed first - [L_i2, L_i1, dR]. 
+- `dRMatrix`: (Newly Spwaned) Sorted list with smaller dR pairs placed first - [L_i2, L_i1, dR]. 
 
 ```python
 def DeltaRLoop(self)
@@ -358,8 +358,8 @@ def DeltaRLoop(self)
 ##### Description:
 Iterates through the `dRMatrix` variable and applies matching rules. Particles matched are appended to their parent particle under the `Decay_init` and `Decay` lists (part of the generic `Particle` class).
 ##### Affected Internal Variables:
-`Anomaly`: Dictionary is filled according to which matching was performed. 
-`Anomaly_Detector`, `Anomaly_TruthMatch`, `Anomaly_TruthMatch_init`: Are set to `True` if applicable. 
+- `Anomaly`: Dictionary is filled according to which matching was performed. 
+- `Anomaly_Detector`, `Anomaly_TruthMatch`, `Anomaly_TruthMatch_init`: Are set to `True` if applicable. 
 
 ```python
 def CompileSpecificParticles(self, particles = False)
@@ -367,12 +367,12 @@ def CompileSpecificParticles(self, particles = False)
 ##### Description: 
 Performs matching for specific particle pairs, such as tops to their truth children objects and compiles all event particle objects. 
 ##### Input:
-`TruthTops`: Compiles only tops.
-`TruthChildren`: Compiles truth children and matches them to their respective tops.
-`TruthJets`: Compiles truth jet objects, no matching is performed at this stage. 
-`Detector`: Compiles detector objects, no matching is performed at this stage.
+- `TruthTops`: Compiles only tops.
+- `TruthChildren`: Compiles truth children and matches them to their respective tops.
+- `TruthJets`: Compiles truth jet objects, no matching is performed at this stage. 
+- `Detector`: Compiles detector objects, no matching is performed at this stage.
 ##### Affected Internal Variables:
-`TruthChildren`, `TruthChildren_init`, `TruthTops`, `TruthJets`, `Jets`, `Muons`, `Electrons`: Dictionaries are converted to lists containing the particle objects.
+- `TruthChildren`, `TruthChildren_init`, `TruthTops`, `TruthJets`, `Jets`, `Muons`, `Electrons`: Dictionaries are converted to lists containing the particle objects.
 
 ```python
 def CompileEvent(self)
@@ -380,7 +380,7 @@ def CompileEvent(self)
 ##### Description:
 Compiles the event and performs all the matching of particles. 
 ##### Affected Internal Variables:
-`TruthChildren`, `TruthChildren_init`, `TruthTops`, `TruthJets`, `Jets`, `Muons`, `Electrons`: Dictionaries are converted to lists containing the particle objects.
+- `TruthChildren`, `TruthChildren_init`, `TruthTops`, `TruthJets`, `Jets`, `Muons`, `Electrons`: Dictionaries are converted to lists containing the particle objects.
 
 ```python
 def DetectorMatchingEngine(self)
@@ -388,7 +388,7 @@ def DetectorMatchingEngine(self)
 ##### Description:
 Matches detector particles with truth jets and leptons from truth children. This function is called from the main compiler routine. 
 ##### Affected Internal Variables:
-`CallLoop`: A string that is updated internally according to which matching engine is being used. 
+- `CallLoop`: A string that is updated internally according to which matching engine is being used. 
 
 ```python
 def TruthMatchingEngine(self)
@@ -396,6 +396,6 @@ def TruthMatchingEngine(self)
 ##### Description:
 Matches truth jet and lepton particles with truth children. This function is called from the main compiler routine. 
 ##### Affected Internal Variables:
-`CallLoop`: A string that is updated internally according to which matching engine is being used. 
+- `CallLoop`: A string that is updated internally according to which matching engine is being used. 
 
 
