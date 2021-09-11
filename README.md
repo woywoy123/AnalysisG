@@ -156,4 +156,4 @@ TestGraphObjects()
 ```
 
 #### Description:
-Provides test coverage for the conversion of an `Event` object, generated from the `EventGenerator` class, to a graph data representation. It uses a simple 4-top truth event and creates a completely connected graph, where the nodes are tops and the edges imply a relationship between top pairs. The edges and nodes have the kinematic properties \\[, \eta \phi \\] and p_{T} associated with particle objects. As closure, a plot is drawn of the graph and the expected number of edges and nodes are asserted using `assert`. 
+Provides test coverage for the conversion of an `Event` object, generated from the `EventGenerator` class, to a graph data representation. It uses a simple 4-top truth event and creates a completely connected graph, where the nodes are tops and the edges imply a relationship between top pairs. The edges and nodes have the kinematic properties $`\eta \phi`$ and p_{T} associated with particle objects. As closure, a plot is drawn of the graph and the expected number of edges and nodes are asserted using `assert`. 
