@@ -76,7 +76,7 @@ The functions listed below are all part of a closure surrounding the EventGenera
 ___
 
 ```python 
-ManualUproot(dir, Tree, Branch)
+def ManualUproot(dir, Tree, Branch)
 ```
 #### Description:
 This function uses the default UpRoot IO interface to open an arbitrary file directory (*dir*) and reads a given *Branch* from a *Tree*. The output is subsequently converted to the Numpy framework and returned. 
@@ -92,7 +92,7 @@ This function uses the default UpRoot IO interface to open an arbitrary file dir
 Numpy array 
 
 ```python 
-Comparison(dir, Tree, Branch, Events, Spawned)
+def Comparison(dir, Tree, Branch, Events, Spawned)
 ```
 
 #### Description:
@@ -113,7 +113,7 @@ This function ensures that the events and the particle floats of the ROOT file a
 None 
 
 ```python 
-TestParticleAssignment()
+def TestParticleAssignment()
 ```
 
 #### Description:
@@ -126,7 +126,7 @@ None
 None 
 
 ```python
-TestEvent()
+def TestEvent()
 ```
 
 #### Description:
@@ -142,7 +142,7 @@ None
 The functions in this python script test anything involving Graph Neural Networks. It basically tests the interoperability between the `EventGenerator` and the PyG `DataLoader` frameworks. This is demonstrated with feature creation of edges and nodes, along with a simple training example. 
 ___
 ```python
-Generate_Cache()
+def Generate_Cache()
 ```
 
 #### Description:
@@ -155,7 +155,7 @@ None
 None - But drops files: `TruthTops` , `TruthChildren`, `TruthJets`, `Detector`, `Complete`
 
 ```python
-TestGraphObjects()
+def TestGraphObjects()
 ```
 
 #### Description:
@@ -168,7 +168,7 @@ None
 None - But drops closure plots of the fully interconnected graph. 
 
 ```python
-TestDataImport(Compiler = "TruthTops")
+def TestDataImport(Compiler = "TruthTops")
 ```
 
 #### Description:
@@ -181,7 +181,7 @@ This function reads in a cached pickle file and tests the interfacing between th
 None - But drops closure plots of the graphs and their labelled edge features. 
 
 ```python
-TestSimple4TopGNN()
+def TestSimple4TopGNN()
 ```
 
 #### Description:
@@ -194,7 +194,7 @@ None
 None 
 
 ```python
-TestComplex4TopGNN()
+def TestComplex4TopGNN()
 ```
 
 #### Description:
@@ -210,7 +210,7 @@ None
 A very simple closure script check if the IO is working as expected. It tests the listing of sub-directories and files within them, along with reading multiple ROOT files at once. 
 ___
 ```python
-TestDir()
+def TestDir()
 ```
 
 #### Description:
@@ -223,7 +223,7 @@ None
 None 
 
 ```python
-TestIO()
+def TestIO()
 ```
 
 #### Description:
@@ -239,7 +239,7 @@ None
 In this closure script, various components are tested, that involve the plotting capabilities with `matplotlib`. This script also serves the purpose to check if the mass spectra of particles and their reconstruction chain are consistent with what is expected. 
 ___
 ```python
-TestTops()
+def TestTops()
 ```
 
 #### Description:
@@ -252,7 +252,7 @@ None
 None - But drops closure mass spectra for: Truth Tops, Tops from Children, Tops from Children INIT, Truth Tops from Truth Jets and Detector leptons matched to children, and a comparison of anomalous truth to detector matching. 
 
 ```python
-TestResonance()
+def TestResonance()
 ```
 
 #### Description:
@@ -263,4 +263,139 @@ None
 
 #### Output:
 None - But drops closure mass spectra for BSM Resonance, that is derived from: Truth Signal tops, Signal Truth Children, Signal Children (reconstructed) from Detector Leptons and Truth Jets, and purely from Detector matched truth. Non perfectly matched detector and truth objects are also compared in plots to assess the impact of improperly matched particles. 
+
+### Functions - Event - Event.py:
+This python file is the core implementation of the `Event` and `EventGenerator` classes. In the `EventGenerator` framework, branches and trees are read on a event basis and compiled into an `Event` object that provides the truth matching and particle object compilation. 
+___
+
+```python
+class EventVariables
+```
+#### Description:
+A class that is inherited by `EventGenerator` to define all needed branches and trees to enable events to be compiled appropriately. It does not serve any functional purpose, except for being a convenient way to do book keeping of variables.
+
+#### Attributes:
+`MinimalTree` : A list that contains the default `nominal` tree to read from ROOT files. Can be expanded later to include systematic `branches`. 
+`MinimalBranch` : A list of all `branches`, that are expected to be contained in the ROOT files.
+
+```python
+class Event(VariableManager, DataTypeCheck, Debugging)
+```
+
+#### Init Input:
+`Debug = False` : (optional) A placeholder for analysing any issues associated with truth particle matching or any other problems in the code. 
+
+#### Inheritance:
+`VariableManager`: A class, which assigns string based variables associated with a `branch` to a value. 
+`DataTypeCheck`: A class, which keeps data structures consistent. 
+`Debugging`: A class, which contains tools that are quite useful for debugging purposes and don't need to be rewritten multiple times in the codebase.
+
+#### Standard Output Attributes:
+`runNumber`: A default string value, that is later converted to an integer by the `VariableManager`.
+`eventNumber`: Same as above, but indicating the event number found in the ROOT file. 
+`mu`: Same as above, but represents the pile-up condition of the event. 
+`met`: Same as above, but represents the missing transverse momentum.
+`phi`: Same as above, but represent the azimuthal angle of, that the missing transverse momentum is pointing to in the detector's reference frame. 
+`mu_actual`: Same as above, but represents the truth pile-up condition of the event. 
+`Type` : A string field indicating, that it is an `Event` object 
+`iter`: An integer value, that is later modified to indicate the index of the ROOT file. This is used for bookkeeping purposes. 
+`Tree`: The `Tree` string used to fill the `Event` object. It was left as a placeholder for future systematics. 
+`TruthTops`: A dictionary containing the truth tops as particle objects.
+`TruthChildren_init`: A dictionary containing the children of the top particles, but inheriting the kinematic values associated with pre-gluon emission. 
+`TruthChildren`: A dictionary containing the children of the top particles, but inheriting the kinematic values associated with post-gluon emission. 
+`TruthJets`: A dictionary containing the truth jets in the event. 
+`Jets`: A dictionary containing the jets that were measured by the detector.
+`Muons`: A dictionary containing the muons that were measured by the detector.
+`Electrons`: A dictionary containing the electrons that were measured by the detector.
+`Anomaly`: A dictionary containing anomalous particle objects, that did not match properly to truth particles or truth children. 
+`Anomaly_TruthMatch`: Truth objects (jets), that were not well matched to the `TruthChildren` particle objects. 
+`Anomaly_TruthMatch_init`: Truth objects (jets), that were not well matched to the `TruthChildren_init` particle objects. 
+`Anomaly_Detector`: Objects (jets), that were not well matched to truth jets. 
+`BrokenEvent`: A boolean flag indicating something was not well matched in the event. 
+
+#### Inherited Dynamic Attributes:
+`Branches`: An empty list that is used by the `VariableManager`.
+`KeyMap`: An empty dictionary used to match string `Branch` contained in the ROOT file to update the variable of the event (e.g. runNumber (string) -> runNumber (value in ROOT file)). 
+`Debug`: A boolean trigger, that is used as a placeholder to inspect the object.
+
+#### Class Implemented Functions: 
+```python 
+def ParticleProxy(self, File)
+```
+##### Description: 
+A function that creates a string to variable mapping given a file object, that contains an opened ROOT file (i.e. branch to variable assignment). 
+##### Affected Internal Variables: 
+- `BrokenEvent`: is set to `True` if an error occurs during value reading (caused by missing branch etc.). 
+- `Branches`: State change of branch strings expected in given ROOT file are saved in a list used for later compilation. 
+- `TruthJets`: Dictionaries are used to map ROOT truthjet branch strings and their values. 
+- `Jets`: Dictionaries are used to map ROOT jet branch strings and their values. 
+- `Electrons`: Dictionaries are used to map ROOT electron branch strings and their values.
+- `Muons`: Dictionaries are used to map ROOT muons branch strings and their values.
+- `TruthChildren`: Dictionaries are used to map ROOT truth_children branch strings and their values.
+- `TruthChildren_init`: Dictionaries are used to map ROOT truth_children_init branch strings and their values.
+- `TruthTops`: Dictionaries are used to map ROOT truth_top branch strings and their values.
+- `runNumber`, `eventNumber`, `mu`, `met`, `mu_actual`, `phi`, `iter`: String values are updated with ROOT and other values. 
+
+```python
+def MatchingRule(self, P1, P2, dR)
+```
+##### Description: 
+Two particles are matched according to certain matching rules (See implementation for details) and their closest dR = sqrt(dphi^2 - deta^2). 
+##### Output:
+`True, False`
+
+```python
+def DeltaRMatrix(self, List1, List2)
+```
+##### Description:
+Calculates the dR matrix between a list of particle objects. 
+##### Affected Internal Variables:
+`dRMatrix`: (Newly Spwaned) Sorted list with smaller dR pairs placed first - [L_i2, L_i1, dR]. 
+
+```python
+def DeltaRLoop(self)
+```
+##### Description:
+Iterates through the `dRMatrix` variable and applies matching rules. Particles matched are appended to their parent particle under the `Decay_init` and `Decay` lists (part of the generic `Particle` class).
+##### Affected Internal Variables:
+`Anomaly`: Dictionary is filled according to which matching was performed. 
+`Anomaly_Detector`, `Anomaly_TruthMatch`, `Anomaly_TruthMatch_init`: Are set to `True` if applicable. 
+
+```python
+def CompileSpecificParticles(self, particles = False)
+```
+##### Description: 
+Performs matching for specific particle pairs, such as tops to their truth children objects and compiles all event particle objects. 
+##### Input:
+`TruthTops`: Compiles only tops.
+`TruthChildren`: Compiles truth children and matches them to their respective tops.
+`TruthJets`: Compiles truth jet objects, no matching is performed at this stage. 
+`Detector`: Compiles detector objects, no matching is performed at this stage.
+##### Affected Internal Variables:
+`TruthChildren`, `TruthChildren_init`, `TruthTops`, `TruthJets`, `Jets`, `Muons`, `Electrons`: Dictionaries are converted to lists containing the particle objects.
+
+```python
+def CompileEvent(self)
+```
+##### Description:
+Compiles the event and performs all the matching of particles. 
+##### Affected Internal Variables:
+`TruthChildren`, `TruthChildren_init`, `TruthTops`, `TruthJets`, `Jets`, `Muons`, `Electrons`: Dictionaries are converted to lists containing the particle objects.
+
+```python
+def DetectorMatchingEngine(self)
+```
+##### Description:
+Matches detector particles with truth jets and leptons from truth children. This function is called from the main compiler routine. 
+##### Affected Internal Variables:
+`CallLoop`: A string that is updated internally according to which matching engine is being used. 
+
+```python
+def TruthMatchingEngine(self)
+```
+##### Description:
+Matches truth jet and lepton particles with truth children. This function is called from the main compiler routine. 
+##### Affected Internal Variables:
+`CallLoop`: A string that is updated internally according to which matching engine is being used. 
+
 
