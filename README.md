@@ -5,7 +5,7 @@
 2. [Folder Directory](#FolderDir)
 3. [Python Files](#FileDir)
 4. [Functions and Classes](#FunctionClasses)
-  1. [Closure - Event.py](#ClosureEvent)
+   1. [Closure - Event.py](#ClosureEvent)
 
 ## Introduction <a name="introduction"></a>
 This package is dedicated for a future iteration of the *Four Tops* analysis using *Graph Neural Networks*. The package expects ROOT files, that are derived from skimmed down TOPQ DOADs, using the **BSM4topsNtuples** package (https://gitlab.cern.ch/hqt-bsm-4tops/bsm4topsntuples). In this framework, particle objects are converted into python particle object, that are then converted into a graph data structure and subsequently converted into the **DataLoader** framework, supported by *PyTorch-Geometric*. PyTorch-Geometric is a codebase, that uses the PyTorch framework as a foundation to provide an intuitive interface to construct models, which can be applied to non euclidean data structures. 
@@ -156,4 +156,4 @@ TestGraphObjects()
 ```
 
 #### Description:
-... continue here ...
+Provides test coverage for the conversion of an `Event` object, generated from the `EventGenerator` class, to a graph data representation. It uses a simple 4-top truth event and creates a completely connected graph, where the nodes are tops and the edges imply a relationship between top pairs. The edges and nodes have the kinematic properties \eta \phi and p_{T} associated with particle objects. As closure, a plot is drawn of the graph and the expected number of edges and nodes are asserted using `assert`. 
