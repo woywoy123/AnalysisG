@@ -257,10 +257,6 @@ TestResonance()
 
 #### Description:
 In this function, a ROOT file is read into the `EventGenerator` framework and only signal tops are selected. Using their kinematic properties, the mass spectra of the BSM resonance is inferred from the tops directly and from the decay chain. This validates the implementation of the `Particle` base class, which is used extensively in the inheritance model of the ROOT objects, to provide a generic framework for particle representations. 
-___
-```python
-TestResonance()
-```
 
 #### Input:
 None 
