@@ -153,7 +153,7 @@ None
 
 #### Output:
 None - But drops files: `TruthTops` , `TruthChildren`, `TruthJets`, `Detector`, `Complete`
-___
+
 ```python
 TestGraphObjects()
 ```
@@ -166,7 +166,7 @@ None
 
 #### Output: 
 None - But drops closure plots of the fully interconnected graph. 
-___
+
 ```python
 TestDataImport(Compiler = "TruthTops")
 ```
@@ -179,7 +179,7 @@ This function reads in a cached pickle file and tests the interfacing between th
 
 #### Output:
 None - But drops closure plots of the graphs and their labelled edge features. 
-___
+
 ```python
 TestSimple4TopGNN()
 ```
@@ -192,7 +192,7 @@ None
 
 #### Output: 
 None 
-___
+
 ```python
 TestComplex4TopGNN()
 ```
@@ -221,7 +221,7 @@ None
 
 #### Output:
 None 
-___
+
 ```python
 TestIO()
 ```
@@ -250,7 +250,7 @@ None
 
 #### Output:
 None - But drops closure mass spectra for: Truth Tops, Tops from Children, Tops from Children INIT, Truth Tops from Truth Jets and Detector leptons matched to children, and a comparison of anomalous truth to detector matching. 
-___
+
 ```python
 TestResonance()
 ```
