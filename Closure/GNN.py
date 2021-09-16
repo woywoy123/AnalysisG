@@ -105,7 +105,22 @@ def TestSimple4TopGNN():
     Op.DataLoader = L.DataLoader
     Op.DefineEdgeConv(1, 2)
     Op.EpochLoop()
+
+def Test4TopGNNInvMass():
     
+    if cache == True:
+        Generate_Cache()
+    ev = UnpickleObject("TruthTops")
+    L = GenerateDataLoader(ev)
+    L.NodeAttributes = {"pt" : "", "eta" : "", "phi" : "", "e" : "", "M" : "invMass"}
+    L.TruthAttribute = {"Signal" : ""}
+    L.TorchDataLoader()
+    
+    Op = Optimizer()
+    Op.DataLoader = L.DataLoader
+    Op.DefineEdgeConv(4, 2)
+    Op.EpochLoop()
+
 def TestComplex4TopGNN():
     
     if cache == True:

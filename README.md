@@ -277,6 +277,7 @@ A class that is inherited by `EventGenerator` to define all needed branches and 
 #### Attributes:
 - `MinimalTree` : A list that contains the default `nominal` tree to read from ROOT files. Can be expanded later to include systematic `branches`. 
 - `MinimalBranch` : A list of all `branches`, that are expected to be contained in the ROOT files.
+___
 
 ```python
 class Event(VariableManager, DataTypeCheck, Debugging)
@@ -397,5 +398,6 @@ def TruthMatchingEngine(self)
 Matches truth jet and lepton particles with truth children. This function is called from the main compiler routine. 
 ##### Affected Internal Variables:
 - `CallLoop`: A string that is updated internally according to which matching engine is being used. 
+___
 
 

@@ -3,6 +3,7 @@ from torch_geometric.utils.convert import from_networkx
 from torch_geometric.data import Data, DataLoader
 from Functions.Event.Event import EventGenerator, Event
 import torch
+from skhep.math.vectors import LorentzVector
 
 class CreateEventGraph:
 
@@ -51,6 +52,9 @@ class CreateEventGraph:
 
     def CalculateNodeAttributes(self):
         for i in self.NodeAttributes:
+
+            if i == "":
+                continue
             l = {}
             for n in self.Nodes:
                 l[n] = [torch.tensor(getattr(self.Event[n], i), dtype = torch.float)]
@@ -87,6 +91,17 @@ class CreateEventGraph:
         self.CalculateEdgeAttributes(fx)
         self.CalculateNodeAttributes()
 
+    def CalculateInvariantMass(self):
+        def fx(a, b, attr):
+            vec1 = LorentzVector()
+            vec2 = LorentzVector()
+            vec1.setptetaphie(a.pt, a.eta, a.phi, a.e)
+            vec2.setptetaphie(b.pt, b.eta, b.phi, b.e)
+            ab = vec1+vec2
+            return ab.mass
+        self.CalculateEdgeAttributes(fx)
+        #self.CalculateNodeAttributes()
+
     def CalculationProxy(self, Dict):
         for i in Dict:
             self.NodeAttributes = [i]
@@ -104,6 +119,9 @@ class CreateEventGraph:
             
             if Dict[i] == "":
                 self.CalculateNodeAttributes()
+
+            if Dict[i] == "invMass":
+                self.CalculateInvariantMass()
 
     def ConvertToData(self):
         # Need to figure out why I cant edit input attributes as described here: 
