@@ -9,8 +9,17 @@
    2. [Closure - GNN.py](#ClosureGNN)
    3. [Closure - IO.py](#ClosureIO)
    4. [Closure - Plots.py](#ClosurePlotting)
-5. [Event.py](#EventsAndCompilers)
-   1. [Event - Event.py](#EventMain)
+5. [Functions - Event - Event.py](#EventsAndCompilers)
+   1. [EventVariables](#EventVariables)
+   2. [Event](#Event)
+   3. [EventGenerator](#EventGenerator)
+6. [Functions - GNN- GNN.py](#GNNsOptimizer)
+   1. [EdgeConv](#EdgeConv)
+   2. [Optimizer](#Optimizer)
+7. [Functions - GNN -Graphs.py](#Graphs)
+   1. [CreateEventGraph](#CreateEventGraph)
+   2. [GenerateDataLoader](#GenerateDataLoader)
+
 ## Introduction <a name="introduction"></a>
 This package is dedicated for a future iteration of the *Four Tops* analysis using *Graph Neural Networks*. The package expects ROOT files, that are derived from skimmed down TOPQ DOADs, using the **BSM4topsNtuples** package (https://gitlab.cern.ch/hqt-bsm-4tops/bsm4topsntuples). In this framework, particle objects are converted into python particle objects, that are then converted into a graph data structure and subsequently converted into the **DataLoader** framework, supported by *PyTorch-Geometric*. PyTorch-Geometric is a codebase, that uses the PyTorch framework as a foundation to provide an intuitive interface to construct models, which can be applied to non euclidean data structures. 
 
@@ -20,54 +29,12 @@ The codebase has the following folder structure:
 - Functions : Container used to hold sub-functions and classes 
    - Event : Contains classes involving event generation. It reads in ROOT files and converts event objects into particle objects constituting an event 
    - GNN : Contains classes and functions relating to Graph Neural Networks. Classes include; Basic training Optimizer, GNN Model, Events to Graph, Graphs to native PyG DataLoader and Performance metrics. 
-   - IO : Reads / Writes directories and does all the UpROOT reading including NUMPY conversion. 
+   - IO : Reads / Writes directories and does all the UpROOT reading including NumPy conversion. 
    - Particles : Definition of particles using a generic particle object that is inherited by other particle types; Jets, Leptons, Truth, etc. 
    - Plotting : Simple plotting functions for Graphs and diagnostics histograms. 
    - Tools : Some repetitive functions that are found to be useful throughout the code. 
 - Plots : Container that holds plots used for diagnostics or future histograms used for presentations 
 - logs : Debugging or other interesting output. 
-
-## Python File Index<a name="FileDir"></a>
-- Closure 
-   - Event.py
-   - GNN.py
-   - IO.py
-   - Plotting.py
-- Functions
-   - Event
-      - Event.py
-   - GNN
-      - GNN.py
-      - Graphs.py
-      - Metrics.py
-   - IO
-      - Files.py
-      - IO.py
-   - Particles
-      - Particles.py
-   - Plotting 
-      - Graphs.py
-      - Histograms.py
-    - Tools
-      - Alerting.py
-      - DataTypes.py
-      - Variables.py
-   - GNN
-      - GNN.py
-      - Graphs.py
-      - Metrics.py
-   - IO
-      - Files.py
-      - IO.py
-   - Particles
-      - Particles.py
-   - Plotting 
-      - Graphs.py
-      - Histograms.py
-   - Tools
-      - Alerting.py
-      - DataTypes.py
-      - Variables.py
 
 ## Closure Functions<a name="ClosureFunctions"></a>
 This section will be dedicated to give a brief description of the individual closure functions, that were used to verify the individual components of the codebase. 
@@ -81,7 +48,7 @@ The functions listed below are all part of a closure test involving the EventGen
 def ManualUproot(dir, Tree, Branch)
 ```
 #### Description:
-This function uses the default UpRoot IO interface to open an arbitrary file directory (*dir*) and reads a given *Branch* from a *Tree*. The output is subsequently converted to the Numpy framework and returned. 
+This function uses the default UpRoot IO interface to open an arbitrary file directory (*dir*) and reads a given *Branch* from a *Tree*. The output is subsequently converted to the NumPy framework and returned. 
 #### Input: 
 - `dir`: Directory pointing to a ROOT file
 - `Tree`: Tree in ROOT file 
@@ -107,7 +74,7 @@ None
 def TestParticleAssignment()
 ```
 #### Description:
-Hardcodes all the branches in the ROOT file and ensures that the `EventGenerator` reproduces outputs consistent with the reading of a normal ROOT file. This includes testing that event order is retained. Any future additions can be added and cross checked with the input ROOT file. 
+Hardcodes expected branches in the ROOT file and ensures that the `EventGenerator` reproduces outputs consistent with the reading of a normal ROOT file. This includes testing that event order is retained. Any future additions can be added and cross checked with the input ROOT file. 
 #### Input:
 None 
 #### Returns:
@@ -178,7 +145,6 @@ None
 #### Output:
 None 
 ___
-___
 
 ### Closure - IO.py<a name="ClosureIO"></a>
 A very simple closure script to check if the IO is working as expected. It tests the listing of sub-directories and files within them, along with reading multiple ROOT files at once. 
@@ -203,7 +169,6 @@ None
 #### Output:
 None 
 ___
-___
 
 ### Closure - Plotting.py<a name="ClosurePlotting"></a>
 In this closure script, various components are tested, that involve the customized histogram plotting using the `matplotlib` package. This script also checks if the mass spectrum of particles and their reconstruction chain are consistent with what is expected. 
@@ -216,7 +181,7 @@ In this function, a ROOT file is read into the `EventGenerator` class and only t
 #### Input:
 None 
 #### Output:
-None - But drops closure mass spectra for: Truth Tops, Tops from Children, Tops from Children INIT, Truth Tops from Truth Jets and Detector leptons matched to children, and a comparison of anomalous truth to detector matching. 
+None - But drops closure mass spectra for: Truth Tops, Tops from Children, Tops from Children Init, Truth Tops from Truth Jets and Detector leptons matched to children, and a comparison of anomalous truth to detector matching. 
 
 ```python
 def TestResonance()
@@ -230,55 +195,57 @@ None - But drops closure mass spectra for BSM Resonance, that is derived from: T
 ___
 
 ## Events and Compilers<a name="EventsAndCompilers"></a>
-This section gives a detailed description of the `Event` class and the associated functions used to compile ROOT events into a `EventGenerator` object. 
+This section gives a detailed description of the `Event` class and associated functions used to compile ROOT events into an `EventGenerator` object. 
 
-### Functions - Event - Event.py:<a name="EventMain"></a>
+### Functions/Event/Event.py:
 This python file is the core implementation of the `Event` and `EventGenerator` classes. In the `EventGenerator` framework, branches and trees are read on an event basis and compiled into an `Event` object that provides the truth matching and particle object compilation. 
 
 ```python
 class EventVariables
 ```
-#### Description:
-A class that is inherited by `EventGenerator`, that uses the string names of branches and trees as a way to mark and load them later on. It does not serve any functional purpose, except for being a convenient way to do book keeping of variables.
+#### Description:<a name="EventsVariables"></a>
+A class that is inherited by the `EventGenerator` and used to assign string names of branches and trees for future loading purposes. It does not serve any functional purpose, except for being a convenient way to do book keeping of variables.
 #### Attributes:
 - `MinimalTree` : A list that contains the default `nominal` tree to read from ROOT files. Can be expanded later to include systematic `branches`. 
-- `MinimalBranch` : A list of all `branches`, that are expected to be contained in the ROOT files.
+- `MinimalBranch` : A list of all `branches`, that are expected to be contained in the ROOT files under the specified trees.
 ___
 
 ```python
 class Event(VariableManager, DataTypeCheck, Debugging)
 ```
+#### Description:<a name="Event"></a>
+This is a basic object class, which holds compiled particle objects and other event level attributes. It performs the main compilation of particles and aims to reconstruct the decay chain of tops in Monte Carlo samples. 
 #### Init Input:
-- `Debug = False` : (optional) A placeholder for analysing any issues associated with truth particle matching or any other problems in the code. 
+- `Debug = False` : (optional) A placeholder for analysing any issues associated with truth particle matching or any other problems, that could appear in the code. 
 #### Inheritance:
 - `VariableManager`: A class, which converts string variables associated with a `branch` to the appropriate values. 
 - `DataTypeCheck`: A class, which keeps data structures consistent. 
-- `Debugging`: A class, which contains tools that are quite useful for debugging purposes and reduce redudant code in the codebase.
+- `Debugging`: A class, which contains tools that are useful for reducing redundant code commonly found in debugging.
 #### Standard Output Attributes:
-- `runNumber`: A default string value that is later converted to an integer by the `VariableManager`.
+- `runNumber`: A default string value, which is later converted to an integer by the `VariableManager`.
 - `eventNumber`: Same as above, but indicating the event number found in the ROOT file. 
 - `mu`: Same as above, but represents the pile-up condition of the event. 
 - `met`: Same as above, but represents the missing transverse momentum.
-- `phi`: Same as above, but represents the azimuthal angle of the missing transverse momentum pointing to in the detector's reference frame. 
+- `phi`: Same as above, but represents the azimuthal angle of the missing transverse momentum within the detector's reference frame. 
 - `mu_actual`: Same as above, but represents the truth pile-up condition of the event. 
 - `Type` : A string field indicating, that it is an `Event` object 
-- `iter`: An integer value, that is later modified to indicate the index of the ROOT file. This is used for book keeping purposes. 
+- `iter`: An integer value, later modified to indicate the index of the ROOT file. Used for book keeping purposes. 
 - `Tree`: The `Tree` string used to fill the `Event` object. It was left as a placeholder for future systematics. 
 - `TruthTops`: A dictionary containing the truth tops as particle objects.
-- `TruthChildren_init`: A dictionary containing the children of the top particles, but inheriting the kinematic values associated with pre-gluon emission. 
-- `TruthChildren`: A dictionary containing the children of the top particles, but inheriting the kinematic values associated with post-gluon emission. 
+- `TruthChildren_init`: A dictionary containing the children of the top particles, using the kinematic values associated with pre-gluon emission. 
+- `TruthChildren`: A dictionary containing the children of the top particles, using the kinematic values associated with post-gluon emission. 
 - `TruthJets`: A dictionary containing the truth jets in the event. 
 - `Jets`: A dictionary containing the jets that were measured by the detector.
 - `Muons`: A dictionary containing the muons that were measured by the detector.
 - `Electrons`: A dictionary containing the electrons that were measured by the detector.
-- `Anomaly`: A dictionary containing anomalous particle objects, that did not match properly to truth particles or truth children. 
-- `Anomaly_TruthMatch`: Truth objects (jets), that were not well matched to the `TruthChildren` particle objects. 
-- `Anomaly_TruthMatch_init`: Truth objects (jets), that were not well matched to the `TruthChildren_init` particle objects. 
-- `Anomaly_Detector`: Objects (jets), that were not well matched to truth jets. 
-- `BrokenEvent`: A boolean flag indicating something was not well matched in the event. 
+- `Anomaly`: A dictionary containing anomalous particle objects, which were not matched properly to truth particles or truth children. 
+- `Anomaly_TruthMatch`: Truth objects (jets), that were not properly matched to the `TruthChildren` particle objects. 
+- `Anomaly_TruthMatch_init`: Truth objects (jets), that were not properly matched to the `TruthChildren_init` particle objects. 
+- `Anomaly_Detector`: Objects (jets), that were not properly matched to truth jets. 
+- `BrokenEvent`: A boolean flag indicating something was not properly matched in the event. 
 #### Inherited Dynamic Attributes:
 - `Branches`: An empty list that is used by the `VariableManager`.
-- `KeyMap`: An empty dictionary used to match the `Branch` string contained in the ROOT file to update the variable of the event (e.g. runNumber (string) -> runNumber (value in ROOT file)). 
+- `KeyMap`: An empty dictionary used to map relevant branches found in ROOT files to object variables of the event. The idea is to update the string representation of an object attribute to the value found in a ROOT file (e.g. runNumber (string) -> runNumber (value in ROOT file)). 
 - `Debug`: A boolean trigger, that is used as a placeholder to inspect the object.
 #### Class Implemented Functions: 
 
@@ -286,17 +253,17 @@ class Event(VariableManager, DataTypeCheck, Debugging)
 def ParticleProxy(self, File)
 ```
 ##### Description: 
-A function that creates a string to variable mapping given a file object, that contains an opened ROOT file (i.e. branch to variable assignment). 
+A function, which routes a given branch variable to the associated object and assigns the object attribute the value of the routed branch (i.e. branch to variable assignment). The `File` argument requires a `File` object to be given.
 ##### Affected Internal Variables: 
 - `BrokenEvent`: is set to `True` if an error occurs during value reading (caused by missing branch etc.). 
-- `Branches`: State change of branch strings expected in given ROOT file are saved in a list used for later compilation. 
-- `TruthJets`: Dictionaries are used to map ROOT truthjet branch strings and their values. 
-- `Jets`: Dictionaries are used to map ROOT jet branch strings and their values. 
-- `Electrons`: Dictionaries are used to map ROOT electron branch strings and their values.
-- `Muons`: Dictionaries are used to map ROOT muons branch strings and their values.
-- `TruthChildren`: Dictionaries are used to map ROOT truth_children branch strings and their values.
-- `TruthChildren_init`: Dictionaries are used to map ROOT truth_children_init branch strings and their values.
-- `TruthTops`: Dictionaries are used to map ROOT truth_top branch strings and their values.
+- `Branches`: The list is updated via an inherited function called `ListAttributes`. This function updates the branch strings expected to be found in a specified ROOT file.
+- `TruthJets`: A dictionary used to map ROOT truthjet branch strings with associated values. 
+- `Jets`: A dictionary used to map ROOT jet branch strings with associated values. 
+- `Electrons`: A dictionary used to map ROOT electron branch strings with associated values. 
+- `Muons`: A dictionary used to map ROOT muons branch strings with associated values. 
+- `TruthChildren`: A dictionary used to map ROOT truth_children branch strings with associated values. 
+- `TruthChildren_init`: A dictionary used to map ROOT truth_children_init branch strings with associated values. 
+- `TruthTops`: A dictionary used to map ROOT truth_top branch strings with associated values. 
 - `runNumber`, `eventNumber`, `mu`, `met`, `mu_actual`, `phi`, `iter`: String values are updated with ROOT and other values. 
 
 ```python
@@ -313,7 +280,7 @@ def DeltaRMatrix(self, List1, List2)
 ##### Description:
 Calculates the dR matrix between a list of particle objects. 
 ##### Affected Internal Variables:
-- `dRMatrix`: (Newly Spwaned) Sorted list with smaller dR pairs placed first - [L_i2, L_i1, dR]. 
+- `dRMatrix`: (Newly Spawned) A sorted list with smaller dR pairs placed first - ```python [L_i2, L_i1, dR]```. 
 
 ```python
 def DeltaRLoop(self)
@@ -330,10 +297,7 @@ def CompileSpecificParticles(self, particles = False)
 ##### Description: 
 Performs matching for specific particle pairs, such as tops to their truth children objects and compiles all event particle objects. 
 ##### Input:
-- `TruthTops`: Compiles only tops.
-- `TruthChildren`: Compiles truth children and matches them to their respective tops.
-- `TruthJets`: Compiles truth jet objects, no matching is performed at this stage. 
-- `Detector`: Compiles detector objects, no matching is performed at this stage.
+- `particles = False`: Allows for the following string arguments; `TruthTops` (Compiles only tops), `TruthChildren` (Compiles truth children and matches them to their respective tops), `TruthJets` (Only compiles truth jet objects), `Detector` (Compiles detector objects).
 ##### Affected Internal Variables:
 - `TruthChildren`, `TruthChildren_init`, `TruthTops`, `TruthJets`, `Jets`, `Muons`, `Electrons`: Dictionaries are converted to lists containing the particle objects.
 
@@ -341,7 +305,7 @@ Performs matching for specific particle pairs, such as tops to their truth child
 def CompileEvent(self)
 ```
 ##### Description:
-Compiles the event and performs all the matching of particles. 
+Compiles the event and performs the matching of particles to their parents. It aims to construct the original decay chain of the individual tops contained in the event. 
 ##### Affected Internal Variables:
 - `TruthChildren`, `TruthChildren_init`, `TruthTops`, `TruthJets`, `Jets`, `Muons`, `Electrons`: Dictionaries are converted to lists containing the particle objects.
 
@@ -349,9 +313,9 @@ Compiles the event and performs all the matching of particles.
 def DetectorMatchingEngine(self)
 ```
 ##### Description:
-Matches detector particles with truth jets and leptons from truth children. This function is called from the main compiler routine. 
+Matches detector particles with truth jets and leptons to the truth children. This function is called from the main compiler routine. 
 ##### Affected Internal Variables:
-- `CallLoop`: A string that is updated internally according to which matching engine is being used. 
+- `CallLoop`: A string that is updated internally according to which matching engine is being called. 
 
 ```python
 def TruthMatchingEngine(self)
@@ -359,17 +323,67 @@ def TruthMatchingEngine(self)
 ##### Description:
 Matches truth jet and lepton particles with truth children. This function is called from the main compiler routine. 
 ##### Affected Internal Variables:
-- `CallLoop`: A string that is updated internally according to which matching engine is being used. 
-___
+- `CallLoop`: A string that is updated internally according to which matching engine is being called. 
 ___
 
-### Functions - GNN - GNN.py
+```python
+class EventGenerator(UpROOT_Reader, Debugging, EventVariables)
+```
+#### Description:<a name="EventGenerator"></a>
+A framework used to represent the contents of a ROOT file as python objects. It does so, by generating individual `Event` objects and passes the event specific values from branches to the object. Furthermore, it also contains a multithreading function used to make the compilation more efficient. 
+#### Init Input: 
+- `dir`: (Required) A directory path to ROOT files. This path can be a specific ROOT file or a directory containing multiple ROOT files. 
+- `Verbose`: (Optional) Set to `True` by default. Enables or disables notifications and debugging messages.
+- `DebugThres`: (Optional) Set to `-1` by default. It is used to specify the number of events to loop over. The default value implies all events. 
+- `Debug = False` : (optional) A placeholder for analysing any issues associated with truth particle matching or any other problems, that could appear in the code. 
+#### Inheritance: 
+- `UpROOT_Reader`: A class used to generate `File` objects and checks for ROOT files within the given directory. 
+- `Debugging`: A class, which contains tools that are useful for reducing redundant code commonly found in debugging.
+- `EventVariables`: A class containing lists of trees and branches, which are to be included in the compilation process. 
+#### Standard Output Attributes:
+- `Events`: A dictionary containing the compiled `Event` objects.
+#### Inherited Dynamic Attributes:
+- `Caller`: A string indicating the function being called. 
+- `FileObjects`: A dictionary of ROOT files mapped to a directory. 
+- `Debug`: A boolean flag, that disables the verbosity. 
+- `MinimalTree`: A list containing the string of trees, that the generator should read and compile events from.
+- `MinimalBranch`: A list containing the string of branches, that the generator should read and compile events from.
+#### Class Implemented Functions:
+
+```python
+def SpawnEvents(self, Full = False)
+```
+##### Description:
+A function, which iterates through `FileObjects`, that contain individual ROOT files and generates `Event` objects. These objects are filled with basic event attributes and mapped to the associated ROOT filename. The `Full` argument is a boolean flag, which toggles whether to use *all* trees in the ROOT files or only include the nominal tree. By default this variable is set to `False`, indicating the use of only the nominal tree. 
+##### Affected Internal Variables:
+- `Events`: The dictionary is populated with uncompiled `Event` objects, but mapped to the associated ROOT file path. 
+- `FileObjects`: The dictionary is cleared to reduce RAM usage. 
+##### Output:
+None 
+
+```python 
+def CompileEvent(self, SingleThread = False, particle = False)
+```
+##### Description:
+A function, which iterates through the `Events` dictionary and batches the `Event` objects into N partitions, that are submitted to the multithreading compiler. The `SingleThread` flag toggles the use of batching for multithreading. If this variable is set to `True`, only a single thread is used to compile the events. The `particle` flag is used to denote which of particles should be compiled. 
+##### Affected Internal Variables:
+`Batches`: (Newly Spawned) A dictionary, which maps the CPU threads to the batches. 
+`Events`: The uncompiled events are updated to fully compiled events. 
+`Caller`: The string of the invoked function is updated to `EVENTCOMPILER` and is used for the notification prompt. 
+##### Output:
+None 
+___
+
+## Graph Neural Network Models and Optimizer<a name="GNNsOptimizer"></a>
+This section gives a detailed description of the Graph Neural Network models that are implemented and the associated optimizer. This file should be used to implement different GNNs. 
+
+### Functions/GNN/GNN.py
 This file is dedicated for GNN model development. This section will be rather quickly outdated since the GNN implementation will change over time and new models are tested. However, this file contains the generic optimizer framework and will most likely contain performance metrics. 
 
 ```python
 class EdgeConv(MessagePassing)
 ```
-#### Description:
+#### Description:<a name="EdgeConv"></a>
 This is an implementation of a very basic GNN model. This model will be extended and altered over time. 
 #### Init Input:
 - `in_channels` : An integer value that represents the number of inputs to the MLP. 
@@ -383,7 +397,7 @@ ___
 ```python
 class Optimizer
 ```
-##### Description:
+##### Description:<a name="Optimizer"></a>
 A custom implementation of the learning optimizer used to minimize the model parameters of a GNN. 
 #### Init Input:
 None 
@@ -436,15 +450,14 @@ This function sets the `Model` and `Optimizer` attributes of the class and inter
 ##### Output:
 None 
 ___
-___
 
-### Functions - GNN - Graphs.py
+### Functions/GNN/Graphs.py<a name="Graphs"></a>
 This file contains classes and functions that convert the given `EventGenerator` object into event graphs that are subsequently parsed into the PyG `DataLoader` framework. Event graphs can also be modified to include feature embedding for the nodes and edges. By default some basic feature embeddings are defined and can be extended easily within the `CreateEventGraph` class.
 
 ```python
 class CreateEventGraph
 ```
-#### Description: 
+#### Description: <a name="CreateEventGraph"></a>
 An object class that transforms particle objects and their attributes into event graphs. These graphs can contain any arbitrary number of features and connections.
 #### Init Input:
 - `Event` : An instance of the `Event` object, that was generated through the `EventGenerator` class. 
@@ -486,7 +499,7 @@ Uses the recorded edge pairs and assigns the "weight" feature to the graph edges
 None 
 
 ```python
-CalculateEdgeAttributes(self, fx)
+def CalculateEdgeAttributes(self, fx)
 ```
 ##### Description:
 Given some function `fx`, the relation feature between two nodes is calculated and assigned to the edges.
@@ -576,9 +589,9 @@ None
 ___
 
 ```python 
-class GenerateDataLoader
+class GenerateDataLoader 
 ```
-#### Description:
+#### Description:<a name="GenerateDataLoader"></a>
 A class used to interface the `EventGenerator` with the `DataLoader` framework by converting individual event objects into graph objects, that can be subsequently imported to the GNN framework.
 #### Init Input:
 - `Bundle`: An `EventGenerator` instance that should be used. 
