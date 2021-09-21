@@ -4,12 +4,13 @@
 1. [Introduction](#introduction)
 2. [Folder Directory](#FolderDir)
 3. [Python Files](#FileDir)
-4. [Functions and Classes](#FunctionClasses)
+4. [Closure Functions](#ClosureFunctions)]
    1. [Closure - Event.py](#ClosureEvent)
    2. [Closure - GNN.py](#ClosureGNN)
    3. [Closure - IO.py](#ClosureIO)
    4. [Closure - Plots.py](#ClosurePlotting)
-
+5. [Event.py](#EventsAndCompilers)
+   1. [Event - Event.py](#EventMain)
 ## Introduction <a name="introduction"></a>
 This package is dedicated for a future iteration of the *Four Tops* analysis using *Graph Neural Networks*. The package expects ROOT files, that are derived from skimmed down TOPQ DOADs, using the **BSM4topsNtuples** package (https://gitlab.cern.ch/hqt-bsm-4tops/bsm4topsntuples). In this framework, particle objects are converted into python particle objects, that are then converted into a graph data structure and subsequently converted into the **DataLoader** framework, supported by *PyTorch-Geometric*. PyTorch-Geometric is a codebase, that uses the PyTorch framework as a foundation to provide an intuitive interface to construct models, which can be applied to non euclidean data structures. 
 
@@ -68,11 +69,11 @@ The codebase has the following folder structure:
       - DataTypes.py
       - Variables.py
 
-## Python Functions and Classes<a name="FunctionClasses"></a>
-This section will be dedicated to give a brief description of what functions are contained in files and how they are interfaced. 
+## Closure Functions<a name="ClosureFunctions"></a>
+This section will be dedicated to give a brief description of the individual closure functions, that were used to verify the individual components of the codebase. 
 ___
 ___
-
+<a name="FileDir"></a>
 ###  Closure - Event.py<a name="ClosureEvent"></a>
 The functions listed below are all part of a closure test involving the EventGenerator class, that converts ROOT files into Python Objects. 
 
@@ -227,9 +228,11 @@ None
 #### Output:
 None - But drops closure mass spectra for BSM Resonance, that is derived from: Truth Signal tops, Signal Truth Children, Signal Children (reconstructed) from Detector Leptons and Truth Jets, and purely from Detector matched truth. Non perfectly matched detector and truth objects are also compared in plots to assess the impact of improperly matched particles. 
 ___
-___
 
-### Functions - Event - Event.py:
+## Events and Compilers<a name="EventsAndCompilers"></a>
+This section gives a detailed description of the `Event` class and the associated functions used to compile ROOT events into a `EventGenerator` object. 
+
+### Functions - Event - Event.py:<a name="EventMain"></a>
 This python file is the core implementation of the `Event` and `EventGenerator` classes. In the `EventGenerator` framework, branches and trees are read on an event basis and compiled into an `Event` object that provides the truth matching and particle object compilation. 
 
 ```python
