@@ -1,6 +1,6 @@
 from Closure.IO import TestIO, TestDir
 from Closure.Event import TestEvent, TestParticleAssignment
-from Closure.Plotting import TestTops, TestResonance
+from Closure.Plotting import TestTops, TestResonance, TestResonanceMassForEnergies
 from Closure.GNN import TestSimple4TopGNN, TestDataImport, TestGraphObjects, TestComplex4TopGNN, Test4TopGNNInvMass
 
 if __name__ == '__main__':
@@ -14,5 +14,6 @@ if __name__ == '__main__':
     #TestDataImport()
     #TestDataImport("TruthChildren")
     #TestSimple4TopGNN()
-    Test4TopGNNInvMass()
+    #Test4TopGNNInvMass()
     #TestComplex4TopGNN()
+    TestResonanceMassForEnergies()

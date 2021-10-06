@@ -2,7 +2,7 @@
 from Functions.Event.Event import EventGenerator
 from Functions.Particles.Particles import Particle
 from Functions.IO.IO import PickleObject, UnpickleObject
-from Functions.Plotting.Histograms import TH1F, SubfigureCanvas
+from Functions.Plotting.Histograms import TH1F, SubfigureCanvas, CombineHistograms
 
 def TestTops():
     dir = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/user.pgadow.24765302._000001.output.root"
@@ -392,7 +392,102 @@ def TestResonance():
     s.SaveFigure()
 
 
+def TestResonanceMassForEnergies():
+    dirs = ["user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root",
+    "user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r9364_p3980.bsm4t-21.2.164-1-0-mc16a_output_root",
+    "user.pgadow.310846.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root",
+    "user.pgadow.310846.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r9364_p3980.bsm4t-21.2.164-1-0-mc16a_output_root",
+    "user.pgadow.310847.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root",
+    "user.pgadow.310847.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r9364_p3980.bsm4t-21.2.164-1-0-mc16a_output_root",
+    "user.pgadow.313180.MGPy8EG.DAOD_TOPQ1.e8080_s3126_r10201_p3980.bsm4t-21.2.164-1-0-mc16d_output_root",
+    "user.pgadow.313180.MGPy8EG.DAOD_TOPQ1.e8080_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root",
+    "user.pgadow.313180.MGPy8EG.DAOD_TOPQ1.e8080_s3126_r9364_p3980.bsm4t-21.2.164-1-0-mc16a_output_root",
+    "user.pgadow.313181.MGPy8EG.DAOD_TOPQ1.e8081_s3126_r10201_p3980.bsm4t-21.2.164-1-0-mc16d_output_root",
+    "user.pgadow.313181.MGPy8EG.DAOD_TOPQ1.e8081_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root",
+    "user.pgadow.313181.MGPy8EG.DAOD_TOPQ1.e8081_s3126_r9364_p3980.bsm4t-21.2.164-1-0-mc16a_output_root",
+    "user.pgadow.313346.MGPy8EG.DAOD_TOPQ1.e8080_s3126_r10201_p3980.bsm4t-21.2.164-1-0-mc16d_output_root",
+    "user.pgadow.313346.MGPy8EG.DAOD_TOPQ1.e8080_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root",
+    "user.pgadow.313346.MGPy8EG.DAOD_TOPQ1.e8080_s3126_r9364_p3980.bsm4t-21.2.164-1-0-mc16a_output_root"]
+    
+    DSIDKeys = {"310844" : "_1TeV", "310845" : "1TeV", "313346" : "1.25TeV", "310846" : "1.5TeV", "310847" : "2TeV", "313180" : "2.5TeV", "313181" : "3TeV"}
 
+    for i in dirs:
+        x = EventGenerator("/CERN/Grid/SignalSamples/"+i)
+        x.SpawnEvents()
+        x.CompileEvent( particle = "TruthTops" )
+        energy = DSIDKeys[i.split(".")[2]]
+
+        ResonanceFromSignalTops = []
+        ResonanceFromSpectatorTops = []
+        SpectatorSignalTops = []
+        for f in x.Events:
+            F = x.Events[f]
+            for e in F:
+                Zp = Particle(True) # Resonance
+                Sp = Particle(True) # Spectators
+                
+                try:
+                    tops = F[e]["nominal"].TruthTops
+                except TypeError:
+                    tops = F["nominal"].TruthTops
+
+                if len(tops) != 4:
+                    continue
+                
+                for t in tops:
+                    if t.Signal == 1:
+                        Zp.Decay.append(t)
+                    if t.Signal == 0:
+                        Sp.Decay.append(t)
+
+                    SSp = Particle(True) # Spectator and Signal 
+                    for ti in tops:
+                        if t.Signal != ti.Signal:
+                            SSp.Decay.append(t)
+                            SSp.Decay.append(ti)
+                    
+                    SSp.CalculateMassFromChildren()
+                    SpectatorSignalTops.append(SSp.Mass_GeV)
+                
+                Zp.CalculateMassFromChildren()
+                Sp.CalculateMassFromChildren()
+
+                ResonanceFromSignalTops.append(Zp.Mass_GeV)
+                ResonanceFromSpectatorTops.append(Sp.Mass_GeV)
+                
+        TT = TH1F()
+        TT.Title = "SignalPair"
+        TT.xTitle = "Mass (GeV)"
+        TT.yTitle = "Entries"
+        TT.Bins = 1000
+        TT.xMin = 0
+        TT.xMax = 5000
+        TT.Data = ResonanceFromSignalTops
+
+        TS = TH1F()
+        TS.Title = "SignalSpectator"
+        TS.xTitle = "Mass (GeV)"
+        TS.yTitle = "Entries"
+        TS.Bins = 1000
+        TS.xMin = 0
+        TS.xMax = 5000
+        TS.Data = SpectatorSignalTops
+
+        SS = TH1F()
+        SS.Title = "Spectator"
+        SS.xTitle = "Mass (GeV)"
+        SS.yTitle = "Entries"
+        SS.Bins = 1000
+        SS.xMin = 0
+        SS.xMax = 5000
+        SS.Data = ResonanceFromSpectatorTops
+
+        Com = CombineHistograms()
+        Com.Histograms = [TT, TS, SS]
+        Com.Alpha = 0.7
+        Com.Title = "Mass Spectrum of Different Top Pair Combinations with: " + energy + " " + i.split(".")[5]
+        Com.CompileStack()
+        Com.Save("Plots/Spectrum/")
 
 
 

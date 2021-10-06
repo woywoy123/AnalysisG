@@ -346,8 +346,6 @@ class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
                 for j in k:
                     k[j].CompileSpecificParticles(particle_)
             return Entries
-
-
   
         self.Caller = "EVENTCOMPILER"
 

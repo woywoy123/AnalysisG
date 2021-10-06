@@ -18,7 +18,11 @@ class GraphPainter(SharedMethods):
         pos = nx.nx_agraph.graphviz_layout(self.G)
         for i in self.G.edges:
             for j in self.G[i[0]][i[1]]:
-                self.G[i[0]][i[1]][j] = round(self.G[i[0]][i[1]][j], 2)
+                if isinstance(self.G[i[0]][i[1]][j], list):
+                    self.G[i[0]][i[1]][j] = round(self.G[i[0]][i[1]][j][0], 2)
+                else:
+                    self.G[i[0]][i[1]][j] = round(self.G[i[0]][i[1]][j], 2)
+
 
         nx.draw(self.G, pos = pos)
         labels = nx.get_edge_attributes(self.G, self.DrawAttribute)

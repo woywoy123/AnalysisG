@@ -43,6 +43,7 @@ class TH1F(SharedMethods):
         self.Align = "left"
         self.Normalize = True
         self.Data = []
+        self.Alpha = 0.5
 
         SharedMethods.__init__(self)
 
@@ -57,9 +58,34 @@ class TH1F(SharedMethods):
         if self.xMax == "":
             self.xMax = max(self.Data) + max(self.Data)*0.01
         
-        self.PLT.hist(self.Data, bins = self.Bins, range=(self.xMin, self.xMax))
+        self.PLT.hist(self.Data, bins = self.Bins, range=(self.xMin, self.xMax), alpha = self.Alpha)
         self.PLT.xlabel(self.xTitle)
         self.PLT.ylabel(self.yTitle)
+
+class CombineHistograms(TH1F):
+    def __init__(self):
+        TH1F.__init__(self)
+        self.Normalize = False
+        self.Histograms = []
+        self.Title = ""
+
+    def CompileStack(self):
+
+        if self.Title != "":
+            self.PLT.title(self.Title)
+
+        for i in range(len(self.Histograms)):
+            H = self.Histograms[i]
+            self.PLT.hist(H.Data, bins = H.Bins, range=(H.xMin,H.xMax), label = H.Title, alpha = self.Alpha)
+        
+        if len(self.Histograms) != 0:
+            self.PLT.xlabel(self.Histograms[0].xTitle)
+            self.PLT.ylabel(self.Histograms[0].yTitle)
+        self.PLT.legend(loc="upper right")
+
+    def Save(self, dir):
+        SharedMethods.__init__(self)
+        self.SaveFigure(dir) 
 
 class SubfigureCanvas(SharedMethods):
     def __init__(self):

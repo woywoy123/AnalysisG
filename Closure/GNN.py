@@ -12,8 +12,7 @@ def Generate_Cache():
     def Generator(dir, events, compiler):
         ev = EventGenerator(dir, DebugThresh = events)
         ev.SpawnEvents()
-        print(compiler)
-        ev.CompileEvent(SingleThread = True, particle = compiler)
+        ev.CompileEvent(SingleThread = False, particle = compiler)
         if compiler == False:
             compiler = "Complete"
         PickleObject(ev, compiler)
