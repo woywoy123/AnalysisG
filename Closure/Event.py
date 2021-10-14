@@ -3,6 +3,7 @@ from Functions.Event.Event import EventGenerator
 import uproot
 from Functions.Particles.Particles import *
 from Functions.Event.Event import Event
+from Functions.IO.IO import PickleObject, UnpickleObject
 
 def ManualUproot(dir, Tree, Branch):
     F = uproot.open(dir)
@@ -17,6 +18,9 @@ def Comparison(dir, Tree, Branch, Events,Spawned):
     top = Top()
     child = Truth_Top_Child()
     child_init = Truth_Top_Child_Init()
+    rcsubjet = RCSubJet()
+    rcjet = RCJet()
+
     event = Event()
 
     en = ManualUproot(dir, Tree, Branch)
@@ -57,6 +61,9 @@ def Comparison(dir, Tree, Branch, Events,Spawned):
             
             if Branch in jet.KeyMap:
                 Compare = Ev.Jets[x].GetAttributeFromKeyMap(Branch)
+
+            if Branch in rcjet.KeyMap:
+                Compare = Ev.RCJets[x].GetAttributeFromKeyMap(Branch)
             
             if Branch in top.KeyMap:
                 Compare = Ev.TruthTops[x].GetAttributeFromKeyMap(Branch)
@@ -81,6 +88,10 @@ def Comparison(dir, Tree, Branch, Events,Spawned):
                     if Branch in child_init.KeyMap:
                         Compare = Ev.TruthChildren_init[it].GetAttributeFromKeyMap(Branch)
                         it += 1
+                    if Branch in rcsubjet.KeyMap:
+                        Compare = Ev.RCSubJets[it].GetAttributeFromKeyMap(Branch)
+                        it += 1
+
                     if Compare != f[x][k]:
                         print("FAILURE::" + Branch + " " + Tree + " " + str(x) + " " + str(k) + " " + str(Compare))
                         assert Compare == f[x][k]
@@ -195,7 +206,7 @@ def TestParticleAssignment():
     Comparison(dir, "nominal", "top_FromRes", Events, x.Events)
     
     #Child 
-    Comparison(dir, "nominal", "truth_top_child_pt", Events, x.Events)# <--- Need to fix test case
+    Comparison(dir, "nominal", "truth_top_child_pt", Events, x.Events)
     Comparison(dir, "nominal", "truth_top_child_e", Events, x.Events)
     Comparison(dir, "nominal", "truth_top_child_phi", Events, x.Events)
     Comparison(dir, "nominal", "truth_top_child_eta", Events, x.Events) 
@@ -207,6 +218,20 @@ def TestParticleAssignment():
     Comparison(dir, "nominal", "truth_top_initialState_child_phi", Events, x.Events)
     Comparison(dir, "nominal", "truth_top_initialState_child_eta", Events, x.Events)
     Comparison(dir, "nominal", "top_initialState_child_pdgid", Events, x.Events)
+    
+    #RCJets 
+    Comparison(dir, "nominal", "rcjet_pt", Events, x.Events)
+    Comparison(dir, "nominal", "rcjet_e", Events, x.Events)
+    Comparison(dir, "nominal", "rcjet_phi", Events, x.Events)
+    Comparison(dir, "nominal", "rcjet_eta", Events, x.Events)
+    Comparison(dir, "nominal", "rcjet_d12", Events, x.Events)
+    Comparison(dir, "nominal", "rcjet_d23", Events, x.Events)
+
+    #RCJets Sub
+    Comparison(dir, "nominal", "rcjetsub_pt", Events, x.Events)
+    Comparison(dir, "nominal", "rcjetsub_e", Events, x.Events)
+    Comparison(dir, "nominal", "rcjetsub_phi", Events, x.Events)
+    Comparison(dir, "nominal", "rcjetsub_eta", Events, x.Events) 
 
 def TestEvent():
     x = EventGenerator(dir, DebugThresh = 20)

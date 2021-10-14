@@ -2,6 +2,7 @@ import networkx as nx
 from torch_geometric.utils.convert import from_networkx
 from torch_geometric.data import Data, DataLoader
 from Functions.Event.Event import EventGenerator, Event
+from Functions.Tools.Alerting import Notification
 import torch
 from skhep.math.vectors import LorentzVector
 
@@ -21,6 +22,10 @@ class CreateEventGraph:
         for i in range(len(self.Event)):
             self.Nodes.append(i)
         self.G.add_nodes_from(self.Nodes)
+        
+        for i in range(len(self.Event)):
+            self.G.nodes[i]["ParticleIndex"] = self.Event[i].Index
+            self.G.nodes[i]["ParticleType"] = self.Event[i].Type
 
     def CreateParticlesEdgesAll(self):
         self.Edges = []
@@ -100,7 +105,6 @@ class CreateEventGraph:
             ab = vec1+vec2
             return ab.mass
         self.CalculateEdgeAttributes(fx)
-        #self.CalculateNodeAttributes()
 
     def CalculationProxy(self, Dict):
         for i in Dict:
@@ -128,12 +132,16 @@ class CreateEventGraph:
         # https://pytorch-geometric.readthedocs.io/en/latest/modules/utils.html#torch_geometric.utils.from_networkx
         return from_networkx(self.G) 
 
-class GenerateDataLoader:
+class GenerateDataLoader(Notification):
 
     def __init__(self, Bundle):
         if isinstance(Bundle, EventGenerator):
             self.__Events = Bundle.Events
         self.ExcludeAnomalies = False
+        
+        self.Verbose = True
+        Notification.__init__(self, self.Verbose)
+        self.Caller = "GenerateDataLoader"
         
         if torch.cuda.is_available():
             self.Device = torch.device("cuda")
@@ -144,7 +152,7 @@ class GenerateDataLoader:
         self.TruthAttribute = {}
 
         self.DataLoader = None
-        self.DefaultBatchSize = 20
+        self.DefaultBatchSize = 100
 
     def GetEventParticles(self, Ev, Branch):
         out = {}
@@ -154,7 +162,7 @@ class GenerateDataLoader:
             return False
         return out
 
-    def CreateEventData(self, Event):
+    def CreateEventData(self, Event, EventIndex):
         ED = CreateEventGraph(Event)
         ED.CreateParticleNodes()
         ED.CreateParticlesEdgesAll() 
@@ -175,6 +183,7 @@ class GenerateDataLoader:
         if len(Edge_Merge) != 0:
             ten = torch.stack(Edge_Merge)
             setattr(ED, "edge_attr", ten)
+        setattr(ED, "EventIndex", EventIndex)
         return ED
     
     def AssignTruthLabel(self, Event):
@@ -188,8 +197,10 @@ class GenerateDataLoader:
             return at.T[0].long()
 
     def TorchDataLoader(self, branch = "nominal"):
-        self.Loader = []
+        self.EventData = []
         self.TruthLoader = []
+
+        self.Notify("CONVERTING")
         for i in self.__Events:
             e = self.__Events[i][branch]
 
@@ -216,12 +227,13 @@ class GenerateDataLoader:
             elif self.GetEventParticles(e, "TruthTops") != False:
                 obj = e.TruthTops
             
-            data = self.CreateEventData(obj)
+            data = self.CreateEventData(obj, i)
             data.y = self.AssignTruthLabel(obj)
             data.mask = torch.ones(data.y.shape, dtype = torch.bool)
-            self.Loader.append(data)
+            self.EventData.append(data)
             data.to(self.Device)
             
-        if len(self.Loader) != 0:
-            self.DataLoader = DataLoader(self.Loader, batch_size = self.DefaultBatchSize)
-
+        if len(self.EventData) != 0:
+            self.DataLoader = DataLoader(self.EventData, batch_size = self.DefaultBatchSize)
+        
+        self.Notify("COMPLETE")   

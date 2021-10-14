@@ -17,6 +17,8 @@ class EventVariables:
         self.MinimalBranch += Top().Branches
         self.MinimalBranch += Truth_Top_Child().Branches
         self.MinimalBranch += Truth_Top_Child_Init().Branches
+        self.MinimalBranch += RCSubJet().Branches
+        self.MinimalBranch += RCJet().Branches
 
 class Event(VariableManager, DataTypeCheck, Debugging):
     def __init__(self, Debug = False):
@@ -36,13 +38,13 @@ class Event(VariableManager, DataTypeCheck, Debugging):
         self.iter = -1
         self.Tree = ""
         
-        self.TruthTops = {}
-        self.TruthChildren_init = {}
-        self.TruthChildren = {}
-        self.TruthJets = {}
-        self.Jets = {}
-        self.Muons = {}
-        self.Electrons = {}
+        self.Objects = {"el->Electrons" : Electron(), "mu->Muons" : Muon(), "truthjet->TruthJets" : TruthJet(), 
+                       "jet->Jets" : Jet(), "top->TruthTops" : Top(), "child->TruthChildren" : Truth_Top_Child(), 
+                       "child_init->TruthChildren_init" : Truth_Top_Child_Init(), "rcsubjet->RCSubJets" : RCSubJet(), 
+                       "rcjet->RCJets" : RCJet()}
+        for i in self.Objects:
+            self.SetAttribute(i.split("->")[1], {})
+
         self.Anomaly = {}
         self.Anomaly_TruthMatch = False
         self.Anomaly_TruthMatch_init = False
@@ -51,16 +53,19 @@ class Event(VariableManager, DataTypeCheck, Debugging):
         self.BrokenEvent = False
     
     def ParticleProxy(self, File):
-        self.ListAttributes()
-        el = Electron()
-        mu = Muon()
-        truthjet = TruthJet()
-        jet = Jet()
-        top = Top()
-        child = Truth_Top_Child()
-        child_init = Truth_Top_Child_Init()
-        event = Event()
+        
+        def Attributor(variable, value):
+            for i in self.Objects:
+                obj = self.Objects[i]
+                if variable in obj.KeyMap:
+                    o = getattr(self, i.split("->")[1])
+                    o[variable] = value
+                    self.SetAttribute(i.split("->")[1], o)
+                    return True
+            return False
 
+
+        self.ListAttributes()
         for i in File.ArrayBranches:
             if self.Tree in i:
                 var = i.replace(self.Tree + "/", "")
@@ -69,22 +74,11 @@ class Event(VariableManager, DataTypeCheck, Debugging):
                 except:
                     self.BrokenEvent = True
                     continue
+                
+                if Attributor(var, val):
+                    continue
 
-                if var in truthjet.KeyMap:
-                    self.TruthJets[var] = val 
-                elif var in jet.KeyMap:
-                    self.Jets[var] = val
-                elif var in el.KeyMap:
-                    self.Electrons[var] = val
-                elif var in mu.KeyMap:
-                    self.Muons[var] = val
-                elif var in child.KeyMap:
-                    self.TruthChildren[var] = val
-                elif var in child_init.KeyMap:
-                    self.TruthChildren_init[var] = val
-                elif var in top.KeyMap:
-                    self.TruthTops[var] = val
-                elif var in event.KeyMap:
+                if var in Event().KeyMap:
                     self.SetAttribute(self.KeyMap[var], val)
 
 
@@ -190,7 +184,6 @@ class Event(VariableManager, DataTypeCheck, Debugging):
             for i in self.TruthTops:
                 i.PropagateSignalLabel()
 
-
         if particles == "TruthJets":
             self.TruthJets = CompileParticles(self.TruthJets, TruthJet()).Compile()
             self.TruthJets = self.DictToList(self.TruthJets)
@@ -199,10 +192,14 @@ class Event(VariableManager, DataTypeCheck, Debugging):
             self.Jets = CompileParticles(self.Jets, Jet()).Compile()
             self.Muons = CompileParticles(self.Muons, Muon()).Compile()
             self.Electrons = CompileParticles(self.Electrons, Electron()).Compile()
+            self.RCSubJets = CompileParticles(self.RCSubJets, RCSubJet()).Compile()
+            self.RCJets = CompileParticles(self.RCJets, RCJet()).Compile()
             
             self.Jets = self.DictToList(self.Jets)
             self.Muons = self.DictToList(self.Muons)
             self.Electrons = self.DictToList(self.Electrons)
+            self.RCJets = self.DictToList(self.RCJets)
+            self.RCSubJets = self.DictToList(self.RCSubJets)
 
     def CompileEvent(self):
         self.TruthTops = CompileParticles(self.TruthTops, Top()).Compile() 
@@ -212,11 +209,17 @@ class Event(VariableManager, DataTypeCheck, Debugging):
         self.Jets = CompileParticles(self.Jets, Jet()).Compile()
         self.Muons = CompileParticles(self.Muons, Muon()).Compile()
         self.Electrons = CompileParticles(self.Electrons, Electron()).Compile()
+        self.RCSubJets = CompileParticles(self.RCSubJets, RCSubJet()).Compile()
+        self.RCJets = CompileParticles(self.RCJets, RCJet()).Compile()
 
         for i in self.TruthTops:
             self.TruthTops[i][0].Decay_init = self.TruthChildren_init[i]
             self.TruthTops[i][0].Decay = self.TruthChildren[i]
-        
+
+        for i in self.RCJets:
+            self.RCJets[i][0].Constituents = self.RCSubJets[i]
+
+
         # Very important to have this one first since the 
         # truth partons contains information about the pdgid (truth partons)
         if self.Debug:
@@ -231,6 +234,8 @@ class Event(VariableManager, DataTypeCheck, Debugging):
         self.__init = False
         self.TruthMatchingEngine()
 
+        self.RCSubJetMatchingEngine()
+
         self.TruthTops = self.DictToList(self.TruthTops)
         self.TruthChildren = self.DictToList(self.TruthChildren)
         self.TruthChildren_init = self.DictToList(self.TruthChildren_init)
@@ -239,7 +244,11 @@ class Event(VariableManager, DataTypeCheck, Debugging):
         self.Jets = self.DictToList(self.Jets)
         self.Muons = self.DictToList(self.Muons)
         self.Electrons = self.DictToList(self.Electrons)
+
         
+        self.RCJets = self.DictToList(self.RCJets)
+        self.RCSubJets = self.DictToList(self.RCSubJets)
+     
         for i in self.TruthTops:
             i.PropagateSignalLabel()
 
@@ -257,7 +266,18 @@ class Event(VariableManager, DataTypeCheck, Debugging):
             self.DebugTruthDetectorMatch(DetectorParticles)
         else:
             self.DeltaRLoop()
-
+    
+    def RCSubJetMatchingEngine(self):
+        
+        Jets = self.DictToList(self.Jets)
+        RC = self.DictToList(self.RCSubJets)
+        self.DeltaRMatrix(Jets, RC)
+        
+        captured = []
+        for i in self.dRMatrix:
+            if i[1][0] not in captured:
+                i[1][1].Decay.append(i[1][0])
+                captured.append(i[1][0])
 
     def TruthMatchingEngine(self):
         Truth = []
@@ -388,7 +408,6 @@ class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
                 for j in self.Batches[k]:
                     self.Events[f][it] = j
                     it += 1
-            
             del th
             self.Batches = {}
             Thread = []

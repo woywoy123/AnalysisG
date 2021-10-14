@@ -5,8 +5,36 @@ from Functions.GNN.Graphs import CreateEventGraph, GenerateDataLoader
 from Functions.Plotting.Graphs import GraphPainter
 
 cache = False
-events = -1
+events = 1000
 dir = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/user.pgadow.24765302._000001.output.root"
+
+def EvaluateTruthTopClassification(Events):
+    n_e = 0 
+    n_t = 0 
+    n_t_c = 0; 
+    n_e_c = 0; 
+    for i in Events.Events:
+        Event = Events.Events[i]["nominal"]
+        c=0
+        for k in Event.TruthTops:
+            n_t+=1
+            
+            if k.ModelPredicts == k.Signal:
+                n_t_c += 1
+                c+=1
+
+        if c == 4:
+            n_e_c += 1
+        n_e+=1
+    
+    print("Correctly Classified Events (%): ", float(n_e_c/n_e)*100)
+    print("Correctly Classified Tops (%): ", float(n_t_c/n_t)*100)
+
+    print("Number of Events: ", n_e)
+    print("Number of Tops: ", n_t)
+
+    print("Number of Correct Events: ", n_e_c)
+    print("Number of Correct Tops: ", n_t_c)
 
 def Generate_Cache():
     def Generator(dir, events, compiler):
@@ -95,30 +123,39 @@ def TestSimple4TopGNN():
     if cache == True:
         Generate_Cache()
     ev = UnpickleObject("TruthTops")
+    
     L = GenerateDataLoader(ev)
     L.NodeAttributes = {"Signal" : "Multi"}
     L.TruthAttribute = {"Signal" : ""}
     L.TorchDataLoader()
     
-    Op = Optimizer()
-    Op.DataLoader = L.DataLoader
+    Op = Optimizer(L)
     Op.DefineEdgeConv(1, 2)
     Op.EpochLoop()
+    Op.AssignPredictionToEvents(ev.Events, "nominal")
+   
+    EvaluateTruthTopClassification(ev)
 
 def Test4TopGNNInvMass():
     
     if cache == True:
         Generate_Cache()
     ev = UnpickleObject("TruthTops")
+    
     L = GenerateDataLoader(ev)
+    L.DefaultBatchSize = 1000
     L.NodeAttributes = {"pt" : "", "eta" : "", "phi" : "", "e" : "", "M" : "invMass"}
     L.TruthAttribute = {"Signal" : ""}
     L.TorchDataLoader()
     
-    Op = Optimizer()
-    Op.DataLoader = L.DataLoader
+    Op = Optimizer(L)
+    Op.Epochs = 100
     Op.DefineEdgeConv(4, 2)
     Op.EpochLoop()
+    Op.AssignPredictionToEvents(ev.Events, "nominal")
+
+    EvaluateTruthTopClassification(ev)
+
 
 def TestComplex4TopGNN():
     

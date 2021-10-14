@@ -130,6 +130,19 @@ class Jet(Particle):
 
         Particle.__init__(self)
 
+class RCSubJet(Particle):
+    def __init__(self):
+        self.Type="rcjetsub"
+        Particle.__init__(self)
+
+class RCJet(Particle):
+    def __init__(self):
+        self.Type = "rcjet"
+        self.d12 = self.Type + "_d12"
+        self.d23 = self.Type + "_d23"
+        Particle.__init__(self)
+        self.Constituents = []
+
 class Top(Particle):
     def __init__(self):
         self.Type = "truth_top"
