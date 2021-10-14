@@ -7,7 +7,7 @@ import math
 
 class EventVariables:
     def __init__(self):
-        self.MinimalTree = ["nominal"]
+        self.MinimalTree = ["tree", "nominal"]
         self.MinimalBranch = []
         self.MinimalBranch += Event().Branches
         self.MinimalBranch += TruthJet().Branches
@@ -245,7 +245,6 @@ class Event(VariableManager, DataTypeCheck, Debugging):
         self.Muons = self.DictToList(self.Muons)
         self.Electrons = self.DictToList(self.Electrons)
 
-        
         self.RCJets = self.DictToList(self.RCJets)
         self.RCSubJets = self.DictToList(self.RCSubJets)
      
@@ -330,11 +329,11 @@ class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
             F.Branches = Branches
             F.CheckKeys()
             F.ConvertToArray()
-
-            self.Events[F.FileName] = []
+            FirstBranches = list(F.ObjectBranches)[0]
             
             self.Notify("SPAWNING EVENTS IN FILE -> " + f)
-            for i in range(len(F.ArrayBranches["nominal/eventNumber"])):
+            self.Events[F.FileName] = []
+            for i in range(len(F.ArrayBranches[FirstBranches])):
                 pairs = {}
                 for k in Trees:
                     E = Event()

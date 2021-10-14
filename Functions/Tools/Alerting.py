@@ -29,6 +29,9 @@ class Notification():
                 print(self.__WARNING + self.Caller + " :: Key -> " + Key + " NOT FOUND")
                 self.Alerted.append(Key)
             return False
+    
+    def Warning(self, text):
+        print(self.__WARNING + self.Caller + " :: " + text)
 
     def CheckAttribute(self, Obj, Attr):
         try: 

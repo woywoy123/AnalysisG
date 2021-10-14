@@ -53,21 +53,41 @@ class File(Notification):
             if j != -1:
                 if self.CheckObject(out, j):
                     out = Obj[i][j]
+                else:
+                    out = ""
             if k != -1:
                 if self.CheckObject(out, k):
                     out = Obj[i][j][k]
+                else:
+                    out = ""
             return out
-
+        
         for i in self.Trees:
-            self.ObjectTrees[i] = ReturnObject(self.__Reader, i)
+            treeobj = ReturnObject(self.__Reader, i)
+            if treeobj == "":
+                self.Warning("SKIPPED TREE -> " + i)
+                continue
+            self.ObjectTrees[i] = treeobj
             for j in self.Branches:
-                self.ObjectBranches[i + "/" + j] = ReturnObject(self.__Reader, i, j)
+                branchobj = ReturnObject(self.__Reader, i, j)
+                if branchobj == "":
+                    self.Warning("SKIPPED BRANCH -> " + j)
+                    continue                
+                self.ObjectBranches[i + "/" + j] = branchobj
+
                 for k in self.Leaves:
-                    self.ObjectLeaves[i + "/" + j + "/" + k] = ReturnObject(self.__Reader, i, j, k)
+                    leafobj = ReturnObject(self.__Reader, i, j, k) 
+                    if leafobj == "":
+                        self.Warning("SKIPPED LEAF -> " + k)
+                        continue
+                    self.ObjectLeaves[i + "/" + j + "/" + k] = leafobj
 
     def ConvertToArray(self):
         def Convert(obj):
-            return obj.array(library = "np")
+            try:
+                return obj.array(library = "np")
+            except:
+                return []
         
         self.Caller = "CONVERTTOARRAY"
         self.Notify("STARTING CONVERSION")
