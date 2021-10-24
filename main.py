@@ -1,13 +1,13 @@
 from Closure.IO import TestIO, TestDir
 from Closure.Event import TestEvent, TestParticleAssignment
-from Closure.Plotting import TestTops, TestResonance, TestResonanceMassForEnergies
-from Closure.GNN import TestSimple4TopGNN, TestDataImport, TestGraphObjects, TestComplex4TopGNN, Test4TopGNNInvMass
+from Closure.Plotting import TestTops, TestResonance, TestResonanceMassForEnergies, TestRCJetAssignments
+from Closure.GNN import TestSimple4TopGNN, TestDataImport, TestGraphObjects, TestComplex4TopGNN, Test4TopGNNInvMass, TestRCJetAssignmentGNN
 
 if __name__ == '__main__':
     #TestDir()
     #TestIO()
     #TestEvent()
-    TestParticleAssignment()
+    #TestParticleAssignment()
     #TestTops()
     #TestResonance()
     #TestGraphObjects()
@@ -17,3 +17,5 @@ if __name__ == '__main__':
     #Test4TopGNNInvMass()
     #TestComplex4TopGNN()
     #TestResonanceMassForEnergies()
+    #TestRCJetAssignments()
+    TestRCJetAssignmentGNN()

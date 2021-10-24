@@ -247,9 +247,19 @@ class Event(VariableManager, DataTypeCheck, Debugging):
 
         self.RCJets = self.DictToList(self.RCJets)
         self.RCSubJets = self.DictToList(self.RCSubJets)
+
+        self.DetectorParticles = []
+        self.DetectorParticles += self.Jets
+        self.DetectorParticles += self.Muons
+        self.DetectorParticles += self.Electrons
+        self.DetectorParticles += self.RCJets
+        self.DetectorParticles += self.RCSubJets
      
         for i in self.TruthTops:
             i.PropagateSignalLabel()
+
+        for i in self.RCJets:
+            i.PropagateJetSignal()
 
     def DetectorMatchingEngine(self):
         DetectorParticles = []

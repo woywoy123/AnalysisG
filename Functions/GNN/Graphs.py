@@ -152,7 +152,8 @@ class GenerateDataLoader(Notification):
         self.TruthAttribute = {}
 
         self.DataLoader = None
-        self.DefaultBatchSize = 100
+        self.DefaultBatchSize = None
+        self.ParticleLevel = "TruthTops"
 
     def GetEventParticles(self, Ev, Branch):
         out = {}
@@ -197,9 +198,9 @@ class GenerateDataLoader(Notification):
             return at.T[0].long()
 
     def TorchDataLoader(self, branch = "nominal"):
-        self.EventData = []
+        self.EventData = {}
         self.TruthLoader = []
-
+            
         self.Notify("CONVERTING")
         for i in self.__Events:
             e = self.__Events[i][branch]
@@ -213,27 +214,47 @@ class GenerateDataLoader(Notification):
                 continue
             
             obj = []
-            # Means this is the truth matched detector stuff 
-            if hasattr(e, "CallLoop"):
+            if self.ParticleLevel == "TruthTop":
+                obj += e.TruthTops
+
+            if self.ParticleLevel == "TruthTopChildren":
+                obj += e.TruthChildren
+            
+            if self.ParticleLevel == "TruthJets":
+                obj += e.TruthJets
+                obj += e.Electrons
+                obj += e.Muons
+
+            if self.ParticleLevel == "Detector":
+                obj += e.Electrons
+                obj += e.Muons
+                obj += e.Jets
+
+            if self.ParticleLevel == "DetectorRCJets":
+                obj += e.RCJets
                 obj += e.Muons
                 obj += e.Electrons
-                obj += e.Jets
- 
-            # Get truth Children
-            elif self.GetEventParticles(e, "TruthChildren") != False:
-                obj = e.TruthChildren
 
-            # Get truth tops
-            elif self.GetEventParticles(e, "TruthTops") != False:
-                obj = e.TruthTops
-            
             data = self.CreateEventData(obj, i)
             data.y = self.AssignTruthLabel(obj)
             data.mask = torch.ones(data.y.shape, dtype = torch.bool)
-            self.EventData.append(data)
             data.to(self.Device)
-            
+
+            obj_len = len(obj)
+
+            try:
+                self.EventData[obj_len].append(data)
+            except KeyError:
+                self.EventData[obj_len] = []
+                self.EventData[obj_len].append(data)
+
         if len(self.EventData) != 0:
-            self.DataLoader = DataLoader(self.EventData, batch_size = self.DefaultBatchSize)
+            self.DataLoader = {}
+            for i in self.EventData:
+                if self.DefaultBatchSize == None:
+                    batch_s = len(self.EventData[i])
+                else:
+                    batch_s = self.DefaultBatchSize
+                self.DataLoader[i] = DataLoader(self.EventData[i], batch_size = batch_s)
         
         self.Notify("COMPLETE")   

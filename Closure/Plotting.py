@@ -490,7 +490,179 @@ def TestResonanceMassForEnergies():
         Com.Save("Plots/Spectrum/")
 
 
+def TestRCJetAssignments():
+    
+    #signal_dir = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/user.pgadow.24765302._000001.output.root"
+    #background_dir = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/postProcessed_ttW.root"
+
+    #Event = -1
+    #back = EventGenerator(background_dir, DebugThresh = Event)
+    #back.SpawnEvents()
+    #back.CompileEvent()
+
+    #sig = EventGenerator(signal_dir, DebugThresh = Event)
+    #sig.SpawnEvents()
+    #sig.CompileEvent()
 
 
+    #PickleObject(sig, "Signal")
+    #PickleObject(back, "ttW")   
+    
+    sig = UnpickleObject("Signal")
+    back = UnpickleObject("ttW")
+    
+    res_truth_tops = []
+    res_rc_onlysignal = []
+    res_rc_atleastone = []
+    res_jets = []
 
+    signa_rc = []
+    back_rc = []
+    
+    for i in sig.Events:
+        sig_events = sig.Events[i]["nominal"]
+        
+        # Fill truth resonance from Tops 
+        Z_prime = Particle(True)
+        for t in sig_events.TruthTops:
+            if t.Signal == 1:
+                Z_prime.Decay.append(t)
+        Z_prime.CalculateMassFromChildren()
+        res_truth_tops.append(Z_prime.Mass_GeV)
+        
+        # Get Resonance where all RCJet consistuents are matched to signal
+        Z_prime_all = Particle(True)
+        for rc in sig_events.DetectorParticles:
+            if rc.Type == "rcjet" or rc.Type == "el" or rc.Type == "mu":
+                pass
+            else:
+                continue
+            
+            if rc.Signal == 1:
+                Z_prime_all.Decay.append(rc)
+        Z_prime_all.CalculateMassFromChildren()
+        if Z_prime_all.Mass_GeV > 10:
+            res_rc_onlysignal.append(Z_prime_all.Mass_GeV)
+            
+        # Get Resonance where at least one RCjet consistuent is signal
+        Z_prime_one = Particle(True)
+        for rc in sig_events.DetectorParticles:
+            if rc.Type == "rcjet" or rc.Type == "el" or rc.Type == "mu":
+                pass
+            else:
+                continue
+            
+            if rc.Signal == 2:
+                Z_prime_one.Decay.append(rc)
+        Z_prime_one.CalculateMassFromChildren()
+        if Z_prime_one.Mass_GeV > 10:
+            res_rc_atleastone.append(Z_prime_one.Mass_GeV)
+        
+        # Reconstruct Resonance from jet objects
+        Z_prime_jets = Particle(True)
+        for rc in sig_events.DetectorParticles:
+            if rc.Type == "jet" or rc.Type == "el" or rc.Type == "mu":
+                pass
+            else:
+                continue
+            
+            if rc.Signal == 1:
+                Z_prime_jets.Decay.append(rc)
+        Z_prime_jets.CalculateMassFromChildren()
+        if Z_prime_jets.Mass_GeV > 10:
+            res_jets.append(Z_prime_jets.Mass_GeV)
+        
+        #Calculate mass of jets
+        for rc in sig_events.RCJets:
+            rc.CalculateMass()
+            signa_rc.append(rc.Mass_GeV)
+        
+    
+        #Calculate mass of jets
+        try:
+            back_events = back.Events[i]["tree"]
+            for rc in back_events.RCJets:
+                rc.CalculateMass()
+                back_rc.append(rc.Mass_GeV)
+        except:
+            pass
 
+    Res_TT = TH1F()
+    Res_TT.Title = "Res->TruthTops"
+    Res_TT.xTitle = "Mass (GeV)"
+    Res_TT.yTitle = "Entries"
+    Res_TT.Bins = 1500
+    Res_TT.xMin = 0
+    Res_TT.xMax = 1500
+    Res_TT.Data = res_truth_tops
+    Res_TT.CompileHistogram()
+    Res_TT.SaveFigure("Plots/RCJetSpectrum/")
+
+    Res_Jet = TH1F()
+    Res_Jet.Title = "Res->Jets+Leptons"
+    Res_Jet.xTitle = "Mass (GeV)"
+    Res_Jet.yTitle = "Entries"
+    Res_Jet.Bins = 1500
+    Res_Jet.xMin = 0
+    Res_Jet.xMax = 1500
+    Res_Jet.Data = res_jets
+    Res_Jet.CompileHistogram()
+    Res_Jet.SaveFigure("Plots/RCJetSpectrum/")
+
+    ResRCAll_TT = TH1F()
+    ResRCAll_TT.Title = "Res->RCJet_OnlySignal+Leptons"
+    ResRCAll_TT.xTitle = "Mass (GeV)"
+    ResRCAll_TT.yTitle = "Entries"
+    ResRCAll_TT.Bins = 1500
+    ResRCAll_TT.xMin = 0
+    ResRCAll_TT.xMax = 1500
+    ResRCAll_TT.Data = res_rc_onlysignal
+    ResRCAll_TT.CompileHistogram()
+    ResRCAll_TT.SaveFigure("Plots/RCJetSpectrum/")
+
+    ResRCOne_TT = TH1F()
+    ResRCOne_TT.Title = "Res->RCJet_AtLeastOneSignal+Leptons"
+    ResRCOne_TT.xTitle = "Mass (GeV)"
+    ResRCOne_TT.yTitle = "Entries"
+    ResRCOne_TT.Bins = 1500
+    ResRCOne_TT.xMin = 0
+    ResRCOne_TT.xMax = 1500
+    ResRCOne_TT.Data = res_rc_atleastone
+    ResRCOne_TT.CompileHistogram()
+    ResRCOne_TT.SaveFigure("Plots/RCJetSpectrum/")
+
+    RC_Sig = TH1F()
+    RC_Sig.Title = "Signal->RCJet_Mass"
+    RC_Sig.xTitle = "Mass (GeV)"
+    RC_Sig.yTitle = "Entries"
+    RC_Sig.Bins = 1500
+    RC_Sig.xMin = 0
+    RC_Sig.xMax = 1500
+    RC_Sig.Data = signa_rc 
+    RC_Sig.CompileHistogram()
+    RC_Sig.SaveFigure("Plots/RCJetSpectrum/")
+   
+    RC_TTW = TH1F()
+    RC_TTW.Title = "Background->RCJet_ttW"
+    RC_TTW.xTitle = "Mass (GeV)"
+    RC_TTW.yTitle = "Entries"
+    RC_TTW.Bins = 1500
+    RC_TTW.xMin = 0
+    RC_TTW.xMax = 1500
+    RC_TTW.Data = res_rc_atleastone   
+    RC_TTW.CompileHistogram() 
+    RC_TTW.SaveFigure("Plots/RCJetSpectrum/")
+
+    Res = CombineHistograms()
+    Res.Histograms = [Res_TT, Res_Jet, ResRCAll_TT, ResRCOne_TT]
+    Res.Alpha = 0.7
+    Res.Title = "Mass Spectrum for Resonance From Truth Tops and RC and Jets"
+    Res.CompileStack()
+    Res.Save("Plots/RCJetSpectrum/")
+
+    Com = CombineHistograms()
+    Com.Histograms = [RC_Sig, RC_TTW]
+    Com.Alpha = 0.7
+    Com.Title = "Mass of RC Jets from Signal and Background Samples"
+    Com.CompileStack()
+    Com.Save("Plots/RCJetSpectrum/")

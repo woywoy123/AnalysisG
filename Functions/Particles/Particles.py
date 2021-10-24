@@ -20,7 +20,7 @@ class Particle(VariableManager, DataTypeCheck):
         if hasattr(self, "FromRes"):
             self.Signal = "top_FromRes"
         else:
-            self.Signal = -1
+            self.Signal = 0
 
         self.CompileKeyMap()
         self.ListAttributes()
@@ -142,6 +142,26 @@ class RCJet(Particle):
         self.d23 = self.Type + "_d23"
         Particle.__init__(self)
         self.Constituents = []
+
+    def PropagateJetSignal(self):
+        # 0: No Signal 
+        # 1: All Signal 
+        # 2: Contains at least one signal
+        
+        s = 0
+        for i in self.Constituents:
+            if i.Signal == 0:
+                s += i.Signal
+            if i.Signal == 1:
+                s += i.Signal
+        if s == len(self.Constituents) and len(self.Constituents) != 0:
+            self.Signal = 1
+        elif s == 0:
+            self.Signal = 0
+        elif s > 0:
+            self.Signal = 2
+
+
 
 class Top(Particle):
     def __init__(self):

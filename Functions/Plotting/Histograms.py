@@ -44,6 +44,7 @@ class TH1F(SharedMethods):
         self.Normalize = True
         self.Data = []
         self.Alpha = 0.5
+        self.Log = False
 
         SharedMethods.__init__(self)
 
@@ -58,9 +59,10 @@ class TH1F(SharedMethods):
         if self.xMax == "":
             self.xMax = max(self.Data) + max(self.Data)*0.01
         
-        self.PLT.hist(self.Data, bins = self.Bins, range=(self.xMin, self.xMax), alpha = self.Alpha)
+        self.PLT.hist(self.Data, bins = self.Bins, range=(self.xMin, self.xMax), alpha = self.Alpha, log = self.Log)
         self.PLT.xlabel(self.xTitle)
         self.PLT.ylabel(self.yTitle)
+        self.Filename = self.Title + ".png"
 
 class CombineHistograms(TH1F):
     def __init__(self):
@@ -68,6 +70,7 @@ class CombineHistograms(TH1F):
         self.Normalize = False
         self.Histograms = []
         self.Title = ""
+        self.Log = False
 
     def CompileStack(self):
 
@@ -76,7 +79,7 @@ class CombineHistograms(TH1F):
 
         for i in range(len(self.Histograms)):
             H = self.Histograms[i]
-            self.PLT.hist(H.Data, bins = H.Bins, range=(H.xMin,H.xMax), label = H.Title, alpha = self.Alpha)
+            self.PLT.hist(H.Data, bins = H.Bins, range=(H.xMin,H.xMax), label = H.Title, alpha = self.Alpha, log = self.Log)
         
         if len(self.Histograms) != 0:
             self.PLT.xlabel(self.Histograms[0].xTitle)

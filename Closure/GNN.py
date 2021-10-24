@@ -36,6 +36,48 @@ def EvaluateTruthTopClassification(Events):
     print("Number of Correct Events: ", n_e_c)
     print("Number of Correct Tops: ", n_t_c)
 
+
+def EvaluationOfGNN(Container, tree):
+    n_e = 0
+    n_c = 0
+    n_c_rc = 0
+    n_rc = 0
+    for i in Container.Events:
+        Event = Container.Events[i][tree]
+        
+        All = []
+        All += Event.RCJets
+        All += Event.Electrons
+        All += Event.Muons
+        All += Event.TruthTops
+        All += Event.TruthChildren
+        All += Event.Jets
+        
+        Objects = []
+        for k in All:
+            try:
+                k.ModelPredicts
+            except AttributeError:
+                continue
+            Objects.append(k)
+        print(Objects)
+        obj = 0
+        for rc in Objects:
+            if rc.Signal == rc.ModelPredicts:
+                n_c_rc += 1
+                obj += 1
+            n_rc += 1
+        n_e += 1
+
+        if obj == len(Objects):
+            n_c += 1
+
+    print("Completely correctly classified Events (%): ", float(n_c/n_e)*100)
+    print("Correctly Classified Objects in Event (%): ", float(n_c_rc/n_rc)*100)
+
+    print("Number of Events: ", n_e)
+    print("Number of Objects: ", n_rc)
+
 def Generate_Cache():
     def Generator(dir, events, compiler):
         ev = EventGenerator(dir, DebugThresh = events)
@@ -173,4 +215,48 @@ def TestComplex4TopGNN():
     Op.DataLoader = L.DataLoader
     Op.DefineEdgeConv(3, 24)
     Op.EpochLoop()
+
+def TestRCJetAssignmentGNN():
+    #signal_dir = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/user.pgadow.24765302._000001.output.root"
+    #background_dir = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/postProcessed_ttW.root"
+
+    #Event = 1000
+    #back = EventGenerator(background_dir, DebugThresh = Event)
+    #back.SpawnEvents()
+    #back.CompileEvent()
+
+    #sig = EventGenerator(signal_dir, DebugThresh = Event)
+    #sig.SpawnEvents()
+    #sig.CompileEvent()
+   
+    #PickleObject(sig, "Signal_GNN")
+    #PickleObject(back, "ttW_GNN") 
+
+    sig = UnpickleObject("Signal_GNN")
+    back = UnpickleObject("ttW_GNN")
+
+    sig_L = GenerateDataLoader(sig)
+    sig_L.DefaultBatchSize = 100
+    sig_L.ParticleLevel = "DetectorRCJets"
+    sig_L.NodeAttributes = {"Signal" : ""} #{"pt" : "", "eta" : "", "phi" : "", "e" : "", "M" : "invMass"}
+    sig_L.TruthAttribute = {"Signal" : ""}
+    sig_L.TorchDataLoader("nominal")
+
+    back_L = GenerateDataLoader(back)
+    back_L.DefaultBatchSize = 100
+    back_L.ParticleLevel = "DetectorRCJets"
+    back_L.NodeAttributes = {"Signal" : ""} #{"pt" : "", "eta" : "", "phi" : "", "e" : "", "M" : "invMass"}
+    back_L.TruthAttribute = {"Signal" : ""}
+    back_L.TorchDataLoader("tree")
+
+    Op = Optimizer(sig_L)
+    Op.DefineEdgeConv(1, 3)
+    Op.Epochs = 100
+    #Op.EpochLoop()
+    #Op.AssignPredictionToEvents(sig, "nominal")
+    Op.DataLoader = back_L.DataLoader
+    Op.EpochLoop()
+    Op.AssignPredictionToEvents(back, "tree")
     
+    EvaluationOfGNN(sig, "nominal")
+    EvaluationOfGNN(back, "tree")
