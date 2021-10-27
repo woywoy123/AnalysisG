@@ -57,7 +57,6 @@ class CreateEventGraph:
 
     def CalculateNodeAttributes(self):
         for i in self.NodeAttributes:
-
             if i == "":
                 continue
             l = {}
@@ -163,7 +162,7 @@ class GenerateDataLoader(Notification):
             return False
         return out
 
-    def CreateEventData(self, Event, EventIndex):
+    def CreateEventData(self, Event, EventIndex, name):
         ED = CreateEventGraph(Event)
         ED.CreateParticleNodes()
         ED.CreateParticlesEdgesAll() 
@@ -185,6 +184,10 @@ class GenerateDataLoader(Notification):
             ten = torch.stack(Edge_Merge)
             setattr(ED, "edge_attr", ten)
         setattr(ED, "EventIndex", EventIndex)
+
+        if name != None:
+            setattr(ED, "Name", name)
+
         return ED
     
     def AssignTruthLabel(self, Event):
@@ -197,7 +200,7 @@ class GenerateDataLoader(Notification):
             at = getattr(D, i)
             return at.T[0].long()
 
-    def TorchDataLoader(self, branch = "nominal"):
+    def TorchDataLoader(self, branch = "nominal", name = None):
         self.EventData = {}
         self.TruthLoader = []
             
@@ -235,26 +238,25 @@ class GenerateDataLoader(Notification):
                 obj += e.Muons
                 obj += e.Electrons
 
-            data = self.CreateEventData(obj, i)
+            data = self.CreateEventData(obj, i, name)
             data.y = self.AssignTruthLabel(obj)
             data.mask = torch.ones(data.y.shape, dtype = torch.bool)
             data.to(self.Device)
 
             obj_len = len(obj)
 
-            try:
+            if obj_len in self.EventData:
                 self.EventData[obj_len].append(data)
-            except KeyError:
+            else:
                 self.EventData[obj_len] = []
                 self.EventData[obj_len].append(data)
 
-        if len(self.EventData) != 0:
-            self.DataLoader = {}
-            for i in self.EventData:
-                if self.DefaultBatchSize == None:
-                    batch_s = len(self.EventData[i])
-                else:
-                    batch_s = self.DefaultBatchSize
-                self.DataLoader[i] = DataLoader(self.EventData[i], batch_size = batch_s)
+        self.DataLoader = {}
+        for i in self.EventData:
+            if self.DefaultBatchSize == None:
+                batch_s = len(self.EventData[i])
+            else:
+                batch_s = self.DefaultBatchSize
+            self.DataLoader[i] = DataLoader(self.EventData[i], batch_size = batch_s)
         
         self.Notify("COMPLETE")   
