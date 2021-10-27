@@ -2,7 +2,7 @@
 from Functions.Event.Event import EventGenerator
 from Functions.Particles.Particles import Particle
 from Functions.IO.IO import PickleObject, UnpickleObject
-from Functions.Plotting.Histograms import TH1F, SubfigureCanvas, CombineHistograms
+from Functions.Plotting.Histograms import TH2F, TH1F, SubfigureCanvas, CombineHistograms
 
 def TestTops():
     dir = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/user.pgadow.24765302._000001.output.root"
@@ -71,8 +71,8 @@ def TestTops():
     t.Title = "The Mass of Truth Top From 'truth_top_*'"
     t.xTitle = "Mass (GeV)"
     t.yTitle = "Entries"
-    t.Bins = 200
-    t.Data = Top_Mass
+    t.xBins = 200
+    t.xData = Top_Mass
     t.CompileHistogram()
     s.AddObject(t)
 
@@ -80,9 +80,9 @@ def TestTops():
     tc.Title = "The Predicted Truth Top Mass Derived From 'truth_top_child_*'"
     tc.xTitle = "Mass (GeV)"
     tc.yTitle = "Entries"
-    tc.Bins = 200
+    tc.xBins = 200
     tc.xMin = 160
-    tc.Data = Top_Mass_From_Children
+    tc.xData = Top_Mass_From_Children
     tc.CompileHistogram()
     s.AddObject(tc)   
 
@@ -91,8 +91,8 @@ def TestTops():
     tc_init.xTitle = "Mass (GeV)"
     tc_init.yTitle = "Entries"
     tc_init.xMin = 160
-    tc_init.Bins = 200
-    tc_init.Data = Top_Mass_From_Children_init
+    tc_init.xBins = 200
+    tc_init.xData = Top_Mass_From_Children_init
     tc_init.CompileHistogram()
     s.AddObject(tc_init)
     
@@ -108,8 +108,8 @@ def TestTops():
     tc.xTitle = "Mass (GeV)"
     tc.yTitle = "Entries"
     tc.xMin = 160
-    tc.Bins = 200
-    tc.Data = Top_Mass_From_Children
+    tc.xBins = 200
+    tc.xData = Top_Mass_From_Children
     tc.CompileHistogram()
     s.AddObject(tc)   
 
@@ -118,8 +118,8 @@ def TestTops():
     t.xTitle = "Mass (GeV)"
     t.yTitle = "Entries"
     t.xMin = 160
-    t.Bins = 200
-    t.Data = Top_Mass_From_Truth_Jets
+    t.xBins = 200
+    t.xData = Top_Mass_From_Truth_Jets
     t.CompileHistogram()
     s.AddObject(t)
     
@@ -128,8 +128,8 @@ def TestTops():
     tc_init.xTitle = "Mass (GeV)"
     tc_init.yTitle = "Entries"
     tc_init.xMin = 160
-    tc_init.Bins = 200
-    tc_init.Data = Top_Mass_From_Truth_Jets_init
+    tc_init.xBins = 200
+    tc_init.xData = Top_Mass_From_Truth_Jets_init
     tc_init.CompileHistogram()
     s.AddObject(tc_init)
     
@@ -146,8 +146,8 @@ def TestTops():
     tc.xTitle = "Mass (GeV)"
     tc.yTitle = "Entries"
     tc.xMin = 160
-    tc.Bins = 200
-    tc.Data = Top_Mass_From_Children
+    tc.xBins = 200
+    tc.xData = Top_Mass_From_Children
     tc.CompileHistogram()
     s.AddObject(tc)   
 
@@ -156,8 +156,8 @@ def TestTops():
     t.xTitle = "Mass (GeV)"
     t.yTitle = "Entries"
     t.xMin = 160
-    t.Bins = 200
-    t.Data = Top_Mass_From_Truth_Jets
+    t.xBins = 200
+    t.xData = Top_Mass_From_Truth_Jets
     t.CompileHistogram()
     s.AddObject(t)
     
@@ -166,8 +166,8 @@ def TestTops():
     tc_init.xTitle = "Mass (GeV)"
     tc_init.yTitle = "Entries"
     tc_init.xMin = 160
-    tc_init.Bins = 200
-    tc_init.Data = Top_Mass_From_Truth_Jets_NoAnomaly
+    tc_init.xBins = 200
+    tc_init.xData = Top_Mass_From_Truth_Jets_NoAnomaly
     tc_init.CompileHistogram()
     s.AddObject(tc_init)
     
@@ -183,8 +183,8 @@ def TestTops():
     tc.xTitle = "Mass (GeV)"
     tc.yTitle = "Entries"
     tc.xMin = 160
-    tc.Bins = 200
-    tc.Data = Top_Mass_From_Children
+    tc.xBins = 200
+    tc.xData = Top_Mass_From_Children
     tc.CompileHistogram()
     s.AddObject(tc)   
 
@@ -193,8 +193,8 @@ def TestTops():
     t.xTitle = "Mass (GeV)"
     t.yTitle = "Entries"
     t.xMin = 160
-    t.Bins = 200
-    t.Data = Top_Mass_From_Truth_Jets
+    t.xBins = 200
+    t.xData = Top_Mass_From_Truth_Jets
     t.CompileHistogram()
     s.AddObject(t)
     
@@ -203,8 +203,8 @@ def TestTops():
     tc_init.xTitle = "Mass (GeV)"
     tc_init.yTitle = "Entries"
     tc_init.xMin = 160
-    tc_init.Bins = 200
-    tc_init.Data = Top_Mass_From_Jets
+    tc_init.xBins = 200
+    tc_init.xData = Top_Mass_From_Jets
     tc_init.CompileHistogram()
     s.AddObject(tc_init)
     
@@ -296,8 +296,8 @@ def TestResonance():
     t.Title = "The Mass of Resonance Using 'truth_top_*'"
     t.xTitle = "Mass (GeV)"
     t.yTitle = "Entries"
-    t.Bins = 200
-    t.Data = Res_TruthTops
+    t.xBins = 200
+    t.xData = Res_TruthTops
     t.CompileHistogram()
     s.AddObject(t)
 
@@ -305,8 +305,8 @@ def TestResonance():
     tc.Title = "The Predicted Resonance Mass Derived From 'truth_top_child_*'"
     tc.xTitle = "Mass (GeV)"
     tc.yTitle = "Entries"
-    tc.Bins = 200
-    tc.Data = Res_Child
+    tc.xBins = 200
+    tc.xData = Res_Child
     tc.CompileHistogram()
     s.AddObject(tc)   
 
@@ -314,8 +314,8 @@ def TestResonance():
     tc_init.Title = "The Predicted Resonance Mass Derived From 'truth_top_child_init*'"
     tc_init.xTitle = "Mass (GeV)"
     tc_init.yTitle = "Entries"
-    tc_init.Bins = 200
-    tc_init.Data = Res_Child_init
+    tc_init.xBins = 200
+    tc_init.xData = Res_Child_init
     tc_init.CompileHistogram()
     s.AddObject(tc_init)
     
@@ -330,8 +330,8 @@ def TestResonance():
     t.Title = "The Mass of Resonance Using 'truth_top_*'"
     t.xTitle = "Mass (GeV)"
     t.yTitle = "Entries"
-    t.Bins = 200
-    t.Data = Res_TruthTops
+    t.xBins = 200
+    t.xData = Res_TruthTops
     t.CompileHistogram()
     s.AddObject(t)
 
@@ -339,8 +339,8 @@ def TestResonance():
     tc.Title =  "The Predicted Resonance Mass Derived From 'truth_jets_*'\n (with Detector Leptons)"
     tc.xTitle = "Mass (GeV)"
     tc.yTitle = "Entries"
-    tc.Bins = 200
-    tc.Data = Res_TruthJet
+    tc.xBins = 200
+    tc.xData = Res_TruthJet
     tc.CompileHistogram()
     s.AddObject(tc)   
 
@@ -348,8 +348,8 @@ def TestResonance():
     tc_init.Title = "The Predicted Resonance Mass Derived From 'truth_jets_*'\n (with Detector Leptons) (Good Matching)"
     tc_init.xTitle = "Mass (GeV)"
     tc_init.yTitle = "Entries"
-    tc_init.Bins = 200
-    tc_init.Data = Res_TruthJet_NoAnomaly
+    tc_init.xBins = 200
+    tc_init.xData = Res_TruthJet_NoAnomaly
     tc_init.CompileHistogram()
     s.AddObject(tc_init)
     
@@ -365,8 +365,8 @@ def TestResonance():
     t.Title = "The Mass of Resonance Using 'truth_top_*'"
     t.xTitle = "Mass (GeV)"
     t.yTitle = "Entries"
-    t.Bins = 200
-    t.Data = Res_TruthTops
+    t.xBins = 200
+    t.xData = Res_TruthTops
     t.CompileHistogram()
     s.AddObject(t)
 
@@ -374,8 +374,8 @@ def TestResonance():
     tc.Title =  "The Predicted Resonance Mass Derived From 'truth_jets_*'\n (with Detector Leptons)"
     tc.xTitle = "Mass (GeV)"
     tc.yTitle = "Entries"
-    tc.Bins = 200
-    tc.Data = Res_TruthJet
+    tc.xBins = 200
+    tc.xData = Res_TruthJet
     tc.CompileHistogram()
     s.AddObject(tc)   
 
@@ -383,8 +383,8 @@ def TestResonance():
     tc_init.Title = "The Predicted Resonance Mass Derived From 'jets_*'\n (with Detector Leptons)"
     tc_init.xTitle = "Mass (GeV)"
     tc_init.yTitle = "Entries"
-    tc_init.Bins = 200
-    tc_init.Data = Res_Jet
+    tc_init.xBins = 200
+    tc_init.xData = Res_Jet
     tc_init.CompileHistogram()
     s.AddObject(tc_init)
     
@@ -459,28 +459,28 @@ def TestResonanceMassForEnergies():
         TT.Title = "SignalPair"
         TT.xTitle = "Mass (GeV)"
         TT.yTitle = "Entries"
-        TT.Bins = 1000
+        TT.xBins = 1000
         TT.xMin = 0
         TT.xMax = 5000
-        TT.Data = ResonanceFromSignalTops
+        TT.xData = ResonanceFromSignalTops
 
         TS = TH1F()
         TS.Title = "SignalSpectator"
         TS.xTitle = "Mass (GeV)"
         TS.yTitle = "Entries"
-        TS.Bins = 1000
+        TS.xBins = 1000
         TS.xMin = 0
         TS.xMax = 5000
-        TS.Data = SpectatorSignalTops
+        TS.xData = SpectatorSignalTops
 
         SS = TH1F()
         SS.Title = "Spectator"
         SS.xTitle = "Mass (GeV)"
         SS.yTitle = "Entries"
-        SS.Bins = 1000
+        SS.xBins = 1000
         SS.xMin = 0
         SS.xMax = 5000
-        SS.Data = ResonanceFromSpectatorTops
+        SS.xData = ResonanceFromSpectatorTops
 
         Com = CombineHistograms()
         Com.Histograms = [TT, TS, SS]
@@ -492,24 +492,24 @@ def TestResonanceMassForEnergies():
 
 def TestRCJetAssignments():
     
-    #signal_dir = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/user.pgadow.24765302._000001.output.root"
-    #background_dir = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/postProcessed_ttW.root"
+    signal_dir = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/user.pgadow.24765302._000001.output.root"
+    background_dir = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/postProcessed_ttW.root"
 
-    #Event = -1
-    #back = EventGenerator(background_dir, DebugThresh = Event)
-    #back.SpawnEvents()
-    #back.CompileEvent()
+    Event = -1
+    back = EventGenerator(background_dir, DebugThresh = Event)
+    back.SpawnEvents()
+    back.CompileEvent()
 
-    #sig = EventGenerator(signal_dir, DebugThresh = Event)
-    #sig.SpawnEvents()
-    #sig.CompileEvent()
+    sig = EventGenerator(signal_dir, DebugThresh = Event)
+    sig.SpawnEvents()
+    sig.CompileEvent()
 
 
     #PickleObject(sig, "Signal")
     #PickleObject(back, "ttW")   
     
-    sig = UnpickleObject("Signal")
-    back = UnpickleObject("ttW")
+    #sig = UnpickleObject("Signal")
+    #back = UnpickleObject("ttW")
     
     res_truth_tops = []
     res_rc_onlysignal = []
@@ -518,6 +518,9 @@ def TestRCJetAssignments():
 
     signa_rc = []
     back_rc = []
+
+    signa_rc_Flav = []
+    signa_rc_Mass = []
     
     for i in sig.Events:
         sig_events = sig.Events[i]["nominal"]
@@ -537,11 +540,23 @@ def TestRCJetAssignments():
                 pass
             else:
                 continue
-            
             if rc.Signal == 1:
                 Z_prime_all.Decay.append(rc)
+        
         Z_prime_all.CalculateMassFromChildren()
         if Z_prime_all.Mass_GeV > 10:
+            for k in Z_prime_all.Decay:
+                if k.Type == "rcjet":
+                    for f in k.Constituents:
+                        if f.Type == "rcjetsub":
+                            signa_rc_Flav.append(f.Flav)
+                            signa_rc_Mass.append(Z_prime_all.Mass_GeV)
+                elif k.Type == "mu":
+                    signa_rc_Flav.append(13)
+                    signa_rc_Mass.append(Z_prime_all.Mass_GeV)
+                elif k.Type == "el":
+                    signa_rc_Flav.append(11)
+                    signa_rc_Mass.append(Z_prime_all.Mass_GeV)
             res_rc_onlysignal.append(Z_prime_all.Mass_GeV)
             
         # Get Resonance where at least one RCjet consistuent is signal
@@ -551,9 +566,9 @@ def TestRCJetAssignments():
                 pass
             else:
                 continue
-            
             if rc.Signal == 2:
                 Z_prime_one.Decay.append(rc)
+        
         Z_prime_one.CalculateMassFromChildren()
         if Z_prime_one.Mass_GeV > 10:
             res_rc_atleastone.append(Z_prime_one.Mass_GeV)
@@ -591,78 +606,84 @@ def TestRCJetAssignments():
     Res_TT.Title = "Res->TruthTops"
     Res_TT.xTitle = "Mass (GeV)"
     Res_TT.yTitle = "Entries"
-    Res_TT.Bins = 1500
+    Res_TT.xBins = 1500
     Res_TT.xMin = 0
     Res_TT.xMax = 1500
-    Res_TT.Data = res_truth_tops
-    Res_TT.CompileHistogram()
+    Res_TT.xData = res_truth_tops
     Res_TT.SaveFigure("Plots/RCJetSpectrum/")
 
     Res_Jet = TH1F()
     Res_Jet.Title = "Res->Jets+Leptons"
     Res_Jet.xTitle = "Mass (GeV)"
     Res_Jet.yTitle = "Entries"
-    Res_Jet.Bins = 1500
+    Res_Jet.xBins = 1500
     Res_Jet.xMin = 0
     Res_Jet.xMax = 1500
-    Res_Jet.Data = res_jets
-    Res_Jet.CompileHistogram()
+    Res_Jet.xData = res_jets
     Res_Jet.SaveFigure("Plots/RCJetSpectrum/")
 
     ResRCAll_TT = TH1F()
     ResRCAll_TT.Title = "Res->RCJet_OnlySignal+Leptons"
     ResRCAll_TT.xTitle = "Mass (GeV)"
     ResRCAll_TT.yTitle = "Entries"
-    ResRCAll_TT.Bins = 1500
+    ResRCAll_TT.xBins = 1500
     ResRCAll_TT.xMin = 0
     ResRCAll_TT.xMax = 1500
-    ResRCAll_TT.Data = res_rc_onlysignal
-    ResRCAll_TT.CompileHistogram()
+    ResRCAll_TT.xData = res_rc_onlysignal
     ResRCAll_TT.SaveFigure("Plots/RCJetSpectrum/")
 
     ResRCOne_TT = TH1F()
     ResRCOne_TT.Title = "Res->RCJet_AtLeastOneSignal+Leptons"
     ResRCOne_TT.xTitle = "Mass (GeV)"
     ResRCOne_TT.yTitle = "Entries"
-    ResRCOne_TT.Bins = 1500
+    ResRCOne_TT.xBins = 1500
     ResRCOne_TT.xMin = 0
     ResRCOne_TT.xMax = 1500
-    ResRCOne_TT.Data = res_rc_atleastone
-    ResRCOne_TT.CompileHistogram()
+    ResRCOne_TT.xData = res_rc_atleastone
     ResRCOne_TT.SaveFigure("Plots/RCJetSpectrum/")
 
     RC_Sig = TH1F()
     RC_Sig.Title = "Signal->RCJet_Mass"
     RC_Sig.xTitle = "Mass (GeV)"
     RC_Sig.yTitle = "Entries"
-    RC_Sig.Bins = 1500
+    RC_Sig.xBins = 1500
     RC_Sig.xMin = 0
     RC_Sig.xMax = 1500
-    RC_Sig.Data = signa_rc 
-    RC_Sig.CompileHistogram()
+    RC_Sig.xData = signa_rc 
     RC_Sig.SaveFigure("Plots/RCJetSpectrum/")
    
     RC_TTW = TH1F()
     RC_TTW.Title = "Background->RCJet_ttW"
     RC_TTW.xTitle = "Mass (GeV)"
     RC_TTW.yTitle = "Entries"
-    RC_TTW.Bins = 1500
+    RC_TTW.xBins = 1500
     RC_TTW.xMin = 0
     RC_TTW.xMax = 1500
-    RC_TTW.Data = res_rc_atleastone   
-    RC_TTW.CompileHistogram() 
+    RC_TTW.xData = res_rc_atleastone   
     RC_TTW.SaveFigure("Plots/RCJetSpectrum/")
 
     Res = CombineHistograms()
     Res.Histograms = [Res_TT, Res_Jet, ResRCAll_TT, ResRCOne_TT]
     Res.Alpha = 0.7
     Res.Title = "Mass Spectrum for Resonance From Truth Tops and RC and Jets"
-    Res.CompileStack()
     Res.Save("Plots/RCJetSpectrum/")
 
     Com = CombineHistograms()
     Com.Histograms = [RC_Sig, RC_TTW]
     Com.Alpha = 0.7
     Com.Title = "Mass of RC Jets from Signal and Background Samples"
-    Com.CompileStack()
     Com.Save("Plots/RCJetSpectrum/")
+
+
+    MassPID = TH2F()
+    MassPID.Title = "RC Jet Mass Signal Sample vs PID"
+    MassPID.xBins = 60 #max(signa_rc_Flav)
+    MassPID.xMin = 0
+    MassPID.xTitle = "Flavour"
+    MassPID.xData = signa_rc_Flav
+    MassPID.yData = signa_rc_Mass
+    MassPID.yBins = 500
+    MassPID.yMin = 0
+    MassPID.yMax = 1500
+    MassPID.yTitle = "GeV"
+    MassPID.SaveFigure("Plots/RCJetSpectrum/")

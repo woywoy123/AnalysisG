@@ -134,6 +134,7 @@ class RCSubJet(Particle):
     def __init__(self):
         self.Type="rcjetsub"
         Particle.__init__(self)
+        self.Flav = None
 
 class RCJet(Particle):
     def __init__(self):

@@ -260,6 +260,10 @@ class Event(VariableManager, DataTypeCheck, Debugging):
 
         for i in self.RCJets:
             i.PropagateJetSignal()
+        
+        for i in self.Jets:
+            for j in i.Decay:
+                j.Flav = i.truthflavExtended
 
     def DetectorMatchingEngine(self):
         DetectorParticles = []

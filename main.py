@@ -17,5 +17,5 @@ if __name__ == '__main__':
     #Test4TopGNNInvMass()
     #TestComplex4TopGNN()
     #TestResonanceMassForEnergies()
-    #TestRCJetAssignments()
-    TestRCJetAssignmentGNN()
+    TestRCJetAssignments()
+    #TestRCJetAssignmentGNN()
