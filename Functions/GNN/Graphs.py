@@ -152,7 +152,7 @@ class GenerateDataLoader(Notification):
 
         self.DataLoader = None
         self.DefaultBatchSize = None
-        self.ParticleLevel = "TruthTops"
+        self.ParticleLevel = "TruthTop"
 
     def GetEventParticles(self, Ev, Branch):
         out = {}
@@ -237,7 +237,7 @@ class GenerateDataLoader(Notification):
                 obj += e.RCJets
                 obj += e.Muons
                 obj += e.Electrons
-
+                
             data = self.CreateEventData(obj, i, name)
             data.y = self.AssignTruthLabel(obj)
             data.mask = torch.ones(data.y.shape, dtype = torch.bool)

@@ -166,6 +166,7 @@ def TestSimple4TopGNN():
     ev = UnpickleObject("TruthTops")
     
     L = GenerateDataLoader(ev)
+    L.DefaultBatchSize = 100
     L.NodeAttributes = {"Signal" : "Multi"}
     L.TruthAttribute = {"Signal" : ""}
     L.TorchDataLoader()
@@ -173,7 +174,7 @@ def TestSimple4TopGNN():
     Op = Optimizer(L)
     Op.DefineEdgeConv(1, 2)
     Op.EpochLoop()
-    Op.AssignPredictionToEvents(ev.Events, "nominal")
+    Op.AssignPredictionToEvents(ev, "nominal")
    
     EvaluateTruthTopClassification(ev)
 

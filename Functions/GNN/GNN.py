@@ -29,8 +29,8 @@ class Optimizer(Notification):
             self.DataLoader = {}
         Notification.__init__(self, verbose)
 
-        self.Epochs = 50
-        self.LearningRate = 0.0001
+        self.Epochs = 500
+        self.LearningRate = 0.001
         self.WeightDecay = 1e-4
         self.kFold = 10
         self.DefaultBatchSize = 5000
