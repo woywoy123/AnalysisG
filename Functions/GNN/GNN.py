@@ -107,6 +107,7 @@ class Optimizer(Notification):
             lossArr.append(float(self.L))
          
         plt.hist(lossArr, bins=200)    
+        plt.savefig(/suphys/mray5102/files/TopData/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/GNNplot.png)
 
 
     def Learning(self):
