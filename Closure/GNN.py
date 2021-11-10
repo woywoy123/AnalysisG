@@ -191,10 +191,10 @@ def Test4TopGNNInvMass():
     L.TorchDataLoader()
     
     Op = Optimizer(L)
-    Op.Epochs = 100
+    Op.Epochs = 500
     Op.DefineEdgeConv(4, 2)
     Op.EpochLoop()
-    Op.AssignPredictionToEvents(ev.Events, "nominal")
+    Op.AssignPredictionToEvents(ev, "nominal")
 
     EvaluateTruthTopClassification(ev)
 

@@ -10,6 +10,7 @@ from sklearn.model_selection import KFold
 from torch.utils.data import ConcatDataset, SubsetRandomSampler
 from torch_geometric.data import DataLoader
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 
@@ -93,6 +94,7 @@ class Optimizer(Notification):
     def EpochLoop(self):
         self.Notify("EPOCHLOOP::Training")
 
+        
         for epoch in range(self.Epochs):
             for n in self.DataLoader:
                 self.DataLoader[n].shuffle = False
@@ -101,7 +103,8 @@ class Optimizer(Notification):
                     self.data = data
                     self.Learning()
             self.Notify("EPOCHLOOP::Training::EPOCH " + str(epoch+1) + "/" + str(self.Epochs) + " -> Current Loss: " + str(float(self.L)))
-
+            lossArr.append(float(self.L))
+         
 
     def Learning(self):
 
