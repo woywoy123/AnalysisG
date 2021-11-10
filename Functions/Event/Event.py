@@ -325,6 +325,7 @@ class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
     def SpawnEvents(self, Full = False):
 
         self.Read()
+        ind = 0
         for f in self.FileObjects:
 
             Trees = []
@@ -353,7 +354,7 @@ class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
                     E = Event()
                     if self.__Debug == True:
                         E.Debug = True
-
+        
                     E.Tree = k
                     E.iter = i
                     E.ParticleProxy(F)

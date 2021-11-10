@@ -88,12 +88,11 @@ class Optimizer(Notification):
                         val_cor += (p == ts.y).sum().item()
                         val_sam += len(test_loader.sampler)
                     
-                    self.Notify("VALIDATION::CORRECT: -> " + str(float(val_cor/val_sam)*100))
+                    #self.Notify("VALIDATION::CORRECT: -> " + str(float(val_cor/val_sam)*100))
 
 
     def EpochLoop(self):
         self.Notify("EPOCHLOOP::Training")
-
         
         for epoch in range(self.Epochs):
             for n in self.DataLoader:
@@ -103,7 +102,6 @@ class Optimizer(Notification):
                     self.data = data
                     self.Learning()
             self.Notify("EPOCHLOOP::Training::EPOCH " + str(epoch+1) + "/" + str(self.Epochs) + " -> Current Loss: " + str(float(self.L)))
-            lossArr.append(float(self.L))
          
 
     def Learning(self):
