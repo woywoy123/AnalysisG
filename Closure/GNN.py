@@ -36,6 +36,8 @@ def EvaluateTruthTopClassification(Events):
     print("Number of Correct Events: ", n_e_c)
     print("Number of Correct Tops: ", n_t_c)
 
+    return float(n_e_c/n_e)*100, float(n_t_c/n_t)*100
+
 
 def EvaluationOfGNN(Container, tree):
     n_e = 0
@@ -264,13 +266,6 @@ def TestRCJetAssignmentGNN():
     #Op.Epochs = 10
     #Op.EpochLoop()
 
-
-
-
-
-
-
-
     #Op = Optimizer(sig_L)
     #Op.DefineEdgeConv(1, 3)
     #Op.Epochs = 100
@@ -282,3 +277,38 @@ def TestRCJetAssignmentGNN():
     #
     #EvaluationOfGNN(sig, "nominal")
     #EvaluationOfGNN(back, "tree")
+
+
+def Helper():
+
+    if cache == True:
+        Generate_Cache()
+    ev = UnpickleObject("TruthTops")
+    
+    L = GenerateDataLoader(ev)
+    L.DefaultBatchSize = 100
+    L.NodeAttributes = {"Signal" : "Multi"}
+    L.TruthAttribute = {"Signal" : ""}
+    L.TorchDataLoader()
+    
+    output = {}
+    for i in range(10):
+        Op = Optimizer(L)
+        Op.Epochs = i+10
+        Op.DefineEdgeConv(1, 2)
+        Op.EpochLoop()
+        Op.AssignPredictionToEvents(ev, "nominal")
+  
+        res = EvaluateTruthTopClassification(ev)
+        print(res)
+        output[i] = res        
+
+
+    PickleObject(output, "LIST")
+
+
+
+
+
+
+

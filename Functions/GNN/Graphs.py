@@ -142,11 +142,12 @@ class GenerateDataLoader(Notification):
         Notification.__init__(self, self.Verbose)
         self.Caller = "GenerateDataLoader"
         
-        if torch.cuda.is_available():
-            self.Device = torch.device("cuda")
-        else:
-            self.Device = torch.device("cpu")
+        #if torch.cuda.is_available():
+        #    self.Device = torch.device("cuda")
+        #else:
+        #    self.Device = torch.device("cpu")
 
+        self.Device = torch.device("cpu")
         self.NodeAttributes = {}
         self.TruthAttribute = {}
 
