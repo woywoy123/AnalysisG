@@ -22,7 +22,7 @@ class DataTypeCheck:
         return Out
     
 class Threading(Notification):
-    def __init__(self, lists, threads = 100):
+    def __init__(self, lists, threads = 12):
         self.__threads = threads
         self.__lists = lists
         self.Result = []

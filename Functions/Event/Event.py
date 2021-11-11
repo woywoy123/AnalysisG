@@ -21,7 +21,7 @@ class EventVariables:
         self.MinimalBranch += RCJet().Branches
 
 class Event(VariableManager, DataTypeCheck, Debugging):
-    def __init__(self, Debug = False):
+    def __init__(self):
         VariableManager.__init__(self)
         DataTypeCheck.__init__(self)
         Debugging.__init__(self)
@@ -51,7 +51,7 @@ class Event(VariableManager, DataTypeCheck, Debugging):
         self.Anomaly_Detector = False
         
         self.BrokenEvent = False
-    
+
     def ParticleProxy(self, File):
         
         def Attributor(variable, value):
@@ -63,7 +63,6 @@ class Event(VariableManager, DataTypeCheck, Debugging):
                     self.SetAttribute(i.split("->")[1], o)
                     return True
             return False
-
 
         self.ListAttributes()
         for i in File.ArrayBranches:
@@ -80,7 +79,6 @@ class Event(VariableManager, DataTypeCheck, Debugging):
 
                 if var in Event().KeyMap:
                     self.SetAttribute(self.KeyMap[var], val)
-
 
     def MatchingRule(self, P1, P2, dR):
         
@@ -166,8 +164,7 @@ class Event(VariableManager, DataTypeCheck, Debugging):
     
     def CompileSpecificParticles(self, particles = False):
         if particles == "TruthTops":
-            self.TruthTops = CompileParticles(self.TruthTops, Top()).Compile() 
-            self.TruthTops = self.DictToList(self.TruthTops)
+            self.TruthTops = self.DictToList(CompileParticles(self.TruthTops, Top()).Compile())
 
         if particles == "TruthChildren":
             self.TruthTops = CompileParticles(self.TruthTops, Top()).Compile() 
@@ -185,21 +182,14 @@ class Event(VariableManager, DataTypeCheck, Debugging):
                 i.PropagateSignalLabel()
 
         if particles == "TruthJets":
-            self.TruthJets = CompileParticles(self.TruthJets, TruthJet()).Compile()
-            self.TruthJets = self.DictToList(self.TruthJets)
+            self.TruthJets = self.DictToList(CompileParticles(self.TruthJets, TruthJet()).Compile())
         
         if particles == "Detector":
-            self.Jets = CompileParticles(self.Jets, Jet()).Compile()
-            self.Muons = CompileParticles(self.Muons, Muon()).Compile()
-            self.Electrons = CompileParticles(self.Electrons, Electron()).Compile()
-            self.RCSubJets = CompileParticles(self.RCSubJets, RCSubJet()).Compile()
-            self.RCJets = CompileParticles(self.RCJets, RCJet()).Compile()
-            
-            self.Jets = self.DictToList(self.Jets)
-            self.Muons = self.DictToList(self.Muons)
-            self.Electrons = self.DictToList(self.Electrons)
-            self.RCJets = self.DictToList(self.RCJets)
-            self.RCSubJets = self.DictToList(self.RCSubJets)
+            self.Jets = self.DictToList(CompileParticles(self.Jets, Jet()).Compile())
+            self.Muons = self.DictToList(CompileParticles(self.Muons, Muon()).Compile())
+            self.Electrons = self.DictToList(CompileParticles(self.Electrons, Electron()).Compile())
+            self.RCSubJets = self.DictToList(CompileParticles(self.RCSubJets, RCSubJet()).Compile())
+            self.RCJets = self.DictToList(CompileParticles(self.RCJets, RCJet()).Compile())
 
     def CompileEvent(self):
         self.TruthTops = CompileParticles(self.TruthTops, Top()).Compile() 
@@ -264,6 +254,11 @@ class Event(VariableManager, DataTypeCheck, Debugging):
         for i in self.Jets:
             for j in i.Decay:
                 j.Flav = i.truthflavExtended
+         
+        del self.dRMatrix
+        del self.Objects
+        del self.Branches
+        del self.KeyMap
 
     def DetectorMatchingEngine(self):
         DetectorParticles = []
@@ -322,7 +317,7 @@ class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
         self.Events = {}
         self.__Debug = Debug
         
-    def SpawnEvents(self, Full = False):
+    def SpawnEvents(self):
 
         self.Read()
         ind = 0
@@ -333,19 +328,20 @@ class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
             self.Notify("Reading -> " + f)
             F = self.FileObjects[f]
             
-            if Full:
-                F.ScanFull()
-                Trees = F.AllTrees
-                Branches = F.AllBranches
-            else:
-                Trees = self.MinimalTree
-                Branches = self.MinimalBranch
+
+            Trees = self.MinimalTree
+            Branches = self.MinimalBranch
             F.Trees = Trees
             F.Branches = Branches
             F.CheckKeys()
             F.ConvertToArray()
             FirstBranches = list(F.ObjectBranches)[0]
-            
+
+            Trees = []
+            for k in F.ObjectBranches:
+                if k.split("/")[0] not in Trees:
+                    Trees.append(k.split("/")[0])
+
             self.Notify("SPAWNING EVENTS IN FILE -> " + f)
             self.Events[F.FileName] = []
             for i in range(len(F.ArrayBranches[FirstBranches])):
@@ -402,7 +398,6 @@ class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
                 else: 
                     particle_ = particle
                     Thread.append(TemplateThreading(k, "", "Batches", self.Batches[k], Loop))
-
             th = Threading(Thread, threads)
             th.Verbose = True
             if SingleThread:
@@ -430,3 +425,6 @@ class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
             for i in self.Events:
                 self.Events = self.Events[i]
                 break
+        
+        del self.MinimalTree 
+        

@@ -4,7 +4,7 @@ from Functions.GNN.GNN import Optimizer
 from Functions.GNN.Graphs import CreateEventGraph, GenerateDataLoader
 from Functions.Plotting.Graphs import GraphPainter
 
-cache = False
+cache = True
 events = -1
 dir = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/user.pgadow.24765302._000001.output.root"
 
@@ -225,31 +225,31 @@ def TestRCJetAssignmentGNN():
     signal_dir = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/user.pgadow.24765302._000001.output.root"
     background_dir = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/postProcessed_ttW.root"
 
-    Event = -1
-    back = EventGenerator(background_dir, DebugThresh = Event)
-    back.SpawnEvents()
-    back.CompileEvent()
+    #Event = -1
+    #back = EventGenerator(background_dir, DebugThresh = Event)
+    #back.SpawnEvents()
+    #back.CompileEvent()
 
-    sig = EventGenerator(signal_dir, DebugThresh = Event)
-    sig.SpawnEvents()
-    sig.CompileEvent()
+    #sig = EventGenerator(signal_dir, DebugThresh = Event)
+    #sig.SpawnEvents()
+    #sig.CompileEvent()
    
-    PickleObject(sig, "Signal_GNN")
-    PickleObject(back, "ttW_GNN") 
+    #PickleObject(sig, "Signal_GNN")
+    #PickleObject(back, "ttW_GNN") 
 
     sig = UnpickleObject("Signal_GNN")
     back = UnpickleObject("ttW_GNN")
 
     sig_L = GenerateDataLoader(sig)
     sig_L.DefaultBatchSize = 1
-    sig_L.ParticleLevel = "DetectorRCJets"
+    sig_L.ParticleLevel = "Detector"
     sig_L.NodeAttributes = {"pt" : "", "eta" : "", "phi" : "", "e" : "", "M" : "invMass"}
     sig_L.TruthAttribute = {"Signal" : ""}
     sig_L.TorchDataLoader("nominal", "signal")
 
     back_L = GenerateDataLoader(back)
     back_L.DefaultBatchSize = 1
-    back_L.ParticleLevel = "DetectorRCJets"
+    back_L.ParticleLevel = "Detector"
     back_L.NodeAttributes = {"pt" : "", "eta" : "", "phi" : "", "e" : "", "M" : "invMass"}
     back_L.TruthAttribute = {"Signal" : ""}
     back_L.TorchDataLoader("tree", "background")
@@ -293,45 +293,51 @@ def Helper():
     
     DSIDKeys = {"310844" : "_1TeV", "310845" : "1TeV", "313346" : "1.25TeV", "310846" : "1.5TeV", "310847" : "2TeV", "313180" : "2.5TeV", "313181" : "3TeV"}
 
-    for j in dirs:
-        ev = EventGenerator("/CERN/Grid/SignalSamples/"+j, -1)
-        ev.SpawnEvents()
-        ev.CompileEvent(particle = "TruthTops")
-        energy = DSIDKeys[j.split(".")[2]]
+    #for j in dirs:
+    #    ev = EventGenerator("/CERN/Grid/SignalSamples/"+j, -1)
+    #    ev.SpawnEvents()
+    #    ev.CompileEvent(particle = "TruthTops")
+    #    energy = DSIDKeys[j.split(".")[2]]
+    #    
+    #    if len(ev.Events) > 1:
+    #        for j in ev.Events:
+    #            ev.Events = ev.Events[j]
+    #            break
+    #    PickleObject(ev, energy + "_DataLoader")    
+    
+    index = 0
+    energy = DSIDKeys[dirs[index].split(".")[2]]
+    ev = UnpickleObject(energy + "_DataLoader")   
+    L = GenerateDataLoader(ev)
+    L.DefaultBatchSize = 10000
+    L.NodeAttributes = {"pt" : "", "eta" : "", "phi" : "", "e" : "", "M" : "invMass"}
+    #L.NodeAttributes = {"Signal" : "Multi"} # <----- Closure: Should give 100%
+    L.TruthAttribute = {"Signal" : ""}
+    L.TorchDataLoader("nominal", "signal")
+    
+    output = {}
+    for i in range(10):
+        ev = UnpickleObject(energy + "_DataLoader")
+        ep = (i+1)*10
+        Op = Optimizer()
+        Op.Epochs = ep
+        Op.kFold = 10
+        Op.SampleHandler([L])
+        Op.DefineEdgeConv(4, 2)
+        #Op.DefineEdgeConv(1, 2) # < ----- Closure
+        Op.KFoldTraining()
+        Op.LoaderObject = L
+        Op.AssignPredictionToEvents(ev, "nominal")
         
-        if len(ev.Events) > 1:
-            for j in ev.Events:
-                ev.Events = ev.Events[j]
-                break
+        output[ep] = EvaluateTruthTopClassification(ev)
+        PickleObject(ev, energy + "_DataLoader_Epoch_"+str(i))
         
-        L = GenerateDataLoader(ev)
-        L.DefaultBatchSize = 10000
-        L.NodeAttributes = {"pt" : "", "eta" : "", "phi" : "", "e" : "", "M" : "invMass"}
-        #L.NodeAttributes = {"Signal" : "Multi"} # <----- Closure: Should give 100%
-        L.TruthAttribute = {"Signal" : ""}
-        L.TorchDataLoader("nominal", "signal")
-        
-        output = {}
-        for i in range(10):
-            ep = (i+1)*10
-            Op = Optimizer()
-            Op.Epochs = ep
-            Op.kFold = 10
-            Op.SampleHandler([L])
-            Op.DefineEdgeConv(4, 2)
-            #Op.DefineEdgeConv(1, 2) # < ----- Closure
-            Op.KFoldTraining()
-            Op.LoaderObject = L
-            Op.AssignPredictionToEvents(ev, "nominal")
-            
-            output[ep] = EvaluateTruthTopClassification(ev)
-       
+    PickleObject(output, energy)
 
-        PickleObject(output, energy)
-        L = UnpickleObject(energy)
-            
-        for i in L:
-            print("Trialed EPOCH: " + str(i) + " :: Correct Events " + str(round(L[i][0], 4)) + "  ->  Correct Tops " + str(round(L[i][1], 4)))
+    L = UnpickleObject(energy)
+        
+    for i in L:
+        print("Trialed EPOCH: " + str(i) + " :: Correct Events " + str(round(L[i][0], 4)) + "  ->  Correct Tops " + str(round(L[i][1], 4)))
     
 
 

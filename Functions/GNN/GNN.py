@@ -1,16 +1,14 @@
 from Functions.GNN.Metrics import EvaluationMetrics
 from Functions.Tools.Alerting import Notification
-import torch 
-from torch_geometric.nn import GCNConv
-from torch_geometric.data import Data, DataLoader
 from Functions.GNN.GNN_Models import EdgeConv
 
 # Training and dataset management 
-from sklearn.model_selection import KFold
+import torch 
 from torch.utils.data import ConcatDataset, SubsetRandomSampler
-from torch_geometric.data import DataLoader
+from torch_geometric.loader import DataLoader
+
 import numpy as np
-import matplotlib.pyplot as plt
+from sklearn.model_selection import KFold
 
 
 
@@ -31,8 +29,8 @@ class Optimizer(Notification):
         Notification.__init__(self, verbose)
 
         self.Epochs = 500
-        self.LearningRate = 0.001
-        self.WeightDecay = 1e-4
+        self.LearningRate = 1e-6
+        self.WeightDecay = 1e-6
         self.kFold = 10
         self.DefaultBatchSize = 5000
         

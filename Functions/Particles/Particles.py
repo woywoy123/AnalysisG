@@ -219,6 +219,9 @@ class CompileParticles:
                         P.Index = i
                         Output[i].append(P)
                     Output[i][0].SetAttribute(k, val)
+        for i in Output:
+            for p in Output[i]:
+                p.ClearVariable()
         return Output
     
 

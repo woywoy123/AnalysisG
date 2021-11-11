@@ -23,6 +23,10 @@ class VariableManager:
     def GetAttributeFromKeyMap(self, key):
         obj = getattr(self, self.KeyMap[key])
         return obj
+    
+    def ClearVariable(self):
+        del self.Branches 
+        del self.KeyMap
         
         
 

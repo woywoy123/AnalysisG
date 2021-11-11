@@ -1,10 +1,12 @@
 import networkx as nx
-from torch_geometric.utils.convert import from_networkx
-from torch_geometric.data import Data, DataLoader
-from Functions.Event.Event import EventGenerator, Event
-from Functions.Tools.Alerting import Notification
 import torch
 from skhep.math.vectors import LorentzVector
+from torch_geometric.utils.convert import from_networkx
+from torch_geometric.loader import DataLoader
+from torch_geometric.data import Data
+
+from Functions.Event.Event import EventGenerator, Event
+from Functions.Tools.Alerting import Notification
 
 class CreateEventGraph:
 
@@ -142,12 +144,11 @@ class GenerateDataLoader(Notification):
         Notification.__init__(self, self.Verbose)
         self.Caller = "GenerateDataLoader"
         
-        #if torch.cuda.is_available():
-        #    self.Device = torch.device("cuda")
-        #else:
-        #    self.Device = torch.device("cpu")
+        if torch.cuda.is_available():
+            self.Device = torch.device("cuda")
+        else:
+            self.Device = torch.device("cpu")
 
-        self.Device = torch.device("cpu")
         self.NodeAttributes = {}
         self.TruthAttribute = {}
 

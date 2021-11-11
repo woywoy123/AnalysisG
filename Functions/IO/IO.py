@@ -25,23 +25,6 @@ class File(Notification):
         self.Branches = []
 
         self.__Reader = uproot.open(self.__Dir)
-
-        self.AllTrees = []
-        self.AllBranches = []
-        self.AllLeaves = []
-    
-
-    def ScanFull(self):
-        for i in self.__Reader.keys():
-            if self.CheckAttribute(self.__Reader[i], "keys") == False:
-                    continue
-            self.AllTrees.append(i.replace(";1", ""))
-            for j in self.__Reader[i].keys():
-                if self.CheckAttribute(self.__Reader[i][j], "keys") == False:
-                    continue
-                self.AllBranches.append(j)
-                for k in self.__Reader[i][j].keys():
-                    self.AllLeaves.append(k)
     
     def CheckKeys(self):
 
