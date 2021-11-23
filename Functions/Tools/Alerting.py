@@ -102,7 +102,7 @@ class Debugging:
             if tjet.Type == "truthjet" and jet.Type == "jet":
                 print("TJet Flavour: ", tjet.flavour, " Extended: ", tjet.flavour_extended, 
                         " nChad", tjet.nCHad, " nBhad", tjet.nBHad, " Index: ", tjet.Index,
-                      "Jet Flavour: ", jet.truthflav, " Extended: ", jet.truthflavExtended, 
+                      "|| Jet Flavour: ", jet.truthflav, " Extended: ", jet.truthflavExtended, 
                       " Truth Parton: ", jet.truthPartonLabel, " HS: ", jet.isTrueHS, " dR: ", round(dR, 4))
             
             if "child" in tjet.Type and jet.Type == "truthjet":
@@ -112,7 +112,7 @@ class Debugging:
 
             if "child" in tjet.Type and (jet.Type == "el" or jet.Type == "mu"):
                 print("Child PDGID: ", tjet.pdgid, " Index: ", tjet.Index, 
-                      "Type: ", jet.Type, " TruTyp: ", jet.true_type, 
+                      "|| Type: ", jet.Type, " TruTyp: ", jet.true_type, 
                       " TruOri: ", jet.true_origin, " Prompt: ", jet.true_isPrompt, " C: ", jet.charge , "dR: ", round(dR, 4))
         
         if len(truthjet_l) != 0 and len(jet_l) != 0:
@@ -120,10 +120,10 @@ class Debugging:
             print("TJ: ", len(truthjet_l), "J: ", len(jet_l), "Captured: ", len(captured))
             
             for tjet in truthjet_l:
-                print("--> Decay Product number: ", len(tjet.Decay), "FL: ", tjet.flavour, " ", tjet.flavour_extended, " Index: ", tjet.Index)
+                print("(TRUTHJET-JET-Match) Decay Product number: ", len(tjet.Decay), "FL: ", tjet.flavour, " FLE: ", tjet.flavour_extended, " Index: ", tjet.Index)
                 for jet in tjet.Decay:
-                    print("TJet Flavour: ", tjet.flavour, " Extended: ", tjet.flavour_extended, 
-                          " nChad", tjet.nCHad, " nBhad", tjet.nBHad, "Jet Flavour: ", jet.truthflav, " Extended: ", jet.truthflavExtended, 
+                    print("---> TJet Flavour: ", tjet.flavour, " Extended: ", tjet.flavour_extended, 
+                          " nChad", tjet.nCHad, " nBhad", tjet.nBHad, " || Jet Flavour: ", jet.truthflav, " Extended: ", jet.truthflavExtended, 
                           " Truth Parton: ", jet.truthPartonLabel, " HS: ", jet.isTrueHS, " dR: ", round(tjet.DeltaR(jet), 4))
 
         if len(truthjet_l) != 0 and len(child) != 0:
@@ -132,10 +132,10 @@ class Debugging:
             
             for c in child:
                 if "init" in c.Type:
-                    print("+----> Decay Product number: ", len(c.Decay_init), "PDGID: ", c.pdgid, " Index: ", c.Index)
+                    print("(TOP-CHILD-TRUTHJET-Match) Decay Product number: ", len(c.Decay_init), "PDGID: ", c.pdgid, " Index: ", c.Index)
                     it = c.Decay_init
                 else:
-                    print("+----> Decay Product number: ", len(c.Decay), "PDGID: ", c.pdgid, " Index: ", c.Index)
+                    print("(TOP-CHILD-TRUTHJET-Match) Decay Product number: ", len(c.Decay), "PDGID: ", c.pdgid, " Index: ", c.Index)
                     it = c.Decay
                 
                 for tjet in it:

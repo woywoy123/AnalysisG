@@ -1,6 +1,8 @@
 from Functions.Event.Event import EventGenerator
 from Functions.GNN.Graphs import GenerateDataLoader
 from Functions.IO.IO import PickleObject, UnpickleObject
+from Functions.Plotting.Histograms import TH1F
+from Functions.Particles.Particles import Particle
 
 events = 100
 Tree = "nominal"
@@ -74,3 +76,66 @@ def TestSignalDirectory():
     
     for i in ev.Events:
         print(i, ev.Events[i], ev.EventIndexFileLookup(i)) 
+
+def TestSingleTopFile():
+    dir = "/CERN/Grid/Samples/NAF/2021-05-05-2cRC-all/PlayGround"
+    
+    ev = EventGenerator(dir)
+    ev.SpawnEvents()
+    ev.CompileEvent(SingleThread = True)
+    PickleObject(ev, "SingleTop")
+    
+    ev = UnpickleObject("SingleTop")
+    TopMass = []
+    Masses = []
+    for i in ev.Events:
+        Event = ev.Events[i]
+        Particles = Event["tree"].DetectorParticles
+        
+        print("Event -> " + str(i))
+
+        Energetic = 0
+        Part = ""
+        P = Particle(True)
+        for k in Particles:
+            if "rc" in k.Type:
+                continue
+ 
+            if k.Type == "jet":
+                if Energetic < k.pt and k.truthPartonLabel == 5:
+                    Energetic = k.pt
+                    Part = k
+
+                print(k.truthflav, k.truthPartonLabel, k.isTrueHS, k.Type, k.Index)
+            
+            if k.Type == "mu" or k.Type == "el":
+                print(k.charge, k.Type, k.Index)
+                P.Decay.append(k)
+
+            k.CalculateMass()
+            Masses.append(k.Mass_GeV)
+
+        if isinstance(Part, Particle):
+            P.Decay.append(Part)
+            P.CalculateMassFromChildren()
+            TopMass.append(P.Mass_GeV)
+    
+    T = TH1F()
+    T.Title = "Mass of Top"
+    T.xTitle = "Mass (GeV)"
+    T.yTitle = "Entries"
+    T.xBins = 1000
+    T.xData = TopMass
+    T.xMin = 0
+    T.xMax = 1000
+    T.SaveFigure("Plots/SingleTop/")
+
+    T = TH1F()
+    T.Title = "Masses of all Particles"
+    T.xTitle = "Mass (GeV)"
+    T.yTitle = "Entries"
+    T.xBins = 150
+    T.xData = Masses
+    T.xMin = 0
+    T.xMax = 150
+    T.SaveFigure("Plots/SingleTop/")

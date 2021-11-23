@@ -2,7 +2,7 @@ from Closure.IO import TestIO, TestDir
 from Closure.Event import TestEvent, TestParticleAssignment
 from Closure.Plotting import TestTops, TestResonance, TestResonanceMassForEnergies, TestRCJetAssignments
 from Closure.GNN import TestSimple4TopGNN, TestDataImport, TestGraphObjects, TestComplex4TopGNN, Test4TopGNNInvMass, TestRCJetAssignmentGNN, Helper
-from Closure.DataLoader import TestSignalSingleFile, TestSignalMultipleFile, TestSignalDirectory
+from Closure.DataLoader import TestSignalSingleFile, TestSignalMultipleFile, TestSignalDirectory, TestSingleTopFile
 
 if __name__ == '__main__':
     #TestDir()
@@ -21,6 +21,8 @@ if __name__ == '__main__':
     #TestRCJetAssignments()
     #TestRCJetAssignmentGNN()
     #Helper()
-    TestSignalSingleFile()
+    #TestSignalSingleFile()
     #TestSignalMultipleFile()  
     #TestSignalDirectory()
+    TestSingleTopFile()
+

@@ -1,4 +1,4 @@
-from Functions.IO.IO import UpROOT_Reader
+from Functions.IO.IO import UpROOT_Reader, PickleObject, UnpickleObject
 from Functions.Tools.Alerting import Debugging
 from Functions.Particles.Particles import *
 from Functions.Tools.Variables import VariableManager
@@ -333,6 +333,7 @@ class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
             F.Branches = self.MinimalBranch
             F.CheckKeys()
             F.ConvertToArray()
+
             FirstBranches = list(F.ObjectBranches)[0]
 
             Trees = []
