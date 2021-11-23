@@ -315,24 +315,22 @@ class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
         Debugging.__init__(self, Threshold = DebugThresh)
         EventVariables.__init__(self)
         self.Events = {}
+        self.FileEventIndex = {}
         self.__Debug = Debug
+        self.Threads = 12
         
     def SpawnEvents(self):
 
         self.Read()
         ind = 0
         for f in self.FileObjects:
-
-            Trees = []
-            Branches = []
+            
+            self.Notify("_______NEW FILE______")
             self.Notify("Reading -> " + f)
             F = self.FileObjects[f]
             
-
-            Trees = self.MinimalTree
-            Branches = self.MinimalBranch
-            F.Trees = Trees
-            F.Branches = Branches
+            F.Trees = self.MinimalTree
+            F.Branches = self.MinimalBranch
             F.CheckKeys()
             F.ConvertToArray()
             FirstBranches = list(F.ObjectBranches)[0]
@@ -343,10 +341,15 @@ class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
                     Trees.append(k.split("/")[0])
 
             self.Notify("SPAWNING EVENTS IN FILE -> " + f)
-            self.Events[F.FileName] = []
+            self.Events[f] = []
+            end = False
             for i in range(len(F.ArrayBranches[FirstBranches])):
                 pairs = {}
                 for k in Trees:
+                    if self.TimeOut():
+                        end = True
+                        break
+
                     E = Event()
                     if self.__Debug == True:
                         E.Debug = True
@@ -355,11 +358,10 @@ class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
                     E.iter = i
                     E.ParticleProxy(F)
                     pairs[k] = E
-                
-                self.Events[F.FileName].append(pairs)
-                
-                if self.TimeOut():
-                    break 
+                if end: 
+                    break
+                self.Events[f].append(pairs)
+
             del F
         self.FileObjects = {}
 
@@ -378,17 +380,18 @@ class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
             return Entries
   
         self.Caller = "EVENTCOMPILER"
-
-        threads = 12
+        
+        it = 0
+        ev = {}
         for f in self.Events:
             self.Notify("COMPILING EVENTS IN FILE -> " + f)
             
             Events = self.Events[f]
-            entries_percpu = math.ceil(len(Events) / threads)
+            entries_percpu = math.ceil(len(Events) / self.Threads)
 
             self.Batches = {}
             Thread = []
-            for k in range(threads):
+            for k in range(self.Threads):
                 self.Batches[k] = [] 
                 for i in Events[k*entries_percpu : (k+1)*entries_percpu]:
                     self.Batches[k].append(i)
@@ -398,7 +401,7 @@ class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
                 else: 
                     particle_ = particle
                     Thread.append(TemplateThreading(k, "", "Batches", self.Batches[k], Loop))
-            th = Threading(Thread, threads)
+            th = Threading(Thread, self.Threads)
             th.Verbose = True
             if SingleThread:
                 th.TestWorker()
@@ -411,20 +414,27 @@ class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
             for i in res:
                 i.SetAttribute(self)
             
-            self.Events[f] = {}
-            it = 0
+            self.FileEventIndex[f] = []
+            self.FileEventIndex[f].append(it)
             for k in self.Batches:
                 for j in self.Batches[k]:
-                    self.Events[f][it] = j
+                    ev[it] = j
                     it += 1
+            self.FileEventIndex[f].append(it-1)
+            
             del th
             self.Batches = {}
             Thread = []
-
-        if len(self.Events) == 1:
-            for i in self.Events:
-                self.Events = self.Events[i]
-                break
-        
         del self.MinimalTree 
+        self.Events = ev
+
+    def EventIndexFileLookup(self, index):
+
+        for i in self.FileEventIndex:
+            min_ = self.FileEventIndex[i][0]
+            max_ = self.FileEventIndex[i][1]
+
+            if index >= min_ and index <= max_:
+                return i
+
         

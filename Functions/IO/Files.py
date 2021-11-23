@@ -27,6 +27,7 @@ class Directories(Notification):
         for i in glob("*"):
             if os.path.isfile(i) and ".root" in i:
                 Output.append(i)
+                self.Notify("FOUND +-> " + i)
         os.chdir(self.__pwd)
         return Output
 

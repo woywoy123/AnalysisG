@@ -48,7 +48,7 @@ class Debugging:
         self.Debug = False
     
     def TimeOut(self):
-        if self.__Threshold == self.__iter:
+        if self.__Threshold <= self.__iter and self.__Threshold != -1:
             return True
         self.__iter +=1
         
@@ -128,7 +128,7 @@ class Debugging:
 
         if len(truthjet_l) != 0 and len(child) != 0:
             print("===== Result::")
-            print("TJ: ", len(truthjet_l), "C: ", len(child), "Captured: ", len(captured))
+            print("TJ: ", len(truthjet_l), "Child: ", len(child), "Captured: ", len(captured))
             
             for c in child:
                 if "init" in c.Type:
