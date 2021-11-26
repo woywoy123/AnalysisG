@@ -1,4 +1,3 @@
-import uproot
 
 class Notification():
     def __init__(self, Verbose = False):
@@ -7,7 +6,6 @@ class Notification():
         self.__FAIL = "FAILURE"
         self.__WARNING = "WARNING"
         self.Caller = ""
-        self.Alerted = []
 
     def Notify(self, Message):
         if self.Verbose and self.Caller == "":
@@ -15,21 +13,6 @@ class Notification():
         elif self.Verbose and self.Caller != "":
             print(self.Caller.upper()+"::"+self.__INFO+"::"+Message)
 
-    def NothingGiven(self, Obj, Name):
-        if len(Obj) == 0:
-            print(self.Caller.upper()+"::"+self.__WARNING+"::NOTHING GIVEN +-> " + Name)
-
-
-    def CheckObject(self, Object, Key):
-        try:
-            Object[Key]
-            return True
-        except uproot.exceptions.KeyInFileError:
-            if Key not in self.Alerted:
-                print(self.__WARNING + self.Caller + " :: Key -> " + Key + " NOT FOUND")
-                self.Alerted.append(Key)
-            return False
-    
     def Warning(self, text):
         print(self.__WARNING + self.Caller + " :: " + text)
 
@@ -47,11 +30,15 @@ class Debugging:
         self.__iter = 0
         self.Debug = False
     
-    def TimeOut(self):
+    def Count(self):
+        self.__iter +=1
+
+    def Stop(self):
         if self.__Threshold <= self.__iter and self.__Threshold != -1:
             return True
-        self.__iter +=1
-        
+        else:
+            return False
+
     def ResetCounter(self):
         self.__iter = 0
 

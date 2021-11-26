@@ -5,10 +5,10 @@ class VariableManager:
         pass
 
     def ListAttributes(self):
-        self.Branches = []
+        self.Leaves = []
         for i in list(self.__dict__.values()):
             if isinstance(i, str) and i != "" and i != self.Type:
-                self.Branches.append(i)
+                self.Leaves.append(i)
 
     def SetAttribute(self, key, val):
         setattr(self, key, val)
@@ -25,7 +25,7 @@ class VariableManager:
         return obj
     
     def ClearVariable(self):
-        del self.Branches 
+        del self.Leaves 
         del self.KeyMap
         
         

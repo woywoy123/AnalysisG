@@ -1,26 +1,6 @@
 from multiprocessing import Process, Pipe
 from Functions.Tools.Alerting import Notification
 
-class DataTypeCheck:
-
-    def __init__(self):
-        pass
-    
-    def AddToList(self, obj):
-        output = []
-        if isinstance(obj, str):
-            output.append(obj)
-        if isinstance(obj, list):
-            output += obj
-        return output
-    
-    def DictToList(self, dic):
-        Out = []
-        for i in dic:
-            if isinstance(dic[i], list):
-                Out += self.AddToList(dic[i])
-        return Out
-    
 class Threading(Notification):
     def __init__(self, lists, threads = 12):
         self.__threads = threads

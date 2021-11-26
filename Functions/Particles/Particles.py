@@ -1,16 +1,14 @@
 from Functions.Tools.Variables import VariableManager
-from Functions.Tools.DataTypes import DataTypeCheck
 import copy
 import math
 from skhep.math.vectors import LorentzVector
 
-class Particle(VariableManager, DataTypeCheck):
+class Particle(VariableManager):
     def __init__(self, Type = False):
         if Type != False:
             self.Type = "Particle"
 
         VariableManager.__init__(self)
-        DataTypeCheck.__init__(self)
         self.pt = self.Type + "_pt"
         self.eta = self.Type + "_eta"
         self.phi = self.Type + "_phi"

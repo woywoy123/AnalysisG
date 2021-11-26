@@ -1,29 +1,28 @@
-from Functions.IO.IO import UpROOT_Reader, PickleObject, UnpickleObject
+from Functions.IO.IO import PickleObject, UnpickleObject, File, Directories
 from Functions.Tools.Alerting import Debugging
 from Functions.Particles.Particles import *
 from Functions.Tools.Variables import VariableManager
-from Functions.Tools.DataTypes import DataTypeCheck, TemplateThreading, Threading
+from Functions.Tools.DataTypes import TemplateThreading, Threading
 import math
 
 class EventVariables:
     def __init__(self):
-        self.MinimalTree = ["tree", "nominal"]
-        self.MinimalBranch = []
-        self.MinimalBranch += Event().Branches
-        self.MinimalBranch += TruthJet().Branches
-        self.MinimalBranch += Jet().Branches
-        self.MinimalBranch += Electron().Branches
-        self.MinimalBranch += Muon().Branches
-        self.MinimalBranch += Top().Branches
-        self.MinimalBranch += Truth_Top_Child().Branches
-        self.MinimalBranch += Truth_Top_Child_Init().Branches
-        self.MinimalBranch += RCSubJet().Branches
-        self.MinimalBranch += RCJet().Branches
+        self.MinimalTrees = ["tree", "nominal"]
+        self.MinimalLeaves = []
+        self.MinimalLeaves += Event().Leaves
+        self.MinimalLeaves += TruthJet().Leaves
+        self.MinimalLeaves += Jet().Leaves
+        self.MinimalLeaves += Electron().Leaves
+        self.MinimalLeaves += Muon().Leaves
+        self.MinimalLeaves += Top().Leaves
+        self.MinimalLeaves += Truth_Top_Child().Leaves
+        self.MinimalLeaves += Truth_Top_Child_Init().Leaves
+        self.MinimalLeaves += RCSubJet().Leaves
+        self.MinimalLeaves += RCJet().Leaves
 
-class Event(VariableManager, DataTypeCheck, Debugging):
+class Event(VariableManager, Debugging):
     def __init__(self):
         VariableManager.__init__(self)
-        DataTypeCheck.__init__(self)
         Debugging.__init__(self)
         self.runNumber = "runNumber"
         self.eventNumber = "eventNumber"
@@ -194,7 +193,15 @@ class Event(VariableManager, DataTypeCheck, Debugging):
             self.RCSubJets = self.DictToList(CompileParticles(self.RCSubJets, RCSubJet()).Compile())
             self.RCJets = self.DictToList(CompileParticles(self.RCJets, RCJet()).Compile())
 
+    def DictToList(self, inp): 
+        out = []
+        for i in inp:
+            out.append(inp[i])
+        return out
+
     def CompileEvent(self, ClearVal = True):
+
+
         self.TruthTops = CompileParticles(self.TruthTops, Top()).Compile(ClearVal) 
         self.TruthChildren_init = CompileParticles(self.TruthChildren_init, Truth_Top_Child_Init()).Compile(ClearVal)
         self.TruthChildren = CompileParticles(self.TruthChildren, Truth_Top_Child()).Compile(ClearVal)
@@ -260,7 +267,7 @@ class Event(VariableManager, DataTypeCheck, Debugging):
         if ClearVal: 
             del self.dRMatrix
             del self.Objects
-            del self.Branches
+            del self.Leaves
             del self.KeyMap
 
     def DetectorMatchingEngine(self):
@@ -312,62 +319,58 @@ class Event(VariableManager, DataTypeCheck, Debugging):
             self.DeltaRLoop() 
         
    
-class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
-    def __init__(self, dir, Verbose = True, DebugThresh = -1, Debug = False):
-        UpROOT_Reader.__init__(self, dir, Verbose)
-        Debugging.__init__(self, Threshold = DebugThresh)
+class EventGenerator(Debugging, EventVariables, Directories):
+    def __init__(self, dir, Verbose = True, Start = 0, Stop = -1, Debug = False):
+        Debugging.__init__(self, Threshold = Stop - Start)
         EventVariables.__init__(self)
+        Directories.__init__(self, dir)
         self.Events = {}
         self.FileEventIndex = {}
         self.__Debug = Debug
         self.Threads = 12
+        self.Caller = "EVENTGENERATOR"
+        self.Start = Start
+        self.Stop = Stop
         
     def SpawnEvents(self):
+        self.GetFilesInDir()
+        for i in self.Files:
+            self.Notify("_______NEW DIRECTORY______: " + str(i))
+            for F in self.Files[i]:
+                self.Events[i + "/" + F] = []
+                F_i = File(i + "/" + F, self.__Debug)
+                F_i.Trees = self.MinimalTrees
+                F_i.Leaves = self.MinimalLeaves
+                F_i.CheckKeys()
+                F_i.ConvertToArray()
+                
+                self.Notify("SPAWNING EVENTS IN FILE -> " + F)
+                for l in range(len(F_i.ArrayLeaves[list(F_i.ArrayLeaves)[0]])):
+                    pairs = {}
+                    for tr in F_i.ObjectTrees:
+                        
+                        if self.Start != 0:
+                            if self.Start <= l:
+                                self.Count() 
+                            else:
+                                continue
 
-        self.Read()
-        ind = 0
-        for f in self.FileObjects:
-            
-            self.Notify("_______NEW FILE______")
-            self.Notify("Reading -> " + f)
-            F = self.FileObjects[f]
-            
-            F.Trees = self.MinimalTree
-            F.Branches = self.MinimalBranch
-            F.CheckKeys()
-            F.ConvertToArray()
 
-            FirstBranches = list(F.ObjectBranches)[0]
+                        E = Event()
+                        E.Debug = self.__Debug
+                        E.Tree = tr
+                        E.iter = l
+                        E.ParticleProxy(F_i)
+                        pairs[tr] = E
 
-            Trees = []
-            for k in F.ObjectBranches:
-                if k.split("/")[0] not in Trees:
-                    Trees.append(k.split("/")[0])
-
-            self.Notify("SPAWNING EVENTS IN FILE -> " + f)
-            self.Events[f] = []
-            end = False
-            for i in range(len(F.ArrayBranches[FirstBranches])):
-                pairs = {}
-                for k in Trees:
-                    if self.TimeOut():
-                        end = True
+                    self.Events[i + "/" + F].append(pairs)
+                    
+                    if self.Stop:
                         break
-
-                    E = Event()
-                    if self.__Debug == True:
-                        E.Debug = True
-        
-                    E.Tree = k
-                    E.iter = i
-                    E.ParticleProxy(F)
-                    pairs[k] = E
-                if end: 
-                    break
-                self.Events[f].append(pairs)
-
-            del F
-        self.FileObjects = {}
+                del F_i
+                self.ResetCounter()
+        del self.MinimalLeaves
+        del self.MinimalTrees
 
     def CompileEvent(self, SingleThread = False, particle = False, ClearVal = True):
         
@@ -388,7 +391,7 @@ class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
         it = 0
         ev = {}
         for f in self.Events:
-            self.Notify("COMPILING EVENTS IN FILE -> " + f)
+            self.Notify("COMPILING EVENTS FROM FILE -> " + f)
             
             Events = self.Events[f]
             entries_percpu = math.ceil(len(Events) / self.Threads)
@@ -412,7 +415,7 @@ class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
             else:
                 th.StartWorkers()
 
-            self.Notify("FINISHED COMPILING EVENTS IN FILE -> " + f)
+            self.Notify("FINISHED COMPILING EVENTS FROM FILE -> " + f)
             self.Notify("SORTING INTO DICTIONARY -> " + f)
             res = th.Result
             for i in res:
@@ -429,7 +432,6 @@ class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
             del th
             self.Batches = {}
             Thread = []
-        del self.MinimalTree 
         self.Events = ev
 
     def EventIndexFileLookup(self, index):

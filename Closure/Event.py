@@ -5,6 +5,17 @@ from Functions.Particles.Particles import *
 from Functions.Event.Event import Event
 from Functions.IO.IO import PickleObject, UnpickleObject
 
+
+dir = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/user.pgadow.24765302._000001.output.root"
+def TestEvents():
+    x = EventGenerator(dir, Start = 0, Stop = 100)
+    x.SpawnEvents()
+    x.CompileEvent(SingleThread = True)
+
+    return True
+
+
+
 def ManualUproot(dir, Tree, Branch):
     F = uproot.open(dir)
     en = F[Tree + "/" + Branch].array(library = "np")
@@ -109,7 +120,6 @@ def Comparison(dir, Tree, Branch, Events,Spawned):
 
     print("PASSED:: " + Branch + " " + Tree)
 
-dir = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/user.pgadow.24765302._000001.output.root"
 
 def TestParticleAssignment():
     Events = -1
@@ -234,9 +244,6 @@ def TestParticleAssignment():
     Comparison(dir, TreeTest, "rcjetsub_phi", Events, x.Events)
     Comparison(dir, TreeTest, "rcjetsub_eta", Events, x.Events) 
 
-def TestEvent():
-    x = EventGenerator(dir, DebugThresh = 20)
-    x.SpawnEvents()
-    x.CompileEvent(SingleThread = True)
+
 
 

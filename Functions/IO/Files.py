@@ -13,12 +13,16 @@ class Directories(Notification):
         self.Files = {}
 
     def ListDirs(self):
-        os.chdir(self.__Dir)
+        try:
+            os.chdir(self.__Dir)
+        except NotADirectoryError:
+            return None
+
         for i in glob("*"):
             if os.path.isdir(i):
                 self.Files[os.getcwd()+"/"+i] = []
             else:
-                self.Files[os.getcwd()] = []
+                pass 
         os.chdir(self.__pwd)
 
     def ListFilesInDir(self, dir):
@@ -27,7 +31,7 @@ class Directories(Notification):
         for i in glob("*"):
             if os.path.isfile(i) and ".root" in i:
                 Output.append(i)
-                self.Notify("FOUND +-> " + i)
+                self.Notify("FOUND +-> " + dir + "/" + i)
         os.chdir(self.__pwd)
         return Output
 

@@ -1,16 +1,15 @@
 import uproot
 import pickle
 from Functions.IO.Files import Directories
-from Functions.Tools.DataTypes import DataTypeCheck, Threading, TemplateThreading
+from Functions.Tools.DataTypes import Threading, TemplateThreading
 from Functions.Tools.Alerting import Notification
 
 class File(Notification):
-    def __init__(self, dir, name, Verbose = False):
+    def __init__(self, dir, Verbose = False):
         Notification.__init__(self, Verbose = Verbose) 
         self.Caller = "FILE +--> " + dir
 
         self.__Dir = dir
-        self.FileName = name 
         
         self.ArrayBranches = {}
         self.ArrayLeaves = {}
@@ -25,45 +24,55 @@ class File(Notification):
         self.Branches = []
 
         self.__Reader = uproot.open(self.__Dir)
-    
+  
+    def CheckObject(self, Object, Key):
+        if Key == -1:
+            return False
+        try:
+            Object[Key]
+            return True
+        except uproot.exceptions.KeyInFileError:
+            return False
+
+    def ReturnObject(self, i, j = -1, k = -1):
+        out = self.__Reader
+        if self.CheckObject(out, i):
+            self.ObjectTrees[i] = self.__Reader[i]
+        else:
+            self.Warning("SKIPPED TREE -> " + i)
+            return None
+        
+        if self.CheckObject(out[i], j):
+            self.ObjectBranches[i + "/" + j] = self.__Reader[i][j]
+        elif j != -1: 
+            self.Warning("SKIPPED BRANCH -> " + j)
+
+        if self.CheckObject(out[i], k):
+            if j != -1:
+                self.ObjectLeaves[i + "/" + j + "/" + k] = out = self.__Reader[i][j][k]
+            else:
+                self.ObjectLeaves[i + "/" + k] = self.__Reader[i][k]
+        elif k != -1: 
+            self.Warning("SKIPPED LEAF -> " + k)
+
     def CheckKeys(self):
 
-        def ReturnObject(Obj, i, j = -1, k = -1):
-            out = ""
-            if self.CheckObject(self.__Reader, i):
-                out = Obj[i]
-
-            if j != -1:
-                if self.CheckObject(out, j):
-                    out = Obj[i][j]
-                else:
-                    out = ""
-            if k != -1:
-                if self.CheckObject(out, k):
-                    out = Obj[i][j][k]
-                else:
-                    out = ""
-            return out
-        
         for i in self.Trees:
-            treeobj = ReturnObject(self.__Reader, i)
-            if treeobj == "":
-                self.Warning("SKIPPED TREE -> " + i)
-                continue
-            self.ObjectTrees[i] = treeobj
+            self.ReturnObject(i)
+        
+        for i in self.ObjectTrees:
             for j in self.Branches:
-                branchobj = ReturnObject(self.__Reader, i, j)
-                if branchobj == "":
-                    self.Warning("SKIPPED BRANCH -> " + j)
-                    continue                
-                self.ObjectBranches[i + "/" + j] = branchobj
+                self.ReturnObject(i, j)
 
-                for k in self.Leaves:
-                    leafobj = ReturnObject(self.__Reader, i, j, k) 
-                    if leafobj == "":
-                        self.Warning("SKIPPED LEAF -> " + k)
-                        continue
-                    self.ObjectLeaves[i + "/" + j + "/" + k] = leafobj
+        for i in self.ObjectTrees:
+            for j in self.Leaves:
+                self.ReturnObject(i, -1, j)
+
+        for i in self.ObjectBranches:
+            for j in self.Leaves:
+                tr = i.split("/")[0]
+                br = i.split("/")[1]
+                self.ReturnObject(tr, br, j) 
 
     def ConvertToArray(self):
         def Convert(obj):
@@ -84,7 +93,7 @@ class File(Notification):
             if self.CheckAttribute(self.ObjectBranches[i], "array") and i not in self.ArrayBranches:
                 th = TemplateThreading(i, "ObjectBranches", "ArrayBranches", self.ObjectBranches[i], Convert)
                 runners.append(th)
-
+        
         for i in self.ObjectLeaves:
             if self.CheckAttribute(self.ObjectLeaves[i], "array") and i not in self.ArrayLeaves:
                 th = TemplateThreading(i, "ObjectLeaves", "ArrayLeaves", self.ObjectLeaves[i], Convert)
@@ -94,42 +103,7 @@ class File(Notification):
         T.StartWorkers()
         for i in T.Result:
             i.SetAttribute(self)
-
-
-
-class UpROOT_Reader(Directories, DataTypeCheck):
-    
-    def __init__(self, dir, Verbose = False):
-        Directories.__init__(self, dir, Verbose)
-        self.Caller = "UpRootReader"
-        
-        DataTypeCheck.__init__(self)
-
-        self.__Branches = []
-        self.__Trees = []
-        self.__Leaves = []
-
-        self.FileObjects = {}
-        
-    def DefineBranches(self, Branches):
-        self.__Branches += self.AddToList(Branches)
-
-    def DefineTrees(self, Trees):
-        self.__Trees += self.AddToList(Trees)
-
-    def DefineLeaves(self, Leaves):
-        self.__Leaves += self.AddToList(Leaves)
-    
-    def Read(self):
-        self.GetFilesInDir()
-        for i in self.Files:
-            for j in self.Files[i]:
-                r = i + "/" +j
-                x = File(r, j, self.Verbose)
-                x.Trees = self.__Trees
-                x.Leaves = self.__Leaves
-                x.Branches = self.__Branches
-                self.FileObjects[r] = x   
+        del T
 
 
 def PickleObject(obj, filename):
