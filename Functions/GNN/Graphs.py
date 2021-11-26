@@ -86,7 +86,7 @@ class CreateEventGraph:
         def fx(a, b, attr):
             return a.DeltaR(b)
         self.CalculateEdgeAttributes(fx)
-        self.CalculateNodeAttributes()
+        #self.CalculateNodeAttributes()
 
     def CalculateNodeMultiplicationIndex(self):
         def fx(a, b, attr):

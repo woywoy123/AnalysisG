@@ -6,6 +6,7 @@ class GraphPainter(SharedMethods):
 
     def __init__(self, networkx_graph):
         self.G = networkx_graph.G
+        self.Filename = ""
         self.PLT = plt
         self.PLT.figure()
         self.Title = "Graph"

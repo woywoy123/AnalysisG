@@ -42,6 +42,9 @@ class Event(VariableManager, DataTypeCheck, Debugging):
                        "jet->Jets" : Jet(), "top->TruthTops" : Top(), "child->TruthChildren" : Truth_Top_Child(), 
                        "child_init->TruthChildren_init" : Truth_Top_Child_Init(), "rcsubjet->RCSubJets" : RCSubJet(), 
                        "rcjet->RCJets" : RCJet()}
+
+        self.DetectorParticles = []
+        
         for i in self.Objects:
             self.SetAttribute(i.split("->")[1], {})
 
@@ -191,16 +194,16 @@ class Event(VariableManager, DataTypeCheck, Debugging):
             self.RCSubJets = self.DictToList(CompileParticles(self.RCSubJets, RCSubJet()).Compile())
             self.RCJets = self.DictToList(CompileParticles(self.RCJets, RCJet()).Compile())
 
-    def CompileEvent(self):
-        self.TruthTops = CompileParticles(self.TruthTops, Top()).Compile() 
-        self.TruthChildren_init = CompileParticles(self.TruthChildren_init, Truth_Top_Child_Init()).Compile()
-        self.TruthChildren = CompileParticles(self.TruthChildren, Truth_Top_Child()).Compile()
-        self.TruthJets = CompileParticles(self.TruthJets, TruthJet()).Compile()
-        self.Jets = CompileParticles(self.Jets, Jet()).Compile()
-        self.Muons = CompileParticles(self.Muons, Muon()).Compile()
-        self.Electrons = CompileParticles(self.Electrons, Electron()).Compile()
-        self.RCSubJets = CompileParticles(self.RCSubJets, RCSubJet()).Compile()
-        self.RCJets = CompileParticles(self.RCJets, RCJet()).Compile()
+    def CompileEvent(self, ClearVal = True):
+        self.TruthTops = CompileParticles(self.TruthTops, Top()).Compile(ClearVal) 
+        self.TruthChildren_init = CompileParticles(self.TruthChildren_init, Truth_Top_Child_Init()).Compile(ClearVal)
+        self.TruthChildren = CompileParticles(self.TruthChildren, Truth_Top_Child()).Compile(ClearVal)
+        self.TruthJets = CompileParticles(self.TruthJets, TruthJet()).Compile(ClearVal)
+        self.Jets = CompileParticles(self.Jets, Jet()).Compile(ClearVal)
+        self.Muons = CompileParticles(self.Muons, Muon()).Compile(ClearVal)
+        self.Electrons = CompileParticles(self.Electrons, Electron()).Compile(ClearVal)
+        self.RCSubJets = CompileParticles(self.RCSubJets, RCSubJet()).Compile(ClearVal)
+        self.RCJets = CompileParticles(self.RCJets, RCJet()).Compile(ClearVal)
 
         for i in self.TruthTops:
             self.TruthTops[i][0].Decay_init = self.TruthChildren_init[i]
@@ -238,7 +241,6 @@ class Event(VariableManager, DataTypeCheck, Debugging):
         self.RCJets = self.DictToList(self.RCJets)
         self.RCSubJets = self.DictToList(self.RCSubJets)
 
-        self.DetectorParticles = []
         self.DetectorParticles += self.Jets
         self.DetectorParticles += self.Muons
         self.DetectorParticles += self.Electrons
@@ -254,11 +256,12 @@ class Event(VariableManager, DataTypeCheck, Debugging):
         for i in self.Jets:
             for j in i.Decay:
                 j.Flav = i.truthflavExtended
-         
-        del self.dRMatrix
-        del self.Objects
-        del self.Branches
-        del self.KeyMap
+        
+        if ClearVal: 
+            del self.dRMatrix
+            del self.Objects
+            del self.Branches
+            del self.KeyMap
 
     def DetectorMatchingEngine(self):
         DetectorParticles = []
@@ -366,12 +369,12 @@ class EventGenerator(UpROOT_Reader, Debugging, EventVariables):
             del F
         self.FileObjects = {}
 
-    def CompileEvent(self, SingleThread = False, particle = False):
+    def CompileEvent(self, SingleThread = False, particle = False, ClearVal = True):
         
         def function(Entries):
             for k in Entries:
                 for j in k:
-                    k[j].CompileEvent()
+                    k[j].CompileEvent(ClearVal = ClearVal)
             return Entries
 
         def Loop(Entries):

@@ -115,8 +115,7 @@ def TestParticleAssignment():
     Events = -1
     x = EventGenerator(dir, DebugThresh = Events)
     x.SpawnEvents()
-    x.CompileEvent()
-    
+    x.CompileEvent(ClearVal = False)
     TreeTest = "nominal"
 
     #Electrons 

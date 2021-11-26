@@ -197,7 +197,7 @@ class CompileParticles:
                 self.__Keys[self.__Part.KeyMap[key]] = val
                 self.__len = len(val)
 
-    def Compile(self):
+    def Compile(self, ClearVal = True):
         Output = {}
        
         for i in range(self.__len):
@@ -219,9 +219,11 @@ class CompileParticles:
                         P.Index = i
                         Output[i].append(P)
                     Output[i][0].SetAttribute(k, val)
+        
         for i in Output:
             for p in Output[i]:
-                p.ClearVariable()
+                if ClearVal:
+                    p.ClearVariable()
         return Output
     
 

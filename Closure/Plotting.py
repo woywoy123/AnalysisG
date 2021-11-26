@@ -96,7 +96,6 @@ def TestTops():
     tc_init.CompileHistogram()
     s.AddObject(tc_init)
     
-    s.CompileFigure()
     s.SaveFigure()
 
     # Comparison Plot of the Truth Top Mass from children and truth jets
@@ -133,7 +132,6 @@ def TestTops():
     tc_init.CompileHistogram()
     s.AddObject(tc_init)
     
-    s.CompileFigure()
     s.SaveFigure()
 
 
@@ -171,7 +169,6 @@ def TestTops():
     tc_init.CompileHistogram()
     s.AddObject(tc_init)
     
-    s.CompileFigure()
     s.SaveFigure()
 
     # Comparison of Top mass from jets vs top_child information + No Anomalous Event matching 
@@ -208,7 +205,6 @@ def TestTops():
     tc_init.CompileHistogram()
     s.AddObject(tc_init)
     
-    s.CompileFigure()
     s.SaveFigure()
 
 
@@ -319,7 +315,6 @@ def TestResonance():
     tc_init.CompileHistogram()
     s.AddObject(tc_init)
     
-    s.CompileFigure()
     s.SaveFigure()
 
     # Comparison Plot of the Truth Top Mass from children and truth jets
@@ -353,7 +348,6 @@ def TestResonance():
     tc_init.CompileHistogram()
     s.AddObject(tc_init)
     
-    s.CompileFigure()
     s.SaveFigure()
 
 
@@ -388,7 +382,6 @@ def TestResonance():
     tc_init.CompileHistogram()
     s.AddObject(tc_init)
     
-    s.CompileFigure()
     s.SaveFigure()
 
 
@@ -687,3 +680,78 @@ def TestRCJetAssignments():
     MassPID.yMax = 1500
     MassPID.yTitle = "GeV"
     MassPID.SaveFigure("Plots/RCJetSpectrum/")
+
+def TestBackGroundProcesses():
+    def CreateEvents(direc, event):
+        ev = EventGenerator(direc, DebugThresh = event)
+        ev.SpawnEvents()
+        ev.CompileEvent()
+        return ev
+
+    def GetNJets(ev, tree):
+        Jet_Number = []
+        for i in ev.Events:
+            Event = ev.Events[i][tree]
+            
+            n = 0
+            for k in Event.DetectorParticles:
+                if k.Type == "jet":
+                    n += 1
+            Jet_Number.append(n)
+        return Jet_Number
+    
+    dir_ttbar = "/CERN/Grid/Samples/NAF/2021-05-05-2cRC-all/mc16a/postProcessed_ttbar_PhPy8_Total.root"
+    dir_4t = "/CERN/Grid/Samples/NAF/2021-05-05-2cRC-all/mc16a/postProcessed_4tops_aMCPy8_AFII.root"
+    dir_SingleT = "/CERN/Grid/Samples/NAF/2021-05-05-2cRC-all/mc16a/postProcessed_SingleTop.root"
+    dir_SingleT_Rare = "/CERN/Grid/Samples/NAF/2021-05-05-2cRC-all/mc16a/postProcessed_SingleTop_rare.root"
+    
+    dir_ttH = "/CERN/Grid/Samples/NAF/2021-05-05-2cRC-all/mc16a/postProcessed_ttH.root"
+    dir_ttW = "/CERN/Grid/Samples/NAF/2021-05-05-2cRC-all/mc16a/postProcessed_ttW.root"
+
+    dir_ttZ = "/CERN/Grid/Samples/NAF/2021-05-05-2cRC-all/mc16a/postProcessed_ttZ.root"
+    dir_VH = "/CERN/Grid/Samples/NAF/2021-05-05-2cRC-all/mc16a/postProcessed_VH.root"
+
+    dir_VV = "/CERN/Grid/Samples/NAF/2021-05-05-2cRC-all/mc16a/postProcessed_VV.root"
+    dir_Wjets = "/CERN/Grid/Samples/NAF/2021-05-05-2cRC-all/mc16a/postProcessed_Wjets_Sherpa221.root"
+
+    dir_Zjets_ee = "/CERN/Grid/Samples/NAF/2021-05-05-2cRC-all/mc16a/postProcessed_Zjets_ee_Sherpa221.root"
+    dir_Zjets_mumu = "/CERN/Grid/Samples/NAF/2021-05-05-2cRC-all/mc16a/postProcessed_Zjets_mumu_Sherpa221.root"
+    dir_Zjets_tautau = "/CERN/Grid/Samples/NAF/2021-05-05-2cRC-all/mc16a/postProcessed_Zjets_tautau_Sherpa221.root"
+
+    
+    Processes = [dir_ttbar, dir_4t, dir_SingleT, dir_SingleT_Rare, dir_ttH, dir_VH, dir_VV, dir_Wjets, dir_Zjets_ee, dir_Zjets_tautau, dir_Zjets_mumu]
+    Map = {}
+    for i in Processes:
+        p = i.split("/")
+        proc = p[len(p) - 1].strip(".root")
+        name = "-".join(proc.split("_")[1:])
+        Map[name] = i
+        
+        #ev = CreateEvents(i, 1000)
+        #PickleObject(ev, name + ".pkl")
+   
+    Jets = []
+    Names = []
+    for i in Map:
+        #ev = UnpickleObject(i + ".pkl")
+        #Jets.append(GetNJets(ev, "tree"))
+        Names.append(i)
+    #PickleObject(Jets, "Jets")
+    Jets = UnpickleObject("Jets")
+    
+    J = []
+    for i in Jets:
+        l = 0
+        for k in i:
+            l += k
+            J.append(k)
+    
+    Njet_P = TH2F()
+    Njet_P.Title = "N-Jets vs Process Considered"
+    Njet_P.Filename = "n_jets_process"
+    Njet_P.yData = Jets
+    Njet_P.xData = Names
+    Njet_P.yMin = 0
+    Njet_P.xTitle = "Process"
+    Njet_P.yTitle = "N-Jets"
+    Njet_P.SaveFigure("Plots/Njets/")
