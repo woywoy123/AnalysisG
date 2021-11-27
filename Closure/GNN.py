@@ -4,10 +4,6 @@ from Functions.GNN.GNN import Optimizer
 from Functions.GNN.Graphs import CreateEventGraph, GenerateDataLoader
 from Functions.Plotting.Graphs import GraphPainter
 
-cache = False
-events = -1
-dir = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/user.pgadow.24765302._000001.output.root"
-
 def EvaluateTruthTopClassification(Events):
     n_e = 0 
     n_t = 0 
@@ -82,25 +78,7 @@ def EvaluationOfGNN(Container, tree):
 
 
 
-def Generate_Cache():
-    def Generator(dir, events, compiler):
-        ev = EventGenerator(dir, DebugThresh = events)
-        ev.SpawnEvents()
-        ev.CompileEvent(SingleThread = False, particle = compiler)
-        if compiler == False:
-            compiler = "Complete"
-        PickleObject(ev, compiler)
 
-    compiler = "TruthTops"
-    Generator(dir, events, compiler)
-    compiler = "TruthChildren"
-    Generator(dir, events, compiler)
-    compiler = "TruthJets"
-    Generator(dir, events, compiler)
-    compiler = "Detector"
-    Generator(dir, events, compiler)
-    compiler = False
-    Generator(dir, events, compiler)
 
 def TestGraphObjects():
 

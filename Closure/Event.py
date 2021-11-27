@@ -11,17 +11,9 @@ def TestEvents():
     x = EventGenerator(dir, Start = 0, Stop = 100)
     x.SpawnEvents()
     x.CompileEvent(SingleThread = True)
-
     return True
 
-
-
-def ManualUproot(dir, Tree, Branch):
-    F = uproot.open(dir)
-    en = F[Tree + "/" + Branch].array(library = "np")
-    return en    
-
-def Comparison(dir, Tree, Branch, Events,Spawned):
+def Comparison(dir, Tree, Branch, Events, Spawned):
     el = Electron()
     mu = Muon()
     truthjet = TruthJet()
@@ -35,7 +27,8 @@ def Comparison(dir, Tree, Branch, Events,Spawned):
     event = Event()
     
     try:
-        en = ManualUproot(dir, Tree, Branch)
+        F = uproot.open(dir)
+        en = F[Tree + "/" + Branch].array(library = "np")
     except:
         print("SKIPPED::" + Branch + " " + Tree + " ")
         return 
@@ -123,9 +116,9 @@ def Comparison(dir, Tree, Branch, Events,Spawned):
 
 def TestParticleAssignment():
     Events = -1
-    x = EventGenerator(dir, DebugThresh = Events)
+    x = EventGenerator(dir)
     x.SpawnEvents()
-    x.CompileEvent(ClearVal = False)
+    x.CompileEvent(SingleThread = True, ClearVal = False)
     TreeTest = "nominal"
 
     #Electrons 
@@ -243,7 +236,35 @@ def TestParticleAssignment():
     Comparison(dir, TreeTest, "rcjetsub_e", Events, x.Events)
     Comparison(dir, TreeTest, "rcjetsub_phi", Events, x.Events)
     Comparison(dir, TreeTest, "rcjetsub_eta", Events, x.Events) 
+    
+    return True
 
 
+def TestSignalMultipleFile():
+    dir = "/CERN/Grid/SignalSamples/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/"
+    
+    ev = EventGenerator(dir, Stop = 1000)
+    ev.SpawnEvents()
+    ev.CompileEvent(SingleThread = True)
+    
+    for i in ev.Events:
+        if i == 1000:
+            print(i, ev.Events[i], ev.EventIndexFileLookup(i)) 
+            return True
 
-
+def TestSignalDirectory():
+    dir = "/CERN/Grid/SignalSamples/"
+    
+    ev = EventGenerator(dir, Stop = 1000)
+    ev.SpawnEvents()
+    ev.CompileEvent(SingleThread = True)
+   
+    c = 0
+    Passed = False
+    for i in ev.Events:
+        if c == 1000:
+            print(i, ev.Events[i], ev.EventIndexFileLookup(i)) 
+            Passed = True
+            c = 0
+        c+=1
+    return Passed

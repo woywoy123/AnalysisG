@@ -6,15 +6,18 @@ class Notification():
         self.__FAIL = "FAILURE"
         self.__WARNING = "WARNING"
         self.Caller = ""
+        self.__CEND = '\033[0m'
+        self.__RED = '\033[91m'
+        self.__GREEN = '\33[32m'
 
     def Notify(self, Message):
         if self.Verbose and self.Caller == "":
-            print(self.__INFO + Message)
+            print(self.__GREEN + self.__INFO + Message + self.__CEND)
         elif self.Verbose and self.Caller != "":
-            print(self.Caller.upper()+"::"+self.__INFO+"::"+Message)
+            print(self.__GREEN + self.Caller.upper() + "::" + self.__INFO + "::" + Message + self.__CEND)
 
     def Warning(self, text):
-        print(self.__WARNING + self.Caller + " :: " + text)
+        print(self.__RED + self.__WARNING + self.Caller + " :: " + text + self.__CEND)
 
     def CheckAttribute(self, Obj, Attr):
         try: 

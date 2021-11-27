@@ -197,7 +197,7 @@ class CompileParticles:
 
     def Compile(self, ClearVal = True):
         Output = {}
-       
+        
         for i in range(self.__len):
             Output[i] = []
             for k in self.__Keys:

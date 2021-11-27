@@ -67,11 +67,11 @@ class Event(VariableManager, Debugging):
             return False
 
         self.ListAttributes()
-        for i in File.ArrayBranches:
+        for i in File.ArrayLeaves:
             if self.Tree in i:
                 var = i.replace(self.Tree + "/", "")
                 try: 
-                    val = File.ArrayBranches[i][self.iter]
+                    val = File.ArrayLeaves[i][self.iter]
                 except:
                     self.BrokenEvent = True
                     continue
@@ -164,39 +164,10 @@ class Event(VariableManager, Debugging):
             if self.CallLoop == "TruthMatchingEngine_init":
                 self.Anomaly_TruthMatch_init = True
     
-    def CompileSpecificParticles(self, particles = False):
-        if particles == "TruthTops":
-            self.TruthTops = self.DictToList(CompileParticles(self.TruthTops, Top()).Compile())
-
-        if particles == "TruthChildren":
-            self.TruthTops = CompileParticles(self.TruthTops, Top()).Compile() 
-            self.TruthChildren = CompileParticles(self.TruthChildren, Truth_Top_Child()).Compile()
-            self.TruthChildren_init = CompileParticles(self.TruthChildren_init, Truth_Top_Child_Init()).Compile()
-        
-            for i in self.TruthTops:
-                self.TruthTops[i][0].Decay_init = self.TruthChildren_init[i]
-                self.TruthTops[i][0].Decay = self.TruthChildren[i]
-            
-            self.TruthChildren = self.DictToList(self.TruthChildren)
-            self.TruthChildren_init = self.DictToList(self.TruthChildren_init)
-            self.TruthTops = self.DictToList(self.TruthTops)
-            for i in self.TruthTops:
-                i.PropagateSignalLabel()
-
-        if particles == "TruthJets":
-            self.TruthJets = self.DictToList(CompileParticles(self.TruthJets, TruthJet()).Compile())
-        
-        if particles == "Detector":
-            self.Jets = self.DictToList(CompileParticles(self.Jets, Jet()).Compile())
-            self.Muons = self.DictToList(CompileParticles(self.Muons, Muon()).Compile())
-            self.Electrons = self.DictToList(CompileParticles(self.Electrons, Electron()).Compile())
-            self.RCSubJets = self.DictToList(CompileParticles(self.RCSubJets, RCSubJet()).Compile())
-            self.RCJets = self.DictToList(CompileParticles(self.RCJets, RCJet()).Compile())
-
     def DictToList(self, inp): 
         out = []
         for i in inp:
-            out.append(inp[i])
+            out += inp[i]
         return out
 
     def CompileEvent(self, ClearVal = True):
@@ -211,7 +182,7 @@ class Event(VariableManager, Debugging):
         self.Electrons = CompileParticles(self.Electrons, Electron()).Compile(ClearVal)
         self.RCSubJets = CompileParticles(self.RCSubJets, RCSubJet()).Compile(ClearVal)
         self.RCJets = CompileParticles(self.RCJets, RCJet()).Compile(ClearVal)
-
+        
         for i in self.TruthTops:
             self.TruthTops[i][0].Decay_init = self.TruthChildren_init[i]
             self.TruthTops[i][0].Decay = self.TruthChildren[i]
@@ -235,7 +206,7 @@ class Event(VariableManager, Debugging):
         self.TruthMatchingEngine()
 
         self.RCSubJetMatchingEngine()
-
+        
         self.TruthTops = self.DictToList(self.TruthTops)
         self.TruthChildren = self.DictToList(self.TruthChildren)
         self.TruthChildren_init = self.DictToList(self.TruthChildren_init)
@@ -329,8 +300,8 @@ class EventGenerator(Debugging, EventVariables, Directories):
         self.__Debug = Debug
         self.Threads = 12
         self.Caller = "EVENTGENERATOR"
-        self.Start = Start
-        self.Stop = Stop
+        self.__Start = Start
+        self.__Stop = Stop
         
     def SpawnEvents(self):
         self.GetFilesInDir()
@@ -349,12 +320,13 @@ class EventGenerator(Debugging, EventVariables, Directories):
                     pairs = {}
                     for tr in F_i.ObjectTrees:
                         
-                        if self.Start != 0:
-                            if self.Start <= l:
+                        if self.__Start != 0:
+                            if self.__Start <= l:
                                 self.Count() 
                             else:
                                 continue
-
+                        else: 
+                            self.Count()
 
                         E = Event()
                         E.Debug = self.__Debug
@@ -365,14 +337,15 @@ class EventGenerator(Debugging, EventVariables, Directories):
 
                     self.Events[i + "/" + F].append(pairs)
                     
-                    if self.Stop:
+                    if self.Stop():
+                        self.ResetCounter()
                         break
                 del F_i
-                self.ResetCounter()
+                
         del self.MinimalLeaves
         del self.MinimalTrees
 
-    def CompileEvent(self, SingleThread = False, particle = False, ClearVal = True):
+    def CompileEvent(self, SingleThread = False, ClearVal = True):
         
         def function(Entries):
             for k in Entries:
@@ -380,12 +353,6 @@ class EventGenerator(Debugging, EventVariables, Directories):
                     k[j].CompileEvent(ClearVal = ClearVal)
             return Entries
 
-        def Loop(Entries):
-            for k in Entries:
-                for j in k:
-                    k[j].CompileSpecificParticles(particle_)
-            return Entries
-  
         self.Caller = "EVENTCOMPILER"
         
         it = 0
@@ -403,11 +370,7 @@ class EventGenerator(Debugging, EventVariables, Directories):
                 for i in Events[k*entries_percpu : (k+1)*entries_percpu]:
                     self.Batches[k].append(i)
 
-                if particle == False:
-                    Thread.append(TemplateThreading(k, "", "Batches", self.Batches[k], function))
-                else: 
-                    particle_ = particle
-                    Thread.append(TemplateThreading(k, "", "Batches", self.Batches[k], Loop))
+                Thread.append(TemplateThreading(k, "", "Batches", self.Batches[k], function))
             th = Threading(Thread, self.Threads)
             th.Verbose = True
             if SingleThread:

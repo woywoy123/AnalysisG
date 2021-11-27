@@ -1,17 +1,13 @@
 # Produce the plotting of the events in the analysis (basically a sanity check) 
 from Functions.Event.Event import EventGenerator
 from Functions.Particles.Particles import Particle
-from Functions.IO.IO import PickleObject, UnpickleObject
+from Functions.IO.IO import UnpickleObject
 from Functions.Plotting.Histograms import TH2F, TH1F, SubfigureCanvas, CombineHistograms
 
 def TestTops():
-    dir = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/user.pgadow.24765302._000001.output.root"
-    
-    Events = -1
-    x = EventGenerator(dir, DebugThresh = Events)
-    x.SpawnEvents()
-    x.CompileEvent()
-    x = x.Events
+   
+    x = UnpickleObject("EventGenerator")
+    x = x.Events 
 
     # Top mass containers 
     Top_Mass = []
@@ -131,7 +127,6 @@ def TestTops():
     tc_init.xData = Top_Mass_From_Truth_Jets_init
     tc_init.CompileHistogram()
     s.AddObject(tc_init)
-    
     s.SaveFigure()
 
 
@@ -168,7 +163,6 @@ def TestTops():
     tc_init.xData = Top_Mass_From_Truth_Jets_NoAnomaly
     tc_init.CompileHistogram()
     s.AddObject(tc_init)
-    
     s.SaveFigure()
 
     # Comparison of Top mass from jets vs top_child information + No Anomalous Event matching 
@@ -204,19 +198,13 @@ def TestTops():
     tc_init.xData = Top_Mass_From_Jets
     tc_init.CompileHistogram()
     s.AddObject(tc_init)
-    
     s.SaveFigure()
 
-
+    return True
 
 def TestResonance():
-    dir = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/user.pgadow.24765302._000001.output.root"
-
-    Events = -1
-    x = EventGenerator(dir, DebugThresh = Events)
-    x.SpawnEvents()
-    x.CompileEvent()
-    x = x.Events
+    x = UnpickleObject("EventGenerator")
+    x = x.Events 
 
     # Top mass containers 
     Res_TruthTops = []
@@ -383,7 +371,8 @@ def TestResonance():
     s.AddObject(tc_init)
     
     s.SaveFigure()
-
+    
+    return True
 
 def TestResonanceMassForEnergies():
     dirs = ["user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root",

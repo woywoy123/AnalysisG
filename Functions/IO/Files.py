@@ -21,8 +21,8 @@ class Directories(Notification):
         for i in glob("*"):
             if os.path.isdir(i):
                 self.Files[os.getcwd()+"/"+i] = []
-            else:
-                pass 
+            elif os.path.isdir(self.__Dir) and os.path.isfile(i):
+                self.Files[os.getcwd()] = []
         os.chdir(self.__pwd)
 
     def ListFilesInDir(self, dir):
@@ -58,3 +58,4 @@ class WriteDirectory(Notification):
     
     def ChangeDir(self, dir):
         os.chdir(self.__pwd + "/" + dir)
+
