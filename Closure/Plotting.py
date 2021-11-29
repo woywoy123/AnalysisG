@@ -1,7 +1,7 @@
 # Produce the plotting of the events in the analysis (basically a sanity check) 
 from Functions.Event.Event import EventGenerator
 from Functions.Particles.Particles import Particle
-from Functions.IO.IO import UnpickleObject
+from Functions.IO.IO import UnpickleObject, PickleObject
 from Functions.Plotting.Histograms import TH2F, TH1F, SubfigureCanvas, CombineHistograms
 
 def TestTops():
@@ -374,307 +374,11 @@ def TestResonance():
     
     return True
 
-def TestResonanceMassForEnergies():
-    dirs = ["user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root",
-    "user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r9364_p3980.bsm4t-21.2.164-1-0-mc16a_output_root",
-    "user.pgadow.310846.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root",
-    "user.pgadow.310846.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r9364_p3980.bsm4t-21.2.164-1-0-mc16a_output_root",
-    "user.pgadow.310847.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root",
-    "user.pgadow.310847.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r9364_p3980.bsm4t-21.2.164-1-0-mc16a_output_root",
-    "user.pgadow.313180.MGPy8EG.DAOD_TOPQ1.e8080_s3126_r10201_p3980.bsm4t-21.2.164-1-0-mc16d_output_root",
-    "user.pgadow.313180.MGPy8EG.DAOD_TOPQ1.e8080_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root",
-    "user.pgadow.313180.MGPy8EG.DAOD_TOPQ1.e8080_s3126_r9364_p3980.bsm4t-21.2.164-1-0-mc16a_output_root",
-    "user.pgadow.313181.MGPy8EG.DAOD_TOPQ1.e8081_s3126_r10201_p3980.bsm4t-21.2.164-1-0-mc16d_output_root",
-    "user.pgadow.313181.MGPy8EG.DAOD_TOPQ1.e8081_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root",
-    "user.pgadow.313181.MGPy8EG.DAOD_TOPQ1.e8081_s3126_r9364_p3980.bsm4t-21.2.164-1-0-mc16a_output_root",
-    "user.pgadow.313346.MGPy8EG.DAOD_TOPQ1.e8080_s3126_r10201_p3980.bsm4t-21.2.164-1-0-mc16d_output_root",
-    "user.pgadow.313346.MGPy8EG.DAOD_TOPQ1.e8080_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root",
-    "user.pgadow.313346.MGPy8EG.DAOD_TOPQ1.e8080_s3126_r9364_p3980.bsm4t-21.2.164-1-0-mc16a_output_root"]
-    
-    DSIDKeys = {"310844" : "_1TeV", "310845" : "1TeV", "313346" : "1.25TeV", "310846" : "1.5TeV", "310847" : "2TeV", "313180" : "2.5TeV", "313181" : "3TeV"}
-
-    for i in dirs:
-        x = EventGenerator("/CERN/Grid/SignalSamples/"+i)
-        x.SpawnEvents()
-        x.CompileEvent( particle = "TruthTops" )
-        energy = DSIDKeys[i.split(".")[2]]
-
-        ResonanceFromSignalTops = []
-        ResonanceFromSpectatorTops = []
-        SpectatorSignalTops = []
-        for f in x.Events:
-            F = x.Events[f]
-            for e in F:
-                Zp = Particle(True) # Resonance
-                Sp = Particle(True) # Spectators
-                
-                try:
-                    tops = F[e]["nominal"].TruthTops
-                except TypeError:
-                    tops = F["nominal"].TruthTops
-
-                if len(tops) != 4:
-                    continue
-                
-                for t in tops:
-                    if t.Signal == 1:
-                        Zp.Decay.append(t)
-                    if t.Signal == 0:
-                        Sp.Decay.append(t)
-
-                    SSp = Particle(True) # Spectator and Signal 
-                    for ti in tops:
-                        if t.Signal != ti.Signal:
-                            SSp.Decay.append(t)
-                            SSp.Decay.append(ti)
-                    
-                    SSp.CalculateMassFromChildren()
-                    SpectatorSignalTops.append(SSp.Mass_GeV)
-                
-                Zp.CalculateMassFromChildren()
-                Sp.CalculateMassFromChildren()
-
-                ResonanceFromSignalTops.append(Zp.Mass_GeV)
-                ResonanceFromSpectatorTops.append(Sp.Mass_GeV)
-                
-        TT = TH1F()
-        TT.Title = "SignalPair"
-        TT.xTitle = "Mass (GeV)"
-        TT.yTitle = "Entries"
-        TT.xBins = 1000
-        TT.xMin = 0
-        TT.xMax = 5000
-        TT.xData = ResonanceFromSignalTops
-
-        TS = TH1F()
-        TS.Title = "SignalSpectator"
-        TS.xTitle = "Mass (GeV)"
-        TS.yTitle = "Entries"
-        TS.xBins = 1000
-        TS.xMin = 0
-        TS.xMax = 5000
-        TS.xData = SpectatorSignalTops
-
-        SS = TH1F()
-        SS.Title = "Spectator"
-        SS.xTitle = "Mass (GeV)"
-        SS.yTitle = "Entries"
-        SS.xBins = 1000
-        SS.xMin = 0
-        SS.xMax = 5000
-        SS.xData = ResonanceFromSpectatorTops
-
-        Com = CombineHistograms()
-        Com.Histograms = [TT, TS, SS]
-        Com.Alpha = 0.7
-        Com.Title = "Mass Spectrum of Different Top Pair Combinations with: " + energy + " " + i.split(".")[5]
-        Com.CompileStack()
-        Com.Save("Plots/Spectrum/")
-
-
-def TestRCJetAssignments():
-    
-    signal_dir = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/user.pgadow.24765302._000001.output.root"
-    background_dir = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/postProcessed_ttW.root"
-
-    Event = -1
-    back = EventGenerator(background_dir, DebugThresh = Event)
-    back.SpawnEvents()
-    back.CompileEvent()
-
-    sig = EventGenerator(signal_dir, DebugThresh = Event)
-    sig.SpawnEvents()
-    sig.CompileEvent()
-
-
-    #PickleObject(sig, "Signal")
-    #PickleObject(back, "ttW")   
-    
-    #sig = UnpickleObject("Signal")
-    #back = UnpickleObject("ttW")
-    
-    res_truth_tops = []
-    res_rc_onlysignal = []
-    res_rc_atleastone = []
-    res_jets = []
-
-    signa_rc = []
-    back_rc = []
-
-    signa_rc_Flav = []
-    signa_rc_Mass = []
-    
-    for i in sig.Events:
-        sig_events = sig.Events[i]["nominal"]
-        
-        # Fill truth resonance from Tops 
-        Z_prime = Particle(True)
-        for t in sig_events.TruthTops:
-            if t.Signal == 1:
-                Z_prime.Decay.append(t)
-        Z_prime.CalculateMassFromChildren()
-        res_truth_tops.append(Z_prime.Mass_GeV)
-        
-        # Get Resonance where all RCJet consistuents are matched to signal
-        Z_prime_all = Particle(True)
-        for rc in sig_events.DetectorParticles:
-            if rc.Type == "rcjet" or rc.Type == "el" or rc.Type == "mu":
-                pass
-            else:
-                continue
-            if rc.Signal == 1:
-                Z_prime_all.Decay.append(rc)
-        
-        Z_prime_all.CalculateMassFromChildren()
-        if Z_prime_all.Mass_GeV > 10:
-            for k in Z_prime_all.Decay:
-                if k.Type == "rcjet":
-                    for f in k.Constituents:
-                        if f.Type == "rcjetsub":
-                            signa_rc_Flav.append(f.Flav)
-                            signa_rc_Mass.append(Z_prime_all.Mass_GeV)
-                elif k.Type == "mu":
-                    signa_rc_Flav.append(13)
-                    signa_rc_Mass.append(Z_prime_all.Mass_GeV)
-                elif k.Type == "el":
-                    signa_rc_Flav.append(11)
-                    signa_rc_Mass.append(Z_prime_all.Mass_GeV)
-            res_rc_onlysignal.append(Z_prime_all.Mass_GeV)
-            
-        # Get Resonance where at least one RCjet consistuent is signal
-        Z_prime_one = Particle(True)
-        for rc in sig_events.DetectorParticles:
-            if rc.Type == "rcjet" or rc.Type == "el" or rc.Type == "mu":
-                pass
-            else:
-                continue
-            if rc.Signal == 2:
-                Z_prime_one.Decay.append(rc)
-        
-        Z_prime_one.CalculateMassFromChildren()
-        if Z_prime_one.Mass_GeV > 10:
-            res_rc_atleastone.append(Z_prime_one.Mass_GeV)
-        
-        # Reconstruct Resonance from jet objects
-        Z_prime_jets = Particle(True)
-        for rc in sig_events.DetectorParticles:
-            if rc.Type == "jet" or rc.Type == "el" or rc.Type == "mu":
-                pass
-            else:
-                continue
-            
-            if rc.Signal == 1:
-                Z_prime_jets.Decay.append(rc)
-        Z_prime_jets.CalculateMassFromChildren()
-        if Z_prime_jets.Mass_GeV > 10:
-            res_jets.append(Z_prime_jets.Mass_GeV)
-        
-        #Calculate mass of jets
-        for rc in sig_events.RCJets:
-            rc.CalculateMass()
-            signa_rc.append(rc.Mass_GeV)
-        
-    
-        #Calculate mass of jets
-        try:
-            back_events = back.Events[i]["tree"]
-            for rc in back_events.RCJets:
-                rc.CalculateMass()
-                back_rc.append(rc.Mass_GeV)
-        except:
-            pass
-
-    Res_TT = TH1F()
-    Res_TT.Title = "Res->TruthTops"
-    Res_TT.xTitle = "Mass (GeV)"
-    Res_TT.yTitle = "Entries"
-    Res_TT.xBins = 1500
-    Res_TT.xMin = 0
-    Res_TT.xMax = 1500
-    Res_TT.xData = res_truth_tops
-    Res_TT.SaveFigure("Plots/RCJetSpectrum/")
-
-    Res_Jet = TH1F()
-    Res_Jet.Title = "Res->Jets+Leptons"
-    Res_Jet.xTitle = "Mass (GeV)"
-    Res_Jet.yTitle = "Entries"
-    Res_Jet.xBins = 1500
-    Res_Jet.xMin = 0
-    Res_Jet.xMax = 1500
-    Res_Jet.xData = res_jets
-    Res_Jet.SaveFigure("Plots/RCJetSpectrum/")
-
-    ResRCAll_TT = TH1F()
-    ResRCAll_TT.Title = "Res->RCJet_OnlySignal+Leptons"
-    ResRCAll_TT.xTitle = "Mass (GeV)"
-    ResRCAll_TT.yTitle = "Entries"
-    ResRCAll_TT.xBins = 1500
-    ResRCAll_TT.xMin = 0
-    ResRCAll_TT.xMax = 1500
-    ResRCAll_TT.xData = res_rc_onlysignal
-    ResRCAll_TT.SaveFigure("Plots/RCJetSpectrum/")
-
-    ResRCOne_TT = TH1F()
-    ResRCOne_TT.Title = "Res->RCJet_AtLeastOneSignal+Leptons"
-    ResRCOne_TT.xTitle = "Mass (GeV)"
-    ResRCOne_TT.yTitle = "Entries"
-    ResRCOne_TT.xBins = 1500
-    ResRCOne_TT.xMin = 0
-    ResRCOne_TT.xMax = 1500
-    ResRCOne_TT.xData = res_rc_atleastone
-    ResRCOne_TT.SaveFigure("Plots/RCJetSpectrum/")
-
-    RC_Sig = TH1F()
-    RC_Sig.Title = "Signal->RCJet_Mass"
-    RC_Sig.xTitle = "Mass (GeV)"
-    RC_Sig.yTitle = "Entries"
-    RC_Sig.xBins = 1500
-    RC_Sig.xMin = 0
-    RC_Sig.xMax = 1500
-    RC_Sig.xData = signa_rc 
-    RC_Sig.SaveFigure("Plots/RCJetSpectrum/")
-   
-    RC_TTW = TH1F()
-    RC_TTW.Title = "Background->RCJet_ttW"
-    RC_TTW.xTitle = "Mass (GeV)"
-    RC_TTW.yTitle = "Entries"
-    RC_TTW.xBins = 1500
-    RC_TTW.xMin = 0
-    RC_TTW.xMax = 1500
-    RC_TTW.xData = res_rc_atleastone   
-    RC_TTW.SaveFigure("Plots/RCJetSpectrum/")
-
-    Res = CombineHistograms()
-    Res.Histograms = [Res_TT, Res_Jet, ResRCAll_TT, ResRCOne_TT]
-    Res.Alpha = 0.7
-    Res.Title = "Mass Spectrum for Resonance From Truth Tops and RC and Jets"
-    Res.Save("Plots/RCJetSpectrum/")
-
-    Com = CombineHistograms()
-    Com.Histograms = [RC_Sig, RC_TTW]
-    Com.Alpha = 0.7
-    Com.Title = "Mass of RC Jets from Signal and Background Samples"
-    Com.Save("Plots/RCJetSpectrum/")
-
-
-    MassPID = TH2F()
-    MassPID.Title = "RC Jet Mass Signal Sample vs PID"
-    MassPID.xBins = 60 #max(signa_rc_Flav)
-    MassPID.xMin = 0
-    MassPID.xTitle = "Flavour"
-    MassPID.xData = signa_rc_Flav
-    MassPID.yData = signa_rc_Mass
-    MassPID.yBins = 500
-    MassPID.yMin = 0
-    MassPID.yMax = 1500
-    MassPID.yTitle = "GeV"
-    MassPID.SaveFigure("Plots/RCJetSpectrum/")
-
 def TestBackGroundProcesses():
     def CreateEvents(direc, event):
-        ev = EventGenerator(direc, DebugThresh = event)
+        ev = EventGenerator(direc, Stop = event)
         ev.SpawnEvents()
-        ev.CompileEvent()
+        ev.CompileEvent(SingleThread = True)
         return ev
 
     def GetNJets(ev, tree):
@@ -716,24 +420,22 @@ def TestBackGroundProcesses():
         name = "-".join(proc.split("_")[1:])
         Map[name] = i
         
-        #ev = CreateEvents(i, 1000)
-        #PickleObject(ev, name + ".pkl")
+        ev = CreateEvents(i, 5000)
+        PickleObject(ev, proc)
    
     Jets = []
     Names = []
     for i in Map:
-        #ev = UnpickleObject(i + ".pkl")
-        #Jets.append(GetNJets(ev, "tree"))
+        ev = UnpickleObject("postProcessed_" + i.replace("-", "_"))
+        Jets.append(GetNJets(ev, "tree"))
         Names.append(i)
-    #PickleObject(Jets, "Jets")
-    Jets = UnpickleObject("Jets")
     
     J = []
     for i in Jets:
         l = 0
         for k in i:
             l += k
-            J.append(k)
+        J.append(k)
     
     Njet_P = TH2F()
     Njet_P.Title = "N-Jets vs Process Considered"
@@ -744,3 +446,4 @@ def TestBackGroundProcesses():
     Njet_P.xTitle = "Process"
     Njet_P.yTitle = "N-Jets"
     Njet_P.SaveFigure("Plots/Njets/")
+    return True

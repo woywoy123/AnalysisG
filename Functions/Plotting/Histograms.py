@@ -1,7 +1,9 @@
 import matplotlib.pyplot as plt
+from networkx.drawing.nx_agraph import to_agraph
 from Functions.IO.Files import WriteDirectory
 from Functions.Tools.Alerting import Notification
 import os
+
 
 class GenericAttributes:
     def __init__(self):
@@ -99,7 +101,7 @@ class SharedMethods(WriteDirectory, Notification):
        
         if self.Filename == "":
            self.Filename = self.Title + ".png"
-
+        
         self.Notify("SAVING FIGURE AS +-> " + self.Filename)
         if dir == "":
             self.MakeDir("Plots/")
@@ -107,7 +109,19 @@ class SharedMethods(WriteDirectory, Notification):
         else:
             self.MakeDir(dir)
             self.ChangeDir(dir)
-        
+         
+        if self.Caller != "PLOTTING":
+            self.PLT.close("all")
+            A = to_agraph(self.G)
+            A.layout("dot")
+
+            if ".png" not in self.Filename:
+                A.draw(self.Filename + ".png")
+            else:
+                A.draw(self.Filename)
+            self.ChangeDirToRoot()
+            return None 
+
         if ".png" not in self.Filename:
             self.PLT.savefig(self.Filename + ".png")
         else: 

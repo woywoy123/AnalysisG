@@ -4,11 +4,86 @@ from skhep.math.vectors import LorentzVector
 from torch_geometric.utils.convert import from_networkx
 from torch_geometric.loader import DataLoader
 from torch_geometric.data import Data
-
 from Functions.Event.Event import EventGenerator, Event
 from Functions.Tools.Alerting import Notification
 
-class CreateEventGraph:
+class EventGraph:
+
+    def __init__(self, Event, Level, Tree):
+        self.G = nx.Graph()
+        self.Event = Event
+        self.Particles = []
+        self.SelfLoop = True
+        self.NodeParticleMap = {}
+        self.Nodes = []
+        self.Edges = []
+        
+        if Level == "JetLepton":
+            self.Particles += Event[Tree].Jets
+            self.Particles += Event[Tree].Muons
+            self.Particles += Event[Tree].Electrons
+
+        if Level == "RCJetLepton":
+            self.Particles += Event[Tree].RCJets
+            self.Particles += Event[Tree].Muons
+            self.Particles += Event[Tree].Electrons
+
+        if Level == "TruthTops":
+            self.Particles += Event[Tree].TruthTops
+
+        if Level == "TruthChildren_init":
+            self.Particles += Event[Tree].TruthChildren_init
+
+        if Level == "TruthChildren":
+            self.Particles += Event[Tree].TruthChildren
+    
+    def CreateParticleNodes(self):
+        for i in range(len(self.Particles)):
+            self.Nodes.append(i)
+            self.NodeParticleMap[i] = self.Particles[i]
+        self.G.add_nodes_from(self.Nodes)
+
+    def CreateEdges(self):
+        for i in self.Nodes:
+            for j in self.Nodes:
+                if self.SelfLoop == False and i == j:
+                    continue 
+                self.Edges.append((i, j))
+        self.G.add_edges_from(self.Edges)
+
+    def ConvertToData(self):
+        return from_networkx(self.G) 
+
+
+class GenerateDataLoader(Notification):
+    
+    def __init__(self):
+        self.Verbose = True 
+        Notification.__init__(self, self.Verbose)
+        self.Caller = "GenerateDataLoader"
+        
+        if torch.cuda.is_available():
+            self.Device = torch.device("cuda")
+        else:
+            self.Device = torch.device("cpu")
+        
+        self.Bundles = []
+
+    def AddSample(self, Bundle, Tree):
+        if isinstance(Bundle, EventGenerator):
+            self.Bundles.append([Tree, Bundle])
+        else:
+            self.Warning("SKIPPED :: NOT A EVENTGENERATOR OBJECT!!!")
+
+
+
+
+
+
+
+
+
+class CreateEventGraph_OLD:
 
     def __init__(self, Event):
         self.G = nx.Graph()
@@ -133,7 +208,7 @@ class CreateEventGraph:
         # https://pytorch-geometric.readthedocs.io/en/latest/modules/utils.html#torch_geometric.utils.from_networkx
         return from_networkx(self.G) 
 
-class GenerateDataLoader(Notification):
+class GenerateDataLoader_OLD(Notification):
 
     def __init__(self, Bundle):
         if isinstance(Bundle, EventGenerator):
