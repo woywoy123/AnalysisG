@@ -1,3 +1,4 @@
+from skhep.math.vectors import LorentzVector
 
 class VariableManager:
 
@@ -28,6 +29,3 @@ class VariableManager:
         del self.Leaves 
         del self.KeyMap
         
-        
-
-

@@ -1,11 +1,21 @@
-import networkx as nx
-import torch
-from skhep.math.vectors import LorentzVector
+from Functions.Event.Event import EventGenerator
+from Functions.Tools.Alerting import Notification
+
 from torch_geometric.utils.convert import from_networkx
 from torch_geometric.loader import DataLoader
 from torch_geometric.data import Data
-from Functions.Event.Event import EventGenerator, Event
-from Functions.Tools.Alerting import Notification
+
+import torch
+import networkx as nx
+import numpy as np
+from sklearn.model_selection import ShuffleSplit
+from torch.utils.data import RandomSampler
+
+
+
+
+
+
 
 class EventGraph:
 
@@ -17,25 +27,29 @@ class EventGraph:
         self.NodeParticleMap = {}
         self.Nodes = []
         self.Edges = []
+        self.EdgeAttr = {}
+        self.NodeAttr = {}
+        self.Event = Event[Tree]
+        self.iter = -1
         
         if Level == "JetLepton":
-            self.Particles += Event[Tree].Jets
-            self.Particles += Event[Tree].Muons
-            self.Particles += Event[Tree].Electrons
+            self.Particles += self.Event.Jets
+            self.Particles += self.Event.Muons
+            self.Particles += self.Event.Electrons
 
         if Level == "RCJetLepton":
-            self.Particles += Event[Tree].RCJets
-            self.Particles += Event[Tree].Muons
-            self.Particles += Event[Tree].Electrons
+            self.Particles += self.Event.RCJets
+            self.Particles += self.Event.Muons
+            self.Particles += self.Event.Electrons
 
         if Level == "TruthTops":
-            self.Particles += Event[Tree].TruthTops
+            self.Particles += self.Event.TruthTops
 
         if Level == "TruthChildren_init":
-            self.Particles += Event[Tree].TruthChildren_init
+            self.Particles += self.Event.TruthChildren_init
 
         if Level == "TruthChildren":
-            self.Particles += Event[Tree].TruthChildren
+            self.Particles += self.Event.TruthChildren
     
     def CreateParticleNodes(self):
         for i in range(len(self.Particles)):
@@ -52,7 +66,45 @@ class EventGraph:
         self.G.add_edges_from(self.Edges)
 
     def ConvertToData(self):
-        return from_networkx(self.G) 
+        self.Data = from_networkx(self.G) 
+        
+        # Apply Node Features [NODES X FEAT]
+        for i in self.NodeAttr:
+            fx = self.NodeAttr[i]
+            attr_v = []
+            for n in self.NodeParticleMap:
+                p = self.NodeParticleMap[n]
+                attr_i = []
+                for fx_i in fx:
+                    attr_i.append(fx_i(p))
+                attr_v.append(attr_i)
+            attr_ten = torch.tensor(attr_v, dtype = torch.float)
+            setattr(self.Data, str(i), attr_ten)
+    
+        # Apply Edge Features [EDGES X FEAT]
+        for i in self.EdgeAttr:
+            fx = self.EdgeAttr[i]
+            attr_v = []
+            for n in self.Edges:
+                p_i = self.NodeParticleMap[n[0]]
+                p_j = self.NodeParticleMap[n[1]]
+                attr_i = []
+                for fx_i in fx:
+                    attr_i.append(fx_i(p_i, p_j))
+                attr_v.append(attr_i)
+            attr_ten = torch.tensor(attr_v, dtype = torch.float)
+            setattr(self.Data, str(i), attr_ten)
+        setattr(self.Data, "i", self.iter)
+
+    def SetNodeAttribute(self, c_name, fx):
+        if c_name not in self.NodeAttr:
+            self.NodeAttr[c_name] = []
+        self.NodeAttr[c_name].append(fx)
+
+    def SetEdgeAttribute(self, c_name, fx):
+        if c_name not in self.EdgeAttr:
+            self.EdgeAttr[c_name] = []
+        self.EdgeAttr[c_name].append(fx)
 
 
 class GenerateDataLoader(Notification):
@@ -64,276 +116,117 @@ class GenerateDataLoader(Notification):
         
         if torch.cuda.is_available():
             self.Device = torch.device("cuda")
+            self.Device_s = "cuda"
         else:
             self.Device = torch.device("cpu")
+            self.Device_s = "cpu"
         
         self.Bundles = []
-
-    def AddSample(self, Bundle, Tree):
-        if isinstance(Bundle, EventGenerator):
-            self.Bundles.append([Tree, Bundle])
-        else:
-            self.Warning("SKIPPED :: NOT A EVENTGENERATOR OBJECT!!!")
-
-
-
-
-
-
-
-
-
-class CreateEventGraph_OLD:
-
-    def __init__(self, Event):
-        self.G = nx.Graph()
-        self.Truth_G = nx.Graph()
-        self.Event = Event
-        self.EdgeAttributes = []
-        self.NodeAttributes = []
-        self.ExcludeSelfLoops = True
-        self.DefaultEdgeWeight = 1
-
-    def CreateParticleNodes(self):
-        self.Nodes = []
-        for i in range(len(self.Event)):
-            self.Nodes.append(i)
-        self.G.add_nodes_from(self.Nodes)
-        
-        for i in range(len(self.Event)):
-            self.G.nodes[i]["ParticleIndex"] = self.Event[i].Index
-            self.G.nodes[i]["ParticleType"] = self.Event[i].Type
-
-    def CreateParticlesEdgesAll(self):
-        self.Edges = []
-        for i in self.Nodes:
-            for j in self.Nodes:
-                if self.ExcludeSelfLoops and i == j:
-                    continue
-                self.Edges.append((i, j))
-        self.G.add_edges_from(self.Edges)
-
-    def CreateDefaultEdgeWeights(self):
-        
-        for i in self.Edges:
-            i_e = i[0]
-            i_j = i[1]
-            self.G[i_e][i_j]["weight"] = self.DefaultEdgeWeight
-    
-    def CalculateEdgeAttributes(self, fx):
-        
-        for i in range(len(self.NodeAttributes)):
-            attr = self.NodeAttributes[i]
-            d_label = str("d_" + attr)
-            for n in self.Nodes:
-                for k in self.Nodes:
-                    if k == n and self.ExcludeSelfLoops:
-                        continue
-                    self.G[n][k][d_label] = [fx(self.Event[k], self.Event[n], attr)]
-            self.EdgeAttributes.append(d_label)
-
-    def CalculateNodeAttributes(self):
-        for i in self.NodeAttributes:
-            if i == "":
-                continue
-            l = {}
-            for n in self.Nodes:
-                l[n] = [torch.tensor(getattr(self.Event[n], i), dtype = torch.float)]
-            nx.set_node_attributes(self.G, l, name = i)
-    
-    def CalculateNodeDifference(self):
-        def fx(a, b, attr):
-            a = getattr(a, attr)
-            b = getattr(b, attr)
-            return a-b
-        self.CalculateEdgeAttributes(fx)
-        self.CalculateNodeAttributes()
-    
-    def CalculateNodeMultiplication(self):
-        def fx(a, b, attr):
-            a = getattr(a, attr)
-            b = getattr(b, attr)
-            return a*b        
-        self.CalculateEdgeAttributes(fx)
-        self.CalculateNodeAttributes()
-    
-    def CalculateParticledR(self):
-        def fx(a, b, attr):
-            return a.DeltaR(b)
-        self.CalculateEdgeAttributes(fx)
-        #self.CalculateNodeAttributes()
-
-    def CalculateNodeMultiplicationIndex(self):
-        def fx(a, b, attr):
-            res = a.Index
-            if a.Index != b.Index:
-                res = -1
-            return res
-        self.CalculateEdgeAttributes(fx)
-        self.CalculateNodeAttributes()
-
-    def CalculateInvariantMass(self):
-        def fx(a, b, attr):
-            vec1 = LorentzVector()
-            vec2 = LorentzVector()
-            vec1.setptetaphie(a.pt, a.eta, a.phi, a.e)
-            vec2.setptetaphie(b.pt, b.eta, b.phi, b.e)
-            ab = vec1+vec2
-            return ab.mass
-        self.CalculateEdgeAttributes(fx)
-
-    def CalculationProxy(self, Dict):
-        for i in Dict:
-            self.NodeAttributes = [i]
-            if Dict[i] == "Diff":
-                self.CalculateNodeDifference()
-            
-            if Dict[i] == "Multi":
-                self.CalculateNodeMultiplication()
-            
-            if Dict[i] == "MultiIndex":
-                self.CalculateNodeMultiplicationIndex()
-
-            if Dict[i] == "dR":
-                self.CalculateParticledR()
-            
-            if Dict[i] == "":
-                self.CalculateNodeAttributes()
-
-            if Dict[i] == "invMass":
-                self.CalculateInvariantMass()
-
-    def ConvertToData(self):
-        # Need to figure out why I cant edit input attributes as described here: 
-        # https://pytorch-geometric.readthedocs.io/en/latest/modules/utils.html#torch_geometric.utils.from_networkx
-        return from_networkx(self.G) 
-
-class GenerateDataLoader_OLD(Notification):
-
-    def __init__(self, Bundle):
-        if isinstance(Bundle, EventGenerator):
-            self.__Events = Bundle.Events
-        self.ExcludeAnomalies = False
-        
-        self.Verbose = True
-        Notification.__init__(self, self.Verbose)
-        self.Caller = "GenerateDataLoader"
-        
-        if torch.cuda.is_available():
-            self.Device = torch.device("cuda")
-        else:
-            self.Device = torch.device("cpu")
-
-        self.NodeAttributes = {}
-        self.TruthAttribute = {}
-
-        self.DataLoader = None
-        self.DefaultBatchSize = None
-        self.ParticleLevel = "TruthTop"
-
-    def GetEventParticles(self, Ev, Branch):
-        out = {}
-        if hasattr(Ev, Branch):
-            out = getattr(Ev, Branch)
-        if isinstance(out, dict):
-            return False
-        return out
-
-    def CreateEventData(self, Event, EventIndex, name):
-        ED = CreateEventGraph(Event)
-        ED.CreateParticleNodes()
-        ED.CreateParticlesEdgesAll() 
-        ED.CalculationProxy(self.NodeAttributes)
-        ED = ED.ConvertToData()
-        
-        Node_Merge = []
-        Edge_Merge = []
-        for i in self.NodeAttributes:
-            if hasattr(ED, i):
-                Node_Merge.append(getattr(ED,i).T[0])
-            if hasattr(ED, "d_"+i):
-                Edge_Merge.append(getattr(ED, "d_"+i).T[0])
-        
-        if len(Node_Merge) != 0:
-            ten = torch.stack(Node_Merge)
-            setattr(ED, "x", ten.T)
-        if len(Edge_Merge) != 0:
-            ten = torch.stack(Edge_Merge)
-            setattr(ED, "edge_attr", ten)
-        setattr(ED, "EventIndex", EventIndex)
-
-        if name != None:
-            setattr(ED, "Name", name)
-
-        return ED
-    
-    def AssignTruthLabel(self, Event):
-        ET = CreateEventGraph(Event)
-        ET.CreateParticleNodes()
-        ET.CreateParticlesEdgesAll()
-        ET.CalculationProxy(self.TruthAttribute)
-        D = ET.ConvertToData()
-        for i in self.TruthAttribute:
-            at = getattr(D, i)
-            return at.T[0].long()
-
-    def TorchDataLoader(self, branch = "nominal", name = None):
         self.EventData = {}
-        self.TruthLoader = []
-            
-        self.Notify("CONVERTING")
-        for i in self.__Events:
-            e = self.__Events[i][branch]
+        self.EventMap = {}
+        self.EventTestData = {}
+        self.__iter = 0
 
-            if e.BrokenEvent:
-                continue
-            
-            if self.ExcludeAnomalies == "TruthMatch" and self.Anomaly_TruthMatch:
-                continue
-            if self.ExcludeAnomalies == "Detector" and self.Anomaly_Detector:
-                continue
-            
-            obj = []
-            if self.ParticleLevel == "TruthTop":
-                obj += e.TruthTops
+        self.TestSize = 40
+        self.ValidationTrainingSize = 60
 
-            if self.ParticleLevel == "TruthTopChildren":
-                obj += e.TruthChildren
+        self.SelfLoop = True
+        self.Converted = False
+
+        self.EdgeAttribute = {}
+        self.NodeAttribute = {}
+
+        self.Notify("DATA WILL BE PROCESSED ON: " + self.Device_s)
+
+    def __AddToMap(self, name, fx, attr):
+        Map = getattr(self, attr)
+        if name not in Map:
+            Map[name] = []
+        Map[name].append(fx)
+        setattr(self, attr, Map)
+
+    def AddEdgeFeature(self, name, fx):
+        self.__AddToMap(name, fx, "EdgeAttribute") 
+
+    def AddNodeFeature(self, name, fx):
+        self.__AddToMap(name, fx, "NodeAttribute")
+
+    def AddNodeTruth(self, name, fx):
+        self.__AddToMap(name, fx, "NodeAttribute")
+
+    def AddEdgeTruth(self, name, fx):
+        self.__AddToMap(name, fx, "EdgeAttribute")
+
+    def AddSample(self, Bundle, Tree, Level = "JetLepton"):
+        if isinstance(Bundle, EventGenerator) == False:
+            self.Warning("SKIPPED :: NOT A EVENTGENERATOR OBJECT!!!")
+            return False
+        for i in Bundle.FileEventIndex: 
+            self.Notify("ADDING SAMPLE -> (" + Tree + ") " + i)
+        start = self.__iter
+        for i in Bundle.Events:
+            e = EventGraph(Bundle.Events[i], Level, Tree)
+            e.SelfLoop = self.SelfLoop
+            e.iter = self.__iter
+            e.CreateParticleNodes()
+            e.CreateEdges()
+            e.NodeAttr = self.NodeAttribute
+            e.EdgeAttr = self.EdgeAttribute
+            e.ConvertToData()
             
-            if self.ParticleLevel == "TruthJets":
-                obj += e.TruthJets
-                obj += e.Electrons
-                obj += e.Muons
-
-            if self.ParticleLevel == "Detector":
-                obj += e.Electrons
-                obj += e.Muons
-                obj += e.Jets
-
-            if self.ParticleLevel == "DetectorRCJets":
-                obj += e.RCJets
-                obj += e.Muons
-                obj += e.Electrons
+            n_particle = len(e.Particles)
+            
+            if n_particle not in self.EventData:
+                self.EventData[n_particle] = []
+            self.EventData[n_particle].append(e)
+            self.EventMap[self.__iter] = e 
+            self.__iter += 1
                 
-            data = self.CreateEventData(obj, i, name)
-            data.y = self.AssignTruthLabel(obj)
-            data.mask = torch.ones(data.y.shape, dtype = torch.bool)
-            data.to(self.Device)
+        self.Bundles.append([Tree, Bundle, start, self.__iter-1])
 
-            obj_len = len(obj)
+    def MakeTrainingSample(self):
+        self.Notify("WILL SPLIT DATA INTO TRAINING/VALIDATION (" + str(self.ValidationTrainingSize) + "%) " + "- TEST (" + str(self.TestSize) + "%) SAMPLES")
+        
+        All = []
+        for i in self.EventData:
+            All += self.EventData[i]
+        All = np.array(All)
+        
+        rs = ShuffleSplit(n_splits = 1, test_size = float(self.TestSize/100), random_state = 42)
+        for train_idx, test_idx in rs.split(All):
+            pass
 
-            if obj_len in self.EventData:
-                self.EventData[obj_len].append(data)
-            else:
-                self.EventData[obj_len] = []
-                self.EventData[obj_len].append(data)
+        self.EventData = {}
+        for i in All[train_idx]:
+            n_particle = len(i.Particles)
+            if n_particle not in self.EventData:
+                self.EventData[n_particle] = []
+            self.EventData[n_particle].append(i)
+        
+        for i in All[test_idx]:
+            n_particle = len(i.Particles)
+            if n_particle not in self.EventTestData:
+                self.EventTestData[n_particle] = []
+            self.EventTestData[n_particle].append(i)
 
+
+
+    def ToDataLoader(self):
+        self.Notify("CONVERTING EVENTS TO PyGeometric DATA")
         self.DataLoader = {}
         for i in self.EventData:
-            if self.DefaultBatchSize == None:
-                batch_s = len(self.EventData[i])
-            else:
-                batch_s = self.DefaultBatchSize
-            self.DataLoader[i] = DataLoader(self.EventData[i], batch_size = batch_s)
+            Data = []
+            for k in self.EventData[i]:
+                Data.append(k.Data.to(self.Device_s, non_blocking=True))
+            self.DataLoader[i] = Data
         
-        self.Notify("COMPLETE")   
+        self.TestDataLoader = {}
+        for i in self.EventTestData:
+            Data = []
+            for k in self.EventTestData[i]:
+                Data.append(k.Data.to(self.Device_s, non_blocking=True))
+            self.TestDataLoader[i] = Data
+        
+        self.Converted = True
+        self.Notify("FINISHED CONVERSION")
+

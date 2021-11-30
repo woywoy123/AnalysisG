@@ -1,7 +1,8 @@
 from Closure.IO import TestDir, TestReadSingleFile, TestReadFile, TestFileConvertArray
 from Closure.Event import TestEvents, TestParticleAssignment, TestSignalMultipleFile, TestSignalDirectory, TestAnomalousStatistics
 from Closure.Plotting import TestTops, TestResonance, TestBackGroundProcesses
-from Closure.DataLoader import TestEventGraphs, TestDataLoader
+from Closure.DataLoader import TestEventGraphs, TestDataLoader, TestDataLoaderTrainingValidationTest, TestEventNodeEdgeFeatures
+from Closure.GNN import SimpleFourTops
 
 
 
@@ -39,10 +40,16 @@ if __name__ == '__main__':
     #Passed(TestAnomalousStatistics(), "TestAnomalousStatistics") # <--- Need to checkout detector particle matching 
     
     # ====== Test of DataLoader
-    #Generate_Cache(dir, Stop = 100, SingleThread = True, Compiler = "SignalSample.pkl")
+    #Generate_Cache(dir, Stop = 1000, SingleThread = True, Compiler = "SignalSample.pkl")
     #Generate_Cache("/CERN/Grid/Samples/NAF/2021-05-05-2cRC-all/mc16a/postProcessed_ttbar_PhPy8_Total.root", Stop = 100, SingleThread = True, Compiler = "ttbar.pkl")
-    Passed(TestEventGraphs(), "TestEventGraphs")
-    Passed(TestDataLoader(), "TestDataLoader")
+    #Passed(TestEventGraphs(), "TestEventGraphs")
+    #Passed(TestDataLoader(), "TestDataLoader")
+    #Passed(TestDataLoaderTrainingValidationTest(), "TestDataLoaderTrainingValidationTest")
+    #Passed(TestEventNodeEdgeFeatures(), "TestEventNodeEdgeFeatures")
+
+
+    # ====== Test of Optimizer
+    Passed(SimpleFourTops(), "SimpleFourTops")
         
 
 
