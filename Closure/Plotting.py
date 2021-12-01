@@ -447,3 +447,34 @@ def TestBackGroundProcesses():
     Njet_P.yTitle = "N-Jets"
     Njet_P.SaveFigure("Plots/Njets/")
     return True
+
+def TestGNNMonitor():
+    def Signal(a):
+        return int(a.Signal)
+
+    def Charge(a):
+        return float(a.Signal)
+
+
+    ev = UnpickleObject("SignalSample.pkl")
+    Loader = GenerateDataLoader()
+    Loader.AddNodeFeature("x", Charge)
+    Loader.AddNodeTruth("y", Signal)
+    Loader.AddSample(ev, "nominal", "TruthTops")
+    Loader.ToDataLoader()
+
+    Sig = GenerateDataLoader()
+    Sig.AddNodeFeature("x", Charge)
+    Sig.AddSample(ev, "nominal", "TruthTops")
+
+
+    op = Optimizer(Loader)
+    op.DefaultBatchSize = 20
+    op.Epochs = 10
+    op.kFold = 3
+    op.DefineEdgeConv(1, 2)
+    op.kFoldTraining()
+    op.ApplyToDataSample(Sig, "Sig")    
+
+
+

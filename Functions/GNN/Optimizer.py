@@ -105,11 +105,17 @@ class Optimizer(Notification):
     def GetClassificationAccuracy(self, loader):
         P = []
         T = []
+        l = 0
         for i in loader:
             _, pred = self.Model(i.x, i.edge_index).max(1)
             truth = i.y.t().contiguous().squeeze()
-            T.append(list(truth))
-            P.append(list(pred))
+
+            if l == 0:
+                l = len(truth.tolist()) 
+
+            if len(truth.tolist()) == l and len(pred.tolist()) == l:
+                T.append(truth.tolist())
+                P.append(pred.tolist())
         p = accuracy(torch.tensor(P), torch.tensor(T))
         return p
     
@@ -118,7 +124,8 @@ class Optimizer(Notification):
         for i in loader:
             pred = self.Model(i.x, i.edge_index)
             Loss = torch.nn.CrossEntropyLoss()
-            L.append(Loss(pred, self.sample.y.t().contiguous().squeeze()))
+            truth = i.y.t().contiguous().squeeze()
+            L.append(Loss(pred, truth))
         return L
 
     def DefineEdgeConv(self, in_channels, out_channels):

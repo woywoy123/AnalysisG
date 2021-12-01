@@ -271,4 +271,14 @@ class SubfigureCanvas(SharedMethods):
         for i in self.FigureObjects:
             self.k += 1
             self.AppendToPLT(i)
+
+class TGraph(SharedMethods, GenericAttributes):
+
+    def __init__(self):
+        SharedMethods.__init__(self)
+        GenericAttributes.__init__(self)
+
+    def Line(self):
+        pass
+
     

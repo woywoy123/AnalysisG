@@ -22,7 +22,6 @@ def SimpleFourTops():
     Sig.AddNodeFeature("x", Charge)
     Sig.AddSample(ev, "nominal", "TruthTops")
 
-
     op = Optimizer(Loader)
     op.DefaultBatchSize = 20
     op.Epochs = 10
@@ -30,17 +29,16 @@ def SimpleFourTops():
     op.DefineEdgeConv(1, 2)
     op.kFoldTraining()
     op.ApplyToDataSample(Sig, "Sig")    
-
-    e = EvaluationMetrics()
-    e.Sample = Sig
-    e.AddTruthAttribute("Signal")
-    e.AddPredictionAttribute("Sig")
-    e.ProcessSample()
-    e.Accuracy()
-
-
-
-
+    
+    for i in Sig.DataLoader:
+        for n_p in Sig.EventData[i]:
+            p_v = n_p.NodeParticleMap
+            for t in p_v:
+                p = p_v[t] 
+                try:
+                    assert p.Sig == p.Signal
+                except AssertionError:
+                    return False
 
     return True
 

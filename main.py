@@ -41,7 +41,7 @@ if __name__ == '__main__':
     
     # ====== Test of DataLoader
     #Generate_Cache(dir, Stop = 1000, SingleThread = True, Compiler = "SignalSample.pkl")
-    #Generate_Cache("/CERN/Grid/Samples/NAF/2021-05-05-2cRC-all/mc16a/postProcessed_ttbar_PhPy8_Total.root", Stop = 100, SingleThread = True, Compiler = "ttbar.pkl")
+    #Generate_Cache("/CERN/Grid/Samples/NAF/2021-05-05-2cRC-all/mc16a/postProcessed_ttbar_PhPy8_Total.root", Stop = 1000, SingleThread = True, Compiler = "ttbar.pkl")
     #Passed(TestEventGraphs(), "TestEventGraphs")
     #Passed(TestDataLoader(), "TestDataLoader")
     #Passed(TestDataLoaderTrainingValidationTest(), "TestDataLoaderTrainingValidationTest")
