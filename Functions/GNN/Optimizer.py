@@ -1,12 +1,16 @@
 from Functions.Tools.Alerting import Notification
 from Functions.GNN.Graphs import GenerateDataLoader
 from Functions.GNN.Models import EdgeConv
-from torch_geometric.loader import DataLoader
 
 import torch
-import numpy as np
 from torch.utils.data import SubsetRandomSampler
+from torch_geometric.loader import DataLoader
+from torch_geometric.utils import accuracy
+
+import numpy as np
 from sklearn.model_selection import KFold 
+
+import copy
 
 
 class Optimizer(Notification):
@@ -28,7 +32,7 @@ class Optimizer(Notification):
         else:
             self.Warning("FAILED TO INITIALIZE OPTIMIZER. WRONG DATALOADER")
             return False
-        
+        self.Loader = Loader 
         self.Epochs = 50
         self.Device = Loader.Device
         self.Device_s = Loader.Device_s
@@ -42,15 +46,29 @@ class Optimizer(Notification):
         self.EdgeAttribute = Loader.EdgeAttribute
         self.NodeAttribute = Loader.NodeAttribute
 
-        self.LossStatistics = {}
+        self.LossTrainStatistics = {}
+        self.TrainStatistics = {}
+        
+        self.ValidationStatistics = {}
+        self.LossValidationStatistics = {}
+
+        self.OptimizerSnapShots = {}
+
         self.epoch = 0
+        self.Trained = False
 
     def kFoldTraining(self):
         Splits = KFold(n_splits = self.kFold, shuffle = True, random_state = 42)
         for epoch in range(self.Epochs):
-            self.Notify("EPOCH: " +str(epoch+1) + "/" + str(self.Epochs))
+            self.Notify("EPOCH =============================== " +str(epoch+1) + "/" + str(self.Epochs))
             self.epoch = epoch
-            self.LossStatistics[epoch] = []
+
+            self.LossTrainStatistics[self.epoch] = []
+            self.LossValidationStatistics[self.epoch] = []
+
+            self.ValidationStatistics[self.epoch] = []
+            self.TrainStatistics[self.epoch] = []
+ 
             for n_node in self.DataLoader:
                 self.Notify("NUMBER OF NODES -----> " + str(n_node) + " BEING TESTED")
                 CurrentData = self.DataLoader[n_node] 
@@ -63,37 +81,85 @@ class Optimizer(Notification):
                     self.Notify("CURRENT k-Fold: " + str(fold+1))
                     
                     train_loader = DataLoader(CurrentData, batch_size = self.DefaultBatchSize, sampler = SubsetRandomSampler(train_idx))
-                    valid_loader = DataLoader(CurrentData, batch_size = self.DefaultBatchSize, sampler = SubsetRandomSampler(val_idx))    
-                    
+                    valid_loader = DataLoader(CurrentData, batch_size = self.DefaultBatchSize, sampler = SubsetRandomSampler(val_idx))                      
                     for ts in train_loader:
                         self.sample = ts
                         self.TrainClassification()
+                   
+                    TA = self.GetClassificationAccuracy(train_loader)
+                    VA = self.GetClassificationAccuracy(valid_loader)
+                    
+                    TL = self.GetClassificationLoss(train_loader)
+                    VL = self.GetClassificationLoss(valid_loader)
 
-                    for vl in valid_loader:
-                        self.Model.eval()
-                        pred = self.Model(vl.x, vl.edge_index)
+                    self.TrainStatistics[self.epoch].append(TA)
+                    self.ValidationStatistics[self.epoch].append(VA)
+
+                    self.LossTrainStatistics[self.epoch].append(TL)
+                    self.LossValidationStatistics[self.epoch].append(VL)
 
                 self.Notify("CURRENT LOSS FUNCTION: " + str(round(float(self.L), 3)))
-                pred = self.Model(self.sample.x, self.sample.edge_index)
-                print(torch.stack(list(pred)), "|",  self.sample.y)
+            self.OptimizerSnapShots[self.epoch] = copy.deepcopy(self.Optimizer)
+        self.Loader.Trained = True 
+    
+    def GetClassificationAccuracy(self, loader):
+        P = []
+        T = []
+        for i in loader:
+            _, pred = self.Model(i.x, i.edge_index).max(1)
+            truth = i.y.t().contiguous().squeeze()
+            T.append(list(truth))
+            P.append(list(pred))
+        p = accuracy(torch.tensor(P), torch.tensor(T))
+        return p
+    
+    def GetClassificationLoss(self, loader):
+        L = []
+        for i in loader:
+            pred = self.Model(i.x, i.edge_index)
+            Loss = torch.nn.CrossEntropyLoss()
+            L.append(Loss(pred, self.sample.y.t().contiguous().squeeze()))
+        return L
 
     def DefineEdgeConv(self, in_channels, out_channels):
+        self.Classifier = True
         self.Model = EdgeConv(in_channels, out_channels)
         self.__DefineOptimizer()
 
     def TrainClassification(self):
         self.Model.train()
         self.Optimizer.zero_grad()
-        Loss = torch.nn.CrossEntropyLoss()
         
         pred = self.Model(self.sample.x, self.sample.edge_index)
-        self.L = Loss(pred, self.sample.y)
+        Loss = torch.nn.CrossEntropyLoss()
+        self.L = Loss(pred, self.sample.y.t().contiguous().squeeze())
         self.L.backward()
         self.Optimizer.step()
-
-        self.LossStatistics[self.epoch].append(self.L)
 
     def __DefineOptimizer(self):
         self.Model.to(self.Device)
         self.Optimizer = torch.optim.Adam(self.Model.parameters(), lr = self.LearningRate, weight_decay = self.WeightDecay)
-        
+    
+    def ApplyToDataSample(self, sample, attr):
+        DataLoader = {}
+        if isinstance(sample, dict):
+            DataLoader = sample
+        elif isinstance(sample, GenerateDataLoader) and sample.Converted == True:
+            DataLoader = sample.DataLoader
+        elif isinstance(sample, GenerateDataLoader):
+            sample.ToDataLoader()
+            DataLoader = sample.DataLoader
+        else:
+            self.Warning("FAILURE::WRONG DATALOADER OBJECT")
+            return False
+
+        for n_part in sample.EventData:
+            for i in sample.EventData[n_part]:
+                Data = i.Data.to(self.Device_s, non_blocking = True)
+                Event_Obj = i.Event
+
+                _, pred = self.Model(Data.x, Data.edge_index).max(1)
+
+                for n in range(len(pred)):
+                    setattr(i.NodeParticleMap[n], attr, pred[n])
+        sample.Processed = True 

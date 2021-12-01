@@ -272,8 +272,3 @@ class SubfigureCanvas(SharedMethods):
             self.k += 1
             self.AppendToPLT(i)
     
-
-
-
-    
-

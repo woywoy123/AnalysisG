@@ -1,28 +1,46 @@
 from Functions.GNN.Graphs import GenerateDataLoader
 from Functions.GNN.Optimizer import Optimizer
+from Functions.GNN.Metrics import EvaluationMetrics
 from Functions.IO.IO import UnpickleObject, PickleObject
-
-
 
 def SimpleFourTops():
     def Signal(a):
-        return a.Signal
+        return int(a.Signal)
+
+    def Charge(a):
+        return float(a.Signal)
+
 
     ev = UnpickleObject("SignalSample.pkl")
-
     Loader = GenerateDataLoader()
-    Loader.AddNodeFeature("x", Signal)
+    Loader.AddNodeFeature("x", Charge)
     Loader.AddNodeTruth("y", Signal)
     Loader.AddSample(ev, "nominal", "TruthTops")
     Loader.ToDataLoader()
 
-    #PickleObject(Loader, "Debug.pkl")
-    #Loader = UnpickleObject("Debug.pkl") 
+    Sig = GenerateDataLoader()
+    Sig.AddNodeFeature("x", Charge)
+    Sig.AddSample(ev, "nominal", "TruthTops")
+
+
     op = Optimizer(Loader)
-    op.DefaultBatchSize = 1
-    op.kFold = 2
-    op.DefineEdgeConv(1, 1)
+    op.DefaultBatchSize = 20
+    op.Epochs = 10
+    op.kFold = 3
+    op.DefineEdgeConv(1, 2)
     op.kFoldTraining()
+    op.ApplyToDataSample(Sig, "Sig")    
+
+    e = EvaluationMetrics()
+    e.Sample = Sig
+    e.AddTruthAttribute("Signal")
+    e.AddPredictionAttribute("Sig")
+    e.ProcessSample()
+    e.Accuracy()
+
+
+
+
 
     return True
 

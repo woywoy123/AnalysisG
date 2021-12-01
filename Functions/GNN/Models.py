@@ -16,8 +16,8 @@ class EdgeConv(MessagePassing):
         tmp = torch.cat([x_i, x_j - x_i], dim = 1)
         return self.mlp(tmp)
 
-    #def update(self, aggr_out):
-    #    F.normalize(aggr_out)
-    #    return aggr_out
+    def update(self, aggr_out):
+        F.normalize(aggr_out)
+        return aggr_out
 
 

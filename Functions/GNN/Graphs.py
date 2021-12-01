@@ -11,12 +11,6 @@ import numpy as np
 from sklearn.model_selection import ShuffleSplit
 from torch.utils.data import RandomSampler
 
-
-
-
-
-
-
 class EventGraph:
 
     def __init__(self, Event, Level, Tree):
@@ -62,12 +56,13 @@ class EventGraph:
             for j in self.Nodes:
                 if self.SelfLoop == False and i == j:
                     continue 
-                self.Edges.append((i, j))
+                self.Edges.append([i, j])
         self.G.add_edges_from(self.Edges)
 
     def ConvertToData(self):
-        self.Data = from_networkx(self.G) 
-        
+        edge_index = torch.tensor(self.Edges, dtype=torch.long).t().contiguous()
+        self.Data = Data(edge_index = edge_index)
+
         # Apply Node Features [NODES X FEAT]
         for i in self.NodeAttr:
             fx = self.NodeAttr[i]
@@ -78,8 +73,9 @@ class EventGraph:
                 for fx_i in fx:
                     attr_i.append(fx_i(p))
                 attr_v.append(attr_i)
-            attr_ten = torch.tensor(attr_v, dtype = torch.float)
-            setattr(self.Data, str(i), attr_ten)
+            attr_ten = torch.tensor(attr_v)
+            setattr(self.Data, i, attr_ten)
+        
     
         # Apply Edge Features [EDGES X FEAT]
         for i in self.EdgeAttr:
@@ -93,7 +89,8 @@ class EventGraph:
                     attr_i.append(fx_i(p_i, p_j))
                 attr_v.append(attr_i)
             attr_ten = torch.tensor(attr_v, dtype = torch.float)
-            setattr(self.Data, str(i), attr_ten)
+            setattr(self.Data, i, attr_ten)
+        
         setattr(self.Data, "i", self.iter)
 
     def SetNodeAttribute(self, c_name, fx):
@@ -132,30 +129,28 @@ class GenerateDataLoader(Notification):
 
         self.SelfLoop = True
         self.Converted = False
+        self.TrainingTestSplit = False
+        self.Processed = False
+        self.Trained = False
 
         self.EdgeAttribute = {}
         self.NodeAttribute = {}
+        self.EdgeTruthAttribute = {}
+        self.NodeTruthAttribute = {}
 
         self.Notify("DATA WILL BE PROCESSED ON: " + self.Device_s)
 
-    def __AddToMap(self, name, fx, attr):
-        Map = getattr(self, attr)
-        if name not in Map:
-            Map[name] = []
-        Map[name].append(fx)
-        setattr(self, attr, Map)
-
     def AddEdgeFeature(self, name, fx):
-        self.__AddToMap(name, fx, "EdgeAttribute") 
+        self.EdgeAttribute[name] = fx
 
     def AddNodeFeature(self, name, fx):
-        self.__AddToMap(name, fx, "NodeAttribute")
+        self.NodeAttribute[name] = fx 
 
     def AddNodeTruth(self, name, fx):
-        self.__AddToMap(name, fx, "NodeAttribute")
+        self.NodeTruthAttribute[name] = fx
 
     def AddEdgeTruth(self, name, fx):
-        self.__AddToMap(name, fx, "EdgeAttribute")
+        self.EdgeTruthAttribute[name] = fx
 
     def AddSample(self, Bundle, Tree, Level = "JetLepton"):
         if isinstance(Bundle, EventGenerator) == False:
@@ -170,8 +165,15 @@ class GenerateDataLoader(Notification):
             e.iter = self.__iter
             e.CreateParticleNodes()
             e.CreateEdges()
-            e.NodeAttr = self.NodeAttribute
-            e.EdgeAttr = self.EdgeAttribute
+            
+            for i in self.NodeAttribute:
+                e.SetNodeAttribute("x", self.NodeAttribute[i])
+            for i in self.EdgeAttribute:
+                e.SetEdgeAttribute("edge_attr", self.EdgeAttribute[i])
+            for i in self.NodeTruthAttribute:
+                e.SetNodeAttribute("y", self.NodeTruthAttribute[i])
+            for i in self.EdgeTruthAttribute:
+                e.SetEdgeAttribute("edge_y", self.EdgeTruthAttribute[i])
             e.ConvertToData()
             
             n_particle = len(e.Particles)
@@ -208,8 +210,8 @@ class GenerateDataLoader(Notification):
             if n_particle not in self.EventTestData:
                 self.EventTestData[n_particle] = []
             self.EventTestData[n_particle].append(i)
-
-
+        
+        self.TrainingTestSplit = True
 
     def ToDataLoader(self):
         self.Notify("CONVERTING EVENTS TO PyGeometric DATA")
