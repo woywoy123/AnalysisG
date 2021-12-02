@@ -3,6 +3,9 @@ from Functions.Event.Event import EventGenerator
 from Functions.Particles.Particles import Particle
 from Functions.IO.IO import UnpickleObject, PickleObject
 from Functions.Plotting.Histograms import TH2F, TH1F, SubfigureCanvas, CombineHistograms
+from Functions.GNN.Graphs import GenerateDataLoader
+from Functions.GNN.Optimizer import Optimizer
+from Functions.GNN.Metrics import EvaluationMetrics
 
 def TestTops():
    
@@ -452,29 +455,41 @@ def TestGNNMonitor():
     def Signal(a):
         return int(a.Signal)
 
+    def Energy(a):
+        return float(a.e)
+    
     def Charge(a):
         return float(a.Signal)
 
-
     ev = UnpickleObject("SignalSample.pkl")
     Loader = GenerateDataLoader()
-    Loader.AddNodeFeature("x", Charge)
+    Loader.AddNodeFeature("e", Energy)
+    Loader.AddNodeFeature("C", Charge)
     Loader.AddNodeTruth("y", Signal)
     Loader.AddSample(ev, "nominal", "TruthTops")
     Loader.ToDataLoader()
 
     Sig = GenerateDataLoader()
-    Sig.AddNodeFeature("x", Charge)
+    Sig.AddNodeFeature("e", Energy)
+    Sig.AddNodeFeature("C", Charge)
+    Sig.AddNodeTruth("y", Signal)
     Sig.AddSample(ev, "nominal", "TruthTops")
 
-
     op = Optimizer(Loader)
-    op.DefaultBatchSize = 20
-    op.Epochs = 10
-    op.kFold = 3
-    op.DefineEdgeConv(1, 2)
+    op.DefaultBatchSize = 100
+    op.Epochs = 200
+    op.kFold = 10
+    op.LearningRate = 1e-6
+    op.WeightDecay = 1e-4
+    op.DefineEdgeConv(2, 2)
     op.kFoldTraining()
     op.ApplyToDataSample(Sig, "Sig")    
 
+    eva = EvaluationMetrics()
+    eva.Sample = op
+    eva.AddTruthAttribute("Signal")
+    eva.AddPredictionAttribute("Sig")
+    eva.ProcessSample()
+    eva.LossTrainingPlot("Plots/GNN_Performance_Plots/")
 
-
+    return True

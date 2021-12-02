@@ -10,6 +10,7 @@ class EdgeConv(MessagePassing):
         self.mlp = Seq(Linear(2 * in_channels, out_channels), ReLU(), Linear(out_channels, out_channels))
     
     def forward(self, x, edge_index):
+        print(x, edge_index)
         return self.propagate(edge_index, x = x)
 
     def message(self, x_i, x_j):

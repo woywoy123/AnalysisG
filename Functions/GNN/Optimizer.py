@@ -15,7 +15,7 @@ import copy
 
 class Optimizer(Notification):
 
-    def __init__(self, Loader):
+    def __init__(self, Loader, Debug = False):
         self.Verbose = True
         Notification.__init__(self, self.Verbose)
         self.Caller = "OPTIMIZER"
@@ -32,19 +32,20 @@ class Optimizer(Notification):
         else:
             self.Warning("FAILED TO INITIALIZE OPTIMIZER. WRONG DATALOADER")
             return False
+
         self.Loader = Loader 
         self.Epochs = 50
-        self.Device = Loader.Device
-        self.Device_s = Loader.Device_s
-        
+        if Debug == False:
+            self.Device = Loader.Device
+            self.Device_s = Loader.Device_s
+        else:
+            self.Device = torch.device("cuda")
+
         self.LearningRate = 1e-2
         self.WeightDecay = 1e-4
         self.DefaultBatchSize = 1
         self.kFold = 10
         self.Model = None
-
-        self.EdgeAttribute = Loader.EdgeAttribute
-        self.NodeAttribute = Loader.NodeAttribute
 
         self.LossTrainStatistics = {}
         self.TrainStatistics = {}
@@ -61,7 +62,7 @@ class Optimizer(Notification):
         Splits = KFold(n_splits = self.kFold, shuffle = True, random_state = 42)
         for epoch in range(self.Epochs):
             self.Notify("EPOCH =============================== " +str(epoch+1) + "/" + str(self.Epochs))
-            self.epoch = epoch
+            self.epoch = epoch+1
 
             self.LossTrainStatistics[self.epoch] = []
             self.LossValidationStatistics[self.epoch] = []
@@ -131,7 +132,7 @@ class Optimizer(Notification):
     def DefineEdgeConv(self, in_channels, out_channels):
         self.Classifier = True
         self.Model = EdgeConv(in_channels, out_channels)
-        self.__DefineOptimizer()
+        self.DefineOptimizer()
 
     def TrainClassification(self):
         self.Model.train()
@@ -143,7 +144,7 @@ class Optimizer(Notification):
         self.L.backward()
         self.Optimizer.step()
 
-    def __DefineOptimizer(self):
+    def DefineOptimizer(self):
         self.Model.to(self.Device)
         self.Optimizer = torch.optim.Adam(self.Model.parameters(), lr = self.LearningRate, weight_decay = self.WeightDecay)
     

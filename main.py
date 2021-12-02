@@ -1,11 +1,9 @@
 from Closure.IO import TestDir, TestReadSingleFile, TestReadFile, TestFileConvertArray
 from Closure.Event import TestEvents, TestParticleAssignment, TestSignalMultipleFile, TestSignalDirectory, TestAnomalousStatistics
-from Closure.Plotting import TestTops, TestResonance, TestBackGroundProcesses
+from Closure.Plotting import TestTops, TestResonance, TestBackGroundProcesses, TestGNNMonitor
 from Closure.DataLoader import TestEventGraphs, TestDataLoader, TestDataLoaderTrainingValidationTest, TestEventNodeEdgeFeatures
 from Closure.GNN import SimpleFourTops
-
-
-
+from Closure.Models import TestEdgeConvModel
 
 def Passed(F, name):
     if F:
@@ -23,7 +21,6 @@ def Generate_Cache(di, Stop = -1, SingleThread = False, Compiler = "EventGenerat
     ev.CompileEvent(SingleThread = SingleThread)
     PickleObject(ev, Compiler)
 
-
 if __name__ == '__main__':
     # ====== Test of IO 
     #Passed(TestDir(), "TestDir")
@@ -38,7 +35,6 @@ if __name__ == '__main__':
     #Passed(TestEvents(), "TestEvents")
     #Passed(TestParticleAssignment(), "TestParticleAssignment")
     #Passed(TestAnomalousStatistics(), "TestAnomalousStatistics") # <--- Need to checkout detector particle matching 
-    
     # ====== Test of DataLoader
     #Generate_Cache(dir, Stop = 1000, SingleThread = True, Compiler = "SignalSample.pkl")
     #Generate_Cache("/CERN/Grid/Samples/NAF/2021-05-05-2cRC-all/mc16a/postProcessed_ttbar_PhPy8_Total.root", Stop = 1000, SingleThread = True, Compiler = "ttbar.pkl")
@@ -46,10 +42,15 @@ if __name__ == '__main__':
     #Passed(TestDataLoader(), "TestDataLoader")
     #Passed(TestDataLoaderTrainingValidationTest(), "TestDataLoaderTrainingValidationTest")
     #Passed(TestEventNodeEdgeFeatures(), "TestEventNodeEdgeFeatures")
-
-
+    
     # ====== Test of Optimizer
-    Passed(SimpleFourTops(), "SimpleFourTops")
+    #Passed(SimpleFourTops(), "SimpleFourTops")
+
+    # ====== Test of Plotting 
+    #Passed(TestGNNMonitor(), "TestGNNMonitor")
+
+    # ====== Test of GNN Model implementations 
+    Passed(TestEdgeConvModel(), "TestEdgeConvModel")
         
 
 

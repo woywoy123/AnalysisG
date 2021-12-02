@@ -1,6 +1,5 @@
 from Functions.GNN.Graphs import GenerateDataLoader
 from Functions.GNN.Optimizer import Optimizer
-from Functions.GNN.Metrics import EvaluationMetrics
 from Functions.IO.IO import UnpickleObject, PickleObject
 
 def SimpleFourTops():

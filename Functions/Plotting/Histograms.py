@@ -3,6 +3,7 @@ from networkx.drawing.nx_agraph import to_agraph
 from Functions.IO.Files import WriteDirectory
 from Functions.Tools.Alerting import Notification
 import os
+import numpy as np
 
 
 class GenericAttributes:
@@ -25,6 +26,9 @@ class GenericAttributes:
         self.Align = "left"
         
         self.Alpha = 0.5
+        self.Color = "black"
+        self.Marker = "o"
+        self.Style = ""
         self.Filename = ""
 
         self.DefaultScaling = 8
@@ -232,6 +236,51 @@ class CombineHistograms(SharedMethods):
     def Save(self, dir):
         self.SaveFigure(dir) 
 
+
+class CombineTGraph(SharedMethods):
+    
+    def __init__(self):
+        SharedMethods.__init__(self)
+        self.DefaultScaling = 8
+        self.DefaultDPI = 500
+        self.Normalize = False
+        self.Lines = []
+        self.Title = ""
+        self.Log = False
+        self.PLT = plt
+        self.PLT.figure(figsize=(self.DefaultScaling, self.DefaultScaling), dpi = self.DefaultDPI)
+        self.yMin = 0
+        self.yMax = 1
+    
+    def CompileLine(self):
+        if self.Title != "":
+            self.PLT.title(self.Title)
+
+        for i in range(len(self.Lines)):
+            H = self.Lines[i]
+
+            if H.ErrorBars:
+                self.PLT.errorbar(x = H.xData, y = H.yData, yerr = [H.Lo_err, H.Up_err], color = H.Color, linestyle = "-", capsize = 3, linewidth = 1, alpha = H.Alpha, label = H.Title)
+            else:
+                self.PLT.plot(H.xData, H.yData, marker = H.Marker, color = H.Color, linewidth = 1, alpha = H.Alpha, label = H.Title)
+        
+        self.PLT.ylim(self.yMin, self.yMax)
+
+        if len(self.Lines) != 0:
+            self.PLT.xlabel(self.Lines[0].xTitle)
+            self.PLT.ylabel(self.Lines[0].yTitle)
+        self.PLT.legend(loc="upper right")
+        self.Filename = self.Title + ".png"
+
+    def Save(self, dir):
+        self.SaveFigure(dir) 
+
+
+
+
+
+
+
 class SubfigureCanvas(SharedMethods):
     def __init__(self):
         self.FigureObjects = []
@@ -277,8 +326,34 @@ class TGraph(SharedMethods, GenericAttributes):
     def __init__(self):
         SharedMethods.__init__(self)
         GenericAttributes.__init__(self)
+        self.ErrorBars = False
 
     def Line(self):
-        pass
+        err = []
+        self.Up_err = []
+        self.Lo_err = []
+        if isinstance(self.yData[0], list) == True:
+            self.ErrorBars = True
+            tmp = []
+            for i in self.yData:
+                av = np.array(i)
+                tmp.append(np.average(av))
+                err.append(np.std(av))  
+                self.Up_err.append(abs(np.average(av)+np.std(av)))
+                self.Lo_err.append(abs(np.average(av)-np.std(av)))
+                
+            self.yData = tmp
+        
+        self.yBins = 1
+        self.xAxis()
+        self.yAxis()
 
+        if self.ErrorBars:
+            self.PLT.errorbar(x = self.xData, y = self.yData, yerr = [self.Lo_err, self.Up_err], color = self.Color, linestyle = "-", capsize = 3, linewidth = 1)
+        else:
+            self.PLT.plot(self.xData, self.yData, marker = self.Marker, color = self.Color, linewidth = 1)
+        self.PLT.xlabel(self.xTitle)
+        self.PLT.ylabel(self.yTitle)
+        self.PLT.xlim(0, self.xMax)
+        self.PLT.ylim(0, self.yMax*2)
     

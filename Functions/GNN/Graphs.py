@@ -15,7 +15,6 @@ class EventGraph:
 
     def __init__(self, Event, Level, Tree):
         self.G = nx.Graph()
-        self.Event = Event
         self.Particles = []
         self.SelfLoop = True
         self.NodeParticleMap = {}
@@ -103,6 +102,11 @@ class EventGraph:
             self.EdgeAttr[c_name] = []
         self.EdgeAttr[c_name].append(fx)
 
+    def CleanUp(self):
+        self.NodeAttr = {}
+        self.EdgeAttr = {}
+        #del self.Nodes 
+        #del self.Edges
 
 class GenerateDataLoader(Notification):
     
@@ -220,6 +224,7 @@ class GenerateDataLoader(Notification):
             Data = []
             for k in self.EventData[i]:
                 Data.append(k.Data.to(self.Device_s, non_blocking=True))
+                k.CleanUp()
             self.DataLoader[i] = Data
         
         self.TestDataLoader = {}
@@ -227,8 +232,14 @@ class GenerateDataLoader(Notification):
             Data = []
             for k in self.EventTestData[i]:
                 Data.append(k.Data.to(self.Device_s, non_blocking=True))
+                k.CleanUp()
             self.TestDataLoader[i] = Data
         
         self.Converted = True
         self.Notify("FINISHED CONVERSION")
+
+        del self.EdgeAttribute
+        del self.NodeAttribute
+        del self.NodeTruthAttribute
+        del self.EdgeTruthAttribute
 

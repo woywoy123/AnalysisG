@@ -1,11 +1,14 @@
 import torch
 from torch_geometric.utils import accuracy
 from Functions.GNN.Graphs import GenerateDataLoader
-from Functions.Plotting.Histograms import TH1F, TH2F
+from Functions.Plotting.Histograms import TH1F, TH2F, TGraph, CombineTGraph
+from Functions.Tools.Alerting import Notification
+from Functions.GNN.Optimizer import Optimizer
 
-class EvaluationMetrics:
+class EvaluationMetrics(Notification):
 
     def __init__(self):
+        Notification.__init__(self)
         self.Sample = []
         self.__TruthAttribute = []
         self.__PredictionAttribute = []
@@ -14,6 +17,8 @@ class EvaluationMetrics:
         self.__Pairs = {}
         self.__Truth = []
         self.__Pred = []
+        self.Caller = "::EvaluationMetrics"
+        self.__Processed = False
 
     def ProcessSample(self):
         
@@ -42,10 +47,15 @@ class EvaluationMetrics:
                 Pred[k] = torch.tensor(Pred[k])
             for k in Truth:
                 Truth[k] = torch.tensor(Truth[k])
-            
+            self.__Processed = True
+        elif "TRAINED" in self.__Type:
+            pass
+        else:
+            self.Warning("NOTHING HAS BEEN PROCESSED!")
+
         self.__Pred = Pred
         self.__Truth = Truth
-    
+         
     def AddTruthAttribute(self, attr):
         self.__TruthAttribute.append(attr)
 
@@ -53,6 +63,10 @@ class EvaluationMetrics:
         self.__PredictionAttribute.append(attr)
 
     def Accuracy(self):
+        
+        if self.__Processed == False:
+            self.ProcessSample()
+
         for tru in self.__Pairs:
             pre = self.__Pairs[tru]
             print("Accuracy (" + tru + "-" + pre +"): " + str(round(accuracy(self.__Truth[tru], self.__Pred[pre]), 3)))
@@ -63,6 +77,69 @@ class EvaluationMetrics:
             p = Particles[i]
             out.append(getattr(p, Attribute))
         return out
+
+    def LossTrainingPlot(self, Dir, ErrorBars = False):
+        self.__Plots = {}
+        
+        LossVal = self.__CompilePlot(self.__LossValidationStatistics, "Loss", "Epoch")
+        LossVal.Color = "blue"
+        LossVal.Title = "Validation"
+        LossVal.ErrorBars = ErrorBars
+        
+        LossTra = self.__CompilePlot(self.__LossTrainStatistics, "Loss", "Epoch")
+        LossTra.Color = "Orange"
+        LossTra.Title = "Training"
+        LossTra.ErrorBars = ErrorBars
+
+        ACVal = self.__CompilePlot(self.__ValidationStatistics, "Accuracy", "Epoch")
+        ACVal.Color = "blue"
+        ACVal.Title = "Validation"
+        ACVal.ErrorBars = ErrorBars
+        ACTra = self.__CompilePlot(self.__TrainStatistics, "Accuracy", "Epoch")
+        ACTra.Color = "Orange"
+        ACTra.Title = "Training"
+        ACTra.ErrorBars = ErrorBars
+        
+        C = CombineTGraph()
+        C.Title = "Training and Validation Prediction Accuracy with Epoch"
+        C.yMin = 0
+        C.yMax = max([max(ACVal.yData), max(ACTra.yData)])*2
+        C.Lines = [ACVal, ACTra] 
+        C.CompileLine()
+        C.Save(Dir)
+
+        T = CombineTGraph()
+        T.Title = "Training and Validation Loss Function with Epoch"
+        T.yMin = 0
+        T.yMax = max([max(LossVal.yData), max(LossTra.yData)])*2
+        T.Lines = [LossVal, LossTra] 
+        T.CompileLine()
+        T.Save(Dir)
+
+    
+    def __CompilePlot(self, dic, yTitle, xTitle):
+        
+        T = TGraph()
+        Epoch = []
+        Loss = []
+        for i in dic:
+            l = dic[i]
+            x = []
+            for k in l:
+                if isinstance(k, list):
+                    for j in k:
+                        x.append(j.item())
+                else:
+                    x.append(k)
+            Epoch.append(i)
+            Loss.append(x)
+        T.xData = Epoch
+        T.yData = Loss
+        T.yTitle = yTitle
+        T.xTitle = xTitle
+        T.Line()
+        return T
+        
 
     def __IsGeneratorType(self):
         if isinstance(self.Sample, GenerateDataLoader):
@@ -75,13 +152,14 @@ class EvaluationMetrics:
 
             if self.Sample.Processed == True:
                 self.__Type += "|PROCESSED"
-
-            if self.Sample.Trained == True:
+        
+        if isinstance(self.Sample, Optimizer):
+            if self.Sample.Loader.Trained == True:
                 self.__Type += "|TRAINED"
-                self.LossValidationStatistics = self.Sample.LossValidationStatistics
-                self.LossTrainStatistics = self.Sample.LossTrainStatistics
-                self.TrainStatistics = self.Sample.TrainStatistics
-                self.ValidationStatistics = self.Sample.ValidationStatistics
+                self.__LossValidationStatistics = self.Sample.LossValidationStatistics
+                self.__LossTrainStatistics = self.Sample.LossTrainStatistics
+                self.__TrainStatistics = self.Sample.TrainStatistics
+                self.__ValidationStatistics = self.Sample.ValidationStatistics
 
     def Reset(self):
         self.__init__(self)
