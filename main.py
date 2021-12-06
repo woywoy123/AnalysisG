@@ -3,7 +3,7 @@ from Closure.Event import TestEvents, TestParticleAssignment, TestSignalMultiple
 from Closure.Plotting import TestTops, TestResonance, TestBackGroundProcesses, TestGNNMonitor
 from Closure.DataLoader import TestEventGraphs, TestDataLoader, TestDataLoaderTrainingValidationTest, TestEventNodeEdgeFeatures
 from Closure.GNN import SimpleFourTops
-from Closure.Models import TestEdgeConvModel
+from Closure.Models import TestEdgeConvModel, TestGCNModel, TestInvMassGNN
 
 def Passed(F, name):
     if F:
@@ -50,7 +50,8 @@ if __name__ == '__main__':
     #Passed(TestGNNMonitor(), "TestGNNMonitor")
 
     # ====== Test of GNN Model implementations 
-    Passed(TestEdgeConvModel(), "TestEdgeConvModel")
-        
+    #Passed(TestEdgeConvModel(), "TestEdgeConvModel")
+    #Passed(TestGCNModel(), "TestGCNModel")
+    Passed(TestInvMassGNN(), "TestInvMassGNN")
 
 

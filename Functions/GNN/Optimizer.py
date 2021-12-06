@@ -39,7 +39,7 @@ class Optimizer(Notification):
             self.Device = Loader.Device
             self.Device_s = Loader.Device_s
         else:
-            self.Device = torch.device("cuda")
+            self.Device = torch.device("cpu")
 
         self.LearningRate = 1e-2
         self.WeightDecay = 1e-4
@@ -138,7 +138,7 @@ class Optimizer(Notification):
         self.Model.train()
         self.Optimizer.zero_grad()
         
-        pred = self.Model(self.sample.x, self.sample.edge_index)
+        pred = self.Model(self.sample)
         Loss = torch.nn.CrossEntropyLoss()
         self.L = Loss(pred, self.sample.y.t().contiguous().squeeze())
         self.L.backward()

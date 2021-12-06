@@ -16,7 +16,7 @@ class EventGraph:
     def __init__(self, Event, Level, Tree):
         self.G = nx.Graph()
         self.Particles = []
-        self.SelfLoop = True
+        self.SelfLoop = False
         self.NodeParticleMap = {}
         self.Nodes = []
         self.Edges = []
@@ -86,7 +86,7 @@ class EventGraph:
                 attr_i = []
                 for fx_i in fx:
                     attr_i.append(fx_i(p_i, p_j))
-                attr_v.append(attr_i)
+                attr_v.append(fx_i(p_i, p_j))
             attr_ten = torch.tensor(attr_v, dtype = torch.float)
             setattr(self.Data, i, attr_ten)
         
@@ -131,7 +131,7 @@ class GenerateDataLoader(Notification):
         self.TestSize = 40
         self.ValidationTrainingSize = 60
 
-        self.SelfLoop = True
+        self.SelfLoop = False
         self.Converted = False
         self.TrainingTestSplit = False
         self.Processed = False
@@ -171,9 +171,9 @@ class GenerateDataLoader(Notification):
             e.CreateEdges()
             
             for i in self.NodeAttribute:
-                e.SetNodeAttribute("x", self.NodeAttribute[i])
+                e.SetNodeAttribute(i, self.NodeAttribute[i])
             for i in self.EdgeAttribute:
-                e.SetEdgeAttribute("edge_attr", self.EdgeAttribute[i])
+                e.SetEdgeAttribute(i, self.EdgeAttribute[i])
             for i in self.NodeTruthAttribute:
                 e.SetNodeAttribute("y", self.NodeTruthAttribute[i])
             for i in self.EdgeTruthAttribute:
