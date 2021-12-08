@@ -2,7 +2,7 @@ from Functions.GNN.Graphs import GenerateDataLoader
 from Functions.GNN.Optimizer import Optimizer
 from Functions.GNN.Metrics import EvaluationMetrics
 from Functions.IO.IO import UnpickleObject, PickleObject
-from Functions.GNN.Models import EdgeConv, GCN, InvMassGNN
+from Functions.GNN.Models import EdgeConv, GCN, InvMassGNN, InvMassAggr
 
 def GenerateTemplate():
     def eta(a):
@@ -35,6 +35,7 @@ def GenerateTemplate():
 
 
 def ExampleEventGraph():
+    from skhep.math.vectors import LorentzVector
     # Different features to include as node and edges
     def eta(a):
         return float(a.eta)
@@ -48,6 +49,15 @@ def ExampleEventGraph():
         return float(a.DeltaR(b))
     def Signal(a):
         return int(a.Index)
+    def m(a, b):
+        t_i = LorentzVector()
+        t_i.setptetaphie(a.pt, a.eta, a.phi, a.e)
+
+        t_j = LorentzVector()
+        t_j.setptetaphie(b.pt, b.eta, b.phi, b.e)
+
+        T = t_i + t_j
+        return float(T.mass)
     
     #GenerateTemplate()
     event = UnpickleObject("Nodes_10.pkl")
@@ -56,8 +66,10 @@ def ExampleEventGraph():
     event.SetNodeAttribute("eta", eta)
     event.SetNodeAttribute("pt", pt)
     event.SetNodeAttribute("phi", phi)
+    event.SetEdgeAttribute("dr", d_r)
+    event.SetEdgeAttribute("m", m) 
+
     event.SetNodeAttribute("y", Signal)
-    event.SetEdgeAttribute("d_r", d_r)
     event.ConvertToData()
 
 
@@ -123,6 +135,49 @@ def TestInvMassGNN():
         _, p = Op.Model(Op.sample).max(1)
         print(p, P, Op.L)
 
+    return True
 
+def TestInvMassGNN():
+    
+    event1 = ExampleEventGraph()
+    #Model = InvMassGNN(4)
+    #Model.forward(event1.Data)
+
+    Op = Optimizer({}, Debug = True)
+    Op.Model = InvMassGNN(4)
+    Op.LearningRate = 1e-5
+    Op.WeightDecay = 1e-3
+    Op.DefineOptimizer()
+    Op.sample = event1.Data
+
+    P = [event1.NodeParticleMap[i].Index for i in event1.NodeParticleMap]
+        
+    print("==========")
+    for i in range(100000):
+        Op.TrainClassification()
+        _, p = Op.Model(Op.sample).max(1)
+        print(p, P, Op.L)
+
+    return True
+
+def TestInvMassAggr():
+    event1 = ExampleEventGraph()
+    #Model = InvMassGNN(4)
+    #Model.forward(event1.Data)
+
+    Op = Optimizer({}, Debug = True)
+    Op.Model = InvMassAggr(4)
+    Op.LearningRate = 1e-5
+    Op.WeightDecay = 1e-3
+    Op.DefineOptimizer()
+    Op.sample = event1.Data
+
+    P = [event1.NodeParticleMap[i].Index for i in event1.NodeParticleMap]
+        
+    print("==========")
+    for i in range(100000):
+        Op.TrainClassification()
+        _, p = Op.Model(Op.sample).max(1)
+        print(p, P, Op.L)
 
     return True

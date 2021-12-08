@@ -1,6 +1,7 @@
 from Functions.GNN.Graphs import GenerateDataLoader
 from Functions.GNN.Optimizer import Optimizer
 from Functions.IO.IO import UnpickleObject, PickleObject
+from Functions.GNN.Metrics import EvaluationMetrics
 
 def SimpleFourTops():
     def Signal(a):
@@ -42,4 +43,70 @@ def SimpleFourTops():
     return True
 
 
+def GenerateTemplate():
+    from skhep.math.vectors import LorentzVector
 
+    def eta(a):
+        return float(a.eta)
+    def energy(a):
+        return float(a.e)
+    def pt(a):
+        return float(a.pt)
+    def phi(a):
+        return float(a.phi)
+    def Signal(a):
+        return int(a.Index)
+    def d_r(a, b):
+        return float(a.DeltaR(b))
+    def m(a, b):
+        t_i = LorentzVector()
+        t_i.setptetaphie(a.pt, a.eta, a.phi, a.e)
+
+        t_j = LorentzVector()
+        t_j.setptetaphie(b.pt, b.eta, b.phi, b.e)
+
+        T = t_i + t_j
+        return float(T.mass)
+
+    ev = UnpickleObject("SignalSample.pkl")
+    Loader = GenerateDataLoader()
+    Loader.AddNodeFeature("e", energy)
+    Loader.AddNodeFeature("eta", eta)
+    Loader.AddNodeFeature("pt", pt)
+    Loader.AddNodeFeature("phi", phi)
+    Loader.AddEdgeFeature("dr", d_r)
+    Loader.AddEdgeFeature("m", m)
+    Loader.AddNodeTruth("y", Signal)
+
+    Loader.AddSample(ev, "nominal", "TruthChildren_init")
+    Loader.ToDataLoader()
+    PickleObject(Loader, "LoaderSignalSample.pkl")
+     
+def TestInvMassGNN_Children():
+    GenerateTemplate()
+
+    Loader = UnpickleObject("LoaderSignalSample.pkl")
+    
+    op = Optimizer(Loader)
+    op.DefaultBatchSize = 100
+    op.Epochs = 50
+    op.kFold = 10
+    op.LearningRate = 1e-5
+    op.WeightDecay = 1e-4
+    op.DefineInvMass(4)
+    op.kFoldTraining()
+    PickleObject(op, "TrainedModel.pkl")
+
+    Sig = UnpickleObject("LoaderSignalSample.pkl")
+    op = UnpickleObject("TrainedModel.pkl")
+    op.ApplyToDataSample(Sig, "y")    
+
+    eva = EvaluationMetrics()
+    eva.Sample = op
+    eva.AddTruthAttribute("Signal")
+    eva.AddPredictionAttribute("y")
+    eva.ProcessSample()
+    eva.LossTrainingPlot("Plots/GNN_Performance_InvMass/")
+
+
+    return True

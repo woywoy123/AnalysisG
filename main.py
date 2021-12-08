@@ -2,8 +2,8 @@ from Closure.IO import TestDir, TestReadSingleFile, TestReadFile, TestFileConver
 from Closure.Event import TestEvents, TestParticleAssignment, TestSignalMultipleFile, TestSignalDirectory, TestAnomalousStatistics
 from Closure.Plotting import TestTops, TestResonance, TestBackGroundProcesses, TestGNNMonitor
 from Closure.DataLoader import TestEventGraphs, TestDataLoader, TestDataLoaderTrainingValidationTest, TestEventNodeEdgeFeatures
-from Closure.GNN import SimpleFourTops
-from Closure.Models import TestEdgeConvModel, TestGCNModel, TestInvMassGNN
+from Closure.GNN import SimpleFourTops, TestInvMassGNN_Children
+from Closure.Models import TestEdgeConvModel, TestGCNModel, TestInvMassGNN, TestInvMassAggr
 
 def Passed(F, name):
     if F:
@@ -36,7 +36,7 @@ if __name__ == '__main__':
     #Passed(TestParticleAssignment(), "TestParticleAssignment")
     #Passed(TestAnomalousStatistics(), "TestAnomalousStatistics") # <--- Need to checkout detector particle matching 
     # ====== Test of DataLoader
-    #Generate_Cache(dir, Stop = 1000, SingleThread = True, Compiler = "SignalSample.pkl")
+    Generate_Cache(dir, Stop = -1, SingleThread = True, Compiler = "SignalSample.pkl")
     #Generate_Cache("/CERN/Grid/Samples/NAF/2021-05-05-2cRC-all/mc16a/postProcessed_ttbar_PhPy8_Total.root", Stop = 1000, SingleThread = True, Compiler = "ttbar.pkl")
     #Passed(TestEventGraphs(), "TestEventGraphs")
     #Passed(TestDataLoader(), "TestDataLoader")
@@ -52,6 +52,8 @@ if __name__ == '__main__':
     # ====== Test of GNN Model implementations 
     #Passed(TestEdgeConvModel(), "TestEdgeConvModel")
     #Passed(TestGCNModel(), "TestGCNModel")
-    Passed(TestInvMassGNN(), "TestInvMassGNN")
-
-
+    #Passed(TestInvMassGNN(), "TestInvMassGNN")
+    #Passed(TestInvMassAggr(), "TestInvMassAggr")
+    
+    # ====== Evaluation of Models ======== #
+    Passed(TestInvMassGNN_Children(), "TestInvMassGNN_Children")

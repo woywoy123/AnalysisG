@@ -1,6 +1,6 @@
 from Functions.Tools.Alerting import Notification
 from Functions.GNN.Graphs import GenerateDataLoader
-from Functions.GNN.Models import EdgeConv
+from Functions.GNN.Models import EdgeConv, InvMassGNN
 
 import torch
 from torch.utils.data import SubsetRandomSampler
@@ -40,6 +40,7 @@ class Optimizer(Notification):
             self.Device_s = Loader.Device_s
         else:
             self.Device = torch.device("cpu")
+            self.Device_s = "cpu"
 
         self.LearningRate = 1e-2
         self.WeightDecay = 1e-4
@@ -92,14 +93,17 @@ class Optimizer(Notification):
                     
                     TL = self.GetClassificationLoss(train_loader)
                     VL = self.GetClassificationLoss(valid_loader)
-
+                    del train_loader
+                    del valid_loader
+                    torch.cuda.empty_cache()
+                    
                     self.TrainStatistics[self.epoch].append(TA)
                     self.ValidationStatistics[self.epoch].append(VA)
 
                     self.LossTrainStatistics[self.epoch].append(TL)
                     self.LossValidationStatistics[self.epoch].append(VL)
 
-                self.Notify("CURRENT LOSS FUNCTION: " + str(round(float(self.L), 3)))
+                self.Notify("CURRENT LOSS FUNCTION: " + str(round(float(self.L), 7)))
             self.OptimizerSnapShots[self.epoch] = copy.deepcopy(self.Optimizer)
         self.Loader.Trained = True 
     
@@ -108,30 +112,41 @@ class Optimizer(Notification):
         T = []
         l = 0
         for i in loader:
-            _, pred = self.Model(i.x, i.edge_index).max(1)
+            with torch.no_grad():
+                _, pred = self.Model(i).max(1)
             truth = i.y.t().contiguous().squeeze()
 
             if l == 0:
                 l = len(truth.tolist()) 
-
+            
             if len(truth.tolist()) == l and len(pred.tolist()) == l:
                 T.append(truth.tolist())
                 P.append(pred.tolist())
+            del truth 
+            del pred
+
         p = accuracy(torch.tensor(P), torch.tensor(T))
+        del P
+        del T
         return p
     
     def GetClassificationLoss(self, loader):
         L = []
         for i in loader:
-            pred = self.Model(i.x, i.edge_index)
+            pred = self.Model(i)
             Loss = torch.nn.CrossEntropyLoss()
             truth = i.y.t().contiguous().squeeze()
-            L.append(Loss(pred, truth))
+            L.append(float(Loss(pred, truth)))
         return L
 
     def DefineEdgeConv(self, in_channels, out_channels):
         self.Classifier = True
         self.Model = EdgeConv(in_channels, out_channels)
+        self.DefineOptimizer()
+
+    def DefineInvMass(self, out_channels):
+        self.Classifier = True
+        self.Model = InvMassGNN(out_channels)
         self.DefineOptimizer()
 
     def TrainClassification(self):
@@ -166,7 +181,7 @@ class Optimizer(Notification):
                 Data = i.Data.to(self.Device_s, non_blocking = True)
                 Event_Obj = i.Event
 
-                _, pred = self.Model(Data.x, Data.edge_index).max(1)
+                _, pred = self.Model(Data).max(1)
 
                 for n in range(len(pred)):
                     setattr(i.NodeParticleMap[n], attr, pred[n])

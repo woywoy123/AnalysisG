@@ -128,7 +128,7 @@ class EvaluationMetrics(Notification):
             for k in l:
                 if isinstance(k, list):
                     for j in k:
-                        x.append(j.item())
+                        x.append(j)
                 else:
                     x.append(k)
             Epoch.append(i)
@@ -137,6 +137,8 @@ class EvaluationMetrics(Notification):
         T.yData = Loss
         T.yTitle = yTitle
         T.xTitle = xTitle
+        T.xMin = 0
+        T.xMax = i
         T.Line()
         return T
         

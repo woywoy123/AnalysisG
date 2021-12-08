@@ -3,6 +3,7 @@ from torch_geometric.data import Batch
 import torch.nn.functional as F
 from torch.nn import Sequential as Seq, Linear, ReLU, Sigmoid
 from skhep.math.vectors import LorentzVector
+from torch_scatter import scatter
 import torch 
 import math
 
@@ -41,15 +42,15 @@ class GCN(torch.nn.Module):
 
 
 def Mass(data, labels, classification):
-    v = data.x
+    e, pt, eta, phi = data.e, data.pt, data.eta, data.phi
     L = [LorentzVector() for i in range(classification)]
     
     inx = []
-    for n, x_i in zip(labels, v):
+    for i in range(len(labels)):
         t = LorentzVector()
-        t.setptetaphie(x_i[2], x_i[1], x_i[3], x_i[0])
-        L[int(n)] += t
-        inx.append(int(n))
+        t.setptetaphie(pt[i], eta[i], phi[i], e[i])
+        L[int(labels[i])] += t
+        inx.append(int(labels[i]))
     L = [[i.mass] for i in L]
     return torch.tensor(L), inx
 
@@ -57,44 +58,64 @@ class InvMassGNN(MessagePassing):
 
     def __init__(self, out_channels):
         super(InvMassGNN, self).__init__(aggr = "add")
-        self.mlp = Seq(Linear(6, 4), Sigmoid(), Linear(4, out_channels))       
+        self.mlp = Seq(Linear(6, 6), ReLU(), Linear(6, 32), ReLU(), Linear(32, 32), ReLU(), Linear(32, out_channels))
     
     def forward(self, data):
+
+        # Kinematics 
+        e, pt, eta, phi = data.e, data.pt, data.eta, data.phi
+        edge_index = data.edge_index
+        x = torch.cat([e, pt, eta, phi], dim = 1)
+
+        return self.propagate(edge_index, x = x, dr = data.dr, m = data.m) 
+
+    def message(self, x_i, x_j, dr, m):
+        return self.mlp(torch.cat([x_i, dr, m], dim = 1))
+
+    def update(self, aggr_out):
+        return F.normalize(aggr_out)
+        
+
+
+class InvMassAggr(MessagePassing):
+
+    def __init__(self, out_channels):
+        super(InvMassAggr, self).__init__(aggr = "add")
+        self.mlp = Seq(Linear(6, 6), ReLU(), Linear(6, 12), ReLU(), Linear(12, 12), ReLU(), Linear(12, out_channels))
+    
+    def forward(self, data):
+
         # Kinematics 
         e, pt, eta, phi = data.e, data.pt, data.eta, data.phi
         d_r, edge_index = data.d_r, data.edge_index
-        y = data.y
-        y = y.t().contiguous().squeeze()
-        #print(Mass(data, y, 4)) 
-        
         x = torch.cat([e, pt, eta, phi], dim = 1)
         return self.propagate(edge_index, x = x) 
 
     def message(self, x_i, x_j):
         dr = []
         m = []
+        de = []
         for i, j in zip(x_i, x_j):
-            dr.append([math.sqrt(math.pow(i[2] - j[2], 2) + math.pow(i[3] - j[3], 2))])
+            del_R = math.sqrt(math.pow(i[2] - j[2], 2) + math.pow(i[3] - j[3], 2))
+            dr.append([del_R])
             T_i = LorentzVector()
             T_i.setptetaphie(i[1], i[2], i[3], i[0])
 
             T_j = LorentzVector()
-            T_i.setptetaphie(i[1], i[2], i[3], i[0])
+            T_j.setptetaphie(j[1], j[2], j[3], j[0])
             T = T_j + T_i
             m.append([T.mass])
-
+        
         dr = torch.tensor(dr)
         m = torch.tensor(m)
         dr = torch.cat([x_i, dr, m], dim = 1)
         return self.mlp(dr)
+    
+    def aggregate(self, inputs, index, dim_size):
+        return scatter(inputs, index, dim = self.node_dim, dim_size = dim_size, reduce = "add")
 
     def update(self, aggr_out):
-        print(aggr_out)
         return F.normalize(aggr_out)
-        
-
-
-
 
 
 

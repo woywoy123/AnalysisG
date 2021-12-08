@@ -86,11 +86,12 @@ class EventGraph:
                 attr_i = []
                 for fx_i in fx:
                     attr_i.append(fx_i(p_i, p_j))
-                attr_v.append(fx_i(p_i, p_j))
+                attr_v.append(attr_i)
             attr_ten = torch.tensor(attr_v, dtype = torch.float)
             setattr(self.Data, i, attr_ten)
         
         setattr(self.Data, "i", self.iter)
+        self.Data.num_nodes = len(self.Nodes)
 
     def SetNodeAttribute(self, c_name, fx):
         if c_name not in self.NodeAttr:
@@ -105,8 +106,8 @@ class EventGraph:
     def CleanUp(self):
         self.NodeAttr = {}
         self.EdgeAttr = {}
-        #del self.Nodes 
-        #del self.Edges
+        del self.Nodes 
+        del self.Edges
 
 class GenerateDataLoader(Notification):
     
@@ -121,7 +122,9 @@ class GenerateDataLoader(Notification):
         else:
             self.Device = torch.device("cpu")
             self.Device_s = "cpu"
-        
+
+
+
         self.Bundles = []
         self.EventData = {}
         self.EventMap = {}
