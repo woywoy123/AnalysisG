@@ -93,9 +93,6 @@ class Optimizer(Notification):
                     
                     TL = self.GetClassificationLoss(train_loader)
                     VL = self.GetClassificationLoss(valid_loader)
-                    del train_loader
-                    del valid_loader
-                    torch.cuda.empty_cache()
                     
                     self.TrainStatistics[self.epoch].append(TA)
                     self.ValidationStatistics[self.epoch].append(VA)
@@ -104,6 +101,7 @@ class Optimizer(Notification):
                     self.LossValidationStatistics[self.epoch].append(VL)
 
                 self.Notify("CURRENT LOSS FUNCTION: " + str(round(float(self.L), 7)))
+                self.Notify("CURRENT ACCURACY (Validation): " + str(round(float(VA), 7)))
             self.OptimizerSnapShots[self.epoch] = copy.deepcopy(self.Optimizer)
         self.Loader.Trained = True 
     
@@ -112,8 +110,7 @@ class Optimizer(Notification):
         T = []
         l = 0
         for i in loader:
-            with torch.no_grad():
-                _, pred = self.Model(i).max(1)
+            _, pred = self.Model(i).max(1)
             truth = i.y.t().contiguous().squeeze()
 
             if l == 0:
@@ -122,12 +119,7 @@ class Optimizer(Notification):
             if len(truth.tolist()) == l and len(pred.tolist()) == l:
                 T.append(truth.tolist())
                 P.append(pred.tolist())
-            del truth 
-            del pred
-
         p = accuracy(torch.tensor(P), torch.tensor(T))
-        del P
-        del T
         return p
     
     def GetClassificationLoss(self, loader):

@@ -36,7 +36,7 @@ if __name__ == '__main__':
     #Passed(TestParticleAssignment(), "TestParticleAssignment")
     #Passed(TestAnomalousStatistics(), "TestAnomalousStatistics") # <--- Need to checkout detector particle matching 
     # ====== Test of DataLoader
-    Generate_Cache(dir, Stop = -1, SingleThread = True, Compiler = "SignalSample.pkl")
+    #Generate_Cache(dir, Stop = 10000, SingleThread = False, Compiler = "SignalSample.pkl")
     #Generate_Cache("/CERN/Grid/Samples/NAF/2021-05-05-2cRC-all/mc16a/postProcessed_ttbar_PhPy8_Total.root", Stop = 1000, SingleThread = True, Compiler = "ttbar.pkl")
     #Passed(TestEventGraphs(), "TestEventGraphs")
     #Passed(TestDataLoader(), "TestDataLoader")
@@ -53,7 +53,7 @@ if __name__ == '__main__':
     #Passed(TestEdgeConvModel(), "TestEdgeConvModel")
     #Passed(TestGCNModel(), "TestGCNModel")
     #Passed(TestInvMassGNN(), "TestInvMassGNN")
-    #Passed(TestInvMassAggr(), "TestInvMassAggr")
+    Passed(TestInvMassAggr(), "TestInvMassAggr")
     
     # ====== Evaluation of Models ======== #
-    Passed(TestInvMassGNN_Children(), "TestInvMassGNN_Children")
+    #Passed(TestInvMassGNN_Children(), "TestInvMassGNN_Children")

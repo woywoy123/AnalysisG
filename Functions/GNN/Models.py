@@ -58,8 +58,8 @@ class InvMassGNN(MessagePassing):
 
     def __init__(self, out_channels):
         super(InvMassGNN, self).__init__(aggr = "add")
-        self.mlp = Seq(Linear(6, 6), ReLU(), Linear(6, 32), ReLU(), Linear(32, 32), ReLU(), Linear(32, out_channels))
-    
+        #self.mlp = Seq(Linear(6, 6), ReLU(), Linear(6, 64), ReLU(), Linear(64, 64), ReLU(), Linear(64, out_channels))
+        self.mlp = Seq(Linear(6, 32), ReLU(), Linear(32, 128), ReLU(), Linear(128, 64), ReLU(), Linear(64, out_channels))
     def forward(self, data):
 
         # Kinematics 
@@ -79,17 +79,17 @@ class InvMassGNN(MessagePassing):
 
 class InvMassAggr(MessagePassing):
 
-    def __init__(self, out_channels):
+    def __init__(self, out_channels, edge_cut = 0.6):
         super(InvMassAggr, self).__init__(aggr = "add")
-        self.mlp = Seq(Linear(6, 6), ReLU(), Linear(6, 12), ReLU(), Linear(12, 12), ReLU(), Linear(12, out_channels))
-    
+        self.mlp = Seq(Linear(6, 64), ReLU(), Linear(64, 64), ReLU(), Linear(64, 63))
+        self.Mmlp = Seq(Linear(63 + 1, 63 + 1), ReLU(), Linear(63+1, out_channels))
+        self.Threshold = edge_cut
     def forward(self, data):
 
         # Kinematics 
         e, pt, eta, phi = data.e, data.pt, data.eta, data.phi
-        d_r, edge_index = data.d_r, data.edge_index
-        x = torch.cat([e, pt, eta, phi], dim = 1)
-        return self.propagate(edge_index, x = x) 
+        x = torch.cat([data.e, data.pt, data.eta, data.phi], dim = 1)
+        return self.propagate(edge_index = data.edge_index, x = x, dr = data.dr, m = data.m, y = data.y) 
 
     def message(self, x_i, x_j):
         dr = []
@@ -112,12 +112,34 @@ class InvMassAggr(MessagePassing):
         return self.mlp(dr)
     
     def aggregate(self, inputs, index, dim_size):
+        #https://pytorch-scatter.readthedocs.io/en/latest/functions/scatter.html
+        # - Basically a form of hashing where the index is used to extract values from the inputs and sums these values @ index value
         return scatter(inputs, index, dim = self.node_dim, dim_size = dim_size, reduce = "add")
 
-    def update(self, aggr_out):
-        return F.normalize(aggr_out)
+    def update(self, aggr_out, x, edge_index, y):
+        #aggr_out = F.normalize(aggr_out)
+        #edge_weight = torch.sigmoid(torch.matmul(aggr_out, aggr_out.t()))
 
+        #print(aggr_out)
+        #print(edge_weight) 
+        
+        _, p = aggr_out.max(1)
+        M = [LorentzVector() for i in range(len(x))]
+        for e_i, e_j in zip(edge_index[0], edge_index[1]):
+            # incoming kinematic quantities  x_j -> x_i            
+            #if edge_weight[e_j][e_i] > self.Threshold:
+            
+            if p[e_i] == p[e_j]:
+                v = LorentzVector()
+                v.setptetaphie(x[e_j][1], x[e_j][2], x[e_j][3], x[e_j][0])
+                M[e_i]+=v
+        
+        # Include own mass in the calculation
+        for e_i in set(edge_index[0].tolist()):
+            v = LorentzVector()
+            v.setptetaphie(x[e_i][1], x[e_i][2], x[e_i][3], x[e_i][0])
+            M[e_i] += v
 
-
-
+        M = torch.cat([aggr_out, torch.tensor([[i.mass] for i in M])], dim = 1)
+        return F.normalize(self.Mmlp(F.normalize(M)))
 

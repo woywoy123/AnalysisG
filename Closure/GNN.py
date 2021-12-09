@@ -2,6 +2,7 @@ from Functions.GNN.Graphs import GenerateDataLoader
 from Functions.GNN.Optimizer import Optimizer
 from Functions.IO.IO import UnpickleObject, PickleObject
 from Functions.GNN.Metrics import EvaluationMetrics
+from Functions.GNN.Models import InvMassGNN
 
 def SimpleFourTops():
     def Signal(a):
@@ -81,32 +82,31 @@ def GenerateTemplate():
     Loader.AddSample(ev, "nominal", "TruthChildren_init")
     Loader.ToDataLoader()
     PickleObject(Loader, "LoaderSignalSample.pkl")
-     
-def TestInvMassGNN_Children():
-    GenerateTemplate()
 
+
+def TrainEvaluate(Model, Outdir):
     Loader = UnpickleObject("LoaderSignalSample.pkl")
     
     op = Optimizer(Loader)
-    op.DefaultBatchSize = 100
-    op.Epochs = 50
+    op.DefaultBatchSize = 10
+    op.Epochs = 100
     op.kFold = 10
-    op.LearningRate = 1e-5
-    op.WeightDecay = 1e-4
+    op.LearningRate = 1e-6
+    op.WeightDecay = 1e-6
     op.DefineInvMass(4)
     op.kFoldTraining()
-    PickleObject(op, "TrainedModel.pkl")
-
-    Sig = UnpickleObject("LoaderSignalSample.pkl")
-    op = UnpickleObject("TrainedModel.pkl")
-    op.ApplyToDataSample(Sig, "y")    
 
     eva = EvaluationMetrics()
     eva.Sample = op
     eva.AddTruthAttribute("Signal")
     eva.AddPredictionAttribute("y")
     eva.ProcessSample()
-    eva.LossTrainingPlot("Plots/GNN_Performance_InvMass/")
+    eva.LossTrainingPlot("Plots/" + name, True)
+
+def TestInvMassGNN_Children():
+    #GenerateTemplate()
+    M = InvMassGNN(4)
+    TrainEvaluate(M, "GNN_Performance_Plots")
 
 
     return True

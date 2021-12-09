@@ -162,8 +162,6 @@ def TestInvMassGNN():
 
 def TestInvMassAggr():
     event1 = ExampleEventGraph()
-    #Model = InvMassGNN(4)
-    #Model.forward(event1.Data)
 
     Op = Optimizer({}, Debug = True)
     Op.Model = InvMassAggr(4)
@@ -173,11 +171,27 @@ def TestInvMassAggr():
     Op.sample = event1.Data
 
     P = [event1.NodeParticleMap[i].Index for i in event1.NodeParticleMap]
+    
+    M_P = [event1.NodeParticleMap[i] for i in event1.NodeParticleMap]
+
+    from Functions.Particles.Particles import Particle 
+
+    M = [Particle(True) for i in range(4)]
+    for i, j in zip(P, M_P):
+        M[i].Decay.append(j)
+    
+    x = []
+    for i in M:
+        i.CalculateMassFromChildren()
+        x.append(i.Mass_GeV) 
         
+    from time import sleep
+
+
     print("==========")
     for i in range(100000):
         Op.TrainClassification()
         _, p = Op.Model(Op.sample).max(1)
         print(p, P, Op.L)
-
+        print(x)
     return True

@@ -106,8 +106,8 @@ class EventGraph:
     def CleanUp(self):
         self.NodeAttr = {}
         self.EdgeAttr = {}
-        del self.Nodes 
-        del self.Edges
+        #del self.Nodes 
+        #del self.Edges
 
 class GenerateDataLoader(Notification):
     
