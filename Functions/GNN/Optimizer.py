@@ -106,13 +106,15 @@ class Optimizer(Notification):
         self.Loader.Trained = True 
     
     def GetClassificationAccuracy(self, loader):
+        self.Model.eval()
         P = []
         T = []
         l = 0
         for i in loader:
             _, pred = self.Model(i).max(1)
             truth = i.y.t().contiguous().squeeze()
-
+            
+            print(truth, pred)
             if l == 0:
                 l = len(truth.tolist()) 
             
@@ -123,11 +125,13 @@ class Optimizer(Notification):
         return p
     
     def GetClassificationLoss(self, loader):
+        self.Model.eval()
         L = []
         for i in loader:
             pred = self.Model(i)
             Loss = torch.nn.CrossEntropyLoss()
             truth = i.y.t().contiguous().squeeze()
+
             L.append(float(Loss(pred, truth)))
         return L
 

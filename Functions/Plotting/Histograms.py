@@ -33,6 +33,7 @@ class GenericAttributes:
 
         self.DefaultScaling = 8
         self.DefaultDPI = 500
+        self.Compiled = False
         
         self.PLT = plt
         self.PLT.figure(figsize=(self.DefaultScaling, self.DefaultScaling), dpi = self.DefaultDPI)
@@ -98,10 +99,11 @@ class SharedMethods(WriteDirectory, Notification):
 
     def SaveFigure(self, dir = ""):
         
-        try:
-            self.CompileHistogram()
-        except AttributeError:
-            pass
+        if self.Compiled != True:
+            try:
+                self.CompileHistogram()
+            except AttributeError:
+                pass
        
         if self.Filename == "":
            self.Filename = self.Title + ".png"
@@ -131,7 +133,7 @@ class SharedMethods(WriteDirectory, Notification):
         else: 
             self.PLT.savefig(self.Filename)
         self.ChangeDirToRoot()
-        self.PLT.close("all")
+        self.PLT.close()
 
 
 class TH1F(SharedMethods, GenericAttributes):
@@ -163,6 +165,7 @@ class TH1F(SharedMethods, GenericAttributes):
 
         self.PLT.xlabel(self.xTitle)
         self.PLT.ylabel(self.yTitle)
+        self.Compiled = True
 
 class TH2F(SharedMethods, GenericAttributes):
     
@@ -204,7 +207,7 @@ class TH2F(SharedMethods, GenericAttributes):
             self.PLT.xticks(self.xLabels, self.xData, rotation = 45, rotation_mode = "anchor", ha = "right")
         if len(self.yLabels) != 0:
             self.PLT.yticks(self.yLabels, self.yData, rotation = 45, rotation_mode = "anchor", ha = "right")
-
+        self.Compiled = True
 
 class CombineHistograms(SharedMethods):
     def __init__(self):
@@ -216,22 +219,25 @@ class CombineHistograms(SharedMethods):
         self.Title = ""
         self.Log = False
         self.PLT = plt
+        self.Compiled = False
         self.PLT.figure(figsize=(self.DefaultScaling, self.DefaultScaling), dpi = self.DefaultDPI)
 
     def CompileHistogram(self):
 
         if self.Title != "":
             self.PLT.title(self.Title)
-
+        
         for i in range(len(self.Histograms)):
             H = self.Histograms[i]
-            self.PLT.hist(H.xData, bins = H.xBins, range=(H.xMin,H.xMax), label = H.Title, alpha = self.Alpha, log = self.Log)
+            self.PLT.hist(H.xData, bins = H.xBins, range=(H.xMin,H.xMax), label = H.Title, alpha = H.Alpha, log = self.Log)
         
         if len(self.Histograms) != 0:
             self.PLT.xlabel(self.Histograms[0].xTitle)
             self.PLT.ylabel(self.Histograms[0].yTitle)
         self.PLT.legend(loc="upper right")
-        self.Filename = self.Title + ".png"
+        if self.Filename == "":
+            self.Filename = self.Title + ".png"
+        self.Compiled = True
 
     def Save(self, dir):
         self.SaveFigure(dir) 

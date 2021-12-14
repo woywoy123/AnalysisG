@@ -79,11 +79,10 @@ class InvMassGNN(MessagePassing):
 
 class InvMassAggr(MessagePassing):
 
-    def __init__(self, out_channels, edge_cut = 0.6):
+    def __init__(self, out_channels):
         super(InvMassAggr, self).__init__(aggr = "add")
-        self.mlp = Seq(Linear(6, 64), ReLU(), Linear(64, 64), ReLU(), Linear(64, 63))
+        self.mlp = Seq(Linear(8 +2, 64), ReLU(), Linear(64, 64), ReLU(), Linear(64, 63))
         self.Mmlp = Seq(Linear(63 + 1, 63 + 1), ReLU(), Linear(63+1, out_channels))
-        self.Threshold = edge_cut
     def forward(self, data):
 
         # Kinematics 
@@ -108,7 +107,7 @@ class InvMassAggr(MessagePassing):
         
         dr = torch.tensor(dr)
         m = torch.tensor(m)
-        dr = torch.cat([x_i, dr, m], dim = 1)
+        dr = torch.cat([x_i, dr, m, abs(x_i - x_j)], dim = 1)
         return self.mlp(dr)
     
     def aggregate(self, inputs, index, dim_size):
@@ -143,3 +142,23 @@ class InvMassAggr(MessagePassing):
         M = torch.cat([aggr_out, torch.tensor([[i.mass] for i in M])], dim = 1)
         return F.normalize(self.Mmlp(F.normalize(M)))
 
+class PathNets(MessagePassing):
+    
+    def __init__(self, out_channels):
+        super(PathNets, self).__init__(aggr = "add")
+        self.mlp = Seq(Linear(8, 64), ReLU(), Linear(64, 64), ReLU(), Linear(64,64))
+
+    def forward(self, data): 
+        x = torch.cat([data.e, data.pt, data.eta, data.phi], dim = 1)
+        edge_attr = torch.cat([data.dr, data.m], dim = 1)
+        return self.propagate(edge_index = data.edge_index, x = x, edge_attr = edge_attr)
+
+    def message(self, x_i, x_j, x, edge_attr):
+        print(x_i, x_j, x, edge_attr)
+
+        print(torch.dot(x_i[0].t(), x_j[0]))
+        
+
+
+
+        

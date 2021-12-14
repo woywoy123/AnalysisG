@@ -16,15 +16,21 @@ for i in range(x):
 
 import torch 
 
-v = torch.Tensor([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-x = list(torch.combinations(v, r = 3))
-#print(x)
+v = torch.Tensor([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
+x = list(torch.combinations(v, r = 4))
+
+print(len(x))
 
 
-v = torch.Tensor([[1, 2, 3], [1, 4, 5]])
-print(v.t())
-c = torch.matmul(v, v.t())
-print(c)
+
+for i in x:
+    print(i)
+
+
+#v = torch.Tensor([[1, 2, 3], [1, 4, 5]])
+#print(v.t())
+#c = torch.matmul(v, v.t())
+#print(c)
 
 
 
