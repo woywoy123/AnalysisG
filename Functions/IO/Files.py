@@ -38,7 +38,11 @@ class Directories(Notification):
     def GetFilesInDir(self):
         if os.path.isfile(self.__Dir) == False:
             self.ListDirs()
-            for dir in self.Files:
+            for dir in list(self.Files):
+                tmp = self.ListFilesInDir(dir)
+                if len(tmp) == 0:
+                    self.Files.pop(dir)
+                    continue
                 self.Files[dir] = self.ListFilesInDir(dir)
         else:
             self.Files[os.path.dirname(self.__Dir)] = [os.path.basename(self.__Dir)]
@@ -46,12 +50,16 @@ class Directories(Notification):
 class WriteDirectory(Notification):
     def __init__(self):
         self.__pwd = os.getcwd()
+        self.__tmp = ""
 
     def MakeDir(self, dir):
-        try:
-            os.mkdir(self.__pwd + "/" + dir)
-        except FileExistsError:
-            pass
+        self.__tmp = str(self.__pwd)
+        for k in dir.split("/"):
+            try:
+                os.mkdir(self.__tmp + "/" + k)
+            except FileExistsError:
+                pass
+            self.__tmp = self.__tmp + "/" + k 
 
     def ChangeDirToRoot(self):
         os.chdir(self.__pwd)

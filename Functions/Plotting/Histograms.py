@@ -103,7 +103,7 @@ class SharedMethods(WriteDirectory, Notification):
             try:
                 self.CompileHistogram()
             except AttributeError:
-                pass
+                self.CompileGraph()
        
         if self.Filename == "":
            self.Filename = self.Title + ".png"
@@ -257,6 +257,7 @@ class CombineTGraph(SharedMethods):
         self.PLT.figure(figsize=(self.DefaultScaling, self.DefaultScaling), dpi = self.DefaultDPI)
         self.yMin = 0
         self.yMax = 1
+        self.Compiled = False
     
     def CompileLine(self):
         if self.Title != "":
@@ -277,13 +278,10 @@ class CombineTGraph(SharedMethods):
             self.PLT.ylabel(self.Lines[0].yTitle)
         self.PLT.legend(loc="upper right")
         self.Filename = self.Title + ".png"
+        self.Compiled = True
 
     def Save(self, dir):
         self.SaveFigure(dir) 
-
-
-
-
 
 
 
@@ -294,6 +292,7 @@ class SubfigureCanvas(SharedMethods):
         self.DefaultScaling = 8
         self.DefaultDPI = 500
         SharedMethods.__init__(self)
+        self.Compiled = False
 
     def AddObject(self, obj):
         self.FigureObjects.append(obj)
@@ -326,6 +325,8 @@ class SubfigureCanvas(SharedMethods):
         for i in self.FigureObjects:
             self.k += 1
             self.AppendToPLT(i)
+
+        self.Compiled = True
 
 class TGraph(SharedMethods, GenericAttributes):
 

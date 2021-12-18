@@ -100,16 +100,16 @@ def TestDataLoader():
     
 
     Loader = GenerateDataLoader()
+    Loader.SelfLoop = True
     Loader.AddSample(tttt, "nominal")
     Loader.AddSample(ttbar, "tree")
     Loader.ToDataLoader()
-
     
     for i in Loader.DataLoader:
         for k in Loader.DataLoader[i]:
-            index = int(k.i[0])
+            index = int(k.i)
             ev = Loader.EventMap[index]
-            
+
             if ValidateEdges(ev, ev.Particles) == False:
                 return False
             if ValidateNodes(ev, ev.Particles) == False:
@@ -126,20 +126,18 @@ def TestDataLoaderTrainingValidationTest():
     Loader.MakeTrainingSample()
     Loader.ToDataLoader()
         
-    Sample = []
+    SampleLoader = []
     for i in Loader.DataLoader:
         l = Loader.DataLoader[i]
         for k in l:
-            Sample.append(k)
-    if len(Sample) != Loader.ValidationTrainingSize:
-        return False
-    
-    Sample = []
+            SampleLoader.append(k)
+    TestLoader = [] 
     for i in Loader.TestDataLoader:
         l = Loader.TestDataLoader[i]
         for k in l:
-            Sample.append(k)
-    if len(Sample) != Loader.ValidationTrainingSize:
+            TestLoader.append(k)
+    
+    if len(SampleLoader) != len(TestLoader):
         return False
     return True
 
@@ -158,6 +156,7 @@ def TestEventNodeEdgeFeatures():
 
 
         tttt_truth = EventGraph(tttt, TruthLevel, "nominal")
+        tttt_truth.SelfLoop = True
         tttt_truth.CreateParticleNodes()
         tttt_truth.CreateEdges()
         P = tttt_truth.Particles 
@@ -175,7 +174,7 @@ def TestEventNodeEdgeFeatures():
         assert list(t.size()) == [len(P)*len(P), 1]
         
         EC_tttt = EdgeConv(2, 2)
-        EC_tttt(GR.x, GR.edge_index)
+        EC_tttt(GR)
 
         tttt_truth = EventGraph(tttt, TruthLevel, "nominal")
         tttt_truth.SelfLoop = False
@@ -196,7 +195,7 @@ def TestEventNodeEdgeFeatures():
         assert list(t.size()) == [len(P)*len(P) - len(P), 1]
         
         EC_tttt = EdgeConv(2, 2)
-        EC_tttt(GR.x, GR.edge_index)
+        EC_tttt(GR)
 
 
 

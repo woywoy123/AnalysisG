@@ -9,7 +9,7 @@ from Functions.GNN.Metrics import EvaluationMetrics
 
 def TestTops():
    
-    x = UnpickleObject("EventGenerator")
+    x = UnpickleObject("SignalSample.pkl")
     x = x.Events 
 
     # Top mass containers 
@@ -206,7 +206,7 @@ def TestTops():
     return True
 
 def TestResonance():
-    x = UnpickleObject("EventGenerator")
+    x = UnpickleObject("SignalSample.pkl")
     x = x.Events 
 
     # Top mass containers 
@@ -463,25 +463,23 @@ def TestGNNMonitor():
 
     ev = UnpickleObject("SignalSample.pkl")
     Loader = GenerateDataLoader()
-    Loader.AddNodeFeature("e", Energy)
-    Loader.AddNodeFeature("C", Charge)
+    Loader.AddNodeFeature("x", Charge)
     Loader.AddNodeTruth("y", Signal)
     Loader.AddSample(ev, "nominal", "TruthTops")
     Loader.ToDataLoader()
 
     Sig = GenerateDataLoader()
-    Sig.AddNodeFeature("e", Energy)
-    Sig.AddNodeFeature("C", Charge)
+    Sig.AddNodeFeature("x", Charge)
     Sig.AddNodeTruth("y", Signal)
     Sig.AddSample(ev, "nominal", "TruthTops")
 
     op = Optimizer(Loader)
     op.DefaultBatchSize = 100
-    op.Epochs = 200
+    op.Epochs = 10
     op.kFold = 10
     op.LearningRate = 1e-6
     op.WeightDecay = 1e-4
-    op.DefineEdgeConv(2, 2)
+    op.DefineEdgeConv(1, 2)
     op.kFoldTraining()
     op.ApplyToDataSample(Sig, "Sig")    
 
@@ -504,13 +502,13 @@ def KinematicsPlotting():
     d_ETA_Edge_DI.Title = "Different Index"
     d_ETA_Edge_SI.xTitle = "delta eta"
     d_ETA_Edge_DI.xTitle = "delta eta"
-    d_ETA_Edge_SI.xBins = 250 
-    d_ETA_Edge_DI.xBins = 250 
+    d_ETA_Edge_SI.xBins = 1000 
+    d_ETA_Edge_DI.xBins = 1000 
     d_ETA_Edge_SI.Filename = "Delta_ETA_Same_Index" 
     d_ETA_Edge_DI.Filename = "Delta_ETA_Different_Index" 
-    d_ETA_Edge_SI.xMin = -5
+    d_ETA_Edge_SI.xMin = 0
     d_ETA_Edge_SI.xMax = 5
-    d_ETA_Edge_DI.xMin = -5
+    d_ETA_Edge_DI.xMin = 0
     d_ETA_Edge_DI.xMax = 5
 
     d_Energy_Edge_SI = TH1F()
@@ -519,13 +517,13 @@ def KinematicsPlotting():
     d_Energy_Edge_DI.Title = "Different Index"
     d_Energy_Edge_SI.xTitle = "delta energy (GeV)"
     d_Energy_Edge_DI.xTitle = "delta energy (GeV)"
-    d_Energy_Edge_SI.xBins = 250 
-    d_Energy_Edge_DI.xBins = 250 
+    d_Energy_Edge_SI.xBins = 1000 
+    d_Energy_Edge_DI.xBins = 1000 
     d_Energy_Edge_SI.Filename = "Delta_Energy_Same_Index" 
     d_Energy_Edge_DI.Filename = "Delta_Energy_Different_Index" 
-    d_Energy_Edge_SI.xMin = -1.25*1e3
+    d_Energy_Edge_SI.xMin = 0
     d_Energy_Edge_SI.xMax = 1.25*1e3
-    d_Energy_Edge_DI.xMin = -1.25*1e3
+    d_Energy_Edge_DI.xMin = 0
     d_Energy_Edge_DI.xMax = 1.25*1e3
 
 
@@ -535,13 +533,13 @@ def KinematicsPlotting():
     d_PHI_Edge_DI.Title = "Different Index"
     d_PHI_Edge_SI.xTitle = "delta phi (rad)"
     d_PHI_Edge_DI.xTitle = "delta phi (rad)"
-    d_PHI_Edge_SI.xBins = 250 
-    d_PHI_Edge_DI.xBins = 250 
+    d_PHI_Edge_SI.xBins = 1000 
+    d_PHI_Edge_DI.xBins = 1000
     d_PHI_Edge_SI.Filename = "Delta_PHI_Same_Index" 
     d_PHI_Edge_DI.Filename = "Delta_PHI_Different_Index" 
-    d_PHI_Edge_SI.xMin = -6
+    d_PHI_Edge_SI.xMin = 0
     d_PHI_Edge_SI.xMax = 6
-    d_PHI_Edge_DI.xMin = -6
+    d_PHI_Edge_DI.xMin = 0
     d_PHI_Edge_DI.xMax = 6
 
     d_PT_Edge_SI = TH1F()
@@ -550,13 +548,13 @@ def KinematicsPlotting():
     d_PT_Edge_DI.Title = "Different Index"
     d_PT_Edge_SI.xTitle = "pt (GeV)"
     d_PT_Edge_DI.xTitle = "pt (GeV)"
-    d_PT_Edge_SI.xBins = 250 
-    d_PT_Edge_DI.xBins = 250 
+    d_PT_Edge_SI.xBins = 1000
+    d_PT_Edge_DI.xBins = 1000
     d_PT_Edge_SI.Filename = "Delta_Pt_Same_Index" 
     d_PT_Edge_DI.Filename = "Delta_Pt_Different_Index" 
-    d_PT_Edge_SI.xMin = -0.6*1e3
+    d_PT_Edge_SI.xMin = 0
     d_PT_Edge_SI.xMax = 0.6*1e3
-    d_PT_Edge_DI.xMin = -0.6*1e3
+    d_PT_Edge_DI.xMin = 0
     d_PT_Edge_DI.xMax = 0.6*1e3
 
     Mass_Edge_SI = TH1F()
@@ -565,44 +563,14 @@ def KinematicsPlotting():
     Mass_Edge_DI.Title = "Different Index"
     Mass_Edge_SI.xTitle = "Mass (MeV)"
     Mass_Edge_DI.xTitle = "Mass (MeV)"
-    Mass_Edge_SI.xBins = 250 
-    Mass_Edge_DI.xBins = 250 
+    Mass_Edge_SI.xBins = 1000
+    Mass_Edge_DI.xBins = 1000
     Mass_Edge_SI.Filename = "Mass_Same_Index" 
     Mass_Edge_DI.Filename = "Mass_Different_Index" 
-    Mass_Edge_SI.xMin = -1e3
+    Mass_Edge_SI.xMin = 0
     Mass_Edge_SI.xMax = 1e3
-    Mass_Edge_DI.xMin = -1e3
+    Mass_Edge_DI.xMin = 0
     Mass_Edge_DI.xMax = 1e3
-
-    Normalized_Mass_Edge_SI = TH1F()
-    Normalized_Mass_Edge_DI = TH1F()
-    Normalized_Mass_Edge_SI.Title = "Same Index"
-    Normalized_Mass_Edge_DI.Title = "Different Index"
-    Normalized_Mass_Edge_SI.xTitle = "Mass (MeV)"
-    Normalized_Mass_Edge_DI.xTitle = "Mass (MeV)"
-    Normalized_Mass_Edge_SI.xBins = 500
-    Normalized_Mass_Edge_DI.xBins = 500
-    Normalized_Mass_Edge_SI.Filename = "Normalized_Mass_Same_Index" 
-    Normalized_Mass_Edge_DI.Filename = "Normalized_Mass_Different_Index" 
-    Normalized_Mass_Edge_SI.xMin = 0
-    Normalized_Mass_Edge_SI.xMax = 0.25
-    Normalized_Mass_Edge_DI.xMin = 0
-    Normalized_Mass_Edge_DI.xMax = 0.25
-
-    Aggre_Kine_Edge_SI = TH1F()
-    Aggre_Kine_Edge_DI = TH1F()
-    Aggre_Kine_Edge_SI.Title = "Same Index"
-    Aggre_Kine_Edge_DI.Title = "Different Index"
-    Aggre_Kine_Edge_SI.xTitle = "Arb."
-    Aggre_Kine_Edge_DI.xTitle = "Arb."
-    Aggre_Kine_Edge_SI.xBins = 10000
-    Aggre_Kine_Edge_DI.xBins = 10000
-    Aggre_Kine_Edge_SI.Filename = "Aggre_Kin_Same_Index" 
-    Aggre_Kine_Edge_DI.Filename = "Aggre_Kin_Different_Index" 
-    Aggre_Kine_Edge_SI.xMin = 0
-    Aggre_Kine_Edge_SI.xMax = 50
-    Aggre_Kine_Edge_DI.xMin = 0
-    Aggre_Kine_Edge_DI.xMax = 50
 
     Ratio_Kine_Edge_SI = TH1F()
     Ratio_Kine_Edge_DI = TH1F()
@@ -614,9 +582,9 @@ def KinematicsPlotting():
     Ratio_Kine_Edge_DI.xBins = 1000
     Ratio_Kine_Edge_SI.Filename = "Ratio_Kin_Same_Index" 
     Ratio_Kine_Edge_DI.Filename = "Ratio_Kin_Different_Index" 
-    Ratio_Kine_Edge_SI.xMin = -5
+    Ratio_Kine_Edge_SI.xMin = 0
     Ratio_Kine_Edge_SI.xMax = 5
-    Ratio_Kine_Edge_DI.xMin = -5
+    Ratio_Kine_Edge_DI.xMin = 0
     Ratio_Kine_Edge_DI.xMax = 5
 
     dR_Edge_SI = TH1F()
@@ -625,19 +593,19 @@ def KinematicsPlotting():
     dR_Edge_DI.Title = "Different Index"
     dR_Edge_SI.xTitle = "dR"
     dR_Edge_DI.xTitle = "dR"
-    dR_Edge_SI.xBins = 250 
-    dR_Edge_DI.xBins = 250 
+    dR_Edge_SI.xBins = 1000
+    dR_Edge_DI.xBins = 1000
     dR_Edge_SI.Filename = "DeltaR_Same_Index" 
     dR_Edge_DI.Filename = "DeltaR_Different_Index" 
-    dR_Edge_SI.xMin = -7
+    dR_Edge_SI.xMin = 0
     dR_Edge_SI.xMax = 7
-    dR_Edge_DI.xMin = -7
+    dR_Edge_DI.xMin = 0
     dR_Edge_DI.xMax = 7
 
     SignalTops = TH1F()
     SignalTops.Title = "Signal"
     SignalTops.xTitle = "Mass (GeV)"
-    SignalTops.xBins = 250 
+    SignalTops.xBins = 1000
     SignalTops.Filename = "Mass_Signal_Tops" 
     SignalTops.xMin = 0
     SignalTops.xMax = 180
@@ -645,7 +613,7 @@ def KinematicsPlotting():
     SpectatorTops = TH1F()
     SpectatorTops.Title = "Spectator"
     SpectatorTops.xTitle = "Mass (GeV)"
-    SpectatorTops.xBins = 250 
+    SpectatorTops.xBins = 1000
     SpectatorTops.Filename = "Mass_Spectator_Top" 
     SpectatorTops.xMax = 180
     SpectatorTops.xMin = 0
@@ -666,34 +634,21 @@ def KinematicsPlotting():
                 e_i.CalculateMass()
                 e_j.CalculateMass()
 
-                agr = abs((e_i.eta - e_j.eta) / (e_i.eta + e_j.eta +1)) + abs((e_i.phi - e_j.phi) / (e_i.phi + e_j.phi +1)) + abs((e_i.e - e_j.e) / (e_i.e + e_j.e +1)) 
-
-                if (e_i.pt > e_j.pt):
-                    r = abs((e_j.eta) / (e_i.eta +1)) # + abs(e_i.phi / (e_j.phi +1))  + abs(e_i.e / (e_j.e +1))  + abs(e_i.pt / (e_j.pt +1)) 
-                else:
-                    r = abs((e_i.eta) / (e_j.eta +1)) # + abs(e_i.phi / (e_j.phi +1))  + abs(e_i.e / (e_j.e +1))  + abs(e_i.pt / (e_j.pt +1)) 
-
                 if e_i.Index == e_j.Index:
                     Mass_Edge_SI.xData.append(P.Mass_GeV) 
-                    d_ETA_Edge_SI.xData.append(e_i.eta - e_j.eta)
-                    d_PHI_Edge_SI.xData.append(e_i.phi - e_j.phi)
-                    d_Energy_Edge_SI.xData.append(float(e_i.e - e_j.e) / 1000)
-                    d_PT_Edge_SI.xData.append(float(e_i.pt - e_j.pt)/ 1000)
+                    d_ETA_Edge_SI.xData.append(abs(e_i.eta - e_j.eta))
+                    d_PHI_Edge_SI.xData.append(abs(e_i.phi - e_j.phi))
+                    d_Energy_Edge_SI.xData.append(abs(float(e_i.e - e_j.e)) / 1000)
+                    d_PT_Edge_SI.xData.append(float(abs(e_i.pt - e_j.pt))/ 1000)
                     dR_Edge_SI.xData.append(e_i.DeltaR(e_j))
-                    Normalized_Mass_Edge_SI.xData.append( abs((e_i.Mass_GeV - e_j.Mass_GeV)) / P.Mass_GeV )
-                    Aggre_Kine_Edge_SI.xData.append( agr + (1 / (P.Mass_GeV+1)) + (1 / (e_i.DeltaR(e_j) +1) ))
-                    Ratio_Kine_Edge_SI.xData.append( r ); 
 
                 elif e_i.Index != e_j.Index:
                     Mass_Edge_DI.xData.append(P.Mass_GeV) 
-                    d_ETA_Edge_DI.xData.append(e_i.eta - e_j.eta)
-                    d_PHI_Edge_DI.xData.append(e_i.phi - e_j.phi)
-                    d_Energy_Edge_DI.xData.append(float(e_i.e - e_j.e) / 1000)
-                    d_PT_Edge_DI.xData.append(float(e_i.pt - e_j.pt)/ 1000)
+                    d_ETA_Edge_DI.xData.append(abs(e_i.eta - e_j.eta))
+                    d_PHI_Edge_DI.xData.append(abs(e_i.phi - e_j.phi))
+                    d_Energy_Edge_DI.xData.append(abs(float(e_i.e - e_j.e)) / 1000)
+                    d_PT_Edge_DI.xData.append(abs(float(e_i.pt - e_j.pt))/ 1000)
                     dR_Edge_DI.xData.append(e_i.DeltaR(e_j))
-                    Normalized_Mass_Edge_DI.xData.append( abs((e_i.Mass_GeV - e_j.Mass_GeV)) / P.Mass_GeV )
-                    Aggre_Kine_Edge_DI.xData.append( agr + (1 / (P.Mass_GeV+1)) + (1 / (e_i.DeltaR(e_j) +1) ))
-                    Ratio_Kine_Edge_DI.xData.append( r ); 
 
         mass = [Particle(True), Particle(True), Particle(True), Particle(True)]
         for e_i in pc:
@@ -719,12 +674,8 @@ def KinematicsPlotting():
     d_Energy_Edge_DI.SaveFigure("Plots/Kinematics/")
     d_PT_Edge_DI.SaveFigure("Plots/Kinematics/")
     dR_Edge_DI.SaveFigure("Plots/Kinematics/")
-    Normalized_Mass_Edge_SI.SaveFigure("Plots/Kinematics/")
-    Normalized_Mass_Edge_DI.SaveFigure("Plots/Kinematics/")
     SignalTops.SaveFigure("Plots/Kinematics/")
     SpectatorTops.SaveFigure("Plots/Kinematics/")
-    Aggre_Kine_Edge_DI.SaveFigure("Plots/Kinematics/")
-    Aggre_Kine_Edge_SI.SaveFigure("Plots/Kinematics/")
 
     # Combine the figures into a single one 
     Mass_Edge = CombineHistograms()
@@ -762,23 +713,5 @@ def KinematicsPlotting():
     d_PT_Edge.Title = "$\Delta P_T$ of Particle Edges from (un)common Parent Index"
     d_PT_Edge.Filename = "Edge_delta_PT.png"
     d_PT_Edge.Save("Plots/Kinematics/ComparativePlots/")
-
-    Normalized_Mass = CombineHistograms()
-    Normalized_Mass.Histograms = [Normalized_Mass_Edge_SI, Normalized_Mass_Edge_DI]
-    Normalized_Mass.Title = "$\Delta$ Particle Mass / Edge Mass from (un)common Parent Index"
-    Normalized_Mass.Filename = "Normalized_Mass.png"
-    Normalized_Mass.Save("Plots/Kinematics/ComparativePlots/")
-
-    Aggr_Kine = CombineHistograms()
-    Aggr_Kine.Histograms = [Aggre_Kine_Edge_SI, Aggre_Kine_Edge_DI]
-    Aggr_Kine.Title = "Edge Kinematic Aggregation from (un)common Parent Index"
-    Aggr_Kine.Filename = "Aggr_Kine.png"
-    Aggr_Kine.Save("Plots/Kinematics/ComparativePlots/")
-
-    R_Kine = CombineHistograms()
-    R_Kine.Histograms = [Ratio_Kine_Edge_SI, Ratio_Kine_Edge_DI]
-    R_Kine.Title = "Edge Kinematic Ratio from (un)common Parent Index"
-    R_Kine.Filename = "Ratio_Kine.png"
-    R_Kine.Save("Plots/Kinematics/ComparativePlots/")
 
     return True    

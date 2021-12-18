@@ -59,7 +59,7 @@ def ExampleEventGraph():
         T = t_i + t_j
         return float(T.mass)
     
-    #GenerateTemplate()
+    GenerateTemplate()
     event = UnpickleObject("Nodes_10.pkl")
 
     event.SetNodeAttribute("e", energy)
@@ -117,8 +117,6 @@ def TestGCNModel():
 def TestInvMassGNN():
     
     event1 = ExampleEventGraph()
-    #Model = InvMassGNN(4)
-    #Model.forward(event1.Data)
 
     Op = Optimizer({}, Debug = True)
     Op.Model = InvMassGNN(4)
@@ -140,8 +138,6 @@ def TestInvMassGNN():
 def TestInvMassGNN():
     
     event1 = ExampleEventGraph()
-    #Model = InvMassGNN(4)
-    #Model.forward(event1.Data)
 
     Op = Optimizer({}, Debug = True)
     Op.Model = InvMassGNN(4)

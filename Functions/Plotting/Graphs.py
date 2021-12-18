@@ -11,6 +11,7 @@ class GenericAttributes:
         self.NodeKey = ""
         self.DefaultDPI = 500
         self.DefaultScaling = 8
+        self.Compiled = False
 
 class Graph(SharedMethods, GenericAttributes):
     
@@ -33,5 +34,6 @@ class Graph(SharedMethods, GenericAttributes):
         else:
             nx.draw(self.G, pos, with_labels = True)
             nx.draw_networkx_edges(self.G, pos)
+        self.Compiled = True
 
 

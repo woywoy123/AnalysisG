@@ -10,6 +10,7 @@ def Passed(F, name):
         print("(+)Passed: "+name)
     else:
         print("(-)Failed: "+name)
+        exit()
 
 
 dir = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/user.pgadow.24765302._000001.output.root"
@@ -22,6 +23,10 @@ def Generate_Cache(di, Stop = -1, SingleThread = False, Compiler = "EventGenerat
     PickleObject(ev, Compiler)
 
 if __name__ == '__main__':
+    #Generate_Cache(dir, Stop = 10000, SingleThread = False, Compiler = "SignalSample.pkl")
+    #Generate_Cache("/CERN/Grid/Samples/NAF/2021-05-05-2cRC-all/mc16a/postProcessed_ttbar_PhPy8_Total.root", Stop = 1000, SingleThread = True, Compiler = "ttbar.pkl")
+
+
     # ====== Test of IO 
     #Passed(TestDir(), "TestDir")
     #Passed(TestReadSingleFile(), "TestReadSingleFile")
@@ -34,10 +39,12 @@ if __name__ == '__main__':
     #Generate_Cache(dir)
     #Passed(TestEvents(), "TestEvents")
     #Passed(TestParticleAssignment(), "TestParticleAssignment")
-    #Passed(TestAnomalousStatistics(), "TestAnomalousStatistics") # <--- Need to checkout detector particle matching 
+    #Passed(TestAnomalousStatistics(), "TestAnomalousStatistics") 
+    #Passed(TestTops(), "TestTop")
+    #Passed(TestResonance(), "TestResonance")
+    #Passed(TestBackGroundProcesses(), "TestBackGroundProcesses")
+    
     # ====== Test of DataLoader
-    #Generate_Cache(dir, Stop = 10000, SingleThread = False, Compiler = "SignalSample.pkl")
-    #Generate_Cache("/CERN/Grid/Samples/NAF/2021-05-05-2cRC-all/mc16a/postProcessed_ttbar_PhPy8_Total.root", Stop = 1000, SingleThread = True, Compiler = "ttbar.pkl")
     #Passed(TestEventGraphs(), "TestEventGraphs")
     #Passed(TestDataLoader(), "TestDataLoader")
     #Passed(TestDataLoaderTrainingValidationTest(), "TestDataLoaderTrainingValidationTest")
@@ -48,14 +55,13 @@ if __name__ == '__main__':
 
     # ====== Test of Plotting 
     #Passed(TestGNNMonitor(), "TestGNNMonitor")
-    Passed(KinematicsPlotting(), "KinematicsPlotting")
-    exit()
+    #Passed(KinematicsPlotting(), "KinematicsPlotting")
 
     # ====== Test of GNN Model implementations 
-    #Passed(TestEdgeConvModel(), "TestEdgeConvModel")
-    #Passed(TestGCNModel(), "TestGCNModel")
-    #Passed(TestInvMassGNN(), "TestInvMassGNN")
-    #Passed(TestInvMassAggr(), "TestInvMassAggr")
+    Passed(TestEdgeConvModel(), "TestEdgeConvModel")
+    Passed(TestGCNModel(), "TestGCNModel")
+    Passed(TestInvMassGNN(), "TestInvMassGNN")
+    Passed(TestInvMassAggr(), "TestInvMassAggr")
     Passed(TestPathNet(), "TestPathNet") 
 
     # ====== Evaluation of Models ======== #
