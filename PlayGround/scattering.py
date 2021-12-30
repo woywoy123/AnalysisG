@@ -1,10 +1,41 @@
 from torch_scatter import scatter
 import torch
 
-src = torch.randn(2, 6, 4)
-index = torch.tensor([0, 1, 0, 1, 2, 1])
+mass = torch.randn(7, 7)
+index = torch.tensor([[0, 1], [1, 2], [2, 0], [1, 0], [2, 0], [1, 1], [3, 2]])
+print(mass, mass.shape)
+print(mass.flatten()[1:].view(6, 8)[:, :-1].reshape(7, 6))
 
-tmp = torch.zeros(max(index)+1, 4)
+
+
+exit()
+
+
+
+
+
+
+out = scatter(src, index, dim = 1, reduce = "mean")
+
+print(src)
+print(index)
+print(out)
+
+src = torch.randn(7, 2)
+out += scatter(src, index, dim = 1, reduce = "mean")
+
+print(src)
+print(out)
+
+x = torch.tensor([1], device = torch.device("cuda"))
+x = torch.stack([x, x], dim = 1)
+
+print(x)
+
+
+exit()
+
+
 print(tmp)
 
 print(src[0], index)

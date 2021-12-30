@@ -114,7 +114,6 @@ class Optimizer(Notification):
             _, pred = self.Model(i).max(1)
             truth = i.y.t().contiguous().squeeze()
             
-            #print(truth, pred)
             if l == 0:
                 l = len(truth.tolist()) 
             

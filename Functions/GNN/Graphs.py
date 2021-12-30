@@ -145,7 +145,6 @@ class GenerateDataLoader(Notification):
         self.EdgeTruthAttribute = {}
         self.NodeTruthAttribute = {}
 
-        self.Notify("DATA WILL BE PROCESSED ON: " + self.Device_s)
 
     def AddEdgeFeature(self, name, fx):
         self.EdgeAttribute[name] = fx
@@ -165,6 +164,8 @@ class GenerateDataLoader(Notification):
             return False
         for i in Bundle.FileEventIndex: 
             self.Notify("ADDING SAMPLE -> (" + Tree + ") " + i)
+
+        self.Notify("DATA WILL BE PROCESSED ON: " + self.Device_s)
         start = self.__iter
         for i in Bundle.Events:
             e = EventGraph(Bundle.Events[i], Level, Tree)

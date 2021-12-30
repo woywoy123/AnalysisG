@@ -6,6 +6,7 @@ from skhep.math.vectors import LorentzVector
 from torch_scatter import scatter
 import torch 
 import math
+from itertools import combinations
 
 class EdgeConv(MessagePassing):
 
@@ -39,20 +40,6 @@ class GCN(torch.nn.Module):
         x = self.conv2(x, edge_index)
 
         return F.log_softmax(x, dim = 1)
-
-
-def Mass(data, labels, classification):
-    e, pt, eta, phi = data.e, data.pt, data.eta, data.phi
-    L = [LorentzVector() for i in range(classification)]
-    
-    inx = []
-    for i in range(len(labels)):
-        t = LorentzVector()
-        t.setptetaphie(pt[i], eta[i], phi[i], e[i])
-        L[int(labels[i])] += t
-        inx.append(int(labels[i]))
-    L = [[i.mass] for i in L]
-    return torch.tensor(L), inx
 
 class InvMassGNN(MessagePassing):
 
@@ -142,23 +129,68 @@ class InvMassAggr(MessagePassing):
         M = torch.cat([aggr_out, torch.tensor([[i.mass] for i in M])], dim = 1)
         return F.normalize(self.Mmlp(F.normalize(M)))
 
+
 class PathNets(MessagePassing):
     
-    def __init__(self, out_channels):
+    def __init__(self, out_channels, debug = False):
         super(PathNets, self).__init__(aggr = "add")
-        self.mlp = Seq(Linear(8, 64), ReLU(), Linear(64, 64), ReLU(), Linear(64,64))
+        self.mlp = Seq(Linear(8, 64), ReLU(), Linear(64, 64), ReLU(), Linear(64,4))
+        self.mlp_path = Seq(Linear(1, 10), ReLU(), Linear(10, 10), ReLU(), Linear(10, 1))
+        
+        self.Debug = debug
+        if self.Debug:
+            self.Debug_L = []
 
     def forward(self, data): 
         x = torch.cat([data.e, data.pt, data.eta, data.phi], dim = 1)
-        edge_attr = torch.cat([data.dr, data.m], dim = 1)
-        return self.propagate(edge_index = data.edge_index, x = x, edge_attr = edge_attr)
-
-    def message(self, x_i, x_j, x, edge_attr):
-        print(x_i, x_j, x, edge_attr)
-
-        print(torch.dot(x_i[0].t(), x_j[0]))
+        edge_attr, edge_index = torch.cat([data.dr, data.m], dim = 1), data.edge_index
+        d = edge_index.device
         
-
-
-
+        Path = []
+        Path_mass = []
+        unique = torch.unique(edge_index)
+        for k in range(1, len(torch.unique(unique))):
+            P = torch.tensor(list(combinations(unique, k+1)))
+            for s_gr in P:
+                v = True
+                for ed in range(len(s_gr)-1):
+                    if torch.tensor([s_gr[ed], s_gr[ed+1]], device = d) in edge_index.t():
+                        pass
+                    else:
+                        v = False
+                        break
+                if v:
+                    Path.append(s_gr)
+                    Path_mass.append(LorentzVector())
+                    
+                    for i in x[s_gr]:
+                        tmp_v = LorentzVector()
+                        tmp_v.setptetaphie(i[1], i[2], i[3], i[0])
+                        Path_mass[len(Path)-1] += tmp_v
+                    Path_mass[len(Path)-1] = [Path_mass[len(Path)-1].mass]
         
+        
+        if self.Debug:
+            self.Debug_L = [Path_mass, Path]
+
+        Path_prob = F.normalize(self.mlp_path(torch.tensor(Path_mass, device = d)))
+        Aggr_Edge_P = torch.zeros(edge_index.shape[1], 1, device = d)
+    
+        # Aggregate the path probability into segmented edge scores 
+        edge_T = edge_index.t().tolist()
+        for s_gr, p in zip(Path, Path_prob):
+            for k in s_gr.unfold(0, 2, 1):
+                ix = edge_T.index(k.tolist())
+                Aggr_Edge_P[ix] *= p[0]
+        
+        print(Aggr_Edge_P.t(), edge_index)
+        edge_attr = torch.cat([edge_attr, Aggr_Edge_P], dim = 1)
+        return self.propagate(edge_index = edge_index, x = x, edge_attr = edge_attr)
+
+    def message(self, edge_index, x_i, x_j, edge_attr):
+         
+        tmp = torch.cat([x_i, abs(x_j[:, 3:4] - x_i[:, 3:4]), edge_attr], dim = 1)
+        return self.mlp(tmp)
+
+    def update(self, aggr_out):
+        return F.normalize(aggr_out)

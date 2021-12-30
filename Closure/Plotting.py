@@ -620,10 +620,12 @@ def KinematicsPlotting():
 
     for i in Events.Events:
         pc = Events.Events[i]["nominal"].TruthChildren
-
+        
         for e_i in pc:
             for e_j in pc: 
                 if e_i == e_j:
+                    continue
+                elif e_i.Index > e_j.Index:
                     continue
                
                 P = Particle(True)

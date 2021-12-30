@@ -58,10 +58,10 @@ if __name__ == '__main__':
     #Passed(KinematicsPlotting(), "KinematicsPlotting")
 
     # ====== Test of GNN Model implementations 
-    Passed(TestEdgeConvModel(), "TestEdgeConvModel")
-    Passed(TestGCNModel(), "TestGCNModel")
-    Passed(TestInvMassGNN(), "TestInvMassGNN")
-    Passed(TestInvMassAggr(), "TestInvMassAggr")
+    #Passed(TestEdgeConvModel(), "TestEdgeConvModel")
+    #Passed(TestGCNModel(), "TestGCNModel")
+    #Passed(TestInvMassGNN(), "TestInvMassGNN")
+    #Passed(TestInvMassAggr(), "TestInvMassAggr")
     Passed(TestPathNet(), "TestPathNet") 
 
     # ====== Evaluation of Models ======== #
