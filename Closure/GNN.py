@@ -90,10 +90,13 @@ def TrainEvaluate(Model, Outdir):
     op = Optimizer(Loader)
     op.DefaultBatchSize = 1
     op.Epochs = 20
-    op.kFold = 10
+    op.kFold = 2
     op.LearningRate = 1e-5
     op.WeightDecay = 1e-3
-    op.DefineInvMass(4)
+    if Model == "InvMass":
+        op.DefineInvMass(4)
+    if Model == "PathNet":
+        op.DefinePathNet()
     op.kFoldTraining()
 
     eva = EvaluationMetrics()
@@ -105,17 +108,17 @@ def TrainEvaluate(Model, Outdir):
 
 def TestInvMassGNN_Children():
     #GenerateTemplate()
-    M = InvMassGNN(4)
-    TrainEvaluate(M, "GNN_Performance_Plots")
-
-
+    TrainEvaluate("InvMass", "GNN_Performance_Plots")
     return True
-
 
 def TestInvMassAggrGNN_Children():
     #GenerateTemplate()
     M = InvMassAggr(4)
     TrainEvaluate(M, "GNN_Performance_Plots")
 
+    return True
 
+def TestPathNetGNN_Children():
+    #GenerateTemplate()
+    TrainEvaluate("PathNet", "PathNet_Performance_Plots")
     return True

@@ -2,7 +2,7 @@ from Functions.GNN.Graphs import GenerateDataLoader
 from Functions.GNN.Optimizer import Optimizer
 from Functions.GNN.Metrics import EvaluationMetrics
 from Functions.IO.IO import UnpickleObject, PickleObject
-from Functions.GNN.Models import EdgeConv, GCN, InvMassGNN, InvMassAggr, PathNets
+from Functions.GNN.Models import EdgeConv, GCN, InvMassGNN, InvMassAggr, PathNet
 from Functions.Plotting.Histograms import TH2F, TH1F
 from skhep.math.vectors import LorentzVector
 
@@ -95,6 +95,7 @@ def ExampleEventGraph():
     
     #GenerateTemplate()
     event = UnpickleObject("Nodes_10.pkl")
+    event = event[0]
 
     event.SetNodeAttribute("e", energy)
     event.SetNodeAttribute("eta", eta)
@@ -206,51 +207,13 @@ def TestInvMassAggr():
 
 def TestPathNet():
     
-    GenerateTemplate(3)
-    #events = UnpickleObject("Nodes_12.pkl")
-    #events = ExampleEventGraph()
-    #H = TH2F()
-    #H.Title = "Inclusive Number of Nodes vs Invariant Mass of Path"
-    #H.Filename = "Debug_Pathnet.png"
-    #H.yTitle = "Mass (GeV)"
-    #H.xTitle = "Number of Nodes"
-    #H.xMin = 0
-    #H.xMax = 12
-    #H.xBins = 12
-    #H.yBins = 1000
-    #H.yMin = 0
-    #H.yMax = 1000
-
-    #HM = TH1F()
-    #HM.Title = "Invariant Mass of Path with 3 Nodes"
-    #HM.Filename = "Debug_Pathnet_Invmass.png"
-    #HM.xTitle = "Mass (GeV)"
-    #HM.xBins = 1000
-    #HM.xMin = 0
-    #HM.xMax = 400
-
-    #Model = PathNets(4, False)
-    #if Model.Debug:
-    #    for ev in events:
-    #        Model.forward(ev.Data)
-    #        tmp = Model.Debug_L
-    #        for i, j in zip(tmp[0], tmp[1]):
-    #            H.xData.append(len(j))
-    #            H.yData.append(i[0]/1000)
-    #            
-    #            if len(j) == 3:
-    #                HM.xData.append(i[0]/1000)
-    #        Model.Debug_L = []
-
-    #    H.SaveFigure("Plots/Debug_Pathnet")
-    #    HM.SaveFigure("Plots/Debug_Pathnet")
-    
+    #GenerateTemplate(3)
+    events = ExampleEventGraph()
     import torch 
     Op = Optimizer({}, Debug = True)
-    Op.Model = PathNets(4)
     Op.LearningRate = 1e-5
     Op.WeightDecay = 1e-3
-    Op.DefineOptimizer()
+    Op.DefinePathNet()
     Op.sample = events.Data
 
     P = [events.NodeParticleMap[i].Index for i in events.NodeParticleMap]
@@ -263,13 +226,19 @@ def TestPathNet():
     for i in M:
         i.CalculateMassFromChildren()
         x.append(i.Mass_GeV) 
-        
+       
+
     print("==========")
     for i in range(100000):
         Op.TrainClassification()
         _, p = Op.Model(Op.sample).max(1)
+       
         print(p, P, Op.L)
-        print(x)
+        print(x) 
+        if p.tolist() == P:
+            break
+        
+
     return True
 
 

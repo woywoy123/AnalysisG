@@ -1,6 +1,6 @@
 from Functions.Tools.Alerting import Notification
 from Functions.GNN.Graphs import GenerateDataLoader
-from Functions.GNN.Models import EdgeConv, InvMassGNN
+from Functions.GNN.Models import EdgeConv, InvMassGNN, PathNet
 
 import torch
 from torch.utils.data import SubsetRandomSampler
@@ -11,6 +11,7 @@ import numpy as np
 from sklearn.model_selection import KFold 
 
 import copy
+import time 
 
 
 class Optimizer(Notification):
@@ -83,11 +84,21 @@ class Optimizer(Notification):
                     self.Notify("CURRENT k-Fold: " + str(fold+1))
                     
                     train_loader = DataLoader(CurrentData, batch_size = self.DefaultBatchSize, sampler = SubsetRandomSampler(train_idx))
-                    valid_loader = DataLoader(CurrentData, batch_size = self.DefaultBatchSize, sampler = SubsetRandomSampler(val_idx))                      
+                    valid_loader = DataLoader(CurrentData, batch_size = self.DefaultBatchSize, sampler = SubsetRandomSampler(val_idx))                              
+                    t_s = time.time() 
+                    t_i = 0 
+                    t_t = 0
                     for ts in train_loader:
                         self.sample = ts
                         self.TrainClassification()
-                   
+                        if t_i == 100:
+                            t_e = time.time()
+                            t_t += t_i
+                            self.Notify("CURRENT LEARNING RATE: " + str(round(float((t_e - t_s)/float(t_i)), 7)) + " /s - FOLD PROGRESS: " + str(round(t_t / len(train_loader), 4)*100) + "%" )
+                            t_s = time.time() 
+                            t_i = -1
+                        t_i += 1
+
                     TA = self.GetClassificationAccuracy(train_loader)
                     VA = self.GetClassificationAccuracy(valid_loader)
                     
@@ -142,6 +153,11 @@ class Optimizer(Notification):
     def DefineInvMass(self, out_channels):
         self.Classifier = True
         self.Model = InvMassGNN(out_channels)
+        self.DefineOptimizer()
+
+    def DefinePathNet(self, PCut = 0.5, complex = 64, path = 64, hidden = 64, out = 20):
+        self.Classifier = True
+        self.Model = PathNet(PCut, complex, path, hidden, out)
         self.DefineOptimizer()
 
     def TrainClassification(self):

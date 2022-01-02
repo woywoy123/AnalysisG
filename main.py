@@ -2,7 +2,7 @@ from Closure.IO import TestDir, TestReadSingleFile, TestReadFile, TestFileConver
 from Closure.Event import TestEvents, TestParticleAssignment, TestSignalMultipleFile, TestSignalDirectory, TestAnomalousStatistics
 from Closure.Plotting import TestTops, TestResonance, TestBackGroundProcesses, TestGNNMonitor, KinematicsPlotting
 from Closure.DataLoader import TestEventGraphs, TestDataLoader, TestDataLoaderTrainingValidationTest, TestEventNodeEdgeFeatures
-from Closure.GNN import SimpleFourTops, TestInvMassGNN_Children, TestInvMassAggrGNN_Children
+from Closure.GNN import SimpleFourTops, TestInvMassGNN_Children, TestInvMassAggrGNN_Children, TestPathNetGNN_Children
 from Closure.Models import TestEdgeConvModel, TestGCNModel, TestInvMassGNN, TestInvMassAggr, TestPathNet
 
 def Passed(F, name):
@@ -62,8 +62,10 @@ if __name__ == '__main__':
     #Passed(TestGCNModel(), "TestGCNModel")
     #Passed(TestInvMassGNN(), "TestInvMassGNN")
     #Passed(TestInvMassAggr(), "TestInvMassAggr")
-    Passed(TestPathNet(), "TestPathNet") 
+    #Passed(TestPathNet(), "TestPathNet") 
 
     # ====== Evaluation of Models ======== #
     #Passed(TestInvMassGNN_Children(), "TestInvMassGNN_Children")
     #Passed(TestInvMassAggrGNN_Children(), "TestInvMassAggrGNN_Children")
+    Passed(TestPathNetGNN_Children(), "TestPathNetGNN_Children") 
+
