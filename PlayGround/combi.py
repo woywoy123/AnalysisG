@@ -9,9 +9,10 @@ from torch.nn import Sequential as Seq, ReLU, Tanh
 from torch_geometric.nn import MessagePassing, Linear
 import torch.nn.functional as F
 from torch_scatter import scatter
-from numba import njit, prange
+from numba import njit, prange, cuda, float32, int32
 import numba
 import numpy as np
+import math
 from sklearn.cluster import AgglomerativeClustering
 
 class PathNet(MessagePassing):
@@ -66,7 +67,8 @@ class PathNet(MessagePassing):
             v = LorentzVector()
             v.setptetaphie(pt[i], eta[i], phi[i], e[i])
             Lor.append(v)
-  
+        
+        t_s = time.time()
         path = []
         path_m = []
         for i in range(1,l):
@@ -77,6 +79,11 @@ class PathNet(MessagePassing):
                 k += [k[0]]
                 k += [-1]*(l - len(k)+1)
             path += p
+        t_e = time.time()
+        print(t_e - t_s)
+
+
+
 
         # 1. ==== Assign the path mass to the adjacency matrix adj_p 
         adj_p = np.zeros((len(path_m), l, l), dtype = float)
@@ -106,56 +113,78 @@ class PathNet(MessagePassing):
     
     def update(self, aggr_out): 
         aggr_out = F.normalize(aggr_out)
-        adj = torch.sigmoid(aggr_out.matmul(aggr_out.t()))
-        l = adj.shape[0]
+        #adj = torch.sigmoid(aggr_out.matmul(aggr_out.t()))
+        #l = adj.shape[0]
 
-        ones = torch.zeros(adj.shape, device = adj.device)
-        for i in range(l):
-            ones[l - i-1] = torch.tensor([[1]*(l-i) + [0]*i])
+        #ones = torch.zeros(adj.shape, device = adj.device)
+        #for i in range(l):
+        #    ones[l - i-1] = torch.tensor([[1]*(l-i) + [0]*i])
 
-        adj[adj <= self.PCut] = 0
-        adj_ = adj.matmul(ones)
-        adj_i = adj_.sum(dim = 0)
-        adj_j = adj_.sum(dim = 1)
-        
-        adj_sum = adj_i + adj_j.flip(dims = [0])
-        step = (adj_sum.max() - adj_sum.min())/len(adj_sum)
+        #adj[adj <= self.PCut] = 0
+        #adj_ = adj.matmul(ones)
+        #adj_i = adj_.sum(dim = 0)
+        #adj_j = adj_.sum(dim = 1)
+        #
+        #adj_sum = adj_i + adj_j.flip(dims = [0])
+        #step = (adj_sum.max() - adj_sum.min())/len(adj_sum)
 
 
-        c_ = np.array(torch.round(adj_sum).tolist()).reshape(-1, 1)
-        clu = list(AgglomerativeClustering(n_clusters = None, distance_threshold = float(step)).fit(c_).labels_)
+        #c_ = np.array(torch.round(adj_sum).tolist()).reshape(-1, 1)
+        #clu = list(AgglomerativeClustering(n_clusters = None, distance_threshold = float(step)).fit(c_).labels_)
 
-        self.n_cluster = len(list(set(clu)))
-        self.Adj_M = adj
-        self.cluster = clu
+        #self.n_cluster = len(list(set(clu)))
+        #self.Adj_M = adj
+        #self.cluster = clu
         return aggr_out
 
 
-torch.set_printoptions(edgeitems = 20)
-torch.set_printoptions(profile = "full")
+#torch.set_printoptions(edgeitems = 20)
+#torch.set_printoptions(profile = "full")
+#
+#
+#data = UnpickleObject("Nodes_12.pkl")
+#data = data[0].Data
+#Model = PathNet()
+#Model.to(device = "cuda")
+#OP = torch.optim.Adam(Model.parameters(), lr = 1e-3, weight_decay= 1e-3)
+#
+#Model.train()
+#for i in range(1000):
+#    inpt, trgt = data, data.y.t()[0]
+#    OP.zero_grad()
+#        
+#    t_s = time.time()
+#    pred = Model(data)
+#    _, x = pred.max(1)
+#    t_e = time.time()
+#    print(t_e - t_s)
+#    Loss = torch.nn.CrossEntropyLoss()
+#    L = Loss(pred, trgt)
+#    
+#    print(L)
+#    print(x, trgt)
+#    L.backward()
+#    OP.step()
 
 
-data = UnpickleObject("Nodes_12.pkl")
-data = data[0].Data
-Model = PathNet()
-Model.to(device = "cuda")
-OP = torch.optim.Adam(Model.parameters(), lr = 1e-3, weight_decay= 1e-3)
+import cmath
 
-Model.train()
-for i in range(1000):
-    inpt, trgt = data, data.y.t()[0]
-    OP.zero_grad()
-
-    pred = Model(data)
-    _, x = pred.max(1)
-    Loss = torch.nn.CrossEntropyLoss()
-    L = Loss(pred, trgt)
+@cuda.jit
+def CalcPathMassCUDA(Lor_xyz, comb, path_m, v_size):
+    x, y = cuda.threadIdx.x, cuda.threadIdx.y
+    x_i, y_i = cuda.grid(2)
     
-    print(L)
-    print(x, trgt)
-    print(Model.n_cluster, Model.cluster)
-    L.backward()
-    OP.step()
+    v = cuda.shared.array(shape = (10, 4), dtype = float32)
+
+    k = comb[x_i][y_i]
+    if k != -1 and y_i > 0:
+        v[0][0] += Lor_xyz[k][0]
+        v[0][1] += Lor_xyz[k][1]
+        v[0][2] += Lor_xyz[k][2]
+        v[0][3] += Lor_xyz[k][3]
+    
+    cuda.syncthreads()
+    path_m[x_i] = math.sqrt(abs(v[0][3]*v[0][3] - v[0][0]*v[0][0] - v[0][1]*v[0][1] - v[0][2]*v[0][2])) / 1000
 
 
 
@@ -166,12 +195,60 @@ for i in range(1000):
 
 
 
+@njit(cache = True, parallel = True)
+def CreateLorentz(Lor_xyz, e, pt, eta, phi):
+    
+    for i in prange(Lor_xyz.shape[0]):
+        Lor_xyz[i][0] = pt[i][0]*np.cos(phi[i][0])
+        Lor_xyz[i][1] = pt[i][0]*np.sin(phi[i][0])
+        Lor_xyz[i][2] = e[i][0]*np.tanh(eta[i][0])
+        Lor_xyz[i][3] = e[i][0]
 
+@njit(cache = True, parallel = True)
+def CalcPathMass(Lor_xyz, comb, path_m, adj_p):
+    n = comb.shape[0] 
+    for i in prange(n):
+        tmp = comb[i]
+        l = []
+        for k in np.unique(tmp):
+            if k != -1:
+               l.append(k) 
+        p = np.array(l) 
+        v = np.zeros(4, dtype = np.float64) 
+        for j in Lor_xyz[p]:
+            v[0] = v[0] + j[0]
+            v[1] = v[1] + j[1]
+            v[2] = v[2] + j[2]
+            v[3] = v[3] + j[3]
+        path_m[i] = np.exp(0.5*np.log(v[3]*v[3] - v[2]*v[2] - v[1]*v[1] - v[0]*v[0])) / 1000
 
+        for j in prange(len(l)-1):
+            adj_p[i, l[j], l[j+1]] = path_m[i]
+            adj_p[i, l[j+1], l[j]] = path_m[i]
 
+def Performance(e, pt, eta, phi, unique):
+    e = np.array(e.tolist())
+    pt = np.array(pt.tolist())
+    eta = np.array(eta.tolist())
+    phi = np.array(phi.tolist())
 
+    Lor_xyz = np.zeros((len(e), 4))
+    CreateLorentz(Lor_xyz, e, pt, eta, phi) 
 
-
+    l = len(unique)
+    tmp = [] 
+    for i in range(1, l):
+        p = list(combinations(unique, r = i+1))
+        p = [list(k) for k in p]
+        for k in p:
+            k += [k[0]]
+            k += [-1]*(l - len(k)+1)
+        tmp += p
+    path = np.array(tmp)
+    p_m = np.zeros(path.shape[0], dtype = np.float32)
+    adj_p = np.zeros((len(p_m), l, l), dtype = float)
+    CalcPathMass(Lor_xyz, path, p_m, adj_p)
+    
 
 
 
@@ -180,13 +257,21 @@ for i in range(1000):
 
 
 # Reading 
-t_s = time.time()
+
+#event = UnpickleObject("Nodes_12.pkl")
+#PickleObject(event[0].Data, "Nodes_12.pkl")
+
 event = UnpickleObject("Nodes_12.pkl")
-event = event[0].Data
+
+t_s = time.time()
 edge_index = event.edge_index
 e, pt, eta, phi = event.e, event.pt, event.eta, event.phi
+Performance(e, pt, eta, phi, np.array(torch.unique(edge_index).tolist()))
+
 t_e = time.time()
 print(t_e - t_s)
+exit()
+
 
 # Combinations 
 t_s = time.time()
