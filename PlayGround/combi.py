@@ -5,21 +5,24 @@ sys.path.append("../")
 from Functions.IO.IO import UnpickleObject, PickleObject
 import time 
 from skhep.math.vectors import LorentzVector
-from torch.nn import Sequential as Seq, Linear, ReLU, Tanh
-from torch_geometric.nn import MessagePassing
+from torch.nn import Sequential as Seq, ReLU, Tanh
+from torch_geometric.nn import MessagePassing, Linear
 import torch.nn.functional as F
 from torch_scatter import scatter
 from numba import njit, prange
 import numba
 import numpy as np
+from sklearn.cluster import AgglomerativeClustering
 
 class PathNet(MessagePassing):
-    def __init__(self):
+    def __init__(self, PCut = 0.5, complex = 64, path = 64, hidden = 64):
         super(PathNet, self).__init__("add")
-        self.mlp_path = Seq(Linear(12, 256), Tanh(), Linear(256, 12))
-        #self.mlp_mass = Seq(Linear(1, 64), Tanh(), Linear(64, 12))
-        self.mlp = Seq(Linear(12, 128), ReLU(), Linear(128, 4))
-    
+        self.mlp_mass_complex = Seq(Linear(-1, hidden), Tanh(), Linear(hidden, 1)) # DO NOT CHANGE OUTPUT DIM 
+        self.mlp_comp = Seq(Linear(-1, hidden), Tanh(), Linear(hidden, complex))
+        self.mlp_path = Seq(Linear(-1, hidden), ReLU(), Linear(hidden, path))
+        self.mlp = Seq(Linear(path + complex, path+complex), ReLU(), Linear(path+complex, 20))
+        self.PCut = PCut 
+
     def forward(self, data):
         
         def PathMass(Lor, com):
@@ -38,9 +41,10 @@ class PathNet(MessagePassing):
                 m = path_m[x]
                 tmp = path[x]
                 pth = []
-                for k in tmp:
-                    if k != -1:
-                        pth.append(k)
+                for k in range(len(tmp)):
+                    if tmp[k] != -1:
+                        pth.append(tmp[k])
+
                 m = m/len(pth) 
                 for j in range(len(pth)-1):
                     out[x, pth[j], pth[j+1]] = m
@@ -57,7 +61,6 @@ class PathNet(MessagePassing):
         unique = np.unique(edge_index.tolist())
         l = len(unique)
         
-        t_s = time.time()
         Lor = []
         for i in unique:
             v = LorentzVector()
@@ -71,42 +74,61 @@ class PathNet(MessagePassing):
             path_m += PathMass(Lor, p)
             p = [list(k) for k in p]
             for k in p:
-                k += [-1]*(l - len(k))
+                k += [k[0]]
+                k += [-1]*(l - len(k)+1)
             path += p
-        t_e = time.time()
-        print(t_e - t_s)
-        
+
+        # 1. ==== Assign the path mass to the adjacency matrix adj_p 
         adj_p = np.zeros((len(path_m), l, l), dtype = float)
         path_m = np.array(path_m, dtype = float)
         path = np.array(path, dtype = int)
         MakeMatrix(adj_p, path_m, path)
         block = torch.tensor(adj_p, device = edge_index.device).float()
-        path = torch.tensor(path, device = edge_index.device).float() 
-       
-        #complex = torch.sum(block, dim = 2).sum(dim = 1).reshape((-1, 1))
-        #ed_p = torch.matmul(path.t(), self.mlp_mass(complex))
-            
-        #print(ed_p)
-        e_jxe_i = torch.sum(block, dim = 0)#.flatten()[1:].view(l-1, l+1)[:, :-1].reshape(l, l-1)
-        tmp_p = self.mlp_path(e_jxe_i) #.reshape((-1, 1)))
-        print(tmp_p)
         
-        e_ij_p = torch.zeros((edge_index.shape[1], tmp_p.shape[1]), device = edge_index.device)
-        #e_ij_p = torch.zeros((edge_index.shape[1], tmp_p.shape[2] + ed_p.shape[1]), device = edge_index.device)
-        for p in range(edge_index.shape[1]):
-            e_i = edge_index[0][p]
-            e_j = edge_index[1][p]
-            
-            e_ij_p[p]= tmp_p[e_i]#[e_j]#, ed_p[e_i]])
-            #e_ij_p[p]= tmp_p[e_j]#[e_i]#, ed_p[e_j]])
-        
-        return self.propagate(edge_index = edge_index, x = torch.cat([e, pt, eta, phi], dim = 1), edge_attr = e_ij_p)
+        # 2. ==== Project the sum of the topological mass states across complexity 
+        e_jxe_i = torch.sum(block, dim = 0)
+        e_i = self.mlp_path(e_jxe_i)
+
+        # 3. ==== Project along the complexity and learn the complexity
+        comp_ej = torch.sum(block, dim = 1)
+        comp_ej = self.mlp_mass_complex(comp_ej)
+        adj_p[adj_p > 0] = 1     
+        adj_p = torch.tensor(adj_p, device = edge_index.device).float()
+        adj_p = adj_p * comp_ej[:, None]
+        adj_p = adj_p.sum(dim = 0)
+        adj_p = adj_p.add(e_jxe_i)
+        adj_p_ei = self.mlp_comp(adj_p)
+
+        return self.propagate(edge_index = edge_index, x = torch.cat([e], dim = 1), edge_attr = torch.cat([e_i, adj_p_ei], dim = 1))
 
     def message(self, edge_index, x_i, x_j, edge_attr):
-        return self.mlp(torch.cat([edge_attr], dim = 0))
+        return self.mlp(torch.cat([edge_attr[edge_index[1].t()]], dim = 1))
     
-    def update(self, aggr_out):
-        return F.normalize(aggr_out)
+    def update(self, aggr_out): 
+        aggr_out = F.normalize(aggr_out)
+        adj = torch.sigmoid(aggr_out.matmul(aggr_out.t()))
+        l = adj.shape[0]
+
+        ones = torch.zeros(adj.shape, device = adj.device)
+        for i in range(l):
+            ones[l - i-1] = torch.tensor([[1]*(l-i) + [0]*i])
+
+        adj[adj <= self.PCut] = 0
+        adj_ = adj.matmul(ones)
+        adj_i = adj_.sum(dim = 0)
+        adj_j = adj_.sum(dim = 1)
+        
+        adj_sum = adj_i + adj_j.flip(dims = [0])
+        step = (adj_sum.max() - adj_sum.min())/len(adj_sum)
+
+
+        c_ = np.array(torch.round(adj_sum).tolist()).reshape(-1, 1)
+        clu = list(AgglomerativeClustering(n_clusters = None, distance_threshold = float(step)).fit(c_).labels_)
+
+        self.n_cluster = len(list(set(clu)))
+        self.Adj_M = adj
+        self.cluster = clu
+        return aggr_out
 
 
 torch.set_printoptions(edgeitems = 20)
@@ -131,6 +153,7 @@ for i in range(1000):
     
     print(L)
     print(x, trgt)
+    print(Model.n_cluster, Model.cluster)
     L.backward()
     OP.step()
 
