@@ -46,6 +46,7 @@ class Optimizer(Notification):
         self.LearningRate = 1e-2
         self.WeightDecay = 1e-4
         self.DefaultBatchSize = 1
+        self.MinimumEvents = 250
         self.kFold = 10
         self.Model = None
 
@@ -62,6 +63,13 @@ class Optimizer(Notification):
 
     def kFoldTraining(self):
         Splits = KFold(n_splits = self.kFold, shuffle = True, random_state = 42)
+
+        MaxNode = []
+        for i in self.DataLoader:
+            if self.MinimumEvents <= len(self.DataLoader[i]):
+                MaxNode.append(int(i))
+        MaxNode.sort(reverse = True)
+
         for epoch in range(self.Epochs):
             self.Notify("EPOCH =============================== " +str(epoch+1) + "/" + str(self.Epochs))
             self.epoch = epoch+1
@@ -72,7 +80,7 @@ class Optimizer(Notification):
             self.ValidationStatistics[self.epoch] = []
             self.TrainStatistics[self.epoch] = []
  
-            for n_node in self.DataLoader:
+            for n_node in MaxNode:
                 self.Notify("NUMBER OF NODES -----> " + str(n_node) + " BEING TESTED")
                 CurrentData = self.DataLoader[n_node] 
                 
@@ -108,7 +116,6 @@ class Optimizer(Notification):
 
                     self.LossTrainStatistics[self.epoch].append(TL)
                     self.LossValidationStatistics[self.epoch].append(VL)
-                    break
 
                 self.Notify("CURRENT LOSS FUNCTION: " + str(round(float(self.L), 7)))
                 self.Notify("CURRENT ACCURACY (Validation): " + str(round(float(VA), 7)))

@@ -45,7 +45,7 @@ def SimpleFourTops():
     return True
 
 
-def GenerateTemplate():
+def GenerateTemplate(Tree = "TruthChildren_init", Additional_Sample = ""):
     from skhep.math.vectors import LorentzVector
 
     def eta(a):
@@ -80,7 +80,12 @@ def GenerateTemplate():
     Loader.AddEdgeFeature("m", m)
     Loader.AddNodeTruth("y", Signal)
 
-    Loader.AddSample(ev, "nominal", "TruthChildren_init")
+    Loader.AddSample(ev, "nominal", Tree)
+    
+    if Additional_Sample != "":
+        ev = UnpickleObject(Additional_Sample)
+        Loader.AddSample(ev, "tree", "JetLepton")
+
     Loader.ToDataLoader()
     PickleObject(Loader, "LoaderSignalSample.pkl")
 
@@ -89,11 +94,12 @@ def TrainEvaluate(Model, Outdir):
     Loader = UnpickleObject("LoaderSignalSample.pkl")
     
     op = Optimizer(Loader)
-    op.DefaultBatchSize = 12
+    op.DefaultBatchSize = 10
     op.Epochs = 2
     op.kFold = 4
     op.LearningRate = 1e-5
     op.WeightDecay = 1e-3
+    op.MinimumEvents = 250
     if Model == "InvMass":
         op.DefineInvMass(4)
     if Model == "PathNet":
@@ -121,5 +127,12 @@ def TestInvMassAggrGNN_Children():
 
 def TestPathNetGNN_Children():
     #GenerateTemplate()
-    TrainEvaluate("PathNet", "PathNet_Performance_Plots")
+    TrainEvaluate("PathNet", "PathNet_Performance_Plots_Children")
     return True
+
+def TestPathNetGNN_Data():
+    #GenerateTemplate("JetLepton")
+    TrainEvaluate("PathNet", "PathNet_Performance_Plots_Data")
+    return True
+
+
