@@ -207,7 +207,7 @@ def TestInvMassAggr():
 
 def TestPathNet():
     
-    #GenerateTemplate(3)
+    GenerateTemplate(10)
     events = ExampleEventGraph()
     import torch 
     Op = Optimizer({}, Debug = True)

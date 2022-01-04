@@ -1,3 +1,4 @@
+import time 
 
 class Notification():
     def __init__(self, Verbose = False):
@@ -9,6 +10,11 @@ class Notification():
         self.__CEND = '\033[0m'
         self.__RED = '\033[91m'
         self.__GREEN = '\33[32m'
+        self.__it = 0
+        self.__i = 0
+        self.__Reset = True
+        self.NotifyTime = 10
+        self.len = -1
 
     def Notify(self, Message):
         if self.Verbose and self.Caller == "":
@@ -25,6 +31,32 @@ class Notification():
             return True
         except AttributeError:
             return False
+
+    def ProgressInformation(self, Mode):
+        if self.__Reset:
+            self.__t_start = time.time()
+            self.__it = 0
+            self.__Reset = False
+      
+        cur = time.time()
+        
+        if cur - self.__t_start >  self.NotifyTime:
+            if Mode == "LEARNING":
+                self.Notify("CURRENT " + Mode + " RATE: " + str(round(float(self.__it) / float(cur - self.__t_start)))[0:4] + " /s - FOLD PROGRESS: " + str(round(float(self.__i / self.len)*100, 4)) + "%")
+
+            elif Mode == "ACCURACY" or Mode == "LOSS":
+                self.Notify("CURRENT " + Mode + " RATE: " + str(round(float(self.__it) / float(cur - self.__t_start)))[0:4] + " /s - PROGRESS: " + str(round(float(self.__i / self.len)*100, 4)) + "%")
+
+            self.__Reset = True
+
+        self.__i += 1
+        self.__it += 1
+
+    def ResetAll(self):
+        self.__Reset = True
+        self.__i = 0
+        self.__it = 0
+        self.len = -1
 
 class Debugging:
 

@@ -1,6 +1,28 @@
 from torch_scatter import scatter
 import torch
 
+x = torch.tensor([0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3])
+y = torch.tensor([0, 0, 0, 2, 2, 2, 0, 0, 0, 1, 1, 1])
+
+dif = torch.sum(x - y)
+su = torch.sum(x + y)
+
+met = ((su / x.sum()*2) + (dif/torch.sum(x)))/4
+
+
+print(met)
+
+
+print(torch.sum(x - y))
+print(torch.sum(x + y))
+print(x.sum()*2)
+
+
+
+
+exit()
+
+
 mass = torch.randn(7, 7)
 index = torch.tensor([[0, 1], [1, 2], [2, 0], [1, 0], [2, 0], [1, 1], [3, 2]])
 print(mass, mass.shape)

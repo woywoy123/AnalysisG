@@ -85,24 +85,22 @@ class Optimizer(Notification):
                     
                     train_loader = DataLoader(CurrentData, batch_size = self.DefaultBatchSize, sampler = SubsetRandomSampler(train_idx))
                     valid_loader = DataLoader(CurrentData, batch_size = self.DefaultBatchSize, sampler = SubsetRandomSampler(val_idx))                              
-                    t_s = time.time() 
-                    t_i = 0 
-                    t_t = 0
+                    
+                    self.Notify("-------> Training <-------")
+                    self.ResetAll()
+                    self.len = len(train_loader)
                     for ts in train_loader:
                         self.sample = ts
                         self.TrainClassification()
-                        if t_i == 100:
-                            t_e = time.time()
-                            t_t += t_i
-                            self.Notify("CURRENT LEARNING RATE: " + str(round(float((t_e - t_s)/float(t_i)), 7)) + " /s - FOLD PROGRESS: " + str(round(t_t / len(train_loader), 4)*100) + "%" )
-                            t_s = time.time() 
-                            t_i = -1
-                        t_i += 1
-
-                    TA = self.GetClassificationAccuracy(train_loader)
-                    VA = self.GetClassificationAccuracy(valid_loader)
+                        self.ProgressInformation(Mode = "LEARNING")
                     
+                    self.Notify("------- Collecting Accuracy/Loss -------")
+                    TA = self.GetClassificationAccuracy(train_loader)
                     TL = self.GetClassificationLoss(train_loader)
+                    
+                    self.Notify("-------> Validation <-------")
+                    self.Notify("------- Collecting Accuracy/Loss -------")                   
+                    VA = self.GetClassificationAccuracy(valid_loader)
                     VL = self.GetClassificationLoss(valid_loader)
                     
                     self.TrainStatistics[self.epoch].append(TA)
@@ -117,6 +115,8 @@ class Optimizer(Notification):
         self.Loader.Trained = True 
     
     def GetClassificationAccuracy(self, loader):
+        self.ResetAll()
+        self.len = len(loader)
         self.Model.eval()
         P = []
         T = []
@@ -131,10 +131,14 @@ class Optimizer(Notification):
             if len(truth.tolist()) == l and len(pred.tolist()) == l:
                 T.append(truth.tolist())
                 P.append(pred.tolist())
+            self.ProgressInformation("ACCURACY")
+
         p = accuracy(torch.tensor(P), torch.tensor(T))
         return p
     
     def GetClassificationLoss(self, loader):
+        self.ResetAll()
+        self.len = len(loader)
         self.Model.eval()
         L = []
         for i in loader:
@@ -143,6 +147,7 @@ class Optimizer(Notification):
             truth = i.y.t().contiguous().squeeze()
 
             L.append(float(Loss(pred, truth)))
+            self.ProgressInformation("LOSS")
         return L
 
     def DefineEdgeConv(self, in_channels, out_channels):

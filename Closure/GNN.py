@@ -24,8 +24,9 @@ def SimpleFourTops():
     Sig.AddSample(ev, "nominal", "TruthTops")
 
     op = Optimizer(Loader)
-    op.DefaultBatchSize = 20
+    op.DefaultBatchSize = 1
     op.Epochs = 10
+    op.NotifyTime = 1
     op.kFold = 3
     op.DefineEdgeConv(1, 2)
     op.kFoldTraining()
@@ -88,9 +89,9 @@ def TrainEvaluate(Model, Outdir):
     Loader = UnpickleObject("LoaderSignalSample.pkl")
     
     op = Optimizer(Loader)
-    op.DefaultBatchSize = 1
-    op.Epochs = 20
-    op.kFold = 2
+    op.DefaultBatchSize = 12
+    op.Epochs = 2
+    op.kFold = 4
     op.LearningRate = 1e-5
     op.WeightDecay = 1e-3
     if Model == "InvMass":
