@@ -25,6 +25,7 @@ class PathNet(MessagePassing):
         self.mlp_path = Seq(Linear(-1, hidden), ReLU(), Linear(hidden, path))
         self.mlp = Seq(Linear(path + complex, path+complex), ReLU(), Linear(path+complex, hidden))
         self.PCut = PCut 
+        self.N_Nodes = -1
 
     def forward(self, data):
 
@@ -78,6 +79,9 @@ class PathNet(MessagePassing):
                 unique = torch.unique(event[0].edge_index).tolist()
                 n_event = len(event)
             
+            if self.N_Nodes == -1:
+                self.N_Nodes  = len(unique)
+
             e = np.array(e.tolist())
             pt = np.array(pt.tolist())
             eta = np.array(eta.tolist())
@@ -93,12 +97,12 @@ class PathNet(MessagePassing):
                 p = [list(k) for k in p]
                 for k in p:
                     k += [k[0]]
-                    k += [-1]*(l - len(k)+1)
+                    k += [-1]*(self.N_Nodes - len(k)+1)
                 tmp += p
             
             path = np.array(tmp)
             p_m = np.zeros(path.shape[0]*n_event, dtype = np.float32)
-            adj_p = np.zeros((path.shape[0]*n_event, l, l), dtype = float)
+            adj_p = np.zeros((path.shape[0]*n_event, self.N_Nodes, self.N_Nodes), dtype = float)
             CalcPathMass(Lor_xyz, path, p_m, adj_p)
             return adj_p, p_m, n_event, path.shape[0]
 
@@ -106,7 +110,7 @@ class PathNet(MessagePassing):
         edge_index = data.edge_index
         adj_p, path_m, n_event, pth_l = Performance(data.e, data.pt, data.eta, data.phi, data)
         block = torch.tensor(adj_p, device = edge_index.device).float()
-
+        
         e_jxe_i_tmp = []
         comp_ej_tmp = []
         for i in range(n_event):
@@ -175,15 +179,17 @@ torch.set_printoptions(edgeitems = 20)
 
 
 data = UnpickleObject("Nodes_12.pkl")
-
-tmp = []
-for i in range(len(data)):
-    tmp.append(data[i].Data)
-    if i == 0:
-        break
-
-for data in DataLoader(tmp, batch_size = len(tmp)):
-    break
+data2 = UnpickleObject("Nodes_10.pkl")
+data = data.Data
+data2 = data2.Data
+#tmp = []
+#for i in range(len(data)):
+#    tmp.append(data[i].Data)
+#    if i == 0:
+#        break
+#
+#for data in DataLoader(tmp, batch_size = len(tmp)):
+#    break
 
 
 
@@ -204,7 +210,28 @@ for i in range(1000):
     print(t_e - t_s)
     Loss = torch.nn.CrossEntropyLoss()
     L = Loss(pred, trgt)
-    
+   
+    inpt, trgt = data2, data2.y.t()[0]
+    OP.zero_grad()
+        
+    t_s = time.time()
+    pred = Model(data2)
+    _, x = pred.max(1)
+    t_e = time.time()
+    print(t_e - t_s)
+    Loss = torch.nn.CrossEntropyLoss()
+    L = Loss(pred, trgt)
+   
+
+
+
+
+
+
+
+
+
+
     print(L)
     print(x, trgt)
     L.backward()

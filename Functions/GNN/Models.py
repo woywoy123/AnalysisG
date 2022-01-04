@@ -145,6 +145,7 @@ class PathNet(MessagePassing):
         self.mlp_path = Seq(Linear(-1, hidden), ReLU(), Linear(hidden, path))
         self.mlp = Seq(Linear(path + complex, path+complex), ReLU(), Linear(path+complex, hidden))
         self.PCut = PCut 
+        self.N_Nodes = -1
 
     def forward(self, data):
 
@@ -197,7 +198,10 @@ class PathNet(MessagePassing):
                 event = event.to_data_list()
                 unique = torch.unique(event[0].edge_index).tolist()
                 n_event = len(event)
-            
+           
+            if self.N_Nodes == -1:
+                self.N_Nodes = len(unique)
+
             e = np.array(e.tolist())
             pt = np.array(pt.tolist())
             eta = np.array(eta.tolist())
@@ -213,12 +217,12 @@ class PathNet(MessagePassing):
                 p = [list(k) for k in p]
                 for k in p:
                     k += [k[0]]
-                    k += [-1]*(l - len(k)+1)
+                    k += [-1]*(self.N_Nodes - len(k)+1)
                 tmp += p
             
             path = np.array(tmp)
             p_m = np.zeros(path.shape[0]*n_event, dtype = np.float32)
-            adj_p = np.zeros((path.shape[0]*n_event, l, l), dtype = float)
+            adj_p = np.zeros((path.shape[0]*n_event, self.N_Nodes, self.N_Nodes), dtype = float)
             CalcPathMass(Lor_xyz, path, p_m, adj_p)
             return adj_p, p_m, n_event, path.shape[0]
 

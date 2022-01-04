@@ -93,9 +93,9 @@ def ExampleEventGraph():
         T = t_i + t_j
         return float(T.mass)
     
-    #GenerateTemplate()
+    GenerateTemplate()
     event = UnpickleObject("Nodes_10.pkl")
-    event = event[0]
+    event = event.Data
 
     event.SetNodeAttribute("e", energy)
     event.SetNodeAttribute("eta", eta)

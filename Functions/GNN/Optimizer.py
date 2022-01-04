@@ -108,6 +108,7 @@ class Optimizer(Notification):
 
                     self.LossTrainStatistics[self.epoch].append(TL)
                     self.LossValidationStatistics[self.epoch].append(VL)
+                    break
 
                 self.Notify("CURRENT LOSS FUNCTION: " + str(round(float(self.L), 7)))
                 self.Notify("CURRENT ACCURACY (Validation): " + str(round(float(VA), 7)))
@@ -118,22 +119,18 @@ class Optimizer(Notification):
         self.ResetAll()
         self.len = len(loader)
         self.Model.eval()
-        P = []
-        T = []
         l = 0
+        T = []
+        P = []
         for i in loader:
             _, pred = self.Model(i).max(1)
             truth = i.y.t().contiguous().squeeze()
             
-            if l == 0:
-                l = len(truth.tolist()) 
-            
-            if len(truth.tolist()) == l and len(pred.tolist()) == l:
-                T.append(truth.tolist())
-                P.append(pred.tolist())
+            T.append(truth)
+            P.append(pred)
             self.ProgressInformation("ACCURACY")
 
-        p = accuracy(torch.tensor(P), torch.tensor(T))
+        p = accuracy(torch.cat(P, dim = 0), torch.cat(T, dim = 0))
         return p
     
     def GetClassificationLoss(self, loader):
