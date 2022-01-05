@@ -95,8 +95,8 @@ def TrainEvaluate(Model, Outdir):
     
     op = Optimizer(Loader)
     op.DefaultBatchSize = 10
-    op.Epochs = 2
-    op.kFold = 4
+    op.Epochs = 10
+    op.kFold = 10
     op.LearningRate = 1e-5
     op.WeightDecay = 1e-3
     op.MinimumEvents = 250

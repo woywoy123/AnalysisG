@@ -82,6 +82,10 @@ class PathNet(MessagePassing):
             if self.N_Nodes == -1:
                 self.N_Nodes  = len(unique)
 
+            Px = pt*torch.cos(phi)
+            Py = pt*torch.sin(phi)
+            Pz = e*torch.tanh(eta)
+            
             e = np.array(e.tolist())
             pt = np.array(pt.tolist())
             eta = np.array(eta.tolist())

@@ -1,6 +1,7 @@
 from torch_scatter import scatter
 import torch
 
+
 x = torch.tensor([0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3])
 y = torch.tensor([0, 0, 0, 2, 2, 2, 0, 0, 0, 1, 1, 1])
 
