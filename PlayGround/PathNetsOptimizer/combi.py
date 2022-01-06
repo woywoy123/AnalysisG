@@ -9,20 +9,6 @@ import PathNetOptimizer_cpp
 
 
 
-
-t_s = time.time()
-x = PathNetOptimizer_cpp.PathCombination(torch.tensor(12, device = "cuda"), 12)
-t_e = time.time()
-print(float(t_e - t_e))
-#
-#
-#
-#
-#
-#exit()
-print(x)
-
-
 event = UnpickleObject("Nodes_12.pkl")
 event = event[0].Data
 
@@ -34,98 +20,37 @@ e_i = edge_index[0]
 e_j = edge_index[1]
 
 unique = torch.unique(edge_index)
-
-
-
-
-
-matrix = torch.zeros(unique.shape[0], unique.shape[0])
+matrix = torch.zeros(unique.shape[0], unique.shape[0], device = "cuda")
 matrix[edge_index[0], edge_index[1]] = 1
-
-
-
-
-
-
 print(matrix)
 
-numbers = torch.tensor([[i+1] for i in range(len(unique))])
+t_s = time.time()
+x = PathNetOptimizer_cpp.PathCombination(matrix, 12)
+t_e = time.time()
+print(round(float(t_e - t_e), 10))
 
-
-
+for i in x:
+    print(i)
+    print(e)
+    print(e[i.to(torch.bool)].sum(0))
+    exit()
+numbers = torch.tensor([[i+1] for i in range(len(unique))], device = "cuda" )
 
 
 p = []
+t_s = time.time()
 for i in range(1, 12):
     f = list(combinations(unique.tolist(), r = i+1))
     p += [list(i) for i in f]
 
-
-
-
-
-
-def Combination(index, bits, number, l):
-    if index == 0:
-        if bits == 0:
-            #out = [int(i) for i in str(bin(number))[2:]]
-            #k = [0]*(l.Len - len(out))
-            #k+= out
-            l.com.append(number)
-            return 
-        return 
-    if index -1 >= bits:
-        Combination(index-1, bits, number, l)
-    if bits > 0:
-        Combination(index -1, bits -1, number | ( 1 << (index -1)), l)
-
-
-class Get:
-    def __init__(self):
-        self.com = []
-        self.Len = -1
-
-g = Get()
-g.Len = 12
-
-t_s = time.time()
-for i in range(1, 12):
-    Combination(12, i+1, 0, g)
-t_e = time.time()
-print(t_e - t_s)
-
-
-
-
-
 k = []
-for i in g.com:
-    mask = 2**torch.arange(12)
-    print(mask)
-    proj = torch.tensor(i)
-    print(proj)
-    proj = proj.unsqueeze(-1) 
-    proj = proj.bitwise_and(mask) 
-    print(proj)
-    proj = proj.ne(0)
-    print(proj)
-    proj = proj.byte()#.reshape(12, 1).to(dtype = torch.float)
-    print(proj)
+for i in x:
+    i = i*numbers
 
-    exit()
-
-
-
-    comb = matrix.matmul(proj)
-    
-    comb[comb == proj.sum(dim =0)] = 0 
-    comb[comb > 0] = 1
-    
-    comb = comb*numbers
-
-    x = [int(k[0]-1) for k in comb.tolist()]
-    x = list(filter(lambda a: a != -1, x)) 
-    k.append(x)
+    t = [int(k[0]-1) for k in i.tolist()]
+    t = list(filter(lambda a: a != -1, t)) 
+    k.append(t)
+        
 
 t_e = time.time()
 print(t_e - t_s)
@@ -133,7 +58,6 @@ print(t_e - t_s)
 
 
 for i in p:
-        
     Found = False
     for j in k:
         
@@ -142,9 +66,7 @@ for i in p:
             break
 
     if Found == False:
-        print(i)
-    else:
-        print("->", i, j)
+        print("->", i)
     
 
 
