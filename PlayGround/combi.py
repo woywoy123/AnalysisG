@@ -16,9 +16,11 @@ import math
 import torch_geometric
 from torch_geometric.loader import DataLoader
 from sklearn.cluster import AgglomerativeClustering
+from PathNetOptimizer_cpp import PathCombination
+from PathNetOptimizerCUDA_cpp import ToCartesianCUDA, PathMassCartesianCUDA
 
 class PathNet(MessagePassing):
-    def __init__(self, PCut = 0.5, complex = 64, path = 64, hidden = 20):
+    def __init__(self, PCut = 0.5, complex = 64, path = 64, hidden = 50):
         super(PathNet, self).__init__("add")
         self.mlp_mass_complex = Seq(Linear(-1, hidden), Tanh(), Linear(hidden, 1)) # DO NOT CHANGE OUTPUT DIM 
         self.mlp_comp = Seq(Linear(-1, hidden), Tanh(), Linear(hidden, complex))
@@ -26,99 +28,61 @@ class PathNet(MessagePassing):
         self.mlp = Seq(Linear(path + complex, path+complex), ReLU(), Linear(path+complex, hidden))
         self.PCut = PCut 
         self.N_Nodes = -1
+        self.__Dyn_adj = -1
+        self.__comb = []
+        self.__cur = -1
+        self.__PathMatrix = -1
+        self.device = -1
 
     def forward(self, data):
 
-        @njit(cache = True, parallel = True)
-        def CreateLorentz(Lor_xyz, e, pt, eta, phi):
-            
-            for i in prange(Lor_xyz.shape[0]):
-                Lor_xyz[i][0] = pt[i][0]*np.cos(phi[i][0])
-                Lor_xyz[i][1] = pt[i][0]*np.sin(phi[i][0])
-                Lor_xyz[i][2] = e[i][0]*np.tanh(eta[i][0])
-                Lor_xyz[i][3] = e[i][0]
-        
-        @njit(cache = True, parallel = True)
-        def CalcPathMass(Lor_xyz, comb, path_m, adj_p):
-            n = path_m.shape[0] 
-            b = 0 
-            inc = 0             
-            for i in prange(n):
-                
-                if b == len(comb):
-                    b = 0
-                    inc += comb.shape[1]-1
-
-                tmp = comb[b] + inc
-                l = []
-                for k in np.unique(tmp):
-                    if k != -1 + inc:
-                       l.append(k) 
-                p = np.array(l) 
-                v = np.zeros(4, dtype = np.float64) 
-                for j in Lor_xyz[p]:
-                    v[0] = v[0] + j[0]
-                    v[1] = v[1] + j[1]
-                    v[2] = v[2] + j[2]
-                    v[3] = v[3] + j[3]
-                path_m[i] = np.exp(0.5*np.log(v[3]*v[3] - v[2]*v[2] - v[1]*v[1] - v[0]*v[0])) / 1000
-        
-                for j in prange(len(l)-1):
-                    adj_p[i, p[j] - inc, p[j+1] - inc] = path_m[i]
-                    adj_p[i, p[j+1] - inc, p[j] - inc] = path_m[i]
-                b += 1
-
-
-
-        def Performance(e, pt, eta, phi, event):
+        def Performance(event):
+            P = ToCartesianCUDA(event.eta, event.phi, event.pt, event.e)
             if type(event) == torch_geometric.data.data.Data:
-                unique = torch.unique(event.edge_index).tolist()
-                n_event = 1
+                event = [event]
             else:
                 event = event.to_data_list()
-                unique = torch.unique(event[0].edge_index).tolist()
-                n_event = len(event)
-            
-            if self.N_Nodes == -1:
-                self.N_Nodes  = len(unique)
 
-            Px = pt*torch.cos(phi)
-            Py = pt*torch.sin(phi)
-            Pz = e*torch.tanh(eta)
+            if self.N_Nodes == -1:
+                self.N_Nodes  = len(event[0].e)
+
+            if self.__cur != len(event[0].e):
+                self.__cur = len(event[0].e)
+
+                self.device = event[0].edge_index.device
+                Adj_Matrix = torch.zeros(self.__cur, self.__cur, device = self.device)
+                Adj_Matrix[event[0].edge_index[0], event[0].edge_index[1]] = 1
+                Combi = PathCombination(Adj_Matrix, self.__cur)
+                
+                self.__Dyn_adj = torch.torch.tensor([[i==j for i in range(self.N_Nodes)] for j in range(self.__cur)], dtype = torch.float, device = self.device)
+                
+                self.__comb = Combi[0]
+                self.__PathMatrix = Combi[1]
+                self.__PathMatrix = self.__PathMatrix[:, :].matmul(self.__Dyn_adj)
             
-            e = np.array(e.tolist())
-            pt = np.array(pt.tolist())
-            eta = np.array(eta.tolist())
-            phi = np.array(phi.tolist())
-        
-            Lor_xyz = np.zeros((len(e), 4))
-            CreateLorentz(Lor_xyz, e, pt, eta, phi) 
+            n_events = len(event)
+
+            p_m = []
+            adj_p = []
+            for i in range(len(event)):
+                s_ = i*self.__cur
+                e_ = (i+1)*self.__cur
+                m_cuda = PathMassCartesianCUDA(P[0][s_: e_], P[1][s_: e_], P[2][s_: e_], P[3][s_: e_], self.__comb)
+                p_m.append(m_cuda)
+                adj_p.append(self.__PathMatrix * m_cuda.reshape(self.__comb.shape[0], 1)[:, None])
             
-            tmp = [] 
-            l = len(unique)
-            for i in range(1, l):
-                p = list(combinations(unique, r = i+1))
-                p = [list(k) for k in p]
-                for k in p:
-                    k += [k[0]]
-                    k += [-1]*(self.N_Nodes - len(k)+1)
-                tmp += p
-            
-            path = np.array(tmp)
-            p_m = np.zeros(path.shape[0]*n_event, dtype = np.float32)
-            adj_p = np.zeros((path.shape[0]*n_event, self.N_Nodes, self.N_Nodes), dtype = float)
-            CalcPathMass(Lor_xyz, path, p_m, adj_p)
-            return adj_p, p_m, n_event, path.shape[0]
+            p_m = torch.cat(p_m, dim = 0)
+            adj_p = torch.cat(adj_p, dim = 0)
+            return adj_p, p_m, n_events, self.__comb.shape[0]
 
         # 1. ==== Assign the path mass to the adjacency matrix adj_p 
         edge_index = data.edge_index
-        adj_p, path_m, n_event, pth_l = Performance(data.e, data.pt, data.eta, data.phi, data)
-        block = torch.tensor(adj_p, device = edge_index.device).float()
+        adj_p, path_m, n_event, pth_l = Performance(data)
         
         e_jxe_i_tmp = []
         comp_ej_tmp = []
         for i in range(n_event):
-            blk = block[i*pth_l:pth_l*(i+1)]
+            blk = adj_p[i*pth_l:pth_l*(i+1)]
 
             # 2. ==== Project the sum of the topological mass states across complexity 
             e_jxe_i_tmp.append(torch.sum(blk, dim = 0))
@@ -134,7 +98,6 @@ class PathNet(MessagePassing):
         
         # 3.2 ==== Set any connection with a mass to 1 and multiply (NOT DOT PRODUCT!!) with the learned mass value (-1 -> 1) to the matrix (n_events * e_i) x e_j
         adj_p[adj_p > 0] = 1 
-        adj_p = torch.tensor(adj_p, device = edge_index.device).float()
         adj_p = adj_p * comp_ej[:, None]
         
         # 4. ==== Split into n_events and project the learned mass values along the complexity axis to get a matrix e_i x e_j and sum the mass projection (non learned) to the learned mass complexity
@@ -153,51 +116,28 @@ class PathNet(MessagePassing):
     
     def update(self, aggr_out): 
         aggr_out = F.normalize(aggr_out)
-        adj = torch.sigmoid(aggr_out.matmul(aggr_out.t()))
-        l = adj.shape[0]
 
-        ones = torch.zeros(adj.shape, device = adj.device)
-        for i in range(l):
-            ones[l - i-1] = torch.tensor([[1]*(l-i) + [0]*i])
-
-        adj[adj <= self.PCut] = 0
-        adj_ = adj.matmul(ones)
-        adj_i = adj_.sum(dim = 0)
-        adj_j = adj_.sum(dim = 1)
+        m = Tanh()
+        k = ReLU()
+        adj = k(m(aggr_out.matmul(aggr_out.t())))
         
-        adj_sum = adj_i + adj_j.flip(dims = [0])
-        step = (adj_sum.max() - adj_sum.min())/len(adj_sum)
-
-
-        c_ = np.array(torch.round(adj_sum).tolist()).reshape(-1, 1)
-        clu = list(AgglomerativeClustering(n_clusters = None, distance_threshold = float(step)).fit(c_).labels_)
-
-        self.n_cluster = len(list(set(clu)))
         self.Adj_M = adj
-        self.cluster = clu
+
         return aggr_out
 
 
 torch.set_printoptions(edgeitems = 20)
-#torch.set_printoptions(profile = "full")
+torch.set_printoptions(profile = "full")
 
 
 data = UnpickleObject("Nodes_12.pkl")
 data2 = UnpickleObject("Nodes_10.pkl")
-data = data.Data
+data = [data.Data]*1
 data2 = data2.Data
-#tmp = []
-#for i in range(len(data)):
-#    tmp.append(data[i].Data)
-#    if i == 0:
-#        break
-#
-#for data in DataLoader(tmp, batch_size = len(tmp)):
-#    break
 
+for data in DataLoader(data, batch_size = len(data)):
+    break
 
-
-#data = data[0].Data
 Model = PathNet()
 Model.to(device = "cuda")
 OP = torch.optim.Adam(Model.parameters(), lr = 1e-3, weight_decay= 1e-3)
@@ -205,39 +145,40 @@ OP = torch.optim.Adam(Model.parameters(), lr = 1e-3, weight_decay= 1e-3)
 Model.train()
 for i in range(1000):
     inpt, trgt = data, data.y.t()[0]
+    
     OP.zero_grad()
-        
+    
     t_s = time.time()
     pred = Model(data)
-    _, x = pred.max(1)
     t_e = time.time()
-    print(t_e - t_s)
-    Loss = torch.nn.CrossEntropyLoss()
-    L = Loss(pred, trgt)
-   
-    inpt, trgt = data2, data2.y.t()[0]
-    OP.zero_grad()
+
+    sol = Model.Adj_M[data.edge_index[0], data.edge_index[1]]
+    trg = torch.tensor(data.y[data.edge_index[0]] == data.y[data.edge_index[1]], dtype = torch.float).t()
         
-    t_s = time.time()
-    pred = Model(data2)
-    _, x = pred.max(1)
-    t_e = time.time()
-    print(t_e - t_s)
-    Loss = torch.nn.CrossEntropyLoss()
-    L = Loss(pred, trgt)
+    Loss = torch.nn.MSELoss()
+    L = Loss(sol, trg)
    
+    print(torch.round(Model.Adj_M))
 
 
-
-
-
-
-
-
-
-
-    print(L)
-    print(x, trgt)
+   # pred = Model(data)
+   # _, x = pred.max(1)
+   # print(t_e - t_s)
+   # Loss = torch.nn.CrossEntropyLoss()
+   # L = Loss(pred, trgt)
+   #
+   # inpt, trgt = data2, data2.y.t()[0]
+   # OP.zero_grad()
+   #     
+   # t_s = time.time()
+   # pred = Model(data2)
+   # _, x = pred.max(1)
+   # t_e = time.time()
+   # print(t_e - t_s)
+   # Loss = torch.nn.CrossEntropyLoss()
+   # L = Loss(pred, trgt)
+   
+    #print(L)
     L.backward()
     OP.step()
     

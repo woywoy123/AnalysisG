@@ -111,7 +111,7 @@ def TrainEvaluate(Model, Outdir):
     eva.AddTruthAttribute("Signal")
     eva.AddPredictionAttribute("y")
     eva.ProcessSample()
-    eva.LossTrainingPlot("Plots/" + Outdir, True)
+    eva.LossTrainingPlot("Plots/" + Outdir, False)
 
 def TestInvMassGNN_Children():
     #GenerateTemplate()

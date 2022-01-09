@@ -67,5 +67,5 @@ if __name__ == '__main__':
     # ====== Evaluation of Models ======== #
     #Passed(TestInvMassGNN_Children(), "TestInvMassGNN_Children")
     #Passed(TestInvMassAggrGNN_Children(), "TestInvMassAggrGNN_Children")
-    #Passed(TestPathNetGNN_Children(), "TestPathNetGNN_Children") 
-    Passed(TestPathNetGNN_Data(), "TestPathNetGNN_Data") 
+    Passed(TestPathNetGNN_Children(), "TestPathNetGNN_Children") 
+    #Passed(TestPathNetGNN_Data(), "TestPathNetGNN_Data") 

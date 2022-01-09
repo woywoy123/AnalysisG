@@ -18,6 +18,10 @@ import torch_geometric
 from torch_geometric.nn import MessagePassing, GCNConv, Linear
 from torch_geometric.data import Batch 
 
+from PathNetOptimizer_cpp import PathCombination
+from PathNetOptimizerCUDA_cpp import ToCartesianCUDA, PathMassCartesianCUDA
+
+
 class EdgeConv(MessagePassing):
 
     def __init__(self, in_channels, out_channels):
@@ -138,6 +142,111 @@ class InvMassAggr(MessagePassing):
 
 
 class PathNet(MessagePassing):
+    def __init__(self, PCut = 0.5, complex = 64, path = 64, hidden = 64, out = 20):
+        super(PathNet, self).__init__("add")
+        self.mlp_mass_complex = Seq(Linear(-1, hidden), Tanh(), Linear(hidden, 1)) # DO NOT CHANGE OUTPUT DIM 
+        self.mlp_comp = Seq(Linear(-1, hidden), Tanh(), Linear(hidden, complex))
+        self.mlp_path = Seq(Linear(-1, hidden), ReLU(), Linear(hidden, path))
+        self.mlp = Seq(Linear(path + complex, path+complex), ReLU(), Linear(path+complex, hidden))
+        self.PCut = PCut 
+        self.N_Nodes = -1
+        self.__Dyn_adj = -1
+        self.__comb = []
+        self.__cur = -1
+        self.__PathMatrix = -1
+        self.device = -1
+
+    def forward(self, data):
+
+        def Performance(event):
+            P = ToCartesianCUDA(event.eta, event.phi, event.pt, event.e)
+            if type(event) == torch_geometric.data.data.Data:
+                event = [event]
+            else:
+                event = event.to_data_list()
+
+            if self.N_Nodes == -1:
+                self.N_Nodes  = len(event[0].e)
+                self.device = event[0].edge_index.device
+            
+            if self.__cur != len(event[0].e):
+                self.__cur = len(event[0].e)
+
+                Adj_Matrix = torch.zeros(self.__cur, self.__cur, device = self.device)
+                Adj_Matrix[event[0].edge_index[0], event[0].edge_index[1]] = 1
+                Combi = PathCombination(Adj_Matrix, self.__cur)
+                
+                self.__Dyn_adj = torch.torch.tensor([[i==j for i in range(self.N_Nodes)] for j in range(self.__cur)], dtype = torch.float, device = self.device)
+                
+                self.__comb = Combi[0]
+                self.__PathMatrix = Combi[1]
+                self.__PathMatrix = self.__PathMatrix[:, :].matmul(self.__Dyn_adj)
+            
+            n_events = len(event)
+
+            p_m = []
+            adj_p = []
+            for i in range(len(event)):
+                s_ = i*self.__cur
+                e_ = (i+1)*self.__cur
+
+                m_cuda = PathMassCartesianCUDA(P[0][s_:e_], P[1][s_:e_], P[2][s_:e_], P[3][s_:e_], self.__comb)
+                p_m.append(m_cuda)
+                adj_p.append(self.__PathMatrix * m_cuda.reshape(self.__comb.shape[0], 1)[:, None])
+            
+            p_m = torch.cat(p_m, dim = 0)
+            adj_p = torch.cat(adj_p, dim = 0)
+            return adj_p, p_m, n_events, self.__comb.shape[0]
+
+        # 1. ==== Assign the path mass to the adjacency matrix adj_p 
+        edge_index = data.edge_index
+        adj_p, path_m, n_event, pth_l = Performance(data)
+        
+        e_jxe_i_tmp = []
+        comp_ej_tmp = []
+        for i in range(n_event):
+            blk = adj_p[i*pth_l:pth_l*(i+1)]
+
+            # 2. ==== Project the sum of the topological mass states across complexity 
+            e_jxe_i_tmp.append(torch.sum(blk, dim = 0))
+       
+            # 3. ==== Project along the complexity (the number of nodes included) and learn the complexity
+            comp_ej_tmp.append(torch.sum(blk, dim = 1))
+        
+        # 2.1 ==== Learn the mass projection with dim (n*events * e_i) x e_j
+        e_i = self.mlp_path(torch.cat(e_jxe_i_tmp, dim = 0))
+       
+        # 3.1 ==== Learn the different masses associated with path complexity (i.e. the number of nodes being included)
+        comp_ej = self.mlp_mass_complex(torch.cat(comp_ej_tmp, dim = 0))
+        
+        # 3.2 ==== Set any connection with a mass to 1 and multiply (NOT DOT PRODUCT!!) with the learned mass value (-1 -> 1) to the matrix (n_events * e_i) x e_j
+        adj_p = adj_p * comp_ej[:, None]
+        
+        # 4. ==== Split into n_events and project the learned mass values along the complexity axis to get a matrix e_i x e_j and sum the mass projection (non learned) to the learned mass complexity
+        adj_p_tmp = []
+        for i in range(n_event):
+            adj_p_tmp.append(adj_p[i*pth_l:pth_l*(i+1)].sum(dim = 0))
+            adj_p_tmp[i].add(e_jxe_i_tmp[i])
+       
+        # 4.1 ==== Learn this sum after concatinating the list to a matrix (n_events * e_i) x e_j
+        adj_p_ei = self.mlp_comp(torch.cat(adj_p_tmp, dim = 0))
+
+        return self.propagate(edge_index = edge_index, x = torch.cat([data.e], dim = 1), edge_attr = torch.cat([e_i, adj_p_ei], dim = 1))
+
+    def message(self, edge_index, x_i, x_j, edge_attr):
+        return self.mlp(torch.cat([edge_attr[edge_index[1].t()]], dim = 1))
+    
+    def update(self, aggr_out): 
+        aggr_out = F.normalize(aggr_out)
+        adj = torch.sigmoid(aggr_out.matmul(aggr_out.t()))
+        adj[adj <= self.PCut] = 0
+        self.Adj_M = adj
+        return aggr_out
+
+
+
+
+class PathNet_Old(MessagePassing):
     def __init__(self, PCut = 0.5, complex = 64, path = 64, hidden = 64, out = 20):
         super(PathNet, self).__init__("add")
         self.mlp_mass_complex = Seq(Linear(-1, hidden), Tanh(), Linear(hidden, 1)) # DO NOT CHANGE OUTPUT DIM 
