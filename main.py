@@ -1,6 +1,6 @@
 from Closure.IO import TestDir, TestReadSingleFile, TestReadFile, TestFileConvertArray
 from Closure.Event import TestEvents, TestParticleAssignment, TestSignalMultipleFile, TestSignalDirectory, TestAnomalousStatistics
-from Closure.Plotting import TestTops, TestResonance, TestBackGroundProcesses, TestGNNMonitor, KinematicsPlotting
+from Closure.Plotting import TestTops, TestResonance, TestBackGroundProcesses, TestGNNMonitor, KinematicsPlotting, TopologicalComplexityMassPlot, TestDataSamples
 from Closure.DataLoader import TestEventGraphs, TestDataLoader, TestDataLoaderTrainingValidationTest, TestEventNodeEdgeFeatures
 from Closure.GNN import SimpleFourTops, TestInvMassGNN_Children, TestInvMassAggrGNN_Children, TestPathNetGNN_Children, TestPathNetGNN_Data
 from Closure.Models import TestEdgeConvModel, TestGCNModel, TestInvMassGNN, TestInvMassAggr, TestPathNet
@@ -24,7 +24,7 @@ def Generate_Cache(di, Stop = -1, SingleThread = False, Compiler = "EventGenerat
 
 if __name__ == '__main__':
     #Generate_Cache(dir, Stop = 10000, SingleThread = False, Compiler = "SignalSample.pkl")
-    #Generate_Cache("/CERN/Grid/Samples/NAF/2021-05-05-2cRC-all/mc16a/postProcessed_ttbar_PhPy8_Total.root", Stop = 1000, SingleThread = True, Compiler = "ttbar.pkl")
+    #Generate_Cache("/CERN/Grid/Samples/NAF/2021-05-05-2cRC-all/mc16a/postProcessed_ttbar_PhPy8_Total.root", Stop = 10, SingleThread = True, Compiler = "ttbar.pkl")
 
 
     # ====== Test of IO 
@@ -56,6 +56,8 @@ if __name__ == '__main__':
     # ====== Test of Plotting 
     #Passed(TestGNNMonitor(), "TestGNNMonitor")
     #Passed(KinematicsPlotting(), "KinematicsPlotting")
+    #Passed(TopologicalComplexityMassPlot(), "TopologicalComplexityMassPlot")
+    Passed(TestDataSamples(), "TestDataSamples")
 
     # ====== Test of GNN Model implementations 
     #Passed(TestEdgeConvModel(), "TestEdgeConvModel")
@@ -67,5 +69,5 @@ if __name__ == '__main__':
     # ====== Evaluation of Models ======== #
     #Passed(TestInvMassGNN_Children(), "TestInvMassGNN_Children")
     #Passed(TestInvMassAggrGNN_Children(), "TestInvMassAggrGNN_Children")
-    Passed(TestPathNetGNN_Children(), "TestPathNetGNN_Children") 
+    #Passed(TestPathNetGNN_Children(), "TestPathNetGNN_Children") 
     #Passed(TestPathNetGNN_Data(), "TestPathNetGNN_Data") 

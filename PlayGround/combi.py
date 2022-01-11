@@ -7,6 +7,7 @@ import time
 from skhep.math.vectors import LorentzVector
 from torch.nn import Sequential as Seq, ReLU, Tanh
 from torch_geometric.nn import MessagePassing, Linear
+from torch_geometric.utils import accuracy
 import torch.nn.functional as F
 from torch_scatter import scatter
 from numba import njit, prange, cuda, float32, int32
@@ -116,7 +117,7 @@ class PathNet(MessagePassing):
     def update(self, aggr_out, edges): 
         aggr_out = F.normalize(aggr_out)
         self.Adj_M = torch.zeros((len(aggr_out), len(aggr_out)), device = self.device)
-        self.Adj_M[edges[0], edges[1]] = F.cosine_similarity(aggr_out[edges[0]], aggr_out[edges[1]])
+        self.Adj_M[edges[0], edges[1]] = F.relu(F.cosine_similarity(aggr_out[edges[0]], aggr_out[edges[1]]))
         return aggr_out
 
 
@@ -127,7 +128,7 @@ torch.set_printoptions(profile = "full")
 
 data = UnpickleObject("Nodes_12.pkl")
 data2 = UnpickleObject("Nodes_10.pkl")
-data = [data.Data]*10
+data = [data.Data]*1
 data2 = data2.Data
 
 for data in DataLoader(data, batch_size = len(data)):
@@ -149,14 +150,15 @@ for i in range(1000):
 
     trg = torch.tensor(data.y[data.edge_index[0]] == data.y[data.edge_index[1]], dtype = torch.float).t()[0]
 
-    sol = Model.Adj_M[data.edge_index[0], data.edge_index[1]]
+    sol = Model.Adj_M[data.edge_index[0], data.edge_index[1].t()]
 
-    print(torch.round(sol + trg))
-
+    print(torch.round(sol).to(torch.int) == trg.to(torch.int))
+    
     Loss = torch.nn.MSELoss()
     L = Loss(sol, trg)
     print(L)
     
+    print(accuracy(torch.round(sol).to(torch.int), trg))    
     time.sleep(0.1)
     #print(torch.round(Model.Adj_M))
 

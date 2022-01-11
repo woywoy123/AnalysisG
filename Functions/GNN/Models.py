@@ -142,7 +142,7 @@ class InvMassAggr(MessagePassing):
 
 
 class PathNet(MessagePassing):
-    def __init__(self, complex = 64, path = 64, hidden = 64, out = 20):
+    def __init__(self, complex = 64, path = 64, hidden = 64, out = 50):
         super(PathNet, self).__init__("add")
         self.mlp_mass_complex = Seq(Linear(-1, hidden), Tanh(), Linear(hidden, 1)) # DO NOT CHANGE OUTPUT DIM 
         self.mlp_comp = Seq(Linear(-1, hidden), Tanh(), Linear(hidden, complex))
@@ -175,7 +175,7 @@ class PathNet(MessagePassing):
                 Adj_Matrix[event[0].edge_index[0], event[0].edge_index[1]] = 1
                 Combi = PathCombination(Adj_Matrix, self.__cur)
                 
-                self.__Dyn_adj = torch.torch.tensor([[i==j for i in range(self.N_Nodes)] for j in range(self.__cur)], dtype = torch.float, device = self.device)
+                self.__Dyn_adj = torch.tensor([[i==j for i in range(self.N_Nodes)] for j in range(self.__cur)], dtype = torch.float, device = self.device)
                 
                 self.__comb = Combi[0]
                 self.__PathMatrix = Combi[1]

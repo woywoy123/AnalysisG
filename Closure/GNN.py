@@ -45,7 +45,7 @@ def SimpleFourTops():
     return True
 
 
-def GenerateTemplate(Tree = "TruthChildren_init", Additional_Sample = ""):
+def GenerateTemplate(SignalSample = "SignalSample.pkl", Tree = "TruthChildren_init", Additional_Samples = "", OutputName = "LoaderSignalSample.pkl"):
     from skhep.math.vectors import LorentzVector
 
     def eta(a):
@@ -70,7 +70,6 @@ def GenerateTemplate(Tree = "TruthChildren_init", Additional_Sample = ""):
         T = t_i + t_j
         return float(T.mass)
 
-    ev = UnpickleObject("SignalSample.pkl")
     Loader = GenerateDataLoader()
     Loader.AddNodeFeature("e", energy)
     Loader.AddNodeFeature("eta", eta)
@@ -79,15 +78,21 @@ def GenerateTemplate(Tree = "TruthChildren_init", Additional_Sample = ""):
     Loader.AddEdgeFeature("dr", d_r)
     Loader.AddEdgeFeature("m", m)
     Loader.AddNodeTruth("y", Signal)
-
-    Loader.AddSample(ev, "nominal", Tree)
     
-    if Additional_Sample != "":
+    if SignalSample != "":
+        ev = UnpickleObject(SignalSample)
+        Loader.AddSample(ev, "nominal", Tree)
+    
+    if Additional_Samples != "" and type(Additional_Samples) != list:
         ev = UnpickleObject(Additional_Sample)
         Loader.AddSample(ev, "tree", "JetLepton")
+    else:
+        for i in Additional_Samples:
+            ev = UnpickleObject(i)
+            Loader.AddSample(ev, "tree", "JetLepton")
 
     Loader.ToDataLoader()
-    PickleObject(Loader, "LoaderSignalSample.pkl")
+    PickleObject(Loader, OutputName)
 
 
 def TrainEvaluate(Model, Outdir):
@@ -126,8 +131,12 @@ def TestInvMassAggrGNN_Children():
     return True
 
 def TestPathNetGNN_Children():
-    #GenerateTemplate()
+    import time
+    #GenerateTemplate("TruthChildren")
+    t_s = time.time()
     TrainEvaluate("PathNet", "PathNet_Performance_Plots_Children")
+    t_e = time.time()
+    print(t_e - t_s)
     return True
 
 def TestPathNetGNN_Data():

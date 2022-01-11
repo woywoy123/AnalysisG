@@ -6,6 +6,7 @@ from Functions.Plotting.Histograms import TH2F, TH1F, SubfigureCanvas, CombineHi
 from Functions.GNN.Graphs import GenerateDataLoader
 from Functions.GNN.Optimizer import Optimizer
 from Functions.GNN.Metrics import EvaluationMetrics
+from Closure.GNN import GenerateTemplate
 
 def TestTops():
    
@@ -716,4 +717,66 @@ def KinematicsPlotting():
     d_PT_Edge.Filename = "Edge_delta_PT.png"
     d_PT_Edge.Save("Plots/Kinematics/ComparativePlots/")
 
-    return True    
+    return True   
+
+def TopologicalComplexityMassPlot(Input = "LoaderSignalSample.pkl", Type = "Signal"):
+    from PathNetOptimizer_cpp import PathCombination
+    from PathNetOptimizerCUDA_cpp import ToCartesianCUDA, PathMassCartesianCUDA
+    import torch 
+
+    #GenerateTemplate()
+    Loader = UnpickleObject("LoaderSignalSample.pkl")
+   
+    Complexity_Mass = TH2F()
+    Complexity_Mass.Title = "Mass Prediction of Combinatorial M chose N-Nodes"
+    Complexity_Mass.yTitle = "Invariant Mass (GeV)"
+    Complexity_Mass.xTitle = "Complexity (abr.)"
+    Complexity_Mass.xMin = 1
+    Complexity_Mass.xMax = 12
+    Complexity_Mass.xMin = 1
+    Complexity_Mass.xBins = 11
+    Complexity_Mass.yMin = 0
+    Complexity_Mass.yMax = 2000
+    Complexity_Mass.yBins = 1000
+    Complexity_Mass.Filename = "Complexity_vs_Mass.png"
+    events = Loader.DataLoader
+    
+    Hists = {}
+    for i in list(events):
+        M = TH1F()
+        M.Title = str(i)+"-Nodes"
+        M.xTitle = "Invariant Mass (GeV)"
+        M.yTitle = "Entries"
+        M.xMin = 0
+        M.xMax = 2000
+        M.xBins = 500
+        M.Filename = "M" + str(i) + ".png"
+        Hists[i] = M
+
+    for n in events:
+        n_nodes = events[n]
+        adj = torch.tensor([[i != j for i in range(n)] for j in range(n)], dtype = torch.float, device = "cuda")
+        combi = PathCombination(adj, n)
+        for i in n_nodes:
+            P = ToCartesianCUDA(i.eta, i.phi, i.pt, i.e)
+            m_cuda = PathMassCartesianCUDA(P[0], P[1], P[2], P[3], combi[0])
+            for j, k in zip(m_cuda, combi[0].sum(1)):
+                Complexity_Mass.yData.append(float(j))
+                Complexity_Mass.xData.append(int(k))
+                Hists[int(k)].xData.append(float(j))
+    Complexity_Mass.SaveFigure("Plots/TopologicalComplexityMass")
+    
+    h = CombineHistograms()
+    h.Histograms = [Hists[i] for i in Hists]
+    h.Title = "Mass of M-Chose, N-Node (Complexity)"
+    h.Filename = "MassComplexity.png"
+    h.SaveFigure("Plots/TopologicalComplexityMass" + Type)
+    return True
+
+def TestDataSamples():
+    GenerateTemplate("", "JetLepton", ["ttbar.pkl"], "TestTTBAR.pkl")
+    
+    TopologicalComplexityMassPlot(Input = "TestTTBAR.pkl", Type = "TTBAR")
+
+
+    return True

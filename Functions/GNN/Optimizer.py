@@ -11,7 +11,6 @@ from torch_geometric.utils import accuracy
 import numpy as np
 from sklearn.model_selection import KFold 
 
-import copy
 import time 
 
 
@@ -158,7 +157,7 @@ class Optimizer(Notification):
         if TargetType == "Edges":
             edge_index = Sample.edge_index
             p = self.Model.Adj_M[edge_index[0], edge_index[1]]
-            return p, p, torch.tensor(Sample.y[edge_index[0]] == Sample.y[edge_index[1]], dtype= torch.float).t()[0]
+            return p, torch.round(p).to(torch.int), torch.tensor(Sample.y[edge_index[0]] == Sample.y[edge_index[1]], dtype= torch.float).t()[0]
 
     def DefineLossFunction(self, LossFunction):
         if LossFunction == "CrossEntropyLoss":
@@ -206,9 +205,9 @@ class Optimizer(Notification):
         self.DefineOptimizer()
         self.DefineLossFunction("CrossEntropyLoss")
 
-    def DefinePathNet(self, complex = 64, path = 64, hidden = 64, out = 20):
+    def DefinePathNet(self, complex = 64, path = 64, hidden = 64, out = 50):
         self.Classifier = True
         self.Model = PathNet(complex, path, hidden, out)
         self.DefineOptimizer()
-        self.DefineLossFunction("MSELoss")
-        self.DefaultTargetType = "Edges"
+        self.DefineLossFunction("CrossEntropyLoss")
+        self.DefaultTargetType = "Nodes"
