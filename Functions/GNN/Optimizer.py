@@ -1,6 +1,7 @@
 from Functions.Tools.Alerting import Notification
 from Functions.GNN.Graphs import GenerateDataLoader
 from Functions.GNN.Models import EdgeConv, InvMassGNN, PathNet
+from Functions.IO.Files import WriteDirectory
 
 import torch
 from torch.utils.data import SubsetRandomSampler
@@ -45,9 +46,11 @@ class Optimizer(Notification):
 
         self.LearningRate = 1e-2
         self.WeightDecay = 1e-4
-        self.DefaultBatchSize = 1
+        self.DefaultBatchSize = 10
         self.MinimumEvents = 250
         self.kFold = 10
+        self.DefaultTargetType = "Nodes"
+        self.TrainingName = "UNTITLED"
         self.Model = None
 
         self.LossTrainStatistics = {}
@@ -55,8 +58,6 @@ class Optimizer(Notification):
         
         self.ValidationStatistics = {}
         self.LossValidationStatistics = {}
-
-        self.OptimizerSnapShots = {}
 
         self.epoch = 0
         self.Trained = False
@@ -70,6 +71,7 @@ class Optimizer(Notification):
                 MaxNode.append(int(i))
         MaxNode.sort(reverse = True)
 
+        WriteDirectory().MakeDir("Models/" + self.TrainingName)
         for epoch in range(self.Epochs):
             self.Notify("EPOCH =============================== " +str(epoch+1) + "/" + str(self.Epochs))
             self.epoch = epoch+1
@@ -93,92 +95,77 @@ class Optimizer(Notification):
                     
                     train_loader = DataLoader(CurrentData, batch_size = self.DefaultBatchSize, sampler = SubsetRandomSampler(train_idx))
                     valid_loader = DataLoader(CurrentData, batch_size = self.DefaultBatchSize, sampler = SubsetRandomSampler(val_idx))                              
-                    
                     self.Notify("-------> Training <-------")
-                    self.ResetAll()
-                    self.len = len(train_loader)
-                    for ts in train_loader:
-                        self.sample = ts
-                        self.TrainClassification()
-                        self.ProgressInformation(Mode = "LEARNING")
-                    
-                    self.Notify("------- Collecting Accuracy/Loss -------")
-                    TA = self.GetClassificationAccuracy(train_loader)
-                    TL = self.GetClassificationLoss(train_loader)
-                    
+                    self.SampleLoop("Training", train_loader)                    
+
                     self.Notify("-------> Validation <-------")
-                    self.Notify("------- Collecting Accuracy/Loss -------")                   
-                    VA = self.GetClassificationAccuracy(valid_loader)
-                    VL = self.GetClassificationLoss(valid_loader)
-                    
-                    self.TrainStatistics[self.epoch].append(TA)
-                    self.ValidationStatistics[self.epoch].append(VA)
-
-                    self.LossTrainStatistics[self.epoch].append(TL)
-                    self.LossValidationStatistics[self.epoch].append(VL)
-
-                self.Notify("CURRENT LOSS FUNCTION: " + str(round(float(self.L), 7)))
-                self.Notify("CURRENT ACCURACY (Validation): " + str(round(float(VA), 7)))
-            self.OptimizerSnapShots[self.epoch] = copy.deepcopy(self.Optimizer)
-        self.Loader.Trained = True 
-    
-    def GetClassificationAccuracy(self, loader):
-        self.ResetAll()
-        self.len = len(loader)
-        self.Model.eval()
-        l = 0
-        T = []
-        P = []
-        for i in loader:
-            _, pred = self.Model(i).max(1)
-            truth = i.y.t().contiguous().squeeze()
+                    self.SampleLoop("Validation", valid_loader)
+                
+                self.Notify("CURRENT TRAIN LOSS FUNCTION: " + str(round(float(self.LossTrainStatistics[self.epoch][-1][-1]), 7)))
+                self.Notify("CURRENT ACCURACY (Validation): " + str(round(float(self.ValidationStatistics[self.epoch][-1]), 7)))
             
-            T.append(truth)
-            P.append(pred)
-            self.ProgressInformation("ACCURACY")
+            torch.save(self.Model, "Models/" + self.TrainingName + "/Model_epoch" + str(epoch +1) +".pt")
+        self.Loader.Trained = True 
 
-        p = accuracy(torch.cat(P, dim = 0), torch.cat(T, dim = 0))
-        return p
-    
-    def GetClassificationLoss(self, loader):
+    def SampleLoop(self, Mode, sample_loader):
+        Mode_b = True 
+        if Mode != "Training":
+            Mode_b = False
+
         self.ResetAll()
-        self.len = len(loader)
-        self.Model.eval()
-        L = []
-        for i in loader:
-            pred = self.Model(i)
-            Loss = torch.nn.CrossEntropyLoss()
-            truth = i.y.t().contiguous().squeeze()
+        TT, TP, L = [], [], []
+        self.len = len(sample_loader)*self.DefaultBatchSize
+        for ts in sample_loader:
+            self.sample = ts
+            self.TrainClassification(Mode_b)
+            
+            for i in range(self.DefaultBatchSize):
+                self.ProgressInformation(Mode)
 
-            L.append(float(Loss(pred, truth)))
-            self.ProgressInformation("LOSS")
-        return L
+            TT.append(self.__Truth)
+            TP.append(self.__Pred) 
+            L.append(float(self.L))
 
-    def DefineEdgeConv(self, in_channels, out_channels):
-        self.Classifier = True
-        self.Model = EdgeConv(in_channels, out_channels)
-        self.DefineOptimizer()
+        ac = accuracy(torch.cat(TP, dim = 0), torch.cat(TT, dim = 0))
+        if Mode_b:
+            self.TrainStatistics[self.epoch].append(ac)
+            self.LossTrainStatistics[self.epoch].append(L)
+        else:
+            self.ValidationStatistics[self.epoch].append(ac)
+            self.LossValidationStatistics[self.epoch].append(L)
 
-    def DefineInvMass(self, out_channels):
-        self.Classifier = True
-        self.Model = InvMassGNN(out_channels)
-        self.DefineOptimizer()
-
-    def DefinePathNet(self, PCut = 0.5, complex = 64, path = 64, hidden = 64, out = 20):
-        self.Classifier = True
-        self.Model = PathNet(PCut, complex, path, hidden, out)
-        self.DefineOptimizer()
-
-    def TrainClassification(self):
-        self.Model.train()
-        self.Optimizer.zero_grad()
+    def TrainClassification(self, Train = True):
+        if Train:
+            self.Model.train()
+            self.Optimizer.zero_grad()
+        else:
+            self.Model.eval()
         
-        pred = self.Model(self.sample)
-        Loss = torch.nn.CrossEntropyLoss()
-        self.L = Loss(pred, self.sample.y.t().contiguous().squeeze())
-        self.L.backward()
-        self.Optimizer.step()
+        param, P, truth = self.TargetDefinition(self.sample, self.DefaultTargetType)
+        self.__Pred = P
+        self.__Truth = truth
+        self.L = self.LossFunction(param, truth)
 
+        if Train:
+            self.L.backward()
+            self.Optimizer.step()
+
+    def TargetDefinition(self, Sample, TargetType = "Nodes"):
+        pred = self.Model(Sample)
+        if TargetType == "Nodes":
+            _, p = pred.max(1)
+            return pred, p, Sample.y.t().contiguous().squeeze()
+        if TargetType == "Edges":
+            edge_index = Sample.edge_index
+            p = self.Model.Adj_M[edge_index[0], edge_index[1]]
+            return p, p, torch.tensor(Sample.y[edge_index[0]] == Sample.y[edge_index[1]], dtype= torch.float).t()[0]
+
+    def DefineLossFunction(self, LossFunction):
+        if LossFunction == "CrossEntropyLoss":
+            self.LossFunction = torch.nn.CrossEntropyLoss()
+        elif LossFunction == "MSELoss":
+            self.LossFunction = torch.nn.MSELoss()
+ 
     def DefineOptimizer(self):
         self.Model.to(self.Device)
         self.Optimizer = torch.optim.Adam(self.Model.parameters(), lr = self.LearningRate, weight_decay = self.WeightDecay)
@@ -206,3 +193,22 @@ class Optimizer(Notification):
                 for n in range(len(pred)):
                     setattr(i.NodeParticleMap[n], attr, pred[n])
         sample.Processed = True 
+
+    def DefineEdgeConv(self, in_channels, out_channels):
+        self.Classifier = True
+        self.Model = EdgeConv(in_channels, out_channels)
+        self.DefineOptimizer()
+        self.DefineLossFunction("CrossEntropyLoss")
+
+    def DefineInvMass(self, out_channels):
+        self.Classifier = True
+        self.Model = InvMassGNN(out_channels)
+        self.DefineOptimizer()
+        self.DefineLossFunction("CrossEntropyLoss")
+
+    def DefinePathNet(self, complex = 64, path = 64, hidden = 64, out = 20):
+        self.Classifier = True
+        self.Model = PathNet(complex, path, hidden, out)
+        self.DefineOptimizer()
+        self.DefineLossFunction("MSELoss")
+        self.DefaultTargetType = "Edges"

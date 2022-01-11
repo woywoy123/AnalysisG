@@ -142,13 +142,12 @@ class InvMassAggr(MessagePassing):
 
 
 class PathNet(MessagePassing):
-    def __init__(self, PCut = 0.5, complex = 64, path = 64, hidden = 64, out = 20):
+    def __init__(self, complex = 64, path = 64, hidden = 64, out = 20):
         super(PathNet, self).__init__("add")
         self.mlp_mass_complex = Seq(Linear(-1, hidden), Tanh(), Linear(hidden, 1)) # DO NOT CHANGE OUTPUT DIM 
         self.mlp_comp = Seq(Linear(-1, hidden), Tanh(), Linear(hidden, complex))
         self.mlp_path = Seq(Linear(-1, hidden), ReLU(), Linear(hidden, path))
         self.mlp = Seq(Linear(path + complex, path+complex), ReLU(), Linear(path+complex, hidden))
-        self.PCut = PCut 
         self.N_Nodes = -1
         self.__Dyn_adj = -1
         self.__comb = []
@@ -182,15 +181,15 @@ class PathNet(MessagePassing):
                 self.__PathMatrix = Combi[1]
                 self.__PathMatrix = self.__PathMatrix[:, :].matmul(self.__Dyn_adj)
             
+            torch.cuda.synchronize()
             n_events = len(event)
-
-            p_m = []
-            adj_p = []
+            adj_p, p_m = [], []
             for i in range(len(event)):
                 s_ = i*self.__cur
                 e_ = (i+1)*self.__cur
 
                 m_cuda = PathMassCartesianCUDA(P[0][s_:e_], P[1][s_:e_], P[2][s_:e_], P[3][s_:e_], self.__comb)
+                torch.cuda.synchronize()
                 p_m.append(m_cuda)
                 adj_p.append(self.__PathMatrix * m_cuda.reshape(self.__comb.shape[0], 1)[:, None])
             
@@ -231,20 +230,16 @@ class PathNet(MessagePassing):
         # 4.1 ==== Learn this sum after concatinating the list to a matrix (n_events * e_i) x e_j
         adj_p_ei = self.mlp_comp(torch.cat(adj_p_tmp, dim = 0))
 
-        return self.propagate(edge_index = edge_index, x = torch.cat([data.e], dim = 1), edge_attr = torch.cat([e_i, adj_p_ei], dim = 1))
+        return self.propagate(edge_index = edge_index, x = torch.cat([data.e], dim = 1), edge_attr = torch.cat([e_i, adj_p_ei], dim = 1), edges = edge_index)
 
     def message(self, edge_index, x_i, x_j, edge_attr):
         return self.mlp(torch.cat([edge_attr[edge_index[1].t()]], dim = 1))
     
-    def update(self, aggr_out): 
+    def update(self, aggr_out, edges): 
         aggr_out = F.normalize(aggr_out)
-        adj = torch.sigmoid(aggr_out.matmul(aggr_out.t()))
-        adj[adj <= self.PCut] = 0
-        self.Adj_M = adj
+        self.Adj_M = torch.zeros((len(aggr_out), len(aggr_out)), device = self.device)
+        self.Adj_M[edges[0], edges[1]] = F.cosine_similarity(aggr_out[edges[0]], aggr_out[edges[1]])
         return aggr_out
-
-
-
 
 class PathNet_Old(MessagePassing):
     def __init__(self, PCut = 0.5, complex = 64, path = 64, hidden = 64, out = 20):
@@ -264,7 +259,7 @@ class PathNet_Old(MessagePassing):
             for i in prange(Lor_xyz.shape[0]):
                 Lor_xyz[i][0] = pt[i][0]*np.cos(phi[i][0])
                 Lor_xyz[i][1] = pt[i][0]*np.sin(phi[i][0])
-                Lor_xyz[i][2] = e[i][0]*np.tanh(eta[i][0])
+                Lor_xyz[i][2] = pt[i][0]*np.sinh(eta[i][0])
                 Lor_xyz[i][3] = e[i][0]
         
         @njit(cache = True, parallel = True)

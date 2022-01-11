@@ -1,8 +1,10 @@
 *.pkl
-*.nbc
-*.nbi
-*.pyc
+**/.nbc
+**/.nbi
+**/.pyc
 **/__pycache__
 **/build
 **/dist
 **/*.egg*
+**/.pt
+**/Models

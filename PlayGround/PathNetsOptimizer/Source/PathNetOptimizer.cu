@@ -29,11 +29,11 @@ template <typename scalar_t>
 __global__ void ToCartesian_z_Kernel(
     scalar_t* __restrict__ PZ, 
     const scalar_t* __restrict__ eta, 
-    const scalar_t* __restrict__ e, 
+    const scalar_t* __restrict__ pt, 
     size_t len_v)
 {
   const int index = blockIdx.x*blockDim.x + threadIdx.x; 
-  if (index < len_v){ PZ[index] = e[index]*tanh(eta[index]); }
+  if (index < len_v){ PZ[index] = pt[index]*sinh(eta[index]); }
 }
 
 template <typename scalar_t>
@@ -78,7 +78,7 @@ std::vector<torch::Tensor> ToCartesianCUDA(torch::Tensor eta, torch::Tensor phi,
     ToCartesian_z_Kernel<scalar_t><<<blocks, threads>>>(
       PZ.data<scalar_t>(), 
       eta.data<scalar_t>(), 
-      e.data<scalar_t>(), 
+      pt.data<scalar_t>(), 
       l);
   }));
   AT_DISPATCH_FLOATING_TYPES(eta.type(), "CUDA_e_ToCartesian", ([&] 

@@ -41,12 +41,7 @@ class Notification():
         cur = time.time()
         
         if cur - self.__t_start >  self.NotifyTime:
-            if Mode == "LEARNING":
-                self.Notify("CURRENT " + Mode + " RATE: " + str(round(float(self.__it) / float(cur - self.__t_start)))[0:4] + " /s - FOLD PROGRESS: " + str(round(float(self.__i / self.len)*100, 4)) + "%")
-
-            elif Mode == "ACCURACY" or Mode == "LOSS":
-                self.Notify("CURRENT " + Mode + " RATE: " + str(round(float(self.__it) / float(cur - self.__t_start)))[0:4] + " /s - PROGRESS: " + str(round(float(self.__i / self.len)*100, 4)) + "%")
-
+            self.Notify("CURRENT " + Mode + " RATE: " + str(round(float(self.__it) / float(cur - self.__t_start)))[0:4] + " /s - PROGRESS: " + str(round(float(self.__i / self.len)*100, 4)) + "%")
             self.__Reset = True
 
         self.__i += 1

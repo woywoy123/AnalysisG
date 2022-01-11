@@ -94,7 +94,7 @@ def TrainEvaluate(Model, Outdir):
     Loader = UnpickleObject("LoaderSignalSample.pkl")
     
     op = Optimizer(Loader)
-    op.DefaultBatchSize = 10
+    op.DefaultBatchSize = 25
     op.Epochs = 10
     op.kFold = 10
     op.LearningRate = 1e-5
@@ -131,7 +131,7 @@ def TestPathNetGNN_Children():
     return True
 
 def TestPathNetGNN_Data():
-    #GenerateTemplate("JetLepton")
+    GenerateTemplate("JetLepton")
     TrainEvaluate("PathNet", "PathNet_Performance_Plots_Data")
     return True
 

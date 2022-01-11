@@ -14,7 +14,7 @@ dyn = [[i == j for i in range(12)] for j in range(10)]
 #    dyn[i][i] = 1.
 dyn = torch.tensor(dyn, dtype = torch.float)
 
-print(dyn * 10)
+print(dyn)
 exit()
 
 print(y.shape)

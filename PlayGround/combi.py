@@ -108,22 +108,17 @@ class PathNet(MessagePassing):
        
         # 4.1 ==== Learn this sum after concatinating the list to a matrix (n_events * e_i) x e_j
         adj_p_ei = self.mlp_comp(torch.cat(adj_p_tmp, dim = 0))
-
-        return self.propagate(edge_index = edge_index, x = torch.cat([data.e], dim = 1), edge_attr = torch.cat([e_i, adj_p_ei], dim = 1))
+        return self.propagate(edge_index = edge_index, x = torch.cat([data.e], dim = 1), edge_attr = torch.cat([e_i, adj_p_ei], dim = 1), edges = edge_index)
 
     def message(self, edge_index, x_i, x_j, edge_attr):
         return self.mlp(torch.cat([edge_attr[edge_index[1].t()]], dim = 1))
     
-    def update(self, aggr_out): 
+    def update(self, aggr_out, edges): 
         aggr_out = F.normalize(aggr_out)
-
-        m = Tanh()
-        k = ReLU()
-        adj = k(m(aggr_out.matmul(aggr_out.t())))
-        
-        self.Adj_M = adj
-
+        self.Adj_M = torch.zeros((len(aggr_out), len(aggr_out)), device = self.device)
+        self.Adj_M[edges[0], edges[1]] = F.cosine_similarity(aggr_out[edges[0]], aggr_out[edges[1]])
         return aggr_out
+
 
 
 torch.set_printoptions(edgeitems = 20)
@@ -132,7 +127,7 @@ torch.set_printoptions(profile = "full")
 
 data = UnpickleObject("Nodes_12.pkl")
 data2 = UnpickleObject("Nodes_10.pkl")
-data = [data.Data]*1
+data = [data.Data]*10
 data2 = data2.Data
 
 for data in DataLoader(data, batch_size = len(data)):
@@ -152,16 +147,20 @@ for i in range(1000):
     pred = Model(data)
     t_e = time.time()
 
+    trg = torch.tensor(data.y[data.edge_index[0]] == data.y[data.edge_index[1]], dtype = torch.float).t()[0]
+
     sol = Model.Adj_M[data.edge_index[0], data.edge_index[1]]
-    trg = torch.tensor(data.y[data.edge_index[0]] == data.y[data.edge_index[1]], dtype = torch.float).t()
-        
+
+    print(torch.round(sol + trg))
+
     Loss = torch.nn.MSELoss()
     L = Loss(sol, trg)
-   
-    print(torch.round(Model.Adj_M))
+    print(L)
+    
+    time.sleep(0.1)
+    #print(torch.round(Model.Adj_M))
 
 
-   # pred = Model(data)
    # _, x = pred.max(1)
    # print(t_e - t_s)
    # Loss = torch.nn.CrossEntropyLoss()
