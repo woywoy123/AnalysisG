@@ -59,87 +59,25 @@ class InvMassGNN(MessagePassing):
 
     def __init__(self, out_channels):
         super(InvMassGNN, self).__init__(aggr = "add")
-        self.mlp = Seq(Linear(6, 32), ReLU(), Linear(32, 128), ReLU(), Linear(128, 64), ReLU(), Linear(64, out_channels))
-    def forward(self, data):
+        self.mlp = Seq(Linear(7, 64), ReLU(), Linear(64, 128), ReLU(), Linear(128, 64), ReLU(), Linear(64, out_channels))
 
+    def forward(self, data):
+        
         # Kinematics 
         e, pt, eta, phi = data.e, data.pt, data.eta, data.phi
         edge_index = data.edge_index
         x = torch.cat([e, pt, eta, phi], dim = 1)
+        self.device = x.device
+        return self.propagate(edge_index, x = x, dr = data.dr, m = data.m, dphi = data.dphi, edges = data.edge_index) 
 
-        return self.propagate(edge_index, x = x, dr = data.dr, m = data.m) 
+    def message(self, x_i, x_j, dr, m, dphi):
+        return self.mlp(torch.cat([x_i, dr, m, dphi], dim = 1))
 
-    def message(self, x_i, x_j, dr, m):
-        return self.mlp(torch.cat([x_i, dr, m], dim = 1))
-
-    def update(self, aggr_out):
-        return F.normalize(aggr_out)
-        
-
-
-class InvMassAggr(MessagePassing):
-
-    def __init__(self, out_channels):
-        super(InvMassAggr, self).__init__(aggr = "add")
-        self.mlp = Seq(Linear(8 +2, 64), ReLU(), Linear(64, 64), ReLU(), Linear(64, 63))
-        self.Mmlp = Seq(Linear(63 + 1, 63 + 1), ReLU(), Linear(63+1, out_channels))
-    def forward(self, data):
-
-        # Kinematics 
-        e, pt, eta, phi = data.e, data.pt, data.eta, data.phi
-        x = torch.cat([data.e, data.pt, data.eta, data.phi], dim = 1)
-        return self.propagate(edge_index = data.edge_index, x = x, dr = data.dr, m = data.m, y = data.y) 
-
-    def message(self, x_i, x_j):
-        dr = []
-        m = []
-        de = []
-        for i, j in zip(x_i, x_j):
-            del_R = math.sqrt(math.pow(i[2] - j[2], 2) + math.pow(i[3] - j[3], 2))
-            dr.append([del_R])
-            T_i = LorentzVector()
-            T_i.setptetaphie(i[1], i[2], i[3], i[0])
-
-            T_j = LorentzVector()
-            T_j.setptetaphie(j[1], j[2], j[3], j[0])
-            T = T_j + T_i
-            m.append([T.mass])
-        
-        dr = torch.tensor(dr)
-        m = torch.tensor(m)
-        dr = torch.cat([x_i, dr, m, abs(x_i - x_j)], dim = 1)
-        return self.mlp(dr)
-    
-    def aggregate(self, inputs, index, dim_size):
-        #https://pytorch-scatter.readthedocs.io/en/latest/functions/scatter.html
-        # - Basically a form of hashing where the index is used to extract values from the inputs and sums these values @ index value
-        return scatter(inputs, index, dim = self.node_dim, dim_size = dim_size, reduce = "add")
-
-    def update(self, aggr_out, x, edge_index, y):
-        #aggr_out = F.normalize(aggr_out)
-        #edge_weight = torch.sigmoid(torch.matmul(aggr_out, aggr_out.t()))
-
-        
-        _, p = aggr_out.max(1)
-        M = [LorentzVector() for i in range(len(x))]
-        for e_i, e_j in zip(edge_index[0], edge_index[1]):
-            # incoming kinematic quantities  x_j -> x_i            
-            #if edge_weight[e_j][e_i] > self.Threshold:
-            
-            if p[e_i] == p[e_j]:
-                v = LorentzVector()
-                v.setptetaphie(x[e_j][1], x[e_j][2], x[e_j][3], x[e_j][0])
-                M[e_i]+=v
-        
-        # Include own mass in the calculation
-        for e_i in set(edge_index[0].tolist()):
-            v = LorentzVector()
-            v.setptetaphie(x[e_i][1], x[e_i][2], x[e_i][3], x[e_i][0])
-            M[e_i] += v
-
-        M = torch.cat([aggr_out, torch.tensor([[i.mass] for i in M])], dim = 1)
-        return F.normalize(self.Mmlp(F.normalize(M)))
-
+    def update(self, aggr_out, edges):
+        aggr_out = F.normalize(aggr_out)
+        self.Adj_M = torch.zeros((len(aggr_out), len(aggr_out)), device = self.device)
+        self.Adj_M[edges[0], edges[1]] = F.cosine_similarity(aggr_out[edges[0]], aggr_out[edges[1]])
+        return aggr_out
 
 class PathNet(MessagePassing):
     def __init__(self, complex = 64, path = 64, hidden = 64, out = 50):
@@ -240,6 +178,11 @@ class PathNet(MessagePassing):
         self.Adj_M = torch.zeros((len(aggr_out), len(aggr_out)), device = self.device)
         self.Adj_M[edges[0], edges[1]] = F.cosine_similarity(aggr_out[edges[0]], aggr_out[edges[1]])
         return aggr_out
+
+
+
+
+
 
 class PathNet_Old(MessagePassing):
     def __init__(self, PCut = 0.5, complex = 64, path = 64, hidden = 64, out = 20):

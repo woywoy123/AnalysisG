@@ -66,4 +66,9 @@ class WriteDirectory(Notification):
     
     def ChangeDir(self, dir):
         os.chdir(self.__pwd + "/" + dir)
+    
+    def WriteTextFile(self, input, dir, name):
+        self.MakeDir(dir)
+        with open(self.__tmp + "/" + name, 'w') as f:
+            f.write(input)
 

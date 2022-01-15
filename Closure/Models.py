@@ -2,7 +2,7 @@ from Functions.GNN.Graphs import GenerateDataLoader
 from Functions.GNN.Optimizer import Optimizer
 from Functions.GNN.Metrics import EvaluationMetrics
 from Functions.IO.IO import UnpickleObject, PickleObject
-from Functions.GNN.Models import EdgeConv, GCN, InvMassGNN, InvMassAggr, PathNet
+from Functions.GNN.Models import EdgeConv, GCN, InvMassGNN, PathNet
 from Functions.Plotting.Histograms import TH2F, TH1F
 from skhep.math.vectors import LorentzVector
 
@@ -169,42 +169,6 @@ def TestInvMassGNN():
 
     return True
 
-def TestInvMassAggr():
-    event1 = ExampleEventGraph()
-
-    Op = Optimizer({}, Debug = True)
-    Op.Model = InvMassAggr(4)
-    Op.LearningRate = 1e-5
-    Op.WeightDecay = 1e-3
-    Op.DefineOptimizer()
-    Op.sample = event1.Data
-
-    P = [event1.NodeParticleMap[i].Index for i in event1.NodeParticleMap]
-    
-    M_P = [event1.NodeParticleMap[i] for i in event1.NodeParticleMap]
-
-    from Functions.Particles.Particles import Particle 
-
-    M = [Particle(True) for i in range(4)]
-    for i, j in zip(P, M_P):
-        M[i].Decay.append(j)
-    
-    x = []
-    for i in M:
-        i.CalculateMassFromChildren()
-        x.append(i.Mass_GeV) 
-        
-    from time import sleep
-
-
-    print("==========")
-    for i in range(100000):
-        Op.TrainClassification()
-        _, p = Op.Model(Op.sample).max(1)
-        print(p, P, Op.L)
-        print(x)
-    return True
-
 def TestPathNet():
     
     GenerateTemplate(10)
@@ -237,8 +201,6 @@ def TestPathNet():
         print(x) 
         if p.tolist() == P:
             break
-        
-
     return True
 
 

@@ -106,6 +106,7 @@ class EventGraph:
     def CleanUp(self):
         self.NodeAttr = {}
         self.EdgeAttr = {}
+        self.Event = []
         del self.Nodes 
         del self.Edges
 
@@ -122,8 +123,6 @@ class GenerateDataLoader(Notification):
         else:
             self.Device = torch.device("cpu")
             self.Device_s = "cpu"
-
-
 
         self.Bundles = []
         self.EventData = {}
@@ -191,8 +190,8 @@ class GenerateDataLoader(Notification):
             self.EventData[n_particle].append(e)
             self.EventMap[self.__iter] = e 
             self.__iter += 1
-                
-        self.Bundles.append([Tree, Bundle, start, self.__iter-1])
+
+        self.Bundles.append([Tree, Bundle, start, self.__iter-1, Level])
 
     def MakeTrainingSample(self):
         self.Notify("WILL SPLIT DATA INTO TRAINING/VALIDATION (" + str(self.ValidationTrainingSize) + "%) " + "- TEST (" + str(self.TestSize) + "%) SAMPLES")

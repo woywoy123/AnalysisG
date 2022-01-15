@@ -14,6 +14,7 @@ class Notification():
         self.__i = 0
         self.__Reset = True
         self.NotifyTime = 10
+        self.Rate = -1
         self.len = -1
 
     def Notify(self, Message):
@@ -37,11 +38,13 @@ class Notification():
             self.__t_start = time.time()
             self.__it = 0
             self.__Reset = False
+            self.Rate = -1
       
         cur = time.time()
         
         if cur - self.__t_start >  self.NotifyTime:
             self.Notify("CURRENT " + Mode + " RATE: " + str(round(float(self.__it) / float(cur - self.__t_start)))[0:4] + " /s - PROGRESS: " + str(round(float(self.__i / self.len)*100, 4)) + "%")
+            self.Rate = float(self.__it) / float(cur - self.__t_start)
             self.__Reset = True
 
         self.__i += 1
@@ -52,6 +55,7 @@ class Notification():
         self.__i = 0
         self.__it = 0
         self.len = -1
+        self.Rate = -1
 
 class Debugging:
 

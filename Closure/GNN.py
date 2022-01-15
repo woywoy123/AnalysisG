@@ -2,7 +2,7 @@ from Functions.GNN.Graphs import GenerateDataLoader
 from Functions.GNN.Optimizer import Optimizer
 from Functions.IO.IO import UnpickleObject, PickleObject
 from Functions.GNN.Metrics import EvaluationMetrics
-from Functions.GNN.Models import InvMassGNN, InvMassAggr
+from Functions.GNN.Models import InvMassGNN
 
 def SimpleFourTops():
     def Signal(a):
@@ -60,6 +60,8 @@ def GenerateTemplate(SignalSample = "SignalSample.pkl", Tree = "TruthChildren_in
         return int(a.Index)
     def d_r(a, b):
         return float(a.DeltaR(b))
+    def d_phi(a, b):
+        return abs(a.phi - b.phi)
     def m(a, b):
         t_i = LorentzVector()
         t_i.setptetaphie(a.pt, a.eta, a.phi, a.e)
@@ -76,6 +78,7 @@ def GenerateTemplate(SignalSample = "SignalSample.pkl", Tree = "TruthChildren_in
     Loader.AddNodeFeature("pt", pt)
     Loader.AddNodeFeature("phi", phi)
     Loader.AddEdgeFeature("dr", d_r)
+    Loader.AddEdgeFeature("dphi", d_phi)
     Loader.AddEdgeFeature("m", m)
     Loader.AddNodeTruth("y", Signal)
     
@@ -100,15 +103,26 @@ def TrainEvaluate(Model, Outdir):
     
     op = Optimizer(Loader)
     op.DefaultBatchSize = 25
-    op.Epochs = 10
+    op.Epochs = 20
     op.kFold = 10
     op.LearningRate = 1e-5
     op.WeightDecay = 1e-3
     op.MinimumEvents = 250
-    if Model == "InvMass":
-        op.DefineInvMass(4)
-    if Model == "PathNet":
-        op.DefinePathNet()
+
+    if Model == "InvMassNode":
+        op.DefineInvMass(4, Target = "Nodes")
+    if Model == "InvMassEdge":
+        op.DefineInvMass(64, Target = "Edges")
+
+    if Model == "PathNetNode":
+        op.DefinePathNet(Target = "Nodes")
+
+    if Model == "PathNetEdge":
+        op.DefinePathNet(Target = "Edges")
+
+
+
+
     op.kFoldTraining()
 
     eva = EvaluationMetrics()
@@ -118,25 +132,34 @@ def TrainEvaluate(Model, Outdir):
     eva.ProcessSample()
     eva.LossTrainingPlot("Plots/" + Outdir, False)
 
-def TestInvMassGNN_Children():
-    #GenerateTemplate()
-    TrainEvaluate("InvMass", "GNN_Performance_Plots")
+def TestInvMassGNN_Tops_Edge():
+    #GenerateTemplate(Tree = "TruthTops")
+    TrainEvaluate("InvMassEdge", "GNN_Performance_Plots/InvMassGNN_Tops_Edge")
     return True
 
-def TestInvMassAggrGNN_Children():
-    #GenerateTemplate()
-    M = InvMassAggr(4)
-    TrainEvaluate(M, "GNN_Performance_Plots")
-
+def TestInvMassGNN_Tops_Node():
+    #GenerateTemplate(Tree = "TruthTops")
+    TrainEvaluate("InvMassNode", "GNN_Performance_Plots/InvMassGNN_Tops_Node")
     return True
 
-def TestPathNetGNN_Children():
-    import time
-    #GenerateTemplate("TruthChildren")
-    t_s = time.time()
-    TrainEvaluate("PathNet", "PathNet_Performance_Plots_Children")
-    t_e = time.time()
-    print(t_e - t_s)
+def TestInvMassGNN_Children_Edge():
+    #GenerateTemplate(Tree = "TruthChildren_init")
+    TrainEvaluate("InvMassEdge", "GNN_Performance_Plots/InvMassGNN_Children_Edge")
+    return True
+
+def TestInvMassGNN_Children_Node():
+    #GenerateTemplate(Tree = "TruthChildren_init")
+    TrainEvaluate("InvMassNode", "GNN_Performance_Plots/InvMassGNN_Children_Node")
+    return True
+
+def TestPathNetGNN_Children_Edge():
+    #GenerateTemplate("TruthChildren_init")
+    TrainEvaluate("PathNetEdge", "PathNet_Performance_Plots_Children")
+    return True
+
+def TestPathNetGNN_Children_Node():
+    #GenerateTemplate("TruthChildren_init")
+    TrainEvaluate("PathNetNode", "PathNet_Performance_Plots_Children")
     return True
 
 def TestPathNetGNN_Data():

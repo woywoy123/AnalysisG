@@ -475,21 +475,21 @@ def TestGNNMonitor():
     Sig.AddSample(ev, "nominal", "TruthTops")
 
     op = Optimizer(Loader)
-    op.DefaultBatchSize = 100
-    op.Epochs = 10
+    op.DefaultBatchSize = 10
+    op.Epochs = 50
     op.kFold = 10
     op.LearningRate = 1e-6
     op.WeightDecay = 1e-4
-    op.DefineEdgeConv(1, 2)
+    op.DefineEdgeConv(1, 4)
     op.kFoldTraining()
-    op.ApplyToDataSample(Sig, "Sig")    
+    
+    PickleObject(op, "Optimizer.pkl")
+    op = UnpickleObject("Optimizer.pkl")
+
 
     eva = EvaluationMetrics()
     eva.Sample = op
-    eva.AddTruthAttribute("Signal")
-    eva.AddPredictionAttribute("Sig")
-    eva.ProcessSample()
-    eva.LossTrainingPlot("Plots/GNN_Performance_Plots/")
+    eva.LossTrainingPlot("Plots/GNN_Performance_Plots/TestMonitor")
 
     return True
 
@@ -723,18 +723,21 @@ def TopologicalComplexityMassPlot(Input = "LoaderSignalSample.pkl", Type = "Sign
     from PathNetOptimizer_cpp import PathCombination
     from PathNetOptimizerCUDA_cpp import ToCartesianCUDA, PathMassCartesianCUDA
     import torch 
+        
+    if Type == "Signal":
+        GenerateTemplate()
+        pass
 
-    #GenerateTemplate()
-    Loader = UnpickleObject("LoaderSignalSample.pkl")
+    Loader = UnpickleObject(Input)
    
     Complexity_Mass = TH2F()
     Complexity_Mass.Title = "Mass Prediction of Combinatorial M chose N-Nodes"
     Complexity_Mass.yTitle = "Invariant Mass (GeV)"
     Complexity_Mass.xTitle = "Complexity (abr.)"
     Complexity_Mass.xMin = 1
-    Complexity_Mass.xMax = 12
+    Complexity_Mass.xMax = 15
     Complexity_Mass.xMin = 1
-    Complexity_Mass.xBins = 11
+    Complexity_Mass.xBins = 15
     Complexity_Mass.yMin = 0
     Complexity_Mass.yMax = 2000
     Complexity_Mass.yBins = 1000
@@ -742,7 +745,7 @@ def TopologicalComplexityMassPlot(Input = "LoaderSignalSample.pkl", Type = "Sign
     events = Loader.DataLoader
     
     Hists = {}
-    for i in list(events):
+    for i in range(2, 15):
         M = TH1F()
         M.Title = str(i)+"-Nodes"
         M.xTitle = "Invariant Mass (GeV)"
@@ -757,14 +760,20 @@ def TopologicalComplexityMassPlot(Input = "LoaderSignalSample.pkl", Type = "Sign
         n_nodes = events[n]
         adj = torch.tensor([[i != j for i in range(n)] for j in range(n)], dtype = torch.float, device = "cuda")
         combi = PathCombination(adj, n)
+        print("-> ", n, len(n_nodes))
         for i in n_nodes:
             P = ToCartesianCUDA(i.eta, i.phi, i.pt, i.e)
             m_cuda = PathMassCartesianCUDA(P[0], P[1], P[2], P[3], combi[0])
             for j, k in zip(m_cuda, combi[0].sum(1)):
                 Complexity_Mass.yData.append(float(j))
                 Complexity_Mass.xData.append(int(k))
-                Hists[int(k)].xData.append(float(j))
-    Complexity_Mass.SaveFigure("Plots/TopologicalComplexityMass")
+                try:
+                    Hists[int(k)].xData.append(float(j))
+                except KeyError:
+                    break
+        events[n] = ""
+
+    Complexity_Mass.SaveFigure("Plots/TopologicalComplexityMass" + Type)
     
     h = CombineHistograms()
     h.Histograms = [Hists[i] for i in Hists]
@@ -774,8 +783,7 @@ def TopologicalComplexityMassPlot(Input = "LoaderSignalSample.pkl", Type = "Sign
     return True
 
 def TestDataSamples():
-    GenerateTemplate("", "JetLepton", ["ttbar.pkl"], "TestTTBAR.pkl")
-    
+    #GenerateTemplate("", "JetLepton", ["ttbar.pkl"], "TestTTBAR.pkl")
     TopologicalComplexityMassPlot(Input = "TestTTBAR.pkl", Type = "TTBAR")
 
 
