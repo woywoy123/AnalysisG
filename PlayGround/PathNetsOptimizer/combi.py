@@ -9,25 +9,35 @@ import PathNetOptimizer_cpp
 
 
 
-event = UnpickleObject("Nodes_12.pkl")
-event = event[0].Data
+#event = UnpickleObject("Nodes_12.pkl")
+#event = event[0].Data
+#
+#t_s = time.time()
+#edge_index = event.edge_index
+#e, pt, eta, phi = event.e, event.pt, event.eta, event.phi
+#
+#e_i = edge_index[0]
+#e_j = edge_index[1]
+#
+#unique = torch.unique(edge_index)
 
-t_s = time.time()
-edge_index = event.edge_index
-e, pt, eta, phi = event.e, event.pt, event.eta, event.phi
+for i in range(1, 16):
+    
+    t_s = time.time()
+    matrix = torch.zeros((i+1), (i+1), device = "cuda")
+    for k in range(i+1):
+        matrix[k, k] = 1
+    t_e = time.time()
+    print(t_e - t_s)
 
-e_i = edge_index[0]
-e_j = edge_index[1]
+    t_s = time.time()
+    x = PathNetOptimizer_cpp.PathCombination(matrix, i+1)
+    t_e = time.time()
+    print("Number of nodes " + str(i+1) + " " + str(float(t_e - t_s)) + "s")
 
-unique = torch.unique(edge_index)
-matrix = torch.zeros(unique.shape[0], unique.shape[0], device = "cuda")
-matrix[edge_index[0], edge_index[1]] = 1
-print(matrix)
+exit()
 
-t_s = time.time()
-x = PathNetOptimizer_cpp.PathCombination(matrix, 12)
-t_e = time.time()
-print(round(float(t_e - t_e), 10))
+
 
 for i in x:
     print(i)

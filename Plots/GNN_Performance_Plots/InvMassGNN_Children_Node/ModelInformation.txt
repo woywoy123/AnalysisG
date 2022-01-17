@@ -1,0 +1,76 @@
+===== Sample Information ===== 
+-> Tree Processed: nominal
+-> Mode: TruthChildren_init
++-> File Processed: /home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/user.pgadow.24765302._000001.output.root
++-> Start: 0 End: 41352
+
+Number of Nodes
+-> Nodes: 12 - Size: 41344
+-> Nodes: 10 - Size: 9
+Total Sample Size: 41353
+
+===== Training Information ===== 
+Number of Epochs: 20
+Time taken for all Epochs: 1666.46s
+Average Batch Time: 83.32s 
+Longest Batch Time: 90.24s
+K-Fold: 10
+Device: cuda
+Final Training Accuracy: 40.1465%
+Final Training Loss: 1.2762
+Final Validation Accuracy: 40.0854%
+Final Validation Loss: 1.2771
+
+===== Model Information ===== 
+Learning Rate: 1e-05
+Weight Decay: 0.001
+Target Type: Nodes
+Loss Function: CrossEntropyLoss
+Model Name: UNTITLED
+
+====== Loss Performance From Epoch 1 -> 20====== 
+ [1/20]  Validation Loss Decrease: 0.2736% || Training Loss Decrease: 0.5313%
+ [2/20]  Validation Loss Decrease: 0.0599% || Training Loss Decrease: 0.0512%
+ [3/20]  Validation Loss Decrease: 0.0155% || Training Loss Decrease: 0.0287%
+ [4/20]  Validation Loss Decrease: 0.0249% || Training Loss Decrease: 0.0227%
+ [5/20]  Validation Loss Decrease: 0.0158% || Training Loss Decrease: 0.0214%
+ [6/20]  Validation Loss Decrease: 0.029% || Training Loss Decrease: 0.0194%
+ [7/20]  Validation Loss Decrease: 0.0133% || Training Loss Decrease: 0.0186%
+ [8/20]  Validation Loss Decrease: 0.0281% || Training Loss Decrease: 0.0176%
+ [9/20]  Validation Loss Decrease: 0.0158% || Training Loss Decrease: 0.0192%
+ [10/20]  Validation Loss Decrease: 0.0096% || Training Loss Decrease: 0.019%
+ [11/20]  Validation Loss Decrease: 0.022% || Training Loss Decrease: 0.0178%
+ [12/20]  Validation Loss Decrease: 0.0175% || Training Loss Decrease: 0.0189%
+ [13/20]  Validation Loss Decrease: 0.0118% || Training Loss Decrease: 0.0177%
+ [14/20]  Validation Loss Decrease: 0.0196% || Training Loss Decrease: 0.0189%
+ [15/20]  Validation Loss Decrease: 0.0159% || Training Loss Decrease: 0.0182%
+ [16/20]  Validation Loss Decrease: 0.0167% || Training Loss Decrease: 0.0168%
+ [17/20]  Validation Loss Decrease: 0.0228% || Training Loss Decrease: 0.0169%
+ [18/20]  Validation Loss Decrease: 0.0222% || Training Loss Decrease: 0.018%
+ [19/20]  Validation Loss Decrease: 0.0038% || Training Loss Decrease: 0.0183%
+ ---- Average Validation Loss Decrease: 0.0336% / Epoch 
+ ---- Average Training Loss Decrease: 0.0479% / Epoch 
+ 
+====== Accuracy Performance From Epoch 1 -> 20 ====== 
+ [1/20] Validation Accuracy Increase: 0.716% || Training Accuracy Increase: 1.1842%
+ [2/20] Validation Accuracy Increase: 0.0772% || Training Accuracy Increase: 0.1074%
+ [3/20] Validation Accuracy Decrease: 0.1128% || Training Accuracy Decrease: 0.0196%
+ [4/20] Validation Accuracy Increase: 0.1033% || Training Accuracy Increase: 0.0214%
+ [5/20] Validation Accuracy Increase: 0.0087% || Training Accuracy Increase: 0.0315%
+ [6/20] Validation Accuracy Increase: 0.0246% || Training Accuracy Decrease: 0.0022%
+ [7/20] Validation Accuracy Decrease: 0.0438% || Training Accuracy Increase: 0.0135%
+ [8/20] Validation Accuracy Increase: 0.1902% || Training Accuracy Increase: 0.0162%
+ [9/20] Validation Accuracy Decrease: 0.2458% || Training Accuracy Increase: 0.0003%
+ [10/20] Validation Accuracy Increase: 0.0117% || Training Accuracy Increase: 0.0005%
+ [11/20] Validation Accuracy Increase: 0.0622% || Training Accuracy Increase: 0.0122%
+ [12/20] Validation Accuracy Increase: 0.1539% || Training Accuracy Decrease: 0.0466%
+ [13/20] Validation Accuracy Decrease: 0.1429% || Training Accuracy Increase: 0.037%
+ [14/20] Validation Accuracy Decrease: 0.0735% || Training Accuracy Increase: 0.0072%
+ [15/20] Validation Accuracy Decrease: 0.0054% || Training Accuracy Decrease: 0.0113%
+ [16/20] Validation Accuracy Increase: 0.0701% || Training Accuracy Increase: 0.0215%
+ [17/20] Validation Accuracy Decrease: 0.0494% || Training Accuracy Decrease: 0.0542%
+ [18/20] Validation Accuracy Decrease: 0.0176% || Training Accuracy Increase: 0.0254%
+ [19/20] Validation Accuracy Decrease: 0.0302% || Training Accuracy Increase: 0.047%
+ ---- Average Validation Accuracy Increase: 0.0367% / Epoch 
+ ---- Average Training Accuracy Increase: 0.0732% / Epoch 
+ 

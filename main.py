@@ -23,7 +23,7 @@ def Generate_Cache(di, Stop = -1, SingleThread = False, Compiler = "EventGenerat
     PickleObject(ev, Compiler)
 
 if __name__ == '__main__':
-    #Generate_Cache(dir, Stop = 1000, SingleThread = False, Compiler = "SignalSample.pkl")
+    #Generate_Cache(dir, Stop = -1, SingleThread = False, Compiler = "SignalSample.pkl")
     #Generate_Cache("/CERN/Grid/Samples/NAF/2021-05-05-2cRC-all/mc16a/postProcessed_ttbar_PhPy8_Total.root", Stop = 150000, SingleThread = True, Compiler = "ttbar.pkl")
 
 
@@ -43,7 +43,7 @@ if __name__ == '__main__':
     #Passed(TestTops(), "TestTop")
     #Passed(TestResonance(), "TestResonance")
     #Passed(TestBackGroundProcesses(), "TestBackGroundProcesses")
-    
+
     # ====== Test of DataLoader
     #Passed(TestEventGraphs(), "TestEventGraphs")
     #Passed(TestDataLoader(), "TestDataLoader")
@@ -55,7 +55,7 @@ if __name__ == '__main__':
 
     # ====== Test of Plotting 
     #Passed(TestGNNMonitor(), "TestGNNMonitor")
-    #Passed(KinematicsPlotting(), "KinematicsPlotting")
+    Passed(KinematicsPlotting(), "KinematicsPlotting")
     #Passed(TopologicalComplexityMassPlot(), "TopologicalComplexityMassPlot")
     #Passed(TestDataSamples(), "TestDataSamples")
 

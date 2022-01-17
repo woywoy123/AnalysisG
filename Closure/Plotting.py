@@ -382,7 +382,7 @@ def TestBackGroundProcesses():
     def CreateEvents(direc, event):
         ev = EventGenerator(direc, Stop = event)
         ev.SpawnEvents()
-        ev.CompileEvent(SingleThread = True)
+        ev.CompileEvent(SingleThread = False)
         return ev
 
     def GetNJets(ev, tree):
@@ -424,7 +424,7 @@ def TestBackGroundProcesses():
         name = "-".join(proc.split("_")[1:])
         Map[name] = i
         
-        ev = CreateEvents(i, 5000)
+        ev = CreateEvents(i, 50000)
         PickleObject(ev, proc)
    
     Jets = []
@@ -432,6 +432,33 @@ def TestBackGroundProcesses():
     for i in Map:
         ev = UnpickleObject("postProcessed_" + i.replace("-", "_"))
         Jets.append(GetNJets(ev, "tree"))
+        
+        if "ttbar" in i:
+            i = "ttbar"
+        elif "4tops" in i:
+            i = "4tops"
+        elif "SingleTop-rare" in i:
+            i = "SingleTop-rare"
+        elif "SingleTop" in i:
+            i = "SingleTop"
+        elif "ttH" in i:
+            i = "ttH"
+        elif "ttW" in i:
+            i = "ttW"
+        elif "ttZ" in i:
+            i = "ttZ"
+        elif "VH" in i:
+            i = "VH"
+        elif "VV" in i:
+            i = "VV"
+        elif "Wjets" in i:
+            i = "Wjets"
+        elif "Zjets-ee" in i:
+            i = "Zjets-ee"
+        elif "Zjets-mumu" in i:
+            i = "Zjets-mumu"
+        elif "Zjets-tautau" in i:
+            i = "Zjets-tautau"
         Names.append(i)
     
     J = []
@@ -499,8 +526,8 @@ def KinematicsPlotting():
 
     d_ETA_Edge_SI = TH1F()
     d_ETA_Edge_DI = TH1F()
-    d_ETA_Edge_SI.Title = "Same Index"
-    d_ETA_Edge_DI.Title = "Different Index"
+    d_ETA_Edge_SI.Title = "Same Parent"
+    d_ETA_Edge_DI.Title = "Different Parent"
     d_ETA_Edge_SI.xTitle = "delta eta"
     d_ETA_Edge_DI.xTitle = "delta eta"
     d_ETA_Edge_SI.xBins = 1000 
@@ -514,8 +541,8 @@ def KinematicsPlotting():
 
     d_Energy_Edge_SI = TH1F()
     d_Energy_Edge_DI = TH1F()
-    d_Energy_Edge_SI.Title = "Same Index"
-    d_Energy_Edge_DI.Title = "Different Index"
+    d_Energy_Edge_SI.Title = "Same Parent"
+    d_Energy_Edge_DI.Title = "Different Parent"
     d_Energy_Edge_SI.xTitle = "delta energy (GeV)"
     d_Energy_Edge_DI.xTitle = "delta energy (GeV)"
     d_Energy_Edge_SI.xBins = 1000 
@@ -530,8 +557,8 @@ def KinematicsPlotting():
 
     d_PHI_Edge_SI = TH1F()
     d_PHI_Edge_DI = TH1F()
-    d_PHI_Edge_SI.Title = "Same Index"
-    d_PHI_Edge_DI.Title = "Different Index"
+    d_PHI_Edge_SI.Title = "Same Parent"
+    d_PHI_Edge_DI.Title = "Different Parent"
     d_PHI_Edge_SI.xTitle = "delta phi (rad)"
     d_PHI_Edge_DI.xTitle = "delta phi (rad)"
     d_PHI_Edge_SI.xBins = 1000 
@@ -545,8 +572,8 @@ def KinematicsPlotting():
 
     d_PT_Edge_SI = TH1F()
     d_PT_Edge_DI = TH1F()
-    d_PT_Edge_SI.Title = "Same Index"
-    d_PT_Edge_DI.Title = "Different Index"
+    d_PT_Edge_SI.Title = "Same Parent"
+    d_PT_Edge_DI.Title = "Different Parent"
     d_PT_Edge_SI.xTitle = "pt (GeV)"
     d_PT_Edge_DI.xTitle = "pt (GeV)"
     d_PT_Edge_SI.xBins = 1000
@@ -560,8 +587,8 @@ def KinematicsPlotting():
 
     Mass_Edge_SI = TH1F()
     Mass_Edge_DI = TH1F()
-    Mass_Edge_SI.Title = "Same Index"
-    Mass_Edge_DI.Title = "Different Index"
+    Mass_Edge_SI.Title = "Same Parent"
+    Mass_Edge_DI.Title = "Different Parent"
     Mass_Edge_SI.xTitle = "Mass (MeV)"
     Mass_Edge_DI.xTitle = "Mass (MeV)"
     Mass_Edge_SI.xBins = 1000
@@ -575,8 +602,8 @@ def KinematicsPlotting():
 
     Ratio_Kine_Edge_SI = TH1F()
     Ratio_Kine_Edge_DI = TH1F()
-    Ratio_Kine_Edge_SI.Title = "Same Index"
-    Ratio_Kine_Edge_DI.Title = "Different Index"
+    Ratio_Kine_Edge_SI.Title = "Same Parent"
+    Ratio_Kine_Edge_DI.Title = "Different Parent"
     Ratio_Kine_Edge_SI.xTitle = "Arb."
     Ratio_Kine_Edge_DI.xTitle = "Arb."
     Ratio_Kine_Edge_SI.xBins = 1000
@@ -590,8 +617,8 @@ def KinematicsPlotting():
 
     dR_Edge_SI = TH1F()
     dR_Edge_DI = TH1F()
-    dR_Edge_SI.Title = "Same Index"
-    dR_Edge_DI.Title = "Different Index"
+    dR_Edge_SI.Title = "Same Parent"
+    dR_Edge_DI.Title = "Different Parent"
     dR_Edge_SI.xTitle = "dR"
     dR_Edge_DI.xTitle = "dR"
     dR_Edge_SI.xBins = 1000
@@ -606,7 +633,7 @@ def KinematicsPlotting():
     SignalTops = TH1F()
     SignalTops.Title = "Signal"
     SignalTops.xTitle = "Mass (GeV)"
-    SignalTops.xBins = 1000
+    SignalTops.xBins = 500
     SignalTops.Filename = "Mass_Signal_Tops" 
     SignalTops.xMin = 0
     SignalTops.xMax = 180
@@ -614,7 +641,7 @@ def KinematicsPlotting():
     SpectatorTops = TH1F()
     SpectatorTops.Title = "Spectator"
     SpectatorTops.xTitle = "Mass (GeV)"
-    SpectatorTops.xBins = 1000
+    SpectatorTops.xBins = 500
     SpectatorTops.Filename = "Mass_Spectator_Top" 
     SpectatorTops.xMax = 180
     SpectatorTops.xMin = 0

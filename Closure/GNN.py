@@ -120,20 +120,14 @@ def TrainEvaluate(Model, Outdir):
     if Model == "PathNetEdge":
         op.DefinePathNet(Target = "Edges")
 
-
-
-
     op.kFoldTraining()
 
     eva = EvaluationMetrics()
     eva.Sample = op
-    eva.AddTruthAttribute("Signal")
-    eva.AddPredictionAttribute("y")
-    eva.ProcessSample()
     eva.LossTrainingPlot("Plots/" + Outdir, False)
 
 def TestInvMassGNN_Tops_Edge():
-    #GenerateTemplate(Tree = "TruthTops")
+    GenerateTemplate(Tree = "TruthTops")
     TrainEvaluate("InvMassEdge", "GNN_Performance_Plots/InvMassGNN_Tops_Edge")
     return True
 
@@ -143,7 +137,7 @@ def TestInvMassGNN_Tops_Node():
     return True
 
 def TestInvMassGNN_Children_Edge():
-    #GenerateTemplate(Tree = "TruthChildren_init")
+    GenerateTemplate(Tree = "TruthChildren_init")
     TrainEvaluate("InvMassEdge", "GNN_Performance_Plots/InvMassGNN_Children_Edge")
     return True
 
@@ -154,17 +148,17 @@ def TestInvMassGNN_Children_Node():
 
 def TestPathNetGNN_Children_Edge():
     #GenerateTemplate("TruthChildren_init")
-    TrainEvaluate("PathNetEdge", "PathNet_Performance_Plots_Children")
+    TrainEvaluate("PathNetEdge", "GNN_Performance_Plots/PathNetGNN_Children_Edge")
     return True
 
 def TestPathNetGNN_Children_Node():
     #GenerateTemplate("TruthChildren_init")
-    TrainEvaluate("PathNetNode", "PathNet_Performance_Plots_Children")
+    TrainEvaluate("PathNetNode", "GNN_Performance_Plots/PathNetGNN_Children_Node")
     return True
 
 def TestPathNetGNN_Data():
     GenerateTemplate("JetLepton")
-    TrainEvaluate("PathNet", "PathNet_Performance_Plots_Data")
+    TrainEvaluate("PathNetEdge", "GNN_Performance_Plots/PathNetGNN_Data_Edge")
     return True
 
 
