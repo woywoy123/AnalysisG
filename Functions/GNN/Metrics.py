@@ -143,11 +143,11 @@ class EvaluationMetrics(Notification):
         LossTra.Title = "Training"
         LossTra.ErrorBars = ErrorBars
 
-        ACVal = self.__CompilePlot(self.__ValidationStatistics, "Accuracy", "Epoch")
+        ACVal = self.__CompilePlot(self.__ValidationStatistics, "Accuracy (%)", "Epoch")
         ACVal.Color = "blue"
         ACVal.Title = "Validation"
         ACVal.ErrorBars = ErrorBars
-        ACTra = self.__CompilePlot(self.__TrainStatistics, "Accuracy", "Epoch")
+        ACTra = self.__CompilePlot(self.__TrainStatistics, "Accuracy (%)", "Epoch")
         ACTra.Color = "Orange"
         ACTra.Title = "Training"
         ACTra.ErrorBars = ErrorBars
@@ -155,7 +155,7 @@ class EvaluationMetrics(Notification):
         C = CombineTGraph()
         C.Title = "Training and Validation Prediction Accuracy with Epoch"
         C.yMin = 0
-        C.yMax = max([max(ACVal.yData), max(ACTra.yData)])*2
+        C.yMax = 120
         C.Lines = [ACVal, ACTra] 
         C.CompileLine()
         C.Save(Dir)
@@ -163,7 +163,7 @@ class EvaluationMetrics(Notification):
         T = CombineTGraph()
         T.Title = "Training and Validation Loss Function with Epoch"
         T.yMin = 0
-        T.yMax = max([max(LossVal.yData), max(LossTra.yData)])*2
+        T.yMax = max([max(LossVal.yData), max(LossTra.yData)])*1.5
         T.Lines = [LossVal, LossTra] 
         T.CompileLine()
         T.Save(Dir)
@@ -172,6 +172,10 @@ class EvaluationMetrics(Notification):
     
     def __CompilePlot(self, dic, yTitle, xTitle):
         
+        factor = 1
+        if "Accuracy" in yTitle:
+            factor = 100
+
         T = TGraph()
         Epoch = []
         Loss = []
@@ -181,9 +185,9 @@ class EvaluationMetrics(Notification):
             for k in l:
                 if isinstance(k, list):
                     for j in k:
-                        x.append(j)
+                        x.append(j*factor)
                 else:
-                    x.append(k)
+                    x.append(k*factor)
             Epoch.append(i)
             Loss.append(x)
         T.xData = Epoch

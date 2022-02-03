@@ -31,13 +31,15 @@ class GenericAttributes:
         self.Style = ""
         self.Filename = ""
 
-        self.DefaultScaling = 8
-        self.DefaultDPI = 500
+        self.DefaultScaling = 10
+        self.DefaultDPI = 250
         self.Compiled = False
+        self.FontSize = 16
         
         self.PLT = plt
         self.PLT.figure(figsize=(self.DefaultScaling, self.DefaultScaling), dpi = self.DefaultDPI)
-
+        self.PLT.rcParams.update({"font.size":self.FontSize, "axes.labelsize" : 22, "legend.fontsize" : 22})
+        
         self.xData = []
         self.yData = []
 
@@ -127,7 +129,7 @@ class SharedMethods(WriteDirectory, Notification):
                 A.draw(self.Filename)
             self.ChangeDirToRoot()
             return None 
-
+        
         if ".png" not in self.Filename:
             self.PLT.savefig(self.Filename + ".png")
         else: 

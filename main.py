@@ -2,8 +2,10 @@ from Closure.IO import TestDir, TestReadSingleFile, TestReadFile, TestFileConver
 from Closure.Event import TestEvents, TestParticleAssignment, TestSignalMultipleFile, TestSignalDirectory, TestAnomalousStatistics
 from Closure.Plotting import TestTops, TestResonance, TestBackGroundProcesses, TestGNNMonitor, KinematicsPlotting, TopologicalComplexityMassPlot, TestDataSamples
 from Closure.DataLoader import TestEventGraphs, TestDataLoader, TestDataLoaderTrainingValidationTest, TestEventNodeEdgeFeatures
-from Closure.GNN import SimpleFourTops, TestInvMassGNN_Children_Edge, TestInvMassGNN_Children_Node, TestPathNetGNN_Children_Edge, TestPathNetGNN_Children_Node, TestPathNetGNN_Data, TestInvMassGNN_Tops_Edge, TestInvMassGNN_Tops_Node
+from Closure.GNN import SimpleFourTops, TestInvMassGNN_Children_Edge, TestInvMassGNN_Children_Node, TestPathNetGNN_Children_Edge, TestPathNetGNN_Children_Node, TestPathNetGNN_Data, TestInvMassGNN_Tops_Edge, TestInvMassGNN_Tops_Node, TestInvMassGNN_Children_NoLep_Edge, TestInvMassGNN_Children_NoLep_Node
 from Closure.Models import TestEdgeConvModel, TestGCNModel, TestInvMassGNN, TestPathNet
+from Closure.TruthMatchingAnalysisTop import *
+
 
 def Passed(F, name):
     if F:
@@ -23,9 +25,8 @@ def Generate_Cache(di, Stop = -1, SingleThread = False, Compiler = "EventGenerat
     PickleObject(ev, Compiler)
 
 if __name__ == '__main__':
-    #Generate_Cache(dir, Stop = -1, SingleThread = False, Compiler = "SignalSample.pkl")
+    #Generate_Cache(dir, Stop = 100, SingleThread = True, Compiler = "SignalSample.pkl")
     #Generate_Cache("/CERN/Grid/Samples/NAF/2021-05-05-2cRC-all/mc16a/postProcessed_ttbar_PhPy8_Total.root", Stop = 150000, SingleThread = True, Compiler = "ttbar.pkl")
-
 
     # ====== Test of IO 
     #Passed(TestDir(), "TestDir")
@@ -55,7 +56,7 @@ if __name__ == '__main__':
 
     # ====== Test of Plotting 
     #Passed(TestGNNMonitor(), "TestGNNMonitor")
-    Passed(KinematicsPlotting(), "KinematicsPlotting")
+    #Passed(KinematicsPlotting(), "KinematicsPlotting")
     #Passed(TopologicalComplexityMassPlot(), "TopologicalComplexityMassPlot")
     #Passed(TestDataSamples(), "TestDataSamples")
 
@@ -72,8 +73,14 @@ if __name__ == '__main__':
     #Passed(TestInvMassGNN_Children_Edge(), "TestInvMassGNN_Children_Edge")
     #Passed(TestInvMassGNN_Children_Node(), "TestInvMassGNN_Children_Node")
 
+    Passed(TestInvMassGNN_Children_NoLep_Edge(), "TestInvMassGNN_Children_Edge")
+    Passed(TestInvMassGNN_Children_NoLep_Node(), "TestInvMassGNN_Children_Node")
+
     #Passed(TestPathNetGNN_Children_Edge(), "TestPathNetGNN_Children_Edge") 
     #Passed(TestPathNetGNN_Children_Node(), "TestPathNetGNN_Children_Node") 
 
 
     #Passed(TestPathNetGNN_Data(), "TestPathNetGNN_Data") 
+
+    # ====== Truth Debugging Stuff ======== #
+    #Passed(TestSimpleTruthMatching(), "TestSimpleTruthMatching")

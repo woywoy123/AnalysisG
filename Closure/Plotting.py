@@ -17,6 +17,8 @@ def TestTops():
     Top_Mass = []
     Top_Mass_From_Children = []
     Top_Mass_From_Children_init = []
+    Top_Mass_From_Children_init_NoLep = []
+
     Top_Mass_From_Truth_Jets = []
     Top_Mass_From_Truth_Jets_init = []
     Top_Mass_From_Truth_Jets_NoAnomaly = []
@@ -36,10 +38,25 @@ def TestTops():
         for k in tops:
 
             # Calculation of top mass from truth jets + detector leptons 
+            P = Particle(True)
+            Skip = False
+            tmp = []
+            for j in k.Decay_init:
+                if abs(j.pdgid) == 11 or abs(j.pdgid) == 13:
+                    Skip = True
+                    break
+                tmp.append(j)
+
+            if Skip == False:
+                P.Decay = tmp
+                P.CalculateMassFromChildren()
+                Top_Mass_From_Children_init_NoLep.append(P.Mass_GeV)
+               
             tmp = []
             for j in k.Decay:
                 tmp += j.Decay
             k.Decay = tmp
+
             tmp = []
             for j in k.Decay_init:
                 tmp += j.Decay_init
@@ -64,145 +81,77 @@ def TestTops():
             Top_Mass_From_Jets.append(k.Mass_GeV)
 
     # Tops from Truth information figures 
-    s = SubfigureCanvas()
-    s.Filename = "TopMasses"
-
     t = TH1F() 
-    t.Title = "The Mass of Truth Top From 'truth_top_*'"
+    t.Title = "Mass of Truth Top From 'truth_top_*'"
     t.xTitle = "Mass (GeV)"
     t.yTitle = "Entries"
-    t.xBins = 200
+    t.xBins = 500
+    t.xMin = 172.45
+    t.xMax = 172.55
     t.xData = Top_Mass
-    t.CompileHistogram()
-    s.AddObject(t)
+    t.Filename = "TruthTops.png"
+    t.SaveFigure("Plots/TestTops")
 
     tc = TH1F()
-    tc.Title = "The Predicted Truth Top Mass Derived From 'truth_top_child_*'"
+    tc.Title = "Top Mass Derived From 'truth_top_child_*'"
     tc.xTitle = "Mass (GeV)"
     tc.yTitle = "Entries"
     tc.xBins = 200
-    tc.xMin = 160
+    tc.xMin = 25
     tc.xData = Top_Mass_From_Children
-    tc.CompileHistogram()
-    s.AddObject(tc)   
+    tc.Filename = "TopChildren.png"
+    tc.SaveFigure("Plots/TestTops")
+
+    tc = TH1F()
+    tc.Title = "Top Mass Derived From 'truth_top_child_init_*' Without Lepton"
+    tc.xTitle = "Mass (GeV)"
+    tc.yTitle = "Entries"
+    tc.xBins = 200
+    tc.xMin = 25
+    tc.xData = Top_Mass_From_Children_init_NoLep
+    tc.Filename = "TopChildren_NoLep.png"
+    tc.SaveFigure("Plots/TestTops")
 
     tc_init = TH1F()
-    tc_init.Title = "The Predicted Truth Top Mass Derived From 'truth_top_child_init_*'"
+    tc_init.Title = "Top Mass Derived From 'truth_top_child_init_*'"
     tc_init.xTitle = "Mass (GeV)"
     tc_init.yTitle = "Entries"
-    tc_init.xMin = 160
+    tc_init.xMin = 150
+    tc_init.xMax = 200
     tc_init.xBins = 200
     tc_init.xData = Top_Mass_From_Children_init
-    tc_init.CompileHistogram()
-    s.AddObject(tc_init)
-    
-    s.SaveFigure()
-
-    # Comparison Plot of the Truth Top Mass from children and truth jets
-    s = SubfigureCanvas()
-    s.Filename = "TopMassesDetector"
- 
-    tc = TH1F()
-    tc.Title =  "The Predicted Truth Top Mass Derived From 'truth_top_child_*'"
-    tc.xTitle = "Mass (GeV)"
-    tc.yTitle = "Entries"
-    tc.xMin = 160
-    tc.xBins = 200
-    tc.xData = Top_Mass_From_Children
-    tc.CompileHistogram()
-    s.AddObject(tc)   
+    tc_init.Filename = "TopChildren_init.png"
+    tc_init.SaveFigure("Plots/TestTops")
 
     t = TH1F()
-    t.Title = "The Predicted Truth Top Mass Derived From 'truth_jets_*' \n (with detector leptons) matched to 'truth_top_child_*'"
+    t.Title = "Top Mass Derived From 'truth_jets_*' \n (with detector leptons) matched to 'truth_top_child_*'"
     t.xTitle = "Mass (GeV)"
     t.yTitle = "Entries"
-    t.xMin = 160
+    t.xMin = 0
     t.xBins = 200
     t.xData = Top_Mass_From_Truth_Jets
-    t.CompileHistogram()
-    s.AddObject(t)
-    
+    t.Filename = "TruthJets.png"
+    t.SaveFigure("Plots/TestTops")
+
     tc_init = TH1F()
-    tc_init.Title = "The Predicted Truth Top Mass Derived From 'truth_jets_*' \n (with detector leptons) matched to 'truth_top_child_init*'"
+    tc_init.Title = "Top Mass Derived From 'truth_jets_*' \n (with detector leptons) matched to 'truth_top_child_init*'"
     tc_init.xTitle = "Mass (GeV)"
     tc_init.yTitle = "Entries"
-    tc_init.xMin = 160
+    tc_init.xMin = 0
     tc_init.xBins = 200
     tc_init.xData = Top_Mass_From_Truth_Jets_init
-    tc_init.CompileHistogram()
-    s.AddObject(tc_init)
-    s.SaveFigure()
+    tc_init.Filename = "TruthJets_init.png"
+    tc_init.SaveFigure("Plots/TestTops")
 
-
-    # Comparison of Top mass from truthjets vs top_child information + No Anomalous Event matching 
-    s = SubfigureCanvas()
-    s.Filename = "TopMassesDetectorNoAnomalous"
- 
-    tc = TH1F()
-    tc.Title =  "The Predicted Truth Top Mass Derived From 'truth_top_child_*'"
-    tc.xTitle = "Mass (GeV)"
-    tc.yTitle = "Entries"
-    tc.xMin = 160
-    tc.xBins = 200
-    tc.xData = Top_Mass_From_Children
-    tc.CompileHistogram()
-    s.AddObject(tc)   
-
-    t = TH1F()
-    t.Title = "The Predicted Truth Top Mass Derived From 'truth_jets_*' \n (with detector leptons) matched to 'truth_top_child_*'"
-    t.xTitle = "Mass (GeV)"
-    t.yTitle = "Entries"
-    t.xMin = 160
-    t.xBins = 200
-    t.xData = Top_Mass_From_Truth_Jets
-    t.CompileHistogram()
-    s.AddObject(t)
-    
     tc_init = TH1F()
-    tc_init.Title = "The Predicted Truth Top Mass Derived From 'truth_jets_*' \n (with detector leptons) matched to 'truth_top_child_*' (No Truth Jet Missmatch)"
+    tc_init.Title = "Top Mass Derived From 'truth_jets_*' \n (with detector leptons) matched to 'truth_top_child_*'\n (No Truth Jet Missmatch)"
     tc_init.xTitle = "Mass (GeV)"
     tc_init.yTitle = "Entries"
-    tc_init.xMin = 160
+    tc_init.xMin = 0
     tc_init.xBins = 200
     tc_init.xData = Top_Mass_From_Truth_Jets_NoAnomaly
-    tc_init.CompileHistogram()
-    s.AddObject(tc_init)
-    s.SaveFigure()
-
-    # Comparison of Top mass from jets vs top_child information + No Anomalous Event matching 
-    s = SubfigureCanvas()
-    s.Filename = "TopMassesDetectorJet"
- 
-    tc = TH1F()
-    tc.Title =  "The Predicted Truth Top Mass Derived From 'truth_top_child_*'"
-    tc.xTitle = "Mass (GeV)"
-    tc.yTitle = "Entries"
-    tc.xMin = 160
-    tc.xBins = 200
-    tc.xData = Top_Mass_From_Children
-    tc.CompileHistogram()
-    s.AddObject(tc)   
-
-    t = TH1F()
-    t.Title = "The Predicted Truth Top Mass Derived From 'truth_jets_*'\n (with detector leptons) matched to 'truth_top_child_*'"
-    t.xTitle = "Mass (GeV)"
-    t.yTitle = "Entries"
-    t.xMin = 160
-    t.xBins = 200
-    t.xData = Top_Mass_From_Truth_Jets
-    t.CompileHistogram()
-    s.AddObject(t)
-    
-    tc_init = TH1F()
-    tc_init.Title = "The Predicted Truth Top Mass Derived From 'jets_*'\n (with detector leptons) matched to 'truth_top_child_*'"
-    tc_init.xTitle = "Mass (GeV)"
-    tc_init.yTitle = "Entries"
-    tc_init.xMin = 160
-    tc_init.xBins = 200
-    tc_init.xData = Top_Mass_From_Jets
-    tc_init.CompileHistogram()
-    s.AddObject(tc_init)
-    s.SaveFigure()
+    tc_init.Filename = "TruthJets_init_goodmatch.png"
+    tc_init.SaveFigure("Plots/TestTops")
 
     return True
 
@@ -277,105 +226,72 @@ def TestResonance():
         Res_Jet.append(Z_.Mass_GeV)
  
     # Tops from Truth information figures 
-    s = SubfigureCanvas()
-    s.Filename = "ResonanceMassTruthParticles"
-
     t = TH1F() 
-    t.Title = "The Mass of Resonance Using 'truth_top_*'"
+    t.Title = "Resonance Mass Derived From 'truth_top_*'"
     t.xTitle = "Mass (GeV)"
     t.yTitle = "Entries"
-    t.xBins = 200
+    t.xMin = 0
+    t.xMax = 5000
+    t.xBins = 2500
     t.xData = Res_TruthTops
-    t.CompileHistogram()
-    s.AddObject(t)
+    t.Filename = "Resonance_TruthTops.png"
+    t.SaveFigure("Plots/TestResonance")
 
     tc = TH1F()
-    tc.Title = "The Predicted Resonance Mass Derived From 'truth_top_child_*'"
+    tc.Title = "Resonance Mass Derived From 'truth_top_child_*'"
     tc.xTitle = "Mass (GeV)"
     tc.yTitle = "Entries"
-    tc.xBins = 200
+    tc.xMin = 0
+    tc.xMax = 5000
+    tc.xBins = 2500
     tc.xData = Res_Child
-    tc.CompileHistogram()
-    s.AddObject(tc)   
+    tc.Filename = "Resonance_TruthChildren.png"
+    tc.SaveFigure("Plots/TestResonance")
 
     tc_init = TH1F()
-    tc_init.Title = "The Predicted Resonance Mass Derived From 'truth_top_child_init*'"
+    tc_init.Title = "Resonance Mass Derived From 'truth_top_child_init*'"
     tc_init.xTitle = "Mass (GeV)"
     tc_init.yTitle = "Entries"
-    tc_init.xBins = 200
+    tc_init.xMin = 0
+    tc_init.xMax = 5000
+    tc_init.xBins = 2500
     tc_init.xData = Res_Child_init
-    tc_init.CompileHistogram()
-    s.AddObject(tc_init)
-    
-    s.SaveFigure()
-
-    # Comparison Plot of the Truth Top Mass from children and truth jets
-    s = SubfigureCanvas()
-    s.Filename = "ResonanceMassTruthJets"
- 
-    t = TH1F() 
-    t.Title = "The Mass of Resonance Using 'truth_top_*'"
-    t.xTitle = "Mass (GeV)"
-    t.yTitle = "Entries"
-    t.xBins = 200
-    t.xData = Res_TruthTops
-    t.CompileHistogram()
-    s.AddObject(t)
+    tc_init.Filename = "Resonance_TruthChildren_init.png"
+    tc_init.SaveFigure("Plots/TestResonance")
 
     tc = TH1F()
-    tc.Title =  "The Predicted Resonance Mass Derived From 'truth_jets_*'\n (with Detector Leptons)"
+    tc.Title =  "Resonance Mass Derived From 'truth_jets_*'\n (with Detector Leptons)"
     tc.xTitle = "Mass (GeV)"
     tc.yTitle = "Entries"
-    tc.xBins = 200
+    tc.xMin = 0
+    tc.xMax = 5000
+    tc.xBins = 2500
     tc.xData = Res_TruthJet
-    tc.CompileHistogram()
-    s.AddObject(tc)   
+    tc.Filename = "Resonance_TruthJet.png"
+    tc.SaveFigure("Plots/TestResonance")
 
     tc_init = TH1F()
-    tc_init.Title = "The Predicted Resonance Mass Derived From 'truth_jets_*'\n (with Detector Leptons) (Good Matching)"
+    tc_init.Title = "Resonance Mass Derived From 'truth_jets_*'\n (with Detector Leptons) (Good Matching)"
     tc_init.xTitle = "Mass (GeV)"
     tc_init.yTitle = "Entries"
-    tc_init.xBins = 200
+    tc_init.xMin = 0
+    tc_init.xMax = 5000
+    tc_init.xBins = 2500
     tc_init.xData = Res_TruthJet_NoAnomaly
-    tc_init.CompileHistogram()
-    s.AddObject(tc_init)
-    
-    s.SaveFigure()
-
-
-    # Comparison of Top mass from truthjets vs top_child information + No Anomalous Event matching 
-    s = SubfigureCanvas()
-    s.Filename = "ResonanceMassDetector"
- 
-    t = TH1F() 
-    t.Title = "The Mass of Resonance Using 'truth_top_*'"
-    t.xTitle = "Mass (GeV)"
-    t.yTitle = "Entries"
-    t.xBins = 200
-    t.xData = Res_TruthTops
-    t.CompileHistogram()
-    s.AddObject(t)
-
-    tc = TH1F()
-    tc.Title =  "The Predicted Resonance Mass Derived From 'truth_jets_*'\n (with Detector Leptons)"
-    tc.xTitle = "Mass (GeV)"
-    tc.yTitle = "Entries"
-    tc.xBins = 200
-    tc.xData = Res_TruthJet
-    tc.CompileHistogram()
-    s.AddObject(tc)   
+    tc_init.Filename = "Resonance_TruthJet_GoodMatching.png"
+    tc_init.SaveFigure("Plots/TestResonance")
 
     tc_init = TH1F()
     tc_init.Title = "The Predicted Resonance Mass Derived From 'jets_*'\n (with Detector Leptons)"
     tc_init.xTitle = "Mass (GeV)"
     tc_init.yTitle = "Entries"
-    tc_init.xBins = 200
+    tc_init.xMin = 0
+    tc_init.xMax = 5000
+    tc_init.xBins = 2500
     tc_init.xData = Res_Jet
-    tc_init.CompileHistogram()
-    s.AddObject(tc_init)
-    
-    s.SaveFigure()
-    
+    tc_init.Filename = "Resonance_Jet.png"
+    tc_init.SaveFigure("Plots/TestResonance")
+
     return True
 
 def TestBackGroundProcesses():
@@ -566,7 +482,7 @@ def KinematicsPlotting():
     d_PHI_Edge_SI.Filename = "Delta_PHI_Same_Index" 
     d_PHI_Edge_DI.Filename = "Delta_PHI_Different_Index" 
     d_PHI_Edge_SI.xMin = 0
-    d_PHI_Edge_SI.xMax = 6
+    d_PHI_Edge_SI.xMax = 7
     d_PHI_Edge_DI.xMin = 0
     d_PHI_Edge_DI.xMax = 6
 

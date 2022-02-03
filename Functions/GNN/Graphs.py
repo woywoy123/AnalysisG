@@ -43,7 +43,17 @@ class EventGraph:
 
         if Level == "TruthChildren":
             self.Particles += self.Event.TruthChildren
-    
+
+        if Level == "TruthChildren_init_NoLep":
+            for i in self.Event.TruthChildren_init:
+                if abs(i.pdgid) not in [11, 12, 13, 14, 15, 16]:
+                    self.Particles.append(i)
+        
+        if Level == "TruthChildren_NoLep":
+            for i in self.Event.TruthChildren:
+                if abs(i.pdgid) not in [11, 12, 13, 14, 15, 16]:
+                    self.Particles.append(i)
+
     def CreateParticleNodes(self):
         for i in range(len(self.Particles)):
             self.Nodes.append(i)
