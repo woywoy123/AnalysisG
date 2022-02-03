@@ -131,47 +131,47 @@ def TrainEvaluate(Model, Outdir):
 
 def TestInvMassGNN_Tops_Edge():
     #GenerateTemplate(Tree = "TruthTops")
-    TrainEvaluate("InvMassEdge", "GNN_Performance_Plots/InvMassGNN_Tops_Edge")
+    TrainEvaluate("InvMassEdge", "GNN_Performance_InvMassGNN_Tops_Edge")
     return True
 
 def TestInvMassGNN_Tops_Node():
     #GenerateTemplate(Tree = "TruthTops")
-    TrainEvaluate("InvMassNode", "GNN_Performance_Plots/InvMassGNN_Tops_Node")
+    TrainEvaluate("InvMassNode", "GNN_Performance_InvMassGNN_Tops_Node")
     return True
 
 def TestInvMassGNN_Children_Edge():
     #GenerateTemplate(Tree = "TruthChildren_init")
-    TrainEvaluate("InvMassEdge", "GNN_Performance_Plots/InvMassGNN_Children_Edge")
+    TrainEvaluate("InvMassEdge", "GNN_Performance_InvMassGNN_Children_Edge")
     return True
 
 def TestInvMassGNN_Children_Node():
     #GenerateTemplate(Tree = "TruthChildren_init")
-    TrainEvaluate("InvMassNode", "GNN_Performance_Plots/InvMassGNN_Children_Node")
+    TrainEvaluate("InvMassNode", "GNN_Performance_InvMassGNN_Children_Node")
     return True
 
 def TestInvMassGNN_Children_NoLep_Edge():
     GenerateTemplate(Tree = "TruthChildren_init_NoLep")
-    TrainEvaluate("InvMassEdge", "GNN_Performance_Plots/InvMassGNN_Children_Edge")
+    TrainEvaluate("InvMassEdge", "GNN_Performance_InvMassGNN_Children_Edge")
     return True
 
 def TestInvMassGNN_Children_NoLep_Node():
     GenerateTemplate(Tree = "TruthChildren_init_NoLep")
-    TrainEvaluate("InvMassNode", "GNN_Performance_Plots/InvMassGNN_Children_Node")
+    TrainEvaluate("InvMassNode", "GNN_Performance_InvMassGNN_Children_Node")
     return True
 
 def TestPathNetGNN_Children_Edge():
     #GenerateTemplate("TruthChildren_init")
-    TrainEvaluate("PathNetEdge", "GNN_Performance_Plots/PathNetGNN_Children_Edge")
+    TrainEvaluate("PathNetEdge", "GNN_Performance_PathNetGNN_Children_Edge")
     return True
 
 def TestPathNetGNN_Children_Node():
     #GenerateTemplate(Tree = "TruthChildren_init")
-    TrainEvaluate("PathNetNode", "GNN_Performance_Plots/PathNetGNN_Children_Node")
+    TrainEvaluate("PathNetNode", "GNN_Performance_PathNetGNN_Children_Node")
     return True
 
 def TestPathNetGNN_Data():
     #GenerateTemplate("JetLepton")
-    TrainEvaluate("PathNetEdge", "GNN_Performance_Plots/PathNetGNN_Data_Edge")
+    TrainEvaluate("PathNetEdge", "GNN_Performance_PathNetGNN_Data_Edge")
     return True
 
 

@@ -232,7 +232,7 @@ def TestResonance():
     t.yTitle = "Entries"
     t.xMin = 0
     t.xMax = 5000
-    t.xBins = 2500
+    t.xBins = 500
     t.xData = Res_TruthTops
     t.Filename = "Resonance_TruthTops.png"
     t.SaveFigure("Plots/TestResonance")
@@ -243,7 +243,7 @@ def TestResonance():
     tc.yTitle = "Entries"
     tc.xMin = 0
     tc.xMax = 5000
-    tc.xBins = 2500
+    tc.xBins = 500
     tc.xData = Res_Child
     tc.Filename = "Resonance_TruthChildren.png"
     tc.SaveFigure("Plots/TestResonance")
@@ -254,7 +254,7 @@ def TestResonance():
     tc_init.yTitle = "Entries"
     tc_init.xMin = 0
     tc_init.xMax = 5000
-    tc_init.xBins = 2500
+    tc_init.xBins = 500
     tc_init.xData = Res_Child_init
     tc_init.Filename = "Resonance_TruthChildren_init.png"
     tc_init.SaveFigure("Plots/TestResonance")
@@ -265,7 +265,7 @@ def TestResonance():
     tc.yTitle = "Entries"
     tc.xMin = 0
     tc.xMax = 5000
-    tc.xBins = 2500
+    tc.xBins = 500
     tc.xData = Res_TruthJet
     tc.Filename = "Resonance_TruthJet.png"
     tc.SaveFigure("Plots/TestResonance")
@@ -276,7 +276,7 @@ def TestResonance():
     tc_init.yTitle = "Entries"
     tc_init.xMin = 0
     tc_init.xMax = 5000
-    tc_init.xBins = 2500
+    tc_init.xBins = 500
     tc_init.xData = Res_TruthJet_NoAnomaly
     tc_init.Filename = "Resonance_TruthJet_GoodMatching.png"
     tc_init.SaveFigure("Plots/TestResonance")
@@ -287,7 +287,7 @@ def TestResonance():
     tc_init.yTitle = "Entries"
     tc_init.xMin = 0
     tc_init.xMax = 5000
-    tc_init.xBins = 2500
+    tc_init.xBins = 500
     tc_init.xData = Res_Jet
     tc_init.Filename = "Resonance_Jet.png"
     tc_init.SaveFigure("Plots/TestResonance")
@@ -432,7 +432,7 @@ def TestGNNMonitor():
 
     eva = EvaluationMetrics()
     eva.Sample = op
-    eva.LossTrainingPlot("Plots/GNN_Performance_Plots/TestMonitor")
+    eva.LossTrainingPlot("Plots/GNN_Performance_TestMonitor")
 
     return True
 
@@ -446,8 +446,8 @@ def KinematicsPlotting():
     d_ETA_Edge_DI.Title = "Different Parent"
     d_ETA_Edge_SI.xTitle = "delta eta"
     d_ETA_Edge_DI.xTitle = "delta eta"
-    d_ETA_Edge_SI.xBins = 1000 
-    d_ETA_Edge_DI.xBins = 1000 
+    d_ETA_Edge_SI.xBins = 100 
+    d_ETA_Edge_DI.xBins = 100 
     d_ETA_Edge_SI.Filename = "Delta_ETA_Same_Index" 
     d_ETA_Edge_DI.Filename = "Delta_ETA_Different_Index" 
     d_ETA_Edge_SI.xMin = 0
@@ -461,8 +461,8 @@ def KinematicsPlotting():
     d_Energy_Edge_DI.Title = "Different Parent"
     d_Energy_Edge_SI.xTitle = "delta energy (GeV)"
     d_Energy_Edge_DI.xTitle = "delta energy (GeV)"
-    d_Energy_Edge_SI.xBins = 1000 
-    d_Energy_Edge_DI.xBins = 1000 
+    d_Energy_Edge_SI.xBins = 100 
+    d_Energy_Edge_DI.xBins = 100 
     d_Energy_Edge_SI.Filename = "Delta_Energy_Same_Index" 
     d_Energy_Edge_DI.Filename = "Delta_Energy_Different_Index" 
     d_Energy_Edge_SI.xMin = 0
@@ -477,8 +477,8 @@ def KinematicsPlotting():
     d_PHI_Edge_DI.Title = "Different Parent"
     d_PHI_Edge_SI.xTitle = "delta phi (rad)"
     d_PHI_Edge_DI.xTitle = "delta phi (rad)"
-    d_PHI_Edge_SI.xBins = 1000 
-    d_PHI_Edge_DI.xBins = 1000
+    d_PHI_Edge_SI.xBins = 100 
+    d_PHI_Edge_DI.xBins = 100
     d_PHI_Edge_SI.Filename = "Delta_PHI_Same_Index" 
     d_PHI_Edge_DI.Filename = "Delta_PHI_Different_Index" 
     d_PHI_Edge_SI.xMin = 0
@@ -492,8 +492,8 @@ def KinematicsPlotting():
     d_PT_Edge_DI.Title = "Different Parent"
     d_PT_Edge_SI.xTitle = "pt (GeV)"
     d_PT_Edge_DI.xTitle = "pt (GeV)"
-    d_PT_Edge_SI.xBins = 1000
-    d_PT_Edge_DI.xBins = 1000
+    d_PT_Edge_SI.xBins = 100
+    d_PT_Edge_DI.xBins = 100
     d_PT_Edge_SI.Filename = "Delta_Pt_Same_Index" 
     d_PT_Edge_DI.Filename = "Delta_Pt_Different_Index" 
     d_PT_Edge_SI.xMin = 0
@@ -507,8 +507,8 @@ def KinematicsPlotting():
     Mass_Edge_DI.Title = "Different Parent"
     Mass_Edge_SI.xTitle = "Mass (MeV)"
     Mass_Edge_DI.xTitle = "Mass (MeV)"
-    Mass_Edge_SI.xBins = 1000
-    Mass_Edge_DI.xBins = 1000
+    Mass_Edge_SI.xBins = 100
+    Mass_Edge_DI.xBins = 100
     Mass_Edge_SI.Filename = "Mass_Same_Index" 
     Mass_Edge_DI.Filename = "Mass_Different_Index" 
     Mass_Edge_SI.xMin = 0
@@ -522,8 +522,8 @@ def KinematicsPlotting():
     Ratio_Kine_Edge_DI.Title = "Different Parent"
     Ratio_Kine_Edge_SI.xTitle = "Arb."
     Ratio_Kine_Edge_DI.xTitle = "Arb."
-    Ratio_Kine_Edge_SI.xBins = 1000
-    Ratio_Kine_Edge_DI.xBins = 1000
+    Ratio_Kine_Edge_SI.xBins = 100
+    Ratio_Kine_Edge_DI.xBins = 100
     Ratio_Kine_Edge_SI.Filename = "Ratio_Kin_Same_Index" 
     Ratio_Kine_Edge_DI.Filename = "Ratio_Kin_Different_Index" 
     Ratio_Kine_Edge_SI.xMin = 0
@@ -537,8 +537,8 @@ def KinematicsPlotting():
     dR_Edge_DI.Title = "Different Parent"
     dR_Edge_SI.xTitle = "dR"
     dR_Edge_DI.xTitle = "dR"
-    dR_Edge_SI.xBins = 1000
-    dR_Edge_DI.xBins = 1000
+    dR_Edge_SI.xBins = 100
+    dR_Edge_DI.xBins = 100
     dR_Edge_SI.Filename = "DeltaR_Same_Index" 
     dR_Edge_DI.Filename = "DeltaR_Different_Index" 
     dR_Edge_SI.xMin = 0
@@ -549,7 +549,7 @@ def KinematicsPlotting():
     SignalTops = TH1F()
     SignalTops.Title = "Signal"
     SignalTops.xTitle = "Mass (GeV)"
-    SignalTops.xBins = 500
+    SignalTops.xBins = 100
     SignalTops.Filename = "Mass_Signal_Tops" 
     SignalTops.xMin = 0
     SignalTops.xMax = 180
@@ -557,7 +557,7 @@ def KinematicsPlotting():
     SpectatorTops = TH1F()
     SpectatorTops.Title = "Spectator"
     SpectatorTops.xTitle = "Mass (GeV)"
-    SpectatorTops.xBins = 500
+    SpectatorTops.xBins = 100
     SpectatorTops.Filename = "Mass_Spectator_Top" 
     SpectatorTops.xMax = 180
     SpectatorTops.xMin = 0
@@ -608,57 +608,57 @@ def KinematicsPlotting():
             else:
                 SpectatorTops.xData.append(e_i.Mass_GeV)
 
-    Mass_Edge_SI.SaveFigure("Plots/Kinematics/")
-    d_ETA_Edge_SI.SaveFigure("Plots/Kinematics/")
-    d_PHI_Edge_SI.SaveFigure("Plots/Kinematics/")
-    d_Energy_Edge_SI.SaveFigure("Plots/Kinematics/")
-    d_PT_Edge_SI.SaveFigure("Plots/Kinematics/")
-    dR_Edge_SI.SaveFigure("Plots/Kinematics/")
-    Mass_Edge_DI.SaveFigure("Plots/Kinematics/")
-    d_ETA_Edge_DI.SaveFigure("Plots/Kinematics/")
-    d_PHI_Edge_DI.SaveFigure("Plots/Kinematics/")
-    d_Energy_Edge_DI.SaveFigure("Plots/Kinematics/")
-    d_PT_Edge_DI.SaveFigure("Plots/Kinematics/")
-    dR_Edge_DI.SaveFigure("Plots/Kinematics/")
-    SignalTops.SaveFigure("Plots/Kinematics/")
-    SpectatorTops.SaveFigure("Plots/Kinematics/")
+    Mass_Edge_SI.SaveFigure("Plots/Kinematics_Original")
+    d_ETA_Edge_SI.SaveFigure("Plots/Kinematics_Original")
+    d_PHI_Edge_SI.SaveFigure("Plots/Kinematics_Original")
+    d_Energy_Edge_SI.SaveFigure("Plots/Kinematics_Original")
+    d_PT_Edge_SI.SaveFigure("Plots/Kinematics_Original")
+    dR_Edge_SI.SaveFigure("Plots/Kinematics_Original")
+    Mass_Edge_DI.SaveFigure("Plots/Kinematics_Original")
+    d_ETA_Edge_DI.SaveFigure("Plots/Kinematics_Original")
+    d_PHI_Edge_DI.SaveFigure("Plots/Kinematics_Original")
+    d_Energy_Edge_DI.SaveFigure("Plots/Kinematics_Original")
+    d_PT_Edge_DI.SaveFigure("Plots/Kinematics_Original")
+    dR_Edge_DI.SaveFigure("Plots/Kinematics_Original")
+    SignalTops.SaveFigure("Plots/Kinematics_Original")
+    SpectatorTops.SaveFigure("Plots/Kinematics_Original")
 
     # Combine the figures into a single one 
     Mass_Edge = CombineHistograms()
     Mass_Edge.Histograms = [Mass_Edge_SI, Mass_Edge_DI]
     Mass_Edge.Title = "Mass of Particle Edges from (un)common Parent Index"
     Mass_Edge.Filename = "Edge_Mass.png"
-    Mass_Edge.Save("Plots/Kinematics/ComparativePlots/")
+    Mass_Edge.Save("Plots/Kinematics/")
 
     dR_Edge = CombineHistograms()
     dR_Edge.Histograms = [dR_Edge_SI, dR_Edge_DI]
     dR_Edge.Title = "$\Delta$R of Particle Edges from (un)common Parent Index"
     dR_Edge.Filename = "Edge_dR.png"
-    dR_Edge.Save("Plots/Kinematics/ComparativePlots/")
+    dR_Edge.Save("Plots/Kinematics/")
 
     d_phi_Edge = CombineHistograms()
     d_phi_Edge.Histograms = [d_PHI_Edge_SI, d_PHI_Edge_DI]
     d_phi_Edge.Title = "$\Delta \phi$ of Particle Edges from (un)common Parent Index"
     d_phi_Edge.Filename = "Edge_delta_phi.png"
-    d_phi_Edge.Save("Plots/Kinematics/ComparativePlots/")
+    d_phi_Edge.Save("Plots/Kinematics/")
 
     d_eta_Edge = CombineHistograms()
     d_eta_Edge.Histograms = [d_ETA_Edge_SI, d_ETA_Edge_DI]
     d_eta_Edge.Title = "$\Delta \eta$ of Particle Edges from (un)common Parent Index"
     d_eta_Edge.Filename = "Edge_delta_eta.png"
-    d_eta_Edge.Save("Plots/Kinematics/ComparativePlots/")
+    d_eta_Edge.Save("Plots/Kinematics/")
 
     d_Energy_Edge = CombineHistograms()
     d_Energy_Edge.Histograms = [d_Energy_Edge_SI, d_Energy_Edge_DI]
     d_Energy_Edge.Title = "$\Delta$ Energy of Particle Edges from (un)common Parent Index"
     d_Energy_Edge.Filename = "Edge_delta_Energy.png"
-    d_Energy_Edge.Save("Plots/Kinematics/ComparativePlots/")
+    d_Energy_Edge.Save("Plots/Kinematics/")
 
     d_PT_Edge = CombineHistograms()
     d_PT_Edge.Histograms = [d_ETA_Edge_SI, d_ETA_Edge_DI]
     d_PT_Edge.Title = "$\Delta P_T$ of Particle Edges from (un)common Parent Index"
     d_PT_Edge.Filename = "Edge_delta_PT.png"
-    d_PT_Edge.Save("Plots/Kinematics/ComparativePlots/")
+    d_PT_Edge.Save("Plots/Kinematics/")
 
     return True   
 
@@ -695,7 +695,7 @@ def TopologicalComplexityMassPlot(Input = "LoaderSignalSample.pkl", Type = "Sign
         M.yTitle = "Entries"
         M.xMin = 0
         M.xMax = 2000
-        M.xBins = 500
+        M.xBins = 100
         M.Filename = "M" + str(i) + ".png"
         Hists[i] = M
 

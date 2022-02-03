@@ -25,7 +25,7 @@ def Generate_Cache(di, Stop = -1, SingleThread = False, Compiler = "EventGenerat
     PickleObject(ev, Compiler)
 
 if __name__ == '__main__':
-    #Generate_Cache(dir, Stop = 100, SingleThread = True, Compiler = "SignalSample.pkl")
+    #Generate_Cache(dir, Stop = -1, SingleThread = False, Compiler = "SignalSample.pkl")
     #Generate_Cache("/CERN/Grid/Samples/NAF/2021-05-05-2cRC-all/mc16a/postProcessed_ttbar_PhPy8_Total.root", Stop = 150000, SingleThread = True, Compiler = "ttbar.pkl")
 
     # ====== Test of IO 
@@ -73,8 +73,8 @@ if __name__ == '__main__':
     #Passed(TestInvMassGNN_Children_Edge(), "TestInvMassGNN_Children_Edge")
     #Passed(TestInvMassGNN_Children_Node(), "TestInvMassGNN_Children_Node")
 
-    Passed(TestInvMassGNN_Children_NoLep_Edge(), "TestInvMassGNN_Children_Edge")
-    Passed(TestInvMassGNN_Children_NoLep_Node(), "TestInvMassGNN_Children_Node")
+    #Passed(TestInvMassGNN_Children_NoLep_Edge(), "TestInvMassGNN_Children_Edge")
+    #Passed(TestInvMassGNN_Children_NoLep_Node(), "TestInvMassGNN_Children_Node")
 
     #Passed(TestPathNetGNN_Children_Edge(), "TestPathNetGNN_Children_Edge") 
     #Passed(TestPathNetGNN_Children_Node(), "TestPathNetGNN_Children_Node") 
@@ -83,4 +83,4 @@ if __name__ == '__main__':
     #Passed(TestPathNetGNN_Data(), "TestPathNetGNN_Data") 
 
     # ====== Truth Debugging Stuff ======== #
-    #Passed(TestSimpleTruthMatching(), "TestSimpleTruthMatching")
+    Passed(TestSimpleTruthMatching(), "TestSimpleTruthMatching")

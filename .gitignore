@@ -8,3 +8,4 @@
 **/*.egg*
 **/.pt
 **/Models
+**/Plots

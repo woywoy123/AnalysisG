@@ -49,7 +49,7 @@ class File(Notification):
 
         if self.CheckObject(out[i], k):
             if j != -1:
-                self.ObjectLeaves[i + "/" + j + "/" + k] = out = self.__Reader[i][j][k]
+                self.ObjectLeaves[i + "/" + j + "/" + k] = self.__Reader[i][j][k]
             else:
                 self.ObjectLeaves[i + "/" + k] = self.__Reader[i][k]
         elif k != -1: 

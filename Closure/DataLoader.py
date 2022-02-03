@@ -40,12 +40,12 @@ def TestLevels(event, Tree, Dir):
 
     if ValidateNodes(G, G.Particles) == False:
         return False
-    DrawGraph(G, "NotConnected", "Plots/EventGraphs/" + Dir)
+    DrawGraph(G, "NotConnected", "Plots/EventGraphs_" + Dir)
     
     G.CreateEdges()
     if ValidateEdges(G, G.Particles) == False:
         return False
-    DrawGraph(G, "ConnectedSelfLoop", "Plots/EventGraphs/" + Dir)
+    DrawGraph(G, "ConnectedSelfLoop", "Plots/EventGraphs_" + Dir)
     
     G = EventGraph(event, Dir, Tree)
     G.SelfLoop = False
@@ -54,7 +54,7 @@ def TestLevels(event, Tree, Dir):
 
     if ValidateNodes(G, G.Particles) == False or ValidateEdges(G, G.Particles) == False:
         return False
-    DrawGraph(G, "Connected", "Plots/EventGraphs/" + Dir)  
+    DrawGraph(G, "Connected", "Plots/EventGraphs_" + Dir)  
     return True
 
 
