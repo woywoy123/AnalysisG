@@ -1,4 +1,4 @@
-from Functions.Event.Event import EventGenerator
+from Functions.Event.EventGenerator import EventGenerator
 from Functions.Tools.Alerting import Notification
 
 from torch_geometric.utils.convert import from_networkx

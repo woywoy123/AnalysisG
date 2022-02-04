@@ -137,8 +137,11 @@ def TestDataLoaderTrainingValidationTest():
         for k in l:
             TestLoader.append(k)
     
-    if len(SampleLoader) != len(TestLoader):
+    if int(len(SampleLoader)/len(TestLoader)) != 0:
         return False
+
+
+
     return True
 
 def TestEventNodeEdgeFeatures():

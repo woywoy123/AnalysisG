@@ -4,7 +4,7 @@ from Closure.Plotting import TestTops, TestResonance, TestBackGroundProcesses, T
 from Closure.DataLoader import TestEventGraphs, TestDataLoader, TestDataLoaderTrainingValidationTest, TestEventNodeEdgeFeatures
 from Closure.GNN import SimpleFourTops, TestInvMassGNN_Children_Edge, TestInvMassGNN_Children_Node, TestPathNetGNN_Children_Edge, TestPathNetGNN_Children_Node, TestPathNetGNN_Data, TestInvMassGNN_Tops_Edge, TestInvMassGNN_Tops_Node, TestInvMassGNN_Children_NoLep_Edge, TestInvMassGNN_Children_NoLep_Node
 from Closure.Models import TestEdgeConvModel, TestGCNModel, TestInvMassGNN, TestPathNet
-from Closure.TruthMatchingAnalysisTop import *
+from Closure.TruthMatchingAnalysisTop import TestSimpleTruthMatching, TestTopShapes
 
 
 def Passed(F, name):
@@ -17,7 +17,7 @@ def Passed(F, name):
 
 dir = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/user.pgadow.24765302._000001.output.root"
 def Generate_Cache(di, Stop = -1, SingleThread = False, Compiler = "EventGenerator"):
-    from Functions.Event.Event import EventGenerator
+    from Functions.Event.EventGenerator import EventGenerator
     from Functions.IO.IO import PickleObject
     ev = EventGenerator(di, Stop = Stop)
     ev.SpawnEvents()
@@ -28,7 +28,7 @@ if __name__ == '__main__':
     #Generate_Cache(dir, Stop = -1, SingleThread = False, Compiler = "SignalSample.pkl")
     #Generate_Cache("/CERN/Grid/Samples/NAF/2021-05-05-2cRC-all/mc16a/postProcessed_ttbar_PhPy8_Total.root", Stop = 150000, SingleThread = True, Compiler = "ttbar.pkl")
 
-    # ====== Test of IO 
+    ## ====== Test of IO 
     #Passed(TestDir(), "TestDir")
     #Passed(TestReadSingleFile(), "TestReadSingleFile")
     #Passed(TestReadFile(), "TestReadFile")
@@ -36,7 +36,7 @@ if __name__ == '__main__':
     #Passed(TestSignalMultipleFile(), "TestSignalMultipleFile")
     #Passed(TestSignalDirectory(), "TestSignalDirectory")
 
-    # ====== Test of EventGenerator 
+    ## ====== Test of EventGenerator 
     #Generate_Cache(dir)
     #Passed(TestEvents(), "TestEvents")
     #Passed(TestParticleAssignment(), "TestParticleAssignment")
@@ -45,7 +45,7 @@ if __name__ == '__main__':
     #Passed(TestResonance(), "TestResonance")
     #Passed(TestBackGroundProcesses(), "TestBackGroundProcesses")
 
-    # ====== Test of DataLoader
+    ## ====== Test of DataLoader
     #Passed(TestEventGraphs(), "TestEventGraphs")
     #Passed(TestDataLoader(), "TestDataLoader")
     #Passed(TestDataLoaderTrainingValidationTest(), "TestDataLoaderTrainingValidationTest")
@@ -83,4 +83,5 @@ if __name__ == '__main__':
     #Passed(TestPathNetGNN_Data(), "TestPathNetGNN_Data") 
 
     # ====== Truth Debugging Stuff ======== #
-    Passed(TestSimpleTruthMatching(), "TestSimpleTruthMatching")
+    #Passed(TestSimpleTruthMatching(), "TestSimpleTruthMatching")
+    Passed(TestTopShapes(), "TestTopShapes")

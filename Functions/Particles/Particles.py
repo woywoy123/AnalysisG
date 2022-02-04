@@ -16,7 +16,7 @@ class Particle(VariableManager):
         self.Index = -1
 
         if hasattr(self, "FromRes"):
-            self.Signal = "top_FromRes"
+            self.Signal = self.FromRes
         else:
             self.Signal = 0
 
@@ -68,6 +68,57 @@ class Particle(VariableManager):
         for i in self.Decay:
             i.Signal = self.Signal
             i.PropagateSignalLabel()
+
+class CompileParticles:
+    def __init__(self, Dictionary, Particles):
+        self.__Dictionary = Dictionary
+        self.__len = -1
+        self.__Part = Particles
+        self.__Keys = {}
+        
+        for key in self.__Dictionary:
+            val = self.__Dictionary[key]
+
+            if key in self.__Part.KeyMap:
+                self.__Keys[self.__Part.KeyMap[key]] = val
+                self.__len = len(val)
+
+    def Compile(self, ClearVal = True):
+        Output = {}
+        
+        for i in range(self.__len):
+            Output[i] = []
+            for k in self.__Keys:
+                val = self.__Keys[k][i]
+                try:
+                    __sub = len(val)
+                    if len(Output[i]) == 0:
+                        for j in range(__sub):
+                            P = copy.deepcopy(self.__Part)
+                            P.Index = i
+                            Output[i].append(P)
+                    for j in range(__sub):
+                        Output[i][j].SetAttribute(k, val[j]) 
+                except:
+                    if len(Output[i]) == 0:
+                        P = copy.deepcopy(self.__Part)
+                        P.Index = i
+                        Output[i].append(P)
+                    Output[i][0].SetAttribute(k, val)
+        
+        for i in Output:
+            for p in Output[i]:
+                if ClearVal:
+                    p.ClearVariable()
+        del self.__Part
+        del self.__Keys
+        del self.__Dictionary
+        del self.__len
+        return Output
+    
+
+
+####### Default particles in ROOT files ###############
 
 class Lepton(Particle):
     def __init__(self):
@@ -169,8 +220,6 @@ class RCJet(Particle):
         elif s > 0:
             self.Signal = 2
 
-
-
 class Top(Particle):
     def __init__(self):
         self.Type = "truth_top"
@@ -190,51 +239,46 @@ class Truth_Top_Child_Init(Particle):
         self.pdgid = "top_initialState_child_pdgid"
         Particle.__init__(self)
 
-class CompileParticles:
-    def __init__(self, Dictionary, Particles):
-        self.__Dictionary = Dictionary
-        self.__len = -1
-        self.__Part = Particles
-        self.__Keys = {}
-        
-        for key in self.__Dictionary:
-            val = self.__Dictionary[key]
 
-            if key in self.__Part.KeyMap:
-                self.__Keys[self.__Part.KeyMap[key]] = val
-                self.__len = len(val)
+################## CUSTOMIZED PARTICLES CLASSES ################
 
-    def Compile(self, ClearVal = True):
-        Output = {}
-        
-        for i in range(self.__len):
-            Output[i] = []
-            for k in self.__Keys:
-                val = self.__Keys[k][i]
-                try:
-                    __sub = len(val)
-                    if len(Output[i]) == 0:
-                        for j in range(__sub):
-                            P = copy.deepcopy(self.__Part)
-                            P.Index = i
-                            Output[i].append(P)
-                    for j in range(__sub):
-                        Output[i][j].SetAttribute(k, val[j]) 
-                except:
-                    if len(Output[i]) == 0:
-                        P = copy.deepcopy(self.__Part)
-                        P.Index = i
-                        Output[i].append(P)
-                    Output[i][0].SetAttribute(k, val)
-        
-        for i in Output:
-            for p in Output[i]:
-                if ClearVal:
-                    p.ClearVariable()
-        return Output
-    
+class TruthJet_C(Particle):
+    def __init__(self):
+        self.Type = "truthjet"
+        self.pdgid = self.Type + "_pdgid"
+        self.GhostTruthJetMap = "GhostTruthJetMap"
+        Particle.__init__(self)
 
-                 
-               
-                
+class TruthTop_C(Particle):
+    def __init__(self):
+        self.Type = "truth_top"
+        self.FromRes = self.Type + "_FromRes"
+        Particle.__init__(self)
 
+class TruthTopChild_C(Particle):
+    def __init__(self):
+        self.Type = "truth_top_child"
+        self.charge = self.Type + "_charge"
+        self.pdgid = self.Type + "_pdgid"
+        Particle.__init__(self)
+
+class TopPreFSR_C(Particle):
+    def __init__(self):
+        self.Type = "topPreFSR"
+        self.charge = self.Type + "_charge"
+        self.FromRes = "Gtop_FromRes"
+        Particle.__init__(self)
+
+class TopPostFSR_C(Particle):
+    def __init__(self):
+        self.Type = "topPostFSR"
+        self.charge = self.Type + "_charge"
+        self.FromRes = "Gtop_FromRes"
+        Particle.__init__(self)
+
+class TopPostFSRChildren_C(Particle):
+    def __init__(self):
+        self.Type = "topPostFSRchildren"
+        self.charge = self.Type + "_charge"
+        self.pdgid = self.Type + "_pdgid"
+        Particle.__init__(self)

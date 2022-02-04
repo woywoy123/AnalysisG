@@ -1,5 +1,3 @@
-from skhep.math.vectors import LorentzVector
-
 class VariableManager:
 
     def __init__(self):

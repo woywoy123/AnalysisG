@@ -1,5 +1,5 @@
 # Event Generator closure test
-from Functions.Event.Event import EventGenerator
+from Functions.Event.EventGenerator import EventGenerator
 import uproot
 from Functions.Particles.Particles import *
 from Functions.Event.Event import Event

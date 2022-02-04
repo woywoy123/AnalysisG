@@ -1,5 +1,5 @@
 # Produce the plotting of the events in the analysis (basically a sanity check) 
-from Functions.Event.Event import EventGenerator
+from Functions.Event.EventGenerator import EventGenerator
 from Functions.Particles.Particles import Particle
 from Functions.IO.IO import UnpickleObject, PickleObject
 from Functions.Plotting.Histograms import TH2F, TH1F, SubfigureCanvas, CombineHistograms

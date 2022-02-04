@@ -30,17 +30,6 @@ def SimpleFourTops():
     op.kFold = 3
     op.DefineEdgeConv(1, 2)
     op.kFoldTraining()
-    op.ApplyToDataSample(Sig, "Sig")    
-    
-    for i in Sig.DataLoader:
-        for n_p in Sig.EventData[i]:
-            p_v = n_p.NodeParticleMap
-            for t in p_v:
-                p = p_v[t] 
-                try:
-                    assert p.Sig == p.Signal
-                except AssertionError:
-                    return False
 
     return True
 

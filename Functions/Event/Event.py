@@ -1,9 +1,6 @@
-from Functions.IO.IO import PickleObject, UnpickleObject, File, Directories
 from Functions.Tools.Alerting import Debugging
 from Functions.Particles.Particles import *
 from Functions.Tools.Variables import VariableManager
-from Functions.Tools.DataTypes import TemplateThreading, Threading
-import math
 
 class EventVariables:
     def __init__(self):
@@ -19,6 +16,154 @@ class EventVariables:
         self.MinimalLeaves += Truth_Top_Child_Init().Leaves
         self.MinimalLeaves += RCSubJet().Leaves
         self.MinimalLeaves += RCJet().Leaves
+        self.MinimalLeaves += TruthJet_C().Leaves
+        self.MinimalLeaves += TruthTop_C().Leaves
+        self.MinimalLeaves += TruthTopChild_C().Leaves
+        self.MinimalLeaves += TopPreFSR_C().Leaves
+        self.MinimalLeaves += TopPostFSR_C().Leaves
+        self.MinimalLeaves += TopPostFSRChildren_C().Leaves
+
+class Event_Custom(VariableManager):
+    def __init__(self):
+        VariableManager.__init__(self)
+        self.runNumber = "runNumber"
+        self.eventNumber = "eventNumber"
+        self.mu = "mu"
+        self.met = "met_met"
+        self.met_phi = "met_phi" 
+        self.mu_actual = "mu_actual"
+        
+        self.Type = "Event"
+        self.ListAttributes()
+        self.CompileKeyMap()
+        self.iter = -1
+        self.Tree = ""
+
+        self.Objects = {"Electrons" : Electron(), 
+                        "Muons" : Muon(), 
+                        "Jets" : Jet(), 
+                        "TruthJets": TruthJet_C(), 
+                        "TruthTops" : TruthTop_C(), 
+                        "TruthTopChild": TruthTopChild_C(), 
+                        "TopPreFSR" : TopPreFSR_C(),
+                        "TopPostFSR" : TopPostFSR_C(),
+                        "TopPostFSRChildren" : TopPostFSRChildren_C()
+                        }
+
+        for i in self.Objects:
+           self.SetAttribute(i, {})
+        self.BrokenEvent = False
+
+    def ParticleProxy(self, File):
+        
+        def Attributor(variable, value):
+            for i in self.Objects:
+                obj = self.Objects[i]
+                if variable in obj.KeyMap:
+                    o = getattr(self, i)
+                    o[variable] = value
+                    self.SetAttribute(i, o)
+                    return True
+            return False
+
+        self.ListAttributes()
+        for i in File.ArrayLeaves:
+            if self.Tree in i:
+                var = i.replace(self.Tree + "/", "")
+                try: 
+                    val = File.ArrayLeaves[i][self.iter]
+                except:
+                    self.BrokenEvent = True
+                    continue
+                
+                if Attributor(var, val):
+                    continue
+
+                if var in Event().KeyMap:
+                    self.SetAttribute(self.KeyMap[var], val)
+
+
+    def CompileEvent(self, ClearVal = True):
+        for i in self.Objects:
+            l = getattr(self, i)
+            l = CompileParticles(l, self.Objects[i]).Compile(ClearVal)
+            self.SetAttribute(i, l)
+        
+        for i in self.TruthTops:
+            self.TruthTops[i][0].Decay_init += self.TruthTopChild[i]
+
+        for i in self.TopPostFSR:
+            self.TopPostFSR[i][0].Decay_init += self.TopPostFSRChildren[i]
+
+        for i in self.TopPostFSR:
+            for j in self.TruthJets:
+
+                if isinstance(self.TruthJets[j][0].GhostTruthJetMap, str):
+                    self.TruthJets[j][0].GhostTruthJetMap = 0
+                
+                try:
+                    self.TruthJets[j][0].GhostTruthJetMap = [int(self.TruthJets[j][0].GhostTruthJetMap)]
+                except TypeError:
+                    self.TruthJets[j][0].GhostTruthJetMap = list(self.TruthJets[j][0].GhostTruthJetMap)
+               
+                if self.TopPostFSR[i][0].Index+1 in self.TruthJets[j][0].GhostTruthJetMap:
+                    self.TopPostFSR[i][0].Decay += [self.TruthJets[j][0]]
+
+        self.DetectorMatchingEngine()
+        self.DetectorParticles = []
+        self.DetectorParticles += self.DictToList(self.Electrons)
+        self.DetectorParticles += self.DictToList(self.Muons)
+        self.DetectorParticles += self.DictToList(self.Jets)
+        self.TruthJets = self.DictToList(self.TruthJets)
+        self.TruthTops = self.DictToList(self.TruthTops)
+        self.TruthTopChild = self.DictToList(self.TruthTopChild)
+        self.TopPreFSR = self.DictToList(self.TopPreFSR)
+        self.TopPostFSR = self.DictToList(self.TopPostFSR)
+        self.TopPostFSRChildren = self.DictToList(self.TopPostFSRChildren)
+
+        if ClearVal: 
+            del self.dRMatrix
+            del self.Objects
+            del self.Leaves
+            del self.KeyMap
+
+    def DetectorMatchingEngine(self):
+        DetectorParticles = []
+        DetectorParticles += self.DictToList(self.Jets)
+        DetectorParticles += self.DictToList(self.Electrons)
+        DetectorParticles += self.DictToList(self.Muons)
+        
+        TruthJets = self.DictToList(self.TruthJets)
+        for i in self.DictToList(self.TopPostFSRChildren):
+            if abs(i.pdgid) not in [12, 14, 16]:
+                TruthJets.append(i)
+        
+        self.DeltaRMatrix(TruthJets, DetectorParticles)
+        
+        col = []
+        for i in self.dRMatrix:
+            if i[1][0] not in col:
+                i[1][1].Decay.append(i[1][0])
+                col.append(i[1][0])
+
+            if len(DetectorParticles) == len(col):
+                break
+    
+    def DeltaRMatrix(self, List1, List2): 
+        delR = {}
+        for i in List1:
+            for c in List2:
+                dR = c.DeltaR(i)
+                delR[str(dR) + "_" + str(c.Index) +"_"+str(i.Index)] = [c, i, dR]
+        self.dRMatrix = sorted(delR.items())
+
+    def DictToList(self, inp): 
+        out = []
+        for i in inp:
+            out += inp[i]
+        return out
+
+
 
 class Event(VariableManager, Debugging):
     def __init__(self):
@@ -37,15 +182,20 @@ class Event(VariableManager, Debugging):
         self.iter = -1
         self.Tree = ""
         
-        self.Objects = {"el->Electrons" : Electron(), "mu->Muons" : Muon(), "truthjet->TruthJets" : TruthJet(), 
-                       "jet->Jets" : Jet(), "top->TruthTops" : Top(), "child->TruthChildren" : Truth_Top_Child(), 
-                       "child_init->TruthChildren_init" : Truth_Top_Child_Init(), "rcsubjet->RCSubJets" : RCSubJet(), 
-                       "rcjet->RCJets" : RCJet()}
+        self.Objects = {"Electrons" : Electron(), 
+                        "Muons" : Muon(), 
+                        "TruthJets" : TruthJet(), 
+                        "Jets" : Jet(), 
+                        "TruthTops" : Top(), 
+                        "TruthChildren" : Truth_Top_Child(), 
+                        "TruthChildren_init" : Truth_Top_Child_Init(), 
+                        "RCSubJets" : RCSubJet(), 
+                        "RCJets" : RCJet()}
 
         self.DetectorParticles = []
         
         for i in self.Objects:
-            self.SetAttribute(i.split("->")[1], {})
+            self.SetAttribute(i, {})
 
         self.Anomaly = {}
         self.Anomaly_TruthMatch = False
@@ -60,9 +210,9 @@ class Event(VariableManager, Debugging):
             for i in self.Objects:
                 obj = self.Objects[i]
                 if variable in obj.KeyMap:
-                    o = getattr(self, i.split("->")[1])
+                    o = getattr(self, i)
                     o[variable] = value
-                    self.SetAttribute(i.split("->")[1], o)
+                    self.SetAttribute(i, o)
                     return True
             return False
 
@@ -290,120 +440,4 @@ class Event(VariableManager, Debugging):
             self.DeltaRLoop() 
         
    
-class EventGenerator(Debugging, EventVariables, Directories):
-    def __init__(self, dir, Verbose = True, Start = 0, Stop = -1, Debug = False):
-        Debugging.__init__(self, Threshold = Stop - Start)
-        EventVariables.__init__(self)
-        Directories.__init__(self, dir)
-        self.Events = {}
-        self.FileEventIndex = {}
-        self.__Debug = Debug
-        self.Threads = 12
-        self.Caller = "EVENTGENERATOR"
-        self.__Start = Start
-        self.__Stop = Stop
-        
-    def SpawnEvents(self):
-        self.GetFilesInDir()
-        for i in self.Files:
-            self.Notify("_______NEW DIRECTORY______: " + str(i))
-            for F in self.Files[i]:
-                self.Events[i + "/" + F] = []
-                F_i = File(i + "/" + F, self.__Debug)
-                F_i.Trees = self.MinimalTrees
-                F_i.Leaves = self.MinimalLeaves
-                F_i.CheckKeys()
-                F_i.ConvertToArray()
-                
-                self.Notify("SPAWNING EVENTS IN FILE -> " + F)
-                for l in range(len(F_i.ArrayLeaves[list(F_i.ArrayLeaves)[0]])):
-                    pairs = {}
-                    for tr in F_i.ObjectTrees:
-                        
-                        if self.__Start != 0:
-                            if self.__Start <= l:
-                                self.Count() 
-                            else:
-                                continue
-                        else: 
-                            self.Count()
-
-                        E = Event()
-                        E.Debug = self.__Debug
-                        E.Tree = tr
-                        E.iter = l
-                        E.ParticleProxy(F_i)
-                        pairs[tr] = E
-
-                    self.Events[i + "/" + F].append(pairs)
-                    
-                    if self.Stop():
-                        self.ResetCounter()
-                        break
-                del F_i
-                
-        del self.MinimalLeaves
-        del self.MinimalTrees
-
-    def CompileEvent(self, SingleThread = False, ClearVal = True):
-        
-        def function(Entries):
-            for k in Entries:
-                for j in k:
-                    k[j].CompileEvent(ClearVal = ClearVal)
-            return Entries
-
-        self.Caller = "EVENTCOMPILER"
-        
-        it = 0
-        ev = {}
-        for f in self.Events:
-            self.Notify("COMPILING EVENTS FROM FILE -> " + f)
-            
-            Events = self.Events[f]
-            entries_percpu = math.ceil(len(Events) / self.Threads)
-
-            self.Batches = {}
-            Thread = []
-            for k in range(self.Threads):
-                self.Batches[k] = [] 
-                for i in Events[k*entries_percpu : (k+1)*entries_percpu]:
-                    self.Batches[k].append(i)
-
-                Thread.append(TemplateThreading(k, "", "Batches", self.Batches[k], function))
-            th = Threading(Thread, self.Threads)
-            th.Verbose = True
-            if SingleThread:
-                th.TestWorker()
-            else:
-                th.StartWorkers()
-
-            self.Notify("FINISHED COMPILING EVENTS FROM FILE -> " + f)
-            self.Notify("SORTING INTO DICTIONARY -> " + f)
-            res = th.Result
-            for i in res:
-                i.SetAttribute(self)
-            
-            self.FileEventIndex[f] = []
-            self.FileEventIndex[f].append(it)
-            for k in self.Batches:
-                for j in self.Batches[k]:
-                    ev[it] = j
-                    it += 1
-            self.FileEventIndex[f].append(it-1)
-            
-            del th
-            self.Batches = {}
-            Thread = []
-        self.Events = ev
-
-    def EventIndexFileLookup(self, index):
-
-        for i in self.FileEventIndex:
-            min_ = self.FileEventIndex[i][0]
-            max_ = self.FileEventIndex[i][1]
-
-            if index >= min_ and index <= max_:
-                return i
-
         
