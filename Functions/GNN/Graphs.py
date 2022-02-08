@@ -54,6 +54,17 @@ class EventGraph:
                 if abs(i.pdgid) not in [11, 12, 13, 14, 15, 16]:
                     self.Particles.append(i)
 
+        if Level == "TopPostFSR":
+            self.Particles += self.Event.TopPostFSR
+
+        if Level == "TopPostFSRChildren":
+            self.Particles += self.Event.TopPostFSRChildren
+
+        if Level == "TopPreFSR":
+            self.Particles += self.Event.TopPreFSR
+
+
+
     def CreateParticleNodes(self):
         for i in range(len(self.Particles)):
             self.Nodes.append(i)

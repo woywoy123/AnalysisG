@@ -1,6 +1,6 @@
 from Closure.IO import TestDir, TestReadSingleFile, TestReadFile, TestFileConvertArray
 from Closure.Event import TestEvents, TestParticleAssignment, TestSignalMultipleFile, TestSignalDirectory, TestAnomalousStatistics
-from Closure.Plotting import TestTops, TestResonance, TestBackGroundProcesses, TestGNNMonitor, KinematicsPlotting, TopologicalComplexityMassPlot, TestDataSamples
+from Closure.Plotting import TestTops, TestResonance, TestBackGroundProcesses, TestGNNMonitor, KinematicsPlotting, TopologicalComplexityMassPlot, TestDataSamples, TestWorkingExample4TopsComplexity
 from Closure.DataLoader import TestEventGraphs, TestDataLoader, TestDataLoaderTrainingValidationTest, TestEventNodeEdgeFeatures
 from Closure.GNN import SimpleFourTops, TestInvMassGNN_Children_Edge, TestInvMassGNN_Children_Node, TestPathNetGNN_Children_Edge, TestPathNetGNN_Children_Node, TestPathNetGNN_Data, TestInvMassGNN_Tops_Edge, TestInvMassGNN_Tops_Node, TestInvMassGNN_Children_NoLep_Edge, TestInvMassGNN_Children_NoLep_Node
 from Closure.Models import TestEdgeConvModel, TestGCNModel, TestInvMassGNN, TestPathNet
@@ -16,17 +16,18 @@ def Passed(F, name):
 
 
 dir = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/user.pgadow.24765302._000001.output.root"
-def Generate_Cache(di, Stop = -1, SingleThread = False, Compiler = "EventGenerator"):
+def Generate_Cache(di, Stop = -1, SingleThread = False, Compiler = "EventGenerator", Custom = False):
     from Functions.Event.EventGenerator import EventGenerator
     from Functions.IO.IO import PickleObject
     ev = EventGenerator(di, Stop = Stop)
-    ev.SpawnEvents()
+    ev.SpawnEvents(Custom)
     ev.CompileEvent(SingleThread = SingleThread)
     PickleObject(ev, Compiler)
 
 if __name__ == '__main__':
     #Generate_Cache(dir, Stop = -1, SingleThread = False, Compiler = "SignalSample.pkl")
     #Generate_Cache("/CERN/Grid/Samples/NAF/2021-05-05-2cRC-all/mc16a/postProcessed_ttbar_PhPy8_Total.root", Stop = 150000, SingleThread = True, Compiler = "ttbar.pkl")
+    Generate_Cache("/home/tnom6927/Downloads/SimpleTTBAR/Out_0/output.root", Compiler = "CustomSignalSample.pkl", Custom = True)
 
     ## ====== Test of IO 
     #Passed(TestDir(), "TestDir")
@@ -85,3 +86,5 @@ if __name__ == '__main__':
     # ====== Truth Debugging Stuff ======== #
     #Passed(TestSimpleTruthMatching(), "TestSimpleTruthMatching")
     Passed(TestTopShapes(), "TestTopShapes")
+
+    #Passed(TestWorkingExample4TopsComplexity(), "TestWorkingExample4TopsComplexity")

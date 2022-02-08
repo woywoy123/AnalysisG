@@ -32,6 +32,7 @@ class Event_Custom(VariableManager):
         self.met = "met_met"
         self.met_phi = "met_phi" 
         self.mu_actual = "mu_actual"
+        self.thres = 0.1
         
         self.Type = "Event"
         self.ListAttributes()
@@ -44,7 +45,7 @@ class Event_Custom(VariableManager):
                         "Jets" : Jet(), 
                         "TruthJets": TruthJet_C(), 
                         "TruthTops" : TruthTop_C(), 
-                        "TruthTopChild": TruthTopChild_C(), 
+                        "TruthTopChildren": TruthTopChild_C(), 
                         "TopPreFSR" : TopPreFSR_C(),
                         "TopPostFSR" : TopPostFSR_C(),
                         "TopPostFSRChildren" : TopPostFSRChildren_C()
@@ -90,7 +91,7 @@ class Event_Custom(VariableManager):
             self.SetAttribute(i, l)
         
         for i in self.TruthTops:
-            self.TruthTops[i][0].Decay_init += self.TruthTopChild[i]
+            self.TruthTops[i][0].Decay_init += self.TruthTopChildren[i]
 
         for i in self.TopPostFSR:
             self.TopPostFSR[i][0].Decay_init += self.TopPostFSRChildren[i]
@@ -116,7 +117,7 @@ class Event_Custom(VariableManager):
         self.DetectorParticles += self.DictToList(self.Jets)
         self.TruthJets = self.DictToList(self.TruthJets)
         self.TruthTops = self.DictToList(self.TruthTops)
-        self.TruthTopChild = self.DictToList(self.TruthTopChild)
+        self.TruthTopChildren = self.DictToList(self.TruthTopChildren)
         self.TopPreFSR = self.DictToList(self.TopPreFSR)
         self.TopPostFSR = self.DictToList(self.TopPostFSR)
         self.TopPostFSRChildren = self.DictToList(self.TopPostFSRChildren)
@@ -133,15 +134,18 @@ class Event_Custom(VariableManager):
         DetectorParticles += self.DictToList(self.Electrons)
         DetectorParticles += self.DictToList(self.Muons)
         
+        # Match all particles (including truth children leptons) to the detector objects
         TruthJets = self.DictToList(self.TruthJets)
         for i in self.DictToList(self.TopPostFSRChildren):
-            if abs(i.pdgid) not in [12, 14, 16]:
+            if abs(i.pdgid) in [11, 13, 15]:
                 TruthJets.append(i)
         
         self.DeltaRMatrix(TruthJets, DetectorParticles)
         
         col = []
         for i in self.dRMatrix:
+            if i[1][2] > self.thres:
+                break
             if i[1][0] not in col:
                 i[1][1].Decay.append(i[1][0])
                 col.append(i[1][0])

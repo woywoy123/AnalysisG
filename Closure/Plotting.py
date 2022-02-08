@@ -728,6 +728,60 @@ def TopologicalComplexityMassPlot(Input = "LoaderSignalSample.pkl", Type = "Sign
 def TestDataSamples():
     #GenerateTemplate("", "JetLepton", ["ttbar.pkl"], "TestTTBAR.pkl")
     TopologicalComplexityMassPlot(Input = "TestTTBAR.pkl", Type = "TTBAR")
+    return True
+
+def TestWorkingExample4TopsComplexity():
+    import torch
+    #GenerateTemplate(SignalSample = "CustomSignalSample.pkl", Tree = "TopPostFSRChildren", OutputName = "LoaderCustomSignalSample.pkl") 
+    ev = UnpickleObject("LoaderCustomSignalSample.pkl")
+
+    op = Optimizer(ev)
+    op.DefaultBatchSize = 10
+    op.Epochs = 1
+    op.kFold = 4
+    op.LearningRate = 1e-5
+    op.WeightDecay = 1e-3
+    op.MinimumEvents = 100
+    op.Debug = True
+    op.DefinePathNet(Target = "Edges")
+    op.kFoldTraining()
+    PickleObject(op, "Debug.pkl")
+    op = UnpickleObject("Debug.pkl") 
+    
+    TMP = []
+    for i in op.Model.TMP:
+        v = i/i.max()
+        TMP.append(v)
+
+    PickleObject(TMP, "Matrix.pkl")
+    TMP = UnpickleObject("Matrix.pkl") 
+    add = torch.zeros(TMP[0].shape, dtype=float, device= TMP[0].device)
+    for i in TMP:
+        add = add + i
+    
+    index = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    xData = []
+    yData = []
+    for i in index:
+        for j in index:
+            xData += [i]*int(add[i-1, j-1])
+            yData += [j]*int(add[i-1, j-1])
+    
+    Complexity_Mass = TH2F()
+    Complexity_Mass.Title = "Normalized Summed of Complexity Connectivity"
+    Complexity_Mass.yTitle = "Child-j"
+    Complexity_Mass.xTitle = "Child-i"
+    Complexity_Mass.xMin = 1
+    Complexity_Mass.xMax = 12
+    Complexity_Mass.yMin = 1
+    Complexity_Mass.yMax = 12
+    Complexity_Mass.xBins = 12
+    Complexity_Mass.yBins = 12
+    Complexity_Mass.xData = xData
+    Complexity_Mass.yData = yData
+    Complexity_Mass.Filename = "Complexity.png"
+    Complexity_Mass.SaveFigure("Plots/Complexity_Mass_Projection")
+
 
 
     return True

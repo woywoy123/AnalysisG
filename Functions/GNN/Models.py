@@ -80,7 +80,7 @@ class InvMassGNN(MessagePassing):
         return aggr_out
 
 class PathNet(MessagePassing):
-    def __init__(self, complex = 64, path = 64, hidden = 64, out = 50):
+    def __init__(self, complex = 64, path = 64, hidden = 64, out = 50, Debug = False):
         super(PathNet, self).__init__("add")
         self.mlp_mass_complex = Seq(Linear(-1, hidden), Tanh(), Linear(hidden, 1)) # DO NOT CHANGE OUTPUT DIM 
         self.mlp_comp = Seq(Linear(-1, hidden), Tanh(), Linear(hidden, complex))
@@ -92,6 +92,9 @@ class PathNet(MessagePassing):
         self.__cur = -1
         self.__PathMatrix = -1
         self.device = -1
+        self.Debug = Debug
+        if Debug:
+            self.TMP = []
 
     def forward(self, data):
 
@@ -146,6 +149,8 @@ class PathNet(MessagePassing):
 
             # 2. ==== Project the sum of the topological mass states across complexity 
             e_jxe_i_tmp.append(torch.sum(blk, dim = 0))
+            if self.Debug:
+                self.TMP.append(torch.sum(blk, dim = 0))
        
             # 3. ==== Project along the complexity (the number of nodes included) and learn the complexity
             comp_ej_tmp.append(torch.sum(blk, dim = 1))

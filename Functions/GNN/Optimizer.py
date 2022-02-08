@@ -42,7 +42,7 @@ class Optimizer(Notification):
         else:
             self.Device = torch.device("cpu")
             self.Device_s = "cpu"
-
+        self.Debug = Debug
         self.LearningRate = 1e-2
         self.WeightDecay = 1e-4
         self.DefaultBatchSize = 10
@@ -230,7 +230,7 @@ class Optimizer(Notification):
 
     def DefinePathNet(self, complex = 64, path = 64, hidden = 64, out = 50, Target = "Nodes"):
         self.Classifier = True
-        self.Model = PathNet(complex, path, hidden, out)
+        self.Model = PathNet(complex, path, hidden, out, self.Debug)
         self.DefineOptimizer()
 
         self.DefaultTargetType = Target
