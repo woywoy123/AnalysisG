@@ -26,4 +26,3 @@ class VariableManager:
     def ClearVariable(self):
         del self.Leaves 
         del self.KeyMap
-        

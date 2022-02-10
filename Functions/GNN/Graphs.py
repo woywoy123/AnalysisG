@@ -63,7 +63,18 @@ class EventGraph:
         if Level == "TopPreFSR":
             self.Particles += self.Event.TopPreFSR
 
+        if Level == "TruthJetsLep":
+            self.Particles += self.Event.TruthJets
+            self.Particles += self.Event.Electrons
+            self.Particles += self.Event.Muons
 
+    def CleanUp(self):
+        self.NodeAttr = {}
+        self.EdgeAttr = {}
+        del self.Event
+        del self.Nodes 
+        del self.Edges
+        del self.G
 
     def CreateParticleNodes(self):
         for i in range(len(self.Particles)):
@@ -110,9 +121,8 @@ class EventGraph:
                 attr_v.append(attr_i)
             attr_ten = torch.tensor(attr_v, dtype = torch.float)
             setattr(self.Data, i, attr_ten)
-        
-        setattr(self.Data, "i", self.iter)
-        self.Data.num_nodes = len(self.Nodes)
+        setattr(self.Data, "i", self.iter)  
+        self.Data.num_nodes = len(self.Particles)
 
     def SetNodeAttribute(self, c_name, fx):
         if c_name not in self.NodeAttr:
@@ -124,12 +134,7 @@ class EventGraph:
             self.EdgeAttr[c_name] = []
         self.EdgeAttr[c_name].append(fx)
 
-    def CleanUp(self):
-        self.NodeAttr = {}
-        self.EdgeAttr = {}
-        self.Event = []
-        del self.Nodes 
-        del self.Edges
+
 
 class GenerateDataLoader(Notification):
     
@@ -187,31 +192,46 @@ class GenerateDataLoader(Notification):
 
         self.Notify("DATA WILL BE PROCESSED ON: " + self.Device_s)
         start = self.__iter
-        for i in Bundle.Events:
-            e = EventGraph(Bundle.Events[i], Level, Tree)
+        self.len = len(Bundle.Events)
+        for it in Bundle.Events:
+            e = EventGraph(Bundle.Events[it], Level, Tree)
             e.SelfLoop = self.SelfLoop
             e.iter = self.__iter
             e.CreateParticleNodes()
+            n_particle = len(e.Particles)
+
+            if n_particle <= 1:
+                self.Warning("EMPTY EVENT")
+                del e
+                continue
+
             e.CreateEdges()
-            
+            ev = Bundle.Events[it]
+            Bundle.Events[it] = -1
+            del ev
+
             for i in self.NodeAttribute:
                 e.SetNodeAttribute(i, self.NodeAttribute[i])
+            
             for i in self.EdgeAttribute:
                 e.SetEdgeAttribute(i, self.EdgeAttribute[i])
+
             for i in self.NodeTruthAttribute:
                 e.SetNodeAttribute("y", self.NodeTruthAttribute[i])
+
             for i in self.EdgeTruthAttribute:
                 e.SetEdgeAttribute("edge_y", self.EdgeTruthAttribute[i])
             e.ConvertToData()
             
-            n_particle = len(e.Particles)
+            self.ProgressInformation("CONVERSION")
             
             if n_particle not in self.EventData:
                 self.EventData[n_particle] = []
             self.EventData[n_particle].append(e)
             self.EventMap[self.__iter] = e 
             self.__iter += 1
-
+        
+        self.ResetAll()
         self.Bundles.append([Tree, Bundle, start, self.__iter-1, Level])
 
     def MakeTrainingSample(self):

@@ -12,7 +12,7 @@ void Combinatorial(int n, int k, int num, std::vector<int>* out)
   if (k > 0){ Combinatorial(n -1, k -1, num | ( 1 << (n -1)), out); }
 }
 
-std::vector<torch::Tensor> PathCombination(torch::Tensor AdjMatrix, int Nodes)
+std::vector<torch::Tensor> PathCombination(torch::Tensor AdjMatrix, int Nodes, int chose)
 {
   auto options = torch::TensorOptions().device(AdjMatrix.device().type());
   torch::Tensor msk = torch::pow(2, torch::arange(Nodes, options)); 
@@ -20,7 +20,7 @@ std::vector<torch::Tensor> PathCombination(torch::Tensor AdjMatrix, int Nodes)
 
   // Create the binary combinatorial 
   std::vector<int> Binary;
-  for (int i = 1; i < Nodes; i++){Combinatorial(Nodes, i+1, 0, &Binary);}
+  for (int i = 1; i < chose; i++){Combinatorial(Nodes, i+1, 0, &Binary);}
 
   std::vector<torch::Tensor> Output; 
   std::vector<torch::Tensor> Output_Matrix; 

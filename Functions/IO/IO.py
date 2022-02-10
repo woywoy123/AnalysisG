@@ -99,12 +99,14 @@ class File(Notification):
                 th = TemplateThreading(i, "ObjectLeaves", "ArrayLeaves", self.ObjectLeaves[i], Convert)
                 runners.append(th)
         
-        T = Threading(runners)
+        T = Threading(runners, self)
         T.StartWorkers()
-        for i in T.Result:
-            i.SetAttribute(self)
         del T
-
+        del runners
+        del self.ObjectLeaves
+        del self.ObjectBranches
+        self.Trees = list(self.ObjectTrees)
+        del self.ObjectTrees
 
 def PickleObject(obj, filename):
 

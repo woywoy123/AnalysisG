@@ -3,71 +3,8 @@ from Functions.Event.EventGenerator import EventGenerator
 from Functions.Plotting.Histograms import TH2F, TH1F
 from Functions.Particles.Particles import Particle
 
-def TestSimpleTruthMatching():
-    
-    Dir = "/home/tnom6927/Downloads/SimpleTTBAR/Out_0/output.root"
-
-    E = EventGenerator(Dir, Stop = -1)
-    E.SpawnEvents(True)
-    E.CompileEvent(SingleThread = True)
-    del E
-
-    Dir = "/home/tnom6927/Downloads/SimpleTTBAR/Out_2/output.root"
-
-    E = EventGenerator(Dir, Stop = -1)
-    E.SpawnEvents(True)
-    E.CompileEvent(SingleThread = True)
-    del E
-
-    Dir = "/home/tnom6927/Downloads/SimpleTTBAR/Out_3/output.root"
-
-    E = EventGenerator(Dir, Stop = -1)
-    E.SpawnEvents(True)
-    E.CompileEvent(SingleThread = True)
-    del E
-
-
-    Dir = "/home/tnom6927/Downloads/SimpleTTBAR/Out_4/output.root"
-
-    E = EventGenerator(Dir, Stop = -1)
-    E.SpawnEvents(True)
-    E.CompileEvent(SingleThread = True)
-    del E
-
-    Dir = "/home/tnom6927/Downloads/SimpleTTBAR/Out_5/output.root"
-
-    E = EventGenerator(Dir, Stop = -1)
-    E.SpawnEvents(True)
-    E.CompileEvent(SingleThread = True)
-    del E
-
-    Dir = "/home/tnom6927/Downloads/SimpleTTBAR/Out_6/output.root"
-
-    E = EventGenerator(Dir, Stop = -1)
-    E.SpawnEvents(True)
-    E.CompileEvent(SingleThread = True)
-    del E
-
-    Dir = "/home/tnom6927/Downloads/SimpleTTBAR/Out_7/output.root"
-
-    E = EventGenerator(Dir, Stop = -1)
-    E.SpawnEvents(True)
-    E.CompileEvent(SingleThread = True)
-    del E
-
-
-    return True
-
-def TestTopShapes():
-    Dir = "/home/tnom6927/Downloads/SimpleTTBAR/Out_0/output.root"
-
-    E = EventGenerator(Dir, Stop = -1)
-    E.SpawnEvents(True)
-    E.CompileEvent(SingleThread = True)
-    
-    PickleObject(E, "Debug.pkl")
-    E = UnpickleObject("Debug.pkl")
-   
+def TestTopShapes( Compiler = "CustomSignalSample.pkl", sample = ""):
+    E = UnpickleObject(Compiler)
 
     Top_Mass = []
     Top_MassPreFSR = []
@@ -119,7 +56,8 @@ def TestTopShapes():
 
             if len(k.Decay_init) == 0:
                 skip = True
-
+            
+            ignore = -1
             if skip == False:
                 ignore = k.Index+1
                 F[k.Index+1] = []
@@ -181,7 +119,7 @@ def TestTopShapes():
     t.xMax = 250
     t.xData = Top_Mass
     t.Filename = "TruthTops.png"
-    t.SaveFigure("Plots/TestCustomAnalysisTop")
+    t.SaveFigure("Plots/TestCustomAnalysisTop" + sample)
 
     t = TH1F() 
     t.Title = "Mass of Top Based on Ghost Pre-FSR"
@@ -192,7 +130,7 @@ def TestTopShapes():
     t.xMax = 250
     t.xData = Top_MassPreFSR
     t.Filename = "TruthTopsPreFSR.png"
-    t.SaveFigure("Plots/TestCustomAnalysisTop")
+    t.SaveFigure("Plots/TestCustomAnalysisTop" + sample)
 
     t = TH1F() 
     t.Title = "Mass of Top Based on Ghost Post-FSR"    
@@ -203,7 +141,7 @@ def TestTopShapes():
     t.xMax = 250
     t.xData = Top_MassPostFSR
     t.Filename = "TruthTopsPostFSR.png"
-    t.SaveFigure("Plots/TestCustomAnalysisTop")
+    t.SaveFigure("Plots/TestCustomAnalysisTop" + sample)
 
 
     t = TH1F() 
@@ -215,7 +153,7 @@ def TestTopShapes():
     t.xMax = 250
     t.xData = Top_FromChildren_Mass
     t.Filename = "TruthTops_Children.png"
-    t.SaveFigure("Plots/TestCustomAnalysisTop")
+    t.SaveFigure("Plots/TestCustomAnalysisTop" + sample)
 
     t = TH1F() 
     t.Title = "Mass of Top Based on Ghost Post-FSR (Children)"    
@@ -226,7 +164,7 @@ def TestTopShapes():
     t.xMax = 250
     t.xData = Top_FromChildren_MassPostFSR
     t.Filename = "TruthTopsPostFSR_Children.png"
-    t.SaveFigure("Plots/TestCustomAnalysisTop")
+    t.SaveFigure("Plots/TestCustomAnalysisTop" + sample)
 
     t = TH1F() 
     t.Title = "Mass of Top Based on Ghost Matched Truth Jets\n (Inclusive of Leptonic decaying Top)"    
@@ -237,7 +175,7 @@ def TestTopShapes():
     t.xMax = 500
     t.xData = Top_FromTruthJets
     t.Filename = "TruthTops_GhostTruthJets.png"
-    t.SaveFigure("Plots/TestCustomAnalysisTop")
+    t.SaveFigure("Plots/TestCustomAnalysisTop" + sample)
 
     t = TH1F() 
     t.Title = "Mass of Top Based on Ghost Matched Truth Jets\n (Exclusive of Leptonic decaying Top)"    
@@ -248,7 +186,7 @@ def TestTopShapes():
     t.xMax = 500
     t.xData = Top_FromTruthJets_NoLeptons
     t.Filename = "TruthTops_GhostTruthJets_NoLeptons.png"
-    t.SaveFigure("Plots/TestCustomAnalysisTop")
+    t.SaveFigure("Plots/TestCustomAnalysisTop" + sample)
 
     t = TH1F() 
     t.Title = "Mass of Top Based on Matched Jets\n (Exclusive of Leptonic decaying Top) and NJets > 1"    
@@ -259,7 +197,18 @@ def TestTopShapes():
     t.xMax = 500
     t.xData = Top_FromJets_NoLeptons
     t.Filename = "TruthTops_Jets_NoLeptons.png"
-    t.SaveFigure("Plots/TestCustomAnalysisTop")
-
-
+    t.SaveFigure("Plots/TestCustomAnalysisTop" + sample)
     return True
+
+def Test_tttt():
+    TestTopShapes( "tttt.pkl", "_tttt" )
+    return True
+
+def Test_ttbar():
+    TestTopShapes( "ttbar.pkl", "_ttbar" )
+    return True
+
+def Test_SingleTop():
+    TestTopShapes( "SingleTop_S.pkl", "_SingleTop" )
+    return True
+

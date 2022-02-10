@@ -229,5 +229,4 @@ def TestEventNodeEdgeFeatures():
         TesterBlock("RCJetLepton", tttt)
     except AssertionError:
         return False
-
     return True

@@ -47,6 +47,38 @@ def GenerateTemplate(SignalSample = "SignalSample.pkl", Tree = "TruthChildren_in
         return float(a.phi)
     def Signal(a):
         return int(a.Index)
+
+    def Connection(a, b):
+        if a.Type == "truthjet" and b.Type == "truthjet":
+            if a.GhostTruthJetMap[0] == 0:
+                return False
+            if b.GhostTruthJetMap[0] == 0:
+                return False
+            if len(list(set(b.GhostTruthJetMap).intersection(a.GhostTruthJetMap))) > 0:
+                return True
+            else:
+                return False
+
+        elif a.Type == "truthjet" and b.Type != "truthjet":
+            if b.Index == 0:
+                return False
+            elif b.Index in a.GhostTruthJetMap:
+                return True 
+            else:
+                return False
+
+        elif a.Type != "truthjet" and b.Type == "truthjet":
+            if a.Index == 0:
+                return False
+            elif a.Index in b.GhostTruthJetMap:
+                return True 
+            else:
+                return False
+
+        elif a.Type != "truthjet" and b.Type != "truthjet":
+            if a.Index != b.Index:
+                return False
+
     def d_r(a, b):
         return float(a.DeltaR(b))
     def d_phi(a, b):
@@ -70,6 +102,7 @@ def GenerateTemplate(SignalSample = "SignalSample.pkl", Tree = "TruthChildren_in
     Loader.AddEdgeFeature("dphi", d_phi)
     Loader.AddEdgeFeature("m", m)
     Loader.AddNodeTruth("y", Signal)
+    Loader.AddEdgeTruth("edge_y", Connection)
     
     if SignalSample != "":
         ev = UnpickleObject(SignalSample)
@@ -77,12 +110,14 @@ def GenerateTemplate(SignalSample = "SignalSample.pkl", Tree = "TruthChildren_in
     
     if Additional_Samples != "" and type(Additional_Samples) != list:
         ev = UnpickleObject(Additional_Sample)
-        Loader.AddSample(ev, "tree", "JetLepton")
+        Loader.AddSample(ev, "nominal", Tree)
     else:
         for i in Additional_Samples:
+            print(i)
             ev = UnpickleObject(i)
-            Loader.AddSample(ev, "tree", "JetLepton")
-
+            Loader.AddSample(ev, "nominal", Tree)
+    
+    #Loader.MakeTrainingSample()
     Loader.ToDataLoader()
     PickleObject(Loader, OutputName)
 
@@ -91,23 +126,31 @@ def TrainEvaluate(Model, Outdir):
     Loader = UnpickleObject("LoaderSignalSample.pkl")
     
     op = Optimizer(Loader)
-    op.DefaultBatchSize = 25
+    op.DefaultBatchSize = 100
     op.Epochs = 20
     op.kFold = 10
-    op.LearningRate = 1e-5
-    op.WeightDecay = 1e-3
-    op.MinimumEvents = 250
+    op.LearningRate = 1e-6
+    op.WeightDecay = 1e-6
+    op.MinimumEvents = 100
 
     if Model == "InvMassNode":
         op.DefineInvMass(4, Target = "Nodes")
+
+    if Model == "InvMassNodeEdge":
+        op.DefineInvMass(64, Target = "NodeEdges")
+
     if Model == "InvMassEdge":
-        op.DefineInvMass(64, Target = "Edges")
+        op.DefineInvMass(128, Target = "Edges")
 
     if Model == "PathNetNode":
         op.DefinePathNet(Target = "Nodes")
 
+    if Model == "PathNetNodeEdge":
+        op.DefinePathNet(Target = "NodeEdges")
+
     if Model == "PathNetEdge":
-        op.DefinePathNet(Target = "Edges")
+        op.DefinePathNet(complex = 128, out = 128, Target = "Edges")
+
 
     op.kFoldTraining()
     PickleObject(op, Model + ".pkl") 
@@ -120,7 +163,7 @@ def TrainEvaluate(Model, Outdir):
 
 def TestInvMassGNN_Tops_Edge():
     #GenerateTemplate(Tree = "TruthTops")
-    TrainEvaluate("InvMassEdge", "GNN_Performance_InvMassGNN_Tops_Edge")
+    TrainEvaluate("InvMassNodeEdge", "GNN_Performance_InvMassGNN_Tops_Edge")
     return True
 
 def TestInvMassGNN_Tops_Node():
@@ -130,7 +173,7 @@ def TestInvMassGNN_Tops_Node():
 
 def TestInvMassGNN_Children_Edge():
     #GenerateTemplate(Tree = "TruthChildren_init")
-    TrainEvaluate("InvMassEdge", "GNN_Performance_InvMassGNN_Children_Edge")
+    TrainEvaluate("InvMassNodeEdge", "GNN_Performance_InvMassGNN_Children_Edge")
     return True
 
 def TestInvMassGNN_Children_Node():
@@ -139,18 +182,23 @@ def TestInvMassGNN_Children_Node():
     return True
 
 def TestInvMassGNN_Children_NoLep_Edge():
-    GenerateTemplate(Tree = "TruthChildren_init_NoLep")
-    TrainEvaluate("InvMassEdge", "GNN_Performance_InvMassGNN_Children_Edge")
+    #GenerateTemplate(Tree = "TruthChildren_init_NoLep")
+    TrainEvaluate("InvMassNodeEdge", "GNN_Performance_InvMassGNN_Children_Edge")
     return True
 
 def TestInvMassGNN_Children_NoLep_Node():
-    GenerateTemplate(Tree = "TruthChildren_init_NoLep")
+    #GenerateTemplate(Tree = "TruthChildren_init_NoLep")
     TrainEvaluate("InvMassNode", "GNN_Performance_InvMassGNN_Children_Node")
+    return True
+
+def TestInvMassGNN_TruthJets():
+    #GenerateTemplate(SignalSample = "tttt.pkl", Tree = "TruthJetsLep", Additional_Samples = ["ttbar.pkl", "SingleTop_S.pkl"], OutputName = "LoaderSignalSample.pkl")
+    TrainEvaluate("InvMassEdge", "GNN_Performance_InvMassGNN_ChildrenMixed_Edge")
     return True
 
 def TestPathNetGNN_Children_Edge():
     #GenerateTemplate("TruthChildren_init")
-    TrainEvaluate("PathNetEdge", "GNN_Performance_PathNetGNN_Children_Edge")
+    TrainEvaluate("PathNetNodeEdge", "GNN_Performance_PathNetGNN_Children_Edge")
     return True
 
 def TestPathNetGNN_Children_Node():
@@ -158,9 +206,9 @@ def TestPathNetGNN_Children_Node():
     TrainEvaluate("PathNetNode", "GNN_Performance_PathNetGNN_Children_Node")
     return True
 
-def TestPathNetGNN_Data():
-    #GenerateTemplate("JetLepton")
-    TrainEvaluate("PathNetEdge", "GNN_Performance_PathNetGNN_Data_Edge")
+def TestPathNetGNN_TruthJets():
+    #GenerateTemplate(SignalSample = "tttt.pkl", Tree = "TruthJetsLep", Additional_Samples = ["ttbar.pkl", "SingleTop_S.pkl"], OutputName = "LoaderSignalSample.pkl")
+    TrainEvaluate("PathNetEdge", "GNN_Performance_PathNetGNN_ChildrenMixed_Edge")
     return True
 
 

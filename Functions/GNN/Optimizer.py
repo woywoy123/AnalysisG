@@ -45,7 +45,7 @@ class Optimizer(Notification):
         self.Debug = Debug
         self.LearningRate = 1e-2
         self.WeightDecay = 1e-4
-        self.DefaultBatchSize = 10
+        self.DefaultBatchSize = 25
         self.MinimumEvents = 250
         self.kFold = 10
         self.NotifyTime = 5
@@ -90,6 +90,8 @@ class Optimizer(Notification):
             TimeStartEpoch = time.time()
 
             for n_node in MaxNode:
+                if n_node == 0:
+                    continue
                 self.Notify("NUMBER OF NODES -----> " + str(n_node) + " BEING TESTED")
                 CurrentData = self.DataLoader[n_node] 
                 
@@ -170,10 +172,16 @@ class Optimizer(Notification):
         if TargetType == "Nodes":
             _, p = pred.max(1)
             return pred, p, Sample.y.t().contiguous().squeeze()
-        if TargetType == "Edges":
+
+        if TargetType == "NodeEdges":
             edge_index = Sample.edge_index
             p = self.Model.Adj_M[edge_index[0], edge_index[1]]
             return p, torch.round(p).to(torch.int), torch.tensor(Sample.y[edge_index[0]] == Sample.y[edge_index[1]], dtype= torch.float).t()[0]
+
+        if TargetType == "Edges":
+            edge_index = Sample.edge_index
+            p = self.Model.Adj_M[edge_index[0], edge_index[1]]
+            return p, torch.round(p).to(torch.int), Sample.edge_y.t()[0].to(torch.float)
 
     def DefineLossFunction(self, LossFunction):
         if LossFunction == "CrossEntropyLoss":
@@ -186,31 +194,6 @@ class Optimizer(Notification):
         self.Model.to(self.Device)
         self.Optimizer = torch.optim.Adam(self.Model.parameters(), lr = self.LearningRate, weight_decay = self.WeightDecay)
     
-    # Need to rebuild this!!!!
-    #def ApplyToDataSample(self, sample, attr):
-    #    DataLoader = {}
-    #    if isinstance(sample, dict):
-    #        DataLoader = sample
-    #    elif isinstance(sample, GenerateDataLoader) and sample.Converted == True:
-    #        DataLoader = sample.DataLoader
-    #    elif isinstance(sample, GenerateDataLoader):
-    #        sample.ToDataLoader()
-    #        DataLoader = sample.DataLoader
-    #    else:
-    #        self.Warning("FAILURE::WRONG DATALOADER OBJECT")
-    #        return False
-
-    #    for n_part in sample.EventData:
-    #        for i in sample.EventData[n_part]:
-    #            Data = i.Data.to(self.Device_s, non_blocking = True)
-    #            Event_Obj = i.Event
-
-    #            _, pred = self.Model(Data).max(1)
-
-    #            for n in range(len(pred)):
-    #                setattr(i.NodeParticleMap[n], attr, pred[n])
-    #    sample.Processed = True 
-
     def DefineEdgeConv(self, in_channels, out_channels):
         self.Classifier = True
         self.Model = EdgeConv(in_channels, out_channels)
@@ -225,6 +208,8 @@ class Optimizer(Notification):
         self.DefaultTargetType = Target
         if Target == "Nodes":
             self.DefineLossFunction("CrossEntropyLoss")
+        elif Target == "NodeEdges": 
+            self.DefineLossFunction("MSELoss")
         elif Target == "Edges": 
             self.DefineLossFunction("MSELoss")
 
@@ -236,5 +221,7 @@ class Optimizer(Notification):
         self.DefaultTargetType = Target
         if Target == "Nodes":
             self.DefineLossFunction("CrossEntropyLoss")
+        elif Target == "NodeEdges": 
+            self.DefineLossFunction("MSELoss")
         elif Target == "Edges": 
             self.DefineLossFunction("MSELoss")

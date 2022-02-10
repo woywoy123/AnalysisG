@@ -1,4 +1,3 @@
-
 import math
 from itertools import combinations
 
@@ -85,7 +84,7 @@ class PathNet(MessagePassing):
         self.mlp_mass_complex = Seq(Linear(-1, hidden), Tanh(), Linear(hidden, 1)) # DO NOT CHANGE OUTPUT DIM 
         self.mlp_comp = Seq(Linear(-1, hidden), Tanh(), Linear(hidden, complex))
         self.mlp_path = Seq(Linear(-1, hidden), ReLU(), Linear(hidden, path))
-        self.mlp = Seq(Linear(path + complex, path+complex), ReLU(), Linear(path+complex, hidden))
+        self.mlp = Seq(Linear(path + complex+2, path+complex), ReLU(), Linear(path+complex, hidden))
         self.N_Nodes = -1
         self.__Dyn_adj = -1
         self.__comb = []
@@ -114,7 +113,7 @@ class PathNet(MessagePassing):
 
                 Adj_Matrix = torch.zeros(self.__cur, self.__cur, device = self.device)
                 Adj_Matrix[event[0].edge_index[0], event[0].edge_index[1]] = 1
-                Combi = PathCombination(Adj_Matrix, self.__cur)
+                Combi = PathCombination(Adj_Matrix, self.__cur, 3)
                 
                 self.__Dyn_adj = torch.tensor([[i==j for i in range(self.N_Nodes)] for j in range(self.__cur)], dtype = torch.float, device = self.device)
                 
@@ -173,18 +172,17 @@ class PathNet(MessagePassing):
         # 4.1 ==== Learn this sum after concatinating the list to a matrix (n_events * e_i) x e_j
         adj_p_ei = self.mlp_comp(torch.cat(adj_p_tmp, dim = 0))
 
-        return self.propagate(edge_index = edge_index, x = torch.cat([data.e], dim = 1), edge_attr = torch.cat([e_i, adj_p_ei], dim = 1), edges = edge_index)
 
-    def message(self, edge_index, x_i, x_j, edge_attr):
-        return self.mlp(torch.cat([edge_attr[edge_index[1].t()]], dim = 1))
+        return self.propagate(edge_index = edge_index, x = torch.cat([data.e, data.pt, data.eta, data.phi], dim = 1), edge_attr = torch.cat([e_i, adj_p_ei], dim = 1), dr = data.dr, dphi = data.dphi, edges = edge_index)
+
+    def message(self, edge_index, x_i, x_j, dr, dphi, edge_attr):
+        return self.mlp(torch.cat([edge_attr[edge_index[1].t()], dr, dphi], dim = 1))
     
     def update(self, aggr_out, edges): 
         aggr_out = F.normalize(aggr_out)
         self.Adj_M = torch.zeros((len(aggr_out), len(aggr_out)), device = self.device)
         self.Adj_M[edges[0], edges[1]] = F.cosine_similarity(aggr_out[edges[0]], aggr_out[edges[1]])
         return aggr_out
-
-
 
 
 

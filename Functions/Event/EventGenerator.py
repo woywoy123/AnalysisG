@@ -28,7 +28,6 @@ class EventGenerator(Debugging, EventVariables, Directories):
                 F_i.Leaves = self.MinimalLeaves
                 F_i.CheckKeys()
                 F_i.ConvertToArray()
-
                 if self.__Debug:
                     PickleObject(F_i, "Debug.pkl")
                     F_i = UnpickleObject("Debug.pkl")
@@ -36,7 +35,7 @@ class EventGenerator(Debugging, EventVariables, Directories):
                 self.Notify("SPAWNING EVENTS IN FILE -> " + F)
                 for l in range(len(F_i.ArrayLeaves[list(F_i.ArrayLeaves)[0]])):
                     pairs = {}
-                    for tr in F_i.ObjectTrees:
+                    for tr in F_i.Trees:
                         
                         if self.__Start != 0:
                             if self.__Start <= l:
@@ -63,6 +62,7 @@ class EventGenerator(Debugging, EventVariables, Directories):
                         self.ResetCounter()
                         break
                 del F_i
+                del F
                 
         del self.MinimalLeaves
         del self.MinimalTrees
@@ -93,18 +93,17 @@ class EventGenerator(Debugging, EventVariables, Directories):
                     self.Batches[k].append(i)
 
                 Thread.append(TemplateThreading(k, "", "Batches", self.Batches[k], function))
-            th = Threading(Thread, self.Threads)
+            th = Threading(Thread, self, self.Threads)
             th.Verbose = True
             if SingleThread:
                 th.TestWorker()
             else:
                 th.StartWorkers()
+            del th
+            del Thread
 
             self.Notify("FINISHED COMPILING EVENTS FROM FILE -> " + f)
             self.Notify("SORTING INTO DICTIONARY -> " + f)
-            res = th.Result
-            for i in res:
-                i.SetAttribute(self)
             
             self.FileEventIndex[f] = []
             self.FileEventIndex[f].append(it)
@@ -113,10 +112,8 @@ class EventGenerator(Debugging, EventVariables, Directories):
                     ev[it] = j
                     it += 1
             self.FileEventIndex[f].append(it-1)
-            
-            del th
-            self.Batches = {}
-            Thread = []
+            del self.Batches
+
         self.Events = ev
 
     def EventIndexFileLookup(self, index):

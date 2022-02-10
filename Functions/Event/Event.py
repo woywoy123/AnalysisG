@@ -111,19 +111,24 @@ class Event_Custom(VariableManager):
                     self.TopPostFSR[i][0].Decay += [self.TruthJets[j][0]]
 
         self.DetectorMatchingEngine()
+        self.Electrons = self.DictToList(self.Electrons)
+        self.Muons = self.DictToList(self.Muons)
+        self.Jets = self.DictToList(self.Jets)
+
         self.DetectorParticles = []
-        self.DetectorParticles += self.DictToList(self.Electrons)
-        self.DetectorParticles += self.DictToList(self.Muons)
-        self.DetectorParticles += self.DictToList(self.Jets)
+        self.DetectorParticles += self.Electrons
+        self.DetectorParticles += self.Muons
+        self.DetectorParticles += self.Jets
+
         self.TruthJets = self.DictToList(self.TruthJets)
         self.TruthTops = self.DictToList(self.TruthTops)
         self.TruthTopChildren = self.DictToList(self.TruthTopChildren)
+
         self.TopPreFSR = self.DictToList(self.TopPreFSR)
         self.TopPostFSR = self.DictToList(self.TopPostFSR)
         self.TopPostFSRChildren = self.DictToList(self.TopPostFSRChildren)
 
         if ClearVal: 
-            del self.dRMatrix
             del self.Objects
             del self.Leaves
             del self.KeyMap
@@ -148,10 +153,13 @@ class Event_Custom(VariableManager):
                 break
             if i[1][0] not in col:
                 i[1][1].Decay.append(i[1][0])
+                if i[1][0].Type in ["mu", "el"] and i[1][1].pdgid in [11, 13]:
+                    i[1][0].Index = i[1][1].Index +1
                 col.append(i[1][0])
 
             if len(DetectorParticles) == len(col):
                 break
+        del self.dRMatrix
     
     def DeltaRMatrix(self, List1, List2): 
         delR = {}
@@ -228,7 +236,6 @@ class Event(VariableManager, Debugging):
                     val = File.ArrayLeaves[i][self.iter]
                 except:
                     self.BrokenEvent = True
-                    continue
                 
                 if Attributor(var, val):
                     continue
@@ -326,7 +333,6 @@ class Event(VariableManager, Debugging):
 
     def CompileEvent(self, ClearVal = True):
 
-
         self.TruthTops = CompileParticles(self.TruthTops, Top()).Compile(ClearVal) 
         self.TruthChildren_init = CompileParticles(self.TruthChildren_init, Truth_Top_Child_Init()).Compile(ClearVal)
         self.TruthChildren = CompileParticles(self.TruthChildren, Truth_Top_Child()).Compile(ClearVal)
@@ -336,7 +342,7 @@ class Event(VariableManager, Debugging):
         self.Electrons = CompileParticles(self.Electrons, Electron()).Compile(ClearVal)
         self.RCSubJets = CompileParticles(self.RCSubJets, RCSubJet()).Compile(ClearVal)
         self.RCJets = CompileParticles(self.RCJets, RCJet()).Compile(ClearVal)
-        
+
         for i in self.TruthTops:
             self.TruthTops[i][0].Decay_init = self.TruthChildren_init[i]
             self.TruthTops[i][0].Decay = self.TruthChildren[i]
@@ -378,7 +384,7 @@ class Event(VariableManager, Debugging):
         self.DetectorParticles += self.Electrons
         self.DetectorParticles += self.RCJets
         self.DetectorParticles += self.RCSubJets
-     
+        
         for i in self.TruthTops:
             i.PropagateSignalLabel()
 
