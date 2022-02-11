@@ -3,6 +3,8 @@ from Functions.GNN.Optimizer import Optimizer
 from Functions.IO.IO import UnpickleObject, PickleObject
 from Functions.GNN.Metrics import EvaluationMetrics
 from Functions.GNN.Models import InvMassGNN
+from Functions.Plotting.Histograms import TH1F, CombineHistograms
+from Functions.IO.Files import WriteDirectory
 
 def SimpleFourTops():
     def Signal(a):
@@ -78,6 +80,7 @@ def GenerateTemplate(SignalSample = "SignalSample.pkl", Tree = "TruthChildren_in
         elif a.Type != "truthjet" and b.Type != "truthjet":
             if a.Index != b.Index:
                 return False
+        return a.Index == b.Index
 
     def d_r(a, b):
         return float(a.DeltaR(b))
@@ -127,7 +130,7 @@ def TrainEvaluate(Model, Outdir):
     
     op = Optimizer(Loader)
     op.DefaultBatchSize = 100
-    op.Epochs = 20
+    op.Epochs = 2
     op.kFold = 10
     op.LearningRate = 1e-6
     op.WeightDecay = 1e-6
@@ -151,15 +154,87 @@ def TrainEvaluate(Model, Outdir):
     if Model == "PathNetEdge":
         op.DefinePathNet(complex = 128, out = 128, Target = "Edges")
 
-
     op.kFoldTraining()
-    PickleObject(op, Model + ".pkl") 
-    
-    op = UnpickleObject(Model + ".pkl")
+    Map_Pred = op.RebuildPredictionParticles()
+    Map_Truth = op.RebuildTruthParticles()
+    #FileMap = op.RebuildEventFileMapping()
+    #for i in Map_Truth:
+    #    print(len(Map_Truth[i]), len(op.Loader.EventMap[i].Particles), FileMap[i], i) #, len(Map_Pred[i]))
 
     eva = EvaluationMetrics()
     eva.Sample = op
     eva.LossTrainingPlot("Plots/" + Outdir, False)
+    
+    tr = TH1F() 
+    tr.Title = "Reconstruction Delta"
+    total = 0
+    total_r = 0
+    for i in Map_Pred:
+        if len(Map_Pred[i]) == 0:
+            continue
+        reco = len(Map_Pred[i])
+        truth = len(Map_Truth[i])
+        delta = truth - reco
+        tr.xData.append(delta)
+        total += truth
+        total_r += reco
+
+    tr.xTitle = "Mass (GeV)"
+    tr.yTitle = "Entries"
+    tr.DefaultDPI = 500
+    tr.xBins = 30
+    tr.xMin = -15
+    tr.xMax = 15
+    tr.Filename = "RecoDelta.png"
+    tr.SaveFigure("Plots/" + Outdir)
+    
+    Output = ""
+    Output += "Top Reconstruction Efficiency: " + str(round(100*total_r / total, 4)) + "%\n"
+    Output += "Total Truth Tops: " + str(total) + "\n"
+    Output += "Total Reco Tops: " + str(total_r) + "\n"
+    WriteDirectory().WriteTextFile(Output, "Plots/" + Outdir, "ReconstructionInformation.txt")
+
+    t = TH1F() 
+    for i in Map_Truth:
+        Part = Map_Truth[i]
+        for j in Part:
+            t.xData.append(j.Mass_GeV)
+    
+    t.Title = "Truth Graph"
+    t.xTitle = "Mass (GeV)"
+    t.yTitle = "Entries"
+    t.DefaultDPI = 500
+    t.xBins = 250
+    t.xMin = 0
+    t.xMax = 500
+    t.Filename = "TruthGraph_Tops.png"
+    t.SaveFigure("Plots/" + Outdir)
+
+
+    tc = TH1F() 
+    for i in Map_Pred:
+        Part = Map_Pred[i]
+        for j in Part:
+            tc.xData.append(j.Mass_GeV)
+    
+    tc.Title = "Reconstruction (GNN)"
+    tc.xTitle = "Mass (GeV)"
+    tc.yTitle = "Entries"
+    tc.DefaultDPI = 500
+    tc.xBins = 250
+    tc.xMin = 0
+    tc.xMax = 500
+    tc.Filename = "GNN_Tops.png"
+    tc.SaveFigure("Plots/" + Outdir)
+
+
+    Mass_Edge = CombineHistograms()
+    Mass_Edge.DefaultDPI = 500
+    Mass_Edge.Histograms = [t, tc]
+    Mass_Edge.Title = "Mass of Tops From Reconstructed (GNN) and Truth"
+    Mass_Edge.Filename = "TopMass.png"
+    Mass_Edge.Save("Plots/" + Outdir)
+
 
 def TestInvMassGNN_Tops_Edge():
     #GenerateTemplate(Tree = "TruthTops")
@@ -183,18 +258,20 @@ def TestInvMassGNN_Children_Node():
 
 def TestInvMassGNN_Children_NoLep_Edge():
     #GenerateTemplate(Tree = "TruthChildren_init_NoLep")
-    TrainEvaluate("InvMassNodeEdge", "GNN_Performance_InvMassGNN_Children_Edge")
+    TrainEvaluate("InvMassNodeEdge", "GNN_Performance_InvMassGNN_NoLepChildren_Edge")
     return True
 
 def TestInvMassGNN_Children_NoLep_Node():
     #GenerateTemplate(Tree = "TruthChildren_init_NoLep")
-    TrainEvaluate("InvMassNode", "GNN_Performance_InvMassGNN_Children_Node")
+    TrainEvaluate("InvMassNode", "GNN_Performance_InvMassGNN_NoLepChildren_Node")
     return True
 
 def TestInvMassGNN_TruthJets():
-    #GenerateTemplate(SignalSample = "tttt.pkl", Tree = "TruthJetsLep", Additional_Samples = ["ttbar.pkl", "SingleTop_S.pkl"], OutputName = "LoaderSignalSample.pkl")
-    TrainEvaluate("InvMassEdge", "GNN_Performance_InvMassGNN_ChildrenMixed_Edge")
+    #GenerateTemplate(SignalSample = "tttt.pkl", Tree = "TopPostFSRChildren", Additional_Samples = "", OutputName = "LoaderSignalSample.pkl")
+    TrainEvaluate("InvMassEdge", "GNN_Performance_InvMassGNN_TruthJet_Edge")
     return True
+
+
 
 def TestPathNetGNN_Children_Edge():
     #GenerateTemplate("TruthChildren_init")
@@ -208,7 +285,7 @@ def TestPathNetGNN_Children_Node():
 
 def TestPathNetGNN_TruthJets():
     #GenerateTemplate(SignalSample = "tttt.pkl", Tree = "TruthJetsLep", Additional_Samples = ["ttbar.pkl", "SingleTop_S.pkl"], OutputName = "LoaderSignalSample.pkl")
-    TrainEvaluate("PathNetEdge", "GNN_Performance_PathNetGNN_ChildrenMixed_Edge")
+    TrainEvaluate("PathNetEdge", "GNN_Performance_PathNetGNN_TruthJet_Edge")
     return True
 
 

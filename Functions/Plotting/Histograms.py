@@ -31,8 +31,8 @@ class GenericAttributes:
         self.Style = ""
         self.Filename = ""
 
-        self.DefaultScaling = 10
-        self.DefaultDPI = 250
+        self.DefaultScaling = 15
+        self.DefaultDPI = 500
         self.Compiled = False
         self.FontSize = 16
         
@@ -214,8 +214,8 @@ class TH2F(SharedMethods, GenericAttributes):
 class CombineHistograms(SharedMethods):
     def __init__(self):
         SharedMethods.__init__(self)
-        self.DefaultScaling = 8
-        self.DefaultDPI = 500
+        self.DefaultScaling = 10
+        self.DefaultDPI = 250
         self.Normalize = False
         self.Histograms = []
         self.Title = ""
@@ -240,6 +240,7 @@ class CombineHistograms(SharedMethods):
         if self.Filename == "":
             self.Filename = self.Title + ".png"
         self.Compiled = True
+        self.PLT.tight_layout()
 
     def Save(self, dir):
         self.SaveFigure(dir) 
@@ -279,6 +280,7 @@ class CombineTGraph(SharedMethods):
             self.PLT.xlabel(self.Lines[0].xTitle)
             self.PLT.ylabel(self.Lines[0].yTitle)
         self.PLT.legend(loc="upper right")
+        self.PLT.tight_layout()
         self.Filename = self.Title + ".png"
         self.Compiled = True
 

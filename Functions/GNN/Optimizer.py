@@ -2,6 +2,7 @@ from Functions.Tools.Alerting import Notification
 from Functions.GNN.Graphs import GenerateDataLoader
 from Functions.GNN.Models import EdgeConv, InvMassGNN, PathNet
 from Functions.IO.Files import WriteDirectory
+from Functions.Particles.Particles import Particle
 
 import torch
 from torch.utils.data import SubsetRandomSampler
@@ -225,3 +226,85 @@ class Optimizer(Notification):
             self.DefineLossFunction("MSELoss")
         elif Target == "Edges": 
             self.DefineLossFunction("MSELoss")
+
+    def __RebuildClustersFromEdge(self, topo):
+        edge_index = self.Sample.edge_index
+        TMP = {}
+        for t, e_i, e_j in zip(topo, edge_index[0], edge_index[1]):
+            if t > 0:
+                if int(e_i) not in TMP:
+                    TMP[int(e_i)] = []
+                TMP[int(e_i)].append(int(e_j))      
+
+        TMP_L = []
+        for i in TMP:
+            l = TMP[i]
+            l.append(i)
+            TMP_L.append(list(set(l)))
+
+        TMP_L = [list(x) for x in set(tuple(x) for x in TMP_L)]
+
+        Output = []
+        for k in TMP_L:
+            Par = Particle(True)
+            for j in k:
+                P = Particle(True)
+                P.pt = self.Sample.pt[j]
+                P.e = self.Sample.e[j]
+                P.phi = self.Sample.phi[j]
+                P.eta = self.Sample.eta[j]
+                Par.Decay.append(P)    
+            Par.CalculateMassFromChildren()
+            Output.append(Par)
+        return Output
+    
+    def __RebuildParticlesFromData(self, Prediction, DataLoader):
+        Output = {}
+        self.ResetAll()
+        l = 0
+        for i in DataLoader:
+            l += len(DataLoader[i]) 
+        self.len = l
+
+        for nodes in DataLoader:
+            for event in DataLoader[nodes]:
+                self.Sample = event
+                if Prediction: 
+                    _, topo, truth = self.TargetDefinition(event, self.DefaultTargetType)
+                else:
+                    topo = event.edge_y
+                self.ProgressInformation("BUILDING/PREDICTING")
+                Output[event.i] = self.__RebuildClustersFromEdge(topo) 
+        if len(Output) == 0:
+            self.Warning("NO DATA!")
+        return Output
+
+    def RebuildTruthParticles(self):
+        self.Notify("REBUILDING TRUTH PARTICLES FROM TRAINING")
+        return self.__RebuildParticlesFromData(False, self.Loader.DataLoader)
+
+    def RebuildPredictionParticles(self):
+        self.Notify("REBUILDING PREDICTION PARTICLES FROM TRAINING")
+        return self.__RebuildParticlesFromData(True, self.Loader.DataLoader) 
+
+    def RebuildTruthParticlesTestData(self):
+        self.Notify("REBUILDING TRUTH PARTICLES FROM TEST DATA")
+        return self.__RebuildParticlesFromData(False, self.Loader.TestDataLoader)
+
+    def RebuildPredictionParticlesTestData(self):
+        self.Notify("REBUILDING PREDICTION PARTICLES FROM TEST DATA")
+        return self.__RebuildParticlesFromData(True, self.Loader.TestDataLoader) 
+
+    def RebuildEventFileMapping(self):
+        it = 0 
+        File = ""
+        Mapping = {}
+        for i in self.Loader.Bundles:
+            start = i[2]
+            end = i[3]
+            Events = i[1].Events
+            for k in Events:
+                File = i[1].EventIndexFileLookup(k)
+                Mapping[it] = File
+                it += 1
+        return Mapping

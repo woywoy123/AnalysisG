@@ -28,9 +28,9 @@ if __name__ == '__main__':
     #Generate_Cache(dir, Stop = -1, SingleThread = False, Compiler = "SignalSample.pkl")
     #Generate_Cache("/CERN/Grid/Samples/NAF/2021-05-05-2cRC-all/mc16a/postProcessed_ttbar_PhPy8_Total.root", Stop = 150000, SingleThread = True, Compiler = "ttbar.pkl")
     #Generate_Cache("/home/tnom6927/Downloads/SimpleTTBAR/Out_0/output.root", Compiler = "CustomSignalSample.pkl", Custom = True)
-    #Generate_Cache("/CERN/CustomAnalysisTopOutput/tttt/tttt.root", Stop = 2000, Compiler = "tttt.pkl", Custom = True)
-    #Generate_Cache("/CERN/CustomAnalysisTopOutput/ttbar/", Stop = 1000, SingleThread = False, Compiler = "ttbar.pkl", Custom = True)
-    #Generate_Cache("/CERN/CustomAnalysisTopOutput/t/SingleTop_S_Channel.root", Compiler = "SingleTop_S.pkl", Custom = True)
+    #Generate_Cache("/CERN/CustomAnalysisTopOutput/tttt/tttt.root", Stop = 5000, Compiler = "tttt.pkl", Custom = True)
+    #Generate_Cache("/CERN/CustomAnalysisTopOutput/ttbar/", Stop = 100, SingleThread = False, Compiler = "ttbar.pkl", Custom = True)
+    #Generate_Cache("/CERN/CustomAnalysisTopOutput/t/SingleTop_S_Channel.root", Stop = 100, Compiler = "SingleTop_S.pkl", Custom = True)
     
     ## ====== Test of IO 
     #Passed(TestDir(), "TestDir")
@@ -41,13 +41,13 @@ if __name__ == '__main__':
     #Passed(TestSignalDirectory(), "TestSignalDirectory")
 
     ## ====== Test of EventGenerator 
-    #Generate_Cache(dir)
-    #Passed(TestEvents(), "TestEvents")
-    #Passed(TestParticleAssignment(), "TestParticleAssignment")
-    #Passed(TestAnomalousStatistics(), "TestAnomalousStatistics") 
-    #Passed(TestTops(), "TestTop")
-    #Passed(TestResonance(), "TestResonance")
-    #Passed(TestBackGroundProcesses(), "TestBackGroundProcesses")
+    Generate_Cache(dir)
+    Passed(TestEvents(), "TestEvents")
+    Passed(TestParticleAssignment(), "TestParticleAssignment")
+    Passed(TestAnomalousStatistics(), "TestAnomalousStatistics") 
+    Passed(TestTops(), "TestTop")
+    Passed(TestResonance(), "TestResonance")
+    Passed(TestBackGroundProcesses(), "TestBackGroundProcesses")
 
     ## ====== Test of DataLoader
     #Passed(TestEventGraphs(), "TestEventGraphs")
@@ -81,18 +81,11 @@ if __name__ == '__main__':
     #Passed(TestInvMassGNN_Children_NoLep_Edge(), "TestInvMassGNN_Children_Edge")
     #Passed(TestInvMassGNN_Children_NoLep_Node(), "TestInvMassGNN_Children_Node")
 
-    #Passed(TestInvMassGNN_TruthJets(), "TestInvMassGNN_TruthJets") 
+    Passed(TestInvMassGNN_TruthJets(), "TestInvMassGNN_TruthJets") 
 
     #Passed(TestPathNetGNN_Children_Edge(), "TestPathNetGNN_Children_Edge") 
     #Passed(TestPathNetGNN_Children_Node(), "TestPathNetGNN_Children_Node") 
-    Passed(TestPathNetGNN_TruthJets(), "TestPathNetGNN_TruthJets") 
-
-
-
-
-
-
-
+    #Passed(TestPathNetGNN_TruthJets(), "TestPathNetGNN_TruthJets") 
 
 
     # ====== Truth Debugging Stuff ======== #

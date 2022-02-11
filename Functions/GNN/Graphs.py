@@ -68,6 +68,9 @@ class EventGraph:
             self.Particles += self.Event.Electrons
             self.Particles += self.Event.Muons
 
+        if Level == "TruthTopChildren":
+            self.Particles += self.Event.TruthTopChildren
+        
     def CleanUp(self):
         self.NodeAttr = {}
         self.EdgeAttr = {}
@@ -159,7 +162,7 @@ class GenerateDataLoader(Notification):
         self.TestSize = 40
         self.ValidationTrainingSize = 60
 
-        self.SelfLoop = False
+        self.SelfLoop = True
         self.Converted = False
         self.TrainingTestSplit = False
         self.Processed = False
@@ -194,6 +197,7 @@ class GenerateDataLoader(Notification):
         start = self.__iter
         self.len = len(Bundle.Events)
         for it in Bundle.Events:
+            
             e = EventGraph(Bundle.Events[it], Level, Tree)
             e.SelfLoop = self.SelfLoop
             e.iter = self.__iter
@@ -202,8 +206,6 @@ class GenerateDataLoader(Notification):
 
             if n_particle <= 1:
                 self.Warning("EMPTY EVENT")
-                del e
-                continue
 
             e.CreateEdges()
             ev = Bundle.Events[it]

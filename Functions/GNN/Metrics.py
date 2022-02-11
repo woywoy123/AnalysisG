@@ -153,7 +153,7 @@ class EvaluationMetrics(Notification):
         ACTra.ErrorBars = ErrorBars
         
         C = CombineTGraph()
-        C.Title = "Training and Validation Prediction Accuracy with Epoch"
+        C.Title = "Training and Validation Accuracy with Epoch"
         C.yMin = 0
         C.yMax = 120
         C.Lines = [ACVal, ACTra] 
