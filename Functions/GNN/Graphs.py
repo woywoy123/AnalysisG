@@ -77,7 +77,8 @@ class EventGraph:
         del self.Event
         del self.Nodes 
         del self.Edges
-        del self.G
+        del self.Particles
+        del self.NodeParticleMap
 
     def CreateParticleNodes(self):
         for i in range(len(self.Particles)):
@@ -162,7 +163,7 @@ class GenerateDataLoader(Notification):
         self.TestSize = 40
         self.ValidationTrainingSize = 60
 
-        self.SelfLoop = True
+        self.SelfLoop = False
         self.Converted = False
         self.TrainingTestSplit = False
         self.Processed = False
@@ -288,4 +289,3 @@ class GenerateDataLoader(Notification):
         del self.NodeAttribute
         del self.NodeTruthAttribute
         del self.EdgeTruthAttribute
-

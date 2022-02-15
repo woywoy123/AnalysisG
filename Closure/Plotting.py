@@ -412,13 +412,14 @@ def TestGNNMonitor():
     Loader.AddSample(ev, "nominal", "TruthTops")
     Loader.ToDataLoader()
 
+    ev = UnpickleObject("SignalSample.pkl")
     Sig = GenerateDataLoader()
     Sig.AddNodeFeature("x", Charge)
     Sig.AddNodeTruth("y", Signal)
     Sig.AddSample(ev, "nominal", "TruthTops")
 
     op = Optimizer(Loader)
-    op.DefaultBatchSize = 10
+    op.DefaultBatchSize = 2000
     op.Epochs = 50
     op.kFold = 10
     op.LearningRate = 1e-6
@@ -668,7 +669,7 @@ def TopologicalComplexityMassPlot(Input = "LoaderSignalSample.pkl", Type = "Sign
     import torch 
         
     if Type == "Signal":
-        GenerateTemplate()
+        GenerateTemplate(tree = "tree")
         pass
 
     Loader = UnpickleObject(Input)
@@ -687,6 +688,7 @@ def TopologicalComplexityMassPlot(Input = "LoaderSignalSample.pkl", Type = "Sign
     Complexity_Mass.Filename = "Complexity_vs_Mass.png"
     events = Loader.DataLoader
     
+    del Loader
     Hists = {}
     for i in range(2, 15):
         M = TH1F()
@@ -702,7 +704,7 @@ def TopologicalComplexityMassPlot(Input = "LoaderSignalSample.pkl", Type = "Sign
     for n in events:
         n_nodes = events[n]
         adj = torch.tensor([[i != j for i in range(n)] for j in range(n)], dtype = torch.float, device = "cuda")
-        combi = PathCombination(adj, n)
+        combi = PathCombination(adj, n, n)
         print("-> ", n, len(n_nodes))
         for i in n_nodes:
             P = ToCartesianCUDA(i.eta, i.phi, i.pt, i.e)
@@ -715,6 +717,7 @@ def TopologicalComplexityMassPlot(Input = "LoaderSignalSample.pkl", Type = "Sign
                 except KeyError:
                     break
         events[n] = ""
+    del events
 
     Complexity_Mass.SaveFigure("Plots/TopologicalComplexityMass" + Type)
     
@@ -726,13 +729,13 @@ def TopologicalComplexityMassPlot(Input = "LoaderSignalSample.pkl", Type = "Sign
     return True
 
 def TestDataSamples():
-    #GenerateTemplate("", "JetLepton", ["ttbar.pkl"], "TestTTBAR.pkl")
+    GenerateTemplate("", "JetLepton", ["ttbar.pkl"], "TestTTBAR.pkl")
     TopologicalComplexityMassPlot(Input = "TestTTBAR.pkl", Type = "TTBAR")
     return True
 
 def TestWorkingExample4TopsComplexity():
     import torch
-    #GenerateTemplate(SignalSample = "CustomSignalSample.pkl", Tree = "TopPostFSRChildren", OutputName = "LoaderCustomSignalSample.pkl") 
+    GenerateTemplate(SignalSample = "CustomSignalSample.pkl", Tree = "TopPostFSRChildren", OutputName = "LoaderCustomSignalSample.pkl") 
     ev = UnpickleObject("LoaderCustomSignalSample.pkl")
 
     op = Optimizer(ev)
@@ -741,9 +744,9 @@ def TestWorkingExample4TopsComplexity():
     op.kFold = 4
     op.LearningRate = 1e-5
     op.WeightDecay = 1e-3
-    op.MinimumEvents = 100
+    op.MinimumEvents = 1
     op.Debug = True
-    op.DefinePathNet(Target = "Edges")
+    op.DefinePathNet(Target = "NodeEdges")
     op.kFoldTraining()
     PickleObject(op, "Debug.pkl")
     op = UnpickleObject("Debug.pkl") 

@@ -83,6 +83,8 @@ def ExampleEventGraph():
         return float(a.DeltaR(b))
     def Signal(a):
         return int(a.Index)
+    def Signal_f(a):
+        return float(a.Index)
     def m(a, b):
         t_i = LorentzVector()
         t_i.setptetaphie(a.pt, a.eta, a.phi, a.e)
@@ -92,18 +94,23 @@ def ExampleEventGraph():
 
         T = t_i + t_j
         return float(T.mass)
+
+    def dphi(a, b):
+        return float(abs(a.phi - b.phi))
+
+
     
     GenerateTemplate()
-    event = UnpickleObject("Nodes_10.pkl")
-    event = event.Data
-
+    event = UnpickleObject("Nodes_12.pkl")
     event.SetNodeAttribute("e", energy)
     event.SetNodeAttribute("eta", eta)
     event.SetNodeAttribute("pt", pt)
     event.SetNodeAttribute("phi", phi)
     event.SetEdgeAttribute("dr", d_r)
     event.SetEdgeAttribute("m", m) 
+    event.SetEdgeAttribute("dphi", dphi) 
     event.SetNodeAttribute("y", Signal)
+    event.SetNodeAttribute("x", Signal_f)
     event.ConvertToData()
 
 
@@ -119,9 +126,11 @@ def TestEdgeConvModel():
     Map1 = event1.NodeParticleMap
 
     Op = Optimizer({}, Debug = True)
-    Op.Model = EdgeConv(4, 2)
-    Op.DefineOptimizer()
+    Op.Model = EdgeConv(1, 4)
     Op.sample = Data1
+    Op.DefineOptimizer()
+    Op.DefineLossFunction("CrossEntropyLoss")
+    Op.DefaultTargetType = "Nodes"
     
     for i in range(10):
         Op.TrainClassification()
@@ -138,8 +147,10 @@ def TestGCNModel():
     Map1 = event1.NodeParticleMap
 
     Op = Optimizer({}, Debug = True)
-    Op.Model = GCN(4, 2)
+    Op.Model = GCN(1, 4)
     Op.DefineOptimizer()
+    Op.DefineLossFunction("CrossEntropyLoss")
+    Op.DefaultTargetType = "Nodes"
     Op.sample = Data1
     
     for i in range(10):
@@ -157,12 +168,14 @@ def TestInvMassGNN():
     Op.LearningRate = 1e-5
     Op.WeightDecay = 1e-3
     Op.DefineOptimizer()
+    Op.DefineLossFunction("CrossEntropyLoss")
+    Op.DefaultTargetType = "Nodes"
     Op.sample = event1.Data
 
     P = [event1.NodeParticleMap[i].Index for i in event1.NodeParticleMap]
         
     print("==========")
-    for i in range(100000):
+    for i in range(100):
         Op.TrainClassification()
         _, p = Op.Model(Op.sample).max(1)
         print(p, P, Op.L)
@@ -175,9 +188,10 @@ def TestPathNet():
     events = ExampleEventGraph()
     import torch 
     Op = Optimizer({}, Debug = True)
-    Op.LearningRate = 1e-5
+    Op.DefaultBatchSize = 1
+    Op.LearningRate = 1e-3
     Op.WeightDecay = 1e-3
-    Op.DefinePathNet()
+    Op.DefinePathNet(out = 4)
     Op.sample = events.Data
 
     P = [events.NodeParticleMap[i].Index for i in events.NodeParticleMap]

@@ -269,32 +269,3 @@ def TestSignalDirectory():
         c+=1
     return Passed
 
-def TestAnomalousStatistics():
-
-    A_D = 0
-    A_TM = 0
-    A_TM_init = 0
-    A_All = 0
-    ev = UnpickleObject("EventGenerator")
-    for i in ev.Events:
-        Event = ev.Events[i]["nominal"]
-
-        if Event.Anomaly_Detector == True and Event.Anomaly_TruthMatch == True and Event.Anomaly_TruthMatch_init == True: 
-            A_All += 1
-
-        if Event.Anomaly_Detector == True: 
-            A_D += 1
-
-        if Event.Anomaly_TruthMatch == True: 
-            A_TM += 1
-
-        if Event.Anomaly_TruthMatch_init == True: 
-            A_TM_init += 1
-
-    print("Number of events considered: " + str(i))
-    print("Number of events with Detector, Truth and Truth_init not well matched particles: " + str(A_All) + " " + str(round(100*float(A_All)/float(i), 4)) + "%")
-    print("Number of events with Truth not well matched particles: " + str(A_TM) + " " + str(round(100*float(A_TM)/float(i), 4)) + "%")
-    print("Number of events with Truth_init not well matched particles: " + str(A_TM_init) + " " + str(round(100*float(A_TM_init)/float(i), 4)) + "%")
-    print("Number of events with Detector particles not well matched with Truth particles: " + str(A_D) + " " + str(round(100*float(A_D)/float(i), 4)) + "%")
-
-    return True

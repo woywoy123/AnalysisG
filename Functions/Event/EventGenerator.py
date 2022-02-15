@@ -83,7 +83,7 @@ class EventGenerator(Debugging, EventVariables, Directories):
             self.Notify("COMPILING EVENTS FROM FILE -> " + f)
             
             Events = self.Events[f]
-            entries_percpu = math.ceil(len(Events) / self.Threads)
+            entries_percpu = math.ceil(len(Events) / (self.Threads))
 
             self.Batches = {}
             Thread = []

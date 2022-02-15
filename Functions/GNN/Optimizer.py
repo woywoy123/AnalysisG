@@ -1,7 +1,7 @@
 from Functions.Tools.Alerting import Notification
 from Functions.GNN.Graphs import GenerateDataLoader
 from Functions.GNN.Models import EdgeConv, InvMassGNN, PathNet
-from Functions.IO.Files import WriteDirectory
+from Functions.IO.Files import WriteDirectory, Directories
 from Functions.Particles.Particles import Particle
 
 import torch
@@ -227,6 +227,20 @@ class Optimizer(Notification):
         elif Target == "Edges": 
             self.DefineLossFunction("MSELoss")
 
+    def LoadModelState(self, Path = False):
+        
+        if Path == False:
+            Path = "Models/" + self.TrainingName
+
+            D = Directories("")
+            Files = D.ListFilesInDir(Path) 
+            high = []
+            for i in Files:
+                high.append(int(i.split("epoch")[1].replace(".pt", "")))
+            Path = "Models/" + self.TrainingName + "/Model_epoch" + str(max(high)) +".pt"
+        self.Model = torch.load(Path)
+
+
     def __RebuildClustersFromEdge(self, topo):
         edge_index = self.Sample.edge_index
         TMP = {}
@@ -235,7 +249,6 @@ class Optimizer(Notification):
                 if int(e_i) not in TMP:
                     TMP[int(e_i)] = []
                 TMP[int(e_i)].append(int(e_j))      
-
         TMP_L = []
         for i in TMP:
             l = TMP[i]

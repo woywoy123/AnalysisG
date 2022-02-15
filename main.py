@@ -1,8 +1,8 @@
 from Closure.IO import TestDir, TestReadSingleFile, TestReadFile, TestFileConvertArray
-from Closure.Event import TestEvents, TestParticleAssignment, TestSignalMultipleFile, TestSignalDirectory, TestAnomalousStatistics
+from Closure.Event import TestEvents, TestParticleAssignment, TestSignalMultipleFile, TestSignalDirectory
 from Closure.Plotting import TestTops, TestResonance, TestBackGroundProcesses, TestGNNMonitor, KinematicsPlotting, TopologicalComplexityMassPlot, TestDataSamples, TestWorkingExample4TopsComplexity
 from Closure.DataLoader import TestEventGraphs, TestDataLoader, TestDataLoaderTrainingValidationTest, TestEventNodeEdgeFeatures
-from Closure.GNN import SimpleFourTops, TestInvMassGNN_Children_Edge, TestInvMassGNN_Children_Node, TestPathNetGNN_Children_Edge, TestPathNetGNN_Children_Node, TestInvMassGNN_TruthJets, TestPathNetGNN_TruthJets, TestInvMassGNN_Tops_Edge, TestInvMassGNN_Tops_Node, TestInvMassGNN_Children_NoLep_Edge, TestInvMassGNN_Children_NoLep_Node
+from Closure.GNN import SimpleFourTops, TestInvMassGNN_Children_Edge, TestInvMassGNN_Children_Node, TestPathNetGNN_Children_Edge, TestPathNetGNN_Children_Node, TestInvMassGNN_TruthJets, TestPathNetGNN_TruthJets, TestInvMassGNN_Tops_Edge, TestInvMassGNN_Tops_Node, TestInvMassGNN_Children_NoLep_Edge, TestInvMassGNN_Children_NoLep_Node, GenerateTemplate
 from Closure.Models import TestEdgeConvModel, TestGCNModel, TestInvMassGNN, TestPathNet
 from Closure.TruthMatchingAnalysisTop import TestTopShapes, Test_ttbar, Test_tttt, Test_SingleTop
 
@@ -27,10 +27,10 @@ def Generate_Cache(di, Stop = -1, SingleThread = False, Compiler = "EventGenerat
 if __name__ == '__main__':
     #Generate_Cache(dir, Stop = -1, SingleThread = False, Compiler = "SignalSample.pkl")
     #Generate_Cache("/CERN/Grid/Samples/NAF/2021-05-05-2cRC-all/mc16a/postProcessed_ttbar_PhPy8_Total.root", Stop = 150000, SingleThread = True, Compiler = "ttbar.pkl")
-    #Generate_Cache("/home/tnom6927/Downloads/SimpleTTBAR/Out_0/output.root", Compiler = "CustomSignalSample.pkl", Custom = True)
-    #Generate_Cache("/CERN/CustomAnalysisTopOutput/tttt/tttt.root", Stop = 5000, Compiler = "tttt.pkl", Custom = True)
-    #Generate_Cache("/CERN/CustomAnalysisTopOutput/ttbar/", Stop = 100, SingleThread = False, Compiler = "ttbar.pkl", Custom = True)
-    #Generate_Cache("/CERN/CustomAnalysisTopOutput/t/SingleTop_S_Channel.root", Stop = 100, Compiler = "SingleTop_S.pkl", Custom = True)
+    #Generate_Cache("/CERN/CustomAnalysisTopOutput/tttt/", Compiler = "CustomSignalSample.pkl", Custom = True)
+    #Generate_Cache("/CERN/CustomAnalysisTopOutput/tttt/", Stop = -1, Compiler = "tttt.pkl", Custom = True)
+    #Generate_Cache("/CERN/CustomAnalysisTopOutput/ttbar/", Stop = -1, SingleThread = False, Compiler = "ttbar.pkl", Custom = True)
+    #Generate_Cache("/CERN/CustomAnalysisTopOutput/t/", Stop = -1, Compiler = "SingleTop_S.pkl", Custom = True)
     
     ## ====== Test of IO 
     #Passed(TestDir(), "TestDir")
@@ -41,15 +41,14 @@ if __name__ == '__main__':
     #Passed(TestSignalDirectory(), "TestSignalDirectory")
 
     ## ====== Test of EventGenerator 
-    Generate_Cache(dir)
-    Passed(TestEvents(), "TestEvents")
-    Passed(TestParticleAssignment(), "TestParticleAssignment")
-    Passed(TestAnomalousStatistics(), "TestAnomalousStatistics") 
-    Passed(TestTops(), "TestTop")
-    Passed(TestResonance(), "TestResonance")
-    Passed(TestBackGroundProcesses(), "TestBackGroundProcesses")
+    #Generate_Cache(dir)
+    #Passed(TestEvents(), "TestEvents")
+    #Passed(TestParticleAssignment(), "TestParticleAssignment")
+    #Passed(TestTops(), "TestTop")
+    #Passed(TestResonance(), "TestResonance")
+    #Passed(TestBackGroundProcesses(), "TestBackGroundProcesses")
 
-    ## ====== Test of DataLoader
+    ### ====== Test of DataLoader
     #Passed(TestEventGraphs(), "TestEventGraphs")
     #Passed(TestDataLoader(), "TestDataLoader")
     #Passed(TestDataLoaderTrainingValidationTest(), "TestDataLoaderTrainingValidationTest")
@@ -72,22 +71,26 @@ if __name__ == '__main__':
     #Passed(TestPathNet(), "TestPathNet") 
 
     # ====== Evaluation of Models ======== #
+    #GenerateTemplate(Tree = "TruthTops")
     #Passed(TestInvMassGNN_Tops_Edge(), "TestInvMassGNN_Tops_Edge")
     #Passed(TestInvMassGNN_Tops_Node(), "TestInvMassGNN_Tops_Node")
 
-    #Passed(TestInvMassGNN_Children_Edge(), "TestInvMassGNN_Children_Edge")
-    #Passed(TestInvMassGNN_Children_Node(), "TestInvMassGNN_Children_Node")
+    #GenerateTemplate(Tree = "TruthChildren_init")
+    Passed(TestInvMassGNN_Children_Edge(), "TestInvMassGNN_Children_Edge")
+    Passed(TestInvMassGNN_Children_Node(), "TestInvMassGNN_Children_Node")
+    
+    exit()
+    #Passed(TestPathNetGNN_Children_Edge(), "TestPathNetGNN_Children_Edge") 
+    Passed(TestPathNetGNN_Children_Node(), "TestPathNetGNN_Children_Node") 
 
+    #GenerateTemplate(Tree = "TruthChildren_init_NoLep")
     #Passed(TestInvMassGNN_Children_NoLep_Edge(), "TestInvMassGNN_Children_Edge")
     #Passed(TestInvMassGNN_Children_NoLep_Node(), "TestInvMassGNN_Children_Node")
 
+    GenerateTemplate(SignalSample = "tttt.pkl", Tree = "TopPostFSRChildren", Additional_Samples = ["ttbar", "SingleTop_S.pkl"], OutputName = "LoaderSignalSample.pkl")
     Passed(TestInvMassGNN_TruthJets(), "TestInvMassGNN_TruthJets") 
-
-    #Passed(TestPathNetGNN_Children_Edge(), "TestPathNetGNN_Children_Edge") 
-    #Passed(TestPathNetGNN_Children_Node(), "TestPathNetGNN_Children_Node") 
-    #Passed(TestPathNetGNN_TruthJets(), "TestPathNetGNN_TruthJets") 
-
-
+    Passed(TestPathNetGNN_TruthJets(), "TestPathNetGNN_TruthJets") 
+    
     # ====== Truth Debugging Stuff ======== #
     #Passed(TestTopShapes(), "TestTopShapes")
     #Passed(Test_tttt(), "Test_tttt")

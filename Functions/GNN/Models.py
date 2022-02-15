@@ -79,7 +79,7 @@ class InvMassGNN(MessagePassing):
         return aggr_out
 
 class PathNet(MessagePassing):
-    def __init__(self, complex = 64, path = 64, hidden = 64, out = 50, Debug = False):
+    def __init__(self, complex = 64, path = 64, hidden = 64, out = 50, Debug = False, Threshold = 12):
         super(PathNet, self).__init__("add")
         self.mlp_mass_complex = Seq(Linear(-1, hidden), Tanh(), Linear(hidden, 1)) # DO NOT CHANGE OUTPUT DIM 
         self.mlp_comp = Seq(Linear(-1, hidden), Tanh(), Linear(hidden, complex))
@@ -90,6 +90,7 @@ class PathNet(MessagePassing):
         self.__comb = []
         self.__cur = -1
         self.__PathMatrix = -1
+        self.__Thres = Threshold
         self.device = -1
         self.Debug = Debug
         if Debug:
@@ -110,10 +111,14 @@ class PathNet(MessagePassing):
             
             if self.__cur != len(event[0].e):
                 self.__cur = len(event[0].e)
+                if self.__cur > self.__Thres:
+                    nodes = 3
+                else:
+                    nodes = self.__cur
 
                 Adj_Matrix = torch.zeros(self.__cur, self.__cur, device = self.device)
                 Adj_Matrix[event[0].edge_index[0], event[0].edge_index[1]] = 1
-                Combi = PathCombination(Adj_Matrix, self.__cur, 3)
+                Combi = PathCombination(Adj_Matrix, self.__cur, nodes)
                 
                 self.__Dyn_adj = torch.tensor([[i==j for i in range(self.N_Nodes)] for j in range(self.__cur)], dtype = torch.float, device = self.device)
                 
@@ -121,7 +126,7 @@ class PathNet(MessagePassing):
                 self.__PathMatrix = Combi[1]
                 self.__PathMatrix = self.__PathMatrix[:, :].matmul(self.__Dyn_adj)
             
-            torch.cuda.synchronize()
+            #torch.cuda.synchronize()
             n_events = len(event)
             adj_p, p_m = [], []
             for i in range(len(event)):
@@ -129,7 +134,7 @@ class PathNet(MessagePassing):
                 e_ = (i+1)*self.__cur
 
                 m_cuda = PathMassCartesianCUDA(P[0][s_:e_], P[1][s_:e_], P[2][s_:e_], P[3][s_:e_], self.__comb)
-                torch.cuda.synchronize()
+                #torch.cuda.synchronize()
                 p_m.append(m_cuda)
                 adj_p.append(self.__PathMatrix * m_cuda.reshape(self.__comb.shape[0], 1)[:, None])
             

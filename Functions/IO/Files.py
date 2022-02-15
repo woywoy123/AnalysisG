@@ -32,6 +32,11 @@ class Directories(Notification):
             if os.path.isfile(i) and ".root" in i:
                 Output.append(i)
                 self.Notify("FOUND +-> " + dir + "/" + i)
+
+            if os.path.isfile(i) and ".pt" in i:
+                Output.append(i)
+                self.Notify("FOUND +-> " + dir + "/" + i)
+
         os.chdir(self.__pwd)
         return Output
 
