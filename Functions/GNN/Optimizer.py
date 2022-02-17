@@ -242,6 +242,7 @@ class Optimizer(Notification):
 
 
     def __RebuildClustersFromEdge(self, topo):
+
         edge_index = self.Sample.edge_index
         TMP = {}
         for t, e_i, e_j in zip(topo, edge_index[0], edge_index[1]):
@@ -270,6 +271,28 @@ class Optimizer(Notification):
             Par.CalculateMassFromChildren()
             Output.append(Par)
         return Output
+
+    def __RebuildClustersFromNodes(self, topo):
+        topo = topo.tolist() 
+        TMP_L = list(set(topo))
+        TMP = {}
+        for i in TMP_L:
+            TMP[i] = Particle(True)
+        
+        for i in range(len(topo)):
+            index = topo[i]
+            Par = Particle(True)
+            Par.pt = self.Sample.pt[i]
+            Par.e = self.Sample.e[i]
+            Par.phi = self.Sample.phi[i]
+            Par.eta = self.Sample.eta[i]
+            TMP[index].Decay.append(Par)
+        
+        Output = []
+        for i in TMP:
+            TMP[i].CalculateMassFromChildren()
+            Output.append(TMP[i]) 
+        return Output
     
     def __RebuildParticlesFromData(self, Prediction, DataLoader):
         Output = {}
@@ -285,9 +308,16 @@ class Optimizer(Notification):
                 if Prediction: 
                     _, topo, truth = self.TargetDefinition(event, self.DefaultTargetType)
                 else:
-                    topo = event.edge_y
+                    if self.DefaultTargetType == "Edges":
+                        topo = event.edge_y
+                    elif self.DefaultTargetType == "Nodes":
+                        topo = event.y.t()[0]
+
                 self.ProgressInformation("BUILDING/PREDICTING")
-                Output[event.i] = self.__RebuildClustersFromEdge(topo) 
+                if self.DefaultTargetType == "Edges":
+                    Output[event.i] = self.__RebuildClustersFromEdge(topo) 
+                elif self.DefaultTargetType == "Nodes":
+                    Output[event.i] = self.__RebuildClustersFromNodes(topo)
         if len(Output) == 0:
             self.Warning("NO DATA!")
         return Output

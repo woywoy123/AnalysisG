@@ -82,12 +82,11 @@ def GenerateTemplate(SignalSample = "SignalSample.pkl", Tree = "TruthChildren_in
             else:
                 return False
         elif a.Type == "truth_top":
-            return a.Signal == b.Signal
+            return a.Signal == b.Signal == 1
 
         elif a.Type != "truthjet" and b.Type != "truthjet":
             if a.Index != b.Index:
                 return False
-
         return a.Index == b.Index
 
     def d_r(a, b):
@@ -138,7 +137,7 @@ def TrainEvaluate(Model, Outdir):
     
     op = Optimizer(Loader)
     op.TrainingName = Outdir
-    op.DefaultBatchSize = 100
+    op.DefaultBatchSize = 1000
     op.Epochs = 20
     op.kFold = 10
     op.LearningRate = 1e-6
@@ -218,7 +217,7 @@ def TrainEvaluate(Model, Outdir):
     t.DefaultDPI = 500
     t.xBins = 250
     t.xMin = 0
-    t.xMax = 500
+    t.xMax = 2500
     t.Filename = "TruthGraph_Tops.png"
     t.SaveFigure("Plots/" + Outdir)
 
@@ -235,7 +234,7 @@ def TrainEvaluate(Model, Outdir):
     tc.DefaultDPI = 500
     tc.xBins = 250
     tc.xMin = 0
-    tc.xMax = 500
+    tc.xMax = 2500
     tc.Filename = "GNN_Tops.png"
     tc.SaveFigure("Plots/" + Outdir)
 
@@ -243,13 +242,13 @@ def TrainEvaluate(Model, Outdir):
     Mass_Edge = CombineHistograms()
     Mass_Edge.DefaultDPI = 500
     Mass_Edge.Histograms = [t, tc]
-    Mass_Edge.Title = "Mass of Tops From Reconstructed (GNN) and Truth"
+    Mass_Edge.Title = "Reconstructed Mass of Resonance (GNN) and Truth"
     Mass_Edge.Filename = "TopMass.png"
     Mass_Edge.Save("Plots/" + Outdir)
 
 
 def TestInvMassGNN_Tops_Edge():
-    TrainEvaluate("InvMassNodeEdge", "GNN_Performance_InvMassGNN_Tops_Edge")
+    TrainEvaluate("InvMassEdge", "GNN_Performance_InvMassGNN_Tops_Edge")
     return True
 
 def TestInvMassGNN_Tops_Node():
@@ -257,7 +256,7 @@ def TestInvMassGNN_Tops_Node():
     return True
 
 def TestInvMassGNN_Children_Edge():
-    TrainEvaluate("InvMassNodeEdge", "GNN_Performance_InvMassGNN_Children_Edge")
+    TrainEvaluate("InvMassEdge", "GNN_Performance_InvMassGNN_Children_Edge")
     return True
 
 def TestInvMassGNN_Children_Node():
@@ -274,6 +273,10 @@ def TestInvMassGNN_Children_NoLep_Node():
 
 def TestInvMassGNN_TruthJets():
     TrainEvaluate("InvMassEdge", "GNN_Performance_InvMassGNN_TruthJet_Edge")
+    return True
+
+def TestPathNetGNN_Tops_Edge():
+    TrainEvaluate("PathNetEdge", "GNN_Performance_PathNetGNN_Tops_Edge")
     return True
 
 def TestPathNetGNN_Children_Edge():

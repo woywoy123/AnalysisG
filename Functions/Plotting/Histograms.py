@@ -47,6 +47,8 @@ class GenericAttributes:
         self.yLabels = []
 
     def xAxis(self):
+        if self.Compiled:
+            return 
         if self.xMin == "":
             self.xMin = min(self.xData)
 
@@ -285,6 +287,7 @@ class CombineTGraph(SharedMethods):
         self.Compiled = True
 
     def Save(self, dir):
+        self.CompileLine()
         self.SaveFigure(dir) 
 
 
@@ -338,6 +341,7 @@ class TGraph(SharedMethods, GenericAttributes):
         SharedMethods.__init__(self)
         GenericAttributes.__init__(self)
         self.ErrorBars = False
+        self.Compiled = True
 
     def Line(self):
         err = []
@@ -368,3 +372,6 @@ class TGraph(SharedMethods, GenericAttributes):
         self.PLT.xlim(0, self.xMax)
         self.PLT.ylim(0, self.yMax*2)
     
+    def Save(self, dir):
+        self.Line()
+        self.SaveFigure(dir) 

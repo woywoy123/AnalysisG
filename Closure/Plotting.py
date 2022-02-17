@@ -161,6 +161,8 @@ def TestResonance():
 
     # Top mass containers 
     Res_TruthTops = []
+    Res_TruthTops_Spec = []
+    Cross_TruthTops = []
     Res_Child = []
     Res_Child_init = []
     Res_TruthJet = []
@@ -172,16 +174,35 @@ def TestResonance():
         tops = ev.TruthTops
         Z_ = Particle(True)
         Sigs = []
+        Spec = []
         for t in tops:
             # Signal Tops from Resonance 
-            if t.FromRes == 0:
-                continue
-            Sigs.append(t)
+            if t.Signal == 0:
+                Spec.append(t)
+            else:
+                Sigs.append(t)
+
+        for t in tops:
+            tmp = []
+            for j in tops:
+                if t == j:
+                    pass
+                elif t.Signal != j.Signal:
+                    tmp.append(j) 
+            for j in tmp:
+                Z_.Decay = [t, j]
+                Z_.CalculateMassFromChildren()
+                Cross_TruthTops.append(Z_.Mass_GeV)
+            break
 
         # Resonance Mass from Truth Tops 
         Z_.Decay = Sigs
         Z_.CalculateMassFromChildren()
         Res_TruthTops.append(Z_.Mass_GeV)
+
+        Z_.Decay = Spec
+        Z_.CalculateMassFromChildren()
+        Res_TruthTops_Spec.append(Z_.Mass_GeV)
         
         Z_.Decay = []
         # Resonance Mass from Truth Children
@@ -227,22 +248,50 @@ def TestResonance():
  
     # Tops from Truth information figures 
     t = TH1F() 
-    t.Title = "Resonance Mass Derived From 'truth_top_*'"
+    t.Title = "Resonance Pair"
     t.xTitle = "Mass (GeV)"
     t.yTitle = "Entries"
     t.xMin = 0
-    t.xMax = 5000
+    t.xMax = 2500
     t.xBins = 500
     t.xData = Res_TruthTops
     t.Filename = "Resonance_TruthTops.png"
     t.SaveFigure("Plots/TestResonance")
+
+    tx = TH1F() 
+    tx.Title = "Spectator Pair"
+    tx.xTitle = "Mass (GeV)"
+    tx.yTitle = "Entries"
+    tx.xMin = 0
+    tx.xMax = 2500
+    tx.xBins = 500
+    tx.xData = Res_TruthTops_Spec
+    tx.Filename = "Spectator_TruthTops.png"
+    tx.SaveFigure("Plots/TestResonance")
+
+    tp = TH1F() 
+    tp.Title = "ResXSpec Pair"
+    tp.xTitle = "Mass (GeV)"
+    tp.yTitle = "Entries"
+    tp.xMin = 0
+    tp.xMax = 2500
+    tp.xBins = 500
+    tp.xData = Cross_TruthTops
+    tp.Filename = "Cross_TruthTops.png"
+    tp.SaveFigure("Plots/TestResonance")
+
+    Com = CombineHistograms()
+    Com.Histograms = [t, tx, tp]
+    Com.Title = "Truth Top (truth_top_*) Resonance and Background (Spectator Tops)"
+    Com.Filename = "ResSpec.png"
+    Com.Save("Plots/TestResonance")
 
     tc = TH1F()
     tc.Title = "Resonance Mass Derived From 'truth_top_child_*'"
     tc.xTitle = "Mass (GeV)"
     tc.yTitle = "Entries"
     tc.xMin = 0
-    tc.xMax = 5000
+    tc.xMax = 2500
     tc.xBins = 500
     tc.xData = Res_Child
     tc.Filename = "Resonance_TruthChildren.png"
@@ -253,7 +302,7 @@ def TestResonance():
     tc_init.xTitle = "Mass (GeV)"
     tc_init.yTitle = "Entries"
     tc_init.xMin = 0
-    tc_init.xMax = 5000
+    tc_init.xMax = 2500
     tc_init.xBins = 500
     tc_init.xData = Res_Child_init
     tc_init.Filename = "Resonance_TruthChildren_init.png"
@@ -264,7 +313,7 @@ def TestResonance():
     tc.xTitle = "Mass (GeV)"
     tc.yTitle = "Entries"
     tc.xMin = 0
-    tc.xMax = 5000
+    tc.xMax = 2500
     tc.xBins = 500
     tc.xData = Res_TruthJet
     tc.Filename = "Resonance_TruthJet.png"
@@ -275,7 +324,7 @@ def TestResonance():
     tc_init.xTitle = "Mass (GeV)"
     tc_init.yTitle = "Entries"
     tc_init.xMin = 0
-    tc_init.xMax = 5000
+    tc_init.xMax = 2500
     tc_init.xBins = 500
     tc_init.xData = Res_TruthJet_NoAnomaly
     tc_init.Filename = "Resonance_TruthJet_GoodMatching.png"
@@ -286,7 +335,7 @@ def TestResonance():
     tc_init.xTitle = "Mass (GeV)"
     tc_init.yTitle = "Entries"
     tc_init.xMin = 0
-    tc_init.xMax = 5000
+    tc_init.xMax = 2500
     tc_init.xBins = 500
     tc_init.xData = Res_Jet
     tc_init.Filename = "Resonance_Jet.png"
