@@ -5,7 +5,12 @@
 void Combinatorial(int n, int k, int num, std::vector<torch::Tensor>* out, torch::Tensor msk, int node)
 { 
   if (n == 0){
-    if (k == 0){ (*out).push_back(torch::tensor(num).unsqueeze(-1).bitwise_and(msk).ne(0).to(torch::kFloat).view({node, 1})); }
+    if (k == 0)
+    { 
+      torch::Tensor o = torch::tensor(num).to(msk.device());
+      (*out).push_back(o.unsqueeze(-1).bitwise_and(msk).ne(0).to(torch::kFloat).view({node, 1})); 
+
+    }
     return; 
   }
   if (n -1 >= k){ Combinatorial(n-1, k, num, out, msk, node); }
@@ -28,7 +33,7 @@ std::vector<torch::Tensor> PathCombination(torch::Tensor AdjMatrix, int Nodes, i
   // Convert the Binary to a tensor 
   for (int i = 0; i < Binary.size(); i++)
   {
-    torch::Tensor proj = AdjMatrix.matmul(Binary[i]);
+    torch::Tensor proj = AdjMatrix.matmul(Binary[i]).to(AdjMatrix.device());
     
     proj.index_put_({proj == Binary[i].sum(0)}, 0); 
     proj.index_put_({proj > 0}, 1); 
@@ -38,8 +43,8 @@ std::vector<torch::Tensor> PathCombination(torch::Tensor AdjMatrix, int Nodes, i
     Output_Matrix.push_back(proj_T);
   }
   
-  torch::Tensor out = torch::stack(Output); 
-  torch::Tensor out2 = torch::stack(Output_Matrix); 
+  torch::Tensor out = torch::stack(Output).to(AdjMatrix.device()); 
+  torch::Tensor out2 = torch::stack(Output_Matrix).to(AdjMatrix.device()); 
   
   return {out, out2};
 }
@@ -64,5 +69,5 @@ torch::Tensor Combination(int Nodes, int choose, std::string device)
 
 PYBIND11_MODULE(TORCH_EXTENSION_NAME, m){
   m.def("PathCombination", &PathCombination, "Path Combinatorial");
-  m.def("PathCombination", &Combination, "Path Combinatorial");
+  m.def("Combination", &Combination, "Path Combinatorial");
 }

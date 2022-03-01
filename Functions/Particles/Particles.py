@@ -242,6 +242,16 @@ class Truth_Top_Child_Init(Particle):
 
 ################## CUSTOMIZED PARTICLES CLASSES ################
 
+class Jet_C(Particle):
+    def __init__(self):
+        self.Type = "jet"
+        self.truthflav = self.Type + "_truthflav"
+        self.truthPartonLabel = self.Type + "_truthPartonLabel"
+        self.truthflavExtended = self.Type + "_truthflavExtended"
+        self.JetMapGhost = self.Type + "_map_Ghost"
+
+        Particle.__init__(self)
+
 class TruthJet_C(Particle):
     def __init__(self):
         self.Type = "truthjet"

@@ -126,7 +126,7 @@ class PathNet(MessagePassing):
                 self.__PathMatrix = Combi[1]
                 self.__PathMatrix = self.__PathMatrix[:, :].matmul(self.__Dyn_adj)
             
-            #torch.cuda.synchronize()
+            torch.cuda.synchronize()
             n_events = len(event)
             adj_p, p_m = [], []
             for i in range(len(event)):
@@ -134,7 +134,7 @@ class PathNet(MessagePassing):
                 e_ = (i+1)*self.__cur
 
                 m_cuda = PathMassCartesianCUDA(P[0][s_:e_], P[1][s_:e_], P[2][s_:e_], P[3][s_:e_], self.__comb)
-                #torch.cuda.synchronize()
+                torch.cuda.synchronize()
                 p_m.append(m_cuda)
                 adj_p.append(self.__PathMatrix * m_cuda.reshape(self.__comb.shape[0], 1)[:, None])
             

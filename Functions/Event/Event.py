@@ -7,8 +7,10 @@ class EventVariables:
         self.MinimalTrees = ["tree", "nominal"]
         self.MinimalLeaves = []
         self.MinimalLeaves += Event().Leaves
+        self.MinimalLeaves += Event_Custom().Leaves
         self.MinimalLeaves += TruthJet().Leaves
         self.MinimalLeaves += Jet().Leaves
+        self.MinimalLeaves += Jet_C().Leaves
         self.MinimalLeaves += Electron().Leaves
         self.MinimalLeaves += Muon().Leaves
         self.MinimalLeaves += Top().Leaves
@@ -29,6 +31,9 @@ class Event_Custom(VariableManager):
         self.runNumber = "runNumber"
         self.eventNumber = "eventNumber"
         self.mu = "mu"
+        #self.JetMapTop = "jet_map_top"
+        #self.JetMapGhost = "jet_map_Ghost"      
+
         self.met = "met_met"
         self.met_phi = "met_phi" 
         self.mu_actual = "mu_actual"
@@ -42,7 +47,7 @@ class Event_Custom(VariableManager):
 
         self.Objects = {"Electrons" : Electron(), 
                         "Muons" : Muon(), 
-                        "Jets" : Jet(), 
+                        "Jets" : Jet_C(), 
                         "TruthJets": TruthJet_C(), 
                         "TruthTops" : TruthTop_C(), 
                         "TruthTopChildren": TruthTopChild_C(), 
@@ -80,7 +85,7 @@ class Event_Custom(VariableManager):
                 if Attributor(var, val):
                     continue
 
-                if var in Event().KeyMap:
+                if var in Event_Custom().KeyMap:
                     self.SetAttribute(self.KeyMap[var], val)
 
 
@@ -109,8 +114,46 @@ class Event_Custom(VariableManager):
                
                 if self.TopPostFSR[i][0].Index+1 in self.TruthJets[j][0].GhostTruthJetMap:
                     self.TopPostFSR[i][0].Decay += [self.TruthJets[j][0]]
+        
+        for i in self.Jets:
+            l = []
+            try:
+                l = [int(self.Jets[i][0].JetMapGhost)]
+            except:
+                if isinstance(self.Jets[i][0].JetMapGhost, str):
+                    continue
+                else:
+                    l = list(self.Jets[i][0].JetMapGhost)
+            for k in l:
+                truthj = self.TruthJets[k][0]
+                truthj.Decay.append(self.Jets[i][0])
 
-        self.DetectorMatchingEngine()
+        #TMP_Top = []
+        #TMP_Ghost = []
+        #for i, j in zip(self.JetMapTop, self.JetMapGhost):
+        #    TMP_Top.append(list(set(i)))
+        #    TMP_Ghost.append(list(set(j)))
+        #self.JetMapTop = TMP_Top
+        #self.JetMapGhost = TMP_Ghost
+        #del TMP_Ghost
+        #del TMP_Top
+        #
+        #for i, k in zip(self.JetMapTop, self.Jets):
+        #    for j in i:
+        #        if j == 0:
+        #            continue
+        #        self.TopPostFSR[j-1][0].Decay.append(self.Jets[k][0])
+        #        #print(self.TopPostFSR[j-1][0].DeltaR(self.Jets[k][0]))
+
+        #for i, k in zip(self.JetMapGhost, self.Jets):
+        #    for j in i:
+        #        if j == 0:
+        #            continue
+        #        self.TruthJets[j-1][0].Decay.append(self.Jets[k][0])
+        #        #print(self.TruthJets[j-1][0].DeltaR(self.Jets[k][0]))
+
+
+        #self.DetectorMatchingEngine()
         self.Electrons = self.DictToList(self.Electrons)
         self.Muons = self.DictToList(self.Muons)
         self.Jets = self.DictToList(self.Jets)
@@ -132,6 +175,8 @@ class Event_Custom(VariableManager):
             del self.Objects
             del self.Leaves
             del self.KeyMap
+            #del self.JetMapGhost
+            #del self.JetMapTop
 
     def DetectorMatchingEngine(self):
         DetectorParticles = []

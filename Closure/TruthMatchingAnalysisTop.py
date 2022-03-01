@@ -212,3 +212,72 @@ def Test_SingleTop():
     TestTopShapes( "SingleTop_S.pkl", "_SingleTop" )
     return True
 
+def TestJets(Sample, Name):
+
+    E = UnpickleObject(Sample)
+
+    TopMass_Top = []
+    TopMass_Ghost = []
+
+    for i in E.Events:
+        tops = E.Events[i]["nominal"].TopPostFSR
+        
+        for t in tops:
+            skip = False
+            for c in t.Decay_init:
+                if abs(c.pdgid) in [11, 13, 15]:
+                    skip = True
+
+
+            T = Particle(True)
+            TJ = Particle(True)
+
+            if len(t.Decay) == 0:
+                continue
+            for obj in t.Decay:
+                T.Decay += obj.Decay
+                TJ.Decay.append(obj)
+
+                if len(obj.Decay) != 1:
+                    skip = True
+            
+            if skip:
+                continue           
+
+            T.CalculateMassFromChildren()
+            if T.Mass_GeV > 0:
+                TopMass_Top.append(T.Mass_GeV)
+ 
+            TJ.CalculateMassFromChildren()
+            if TJ.Mass_GeV > 0:
+                TopMass_Ghost.append(TJ.Mass_GeV)
+
+
+    t = TH1F() 
+    t.Title = "Mass of Top Based on Truth Jets (Non Leptonic)"    
+    t.xTitle = "Mass (GeV)"
+    t.yTitle = "Entries"
+    t.xBins = 250
+    t.xMin = 0
+    t.xMax = 500
+    t.xData = TopMass_Ghost
+    t.Filename = "TopMass_TruthJet.png"
+    t.SaveFigure("Plots/TestJetMatchingScheme" + Name)
+
+    t = TH1F() 
+    t.Title = "Mass of Top Based on Truth Jets Matched to Reconstructed Jets (Non Leptonic)"    
+    t.xTitle = "Mass (GeV)"
+    t.yTitle = "Entries"
+    t.xBins = 250
+    t.xMin = 0
+    t.xMax = 500
+    t.xData = TopMass_Top
+    t.Filename = "TruthTops_Ghost.png"
+    t.SaveFigure("Plots/TestJetMatchingScheme" + Name)
+
+
+
+
+def Test_tttt_Jets():
+    TestJets("CustomSignalSample.pkl", "_tttt")
+    return True

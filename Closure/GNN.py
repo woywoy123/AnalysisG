@@ -137,7 +137,7 @@ def TrainEvaluate(Model, Outdir):
     
     op = Optimizer(Loader)
     op.TrainingName = Outdir
-    op.DefaultBatchSize = 1000
+    op.DefaultBatchSize = 20
     op.Epochs = 20
     op.kFold = 10
     op.LearningRate = 1e-6
@@ -217,7 +217,7 @@ def TrainEvaluate(Model, Outdir):
     t.DefaultDPI = 500
     t.xBins = 250
     t.xMin = 0
-    t.xMax = 2500
+    t.xMax = 500
     t.Filename = "TruthGraph_Tops.png"
     t.SaveFigure("Plots/" + Outdir)
 
@@ -234,7 +234,7 @@ def TrainEvaluate(Model, Outdir):
     tc.DefaultDPI = 500
     tc.xBins = 250
     tc.xMin = 0
-    tc.xMax = 2500
+    tc.xMax = 500
     tc.Filename = "GNN_Tops.png"
     tc.SaveFigure("Plots/" + Outdir)
 
@@ -242,7 +242,7 @@ def TrainEvaluate(Model, Outdir):
     Mass_Edge = CombineHistograms()
     Mass_Edge.DefaultDPI = 500
     Mass_Edge.Histograms = [t, tc]
-    Mass_Edge.Title = "Reconstructed Mass of Resonance (GNN) and Truth"
+    Mass_Edge.Title = "Reconstructed Mass of Top (GNN) and Truth"
     Mass_Edge.Filename = "TopMass.png"
     Mass_Edge.Save("Plots/" + Outdir)
 
@@ -290,5 +290,4 @@ def TestPathNetGNN_Children_Node():
 def TestPathNetGNN_TruthJets():
     TrainEvaluate("PathNetEdge", "GNN_Performance_PathNetGNN_TruthJet_Edge")
     return True
-
 
