@@ -14,11 +14,11 @@ class Particle(VariableManager):
         self.phi = self.Type + "_phi"
         self.e = self.Type + "_e"
         self.Index = -1
-
-        if hasattr(self, "FromRes"):
-            self.Signal = self.FromRes
-        else:
-            self.Signal = 0
+        
+        #if hasattr(self, "FromRes"):
+        #    self.Signal = self.FromRes
+        #else:
+        #    self.Signal = 0
 
         self.CompileKeyMap()
         self.ListAttributes()
@@ -78,7 +78,6 @@ class CompileParticles:
         
         for key in self.__Dictionary:
             val = self.__Dictionary[key]
-
             if key in self.__Part.KeyMap:
                 self.__Keys[self.__Part.KeyMap[key]] = val
                 self.__len = len(val)
@@ -249,7 +248,6 @@ class Jet_C(Particle):
         self.truthPartonLabel = self.Type + "_truthPartonLabel"
         self.truthflavExtended = self.Type + "_truthflavExtended"
         self.JetMapGhost = self.Type + "_map_Ghost"
-
         Particle.__init__(self)
 
 class TruthJet_C(Particle):
@@ -262,7 +260,7 @@ class TruthJet_C(Particle):
 class TruthTop_C(Particle):
     def __init__(self):
         self.Type = "truth_top"
-        self.FromRes = self.Type + "_FromRes"
+        self.FromRes = "truth_top_FromRes"
         Particle.__init__(self)
 
 class TruthTopChild_C(Particle):
@@ -276,7 +274,7 @@ class TopPreFSR_C(Particle):
     def __init__(self):
         self.Type = "topPreFSR"
         self.charge = self.Type + "_charge"
-        self.FromRes = "Gtop_FromRes"
+        self.Status = self.Type + "_status"
         Particle.__init__(self)
 
 class TopPostFSR_C(Particle):

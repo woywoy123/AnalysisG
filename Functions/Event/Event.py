@@ -31,13 +31,10 @@ class Event_Custom(VariableManager):
         self.runNumber = "runNumber"
         self.eventNumber = "eventNumber"
         self.mu = "mu"
-        #self.JetMapTop = "jet_map_top"
-        #self.JetMapGhost = "jet_map_Ghost"      
 
         self.met = "met_met"
         self.met_phi = "met_phi" 
         self.mu_actual = "mu_actual"
-        self.thres = 0.1
         
         self.Type = "Event"
         self.ListAttributes()
@@ -45,15 +42,16 @@ class Event_Custom(VariableManager):
         self.iter = -1
         self.Tree = ""
 
-        self.Objects = {"Electrons" : Electron(), 
-                        "Muons" : Muon(), 
-                        "Jets" : Jet_C(), 
-                        "TruthJets": TruthJet_C(), 
-                        "TruthTops" : TruthTop_C(), 
-                        "TruthTopChildren": TruthTopChild_C(), 
-                        "TopPreFSR" : TopPreFSR_C(),
-                        "TopPostFSR" : TopPostFSR_C(),
-                        "TopPostFSRChildren" : TopPostFSRChildren_C()
+        self.Objects = {
+                         "Electrons" : Electron(), 
+                         "Muons" : Muon(), 
+                         "Jets" : Jet_C(), 
+                         "TruthJets": TruthJet_C(), 
+                         "TruthTops" : TruthTop_C(), 
+                         "TruthTopChildren": TruthTopChild_C(), 
+                         "TopPreFSR" : TopPreFSR_C(),
+                         "TopPostFSR" : TopPostFSR_C(),
+                         "TopPostFSRChildren" : TopPostFSRChildren_C()
                         }
 
         for i in self.Objects:
@@ -113,7 +111,7 @@ class Event_Custom(VariableManager):
                     self.TruthJets[j][0].GhostTruthJetMap = list(self.TruthJets[j][0].GhostTruthJetMap)
                
                 if self.TopPostFSR[i][0].Index+1 in self.TruthJets[j][0].GhostTruthJetMap:
-                    self.TopPostFSR[i][0].Decay += [self.TruthJets[j][0]]
+                    self.TopPostFSR[i][0].Decay += self.TruthJets[j]
         
         for i in self.Jets:
             l = []
@@ -124,36 +122,11 @@ class Event_Custom(VariableManager):
                     continue
                 else:
                     l = list(self.Jets[i][0].JetMapGhost)
+            self.Jets[i][0].JetMapGhost = l 
             for k in l:
                 truthj = self.TruthJets[k][0]
                 truthj.Decay.append(self.Jets[i][0])
-
-        #TMP_Top = []
-        #TMP_Ghost = []
-        #for i, j in zip(self.JetMapTop, self.JetMapGhost):
-        #    TMP_Top.append(list(set(i)))
-        #    TMP_Ghost.append(list(set(j)))
-        #self.JetMapTop = TMP_Top
-        #self.JetMapGhost = TMP_Ghost
-        #del TMP_Ghost
-        #del TMP_Top
-        #
-        #for i, k in zip(self.JetMapTop, self.Jets):
-        #    for j in i:
-        #        if j == 0:
-        #            continue
-        #        self.TopPostFSR[j-1][0].Decay.append(self.Jets[k][0])
-        #        #print(self.TopPostFSR[j-1][0].DeltaR(self.Jets[k][0]))
-
-        #for i, k in zip(self.JetMapGhost, self.Jets):
-        #    for j in i:
-        #        if j == 0:
-        #            continue
-        #        self.TruthJets[j-1][0].Decay.append(self.Jets[k][0])
-        #        #print(self.TruthJets[j-1][0].DeltaR(self.Jets[k][0]))
-
-
-        #self.DetectorMatchingEngine()
+        
         self.Electrons = self.DictToList(self.Electrons)
         self.Muons = self.DictToList(self.Muons)
         self.Jets = self.DictToList(self.Jets)
@@ -175,45 +148,7 @@ class Event_Custom(VariableManager):
             del self.Objects
             del self.Leaves
             del self.KeyMap
-            #del self.JetMapGhost
-            #del self.JetMapTop
-
-    def DetectorMatchingEngine(self):
-        DetectorParticles = []
-        DetectorParticles += self.DictToList(self.Jets)
-        DetectorParticles += self.DictToList(self.Electrons)
-        DetectorParticles += self.DictToList(self.Muons)
-        
-        # Match all particles (including truth children leptons) to the detector objects
-        TruthJets = self.DictToList(self.TruthJets)
-        for i in self.DictToList(self.TopPostFSRChildren):
-            if abs(i.pdgid) in [11, 13, 15]:
-                TruthJets.append(i)
-        
-        self.DeltaRMatrix(TruthJets, DetectorParticles)
-        
-        col = []
-        for i in self.dRMatrix:
-            if i[1][2] > self.thres:
-                break
-            if i[1][0] not in col:
-                i[1][1].Decay.append(i[1][0])
-                if i[1][0].Type in ["mu", "el"] and i[1][1].pdgid in [11, 13]:
-                    i[1][0].Index = i[1][1].Index +1
-                col.append(i[1][0])
-
-            if len(DetectorParticles) == len(col):
-                break
-        del self.dRMatrix
     
-    def DeltaRMatrix(self, List1, List2): 
-        delR = {}
-        for i in List1:
-            for c in List2:
-                dR = c.DeltaR(i)
-                delR[str(dR) + "_" + str(c.Index) +"_"+str(i.Index)] = [c, i, dR]
-        self.dRMatrix = sorted(delR.items())
-
     def DictToList(self, inp): 
         out = []
         for i in inp:

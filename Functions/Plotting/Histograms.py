@@ -26,7 +26,7 @@ class GenericAttributes:
         self.Align = "left"
         
         self.Alpha = 0.5
-        self.Color = "black"
+        self.Color = ""
         self.Marker = "o"
         self.Style = ""
         self.Filename = ""
@@ -35,17 +35,22 @@ class GenericAttributes:
         self.DefaultDPI = 500
         self.Compiled = False
         self.FontSize = 16
-        
-        self.PLT = plt
-        self.PLT.figure(figsize=(self.DefaultScaling, self.DefaultScaling), dpi = self.DefaultDPI)
-        self.PLT.rcParams.update({"font.size":self.FontSize, "axes.labelsize" : 22, "legend.fontsize" : 22})
+        self.LabelSize = 30
+        self.LegendSize = 10
+        self.LegendPos = "upper left"
+        self.TitleSize = 20
         
         self.xData = []
         self.yData = []
 
         self.xLabels = []
         self.yLabels = []
-
+    
+    def Init_PLT(self):
+        self.PLT = plt
+        self.PLT.figure(figsize=(self.DefaultScaling, self.DefaultScaling), dpi = self.DefaultDPI)
+        self.PLT.rcParams.update({"font.size":self.FontSize, "axes.labelsize" : self.LabelSize, "legend.fontsize" : self.LegendSize, "figure.titlesize" : self.TitleSize})
+    
     def xAxis(self):
         if self.Compiled:
             return 
@@ -136,6 +141,7 @@ class SharedMethods(WriteDirectory, Notification):
             self.PLT.savefig(self.Filename + ".png")
         else: 
             self.PLT.savefig(self.Filename)
+
         self.ChangeDirToRoot()
         self.PLT.close()
 
@@ -150,7 +156,7 @@ class TH1F(SharedMethods, GenericAttributes):
         GenericAttributes.__init__(self)
 
     def CompileHistogram(self):
-         
+        self.Init_PLT()
         self.TransformData("xData", "xLabels")
         self.PLT.title(self.Title)
         self.xAxis()
@@ -177,10 +183,10 @@ class TH2F(SharedMethods, GenericAttributes):
         self.Normalize = True
         SharedMethods.__init__(self)
         GenericAttributes.__init__(self)
-        self.Colorscheme = self.PLT.cm.jet
     
     def CompileHistogram(self):
- 
+        self.Init_PLT()
+        self.Colorscheme = self.PLT.cm.BuPu
         self.TransformData("xData", "xLabels")
         self.TransformData("yData", "yLabels")
 
@@ -213,32 +219,32 @@ class TH2F(SharedMethods, GenericAttributes):
             self.PLT.yticks(self.yLabels, self.yData, rotation = 45, rotation_mode = "anchor", ha = "right")
         self.Compiled = True
 
-class CombineHistograms(SharedMethods):
+class CombineHistograms(SharedMethods, GenericAttributes):
     def __init__(self):
         SharedMethods.__init__(self)
-        self.DefaultScaling = 10
-        self.DefaultDPI = 250
+        GenericAttributes.__init__(self) 
         self.Normalize = False
         self.Histograms = []
         self.Title = ""
         self.Log = False
-        self.PLT = plt
         self.Compiled = False
-        self.PLT.figure(figsize=(self.DefaultScaling, self.DefaultScaling), dpi = self.DefaultDPI)
 
     def CompileHistogram(self):
-
+        self.Init_PLT()
         if self.Title != "":
             self.PLT.title(self.Title)
         
         for i in range(len(self.Histograms)):
             H = self.Histograms[i]
-            self.PLT.hist(H.xData, bins = H.xBins, range=(H.xMin,H.xMax), label = H.Title, alpha = H.Alpha, log = self.Log)
-        
+            if H.Color != "":
+                self.PLT.hist(H.xData, bins = H.xBins, range=(H.xMin,H.xMax), label = H.Title, alpha = H.Alpha, log = self.Log, color = H.Color)
+            else:     
+                self.PLT.hist(H.xData, bins = H.xBins, range=(H.xMin,H.xMax), label = H.Title, alpha = H.Alpha, log = self.Log)
+
         if len(self.Histograms) != 0:
             self.PLT.xlabel(self.Histograms[0].xTitle)
             self.PLT.ylabel(self.Histograms[0].yTitle)
-        self.PLT.legend(loc="upper right")
+        self.PLT.legend(loc=self.LegendPos)
         if self.Filename == "":
             self.Filename = self.Title + ".png"
         self.Compiled = True
@@ -248,23 +254,21 @@ class CombineHistograms(SharedMethods):
         self.SaveFigure(dir) 
 
 
-class CombineTGraph(SharedMethods):
+class CombineTGraph(SharedMethods, GenericAttributes):
     
     def __init__(self):
         SharedMethods.__init__(self)
-        self.DefaultScaling = 8
-        self.DefaultDPI = 500
+        GenericAttributes.__init__(self)
         self.Normalize = False
         self.Lines = []
         self.Title = ""
         self.Log = False
-        self.PLT = plt
-        self.PLT.figure(figsize=(self.DefaultScaling, self.DefaultScaling), dpi = self.DefaultDPI)
         self.yMin = 0
         self.yMax = 1
         self.Compiled = False
     
     def CompileLine(self):
+        self.Init_PLT()
         if self.Title != "":
             self.PLT.title(self.Title)
 
@@ -363,6 +367,7 @@ class TGraph(SharedMethods, GenericAttributes):
         self.xAxis()
         self.yAxis()
 
+        self.Init_PLT()
         if self.ErrorBars:
             self.PLT.errorbar(x = self.xData, y = self.yData, yerr = [self.Lo_err, self.Up_err], color = self.Color, linestyle = "-", capsize = 3, linewidth = 1)
         else:

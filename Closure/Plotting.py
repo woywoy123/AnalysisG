@@ -15,143 +15,192 @@ def TestTops():
 
     # Top mass containers 
     Top_Mass = []
+    Top_Mass_Lep = []
+    Top_Mass_NoLep = []
+    
     Top_Mass_From_Children = []
+    Top_Mass_From_Children_Lep = []
+    Top_Mass_From_Children_NoLep = []
+    
     Top_Mass_From_Children_init = []
+    Top_Mass_From_Children_init_Lep = []
     Top_Mass_From_Children_init_NoLep = []
-
-    Top_Mass_From_Truth_Jets = []
-    Top_Mass_From_Truth_Jets_init = []
-    Top_Mass_From_Truth_Jets_NoAnomaly = []
-    Top_Mass_From_Jets = []
     for i in x:
         ev = x[i]["nominal"]
         
         tops = ev.TruthTops
         for k in tops:
             k.CalculateMass()
-            Top_Mass.append(k.Mass_GeV)
+            m = k.Mass_GeV
+            Top_Mass.append(m)
             
             k.CalculateMassFromChildren()
             Top_Mass_From_Children.append(k.Mass_GeV)
             Top_Mass_From_Children_init.append(k.Mass_init_GeV)
-    
-        for k in tops:
-
-            # Calculation of top mass from truth jets + detector leptons 
-            P = Particle(True)
-            Skip = False
-            tmp = []
-            for j in k.Decay_init:
-                if abs(j.pdgid) == 11 or abs(j.pdgid) == 13:
-                    Skip = True
+   
+            # Now check if the top children contains a leptonic decay, if yes skip
+            skip = False
+            for l in k.Decay:
+                if abs(l.pdgid) in [11, 13, 15]:
+                    skip = True
                     break
-                tmp.append(j)
+            if skip: 
+                Top_Mass_NoLep.append(m)
+                Top_Mass_From_Children_NoLep.append(k.Mass_GeV)
+                Top_Mass_From_Children_init_NoLep.append(k.Mass_init_GeV)
+            else:
+                Top_Mass_Lep.append(m)
+                Top_Mass_From_Children_Lep.append(k.Mass_GeV)
+                Top_Mass_From_Children_init_Lep.append(k.Mass_init_GeV)
+ 
+    # ALL TOPS
+    T = CombineHistograms()
+    T.DefaultDPI = 500
+    T.DefaultScaling = 7
+    T.LabelSize = 15
+    T.FontSize = 10
+    T.LegendSize = 10
+    T.Title = "Invariant Top Mass Derived from Different Branches"
+    T.Log = True
 
-            if Skip == False:
-                P.Decay = tmp
-                P.CalculateMassFromChildren()
-                Top_Mass_From_Children_init_NoLep.append(P.Mass_GeV)
-               
-            tmp = []
-            for j in k.Decay:
-                tmp += j.Decay
-            k.Decay = tmp
-
-            tmp = []
-            for j in k.Decay_init:
-                tmp += j.Decay_init
-            k.Decay_init = tmp
-            
-            k.CalculateMassFromChildren()
-            Top_Mass_From_Truth_Jets.append(k.Mass_GeV)
-            Top_Mass_From_Truth_Jets_init.append(k.Mass_init_GeV)
-        
-            if ev.Anomaly_TruthMatch == False:
-                Top_Mass_From_Truth_Jets_NoAnomaly.append(k.Mass_GeV)
-
-            # Now we calculate from detector jets
-            tmp = []
-            for j in k.Decay:
-                if j.Type == "truthjet":
-                    tmp += j.Decay
-                else:
-                    tmp.append(j)
-            k.Decay = tmp
-            k.CalculateMassFromChildren()
-            Top_Mass_From_Jets.append(k.Mass_GeV)
-
-    # Tops from Truth information figures 
     t = TH1F() 
-    t.Title = "Mass of Truth Top From 'truth_top_*'"
+    t.Title = "'truth_top_*'"
     t.xTitle = "Mass (GeV)"
     t.yTitle = "Entries"
-    t.xBins = 500
-    t.xMin = 172.45
-    t.xMax = 172.55
+    t.Color = "black"
+    t.xBins = 250
+    t.xMin = 0
+    t.xMax = 200
     t.xData = Top_Mass
     t.Filename = "TruthTops.png"
     t.SaveFigure("Plots/TestTops")
-
+    
     tc = TH1F()
-    tc.Title = "Top Mass Derived From 'truth_top_child_*'"
+    tc.Title = "'truth_top_child_*'"
     tc.xTitle = "Mass (GeV)"
     tc.yTitle = "Entries"
-    tc.xBins = 200
-    tc.xMin = 25
+    tc.xBins = 250
+    tc.xMin = 0
+    tc.xMax = 200
     tc.xData = Top_Mass_From_Children
     tc.Filename = "TopChildren.png"
     tc.SaveFigure("Plots/TestTops")
 
+    tc_in = TH1F()
+    tc_in.Title = "'truth_top_child_init_*'"
+    tc_in.xTitle = "Mass (GeV)"
+    tc_in.yTitle = "Entries"
+    tc_in.xBins = 250
+    tc_in.xMin = 0
+    tc_in.xMax = 200
+    tc_in.xData = Top_Mass_From_Children_init
+    tc_in.Filename = "TopChildren_init.png"
+    tc_in.SaveFigure("Plots/TestTops")
+
+    T.Histograms = [t, tc, tc_in]
+    T.CompileHistogram()
+    T.Filename = "Combined.png"
+    T.Save("Plots/TestTops/")
+    
+
+    # NON LEPTONIC TOPS
+    T = CombineHistograms()
+    T.DefaultDPI = 500
+    T.DefaultScaling = 7
+    T.LabelSize = 15
+    T.FontSize = 10
+    T.LegendSize = 10
+    T.Title = "Invariant Top Mass Derived from Different Branches (Non Leptonic Decay)"
+    T.Log = True
+
+    t = TH1F() 
+    t.Title = "'truth_top_*'"
+    t.xTitle = "Mass (GeV)"
+    t.yTitle = "Entries"
+    t.Color = "black"
+    t.xBins = 250
+    t.xMin = 0
+    t.xMax = 200
+    t.xData = Top_Mass_NoLep
+    t.Filename = "TruthTops_NoLep.png"
+    t.SaveFigure("Plots/TestTops")
+    
     tc = TH1F()
-    tc.Title = "Top Mass Derived From 'truth_top_child_init_*' Without Lepton"
+    tc.Title = "'truth_top_child_*'"
     tc.xTitle = "Mass (GeV)"
     tc.yTitle = "Entries"
-    tc.xBins = 200
-    tc.xMin = 25
-    tc.xData = Top_Mass_From_Children_init_NoLep
+    tc.xBins = 250
+    tc.xMin = 0
+    tc.xMax = 200
+    tc.xData = Top_Mass_From_Children_NoLep
     tc.Filename = "TopChildren_NoLep.png"
     tc.SaveFigure("Plots/TestTops")
 
-    tc_init = TH1F()
-    tc_init.Title = "Top Mass Derived From 'truth_top_child_init_*'"
-    tc_init.xTitle = "Mass (GeV)"
-    tc_init.yTitle = "Entries"
-    tc_init.xMin = 150
-    tc_init.xMax = 200
-    tc_init.xBins = 200
-    tc_init.xData = Top_Mass_From_Children_init
-    tc_init.Filename = "TopChildren_init.png"
-    tc_init.SaveFigure("Plots/TestTops")
+    tc_in = TH1F()
+    tc_in.Title = "'truth_top_child_init_*'"
+    tc_in.xTitle = "Mass (GeV)"
+    tc_in.yTitle = "Entries"
+    tc_in.xBins = 250
+    tc_in.xMin = 0
+    tc_in.xMax = 200
+    tc_in.xData = Top_Mass_From_Children_init_NoLep
+    tc_in.Filename = "TopChildren_init_NoLep.png"
+    tc_in.SaveFigure("Plots/TestTops")
 
-    t = TH1F()
-    t.Title = "Top Mass Derived From 'truth_jets_*' \n (with detector leptons) matched to 'truth_top_child_*'"
+    T.Histograms = [t, tc, tc_in]
+    T.CompileHistogram()
+    T.Filename = "Combined_NoLep.png"
+    T.Save("Plots/TestTops/")
+
+    
+    # ONLY LEPTONIC TOPS
+    T = CombineHistograms()
+    T.DefaultDPI = 500
+    T.DefaultScaling = 7
+    T.LabelSize = 15
+    T.FontSize = 10
+    T.LegendSize = 10
+    T.Title = "Invariant Top Mass Derived from Different Branches (Only Leptonic Decay)"
+    T.Log = True
+
+    t = TH1F() 
+    t.Title = "'truth_top_*'"
     t.xTitle = "Mass (GeV)"
     t.yTitle = "Entries"
+    t.Color = "black"
+    t.xBins = 250
     t.xMin = 0
-    t.xBins = 200
-    t.xData = Top_Mass_From_Truth_Jets
-    t.Filename = "TruthJets.png"
+    t.xMax = 200
+    t.xData = Top_Mass_Lep
+    t.Filename = "TruthTops_Lep.png"
     t.SaveFigure("Plots/TestTops")
+    
+    tc = TH1F()
+    tc.Title = "'truth_top_child_*'"
+    tc.xTitle = "Mass (GeV)"
+    tc.yTitle = "Entries"
+    tc.xBins = 250
+    tc.xMin = 0
+    tc.xMax = 200
+    tc.xData = Top_Mass_From_Children_Lep
+    tc.Filename = "TopChildren_Lep.png"
+    tc.SaveFigure("Plots/TestTops")
 
-    tc_init = TH1F()
-    tc_init.Title = "Top Mass Derived From 'truth_jets_*' \n (with detector leptons) matched to 'truth_top_child_init*'"
-    tc_init.xTitle = "Mass (GeV)"
-    tc_init.yTitle = "Entries"
-    tc_init.xMin = 0
-    tc_init.xBins = 200
-    tc_init.xData = Top_Mass_From_Truth_Jets_init
-    tc_init.Filename = "TruthJets_init.png"
-    tc_init.SaveFigure("Plots/TestTops")
+    tc_in = TH1F()
+    tc_in.Title = "'truth_top_child_init_*'"
+    tc_in.xTitle = "Mass (GeV)"
+    tc_in.yTitle = "Entries"
+    tc_in.xBins = 250
+    tc_in.xMin = 0
+    tc_in.xMax = 200
+    tc_in.xData = Top_Mass_From_Children_init_Lep
+    tc_in.Filename = "TopChildren_init_Lep.png"
+    tc_in.SaveFigure("Plots/TestTops")
 
-    tc_init = TH1F()
-    tc_init.Title = "Top Mass Derived From 'truth_jets_*' \n (with detector leptons) matched to 'truth_top_child_*'\n (No Truth Jet Missmatch)"
-    tc_init.xTitle = "Mass (GeV)"
-    tc_init.yTitle = "Entries"
-    tc_init.xMin = 0
-    tc_init.xBins = 200
-    tc_init.xData = Top_Mass_From_Truth_Jets_NoAnomaly
-    tc_init.Filename = "TruthJets_init_goodmatch.png"
-    tc_init.SaveFigure("Plots/TestTops")
+    T.Histograms = [t, tc, tc_in]
+    T.CompileHistogram()
+    T.Filename = "Combined_Lep.png"
+    T.Save("Plots/TestTops/")
 
     return True
 
