@@ -37,6 +37,10 @@ class Directories(Notification):
                 Output.append(i)
                 self.Notify("FOUND +-> " + dir + "/" + i)
 
+            if os.path.isfile(i) and ".pkl" in i:
+                Output.append(i)
+                self.Notify("FOUND +-> " + dir + "/" + i)
+        
         os.chdir(self.__pwd)
         return Output
 

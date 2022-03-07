@@ -1,4 +1,6 @@
 import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use("agg")
 from networkx.drawing.nx_agraph import to_agraph
 from Functions.IO.Files import WriteDirectory
 from Functions.Tools.Alerting import Notification
@@ -107,13 +109,12 @@ class SharedMethods(WriteDirectory, Notification):
         self.Verbose = True
 
     def SaveFigure(self, dir = ""):
-        
         if self.Compiled != True:
             try:
                 self.CompileHistogram()
             except AttributeError:
                 self.CompileGraph()
-       
+        
         if self.Filename == "":
            self.Filename = self.Title + ".png"
         
@@ -143,8 +144,8 @@ class SharedMethods(WriteDirectory, Notification):
             self.PLT.savefig(self.Filename)
 
         self.ChangeDirToRoot()
-        self.PLT.close()
-
+        self.PLT.close("all")
+        del self.PLT
 
 class TH1F(SharedMethods, GenericAttributes):
     def __init__(self, PLT = ""):
@@ -252,6 +253,9 @@ class CombineHistograms(SharedMethods, GenericAttributes):
 
     def Save(self, dir):
         self.SaveFigure(dir) 
+        for i in self.Histograms:
+            del i
+        self.PLT = ""
 
 
 class CombineTGraph(SharedMethods, GenericAttributes):
