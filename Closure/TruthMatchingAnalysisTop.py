@@ -2,6 +2,7 @@ from Functions.IO.IO import File, PickleObject, UnpickleObject
 from Functions.Event.EventGenerator import EventGenerator
 from Functions.Plotting.Histograms import TH2F, TH1F, CombineHistograms
 from Functions.Particles.Particles import Particle
+from math import sqrt
 
 def TestTopShapes( Compiler = "CustomSignalSample.pkl", sample = ""):
     E = UnpickleObject(Compiler)
@@ -299,50 +300,68 @@ def Test_SimilarityCustomOriginalMethods():
             if abs(c.pdgid) in [11, 12, 13, 14, 15, 16]:
                 return True 
         return False                
-
-    Tops_mTruth = []
-    Tops_PreFSR = []
-    Tops_PostFSR = []
-
-    Children_mTruth = []
-    Children_PostFSR = []
-
-    TruthJet = []
-    TruthJet_NoLep = []
-
-    Status_Code = []
-    Children_mTruth_Weird = []
-    Children_PostFSR_Weird = []
-    TruthJet_Weird = []
-
-    TopTruthJetShare_0 = []
-    TopTruthJetShare_1 = []
-    TopTruthJetShare_2 = []
-    TopTruthJetShare_3 = []
-
-    top_energy_nJet_x = []
-    top_energy_nJet_y = []
-
-    TruthJetsShared = []
     
-    Jets = []
-    JetsSharedWithTruthJets_x = []
-    JetsSharedWithTruthJets_y = []
-
-    JetsSharedTruthTops_x = []
-    JetsSharedTruthTops_y = []
-
-    JetsSharedZPRIME_x = []
-    JetsSharedZPRIME_y = []
+    def R(p):
+        return sqrt(p.eta * p.eta + p.phi * p.phi)
     
-    ZPrimeMass = []
+    def dR(p, x):
+        return sqrt((p.eta - x.eta)**2 + (p.phi - x.phi)**2)
 
-    
+
+
+
+    BackUp = {}
+    BackUp["Tops_mTruth"] = []             
+    BackUp["Tops_PreFSR"] = []
+    BackUp["Tops_PostFSR"] = []
+
+    BackUp["Children_mTruth"] = []
+    BackUp["Children_PostFSR"] = []
+
+    BackUp["TruthJet_NoLep"] = []
+
+    BackUp["Status_Code"] = []
+    BackUp["Children_mTruth_Weird"] = []
+    BackUp["Children_PostFSR_Weird"] = []
+    BackUp["TruthJet_Weird"] = []
+    BackUp["TopTruthJetShare_0"] = []
+    BackUp["TopTruthJetShare_1"] = [] 
+    BackUp["TopTruthJetShare_2"] = [] 
+    BackUp["TopTruthJetShare_3"] = [] 
+
+    BackUp["top_energy_nJet_x"] = []
+    BackUp["top_energy_nJet_y"] = []
+    BackUp["TruthJetsShared"] = []
+    BackUp["Jets"] = []
+    BackUp["JetsSharedWithTruthJets_x"] = []
+    BackUp["JetsSharedWithTruthJets_y"] = []
+    BackUp["JetsSharedTruthTops_x"] = [] 
+    BackUp["JetsSharedTruthTops_y"] = [] 
+    BackUp["JetsSharedZPRIME_x"] = []
+    BackUp["JetsSharedZPRIME_y"] = []
+    BackUp["ZPrimeMass"] = []
+
+    BackUp["Matched_JetSimilarity_E_x"] = []
+    BackUp["Matched_JetSimilarity_E_y"] = [] 
+    BackUp["Matched_JetSimilarity_R_y"] = [] 
+    BackUp["Matched_JetSimilarity_R_x"] = []  
+    BackUp["Matched_JetSimilarity_pt_x"] = []
+    BackUp["Matched_JetSimilarity_pt_y"] = [] 
+    BackUp["Matched_JetsDeltaR"] = []
+    BackUp["nTruthJets"] = []
+    BackUp["nJets"] = []
+
     from Functions.IO.Files import Directories 
-    d = Directories("CustomSample_Cache")
-    Files = d.ListFilesInDir("CustomSample_Cache")
+    CM_Energy = "1000"
+    Files = []
+    for i in ["A", "D", "E"]:
+        dx = "_Cache/CustomSample_tttt_"+ CM_Energy + "_MC_" + i + "_Cache"
+        d = Directories(dx)
+        for f in d.ListFilesInDir(dx):
+            Files.append(dx + "/" + f)
+    
     for F in Files:
-        E_C = UnpickleObject("CustomSample_Cache/" + F)
+        E_C = UnpickleObject(F)
         print(F)
         for i in E_C.Events:
             ev = E_C.Events[i]["nominal"]
@@ -352,23 +371,19 @@ def Test_SimilarityCustomOriginalMethods():
                 if t.Status != 22:
                     skip = True
             if skip == True:
-                Children_mTruth_Weird += CollectChildrenTop(ev.TruthTops)
-                Children_PostFSR_Weird += CollectChildrenTop(ev.TopPostFSR)
+                BackUp["Children_mTruth_Weird"] += CollectChildrenTop(ev.TruthTops)
+                BackUp["Children_PostFSR_Weird"] += CollectChildrenTop(ev.TopPostFSR)
                 for t, j in zip(ev.TopPostFSR, ev.TopPreFSR):
-                    TruthJet_Weird.append(t.Mass_GeV)
-                    Status_Code.append(j.Status)
+                    BackUp["TruthJet_Weird"].append(t.Mass_GeV)
+                    BackUp["Status_Code"].append(j.Status)
                 continue 
 
-            Tops_mTruth += CollectTopsMass(ev.TruthTops)
-            Tops_PreFSR += CollectTopsMass(ev.TopPreFSR)
-            Tops_PostFSR += CollectTopsMass(ev.TopPostFSR)
+            BackUp["Tops_mTruth"] += CollectTopsMass(ev.TruthTops)
+            BackUp["Tops_PreFSR"] += CollectTopsMass(ev.TopPreFSR)
+            BackUp["Tops_PostFSR"] += CollectTopsMass(ev.TopPostFSR)
 
-            Children_mTruth += CollectChildrenTop(ev.TruthTops)
-            Children_PostFSR += CollectChildrenTop(ev.TopPostFSR)
-            
-            # Includes Lepton
-            for t in ev.TopPostFSR:
-                TruthJet.append(t.Mass_GeV)
+            BackUp["Children_mTruth"] += CollectChildrenTop(ev.TruthTops)
+            BackUp["Children_PostFSR"] += CollectChildrenTop(ev.TopPostFSR)
             
             # Removes Lepton
             TJets = []
@@ -379,7 +394,7 @@ def Test_SimilarityCustomOriginalMethods():
                 if LeptonInTop(t):
                     continue
 
-                TruthJet_NoLep.append(t.Mass_GeV) 
+                BackUp["TruthJet_NoLep"].append(t.Mass_GeV) 
             
             # Find Truth Jets being shared by the same tops
             Reuse = [-1 for l in range(len(TJets))]
@@ -397,18 +412,18 @@ def Test_SimilarityCustomOriginalMethods():
                     shared += Reuse[TJets.index(j)]
 
                 if shared == 0:
-                    TopTruthJetShare_0.append(t.Mass_GeV)
+                    BackUp["TopTruthJetShare_0"].append(t.Mass_GeV)
                 if shared == 1:
-                    TopTruthJetShare_1.append(t.Mass_GeV)
+                    BackUp["TopTruthJetShare_1"].append(t.Mass_GeV)
                 if shared == 2:
-                    TopTruthJetShare_2.append(t.Mass_GeV)
+                    BackUp["TopTruthJetShare_2"].append(t.Mass_GeV)
                 if shared == 3:
-                    TopTruthJetShare_3.append(t.Mass_GeV)
+                    BackUp["TopTruthJetShare_3"].append(t.Mass_GeV)
                     
-                top_energy_nJet_x.append(t.e / 1000)
-                top_energy_nJet_y.append(shared)
+                BackUp["top_energy_nJet_x"].append(t.e / 1000)
+                BackUp["top_energy_nJet_y"].append(shared)
 
-            TruthJetsShared += Reuse
+            BackUp["TruthJetsShared"] += Reuse
             
             # Do the above with the Jets
             uniquejets = []
@@ -427,7 +442,7 @@ def Test_SimilarityCustomOriginalMethods():
                             uniquejets.append(je)
                 if not skip: 
                     Top.CalculateMassFromChildren()
-                    Jets.append(Top.Mass_GeV)
+                    BackUp["Jets"].append(Top.Mass_GeV)
 
 
             Reuse = [-1 for l in range(len(uniquejets))]
@@ -436,8 +451,8 @@ def Test_SimilarityCustomOriginalMethods():
                     for je in jt.Decay:
                         Reuse[uniquejets.index(je)] += 1
             
-            JetsSharedWithTruthJets_x += [j.e/1000 for j in uniquejets]
-            JetsSharedWithTruthJets_y += Reuse
+            BackUp["JetsSharedWithTruthJets_x"] += [j.e/1000 for j in uniquejets]
+            BackUp["JetsSharedWithTruthJets_y"] += Reuse
             
             Z = Particle(True)
             for t in ev.TopPostFSR:
@@ -452,50 +467,44 @@ def Test_SimilarityCustomOriginalMethods():
                 for jt in t.Decay:
                     for j in jt.Decay:
                         share += Reuse[uniquejets.index(j)]
-                JetsSharedTruthTops_x.append(t.e / 1000)
-                JetsSharedTruthTops_y.append(share)
-
+                BackUp["JetsSharedTruthTops_x"].append(t.e / 1000)
+                BackUp["JetsSharedTruthTops_y"].append(share)
+                
                 if t.FromRes == 1:
-                    JetsSharedZPRIME_x.append(t.e / 1000)
-                    JetsSharedZPRIME_y.append(share)
+                    BackUp["JetsSharedZPRIME_x"].append(t.e / 1000)
+                    BackUp["JetsSharedZPRIME_y"].append(share)
             
             Z.CalculateMassFromChildren()
-            ZPrimeMass.append(Z.Mass_GeV)
+            BackUp["ZPrimeMass"].append(Z.Mass_GeV)
             
+            for t in ev.TopPostFSR:
+                BackUp["nTruthJets"].append(len(t.Decay))
+                n = 0
+                for tj in t.Decay:
+                    rt = R(tj)
+                    for je in tj.Decay:
+                        rj = R(je)
+                        BackUp["Matched_JetSimilarity_R_y"].append(rj)
+                        BackUp["Matched_JetSimilarity_R_x"].append(rt)
+                        BackUp["Matched_JetsDeltaR"].append(dR(tj, je))
+
+                        BackUp["Matched_JetSimilarity_E_y"].append(je.e / 1000)
+                        BackUp["Matched_JetSimilarity_E_x"].append(tj.e / 1000)
+
+                        BackUp["Matched_JetSimilarity_pt_y"].append(je.pt / 1000)
+                        BackUp["Matched_JetSimilarity_pt_x"].append(tj.pt / 1000)
+                        n+=1
+                BackUp["nJets"].append(n)
             E_C.Events[i]["nominal"] = []
    
-    BackUp = {}
-    BackUp["Tops_mTruth"] = Tops_mTruth                 
-    BackUp["Tops_PreFSR"] = Tops_PreFSR
-    BackUp["Tops_PostFSR"] = Tops_PostFSR
-    BackUp["Children_mTruth"] = Children_mTruth
-    BackUp["Children_PostFSR"] = Children_PostFSR
-    BackUp["TruthJet"] = TruthJet
-    BackUp["TruthJet_NoLep"] = TruthJet_NoLep
-    BackUp["Status_Code"] = Status_Code
-    BackUp["Children_mTruth_Weird"] = Children_mTruth_Weird
-    BackUp["Children_PostFSR_Weird"] = Children_PostFSR_Weird
-    BackUp["TruthJet_Weird"] = TruthJet_Weird
-    BackUp["TopTruthJetShare_0"] = TopTruthJetShare_0
-    BackUp["TopTruthJetShare_1"] = TopTruthJetShare_1
-    BackUp["TopTruthJetShare_2"] = TopTruthJetShare_2
-    BackUp["TopTruthJetShare_3"] = TopTruthJetShare_3
-    BackUp["top_energy_nJet_x"] = top_energy_nJet_x
-    BackUp["top_energy_nJet_y"] = top_energy_nJet_y
-    BackUp["TruthJetsShared"] = TruthJetsShared
-    BackUp["Jets"] = Jets
-    BackUp["JetsSharedWithTruthJets_x"] = JetsSharedWithTruthJets_x
-    BackUp["JetsSharedWithTruthJets_y"] = JetsSharedWithTruthJets_y
-    BackUp["JetsSharedTruthTops_x"] = JetsSharedTruthTops_x
-    BackUp["JetsSharedTruthTops_y"] = JetsSharedTruthTops_y
-    BackUp["JetsSharedZPRIME_x"] = JetsSharedZPRIME_x
-    BackUp["JetsSharedZPRIME_y"] = JetsSharedZPRIME_y
-    BackUp["ZPrimeMass"] = ZPrimeMass
-    PickleObject(BackUp, "Plot.pkl")
+    PickleObject(BackUp, "Plot" + CM_Energy + ".pkl")
+    return True
 
 def Test_SimilarityCustomOriginalMethods_Plot():
-    BackUp = UnpickleObject("Plot.pkl")
-    
+    Energy = "1000"
+    BackUp = UnpickleObject("Plot"+Energy+".pkl")
+    E = "Plots/MatchingAlgorithm_" + Energy
+
     # Illustration of consistent tops 
     T = CombineHistograms()
     T.DefaultDPI = 500
@@ -516,7 +525,7 @@ def Test_SimilarityCustomOriginalMethods_Plot():
     t.xMax = 200
     t.xData = BackUp["Tops_mTruth"]
     t.Filename = "mTruth.png"
-    t.SaveFigure("Plots/MatchingAlgorithm/Raw")
+    t.SaveFigure(E + "/Raw")
     
     tc = TH1F()
     tc.Title = "PreFSR (Alt-Algo)"
@@ -527,7 +536,7 @@ def Test_SimilarityCustomOriginalMethods_Plot():
     tc.xMax = 200
     tc.xData = BackUp["Tops_PreFSR"]
     tc.Filename = "TopPreFSR.png"
-    tc.SaveFigure("Plots/MatchingAlgorithm/Raw")
+    tc.SaveFigure(E + "/Raw")
 
     tc_in = TH1F()
     tc_in.Title = "PostFSR (Alt-Algo)"
@@ -538,11 +547,11 @@ def Test_SimilarityCustomOriginalMethods_Plot():
     tc_in.xMax = 200
     tc_in.xData = BackUp["Tops_PostFSR"]
     tc_in.Filename = "TopPostFSR.png"
-    tc_in.SaveFigure("Plots/MatchingAlgorithm/Raw")
+    tc_in.SaveFigure(E + "/Raw")
 
     T.Histograms = [t, tc, tc_in]
     T.Filename = "CompareTops.png"
-    T.Save("Plots/MatchingAlgorithm")
+    T.Save(E)
     T = "" 
 
     # Illustration of consistent top mass based on truth children 
@@ -564,7 +573,7 @@ def Test_SimilarityCustomOriginalMethods_Plot():
     tc.xMax = 200
     tc.xData = BackUp["Children_mTruth"]
     tc.Filename = "Top_Children_mTruth.png"
-    tc.SaveFigure("Plots/MatchingAlgorithm/Raw")
+    tc.SaveFigure(E + "/Raw")
 
     tc_in = TH1F()
     tc_in.Title = "PostFSR (Alt-Algo)"
@@ -575,11 +584,11 @@ def Test_SimilarityCustomOriginalMethods_Plot():
     tc_in.xMax = 200
     tc_in.xData = BackUp["Children_PostFSR"]
     tc_in.Filename = "Top_Children_PostFSR.png"
-    tc_in.SaveFigure("Plots/MatchingAlgorithm/Raw")
+    tc_in.SaveFigure(E + "/Raw")
 
     T.Histograms = [tc, tc_in]
     T.Filename = "CompareChildren.png"
-    T.Save("Plots/MatchingAlgorithm")
+    T.Save(E)
     T = ""
     
     # Overlaying the mass of top based on truth jet and children and Tops
@@ -601,7 +610,7 @@ def Test_SimilarityCustomOriginalMethods_Plot():
     tc.xMax = 500
     tc.xData = BackUp["Tops_PostFSR"]
     tc.Filename = "InvMassTopDecay_Top.png"
-    tc.SaveFigure("Plots/MatchingAlgorithm/Raw")
+    tc.SaveFigure(E + "/Raw")
 
     tc_in = TH1F()
     tc_in.Title = "Children"
@@ -612,18 +621,7 @@ def Test_SimilarityCustomOriginalMethods_Plot():
     tc_in.xMax = 500
     tc_in.xData = BackUp["Children_PostFSR"]
     tc_in.Filename = "InvMassTopDecay_Children.png"
-    tc_in.SaveFigure("Plots/MatchingAlgorithm/Raw")
-
-    tc_ = TH1F()
-    tc_.Title = "Truth Jet"
-    tc_.xTitle = "Mass (GeV)"
-    tc_.yTitle = "Entries"
-    tc_.xBins = 500
-    tc_.xMin = 0
-    tc_.xMax = 500
-    tc_.xData = BackUp["TruthJet"]
-    tc_.Filename = "InvMassTopDecay_TruthJet.png"
-    tc_.SaveFigure("Plots/MatchingAlgorithm/Raw")
+    tc_in.SaveFigure(E + "/Raw")
 
     tc_NL = TH1F()
     tc_NL.Title = "Truth Jet (No Lepton)"
@@ -634,11 +632,11 @@ def Test_SimilarityCustomOriginalMethods_Plot():
     tc_NL.xMax = 500
     tc_NL.xData = BackUp["TruthJet_NoLep"]
     tc_NL.Filename = "InvMassTopDecay_TruthJet_NOLEP.png"
-    tc_NL.SaveFigure("Plots/MatchingAlgorithm/Raw")
+    tc_NL.SaveFigure(E + "/Raw")
 
-    T.Histograms = [tc, tc_, tc_in, tc_NL]
-    T.Filename = "CompareDecayChain.png"
-    T.Save("Plots/MatchingAlgorithm")
+    T.Histograms = [tc, tc_in, tc_NL]
+    T.Filename = "CompareDecayChain_ToTruthJet.png"
+    T.Save(E)
     T = ""
 
     # Weird behaviour Children
@@ -660,7 +658,7 @@ def Test_SimilarityCustomOriginalMethods_Plot():
     tc.xMax = 500
     tc.xData = BackUp["Children_mTruth_Weird"]
     tc.Filename = "InvMassTopDecay_Children_Weird.png"
-    tc.SaveFigure("Plots/MatchingAlgorithm/Raw")
+    tc.SaveFigure(E+ "/Raw")
 
     tc_in = TH1F()
     tc_in.Title = "Children (Alt-Algo)"
@@ -671,7 +669,7 @@ def Test_SimilarityCustomOriginalMethods_Plot():
     tc_in.xMax = 500
     tc_in.xData = BackUp["Children_PostFSR_Weird"]
     tc_in.Filename = "InvMassTopDecay_Children_AA_Weird.png"
-    tc_in.SaveFigure("Plots/MatchingAlgorithm/Raw")
+    tc_in.SaveFigure(E + "/Raw")
 
     tc_ = TH1F()
     tc_.Title = "Truth Jet (Alt-Algo)"
@@ -682,11 +680,11 @@ def Test_SimilarityCustomOriginalMethods_Plot():
     tc_.xMax = 500
     tc_.xData = BackUp["TruthJet_Weird"]
     tc_.Filename = "InvMassTopDecay_TruthJet_Weird.png"
-    tc_.SaveFigure("Plots/MatchingAlgorithm/Raw")
+    tc_.SaveFigure(E + "/Raw")
 
     T.Histograms = [tc, tc_, tc_in]
     T.Filename = "CompareDecayChainWeird.png"
-    T.Save("Plots/MatchingAlgorithm")
+    T.Save(E)
     T = ""
 
     # Random Statistics
@@ -700,7 +698,7 @@ def Test_SimilarityCustomOriginalMethods_Plot():
     tc.xMax = 100
     tc.xData = BackUp["Status_Code"]
     tc.Filename = "TopStatusCodes_Weird.png"
-    tc.SaveFigure("Plots/MatchingAlgorithm/")
+    tc.SaveFigure(E)
 
  
     # Overlaying the mass of top based on truth jet and children and Tops
@@ -722,7 +720,7 @@ def Test_SimilarityCustomOriginalMethods_Plot():
     tc.xMax = 500
     tc.xData = BackUp["TopTruthJetShare_0"]
     tc.Filename = "TruthJetShare_0.png"
-    tc.SaveFigure("Plots/MatchingAlgorithm/Raw")
+    tc.SaveFigure(E + "/Raw")
 
     tc_in = TH1F()
     tc_in.Title = "1"
@@ -733,7 +731,7 @@ def Test_SimilarityCustomOriginalMethods_Plot():
     tc_in.xMax = 500
     tc_in.xData = BackUp["TopTruthJetShare_1"]
     tc_in.Filename = "TruthJetShare_1.png"
-    tc_in.SaveFigure("Plots/MatchingAlgorithm/Raw")
+    tc_in.SaveFigure(E + "/Raw")
 
     tc_ = TH1F()
     tc_.Title = "2"
@@ -744,7 +742,7 @@ def Test_SimilarityCustomOriginalMethods_Plot():
     tc_.xMax = 500
     tc_.xData = BackUp["TopTruthJetShare_2"]
     tc_.Filename = "TruthJetShare_2.png"
-    tc_.SaveFigure("Plots/MatchingAlgorithm/Raw")
+    tc_.SaveFigure(E + "/Raw")
 
     tc_NL = TH1F()
     tc_NL.Title = "3"
@@ -755,11 +753,11 @@ def Test_SimilarityCustomOriginalMethods_Plot():
     tc_NL.xMax = 500
     tc_NL.xData = BackUp["TopTruthJetShare_3"]
     tc_NL.Filename = "TruthJetShare_3.png"
-    tc_NL.SaveFigure("Plots/MatchingAlgorithm/Raw")
+    tc_NL.SaveFigure(E + "/Raw")
 
     T.Histograms = [tc, tc_, tc_in, tc_NL]
     T.Filename = "TruthJetsShared_NoLep.png"
-    T.Save("Plots/MatchingAlgorithm")
+    T.Save(E)
     T = ""
 
     tc_ = TH1F()
@@ -769,7 +767,7 @@ def Test_SimilarityCustomOriginalMethods_Plot():
     tc_.xMin = 0
     tc_.xData = BackUp["TruthJetsShared"]
     tc_.Filename = "truthjetsshared.png"
-    tc_.SaveFigure("Plots/MatchingAlgorithm/")
+    tc_.SaveFigure(E)
 
     # Overlaying the mass of top from all decay chain
     T = CombineHistograms()
@@ -790,7 +788,7 @@ def Test_SimilarityCustomOriginalMethods_Plot():
     tc.xMax = 500
     tc.xData = BackUp["Tops_PostFSR"]
     tc.Filename = "InvMassTopDecay_Top.png"
-    tc.SaveFigure("Plots/MatchingAlgorithm/Raw")
+    tc.SaveFigure(E + "/Raw")
 
     tc_in = TH1F()
     tc_in.Title = "Children"
@@ -798,10 +796,10 @@ def Test_SimilarityCustomOriginalMethods_Plot():
     tc_in.yTitle = "Entries"
     tc_in.xBins = 500
     tc_in.xMin = 0
-    tc_in.xMax = 200
+    tc_in.xMax = 500
     tc_in.xData = BackUp["Children_PostFSR"]
     tc_in.Filename = "InvMassTopDecay_Children.png"
-    tc_in.SaveFigure("Plots/MatchingAlgorithm/Raw")
+    tc_in.SaveFigure(E + "/Raw")
 
     tc_NL = TH1F()
     tc_NL.Title = "Truth Jet"
@@ -812,7 +810,7 @@ def Test_SimilarityCustomOriginalMethods_Plot():
     tc_NL.xMax = 500
     tc_NL.xData = BackUp["TruthJet_NoLep"]
     tc_NL.Filename = "InvMassTopDecay_TruthJet_NOLEP.png"
-    tc_NL.SaveFigure("Plots/MatchingAlgorithm/Raw")
+    tc_NL.SaveFigure(E + "/Raw")
 
     tc_ = TH1F()
     tc_.Title = "Reco Jet"
@@ -823,11 +821,11 @@ def Test_SimilarityCustomOriginalMethods_Plot():
     tc_.xMax = 500
     tc_.xData = BackUp["Jets"]
     tc_.Filename = "InvMassTopDecay_RecoJet.png"
-    tc_.SaveFigure("Plots/MatchingAlgorithm/Raw")
+    tc_.SaveFigure(E + "/Raw")
 
     T.Histograms = [tc, tc_, tc_in, tc_NL]
-    T.Filename = "CompareDecayChain.png"
-    T.Save("Plots/MatchingAlgorithm")
+    T.Filename = "CompareDecayChain_All.png"
+    T.Save(E)
     T = ""
 
     tc_ = TH1F()
@@ -839,7 +837,18 @@ def Test_SimilarityCustomOriginalMethods_Plot():
     tc_.xMax = 2000
     tc_.xData = BackUp["ZPrimeMass"]
     tc_.Filename = "ZPrimeMass.png"
-    tc_.SaveFigure("Plots/MatchingAlgorithm")
+    tc_.SaveFigure(E)
+
+    tc_ = TH1F()
+    tc_.Title = "deltaR of matched Jet to Truth Jet"
+    tc_.xTitle = "deltaR (arb.)"
+    tc_.yTitle = "Entries"
+    tc_.xBins = 50
+    tc_.xMin = 0
+    tc_.xMax = 3
+    tc_.xData = BackUp["Matched_JetsDeltaR"]
+    tc_.Filename = "deltaR_TruthJet_To_RecoJet.png"
+    tc_.SaveFigure(E)
 
 
     T = TH2F()
@@ -856,9 +865,8 @@ def Test_SimilarityCustomOriginalMethods_Plot():
     T.Filename = "EnergyTruthJets_vs_nSharedJets.png"
     T.xData = BackUp["JetsSharedWithTruthJets_x"]
     T.yData = BackUp["JetsSharedWithTruthJets_y"] 
-    T.SaveFigure("Plots/MatchingAlgorithm/")
+    T.SaveFigure(E)
     T = ""
-
 
 
     T = TH2F()
@@ -875,7 +883,7 @@ def Test_SimilarityCustomOriginalMethods_Plot():
     T.Filename = "EnergyTruthTops_vs_nSharedJets.png"
     T.xData = BackUp["JetsSharedTruthTops_x"]
     T.yData = BackUp["JetsSharedTruthTops_y"] 
-    T.SaveFigure("Plots/MatchingAlgorithm/")
+    T.SaveFigure(E)
     T = ""
 
 
@@ -885,6 +893,7 @@ def Test_SimilarityCustomOriginalMethods_Plot():
     T.xTitle = "Energy (GeV)"
     T.yTitle = "n-Jets Shared"
     T.xMin = 0 
+    T.xMax = 2000
     T.yMin = 0
     T.yMax = 6
     T.xBins = 100
@@ -892,9 +901,8 @@ def Test_SimilarityCustomOriginalMethods_Plot():
     T.Filename = "ZPrimeTops_vs_nSharedJets.png"
     T.xData = BackUp["JetsSharedZPRIME_x"]
     T.yData = BackUp["JetsSharedZPRIME_y"]
-    T.SaveFigure("Plots/MatchingAlgorithm/")
+    T.SaveFigure(E)
     T = ""
-
 
     T = TH2F()
     T.Normalize = False
@@ -902,6 +910,7 @@ def Test_SimilarityCustomOriginalMethods_Plot():
     T.xTitle = "Energy (GeV)"
     T.yTitle = "n-Truth Jets"
     T.xMin = 0 
+    T.xMax = 2000
     T.yMin = 0
     T.yMax = 5
     T.xBins = 100
@@ -909,9 +918,76 @@ def Test_SimilarityCustomOriginalMethods_Plot():
     T.Filename = "TopEnergySharedTruthJets.png"
     T.xData = BackUp["top_energy_nJet_x"]
     T.yData = BackUp["top_energy_nJet_y"]
-    T.SaveFigure("Plots/MatchingAlgorithm/")
+    T.SaveFigure(E)
     T = ""
 
+    T = TH2F()
+    T.Normalize = False
+    T.Title = "n-Jets vs n-Truth Jets (Per Top)"
+    T.xTitle = "n-Jets"
+    T.yTitle = "n-Truth Jets"
+    T.xMin = 0 
+    T.xMax = 6
+    T.yMin = 0
+    T.yMax = 6
+    T.xBins = 6
+    T.yBins = 6
+    T.Filename = "n-jets_n-truthjets.png"
+    T.xData = BackUp["nJets"]
+    T.yData = BackUp["nTruthJets"]
+    T.SaveFigure(E)
+    T = ""
+
+    T = TH2F()
+    T.Normalize = False
+    T.Title = "Energy of matched Jet to Truth Jet (Per Top)"
+    T.yTitle = "Jet Energy (GeV)"
+    T.xTitle = "Truth Jet Energy (GeV)"
+    T.xMin = 0 
+    T.xMax = 600
+    T.yMin = 0
+    T.yMax = 600
+    T.xBins = 100
+    T.yBins = 100
+    T.Filename = "Energy-jets_n-truthjets.png"
+    T.xData = BackUp["Matched_JetSimilarity_E_x"]
+    T.yData = BackUp["Matched_JetSimilarity_E_y"]
+    T.SaveFigure(E)
+    T = ""
+
+    T = TH2F()
+    T.Normalize = False
+    T.Title = "R (not deltaR) of matched Jet to Truth Jet (Per Top)"
+    T.yTitle = "R - Jet (arb.)"
+    T.xTitle = "R - Truth Jet (arb.)"
+    T.xMin = 0 
+    T.xMax = 6
+    T.yMin = 0
+    T.yMax = 6
+    T.xBins = 100
+    T.yBins = 100
+    T.Filename = "R-jets_n-truthjets.png"
+    T.xData = BackUp["Matched_JetSimilarity_R_x"]
+    T.yData = BackUp["Matched_JetSimilarity_R_y"]
+    T.SaveFigure(E)
+    T = ""
+
+    T = TH2F()
+    T.Normalize = False
+    T.Title = "pT (not deltaR) of matched Jet to Truth Jet (Per Top)"
+    T.yTitle = "pT - Jet (GeV)"
+    T.xTitle = "pT - Truth Jet (GeV)"
+    T.xMin = 0 
+    T.xMax = 600
+    T.yMin = 0
+    T.yMax = 600
+    T.xBins = 100
+    T.yBins = 100
+    T.Filename = "pt-jets_n-truthjets.png"
+    T.xData = BackUp["Matched_JetSimilarity_pt_x"]
+    T.yData = BackUp["Matched_JetSimilarity_pt_y"]
+    T.SaveFigure(E)
+    T = ""
 
 
 

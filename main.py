@@ -37,11 +37,11 @@ def Generate_Cache_Batches(di, Stop = -1, SingleThread = False, Compiler = "Even
         PickleObject(ev, Name)
     
     MKDIR = WriteDirectory()
-    MKDIR.MakeDir(Compiler + "_Cache")
+    MKDIR.MakeDir("_Cache/" + Compiler + "_Cache")
     d = Directories(di)
     Files = d.ListFilesInDir(di)
     for f in Files:
-        Compile(di + "/" + f, Compiler + "_Cache/"+f.replace(".root", ".pkl"))
+        Compile(di + "/" + f, "_Cache" + "/" + Compiler + "_Cache/"+f.replace(".root", ".pkl"))
 
 if __name__ == '__main__':
     #Generate_Cache(dir, Stop = -1, SingleThread = False, Compiler = "SignalSample.pkl")
@@ -50,9 +50,16 @@ if __name__ == '__main__':
     #Generate_Cache("/CERN/CustomAnalysisTopOutput/tttt/", Stop = -1, Compiler = "tttt.pkl", Custom = True)
     #Generate_Cache("/CERN/CustomAnalysisTopOutput/ttbar/", Stop = -1, SingleThread = False, Compiler = "ttbar.pkl", Custom = True)
     #Generate_Cache("/CERN/CustomAnalysisTopOutput/t/", Stop = -1, Compiler = "SingleTop_S.pkl", Custom = True)
-    
-    #Generate_Cache_Batches("/CERN/CustomAnalysisTopOutput/tttt/Merger", Stop = -1, SingleThread = True, Compiler = "CustomSample", Custom = True)
+   
+    #Camp = "E"
+    #for j in range(6):
+    #    index = j
+    #    Energy = ["1000", "1250", "1500", "2000", "2500", "3000"]
+    #    Generate_Cache_Batches("/CERN/CustomAnalysisTopOutput/tttt_" + Energy[index] + "GeV/Merger_" + Camp, Stop = -1, SingleThread = True, Compiler = "CustomSample_tttt_" + Energy[index] + "_MC_" + Camp, Custom = True)
 
+    #Generate_Cache_Batches("/CERN/CustomAnalysisTopOutput/ttbar/Merger", Stop = -1, SingleThread = True, Compiler = "CustomSample_ttbar", Custom = True)
+    #Generate_Cache_Batches("/CERN/CustomAnalysisTopOutput/Resonance_tttt_1500GeV/Merger", Stop = -1, SingleThread = True, Compiler = "tttt_Res", Custom = True)
+    
     ## ====== Test of IO 
     #Passed(TestDir(), "TestDir")
     #Passed(TestReadSingleFile(), "TestReadSingleFile")

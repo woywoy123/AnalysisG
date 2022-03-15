@@ -168,7 +168,7 @@ class TH1F(SharedMethods, GenericAttributes):
                 for k in range(self.yData[i]): 
                     Update.append(i)
             self.xData = Update
-        self.PLT.hist(self.xData, bins = self.xBins, range=(self.xMin, self.xMax), alpha = self.Alpha, log = self.Log)
+        self.PLT.hist(self.xData, bins = self.xBins, range=(self.xMin, self.xMax), alpha = self.Alpha, log = self.Log, density = self.Normalize)
 
         if len(self.xLabels) != 0:
             self.TransformData("xLabels", "xData")
@@ -238,9 +238,9 @@ class CombineHistograms(SharedMethods, GenericAttributes):
         for i in range(len(self.Histograms)):
             H = self.Histograms[i]
             if H.Color != "":
-                self.PLT.hist(H.xData, bins = H.xBins, range=(H.xMin,H.xMax), label = H.Title, alpha = H.Alpha, log = self.Log, color = H.Color)
+                self.PLT.hist(H.xData, bins = H.xBins, range=(H.xMin,H.xMax), label = H.Title, alpha = H.Alpha, log = self.Log, color = H.Color, density = self.Normalize)
             else:     
-                self.PLT.hist(H.xData, bins = H.xBins, range=(H.xMin,H.xMax), label = H.Title, alpha = H.Alpha, log = self.Log)
+                self.PLT.hist(H.xData, bins = H.xBins, range=(H.xMin,H.xMax), label = H.Title, alpha = H.Alpha, log = self.Log, density = self.Normalize)
 
         if len(self.Histograms) != 0:
             self.PLT.xlabel(self.Histograms[0].xTitle)
