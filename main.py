@@ -47,11 +47,11 @@ if __name__ == '__main__':
     #Generate_Cache(dir, Stop = -1, SingleThread = False, Compiler = "SignalSample.pkl")
     #Generate_Cache("/CERN/Grid/Samples/NAF/2021-05-05-2cRC-all/mc16a/postProcessed_ttbar_PhPy8_Total.root", Stop = 150000, SingleThread = True, Compiler = "ttbar.pkl")
     #Generate_Cache("/CERN/CustomAnalysisTopOutput/tttt/Merger", Stop = -1, SingleThread = True, Compiler = "CustomSignalSample.pkl", Custom = True)
-    #Generate_Cache("/CERN/CustomAnalysisTopOutput/tttt/", Stop = -1, Compiler = "tttt.pkl", Custom = True)
+    Generate_Cache("/CERN/CustomAnalysisTopOutput/tttt/", Stop = -1, Compiler = "tttt.pkl", Custom = True)
     #Generate_Cache("/CERN/CustomAnalysisTopOutput/ttbar/", Stop = -1, SingleThread = False, Compiler = "ttbar.pkl", Custom = True)
     #Generate_Cache("/CERN/CustomAnalysisTopOutput/t/", Stop = -1, Compiler = "SingleTop_S.pkl", Custom = True)
    
-    #Camp = "E"
+    #Camp = "A"
     #for j in range(6):
     #    index = j
     #    Energy = ["1000", "1250", "1500", "2000", "2500", "3000"]
@@ -129,6 +129,9 @@ if __name__ == '__main__':
     #Passed(Test_SingleTop(), "Test_SingleTop")
 
     #Passed(Test_tttt_Jets(), "Test_tttt_Jets")
-    #Passed(Test_SimilarityCustomOriginalMethods(), "Test_SimilarityCustomOriginalMethods")
-    Passed(Test_SimilarityCustomOriginalMethods_Plot(), "Test_SimilarityCustomOriginalMethods_Plot")
+
+    i = ["1000", "1250", "1500", "2000", "2500", "3000"]
+    i = i[2]
+    #Passed(Test_SimilarityCustomOriginalMethods(i), "Test_SimilarityCustomOriginalMethods")
+    Passed(Test_SimilarityCustomOriginalMethods_Plot(i), "Test_SimilarityCustomOriginalMethods_Plot")
 

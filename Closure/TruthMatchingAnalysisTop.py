@@ -280,7 +280,7 @@ def Test_tttt_Jets():
     TestJets("CustomSignalSample.pkl", "_tttt")
     return True
 
-def Test_SimilarityCustomOriginalMethods():
+def Test_SimilarityCustomOriginalMethods(CM_Energy = ""):
     def CollectTopsMass(tops):
         out = []
         for t in tops:
@@ -352,7 +352,6 @@ def Test_SimilarityCustomOriginalMethods():
     BackUp["nJets"] = []
 
     from Functions.IO.Files import Directories 
-    CM_Energy = "1000"
     Files = []
     for i in ["A", "D", "E"]:
         dx = "_Cache/CustomSample_tttt_"+ CM_Energy + "_MC_" + i + "_Cache"
@@ -475,7 +474,8 @@ def Test_SimilarityCustomOriginalMethods():
                     BackUp["JetsSharedZPRIME_y"].append(share)
             
             Z.CalculateMassFromChildren()
-            BackUp["ZPrimeMass"].append(Z.Mass_GeV)
+            if len(Z.Decay) == 2:
+                BackUp["ZPrimeMass"].append(Z.Mass_GeV)
             
             for t in ev.TopPostFSR:
                 BackUp["nTruthJets"].append(len(t.Decay))
@@ -500,8 +500,7 @@ def Test_SimilarityCustomOriginalMethods():
     PickleObject(BackUp, "Plot" + CM_Energy + ".pkl")
     return True
 
-def Test_SimilarityCustomOriginalMethods_Plot():
-    Energy = "1000"
+def Test_SimilarityCustomOriginalMethods_Plot(Energy):
     BackUp = UnpickleObject("Plot"+Energy+".pkl")
     E = "Plots/MatchingAlgorithm_" + Energy
 
@@ -755,8 +754,12 @@ def Test_SimilarityCustomOriginalMethods_Plot():
     tc_NL.Filename = "TruthJetShare_3.png"
     tc_NL.SaveFigure(E + "/Raw")
 
-    T.Histograms = [tc, tc_, tc_in, tc_NL]
+    T.Histograms = [tc, tc_in, tc_, tc_NL]
     T.Filename = "TruthJetsShared_NoLep.png"
+    T.Save(E)
+    T.Filename = "TruthJetsShared_NoLep_Log.png"
+    T.Log = True
+    T.CompileHistogram()
     T.Save(E)
     T = ""
 
@@ -823,7 +826,7 @@ def Test_SimilarityCustomOriginalMethods_Plot():
     tc_.Filename = "InvMassTopDecay_RecoJet.png"
     tc_.SaveFigure(E + "/Raw")
 
-    T.Histograms = [tc, tc_, tc_in, tc_NL]
+    T.Histograms = [tc_, tc_NL, tc_in, tc] #[tc, tc_, tc_in, tc_NL]
     T.Filename = "CompareDecayChain_All.png"
     T.Save(E)
     T = ""
@@ -834,22 +837,27 @@ def Test_SimilarityCustomOriginalMethods_Plot():
     tc_.yTitle = "Entries"
     tc_.xBins = 500
     tc_.xMin = 0
-    tc_.xMax = 2000
+    tc_.xMax = 5000
     tc_.xData = BackUp["ZPrimeMass"]
     tc_.Filename = "ZPrimeMass.png"
     tc_.SaveFigure(E)
 
     tc_ = TH1F()
+    tc_.Log = False
     tc_.Title = "deltaR of matched Jet to Truth Jet"
     tc_.xTitle = "deltaR (arb.)"
     tc_.yTitle = "Entries"
-    tc_.xBins = 50
+    tc_.xBins = 100
     tc_.xMin = 0
-    tc_.xMax = 3
+    tc_.xMax = 1
     tc_.xData = BackUp["Matched_JetsDeltaR"]
     tc_.Filename = "deltaR_TruthJet_To_RecoJet.png"
     tc_.SaveFigure(E)
 
+    tc_.Filename = "deltaR_TruthJet_To_RecoJet_Log.png"
+    tc_.Log = True
+    tc_.CompileHistogram()
+    tc_.SaveFigure(E)
 
     T = TH2F()
     T.Normalize = False
@@ -923,7 +931,7 @@ def Test_SimilarityCustomOriginalMethods_Plot():
 
     T = TH2F()
     T.Normalize = False
-    T.Title = "n-Jets vs n-Truth Jets (Per Top)"
+    T.Title = "n-Jets vs n-Truth Jets"
     T.xTitle = "n-Jets"
     T.yTitle = "n-Truth Jets"
     T.xMin = 0 
@@ -940,13 +948,14 @@ def Test_SimilarityCustomOriginalMethods_Plot():
 
     T = TH2F()
     T.Normalize = False
-    T.Title = "Energy of matched Jet to Truth Jet (Per Top)"
+    T.Diagonal = True
+    T.Title = "Energy of matched Jet to Truth Jet"
     T.yTitle = "Jet Energy (GeV)"
     T.xTitle = "Truth Jet Energy (GeV)"
     T.xMin = 0 
-    T.xMax = 600
+    T.xMax = 400
     T.yMin = 0
-    T.yMax = 600
+    T.yMax = 400
     T.xBins = 100
     T.yBins = 100
     T.Filename = "Energy-jets_n-truthjets.png"
@@ -957,7 +966,8 @@ def Test_SimilarityCustomOriginalMethods_Plot():
 
     T = TH2F()
     T.Normalize = False
-    T.Title = "R (not deltaR) of matched Jet to Truth Jet (Per Top)"
+    T.Diagonal = True
+    T.Title = "R (not deltaR) of matched Jet to Truth Jet"
     T.yTitle = "R - Jet (arb.)"
     T.xTitle = "R - Truth Jet (arb.)"
     T.xMin = 0 
@@ -974,13 +984,14 @@ def Test_SimilarityCustomOriginalMethods_Plot():
 
     T = TH2F()
     T.Normalize = False
-    T.Title = "pT (not deltaR) of matched Jet to Truth Jet (Per Top)"
+    T.Diagonal = True
+    T.Title = "pT of matched Jet to Truth Jet"
     T.yTitle = "pT - Jet (GeV)"
     T.xTitle = "pT - Truth Jet (GeV)"
     T.xMin = 0 
-    T.xMax = 600
+    T.xMax = 400
     T.yMin = 0
-    T.yMax = 600
+    T.yMax = 400
     T.xBins = 100
     T.yBins = 100
     T.Filename = "pt-jets_n-truthjets.png"

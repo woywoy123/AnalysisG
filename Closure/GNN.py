@@ -8,29 +8,23 @@ from Functions.IO.Files import WriteDirectory
 
 def SimpleFourTops():
     def Signal(a):
-        return int(a.Signal)
+        return int(a.FromRes)
 
     def Charge(a):
-        return float(a.Signal)
+        return float(a.FromRes)
 
-
-    ev = UnpickleObject("SignalSample.pkl")
+    ev = UnpickleObject("tttt.pkl")
     Loader = GenerateDataLoader()
     Loader.AddNodeFeature("x", Charge)
     Loader.AddNodeTruth("y", Signal)
     Loader.AddSample(ev, "nominal", "TruthTops")
     Loader.ToDataLoader()
 
-    ev = UnpickleObject("SignalSample.pkl")
-    Sig = GenerateDataLoader()
-    Sig.AddNodeFeature("x", Charge)
-    Sig.AddSample(ev, "nominal", "TruthTops")
-
     op = Optimizer(Loader)
-    op.DefaultBatchSize = 1
+    op.DefaultBatchSize = 5000
     op.Epochs = 10
     op.NotifyTime = 1
-    op.kFold = 3
+    op.kFold = 2
     op.DefineEdgeConv(1, 2)
     op.kFoldTraining()
 

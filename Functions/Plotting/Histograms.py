@@ -184,6 +184,7 @@ class TH2F(SharedMethods, GenericAttributes):
         self.Normalize = True
         SharedMethods.__init__(self)
         GenericAttributes.__init__(self)
+        self.Diagonal = False
     
     def CompileHistogram(self):
         self.Init_PLT()
@@ -212,6 +213,8 @@ class TH2F(SharedMethods, GenericAttributes):
         self.PLT.xlabel(self.xTitle)
         self.PLT.ylabel(self.yTitle)
         self.PLT.colorbar()
+        if self.Diagonal:
+            self.PLT.plot([self.xMin, self.xMax], [self.yMin, self.yMax], ls="--", c=".3")
 
         if len(self.xLabels) != 0:
             self.TransformData("xLabels", "xData")
