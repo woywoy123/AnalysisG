@@ -9,8 +9,9 @@ function CreateShellScript ()
   echo "source ~/.bashrc" >> $name/Spawn.sh
   echo 'eval "$(conda shell.bash hook)"' >> $name/Spawn.sh
   echo "conda activate GNN" >> $name/Spawn.sh
-  echo "cd ../../" >> $name/Spawn.sh
+  echo "cd ../" >> $name/Spawn.sh
   echo "$str" >> $name/Spawn.sh
+  chmod +x $name/Spawn.sh
   echo "JOB $name $name/$name.submit" >> SubmissionDAG.submit
 }
 
@@ -18,10 +19,10 @@ function CreateSubmitGPU()
 {
   local hours=$1
   local name=$2
-  echo "executable = $1.sh" > $name/$name.submit
+  echo "executable = $name/Spawn.sh" > $name/$name.submit
   echo "error = results.error.$""(ClusterID)" >> $name/$name.submit
   echo 'Requirements = OpSysAndVer == "CentOS7"' >> $name/$name.submit
-  echo "Request_GPUs = 1" >> $name/$name.submit
+  echo "Request_GPUs = 4" >> $name/$name.submit
   echo "+RequestRuntime = $((60*60*$hours))" >> $name/$name.submit
   echo "+Request_Memory = 1024" >> $name/$name.submit
   echo "queue" >> $name/$name.submit
@@ -31,7 +32,7 @@ function CreateSubmitCPU()
 {
   local hours=$1
   local name=$2
-  echo "executable = Spawn.sh" > $name/$name.submit
+  echo "executable = $name/Spawn.sh" > $name/$name.submit
   echo "error = results.error.$""(ClusterID)" >> $name/$name.submit
   echo 'Requirements = OpSysAndVer == "CentOS7"' >> $name/$name.submit
   echo "Request_Cpus = 1" >> $name/$name.submit
@@ -47,18 +48,18 @@ function CreateEdge()
 echo "" > SubmissionDAG.submit
 
 
-sampleDir="/CERN/CustomAnalysisTopOutput"
-outDir="/CERN/BSM4tops-GNN-Samples"
+sampleDir="/nfs/dust/atlas/group/top/BS4Tops/BSM4tops-GNN-Samples/CustomAnalysisTopOutput"
+outDir="/nfs/dust/atlas/group/top/BS4Tops/BSM4tops-GNN-Samples"
 
 ## ============ Cache Builder ============ ##
 CreateShellScript "python main_cluster.py --Mode Cache --SampleDir $sampleDir/tttt_1500GeV/Merger_A --CompilerName tttt_1500GeV --OutputDir $outDir/Cache" 'tttt_1500GeV_Cache'
-CreateSubmitCPU 12 'tttt_1500GeV_Cache'
+CreateSubmitCPU 6 'tttt_1500GeV_Cache'
 
 CreateShellScript "python main_cluster.py --Mode Cache --SampleDir $sampleDir/ttbar/Merger --CompilerName ttbar --OutputDir $outDir/Cache" 'ttbar_Cache'
-CreateSubmitCPU 12 'ttbar_Cache'
+CreateSubmitCPU 6 'ttbar_Cache'
 
-CreateShellScript "python main_cluster.py --Mode Cache --SampleDir $sampleDir/SingleTop/Merger --CompilerName t --OutputDir $outDir"/Cache 't_Cache'
-CreateSubmitCPU 12 't_Cache'
+CreateShellScript "python main_cluster.py --Mode Cache --SampleDir $sampleDir/SingleTop/Merger --CompilerName t --OutputDir $outDir/Cache" 't_Cache'
+CreateSubmitCPU 6 't_Cache'
 
 ## ============ DataLoader Builder ============ ##
 # +++++++> Truth Top Children 
@@ -93,42 +94,42 @@ CreateEdge "t_Cache" "TTC_Mixed_1500GeV_Data"
 # +++++++++++++> InvMassNode - 1500 GeV
 CreateShellScript "python main_cluster.py --Mode Train --Model InvMassNode --ModelName TTC_tttt_1500GeV_InvMassNode --ModelDataLoaderInput $outDir/DataLoaders/TTC_tttt_1500GeV.pkl --ModelOutputDir $outDir/TrainedModels" "TTC_tttt_1500GeV_InvMassNode"
 CreateSubmitGPU 12 "TTC_tttt_1500GeV_InvMassNode"
-CreateEdge "TTC_tttt_1500GeV_Data" "TTC_tttt_1500GeV_InvMassNode"
 
 # +++++++++++++> InvMassEdge - 1500 GeV
 CreateShellScript "python main_cluster.py --Mode Train --Model InvMassEdge --ModelName TTC_tttt_1500GeV_InvMassEdge --ModelDataLoaderInput $outDir/DataLoaders/TTC_tttt_1500GeV.pkl --ModelOutputDir $outDir/TrainedModels" "TTC_tttt_1500GeV_InvMassEdge"
 CreateSubmitGPU 12 "TTC_tttt_1500GeV_InvMassEdge"
-CreateEdge "TTC_tttt_1500GeV_Data" "TTC_tttt_1500GeV_InvMassEdge"
 
 # +++++++++++++> InvMassNode - Mixed + 1500 GeV
 CreateShellScript "python main_cluster.py --Mode Train --Model InvMassNode --ModelName TTC_Mixed_1500GeV_InvMassNode --ModelDataLoaderInput $outDir/DataLoaders/TTC_Mixed_1500GeV.pkl --ModelOutputDir $outDir/TrainedModels" "TTC_Mixed_1500GeV_InvMassNode"
 CreateSubmitGPU 12 "TTC_Mixed_1500GeV_InvMassNode"
-CreateEdge "TTC_Mixed_1500GeV_Data" "TTC_Mixed_1500GeV_InvMassNode"
 
 # +++++++++++++> InvMassEdge - Mixed + 1500 GeV
 CreateShellScript "python main_cluster.py --Mode Train --Model InvMassEdge --ModelName TTC_Mixed_1500GeV_InvMassEdge --ModelDataLoaderInput $outDir/DataLoaders/TTC_Mixed_1500GeV.pkl --ModelOutputDir $outDir/TrainedModels" "TTC_Mixed_1500GeV_InvMassEdge"
 CreateSubmitGPU 12 "TTC_Mixed_1500GeV_InvMassEdge"
-CreateEdge "TTC_Mixed_1500GeV_Data" "TTC_Mixed_1500GeV_InvMassEdge"
 
 # ===> PathNets
 # +++++++++++++> PathNetNode
 CreateShellScript "python main_cluster.py --Mode Train --Model PathNetNode --ModelName TTC_tttt_1500GeV_PathNetNode --ModelDataLoaderInput $outDir/DataLoaders/TTC_tttt_1500GeV.pkl --ModelOutputDir $outDir/TrainedModels" "TTC_tttt_1500GeV_PathNetNode"
 CreateSubmitGPU 12 "TTC_tttt_1500GeV_PathNetNode"
-CreateEdge "TTC_tttt_1500GeV_Data" "TTC_tttt_1500GeV_PathNetNode"
 
 # +++++++++++++> PathNetEdge
 CreateShellScript "python main_cluster.py --Mode Train --Model PathNetEdge --ModelName TTC_tttt_1500GeV_PathNetEdge --ModelDataLoaderInput $outDir/DataLoaders/TTC_tttt_1500GeV.pkl --ModelOutputDir $outDir/TrainedModels" "TTC_tttt_1500GeV_PathNetEdge"
 CreateSubmitGPU 12 "TTC_tttt_1500GeV_PathNetEdge"
-CreateEdge "TTC_tttt_1500GeV_Data" "TTC_tttt_1500GeV_PathNetEdge"
 
 # +++++++++++++> PathNetNode - Mixed + 1500 GeV
 CreateShellScript "python main_cluster.py --Mode Train --Model PathNetNode --ModelName TTC_Mixed_1500GeV_PathNetNode --ModelDataLoaderInput $outDir/DataLoaders/TTC_Mixed_1500GeV.pkl --ModelOutputDir $outDir/TrainedModels" "TTC_Mixed_1500GeV_PathNetNode"
 CreateSubmitGPU 12 "TTC_Mixed_1500GeV_PathNetNode"
-CreateEdge "TTC_Mixed_1500GeV_Data" "TTC_Mixed_1500GeV_PathNetNode"
 
 # +++++++++++++> PathNetEdge - Mixed + 1500 GeV
 CreateShellScript "python main_cluster.py --Mode Train --Model PathNetEdge --ModelName TTC_Mixed_1500GeV_PathNetEdge --ModelDataLoaderInput $outDir/DataLoaders/TTC_Mixed_1500GeV.pkl --ModelOutputDir $outDir/TrainedModels" "TTC_Mixed_1500GeV_PathNetEdge"
 CreateSubmitGPU 12 "TTC_Mixed_1500GeV_PathNetEdge"
+
+
+CreateEdge "TTC_tttt_1500GeV_Data" "TTC_tttt_1500GeV_InvMassNode"
+CreateEdge "TTC_tttt_1500GeV_Data" "TTC_tttt_1500GeV_InvMassEdge"
+CreateEdge "TTC_Mixed_1500GeV_Data" "TTC_Mixed_1500GeV_InvMassNode"
+CreateEdge "TTC_Mixed_1500GeV_Data" "TTC_Mixed_1500GeV_InvMassEdge"
+CreateEdge "TTC_tttt_1500GeV_Data" "TTC_tttt_1500GeV_PathNetNode"
+CreateEdge "TTC_tttt_1500GeV_Data" "TTC_tttt_1500GeV_PathNetEdge"
+CreateEdge "TTC_Mixed_1500GeV_Data" "TTC_Mixed_1500GeV_PathNetNode"
 CreateEdge "TTC_Mixed_1500GeV_Data" "TTC_Mixed_1500GeV_PathNetEdge"
-
-

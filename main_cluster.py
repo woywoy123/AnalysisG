@@ -18,6 +18,8 @@ def GenerateTemplate_Batches(TruthLevel, Direct, OutputDir, OutputName):
         os.mkdir(OutputDir)
     except FileExistsError:
         pass
+    except PermissionError:
+        pass
 
     GenerateTemplate("", Level = TruthLevel, Additional_Samples = File_Dumps, OutputName = OutputDir + "/" + OutputName + ".pkl", device = "cpu")
 
@@ -28,6 +30,8 @@ def MakeDirectory(directory):
         try: 
             os.mkdir(s)
         except FileExistsError:
+            pass
+        except PermissionError:
             pass
 
 parse = argparse.ArgumentParser()
@@ -49,7 +53,7 @@ parse.add_argument("--ModelDataLoaderInput", type = str, help = "Specify the Dat
 args = parse.parse_args()
 
 if args.Mode == "Cache":
-    Generate_Cache_Batches(args.SampleDir, SingleThread = True, Compiler = args.CompilerName, Custom = True, CustomDirectory = args.OutputDir) 
+    Generate_Cache_Batches(args.SampleDir, SingleThread = False, Compiler = args.CompilerName, Custom = True, CustomDirectory = args.OutputDir) 
 
 elif args.Mode == "DataLoader":
     GenerateTemplate_Batches(args.DataLoaderTruthLevel, args.DataLoaderAddSamples, args.OutputDir + "/DataLoaders", args.DataLoaderName) 
@@ -59,17 +63,3 @@ elif args.Mode == "Train":
     TrainEvaluate(args.Model, args.ModelName, args.ModelDataLoaderInput, ClusterOutputDir = args.ModelOutputDir)
 
 exit()
-
-
-if __name__ == '__main__':
-
-    # ====== Evaluation of Models on Clustered environment ======== #
-    # Parameters 
-    SampleRootDir = "/CERN/BSM4tops-GNN-Samples"
-    Cached = [SampleRootDir+"/tttt_1500_Cache", SampleRootDir+"/t_Cache", SampleRootDir + "/tt_Cache"]
-    OutputModels = "/CERN/BSM4tops-GNN-Samples/TrainedModels"
-    name = "TruthTopChildrenInvMassNode-ONLY_tttt_1500GeV"
-   
-    MakeDirectory(OutputModels + "/" + name)
-    TrainEvaluate("InvMassNode", name, "/CERN/BSM4tops-GNN-Samples/DataLoaders/tttt_1500_GeV", ClusterOutputDir = "/CERN/BSM4tops-GNN-Samples/TrainedModels")
-

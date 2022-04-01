@@ -47,6 +47,8 @@ def Generate_Cache_Batches(di, Stop = -1, SingleThread = False, Compiler = "Even
                 os.mkdir(k)   
             except FileExistsError:
                 pass
+            except PermissionError:
+                pass
         os.chdir(CustomDirectory + "/" + Compiler + "_Cache/")   
     else:
         MKDIR = WriteDirectory()
