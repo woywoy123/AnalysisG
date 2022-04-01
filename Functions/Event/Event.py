@@ -122,10 +122,14 @@ class Event_Custom(VariableManager):
                     continue
                 else:
                     l = list(self.Jets[i][0].JetMapGhost)
-            self.Jets[i][0].JetMapGhost = l 
+
+            self.Jets[i][0].JetMapGhost = [] 
             for k in l:
                 truthj = self.TruthJets[k][0]
                 truthj.Decay.append(self.Jets[i][0])
+                self.Jets[i][0].JetMapGhost += truthj.GhostTruthJetMap
+
+            self.Jets[i][0].JetMapGhost = list(set(self.Jets[i][0].JetMapGhost))
         
         self.Electrons = self.DictToList(self.Electrons)
         self.Muons = self.DictToList(self.Muons)

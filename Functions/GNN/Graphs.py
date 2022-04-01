@@ -58,6 +58,11 @@ class EventGraph:
             self.Particles += self.Event.Electrons
             self.Particles += self.Event.Muons
 
+        if Level == "JetsLep":
+            self.Particles += self.Event.Jets
+            self.Particles += self.Event.Electrons
+            self.Particles += self.Event.Muons
+
         if Level == "TruthTopChildren":
             self.Particles += self.Event.TruthTopChildren
         

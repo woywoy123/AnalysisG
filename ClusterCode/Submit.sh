@@ -3,41 +3,132 @@
 function CreateShellScript ()
 {
   local str=$1
-  echo "#!/bin/bash" > Spawn.sh
-  echo "source ~/.bashrc" >> Spawn.sh
-  echo 'eval "$(conda shell.bash hook)"' >> Spawn.sh
-  echo "conda activate GNN" >> Spawn.sh
-  echo "cd ../" >> Spawn.sh
-  echo "$1 >> ClusterCode/log.txt" >> Spawn.sh
+  local name=$2
+  mkdir $2
+  echo "#!/bin/bash" > $name/Spawn.sh
+  echo "source ~/.bashrc" >> $name/Spawn.sh
+  echo 'eval "$(conda shell.bash hook)"' >> $name/Spawn.sh
+  echo "conda activate GNN" >> $name/Spawn.sh
+  echo "cd ../../" >> $name/Spawn.sh
+  echo "$str" >> $name/Spawn.sh
+  echo "JOB $name $name/$name.submit" >> SubmissionDAG.submit
 }
 
 function CreateSubmitGPU()
 {
-  local str=$1
-  echo "executable = $1.sh" > $1.submit
-  echo "error = results.error.$""(ClusterID)" >> $1.submit
-  echo 'Requirements = OpSysAndVer == "CentOS7"' >> $1.submit
-  echo "Request_GPUs = 1" >> $1.submit
-  echo "+RequestRuntime = $((60*60*$1))" >> $1.submit
-  echo "+Request_Memory = 1024" >> $1.submit
-  echo "queue" >> $1.submit
+  local hours=$1
+  local name=$2
+  echo "executable = $1.sh" > $name/$name.submit
+  echo "error = results.error.$""(ClusterID)" >> $name/$name.submit
+  echo 'Requirements = OpSysAndVer == "CentOS7"' >> $name/$name.submit
+  echo "Request_GPUs = 1" >> $name/$name.submit
+  echo "+RequestRuntime = $((60*60*$hours))" >> $name/$name.submit
+  echo "+Request_Memory = 1024" >> $name/$name.submit
+  echo "queue" >> $name/$name.submit
 }
 
 function CreateSubmitCPU()
 {
-  local str=$1
-  echo "executable = $1.sh" > $1.submit
-  echo "error = results.error.$""(ClusterID)" >> $1.submit
-  echo 'Requirements = OpSysAndVer == "CentOS7"' >> $1.submit
-  echo "Request_Cpus = 1" >> $1.submit
-  echo "+RequestRuntime = $((60*60*$1))" >> $1.submit
-  echo "+Request_Memory = 4096" >> $1.submit
-  echo "queue" >> $1.submit
+  local hours=$1
+  local name=$2
+  echo "executable = Spawn.sh" > $name/$name.submit
+  echo "error = results.error.$""(ClusterID)" >> $name/$name.submit
+  echo 'Requirements = OpSysAndVer == "CentOS7"' >> $name/$name.submit
+  echo "Request_Cpus = 1" >> $name/$name.submit
+  echo "+RequestRuntime = $((60*60*$hours))" >> $name/$name.submit
+  echo "+Request_Memory = 4096" >> $name/$name.submit
+  echo "queue" >> $name/$name.submit
 }
 
+function CreateEdge()
+{
+  echo "PARENT $1 CHILD $2" >> SubmissionDAG.submit
+}
+echo "" > SubmissionDAG.submit
 
 
+sampleDir="/CERN/CustomAnalysisTopOutput"
+outDir="/CERN/BSM4tops-GNN-Samples"
 
-CreateShellScript "python main_cluster.py --Mode Cache "
-chmod +x Spawn.sh
-condor_submit GNN.submit
+## ============ Cache Builder ============ ##
+CreateShellScript "python main_cluster.py --Mode Cache --SampleDir $sampleDir/tttt_1500GeV/Merger_A --CompilerName tttt_1500GeV --OutputDir $outDir/Cache" 'tttt_1500GeV_Cache'
+CreateSubmitCPU 12 'tttt_1500GeV_Cache'
+
+CreateShellScript "python main_cluster.py --Mode Cache --SampleDir $sampleDir/ttbar/Merger --CompilerName ttbar --OutputDir $outDir/Cache" 'ttbar_Cache'
+CreateSubmitCPU 12 'ttbar_Cache'
+
+CreateShellScript "python main_cluster.py --Mode Cache --SampleDir $sampleDir/SingleTop/Merger --CompilerName t --OutputDir $outDir"/Cache 't_Cache'
+CreateSubmitCPU 12 't_Cache'
+
+## ============ DataLoader Builder ============ ##
+# +++++++> Truth Top Children 
+CreateShellScript "python main_cluster.py --Mode DataLoader --DataLoaderTruthLevel TruthTopChildren --OutputDir $outDir --DataLoaderAddSamples $outDir/Cache/tttt_1500GeV_Cache --DataLoaderName TTC_tttt_1500GeV" 'TTC_tttt_1500GeV_Data'
+CreateSubmitCPU 12 'TTC_tttt_1500GeV_Data'
+CreateEdge "tttt_1500GeV_Cache" "TTC_tttt_1500GeV_Data"
+CreateEdge "ttbar_Cache" "TTC_tttt_1500GeV_Data"
+CreateEdge "t_Cache" "TTC_tttt_1500GeV_Data"
+
+CreateShellScript "python main_cluster.py --Mode DataLoader --DataLoaderTruthLevel TruthTopChildren --OutputDir $outDir --DataLoaderAddSamples $outDir/Cache/tttt_1500GeV_Cache $outDir/Cache/ttbar_Cache $outDir/Cache/t_Cache --DataLoaderName TTC_Mixed_1500GeV" 'TTC_Mixed_1500GeV_Data'
+CreateSubmitCPU 12 'TTC_Mixed_1500GeV_Data'
+CreateEdge "tttt_1500GeV_Cache" "TTC_Mixed_1500GeV_Data"
+CreateEdge "ttbar_Cache" "TTC_Mixed_1500GeV_Data"
+CreateEdge "t_Cache" "TTC_Mixed_1500GeV_Data"
+
+## +++++++> Truth Jets 
+#CreateShellScript "python main_cluster.py --Mode DataLoader --DataLoaderTruthLevel TruthJetsLep --OutputDir $outDir --DataLoaderAddSamples $outDir/Cache/tttt_1500GeV_Cache --DataLoaderName TJL_tttt_1500GeV" 'TJL_tttt_1500GeV_Data'
+#CreateSubmitCPU 12 'TJL_tttt_1500GeV_Data'
+#
+#CreateShellScript "python main_cluster.py --Mode DataLoader --DataLoaderTruthLevel TruthJetsLep --OutputDir $outDir --DataLoaderAddSamples $outDir/Cache/tttt_1500GeV_Cache $outDir/Cache/ttbar_Cache $outDir/Cache/t_Cache --DataLoaderName TJL_Mixed_1500GeV" 'TJL_Mixed_1500GeV_Data'
+#CreateSubmitCPU 12 'TJL_Mixed_1500GeV_Data'
+#
+## +++++++> Jets 
+#CreateShellScript "python main_cluster.py --Mode DataLoader --DataLoaderTruthLevel JetsLep --OutputDir $outDir --DataLoaderAddSamples $outDir/Cache/tttt_1500GeV_Cache --DataLoaderName JL_tttt_1500GeV" 'JL_tttt_1500GeV_Data'
+#CreateSubmitCPU 12 'JL_tttt_1500GeV_Data'
+#
+#CreateShellScript "python main_cluster.py --Mode DataLoader --DataLoaderTruthLevel JetsLep --OutputDir $outDir --DataLoaderAddSamples $outDir/Cache/tttt_1500GeV_Cache $outDir/Cache/ttbar_Cache $outDir/Cache/t_Cache --DataLoaderName JL_Mixed_1500GeV" 'JL_Mixed_1500GeV_Data'
+#CreateSubmitCPU 12 'JL_Mixed_1500GeV_Data'
+
+## =============== Model Runners ================ ##
+# ===> InvMass
+# +++++++++++++> InvMassNode - 1500 GeV
+CreateShellScript "python main_cluster.py --Mode Train --Model InvMassNode --ModelName TTC_tttt_1500GeV_InvMassNode --ModelDataLoaderInput $outDir/DataLoaders/TTC_tttt_1500GeV.pkl --ModelOutputDir $outDir/TrainedModels" "TTC_tttt_1500GeV_InvMassNode"
+CreateSubmitGPU 12 "TTC_tttt_1500GeV_InvMassNode"
+CreateEdge "TTC_tttt_1500GeV_Data" "TTC_tttt_1500GeV_InvMassNode"
+
+# +++++++++++++> InvMassEdge - 1500 GeV
+CreateShellScript "python main_cluster.py --Mode Train --Model InvMassEdge --ModelName TTC_tttt_1500GeV_InvMassEdge --ModelDataLoaderInput $outDir/DataLoaders/TTC_tttt_1500GeV.pkl --ModelOutputDir $outDir/TrainedModels" "TTC_tttt_1500GeV_InvMassEdge"
+CreateSubmitGPU 12 "TTC_tttt_1500GeV_InvMassEdge"
+CreateEdge "TTC_tttt_1500GeV_Data" "TTC_tttt_1500GeV_InvMassEdge"
+
+# +++++++++++++> InvMassNode - Mixed + 1500 GeV
+CreateShellScript "python main_cluster.py --Mode Train --Model InvMassNode --ModelName TTC_Mixed_1500GeV_InvMassNode --ModelDataLoaderInput $outDir/DataLoaders/TTC_Mixed_1500GeV.pkl --ModelOutputDir $outDir/TrainedModels" "TTC_Mixed_1500GeV_InvMassNode"
+CreateSubmitGPU 12 "TTC_Mixed_1500GeV_InvMassNode"
+CreateEdge "TTC_Mixed_1500GeV_Data" "TTC_Mixed_1500GeV_InvMassNode"
+
+# +++++++++++++> InvMassEdge - Mixed + 1500 GeV
+CreateShellScript "python main_cluster.py --Mode Train --Model InvMassEdge --ModelName TTC_Mixed_1500GeV_InvMassEdge --ModelDataLoaderInput $outDir/DataLoaders/TTC_Mixed_1500GeV.pkl --ModelOutputDir $outDir/TrainedModels" "TTC_Mixed_1500GeV_InvMassEdge"
+CreateSubmitGPU 12 "TTC_Mixed_1500GeV_InvMassEdge"
+CreateEdge "TTC_Mixed_1500GeV_Data" "TTC_Mixed_1500GeV_InvMassEdge"
+
+# ===> PathNets
+# +++++++++++++> PathNetNode
+CreateShellScript "python main_cluster.py --Mode Train --Model PathNetNode --ModelName TTC_tttt_1500GeV_PathNetNode --ModelDataLoaderInput $outDir/DataLoaders/TTC_tttt_1500GeV.pkl --ModelOutputDir $outDir/TrainedModels" "TTC_tttt_1500GeV_PathNetNode"
+CreateSubmitGPU 12 "TTC_tttt_1500GeV_PathNetNode"
+CreateEdge "TTC_tttt_1500GeV_Data" "TTC_tttt_1500GeV_PathNetNode"
+
+# +++++++++++++> PathNetEdge
+CreateShellScript "python main_cluster.py --Mode Train --Model PathNetEdge --ModelName TTC_tttt_1500GeV_PathNetEdge --ModelDataLoaderInput $outDir/DataLoaders/TTC_tttt_1500GeV.pkl --ModelOutputDir $outDir/TrainedModels" "TTC_tttt_1500GeV_PathNetEdge"
+CreateSubmitGPU 12 "TTC_tttt_1500GeV_PathNetEdge"
+CreateEdge "TTC_tttt_1500GeV_Data" "TTC_tttt_1500GeV_PathNetEdge"
+
+# +++++++++++++> PathNetNode - Mixed + 1500 GeV
+CreateShellScript "python main_cluster.py --Mode Train --Model PathNetNode --ModelName TTC_Mixed_1500GeV_PathNetNode --ModelDataLoaderInput $outDir/DataLoaders/TTC_Mixed_1500GeV.pkl --ModelOutputDir $outDir/TrainedModels" "TTC_Mixed_1500GeV_PathNetNode"
+CreateSubmitGPU 12 "TTC_Mixed_1500GeV_PathNetNode"
+CreateEdge "TTC_Mixed_1500GeV_Data" "TTC_Mixed_1500GeV_PathNetNode"
+
+# +++++++++++++> PathNetEdge - Mixed + 1500 GeV
+CreateShellScript "python main_cluster.py --Mode Train --Model PathNetEdge --ModelName TTC_Mixed_1500GeV_PathNetEdge --ModelDataLoaderInput $outDir/DataLoaders/TTC_Mixed_1500GeV.pkl --ModelOutputDir $outDir/TrainedModels" "TTC_Mixed_1500GeV_PathNetEdge"
+CreateSubmitGPU 12 "TTC_Mixed_1500GeV_PathNetEdge"
+CreateEdge "TTC_Mixed_1500GeV_Data" "TTC_Mixed_1500GeV_PathNetEdge"
+
+

@@ -30,7 +30,7 @@ def SimpleFourTops():
     return True
 
 
-def GenerateTemplate(SignalSample = "SignalSample.pkl", Tree = "TruthChildren_init", Additional_Samples = "", OutputName = "LoaderSignalSample.pkl", tree = "nominal", device = "cuda"):
+def GenerateTemplate(SignalSample = "SignalSample.pkl", Level = "TruthChildren_init", Additional_Samples = "", OutputName = "LoaderSignalSample.pkl", tree = "nominal", device = "cuda"):
     from skhep.math.vectors import LorentzVector
 
     def eta(a):
@@ -47,7 +47,7 @@ def GenerateTemplate(SignalSample = "SignalSample.pkl", Tree = "TruthChildren_in
             return int(a.FromRes)
         return int(a.Index)
 
-    def Connection(a, b):
+    def ConnectionTruthJet(a, b):
         
         if a.Type == "truthjet" and b.Type == "truthjet":
             if a.GhostTruthJetMap[0] == 0:
@@ -74,13 +74,54 @@ def GenerateTemplate(SignalSample = "SignalSample.pkl", Tree = "TruthChildren_in
                 return True 
             else:
                 return False
-        elif a.Type == "truth_top":
-            return a.Signal == b.Signal == 1
 
+        return a.Index == b.Index
+
+    def ConnectionJet(a, b):
+        if a.Type == "jet" and b.Type == "jet":
+            if a.JetMapGhost[0] == 0:
+                return False
+            if b.JetMapGhost[0] == 0:
+                return False
+            if len(list(set(b.JetMapGhost).intersection(a.JetMapGhost))) > 0:
+                return True
+            else:
+                return False
+
+        elif a.Type == "jet" and b.Type != "jet":
+            if b.Index == 0:
+                return False
+            elif b.Index in a.JetMapGhost:
+                return True 
+            else:
+                return False
+
+        elif a.Type != "jet" and b.Type == "jet":
+            if a.Index == 0:
+                return False
+            elif a.Index in b.JetMapGhost:
+                return True 
+            else:
+                return False
+
+        return a.Index == b.Index
+
+    def Connection(a, b):
+        if a.Type == "truth_top":
+            return a.Signal == b.Signal == 1
+        
         elif a.Type != "truthjet" and b.Type != "truthjet":
             if a.Index != b.Index:
                 return False
         return a.Index == b.Index
+
+    def MergedNode(a):
+        if a.Type == "truthjet":
+            return len(a.GhostTruthJetMap)
+        elif a.Type == "jet":
+            return len(a.JetMapGhost)
+        else:
+            return 0
 
     def d_r(a, b):
         return float(a.DeltaR(b))
@@ -107,20 +148,31 @@ def GenerateTemplate(SignalSample = "SignalSample.pkl", Tree = "TruthChildren_in
     Loader.AddEdgeFeature("dr", d_r)
     Loader.AddEdgeFeature("dphi", d_phi)
     Loader.AddEdgeFeature("m", m)
+    
     Loader.AddNodeTruth("y", Signal)
-    Loader.AddEdgeTruth("edge_y", Connection)
+    
+    if Level == "TruthJetsLep":
+        Loader.AddNodeTruth("merged", MergedNode)
+        Loader.AddEdgeTruth("edge_y", ConnectionTruthJet)
+
+    elif Level == "JetsLep":
+        Loader.AddNodeTruth("merged", MergedNode)
+        Loader.AddEdgeTruth("edge_y", ConnectionJet)
+    else:
+        Loader.AddEdgeTruth("edge_y", Connection)
+
     
     if SignalSample != "":
         ev = UnpickleObject(SignalSample)
-        Loader.AddSample(ev, "nominal", Tree)
+        Loader.AddSample(ev, "nominal", Level)
     
     if Additional_Samples != "" and type(Additional_Samples) != list:
         ev = UnpickleObject(Additional_Sample)
-        Loader.AddSample(ev, tree, Tree)
+        Loader.AddSample(ev, tree, Level)
     else:
         for i in Additional_Samples:
             ev = UnpickleObject(i)
-            Loader.AddSample(ev, tree, Tree)
+            Loader.AddSample(ev, tree, Level)
     
     Loader.MakeTrainingSample()
     PickleObject(Loader, OutputName)
