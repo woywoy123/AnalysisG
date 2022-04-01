@@ -69,7 +69,6 @@ class WriteDirectory(Notification):
             except FileExistsError:
                 pass
             self.__tmp = self.__tmp + "/" + k 
-
     def ChangeDirToRoot(self):
         os.chdir(self.__pwd)
     

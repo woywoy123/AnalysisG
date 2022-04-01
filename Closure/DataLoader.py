@@ -103,7 +103,6 @@ def TestDataLoader():
     Loader.SelfLoop = True
     Loader.AddSample(tttt, "nominal")
     Loader.AddSample(ttbar, "tree")
-    Loader.ToDataLoader()
     
     for i in Loader.DataLoader:
         for k in Loader.DataLoader[i]:
@@ -124,7 +123,6 @@ def TestDataLoaderTrainingValidationTest():
     Loader.ValidationTrainingSize = 50
     Loader.AddSample(tttt, "nominal")
     Loader.MakeTrainingSample()
-    Loader.ToDataLoader()
         
     SampleLoader = []
     for i in Loader.DataLoader:

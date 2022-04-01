@@ -196,6 +196,7 @@ class EvaluationMetrics(Notification):
         T.xTitle = xTitle
         T.xMin = 0
         T.xMax = i
+        T.Color = "blue"
         T.Line()
         return T
         

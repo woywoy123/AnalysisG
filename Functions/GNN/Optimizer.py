@@ -29,7 +29,6 @@ class Optimizer(Notification):
             self.DataLoader = Loader.DataLoader
         elif isinstance(Loader, GenerateDataLoader):
             self.DataLoader = Loader
-            self.DataLoader.ToDataLoader()
             self.DataLoader = self.Loader.DataLoader
         else:
             self.Warning("FAILED TO INITIALIZE OPTIMIZER. WRONG DATALOADER")
@@ -38,11 +37,12 @@ class Optimizer(Notification):
         self.Loader = Loader 
         self.Epochs = 50
         if Debug == False:
-            self.Device = Loader.Device
-            self.Device_s = Loader.Device_s
+            self.Device_s = "cuda"
+            self.Device = torch.device("cuda")
         else:
             self.Device = torch.device("cpu")
             self.Device_s = "cpu"
+
         self.Debug = Debug
         self.LearningRate = 1e-2
         self.WeightDecay = 1e-4
@@ -53,6 +53,7 @@ class Optimizer(Notification):
         self.DefaultTargetType = "Nodes"
         self.DefaultLossFunction = ""
         self.TrainingName = "UNTITLED"
+        self.ModelOutdir = "Models"
         self.Model = None
 
         self.LossTrainStatistics = {}
@@ -69,13 +70,16 @@ class Optimizer(Notification):
 
     def kFoldTraining(self):
         Splits = KFold(n_splits = self.kFold, shuffle = True, random_state = 42)
+        
+        for i in self.DataLoader:
+            for k in self.DataLoader[i]:
+                k.to(self.Device_s)
 
         MaxNode = []
         for i in self.DataLoader:
             if self.MinimumEvents <= len(self.DataLoader[i]):
                 MaxNode.append(int(i))
         MaxNode.sort(reverse = True)
-
         WriteDirectory().MakeDir("Models/" + self.TrainingName)
         
         TimeStart = time.time()
@@ -114,7 +118,7 @@ class Optimizer(Notification):
                 self.Notify("CURRENT TRAIN LOSS FUNCTION: " + str(round(float(self.LossTrainStatistics[self.epoch][-1][-1]), 7)))
                 self.Notify("CURRENT ACCURACY (Validation): " + str(round(float(self.ValidationStatistics[self.epoch][-1]), 7)))
             
-            torch.save(self.Model, "Models/" + self.TrainingName + "/Model_epoch" + str(epoch +1) +".pt")
+            torch.save(self.Model, self.ModelOutdir + "/" + self.TrainingName + "/Model_epoch" + str(epoch +1) +".pt")
             TimeEndEpoch = time.time()
             self.BatchTime.append(TimeEndEpoch - TimeStartEpoch)
         
@@ -237,7 +241,7 @@ class Optimizer(Notification):
             high = []
             for i in Files:
                 high.append(int(i.split("epoch")[1].replace(".pt", "")))
-            Path = "Models/" + self.TrainingName + "/Model_epoch" + str(max(high)) +".pt"
+            Path = self.ModelOutdir + "/" + self.TrainingName + "/Model_epoch" + str(max(high)) +".pt"
         self.Model = torch.load(Path)
 
 

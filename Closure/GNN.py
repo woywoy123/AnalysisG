@@ -18,7 +18,6 @@ def SimpleFourTops():
     Loader.AddNodeFeature("x", Charge)
     Loader.AddNodeTruth("y", Signal)
     Loader.AddSample(ev, "nominal", "TruthTops")
-    Loader.ToDataLoader()
 
     op = Optimizer(Loader)
     op.DefaultBatchSize = 5000
@@ -31,7 +30,7 @@ def SimpleFourTops():
     return True
 
 
-def GenerateTemplate(SignalSample = "SignalSample.pkl", Tree = "TruthChildren_init", Additional_Samples = "", OutputName = "LoaderSignalSample.pkl", tree = "nominal"):
+def GenerateTemplate(SignalSample = "SignalSample.pkl", Tree = "TruthChildren_init", Additional_Samples = "", OutputName = "LoaderSignalSample.pkl", tree = "nominal", device = "cuda"):
     from skhep.math.vectors import LorentzVector
 
     def eta(a):
@@ -45,7 +44,7 @@ def GenerateTemplate(SignalSample = "SignalSample.pkl", Tree = "TruthChildren_in
 
     def Signal(a):
         if a.Type == "truth_top":
-            return int(a.Signal)
+            return int(a.FromRes)
         return int(a.Index)
 
     def Connection(a, b):
@@ -85,8 +84,10 @@ def GenerateTemplate(SignalSample = "SignalSample.pkl", Tree = "TruthChildren_in
 
     def d_r(a, b):
         return float(a.DeltaR(b))
+
     def d_phi(a, b):
         return abs(a.phi - b.phi)
+
     def m(a, b):
         t_i = LorentzVector()
         t_i.setptetaphie(a.pt, a.eta, a.phi, a.e)
@@ -98,6 +99,7 @@ def GenerateTemplate(SignalSample = "SignalSample.pkl", Tree = "TruthChildren_in
         return float(T.mass)
 
     Loader = GenerateDataLoader()
+    Loader.Device_s = device
     Loader.AddNodeFeature("e", energy)
     Loader.AddNodeFeature("eta", eta)
     Loader.AddNodeFeature("pt", pt)
@@ -117,32 +119,32 @@ def GenerateTemplate(SignalSample = "SignalSample.pkl", Tree = "TruthChildren_in
         Loader.AddSample(ev, tree, Tree)
     else:
         for i in Additional_Samples:
-            print(i)
             ev = UnpickleObject(i)
             Loader.AddSample(ev, tree, Tree)
     
-    #Loader.MakeTrainingSample()
-    Loader.ToDataLoader()
+    Loader.MakeTrainingSample()
     PickleObject(Loader, OutputName)
 
 
-def TrainEvaluate(Model, Outdir):
-    Loader = UnpickleObject("LoaderSignalSample.pkl")
+def TrainEvaluate(Model, Outdir, Input = "LoaderSignalSample.pkl", ClusterOutputDir = ""):
+    Loader = UnpickleObject(Input)
     
     op = Optimizer(Loader)
     op.TrainingName = Outdir
-    op.DefaultBatchSize = 20
-    op.Epochs = 20
-    op.kFold = 10
+    if ClusterOutputDir != "":
+        op.ModelOutdir = ClusterOutputDir
+    op.DefaultBatchSize = 1000
+    op.Epochs = 4
+    op.kFold = 2
     op.LearningRate = 1e-6
     op.WeightDecay = 1e-6
-    op.MinimumEvents = 500
+    op.MinimumEvents = 100
 
     if Model == "InvMassNode":
         op.DefineInvMass(4, Target = "Nodes")
 
     if Model == "InvMassNodeEdge":
-        op.DefineInvMass(64, Target = "NodeEdges")
+        op.DefineInvMass(128, Target = "NodeEdges")
 
     if Model == "InvMassEdge":
         op.DefineInvMass(128, Target = "Edges")
@@ -158,6 +160,9 @@ def TrainEvaluate(Model, Outdir):
 
     op.kFoldTraining()
     #op.LoadModelState()
+    if ClusterOutputDir != "":
+        PickleObject(op, ClusterOutputDir + "/" + Outdir + "/Optimizer.pkl")
+        return 
 
     eva = EvaluationMetrics()
     eva.Sample = op
@@ -255,14 +260,6 @@ def TestInvMassGNN_Children_Edge():
 
 def TestInvMassGNN_Children_Node():
     TrainEvaluate("InvMassNode", "GNN_Performance_InvMassGNN_Children_Node")
-    return True
-
-def TestInvMassGNN_Children_NoLep_Edge():
-    TrainEvaluate("InvMassNodeEdge", "GNN_Performance_InvMassGNN_NoLepChildren_Edge")
-    return True
-
-def TestInvMassGNN_Children_NoLep_Node():
-    TrainEvaluate("InvMassNode", "GNN_Performance_InvMassGNN_NoLepChildren_Node")
     return True
 
 def TestInvMassGNN_TruthJets():

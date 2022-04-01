@@ -2,7 +2,7 @@ from Closure.IO import TestDir, TestReadSingleFile, TestReadFile, TestFileConver
 from Closure.Event import TestEvents, TestParticleAssignment, TestSignalMultipleFile, TestSignalDirectory
 from Closure.Plotting import TestTops, TestResonance, TestBackGroundProcesses, TestGNNMonitor, KinematicsPlotting, TopologicalComplexityMassPlot, TestDataSamples, TestWorkingExample4TopsComplexity
 from Closure.DataLoader import TestEventGraphs, TestDataLoader, TestDataLoaderTrainingValidationTest, TestEventNodeEdgeFeatures
-from Closure.GNN import SimpleFourTops, TestInvMassGNN_Children_Edge, TestInvMassGNN_Children_Node, TestPathNetGNN_Children_Edge, TestPathNetGNN_Children_Node, TestInvMassGNN_TruthJets, TestPathNetGNN_TruthJets, TestInvMassGNN_Tops_Edge, TestInvMassGNN_Tops_Node, TestInvMassGNN_Children_NoLep_Edge, TestInvMassGNN_Children_NoLep_Node, GenerateTemplate, TestPathNetGNN_Tops_Edge
+from Closure.GNN import SimpleFourTops, TestInvMassGNN_Children_Edge, TestInvMassGNN_Children_Node, TestPathNetGNN_Children_Edge, TestPathNetGNN_Children_Node, TestInvMassGNN_TruthJets, TestPathNetGNN_TruthJets, TestInvMassGNN_Tops_Edge, TestInvMassGNN_Tops_Node, GenerateTemplate, TestPathNetGNN_Tops_Edge
 from Closure.Models import TestEdgeConvModel, TestGCNModel, TestInvMassGNN, TestPathNet
 from Closure.TruthMatchingAnalysisTop import TestTopShapes, Test_ttbar, Test_tttt, Test_SingleTop, Test_tttt_Jets, Test_SimilarityCustomOriginalMethods, Test_SimilarityCustomOriginalMethods_Plot
 from Closure.Benchmarking import Combinatorials
@@ -26,23 +26,38 @@ def Generate_Cache(di, Stop = -1, SingleThread = False, Compiler = "EventGenerat
     ev.CompileEvent(SingleThread = SingleThread)
     PickleObject(ev, Compiler)
 
-def Generate_Cache_Batches(di, Stop = -1, SingleThread = False, Compiler = "EventGenerator", Custom = False):
+def Generate_Cache_Batches(di, Stop = -1, SingleThread = False, Compiler = "EventGenerator", Custom = False, CustomDirectory = "_Cache"):
     from Functions.Event.EventGenerator import EventGenerator
     from Functions.IO.IO import PickleObject
     from Functions.IO.Files import WriteDirectory, Directories 
-    
+    import os
+
     def Compile(File, Name):
         ev = EventGenerator(File, Stop = Stop)
         ev.SpawnEvents(Custom)
         ev.CompileEvent(SingleThread = SingleThread)
         PickleObject(ev, Name)
     
-    MKDIR = WriteDirectory()
-    MKDIR.MakeDir("_Cache/" + Compiler + "_Cache")
+    if CustomDirectory != "_Cache":
+        d = CustomDirectory + "/" + Compiler + "_Cache/"
+        k = ""
+        for i in d.split("/"):
+            k += "/"+i
+            try:
+                os.mkdir(k)   
+            except FileExistsError:
+                pass
+        os.chdir(CustomDirectory + "/" + Compiler + "_Cache/")   
+    else:
+        MKDIR = WriteDirectory()
+        MKDIR.MakeDir(CustomDirectory + "/" + Compiler + "_Cache")
+
     d = Directories(di)
     Files = d.ListFilesInDir(di)
     for f in Files:
-        Compile(di + "/" + f, "_Cache" + "/" + Compiler + "_Cache/"+f.replace(".root", ".pkl"))
+        Compile(di + "/" + f, CustomDirectory + "/" + Compiler + "_Cache/"+f.replace(".root", ".pkl"))
+
+
 
 if __name__ == '__main__':
     #x = os.getcwd().split("/")
@@ -87,7 +102,7 @@ if __name__ == '__main__':
     #Passed(TestEventNodeEdgeFeatures(), "TestEventNodeEdgeFeatures")
     
     # ====== Test of Optimizer
-    Passed(SimpleFourTops(), "SimpleFourTops")
+    #Passed(SimpleFourTops(), "SimpleFourTops")
 
     # ====== Test of Plotting 
     #Passed(TestGNNMonitor(), "TestGNNMonitor")
@@ -118,13 +133,10 @@ if __name__ == '__main__':
     #Passed(TestPathNetGNN_Children_Edge(), "TestPathNetGNN_Children_Edge") 
     #Passed(TestPathNetGNN_Children_Node(), "TestPathNetGNN_Children_Node") 
 
-    #GenerateTemplate(Tree = "TruthChildren_init_NoLep")
-    #Passed(TestInvMassGNN_Children_NoLep_Edge(), "TestInvMassGNN_Children_Edge")
-    #Passed(TestInvMassGNN_Children_NoLep_Node(), "TestInvMassGNN_Children_Node")
-
     #GenerateTemplate(SignalSample = "tttt.pkl", Tree = "TruthJetsLep", Additional_Samples = ["ttbar.pkl", "SingleTop_S.pkl"], OutputName = "LoaderSignalSample.pkl")
     #Passed(TestInvMassGNN_TruthJets(), "TestInvMassGNN_TruthJets") 
     #Passed(TestPathNetGNN_TruthJets(), "TestPathNetGNN_TruthJets") 
+
     
     # ====== Truth Debugging Stuff ======== #
     #Passed(TestTopShapes(), "TestTopShapes")
@@ -138,4 +150,6 @@ if __name__ == '__main__':
     #i = i[2]
     #Passed(Test_SimilarityCustomOriginalMethods(i), "Test_SimilarityCustomOriginalMethods")
     #Passed(Test_SimilarityCustomOriginalMethods_Plot(i), "Test_SimilarityCustomOriginalMethods_Plot")
+
+    pass
 

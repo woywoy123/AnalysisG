@@ -49,7 +49,6 @@ def GenerateTemplate(Num_events = 1):
     Loader.AddNodeTruth("y", Signal)
 
     Loader.AddSample(ev, "nominal", "TruthChildren_init")
-    Loader.ToDataLoader()
     
     L = {}
     for i in Loader.EventData:

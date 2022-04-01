@@ -44,16 +44,6 @@ class EventGraph:
         if Level == "TruthChildren":
             self.Particles += self.Event.TruthChildren
 
-        if Level == "TruthChildren_init_NoLep":
-            for i in self.Event.TruthChildren_init:
-                if abs(i.pdgid) not in [11, 12, 13, 14, 15, 16]:
-                    self.Particles.append(i)
-        
-        if Level == "TruthChildren_NoLep":
-            for i in self.Event.TruthChildren:
-                if abs(i.pdgid) not in [11, 12, 13, 14, 15, 16]:
-                    self.Particles.append(i)
-
         if Level == "TopPostFSR":
             self.Particles += self.Event.TopPostFSR
 
@@ -79,6 +69,7 @@ class EventGraph:
         del self.Edges
         del self.Particles
         del self.NodeParticleMap
+        del self.G
 
     def CreateParticleNodes(self):
         for i in range(len(self.Particles)):
@@ -144,20 +135,16 @@ class GenerateDataLoader(Notification):
     
     def __init__(self):
         self.Verbose = True 
+        self.Debug = False
+        
         Notification.__init__(self, self.Verbose)
         self.Caller = "GenerateDataLoader"
-        
-        if torch.cuda.is_available():
-            self.Device = torch.device("cuda")
-            self.Device_s = "cuda"
-        else:
-            self.Device = torch.device("cpu")
-            self.Device_s = "cpu"
+        self.Device_s = "cuda"
 
         self.Bundles = []
-        self.EventData = {}
+        self.DataLoader = {}
         self.EventMap = {}
-        self.EventTestData = {}
+        self.TestDataLoader = {}
         self.__iter = 0
 
         self.TestSize = 40
@@ -174,7 +161,6 @@ class GenerateDataLoader(Notification):
         self.EdgeTruthAttribute = {}
         self.NodeTruthAttribute = {}
 
-
     def AddEdgeFeature(self, name, fx):
         self.EdgeAttribute[name] = fx
 
@@ -188,6 +174,7 @@ class GenerateDataLoader(Notification):
         self.EdgeTruthAttribute[name] = fx
 
     def AddSample(self, Bundle, Tree, Level = "JetLepton"):
+        self.Device = torch.device(self.Device_s)
         if isinstance(Bundle, EventGenerator) == False:
             self.Warning("SKIPPED :: NOT A EVENTGENERATOR OBJECT!!!")
             return False
@@ -207,11 +194,10 @@ class GenerateDataLoader(Notification):
 
             if n_particle <= 1:
                 self.Warning("EMPTY EVENT")
-
+                continue
+            
             e.CreateEdges()
-            ev = Bundle.Events[it]
             Bundle.Events[it] = -1
-            del ev
 
             for i in self.NodeAttribute:
                 e.SetNodeAttribute(i, self.NodeAttribute[i])
@@ -226,66 +212,53 @@ class GenerateDataLoader(Notification):
                 e.SetEdgeAttribute("edge_y", self.EdgeTruthAttribute[i])
             e.ConvertToData()
             
+            if self.Debug:
+                pass
+            else:
+                e.CleanUp()
+                e.Data.to(self.Device_s, non_blocking=True)
+                e = e.Data
+
             self.ProgressInformation("CONVERSION")
             
-            if n_particle not in self.EventData:
-                self.EventData[n_particle] = []
-            self.EventData[n_particle].append(e)
+            if n_particle not in self.DataLoader:
+                self.DataLoader[n_particle] = []
+            self.DataLoader[n_particle].append(e)
             self.EventMap[self.__iter] = e 
             self.__iter += 1
         
         self.ResetAll()
         self.Bundles.append([Tree, Bundle, start, self.__iter-1, Level])
+        self.Converted = True
+        self.Notify("FINISHED CONVERSION")
 
     def MakeTrainingSample(self):
         self.Notify("WILL SPLIT DATA INTO TRAINING/VALIDATION (" + str(self.ValidationTrainingSize) + "%) " + "- TEST (" + str(self.TestSize) + "%) SAMPLES")
         
-        All = []
-        for i in self.EventData:
-            All += self.EventData[i]
-        All = np.array(All)
-        
+        All = np.array(list(self.EventMap))
         rs = ShuffleSplit(n_splits = 1, test_size = float(self.TestSize/100), random_state = 42)
         for train_idx, test_idx in rs.split(All):
             pass
-
-        self.EventData = {}
-        for i in All[train_idx]:
-            n_particle = len(i.Particles)
-            if n_particle not in self.EventData:
-                self.EventData[n_particle] = []
-            self.EventData[n_particle].append(i)
         
-        for i in All[test_idx]:
-            n_particle = len(i.Particles)
-            if n_particle not in self.EventTestData:
-                self.EventTestData[n_particle] = []
-            self.EventTestData[n_particle].append(i)
-        
-        self.TrainingTestSplit = True
-
-    def ToDataLoader(self):
-        self.Notify("CONVERTING EVENTS TO PyGeometric DATA")
-        self.DataLoader = {}
-        for i in self.EventData:
-            Data = []
-            for k in self.EventData[i]:
-                Data.append(k.Data.to(self.Device_s, non_blocking=True))
-                k.CleanUp()
-            self.DataLoader[i] = Data
+        for i in train_idx:
+            i = self.EventMap[i]
+            n_particle = i.num_nodes
+            if n_particle not in self.DataLoader:
+                self.DataLoader[n_particle] = []
+            self.DataLoader[n_particle].append(i)
         
         self.TestDataLoader = {}
-        for i in self.EventTestData:
-            Data = []
-            for k in self.EventTestData[i]:
-                Data.append(k.Data.to(self.Device_s, non_blocking=True))
-                k.CleanUp()
-            self.TestDataLoader[i] = Data
-        
-        self.Converted = True
-        self.Notify("FINISHED CONVERSION")
+        for i in test_idx:
+            i = self.EventMap[i]
+            n_particle = i.num_nodes
+            if n_particle not in self.TestDataLoader:
+                self.TestDataLoader[n_particle] = []
+            self.TestDataLoader[n_particle].append(i)
+        self.TrainingTestSplit = True
 
         del self.EdgeAttribute
         del self.NodeAttribute
         del self.NodeTruthAttribute
         del self.EdgeTruthAttribute
+        del self.EventMap
+
