@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import matplotlib
+from matplotlib import colors
 matplotlib.use("agg")
 from networkx.drawing.nx_agraph import to_agraph
 from Functions.IO.Files import WriteDirectory
@@ -52,6 +53,7 @@ class GenericAttributes:
         self.PLT = plt
         self.PLT.figure(figsize=(self.DefaultScaling, self.DefaultScaling), dpi = self.DefaultDPI)
         self.PLT.rcParams.update({"font.size":self.FontSize, "axes.labelsize" : self.LabelSize, "legend.fontsize" : self.LegendSize, "figure.titlesize" : self.TitleSize})
+        self.PLT.rcParams["text.usetex"] = True
     
     def xAxis(self):
         if self.Compiled:
@@ -241,9 +243,18 @@ class CombineHistograms(SharedMethods, GenericAttributes):
         for i in range(len(self.Histograms)):
             H = self.Histograms[i]
             if H.Color != "":
-                self.PLT.hist(H.xData, bins = H.xBins, range=(H.xMin,H.xMax), label = H.Title, alpha = H.Alpha, log = self.Log, color = H.Color, density = self.Normalize)
-            else:     
-                self.PLT.hist(H.xData, bins = H.xBins, range=(H.xMin,H.xMax), label = H.Title, alpha = H.Alpha, log = self.Log, density = self.Normalize)
+                self.PLT.hist(H.xData, bins = H.xBins, range=(H.xMin,H.xMax), 
+                        label = H.Title, alpha = H.Alpha, log = self.Log, color = H.Color, 
+                        density = self.Normalize, histtype = "stepfilled", edgecolor = "black")
+            else: 
+
+                col = ["blue", "orange", "green", "red", "cyan", "purple"]
+                ec = colors.to_rgba(col[i])
+                c = colors.to_rgba(col[i])
+                self.PLT.hist(H.xData, bins = H.xBins, range=(H.xMin,H.xMax), 
+                        label = H.Title, facecolor = (c[0], c[1], c[2], H.Alpha), log = self.Log, density = self.Normalize, 
+                        edgecolor = (ec[0], ec[1], ec[2], 1), histtype = "stepfilled", linewidth = 0.5)
+                
 
         if len(self.Histograms) != 0:
             self.PLT.xlabel(self.Histograms[0].xTitle)
@@ -284,8 +295,7 @@ class CombineTGraph(SharedMethods, GenericAttributes):
 
             if H.ErrorBars:
                 self.PLT.errorbar(x = H.xData, y = H.yData, yerr = [H.Lo_err, H.Up_err], color = H.Color, linestyle = "-", capsize = 3, linewidth = 1, alpha = H.Alpha, label = H.Title)
-            else:
-                self.PLT.plot(H.xData, H.yData, marker = H.Marker, color = H.Color, linewidth = 1, alpha = H.Alpha, label = H.Title)
+            else: self.PLT.plot(H.xData, H.yData, marker = H.Marker, color = H.Color, linewidth = 1, alpha = H.Alpha, label = H.Title)
         
         self.PLT.ylim(self.yMin, self.yMax)
 

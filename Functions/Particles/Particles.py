@@ -14,11 +14,6 @@ class Particle(VariableManager):
         self.phi = self.Type + "_phi"
         self.e = self.Type + "_e"
         self.Index = -1
-        
-        #if hasattr(self, "FromRes"):
-        #    self.Signal = self.FromRes
-        #else:
-        #    self.Signal = 0
 
         self.CompileKeyMap()
         self.ListAttributes()
@@ -248,6 +243,7 @@ class Jet_C(Particle):
         self.truthPartonLabel = self.Type + "_truthPartonLabel"
         self.truthflavExtended = self.Type + "_truthflavExtended"
         self.JetMapGhost = self.Type + "_map_Ghost"
+        self.JetMapTops = self.Type + "_map_Gtops"
         Particle.__init__(self)
 
 class TruthJet_C(Particle):

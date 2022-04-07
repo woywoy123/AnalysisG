@@ -4,7 +4,7 @@ from Closure.Plotting import TestTops, TestResonance, TestBackGroundProcesses, T
 from Closure.DataLoader import TestEventGraphs, TestDataLoader, TestDataLoaderTrainingValidationTest, TestEventNodeEdgeFeatures
 from Closure.GNN import SimpleFourTops, TestInvMassGNN_Children_Edge, TestInvMassGNN_Children_Node, TestPathNetGNN_Children_Edge, TestPathNetGNN_Children_Node, TestInvMassGNN_TruthJets, TestPathNetGNN_TruthJets, TestInvMassGNN_Tops_Edge, TestInvMassGNN_Tops_Node, GenerateTemplate, TestPathNetGNN_Tops_Edge
 from Closure.Models import TestEdgeConvModel, TestGCNModel, TestInvMassGNN, TestPathNet
-from Closure.TruthMatchingAnalysisTop import TestTopShapes, Test_ttbar, Test_tttt, Test_SingleTop, Test_tttt_Jets, Test_SimilarityCustomOriginalMethods, Test_SimilarityCustomOriginalMethods_Plot
+from Closure.TruthMatchingAnalysisTop import Test_SimilarityCustomOriginalMethods, Test_SimilarityCustomOriginalMethods_Plot
 from Closure.Benchmarking import Combinatorials
 import os
 
@@ -67,7 +67,7 @@ if __name__ == '__main__':
     
     #Generate_Cache(dir, Stop = -1, SingleThread = False, Compiler = "SignalSample.pkl")
     #Generate_Cache("/CERN/Grid/Samples/NAF/2021-05-05-2cRC-all/mc16a/postProcessed_ttbar_PhPy8_Total.root", Stop = 150000, SingleThread = True, Compiler = "ttbar.pkl")
-    #Generate_Cache("/CERN/CustomAnalysisTopOutput/tttt/Merger", Stop = -1, SingleThread = True, Compiler = "CustomSignalSample.pkl", Custom = True)
+    #Generate_Cache("/CERN/CustomAnalysisTopOutput/tttt/NewSample/1500_GeV/MCe.root", Stop = -1, SingleThread = True, Compiler = "CustomSignalSample.pkl", Custom = True)
     #Generate_Cache("/CERN/CustomAnalysisTopOutput/tttt/", Stop = -1, Compiler = "tttt.pkl", Custom = True)
     #Generate_Cache("/CERN/CustomAnalysisTopOutput/ttbar/", Stop = -1, SingleThread = False, Compiler = "ttbar.pkl", Custom = True)
     #Generate_Cache("/CERN/CustomAnalysisTopOutput/t/", Stop = -1, Compiler = "SingleTop_S.pkl", Custom = True)
@@ -141,17 +141,10 @@ if __name__ == '__main__':
 
     
     # ====== Truth Debugging Stuff ======== #
-    #Passed(TestTopShapes(), "TestTopShapes")
-    #Passed(Test_tttt(), "Test_tttt")
-    #Passed(Test_ttbar(), "Test_ttbar")
-    #Passed(Test_SingleTop(), "Test_SingleTop")
-
-    #Passed(Test_tttt_Jets(), "Test_tttt_Jets")
-
     #i = ["1000", "1250", "1500", "2000", "2500", "3000"]
     #i = i[2]
-    #Passed(Test_SimilarityCustomOriginalMethods(i), "Test_SimilarityCustomOriginalMethods")
-    #Passed(Test_SimilarityCustomOriginalMethods_Plot(i), "Test_SimilarityCustomOriginalMethods_Plot")
+    #Passed(Test_SimilarityCustomOriginalMethods(), "Test_SimilarityCustomOriginalMethods")
+    Passed(Test_SimilarityCustomOriginalMethods_Plot(""), "Test_SimilarityCustomOriginalMethods_Plot")
 
     pass
 

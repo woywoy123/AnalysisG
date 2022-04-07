@@ -101,10 +101,6 @@ class Event_Custom(VariableManager):
 
         for i in self.TopPostFSR:
             for j in self.TruthJets:
-
-                if isinstance(self.TruthJets[j][0].GhostTruthJetMap, str):
-                    self.TruthJets[j][0].GhostTruthJetMap = 0
-                
                 try:
                     self.TruthJets[j][0].GhostTruthJetMap = [int(self.TruthJets[j][0].GhostTruthJetMap)]
                 except TypeError:
@@ -114,26 +110,52 @@ class Event_Custom(VariableManager):
                     self.TopPostFSR[i][0].Decay += self.TruthJets[j]
         
         for i in self.Jets:
-            l = []
+
             try:
-                l = [int(self.Jets[i][0].JetMapGhost)]
+                self.Jets[i][0].JetMapGhost = [int(self.Jets[i][0].JetMapGhost)]
             except:
-                if isinstance(self.Jets[i][0].JetMapGhost, str):
+                self.Jets[i][0].JetMapGhost = list(self.Jets[i][0].JetMapGhost)
+
+            try:
+                self.Jets[i][0].JetMapTops = [int(self.Jets[i][0].JetMapTops)]
+            except:
+                self.Jets[i][0].JetMapTops = list(self.Jets[i][0].JetMapTops)
+
+            tmp_origin = []
+            for j in self.Jets[i][0].JetMapGhost:
+                if j == -1:
                     continue
-                else:
-                    l = list(self.Jets[i][0].JetMapGhost)
+                self.TruthJets[j][0].Decay.append(self.Jets[i][0])
+                
+                if self.TruthJets[j][0].GhostTruthJetMap[0] == 0:
+                    continue
+                tmp_origin += self.TruthJets[j][0].GhostTruthJetMap
+                
+            self.Jets[i][0].JetMapGhost = list(set(tmp_origin))
 
-            self.Jets[i][0].JetMapGhost = [] 
-            for k in l:
-                truthj = self.TruthJets[k][0]
-                truthj.Decay.append(self.Jets[i][0])
-                self.Jets[i][0].JetMapGhost += truthj.GhostTruthJetMap
-
-            self.Jets[i][0].JetMapGhost = list(set(self.Jets[i][0].JetMapGhost))
         
         self.Electrons = self.DictToList(self.Electrons)
         self.Muons = self.DictToList(self.Muons)
         self.Jets = self.DictToList(self.Jets)
+        
+        Leptons = []
+        Leptons += self.Electrons
+        Leptons += self.Muons
+        
+        All = [y for i in self.TopPostFSRChildren for y in self.TopPostFSRChildren[i] if abs(y.pdgid) in [11, 13, 15]]
+        for j in Leptons:
+            dr = 99
+            low = ""
+            for i in All:
+                d = i.DeltaR(j) 
+                if dr < d:
+                    continue
+                dr = d
+                low = i
+            if low == "":
+                continue
+            j.Index = low.Index+1
+            self.TopPostFSR[low.Index][0].Decay.append(j)
 
         self.DetectorParticles = []
         self.DetectorParticles += self.Electrons
