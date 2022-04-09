@@ -88,6 +88,13 @@ class Event_Custom(VariableManager):
 
 
     def CompileEvent(self, ClearVal = True):
+        def FixList(Input):
+            try:
+                return [int(Input)]
+            except:
+                return list(Input)
+
+
         for i in self.Objects:
             l = getattr(self, i)
             l = CompileParticles(l, self.Objects[i]).Compile(ClearVal)
@@ -98,42 +105,26 @@ class Event_Custom(VariableManager):
 
         for i in self.TopPostFSR:
             self.TopPostFSR[i][0].Decay_init += self.TopPostFSRChildren[i]
+       
+        for i in self.TruthJets:
+            self.TruthJets[i][0].GhostTruthJetMap = FixList(self.TruthJets[i][0].GhostTruthJetMap)
 
-        for i in self.TopPostFSR:
-            for j in self.TruthJets:
-                try:
-                    self.TruthJets[j][0].GhostTruthJetMap = [int(self.TruthJets[j][0].GhostTruthJetMap)]
-                except TypeError:
-                    self.TruthJets[j][0].GhostTruthJetMap = list(self.TruthJets[j][0].GhostTruthJetMap)
-               
-                if self.TopPostFSR[i][0].Index+1 in self.TruthJets[j][0].GhostTruthJetMap:
-                    self.TopPostFSR[i][0].Decay += self.TruthJets[j]
-        
         for i in self.Jets:
+            self.Jets[i][0].JetMapGhost = FixList(self.Jets[i][0].JetMapGhost)
+            self.Jets[i][0].JetMapTops = FixList(self.Jets[i][0].JetMapTops)
 
-            try:
-                self.Jets[i][0].JetMapGhost = [int(self.Jets[i][0].JetMapGhost)]
-            except:
-                self.Jets[i][0].JetMapGhost = list(self.Jets[i][0].JetMapGhost)
-
-            try:
-                self.Jets[i][0].JetMapTops = [int(self.Jets[i][0].JetMapTops)]
-            except:
-                self.Jets[i][0].JetMapTops = list(self.Jets[i][0].JetMapTops)
-
-            tmp_origin = []
-            for j in self.Jets[i][0].JetMapGhost:
-                if j == -1:
+        for i in self.TruthJets:
+            for t in self.TruthJets[i][0].GhostTruthJetMap:
+                if t == -1:
                     continue
-                self.TruthJets[j][0].Decay.append(self.Jets[i][0])
-                
-                if self.TruthJets[j][0].GhostTruthJetMap[0] == 0:
-                    continue
-                tmp_origin += self.TruthJets[j][0].GhostTruthJetMap
-                
-            self.Jets[i][0].JetMapGhost = list(set(tmp_origin))
+                self.TopPostFSR[t][0].Decay += self.TruthJets[i]
 
-        
+        for i in self.Jets:
+            for tj in self.Jets[i][0].JetMapGhost:
+                if tj == -1:
+                    continue
+                self.TruthJets[tj][0].Decay += self.Jets[i]
+
         self.Electrons = self.DictToList(self.Electrons)
         self.Muons = self.DictToList(self.Muons)
         self.Jets = self.DictToList(self.Jets)
@@ -154,7 +145,7 @@ class Event_Custom(VariableManager):
                 low = i
             if low == "":
                 continue
-            j.Index = low.Index+1
+            j.Index = low.Index
             self.TopPostFSR[low.Index][0].Decay.append(j)
 
         self.DetectorParticles = []

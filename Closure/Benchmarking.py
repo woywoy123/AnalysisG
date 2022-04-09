@@ -6,7 +6,6 @@ from Functions.Plotting.Histograms import CombineTGraph,TGraph
 
 def Combinatorials():
    
-
     node = 20
 
     combi = TGraph()
@@ -66,6 +65,33 @@ def Combinatorials():
     com.Filename = "Combinatorials.png"
     com.Save("Plots/Combinatorials")
 
+    return True
 
-    exit()
+def LorentzVectorBenchmark():
+    import LorentzVector as LVCUST
+    from skhep.math.vectors import LorentzVector as LVSKHEP
+    
+    from Functions.IO.IO import UnpickleObject
+    
+    ev = UnpickleObject("_Cache/CustomSample_tttt_1000_MC_a_Cache/QU_0.pkl")
+    
+    t_cust = 0
+    t_skhep = 0
+    for i in ev.Events:
+        event = ev.Events[i]["nominal"]
+        ts = time.time()
+        
+        for t in event.TopPostFSR:
+            x = LVCUST.ToPxPyPzE(t.pt, t.eta, t.phi, t.e, "cpu")
+            LVCUST.GetMass(x)
+        t_cust += time.time() - ts 
+
+        for t in event.TopPostFSR:
+            v = LVSKHEP()
+            v.setptetaphie(t.pt, t.eta, t.phi, t.e)
+            v.mass
+        t_skhep += time.time() - ts 
+    print(t_cust, t_skhep)
+
+
     return True

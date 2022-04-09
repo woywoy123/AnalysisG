@@ -1,121 +1,7 @@
-from Functions.GNN.Graphs import GenerateDataLoader
 from Functions.GNN.Optimizer import Optimizer
-from Functions.GNN.Metrics import EvaluationMetrics
-from Functions.IO.IO import UnpickleObject, PickleObject
 from Functions.GNN.Models import EdgeConv, GCN, InvMassGNN, PathNet
-from Functions.Plotting.Histograms import TH2F, TH1F
-from skhep.math.vectors import LorentzVector
-
-def GenerateTemplate(Num_events = 1):
-    def eta(a):
-        return float(a.eta)
-    
-    def energy(a):
-        return float(a.e)
-    
-    def pt(a):
-        return float(a.pt)
-    
-    def phi(a):
-        return float(a.phi)
-    
-    def d_r(a, b):
-        return float(a.DeltaR(b))
-
-    def Signal(a):
-        return int(a.Index)
-
-    def m(a, b):
-        t_i = LorentzVector()
-        t_i.setptetaphie(a.pt, a.eta, a.phi, a.e)
-
-        t_j = LorentzVector()
-        t_j.setptetaphie(b.pt, b.eta, b.phi, b.e)
-
-        T = t_i + t_j
-        return float(T.mass)
-
-
-
-    ev = UnpickleObject("SignalSample.pkl")
-    Loader = GenerateDataLoader()
-    #Loader.Device_s = "cpu"
-    Loader.AddNodeFeature("e", energy)
-    Loader.AddNodeFeature("eta", eta)
-    Loader.AddNodeFeature("pt", pt)
-    Loader.AddNodeFeature("phi", phi)
-    Loader.AddEdgeFeature("dr", d_r)
-    Loader.AddEdgeFeature("m", m) 
-    Loader.AddNodeTruth("y", Signal)
-
-    Loader.AddSample(ev, "nominal", "TruthChildren_init")
-    
-    L = {}
-    for i in Loader.EventData:
-        ev = Loader.EventData[i]
-        it = 0
-        L[i] = []
-        for k in ev:
-            if Num_events == 1:
-                PickleObject(k, "Nodes_" + str(i) + ".pkl")
-                break
-            elif Num_events != 1:
-                L[i].append(k)
-            
-            it += 1
-            if it == Num_events:
-                PickleObject(L[i], "Nodes_" + str(i) + ".pkl")
-                break
-
-def ExampleEventGraph():
-
-    # Different features to include as node and edges
-    def eta(a):
-        return float(a.eta)
-    def energy(a):
-        return float(a.e)
-    def pt(a):
-        return float(a.pt)
-    def phi(a):
-        return float(a.phi)
-    def d_r(a, b):
-        return float(a.DeltaR(b))
-    def Signal(a):
-        return int(a.Index)
-    def Signal_f(a):
-        return float(a.Index)
-    def m(a, b):
-        t_i = LorentzVector()
-        t_i.setptetaphie(a.pt, a.eta, a.phi, a.e)
-
-        t_j = LorentzVector()
-        t_j.setptetaphie(b.pt, b.eta, b.phi, b.e)
-
-        T = t_i + t_j
-        return float(T.mass)
-
-    def dphi(a, b):
-        return float(abs(a.phi - b.phi))
-
-
-    
-    GenerateTemplate()
-    event = UnpickleObject("Nodes_12.pkl")
-    event.SetNodeAttribute("e", energy)
-    event.SetNodeAttribute("eta", eta)
-    event.SetNodeAttribute("pt", pt)
-    event.SetNodeAttribute("phi", phi)
-    event.SetEdgeAttribute("dr", d_r)
-    event.SetEdgeAttribute("m", m) 
-    event.SetEdgeAttribute("dphi", dphi) 
-    event.SetNodeAttribute("y", Signal)
-    event.SetNodeAttribute("x", Signal_f)
-    event.ConvertToData()
-
-
-    print("Number of Nodes: ", len(event.Nodes), "Number of Edges: ", len(event.Edges))
-    return event
-
+from Functions.DataTemplates.DataLoader import GenerateTemplate, ExampleEventGraph, GenerateTemplateCustomSample
+from Functions.IO.IO import PickleObject, UnpickleObject
 
 def TestEdgeConvModel():
     
@@ -217,4 +103,19 @@ def TestPathNet():
     return True
 
 
+def TestJetMergingTagging():
+    #inp = "CustomSignalSample.pkl"
+    #f = GenerateTemplateCustomSample(inp, "TruthJetsLep", 20)
+    #PickleObject(f, "_Cache/DebugSample.pkl")
+    f = UnpickleObject("_Cache/DebugSample.pkl") 
+    D = [j for i in f.DataLoader for j in f.DataLoader[i]]
+
+    for i in D:
+        print(i.y.t())
+
+
+
+
+
+    return True
 

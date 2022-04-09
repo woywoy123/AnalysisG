@@ -22,6 +22,7 @@ class EventGraph:
         self.Edges = []
         self.EdgeAttr = {}
         self.NodeAttr = {}
+        self.GraphAttr = {}
         self.Event = Event[Tree]
         self.iter = -1
         
@@ -69,6 +70,7 @@ class EventGraph:
     def CleanUp(self):
         self.NodeAttr = {}
         self.EdgeAttr = {}
+        self.GraphAttr = {}
         del self.Event
         del self.Nodes 
         del self.Edges
@@ -121,6 +123,12 @@ class EventGraph:
                 attr_v.append(attr_i)
             attr_ten = torch.tensor(attr_v, dtype = torch.float)
             setattr(self.Data, i, attr_ten)
+        
+        # Apply Graph Level Feature 
+        for i in self.GraphAttr:
+            fx = self.GraphAttr[i]
+            setattr(self.Data, i, torch.tensor(fx(self.Event), dtype = torch.float))
+
         setattr(self.Data, "i", self.iter)  
         self.Data.num_nodes = len(self.Particles)
 
@@ -134,6 +142,10 @@ class EventGraph:
             self.EdgeAttr[c_name] = []
         self.EdgeAttr[c_name].append(fx)
 
+    def SetGraphAttribute(self, c_name, fx):
+        if c_name not in self.GraphAttr:
+            self.GraphAttr[c_name] = []
+        self.GraphAttr[c_name].append(fx)
 
 
 class GenerateDataLoader(Notification):
@@ -160,6 +172,7 @@ class GenerateDataLoader(Notification):
         self.TrainingTestSplit = False
         self.Processed = False
         self.Trained = False
+        self.NEvents = -1
 
         self.EdgeAttribute = {}
         self.NodeAttribute = {}
@@ -231,6 +244,9 @@ class GenerateDataLoader(Notification):
             self.DataLoader[n_particle].append(e)
             self.EventMap[self.__iter] = e 
             self.__iter += 1
+
+            if self.__iter == self.NEvents:
+                break
         
         self.ResetAll()
         self.Bundles.append([Tree, Bundle, start, self.__iter-1, Level])

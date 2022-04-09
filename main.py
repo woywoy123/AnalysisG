@@ -3,9 +3,9 @@ from Closure.Event import TestEvents, TestParticleAssignment, TestSignalMultiple
 from Closure.Plotting import TestTops, TestResonance, TestBackGroundProcesses, TestGNNMonitor, KinematicsPlotting, TopologicalComplexityMassPlot, TestDataSamples, TestWorkingExample4TopsComplexity
 from Closure.DataLoader import TestEventGraphs, TestDataLoader, TestDataLoaderTrainingValidationTest, TestEventNodeEdgeFeatures
 from Closure.GNN import SimpleFourTops, TestInvMassGNN_Children_Edge, TestInvMassGNN_Children_Node, TestPathNetGNN_Children_Edge, TestPathNetGNN_Children_Node, TestInvMassGNN_TruthJets, TestPathNetGNN_TruthJets, TestInvMassGNN_Tops_Edge, TestInvMassGNN_Tops_Node, GenerateTemplate, TestPathNetGNN_Tops_Edge
-from Closure.Models import TestEdgeConvModel, TestGCNModel, TestInvMassGNN, TestPathNet
+from Closure.Models import TestEdgeConvModel, TestGCNModel, TestInvMassGNN, TestPathNet, TestJetMergingTagging
 from Closure.TruthMatchingAnalysisTop import Test_SimilarityCustomOriginalMethods, Test_SimilarityCustomOriginalMethods_Plot
-from Closure.Benchmarking import Combinatorials
+from Closure.Benchmarking import Combinatorials, LorentzVectorBenchmark
 import os
 
 
@@ -67,19 +67,18 @@ if __name__ == '__main__':
     
     #Generate_Cache(dir, Stop = -1, SingleThread = False, Compiler = "SignalSample.pkl")
     #Generate_Cache("/CERN/Grid/Samples/NAF/2021-05-05-2cRC-all/mc16a/postProcessed_ttbar_PhPy8_Total.root", Stop = 150000, SingleThread = True, Compiler = "ttbar.pkl")
-    #Generate_Cache("/CERN/CustomAnalysisTopOutput/tttt/NewSample/1500_GeV/MCe.root", Stop = -1, SingleThread = True, Compiler = "CustomSignalSample.pkl", Custom = True)
+    #Generate_Cache("/CERN/CustomAnalysisTopOutput/TMP_DELETE_AFTER/output.root", Stop = -1, SingleThread = True, Compiler = "CustomSignalSample.pkl", Custom = True)
     #Generate_Cache("/CERN/CustomAnalysisTopOutput/tttt/", Stop = -1, Compiler = "tttt.pkl", Custom = True)
-    #Generate_Cache("/CERN/CustomAnalysisTopOutput/ttbar/", Stop = -1, SingleThread = False, Compiler = "ttbar.pkl", Custom = True)
-    #Generate_Cache("/CERN/CustomAnalysisTopOutput/t/", Stop = -1, Compiler = "SingleTop_S.pkl", Custom = True)
+    #Generate_Cache("/CERN/CustomAnalysisTopOutput/ttbar/MCa/", Stop = -1, SingleThread = True, Compiler = "ttbar.pkl", Custom = True)
+    #Generate_Cache("/CERN/CustomAnalysisTopOutput/t/MCa/", Stop = -1, Compiler = "SingleTop_S.pkl", Custom = True)
    
-    #Camp = "A"
-    #for j in range(6):
-    #    index = j
-    #    Energy = ["1000", "1250", "1500", "2000", "2500", "3000"]
-    #    Generate_Cache_Batches("/CERN/CustomAnalysisTopOutput/tttt_" + Energy[index] + "GeV/Merger_" + Camp, Stop = -1, SingleThread = True, Compiler = "CustomSample_tttt_" + Energy[index] + "_MC_" + Camp, Custom = True)
+    #for i in ["a", "d", "e"]:
+    #    for j in range(6):
+    #        Energy = ["1000", "1250", "1500", "2000", "2500", "3000"]
+    #        Generate_Cache_Batches("/CERN/CustomAnalysisTopOutput/tttt/NewSample/" + Energy[j] + "_GeV/MC" + i, Stop = -1, SingleThread = False, Compiler = "CustomSample_tttt_" + Energy[j] + "_MC_" + i, Custom = True)
 
-    #Generate_Cache_Batches("/CERN/CustomAnalysisTopOutput/ttbar/Merger", Stop = -1, SingleThread = True, Compiler = "CustomSample_ttbar", Custom = True)
-    #Generate_Cache_Batches("/CERN/CustomAnalysisTopOutput/Resonance_tttt_1500GeV/Merger", Stop = -1, SingleThread = True, Compiler = "tttt_Res", Custom = True)
+    #Generate_Cache_Batches("/CERN/CustomAnalysisTopOutput/t/MCa/", Stop = -1, SingleThread = True, Compiler = "CustomSample_t", Custom = True)
+    #Generate_Cache_Batches("/CERN/CustomAnalysisTopOutput/ttbar/MCa/", Stop = -1, SingleThread = False, Compiler = "CustomSample_ttbar", Custom = True)
     
     ## ====== Test of IO 
     #Passed(TestDir(), "TestDir")
@@ -118,9 +117,12 @@ if __name__ == '__main__':
     #Passed(TestGCNModel(), "TestGCNModel")
     #Passed(TestInvMassGNN(), "TestInvMassGNN")
     #Passed(TestPathNet(), "TestPathNet") 
+    Passed(TestJetMergingTagging(), "TestJetMergingTagging")
 
     # ====== Custom Code Benchmarks ======== #
     #Passed(Combinatorials(), "Combinatorials")
+    #Passed(LorentzVectorBenchmark(), "LorentzVectorBenchmark")
+    
 
     # ====== Evaluation of Models ======== #
     #GenerateTemplate(Tree = "TruthTops")
@@ -142,9 +144,9 @@ if __name__ == '__main__':
     
     # ====== Truth Debugging Stuff ======== #
     #i = ["1000", "1250", "1500", "2000", "2500", "3000"]
-    #i = i[2]
-    #Passed(Test_SimilarityCustomOriginalMethods(), "Test_SimilarityCustomOriginalMethods")
-    Passed(Test_SimilarityCustomOriginalMethods_Plot(""), "Test_SimilarityCustomOriginalMethods_Plot")
+    #for k in i: 
+    #    Passed(Test_SimilarityCustomOriginalMethods(k), "Test_SimilarityCustomOriginalMethods")
+    #    Passed(Test_SimilarityCustomOriginalMethods_Plot(k), "Test_SimilarityCustomOriginalMethods_Plot")
 
     pass
 

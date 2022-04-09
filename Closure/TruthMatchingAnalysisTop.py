@@ -69,23 +69,17 @@ def Test_SimilarityCustomOriginalMethods(CM_Energy = ""):
 
     BackUp["Two_TruthJet_JetsDeltaR"] = []
 
-
-
-
-
-
-
-
-    #from Functions.IO.Files import Directories 
-    #Files = []
-    #for i in ["A", "D", "E"]:
-    #    dx = "_Cache/CustomSample_tttt_"+ CM_Energy + "_MC_" + i + "_Cache"
-    #    d = Directories(dx)
-    #    for f in d.ListFilesInDir(dx):
-    #        Files.append(dx + "/" + f)
+    from Functions.IO.Files import Directories 
     Files = []
-    Files.append("CustomSignalSample.pkl")
+    for i in ["a", "d", "e"]:
+        dx = "_Cache/CustomSample_tttt_"+ CM_Energy + "_MC_" + i + "_Cache"
+        d = Directories(dx)
+        for f in d.ListFilesInDir(dx):
+            Files.append(dx + "/" + f)
+    #Files = []
+    #Files.append("CustomSignalSample.pkl")
     for F in Files:
+        print(F)
         E_C = UnpickleObject(F)
         for i in E_C.Events:
             ev = E_C.Events[i]["nominal"]
@@ -211,7 +205,7 @@ def Test_SimilarityCustomOriginalMethods(CM_Energy = ""):
 
 def Test_SimilarityCustomOriginalMethods_Plot(Energy):
 
-    E = "Plots/MatchingAlgorithm_tttt"# + Energy
+    E = "Plots/MatchingAlgorithm_tttt_" + Energy
     def Histograms_Template(Title, xTitle, yTitle, bins, Min, Max, Data, FileName, Color = None):
         H = TH1F()
         H.Title = Title
@@ -248,10 +242,8 @@ def Test_SimilarityCustomOriginalMethods_Plot(Energy):
         H.SaveFigure(E)
         return H
 
-    BackUp = UnpickleObject("Plot.pkl")
-    #BackUp = UnpickleObject("Plot"+Energy+".pkl")
-
-
+    #BackUp = UnpickleObject("Plot.pkl")
+    BackUp = UnpickleObject("Plot"+Energy+".pkl")
 
     # Random Statistics
     # --- Codes
