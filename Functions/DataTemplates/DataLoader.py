@@ -2,6 +2,7 @@ from Functions.GNN.Graphs import GenerateDataLoader
 from Functions.IO.IO import UnpickleObject
 import Functions.DataTemplates.NodeFeatures as nf
 import Functions.DataTemplates.EdgeFeatures as ef
+import Functions.DataTemplates.GraphFeatures as gf
 
 def GenerateTemplate(Directory = "SignalSample.pkl", Num_events = 1):
     ev = UnpickleObject(Directory)
@@ -37,11 +38,23 @@ def GenerateTemplate(Directory = "SignalSample.pkl", Num_events = 1):
 def GenerateTemplateCustomSample(Directory, ParticleLevel, Num_events = 1):
     Loader = GenerateDataLoader()
     Loader.NEvents = Num_events
+
+    # ==== Node Features
     Loader.AddNodeFeature("e", nf.energy)
     Loader.AddNodeFeature("eta", nf.eta)
     Loader.AddNodeFeature("phi", nf.phi)
     Loader.AddNodeFeature("pt", nf.pt)
     Loader.AddNodeFeature("m", nf.Mass)
+
+    # ==== Edge Features
+    
+    # ==== Graph Features
+    Loader.AddGraphFeature("met", gf.MissingET)
+    Loader.AddGraphFeature("mphi", gf.MissingPhi)
+    Loader.AddGraphFeature("MU", gf.MU)
+    Loader.AddGraphFeature("NJets", gf.NJets)
+
+    # ==== Node Truth 
     Loader.AddNodeTruth("n_m", nf.Merged)
     
     ev = UnpickleObject(Directory)

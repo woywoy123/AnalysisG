@@ -40,7 +40,7 @@ class GenericAttributes:
         self.FontSize = 16
         self.LabelSize = 30
         self.LegendSize = 10
-        self.LegendPos = "upper left"
+        self.LegendPos = "upper right"
         self.TitleSize = 20
         
         self.xData = []

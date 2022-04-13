@@ -1,5 +1,6 @@
 from Functions.GNN.Optimizer import Optimizer
-from Functions.GNN.Models import EdgeConv, GCN, InvMassGNN, PathNet
+from Functions.GNN.Models import EdgeConv, GCN, InvMassGNN
+from Functions.GNN.PathNets import PathNet
 from Functions.DataTemplates.DataLoader import GenerateTemplate, ExampleEventGraph, GenerateTemplateCustomSample
 from Functions.IO.IO import PickleObject, UnpickleObject
 
@@ -104,16 +105,44 @@ def TestPathNet():
 
 
 def TestJetMergingTagging():
+    from Functions.GNN.Models import JetTaggingGNN
+    import torch
+
     #inp = "CustomSignalSample.pkl"
     #f = GenerateTemplateCustomSample(inp, "TruthJetsLep", 20)
     #PickleObject(f, "_Cache/DebugSample.pkl")
     f = UnpickleObject("_Cache/DebugSample.pkl") 
     D = [j for i in f.DataLoader for j in f.DataLoader[i]]
 
-    for i in D:
-        print(i.y.t())
+    Op = Optimizer({})
+    Op.DefaultBatchSize = 1
+    Op.LearningRate = 1e-4
+    Op.WeightDecay = 1e-5
+    Op.Model = JetTaggingGNN( 1 )
+    Op.DefineOptimizer()
+    Op.Model.train()
+    l = torch.nn.CrossEntropyLoss()
+    for x in range(100000):
+        for i in D:
+            Op.Optimizer.zero_grad()
+            Op.sample = i
+
+            p = Op.Model(Op.sample)
+            _, x = p.max(1)
+            y = Op.sample.y.t().contiguous().squeeze()
+            
+            #print(x, y, len(x), len(y))
+            Op.L = l(p, y)
 
 
+            Op.L.backward()
+            Op.Optimizer.step()
+            Op.Optimizer.zero_grad()
+            break
+
+        print(l(p, y))
+        print(x, y)
+ 
 
 
 

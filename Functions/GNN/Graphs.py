@@ -176,6 +176,7 @@ class GenerateDataLoader(Notification):
 
         self.EdgeAttribute = {}
         self.NodeAttribute = {}
+        self.GraphAttribute = {}
         self.EdgeTruthAttribute = {}
         self.NodeTruthAttribute = {}
 
@@ -184,6 +185,9 @@ class GenerateDataLoader(Notification):
 
     def AddNodeFeature(self, name, fx):
         self.NodeAttribute[name] = fx 
+
+    def AddGraphFeature(self, name, fx):
+        self.GraphAttribute[name] = fx
 
     def AddNodeTruth(self, name, fx):
         self.NodeTruthAttribute[name] = fx

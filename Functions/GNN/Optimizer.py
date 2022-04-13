@@ -1,6 +1,7 @@
 from Functions.Tools.Alerting import Notification
 from Functions.GNN.Graphs import GenerateDataLoader
-from Functions.GNN.Models import EdgeConv, InvMassGNN, PathNet
+from Functions.GNN.Models import EdgeConv, InvMassGNN
+from Functions.GNN.PathNets import PathNet
 from Functions.IO.Files import WriteDirectory, Directories
 from Functions.Particles.Particles import Particle
 

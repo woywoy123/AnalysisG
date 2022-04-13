@@ -67,8 +67,7 @@ if __name__ == '__main__':
     
     #Generate_Cache(dir, Stop = -1, SingleThread = False, Compiler = "SignalSample.pkl")
     #Generate_Cache("/CERN/Grid/Samples/NAF/2021-05-05-2cRC-all/mc16a/postProcessed_ttbar_PhPy8_Total.root", Stop = 150000, SingleThread = True, Compiler = "ttbar.pkl")
-    #Generate_Cache("/CERN/CustomAnalysisTopOutput/TMP_DELETE_AFTER/output.root", Stop = -1, SingleThread = True, Compiler = "CustomSignalSample.pkl", Custom = True)
-    #Generate_Cache("/CERN/CustomAnalysisTopOutput/tttt/", Stop = -1, Compiler = "tttt.pkl", Custom = True)
+    #Generate_Cache("/CERN/CustomAnalysisTopOutput/TMP_DELETE_AFTER/output.root", Stop = 100, SingleThread = True, Compiler = "CustomSignalSample.pkl", Custom = True)
     #Generate_Cache("/CERN/CustomAnalysisTopOutput/ttbar/MCa/", Stop = -1, SingleThread = True, Compiler = "ttbar.pkl", Custom = True)
     #Generate_Cache("/CERN/CustomAnalysisTopOutput/t/MCa/", Stop = -1, Compiler = "SingleTop_S.pkl", Custom = True)
    
@@ -79,6 +78,7 @@ if __name__ == '__main__':
 
     #Generate_Cache_Batches("/CERN/CustomAnalysisTopOutput/t/MCa/", Stop = -1, SingleThread = True, Compiler = "CustomSample_t", Custom = True)
     #Generate_Cache_Batches("/CERN/CustomAnalysisTopOutput/ttbar/MCa/", Stop = -1, SingleThread = False, Compiler = "CustomSample_ttbar", Custom = True)
+    #Generate_Cache_Batches("/CERN/CustomAnalysisTopOutput/tttt/OldSample/1500_GeV/MCe/", SingleThread = True, Stop = -1, Compiler = "CustomSample_tttt", Custom = True)
     
     ## ====== Test of IO 
     #Passed(TestDir(), "TestDir")
@@ -117,7 +117,7 @@ if __name__ == '__main__':
     #Passed(TestGCNModel(), "TestGCNModel")
     #Passed(TestInvMassGNN(), "TestInvMassGNN")
     #Passed(TestPathNet(), "TestPathNet") 
-    Passed(TestJetMergingTagging(), "TestJetMergingTagging")
+    #Passed(TestJetMergingTagging(), "TestJetMergingTagging")
 
     # ====== Custom Code Benchmarks ======== #
     #Passed(Combinatorials(), "Combinatorials")
@@ -145,8 +145,10 @@ if __name__ == '__main__':
     # ====== Truth Debugging Stuff ======== #
     #i = ["1000", "1250", "1500", "2000", "2500", "3000"]
     #for k in i: 
-    #    Passed(Test_SimilarityCustomOriginalMethods(k), "Test_SimilarityCustomOriginalMethods")
-    #    Passed(Test_SimilarityCustomOriginalMethods_Plot(k), "Test_SimilarityCustomOriginalMethods_Plot")
+    li = ["tttt", "ttbar"]
+    for i in li:
+        Passed(Test_SimilarityCustomOriginalMethods(i), "Test_SimilarityCustomOriginalMethods")
+        Passed(Test_SimilarityCustomOriginalMethods_Plot(i), "Test_SimilarityCustomOriginalMethods_Plot")
 
     pass
 

@@ -25,12 +25,12 @@ def Signal_f(a):
 def Merged(a):
     if a.Type == "truthjet":
         if a.GhostTruthJetMap[0] == -1:
-            return -1
+            return 0
         return len(a.GhostTruthJetMap)
     elif a.Type == "jet":
         if a.JetMapGhost[0] == -1:
-            return -1 
+            return 0
         return len(a.JetMapTops)
-    return -1
+    return 0
 
 

@@ -29,7 +29,6 @@ def Test_SimilarityCustomOriginalMethods(CM_Energy = ""):
     BackUp["Jets_Lep"] = []
 
     BackUp["Status_Code"] = []
-   
 
     BackUp["TopTruthJetShare_0"] = []
     BackUp["TopTruthJetShare_1"] = [] 
@@ -69,10 +68,15 @@ def Test_SimilarityCustomOriginalMethods(CM_Energy = ""):
 
     BackUp["Two_TruthJet_JetsDeltaR"] = []
 
+    BackUp["Lowest_dR_TruthJet_Jet_TopMass"] = []
+
+    BackUp["TruthTopEnergy_NJet_E"] = []
+    BackUp["TruthTopEnergy_NJet_Njets"] = []
+
     from Functions.IO.Files import Directories 
     Files = []
-    for i in ["a", "d", "e"]:
-        dx = "_Cache/CustomSample_tttt_"+ CM_Energy + "_MC_" + i + "_Cache"
+    for i in ["a"]: #, "d", "e"]:
+        dx = "_Cache/CustomSample_" + CM_Energy + "_Cache"#+ CM_Energy + "_MC_" + i + "_Cache"
         d = Directories(dx)
         for f in d.ListFilesInDir(dx):
             Files.append(dx + "/" + f)
@@ -86,6 +90,13 @@ def Test_SimilarityCustomOriginalMethods(CM_Energy = ""):
             
             if len(ev.TopPostFSR) != len(ev.TopPreFSR) != len(ev.TruthTops):
                 continue
+            
+            if len(ev.TopPostFSR) == 5:
+                continue
+            
+            leptonic_top_index = []
+            tau_top_index = []
+
             for prefsr, postfsr, truth in zip(ev.TopPreFSR, ev.TopPostFSR, ev.TruthTops): 
                 prefsr.CalculateMass(), postfsr.CalculateMass(), truth.CalculateMass()
                 BackUp["Status_Code"].append(prefsr.Status)
@@ -104,9 +115,11 @@ def Test_SimilarityCustomOriginalMethods(CM_Energy = ""):
 
                 BackUp["TruthJet_WithLep"].append(postfsr.Mass_GeV)
 
-
                 L = [j for j in postfsr.Decay_init if abs(j.pdgid) in [11, 13, 15]]
                 if len(L) != 0 :
+                    leptonic_top_index.append(prefsr.Index)
+                    if abs(L[0].pdgid) == 15:
+                        tau_top_index.append(prefsr.Index)
                     continue
                 
                 if len([g for g in postfsr.Decay if g.Type in ["mu", "el"]]) > 0:
@@ -134,10 +147,11 @@ def Test_SimilarityCustomOriginalMethods(CM_Energy = ""):
                     ind = [j.Index]
                 
                 for k in ind:
+                    if k == -1:
+                        continue
                     if k not in cap:
                         cap[k] = []
                     cap[k].append(j)
-
             
             for k in cap:
                 P = Particle(True)
@@ -145,9 +159,13 @@ def Test_SimilarityCustomOriginalMethods(CM_Energy = ""):
                 P.CalculateMassFromChildren()
                 
                 BackUp["Jets_Lep"].append(P.Mass_GeV)
+                
                 if len([g for g in cap[k] if g.Type in ["mu", "el"]]) > 0:
                     continue
-                
+
+                if k in leptonic_top_index:
+                    continue
+
                 BackUp["Jets_NoLep"].append(P.Mass_GeV)
 
 
@@ -162,6 +180,12 @@ def Test_SimilarityCustomOriginalMethods(CM_Energy = ""):
                 nj = len(P.Decay)
                 if nj <= 4:
                     BackUp["Top_" + str(nj) + "Jets"].append(P.Mass_GeV)
+                
+                for t in ev.TruthTops:
+                    if t.Index == k and nj <= 4:
+                        BackUp["TruthTopEnergy_NJet_E"].append(t.e/1000)
+                        BackUp["TruthTopEnergy_NJet_Njets"].append(nj)
+
             
             for tj in ev.TruthJets:
                 if len(tj.Decay) == 1:
@@ -194,13 +218,30 @@ def Test_SimilarityCustomOriginalMethods(CM_Energy = ""):
                         BackUp["Two_TruthJet_JetSimilarity_PT_J"].append(j.pt/1000)
 
                         BackUp["Two_TruthJet_JetsDeltaR"].append(dr)
+            
+            #for tj in ev.TruthJets:
+            #    if len(tj.Decay) == 0:
+            #        continue
 
+
+            #    r = 99
+            #    low = ""
+            #    for j in tj.Decay:
+            #        dr = ( (j.eta - tj.eta)**2 + (j.phi - tj.phi)**2 )**0.5
+            #        if r > dr:
+            #            r = dr
+            #            low = j
+
+            #        #print(leptonic_top_index, j.JetMapGhost, j.JetMapTops, tj.GhostTruthJetMap)
+            #    if low == "":
+            #        continue
+                
             E_C.Events[i]["nominal"] = ""
 
 
 
 
-    PickleObject(BackUp, "Plot" + CM_Energy + ".pkl")
+    PickleObject(BackUp, "Plot_" + CM_Energy + ".pkl")
     return True
 
 def Test_SimilarityCustomOriginalMethods_Plot(Energy):
@@ -243,8 +284,8 @@ def Test_SimilarityCustomOriginalMethods_Plot(Energy):
         return H
 
     #BackUp = UnpickleObject("Plot.pkl")
-    BackUp = UnpickleObject("Plot"+Energy+".pkl")
-
+    BackUp = UnpickleObject("Plot_"+Energy+".pkl")
+    
     # Random Statistics
     # --- Codes
     py = Histograms_Template("Status Codes", "Pythia Status", "Entries", 100, 0, 100, BackUp["Status_Code"], "TopStatusCodes.png")
@@ -463,8 +504,8 @@ def Test_SimilarityCustomOriginalMethods_Plot(Energy):
     # =========================== 2D Histograms ======================================= #
     
     # Single Truth Jet Matched to Jet
-    Histograms2D_Template("Energy of Truth Jet vs Matched Jet - Singly Matched", 
-            "Truth Jet Energy (GeV)", "Jet Energy (GeV)", 250, 250, 0, 300, 0, 300, 
+    Histograms2D_Template("Energy of Reconstructed Matched Jet vs Truth Jet - Singly Matched", 
+            "Truth Jet Energy (GeV)", "Reconstructed Jet Energy (GeV)", 250, 250, 0, 300, 0, 300, 
             BackUp["Single_TruthJet_JetSimilarity_E_J"], BackUp["Single_TruthJet_JetSimilarity_E_TJ"], 
             "JetMatchingSimilarity_Energy_Single.png", True)
 
@@ -479,28 +520,25 @@ def Test_SimilarityCustomOriginalMethods_Plot(Energy):
             "JetMatchingSimilarity_PT_Single.png", True)
 
     # Two Truth Jet Matched to Jet
-    Histograms2D_Template("Energy of Truth Jet vs Matched Jet - Two Matched", 
-            "Truth Jet Energy (GeV)", "Jet Energy (GeV)", 250, 250, 0, 600, 0, 600, 
+    Histograms2D_Template("Energy of Reconstructed Matched Jet vs Truth Jet - Doubly Matched", 
+            "Truth Jet Energy (GeV)", "Reconstructed Jet Energy (GeV)", 250, 250, 0, 300, 0, 300, 
             BackUp["Two_TruthJet_JetSimilarity_E_J"], BackUp["Two_TruthJet_JetSimilarity_E_TJ"], 
             "JetMatchingSimilarity_Energy_Two.png", True)
 
-    Histograms2D_Template("R (not $\Delta$R) of Truth Jet vs Matched Jet - Two Matched", 
+    Histograms2D_Template("R (not $\Delta$R) of Truth Jet vs Matched Jet - Doubly Matched", 
             "Truth Jet R (Arb.)", "Jet R (Arb.)", 250, 250, 0, 3, 0, 3, 
             BackUp["Two_TruthJet_JetSimilarity_R_J"], BackUp["Two_TruthJet_JetSimilarity_R_TJ"], 
             "JetMatchingSimilarity_R_Two.png", True)
 
-    Histograms2D_Template("$P_T$ of Truth Jet vs Matched Jet - Two Matched", 
-            "Truth Jet $P_T$ (GeV)", "Jet $P_T$ (GeV)", 250, 250, 0, 600, 0, 600, 
+    Histograms2D_Template("$P_T$ of Reconstructed Matched Jet vs Truth Jet - Doubly Matched", 
+            "Truth Jet $P_T$ (GeV)", "Reconstructed Jet $P_T$ (GeV)", 250, 250, 0, 300, 0, 300, 
             BackUp["Two_TruthJet_JetSimilarity_PT_J"], BackUp["Two_TruthJet_JetSimilarity_PT_TJ"], 
             "JetMatchingSimilarity_PT_Two.png", True)
 
-
-
-
-
-
-
-
+    Histograms2D_Template("Number of Jets Produced with Respect to the Truth Top Energy", 
+            "Truth Top $E$ (GeV)", "Number of Jets", 100, 4, 0, 1600, 1, 4, 
+            BackUp["TruthTopEnergy_NJet_E"], BackUp["TruthTopEnergy_NJet_Njets"], 
+            "TruthTopEnergy_NJets.png", False)
 
     return True
     

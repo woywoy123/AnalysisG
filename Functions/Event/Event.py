@@ -105,7 +105,7 @@ class Event_Custom(VariableManager):
 
         for i in self.TopPostFSR:
             self.TopPostFSR[i][0].Decay_init += self.TopPostFSRChildren[i]
-       
+
         for i in self.TruthJets:
             self.TruthJets[i][0].GhostTruthJetMap = FixList(self.TruthJets[i][0].GhostTruthJetMap)
 

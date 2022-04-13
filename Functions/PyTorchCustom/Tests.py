@@ -1,5 +1,6 @@
 import torch
 import LorentzVector as LV
+import math
 
 from skhep.math.vectors import LorentzVector 
 
@@ -9,7 +10,10 @@ print(x)
 
 print(LV.GetMass(x))
 
-
+v = [139742.28, -1.4921323, -2.0837228, 326400.22]
+x = LV.ToPxPyPzE(v[0], v[1], v[2], v[3], "cpu")
+print(x)
+print(LV.GetMass(x))
 
 print(x.device)
 print(x)

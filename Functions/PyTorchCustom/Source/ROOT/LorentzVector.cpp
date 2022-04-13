@@ -14,7 +14,11 @@ torch::Tensor ToPxPyPzE(float pt, float eta, float phi, float e, std::string dev
 
 torch::Tensor GetMass(torch::Tensor v)
 {
-  return at::sqrt(v[3]*v[3] - v[0]*v[0] - v[1]*v[1] - v[2]*v[2]); 
+
+  torch::Tensor val = v[3]*v[3] - v[0]*v[0] - v[1]*v[1] - v[2]*v[2]; 
+  val.index_put_({val < 0}, -at::sqrt(abs(val))/1000);
+  val.index_put_({val >= 0}, at::sqrt(val)/1000);
+  return val; 
 }
 
 
