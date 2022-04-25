@@ -6,6 +6,7 @@ from Closure.GNN import SimpleFourTops, TestInvMassGNN_Children_Edge, TestInvMas
 from Closure.Models import TestEdgeConvModel, TestGCNModel, TestInvMassGNN, TestPathNet, TestJetMergingTagging
 from Closure.TruthMatchingAnalysisTop import Test_SimilarityCustomOriginalMethods, Test_SimilarityCustomOriginalMethods_Plot
 from Closure.Benchmarking import Combinatorials, LorentzVectorBenchmark
+from Closure.ParticlePropertiesMonteCarlo import JetMergingFrequency, JetMergingFrequencyFraction, JetMergingFrequencyFractionPlot
 import os
 
 
@@ -117,11 +118,16 @@ if __name__ == '__main__':
     #Passed(TestGCNModel(), "TestGCNModel")
     #Passed(TestInvMassGNN(), "TestInvMassGNN")
     #Passed(TestPathNet(), "TestPathNet") 
-    #Passed(TestJetMergingTagging(), "TestJetMergingTagging")
+    # ---> Passed(TestJetMergingTagging(), "TestJetMergingTagging")
 
     # ====== Custom Code Benchmarks ======== #
     #Passed(Combinatorials(), "Combinatorials")
     #Passed(LorentzVectorBenchmark(), "LorentzVectorBenchmark")
+   
+    # ====== Monte Carlo Particle Properties ====== #
+    #Passed(JetMergingFrequency("_Cache/CustomSample_tttt_Cache"), "JetMergingFrequency")
+    #Passed(JetMergingFrequencyFraction("_Cache/CustomSample_tttt_Cache"), "JetMergingFrequencyFraction")
+    Passed(JetMergingFrequencyFractionPlot("_Pickles/Fraction_of_Jets_Tops_100.0.pkl", "4-Tops"), "JetMergingFrequencyFractionPlot")
     
 
     # ====== Evaluation of Models ======== #
@@ -145,10 +151,9 @@ if __name__ == '__main__':
     # ====== Truth Debugging Stuff ======== #
     #i = ["1000", "1250", "1500", "2000", "2500", "3000"]
     #for k in i: 
-    li = ["tttt", "ttbar"]
-    for i in li:
-        Passed(Test_SimilarityCustomOriginalMethods(i), "Test_SimilarityCustomOriginalMethods")
-        Passed(Test_SimilarityCustomOriginalMethods_Plot(i), "Test_SimilarityCustomOriginalMethods_Plot")
-
-    pass
+    #li = ["tttt", "ttbar"]
+    #for i in li:
+    #    Passed(Test_SimilarityCustomOriginalMethods(i), "Test_SimilarityCustomOriginalMethods")
+    #    Passed(Test_SimilarityCustomOriginalMethods_Plot(i), "Test_SimilarityCustomOriginalMethods_Plot")
+    #pass
 

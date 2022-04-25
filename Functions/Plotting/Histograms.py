@@ -48,6 +48,8 @@ class GenericAttributes:
 
         self.xLabels = []
         self.yLabels = []
+
+        self.Weights = None
     
     def Init_PLT(self):
         self.PLT = plt
@@ -170,7 +172,7 @@ class TH1F(SharedMethods, GenericAttributes):
                 for k in range(self.yData[i]): 
                     Update.append(i)
             self.xData = Update
-        self.PLT.hist(self.xData, bins = self.xBins, range=(self.xMin, self.xMax), alpha = self.Alpha, log = self.Log, density = self.Normalize)
+        self.PLT.hist(self.xData, bins = self.xBins, range=(self.xMin, self.xMax), alpha = self.Alpha, log = self.Log, density = self.Normalize, weights = self.Weights)
 
         if len(self.xLabels) != 0:
             self.TransformData("xLabels", "xData")
@@ -187,14 +189,49 @@ class TH2F(SharedMethods, GenericAttributes):
         SharedMethods.__init__(self)
         GenericAttributes.__init__(self)
         self.Diagonal = False
-    
+        self.ShowBinContent = False
+
+    def ShowBins(self, hist, xbins, ybins):
+        skip = 4
+        delx = abs(self.xBins[0] - self.xBins[1])
+        dely = abs(self.yBins[0] - self.yBins[1])
+        for i in range(len(self.yBins)-2):
+            if i/skip - int(i/skip)  != 0:
+                continue
+            for j in range(len(self.xBins)-1):
+                self.PLT.text(xbins[j]+ delx*0.5, ybins[i] + dely*0.5, round(hist.T[i, j], 2), color = "black", ha = "center", va = "center", fontweight = "bold")
+
+   
+    def SetBinContent(self):
+        self.xBins = self.xData.copy()
+        del_x = abs(self.xBins[0]-self.xBins[1])
+        self.xBins += [max(self.xBins)+del_x]
+        self.xBins = list(np.array(self.xBins) - del_x*0.5)
+
+        self.yBins = self.yData.copy()
+        del_y = abs(self.yBins[0]-self.yBins[1])
+        self.yBins += [max(self.yBins)+del_y]
+        self.yBins = list(np.array(self.yBins) - del_y*0.5)
+
+        if len(self.Weights) == len(self.xData) and len(self.Weights[0]) == len(self.yData):
+            self.Weights = [self.Weights[x][y] for x in range(len(self.xData)) for y in range(len(self.yData))] 
+            x_t = [x for x in self.xData for y in self.yData]
+            y_t = [y for x in self.xData for y in self.yData]
+            self.xData = x_t
+            self.yData = y_t
+
+
     def CompileHistogram(self):
         self.Init_PLT()
         self.Colorscheme = self.PLT.cm.BuPu
         self.TransformData("xData", "xLabels")
         self.TransformData("yData", "yLabels")
+        self.PLT.title(self.Title)
 
-        if len(self.yData) == len(self.xData): 
+        if self.Weights != None:
+            self.SetBinContent()
+
+        if len(self.yData) == len(self.xData) and self.Weights == None: 
             if not isinstance(self.yData[0], list):
                 pass
             else:
@@ -207,14 +244,26 @@ class TH2F(SharedMethods, GenericAttributes):
                 self.xData = xUpdate
                 self.yData = yUpdate
 
-        self.PLT.title(self.Title)
-        self.xAxis()
-        self.yAxis()
 
-        self.PLT.hist2d(self.xData, self.yData, bins = [self.xBins, self.yBins], range=[[self.xMin, self.xMax], [self.yMin, self.yMax]], cmap = self.Colorscheme)
+        if self.Weights == None:
+            self.xAxis()
+            self.yAxis()
+
+        hist, xbins, ybins, im = self.PLT.hist2d(self.xData, self.yData, bins = [self.xBins, self.yBins], 
+                range=[[self.xMin, self.xMax], [self.yMin, self.yMax]], 
+                cmap = self.Colorscheme, weights = self.Weights)
+
+        
+        self.PLT.grid()
+        self.PLT.xticks(self.xData)
+
         self.PLT.xlabel(self.xTitle)
         self.PLT.ylabel(self.yTitle)
         self.PLT.colorbar()
+
+        if self.ShowBinContent:
+            self.ShowBins(hist, xbins, ybins)
+
         if self.Diagonal:
             self.PLT.plot([self.xMin, self.xMax], [self.yMin, self.yMax], ls="--", c=".3")
 
@@ -239,6 +288,8 @@ class CombineHistograms(SharedMethods, GenericAttributes):
         self.Init_PLT()
         if self.Title != "":
             self.PLT.title(self.Title)
+        
+        self.Histograms = [i for i in self.Histograms if len(i.xData) != 0]
         
         for i in range(len(self.Histograms)):
             H = self.Histograms[i]

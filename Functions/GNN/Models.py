@@ -63,6 +63,17 @@ class InvMassGNN(MessagePassing):
         self.Adj_M[edges[0], edges[1]] = F.cosine_similarity(aggr_out[edges[0]], aggr_out[edges[1]])
         return aggr_out
 
+
+#class MergedJetNeuralNetwork(nn.Module):
+#    
+#    def __init__(self):
+#        super(MergedJetNeuralNetwork, self).__init__()
+#        self.Flatten = nn.Flatten()
+#        self.MLP = Seq(Linear(
+#
+
+
+
 class JetTaggingGNN(torch.nn.Module):
 
     def __init__(self,out_channels):
@@ -81,5 +92,4 @@ class JetTaggingGNN(torch.nn.Module):
 
         return v
 
-        #return self.mlp(self.propagate(edge_index = data.edge_index, x = torch.cat([data.e, data.pt, data.eta, data.phi, data.m], dim = 1)))
 

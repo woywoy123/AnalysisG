@@ -12,9 +12,6 @@ def Test_SimilarityCustomOriginalMethods(CM_Energy = ""):
     def dR(p, x):
         return sqrt((p.eta - x.eta)**2 + (p.phi - x.phi)**2)
 
-
-
-
     BackUp = {}
     BackUp["Tops_mTruth"] = []             
     BackUp["Tops_PreFSR"] = []
@@ -218,28 +215,7 @@ def Test_SimilarityCustomOriginalMethods(CM_Energy = ""):
                         BackUp["Two_TruthJet_JetSimilarity_PT_J"].append(j.pt/1000)
 
                         BackUp["Two_TruthJet_JetsDeltaR"].append(dr)
-            
-            #for tj in ev.TruthJets:
-            #    if len(tj.Decay) == 0:
-            #        continue
-
-
-            #    r = 99
-            #    low = ""
-            #    for j in tj.Decay:
-            #        dr = ( (j.eta - tj.eta)**2 + (j.phi - tj.phi)**2 )**0.5
-            #        if r > dr:
-            #            r = dr
-            #            low = j
-
-            #        #print(leptonic_top_index, j.JetMapGhost, j.JetMapTops, tj.GhostTruthJetMap)
-            #    if low == "":
-            #        continue
-                
             E_C.Events[i]["nominal"] = ""
-
-
-
 
     PickleObject(BackUp, "Plot_" + CM_Energy + ".pkl")
     return True

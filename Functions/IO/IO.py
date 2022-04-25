@@ -1,6 +1,6 @@
 import uproot
 import pickle
-from Functions.IO.Files import Directories
+from Functions.IO.Files import Directories, WriteDirectory
 from Functions.Tools.DataTypes import Threading, TemplateThreading
 from Functions.Tools.Alerting import Notification
 
@@ -108,7 +108,19 @@ class File(Notification):
         self.Trees = list(self.ObjectTrees)
         del self.ObjectTrees
 
-def PickleObject(obj, filename):
+def PickleObject(obj, filename, Dir = None):
+    if filename.endswith(".pkl"):
+        pass
+    else:
+        filename += ".pkl"
+    
+    if Dir is not None:
+        d = WriteDirectory()
+        d.MakeDir(Dir)
+        if Dir.endswith("/"):
+            filename = Dir + filename
+        else:
+            filename = Dir + "/" + filename
 
     outfile = open(filename, "wb")
     pickle.dump(obj, outfile)
