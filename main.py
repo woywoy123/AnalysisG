@@ -6,7 +6,7 @@ from Closure.GNN import SimpleFourTops, TestInvMassGNN_Children_Edge, TestInvMas
 from Closure.Models import TestEdgeConvModel, TestGCNModel, TestInvMassGNN, TestPathNet, TestJetMergingTagging
 from Closure.TruthMatchingAnalysisTop import Test_SimilarityCustomOriginalMethods, Test_SimilarityCustomOriginalMethods_Plot
 from Closure.Benchmarking import Combinatorials, LorentzVectorBenchmark
-from Closure.ParticlePropertiesMonteCarlo import JetMergingFrequency, JetMergingFrequencyFraction, JetMergingFrequencyFractionPlot
+from Closure.ParticlePropertiesMonteCarlo import JetMergingFrequency, JetMergingFrequencyFraction, JetMergingFrequencyFractionPlot, FragmentationOfTriplets, FragmentationOfTripletsScanning, TopJetTrajectory
 import os
 
 
@@ -127,8 +127,10 @@ if __name__ == '__main__':
     # ====== Monte Carlo Particle Properties ====== #
     #Passed(JetMergingFrequency("_Cache/CustomSample_tttt_Cache"), "JetMergingFrequency")
     #Passed(JetMergingFrequencyFraction("_Cache/CustomSample_tttt_Cache"), "JetMergingFrequencyFraction")
-    Passed(JetMergingFrequencyFractionPlot("_Pickles/Fraction_of_Jets_Tops_100.0.pkl", "4-Tops"), "JetMergingFrequencyFractionPlot")
-    
+    #Passed(JetMergingFrequencyFractionPlot("_Pickles/Fraction_of_Jets_Tops_100.0.pkl"), "JetMergingFrequencyFractionPlot")
+    #Passed(FragmentationOfTriplets("_Cache/CustomSample_tttt_Cache"), "FragmentationOfTriplets")
+    #Passed(FragmentationOfTripletsScanning("_Cache/CustomSample_tttt_Cache", "_Pickles/Fragmentation_Triplets100.0.pkl"), "FragmentationOfTripletsScannning")
+    Passed(TopJetTrajectory("_Cache/CustomSample_tttt_Cache"), "TopJetTrajectory")
 
     # ====== Evaluation of Models ======== #
     #GenerateTemplate(Tree = "TruthTops")
