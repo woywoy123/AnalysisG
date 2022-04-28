@@ -64,11 +64,10 @@ def Generate_Cache_Batches(di, Stop = -1, SingleThread = False, Compiler = "Even
 
 if __name__ == '__main__':
     #x = os.getcwd().split("/")
-    #Generate_Cache("/".join(x[:len(x)-1]) + "/AnalysisSample", Stop = -1, SingleThread = False, Compiler = "tttt.pkl", Custom = True)
-    
     #Generate_Cache(dir, Stop = -1, SingleThread = False, Compiler = "SignalSample.pkl")
     #Generate_Cache("/CERN/Grid/Samples/NAF/2021-05-05-2cRC-all/mc16a/postProcessed_ttbar_PhPy8_Total.root", Stop = 150000, SingleThread = True, Compiler = "ttbar.pkl")
     #Generate_Cache("/CERN/CustomAnalysisTopOutput/TMP_DELETE_AFTER/output.root", Stop = 100, SingleThread = True, Compiler = "CustomSignalSample.pkl", Custom = True)
+    #Generate_Cache("/CERN/CustomAnalysisTopOutput/tttt/OldSample/1500_GeV/MCe.root", Stop = 1000, SingleThread = True, Compiler = "CustomSignalSample.pkl", Custom = True)
     #Generate_Cache("/CERN/CustomAnalysisTopOutput/ttbar/MCa/", Stop = -1, SingleThread = True, Compiler = "ttbar.pkl", Custom = True)
     #Generate_Cache("/CERN/CustomAnalysisTopOutput/t/MCa/", Stop = -1, Compiler = "SingleTop_S.pkl", Custom = True)
    
@@ -130,7 +129,7 @@ if __name__ == '__main__':
     #Passed(JetMergingFrequencyFractionPlot("_Pickles/Fraction_of_Jets_Tops_100.0.pkl"), "JetMergingFrequencyFractionPlot")
     #Passed(FragmentationOfTriplets("_Cache/CustomSample_tttt_Cache"), "FragmentationOfTriplets")
     #Passed(FragmentationOfTripletsScanning("_Cache/CustomSample_tttt_Cache", "_Pickles/Fragmentation_Triplets100.0.pkl"), "FragmentationOfTripletsScannning")
-    Passed(TopJetTrajectory("_Cache/CustomSample_tttt_Cache"), "TopJetTrajectory")
+    #Passed(TopJetTrajectory("_Cache/CustomSample_tttt_Cache"), "TopJetTrajectory")
 
     # ====== Evaluation of Models ======== #
     #GenerateTemplate(Tree = "TruthTops")
@@ -138,11 +137,11 @@ if __name__ == '__main__':
     #Passed(TestPathNetGNN_Tops_Edge(), "PathNetGNN_Tops_Edge")
     #Passed(TestInvMassGNN_Tops_Node(), "TestInvMassGNN_Tops_Node")
     
-    #GenerateTemplate(Tree = "TruthChildren_init")
+    GenerateTemplate(SignalSample = "CustomSignalSample.pkl", Level = "TruthJetsLep")
     #Passed(TestInvMassGNN_Children_Edge(), "TestInvMassGNN_Children_Edge")
     #Passed(TestInvMassGNN_Children_Node(), "TestInvMassGNN_Children_Node")
     
-    #Passed(TestPathNetGNN_Children_Edge(), "TestPathNetGNN_Children_Edge") 
+    Passed(TestPathNetGNN_Children_Edge(), "TestPathNetGNN_Children_Edge") 
     #Passed(TestPathNetGNN_Children_Node(), "TestPathNetGNN_Children_Node") 
 
     #GenerateTemplate(SignalSample = "tttt.pkl", Tree = "TruthJetsLep", Additional_Samples = ["ttbar.pkl", "SingleTop_S.pkl"], OutputName = "LoaderSignalSample.pkl")
