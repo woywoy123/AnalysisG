@@ -2,9 +2,8 @@
 from Functions.IO.Files import Directories
 from Functions.IO.IO import File
 
-di = "/CERN/Grid/SignalSamples"
 
-def TestDir():  
+def TestDir(di):  
     x = Directories(di)
     x.ListDirs()
     x.GetFilesInDir()
@@ -16,8 +15,7 @@ def TestDir():
             return False
     return True
 
-dir_f = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/user.pgadow.24765302._000001.output.root"
-def TestReadSingleFile():
+def TestReadSingleFile(dir_f):
     x = Directories(dir_f)
     x.GetFilesInDir()
     
@@ -26,7 +24,7 @@ def TestReadSingleFile():
             return True
 
 
-def TestReadFile():
+def TestReadFile(di):
     x = Directories(di, Verbose = False)
     x.ListDirs()
     x.GetFilesInDir()
@@ -62,7 +60,7 @@ def TestReadFile():
     
     return passed
 
-def TestFileConvertArray():
+def TestFileConvertArray(di):
     x = Directories(di, Verbose = False)
     x.ListDirs()
     x.GetFilesInDir()
@@ -74,7 +72,7 @@ def TestFileConvertArray():
     name = x.Files[dir_e][0]
 
     Tree = "nominal"
-    Leaf = "truth_top_child_e"
+    Leaf = "truthjet_e"
     
     x = File(dir_e + "/" + name)
     x.Trees += [Tree]
@@ -84,7 +82,7 @@ def TestFileConvertArray():
     
     passed = False
     for i in x.ArrayLeaves[Tree + "/" + Leaf]:
-        assert isinstance((float(i[0][0])), float) == True
+        assert isinstance((float(i[0])), float) == True
         passed = True
     return passed
 

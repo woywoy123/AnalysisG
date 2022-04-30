@@ -9,3 +9,5 @@
 **/.pt
 **/Models
 **/Plots
+**/_Cache
+**/_Pickle

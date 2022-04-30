@@ -1,4 +1,5 @@
-#include "../PyTorchCustom/LorentzVector.h"
+#include <torch/extension.h>
+#include <iostream>
 
 torch::Tensor ToPxPyPzE(float pt, float eta, float phi, float e, std::string device)
 {
@@ -20,11 +21,6 @@ torch::Tensor GetMass(torch::Tensor v)
   val.index_put_({val >= 0}, at::sqrt(val)/1000);
   return val; 
 }
-
-
-
-
-
 
 
 

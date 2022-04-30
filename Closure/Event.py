@@ -4,239 +4,191 @@ import uproot
 from Functions.Particles.Particles import *
 from Functions.Event.Event import Event
 from Functions.IO.IO import PickleObject, UnpickleObject
+import importlib, inspect
 
 
-dir = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/user.pgadow.24765302._000001.output.root"
-def TestEvents():
-    x = EventGenerator(dir, Start = 0, Stop = 100)
+def TestEvents(di):
+    x = EventGenerator(di, Start = 0, Stop = 100)
     x.SpawnEvents()
     x.CompileEvent(SingleThread = True)
     return True
 
-def Comparison(dir, Tree, Branch, Events, Spawned):
-    el = Electron()
-    mu = Muon()
-    truthjet = TruthJet()
-    jet = Jet()
-    top = Top()
-    child = Truth_Top_Child()
-    child_init = Truth_Top_Child_Init()
-    rcsubjet = RCSubJet()
-    rcjet = RCJet()
-
-    event = Event()
+def Comparison(di, Tree, Branch, EventContainer, NEvents = -1):
     
-    try:
-        F = uproot.open(dir)
-        en = F[Tree + "/" + Branch].array(library = "np")
-    except:
-        print("SKIPPED::" + Branch + " " + Tree + " ")
-        return 
+    F = uproot.open(di)
+    ev = F[Tree + "/" + Branch].array(library = "np")
+    
+    if NEvents == -1:
+        NEvents = len(ev)
+   
+    Attribute = ""
+    Key = ""
+    test_e = EventContainer[0][Tree]
+    if Branch in test_e.KeyMap:
+        Attribute = test_e.KeyMap[Branch]
+        Key = "Event"
+    else:
+        for i in test_e.Objects:
+            obj = test_e.Objects[i]
+            if Branch in obj.KeyMap:
+                Attribute = obj.KeyMap[Branch]
+                Key = i
+                break
 
-    if Events == -1:
-        Events = len(en)
-    for i in range(Events):
-        f = en[i]
-        Ev = Spawned[i][Tree]
+    for i in range(NEvents):
+        e_up = ev[i]
+        e_my = EventContainer[i][Tree]
 
-        
-        comp = False 
-        try: 
-            len(f)
-        except:
-            if Branch in event.KeyMap:
-                Compare = Ev.GetAttributeFromKeyMap(Branch)
-                comp = True
-                if Compare == f:
-                    assert Compare == f
-                else:
-                    print("FAILURE::" + Branch + " " + Tree + " ")
-                    print(Compare, f) 
-                    assert Compare == f
-
-            continue
-        
-        it = 0
-        for x in range(len(f)):
-            Compare = ""
-            if Branch in el.KeyMap:
-                Compare = Ev.Electrons[x].GetAttributeFromKeyMap(Branch)
-            
-            if Branch in mu.KeyMap:
-                Compare = Ev.Muons[x].GetAttributeFromKeyMap(Branch)
-            
-            if Branch in truthjet.KeyMap:
-                Compare = Ev.TruthJets[x].GetAttributeFromKeyMap(Branch)
-            
-            if Branch in jet.KeyMap:
-                Compare = Ev.Jets[x].GetAttributeFromKeyMap(Branch)
-
-            if Branch in rcjet.KeyMap:
-                Compare = Ev.RCJets[x].GetAttributeFromKeyMap(Branch)
-            
-            if Branch in top.KeyMap:
-                Compare = Ev.TruthTops[x].GetAttributeFromKeyMap(Branch)
+        if Key == "Event":
+            Value_My = [float(getattr(e_my, Attribute))]
+            e_up = [float(e_up)]
+        else:
+            Object_List = getattr(e_my, Key)
+            try:
+                Value_My = [float(getattr(k, Attribute)) for k in Object_List]
+            except:
+                Value_My = [float(l) for k in Object_List for l in getattr(k, Attribute)]
 
             try:
-                float(f[x])
-                listed = False
-                if Compare == f[x] and listed == False:
-                    assert Compare == f[x]
-                    comp = True
-                else:
-                   print("FAILURE::" + Branch + " " + Tree + " " + str(x), " " + str(f[x]))
-                   assert Compare == f[x] 
+                e_up = [float(k) for k in e_up]
             except:
-                listed = True
+                e_up = [float(k) for p in e_up for k in p]
+       
+        if len(e_up) != len(Value_My):
+            return "FAILURE::Branch -> " + Branch + " |Tree -> " + Tree + " Uproot ->" + str(e_up) + " Loader -> " + str(Value_My)
 
-            if listed == True:
-                for k in range(len(f[x])):
-                    if Branch in child.KeyMap:
-                        Compare = Ev.TruthChildren[it].GetAttributeFromKeyMap(Branch)
-                        it += 1
-                    if Branch in child_init.KeyMap:
-                        Compare = Ev.TruthChildren_init[it].GetAttributeFromKeyMap(Branch)
-                        it += 1
-                    if Branch in rcsubjet.KeyMap:
-                        Compare = Ev.RCSubJets[it].GetAttributeFromKeyMap(Branch)
-                        it += 1
+        for k, p in zip(e_up, Value_My):
+            try: 
+                assert k == p
+            except:
+                return "FAILURE::Branch -> " + Branch + " |Tree -> " + Tree + " Uproot ->" + str(e_up) + " Loader -> " + str(Value_My)
 
-                    if Compare != f[x][k]:
-                        print("FAILURE::" + Branch + " " + Tree + " " + str(x) + " " + str(k) + " " + str(Compare))
-                        assert Compare == f[x][k]
-                    comp = True
-
-            if comp:
-                pass
-            else:
-                print("FAILURE::" + Branch + " " + Tree + " " + str(x) )
-
-    print("PASSED:: " + Branch + " " + Tree)
+    return "PASSED::Branch -> " + Branch + " |Tree -> " + Tree
 
 
-def TestParticleAssignment():
+
+def TestParticleAssignment(di):
+    #x = EventGenerator(di)
+    #x.SpawnEvents()
+    #x.CompileEvent(SingleThread = True, ClearVal = False)
+    #PickleObject(x, "debug")
+    x = UnpickleObject("debug")
+
     Events = -1
-    x = EventGenerator(dir)
-    x.SpawnEvents()
-    x.CompileEvent(SingleThread = True, ClearVal = False)
     TreeTest = "nominal"
 
-    #Electrons 
-    Comparison(dir, TreeTest, "el_pt", Events, x.Events)
-    Comparison(dir, TreeTest, "el_e", Events, x.Events)
-    Comparison(dir, TreeTest, "el_phi", Events, x.Events)
-    Comparison(dir, TreeTest, "el_eta", Events, x.Events)
-    Comparison(dir, TreeTest, "el_charge", Events, x.Events)
-    Comparison(dir, TreeTest, "el_topoetcone20", Events, x.Events)
-    Comparison(dir, TreeTest, "el_ptvarcone20", Events, x.Events)
-    Comparison(dir, TreeTest, "el_CF", Events, x.Events)
-    Comparison(dir, TreeTest, "el_d0sig", Events, x.Events)
-    Comparison(dir, TreeTest, "el_delta_z0_sintheta", Events, x.Events)
-    Comparison(dir, TreeTest, "el_true_type", Events, x.Events)
-    Comparison(dir, TreeTest, "el_true_origin", Events, x.Events)
-    Comparison(dir, TreeTest, "el_true_firstEgMotherTruthType", Events, x.Events)
-    Comparison(dir, TreeTest, "el_true_firstEgMotherTruthOrigin", Events, x.Events)
-    Comparison(dir, TreeTest, "el_true_firstEgMotherPdgId", Events, x.Events)
-    Comparison(dir, TreeTest, "el_true_IFFclass", Events, x.Events)
-    Comparison(dir, TreeTest, "el_true_isPrompt", Events, x.Events)
-    Comparison(dir, TreeTest, "el_true_isChargeFl", Events, x.Events)
+
+    Tests = [
+            "el_pt", 
+            "el_e", 
+            "el_pt", 
+            "el_eta", 
+            "el_charge", 
+            "el_topoetcone20", 
+            "el_ptvarcone20", 
+            "el_CF", 
+            "el_d0sig", 
+            "el_delta_z0_sintheta",
+            "el_true_type", 
+            "el_true_origin", 
+            "el_true_firstEgMotherTruthType", 
+            "el_true_firstEgMotherTruthOrigin", 
+            "el_true_firstEgMotherPdgId", 
+            "el_true_IFFclass", 
+            "el_true_isPrompt", 
+            "el_true_isChargeFl",
+
+            "mu_pt", 
+            "mu_e", 
+            "mu_pt", 
+            "mu_eta", 
+            "mu_charge", 
+            "mu_topoetcone20", 
+            "mu_ptvarcone30", 
+            "mu_d0sig", 
+            "mu_delta_z0_sintheta",
+            "mu_true_type", 
+            "mu_true_origin", 
+            "mu_true_IFFclass", 
+            "mu_true_isPrompt",
+
+            "jet_pt",
+            "jet_e",
+            "jet_phi",
+            "jet_eta",
+            "jet_jvt",
+            "jet_truthflav",
+            "jet_truthPartonLabel",
+            "jet_isTrueHS",
+            "jet_truthflavExtended",
+            "jet_isbtagged_DL1r_77",
+            "jet_isbtagged_DL1r_70",
+            "jet_isbtagged_DL1r_60",
+            "jet_isbtagged_DL1r_85",
+            "jet_DL1r",
+            "jet_DL1r_pb",
+            "jet_DL1r_pc",
+            "jet_DL1r_pu",
+            "jet_isbtagged_DL1_77",
+            "jet_isbtagged_DL1_70",
+            "jet_isbtagged_DL1_60",
+            "jet_isbtagged_DL1_85",
+            "jet_DL1",
+            "jet_DL1_pb",
+            "jet_DL1_pc",
+            "jet_DL1_pu", 
+            "jet_map_Ghost", 
+            "jet_map_Gtops",
+
+            "met_met",
+            "met_phi",
+            "eventNumber",
+            "runNumber",
+            "mu",
+            "mu_actual",
+
+            "truthjet_pt",
+            "truthjet_e",
+            "truthjet_phi",
+            "truthjet_eta",
+            "truthjet_pdgid", 
+            "GhostTruthJetMap",
+
+            "truth_top_pt",
+            "truth_top_e",
+            "truth_top_phi",
+            "truth_top_eta",
+            "truth_top_FromRes",
+   
+            "topPreFSR_pt",
+            "topPreFSR_e",
+            "topPreFSR_phi",
+            "topPreFSR_eta",
+            "topPreFSR_charge",
+            "topPreFSR_status",
+
+            "topPostFSR_pt",
+            "topPostFSR_e",
+            "topPostFSR_phi",
+            "topPostFSR_eta",
+            "topPostFSR_charge",
+            "Gtop_FromRes",
+
+            "truth_top_child_pt",
+            "truth_top_child_e",
+            "truth_top_child_phi",
+            "truth_top_child_eta", 
+            "truth_top_child_charge",
+            "truth_top_child_pdgid",
+            "topPostFSRchildren_pt",
+            "topPostFSRchildren_e",
+            "topPostFSRchildren_phi",
+            "topPostFSRchildren_eta",
+            "topPostFSRchildren_charge",
+            "topPostFSRchildren_pdgid"]
     
-    #Muons
-    Comparison(dir, TreeTest, "mu_pt", Events, x.Events)
-    Comparison(dir, TreeTest, "mu_e", Events, x.Events)
-    Comparison(dir, TreeTest, "mu_phi", Events, x.Events)
-    Comparison(dir, TreeTest, "mu_eta", Events, x.Events)
-    Comparison(dir, TreeTest, "mu_charge", Events, x.Events)
-    Comparison(dir, TreeTest, "mu_topoetcone20", Events, x.Events)
-    Comparison(dir, TreeTest, "mu_ptvarcone30", Events, x.Events)
-    Comparison(dir, TreeTest, "mu_d0sig", Events, x.Events)
-    Comparison(dir, TreeTest, "mu_delta_z0_sintheta", Events, x.Events)
-    Comparison(dir, TreeTest, "mu_true_type", Events, x.Events)
-    Comparison(dir, TreeTest, "mu_true_origin", Events, x.Events)
-    Comparison(dir, TreeTest, "mu_true_IFFclass", Events, x.Events)
-    Comparison(dir, TreeTest, "mu_true_isPrompt", Events, x.Events)
-
-    #jets
-    Comparison(dir, TreeTest, "jet_pt", Events, x.Events)
-    Comparison(dir, TreeTest, "jet_e", Events, x.Events)
-    Comparison(dir, TreeTest, "jet_phi", Events, x.Events)
-    Comparison(dir, TreeTest, "jet_eta", Events, x.Events)
-    Comparison(dir, TreeTest, "jet_jvt", Events, x.Events)
-    Comparison(dir, TreeTest, "jet_truthflav", Events, x.Events)
-    Comparison(dir, TreeTest, "jet_truthPartonLabel", Events, x.Events)
-    Comparison(dir, TreeTest, "jet_isTrueHS", Events, x.Events)
-    Comparison(dir, TreeTest, "jet_truthflavExtended", Events, x.Events)
-    Comparison(dir, TreeTest, "jet_isbtagged_DL1r_77", Events, x.Events)
-    Comparison(dir, TreeTest, "jet_isbtagged_DL1r_70", Events, x.Events)
-    Comparison(dir, TreeTest, "jet_isbtagged_DL1r_60", Events, x.Events)
-    Comparison(dir, TreeTest, "jet_isbtagged_DL1r_85", Events, x.Events)
-    Comparison(dir, TreeTest, "jet_DL1r", Events, x.Events)
-    Comparison(dir, TreeTest, "jet_DL1r_pb", Events, x.Events)
-    Comparison(dir, TreeTest, "jet_DL1r_pc", Events, x.Events)
-    Comparison(dir, TreeTest, "jet_DL1r_pu", Events, x.Events)
-    Comparison(dir, TreeTest, "jet_isbtagged_DL1_77", Events, x.Events)
-    Comparison(dir, TreeTest, "jet_isbtagged_DL1_70", Events, x.Events)
-    Comparison(dir, TreeTest, "jet_isbtagged_DL1_60", Events, x.Events)
-    Comparison(dir, TreeTest, "jet_isbtagged_DL1_85", Events, x.Events)
-    Comparison(dir, TreeTest, "jet_DL1", Events, x.Events)
-    Comparison(dir, TreeTest, "jet_DL1_pb", Events, x.Events)
-    Comparison(dir, TreeTest, "jet_DL1_pc", Events, x.Events)
-    Comparison(dir, TreeTest, "jet_DL1_pu", Events, x.Events)
-
-    #Event 
-    Comparison(dir, TreeTest, "met_met", Events, x.Events)
-    Comparison(dir, TreeTest, "met_phi", Events, x.Events)
-    Comparison(dir, TreeTest, "eventNumber", Events, x.Events)
-    Comparison(dir, TreeTest, "runNumber", Events, x.Events)
-    Comparison(dir, TreeTest, "mu", Events, x.Events)
-    Comparison(dir, TreeTest, "mu_actual", Events, x.Events)
-
-    #Truth Jets
-    Comparison(dir, TreeTest, "truthjet_pt", Events, x.Events)
-    Comparison(dir, TreeTest, "truthjet_e", Events, x.Events)
-    Comparison(dir, TreeTest, "truthjet_phi", Events, x.Events)
-    Comparison(dir, TreeTest, "truthjet_eta", Events, x.Events)
-    Comparison(dir, TreeTest, "truthjet_flavour", Events, x.Events)
-    Comparison(dir, TreeTest, "truthjet_flavour_extended", Events, x.Events)
-    Comparison(dir, TreeTest, "truthjet_nCHad", Events, x.Events)
-    Comparison(dir, TreeTest, "truthjet_nBHad", Events, x.Events)
-
-    # Truth Tops
-    Comparison(dir, TreeTest, "truth_top_pt", Events, x.Events)
-    Comparison(dir, TreeTest, "truth_top_e", Events, x.Events)
-    Comparison(dir, TreeTest, "truth_top_phi", Events, x.Events)
-    Comparison(dir, TreeTest, "truth_top_eta", Events, x.Events)
-    Comparison(dir, TreeTest, "truth_top_charge", Events, x.Events)
-    Comparison(dir, TreeTest, "top_FromRes", Events, x.Events)
-    
-    #Child 
-    Comparison(dir, TreeTest, "truth_top_child_pt", Events, x.Events)
-    Comparison(dir, TreeTest, "truth_top_child_e", Events, x.Events)
-    Comparison(dir, TreeTest, "truth_top_child_phi", Events, x.Events)
-    Comparison(dir, TreeTest, "truth_top_child_eta", Events, x.Events) 
-    Comparison(dir, TreeTest, "truth_top_child_pdgid", Events, x.Events)
-
-    #Child  init
-    Comparison(dir, TreeTest, "truth_top_initialState_child_pt", Events, x.Events)
-    Comparison(dir, TreeTest, "truth_top_initialState_child_e", Events, x.Events)
-    Comparison(dir, TreeTest, "truth_top_initialState_child_phi", Events, x.Events)
-    Comparison(dir, TreeTest, "truth_top_initialState_child_eta", Events, x.Events)
-    Comparison(dir, TreeTest, "top_initialState_child_pdgid", Events, x.Events)
-    
-    #RCJets 
-    Comparison(dir, TreeTest, "rcjet_pt", Events, x.Events)
-    Comparison(dir, TreeTest, "rcjet_e", Events, x.Events)
-    Comparison(dir, TreeTest, "rcjet_phi", Events, x.Events)
-    Comparison(dir, TreeTest, "rcjet_eta", Events, x.Events)
-    Comparison(dir, TreeTest, "rcjet_d12", Events, x.Events)
-    Comparison(dir, TreeTest, "rcjet_d23", Events, x.Events)
-
-    #RCJets Sub
-    Comparison(dir, TreeTest, "rcjetsub_pt", Events, x.Events)
-    Comparison(dir, TreeTest, "rcjetsub_e", Events, x.Events)
-    Comparison(dir, TreeTest, "rcjetsub_phi", Events, x.Events)
-    Comparison(dir, TreeTest, "rcjetsub_eta", Events, x.Events) 
-    
+    for i in Tests:
+        print(Comparison(di, TreeTest, i, x.Events, Events))
     return True
 
 

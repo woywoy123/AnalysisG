@@ -108,25 +108,32 @@ class File(Notification):
         self.Trees = list(self.ObjectTrees)
         del self.ObjectTrees
 
-def PickleObject(obj, filename, Dir = None):
+def PickleObject(obj, filename, Dir = "_Pickle"):
     if filename.endswith(".pkl"):
         pass
     else:
         filename += ".pkl"
-    
-    if Dir is not None:
-        d = WriteDirectory()
-        d.MakeDir(Dir)
-        if Dir.endswith("/"):
-            filename = Dir + filename
-        else:
-            filename = Dir + "/" + filename
+   
+    d = WriteDirectory()
+    d.MakeDir(Dir)
+    if Dir.endswith("/"):
+        filename = Dir + filename
+    else:
+        filename = Dir + "/" + filename
 
     outfile = open(filename, "wb")
     pickle.dump(obj, outfile)
     outfile.close()
 
-def UnpickleObject(filename):
+def UnpickleObject(filename, Dir = "_Pickle"):
+    if Dir.endswith("/"):
+        Dir = Dir[0:len(Dir)-1]
+    if filename.endswith(".pkl"):
+        pass
+    else:
+        filename += ".pkl"
+
+    filename = Dir + "/" + filename
 
     infile = open(filename, "rb")
     obj = pickle.load(infile)

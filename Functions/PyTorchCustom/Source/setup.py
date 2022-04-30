@@ -3,7 +3,7 @@ from torch.utils.cpp_extension import BuildExtension, CUDAExtension, CppExtensio
 
 setup(name = "PyTorchCustom", 
         ext_modules = [
-            CppExtension("LorentzVector", ["../ROOT/LorentzVector.cpp"])
+            CppExtension("LorentzVector", ["LorentzVector.cpp"])
         ],
         cmdclass = {"build_ext" : BuildExtension}
     )

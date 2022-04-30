@@ -1,7 +1,7 @@
 from Functions.IO.IO import File, Directories, PickleObject, UnpickleObject
 from Functions.Tools.Alerting import Debugging
 from Functions.Tools.DataTypes import TemplateThreading, Threading
-from Functions.Event.Event import Event, Event_Custom, EventVariables
+from Functions.Event.Event import Event, EventVariables
 import math
 
 class EventGenerator(Debugging, EventVariables, Directories):
@@ -17,7 +17,7 @@ class EventGenerator(Debugging, EventVariables, Directories):
         self.__Start = Start
         self.__Stop = Stop
         
-    def SpawnEvents(self, Custom = False):
+    def SpawnEvents(self):
         self.GetFilesInDir()
         for i in self.Files:
             self.Notify("_______NEW DIRECTORY______: " + str(i))
@@ -45,11 +45,7 @@ class EventGenerator(Debugging, EventVariables, Directories):
                         else: 
                             self.Count()
                         
-                        if Custom:
-                            E = Event_Custom()
-                        else:
-                            E = Event()
-
+                        E = Event()
                         E.Debug = self.__Debug
                         E.Tree = tr
                         E.iter = l

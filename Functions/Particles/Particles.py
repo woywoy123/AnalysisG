@@ -1,7 +1,8 @@
 from Functions.Tools.Variables import VariableManager
 import copy
 import math
-from skhep.math.vectors import LorentzVector
+import torch
+import LorentzVector
 
 class Particle(VariableManager):
     def __init__(self, Type = False):
@@ -35,34 +36,21 @@ class Particle(VariableManager):
     def DeltaR(self, P):
         return math.sqrt(math.pow(P.eta-self.eta, 2) + math.pow(P.phi-self.phi, 2)) 
 
-    def EnergyUnits(self, mass, name):
-        setattr(self, name + "_eV", mass * 1000)
-        setattr(self, name + "_MeV", mass)
-        setattr(self, name + "_GeV", mass / 1000)
-
-    def CalculateMass(self):
+    def CalculateMass(self, lists = None, Name = "Mass"):
         v = LorentzVector()
-        v.setptetaphie(self.pt, self.eta, self.phi, self.e)
-        self.EnergyUnits(v.mass, "Mass")
+        if lists == None:
+            v = LorentzVector.ToPxPyPzE(self.pt, self.eta, self.phi, self.e, "cpu")
+        else:
+            for i in lists:
+                v += LorentzVector.ToPxPyPzE(i.pt, i.eta, i.phi, i.e)
+        m = float(LorentzVector.GetMass(v))
+        setattr(self, Name + "_MeV", m)
+        setattr(self, Name + "_GeV", m / 1000)
 
     def CalculateMassFromChildren(self):
-        v = self.CalculateVector(self.Decay)
-        v_init = self.CalculateVector(self.Decay_init)
-        self.EnergyUnits(v.mass, "Mass")
-        self.EnergyUnits(v_init.mass, "Mass_init")
+        self.CalculateMass(self.Decay, "Mass")
+        self.CalculateMass(self.Decay_init, "Mass_init")
 
-    def CalculateVector(self, lists):
-        vec = LorentzVector()
-        for i in lists:
-            v = LorentzVector()
-            v.setptetaphie(i.pt, i.eta, i.phi, i.e)
-            vec += v
-        return vec
-    
-    def PropagateSignalLabel(self):
-        for i in self.Decay:
-            i.Signal = self.Signal
-            i.PropagateSignalLabel()
 
 class CompileParticles:
     def __init__(self, Dictionary, Particles):
@@ -112,8 +100,8 @@ class CompileParticles:
     
 
 
-####### Default particles in ROOT files ###############
-
+####### Customized Particle implementations ###############
+### Default AnalysisTop particles 
 class Lepton(Particle):
     def __init__(self):
         self.charge = self.Type + "_charge"
@@ -145,15 +133,6 @@ class Muon(Lepton):
         self.ptvarcone30 = self.Type + "_ptvarcone30"
         Lepton.__init__(self)
 
-class TruthJet(Particle):
-    def __init__(self):
-        self.Type = "truthjet"
-        self.flavour = self.Type + "_flavour"
-        self.flavour_extended = self.Type + "_flavour_extended"
-        self.nCHad = self.Type + "_nCHad"
-        self.nBHad = self.Type + "_nBHad"
-        Particle.__init__(self)
-
 class Jet(Particle):
     def __init__(self):
         self.Type = "jet"
@@ -180,107 +159,47 @@ class Jet(Particle):
         self.DL1_pc = self.Type + "_DL1_pc"
         self.DL1_pu = self.Type + "_DL1_pu"
 
-        Particle.__init__(self)
-
-class RCSubJet(Particle):
-    def __init__(self):
-        self.Type="rcjetsub"
-        Particle.__init__(self)
-        self.Flav = None
-
-class RCJet(Particle):
-    def __init__(self):
-        self.Type = "rcjet"
-        self.d12 = self.Type + "_d12"
-        self.d23 = self.Type + "_d23"
-        Particle.__init__(self)
-        self.Constituents = []
-
-    def PropagateJetSignal(self):
-        # 0: No Signal 
-        # 1: All Signal 
-        # 2: Contains at least one signal
-        
-        s = 0
-        for i in self.Constituents:
-            if i.Signal == 0:
-                s += i.Signal
-            if i.Signal == 1:
-                s += i.Signal
-        if s == len(self.Constituents) and len(self.Constituents) != 0:
-            self.Signal = 1
-        elif s == 0:
-            self.Signal = 0
-        elif s > 0:
-            self.Signal = 2
-
-class Top(Particle):
-    def __init__(self):
-        self.Type = "truth_top"
-        self.FromRes = "top_FromRes"
-        self.charge = self.Type + "_charge"
-        Particle.__init__(self)
-
-class Truth_Top_Child(Particle):
-    def __init__(self):
-        self.Type = "truth_top_child"
-        self.pdgid = self.Type + "_pdgid"
-        Particle.__init__(self)
-
-class Truth_Top_Child_Init(Particle):
-    def __init__(self):
-        self.Type = "truth_top_initialState_child"
-        self.pdgid = "top_initialState_child_pdgid"
-        Particle.__init__(self)
-
-
-################## CUSTOMIZED PARTICLES CLASSES ################
-
-class Jet_C(Particle):
-    def __init__(self):
-        self.Type = "jet"
-        self.truthflav = self.Type + "_truthflav"
-        self.truthPartonLabel = self.Type + "_truthPartonLabel"
-        self.truthflavExtended = self.Type + "_truthflavExtended"
         self.JetMapGhost = self.Type + "_map_Ghost"
         self.JetMapTops = self.Type + "_map_Gtops"
+
         Particle.__init__(self)
 
-class TruthJet_C(Particle):
+class TruthJet(Particle):
     def __init__(self):
         self.Type = "truthjet"
         self.pdgid = self.Type + "_pdgid"
         self.GhostTruthJetMap = "GhostTruthJetMap"
         Particle.__init__(self)
 
-class TruthTop_C(Particle):
+### Additional custom particle definitions 
+class TruthTop(Particle):
     def __init__(self):
         self.Type = "truth_top"
         self.FromRes = "truth_top_FromRes"
         Particle.__init__(self)
 
-class TruthTopChild_C(Particle):
-    def __init__(self):
-        self.Type = "truth_top_child"
-        self.charge = self.Type + "_charge"
-        self.pdgid = self.Type + "_pdgid"
-        Particle.__init__(self)
-
-class TopPreFSR_C(Particle):
+class TopPreFSR(Particle):
     def __init__(self):
         self.Type = "topPreFSR"
         self.charge = self.Type + "_charge"
         self.Status = self.Type + "_status"
         Particle.__init__(self)
 
-class TopPostFSR_C(Particle):
+class TopPostFSR(Particle):
     def __init__(self):
         self.Type = "topPostFSR"
         self.charge = self.Type + "_charge"
         self.FromRes = "Gtop_FromRes"
         Particle.__init__(self)
 
-class TopPostFSRChildren_C(Particle):
+class TruthTopChildren(Particle):
+    def __init__(self):
+        self.Type = "truth_top_child"
+        self.charge = self.Type + "_charge"
+        self.pdgid = self.Type + "_pdgid"
+        Particle.__init__(self)
+
+class TopPostFSRChildren(Particle):
     def __init__(self):
         self.Type = "topPostFSRchildren"
         self.charge = self.Type + "_charge"
