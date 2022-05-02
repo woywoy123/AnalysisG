@@ -1,230 +1,118 @@
+import torch
 from Functions.IO.IO import PickleObject, UnpickleObject
-from Functions.GNN.Graphs import EventGraph, GenerateDataLoader
-from Functions.Plotting.Graphs import Graph
-from Functions.GNN.Models import EdgeConv
-from math import factorial 
+from Functions.Event.EventGraph import EventGraphTemplate
+from Functions.Event.DataLoader import GenerateDataLoader
+import Functions.FeatureTemplates.GraphFeatures as GF
+import Functions.FeatureTemplates.EdgeFeatures as EF
+import Functions.FeatureTemplates.NodeFeatures as NF
 
-def DrawGraph(event, Filename, Dir, Attribute = False):
-    G_P = Graph(event)
-    G_P.CompileGraph()
-    G_P.Filename = Filename 
-    G_P.SaveFigure(Dir)
+def TrivialNodeFeature(a):
+    return float(1.0)
 
-def ValidateNodes(Graph, List):
-    try: 
-        assert Graph.G.number_of_nodes() == len(List)
-        if hasattr(Graph, "Data"):
-            assert Graph.Data.num_nodes == len(List)
-        return True
-    except AssertionError:
-        return False
+def TrivialEdgeFeature(a, b):
+    return float(a.Index*b.Index)
 
-def ValidateEdges(Graph, List):
-    p = len(List)
-    p_2 = (factorial(p))/(factorial(2) * factorial( p - 2 ))
-    if Graph.SelfLoop:
-        p_2 = p_2 + len(List)
-    else:
-        p_2 = p_2 
-    try:
-        assert Graph.G.number_of_edges() == int(p_2)
-        if hasattr(Graph, "Data"):
-            assert Graph.Data.num_edges == int(len(List)*len(List))
-        return True
-    except AssertionError:
-        return False
+def TrivialGraphFeature(event):
+    return float(1.0)
 
-def TestLevels(event, Tree, Dir):
-    G = EventGraph(event, Dir, Tree)
-    G.CreateParticleNodes()
 
-    if ValidateNodes(G, G.Particles) == False:
-        return False
-    DrawGraph(G, "NotConnected", "Plots/EventGraphs_" + Dir)
+def TestEventGraph(Name, Level):
+    ev = UnpickleObject(Name)
+    for i in ev.Events:
+        event = ev.Events[i]
+        Particles = getattr(event["nominal"], Level)
+        
+        eventG = EventGraphTemplate()
+        eventG.Event = event["nominal"]
+        eventG.Particles = Particles
+        eventG.iter = i 
+        eventG.SetNodeAttribute("Node", TrivialNodeFeature)
+        eventG.SetEdgeAttribute("Edge", TrivialEdgeFeature)      
+        eventG.SetGraphAttribute("Graph", TrivialGraphFeature)
+        
+        # Test With Self Loop
+        eventG.SelfLoop = True
+        data = eventG.ConvertToData()
+        assert data.G_Graph == 1.0
+        assert list(data.N_Node) == list(torch.tensor([TrivialNodeFeature(i) for i in Particles], dtype = torch.float))
+        assert list(data.E_Edge) == list(torch.tensor([TrivialEdgeFeature(i, j) for i in Particles for j in Particles], dtype = torch.float))
+       
+        # Test Without Self Loop
+        eventG.SelfLoop = False
+        data = eventG.ConvertToData()
+        assert data.G_Graph == 1.0
+        assert list(data.N_Node) == list(torch.tensor([TrivialNodeFeature(i) for i in Particles], dtype = torch.float))
+        assert list(data.E_Edge) == list(torch.tensor([TrivialEdgeFeature(i, j) for i in Particles for j in Particles if i != j], dtype = torch.float))
+    return True
+
+def TestDataLoader(Name, Level):
+    ev = UnpickleObject(Name)
+    DL = GenerateDataLoader() 
+    DL.CleanUp = False
+    DL.AddGraphFeature("Graph", TrivialGraphFeature)
+    DL.AddNodeFeature("Node", TrivialNodeFeature)
+    DL.AddEdgeFeature("Edge", TrivialEdgeFeature)
+    DL.AddSample(ev, "nominal", Level, True)
+
+    for i in DL.DataContainer:
+        Particles = getattr(ev.Events[i]["nominal"], Level) 
+
+        # Test With Self Loop
+        data = DL.DataContainer[i]
+        assert data.G_Graph == 1.0
+        assert list(data.N_Node) == list(torch.tensor([TrivialNodeFeature(i) for i in Particles], dtype = torch.float))
+        assert list(data.E_Edge) == list(torch.tensor([TrivialEdgeFeature(i, j) for i in Particles for j in Particles], dtype = torch.float))
+   
+    DL.ResetData()
+    DL.AddSample(ev, "nominal", Level, False)
+    for i in DL.DataContainer:
+        Particles = getattr(ev.Events[i]["nominal"], Level) 
+
+        # Test Without Self Loop
+        data = DL.DataContainer[i]
+        assert data.G_Graph == 1.0
+        assert list(data.N_Node) == list(torch.tensor([TrivialNodeFeature(i) for i in Particles], dtype = torch.float))
+        assert list(data.E_Edge) == list(torch.tensor([TrivialEdgeFeature(i, j) for i in Particles for j in Particles if i != j], dtype = torch.float))
     
-    G.CreateEdges()
-    if ValidateEdges(G, G.Particles) == False:
-        return False
-    DrawGraph(G, "ConnectedSelfLoop", "Plots/EventGraphs_" + Dir)
+    DL.MakeTrainingSample(60)
+    All = len(list(DL.DataContainer))
+    Training_Size = len([k for i in DL.TrainingSample for k in DL.TrainingSample[i]])
+    Validation_Size = len([k for i in DL.ValidationSample for k in DL.ValidationSample[i]])
     
-    G = EventGraph(event, Dir, Tree)
-    G.SelfLoop = False
-    G.CreateParticleNodes()
-    G.CreateEdges()
+    print("Training Size: " + str(float(Training_Size/All)*100) + " Validation Size: " + str(float(Validation_Size/All)*100))
+    return True
 
-    if ValidateNodes(G, G.Particles) == False or ValidateEdges(G, G.Particles) == False:
-        return False
-    DrawGraph(G, "Connected", "Plots/EventGraphs_" + Dir)  
+def TestDataLoaderMixing(Files, Level):
+    
+    Loaders = []
+    DL = GenerateDataLoader()
+    DL.CleanUp = False
+    DL.AddGraphFeature("Graph", TrivialGraphFeature)
+    DL.AddNodeFeature("Node", TrivialNodeFeature)
+    DL.AddEdgeFeature("Edge", TrivialEdgeFeature)
+    DL.SetDevice("cuda:0")
+    
+    Start = []
+    End = []
+    Samples = []
+    su = 0
+    for i in Files:
+        ev = UnpickleObject(i + "/" + i)
+        Loaders.append(ev)
+        DL.AddSample(ev, "nominal", Level, True)
+        for k in ev.Events:
+            if ev.EventIndexFileLookup(k) not in Samples:
+                s = ev.EventIndexFileLookup(k)
+                Samples.append(s)
+                Start.append(su)
+                End.append(su + ev.FileEventIndex[s][1] - ev.FileEventIndex[s][0])
+            su+=1
+     
+    assert DL.FileTraces["Start"] == Start
+    assert DL.FileTraces["End"] == End 
+    assert DL.FileTraces["Samples"] == Samples
+
     return True
 
 
-def TestEventGraphs():
-    tttt = UnpickleObject("SignalSample.pkl")
-    
-    for i in tttt.Events:
-        ev = tttt.Events[i]
 
-        if TestLevels(ev, "nominal", "TruthTops") == False:
-            return False
-        if TestLevels(ev, "nominal", "TruthChildren") == False:
-            return False
-        if TestLevels(ev, "nominal", "TruthChildren_init") == False:
-            return False
-        if TestLevels(ev, "nominal", "RCJetLepton") == False:
-            return False
-        if TestLevels(ev, "nominal", "JetLepton") == False:
-            return False
-
-        if int(i) == 10:
-            break
-
-    ttbar = UnpickleObject("ttbar.pkl")
-    
-    for i in tttt.Events:
-        ev = tttt.Events[i]
-
-        if TestLevels(ev, "nominal", "RCJetLepton") == False:
-            return False
-        if TestLevels(ev, "nominal", "JetLepton") == False:
-            return False
-        
-        if int(i) == 10:
-            break
-
-    return True
-
-def TestDataLoader():
-
-    tttt = UnpickleObject("SignalSample.pkl")
-    ttbar = UnpickleObject("ttbar.pkl")
-    
-
-    Loader = GenerateDataLoader()
-    Loader.SelfLoop = True
-    Loader.AddSample(tttt, "nominal")
-    Loader.AddSample(ttbar, "tree")
-    
-    for i in Loader.DataLoader:
-        for k in Loader.DataLoader[i]:
-            index = int(k.i)
-            ev = Loader.EventMap[index]
-
-            if ValidateEdges(ev, ev.Particles) == False:
-                return False
-            if ValidateNodes(ev, ev.Particles) == False:
-                return False
-    return True
-
-def TestDataLoaderTrainingValidationTest():
-    
-    tttt = UnpickleObject("SignalSample.pkl")
-    Loader = GenerateDataLoader()
-    Loader.TestSize = 50
-    Loader.ValidationTrainingSize = 50
-    Loader.AddSample(tttt, "nominal")
-    Loader.MakeTrainingSample()
-        
-    SampleLoader = []
-    for i in Loader.DataLoader:
-        l = Loader.DataLoader[i]
-        for k in l:
-            SampleLoader.append(k)
-    TestLoader = [] 
-    for i in Loader.TestDataLoader:
-        l = Loader.TestDataLoader[i]
-        for k in l:
-            TestLoader.append(k)
-    
-    if int(len(SampleLoader)/len(TestLoader)) != 0:
-        return False
-
-
-
-    return True
-
-def TestEventNodeEdgeFeatures():
-
-    def TesterBlock(TruthLevel, tttt):
-        
-        def Truth(a):
-            return a.Signal
-        def Index(a):
-            return a.Index
-        def PT(a):
-            return a.pt
-        def dPT(a, b):
-            return a.pt - b.pt
-
-
-        tttt_truth = EventGraph(tttt, TruthLevel, "nominal")
-        tttt_truth.SelfLoop = True
-        tttt_truth.CreateParticleNodes()
-        tttt_truth.CreateEdges()
-        P = tttt_truth.Particles 
-        
-        tttt_truth.SetNodeAttribute("y", Truth)
-        tttt_truth.SetNodeAttribute("x", Index)
-        tttt_truth.SetNodeAttribute("x", PT)
-        tttt_truth.SetEdgeAttribute("edge_attr", dPT)
-        tttt_truth.ConvertToData()
-        GR = tttt_truth.Data
-        t = GR.x
-        assert list(t.size()) == [len(P), 2]
-        
-        t = GR.edge_attr
-        assert list(t.size()) == [len(P)*len(P), 1]
-        
-        EC_tttt = EdgeConv(2, 2)
-        EC_tttt(GR)
-
-        tttt_truth = EventGraph(tttt, TruthLevel, "nominal")
-        tttt_truth.SelfLoop = False
-        tttt_truth.CreateParticleNodes()
-        tttt_truth.CreateEdges()
-        P = tttt_truth.Particles 
-        
-        tttt_truth.SetNodeAttribute("y", Truth)
-        tttt_truth.SetNodeAttribute("x", Index)
-        tttt_truth.SetNodeAttribute("x", PT)
-        tttt_truth.SetEdgeAttribute("edge_attr", dPT)
-        tttt_truth.ConvertToData()
-        GR = tttt_truth.Data
-        t = GR.x
-        assert list(t.size()) == [len(P), 2]
-        
-        t = GR.edge_attr
-        assert list(t.size()) == [len(P)*len(P) - len(P), 1]
-        
-        EC_tttt = EdgeConv(2, 2)
-        EC_tttt(GR)
-
-
-
-    tttt = UnpickleObject("SignalSample.pkl")
-    tttt = tttt.Events[1]
-
-    try:
-        TesterBlock("TruthTops", tttt)
-    except AssertionError:
-        return False
-
-    try:
-        TesterBlock("TruthChildren_init", tttt)
-    except AssertionError:
-        return False
-
-    try:
-        TesterBlock("TruthChildren", tttt)
-    except AssertionError:
-        return False
-
-    try:
-        TesterBlock("JetLepton", tttt)
-    except AssertionError:
-        return False
-
-    try:
-        TesterBlock("RCJetLepton", tttt)
-    except AssertionError:
-        return False
-    return True

@@ -35,6 +35,19 @@ def Generate_Cache(di, Stop = -1, SingleThread = False, Compiler = "EventGenerat
     ev.CompileEvent(SingleThread = SingleThread)
     PickleObject(ev, Compiler, Outdir + "/" + Compiler)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 def Generate_Cache_Batches(di, Stop = -1, SingleThread = False, Compiler = "EventGenerator", Custom = False, CustomDirectory = "_Cache"):
     BuildCacheDirectory(CustomDirectory, Name)
     

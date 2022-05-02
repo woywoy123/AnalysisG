@@ -1,3 +1,4 @@
+import torch
 import LorentzVector
 
 def eta(a):

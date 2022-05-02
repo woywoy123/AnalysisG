@@ -1,5 +1,7 @@
 from Closure import IO
 from Closure import Event
+from Closure import DataLoader
+from Closure import Optimizer
 from Functions.Event import CacheGenerators
 
 
@@ -46,4 +48,24 @@ if __name__ == "__main__":
     ## ===== Test of EventGenerator ===== ##
     #Test(Event.TestEvents, di = GeneralDir + "tttt/OldSample/1500_GeV/MCe/QU_0.root")
     #Test(Event.TestParticleAssignment, di = GeneralDir + "tttt/OldSample/1500_GeV/MCe/QU_0.root")
-    #Test(Event.TestSignalMultipleFile, di......) <--- Continue here 
+    #Test(Event.TestSignalMultipleFile, di = GeneralDir + "tttt/OldSample/1500_GeV/MCe/")
+    #Test(Event.TestSignalDirectory, di = GeneralDir + "t/MCa/")
+
+    ## ====== Test of DataLoader ====== ##
+    #CacheGenerators.Generate_Cache(GeneralDir + "tttt/OldSample/1500_GeV/MCe/QU_0.root", Stop = 100, Compiler = "DataLoaderTest", Outdir = "_Pickle")
+    #CacheGenerators.Generate_Cache(GeneralDir + "tttt/OldSample/1500_GeV/MCe/QU_1.root", Stop = 100, Compiler = "DataLoaderTest_1", Outdir = "_Pickle")
+    #CacheGenerators.Generate_Cache(GeneralDir + "t/MCa", Stop = 100, Compiler = "DataLoaderTest_2", Outdir = "_Pickle") 
+
+    #Test(DataLoader.TestEventGraph, Name = "DataLoaderTest/DataLoaderTest.pkl", Level = "TruthTops")
+    #Test(DataLoader.TestEventGraph, Name = "DataLoaderTest/DataLoaderTest.pkl", Level = "TruthTopChildren")
+    #Test(DataLoader.TestEventGraph, Name = "DataLoaderTest/DataLoaderTest.pkl", Level = "DetectorParticles")
+    
+    #Test(DataLoader.TestDataLoader, Name = "DataLoaderTest/DataLoaderTest.pkl", Level = "TruthTops")
+    #Test(DataLoader.TestDataLoader, Name = "DataLoaderTest/DataLoaderTest.pkl", Level = "TruthTopChildren")
+    #Test(DataLoader.TestDataLoader, Name = "DataLoaderTest/DataLoaderTest.pkl", Level = "DetectorParticles")
+
+    #Test(DataLoader.TestDataLoaderMixing, Files = ["DataLoaderTest", "DataLoaderTest_1", "DataLoaderTest_2"], Level = "TruthTops")
+
+    ## ====== Test of Optimizer ====== ##
+    Test(Optimizer.TestOptimizerGraph, Files = ["DataLoaderTest", "DataLoaderTest_1", "DataLoaderTest_2"], Level = "TruthTops")
+ 

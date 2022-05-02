@@ -68,11 +68,9 @@ def Comparison(di, Tree, Branch, EventContainer, NEvents = -1):
 
 
 def TestParticleAssignment(di):
-    #x = EventGenerator(di)
-    #x.SpawnEvents()
-    #x.CompileEvent(SingleThread = True, ClearVal = False)
-    #PickleObject(x, "debug")
-    x = UnpickleObject("debug")
+    x = EventGenerator(di)
+    x.SpawnEvents()
+    x.CompileEvent(SingleThread = True, ClearVal = False)
 
     Events = -1
     TreeTest = "nominal"
@@ -192,10 +190,9 @@ def TestParticleAssignment(di):
     return True
 
 
-def TestSignalMultipleFile():
-    dir = "/CERN/Grid/SignalSamples/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/"
+def TestSignalMultipleFile(di):
     
-    ev = EventGenerator(dir, Stop = 1000)
+    ev = EventGenerator(di, Stop = 1000)
     ev.SpawnEvents()
     ev.CompileEvent(SingleThread = True)
     
@@ -204,10 +201,9 @@ def TestSignalMultipleFile():
             print(i, ev.Events[i], ev.EventIndexFileLookup(i)) 
             return True
 
-def TestSignalDirectory():
-    dir = "/CERN/Grid/SignalSamples/"
+def TestSignalDirectory(di):
     
-    ev = EventGenerator(dir, Stop = 1000)
+    ev = EventGenerator(di, Stop = 1000)
     ev.SpawnEvents()
     ev.CompileEvent(SingleThread = True)
    

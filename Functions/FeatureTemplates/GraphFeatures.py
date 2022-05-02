@@ -11,3 +11,8 @@ def MU(ev):
 
 def NJets(ev):
     return len(ev.Jets)
+
+def Resonance(ev):
+    if len(ev.TruthTops) == 4:
+        return float(1)
+    return float(0.)

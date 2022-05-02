@@ -64,13 +64,6 @@ class InvMassGNN(MessagePassing):
         return aggr_out
 
 
-#class MergedJetNeuralNetwork(nn.Module):
-#    
-#    def __init__(self):
-#        super(MergedJetNeuralNetwork, self).__init__()
-#        self.Flatten = nn.Flatten()
-#        self.MLP = Seq(Linear(
-#
 
 
 
