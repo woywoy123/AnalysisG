@@ -192,10 +192,10 @@ class TH2F(SharedMethods, GenericAttributes):
         self.ShowBinContent = False
 
     def ShowBins(self, hist, xbins, ybins):
-        skip = 4
+        skip = 1
         delx = abs(self.xBins[0] - self.xBins[1])
         dely = abs(self.yBins[0] - self.yBins[1])
-        for i in range(len(self.yBins)-2):
+        for i in range(len(self.yBins)-1):
             if i/skip - int(i/skip)  != 0:
                 continue
             for j in range(len(self.xBins)-1):

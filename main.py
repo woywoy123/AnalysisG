@@ -1,12 +1,13 @@
-from Closure.IO import TestDir, TestReadSingleFile, TestReadFile, TestFileConvertArray
-from Closure.Event import TestEvents, TestParticleAssignment, TestSignalMultipleFile, TestSignalDirectory
-from Closure.Plotting import TestTops, TestResonance, TestBackGroundProcesses, TestGNNMonitor, KinematicsPlotting, TopologicalComplexityMassPlot, TestDataSamples, TestWorkingExample4TopsComplexity
-from Closure.DataLoader import TestEventGraphs, TestDataLoader, TestDataLoaderTrainingValidationTest, TestEventNodeEdgeFeatures
-from Closure.GNN import SimpleFourTops, TestInvMassGNN_Children_Edge, TestInvMassGNN_Children_Node, TestPathNetGNN_Children_Edge, TestPathNetGNN_Children_Node, TestInvMassGNN_TruthJets, TestPathNetGNN_TruthJets, TestInvMassGNN_Tops_Edge, TestInvMassGNN_Tops_Node, GenerateTemplate, TestPathNetGNN_Tops_Edge
-from Closure.Models import TestEdgeConvModel, TestGCNModel, TestInvMassGNN, TestPathNet, TestJetMergingTagging
-from Closure.TruthMatchingAnalysisTop import Test_SimilarityCustomOriginalMethods, Test_SimilarityCustomOriginalMethods_Plot
-from Closure.Benchmarking import Combinatorials, LorentzVectorBenchmark
-from Closure.ParticlePropertiesMonteCarlo import JetMergingFrequency, JetMergingFrequencyFraction, JetMergingFrequencyFractionPlot, FragmentationOfTriplets, FragmentationOfTripletsScanning, TopJetTrajectory
+#from Closure.IO import TestDir, TestReadSingleFile, TestReadFile, TestFileConvertArray
+#from Closure.Event import TestEvents, TestParticleAssignment, TestSignalMultipleFile, TestSignalDirectory
+#from Closure.Plotting import TestTops, TestResonance, TestBackGroundProcesses, TestGNNMonitor, KinematicsPlotting, TopologicalComplexityMassPlot, TestDataSamples, TestWorkingExample4TopsComplexity
+#from Closure.DataLoader import TestEventGraphs, TestDataLoader, TestDataLoaderTrainingValidationTest, TestEventNodeEdgeFeatures
+#from Closure.GNN import SimpleFourTops, TestInvMassGNN_Children_Edge, TestInvMassGNN_Children_Node, TestPathNetGNN_Children_Edge, TestPathNetGNN_Children_Node, TestInvMassGNN_TruthJets, TestPathNetGNN_TruthJets, TestInvMassGNN_Tops_Edge, TestInvMassGNN_Tops_Node, GenerateTemplate, TestPathNetGNN_Tops_Edge
+#from Closure.Models import TestEdgeConvModel, TestGCNModel, TestInvMassGNN, TestPathNet, TestJetMergingTagging
+#from Closure.TruthMatchingAnalysisTop import Test_SimilarityCustomOriginalMethods, Test_SimilarityCustomOriginalMethods_Plot
+#from Closure.Benchmarking import Combinatorials, LorentzVectorBenchmark
+#from Closure.ParticlePropertiesMonteCarlo import JetMergingFrequency, JetMergingFrequencyFraction, JetMergingFrequencyFractionPlot, FragmentationOfTriplets, FragmentationOfTripletsScanning, TopJetTrajectory
+from Closure.Presentation5 import *
 import os
 
 
@@ -23,7 +24,7 @@ def Generate_Cache(di, Stop = -1, SingleThread = False, Compiler = "EventGenerat
     from Functions.Event.EventGenerator import EventGenerator
     from Functions.IO.IO import PickleObject
     ev = EventGenerator(di, Stop = Stop)
-    ev.SpawnEvents(Custom)
+    ev.SpawnEvents()
     ev.CompileEvent(SingleThread = SingleThread)
     PickleObject(ev, Compiler)
 
@@ -33,11 +34,11 @@ def Generate_Cache_Batches(di, Stop = -1, SingleThread = False, Compiler = "Even
     from Functions.IO.Files import WriteDirectory, Directories 
     import os
 
-    def Compile(File, Name):
+    def Compile(File, Name, FName):
         ev = EventGenerator(File, Stop = Stop)
-        ev.SpawnEvents(Custom)
+        ev.SpawnEvents()
         ev.CompileEvent(SingleThread = SingleThread)
-        PickleObject(ev, Name)
+        PickleObject(ev, Name, FName)
     
     if CustomDirectory != "_Cache":
         d = CustomDirectory + "/" + Compiler + "_Cache/"
@@ -58,7 +59,7 @@ def Generate_Cache_Batches(di, Stop = -1, SingleThread = False, Compiler = "Even
     d = Directories(di)
     Files = d.ListFilesInDir(di)
     for f in Files:
-        Compile(di + "/" + f, CustomDirectory + "/" + Compiler + "_Cache/"+f.replace(".root", ".pkl"))
+        Compile(di + "/" + f, f.replace(".root", ""), CustomDirectory + "/" + Compiler + "_Cache/")
 
 
 
@@ -137,11 +138,11 @@ if __name__ == '__main__':
     #Passed(TestPathNetGNN_Tops_Edge(), "PathNetGNN_Tops_Edge")
     #Passed(TestInvMassGNN_Tops_Node(), "TestInvMassGNN_Tops_Node")
     
-    GenerateTemplate(SignalSample = "CustomSignalSample.pkl", Level = "TruthJetsLep")
+    #GenerateTemplate(SignalSample = "CustomSignalSample.pkl", Level = "TruthJetsLep")
     #Passed(TestInvMassGNN_Children_Edge(), "TestInvMassGNN_Children_Edge")
     #Passed(TestInvMassGNN_Children_Node(), "TestInvMassGNN_Children_Node")
     
-    Passed(TestPathNetGNN_Children_Edge(), "TestPathNetGNN_Children_Edge") 
+    #Passed(TestPathNetGNN_Children_Edge(), "TestPathNetGNN_Children_Edge") 
     #Passed(TestPathNetGNN_Children_Node(), "TestPathNetGNN_Children_Node") 
 
     #GenerateTemplate(SignalSample = "tttt.pkl", Tree = "TruthJetsLep", Additional_Samples = ["ttbar.pkl", "SingleTop_S.pkl"], OutputName = "LoaderSignalSample.pkl")
@@ -157,4 +158,7 @@ if __name__ == '__main__':
     #    Passed(Test_SimilarityCustomOriginalMethods(i), "Test_SimilarityCustomOriginalMethods")
     #    Passed(Test_SimilarityCustomOriginalMethods_Plot(i), "Test_SimilarityCustomOriginalMethods_Plot")
     #pass
+
+    EntryPointEfficiencyHists()
+
 
