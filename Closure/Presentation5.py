@@ -341,14 +341,17 @@ def EntryPoint(F):
     delta_pt = (abs(end_pt - start_pt)/n_pt)
     Scan_pt = [start_pt + delta_pt*j for j in range(n_pt+1)] 
     
-    Backup = {}
     for pt in Scan_pt:
+        Backup = {}
         for eta in Scan_eta:
             print("Scanning ----> "+ str(pt) + " @ " + str(eta))
             Backup[str(pt) + "_" + str(eta)] = TopFragmentation(F, eta, pt)
 
         print("Checkpoint ----> "+ str(pt))
-    PickleObject(Backup, "FragmentationJets_" + str(pt))
+        PickleObject(Backup, "FragmentationJets_" + str(pt))
+
+    for i in F:
+        del i
    
 
 
@@ -359,11 +362,14 @@ def EntryPointEfficiencyHists():
     F = []
     for i in d:
         F.append(UnpickleObject(i, f))
-    EntryPoint(F)
-    JetAnalysis(F)
     
-
-    B = UnpickleObject("FragmentationJets_110.0")
+    JetAnalysis(F)
+    EntryPoint(F)
+    
+    B = {}
+    for d in Directories("_Pickle").ListFilesInDir("_Pickle"):
+        B.update(UnpickleObject(d))
+        print("----> ", d)
     PT = []
     ETA = []
     for i in B:
@@ -419,7 +425,7 @@ def EntryPointEfficiencyHists():
         TopSig.append(topsigjets)
         TopSpec.append(topspecjets)
 
-        EntryPointPlotHists(str(pt) + "_" + str(ETA[it]))
+        #EntryPointPlotHists(str(pt) + "_" + str(ETA[it]), B)
         it += 1
 
     Histograms2D_Template("Fraction of Jets Remaining (n-jets-remaining/n-jets-event)", "Lowest PT Threshold (GeV)", "Highest Eta Threshold", 
@@ -444,11 +450,11 @@ def EntryPointEfficiencyHists():
             None, None, min(PT), max(PT), min(ETA), max(ETA), 
             PT, ETA, "TopRecoEff", "Presentation5/", Weight = Reco_eff)
 
-    Histograms2D_Template("Fraction of Complete Jet-Sets Forming a Top - Spectator", "Lowest PT Threshold (GeV)", "Highest Eta Threshold", 
+    Histograms2D_Template("Fraction of Complete Jet-Sets Forming a Top - Signal", "Lowest PT Threshold (GeV)", "Highest Eta Threshold", 
             None, None, min(PT), max(PT), min(ETA), max(ETA), 
             PT, ETA, "Signal-Tops", "Presentation5/", Weight = TopSig)
     
-    Histograms2D_Template("Fraction of Complete Jet-Sets Forming a Top - Signal", "Lowest PT Threshold (GeV)", "Highest Eta Threshold", 
+    Histograms2D_Template("Fraction of Complete Jet-Sets Forming a Top - Spectator", "Lowest PT Threshold (GeV)", "Highest Eta Threshold", 
             None, None, min(PT), max(PT), min(ETA), max(ETA), 
             PT, ETA, "Spectator-Tops", "Presentation5/", Weight = TopSpec)
 
@@ -457,8 +463,7 @@ def EntryPointEfficiencyHists():
 
 
 
-def EntryPointPlotHists(Cut):
-    B = UnpickleObject("FragmentationJets_110.0")
+def EntryPointPlotHists(Cut, B):
     
     Back = B[Cut]
     pt_cut = str(Cut.split("_")[0]).replace(".0", "")
