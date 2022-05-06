@@ -9,7 +9,6 @@ class GenerateDataLoader(Notification):
         self.Verbose = True
         Notification.__init__(self, self.Verbose)
         self.Device_S = "cpu"
-        self.SetDevice(self.Device_S)
         self.__iter = 0
         self.NEvents = -1
         self.CleanUp = True
@@ -30,6 +29,8 @@ class GenerateDataLoader(Notification):
         self.FileTraces["Level"] = []
         self.FileTraces["SelfLoop"] = []
         self.FileTraces["Samples"] = []
+
+        self.SetDevice(self.Device_S)
 
     def __SetAttribute(self, c_name, fx, container):
         if c_name not in container:

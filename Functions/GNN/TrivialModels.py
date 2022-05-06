@@ -8,13 +8,15 @@ class GraphNN(nn.Module):
     def __init__(self, inputs = 1):
         super(GraphNN, self).__init__()
         self.layers = nn.Sequential(
-                nn.Linear(10, 64), 
+                nn.Linear(1, 64), 
                 nn.ReLU(), 
                 nn.Linear(64, 32), 
                 nn.ReLU(), 
-                nn.Linear(32, 1)
+                nn.Linear(32, 2)
         )
+        self.L_Signal = "CEL"
+        self.C_Signal = True
 
     def forward(self, data):
-        self.G = self.layers(data.G_Signal)
+        self.G_Signal = self.layers(data.G_Signal.view(-1, 1))
 

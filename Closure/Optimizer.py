@@ -22,7 +22,6 @@ def TestOptimizerGraph(Files, Level):
     op = Optimizer(DL)
     op.Model = GraphNN()
     op.DefineOptimizer()
-    op.DefineLossFunction("MSELoss")
     op.KFoldTraining()
     
     # Continue here.

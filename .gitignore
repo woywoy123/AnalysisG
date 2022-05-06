@@ -7,7 +7,7 @@
 **/dist
 **/*.egg*
 **/.pt
-**/Models
+**/_Models
 **/Plots
 **/_Cache
 **/_Pickle
