@@ -2,6 +2,7 @@ from Closure import IO
 from Closure import Event
 from Closure import DataLoader
 from Closure import Optimizer
+from Closure import Metrics
 from Functions.Event import CacheGenerators
 
 
@@ -67,5 +68,6 @@ if __name__ == "__main__":
     #Test(DataLoader.TestDataLoaderMixing, Files = ["DataLoaderTest", "DataLoaderTest_1", "DataLoaderTest_2"], Level = "TruthTops")
 
     ## ====== Test of Optimizer ====== ##
-    Test(Optimizer.TestOptimizerGraph, Files = ["DataLoaderTest", "DataLoaderTest_1", "DataLoaderTest_2"], Level = "TruthTops")
- 
+    #Test(Optimizer.TestOptimizerGraph, Files = ["DataLoaderTest", "DataLoaderTest_1", "DataLoaderTest_2"], Level = "TruthTops")
+    
+    Test(Metrics.TestReadTraining, modelname = "UNTITLED")

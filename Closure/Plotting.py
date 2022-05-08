@@ -882,7 +882,4 @@ def TestWorkingExample4TopsComplexity():
     Complexity_Mass.yData = yData
     Complexity_Mass.Filename = "Complexity.png"
     Complexity_Mass.SaveFigure("Plots/Complexity_Mass_Projection")
-
-
-
     return True

@@ -12,7 +12,7 @@ class Notification():
         self.__GREEN = '\33[32m'
         self.__it = 0
         self.__i = 0
-        self.AlReset = True
+        self.AllReset = True
         self.NotifyTime = 10
         self.Rate = -1
         self.len = -1
@@ -34,10 +34,10 @@ class Notification():
             return False
 
     def ProgressInformation(self, Mode):
-        if self.AlReset:
+        if self.AllReset:
             self.__t_start = time.time()
             self.__it = 0
-            self.AlReset = False
+            self.AllReset = False
             self.Rate = -1
       
         cur = time.time()
@@ -45,13 +45,13 @@ class Notification():
         if cur - self.__t_start >  self.NotifyTime:
             self.Notify("CURRENT " + Mode + " RATE: " + str(round(float(self.__it) / float(cur - self.__t_start)))[0:4] + " /s - PROGRESS: " + str(round(float(self.__i / self.len)*100, 4)) + "%")
             self.Rate = float(self.__it) / float(cur - self.__t_start)
-            self.AlReset = True
+            self.AllReset = True
 
         self.__i += 1
         self.__it += 1
 
     def ResetAll(self):
-        self.AlReset = True
+        self.AllReset = True
         self.__i = 0
         self.__it = 0
         self.len = -1

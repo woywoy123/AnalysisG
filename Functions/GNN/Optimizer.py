@@ -15,9 +15,9 @@ class Optimizer(Notification):
 
     def __init__(self, DataLoaderInstance = None):
         self.Verbose = True
-        self.Caller = "OPTIMIZER"
         Notification.__init__(self, self.Verbose)
 
+        self.Caller = "OPTIMIZER"
         ### DataLoader Inheritence 
         self.DataLoader = DataLoaderInstance
         if DataLoader != None:
@@ -49,7 +49,7 @@ class Optimizer(Notification):
     def __Average(self, key, key2 = None):
         def Average(Input, l):
             for i in range(len(Input[l])):
-                av = float(sum(Input[l][i])/len(Input[l][i])) # <----- Fix this! Float error because of Loss values not being in kFold array
+                av = float(sum(Input[l][i])/len(Input[l][i]))
                 Input[l][i] = [av]
 
         if key2 == None:
@@ -65,7 +65,7 @@ class Optimizer(Notification):
 
     def MakeStats(self):
 
-         ### Output Information
+        ### Output Information
         self.Stats = {}
         self.Stats["EpochTime"] = []
         self.Stats["BatchRate"] = []
@@ -77,12 +77,12 @@ class Optimizer(Notification):
         self.Stats["Validation_Accuracy"] = {}
         self.Stats["Training_Loss"] = {}
         self.Stats["Validation_Loss"] = {}
+
         for i in self.T_Features:
             self.Stats["Training_Accuracy"][i] = []
             self.Stats["Validation_Accuracy"][i] = []
             self.Stats["Training_Loss"][i] = []
             self.Stats["Validation_Loss"][i] = []
-
 
     def __GetTruthFlags(self, inp, FEAT):
         for i in inp:
@@ -128,11 +128,11 @@ class Optimizer(Notification):
             self.L = self.LF(pred, truth)
             acc = accuracy(p, truth)
             if self.Training:
-                self.Stats["Training_Accuracy"][key].append(acc)
-                self.Stats["Training_Loss"][key].append(self.L)
+                self.Stats["Training_Accuracy"][key][-1].append(acc)
+                self.Stats["Training_Loss"][key][-1].append(self.L)
             else:
-                self.Stats["Validation_Accuracy"][key].append(acc)
-                self.Stats["Validation_Loss"][key].append(self.L)
+                self.Stats["Validation_Accuracy"][key][-1].append(acc)
+                self.Stats["Validation_Loss"][key][-1].append(self.L)
             
             if self.Training:
                 self.L.backward()
@@ -151,7 +151,7 @@ class Optimizer(Notification):
                 self.ProgressInformation("VALIDATING")
             self.Train(i) 
             R.append(self.Rate)
-        if self.AlReset:
+        if self.AllReset:
             self.Stats["BatchRate"].append(R)
 
     def KFoldTraining(self):
@@ -178,8 +178,16 @@ class Optimizer(Notification):
                     self.Warning("NOT ENOUGH SAMPLES FOR EVENTS WITH " + str(n_node) + " PARTICLES :: SKIPPING")
                     continue
 
-                
+                self.Stats["FoldTime"].append([])
+                self.Stats["kFold"].append([])
                 for fold, (train_idx, val_idx) in enumerate(Splits.split(np.arange(Curr_l))):
+
+                    for f in self.T_Features:
+                        self.Stats["Training_Accuracy"][f].append([])
+                        self.Stats["Validation_Accuracy"][f].append([])
+                        self.Stats["Training_Loss"][f].append([])
+                        self.Stats["Validation_Loss"][f].append([])
+
                     TimeStartFold = time.time()
                     self.Notify("CURRENT k-Fold: " + str(fold+1))
 
@@ -193,16 +201,15 @@ class Optimizer(Notification):
                     self.Training = False
                     self.SampleLoop(valid_loader)
                     
-                    self.Stats["FoldTime"].append(time.time() - TimeStartFold)
-                    self.Stats["kFold"].append(fold+1)
+                    self.Stats["FoldTime"][-1].append(time.time() - TimeStartFold)
+                    self.Stats["kFold"][-1].append(fold+1)
                 
-
                 self.__Average("BatchRate")
                 self.__Average("Training_Accuracy", True)
                 self.__Average("Validation_Accuracy", True)
                 self.__Average("Training_Loss", True)
                 self.__Average("Validation_Loss", True)
-                self.Stats["Nodes"].append(n_node)
+                self.Stats["Nodes"].append([n_node])
 
             self.Stats["EpochTime"].append(time.time() - TimeStartEpoch)
             self.DumpStatistics()

@@ -8,30 +8,37 @@ from Functions.GNN.TrivialModels import GraphNN
 
 def TestOptimizerGraph(Files, Level):
     
-    #DL = GenerateDataLoader()
-    #DL.AddGraphFeature("Signal", gf.Resonance)
-    #DL.AddGraphTruth("Signal", gf.Resonance)
-    #DL.SetDevice("cuda")
-    #for i in Files:
-    #    ev = UnpickleObject(i + "/" + i)
-    #    DL.AddSample(ev, "nominal", Level)
-    #DL.MakeTrainingSample(0)
-    #PickleObject(DL, "TestOptimizer")
+    DL = GenerateDataLoader()
+    DL.AddGraphFeature("Signal", gf.Resonance)
+    DL.AddGraphTruth("Signal", gf.Resonance)
+    DL.SetDevice("cuda")
+    for i in Files:
+        ev = UnpickleObject(i + "/" + i)
+        DL.AddSample(ev, "nominal", Level)
+    DL.MakeTrainingSample(0)
     
-    DL = UnpickleObject("TestOptimizer")
     op = Optimizer(DL)
     op.Model = GraphNN()
     op.DefineOptimizer()
     op.KFoldTraining()
-    
-    # Continue here.
-    # Remove hard coded feature on line 74 - Optimizer
 
+    return True
 
+def TestOptimizerNode(Files, Level):
+    DL = GenerateDataLoader()
+    DL.AddGraphFeature("Signal", gf.Resonance)
+    DL.AddGraphTruth("Signal", gf.Resonance)
+    DL.SetDevice("cuda")
+    for i in Files:
+        ev = UnpickleObject(i + "/" + i)
+        DL.AddSample(ev, "nominal", Level)
+    DL.MakeTrainingSample(0)
+    PickleObject("TestOptimizerNode")
+    DL = UnpickleObject("testOptimizerNode")
 
-    print(DL)
-
-
-
+    op = Optimizer(DL)
+    op.Model = GraphNN()
+    op.DefineOptimizer()
+    op.KFoldTraining()
 
     return True

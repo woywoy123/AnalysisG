@@ -362,51 +362,6 @@ class CombineTGraph(SharedMethods, GenericAttributes):
         self.CompileLine()
         self.SaveFigure(dir) 
 
-
-
-class SubfigureCanvas(SharedMethods):
-    def __init__(self):
-        self.FigureObjects = []
-        self.Title = ""
-        self.DefaultScaling = 8
-        self.DefaultDPI = 500
-        SharedMethods.__init__(self)
-        self.Compiled = False
-
-    def AddObject(self, obj):
-        self.FigureObjects.append(obj)
-    
-    def AppendToKey(self, key, val):
-        if val != "":
-            self.__dic[key] = val
-
-    def AppendToPLT(self, hist):
-        self.__dic = {}
-        self.AppendToKey("align", hist.Align)
-        self.AppendToKey("bins", hist.xBins)
-        self.AppendToKey("range", (hist.xMin, hist.xMax))
-        self.AppendToKey("density", hist.Normalize)
-        self.AppendToKey("align", hist.Align)
-        
-        self.PLT.subplot(int(str(self.y) + str(self.x) + str(self.k)))
-        self.PLT.title(hist.Title)
-        self.PLT.hist(hist.xData, **self.__dic)
-        self.PLT.xlabel(hist.xTitle)
-        self.PLT.ylabel(hist.yTitle)       
-    
-    def CompileHistogram(self):
-        self.PLT = plt
-        self.PLT.figure(figsize = (len(self.FigureObjects)*self.DefaultScaling, self.DefaultScaling), dpi = self.DefaultDPI)
-        
-        self.y = 1
-        self.x = len(self.FigureObjects)
-        self.k = 0
-        for i in self.FigureObjects:
-            self.k += 1
-            self.AppendToPLT(i)
-
-        self.Compiled = True
-
 class TGraph(SharedMethods, GenericAttributes):
 
     def __init__(self):
