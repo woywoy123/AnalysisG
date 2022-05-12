@@ -332,10 +332,23 @@ class CombineTGraph(SharedMethods, GenericAttributes):
         self.Lines = []
         self.Title = ""
         self.Log = False
-        self.yMin = 0
-        self.yMax = 1
+        self.yMin = None
+        self.yMax = None
         self.Compiled = False
-    
+   
+    def UpdateMaxMin(self, hist):
+
+        if self.yMin == None and self.yMax == None:
+            self.yMin = 0 
+            if self.Log:
+                self.yMin = 0.1
+            self.yMax = 1.25
+
+        if min(hist.yData) <= self.yMin:
+            self.yMin = min(hist.yData)*0.5
+        if max(hist.yData) >= self.yMax:
+            self.yMax = max(hist.yData)*2
+
     def CompileLine(self):
         self.Init_PLT()
         if self.Title != "":
@@ -345,10 +358,17 @@ class CombineTGraph(SharedMethods, GenericAttributes):
             H = self.Lines[i]
 
             if H.ErrorBars:
-                self.PLT.errorbar(x = H.xData, y = H.yData, yerr = [H.Lo_err, H.Up_err], color = H.Color, linestyle = "-", capsize = 3, linewidth = 1, alpha = H.Alpha, label = H.Title)
-            else: self.PLT.plot(H.xData, H.yData, marker = H.Marker, color = H.Color, linewidth = 1, alpha = H.Alpha, label = H.Title)
+                if H.Compiled == False:
+                    H.Line()
+                self.UpdateMaxMin(H)
+                self.PLT.errorbar(x = H.xData, y = H.yData, yerr = [H.Lo_err, H.Up_err], color = H.Color, linestyle = "-", 
+                        capsize = 3, linewidth = 1, alpha = H.Alpha, label = H.Title, marker = H.Marker)
+            else:
+                self.PLT.plot(H.xData, H.yData, marker = H.Marker, color = H.Color, linewidth = 1, alpha = H.Alpha, label = H.Title)
         
         self.PLT.ylim(self.yMin, self.yMax)
+        if self.Log:
+            self.PLT.yscale("log")
 
         if len(self.Lines) != 0:
             self.PLT.xlabel(self.Lines[0].xTitle)
@@ -368,38 +388,45 @@ class TGraph(SharedMethods, GenericAttributes):
         SharedMethods.__init__(self)
         GenericAttributes.__init__(self)
         self.ErrorBars = False
-        self.Compiled = True
+        self.AlphaConf = 1.96
 
     def Line(self):
-        err = []
+        self.Init_PLT()
+        self.Compiled = True
         self.Up_err = []
         self.Lo_err = []
-        if isinstance(self.yData[0], list) == True:
-            self.ErrorBars = True
-            tmp = []
+        self.Stdev = []
+        self.TMP = []
+        if self.ErrorBars:
+            means = []
+            self.TMP = self.yData
             for i in self.yData:
-                av = np.array(i)
-                tmp.append(np.average(av))
-                err.append(np.std(av))  
-                self.Up_err.append(abs(np.average(av)+np.std(av)))
-                self.Lo_err.append(abs(np.average(av)-np.std(av)))
+                Mean = float(sum(i)/len(i))
+                chi2 = sum([pow(x - Mean, 2) for x in i])
+                s = pow(chi2 / (len(i)-1), 0.5)
                 
-            self.yData = tmp
-        
+                means.append(Mean)
+                self.Stdev.append(s)
+                self.Up_err.append(self.AlphaConf*s/float(pow(len(i), 0.5)))
+                self.Lo_err.append(self.AlphaConf*s/float(pow(len(i), 0.5)))
+            self.yData = means
         self.yBins = 1
         self.xAxis()
         self.yAxis()
 
         self.Init_PLT()
         if self.ErrorBars:
-            self.PLT.errorbar(x = self.xData, y = self.yData, yerr = [self.Lo_err, self.Up_err], color = self.Color, linestyle = "-", capsize = 3, linewidth = 1)
-        else:
-            self.PLT.plot(self.xData, self.yData, marker = self.Marker, color = self.Color, linewidth = 1)
+            self.PLT.errorbar(x = self.xData, y = self.yData, yerr = [self.Lo_err, self.Up_err], 
+                    color = self.Color, linestyle = "-", capsize = 3, linewidth = 1, marker = self.Marker)
+        self.PLT.plot(self.xData, self.yData, marker = self.Marker, color = self.Color, linewidth = 1)
+
+        
+        self.PLT.title(self.Title)
         self.PLT.xlabel(self.xTitle)
         self.PLT.ylabel(self.yTitle)
         self.PLT.xlim(0, self.xMax)
         self.PLT.ylim(0, self.yMax*2)
-    
+        
     def Save(self, dir):
         self.Line()
         self.SaveFigure(dir) 

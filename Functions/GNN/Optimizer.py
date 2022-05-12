@@ -20,7 +20,7 @@ class Optimizer(Notification):
         self.Caller = "OPTIMIZER"
         ### DataLoader Inheritence 
         self.DataLoader = DataLoaderInstance
-        if DataLoader != None:
+        if self.DataLoader != None:
             self.TrainingSample = DataLoaderInstance.TrainingSample
 
             self.EdgeFeatures = DataLoaderInstance.EdgeAttribute
@@ -60,7 +60,10 @@ class Optimizer(Notification):
 
     def DumpStatistics(self):
         WriteDirectory().MakeDir(self.RunDir + "/" + self.RunName + "/Statistics")
-        PickleObject(self.Stats, "Stats_" + str(self.epoch+1), self.RunDir + "/" + self.RunName + "/Statistics")
+        if self.epoch == "Done":
+            PickleObject(self.Stats, "Stats_" + self.epoch, self.RunDir + "/" + self.RunName + "/Statistics")
+        else:
+            PickleObject(self.Stats, "Stats_" + str(self.epoch+1), self.RunDir + "/" + self.RunName + "/Statistics")
         self.MakeStats()
 
     def MakeStats(self):
@@ -209,12 +212,14 @@ class Optimizer(Notification):
                 self.__Average("Validation_Accuracy", True)
                 self.__Average("Training_Loss", True)
                 self.__Average("Validation_Loss", True)
-                self.Stats["Nodes"].append([n_node])
+                self.Stats["Nodes"].append(n_node)
 
             self.Stats["EpochTime"].append(time.time() - TimeStartEpoch)
             self.DumpStatistics()
         self.Stats["TrainingTime"] = time.time() - TimeStart
-
+        self.Stats.update(self.DataLoader.FileTraces)
+        self.epoch = "Done"
+        self.DumpStatistics()
 
 
 
