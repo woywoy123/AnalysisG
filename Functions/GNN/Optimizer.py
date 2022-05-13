@@ -207,17 +207,44 @@ class Optimizer(Notification):
                     self.Stats["FoldTime"][-1].append(time.time() - TimeStartFold)
                     self.Stats["kFold"][-1].append(fold+1)
                 
-                self.__Average("BatchRate")
-                self.__Average("Training_Accuracy", True)
-                self.__Average("Validation_Accuracy", True)
-                self.__Average("Training_Loss", True)
-                self.__Average("Validation_Loss", True)
+                #self.__Average("BatchRate")
+                #self.__Average("Training_Accuracy", True)
+                #self.__Average("Validation_Accuracy", True)
+                #self.__Average("Training_Loss", True)
+                #self.__Average("Validation_Loss", True)
                 self.Stats["Nodes"].append(n_node)
 
             self.Stats["EpochTime"].append(time.time() - TimeStartEpoch)
             self.DumpStatistics()
+
         self.Stats["TrainingTime"] = time.time() - TimeStart
         self.Stats.update(self.DataLoader.FileTraces)
+        
+        ix = 0
+        self.Stats["n_Node_Files"] = [[]]
+        self.Stats["n_Node_Count"] = [[]]
+        for i in self.TrainingSample:
+            for j in self.TrainingSample[i]:
+                indx, n_nodes = j.i, j.num_nodes
+                start, end = self.Stats["Start"][ix], self.Stats["End"][ix]
+                if start <= indx and indx <= end:
+                    pass
+                else:
+                    self.Stats["n_Node_Files"].append([])
+                    self.Stats["n_Node_Count"].append([])
+                    ix += 1
+
+                if n_nodes not in self.Stats["n_Node_Files"][ix]:
+                    self.Stats["n_Node_Files"][ix].append(n_nodes)
+                    self.Stats["n_Node_Count"][ix].append(0)
+                
+                n_i = self.Stats["n_Node_Files"][ix].index(n_nodes)
+                self.Stats["n_Node_Count"][ix][n_i] += 1
+        self.Stats["BatchSize"] = self.BatchSize
+        self.Stats["Model"] = {}
+        self.Stats["Model"]["LearningRate"] = self.LearningRate
+        self.Stats["Model"]["WeightDecay"] = self.WeightDecay
+        self.Stats["Model"]["ModelFunctionName"] = type(self.Model)
         self.epoch = "Done"
         self.DumpStatistics()
 

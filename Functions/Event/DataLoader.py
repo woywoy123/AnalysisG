@@ -91,6 +91,7 @@ class GenerateDataLoader(Notification):
             fx = EventGraphDetector
         else:
             self.Warning("EVENT GRAPH NOT DEFINED. See EventGraph.py")
+            exit()
             return
 
 

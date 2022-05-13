@@ -75,8 +75,10 @@ class WriteDirectory(Notification):
     def ChangeDir(self, dir):
         os.chdir(self.__pwd + "/" + dir)
     
-    def WriteTextFile(self, input, dir, name):
-        self.MakeDir(dir)
+    def WriteTextFile(self, inp, di_, name):
+        self.MakeDir(di_)
+        if name.endswith(".txt") != True:
+            name += ".txt"
         with open(self.__tmp + "/" + name, 'w') as f:
-            f.write(input)
+            f.write(inp)
 

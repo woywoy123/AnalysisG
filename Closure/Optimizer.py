@@ -18,6 +18,8 @@ def TestOptimizerGraph(Files, Level):
     DL.MakeTrainingSample(0)
     
     op = Optimizer(DL)
+    op.Epochs = 15
+    op.kFold = 20
     op.Model = GraphNN()
     op.DefineOptimizer()
     op.KFoldTraining()

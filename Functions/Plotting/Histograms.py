@@ -121,7 +121,8 @@ class SharedMethods(WriteDirectory, Notification):
         
         if self.Filename == "":
            self.Filename = self.Title + ".png"
-        
+        self.Filename.replace(" ", "") 
+
         self.Notify("SAVING FIGURE AS +-> " + self.Filename)
         if dir == "":
             self.MakeDir("Plots/")
@@ -375,7 +376,8 @@ class CombineTGraph(SharedMethods, GenericAttributes):
             self.PLT.ylabel(self.Lines[0].yTitle)
         self.PLT.legend(loc="upper right")
         self.PLT.tight_layout()
-        self.Filename = self.Title + ".png"
+        if self.Filename == "":
+            self.Filename = self.Title + ".png"
         self.Compiled = True
 
     def Save(self, dir):
