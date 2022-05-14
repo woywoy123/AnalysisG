@@ -19,17 +19,8 @@ class Optimizer(Notification):
 
         self.Caller = "OPTIMIZER"
         ### DataLoader Inheritence 
-        self.DataLoader = DataLoaderInstance
-        if self.DataLoader != None:
-            self.TrainingSample = DataLoaderInstance.TrainingSample
-
-            self.EdgeFeatures = DataLoaderInstance.EdgeAttribute
-            self.NodeFeatures = DataLoaderInstance.NodeAttribute
-            self.GraphFeatures = DataLoaderInstance.GraphAttribute
-
-            self.Device_S = DataLoaderInstance.Device_S
-            self.Device = DataLoaderInstance.Device
-        
+        if DataLoaderInstance != None:
+            self.ReadInDataLoader(DataLoaderInstance)
 
         ### User defined ML parameters
         self.LearningRate = 0.001
@@ -40,12 +31,25 @@ class Optimizer(Notification):
         self.Model = None
         self.RunName = "UNTITLED"
         self.RunDir = "_Models"
+        self.ONNX_Export = False
+        self.TorchScript_Export = True
 
         ### Internal Stuff 
         self.Training = True
         self.Sample = None
         self.T_Features = {}
-       
+      
+    def ReadInDataLoader(self, DataLoaderInstance):
+        self.TrainingSample = DataLoaderInstance.TrainingSample
+
+        self.EdgeFeatures = DataLoaderInstance.EdgeAttribute
+        self.NodeFeatures = DataLoaderInstance.NodeAttribute
+        self.GraphFeatures = DataLoaderInstance.GraphAttribute
+
+        self.Device_S = DataLoaderInstance.Device_S
+        self.Device = DataLoaderInstance.Device
+        self.DataLoader = DataLoaderInstance
+
     def DumpStatistics(self):
         WriteDirectory().MakeDir(self.RunDir + "/" + self.RunName + "/Statistics")
         if self.epoch == "Done":
@@ -75,10 +79,111 @@ class Optimizer(Notification):
             self.Stats["Training_Loss"][i] = []
             self.Stats["Validation_Loss"][i] = []
 
-    def __GetTruthFlags(self, inp, FEAT):
+    def __GetFlags(self, inp, FEAT):
+        if FEAT == "M":
+            self.ModelInputs = list(self.Model.forward.__code__.co_varnames)
+            self.ModelInputs.remove("self")
+            
+            if len(list(set(list(inp.__dict__["_store"])).intersection(set(self.ModelInputs)))) != len(self.ModelInputs):
+                self.Fail("MISSING VARIABLES IN GIVEN DATA SAMPLE")
+
+            self.Notify("FOUND ALL MODEL INPUT PARAMETERS IN SAMPLE")
+            for i in self.ModelInputs:
+                self.Notify("---> " + i)
+
+            Setting = [i for i in self.Model.__dict__ if i.startswith("C_") or i.startswith("L_") or i.startswith("O_")]
+            self.ModelOutputs = {}
+            for i in Setting:
+                self.ModelOutputs[i] = self.Model.__dict__[i]
+            return
+            
         for i in inp:
             if i.startswith("T_"):
                 self.T_Features[i[2:]] = [FEAT + "_" +i, FEAT + "_" +i[2:]]
+
+    def __ExportONNX(self, DummySample, Name):
+        import onnx
+        
+        DummySample = tuple([DummySample[i] for i in self.ModelInputs])
+        torch.onnx.export(
+                self.Model, DummySample, Name,
+                export_params = True, 
+                input_names = self.ModelInputs, 
+                output_names = [i for i in self.ModelOutputs if i.startswith("O_")])
+
+   
+    def __ExportTorchScript(self, DummySample, Name):
+        DummySample = tuple([DummySample[i] for i in self.ModelInputs])
+      
+        Compact = {}
+        for i in self.ModelInputs:
+            Compact[i] = str(self.ModelInputs.index(i))
+
+        p = 0
+        for i in self.ModelOutputs:
+            if i.startswith("O_"):
+                Compact[i] = str(p)
+                p+=1
+            else:
+                Compact[i] = str(self.ModelOutputs[i])
+
+        model = torch.jit.trace(self.Model, DummySample)
+        torch.jit.save(model, Name, _extra_files = Compact)
+
+    def __ImportTorchScript(self, Name):
+        class Model:
+            def __init__(self, dict_in, model):
+                self.__Model = model
+                self.__router = {}
+                for i in dict_in:
+                    setattr(self, i, dict_in[i])
+                    if i.startswith("O_"):
+                        self.__router[dict_in[i]] = i         
+            
+            def __call__(self, **kargs):
+                pred = list(self.__Model(**kargs))
+                for i in range(len(pred)):
+                    setattr(self, self.__router[i], pred[i])
+
+            def train(self):
+                self.__Model.train(True)
+
+            def eval(self):
+                self.__Model.train(False)
+        
+        extra_files = {}
+        for i in list(self.ModelOutputs):
+            extra_files[i] = ""
+        for i in list(self.ModelInputs):
+            extra_files[i] = ""
+        
+        M = torch.jit.load(Name, _extra_files = extra_files)
+        for i in extra_files:
+            conv = str(extra_files[i].decode())
+            if conv.isnumeric():
+                conv = int(conv)
+            if conv == "True":
+                conv = True
+            if conv == "False":
+                conv = False
+            extra_files[i] = conv
+         
+        self.Model = Model(extra_files, M)
+    
+    def __SaveModel(self, DummySample):
+        self.Model.eval()
+        DummySample = [i for i in DummySample][0]
+        DummySample = DummySample.to_data_list()[0].detach().to_dict()
+        DirOut = self.RunDir + "/" + self.RunName + "/"
+        if self.ONNX_Export:
+            WriteDirectory().MakeDir(DirOut + "ModelONNX")
+            Name = DirOut + "ModelONNX/Epoch_" + str(self.epoch+1) + "_" + str(self.Epochs) + ".onnx"
+            self.__ExportONNX(DummySample, Name)
+        
+        if self.TorchScript_Export:
+            WriteDirectory().MakeDir(DirOut + "ModelTorchScript")
+            Name = DirOut + "ModelTorchScript/Epoch_" + str(self.epoch+1) + "_" + str(self.Epochs) + ".pt"
+            self.__ExportTorchScript(DummySample, Name)
 
     def DefineOptimizer(self):
         self.Model.to(self.Device)
@@ -92,8 +197,11 @@ class Optimizer(Notification):
    
     def MakePrediction(self, sample, TargetAttribute, Classification):
         
-        self.Model(sample)
-        pred = getattr(self.Model, TargetAttribute)
+        dr = {}
+        for i in self.ModelInputs:
+            dr[i] = sample[i]
+        self.Model(**dr)
+        pred  = self.Model.__dict__[TargetAttribute]
         if Classification:
             _, p = pred.max(1)
         else:
@@ -103,11 +211,12 @@ class Optimizer(Notification):
     def Train(self, sample):
         for key in self.T_Features:
             key_t = self.T_Features[key][0]
-            key_f = self.T_Features[key][1]
+            key_f = "O_" + key
             key_l = "L_" + key
             key_c = "C_" + key
-            self.DefineLossFunction(getattr(self.Model, key_l))
-            truth = getattr(sample, key_t).type(torch.LongTensor).to(self.Device)
+            
+            self.DefineLossFunction(self.Model.__dict__[key_l])
+            truth = sample[key_t].type(torch.LongTensor).to(self.Device)
             
             if self.Training:
                 self.Model.train()
@@ -147,14 +256,17 @@ class Optimizer(Notification):
             self.Stats["BatchRate"].append(R)
 
     def KFoldTraining(self):
+
+        self.DefineOptimizer()
         Splits = KFold(n_splits = self.kFold, shuffle = True, random_state= 42)
         N_Nodes = list(self.TrainingSample)
         N_Nodes.sort(reverse = True)
-        self.__GetTruthFlags(self.EdgeFeatures, "E")
-        self.__GetTruthFlags(self.NodeFeatures, "N")
-        self.__GetTruthFlags(self.GraphFeatures, "G")
+        self.__GetFlags(self.EdgeFeatures, "E")
+        self.__GetFlags(self.NodeFeatures, "N")
+        self.__GetFlags(self.GraphFeatures, "G")
+        self.__GetFlags(self.TrainingSample[N_Nodes[0]][0], "M")
+
         self.MakeStats()
-        self.DefineOptimizer()
 
         TimeStart = time.time()
         for self.epoch in range(self.Epochs):
@@ -200,6 +312,7 @@ class Optimizer(Notification):
 
             self.Stats["EpochTime"].append(time.time() - TimeStartEpoch)
             self.DumpStatistics()
+            self.__SaveModel(train_loader)
 
         self.Stats["TrainingTime"] = time.time() - TimeStart
         self.Stats.update(self.DataLoader.FileTraces)
@@ -228,7 +341,7 @@ class Optimizer(Notification):
         self.Stats["Model"] = {}
         self.Stats["Model"]["LearningRate"] = self.LearningRate
         self.Stats["Model"]["WeightDecay"] = self.WeightDecay
-        self.Stats["Model"]["ModelFunctionName"] = type(self.Model)
+        self.Stats["Model"]["ModelFunctionName"] = str(type(self.Model))
         self.epoch = "Done"
         self.DumpStatistics()
 

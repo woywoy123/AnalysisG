@@ -60,8 +60,8 @@ class Metrics(Directories):
         L.xTitle = xAxis
         L.yTitle = yAxis
         L.Title = Title
-        L.xMax = self.Max+0.5
-        L.xMin = self.Min+0.5
+        L.xMax = max(xData)+0.5 
+        L.xMin = min(xData)+0.5 
         L.xData = xData
         L.yData = yData
         L.Filename = name
@@ -183,12 +183,13 @@ class Metrics(Directories):
                 node = vals["Nodes"][n]
                 FT = vals["FoldTime"][n]
                 kF = vals["kFold"][n]
-                
+
+                 
                 if node not in self.kFoldTime_Nodes:
                     self.kFoldTime_Nodes[node] = [[] for j in range(len(kF))]
                     self.kFold_n[node] = kF
                 self.kFoldTime_Nodes[node] = [x + [y] for x, y in zip(self.kFoldTime_Nodes[node], FT)] 
-               
+                
                 FillLoop(self.TrainAcc, indx, "Training_Accuracy", node, kF, vals)
                 FillLoop(self.TrainLoss, indx, "Training_Loss", node, kF, vals)
 

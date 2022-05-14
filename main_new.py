@@ -69,4 +69,4 @@ if __name__ == "__main__":
 
     ## ====== Test of Optimizer/Metrics ====== ##
     #Test(Optimizer.TestOptimizerGraph, Files = ["DataLoaderTest", "DataLoaderTest_1", "DataLoaderTest_2"], Level = "TruthTopChildren", Name = "GraphTest")
-    Test(Metrics.TestReadTraining, modelname = "UNTITLED")
+    Test(Metrics.TestReadTraining, modelname = "GraphTest")

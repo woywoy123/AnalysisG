@@ -7,24 +7,74 @@ class Notification():
         self.__FAIL = "FAILURE"
         self.__WARNING = "WARNING"
         self.Caller = ""
+       
+        self.__ESC = '\033['
+
+        self.__BOLD = '1'
+        self.__NORM = '0'
         self.__CEND = '\033[0m'
-        self.__RED = '\033[91m'
-        self.__GREEN = '\33[32m'
+        self.__RED = '91'
+        self.__GREEN = '92'
+        self.__YELLOW = '93'
         self.__it = 0
         self.__i = 0
         self.AllReset = True
         self.NotifyTime = 10
         self.Rate = -1
         self.len = -1
+        self.__Color = ""
+        self.__FONT = ""
+        self.__Text = ""
+
+    def __ColorFormat(self):
+        return self.__ESC + self.__FONT + ";" + self.__Color + "m" + self.__Text + self.__CEND
+
 
     def Notify(self, Message):
+        self.__Color = self.__GREEN
         if self.Verbose and self.Caller == "":
-            print(self.__GREEN + self.__INFO + Message + self.__CEND)
-        elif self.Verbose and self.Caller != "":
-            print(self.__GREEN + self.Caller.upper() + "::" + self.__INFO + "::" + Message + self.__CEND)
+            self.__Text = self.__INFO
+            self.__FONT = "0"
+            self.__Text += "::" + Message
+            self.__Text = self.__ColorFormat()
+        else:
+            self.__FONT = self.__BOLD
+            self.__Text += self.Caller.upper() + "::" + self.__INFO + "::"
+            Text = self.__ColorFormat() 
+            self.__Text = Message
+            self.__Color = self.__GREEN
+            self.__FONT = self.__NORM 
+            self.__Text = Text + self.__ColorFormat()
+        print(self.__Text)
+        self.__Text = ""
+
 
     def Warning(self, text):
-        print(self.__RED + self.__WARNING + self.Caller + " :: " + text + self.__CEND)
+        self.__Color = self.__YELLOW
+        self.__FONT = self.__BOLD
+        self.__Text += self.Caller.upper() + "::" + self.__WARNING + "::"
+        Text = self.__ColorFormat() 
+        self.__Text = text
+        self.__Color = self.__YELLOW
+        self.__FONT = self.__NORM 
+        self.__Text = Text + self.__ColorFormat()
+        print(self.__Text)
+        self.__Text = ""
+
+    def Fail(self, text):
+        self.__Color = self.__RED
+        self.__FONT = self.__BOLD
+        self.__Text += self.Caller.upper() + "::" + self.__FAIL + "::"
+        Text = self.__ColorFormat() 
+        self.__Text = text
+        self.__Color = self.__RED
+        self.__FONT = self.__NORM 
+        self.__Text = Text + self.__ColorFormat()
+        print(self.__Text)
+        self.__Text = ""
+        import os
+        os._exit(1)
+
 
     def CheckAttribute(self, Obj, Attr):
         try: 

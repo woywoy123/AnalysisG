@@ -14,9 +14,15 @@ class GraphNN(nn.Module):
                 nn.ReLU(), 
                 nn.Linear(32, 2)
         )
+        
         self.L_Signal = "CEL"
         self.C_Signal = True
+        self.O_Signal = 0
+        self.O_Proton = -1
 
-    def forward(self, data):
-        self.G_Signal = self.layers(data.G_Signal.view(-1, 1))
+    def forward(self, G_Signal, edge_index):
+        self.O_Signal = self.layers(G_Signal.view(-1, 1))
+        self.O_Proton = self.layers(G_Signal.view(-1, 1))
+
+        return self.O_Signal, self.O_Proton
 
