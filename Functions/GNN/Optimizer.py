@@ -46,18 +46,6 @@ class Optimizer(Notification):
         self.Sample = None
         self.T_Features = {}
        
-    def __Average(self, key, key2 = None):
-        def Average(Input, l):
-            for i in range(len(Input[l])):
-                av = float(sum(Input[l][i])/len(Input[l][i]))
-                Input[l][i] = [av]
-
-        if key2 == None:
-            Average(self.Stats, key)
-        else:
-            for k in self.Stats[key]:
-                Average(self.Stats[key], k)
-
     def DumpStatistics(self):
         WriteDirectory().MakeDir(self.RunDir + "/" + self.RunName + "/Statistics")
         if self.epoch == "Done":
@@ -130,6 +118,7 @@ class Optimizer(Notification):
             pred, p = self.MakePrediction(sample, key_f, key_c) 
             self.L = self.LF(pred, truth)
             acc = accuracy(p, truth)
+            
             if self.Training:
                 self.Stats["Training_Accuracy"][key][-1].append(acc)
                 self.Stats["Training_Loss"][key][-1].append(self.L)
@@ -206,12 +195,7 @@ class Optimizer(Notification):
                     
                     self.Stats["FoldTime"][-1].append(time.time() - TimeStartFold)
                     self.Stats["kFold"][-1].append(fold+1)
-                
-                #self.__Average("BatchRate")
-                #self.__Average("Training_Accuracy", True)
-                #self.__Average("Validation_Accuracy", True)
-                #self.__Average("Training_Loss", True)
-                #self.__Average("Validation_Loss", True)
+               
                 self.Stats["Nodes"].append(n_node)
 
             self.Stats["EpochTime"].append(time.time() - TimeStartEpoch)

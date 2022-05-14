@@ -33,6 +33,7 @@ class GenericAttributes:
         self.Marker = "o"
         self.Style = ""
         self.Filename = ""
+        self.LineStyle = "-"
 
         self.DefaultScaling = 15
         self.DefaultDPI = 500
@@ -122,8 +123,10 @@ class SharedMethods(WriteDirectory, Notification):
         if self.Filename == "":
            self.Filename = self.Title + ".png"
         self.Filename.replace(" ", "") 
+        
+        if dir.endswith("/") == False:
+            dir += "/"
 
-        self.Notify("SAVING FIGURE AS +-> " + self.Filename)
         if dir == "":
             self.MakeDir("Plots/")
             self.ChangeDir("Plots/")
@@ -131,6 +134,7 @@ class SharedMethods(WriteDirectory, Notification):
             self.MakeDir(dir)
             self.ChangeDir(dir)
          
+        self.Notify("SAVING FIGURE AS +-> " + dir + self.Filename)
         if self.Caller != "PLOTTING":
             self.PLT.close("all")
             A = to_agraph(self.G)
@@ -319,9 +323,7 @@ class CombineHistograms(SharedMethods, GenericAttributes):
 
     def Save(self, dir):
         self.SaveFigure(dir) 
-        for i in self.Histograms:
-            del i
-        self.PLT = ""
+
 
 
 class CombineTGraph(SharedMethods, GenericAttributes):
@@ -357,23 +359,25 @@ class CombineTGraph(SharedMethods, GenericAttributes):
 
         for i in range(len(self.Lines)):
             H = self.Lines[i]
-
             if H.ErrorBars:
                 if H.Compiled == False:
                     H.Line()
                 self.UpdateMaxMin(H)
-                self.PLT.errorbar(x = H.xData, y = H.yData, yerr = [H.Lo_err, H.Up_err], color = H.Color, linestyle = "-", 
+                self.PLT.errorbar(x = H.xData, y = H.yData, yerr = [H.Lo_err, H.Up_err], color = H.Color, linestyle = H.LineStyle, 
                         capsize = 3, linewidth = 1, alpha = H.Alpha, label = H.Title, marker = H.Marker)
+
             else:
-                self.PLT.plot(H.xData, H.yData, marker = H.Marker, color = H.Color, linewidth = 1, alpha = H.Alpha, label = H.Title)
-        
+                self.UpdateMaxMin(H)
+                self.PLT.plot(H.xData, H.yData, marker = H.Marker, color = H.Color, 
+                        linewidth = 1, alpha = H.Alpha, label = H.Title, linestyle = H.LineStyle)
         self.PLT.ylim(self.yMin, self.yMax)
+        self.PLT.xlabel(self.Lines[0].xTitle)
+        self.PLT.ylabel(self.Lines[0].yTitle)       
+
         if self.Log:
             self.PLT.yscale("log")
 
-        if len(self.Lines) != 0:
-            self.PLT.xlabel(self.Lines[0].xTitle)
-            self.PLT.ylabel(self.Lines[0].yTitle)
+        self.PLT.title(self.Title)
         self.PLT.legend(loc="upper right")
         self.PLT.tight_layout()
         if self.Filename == "":
@@ -391,9 +395,25 @@ class TGraph(SharedMethods, GenericAttributes):
         GenericAttributes.__init__(self)
         self.ErrorBars = False
         self.AlphaConf = 1.96
+        self.yMax = None
+        self.yMin = None
+        self.Log = False
+        self.Init_PLT()
+
+    def UpdateMaxMin(self):
+
+        if self.yMin == None and self.yMax == None:
+            self.yMin = 0 
+            if self.Log:
+                self.yMin = 0.1
+            self.yMax = 1.25
+
+        if min(self.yData) <= self.yMin:
+            self.yMin = min(self.yData)*0.5
+        if max(self.yData) >= self.yMax:
+            self.yMax = max(self.yData)*2
 
     def Line(self):
-        self.Init_PLT()
         self.Compiled = True
         self.Up_err = []
         self.Lo_err = []
@@ -413,21 +433,19 @@ class TGraph(SharedMethods, GenericAttributes):
                 self.Lo_err.append(self.AlphaConf*s/float(pow(len(i), 0.5)))
             self.yData = means
         self.yBins = 1
-        self.xAxis()
-        self.yAxis()
 
-        self.Init_PLT()
         if self.ErrorBars:
             self.PLT.errorbar(x = self.xData, y = self.yData, yerr = [self.Lo_err, self.Up_err], 
                     color = self.Color, linestyle = "-", capsize = 3, linewidth = 1, marker = self.Marker)
-        self.PLT.plot(self.xData, self.yData, marker = self.Marker, color = self.Color, linewidth = 1)
-
+        else:
+            self.PLT.plot(self.xData, self.yData, marker = self.Marker, color = self.Color, linewidth = 1)
         
+        self.UpdateMaxMin()
         self.PLT.title(self.Title)
         self.PLT.xlabel(self.xTitle)
         self.PLT.ylabel(self.yTitle)
         self.PLT.xlim(0, self.xMax)
-        self.PLT.ylim(0, self.yMax*2)
+        self.PLT.ylim(0, self.yMax)
         
     def Save(self, dir):
         self.Line()

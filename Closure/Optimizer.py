@@ -6,7 +6,7 @@ import Functions.FeatureTemplates.GraphFeatures as gf
 from Functions.GNN.Optimizer import Optimizer
 from Functions.GNN.TrivialModels import GraphNN
 
-def TestOptimizerGraph(Files, Level):
+def TestOptimizerGraph(Files, Level, name):
     
     DL = GenerateDataLoader()
     DL.AddGraphFeature("Signal", gf.Resonance)
@@ -18,6 +18,7 @@ def TestOptimizerGraph(Files, Level):
     DL.MakeTrainingSample(0)
     
     op = Optimizer(DL)
+    op.RunName = name
     op.Epochs = 15
     op.kFold = 20
     op.Model = GraphNN()

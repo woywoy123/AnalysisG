@@ -53,7 +53,7 @@ class Metrics(Directories):
         self.Min = min(self.Epochs)
         self.Max = max(self.Epochs)
 
-    def __CreateGraph(self, Title, xAxis, yAxis, xData, yData, name, errors = None, node = None):
+    def __CreateGraph(self, Title, xAxis, yAxis, xData, yData, name, errors = None, todir = None):
         
         L = TGraph()
         L.Color = "Blue" 
@@ -65,14 +65,17 @@ class Metrics(Directories):
         L.xData = xData
         L.yData = yData
         L.Filename = name
-        if self.PlotFigures == False:
-            return L
+
         if errors:
             L.ErrorBars = True
-        if node != None:
-            L.Save(self.PlotDir + "/Raw" + "/Node-" + str(node))
-        else:
-            L.Save(self.PlotDir + "/Raw")
+        
+        if self.PlotFigures:
+            if todir != None:
+                L.Save(self.PlotDir + "/" + todir + "/")
+            else:
+                L.Save(self.PlotDir + "/")
+
+
         return L
 
     def PlotStats(self, PlotDir = None):
@@ -102,25 +105,72 @@ class Metrics(Directories):
         
         def DumpFigure(inpx, inpy, feature, Metric, Mode, Global = False):
             Com = CombineTGraph()
-            Com.Title = Mode + " " + Metric
+            Com.Title = "Average " + Mode + " " + Metric + " for feature: " + feature
+            Com.Filename = feature + "_" + Metric + "_" + Mode
             Com.Log = False
             for n in inpy:
                 if Global == False:
-                    L_ = self.__CreateGraph("Average " + Mode + " " + Metric + " for n-Nodes " + str(n) + " for feature: " + feature, 
-                         "Epoch", Metric, inpx, inpy[n], 
-                         Mode + "_" + Metric + "_Node-" + str(n) + "_Feature_" + feature, True, n)
+                    L_ = self.__CreateGraph("Nodes-" + str(n), 
+                         "Epoch", Metric, 
+                         inpx, inpy[n], 
+                         Mode + "_" + Metric + "_Node-" + str(n), 
+                         errors = True, todir = feature + "/Raw")
                     L_.Title = "Nodes-" + str(n)
                 else:
-                    L_ = self.__CreateGraph("Average " + Mode + " " + Metric + " for feature: " + n, 
-                         "Epoch", Metric, inpx, inpy[n], 
-                         Mode + "_" + Metric + "_Feature_" + n, True)
+                    L_ = self.__CreateGraph(n, 
+                         "Epoch", Metric, 
+                         inpx, inpy[n], 
+                         Mode + "_" + Metric + "_Feature_" + n, 
+                         errors = True, todir = feature + "/Raw")
                     L_.Title = n
 
                 Com.Lines.append(L_)
             if self.PlotFigures:
                 Com.Save(self.PlotDir + "/" + feature)
- 
-        
+
+        def MergeLines(inpx, inpy1, inpy2, feature, Metric, Mode1, Mode2, Nodes = True):
+            Com = CombineTGraph()
+            Com.Filename = Mode1 + "_" + Mode2 + "_" + Metric
+            Com.Title = Mode1 + "(Dashed)/" + Mode2 + "(Solid) " + Metric + " " + feature
+            Com.Log = False
+            self.PlotFigures = False
+            it = 0
+            col = ["b", "g", "r", "c", "m", "y", "p"]
+            for n in inpy1:
+                if Nodes:
+                    SubT = "Nodes-" + str(n)
+                else:
+                    SubT = str(n)
+                L_1 = self.__CreateGraph(SubT,
+                     "Epoch", Metric, 
+                     inpx, inpy1[n], 
+                     Mode1 + "_" + Metric + "_" + SubT, 
+                     errors = True)
+                L_1.Color = col[it]
+                L_1.LineStyle = "dashed"
+
+                L_2 = self.__CreateGraph(SubT, 
+                     "Epoch", Metric, 
+                     inpx, inpy2[n], 
+                     Mode2 + "_" + Metric + "_" + SubT, 
+                     errors = True)
+                L_2.Color = col[it]
+                L_2.LineStyle = "solid"
+                L_2.Marker = "x"
+                it+=1
+                
+                Com.Lines.append(L_1)
+                Com.Lines.append(L_2)
+
+            self.PlotFigures = True
+            if self.PlotFigures:
+                Com.Save(self.PlotDir + "/" + feature)
+
+
+
+
+
+
         if PlotDir != None:
             self.PlotDir = PlotDir
         
@@ -154,13 +204,18 @@ class Metrics(Directories):
             MergeFolds(self.AllValidLoss, "Validation_Loss", vals, i)
 
         # ======= Make Epoch Time plot ====== #
-        self.__CreateGraph("Training + Validation Time", "Epoch", "Time (s)", self.Epochs, self.EpochTime, "EpochTime")
+        self.__CreateGraph("Training + Validation Time", 
+                "Epoch", "Time (s)", 
+                self.Epochs, self.EpochTime, 
+                "EpochTime", todir = "Time")
 
-        ## ======= Make kFold average time over all epochs ======= #
+        # ======= Make kFold average time over all epochs ======= #
         for n in self.kFoldTime_Nodes:
             self.__CreateGraph("Average kFold Training and Validation Time for n-Nodes " + str(n), 
-                    "kFold", "Average Time (s)", self.kFold_n[n], self.kFoldTime_Nodes[n], 
-                    "kFoldTime_Node-" + str(n), True, n)
+                    "k-Fold", "Average Time (s)", 
+                    self.kFold_n[n], self.kFoldTime_Nodes[n], 
+                    "kFoldTime_Node-" + str(n), 
+                    errors = True, todir = "Time")
         
         # ======= Make Average Training/Validation Accuracy ======== #
         for ft in self.TrainAcc:
@@ -168,12 +223,19 @@ class Metrics(Directories):
             DumpFigure(self.Epochs, self.ValidAcc[ft], ft, "Accuracy", "Validation")
             DumpFigure(self.Epochs, self.TrainLoss[ft], ft, "Loss", "Training")
             DumpFigure(self.Epochs, self.ValidLoss[ft], ft, "Loss", "Validation")
+            MergeLines(self.Epochs, self.TrainAcc[ft], self.ValidAcc[ft], ft, "Accuracy", "Training", "Validation")
+            MergeLines(self.Epochs, self.TrainLoss[ft], self.ValidLoss[ft], ft, "Loss", "Training", "Validation")   
         
-        DumpFigure(self.Epochs, self.AllTrainAcc, "AllFeatures", "Accuracy", "Training") 
-        DumpFigure(self.Epochs, self.AllValidAcc, "AllFeatures", "Accuracy", "Validation")
-        DumpFigure(self.Epochs, self.AllTrainLoss, "AllFeatures", "Loss", "Training")
-        DumpFigure(self.Epochs, self.AllValidLoss, "AllFeatures", "Loss", "Validation")
-        
+        DumpFigure(self.Epochs, self.AllTrainAcc, "All-Features", "Accuracy", "Training", True) 
+        DumpFigure(self.Epochs, self.AllValidAcc, "All-Features", "Accuracy", "Validation", True)
+        DumpFigure(self.Epochs, self.AllTrainLoss, "All-Features", "Loss", "Training", True)
+        DumpFigure(self.Epochs, self.AllValidLoss, "All-Features", "Loss", "Validation", True)
+        MergeLines(self.Epochs, self.AllTrainAcc, self.AllValidAcc, "All-Features", "Accuracy", "Training", "Validation", False)
+        MergeLines(self.Epochs, self.AllTrainLoss, self.AllValidLoss, "All-Features", "Loss", "Training", "Validation", False)         
+
+
+
+
         self.DumpLog()
 
     def DumpLog(self):
@@ -351,14 +413,20 @@ class Metrics(Directories):
 
 
         Com_A = CombineTGraph()
-        Com_A.Title = "Accuracy dT_dV plot"
+        Com_A.Title = "Accuracy dT/dV plot"
         Com_L = CombineTGraph()
         Com_L.Title = "Loss dT/dV plot"
         for ft in Features:
-            L_ = self.__CreateGraph(ft, "Epoch", "dT/dV", [i+1 for i in range(self.Min-1, self.Max-1)], Delta_T_V[ft + "::Accuracy"], ft + "_A")
+            L_ = self.__CreateGraph(ft, 
+                    "Epoch", "dT/dV", 
+                    [i+1 for i in range(self.Min-1, self.Max-1)], Delta_T_V[ft + "::Accuracy"], 
+                    ft + "_A", todir = "dT_dV/Raw")
             Com_A.Lines.append(L_) 
 
-            L_ = self.__CreateGraph(ft, "Epoch", "dT/dV", [i+1 for i in range(self.Min-1, self.Max-1)], Delta_T_V[ft + "::Loss"], ft + "_L")
+            L_ = self.__CreateGraph(ft, 
+                    "Epoch", "dT/dV", 
+                    [i+1 for i in range(self.Min-1, self.Max-1)], Delta_T_V[ft + "::Loss"], 
+                    ft + "_L", todir = "dT_dV/Raw")
             Com_L.Lines.append(L_) 
        
         Com_A.Filename = "Accuracy_dT_dV"

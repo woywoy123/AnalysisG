@@ -67,6 +67,6 @@ if __name__ == "__main__":
 
     #Test(DataLoader.TestDataLoaderMixing, Files = ["DataLoaderTest", "DataLoaderTest_1", "DataLoaderTest_2"], Level = "TruthTops")
 
-    ## ====== Test of Optimizer ====== ##
-    #Test(Optimizer.TestOptimizerGraph, Files = ["DataLoaderTest", "DataLoaderTest_1", "DataLoaderTest_2"], Level = "TruthTopChildren")
+    ## ====== Test of Optimizer/Metrics ====== ##
+    #Test(Optimizer.TestOptimizerGraph, Files = ["DataLoaderTest", "DataLoaderTest_1", "DataLoaderTest_2"], Level = "TruthTopChildren", Name = "GraphTest")
     Test(Metrics.TestReadTraining, modelname = "UNTITLED")
