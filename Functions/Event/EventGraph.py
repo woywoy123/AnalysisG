@@ -31,6 +31,8 @@ class EventGraphTemplate:
             for j in self.Nodes:
                 if self.SelfLoop == False and i == j:
                     continue 
+                if self.FullyConnect == False and i != j:
+                    continue
                 self.Edges.append([i, j])
         self.G.add_edges_from(self.Edges)
 
@@ -42,10 +44,10 @@ class EventGraphTemplate:
                 k = ""
                 for n in Map2:
                     if isinstance(n, int):
-                        attr_v.append(fx(self.NodeParticleMap[n]))
+                        attr_v.append([fx(self.NodeParticleMap[n])])
                         k = "N_"
                     if isinstance(n, list):
-                        attr_v.append(fx(self.NodeParticleMap[n[0]], self.NodeParticleMap[n[1]]))
+                        attr_v.append([fx(self.NodeParticleMap[n[0]], self.NodeParticleMap[n[1]])])
                         k = "E_"
                 if len(attr_v) == 0:
                     k = "G_"

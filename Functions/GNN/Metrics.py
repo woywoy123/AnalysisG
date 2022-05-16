@@ -167,10 +167,6 @@ class Metrics(Directories):
                 Com.Save(self.PlotDir + "/" + feature)
 
 
-
-
-
-
         if PlotDir != None:
             self.PlotDir = PlotDir
         
@@ -233,10 +229,6 @@ class Metrics(Directories):
         DumpFigure(self.Epochs, self.AllValidLoss, "All-Features", "Loss", "Validation", True)
         MergeLines(self.Epochs, self.AllTrainAcc, self.AllValidAcc, "All-Features", "Accuracy", "Training", "Validation", False)
         MergeLines(self.Epochs, self.AllTrainLoss, self.AllValidLoss, "All-Features", "Loss", "Training", "Validation", False)         
-
-
-
-
         self.DumpLog()
 
     def DumpLog(self):
@@ -374,7 +366,7 @@ class Metrics(Directories):
                 r_tl, av_tl = RateOfChange(self.AllTrainLoss, ft, i, "Loss")
                 r_va, av_va = RateOfChange(self.AllValidAcc, ft, i, "Accuracy")
                 r_vl, av_vl = RateOfChange(self.AllValidLoss, ft, i, "Loss")
-
+                
                 if r_ta != None:
                     Delta_T[ft + "::Accuracy"].append(r_ta)
                     Delta_T[ft + "::Loss"].append(r_tl)
@@ -383,7 +375,11 @@ class Metrics(Directories):
                     Delta_V[ft + "::Loss"].append(r_vl)
                     
                     Delta_T_V[ft + "::Accuracy"].append(r_ta / r_va)
-                    Delta_T_V[ft + "::Loss"].append(r_tl / r_vl)
+                    
+                    try: 
+                        Delta_T_V[ft + "::Loss"].append(r_tl / r_vl)
+                    except ZeroDivisionError:
+                        Delta_T_V[ft + "::Loss"].append(r_tl / (r_vl + 1))
 
                 Record("      " + ft + " :: " + str(round(av_ta, 3)) + "% :: " + str(round(av_tl, 3)) + " / " + str(round(av_va, 3)) + "% :: " + str(round(av_vl, 3)))
 

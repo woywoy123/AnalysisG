@@ -81,9 +81,8 @@ class Optimizer(Notification):
 
     def __GetFlags(self, inp, FEAT):
         if FEAT == "M":
-            self.ModelInputs = list(self.Model.forward.__code__.co_varnames)
+            self.ModelInputs = list(self.Model.forward.__code__.co_varnames[:self.Model.forward.__code__.co_argcount])
             self.ModelInputs.remove("self")
-            
             if len(list(set(list(inp.__dict__["_store"])).intersection(set(self.ModelInputs)))) != len(self.ModelInputs):
                 self.Fail("MISSING VARIABLES IN GIVEN DATA SAMPLE")
 
@@ -91,7 +90,7 @@ class Optimizer(Notification):
             for i in self.ModelInputs:
                 self.Notify("---> " + i)
 
-            Setting = [i for i in self.Model.__dict__ if i.startswith("C_") or i.startswith("L_") or i.startswith("O_")]
+            Setting = [i for i in self.Model.__dict__ if i.startswith("C_") or i.startswith("L_") or i.startswith("O_") or i.startswith("N_")]
             self.ModelOutputs = {}
             for i in Setting:
                 self.ModelOutputs[i] = self.Model.__dict__[i]
@@ -187,7 +186,8 @@ class Optimizer(Notification):
 
     def DefineOptimizer(self):
         self.Model.to(self.Device)
-        self.Optimizer = torch.optim.Adam(self.Model.parameters(), lr = self.LearningRate, weight_decay = self.WeightDecay)
+        #self.Optimizer = torch.optim.Adam(self.Model.parameters(), lr = self.LearningRate, weight_decay = self.WeightDecay)
+        self.Optimizer = torch.optim.SGD(self.Model.parameters(), lr = self.LearningRate)
 
     def DefineLossFunction(self, LossFunction):
         if LossFunction == "CEL":
@@ -195,36 +195,49 @@ class Optimizer(Notification):
         elif LossFunction == "MSEL":
             self.LF = torch.nn.MSELoss()
    
-    def MakePrediction(self, sample, TargetAttribute, Classification):
+    def MakePrediction(self, sample, TargetAttribute, Classification, Topology):
         
         dr = {}
         for i in self.ModelInputs:
             dr[i] = sample[i]
         self.Model(**dr)
         pred  = self.Model.__dict__[TargetAttribute]
+
+        if Topology:
+            pred = pred[sample.edge_index[0]]
+
         if Classification:
             _, p = pred.max(1)
+            p = p.view(1, -1)[0]
         else:
-            p = pred
+            pred = pred.view(1, -1)[0]
+            p = torch.round(pred, decimals=3)
+        
         return pred, p
 
     def Train(self, sample):
         for key in self.T_Features:
-            key_t = self.T_Features[key][0]
-            key_f = "O_" + key
-            key_l = "L_" + key
-            key_c = "C_" + key
-            
-            self.DefineLossFunction(self.Model.__dict__[key_l])
-            truth = sample[key_t].type(torch.LongTensor).to(self.Device)
-            
             if self.Training:
                 self.Model.train()
                 self.Optimizer.zero_grad()
             else:
                 self.Model.eval()
-          
-            pred, p = self.MakePrediction(sample, key_f, key_c) 
+
+            key_t = self.T_Features[key][0]
+            key_o = "O_" + key
+            key_l = self.Model.__dict__["L_" + key]
+            key_c = self.Model.__dict__["C_" + key]
+            key_n = self.Model.__dict__["N_" + key]
+            self.DefineLossFunction(key_l)
+            
+            pred, p = self.MakePrediction(sample, key_o, key_c, key_n) 
+
+            if key_l == "CEL":
+                truth = sample[key_t].type(torch.LongTensor).to(self.Device).view(1, -1)[0]
+
+            elif key_l == "MSEL":
+                truth = sample[key_t].type(torch.float).to(self.Device).view(1, -1)[0]
+            
             self.L = self.LF(pred, truth)
             acc = accuracy(p, truth)
             
@@ -256,6 +269,10 @@ class Optimizer(Notification):
             self.Stats["BatchRate"].append(R)
 
     def KFoldTraining(self):
+        def CalcAverage(Mode, k):
+            for f_k in self.Stats[Mode]:
+                v = round(float(sum(self.Stats[Mode][f_k][k])/len(self.Stats[Mode][f_k][k])), 3)
+                self.Notify("-- (" + f_k + ") -> " + Mode.split("_")[1] + ": " + str(v))
 
         self.DefineOptimizer()
         Splits = KFold(n_splits = self.kFold, shuffle = True, random_state= 42)
@@ -267,15 +284,17 @@ class Optimizer(Notification):
         self.__GetFlags(self.TrainingSample[N_Nodes[0]][0], "M")
 
         self.MakeStats()
-
+        
         TimeStart = time.time()
         for self.epoch in range(self.Epochs):
-            self.Notify("EPOCH =============================== " +str(self.epoch+1) + "/" + str(self.Epochs))
+            self.Notify(" >============== [ EPOCH (" + str(self.epoch+1) + "/" + str(self.Epochs) + ") ] ==============< ")
             
             TimeStartEpoch = time.time()
+            k = 0
             for n_node in N_Nodes:
                 Curr = self.TrainingSample[n_node]
                 Curr_l = len(Curr)
+                self.Notify("+++++++++++++++++++++++")
                 self.Notify("NUMBER OF NODES -----> " + str(n_node) + " NUMBER OF ENTRIES: " + str(Curr_l))
 
                 if Curr_l < self.kFold:
@@ -300,14 +319,23 @@ class Optimizer(Notification):
                     self.Notify("-------> Training <-------")
                     self.Training = True
                     self.SampleLoop(train_loader)
+                    CalcAverage("Training_Accuracy", k)
+                    CalcAverage("Training_Loss", k)
+
 
                     self.Notify("-------> Validation <-------")
                     self.Training = False
                     self.SampleLoop(valid_loader)
-                    
+                    CalcAverage("Validation_Accuracy", k)
+                    CalcAverage("Validation_Loss", k)
+
                     self.Stats["FoldTime"][-1].append(time.time() - TimeStartFold)
                     self.Stats["kFold"][-1].append(fold+1)
-               
+
+                    k += 1
+
+
+
                 self.Stats["Nodes"].append(n_node)
 
             self.Stats["EpochTime"].append(time.time() - TimeStartEpoch)

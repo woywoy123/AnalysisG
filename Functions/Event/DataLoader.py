@@ -63,7 +63,7 @@ class GenerateDataLoader(Notification):
         for i in self.DataContainer:
             self.DataContainer[i].to(self.Device)
 
-    def AddSample(self, EventGeneratorInstance, Tree, Level, SelfLoop = False):
+    def AddSample(self, EventGeneratorInstance, Tree, Level, SelfLoop = False, FullyConnect = True):
         
         try:
             for i in EventGeneratorInstance.FileEventIndex:
@@ -90,8 +90,7 @@ class GenerateDataLoader(Notification):
         elif Level == "DetectorParticles":
             fx = EventGraphDetector
         else:
-            self.Warning("EVENT GRAPH NOT DEFINED. See EventGraph.py")
-            exit()
+            self.Fail("EVENT GRAPH NOT DEFINED. See EventGraph.py")
             return
 
 
@@ -104,6 +103,7 @@ class GenerateDataLoader(Notification):
             event = fx(ev)
             event.iter = self.__iter
             event.SelfLoop = SelfLoop
+            event.FullyConnect = FullyConnect
             event.EdgeAttr = self.EdgeAttribute
             event.NodeAttr = self.NodeAttribute
             event.GraphAttr = self.GraphAttribute

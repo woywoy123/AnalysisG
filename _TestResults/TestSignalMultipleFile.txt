@@ -1,0 +1,2 @@
+(-) Failed: TestSignalMultipleFile
+'type' object is not iterable

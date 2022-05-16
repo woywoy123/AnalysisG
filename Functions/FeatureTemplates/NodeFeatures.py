@@ -14,7 +14,7 @@ def phi(a):
     return float(a.phi)
 
 def Signal(a):
-    return int(a.Index)
+    return int(a.FromRes)
 
 def Mass(a):
     v = LorentzVector.ToPxPyPzE(a.pt, a.eta, a.phi, a.e, "cpu")

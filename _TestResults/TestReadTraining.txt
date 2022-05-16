@@ -1,1 +1,1 @@
-(-) Failed: TestReadTraining
+(+) Passed: TestReadTraining

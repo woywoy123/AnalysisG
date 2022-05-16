@@ -12,5 +12,8 @@ def mass(a, b):
 def dphi(a, b):
     return float(abs(a.phi - b.phi))
 
+def Signal(a, b):
+    return float(a.FromRes * b.FromRes)
+
 
 
