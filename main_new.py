@@ -74,10 +74,10 @@ if __name__ == "__main__":
     #Test(Optimizer.TestOptimizerNode, Files = ["DataLoaderTest", "DataLoaderTest_1", "DataLoaderTest_2"], Level = "TruthTopChildren", Name = "NodeTest", CreateCache = True)
     #Test(Metrics.TestReadTraining, modelname = "NodeTest")
 
-    Test(Optimizer.TestOptimizerEdge, Files = ["DataLoaderTest", "DataLoaderTest_1", "DataLoaderTest_2"], Level = "TruthTopChildren", Name = "EdgeTest", CreateCache = True)
+    #Test(Optimizer.TestOptimizerEdge, Files = ["DataLoaderTest", "DataLoaderTest_1", "DataLoaderTest_2"], Level = "TruthTopChildren", Name = "EdgeTest", CreateCache = True)
     #Test(Metrics.TestReadTraining, modelname = "EdgeTest")
 
-
+    Test(Optimizer.TestOptimizerCombined, Files = ["DataLoaderTest", "DataLoaderTest_1", "DataLoaderTest_2"], Level = "TruthTopChildren", Name = "CombinedTest", CreateCache = False)
 
 
 

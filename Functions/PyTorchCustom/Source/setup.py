@@ -7,4 +7,3 @@ setup(name = "PyTorchCustom",
         ],
         cmdclass = {"build_ext" : BuildExtension}
     )
-

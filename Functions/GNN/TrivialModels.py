@@ -7,6 +7,7 @@ from torch_scatter import scatter
 import torch_geometric
 from torch_geometric.nn import MessagePassing, GCNConv, Linear
 
+import LorentzVector as LV
 
 class GraphNN(nn.Module):
     
@@ -83,3 +84,99 @@ class EdgeConv(MessagePassing):
 
     def update(self, aggr_out):
         return F.normalize(aggr_out)
+
+
+class CombinedConv(MessagePassing):
+
+    def __init__(self):
+        super(CombinedConv, self).__init__(aggr = "add")
+        self.mlp_EdgeFeatures = Seq(
+                Linear(3, 256), 
+                Sigmoid(),
+                Linear(256, 2)
+        )
+
+        self.mlp_NodeFeatures = Seq(
+                Linear(5*2, 256), 
+                Sigmoid(),
+                Linear(256, 2)
+        )
+
+        self.mlp_GraphSignal = Seq(
+                Linear(3, 256), 
+                Sigmoid(),
+                Linear(256, 2)
+        )
+        
+        # Predict the Topology of the event 
+        self.O_Topology = 0
+        self.L_Topology = "CEL"
+        self.C_Topology = True
+        self.N_Topology = True
+        
+        # Predict which particles in the event are resonance related
+        self.O_NodeSignal = 0
+        self.L_NodeSignal = "CEL"
+        self.C_NodeSignal = True
+        
+        # Is the event a signal event i.e. originate from Z'
+        self.O_GraphSignal = 0
+        self.L_GraphSignal = "CEL"
+        self.C_GraphSignal = True
+        
+        # For fun predict true pile-up
+        self.O_GraphMuActual = 0
+        self.L_GraphMuActual = "MSEL"
+        self.C_GraphMuActual = False
+
+        # For fun predict MissingET
+        self.O_GraphEt = 0
+        self.L_GraphEt = "MSEL"
+        self.C_GraphEt = False
+
+        # For fun predict MissingPhi
+        self.O_GraphPhi = 0
+        self.L_GraphPhi = "MSEL"
+        self.C_GraphPhi = False
+        
+        self.Device = ""
+    
+    def forward(self, edge_index, 
+            E_dr, E_mass, E_signal, 
+            N_eta, N_pt, N_phi, N_energy, N_signal, 
+            G_mu, G_m_phi, G_m_et, G_signal):
+    
+        
+        self.O_Topology = self.mlp_EdgeFeatures(torch.cat([E_dr, E_mass, E_signal], dim = 1))
+        self.O_NodeSignal = self.propagate(edge_index, x = torch.cat([N_eta, N_pt, N_phi, N_energy, N_signal], dim = 1))
+        
+
+        self.O_GraphSignal = self.mlp_GraphSignal(torch.cat([G_mu, G_m_phi, G_signal], dim = 0))
+        
+        p = LV.ToPxPyPzE(N_pt, N_eta, N_phi, N_energy, "cuda")
+        
+
+
+
+
+
+        print(Graph_Encode)
+        #print(torch.cat([G_mu, G_m_phi, G_signal], dim = 0))
+
+
+
+
+
+
+
+
+        return self.O_Topology, self.O_NodeSignal, self.O_GraphSignal, self.O_GraphMuActual, self.O_GraphEt, self.O_GraphPhi
+
+
+
+    def message(self, x_i, x_j):
+        tmp = torch.cat([x_i, x_j-x_i], dim = 1)
+        return self.mlp_NodeFeatures(tmp)
+        
+
+
