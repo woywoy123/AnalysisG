@@ -56,7 +56,9 @@ class Metrics(Directories):
     def __CreateGraph(self, Title, xAxis, yAxis, xData, yData, name, errors = None, todir = None):
         
         L = TGraph()
-        L.Color = "Blue" 
+        L.Color = "Blue"
+        L.DefaultDPI = 250
+        L.DefaultScaling = 10
         L.xTitle = xAxis
         L.yTitle = yAxis
         L.Title = Title
@@ -65,6 +67,7 @@ class Metrics(Directories):
         L.xData = xData
         L.yData = yData
         L.Filename = name
+        L.Init_PLT()
 
         if errors:
             L.ErrorBars = True
@@ -74,8 +77,7 @@ class Metrics(Directories):
                 L.Save(self.PlotDir + "/" + todir + "/")
             else:
                 L.Save(self.PlotDir + "/")
-
-
+        L.CloseFigure()
         return L
 
     def PlotStats(self, PlotDir = None):
@@ -103,11 +105,21 @@ class Metrics(Directories):
             return inp
 
         
-        def DumpFigure(inpx, inpy, feature, Metric, Mode, Global = False):
+        def DumpFigure(inpx, inpy, feature, Metric, Mode, Global = False, Log = False):
             Com = CombineTGraph()
             Com.Title = "Average " + Mode + " " + Metric + " for feature: " + feature
             Com.Filename = feature + "_" + Metric + "_" + Mode
-            Com.Log = False
+
+            Com.Log = Log
+            Com.DefaultDPI = 250
+            Com.DefaultScaling = 10
+            Com.LegendSize = 15
+            Com.LabelSize = 15
+            Com.FontSize = 10
+
+            Com.ErrorBars = True
+            col = ["b", "g", "r", "c", "m", "y", "p"]
+            it = 0
             for n in inpy:
                 if Global == False:
                     L_ = self.__CreateGraph("Nodes-" + str(n), 
@@ -123,18 +135,25 @@ class Metrics(Directories):
                          Mode + "_" + Metric + "_Feature_" + n, 
                          errors = True, todir = feature + "/Raw")
                     L_.Title = n
-
+                L_.Color = col[it]
                 Com.Lines.append(L_)
+                it += 1
             if self.PlotFigures:
                 Com.Save(self.PlotDir + "/" + feature)
 
-        def MergeLines(inpx, inpy1, inpy2, feature, Metric, Mode1, Mode2, Nodes = True):
+        def MergeLines(inpx, inpy1, inpy2, feature, Metric, Mode1, Mode2, Nodes = True, Log = False):
             Com = CombineTGraph()
             Com.Filename = Mode1 + "_" + Mode2 + "_" + Metric
             Com.Title = Mode1 + "(Dashed)/" + Mode2 + "(Solid) " + Metric + " " + feature
-            Com.Log = False
-            self.PlotFigures = False
+            Com.Log = Log
+            Com.DefaultDPI = 250
+            Com.DefaultScaling = 10
+            Com.LegendSize = 15
+            Com.LabelSize = 15
+            Com.FontSize = 10
+            self.PlotFigures = True
             it = 0
+
             col = ["b", "g", "r", "c", "m", "y", "p"]
             for n in inpy1:
                 if Nodes:
@@ -145,7 +164,7 @@ class Metrics(Directories):
                      "Epoch", Metric, 
                      inpx, inpy1[n], 
                      Mode1 + "_" + Metric + "_" + SubT, 
-                     errors = True)
+                     errors = True, todir = feature + "/Raw")
                 L_1.Color = col[it]
                 L_1.LineStyle = "dashed"
 
@@ -153,7 +172,7 @@ class Metrics(Directories):
                      "Epoch", Metric, 
                      inpx, inpy2[n], 
                      Mode2 + "_" + Metric + "_" + SubT, 
-                     errors = True)
+                     errors = True, todir = feature + "/Raw")
                 L_2.Color = col[it]
                 L_2.LineStyle = "solid"
                 L_2.Marker = "x"
@@ -161,7 +180,6 @@ class Metrics(Directories):
                 
                 Com.Lines.append(L_1)
                 Com.Lines.append(L_2)
-
             self.PlotFigures = True
             if self.PlotFigures:
                 Com.Save(self.PlotDir + "/" + feature)
@@ -218,17 +236,19 @@ class Metrics(Directories):
         for ft in self.TrainAcc:
             DumpFigure(self.Epochs, self.TrainAcc[ft], ft, "Accuracy", "Training") 
             DumpFigure(self.Epochs, self.ValidAcc[ft], ft, "Accuracy", "Validation")
-            DumpFigure(self.Epochs, self.TrainLoss[ft], ft, "Loss", "Training")
-            DumpFigure(self.Epochs, self.ValidLoss[ft], ft, "Loss", "Validation")
             MergeLines(self.Epochs, self.TrainAcc[ft], self.ValidAcc[ft], ft, "Accuracy", "Training", "Validation")
-            MergeLines(self.Epochs, self.TrainLoss[ft], self.ValidLoss[ft], ft, "Loss", "Training", "Validation")   
+            
+            DumpFigure(self.Epochs, self.TrainLoss[ft], ft, "Loss", "Training", Log = True)
+            DumpFigure(self.Epochs, self.ValidLoss[ft], ft, "Loss", "Validation", Log = True)
+            MergeLines(self.Epochs, self.TrainLoss[ft], self.ValidLoss[ft], ft, "Loss", "Training", "Validation", Log = True)   
         
         DumpFigure(self.Epochs, self.AllTrainAcc, "All-Features", "Accuracy", "Training", True) 
         DumpFigure(self.Epochs, self.AllValidAcc, "All-Features", "Accuracy", "Validation", True)
-        DumpFigure(self.Epochs, self.AllTrainLoss, "All-Features", "Loss", "Training", True)
-        DumpFigure(self.Epochs, self.AllValidLoss, "All-Features", "Loss", "Validation", True)
         MergeLines(self.Epochs, self.AllTrainAcc, self.AllValidAcc, "All-Features", "Accuracy", "Training", "Validation", False)
-        MergeLines(self.Epochs, self.AllTrainLoss, self.AllValidLoss, "All-Features", "Loss", "Training", "Validation", False)         
+        
+        DumpFigure(self.Epochs, self.AllTrainLoss, "All-Features", "Loss", "Training", True, Log = True)
+        DumpFigure(self.Epochs, self.AllValidLoss, "All-Features", "Loss", "Validation", True, Log = True)
+        MergeLines(self.Epochs, self.AllTrainLoss, self.AllValidLoss, "All-Features", "Loss", "Training", "Validation", False, True)         
         self.DumpLog()
 
     def DumpLog(self):
@@ -374,11 +394,11 @@ class Metrics(Directories):
                     Delta_V[ft + "::Accuracy"].append(r_va)
                     Delta_V[ft + "::Loss"].append(r_vl)
                     
-                    Delta_T_V[ft + "::Accuracy"].append(r_ta / r_va)
-                    
                     try: 
+                        Delta_T_V[ft + "::Accuracy"].append(r_ta / r_va)
                         Delta_T_V[ft + "::Loss"].append(r_tl / r_vl)
                     except ZeroDivisionError:
+                        Delta_T_V[ft + "::Accuracy"].append(r_ta / (r_va +1))
                         Delta_T_V[ft + "::Loss"].append(r_tl / (r_vl + 1))
 
                 Record("      " + ft + " :: " + str(round(av_ta, 3)) + "% :: " + str(round(av_tl, 3)) + " / " + str(round(av_va, 3)) + "% :: " + str(round(av_vl, 3)))

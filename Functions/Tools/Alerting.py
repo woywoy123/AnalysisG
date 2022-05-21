@@ -3,6 +3,7 @@ import time
 class Notification():
     def __init__(self, Verbose = False):
         self.Verbose = Verbose
+        self.VerboseLevel = 3
         self.__INFO = "INFO"
         self.__FAIL = "FAILURE"
         self.__WARNING = "WARNING"
@@ -31,6 +32,10 @@ class Notification():
 
 
     def Notify(self, Message):
+        if len(Message) - len(Message.lstrip("!")) > self.VerboseLevel:
+            return 
+
+        Message = Message.lstrip("!")
         self.__Color = self.__GREEN
         if self.Verbose and self.Caller == "":
             self.__Text = self.__INFO

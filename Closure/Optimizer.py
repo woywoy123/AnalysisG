@@ -110,19 +110,22 @@ def TestOptimizerCombined(Files, Level, Name, CreateCache):
         DL.AddGraphTruth("GraphMuActual", gf.MuActual)
         DL.AddGraphTruth("GraphEt", gf.MissingET)
         DL.AddGraphTruth("GraphPhi", gf.MissingPhi)
+        DL.AddGraphTruth("GraphSignal", gf.Signal)
 
         DL.SetDevice("cuda")
         for i in Files:
             ev = UnpickleObject(i + "/" + i)
             DL.AddSample(ev, "nominal", Level, True, True)
-            break
         DL.MakeTrainingSample(0)
         PickleObject(DL, Name)
     DL = UnpickleObject(Name)
 
     op = Optimizer(DL)
-    op.BatchSize = 1
-    op.kFold = 100
+    op.VerboseLevel = 2
+    op.BatchSize = 100
+    op.LearningRate = 0.0001
+    op.WeightDecay = 0.0001
+    op.kFold = 10
     op.Epochs= 100
     op.RunName = Name
     op.Model = CombinedConv()

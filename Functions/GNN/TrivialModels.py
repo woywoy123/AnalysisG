@@ -91,84 +91,92 @@ class CombinedConv(MessagePassing):
     def __init__(self):
         super(CombinedConv, self).__init__(aggr = "add")
         self.mlp_EdgeFeatures = Seq(
-                Linear(3, 256), 
+                Linear(1, 256),
                 Sigmoid(),
                 Linear(256, 2)
         )
 
         self.mlp_NodeFeatures = Seq(
-                Linear(5*2, 256), 
+                Linear(1*2, 256), 
                 Sigmoid(),
                 Linear(256, 2)
         )
 
         self.mlp_GraphSignal = Seq(
-                Linear(3, 256), 
+                Linear(1, 256), 
                 Sigmoid(),
                 Linear(256, 2)
         )
+    
+        self.mlp_GraphMuActual = Seq(
+                Linear(1, 256*4), 
+                Linear(256*4, 1)
+        )
+
+        self.mlp_GraphMissingET = Seq(
+                Linear(1, 256), 
+                Linear(256, 1)
+        )
+
+        self.mlp_GraphMissingPhi = Seq(
+                Linear(1, 4096), 
+                Linear(4096, 1)
+        )
+
         
         # Predict the Topology of the event 
-        self.O_Topology = 0
+        self.O_Topology = None
         self.L_Topology = "CEL"
         self.C_Topology = True
         self.N_Topology = True
         
         # Predict which particles in the event are resonance related
-        self.O_NodeSignal = 0
+        self.O_NodeSignal = None
         self.L_NodeSignal = "CEL"
         self.C_NodeSignal = True
         
         # Is the event a signal event i.e. originate from Z'
-        self.O_GraphSignal = 0
+        self.O_GraphSignal = None
         self.L_GraphSignal = "CEL"
         self.C_GraphSignal = True
         
         # For fun predict true pile-up
-        self.O_GraphMuActual = 0
+        self.O_GraphMuActual = None
         self.L_GraphMuActual = "MSEL"
         self.C_GraphMuActual = False
 
         # For fun predict MissingET
-        self.O_GraphEt = 0
+        self.O_GraphEt = None
         self.L_GraphEt = "MSEL"
         self.C_GraphEt = False
 
         # For fun predict MissingPhi
-        self.O_GraphPhi = 0
+        self.O_GraphPhi = None
         self.L_GraphPhi = "MSEL"
         self.C_GraphPhi = False
         
         self.Device = ""
     
-    def forward(self, edge_index, 
+    def forward(self, edge_index, i,
             E_dr, E_mass, E_signal, 
             N_eta, N_pt, N_phi, N_energy, N_signal, 
             G_mu, G_m_phi, G_m_et, G_signal):
-    
         
-        self.O_Topology = self.mlp_EdgeFeatures(torch.cat([E_dr, E_mass, E_signal], dim = 1))
-        self.O_NodeSignal = self.propagate(edge_index, x = torch.cat([N_eta, N_pt, N_phi, N_energy, N_signal], dim = 1))
+        batch_len = i.shape[0]
         
+        self.O_Topology = self.mlp_EdgeFeatures(torch.cat([E_signal], dim = 1))
 
-        self.O_GraphSignal = self.mlp_GraphSignal(torch.cat([G_mu, G_m_phi, G_signal], dim = 0))
+        self.O_NodeSignal = self.propagate(edge_index, x = torch.cat([N_signal], dim = 1))
+
+        self.O_GraphSignal = self.mlp_GraphSignal(torch.cat([G_signal], dim = 1))
+        self.O_GraphMuActual = self.mlp_GraphMuActual(G_mu) 
         
-        p = LV.ToPxPyPzE(N_pt, N_eta, N_phi, N_energy, "cuda")
+        # Calculate the net ET and Phi from nodes 
+        Gr_T_MissingPhi = N_phi.view(batch_len, -1).sum(dim = 1, keepdim = True)
+        Gr_T_MissingET = N_energy.view(batch_len, -1).sum(dim =1, keepdim = True)
         
-
-
-
-
-
-        print(Graph_Encode)
-        #print(torch.cat([G_mu, G_m_phi, G_signal], dim = 0))
-
-
-
-
-
-
-
+        self.O_GraphPhi = self.mlp_GraphMissingPhi(Gr_T_MissingPhi)
+        self.O_GraphEt = self.mlp_GraphMissingET(G_m_et)
 
         return self.O_Topology, self.O_NodeSignal, self.O_GraphSignal, self.O_GraphMuActual, self.O_GraphEt, self.O_GraphPhi
 

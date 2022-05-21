@@ -153,8 +153,11 @@ class SharedMethods(WriteDirectory, Notification):
             self.PLT.savefig(self.Filename)
 
         self.ChangeDirToRoot()
+        self.CloseFigure()
+    
+    def CloseFigure(self):
         self.PLT.close("all")
-        del self.PLT
+ 
 
 class TH1F(SharedMethods, GenericAttributes):
     def __init__(self, PLT = ""):
@@ -338,14 +341,15 @@ class CombineTGraph(SharedMethods, GenericAttributes):
         self.yMin = None
         self.yMax = None
         self.Compiled = False
+        self.ErrorBars = None
    
     def UpdateMaxMin(self, hist):
-
+        
         if self.yMin == None and self.yMax == None:
-            self.yMin = 0 
+            self.yMin = 0
+            self.yMax = 1.25
             if self.Log:
                 self.yMin = 0.1
-            self.yMax = 1.25
 
         if min(hist.yData) <= self.yMin:
             self.yMin = min(hist.yData)*0.5
@@ -359,17 +363,19 @@ class CombineTGraph(SharedMethods, GenericAttributes):
 
         for i in range(len(self.Lines)):
             H = self.Lines[i]
-            if H.ErrorBars:
-                if H.Compiled == False:
-                    H.Line()
+            
+            H.ErrorBars = self.ErrorBars 
+            if H.Compiled == False:
+                H.Line()
+            if self.ErrorBars:
                 self.UpdateMaxMin(H)
                 self.PLT.errorbar(x = H.xData, y = H.yData, yerr = [H.Lo_err, H.Up_err], color = H.Color, linestyle = H.LineStyle, 
                         capsize = 3, linewidth = 1, alpha = H.Alpha, label = H.Title, marker = H.Marker)
-
             else:
                 self.UpdateMaxMin(H)
                 self.PLT.plot(H.xData, H.yData, marker = H.Marker, color = H.Color, 
                         linewidth = 1, alpha = H.Alpha, label = H.Title, linestyle = H.LineStyle)
+        
         self.PLT.ylim(self.yMin, self.yMax)
         self.PLT.xlabel(self.Lines[0].xTitle)
         self.PLT.ylabel(self.Lines[0].yTitle)       
@@ -419,7 +425,7 @@ class TGraph(SharedMethods, GenericAttributes):
         self.Lo_err = []
         self.Stdev = []
         self.TMP = []
-        if self.ErrorBars:
+        if isinstance(self.yData[0], list):
             means = []
             self.TMP = self.yData
             for i in self.yData:

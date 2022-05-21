@@ -18,7 +18,7 @@ def Signal(a):
 
 def Mass(a):
     v = LorentzVector.ToPxPyPzE(a.pt, a.eta, a.phi, a.e, "cpu")
-    return float(LorentzVector.GetMass(v))
+    return float(LorentzVector.MassFromPxPyPzE(v))
 
 def Signal_f(a):
     return float(a.Index)

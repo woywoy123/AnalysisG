@@ -49,10 +49,14 @@ class EventGraphTemplate:
                     if isinstance(n, list):
                         attr_v.append([fx(self.NodeParticleMap[n[0]], self.NodeParticleMap[n[1]])])
                         k = "E_"
+                
                 if len(attr_v) == 0:
                     k = "G_"
-                    attr_v = fx(self.Event)
+                    attr_v.append([fx(self.Event)])
                 setattr(self.Data, k + key, torch.tensor(attr_v, dtype = torch.float))
+                
+
+
 
         self.CreateParticleNodes()
         self.CreateEdges()
@@ -64,8 +68,8 @@ class EventGraphTemplate:
         ApplyToGraph(self.NodeAttr, self.NodeParticleMap)
         ApplyToGraph(self.EdgeAttr, self.Edges)
 
-        setattr(self.Data, "i", self.iter)  
         self.Data.num_nodes = len(self.Particles)
+        setattr(self.Data, "i", self.iter)
         return self.Data
 
     def __SetAttribute(self, c_name, fx, container):

@@ -50,9 +50,6 @@ torch::Tensor MassFromPtEtaPhiE(torch::Tensor v)
   return torch::sqrt(s2.abs()); 
 }
 
-
-
-
 torch::Tensor ListToPxPyPzE(std::vector<std::vector<float>> P_mu_List, std::string device)
 {
   torch::TensorOptions options = torch::TensorOptions().dtype(torch::kFloat64); 
