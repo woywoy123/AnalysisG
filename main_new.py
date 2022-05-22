@@ -3,6 +3,7 @@ from Closure import Event
 from Closure import DataLoader
 from Closure import Optimizer
 from Closure import Metrics
+from Closure import Exporter
 from Functions.Event import CacheGenerators
 
 
@@ -14,7 +15,7 @@ def Test(F, **kargs):
     name = F.__name__
     var = F.__code__.co_varnames
     result = ""
-    
+    CallerDir = traceback.format_stack()[0].split("Test(")[1].split("." +name)[0]
     keys = list(set(list(var)).intersection(set(list(kargs))))
     driver = {} 
     for i in keys:
@@ -30,7 +31,7 @@ def Test(F, **kargs):
         result = "(-) Failed: " + name + "\n" + e
     
     print(result)
-    test_dir.WriteTextFile(result, "_TestResults", name)
+    test_dir.WriteTextFile(result, "_TestResults/" + CallerDir, name)
 
 
 if __name__ == "__main__":
@@ -60,7 +61,7 @@ if __name__ == "__main__":
     #Test(DataLoader.TestEventGraph, Name = "DataLoaderTest/DataLoaderTest.pkl", Level = "TruthTops")
     #Test(DataLoader.TestEventGraph, Name = "DataLoaderTest/DataLoaderTest.pkl", Level = "TruthTopChildren")
     #Test(DataLoader.TestEventGraph, Name = "DataLoaderTest/DataLoaderTest.pkl", Level = "DetectorParticles")
-    
+    #
     #Test(DataLoader.TestDataLoader, Name = "DataLoaderTest/DataLoaderTest.pkl", Level = "TruthTops")
     #Test(DataLoader.TestDataLoader, Name = "DataLoaderTest/DataLoaderTest.pkl", Level = "TruthTopChildren")
     #Test(DataLoader.TestDataLoader, Name = "DataLoaderTest/DataLoaderTest.pkl", Level = "DetectorParticles")
@@ -77,6 +78,9 @@ if __name__ == "__main__":
     #Test(Optimizer.TestOptimizerEdge, Files = ["DataLoaderTest", "DataLoaderTest_1", "DataLoaderTest_2"], Level = "TruthTopChildren", Name = "EdgeTest", CreateCache = True)
     #Test(Metrics.TestReadTraining, modelname = "EdgeTest")
 
-    Test(Optimizer.TestOptimizerCombined, Files = ["DataLoaderTest", "DataLoaderTest_1", "DataLoaderTest_2"], Level = "TruthTopChildren", Name = "CombinedTest", CreateCache = True)
+    #Test(Optimizer.TestOptimizerCombined, Files = ["DataLoaderTest", "DataLoaderTest_1", "DataLoaderTest_2"], Level = "TruthTopChildren", Name = "CombinedTest", CreateCache = True)
     #Test(Metrics.TestReadTraining, modelname = "CombinedTest")
+    
+    # ======== Test Model/Data Exporting ======= #
+    #Test(Exporter.TestModelExport, Files = ["DataLoaderTest"], Name = "ExportModel", Level = "TruthTopChildren", CreateCache = True)
 

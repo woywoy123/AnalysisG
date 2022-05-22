@@ -7,6 +7,7 @@ class EventGraphTemplate:
     def __init__(self):
         self.Particles = []
         self.SelfLoop = False
+        self.FullyConnect = True
         self.EdgeAttr = {}
         self.NodeAttr = {}
         self.GraphAttr = {}
@@ -37,27 +38,23 @@ class EventGraphTemplate:
         self.G.add_edges_from(self.Edges)
 
     def ConvertToData(self):
-        def ApplyToGraph(Dict, Map2 = []):
+        def ApplyToGraph(Dict, Map2 = None):
             for key in Dict:
                 fx = Dict[key]
                 attr_v = []
-                k = ""
-                for n in Map2:
-                    if isinstance(n, int):
-                        attr_v.append([fx(self.NodeParticleMap[n])])
-                        k = "N_"
-                    if isinstance(n, list):
-                        attr_v.append([fx(self.NodeParticleMap[n[0]], self.NodeParticleMap[n[1]])])
-                        k = "E_"
+                kl = len(fx.__code__.co_varnames)
                 
-                if len(attr_v) == 0:
+                if Map2 == None:
+                    attr_v += [[fx(self.Event)]]
                     k = "G_"
-                    attr_v.append([fx(self.Event)])
+                elif kl == 1:
+                    attr_v += [[ fx(self.NodeParticleMap[n]) ] for n in Map2]
+                    k = "N_"
+                else:
+                    attr_v += [[ fx(self.NodeParticleMap[n[0]], self.NodeParticleMap[n[1]]) ] for n in Map2]
+                    k = "E_"
                 setattr(self.Data, k + key, torch.tensor(attr_v, dtype = torch.float))
                 
-
-
-
         self.CreateParticleNodes()
         self.CreateEdges()
         

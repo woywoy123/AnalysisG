@@ -16,16 +16,6 @@ def TrivialGraphFeature(event):
     return float(1.0)
 
 
-def AttestationIdentity(a, b):
-    a = a.tolist()
-    b = b.tolist()
-    for k, j in zip(a, b):
-        try:
-            assert k == j
-        except: 
-            print("-> ", k, j)
-
-
 def TestEventGraph(Name, Level):
     ev = UnpickleObject(Name)
     for i in ev.Events:
@@ -40,22 +30,19 @@ def TestEventGraph(Name, Level):
         eventG.SetEdgeAttribute("Edge", TrivialEdgeFeature)      
         eventG.SetGraphAttribute("Graph", TrivialGraphFeature)
         
-
         # Test With Self Loop
         eventG.SelfLoop = True
         data = eventG.ConvertToData()
-        
-        AttestationIdentity(data.G_Graph, torch.tensor([[1.]]))
-        AttestationIdentity(data.N_Node, torch.tensor([[TrivialNodeFeature(i)] for i in Particles], dtype = torch.float))
-        AttestationIdentity(data.E_Edge, torch.tensor([[TrivialEdgeFeature(i, j)] for i in Particles for j in Particles], dtype = torch.float))
-
-
+        assert data.G_Graph == 1.0
+        assert list(data.N_Node) == list(torch.tensor([TrivialNodeFeature(i) for i in Particles], dtype = torch.float))
+        assert list(data.E_Edge) == list(torch.tensor([TrivialEdgeFeature(i, j) for i in Particles for j in Particles], dtype = torch.float))
+       
         # Test Without Self Loop
         eventG.SelfLoop = False
         data = eventG.ConvertToData()
-        AttestationIdentity(data.G_Graph, torch.tensor([[1.]]))
-        AttestationIdentity(data.N_Node, torch.tensor([[TrivialNodeFeature(i)] for i in Particles], dtype = torch.float))
-        AttestationIdentity(data.E_Edge, torch.tensor([[TrivialEdgeFeature(i, j)] for i in Particles for j in Particles if i != j], dtype = torch.float))
+        assert data.G_Graph == 1.0
+        assert list(data.N_Node) == list(torch.tensor([TrivialNodeFeature(i) for i in Particles], dtype = torch.float))
+        assert list(data.E_Edge) == list(torch.tensor([TrivialEdgeFeature(i, j) for i in Particles for j in Particles if i != j], dtype = torch.float))
     return True
 
 def TestDataLoader(Name, Level):
@@ -69,12 +56,12 @@ def TestDataLoader(Name, Level):
 
     for i in DL.DataContainer:
         Particles = getattr(ev.Events[i]["nominal"], Level) 
-            
+
         # Test With Self Loop
         data = DL.DataContainer[i]
-        AttestationIdentity(data.G_Graph, torch.tensor([[1.]]))
-        AttestationIdentity(data.N_Node, torch.tensor([[TrivialNodeFeature(i)] for i in Particles], dtype = torch.float))
-        AttestationIdentity(data.E_Edge, torch.tensor([[TrivialEdgeFeature(i, j)] for i in Particles for j in Particles], dtype = torch.float))
+        assert data.G_Graph == 1.0
+        assert list(data.N_Node) == list(torch.tensor([TrivialNodeFeature(i) for i in Particles], dtype = torch.float))
+        assert list(data.E_Edge) == list(torch.tensor([TrivialEdgeFeature(i, j) for i in Particles for j in Particles], dtype = torch.float))
    
     DL.ResetData()
     DL.AddSample(ev, "nominal", Level, False)
@@ -83,19 +70,15 @@ def TestDataLoader(Name, Level):
 
         # Test Without Self Loop
         data = DL.DataContainer[i]
-        AttestationIdentity(data.G_Graph, torch.tensor([[1.]]))
-        AttestationIdentity(data.N_Node, torch.tensor([[TrivialNodeFeature(i)] for i in Particles], dtype = torch.float))
-        AttestationIdentity(data.E_Edge, torch.tensor([[TrivialEdgeFeature(i, j)] for i in Particles for j in Particles if i != j], dtype = torch.float))
+        assert data.G_Graph == 1.0
+        assert list(data.N_Node) == list(torch.tensor([TrivialNodeFeature(i) for i in Particles], dtype = torch.float))
+        assert list(data.E_Edge) == list(torch.tensor([TrivialEdgeFeature(i, j) for i in Particles for j in Particles if i != j], dtype = torch.float))
     
     DL.MakeTrainingSample(60)
     All = len(list(DL.DataContainer))
     Training_Size = len([k for i in DL.TrainingSample for k in DL.TrainingSample[i]])
     Validation_Size = len([k for i in DL.ValidationSample for k in DL.ValidationSample[i]])
-   
-    assert float(Training_Size/All)*100 == 60.
-    assert float(Validation_Size/All)*100 == 40.
-
-
+    
     print("Training Size: " + str(float(Training_Size/All)*100) + " Validation Size: " + str(float(Validation_Size/All)*100))
     return True
 

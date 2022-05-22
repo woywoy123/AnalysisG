@@ -133,7 +133,7 @@ class GenerateDataLoader(Notification):
 
     def MakeTrainingSample(self, ValidationSize = 50):
         def MakeSample(Shuff, InputList):
-            if Shuff == -1:
+            if isinstance(Shuff, int):
                 Shuff = self.DataContainer
             for i in Shuff:
                 n_p = self.DataContainer[i].num_nodes
@@ -147,7 +147,7 @@ class GenerateDataLoader(Notification):
 
         All = np.array(list(self.DataContainer))
         
-        if ValidationSize > 0 and Validation < 100:
+        if ValidationSize > 0 and ValidationSize < 100:
             rs = ShuffleSplit(n_splits = 1, test_size = float((100-ValidationSize)/100), random_state = 42)
             for train_idx, test_idx in rs.split(All):
                 pass

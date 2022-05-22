@@ -10,13 +10,13 @@ def TestOptimizerGraph(Files, Level, Name, CreateCache):
     
     if CreateCache:
         DL = GenerateDataLoader()
-        DL.AddGraphFeature("Signal", gf.Signal)
-        DL.AddGraphTruth("Signal", gf.Signal)
+        DL.AddGraphFeature("Signal", gf.Resonance)
+        DL.AddGraphTruth("Signal", gf.Resonance)
         DL.SetDevice("cuda")
         for i in Files:
             ev = UnpickleObject(i + "/" + i)
             DL.AddSample(ev, "nominal", Level)
-        DL.MakeTrainingSample(50)
+        DL.MakeTrainingSample(0)
         PickleObject(DL, "TestOptimizerGraph")
     DL = UnpickleObject("TestOptimizerGraph")
 
@@ -42,7 +42,7 @@ def TestOptimizerNode(Files, Level, Name, CreateCache):
         for i in Files:
             ev = UnpickleObject(i + "/" + i)
             DL.AddSample(ev, "nominal", Level, True, False)
-        DL.MakeTrainingSample(50)
+        DL.MakeTrainingSample(0)
         PickleObject(DL, Name)
     DL = UnpickleObject(Name)
 
@@ -65,14 +65,15 @@ def TestOptimizerEdge(Files, Level, Name, CreateCache):
         for i in Files:
             ev = UnpickleObject(i + "/" + i)
             DL.AddSample(ev, "nominal", Level, False, True)
-        DL.MakeTrainingSample(20)
+            break
+        DL.MakeTrainingSample(0)
         PickleObject(DL, Name)
     DL = UnpickleObject(Name)
 
     op = Optimizer(DL)
     op.BatchSize = 10
     op.kFold = 100
-    op.Epochs= 20
+    op.Epochs= 100
     op.RunName = Name
     op.Model = EdgeConv(1, 1)
     op.KFoldTraining()
@@ -115,7 +116,7 @@ def TestOptimizerCombined(Files, Level, Name, CreateCache):
         for i in Files:
             ev = UnpickleObject(i + "/" + i)
             DL.AddSample(ev, "nominal", Level, True, True)
-        DL.MakeTrainingSample(50)
+        DL.MakeTrainingSample(0)
         PickleObject(DL, Name)
     DL = UnpickleObject(Name)
 
@@ -125,7 +126,7 @@ def TestOptimizerCombined(Files, Level, Name, CreateCache):
     op.LearningRate = 0.0001
     op.WeightDecay = 0.0001
     op.kFold = 10
-    op.Epochs= 20
+    op.Epochs= 100
     op.RunName = Name
     op.Model = CombinedConv()
     op.KFoldTraining()

@@ -13,12 +13,12 @@ class GraphNN(nn.Module):
     
     def __init__(self, inputs = 1):
         super(GraphNN, self).__init__()
-        self.layers = nn.Sequential(
-                nn.Linear(1, 64), 
-                nn.ReLU(), 
-                nn.Linear(64, 32), 
-                nn.ReLU(), 
-                nn.Linear(32, 1)
+        self.layers = Seq(
+                Linear(1, 64), 
+                ReLU(), 
+                Linear(64, 32), 
+                ReLU(), 
+                Linear(32, 2)
         )
         
         self.L_Signal = "CEL"
@@ -26,15 +26,14 @@ class GraphNN(nn.Module):
         self.O_Signal = 0
 
     def forward(self, G_Signal, edge_index):
-        self.O_Signal = self.layers(G_Signal.view(-1, 1))
-
+        self.O_Signal = self.layers(G_Signal)
         return self.O_Signal
 
 
 class NodeConv(MessagePassing):
 
     def __init__(self, in_channels, out_channels):
-        super(EdgeConv, self).__init__(aggr = "mean") 
+        super(NodeConv, self).__init__(aggr = "mean") 
         self.mlp = Seq(
                 Linear(2 * in_channels, 2), 
                 ReLU(), 

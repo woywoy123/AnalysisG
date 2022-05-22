@@ -63,12 +63,6 @@ torch::Tensor ListToPxPyPzE(std::vector<std::vector<float>> P_mu_List, std::stri
   return torch::stack(Output).to(options);
 }
 
-
-
-
-
-
-
 PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
 {
   m.def("ToPxPyPzE", &ToPxPyPzE, "Convert Rapidity to Cartesian"); 

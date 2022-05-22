@@ -264,16 +264,29 @@ class Optimizer(Notification):
             m_v = model_out[key][1]
             
             Loss = self.ModelOutputs["L_" + key]
+            Classification = False
+            acc = None
             if Loss == "CEL":
                 t_v = t_v.type(torch.LongTensor).to(self.Device).view(1, -1)[0]
-                acc = accuracy(m_p, t_p)
+                acc = accuracy
                 self.LF = torch.nn.CrossEntropyLoss()
-
+                Classification = True
+                
             elif Loss == "MSEL":
                 t_v = t_v.type(torch.float).to(self.Device)
                 self.LF = torch.nn.MSELoss()
-                acc = self.LF(m_p, t_p)
+                acc = self.LF
             
+            # Error Handling if something goes wrong. Can cause CUDA to completely freeze Python
+            if acc == None:
+                self.Warning("SKIPPING " + key + " :: NO LOSS FUNCTION SELECTED!!!!")
+                continue
+            if m_v.shape[1] <= t_v.max() and (self.ModelOutputs["C_" + key] or Classification):
+                self.Fail("Your Classification Model only has " + str(int(m_v.shape[1])) + " classes but requires " + str(int(t_v.max()+1)))
+            elif Classification == False and m_v.shape[1] != t_v.shape[1]:
+                self.Fail("Your Model has more outputs than Truth! :: " + key)
+            
+            acc = acc(t_p, m_p)
             L = self.LF(m_v, t_v)
             if self.Training:
                 self.Stats["Training_Accuracy"][key][-1].append(acc)
@@ -282,7 +295,7 @@ class Optimizer(Notification):
                 self.Stats["Validation_Accuracy"][key][-1].append(acc)
                 self.Stats["Validation_Loss"][key][-1].append(L)
             LT += L
-          
+
         if self.Training:
             LT.backward()
             self.Optimizer.step()
@@ -375,7 +388,7 @@ class Optimizer(Notification):
 
                 self.Notify("!! >----- [ EPOCH (" + str(self.epoch+1) + "/" + str(self.Epochs) + ") ] -----< ")
                 self.Notify("!!-------> Training || Validation <-------")
-                self.Notify("!!_______________ Accuracy _______________")
+                self.Notify("!!_______________ Accuracy/MSE _______________")
                 CalcAverage("Training_Accuracy", k-1, "!!", "Validation_Accuracy")
                 self.Notify("!!_______________ LOSS _______________")
                 CalcAverage("Training_Loss", k-1, "!!", "Validation_Loss")
@@ -387,26 +400,21 @@ class Optimizer(Notification):
         self.Stats["TrainingTime"] = time.time() - TimeStart
         self.Stats.update(self.DataLoader.FileTraces)
         
-        ix = 0
-        self.Stats["n_Node_Files"] = [[]]
-        self.Stats["n_Node_Count"] = [[]]
-        for i in self.TrainingSample:
-            for j in self.TrainingSample[i]:
-                indx, n_nodes = j.i, j.num_nodes
-                start, end = self.Stats["Start"][ix], self.Stats["End"][ix]
-                if start <= indx and indx <= end:
-                    pass
-                else:
-                    self.Stats["n_Node_Files"].append([])
-                    self.Stats["n_Node_Count"].append([])
-                    ix += 1
-
-                if n_nodes not in self.Stats["n_Node_Files"][ix]:
-                    self.Stats["n_Node_Files"][ix].append(n_nodes)
-                    self.Stats["n_Node_Count"][ix].append(0)
-                
-                n_i = self.Stats["n_Node_Files"][ix].index(n_nodes)
-                self.Stats["n_Node_Count"][ix][n_i] += 1
+        self.Stats["n_Node_Files"] = [[] for i in range(len(self.Stats["Start"]))]
+        self.Stats["n_Node_Count"] = [[] for i in range(len(self.Stats["Start"]))]
+        self.TrainingSample = [smpl for node in self.TrainingSample for smpl in self.TrainingSample[node]]       
+        for s_i in range(len(self.TrainingSample)):
+            smpl = self.TrainingSample[s_i]
+            indx, n_nodes = smpl.i, smpl.num_nodes
+            find = [indx >= start and indx <= end for start, end in zip(self.Stats["Start"], self.Stats["End"])].index(True)
+            
+            if n_nodes not in self.Stats["n_Node_Files"][find]:
+                self.Stats["n_Node_Files"][find].append(n_nodes)
+                self.Stats["n_Node_Count"][find].append(0)
+            
+            n_i = self.Stats["n_Node_Files"][find].index(n_nodes)
+            self.Stats["n_Node_Count"][find][n_i] += 1
+     
         self.Stats["BatchSize"] = self.BatchSize
         self.Stats["Model"] = {}
         self.Stats["Model"]["LearningRate"] = self.LearningRate
