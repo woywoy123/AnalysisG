@@ -11,7 +11,7 @@ import LorentzVector as LV
 
 class GraphNN(nn.Module):
     
-    def __init__(self, inputs = 1):
+    def __init__(self):
         super(GraphNN, self).__init__()
         self.layers = Seq(
                 Linear(1, 64), 
@@ -23,7 +23,7 @@ class GraphNN(nn.Module):
         
         self.L_Signal = "CEL"
         self.C_Signal = True
-        self.O_Signal = 0
+        self.O_Signal = None
 
     def forward(self, G_Signal, edge_index):
         self.O_Signal = self.layers(G_Signal)
@@ -35,14 +35,14 @@ class NodeConv(MessagePassing):
     def __init__(self, in_channels, out_channels):
         super(NodeConv, self).__init__(aggr = "mean") 
         self.mlp = Seq(
-                Linear(2 * in_channels, 2), 
+                Linear(2 * in_channels, 256), 
                 ReLU(), 
-                Linear(2, out_channels)
+                Linear(256, out_channels)
         )
     
         self.L_x = "CEL"
         self.C_x = True
-        self.O_x = 0
+        self.O_x = None
     
     def forward(self, N_x, N_Sig, edge_index):
         x = torch.cat((N_x, N_Sig), dim = 1)

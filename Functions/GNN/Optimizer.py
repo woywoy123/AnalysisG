@@ -10,8 +10,9 @@ import time
 from Functions.Tools.Alerting import Notification
 from Functions.IO.Files import WriteDirectory, Directories
 from Functions.IO.IO import PickleObject
+from Functions.IO.Exporter import ExportToDataScience
 
-class Optimizer(Notification):
+class Optimizer(ExportToDataScience, Notification):
 
     def __init__(self, DataLoaderInstance = None):
         self.Verbose = True
@@ -34,10 +35,9 @@ class Optimizer(Notification):
         self.DefaultOptimizer = "ADAM"
         self.ONNX_Export = False
         self.TorchScript_Export = True
-
+        
         ### Internal Stuff 
         self.Training = True
-        self.Sample = None
         self.T_Features = {}
       
     def ReadInDataLoader(self, DataLoaderInstance):
@@ -115,35 +115,6 @@ class Optimizer(Notification):
             if i.startswith("T_"):
                 self.T_Features[i[2:]] = [FEAT + "_" +i, FEAT + "_" +i[2:]]
 
-    def __ExportONNX(self, DummySample, Name):
-        import onnx
-        
-        DummySample = tuple([DummySample[i] for i in self.ModelInputs])
-        torch.onnx.export(
-                self.Model, DummySample, Name,
-                export_params = True, 
-                input_names = self.ModelInputs, 
-                output_names = [i for i in self.ModelOutputs if i.startswith("O_")])
-
-   
-    def __ExportTorchScript(self, DummySample, Name):
-        DummySample = tuple([DummySample[i] for i in self.ModelInputs])
-      
-        Compact = {}
-        for i in self.ModelInputs:
-            Compact[i] = str(self.ModelInputs.index(i))
-
-        p = 0
-        for i in self.ModelOutputs:
-            if i.startswith("O_"):
-                Compact[i] = str(p)
-                p+=1
-            else:
-                Compact[i] = str(self.ModelOutputs[i])
-
-        model = torch.jit.trace(self.Model, DummySample)
-        torch.jit.save(model, Name, _extra_files = Compact)
-
     def __ImportTorchScript(self, Name):
         class Model:
             def __init__(self, dict_in, model):
@@ -184,21 +155,6 @@ class Optimizer(Notification):
          
         self.Model = Model(extra_files, M)
     
-    def __SaveModel(self, DummySample):
-        self.Model.eval()
-        DummySample = [i for i in DummySample][0]
-        DummySample = DummySample.to_data_list()[0].detach().to_dict()
-        DirOut = self.RunDir + "/" + self.RunName + "/"
-        if self.ONNX_Export:
-            WriteDirectory().MakeDir(DirOut + "ModelONNX")
-            Name = DirOut + "ModelONNX/Epoch_" + str(self.epoch+1) + "_" + str(self.Epochs) + ".onnx"
-            self.__ExportONNX(DummySample, Name)
-        
-        if self.TorchScript_Export:
-            WriteDirectory().MakeDir(DirOut + "ModelTorchScript")
-            Name = DirOut + "ModelTorchScript/Epoch_" + str(self.epoch+1) + "_" + str(self.Epochs) + ".pt"
-            self.__ExportTorchScript(DummySample, Name)
-
     def DefineOptimizer(self):
         self.Model.to(self.Device)
         if self.DefaultOptimizer == "ADAM":
@@ -395,7 +351,9 @@ class Optimizer(Notification):
 
             self.Stats["EpochTime"].append(time.time() - TimeStartEpoch)
             self.DumpStatistics()
-            self.__SaveModel(train_loader)
+
+            self.ExportModel(train_loader)
+            #self.__SaveModel(train_loader)
 
         self.Stats["TrainingTime"] = time.time() - TimeStart
         self.Stats.update(self.DataLoader.FileTraces)

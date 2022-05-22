@@ -1,126 +1,141 @@
 import torch
+import onnx
+import h5py
+import numpy as np
 from Functions.IO.Files import WriteDirectory
+import Functions
+
+class Model:
+    def __init__(self, dict_in, model):
+        self.__Model = model
+        self.__router = {}
+        for i in dict_in:
+            setattr(self, i, dict_in[i])
+            if i.startswith("O_"):
+                self.__router[dict_in[i]] = i         
+    
+    def __call__(self, **kargs):
+        pred = list(self.__Model(**kargs))
+        for i in range(len(pred)):
+            setattr(self, self.__router[i], pred[i])
+
+    def train(self):
+        self.__Model.train(True)
+
+    def eval(self):
+        self.__Model.train(False)
 
 class ExportToDataScience(WriteDirectory):
     def __init__(self):
-        WriteDirectory.__init__(self)
         self.Model = None
+        self.ONNX_Export = None 
+        self.TorchScript_Export = None
+        self.RunDir = None
+        self.RunName = None
+
+        self.epoch = 0
+        self.Epochs = 0
+
+        self.Caller = "ExportToDataScience"
+        self.__OutputDir = None
+        self.__EpochDir = None
+
+    def __ProcessSample(self):
+        if "dataloader" in str(type(self.__Sample)):
+            self.__Sample = [i for i in self.__Sample][0].to_data_list()[0].detach().to_dict()
+            self.__Sample = [self.__Sample[i] for i in self.__InputMap]
+            return 
         
+        if isinstance(self.__Sample, Functions.Event.Event.Event):
+             
+            for i in self.__Sample.__dict__:
+                if isinstance(self.__Sample.__dict__[i], list):
+                    continue
+                self.__GeneratorDump[self.__dump_e + "/E-" + i] = self.__Sample.__dict__[i]
+            return 
 
-    def ConvertSample(self, Sample):
-        
-        self.Sample = [i for i in DummySample][0]
+        if issubclass( type(self.__Sample) , Functions.Particles.Particles.Particle):
+            for i in self.__Sample.__dict__:
+                if isinstance(self.__Sample.__dict__[i], list):
+                    continue
 
-
-
-        pass
-
-    def ExportONNX(self, DummySample, Name):
-        import onnx
-        pass
-
-    def ExportTorchScript(self, DummySample, Name):
-        pass
-
-
-
+                if str(self.__dump_e + "/" + i) not in self.__GeneratorDump:
+                    self.__GeneratorDump[self.__dump_e + "/" + i] = []
+                self.__GeneratorDump[self.__dump_e + "/" + i].append(self.__Sample.__dict__[i])
 
 
 
+    def ExportEventGenerator(self, EventGenerator):
+        self.__FileDictionary = EventGenerator.FileEventIndex
+        self.__GeneratorDump = {}
+        self.__GeneratorDump["Files"] = []
 
+        for ev_i in EventGenerator.Events:
+            F = EventGenerator.EventIndexFileLookup(ev_i) 
+            if F not in self.__GeneratorDump["Files"]:
+                self.__GeneratorDump["Files"].append(F)
 
+            idx = "F-" + str(self.__GeneratorDump["Files"].index(F))
+            dump_s = idx + "/i-" + str(ev_i)
 
-    '''
-    def __SaveModel(self, DummySample):
-        self.Model.eval()
-        DummySample = [i for i in DummySample][0]
-        DummySample = DummySample.to_data_list()[0].detach().to_dict()
-        DirOut = self.RunDir + "/" + self.RunName + "/"
-        if self.ONNX_Export:
-            WriteDirectory().MakeDir(DirOut + "ModelONNX")
-            Name = DirOut + "ModelONNX/Epoch_" + str(self.epoch+1) + "_" + str(self.Epochs) + ".onnx"
-            self.__ExportONNX(DummySample, Name)
-        
-        if self.TorchScript_Export:
-            WriteDirectory().MakeDir(DirOut + "ModelTorchScript")
-            Name = DirOut + "ModelTorchScript/Epoch_" + str(self.epoch+1) + "_" + str(self.Epochs) + ".pt"
-            self.__ExportTorchScript(DummySample, Name)
+            for key in EventGenerator.Events[ev_i]:
+                EventObject =  EventGenerator.Events[ev_i][key]
 
-
-
-
-
-
-
-
-
-    def __ExportONNX(self, DummySample, Name):
-        import onnx
-        
-        DummySample = tuple([DummySample[i] for i in self.ModelInputs])
-        torch.onnx.export(
-                self.Model, DummySample, Name,
-                export_params = True, 
-                input_names = self.ModelInputs, 
-                output_names = [i for i in self.ModelOutputs if i.startswith("O_")])
-
-   
-    def __ExportTorchScript(self, DummySample, Name):
-        DummySample = tuple([DummySample[i] for i in self.ModelInputs])
-      
-        Compact = {}
-        for i in self.ModelInputs:
-            Compact[i] = str(self.ModelInputs.index(i))
-
-        p = 0
-        for i in self.ModelOutputs:
-            if i.startswith("O_"):
-                Compact[i] = str(p)
-                p+=1
-            else:
-                Compact[i] = str(self.ModelOutputs[i])
-
-        model = torch.jit.trace(self.Model, DummySample)
-        torch.jit.save(model, Name, _extra_files = Compact)
-
-    def __ImportTorchScript(self, Name):
-        class Model:
-            def __init__(self, dict_in, model):
-                self.__Model = model
-                self.__router = {}
-                for i in dict_in:
-                    setattr(self, i, dict_in[i])
-                    if i.startswith("O_"):
-                        self.__router[dict_in[i]] = i         
+                self.__dump_e = dump_s + "/T-" + key
+                self.__Sample = EventObject
+                self.__ProcessSample()
+                 
+                for p in EventObject.__dict__:
+                    if isinstance(EventObject.__dict__[p], list) == False:
+                        continue
+                    for k in EventObject.__dict__[p]:
+                        self.__Sample = k
+                        self.__ProcessSample()
+                
             
-            def __call__(self, **kargs):
-                pred = list(self.__Model(**kargs))
-                for i in range(len(pred)):
-                    setattr(self, self.__router[i], pred[i])
+        for i in self.__GeneratorDump:
+            print(i) # <---- continue here and write the hdf5 dump.
 
-            def train(self):
-                self.__Model.train(True)
 
-            def eval(self):
-                self.__Model.train(False)
+    def ExportModel(self, Sample):
+        WriteDirectory.__init__(self)
+        self.__EpochDir = "/Epoch_" + str(self.epoch+1) + "_" + str(self.Epochs)
+        self.__OutputDir = self.RunDir + "/" + self.RunName + "/"       
+        self.__Sample = Sample 
+       
+        self.__InputMap = {}
+        for i in self.ModelInputs:
+            self.__InputMap[i] = str(self.ModelInputs.index(i))
+
+        self.__OutputMap = {}
+        for i in self.ModelOutputs:
+            self.__OutputMap[i] = str(self.ModelOutputs[i]) + "->" + str(type(self.ModelOutputs[i])).split("'")[1]
+
+        self.__ProcessSample()
+        self.Model.eval()
+        self.Model.requires_grad_(False)
+        if self.ONNX_Export:
+            self.__ExportONNX( self.__OutputDir + "ONNX" + self.__EpochDir + ".onnx")
+        if self.TorchScript_Export:
+            self.__ExportTorchScript( self.__OutputDir + "TorchScript" + self.__EpochDir + ".pt")
+        self.Model.requires_grad_(True)
+
+    def __ExportONNX(self, Dir):
+        self.MakeDir("/".join(Dir.split("/")[:-1]))
         
-        extra_files = {}
-        for i in list(self.ModelOutputs):
-            extra_files[i] = ""
-        for i in list(self.ModelInputs):
-            extra_files[i] = ""
-        
-        M = torch.jit.load(Name, _extra_files = extra_files)
-        for i in extra_files:
-            conv = str(extra_files[i].decode())
-            if conv.isnumeric():
-                conv = int(conv)
-            if conv == "True":
-                conv = True
-            if conv == "False":
-                conv = False
-            extra_files[i] = conv
-         
-        self.Model = Model(extra_files, M)
-    
-    '''
+        torch.onnx.export(
+                self.Model, 
+                tuple(self.__Sample), 
+                Dir, 
+                verbose = False,
+                export_params = True, 
+                opset_version = 14,
+                input_names = list(self.__InputMap), 
+                output_names = [i for i in self.__OutputMap if i.startswith("O_")])
+
+    def __ExportTorchScript(self, Dir):
+        self.MakeDir("/".join(Dir.split("/")[:-1]))
+        model = torch.jit.trace(self.Model, self.__Sample)
+        torch.jit.save(model, Dir, _extra_files = self.__OutputMap)
+
+

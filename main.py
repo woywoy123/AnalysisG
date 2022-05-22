@@ -22,9 +22,9 @@ def Test(F, **kargs):
         driver[i] = kargs[i]
     try:
         if F(**driver):
-            result = "(+) Passed: " + name
+            result = "(+) Passed: " + name + "\n"
         else:
-            result = "(-) Failed: " + name
+            result = "(-) Failed: " + name + "\n"
     except:
         e = str(sys.exc_info()[1])
         traceback.print_tb(sys.exc_info()[2])
@@ -82,5 +82,5 @@ if __name__ == "__main__":
     #Test(Metrics.TestReadTraining, modelname = "CombinedTest")
     
     # ======== Test Model/Data Exporting ======= #
-    #Test(Exporter.TestModelExport, Files = ["DataLoaderTest"], Name = "ExportModel", Level = "TruthTopChildren", CreateCache = True)
-
+    #Test(Exporter.TestModelExport, Files = ["DataLoaderTest"], Name = "ExportModel", Level = "TruthTopChildren", CreateCache = False)
+    Test(Exporter.TestEventGeneratorExport, Files = ["DataLoaderTest", "DataLoaderTest_1", "DataLoaderTest_2"], Name = "EventGeneratorExport")
