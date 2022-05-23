@@ -22,6 +22,7 @@ def TestOptimizerGraph(Files, Level, Name, CreateCache):
 
 
     op = Optimizer(DL)
+    op.VerboseLevel = 1
     op.RunName = Name
     op.Epochs = 10
     op.kFold = 2
@@ -47,6 +48,7 @@ def TestOptimizerNode(Files, Level, Name, CreateCache):
     DL = UnpickleObject(Name)
 
     op = Optimizer(DL)
+    op.VerboseLevel = 1
     op.BatchSize = 1
     op.kFold = 4
     op.RunName = Name
@@ -70,8 +72,9 @@ def TestOptimizerEdge(Files, Level, Name, CreateCache):
     DL = UnpickleObject(Name)
 
     op = Optimizer(DL)
+    op.VerboseLevel = 1
     op.BatchSize = 10
-    op.kFold = 100
+    op.kFold = 10
     op.Epochs= 20
     op.RunName = Name
     op.Model = EdgeConv(1, 1)

@@ -16,14 +16,16 @@ class EventGenerator(Debugging, EventVariables, Directories):
         self.Caller = "EVENTGENERATOR"
         self.__Start = Start
         self.__Stop = Stop
+        self.VerboseLevel = 1
         
     def SpawnEvents(self):
         self.GetFilesInDir()
         for i in self.Files:
-            self.Notify("_______NEW DIRECTORY______: " + str(i))
+            self.Notify("!_______NEW DIRECTORY______: " + str(i))
             for F in self.Files[i]:
                 self.Events[i + "/" + F] = []
                 F_i = File(i + "/" + F, self.__Debug)
+                F_i.VerboseLevel = self.VerboseLevel
                 F_i.Trees = self.MinimalTrees
                 F_i.Leaves = self.MinimalLeaves
                 F_i.CheckKeys()
@@ -32,7 +34,7 @@ class EventGenerator(Debugging, EventVariables, Directories):
                     PickleObject(F_i, "Debug.pkl")
                     F_i = UnpickleObject("Debug.pkl")
                 
-                self.Notify("SPAWNING EVENTS IN FILE -> " + F)
+                self.Notify("!SPAWNING EVENTS IN FILE -> " + F)
                 for l in range(len(F_i.ArrayLeaves[list(F_i.ArrayLeaves)[0]])):
                     pairs = {}
                     for tr in F_i.Trees:
@@ -76,7 +78,7 @@ class EventGenerator(Debugging, EventVariables, Directories):
         it = 0
         ev = {}
         for f in self.Events:
-            self.Notify("COMPILING EVENTS FROM FILE -> " + f)
+            self.Notify("!COMPILING EVENTS FROM FILE -> " + f)
             
             Events = self.Events[f]
             entries_percpu = math.ceil(len(Events) / (self.Threads))
@@ -98,8 +100,8 @@ class EventGenerator(Debugging, EventVariables, Directories):
             del th
             del Thread
 
-            self.Notify("FINISHED COMPILING EVENTS FROM FILE -> " + f)
-            self.Notify("SORTING INTO DICTIONARY -> " + f)
+            self.Notify("!FINISHED COMPILING EVENTS FROM FILE -> " + f)
+            self.Notify("!!SORTING INTO DICTIONARY -> " + f)
             
             self.FileEventIndex[f] = []
             self.FileEventIndex[f].append(it)

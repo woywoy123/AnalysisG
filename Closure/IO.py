@@ -1,7 +1,7 @@
 # Closure Test Function 
 from Functions.IO.Files import Directories
 from Functions.IO.IO import File
-
+from Functions.IO.IO import HDF5
 
 def TestDir(di):  
     x = Directories(di)
@@ -85,4 +85,20 @@ def TestFileConvertArray(di):
         assert isinstance((float(i[0])), float) == True
         passed = True
     return passed
+
+def TestHDF5ReadAndWrite():
+    from Functions.Particles.Particles import Particle
+
+    P = Particle()
+
+    H = HDF5(Name = "ClosureTestHDF5")
+    H.StartFile()
+    H.DumpObject(P, "Particle")
+    H.EndFile()
+
+    H.OpenFile(SourceDir = "_Pickle", Name = "ClosureTestHDF5")
+    obj = H.RebuildObject("Particle")
+    
+    assert obj == P
+    return True
 

@@ -1,8 +1,10 @@
 import uproot
 import pickle
+import h5py
 from Functions.IO.Files import Directories, WriteDirectory
 from Functions.Tools.DataTypes import Threading, TemplateThreading
 from Functions.Tools.Alerting import Notification
+from Functions.Tools.Variables import RecallObjectFromString
 
 class File(Notification):
     def __init__(self, dir, Verbose = False):
@@ -82,7 +84,7 @@ class File(Notification):
                 return []
         
         self.Caller = "CONVERTTOARRAY"
-        self.Notify("STARTING CONVERSION")
+        self.Notify("!!STARTING CONVERSION")
         runners = []
         for i in self.ObjectTrees:  
             if self.CheckAttribute(self.ObjectTrees[i], "array") and i not in self.ArrayTrees:
@@ -100,6 +102,8 @@ class File(Notification):
                 runners.append(th)
         
         T = Threading(runners, self)
+        T.Verbose = self.Verbose
+        T.VerboseLevel = self.VerboseLevel
         T.StartWorkers()
         del T
         del runners
@@ -139,3 +143,75 @@ def UnpickleObject(filename, Dir = "_Pickle"):
     obj = pickle.load(infile)
     infile.close()
     return obj
+
+class HDF5(WriteDirectory, Notification):
+
+    def __init__(self, OutDir = "_Pickle", Name = "UNTITLED", Verbose = True):
+        WriteDirectory.__init__(self)
+        Notification.__init__(self, Verbose)
+
+        self.VerboseLevel = 3
+        self.Verbose = Verbose
+        self.Caller = "WRITETOHDF5"
+        self.__Outdir = OutDir
+        self.__Name = Name
+        self.__File = None
+        self.MakeDir(self.__Outdir + "/" + Name)
+        self.__FileDirName = self.__Outdir + "/" + self.__Name + "/" + self.__Name + ".hdf5"
+  
+    def StartFile(self, Mode = "w"):
+        if Mode == "w":
+            self.Notify("!!WRITING -> " + self.__FileDirName)    
+        if Mode == "r":
+            self.Notify("!!READING -> " + self.__FileDirName)
+        self.__File = h5py.File(self.__FileDirName, Mode)
+    
+    def OpenFile(self, SourceDir, Name):
+        self.__init__(OutDir = SourceDir, Name = Name, Verbose = self.Verbose)
+        self.StartFile(Mode = "r")
+
+    def EndFile(self):
+        self.Notify("!!CLOSING FILE -> " + self.__FileDirName)
+        self.__File.close()
+        self.__File = None
+
+    def DumpObject(self, obj, DirKey):
+        def Recursion(dic, ki):
+            if isinstance(dic, int):
+                return dic
+
+            if isinstance(dic, str):
+                return dic
+
+            if isinstance(dic, dict):
+                v = [ki]
+                v += [[i, Recursion(dic[i], i)] for i in dic]
+                return v
+            if isinstance(dic, list):
+                v = [Recursion(i, i) for i in dic]
+                return v
+
+        
+        self.__File[DirKey] = [str(type(obj))]
+        ob = self.__File[DirKey]
+        for key, val in obj.__dict__.items():
+            if isinstance(val, dict) == isinstance(val, list):
+                ob.attrs[key] = [val]
+                continue
+            elif isinstance(val, dict):
+                print(Recursion(val, key)) # <----- Fix the recursion!!!
+            elif isinstance(val, list):
+                continue
+            print("\n\n\n")
+            print(val, key)
+            print("\n\n\n")
+   
+    def RebuildObject(self, DirKey):
+
+        obj = self.__File[DirKey]
+        obj_type = str(obj[0].decode("utf-8")).split("'")[1]
+        OBJ = RecallObjectFromString(obj_type)
+        
+        for i in list(obj.attrs):
+            setattr(OBJ, i, obj.attrs[i][0])
+        return OBJ

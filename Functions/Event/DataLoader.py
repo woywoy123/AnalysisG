@@ -78,7 +78,7 @@ class GenerateDataLoader(Notification):
         if len(list(self.GraphAttribute)) == 0:
             self.Warning("NO GRAPH FEATURES PROVIDED")
 
-        self.Notify("DATA BEING PROCESSED ON: " + self.Device_S)
+        self.Notify("!DATA BEING PROCESSED ON: " + self.Device_S)
         self.len = len(EventGeneratorInstance.Events)
 
         if Level == "TruthTops":
@@ -142,7 +142,7 @@ class GenerateDataLoader(Notification):
                 InputList[n_p].append(self.DataContainer[i])
 
 
-        self.Notify("WILL SPLIT DATA INTO TRAINING/VALIDATION (" + 
+        self.Notify("!WILL SPLIT DATA INTO TRAINING/VALIDATION (" + 
                 str(ValidationSize) + "%) - TEST (" + str(100 - ValidationSize) + "%) SAMPLES")
 
         All = np.array(list(self.DataContainer))

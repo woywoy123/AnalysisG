@@ -5,9 +5,9 @@ import torch
 import LorentzVector
 
 class Particle(VariableManager):
-    def __init__(self, Type = False):
-        if Type != False:
-            self.Type = "Particle"
+    def __init__(self, Type = "Particle"):
+        if hasattr(self, "Type") == False:
+            self.Type = Type
 
         VariableManager.__init__(self)
         self.pt = self.Type + "_pt"
@@ -37,13 +37,12 @@ class Particle(VariableManager):
         return math.sqrt(math.pow(P.eta-self.eta, 2) + math.pow(P.phi-self.phi, 2)) 
 
     def CalculateMass(self, lists = None, Name = "Mass"):
-        v = LorentzVector()
         if lists == None:
             v = LorentzVector.ToPxPyPzE(self.pt, self.eta, self.phi, self.e, "cpu")
         else:
             for i in lists:
                 v += LorentzVector.ToPxPyPzE(i.pt, i.eta, i.phi, i.e)
-        m = float(LorentzVector.GetMass(v))
+        m = float(LorentzVector.MassFromPxPyPzE(v))
         setattr(self, Name + "_MeV", m)
         setattr(self, Name + "_GeV", m / 1000)
 

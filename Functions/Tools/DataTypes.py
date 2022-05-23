@@ -12,7 +12,7 @@ class Threading(Notification):
 
     def StartWorkers(self):
         
-        self.Notify("STARTING " + str(len(self.__lists)) + " WORKERS")
+        self.Notify("!!STARTING " + str(len(self.__lists)) + " WORKERS")
         
         sub_p = []
         it = 0
@@ -30,7 +30,7 @@ class Threading(Notification):
                     for j in re:
                         self.__lists[j].SetAttribute(self.Object, re[j])
                         self.__lists[j] = 0
-                    self.Notify("PROGRESS " + str(round(100*float(it) / float(len(self.__lists)), 2)) + "% COMPLETE")    
+                    self.Notify("!!!PROGRESS " + str(round(100*float(it) / float(len(self.__lists)), 2)) + "% COMPLETE")    
                     del re
                     del p
                 sub_p = []
@@ -40,7 +40,7 @@ class Threading(Notification):
             it += 1
             for j in re:
                 self.__lists[j].SetAttribute(self.Object, re[j])
-            self.Notify("PROGRESS " + str(round(100*float(it) / float(len(self.__lists)), 2)) + "% COMPLETE")      
+            self.Notify("!!!PROGRESS " + str(round(100*float(it) / float(len(self.__lists)), 2)) + "% COMPLETE")      
             del p
             del re 
 

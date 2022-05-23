@@ -1,8 +1,8 @@
 import torch
 import onnx
-import h5py
 import numpy as np
 from Functions.IO.Files import WriteDirectory
+from Functions.IO.IO import HDF5
 import Functions
 
 class Model:
@@ -46,55 +46,24 @@ class ExportToDataScience(WriteDirectory):
             self.__Sample = [self.__Sample[i] for i in self.__InputMap]
             return 
         
-        if isinstance(self.__Sample, Functions.Event.Event.Event):
-             
-            for i in self.__Sample.__dict__:
-                if isinstance(self.__Sample.__dict__[i], list):
-                    continue
-                self.__GeneratorDump[self.__dump_e + "/E-" + i] = self.__Sample.__dict__[i]
-            return 
 
-        if issubclass( type(self.__Sample) , Functions.Particles.Particles.Particle):
-            for i in self.__Sample.__dict__:
-                if isinstance(self.__Sample.__dict__[i], list):
-                    continue
-
-                if str(self.__dump_e + "/" + i) not in self.__GeneratorDump:
-                    self.__GeneratorDump[self.__dump_e + "/" + i] = []
-                self.__GeneratorDump[self.__dump_e + "/" + i].append(self.__Sample.__dict__[i])
+    def ExportEventGenerator(self, EventGenerator, Name = None, OutDirectory = None):
+        if Name == None:
+            Name = "UNTITLED"
+        if OutDirectory == None:
+            OutDirectory = "_Pickle/"
+       
+        self.__Dump = HDF5(OutDirectory, Name)
+        self.__Dump.StartFile()
+        self.__Dump.DumpObject(EventGenerator, "EventGenerator")
+        #e = self.__Dump.RebuildObject("EventGenerator")
+        #print(e)
 
 
 
-    def ExportEventGenerator(self, EventGenerator):
-        self.__FileDictionary = EventGenerator.FileEventIndex
-        self.__GeneratorDump = {}
-        self.__GeneratorDump["Files"] = []
 
-        for ev_i in EventGenerator.Events:
-            F = EventGenerator.EventIndexFileLookup(ev_i) 
-            if F not in self.__GeneratorDump["Files"]:
-                self.__GeneratorDump["Files"].append(F)
 
-            idx = "F-" + str(self.__GeneratorDump["Files"].index(F))
-            dump_s = idx + "/i-" + str(ev_i)
 
-            for key in EventGenerator.Events[ev_i]:
-                EventObject =  EventGenerator.Events[ev_i][key]
-
-                self.__dump_e = dump_s + "/T-" + key
-                self.__Sample = EventObject
-                self.__ProcessSample()
-                 
-                for p in EventObject.__dict__:
-                    if isinstance(EventObject.__dict__[p], list) == False:
-                        continue
-                    for k in EventObject.__dict__[p]:
-                        self.__Sample = k
-                        self.__ProcessSample()
-                
-            
-        for i in self.__GeneratorDump:
-            print(i) # <---- continue here and write the hdf5 dump.
 
 
     def ExportModel(self, Sample):
