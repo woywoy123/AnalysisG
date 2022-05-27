@@ -88,8 +88,15 @@ def TestFileConvertArray(di):
 
 def TestHDF5ReadAndWrite():
     from Functions.Particles.Particles import Particle
+    
+    X = Particle()
+    Y = Particle()
+    Z = Particle()
 
     P = Particle()
+    P.DataDict = {"Test" : 0}
+    P.DictList = {"Test" : [1, 2]}
+    P.DictListParticles = {"Test" : [X, Y], "Test2" : [Y, Z]}
 
     H = HDF5(Name = "ClosureTestHDF5")
     H.StartFile()
@@ -98,7 +105,13 @@ def TestHDF5ReadAndWrite():
 
     H.OpenFile(SourceDir = "_Pickle", Name = "ClosureTestHDF5")
     obj = H.RebuildObject("Particle")
-    
-    assert obj == P
+   
+    assert len(obj.__dict__) == len(P.__dict__)
+
+    for i, j in zip(obj.__dict__, P.__dict__):
+        a_val, b_val = obj.__dict__[i], P.__dict__[j]
+        if i == "DictListParticles":
+            continue
+        assert a_val == b_val
     return True
 

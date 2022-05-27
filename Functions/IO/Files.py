@@ -3,12 +3,14 @@ from glob import glob
 from Functions.Tools.Alerting import *
 
 class Directories(Notification):
-    def __init__(self, dir, Verbose = True):
+    def __init__(self, directory = None, Verbose = True):
         Notification.__init__(self, Verbose)
         self.Caller = "Directories"
         
-        self.__Dir = dir 
-        self.Notify("READING +-> " + dir)
+        if directory != None:
+            self.__Dir = directory
+            self.Notify("READING +-> " + directory)
+        
         self.__pwd = os.getcwd()
         self.Files = {}
 

@@ -47,7 +47,7 @@ class ExportToDataScience(WriteDirectory):
             return 
         
 
-    def ExportEventGenerator(self, EventGenerator, Name = None, OutDirectory = None):
+    def ExportEventGenerator(self, EventGenerator, Name = None, OutDirectory = None, DumpName = None):
         if Name == None:
             Name = "UNTITLED"
         if OutDirectory == None:
@@ -55,15 +55,19 @@ class ExportToDataScience(WriteDirectory):
        
         self.__Dump = HDF5(OutDirectory, Name)
         self.__Dump.StartFile()
-        self.__Dump.DumpObject(EventGenerator, "EventGenerator")
-        #e = self.__Dump.RebuildObject("EventGenerator")
-        #print(e)
-
-
-
-
-
-
+        self.__Dump.DumpObject(EventGenerator, DumpName)
+        
+        for i in EventGenerator.Events:
+            event = EventGenerator.Events[i]
+            for k in event:
+                ev = event[k]
+                self.__Dump.DumpObject(ev)
+        self.__Dump.EndFile()
+    
+    def ImportEventGenerator(self, Name = None, InputDirectory = None, DumpName = None):
+        self.__Collect = HDF5()
+        self.__Collect.OpenFile(InputDirectory, Name)
+        return self.__Collect.RebuildObject(DumpName)
 
 
     def ExportModel(self, Sample):

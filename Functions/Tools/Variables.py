@@ -33,6 +33,9 @@ def RecallObjectFromString(string):
     mod = importlib.import_module(".".join(string.split(".")[:-1]))
     Reco = getattr(mod, string.split(".")[-1])
     
+    if Reco.__init__.__defaults__ == None:
+        return Reco()
+
     def_inp = list(Reco.__init__.__defaults__)
     inp = list(Reco.__init__.__code__.co_varnames)
     inp.remove("self")
@@ -44,21 +47,5 @@ def RecallObjectFromString(string):
 
     for i, j in zip(inp, def_inp):
         l[i] = j
-
-    print(l)
-
-
-
-    
-
-
-
-
-    print(def_inp)
-    print(inp)
-
-
-
-
 
     return Reco(**l)

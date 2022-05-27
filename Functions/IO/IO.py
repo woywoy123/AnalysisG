@@ -1,18 +1,21 @@
 import uproot
 import pickle
 import h5py
+import numpy as np
 from Functions.IO.Files import Directories, WriteDirectory
 from Functions.Tools.DataTypes import Threading, TemplateThreading
 from Functions.Tools.Alerting import Notification
 from Functions.Tools.Variables import RecallObjectFromString
 
 class File(Notification):
-    def __init__(self, dir, Verbose = False):
+    def __init__(self, directory = None, Verbose = False):
         Notification.__init__(self, Verbose = Verbose) 
-        self.Caller = "FILE +--> " + dir
-
-        self.__Dir = dir
         
+        if directory != None:
+            self.Caller = "FILE +--> " + directory
+            self.__Dir = directory
+            self.__Reader = uproot.open(self.__Dir)       
+
         self.ArrayBranches = {}
         self.ArrayLeaves = {}
         self.ArrayTrees = {}
@@ -25,7 +28,8 @@ class File(Notification):
         self.Leaves = []
         self.Branches = []
 
-        self.__Reader = uproot.open(self.__Dir)
+    def DefineDirectory(self, Directory):
+        self.__init__(directory = Directory, Verbose = self.Verbose)
   
     def CheckObject(self, Object, Key):
         if Key == -1:
@@ -146,7 +150,7 @@ def UnpickleObject(filename, Dir = "_Pickle"):
 
 class HDF5(WriteDirectory, Notification):
 
-    def __init__(self, OutDir = "_Pickle", Name = "UNTITLED", Verbose = True):
+    def __init__(self, OutDir = None, Name = None, Verbose = True):
         WriteDirectory.__init__(self)
         Notification.__init__(self, Verbose)
 
@@ -156,7 +160,18 @@ class HDF5(WriteDirectory, Notification):
         self.__Outdir = OutDir
         self.__Name = Name
         self.__File = None
-        self.MakeDir(self.__Outdir + "/" + Name)
+        
+        if OutDir == None:
+            self.__Outdir = "_Pickle"
+        if Name == None:
+            self.__Name = "UNTITLED"
+
+        if self.__Outdir.endswith("/"):
+            self.__Outdir = self.__Outdir.rstrip("/")
+        if self.__Name.endswith("/"):
+            self.__Name = self.__Name.rstrip("/")           
+
+        self.MakeDir(self.__Outdir + "/" + self.__Name)
         self.__FileDirName = self.__Outdir + "/" + self.__Name + "/" + self.__Name + ".hdf5"
   
     def StartFile(self, Mode = "w"):
@@ -165,6 +180,10 @@ class HDF5(WriteDirectory, Notification):
         if Mode == "r":
             self.Notify("!!READING -> " + self.__FileDirName)
         self.__File = h5py.File(self.__FileDirName, Mode)
+        if "__PointerReferences" in self.__File:
+            self.__RefSet = self.__File["__PointerReferences"]
+        else:
+            self.__RefSet = self.__File.create_dataset("__PointerReferences", (1, ), dtype = h5py.ref_dtype)
     
     def OpenFile(self, SourceDir, Name):
         self.__init__(OutDir = SourceDir, Name = Name, Verbose = self.Verbose)
@@ -174,44 +193,111 @@ class HDF5(WriteDirectory, Notification):
         self.Notify("!!CLOSING FILE -> " + self.__FileDirName)
         self.__File.close()
         self.__File = None
-
-    def DumpObject(self, obj, DirKey):
-        def Recursion(dic, ki):
-            if isinstance(dic, int):
-                return dic
-
-            if isinstance(dic, str):
-                return dic
-
-            if isinstance(dic, dict):
-                v = [ki]
-                v += [[i, Recursion(dic[i], i)] for i in dic]
-                return v
-            if isinstance(dic, list):
-                v = [Recursion(i, i) for i in dic]
-                return v
-
-        
-        self.__File[DirKey] = [str(type(obj))]
-        ob = self.__File[DirKey]
-        for key, val in obj.__dict__.items():
-            if isinstance(val, dict) == isinstance(val, list):
-                ob.attrs[key] = [val]
-                continue
-            elif isinstance(val, dict):
-                print(Recursion(val, key)) # <----- Fix the recursion!!!
-            elif isinstance(val, list):
-                continue
-            print("\n\n\n")
-            print(val, key)
-            print("\n\n\n")
+        self.__RefSet = None
    
-    def RebuildObject(self, DirKey):
+    def __Store(self, Name, key, val):
+        if isinstance(val, dict):
+            self.__StoreDict(Name, key, val)
+        elif isinstance(val, list):
+            if len(val) == 0:
+                self.__CreateAttribute(Name, key, val)
+            else:
+                self.__StoreList(Name, key, val)
+        elif "Functions" in str(type(val)):
+            self.__CreateAttribute(Name, key, [str(val)])
+        else:
+            self.__CreateAttribute(Name, key, val)
 
-        obj = self.__File[DirKey]
-        obj_type = str(obj[0].decode("utf-8")).split("'")[1]
-        OBJ = RecallObjectFromString(obj_type)
+    def __CreateDataSet(self, RefName):
+        self.__RefSet.attrs[RefName] = self.__File.create_dataset(RefName, data = h5py.Empty(None)).ref
+    
+    def __CreateAttribute(self, RefName, AttributeName, Data):
+        if AttributeName in self.__File[RefName].attrs:
+            D = self.__File[RefName].attrs[AttributeName]
+            if isinstance(D, np.ndarray):
+                D = np.append(D, Data)
+            else: 
+                D = [D, Data]
+            self.__File[RefName].attrs[AttributeName] = D
+        else:
+            self.__File[RefName].attrs[AttributeName] = Data
+        return self.__File[RefName].attrs[AttributeName]
+
+    def __StoreDict(self, Name, AttributeName, Value):
+        for key, val in Value.items():
+            self.__Store(Name, AttributeName + "/#/" + str(key), val) 
+
+    def __StoreList(self, Name, AttributeName, Value):
+        for i in Value:
+            self.__Store(Name, AttributeName, i)
+        if len(Value) == 0:
+            self.__Store(Name, AttributeName, [])
+
+    def DumpObject(self, obj, Name = None):
+        type_addr = str(obj).replace(">", "").replace("<", "").split(" ")
         
-        for i in list(obj.attrs):
-            setattr(OBJ, i, obj.attrs[i][0])
-        return OBJ
+        if Name == None:
+            Name = type_addr[-1]
+        
+        self.__CreateDataSet(Name)
+        self.__CreateAttribute(Name, "__FunctionType", type_addr[0])
+        for i, j in obj.__dict__.items():
+            self.__Store(Name, i, j)
+
+    def RebuildObject(self, DirKey = None):
+        def Dictify(lst, dic, va):
+            if len(lst) == 0:
+                if len(va) == 1:
+                    return va[0]
+                return va
+            if lst[0] not in dic:
+                dic |= {lst[0]: Dictify(lst[1:], {}, va)}
+            else:
+                dic[lst[0]] |= Dictify(lst[1:], dic[lst[0]], va)
+            return dic
+
+        obj = self.__File
+        output = []
+        for i in obj.keys():
+            if i == "__PointerReferences":
+                continue
+                
+            obj_type = obj[i].attrs["__FunctionType"]
+            target_obj = RecallObjectFromString(obj_type)
+            
+            out = {}
+            attr_List = []
+            for key in obj[i].attrs.keys():
+                if key == "__FunctionType":
+                    continue
+                val = obj[i].attrs[key]
+                val = getattr(val, "tolist", lambda: val)()
+                    
+                if "/#/" in key:
+                    dic_v = key.split("/#/")
+                    key = key.split("/#/")[0]
+                    out = Dictify(dic_v, out, val)
+                    
+                    if key not in attr_List:
+                        attr_List.append(key)
+                    continue
+
+                if key not in attr_List:
+                    attr_List.append(key)
+
+                setattr(target_obj, key, val)
+            
+            for key in out:
+                setattr(target_obj, key, out[key])
+            
+            t_list = list(target_obj.__dict__.keys())
+            for k in t_list:
+                if k not in attr_List:
+                    delattr(target_obj, k) 
+            
+            if DirKey == i:
+                return target_obj
+            else:
+                output.append(target_obj)
+        return output 
+
