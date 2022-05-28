@@ -35,33 +35,7 @@ def TestModelExport(Files, Level, Name, CreateCache):
     return True
 
 def TestEventGeneratorExport(File, Name, CreateCache):
-    def Recursive(inp1, inp2):
-        if isinstance(inp1, dict):
-            if len(inp1) != len(inp2):
-                exit()
-
-            for key in inp1:
-                Recursive(inp1[key], inp2[str(key)])
-        elif isinstance(inp1, list):
-            for key1, key2 in zip(inp1, inp2):
-                Recursive(key1, key2)
-        else:
-            if inp1 != inp2:
-                if str(inp1) == inp2:
-                    return 
-                print([inp1, inp2], inp1 == inp2, type(inp2) == type(inp1))
-                #exit()
-    def CompareObjects(in1, in2):
-        key_t = set(list(in1.__dict__.keys()))
-        key_r = set(list(in2.__dict__.keys()))
-        d = key_t ^ key_r
-        
-        if len(list(d)) != 0:
-            print("!!!!!!!!!!!!!!!!Variable difference: ", d)
-
-        for i, j in zip(list(key_t), list(key_r)):
-            print("----> ", i, j)
-            Recursive(in1.__dict__[i], in2.__dict__[j])
+    from Closure.GenericFunctions import CompareObjects
 
     if CreateCache:
         ev = EventGenerator(File, Stop = 5)
@@ -70,33 +44,30 @@ def TestEventGeneratorExport(File, Name, CreateCache):
         PickleObject(ev, Name) 
     ev = UnpickleObject(Name)
 
-    #Exp = ExportToDataScience()
-    #Exp.ExportEventGenerator(ev, Name = "TestEventGeneratorExport", DumpName = "EventLoader")
-    #ev_restore = Exp.ImportEventGenerator(Name = "TestEventGeneratorExport", DumpName = "EventLoader")
-    #CompareObjects(ev, ev_restore)
-
-
     Exp = ExportToDataScience()
     Exp.ExportEventGenerator(ev, Name = "TestEventGeneratorExport_Events")
     ev_event = Exp.ImportEventGenerator(Name = "TestEventGeneratorExport_Events")
-    for i in ev_event:
-        if "EventGenerator" in str(i):
-            continue
-        
-        ev_t = ev.Events[i.iter][i.Tree]
-        print(ev_t.iter, i.iter)
-        print(ev_t.mu, i.mu)
-        break
-        CompareObjects(ev_t, i)
+    for i in ev_event.Events:
+        for tree in ev_event.Events[i]:
+            ev_p = ev_event.Events[i][tree][0] 
+            ev_t = ev.Events[i][tree]
+            CompareObjects(ev_t, ev_p)
+    return True
 
 
+def TestDataLoaderExport(Files, CreateCache):
+    from Closure.GenericFunctions import CompareObjects, CreateDataLoaderComplete
+    DL = CreateDataLoaderComplete(Files, "TruthTopChildren", "TestDataLoaderExport", CreateCache)
+    
+    Exp = ExportToDataScience()
+    Exp.ExportDataGenerator(DL, Name = "TestDataLoaderExportHDF5")
+    
+    Exp = ExportToDataScience()
+    obj = Exp.ImportDataGenerator(Name = "TestDataLoaderExportHDF5")
 
-        break
-
-
-
-
-
+    DL = CreateDataLoaderComplete(Files, "TruthTopChildren", "TestDataLoaderExport", CreateCache)
+    CompareObjects(DL, obj)
 
 
     return True
+

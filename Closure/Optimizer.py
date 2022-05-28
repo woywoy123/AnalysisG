@@ -83,45 +83,8 @@ def TestOptimizerEdge(Files, Level, Name, CreateCache):
     return True
 
 def TestOptimizerCombined(Files, Level, Name, CreateCache):
-
-    if CreateCache: 
-        DL = GenerateDataLoader()
-
-        # Edge Features 
-        DL.AddEdgeFeature("dr", ef.d_r)
-        DL.AddEdgeFeature("mass", ef.mass)       
-        DL.AddEdgeFeature("signal", ef.Signal)
- 
-        # Node Features 
-        DL.AddNodeFeature("eta", nf.eta)
-        DL.AddNodeFeature("pt", nf.pt)       
-        DL.AddNodeFeature("phi", nf.phi)      
-        DL.AddNodeFeature("energy", nf.energy)
-        DL.AddNodeFeature("signal", nf.Signal)
-        
-        # Graph Features 
-        DL.AddGraphFeature("mu", gf.Mu)
-        DL.AddGraphFeature("m_phi", gf.MissingPhi)       
-        DL.AddGraphFeature("m_et", gf.MissingET)      
-        DL.AddGraphFeature("signal", gf.Signal)       
-
-
-        # Truth Stuff 
-        DL.AddEdgeTruth("Topology", ef.Signal)
-        DL.AddNodeTruth("NodeSignal", nf.Signal)
-        DL.AddGraphTruth("GraphMuActual", gf.MuActual)
-        DL.AddGraphTruth("GraphEt", gf.MissingET)
-        DL.AddGraphTruth("GraphPhi", gf.MissingPhi)
-        DL.AddGraphTruth("GraphSignal", gf.Signal)
-
-        DL.SetDevice("cuda")
-        for i in Files:
-            ev = UnpickleObject(i + "/" + i)
-            DL.AddSample(ev, "nominal", Level, True, True)
-        DL.MakeTrainingSample(50)
-        PickleObject(DL, Name)
-    DL = UnpickleObject(Name)
-
+    from Closure.GenericFunctions import CreateDataLoaderComplete
+    DL = CreateDataLoaderComplete(Files, Level, Name, CreateCache)
     op = Optimizer(DL)
     op.VerboseLevel = 2
     op.BatchSize = 100

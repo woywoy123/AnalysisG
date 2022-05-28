@@ -76,7 +76,11 @@ def TestDataLoader(Name, Level):
         AttestationIdentity(data.N_Node, torch.tensor([[TrivialNodeFeature(i)] for i in Particles], dtype = torch.float))
         AttestationIdentity(data.E_Edge, torch.tensor([[TrivialEdgeFeature(i, j)] for i in Particles for j in Particles], dtype = torch.float))
    
-    DL.ResetData()
+    DL = GenerateDataLoader() 
+    DL.CleanUp = False
+    DL.AddGraphFeature("Graph", TrivialGraphFeature)
+    DL.AddNodeFeature("Node", TrivialNodeFeature)
+    DL.AddEdgeFeature("Edge", TrivialEdgeFeature)
     DL.AddSample(ev, "nominal", Level, False)
     for i in DL.DataContainer:
         Particles = getattr(ev.Events[i]["nominal"], Level) 

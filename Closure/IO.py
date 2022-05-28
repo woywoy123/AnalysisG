@@ -86,7 +86,7 @@ def TestFileConvertArray(di):
         passed = True
     return passed
 
-def TestHDF5ReadAndWrite():
+def TestHDF5ReadAndWriteParticle():
     from Functions.Particles.Particles import Particle
     
     X = Particle()
@@ -100,11 +100,14 @@ def TestHDF5ReadAndWrite():
 
     H = HDF5(Name = "ClosureTestHDF5")
     H.StartFile()
-    H.DumpObject(P, "Particle")
+    H.DumpObject(P)
     H.EndFile()
 
     H.OpenFile(SourceDir = "_Pickle", Name = "ClosureTestHDF5")
-    obj = H.RebuildObject("Particle")
+    obj = H.RebuildObject()
+    for i in obj:
+        obj = obj[i]
+        break
    
     assert len(obj.__dict__) == len(P.__dict__)
 
@@ -115,3 +118,42 @@ def TestHDF5ReadAndWrite():
         assert a_val == b_val
     return True
 
+def TestHDF5ReadAndWriteEvent(di, Cache):
+    from Closure.GenericFunctions import CacheEventGenerator, CompareObjects
+    from Functions.IO.IO import UnpickleObject, PickleObject  
+
+    ev = CacheEventGenerator(1, di, "TestHDF5ReadAndWriteEvent", Cache)
+    event = ev.Events[0]["nominal"]
+    PickleObject(event, "TestHDF5ReadAndWriteEventObject")
+    event = UnpickleObject("TestHDF5ReadAndWriteEventObject")
+
+    f = HDF5(Name = "TestHDF5ReadAndWriteEvent")
+    f.StartFile()
+    f.DumpObject(event)
+    f.EndFile()
+    
+    x = HDF5()
+    x.OpenFile(Name = "TestHDF5ReadAndWriteEvent")
+    ev = x.RebuildObject()
+    for i in ev:
+        def Apply(ins, attr, ino):
+            setattr(ins, attr, getattr(ino, attr))
+        
+        Apply(event, "DetectorParticles", ev[i])
+        Apply(event, "Electrons", ev[i])
+        Apply(event, "Muons", ev[i])
+        Apply(event, "Jets", ev[i])
+        Apply(event, "TruthJets", ev[i])
+        Apply(event, "TruthTops", ev[i])
+        Apply(event, "TruthTopChildren", ev[i])
+        Apply(event, "TopPreFSR", ev[i])
+        Apply(event, "TopPostFSR", ev[i])
+        Apply(event, "TopPostFSRChildren", ev[i])
+        
+        ev = ev[i]
+
+
+
+    CompareObjects(event, ev)
+
+    return True

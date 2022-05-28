@@ -156,17 +156,3 @@ class GenerateDataLoader(Notification):
         else:
             MakeSample(-1, self.TrainingSample)
 
-    def ResetData(self):
-        self.FileTraces = {}
-        self.__iter = 0
-        self.TrainigSample = {}
-        self.ValidationSample = {}
-        self.DataContainer = {}
-        self.FileTraces["Tree"] = []
-        self.FileTraces["Start"] = []
-        self.FileTraces["End"] = []
-        self.FileTraces["Level"] = []
-        self.FileTraces["SelfLoop"] = []
-        self.FileTraces["Samples"] = []
-
-

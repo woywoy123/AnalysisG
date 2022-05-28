@@ -47,5 +47,5 @@ def RecallObjectFromString(string):
 
     for i, j in zip(inp, def_inp):
         l[i] = j
-
+    
     return Reco(**l)

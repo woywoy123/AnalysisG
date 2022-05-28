@@ -2,6 +2,7 @@ import uproot
 import pickle
 import h5py
 import numpy as np
+import torch
 from Functions.IO.Files import Directories, WriteDirectory
 from Functions.Tools.DataTypes import Threading, TemplateThreading
 from Functions.Tools.Alerting import Notification
@@ -185,7 +186,7 @@ class HDF5(WriteDirectory, Notification):
         else:
             self.__RefSet = self.__File.create_dataset("__PointerReferences", (1, ), dtype = h5py.ref_dtype)
     
-    def OpenFile(self, SourceDir, Name):
+    def OpenFile(self, SourceDir = None, Name = None):
         self.__init__(OutDir = SourceDir, Name = Name, Verbose = self.Verbose)
         self.StartFile(Mode = "r")
 
@@ -196,8 +197,10 @@ class HDF5(WriteDirectory, Notification):
         self.__RefSet = None
    
     def __Store(self, Name, key, val):
+
         if isinstance(val, dict):
             self.__StoreDict(Name, key, val)
+
         elif isinstance(val, list):
             if len(val) == 0:
                 self.__CreateAttribute(Name, key, val)
@@ -205,6 +208,19 @@ class HDF5(WriteDirectory, Notification):
                 self.__StoreList(Name, key, val)
         elif "Functions" in str(type(val)):
             self.__CreateAttribute(Name, key, [str(val)])
+
+        elif "torch.Tensor" in str(type(val)):
+            self.__CreateAttribute(Name, key, val.numpy())
+
+        elif "torch_geometric" in str(type(val)):
+            self.__Store(Name, key, val.__dict__) 
+        
+        elif "weakref" in str(type(val)):
+            return 
+
+        elif "torch." in str(type(val)):
+            self.__Store(Name, key, "")
+
         else:
             self.__CreateAttribute(Name, key, val)
 
@@ -212,8 +228,10 @@ class HDF5(WriteDirectory, Notification):
         self.__RefSet.attrs[RefName] = self.__File.create_dataset(RefName, data = h5py.Empty(None)).ref
     
     def __CreateAttribute(self, RefName, AttributeName, Data):
+
         if AttributeName in self.__File[RefName].attrs:
             D = self.__File[RefName].attrs[AttributeName]
+
             if isinstance(D, np.ndarray):
                 D = np.append(D, Data)
             else: 
@@ -228,36 +246,48 @@ class HDF5(WriteDirectory, Notification):
             self.__Store(Name, AttributeName + "/#/" + str(key), val) 
 
     def __StoreList(self, Name, AttributeName, Value):
+        if any(isinstance(k, str) or isinstance(k, int) or isinstance(k, float) for k in Value):
+            self.__CreateAttribute(Name, AttributeName, Value)
+            return  
         for i in Value:
             self.__Store(Name, AttributeName, i)
         if len(Value) == 0:
             self.__Store(Name, AttributeName, [])
 
     def DumpObject(self, obj, Name = None):
-        type_addr = str(obj).replace(">", "").replace("<", "").split(" ")
         
         if Name == None:
-            Name = type_addr[-1]
+            Name = hex(id(obj))
         
+        if Name in self.__RefSet.attrs:
+            return 
+
+        type_ = str(type(obj).__module__) + "." + str(type(obj).__name__)
         self.__CreateDataSet(Name)
-        self.__CreateAttribute(Name, "__FunctionType", type_addr[0])
+        self.__CreateAttribute(Name, "__FunctionType", type_)
         for i, j in obj.__dict__.items():
             self.__Store(Name, i, j)
 
-    def RebuildObject(self, DirKey = None):
+    def RebuildObject(self):
         def Dictify(lst, dic, va):
             if len(lst) == 0:
-                if len(va) == 1:
-                    return va[0]
+                if isinstance(va, str) or isinstance(va, float) or isinstance(va, int):
+                    return va
                 return va
-            if lst[0] not in dic:
-                dic |= {lst[0]: Dictify(lst[1:], {}, va)}
+            
+            l = lst[0] 
+            if l.isdigit():
+                l = int(l)
+
+            if l not in dic:
+                dic |= {l: Dictify(lst[1:], {}, va)}
             else:
-                dic[lst[0]] |= Dictify(lst[1:], dic[lst[0]], va)
+                dic[l] |= Dictify(lst[1:], dic[l], va)
             return dic
 
         obj = self.__File
-        output = []
+        output = {}
+        
         for i in obj.keys():
             if i == "__PointerReferences":
                 continue
@@ -288,16 +318,15 @@ class HDF5(WriteDirectory, Notification):
                 setattr(target_obj, key, val)
             
             for key in out:
+                if key == "_store" and type(target_obj).__name__ == "Data":
+                    for l, v in out[key]["_mapping"].items():
+                        setattr(target_obj, l, torch.tensor(v))
+                    continue
                 setattr(target_obj, key, out[key])
             
             t_list = list(target_obj.__dict__.keys())
             for k in t_list:
                 if k not in attr_List:
                     delattr(target_obj, k) 
-            
-            if DirKey == i:
-                return target_obj
-            else:
-                output.append(target_obj)
+            output[i] = target_obj
         return output 
-
