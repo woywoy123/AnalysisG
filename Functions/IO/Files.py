@@ -1,6 +1,7 @@
 import os
 from glob import glob
 from Functions.Tools.Alerting import *
+import re
 
 class Directories(Notification):
     def __init__(self, directory = None, Verbose = True):
@@ -29,22 +30,30 @@ class Directories(Notification):
 
     def ListFilesInDir(self, dir):
         os.chdir(dir)
-        Output = []
-        for i in glob("*"):
-            if os.path.isfile(i) and ".root" in i:
-                Output.append(i)
-                self.Notify("FOUND +-> " + dir + "/" + i)
-
-            if os.path.isfile(i) and ".pt" in i:
-                Output.append(i)
-                self.Notify("FOUND +-> " + dir + "/" + i)
-
-            if os.path.isfile(i) and ".pkl" in i:
-                Output.append(i)
-                self.Notify("FOUND +-> " + dir + "/" + i)
+        if dir.endswith("/"):
+            dir = dir[:-1]
         
+        Output = {}
+        accepted = [".root", ".pt", ".pkl", ".hdf5", ".onnx"]
+        for i in glob("*"):
+            
+            if os.path.isfile(i) and len([k for k in accepted if i.endswith(k)]) != 0:
+                pass
+            else:
+                continue
+            Output[i] = ""
+
         os.chdir(self.__pwd)
-        return Output
+        integers = { re.search(r'\d+$', ".".join(i.split(".")[:-1])) : i  for i in Output }
+        integers = { int(i.group()) : integers[i] for i in integers if i != None }
+        integers = { integers[i] : "" for i in sorted(integers) }
+        Output = {i : "" for i in Output if i not in integers} 
+        Output |= integers 
+
+        for i in Output:
+            self.Notify("!!FOUND +-> " + dir + "/" + i)
+
+        return list(Output)
 
     def GetFilesInDir(self):
         if os.path.isfile(self.__Dir) == False:

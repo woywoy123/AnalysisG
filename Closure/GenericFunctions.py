@@ -1,6 +1,7 @@
 def Recursive(inp1, inp2):
     if isinstance(inp1, dict):
         if len(inp1) != len(inp2):
+            print(inp1, inp2)
             exit()
         for key in inp1:
             Recursive(inp1[key], inp2[key])
@@ -29,11 +30,13 @@ def Recursive(inp1, inp2):
                 r = round(inp1/inp2)
                 if r == 1:
                     return 
-            print(inp1, inp2, type(inp2), type(inp1))
-            for i in inp1.__dict__:
-                p1, p2 = inp1.__dict__[i], inp2.__dict__[i]
-                print(p1, p2)
-            
+            print(inp1, inp2, inp1 == inp2)
+            for i, j in zip(inp1.__dict__, inp2.__dict__):
+                p1, p2 = inp1.__dict__[i], inp2.__dict__[j]
+                if p1 == p2:
+                    continue
+                print(" > ", p1, p2, p1 == p2, type(p1), type(p2))
+            print(inp1.iter,inp2.iter) 
             return False
 
 
@@ -51,6 +54,7 @@ def CompareObjects(in1, in2):
         else:
             print("----> ", i, j)
             exit()
+
 def CacheEventGenerator(Stop, Dir, Name, Cache):
     from Functions.IO.IO import UnpickleObject, PickleObject   
     from Functions.Event.EventGenerator import EventGenerator
@@ -63,7 +67,21 @@ def CacheEventGenerator(Stop, Dir, Name, Cache):
     return UnpickleObject(Name)
 
 
-def CreateDataLoaderComplete(Files, Level, Name, CreateCache):
+def CreateEventGeneratorComplete(Stop, Files, Name, CreateCache, NameOfCaller):
+    from Functions.IO.IO import UnpickleObject, PickleObject   
+    from Functions.Event.EventGenerator import EventGenerator 
+
+    out = []
+    for i, j in zip(Files, Name):
+        if CreateCache:
+            ev = EventGenerator(i, Stop = Stop)
+            ev.SpawnEvents()
+            ev.CompileEvent(SingleThread = False)
+            PickleObject(ev, j, Dir = "_Pickle/" +  NameOfCaller) 
+        out.append(UnpickleObject(j, Dir = "_Pickle/" + NameOfCaller))
+    return out
+
+def CreateDataLoaderComplete(Files, Level, Name, CreateCache, NameOfCaller = None):
     from Functions.IO.IO import UnpickleObject, PickleObject   
     if CreateCache:
 
@@ -103,10 +121,12 @@ def CreateDataLoaderComplete(Files, Level, Name, CreateCache):
 
         DL.SetDevice("cuda")
         for i in Files:
-            ev = UnpickleObject(i + "/" + i)
+            if NameOfCaller != None:
+                ev = UnpickleObject(NameOfCaller + "/" + i)
+            else:
+                ev = UnpickleObject(i + "/" + i)
             DL.AddSample(ev, "nominal", Level, True, True)
-            break
-        DL.MakeTrainingSample(50)
+        DL.MakeTrainingSample(0)
         PickleObject(DL, Name)
     return UnpickleObject(Name)
 

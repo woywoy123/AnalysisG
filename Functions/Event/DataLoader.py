@@ -4,7 +4,7 @@ from sklearn.model_selection import ShuffleSplit
 import numpy as np
 
 class GenerateDataLoader(Notification):
-
+    
     def __init__(self):
         self.Verbose = True
         Notification.__init__(self, self.Verbose)
@@ -128,8 +128,8 @@ class GenerateDataLoader(Notification):
 
 
         self.FileTraces["End"].append(self.__iter-1)
-        self.ResetAll()
         self.Notify("FINISHED CONVERSION")
+        self.ResetAll()
 
     def MakeTrainingSample(self, ValidationSize = 50):
         def MakeSample(Shuff, InputList):

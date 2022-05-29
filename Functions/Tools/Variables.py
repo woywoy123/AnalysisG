@@ -27,6 +27,22 @@ class VariableManager:
         del self.Leaves 
         del self.KeyMap
 
+    def __eq__(self, other):
+        if type(self) != type(other):
+            return False
+
+        if self.__dict__.items() != other.__dict__.items():
+            return False
+
+        for k, j in zip(self.__dict__.keys(), other.__dict__.keys()):
+            if k != j:
+                return False
+            if self.__dict__[k] != self.__dict__[j]:
+                return False
+        return True
+
+
+
 
 def RecallObjectFromString(string):
     import importlib

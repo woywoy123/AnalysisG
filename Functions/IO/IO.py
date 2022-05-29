@@ -149,32 +149,63 @@ def UnpickleObject(filename, Dir = "_Pickle"):
     infile.close()
     return obj
 
-class HDF5(WriteDirectory, Notification):
+class HDF5(WriteDirectory, Directories):
 
-    def __init__(self, OutDir = None, Name = None, Verbose = True):
+    def __init__(self, OutDir = None, Name = None, Verbose = True, Chained = True):
         WriteDirectory.__init__(self)
+        Directories.__init__(self)
         Notification.__init__(self, Verbose)
 
         self.VerboseLevel = 3
         self.Verbose = Verbose
-        self.Caller = "WRITETOHDF5"
+        self.Caller = "WRITE-TO-HDF5"
         self.__Outdir = OutDir
         self.__Name = Name
         self.__File = None
         
-        if OutDir == None:
+        self.__DirectoryStandard()
+        self.MakeDir(self.__Outdir + "/" + self.__Name)
+        self.__part = 0
+        
+        if Chained:
+            self.__FileDirName = self.__Outdir + "/" + self.__Name + "/" + self.__Name + "_" + str(self.__part) + ".hdf5" 
+        else:
+            self.__FileDirName = self.__Outdir + "/" + self.__Name + "/" + self.__Name + ".hdf5"
+
+    def __DirectoryStandard(self):
+        if self.__Outdir == None:
             self.__Outdir = "_Pickle"
-        if Name == None:
+        if self.__Name == None:
             self.__Name = "UNTITLED"
 
         if self.__Outdir.endswith("/"):
             self.__Outdir = self.__Outdir.rstrip("/")
         if self.__Name.endswith("/"):
-            self.__Name = self.__Name.rstrip("/")           
+            self.__Name = self.__Name.rstrip("/")
 
-        self.MakeDir(self.__Outdir + "/" + self.__Name)
-        self.__FileDirName = self.__Outdir + "/" + self.__Name + "/" + self.__Name + ".hdf5"
-  
+    def SwitchFile(self):
+        tmp = self.VerboseLevel
+        self.VerboseLevel = 0
+        self.EndFile()
+        self.__part += 1
+        self.__FileDirName = self.__Outdir + "/" + self.__Name + "/" + self.__Name + "_" + str(self.__part) + ".hdf5"
+        self.StartFile()
+        self.VerboseLevel = tmp
+
+    def ReadChain(self):
+        f = self.ListFilesInDir(self.__Outdir + "/" + self.__Name + "/")
+        tmp = self.VerboseLevel
+        output = {}
+        for i in f:
+            self.VerboseLevel = 0
+            self.__FileDirName = self.__Outdir + "/" + self.__Name + "/" + i
+            self.StartFile("r")
+            output |= self.RebuildObject()
+            self.EndFile()
+            self.VerboseLevel = tmp
+            self.Notify("!!!FINISHED READING -> " + i + " / " + str(len(f)))
+        return output
+
     def StartFile(self, Mode = "w"):
         if Mode == "w":
             self.Notify("!!WRITING -> " + self.__FileDirName)    
@@ -187,7 +218,10 @@ class HDF5(WriteDirectory, Notification):
             self.__RefSet = self.__File.create_dataset("__PointerReferences", (1, ), dtype = h5py.ref_dtype)
     
     def OpenFile(self, SourceDir = None, Name = None):
-        self.__init__(OutDir = SourceDir, Name = Name, Verbose = self.Verbose)
+        self.__OutDir = SourceDir
+        self.__Name = Name
+        self.__DirectoryStandard()
+        self.__FileDirName = self.__Outdir + "/" + self.__Name + "/" + self.__Name + ".hdf5"
         self.StartFile(Mode = "r")
 
     def EndFile(self):
@@ -244,6 +278,9 @@ class HDF5(WriteDirectory, Notification):
     def __StoreDict(self, Name, AttributeName, Value):
         for key, val in Value.items():
             self.__Store(Name, AttributeName + "/#/" + str(key), val) 
+        
+        if len(Value) == 0:
+            self.__Store(Name, AttributeName + "/#/", "")
 
     def __StoreList(self, Name, AttributeName, Value):
         if any(isinstance(k, str) or isinstance(k, int) or isinstance(k, float) for k in Value):
@@ -278,8 +315,10 @@ class HDF5(WriteDirectory, Notification):
             l = lst[0] 
             if l.isdigit():
                 l = int(l)
-
-            if l not in dic:
+           
+            if l == "":
+                dic |= {}
+            elif l not in dic:
                 dic |= {l: Dictify(lst[1:], {}, va)}
             else:
                 dic[l] |= Dictify(lst[1:], dic[l], va)
@@ -307,14 +346,12 @@ class HDF5(WriteDirectory, Notification):
                     dic_v = key.split("/#/")
                     key = key.split("/#/")[0]
                     out = Dictify(dic_v, out, val)
-                    
                     if key not in attr_List:
                         attr_List.append(key)
                     continue
-
+                
                 if key not in attr_List:
                     attr_List.append(key)
-
                 setattr(target_obj, key, val)
             
             for key in out:

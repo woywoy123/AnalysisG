@@ -21,18 +21,6 @@ class Particle(VariableManager):
         self.Decay_init = []
         self.Decay = []
     
-    def __eq__(self, other):
-        if (isinstance(other, Particle)):
-            if self.__dict__ != self.__dict__:
-                return False
-
-            for k in self.__dict__:
-                if getattr(self, k) != getattr(other, k):
-                    return False
-            return True
-        else:
-            return False
-
     def DeltaR(self, P):
         return math.sqrt(math.pow(P.eta-self.eta, 2) + math.pow(P.phi-self.phi, 2)) 
 

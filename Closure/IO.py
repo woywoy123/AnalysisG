@@ -98,7 +98,7 @@ def TestHDF5ReadAndWriteParticle():
     P.DictList = {"Test" : [1, 2]}
     P.DictListParticles = {"Test" : [X, Y], "Test2" : [Y, Z]}
 
-    H = HDF5(Name = "ClosureTestHDF5")
+    H = HDF5(Name = "ClosureTestHDF5", Chained = False)
     H.StartFile()
     H.DumpObject(P)
     H.EndFile()
@@ -127,7 +127,7 @@ def TestHDF5ReadAndWriteEvent(di, Cache):
     PickleObject(event, "TestHDF5ReadAndWriteEventObject")
     event = UnpickleObject("TestHDF5ReadAndWriteEventObject")
 
-    f = HDF5(Name = "TestHDF5ReadAndWriteEvent")
+    f = HDF5(Name = "TestHDF5ReadAndWriteEvent", Chained = False)
     f.StartFile()
     f.DumpObject(event)
     f.EndFile()
