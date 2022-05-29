@@ -396,10 +396,17 @@ class Metrics(Directories):
                     
                     try: 
                         Delta_T_V[ft + "::Accuracy"].append(r_ta / r_va)
-                        Delta_T_V[ft + "::Loss"].append(r_tl / r_vl)
                     except ZeroDivisionError:
                         Delta_T_V[ft + "::Accuracy"].append(r_ta / (r_va +1))
+
+                    try: 
+                        Delta_T_V[ft + "::Loss"].append(r_tl / r_vl)
+                    except ZeroDivisionError:
                         Delta_T_V[ft + "::Loss"].append(r_tl / (r_vl + 1))
+
+
+
+
 
                 Record("      " + ft + " :: " + str(round(av_ta, 3)) + "% :: " + str(round(av_tl, 3)) + " / " + str(round(av_va, 3)) + "% :: " + str(round(av_vl, 3)))
 
