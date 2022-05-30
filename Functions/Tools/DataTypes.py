@@ -59,7 +59,7 @@ class TemplateThreading:
 
     def Runner(self, q, index):
         out = {}
-        out[index] = self.__function(self.__source_value)        
+        out[index] = self.__function(self.__source_value)
         del self.__source_value
         del self.__source_name
         del self.__function

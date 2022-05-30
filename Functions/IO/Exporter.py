@@ -93,7 +93,7 @@ class ExportToDataScience(WriteDirectory):
             self.__SearchObject(inp, MemoryLink)
             return out
 
-        if "torch_geometric." in type(inp).__module__ and MemoryLink != True:
+        elif "torch_geometric." in type(inp).__module__ and MemoryLink != True:
             out = str(hex(id(inp)))
             MemoryLink[out] = inp
             self.__SearchObject(inp, MemoryLink)
@@ -133,31 +133,34 @@ class ExportToDataScience(WriteDirectory):
             l = self.__RecursiveDict(val, MemoryLink)
             if l != None:
                 SourceObject.__dict__[key] = l
+                continue
             p = self.__RecursiveList(val, MemoryLink)
             if p != None:
                 SourceObject.__dict__[key] = p
 
     def ExportEventGenerator(self, EventGenerator, Name = None, OutDirectory = None):
-        
-        self.MemoryLink = {}
-        self.__SearchObject(EventGenerator, self.MemoryLink)      
+        self.__ResetAll() 
+
+        self.__SearchObject(EventGenerator, self.__MemoryLink)      
         self.__Dump = HDF5(OutDirectory, Name)
         self.__Dump.StartFile()
         ev = 0
-        for i in self.MemoryLink:
-            obj = self.MemoryLink[i]
-            self.__Dump.DumpObject(obj)
+        for i in self.__MemoryLink:
+            obj = self.__MemoryLink[i]
             if "Event" in type(obj).__name__:
                 self.Notify("!!!Dumped Event " + str(ev +1) + "/" + str(len(EventGenerator.Events)))
                 self.__Dump.SwitchFile()
                 ev+=1
+            self.__Dump.DumpObject(obj)
         self.__Dump.DumpObject(EventGenerator)
         self.__Dump.EndFile()
 
     def ImportEventGenerator(self, Name = None, InputDirectory = None):
+        self.__ResetAll() 
+
         self.__Collect = HDF5(InputDirectory, Name)
         self.__MemoryLink = self.__Collect.ReadChain() 
-
+        
         ObjectDict = {}
         for addr in self.__MemoryLink:
             i = self.__MemoryLink[addr]
@@ -166,9 +169,14 @@ class ExportToDataScience(WriteDirectory):
             if x not in ObjectDict:
                 ObjectDict[x] = []
             ObjectDict[x].append(i)
+
+        Events = ObjectDict["EventGenerator"][0].Events
+        ObjectDict["EventGenerator"][0].Events = {ev : Events[ev] for ev in sorted(Events)}
         return ObjectDict["EventGenerator"][0]
 
     def ExportDataGenerator(self, DataGenerator, Name = None, OutDirectory = None):
+        self.__ResetAll() 
+        
         for i in DataGenerator.EdgeAttribute:
             DataGenerator.EdgeAttribute[i] = str(DataGenerator.EdgeAttribute[i]).split(" ")[1]
 
@@ -178,36 +186,43 @@ class ExportToDataScience(WriteDirectory):
         for i in DataGenerator.GraphAttribute:
             DataGenerator.GraphAttribute[i] = str(DataGenerator.GraphAttribute[i]).split(" ")[1]
 
-        self.MemoryLink = {}
         DataGenerator.SetDevice("cpu")
-        self.__SearchObject(DataGenerator, self.MemoryLink)
+        self.__SearchObject(DataGenerator, self.__MemoryLink)
         
         self.__Dump = HDF5(OutDirectory, Name)
         self.__Dump.StartFile()
-        for i in self.MemoryLink:
-            obj = self.MemoryLink[i]
+        for i in self.__MemoryLink:
+            obj = self.__MemoryLink[i]
             self.__Dump.DumpObject(obj)
-            self.Notify("!!!Dumped Event " +  str(obj.i+1) + "/" + str(len(self.MemoryLink)))
+            self.Notify("!!!Dumped Event " +  str(int(obj.i)+1) + "/" + str(len(self.__MemoryLink)))
             self.__Dump.SwitchFile()
         self.__Dump.DumpObject(DataGenerator)
         self.__Dump.EndFile()
 
     def ImportDataGenerator(self, Name = None, InputDirectory = None):
+        self.__ResetAll() 
+
         self.__Collect = HDF5(InputDirectory, Name)
         self.__MemoryLink = self.__Collect.ReadChain()
         
         Obj = {}
         for i, j in self.__MemoryLink.items():
             self.__SearchObject(j, True)
-            
             name = type(j).__name__
             if name not in Obj:
                 Obj[name] = []
             Obj[name].append(j)
-       
-        Obj["GenerateDataLoader"][0].SetDevice("cuda")
-        return Obj["GenerateDataLoader"][0]
 
+        con = Obj["GenerateDataLoader"][0].DataContainer
+        Obj["GenerateDataLoader"][0].DataContainer = {i : con[i] for i in sorted(con)}
+        Obj["GenerateDataLoader"][0].SetDevice("cuda")
+
+        return Obj["GenerateDataLoader"][0]
+    
+    def __ResetAll(self):
+        self.__MemoryLink = {}
+        self.__Collect = None
+        self.__Dump = None
 
 
 

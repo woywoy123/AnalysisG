@@ -94,7 +94,7 @@ class GenerateDataLoader(Notification):
             return
 
 
-        for it in EventGeneratorInstance.Events:
+        for it in sorted(EventGeneratorInstance.Events):
             ev = EventGeneratorInstance.Events[it][Tree]
             self.ProgressInformation("CONVERSION")
             if self.__iter == self.NEvents:
@@ -125,8 +125,6 @@ class GenerateDataLoader(Notification):
                 self.FileTraces["SelfLoop"].append(SelfLoop)
 
             self.__iter += 1
-
-
         self.FileTraces["End"].append(self.__iter-1)
         self.Notify("FINISHED CONVERSION")
         self.ResetAll()
@@ -136,7 +134,7 @@ class GenerateDataLoader(Notification):
             if isinstance(Shuff, int):
                 Shuff = self.DataContainer
             for i in Shuff:
-                n_p = self.DataContainer[i].num_nodes
+                n_p = int(self.DataContainer[i].num_nodes)
                 if n_p not in InputList:
                     InputList[n_p] = []
                 InputList[n_p].append(self.DataContainer[i])

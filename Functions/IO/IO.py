@@ -83,10 +83,22 @@ class File(Notification):
 
     def ConvertToArray(self):
         def Convert(obj):
-            try:
-                return obj.array(library = "np")
+            def Rec(val):
+                if isinstance(val, list):
+                    return [Rec(i) for i in val]                
+                elif isinstance(val, dict):
+                    return {j : Rec(val[j]) for j in val}
+                elif type(val).__module__ == "numpy":
+                    return Rec(getattr(val, "tolist", lambda: val)())
+                elif type(val).__name__ == "STLVector":
+                    return Rec(val.tolist())
+                else:
+                    return val
+            try:                
+                return Rec(obj.array(library = "np"))
             except:
                 return []
+
         
         self.Caller = "CONVERTTOARRAY"
         self.Notify("!!STARTING CONVERSION")
@@ -211,7 +223,8 @@ class HDF5(WriteDirectory, Directories):
             self.Notify("!!WRITING -> " + self.__FileDirName)    
         if Mode == "r":
             self.Notify("!!READING -> " + self.__FileDirName)
-        self.__File = h5py.File(self.__FileDirName, Mode)
+
+        self.__File = h5py.File(self.__FileDirName, Mode, track_order = True)
         if "__PointerReferences" in self.__File:
             self.__RefSet = self.__File["__PointerReferences"]
         else:
@@ -247,10 +260,7 @@ class HDF5(WriteDirectory, Directories):
             self.__CreateAttribute(Name, key, val.numpy())
 
         elif "torch_geometric" in str(type(val)):
-            self.__Store(Name, key, val.__dict__) 
-        
-        elif "weakref" in str(type(val)):
-            return 
+            self.__Store(Name, key, val.to_dict()) 
 
         elif "torch." in str(type(val)):
             self.__Store(Name, key, "")
@@ -262,7 +272,6 @@ class HDF5(WriteDirectory, Directories):
         self.__RefSet.attrs[RefName] = self.__File.create_dataset(RefName, data = h5py.Empty(None)).ref
     
     def __CreateAttribute(self, RefName, AttributeName, Data):
-
         if AttributeName in self.__File[RefName].attrs:
             D = self.__File[RefName].attrs[AttributeName]
 
@@ -308,10 +317,8 @@ class HDF5(WriteDirectory, Directories):
     def RebuildObject(self):
         def Dictify(lst, dic, va):
             if len(lst) == 0:
-                if isinstance(va, str) or isinstance(va, float) or isinstance(va, int):
-                    return va
                 return va
-            
+             
             l = lst[0] 
             if l.isdigit():
                 l = int(l)
@@ -341,26 +348,24 @@ class HDF5(WriteDirectory, Directories):
                     continue
                 val = obj[i].attrs[key]
                 val = getattr(val, "tolist", lambda: val)()
-                    
                 if "/#/" in key:
                     dic_v = key.split("/#/")
                     key = key.split("/#/")[0]
                     out = Dictify(dic_v, out, val)
-                    if key not in attr_List:
-                        attr_List.append(key)
-                    continue
-                
+                else:
+                    setattr(target_obj, key, val)
+
                 if key not in attr_List:
                     attr_List.append(key)
-                setattr(target_obj, key, val)
             
             for key in out:
-                if key == "_store" and type(target_obj).__name__ == "Data":
-                    for l, v in out[key]["_mapping"].items():
-                        setattr(target_obj, l, torch.tensor(v))
-                    continue
-                setattr(target_obj, key, out[key])
-            
+                if type(target_obj).__name__ == "Data":
+                    p = {k : torch.tensor(out[key][k]) for k in out[key]}
+                    target_obj = target_obj.from_dict(p)
+                    attr_List = list(target_obj.__dict__)
+                else:
+                    setattr(target_obj, key, out[key])
+           
             t_list = list(target_obj.__dict__.keys())
             for k in t_list:
                 if k not in attr_List:

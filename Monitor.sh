@@ -46,7 +46,14 @@ then
   git push origin RefactoringCode
   git push origin_github RefactoringCode
 else
-  echo "Shutting down without commit."
+  echo "Going to COMMIT TO GIT AND SHUTTING DOWN SOON!"
+  sleep 60
+  rm -rf logs 
+  git add . 
+  git commit -m "Failed Some Tests."
+  git push origin RefactoringCode
+  git push origin_github RefactoringCode
+  echo "Shutting down with commit."
 fi
 
 sleep 60

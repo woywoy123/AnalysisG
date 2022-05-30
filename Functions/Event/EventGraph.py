@@ -65,8 +65,8 @@ class EventGraphTemplate:
         ApplyToGraph(self.NodeAttr, self.NodeParticleMap)
         ApplyToGraph(self.EdgeAttr, self.Edges)
 
-        self.Data.num_nodes = len(self.Particles)
-        setattr(self.Data, "i", self.iter)
+        self.Data.num_nodes = torch.tensor(len(self.Particles))
+        setattr(self.Data, "i", torch.tensor(self.iter))
         return self.Data
 
     def __SetAttribute(self, c_name, fx, container):

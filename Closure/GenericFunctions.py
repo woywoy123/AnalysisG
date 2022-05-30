@@ -1,59 +1,118 @@
-def Recursive(inp1, inp2):
-    if isinstance(inp1, dict):
-        if len(inp1) != len(inp2):
-            print(inp1, inp2)
-            exit()
-        for key in inp1:
-            Recursive(inp1[key], inp2[key])
-    elif isinstance(inp1, list):
-        for key1, key2 in zip(inp1, inp2):
-            Recursive(key1, key2)
-    else:
-        if inp1 != inp2:
-            try:
-                if "_store" in inp1.__dict__:
-                    import torch
-                    for i in inp1.__dict__["_store"].keys():
-                        a = inp1.__dict__["_store"][i]
-                        b = inp2.__dict__["_store"][i]
-                        if torch.all( a == b ):
-                            continue
-                        else:
-                            print(a, b)
-                    return 
-            except:
-                pass
-            if "function" in str(type(inp1)):
-                return 
-
-            if isinstance(inp1, float) and isinstance(inp2, float):
-                r = round(inp1/inp2)
-                if r == 1:
-                    return 
-            print(inp1, inp2, inp1 == inp2)
-            for i, j in zip(inp1.__dict__, inp2.__dict__):
-                p1, p2 = inp1.__dict__[i], inp2.__dict__[j]
-                if p1 == p2:
-                    continue
-                print(" > ", p1, p2, p1 == p2, type(p1), type(p2))
-            print(inp1.iter,inp2.iter) 
+def Comparison(a, b, key = None):
+    
+    same = False
+    try:
+        if a == b: 
+            return True
+        if round(float(a)/float(b), 4) == 1.0:
+            return True
+    except:
+        same = False
+    
+    try: 
+        import torch
+        if torch.all( a == b):
+            return True 
+    except:
+        same = False
+    
+    try:
+        if len(a) != len(b):
+            print("!!!! ", a, b)
             return False
+        for i, j in zip(a, b):
+            if j == i:
+                continue
+            if round(float(j)/float(i), 4) == 1.0:
+                continue
+            print("####> ", float(i), "  |||   ", float(j), type(a), key, "  |||   ", round(float(j)/float(i), 4))
+            return False
+        return True
+    except:
+        same = False
+    print(a, b)
+    return same
+
+def ObjectIter(a, b):
+    try:
+        assert a.__dict__.keys() == b.__dict__.keys()
+    except:
+        print("!!!!! -> ", a.__dict__.keys(), "  |||  ",  b.__dict__.keys())
+        return False
+
+    for i in a.__dict__.keys():
+        CompareObjects(a.__dict__[i], b.__dict__[i], i)
+    return True
+
+def DictIter(a, b, key):
+    assert len(a) == len(b)
+    for i, j in zip(sorted(a), sorted(b)):
+        try:
+            assert i == j
+            assert CompareObjects(a[i], b[j], i) == True
+        except:
+            print(CompareObjects(a[i], b[j], i))
+            print("Dictionary !!! -> ", i, "  |||  ", j, "   ", len(a), len(b), key)
+            return False
+        
+    return True 
+
+def ListIter(a, b):
+    assert len(a) == len(b)
+    for i, j in zip(a, b):
+        try:
+            assert i == j
+            assert CompareObjects(i, j) == True
+        except:
+            print("List !!! -> ", i, "  |||  ", j, "   ", len(a), len(b))
+            return False
+    return True 
+
+def CompareObjects(obj1, obj2, key = None):
+  
+    if type(obj1).__name__ == "function": 
+        return True
+    if type(obj2).__name__ == "function":
+        return True
+    
+    try:
+        assert type(obj1) == type(obj2)
+    except assertion: 
+        print(type(obj1), type(obj2), obj1, obj2, key)
 
 
-def CompareObjects(in1, in2):
-    key_t = set(list(in1.__dict__.keys()))
-    key_r = set(list(in2.__dict__.keys()))
-    d = key_t ^ key_r
+    if type(obj1).__name__ == "GenerateDataLoader":
+        return ObjectIter(obj1, obj2)
+
+    elif type(obj1).__name__ == "EventGenerator":
+        return ObjectIter(obj1, obj2)
+
+    elif type(obj1).__name__ == "Event":
+        return ObjectIter(obj1, obj2)
     
-    if len(list(d)) != 0:
-        print("!!!!!!!!!!!!!!!!Variable difference: ", d)
+    elif "Particles" in type(obj1).__module__:
+        return ObjectIter(obj1, obj2)
+
+    elif type(obj1).__name__ == "Data":
+        return CompareObjects(obj1.to_dict(), obj2.to_dict())
+
+    elif type(obj1).__name__ == "torch":
+         return ObjectIter(obj1, obj2)
+
+    elif isinstance(obj1, list):
+        return ListIter(obj1, obj2)
+
+    elif isinstance(obj1, dict):
+        return DictIter(obj1, obj2, key)
     
-    for i, j in zip(list(key_t), list(key_r)):
-        if Recursive(in1.__dict__[i], in2.__dict__[j]) == None:
-            continue
-        else:
-            print("----> ", i, j)
-            exit()
+    out = Comparison(obj1, obj2, key)
+    if out:
+        return True
+    else:
+        print(" =================================> " + str(key))
+        print("!!! --> ", obj1, obj2, type(obj1), type(obj2))
+        return False
+
 
 def CacheEventGenerator(Stop, Dir, Name, Cache):
     from Functions.IO.IO import UnpickleObject, PickleObject   
@@ -125,8 +184,11 @@ def CreateDataLoaderComplete(Files, Level, Name, CreateCache, NameOfCaller = Non
                 ev = UnpickleObject(NameOfCaller + "/" + i)
             else:
                 ev = UnpickleObject(i + "/" + i)
+
             DL.AddSample(ev, "nominal", Level, True, True)
-        DL.MakeTrainingSample(0)
+        if NameOfCaller == None:
+            DL.MakeTrainingSample(20)
+
         PickleObject(DL, Name)
     return UnpickleObject(Name)
 

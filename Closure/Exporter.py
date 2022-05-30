@@ -57,8 +57,11 @@ def TestEventGeneratorExport(File, Name, CreateCache):
 
 
 def TestDataLoaderExport(Files, CreateCache):
-    from Closure.GenericFunctions import CompareObjects, CreateDataLoaderComplete
-    DL = CreateDataLoaderComplete(Files, "TruthTopChildren", "TestDataLoaderExport", CreateCache)
+    from Closure.GenericFunctions import CreateEventGeneratorComplete, CreateDataLoaderComplete, CompareObjects
+    
+    it = 10
+    ev_O = CreateEventGeneratorComplete(it, Files, ["tttt", "t"], CreateCache, "TestDataLoaderExport")
+    DL = CreateDataLoaderComplete(["tttt", "t"], "TruthTopChildren", "TestDataLoaderExport", CreateCache, NameOfCaller = "TestDataLoaderExport" )
     
     Exp = ExportToDataScience()
     Exp.ExportDataGenerator(DL, Name = "TestDataLoaderExportHDF5")
@@ -66,7 +69,7 @@ def TestDataLoaderExport(Files, CreateCache):
     Exp = ExportToDataScience()
     obj = Exp.ImportDataGenerator(Name = "TestDataLoaderExportHDF5")
 
-    DL = CreateDataLoaderComplete(Files, "TruthTopChildren", "TestDataLoaderExport", CreateCache)
+    DL = CreateDataLoaderComplete(["tttt", "t"], "TruthTopChildren", "TestDataLoaderExport", CreateCache, NameOfCaller = "TestDataLoaderExport" )   
     CompareObjects(DL, obj)
 
 
@@ -78,12 +81,9 @@ def TestEventGeneratorWithDataLoader(Files, CreateCache):
     import Functions.FeatureTemplates.EdgeFeatures as ef
     import Functions.FeatureTemplates.NodeFeatures as nf
     import Functions.FeatureTemplates.GraphFeatures as gf
-
-    ev_O = CreateEventGeneratorComplete(5, 
-            Files, 
-            ["tttt", "t"], 
-            CreateCache, 
-            "TestEventGeneratorWithDataLoader")
+        
+    it = 10
+    ev_O = CreateEventGeneratorComplete(it, Files, ["tttt", "t"], CreateCache, "TestEventGeneratorWithDataLoader")
 
     Exp = ExportToDataScience() 
     Exp.ExportEventGenerator(ev_O[0], Name = "ExpEventGenerator_1", OutDirectory = "_Pickle/TestEventGeneratorWithDataLoader")
@@ -93,58 +93,60 @@ def TestEventGeneratorWithDataLoader(Files, CreateCache):
     ev_R1 = Exp_In.ImportEventGenerator(Name = "ExpEventGenerator_1", InputDirectory = "_Pickle/TestEventGeneratorWithDataLoader")
     ev_R2 = Exp_In.ImportEventGenerator(Name = "ExpEventGenerator_2", InputDirectory = "_Pickle/TestEventGeneratorWithDataLoader")
 
-
-    ev_O = CreateEventGeneratorComplete(5, 
-            Files, 
-            ["tttt", "t"], 
-            False, 
-            "TestEventGeneratorWithDataLoader")
-
-    CompareObjects(ev_R1, ev_O[0])
-    CompareObjects(ev_R2, ev_O[1])
-
+    ev_P = CreateEventGeneratorComplete(it, Files, ["tttt", "t"], False, "TestEventGeneratorWithDataLoader")
+    CompareObjects(ev_R1, ev_P[0])
+    CompareObjects(ev_R2, ev_P[1])
+    
     DL = GenerateDataLoader()
-
-    # Edge Features 
     DL.AddEdgeFeature("dr", ef.d_r)
     DL.AddEdgeFeature("mass", ef.mass)       
     DL.AddEdgeFeature("signal", ef.Signal)
- 
-    # Node Features 
     DL.AddNodeFeature("eta", nf.eta)
     DL.AddNodeFeature("pt", nf.pt)       
     DL.AddNodeFeature("phi", nf.phi)      
     DL.AddNodeFeature("energy", nf.energy)
     DL.AddNodeFeature("signal", nf.Signal)
-    
-    # Graph Features 
     DL.AddGraphFeature("mu", gf.Mu)
     DL.AddGraphFeature("m_phi", gf.MissingPhi)       
     DL.AddGraphFeature("m_et", gf.MissingET)      
     DL.AddGraphFeature("signal", gf.Signal)       
-
-
-    # Truth Stuff 
     DL.AddEdgeTruth("Topology", ef.Signal)
     DL.AddNodeTruth("NodeSignal", nf.Signal)
     DL.AddGraphTruth("GraphMuActual", gf.MuActual)
     DL.AddGraphTruth("GraphEt", gf.MissingET)
     DL.AddGraphTruth("GraphPhi", gf.MissingPhi)
     DL.AddGraphTruth("GraphSignal", gf.Signal)
+    DL.SetDevice("cuda")
     
     DL.AddSample(ev_R1, "nominal", "TruthTopChildren", True, True)
     DL.AddSample(ev_R2, "nominal", "TruthTopChildren", True, True)
-    
-    #DL.MakeTrainingSample(0)
-    DL.SetDevice("cuda")
-
-    Out_Data = CreateDataLoaderComplete(["tttt", "t"], 
-            "TruthTopChildren", 
-            "TestEventGeneratorWithDataLoader/DataLoader", 
-            CreateCache = CreateCache, 
-            NameOfCaller = "TestEventGeneratorWithDataLoader")
-
-    #CompareObjects(DL, Out_Data)
 
 
+    DLO = GenerateDataLoader()
+    DLO.AddEdgeFeature("dr", ef.d_r)
+    DLO.AddEdgeFeature("mass", ef.mass)       
+    DLO.AddEdgeFeature("signal", ef.Signal)
+    DLO.AddNodeFeature("eta", nf.eta)
+    DLO.AddNodeFeature("pt", nf.pt)       
+    DLO.AddNodeFeature("phi", nf.phi)      
+    DLO.AddNodeFeature("energy", nf.energy)
+    DLO.AddNodeFeature("signal", nf.Signal)
+    DLO.AddGraphFeature("mu", gf.Mu)
+    DLO.AddGraphFeature("m_phi", gf.MissingPhi)       
+    DLO.AddGraphFeature("m_et", gf.MissingET)      
+    DLO.AddGraphFeature("signal", gf.Signal)       
+    DLO.AddEdgeTruth("Topology", ef.Signal)
+    DLO.AddNodeTruth("NodeSignal", nf.Signal)
+    DLO.AddGraphTruth("GraphMuActual", gf.MuActual)
+    DLO.AddGraphTruth("GraphEt", gf.MissingET)
+    DLO.AddGraphTruth("GraphPhi", gf.MissingPhi)
+    DLO.AddGraphTruth("GraphSignal", gf.Signal)
+    DLO.SetDevice("cuda")
+
+    DLO.AddSample(ev_P[0], "nominal", "TruthTopChildren", True, True)
+    DLO.AddSample(ev_P[1], "nominal", "TruthTopChildren", True, True)
+
+    assert DL.__dict__.keys() == DLO.__dict__.keys()
+
+    CompareObjects(DLO, DL)
     return True

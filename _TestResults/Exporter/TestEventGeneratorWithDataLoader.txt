@@ -1,2 +1,2 @@
 (-) Failed: TestEventGeneratorWithDataLoader
-'bool' object has no attribute '__dict__'
+[Errno 2] No such file or directory: '_Pickle/TestEventGeneratorWithDataLoader/tttt.pkl'

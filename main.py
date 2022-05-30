@@ -45,13 +45,13 @@ if __name__ == "__main__":
     Test(IO.TestHDF5ReadAndWriteParticle)
     Test(IO.TestHDF5ReadAndWriteEvent, di = GeneralDir + "tttt/OldSample/1500_GeV/MCe/QU_0.root", Cache = True)
 
-    ## ===== Test Cache ==== ##
+    # ===== Test Cache ==== ##
     Test(CacheGenerators.BuildCacheDirectory, Name = "tttt")
     CacheGenerators.Generate_Cache(GeneralDir + "tttt/OldSample/1500_GeV/MCe/QU_0.root", Compiler = "tttt")
     Test(CacheGenerators.BuildCacheDirectory, Name = "t")
     CacheGenerators.Generate_Cache(GeneralDir + "t/MCa", Compiler = "t")
 
-    ## ===== Test of EventGenerator ===== ##
+    # ===== Test of EventGenerator ===== ##
     Test(Event.TestEvents, di = GeneralDir + "tttt/OldSample/1500_GeV/MCe/QU_0.root")
     Test(Event.TestParticleAssignment, di = GeneralDir + "tttt/OldSample/1500_GeV/MCe/QU_0.root")
     Test(Event.TestSignalMultipleFile, di = GeneralDir + "tttt/OldSample/1500_GeV/MCe/")
@@ -72,7 +72,7 @@ if __name__ == "__main__":
 
     Test(DataLoader.TestDataLoaderMixing, Files = ["DataLoaderTest", "DataLoaderTest_1", "DataLoaderTest_2"], Level = "TruthTops")
 
-    ## ====== Test of Optimizer/Metrics ====== ##
+    # ====== Test of Optimizer/Metrics ====== ##
     Test(Optimizer.TestOptimizerGraph, Files = ["DataLoaderTest", "DataLoaderTest_1", "DataLoaderTest_2"], Level = "TruthTopChildren", Name = "GraphTest", CreateCache = True)
     Test(Metrics.TestReadTraining, modelname = "GraphTest")
 
@@ -88,6 +88,6 @@ if __name__ == "__main__":
     ## ======== Test Model/Data Exporting ======= #
     Test(Exporter.TestModelExport, Files = ["DataLoaderTest"], Name = "ExportModel", Level = "TruthTopChildren", CreateCache = True)
     Test(Exporter.TestEventGeneratorExport, File = GeneralDir + "t/MCa", Name = "EventGeneratorExport", CreateCache = True)
-    Test(Exporter.TestDataLoaderExport, Files = ["DataLoaderTest", "DataLoaderTest_1", "DataLoaderTest_2"], CreateCache = True)
-    Test(Exporter.TestEventGeneratorWithDataLoader, Files = [GeneralDir + "tttt/OldSample/1500_GeV/MCe/QU_0.root", GeneralDir + "t/MCa"], CreateCache = True)
+    Test(Exporter.TestDataLoaderExport, Files = [GeneralDir + "tttt/OldSample/1500_GeV/MCe/QU_0.root", GeneralDir + "t/MCa"], CreateCache = True)
+    Test(Exporter.TestEventGeneratorWithDataLoader, Files = [GeneralDir + "tttt/OldSample/1500_GeV/MCe/QU_0.root", GeneralDir + "t/MCa"], CreateCache = False)
     
