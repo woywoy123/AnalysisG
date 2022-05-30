@@ -85,9 +85,9 @@ if __name__ == "__main__":
     Test(Optimizer.TestOptimizerCombined, Files = ["DataLoaderTest", "DataLoaderTest_1", "DataLoaderTest_2"], Level = "TruthTopChildren", Name = "CombinedTest", CreateCache = True)
     Test(Metrics.TestReadTraining, modelname = "CombinedTest")
     
-    ## ======== Test Model/Data Exporting ======= #
+    # ======== Test Model/Data Exporting ======= #
     Test(Exporter.TestModelExport, Files = ["DataLoaderTest"], Name = "ExportModel", Level = "TruthTopChildren", CreateCache = True)
     Test(Exporter.TestEventGeneratorExport, File = GeneralDir + "t/MCa", Name = "EventGeneratorExport", CreateCache = True)
     Test(Exporter.TestDataLoaderExport, Files = [GeneralDir + "tttt/OldSample/1500_GeV/MCe/QU_0.root", GeneralDir + "t/MCa"], CreateCache = True)
-    Test(Exporter.TestEventGeneratorWithDataLoader, Files = [GeneralDir + "tttt/OldSample/1500_GeV/MCe/QU_0.root", GeneralDir + "t/MCa"], CreateCache = False)
+    Test(Exporter.TestEventGeneratorWithDataLoader, Files = [GeneralDir + "tttt/OldSample/1500_GeV/MCe/QU_0.root", GeneralDir + "t/MCa"], CreateCache = True)
     
