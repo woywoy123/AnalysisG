@@ -78,6 +78,8 @@ def TestDataLoaderExport(Files, CreateCache):
 def TestEventGeneratorWithDataLoader(Files, CreateCache):
     from Closure.GenericFunctions import CreateEventGeneratorComplete, CreateDataLoaderComplete, CompareObjects
     from Functions.Event.DataLoader import GenerateDataLoader
+    from Functions.GNN.Optimizer import Optimizer
+    from Functions.GNN.TrivialModels import CombinedConv
     import Functions.FeatureTemplates.EdgeFeatures as ef
     import Functions.FeatureTemplates.NodeFeatures as nf
     import Functions.FeatureTemplates.GraphFeatures as gf
@@ -121,7 +123,6 @@ def TestEventGeneratorWithDataLoader(Files, CreateCache):
     DL.AddSample(ev_R1, "nominal", "TruthTopChildren", True, True)
     DL.AddSample(ev_R2, "nominal", "TruthTopChildren", True, True)
 
-
     DLO = GenerateDataLoader()
     DLO.AddEdgeFeature("dr", ef.d_r)
     DLO.AddEdgeFeature("mass", ef.mass)       
@@ -149,4 +150,16 @@ def TestEventGeneratorWithDataLoader(Files, CreateCache):
     assert DL.__dict__.keys() == DLO.__dict__.keys()
 
     CompareObjects(DLO, DL)
+
+    DL.MakeTrainingSample(0)
+    op = Optimizer(DL)
+    op.VerboseLevel = 1
+    op.Model = CombinedConv()
+    op.KFoldTraining()
+
+
+
+
+
+
     return True

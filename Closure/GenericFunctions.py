@@ -172,6 +172,7 @@ def CreateDataLoaderComplete(Files, Level, Name, CreateCache, NameOfCaller = Non
 
         # Truth Stuff 
         DL.AddEdgeTruth("Topology", ef.Signal)
+        DL.AddNodeTruth("Index", nf.Index)
         DL.AddNodeTruth("NodeSignal", nf.Signal)
         DL.AddGraphTruth("GraphMuActual", gf.MuActual)
         DL.AddGraphTruth("GraphEt", gf.MissingET)

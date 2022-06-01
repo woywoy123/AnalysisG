@@ -56,8 +56,8 @@ else
   echo "Shutting down with commit."
 fi
 
-sleep 60
-sudo shutdown now 
+#sleep 60
+#sudo shutdown now 
 
 
 

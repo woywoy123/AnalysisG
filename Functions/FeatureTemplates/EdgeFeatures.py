@@ -13,7 +13,7 @@ def dphi(a, b):
     return float(abs(a.phi - b.phi))
 
 def Signal(a, b):
-    return float(a.FromRes * b.FromRes)
+    return float(a.Index == b.Index)
 
 
 

@@ -20,8 +20,8 @@ def Mass(a):
     v = LorentzVector.ToPxPyPzE(a.pt, a.eta, a.phi, a.e, "cpu")
     return float(LorentzVector.MassFromPxPyPzE(v))
 
-def Signal_f(a):
-    return float(a.Index)
+def Index(a):
+    return float(a.Index + 1)
 
 def Merged(a):
     if a.Type == "truthjet":

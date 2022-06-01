@@ -7,12 +7,87 @@ from sklearn.model_selection import KFold
 import numpy as np
 
 import time
+import datetime
 from Functions.Tools.Alerting import Notification
 from Functions.IO.Files import WriteDirectory, Directories
 from Functions.IO.IO import PickleObject
 from Functions.IO.Exporter import ExportToDataScience
 
-class Optimizer(ExportToDataScience, Notification):
+class ModelImporter:
+
+    def __init__(self, ExampleSample):
+        Notification.__init__(self)
+        self.Caller = "MODELIMPORTER"
+        self.Sample = None
+        self.InitializeModel()
+
+        
+    def InitializeModel(self):
+        self.Model.to(self.Device)
+        self.ModelInputs = list(self.Model.forward.__code__.co_varnames[:self.Model.forward.__code__.co_argcount])
+        self.ModelInputs.remove("self")
+        input_len = len(list(set(list(self.Sample.to_dict())).intersection(set(self.ModelInputs))))
+        
+        if input_len < len(self.ModelInputs):
+            
+            self.Warning("---> ! Features Expected in Model Input ! <---")
+            for i in self.ModelInputs:
+                self.Warning("+-> " + i)
+            
+            self.Warning("---> ! Features Found in Sample Input ! <---")
+            for i in list(Input.__dict__["_store"]):
+                self.Warning("+-> " + i)
+            
+            self.Fail("MISSING VARIABLES IN GIVEN DATA SAMPLE")
+
+        self.Notify("FOUND ALL MODEL INPUT PARAMETERS IN SAMPLE")
+        for i in self.ModelInputs:
+            self.Notify("---> " + i)
+       
+        self.ModelOutputs = {i : k for i, k in self.Model.__dict__.items() for p in ["C_", "L_", "O_", "N_"] if i.startswith(p)}
+        self.ModelOutputs |= {i : None for i, k in self.Model.__dict__.items() if i.startswith("O_")}
+
+    def MakePrediction(self, sample):
+        dr = {}
+        for i in self.ModelInputs:
+            dr[i] = sample[i]
+        self.Model(**dr)
+
+    def Output(self, output_dict, sample, Truth = False):
+        def GetKeyPair(dic, key):
+            if key in dic:
+                return dic[key]
+            else:
+                return False
+        OutDict = {} 
+        for key in output_dict:
+            if key.startswith("O_") == False:
+                continue
+
+            key = key.lstrip("O_")
+            if Truth: 
+                key_T = self.T_Features[key][0]
+                out_v = sample[key_T]
+            else:
+                out_v = self.Model.__dict__["O_" + key]
+            out_p = out_v
+
+            # Adjust the outputs
+            if GetKeyPair(output_dict, "N_" + key):
+                out_v = out_v[sample.edge_index[0]]
+                out_p = out_v
+            
+            if GetKeyPair(output_dict, "C_" + key) and not Truth:
+                out_p = out_p.max(1)[1]
+            
+            out_p = out_p.view(1, -1)[0]
+            OutDict[key] = [out_p, out_v]
+        return OutDict
+
+
+
+
+class Optimizer(ExportToDataScience, Notification, ModelImporter):
 
     def __init__(self, DataLoaderInstance = None):
         self.Verbose = True
@@ -57,9 +132,9 @@ class Optimizer(ExportToDataScience, Notification):
             PickleObject(self.Stats, "Stats_" + self.epoch, self.RunDir + "/" + self.RunName + "/Statistics")
         else:
             PickleObject(self.Stats, "Stats_" + str(self.epoch+1), self.RunDir + "/" + self.RunName + "/Statistics")
-        self.MakeStats()
+        self.__MakeStats()
 
-    def MakeStats(self):
+    def __MakeStats(self):
 
         ### Output Information
         self.Stats = {}
@@ -80,125 +155,12 @@ class Optimizer(ExportToDataScience, Notification):
             self.Stats["Training_Loss"][i] = []
             self.Stats["Validation_Loss"][i] = []
 
-    def __GetFlags(self, inp, FEAT):
-        if FEAT == "M":
-            self.ModelInputs = list(self.Model.forward.__code__.co_varnames[:self.Model.forward.__code__.co_argcount])
-            self.ModelInputs.remove("self")
-            
-            input_len = len(list(set(list(inp.__dict__["_store"])).intersection(set(self.ModelInputs))))
-            if "batch" in self.ModelInputs:
-                input_len += 1
 
-            if input_len < len(self.ModelInputs):
-                
-                self.Warning("---> ! Features Expected in Model Input ! <---")
-                for i in self.ModelInputs:
-                    self.Warning("+-> " + i)
-                
-                self.Warning("---> ! Features Found in Sample Input ! <---")
-                for i in list(inp.__dict__["_store"]):
-                    self.Warning("+-> " + i)
-                
-                self.Fail("MISSING VARIABLES IN GIVEN DATA SAMPLE")
-
-            self.Notify("FOUND ALL MODEL INPUT PARAMETERS IN SAMPLE")
-            for i in self.ModelInputs:
-                self.Notify("---> " + i)
-
-            Setting = [i for i in self.Model.__dict__ if i.startswith("C_") or i.startswith("L_") or i.startswith("O_") or i.startswith("N_")]
-            self.ModelOutputs = {}
-            for i in Setting:
-                self.ModelOutputs[i] = self.Model.__dict__[i]
-            return
-            
-        for i in inp:
-            if i.startswith("T_"):
-                self.T_Features[i[2:]] = [FEAT + "_" +i, FEAT + "_" +i[2:]]
-
-    def __ImportTorchScript(self, Name):
-        class Model:
-            def __init__(self, dict_in, model):
-                self.__Model = model
-                self.__router = {}
-                for i in dict_in:
-                    setattr(self, i, dict_in[i])
-                    if i.startswith("O_"):
-                        self.__router[dict_in[i]] = i         
-            
-            def __call__(self, **kargs):
-                pred = list(self.__Model(**kargs))
-                for i in range(len(pred)):
-                    setattr(self, self.__router[i], pred[i])
-
-            def train(self):
-                self.__Model.train(True)
-
-            def eval(self):
-                self.__Model.train(False)
-        
-        extra_files = {}
-        for i in list(self.ModelOutputs):
-            extra_files[i] = ""
-        for i in list(self.ModelInputs):
-            extra_files[i] = ""
-        
-        M = torch.jit.load(Name, _extra_files = extra_files)
-        for i in extra_files:
-            conv = str(extra_files[i].decode())
-            if conv.isnumeric():
-                conv = int(conv)
-            if conv == "True":
-                conv = True
-            if conv == "False":
-                conv = False
-            extra_files[i] = conv
-         
-        self.Model = Model(extra_files, M)
-    
     def DefineOptimizer(self):
-        self.Model.to(self.Device)
         if self.DefaultOptimizer == "ADAM":
             self.Optimizer = torch.optim.Adam(self.Model.parameters(), lr = self.LearningRate, weight_decay = self.WeightDecay)
         elif self.DefaultOptimizer == "SGD":
             self.Optimizer = torch.optim.SGD(self.Model.parameters(), lr = self.LearningRate)
-
-    def MakePrediction(self, sample):
-        dr = {}
-        for i in self.ModelInputs:
-            dr[i] = sample[i]
-        self.Model(**dr)
-
-    def Output(self, output_dict, sample, Truth = False):
-        def GetKeyPair(dic, key):
-            if key in dic:
-                return dic[key]
-            else:
-                return False
-        OutDict = {} 
-        for key in output_dict:
-            if key.startswith("O_") == False:
-                continue
-
-            key = key.lstrip("O_")
-            if Truth: 
-                key_T = self.T_Features[key][0]
-                out_v = sample[key_T]
-            else:
-                out_v = self.Model.__dict__["O_" + key]
-            out_p = out_v
-
-            # Adjust the outputs
-            if GetKeyPair(output_dict, "N_" + key):
-                out_v = out_v[sample.edge_index[0]]
-                out_p = out_v
-            
-            if GetKeyPair(output_dict, "C_" + key) and not Truth:
-                out_p = out_p.max(1)[1]
-            
-            out_p = out_p.view(1, -1)[0]
-            OutDict[key] = [out_p, out_v]
-        return OutDict
-
 
     def Train(self, sample):
         if self.Training:
@@ -270,6 +232,11 @@ class Optimizer(ExportToDataScience, Notification):
         if self.AllReset:
             self.Stats["BatchRate"].append(R)
 
+    def GetTruthFlags(self, Input, FEAT):
+        for i in Input:
+            if i.startswith("T_") and str("O_" + i[2:]) in self.ModelOutputs:
+                self.T_Features[i[2:]] = [FEAT + "_" +i, FEAT + "_" +i[2:]]
+
     def KFoldTraining(self):
         def CalcAverage(Mode, k, Notify = "", Mode2 = None):
             for f_k in self.Stats[Mode]:
@@ -278,17 +245,26 @@ class Optimizer(ExportToDataScience, Notification):
                     
                 self.Notify(Notify + "       " + str(v_1) + " || " + str(v_2) + " (" + f_k + ")")
 
+        if self.Model == None:
+            self.Fail("No Model has been given!")
 
         self.DefineOptimizer()
         Splits = KFold(n_splits = self.kFold, shuffle = True, random_state= 42)
         N_Nodes = list(self.TrainingSample)
         N_Nodes.sort(reverse = True)
-        self.__GetFlags(self.EdgeFeatures, "E")
-        self.__GetFlags(self.NodeFeatures, "N")
-        self.__GetFlags(self.GraphFeatures, "G")
-        self.__GetFlags(self.TrainingSample[N_Nodes[0]][0], "M")
+        self.Sample = self.TrainingSample[N_Nodes[0]][0]
+        self.InitializeModel()
 
-        self.MakeStats()
+       
+        self.Notify(">------------------------ Starting k-Fold Training ------------------------------------")
+        self.Notify("!SIZE OF ENTIRE SAMPLE SET: " + str(sum([len(self.TrainingSample[i]) for i in N_Nodes])))
+        
+        self.GetTruthFlags(self.EdgeFeatures, "E")
+        self.GetTruthFlags(self.NodeFeatures, "N")
+        self.GetTruthFlags(self.GraphFeatures, "G")
+        self.Notify(">----------------------------------------------------------------------------------------\n")
+
+        self.__MakeStats()
         self.Model.Device = self.Device_S
         
         TimeStart = time.time()
@@ -350,10 +326,10 @@ class Optimizer(ExportToDataScience, Notification):
                 CalcAverage("Training_Loss", k-1, "!!", "Validation_Loss")
 
             self.Stats["EpochTime"].append(time.time() - TimeStartEpoch)
+            self.Notify("! >========= DURATION: " + str(datetime.timedelta(seconds = self.Stats["EpochTime"][-1])))
             self.DumpStatistics()
 
             self.ExportModel(train_loader)
-            #self.__SaveModel(train_loader)
 
         self.Stats["TrainingTime"] = time.time() - TimeStart
         self.Stats.update(self.DataLoader.FileTraces)
