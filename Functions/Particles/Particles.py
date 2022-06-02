@@ -24,19 +24,19 @@ class Particle(VariableManager):
     def DeltaR(self, P):
         return math.sqrt(math.pow(P.eta-self.eta, 2) + math.pow(P.phi-self.phi, 2)) 
 
-    def CalculateMass(self, lists = None, Name = "Mass"):
-        if lists == None:
-            v = LorentzVector.ToPxPyPzE(self.pt, self.eta, self.phi, self.e, "cpu")
-        else:
-            for i in lists:
-                v += LorentzVector.ToPxPyPzE(i.pt, i.eta, i.phi, i.e)
+    def CalculateMass(self, lists, Name = "Mass"):
+        v = torch.zeros((1, 4))
+        for i in lists:
+            v += LorentzVector.ToPxPyPzE(i.pt, i.eta, i.phi, i.e, "cpu")
         m = float(LorentzVector.MassFromPxPyPzE(v))
         setattr(self, Name + "_MeV", m)
         setattr(self, Name + "_GeV", m / 1000)
 
     def CalculateMassFromChildren(self):
-        self.CalculateMass(self.Decay, "Mass")
-        self.CalculateMass(self.Decay_init, "Mass_init")
+        if len(self.Decay) != 0:
+            self.CalculateMass(self.Decay, "Mass")
+        if len(self.Decay_init) != 0:    
+            self.CalculateMass(self.Decay_init, "Mass_init")
 
 
 class CompileParticles:

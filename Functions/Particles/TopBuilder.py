@@ -1,7 +1,7 @@
 from Functions.GNN.Optimizer import ModelImporter
 from Functions.Tools.Alerting import Notification
 from torch_geometric.data import Batch
-from torch_geometric.utils import remove_self_loops, to_dense_adj, dense_to_sparse
+from torch_geometric.utils import get_laplacian, subgraph, to_dense_adj, dense_to_sparse
 import torch 
 import LorentzVector as LV
 
@@ -10,6 +10,7 @@ class ParticleReconstructor(ModelImporter, Notification):
         Notification.__init__(self)
         self.VerboseLevel = 0
         self.Caller = "ParticleReconstructor"
+        self.TruthMode = False
         
         if Sample.is_cuda:
             self.Device = "cuda"
@@ -20,96 +21,71 @@ class ParticleReconstructor(ModelImporter, Notification):
         self.InitializeModel()
     
     def Prediction(self):
-        self.Model.eval()
-        self.MakePrediction(Batch.from_data_list([self.Sample]))
-        self.__Results = self.Output(self.ModelOutputs, self.Sample) 
-
-    def MassFromFeature(self, TargetFeature, pt = "N_pt", eta = "N_eta", phi = "N_phi", e = "N_energy"):
-        def To1D(inpt):
-            return inpt.view(1, -1)[0]
-
-        pt_s = To1D(self.Sample[pt])
-        eta_s = To1D(self.Sample[eta])
-        phi_s = To1D(self.Sample[phi])
-        e_s = To1D(self.Sample[e])
-
-        edge_index_s = self.Sample.edge_index[0]
-        edge_index_r = self.Sample.edge_index[1]
-        nodes = self.Sample.num_nodes
-        pred = To1D(self.Sample.N_T_Index).to(dtype = int)
-     
-        print(pt_s)
-
-
-        pt_T = To1D(self.Sample.E_T_Topology).view(-1, nodes)*pt_s
-        eta_T = To1D(self.Sample.E_T_Topology).view(-1, nodes)*eta_s 
-        phi_T = To1D(self.Sample.E_T_Topology).view(-1, nodes)*phi_s
-        e_T = To1D(self.Sample.E_T_Topology).view(-1, nodes)*e_s
-        
-        print(self.Sample.E_T_Topology)
-
-
-
-        edge_index_i = edge_index_s[pred[edge_index_r] == pred[edge_index_s]]
-        edge_index_j = edge_index_r[pred[edge_index_r] == pred[edge_index_s]]
-            
-
-        edge_index = torch.cat([edge_index_i, edge_index_j], dim = 0).view(-1, len(edge_index_i))
-        mat = to_dense_adj(remove_self_loops(edge_index)[0])[0]
-        for i in range(1, nodes):
-            mat.diagonal(-i).zero_()
-        edge_index = dense_to_sparse(mat)[0] 
-
-        pt_ = torch.sum(pt_s[edge_index], dim = 0).view(-1, 1)
-        eta_ = torch.sum(eta_s[edge_index], dim = 0).view(-1, 1)
-        phi_ = torch.sum(phi_s[edge_index], dim = 0).view(-1, 1)
-        e_ = torch.sum(e_s[edge_index], dim = 0).view(-1, 1)
-
-        four_vec = torch.cat([pt_, eta_, phi_, e_], dim = 1)
-        print(four_vec) 
-        print(pred[edge_index][0]-1)
-        
-        particles_ = torch.zeros((len(torch.unique(pred[edge_index][0])), 4), device = self.Model.Device)
-        particles_[pred[edge_index][0]-1] += four_vec
-        print(LV.MassFromPtEtaPhiE(particles_)/1000)
-
-
-
-
-
-
-
-
-
-        exit()
-
-
-        print(self.Sample)
-
-        print(pt_s)
-        print(pred)
-        print("")
-        print(pred[edge_index_s]) #*pred[edge_index_r])
-
-
-        exit()
-        if len(pred) == self.Sample.num_nodes:
-            print(pt_s[edge_index_s])
-            print(pt_s[edge_index_r])
-
-            print(torch.dot(edge_index_r, edge_index_s))
-
-
-
-
-
-            print(LV.MassFromPtEtaPhiE(torch.tensor([torch.sum(pt_s*pred), torch.sum(eta_s*pred), torch.sum(phi_s*pred), torch.sum(e_s*pred)]))/1000)
+        if self.TruthMode:
+            self.__Results = self.Sample
+            self.Warning("USING THE TRUTH SETTING!")
         else:
+            self.Model.eval()
+            self.MakePrediction(Batch.from_data_list([self.Sample]))
+            self.__Results = self.Output(self.ModelOutputs, self.Sample) 
+            self.__Results = { i : self.__Results[i][0] for i in self.__Results}
 
+    def MassFromNodeFeature(self, TargetFeature, pt = "N_pt", eta = "N_eta", phi = "N_phi", e = "N_energy"):
+        edge_index = self.Sample.edge_index
 
+        # Get the prediction of the sample 
+        pred = self.__Results[TargetFeature].to(dtype = int).view(1, -1)[0]
+        
+        # Filter out the nodes which are not equally valued and apply masking
+        mask = pred[edge_index[0]] == pred[edge_index[1]]
 
+        # Only keep nodes of the same classification 
+        edge_index_s = edge_index[0][mask == True]
+        edge_index_r = edge_index[1][mask == True]
+        edge_index = torch.cat([edge_index_s, edge_index_r]).view(2, -1)
+        
+        # Create a classification matrix nclass x nodes 
+        clf = torch.zeros((len(torch.unique(pred)), len(pred)), device = edge_index.device)
+        idx = torch.cat([pred[edge_index[0]], edge_index[0]], dim = 0).view(2, -1)
+        clf[idx[0], idx[1]] += 1
 
+        # Convert the sample kinematics into cartesian and perform a vector aggregation 
+        FV = torch.cat([self.Sample[pt], self.Sample[eta], self.Sample[phi], self.Sample[e]], dim = 1)
+        FV = LV.TensorToPxPyPzE(FV)        
+        pt_ = torch.mm(clf, FV[:, 0].view(-1, 1))
+        eta_ = torch.mm(clf, FV[:, 1].view(-1, 1))
+        phi_ = torch.mm(clf, FV[:, 2].view(-1, 1))
+        e_ = torch.mm(clf, FV[:, 3].view(-1, 1))
+        FourVec = torch.cat([pt_, eta_, phi_, e_], dim = 1)
+        return LV.MassFromPxPyPzE(FourVec)/1000
+ 
+    def MassFromFeatureEdges(self, TargetFeature, pt = "N_pt", eta = "N_eta", phi = "N_phi", e = "N_energy"):
+        edge_index = self.Sample.edge_index
 
-            pass 
+        # Get the prediction of the sample and extract from the topology the number of unique classes
+        adj = self.__Results[TargetFeature].to(dtype = int).view(1, -1)[0].view(-1, self.Sample.num_nodes)
+        edge_index, weights = dense_to_sparse(adj)
+        nodes = edge_index[0].unique().view(-1, 1).to(dtype = torch.float)
+        
+        #Apply the mapping between clusters and index of class
+        mapping = torch.mm(adj.to(dtype = torch.float), nodes.to(dtype = torch.float))
+        classes = mapping.unique().sort()
+        mapping = classes[1][(mapping[:, :] == classes[0]).nonzero(as_tuple = True)[1]]
 
+        # Create a classification matrix nclass x nodes 
+        clf = torch.zeros((len(classes[1]), len(nodes.t()[0])), device = edge_index.device)
+        idx = torch.cat([mapping[edge_index[0]], edge_index[0]], dim = 0).view(2, -1)
+        clf[idx[0], idx[1]] += 1
+
+        # Convert the sample kinematics into cartesian and perform a vector aggregation 
+        FV = torch.cat([self.Sample[pt], self.Sample[eta], self.Sample[phi], self.Sample[e]], dim = 1)
+        FV = LV.TensorToPxPyPzE(FV)        
+        pt_ = torch.mm(clf, FV[:, 0].view(-1, 1))
+        eta_ = torch.mm(clf, FV[:, 1].view(-1, 1))
+        phi_ = torch.mm(clf, FV[:, 2].view(-1, 1))
+        e_ = torch.mm(clf, FV[:, 3].view(-1, 1))
+        FourVec = torch.cat([pt_, eta_, phi_, e_], dim = 1)
+        return LV.MassFromPxPyPzE(FourVec)/1000
+        
+       
 

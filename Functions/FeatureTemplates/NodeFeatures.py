@@ -21,7 +21,7 @@ def Mass(a):
     return float(LorentzVector.MassFromPxPyPzE(v))
 
 def Index(a):
-    return float(a.Index + 1)
+    return float(a.Index)
 
 def Merged(a):
     if a.Type == "truthjet":

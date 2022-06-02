@@ -55,9 +55,3 @@ else
   git push origin_github RefactoringCode
   echo "Shutting down with commit."
 fi
-
-#sleep 60
-#sudo shutdown now 
-
-
-
