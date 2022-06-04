@@ -1,84 +1,5 @@
-from Functions.Tools.Alerting import Debugging
 from Functions.Particles.Particles import *
-from Functions.Tools.Variables import VariableManager
-
-class EventVariables:
-    def __init__(self):
-        self.MinimalTrees = ["tree", "nominal"]
-        self.MinimalLeaves = []
-        self.MinimalLeaves += Event().Leaves
-        self.MinimalLeaves += Jet().Leaves
-        self.MinimalLeaves += Electron().Leaves
-        self.MinimalLeaves += Muon().Leaves
-
-        self.MinimalLeaves += TruthJet().Leaves
-        self.MinimalLeaves += TruthTopChildren().Leaves
-        self.MinimalLeaves += TopPostFSRChildren().Leaves
-        
-        self.MinimalLeaves += TruthTop().Leaves
-        self.MinimalLeaves += TopPreFSR().Leaves
-        self.MinimalLeaves += TopPostFSR().Leaves
-
-class EventTemplate(VariableManager):
-    def __init__(self):
-        VariableManager.__init__(self)
-        self.runNumber = "runNumber"
-        self.eventNumber = "eventNumber"
-        self.mu = "mu"
-
-        self.met = "met_met"
-        self.met_phi = "met_phi" 
-        self.mu_actual = "mu_actual"
-        
-        self.Type = "Event"
-        self.ListAttributes()
-        self.CompileKeyMap()
-        self.iter = -1
-        self.Tree = ""
-        self.BrokenEvent = False
-
-    def DefineObjects(self):
-        for i in self.Objects:
-           self.SetAttribute(i, {})
-
-    def ParticleProxy(self, File):
-        
-        def Attributor(variable, value):
-            for i in self.Objects:
-                obj = self.Objects[i]
-                if variable in obj.KeyMap:
-                    o = getattr(self, i)
-                    o[variable] = value
-                    self.SetAttribute(i, o)
-                    return True
-            return False
-
-        self.ListAttributes()
-        for i in File.ArrayLeaves:
-            if self.Tree in i:
-                var = i.replace(self.Tree + "/", "")
-                try: 
-                    val = File.ArrayLeaves[i][self.iter]
-                except:
-                    self.BrokenEvent = True
-                    continue
-                
-                if Attributor(var, val):
-                    continue
-
-                if var in self.KeyMap:
-                    self.SetAttribute(self.KeyMap[var], val)
-
-    def CompileEvent(self, ClearVal = True):
-        pass
-
-    def DictToList(self, inp): 
-        out = []
-        for i in inp:
-            out += inp[i]
-        return out
-
-
+from Functions.Event.EventTemplate import EventTemplate
 
 class Event(EventTemplate):
     def __init__(self):
@@ -94,10 +15,18 @@ class Event(EventTemplate):
                             "TopPostFSR" : TopPostFSR(),
                             "TopPostFSRChildren" : TopPostFSRChildren()
                         }
+        self.Tree = ["nominal"]
+        self.runNumber = "runNumber"
+        self.eventNumber = "eventNumber"
+        self.mu = "mu"
+        self.met = "met_met"
+        self.met_phi = "met_phi" 
+        self.mu_actual = "mu_actual"
         self.DefineObjects()
-
+        self.iter = -1
 
     def CompileEvent(self, ClearVal = True):
+        self.CompileParticles(ClearVal)
         def FixList(Input):
             try:
                 return [int(Input)]
@@ -110,12 +39,7 @@ class Event(EventTemplate):
                 p_i.Index = index
                 RecursiveSignal(p_i.Decay_init, sig, index)
                 RecursiveSignal(p_i.Decay, sig, index)
-
-        for i in self.Objects:
-            l = getattr(self, i)
-            l = CompileParticles(l, self.Objects[i]).Compile(ClearVal)
-            self.SetAttribute(i, l)
-        
+       
         for i in self.TruthTops:
             self.TruthTops[i][0].Decay_init += self.TruthTopChildren[i]
 

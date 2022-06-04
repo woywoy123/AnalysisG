@@ -71,8 +71,6 @@ def TestDataLoaderExport(Files, CreateCache):
 
     DL = CreateDataLoaderComplete(["tttt", "t"], "TruthTopChildren", "TestDataLoaderExport", CreateCache, NameOfCaller = "TestDataLoaderExport" )   
     CompareObjects(DL, obj)
-
-
     return True
 
 def TestEventGeneratorWithDataLoader(Files, CreateCache):
@@ -156,10 +154,4 @@ def TestEventGeneratorWithDataLoader(Files, CreateCache):
     op.VerboseLevel = 1
     op.Model = CombinedConv()
     op.KFoldTraining()
-
-
-
-
-
-
     return True

@@ -1,13 +1,13 @@
 from Functions.IO.IO import File, Directories, PickleObject, UnpickleObject
 from Functions.Tools.Alerting import Debugging
 from Functions.Tools.DataTypes import TemplateThreading, Threading
-from Functions.Event.Event import Event, EventVariables
+from Functions.Tools.Variables import RecallObjectFromString
+from Functions.Event.Implementations.Event import Event #, EventVariables
 import math
 
-class EventGenerator(Debugging, EventVariables, Directories):
+class EventGenerator(Debugging, Directories):
     def __init__(self, dir, Verbose = True, Start = 0, Stop = -1, Debug = False):
         Debugging.__init__(self, Threshold = Stop - Start)
-        EventVariables.__init__(self)
         Directories.__init__(self, dir)
         self.Events = {}
         self.FileEventIndex = {}
@@ -17,8 +17,12 @@ class EventGenerator(Debugging, EventVariables, Directories):
         self.__Start = Start
         self.__Stop = Stop
         self.VerboseLevel = 1
+        self.EventImplementation = Event()
         
     def SpawnEvents(self):
+
+        name = type(self.EventImplementation).__module__ + "." + type(self.EventImplementation).__name__
+        obj = RecallObjectFromString(name)
         self.GetFilesInDir()
         for i in self.Files:
             self.Notify("!_______NEW DIRECTORY______: " + str(i))
@@ -26,8 +30,9 @@ class EventGenerator(Debugging, EventVariables, Directories):
                 self.Events[i + "/" + F] = []
                 F_i = File(i + "/" + F, self.__Debug)
                 F_i.VerboseLevel = self.VerboseLevel
-                F_i.Trees = self.MinimalTrees
-                F_i.Leaves = self.MinimalLeaves
+                F_i.Trees = obj.MinimalTrees
+                F_i.Branches = obj.MinimalBranches
+                F_i.Leaves = obj.MinimalLeaves
                 F_i.CheckKeys()
                 F_i.ConvertToArray()
                 if self.__Debug:
@@ -46,8 +51,8 @@ class EventGenerator(Debugging, EventVariables, Directories):
                                 continue
                         else: 
                             self.Count()
-                        
-                        E = Event()
+
+                        E = RecallObjectFromString(name)
                         E.Debug = self.__Debug
                         E.Tree = tr
                         E.iter = l
@@ -61,9 +66,7 @@ class EventGenerator(Debugging, EventVariables, Directories):
                         break
                 del F_i
                 del F
-                
-        del self.MinimalLeaves
-        del self.MinimalTrees
+        del self.EventImplementation
 
     def CompileEvent(self, SingleThread = False, ClearVal = True):
         

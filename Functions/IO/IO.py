@@ -41,45 +41,40 @@ class File(Notification):
         except uproot.exceptions.KeyInFileError:
             return False
 
-    def ReturnObject(self, i, j = -1, k = -1):
-        out = self.__Reader
-        if self.CheckObject(out, i):
-            self.ObjectTrees[i] = self.__Reader[i]
-        else:
-            self.Warning("SKIPPED TREE -> " + i)
-            return None
-        
-        if self.CheckObject(out[i], j):
-            self.ObjectBranches[i + "/" + j] = self.__Reader[i][j]
-        elif j != -1: 
-            self.Warning("SKIPPED BRANCH -> " + j)
-
-        if self.CheckObject(out[i], k):
-            if j != -1:
-                self.ObjectLeaves[i + "/" + j + "/" + k] = self.__Reader[i][j][k]
-            else:
-                self.ObjectLeaves[i + "/" + k] = self.__Reader[i][k]
-        elif k != -1: 
-            self.Warning("SKIPPED LEAF -> " + k)
-
     def CheckKeys(self):
-
-        for i in self.Trees:
-            self.ReturnObject(i)
+        FoundBranches = set()
+        FoundLeaves = set()
         
-        for i in self.ObjectTrees:
-            for j in self.Branches:
-                self.ReturnObject(i, j)
+        for i in self.Trees:
+            if self.CheckObject(self.__Reader, i) == False:
+                self.Warning("SKIPPED TREE -> " + i)
+            else:
+                self.ObjectTrees[i] = self.__Reader[i]
 
-        for i in self.ObjectTrees:
-            for j in self.Leaves:
-                self.ReturnObject(i, -1, j)
+        for i, j in self.ObjectTrees.items():
+            for k in j.iterkeys():
+                Key = k.split("/")
+                if Key[-1] in self.Branches:
+                    self.ObjectBranches[i + "/" + Key[0]] = self.__Reader[i + "/" + Key[0]]
+                    FoundBranches.add(Key[-1])
+                    continue
+                if Key[-1] in self.Leaves and len(Key) > 1:
+                    self.ObjectLeaves[i + "/" + Key[0] + "/" + Key[-1]] = self.__Reader[i + "/" + Key[0] + "/" + Key[-1]]
+                    FoundLeaves.add(Key[-1])
+                    continue
 
-        for i in self.ObjectBranches:
-            for j in self.Leaves:
-                tr = i.split("/")[0]
-                br = i.split("/")[1]
-                self.ReturnObject(tr, br, j) 
+                if Key[-1] in self.Leaves:
+                   self.ObjectLeaves[i + "/" + Key[-1]] = self.__Reader[i + "/" + Key[-1]]
+                   FoundLeaves.add(Key[-1])
+
+        for i in self.Branches:
+            if i not in FoundBranches:
+                self.Warning("SKIPPED BRANCH -> " + i)
+
+        for i in self.Leaves:
+            if i not in FoundLeaves:
+                self.Warning("SKIPPED LEAF -> " + i)
+
 
     def ConvertToArray(self):
         def Convert(obj):

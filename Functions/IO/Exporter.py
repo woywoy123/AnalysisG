@@ -109,7 +109,6 @@ class ExportToDataScience(WriteDirectory):
             return val
 
     def __SearchObject(self, SourceObject, MemoryLink):
-        
         for key, val in SourceObject.__dict__.items():
             l = self.__RecursiveDict(val, MemoryLink)
             if l != None:

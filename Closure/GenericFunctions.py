@@ -74,12 +74,10 @@ def CompareObjects(obj1, obj2, key = None):
         return True
     if type(obj2).__name__ == "function":
         return True
-    
     try:
         assert type(obj1) == type(obj2)
-    except assertion: 
-        print(type(obj1), type(obj2), obj1, obj2, key)
-
+    except AssertionError: 
+        print("--> ", type(obj1), type(obj2), obj1, obj2, key)
 
     if type(obj1).__name__ == "GenerateDataLoader":
         return ObjectIter(obj1, obj2)
