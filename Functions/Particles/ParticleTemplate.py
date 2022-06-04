@@ -16,7 +16,9 @@ class Particle(VariableManager):
     def DeltaR(self, P):
         return math.sqrt(math.pow(P.eta-self.eta, 2) + math.pow(P.phi-self.phi, 2)) 
 
-    def CalculateMass(self, lists, Name = "Mass"):
+    def CalculateMass(self, lists = None, Name = "Mass"):
+        if lists == None:
+            lists = [self]
         v = torch.zeros((1, 4))
         for i in lists:
             v += LorentzVector.ToPxPyPzE(i.pt, i.eta, i.phi, i.e, "cpu")
