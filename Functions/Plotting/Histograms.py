@@ -180,6 +180,8 @@ class TH1F(SharedMethods, GenericAttributes):
                 for k in range(self.yData[i]): 
                     Update.append(i)
             self.xData = Update
+
+
         self.PLT.hist(self.xData, bins = self.xBins, range=(self.xMin, self.xMax), alpha = self.Alpha, log = self.Log, density = self.Normalize, weights = self.Weights)
 
         if len(self.xLabels) != 0:

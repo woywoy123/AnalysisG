@@ -1,66 +1,30 @@
-from Functions.IO.Files import WriteDirectory
+from Functions.IO.Files import WriteDirectory, Directories
 from Functions.IO.IO import UnpickleObject, PickleObject
-from Functions.Event.CacheGenerators import Generate_Cache
+from Functions.Event.CacheGenerators import Generate_Cache_Batches
 from Functions.Plotting.Histograms import TH2F, TH1F, CombineHistograms
 
-def CreateWorkspace(Name, Dir, Cache, Stop = 100):
+def CreateWorkspace(Name, FileDir, Cache, Stop = 100):
     if Cache:
         x = WriteDirectory()
         x.MakeDir("PresentationPlots/" + Name)
-        Generate_Cache(Dir, Stop = Stop, Outdir = "PresentationPlots/" + Name)
-    return UnpickleObject("EventGenerator", "PresentationPlots/" + Name + "/EventGenerator")
-     
-def Histograms_Template(Title, xTitle, yTitle, bins, Min, Max, Data, FileName = None, Dir = None, Color = None, Weight = None, Alpha = 0.25, DPI = None):
-    H = TH1F()
-    H.Title = Title
-    H.xTitle = xTitle
-    H.yTitle = yTitle
-    H.xBins = bins
-    H.xMin = Min
-    H.xMax = Max
-    H.xData = Data
-    H.Alpha = Alpha
-    H.Weights = Weight
-    H.DefaultScaling = 7
-
-    if DPI != None:
-        H.DefaultDPI = DPI
+    return Generate_Cache_Batches(FileDir, Stop = Stop, OutDirectory = "PresentationPlots/" + Name, CreateCache = Cache)
     
-    if Color is not None:
-        H.Color = Color
+def BackupData(Dir, DB = None, Name = None, restore = False):
+    if restore == False:
+        PickleObject(DB, Name, Dir)
+    else:
+        Files = Directories(Dir).ListFilesInDir(Dir)
+        Backup = {}
+        for i in Files:
+            b = UnpickleObject(i, Dir)
+            for k, j in b.items():
+                if k not in Backup:
+                    Backup[k] = []
+                Backup[k] += j
+        return Backup
 
-    if FileName != None:
-        H.Filename = FileName
-        H.SaveFigure(Dir)
-    return H
-
-def Histograms2D_Template(Title, xTitle, yTitle, xBins, yBins, xMin, xMax, yMin, yMax, xData, yData, FileName, Dir, Diagonal = False, Weight = None):
-    H = TH2F()
-    H.Diagonal = Diagonal
-    H.Title = Title
-    H.xTitle = xTitle
-    H.yTitle = yTitle
-    H.xBins = xBins 
-    H.yBins = yBins 
-    H.xMin = xMin
-    H.xMax = xMax
-    H.yMin = yMin
-    H.yMax = yMax
-    H.xData = xData
-    H.yData = yData
-    H.Weights = Weight
-    H.ShowBinContent = True
-
-    H.Filename = FileName
-    H.SaveFigure("Plots/" + Dir)
-    return H
-
-
-def HistogramCombineTemplate(DPI = 500, Scaling = 7, Size = 10):
-    T = CombineHistograms()
-    T.DefaultDPI = DPI
-    T.DefaultScaling = Scaling
-    T.LabelSize = Size + 5
-    T.FontSize = Size
-    T.LegendSize = Size
-    return T
+def Mass(child):
+    from Functions.Particles.Particles import Particle
+    m = Particle()
+    m.CalculateMass(child)
+    return m.Mass_GeV

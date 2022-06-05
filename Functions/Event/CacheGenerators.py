@@ -1,37 +1,40 @@
 from Functions.Event.EventGenerator import EventGenerator
-from Functions.IO.IO import PickleObject
+from Functions.IO.IO import PickleObject, UnpickleObject
 from Functions.IO.Files import WriteDirectory, Directories 
 import os
 
-def EventGenerator_Template(di, Compiler, Stop = -1, SingleThread = False):
-    ev = EventGenerator(di, Stop = Stop)
-    ev.SpawnEvents()
-    ev.CompileEvent(SingleThread = SingleThread)
-    PickleObject(ev, Compiler)
-
-def BuildCacheDirectory(Dir = "_Cache", Name = "EventGenerator"):
-    if Dir == "_Cache":
-        mkdir = WriteDirectory()
-        mkdir.MakeDir(Dir + "/" + Name)
-    else:
-        d = Dir + "/" + Name + "/"
-        k = ""
-        for i in d.split("/"):
-            k += "/" + i
-            
-            try:
-                os.mkdir(k)
-            except FileExistsError:
-                pass
-            except PermissionError:
-                pass
-        os.chdir(d)
+def BuildCacheDirectory(Dir = "_Cache", Name = "EventGenerator", rootDir = False):
+    d = Dir + "/" + Name
+    if rootDir:
+        d = "/" + d
+    mkdir = WriteDirectory()
+    mkdir.MakeDir(d)
     return True
-
 
 def Generate_Cache(di, Stop = -1, SingleThread = False, Compiler = "EventGenerator", Outdir = "_Cache"):
     ev = EventGenerator(di, Stop = Stop)
     ev.SpawnEvents()
     ev.CompileEvent(SingleThread = SingleThread)
-    PickleObject(ev, Compiler, Outdir + "/" + Compiler)
+    PickleObject(ev, Compiler, Outdir + "/")
+
+def Generate_Cache_Batches(di, Stop = -1, SingleThread = False, Compiler = "EventGenerator", OutDirectory = "_Cache", CreateCache = True):
+    if di.endswith("/") == False:
+        di += "/"
+    if OutDirectory.endswith("/") == False:
+        OutDirectory += "/"
+    
+    BuildCacheDirectory(OutDirectory, Compiler)
+    
+    if CreateCache == True:
+        Files = Directories(di).ListFilesInDir(di)
+        for f in Files:
+            Generate_Cache(di + f, Stop, SingleThread, f.replace(".root", ""), OutDirectory + Compiler)
+    
+    dic = []
+    target = OutDirectory + Compiler
+    for f in Directories(target).ListFilesInDir(target):
+        dic.append(target + "/" + f)
+    return dic
+
+
 

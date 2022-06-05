@@ -79,6 +79,9 @@ class WriteDirectory(Notification):
                 os.mkdir(self.__tmp + "/" + k)
             except FileExistsError:
                 pass
+            except:
+                self.Warning("SOMETHING WENT WRONG MAKING DIR! -> " + dir)
+
             self.__tmp = self.__tmp + "/" + k 
     def ChangeDirToRoot(self):
         os.chdir(self.__pwd)
