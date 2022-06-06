@@ -1,6 +1,7 @@
-from PresentationPlots.GenericFunctions import *
+from Closure.PresentationCode.GenericFunctions import *
 from Functions.Plotting.TemplateHistograms import *
 from Functions.IO.IO import UnpickleObject
+from Functions.Event.DataLoader import GenerateDataLoader
 
 Out = "PresentationPlots/Presentation1/Plots/"
 def TopMassAnalysis(ev, Dir):
@@ -81,16 +82,28 @@ def EdgeAnalysisOfChildren(ev, Dir):
     BackupData("/".join(Out.split("/")[:-1]) + "/EdgeAnalysisOfChildrenBackup", DB = Backup, Name = ev)
 
 def CreatePlots(FileDir, CreateCache):
+    CreateCache = False
     ev = CreateWorkspace("Presentation1", FileDir, CreateCache, -1)
+    DL = GenerateDataLoader()
+    
     for i in ev:
         Dir = "/".join(i.split("/")[:-1])
         Name = i.split("/")[-1]
-        TopMassAnalysis(Name, Dir)
-        EdgeAnalysisOfChildren(Name, Dir)
+        imprt = UnpickleObject(Name, Dir)
+        DL.AddSample(imprt, "nominal", "TruthTopChildren", SelfLoop = True, FullyConnect = True)
+
+        #TopMassAnalysis(Name, Dir)
+        #EdgeAnalysisOfChildren(Name, Dir)
+
     
-    TopMassAnalysisPlots("Presentation1")
-    EdgeAnalysisOfChildrenPlots("Presentation1")
+    #TopMassAnalysisPlots("Presentation1")
+    #EdgeAnalysisOfChildrenPlots("Presentation1")
     return True
+
+
+
+
+
 
 def TopMassAnalysisPlots(Dir):
 

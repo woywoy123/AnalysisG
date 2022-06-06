@@ -6,7 +6,8 @@ from Closure import Metrics
 from Closure import Exporter
 from Closure import TopBuilder
 from Closure import DelphesImplementation
-from PresentationPlots import Presentation1
+from Closure import FeatureTester
+from Closure.PresentationCode import Presentation1
 from Functions.Event import CacheGenerators
 
 
@@ -66,13 +67,13 @@ if __name__ == "__main__":
     CacheGenerators.Generate_Cache(GeneralDir + "tttt/OldSample/1500_GeV/MCe/QU_1.root", Stop = 100, Compiler = "DataLoaderTest_1", Outdir = "_Pickle")
     CacheGenerators.Generate_Cache(GeneralDir + "t/MCa", Stop = 100, Compiler = "DataLoaderTest_2", Outdir = "_Pickle") 
 
-    Test(DataLoader.TestEventGraph, Name = "DataLoaderTest/DataLoaderTest.pkl", Level = "TruthTops")
-    Test(DataLoader.TestEventGraph, Name = "DataLoaderTest/DataLoaderTest.pkl", Level = "TruthTopChildren")
-    Test(DataLoader.TestEventGraph, Name = "DataLoaderTest/DataLoaderTest.pkl", Level = "DetectorParticles")
+    Test(DataLoader.TestEventGraph, Name = "DataLoaderTest.pkl", Level = "TruthTops")
+    Test(DataLoader.TestEventGraph, Name = "DataLoaderTest.pkl", Level = "TruthTopChildren")
+    Test(DataLoader.TestEventGraph, Name = "DataLoaderTest.pkl", Level = "DetectorParticles")
     
-    Test(DataLoader.TestDataLoader, Name = "DataLoaderTest/DataLoaderTest.pkl", Level = "TruthTops")
-    Test(DataLoader.TestDataLoader, Name = "DataLoaderTest/DataLoaderTest.pkl", Level = "TruthTopChildren")
-    Test(DataLoader.TestDataLoader, Name = "DataLoaderTest/DataLoaderTest.pkl", Level = "DetectorParticles")
+    Test(DataLoader.TestDataLoader, Name = "DataLoaderTest.pkl", Level = "TruthTops")
+    Test(DataLoader.TestDataLoader, Name = "DataLoaderTest.pkl", Level = "TruthTopChildren")
+    Test(DataLoader.TestDataLoader, Name = "DataLoaderTest.pkl", Level = "DetectorParticles")
 
     Test(DataLoader.TestDataLoaderMixing, Files = ["DataLoaderTest", "DataLoaderTest_1", "DataLoaderTest_2"], Level = "TruthTops")
 
@@ -95,7 +96,10 @@ if __name__ == "__main__":
     Test(Exporter.TestDataLoaderExport, Files = [GeneralDir + "tttt/OldSample/1500_GeV/MCe/QU_0.root", GeneralDir + "t/MCa"], CreateCache = True)
     Test(Exporter.TestEventGeneratorWithDataLoader, Files = [GeneralDir + "tttt/OldSample/1500_GeV/MCe/QU_0.root", GeneralDir + "t/MCa"], CreateCache = True)
     Test(TopBuilder.TestBuilder, Files = [GeneralDir + "tttt/OldSample/1500_GeV/MCe/QU_0.root", GeneralDir + "t/MCa"], CreateCache = True)
-    
+   
+    # ========= Test Feature Implementations ========= #
+    Test(FeatureTester.Analyser, Files = [GeneralDir + "tttt/OldSample/1500_GeV/MCe/QU_0.root"])
+
     # ========= Presentation Plots ============ #
     Test(Presentation1.CreatePlots, FileDir = GeneralDir + "tttt/OldSample/1500_GeV/MCe/", CreateCache = True)
 

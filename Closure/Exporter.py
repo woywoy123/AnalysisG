@@ -17,7 +17,7 @@ def TestModelExport(Files, Level, Name, CreateCache):
         DL.AddNodeTruth("x", nf.Signal)
         DL.SetDevice("cuda")
         for i in Files:
-            ev = UnpickleObject(i + "/" + i)
+            ev = UnpickleObject(i)
             DL.AddSample(ev, "nominal", Level)
         DL.MakeTrainingSample(0)
         PickleObject(DL, "TestOptimizerGraph")

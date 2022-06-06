@@ -42,7 +42,7 @@ class EventGraphTemplate:
             for key in Dict:
                 fx = Dict[key]
                 attr_v = []
-                kl = len(fx.__code__.co_varnames)
+                kl = fx.__code__.co_argcount
                 
                 if Map2 == None:
                     attr_v += [[fx(self.Event)]]

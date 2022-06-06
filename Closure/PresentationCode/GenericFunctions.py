@@ -1,7 +1,6 @@
 from Functions.IO.Files import WriteDirectory, Directories
 from Functions.IO.IO import UnpickleObject, PickleObject
 from Functions.Event.CacheGenerators import Generate_Cache_Batches
-from Functions.Plotting.Histograms import TH2F, TH1F, CombineHistograms
 
 def CreateWorkspace(Name, FileDir, Cache, Stop = 100):
     if Cache:

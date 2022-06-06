@@ -182,7 +182,7 @@ def CreateDataLoaderComplete(Files, Level, Name, CreateCache, NameOfCaller = Non
             if NameOfCaller != None:
                 ev = UnpickleObject(NameOfCaller + "/" + i)
             else:
-                ev = UnpickleObject(i + "/" + i)
+                ev = UnpickleObject(i)
 
             DL.AddSample(ev, "nominal", Level, True, True)
         if NameOfCaller == None:

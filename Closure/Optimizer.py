@@ -14,7 +14,7 @@ def TestOptimizerGraph(Files, Level, Name, CreateCache):
         DL.AddGraphTruth("Signal", gf.Signal)
         DL.SetDevice("cuda")
         for i in Files:
-            ev = UnpickleObject(i + "/" + i)
+            ev = UnpickleObject(i)
             DL.AddSample(ev, "nominal", Level)
         DL.MakeTrainingSample(50)
         PickleObject(DL, "TestOptimizerGraph")
@@ -41,7 +41,7 @@ def TestOptimizerNode(Files, Level, Name, CreateCache):
         DL.AddNodeTruth("x", nf.Signal)
         DL.SetDevice("cuda")
         for i in Files:
-            ev = UnpickleObject(i + "/" + i)
+            ev = UnpickleObject(i)
             DL.AddSample(ev, "nominal", Level, True, False)
         DL.MakeTrainingSample(50)
         PickleObject(DL, Name)
@@ -65,7 +65,7 @@ def TestOptimizerEdge(Files, Level, Name, CreateCache):
         DL.AddEdgeTruth("x", ef.Signal)
         DL.SetDevice("cuda")
         for i in Files:
-            ev = UnpickleObject(i + "/" + i)
+            ev = UnpickleObject(i)
             DL.AddSample(ev, "nominal", Level, False, True)
         DL.MakeTrainingSample(20)
         PickleObject(DL, Name)

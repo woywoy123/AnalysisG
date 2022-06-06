@@ -15,6 +15,7 @@ class Particle(Part):
 
         self.Decay_init = []
         self.Decay = []
+        self.Index = -1
  
 
 class Lepton(Particle):

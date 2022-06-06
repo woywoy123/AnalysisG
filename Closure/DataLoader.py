@@ -118,7 +118,7 @@ def TestDataLoaderMixing(Files, Level):
     Samples = []
     su = 0
     for i in Files:
-        ev = UnpickleObject(i + "/" + i)
+        ev = UnpickleObject(i)
         Loaders.append(ev)
         DL.AddSample(ev, "nominal", Level, True)
         for k in ev.Events:

@@ -2,7 +2,8 @@ from Functions.Tools.Alerting import Notification
 from Functions.Event.EventGraph import *
 from sklearn.model_selection import ShuffleSplit
 import numpy as np
-
+import importlib
+           
 class GenerateDataLoader(Notification):
     
     def __init__(self):
@@ -70,36 +71,43 @@ class GenerateDataLoader(Notification):
                 self.Notify("ADDING SAMPLE -> (" + Tree + ") " + i)
         except:
             self.Warning("FAILED TO ADD SAMPLE " + str(type(EventGeneratorInstance)))
-
+        
+        attrs = 0
         if len(list(self.EdgeAttribute)) == 0:
             self.Warning("NO EDGE FEATURES PROVIDED")
+            attrs+=1
         if len(list(self.NodeAttribute)) == 0:
             self.Warning("NO NODE FEATURES PROVIDED")
+            attrs+=1
         if len(list(self.GraphAttribute)) == 0:
             self.Warning("NO GRAPH FEATURES PROVIDED")
+            attrs+=1
+        if attrs == 3:
+            self.Fail("NO ATTRIBUTES DEFINED!")
 
         self.Notify("!DATA BEING PROCESSED ON: " + self.Device_S)
         self.len = len(EventGeneratorInstance.Events)
 
         if Level == "TruthTops":
-            fx = EventGraphTruthTops
+            fx_s = EventGraphTruthTops
         elif Level == "TruthTopChildren":
-            fx = EventGraphTruthTopChildren
+            fx_s = EventGraphTruthTopChildren
         elif Level == "TruthJetLepton":
-            fx = EventGraphTruthJetLepton
+            fx_s = EventGraphTruthJetLepton
         elif Level == "DetectorParticles":
-            fx = EventGraphDetector
+            fx_s = EventGraphDetector
         else:
             self.Fail("EVENT GRAPH NOT DEFINED. See EventGraph.py")
             return
-
-
+        fx_m = fx_s.__module__ 
+        fx_n = fx_s.__name__
         for it in sorted(EventGeneratorInstance.Events):
             ev = EventGeneratorInstance.Events[it][Tree]
             self.ProgressInformation("CONVERSION")
             if self.__iter == self.NEvents:
                 break
 
+            fx = getattr(importlib.import_module(fx_m), fx_n)
             event = fx(ev)
             event.iter = self.__iter
             event.SelfLoop = SelfLoop
