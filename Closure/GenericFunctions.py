@@ -1,3 +1,5 @@
+from Functions.IO.IO import UnpickleObject, PickleObject   
+
 def Comparison(a, b, key = None):
     
     same = False
@@ -113,7 +115,6 @@ def CompareObjects(obj1, obj2, key = None):
 
 
 def CacheEventGenerator(Stop, Dir, Name, Cache):
-    from Functions.IO.IO import UnpickleObject, PickleObject   
     from Functions.Event.EventGenerator import EventGenerator
 
     if Cache:
@@ -125,7 +126,6 @@ def CacheEventGenerator(Stop, Dir, Name, Cache):
 
 
 def CreateEventGeneratorComplete(Stop, Files, Name, CreateCache, NameOfCaller):
-    from Functions.IO.IO import UnpickleObject, PickleObject   
     from Functions.Event.EventGenerator import EventGenerator 
 
     out = []
@@ -139,9 +139,7 @@ def CreateEventGeneratorComplete(Stop, Files, Name, CreateCache, NameOfCaller):
     return out
 
 def CreateDataLoaderComplete(Files, Level, Name, CreateCache, NameOfCaller = None):
-    from Functions.IO.IO import UnpickleObject, PickleObject   
     if CreateCache:
-
         import Functions.FeatureTemplates.EdgeFeatures as ef
         import Functions.FeatureTemplates.NodeFeatures as nf
         import Functions.FeatureTemplates.GraphFeatures as gf
@@ -191,8 +189,89 @@ def CreateDataLoaderComplete(Files, Level, Name, CreateCache, NameOfCaller = Non
         PickleObject(DL, Name)
     return UnpickleObject(Name)
 
+def CreateModelWorkspace(Files, DataFeatures, Cache, Stop, ProcessName, Level):
+    from Functions.Event.CacheGenerators import Generate_Cache_Batches
+    from Functions.Event.DataLoader import GenerateDataLoader
+    from Functions.IO.Files import WriteDirectory, Directories
+    import inspect 
 
+    CallerName = inspect.stack()[1].function
+    Outdir = "_Cache/" + CallerName
+    
+    if Cache:
+        x = WriteDirectory()
+        x.MakeDir(Outdir)
+    
+    Out = []
+    for i, j in zip(Files, ProcessName):
+        Out += Generate_Cache_Batches(i, Stop = Stop, Compiler = j, OutDirectory = Outdir, CreateCache = Cache)
+   
+    if Cache:
+        DL = GenerateDataLoader()
+        DL.SetDevice("cuda")
+        for key, fx in DataFeatures.items():
+            if "GT_" == key[0:3]:
+                DL.AddGraphTruth(key[3:], fx)
+            if "GF_" == key[0:3]:
+                DL.AddGraphFeature(key[3:], fx)
 
+            if "NT_" == key[0:3]:
+                DL.AddNodeTruth(key[3:], fx)
+            if "NF_" == key[0:3]:
+                DL.AddNodeFeature(key[3:], fx)
 
+            if "ET_" == key[0:3]:
+                DL.AddEdgeTruth(key[3:], fx)
+            if "EF_" == key[0:3]:
+                DL.AddEdgeFeature(key[3:], fx)
+        
+        for i in Out:
+            ev = UnpickleObject(i)
+            DL.AddSample(ev, "nominal", Level, True, True)
+        DL.MakeTrainingSample(10)
+        PickleObject(DL, "DataLoader", Outdir)
+    return UnpickleObject("DataLoader", Outdir)
 
+def OptimizerTemplate(DataLoader, Model):
+    from Functions.GNN.Optimizer import Optimizer
 
+    Op = Optimizer(DataLoader)
+    Op.Verbose = False
+    Op.ONNX_Export = False
+    Op.TorchScript_Export = False
+    Op.Model = Model
+    Op.DefineOptimizer()
+    N_Nodes = list(Op.TrainingSample)
+    N_Nodes.sort(reverse = True)
+    Op.Sample = Op.TrainingSample[N_Nodes[0]][0]
+    Op.InitializeModel()
+    Op.GetTruthFlags(Op.EdgeFeatures, "E")
+    Op.GetTruthFlags(Op.NodeFeatures, "N")
+    Op.GetTruthFlags(Op.GraphFeatures, "G")
+    return Op
+
+def KillCondition(Variable, TestIndex, Optimizer, Samples, Iterations, sleep = -1):
+    import torch
+    import time
+    
+    def Classification(truth, model):
+            return int(torch.sum(torch.eq(truth[0], model[0]))) == len(truth[0])
+    
+    Passed = False
+    for k in range(Iterations):
+        Optimizer.Debug = "Loss"
+        for i in Samples:
+            Optimizer.Train(i)
+        if k/TestIndex - int(k/TestIndex) == 0:
+            Optimizer.Debug = True
+            truth, model = Optimizer.Train(i)
+
+            for key, cl in Variable.items():
+                if cl == "C":
+                    Passed = Classification(truth[key], model[key])
+
+            if sleep > 0:
+                time.sleep(sleep)
+            if Passed:
+                return Passed
+    return Passed

@@ -24,8 +24,10 @@ def Generate_Cache_Batches(di, Stop = -1, SingleThread = False, Compiler = "Even
         OutDirectory += "/"
     
     BuildCacheDirectory(OutDirectory, Compiler)
-    
-    if CreateCache == True:
+   
+    if ".root" in di and CreateCache:
+        Generate_Cache(di[:-1], Stop, SingleThread, di[:-1].split("/")[-1].replace(".root", ""), OutDirectory + Compiler)
+    elif CreateCache:
         Files = Directories(di).ListFilesInDir(di)
         for f in Files:
             Generate_Cache(di + f, Stop, SingleThread, f.replace(".root", ""), OutDirectory + Compiler)

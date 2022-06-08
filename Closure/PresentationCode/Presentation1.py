@@ -82,7 +82,6 @@ def EdgeAnalysisOfChildren(ev, Dir):
     BackupData("/".join(Out.split("/")[:-1]) + "/EdgeAnalysisOfChildrenBackup", DB = Backup, Name = ev)
 
 def CreatePlots(FileDir, CreateCache):
-    CreateCache = False
     ev = CreateWorkspace("Presentation1", FileDir, CreateCache, -1)
     DL = GenerateDataLoader()
     
@@ -90,20 +89,15 @@ def CreatePlots(FileDir, CreateCache):
         Dir = "/".join(i.split("/")[:-1])
         Name = i.split("/")[-1]
         imprt = UnpickleObject(Name, Dir)
-        DL.AddSample(imprt, "nominal", "TruthTopChildren", SelfLoop = True, FullyConnect = True)
+        #DL.AddSample(imprt, "nominal", "TruthTopChildren", SelfLoop = True, FullyConnect = True)
 
-        #TopMassAnalysis(Name, Dir)
-        #EdgeAnalysisOfChildren(Name, Dir)
-
+        TopMassAnalysis(Name, Dir)
+        EdgeAnalysisOfChildren(Name, Dir)
     
-    #TopMassAnalysisPlots("Presentation1")
-    #EdgeAnalysisOfChildrenPlots("Presentation1")
+    TopMassAnalysisPlots("Presentation1")
+    EdgeAnalysisOfChildrenPlots("Presentation1")
+    
     return True
-
-
-
-
-
 
 def TopMassAnalysisPlots(Dir):
 

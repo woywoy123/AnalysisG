@@ -16,7 +16,7 @@ def phi(a):
 def Signal(a):
     return int(a.FromRes)
 
-def Property(a):
+def Mass(a):
     v = LorentzVector.ToPxPyPzE(a.pt, a.eta, a.phi, a.e, "cpu")
     return float(LorentzVector.MassFromPxPyPzE(v))
 

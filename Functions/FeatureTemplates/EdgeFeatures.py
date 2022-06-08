@@ -16,4 +16,3 @@ def Signal(a, b):
     return float(a.Index == b.Index)
 
 
-

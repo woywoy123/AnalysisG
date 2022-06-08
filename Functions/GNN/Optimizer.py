@@ -20,7 +20,6 @@ class ModelImporter:
         self.Caller = "MODELIMPORTER"
         self.Sample = None
         self.InitializeModel()
-
         
     def InitializeModel(self):
         self.Model.to(self.Device)
@@ -66,20 +65,15 @@ class ModelImporter:
 
             key = key.lstrip("O_")
             if Truth: 
-                key_T = self.T_Features[key][0]
-                out_v = sample[key_T]
+                out_v = sample[self.T_Features[key][0]]
             else:
                 out_v = self.Model.__dict__["O_" + key]
             out_p = out_v
 
             # Adjust the outputs
-            if GetKeyPair(output_dict, "N_" + key):
-                out_v = out_v[sample.edge_index[0]]
-                out_p = out_v
-            
             if GetKeyPair(output_dict, "C_" + key) and not Truth:
-                out_p = out_p.max(1)[1]
-            
+                out_p = out_v.softmax(dim = 1).max(dim = 1)[1]
+ 
             out_p = out_p.view(1, -1)[0]
             OutDict[key] = [out_p, out_v]
         return OutDict
@@ -110,6 +104,7 @@ class Optimizer(ExportToDataScience, Notification, ModelImporter):
         self.DefaultOptimizer = "ADAM"
         self.ONNX_Export = False
         self.TorchScript_Export = True
+        self.Debug = False
         
         ### Internal Stuff 
         self.Training = True
@@ -202,21 +197,43 @@ class Optimizer(ExportToDataScience, Notification, ModelImporter):
             if m_v.shape[1] <= t_v.max() and (self.ModelOutputs["C_" + key] or Classification):
                 self.Fail("Your Classification Model only has " + str(int(m_v.shape[1])) + " classes but requires " + str(int(t_v.max()+1)))
             elif Classification == False and m_v.shape[1] != t_v.shape[1]:
+                self.Warning("Model is using regression, but your truth has length " 
+                        + str(int(t_v.shape[1])) + " but need " + str(int(m_v.shape[1])))
                 self.Fail("Your Model has more outputs than Truth! :: " + key)
             
-            acc = acc(t_p, m_p)
+
+
+          
+            acc = acc(m_p, t_p)
             L = self.LF(m_v, t_v)
+            LT += L
+            
+            if self.Debug == True:
+                print("("+key+")" + "---> Truth: \n", t_p)
+                print("("+key+")" + "---> Model: \n", m_p)
+                print("(Loss)---> ", L)
+            elif self.Debug == "Loss":
+                print("(Loss)---> ", L)
+            elif self.Debug == "Pred":
+                print("---> Truth: \n", t_p)
+                print("---> Model: \n", m_p)
+            if self.Debug:
+                continue
+
             if self.Training:
                 self.Stats["Training_Accuracy"][key][-1].append(acc)
                 self.Stats["Training_Loss"][key][-1].append(L)
             else:
                 self.Stats["Validation_Accuracy"][key][-1].append(acc)
                 self.Stats["Validation_Loss"][key][-1].append(L)
-            LT += L
 
         if self.Training:
             LT.backward()
             self.Optimizer.step()
+        
+        if self.Debug:
+            return truth_out, model_out
+
 
     def SampleLoop(self, samples):
         self.ResetAll() 

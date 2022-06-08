@@ -144,13 +144,17 @@ def PickleObject(obj, filename, Dir = "_Pickle"):
 def UnpickleObject(filename, Dir = "_Pickle"):
     if Dir.endswith("/"):
         Dir = Dir[0:len(Dir)-1]
-    if filename.endswith(".pkl"):
-        pass
+
+    if filename.endswith(".pkl") and Dir == "_Pickle" and len(filename.split("/")) != 1:
+        l = filename.split("/")
+        Dir = "/".join(l[:-1])
+        filename = l[-1]
+    elif filename.endswith(".pkl"):
+        filename = filename.split("/")[-1]
     else:
         filename += ".pkl"
 
     filename = Dir + "/" + filename
-
     infile = open(filename, "rb")
     obj = pickle.load(infile)
     infile.close()

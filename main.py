@@ -7,6 +7,7 @@ from Closure import Exporter
 from Closure import TopBuilder
 from Closure import DelphesImplementation
 from Closure import FeatureTester
+from Closure import ModelProofOfConcept
 from Closure.PresentationCode import Presentation1
 from Functions.Event import CacheGenerators
 
@@ -33,6 +34,7 @@ def Test(F, **kargs):
         e = str(sys.exc_info()[1])
         traceback.print_tb(sys.exc_info()[2])
         result = "(-) Failed: " + name + "\n" + e
+        exit()
     
     print(result)
     test_dir.WriteTextFile(result, "_TestResults/" + CallerDir, name)
@@ -99,6 +101,11 @@ if __name__ == "__main__":
    
     # ========= Test Feature Implementations ========= #
     Test(FeatureTester.Analyser, Files = [GeneralDir + "tttt/OldSample/1500_GeV/MCe/QU_0.root"])
+
+    # ========== Test Model Developments ========== # 
+    #Test(ModelProofOfConcept.BaseLine, Files = [GeneralDir + "tttt/OldSample/1500_GeV/MCe/QU_0.root", GeneralDir + "t/MCa/QU_0.root"], Names = ["tttt", "t"], CreateCache = True)
+
+
 
     # ========= Presentation Plots ============ #
     Test(Presentation1.CreatePlots, FileDir = GeneralDir + "tttt/OldSample/1500_GeV/MCe/", CreateCache = True)

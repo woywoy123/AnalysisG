@@ -12,8 +12,6 @@ from Functions.Particles.TopBuilder import ParticleReconstructor
 
 def TestBuilder(Files, CreateCache): 
     
-    CreateCache = True
-
     it = 10
     EV = CreateEventGeneratorComplete(it, Files, ["D_" + str(i) for i in range(len(Files))], CreateCache, "TestBuilder")
     DL = CreateDataLoaderComplete(["D_" + str(i) for i in range(len(Files))], "TruthTopChildren", "TestBuilderData", CreateCache, "TestBuilder")
