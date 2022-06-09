@@ -18,10 +18,36 @@ class Event(EventTemplate):
         self.Tree = ["nominal"]
         self.runNumber = "runNumber"
         self.eventNumber = "eventNumber"
+        
+        tag = "weight"
+        self.pileup = tag + "_pileup"
+        self.leptonSF = tag + "_leptonSF"
+        self.globalLeptonTriggerSF = tag + "_globalLeptonTriggerSF"
+
+        self.bTagSF_DL1_85 = tag + "_bTagSF_DL1_85"
+        self.bTagSF_DL1_77 = tag + "_bTagSF_DL1_77"
+        self.bTagSF_DL1_70 = tag + "_bTagSF_DL1_70"
+        self.bTagSF_DL1_60 = tag + "_bTagSF_DL1_60"
+
+        self.bTagSF_DL1r_85 = tag + "_bTagSF_DL1r_85"
+        self.bTagSF_DL1r_77 = tag + "_bTagSF_DL1r_77"
+        self.bTagSF_DL1r_70 = tag + "_bTagSF_DL1r_70"
+        self.bTagSF_DL1r_60 = tag + "_bTagSF_DL1r_60"
+
+        self.jvt = tag + "_jvt"
+        self.indiv_SF_EL_Reco = tag + "_indiv_SF_EL_Reco"
+        self.indiv_SF_EL_ID = tag + "_indiv_SF_EL_ID"
+        self.indiv_SF_EL_Isol = tag + "_indiv_SF_EL_Isol"
+
+        self.indiv_SF_MU_ID = tag + "_indiv_SF_MU_ID"
+        self.indiv_SF_MU_Isol = tag + "_indiv_SF_MU_Isol"
+
         self.mu = "mu"
+        self.mu_actual = "mu_actual"
+
         self.met = "met_met"
         self.met_phi = "met_phi" 
-        self.mu_actual = "mu_actual"
+
         self.DefineObjects()
         self.iter = -1
 

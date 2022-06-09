@@ -167,6 +167,7 @@ class ExportToDataScience(WriteDirectory):
             DataGenerator.GraphAttribute[i] = str(DataGenerator.GraphAttribute[i]).split(" ")[1]
 
         DataGenerator.SetDevice("cpu")
+        DataGenerator.EventGraph = ""
         self.__SearchObject(DataGenerator, self.__MemoryLink)
         
         self.__Dump = HDF5(OutDirectory, Name)

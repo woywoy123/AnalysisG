@@ -1,17 +1,25 @@
 from Functions.IO.IO import PickleObject, UnpickleObject
 from Functions.Event.DataLoader import GenerateDataLoader
-import Functions.FeatureTemplates.EdgeFeatures as ef
-import Functions.FeatureTemplates.NodeFeatures as nf
-import Functions.FeatureTemplates.GraphFeatures as gf
+import Closure.FeatureTemplates.EdgeFeatures as ef
+import Closure.FeatureTemplates.NodeFeatures as nf
+import Closure.FeatureTemplates.GraphFeatures as gf
 from Functions.GNN.Optimizer import Optimizer
 from Functions.GNN.TrivialModels import GraphNN, NodeConv, EdgeConv, CombinedConv
+from Functions.Event.Implementations.EventGraphs import EventGraphTruthTops, EventGraphTruthTopChildren, EventGraphDetector  
 
 def TestOptimizerGraph(Files, Level, Name, CreateCache):
-    
     if CreateCache:
         DL = GenerateDataLoader()
         DL.AddGraphFeature("Signal", gf.Signal)
         DL.AddGraphTruth("Signal", gf.Signal)
+
+        if Level == "TruthTops":
+            DL.EventGraph = EventGraphTruthTops
+        elif Level == "TruthTopChildren":
+            DL.EventGraph = EventGraphTruthTopChildren
+        elif Level == "DetectorParticles":
+            DL.EventGraph = EventGraphDetector
+
         DL.SetDevice("cuda")
         for i in Files:
             ev = UnpickleObject(i)
@@ -40,9 +48,15 @@ def TestOptimizerNode(Files, Level, Name, CreateCache):
         DL.AddNodeFeature("Sig", nf.Signal)
         DL.AddNodeTruth("x", nf.Signal)
         DL.SetDevice("cuda")
+        if Level == "TruthTops":
+            DL.EventGraph = EventGraphTruthTops
+        elif Level == "TruthTopChildren":
+            DL.EventGraph = EventGraphTruthTopChildren
+        elif Level == "DetectorParticles":
+            DL.EventGraph = EventGraphDetector
         for i in Files:
             ev = UnpickleObject(i)
-            DL.AddSample(ev, "nominal", Level, True, False)
+            DL.AddSample(ev, "nominal", True, False)
         DL.MakeTrainingSample(50)
         PickleObject(DL, Name)
     DL = UnpickleObject(Name)
@@ -63,10 +77,19 @@ def TestOptimizerEdge(Files, Level, Name, CreateCache):
         DL = GenerateDataLoader()
         DL.AddEdgeFeature("x", ef.Signal)
         DL.AddEdgeTruth("x", ef.Signal)
+
+        if Level == "TruthTops":
+            DL.EventGraph = EventGraphTruthTops
+        elif Level == "TruthTopChildren":
+            DL.EventGraph = EventGraphTruthTopChildren
+        elif Level == "DetectorParticles":
+            DL.EventGraph = EventGraphDetector
+
         DL.SetDevice("cuda")
+
         for i in Files:
             ev = UnpickleObject(i)
-            DL.AddSample(ev, "nominal", Level, False, True)
+            DL.AddSample(ev, "nominal", False, True)
         DL.MakeTrainingSample(20)
         PickleObject(DL, Name)
     DL = UnpickleObject(Name)

@@ -5,20 +5,30 @@ from Functions.GNN.Optimizer import Optimizer
 from Functions.IO.IO import UnpickleObject, PickleObject
 from Functions.GNN.TrivialModels import *
 
-import Functions.FeatureTemplates.GraphFeatures as gf
-import Functions.FeatureTemplates.NodeFeatures as nf
+import Closure.FeatureTemplates.EdgeFeatures as ef
+import Closure.FeatureTemplates.NodeFeatures as nf
+import Closure.FeatureTemplates.GraphFeatures as gf
+from Functions.Event.Implementations.EventGraphs import EventGraphTruthTops, EventGraphTruthTopChildren, EventGraphDetector
 
 def TestModelExport(Files, Level, Name, CreateCache):
-
     if CreateCache:
         DL = GenerateDataLoader()
+
+        if Level == "TruthTops":
+            DL.EventGraph = EventGraphTruthTops
+        elif Level == "TruthTopChildren":
+            DL.EventGraph = EventGraphTruthTopChildren
+        elif Level == "DetectorParticles":
+            DL.EventGraph = EventGraphDetector
+
+
         DL.AddNodeFeature("x", nf.Signal)
         DL.AddNodeFeature("Sig", nf.Signal)
         DL.AddNodeTruth("x", nf.Signal)
         DL.SetDevice("cuda")
         for i in Files:
             ev = UnpickleObject(i)
-            DL.AddSample(ev, "nominal", Level)
+            DL.AddSample(ev, "nominal")
         DL.MakeTrainingSample(0)
         PickleObject(DL, "TestOptimizerGraph")
     DL = UnpickleObject("TestOptimizerGraph")
@@ -78,9 +88,6 @@ def TestEventGeneratorWithDataLoader(Files, CreateCache):
     from Functions.Event.DataLoader import GenerateDataLoader
     from Functions.GNN.Optimizer import Optimizer
     from Functions.GNN.TrivialModels import CombinedConv
-    import Functions.FeatureTemplates.EdgeFeatures as ef
-    import Functions.FeatureTemplates.NodeFeatures as nf
-    import Functions.FeatureTemplates.GraphFeatures as gf
         
     it = 10
     ev_O = CreateEventGeneratorComplete(it, Files, ["tttt", "t"], CreateCache, "TestEventGeneratorWithDataLoader")
@@ -117,9 +124,11 @@ def TestEventGeneratorWithDataLoader(Files, CreateCache):
     DL.AddGraphTruth("GraphPhi", gf.MissingPhi)
     DL.AddGraphTruth("GraphSignal", gf.Signal)
     DL.SetDevice("cuda")
-    
-    DL.AddSample(ev_R1, "nominal", "TruthTopChildren", True, True)
-    DL.AddSample(ev_R2, "nominal", "TruthTopChildren", True, True)
+
+    DL.EventGraph = EventGraphTruthTopChildren
+
+    DL.AddSample(ev_R1, "nominal", True, True)
+    DL.AddSample(ev_R2, "nominal", True, True)
 
     DLO = GenerateDataLoader()
     DLO.AddEdgeFeature("dr", ef.d_r)
@@ -142,8 +151,10 @@ def TestEventGeneratorWithDataLoader(Files, CreateCache):
     DLO.AddGraphTruth("GraphSignal", gf.Signal)
     DLO.SetDevice("cuda")
 
-    DLO.AddSample(ev_P[0], "nominal", "TruthTopChildren", True, True)
-    DLO.AddSample(ev_P[1], "nominal", "TruthTopChildren", True, True)
+    DLO.EventGraph = EventGraphTruthTopChildren
+
+    DLO.AddSample(ev_P[0], "nominal", True, True)
+    DLO.AddSample(ev_P[1], "nominal", True, True)
 
     assert DL.__dict__.keys() == DLO.__dict__.keys()
 

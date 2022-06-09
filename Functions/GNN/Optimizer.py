@@ -200,10 +200,6 @@ class Optimizer(ExportToDataScience, Notification, ModelImporter):
                 self.Warning("Model is using regression, but your truth has length " 
                         + str(int(t_v.shape[1])) + " but need " + str(int(m_v.shape[1])))
                 self.Fail("Your Model has more outputs than Truth! :: " + key)
-            
-
-
-          
             acc = acc(m_p, t_p)
             L = self.LF(m_v, t_v)
             LT += L

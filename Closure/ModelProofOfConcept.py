@@ -1,8 +1,8 @@
 from Closure.GenericFunctions import * 
-from Functions.GNN.BaseLine import *
-import Functions.FeatureTemplates.EdgeFeatures as ef
-import Functions.FeatureTemplates.NodeFeatures as nf
-import Functions.FeatureTemplates.GraphFeatures as gf
+from Functions.GNN.Models.BaseLine import *
+import Closure.FeatureTemplates.EdgeFeatures as ef
+import Closure.FeatureTemplates.NodeFeatures as nf
+import Closure.FeatureTemplates.GraphFeatures as gf
 
 def BaseLine(Files, Names, CreateCache):
 
@@ -45,10 +45,5 @@ def BaseLine(Files, Names, CreateCache):
     kill = {}
     kill |= {"Signal" : "C"}
     KillCondition(kill, 100, Op, samples, 10000, 0.1)
-
-
-
-
-
 
     return True

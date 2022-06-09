@@ -1,10 +1,10 @@
 import torch
 from Functions.IO.IO import PickleObject, UnpickleObject
-from Functions.Event.EventGraph import EventGraphTemplate
+from Functions.Event.EventGraphTemplate import EventGraphTemplate
 from Functions.Event.DataLoader import GenerateDataLoader
-import Functions.FeatureTemplates.GraphFeatures as GF
-import Functions.FeatureTemplates.EdgeFeatures as EF
-import Functions.FeatureTemplates.NodeFeatures as NF
+import Closure.FeatureTemplates.GraphFeatures as GF
+import Closure.FeatureTemplates.EdgeFeatures as EF
+import Closure.FeatureTemplates.NodeFeatures as NF
 
 def TrivialNodeFeature(a):
     return float(1.0)
@@ -59,13 +59,22 @@ def TestEventGraph(Name, Level):
     return True
 
 def TestDataLoader(Name, Level):
+    from Functions.Event.Implementations.EventGraphs import EventGraphTruthTops, EventGraphTruthTopChildren, EventGraphDetector
     ev = UnpickleObject(Name)
     DL = GenerateDataLoader() 
+    
+    if Level == "TruthTops":
+        DL.EventGraph = EventGraphTruthTops
+    elif Level == "TruthTopChildren":
+        DL.EventGraph = EventGraphTruthTopChildren
+    elif Level == "DetectorParticles":
+        DL.EventGraph = EventGraphDetector
+    
     DL.CleanUp = False
     DL.AddGraphFeature("Graph", TrivialGraphFeature)
     DL.AddNodeFeature("Node", TrivialNodeFeature)
     DL.AddEdgeFeature("Edge", TrivialEdgeFeature)
-    DL.AddSample(ev, "nominal", Level, True)
+    DL.AddSample(ev, "nominal", True)
 
     for i in DL.DataContainer:
         Particles = getattr(ev.Events[i]["nominal"], Level) 
@@ -81,7 +90,15 @@ def TestDataLoader(Name, Level):
     DL.AddGraphFeature("Graph", TrivialGraphFeature)
     DL.AddNodeFeature("Node", TrivialNodeFeature)
     DL.AddEdgeFeature("Edge", TrivialEdgeFeature)
-    DL.AddSample(ev, "nominal", Level, False)
+
+    if Level == "TruthTops":
+        DL.EventGraph = EventGraphTruthTops
+    elif Level == "TruthTopChildren":
+        DL.EventGraph = EventGraphTruthTopChildren
+    elif Level == "DetectorParticles":
+        DL.EventGraph = EventGraphDetector
+    DL.AddSample(ev, "nominal", False)
+    
     for i in DL.DataContainer:
         Particles = getattr(ev.Events[i]["nominal"], Level) 
 
@@ -104,14 +121,23 @@ def TestDataLoader(Name, Level):
     return True
 
 def TestDataLoaderMixing(Files, Level):
-    
+    from Functions.Event.Implementations.EventGraphs import EventGraphTruthTops, EventGraphTruthTopChildren, EventGraphDetector
     Loaders = []
     DL = GenerateDataLoader()
     DL.CleanUp = False
     DL.AddGraphFeature("Graph", TrivialGraphFeature)
     DL.AddNodeFeature("Node", TrivialNodeFeature)
     DL.AddEdgeFeature("Edge", TrivialEdgeFeature)
+
+    if Level == "TruthTops":
+        DL.EventGraph = EventGraphTruthTops
+    elif Level == "TruthTopChildren":
+        DL.EventGraph = EventGraphTruthTopChildren
+    elif Level == "DetectorParticles":
+        DL.EventGraph = EventGraphDetector
+
     DL.SetDevice("cuda:0")
+
     
     Start = []
     End = []
@@ -120,7 +146,7 @@ def TestDataLoaderMixing(Files, Level):
     for i in Files:
         ev = UnpickleObject(i)
         Loaders.append(ev)
-        DL.AddSample(ev, "nominal", Level, True)
+        DL.AddSample(ev, "nominal", True)
         for k in ev.Events:
             if ev.EventIndexFileLookup(k) not in Samples:
                 s = ev.EventIndexFileLookup(k)

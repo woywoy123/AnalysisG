@@ -1,8 +1,8 @@
 from Functions.Tools.Alerting import Notification 
-from Functions.Event.EventGraph import *
 from sklearn.model_selection import ShuffleSplit
 import numpy as np
 import importlib
+import torch
            
 class GenerateDataLoader(Notification):
     
@@ -10,6 +10,7 @@ class GenerateDataLoader(Notification):
         self.Verbose = True
         Notification.__init__(self, self.Verbose)
         self.Device_S = "cpu"
+        self.Device = ""
         self.__iter = 0
         self.NEvents = -1
         self.CleanUp = True
@@ -30,6 +31,8 @@ class GenerateDataLoader(Notification):
         self.FileTraces["Level"] = []
         self.FileTraces["SelfLoop"] = []
         self.FileTraces["Samples"] = []
+
+        self.EventGraph = ""
 
         self.SetDevice(self.Device_S)
 
@@ -64,7 +67,7 @@ class GenerateDataLoader(Notification):
         for i in self.DataContainer:
             self.DataContainer[i].to(self.Device)
 
-    def AddSample(self, EventGeneratorInstance, Tree, Level, SelfLoop = False, FullyConnect = True):
+    def AddSample(self, EventGeneratorInstance, Tree, SelfLoop = False, FullyConnect = True):
         
         try:
             for i in EventGeneratorInstance.FileEventIndex:
@@ -87,20 +90,13 @@ class GenerateDataLoader(Notification):
 
         self.Notify("!DATA BEING PROCESSED ON: " + self.Device_S)
         self.len = len(EventGeneratorInstance.Events)
-
-        if Level == "TruthTops":
-            fx_s = EventGraphTruthTops
-        elif Level == "TruthTopChildren":
-            fx_s = EventGraphTruthTopChildren
-        elif Level == "TruthJetLepton":
-            fx_s = EventGraphTruthJetLepton
-        elif Level == "DetectorParticles":
-            fx_s = EventGraphDetector
-        else:
-            self.Fail("EVENT GRAPH NOT DEFINED. See EventGraph.py")
+        
+        if self.EventGraph == "":
+            self.Fail("EVENT GRAPH NOT DEFINED. Import an EventGraph implementation (See Functions/Event/Implementations)")
             return
-        fx_m = fx_s.__module__ 
-        fx_n = fx_s.__name__
+        
+        fx_m = self.EventGraph.__module__ 
+        fx_n = self.EventGraph.__name__
         for it in sorted(EventGeneratorInstance.Events):
             ev = EventGeneratorInstance.Events[it][Tree]
             self.ProgressInformation("CONVERSION")
@@ -129,7 +125,7 @@ class GenerateDataLoader(Notification):
                 self.FileTraces["Samples"].append(EventGeneratorInstance.EventIndexFileLookup(it))
                 self.FileTraces["Tree"].append(Tree)
                 self.FileTraces["Start"].append(self.__iter)
-                self.FileTraces["Level"].append(Level)
+                self.FileTraces["Level"].append(fx_m + "." + fx_n)
                 self.FileTraces["SelfLoop"].append(SelfLoop)
 
             self.__iter += 1

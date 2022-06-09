@@ -55,15 +55,15 @@ def Comparison(di, Tree, Branch, EventContainer, NEvents = -1):
                 e_up = [float(k) for p in e_up for k in p]
        
         if len(e_up) != len(Value_My):
-            return "FAILURE::Branch -> " + Branch + " |Tree -> " + Tree + " Uproot ->" + str(e_up) + " Loader -> " + str(Value_My)
+            return "FAILURE::TREE -> " + Tree + " | Branch -> " + Branch + " Uproot ->" + str(e_up) + " Loader -> " + str(Value_My)
 
         for k, p in zip(e_up, Value_My):
             try: 
                 assert k == p
             except:
-                return "FAILURE::Branch -> " + Branch + " |Tree -> " + Tree + " Uproot ->" + str(e_up) + " Loader -> " + str(Value_My)
+                return "FAILURE::TREE -> " + Tree + " | Branch -> " + Branch + " Uproot ->" + str(e_up) + " Loader -> " + str(Value_My)
 
-    return "PASSED::Branch -> " + Branch + " |Tree -> " + Tree
+    return "PASSED::TREE -> " + Tree + " | Branch -> " + Branch
 
 
 

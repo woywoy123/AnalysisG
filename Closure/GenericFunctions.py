@@ -1,4 +1,5 @@
 from Functions.IO.IO import UnpickleObject, PickleObject   
+from Functions.Event.Implementations.EventGraphs import EventGraphTruthTops, EventGraphTruthTopChildren, EventGraphDetector  
 
 def Comparison(a, b, key = None):
     
@@ -140,12 +141,21 @@ def CreateEventGeneratorComplete(Stop, Files, Name, CreateCache, NameOfCaller):
 
 def CreateDataLoaderComplete(Files, Level, Name, CreateCache, NameOfCaller = None):
     if CreateCache:
-        import Functions.FeatureTemplates.EdgeFeatures as ef
-        import Functions.FeatureTemplates.NodeFeatures as nf
-        import Functions.FeatureTemplates.GraphFeatures as gf
+        import Closure.FeatureTemplates.EdgeFeatures as ef
+        import Closure.FeatureTemplates.NodeFeatures as nf
+        import Closure.FeatureTemplates.GraphFeatures as gf
         from Functions.Event.DataLoader import GenerateDataLoader
 
         DL = GenerateDataLoader()
+
+        if Level == "TruthTops":
+            DL.EventGraph = EventGraphTruthTops
+        elif Level == "TruthTopChildren":
+            DL.EventGraph = EventGraphTruthTopChildren
+        elif Level == "DetectorParticles":
+            DL.EventGraph = EventGraphDetector
+
+
 
         # Edge Features 
         DL.AddEdgeFeature("dr", ef.d_r)
@@ -182,7 +192,7 @@ def CreateDataLoaderComplete(Files, Level, Name, CreateCache, NameOfCaller = Non
             else:
                 ev = UnpickleObject(i)
 
-            DL.AddSample(ev, "nominal", Level, True, True)
+            DL.AddSample(ev, "nominal", True, True)
         if NameOfCaller == None:
             DL.MakeTrainingSample(20)
 
@@ -208,6 +218,12 @@ def CreateModelWorkspace(Files, DataFeatures, Cache, Stop, ProcessName, Level):
    
     if Cache:
         DL = GenerateDataLoader()
+        if Level == "TruthTops":
+            DL.EventGraph = EventGraphTruthTops
+        elif Level == "TruthTopChildren":
+            DL.EventGraph = EventGraphTruthTopChildren
+        elif Level == "DetectorParticles":
+            DL.EventGraph = EventGraphDetector
         DL.SetDevice("cuda")
         for key, fx in DataFeatures.items():
             if "GT_" == key[0:3]:

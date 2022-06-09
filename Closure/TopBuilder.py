@@ -2,9 +2,9 @@ from Closure.GenericFunctions import CreateEventGeneratorComplete, CreateDataLoa
 from Functions.GNN.Optimizer import Optimizer
 from Functions.GNN.TrivialModels import CombinedConv
 from Functions.IO.IO import UnpickleObject, PickleObject
-import Functions.FeatureTemplates.EdgeFeatures as ef
-import Functions.FeatureTemplates.NodeFeatures as nf
-import Functions.FeatureTemplates.GraphFeatures as gf
+import Closure.FeatureTemplates.EdgeFeatures as ef
+import Closure.FeatureTemplates.NodeFeatures as nf
+import Closure.FeatureTemplates.GraphFeatures as gf
 
 from Functions.Particles.Particles import Particle
 

@@ -42,8 +42,6 @@ class VariableManager:
         return True
 
 
-
-
 def RecallObjectFromString(string):
     import importlib
     mod = importlib.import_module(".".join(string.split(".")[:-1]))
