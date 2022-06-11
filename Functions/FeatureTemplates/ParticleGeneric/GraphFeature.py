@@ -20,10 +20,7 @@ def nTruthJet(ev):
     return float(len(ev.TruthJets))
 
 # ================== Truth ================ #
-def Index(ev):
-    return float(ev.Index)
-
-def mu_active(ev):
+def mu_actual(ev):
     return float(ev.mu_actual)
 
 def nTops(ev):

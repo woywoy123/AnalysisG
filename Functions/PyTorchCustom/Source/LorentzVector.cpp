@@ -71,7 +71,22 @@ torch::Tensor MassFromPtEtaPhiE(torch::Tensor v)
   return torch::sqrt(s2.abs()); 
 }
 
+torch::Tensor TensorToPtEtaPhiE(torch::Tensor v)
+{
 
+  v = v.view({-1, 4});
+  
+  torch::Tensor px = v.index({Slice(), Slice(0, 1, 1)}); 
+  torch::Tensor py = v.index({Slice(), Slice(1, 2, 2)}); 
+  torch::Tensor pz = v.index({Slice(), Slice(2, 3, 3)}); 
+  torch::Tensor e = v.index({Slice(), Slice(3, 4, 4)}); 
+  
+  torch::Tensor pt = torch::sqrt(torch::pow(px,2) + torch::pow(py, 2)); 
+  torch::Tensor phi = torch::atan2(py, px); 
+  torch::Tensor eta = torch::arcsinh(pz/pt);
+
+  return torch::cat({pt, eta, phi, e}, 1); 
+}
 
 PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
 {
@@ -80,4 +95,5 @@ PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
   m.def("MassFromPxPyPzE", &MassFromPxPyPzE, "Calculate Invariant Mass");
   m.def("MassFromPtEtaPhiE", &MassFromPtEtaPhiE, "Calculate Invariant Mass");
   m.def("TensorToPxPyPzE", &TensorToPxPyPzE, "Convert Rapidity Tensor to Cartesian");
+  m.def("TensorToPtEtaPhiE", &TensorToPtEtaPhiE, "Convert Cartesian to Rapidity"); 
 }

@@ -243,7 +243,7 @@ def CreateModelWorkspace(Files, DataFeatures, Cache, Stop, ProcessName, Level):
         
         for i in Out:
             ev = UnpickleObject(i)
-            DL.AddSample(ev, "nominal", Level, True, True)
+            DL.AddSample(ev, "nominal", True, True)
         DL.MakeTrainingSample(10)
         PickleObject(DL, "DataLoader", Outdir)
     return UnpickleObject("DataLoader", Outdir)
@@ -266,28 +266,39 @@ def OptimizerTemplate(DataLoader, Model):
     Op.GetTruthFlags(Op.GraphFeatures, "G")
     return Op
 
-def KillCondition(Variable, TestIndex, Optimizer, Samples, Iterations, sleep = -1):
+def KillCondition(Variable, TestIndex, Optimizer, Samples, Iterations, sleep = -1, batched = 1):
     import torch
     import time
+    from torch_geometric.loader import DataLoader
     
     def Classification(truth, model):
-            return int(torch.sum(torch.eq(truth[0], model[0]))) == len(truth[0])
+        return int(torch.sum(torch.eq(truth[0], model[0]))) == len(truth[0])
+    
+    def Regression(truth, model):
+        return abs(round(float(truth[0] - model[0])/float(model[0]), 5)) <= 1e-4
     
     Passed = False
     for k in range(Iterations):
         Optimizer.Debug = "Loss"
-        for i in Samples:
+        Sample = DataLoader(Samples, batch_size = batched, shuffle = True)
+        for i in Sample:
             Optimizer.Train(i)
         if k/TestIndex - int(k/TestIndex) == 0:
             Optimizer.Debug = True
             truth, model = Optimizer.Train(i)
-
+            
+            Pass = 0
             for key, cl in Variable.items():
                 if cl == "C":
                     Passed = Classification(truth[key], model[key])
-
+                if cl == "R":
+                    Passed = Regression(truth[key], model[key])
+                if Passed:
+                    Pass += 1
             if sleep > 0:
                 time.sleep(sleep)
-            if Passed:
-                return Passed
+            if Pass == len(list(Variable)):
+                return True
     return Passed
+
+

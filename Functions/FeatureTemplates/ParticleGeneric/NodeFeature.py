@@ -20,3 +20,4 @@ def mass(a):
 # ================== Truth ================ #
 def Index(a):
     return float(a.Index)
+

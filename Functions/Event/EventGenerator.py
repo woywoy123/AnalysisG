@@ -63,11 +63,14 @@ class EventGenerator(Debugging, Directories):
                     
                     if self.Stop():
                         self.ResetCounter()
-                        break
+                        del F_i
+                        del F
+                        del self.EventImplementation
+                        return 
                 del F_i
                 del F
         del self.EventImplementation
-
+    
     def CompileEvent(self, SingleThread = False, ClearVal = True):
         
         def function(Entries):

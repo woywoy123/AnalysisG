@@ -42,7 +42,6 @@ class ModelImporter:
         self.Notify("FOUND ALL MODEL INPUT PARAMETERS IN SAMPLE")
         for i in self.ModelInputs:
             self.Notify("---> " + i)
-       
         self.ModelOutputs = {i : k for i, k in self.Model.__dict__.items() for p in ["C_", "L_", "O_", "N_"] if i.startswith(p)}
         self.ModelOutputs |= {i : None for i, k in self.Model.__dict__.items() if i.startswith("O_")}
 
@@ -167,7 +166,10 @@ class Optimizer(ExportToDataScience, Notification, ModelImporter):
         self.MakePrediction(sample)
         truth_out = self.Output(self.ModelOutputs, sample, Truth = True)
         model_out = self.Output(self.ModelOutputs, sample, Truth = False)
-        
+            
+        if self.Debug:
+            longest = max([len(i) for i in model_out])
+
         LT = 0
         for key in model_out:
             t_p = truth_out[key][0]
@@ -181,6 +183,7 @@ class Optimizer(ExportToDataScience, Notification, ModelImporter):
             acc = None
             if Loss == "CEL":
                 t_v = t_v.type(torch.LongTensor).to(self.Device).view(1, -1)[0]
+                t_p = t_p.type(torch.int)
                 acc = accuracy
                 self.LF = torch.nn.CrossEntropyLoss()
                 Classification = True
@@ -195,7 +198,7 @@ class Optimizer(ExportToDataScience, Notification, ModelImporter):
                 self.Warning("SKIPPING " + key + " :: NO LOSS FUNCTION SELECTED!!!!")
                 continue
             if m_v.shape[1] <= t_v.max() and (self.ModelOutputs["C_" + key] or Classification):
-                self.Fail("Your Classification Model only has " + str(int(m_v.shape[1])) + " classes but requires " + str(int(t_v.max()+1)))
+                self.Fail("(" + key + ") Your Classification Model only has " + str(int(m_v.shape[1])) + " classes but requires " + str(int(t_v.max()+1)))
             elif Classification == False and m_v.shape[1] != t_v.shape[1]:
                 self.Warning("Model is using regression, but your truth has length " 
                         + str(int(t_v.shape[1])) + " but need " + str(int(m_v.shape[1])))
@@ -205,14 +208,17 @@ class Optimizer(ExportToDataScience, Notification, ModelImporter):
             LT += L
             
             if self.Debug == True:
-                print("("+key+")" + "---> Truth: \n", t_p)
-                print("("+key+")" + "---> Model: \n", m_p)
-                print("(Loss)---> ", L)
+                print("----------------------(" + key + ") -------------------------------")
+                print("---> Truth: \n", t_p.tolist())
+                print("---> Model: \n", m_p.tolist())
+                print("---> DIFF: \n", (t_p - m_p).tolist())
+                print("(Loss)---> ", float(L))
             elif self.Debug == "Loss":
-                print("(Loss)---> ", L)
+                dif = key + " "*int(longest - len(key))
+                print(dif + " | (Loss)---> ", float(L))
             elif self.Debug == "Pred":
-                print("---> Truth: \n", t_p)
-                print("---> Model: \n", m_p)
+                print("---> Truth: \n", t_p.tolist())
+                print("---> Model: \n", m_p.tolist())
             if self.Debug:
                 continue
 
@@ -262,7 +268,6 @@ class Optimizer(ExportToDataScience, Notification, ModelImporter):
             self.Fail("No Model has been given!")
 
         self.DefineOptimizer()
-        Splits = KFold(n_splits = self.kFold, shuffle = True, random_state= 42)
         N_Nodes = list(self.TrainingSample)
         N_Nodes.sort(reverse = True)
         self.Sample = self.TrainingSample[N_Nodes[0]][0]
@@ -284,6 +289,7 @@ class Optimizer(ExportToDataScience, Notification, ModelImporter):
         for self.epoch in range(self.Epochs):
             self.Notify("! >============== [ EPOCH (" + str(self.epoch+1) + "/" + str(self.Epochs) + ") ] ==============< ")
             
+            Splits = KFold(n_splits = self.kFold, shuffle = True, random_state= 42)
             TimeStartEpoch = time.time()
             k = 0
             for n_node in N_Nodes:

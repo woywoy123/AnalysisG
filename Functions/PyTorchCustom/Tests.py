@@ -52,7 +52,7 @@ assert len(x_list.round(decimals = 0).tolist()) == len(v_s)
 # This will be a performance test now
 import time 
 
-iterator = 1e7
+iterator = 1
 V_L = []
 for i in range(int(iterator)):
     V_L.append(v) 
@@ -99,6 +99,16 @@ t_cuda = t_e - t_s
 
 print("Time of loading to memory ->  CPU: ", tl_cpu, " CUDA: ", tl_cuda)
 print("Time of calculation ->  CPU: ", t_cpu, " CUDA: ", t_cuda)
+
+cartesian = LV.ToPxPyPzE(v[0], v[1], v[2], v[3], "cpu"); 
+rapidity = LV.TensorToPtEtaPhiE(cartesian)
+for i, j in zip(v, rapidity.tolist()[0]):
+    assert round(i, 3) == round(j, 3)
+
+
+
+
+
 
 
 
