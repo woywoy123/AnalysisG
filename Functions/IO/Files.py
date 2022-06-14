@@ -9,7 +9,7 @@ class Directories(Notification):
         self.Caller = "Directories"
         
         if directory != None:
-            self.__Dir = directory
+            self._Dir = directory
             self.Notify("READING +-> " + directory)
         
         self.pwd = os.getcwd()
@@ -17,14 +17,14 @@ class Directories(Notification):
 
     def ListDirs(self):
         try:
-            os.chdir(self.__Dir)
+            os.chdir(self._Dir)
         except NotADirectoryError:
             return None
 
         for i in glob("*"):
             if os.path.isdir(i):
                 self.Files[os.getcwd()+"/"+i] = []
-            elif os.path.isdir(self.__Dir) and os.path.isfile(i):
+            elif os.path.isdir(self._Dir) and os.path.isfile(i):
                 self.Files[os.getcwd()] = []
         os.chdir(self.pwd)
 
@@ -53,20 +53,16 @@ class Directories(Notification):
 
         for i in Output:
             self.Notify("!!FOUND +-> " + i)
-
         return list(Output)
 
     def GetFilesInDir(self):
-        if os.path.isfile(self.__Dir) == False:
-            self.ListDirs()
-            for dir in list(self.Files):
-                tmp = self.ListFilesInDir(dir)
-                if len(tmp) == 0:
-                    self.Files.pop(dir)
-                    continue
-                self.Files[dir] = self.ListFilesInDir(dir)
-        else:
-            self.Files[os.path.dirname(self.__Dir)] = [os.path.basename(self.__Dir)]
+        self.Files = {}
+        for i in self.ListFilesInDir(self._Dir):
+            Filename = i.split("/")[-1]
+            FileDir = "/".join(i.split("/")[:-1])
+            if FileDir not in self.Files:
+                self.Files[FileDir] = []
+            self.Files[FileDir].append(Filename)
 
 class WriteDirectory(Notification):
     def __init__(self):

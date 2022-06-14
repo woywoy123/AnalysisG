@@ -112,7 +112,8 @@ def TestDataLoader(Name, Level):
     All = len(list(DL.DataContainer))
     Training_Size = len([k for i in DL.TrainingSample for k in DL.TrainingSample[i]])
     Validation_Size = len([k for i in DL.ValidationSample for k in DL.ValidationSample[i]])
-   
+    
+    print(float(Training_Size), All)
     assert float(Training_Size/All)*100 == 60.
     assert float(Validation_Size/All)*100 == 40.
 

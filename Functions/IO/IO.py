@@ -207,14 +207,14 @@ class HDF5(WriteDirectory, Directories):
         f = self.ListFilesInDir(self.__Outdir + "/" + self.__Name + "/")
         tmp = self.VerboseLevel
         output = {}
-        for i in f:
+        for self.__FileDirName in f:
             self.VerboseLevel = 0
-            self.__FileDirName = self.__Outdir + "/" + self.__Name + "/" + i
             self.StartFile("r")
             output |= self.RebuildObject()
             self.EndFile()
             self.VerboseLevel = tmp
-            self.Notify("!!!FINISHED READING -> " + i + " / " + str(len(f)))
+            name = int(self.__FileDirName.replace(".hdf5", "").split("_")[-1])+1
+            self.Notify("!!!FINISHED READING -> " + str(name) + " / " + str(len(f)))
         return output
 
     def StartFile(self, Mode = "w"):

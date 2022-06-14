@@ -2,7 +2,9 @@ from Functions.Unification.Unification import Unification
 
 def TestUnification(FileDir, Files):
     U = Unification()
-    #U.AddSample("AllSamples", FileDir)
-    U.AddSample("OtherSamples", Files)
+    U.Cache = True
+    
+    for key, Dir in Files.items():
+        U.AddSample(key, Dir)
     U.Launch()
     return True

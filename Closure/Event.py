@@ -197,7 +197,7 @@ def TestSignalMultipleFile(di):
     ev.CompileEvent(SingleThread = True)
     
     for i in ev.Events:
-        if i == 1000:
+        if i == 1000-1:
             print(i, ev.Events[i], ev.EventIndexFileLookup(i)) 
             return True
 
@@ -210,7 +210,7 @@ def TestSignalDirectory(di):
     c = 0
     Passed = False
     for i in ev.Events:
-        if c == 1000:
+        if c == 1000-1:
             print(i, ev.Events[i], ev.EventIndexFileLookup(i)) 
             Passed = True
             c = 0

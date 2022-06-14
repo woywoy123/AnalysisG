@@ -12,7 +12,7 @@ class Threading(Notification):
 
     def StartWorkers(self):
         
-        self.Notify("!!STARTING " + str(len(self.__lists)) + " WORKERS")
+        self.Notify("!!STARTING " + str(self.__threads) + " WORKERS")
         
         sub_p = []
         it = 0

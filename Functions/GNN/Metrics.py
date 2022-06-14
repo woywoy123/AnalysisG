@@ -43,7 +43,7 @@ class Metrics(Directories):
         self.Stats = {}
         self.Epochs = []
         for i in Files:
-            epoch = i.split("_")[1].replace(".pkl", "")
+            epoch = i.split("_")[2].replace(".pkl", "")
             if epoch == "Done":
                 self.File = UnpickleObject(i, outputDir)
                 continue

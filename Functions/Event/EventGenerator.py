@@ -1,16 +1,18 @@
 from Functions.IO.IO import File, Directories, PickleObject, UnpickleObject
-from Functions.Tools.Alerting import Debugging
+from Functions.Tools.Alerting import Debugging, Notification
 from Functions.Tools.DataTypes import TemplateThreading, Threading
 from Functions.Tools.Variables import RecallObjectFromString
-from Functions.Event.Implementations.Event import Event #, EventVariables
+from Functions.Event.Implementations.Event import Event
 import math
 
 class EventGenerator(Debugging, Directories):
-    def __init__(self, dir, Verbose = True, Start = 0, Stop = -1, Debug = False):
+    def __init__(self, dir = None, Verbose = True, Start = 0, Stop = -1, Debug = False):
+        Notification.__init__(self)
         Debugging.__init__(self, Threshold = Stop - Start)
-        Directories.__init__(self, dir)
+        self._Dir = dir
         self.Events = {}
         self.FileEventIndex = {}
+        self.Files = {}
         self.__Debug = Debug
         self.Threads = 12
         self.Caller = "EVENTGENERATOR"
@@ -23,7 +25,10 @@ class EventGenerator(Debugging, Directories):
 
         name = type(self.EventImplementation).__module__ + "." + type(self.EventImplementation).__name__
         obj = RecallObjectFromString(name)
-        self.GetFilesInDir()
+        
+        if len(self.Files) == 0:
+            self.GetFilesInDir()
+
         for i in self.Files:
             self.Notify("!_______NEW DIRECTORY______: " + str(i))
             for F in self.Files[i]:
@@ -51,14 +56,12 @@ class EventGenerator(Debugging, Directories):
                                 continue
                         else: 
                             self.Count()
-
                         E = RecallObjectFromString(name)
                         E.Debug = self.__Debug
                         E.Tree = tr
                         E.iter = l
                         E.ParticleProxy(F_i)
                         pairs[tr] = E
-
                     self.Events[i + "/" + F].append(pairs)
                     
                     if self.Stop():
@@ -99,6 +102,7 @@ class EventGenerator(Debugging, Directories):
                 Thread.append(TemplateThreading(k, "", "Batches", self.Batches[k], function))
             th = Threading(Thread, self, self.Threads)
             th.Verbose = True
+            th.VerboseLevel = self.VerboseLevel
             if SingleThread:
                 th.TestWorker()
             else:
