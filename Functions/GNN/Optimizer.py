@@ -77,9 +77,6 @@ class ModelImporter:
             OutDict[key] = [out_p, out_v]
         return OutDict
 
-
-
-
 class Optimizer(ExportToDataScience, Notification, ModelImporter):
 
     def __init__(self, DataLoaderInstance = None):

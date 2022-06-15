@@ -67,28 +67,29 @@ class GenerateDataLoader(Notification):
         for i in self.DataContainer:
             self.DataContainer[i].to(self.Device)
 
-    def AddSample(self, EventGeneratorInstance, Tree, SelfLoop = False, FullyConnect = True):
+    def AddSample(self, EventGeneratorInstance, Tree, SelfLoop = False, FullyConnect = True, override = 0):
         
         try:
             for i in EventGeneratorInstance.FileEventIndex:
                 self.Notify("ADDING SAMPLE -> (" + Tree + ") " + i)
         except:
             self.Warning("FAILED TO ADD SAMPLE " + str(type(EventGeneratorInstance)))
-        
+       
         attrs = 0
-        if len(list(self.EdgeAttribute)) == 0:
+        if len(list(self.EdgeAttribute)) == override:
             self.Warning("NO EDGE FEATURES PROVIDED")
             attrs+=1
-        if len(list(self.NodeAttribute)) == 0:
+        if len(list(self.NodeAttribute)) == override:
             self.Warning("NO NODE FEATURES PROVIDED")
             attrs+=1
-        if len(list(self.GraphAttribute)) == 0:
+        if len(list(self.GraphAttribute)) == override:
             self.Warning("NO GRAPH FEATURES PROVIDED")
             attrs+=1
         if attrs == 3:
             self.Fail("NO ATTRIBUTES DEFINED!")
-
-        self.Notify("!DATA BEING PROCESSED ON: " + self.Device_S)
+        
+        if override == 0:
+            self.Notify("!DATA BEING PROCESSED ON: " + self.Device_S)
         self.len = len(EventGeneratorInstance.Events)
         
         if self.EventGraph == "":
@@ -102,7 +103,7 @@ class GenerateDataLoader(Notification):
             self.ProgressInformation("CONVERSION")
             if self.__iter == self.NEvents:
                 break
-
+        
             fx = getattr(importlib.import_module(fx_m), fx_n)
             event = fx(ev)
             event.iter = self.__iter
@@ -130,7 +131,8 @@ class GenerateDataLoader(Notification):
 
             self.__iter += 1
         self.FileTraces["End"].append(self.__iter-1)
-        self.Notify("FINISHED CONVERSION")
+        if override == 0:
+            self.Notify("FINISHED CONVERSION")
         self.ResetAll()
 
     def MakeTrainingSample(self, ValidationSize = 50):

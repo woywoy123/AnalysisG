@@ -20,7 +20,7 @@ class Directories(Notification):
             os.chdir(self._Dir)
         except NotADirectoryError:
             return None
-
+        
         for i in glob("*"):
             if os.path.isdir(i):
                 self.Files[os.getcwd()+"/"+i] = []

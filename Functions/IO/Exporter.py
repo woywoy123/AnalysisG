@@ -110,6 +110,7 @@ class ExportToDataScience(WriteDirectory):
 
     def __SearchObject(self, SourceObject, MemoryLink):
         for key, val in SourceObject.__dict__.items():
+            print(key, val)
             l = self.__RecursiveDict(val, MemoryLink)
             if l != None:
                 SourceObject.__dict__[key] = l
@@ -179,10 +180,25 @@ class ExportToDataScience(WriteDirectory):
             self.__Dump.SwitchFile()
         self.__Dump.DumpObject(DataGenerator)
         self.__Dump.EndFile()
+    
+    def ExportEventGraph(self, EventGraph, Name, OutDirectory):
+        self.__ResetAll()
+        self.__Dump = HDF5(OutDirectory, Name, Chained = False)
+        self.__Dump.VerboseLevel = self.VerboseLevel
+        self.__Dump.StartFile()
+        self.__Dump.DumpObject(EventGraph)
+        self.__Dump.EndFile()
+    
+    def ImportEventGraph(self, Name, InputDirectory):
+        self.__ResetAll()
+        self.__Collect = HDF5(InputDirectory, "", Chained = False)
+        self.__Collect.VerboseLevel = self.VerboseLevel
+        self.__Collect.OpenFile(InputDirectory, Name, True)
+        return self.__Collect.RebuildObject()
+
 
     def ImportDataGenerator(self, Name = None, InputDirectory = None):
         self.__ResetAll() 
-
         self.__Collect = HDF5(InputDirectory, Name)
         self.__MemoryLink = self.__Collect.ReadChain()
         

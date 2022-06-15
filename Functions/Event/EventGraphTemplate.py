@@ -38,6 +38,16 @@ class EventGraphTemplate:
         self.G.add_edges_from(self.Edges)
 
     def ConvertToData(self):
+        # Anticipates Errors when certain particles dont have an attribute
+        def ErrorHandler(fx, *args):
+            try: 
+                if len(args) == 1:
+                    return fx(args)
+                else:
+                    return fx(args[0], args[1])
+            except AttributeError:
+                return 0
+
         def ApplyToGraph(Dict, Map2 = None):
             for key in Dict:
                 fx = Dict[key]
@@ -45,13 +55,13 @@ class EventGraphTemplate:
                 kl = fx.__code__.co_argcount
                 
                 if Map2 == None:
-                    attr_v += [[fx(self.Event)]]
+                    attr_v += [[ErrorHandler(fx, self.Event)]]
                     k = "G_"
                 elif kl == 1:
-                    attr_v += [[ fx(self.NodeParticleMap[n]) ] for n in Map2]
+                    attr_v += [[ ErrorHandler(fx, self.NodeParticleMap[n]) ] for n in Map2]
                     k = "N_"
                 else:
-                    attr_v += [[ fx(self.NodeParticleMap[n[0]], self.NodeParticleMap[n[1]]) ] for n in Map2]
+                    attr_v += [[ ErrorHandler(fx, self.NodeParticleMap[n[0]], self.NodeParticleMap[n[1]]) ] for n in Map2]
                     k = "E_"
                 setattr(self.Data, k + key, torch.tensor(attr_v, dtype = torch.float))
                 

@@ -175,13 +175,16 @@ class HDF5(WriteDirectory, Directories):
         self.__File = None
         
         self.__DirectoryStandard()
-        self.MakeDir(self.__Outdir + "/" + self.__Name)
         self.__part = 0
         
         if Chained:
             self.__FileDirName = self.__Outdir + "/" + self.__Name + "/" + self.__Name + "_" + str(self.__part) + ".hdf5" 
+        elif Chained == False and Name != None:
+            self.__FileDirName = self.__Outdir + "/" + self.__Name + ".hdf5"
+            return 
         else:
             self.__FileDirName = self.__Outdir + "/" + self.__Name + "/" + self.__Name + ".hdf5"
+        self.MakeDir(self.__Outdir + "/" + self.__Name)
 
     def __DirectoryStandard(self):
         if self.__Outdir == None:
@@ -190,9 +193,9 @@ class HDF5(WriteDirectory, Directories):
             self.__Name = "UNTITLED"
 
         if self.__Outdir.endswith("/"):
-            self.__Outdir = self.__Outdir.rstrip("/")
+            self.__Outdir = self.__Outdir[:-1]
         if self.__Name.endswith("/"):
-            self.__Name = self.__Name.rstrip("/")
+            self.__Name = self.__Name[:-1]
 
     def SwitchFile(self):
         tmp = self.VerboseLevel
@@ -229,11 +232,14 @@ class HDF5(WriteDirectory, Directories):
         else:
             self.__RefSet = self.__File.create_dataset("__PointerReferences", (1, ), dtype = h5py.ref_dtype)
     
-    def OpenFile(self, SourceDir = None, Name = None):
+    def OpenFile(self, SourceDir = None, Name = None, SingleFile = False):
         self.__OutDir = SourceDir
         self.__Name = Name
-        self.__DirectoryStandard()
-        self.__FileDirName = self.__Outdir + "/" + self.__Name + "/" + self.__Name + ".hdf5"
+        if SingleFile:
+            self.__FileDirName = self.__Outdir + "/" + self.__Name + ".hdf5"
+        else: 
+            self.__DirectoryStandard()
+            self.__FileDirName = self.__Outdir + "/" + self.__Name + "/" + self.__Name + ".hdf5"
         self.StartFile(Mode = "r")
 
     def EndFile(self):
