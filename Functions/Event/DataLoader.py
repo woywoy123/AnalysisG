@@ -94,7 +94,7 @@ class GenerateDataLoader(Notification):
             self.Fail("NO ATTRIBUTES DEFINED!")
         
         if override == 0:
-            self.Notify("!DATA BEING PROCESSED ON: " + self.Device)
+            self.Notify("!DATA BEING PROCESSED ON: " + str(self.Device))
         self.len = len(EventGeneratorInstance.Events)
         
         if self.EventGraph == "":

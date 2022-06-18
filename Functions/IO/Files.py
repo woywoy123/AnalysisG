@@ -70,7 +70,6 @@ class WriteDirectory(Notification):
         self.__tmp = ""
 
     def MakeDir(self, Dir):
-        self.__tmp = str(self.pwd)
         try:
             os.makedirs(Dir)
         except FileExistsError:
@@ -87,10 +86,10 @@ class WriteDirectory(Notification):
         os.chdir(self.pwd + "/" + dir)
     
     def WriteTextFile(self, inp, di_, name):
-        self.MakeDir(di_)
+        self.MakeDir(self.pwd + "/" + di_)
         if name.endswith(".txt") != True:
             name += ".txt"
-        with open(self.__tmp + "/" + name, 'w') as f:
+        with open(self.pwd + "/" + di_ + "/" + name, 'w') as f:
             f.write(inp)
 
 

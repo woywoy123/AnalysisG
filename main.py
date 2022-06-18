@@ -37,7 +37,7 @@ def Test(F, **kargs):
         print(result)
         exit()
     print(result)
-    test_dir.WriteTextFile(result, "_TestResults/" + CallerDir, name)
+    test_dir.WriteTextFile(result, "_TestResults/" + CallerDir +  "/", name)
 
 
 if __name__ == "__main__":
@@ -53,7 +53,7 @@ if __name__ == "__main__":
 
     # ===== Test Cache ==== ##
     Test(CacheGenerators.BuildCacheDirectory, Name = "tttt")
-    CacheGenerators.Generate_Cache(GeneralDir + "tttt/QU_0.root", Compiler = "tttt")
+    CacheGenerators.Generate_Cache(GeneralDir + "tttt/MCe/QU_0.root", Compiler = "tttt")
     Test(CacheGenerators.BuildCacheDirectory, Name = "t")
     CacheGenerators.Generate_Cache(GeneralDir + "t/MCa/", Compiler = "t")
 
