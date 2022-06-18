@@ -20,8 +20,6 @@ def TestModelExport(Files, Level, Name, CreateCache):
             DL.EventGraph = EventGraphTruthTopChildren
         elif Level == "DetectorParticles":
             DL.EventGraph = EventGraphDetector
-
-
         DL.AddNodeFeature("x", nf.Signal)
         DL.AddNodeFeature("Sig", nf.Signal)
         DL.AddNodeTruth("x", nf.Signal)

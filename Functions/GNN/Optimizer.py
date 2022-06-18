@@ -2,6 +2,7 @@ import torch
 from torch.utils.data import SubsetRandomSampler
 from torch_geometric.loader import DataLoader
 from torch_geometric.utils import accuracy
+from torch_geometric.profile import get_gpu_memory_from_nvidia_smi
 
 from sklearn.model_selection import KFold
 import numpy as np
@@ -12,6 +13,7 @@ from Functions.Tools.Alerting import Notification
 from Functions.IO.Files import WriteDirectory, Directories
 from Functions.IO.IO import PickleObject
 from Functions.IO.Exporter import ExportToDataScience
+from Functions.Event.DataLoader import GenerateDataLoader
 
 class ModelImporter:
 
@@ -77,7 +79,7 @@ class ModelImporter:
             OutDict[key] = [out_p, out_v]
         return OutDict
 
-class Optimizer(ExportToDataScience, Notification, ModelImporter):
+class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Notification):
 
     def __init__(self, DataLoaderInstance = None):
         self.Verbose = True
@@ -105,24 +107,31 @@ class Optimizer(ExportToDataScience, Notification, ModelImporter):
         ### Internal Stuff 
         self.Training = True
         self.T_Features = {}
-      
+        self.CacheDir = None
+
     def ReadInDataLoader(self, DataLoaderInstance):
         self.TrainingSample = DataLoaderInstance.TrainingSample
 
-        self.EdgeFeatures = DataLoaderInstance.EdgeAttribute
-        self.NodeFeatures = DataLoaderInstance.NodeAttribute
-        self.GraphFeatures = DataLoaderInstance.GraphAttribute
+        self.EdgeAttribute = DataLoaderInstance.EdgeAttribute
+        self.NodeAttribute = DataLoaderInstance.NodeAttribute
+        self.GraphAttribute = DataLoaderInstance.GraphAttribute
 
-        self.Device_S = DataLoaderInstance.Device_S
         self.Device = DataLoaderInstance.Device
-        self.DataLoader = DataLoaderInstance
+        self.FileTraces = DataLoaderInstance.FileTraces 
 
     def DumpStatistics(self):
-        WriteDirectory().MakeDir(self.RunDir + "/" + self.RunName + "/Statistics")
-        if self.epoch == "Done":
-            PickleObject(self.Stats, "Stats_" + self.epoch, self.RunDir + "/" + self.RunName + "/Statistics")
+        if self.Debug == True:
+            return 
+        if self.RunDir == None:
+            OutDir = self.RunName
         else:
-            PickleObject(self.Stats, "Stats_" + str(self.epoch+1), self.RunDir + "/" + self.RunName + "/Statistics")
+            OutDir = self.RunDir + "/" + self.RunName
+
+        WriteDirectory().MakeDir(OutDir + "/Statistics")
+        if self.epoch == "Done":
+            PickleObject(self.Stats, "Stats_" + self.epoch, OutDir + "/Statistics")
+        else:
+            PickleObject(self.Stats, "Stats_" + str(self.epoch+1), OutDir + "/Statistics")
         self.__MakeStats()
 
     def __MakeStats(self):
@@ -238,6 +247,7 @@ class Optimizer(ExportToDataScience, Notification, ModelImporter):
         self.ResetAll() 
         self.len = len(samples.dataset)
         R = []
+        
         for i in samples:
             if self.Training:
                 self.ProgressInformation("TRAINING")
@@ -267,20 +277,19 @@ class Optimizer(ExportToDataScience, Notification, ModelImporter):
         self.DefineOptimizer()
         N_Nodes = list(self.TrainingSample)
         N_Nodes.sort(reverse = True)
-        self.Sample = self.TrainingSample[N_Nodes[0]][0]
+        self.Sample = self.RecallFromCache(self.TrainingSample[N_Nodes[0]][0], self.CacheDir)
         self.InitializeModel()
 
-       
         self.Notify(">------------------------ Starting k-Fold Training ------------------------------------")
         self.Notify("!SIZE OF ENTIRE SAMPLE SET: " + str(sum([len(self.TrainingSample[i]) for i in N_Nodes])))
         
-        self.GetTruthFlags(self.EdgeFeatures, "E")
-        self.GetTruthFlags(self.NodeFeatures, "N")
-        self.GetTruthFlags(self.GraphFeatures, "G")
+        self.GetTruthFlags(self.EdgeAttribute, "E")
+        self.GetTruthFlags(self.NodeAttribute, "N")
+        self.GetTruthFlags(self.GraphAttribute, "G")
         self.Notify(">----------------------------------------------------------------------------------------\n")
 
         self.__MakeStats()
-        self.Model.Device = self.Device_S
+        self.Model.Device = str(self.Device)
         
         TimeStart = time.time()
         for self.epoch in range(self.Epochs):
@@ -290,7 +299,7 @@ class Optimizer(ExportToDataScience, Notification, ModelImporter):
             TimeStartEpoch = time.time()
             k = 0
             for n_node in N_Nodes:
-                Curr = self.TrainingSample[n_node]
+                Curr = self.RecallFromCache(self.TrainingSample[n_node], self.CacheDir)
                 Curr_l = len(Curr)
                 self.Notify("!+++++++++++++++++++++++")
                 self.Notify("!NUMBER OF NODES -----> " + str(n_node) + " NUMBER OF ENTRIES: " + str(Curr_l))
@@ -312,17 +321,19 @@ class Optimizer(ExportToDataScience, Notification, ModelImporter):
                     TimeStartFold = time.time()
                     self.Notify("!!CURRENT k-Fold: " + str(fold+1))
 
-                    train_loader = DataLoader(Curr, batch_size = self.BatchSize, sampler = SubsetRandomSampler(train_idx))
-                    valid_loader = DataLoader(Curr, batch_size = self.BatchSize, sampler = SubsetRandomSampler(val_idx)) 
-
                     self.Training = True
+                    train_loader = DataLoader(Curr, batch_size = self.BatchSize, sampler = SubsetRandomSampler(train_idx))
+                    memory_rem = get_gpu_memory_from_nvidia_smi()[0]
                     self.SampleLoop(train_loader)
                     self.Notify("!!!-----++> Training <++-----")
                     self.Notify("!!!-------> Accuracy || Loss  <-------")
                     CalcAverage("Training_Accuracy", k, "!!!", "Training_Loss")
-
+                    if memory_rem < 500 and self.BatchSize > 1:
+                        self.BatchSize -= 1
+                    del train_loader 
 
                     self.Training = False
+                    valid_loader = DataLoader(Curr, batch_size = self.BatchSize, sampler = SubsetRandomSampler(val_idx)) 
                     self.SampleLoop(valid_loader)
                     self.Notify("!!!-----==> Validation <==-----")
                     self.Notify("!!!-------> Accuracy || Loss  <-------")
@@ -345,19 +356,18 @@ class Optimizer(ExportToDataScience, Notification, ModelImporter):
             self.Notify("! >========= DURATION: " + str(datetime.timedelta(seconds = self.Stats["EpochTime"][-1])))
             self.DumpStatistics()
 
-            self.ExportModel(train_loader)
+            self.ExportModel(valid_loader)
 
         self.Stats["TrainingTime"] = time.time() - TimeStart
-        self.Stats.update(self.DataLoader.FileTraces)
+        self.Stats.update(self.FileTraces)
         
         self.Stats["n_Node_Files"] = [[] for i in range(len(self.Stats["Start"]))]
         self.Stats["n_Node_Count"] = [[] for i in range(len(self.Stats["Start"]))]
-        self.TrainingSample = [smpl for node in self.TrainingSample for smpl in self.TrainingSample[node]]       
+        self.TrainingSample = [smpl for node in self.TrainingSample for smpl in self.RecallFromCache(self.TrainingSample[node], self.CacheDir)]       
         for s_i in range(len(self.TrainingSample)):
             smpl = self.TrainingSample[s_i]
-            indx, n_nodes = smpl.i, smpl.num_nodes
-            find = [indx >= start and indx <= end for start, end in zip(self.Stats["Start"], self.Stats["End"])].index(True)
-            
+            indx, n_nodes = int(smpl.i), int(smpl.num_nodes)
+            find = [indx >= int(start) and indx <= int(end) for start, end in zip(self.Stats["Start"], self.Stats["End"])].index(True)
             if n_nodes not in self.Stats["n_Node_Files"][find]:
                 self.Stats["n_Node_Files"][find].append(n_nodes)
                 self.Stats["n_Node_Count"][find].append(0)

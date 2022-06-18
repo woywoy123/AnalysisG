@@ -69,16 +69,14 @@ class WriteDirectory(Notification):
         self.pwd = os.getcwd()
         self.__tmp = ""
 
-    def MakeDir(self, dir):
+    def MakeDir(self, Dir):
         self.__tmp = str(self.pwd)
-        for k in dir.split("/"):
-            try:
-                os.mkdir(self.__tmp + "/" + k)
-            except FileExistsError:
-                pass
-            except:
-                self.Warning("SOMETHING WENT WRONG MAKING DIR! -> " + dir)
-            self.__tmp = self.__tmp + "/" + k 
+        try:
+            os.makedirs(Dir)
+        except FileExistsError:
+            pass
+        except:
+            self.Warning("SOMETHING WENT WRONG MAKING DIR! -> " + Dir)
 
     def ChangeDirToRoot(self, Dir = None):
         if Dir != None:

@@ -30,12 +30,13 @@ def Generate_Cache_Batches(di, Stop = -1, SingleThread = False, Compiler = "Even
     elif CreateCache:
         Files = Directories(di).ListFilesInDir(di)
         for f in Files:
+            f = f.split("/")[-1]
             Generate_Cache(di + f, Stop, SingleThread, f.replace(".root", ""), OutDirectory + Compiler)
     
     dic = []
     target = OutDirectory + Compiler
     for f in Directories(target).ListFilesInDir(target):
-        dic.append(target + "/" + f)
+        dic.append(f)
     return dic
 
 

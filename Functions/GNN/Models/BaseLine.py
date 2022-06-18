@@ -64,28 +64,34 @@ class BaseLineModelAdvanced(MessagePassing):
                             ReLU(),
                             Linear(256, 2))
 
-        self._iter = 0
+        self._iter = torch.tensor(0, dtype = torch.int)
+        self._zero = torch.tensor(0, dtype = torch.int)
+        self._lim = torch.tensor(2, dtype = torch.int)
         self._edge_index = None
 
     def forward(self, edge_index, N_pT, N_eta, N_phi, N_energy):
-        if self._iter == 0:
+        self._iter.to(N_pT.device)
+        self._zero.to(N_pT.device)
+        self._lim.to(N_pT.device)
+
+        if self._iter == self._zero:
             self._P_mu = LV.TensorToPxPyPzE(torch.cat([N_pT, N_eta, N_phi, N_energy], dim = 1))
             self._edge_index = edge_index
         
-        if self._iter > 0 or len(edge_index[0]) == 0:
-            self._iter = 0
+        if self._iter > self._lim or edge_index[0].shape[0] == self._zero:
+            self._iter = self._zero
             return self.O_Topo
 
         prop = self.propagate(edge_index, x = self._P_mu)
         mass = self._mlp_m(LV.MassFromPxPyPzE(self._P_mu[edge_index[0]] + self._P_mu[edge_index[1]]))
         dr = self.deltaR(edge_index, N_eta, N_phi)
 
-        if self._iter == 0:
+        if self._iter == self._zero:
             self.O_Topo = self._mlp_edge(torch.cat([prop[edge_index[0]], mass, dr], dim = 1))
         else: 
             self.O_Topo[edge_index[0]] += self._mlp_edge(torch.cat([prop[edge_index[0]], mass, dr], dim = 1))
-
-        self._iter += 1
+        
+        self._iter = torch.add(self._iter, torch.tensor(1))
         pred = self.O_Topo[edge_index[0]].max(dim = 1)[1]
         edges = torch.cat([edge_index[0][pred == 1].view(1, -1), edge_index[1][pred == 1].view(1, -1)], dim = 0)
         return self.forward(edges, N_pT, N_eta, N_phi, N_energy) 
@@ -159,10 +165,10 @@ class BaseLineModelEvent(torch.nn.Module):
         e_r = edge_index[1][e_i_active == 1].view(1, -1)
         
         # Use the source nodes and destination nodes predicted by above GNN to rebuild tops
-        scatPx_ = torch.zeros(1, len(N_pT), device = i.device, dtype = P_mu.dtype)
-        scatPy_ = torch.zeros(1, len(N_pT), device = i.device, dtype = P_mu.dtype)
-        scatPz_ = torch.zeros(1, len(N_pT), device = i.device, dtype = P_mu.dtype)
-        scatE_ = torch.zeros(1, len(N_pT), device = i.device, dtype = P_mu.dtype)
+        scatPx_ = torch.zeros(1, N_pT.shape[0], device = i.device, dtype = P_mu.dtype)
+        scatPy_ = torch.zeros(1, N_pT.shape[0], device = i.device, dtype = P_mu.dtype)
+        scatPz_ = torch.zeros(1, N_pT.shape[0], device = i.device, dtype = P_mu.dtype)
+        scatE_ = torch.zeros(1, N_pT.shape[0], device = i.device, dtype = P_mu.dtype)
 
         scatPx_ = scatPx_.scatter_(1, e_s, P_mu[e_r, 0].view(1, -1), reduce= "add").view(-1, 1)
         scatPy_ = scatPy_.scatter_(1, e_s, P_mu[e_r, 1].view(1, -1), reduce= "add").view(-1, 1)

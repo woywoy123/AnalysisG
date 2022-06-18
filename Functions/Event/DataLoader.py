@@ -1,4 +1,5 @@
 from Functions.Tools.Alerting import Notification 
+from Functions.IO.Exporter import ExportToDataScience
 from sklearn.model_selection import ShuffleSplit
 import numpy as np
 import importlib
@@ -9,8 +10,7 @@ class GenerateDataLoader(Notification):
     def __init__(self):
         self.Verbose = True
         Notification.__init__(self, self.Verbose)
-        self.Device_S = "cpu"
-        self.Device = ""
+        self.Device = "cpu"
         self.__iter = 0
         self.NEvents = -1
         self.CleanUp = True
@@ -34,7 +34,7 @@ class GenerateDataLoader(Notification):
 
         self.EventGraph = ""
 
-        self.SetDevice(self.Device_S)
+        self.SetDevice(self.Device)
 
     def __SetAttribute(self, c_name, fx, container):
         if c_name not in container:
@@ -60,12 +60,17 @@ class GenerateDataLoader(Notification):
     def AddEdgeTruth(self, name, fx):
         self.__SetAttribute("T_" + name, fx, self.EdgeAttribute)
 
-    def SetDevice(self, device):
-        self.Device_S = device
-        self.Device = torch.device(device)
-
-        for i in self.DataContainer:
-            self.DataContainer[i].to(self.Device)
+    def SetDevice(self, device, SampleList = None):
+        if torch.cuda.is_available() and "cuda" in str(device):
+            self.Device = device
+        else:
+            self.Device = "cpu"
+        self.Device = torch.device(self.Device)
+        
+        if SampleList == None:
+            SampleList = [self.DataContainer[i] for i in self.DataContainer]
+        for i in SampleList:
+            i.to(self.Device)
 
     def AddSample(self, EventGeneratorInstance, Tree, SelfLoop = False, FullyConnect = True, override = 0):
         
@@ -89,7 +94,7 @@ class GenerateDataLoader(Notification):
             self.Fail("NO ATTRIBUTES DEFINED!")
         
         if override == 0:
-            self.Notify("!DATA BEING PROCESSED ON: " + self.Device_S)
+            self.Notify("!DATA BEING PROCESSED ON: " + self.Device)
         self.len = len(EventGeneratorInstance.Events)
         
         if self.EventGraph == "":
@@ -99,11 +104,12 @@ class GenerateDataLoader(Notification):
         fx_m = self.EventGraph.__module__ 
         fx_n = self.EventGraph.__name__
         for it in sorted(EventGeneratorInstance.Events):
+
             ev = EventGeneratorInstance.Events[it][Tree]
             self.ProgressInformation("CONVERSION")
             if self.__iter == self.NEvents:
                 break
-        
+            
             fx = getattr(importlib.import_module(fx_m), fx_n)
             event = fx(ev)
             event.iter = self.__iter
@@ -113,6 +119,7 @@ class GenerateDataLoader(Notification):
             event.NodeAttr = self.NodeAttribute
             event.GraphAttr = self.GraphAttribute
             DataObject = event.ConvertToData()
+
             DataObject.to(device = self.Device, non_blocking = True)
             self.DataContainer[self.__iter] = DataObject
             
@@ -159,4 +166,21 @@ class GenerateDataLoader(Notification):
             MakeSample(test_idx, self.ValidationSample)
         else:
             MakeSample(-1, self.TrainingSample)
+
+    def RecallFromCache(self, SampleList, Directory):
+        if Directory == None:
+            return SampleList
+        Exp = ExportToDataScience()
+        Exp.VerboseLevel = 0
+        if isinstance(SampleList, str):
+            dic = Exp.ImportEventGraph(SampleList, Directory)
+            return dic[list(dic)[0]]
+        
+        Out = [] 
+        for i in range(len(SampleList)):
+            Out.append(Exp.ImportEventGraph(SampleList[i], Directory).popitem()[1])
+        self.SetDevice(self.Device, Out)
+        return Out
+            
+
 

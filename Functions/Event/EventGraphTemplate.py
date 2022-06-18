@@ -42,7 +42,7 @@ class EventGraphTemplate:
         def ErrorHandler(fx, *args):
             try: 
                 if len(args) == 1:
-                    return fx(args)
+                    return fx(args[0])
                 else:
                     return fx(args[0], args[1])
             except AttributeError:

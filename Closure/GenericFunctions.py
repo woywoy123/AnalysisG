@@ -155,8 +155,7 @@ def CreateDataLoaderComplete(Files, Level, Name, CreateCache, NameOfCaller = Non
         elif Level == "DetectorParticles":
             DL.EventGraph = EventGraphDetector
 
-
-
+        
         # Edge Features 
         DL.AddEdgeFeature("dr", ef.d_r)
         DL.AddEdgeFeature("mass", ef.mass)       
@@ -228,16 +227,19 @@ def CreateModelWorkspace(Files, DataFeatures, Cache, Stop, ProcessName, Level):
         for key, fx in DataFeatures.items():
             if "GT_" == key[0:3]:
                 DL.AddGraphTruth(key[3:], fx)
+
             if "GF_" == key[0:3]:
                 DL.AddGraphFeature(key[3:], fx)
 
             if "NT_" == key[0:3]:
                 DL.AddNodeTruth(key[3:], fx)
+
             if "NF_" == key[0:3]:
                 DL.AddNodeFeature(key[3:], fx)
 
             if "ET_" == key[0:3]:
                 DL.AddEdgeTruth(key[3:], fx)
+
             if "EF_" == key[0:3]:
                 DL.AddEdgeFeature(key[3:], fx)
         

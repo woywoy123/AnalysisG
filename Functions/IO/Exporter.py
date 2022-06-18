@@ -11,24 +11,14 @@ import Functions
 class ExportToDataScience(WriteDirectory):
     def __init__(self):
         Notification.__init__(self)
-        self.Model = None
-        self.ONNX_Export = None 
-        self.TorchScript_Export = None
-        self.RunDir = None
-        self.RunName = None
-        self.VerboseLevel = 3
-
-        self.epoch = 0
-        self.Epochs = 0
-
-        self.Caller = "ExportToDataScience"
-        self.__OutputDir = None
-        self.__EpochDir = None
 
     def ExportModel(self, Sample):
         WriteDirectory.__init__(self)
         self.__EpochDir = "/Epoch_" + str(self.epoch+1) + "_" + str(self.Epochs)
-        self.__OutputDir = self.RunDir + "/" + self.RunName + "/"       
+        if self.RunDir == None:
+            self.__OutputDir = self.RunName + "/"
+        else:
+            self.__OutputDir = self.RunDir + "/" + self.RunName + "/"       
         self.__Sample = Sample 
        
         self.__InputMap = {}
@@ -38,15 +28,27 @@ class ExportToDataScience(WriteDirectory):
         self.__OutputMap = {}
         for i in self.ModelOutputs:
             self.__OutputMap[i] = str(self.ModelOutputs[i]) + "->" + str(type(self.ModelOutputs[i])).split("'")[1]
+        
+        try:
+            self.__Sample = [i for i in self.__Sample][0].to_data_list()[0].detach().to_dict()
+        except AttributeError:
+            self.__Sample.detach().to_dict()
 
-        self.__Sample = [i for i in self.__Sample][0].to_data_list()[0].detach().to_dict()
         self.__Sample = [self.__Sample[i] for i in self.__InputMap]
         self.Model.eval()
         self.Model.requires_grad_(False)
         if self.ONNX_Export:
-            self.__ExportONNX( self.__OutputDir + "ONNX" + self.__EpochDir + ".onnx")
+            try:
+                self.__ExportONNX( self.__OutputDir + "ONNX" + self.__EpochDir + ".onnx")
+            except:
+                self.Warning("FAILED TO EXPORT AS ONNX.")
+
         if self.TorchScript_Export:
-            self.__ExportTorchScript( self.__OutputDir + "TorchScript" + self.__EpochDir + ".pt")
+            try:
+                self.__ExportTorchScript( self.__OutputDir + "TorchScript" + self.__EpochDir + ".pt")
+            except:
+                self.Warning("FAILED TO EXPORT AS TORCH SCRIPT")
+
         self.Model.requires_grad_(True)
 
     def __ExportONNX(self, Dir):
@@ -82,7 +84,7 @@ class ExportToDataScience(WriteDirectory):
 
         elif isinstance(inp, str) and MemoryLink == True:
             if inp.startswith("0x"):
-                return self.__MemoryLink[inp]
+                return self._MemoryLink[inp]
 
         x = self.__RecursiveDict(inp, MemoryLink)
         if x != None:
@@ -110,7 +112,6 @@ class ExportToDataScience(WriteDirectory):
 
     def __SearchObject(self, SourceObject, MemoryLink):
         for key, val in SourceObject.__dict__.items():
-            print(key, val)
             l = self.__RecursiveDict(val, MemoryLink)
             if l != None:
                 SourceObject.__dict__[key] = l
@@ -119,15 +120,15 @@ class ExportToDataScience(WriteDirectory):
             if p != None:
                 SourceObject.__dict__[key] = p
 
-    def ExportEventGenerator(self, EventGenerator, Name = None, OutDirectory = None):
+    def ExportEventGenerator(self, EventGenerator, Name = "UNTITLED", OutDirectory = "_Pickle"):
         self.__ResetAll() 
 
-        self.__SearchObject(EventGenerator, self.__MemoryLink)      
-        self.__Dump = HDF5(OutDirectory, Name)
+        self.__SearchObject(EventGenerator, self._MemoryLink)      
+        self.__Dump = HDF5(OutDirectory, Name, Chained = True)
         self.__Dump.StartFile()
         ev = 0
-        for i in self.__MemoryLink:
-            obj = self.__MemoryLink[i]
+        for i in self._MemoryLink:
+            obj = self._MemoryLink[i]
             if "Event" in type(obj).__name__:
                 self.Notify("!!!Dumped Event " + str(ev +1) + "/" + str(len(EventGenerator.Events)))
                 self.__Dump.SwitchFile()
@@ -136,15 +137,15 @@ class ExportToDataScience(WriteDirectory):
         self.__Dump.DumpObject(EventGenerator)
         self.__Dump.EndFile()
 
-    def ImportEventGenerator(self, Name = None, InputDirectory = None):
+    def ImportEventGenerator(self, Name = "UNTITLED", InputDirectory = "_Pickle"):
         self.__ResetAll() 
 
-        self.__Collect = HDF5(InputDirectory, Name)
-        self.__MemoryLink = self.__Collect.ReadChain() 
+        self.__Collect = HDF5(Chained = True)
+        self._MemoryLink = self.__Collect.OpenFile(InputDirectory, Name) 
         
         ObjectDict = {}
-        for addr in self.__MemoryLink:
-            i = self.__MemoryLink[addr]
+        for addr in self._MemoryLink:
+            i = self._MemoryLink[addr]
             self.__SearchObject(i, True)
             x = str(type(i).__name__)
             if x not in ObjectDict:
@@ -155,7 +156,7 @@ class ExportToDataScience(WriteDirectory):
         ObjectDict["EventGenerator"][0].Events = {ev : Events[ev] for ev in sorted(Events)}
         return ObjectDict["EventGenerator"][0]
 
-    def ExportDataGenerator(self, DataGenerator, Name = None, OutDirectory = None):
+    def ExportDataGenerator(self, DataGenerator, Name = "UNTITLED", OutDirectory = "_Pickle"):
         self.__ResetAll() 
         
         for i in DataGenerator.EdgeAttribute:
@@ -169,41 +170,26 @@ class ExportToDataScience(WriteDirectory):
 
         DataGenerator.SetDevice("cpu")
         DataGenerator.EventGraph = ""
-        self.__SearchObject(DataGenerator, self.__MemoryLink)
+        self.__SearchObject(DataGenerator, self._MemoryLink)
         
-        self.__Dump = HDF5(OutDirectory, Name)
+        self.__Dump = HDF5(OutDirectory, Name, Chained = True)
         self.__Dump.StartFile()
-        for i in self.__MemoryLink:
-            obj = self.__MemoryLink[i]
+        for i in self._MemoryLink:
+            obj = self._MemoryLink[i]
             self.__Dump.DumpObject(obj)
-            self.Notify("!!!Dumped Event " +  str(int(obj.i)+1) + "/" + str(len(self.__MemoryLink)))
+            self.Notify("!!!Dumped Event " +  str(int(obj.i)+1) + "/" + str(len(self._MemoryLink)))
             self.__Dump.SwitchFile()
         self.__Dump.DumpObject(DataGenerator)
         self.__Dump.EndFile()
     
-    def ExportEventGraph(self, EventGraph, Name, OutDirectory):
-        self.__ResetAll()
-        self.__Dump = HDF5(OutDirectory, Name, Chained = False)
-        self.__Dump.VerboseLevel = self.VerboseLevel
-        self.__Dump.StartFile()
-        self.__Dump.DumpObject(EventGraph)
-        self.__Dump.EndFile()
-    
-    def ImportEventGraph(self, Name, InputDirectory):
-        self.__ResetAll()
-        self.__Collect = HDF5(InputDirectory, "", Chained = False)
-        self.__Collect.VerboseLevel = self.VerboseLevel
-        self.__Collect.OpenFile(InputDirectory, Name, True)
-        return self.__Collect.RebuildObject()
 
-
-    def ImportDataGenerator(self, Name = None, InputDirectory = None):
+    def ImportDataGenerator(self, Name = "UNTITLED", InputDirectory = "_Pickle"):
         self.__ResetAll() 
-        self.__Collect = HDF5(InputDirectory, Name)
-        self.__MemoryLink = self.__Collect.ReadChain()
+        self.__Collect = HDF5(Chained = True)
+        self._MemoryLink = self.__Collect.OpenFile(SourceDir = InputDirectory, Name = Name)
         
         Obj = {}
-        for i, j in self.__MemoryLink.items():
+        for i, j in self._MemoryLink.items():
             self.__SearchObject(j, True)
             name = type(j).__name__
             if name not in Obj:
@@ -215,9 +201,24 @@ class ExportToDataScience(WriteDirectory):
         Obj["GenerateDataLoader"][0].SetDevice("cuda")
 
         return Obj["GenerateDataLoader"][0]
+
+    def ExportEventGraph(self, EventGraph, Name, OutDirectory):
+        self.__ResetAll()
+        self.__Dump = HDF5(OutDirectory, Name)
+        self.__Dump.VerboseLevel = self.VerboseLevel
+        self.__Dump.StartFile()
+        self.__Dump.DumpObject(EventGraph)
+        self.__Dump.EndFile()
     
+    def ImportEventGraph(self, Name, InputDirectory):
+        self.__ResetAll()
+        self.__Collect = HDF5()
+        self.__Collect.VerboseLevel = self.VerboseLevel
+        self.__Collect.OpenFile(InputDirectory, Name)
+        return self.__Collect.RebuildObject()
+
     def __ResetAll(self):
-        self.__MemoryLink = {}
+        self._MemoryLink = {}
         self.__Collect = None
         self.__Dump = None
 

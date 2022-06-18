@@ -9,8 +9,7 @@ def BaseLine(Files, Names, CreateCache):
     Features = {}
     Features |= {"NT_" + i : j for i, j in zip(["Index"], [nf.Index])}
     Features |= {"NF_" + i : j for i, j in zip(["Index"], [nf.Index])}
-
-    CreateCache = False
+    
     if CreateCache:
         DL = CreateModelWorkspace(Files, Features, CreateCache, -1, Names, "TruthTopChildren")
         samples = DL.TrainingSample
@@ -36,8 +35,7 @@ def BaseLine(Files, Names, CreateCache):
     Features |= {"NF_" + i : j for i, j in zip(["eta", "energy", "pT", "phi"], [nf.eta, nf.energy, nf.pT, nf.phi])}
     Features |= {"GF_" + i : j for i, j in zip(["mu", "met", "met_phi", "pileup", "nTruthJet"], 
                                                [gf.mu, gf.met, gf.met_phi, gf.pileup, gf.nTruthJet])}
-
-    CreateCache = False
+    CreateCache = True
     DL = CreateModelWorkspace(Files, Features, CreateCache, 100, Names, "TruthTopChildren")
     samples = DL.TrainingSample
     samples = samples[max(list(samples))][:10]

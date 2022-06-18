@@ -145,7 +145,7 @@ def UnpickleObject(filename, Dir = "_Pickle"):
     if Dir.endswith("/"):
         Dir = Dir[0:len(Dir)-1]
 
-    if filename.endswith(".pkl") and Dir == "_Pickle" and len(filename.split("/")) != 1:
+    if filename.endswith(".pkl") and Dir == "_Pickle" and len(filename.split("/")) > 1:
         l = filename.split("/")
         Dir = "/".join(l[:-1])
         filename = l[-1]
@@ -162,7 +162,7 @@ def UnpickleObject(filename, Dir = "_Pickle"):
 
 class HDF5(WriteDirectory, Directories):
 
-    def __init__(self, OutDir = None, Name = None, Verbose = True, Chained = True):
+    def __init__(self, OutDir = "_Pickle", Name = "UNTITLED", Verbose = True, Chained = False):
         WriteDirectory.__init__(self)
         Directories.__init__(self)
         Notification.__init__(self, Verbose)
@@ -170,83 +170,80 @@ class HDF5(WriteDirectory, Directories):
         self.VerboseLevel = 3
         self.Verbose = Verbose
         self.Caller = "WRITE-TO-HDF5"
-        self.__Outdir = OutDir
-        self.__Name = Name
-        self.__File = None
         
-        self.__DirectoryStandard()
-        self.__part = 0
-        
-        if Chained:
-            self.__FileDirName = self.__Outdir + "/" + self.__Name + "/" + self.__Name + "_" + str(self.__part) + ".hdf5" 
-        elif Chained == False and Name != None:
-            self.__FileDirName = self.__Outdir + "/" + self.__Name + ".hdf5"
-            return 
-        else:
-            self.__FileDirName = self.__Outdir + "/" + self.__Name + "/" + self.__Name + ".hdf5"
-        self.MakeDir(self.__Outdir + "/" + self.__Name)
+        self._OutDir = OutDir
+        self._Name = Name
+        self._Chained = Chained
+        self._part = 0
 
     def __DirectoryStandard(self):
-        if self.__Outdir == None:
-            self.__Outdir = "_Pickle"
-        if self.__Name == None:
-            self.__Name = "UNTITLED"
+        if self._OutDir.endswith("/"):
+            self._OutDir = self._OutDir[:-1]
+        if self._Name.endswith("/"):
+            self._Name = self._Name[:-1]
+        
+        if self._Chained == True:
+            self._FileDirName = self._OutDir + "/" + self._Name + "/Part_" + str(self._part)
+            self.MakeDir(self._OutDir + "/" + self._Name)
+        else:
+            self._FileDirName = self._OutDir + "/" + self._Name
+            self.MakeDir(self._OutDir)
 
-        if self.__Outdir.endswith("/"):
-            self.__Outdir = self.__Outdir[:-1]
-        if self.__Name.endswith("/"):
-            self.__Name = self.__Name[:-1]
+        self._FileDirName += ".hdf5"
 
     def SwitchFile(self):
         tmp = self.VerboseLevel
         self.VerboseLevel = 0
         self.EndFile()
-        self.__part += 1
-        self.__FileDirName = self.__Outdir + "/" + self.__Name + "/" + self.__Name + "_" + str(self.__part) + ".hdf5"
+        self._part += 1
+        self.__DirectoryStandard()
         self.StartFile()
         self.VerboseLevel = tmp
 
-    def ReadChain(self):
-        f = self.ListFilesInDir(self.__Outdir + "/" + self.__Name + "/")
+    def __ReadChain(self):
+        self.__DirectoryStandard()
+        f = self.ListFilesInDir(self._OutDir + "/" + self._Name + "/")
         tmp = self.VerboseLevel
         output = {}
-        for self.__FileDirName in f:
+        for self._FileDirName in f:
             self.VerboseLevel = 0
             self.StartFile("r")
             output |= self.RebuildObject()
             self.EndFile()
+            self._part += 1
             self.VerboseLevel = tmp
-            name = int(self.__FileDirName.replace(".hdf5", "").split("_")[-1])+1
+            name = int(self._FileDirName.replace(".hdf5", "").split("_")[-1])+1
             self.Notify("!!!FINISHED READING -> " + str(name) + " / " + str(len(f)))
         return output
 
     def StartFile(self, Mode = "w"):
+        
+        self.__DirectoryStandard()
         if Mode == "w":
-            self.Notify("!!WRITING -> " + self.__FileDirName)    
+            self.Notify("!!WRITING -> " + self._FileDirName)    
         if Mode == "r":
-            self.Notify("!!READING -> " + self.__FileDirName)
-
-        self.__File = h5py.File(self.__FileDirName, Mode, track_order = True)
-        if "__PointerReferences" in self.__File:
-            self.__RefSet = self.__File["__PointerReferences"]
+            self.Notify("!!READING -> " + self._FileDirName)
+        
+        self._File = h5py.File(self._FileDirName, Mode, track_order = True)
+        if "__PointerReferences" in self._File:
+            self._RefSet = self._File["__PointerReferences"]
         else:
-            self.__RefSet = self.__File.create_dataset("__PointerReferences", (1, ), dtype = h5py.ref_dtype)
+            self._RefSet = self._File.create_dataset("__PointerReferences", (1, ), dtype = h5py.ref_dtype)
     
-    def OpenFile(self, SourceDir = None, Name = None, SingleFile = False):
-        self.__OutDir = SourceDir
-        self.__Name = Name
-        if SingleFile:
-            self.__FileDirName = self.__Outdir + "/" + self.__Name + ".hdf5"
-        else: 
-            self.__DirectoryStandard()
-            self.__FileDirName = self.__Outdir + "/" + self.__Name + "/" + self.__Name + ".hdf5"
-        self.StartFile(Mode = "r")
+    def OpenFile(self, SourceDir = "_Pickle", Name = "UNTITLED"):
+        self._OutDir = SourceDir
+        self._Name = Name
+
+        if self._Chained == True:
+            return self.__ReadChain()
+        else:
+            self.StartFile(Mode = "r")
 
     def EndFile(self):
-        self.Notify("!!CLOSING FILE -> " + self.__FileDirName)
-        self.__File.close()
-        self.__File = None
-        self.__RefSet = None
+        self.Notify("!!CLOSING FILE -> " + self._FileDirName)
+        self._File.close()
+        self._File = None
+        self._RefSet = None
    
     def __Store(self, Name, key, val):
 
@@ -274,20 +271,20 @@ class HDF5(WriteDirectory, Directories):
             self.__CreateAttribute(Name, key, val)
 
     def __CreateDataSet(self, RefName):
-        self.__RefSet.attrs[RefName] = self.__File.create_dataset(RefName, data = h5py.Empty(None)).ref
+        self._RefSet.attrs[RefName] = self._File.create_dataset(RefName, data = h5py.Empty(None)).ref
     
     def __CreateAttribute(self, RefName, AttributeName, Data):
-        if AttributeName in self.__File[RefName].attrs:
-            D = self.__File[RefName].attrs[AttributeName]
+        if AttributeName in self._File[RefName].attrs:
+            D = self._File[RefName].attrs[AttributeName]
 
             if isinstance(D, np.ndarray):
                 D = np.append(D, Data)
             else: 
                 D = [D, Data]
-            self.__File[RefName].attrs[AttributeName] = D
+            self._File[RefName].attrs[AttributeName] = D
         else:
-            self.__File[RefName].attrs[AttributeName] = Data
-        return self.__File[RefName].attrs[AttributeName]
+            self._File[RefName].attrs[AttributeName] = Data
+        return self._File[RefName].attrs[AttributeName]
 
     def __StoreDict(self, Name, AttributeName, Value):
         for key, val in Value.items():
@@ -310,7 +307,7 @@ class HDF5(WriteDirectory, Directories):
         if Name == None:
             Name = hex(id(obj))
         
-        if Name in self.__RefSet.attrs:
+        if Name in self._RefSet.attrs:
             return 
 
         type_ = str(type(obj).__module__) + "." + str(type(obj).__name__)
@@ -336,7 +333,7 @@ class HDF5(WriteDirectory, Directories):
                 dic[l] |= Dictify(lst[1:], dic[l], va)
             return dic
 
-        obj = self.__File
+        obj = self._File
         output = {}
         
         for i in obj.keys():

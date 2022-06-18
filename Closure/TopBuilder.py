@@ -2,12 +2,7 @@ from Closure.GenericFunctions import CreateEventGeneratorComplete, CreateDataLoa
 from Functions.GNN.Optimizer import Optimizer
 from Functions.GNN.TrivialModels import CombinedConv
 from Functions.IO.IO import UnpickleObject, PickleObject
-import Closure.FeatureTemplates.EdgeFeatures as ef
-import Closure.FeatureTemplates.NodeFeatures as nf
-import Closure.FeatureTemplates.GraphFeatures as gf
-
 from Functions.Particles.Particles import Particle
-
 from Functions.Particles.TopBuilder import ParticleReconstructor
 
 def TestBuilder(Files, CreateCache): 
@@ -30,7 +25,6 @@ def TestBuilder(Files, CreateCache):
     
     def ParticleAggre(sample, attr):
         P = {}
-        sample = op.TrainingSample[0]
         for i in EV[0].Events[int(sample.i)]["nominal"].TopPostFSRChildren:
             if i.__dict__[attr] not in P:
                 P[i.__dict__[attr]] = Particle()

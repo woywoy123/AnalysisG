@@ -83,13 +83,10 @@ def EdgeAnalysisOfChildren(ev, Dir):
 
 def CreatePlots(FileDir, CreateCache):
     ev = CreateWorkspace("Presentation1", FileDir, CreateCache, -1)
-    DL = GenerateDataLoader()
     
     for i in ev:
         Dir = "/".join(i.split("/")[:-1])
         Name = i.split("/")[-1]
-        imprt = UnpickleObject(Name, Dir)
-        #DL.AddSample(imprt, "nominal", "TruthTopChildren", SelfLoop = True, FullyConnect = True)
 
         TopMassAnalysis(Name, Dir)
         EdgeAnalysisOfChildren(Name, Dir)
