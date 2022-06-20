@@ -29,6 +29,6 @@ class Event(EventTemplate):
         self.DefineObjects()
 
     def CompileEvent(self, ClearVal):
-        self.CompileParticles(False)
+        self.CompileParticles(ClearVal)
         self.Particle = self.DictToList(self.Particle)
 
