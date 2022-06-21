@@ -228,21 +228,32 @@ def CreateModelWorkspace(Files, DataFeatures, Cache, Stop, ProcessName, Level):
             if "GT_" == key[0:3]:
                 DL.AddGraphTruth(key[3:], fx)
 
-            if "GF_" == key[0:3]:
-                DL.AddGraphFeature(key[3:], fx)
-
             if "NT_" == key[0:3]:
                 DL.AddNodeTruth(key[3:], fx)
+
+            if "ET_" == key[0:3]:
+                DL.AddEdgeTruth(key[3:], fx)
+   
+
+            if "GF_" == key[0:3]:
+                DL.AddGraphFeature(key[3:], fx)
 
             if "NF_" == key[0:3]:
                 DL.AddNodeFeature(key[3:], fx)
 
-            if "ET_" == key[0:3]:
-                DL.AddEdgeTruth(key[3:], fx)
-
             if "EF_" == key[0:3]:
                 DL.AddEdgeFeature(key[3:], fx)
-        
+ 
+
+            if "GP_" == key[0:3]:
+                DL.AddGraphPreprocessing(key[3:], fx)
+
+            if "NP_" == key[0:3]:
+                DL.AddNodePreprocessing(key[3:], fx)
+
+            if "EP_" == key[0:3]:
+                DL.AddEdgePreprocessing(key[3:], fx)
+
         for i in Out:
             ev = UnpickleObject(i)
             DL.AddSample(ev, "nominal", True, True)
@@ -263,9 +274,9 @@ def OptimizerTemplate(DataLoader, Model):
     N_Nodes.sort(reverse = True)
     Op.Sample = Op.TrainingSample[N_Nodes[0]][0]
     Op.InitializeModel()
-    Op.GetTruthFlags(Op.EdgeFeatures, "E")
-    Op.GetTruthFlags(Op.NodeFeatures, "N")
-    Op.GetTruthFlags(Op.GraphFeatures, "G")
+    Op.GetTruthFlags(Op.EdgeAttribute, "E")
+    Op.GetTruthFlags(Op.NodeAttribute, "N")
+    Op.GetTruthFlags(Op.GraphAttribute, "G")
     return Op
 
 def KillCondition(Variable, TestIndex, Optimizer, Samples, Iterations, sleep = -1, batched = 1):
@@ -277,7 +288,9 @@ def KillCondition(Variable, TestIndex, Optimizer, Samples, Iterations, sleep = -
         return int(torch.sum(torch.eq(truth[0], model[0]))) == len(truth[0])
     
     def Regression(truth, model):
-        return abs(round(float(truth[0] - model[0])/float(model[0]), 5)) <= 1e-4
+        tru = sum([float(k) for k in truth[0]])
+        dif = sum([abs(float(k-j)) for k, j in zip(truth[0], model[0].t())])
+        return abs(round(dif/tru, 5)) <= 1e-4
     
     Passed = False
     for k in range(Iterations):

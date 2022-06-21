@@ -102,19 +102,21 @@ if __name__ == "__main__":
     ## ========= Test Feature Implementations ========= #
     #Test(FeatureTester.Analyser, Files = [GeneralDir + "tttt/MCe/QU_0.root"])
 
-    ## ========== Test Model Developments ========== # 
-    #Test(ModelProofOfConcept.BaseLine, Files = [GeneralDir + "tttt/MCe/QU_0.root", GeneralDir + "t/MCa/QU_0.root"], Names = ["tttt", "t"], CreateCache = True)
+    # ========== Test Model Developments ========== # 
+    #Test(ModelProofOfConcept.TestBaseLine, Files = [GeneralDir + "tttt/MCe/QU_0.root", GeneralDir + "t/MCa/QU_0.root"], Names = ["tttt", "t"], CreateCache = True)
+    Test(ModelProofOfConcept.TestPDFNet, Files = [GeneralDir + "tttt/MCe/QU_0.root", GeneralDir + "t/MCa/QU_0.root"], Names = ["tttt", "t"], CreateCache = True)
 
-    # ========== Test Entire Aggregation of Framework =========== #
-    Files = { 
-                "4-Tops" :  GeneralDir + "tttt/MCe/", 
-                "SingleTop" : GeneralDir + "t/MCa/", 
-                "ttbar" : GeneralDir + "ttbar/MCa/QU_0.root", 
-                "Zmumu" : GeneralDir + "Zmumu/MCd/"
-            }
-    Test(Unification.TestUnificationEventGenerator, FileDir = GeneralDir, Files = Files)
-    Test(Unification.TestUnificationDataLoader)
-    Test(Unification.TestUnificationOptimizer)
+
+    ## ========== Test Entire Aggregation of Framework =========== #
+    #Files = { 
+    #            "4-Tops" :  GeneralDir + "tttt/MCe/", 
+    #            "SingleTop" : GeneralDir + "t/MCa/", 
+    #            "ttbar" : GeneralDir + "ttbar/MCa/QU_0.root", 
+    #            "Zmumu" : GeneralDir + "Zmumu/MCd/"
+    #        }
+    #Test(Unification.TestUnificationEventGenerator, FileDir = GeneralDir, Files = Files)
+    #Test(Unification.TestUnificationDataLoader)
+    #Test(Unification.TestUnificationOptimizer)
 
     ## ========= Presentation Plots ============ #
     #Test(Presentation1.CreatePlots, FileDir = GeneralDir + "tttt/MCe/", CreateCache = True)

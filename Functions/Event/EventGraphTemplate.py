@@ -48,8 +48,13 @@ class EventGraphTemplate:
             except AttributeError:
                 return 0
 
-        def ApplyToGraph(Dict, Map2 = None):
+        def ApplyToGraph(Dict, Map2 = None, Preprocess = False):
             for key in Dict:
+                if key[:2] != "P_" and Preprocess == True:
+                    continue
+                elif key[:2] == "P_" and Preprocess == False:
+                    continue
+
                 fx = Dict[key]
                 attr_v = []
                 kl = fx.__code__.co_argcount
@@ -63,6 +68,9 @@ class EventGraphTemplate:
                 else:
                     attr_v += [[ ErrorHandler(fx, self.NodeParticleMap[n[0]], self.NodeParticleMap[n[1]]) ] for n in Map2]
                     k = "E_"
+                
+                if Preprocess == True:
+                    continue
                 setattr(self.Data, k + key, torch.tensor(attr_v, dtype = torch.float))
                 
         self.CreateParticleNodes()
@@ -70,7 +78,13 @@ class EventGraphTemplate:
         
         edge_index = torch.tensor(self.Edges, dtype=torch.long).t().contiguous()
         self.Data = Data(edge_index = edge_index)
-
+        
+        # Do some preprocessing 
+        ApplyToGraph(self.GraphAttr, Preprocess = True)
+        ApplyToGraph(self.NodeAttr, self.NodeParticleMap, Preprocess = True)
+        ApplyToGraph(self.EdgeAttr, self.Edges, Preprocess = True)
+        
+        # Apply to graph 
         ApplyToGraph(self.GraphAttr)
         ApplyToGraph(self.NodeAttr, self.NodeParticleMap)
         ApplyToGraph(self.EdgeAttr, self.Edges)
@@ -85,11 +99,11 @@ class EventGraphTemplate:
         else:
             self.Notification.Warning("Found Duplicate " + c_name + " Attribute")
 
-    def SetNodeAttribute(self, c_name, fx):
-        self.__SetAttribute(c_name, fx, self.NodeAttr)
-
     def SetEdgeAttribute(self, c_name, fx):
         self.__SetAttribute(c_name, fx, self.EdgeAttr)
+
+    def SetNodeAttribute(self, c_name, fx):
+        self.__SetAttribute(c_name, fx, self.NodeAttr)
 
     def SetGraphAttribute(self, c_name, fx):
         self.__SetAttribute(c_name, fx, self.GraphAttr)

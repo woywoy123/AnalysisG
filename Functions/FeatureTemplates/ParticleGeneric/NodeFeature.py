@@ -21,3 +21,6 @@ def mass(a):
 def Index(a):
     return float(a.Index)
 
+def ExpPT(a):
+    del a.tmp
+    return float(a.exp_pT)

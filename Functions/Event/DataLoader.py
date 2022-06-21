@@ -41,24 +41,39 @@ class GenerateDataLoader(Notification):
             container[c_name] = fx
         else:
             self.Warning("Found Duplicate " + c_name + " Attribute")
-
+    
+    # Define the observable features
     def AddGraphFeature(self, name, fx):
         self.__SetAttribute(name, fx, self.GraphAttribute)
-
-    def AddGraphTruth(self, name, fx):
-        self.__SetAttribute("T_" + name, fx, self.GraphAttribute)
 
     def AddNodeFeature(self, name, fx):
         self.__SetAttribute(name, fx, self.NodeAttribute)
 
-    def AddNodeTruth(self, name, fx):
-        self.__SetAttribute("T_" + name, fx, self.NodeAttribute)
-
     def AddEdgeFeature(self, name, fx):
         self.__SetAttribute(name, fx, self.EdgeAttribute)
 
+    
+    # Define the truth features used for supervised learning 
+    def AddGraphTruth(self, name, fx):
+        self.__SetAttribute("T_" + name, fx, self.GraphAttribute)
+
+    def AddNodeTruth(self, name, fx):
+        self.__SetAttribute("T_" + name, fx, self.NodeAttribute)
+
     def AddEdgeTruth(self, name, fx):
         self.__SetAttribute("T_" + name, fx, self.EdgeAttribute)
+
+    
+    # Define any last minute changes to attributes before adding to graph
+    def AddGraphPreprocessing(self, name, fx):
+        self.__SetAttribute("P_" + name, fx, self.GraphAttribute)
+
+    def AddNodePreprocessing(self, name, fx):
+        self.__SetAttribute("P_" + name, fx, self.NodeAttribute)
+
+    def AddEdgePreprocessing(self, name, fx):
+        self.__SetAttribute("P_" + name, fx, self.EdgeAttribute)
+
 
     def SetDevice(self, device, SampleList = None):
         if torch.cuda.is_available() and "cuda" in str(device):

@@ -1,3 +1,5 @@
+import torch
+
 class VariableManager:
 
     def __init__(self):
@@ -37,7 +39,15 @@ class VariableManager:
         for k, j in zip(self.__dict__.keys(), other.__dict__.keys()):
             if k != j:
                 return False
-            if self.__dict__[k] != self.__dict__[j]:
+            
+            if type(self.__dict__[k]) != type(other.__dict__[j]):
+                return False
+            
+            if isinstance(self.__dict__[k], torch.Tensor):
+                if torch.equal(self.__dict__[k], other.__dict__[j]):
+                    continue
+            
+            if self.__dict__[k] != other.__dict__[j]:
                 return False
         return True
 
