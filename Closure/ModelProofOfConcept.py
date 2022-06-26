@@ -57,14 +57,24 @@ def TestPDFNet(Files, Names, CreateCache):
 
     #Measured Features
     Features = {}
-    Features |= {"EP_" + i : j for i, j in zip(["pT"], [ef.Expected_pT])}
     Features |= {"NF_" + i : j for i, j in zip(["eta", "energy", "pT", "phi"], [nf.eta, nf.energy, nf.pT, nf.phi])}
     
     # Fake truth - Observables
     Features |= {"NT_" + i : j for i, j in zip(["eta", "energy", "pT", "phi"], [nf.eta, nf.energy, nf.pT, nf.phi])}
-    
-    # Real Truth 
-    Features |= {"NT_" + i : j for i, j in zip(["expPT"], [nf.ExpPT])}   
+   
+    # Truth Features
+    Features |= {"ET_" + i : j for i, j in zip(["Index"], [ef.Index])}
+
+
+    ## Real Truth 
+    #Features |= {"NT_" + i : j for i, j in zip(["expPx"], [nf.ExpPx])}   
+    ## Preprocessing 
+    #Features |= {"EP_" + i : j for i, j in zip(["pT"], [ef.Expected_Px])}
+
+
+    # Debug: Create a simple GNN that only looks at 
+
+
 
 
 
