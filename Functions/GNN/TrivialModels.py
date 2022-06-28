@@ -186,4 +186,65 @@ class CombinedConv(MessagePassing):
         return self.mlp_NodeFeatures(tmp)
         
 
+class MassGraphNeuralNetwork(MessagePassing):
+
+    def __init__(self):
+        super(MassGraphNeuralNetwork, self).__init__(aggr = None, flow = "target_to_source")
+        self._mass_mlp = Seq(
+                Linear(5, 256),
+                Linear(256, 256), 
+                Linear(256, 256)
+        )
+        
+        self._edge_mass = Seq(
+                Linear(256, 256), 
+                ReLU(),
+                Linear(256, 128), 
+                ReLU(), 
+                Linear(128, 2)
+        )
+        
+        self._edge_mlp = Seq(
+                Linear(4, 4), 
+                Linear(4, 2)
+        )
+
+
+        self.O_Index = None
+        self.L_Index = "CEL"
+        self.C_Index = True
+
+    def forward(self, edge_index, N_eta, N_energy, N_pT, N_phi):
+        Pmu = torch.cat([N_pT, N_eta, N_phi, N_energy], dim = 1)
+        Pmu_cart = LV.TensorToPxPyPzE(Pmu)
+        TMP = self.propagate(edge_index, Pmu = Pmu_cart)
+        self.O_Index = TMP
+        return self.O_Index
+
+    def message(self, index, Pmu_i, Pmu_j):
+        Pmu = Pmu_i + Pmu_j
+        Mass = LV.MassFromPxPyPzE(Pmu)
+        return self._mass_mlp(torch.cat([Pmu, Mass], dim = 1)), Pmu_j
+    
+    def aggregate(self, message, index, Pmu):
+        e_mlp = message[0]
+        Pmu_inc = message[1]
+        
+        mass_mlp = self._edge_mass(e_mlp)
+        mass_bool = mass_mlp.max(1)[1]
+        for i in range(Pmu.shape[0]):
+            swi = mass_bool[i == index].view(-1, 1)
+            P_inc = torch.cumsum(Pmu_inc[i == index]*swi, dim = 0)
+            if i == 0:
+                Psum = P_inc
+                continue
+            Psum = torch.cat([Psum, P_inc], dim = 0)
+
+        mass = LV.MassFromPxPyPzE(Psum)
+        print(mass[mass != 0].unique()) 
+        
+        mass = self._mass_mlp(torch.cat([Psum, mass], dim = 1))
+        mass = self._edge_mass(mass)
+        
+        return self._edge_mlp(torch.cat([mass, mass_mlp], dim = 1))
 

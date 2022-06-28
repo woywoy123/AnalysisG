@@ -1,6 +1,7 @@
 from Closure.GenericFunctions import * 
 from Functions.GNN.Models.BaseLine import *
 from Functions.GNN.Models.PDFNet import *
+from Functions.GNN.TrivialModels import MassGraphNeuralNetwork
 import Functions.FeatureTemplates.ParticleGeneric.EdgeFeature as ef
 import Functions.FeatureTemplates.ParticleGeneric.NodeFeature as nf
 import Functions.FeatureTemplates.ParticleGeneric.GraphFeature as gf
@@ -65,27 +66,29 @@ def TestPDFNet(Files, Names, CreateCache):
     # Truth Features
     Features |= {"ET_" + i : j for i, j in zip(["Index"], [ef.Index])}
 
-
     ## Real Truth 
     #Features |= {"NT_" + i : j for i, j in zip(["expPx"], [nf.ExpPx])}   
     ## Preprocessing 
     #Features |= {"EP_" + i : j for i, j in zip(["pT"], [ef.Expected_Px])}
 
-
-    # Debug: Create a simple GNN that only looks at 
-
-
-
-
-
-
-
     # Create a model just for the TruthTopChildren 
     CreateCache = False
-    DL = CreateModelWorkspace(Files, Features, CreateCache, 100, Names, "TruthTopChildren")
+    DL = CreateModelWorkspace(Files, Features, CreateCache, 1000, Names, "TruthTopChildren")
     samples = DL.TrainingSample
-    samples = samples[max(list(samples))][:4]
+    samples = samples[max(list(samples))][:100]
    
+    ## Debug: Create a simple GNN that only looks at the mass 
+    #Model = MassGraphNeuralNetwork() 
+    #Op = OptimizerTemplate(DL, Model)
+    #Op.LearningRate = 0.0001
+    #Op.WeightDecay = 0.001
+    #Op.DefineOptimizer()
+
+    #kill = {}
+    #kill |= {"Index" : "R"}
+    #KillCondition(kill, 1000, Op, samples, 10000, sleep = 1)
+    
+    # ====== Experimental GNN stuff ======= #
     Model = PDFNetTruthChildren()
     Op = OptimizerTemplate(DL, Model)
     Op.LearningRate = 0.0001
@@ -96,8 +99,9 @@ def TestPDFNet(Files, Names, CreateCache):
     kill |= {"eta" : "R", 
              "energy" : "R", 
              "pT" : "R", 
-             "phi" : "R"}
-    KillCondition(kill, 100, Op, samples, 10000, sleep = 1)
+             "phi" : "R",
+             "Index" : "C"}
+    KillCondition(kill, 1000, Op, samples, 10000, sleep = 1, batched = 10)
 
 
     return True

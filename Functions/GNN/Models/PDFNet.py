@@ -4,7 +4,7 @@ from torch.nn import Sequential as Seq, Linear, ReLU, Tanh, Sigmoid
 import torch.nn.functional as F
 from LorentzVector import *
 from torch_geometric.nn import MessagePassing
-from torch_geometric.utils import remove_self_loops
+from torch_geometric.utils import *
 
 class BasePDFNetEncode(torch.nn.Module):
     
@@ -39,54 +39,62 @@ class BasePDFNetProbability(torch.nn.Module):
     def forward(self, kin):
         return self._mlp(kin)
 
-class GraphNeuralNetwork(MessagePassing):
 
-    def __init__(self, nodes):
-        super().__init__(aggr = "add", flow = "target_to_source")
-        self._edgemlp = Seq(Linear(10, nodes), 
-                            ReLU(), 
-                            Linear(nodes, nodes), 
-                            ReLU(), 
-                            Linear(nodes, 2))
-    
-        self._nodemlp = Seq(Linear(1, nodes), 
-                            ReLU(), 
-                            Linear(nodes, nodes), 
-                            ReLU(), 
-                            Linear(nodes, 8))
+class GraphNeuralNetwork_MassTagger(MessagePassing):
 
-        self._aggrmlp = Seq(Linear(8+8, nodes),
-                            ReLU(), 
-                            Linear(nodes, nodes), 
-                            ReLU(), 
-                            Linear(nodes, 8))
-
-
-    def forward(self, edge_index, Pmu, W_Pmu):
-        #edge_index = remove_self_loops(edge_index)[0]
-        aggr = self.propagate(edge_index, Pmu = Pmu, W = W_Pmu)
-        return self._aggrmlp(torch.cat([aggr, Pmu, W_Pmu], dim = 1))
-
-    def message(self, Pmu_i, Pmu_j, W_i, W_j):
-        tmp = torch.pow(TensorToPtEtaPhiE(Pmu_i)[..., 1:3], 2)
-        delR = torch.sqrt(torch.sum(tmp, dim = 1, keepdim = True))
+    def __init__(self):
+        super(GraphNeuralNetwork_MassTagger, self).__init__(aggr = None, flow = "target_to_source")
+        self._mass_mlp = Seq(
+                Linear(5, 256),
+                Linear(256, 256), 
+                Linear(256, 256)
+        )
         
-        mass = MassFromPxPyPzE(Pmu_i + Pmu_j)
+        self._edge_mass = Seq(
+                Linear(256, 256), 
+                ReLU(),
+                Linear(256, 128), 
+                ReLU(), 
+                Linear(128, 2)
+        )
         
-        # Input: 1 + 1 + 4 + 4
-        return torch.cat([Pmu_j, self._edgemlp(torch.cat([delR, mass, Pmu_i - Pmu_j, W_i - W_j], dim = 1))], dim = 1)
+        self._edge_mlp = Seq(
+                Linear(4, 4), 
+                Linear(4, 2)
+        )
+
+
+    def forward(self, edge_index, Pmu_cart):
+        edge_index = add_remaining_self_loops(edge_index)[0]
+        return self.propagate(edge_index, Pmu = Pmu_cart)
+
+    def message(self, index, Pmu_i, Pmu_j):
+        Pmu = Pmu_i + Pmu_j
+        Mass = MassFromPxPyPzE(Pmu)
+        return self._mass_mlp(torch.cat([Pmu, Mass], dim = 1)), Pmu_j
     
-    def aggregate(self, message, index, Pmu, W):
-        Pmu_m = message[..., 0:4]
-        message_weight = message[..., 4:]
-        sel = message_weight.max(1)[1]
-        index = index[ sel != 0]
-        Pmu_m = Pmu_m[ sel != 0]
+    def aggregate(self, message, index, Pmu):
+        e_mlp = message[0]
+        Pmu_inc = message[1]
         
-        Pmu_mass = MassFromPxPyPzE(Pmu.index_add_(0, index, Pmu_m))
-        print(Pmu_mass/1000)
-        return self._nodemlp(Pmu_mass)
-    
+        mass_mlp = self._edge_mass(e_mlp)
+        mass_bool = mass_mlp.max(1)[1]
+        for i in range(Pmu.shape[0]):
+            swi = mass_bool[i == index].view(-1, 1)
+            P_inc = torch.cumsum(Pmu_inc[i == index]*swi, dim = 0)
+            if i == 0:
+                Psum = P_inc
+                continue
+            Psum = torch.cat([Psum, P_inc], dim = 0)
+
+        mass = MassFromPxPyPzE(Psum)
+        Masses = mass[mass != 0].unique() 
+        
+        mass = self._mass_mlp(torch.cat([Psum, mass], dim = 1))
+        mass = self._edge_mass(mass)
+        
+        return mass_mlp, Masses #self._edge_mlp(torch.cat([mass, mass_mlp], dim = 1)), Masses
+
 
 class PDFNetTruthChildren(torch.nn.Module):
 
@@ -109,21 +117,10 @@ class PDFNetTruthChildren(torch.nn.Module):
         
         # Learn Residual of prediction and observed kinematics
         self._deltaEnc = BasePDFNetEncode(self._nodes, 4)
-        
-        # Scaling factor which learns the error of the predicted kinematics 
-        self._WPx = BasePDFNetProbability(self._nodes, self._nodes*4, 1)
-        self._WPy = BasePDFNetProbability(self._nodes, self._nodes*4, 1)
-        self._WPz = BasePDFNetProbability(self._nodes, self._nodes*4, 1)
-        self._WEn = BasePDFNetProbability(self._nodes, self._nodes*4, 1)
-        
-        # This MLP assigns each node a weight based on the error of the autoencoder and its kinematics
-        self._NodeScaling = BasePDFNetProbability(self._nodes, 8, 1)
 
-        # Graph Neural Network - Node and Topology classifcation/prediction
-        self._GNN = GraphNeuralNetwork(self._nodes)
-        self._Cos = Seq(Linear(16, 4), 
-                        Linear(4, 2))
-
+        # Graph Neural Network which uses particle masses to tag the topology
+        self._GNN_MassTag = GraphNeuralNetwork_MassTagger()
+        
         self.L_eta = "MSEL"
         self.O_eta = None
         self.C_eta = False
@@ -142,15 +139,15 @@ class PDFNetTruthChildren(torch.nn.Module):
 
         self.L_Index = "CEL"
         self.O_Index = None
-        self.N_Index = True
         self.C_Index = True
-        
-        #self.L_expPx = "MSEL"
-        #self.O_expPx = None
-        #self.C_expPx = False
+
+        self._MassPDF = None
 
     def forward(self, N_eta, N_energy, N_pT, N_phi, edge_index):
         
+        if self._MassPDF == None:
+            self._MassPDF = torch.zeros(self._nodes, device = edge_index.device)
+
         # Encode the kinematics 
         Pt_enc =  self._PtEnc(N_pT)
         Eta_enc = self._EtaEnc(N_eta)
@@ -164,27 +161,26 @@ class PDFNetTruthChildren(torch.nn.Module):
         self.O_energy = self._EnDec(E_enc)
         
         # Calculate the difference between the prediction and observed
-        pred = TensorToPxPyPzE(torch.cat([self.O_pT, self.O_eta, self.O_phi, self.O_energy], dim = 1))
-        truth = TensorToPxPyPzE(torch.cat([N_pT, N_eta, N_phi, N_energy], dim = 1))
+        Pmu_PP = torch.cat([self.O_pT, self.O_eta, self.O_phi, self.O_energy], dim = 1)
+        Pmu_DP = torch.cat([N_pT, N_eta, N_phi, N_energy], dim = 1)
 
-        delta_enc = self._deltaEnc(pred-truth)
+        Pmu_PC = TensorToPxPyPzE(Pmu_PP)
+        Pmu_DC = TensorToPxPyPzE(Pmu_DP)
+    
+        delta_enc = self._deltaEnc((Pmu_DC-Pmu_PC)/(torch.abs(Pmu_DC)))
         
-        # Calculate a weight factor 
-        W_Px = self._WPx(delta_enc*Eta_enc)
-        W_Py = self._WPy(delta_enc*Phi_enc)
-        W_Pz =  self._WPz(delta_enc*Pt_enc)
-        W_En =  self._WEn(delta_enc*E_enc)
+        # Graph Neural Network - Mass Tagging 
+        TopoMass, TaggedMass = self._GNN_MassTag(edge_index, Pmu_DC)
+        self.O_Index = TopoMass
         
-        Pmu = TensorToPxPyPzE(torch.cat([N_pT, N_eta, N_phi, N_energy], dim = 1))
-        W_Pmu = torch.cat([W_Px, W_Py, W_Pz, W_En], dim = 1)
-        WeightedNodes = self._NodeScaling(torch.cat([Pmu, W_Pmu], dim = 1))*Pmu
-        
-        # Add as global graph output - It uses the sum of all nodes*weight to calculate the invariant mass
-        TopoGraphMass = MassFromPxPyPzE(torch.sum(WeightedNodes, dim = 0))
-         
-        # Predict the Topology of Graph 
-        Nodes = self._GNN(edge_index, Pmu, W_Pmu)
-        self.O_Index = self._Cos(torch.cat([Nodes[edge_index[0]], Nodes[edge_index[1]]], dim = 1))
+        if TaggedMass.shape[0]:
+            
+            print(TaggedMass/1000)
+            #TMP = torch.zeros(self._nodes - TaggedMass.shape[0], device = edge_index.device)
+            #self._MassPDF = torch.cat([TMP, TaggedMass, self._MassPDF], dim = 0).sort()[0].view(-1, 2).sum(dim = 1)
+            
+            #print(self._MassPDF)
+
         return self.O_eta, self.O_energy, self.O_phi, self.O_pT, self.O_Index
 
 

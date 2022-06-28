@@ -74,7 +74,7 @@ class ModelImporter:
             # Adjust the outputs
             if GetKeyPair(output_dict, "C_" + key) and not Truth:
                 out_p = out_v.softmax(dim = 1).max(dim = 1)[1]
- 
+            
             out_p = out_p.view(1, -1)[0]
             OutDict[key] = [out_p, out_v]
         return OutDict
