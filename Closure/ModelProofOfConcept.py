@@ -89,19 +89,25 @@ def TestPDFNet(Files, Names, CreateCache):
     #KillCondition(kill, 1000, Op, samples, 10000, sleep = 1)
     
     # ====== Experimental GNN stuff ======= #
-    Model = PDFNetTruthChildren()
+    Model = GraphNeuralNetwork_MassTagger()
     Op = OptimizerTemplate(DL, Model)
     Op.LearningRate = 0.0001
     Op.WeightDecay = 0.0001
     Op.DefineOptimizer()
 
     kill = {}
-    kill |= {"eta" : "R", 
-             "energy" : "R", 
-             "pT" : "R", 
-             "phi" : "R",
-             "Index" : "C"}
-    KillCondition(kill, 1000, Op, samples, 10000, sleep = 1, batched = 10)
+    kill |= {"Index" : "R"}
+    KillCondition(kill, 1000, Op, samples, 10000, sleep = 1, batched = 1)
+ 
+
+
+    #kill = {}
+    #kill |= {"eta" : "R", 
+    #         "energy" : "R", 
+    #         "pT" : "R", 
+    #         "phi" : "R",
+    #         "Index" : "C"}
+    #KillCondition(kill, 1000, Op, samples, 10000, sleep = 1, batched = 10)
 
 
     return True
