@@ -44,7 +44,7 @@ class GraphNeuralNetwork_MassTagger(MessagePassing):
 
     def __init__(self):
         super(GraphNeuralNetwork_MassTagger, self).__init__(aggr = None, flow = "target_to_source")
-        self._out = 512
+        self._out = 256
         self._mass_mlp = Seq(
                 Linear(1, 1024),
                 ReLU(),
@@ -53,15 +53,8 @@ class GraphNeuralNetwork_MassTagger(MessagePassing):
                 Linear(1024, self._out)
         )
 
-        self._edge_bias = Seq(
-                Linear(1, 1024),
-                ReLU(),
-                Linear(1024, 1024), 
-                Linear(1024, self._out)
-        )
-
         self._edge = Seq(
-                Linear(self._out*2, 1024), 
+                Linear(256+1, 1024), 
                 ReLU(),
                 Linear(1024, 1024), 
                 ReLU(), 
@@ -73,21 +66,23 @@ class GraphNeuralNetwork_MassTagger(MessagePassing):
         self.O_Index = None
         self.L_Index = "CEL"
         self.C_Index = True
-        self._SM = Softmax(dim = 1)
         self._pdf = None
 
     def forward(self, edge_index, N_pT, N_eta, N_phi, N_energy, E_T_Index): #Pmu_cart):
         
         Pmu_cart = TensorToPxPyPzE(torch.cat([N_pT, N_eta, N_phi, N_energy], dim = 1))
         self.O_Index = self.propagate(edge_index, Pmu = Pmu_cart, T = E_T_Index)
-        self.O_Index = self._edge(self.O_Index)
-    
+        src = self.O_Index[edge_index[0]]
+        dst = self.O_Index[edge_index[1]]
+        self.O_Index = self._edge(dst-src)
+
     def message(self, index, Pmu_i, Pmu_j):
         return Pmu_j
     
     def aggregate(self, message, index, Pmu, T):
         torch.set_printoptions(profile="full", linewidth = 200, sci_mode = False)
         OwnMass = MassFromPxPyPzE(Pmu)/1000
+        IncomingMass = MassFromPxPyPzE(message) / 1000
 
         # Count number of unique edges incident on nodes
         cons, n_cons = index.unique(sorted = False, return_counts = True)
@@ -100,54 +95,64 @@ class GraphNeuralNetwork_MassTagger(MessagePassing):
         empty = 1 - empty.cumsum(dim = -1)
         msk = empty.view(-1) != 0
 
-        # Apply an MLP on the cummulative sum of the four vectors invariant mass - Creates an inital bias
-        IncomingSumNode = empty.clone()
-        IncomingSumNode[empty != 0] = torch.arange(index.shape[0], device = Pmu.device).to(dtype = empty.dtype)
-        MassA = MassFromPxPyPzE(message[IncomingSumNode].cumsum(dim = 1).view(-1, 4)[msk])/1000
-        SumNodeMass = self._edge_bias(MassA)
-        ConnectionTrigger = SumNodeMass.max(1)[1] 
-        
-        # Use the connection trigger to zero out incoming edges and recomputed the cummulative four vector
-        Blind = message.clone()
-        Blind[ConnectionTrigger > self._confidence] = message[ConnectionTrigger > self._confidence]*0
-        MassB = MassFromPxPyPzE(Blind[IncomingSumNode].cumsum(dim = 1).view(-1, 4)[msk])/1000
-        MassBias = self._edge_bias(MassB)
+        ## Apply an MLP on the cummulative sum of the four vectors invariant mass - Creates an inital bias
+        #IncomingSumNode = empty.clone()
+        #IncomingSumNode[empty != 0] = torch.arange(index.shape[0], device = Pmu.device).to(dtype = empty.dtype)
+        #MassA = MassFromPxPyPzE(message[IncomingSumNode].cumsum(dim = 1).view(-1, 4)[msk])/1000
+        #SumNodeMass = self._edge_bias(torch.cat([MassA, index.view(-1, 1)], dim = 1))
+        #ConnectionTrigger = SumNodeMass.max(1)[1] 
+        #
+        ## Use the connection trigger to zero out incoming edges and recomputed the cummulative four vector
+        #Blind = message.clone()
+        #Blind[ConnectionTrigger > self._confidence] = message[ConnectionTrigger > self._confidence]*0
+        #MassB = MassFromPxPyPzE(Blind[IncomingSumNode].cumsum(dim = 1).view(-1, 4)[msk])/1000
+        #MassBias = self._edge_bias(torch.cat([MassB, index.view(-1, 1)], dim = 1))
         
         # Derive a bias pdf
         link = empty.clone().to(dtype = torch.float)
-        n_bias = MassBias.max(1)[1] 
-        link[empty != 0] += n_bias.to(dtype = torch.float)
+        #n_bias = MassBias.max(1)[1] 
+        link[empty != 0] = T.view(-1) 
+        #link[empty != 0] += n_bias.to(dtype = torch.float)
+        # === Continue here with a method to bias the pdf
+        indices = torch.multinomial(link, lim) 
+        # === Continue here with a method to bias the pdf
 
         # Sample this distribution and perform cummulative summation of the four vector and calculate the invariant mass but removing non connected edges
-        indices = link.sort(descending = True)[1] 
+        link_map, indices = link.sort(descending = True)
         IndxMap = empty.clone()
         IndxMap[empty != 0] = torch.arange(index.shape[0], device = Pmu.device).to(dtype = empty.dtype)
         
-        #----- Trial; Add constraint on the number of cons
-        #indices = indices*cons
-        
-
+        # Collect relevant indices
         IndxMap = torch.gather(IndxMap, 1, indices.to(dtype = torch.int64)).to(dtype = torch.long)
-        Mass = MassFromPxPyPzE(message[IndxMap].cumsum(dim = 1).view(-1, 4)[msk]) / 1000
-        Mass = Mass[IndxMap[empty != 0].view(-1).sort()[1]]
+
+        l_msk = link.view(-1) > 0
+        lm_msk = link_map.view(-1) > 0 
+        pmu_j = message*l_msk[msk].view(-1, 1)
+        pmu_j = pmu_j[IndxMap].cumsum(dim = 1).view(-1, 4)[lm_msk]
+        Mass = MassFromPxPyPzE(pmu_j) / 1000
         
         # Predict whether the masses derived from the cummulative summation of the four vectors are consistent
-        sel = self._edge_bias(Mass)
-        
-        print(Mass[sel.max(1)[1] > self._confidence].unique())
-        
-        ## Record the mass and bias mlp output
-        Node_Bias = torch.zeros((Pmu.shape[0], self._out), device = Pmu.device)
-        Node_Mass = torch.zeros((Pmu.shape[0], self._out), device = Pmu.device)
-        Node_pdf = torch.zeros((Pmu.shape[0], self._out), device = Pmu.device)
+        sel = self._mass_mlp(Mass)
+        selc = self._edge(torch.cat([sel, Mass], dim = 1))
+        print(Mass[selc.max(1)[1] == 1])
 
-        Node_Bias[index] += MassBias
-        Node_Mass[index] += sel
-        Node_pdf[index] += SumNodeMass
+        ### Record the mass and bias mlp output
+        Node_Bias = torch.zeros((Pmu.shape[0], self._out + 1), device = Pmu.device)
+        #Node_Mass = torch.zeros((Pmu.shape[0], self._out), device = Pmu.device)
+        #Node_pdf = torch.zeros((Pmu.shape[0], self._out), device = Pmu.device)
+        
+        index = index[l_msk[msk]]
+        
+        #print(Mass, index) 
+        Node_Bias.index_add_(0, index, torch.cat([sel, Mass], dim =1))
+        #Node_Bias = torch.cat([Node_Bias, Pmu], dim =1)
+
+        #Node_Mass[index] += sel
+        #Node_pdf[index] += SumNodeMass
             
         # Append the encoded node's features 
         #EncodedNode = self._EncodeNode(torch.cat([OwnMass, Node_Mass], dim = 1))
-        return torch.cat([MassBias*SumNodeMass*sel, Node_Bias[index] * Node_Mass[index] * Node_pdf[index]], dim = 1)
+        return Node_Bias
 
 
 

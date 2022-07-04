@@ -103,7 +103,7 @@ def TestPDFNet(Files, Names, CreateCache):
 
     kill = {}
     kill |= {"Index" : "C"}
-    KillCondition(kill, 1000, Op, samples, 100000, sleep = 2, batched = 3)
+    KillCondition(kill, 1000, Op, samples, 100000, sleep = 2, batched = 2)
  
 
 
