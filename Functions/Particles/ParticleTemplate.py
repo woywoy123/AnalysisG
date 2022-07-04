@@ -4,12 +4,12 @@ import math
 import torch
 import LorentzVector
 
-class Particle(VariableManager):
+class ParticleTemplate(VariableManager):
     def __init__(self):
         self.Index = -1
         VariableManager.__init__(self)
     
-    def __DefineParticle(self):
+    def _DefineParticle(self):
         self.CompileKeyMap()
         self.ListAttributes()
    

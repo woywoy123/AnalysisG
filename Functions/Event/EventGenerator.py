@@ -33,15 +33,20 @@ class EventGenerator(Debugging, Directories):
             self.Notify("!_______NEW DIRECTORY______: " + str(i))
             for F in self.Files[i]:
                 self.Events[i + "/" + F] = []
-                F_i = File(i + "/" + F, self.__Debug)
-                F_i.VerboseLevel = self.VerboseLevel
-                F_i.Trees = obj.MinimalTrees
-                F_i.Branches = obj.MinimalBranches
-                F_i.Leaves = obj.MinimalLeaves
-                F_i.CheckKeys()
-                F_i.ConvertToArray()
-                if self.__Debug:
+                
+                if self.__Debug != True:
+                    F_i = File(i + "/" + F, self.__Debug)
+                    F_i.VerboseLevel = self.VerboseLevel
+                    F_i.Trees = obj.MinimalTrees
+                    F_i.Branches = obj.MinimalBranches
+                    F_i.Leaves = obj.MinimalLeaves
+                    F_i.CheckKeys()
+                    F_i.ConvertToArray()
+                
+                if self.__Debug == None:
                     PickleObject(F_i, "Debug.pkl")
+
+                if self.__Debug == True:
                     F_i = UnpickleObject("Debug.pkl")
                 
                 self.Notify("!SPAWNING EVENTS IN FILE -> " + F)
@@ -62,6 +67,7 @@ class EventGenerator(Debugging, Directories):
                         E.iter = l
                         E.ParticleProxy(F_i)
                         pairs[tr] = E
+
                     self.Events[i + "/" + F].append(pairs)
                     
                     if self.Stop():

@@ -1,9 +1,9 @@
-from Functions.Particles.ParticleTemplate import Particle as Part
+from Functions.Particles.ParticleTemplate import ParticleTemplate
 
 ### Default AnalysisTop particles 
-class Particle(Part):
+class Particle(ParticleTemplate):
     def __init__(self, Type = "Particle"):
-        Part.__init__(self)
+        ParticleTemplate.__init__(self)
         
         self.Type = Type
         self.pt = self.Type + "_pt"
@@ -11,7 +11,7 @@ class Particle(Part):
         self.phi = self.Type + "_phi"
         self.e = self.Type + "_e"
 
-        self.__DefineParticle()
+        self._DefineParticle()
 
         self.Decay_init = []
         self.Decay = []

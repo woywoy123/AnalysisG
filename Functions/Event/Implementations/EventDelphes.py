@@ -1,10 +1,10 @@
 from Functions.Event.EventTemplate import EventTemplate 
-from Functions.Particles.ParticleTemplate import Particle as Part
+from Functions.Particles.ParticleTemplate import ParticleTemplate
 
 # Particle Definitions 
-class Particle(Part):
+class Particle(ParticleTemplate):
     def __init__(self):
-        Part.__init__(self)
+        ParticleTemplate.__init__(self)
         self.Type = "Particle"
         self.PID = self.Type + ".PID"
         self.Status = self.Type + ".Status"
@@ -13,7 +13,8 @@ class Particle(Part):
         self.Eta = self.Type + ".Eta"
         self.Phi = self.Type + ".Phi"
         self.E = self.Type + ".E"
-        self.__DefineParticle() 
+        
+        self._DefineParticle() 
 
 
 class Event(EventTemplate):

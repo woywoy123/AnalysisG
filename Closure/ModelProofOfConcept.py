@@ -73,10 +73,16 @@ def TestPDFNet(Files, Names, CreateCache):
 
     # Create a model just for the TruthTopChildren 
     CreateCache = False
-    DL = CreateModelWorkspace(Files, Features, CreateCache, 1000, Names, "TruthTopChildren")
+    DL = CreateModelWorkspace(Files, Features, CreateCache, 100, Names, "TruthTopChildren")
     samples = DL.TrainingSample
-    samples = samples[max(list(samples))][:100]
-   
+    
+    samples = [ i for k in samples for i in samples[k]]
+
+
+
+
+    #samples = samples[max(list(samples))][:-1]
+    
     ## Debug: Create a simple GNN that only looks at the mass 
     #Model = MassGraphNeuralNetwork() 
     #Op = OptimizerTemplate(DL, Model)
@@ -91,13 +97,13 @@ def TestPDFNet(Files, Names, CreateCache):
     # ====== Experimental GNN stuff ======= #
     Model = GraphNeuralNetwork_MassTagger()
     Op = OptimizerTemplate(DL, Model)
-    Op.LearningRate = 0.0001
-    Op.WeightDecay = 0.0001
+    Op.LearningRate = 0.001
+    Op.WeightDecay = 0.001
     Op.DefineOptimizer()
 
     kill = {}
-    kill |= {"Index" : "R"}
-    KillCondition(kill, 1000, Op, samples, 10000, sleep = 1, batched = 1)
+    kill |= {"Index" : "C"}
+    KillCondition(kill, 1000, Op, samples, 100000, sleep = 2, batched = 3)
  
 
 
