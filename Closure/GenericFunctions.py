@@ -198,7 +198,7 @@ def CreateDataLoaderComplete(Files, Level, Name, CreateCache, NameOfCaller = Non
         PickleObject(DL, Name)
     return UnpickleObject(Name)
 
-def CreateModelWorkspace(Files, DataFeatures, Cache, Stop, ProcessName, Level):
+def CreateModelWorkspace(Files, DataFeatures, Cache, Stop, ProcessName, Level, selfloop = False):
     from Functions.Event.CacheGenerators import Generate_Cache_Batches
     from Functions.Event.DataLoader import GenerateDataLoader
     from Functions.IO.Files import WriteDirectory, Directories
@@ -256,7 +256,7 @@ def CreateModelWorkspace(Files, DataFeatures, Cache, Stop, ProcessName, Level):
 
         for i in Out:
             ev = UnpickleObject(i)
-            DL.AddSample(ev, "nominal", True, True)
+            DL.AddSample(ev, "nominal", selfloop, True)
         DL.MakeTrainingSample(10)
         PickleObject(DL, "DataLoader", Outdir)
     return UnpickleObject("DataLoader", Outdir)

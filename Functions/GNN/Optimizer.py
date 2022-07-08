@@ -36,15 +36,19 @@ class ModelImporter:
                 self.Warning("+-> " + i)
             
             self.Warning("---> ! Features Found in Sample Input ! <---")
-            for i in list(Input.__dict__["_store"]):
+            for i in list(self.Sample.__dict__["_store"]):
                 self.Warning("+-> " + i)
-            
             self.Fail("MISSING VARIABLES IN GIVEN DATA SAMPLE")
 
         self.Notify("FOUND ALL MODEL INPUT PARAMETERS IN SAMPLE")
         for i in self.ModelInputs:
             self.Notify("---> " + i)
-        self.ModelOutputs = {i : k for i, k in self.Model.__dict__.items() for p in ["C_", "L_", "O_", "N_"] if i.startswith(p)}
+
+        self.Notify("AVAILABLE PARAMETERS FOUND IN SAMPLE")
+        for i in list(self.Sample.__dict__["_store"]):
+            self.Notify("---> " + i)
+
+        self.ModelOutputs = {i : k for i, k in self.Model.__dict__.items() for p in ["C_", "L_", "O_"] if i.startswith(p)}
         self.ModelOutputs |= {i : None for i, k in self.Model.__dict__.items() if i.startswith("O_")}
 
     def MakePrediction(self, sample):
@@ -73,8 +77,7 @@ class ModelImporter:
 
             # Adjust the outputs
             if GetKeyPair(output_dict, "C_" + key) and not Truth:
-                out_p = out_v.softmax(dim = 1).max(dim = 1)[1]
-            
+                out_p = out_v.max(dim = 1)[1]
             out_p = out_p.view(1, -1)[0]
             OutDict[key] = [out_p, out_v]
         return OutDict

@@ -88,6 +88,19 @@ torch::Tensor TensorToPtEtaPhiE(torch::Tensor v)
   return torch::cat({pt, eta, phi, e}, 1); 
 }
 
+torch::Tensor TensorDeltaR(torch::Tensor v1, torch::Tensor v2)
+{
+  torch::Tensor eta1 = v1.index({Slice(), Slice(1, 2, 2)}); 
+  torch::Tensor phi1 = v1.index({Slice(), Slice(2, 3, 3)}); 
+
+  torch::Tensor eta2 = v2.index({Slice(), Slice(1, 2, 2)}); 
+  torch::Tensor phi2 = v2.index({Slice(), Slice(2, 3, 3)}); 
+
+  return torch::sqrt((eta1-eta2).pow(2) + (phi1 - phi2).pow(2)); 
+}
+
+
+
 PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
 {
   m.def("ToPxPyPzE", &ToPxPyPzE, "Convert Rapidity to Cartesian"); 
@@ -96,4 +109,7 @@ PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
   m.def("MassFromPtEtaPhiE", &MassFromPtEtaPhiE, "Calculate Invariant Mass");
   m.def("TensorToPxPyPzE", &TensorToPxPyPzE, "Convert Rapidity Tensor to Cartesian");
   m.def("TensorToPtEtaPhiE", &TensorToPtEtaPhiE, "Convert Cartesian to Rapidity"); 
+  m.def("TensorDeltaR", &TensorDeltaR, "Calculate the DeltaR between objects"); 
+
+
 }

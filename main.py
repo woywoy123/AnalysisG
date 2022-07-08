@@ -107,8 +107,8 @@ if __name__ == "__main__":
 
     # ========== Test Model Developments ========== # 
     #Test(ModelProofOfConcept.TestBaseLine, Files = [GeneralDir + "tttt/MCe/QU_0.root", GeneralDir + "t/MCa/QU_0.root"], Names = ["tttt", "t"], CreateCache = True)
-    Test(ModelProofOfConcept.TestPDFNet, Files = [GeneralDir + "tttt/MCe/QU_0.root", GeneralDir + "t/MCa/QU_0.root"], Names = ["tttt", "t"], CreateCache = True)
-
+    #Test(ModelProofOfConcept.TestPDFNet, Files = [GeneralDir + "tttt/MCe/QU_0.root", GeneralDir + "t/MCa/QU_0.root"], Names = ["tttt", "t"], CreateCache = True)
+    Test(ModelProofOfConcept.TestBasicBaseLine, Files = [GeneralDir + "tttt/MCe/QU_0.root", GeneralDir + "t/MCa"], Names = ["tttt", "t"], CreateCache = True)
 
     ## ========== Test Entire Aggregation of Framework =========== #
     #Files = { 

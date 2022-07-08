@@ -4,3 +4,5 @@ def charge(a):
 def pdgid(a):
     return float(a.pdgid)
 
+def FromRes(a):
+    return float(a.FromRes)
