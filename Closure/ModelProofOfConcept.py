@@ -6,7 +6,12 @@ from Functions.GNN.TrivialModels import MassGraphNeuralNetwork
 import Functions.FeatureTemplates.ParticleGeneric.EdgeFeature as ef
 import Functions.FeatureTemplates.ParticleGeneric.NodeFeature as nf
 import Functions.FeatureTemplates.ParticleGeneric.GraphFeature as gf
+
 import Functions.FeatureTemplates.TruthTopChildren.NodeFeature as tc_nf
+
+import Functions.FeatureTemplates.TruthJet.NodeFeature as tj_nf
+import Functions.FeatureTemplates.TruthJet.EdgeFeature as tj_ef
+
 
 
 def TestBaseLine(Files, Names, CreateCache):
@@ -123,6 +128,7 @@ def TestPDFNet(Files, Names, CreateCache):
 
 def TestBasicBaseLine(Files, Names, CreateCache):
     
+    # =========================================== TRUTH CHILDREN GNN STUFF =========================================== #
     Features = {}
     Features |= {"NF_" + i : j for i, j in zip(["eta", "energy", "pT", "phi"], [nf.eta, nf.energy, nf.pT, nf.phi])}
     
@@ -132,20 +138,45 @@ def TestBasicBaseLine(Files, Names, CreateCache):
     Features |= {"GT_" + i : j for i, j in zip(["SignalSample"], [gf.SignalSample])}
 
     # Create a model just for the TruthTopChildren 
-    CreateCache = False
+    CreateCache = True
     DL = CreateModelWorkspace(Files, Features, CreateCache, 100, Names, "TruthTopChildren")
     samples = DL.TrainingSample
     
-    samples = [ i for k in samples for i in samples[12]]
+    samples = [ i for k in samples for i in samples[k]]
 
     Model = BasicBaseLineTruthChildren()
     Op = OptimizerTemplate(DL, Model)
-    Op.LearningRate = 0.001
-    Op.WeightDecay = 0.01
+    Op.LearningRate = 0.0001
+    Op.WeightDecay = 0.001
     Op.DefineOptimizer()
 
     kill = {}
     kill |= {"Edge" : "C"}
     kill |= {"FromRes" : "C"}
     KillCondition(kill, 50, Op, samples, 100000, sleep = 2, batched = 2)
-  
+    
+    # =========================================== TRUTH JET/ JET GNN STUFF =========================================== #
+    # Create a model just for the TruthJets/Jets
+    Features = {}
+
+    # Generic Particle Properties
+    Features |= {"NF_" + i : j for i, j in zip(["eta", "energy", "pT", "phi", "mass"], [nf.eta, nf.energy, nf.pT, nf.phi, nf.mass])}
+
+    # Truth Features
+    Features |= {"NT_" + i : j for i, j in zip(["pdgid", "tops_merged"], [tj_nf.PDGID, tj_nf.TopsMerged])} 
+
+    Features |= {"NT_" + i : j for i, j in zip(["FromRes"], [tj_nf.FromRes])}
+    Features |= {"ET_" + i : j for i, j in zip(["Edge"], [tj_ef.Index])}
+    Features |= {"GT_" + i : j for i, j in zip(["SignalSample"], [gf.SignalSample])}
+
+    CreateCache = True
+    DL = CreateModelWorkspace(Files, Features, CreateCache, 100, Names, "TruthJetLepton")
+    samples = DL.TrainingSample
+ 
+    #Model = BasicBaseLineTruthChildren()
+    #Op = OptimizerTemplate(DL, Model)
+    #Op.LearningRate = 0.001
+    #Op.WeightDecay = 0.01
+    #Op.DefineOptimizer()
+
+    return True 

@@ -90,6 +90,7 @@ class EventGraphTemplate:
         ApplyToGraph(self.EdgeAttr, self.Edges)
 
         self.Data.num_nodes = torch.tensor(len(self.Particles))
+        setattr(self.Data, "ni", torch.tensor([[self.iter] for k in range(len(self.Particles))]))
         setattr(self.Data, "i", torch.tensor(self.iter))
         return self.Data
 

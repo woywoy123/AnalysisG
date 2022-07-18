@@ -62,7 +62,7 @@ class Event(EventTemplate):
         def RecursiveSignal(DecayList, sig, index):
             for p_i in DecayList:
                 setattr(p_i, "FromRes", sig)
-                p_i.Index = index
+                setattr(p_i, "Index", index)
                 RecursiveSignal(p_i.Decay_init, sig, index)
                 RecursiveSignal(p_i.Decay, sig, index)
        

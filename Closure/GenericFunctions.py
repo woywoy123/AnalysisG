@@ -1,5 +1,5 @@
 from Functions.IO.IO import UnpickleObject, PickleObject   
-from Functions.Event.Implementations.EventGraphs import EventGraphTruthTops, EventGraphTruthTopChildren, EventGraphDetector  
+from Functions.Event.Implementations.EventGraphs import EventGraphTruthTops, EventGraphTruthTopChildren, EventGraphDetector, EventGraphTruthJetLepton
 
 def Comparison(a, b, key = None):
     
@@ -223,6 +223,9 @@ def CreateModelWorkspace(Files, DataFeatures, Cache, Stop, ProcessName, Level, s
             DL.EventGraph = EventGraphTruthTopChildren
         elif Level == "DetectorParticles":
             DL.EventGraph = EventGraphDetector
+        elif Level == "TruthJetLepton":
+            DL.EventGraph = EventGraphTruthJetLepton
+
         DL.SetDevice("cuda")
         for key, fx in DataFeatures.items():
             if "GT_" == key[0:3]:

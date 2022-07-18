@@ -42,7 +42,7 @@ def TestExperiemental(FileDir):
 
 
     E = ExperimentalEvent()
-    ev = EventGenerator(FileDir, Stop = 10, Debug = True)
+    ev = EventGenerator(FileDir, Stop = 10000, Debug = False)
     ev.EventImplementation = E
     ev.SpawnEvents()
     ev.CompileEvent(True)
@@ -54,7 +54,6 @@ def TestExperiemental(FileDir):
     n_LEvent = {}
     for i in ev.Events:
         event = ev.Events[i]["nominal"]
-        
         leptons = []
         for t in event.Tops:
             #Recursive(t, 0)
