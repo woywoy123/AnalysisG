@@ -17,9 +17,22 @@ def mass(a):
     a.CalculateMass()
     return float(a.Mass_GeV)
 
+def islepton(a):
+    if a.Type == "el" or a.Type == "mu":
+        return 1
+    return 0
+
+def charge(a):
+    if hasattr(a, "charge"):
+        return a.charge
+    return 0
+
 # ================== Truth ================ #
 def Index(a):
     return float(a.Index)
+
+def FromRes(a):
+    return a.FromRes
 
 def ExpPx(a):
     return float(a.exp_Px)

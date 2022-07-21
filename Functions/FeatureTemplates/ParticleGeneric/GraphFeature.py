@@ -16,8 +16,12 @@ def pileup(ev):
 def nJets(ev):
     return float(len(ev.Jets))
 
-def nTruthJet(ev):
+def nTruthJets(ev):
     return float(len(ev.TruthJets))
+
+def nLeptons(ev):
+    return len(ev.Leptons)
+
 
 # ================== Truth ================ #
 def mu_actual(ev):

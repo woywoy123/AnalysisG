@@ -78,6 +78,9 @@ class ModelImporter:
             # Adjust the outputs
             if GetKeyPair(output_dict, "C_" + key) and not Truth:
                 out_p = out_v.max(dim = 1)[1]
+                
+            if GetKeyPair(output_dict, "C_" + key) and out_v.shape[1] == 1 and not Truth: 
+                out_p = out_v.round().to(dtype = torch.int)
             out_p = out_p.view(1, -1)[0]
             OutDict[key] = [out_p, out_v]
         return OutDict
@@ -163,7 +166,7 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Notifica
         if self.DefaultOptimizer == "ADAM":
             self.Optimizer = torch.optim.Adam(self.Model.parameters(), lr = self.LearningRate, weight_decay = self.WeightDecay)
         elif self.DefaultOptimizer == "SGD":
-            self.Optimizer = torch.optim.SGD(self.Model.parameters(), lr = self.LearningRate)
+            self.Optimizer = torch.optim.SGD(self.Model.parameters(), lr = self.LearningRate, weight_decay = self.WeightDecay)
 
     def Train(self, sample):
         if self.Training:
@@ -206,7 +209,9 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Notifica
             if acc == None:
                 self.Warning("SKIPPING " + key + " :: NO LOSS FUNCTION SELECTED!!!!")
                 continue
-            if m_v.shape[1] <= t_v.max() and (self.ModelOutputs["C_" + key] or Classification):
+            elif m_v.shape[1] == 1 and self.ModelOutputs["C_" + key]:
+                pass
+            elif m_v.shape[1] <= t_v.max() and (self.ModelOutputs["C_" + key] or Classification):
                 self.Fail("(" + key + ") Your Classification Model only has " + str(int(m_v.shape[1])) + " classes but requires " + str(int(t_v.max()+1)))
             elif Classification == False and m_v.shape[1] != t_v.shape[1]:
                 self.Warning("Model is using regression, but your truth has length " 

@@ -65,7 +65,7 @@ class Event(EventTemplate):
                 setattr(p_i, "Index", index)
                 RecursiveSignal(p_i.Decay_init, sig, index)
                 RecursiveSignal(p_i.Decay, sig, index)
-       
+      
         for i in self.TruthTops:
             self.TruthTops[i][0].Decay_init += self.TruthTopChildren[i]
 
@@ -126,7 +126,7 @@ class Event(EventTemplate):
         self.TopPreFSR = self.DictToList(self.TopPreFSR)
         self.TopPostFSR = self.DictToList(self.TopPostFSR)
         self.TopPostFSRChildren = self.DictToList(self.TopPostFSRChildren)
-        
+
         for i in self.TopPostFSR:
             RecursiveSignal(i.Decay_init, i.FromRes, i.Index)
             RecursiveSignal(i.Decay, i.FromRes, i.Index)

@@ -298,9 +298,15 @@ def KillCondition(Variable, TestIndex, Optimizer, Samples, Iterations, sleep = -
     Passed = False
     for k in range(Iterations):
         Optimizer.Debug = "Loss"
-        Sample = DataLoader(Samples, batch_size = batched, shuffle = True)
-        for i in Sample:
-            Optimizer.Train(i)
+        if isinstance(Samples, dict):
+            Sample = []
+            for inpt in Samples: 
+                for i in DataLoader(Samples[inpt], batch_size = batched, shuffle = True):
+                    Optimizer.Train(i)
+        else:
+            for i in DataLoader(Samples, batch_size = batched, shuffle = True):
+                Optimizer.Train(i)
+
         if k/TestIndex - int(k/TestIndex) == 0:
             Optimizer.Debug = True
             truth, model = Optimizer.Train(i)
