@@ -34,5 +34,9 @@ def Index(a):
 def FromRes(a):
     return a.FromRes
 
+def FromTop(a):
+    return 1
+
+
 def ExpPx(a):
     return float(a.exp_Px)

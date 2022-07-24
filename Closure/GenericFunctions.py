@@ -301,10 +301,10 @@ def KillCondition(Variable, TestIndex, Optimizer, Samples, Iterations, sleep = -
         if isinstance(Samples, dict):
             Sample = []
             for inpt in Samples: 
-                for i in DataLoader(Samples[inpt], batch_size = batched, shuffle = True):
+                for i in DataLoader(Samples[inpt], batch_size = batched, shuffle = False):
                     Optimizer.Train(i)
         else:
-            for i in DataLoader(Samples, batch_size = batched, shuffle = True):
+            for i in DataLoader(Samples, batch_size = batched, shuffle = False):
                 Optimizer.Train(i)
 
         if k/TestIndex - int(k/TestIndex) == 0:

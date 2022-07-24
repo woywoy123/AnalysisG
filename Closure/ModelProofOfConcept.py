@@ -215,8 +215,8 @@ def TestBasicBaseLine(Files, Names, CreateCache):
     Features |= AddFeature("NT", GenPartTNF)
     Features |= AddFeature("GT", GenPartTGF)
 
-    CreateCache = False
-    DL = CreateModelWorkspace([Files[0]], Features, CreateCache, 100, Names, "TruthJetLepton", True)
+    CreateCache = True
+    DL = CreateModelWorkspace(Files, Features, CreateCache, 100, Names, "TruthJetLepton", True)
     samples = DL.TrainingSample
     k = 19 
     #su = 0
@@ -228,17 +228,17 @@ def TestBasicBaseLine(Files, Names, CreateCache):
 
     Model = BasicBaseLineTruthJet()
     Op = OptimizerTemplate(DL, Model)
-    Op.LearningRate = 0.001
-    Op.WeightDecay = 0.01
-    Op.DefaultOptimizer = "SGD"
+    Op.LearningRate = 0.0001
+    Op.WeightDecay = 0.001
+#    Op.DefaultOptimizer = "SGD"
     Op.DefineOptimizer()
 
     kill = {}
     kill |= {"edge" : "R"}
-    kill |= {"from_res" : "C"}
-    kill |= {"signal_sample": "C"}
-    kill |= {"from_top": "C"}
-    KillCondition(kill, 50, Op, samples[k], 100000, sleep = 2, batched = 2)
+    #kill |= {"from_res" : "C"}
+    #kill |= {"signal_sample": "C"}
+    #kill |= {"from_top": "C"}
+    KillCondition(kill, 50, Op, samples[k], 100000, sleep = 2, batched = 10)
  
 
 

@@ -212,7 +212,8 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Notifica
             elif m_v.shape[1] == 1 and self.ModelOutputs["C_" + key]:
                 pass
             elif m_v.shape[1] <= t_v.max() and (self.ModelOutputs["C_" + key] or Classification):
-                self.Fail("(" + key + ") Your Classification Model only has " + str(int(m_v.shape[1])) + " classes but requires " + str(int(t_v.max()+1)))
+                self.Fail("(" + key + ") Your Classification Model only has " 
+                        + str(int(m_v.shape[1])) + " classes but requires " + str(int(t_v.max()+1)))
             elif Classification == False and m_v.shape[1] != t_v.shape[1]:
                 self.Warning("Model is using regression, but your truth has length " 
                         + str(int(t_v.shape[1])) + " but need " + str(int(m_v.shape[1])))

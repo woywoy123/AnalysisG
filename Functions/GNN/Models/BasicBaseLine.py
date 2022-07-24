@@ -120,11 +120,17 @@ class BasicBaseLineTruthChildren(MessagePassing):
 class BasicBaseLineTruthJet(MessagePassing):
 
     def __init__(self):
-        super().__init__(aggr = "add")
-
-        self._Edge = BasicEdgeConvolutionBaseLine()
-        self._Res = BasicMessageBaseLine()
+        super().__init__(aggr = None, flow = "target_to_source")
         
+        def MakeMLP(lay):
+            out = []
+            for i in range(len(lay)-1):
+                x1, x2 = lay[i], lay[i+1]
+                out += [Linear(x1, x2)]
+            return Seq(*out)
+
+
+
         self.O_edge = None
         self.L_edge = "CEL"
         self.C_edge = True
@@ -140,46 +146,37 @@ class BasicBaseLineTruthJet(MessagePassing):
         self.O_from_top = None
         self.L_from_top = "CEL"
         self.C_from_top = True
-
-        self._Hidden = [6, 256, 256, 256, 2]
-        LinDict = []
-        for i in range(len(self._Hidden)-1):
-            x1 = self._Hidden[i]
-            x2 = self._Hidden[i+1]
-            LinDict += [Linear(x1, x2), Sigmoid(), Linear(x2, x2)]
-        self._from_res = Seq(*LinDict)
-
-        self._Hidden = [6, 256, 256, 256, 2]
-        LinDict = []
-        for i in range(len(self._Hidden)-1):
-            x1 = self._Hidden[i]
-            x2 = self._Hidden[i+1]
-            #l1 = Linear(x1, x2)
-            #l2 = Linear(x2, x2)
-            #xavier_uniform(l1.weight)
-            LinDict += [Linear(x1, x2), Sigmoid(), Linear(x2, x2)]
-        print(LinDict)
-        self._edge = Seq(*LinDict)
         
-        self._Hidden = [8, 256, 256, 256, 2]
-        LinDict = []
-        for i in range(len(self._Hidden)-1):
-            x1 = self._Hidden[i]
-            x2 = self._Hidden[i+1]
-            LinDict += [Linear(x1, x2), Linear(x2, x2)]
-        self._signal = Seq(*LinDict)
+        end = 2048
+
+        self._Node = MakeMLP([7, 256, 1024, end])
+        self._Edge = MakeMLP([2, 256, 1024, end])
+
+        self._isedge = Seq(Linear(2*end, int(end/2)), ReLU(), Linear(int(end/2), 2))
+        self._istop = Seq(Linear(2*end, int(end/2)), ReLU(), Linear(int(end/2), 2))
+        self._ResSw = Seq(Linear(end, int(end/2)), ReLU(), Linear(int(end/2), 2))
+        self._fromRes = Seq(Linear(end*3, int(end/2)), ReLU(), Linear(int(end/2), 2))
+
+        self._mass = MakeMLP([1, 1024, 1024, end])
+        self._node_m = MakeMLP([4*end, 1024, end])
+
+        self._signal = MakeMLP([8, 256, 256, 256, 2])
     
     def forward(self, i, edge_index, N_eta, N_energy, N_pT, N_phi, N_mass, N_islep, N_charge, G_mu, G_met, G_met_phi, G_pileup, G_njets, G_nlep):
         device = N_eta.device
         Pmu = torch.cat([N_pT, N_eta, N_phi, N_energy], dim = 1)
+        Pmc = TensorToPxPyPzE(Pmu)
         Mass = N_mass/1000
+       
+        # Make Prediction about topology
+        node_enc = self._Node(torch.cat([Pmu, Mass, N_islep, N_charge], dim = 1))
+        node = self.propagate(edge_index, Pmu = Pmu, Mass = Mass, charge = N_charge, islep = N_islep, node_enc = node_enc)
+        rw = self._ResSw(node_enc)
+        res = rw.max(1)[1] 
         
-        # Use subgraph predictions to make a prediction about nodes
-        self.O_edge = self._Edge(edge_index, Pmu, Mass)
-        self.O_from_res = self._Res(edge_index, Pmu, Mass)
-        Node = self.propagate(edge_index, Pmu = Pmu, Mass = Mass, charge = N_charge, islep = N_islep)
-        self.O_from_res = self._from_res(torch.cat([Node, self.O_from_res, N_islep, Mass], dim = 1))
-        self.O_from_top = Node 
+        Mass_sum = torch.zeros((Pmu.shape[0], node.shape[1]), device = Pmu.device, dtype = torch.float)
+        Mass_sum[res == 1] = self._mass(MassFromPxPyPzE(Pmc[res == 1].sum(0))/1000)
+        self.O_from_res = self._fromRes(torch.cat([Mass_sum, node_enc, node], dim = 1)) + rw
 
         # Aggregate the nodes into a per graph basis if batches are more than 1.
         graph_res = self.O_from_res.view(i.shape[0], -1, 2).sum(dim = 1)
@@ -187,14 +184,33 @@ class BasicBaseLineTruthJet(MessagePassing):
 
         return self.O_edge, self.O_from_res
     
-    def message(self, edge_index, Pmu_i, Pmu_j, Mass_i, Mass_j, charge_i, charge_j, islep_i, islep_j):
+    def message(self, edge_index, Pmu_i, Pmu_j, Mass_i, Mass_j, charge_i, charge_j, islep_i, islep_j, node_enc_i, node_enc_j):
         Pm_i = TensorToPxPyPzE(Pmu_i)
         Pm_j = TensorToPxPyPzE(Pmu_j)
         dR = TensorDeltaR(Pmu_i, Pmu_j)
-        self.O_edge = self._edge(torch.cat([dR, MassFromPxPyPzE(Pm_i + Pm_j)/1000, islep_i, islep_j, self.O_edge], dim = 1))
-        return self.O_edge 
 
+        mass = self._mass(MassFromPxPyPzE(Pm_i + Pm_j)/1000)
+        edge = self._Edge(torch.cat([dR, islep_i*islep_j], dim = 1))
+        self.O_edge = self._isedge(torch.cat([edge, mass], dim = 1))
 
+        return self.O_edge, Pm_j, node_enc_j, edge+mass
 
+    def aggregate(self, message, index, Pmu, node_enc):
+        edge, Pm_j, node_j, edgemlp = message
+        sw = edge.max(dim = 1)[1]
+
+        Mass_sum = torch.zeros(Pmu.shape, device = Pmu.device, dtype = torch.float)
+        Mass_sum.index_add_(0, index[sw == 1], Pm_j[sw == 1])
+        Mass = MassFromPxPyPzE(Mass_sum) / 1000 
+        MassMLP = self._mass(Mass)
+        self.O_from_top = self._istop(torch.cat([MassMLP, node_enc], dim = 1))
+
+        Node_sum = torch.zeros((Pmu.shape[0], node_j.shape[1]), device = Pmu.device, dtype = torch.float)
+        Node_sum.index_add_(0, index[sw == 1], node_j[sw == 1])
+
+        edge_sum = torch.zeros((Pmu.shape[0], edgemlp.shape[1]), device = Pmu.device, dtype = torch.float)
+        edge_sum.index_add_(0, index[sw == 1], edgemlp[sw == 1])
+
+        return self._node_m(torch.cat([MassMLP, node_enc, Node_sum, edge_sum], dim = 1))
 
 
