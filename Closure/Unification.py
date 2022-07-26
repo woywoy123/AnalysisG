@@ -73,8 +73,6 @@ def TestUnificationOptimizer():
     U.AddGraphTruth("nTops", gf.nTops)
 
     U.Model = BaseLineModelEvent()
-
     U.Launch()
-
-
     return True
+
