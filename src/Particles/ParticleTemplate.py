@@ -1,4 +1,4 @@
-from Functions.Tools.Variables import VariableManager
+from AnalysisTopGNN.Tools.Variables import VariableManager
 import copy
 import math
 import torch

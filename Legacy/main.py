@@ -1,164 +1,128 @@
-#from Closure.IO import TestDir, TestReadSingleFile, TestReadFile, TestFileConvertArray
-#from Closure.Event import TestEvents, TestParticleAssignment, TestSignalMultipleFile, TestSignalDirectory
-#from Closure.Plotting import TestTops, TestResonance, TestBackGroundProcesses, TestGNNMonitor, KinematicsPlotting, TopologicalComplexityMassPlot, TestDataSamples, TestWorkingExample4TopsComplexity
-#from Closure.DataLoader import TestEventGraphs, TestDataLoader, TestDataLoaderTrainingValidationTest, TestEventNodeEdgeFeatures
-#from Closure.GNN import SimpleFourTops, TestInvMassGNN_Children_Edge, TestInvMassGNN_Children_Node, TestPathNetGNN_Children_Edge, TestPathNetGNN_Children_Node, TestInvMassGNN_TruthJets, TestPathNetGNN_TruthJets, TestInvMassGNN_Tops_Edge, TestInvMassGNN_Tops_Node, GenerateTemplate, TestPathNetGNN_Tops_Edge
-#from Closure.Models import TestEdgeConvModel, TestGCNModel, TestInvMassGNN, TestPathNet, TestJetMergingTagging
-#from Closure.TruthMatchingAnalysisTop import Test_SimilarityCustomOriginalMethods, Test_SimilarityCustomOriginalMethods_Plot
-#from Closure.Benchmarking import Combinatorials, LorentzVectorBenchmark
-#from Closure.ParticlePropertiesMonteCarlo import JetMergingFrequency, JetMergingFrequencyFraction, JetMergingFrequencyFractionPlot, FragmentationOfTriplets, FragmentationOfTripletsScanning, TopJetTrajectory
-from Closure.Presentation5 import *
-import os
+#from Closure import IO
+#from Closure import Event
+#from Closure import DataLoader
+#from Closure import Optimizer
+#from Closure import Metrics
+#from Closure import Exporter
+#from Closure import TopBuilder
+#from Closure import EventImplementations
+#from Closure import FeatureTester
+from Closure import ModelProofOfConcept
+#from Closure import Unification 
+#from Closure.PresentationCode import Presentation1
+#from Functions.Event import CacheGenerators
 
-
-def Passed(F, name):
-    if F:
-        print("(+)Passed: "+name)
-    else:
-        print("(-)Failed: "+name)
+def Test(F, **kargs):
+    from Functions.IO.Files import WriteDirectory
+    import sys
+    import traceback
+    test_dir = WriteDirectory()
+    name = F.__name__
+    var = F.__code__.co_varnames
+    result = ""
+    CallerDir = traceback.format_stack()[0].split("Test(")[1].split("." +name)[0]
+    keys = list(set(list(var)).intersection(set(list(kargs))))
+    driver = {} 
+    for i in keys:
+        driver[i] = kargs[i]
+    try:
+        if F(**driver):
+            result = "(+) Passed: " + name + "\n"
+        else:
+            result = "(-) Failed: " + name + "\n"
+    except:
+        e = str(sys.exc_info()[1])
+        traceback.print_tb(sys.exc_info()[2])
+        result = "(-) Failed: " + name + "\n" + e
+        print(result)
         exit()
+    print(result)
+    test_dir.WriteTextFile(result, "_TestResults/" + CallerDir +  "/", name)
 
 
-dir = "/home/tnom6927/Downloads/user.pgadow.310845.MGPy8EG.DAOD_TOPQ1.e7058_s3126_r10724_p3980.bsm4t-21.2.164-1-0-mc16e_output_root/user.pgadow.24765302._000001.output.root"
-def Generate_Cache(di, Stop = -1, SingleThread = False, Compiler = "EventGenerator", Custom = False):
-    from Functions.Event.EventGenerator import EventGenerator
-    from Functions.IO.IO import PickleObject
-    ev = EventGenerator(di, Stop = Stop)
-    ev.SpawnEvents()
-    ev.CompileEvent(SingleThread = SingleThread)
-    PickleObject(ev, Compiler)
-
-def Generate_Cache_Batches(di, Stop = -1, SingleThread = False, Compiler = "EventGenerator", Custom = False, CustomDirectory = "_Cache"):
-    from Functions.Event.EventGenerator import EventGenerator
-    from Functions.IO.IO import PickleObject
-    from Functions.IO.Files import WriteDirectory, Directories 
-    import os
-
-    def Compile(File, Name, FName):
-        ev = EventGenerator(File, Stop = Stop)
-        ev.SpawnEvents()
-        ev.CompileEvent(SingleThread = SingleThread)
-        PickleObject(ev, Name, FName)
-    
-    if CustomDirectory != "_Cache":
-        d = CustomDirectory + "/" + Compiler + "_Cache/"
-        k = ""
-        for i in d.split("/"):
-            k += "/"+i
-            try:
-                os.mkdir(k)   
-            except FileExistsError:
-                pass
-            except PermissionError:
-                pass
-        os.chdir(CustomDirectory + "/" + Compiler + "_Cache/")   
-    else:
-        MKDIR = WriteDirectory()
-        MKDIR.MakeDir(CustomDirectory + "/" + Compiler + "_Cache")
-
-    d = Directories(di)
-    Files = d.ListFilesInDir(di)
-    for f in Files:
-        Compile(di + "/" + f, f.replace(".root", ""), CustomDirectory + "/" + Compiler + "_Cache/")
-
-
-
-if __name__ == '__main__':
-    #x = os.getcwd().split("/")
-    #Generate_Cache(dir, Stop = -1, SingleThread = False, Compiler = "SignalSample.pkl")
-    #Generate_Cache("/CERN/Grid/Samples/NAF/2021-05-05-2cRC-all/mc16a/postProcessed_ttbar_PhPy8_Total.root", Stop = 150000, SingleThread = True, Compiler = "ttbar.pkl")
-    #Generate_Cache("/CERN/CustomAnalysisTopOutput/TMP_DELETE_AFTER/output.root", Stop = 100, SingleThread = True, Compiler = "CustomSignalSample.pkl", Custom = True)
-    #Generate_Cache("/CERN/CustomAnalysisTopOutput/tttt/OldSample/1500_GeV/MCe.root", Stop = 1000, SingleThread = True, Compiler = "CustomSignalSample.pkl", Custom = True)
-    #Generate_Cache("/CERN/CustomAnalysisTopOutput/ttbar/MCa/", Stop = -1, SingleThread = True, Compiler = "ttbar.pkl", Custom = True)
-    #Generate_Cache("/CERN/CustomAnalysisTopOutput/t/MCa/", Stop = -1, Compiler = "SingleTop_S.pkl", Custom = True)
+if __name__ == "__main__":
+    GeneralDir = "/CERN/CustomAnalysisTopOutputTest/"
    
-    #for i in ["a", "d", "e"]:
-    #    for j in range(6):
-    #        Energy = ["1000", "1250", "1500", "2000", "2500", "3000"]
-    #        Generate_Cache_Batches("/CERN/CustomAnalysisTopOutput/tttt/NewSample/" + Energy[j] + "_GeV/MC" + i, Stop = -1, SingleThread = False, Compiler = "CustomSample_tttt_" + Energy[j] + "_MC_" + i, Custom = True)
+    ## ===== Test IO ===== ##
+    #Test(IO.TestDir, di = GeneralDir)
+    #Test(IO.TestReadSingleFile, dir_f = GeneralDir + "t/MCa/QU_0.root") 
+    #Test(IO.TestReadFile, di = GeneralDir)
+    #Test(IO.TestFileConvertArray, di = GeneralDir)
+    #Test(IO.TestHDF5ReadAndWriteParticle)
+    #Test(IO.TestHDF5ReadAndWriteEvent, di = GeneralDir + "tttt/MCe/QU_0.root", Cache = True)
 
-    #Generate_Cache_Batches("/CERN/CustomAnalysisTopOutput/t/MCa/", Stop = -1, SingleThread = True, Compiler = "CustomSample_t", Custom = True)
-    #Generate_Cache_Batches("/CERN/CustomAnalysisTopOutput/ttbar/MCa/", Stop = -1, SingleThread = False, Compiler = "CustomSample_ttbar", Custom = True)
-    #Generate_Cache_Batches("/CERN/CustomAnalysisTopOutput/tttt/OldSample/1500_GeV/MCe/", SingleThread = True, Stop = -1, Compiler = "CustomSample_tttt", Custom = True)
-    
-    ## ====== Test of IO 
-    #Passed(TestDir(), "TestDir")
-    #Passed(TestReadSingleFile(), "TestReadSingleFile")
-    #Passed(TestReadFile(), "TestReadFile")
-    #Passed(TestFileConvertArray(), "TestFileConvertArray")
-    #Passed(TestSignalMultipleFile(), "TestSignalMultipleFile")
-    #Passed(TestSignalDirectory(), "TestSignalDirectory")
+    ## ===== Test Cache ==== ##
+    #Test(CacheGenerators.BuildCacheDirectory, Name = "tttt")
+    #CacheGenerators.Generate_Cache(GeneralDir + "tttt/MCe/QU_0.root", Compiler = "tttt")
+    #Test(CacheGenerators.BuildCacheDirectory, Name = "t")
+    #CacheGenerators.Generate_Cache(GeneralDir + "t/MCa/", Compiler = "t")
 
-    ## ====== Test of EventGenerator 
-    #Generate_Cache(dir)
-    #Passed(TestEvents(), "TestEvents")
-    #Passed(TestParticleAssignment(), "TestParticleAssignment")
-    #Passed(TestTops(), "TestTop")
-    #Passed(TestResonance(), "TestResonance")
-    #Passed(TestBackGroundProcesses(), "TestBackGroundProcesses")
+    ## ===== Test of EventGenerator ===== ##
+    #Test(Event.TestEvents, di = GeneralDir + "tttt/MCe/QU_0.root")
+    #Test(Event.TestParticleAssignment, di = GeneralDir + "tttt/MCe/QU_0.root")
+    #Test(Event.TestSignalMultipleFile, di = GeneralDir + "tttt/MCe/")
+    #Test(Event.TestSignalDirectory, di = GeneralDir + "t/MCa/")
 
-    ### ====== Test of DataLoader
-    #Passed(TestEventGraphs(), "TestEventGraphs")
-    #Passed(TestDataLoader(), "TestDataLoader")
-    #Passed(TestDataLoaderTrainingValidationTest(), "TestDataLoaderTrainingValidationTest")
-    #Passed(TestEventNodeEdgeFeatures(), "TestEventNodeEdgeFeatures")
-    
-    # ====== Test of Optimizer
-    #Passed(SimpleFourTops(), "SimpleFourTops")
+    ## ===== Test Event Implementations ===== #
+    ##Test(EventImplementations.TestDelphes, FileDir = "/CERN/Delphes/tag_1_delphes_events.root")
+    #Test(EventImplementations.TestExperiemental, FileDir = "/CERN/CustomAnalysisTopOutputSameSignDilepton/Merger/QU_0.root")
 
-    # ====== Test of Plotting 
-    #Passed(TestGNNMonitor(), "TestGNNMonitor")
-    #Passed(KinematicsPlotting(), "KinematicsPlotting")
-    #Passed(TopologicalComplexityMassPlot(), "TopologicalComplexityMassPlot")
-    #Passed(TestDataSamples(), "TestDataSamples")
-    #Passed(TestWorkingExample4TopsComplexity(), "TestWorkingExample4TopsComplexity")
-    
-    # ====== Test of GNN Model implementations 
-    #Passed(TestEdgeConvModel(), "TestEdgeConvModel")
-    #Passed(TestGCNModel(), "TestGCNModel")
-    #Passed(TestInvMassGNN(), "TestInvMassGNN")
-    #Passed(TestPathNet(), "TestPathNet") 
-    # ---> Passed(TestJetMergingTagging(), "TestJetMergingTagging")
+    ## ====== Test of DataLoader ====== ##
+    #CacheGenerators.Generate_Cache(GeneralDir + "tttt/MCe/QU_0.root", Stop = 100, Compiler = "DataLoaderTest", Outdir = "_Pickle")
+    #CacheGenerators.Generate_Cache(GeneralDir + "tttt/MCe/QU_1.root", Stop = 100, Compiler = "DataLoaderTest_1", Outdir = "_Pickle")
+    #CacheGenerators.Generate_Cache(GeneralDir + "t/MCa", Stop = 100, Compiler = "DataLoaderTest_2", Outdir = "_Pickle") 
 
-    # ====== Custom Code Benchmarks ======== #
-    #Passed(Combinatorials(), "Combinatorials")
-    #Passed(LorentzVectorBenchmark(), "LorentzVectorBenchmark")
+    #Test(DataLoader.TestEventGraph, Name = "DataLoaderTest.pkl", Level = "TruthTops")
+    #Test(DataLoader.TestEventGraph, Name = "DataLoaderTest.pkl", Level = "TruthTopChildren")
+    #Test(DataLoader.TestEventGraph, Name = "DataLoaderTest.pkl", Level = "DetectorParticles")
+    #
+    #Test(DataLoader.TestDataLoader, Name = "DataLoaderTest.pkl", Level = "TruthTops")
+    #Test(DataLoader.TestDataLoader, Name = "DataLoaderTest.pkl", Level = "TruthTopChildren")
+    #Test(DataLoader.TestDataLoader, Name = "DataLoaderTest.pkl", Level = "DetectorParticles")
+
+    #Test(DataLoader.TestDataLoaderMixing, Files = ["DataLoaderTest", "DataLoaderTest_1", "DataLoaderTest_2"], Level = "TruthTops")
+
+    ## ====== Test of Optimizer/Metrics ====== ##
+    #Test(Optimizer.TestOptimizerGraph, Files = ["DataLoaderTest", "DataLoaderTest_1", "DataLoaderTest_2"], Level = "TruthTopChildren", Name = "GraphTest", CreateCache = True)
+    #Test(Metrics.TestReadTraining, modelname = "GraphTest")
+
+    #Test(Optimizer.TestOptimizerNode, Files = ["DataLoaderTest", "DataLoaderTest_1", "DataLoaderTest_2"], Level = "TruthTopChildren", Name = "NodeTest", CreateCache = True)
+    #Test(Metrics.TestReadTraining, modelname = "NodeTest")
+
+    #Test(Optimizer.TestOptimizerEdge, Files = ["DataLoaderTest", "DataLoaderTest_1", "DataLoaderTest_2"], Level = "TruthTopChildren", Name = "EdgeTest", CreateCache = True)
+    #Test(Metrics.TestReadTraining, modelname = "EdgeTest")
+
+    #Test(Optimizer.TestOptimizerCombined, Files = ["DataLoaderTest", "DataLoaderTest_1", "DataLoaderTest_2"], Level = "TruthTopChildren", Name = "CombinedTest", CreateCache = True)
+    #Test(Metrics.TestReadTraining, modelname = "CombinedTest")
+    #
+    ## ======== Test Model/Data Exporting ======= #
+    #Test(Exporter.TestModelExport, Files = ["DataLoaderTest"], Name = "ExportModel", Level = "TruthTopChildren", CreateCache = True)
+    #Test(Exporter.TestEventGeneratorExport, File = GeneralDir + "t/MCa", Name = "EventGeneratorExport", CreateCache = True)
+    #Test(Exporter.TestDataLoaderExport, Files = [GeneralDir + "tttt/MCe/QU_0.root", GeneralDir + "t/MCa"], CreateCache = True)
+    #Test(Exporter.TestEventGeneratorWithDataLoader, Files = [GeneralDir + "tttt/MCe/QU_0.root", GeneralDir + "t/MCa"], CreateCache = True)
+    #Test(TopBuilder.TestBuilder, Files = [GeneralDir + "tttt/MCe/QU_0.root", GeneralDir + "t/MCa"], CreateCache = True)
    
-    # ====== Monte Carlo Particle Properties ====== #
-    #Passed(JetMergingFrequency("_Cache/CustomSample_tttt_Cache"), "JetMergingFrequency")
-    #Passed(JetMergingFrequencyFraction("_Cache/CustomSample_tttt_Cache"), "JetMergingFrequencyFraction")
-    #Passed(JetMergingFrequencyFractionPlot("_Pickles/Fraction_of_Jets_Tops_100.0.pkl"), "JetMergingFrequencyFractionPlot")
-    #Passed(FragmentationOfTriplets("_Cache/CustomSample_tttt_Cache"), "FragmentationOfTriplets")
-    #Passed(FragmentationOfTripletsScanning("_Cache/CustomSample_tttt_Cache", "_Pickles/Fragmentation_Triplets100.0.pkl"), "FragmentationOfTripletsScannning")
-    #Passed(TopJetTrajectory("_Cache/CustomSample_tttt_Cache"), "TopJetTrajectory")
+    ## ========= Test Feature Implementations ========= #
+    #Test(FeatureTester.Analyser, Files = [GeneralDir + "tttt/MCe/QU_0.root"])
 
-    # ====== Evaluation of Models ======== #
-    #GenerateTemplate(Tree = "TruthTops")
-    #Passed(TestInvMassGNN_Tops_Edge(), "TestInvMassGNN_Tops_Edge")
-    #Passed(TestPathNetGNN_Tops_Edge(), "PathNetGNN_Tops_Edge")
-    #Passed(TestInvMassGNN_Tops_Node(), "TestInvMassGNN_Tops_Node")
-    
-    #GenerateTemplate(SignalSample = "CustomSignalSample.pkl", Level = "TruthJetsLep")
-    #Passed(TestInvMassGNN_Children_Edge(), "TestInvMassGNN_Children_Edge")
-    #Passed(TestInvMassGNN_Children_Node(), "TestInvMassGNN_Children_Node")
-    
-    #Passed(TestPathNetGNN_Children_Edge(), "TestPathNetGNN_Children_Edge") 
-    #Passed(TestPathNetGNN_Children_Node(), "TestPathNetGNN_Children_Node") 
+    # ========== Test Model Developments ========== # 
+    #Test(ModelProofOfConcept.TestBaseLine, Files = [GeneralDir + "tttt/MCe/QU_0.root", GeneralDir + "t/MCa/QU_0.root"], Names = ["tttt", "t"], CreateCache = True)
+    #Test(ModelProofOfConcept.TestPDFNet, Files = [GeneralDir + "tttt/MCe/QU_0.root", GeneralDir + "t/MCa/QU_0.root"], Names = ["tttt", "t"], CreateCache = True)
+    Test(ModelProofOfConcept.TestBasicBaseLine, Files = [GeneralDir + "tttt/MCe", GeneralDir + "t/MCa"], Names = ["tttt", "t"], CreateCache = True)
 
-    #GenerateTemplate(SignalSample = "tttt.pkl", Tree = "TruthJetsLep", Additional_Samples = ["ttbar.pkl", "SingleTop_S.pkl"], OutputName = "LoaderSignalSample.pkl")
-    #Passed(TestInvMassGNN_TruthJets(), "TestInvMassGNN_TruthJets") 
-    #Passed(TestPathNetGNN_TruthJets(), "TestPathNetGNN_TruthJets") 
+    ## ========== Test Entire Aggregation of Framework =========== #
+    #Files = { 
+    #            "4-Tops" :  GeneralDir + "tttt/MCe/", 
+    #            "SingleTop" : GeneralDir + "t/MCa/", 
+    #            "ttbar" : GeneralDir + "ttbar/MCa/QU_0.root", 
+    #            "Zmumu" : GeneralDir + "Zmumu/MCd/"
+    #        }
+    #Test(Unification.TestUnificationEventGenerator, FileDir = GeneralDir, Files = Files)
+    #Test(Unification.TestUnificationDataLoader) #<<<< ----- Check this. Throws error:'str' object has no attribute 'to'
+    #Test(Unification.TestUnificationOptimizer)
+
+    ## ========= Presentation Plots ============ #
+    #Test(Presentation1.CreatePlots, FileDir = GeneralDir + "tttt/MCe/", CreateCache = True)
 
     
-    # ====== Truth Debugging Stuff ======== #
-    #i = ["1000", "1250", "1500", "2000", "2500", "3000"]
-    #for k in i: 
-    #li = ["tttt", "ttbar"]
-    #for i in li:
-    #    Passed(Test_SimilarityCustomOriginalMethods(i), "Test_SimilarityCustomOriginalMethods")
-    #    Passed(Test_SimilarityCustomOriginalMethods_Plot(i), "Test_SimilarityCustomOriginalMethods_Plot")
-    #pass
-
-    EntryPointEfficiencyHists()
-
 

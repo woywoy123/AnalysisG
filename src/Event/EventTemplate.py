@@ -1,6 +1,6 @@
-from Functions.Tools.Alerting import Debugging
-from Functions.Tools.Variables import VariableManager
-from Functions.Particles.ParticleTemplate import *
+from AnalysisTopGNN.Tools.Alerting import Debugging
+from AnalysisTopGNN.Tools.Variables import VariableManager
+from AnalysisTopGNN.Particles.ParticleTemplate import *
 
 class EventTemplate(VariableManager):
     def __init__(self):

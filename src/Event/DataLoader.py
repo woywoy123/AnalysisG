@@ -1,5 +1,5 @@
-from Functions.Tools.Alerting import Notification 
-from Functions.IO.Exporter import ExportToDataScience
+from AnalysisTopGNN.Tools.Alerting import Notification 
+from AnalysisTopGNN.IO.Exporter import ExportToDataScience
 from sklearn.model_selection import ShuffleSplit
 import numpy as np
 import importlib

@@ -10,7 +10,7 @@ import sys
 import random
 import shutil  
 
-class Unification(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notification):
+class AnalysisCompiler(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notification):
     def __init__(self):
         WriteDirectory.__init__(self)
         Directories.__init__(self)

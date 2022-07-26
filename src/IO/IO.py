@@ -3,10 +3,10 @@ import pickle
 import h5py
 import numpy as np
 import torch
-from Functions.IO.Files import Directories, WriteDirectory
-from Functions.Tools.DataTypes import Threading, TemplateThreading
-from Functions.Tools.Alerting import Notification
-from Functions.Tools.Variables import RecallObjectFromString
+from AnalysisTopGNN.IO.Files import Directories, WriteDirectory
+from AnalysisTopGNN.Tools.DataTypes import Threading, TemplateThreading
+from AnalysisTopGNN.Tools.Alerting import Notification
+from AnalysisTopGNN.Tools.Variables import RecallObjectFromString
 
 class File(Notification):
     def __init__(self, directory = None, Verbose = False):

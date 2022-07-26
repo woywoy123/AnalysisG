@@ -2,10 +2,10 @@ import torch
 import onnx
 import numpy as np
 import string
-from Functions.IO.Files import WriteDirectory
-from Functions.IO.IO import HDF5
-from Functions.Tools.Alerting import Notification
-import Functions
+from AnalysisTopGNN.IO.Files import WriteDirectory
+from AnalysisTopGNN.IO.IO import HDF5
+from AnalysisTopGNN.Tools.Alerting import Notification
+import AnalysisTopGNN
 
 
 class ExportToDataScience(WriteDirectory):
