@@ -65,7 +65,7 @@ if __name__ == "__main__":
     Test(Event.TestSignalDirectory, di = GeneralDir + "t/MCa/")
 
     # ===== Test Event Implementations ===== #
-    Test(EventImplementations.TestDelphes, FileDir = "/CERN/Delphes/tag_1_delphes_events.root")
+    #Test(EventImplementations.TestDelphes, FileDir = "/CERN/Delphes/tag_1_delphes_events.root")
     Test(EventImplementations.TestExperiemental, FileDir = "/CERN/CustomAnalysisTopOutputSameSignDilepton/Merger/QU_0.root")
 
     # ====== Test of DataLoader ====== ##
