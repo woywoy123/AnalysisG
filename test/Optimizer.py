@@ -1,11 +1,11 @@
-from Functions.IO.IO import PickleObject, UnpickleObject
-from Functions.Event.DataLoader import GenerateDataLoader
-import Closure.FeatureTemplates.EdgeFeatures as ef
-import Closure.FeatureTemplates.NodeFeatures as nf
-import Closure.FeatureTemplates.GraphFeatures as gf
-from Functions.GNN.Optimizer import Optimizer
-from Functions.GNN.TrivialModels import GraphNN, NodeConv, EdgeConv, CombinedConv
-from Functions.Event.Implementations.EventGraphs import EventGraphTruthTops, EventGraphTruthTopChildren, EventGraphDetector  
+from AnalysisTopGNN.IO import PickleObject, UnpickleObject
+from AnalysisTopGNN.Generators import GenerateDataLoader
+import Templates.EdgeFeatures as ef
+import Templates.NodeFeatures as nf
+import Templates.GraphFeatures as gf
+from AnalysisTopGNN.Generators import Optimizer
+from AnalysisTopGNN.Models import GraphNN, NodeConv, EdgeConv, CombinedConv
+from AnalysisTopGNN.Events import EventGraphTruthTops, EventGraphTruthTopChildren, EventGraphDetector  
 
 def TestOptimizerGraph(Files, Level, Name, CreateCache):
     if CreateCache:
@@ -106,7 +106,7 @@ def TestOptimizerEdge(Files, Level, Name, CreateCache):
     return True
 
 def TestOptimizerCombined(Files, Level, Name, CreateCache):
-    from Closure.GenericFunctions import CreateDataLoaderComplete
+    from GenericFunctions import CreateDataLoaderComplete
     DL = CreateDataLoaderComplete(Files, Level, Name, CreateCache)
     op = Optimizer(DL)
     op.VerboseLevel = 2

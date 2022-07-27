@@ -1,9 +1,9 @@
-from Functions.Event.Implementations.EventDelphes import Event
-from Functions.Event.Implementations.EventExperimental import ExperimentalEvent
-from Functions.Event.EventGenerator import EventGenerator
+from AnalysisTopGNN.Events import EventDelphes
+from AnalysisTopGNN.Events import ExperimentalEvent
+from AnalysisTopGNN.Generators import EventGenerator
 
 def TestDelphes(FileDir):
-    E = Event()
+    E = EventDelphes()
     ev = EventGenerator(FileDir, Stop = 2)
     ev.EventImplementation = E
     ev.SpawnEvents()
@@ -45,7 +45,7 @@ def TestExperiemental(FileDir):
     ev = EventGenerator(FileDir, Stop = 10000, Debug = False)
     ev.EventImplementation = E
     ev.SpawnEvents()
-    ev.CompileEvent(True)
+    ev.CompileEvent()
         
     n_N = 0 # Number of negative leptons
     n_P = 0 # Number of positive leptons

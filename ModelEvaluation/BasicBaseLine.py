@@ -1,1 +1,0 @@
-from AnalysisTopGNN.Event.DataLoader import GenerateDataLoader

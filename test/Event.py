@@ -1,11 +1,10 @@
 # Event Generator closure test
-from Functions.Event.EventGenerator import EventGenerator
+from AnalysisTopGNN.Generators import EventGenerator
 import uproot
-from Functions.Particles.Particles import *
-from Functions.Event.Implementations.Event import Event
-from Functions.IO.IO import PickleObject, UnpickleObject
+from AnalysisTopGNN.Particles import *
+from AnalysisTopGNN.Events import Event
+from AnalysisTopGNN.IO import PickleObject, UnpickleObject
 import importlib, inspect
-
 
 def TestEvents(di):
     x = EventGenerator(di, Start = 0, Stop = 100)

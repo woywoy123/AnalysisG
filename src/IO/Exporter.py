@@ -68,7 +68,7 @@ class ExportToDataScience(WriteDirectory):
         torch.jit.save(model, Dir, _extra_files = self.__OutputMap)
 
     def __Routing(self, inp, MemoryLink):
-        if "Functions." in type(inp).__module__ and MemoryLink != True:
+        if "AnalysisTopGNN." in type(inp).__module__ and MemoryLink != True:
             out = str(hex(id(inp)))
             MemoryLink[out] = inp
             self.__SearchObject(inp, MemoryLink)

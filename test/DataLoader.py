@@ -1,10 +1,11 @@
 import torch
-from Functions.IO.IO import PickleObject, UnpickleObject
-from Functions.Event.EventGraphTemplate import EventGraphTemplate
-from Functions.Event.DataLoader import GenerateDataLoader
-import Closure.FeatureTemplates.GraphFeatures as GF
-import Closure.FeatureTemplates.EdgeFeatures as EF
-import Closure.FeatureTemplates.NodeFeatures as NF
+from AnalysisTopGNN.IO import PickleObject, UnpickleObject
+from AnalysisTopGNN.Templates import EventGraphTemplate
+from AnalysisTopGNN.Generators import GenerateDataLoader
+import FeatureTemplates.Generic.GraphFeature as GF
+import FeatureTemplates.Generic.EdgeFeature as EF
+import FeatureTemplates.Generic.NodeFeature as NF
+from AnalysisTopGNN.Events import EventGraphTruthTops, EventGraphTruthTopChildren, EventGraphDetector
 
 def TrivialNodeFeature(a):
     return float(1.0)
@@ -59,7 +60,6 @@ def TestEventGraph(Name, Level):
     return True
 
 def TestDataLoader(Name, Level):
-    from Functions.Event.Implementations.EventGraphs import EventGraphTruthTops, EventGraphTruthTopChildren, EventGraphDetector
     ev = UnpickleObject(Name)
     DL = GenerateDataLoader() 
     
@@ -122,7 +122,6 @@ def TestDataLoader(Name, Level):
     return True
 
 def TestDataLoaderMixing(Files, Level):
-    from Functions.Event.Implementations.EventGraphs import EventGraphTruthTops, EventGraphTruthTopChildren, EventGraphDetector
     Loaders = []
     DL = GenerateDataLoader()
     DL.CleanUp = False

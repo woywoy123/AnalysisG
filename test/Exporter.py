@@ -1,14 +1,12 @@
-from Functions.IO.Exporter import ExportToDataScience
-from Functions.Event.DataLoader import GenerateDataLoader
-from Functions.Event.EventGenerator import EventGenerator
-from Functions.GNN.Optimizer import Optimizer
-from Functions.IO.IO import UnpickleObject, PickleObject
-from Functions.GNN.TrivialModels import *
-
-import Closure.FeatureTemplates.EdgeFeatures as ef
-import Closure.FeatureTemplates.NodeFeatures as nf
-import Closure.FeatureTemplates.GraphFeatures as gf
-from Functions.Event.Implementations.EventGraphs import EventGraphTruthTops, EventGraphTruthTopChildren, EventGraphDetector
+from AnalysisTopGNN.IO import ExportToDataScience, UnpickleObject, PickleObject
+from AnalysisTopGNN.Generators import GenerateDataLoader, EventGenerator, Optimizer
+from AnalysisTopGNN.Models import *
+from AnalysisTopGNN.Events import EventGraphTruthTops, EventGraphTruthTopChildren, EventGraphDetector
+import Templates.EdgeFeatures as ef
+import Templates.NodeFeatures as nf
+import Templates.GraphFeatures as gf
+from GenericFunctions import CompareObjects
+from GenericFunctions import CreateEventGeneratorComplete, CreateDataLoaderComplete, CompareObjects
 
 def TestModelExport(Files, Level, Name, CreateCache):
     if CreateCache:
@@ -43,7 +41,6 @@ def TestModelExport(Files, Level, Name, CreateCache):
     return True
 
 def TestEventGeneratorExport(File, Name, CreateCache):
-    from Closure.GenericFunctions import CompareObjects
 
     if CreateCache:
         ev = EventGenerator(File, Stop = 5)
@@ -65,7 +62,6 @@ def TestEventGeneratorExport(File, Name, CreateCache):
 
 
 def TestDataLoaderExport(Files, CreateCache):
-    from Closure.GenericFunctions import CreateEventGeneratorComplete, CreateDataLoaderComplete, CompareObjects
     
     it = 10
     ev_O = CreateEventGeneratorComplete(it, Files, ["tttt", "t"], CreateCache, "TestDataLoaderExport")
@@ -82,10 +78,6 @@ def TestDataLoaderExport(Files, CreateCache):
     return True
 
 def TestEventGeneratorWithDataLoader(Files, CreateCache):
-    from Closure.GenericFunctions import CreateEventGeneratorComplete, CreateDataLoaderComplete, CompareObjects
-    from Functions.Event.DataLoader import GenerateDataLoader
-    from Functions.GNN.Optimizer import Optimizer
-    from Functions.GNN.TrivialModels import CombinedConv
         
     it = 10
     ev_O = CreateEventGeneratorComplete(it, Files, ["tttt", "t"], CreateCache, "TestEventGeneratorWithDataLoader")

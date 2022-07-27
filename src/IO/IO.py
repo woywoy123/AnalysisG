@@ -255,7 +255,7 @@ class HDF5(WriteDirectory, Directories):
                 self.__CreateAttribute(Name, key, val)
             else:
                 self.__StoreList(Name, key, val)
-        elif "Functions" in str(type(val)):
+        elif "AnalysisTopGNN" in str(type(val)):
             self.__CreateAttribute(Name, key, [str(val)])
 
         elif "torch.Tensor" in str(type(val)):

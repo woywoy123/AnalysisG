@@ -1,11 +1,12 @@
 from AnalysisTopGNN.Tools import Notification 
-from AnalysisTopGNN.IO import WriteDirectory, Directories, PickleObject, UnpickleObject
-from AnalysisTopGNN.IO import ExportToDataScience
+from AnalysisTopGNN.IO import WriteDirectory, Directories, PickleObject, UnpickleObject, ExportToDataScience
 from AnalysisTopGNN.Generators import EventGenerator, GenerateDataLoader, Optimizer
+from AnalysisTopGNN.Events import Event
 import os 
 import sys
 import random
 import shutil  
+import torch
 
 class Analysis(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notification):
     def __init__(self):
@@ -139,7 +140,6 @@ class Analysis(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notif
             self.Fail("NO VALID SAMPLES GIVEN/FOUND. EXITING...")
         # - Revert to nominal implementation if no event implementation has been given 
         if self.EventCache == True and self.EventImplementation == None:
-            from Functions.Event.Implementations.Event import Event
             self.Warning("No 'EventImplementation' provided. Assuming 'Functions.Event.Implementations.Event'.")
             self.EventImplementation = Event()
         
@@ -305,7 +305,6 @@ class Analysis(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notif
             PickleObject(RandomTestSample, "RandomTestSample", self._DataLoaderDir + "Test")
 
     def __Optimizer(self):
-        import torch
         self.__CheckSettings(True)
             
         # Check if the model can be backed up 
@@ -318,6 +317,9 @@ class Analysis(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notif
             self.Sample.i = torch.tensor([1], device = self.Device)
             self.Sample.to(self.Device)
             break
+        if isinstance(self.Model, str) or self.Model == None:
+            self.Warning("Need to specify a valid model.")
+            return 
         self.InitializeModel()
         self.ExportModel(self.Sample)
        

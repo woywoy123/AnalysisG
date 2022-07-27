@@ -153,7 +153,7 @@ class BaseLineModelEvent(torch.nn.Module):
 
 
     def forward(self, edge_index, i,  N_pT, N_eta, N_phi, N_energy,
-                                  G_mu, G_met, G_met_phi, G_pileup, G_nTruthJet):
+                                  G_mu, G_met, G_met_phi, G_pileup, G_nTruthJets):
        
         batch_len = i.shape[0]
         P_mu = LV.TensorToPxPyPzE(torch.cat([N_pT, N_eta, N_phi, N_energy], dim = 1))
@@ -194,8 +194,8 @@ class BaseLineModelEvent(torch.nn.Module):
         MET_Phi = -calc[:, 2].view(-1, 1)
         
         # ===== Output pileup stuff and nTop predictions
-        self.O_mu_actual = self._mlp_mu(torch.cat([nTops, G_mu, G_pileup, MET_Meas - G_met, MET_Phi - G_met_phi, G_nTruthJet], dim = 1))
-        self.O_nTops = self._mlp_nTops(torch.cat([nTops, MET_Meas, MET_Phi, G_nTruthJet], dim = 1))
+        self.O_mu_actual = self._mlp_mu(torch.cat([nTops, G_mu, G_pileup, MET_Meas - G_met, MET_Phi - G_met_phi, G_nTruthJets], dim = 1))
+        self.O_nTops = self._mlp_nTops(torch.cat([nTops, MET_Meas, MET_Phi, G_nTruthJets], dim = 1))
 
         # ===== Output the Topology prediction 
         self.O_Topo = self._mlp_Topo(torch.cat([Topo_pred, e_i_active.view(-1, 1), P_mu_p[edge_index[0]].view(-1, 4), P_mu_p[edge_index[1]].view(-1, 4)], dim = 1))

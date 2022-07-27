@@ -1,9 +1,9 @@
-from Closure.GenericFunctions import CreateEventGeneratorComplete, CreateDataLoaderComplete
-from Functions.GNN.Optimizer import Optimizer
-from Functions.GNN.TrivialModels import CombinedConv
-from Functions.IO.IO import UnpickleObject, PickleObject
-from Functions.Particles.Particles import Particle
-from Functions.Particles.TopBuilder import ParticleReconstructor
+from GenericFunctions import CreateEventGeneratorComplete, CreateDataLoaderComplete
+from AnalysisTopGNN.Generators import Optimizer
+from AnalysisTopGNN.Models import CombinedConv
+from AnalysisTopGNN.IO import UnpickleObject, PickleObject
+from AnalysisTopGNN.Particles.Particles import Particle 
+from AnalysisTopGNN.Reconstruction import Reconstructor
 
 def TestBuilder(Files, CreateCache): 
     
@@ -40,7 +40,7 @@ def TestBuilder(Files, CreateCache):
     sample = op.TrainingSample[0]
     
     Res_T = ParticleAggre(sample, "FromRes")
-    top = ParticleReconstructor(op.Model, sample) 
+    top = Reconstructor(op.Model, sample) 
     top.VerboseLevel = 0
     top.TruthMode = True
     top.Prediction()
@@ -54,7 +54,7 @@ def TestBuilder(Files, CreateCache):
 
     # Reconstruct the tops
     Res_T = ParticleAggre(sample, "Index")   
-    top = ParticleReconstructor(op.Model, sample) 
+    top = Reconstructor(op.Model, sample) 
     top.VerboseLevel = 0
     top.TruthMode = True
     top.Prediction()
@@ -66,7 +66,7 @@ def TestBuilder(Files, CreateCache):
     assert res == Res_T
 
 
-    top = ParticleReconstructor(op.Model, sample) 
+    top = Reconstructor(op.Model, sample) 
     top.TruthMode = True
     top.Prediction()
     res = [round(i[0], 2) for i in top.MassFromFeatureEdges("E_T_Topology").tolist()]
@@ -77,7 +77,7 @@ def TestBuilder(Files, CreateCache):
     print(res, Res_T)   
     assert res == Res_T
 
-    top = ParticleReconstructor(op.Model, sample) 
+    top = Reconstructor(op.Model, sample) 
     top.TruthMode = True
     top.Prediction()
     res = [round(i[0], 2) for i in top.MassFromFeatureEdges("E_signal").tolist()]

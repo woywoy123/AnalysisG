@@ -1,7 +1,5 @@
 # Closure Test Function 
-from Functions.IO.Files import Directories
-from Functions.IO.IO import File
-from Functions.IO.IO import HDF5
+from AnalysisTopGNN.IO import Directories, File, HDF5
 
 def TestDir(di):  
     x = Directories(di)
@@ -87,12 +85,12 @@ def TestFileConvertArray(di):
     return passed
 
 def TestHDF5ReadAndWriteParticle():
-    from Functions.Particles.Particles import Particle
+    from AnalysisTopGNN.Particles.Particles import Particle
     
     X = Particle()
     Y = Particle()
     Z = Particle()
-
+    
     P = Particle()
     P.DataDict = {"Test" : 0}
     P.DictList = {"Test" : [1, 2]}
@@ -119,8 +117,8 @@ def TestHDF5ReadAndWriteParticle():
     return True
 
 def TestHDF5ReadAndWriteEvent(di, Cache):
-    from Closure.GenericFunctions import CacheEventGenerator, CompareObjects
-    from Functions.IO.IO import UnpickleObject, PickleObject  
+    from GenericFunctions import CacheEventGenerator, CompareObjects
+    from AnalysisTopGNN.IO import UnpickleObject, PickleObject  
 
     ev = CacheEventGenerator(1, di, "TestHDF5ReadAndWriteEvent", Cache)
     event = ev.Events[0]["nominal"]

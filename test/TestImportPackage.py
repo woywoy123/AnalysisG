@@ -65,18 +65,5 @@ def TestImports():
     from AnalysisTopGNN.Models import CombinedConv
     from AnalysisTopGNN.Models import MassGraphNeuralNetwork
     print("PASSED MODEL IMPORTS")  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-TestImports()
+    
+    return True

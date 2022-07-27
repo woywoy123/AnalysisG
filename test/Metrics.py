@@ -1,5 +1,5 @@
-from Functions.IO.IO import UnpickleObject
-from Functions.GNN.Metrics import Metrics
+from AnalysisTopGNN.IO import UnpickleObject
+from AnalysisTopGNN.Tools import Metrics
 
 
 

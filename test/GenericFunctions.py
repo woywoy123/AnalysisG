@@ -1,5 +1,5 @@
-from Functions.IO.IO import UnpickleObject, PickleObject   
-from Functions.Event.Implementations.EventGraphs import EventGraphTruthTops, EventGraphTruthTopChildren, EventGraphDetector, EventGraphTruthJetLepton
+from AnalysisTopGNN.IO import UnpickleObject, PickleObject   
+from AnalysisTopGNN.Events import EventGraphTruthTops, EventGraphTruthTopChildren, EventGraphDetector, EventGraphTruthJetLepton
 
 def Comparison(a, b, key = None):
     
@@ -40,6 +40,7 @@ def ObjectIter(a, b):
     try:
         assert a.__dict__.keys() == b.__dict__.keys()
     except:
+        print(a, b)
         print("!!!!! -> ", a.__dict__.keys(), "  |||  ",  b.__dict__.keys())
         return False
 
@@ -116,7 +117,7 @@ def CompareObjects(obj1, obj2, key = None):
 
 
 def CacheEventGenerator(Stop, Dir, Name, Cache):
-    from Functions.Event.EventGenerator import EventGenerator
+    from AnalysisTopGNN.Generators import EventGenerator
 
     if Cache:
         ev = EventGenerator(Dir, Stop = Stop)
@@ -127,7 +128,7 @@ def CacheEventGenerator(Stop, Dir, Name, Cache):
 
 
 def CreateEventGeneratorComplete(Stop, Files, Name, CreateCache, NameOfCaller):
-    from Functions.Event.EventGenerator import EventGenerator 
+    from AnalysisTopGNN.Generators import EventGenerator
 
     out = []
     for i, j in zip(Files, Name):
@@ -141,10 +142,10 @@ def CreateEventGeneratorComplete(Stop, Files, Name, CreateCache, NameOfCaller):
 
 def CreateDataLoaderComplete(Files, Level, Name, CreateCache, NameOfCaller = None):
     if CreateCache:
-        import Closure.FeatureTemplates.EdgeFeatures as ef
-        import Closure.FeatureTemplates.NodeFeatures as nf
-        import Closure.FeatureTemplates.GraphFeatures as gf
-        from Functions.Event.DataLoader import GenerateDataLoader
+        import Templates.EdgeFeatures as ef
+        import Templates.NodeFeatures as nf
+        import Templates.GraphFeatures as gf
+        from AnalysisTopGNN.Generators import GenerateDataLoader
 
         DL = GenerateDataLoader()
 
@@ -199,9 +200,9 @@ def CreateDataLoaderComplete(Files, Level, Name, CreateCache, NameOfCaller = Non
     return UnpickleObject(Name)
 
 def CreateModelWorkspace(Files, DataFeatures, Cache, Stop, ProcessName, Level, selfloop = False):
-    from Functions.Event.CacheGenerators import Generate_Cache_Batches
-    from Functions.Event.DataLoader import GenerateDataLoader
-    from Functions.IO.Files import WriteDirectory, Directories
+    from AnalysisTopGNN.Generators import Generate_Cache_Batches
+    from AnalysisTopGNN.Generators import GenerateDataLoader
+    from AnalysisTopGNN.IO import WriteDirectory, Directories
     import inspect 
 
     CallerName = inspect.stack()[1].function
@@ -265,7 +266,7 @@ def CreateModelWorkspace(Files, DataFeatures, Cache, Stop, ProcessName, Level, s
     return UnpickleObject("DataLoader", Outdir)
 
 def OptimizerTemplate(DataLoader, Model):
-    from Functions.GNN.Optimizer import Optimizer
+    from AnalysisTopGNN.Generators import Optimizer
 
     Op = Optimizer(DataLoader)
     Op.Verbose = False

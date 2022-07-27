@@ -22,6 +22,7 @@ class ModelImporter:
         self.InitializeModel()
         
     def InitializeModel(self):
+        print(self.Model)
         self.Model.to(self.Device)
         self.ModelInputs = list(self.Model.forward.__code__.co_varnames[:self.Model.forward.__code__.co_argcount])
         self.ModelInputs.remove("self")

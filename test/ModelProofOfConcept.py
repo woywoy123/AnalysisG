@@ -1,17 +1,14 @@
-from Closure.GenericFunctions import * 
-from Functions.GNN.Models.BaseLine import *
-from Functions.GNN.Models.PDFNet import *
-from Functions.GNN.Models.BasicBaseLine import *
-from Functions.GNN.TrivialModels import MassGraphNeuralNetwork
-import Functions.FeatureTemplates.ParticleGeneric.EdgeFeature as ef
-import Functions.FeatureTemplates.ParticleGeneric.NodeFeature as nf
-import Functions.FeatureTemplates.ParticleGeneric.GraphFeature as gf
+from GenericFunctions import * 
+from AnalysisTopGNN.Models import * 
+import FeatureTemplates.Generic.EdgeFeature as ef
+import FeatureTemplates.Generic.NodeFeature as nf
+import FeatureTemplates.Generic.GraphFeature as gf
 
-import Functions.FeatureTemplates.TruthTopChildren.NodeFeature as tc_nf
+import FeatureTemplates.TruthTopChildren.NodeFeature as tc_nf
 
-import Functions.FeatureTemplates.TruthJet.EdgeFeature as tj_ef
-import Functions.FeatureTemplates.TruthJet.NodeFeature as tj_nf
-import Functions.FeatureTemplates.TruthJet.GraphFeature as tj_gf
+import FeatureTemplates.TruthJet.EdgeFeature as tj_ef
+import FeatureTemplates.TruthJet.NodeFeature as tj_nf
+import FeatureTemplates.TruthJet.GraphFeature as tj_gf
 
 
 def AddFeature(Prefix, dic):

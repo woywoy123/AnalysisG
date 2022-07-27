@@ -1,8 +1,12 @@
-from Functions.Unification.Unification import Unification 
-from Functions.Event.Implementations.Event import Event 
+from AnalysisTopGNN.Generators import Analysis
+from AnalysisTopGNN.Events import Event, EventGraphTruthTops, EventGraphTruthTopChildren
+from AnalysisTopGNN.Models import *
+import FeatureTemplates.Generic.EdgeFeature as ef
+import FeatureTemplates.Generic.NodeFeature as nf
+import FeatureTemplates.Generic.GraphFeature as gf
 
 def TestUnificationEventGenerator(FileDir, Files):
-    U = Unification()
+    U = Analysis()
     U.EventCache = True
     U.NEvent_Stop = 100
     for key, Dir in Files.items():
@@ -11,15 +15,10 @@ def TestUnificationEventGenerator(FileDir, Files):
     return True
 
 def TestUnificationDataLoader():
-    import Functions.FeatureTemplates.ParticleGeneric.EdgeFeature as ef
-    import Functions.FeatureTemplates.ParticleGeneric.NodeFeature as nf
-    import Functions.FeatureTemplates.ParticleGeneric.GraphFeature as gf
-    from Functions.Event.Implementations.EventGraphs import EventGraphTruthTops
-    
     def Test(a):
         return float(a.Test)
 
-    U = Unification()
+    U = Analysis()
     U.DataCache = True
     U.EventGraph = EventGraphTruthTops
     U.AddGraphFeature("mu", gf.mu)
@@ -27,7 +26,7 @@ def TestUnificationDataLoader():
     U.AddNodeFeature("Test", Test)
     U.Launch()
 
-    U = Unification()
+    U = Analysis()
     U.Model = ""
     U.Launch()
     
@@ -39,16 +38,10 @@ def TestUnificationDataLoader():
     return True
 
 def TestUnificationOptimizer():
-    from Functions.GNN.Models.BaseLine import BaseLineModelEvent
-    from Functions.Event.Implementations.EventGraphs import EventGraphTruthTopChildren
-    import Functions.FeatureTemplates.ParticleGeneric.EdgeFeature as ef
-    import Functions.FeatureTemplates.ParticleGeneric.NodeFeature as nf
-    import Functions.FeatureTemplates.ParticleGeneric.GraphFeature as gf
-    
-    U = Unification()
+    U = Analysis()
     U.EventGraph = EventGraphTruthTopChildren
     U.EventCache = False
-    U.DataCache = False
+    U.DataCache = True # <--- recompiles the samples
     U.ONNX_Export = True 
     U.TorchScript_Export = True
     U.Device = "cuda"
@@ -68,7 +61,7 @@ def TestUnificationOptimizer():
     U.AddGraphFeature("met", gf.met)
     U.AddGraphFeature("met_phi", gf.met_phi)
     U.AddGraphFeature("pileup", gf.pileup)
-    U.AddGraphFeature("nTruthJet", gf.nTruthJet)
+    U.AddGraphFeature("nTruthJets", gf.nTruthJets)
     U.AddGraphTruth("mu_actual", gf.mu_actual)
     U.AddGraphTruth("nTops", gf.nTops)
 

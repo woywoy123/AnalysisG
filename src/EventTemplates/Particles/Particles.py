@@ -16,7 +16,6 @@ class Particle(ParticleTemplate):
         self.Decay_init = []
         self.Decay = []
         self.Index = -1
- 
 
 class Lepton(Particle):
     def __init__(self):

@@ -1,6 +1,6 @@
-from Functions.Event.EventGenerator import EventGenerator
-from Functions.Tools.Alerting import Notification
-import Functions.Event.Implementations.EventGraphs as EG
+from AnalysisTopGNN.Generators import EventGenerator
+from AnalysisTopGNN.Tools import Notification
+from AnalysisTopGNN.Events import EventGraphs as EG
 import inspect
 import importlib
 import sys
@@ -44,9 +44,9 @@ def FeatureTester(Input, EventGraph, Fx):
     return Passed
 
 def Analyser(Files):
-    import Closure.FeatureTemplates.GraphFeatures as GF
-    import Closure.FeatureTemplates.NodeFeatures as NF
-    import Closure.FeatureTemplates.EdgeFeatures as EF  
+    import Templates.GraphFeatures as GF
+    import Templates.NodeFeatures as NF
+    import Templates.EdgeFeatures as EF  
 
     GraphFunc = {i : j for i, j in inspect.getmembers(GF, inspect.isfunction)}
     NodeFunc = {i : j for i, j in inspect.getmembers(NF, inspect.isfunction)}
