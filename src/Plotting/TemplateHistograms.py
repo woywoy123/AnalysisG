@@ -3,8 +3,8 @@ import mplhep as hep
 import numpy as np
 import matplotlib
 matplotlib.use("agg")
-from Functions.IO.Files import WriteDirectory
-from Functions.Tools.Alerting import Notification
+from AnalysisTopGNN.IO import WriteDirectory
+from AnalysisTopGNN.Tools import Notification
 
 class Settings:
     def __init__(self):

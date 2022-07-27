@@ -1,5 +1,5 @@
-from Functions.Particles.ExperimentalParticles import *
-from Functions.Event.EventTemplate import EventTemplate
+from AnalysisTopGNN.Particles.ExperimentalParticles import *
+from AnalysisTopGNN.Templates import EventTemplate
 
 class ExperimentalEvent(EventTemplate):
 

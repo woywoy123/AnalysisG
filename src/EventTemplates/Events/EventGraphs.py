@@ -1,4 +1,4 @@
-from Functions.Event.EventGraphTemplate import EventGraphTemplate
+from AnalysisTopGNN.Templates import EventGraphTemplate
 
 class EventGraphTruthTops(EventGraphTemplate):
     def __init__(self, Event):

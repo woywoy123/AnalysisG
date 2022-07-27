@@ -1,5 +1,5 @@
 from multiprocessing import Process, Pipe
-from AnalysisTopGNN.Tools.Alerting import Notification
+from AnalysisTopGNN.Tools import Notification
 
 class Threading(Notification):
     def __init__(self, lists, obj, threads = 12):

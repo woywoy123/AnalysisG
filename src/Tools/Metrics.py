@@ -1,6 +1,5 @@
-from Functions.IO.Files import Directories, WriteDirectory
-from Functions.Plotting.Histograms import TGraph, CombineTGraph
-from Functions.IO.IO import UnpickleObject
+from AnalysisTopGNN.IO import Directories, WriteDirectory, UnpickleObject
+from AnalysisTopGNN.Plotting.Legacy import TGraph, CombineTGraph
 import math
 
 class Metrics(Directories):

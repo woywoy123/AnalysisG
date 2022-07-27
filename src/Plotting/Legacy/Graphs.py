@@ -1,4 +1,4 @@
-from Functions.Plotting.Histograms import SharedMethods
+from AnalysisTopGNN.Plotting.Legacy import SharedMethods
 import matplotlib.pyplot as plt
 import networkx as nx
 

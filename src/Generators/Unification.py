@@ -1,16 +1,13 @@
-from Functions.Tools.Alerting import Notification 
-from Functions.IO.Files import WriteDirectory, Directories 
-from Functions.IO.IO import PickleObject, UnpickleObject
-from Functions.IO.Exporter import ExportToDataScience
-from Functions.Event.EventGenerator import EventGenerator 
-from Functions.Event.DataLoader import GenerateDataLoader
-from Functions.GNN.Optimizer import Optimizer
+from AnalysisTopGNN.Tools import Notification 
+from AnalysisTopGNN.IO import WriteDirectory, Directories, PickleObject, UnpickleObject
+from AnalysisTopGNN.IO import ExportToDataScience
+from AnalysisTopGNN.Generators import EventGenerator, GenerateDataLoader, Optimizer
 import os 
 import sys
 import random
 import shutil  
 
-class AnalysisCompiler(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notification):
+class Analysis(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notification):
     def __init__(self):
         WriteDirectory.__init__(self)
         Directories.__init__(self)

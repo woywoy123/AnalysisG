@@ -4,27 +4,33 @@ setup(
         name = "AnalysisTopGNN", 
         version = "1.0", 
 
-
-
-
         packages = [
             "AnalysisTopGNN", 
-            "AnalysisTopGNN.Event", 
-            "AnalysisTopGNN.Event.Implementations",
+            "AnalysisTopGNN.Events", 
+            "AnalysisTopGNN.Particles", 
+            "AnalysisTopGNN.Templates", 
+            "AnalysisTopGNN.Reconstruction",
             "AnalysisTopGNN.Tools", 
             "AnalysisTopGNN.IO",
-            "AnalysisTopGNN.Particles"
+            "AnalysisTopGNN.Generators",
+            "AnalysisTopGNN.Plotting", 
+            "AnalysisTopGNN.Plotting.Legacy", 
+            "AnalysisTopGNN.Models"
         ],
         package_dir = {
-            "AnalysisTopGNN": "src", 
-            "AnalysisTopGNN.Event" : "src/Event",
-            "AnalysisTopGNN.Event.Implementations" : "src/Event/Implementations",
-            "AnalysisTopGNN.Tools" : "src/Tools", 
+            "AnalysisTopGNN": "src",
+            "AnalysisTopGNN.Events" : "src/EventTemplates/Events", 
+            "AnalysisTopGNN.Particles" : "src/EventTemplates/Particles",
+            "AnalysisTopGNN.Templates" : "src/EventTemplates/Templates", 
+            "AnalysisTopGNN.Reconstruction" : "src/EventTemplates/Reconstruction",
+            "AnalysisTopGNN.Tools" : "src/Tools",
             "AnalysisTopGNN.IO" : "src/IO",
-            "AnalysisTopGNN.Particles" : "src/Particles"
+            "AnalysisTopGNN.Generators" : "src/Generators", 
+            "AnalysisTopGNN.Plotting" : "src/Plotting",
+            "AnalysisTopGNN.Plotting.Legacy" : "src/Plotting/Legacy", 
+            "AnalysisTopGNN.Models" : "src/Models"
         },
 
         long_description = open("README.md").read(), 
-        #package_dir = {pkg : f"src/{pkg.replace('.', '/')}" for pkg in packages}, 
     )
 

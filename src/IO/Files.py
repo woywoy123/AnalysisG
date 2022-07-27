@@ -1,6 +1,6 @@
 import os
 from glob import glob
-from AnalysisTopGNN.Tools.Alerting import *
+from AnalysisTopGNN.Tools import *
 import re
 
 class Directories(Notification):

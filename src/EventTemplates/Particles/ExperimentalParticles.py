@@ -1,4 +1,4 @@
-from Functions.Particles.ParticleTemplate import ParticleTemplate
+from AnalysisTopGNN.Templates import ParticleTemplate
 
 class GenericParticle(ParticleTemplate):
 

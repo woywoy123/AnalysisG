@@ -1,6 +1,5 @@
-from Functions.Event.EventGenerator import EventGenerator
-from Functions.IO.IO import PickleObject, UnpickleObject
-from Functions.IO.Files import WriteDirectory, Directories 
+from AnalysisTopGNN.Generators import EventGenerator
+from AnalysisTopGNN.IO import PickleObject, UnpickleObject, WriteDirectory, Directories 
 import os
 
 def BuildCacheDirectory(Dir = "_Cache", Name = "EventGenerator", rootDir = False):

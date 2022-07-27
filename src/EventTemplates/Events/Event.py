@@ -1,5 +1,5 @@
 from AnalysisTopGNN.Particles.Particles import *
-from AnalysisTopGNN.Event.EventTemplate import EventTemplate
+from AnalysisTopGNN.Templates import EventTemplate
 
 class Event(EventTemplate):
     def __init__(self):

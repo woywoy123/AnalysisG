@@ -9,11 +9,9 @@ import numpy as np
 
 import time
 import datetime
-from Functions.Tools.Alerting import Notification
-from Functions.IO.Files import WriteDirectory, Directories
-from Functions.IO.IO import PickleObject
-from Functions.IO.Exporter import ExportToDataScience
-from Functions.Event.DataLoader import GenerateDataLoader
+from AnalysisTopGNN.Tools import Notification
+from AnalysisTopGNN.IO import WriteDirectory, Directories, PickleObject, ExportToDataScience
+from AnalysisTopGNN.Generators import GenerateDataLoader
 
 class ModelImporter:
 

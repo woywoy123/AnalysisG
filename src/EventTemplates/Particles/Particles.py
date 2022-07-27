@@ -1,4 +1,4 @@
-from AnalysisTopGNN.Particles.ParticleTemplate import ParticleTemplate
+from AnalysisTopGNN.Templates import ParticleTemplate
 
 ### Default AnalysisTop particles 
 class Particle(ParticleTemplate):

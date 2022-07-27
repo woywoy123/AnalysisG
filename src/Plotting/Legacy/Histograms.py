@@ -3,8 +3,8 @@ import matplotlib
 from matplotlib import colors
 matplotlib.use("agg")
 from networkx.drawing.nx_agraph import to_agraph
-from Functions.IO.Files import WriteDirectory
-from Functions.Tools.Alerting import Notification
+from AnalysisTopGNN.IO  import WriteDirectory
+from AnalysisTopGNN.Tools import Notification
 import os
 import numpy as np
 

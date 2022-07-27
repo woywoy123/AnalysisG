@@ -1,5 +1,5 @@
-from Functions.Event.EventTemplate import EventTemplate 
-from Functions.Particles.ParticleTemplate import ParticleTemplate
+from AnalysisTopGNN.Templates import EventTemplate 
+from AnalysisTopGNN.Templates import ParticleTemplate
 
 # Particle Definitions 
 class Particle(ParticleTemplate):
