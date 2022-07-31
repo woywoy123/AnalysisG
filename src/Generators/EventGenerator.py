@@ -22,10 +22,11 @@ class EventGenerator(Debugging, Directories):
         self.EventImplementation = Event()
         
     def SpawnEvents(self):
-
+        
+        if "__init__" in self.EventImplementation.__dict__:
+            self.EventImplementation = self.EventImplementation()
         name = type(self.EventImplementation).__module__ + "." + type(self.EventImplementation).__name__
         obj = RecallObjectFromString(name)
-        
         if len(self.Files) == 0:
             self.GetFilesInDir()
 

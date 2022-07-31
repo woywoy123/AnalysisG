@@ -11,6 +11,8 @@ def TestDelphes(FileDir):
 
     for i in ev.Events:
         event = ev.Events[i]["Delphes"]
+
+        print(event.Jets)
         if len(event.Particle) != 0:
             return True
     

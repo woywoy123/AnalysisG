@@ -20,3 +20,4 @@ def FromTop(a):
     if len(list(set(ta))) > 0:
         return 1
     return 0
+

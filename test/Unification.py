@@ -45,9 +45,11 @@ def TestUnificationOptimizer():
     U.ONNX_Export = True 
     U.TorchScript_Export = True
     U.Device = "cuda"
+    U.Epoch = 10
     
     # Define the Edge Features 
     U.AddEdgeTruth("Topo", ef.Index)
+    U.AddNodeFeature("Index", ef.Index)
     
     # Define the Node Features 
     U.AddNodeFeature("eta", nf.Index)
@@ -65,7 +67,7 @@ def TestUnificationOptimizer():
     U.AddGraphTruth("mu_actual", gf.mu_actual)
     U.AddGraphTruth("nTops", gf.nTops)
 
-    U.Model = BaseLineModelEvent()
+    U.Model = BaseLineModel(1, 2)
     U.Launch()
     return True
 

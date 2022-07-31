@@ -190,6 +190,8 @@ class GenerateDataLoader(Notification):
         if isinstance(SampleList, str):
             dic = Exp.ImportEventGraph(SampleList, Directory)
             return dic[list(dic)[0]]
+        if isinstance(SampleList, list) == False: 
+            self.Fail("WRONG SAMPLE INPUT! Expected list, got: " + type(SampleList))
         
         Out = [] 
         for i in range(len(SampleList)):

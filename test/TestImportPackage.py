@@ -66,4 +66,5 @@ def TestImports():
     from AnalysisTopGNN.Models import MassGraphNeuralNetwork
     print("PASSED MODEL IMPORTS")  
     
-    return True
+    return True 
+

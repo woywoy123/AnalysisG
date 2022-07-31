@@ -15,4 +15,12 @@ class Particle(ParticleTemplate):
         
         self._DefineParticle() 
 
+class Jet(ParticleTemplate):
+    def __init__(self):
+        ParticleTemplate.__init__(self)
+        self.Type = "Jet"
+        self.Charge = self.Type + ".Charge"
+        
+        self._DefineParticle()
+        
 

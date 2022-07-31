@@ -87,6 +87,8 @@ class File(Notification):
                     return Rec(getattr(val, "tolist", lambda: val)())
                 elif type(val).__name__ == "STLVector":
                     return Rec(val.tolist())
+                elif "TRefArray" in type(val).__name__:
+                    return Rec(list(val))
                 else:
                     return val
             try:                

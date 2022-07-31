@@ -1,5 +1,6 @@
 import torch
 from torch.utils.data import SubsetRandomSampler
+from torch.optim.lr_scheduler import ExponentialLR
 from torch_geometric.loader import DataLoader
 from torch_geometric.utils import accuracy
 from torch_geometric.profile import get_gpu_memory_from_nvidia_smi
@@ -20,9 +21,11 @@ class ModelImporter:
         self.Caller = "MODELIMPORTER"
         self.Sample = None
         self.InitializeModel()
+        self._init = False
         
     def InitializeModel(self):
-        print(self.Model)
+        if self._init == True:
+            return 
         self.Model.to(self.Device)
         self.ModelInputs = list(self.Model.forward.__code__.co_varnames[:self.Model.forward.__code__.co_argcount])
         self.ModelInputs.remove("self")
@@ -37,6 +40,11 @@ class ModelImporter:
             self.Warning("---> ! Features Found in Sample Input ! <---")
             for i in list(self.Sample.__dict__["_store"]):
                 self.Warning("+-> " + i)
+            
+            dif = [i for i in self.ModelInputs if i not in list(self.Sample.__dict__["_store"])]
+            self.Warning("---> ! Missing Variables: ! <---")
+            for i in dif:
+                self.Warning("---> " + i)
             self.Fail("MISSING VARIABLES IN GIVEN DATA SAMPLE")
 
         self.Notify("FOUND ALL MODEL INPUT PARAMETERS IN SAMPLE")
@@ -49,6 +57,7 @@ class ModelImporter:
 
         self.ModelOutputs = {i : k for i, k in self.Model.__dict__.items() for p in ["C_", "L_", "O_"] if i.startswith(p)}
         self.ModelOutputs |= {i : None for i, k in self.Model.__dict__.items() if i.startswith("O_")}
+        self._init = True
 
     def MakePrediction(self, sample):
         dr = {}
@@ -102,9 +111,14 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Notifica
         self.Epochs = 10
         self.BatchSize = 10
         self.Model = None
+        self._init = False
+        self.Scheduler = None
         self.RunName = "UNTITLED"
         self.RunDir = "_Models"
         self.DefaultOptimizer = "ADAM"
+        self.DefaultScheduler = "ExponentialR"
+        self.SchedulerParams = {"gamma" : 0.9}
+
         self.ONNX_Export = False
         self.TorchScript_Export = True
         self.Debug = False
@@ -166,13 +180,19 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Notifica
             self.Optimizer = torch.optim.Adam(self.Model.parameters(), lr = self.LearningRate, weight_decay = self.WeightDecay)
         elif self.DefaultOptimizer == "SGD":
             self.Optimizer = torch.optim.SGD(self.Model.parameters(), lr = self.LearningRate, weight_decay = self.WeightDecay)
+    
+    def DefineScheduler(self):
+        if self.DefaultScheduler == "ExponentialLR":
+            self.Scheduler = ExponentialLR(self.Optimizer, *self.SchedulerParams)
 
     def Train(self, sample):
         if self.Training:
             self.Model.train()
             self.Optimizer.zero_grad()
+            self._mode = "Training"
         else:
             self.Model.eval()
+            self._mode = "Validation"
 
         self.MakePrediction(sample)
         truth_out = self.Output(self.ModelOutputs, sample, Truth = True)
@@ -180,7 +200,7 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Notifica
             
         if self.Debug:
             longest = max([len(i) for i in model_out])
-
+        
         LT = 0
         for key in model_out:
             t_p = truth_out[key][0]
@@ -205,6 +225,7 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Notifica
                 acc = self.LF
             
             # Error Handling if something goes wrong. Can cause CUDA to completely freeze Python
+            # Can be solved by changing screen resolution....
             if acc == None:
                 self.Warning("SKIPPING " + key + " :: NO LOSS FUNCTION SELECTED!!!!")
                 continue
@@ -235,21 +256,16 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Notifica
                 print("---> Model: \n", m_p.tolist())
             if self.Debug:
                 continue
-
-            if self.Training:
-                self.Stats["Training_Accuracy"][key][-1].append(acc)
-                self.Stats["Training_Loss"][key][-1].append(L)
-            else:
-                self.Stats["Validation_Accuracy"][key][-1].append(acc)
-                self.Stats["Validation_Loss"][key][-1].append(L)
+          
+            self.Stats[self._mode + "_Accuracy"][key][-1].append(acc)
+            self.Stats[self._mode + "_Loss"][key][-1].append(L)
 
         if self.Training:
             LT.backward()
             self.Optimizer.step()
         
         if self.Debug:
-            return truth_out, model_out
-
+            return truth_out, model_outa
 
     def SampleLoop(self, samples):
         self.ResetAll() 
@@ -265,7 +281,7 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Notifica
             R.append(self.Rate)
         if self.AllReset:
             self.Stats["BatchRate"].append(R)
-
+        
     def GetTruthFlags(self, Input, FEAT):
         for i in Input:
             if i.startswith("T_") and str("O_" + i[2:]) in self.ModelOutputs:
@@ -299,6 +315,9 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Notifica
         self.__MakeStats()
         self.Model.Device = str(self.Device)
         
+        if self.DefaultScheduler != None:
+            self.DefineScheduler()
+
         TimeStart = time.time()
         for self.epoch in range(self.Epochs):
             self.Notify("! >============== [ EPOCH (" + str(self.epoch+1) + "/" + str(self.Epochs) + ") ] ==============< ")
@@ -307,7 +326,8 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Notifica
             TimeStartEpoch = time.time()
             k = 0
             for n_node in N_Nodes:
-                Curr = self.RecallFromCache(self.TrainingSample[n_node], self.CacheDir)
+
+                Curr = self.RecallFromCache(self.TrainingSample[n_node], self.CacheDir) 
                 Curr_l = len(Curr)
                 self.Notify("!+++++++++++++++++++++++")
                 self.Notify("!NUMBER OF NODES -----> " + str(n_node) + " NUMBER OF ENTRIES: " + str(Curr_l))
@@ -331,8 +351,9 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Notifica
 
                     self.Training = True
                     train_loader = DataLoader(Curr, batch_size = self.BatchSize, sampler = SubsetRandomSampler(train_idx))
-                    memory_rem = get_gpu_memory_from_nvidia_smi()[0]
                     self.SampleLoop(train_loader)
+                    
+                    memory_rem = get_gpu_memory_from_nvidia_smi()[0]
                     self.Notify("!!!-----++> Training <++-----")
                     self.Notify("!!!-------> Accuracy || Loss  <-------")
                     CalcAverage("Training_Accuracy", k, "!!!", "Training_Loss")
@@ -350,7 +371,14 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Notifica
                     self.Stats["FoldTime"][-1].append(time.time() - TimeStartFold)
                     self.Stats["kFold"][-1].append(fold+1)
 
+
+                    for f in self.T_Features:
+                        self.Stats["Training_Accuracy"][f][-1]   = [float(t) for t in self.Stats["Training_Accuracy"][f][-1]]
+                        self.Stats["Validation_Accuracy"][f][-1] = [float(t) for t in self.Stats["Validation_Accuracy"][f][-1]]
+                        self.Stats["Training_Loss"][f][-1]       = [float(t) for t in self.Stats["Training_Loss"][f][-1]]
+                        self.Stats["Validation_Loss"][f][-1]     = [float(t) for t in self.Stats["Validation_Loss"][f][-1]]
                     k += 1
+                
                 self.Stats["Nodes"].append(n_node)
 
                 self.Notify("!! >----- [ EPOCH (" + str(self.epoch+1) + "/" + str(self.Epochs) + ") ] -----< ")
@@ -363,6 +391,9 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Notifica
             self.Stats["EpochTime"].append(time.time() - TimeStartEpoch)
             self.Notify("! >========= DURATION: " + str(datetime.timedelta(seconds = self.Stats["EpochTime"][-1])))
             self.DumpStatistics()
+            
+            if self.Scheduler != None:
+                self.Scheduler.step()
 
             self.ExportModel(valid_loader)
 

@@ -1,10 +1,11 @@
 import torch
 import onnx
 import numpy as np
-import string
 from AnalysisTopGNN.IO import WriteDirectory
 from AnalysisTopGNN.IO import HDF5
 from AnalysisTopGNN.Tools import Notification
+import sys
+import time
 
 class ExportToDataScience(WriteDirectory):
     def __init__(self):
@@ -40,12 +41,23 @@ class ExportToDataScience(WriteDirectory):
                 self.__ExportONNX( self.__OutputDir + "ONNX" + self.__EpochDir + ".onnx")
             except:
                 self.Warning("FAILED TO EXPORT AS ONNX.")
+                fail = str(sys.exc_info()[1]).replace("'", "").split(" ")
+                self.Warning("_____ ERROR _____")
+                self.Warning(" ".join(fail))
+                self.Warning("=================")
+                self.TorchScript_Export = True
+                time.sleep(10)
 
         if self.TorchScript_Export:
             try:
                 self.__ExportTorchScript( self.__OutputDir + "TorchScript" + self.__EpochDir + ".pt")
             except:
                 self.Warning("FAILED TO EXPORT AS TORCH SCRIPT")
+                fail = str(sys.exc_info()[1]).replace("'", "").split(" ")
+                self.Warning("_____ ERROR _____")
+                self.Warning(" ".join(fail))
+                self.Warning("=================")
+                time.sleep(10)
 
         self.Model.requires_grad_(True)
 
@@ -58,7 +70,7 @@ class ExportToDataScience(WriteDirectory):
                 Dir, 
                 verbose = False,
                 export_params = True, 
-                opset_version = 14,
+                opset_version = 17,
                 input_names = list(self.__InputMap), 
                 output_names = [i for i in self.__OutputMap if i.startswith("O_")])
 

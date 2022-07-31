@@ -16,7 +16,7 @@ class Analysis(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notif
         Notification.__init__(self)
         
         # ==== Initial variables ==== #
-        self.Caller = "Unification"
+        self.Caller = "Analysis"
         self.VerboseLevel = 2
         self.Verbose = True 
         self.ProjectName = "UNTITLED"
@@ -42,13 +42,14 @@ class Analysis(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notif
         self.DataCacheInput = []
         self.Tree = "nominal"
         self.EventGraph = None
-        self.ValidationSampleSize = 50
+        self.TrainingSampleSize = 50
         self.GraphAttribute = {}
         self.NodeAttribute = {}
         self.EdgeAttribute = {}
         self.Device = "cpu" 
         self.SelfLoop = True
         self.FullyConnect = True
+        self.GenerateTrainingSample = False
 
         # ===== Optimizer variables ====== # 
         self.LearningRate = 0.0001
@@ -57,13 +58,17 @@ class Analysis(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notif
         self.Epochs = 0
         self.BatchSize = 10
         self.Model = None
+        self._init = False
         self.RunName = "TESTMODEL"
         self.DefaultOptimizer = "ADAM"
         self.ONNX_Export = False
         self.TorchScript_Export = False
         self.Training = True
         self.Debug = False
-
+        self.DefaultScheduler = "ExponentialR"
+        self.SchedulerParams = {"gamma" : 0.9}
+        self.Scheduler = None
+        
         # ===== Constant variables ====== #
         self.RunDir = None
         self.T_Features = {}
@@ -89,8 +94,16 @@ class Analysis(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notif
     def __CheckSettings(self, Optimizer = False):
         if Optimizer == True and self.Model != None:
             self.FileTraces = UnpickleObject("FileTraces", self._DataLoaderDir + "FileTraceDump")
-            self.TrainingSample = UnpickleObject("TrainingSample", self._DataLoaderDir + "FileTraceDump")
-            self.ValidationSample = UnpickleObject("ValidationSample", self._DataLoaderDir + "FileTraceDump")
+            try:
+                self.TrainingSample = UnpickleObject("TrainingSample", self._DataLoaderDir + "FileTraceDump")
+                self.ValidationSample = UnpickleObject("ValidationSample", self._DataLoaderDir + "FileTraceDump")
+            except:
+                self.GenerateTrainingSample = True
+                self.DataCache = False
+                self._SampleDir = {}
+                self.Warning("NO TRAINING / VALIDATION SAMPLES FOUND! GENERATING...")
+                self.__BuildSampleCache()
+
             tmp = self.VerboseLevel 
             self.VerboseLevel = 0 
             events = self.__CheckFiles(self._DataLoaderDir)["DataLoader"]
@@ -145,15 +158,17 @@ class Analysis(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notif
         
         # Case 2: We want to create the dataloader from the event generator cached/just created
         # - Check if we can find a cached event generator instance 
+        self.Notify("CHECKING IF ANYTHING HAS BEEN CACHED.")
         cached = self.__CheckFiles(self._MainDirectory + "/" + self._EventGeneratorDir)
         if len(cached) == 0 and self.DataCache == True and len(self._SampleDir) == 0:
             self.Fail("NOTHING CACHED OR GIVEN SAMPLES NOT FOUND. EXITING...") 
         
         if self.DataCache == True and self.EventGraph == None:
-            self.Fail("CAN'T CREATE SAMPLE EVENT GRAPH FOR DATALOADER. NO EVENTGRAPH FOUND. See 'Functions.Event.Implementations.EventGraph'")
+            self.Fail("CAN'T CREATE SAMPLE EVENT GRAPH FOR DATALOADER. NO EVENTGRAPH FOUND. See 'src.EventTemplates.EventGraphs'")
         
         if self.DataCache == True: 
             attrs = 0
+            self.NEvents = self.NEvent_Stop
             if len(list(self.EdgeAttribute)) == 0:
                 self.Warning("NO EDGE FEATURES PROVIDED")
                 attrs+=1
@@ -183,20 +198,18 @@ class Analysis(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notif
         self.ChangeDirToRoot(self._MainDirectory)
 
         if self.EventCache == True:
-            shutil.rmtree(self._EventGeneratorDir, ignore_errors = True)
             self._CommonDir = os.path.commonpath([i for name in self._SampleDir for i in list(self._SampleDir[name])])
             for name in self._SampleDir:
                 for FileDir in self._SampleDir[name]:
                     self.MakeDir(self._EventGeneratorDir + "/" + name + "/" + FileDir.replace(self._CommonDir, ""))
         
         if self.DataCache == True:
-            shutil.rmtree(self._DataLoaderDir, ignore_errors = True)
-            shutil.rmtree(self._DataLoaderDir + "FileTraceDump", ignore_errors = True)
-            shutil.rmtree(self._DataLoaderDir + "Test", ignore_errors = True)
-            
             self.MakeDir(self._DataLoaderDir)
-            self.MakeDir(self._DataLoaderDir + "Test")
             self.MakeDir(self._DataLoaderDir + "FileTraceDump")
+        
+        if self.GenerateTrainingSample == True:
+            shutil.rmtree(self._DataLoaderDir + "Test", ignore_errors = True)
+            self.MakeDir(self._DataLoaderDir + "Test")
     
     def __CheckFiles(self, Directory):
         if isinstance(Directory, str):
@@ -229,7 +242,7 @@ class Analysis(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notif
         
             except AttributeError:
                 fail = str(sys.exc_info()[1]).replace("'", "").split(" ")
-                return ["FAILED: " + Fx_m + " -> " + Fx_n + " ERROR -> " + fail[-1]]
+                return ["FAILED: " + Fx_m + " -> " + Fx_n + " ERROR -> " + " ".join(fail)]
 
         def __TestObjectAttributes(Event):
             samples = [Event[k][self.Tree] for k in random.sample(list(Event), 10)]
@@ -257,11 +270,19 @@ class Analysis(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notif
         
         for name in self._SampleDir:
             for FileDir, Samples in self._SampleDir[name].items():
+                f = []
+                if self.EventCache == False:
+                    f = [k for k in Samples if k.endswith(".root")]
+                if self.EventCache == True:
+                    f = [k for k in Samples if k.endswith(".pkl")]
+                if len(f) > 0:
+                    continue
+
                 self.Notify("STARTING THE COMPILATION OF NEW DIRECTORY: " + FileDir)
                 FileOut = self._EventGeneratorDir + "/" + name + "/" + FileDir.replace(self._CommonDir, "")
                 CheckSample = True
                 for S in Samples:
-                    if self.EventImplementation != None:
+                    if self.EventImplementation != None and self.EventCache == True:
                         ev = EventGenerator(None, self.Verbose, self.NEvent_Start, self.NEvent_Stop)
                         ev.EventImplementation = self.EventImplementation
                         ev.Files = {FileDir : [S]}
@@ -276,30 +297,45 @@ class Analysis(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notif
                         __TestObjectAttributes(ev.Events)
                         CheckSample = False
                     
-                    if self.EventCache:
+                    if self.EventCache == True:
                         PickleObject(ev, S.replace(".root", ""), FileOut)
  
-                    if self.DataCache: 
+                    if self.DataCache == True: 
                         self.AddSample(ev, self.Tree, self.SelfLoop, self.FullyConnect, -1) 
+        
         if self.DataCache:
-            self.MakeTrainingSample(self.ValidationSampleSize)
-            
             Exp = ExportToDataScience()
             Exp.VerboseLevel = 0
             for i in self.DataContainer:
                 address = hex(id(self.DataContainer[i]))
                 Exp.ExportEventGraph(self.DataContainer[i].to("cpu"), str(address), self._DataLoaderDir)
-                self.Notify("!!DUMPED EVENT " + str(int(self.DataContainer[i].i)) + "/" + str(len(self.DataContainer)))
+                self.Notify("!!DUMPED EVENT " + str(int(self.DataContainer[i].i+1)) + "/" + str(len(self.DataContainer)))
+                self.DataContainer[i] = str(address)
+            PickleObject(self.FileTraces, "FileTraces", self._DataLoaderDir + "FileTraceDump")
+            PickleObject(self.DataContainer, "DataContainer", self._DataLoaderDir + "FileTraceDump")
+
+        if self.GenerateTrainingSample:
+            self.DataContainer = UnpickleObject("DataContainer", self._DataLoaderDir + "FileTraceDump")
+            Exp = ExportToDataScience()
             
+            tmp = {}
+            for i in self.DataContainer:
+                tmp[i] = self.DataContainer[i] 
+                out = self.RecallFromCache(self.DataContainer[i], self._DataLoaderDir)
+                self.DataContainer[i] = out
+
             RandomTestSample = {}
+            self.MakeTrainingSample(self.TrainingSampleSize)
             for i in self.TrainingSample:
-                self.TrainingSample[i] = [str(hex(id(k))) for k in self.TrainingSample[i]]
+                self.TrainingSample[i] = [tmp[int(k.i)] for k in self.TrainingSample[i]]
+
+                if len(self.TrainingSample[i]) < 10:
+                    RandomTestSample[i] = self.TrainingSample[i]
+                    continue
                 RandomTestSample[i] = random.sample(self.TrainingSample[i], 10) 
 
             for i in self.ValidationSample:
-                self.ValidationSample[i] = [str(hex(id(k))) for k in self.ValidationSample[i]]
-
-            PickleObject(self.FileTraces, "FileTraces", self._DataLoaderDir + "FileTraceDump")
+                self.ValidationSample[i] = [tmp[int(k.i)] for k in self.ValidationSample[i]]
             PickleObject(self.TrainingSample, "TrainingSample", self._DataLoaderDir + "FileTraceDump") 
             PickleObject(self.ValidationSample, "ValidationSample", self._DataLoaderDir + "FileTraceDump")
             PickleObject(RandomTestSample, "RandomTestSample", self._DataLoaderDir + "Test")
@@ -331,7 +367,9 @@ class Analysis(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notif
             self.Sample.i = torch.tensor([1], device = self.Device)
             self.Sample.to(self.Device)
             self.MakePrediction(self.Sample)
-        self.Notify("PASSED RANDM n-Node TEST.")
+        self.Notify("PASSED RANDOM n-Node TEST.")
+
+
         self.KFoldTraining()
 
     def Launch(self):

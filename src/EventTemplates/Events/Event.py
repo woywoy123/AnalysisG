@@ -74,6 +74,8 @@ class Event(EventTemplate):
 
         for i in self.TruthJets:
             self.TruthJets[i][0].GhostTruthJetMap = FixList(self.TruthJets[i][0].GhostTruthJetMap)
+            self.TruthJets[i][0].Index = -1
+            self.TruthJets[i][0].FromRes = 0
 
         for i in self.Jets:
             self.Jets[i][0].JetMapGhost = FixList(self.Jets[i][0].JetMapGhost)
@@ -95,12 +97,12 @@ class Event(EventTemplate):
         self.Muons = self.DictToList(self.Muons)
         self.Jets = self.DictToList(self.Jets)
         
-        Leptons = []
-        Leptons += self.Electrons
-        Leptons += self.Muons
+        self.Leptons = []
+        self.Leptons += self.Electrons
+        self.Leptons += self.Muons
         
         All = [y for i in self.TopPostFSRChildren for y in self.TopPostFSRChildren[i] if abs(y.pdgid) in [11, 13, 15]]
-        for j in Leptons:
+        for j in self.Leptons:
             dr = 99
             low = ""
             for i in All:

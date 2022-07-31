@@ -15,7 +15,7 @@ class BaseLineModel(MessagePassing):
         self.O_Index = None
         self.L_Index = "CEL"
         self.C_Index = True
-        self.N_Index = True
+        #self.N_Index = True
 
         self.Device = ""
 
