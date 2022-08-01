@@ -52,7 +52,7 @@ class Directories(Notification):
         Output |= integers 
 
         for i in Output:
-            self.Notify("!!FOUND +-> " + i)
+            self.Notify("!!FOUND +-> " + i.replace("//", "/"))
         return list(Output)
 
     def GetFilesInDir(self):
@@ -71,9 +71,7 @@ class WriteDirectory(Notification):
 
     def MakeDir(self, Dir):
         try:
-            os.makedirs(Dir)
-        except FileExistsError:
-            pass
+            os.makedirs(Dir, exist_ok = True)
         except:
             self.Warning("SOMETHING WENT WRONG MAKING DIR! -> " + Dir)
 

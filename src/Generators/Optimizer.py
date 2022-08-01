@@ -127,6 +127,7 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Notifica
         self.Training = True
         self.T_Features = {}
         self.CacheDir = None
+        self.TrainWithoutCache = False
 
     def ReadInDataLoader(self, DataLoaderInstance):
         self.TrainingSample = DataLoaderInstance.TrainingSample
@@ -256,16 +257,17 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Notifica
                 print("---> Model: \n", m_p.tolist())
             if self.Debug:
                 continue
-          
+            
             self.Stats[self._mode + "_Accuracy"][key][-1].append(acc)
-            self.Stats[self._mode + "_Loss"][key][-1].append(L)
+            self.Stats[self._mode + "_Loss"][key][-1].append(L.item())
 
         if self.Training:
             LT.backward()
             self.Optimizer.step()
         
         if self.Debug:
-            return truth_out, model_outa
+            return truth_out, model_out
+
 
     def SampleLoop(self, samples):
         self.ResetAll() 
@@ -294,7 +296,7 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Notifica
                 v_2 = str(format(float(sum(self.Stats[Mode2][f_k][k])/len(self.Stats[Mode2][f_k][k])), ' >10.4g'))
                     
                 self.Notify(Notify + "       " + str(v_1) + " || " + str(v_2) + " (" + f_k + ")")
-
+        
         if self.Model == None:
             self.Fail("No Model has been given!")
 
@@ -317,6 +319,12 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Notifica
         
         if self.DefaultScheduler != None:
             self.DefineScheduler()
+        
+        if self.TrainWithoutCache == True:
+            for i in self.TrainingSample:
+                self.TrainingSample[i] = self.RecallFromCache(self.TrainingSample[i], self.CacheDir)
+            self.TrainWithoutCache = self.CacheDir
+            self.CacheDir = None
 
         TimeStart = time.time()
         for self.epoch in range(self.Epochs):
@@ -326,7 +334,6 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Notifica
             TimeStartEpoch = time.time()
             k = 0
             for n_node in N_Nodes:
-
                 Curr = self.RecallFromCache(self.TrainingSample[n_node], self.CacheDir) 
                 Curr_l = len(Curr)
                 self.Notify("!+++++++++++++++++++++++")
@@ -357,9 +364,6 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Notifica
                     self.Notify("!!!-----++> Training <++-----")
                     self.Notify("!!!-------> Accuracy || Loss  <-------")
                     CalcAverage("Training_Accuracy", k, "!!!", "Training_Loss")
-                    if memory_rem < 500 and self.BatchSize > 1:
-                        self.BatchSize -= 1
-                    del train_loader 
 
                     self.Training = False
                     valid_loader = DataLoader(Curr, batch_size = self.BatchSize, sampler = SubsetRandomSampler(val_idx)) 
@@ -370,15 +374,8 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Notifica
 
                     self.Stats["FoldTime"][-1].append(time.time() - TimeStartFold)
                     self.Stats["kFold"][-1].append(fold+1)
-
-
-                    for f in self.T_Features:
-                        self.Stats["Training_Accuracy"][f][-1]   = [float(t) for t in self.Stats["Training_Accuracy"][f][-1]]
-                        self.Stats["Validation_Accuracy"][f][-1] = [float(t) for t in self.Stats["Validation_Accuracy"][f][-1]]
-                        self.Stats["Training_Loss"][f][-1]       = [float(t) for t in self.Stats["Training_Loss"][f][-1]]
-                        self.Stats["Validation_Loss"][f][-1]     = [float(t) for t in self.Stats["Validation_Loss"][f][-1]]
+                   
                     k += 1
-                
                 self.Stats["Nodes"].append(n_node)
 
                 self.Notify("!! >----- [ EPOCH (" + str(self.epoch+1) + "/" + str(self.Epochs) + ") ] -----< ")
@@ -387,7 +384,8 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Notifica
                 CalcAverage("Training_Accuracy", k-1, "!!", "Validation_Accuracy")
                 self.Notify("!!_______________ LOSS _______________")
                 CalcAverage("Training_Loss", k-1, "!!", "Validation_Loss")
-
+                torch.cuda.empty_cache()
+            
             self.Stats["EpochTime"].append(time.time() - TimeStartEpoch)
             self.Notify("! >========= DURATION: " + str(datetime.timedelta(seconds = self.Stats["EpochTime"][-1])))
             self.DumpStatistics()

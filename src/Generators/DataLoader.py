@@ -185,14 +185,17 @@ class GenerateDataLoader(Notification):
     def RecallFromCache(self, SampleList, Directory):
         if Directory == None:
             return SampleList
-        Exp = ExportToDataScience()
-        Exp.VerboseLevel = 0
+        
         if isinstance(SampleList, str):
+            Exp = ExportToDataScience()
+            Exp.VerboseLevel = 0
             dic = Exp.ImportEventGraph(SampleList, Directory)
             return dic[list(dic)[0]]
-        if isinstance(SampleList, list) == False: 
+        elif isinstance(SampleList, list) == False: 
             self.Fail("WRONG SAMPLE INPUT! Expected list, got: " + type(SampleList))
         
+        Exp = ExportToDataScience()
+        Exp.VerboseLevel = 0
         Out = [] 
         for i in range(len(SampleList)):
             Out.append(Exp.ImportEventGraph(SampleList[i], Directory).popitem()[1])

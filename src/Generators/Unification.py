@@ -7,6 +7,8 @@ import sys
 import random
 import shutil  
 import torch
+import hashlib
+from pathlib import Path
 
 class Analysis(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notification):
     def __init__(self):
@@ -39,7 +41,7 @@ class Analysis(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notif
        
         # ===== DataLoader variables ===== #
         self.DataCache = False
-        self.DataCacheInput = []
+        self.DataCacheOnlyCompile = []
         self.Tree = "nominal"
         self.EventGraph = None
         self.TrainingSampleSize = 50
@@ -64,6 +66,7 @@ class Analysis(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notif
         self.ONNX_Export = False
         self.TorchScript_Export = False
         self.Training = True
+        self.TrainWithoutCache = False
         self.Debug = False
         self.DefaultScheduler = "ExponentialR"
         self.SchedulerParams = {"gamma" : 0.9}
@@ -86,7 +89,7 @@ class Analysis(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notif
 
         elif isinstance(Directory, str):
             self._SampleDir[Name].append(Directory)
-
+        
         else:
             self.Warning("INPUT DIRECTORY NOT VALID (STRING OR LIST)!")
             return 
@@ -106,7 +109,7 @@ class Analysis(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notif
 
             tmp = self.VerboseLevel 
             self.VerboseLevel = 0 
-            events = self.__CheckFiles(self._DataLoaderDir)["DataLoader"]
+            events = self.__CheckFiles(self._DataLoaderDir + "/HDF5")["DataLoader/HDF5"]
             self.VerboseLevel = tmp
             self.Notify("FOUND " + str(len(events)) + " EVENTS IN THE DATALOADER DIRECTORY.")
             self.Notify("CHECKING IF EVENTS ARE CONSISTENT.")
@@ -120,7 +123,7 @@ class Analysis(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notif
                     self.Fail("MISSING FILE -> " + i + ".hdf5 FROM VALIDATION SAMPLE! EXITING...")
                 counter += 1
             self.Notify("SUCCESSFULLY VERIFIED " + str(counter) + " FILES.")
-            self.CacheDir = self._DataLoaderDir
+            self.CacheDir = self._DataLoaderDir + "/HDF5"
             
             tmp = {}
             if 0 in self.TrainingSample:
@@ -141,12 +144,15 @@ class Analysis(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notif
         self._MainDirectory = self.OutputDir 
         if self.ProjectName != self.OutputDir.split("/")[-1]:
             self._MainDirectory += "/" + self.ProjectName
-        
+       
+        tmp = {}
         for k, l in self._SampleDir.items():
-            self._SampleDir[k] = self.__CheckFiles(l)
-            if len(self._SampleDir[k]) == 0:
-                self._SampleDir.pop(k, None)
- 
+            tmp[k] = self.__CheckFiles(l)
+            if len(tmp[k]) == 0:
+                tmp.pop(k, None)
+        self._SampleDir = tmp
+
+
         # Case 1: We want to only create the event generator caches 
         # - Check if a sample has been provided and that they resolve to root files       
         if self.EventCache == True and len(self._SampleDir) == 0:
@@ -217,8 +223,11 @@ class Analysis(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notif
         out = {}
         for i in Directory:
             val = self.ListFilesInDir(i)
-            for p in val: 
-                f, key  = p.split("/")[-1], "/".join(p.split("/")[:-1])
+            for p in val:
+                f, key  = p.split("/")[-1], "/".join(p.split("/")[:-1]).replace("//", "/")
+                if key.split("/")[-1] not in self.DataCacheOnlyCompile and len(self.DataCacheOnlyCompile) != 0:
+                    self.Warning("EXCLUDING " + key + "/" + f + " FROM DATALOADER.")
+                    continue
                 if key not in out:
                     out[key] = []
                 if f not in out[key]:
@@ -302,26 +311,101 @@ class Analysis(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notif
  
                     if self.DataCache == True: 
                         self.AddSample(ev, self.Tree, self.SelfLoop, self.FullyConnect, -1) 
-        
+
         if self.DataCache:
+            Start_E = self.FileTraces["Start"]
+            End_E = self.FileTraces["End"]
+            Sample_N = self._SampleDir[""]
+            Sample_N = [l.replace("EventGenerator", "DataLoader") + "/"*(1-int(l.endswith("/"))) + j.replace(".pkl", "") for l in Sample_N for j in Sample_N[l]]
+            Sample_N = [ "/".join(p.split("/")[p.split("/").index("DataLoader")+1:]) for p in Sample_N]
+            self.MakeDir(self._DataLoaderDir + "/HDF5")
+            
+            it = 0
             Exp = ExportToDataScience()
             Exp.VerboseLevel = 0
             for i in self.DataContainer:
-                address = hex(id(self.DataContainer[i]))
-                Exp.ExportEventGraph(self.DataContainer[i].to("cpu"), str(address), self._DataLoaderDir)
-                self.Notify("!!DUMPED EVENT " + str(int(self.DataContainer[i].i+1)) + "/" + str(len(self.DataContainer)))
-                self.DataContainer[i] = str(address)
-            PickleObject(self.FileTraces, "FileTraces", self._DataLoaderDir + "FileTraceDump")
-            PickleObject(self.DataContainer, "DataContainer", self._DataLoaderDir + "FileTraceDump")
+                if self.DataContainer[i].i == Start_E[it]:
+                    self._outdir = self._DataLoaderDir + "/" + Sample_N[it]
+                if self.DataContainer[i].i == End_E[it]:
+                    it+=1
+                
+                name = self._outdir + "/" + str(i)
+                address = str(hashlib.md5(name.encode("utf-8")).hexdigest())
+                srcdir = self._MainDirectory + "/" + self._outdir + "/" + address + ".hdf5"
+                dstdir = self._MainDirectory + "/" + self._DataLoaderDir + "/HDF5/" + address + ".hdf5"
+                    
+                if os.path.exists(srcdir) and os.path.exists(dstdir):
+                    self.Notify("!!EVENT NOT DUMPED, FILES EXIST " +  dstdir)
+                else:
+                    Exp.ExportEventGraph(self.DataContainer[i].to("cpu"), address, self._outdir)
+                    self.Notify("!!DUMPED EVENT " + str(int(self.DataContainer[i].i+1)) + "/" + str(len(self.DataContainer)))
+                self.DataContainer[i] = address
+
+                try:
+                    os.symlink(srcdir.replace("//", "/"), dstdir.replace("//", "/"))
+                except FileExistsError:
+                    pass
+                except:
+                    self.Fail("SYMLINKS NOT SUPPORTED!")
+
+            prfx = ""
+            if len(self.DataCacheOnlyCompile) > 0:
+                prfx += "_".join(self.DataCacheOnlyCompile)
+                prfx += "_"
+
+            PickleObject(self.FileTraces, prfx + "FileTraces", self._DataLoaderDir + "FileTraceDump")
+            PickleObject(self.DataContainer, prfx + "DataContainer", self._DataLoaderDir + "FileTraceDump")
 
         if self.GenerateTrainingSample:
+            x = self.ListFilesInDir(self._DataLoaderDir + "FileTraceDump")
+            Trace = [UnpickleObject(k) for k in x if "_FileTraces.pkl" in k]
+            Container = [UnpickleObject(k) for k in x if "_DataContainer.pkl" in k]
+            
+            if len(Trace) != 0 and len(Container) != 0:
+                self.Notify("FOUND FRAGMENTATION PIECES... NEED TO REBUILD THE DATA PROPERLY...")
+                for i in Trace:
+                    for key in self.FileTraces:
+                        self.FileTraces[key] += i[key]
+                
+                start, end = [], []
+                it = 0
+                for k, j in zip(self.FileTraces["Start"], self.FileTraces["End"]):
+                    start.append(it)
+                    it += (j-k)
+                    end.append(it)
+                    it += 1
+                self.FileTraces["End"] = end
+                self.FileTraces["Start"] = start
+
+                c = 0
+                exp = ExportToDataScience()
+                exp.VerboseLevel = 0
+                for i in Container:
+                    Data = []
+                    counter = []
+                    for j in i:
+                        self.DataContainer[c] = i[j]
+                        Data.append(i[j])
+                        counter.append(torch.tensor(c))
+                        c += 1
+                    sets = self.RecallFromCache(Data, self._DataLoaderDir + "/HDF5/")
+                    it = 0
+                    for j, k in zip(sets, counter):
+                        setattr(j, "i", k)
+                        di = "/".join(str(Path(self._DataLoaderDir + "/HDF5/" + Data[it] + ".hdf5").resolve()).split("/")[:-1])
+                        exp.ExportEventGraph(j, Data[it], di)
+                        it+=1 
+
+                PickleObject(self.FileTraces, "FileTraces", self._DataLoaderDir + "FileTraceDump")
+                PickleObject(self.DataContainer, "DataContainer", self._DataLoaderDir + "FileTraceDump")
+
             self.DataContainer = UnpickleObject("DataContainer", self._DataLoaderDir + "FileTraceDump")
             Exp = ExportToDataScience()
             
             tmp = {}
             for i in self.DataContainer:
                 tmp[i] = self.DataContainer[i] 
-                out = self.RecallFromCache(self.DataContainer[i], self._DataLoaderDir)
+                out = self.RecallFromCache(self.DataContainer[i], self._DataLoaderDir + "/HDF5/")
                 self.DataContainer[i] = out
 
             RandomTestSample = {}

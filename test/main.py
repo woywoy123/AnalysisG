@@ -120,7 +120,8 @@ if __name__ == "__main__":
     #        }
     #Test(Unification.TestUnificationEventGenerator, FileDir = GeneralDir, Files = Files)
     #Test(Unification.TestUnificationDataLoader)
-    Test(Unification.TestUnificationOptimizer)
+    #Test(Unification.TestUnificationOptimizer)
+    Test(Unification.TestUnificationSubmission)
 
     ## ========= Presentation Plots ============ #
     #Test(Presentation1.CreatePlots, FileDir = GeneralDir + "tttt/MCe/", CreateCache = True)
