@@ -52,6 +52,7 @@ class Analysis(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notif
         self.SelfLoop = True
         self.FullyConnect = True
         self.GenerateTrainingSample = False
+        self.RebuildTrainingSample = False
 
         # ===== Optimizer variables ====== # 
         self.LearningRate = 0.0001
@@ -334,7 +335,7 @@ class Analysis(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notif
                 srcdir = self._MainDirectory + "/" + self._outdir + "/" + address + ".hdf5"
                 dstdir = self._MainDirectory + "/" + self._DataLoaderDir + "/HDF5/" + address + ".hdf5"
                     
-                if os.path.exists(srcdir) and os.path.exists(dstdir):
+                if os.path.exists(srcdir) and os.path.exists(dstdir) and self.DataCache == False:
                     self.Notify("!!EVENT NOT DUMPED, FILES EXIST " +  dstdir)
                 else:
                     Exp.ExportEventGraph(self.DataContainer[i].to("cpu"), address, self._outdir)
@@ -361,7 +362,7 @@ class Analysis(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notif
             Trace = [UnpickleObject(k) for k in x if "_FileTraces.pkl" in k]
             Container = [UnpickleObject(k) for k in x if "_DataContainer.pkl" in k]
             
-            if len(Trace) != 0 and len(Container) != 0:
+            if len(Trace) != 0 and len(Container) != 0 and self.RebuildTrainingSample:
                 self.Notify("FOUND FRAGMENTATION PIECES... NEED TO REBUILD THE DATA PROPERLY...")
                 for i in Trace:
                     for key in self.FileTraces:

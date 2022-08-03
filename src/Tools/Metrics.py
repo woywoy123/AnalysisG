@@ -1,6 +1,7 @@
 from AnalysisTopGNN.IO import Directories, WriteDirectory, UnpickleObject
 from AnalysisTopGNN.Plotting.Legacy import TGraph, CombineTGraph
 import math
+import matplotlib.pyplot as plt
 
 class Metrics(Directories):
 
@@ -42,7 +43,7 @@ class Metrics(Directories):
         self.Stats = {}
         self.Epochs = []
         for i in Files:
-            epoch = i.split("_")[2].replace(".pkl", "")
+            epoch = i.split("_")[1].replace(".pkl", "")
             if epoch == "Done":
                 self.File = UnpickleObject(i, outputDir)
                 continue
@@ -117,7 +118,7 @@ class Metrics(Directories):
             Com.FontSize = 10
 
             Com.ErrorBars = True
-            col = ["b", "g", "r", "c", "m", "y", "p"]
+            col = ["b", "g", "r", "c", "m", "y"]
             it = 0
             for n in inpy:
                 if Global == False:
@@ -134,7 +135,10 @@ class Metrics(Directories):
                          Mode + "_" + Metric + "_Feature_" + n, 
                          errors = True, todir = feature + "/Raw")
                     L_.Title = n
-                L_.Color = col[it]
+                try:
+                    L_.Color = col[it]
+                except:
+                    L_.Color = it
                 Com.Lines.append(L_)
                 it += 1
             if self.PlotFigures:
@@ -153,7 +157,7 @@ class Metrics(Directories):
             self.PlotFigures = True
             it = 0
 
-            col = ["b", "g", "r", "c", "m", "y", "p"]
+            col = ["b", "g", "r", "c", "m", "y"]
             for n in inpy1:
                 if Nodes:
                     SubT = "Nodes-" + str(n)
@@ -164,7 +168,11 @@ class Metrics(Directories):
                      inpx, inpy1[n], 
                      Mode1 + "_" + Metric + "_" + SubT, 
                      errors = True, todir = feature + "/Raw")
-                L_1.Color = col[it]
+                try:
+                    L_1.Color = col[it]
+                except:
+                    L_1.Color = it
+
                 L_1.LineStyle = "dashed"
 
                 L_2 = self.__CreateGraph(SubT, 
@@ -172,9 +180,13 @@ class Metrics(Directories):
                      inpx, inpy2[n], 
                      Mode2 + "_" + Metric + "_" + SubT, 
                      errors = True, todir = feature + "/Raw")
-                L_2.Color = col[it]
                 L_2.LineStyle = "solid"
                 L_2.Marker = "x"
+                try:
+                    L_2.Color = col[it]
+                except:
+                    L_2.Color = it
+
                 it+=1
                 
                 Com.Lines.append(L_1)

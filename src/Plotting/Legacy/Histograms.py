@@ -303,6 +303,8 @@ class CombineHistograms(SharedMethods, GenericAttributes):
         
         for i in range(len(self.Histograms)):
             H = self.Histograms[i]
+            if isinstance(H.Color, int):
+                    H.Color = plt.cm.get_cmap("hsv", H.Color)
             if H.Color != "":
                 self.PLT.hist(H.xData, bins = H.xBins, range=(H.xMin,H.xMax), 
                         label = H.Title, alpha = H.Alpha, log = self.Log, color = H.Color, 
@@ -365,7 +367,11 @@ class CombineTGraph(SharedMethods, GenericAttributes):
 
         for i in range(len(self.Lines)):
             H = self.Lines[i]
-            
+
+            if isinstance(H.Color, int):
+                obj = plt.cm.get_cmap("hsv", H.Color)
+                H.Color = obj(H.Color)
+
             H.ErrorBars = self.ErrorBars 
             if H.Compiled == False:
                 H.Line()

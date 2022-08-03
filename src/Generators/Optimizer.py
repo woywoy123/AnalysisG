@@ -75,7 +75,6 @@ class ModelImporter:
         for key in output_dict:
             if key.startswith("O_") == False:
                 continue
-
             key = key.lstrip("O_")
             if Truth: 
                 out_v = sample[self.T_Features[key][0]]
@@ -285,6 +284,9 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Notifica
             self.Stats["BatchRate"].append(R)
         
     def GetTruthFlags(self, Input, FEAT):
+        if len(Input) == 0:
+            Input = list(self.Sample.to_dict())
+            Input = [i.replace(FEAT+"_", "") for i in Input if i.startswith(FEAT + "_")]
         for i in Input:
             if i.startswith("T_") and str("O_" + i[2:]) in self.ModelOutputs:
                 self.T_Features[i[2:]] = [FEAT + "_" +i, FEAT + "_" +i[2:]]
@@ -308,10 +310,12 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Notifica
 
         self.Notify(">------------------------ Starting k-Fold Training ------------------------------------")
         self.Notify("!SIZE OF ENTIRE SAMPLE SET: " + str(sum([len(self.TrainingSample[i]) for i in N_Nodes])))
-        
         self.GetTruthFlags(self.EdgeAttribute, "E")
         self.GetTruthFlags(self.NodeAttribute, "N")
         self.GetTruthFlags(self.GraphAttribute, "G")
+
+        if len(self.T_Features) == 0:
+            self.Fail("NO TRUTH FEATURES WERE FOUND DURING INITIALIZATION PHASE!")
         self.Notify(">----------------------------------------------------------------------------------------\n")
 
         self.__MakeStats()

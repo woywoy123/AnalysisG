@@ -5,6 +5,8 @@ from AnalysisTopGNN.Submission import Condor
 import FeatureTemplates.Generic.EdgeFeature as ef
 import FeatureTemplates.Generic.NodeFeature as nf
 import FeatureTemplates.Generic.GraphFeature as gf
+from Templates.TruthJetFeatures import TruthJetsFeatures
+from AnalysisTopGNN.Tools import Metrics
 
 def TestUnificationEventGenerator(FileDir, Files):
     U = Analysis()
@@ -84,6 +86,7 @@ def TestUnificationSubmission():
     A1.EventCache = True
     A1.OutputDir = out
     A1.EventImplementation = Event
+    TruthJetsFeatures(A1)
     A1.InputSample("ttbar", nfs + "CustomAnalysisTopOutputTest/ttbar")
 
 
@@ -94,6 +97,7 @@ def TestUnificationSubmission():
     A2.EventCache = True
     A2.OutputDir = out
     A2.EventImplementation = Event
+    TruthJetsFeatures(A2)
     A2.InputSample("zmumu", nfs + "CustomAnalysisTopOutputTest/Zmumu")
 
     
@@ -104,6 +108,7 @@ def TestUnificationSubmission():
     A3.EventCache = True
     A3.OutputDir = out
     A3.EventImplementation = Event
+    TruthJetsFeatures(A3)
     A3.InputSample("t", nfs + "CustomAnalysisTopOutputTest/t")
 
     A4 = Analysis()
@@ -113,6 +118,7 @@ def TestUnificationSubmission():
     A4.EventCache = True
     A4.OutputDir = out
     A4.EventImplementation = Event
+    TruthJetsFeatures(A4)
     A4.InputSample("tttt", nfs + "CustomAnalysisTopOutputTest/tttt")
 
 
@@ -122,7 +128,7 @@ def TestUnificationSubmission():
     D1.OutputDir = out
     D1.DataCache = True
     D1.EventGraph = EventGraphTruthJetLepton
-    D1.AddNodeTruth("from_res", nf.FromTop) 
+    TruthJetsFeatures(D1)
     D1.DataCacheOnlyCompile = ["t"] 
 
 
@@ -132,7 +138,7 @@ def TestUnificationSubmission():
     D2.OutputDir = out
     D2.DataCache = True
     D2.EventGraph = EventGraphTruthJetLepton
-    D2.AddNodeTruth("from_res", nf.FromTop) 
+    TruthJetsFeatures(D2)
     D2.DataCacheOnlyCompile = ["zmumu"] 
 
     # Job for creating TrainingSample
@@ -140,6 +146,10 @@ def TestUnificationSubmission():
     T2.ProjectName = "TopEvaluation"
     T2.OutputDir = out
     T2.GenerateTrainingSample = True
+    T2.RebuildTrainingSample = True
+
+
+    from TestModelCondor.Model import BasicBaseLineTruthJet
 
     # Job for optimization
     Op = Analysis()
@@ -158,7 +168,9 @@ def TestUnificationSubmission():
     Op.Model = BasicBaseLineTruthJet()
 
     T = Condor()
-    T.DisableEventCache = False
+    T.DisableEventCache = True
+    T.DisableDataCache = True
+    T.DisableRebuildTrainingSample = True
     #T.AddJob("ttbar", A1, "10GB", "1h")
     T.AddJob("Zmumu", A2, "10GB", "1h")
     T.AddJob("t", A3, "10GB", "1h")
@@ -170,9 +182,9 @@ def TestUnificationSubmission():
 
     T.AddJob("TruthJet", Op, "10GB", ["DataTraining"])
 
-    T.LocalDryRun() 
-
-
+    #T.LocalDryRun() 
+    T.DumpCondorJobs() 
+    
 
     return True
 
