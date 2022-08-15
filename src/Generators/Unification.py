@@ -271,9 +271,11 @@ class Analysis(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notif
                     Failed += __FeatureAnalysis(i, en, efx, "EdgeFeatures")
             if len(Failed) == 0:
                 return 
+
             self.Warning("------------- Feature Errors -------------------")
             for i in list(set(Failed)):
                 self.Warning(i)
+
             self.Warning("------------------------------------------------")
             if len(list(set(Failed))) == int(len(Features)):
                 self.Fail("NONE OF THE FEATURES PROVIDED WERE SUCCESSFUL!")
@@ -303,7 +305,7 @@ class Analysis(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notif
                     else:
                         ev = UnpickleObject(S, FileDir)
                   
-                    if CheckSample:
+                    if CheckSample and self.DataCache:
                         __TestObjectAttributes(ev.Events)
                         CheckSample = False
                     

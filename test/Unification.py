@@ -168,8 +168,8 @@ def TestUnificationSubmission():
     Op.Model = BasicBaseLineTruthJet()
 
     T = Condor()
-    T.DisableEventCache = True
-    T.DisableDataCache = True
+    T.DisableEventCache = False
+    T.DisableDataCache = False
     T.DisableRebuildTrainingSample = True
     #T.AddJob("ttbar", A1, "10GB", "1h")
     T.AddJob("Zmumu", A2, "10GB", "1h")
@@ -177,10 +177,10 @@ def TestUnificationSubmission():
     #T.AddJob("tttt", A4, "10GB", "1h")
 
     T.AddJob("tData", D1, "10GB", "1h", ["t", "Zmumu"])
-    T.AddJob("ZmumuData", D2, "10GB", ["t", "Zmumu"])
-    T.AddJob("DataTraining", T2, "10GB", ["tData", "ZmumuData"])
+    T.AddJob("ZmumuData", D2, "10GB", "1h", ["t", "Zmumu"])
+    T.AddJob("DataTraining", T2, "10GB", "1h", ["tData", "ZmumuData"])
 
-    T.AddJob("TruthJet", Op, "10GB", ["DataTraining"])
+    T.AddJob("TruthJet", Op, "10GB", "1h", ["DataTraining"])
 
     #T.LocalDryRun() 
     T.DumpCondorJobs() 
