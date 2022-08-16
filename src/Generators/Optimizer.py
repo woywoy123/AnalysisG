@@ -294,6 +294,8 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Notifica
     def KFoldTraining(self):
         def CalcAverage(Mode, k, Notify = "", Mode2 = None):
             for f_k in self.Stats[Mode]:
+                if self.Debug:
+                    continue
                 v_1 = str(format(float(sum(self.Stats[Mode][f_k][k])/len(self.Stats[Mode][f_k][k])), ' >10.4g'))
                 v_2 = str(format(float(sum(self.Stats[Mode2][f_k][k])/len(self.Stats[Mode2][f_k][k])), ' >10.4g'))
                     

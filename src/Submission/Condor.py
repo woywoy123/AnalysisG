@@ -70,6 +70,9 @@ class Condor(WriteDirectory, Notification):
                     self._Jobs[j].DataCache = False
                 if self.DisableRebuildTrainingSample == True:
                     self._Jobs[j].RebuildTrainingSample = False
+                
+                self.Notify("---------------------------")
+                self.Notify("CURRENTLY RUNNING JOB: " + j)
                 self._Jobs[j].Launch()
                 self._Complete[j] = True
 

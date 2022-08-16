@@ -285,11 +285,14 @@ class Analysis(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notif
                 f = []
                 if self.EventCache == False:
                     f = [k for k in Samples if k.endswith(".root")]
-                if self.EventCache == True:
+                else:
                     f = [k for k in Samples if k.endswith(".pkl")]
                 if len(f) > 0:
                     continue
 
+                if FileDir.split("/")[-1] not in self.DataCacheOnlyCompile and len(self.DataCacheOnlyCompile) > 0:
+                    continue
+                
                 self.Notify("STARTING THE COMPILATION OF NEW DIRECTORY: " + FileDir)
                 FileOut = self._EventGeneratorDir + "/" + name + "/" + FileDir.replace(self._CommonDir, "")
                 CheckSample = True
@@ -383,6 +386,8 @@ class Analysis(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notif
                 c = 0
                 exp = ExportToDataScience()
                 exp.VerboseLevel = 0
+                tmp = self.Device
+                self.Device = "cpu"
                 for i in Container:
                     Data = []
                     counter = []
@@ -401,6 +406,7 @@ class Analysis(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notif
 
                 PickleObject(self.FileTraces, "FileTraces", self._DataLoaderDir + "FileTraceDump")
                 PickleObject(self.DataContainer, "DataContainer", self._DataLoaderDir + "FileTraceDump")
+                self.Device = tmp
 
             self.DataContainer = UnpickleObject("DataContainer", self._DataLoaderDir + "FileTraceDump")
             Exp = ExportToDataScience()

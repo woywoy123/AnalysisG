@@ -32,7 +32,6 @@ class Directories(Notification):
         accepted = [".root", ".pt", ".pkl", ".hdf5", ".onnx"]
         if dir.endswith("/"):
             dir = dir[:-1]
-        
         Output = {}
         if os.path.isfile(dir) and len([k for k in accepted if dir.endswith(k)]) != 0:
            Output[dir] = ""
@@ -44,7 +43,6 @@ class Directories(Notification):
                 Output[i] = ""
             else:
                 continue
-        
         integers = { re.search(r'\d+$', ".".join(i.split(".")[:-1])) : i  for i in Output }
         integers = { int(i.group()) : integers[i] for i in integers if i != None }
         integers = { integers[i] : "" for i in sorted(integers) }
