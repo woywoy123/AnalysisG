@@ -388,6 +388,7 @@ class Analysis(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notif
                 exp.VerboseLevel = 0
                 tmp = self.Device
                 self.Device = "cpu"
+                p = 1
                 for i in Container:
                     Data = []
                     counter = []
@@ -403,6 +404,9 @@ class Analysis(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notif
                         di = "/".join(str(Path(self._DataLoaderDir + "/HDF5/" + Data[it] + ".hdf5").resolve()).split("/")[:-1])
                         exp.ExportEventGraph(j, Data[it], di)
                         it+=1 
+                        if it % 1000 == 0:
+                            self.Notify("REBUILDING CONTAINER... " + str(p) + "/"  + str(len(Container)) + " - " + str(it) + "/" + str(len(sets)))
+                    p+=1
 
                 PickleObject(self.FileTraces, "FileTraces", self._DataLoaderDir + "FileTraceDump")
                 PickleObject(self.DataContainer, "DataContainer", self._DataLoaderDir + "FileTraceDump")
