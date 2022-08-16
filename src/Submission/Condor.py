@@ -2,6 +2,7 @@ from AnalysisTopGNN.IO import WriteDirectory
 from AnalysisTopGNN.Tools import Notification
 from AnalysisTopGNN.Generators import Analysis
 import inspect
+import os, stat 
 
 class Condor(WriteDirectory, Notification):
     def __init__(self):
@@ -21,6 +22,7 @@ class Condor(WriteDirectory, Notification):
         self.DisableDataCache = False
         self.DisableRebuildTrainingSample = False
         self.CondaEnv = "GNN"
+        self.ProjectName = None
     
     def AddJob(self, name, instance, memory, time, waitfor = None):
         if name not in self._Jobs: 
@@ -37,7 +39,13 @@ class Condor(WriteDirectory, Notification):
     
         if name not in self._Memory:
             self._Memory[name] = memory
-            self._Time[name] = time 
+            self._Time[name] = time
+
+        if self.ProjectName == None:
+            self.Warning("INHERITING PROJECT NAME FROM INSTANCE!")
+            self.ProjectName = instance.ProjectName 
+        else:
+            instance.ProjectName = self.ProjectName
     
     def __Sequencer(self):
         def Recursion(inpt, key):
@@ -78,13 +86,14 @@ class Condor(WriteDirectory, Notification):
 
     def DumpCondorJobs(self):
         self.__Sequencer()
-        self.MakeDir("CondorDump")
+        self.MakeDir(self.ProjectName + "/CondorDump")
         DAG = []
         for i in self._sequence:
             for j in self._sequence[i]:
                 if self._Complete[j] == True:
                     continue
-                self.MakeDir("CondorDump/" + j)
+                self._Complete[j] = True
+                self.MakeDir(self.ProjectName + "/CondorDump/" + j)
                 configs = []
                 configs += ["from AnalysisTopGNN.Generators import Analysis"]
                 configs += ["Ana = Analysis()"]
@@ -96,26 +105,26 @@ class Condor(WriteDirectory, Notification):
                     if k == "EventImplementation" and obj != None:
                         configs += ["from EventImplementation import *"]
                         configs += ["Ana.EventImplementation = " + obj.__name__]
-                        F = open("CondorDump/" + j + "/EventImplementation.py", "w")
+                        F = open(self.ProjectName + "/CondorDump/" + j + "/EventImplementation.py", "w")
                         F.write("".join(open(inspect.getfile(obj), "r").readlines()))
                         F.close()
 
                     elif k == "Model" and obj != None:
                         configs += ["from ModelImplementation import *"]
                         configs += ["Ana.Model = " + type(obj).__name__]
-                        F = open("CondorDump/" + j + "/ModelImplementation.py", "w")
+                        F = open(self.ProjectName + "/CondorDump/" + j + "/ModelImplementation.py", "w")
                         F.write("".join(open(type(obj).__module__.replace(".", "/") +".py", "r").readlines()))
                         F.close()
 
                     elif k == "EventGraph" and obj != None:
                         configs += ["from EventGraphImplementation import *"]
                         configs += ["Ana.EventGraph = " + obj.__name__]
-                        F = open("CondorDump/" + j + "/EventGraphImplementation.py", "w")
+                        F = open(self.ProjectName + "/CondorDump/" + j + "/EventGraphImplementation.py", "w")
                         F.write("".join(open(inspect.getfile(obj), "r").readlines()))
                         F.close()
 
                     elif k.endswith("Attribute"):
-                        F = open("CondorDump/" + j + "/" + k +".py", "w")
+                        F = open(self.ProjectName + "/CondorDump/" + j + "/" + k +".py", "w")
                         configs += ["from " + k + " import *"]
                         for l in obj:
                             configs += ["Ana." + k + '["' + l + '"] = ' + obj[l].__name__]
@@ -129,16 +138,17 @@ class Condor(WriteDirectory, Notification):
                         configs += ["Ana." + k + " = " + str(obj)]
                 
                 configs += ["Ana.Launch()"]
-                F = open("CondorDump/" + j + "/Spawn.py", "w")
+                F = open(self.ProjectName + "/CondorDump/" + j + "/Spawn.py", "w")
                 F.write("\n".join(configs))
                 F.close()
 
-                F = open("CondorDump/" + j + "/Spawn.sh", "w")
-                sk = ["#!/bin/bash", "source ~/.bashrc", 'eval "$(conda shell.bash hook)"', "conda activate GNN", "python Spawn.py"]
+                F = open(self.ProjectName + "/CondorDump/" + j + "/Spawn.sh", "w")
+                sk = ["#!/bin/bash", "source ~/.bashrc", 'eval "$(conda shell.bash hook)"', "conda activate GNN", "python " + j + "/Spawn.py"]
                 F.write("\n".join(sk))
                 F.close()
+                os.chmod(self.ProjectName + "/CondorDump/" + j + "/Spawn.sh", stat.S_IRWXU)
                 
-                sk = ["executable = " + j + "/Spawn.sh", "error = results.error.$(ClusterID)", 'Requirements = OpSysAndVer == CentOS7"']
+                sk = ["executable = " + j + "/Spawn.sh", "error = results.error.$(ClusterID)", 'Requirements = OpSysAndVer == "CentOS7"']
                 if self._Device[j] == "cpu":
                     sk += ["Request_CPUs = " + str(self._Jobs[j].__dict__["CPUThreads"])]
                 else:
@@ -165,7 +175,7 @@ class Condor(WriteDirectory, Notification):
                     sk += ["+Request_Memory = " + str(x)]
                 sk += ["queue"]
 
-                F = open("CondorDump/" + j + "/" + j + ".submit", "w")
+                F = open(self.ProjectName + "/CondorDump/" + j + "/" + j + ".submit", "w")
                 F.write("\n".join(sk))
                 F.close()
                 s = "JOB " + j + " " + j + "/" + j + ".submit"
@@ -178,6 +188,6 @@ class Condor(WriteDirectory, Notification):
                     s = "PARENT " + p + " CHILD " + j
                     if s not in DAG:
                         DAG.append(s)
-        F = open("CondorDump/DAGSUBMISSION.submit", "w")
+        F = open(self.ProjectName + "/CondorDump/DAGSUBMISSION.submit", "w")
         F.write("\n".join(DAG))
         F.close()
