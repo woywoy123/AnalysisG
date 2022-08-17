@@ -89,11 +89,8 @@ class Condor(WriteDirectory, Notification):
         self.MakeDir(self.ProjectName + "/CondorDump")
         DAG = []
         for i in self._sequence:
+            self.MakeDir(self.ProjectName + "/CondorDump/" + i)
             for j in self._sequence[i]:
-                if self._Complete[j] == True:
-                    continue
-                self._Complete[j] = True
-                self.MakeDir(self.ProjectName + "/CondorDump/" + j)
                 configs = []
                 configs += ["from AnalysisTopGNN.Generators import Analysis"]
                 configs += ["Ana = Analysis()"]
@@ -101,30 +98,29 @@ class Condor(WriteDirectory, Notification):
                     obj = self._Jobs[j].__dict__[k]
                     if k.startswith("_") and k != "_SampleDir":
                         continue
-
                     if k == "EventImplementation" and obj != None:
                         configs += ["from EventImplementation import *"]
                         configs += ["Ana.EventImplementation = " + obj.__name__]
-                        F = open(self.ProjectName + "/CondorDump/" + j + "/EventImplementation.py", "w")
+                        F = open(self.ProjectName + "/CondorDump/" + i + "/EventImplementation.py", "w")
                         F.write("".join(open(inspect.getfile(obj), "r").readlines()))
                         F.close()
 
                     elif k == "Model" and obj != None:
                         configs += ["from ModelImplementation import *"]
                         configs += ["Ana.Model = " + type(obj).__name__]
-                        F = open(self.ProjectName + "/CondorDump/" + j + "/ModelImplementation.py", "w")
+                        F = open(self.ProjectName + "/CondorDump/" + i + "/ModelImplementation.py", "w")
                         F.write("".join(open(type(obj).__module__.replace(".", "/") +".py", "r").readlines()))
                         F.close()
 
                     elif k == "EventGraph" and obj != None:
                         configs += ["from EventGraphImplementation import *"]
                         configs += ["Ana.EventGraph = " + obj.__name__]
-                        F = open(self.ProjectName + "/CondorDump/" + j + "/EventGraphImplementation.py", "w")
+                        F = open(self.ProjectName + "/CondorDump/" + i + "/EventGraphImplementation.py", "w")
                         F.write("".join(open(inspect.getfile(obj), "r").readlines()))
                         F.close()
 
                     elif k.endswith("Attribute"):
-                        F = open(self.ProjectName + "/CondorDump/" + j + "/" + k +".py", "w")
+                        F = open(self.ProjectName + "/CondorDump/" + i + "/" + k +".py", "w")
                         configs += ["from " + k + " import *"]
                         for l in obj:
                             configs += ["Ana." + k + '["' + l + '"] = ' + obj[l].__name__]
@@ -137,57 +133,57 @@ class Condor(WriteDirectory, Notification):
                             obj = '"' + obj + '"'
                         configs += ["Ana." + k + " = " + str(obj)]
                 
-                configs += ["Ana.Launch()"]
-                F = open(self.ProjectName + "/CondorDump/" + j + "/Spawn.py", "w")
-                F.write("\n".join(configs))
-                F.close()
+            configs += ["Ana.Launch()"]
+            F = open(self.ProjectName + "/CondorDump/" + i + "/Spawn.py", "w")
+            F.write("\n".join(configs))
+            F.close()
 
-                F = open(self.ProjectName + "/CondorDump/" + j + "/Spawn.sh", "w")
-                sk = ["#!/bin/bash", "source ~/.bashrc", 'eval "$(conda shell.bash hook)"', "conda activate GNN", "python " + j + "/Spawn.py"]
-                F.write("\n".join(sk))
-                F.close()
-                os.chmod(self.ProjectName + "/CondorDump/" + j + "/Spawn.sh", stat.S_IRWXU)
-                
-                sk = ["executable = " + j + "/Spawn.sh", "error = results.error.$(ClusterID)", 'Requirements = OpSysAndVer == "CentOS7"']
-                if self._Device[j] == "cpu":
-                    sk += ["Request_CPUs = " + str(self._Jobs[j].__dict__["CPUThreads"])]
-                else:
-                    sk += ["Request_GPUs = " + str(1)]
+            F = open(self.ProjectName + "/CondorDump/" + i + "/Spawn.sh", "w")
+            sk = ["#!/bin/bash", "source ~/.bashrc", 'eval "$(conda shell.bash hook)"', "conda activate GNN", "python " + i + "/Spawn.py"]
+            F.write("\n".join(sk))
+            F.close()
+            os.chmod(self.ProjectName + "/CondorDump/" + i + "/Spawn.sh", stat.S_IRWXU)
+            
+            sk = ["executable = " + i + "/Spawn.sh", "error = results.error.$(ClusterID)", 'Requirements = OpSysAndVer == "CentOS7"']
+            if self._Device[i] == "cpu":
+                sk += ["Request_CPUs = " + str(self._Jobs[i].__dict__["CPUThreads"])]
+            else:
+                sk += ["Request_GPUs = " + str(1)]
  
-                clust_t = self._Time[j]
-                x = None
-                if clust_t.endswith("h"):
-                    x = 60*60*float(clust_t.replace("h", ""))
-                elif clust_t.endswith("m"):
-                    x = 60*float(clust_t.replace("m", ""))
-                elif clust_t.endswith("s"):
-                    x = float(clust_t.replace("s", ""))
-                if x != None:
-                    sk += ["+RequestRuntime = " + str(x)]
-                
-                Mem = self._Memory[j]
-                x = None
-                if Mem.endswith("GB"):
-                    x = 1024*float(Mem.replace("GB", ""))
-                elif Mem.endswith("MB"):
-                    x = float(Mem.replace("MB", ""))
-                if x != None:
-                    sk += ["+Request_Memory = " + str(x)]
-                sk += ["queue"]
+            x = None
+            clust_t = self._Time[i]
+            if clust_t.endswith("h"):
+                x = 60*60*float(clust_t.replace("h", ""))
+            elif clust_t.endswith("m"):
+                x = 60*float(clust_t.replace("m", ""))
+            elif clust_t.endswith("s"):
+                x = float(clust_t.replace("s", ""))
+            if x != None:
+                sk += ["+RequestRuntime = " + str(x)]
+            
+            x = None
+            Mem = self._Memory[i]
+            if Mem.endswith("GB"):
+                x = 1024*float(Mem.replace("GB", ""))
+            elif Mem.endswith("MB"):
+                x = float(Mem.replace("MB", ""))
+            if x != None:
+                sk += ["+Request_Memory = " + str(x)]
+            sk += ["queue"]
 
-                F = open(self.ProjectName + "/CondorDump/" + j + "/" + j + ".submit", "w")
-                F.write("\n".join(sk))
-                F.close()
-                s = "JOB " + j + " " + j + "/" + j + ".submit"
+            F = open(self.ProjectName + "/CondorDump/" + i + "/" + i + ".submit", "w")
+            F.write("\n".join(sk))
+            F.close()
+            s = "JOB " + i + " " + i + "/" + i + ".submit"
+            if s not in DAG:
+                DAG.append(s)
+            
+            for p in self._sequence[i]:
+                if p == i:
+                    continue
+                s = "PARENT " + p + " CHILD " + i
                 if s not in DAG:
                     DAG.append(s)
-                
-                for p in self._sequence[j]:
-                    if p == j:
-                        continue
-                    s = "PARENT " + p + " CHILD " + j
-                    if s not in DAG:
-                        DAG.append(s)
         F = open(self.ProjectName + "/CondorDump/DAGSUBMISSION.submit", "w")
         F.write("\n".join(DAG))
         F.close()

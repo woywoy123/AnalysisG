@@ -344,7 +344,8 @@ class Analysis(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notif
                     self.Notify("!!EVENT NOT DUMPED, FILES EXIST " +  dstdir)
                 else:
                     Exp.ExportEventGraph(self.DataContainer[i].to("cpu"), address, self._outdir)
-                    self.Notify("!!DUMPED EVENT " + str(int(self.DataContainer[i].i+1)) + "/" + str(len(self.DataContainer)))
+                    if int(i+1) % 1000 == 0:
+                        self.Notify("!!DUMPED EVENT " + str(int(self.DataContainer[i].i+1)) + "/" + str(len(self.DataContainer)))
                 self.DataContainer[i] = address
 
                 try:
