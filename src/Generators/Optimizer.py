@@ -1,6 +1,6 @@
 import torch
 from torch.utils.data import SubsetRandomSampler
-from torch.optim.lr_scheduler import ExponentialLR
+from torch.optim.lr_scheduler import ExponentialLR, CyclicLR
 from torch_geometric.loader import DataLoader
 from torch_geometric.utils import accuracy
 from torch_geometric.profile import get_gpu_memory_from_nvidia_smi
@@ -184,6 +184,11 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Notifica
     def DefineScheduler(self):
         if self.DefaultScheduler == "ExponentialLR":
             self.Scheduler = ExponentialLR(self.Optimizer, *self.SchedulerParams)
+        elif self.DefineScheduler == None:
+            self.Scheduler = None
+        elif self.DefineScheduler == "CyclicLR":
+            self.Scheduler = CyclicLR(self.Optimizer, *self.SchedulerParams)
+
 
     def Train(self, sample):
         if self.Training:
