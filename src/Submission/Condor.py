@@ -107,7 +107,7 @@ class Condor(WriteDirectory, Notification):
 
                     elif k == "Model" and obj != None:
                         configs += ["from ModelImplementation import *"]
-                        configs += ["Ana.Model = " + type(obj).__name__]
+                        configs += ["Ana.Model = " + type(obj).__name__ + "()"]
                         F = open(self.ProjectName + "/CondorDump/" + i + "/ModelImplementation.py", "w")
                         F.write("".join(open(type(obj).__module__.replace(".", "/") +".py", "r").readlines()))
                         F.close()
