@@ -29,7 +29,7 @@ git clone https://github.com/woywoy123/FourTopsAnalysis.git
 - ```PyTorch``` 
 - ```ONNX```
 - ```UpROOT```
-- ```HDF5````
+- ```HDF5```
 
 3. Navigate to:
 ```bash 
