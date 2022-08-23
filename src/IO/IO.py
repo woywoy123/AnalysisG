@@ -24,7 +24,7 @@ class File(Notification):
         self.ObjectBranches = {}
         self.ObjectLeaves = {}
         self.ObjectTrees = {}
-
+        self.Threads = 12
         self.Trees = []
         self.Leaves = []
         self.Branches = []
@@ -115,7 +115,7 @@ class File(Notification):
                 th = TemplateThreading(i, "ObjectLeaves", "ArrayLeaves", self.ObjectLeaves[i], Convert)
                 runners.append(th)
         
-        T = Threading(runners, self)
+        T = Threading(runners, self, self.Threads)
         T.Verbose = self.Verbose
         T.VerboseLevel = self.VerboseLevel
         T.StartWorkers()

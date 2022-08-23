@@ -301,7 +301,7 @@ class Analysis(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notif
                         ev = EventGenerator(None, self.Verbose, self.NEvent_Start, self.NEvent_Stop)
                         ev.EventImplementation = self.EventImplementation
                         ev.Files = {FileDir : [S]}
-                        ev.VerboseLevel = 0
+                        ev.VerboseLevel = self.VerboseLevel
                         ev.Threads = self.CPUThreads 
                         ev.SpawnEvents()
                         ev.CompileEvent(self.CompileSingleThread)

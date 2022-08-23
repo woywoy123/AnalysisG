@@ -37,6 +37,7 @@ class EventGenerator(Debugging, Directories):
                 
                 if self.__Debug != True:
                     F_i = File(i + "/" + F, self.__Debug)
+                    F_i.Threads = self.Threads
                     F_i.VerboseLevel = self.VerboseLevel
                     F_i.Trees = obj.MinimalTrees
                     F_i.Branches = obj.MinimalBranches
