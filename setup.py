@@ -1,4 +1,7 @@
 from distutils.core import setup
+from setuptools import Extension
+from torch.utils.cpp_extension import BuildExtension, CppExtension
+
 
 setup(
         name = "AnalysisTopGNN", 
@@ -44,3 +47,10 @@ setup(
         long_description = open("README.md").read(), 
     )
 
+setup(
+        name = "PyTorchCustom", 
+        ext_modules = [
+            CppExtension("LorentzVector", ["src/PyTorchCustom/Source/LorentzVector.cpp"])
+        ],
+        cmdclass = {"build_ext" : BuildExtension}
+    )

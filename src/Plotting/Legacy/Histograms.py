@@ -369,8 +369,7 @@ class CombineTGraph(SharedMethods, GenericAttributes):
             H = self.Lines[i]
 
             if isinstance(H.Color, int):
-                obj = plt.cm.get_cmap("hsv", H.Color)
-                H.Color = obj(H.Color)
+                H.Color = (float(np.random.rand(1)), float(np.random.rand(1)), float(np.random.rand(1)))
 
             H.ErrorBars = self.ErrorBars 
             if H.Compiled == False:

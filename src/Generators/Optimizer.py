@@ -2,7 +2,7 @@ import torch
 from torch.utils.data import SubsetRandomSampler
 from torch.optim.lr_scheduler import ExponentialLR, CyclicLR
 from torch_geometric.loader import DataLoader
-from torch_geometric.utils import accuracy
+from torchmetrics.functional import accuracy
 from torch_geometric.profile import get_gpu_memory_from_nvidia_smi
 
 from sklearn.model_selection import KFold

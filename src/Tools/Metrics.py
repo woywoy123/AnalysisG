@@ -43,7 +43,7 @@ class Metrics(Directories):
         self.Stats = {}
         self.Epochs = []
         for i in Files:
-            epoch = i.split("_")[1].replace(".pkl", "")
+            epoch = i.split("_")[-1].replace(".pkl", "")
             if epoch == "Done":
                 self.File = UnpickleObject(i, outputDir)
                 continue
@@ -259,7 +259,9 @@ class Metrics(Directories):
         
         DumpFigure(self.Epochs, self.AllTrainLoss, "All-Features", "Loss", "Training", True, Log = True)
         DumpFigure(self.Epochs, self.AllValidLoss, "All-Features", "Loss", "Validation", True, Log = True)
-        MergeLines(self.Epochs, self.AllTrainLoss, self.AllValidLoss, "All-Features", "Loss", "Training", "Validation", False, True)         
+        MergeLines(self.Epochs, self.AllTrainLoss, self.AllValidLoss, "All-Features", "Loss", "Training", "Validation", False, True)     
+        
+        self.LogsDir = self.PlotDir + "/Logs/" 
         self.DumpLog()
 
     def DumpLog(self):
@@ -451,19 +453,23 @@ class Metrics(Directories):
         Com_A.Title = "Accuracy dT/dV plot"
         Com_L = CombineTGraph()
         Com_L.Title = "Loss dT/dV plot"
+        it = 5
         for ft in Features:
             L_ = self.__CreateGraph(ft, 
                     "Epoch", "dT/dV", 
                     [i+1 for i in range(self.Min-1, self.Max-1)], Delta_T_V[ft + "::Accuracy"], 
                     ft + "_A", todir = "dT_dV/Raw")
             Com_A.Lines.append(L_) 
-
-            L_ = self.__CreateGraph(ft, 
+            L_.Color = it
+            X_ = self.__CreateGraph(ft, 
                     "Epoch", "dT/dV", 
                     [i+1 for i in range(self.Min-1, self.Max-1)], Delta_T_V[ft + "::Loss"], 
                     ft + "_L", todir = "dT_dV/Raw")
-            Com_L.Lines.append(L_) 
-       
+            Com_L.Lines.append(X_) 
+            X_.Color = it 
+
+            it += 1
+
         Com_A.Filename = "Accuracy_dT_dV"
         Com_L.Filename = "Loss_dT_dV"
         Com_A.Save(self.PlotDir + "/dT_dV")
