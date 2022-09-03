@@ -1,16 +1,19 @@
-from AnalysisTopGNN.Generators import CacheGenerators
-import TestImportPackage
-import Event
+import sys
+sys.path.append("../")
 import IO
-import EventImplementations
-import DataLoader
-import Metrics 
-import Optimizer
-import Exporter
-import TopBuilder
-import FeatureTester
-import ModelProofOfConcept
-import Unification
+
+#from AnalysisTopGNN.Generators import CacheGenerators
+#import TestImportPackage
+import Event
+#import EventImplementations
+#import DataLoader
+#import Metrics 
+#import Optimizer
+#import Exporter
+#import TopBuilder
+#import FeatureTester
+#import ModelProofOfConcept
+#import Analysis
 
 def Test(F, **kargs):
     from AnalysisTopGNN.IO import WriteDirectory
@@ -41,9 +44,13 @@ def Test(F, **kargs):
 
 
 if __name__ == "__main__":
-    TestImportPackage.TestImports()
+    #TestImportPackage.TestImports()
     GeneralDir = "/CERN/CustomAnalysisTopOutputTest/"
-   
+    
+    # ===== Test IO ===== #
+    #Test(IO.TestReadROOTNominal, file = GeneralDir + "/tttt/QU_0.root")
+    #Test(IO.TestReadROOTDelphes, file = "/CERN/Delphes/tag_1_delphes_events.root")
+
     ## ===== Test IO ===== ##
     #Test(IO.TestDir, di = GeneralDir)
     #Test(IO.TestReadSingleFile, dir_f = GeneralDir + "t/MCa/QU_0.root") 
@@ -59,7 +66,7 @@ if __name__ == "__main__":
     #CacheGenerators.Generate_Cache(GeneralDir + "t/MCa/", Compiler = "t")
 
     ## ===== Test of EventGenerator ===== ##
-    #Test(Event.TestEvents, di = GeneralDir + "tttt/MCe/QU_0.root")
+    Test(Event.TestEvents, di = GeneralDir + "tttt/QU_0.root")
     #Test(Event.TestParticleAssignment, di = GeneralDir + "tttt/MCe/QU_0.root")
     #Test(Event.TestSignalMultipleFile, di = GeneralDir + "tttt/MCe/")
     #Test(Event.TestSignalDirectory, di = GeneralDir + "t/MCa/")
@@ -118,10 +125,10 @@ if __name__ == "__main__":
     #            "ttbar" : GeneralDir + "ttbar/MCa/QU_0.root", 
     #            "Zmumu" : GeneralDir + "Zmumu/MCd/"
     #        }
-    #Test(Unification.TestUnificationEventGenerator, FileDir = GeneralDir, Files = Files)
-    #Test(Unification.TestUnificationDataLoader)
-    #Test(Unification.TestUnificationOptimizer)
-    Test(Unification.TestUnificationSubmission)
+    #Test(Analysis.TestUnificationEventGenerator, FileDir = GeneralDir, Files = Files)
+    #Test(Analysis.TestUnificationDataLoader)
+    #Test(Analysis.TestUnificationOptimizer)
+    #Test(Analysis.TestUnificationSubmission)
 
     ## ========= Presentation Plots ============ #
     #Test(Presentation1.CreatePlots, FileDir = GeneralDir + "tttt/MCe/", CreateCache = True)
