@@ -1,7 +1,7 @@
 from AnalysisTopGNN.IO import ExportToDataScience, UnpickleObject, PickleObject
 from AnalysisTopGNN.Generators import GenerateDataLoader, EventGenerator, Optimizer
-from AnalysisTopGNN.Models import *
 from AnalysisTopGNN.Events import EventGraphTruthTops, EventGraphTruthTopChildren, EventGraphDetector
+from TrivialModels import *
 import Templates.EdgeFeatures as ef
 import Templates.NodeFeatures as nf
 import Templates.GraphFeatures as gf
@@ -66,6 +66,7 @@ def TestDataLoaderExport(Files, CreateCache):
     it = 10
     ev_O = CreateEventGeneratorComplete(it, Files, ["tttt", "t"], CreateCache, "TestDataLoaderExport")
     DL = CreateDataLoaderComplete(["tttt", "t"], "TruthTopChildren", "TestDataLoaderExport", CreateCache, NameOfCaller = "TestDataLoaderExport" )
+    DL.ProcessSamples()
     
     Exp = ExportToDataScience()
     Exp.ExportDataGenerator(DL, Name = "TestDataLoaderExportHDF5")

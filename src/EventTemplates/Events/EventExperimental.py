@@ -30,8 +30,6 @@ class ExperimentalEvent(EventTemplate):
             inp.MassFromChild()
             for p in inp.Daughter:
                 RecursiveMass(p)
-
-        self.CompileParticles(ClearVal)
         
         collect = {}
         for i in self.TopChildren:

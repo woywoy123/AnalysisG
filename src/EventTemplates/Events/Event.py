@@ -15,7 +15,7 @@ class Event(EventTemplate):
                             "TopPostFSR" : TopPostFSR(),
                             "TopPostFSRChildren" : TopPostFSRChildren()
                         }
-        self.Tree = ["nominal"]
+        self.Trees = ["nominal"]
         self.runNumber = "runNumber"
         self.eventNumber = "eventNumber"
         
@@ -49,49 +49,39 @@ class Event(EventTemplate):
         self.met_phi = "met_phi" 
 
         self.DefineObjects()
-        self.iter = -1
 
-    def CompileEvent(self, ClearVal = True):
-        self.CompileParticles(ClearVal)
-        def FixList(Input):
-            try:
-                return [int(Input)]
-            except:
-                return list(Input)
-
+    def CompileEvent(self):
         def RecursiveSignal(DecayList, sig, index):
             for p_i in DecayList:
                 setattr(p_i, "FromRes", sig)
                 setattr(p_i, "Index", index)
-                RecursiveSignal(p_i.Decay_init, sig, index)
-                RecursiveSignal(p_i.Decay, sig, index)
-      
-        for i in self.TruthTops:
-            self.TruthTops[i][0].Decay_init += self.TruthTopChildren[i]
+                RecursiveSignal(p_i.Children, sig, index)
+     
+
+        for i in self.TruthTopChildren.values():
+            self.TruthTops[i.Index].Children += [i]
+
+        for i in self.TopPostFSRChildren.values():
+            self.TopPostFSR[i.Index].Children += [i]
 
         for i in self.TopPostFSR:
-            self.TopPostFSR[i][0].Decay_init += self.TopPostFSRChildren[i]
+            setattr(self.TopPostFSR[i], "Jets", [])
 
         for i in self.TruthJets:
-            self.TruthJets[i][0].GhostTruthJetMap = FixList(self.TruthJets[i][0].GhostTruthJetMap)
-            self.TruthJets[i][0].Index = -1
-            self.TruthJets[i][0].FromRes = 0
-
-        for i in self.Jets:
-            self.Jets[i][0].JetMapGhost = FixList(self.Jets[i][0].JetMapGhost)
-            self.Jets[i][0].JetMapTops = FixList(self.Jets[i][0].JetMapTops)
+            self.TruthJets[i].Index = -1
+            self.TruthJets[i].FromRes = 0
 
         for i in self.TruthJets:
-            for t in self.TruthJets[i][0].GhostTruthJetMap:
+            for t in self.TruthJets[i].GhostTruthJetMap:
                 if t == -1:
                     continue
-                self.TopPostFSR[t][0].Decay += self.TruthJets[i]
+                self.TopPostFSR[t].Jets += [self.TruthJets[i]]
 
         for i in self.Jets:
-            for tj in self.Jets[i][0].JetMapGhost:
+            for tj in self.Jets[i].JetMapGhost:
                 if tj == -1:
                     continue
-                self.TruthJets[tj][0].Decay += self.Jets[i]
+                self.TruthJets[tj].Children += [self.Jets[i]]
 
         self.Electrons = self.DictToList(self.Electrons)
         self.Muons = self.DictToList(self.Muons)
@@ -101,7 +91,7 @@ class Event(EventTemplate):
         self.Leptons += self.Electrons
         self.Leptons += self.Muons
         
-        All = [y for i in self.TopPostFSRChildren for y in self.TopPostFSRChildren[i] if abs(y.pdgid) in [11, 13, 15]]
+        All = [i for i in self.TopPostFSRChildren.values() if abs(i.pdgid) in [11, 13, 15]]
         for j in self.Leptons:
             dr = 99
             low = ""
@@ -114,7 +104,8 @@ class Event(EventTemplate):
             if low == "":
                 continue
             j.Index = low.Index
-            self.TopPostFSR[low.Index][0].Decay.append(j)
+            setattr(j, "FromRes", 0)
+            self.TopPostFSR[low.Index].Jets.append(j)
 
         self.DetectorParticles = []
         self.DetectorParticles += self.Electrons
@@ -130,10 +121,6 @@ class Event(EventTemplate):
         self.TopPostFSRChildren = self.DictToList(self.TopPostFSRChildren)
 
         for i in self.TopPostFSR:
-            RecursiveSignal(i.Decay_init, i.FromRes, i.Index)
-            RecursiveSignal(i.Decay, i.FromRes, i.Index)
+            RecursiveSignal(i.Children, i.FromRes, i.Index)
+            RecursiveSignal(i.Jets, i.FromRes, i.Index)
 
-        if ClearVal: 
-            del self.Objects
-            del self.Leaves
-            del self.KeyMap

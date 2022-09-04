@@ -158,7 +158,6 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Notifica
         ### Output Information
         self.Stats = {}
         self.Stats["EpochTime"] = []
-        self.Stats["BatchRate"] = []
         self.Stats["kFold"] = []
         self.Stats["FoldTime"] = []
         self.Stats["Nodes"] = []
@@ -274,19 +273,8 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Notifica
 
 
     def SampleLoop(self, samples):
-        self.ResetAll() 
-        self.len = len(samples.dataset)
-        R = []
-        
         for i in samples:
-            if self.Training:
-                self.ProgressInformation("TRAINING")
-            else:
-                self.ProgressInformation("VALIDATING")
             self.Train(i) 
-            R.append(self.Rate)
-        if self.AllReset:
-            self.Stats["BatchRate"].append(R)
         
     def GetTruthFlags(self, Input, FEAT):
         if len(Input) == 0:

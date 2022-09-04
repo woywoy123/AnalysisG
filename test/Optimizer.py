@@ -4,8 +4,14 @@ import Templates.EdgeFeatures as ef
 import Templates.NodeFeatures as nf
 import Templates.GraphFeatures as gf
 from AnalysisTopGNN.Generators import Optimizer
-from AnalysisTopGNN.Models import GraphNN, NodeConv, EdgeConv, CombinedConv
+from TrivialModels import GraphNN, NodeConv, EdgeConv, CombinedConv
 from AnalysisTopGNN.Events import EventGraphTruthTops, EventGraphTruthTopChildren, EventGraphDetector  
+from AnalysisTopGNN.Tools import Metrics
+
+def TestReadTraining(modelname):
+    M = Metrics(modelname, "_Models") 
+    M.PlotStats()
+    return True
 
 def TestOptimizerGraph(Files, Level, Name, CreateCache):
     if CreateCache:

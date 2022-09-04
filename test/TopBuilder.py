@@ -1,6 +1,6 @@
 from GenericFunctions import CreateEventGeneratorComplete, CreateDataLoaderComplete
 from AnalysisTopGNN.Generators import Optimizer
-from AnalysisTopGNN.Models import CombinedConv
+from TrivialModels import CombinedConv
 from AnalysisTopGNN.IO import UnpickleObject, PickleObject
 from AnalysisTopGNN.Particles.Particles import Particle 
 from AnalysisTopGNN.Reconstruction import Reconstructor
@@ -28,12 +28,12 @@ def TestBuilder(Files, CreateCache):
         for i in EV[0].Events[int(sample.i)]["nominal"].TopPostFSRChildren:
             if i.__dict__[attr] not in P:
                 P[i.__dict__[attr]] = Particle()
-            P[i.__dict__[attr]].Decay_init.append(i)
+            P[i.__dict__[attr]].Children.append(i)
 
         Res_T = []
         for i in P:
-            P[i].CalculateMassFromChildren()
-            Res_T.append(round(P[i].Mass_init_GeV,2))
+            P[i].CalculateMass(P[i].Children)
+            Res_T.append(round(P[i].Mass_GeV,2))
         return Res_T
    
 

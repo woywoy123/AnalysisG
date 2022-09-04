@@ -1,7 +1,7 @@
 from AnalysisTopGNN.Generators import ModelImporter
 from AnalysisTopGNN.Tools import Notification
 from torch_geometric.data import Batch
-from torch_geometric.utils import get_laplacian, subgraph, to_dense_adj, dense_to_sparse
+from torch_geometric.utils import dense_to_sparse
 import torch 
 import LorentzVector as LV
 
@@ -11,6 +11,7 @@ class Reconstructor(ModelImporter, Notification):
         self.VerboseLevel = 0
         self.Caller = "Reconstructor"
         self.TruthMode = False
+        self._init = False
         
         if Sample.is_cuda:
             self.Device = "cuda"

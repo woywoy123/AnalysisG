@@ -1,9 +1,11 @@
 from AnalysisTopGNN.Tools import Notification 
 from AnalysisTopGNN.IO import ExportToDataScience
+from AnalysisTopGNN.Tools import Threading
 from sklearn.model_selection import ShuffleSplit
 import numpy as np
 import importlib
 import torch
+import time
            
 class GenerateDataLoader(Notification):
     
@@ -13,6 +15,7 @@ class GenerateDataLoader(Notification):
         self.Device = "cpu"
         self.__iter = 0
         self.NEvents = -1
+        self.Threads = 6
         self.CleanUp = True
         self.Caller = "GenerateDataLoader"
         
@@ -33,7 +36,6 @@ class GenerateDataLoader(Notification):
         self.FileTraces["Samples"] = []
 
         self.EventGraph = ""
-
         self.SetDevice(self.Device)
 
     def __SetAttribute(self, c_name, fx, container):
@@ -121,7 +123,6 @@ class GenerateDataLoader(Notification):
         for it in sorted(EventGeneratorInstance.Events):
 
             ev = EventGeneratorInstance.Events[it][Tree]
-            self.ProgressInformation("CONVERSION")
             if self.__iter == self.NEvents:
                 break
             
@@ -133,10 +134,7 @@ class GenerateDataLoader(Notification):
             event.EdgeAttr = self.EdgeAttribute
             event.NodeAttr = self.NodeAttribute
             event.GraphAttr = self.GraphAttribute
-            DataObject = event.ConvertToData()
-
-            DataObject.to(device = self.Device, non_blocking = True)
-            self.DataContainer[self.__iter] = DataObject
+            self.DataContainer[self.__iter] = event
             
             if self.CleanUp:
                 EventGeneratorInstance.Events[it][Tree] = []
@@ -150,12 +148,29 @@ class GenerateDataLoader(Notification):
                 self.FileTraces["Start"].append(self.__iter)
                 self.FileTraces["Level"].append(fx_m + "." + fx_n)
                 self.FileTraces["SelfLoop"].append(SelfLoop)
-
             self.__iter += 1
         self.FileTraces["End"].append(self.__iter-1)
         if override == 0:
             self.Notify("FINISHED CONVERSION")
-        self.ResetAll()
+    
+    def ProcessSamples(self):
+        # ==== Use Threading to Speed up conversion ==== # 
+        def function(inpt, out = []):
+            for i in inpt:
+                try:
+                    out.append(i.ConvertToData())
+                    del i
+                except:
+                    out.append(i)
+            return out
+       
+        tmp = list(self.DataContainer)
+        TH = Threading(list(self.DataContainer.values()), function, self.Threads)
+        TH.Start()
+        for j, i in zip(tmp, TH._lists):
+            self.DataContainer[j] = i
+            i.to(device = self.Device, non_blocking = True)
+        del TH
 
     def MakeTrainingSample(self, ValidationSize = 50):
         def MakeSample(Shuff, InputList):
@@ -167,7 +182,7 @@ class GenerateDataLoader(Notification):
                     InputList[n_p] = []
                 InputList[n_p].append(self.DataContainer[i])
 
-
+        self.ProcessSamples() 
         self.Notify("!WILL SPLIT DATA INTO TRAINING/VALIDATION (" + 
                 str(ValidationSize) + "%) - TEST (" + str(100 - ValidationSize) + "%) SAMPLES")
 

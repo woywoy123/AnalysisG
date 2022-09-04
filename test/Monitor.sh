@@ -39,7 +39,6 @@ done
 cd ../
 
 rm -rf _Pickle 
-rm -rf _TestResults
 rm -rf _Cache
 rm -rf _Models
 rm -rf PresentationPlots

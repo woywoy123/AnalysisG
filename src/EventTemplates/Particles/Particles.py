@@ -11,12 +11,6 @@ class Particle(ParticleTemplate):
         self.phi = self.Type + "_phi"
         self.e = self.Type + "_e"
 
-        self._DefineParticle()
-
-        self.Decay_init = []
-        self.Decay = []
-        self.Index = -1
-
 class Lepton(Particle):
     def __init__(self):
         self.charge = self.Type + "_charge"

@@ -8,123 +8,67 @@ from AnalysisTopGNN.Tools import Threading, TemplateThreading
 from AnalysisTopGNN.Tools import Notification
 from AnalysisTopGNN.Tools import RecallObjectFromString
 
+
 class File(Notification):
-    def __init__(self, directory = None, Verbose = False):
-        Notification.__init__(self, Verbose = Verbose) 
-        
-        if directory != None:
-            self.Caller = "FILE +--> " + directory
-            self.__Dir = directory
-            self.__Reader = uproot.open(self.__Dir)       
-
-        self.ArrayBranches = {}
-        self.ArrayLeaves = {}
-        self.ArrayTrees = {}
-        
-        self.ObjectBranches = {}
-        self.ObjectLeaves = {}
-        self.ObjectTrees = {}
-        self.Threads = 12
+    def __init__(self, FileDirectory):
+        Notification.__init__(self)
+        self.Caller = "FILE"
         self.Trees = []
-        self.Leaves = []
         self.Branches = []
+        self.Leaves = []
+        self._Reader =  uproot.open(FileDirectory)
+        self._State = None
+        self._Threads = 1
+   
+    def _CheckKeys(self, List, Type):
+        TMP = []
 
-    def DefineDirectory(self, Directory):
-        self.__init__(directory = Directory, Verbose = self.Verbose)
-  
-    def CheckObject(self, Object, Key):
-        if Key == -1:
-            return False
-        try:
-            Object[Key]
-            return True
-        except uproot.exceptions.KeyInFileError:
-            return False
+        t = []
+        for i in [k for k in self._State.keys() if "/" not in k]:
+            if ";" in i:
+                i = i.split(";")[0]
+            t.append(i)
+        self._State = t
 
-    def CheckKeys(self):
-        FoundBranches = set()
-        FoundLeaves = set()
-        
-        for i in self.Trees:
-            if self.CheckObject(self.__Reader, i) == False:
-                self.Warning("SKIPPED TREE -> " + i)
-            else:
-                self.ObjectTrees[i] = self.__Reader[i]
+        for i in List:
+            if i not in self._State:
+                self.Warning("SKIPPED " + Type + ": " + i)
+                continue
+            TMP.append(i)
+        return TMP
+    
+    def _GetKeys(self, List1, List2, Type):
+        TMP = []
+        for i in List1:
+            self._State = self._Reader[i]
+            TMP += [i + "/" + j for j in self._CheckKeys(List2, Type)]
+        return TMP
 
-        for i, j in self.ObjectTrees.items():
-            for k in j.iterkeys():
-                Key = k.split("/")
-                if Key[-1] in self.Branches:
-                    self.ObjectBranches[i + "/" + Key[0]] = self.__Reader[i + "/" + Key[0]]
-                    FoundBranches.add(Key[-1])
-                    continue
-                if Key[-1] in self.Leaves and len(Key) > 1:
-                    self.ObjectLeaves[i + "/" + Key[0] + "/" + Key[-1]] = self.__Reader[i + "/" + Key[0] + "/" + Key[-1]]
-                    FoundLeaves.add(Key[-1])
-                    continue
-
-                if Key[-1] in self.Leaves:
-                   self.ObjectLeaves[i + "/" + Key[-1]] = self.__Reader[i + "/" + Key[-1]]
-                   FoundLeaves.add(Key[-1])
-
-        for i in self.Branches:
-            if i not in FoundBranches:
-                self.Warning("SKIPPED BRANCH -> " + i)
-
-        for i in self.Leaves:
-            if i not in FoundLeaves:
-                self.Warning("SKIPPED LEAF -> " + i)
-
-
-    def ConvertToArray(self):
-        def Convert(obj):
-            def Rec(val):
-                if isinstance(val, list):
-                    return [Rec(i) for i in val]                
-                elif isinstance(val, dict):
-                    return {j : Rec(val[j]) for j in val}
-                elif type(val).__module__ == "numpy":
-                    return Rec(getattr(val, "tolist", lambda: val)())
-                elif type(val).__name__ == "STLVector":
-                    return Rec(val.tolist())
-                elif "TRefArray" in type(val).__name__:
-                    return Rec(list(val))
-                else:
-                    return val
-            try:                
-                return Rec(obj.array(library = "np"))
-            except:
-                return []
-
-        
-        self.Caller = "CONVERTTOARRAY"
-        self.Notify("!!STARTING CONVERSION")
-        runners = []
-        for i in self.ObjectTrees:  
-            if self.CheckAttribute(self.ObjectTrees[i], "array") and i not in self.ArrayTrees:
-                th = TemplateThreading(i, "ObjectTrees", "ArrayTrees", self.ObjectTrees[i], Convert)
-                runners.append(th)
-        
-        for i in self.ObjectBranches:
-            if self.CheckAttribute(self.ObjectBranches[i], "array") and i not in self.ArrayBranches:
-                th = TemplateThreading(i, "ObjectBranches", "ArrayBranches", self.ObjectBranches[i], Convert)
-                runners.append(th)
-        
-        for i in self.ObjectLeaves:
-            if self.CheckAttribute(self.ObjectLeaves[i], "array") and i not in self.ArrayLeaves:
-                th = TemplateThreading(i, "ObjectLeaves", "ArrayLeaves", self.ObjectLeaves[i], Convert)
-                runners.append(th)
-        
-        T = Threading(runners, self, self.Threads)
-        T.Verbose = self.Verbose
-        T.VerboseLevel = self.VerboseLevel
-        T.StartWorkers()
-        del T
-        del runners
-        del self.ObjectLeaves
-        del self.ObjectBranches
-        self.Trees = list(self.ObjectTrees)
-        del self.ObjectTrees
+    def _GetBranches(self):
+        return self._GetKeys(self.Trees, self.Branches, "BRANCH")
+    
+    def _GetLeaves(self):
+        leaves = []
+        leaves += self._GetKeys(self.Trees, self.Leaves, "LEAF")
+        leaves += self._GetKeys(self.Branches, self.Leaves, "LEAF")
+        return leaves 
+    
+    def ValidateKeys(self):
+        self.Leaves = list(set(self.Leaves))
+        self.Branches = list(set(self.Branches))
+        self.Trees = list(set(self.Trees))
+        self._State = self._Reader 
+        self.Trees = self._CheckKeys(self.Trees, "TREE")
+        self.Branches = self._GetBranches()
+        self.Leaves = self._GetLeaves()     
+    
+    def GetTreeValues(self, Tree):
+        All = []
+        All += [b.split("/")[-1] for b in self.Branches]
+        All += [l.split("/")[-1] for l in self.Leaves]
+        for i in self._Reader[Tree].iterate(All, library = "ak"):
+            self.Iter = i
+            break
 
 def PickleObject(obj, filename, Dir = "_Pickle"):
     if filename.endswith(".pkl"):

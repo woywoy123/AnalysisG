@@ -9,9 +9,7 @@ class GenericParticle(ParticleTemplate):
         self.eta = self.Type + "_eta"
         self.phi = self.Type + "_phi"
         self.e = self.Type + "_e"
-        
-        self._DefineParticle()
-
+       
         self.Daughter = []
         self.Parent = []
     

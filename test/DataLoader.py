@@ -2,9 +2,9 @@ import torch
 from AnalysisTopGNN.IO import PickleObject, UnpickleObject
 from AnalysisTopGNN.Templates import EventGraphTemplate
 from AnalysisTopGNN.Generators import GenerateDataLoader
-import FeatureTemplates.Generic.GraphFeature as GF
-import FeatureTemplates.Generic.EdgeFeature as EF
-import FeatureTemplates.Generic.NodeFeature as NF
+import Templates.ParticleGeneric.GraphFeature as GF
+import Templates.ParticleGeneric.EdgeFeature as EF
+import Templates.ParticleGeneric.NodeFeature as NF
 from AnalysisTopGNN.Events import EventGraphTruthTops, EventGraphTruthTopChildren, EventGraphDetector
 
 def TrivialNodeFeature(a):
@@ -40,7 +40,6 @@ def TestEventGraph(Name, Level):
         eventG.SetNodeAttribute("Node", TrivialNodeFeature)
         eventG.SetEdgeAttribute("Edge", TrivialEdgeFeature)      
         eventG.SetGraphAttribute("Graph", TrivialGraphFeature)
-        
 
         # Test With Self Loop
         eventG.SelfLoop = True
@@ -49,7 +48,6 @@ def TestEventGraph(Name, Level):
         AttestationIdentity(data.G_Graph, torch.tensor([[1.]]))
         AttestationIdentity(data.N_Node, torch.tensor([[TrivialNodeFeature(i)] for i in Particles], dtype = torch.float))
         AttestationIdentity(data.E_Edge, torch.tensor([[TrivialEdgeFeature(i, j)] for i in Particles for j in Particles], dtype = torch.float))
-
 
         # Test Without Self Loop
         eventG.SelfLoop = False
@@ -75,6 +73,7 @@ def TestDataLoader(Name, Level):
     DL.AddNodeFeature("Node", TrivialNodeFeature)
     DL.AddEdgeFeature("Edge", TrivialEdgeFeature)
     DL.AddSample(ev, "nominal", True)
+    DL.ProcessSamples()
 
     for i in DL.DataContainer:
         Particles = getattr(ev.Events[i]["nominal"], Level) 
@@ -98,6 +97,7 @@ def TestDataLoader(Name, Level):
     elif Level == "DetectorParticles":
         DL.EventGraph = EventGraphDetector
     DL.AddSample(ev, "nominal", False)
+    DL.ProcessSamples()
     
     for i in DL.DataContainer:
         Particles = getattr(ev.Events[i]["nominal"], Level) 
@@ -128,16 +128,13 @@ def TestDataLoaderMixing(Files, Level):
     DL.AddGraphFeature("Graph", TrivialGraphFeature)
     DL.AddNodeFeature("Node", TrivialNodeFeature)
     DL.AddEdgeFeature("Edge", TrivialEdgeFeature)
-
     if Level == "TruthTops":
         DL.EventGraph = EventGraphTruthTops
     elif Level == "TruthTopChildren":
         DL.EventGraph = EventGraphTruthTopChildren
     elif Level == "DetectorParticles":
         DL.EventGraph = EventGraphDetector
-
     DL.SetDevice("cuda:0")
-
     
     Start = []
     End = []
@@ -155,6 +152,7 @@ def TestDataLoaderMixing(Files, Level):
                 End.append(su + ev.FileEventIndex[s][1] - ev.FileEventIndex[s][0])
             su+=1
      
+    DL.ProcessSamples()
     assert DL.FileTraces["Start"] == Start
     assert DL.FileTraces["End"] == End 
     assert DL.FileTraces["Samples"] == Samples

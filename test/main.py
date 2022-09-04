@@ -1,16 +1,14 @@
 import sys
 sys.path.append("../")
 import IO
-
-#from AnalysisTopGNN.Generators import CacheGenerators
-#import TestImportPackage
 import Event
+import DataLoader
+import Optimizer
+import TopBuilder
+import Exporter
+from AnalysisTopGNN.Generators import CacheGenerators
+
 #import EventImplementations
-#import DataLoader
-#import Metrics 
-#import Optimizer
-#import Exporter
-#import TopBuilder
 #import FeatureTester
 #import ModelProofOfConcept
 #import Analysis
@@ -44,42 +42,24 @@ def Test(F, **kargs):
 
 
 if __name__ == "__main__":
-    #TestImportPackage.TestImports()
     GeneralDir = "/CERN/CustomAnalysisTopOutputTest/"
     
-    # ===== Test IO ===== #
+    ## ===== Test IO ===== #
     #Test(IO.TestReadROOTNominal, file = GeneralDir + "/tttt/QU_0.root")
     #Test(IO.TestReadROOTDelphes, file = "/CERN/Delphes/tag_1_delphes_events.root")
-
-    ## ===== Test IO ===== ##
-    #Test(IO.TestDir, di = GeneralDir)
-    #Test(IO.TestReadSingleFile, dir_f = GeneralDir + "t/MCa/QU_0.root") 
-    #Test(IO.TestReadFile, di = GeneralDir)
-    #Test(IO.TestFileConvertArray, di = GeneralDir)
     #Test(IO.TestHDF5ReadAndWriteParticle)
-    #Test(IO.TestHDF5ReadAndWriteEvent, di = GeneralDir + "tttt/MCe/QU_0.root", Cache = True)
-
-    ## ===== Test Cache ==== ##
-    #Test(CacheGenerators.BuildCacheDirectory, Name = "tttt")
-    #CacheGenerators.Generate_Cache(GeneralDir + "tttt/MCe/QU_0.root", Compiler = "tttt")
-    #Test(CacheGenerators.BuildCacheDirectory, Name = "t")
-    #CacheGenerators.Generate_Cache(GeneralDir + "t/MCa/", Compiler = "t")
+    #Test(IO.TestHDF5ReadAndWriteEvent, di = GeneralDir + "tttt/QU_0.root", Cache = True)
 
     ## ===== Test of EventGenerator ===== ##
-    Test(Event.TestEvents, di = GeneralDir + "tttt/QU_0.root")
-    #Test(Event.TestParticleAssignment, di = GeneralDir + "tttt/MCe/QU_0.root")
-    #Test(Event.TestSignalMultipleFile, di = GeneralDir + "tttt/MCe/")
-    #Test(Event.TestSignalDirectory, di = GeneralDir + "t/MCa/")
-
-    # ===== Test Event Implementations ===== #
-    #Test(EventImplementations.TestDelphes, FileDir = "/CERN/Delphes/tag_1_delphes_events.root")
-    #Test(EventImplementations.TestExperiemental, FileDir = "/CERN/CustomAnalysisTopOutputSameSignDilepton/Merger/QU_0.root")
+    #Test(Event.TestEvents, di = GeneralDir + "tttt/QU_0.root")
+    #Test(Event.TestSignalMultipleFile, di = GeneralDir + "tttt/")
+    #Test(Event.TestSignalDirectory, di = GeneralDir + "t/")
 
     ## ====== Test of DataLoader ====== ##
-    #CacheGenerators.Generate_Cache(GeneralDir + "tttt/MCe/QU_0.root", Stop = 100, Compiler = "DataLoaderTest", Outdir = "_Pickle")
-    #CacheGenerators.Generate_Cache(GeneralDir + "tttt/MCe/QU_1.root", Stop = 100, Compiler = "DataLoaderTest_1", Outdir = "_Pickle")
-    #CacheGenerators.Generate_Cache(GeneralDir + "t/MCa", Stop = 100, Compiler = "DataLoaderTest_2", Outdir = "_Pickle") 
-
+    #CacheGenerators.Generate_Cache(GeneralDir + "tttt/QU_0.root", Stop = 100, Compiler = "DataLoaderTest", Outdir = "_Pickle")
+    #CacheGenerators.Generate_Cache(GeneralDir + "tttt/QU_1.root", Stop = 100, Compiler = "DataLoaderTest_1", Outdir = "_Pickle")
+    #CacheGenerators.Generate_Cache(GeneralDir + "t/", Stop = 100, Compiler = "DataLoaderTest_2", Outdir = "_Pickle") 
+    
     #Test(DataLoader.TestEventGraph, Name = "DataLoaderTest.pkl", Level = "TruthTops")
     #Test(DataLoader.TestEventGraph, Name = "DataLoaderTest.pkl", Level = "TruthTopChildren")
     #Test(DataLoader.TestEventGraph, Name = "DataLoaderTest.pkl", Level = "DetectorParticles")
@@ -92,31 +72,37 @@ if __name__ == "__main__":
 
     ## ====== Test of Optimizer/Metrics ====== ##
     #Test(Optimizer.TestOptimizerGraph, Files = ["DataLoaderTest", "DataLoaderTest_1", "DataLoaderTest_2"], Level = "TruthTopChildren", Name = "GraphTest", CreateCache = True)
-    #Test(Metrics.TestReadTraining, modelname = "GraphTest")
+    #Test(Optimizer.TestReadTraining, modelname = "GraphTest")
 
     #Test(Optimizer.TestOptimizerNode, Files = ["DataLoaderTest", "DataLoaderTest_1", "DataLoaderTest_2"], Level = "TruthTopChildren", Name = "NodeTest", CreateCache = True)
-    #Test(Metrics.TestReadTraining, modelname = "NodeTest")
+    #Test(Optimizer.TestReadTraining, modelname = "NodeTest")
 
     #Test(Optimizer.TestOptimizerEdge, Files = ["DataLoaderTest", "DataLoaderTest_1", "DataLoaderTest_2"], Level = "TruthTopChildren", Name = "EdgeTest", CreateCache = True)
-    #Test(Metrics.TestReadTraining, modelname = "EdgeTest")
+    #Test(Optimizer.TestReadTraining, modelname = "EdgeTest")
 
     #Test(Optimizer.TestOptimizerCombined, Files = ["DataLoaderTest", "DataLoaderTest_1", "DataLoaderTest_2"], Level = "TruthTopChildren", Name = "CombinedTest", CreateCache = True)
-    #Test(Metrics.TestReadTraining, modelname = "CombinedTest")
-    #
+    #Test(Optimizer.TestReadTraining, modelname = "CombinedTest")
+ 
     ## ======== Test Model/Data Exporting ======= #
     #Test(Exporter.TestModelExport, Files = ["DataLoaderTest"], Name = "ExportModel", Level = "TruthTopChildren", CreateCache = True)
-    #Test(Exporter.TestEventGeneratorExport, File = GeneralDir + "t/MCa", Name = "EventGeneratorExport", CreateCache = True)
-    #Test(Exporter.TestDataLoaderExport, Files = [GeneralDir + "tttt/MCe/QU_0.root", GeneralDir + "t/MCa"], CreateCache = True)
-    #Test(Exporter.TestEventGeneratorWithDataLoader, Files = [GeneralDir + "tttt/MCe/QU_0.root", GeneralDir + "t/MCa"], CreateCache = True)
-    #Test(TopBuilder.TestBuilder, Files = [GeneralDir + "tttt/MCe/QU_0.root", GeneralDir + "t/MCa"], CreateCache = True)
-   
-    ## ========= Test Feature Implementations ========= #
-    #Test(FeatureTester.Analyser, Files = [GeneralDir + "tttt/MCe/QU_0.root"])
+    #Test(Exporter.TestEventGeneratorExport, File = GeneralDir + "t/", Name = "EventGeneratorExport", CreateCache = True)
+    #Test(Exporter.TestDataLoaderExport, Files = [GeneralDir + "tttt/QU_0.root", GeneralDir + "t/"], CreateCache = True)
+    #Test(Exporter.TestEventGeneratorWithDataLoader, Files = [GeneralDir + "tttt/QU_0.root", GeneralDir + "t/"], CreateCache = True)
+    #Test(TopBuilder.TestBuilder, Files = [GeneralDir + "tttt/QU_0.root", GeneralDir + "t/"], CreateCache = True)
 
-    ### ========== Test Model Developments ========== # 
-    #Test(ModelProofOfConcept.TestBaseLine, Files = [GeneralDir + "tttt/MCe/QU_0.root", GeneralDir + "t/MCa/QU_0.root"], Names = ["tttt", "t"], CreateCache = True)
-    #Test(ModelProofOfConcept.TestPDFNet, Files = [GeneralDir + "tttt/MCe/QU_0.root", GeneralDir + "t/MCa/QU_0.root"], Names = ["tttt", "t"], CreateCache = True)
-    #Test(ModelProofOfConcept.TestBasicBaseLine, Files = [GeneralDir + "tttt/MCe", GeneralDir + "t/MCa"], Names = ["tttt", "t"], CreateCache = True)
+
+
+
+
+
+
+
+
+
+
+    # ===== Test Event Implementations ===== #
+    #Test(EventImplementations.TestExperiemental, FileDir = "/CERN/CustomAnalysisTopOutputSameSignDilepton/Merger/QU_0.root")
+
 
     # ========== Test Entire Aggregation of Framework =========== #
     #Files = { 
