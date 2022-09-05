@@ -28,13 +28,12 @@ class File(Notification):
             if ";" in i:
                 i = i.split(";")[0]
             t.append(i)
-        self._State = t
 
         for i in List:
-            if i not in self._State:
-                self.Warning("SKIPPED " + Type + ": " + i)
+            if i not in t:
                 continue
             TMP.append(i)
+            
         return TMP
     
     def _GetKeys(self, List1, List2, Type):
@@ -42,6 +41,14 @@ class File(Notification):
         for i in List1:
             self._State = self._Reader[i]
             TMP += [i + "/" + j for j in self._CheckKeys(List2, Type)]
+        
+        for i in TMP:
+            if i.split("/")[-1] in List2:
+                List2.pop(List2.index(i.split("/")[-1]))
+        
+        for i in List2:
+            self.Warning("SKIPPED " + Type + ": " + i)
+        
         return TMP
 
     def _GetBranches(self):
@@ -49,8 +56,8 @@ class File(Notification):
     
     def _GetLeaves(self):
         leaves = []
-        leaves += self._GetKeys(self.Trees, self.Leaves, "LEAF")
         leaves += self._GetKeys(self.Branches, self.Leaves, "LEAF")
+        leaves += self._GetKeys(self.Trees, self.Leaves, "LEAF")
         return leaves 
     
     def ValidateKeys(self):

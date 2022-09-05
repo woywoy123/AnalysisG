@@ -58,7 +58,11 @@ class EventTemplate(VariableManager):
         maps = self.GetKey(self)
         tmp = { maps[i] : self._Store[i] for i in self._Store if i in maps }
         for i in tmp:
-            setattr(self, i, float(tmp[i]))
+            try:
+                tmp[i] = float(tmp[i])
+            except:
+                tmp[i] = float(tmp[i][0])
+            setattr(self, i, tmp[i])
         self.CompileEvent() 
 
         if ClearVal:
