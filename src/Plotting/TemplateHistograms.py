@@ -26,7 +26,7 @@ class Settings:
         self.Style = None
         self.RandomTexture = False
         self.Alpha = 0.5
-        self.Color = "Orange"
+        self.Color = None
         self.FillHist = "fill"
         
         # --- Data Display --- #
@@ -95,8 +95,10 @@ class CommonFunctions:
         self.Set(Dim + "Range", None)
 
     def ApplyInput(self, args):
+
         for key, val in args.items():
             if key not in self.__dict__:
+                self.Warning("Provided variable " + key + " not found")
                 continue
             self.__dict__[key] = val
 
@@ -105,7 +107,7 @@ class CommonFunctions:
             Dir = self.OutputDirectory
         if Dir.endswith("/") == False:
             Dir += "/"
-        if ".png" not in self.Filename:
+        if self.Filename.endswith(".png") == False:
             self.Filename += ".png"
     
         self.MakeDir(Dir)
@@ -159,6 +161,11 @@ class CommonFunctions:
             random.shuffle(ptr)
             return ptr[0]
         return 
+    
+    def ApplyRandomColor(self, obj):
+        if obj.Color == None:
+            color = next(self.Axis._get_lines.prop_cycler)["color"]
+            obj.Color = color
 
 class TH1F(CommonFunctions, WriteDirectory, Settings):
     def __init__(self, **kargs):
@@ -170,7 +177,6 @@ class TH1F(CommonFunctions, WriteDirectory, Settings):
         self.DefineAxis("y")
         self.ApplyInput(kargs)
         self.Caller = "TH1F"
-        self.Alpha = 1
 
     def ApplyFormat(self):
         obj, err, legen = hep.histplot(self.NPHisto, 
@@ -197,7 +203,9 @@ class TH1F(CommonFunctions, WriteDirectory, Settings):
         self.DefineRange("x")
         if self.xBinCentering:
             self.CenteringBins("x")
-        
+        self.ApplyRandomColor(self) 
+
+
         self.NPHisto = np.histogram(self.xData, bins = self.xBins, range = self.xRange, weights = self.xWeights)
         self.ApplyFormat()
        
@@ -212,11 +220,11 @@ class CombineTH1F(CommonFunctions, WriteDirectory, Settings):
         self.DefineAxis("x")
         self.DefineAxis("y")
         self.DefineAxisData("x")
-        self.ApplyInput(kargs)
-        self.Caller = "Combine-TH1F"
         self.Histograms = []
         self.Histogram = None
         self.Stack = False
+        self.ApplyInput(kargs)
+        self.Caller = "Combine-TH1F"
     
     def ConsistencyCheck(self):
         b, H = [], []
@@ -232,11 +240,10 @@ class CombineTH1F(CommonFunctions, WriteDirectory, Settings):
         self.CenteringBins("x")
         
         for i in H:
-            color = next(self.Axis._get_lines.prop_cycler)["color"]
             i.xBins = self.xBins
             i.xMin = self.xMin
             i.xMax = self.xMax
-            i.Color = color
+            self.ApplyRandomColor(i)
             i.Compile()
 
     def Compile(self):
