@@ -17,7 +17,7 @@ class CommonFunctions(CommonFunctions, Settings, WriteDirectory):
         # --- Figure Settings --- #
         self.Scaling = 1.25
         self.DPI = 250
-
+        
         # --- Cosmetic --- #
         self.Style = None
         self.ATLASData = False
@@ -27,6 +27,7 @@ class CommonFunctions(CommonFunctions, Settings, WriteDirectory):
         self.LineStyle = None
         self.Color = None
         self.Marker = None
+        self.Label = None
  
         # --- Line Properties --- #
         self.Title = None
@@ -35,7 +36,8 @@ class CommonFunctions(CommonFunctions, Settings, WriteDirectory):
         self.DefineAxis("up_y")
         self.DefineAxis("down_y")
         self.ErrorBars = False
-
+        self.Logarithmic = None
+        
         self.OutputDirectory = "Plots"
         self.Filename = None
 
@@ -48,13 +50,13 @@ class CommonFunctions(CommonFunctions, Settings, WriteDirectory):
 
     def DefineRange(self, Dims):
         if self.Get(Dims + "Min") == None:
-            self.Set(Dims + "Min", min(self.Get(Dims + "Data")))
+            self.Set(Dims + "Min", min(self.Get(Dims + "Data"))*0.9)
 
         if self.Get(Dims + "Max") == None:
-            self.Set(Dims + "Max", max(self.Get(Dims + "Data")))
+            self.Set(Dims + "Max", max(self.Get(Dims + "Data"))*1.1)
 
     def ApplyRandomTexture(self, obj):
-        ptr = ["-" , "+" , "x", "o", "O", ".", "*" ]
+        ptr = ["-" , "--", "-.", ":" ]
         if obj.LineStyle == True:
             random.shuffle(ptr)
         elif obj.LineStyle != None:
@@ -83,20 +85,83 @@ class TLine(CommonFunctions):
 
         self.ApplyInput(kargs)
         self.Caller = "TLINE"
-
-
  
+    def Compile(self, Reset = True):
+        if Reset:
+            self.ResetPLT()
+            self.DefineStyle()
+            self.ApplyToPLT()
+
+        self.ApplyRandomColor(self)
+        self.ApplyRandomMarker(self)
+        self.DefineRange("y")
+        self.DefineRange("x")
+
+        if len(self.up_yData) != 0 and len(self.down_yData) != 0:
+            self.PLT.errorbar(x = self.xData, y = self.yData, yerr = [self.up_yData, self.down_yData], 
+                        linestyle = self.LineStyle, color = self.Color, marker = self.Marker, 
+                        linewidth = 1, capsize = 3, label = self.Label) 
+        else:
+            self.PLT.plot(self.xData, self.yData, marker = self.Marker, color = self.Color, linewidth = 1, label = self.Label)
+        
+        if Reset:
+            self.PLT.title(self.Title)
+            self.PLT.xlabel(self.xTitle)
+            self.PLT.ylabel(self.yTitle)
+            self.PLT.xlim(self.xMin, self.xMax)
+            self.PLT.ylim(self.yMin, self.yMax)
+        if self.Logarithmic:
+            self.PLT.yscale("log")
+
+
+class CombineTLine(CommonFunctions):
+
+    def __init__(self, **kwargs):
+        CommonFunctions.__init__(self)
+
+        self.Lines = []
+        
+        self.ApplyInput(kwargs)
+        self.Caller = "COMBINED-TLINE"
+        self.ResetPLT()
+        
+
+    def ConsistencyCheck(self):
+
+        for i in self.Lines:
+            self.yData += i.yData
+            self.xData += i.xData
+        
+        self.DefineRange("x")
+        self.DefineRange("y")
+        
+        for i in self.Lines:
+            i.xMin = self.xMin
+            i.xMax = self.xMax
+            i.yMin = self.yMin
+            i.yMax = self.yMax
+            
+            self.ApplyRandomColor(i)
+            self.ApplyRandomMarker(i)
+            i.Compile()
+
     def Compile(self):
+
+        self.ConsistencyCheck()
+
         self.ResetPLT()
         self.DefineStyle()
         self.ApplyToPLT()
+       
+        for i in self.Lines:
+            i.Compile(False)
 
+        self.PLT.legend()
+        if self.Logarithmic:
+            self.PLT.yscale("log")
 
-        self.ApplyRandomColor(self)
-        self.ApplyRandomColor(self)
-
-
-        if len(self.up_yData) != 0:
-            self.PLT.errorbar(x = self.xData, y = self.yData, yerr = [self.up_yData, self.down_yData], 
-                        linestyle = self.LineStyle, color = self.Color, marker = self.Marker, 
-                        linewidth = 1, capsize = 3) 
+        self.PLT.title(self.Title)
+        self.PLT.xlabel(self.xTitle)
+        self.PLT.ylabel(self.yTitle)
+        self.PLT.xlim(self.xMin, self.xMax)
+        self.PLT.ylim(self.yMin, self.yMax)

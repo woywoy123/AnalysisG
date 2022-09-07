@@ -85,9 +85,11 @@ class WriteDirectory(Notification):
         self.MakeDir(self.pwd + "/" + di_)
         if name.endswith(".txt") != True:
             name += ".txt"
-        with open(self.pwd + "/" + di_ + "/" + name, 'w') as f:
-            f.write(inp)
-
+        f = open(self.pwd + "/" + di_ + "/" + name, 'w')
+        if isinstance(inp, list):
+            inp = "\n".join(inp)
+        f.write(inp)
+        f.close()
 
 
 
