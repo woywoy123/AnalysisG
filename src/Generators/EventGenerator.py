@@ -1,31 +1,25 @@
 from AnalysisTopGNN.IO import File, Directories, PickleObject, UnpickleObject
-from AnalysisTopGNN.Tools import Notification
-from AnalysisTopGNN.Tools import TemplateThreading, Threading
-from AnalysisTopGNN.Tools import RecallObjectFromString
-from AnalysisTopGNN.Events import Event
+from AnalysisTopGNN.Tools import Notification, TemplateThreading, Threading, RecallObjectFromString
+from AnalysisTopGNN.Parameters import Parameters
 
-class EventGenerator(Directories):
+
+class EventGenerator(Directories, Parameters):
     def __init__(self, dir = None, Verbose = True, Start = 0, Stop = None):
         Notification.__init__(self)
-        self._Dir = dir
-        self.Events = {}
-        self.FileEventIndex = {}
-        self.Files = {}
-        self.Threads = 12
         self.Caller = "EVENTGENERATOR"
+        self._Dir = dir
         self._Start = Start
         self._Stop = Stop
-        self.VerboseLevel = 1
-        self.EventImplementation = Event()
-       
-        self.FileEventIndex["Start"] = []
-        self.FileEventIndex["End"] = []
-
+        
+        self.Computations()
+        self.Notification()
+        self.EventGenerator()
+    
     def SpawnEvents(self):
         
-        if "__init__" in self.EventImplementation.__dict__:
-            self.EventImplementation = self.EventImplementation()
-        name = type(self.EventImplementation).__module__ + "." + type(self.EventImplementation).__name__
+        if "__init__" in self.Event.__dict__:
+            self.Event = self.Event()
+        name = type(self.Event).__module__ + "." + type(self.Event).__name__
         obj = RecallObjectFromString(name)
         if len(self.Files) == 0:
             self.GetFilesInDir()
@@ -59,7 +53,7 @@ class EventGenerator(Directories):
                         it += 1
                 it_a = it
 
-        del self.EventImplementation
+        del self.Event
     
     def CompileEvent(self, SingleThread = False, ClearVal = True):
         
