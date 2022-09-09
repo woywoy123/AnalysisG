@@ -152,6 +152,8 @@ class GenerateDataLoader(Notification, Parameters):
         TH.Start()
         for j, i in zip(tmp, TH._lists):
             self.DataContainer[j] = i
+            if isinstance(i, str):
+                continue
             i.to(device = self.Device, non_blocking = True)
         del TH
 
@@ -161,6 +163,8 @@ class GenerateDataLoader(Notification, Parameters):
                 Shuff = self.DataContainer
             for i in Shuff:
                 n_p = int(self.DataContainer[i].num_nodes)
+                if n_p == 0:
+                    continue
                 if n_p not in InputList:
                     InputList[n_p] = []
                 InputList[n_p].append(self.DataContainer[i])

@@ -11,8 +11,9 @@ import numpy as np
 import time
 import datetime
 from AnalysisTopGNN.Tools import Notification
-from AnalysisTopGNN.IO import WriteDirectory, Directories, PickleObject, ExportToDataScience
+from AnalysisTopGNN.IO import WriteDirectory, Directories, PickleObject, ExportToDataScience, UnpickleObject
 from AnalysisTopGNN.Generators import GenerateDataLoader
+from AnalysisTopGNN.Parameters import Parameters
 
 class ModelImporter:
 
@@ -24,6 +25,29 @@ class ModelImporter:
         self._init = False
         
     def InitializeModel(self):
+        def CiteContent(i):
+            f = i.split("_")
+            level = ""
+            if f[0] == "G":
+                level = "Graph"
+            elif f[0] == "N":
+                level = "Node"
+            elif f[0] == "E":
+                level = "Edge"
+            try:
+                if f[1] == "T":
+                    level = "Truth " + level
+            except:
+                pass
+            if level == "":
+                out = "_".join(f[0:])
+            elif "Truth" in level:
+                out = "_".join(f[2:])
+            else:
+                out = "_".join(f[1:])
+            
+            return level, out
+
         if self._init == True:
             return 
         self.Model.to(self.Device)
@@ -35,25 +59,30 @@ class ModelImporter:
             
             self.Warning("---> ! Features Expected in Model Input ! <---")
             for i in self.ModelInputs:
-                self.Warning("+-> " + i)
+                level, out = CiteContent(i)
+                self.Warning("---> " + level + " Attribute: " + out)
             
             self.Warning("---> ! Features Found in Sample Input ! <---")
             for i in list(self.Sample.__dict__["_store"]):
-                self.Warning("+-> " + i)
+                level, out = CiteContent(i)
+                self.Warning("---> " + level + " Attribute: " + out)
             
             dif = [i for i in self.ModelInputs if i not in list(self.Sample.__dict__["_store"])]
             self.Warning("---> ! Missing Variables: ! <---")
             for i in dif:
-                self.Warning("---> " + i)
+                level, out = CiteContent(i)
+                self.Warning("---> " + level + " Attribute: " + out)
             self.Fail("MISSING VARIABLES IN GIVEN DATA SAMPLE")
 
         self.Notify("FOUND ALL MODEL INPUT PARAMETERS IN SAMPLE")
         for i in self.ModelInputs:
-            self.Notify("---> " + i)
+            level, out = CiteContent(i)
+            self.Notify("---> " + level + " Attribute: " + out)
 
         self.Notify("AVAILABLE PARAMETERS FOUND IN SAMPLE")
         for i in list(self.Sample.__dict__["_store"]):
-            self.Notify("---> " + i)
+            level, out = CiteContent(i)
+            self.Notify("---> " + level + " Attribute: " + out)
 
         self.ModelOutputs = {i : k for i, k in self.Model.__dict__.items() for p in ["C_", "L_", "O_"] if i.startswith(p)}
         self.ModelOutputs |= {i : None for i, k in self.Model.__dict__.items() if i.startswith("O_")}
@@ -92,7 +121,7 @@ class ModelImporter:
             OutDict[key] = [out_p, out_v]
         return OutDict
 
-class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Notification):
+class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Parameters):
 
     def __init__(self, DataLoaderInstance = None):
         self.Verbose = True
@@ -102,31 +131,10 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Notifica
         ### DataLoader Inheritence 
         if DataLoaderInstance != None:
             self.ReadInDataLoader(DataLoaderInstance)
-
-        ### User defined ML parameters
-        self.LearningRate = 0.0001
-        self.WeightDecay = 0.001
-        self.kFold = 10
-        self.Epochs = 10
-        self.BatchSize = 10
-        self.Model = None
-        self._init = False
-        self.Scheduler = None
-        self.RunName = "UNTITLED"
-        self.RunDir = "_Models"
-        self.DefaultOptimizer = "ADAM"
-        self.DefaultScheduler = "ExponentialR"
-        self.SchedulerParams = {"gamma" : 0.9}
-
-        self.ONNX_Export = False
-        self.TorchScript_Export = True
-        self.Debug = False
         
-        ### Internal Stuff 
-        self.Training = True
-        self.T_Features = {}
-        self.CacheDir = None
-        self.TrainWithoutCache = False
+        self.Optimizer()
+        self._init = False
+        
 
     def ReadInDataLoader(self, DataLoaderInstance):
         self.TrainingSample = DataLoaderInstance.TrainingSample
@@ -301,8 +309,8 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Notifica
         N_Nodes = list(self.TrainingSample)
         N_Nodes.sort(reverse = True)
         self.Sample = self.RecallFromCache(self.TrainingSample[N_Nodes[0]][0], self.CacheDir)
-        self.InitializeModel()
 
+        self.InitializeModel()
         self.Notify(">------------------------ Starting k-Fold Training ------------------------------------")
         self.Notify("!SIZE OF ENTIRE SAMPLE SET: " + str(sum([len(self.TrainingSample[i]) for i in N_Nodes])))
         self.GetTruthFlags(self.EdgeAttribute, "E")
@@ -313,7 +321,6 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Notifica
             self.Fail("NO TRUTH FEATURES WERE FOUND DURING INITIALIZATION PHASE!")
         self.Notify(">----------------------------------------------------------------------------------------\n")
 
-        self.__MakeStats()
         self.Model.Device = str(self.Device)
         
         if self.DefaultScheduler != None:
@@ -324,6 +331,38 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Notifica
                 self.TrainingSample[i] = self.RecallFromCache(self.TrainingSample[i], self.CacheDir)
             self.TrainWithoutCache = self.CacheDir
             self.CacheDir = None
+
+        # ===== Make a preliminary Dump of the Sample being trained on ====== #
+        self.__MakeStats()
+        self.Stats["TrainingTime"] = 0 
+        self.Stats.update(self.FileTraces)
+        
+        self.Stats["n_Node_Files"] = [[] for i in range(len(self.Stats["Start"]))]
+        self.Stats["n_Node_Count"] = [[] for i in range(len(self.Stats["Start"]))]
+        TMP = [smpl for node in self.TrainingSample for smpl in self.RecallFromCache(self.TrainingSample[node], self.CacheDir)]       
+        for s_i in range(len(TMP)):
+            smpl = TMP[s_i]
+            indx, n_nodes = int(smpl.i), int(smpl.num_nodes)
+            find = [indx >= int(start) and indx <= int(end) for start, end in zip(self.Stats["Start"], self.Stats["End"])].index(True)
+            continue
+            if n_nodes not in self.Stats["n_Node_Files"][find]:
+                self.Stats["n_Node_Files"][find].append(n_nodes)
+                self.Stats["n_Node_Count"][find].append(0)
+            
+            n_i = self.Stats["n_Node_Files"][find].index(n_nodes)
+            self.Stats["n_Node_Count"][find][n_i] += 1
+     
+        self.Stats["BatchSize"] = self.BatchSize
+        self.Stats["Model"] = {}
+        self.Stats["Model"]["LearningRate"] = self.LearningRate
+        self.Stats["Model"]["WeightDecay"] = self.WeightDecay
+        self.Stats["Model"]["ModelFunctionName"] = str(type(self.Model))
+        self.Stats["Model"]["Scheduler"] = self.DefaultScheduler
+        self.Stats["Model"]["SchedulerParams"] = str(self.SchedulerParams)
+        self.Stats["Model"]["Optimizer"] = self.DefaultOptimizer
+        self.epoch = "Done"
+        self.DumpStatistics()
+        # ===== Make a preliminary Dump of the Sample being trained on ====== #
 
         TimeStart = time.time()
         for self.epoch in range(self.Epochs):
@@ -359,7 +398,6 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Notifica
                     train_loader = DataLoader(Curr, batch_size = self.BatchSize, sampler = SubsetRandomSampler(train_idx))
                     self.SampleLoop(train_loader)
                     
-                    memory_rem = get_gpu_memory_from_nvidia_smi()[0]
                     self.Notify("!!!-----++> Training <++-----")
                     self.Notify("!!!-------> Accuracy || Loss  <-------")
                     CalcAverage("Training_Accuracy", k, "!!!", "Training_Loss")
@@ -393,29 +431,14 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Notifica
                 self.Scheduler.step()
 
             self.ExportModel(valid_loader)
+       
+        if self.RunDir == None:
+            OutDir = self.RunName
+        else:
+            OutDir = self.RunDir + "/" + self.RunName
 
+        self.Stats = UnpickleObject("Stats_Done", OutDir + "/Statistics")
         self.Stats["TrainingTime"] = time.time() - TimeStart
-        self.Stats.update(self.FileTraces)
-        
-        self.Stats["n_Node_Files"] = [[] for i in range(len(self.Stats["Start"]))]
-        self.Stats["n_Node_Count"] = [[] for i in range(len(self.Stats["Start"]))]
-        self.TrainingSample = [smpl for node in self.TrainingSample for smpl in self.RecallFromCache(self.TrainingSample[node], self.CacheDir)]       
-        for s_i in range(len(self.TrainingSample)):
-            smpl = self.TrainingSample[s_i]
-            indx, n_nodes = int(smpl.i), int(smpl.num_nodes)
-            find = [indx >= int(start) and indx <= int(end) for start, end in zip(self.Stats["Start"], self.Stats["End"])].index(True)
-            if n_nodes not in self.Stats["n_Node_Files"][find]:
-                self.Stats["n_Node_Files"][find].append(n_nodes)
-                self.Stats["n_Node_Count"][find].append(0)
-            
-            n_i = self.Stats["n_Node_Files"][find].index(n_nodes)
-            self.Stats["n_Node_Count"][find][n_i] += 1
-     
-        self.Stats["BatchSize"] = self.BatchSize
-        self.Stats["Model"] = {}
-        self.Stats["Model"]["LearningRate"] = self.LearningRate
-        self.Stats["Model"]["WeightDecay"] = self.WeightDecay
-        self.Stats["Model"]["ModelFunctionName"] = str(type(self.Model))
         self.epoch = "Done"
         self.DumpStatistics()
 

@@ -1,479 +1,351 @@
-from AnalysisTopGNN.Tools import Notification 
+from AnalysisTopGNN.Tools import Notification, Threading
 from AnalysisTopGNN.IO import WriteDirectory, Directories, PickleObject, UnpickleObject, ExportToDataScience
 from AnalysisTopGNN.Generators import EventGenerator, GenerateDataLoader, Optimizer
-from AnalysisTopGNN.Events import Event
-import os 
-import sys
+from AnalysisTopGNN.Parameters import Parameters
+import os
 import random
-import shutil  
-import torch
 import hashlib
-from pathlib import Path
+import torch
+import itertools
+import sys
 
-class Analysis(Optimizer, WriteDirectory, Directories, GenerateDataLoader, Notification):
+class FeatureAnalysis(Notification, Parameters):
     def __init__(self):
-        WriteDirectory.__init__(self)
-        Directories.__init__(self)
-        GenerateDataLoader.__init__(self)
         Notification.__init__(self)
-        
-        # ==== Initial variables ==== #
-        self.Caller = "Analysis"
-        self.VerboseLevel = 2
-        self.Verbose = True 
-        self.ProjectName = "UNTITLED"
-        self.OutputDir = None
-        
-        # ==== Hidden internal variables ==== #
-        self._MainDirectory = None
-        self._SampleDir = {}
-        self._EventGeneratorDir = "EventGenerator"
-        self._DataLoaderDir = "DataLoader"
-        self._launchDir = os.getcwd()
+        self.GenerateDataLoader()
 
-        # ==== Event Generator variables ==== # 
-        self.EventImplementation = None  
-        self.CompileSingleThread = False
-        self.CPUThreads = 12
-        self.NEvent_Start = 0
-        self.NEvent_Stop = -1
-        self.EventCache = False
-       
-        # ===== DataLoader variables ===== #
-        self.DataCache = False
-        self.DataCacheOnlyCompile = []
-        self.Tree = "nominal"
-        self.EventGraph = None
-        self.TrainingSampleSize = 50
-        self.GraphAttribute = {}
-        self.NodeAttribute = {}
-        self.EdgeAttribute = {}
-        self.Device = "cpu" 
-        self.SelfLoop = True
-        self.FullyConnect = True
-        self.GenerateTrainingSample = False
-        self.RebuildTrainingSample = False
-
-        # ===== Optimizer variables ====== # 
-        self.LearningRate = 0.0001
-        self.WeightDecay = 0.001
-        self.kFold = 4
-        self.Epochs = 0
-        self.BatchSize = 10
-        self.Model = None
-        self._init = False
-        self.RunName = "TESTMODEL"
-        self.DefaultOptimizer = "ADAM"
-        self.ONNX_Export = False
-        self.TorchScript_Export = False
-        self.Training = True
-        self.TrainWithoutCache = False
-        self.Debug = False
-        self.DefaultScheduler = "ExponentialR"
-        self.SchedulerParams = {"gamma" : 0.9}
-        self.Scheduler = None
-        
-        # ===== Constant variables ====== #
-        self.RunDir = None
-        self.T_Features = {}
-
-
-    def InputSample(self, Name,  Directory):
-        if isinstance(Name, str) == False:
-            self.Warning("NAME NOT A STRING!")
-            return 
-        if Name not in self._SampleDir:
-            self._SampleDir[Name] = []
-
-        if isinstance(Directory, list):
-            self._SampleDir[Name] += Directory 
-
-        elif isinstance(Directory, str):
-            self._SampleDir[Name].append(Directory)
-        
-        else:
-            self.Warning("INPUT DIRECTORY NOT VALID (STRING OR LIST)!")
-            return 
-
-    def __CheckSettings(self, Optimizer = False):
-        if Optimizer == True and self.Model != None:
-            self.FileTraces = UnpickleObject("FileTraces", self._DataLoaderDir + "FileTraceDump")
-            try:
-                self.TrainingSample = UnpickleObject("TrainingSample", self._DataLoaderDir + "FileTraceDump")
-                self.ValidationSample = UnpickleObject("ValidationSample", self._DataLoaderDir + "FileTraceDump")
-            except:
-                self.GenerateTrainingSample = True
-                self.DataCache = False
-                self._SampleDir = {}
-                self.Warning("NO TRAINING / VALIDATION SAMPLES FOUND! GENERATING...")
-                self.__BuildSampleCache()
-
-            tmp = self.VerboseLevel 
-            self.VerboseLevel = 0 
-            events = self.__CheckFiles(self._DataLoaderDir + "/HDF5")["DataLoader/HDF5"]
-            self.VerboseLevel = tmp
-            self.Notify("FOUND " + str(len(events)) + " EVENTS IN THE DATALOADER DIRECTORY.")
-            self.Notify("CHECKING IF EVENTS ARE CONSISTENT.")
-            counter = 0
-            for i in [p for n in self.TrainingSample for p in self.TrainingSample[n]]:
-                if str(i + ".hdf5") not in events:
-                    self.Fail("MISSING FILE -> " + i + ".hdf5 FROM TRAINING SAMPLE! EXITING...")
-                counter += 1
-            for i in [p for n in self.ValidationSample for p in self.ValidationSample[n]]:
-                if str(i + ".hdf5") not in events:
-                    self.Fail("MISSING FILE -> " + i + ".hdf5 FROM VALIDATION SAMPLE! EXITING...")
-                counter += 1
-            self.Notify("SUCCESSFULLY VERIFIED " + str(counter) + " FILES.")
-            self.CacheDir = self._DataLoaderDir + "/HDF5"
-            
-            tmp = {}
-            if 0 in self.TrainingSample:
-                self.Warning("ZERO NODE EVENTS DETECTED IN SAMPLES. REMOVING THEM.")
-                self.TrainingSample.pop(0) 
-
-            if 0 in self.ValidationSample:
-                self.ValidationSample.pop(0) 
-            return 
-
-        if self.ProjectName == "UNTITLED":
-            self.Warning("NAME VARIABLE IS SET TO: " + self.ProjectName)
-        
-        if self.OutputDir == None:
-            self.Warning("NO OUTPUT DIRECTORY DEFINED. USING CURRENT DIRECTORY: \n" + self.pwd)
-            self.OutputDir = self.pwd
-        self.Notify("BUILDING THE PROJECT: '" + self.ProjectName + "' IN " + self.OutputDir)
-        self._MainDirectory = self.OutputDir 
-        if self.ProjectName != self.OutputDir.split("/")[-1]:
-            self._MainDirectory += "/" + self.ProjectName
-       
-        tmp = {}
-        for k, l in self._SampleDir.items():
-            tmp[k] = self.__CheckFiles(l)
-            if len(tmp[k]) == 0:
-                tmp.pop(k, None)
-        self._SampleDir = tmp
-
-
-        # Case 1: We want to only create the event generator caches 
-        # - Check if a sample has been provided and that they resolve to root files       
-        if self.EventCache == True and len(self._SampleDir) == 0:
-            self.Fail("NO VALID SAMPLES GIVEN/FOUND. EXITING...")
-        # - Revert to nominal implementation if no event implementation has been given 
-        if self.EventCache == True and self.EventImplementation == None:
-            self.Warning("No 'EventImplementation' provided. Assuming 'Functions.Event.Implementations.Event'.")
-            self.EventImplementation = Event()
-        
-        # Case 2: We want to create the dataloader from the event generator cached/just created
-        # - Check if we can find a cached event generator instance 
-        self.Notify("CHECKING IF ANYTHING HAS BEEN CACHED.")
-        cached = self.__CheckFiles(self._MainDirectory + "/" + self._EventGeneratorDir)
-        if len(cached) == 0 and self.DataCache == True and len(self._SampleDir) == 0:
-            self.Fail("NOTHING CACHED OR GIVEN SAMPLES NOT FOUND. EXITING...") 
-        
-        if self.DataCache == True and self.EventGraph == None:
-            self.Fail("CAN'T CREATE SAMPLE EVENT GRAPH FOR DATALOADER. NO EVENTGRAPH FOUND. See 'src.EventTemplates.EventGraphs'")
-        
-        if self.DataCache == True: 
-            attrs = 0
-            self.NEvents = self.NEvent_Stop
-            if len(list(self.EdgeAttribute)) == 0:
-                self.Warning("NO EDGE FEATURES PROVIDED")
-                attrs+=1
-            if len(list(self.NodeAttribute)) == 0:
-                self.Warning("NO NODE FEATURES PROVIDED")
-                attrs+=1
-            if len(list(self.GraphAttribute)) == 0:
-                self.Warning("NO GRAPH FEATURES PROVIDED")
-                attrs+=1
-            if attrs == 3:
-                self.Fail("NO FEATURES DEFINED! EXITING...")
-
-        if self.DataCache == True and self.EventCache == False:
-            self._SampleDir[""] = {}
-            self._CommonDir = self._EventGeneratorDir
-            for Dir, Files in cached.items():
-                self._SampleDir[""][Dir] = Files
-
-    def __BuildStructure(self):
-        # Initialize the ROOT directory
-        if self.OutputDir.endswith("/"):
-            self.OutputDir = self.OutputDir[:-1]
-        if self.ProjectName.endswith("/"):
-            self.OutputDir = self.OutputDir[:-1]
-       
-        self.MakeDir(self._MainDirectory)
-        self.ChangeDirToRoot(self._MainDirectory)
-
-        if self.EventCache == True:
-            self._CommonDir = os.path.commonpath([i for name in self._SampleDir for i in list(self._SampleDir[name])])
-            for name in self._SampleDir:
-                for FileDir in self._SampleDir[name]:
-                    self.MakeDir(self._EventGeneratorDir + "/" + name + "/" + FileDir.replace(self._CommonDir, ""))
-        
-        if self.DataCache == True:
-            self.MakeDir(self._DataLoaderDir)
-            self.MakeDir(self._DataLoaderDir + "FileTraceDump")
-        
-        if self.GenerateTrainingSample == True:
-            shutil.rmtree(self._DataLoaderDir + "Test", ignore_errors = True)
-            self.MakeDir(self._DataLoaderDir + "Test")
+    def FeatureAnalysis(self, Input, Fx_n, Fx, Fx_m):
+        Input = self.EventGraph(Input)
+        try: 
+            if "GraphFeatures" in Fx_m:
+                Fx(Input.Event)
+            if "NodeFeatures" in Fx_m:
+                for i in Input.Particles:
+                    Fx(i)
+            if "EdgeFeatures" in Fx_m:
+                for i in Input.Particles:
+                    for j in Input.Particles:
+                        Fx(i, j)
+            return []
     
-    def __CheckFiles(self, Directory):
-        if isinstance(Directory, str):
-            Directory = [Directory]
-        out = {}
-        for i in Directory:
-            val = self.ListFilesInDir(i)
-            for p in val:
-                f, key  = p.split("/")[-1], "/".join(p.split("/")[:-1]).replace("//", "/")
-                if key.split("/")[-1] not in self.DataCacheOnlyCompile and len(self.DataCacheOnlyCompile) != 0:
-                    self.Warning("EXCLUDING " + key + "/" + f + " FROM DATALOADER.")
-                    continue
-                if key not in out:
-                    out[key] = []
-                if f not in out[key]:
-                    out[key].append(f)
-        return out
+        except AttributeError:
+            fail = str(sys.exc_info()[1]).replace("'", "").split(" ")
+            return ["FAILED: " + Fx_m + " -> " + Fx_n + " ERROR -> " + " ".join(fail)]
     
-    def __BuildSampleCache(self): 
-        def __FeatureAnalysis(Input, Fx_n, Fx, Fx_m):
-            Input = self.EventGraph(Input)
-            try: 
-                if "GraphFeatures" in Fx_m:
-                    Fx(Input.Event)
-                if "NodeFeatures" in Fx_m:
-                    for i in Input.Particles:
-                        Fx(i)
-                if "EdgeFeatures" in Fx_m:
-                    for i in Input.Particles:
-                        for j in Input.Particles:
-                            Fx(i, j)
-                return []
-        
-            except AttributeError:
-                fail = str(sys.exc_info()[1]).replace("'", "").split(" ")
-                return ["FAILED: " + Fx_m + " -> " + Fx_n + " ERROR -> " + " ".join(fail)]
-
-        def __TestObjectAttributes(Event):
-            samples = [Event[k][self.Tree] for k in random.sample(list(Event), 10)]
-            Failed = []
-            Features = []
-            Features += list(self.GraphAttribute)
-            Features += list(self.NodeAttribute)
-            Features += list(self.EdgeAttribute)
-            for i in samples:
-                # Test the Graph Attributes 
-                for gn, gfx in self.GraphAttribute.items():
-                    Failed += __FeatureAnalysis(i, gn, gfx, "GraphFeatures")
-                for nn, nfx in self.NodeAttribute.items():
-                    Failed += __FeatureAnalysis(i, nn, nfx, "NodeFeatures")
-                for en, efx in self.EdgeAttribute.items():
-                    Failed += __FeatureAnalysis(i, en, efx, "EdgeFeatures")
-            if len(Failed) == 0:
-                return 
-
-            self.Warning("------------- Feature Errors -------------------")
-            for i in list(set(Failed)):
-                self.Warning(i)
-
-            self.Warning("------------------------------------------------")
-            if len(list(set(Failed))) == int(len(Features)):
-                self.Fail("NONE OF THE FEATURES PROVIDED WERE SUCCESSFUL!")
-        
-        for name in self._SampleDir:
-            for FileDir, Samples in self._SampleDir[name].items():
-                f = []
-                if self.EventCache == False:
-                    f = [k for k in Samples if k.endswith(".root")]
-                else:
-                    f = [k for k in Samples if k.endswith(".pkl")]
-                if len(f) > 0:
-                    continue
-
-                if FileDir.split("/")[-1] not in self.DataCacheOnlyCompile and len(self.DataCacheOnlyCompile) > 0:
-                    continue
-                
-                self.Notify("STARTING THE COMPILATION OF NEW DIRECTORY: " + FileDir)
-                FileOut = self._EventGeneratorDir + "/" + name + "/" + FileDir.replace(self._CommonDir, "")
-                CheckSample = True
-                for S in Samples:
-                    if self.EventImplementation != None and self.EventCache == True:
-                        ev = EventGenerator(None, self.Verbose, self.NEvent_Start, self.NEvent_Stop)
-                        ev.EventImplementation = self.EventImplementation
-                        ev.Files = {FileDir : [S]}
-                        ev.VerboseLevel = self.VerboseLevel
-                        ev.Threads = self.CPUThreads 
-                        ev.SpawnEvents()
-                        ev.CompileEvent(self.CompileSingleThread)
-                    else:
-                        ev = UnpickleObject(S, FileDir)
-                  
-                    if CheckSample and self.DataCache:
-                        __TestObjectAttributes(ev.Events)
-                        CheckSample = False
-                    
-                    if self.EventCache == True:
-                        PickleObject(ev, S.replace(".root", ""), FileOut)
+    def TestObjectAttributes(self, Event):
+        samples = [Event[k][self.Tree] for k in random.sample(list(Event), 10)]
+        Failed = []
+        Features = []
+        Features += list(self.GraphAttribute)
+        Features += list(self.NodeAttribute)
+        Features += list(self.EdgeAttribute)
+        for i in samples:
+            # Test the Graph Attributes 
+            for gn, gfx in self.GraphAttribute.items():
+                Failed += self.FeatureAnalysis(i, gn, gfx, "GraphFeatures")
+            for nn, nfx in self.NodeAttribute.items():
+                Failed += self.FeatureAnalysis(i, nn, nfx, "NodeFeatures")
+            for en, efx in self.EdgeAttribute.items():
+                Failed += self.FeatureAnalysis(i, en, efx, "EdgeFeatures")
+        if len(Failed) == 0:
+            return 
+    
+        self.Warning("------------- Feature Errors -------------------")
+        for i in list(set(Failed)):
+            self.Warning(i)
+    
+        self.Warning("------------------------------------------------")
+        if len(list(set(Failed))) == int(len(Features)):
+            self.Fail("NONE OF THE FEATURES PROVIDED WERE SUCCESSFUL!")
  
-                    if self.DataCache == True: 
-                        self.AddSample(ev, self.Tree, self.SelfLoop, self.FullyConnect, -1) 
+class Analysis(Optimizer, WriteDirectory, GenerateDataLoader, Directories, FeatureAnalysis):
 
-        if self.DataCache:
-            Start_E = self.FileTraces["Start"]
-            End_E = self.FileTraces["End"]
-            Sample_N = self._SampleDir[""]
-            Sample_N = [l.replace("EventGenerator", "DataLoader") + "/"*(1-int(l.endswith("/"))) + j.replace(".pkl", "") for l in Sample_N for j in Sample_N[l]]
-            Sample_N = [ "/".join(p.split("/")[p.split("/").index("DataLoader")+1:]) for p in Sample_N]
-            self.MakeDir(self._DataLoaderDir + "/HDF5")
-            
-            it = 0
-            Exp = ExportToDataScience()
-            Exp.VerboseLevel = 0
-            for i in self.DataContainer:
-                if self.DataContainer[i].i == Start_E[it]:
-                    self._outdir = self._DataLoaderDir + "/" + Sample_N[it]
-                if self.DataContainer[i].i == End_E[it]:
-                    it+=1
-                
-                name = self._outdir + "/" + str(i)
-                address = str(hashlib.md5(name.encode("utf-8")).hexdigest())
-                srcdir = self._MainDirectory + "/" + self._outdir + "/" + address + ".hdf5"
-                dstdir = self._MainDirectory + "/" + self._DataLoaderDir + "/HDF5/" + address + ".hdf5"
-                    
-                if os.path.exists(srcdir) and os.path.exists(dstdir) and self.DataCache == False:
-                    self.Notify("!!EVENT NOT DUMPED, FILES EXIST " +  dstdir)
+    def __init__(self):
+        Notification.__init__(self)
+        super().__init__()
+        
+        self.Analysis()
+        self.Caller = "Analysis"
+
+        # ==== Hidden Internal Variables ==== #
+        self._SampleMap = {}
+        self._iter = 0
+        self._init = False
+        self._pwd = os.getcwd()
+        self.pwd = self._pwd
+
+    def InputSample(self, Name, Directory = None):
+        
+        self.Notify("=====================================")
+        if isinstance(Directory, str):
+            Directory = [Directory] 
+        
+        if Name not in self._SampleMap:
+            self.Notify("Added Sample: " + Name)
+            self._SampleMap[Name] = Directory
+        else:
+            self.Warning(Name + " already exists! Checking if Directory already exists in List.")
+            for i in Directory: 
+                if i not in self._SampleMap[Name]:
+                    self._SampleMap[Name].append(i)
                 else:
-                    Exp.ExportEventGraph(self.DataContainer[i].to("cpu"), address, self._outdir)
-                    if int(i+1) % 1000 == 0:
-                        self.Notify("!!DUMPED EVENT " + str(int(self.DataContainer[i].i+1)) + "/" + str(len(self.DataContainer)))
-                self.DataContainer[i] = address
+                    self.Warning(i + " already exists! Skipping...")
+        self.Notify("=====================================")
 
-                try:
-                    os.symlink(srcdir.replace("//", "/"), dstdir.replace("//", "/"))
-                except FileExistsError:
-                    pass
-                except:
-                    self.Fail("SYMLINKS NOT SUPPORTED!")
+    def __BuildRootStructure(self): 
 
-            prfx = ""
-            if len(self.DataCacheOnlyCompile) > 0:
-                prfx += "_".join(self.DataCacheOnlyCompile)
-                prfx += "_"
+        # ==== Builds the Main Directory ==== #
+        if self.OutputDirectory == None:
+            self.OutputDirectory = self.pwd
+        if self.OutputDirectory.endswith("/"):
+            self.OutputDirectory = self.OutputDirectory[:-1]
 
-            PickleObject(self.FileTraces, prfx + "FileTraces", self._DataLoaderDir + "FileTraceDump")
-            PickleObject(self.DataContainer, prfx + "DataContainer", self._DataLoaderDir + "FileTraceDump")
+        self.Notify("BUILDING PROJECT " + self.ProjectName + " UNDER: " + self.OutputDirectory)
+        self.MakeDir(self.OutputDirectory + "/" + self.ProjectName)
+        self.ChangeDirToRoot(self.OutputDirectory + "/" + self.ProjectName)
+        
+        self.MakeDir("./EventCache")
+        self.MakeDir("./DataCache")
 
-        if self.GenerateTrainingSample:
-            x = self.ListFilesInDir(self._DataLoaderDir + "FileTraceDump")
-            Trace = [UnpickleObject(k) for k in x if "_FileTraces.pkl" in k]
-            Container = [UnpickleObject(k) for k in x if "_DataContainer.pkl" in k]
-            
-            if len(Trace) != 0 and len(Container) != 0 and self.RebuildTrainingSample:
-                self.Notify("FOUND FRAGMENTATION PIECES... NEED TO REBUILD THE DATA PROPERLY...")
-                for i in Trace:
-                    for key in self.FileTraces:
-                        self.FileTraces[key] += i[key]
-                
-                start, end = [], []
-                it = 0
-                for k, j in zip(self.FileTraces["Start"], self.FileTraces["End"]):
-                    start.append(it)
-                    it += (j-k)
-                    end.append(it)
-                    it += 1
-                self.FileTraces["End"] = end
-                self.FileTraces["Start"] = start
+    def __CheckFiles(self, InputMap, Extension = ""):
+        OutputMap = {}
+        for i in InputMap:
+            OutputMap[i] = [t for k in InputMap[i] for t in self.ListFilesInDir(k) if Extension in t or Extension == ""]
+        return OutputMap 
 
-                c = 0
+    def __BuildSampleDirectory(self, InputMap, CacheType):
+        OutputMap = {}
+        for i in InputMap:
+            self.MakeDir("./" + CacheType + "/" + i)
+            for j in InputMap[i]:
+                basename = j.split("/")[-1].split(".")[0]
+                self.MakeDir("./" + CacheType + "/" + i + "/" + basename)
+                OutputMap["./" + CacheType + "/" + i + "/" + basename] = j
+        return OutputMap
+
+    def __BuildCache(self, InputMap):
+        def EventCache(BaseName, FileName):
+            if self.Event == None:
+                self.Fail("NO EVENT IMPLEMENTATION GIVEN. EXITING...")
+            Compiler = EventGenerator(None, self.Verbose, self.EventStart, self.EventEnd)
+            Compiler.Event = self.Event
+            Compiler.VerboseLevel = self.VerboseLevel
+            Compiler.Threads = self.Threads
+            Compiler.Files[BaseName] = [FileName]
+            Compiler.SpawnEvents()
+            Compiler.CompileEvent()
+            return Compiler
+         
+        def DataCache(EventInstance):
+            if self.EventGraph == None:
+                self.Fail("NO EVENTGRAPH IMPLEMENTATION GIVEN. EXITING...")
+            self.TestObjectAttributes(EventInstance.Events)
+            self.AddSample(EventInstance, self.Tree, self.SelfLoop, self.FullyConnect)
+
+        def DumpHDF5(BaseDir, Filename):
+            def function(inpt):
                 exp = ExportToDataScience()
                 exp.VerboseLevel = 0
-                tmp = self.Device
-                self.Device = "cpu"
-                p = 1
-                for i in Container:
-                    Data = []
-                    counter = []
-                    for j in i:
-                        self.DataContainer[c] = i[j]
-                        Data.append(i[j])
-                        counter.append(torch.tensor(c))
-                        c += 1
-                    sets = self.RecallFromCache(Data, self._DataLoaderDir + "/HDF5/")
-                    it = 0
-                    for j, k in zip(sets, counter):
-                        setattr(j, "i", k)
-                        di = "/".join(str(Path(self._DataLoaderDir + "/HDF5/" + Data[it] + ".hdf5").resolve()).split("/")[:-1])
-                        exp.ExportEventGraph(j, Data[it], di)
-                        it+=1 
-                        if it % 1000 == 0:
-                            self.Notify("REBUILDING CONTAINER... " + str(p) + "/"  + str(len(Container)) + " - " + str(it) + "/" + str(len(sets)))
-                    p+=1
-
-                PickleObject(self.FileTraces, "FileTraces", self._DataLoaderDir + "FileTraceDump")
-                PickleObject(self.DataContainer, "DataContainer", self._DataLoaderDir + "FileTraceDump")
-                self.Device = tmp
-
-            self.DataContainer = UnpickleObject("DataContainer", self._DataLoaderDir + "FileTraceDump")
-            Exp = ExportToDataScience()
+                out = []
+                for i in inpt:
+                    f = str(hashlib.md5(str(BaseDir + "/" + str(int(i.i))).encode("utf-8")).hexdigest())
+                    exp.ExportEventGraph(i, f, BaseDir)
+                    out.append(f)
+                    del i
+                return out
+                    
             
-            tmp = {}
-            for i in self.DataContainer:
-                tmp[i] = self.DataContainer[i] 
-                out = self.RecallFromCache(self.DataContainer[i], self._DataLoaderDir + "/HDF5/")
-                self.DataContainer[i] = out
+            BaseDir = BaseDir.replace("./Event", "./Data")
+            Start = self.FileTraces["Start"][-1]
+            End = self.FileTraces["End"][-1]
+            Chnk = [self.DataContainer[i] for i in range(Start, End+1)]
+            TH = Threading(Chnk, function, self.Threads)
+            TH.VerboseLevel = 0
+            TH.Start()
 
-            RandomTestSample = {}
-            self.MakeTrainingSample(self.TrainingSampleSize)
-            for i in self.TrainingSample:
-                self.TrainingSample[i] = [tmp[int(k.i)] for k in self.TrainingSample[i]]
+            for i in range(len(TH._lists)):
+                self.DataContainer[Start + i] = TH._lists[i]
 
-                if len(self.TrainingSample[i]) < 10:
-                    RandomTestSample[i] = self.TrainingSample[i]
+        for i in InputMap:
+            F = InputMap[i].split("/")
+            BaseDir = "/".join(F[:-1])
+            FileName = F[-1] 
+            
+            if self.EventCache and FileName.endswith(".root"):
+                ev = EventCache(BaseDir, FileName) 
+                PickleObject(ev, FileName.replace(".root", ""), i) 
+
+            if self.DataCache and FileName.endswith(".pkl"):
+                ev = UnpickleObject(BaseDir + "/" + FileName)
+                DataCache(ev)
+                self.ProcessSamples()
+
+            if self.DumpHDF5 and self.DataCache and FileName.endswith(".pkl"):
+                DumpHDF5(BaseDir, FileName)
+    
+    def __UpdateSampleIndex(self):
+        def function(inpt):
+            exp = ExportToDataScience()
+            exp.VerboseLevel = 0
+            out = []
+            for i in inpt:
+                i[1].i = torch.tensor(i[2])
+                out.append([i[1], i[2]])
+                if i[0] == "":
                     continue
-                RandomTestSample[i] = random.sample(self.TrainingSample[i], 10) 
+                FName = i[0].split("/")[-1]
+                os.remove(i[0] + ".hdf5")
+                exp.ExportEventGraph(i[1], FName, "/".join(i[0].split("/")[:-1]))
+                try:
+                    os.symlink(os.path.abspath(i[0] + ".hdf5"), os.path.abspath(self.DataCacheDir + "/" + FName + ".hdf5"))
+                except FileExistsError:
+                    pass
+            return out
+        inpt = [[self._SampleMap[it], self.DataContainer[it], it] for it in self.DataContainer]
+        TH = Threading(inpt, function, self.Threads)
+        TH.Start()
+        for i in TH._lists:
+            self.DataContainer[i[1]] = i[0]
 
-            for i in self.ValidationSample:
-                self.ValidationSample[i] = [tmp[int(k.i)] for k in self.ValidationSample[i]]
-            PickleObject(self.TrainingSample, "TrainingSample", self._DataLoaderDir + "FileTraceDump") 
-            PickleObject(self.ValidationSample, "ValidationSample", self._DataLoaderDir + "FileTraceDump")
-            PickleObject(RandomTestSample, "RandomTestSample", self._DataLoaderDir + "Test")
-
-    def __Optimizer(self):
-        self.__CheckSettings(True)
-            
-        # Check if the model can be backed up 
-        samples = UnpickleObject("RandomTestSample", self._DataLoaderDir + "Test")
-        for i in samples:
-            if i == 0:
-                continue
-            self.epoch = 0
-            self.Sample = self.RecallFromCache(samples[i][0], self.CacheDir)
-            self.Sample.i = torch.tensor([1], device = self.Device)
-            self.Sample.to(self.Device)
-            break
-        if isinstance(self.Model, str) or self.Model == None:
-            self.Warning("Need to specify a valid model.")
-            return 
-        self.InitializeModel()
-        self.ExportModel(self.Sample)
-       
-        # Test the model for all node types 
-        for i in samples:
-            if i == 0:
-                continue
-            self.Sample = self.RecallFromCache(samples[i][0], self.CacheDir)
-            self.Sample.i = torch.tensor([1], device = self.Device)
-            self.Sample.to(self.Device)
-            self.MakePrediction(self.Sample)
-        self.Notify("PASSED RANDOM n-Node TEST.")
-
-
-        self.KFoldTraining()
 
     def Launch(self):
-        self.__CheckSettings()
-        self.__BuildStructure()
-        self.__BuildSampleCache()
+        self.__BuildRootStructure()
+        
+        if self.EventCache:
+            self.Caller = "Analysis(EventGenerator)"
+            self.Notify("------ Checking for ROOT Files -------")
+            EventMap = self.__CheckFiles(self._SampleMap)
+            EventMap = self.__BuildSampleDirectory(EventMap, "EventCache")
+            self.__BuildCache(EventMap) 
+        
+        if self.DataCache:
+            self.Caller = "Analysis(DataGenerator)"
+            self.Notify("------ Checking for EventCached Files -------")          
+            Cache = self.__CheckFiles({"" : ["./EventCache"]})
+            SMPL = list(self._SampleMap.keys())
+            Cache = {"" : [ i for i in Cache[""] for j in SMPL if i.split("/")[2] == j]}
+            if len(Cache[""]) == 0:
+                self.Warning("NO EVENT CACHE FOUND! GENERATING EVENTS WITHOUT CACHING...")
+                self.EventCache = True
+                return self.Launch() 
+            
+            if self.DumpHDF5:
+                DirMap = {i.split("/")[2] : [] for i in Cache[""]}
+                for i in Cache[""]:
+                    DirMap[i.split("/")[2]].append(i)
+                self.__BuildSampleDirectory(DirMap, "DataCache")
+            
+            DataMap = { "/".join(i.split("/")[:-1]).replace("./EventCache", "./DataCache") : i for i in Cache[""]}
+            self.__BuildCache(DataMap)
+            Package = {}
+            Package |= self.DataContainer
+            Package |= self.FileTraces
+            Package |= {"DataMap" : list(DataMap)}
+       
+            fname = list(set([i.split("/")[2] for i in DataMap]))[0]
+            PickleObject(Package, fname, "./DataCache/" + fname)
+        
+        if self.MergeSamples: 
+            self.Caller = "Analysis(Sample Merger)"
+            Cache = self.__CheckFiles({"" : ["./DataCache/"]}, ".pkl")
+            l = ["Tree", "Start", "End", "SelfLoop", "Samples", "Level", "DataMap"]
+            self.MakeDir(self.DataCacheDir)
+            exp = ExportToDataScience()
+            exp.VerboseLevel = 0
+            it = 0
+            for i in Cache[""]:
+                Smpl = UnpickleObject(i)
+                Data = { i : Smpl[i] for i in l }
+                Smpl = { i : Smpl[i] for i in Smpl if i not in Data }
+                F = 0
+                ct = 0
+                for s in Smpl:
+                    if ct > Data["End"][F]: 
+                        F+=1
+
+                    if ct == Data["Start"][F]: 
+                        self.FileTraces["Start"].append(it)
+                        self.FileTraces["End"].append(it)
+                        
+                        self.FileTraces["Samples"].append(Data["Samples"][F])
+                        self.FileTraces["Tree"].append(Data["Tree"][F])
+                        self.FileTraces["Level"].append(Data["Level"][F])
+                        self.FileTraces["SelfLoop"].append(Data["SelfLoop"][F])
+
+                    if ct >= Data["Start"][F] and ct <= Data["End"][F]:
+                        if isinstance(Smpl[ct], str):
+                            self._SampleMap[it] = Data["DataMap"][F] + "/" + Smpl[ct]
+                            self.DataContainer[it] = list(exp.ImportEventGraph(Smpl[ct], Data["DataMap"][F]).values())[0]
+                        else:
+                            self._SampleMap[it] = ""
+                            self.DataContainer[it] = Smpl[ct]
+                    self.FileTraces["End"][-1] = it
+                    ct+=1
+                    it+=1
+            self.__UpdateSampleIndex()
+            self.MakeDir("./FileTraces")
+            self._SampleMap = {i : self._SampleMap[i].split("/")[-1] for i in self._SampleMap if isinstance(i, int)}
+            self.FileTraces |= {"SampleMap" : self._SampleMap}
+            PickleObject(self.FileTraces, "FileTraces", "./FileTraces")
+        
+        if self.GenerateTrainingSample:
+            self.Caller = "Analysis(Training Sample Generator)"
+            self.FileTraces = UnpickleObject("FileTraces", "./FileTraces")
+            self.DataContainer = self.FileTraces["SampleMap"]
+            del self.FileTraces["SampleMap"]
+
+            exp = ExportToDataScience()
+            exp.VerboseLevel = 0
+            for i in self.DataContainer:
+                self.DataContainer[i] = list(exp.ImportEventGraph(self.DataContainer[i], "./HDF5").values())[0]
+            self.MakeTrainingSample()
+            self._SampleMap = {}
+            for i in self.TrainingSample:
+                self.TrainingSample[i] = [int(k.i) for k in self.TrainingSample[i]]
+                self._SampleMap[i] = [k for k in random.sample(self.TrainingSample[i], 10)]
+            for i in self.ValidationSample:
+                self.ValidationSample[i] = [int(k.i) for k in self.ValidationSample[i]]
+            pgk = {}
+            pgk["Validation"] = self.ValidationSample
+            pgk["Test"] = self._SampleMap
+            pgk["Training"] = self.TrainingSample
+            PickleObject(pgk, "TrainingSample", "./FileTraces")
+        
         if self.Model != None:
-            self.__Optimizer()
-        os.chdir(self._launchDir)
+            self.Caller = "Analysis(Optimizer)"
+            self.RunDir = "Models"
+            self.CacheDir = "./HDF5"
+            F = UnpickleObject("FileTraces", "./FileTraces")
+            self.DataContainer = F["SampleMap"]
+            self.FileTraces = {i : F[i] for i in F if i != "SampleMap"}
+            F = UnpickleObject("TrainingSample", "./FileTraces")
+            self.TrainingSample = F["Training"]
+            self.ValidationSample = F["Validation"]
+            self._SampleMap = F["Test"]
+            exp = ExportToDataScience()
+            exp.VerboseLevel = 0
+            for i in self.TrainingSample:
+                self.TrainingSample[i] = [self.DataContainer[k] for k in self.TrainingSample[i]]
+            for i in self.ValidationSample:
+                self.ValidationSample[i] = [self.DataContainer[k] for k in self.ValidationSample[i]]
+            for i in self._SampleMap:
+                self._SampleMap[i] = [list(exp.ImportEventGraph(self.DataContainer[k], self.CacheDir).values())[0].to(self.Device) for k in self._SampleMap[i]]
+            
+            self.Notify("========= Testing Sample for Model Compatibility =========")
+            self.Sample = list(self._SampleMap.values())[0][0]
+            self.InitializeModel()
+            self.epoch = -1
+            self.ExportModel(self.Sample)
+            self.DefineOptimizer()
+            self.GetTruthFlags(self.EdgeAttribute, "E")
+            self.GetTruthFlags(self.NodeAttribute, "N")
+            self.GetTruthFlags(self.GraphAttribute, "G")
+            self.Debug = True
+            for i in self._SampleMap:
+                for k in self._SampleMap[i]:
+                    self.Train(k)
+            self.Debug = False
+
+            self.Notify("========= Starting the Full Training =========")
+            self.KFoldTraining()
+        os.chdir(self._pwd)

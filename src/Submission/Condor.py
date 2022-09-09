@@ -15,14 +15,12 @@ class Condor(WriteDirectory, Notification):
         self._Complete = {}
         self._sequence = {}
         self._Device = {}
-        self.Hostname = None
-        self.Password = None
         self.OutputDirectory = None 
         self.DisableEventCache = False
         self.DisableDataCache = False
-        self.DisableRebuildTrainingSample = False
         self.CondaEnv = "GNN"
         self.ProjectName = None
+        self.Tree = None
     
     def AddJob(self, name, instance, memory, time, waitfor = None):
         if name not in self._Jobs: 
@@ -46,6 +44,12 @@ class Condor(WriteDirectory, Notification):
             self.ProjectName = instance.ProjectName 
         else:
             instance.ProjectName = self.ProjectName
+
+        if self.OutputDirectory != None:
+            instance.OutputDirectory = self.OutputDirectory
+
+        if self.Tree != None:
+            instance.Tree = self.Tree
     
     def __Sequencer(self):
         def Recursion(inpt, key):
@@ -76,8 +80,6 @@ class Condor(WriteDirectory, Notification):
                     self._Jobs[j].EventCache = False
                 if self.DisableDataCache == True:
                     self._Jobs[j].DataCache = False
-                if self.DisableRebuildTrainingSample == True:
-                    self._Jobs[j].RebuildTrainingSample = False
                 
                 self.Notify("---------------------------")
                 self.Notify("CURRENTLY RUNNING JOB: " + j)
@@ -98,9 +100,9 @@ class Condor(WriteDirectory, Notification):
                     obj = self._Jobs[j].__dict__[k]
                     if k.startswith("_") and k != "_SampleDir":
                         continue
-                    if k == "EventImplementation" and obj != None:
+                    if k == "Event" and obj != None:
                         configs += ["from EventImplementation import *"]
-                        configs += ["Ana.EventImplementation = " + obj.__name__]
+                        configs += ["Ana.Event = " + obj.__name__]
                         F = open(self.ProjectName + "/CondorDump/" + i + "/EventImplementation.py", "w")
                         F.write("".join(open(inspect.getfile(obj), "r").readlines()))
                         F.close()
@@ -146,7 +148,7 @@ class Condor(WriteDirectory, Notification):
             
             sk = ["executable = " + i + "/Spawn.sh", "error = results.error.$(ClusterID)", 'Requirements = OpSysAndVer == "CentOS7"']
             if self._Device[i] == "cpu":
-                sk += ["Request_CPUs = " + str(self._Jobs[i].__dict__["CPUThreads"])]
+                sk += ["Request_CPUs = " + str(self._Jobs[i].__dict__["Threads"])]
             else:
                 sk += ["Request_GPUs = " + str(1)]
  

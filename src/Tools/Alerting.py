@@ -16,7 +16,7 @@ class Notification():
             txt += self.Caller.upper() + "::" + Field + "::"
             txt += "\033[0m" 
             txt += "\033[0;9" + Color + "m" + Message + "\033[0m"
-        print(txt)
+        print(txt.replace("//", "/"))
 
     def Notify(self, Message):
         if len(Message) - len(Message.lstrip("!")) > self.VerboseLevel:

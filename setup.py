@@ -37,10 +37,10 @@ setup(
         long_description = open("README.md").read(), 
     )
 
-#setup(
-#        name = "PyTorchCustom", 
-#        ext_modules = [
-#            CppExtension("LorentzVector", ["src/PyTorchCustom/Source/LorentzVector.cpp"])
-#        ],
-#        cmdclass = {"build_ext" : BuildExtension}
-#    )
+setup(
+        name = "PyTorchCustom", 
+        ext_modules = [
+            CppExtension("LorentzVector", ["src/PyTorchCustom/Source/LorentzVector.cpp"])
+        ],
+        cmdclass = {"build_ext" : BuildExtension}
+    )

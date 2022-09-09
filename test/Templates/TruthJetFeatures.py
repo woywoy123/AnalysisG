@@ -1,12 +1,12 @@
-import FeatureTemplates.Generic.EdgeFeature as ef
-import FeatureTemplates.Generic.NodeFeature as nf
-import FeatureTemplates.Generic.GraphFeature as gf
+import Templates.ParticleGeneric.EdgeFeature as ef
+import Templates.ParticleGeneric.NodeFeature as nf
+import Templates.ParticleGeneric.GraphFeature as gf
 
-import FeatureTemplates.TruthTopChildren.NodeFeature as tc_nf
+import Templates.TruthTopChildren.NodeFeature as tc_nf
 
-import FeatureTemplates.TruthJet.EdgeFeature as tj_ef
-import FeatureTemplates.TruthJet.NodeFeature as tj_nf
-import FeatureTemplates.TruthJet.GraphFeature as tj_gf
+import Templates.TruthJet.EdgeFeature as tj_ef
+import Templates.TruthJet.NodeFeature as tj_nf
+import Templates.TruthJet.GraphFeature as tj_gf
 from AnalysisTopGNN.Tools.ModelTesting import AddFeature
 
 def TruthJetsFeatures(Analysis):

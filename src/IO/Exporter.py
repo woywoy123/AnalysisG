@@ -1,5 +1,6 @@
 import torch
 import onnx
+from onnx.defs import onnx_opset_version
 import numpy as np
 from AnalysisTopGNN.IO import WriteDirectory
 from AnalysisTopGNN.IO import HDF5
@@ -13,32 +14,33 @@ class ExportToDataScience(WriteDirectory):
 
     def ExportModel(self, Sample):
         WriteDirectory.__init__(self)
-        self.__EpochDir = "/Epoch_" + str(self.epoch+1) + "_" + str(self.Epochs)
+        self._EpochDir = "/Epoch_" + str(self.epoch+1) + "_" + str(self.Epochs)
         if self.RunDir == None:
-            self.__OutputDir = self.RunName + "/"
+            self._OutputDir = self.RunName + "/"
         else:
-            self.__OutputDir = self.RunDir + "/" + self.RunName + "/"       
-        self.__Sample = Sample 
+            self._OutputDir = self.RunDir + "/" + self.RunName + "/"       
+        self._Sample = Sample 
        
-        self.__InputMap = {}
+        self._InputMap = {}
         for i in self.ModelInputs:
-            self.__InputMap[i] = str(self.ModelInputs.index(i))
+            self._InputMap[i] = str(self.ModelInputs.index(i))
 
-        self.__OutputMap = {}
+        self._OutputMap = {}
         for i in self.ModelOutputs:
-            self.__OutputMap[i] = str(self.ModelOutputs[i]) + "->" + str(type(self.ModelOutputs[i])).split("'")[1]
+            self._OutputMap[i] = str(self.ModelOutputs[i]) + "->" + str(type(self.ModelOutputs[i])).split("'")[1]
         
         try:
-            self.__Sample = [i for i in self.__Sample][0].to_data_list()[0].detach().to_dict()
+            self._Sample = [i for i in self._Sample][0].to_data_list()[0].detach().to_dict()
         except AttributeError:
-            self.__Sample.detach().to_dict()
+            self._Sample.detach().to_dict()
 
-        self.__Sample = [self.__Sample[i] for i in self.__InputMap]
+        self._Sample = [self._Sample[i] for i in self._InputMap]
         self.Model.eval()
         self.Model.requires_grad_(False)
         if self.ONNX_Export:
+
             try:
-                self.__ExportONNX( self.__OutputDir + "ONNX" + self.__EpochDir + ".onnx")
+                self.__ExportONNX( self._OutputDir + "ONNX" + self._EpochDir + ".onnx")
             except:
                 self.Warning("FAILED TO EXPORT AS ONNX.")
                 fail = str(sys.exc_info()[1]).replace("'", "").split(" ")
@@ -46,38 +48,34 @@ class ExportToDataScience(WriteDirectory):
                 self.Warning(" ".join(fail))
                 self.Warning("=================")
                 self.TorchScript_Export = True
-                time.sleep(10)
 
         if self.TorchScript_Export:
             try:
-                self.__ExportTorchScript( self.__OutputDir + "TorchScript" + self.__EpochDir + ".pt")
+                self.__ExportTorchScript( self._OutputDir + "TorchScript" + self._EpochDir + ".pt")
             except:
                 self.Warning("FAILED TO EXPORT AS TORCH SCRIPT")
                 fail = str(sys.exc_info()[1]).replace("'", "").split(" ")
                 self.Warning("_____ ERROR _____")
                 self.Warning(" ".join(fail))
                 self.Warning("=================")
-                time.sleep(10)
 
         self.Model.requires_grad_(True)
 
     def __ExportONNX(self, Dir):
         self.MakeDir("/".join(Dir.split("/")[:-1]))
-        
         torch.onnx.export(
                 self.Model, 
-                tuple(self.__Sample), 
+                tuple(self._Sample), 
                 Dir, 
                 verbose = False,
                 export_params = True, 
-                opset_version = 17,
-                input_names = list(self.__InputMap), 
-                output_names = [i for i in self.__OutputMap if i.startswith("O_")])
+                input_names = list(self._InputMap), 
+                output_names = [i for i in self._OutputMap if i.startswith("O_")])
 
     def __ExportTorchScript(self, Dir):
         self.MakeDir("/".join(Dir.split("/")[:-1]))
-        model = torch.jit.trace(self.Model, self.__Sample)
-        torch.jit.save(model, Dir, _extra_files = self.__OutputMap)
+        model = torch.jit.trace(self.Model, self._Sample)
+        torch.jit.save(model, Dir, _extra_files = self._OutputMap)
 
     def __Routing(self, inp, MemoryLink):
         if "AnalysisTopGNN." in type(inp).__module__ and MemoryLink != True:

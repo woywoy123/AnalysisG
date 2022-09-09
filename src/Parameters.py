@@ -36,10 +36,35 @@ class Parameters:
         self.EventGraph = None
         self.ValidationSize = 50
 
+        
+    def Optimizer(self):
+        self.LearningRate = 0.0001
+        self.WeightDecay = 0.001
+        self.kFold = 10
+        self.Epochs = 10
+        self.BatchSize = 10
+        self.Model = None
+        self.Scheduler = None
+        self.RunName = "UNTITLED"
+        self.RunDir = "_Models"
+        self.DefaultOptimizer = "ADAM"
+        self.DefaultScheduler = "ExponentialR"
+        self.SchedulerParams = {"gamma" : 0.9}
+
+        self.ONNX_Export = False
+        self.TorchScript_Export = True
+        self.Debug = False
+ 
+        self.Training = True
+        self.T_Features = {}
+        self.CacheDir = None
+        self.TrainWithoutCache = False
+
     def Analysis(self):
         self.GenerateDataLoader()
         self.EventGenerator() 
         self.Computations()
+        self.Optimizer()
         self.Notification()
 
         self.EventCache = False
@@ -56,5 +81,7 @@ class Parameters:
         self.FullyConnect = True
 
         self.DumpHDF5 = True
-        
-        
+        self.MergeSamples = False
+
+        self.DataCacheDir = "./HDF5"
+        self.GenerateTrainingSample = False

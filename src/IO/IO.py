@@ -46,6 +46,8 @@ class File(Notification):
             if i.split("/")[-1] in List2:
                 List2.pop(List2.index(i.split("/")[-1]))
         
+        if len(List1) == 0:
+            return []
         for i in List2:
             self.Warning("SKIPPED " + Type + ": " + i)
         
