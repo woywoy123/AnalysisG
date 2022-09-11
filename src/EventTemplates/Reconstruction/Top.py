@@ -23,19 +23,24 @@ class Reconstructor(ModelImporter, Notification):
     
     def Prediction(self):
         if self.TruthMode:
-            self.__Results = self.Sample
-            self.Warning("USING THE TRUTH SETTING!")
+            self._Results = self.Sample
         else:
             self.Model.eval()
             self.MakePrediction(Batch.from_data_list([self.Sample]))
-            self.__Results = self.Output(self.ModelOutputs, self.Sample) 
-            self.__Results = { i : self.__Results[i][0] for i in self.__Results}
+            self._Results = self.Output(self.ModelOutputs, self.Sample) 
+            self._Results = { "O_" + i : self._Results[i][0] for i in self._Results}
 
     def MassFromNodeFeature(self, TargetFeature, pt = "N_pt", eta = "N_eta", phi = "N_phi", e = "N_energy"):
+        if self.TruthMode:
+            TargetFeature = "N_T_" + TargetFeature
+        else:
+            TargetFeature = "O_" + TargetFeature
+
+        self.Prediction()
         edge_index = self.Sample.edge_index
 
         # Get the prediction of the sample 
-        pred = self.__Results[TargetFeature].to(dtype = int).view(1, -1)[0]
+        pred = self._Results[TargetFeature].to(dtype = int).view(1, -1)[0]
         
         # Filter out the nodes which are not equally valued and apply masking
         mask = pred[edge_index[0]] == pred[edge_index[1]]
@@ -60,16 +65,23 @@ class Reconstructor(ModelImporter, Notification):
         FourVec = torch.cat([pt_, eta_, phi_, e_], dim = 1)
         return LV.MassFromPxPyPzE(FourVec)/1000
  
-    def MassFromFeatureEdges(self, TargetFeature, pt = "N_pt", eta = "N_eta", phi = "N_phi", e = "N_energy"):
-        edge_index = self.Sample.edge_index
+    def MassFromEdgeFeature(self, TargetFeature, pt = "N_pt", eta = "N_eta", phi = "N_phi", e = "N_energy"):
+        if self.TruthMode:
+            TargetFeature = "E_T_" + TargetFeature
+        else:
+            TargetFeature = "O_" + TargetFeature
 
+        self.Prediction()
+        edge_index = self.Sample.edge_index
+        
         # Get the prediction of the sample and extract from the topology the number of unique classes
-        adj = self.__Results[TargetFeature].to(dtype = int).view(1, -1)[0].view(-1, self.Sample.num_nodes)
+        adj = self._Results[TargetFeature].to(dtype = int).view(1, -1)[0].view(-1, self.Sample.num_nodes)
         edge_index, weights = dense_to_sparse(adj)
-        nodes = edge_index[0].unique().view(-1, 1).to(dtype = torch.float)
+        nodes = torch.arange(edge_index.max()+1).view(-1, 1).to(device = self.Device)
         
         #Apply the mapping between clusters and index of class
         mapping = torch.mm(adj.to(dtype = torch.float), nodes.to(dtype = torch.float))
+
         classes = mapping.unique().sort()
         mapping = classes[1][(mapping[:, :] == classes[0]).nonzero(as_tuple = True)[1]]
 

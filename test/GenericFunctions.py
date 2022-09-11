@@ -1,5 +1,5 @@
 from AnalysisTopGNN.IO import UnpickleObject, PickleObject   
-from AnalysisTopGNN.Events import EventGraphTruthTops, EventGraphTruthTopChildren, EventGraphDetector, EventGraphTruthJetLepton
+from AnalysisTopGNN.Events import EventGraphTruthTops, EventGraphTruthTopChildren, EventGraphDetector, EventGraphTruthJetLepton, Event
 
 def Comparison(a, b, key = None):
     
@@ -121,6 +121,7 @@ def CacheEventGenerator(Stop, Dir, Name, Cache):
 
     if Cache:
         ev = EventGenerator(Dir, Stop = Stop)
+        ev.Event = Event
         ev.SpawnEvents()
         ev.CompileEvent(SingleThread = False)
         PickleObject(ev, Name) 
@@ -134,6 +135,7 @@ def CreateEventGeneratorComplete(Stop, Files, Name, CreateCache, NameOfCaller):
     for i, j in zip(Files, Name):
         if CreateCache:
             ev = EventGenerator(i, Stop = Stop)
+            ev.Event = Event
             ev.SpawnEvents()
             ev.CompileEvent(SingleThread = False)
             PickleObject(ev, j, Dir = "_Pickle/" +  NameOfCaller) 

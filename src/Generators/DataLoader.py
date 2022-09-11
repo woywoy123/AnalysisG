@@ -12,7 +12,6 @@ import time
 class GenerateDataLoader(Notification, Parameters):
     
     def __init__(self):
-        Notification.__init__(self, self.Verbose)
         self.Caller = "GenerateDataLoader"
        
         self.Notification()

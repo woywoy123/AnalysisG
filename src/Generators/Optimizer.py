@@ -83,15 +83,13 @@ class ModelImporter:
         for i in list(self.Sample.__dict__["_store"]):
             level, out = CiteContent(i)
             self.Notify("---> " + level + " Attribute: " + out)
-
+        
         self.ModelOutputs = {i : k for i, k in self.Model.__dict__.items() for p in ["C_", "L_", "O_"] if i.startswith(p)}
         self.ModelOutputs |= {i : None for i, k in self.Model.__dict__.items() if i.startswith("O_")}
         self._init = True
 
     def MakePrediction(self, sample):
-        dr = {}
-        for i in self.ModelInputs:
-            dr[i] = sample[i]
+        dr = {i :  sample[i] for i in self.ModelInputs}
         self.Model(**dr)
 
     def Output(self, output_dict, sample, Truth = False):

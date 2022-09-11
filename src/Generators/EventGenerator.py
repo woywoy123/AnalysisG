@@ -16,7 +16,9 @@ class EventGenerator(Directories, Parameters):
         self.EventGenerator()
     
     def SpawnEvents(self):
-        
+        if self.Event == None:
+            self.Fail("NEED TO PROVIDE AN EVENT IMPLEMENTATION VIA 'self.Event'.")
+
         if "__init__" in self.Event.__dict__:
             self.Event = self.Event()
         name = type(self.Event).__module__ + "." + type(self.Event).__name__

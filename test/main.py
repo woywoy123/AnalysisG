@@ -88,17 +88,10 @@ if __name__ == "__main__":
     #Test(Exporter.TestEventGeneratorExport, File = GeneralDir + "t/", Name = "EventGeneratorExport", CreateCache = True)
     #Test(Exporter.TestDataLoaderExport, Files = [GeneralDir + "tttt/QU_0.root", GeneralDir + "t/"], CreateCache = True)
     #Test(Exporter.TestEventGeneratorWithDataLoader, Files = [GeneralDir + "tttt/QU_0.root", GeneralDir + "t/"], CreateCache = True)
-    #Test(TopBuilder.TestBuilder, Files = [GeneralDir + "tttt/QU_0.root", GeneralDir + "t/"], CreateCache = True)
+    Test(TopBuilder.TestBuilder, Files = [GeneralDir + "tttt/QU_0.root", GeneralDir + "t/"], CreateCache = False)
 
     # ===== Test Event Implementations ===== #
     #Test(EventImplementations.TestExperiemental, FileDir = "/CERN/CustomAnalysisTopOutputSameSignDilepton/Merger/QU_0.root")
-
-
-
-
-
-
-
 
 
 

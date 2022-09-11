@@ -10,7 +10,7 @@ def TestBuilder(Files, CreateCache):
     it = 10
     EV = CreateEventGeneratorComplete(it, Files, ["D_" + str(i) for i in range(len(Files))], CreateCache, "TestBuilder")
     DL = CreateDataLoaderComplete(["D_" + str(i) for i in range(len(Files))], "TruthTopChildren", "TestBuilderData", CreateCache, "TestBuilder")
-    DL.MakeTrainingSample(0)
+    DL.MakeTrainingSample(50)
     
     if CreateCache:
         op = Optimizer(DL)
@@ -37,14 +37,13 @@ def TestBuilder(Files, CreateCache):
         return Res_T
    
 
-    sample = op.TrainingSample[0]
+    sample = list(op.TrainingSample.values())[0][0]
     
     Res_T = ParticleAggre(sample, "FromRes")
     top = Reconstructor(op.Model, sample) 
     top.VerboseLevel = 0
     top.TruthMode = True
-    top.Prediction()
-    res = [round(i[0], 2) for i in top.MassFromNodeFeature("N_T_NodeSignal").tolist()]
+    res = [round(i[0], 2) for i in top.MassFromNodeFeature("NodeSignal").tolist()]
     
     res.sort()
     Res_T.sort()
@@ -57,8 +56,7 @@ def TestBuilder(Files, CreateCache):
     top = Reconstructor(op.Model, sample) 
     top.VerboseLevel = 0
     top.TruthMode = True
-    top.Prediction()
-    res = [round(i[0], 2) for i in top.MassFromNodeFeature("N_T_Index").tolist()]
+    res = [round(i[0], 2) for i in top.MassFromNodeFeature("Index").tolist()]
 
     res.sort()
     Res_T.sort()
@@ -68,26 +66,13 @@ def TestBuilder(Files, CreateCache):
 
     top = Reconstructor(op.Model, sample) 
     top.TruthMode = True
-    top.Prediction()
-    res = [round(i[0], 2) for i in top.MassFromFeatureEdges("E_T_Topology").tolist()]
+    res = [round(i[0], 2) for i in top.MassFromEdgeFeature("Topology").tolist()]
     
     res.sort()
     Res_T.sort()
 
     print(res, Res_T)   
     assert res == Res_T
-
-    top = Reconstructor(op.Model, sample) 
-    top.TruthMode = True
-    top.Prediction()
-    res = [round(i[0], 2) for i in top.MassFromFeatureEdges("E_signal").tolist()]
-    
-    res.sort()
-    Res_T.sort()
-
-    print(res, Res_T)   
-    assert res == Res_T
-
 
 
 
