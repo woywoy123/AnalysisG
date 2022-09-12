@@ -4,8 +4,8 @@
 
 # ============= Truth =================== #
 def Index(a, b):
-    ta = [i.Index for i in a.Decay]
-    tb = [i.Index for i in b.Decay]
+    ta = [i.Index for i in a.Children]
+    tb = [i.Index for i in b.Children]
     
     if a.Type == "el" or a.Type == "mu":
         ta.append(a.Index)

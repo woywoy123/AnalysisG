@@ -98,8 +98,6 @@ class Condor(WriteDirectory, Notification):
                 configs += ["Ana = Analysis()"]
                 for k in self._Jobs[j].__dict__:
                     obj = self._Jobs[j].__dict__[k]
-                    if k.startswith("_") and k != "_SampleDir":
-                        continue
                     if k == "Event" and obj != None:
                         configs += ["from EventImplementation import *"]
                         configs += ["Ana.Event = " + obj.__name__]

@@ -4,7 +4,7 @@ def PDGID(a):
     return a.pdgid
 
 def TopsMerged(a):
-    ta = [i.Index for i in a.Decay] 
+    ta = [i.Index for i in a.Children] 
     if a.Type == "el" or a.Type == "mu":
         ta.append(a.Index)
     ta = [i for i in ta if i != -1]
@@ -13,7 +13,7 @@ def TopsMerged(a):
     return 0
 
 def FromTop(a):
-    ta = [i.Index for i in a.Decay] 
+    ta = [i.Index for i in a.Children] 
     if a.Type == "el" or a.Type == "mu":
         ta.append(a.Index)
     ta = [i for i in ta if i != -1]
