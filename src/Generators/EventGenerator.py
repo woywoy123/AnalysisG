@@ -54,12 +54,12 @@ class EventGenerator(Directories, Parameters):
                         self.Events[BaseName] |= {tr : E}
                         it += 1
                 it_a = it
-
         del self.Event
     
     def CompileEvent(self, SingleThread = False, ClearVal = True):
         
-        def function(inp, out = []):
+        def function(inp):
+            out = []
             for k in inp:
                 k._Compile(ClearVal)
                 out.append(k)

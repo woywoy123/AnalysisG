@@ -137,22 +137,24 @@ class GenerateDataLoader(Notification, Parameters):
     
     def ProcessSamples(self):
         # ==== Use Threading to Speed up conversion ==== # 
-        def function(inpt, out = []):
-            for i in inpt:
-                try:
-                    out.append(i.ConvertToData())
-                    del i
-                except:
-                    out.append(i)
+        def function(inpt):
+            out = []
+            for z in inpt:
+                out.append(z.ConvertToData())
             return out
-       
-        tmp = list(self.DataContainer)
-        TH = Threading(list(self.DataContainer.values()), function, self.Threads)
+      
+        if self.EventGraph == None:
+            return 
+
+        tmp = list(self.DataContainer.keys())
+        val = list(self.DataContainer.values())
+        tmp = [k for k,j in zip(tmp, val) if isinstance(j, self.EventGraph)]
+        val = [k for k in val if isinstance(k, self.EventGraph)]
+        
+        TH = Threading(val, function, self.Threads, self.chnk)
         TH.Start()
         for j, i in zip(tmp, TH._lists):
             self.DataContainer[j] = i
-            if isinstance(i, str):
-                continue
             i.to(device = self.Device, non_blocking = True)
         del TH
 

@@ -76,7 +76,7 @@ class EventGraphTemplate:
         self.CreateParticleNodes()
         self.CreateEdges()
         
-        edge_index = torch.tensor(self.Edges, dtype=torch.long).t().contiguous()
+        edge_index = torch.tensor(self.Edges, dtype=torch.long).t()
         self.Data = Data(edge_index = edge_index)
         
         # Do some preprocessing 

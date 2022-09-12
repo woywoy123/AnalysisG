@@ -147,24 +147,25 @@ class Analysis(Optimizer, WriteDirectory, GenerateDataLoader, Directories, Featu
                 exp = ExportToDataScience()
                 exp.VerboseLevel = 0
                 out = []
-                for i in inpt:
-                    f = str(hashlib.md5(str(BaseDir + "/" + str(int(i.i))).encode("utf-8")).hexdigest())
-                    exp.ExportEventGraph(i, f, BaseDir)
+                for p in inpt:
+                    f = str(hashlib.md5(str(BaseDir + "/" + str(int(p.i))).encode("utf-8")).hexdigest())
+                    exp.ExportEventGraph(p, f, BaseDir)
                     out.append(f)
-                    del i
+                    del p
+                del exp
                 return out
                     
             
             BaseDir = BaseDir.replace("./Event", "./Data")
             Start = self.FileTraces["Start"][-1]
             End = self.FileTraces["End"][-1]
-            Chnk = [self.DataContainer[i] for i in range(Start, End+1)]
-            TH = Threading(Chnk, function, self.Threads)
+            Chnk = [self.DataContainer[p] for p in range(Start, End+1)]
+            TH = Threading(Chnk, function, self.Threads, self.chnk)
             TH.VerboseLevel = 0
             TH.Start()
 
-            for i in range(len(TH._lists)):
-                self.DataContainer[Start + i] = TH._lists[i]
+            for p in range(len(TH._lists)):
+                self.DataContainer[Start + p] = TH._lists[p]
 
         for i in InputMap:
             F = InputMap[i].split("/")
@@ -202,7 +203,7 @@ class Analysis(Optimizer, WriteDirectory, GenerateDataLoader, Directories, Featu
                     pass
             return out
         inpt = [[self._SampleMap[it], self.DataContainer[it], it] for it in self.DataContainer]
-        TH = Threading(inpt, function, self.Threads)
+        TH = Threading(inpt, function, self.Threads, self.chnk)
         TH.Start()
         for i in TH._lists:
             self.DataContainer[i[1]] = i[0]
@@ -302,7 +303,11 @@ class Analysis(Optimizer, WriteDirectory, GenerateDataLoader, Directories, Featu
             self._SampleMap = {}
             for i in self.TrainingSample:
                 self.TrainingSample[i] = [int(k.i) for k in self.TrainingSample[i]]
-                self._SampleMap[i] = [k for k in random.sample(self.TrainingSample[i], 10)]
+                if len(self.TrainingSample[i]) < 10:
+                    t = len(self.TrainingSample[i])
+                else:
+                    t = 10
+                self._SampleMap[i] = [k for k in random.sample(self.TrainingSample[i], t)]
             for i in self.ValidationSample:
                 self.ValidationSample[i] = [int(k.i) for k in self.ValidationSample[i]]
             pgk = {}

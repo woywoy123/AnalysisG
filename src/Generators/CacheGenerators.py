@@ -1,4 +1,5 @@
 from AnalysisTopGNN.Generators import EventGenerator
+from AnalysisTopGNN.Events import Event
 from AnalysisTopGNN.IO import PickleObject, UnpickleObject, WriteDirectory, Directories 
 import os
 
@@ -12,6 +13,7 @@ def BuildCacheDirectory(Dir = "_Cache", Name = "EventGenerator", rootDir = False
 
 def Generate_Cache(di, Stop = -1, SingleThread = False, Compiler = "EventGenerator", Outdir = "_Cache"):
     ev = EventGenerator(di, Stop = Stop)
+    ev.Event = Event
     ev.SpawnEvents()
     ev.CompileEvent(SingleThread = SingleThread)
     PickleObject(ev, Compiler, Outdir + "/")

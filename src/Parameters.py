@@ -35,6 +35,7 @@ class Parameters:
 
         self.EventGraph = None
         self.ValidationSize = 50
+        self.chnk = 1000
 
         
     def Optimizer(self):
