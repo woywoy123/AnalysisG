@@ -1,5 +1,6 @@
 import mplhep as hep
 import numpy as np
+import math
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -138,6 +139,11 @@ class CommonFunctions:
         return float((d_max - d_min) / (d_bin-1))
 
     def DefineRange(self, Dims):
+
+        x = self.Get(Dims + "Data")
+        x = [i for i in x if math.isnan(i) == False and math.isinf(i) == False]
+        self.Set(Dims + "Data", x)
+
         if self.Get(Dims + "Min") == None:
             self.Set(Dims + "Min", min(self.Get(Dims + "Data")))
 

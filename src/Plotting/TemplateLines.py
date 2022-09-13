@@ -1,7 +1,7 @@
 from AnalysisTopGNN.Plotting import Settings, CommonFunctions
 from AnalysisTopGNN.IO import WriteDirectory
 from AnalysisTopGNN.Tools import Notification
-
+import math
 
 class CommonFunctions(CommonFunctions, Settings, WriteDirectory):
     def __init__(self):
@@ -49,6 +49,10 @@ class CommonFunctions(CommonFunctions, Settings, WriteDirectory):
         self.Set(Dim + "Data", [])   
 
     def DefineRange(self, Dims):
+        
+        if len(self.Get(Dims + "Data")) == 0:
+            return 
+
         if self.Get(Dims + "Min") == None:
             self.Set(Dims + "Min", min(self.Get(Dims + "Data"))*0.9)
 
@@ -77,6 +81,19 @@ class CommonFunctions(CommonFunctions, Settings, WriteDirectory):
     def CenteringBins(self):
         pass
 
+    def SanitizeData(self, var):
+        out = []
+        for i in range(len(var)):
+            if var[i] == None:
+                out.append(i) 
+                continue
+            if math.isinf(var[i]): 
+                out.append(i)
+                continue
+            if math.isnan(var[i]):
+                out.append(i)
+                continue
+        return out 
 
 class TLine(CommonFunctions):
     
@@ -94,8 +111,25 @@ class TLine(CommonFunctions):
 
         self.ApplyRandomColor(self)
         self.ApplyRandomMarker(self)
+        
+        out = self.SanitizeData(self.xData)
+        out += self.SanitizeData(self.yData)
+        out = list(set(out))
+
+        er_out = self.SanitizeData(self.down_yData)
+        er_out += self.SanitizeData(self.up_yData)
+        er_out = list(set(er_out)) 
+        
+        self.xData = [self.xData[i] for i in range(len(self.xData)) if i not in out]
+        self.yData = [self.yData[i] for i in range(len(self.yData)) if i not in out]      
+        self.up_yData = [self.up_yData[i] for i in range(len(self.up_yData)) if i not in out]
+        self.down_yData = [self.down_yData[i] for i in range(len(self.down_yData)) if i not in out]
+
         self.DefineRange("y")
         self.DefineRange("x")
+        
+        if len(self.xData) != len(self.yData):
+            return 
 
         if len(self.up_yData) != 0 and len(self.down_yData) != 0:
             self.PLT.errorbar(x = self.xData, y = self.yData, yerr = [self.up_yData, self.down_yData], 
@@ -131,16 +165,31 @@ class CombineTLine(CommonFunctions):
         for i in self.Lines:
             self.yData += i.yData
             self.xData += i.xData
+ 
+        out = self.SanitizeData(self.xData)
+        out += self.SanitizeData(self.yData)
+        out = list(set(out))
         
+        self.xData = [self.xData[i] for i in range(len(self.xData)) if i not in out]
+        self.yData = [self.yData[i] for i in range(len(self.yData)) if i not in out]   
+
         self.DefineRange("x")
         self.DefineRange("y")
         
         for i in self.Lines:
+                
             i.xMin = self.xMin
             i.xMax = self.xMax
             i.yMin = self.yMin
             i.yMax = self.yMax
-            
+
+            if self.xTitle == None:
+                self.xTitle = i.xTitle
+            if self.yTitle == None:
+                self.yTitle = i.yTitle
+            if i.Label == None:
+                i.Label = i.Title
+
             self.ApplyRandomColor(i)
             self.ApplyRandomMarker(i)
             i.Compile()

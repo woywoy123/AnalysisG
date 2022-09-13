@@ -51,8 +51,10 @@ class Reconstructor(ModelImporter, Notification):
         edge_index = torch.cat([edge_index_s, edge_index_r]).view(2, -1)
         
         # Create a classification matrix nclass x nodes 
+        print(pred)
         clf = torch.zeros((len(torch.unique(pred)), len(pred)), device = edge_index.device)
         idx = torch.cat([pred[edge_index[0]], edge_index[0]], dim = 0).view(2, -1)
+        print(idx)
         clf[idx[0], idx[1]] += 1
 
         # Convert the sample kinematics into cartesian and perform a vector aggregation 
