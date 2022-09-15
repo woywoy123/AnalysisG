@@ -12,112 +12,8 @@ import time
 import datetime
 from AnalysisTopGNN.Tools import Notification
 from AnalysisTopGNN.IO import WriteDirectory, Directories, PickleObject, ExportToDataScience, UnpickleObject
-from AnalysisTopGNN.Generators import GenerateDataLoader
+from AnalysisTopGNN.Generators import GenerateDataLoader, ModelImporter
 from AnalysisTopGNN.Parameters import Parameters
-
-class ModelImporter:
-
-    def __init__(self, ExampleSample):
-        Notification.__init__(self)
-        self.Caller = "MODELIMPORTER"
-        self.Sample = None
-        self.InitializeModel()
-        self._init = False
-        
-    def InitializeModel(self):
-        def CiteContent(i):
-            f = i.split("_")
-            level = ""
-            if f[0] == "G":
-                level = "Graph"
-            elif f[0] == "N":
-                level = "Node"
-            elif f[0] == "E":
-                level = "Edge"
-            try:
-                if f[1] == "T":
-                    level = "Truth " + level
-            except:
-                pass
-            if level == "":
-                out = "_".join(f[0:])
-            elif "Truth" in level:
-                out = "_".join(f[2:])
-            else:
-                out = "_".join(f[1:])
-            
-            return level, out
-
-        if self._init == True:
-            return 
-        self.Model.to(self.Device)
-        self.ModelInputs = list(self.Model.forward.__code__.co_varnames[:self.Model.forward.__code__.co_argcount])
-        self.ModelInputs.remove("self")
-        input_len = len(list(set(list(self.Sample.to_dict())).intersection(set(self.ModelInputs))))
-        
-        if input_len < len(self.ModelInputs):
-            
-            self.Warning("---> ! Features Expected in Model Input ! <---")
-            for i in self.ModelInputs:
-                level, out = CiteContent(i)
-                self.Warning("---> " + level + " Attribute: " + out)
-            
-            self.Warning("---> ! Features Found in Sample Input ! <---")
-            for i in list(self.Sample.__dict__["_store"]):
-                level, out = CiteContent(i)
-                self.Warning("---> " + level + " Attribute: " + out)
-            
-            dif = [i for i in self.ModelInputs if i not in list(self.Sample.__dict__["_store"])]
-            self.Warning("---> ! Missing Variables: ! <---")
-            for i in dif:
-                level, out = CiteContent(i)
-                self.Warning("---> " + level + " Attribute: " + out)
-            self.Fail("MISSING VARIABLES IN GIVEN DATA SAMPLE")
-
-        self.Notify("FOUND ALL MODEL INPUT PARAMETERS IN SAMPLE")
-        for i in self.ModelInputs:
-            level, out = CiteContent(i)
-            self.Notify("---> " + level + " Attribute: " + out)
-
-        self.Notify("AVAILABLE PARAMETERS FOUND IN SAMPLE")
-        for i in list(self.Sample.__dict__["_store"]):
-            level, out = CiteContent(i)
-            self.Notify("---> " + level + " Attribute: " + out)
-        
-        self.ModelOutputs = {i : k for i, k in self.Model.__dict__.items() for p in ["C_", "L_", "O_"] if i.startswith(p)}
-        self.ModelOutputs |= {i : None for i, k in self.Model.__dict__.items() if i.startswith("O_")}
-        self._init = True
-
-    def MakePrediction(self, sample):
-        dr = {i :  sample[i] for i in self.ModelInputs}
-        self.Model(**dr)
-
-    def Output(self, output_dict, sample, Truth = False):
-        def GetKeyPair(dic, key):
-            if key in dic:
-                return dic[key]
-            else:
-                return False
-        OutDict = {} 
-        for key in output_dict:
-            if key.startswith("O_") == False:
-                continue
-            key = key.lstrip("O_")
-            if Truth: 
-                out_v = sample[self.T_Features[key][0]]
-            else:
-                out_v = self.Model.__dict__["O_" + key]
-            out_p = out_v
-
-            # Adjust the outputs
-            if GetKeyPair(output_dict, "C_" + key) and not Truth:
-                out_p = out_v.max(dim = 1)[1]
-                
-            if GetKeyPair(output_dict, "C_" + key) and out_v.shape[1] == 1 and not Truth: 
-                out_p = out_v.round().to(dtype = torch.int)
-            out_p = out_p.view(1, -1)[0]
-            OutDict[key] = [out_p, out_v]
-        return OutDict
 
 class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Parameters):
 
@@ -126,13 +22,13 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Paramete
         Notification.__init__(self, self.Verbose)
 
         self.Caller = "OPTIMIZER"
-        ### DataLoader Inheritence 
-        if DataLoaderInstance != None:
-            self.ReadInDataLoader(DataLoaderInstance)
-        
+
         self.Optimizer()
         self._init = False
-        
+ 
+        ### DataLoader Inheritence 
+        if DataLoaderInstance != None:
+            self.ReadInDataLoader(DataLoaderInstance)       
 
     def ReadInDataLoader(self, DataLoaderInstance):
         self.TrainingSample = DataLoaderInstance.TrainingSample
@@ -267,7 +163,7 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Paramete
             if self.Debug:
                 continue
             
-            self.Stats[self._mode + "_Accuracy"][key][-1].append(acc)
+            self.Stats[self._mode + "_Accuracy"][key][-1].append(acc.item())
             self.Stats[self._mode + "_Loss"][key][-1].append(L.item())
 
         if self.Training:
@@ -277,11 +173,6 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Paramete
         if self.Debug:
             return truth_out, model_out
 
-
-    def SampleLoop(self, samples):
-        for i in samples:
-            self.Train(i) 
-        
     def GetTruthFlags(self, Input, FEAT):
         if len(Input) == 0:
             Input = list(self.Sample.to_dict())
@@ -289,6 +180,10 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Paramete
         for i in Input:
             if i.startswith("T_") and str("O_" + i[2:]) in self.ModelOutputs:
                 self.T_Features[i[2:]] = [FEAT + "_" +i, FEAT + "_" +i[2:]]
+
+    def SampleLoop(self, samples):
+        for i in samples:
+            self.Train(i) 
 
     def KFoldTraining(self):
         def CalcAverage(Mode, k, Notify = "", Mode2 = None):

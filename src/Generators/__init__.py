@@ -1,3 +1,4 @@
+from .ModelImporter import *
 from .EventGenerator import *
 from .DataLoader import *
 from .Optimizer import *

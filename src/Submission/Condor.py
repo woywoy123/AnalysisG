@@ -146,7 +146,7 @@ class Condor(WriteDirectory, Notification):
             
             sk = ["executable = " + i + "/Spawn.sh", "error = results.error.$(ClusterID)", 'Requirements = OpSysAndVer == "CentOS7"']
             if self._Device[i] == "cpu":
-                sk += ["Request_CPUs = " + str(self._Jobs[i].__dict__["Threads"])]
+                sk += ["Request_Cpus = " + str(self._Jobs[i].__dict__["Threads"])]
             else:
                 sk += ["Request_GPUs = " + str(1)]
  

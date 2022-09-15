@@ -28,8 +28,7 @@ class Directories(Notification):
                 self.Files[os.getcwd()] = []
         os.chdir(self.pwd)
 
-    def ListFilesInDir(self, dir):
-        accepted = [".root", ".pt", ".pkl", ".hdf5", ".onnx"]
+    def ListFilesInDir(self, dir, accepted = [".root", ".pt", ".pkl", ".hdf5", ".onnx"]):
         if dir.endswith("/"):
             dir = dir[:-1]
         Output = {}

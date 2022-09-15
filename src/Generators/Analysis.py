@@ -291,7 +291,13 @@ class Analysis(Optimizer, WriteDirectory, GenerateDataLoader, Directories, Featu
         
         if self.GenerateTrainingSample:
             self.Caller = "Analysis(Training Sample Generator)"
-            self.FileTraces = UnpickleObject("FileTraces", "./FileTraces")
+            try:
+                self.FileTraces = UnpickleObject("FileTraces", "./FileTraces")
+            except FileNotFoundError:
+                self.DataCache = False
+                self.EventCache = False
+                self.MergeSamples = True
+                return self.Launch()
             self.DataContainer = self.FileTraces["SampleMap"]
             del self.FileTraces["SampleMap"]
 
