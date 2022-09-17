@@ -334,7 +334,10 @@ class Analysis(Optimizer, WriteDirectory, GenerateDataLoader, Directories, Featu
             self.Caller = "Analysis(Optimizer)"
             self.RunDir = "Models"
             self.CacheDir = "./HDF5"
-            F = UnpickleObject("FileTraces", "./FileTraces")
+            try:
+                F = UnpickleObject("FileTraces", "./FileTraces")
+            except FileNotFoundError:
+                self.Fail("NO TRAINING SAMPLE HAS BEEN CREATED. FIRST MERGE THE SAMPLES AND THEN GENERATE THE TRAINING SAMPLE!")
             self.DataContainer = F["SampleMap"]
             self.FileTraces = {i : F[i] for i in F if i != "SampleMap"}
             F = UnpickleObject("TrainingSample", "./FileTraces")

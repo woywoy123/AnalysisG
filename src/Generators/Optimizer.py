@@ -50,6 +50,9 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Paramete
         for i in Directories().ListFilesInDir(OutDir + "/TorchSave"):
             out.append(int(i.split("/")[-1].split("_")[1]))
         out.sort()
+        if len(out) == 0:
+            self.StartEpoch = 0
+            return 
         self.StartEpoch = out[-1]
         self.Model = torch.load(OutDir + "/TorchSave/Epoch_" + str(self.StartEpoch) + "_" + str(self.Epochs) + ".pt")
         self.Model.eval()
