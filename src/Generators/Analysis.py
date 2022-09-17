@@ -190,24 +190,69 @@ class Analysis(Optimizer, WriteDirectory, GenerateDataLoader, Directories, Featu
             exp.VerboseLevel = 0
             out = []
             for i in inpt:
-                i[1].i = torch.tensor(i[2])
-                out.append([i[1], i[2]])
-                if i[0] == "":
-                    continue
                 FName = i[0].split("/")[-1]
-                os.remove(i[0] + ".hdf5")
-                exp.ExportEventGraph(i[1], FName, "/".join(i[0].split("/")[:-1]))
+                directory = i[1]
+                it = i[2]
+                out.append([it, None]) 
+                
                 try:
-                    os.symlink(os.path.abspath(i[0] + ".hdf5"), os.path.abspath(self.DataCacheDir + "/" + FName + ".hdf5"))
+                    os.symlink(os.path.abspath(directory + "/" + FName + ".hdf5"), os.path.abspath(self.DataCacheDir + "/" + FName + ".hdf5"))
                 except FileExistsError:
-                    pass
+                    continue
+                
+                data = list(exp.ImportEventGraph(FName, directory).values())[0]
+                data.i = torch.tensor(it)
+                os.remove(directory + "/" + FName + ".hdf5")
+                exp.ExportEventGraph(data, FName, directory)
             return out
-        inpt = [[self._SampleMap[it], self.DataContainer[it], it] for it in self.DataContainer]
+        
+        it = 0
+        for i in self.__CheckFiles({"": ["./DataCache/"]}, ".pkl")[""]:
+            Smpl = UnpickleObject(i)
+            Data = { i : Smpl[i] for i in ["Tree", "Start", "End", "SelfLoop", "Samples", "Level", "DataMap"] }
+            Smpl = { i : Smpl[i] for i in Smpl if i not in Data }
+            F = 0
+            ct = 0
+            Recall = []
+            for s in Smpl:
+                if ct > Data["End"][F]: 
+                    F+=1
+
+                if ct == Data["Start"][F]: 
+                    self.FileTraces["Start"].append(it)
+                    self.FileTraces["End"].append(it)
+                    
+                    self.FileTraces["Samples"].append(Data["Samples"][F])
+                    self.FileTraces["Tree"].append(Data["Tree"][F])
+                    self.FileTraces["Level"].append(Data["Level"][F])
+                    self.FileTraces["SelfLoop"].append(Data["SelfLoop"][F])
+
+                if ct >= Data["Start"][F] and ct <= Data["End"][F]:
+                    self._SampleMap[it] = Data["DataMap"][F] + "/" + Smpl[ct]
+                    self.DataContainer[it] = [Smpl[ct], Data["DataMap"][F], it]
+                self.FileTraces["End"][-1] = it
+                ct+=1
+                it+=1
+
+            inpt = [self.DataContainer[x] for x in self.DataContainer if self.DataContainer[x] != None]
+            TH = Threading(inpt, function, self.Threads, self.chnk)
+            TH.Start()
+            for t in TH._lists:
+                self.DataContainer[t[0]] = t[1]
+
+    def __ImportDataLoader(self):
+        def function(inpt):
+            exp = ExportToDataScience()
+            exp.VerboseLevel = 0
+            out = []
+            for i in inpt:
+                out.append([i[0], list(exp.ImportEventGraph(i[1], "./HDF5").values())[0]])
+            return out
+        inpt = [[i, self.DataContainer[i]] for i in self.DataContainer]
         TH = Threading(inpt, function, self.Threads, self.chnk)
         TH.Start()
         for i in TH._lists:
-            self.DataContainer[i[1]] = i[0]
-
+            self.DataContainer[i[0]] = i[1]
 
     def Launch(self):
         self.__BuildRootStructure()
@@ -248,41 +293,7 @@ class Analysis(Optimizer, WriteDirectory, GenerateDataLoader, Directories, Featu
         
         if self.MergeSamples: 
             self.Caller = "Analysis(Sample Merger)"
-            Cache = self.__CheckFiles({"" : ["./DataCache/"]}, ".pkl")
-            l = ["Tree", "Start", "End", "SelfLoop", "Samples", "Level", "DataMap"]
             self.MakeDir(self.DataCacheDir)
-            exp = ExportToDataScience()
-            exp.VerboseLevel = 0
-            it = 0
-            for i in Cache[""]:
-                Smpl = UnpickleObject(i)
-                Data = { i : Smpl[i] for i in l }
-                Smpl = { i : Smpl[i] for i in Smpl if i not in Data }
-                F = 0
-                ct = 0
-                for s in Smpl:
-                    if ct > Data["End"][F]: 
-                        F+=1
-
-                    if ct == Data["Start"][F]: 
-                        self.FileTraces["Start"].append(it)
-                        self.FileTraces["End"].append(it)
-                        
-                        self.FileTraces["Samples"].append(Data["Samples"][F])
-                        self.FileTraces["Tree"].append(Data["Tree"][F])
-                        self.FileTraces["Level"].append(Data["Level"][F])
-                        self.FileTraces["SelfLoop"].append(Data["SelfLoop"][F])
-
-                    if ct >= Data["Start"][F] and ct <= Data["End"][F]:
-                        if isinstance(Smpl[ct], str):
-                            self._SampleMap[it] = Data["DataMap"][F] + "/" + Smpl[ct]
-                            self.DataContainer[it] = list(exp.ImportEventGraph(Smpl[ct], Data["DataMap"][F]).values())[0]
-                        else:
-                            self._SampleMap[it] = ""
-                            self.DataContainer[it] = Smpl[ct]
-                    self.FileTraces["End"][-1] = it
-                    ct+=1
-                    it+=1
             self.__UpdateSampleIndex()
             self.MakeDir("./FileTraces")
             self._SampleMap = {i : self._SampleMap[i].split("/")[-1] for i in self._SampleMap if isinstance(i, int)}
@@ -301,10 +312,7 @@ class Analysis(Optimizer, WriteDirectory, GenerateDataLoader, Directories, Featu
             self.DataContainer = self.FileTraces["SampleMap"]
             del self.FileTraces["SampleMap"]
 
-            exp = ExportToDataScience()
-            exp.VerboseLevel = 0
-            for i in self.DataContainer:
-                self.DataContainer[i] = list(exp.ImportEventGraph(self.DataContainer[i], "./HDF5").values())[0]
+            self.__ImportDataLoader()
             self.MakeTrainingSample()
             self._SampleMap = {}
             for i in self.TrainingSample:

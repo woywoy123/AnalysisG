@@ -44,6 +44,7 @@ class Parameters:
         self.kFold = 10
         self.Epochs = 10
         self.BatchSize = 10
+        self.StartEpoch = 0
         self.Model = None
         self.Scheduler = None
         self.RunName = "UNTITLED"
@@ -59,7 +60,6 @@ class Parameters:
         self.Training = True
         self.T_Features = {}
         self.CacheDir = None
-        self.TrainWithoutCache = False
 
     def Analysis(self):
         self.GenerateDataLoader()

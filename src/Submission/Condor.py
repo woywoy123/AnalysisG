@@ -15,7 +15,7 @@ class Condor(WriteDirectory, Notification):
         self._Complete = {}
         self._sequence = {}
         self._Device = {}
-        self.OutputDirectory = None 
+        self.OutputDirectory = "./" 
         self.DisableEventCache = False
         self.DisableDataCache = False
         self.CondaEnv = "GNN"
@@ -45,7 +45,7 @@ class Condor(WriteDirectory, Notification):
         else:
             instance.ProjectName = self.ProjectName
 
-        if self.OutputDirectory != None:
+        if instance.OutputDirectory != None:
             instance.OutputDirectory = self.OutputDirectory
 
         if self.Tree != None:

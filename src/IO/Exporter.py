@@ -35,6 +35,10 @@ class ExportToDataScience(WriteDirectory):
             self._Sample.detach().to_dict()
 
         self._Sample = [self._Sample[i] for i in self._InputMap]
+
+        self.MakeDir(self._OutputDir + "TorchSave")
+        torch.save(self.Model, self._OutputDir + "TorchSave" + self._EpochDir + ".pt")
+
         self.Model.eval()
         self.Model.requires_grad_(False)
         if self.ONNX_Export:
@@ -58,6 +62,7 @@ class ExportToDataScience(WriteDirectory):
                 self.Warning("_____ ERROR _____")
                 self.Warning(" ".join(fail))
                 self.Warning("=================")
+       
 
         self.Model.requires_grad_(True)
 

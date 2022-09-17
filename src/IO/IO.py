@@ -221,6 +221,9 @@ class HDF5(WriteDirectory, Directories):
 
         elif "torch." in str(type(val)):
             self.__Store(Name, key, "")
+        
+        elif "type" in str(type(val)):
+            pass
 
         else:
             self.__CreateAttribute(Name, key, val)

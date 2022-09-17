@@ -118,7 +118,6 @@ class GenerateDataLoader(Notification, Parameters):
             event.NodeAttr = self.NodeAttribute
             event.GraphAttr = self.GraphAttribute
             self.DataContainer[self._iter] = event
-            
             if self.CleanUp:
                 EventGeneratorInstance.Events[it][Tree] = []
 
@@ -150,7 +149,9 @@ class GenerateDataLoader(Notification, Parameters):
         val = list(self.DataContainer.values())
         tmp = [k for k,j in zip(tmp, val) if isinstance(j, self.EventGraph)]
         val = [k for k in val if isinstance(k, self.EventGraph)]
-        
+        if len(val) == 0:
+            return 
+
         TH = Threading(val, function, self.Threads, self.chnk)
         TH.Start()
         for j, i in zip(tmp, TH._lists):
@@ -189,6 +190,15 @@ class GenerateDataLoader(Notification, Parameters):
             MakeSample(-1, self.TrainingSample)
 
     def RecallFromCache(self, SampleList, Directory):
+
+        def function(inpt):
+            exp = ExportToDataScience()
+            exp.VerboseLevel = 0
+            out = []
+            for i in inpt:
+                out += list(exp.ImportEventGraph(i, "./HDF5").values())
+            return out
+
         if Directory == None:
             return SampleList
         
@@ -200,13 +210,10 @@ class GenerateDataLoader(Notification, Parameters):
         elif isinstance(SampleList, list) == False: 
             self.Fail("WRONG SAMPLE INPUT! Expected list, got: " + type(SampleList))
         
-        Exp = ExportToDataScience()
-        Exp.VerboseLevel = 0
-        Out = [] 
-        for i in range(len(SampleList)):
-            Out.append(Exp.ImportEventGraph(SampleList[i], Directory).popitem()[1])
-        self.SetDevice(self.Device, Out)
-        return Out
+        TH = Threading(SampleList, function, self.Threads, self.chnk)
+        TH.Start()
+        self.SetDevice(self.Device, TH._lists)
+        return TH._lists
             
 
 
