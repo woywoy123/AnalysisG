@@ -94,12 +94,11 @@ class ModelImporter:
             else:
                 out_v = self.Model.__dict__["O_" + key]
             out_p = out_v
-
             # Adjust the outputs
             if GetKeyPair(output_dict, "C_" + key) and not Truth:
                 out_p = out_v.max(dim = 1)[1]
                 
-            if GetKeyPair(output_dict, "C_" + key) and out_v.shape[1] == 1 and not Truth: 
+            elif GetKeyPair(output_dict, "C_" + key) and out_v.shape[1] == 1 and not Truth: 
                 out_p = out_v.round().to(dtype = torch.int)
             out_p = out_p.view(1, -1)[0]
             OutDict[key] = [out_p, out_v]

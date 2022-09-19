@@ -84,7 +84,6 @@ torch::Tensor TensorToPtEtaPhiE(torch::Tensor v)
   torch::Tensor pt = torch::sqrt(torch::pow(px,2) + torch::pow(py, 2)); 
   torch::Tensor phi = torch::atan2(py, px); 
   torch::Tensor eta = torch::arcsinh(pz/pt);
-
   return torch::cat({pt, eta, phi, e}, 1); 
 }
 

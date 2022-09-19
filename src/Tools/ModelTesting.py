@@ -101,6 +101,7 @@ def KillCondition(Variable, TestIndex, Optimizer, Samples, Iterations, sleep = -
     Passed = False
     for k in range(Iterations):
         Optimizer.Debug = "Loss"
+        Optimizer.Training = True
         if isinstance(Samples, dict):
             Sample = []
             for inpt in Samples: 

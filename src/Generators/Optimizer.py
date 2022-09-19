@@ -245,7 +245,7 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Paramete
                 CalcAverage("Training_Accuracy", k-1, "!!", "Validation_Accuracy")
                 self.Notify("!!_______________ LOSS _______________")
                 CalcAverage("Training_Loss", k-1, "!!", "Validation_Loss")
-                torch.cuda.empty_cache()
+                #torch.cuda.empty_cache()
             
             self.Stats["EpochTime"].append(time.time() - TimeStartEpoch)
             self.Notify("! >========= DURATION: " + str(datetime.timedelta(seconds = self.Stats["EpochTime"][-1])))
@@ -295,7 +295,7 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Paramete
             Classification = False
             acc = None
             if Loss == "CEL":
-                t_v = t_v.type(torch.LongTensor).to(self.Device).view(1, -1)[0]
+                t_v = t_v.type(torch.LongTensor).view(-1).to(self.Device)
                 t_p = t_p.type(torch.int)
                 acc = accuracy
                 self.LF = torch.nn.CrossEntropyLoss()
@@ -305,14 +305,27 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Paramete
                 t_v = t_v.type(torch.float).to(self.Device)
                 self.LF = torch.nn.MSELoss()
                 acc = self.LF
+
+            elif Loss == "HEL":
+                self.LF = torch.nn.HingeEmbeddingLoss()
+                t_v = t_v.type(torch.LongTensor).to(self.Device)
+                acc = self.LF
+
+            elif Loss == "KLD":
+                self.LF = torch.nn.KLDivLoss()
+                t_v.type(torch.LongTensor)
+                m_v.type(torch.LongTensor)
+                acc = self.LF
             
             # Error Handling if something goes wrong. Can cause CUDA to completely freeze Python
             # Can be solved by changing screen resolution....
             if acc == None:
                 self.Warning("SKIPPING " + key + " :: NO LOSS FUNCTION SELECTED!!!!")
                 continue
+
             elif m_v.shape[1] == 1 and self.ModelOutputs["C_" + key]:
                 pass
+
             elif m_v.shape[1] <= t_v.max() and (self.ModelOutputs["C_" + key] or Classification):
                 self.Fail("(" + key + ") Your Classification Model only has " 
                         + str(int(m_v.shape[1])) + " classes but requires " + str(int(t_v.max()+1)))
