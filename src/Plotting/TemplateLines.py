@@ -2,6 +2,7 @@ from AnalysisTopGNN.Plotting import Settings, CommonFunctions
 from AnalysisTopGNN.IO import WriteDirectory
 from AnalysisTopGNN.Tools import Notification
 import math
+import statistics
 
 class CommonFunctions(CommonFunctions, Settings, WriteDirectory):
     def __init__(self):
@@ -37,10 +38,10 @@ class CommonFunctions(CommonFunctions, Settings, WriteDirectory):
         self.DefineAxis("down_y")
         self.ErrorBars = False
         self.Logarithmic = None
+        self.DoStatistics = False
         
         self.OutputDirectory = "Plots"
         self.Filename = None
-
    
     def DefineAxis(self, Dim):
         self.Set(Dim + "Min", None)
@@ -94,6 +95,20 @@ class CommonFunctions(CommonFunctions, Settings, WriteDirectory):
                 out.append(i)
                 continue
         return out 
+    
+    def MakeStatistics(self, inpt):
+        if isinstance(inpt, dict):
+            xinpt = list(inpt.keys())
+            inpt = list(inpt.values())
+        else:
+            xinpt = [i+1 for i in range(len(inpt))]            
+
+        output = {}
+        for i in range(len(inpt)):
+            mean = statistics.mean(inpt[i])
+            stdev = statistics.pstdev(inpt[i], mean)/math.sqrt(len(inpt[i]))
+            output[xinpt[i]] = [mean, stdev]
+        return output
 
 class TLine(CommonFunctions):
     
@@ -109,9 +124,16 @@ class TLine(CommonFunctions):
             self.DefineStyle()
             self.ApplyToPLT()
 
-        self.ApplyRandomColor(self)
         self.ApplyRandomMarker(self)
-        
+
+        if self.DoStatistics:
+            self._temp = self.xData
+            out = self.MakeStatistics(self.xData)
+            self.xData = [i for i in out]
+            self.yData = [out[i][0] for i in out]
+            self.up_yData = [out[i][1] for i in out]
+            self.down_yData = [out[i][1] for i in out]
+
         out = self.SanitizeData(self.xData)
         out += self.SanitizeData(self.yData)
         out = list(set(out))
@@ -119,7 +141,7 @@ class TLine(CommonFunctions):
         er_out = self.SanitizeData(self.down_yData)
         er_out += self.SanitizeData(self.up_yData)
         er_out = list(set(er_out)) 
-        
+
         self.xData = [self.xData[i] for i in range(len(self.xData)) if i not in out]
         self.yData = [self.yData[i] for i in range(len(self.yData)) if i not in out]      
         self.up_yData = [self.up_yData[i] for i in range(len(self.up_yData)) if i not in out]
@@ -146,7 +168,8 @@ class TLine(CommonFunctions):
             self.PLT.ylim(self.yMin, self.yMax)
         if self.Logarithmic:
             self.PLT.yscale("log")
-
+        if self.DoStatistics:
+            self.xData = self._temp
 
 class CombineTLine(CommonFunctions):
 
@@ -154,6 +177,7 @@ class CombineTLine(CommonFunctions):
         CommonFunctions.__init__(self)
 
         self.Lines = []
+        self.Colors = []
         
         self.ApplyInput(kwargs)
         self.Caller = "COMBINED-TLINE"
