@@ -198,7 +198,7 @@ class GenerateDataLoader(Notification, Parameters):
             exp.VerboseLevel = 0
             out = []
             for i in inpt:
-                out += list(exp.ImportEventGraph(i, "./HDF5").values())
+                out += list(exp.ImportEventGraph(i, self.DataCacheDir).values())
             return out
 
         if Directory == None:
@@ -213,6 +213,7 @@ class GenerateDataLoader(Notification, Parameters):
             self.Fail("WRONG SAMPLE INPUT! Expected list, got: " + type(SampleList))
         
         TH = Threading(SampleList, function, self.Threads, self.chnk)
+        TH.VerboseLevel = 0
         TH.Start()
         self.SetDevice(self.Device, TH._lists)
         return TH._lists

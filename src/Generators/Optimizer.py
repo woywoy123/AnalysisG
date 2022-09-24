@@ -18,11 +18,8 @@ from AnalysisTopGNN.Parameters import Parameters
 class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Parameters):
 
     def __init__(self, DataLoaderInstance = None):
-        self.Verbose = True
-        Notification.__init__(self, self.Verbose)
-
         self.Caller = "OPTIMIZER"
-
+        self.Notification()
         self.Optimizer()
         self._init = False
  
@@ -147,7 +144,7 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Paramete
             self.Fail("NO TRUTH FEATURES WERE FOUND DURING INITIALIZATION PHASE!")
         self.Notify(">----------------------------------------------------------------------------------------\n")
         
-        self.LoadLastState()
+        #self.LoadLastState()
         self.Model.Device = str(self.Device)
         
         if self.DefaultScheduler != None:

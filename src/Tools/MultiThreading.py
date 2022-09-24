@@ -38,7 +38,6 @@ class Threading(Notification):
         self._lists = lists
         self._function = Function
         Notification.__init__(self)
-        self.Verbose = True
         self.Caller = "MULTITHREADING"
         
         if chnk_size != None:

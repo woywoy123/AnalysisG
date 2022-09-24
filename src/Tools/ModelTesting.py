@@ -71,7 +71,6 @@ def OptimizerTemplate(DataLoader, Model):
     from AnalysisTopGNN.Generators import Optimizer
 
     Op = Optimizer(DataLoader)
-    Op.Verbose = False
     Op.ONNX_Export = False
     Op.TorchScript_Export = False
     Op.Model = Model

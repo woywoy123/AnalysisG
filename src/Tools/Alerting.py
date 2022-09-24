@@ -1,13 +1,12 @@
 import os
 
-class Notification():
-    def __init__(self, Verbose = False):
-        self.Verbose = Verbose
+class Notification:
+    def __init__(self):
         self.VerboseLevel = 3
         self.Caller = ""
     
     def __Format(self, Color, Message, Field):
-        if self.Verbose and self.Caller == "":
+        if self.VerboseLevel > 0 and self.Caller == "":
             txt = "\033[0;9" + Color + "m" + Field + "::"
             txt += Message
             txt += "\033[0m" 

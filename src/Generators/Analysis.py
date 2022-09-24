@@ -127,7 +127,7 @@ class Analysis(Optimizer, WriteDirectory, GenerateDataLoader, Directories, Featu
         def EventCache(BaseName, FileName):
             if self.Event == None:
                 self.Fail("NO EVENT IMPLEMENTATION GIVEN. EXITING...")
-            Compiler = EventGenerator(None, self.Verbose, self.EventStart, self.EventEnd)
+            Compiler = EventGenerator(None, self.EventStart, self.EventEnd)
             Compiler.Event = self.Event
             Compiler.VerboseLevel = self.VerboseLevel
             Compiler.Threads = self.Threads

@@ -170,7 +170,6 @@ class CommonFunctions:
         if obj.Color == None:
             obj.Color = color
         if obj.Color in self.Colors:
-            print(color, self.Colors)
             obj.Color = None
             self.ApplyRandomColor(obj)
         else:

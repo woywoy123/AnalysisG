@@ -4,7 +4,6 @@ class Parameters:
         pass
     
     def Notification(self):
-        self.Verbose = True 
         self.VerboseLevel = 1
 
     def Computations(self):
@@ -37,6 +36,7 @@ class Parameters:
         self.EventGraph = None
         self.ValidationSize = 50
         self.chnk = 10
+        self.DataCacheDir = "./HDF5"
 
         
     def Optimizer(self):
@@ -86,5 +86,4 @@ class Parameters:
         self.DumpHDF5 = True
         self.MergeSamples = False
 
-        self.DataCacheDir = "./HDF5"
         self.GenerateTrainingSample = False

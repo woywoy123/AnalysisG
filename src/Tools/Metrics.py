@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 class Metrics(Directories):
 
     def __init__(self, modelname, modelDir):
-        self.Verbose = True
         Directories.__init__(self, modelDir)
         self.Caller = "METRICS"
         self.ModelName = modelname

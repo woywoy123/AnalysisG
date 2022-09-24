@@ -117,13 +117,12 @@ def UnpickleObject(filename, Dir = "_Pickle"):
 
 class HDF5(WriteDirectory, Directories):
 
-    def __init__(self, OutDir = "_Pickle", Name = "UNTITLED", Verbose = True, Chained = False):
+    def __init__(self, OutDir = "_Pickle", Name = "UNTITLED", Chained = False):
         WriteDirectory.__init__(self)
         Directories.__init__(self)
-        Notification.__init__(self, Verbose)
+        Notification.__init__(self)
 
         self.VerboseLevel = 3
-        self.Verbose = Verbose
         self.Caller = "WRITE-TO-HDF5"
         
         self._OutDir = OutDir

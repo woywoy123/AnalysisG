@@ -4,7 +4,7 @@ from AnalysisTopGNN.Parameters import Parameters
 
 
 class EventGenerator(Directories, Parameters):
-    def __init__(self, dir = None, Verbose = True, Start = 0, Stop = None):
+    def __init__(self, dir = None, Start = 0, Stop = None):
         Notification.__init__(self)
         self.Caller = "EVENTGENERATOR"
         self._Dir = dir

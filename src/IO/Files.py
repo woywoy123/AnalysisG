@@ -4,8 +4,8 @@ from AnalysisTopGNN.Tools import *
 import re
 
 class Directories(Notification):
-    def __init__(self, directory = None, Verbose = True):
-        Notification.__init__(self, Verbose)
+    def __init__(self, directory = None):
+        Notification.__init__(self)
         self.Caller = "Directories"
         
         if directory != None:

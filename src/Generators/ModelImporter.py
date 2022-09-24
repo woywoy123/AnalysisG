@@ -108,7 +108,6 @@ class ModelImporter:
 class TorchScriptModel(Notification):
 
     def __init__(self, ModelPath, **kargs):
-        self.Verbose = False
         self.VerboseLevel = 0
         self.Caller = "TorchScriptModel"
         self.ModelPath = ModelPath
