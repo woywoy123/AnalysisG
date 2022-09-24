@@ -20,15 +20,34 @@ class EventTemplate(VariableManager):
         self.Leaves += list(self.GetKey(self, ["Type", "Objects", "iter"]))
 
     def _Compile(self, ClearVal):
+        def CheckDims(lst):
+            try:
+                out = [len(lst)]
+                for i in lst:
+                    out += CheckDims(i)
+                    return out
+            except:
+                pass
+            return [0]
+
         def Recursive(lst, name):
+            dims_un = []
+            for i in lst:
+                d = CheckDims(lst[i])
+                if d not in dims_un:
+                    dims_un.append(d)
+            awkward = True if len(dims_un) > 1 else False
+
             for i in lst:
                 if len(lst[i]) == 0:
                     continue
-
                 p = getattr(self, name)
                 if len(p) == len(lst[i]):
-                   for k in p:
-                        setattr(p[k], i, lst[i][k])
+                    for k in p:
+                        val = lst[i][k]
+                        if isinstance(lst[i][k], list) and not awkward:
+                            val = val[0]
+                        setattr(p[k], i, val)
                 else:
                     tmp = [l for f in lst[i] for l in f]
                     indx = [f for f in range(len(lst[i])) for k in lst[i][f]]
