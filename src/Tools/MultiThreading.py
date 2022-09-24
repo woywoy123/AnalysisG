@@ -4,6 +4,7 @@ torch.multiprocessing.set_sharing_strategy("file_system")
 from torch.multiprocessing import Process, Pipe
 from AnalysisTopGNN.Tools import Notification
 import math
+import gc
 
 class TemplateThreading:
 
@@ -11,21 +12,24 @@ class TemplateThreading:
         self._v = val
         self._f = function
         self._i = index
-        self._r = None
         self.i = None
     
     def Runner(self, q):
-        self._r = self._f(self._v) 
+        _r = self._f(self._v) 
+        for i in self._v:
+            del i
         try:
-            q.send(self._r)
-            for i in self._r:
-                del i
+            q.send(_r)
+            for i in _r:
+                del i 
         except:
             q.send(False)
 
     def MainThread(self):
-        self._r = self._f(self._v) 
-        return self._r
+        r = self._f(self._v) 
+        for i in self._v:
+            del i
+        return r
 
 
 class Threading(Notification):
@@ -68,7 +72,8 @@ class Threading(Notification):
         
         if i+1 < self._threads*it:
             self.CheckJobs(tmp, i+1)
- 
+        gc.collect()
+
     def CheckJobs(self, start, end):
         w = 1
         for t in range(start, end):
@@ -84,6 +89,10 @@ class Threading(Notification):
                 out = i[2].MainThread()
             for j, d in zip(range(indx[0], indx[1]), out):
                 self._lists[j] = d
+
+            del self._chnk[t][2]
+            del self._chnk[t][1]
+            del self._chnk[t][0]
             self._chnk[t] = None
             self.Notify("!!WORKER FINISHED " + str(w) + "/" + str(self._threads))
             w+=1

@@ -118,6 +118,7 @@ class GenerateDataLoader(Notification, Parameters):
             event.NodeAttr = self.NodeAttribute
             event.GraphAttr = self.GraphAttribute
             self.DataContainer[self._iter] = event
+
             if self.CleanUp:
                 EventGeneratorInstance.Events[it][Tree] = []
 
@@ -140,6 +141,7 @@ class GenerateDataLoader(Notification, Parameters):
             out = []
             for z in inpt:
                 out.append(z.ConvertToData())
+                del z
             return out
       
         if self.EventGraph == None:

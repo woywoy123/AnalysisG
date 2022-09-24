@@ -66,8 +66,8 @@ class EventTemplate(VariableManager):
         self.CompileEvent() 
 
         if ClearVal:
-            del self._Store
             names = [i for i in self.Objects]
+            del self._Store
             del self.Objects
             del self.Leaves
             del self.Branches
@@ -100,4 +100,5 @@ class EventTemplate(VariableManager):
             l = getattr(self, i)
             l = CompileParticles(l, self.Objects[i]).Compile(ClearVal)
             self.SetAttribute(i, l)
+
  

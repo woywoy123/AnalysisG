@@ -16,8 +16,8 @@ class Condor(WriteDirectory, Notification):
         self._sequence = {}
         self._Device = {}
         self.OutputDirectory = "./" 
-        self.DisableEventCache = False
-        self.DisableDataCache = False
+        self.SkipEventCache = False
+        self.SkipDataCache = False
         self.CondaEnv = "GNN"
         self.ProjectName = None
         self.Tree = None
@@ -76,15 +76,18 @@ class Condor(WriteDirectory, Notification):
             for j in self._sequence[i]:
                 if self._Complete[j] == True:
                     continue
-                if self.DisableEventCache == True:
+                if self.SkipEventCache == True:
                     self._Jobs[j].EventCache = False
-                if self.DisableDataCache == True:
+                if self.SkipDataCache == True:
                     self._Jobs[j].DataCache = False
                 
                 self.Notify("---------------------------")
                 self.Notify("CURRENTLY RUNNING JOB: " + j)
                 self._Jobs[j].Launch()
                 self._Complete[j] = True
+                del self._Jobs[j]
+                self._Jobs[j] = None
+        exit()
 
     def DumpCondorJobs(self):
         self.__Sequencer()
@@ -168,7 +171,7 @@ class Condor(WriteDirectory, Notification):
             elif Mem.endswith("MB"):
                 x = float(Mem.replace("MB", ""))
             if x != None:
-                sk += ["+Request_Memory = " + str(x)]
+                sk += ["Request_Memory = " + str(x)]
             sk += ["queue"]
 
             F = open(self.ProjectName + "/CondorDump/" + i + "/" + i + ".submit", "w")

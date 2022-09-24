@@ -23,3 +23,9 @@ class ParticleTemplate(VariableManager):
         m = float(LorentzVector.MassFromPxPyPzE(v))
         setattr(self, Name + "_MeV", m)
         setattr(self, Name + "_GeV", m / 1000)
+    
+    def __del__(self):
+        for i in self.__dict__:
+            val = self.__dict__[i]
+            del val, i
+

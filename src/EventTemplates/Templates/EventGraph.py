@@ -92,7 +92,30 @@ class EventGraphTemplate:
         self.Data.num_nodes = torch.tensor(len(self.Particles))
         setattr(self.Data, "ni", torch.tensor([[self.iter] for k in range(len(self.Particles))]))
         setattr(self.Data, "i", torch.tensor(self.iter))
+
+        self.__Clean(self.Particles)
+        self.__Clean(self.Event.__dict__)
+        del self.GraphAttr
+        del self.NodeAttr
+        del self.EdgeAttr
+        del self.Event
+        del self.G
+        del self.Nodes
+        del self.Edges
         return self.Data
+    
+    def __Clean(self, obj):
+        if isinstance(obj, list):
+            for k in obj:
+                self.__Clean(k)
+            return 
+
+        elif isinstance(obj, dict):
+            k = []
+            k += list(obj.keys())
+            k += list(obj.values())
+            return self.__Clean(k)
+        del obj
 
     def __SetAttribute(self, c_name, fx, container):
         if c_name not in container:

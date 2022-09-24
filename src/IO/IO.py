@@ -76,7 +76,7 @@ class File(Notification):
         All += [b.split("/")[-1] for b in self.Branches]
         All += [l.split("/")[-1] for l in self.Leaves]
         for i in self._Reader[Tree].iterate(All, library = "ak"):
-            self.Iter = i
+            self.Iter = i.to_list()
             break
 
 def PickleObject(obj, filename, Dir = "_Pickle"):

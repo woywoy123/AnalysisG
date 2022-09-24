@@ -163,9 +163,10 @@ class Analysis(Optimizer, WriteDirectory, GenerateDataLoader, Directories, Featu
             TH = Threading(Chnk, function, self.Threads, self.chnk)
             TH.VerboseLevel = 0
             TH.Start()
-
             for p in range(len(TH._lists)):
                 self.DataContainer[Start + p] = TH._lists[p]
+                TH._lists[p] = None
+            del TH
 
         for i in InputMap:
             F = InputMap[i].split("/")
@@ -180,10 +181,27 @@ class Analysis(Optimizer, WriteDirectory, GenerateDataLoader, Directories, Featu
                 ev = UnpickleObject(BaseDir + "/" + FileName)
                 DataCache(ev)
                 self.ProcessSamples()
+                del ev
 
             if self.DumpHDF5 and self.DataCache and FileName.endswith(".pkl"):
                 DumpHDF5(BaseDir, FileName)
-    
+            
+            # --- Do some Clean-Up if not cached.
+            if self.DataCache:
+                fname = list(set([i.split("/")[2] for i in InputMap]))[0]
+                try:
+                    Package = UnpickleObject(fname, "./DataCache/" + fname)
+                except FileNotFoundError:
+                    Package = {}
+                Package |= self.DataContainer
+                Package |= self.FileTraces
+                Package |= {"DataMap" : list(InputMap)}
+                PickleObject(Package, fname, "./DataCache/" + fname)
+
+                Start, End = self.FileTraces["Start"][-1], self.FileTraces["End"][-1]
+                self.DataContainer = {}
+                Package = {}
+
     def __UpdateSampleIndex(self):
         def function(inpt):
             exp = ExportToDataScience()
@@ -204,6 +222,7 @@ class Analysis(Optimizer, WriteDirectory, GenerateDataLoader, Directories, Featu
                 data.i = torch.tensor(it)
                 os.remove(directory + "/" + FName + ".hdf5")
                 exp.ExportEventGraph(data, FName, directory)
+                del data
             return out
         
         it = 0
@@ -260,6 +279,9 @@ class Analysis(Optimizer, WriteDirectory, GenerateDataLoader, Directories, Featu
         if self.EventCache:
             self.Caller = "Analysis(EventGenerator)"
             self.Notify("------ Checking for ROOT Files -------")
+            self._SampleMap = {k : self._SampleMap[k] for k in self._SampleMap if self._SampleMap[k] != None} 
+            if len(self._SampleMap) == 0:
+                self.Fail("NO ROOT FILES WERE FOUND... EXITING.")
             EventMap = self.__CheckFiles(self._SampleMap)
             EventMap = self.__BuildSampleDirectory(EventMap, "EventCache")
             self.__BuildCache(EventMap) 
@@ -271,7 +293,7 @@ class Analysis(Optimizer, WriteDirectory, GenerateDataLoader, Directories, Featu
             SMPL = list(self._SampleMap.keys())
             Cache = {"" : [ i for i in Cache[""] for j in SMPL if i.split("/")[2] == j]}
             if len(Cache[""]) == 0:
-                self.Warning("NO EVENT CACHE FOUND! GENERATING EVENTS WITHOUT CACHING...")
+                self.Warning("NO EVENT CACHE FOUND! GENERATING EVENTS WITH CACHING...")
                 self.EventCache = True
                 return self.Launch() 
             
@@ -283,15 +305,10 @@ class Analysis(Optimizer, WriteDirectory, GenerateDataLoader, Directories, Featu
             
             DataMap = { "/".join(i.split("/")[:-1]).replace("./EventCache", "./DataCache") : i for i in Cache[""]}
             self.__BuildCache(DataMap)
-            Package = {}
-            Package |= self.DataContainer
-            Package |= self.FileTraces
-            Package |= {"DataMap" : list(DataMap)}
-       
-            fname = list(set([i.split("/")[2] for i in DataMap]))[0]
-            PickleObject(Package, fname, "./DataCache/" + fname)
+
         
         if self.MergeSamples: 
+
             self.Caller = "Analysis(Sample Merger)"
             self.MakeDir(self.DataCacheDir)
             self.__UpdateSampleIndex()

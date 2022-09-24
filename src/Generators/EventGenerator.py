@@ -93,7 +93,7 @@ class EventGenerator(Directories, Parameters):
 
         for i in blk:
             self.Notify("!COMPILING EVENTS FROM FILE: " + i)
-            TH = Threading(blk[i], function, threads = self.Threads)
+            TH = Threading(blk[i], function, threads = self.Threads, chnk_size = self.chnk)
             TH.Start()
             for k in range(len(tmp[i])):
                 p = tmp[i][k]

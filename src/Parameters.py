@@ -19,6 +19,7 @@ class Parameters:
         self.FileEventIndex = {}
         self.FileEventIndex["Start"] = []
         self.FileEventIndex["End"] = []
+        self.chnk = 100
     
     def GenerateDataLoader(self):
         self.NEvents = -1
@@ -35,7 +36,7 @@ class Parameters:
 
         self.EventGraph = None
         self.ValidationSize = 50
-        self.chnk = 1000
+        self.chnk = 10
 
         
     def Optimizer(self):
@@ -70,6 +71,7 @@ class Parameters:
 
         self.EventCache = False
         self.DataCache = False
+        self.chnk = 10
 
         self.EventStart = 0
         self.EventEnd = None
