@@ -176,7 +176,50 @@ class CombineTH1F(Functions):
         if self.xBinCentering:
             self.Axis.set_xticks(self.xData)
     
-        
+            
+class TH1FStack(CombineTH1F):
+
+    def __init__(self, **kargs):
+        self.Superimposed = []
+        self.Histogram = None
+        self.Data = {}
+        CombineTH1F.__init__(self, **kargs)
+   
+    def __Recursive(self, inpt, search):
+        if isinstance(inpt, dict) == False:
+            return inpt
+        if search in inpt:
+            if isinstance(inpt[search], list):
+                return inpt[search]
+
+            out = []
+            for k in inpt[search]:
+                out += [k]*inpt[search][k]
+            return out
+        return [l for i in inpt for l in self.__Recursive(inpt[i], search)]
+
+    def __Organize(self):
+        Hists = {}
+        if self.Histogram != None:
+            Hists |= { self.Histogram : None }
+        Hists |= { key : None for key in self.Histograms }
+        self.Histograms = {}
+        for i in Hists:
+            params = {
+                        "xData" : self.__Recursive(self.Data, i), 
+                        "Title" : i, 
+                    }
+            self.Histograms[i] = params
     
+    def Precompiler(self):
+        self.__Organize()
+        hists = []
+        for i in self.Histograms:
+            if self.Histogram == i:
+                self.Histogram = TH1F(**self.Histograms[i])
+            else:
+                hists.append(TH1F(**self.Histograms[i]))
+        self.Histograms = hists
+
 
 

@@ -64,7 +64,6 @@ class Directories(Notification):
 class WriteDirectory(Notification):
     def __init__(self):
         self.pwd = os.getcwd()
-        self.__tmp = ""
 
     def MakeDir(self, Dir):
         try:
