@@ -1,17 +1,63 @@
-from AnalysisTopGNN.IO import WriteDirectory
-from AnalysisTopGNN.Tools import Notification
-from AnalysisTopGNN.Plotting import CommonFunctions, Settings
+from AnalysisTopGNN.Plotting import CommonFunctions
 import numpy as np
 import mplhep as hep
 
-class TH1F(CommonFunctions, WriteDirectory, Settings):
+class Functions(CommonFunctions):
+
+    def __init__(self):
+        CommonFunctions.__init__(self)
+
+        # --- Histogram Cosmetic Styles --- #
+        self.Texture = False
+        self.Alpha = 0.5
+        self.FillHist = "fill"
+        
+        # --- Data Display --- #
+        self.Normalize = None    
+    
+    def DefineAxisBins(self, Dim):
+        self.Set(Dim + "Bins", None)
+        self.Set(Dim + "BinCentering", False)
+        self.Set(Dim + "Range", None)
+
+    def ApplyRandomTexture(self):
+        if self.Texture:
+            ptr = [ "/" , "\\" , "|" , "-" , "+" , "x", "o", "O", ".", "*" ]
+            random.shuffle(ptr)
+            return ptr[0]
+        return 
+
+    def GetBinWidth(self, Dims):
+        if self.Get(Dims + "Min") == None or self.Get(Dims + "Max") == None:
+            return False
+        d_max, d_min, d_bin = self.Get(Dims + "Max"), self.Get(Dims + "Min"), self.Get(Dims + "Bins")
+        return float((d_max - d_min) / (d_bin-1))
+
+    def CenteringBins(self, Dims):
+        wb = self.GetBinWidth(Dims)
+        self.Set(Dims + "Range", (self.Get(Dims + "Min")- wb*0.5, self.Get(Dims + "Max") + wb*0.5))
+ 
+    def DefineRange(self, Dims):
+        self.DefineCommonRange(Dims)
+
+        if self.Get(Dims + "Bins") == None:
+            p = set(self.Get(Dims + "Data"))
+            self.Set(Dims + "Bins", max(p) - min(p)+1)
+        
+        if self.Get(Dims + "Range") == None:
+            self.Set(Dims + "Range", (self.Get(Dims + "Min"), self.Get(Dims + "Max")))
+
+
+class TH1F(Functions):
     def __init__(self, **kargs):
-        Settings.__init__(self)
-        Notification.__init__(self)
-        WriteDirectory.__init__(self)
-        self.DefineAxis("x")
+        Functions.__init__(self)
+
         self.DefineAxisData("x")
-        self.DefineAxis("y")
+        self.DefineAxisBins("x")
+
+        self.DefineAxisData("y")
+        self.DefineAxisBins("y")
+
         self.ApplyInput(kargs)
         self.Caller = "TH1F"
 
@@ -47,18 +93,22 @@ class TH1F(CommonFunctions, WriteDirectory, Settings):
         if self.xBinCentering:
             self.Axis.set_xticks(self.xData)
        
-class CombineTH1F(CommonFunctions, WriteDirectory, Settings):
+class CombineTH1F(Functions):
     def __init__(self, **kargs):
-        Settings.__init__(self)
-        Notification.__init__(self)
-        WriteDirectory.__init__(self)
-        self.DefineAxis("x")
-        self.DefineAxis("y")
+        Functions.__init__(self)
+
         self.DefineAxisData("x")
+        self.DefineAxisBins("x")
+
+        self.DefineAxisData("y")
+        self.DefineAxisBins("y")
+
         self.Histograms = []
         self.Colors = []
+
         self.Histogram = None
         self.Stack = False
+
         self.ApplyInput(kargs)
         self.Caller = "Combine-TH1F"
     
@@ -71,7 +121,7 @@ class CombineTH1F(CommonFunctions, WriteDirectory, Settings):
         for i in H:
             b.append(i.xBins)
             self.xData += i.xData
-
+        
         self.DefineRange("x")
         self.CenteringBins("x")
         
@@ -79,6 +129,7 @@ class CombineTH1F(CommonFunctions, WriteDirectory, Settings):
             i.xBins = self.xBins
             i.xMin = self.xMin
             i.xMax = self.xMax
+            i.xBinCentering = self.xBinCentering
             self.ApplyRandomColor(i)
             i.Compile()
 
