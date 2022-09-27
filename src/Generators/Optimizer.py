@@ -144,7 +144,7 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Paramete
             self.Fail("NO TRUTH FEATURES WERE FOUND DURING INITIALIZATION PHASE!")
         self.Notify(">----------------------------------------------------------------------------------------\n")
         
-        #self.LoadLastState()
+        self.LoadLastState()
         self.Model.Device = str(self.Device)
         
         if self.DefaultScheduler != None:

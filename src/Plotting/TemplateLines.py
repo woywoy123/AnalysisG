@@ -1,4 +1,5 @@
 from AnalysisTopGNN.Plotting import CommonFunctions
+from AnalysisTopGNN.Plotting.TemplateHistograms import TH1FStack
 import math
 import statistics
 
@@ -51,7 +52,7 @@ class TLine(Functions):
     
     def __init__(self, **kargs):
         Functions.__init__(self)
-
+        
         self.ApplyInput(kargs)
         self.Caller = "TLINE"
  
@@ -62,7 +63,7 @@ class TLine(Functions):
             self.DefineStyle()
             self.ApplyToPLT()
         self.ApplyRandomMarker(self)
-
+        
         if self.DoStatistics:
             self._temp = self.xData
             out = self.MakeStatistics(self.xData)
@@ -71,18 +72,11 @@ class TLine(Functions):
             self.up_yData = [out[i][1] for i in out]
             self.down_yData = [out[i][1] for i in out]
 
-        out = self.SanitizeData(self.xData)
-        out += self.SanitizeData(self.yData)
-        out = list(set(out))
+        self.xData = self.SanitizeData(self.xData)
+        self.yData = self.SanitizeData(self.yData)
 
-        er_out = self.SanitizeData(self.down_yData)
-        er_out += self.SanitizeData(self.up_yData)
-        er_out = list(set(er_out)) 
-
-        self.xData = [self.xData[i] for i in range(len(self.xData)) if i not in out]
-        self.yData = [self.yData[i] for i in range(len(self.yData)) if i not in out]      
-        self.up_yData = [self.up_yData[i] for i in range(len(self.up_yData)) if i not in out]
-        self.down_yData = [self.down_yData[i] for i in range(len(self.down_yData)) if i not in out]
+        self.down_yData = self.SanitizeData(self.down_yData)
+        self.down_yData = self.SanitizeData(self.up_yData)
 
         self.DefineRange("y")
         self.DefineRange("x")
@@ -127,13 +121,9 @@ class CombineTLine(Functions):
             self.yData += i.yData
             self.xData += i.xData
  
-        out = self.SanitizeData(self.xData)
-        out += self.SanitizeData(self.yData)
-        out = list(set(out))
+        self.xData = self.SanitizeData(self.xData)
+        self.yData = self.SanitizeData(self.yData)
         
-        self.xData = [self.xData[i] for i in range(len(self.xData)) if i not in out]
-        self.yData = [self.yData[i] for i in range(len(self.yData)) if i not in out]   
-
         self.DefineRange("x")
         self.DefineRange("y")
         
@@ -173,3 +163,84 @@ class CombineTLine(Functions):
         self.PLT.ylabel(self.yTitle)
         self.PLT.xlim(self.xMin, self.xMax)
         self.PLT.ylim(self.yMin, self.yMax)
+
+
+class TLineStack(CombineTLine):
+    def __init__(self, **kargs):
+        self.Data = []
+        self.MakeStaticHistograms = True
+        CombineTLine.__init__(self, **kargs)
+    
+    def __Recursive(self, inpt, search):
+        if isinstance(inpt, dict) == False:
+            return inpt
+        if search in inpt:
+            if isinstance(inpt[search], list):
+                return inpt[search]
+            out = []
+            for k in inpt[search]:
+                out += [k]*inpt[search][k]
+            return out
+        return [l for i in inpt for l in self.__Recursive(inpt[i], search)]
+
+    def __Organize(self):
+        self._Hists = {}
+        self.Lines = { T : {} for T in self.Lines }
+        for x, y, t in zip(self.xData, self.yData, self.Lines):
+            params = {
+                        "xData" : [float(i) if isinstance(i, str) else i for i in self.__Recursive(self.Data, x)], 
+                        "yData" : [float(i) if isinstance(i, str) else i for i in self.__Recursive(self.Data, y)],
+                        "Title" : t,
+                    }
+
+            if self.DoStatistics:
+                sort = {}
+                for y, x in zip(params["yData"], params["xData"]):
+                    if x not in sort:
+                        sort[x] = []
+                    sort[x].append(y)
+                params["xData"] = sort
+                params["yData"] = []
+                
+            params["DoStatistics"] = self.DoStatistics
+            self.Lines[t] = params
+        
+   
+        if self.DoStatistics and self.MakeStaticHistograms:
+            for t in self.Lines:
+                Plot = {}
+                Plot["xBins"] = 100
+                Plot["Title"] = "Distribution of Data Points for " + t
+                Plot["Histograms"] = []
+                for p in self.Lines[t]["xData"]:
+                    Plot["Histograms"] += [{ "Title" : p, "xData" : self.Lines[t]["xData"][p] }]
+                Plot["Filename"] = "xProjection_" + t
+                Plot["xTitle"] = self.yTitle # This is correct. We are projecting along the x-axis
+                Plot["OutputDirectory"] = self.OutputDirectory + "/" + self.Filename
+                self._Hists[t] = TH1FStack(**Plot)
+            
+            Plot = {}
+            Plot["xBins"] = 100
+            Plot["xTitle"] = self.yTitle
+            Plot["Title"] = "Data Points Summed Along the x-Axis: " + self.Filename 
+            Plot["Histograms"] = [{"Title" :  t,
+                                   "xData" : [k for val in list(self.Lines[t]["xData"].values()) for k in val]} 
+                                   for t in self.Lines]
+            Plot["Filename"] = "xProjection_" + self.Filename
+            Plot["OutputDirectory"] = self.OutputDirectory + "/" + self.Filename
+            self._Hists["Projections"] = TH1FStack(**Plot) 
+
+    def Precompiler(self):
+        self.__Organize()
+        tmp = []
+        for i in self._Hists:
+            self._Hists[i].SaveFigure()
+        for i in self.Lines:
+            x = TLine(**self.Lines[i])
+            x.Compile()
+            tmp.append(x)
+        self.Lines = tmp
+        self.xData = []
+        self.yData = []
+
+

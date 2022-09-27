@@ -107,8 +107,8 @@ class ModelImporter:
 
 class TorchScriptModel(Notification):
 
-    def __init__(self, ModelPath, **kargs):
-        self.VerboseLevel = 0
+    def __init__(self, ModelPath, VerboseLevel = 0, **kargs):
+        self.VerboseLevel = VerboseLevel
         self.Caller = "TorchScriptModel"
         self.ModelPath = ModelPath
 
@@ -116,14 +116,19 @@ class TorchScriptModel(Notification):
         self._model = torch.jit.load(self.ModelPath, _extra_files = self.key)
         self.__forward() 
         self.__CheckOutpout()
-        
-        if list(kargs.values())[0] == None:
+
+        self._keys = {}
+       
+        if len(kargs) == 0:
+            kargs = {}
+        elif list(kargs.values())[0] == None:
             kargs = {}
         
         if len(self.Outputs) > 0 and len(kargs) == 0: 
             self.Warning("Found Outputs (In order): " + " | ".join(self.Outputs))
         if len(self.keys) > 0 and len(kargs) == 0: 
             self.Warning("Found Keys: " + " | ".join(self.keys))
+            return 
 
         for i in list(kargs.values())[0]:
             self.AddOutput(**i)
@@ -131,7 +136,7 @@ class TorchScriptModel(Notification):
     def __CheckOutpout(self):
         x = [str(i).replace(",","").replace("\n", "") for i in self._model.graph.outputs()] 
         x = [str(i).replace("(","").replace(")", "").split("=")[-1] for i in x]
-        x = ["%"+j.replace(" ", "") for i in x for j in i.split("%")[1:]]
+        x = ["%"+j.replace(" ", "").split("#")[0] for i in x for j in i.split("%")[1:]]
         self.Outputs = x
 
     def __ExtraFiles(self):
@@ -194,7 +199,6 @@ class TorchScriptModel(Notification):
         self.Notify("------------ END GRAPH NODES -----------------")
 
     def Finalize(self):
-        self._keys = {}
         it = len(list(self._model.graph.outputs()))
         for i in self.keys:
             setattr(self, "O_" + i, None)
@@ -213,6 +217,8 @@ class TorchScriptModel(Notification):
         self._model.eval()
     
     def __call__(self, **kargs):
+        if len(self._keys) == 0:
+            self.Finalize()
         out = self._model(**{key : kargs[key] for key in self.Inputs})
         for i in self._keys:
             setattr(self, i, out[self._keys[i]])

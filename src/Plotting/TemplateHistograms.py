@@ -180,7 +180,6 @@ class CombineTH1F(Functions):
 class TH1FStack(CombineTH1F):
 
     def __init__(self, **kargs):
-        self.Superimposed = []
         self.Histogram = None
         self.Data = {}
         CombineTH1F.__init__(self, **kargs)
@@ -202,13 +201,17 @@ class TH1FStack(CombineTH1F):
         Hists = {}
         if self.Histogram != None:
             Hists |= { self.Histogram : None }
-        Hists |= { key : None for key in self.Histograms }
+        try:
+            Hists |= { key : None for key in self.Histograms }
+        except TypeError:
+            Hists = self.Histograms
         self.Histograms = {}
         for i in Hists:
-            params = {
-                        "xData" : self.__Recursive(self.Data, i), 
-                        "Title" : i, 
-                    }
+            if isinstance(i, str):
+                params = {"xData" : self.__Recursive(self.Data, i), "Title" : i}
+            else:
+                params = i
+                i = params["Title"]
             self.Histograms[i] = params
     
     def Precompiler(self):
