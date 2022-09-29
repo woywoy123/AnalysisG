@@ -51,13 +51,12 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Paramete
             self.StartEpoch = 0
             return 
         self.StartEpoch = out[-1]
-
+        
         state = torch.load(OutDir + "/TorchSave/Epoch_" + str(self.StartEpoch) + "_" + str(self.Epochs) + ".pt")
         self.Model.load_state_dict(state["state_dict"])
         self.optimizer.load_state_dict(state["optimizer"])
         self.StartEpoch = state["epoch"]
 
-        self.Model = torch.load(OutDir + "/TorchSave/Epoch_" + str(self.StartEpoch) + "_" + str(self.Epochs) + ".pt")
         self.Model.train()
 
     def DumpStatistics(self):
@@ -73,7 +72,10 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Paramete
             PickleObject(self.Stats, "Stats_" + self.epoch, OutDir + "/Statistics")
         else:
             PickleObject(self.Stats, "Stats_" + str(self.epoch+1), OutDir + "/Statistics")
+       
         self.__MakeStats()
+        if self.epoch == "Done":
+            return 
         self.MakeDir(OutDir + "/TorchSave")
         state = {
                 "epoch" : self.epoch+1, 
@@ -156,9 +158,7 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Paramete
             self.Fail("NO TRUTH FEATURES WERE FOUND DURING INITIALIZATION PHASE!")
         self.Notify(">----------------------------------------------------------------------------------------\n")
         
-        self.LoadLastState()
-        self.Model.Device = str(self.Device)
-        
+       
         if self.DefaultScheduler != None:
             self.DefineScheduler()
         
@@ -195,6 +195,10 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Paramete
         self.epoch = "Done"
         self.DumpStatistics()
         # ===== Make a preliminary Dump of the Sample being trained on ====== #
+
+        self.LoadLastState()
+        self.Model.Device = str(self.Device)
+ 
 
         TimeStart = time.time()
         for self.epoch in range(self.StartEpoch, self.Epochs):
@@ -352,6 +356,7 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Paramete
                 print("---> Model: \n", m_p.tolist())
                 print("---> DIFF: \n", (t_p - m_p).tolist())
                 print("(Loss)---> ", float(L))
+                continue
             elif self.Debug == "Loss":
                 dif = key + " "*int(longest - len(key))
                 print(dif + " | (Loss)---> ", float(L))
@@ -361,8 +366,6 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Paramete
             elif self.Debug == "Test":
                 self.Stats["Test_Accuracy"][key].append(acc.item())
                 self.Stats["Test_Loss"][key].append(L.item())
-                continue
-            elif self.Debug:
                 continue
             
             self.Stats[self._mode + "_Accuracy"][key][-1].append(acc.item())

@@ -213,7 +213,8 @@ class GenerateDataLoader(Notification, Parameters):
             self.Fail("WRONG SAMPLE INPUT! Expected list, got: " + type(SampleList))
         
         TH = Threading(SampleList, function, self.Threads, self.chnk)
-        TH.VerboseLevel = 0
+        TH.VerboseLevel = self.VerboseLevel
+        TH.Caller = self.Caller
         TH.Start()
         self.SetDevice(self.Device, TH._lists)
         return TH._lists
