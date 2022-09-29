@@ -40,7 +40,7 @@ class ExportToDataScience(WriteDirectory):
         state = {
                 "epoch" : self.epoch+1, 
                 "state_dict" : self.Model.state_dict(), 
-                "optimizer" : self.Optimizer.state_dict()
+                "optimizer" : self.optimizer.state_dict()
                 }
         torch.save(state, self._OutputDir + "TorchSave" + self._EpochDir + ".pt")
 

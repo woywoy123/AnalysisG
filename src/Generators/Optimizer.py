@@ -54,7 +54,7 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Paramete
 
         state = torch.load(OutDir + "/TorchSave/Epoch_" + str(self.StartEpoch) + "_" + str(self.Epochs) + ".pt")
         self.Model.load_state_dict(state["state_dict"])
-        self.Optimizer.load_state_dict(state["optimizer"])
+        self.optimizer.load_state_dict(state["optimizer"])
         self.StartEpoch = state["epoch"]
 
         self.Model = torch.load(OutDir + "/TorchSave/Epoch_" + str(self.StartEpoch) + "_" + str(self.Epochs) + ".pt")
@@ -96,17 +96,17 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Paramete
 
     def DefineOptimizer(self):
         if self.DefaultOptimizer == "ADAM":
-            self.Optimizer = torch.optim.Adam(self.Model.parameters(), lr = self.LearningRate, weight_decay = self.WeightDecay)
+            self.optimizer = torch.optim.Adam(self.Model.parameters(), lr = self.LearningRate, weight_decay = self.WeightDecay)
         elif self.DefaultOptimizer == "SGD":
-            self.Optimizer = torch.optim.SGD(self.Model.parameters(), lr = self.LearningRate, weight_decay = self.WeightDecay)
+            self.optimizer = torch.optim.SGD(self.Model.parameters(), lr = self.LearningRate, weight_decay = self.WeightDecay)
     
     def DefineScheduler(self):
         if self.DefaultScheduler == "ExponentialLR":
-            self.Scheduler = ExponentialLR(self.Optimizer, *self.SchedulerParams)
+            self.Scheduler = ExponentialLR(self.optimizer, *self.SchedulerParams)
         elif self.DefineScheduler == None:
             self.Scheduler = None
         elif self.DefineScheduler == "CyclicLR":
-            self.Scheduler = CyclicLR(self.Optimizer, *self.SchedulerParams)
+            self.Scheduler = CyclicLR(self.optimizer, *self.SchedulerParams)
 
     def GetTruthFlags(self, Input = [], FEAT = ""):
         if len(Input) == 0:
@@ -272,7 +272,7 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Paramete
     def Train(self, sample):
         if self.Training:
             self.Model.train()
-            self.Optimizer.zero_grad()
+            self.optimizer.zero_grad()
             self._mode = "Training"
         else:
             self.Model.eval()
@@ -363,7 +363,7 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Paramete
 
         if self.Training:
             LT.backward()
-            self.Optimizer.step()
+            self.optimizer.step()
         
         if self.Debug:
             return truth_out, model_out
