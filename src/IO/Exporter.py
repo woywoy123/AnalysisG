@@ -36,18 +36,9 @@ class ExportToDataScience(WriteDirectory):
 
         self._Sample = [self._Sample[i] for i in self._InputMap]
 
-        self.MakeDir(self._OutputDir + "TorchSave")
-        state = {
-                "epoch" : self.epoch+1, 
-                "state_dict" : self.Model.state_dict(), 
-                "optimizer" : self.optimizer.state_dict()
-                }
-        torch.save(state, self._OutputDir + "TorchSave" + self._EpochDir + ".pt")
-
         self.Model.eval()
         self.Model.requires_grad_(False)
         if self.ONNX_Export:
-
             try:
                 self.__ExportONNX( self._OutputDir + "ONNX" + self._EpochDir + ".onnx")
             except:
@@ -67,9 +58,8 @@ class ExportToDataScience(WriteDirectory):
                 self.Warning("_____ ERROR _____")
                 self.Warning(" ".join(fail))
                 self.Warning("=================")
-       
-
         self.Model.requires_grad_(True)
+        self.Model.train()
 
     def __ExportONNX(self, Dir):
         self.MakeDir("/".join(Dir.split("/")[:-1]))

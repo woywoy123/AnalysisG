@@ -74,6 +74,13 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Paramete
         else:
             PickleObject(self.Stats, "Stats_" + str(self.epoch+1), OutDir + "/Statistics")
         self.__MakeStats()
+        self.MakeDir(OutDir + "/TorchSave")
+        state = {
+                "epoch" : self.epoch+1, 
+                "state_dict" : self.Model.state_dict(), 
+                "optimizer" : self.optimizer.state_dict()
+                }
+        torch.save(state, OutDir + "/TorchSave/Epoch_" + str(self.epoch+1) + "_" + str(self.Epochs) + ".pt")
 
     def MakeContainer(self, Mode):
         self.Stats[Mode + "_Accuracy"] = {}
