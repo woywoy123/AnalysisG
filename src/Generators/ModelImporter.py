@@ -208,7 +208,6 @@ class TorchScriptModel(Notification):
             self._keys["O_" + i] = it
             it+=1
         self._model.graph.makeMultiOutputIntoTuple()
-
             
     def train(self):
         self._model.train()

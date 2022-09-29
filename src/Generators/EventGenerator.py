@@ -4,7 +4,7 @@ from AnalysisTopGNN.Parameters import Parameters
 
 
 class EventGenerator(Directories, Parameters):
-    def __init__(self, dir = None, Start = 0, Stop = None):
+    def __init__(self, dir = None, Start = 0, Stop = -1):
         Notification.__init__(self)
         self.Caller = "EVENTGENERATOR"
         self._Dir = dir
@@ -31,19 +31,26 @@ class EventGenerator(Directories, Parameters):
             self.Notify("!_______NEW DIRECTORY______: " + str(i))
 
             for F in self.Files[i]:
-                F_i = File(i + "/" + F)
+                F_i = File(i + "/" + F, self.Threads)
                 F_i._Threads = self.Threads
                 F_i.Trees += obj.Trees
                 F_i.Branches += obj.Branches
                 F_i.Leaves += obj.Leaves 
                 F_i.ValidateKeys()
                 self.Notify("!SPAWNING EVENTS FROM FILE -> " + F)
-                
                 for tr in F_i.Trees:
                     
                     it = it_a
                     F_i.GetTreeValues(tr)
-                    for t in F_i.Iter[self._Start:self._Stop]:
+
+                    for t in F_i:
+                        if it > self._Stop and self._Stop != -1:
+                            break
+                        
+                        if it < self._Start:
+                            it += 1
+                            continue
+                        
                         E = RecallObjectFromString(name)
                         E.Tree = tr
                         E.iter = it 
@@ -53,9 +60,9 @@ class EventGenerator(Directories, Parameters):
                             self.Events[BaseName] = {}
                         self.Events[BaseName] |= {tr : E}
                         it += 1
+                del F_i
                 it_a = it
         del self.Event
-    
     def CompileEvent(self, SingleThread = False, ClearVal = True):
         
         def function(inp):

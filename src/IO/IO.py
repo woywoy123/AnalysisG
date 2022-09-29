@@ -10,15 +10,15 @@ from AnalysisTopGNN.Tools import RecallObjectFromString
 
 
 class File(Notification):
-    def __init__(self, FileDirectory):
+    def __init__(self, FileDirectory, Threads = 1):
         Notification.__init__(self)
         self.Caller = "FILE"
         self.Trees = []
         self.Branches = []
         self.Leaves = []
-        self._Reader =  uproot.open(FileDirectory)
+
+        self._Reader =  uproot.open(FileDirectory, num_workers = Threads)
         self._State = None
-        self._Threads = 1
    
     def _CheckKeys(self, List, Type):
         TMP = []
@@ -41,7 +41,7 @@ class File(Notification):
         for i in List1:
             self._State = self._Reader[i]
             TMP += [i + "/" + j for j in self._CheckKeys(List2, Type)]
-        
+             
         for i in TMP:
             if i.split("/")[-1] in List2:
                 List2.pop(List2.index(i.split("/")[-1]))
@@ -75,9 +75,19 @@ class File(Notification):
         All = []
         All += [b.split("/")[-1] for b in self.Branches]
         All += [l.split("/")[-1] for l in self.Leaves]
-        for i in self._Reader[Tree].iterate(All, library = "ak"):
-            self.Iter = i.to_list()
-            break
+        self._All = All
+        self._Tree = Tree 
+ 
+    def __iter__(self):
+        self._C = []
+        self._iter = self._Reader[self._Tree].iterate(self._All, library = "ak", step_size = 10)
+        return self
+
+    def __next__(self):
+        if len(self._C) == 0:
+            self.Iter = next(self._iter)
+            self._C += self.Iter.to_list()
+        return self._C.pop(0)
 
 def PickleObject(obj, filename, Dir = "_Pickle"):
     if filename.endswith(".pkl"):

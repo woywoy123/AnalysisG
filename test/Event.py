@@ -3,20 +3,24 @@ from AnalysisTopGNN.Generators import EventGenerator
 import uproot
 from AnalysisTopGNN.Particles import *
 from AnalysisTopGNN.Events import Event
+from DelphesEvent import Event as EventDelphes
 from AnalysisTopGNN.IO import PickleObject, UnpickleObject
 import importlib, inspect
 
 def TestEvents(di):
-    x = EventGenerator(di, Start = 0, Stop = None)
+    x = EventGenerator(di, Start = 0, Stop = -1)
+    x.Event = EventDelphes
     x.SpawnEvents()
     x.Threads = 10
-    x.CompileEvent(SingleThread = False)
+    x.chnk = 5
+    #x.CompileEvent(SingleThread = False)
     return True
 
 def TestSignalMultipleFile(di):
     
     ev = EventGenerator(di, Stop = 1000)
     ev.SpawnEvents()
+    ev.Event = Event
     ev.Threads = 10
     ev.CompileEvent(SingleThread = False)
     

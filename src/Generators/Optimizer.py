@@ -51,8 +51,14 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Paramete
             self.StartEpoch = 0
             return 
         self.StartEpoch = out[-1]
+
+        state = torch.load(OutDir + "/TorchSave/Epoch_" + str(self.StartEpoch) + "_" + str(self.Epochs) + ".pt")
+        self.Model.load_state_dict(state["state_dict"])
+        self.Optimizer.load_state_dict(state["optimizer"])
+        self.StartEpoch = state["epoch"]
+
         self.Model = torch.load(OutDir + "/TorchSave/Epoch_" + str(self.StartEpoch) + "_" + str(self.Epochs) + ".pt")
-        self.Model.eval()
+        self.Model.train()
 
     def DumpStatistics(self):
         if self.Debug == True:
@@ -69,6 +75,13 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Paramete
             PickleObject(self.Stats, "Stats_" + str(self.epoch+1), OutDir + "/Statistics")
         self.__MakeStats()
 
+    def MakeContainer(self, Mode):
+        self.Stats[Mode + "_Accuracy"] = {}
+        self.Stats[Mode + "_Loss"] = {}
+        for i in self.T_Features:
+            self.Stats[Mode + "_Accuracy"][i] = []
+            self.Stats[Mode + "_Loss"][i] = []
+    
     def __MakeStats(self):
 
         ### Output Information
@@ -78,16 +91,8 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Paramete
         self.Stats["FoldTime"] = []
         self.Stats["Nodes"] = []
 
-        self.Stats["Training_Accuracy"] = {}
-        self.Stats["Validation_Accuracy"] = {}
-        self.Stats["Training_Loss"] = {}
-        self.Stats["Validation_Loss"] = {}
-
-        for i in self.T_Features:
-            self.Stats["Training_Accuracy"][i] = []
-            self.Stats["Validation_Accuracy"][i] = []
-            self.Stats["Training_Loss"][i] = []
-            self.Stats["Validation_Loss"][i] = []
+        self.MakeContainer("Training")
+        self.MakeContainer("Validation")
 
     def DefineOptimizer(self):
         if self.DefaultOptimizer == "ADAM":
@@ -103,7 +108,7 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Paramete
         elif self.DefineScheduler == "CyclicLR":
             self.Scheduler = CyclicLR(self.Optimizer, *self.SchedulerParams)
 
-    def GetTruthFlags(self, Input, FEAT):
+    def GetTruthFlags(self, Input = [], FEAT = ""):
         if len(Input) == 0:
             Input = list(self.Sample.to_dict())
             Input = [i.replace(FEAT+"_", "") for i in Input if i.startswith(FEAT + "_")]
@@ -346,7 +351,11 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Paramete
             elif self.Debug == "Pred":
                 print("---> Truth: \n", t_p.tolist())
                 print("---> Model: \n", m_p.tolist())
-            if self.Debug:
+            elif self.Debug == "Test":
+                self.Stats["Test_Accuracy"][key].append(acc.item())
+                self.Stats["Test_Loss"][key].append(L.item())
+                continue
+            elif self.Debug:
                 continue
             
             self.Stats[self._mode + "_Accuracy"][key][-1].append(acc.item())

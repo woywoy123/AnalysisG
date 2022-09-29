@@ -133,11 +133,10 @@ class CommonFunctions(WriteDirectory, Settings, Notification):
         color = next(self.Axis._get_lines.prop_cycler)["color"]
         if obj.Color == None:
             obj.Color = color
-        if obj.Color in self.Colors:
+            self.Colors.append(color)
+        elif obj.Color in self.Colors:
             obj.Color = None
             self.ApplyRandomColor(obj)
-        else:
-            self.Colors.append(obj.Color)
             return 
 
     def Precompiler(self):

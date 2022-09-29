@@ -37,7 +37,12 @@ class ExportToDataScience(WriteDirectory):
         self._Sample = [self._Sample[i] for i in self._InputMap]
 
         self.MakeDir(self._OutputDir + "TorchSave")
-        torch.save(self.Model, self._OutputDir + "TorchSave" + self._EpochDir + ".pt")
+        state = {
+                "epoch" : self.epoch+1, 
+                "state_dict" : self.model.state_dict(), 
+                "optimizer" : self.Optimizer.state_dict()
+                }
+        torch.save(state, self._OutputDir + "TorchSave" + self._EpochDir + ".pt")
 
         self.Model.eval()
         self.Model.requires_grad_(False)

@@ -74,7 +74,7 @@ class Parameters:
         self.chnk = 10
 
         self.EventStart = 0
-        self.EventEnd = None
+        self.EventEnd = -1
         
         self.ProjectName = "UNTITLED" 
         self.OutputDirectory = None

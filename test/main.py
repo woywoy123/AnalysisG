@@ -6,6 +6,7 @@ import DataLoader
 import Optimizer
 import TopBuilder
 import Exporter
+import CompareToROOT
 from AnalysisTopGNN.Generators import CacheGenerators
 
 #import EventImplementations
@@ -43,6 +44,7 @@ def Test(F, **kargs):
 
 if __name__ == "__main__":
     GeneralDir = "/CERN/CustomAnalysisTopOutputTest/"
+    GeneralDir = "/home/tnom6927/Schreibtisch/tag_1_delphes_events.root"
     
     ## ===== Test IO ===== #
     #Test(IO.TestReadROOTNominal, file = GeneralDir + "/tttt/QU_0.root")
@@ -51,9 +53,13 @@ if __name__ == "__main__":
     #Test(IO.TestHDF5ReadAndWriteEvent, di = GeneralDir + "tttt/QU_0.root", Cache = True)
 
     ## ===== Test of EventGenerator ===== ##
-    #Test(Event.TestEvents, di = GeneralDir + "tttt/QU_0.root")
+    Test(Event.TestEvents, di = GeneralDir) # + "tttt/QU_0.root")
     #Test(Event.TestSignalMultipleFile, di = GeneralDir + "tttt/")
     #Test(Event.TestSignalDirectory, di = GeneralDir + "t/")
+
+    ## ====== Test EventGenerator to File ======= #
+    Test(CompareToROOT.TestReadROOTDelphes, file = GeneralDir) # + "tttt/QU_0.root")
+
 
     ## ====== Test of DataLoader ====== ##
     #CacheGenerators.Generate_Cache(GeneralDir + "tttt/QU_0.root", Stop = 100, Compiler = "DataLoaderTest", Outdir = "_Pickle")
@@ -107,6 +113,4 @@ if __name__ == "__main__":
     #Test(Analysis.TestUnificationOptimizer)
     #Test(Analysis.TestUnificationSubmission)
 
-    ## ========= Presentation Plots ============ #
-    #Test(Presentation1.CreatePlots, FileDir = GeneralDir + "tttt/MCe/", CreateCache = True)
     pass
