@@ -27,7 +27,7 @@ class Functions(CommonFunctions):
         self.Set(Dims + "Max", self.Get(Dims + "Max")*(1 + 0.1*_max))
 
     def ApplyRandomMarker(self, obj):
-        ptr = ["x", "o", "O"]
+        ptr = [",", ".", "-", "x", "o", "O"]
         if obj.Marker == True:
             random.shuffle(ptr)
         elif obj.Marker != None:
@@ -164,11 +164,15 @@ class CombineTLine(Functions):
         self.PLT.xlim(self.xMin, self.xMax)
         self.PLT.ylim(self.yMin, self.yMax)
 
+        if self.ROC:
+            self.PLT.plot([0, 1], [0, 1], color="black", linestyle = "--")
+
 
 class TLineStack(CombineTLine):
     def __init__(self, **kargs):
         self.Data = []
         self.MakeStaticHistograms = True
+        self.ROC = False
         CombineTLine.__init__(self, **kargs)
     
     def __Recursive(self, inpt, search):
@@ -184,12 +188,28 @@ class TLineStack(CombineTLine):
         return [l for i in inpt for l in self.__Recursive(inpt[i], search)]
 
     def __Organize(self):
+        def ScanDict(string, dic):
+            for i in range(len(string)):
+                return ScanDict(string[i+1:], dic[string[i]]) 
+            return dic
+
+        def Switch(inpt):
+            if isinstance(inpt, str):
+                return ScanDict(inpt.split("/"), self.Data)
+            else:
+                return inpt
+
+
+
         self._Hists = {}
         self.Lines = { T : {} for T in self.Lines }
         for x, y, t in zip(self.xData, self.yData, self.Lines):
+            data_x = Switch(x)
+            data_y = Switch(y)
+
             params = {
-                        "xData" : [float(i) if isinstance(i, str) else i for i in self.__Recursive(self.Data, x)], 
-                        "yData" : [float(i) if isinstance(i, str) else i for i in self.__Recursive(self.Data, y)],
+                        "xData" : [float(i) if isinstance(i, str) else i for i in self.__Recursive(data_x, x)], 
+                        "yData" : [float(i) if isinstance(i, str) else i for i in self.__Recursive(data_y, y)],
                         "Title" : t,
                     }
 

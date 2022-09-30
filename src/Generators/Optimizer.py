@@ -56,7 +56,6 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Paramete
         self.Model.load_state_dict(state["state_dict"])
         self.optimizer.load_state_dict(state["optimizer"])
         self.StartEpoch = state["epoch"]
-
         self.Model.train()
 
     def DumpStatistics(self):

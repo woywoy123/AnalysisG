@@ -16,6 +16,9 @@ class Reconstructor(ModelImporter, Notification):
     
     def __call__(self, sample):
         self.Sample = sample
+        if self.Model == None:
+            self.TruthMode = True 
+
         if self._init == False and self.TruthMode == False:
             self.Device = "cuda" if sample.is_cuda else "cpu"
             self.InitializeModel()
@@ -41,19 +44,19 @@ class Reconstructor(ModelImporter, Notification):
         edge_index_s = edge_index[1][msk == True]
 
         # Weird floating point inaccuracy. When using Unique, the values seem to change slightly
-        Pmu = Pmu.int()
-        Pmu_n = torch.zeros(Pmu.shape, device = Pmu.device, dtype = torch.int)
+        Pmu = Pmu.to(dtype = torch.long)
+        Pmu_n = torch.zeros(Pmu.shape, device = Pmu.device, dtype = torch.long)
         Pmu_n.index_add_(0, edge_index_r, Pmu[edge_index_s])
-        
+
         #Make sure to find self loops - Avoid double counting 
         excluded_self = edge_index[1] == edge_index[0]
         excluded_self[msk == True] = False
         Pmu_n[edge_index[0][excluded_self]] += Pmu[edge_index[1][excluded_self]]
-        Pmu_n = Pmu_n.unique(dim = 0)
-        
-        mass = LV.MassFromPxPyPzE(Pmu_n)
-        mass = torch.unique(mass).float()/1000
-        return mass
+   
+        Pmu_n = (Pmu_n/1000).to(dtype = torch.long)
+        Pmu_n = torch.unique(Pmu_n, dim = 0)
+
+        return LV.MassFromPxPyPzE(Pmu_n).view(-1)
 
     def MassFromNodeFeature(self, TargetFeature, pt = "N_pT", eta = "N_eta", phi = "N_phi", e = "N_energy"):
         if self.TruthMode:

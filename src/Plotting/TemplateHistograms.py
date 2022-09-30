@@ -113,13 +113,9 @@ class CombineTH1F(Functions):
         self.Caller = "Combine-TH1F"
     
     def ConsistencyCheck(self):
-        b, H = [], []
-        if self.Histogram != None:
-            H.append(self.Histogram)
+        H = [self.Histogram] if self.Histogram != None else []
         H += self.Histograms
-        
         for i in H:
-            b.append(i.xBins)
             self.xData += i.xData
         
         self.DefineRange("x")
