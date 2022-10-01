@@ -89,6 +89,7 @@ class CommonFunctions(WriteDirectory, Settings, Notification):
         self.Set(Dim + "Max", None)
         self.Set(Dim + "Weights", None)
         self.Set(Dim + "Title", None)
+        self.Set(Dim + "TickLabels", None)
 
     def ApplyInput(self, args):
         for key, val in args.items():

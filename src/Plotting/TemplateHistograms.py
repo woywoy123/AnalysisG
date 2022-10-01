@@ -78,7 +78,6 @@ class TH1F(Functions):
             self.ResetPLT()
             self.DefineStyle()
             self.ApplyToPLT()
-
         if len(self.xData) == 0:
             self.Warning("EMPTY DATA. SKIPPING!")
             return
@@ -92,6 +91,11 @@ class TH1F(Functions):
        
         if self.xBinCentering:
             self.Axis.set_xticks(self.xData)
+
+        if isinstance(self.xTickLabels, list):
+            self.Axis.set_xticks(self.xData)
+            self.Axis.set_xticklabels(self.xTickLabels)
+
        
 class CombineTH1F(Functions):
     def __init__(self, **kargs):
@@ -136,6 +140,7 @@ class CombineTH1F(Functions):
         self.DefineStyle()
         self.ApplyToPLT()
         
+        Labels, Numpies = [], []
         Sum = 1
         if self.Normalize == "%" and self.Histogram != None:
             Sum = self.Histogram.NPHisto[0].sum()*0.01
@@ -146,8 +151,8 @@ class CombineTH1F(Functions):
         if self.Histogram != None:
             self.Histogram.NPHisto = (self.Histogram.NPHisto[0] / Sum, self.Histogram.NPHisto[1])
             self.Histogram.ApplyFormat()
+            Labels.append(self.Histogram.Title)
 
-        Labels, Numpies = [], []
         for i in self.Histograms:
             Labels.append(i.Title)
             i.NPHisto = (i.NPHisto[0]/Sum, i.NPHisto[1])
@@ -171,7 +176,12 @@ class CombineTH1F(Functions):
 
         if self.xBinCentering:
             self.Axis.set_xticks(self.xData)
-    
+
+        if isinstance(self.xTickLabels, list):
+            self.Axis.set_xticks(self.xData)
+            self.Axis.set_xticklabels(self.xTickLabels)
+
+
             
 class TH1FStack(CombineTH1F):
 
@@ -186,7 +196,6 @@ class TH1FStack(CombineTH1F):
         if search in inpt:
             if isinstance(inpt[search], list):
                 return inpt[search]
-
             out = []
             for k in inpt[search]:
                 out += [k]*inpt[search][k]
@@ -194,17 +203,22 @@ class TH1FStack(CombineTH1F):
         return [l for i in inpt for l in self.__Recursive(inpt[i], search)]
 
     def __Organize(self):
+
         Hists = {}
-        if self.Histogram != None:
-            Hists |= { self.Histogram : None }
         try:
             Hists |= { key : None for key in self.Histograms }
         except TypeError:
             Hists = self.Histograms
+        
+        if isinstance(self.Histogram, str):
+            Hists |= { self.Histogram : None }
+        elif isinstance(self.Histogram, dict):
+            self.Histogram = TH1F(**self.Histogram)
+
         self.Histograms = {}
         for i in Hists:
             if isinstance(i, str):
-                params = {"xData" : self.__Recursive(self.Data, i), "Title" : i}
+                params = {"xData" : self.__Recursive(data, i), "Title" : i}
             else:
                 params = i
                 i = params["Title"]

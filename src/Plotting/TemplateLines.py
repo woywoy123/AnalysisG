@@ -103,6 +103,10 @@ class TLine(Functions):
         if self.DoStatistics:
             self.xData = self._temp
 
+        if isinstance(self.xTickLabels, list):
+            self.Axis.set_xticks(self.xData)
+            self.Axis.set_xticklabels(self.xTickLabels)
+
 class CombineTLine(Functions):
 
     def __init__(self, **kwargs):
@@ -154,7 +158,6 @@ class CombineTLine(Functions):
             i.Compile(False)
 
         self.PLT.legend()
-
         if self.Logarithmic:
             self.PLT.yscale("log")
 
@@ -167,6 +170,9 @@ class CombineTLine(Functions):
         if self.ROC:
             self.PLT.plot([0, 1], [0, 1], color="black", linestyle = "--")
 
+        if isinstance(self.xTickLabels, list):
+            self.Axis.set_xticks(self.xData)
+            self.Axis.set_xticklabels(self.xTickLabels)
 
 class TLineStack(CombineTLine):
     def __init__(self, **kargs):
@@ -198,8 +204,6 @@ class TLineStack(CombineTLine):
                 return ScanDict(inpt.split("/"), self.Data)
             else:
                 return inpt
-
-
 
         self._Hists = {}
         self.Lines = { T : {} for T in self.Lines }
@@ -236,7 +240,7 @@ class TLineStack(CombineTLine):
                     Plot["Histograms"] += [{ "Title" : p, "xData" : self.Lines[t]["xData"][p] }]
                 Plot["Filename"] = "xProjection_" + t
                 Plot["xTitle"] = self.yTitle # This is correct. We are projecting along the x-axis
-                Plot["OutputDirectory"] = self.OutputDirectory + "/" + self.Filename
+                Plot["OutputDirectory"] = self.OutputDirectory + "/ProjectionPlots/" + self.Filename
                 self._Hists[t] = TH1FStack(**Plot)
             
             Plot = {}
@@ -247,7 +251,7 @@ class TLineStack(CombineTLine):
                                    "xData" : [k for val in list(self.Lines[t]["xData"].values()) for k in val]} 
                                    for t in self.Lines]
             Plot["Filename"] = "xProjection_" + self.Filename
-            Plot["OutputDirectory"] = self.OutputDirectory + "/" + self.Filename
+            Plot["OutputDirectory"] = self.OutputDirectory + "/ProjectionPlots/" + self.Filename
             self._Hists["Projections"] = TH1FStack(**Plot) 
 
     def Precompiler(self):
