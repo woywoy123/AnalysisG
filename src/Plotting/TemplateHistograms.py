@@ -218,7 +218,7 @@ class TH1FStack(CombineTH1F):
         self.Histograms = {}
         for i in Hists:
             if isinstance(i, str):
-                params = {"xData" : self.__Recursive(data, i), "Title" : i}
+                params = {"xData" : self.__Recursive(self.Data, i), "Title" : i}
             else:
                 params = i
                 i = params["Title"]

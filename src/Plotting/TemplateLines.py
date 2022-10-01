@@ -16,15 +16,14 @@ class Functions(CommonFunctions):
         self.DefineAxisData("y")
         self.DefineAxisData("up_y", True)
         self.DefineAxisData("down_y", True)
-        self.ErrorBars = False
         self.DoStatistics = False
    
     def DefineRange(self, Dims):
-        _min  = True if self.Get(Dims + "Min") == None else False
-        _max  = True if self.Get(Dims + "Max") == None else False       
+        _min  = 1 if self.Get(Dims + "Min") == None else 0
+        _max  = 1 if self.Get(Dims + "Max") == None else 0    
         self.DefineCommonRange(Dims)       
-        self.Set(Dims + "Min", self.Get(Dims + "Min")*(1 - 0.1*_min))
-        self.Set(Dims + "Max", self.Get(Dims + "Max")*(1 + 0.1*_max))
+        self.Set(Dims + "Min", self.Get(Dims + "Min") - 0.1*_min)
+        self.Set(Dims + "Max", self.Get(Dims + "Max") + 0.1*_max)
 
     def ApplyRandomMarker(self, obj):
         ptr = [",", ".", "-", "x", "o", "O"]
