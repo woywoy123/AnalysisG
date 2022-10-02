@@ -39,10 +39,9 @@ class EventGenerator(Directories, Parameters):
                 F_i.ValidateKeys()
                 self.Notify("!SPAWNING EVENTS FROM FILE -> " + F)
                 for tr in F_i.Trees:
-                    
                     it = it_a
+                    
                     F_i.GetTreeValues(tr)
-
                     for t in F_i:
                         if it > self._Stop and self._Stop != -1:
                             break
@@ -60,8 +59,8 @@ class EventGenerator(Directories, Parameters):
                             self.Events[BaseName] = {}
                         self.Events[BaseName] |= {tr : E}
                         it += 1
-                del F_i
-                it_a = it
+                #del F_i
+                #it_a = it
         del self.Event
     def CompileEvent(self, SingleThread = False, ClearVal = True):
         

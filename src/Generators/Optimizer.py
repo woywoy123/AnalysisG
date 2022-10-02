@@ -45,6 +45,8 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Paramete
 
         out = []
         for i in Directories().ListFilesInDir(OutDir + "/TorchSave"):
+            if "Model" in i:
+                continue
             out.append(int(i.split("/")[-1].split("_")[1]))
         out.sort()
         if len(out) == 0:
@@ -82,6 +84,7 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Paramete
                 "optimizer" : self.optimizer.state_dict()
                 }
         torch.save(state, OutDir + "/TorchSave/Epoch_" + str(self.epoch+1) + "_" + str(self.Epochs) + ".pt")
+        torch.save(self.Model, OutDir + "/TorchSave/Epoch_Model.pt")
 
     def MakeContainer(self, Mode):
         self.Stats[Mode + "_Accuracy"] = {}
@@ -115,14 +118,6 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Paramete
             self.Scheduler = None
         elif self.DefineScheduler == "CyclicLR":
             self.Scheduler = CyclicLR(self.optimizer, *self.SchedulerParams)
-
-    def GetTruthFlags(self, Input = [], FEAT = ""):
-        if len(Input) == 0:
-            Input = list(self.Sample.to_dict())
-            Input = [i.replace(FEAT+"_", "") for i in Input if i.startswith(FEAT + "_")]
-        for i in Input:
-            if i.startswith("T_") and str("O_" + i[2:]) in self.ModelOutputs:
-                self.T_Features[i[2:]] = [FEAT + "_" +i, FEAT + "_" +i[2:]]
 
     def SampleLoop(self, samples):
         for i in samples:

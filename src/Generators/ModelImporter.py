@@ -3,35 +3,26 @@ import torch
 
 class ModelImporter:
 
-    def __init__(self, ExampleSample):
+    def __init__(self, ExampleSample = None, Model = None):
         Notification.__init__(self)
         self.Caller = "MODELIMPORTER"
-        self.Sample = None
+        self.Model = Model 
+        self.Sample = ExampleSample
         self.InitializeModel()
         self._init = False
+        self.T_Features = {}
         
     def InitializeModel(self):
         def CiteContent(i):
-            f = i.split("_")
-            level = ""
-            if f[0] == "G":
-                level = "Graph"
-            elif f[0] == "N":
-                level = "Node"
-            elif f[0] == "E":
-                level = "Edge"
-            try:
-                if f[1] == "T":
-                    level = "Truth " + level
-            except:
-                pass
-            if level == "":
-                out = "_".join(f[0:])
-            elif "Truth" in level:
-                out = "_".join(f[2:])
-            else:
-                out = "_".join(f[1:])
             
+            f = i.split("_")
+            level = "Graph" if f[0] == "G" else ""
+            level = "Node" if f[0] == "N" else level
+            level = "Edge" if f[0] == "E" else level
+            level = "Truth " + level if "T" in f else level 
+            
+            out = "_".join(f[0:]) if level == "" else "_".join(f[1:])
+            out = "_".join(f[2:]) if level.startswith("Truth") else out
             return level, out
 
         if self._init == True:
@@ -77,6 +68,14 @@ class ModelImporter:
     def MakePrediction(self, sample):
         dr = {i :  sample[i] for i in self.ModelInputs}
         self.Model(**dr)
+
+    def GetTruthFlags(self, Input = [], FEAT = ""):
+        if len(Input) == 0:
+            Input = list(self.Sample.to_dict())
+            Input = [i.replace(FEAT+"_", "") for i in Input if i.startswith(FEAT + "_")]
+        for i in Input:
+            if i.startswith("T_") and str("O_" + i[2:]) in self.ModelOutputs:
+                self.T_Features[i[2:]] = [FEAT + "_" +i, FEAT + "_" +i[2:]]
 
     def Output(self, output_dict, sample, Truth = False):
         def GetKeyPair(dic, key):

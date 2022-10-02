@@ -80,7 +80,7 @@ class File(Notification):
  
     def __iter__(self):
         self._C = []
-        self._iter = self._Reader[self._Tree].iterate(self._All, library = "ak", step_size = 10)
+        self._iter = self._Reader[self._Tree].iterate(self._All, library = "ak", step_size = 10000)
         return self
 
     def __next__(self):

@@ -15,7 +15,10 @@ class Directories(Notification):
         self.pwd = os.getcwd()
         self.Files = {}
 
-    def ListDirs(self):
+    def ListDirs(self, Dir = None):
+        if Dir != None:
+            self._Dir = Dir 
+        self.pwd = os.getcwd()
         try:
             os.chdir(self._Dir)
         except NotADirectoryError:
@@ -27,6 +30,7 @@ class Directories(Notification):
             elif os.path.isdir(self._Dir) and os.path.isfile(i):
                 self.Files[os.getcwd()] = []
         os.chdir(self.pwd)
+        return self.Files
 
     def ListFilesInDir(self, dir, accepted = [".root", ".pt", ".pkl", ".hdf5", ".onnx"]):
         if dir.endswith("/"):
