@@ -121,6 +121,7 @@ class CombineTLine(Functions):
     
     def ConsistencyCheck(self):
         for i in self.Lines:
+            i.Compile()
             self.yData += i.yData
             self.xData += i.xData
  
@@ -143,7 +144,6 @@ class CombineTLine(Functions):
             
             self.ApplyRandomColor(i)
             self.ApplyRandomMarker(i)
-            i.Compile()
 
     def Compile(self):
 
@@ -165,9 +165,6 @@ class CombineTLine(Functions):
         self.PLT.ylabel(self.yTitle)
         self.PLT.xlim(self.xMin, self.xMax)
         self.PLT.ylim(self.yMin, self.yMax)
-
-        if self.ROC:
-            self.PLT.plot([0, 1], [0, 1], color="black", linestyle = "--")
 
         if isinstance(self.xTickLabels, list):
             self.Axis.set_xticks(self.xData)

@@ -25,6 +25,7 @@ class Settings:
         self.ATLASLumi = None
         self.ATLASCom = None
         self.Color = None
+        self.Colors = []
         
     def Layout(self):
         self.FontSize = 10
