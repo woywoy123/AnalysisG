@@ -105,6 +105,26 @@ class CommonFunctions(WriteDirectory, Settings, Notification):
     def Set(self, var, val):
         setattr(self, var, val)
 
+    def DumpDict(self, Varname = None):
+        out = {}
+        for i in self.__dict__:
+            if i in ["PLT", "Figure", "Axis"]:
+                continue 
+
+            obj = []
+            if isinstance(self.__dict__[i], list):
+                obj = {hex(id(k)) : k.DumpDict(i) for k in self.__dict__[i] if "AnalysisTopGNN" in type(k).__module__}
+            
+            if len(obj) == 0:
+                out[i] = self.__dict__[i]
+            else:
+                out["Rebuild"] = obj
+        out["_ID"] = hex(id(self))
+        out["_TYPE"] = type(self).__name__
+        if Varname != None:
+            out["_Varname"] = Varname
+        return out
+
     def SanitizeData(self, var):
         out = []
         for i in range(len(var)):
