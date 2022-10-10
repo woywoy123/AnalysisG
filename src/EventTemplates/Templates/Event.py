@@ -1,4 +1,4 @@
-from AnalysisTopGNN.Tools import VariableManager
+from .Manager import VariableManager
 import copy 
 
 class EventTemplate(VariableManager):

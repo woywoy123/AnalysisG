@@ -1,5 +1,4 @@
-from AnalysisTopGNN.Tools.Variables import VariableManager
-import copy
+from .Manager import VariableManager
 import math
 import torch
 import LorentzVector

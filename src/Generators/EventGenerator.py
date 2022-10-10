@@ -1,4 +1,4 @@
-from AnalysisTopGNN.IO import File, Directories, PickleObject, UnpickleObject
+from AnalysisTopGNN.IO import File, Directories
 from AnalysisTopGNN.Tools import Notification, TemplateThreading, Threading, RecallObjectFromString
 from AnalysisTopGNN.Parameters import Parameters
 
@@ -59,8 +59,7 @@ class EventGenerator(Directories, Parameters):
                             self.Events[BaseName] = {}
                         self.Events[BaseName] |= {tr : E}
                         it += 1
-                #del F_i
-                #it_a = it
+                it_a = it
         del self.Event
     def CompileEvent(self, SingleThread = False, ClearVal = True):
         

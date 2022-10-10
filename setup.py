@@ -5,7 +5,7 @@ from torch.utils.cpp_extension import BuildExtension, CppExtension
 
 setup(
         name = "AnalysisTopGNN", 
-        version = "1.0", 
+        version = "2.0", 
 
         packages = [
             "AnalysisTopGNN", 
@@ -17,7 +17,6 @@ setup(
             "AnalysisTopGNN.IO",
             "AnalysisTopGNN.Generators",
             "AnalysisTopGNN.Plotting", 
-            "AnalysisTopGNN.Plotting.Legacy", 
             "AnalysisTopGNN.Submission", 
         ],
         package_dir = {
@@ -25,12 +24,11 @@ setup(
             "AnalysisTopGNN.Events" : "src/EventTemplates/Events", 
             "AnalysisTopGNN.Particles" : "src/EventTemplates/Particles",
             "AnalysisTopGNN.Templates" : "src/EventTemplates/Templates", 
-            "AnalysisTopGNN.Reconstruction" : "src/EventTemplates/Reconstruction",
+            "AnalysisTopGNN.Reconstruction" : "src/Reconstruction",
             "AnalysisTopGNN.Tools" : "src/Tools",
             "AnalysisTopGNN.IO" : "src/IO",
             "AnalysisTopGNN.Generators" : "src/Generators", 
             "AnalysisTopGNN.Plotting" : "src/Plotting",
-            "AnalysisTopGNN.Plotting.Legacy" : "src/Plotting/Legacy", 
             "AnalysisTopGNN.Submission" : "src/Submission", 
         },
 
