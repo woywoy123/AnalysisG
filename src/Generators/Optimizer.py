@@ -10,33 +10,19 @@ import numpy as np
 
 import time
 import datetime
-from AnalysisTopGNN.Tools import Notification
+from AnalysisTopGNN.Tools import OptimizerNotifier
 from AnalysisTopGNN.IO import WriteDirectory, Directories, PickleObject, ExportToDataScience, UnpickleObject
 from AnalysisTopGNN.Generators import GenerateDataLoader, ModelImporter
 from AnalysisTopGNN.Parameters import Parameters
 
-class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Parameters):
+class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Parameters, OptimizerNotifier):
 
-    def __init__(self, DataLoaderInstance = None):
+    def __init__(self):
         self.Caller = "OPTIMIZER"
         self.Notification()
         self.Optimizer()
         self._init = False
  
-        ### DataLoader Inheritence 
-        if DataLoaderInstance != None:
-            self.ReadInDataLoader(DataLoaderInstance)       
-
-    def ReadInDataLoader(self, DataLoaderInstance):
-        self.TrainingSample = DataLoaderInstance.TrainingSample
-
-        self.EdgeAttribute = DataLoaderInstance.EdgeAttribute
-        self.NodeAttribute = DataLoaderInstance.NodeAttribute
-        self.GraphAttribute = DataLoaderInstance.GraphAttribute
-
-        self.Device = DataLoaderInstance.Device
-        self.FileTraces = DataLoaderInstance.FileTraces 
-
     def LoadLastState(self):
         if self.RunDir == None:
             OutDir = self.RunName
@@ -45,7 +31,7 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Paramete
 
         out = []
         for i in Directories().ListFilesInDir(OutDir + "/TorchSave"):
-            if "Model" in i:
+            if "Epoch_Model.pt" in i:
                 continue
             out.append(int(i.split("/")[-1].split("_")[1]))
         out.sort()
@@ -77,14 +63,19 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Paramete
         self.__MakeStats()
         if self.epoch == "Done":
             return 
-        self.MakeDir(OutDir + "/TorchSave")
+
         state = {
-                "epoch" : self.epoch+1, 
-                "state_dict" : self.Model.state_dict(), 
-                "optimizer" : self.optimizer.state_dict()
+                    "epoch" : self.epoch+1, 
+                    "state_dict" : self.Model.state_dict(), 
+                    "optimizer" : self.optimizer.state_dict()
                 }
+        
+        self.MakeDir(OutDir + "/TorchSave")
         torch.save(state, OutDir + "/TorchSave/Epoch_" + str(self.epoch+1) + "_" + str(self.Epochs) + ".pt")
         torch.save(self.Model, OutDir + "/TorchSave/Epoch_Model.pt")
+
+        self.MakeDir(OutDir + "/PickleSave")
+        PickleObject(self.Model, "Epoch_" + str(self.epoch+1) + "_" + str(self.Epochs), OutDir + "/PickleSave/")
 
     def MakeContainer(self, Mode):
         self.Stats[Mode + "_Accuracy"] = {}
@@ -151,7 +142,7 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Paramete
         if len(self.T_Features) == 0:
             self.Fail("NO TRUTH FEATURES WERE FOUND DURING INITIALIZATION PHASE!")
         self.Notify(">----------------------------------------------------------------------------------------\n")
-        
+        self.LongestOutput() 
        
         if self.DefaultScheduler != None:
             self.DefineScheduler()
@@ -192,8 +183,7 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Paramete
 
         self.LoadLastState()
         self.Model.Device = str(self.Device)
- 
-
+        
         TimeStart = time.time()
         for self.epoch in range(self.StartEpoch, self.Epochs):
             self.Notify("! >============== [ EPOCH (" + str(self.epoch+1) + "/" + str(self.Epochs) + ") ] ==============< ")
@@ -252,7 +242,6 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Paramete
                 CalcAverage("Training_Accuracy", k-1, "!!", "Validation_Accuracy")
                 self.Notify("!!_______________ LOSS _______________")
                 CalcAverage("Training_Loss", k-1, "!!", "Validation_Loss")
-                #torch.cuda.empty_cache()
             
             self.Stats["EpochTime"].append(time.time() - TimeStartEpoch)
             self.Notify("! >========= DURATION: " + str(datetime.timedelta(seconds = self.Stats["EpochTime"][-1])))
@@ -282,13 +271,9 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Paramete
         else:
             self.Model.eval()
             self._mode = "Validation"
-
         self.MakePrediction(sample)
         truth_out = self.Output(self.ModelOutputs, sample, Truth = True)
         model_out = self.Output(self.ModelOutputs, sample, Truth = False)
-            
-        if self.Debug:
-            longest = max([len(i) for i in model_out])
         
         LT = 0
         for key in model_out:
@@ -324,40 +309,15 @@ class Optimizer(ExportToDataScience, GenerateDataLoader, ModelImporter, Paramete
                 m_v.type(torch.LongTensor)
                 acc = self.LF
             
-            # Error Handling if something goes wrong. Can cause CUDA to completely freeze Python
-            # Can be solved by changing screen resolution....
-            if acc == None:
-                self.Warning("SKIPPING " + key + " :: NO LOSS FUNCTION SELECTED!!!!")
-                continue
-
-            elif m_v.shape[1] == 1 and self.ModelOutputs["C_" + key]:
-                pass
-
-            elif m_v.shape[1] <= t_v.max() and (self.ModelOutputs["C_" + key] or Classification):
-                self.Fail("(" + key + ") Your Classification Model only has " 
-                        + str(int(m_v.shape[1])) + " classes but requires " + str(int(t_v.max()+1)))
-            elif Classification == False and m_v.shape[1] != t_v.shape[1]:
-                self.Warning("Model is using regression, but your truth has length " 
-                        + str(int(t_v.shape[1])) + " but need " + str(int(m_v.shape[1])))
-                self.Fail("Your Model has more outputs than Truth! :: " + key)
             acc = acc(m_p, t_p)
             L = self.LF(m_v, t_v)
             LT += L
             
-            if self.Debug == True:
-                print("----------------------(" + key + ") -------------------------------")
-                print("---> Truth: \n", t_p.tolist())
-                print("---> Model: \n", m_p.tolist())
-                print("---> DIFF: \n", (t_p - m_p).tolist())
-                print("(Loss)---> ", float(L))
-                continue
-            elif self.Debug == "Loss":
-                dif = key + " "*int(longest - len(key))
-                print(dif + " | (Loss)---> ", float(L))
-            elif self.Debug == "Pred":
-                print("---> Truth: \n", t_p.tolist())
-                print("---> Model: \n", m_p.tolist())
-            elif self.Debug == "Test":
+            if self.ModelDebug(t_p, m_p, L, key):
+                for t in range(2):
+                    truth_out[key][t] = truth_out[key][t].detach()
+                    model_out[key][t] = model_out[key][t].detach()
+
                 self.Stats["Test_Accuracy"][key].append(acc.item())
                 self.Stats["Test_Loss"][key].append(L.item())
                 continue

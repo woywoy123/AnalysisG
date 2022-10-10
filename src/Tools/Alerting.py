@@ -31,3 +31,38 @@ class Notification:
         os._exit(1)
 
 
+class OptimizerNotifier:
+
+    def __init__(self):
+        pass
+
+    def LongestOutput(self):
+        self._len = 0
+        for key in self.ModelOutputs:
+            if self._len < len(key):
+                self._len = len(key)
+
+    def ModelDebug(self, truth_pred, model_pred, Loss, key):
+
+        if self.Debug == False:
+            return False
+        
+        elif self.Debug == True:
+            print("-" *10 + "(" + key + ")" +"-"*10)
+            print("---> Truth: \n", truth_pred.tolist())
+            print("---> Model: \n", model_pred.tolist())
+            print("---> DIFF: \n", (truth_pred - model_pred).tolist())
+            print("(Loss)---> ", float(Loss))
+            return False
+        elif self.Debug == "Loss":
+            dif = key + " "*int(longest - len(key))
+            print(dif + " | (Loss)---> ", float(Loss))
+            return False
+        elif self.Debug == "Pred":
+            print("---> Truth: \n", t_p.tolist())
+            print("---> Model: \n", m_p.tolist())
+            return False
+        else:
+            return self.Debug
+
+    
