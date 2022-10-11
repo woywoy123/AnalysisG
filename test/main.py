@@ -1,5 +1,6 @@
 import sys
 import EventGenerator
+import IO
 
 def Test(F, **kargs):
     import traceback
@@ -29,5 +30,9 @@ if __name__ == '__main__':
 
     RootDir = "/CERN/CustomAnalysisTopOutputTest/"
     
-    Test(EventGenerator.TestEventGenerator, Files = [RootDir + "tttt/QU_0.root"])
+    # ==== Testing IO ==== #
+    #Test(IO.TestDirectory, Files = RootDir)
+    
+    # ==== Test EventGenerator ==== #
+    Test(EventGenerator.TestEventGenerator, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
 

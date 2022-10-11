@@ -1,66 +1,67 @@
-from AnalysisTopGNN.IO import File, Directories
-from AnalysisTopGNN.Tools import Notification, TemplateThreading, Threading, RecallObjectFromString
+#from AnalysisTopGNN.IO import File, Directories
+#from AnalysisTopGNN.Tools import TemplateThreading, Threading, RecallObjectFromString
+
+from AnalysisTopGNN.IO import File
 from AnalysisTopGNN.Parameters import Parameters
+from AnalysisTopGNN.Notification import EventGenerator
+from AnalysisTopGNN.Samples import SampleTracer
 
-
-class EventGenerator(Directories, Parameters):
-    def __init__(self, dir = None, Start = 0, Stop = -1):
-        Notification.__init__(self)
+class EventGenerator(EventGenerator, SampleTracer): #, Directories, Parameters):
+    def __init__(self, InputDir = None, EventStart = 0, EventStop = None):
         self.Caller = "EVENTGENERATOR"
-        self._Dir = dir
-        self._Start = Start
-        self._Stop = Stop
-        
-        self.Computations()
-        self.Notification()
-        self.EventGenerator()
-    
-    def SpawnEvents(self):
-        if self.Event == None:
-            self.Fail("NEED TO PROVIDE AN EVENT IMPLEMENTATION VIA 'self.Event'.")
-
+        self.InputDirectory = InputDir
+        self.EventStart = EventStart
+        self.EventStop = EventStop
+        self.Event = None
+        self.VerboseLevel = 3
+        self.Threads = 12
+   
+    def __GetEvent(self):
         if "__init__" in self.Event.__dict__:
             self.Event = self.Event()
-        name = type(self.Event).__module__ + "." + type(self.Event).__name__
-        obj = RecallObjectFromString(name)
-        if len(self.Files) == 0:
-            self.GetFilesInDir()
-        
-        it_a = 0
-        for i in self.Files:
-            self.Notify("!_______NEW DIRECTORY______: " + str(i))
+        _, evnt = self.GetObjectFromString(self.Event.__module__, type(self.Event).__name__)
+        return evnt
 
-            for F in self.Files[i]:
-                F_i = File(i + "/" + F, self.Threads)
-                F_i._Threads = self.Threads
-                F_i.Trees += obj.Trees
-                F_i.Branches += obj.Branches
-                F_i.Leaves += obj.Leaves 
-                F_i.ValidateKeys()
-                self.Notify("!SPAWNING EVENTS FROM FILE -> " + F)
-                for tr in F_i.Trees:
-                    it = it_a
-                    
-                    F_i.GetTreeValues(tr)
-                    for t in F_i:
-                        if it > self._Stop and self._Stop != -1:
-                            break
-                        
-                        if it < self._Start:
-                            it += 1
-                            continue
-                        
-                        E = RecallObjectFromString(name)
-                        E.Tree = tr
-                        E.iter = it 
-                        E._Store = t
-                        BaseName = i + "/" + F + "/" + str(it)
-                        if BaseName not in self.Events:
-                            self.Events[BaseName] = {}
-                        self.Events[BaseName] |= {tr : E}
-                        it += 1
-                it_a = it
-        del self.Event
+    def __AddEvent(self, File, val = False):
+        if val:
+            EventObj = self.__GetEvent()
+            EventObj._State = val
+            EventObj.Tree = File._Tree
+            EventObj.iter = self.Tracer.ROOTInfo[File.ROOTFile].EventIndex[EventObj.Tree]
+            return self.Tracer.AddEvent(EventObj) 
+        for i in File:
+            if self.__AddEvent(File, i):
+                return True
+
+    def SpawnEvents(self):
+        self.BeginTrace()
+        self.CheckEventImplementation()
+
+        Path = self.Event.__module__ + "." + self.Event.__name__
+        self.AddInfo("Name", self.Event.__name__)
+        self.AddInfo("Module", self.Event.__module__)
+        self.AddInfo("Path", Path)
+        self.AddInfo("EventCode", self.GetSourceCode(self.Event))
+        obj = self.__GetEvent()
+        
+        self.Files = self.ListFilesInDir(self.InputDirectory, extension = ".root") 
+        self.CheckROOTFiles() 
+        
+        for i in self.Files:
+            self.AddSamples(i, self.Files[i])
+
+        for F in self.DictToList(self.Files):
+            F_i = File(F, self.Threads)
+            F_i.Tracer = self.Tracer
+            F_i.Trees += obj.Trees
+            F_i.Branches += obj.Branches
+            F_i.Leaves += obj.Leaves 
+            F_i.ValidateKeys()
+            for tr in F_i.Trees:
+                F_i.GetTreeValues(tr)
+                if self.__AddEvent(F_i):
+                    return 
+
     def CompileEvent(self, SingleThread = False, ClearVal = True):
         
         def function(inp):

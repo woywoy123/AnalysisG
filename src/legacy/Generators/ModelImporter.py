@@ -1,4 +1,4 @@
-from AnalysisTopGNN.Tools import Notification
+#from AnalysisTopGNN.Tools import Notification
 import torch
 
 class ModelImporter:

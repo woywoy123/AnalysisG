@@ -1,7 +1,7 @@
 import torch
 import networkx as nx
 from torch_geometric.data import Data
-from AnalysisTopGNN.Tools import Notification
+from AnalysisTopGNN.Notification import Notification
 
 class EventGraphTemplate(Notification):
     def __init__(self):

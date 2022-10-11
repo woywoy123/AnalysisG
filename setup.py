@@ -9,6 +9,9 @@ setup(
 
         packages = [
             "AnalysisTopGNN", 
+            "AnalysisTopGNN.Notification", 
+            "AnalysisTopGNN.Samples", 
+            
             "AnalysisTopGNN.Events", 
             "AnalysisTopGNN.Particles", 
             "AnalysisTopGNN.Templates", 
@@ -21,11 +24,18 @@ setup(
         ],
         package_dir = {
             "AnalysisTopGNN": "src",
+            "AnalysisTopGNN.Notification" : "src/Notification",
+            "AnalysisTopGNN.Samples" : "src/Samples", 
+
+
             "AnalysisTopGNN.Events" : "src/EventTemplates/Events", 
             "AnalysisTopGNN.Particles" : "src/EventTemplates/Particles",
             "AnalysisTopGNN.Templates" : "src/EventTemplates/Templates", 
             "AnalysisTopGNN.Reconstruction" : "src/Reconstruction",
+
             "AnalysisTopGNN.Tools" : "src/Tools",
+            
+            
             "AnalysisTopGNN.IO" : "src/IO",
             "AnalysisTopGNN.Generators" : "src/Generators", 
             "AnalysisTopGNN.Plotting" : "src/Plotting",

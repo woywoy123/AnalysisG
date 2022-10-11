@@ -1,9 +1,30 @@
 import importlib
+import inspect
+
+def StringToObject(module, name):
+    modul = importlib.import_module(module)
+    obj = getattr(modul, name)
+    return CheckObjectInputs(obj)
 
 
-def StringToObject(string):
+
+def CheckObjectInputs(obj):
+    InptDic = {}
+    _def = obj.__init__.__defaults__
+    if _def == None:
+        return InptDic, obj()
+    _inptvars = list(obj.__init__.__code__.co_varnames)
+    _inptvars.remove("self")
     
-    print(string)
+    print("Fix" , _inptvars, _def)
+
+
+
+def GetSourceCode(obj):
+    return inspect.getsource(obj)
+
+
+
 
 def RecallObjectFromString(string):
     import importlib
