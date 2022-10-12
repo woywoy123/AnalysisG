@@ -1,12 +1,13 @@
 import os
 from glob import glob
 import AnalysisTopGNN
+from .String import *
 
 def _IO(directory, extension):
     io = IO()
     return io.ListFilesInDir(directory, extension)
 
-class IO(AnalysisTopGNN.Notification.IO):
+class IO(AnalysisTopGNN.Notification.IO, String):
 
     def __init__(self):
         self.Caller = "IO"
@@ -23,7 +24,7 @@ class IO(AnalysisTopGNN.Notification.IO):
         if os.path.isfile(directory):
             return directory
         else:
-            self.FileNotFoundWarning(os.path.dirname(directory, i.split("/")[-1]))
+            self.FileNotFoundWarning(self.path(directory, i.split("/")[-1]))
             return False
 
     def ListFilesInDir(self, directory, extension, _it = 0):
@@ -45,8 +46,8 @@ class IO(AnalysisTopGNN.Notification.IO):
             F = [i for i in F if self.IsFile(i)] 
 
         if _it == 0:
-            dirs = {os.path.dirname(i) : [] for i in F}
-            F = {i : [k.split("/")[-1] for k in F if os.path.dirname(k) == i] for i in dirs} 
+            dirs = {self.path(i) : [] for i in F}
+            F = {i : [k.split("/")[-1] for k in F if self.path(k) == i] for i in dirs} 
             Out = {}
             for i in F:
                 if len(F[i]) == 0:
@@ -55,3 +56,25 @@ class IO(AnalysisTopGNN.Notification.IO):
             self.FoundFiles(Out)
             return Out
         return F
+    
+    def pwd(self):
+        return os.getcwd()
+
+    def abs(self, directory):
+        return os.path.abspath(directory)
+    
+    def path(self, inpt):
+        return os.path.dirname(self.abs(inpt))
+    
+    def filename(self, inpt):
+        return inpt.split("/")[-1]
+
+    def mkdir(self, directory):
+        try:
+            os.makedirs(self.abs(directory))
+        except FileExistsError:
+            pass
+    
+    
+
+

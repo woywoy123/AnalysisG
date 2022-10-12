@@ -9,54 +9,7 @@ import torch
 import itertools
 import sys
 
-class FeatureAnalysis(Notification, Parameters):
-    def __init__(self):
-        Notification.__init__(self)
-        self.GenerateDataLoader()
 
-    def FeatureAnalysis(self, Input, Fx_n, Fx, Fx_m):
-        Input = self.EventGraph(Input)
-        try: 
-            if "GraphFeatures" in Fx_m:
-                Fx(Input.Event)
-            if "NodeFeatures" in Fx_m:
-                for i in Input.Particles:
-                    Fx(i)
-            if "EdgeFeatures" in Fx_m:
-                for i in Input.Particles:
-                    for j in Input.Particles:
-                        Fx(i, j)
-            return []
-    
-        except AttributeError:
-            fail = str(sys.exc_info()[1]).replace("'", "").split(" ")
-            return ["FAILED: " + Fx_m + " -> " + Fx_n + " ERROR -> " + " ".join(fail)]
-    
-    def TestObjectAttributes(self, Event):
-        samples = [Event[k][self.Tree] for k in random.sample(list(Event), 10)]
-        Failed = []
-        Features = []
-        Features += list(self.GraphAttribute)
-        Features += list(self.NodeAttribute)
-        Features += list(self.EdgeAttribute)
-        for i in samples:
-            # Test the Graph Attributes 
-            for gn, gfx in self.GraphAttribute.items():
-                Failed += self.FeatureAnalysis(i, gn, gfx, "GraphFeatures")
-            for nn, nfx in self.NodeAttribute.items():
-                Failed += self.FeatureAnalysis(i, nn, nfx, "NodeFeatures")
-            for en, efx in self.EdgeAttribute.items():
-                Failed += self.FeatureAnalysis(i, en, efx, "EdgeFeatures")
-        if len(Failed) == 0:
-            return 
-    
-        self.Warning("------------- Feature Errors -------------------")
-        for i in list(set(Failed)):
-            self.Warning(i)
-    
-        self.Warning("------------------------------------------------")
-        if len(list(set(Failed))) == int(len(Features)):
-            self.Fail("NONE OF THE FEATURES PROVIDED WERE SUCCESSFUL!")
  
 class Analysis(Optimizer, WriteDirectory, GenerateDataLoader, Directories, FeatureAnalysis):
 

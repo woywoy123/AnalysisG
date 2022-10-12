@@ -118,10 +118,7 @@ class EventGraphTemplate(Notification):
         del obj
 
     def __SetAttribute(self, c_name, fx, container):
-        if c_name not in container:
-            container[c_name] = fx
-        else:
-            self.Notification.Warning("Found Duplicate " + c_name + " Attribute")
+        container[c_name] = fx
 
     def SetEdgeAttribute(self, c_name, fx):
         self.__SetAttribute(c_name, fx, self.EdgeAttr)

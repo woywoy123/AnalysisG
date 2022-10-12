@@ -9,7 +9,7 @@ class EventTemplate(VariableManager):
         self.Branches = []
         self.Leaves = []
         self._Store = None
-        self.iter = -1
+        self._SampleIndex = -1
 
     def GetKey(self, obj, Excld = []):
         return {j : i for i, j in zip(obj.__dict__.keys(), obj.__dict__.values()) if i not in Excld and isinstance(j, str)}
@@ -19,7 +19,7 @@ class EventTemplate(VariableManager):
             self.Leaves += list(self.GetKey(self.Objects[name], ["Index", "Type"]))
         self.Leaves += list(self.GetKey(self, ["Type", "Objects", "iter"]))
 
-    def _Compile(self, ClearVal):
+    def _Compile(self, ClearVal = True):
         def CheckDims(lst):
             try:
                 out = [len(lst)]
@@ -85,21 +85,12 @@ class EventTemplate(VariableManager):
         self.CompileEvent() 
 
         if ClearVal:
-            names = [i for i in self.Objects]
             del self._Store
             del self.Objects
             del self.Leaves
             del self.Branches
             del self.Trees
             
-            for i in names:
-                for l in self.DictToList(getattr(self, i)):
-                    maps = self.GetKey(l, ["Index", "Type"])
-                    if len(maps) == 0: 
-                        continue
-                    for t in maps.values():
-                        self.Warning("POTENTIAL MEMORY LEAK IN EVENT PARTICLE: " + i + " -> " + t + ":::" + maps[t])
-    
     def CompileEvent(self):
         pass
 

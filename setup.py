@@ -15,23 +15,25 @@ setup(
             "AnalysisTopGNN.Events", 
             "AnalysisTopGNN.Particles", 
             "AnalysisTopGNN.Templates", 
-            "AnalysisTopGNN.Reconstruction",
+            "AnalysisTopGNN.Features",  
             "AnalysisTopGNN.Tools", 
             "AnalysisTopGNN.IO",
             "AnalysisTopGNN.Generators",
             "AnalysisTopGNN.Plotting", 
-            "AnalysisTopGNN.Submission", 
+            #"AnalysisTopGNN.Submission", 
+            #"AnalysisTopGNN.Reconstruction",
         ],
         package_dir = {
             "AnalysisTopGNN": "src",
             "AnalysisTopGNN.Notification" : "src/Notification",
             "AnalysisTopGNN.Samples" : "src/Samples", 
-
-
+            
             "AnalysisTopGNN.Events" : "src/EventTemplates/Events", 
             "AnalysisTopGNN.Particles" : "src/EventTemplates/Particles",
             "AnalysisTopGNN.Templates" : "src/EventTemplates/Templates", 
-            "AnalysisTopGNN.Reconstruction" : "src/Reconstruction",
+
+            "AnalysisTopGNN.Features" : "src/Features",
+            #"AnalysisTopGNN.Reconstruction" : "src/Reconstruction",
 
             "AnalysisTopGNN.Tools" : "src/Tools",
             
@@ -39,7 +41,7 @@ setup(
             "AnalysisTopGNN.IO" : "src/IO",
             "AnalysisTopGNN.Generators" : "src/Generators", 
             "AnalysisTopGNN.Plotting" : "src/Plotting",
-            "AnalysisTopGNN.Submission" : "src/Submission", 
+            #"AnalysisTopGNN.Submission" : "src/Submission", 
         },
 
         long_description = open("README.md").read(), 

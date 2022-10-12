@@ -18,3 +18,17 @@ class EventGenerator(Notification):
             mes = "No .root files found."
             self.Failure("="*len(mes))
             self.FailureExit(mes)
+
+    def CheckSettings(self):
+        if self.EventStop == None:
+            return 
+        if self.EventStop < self.EventStart:
+            self.Warning("EventStart is larger than EventStop. Switching.")
+            tmp = self.EventStop
+            tmp2 = self.EventStart
+            self.EventStop = tmp2
+            self.EventStart = tmp
+    
+    def CheckSpawnedEvents(self):
+        if len(self.Tracer.Events) == 0:
+            self.Warning("No Events were generated...")

@@ -11,6 +11,9 @@ class Tools(IO):
     
     def GetObjectFromString(self, module, name):
         return StringToObject(module, name)
+    
+    def GetSourceFile(self, obj):
+        return GetSourceFile(obj)
 
     def MergeListsInDict(self, inpt):
         if isinstance(inpt, list):
@@ -33,4 +36,11 @@ class Tools(IO):
             for i in inpt:
                 out += self.DictToList(inpt[i], i)
             return out 
-
+        
+    def AddDictToDict(self, Dict, key):
+        if key not in Dict:
+            Dict[key] = {}
+    
+    def AddListToDict(self, Dict, key):
+        if key not in Dict:
+            Dict[key] = []

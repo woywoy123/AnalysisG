@@ -7,6 +7,7 @@ class File(UpROOT):
         self.Trees = []
         self.Branches = []
         self.Leaves = []
+        self.StepSize = 10000
         self.ROOTFile = ROOTFile
 
         self._Reader =  uproot.open(self.ROOTFile, num_workers = Threads)
@@ -74,7 +75,7 @@ class File(UpROOT):
  
     def __iter__(self):
         self._C = []
-        self._iter = self._Reader[self._Tree].iterate(self._All, library = "ak", step_size = 10000)
+        self._iter = self._Reader[self._Tree].iterate(self._All, library = "ak", step_size = self.StepSize)
         return self
 
     def __next__(self):

@@ -2,9 +2,10 @@ import multiprocessing
 import torch.multiprocessing
 torch.multiprocessing.set_sharing_strategy("file_system")
 from torch.multiprocessing import Process, Pipe
-from AnalysisTopGNN.Tools import Notification
 import math
 import gc
+from AnalysisTopGNN.Notification import MultiThreading
+
 
 class TemplateThreading:
 
@@ -32,12 +33,11 @@ class TemplateThreading:
         return r
 
 
-class Threading(Notification):
+class Threading(MultiThreading):
     def __init__(self, lists, Function, threads = 12, chnk_size = None):
         self._threads = threads
         self._lists = lists
         self._function = Function
-        Notification.__init__(self)
         self.Caller = "MULTITHREADING"
         
         if chnk_size != None:
@@ -62,7 +62,7 @@ class Threading(Notification):
             self._chnk[i] = [P, recv, T]
 
             P.start()
-            self.Notify("!!STARTED JOB " + str(i+1) + "/" + str(len(self._chnk)))
+            self.StartingJobs(i)
             
             if i+1 == self._threads*it:
                 self.CheckJobs(tmp, i+1)
@@ -82,6 +82,7 @@ class Threading(Notification):
             except:
                 i[0].terminate()
                 out = False
+                self.RecoveredThread(w)
             indx = i[2]._i
 
             if out == False:
@@ -93,5 +94,5 @@ class Threading(Notification):
             del self._chnk[t][1]
             del self._chnk[t][0]
             self._chnk[t] = None
-            self.Notify("!!WORKER FINISHED " + str(w) + "/" + str(self._threads))
+            self.FinishedJobs(w)
             w+=1
