@@ -1,8 +1,6 @@
 import AnalysisTopGNN
-from .ROOTFile import ROOTFile
 from .SampleContainer import SampleContainer
 from AnalysisTopGNN.Tools import Tools
-
 
 class SampleTracer(Tools):
 
@@ -11,7 +9,9 @@ class SampleTracer(Tools):
             self.Tracer = IMPRT
             self.MakeCache()
 
-    def BeginTrace(self, Tracer = SampleContainer()):
+    def BeginTrace(self, Tracer = None):
+        if Tracer == None:
+            Tracer = SampleContainer()
         self.Tracer = Tracer
         self.Tracer.Initialize(self.Caller)
         self.Tracer.VerboseLevel = self.VerboseLevel
@@ -23,10 +23,13 @@ class SampleTracer(Tools):
 
     def AddSamples(self, Directory, Files):
         self.Tracer.AddSamples(Directory, Files)
-
+    
     def ImportTracer(self, Inpt):
         self.BeginTrace(Inpt)
-   
+  
+    def FlushCache(self):
+        self._HashCache = {}
+
     def MakeCache(self):
         if "_HashCache" not in self.__dict__:
             self._HashCache = {}
@@ -57,5 +60,17 @@ class SampleTracer(Tools):
     def IndexToROOT(self, index):
         self.MakeCache()
         return self._HashCache["HashToFile"][self._HashCache["IndexToHash"][index]]
+   
+    def __iter__(self):
+        self.MakeCache()
+        ev = self._HashCache["IndexToEvent"]
+        self._events = {k : ev[k] for k in ev if ev[k] != None}
+        self._iter = 0
+        return self
 
-
+    def __next__(self):
+        ev = self._events[self._iter]
+        self._iter += 1
+        if self._iter == len(self._events):
+            raise StopIteration()
+        return ev

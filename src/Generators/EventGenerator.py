@@ -1,13 +1,9 @@
-#from AnalysisTopGNN.IO import File, Directories
-#from AnalysisTopGNN.Tools import TemplateThreading, Threading, RecallObjectFromString
-
 from AnalysisTopGNN.IO import File
-from AnalysisTopGNN.Parameters import Parameters
 from AnalysisTopGNN.Notification import EventGenerator
 from AnalysisTopGNN.Samples import SampleTracer
 from AnalysisTopGNN.Tools import Threading
 
-class EventGenerator(EventGenerator, SampleTracer): #, Directories, Parameters):
+class EventGenerator(EventGenerator, SampleTracer):
     def __init__(self, InputDir = None, EventStart = 0, EventStop = None):
         self.Caller = "EVENTGENERATOR"
         self.InputDirectory = InputDir
@@ -22,7 +18,7 @@ class EventGenerator(EventGenerator, SampleTracer): #, Directories, Parameters):
         if "__init__" in self.Event.__dict__:
             self.Event = self.Event()
         _, evnt = self.GetObjectFromString(self.Event.__module__, type(self.Event).__name__)
-        return evnt
+        return evnt()
 
     def __AddEvent(self, File, val = False):
         if val:
@@ -46,6 +42,7 @@ class EventGenerator(EventGenerator, SampleTracer): #, Directories, Parameters):
         self.AddInfo("Path", Path)
         self.AddInfo("EventCode", self.GetSourceFile(self.Event))
         obj = self.__GetEvent()
+
         particles = []
         for p in obj.Objects:
             particles.append(self.GetSourceFile(obj.Objects[p]))
@@ -72,7 +69,7 @@ class EventGenerator(EventGenerator, SampleTracer): #, Directories, Parameters):
         
         self.CheckSpawnedEvents()
 
-    def CompileEvent(self, SingleThread = False, ClearVal = True):
+    def CompileEvent(self, ClearVal = True):
         
         def function(inp):
             out = []
@@ -81,14 +78,9 @@ class EventGenerator(EventGenerator, SampleTracer): #, Directories, Parameters):
                 out.append(k)
             return out
        
-        if SingleThread:
-            self.Threads = 1
-       
-        Events = list(self.Tracer.Events.values())
-        TH = Threading(Events, function, threads = self.Threads, chnk_size = self.chnk)
+        TH = Threading(list(self.Tracer.Events.values()), function, threads = self.Threads, chnk_size = self.chnk)
         TH.VerboseLevel = self.VerboseLevel
         TH.Start()
         
         for ev in TH._lists:
             self.Tracer.Events[ev.EventIndex] = ev
-        self.Events = self.Tracer.Events

@@ -1,11 +1,9 @@
 import torch
 import networkx as nx
 from torch_geometric.data import Data
-from AnalysisTopGNN.Notification import Notification
 
-class EventGraphTemplate(Notification):
+class EventGraphTemplate:
     def __init__(self):
-        Notification.__init__(self)
         self.Particles = []
         self.SelfLoop = False
         self.FullyConnect = True
@@ -15,7 +13,6 @@ class EventGraphTemplate(Notification):
         self.Event = ""
         self.Particles = []
         self.iter = -1
-        self.Caller = "EventGraph"
 
     def CreateParticleNodes(self):
         self.G = nx.Graph()

@@ -15,36 +15,30 @@ class FeatureAnalysis(FeatureAnalysis):
         ev = EventGraph(Event)
         return [ Fx(i, j) for i in ev.Particles for j in ev.Particles]
 
-    def TestEvent(self, Event, EventGraph):
+    def TestEvent(self, Event, EventGraph, EventIndex = None):
         if isinstance(Event, list):
             for ev in Event:
-                self.TestEvent(ev, EventGraph)
+                self.TestEvent(ev, EventGraph, ev.EventIndex)
             return 
         if hasattr(Event, "Trees"):
             for tree in Event.Trees:
-                self.TestEvent(Event.Trees[tree], EventGraph)
+                self.TestEvent(Event.Trees[tree], EventGraph, EventIndex)
             return 
         
-        res = {"GRAPH" : {}, "NODE" : {}, "EDGE" : {}}
         for c_name in self.GraphAttribute:
             try:
                 self.TestGraphFeature(Event, self.GetEventGraph(), self.GraphAttribute[c_name])    
             except AttributeError:
-                fail = str(sys.exc_info()[1]).replace("'", "").split(" ")
-                res["GRAPH"][c_name] = "FAILED: " + Fx_m + " -> " + Fx_n + " ERROR -> " + " ".join(fail)
+                self.FeatureFailure(c_name, "GRAPH", EventIndex)
 
         for c_name in self.NodeAttribute:
             try:
                 self.TestNodeFeature(Event, self.GetEventGraph(), self.NodeAttribute[c_name])    
             except AttributeError:
-                fail = str(sys.exc_info()[1]).replace("'", "").split(" ")
-                res["NODE"][c_name] = "FAILED: " + Fx_m + " -> " + Fx_n + " ERROR -> " + " ".join(fail)
+                self.FeatureFailure(c_name, "NODE", EventIndex)
 
         for c_name in self.EdgeAttribute:
             try:
                 self.TestEdgeFeature(Event, self.GetEventGraph(), self.EdgeAttribute[c_name])    
             except AttributeError:
-                fail = str(sys.exc_info()[1]).replace("'", "").split(" ")
-                res["EDGE"][c_name] = "FAILED: " + Fx_m + " -> " + Fx_n + " ERROR -> " + " ".join(fail)
-
-        #// Continue here with the error notification ...
+                self.FeatureFailure(c_name, "EDGE", EventIndex)

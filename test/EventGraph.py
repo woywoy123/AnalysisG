@@ -3,26 +3,27 @@ from AnalysisTopGNN.Events import Event, EventGraphTruthTopChildren
 from AnalysisTopGNN.IO import PickleObject, UnpickleObject
 from AnalysisTopGNN.Tools import Tools
 
-
-
 def Test(a):
     return 1
 
 def TestEventGraph(Files):
    
-    #Ev = EventGenerator(Files)
-    #Ev.EventStart = 0
-    #Ev.EventStop = 3000
-    #Ev.Event = Event
-    #Ev.SpawnEvents()
-    #Ev.CompileEvent()
+    Ev = EventGenerator(Files)
+    Ev.EventStart = 0
+    Ev.EventStop = 100
+    Ev.Event = Event
+    Ev.SpawnEvents()
+    Ev.CompileEvent()
 
-    #PickleObject(Ev, "TMP2")
-    Ev = UnpickleObject("TMP2")
- 
     Gr = GraphGenerator()
     Gr.EventGraph = EventGraphTruthTopChildren
     Gr.ImportTracer(Ev.Tracer)
     Gr.AddGraphFeature(Test)
-    Gr.TestFeatures(100)
-    #Gr.CompileEventGraph()
+    Gr.TestFeatures(10)
+    Gr.EventStart = 1
+    Gr.EventStop = 10 
+    Gr.CompileEventGraph()
+
+    for i in Gr:
+        print(i)
+    return True 

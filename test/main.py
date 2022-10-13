@@ -2,6 +2,7 @@ import sys
 import EventGenerator
 import IO
 import EventGraph
+import Exporter
 
 def Test(F, **kargs):
     import traceback
@@ -38,5 +39,8 @@ if __name__ == '__main__':
     #Test(EventGenerator.TestEventGenerator, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
 
     # ==== Test EventGraph ==== #
-    Test(EventGraph.TestEventGraph, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
+    #Test(EventGraph.TestEventGraph, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
+
+    # ==== Test Merger ==== #
+    Test(Exporter.TestSamples, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
 

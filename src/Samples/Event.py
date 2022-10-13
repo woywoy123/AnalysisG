@@ -1,6 +1,6 @@
 from .Hashing import Hashing
 
-class Event(Hashing):
+class EventContainer(Hashing):
 
     def __init__(self):
         self.Trees = {}
@@ -12,3 +12,7 @@ class Event(Hashing):
             self.Trees[i]._Compile(ClearVal)
             self.Filename = self.MD5(self.Filename + "/" + str(self.Trees[i]._SampleIndex))
     
+    def MakeGraph(self):
+        for i in self.Trees:
+            self.Trees[i] = self.Trees[i].ConvertToData()
+        return self

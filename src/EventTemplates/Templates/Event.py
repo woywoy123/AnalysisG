@@ -54,7 +54,7 @@ class EventTemplate(VariableManager):
                     for k in p:
                         setattr(p[k], i, tmp[k])
                         p[k].Index = indx[k]
-
+        
         for name, obj in zip(self.Objects, self.Objects.values()):
             maps = self.GetKey(obj, ["Type"])
             tmp = { maps[i] : self._Store[i] for i in self._Store if i in maps }

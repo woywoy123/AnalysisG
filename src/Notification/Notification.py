@@ -16,7 +16,7 @@ class Base:
         txt += str(Color) + "m"
         txt += "" if self.Caller == "" else self.Caller.upper() + "::"
         txt += State + "::"
-        txt += "" if self.Caller == "" else "\033[0;9" + str(Color) + "m" + Message 
+        txt += Message if self.Caller == "" else "\033[0;9" + str(Color) + "m" + Message 
         txt += "\033[0m"
         print(txt)
 

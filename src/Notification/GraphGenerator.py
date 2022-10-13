@@ -32,5 +32,5 @@ class GraphGenerator(Notification):
             self.Failure("="*message)
             self.FailureExit("NO ATTRIBUTES DEFINED!")
         self.Success("!!Data being processed on " + self.Device)
-
-
+        
+        self.BeginTrace(self.Tracer)

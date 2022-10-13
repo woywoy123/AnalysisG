@@ -1,5 +1,6 @@
 from AnalysisTopGNN.Notification import SampleContainer
-from .Event import Event
+from .Event import EventContainer
+from .ROOTFile import ROOTFile
 
 class SampleContainer(SampleContainer):
 
@@ -40,12 +41,12 @@ class SampleContainer(SampleContainer):
             self.EventInfo[self.Caller][InptEvent.Tree] += 1
             return False
 
-        if self.EventStop < it and self.EventStop != None:
+        if self.EventStop != None and self.EventStop < it:
             self.EventInfo[self.Caller][InptEvent.Tree] += 1
             return True
 
         if it not in self.Events:
-            self.Events[it] = Event()
+            self.Events[it] = EventContainer()
             self.Events[it].Filename = Filename
         self.ROOTInfo[Filename].MakeHash(it) 
         self.Events[it].Trees[InptEvent.Tree] = InptEvent
@@ -53,5 +54,3 @@ class SampleContainer(SampleContainer):
         self.EventInfo[self.Caller][InptEvent.Tree] += 1
         return False
     
-
-

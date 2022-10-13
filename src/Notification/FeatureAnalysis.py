@@ -1,16 +1,18 @@
 from .Notification import Notification
+import sys
 
 class FeatureAnalysis(Notification):
 
     def __init__(self):
         pass
 
-    def ReturnWarning(self, Failed):
-        
-        self.Warning("------------- Feature Errors -------------------")
-        for i in list(set(Failed)):
-            self.Warning(i)
-    
-        self.Warning("------------------------------------------------")
-        if len(list(set(Failed))) == int(len(Features)):
-            self.Fail("NONE OF THE FEATURES PROVIDED WERE SUCCESSFUL!")
+    def FeatureFailure(self, name, mode, EventIndex):
+        try:
+            EventIndex = " :: File " + "/".join(self.IndexToROOT(EventIndex).split("/")[-2:])
+        except: 
+            EventIndex = ""
+
+        fail = str(sys.exc_info()[1]).replace("'", "").split(" ")
+        self.Failure("(" + mode + "): " + name + " ERROR -> " + " ".join(fail) + EventIndex)
+
+

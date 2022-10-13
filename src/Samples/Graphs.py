@@ -11,6 +11,7 @@ class Graphs(FeatureAnalysis, Tools):
         self.NodeAttribute = {}
         self.EdgeAttribute = {}
         self.EventGraph = None
+        self.Tree = False
 
     def SetAttribute(self, c_name, fx, container):
         if c_name == "P_" or c_name == "T_":
@@ -27,3 +28,18 @@ class Graphs(FeatureAnalysis, Tools):
         name = self.EventGraph.__init__.__qualname__.split(".")[-2]
         _, evnt = self.GetObjectFromString(self.EventGraph.__module__, name)
         return evnt
+
+    def MakeGraph(self, event, smplidx):
+        ev = self.GetEventGraph()
+        ev = ev(event)
+        ev.iter = smplidx
+        ev.SelfLoop = self.SelfLoop
+        ev.FullyConnect = self.FullyConnect
+        ev.EdgeAttr |= self.EdgeAttribute
+        ev.NodeAttr |= self.NodeAttribute
+        ev.GraphAttr |= self.GraphAttribute
+        return ev
+
+
+
+
