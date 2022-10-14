@@ -175,3 +175,72 @@ def TestGraphGenerator(Files):
     print("PASSED: SAME NUMBER OF PARTICLES PER EVENT")
 
     return True 
+
+
+
+
+import torch 
+import h5py
+import numpy as np
+
+
+import hashlib 
+
+class Hashing:
+
+    def __init__(self):
+        pass
+    
+    def MD5(self, inpt):
+        return str(hashlib.md5(inpt.encode("utf-8")).hexdigest())
+
+
+from AnalysisTopGNN.Tools import Tools
+class HDF5(Tools):
+
+    def __init__(self):
+        self._File = None
+        self.Filename = "UNTITLED"
+        self._ext = ".hdf5"
+        self._iter = -1
+    
+    def Start(self, Mode = "w"):
+        self._File = h5py.File(self.Filename + self._ext, mode = Mode, track_order = True)
+        self.__IncrementRefSet()
+    
+    def __IncrementRefSet(self):
+        self._iter += 1
+        self.RefSet = self._File.create_dataset(str(self._iter), (1, ), dtype = h5py.ref_dtype)
+
+    def __CreateDataSet(self, RefName):
+        self._Ref.attrs[RefName] = self._File.create_dataset(RefName, data = h5py.Empty(None)).ref
+
+    def DumpObject(self, obj, Name):
+        if self._iter == -1:
+            self.Start()
+        print(obj.__module__, type(obj).__qualname__)
+        print(Name)
+
+
+
+
+
+def TestEventGeneratorDumper(Files):
+
+    #File1 = Files[0]
+
+    #Ev = EventGenerator(File1) 
+    #Ev.Event = Event
+    #Ev.SpawnEvents()
+    #Ev.CompileEvent()
+    #PickleObject(Ev, "TMP1")
+
+    ev1 = UnpickleObject("TMP1")
+    hdf = HDF5()
+    hdf.Start("w")
+    for i in ev1:
+        hdf.DumpObject(i, i.Filename)
+
+        break
+        
+
