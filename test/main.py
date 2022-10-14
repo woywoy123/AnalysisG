@@ -42,5 +42,5 @@ if __name__ == '__main__':
     #Test(EventGraph.TestEventGraph, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
 
     # ==== Test Merger ==== #
-    Test(Exporter.TestSamples, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
-
+    #Test(Exporter.TestEventGenerator, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
+    Test(Exporter.TestGraphGenerator, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])

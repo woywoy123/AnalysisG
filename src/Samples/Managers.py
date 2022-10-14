@@ -5,18 +5,28 @@ from AnalysisTopGNN.Tools import Tools
 class SampleTracer(Tools):
 
     def __init__(self, IMPRT = None):
-        if IMPRT != None:
-            self.Tracer = IMPRT
-            self.MakeCache()
+        self.Caller = ""
+        self.VerboseLevel = 3
+        self.EventStart = 0
+        self.EventStop = None
+        self.BeginTrace(IMPRT)
+        self.MakeCache()
 
     def BeginTrace(self, Tracer = None):
         if Tracer == None:
-            Tracer = SampleContainer()
-        self.Tracer = Tracer
+            self.Tracer = SampleContainer()
+        if hasattr(self, "Tracer"):
+            pass
+        else:
+            if hasattr(Tracer, "Tracer"):
+                self.Tracer = Tracer.Tracer
+            else:
+                return self.BeginTrace()
         self.Tracer.Initialize(self.Caller)
         self.Tracer.VerboseLevel = self.VerboseLevel
         self.Tracer.EventStart = self.EventStart
         self.Tracer.EventStop = self.EventStop
+        self.MakeCache()
 
     def AddInfo(self, key, Inpt):
         self.Tracer.Add({key : Inpt})
@@ -25,30 +35,28 @@ class SampleTracer(Tools):
         self.Tracer.AddSamples(Directory, Files)
     
     def ImportTracer(self, Inpt):
+        if "Tracer" in Inpt.__dict__:
+            Inpt = Inpt.Tracer
+        if Inpt.__name__ == "SampleContainer":
+            self.Tracer = Inpt
+        
         self.BeginTrace(Inpt)
   
-    def FlushCache(self):
-        self._HashCache = {}
-
     def MakeCache(self):
-        if "_HashCache" not in self.__dict__:
-            self._HashCache = {}
-        else:
-            return 
+        self._HashCache = {}
         self.AddDictToDict(self._HashCache, "IndexToHash")
         self.AddDictToDict(self._HashCache, "HashToEvent")
         self.AddDictToDict(self._HashCache, "HashToFile")
         self.AddDictToDict(self._HashCache, "IndexToEvent")
 
         ROOTInfo = self.Tracer.ROOTInfo
-        EventInfo = self.Tracer.EventInfo
         Events = self.Tracer.Events
-        for i in ROOTInfo:
-            self._HashCache["IndexToHash"] |= ROOTInfo[i]._HashMap
-            self._HashCache["HashToFile"] |= {ROOTInfo[i]._HashMap[idx] : ROOTInfo[i].Filename for idx in list(ROOTInfo[i]._HashMap)}
-        self._HashCache["HashToEvent"] |= {self._HashCache["IndexToHash"][ev] : Events[ev] for ev in Events}
-        self._HashCache["IndexToEvent"] |= Events
         
+        self._HashCache["HashToFile"] = {j : i  for i in ROOTInfo for j in list(ROOTInfo[i]._HashMap.values())}
+        self._HashCache["HashToEvent"] = {i.Filename : i for i in Events.values()}
+        self._HashCache["IndexToHash"] = {i.EventIndex : i.Filename for i in Events.values()}
+        self._HashCache["IndexToEvent"] = {i.EventIndex : i for i in Events.values()}
+
     def IndexToHash(self, index):
         self.MakeCache()
         return self._HashCache["IndexToHash"][index]
@@ -60,7 +68,7 @@ class SampleTracer(Tools):
     def IndexToROOT(self, index):
         self.MakeCache()
         return self._HashCache["HashToFile"][self._HashCache["IndexToHash"][index]]
-   
+
     def __iter__(self):
         self.MakeCache()
         ev = self._HashCache["IndexToEvent"]
@@ -74,3 +82,18 @@ class SampleTracer(Tools):
         if self._iter == len(self._events):
             raise StopIteration()
         return ev
+
+    def __radd__(self, other):
+        if other == 0:
+            return self
+        else:
+            return self.__add__(other)
+
+    def __add__(self, other):
+        self.Tracer += other.Tracer
+        self.MakeCache()
+        return self
+    
+    def __len__(self):
+        self.MakeCache()
+        return len(self._HashCache["IndexToEvent"])

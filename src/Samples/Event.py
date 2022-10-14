@@ -16,3 +16,16 @@ class EventContainer(Hashing):
         for i in self.Trees:
             self.Trees[i] = self.Trees[i].ConvertToData()
         return self
+
+    def __add__(self, other):
+        if other == None:
+            return self
+        
+        if self.Filename != other.Filename:
+            return self
+        self.Trees |= other.Trees
+        return self
+
+    def UpdateIndex(self, index):
+        self.EventIndex = index
+        return self

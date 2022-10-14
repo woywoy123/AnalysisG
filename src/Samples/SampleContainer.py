@@ -1,5 +1,4 @@
 from AnalysisTopGNN.Notification import SampleContainer
-from .Event import EventContainer
 from .ROOTFile import ROOTFile
 
 class SampleContainer(SampleContainer):
@@ -11,6 +10,7 @@ class SampleContainer(SampleContainer):
         self.VerboseLevel = 3
         self.EventStart = 0
         self.EventStop = None
+        self.__name__ = "SampleContainer"
     
     def Initialize(self, Caller):
         self.Caller = Caller
@@ -32,25 +32,28 @@ class SampleContainer(SampleContainer):
         F.Filename = Obj.ROOTFile
         self.ROOTInfo[Obj.ROOTFile] = F
     
-    def AddEvent(self, InptEvent, Filename):
-        if InptEvent.Tree not in self.EventInfo[self.Caller]:
-            self.EventInfo[self.Caller][InptEvent.Tree] = 0
+    def __add__(self, other):
+        _EventInfo1, _EventInfo2 = self.EventInfo, other.EventInfo
+        for j in _EventInfo2:
+            if j not in _EventInfo1:
+                _EventInfo1[j] = _EventInfo2[j]
+            for k in _EventInfo2[j]:
+                if k not in _EventInfo1[j]:
+                    _EventInfo1[j][k] = []
+                _EventInfo1[j][k] += _EventInfo2[j][k]
+        
+        smpl_o = {i.Filename : i for i in other.Events.values()}
+        Map = {i.Filename : i + smpl_o.pop(i.Filename, None) for i in self.Events.values()}
+        Map |= smpl_o 
+       
+        self.Events = { i : Map[k].UpdateIndex(i) for i, k in zip(range(len(Map)), Map) }
+        hashmap = {i.Filename : i.EventIndex for i in self.Events.values()}
 
-        it = self.EventInfo[self.Caller][InptEvent.Tree]
-        if self.EventStart > it:
-            self.EventInfo[self.Caller][InptEvent.Tree] += 1
-            return False
+        roots = sum(list(self.ROOTInfo.values()) + list(other.ROOTInfo.values()))
+        self.ROOTInfo = {i.Filename : i for i in roots}
 
-        if self.EventStop != None and self.EventStop < it:
-            self.EventInfo[self.Caller][InptEvent.Tree] += 1
-            return True
+        for i in self.ROOTInfo:
+            self.ROOTInfo[i]._HashMap = {hashmap[k] : k for k in self.ROOTInfo[i]._HashMap.values()}
+        return self
 
-        if it not in self.Events:
-            self.Events[it] = EventContainer()
-            self.Events[it].Filename = Filename
-        self.ROOTInfo[Filename].MakeHash(it) 
-        self.Events[it].Trees[InptEvent.Tree] = InptEvent
-        self.Events[it].EventIndex = it
-        self.EventInfo[self.Caller][InptEvent.Tree] += 1
-        return False
-    
+
