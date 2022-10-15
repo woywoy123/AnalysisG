@@ -26,6 +26,15 @@ class EventContainer(Hashing):
         self.Trees |= other.Trees
         return self
 
+    def __iter__(self):
+        self._iter = list(self.Trees)
+        return self
+
+    def __next__(self):
+        if len(self._iter) == 0:
+            raise StopIteration()
+        return self.Trees[self._iter.pop()]
+
     def UpdateIndex(self, index):
         self.EventIndex = index
         return self

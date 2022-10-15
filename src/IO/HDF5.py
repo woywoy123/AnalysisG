@@ -23,7 +23,7 @@ class HDF5:
 
 
 
-class HDF5_old(WriteDirectory, Directories):
+class HDF5_old:
 
     def __init__(self, OutDir = "_Pickle", Name = "UNTITLED", Chained = False):
         WriteDirectory.__init__(self)

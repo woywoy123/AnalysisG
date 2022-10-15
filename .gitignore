@@ -4,6 +4,7 @@
 *.nbi
 *.pyc
 *.pt
+*.hdf5
 
 **/__pycache__
 **/build
