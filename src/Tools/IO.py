@@ -20,6 +20,9 @@ class IO(AnalysisTopGNN.Notification.IO, String):
             self.EmptyDirectoryWarning(directory)
         return srch
     
+    def ls(self, directory):
+        return os.listdir(directory)
+
     def IsFile(self, directory):
         if os.path.isfile(directory):
             return directory
@@ -74,7 +77,10 @@ class IO(AnalysisTopGNN.Notification.IO, String):
             os.makedirs(self.abs(directory))
         except FileExistsError:
             pass
-    
+
+    def cd(self, directory):
+        os.chdir(directory)
+        return self.pwd()
     
 
 

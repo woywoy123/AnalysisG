@@ -1,241 +1,196 @@
 import torch 
 import h5py
 import numpy as np
+import os
 
+from AnalysisTopGNN.Tools import Tools
+from AnalysisTopGNN.Tools import Threading
+from AnalysisTopGNN.Notification import IO
 
-class HDF5:
+class HDF5(Tools, IO):
 
     def __init__(self):
-        pass
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-class HDF5_old:
-
-    def __init__(self, OutDir = "_Pickle", Name = "UNTITLED", Chained = False):
-        WriteDirectory.__init__(self)
-        Directories.__init__(self)
-        Notification.__init__(self)
+        self._File = None
+        self.Filename = "UNTITLED"
+        self._ext = ".hdf5"
+        self._iter = -1
+        self._obj = {}
 
         self.VerboseLevel = 3
-        self.Caller = "WRITE-TO-HDF5"
-        
-        self._OutDir = OutDir
-        self._Name = Name
-        self._Chained = Chained
-        self._part = 0
-
-    def __DirectoryStandard(self):
-        if self._OutDir.endswith("/"):
-            self._OutDir = self._OutDir[:-1]
-        if self._Name.endswith("/"):
-            self._Name = self._Name[:-1]
-        
-        if self._Chained == True:
-            self._FileDirName = self._OutDir + "/" + self._Name + "/Part_" + str(self._part)
-            self.MakeDir(self._OutDir + "/" + self._Name)
-        else:
-            self._FileDirName = self._OutDir + "/" + self._Name
-            self.MakeDir(self._OutDir)
-
-        self._FileDirName += ".hdf5"
-
-    def SwitchFile(self):
-        tmp = self.VerboseLevel
-        self.VerboseLevel = 0
-        self.EndFile()
-        self._part += 1
-        self.__DirectoryStandard()
-        self.StartFile()
-        self.VerboseLevel = tmp
-
-    def __ReadChain(self):
-        self.__DirectoryStandard()
-        f = self.ListFilesInDir(self._OutDir + "/" + self._Name + "/")
-        tmp = self.VerboseLevel
-        output = {}
-        for self._FileDirName in f:
-            self.VerboseLevel = 0
-            self.StartFile("r")
-            output |= self.RebuildObject()
-            self.EndFile()
-            self._part += 1
-            self.VerboseLevel = tmp
-            name = int(self._FileDirName.replace(".hdf5", "").split("_")[-1])+1
-            self.Notify("!!!FINISHED READING -> " + str(name) + " / " + str(len(f)))
-        return output
-
-    def StartFile(self, Mode = "w"):
-        
-        self.__DirectoryStandard()
+        self.Threads = 12
+        self.chnk = 2
+        self.Caller = "HDF5"
+    
+    def Start(self, Name = False, Mode = "w"):
+        self._File = h5py.File(self.Filename + self._ext, mode = Mode, track_order = True)
         if Mode == "w":
-            self.Notify("!!WRITING -> " + self._FileDirName)    
-        if Mode == "r":
-            self.Notify("!!READING -> " + self._FileDirName)
-        
-        self._File = h5py.File(self._FileDirName, Mode, track_order = True)
-        if "__PointerReferences" in self._File:
-            self._RefSet = self._File["__PointerReferences"]
-        else:
-            self._RefSet = self._File.create_dataset("__PointerReferences", (1, ), dtype = h5py.ref_dtype)
+            self.__IncrementRefSet(Name)
     
-    def OpenFile(self, SourceDir = "_Pickle", Name = "UNTITLED"):
-        self._OutDir = SourceDir
-        self._Name = Name
-
-        if self._Chained == True:
-            return self.__ReadChain()
+    def __IncrementRefSet(self, Name = False):
+        self._iter += 1
+        if Name:
+            name = Name 
         else:
-            self.StartFile(Mode = "r")
-
-    def EndFile(self):
-        self.Notify("!!CLOSING FILE -> " + self._FileDirName)
-        self._File.close()
-        self._File = None
-        self._RefSet = None
-   
-    def __Store(self, Name, key, val):
-
-        if isinstance(val, dict):
-            self.__StoreDict(Name, key, val)
-
-        elif isinstance(val, list):
-            if len(val) == 0:
-                self.__CreateAttribute(Name, key, val)
-            else:
-                self.__StoreList(Name, key, val)
-        elif "AnalysisTopGNN" in str(type(val)):
-            self.__CreateAttribute(Name, key, [str(val)])
-
-        elif "torch.Tensor" in str(type(val)):
-            self.__CreateAttribute(Name, key, val.numpy())
-
-        elif "torch_geometric" in str(type(val)):
-            self.__Store(Name, key, val.to_dict()) 
-
-        elif "torch." in str(type(val)):
-            self.__Store(Name, key, "")
-        
-        elif "type" in str(type(val)):
-            pass
-
-        else:
-            self.__CreateAttribute(Name, key, val)
-
-    def __CreateDataSet(self, RefName):
-        self._RefSet.attrs[RefName] = self._File.create_dataset(RefName, data = h5py.Empty(None)).ref
-    
-    def __CreateAttribute(self, RefName, AttributeName, Data):
-        if AttributeName in self._File[RefName].attrs:
-            D = self._File[RefName].attrs[AttributeName]
-
-            if isinstance(D, np.ndarray):
-                D = np.append(D, Data)
-            else: 
-                D = [D, Data]
-            self._File[RefName].attrs[AttributeName] = D
-        else:
-            self._File[RefName].attrs[AttributeName] = Data
-        return self._File[RefName].attrs[AttributeName]
-
-    def __StoreDict(self, Name, AttributeName, Value):
-        for key, val in Value.items():
-            self.__Store(Name, AttributeName + "/#/" + str(key), val) 
-        
-        if len(Value) == 0:
-            self.__Store(Name, AttributeName + "/#/", "")
-
-    def __StoreList(self, Name, AttributeName, Value):
-        if any(isinstance(k, str) or isinstance(k, int) or isinstance(k, float) for k in Value):
-            self.__CreateAttribute(Name, AttributeName, Value)
-            return  
-        for i in Value:
-            self.__Store(Name, AttributeName, i)
-        if len(Value) == 0:
-            self.__Store(Name, AttributeName, [])
-
-    def DumpObject(self, obj, Name = None):
-        
-        if Name == None:
-            Name = hex(id(obj))
-        
-        if Name in self._RefSet.attrs:
+            name = self._iter
+        if str(name) in self._File:
             return 
+        self.DumpingObjectName(Name)
+        self._Ref = self._File.create_dataset(str(name), (1, ), dtype = h5py.ref_dtype)
 
-        type_ = str(type(obj).__module__) + "." + str(type(obj).__name__)
-        self.__CreateDataSet(Name)
-        self.__CreateAttribute(Name, "__FunctionType", type_)
-        for i, j in obj.__dict__.items():
-            self.__Store(Name, i, j)
+    def __AddToDataSet(self, RefName, Key, Val = None):
+        if Val == None:
+            self._Ref.attrs[RefName] = Key
+            return  
+        if "AnalysisTopGNN" in str(type(Val)).split("'")[1]:
+            self.DumpObject(Val)
+            Val = str(hex(id(Val)))
+        if "torch_geometric" in str(type(Val)).split("'")[1]:
+            self.DumpObject(Val.to("cpu"))
+            Val = str(hex(id(Val)))
+        self._Ref.attrs[RefName + "." + Key] = Val
 
-    def RebuildObject(self):
-        def Dictify(lst, dic, va):
-            if len(lst) == 0:
-                return va
-             
-            l = lst[0] 
-            if l.isdigit():
-                l = int(l)
-           
-            if l == "":
-                dic |= {}
-            elif l not in dic:
-                dic |= {l: Dictify(lst[1:], {}, va)}
-            else:
-                dic[l] |= Dictify(lst[1:], dic[l], va)
-            return dic
+    def __Contains(self, key):
+        return True if key in self._Ref.attrs else False
 
-        obj = self._File
-        output = {}
+    def __Store(self, ObjPath, objectaddress, Key, Val):
+            
+            if self.__Contains(objectaddress) == False:
+                self.__AddToDataSet(objectaddress, ObjPath)
+            
+            if isinstance(Val, str):
+                return self.__AddToDataSet(objectaddress, Key, Val)
+            elif isinstance(Val, int):
+                return self.__AddToDataSet(objectaddress, Key, Val)
+            elif isinstance(Val, float):
+                return self.__AddToDataSet(objectaddress, Key, Val)
+            elif isinstance(Val, dict):
+                for i in Val:
+                    self.__AddToDataSet(objectaddress, Key + "-" + i, Val[i])
+                return 
+            elif isinstance(Val, list):
+                for i in range(len(Val)):
+                    self.__AddToDataSet(objectaddress, Key + "#" + str(i), Val[i]) 
+                return 
+            elif "Data" in ObjPath:
+                for i in list(Val):
+                    self.__AddToDataSet(objectaddress, i, Val[i])
+                return
+            print("NEED TO FIX THIS. COMING FROM HDF5", ObjPath, objectaddress, Key, Val, type(Val))
+
+    def DumpObject(self, obj, Name = False):
+        if self._iter == -1:
+            self.Start(Name = Name, Mode = "w")
+        if Name:
+            self.__IncrementRefSet(Name)
+
+        objname = str(type(obj)).split("'")[1]
+        objectaddress = str(hex(id(obj)))
+        for i in obj.__dict__:
+            self.__Store(objname, objectaddress, i, obj.__dict__[i])
+        return True
+    
+    def MultiThreadedDump(self, ObjectDict, OutputDirectory):
+
+        def function(inpt):
+            out = []
+            for i in inpt:
+                h = HDF5()
+                h.Filename = OutputDirectory + "/" + i[0] 
+                h.DumpObject(i[1], i[0])
+                out.append([h.Filename + self._ext, i[0]]) 
+            return out
+
+        if isinstance(ObjectDict, dict) == False:
+            self.WrongInputMultiThreading(ObjectDict)
+            return 
+        inpo = [[name, ObjectDict[name]] for name in ObjectDict]
+        TH = Threading(inpo, function, self.Threads, self.chnk)
+        TH.VerboseLevel = 3
+        TH.Start()
+       
+    def MergeHDF5(self, Directory):
+        Files = self.DictToList(self.ListFilesInDir({Directory : ["*"]}, ".hdf5"))
+        if len(Files) == 0:
+            return 
+        self._File = h5py.File(Directory + "/" + self.Filename + self._ext, mode = "w", track_order = True)
+        for i in Files:
+            name = i.split("/")[-1].replace(self._ext, "")
+            self._Ref = self._File.create_dataset(name, track_order = True, dtype = h5py.ref_dtype)
+            src = h5py.File(i, mode = "r")
+            self.MergingHDF5(i)
+            for key in src:
+                for attr in src[key].attrs:
+                    self._Ref.attrs[attr] = src[key].attrs[attr]
+            os.remove(i)
+
+
+    def End(self):
+        self._File.close()
+        self.__init__()
+    
+    def __BuildContainer(self, obj, attr, i, typ):
+        if typ == "-":
+            ins = {}
+        if typ == "#":
+            ins = []
+        attr = attr.split(typ)
+        r = self._Ref.attrs[i]
+        val = {attr[1] : r if r not in self._obj else self._obj[r][1]}
+
+        if attr[0] not in obj.__dict__:
+            setattr(obj, attr[0], ins)
+        elif isinstance(obj.__dict__[attr[0]], type(ins)) == False:
+            setattr(obj, attr[0], ins)
+
+        v = getattr(obj, attr[0])
+        if typ == "-":
+            v |= val
+        if typ == "#":
+            setattr(obj, attr[0], v + list(val.values()))
+
+    def RebuildObject(self, Name):
+        self.Start(Mode = "r")
+        self._Ref = None
+        self._Ref = self._File[Name]
         
-        for i in obj.keys():
-            if i == "__PointerReferences":
+        objstruc = {n : self._Ref.attrs[n] for n in self._Ref.attrs}
+        self._obj = {n : self.GetObjectFromString(".".join(objstruc[n].split(".")[:-1]), objstruc[n].split(".")[-1]) for n in objstruc if "." not in n}
+        for i in self._obj:
+            if self._obj[i][0] != None:
+                ob = self._obj[i][1]()
+                self._obj[i] = (None, ob)
+        
+        for i in self._Ref.attrs:
+            val = i.split(".")
+            
+            # --- the variable "de" is the default value for an object. See if this causes a problem.
+            de, obj = self._obj[val[0]]
+            
+            if len(val) == 1:
                 continue
-                
-            obj_type = obj[i].attrs["__FunctionType"]
-            target_obj = RecallObjectFromString(obj_type)
-            
-            out = {}
-            attr_List = []
-            for key in obj[i].attrs.keys():
-                if key == "__FunctionType":
-                    continue
-                val = obj[i].attrs[key]
-                val = getattr(val, "tolist", lambda: val)()
-                if "/#/" in key:
-                    dic_v = key.split("/#/")
-                    key = key.split("/#/")[0]
-                    out = Dictify(dic_v, out, val)
-                else:
-                    setattr(target_obj, key, val)
+            attr = val[1]
+            if "torch_geometric" in str(type(obj)).split("'")[1]:
+                setattr(obj, attr, torch.tensor(self._Ref.attrs[i]))
+                continue
+            elif "-" in attr:
+                self.__BuildContainer(obj, attr, i, "-")
+                continue
+            elif "#" in attr:
+                self.__BuildContainer(obj, attr, i, "#")
+                continue
+            setattr(obj, attr, self._Ref.attrs[i])
+        return [i[1] for i in self._obj.values() if "EventContainer" in str(type(i[1])).split("'")[1]][0]
 
-                if key not in attr_List:
-                    attr_List.append(key)
-            
-            for key in out:
-                if type(target_obj).__name__ == "Data":
-                    p = {k : torch.tensor(out[key][k]) for k in out[key]}
-                    target_obj = target_obj.from_dict(p)
-                    attr_List = list(target_obj.__dict__)
-                else:
-                    setattr(target_obj, key, out[key])
-           
-            t_list = list(target_obj.__dict__.keys())
-            for k in t_list:
-                if k not in attr_List:
-                    delattr(target_obj, k) 
-            output[i] = target_obj
-        return output
+    def __iter__(self):
+        self.Start(Mode = "r")
+        self._names = [i for i in self._File]
+        return self
+
+    def __next__(self):
+        self._iter = -1
+        if len(self._names) == 0:
+            raise StopIteration()
+        name = self._names.pop()
+        return (name, self.RebuildObject(name))
+
+

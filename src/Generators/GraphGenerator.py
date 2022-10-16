@@ -9,12 +9,12 @@ class GraphGenerator(GraphGenerator, SampleTracer, Graphs, RandomSamplers):
     def __init__(self):
         self.VerboseLevel = 3
         self.Caller = "GraphGenerator"
-        self.Tracer = None
         self.EventStart = 0
         self.EventStop = None
         self.Threads = 12
         self.chnk = 1000
         Graphs.__init__(self)
+        SampleTracer.__init__(self)
    
     # Define the observable features
     def AddGraphFeature(self, fx, name = ""):
@@ -66,6 +66,8 @@ class GraphGenerator(GraphGenerator, SampleTracer, Graphs, RandomSamplers):
                 continue
             if self.EventStop != None and self.EventStop < ev:
                 self.Tracer.Events[ev] = None
+                continue
+            if evobj.Compiled:
                 continue
 
             trees = {}

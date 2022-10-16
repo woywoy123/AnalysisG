@@ -17,4 +17,12 @@ class IO(Notification):
 
     def PickleOutput(self):
         x = self.abs()
-        
+
+    def DumpingObjectName(self, Name):
+        self.Success("!!!Dumping: " + Name + " to " + self.Filename +  self._ext)
+
+    def WrongInputMultiThreading(self, Inpt):
+        self.Failure("Wrong input, expected a dictionary but got " + str(type(Inpt)) + " returning.")
+    
+    def MergingHDF5(self, inpt):
+        self.Success("!Merging: " + inpt + " to " + self.Filename)

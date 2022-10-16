@@ -29,7 +29,7 @@ class GraphGenerator(Notification):
             attrs+=1
         if attrs == 3:
             message = "NO ATTRIBUTES DEFINED!"
-            self.Failure("="*message)
+            self.Failure("="*len(message))
             self.FailureExit("NO ATTRIBUTES DEFINED!")
         self.Success("!!Data being processed on " + self.Device)
         

@@ -9,13 +9,11 @@ def StringToObject(module, name):
 def CheckObjectInputs(obj):
     _def = obj.__init__.__defaults__
     _req = [i for i in obj.__init__.__code__.co_varnames if i != "self"]
-    if _def == None and len(_req) == 0:
+
+    if _def == None:
         return None, obj()
-    
-    if _def != None:
-        print("Fix" , _def)
-    InptDic = {key : None for key in _req} 
-    return InptDic, obj  
+    _dic = {_req[i] : _def[i] for _, i in zip(_def, range(len(_req)))}
+    return _dic, obj  
 
 
 def GetSourceCode(obj):

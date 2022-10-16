@@ -40,7 +40,13 @@ class Tools(IO):
     def AddDictToDict(self, Dict, key):
         if key not in Dict:
             Dict[key] = {}
+            return False
+        else:
+            return True
     
     def AddListToDict(self, Dict, key):
         if key not in Dict:
             Dict[key] = []
+            return False
+        else:
+            return True

@@ -16,10 +16,10 @@ class EventGenerator(EventGenerator, SampleTracer):
         self.Threads = 12
    
     def __GetEvent(self):
-        if "__init__" in self.Event.__dict__:
+        if callable(self.Event):
             self.Event = self.Event()
         _, evnt = self.GetObjectFromString(self.Event.__module__, type(self.Event).__name__)
-        return evnt()
+        return evnt
 
     def __AddEvent(self, File, val = False):
         if val:

@@ -49,7 +49,8 @@ class SampleContainer(SampleContainer):
         self.Events = { i : Map[k].UpdateIndex(i) for i, k in zip(range(len(Map)), Map) }
         hashmap = {i.Filename : i.EventIndex for i in self.Events.values()}
 
-        roots = sum(list(self.ROOTInfo.values()) + list(other.ROOTInfo.values()))
+        roots = list(self.ROOTInfo.values()) + list(other.ROOTInfo.values())
+        roots = roots if isinstance(roots, list) else [roots]
         self.ROOTInfo = {i.Filename : i for i in roots}
 
         for i in self.ROOTInfo:

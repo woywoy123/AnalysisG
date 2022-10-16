@@ -13,15 +13,15 @@ class SampleTracer(Tools):
         self.MakeCache()
 
     def BeginTrace(self, Tracer = None):
-        if Tracer == None:
-            self.Tracer = SampleContainer()
+
         if hasattr(self, "Tracer"):
             pass
+        elif Tracer == None:
+            self.Tracer = SampleContainer()
+        elif hasattr(Tracer, "Tracer"):
+            self.Tracer = Tracer.Tracer
         else:
-            if hasattr(Tracer, "Tracer"):
-                self.Tracer = Tracer.Tracer
-            else:
-                return self.BeginTrace()
+            return self.BeginTrace()
         self.Tracer.Initialize(self.Caller)
         self.Tracer.VerboseLevel = self.VerboseLevel
         self.Tracer.EventStart = self.EventStart
@@ -68,6 +68,9 @@ class SampleTracer(Tools):
     def IndexToROOT(self, index):
         self.MakeCache()
         return self._HashCache["HashToFile"][self._HashCache["IndexToHash"][index]]
+    
+    def HashToROOT(self, _hash):
+        return self._HashCache["HashToFile"][_hash] 
 
     def __iter__(self):
         self.MakeCache()
