@@ -3,7 +3,8 @@ import pickle
 
 class Pickle(Tools):
     def __init__(self):
-        pass
+        self.VerboseLevel = 3
+        self.Caller = "Pickler"
 
     def PickleObject(self, obj, filename, Dir = "_Pickle"):
         filename = self.AddTrailing(filename, ".pkl")
@@ -25,6 +26,9 @@ class Pickle(Tools):
         filename = self.filename(filename)
         if self.RemoveTrailing(self.pwd(), "/") == direc:
             direc += "/" + Dir
+        
+        if self.IsFile(direc + "/" + filename) == False:
+            return 
         f = open(direc + "/" + filename, "rb")
         obj = pickle.load(f)
         f.close()

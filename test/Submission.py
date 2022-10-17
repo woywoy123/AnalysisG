@@ -9,15 +9,16 @@ def TestAnalysis(GeneralDir):
 
     def EventGen(Dir, Name):
         Ana = Analysis()
+        Ana.ProjectName = "TMPProject"
         Ana.InputSample(Name, Dir)
         Ana.EventCache = True
         Ana.Event = Event
-        Ana.Threads = 10
-        Ana.EventStop = 100
+        Ana.Threads = 1
+        Ana.EventStop = 10
         Ana.DumpHDF5 = False
         Ana.DumpPickle = True
-        Ana.ProjectName = "TMPProject"
         Ana.Launch()
+        return Ana
 
     def DataGen(Name):
         Ana = Analysis()
@@ -32,22 +33,51 @@ def TestAnalysis(GeneralDir):
         Ana.DumpHDF5 = True
         Ana.DumpPickle = True
         Ana.Launch()
+        return Ana
+
+
+
+
+    
+    ev = EventGen(GeneralDir + "/t", "SingleTop")
+    ev += EventGen(GeneralDir + "/ttbar", "ttbar")
+    #ev += EventGen(GeneralDir + "/tttt", "Signal")
+    #ev += EventGen(GeneralDir + "/Zmumu", "Zmumu")
+    #ev += EventGen([GeneralDir + "/t", GeneralDir + "/ttbar"], "Combined")
+    
+    print(ev._HashCache)
+
+    for i in ev:
+        print(i)
 
 
 
 
 
-    #EventGen(GeneralDir + "/t", "SingleTop")
-    #EventGen(GeneralDir + "/ttbar", "ttbar")
-    #EventGen(GeneralDir + "/tttt", "Signal")
-    #EventGen(GeneralDir + "/Zmumu", "Zmumu")
-    #EventGen([GeneralDir + "/t", GeneralDir + "/ttbar"], "Combined")
- 
 
-    DataGen("SingleTop")
-    DataGen("ttbar")
-    DataGen("Signal")
-    DataGen("Zmumu")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    #DataGen("SingleTop")
+    #DataGen("ttbar")
+    #DataGen("Signal")
+    #DataGen("Zmumu")
 
     #Ana = Analysis()
     #Ana.InputSample("SingleTop")

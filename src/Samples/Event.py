@@ -27,7 +27,7 @@ class EventContainer(Hashing):
             return self
         
         if self.Filename != other.Filename:
-            return self
+            return [self, other]
         self.Trees |= other.Trees
         return self
 

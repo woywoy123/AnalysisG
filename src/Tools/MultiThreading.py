@@ -39,18 +39,24 @@ class Threading(MultiThreading):
         self._lists = lists
         self._function = Function
         self.Caller = "MULTITHREADING"
+        self.VerboseLevel = 3
         
+        self.AlertOnEmptyList()
         if chnk_size != None:
             _quant = int(len(lists)/chnk_size)+1
         else:
             _quant = self._threads
         
         cpu_ev = math.ceil(len(self._lists) / _quant)
+        if cpu_ev == 0:
+            cpu_ev = 1
         self._chnk = [self._lists[i : i+cpu_ev] for i in range(0, len(self._lists), cpu_ev)]
         self._indx = [[i, i + cpu_ev] for i in range(0, len(self._lists), cpu_ev)]
         self._lists = [i for i in range(len(self._lists))]
-      
+    
     def Start(self):
+        if self._lock:
+            return 
         it = 1
         tmp = 0
         for i in range(len(self._chnk)):

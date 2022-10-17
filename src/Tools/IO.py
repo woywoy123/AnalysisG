@@ -21,13 +21,16 @@ class IO(AnalysisTopGNN.Notification.IO, String):
         return srch
     
     def ls(self, directory):
-        return os.listdir(directory)
+        try:
+            return os.listdir(directory)
+        except OSError:
+            return []
 
     def IsFile(self, directory):
         if os.path.isfile(directory):
             return directory
         else:
-            self.FileNotFoundWarning(self.path(directory, i.split("/")[-1]))
+            self.FileNotFoundWarning(self.path(directory), directory.split("/")[-1])
             return False
 
     def ListFilesInDir(self, directory, extension, _it = 0):

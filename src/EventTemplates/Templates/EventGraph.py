@@ -13,6 +13,14 @@ class EventGraphTemplate:
         self.Event = ""
         self.Particles = []
         self.iter = -1
+    
+    def Escape(ev):
+        new_self = object.__new__(ev)
+        try:
+            new_self.__init__()
+        except:
+            pass
+        return new_self
 
     def CreateParticleNodes(self):
         self.G = nx.Graph()

@@ -22,7 +22,10 @@ class HDF5(Tools, IO):
         self.Caller = "HDF5"
     
     def Start(self, Name = False, Mode = "w"):
-        self._File = h5py.File(self.Filename + self._ext, mode = Mode, track_order = True)
+        if self.Filename.endswith(self._ext) == False:
+            self.Filename += self._ext
+        self._File = h5py.File(self.Filename, mode = Mode, track_order = True)
+        
         if Mode == "w":
             self.__IncrementRefSet(Name)
     
@@ -37,14 +40,11 @@ class HDF5(Tools, IO):
         self.DumpingObjectName(Name)
         self._Ref = self._File.create_dataset(str(name), (1, ), dtype = h5py.ref_dtype)
 
-    def __AddToDataSet(self, RefName, Key, Val = None):
-        if Val == None:
-            self._Ref.attrs[RefName] = Key
-            return  
+    def __AddToDataSet(self, RefName, Key, Val = ""):
         if "AnalysisTopGNN" in str(type(Val)).split("'")[1]:
             self.DumpObject(Val)
             Val = str(hex(id(Val)))
-        if "torch_geometric" in str(type(Val)).split("'")[1]:
+        elif "torch_geometric" in str(type(Val)).split("'")[1]:
             self.DumpObject(Val.to("cpu"))
             Val = str(hex(id(Val)))
         self._Ref.attrs[RefName + "." + Key] = Val
@@ -55,7 +55,7 @@ class HDF5(Tools, IO):
     def __Store(self, ObjPath, objectaddress, Key, Val):
             
             if self.__Contains(objectaddress) == False:
-                self.__AddToDataSet(objectaddress, ObjPath)
+                self._Ref.attrs[objectaddress] = ObjPath
             
             if isinstance(Val, str):
                 return self.__AddToDataSet(objectaddress, Key, Val)
@@ -74,6 +74,14 @@ class HDF5(Tools, IO):
             elif "Data" in ObjPath:
                 for i in list(Val):
                     self.__AddToDataSet(objectaddress, i, Val[i])
+                return
+            elif isinstance(Val, bool):
+                self.__AddToDataSet(objectaddress, Key, Val)
+                return 
+            elif isinstance(Val, type(None)):
+                return 
+            elif isinstance(Val, np.int64):
+                self.__AddToDataSet(objectaddress, Key, Val)
                 return
             print("NEED TO FIX THIS. COMING FROM HDF5", ObjPath, objectaddress, Key, Val, type(Val))
 
@@ -97,7 +105,7 @@ class HDF5(Tools, IO):
                 h = HDF5()
                 h.Filename = OutputDirectory + "/" + i[0] 
                 h.DumpObject(i[1], i[0])
-                out.append([h.Filename + self._ext, i[0]]) 
+                out.append([h.Filename, i[0]]) 
             return out
 
         if isinstance(ObjectDict, dict) == False:
@@ -112,7 +120,12 @@ class HDF5(Tools, IO):
         Files = self.DictToList(self.ListFilesInDir({Directory : ["*"]}, ".hdf5"))
         if len(Files) == 0:
             return 
-        self._File = h5py.File(Directory + "/" + self.Filename + self._ext, mode = "w", track_order = True)
+        
+        self.Filename = Directory + "/" + self.Filename
+        if self.Filename.endswith(self._ext) == False:
+            self.Filename += self._ext
+
+        self._File = h5py.File(self.Filename, mode = "w", track_order = True)
         for i in Files:
             name = i.split("/")[-1].replace(self._ext, "")
             self._Ref = self._File.create_dataset(name, track_order = True, dtype = h5py.ref_dtype)

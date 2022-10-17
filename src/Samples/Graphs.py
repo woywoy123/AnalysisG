@@ -31,7 +31,12 @@ class Graphs(FeatureAnalysis, Tools):
 
     def MakeGraph(self, event, smplidx):
         ev = self.GetEventGraph()
-        ev = ev(event)
+        try:
+            ev = ev(event)
+        except AttributeError:
+            ev = ev.Escape(ev)
+            ev.Event = event
+            ev.Particles = []
         ev.iter = smplidx
         ev.SelfLoop = self.SelfLoop
         ev.FullyConnect = self.FullyConnect

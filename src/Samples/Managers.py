@@ -13,7 +13,7 @@ class SampleTracer(Tools):
         self.MakeCache()
 
     def BeginTrace(self, Tracer = None):
-
+        
         if hasattr(self, "Tracer"):
             pass
         elif Tracer == None:
@@ -35,11 +35,12 @@ class SampleTracer(Tools):
         self.Tracer.AddSamples(Directory, Files)
     
     def ImportTracer(self, Inpt):
-        if "Tracer" in Inpt.__dict__:
-            Inpt = Inpt.Tracer
-        if Inpt.__name__ == "SampleContainer":
+        if Inpt == None:
+            pass
+        elif "Tracer" in Inpt.__dict__:
+            self.Tracer = Inpt.Tracer
+        elif Inpt.__name__ == "SampleContainer":
             self.Tracer = Inpt
-        
         self.BeginTrace(Inpt)
   
     def MakeCache(self):
@@ -48,7 +49,7 @@ class SampleTracer(Tools):
         self.AddDictToDict(self._HashCache, "HashToEvent")
         self.AddDictToDict(self._HashCache, "HashToFile")
         self.AddDictToDict(self._HashCache, "IndexToEvent")
-
+        
         ROOTInfo = self.Tracer.ROOTInfo
         Events = self.Tracer.Events
         
@@ -71,6 +72,9 @@ class SampleTracer(Tools):
     
     def HashToROOT(self, _hash):
         return self._HashCache["HashToFile"][_hash] 
+
+    def HashToEvent(self, _hash):
+        return self._HashCache["HashToEvent"][_hash]
 
     def __iter__(self):
         self.MakeCache()
