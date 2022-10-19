@@ -20,7 +20,7 @@ setup(
             "AnalysisTopGNN.IO",
             "AnalysisTopGNN.Generators",
             "AnalysisTopGNN.Plotting", 
-            #"AnalysisTopGNN.Submission", 
+            "AnalysisTopGNN.Submission", 
             #"AnalysisTopGNN.Reconstruction",
         ],
         package_dir = {
@@ -41,7 +41,7 @@ setup(
             "AnalysisTopGNN.IO" : "src/IO",
             "AnalysisTopGNN.Generators" : "src/Generators", 
             "AnalysisTopGNN.Plotting" : "src/Plotting",
-            #"AnalysisTopGNN.Submission" : "src/Submission", 
+            "AnalysisTopGNN.Submission" : "src/Submission", 
         },
 
         long_description = open("README.md").read(), 

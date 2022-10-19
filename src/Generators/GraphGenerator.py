@@ -3,17 +3,14 @@ from AnalysisTopGNN.Tools import Threading
 from AnalysisTopGNN.Notification import GraphGenerator
 from AnalysisTopGNN.Samples import SampleTracer, Graphs
 from AnalysisTopGNN.Tools import RandomSamplers
+from AnalysisTopGNN.Generators import Settings
 
 class GraphGenerator(GraphGenerator, SampleTracer, Graphs, RandomSamplers):
     
     def __init__(self):
-        self.VerboseLevel = 3
-        self.Caller = "GraphGenerator"
-        self.EventStart = 0
-        self.EventStop = None
-        self.Threads = 12
-        self.chnk = 1000
+        Settings.__init__(self)
         Graphs.__init__(self)
+        self.Caller = "GraphGenerator"
         SampleTracer.__init__(self)
    
     # Define the observable features
@@ -94,19 +91,23 @@ class GraphGenerator(GraphGenerator, SampleTracer, Graphs, RandomSamplers):
         self.AddInfo("Device", [self.Device])
         self.AddInfo("SelfLoop", [self.SelfLoop])
         self.AddInfo("FullyConnect", [self.FullyConnect])
+        if self._PullCode:
+            return self
+
         self.AddSamples(self.Tracer.Events, self.Tree)
         
         def function(inpt):
             return [i.MakeGraph() if i != None else True for i in inpt]
 
         events = list(self.Tracer.Events.values())
+        self.Tracer.Events = {}
         TH = Threading(events, function, self.Threads, self.chnk)
         TH.VerboseLevel = self.VerboseLevel
         TH.Start()
         for i in TH._lists:
             if i == True:
                 continue
-            self.Tracer.Events[i.EventIndex] = i
+            self.Tracer.Events[i.Filename] = i
         self.EdgeAttribute = {}
         self.GraphAttribute = {}
         self.NodeAttribute = {}

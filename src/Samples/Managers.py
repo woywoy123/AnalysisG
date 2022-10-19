@@ -5,17 +5,21 @@ from AnalysisTopGNN.Tools import Tools
 class SampleTracer(Tools):
 
     def __init__(self, IMPRT = None):
-        self.Caller = ""
+        if IMPRT is None:
+            self.Caller = ""
+        else:
+            self.Caller = IMPRT.Caller
         self.VerboseLevel = 3
         self.EventStart = 0
         self.EventStop = None
-        self.BeginTrace(IMPRT)
-        self.MakeCache()
+
+        self.ImportTracer(IMPRT)
 
     def BeginTrace(self, Tracer = None):
         
         if hasattr(self, "Tracer"):
-            pass
+            if self.Tracer == None:
+                self.Tracer = SampleContainer()
         elif Tracer == None:
             self.Tracer = SampleContainer()
         elif hasattr(Tracer, "Tracer"):
@@ -61,15 +65,15 @@ class SampleTracer(Tools):
         self._HashCache["IndexToEvent"] = {i.EventIndex : i for i in Events.values()}
 
     def IndexToHash(self, index):
-        self.MakeCache()
         return self._HashCache["IndexToHash"][index]
-    
+   
+    def HashToIndex(self, _hash):
+        return self._HashCache["HashToEvent"][_hash].EventIndex
+
     def IndexToEvent(self, Index):
-        self.MakeCache()
         return self._HashCache["IndexToEvent"][Index]
 
     def IndexToROOT(self, index):
-        self.MakeCache()
         return self._HashCache["HashToFile"][self._HashCache["IndexToHash"][index]]
     
     def HashToROOT(self, _hash):

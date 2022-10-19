@@ -47,6 +47,10 @@ class __Success(Base):
 
     def Success(self, Message):
         self.Format(2, Message, "SUCCESS")
+
+    def FinishExit(self, Message = ""):
+        self.Format(2, Message, "FINISHED")
+        os._exit(1)
  
 class __Warning(Base):
 

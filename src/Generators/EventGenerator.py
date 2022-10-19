@@ -3,19 +3,24 @@ from AnalysisTopGNN.Notification import EventGenerator
 from AnalysisTopGNN.Samples import SampleTracer
 from AnalysisTopGNN.Samples.Event import EventContainer
 from AnalysisTopGNN.Tools import Threading
+from .Settings import Settings
 
 class EventGenerator(EventGenerator, SampleTracer):
     def __init__(self, InputDir = False, EventStart = 0, EventStop = None):
+
         self.Caller = "EVENTGENERATOR"
+        
+        Settings.__init__(self)
         self.InputDirectory = {} 
         if InputDir:
             self.InputDirectory |= InputDir
+        
         self.EventStart = EventStart
         self.EventStop = EventStop
+        
         self.Event = None
-        self.VerboseLevel = 3
-        self.chnk = 50
-        self.Threads = 12
+
+        self.Settings = Settings()
    
     def __GetEvent(self):
         if callable(self.Event):
@@ -75,7 +80,9 @@ class EventGenerator(EventGenerator, SampleTracer):
             particles.append(self.GetSourceFile(obj.Objects[p]))
         particles = list(set(particles))
         self.AddInfo("ParticleCode", particles)
-        
+        if self._PullCode:
+            return self
+
         self.Files = self.ListFilesInDir(self.InputDirectory, extension = ".root") 
         self.CheckROOTFiles() 
         
@@ -106,7 +113,10 @@ class EventGenerator(EventGenerator, SampleTracer):
                 k.MakeEvent(ClearVal)
                 out.append(k)
             return out
-       
+        
+        if self._PullCode:
+            return self
+
         TH = Threading(list(self.Tracer.Events.values()), function, threads = self.Threads, chnk_size = self.chnk)
         TH.VerboseLevel = self.VerboseLevel
         TH.Start()

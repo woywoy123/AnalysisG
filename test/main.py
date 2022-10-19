@@ -50,8 +50,9 @@ if __name__ == '__main__':
     #Test(Exporter.TestGraphGeneratorDumper, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
 
     # ==== Test Modules ==== #
-    Test(Modular.TestEventGenerator, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
+    #Test(Modular.TestEventGenerator, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
 
 
     # === Test Submission ==== #
     #Test(Submission.TestAnalysis, GeneralDir = RootDir)
+    Test(Submission.TestCondorDumping, GeneralDir = RootDir)

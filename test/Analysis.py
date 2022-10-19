@@ -1,31 +1,25 @@
 from AnalysisTopGNN.Samples import SampleTracer
-from AnalysisTopGNN.Generators import EventGenerator, GraphGenerator
+from AnalysisTopGNN.Generators import EventGenerator, GraphGenerator, Settings
 from AnalysisTopGNN.IO import HDF5, PickleObject, UnpickleObject
 
 class Analysis(GraphGenerator):
 
     def __init__(self):
-        SampleTracer.__init__(self)
-        self.EventCache = False
-        self.DataCache = False
+        Settings.__init__(self) 
+
         self.Event = None 
         self.EventGraph = None
-        self.Tree = None 
-        self.Threads = 12
-        self.chnk = 2
         
-        self.DumpHDF5 = True 
-        self.DumpPickle = True 
-        self.OutputDirectory = False
-        self.ProjectName = "UNTITLED"
-
         self.Caller = "ANALYSIS"
 
         self._SampleMap= {}
+
         self.GraphAttribute = {}
         self.NodeAttribute = {}
         self.EdgeAttribute = {}
-
+        
+        SampleTracer.__init__(self, self)
+        self.Settings = Settings()
 
     def InputSample(self, Name, SampleDirectory = None):
         if isinstance(SampleDirectory, str):
@@ -46,78 +40,104 @@ class Analysis(GraphGenerator):
         self.OutputDirectory = self.RemoveTrailing(self.OutputDirectory, "/")
         self.mkdir(self.OutputDirectory + "/" + self.ProjectName)
         self.mkdir(self.OutputDirectory + "/" + self.ProjectName + "/Tracers")
-     
-    def __EventGenerator(self, InptMap, output):
+    
+    def __DumpCache(self, events, outdir):
+        gener = {t.Filename : t for t in events.values() if t.Filename not in self._Cache}
+        if len(gener) == 0:
+            return 
+        
+        if self.DumpHDF5:
+            hdf = HDF5()
+            hdf.VerboseLevel = self.VerboseLevel
+            hdf.Threads = self.Threads
+            hdf.chnk = self.chnk
+            hdf.Filename = "Events"
+            hdf.MultiThreadedDump(events, outdir)
+        
+        if self.DumpPickle:
+            PickleObject(events, outdir + "/Events")
+
+    def __EventGenerator(self, InptMap, output, name):
         if self.EventCache == False:
             return {}
-        Output = {}
+        
         for f in self.DictToList(InptMap):
             tmp = f.split("/")
-            self.mkdir(output + "/" + tmp[-1].split(".")[0])
+            outdir = output + "/" + name + "/" + tmp[-1].split(".")[0]
+            self.mkdir(outdir)
+                
             ev = EventGenerator({"/".join(tmp[:-1]) : tmp[-1]}, self.EventStart, self.EventStop)
             ev.Event = self.Event
             ev.EventStart = self.EventStart
             ev.EventStop = self.EventStop
             ev.VerboseLevel = self.VerboseLevel
+            ev._PullCode = self._PullCode
             ev.SpawnEvents()
             ev.CompileEvent()
-            Output[f] = ev
-        return Output
+            if self._PullCode:
+                self += ev
+                return {}
+            self.__DumpCache({i.Filename : i for i in ev.Tracer.Events.values()}, outdir)
 
-    def __GraphGenerator(self, InptMap, output):
+            self += ev
+            
+            events = self.Tracer.Events
+            self.Tracer.Events = {}
+            PickleObject(self, self.OutputDirectory + "/" + self.ProjectName + "/Tracers/" + name)
+            self.Tracer.Events = events
+
+    def __GraphGenerator(self, InptMap, output, name):
         if self.DataCache == False:
             return {}
-        for k in InptMap:
-            for f in InptMap[k]:
-                self.mkdir(output + "/" + f)
+        
+        GraphAttribute = self.GraphAttribute
+        NodeAttribute = self.NodeAttribute
+        EdgeAttribute = self.EdgeAttribute
+            
+        events = {}
+        for i in self:
+            file = self.HashToROOT(i.Filename)
+            file = file.split("/")[-1].replace(".root", "")
+            if file not in events:
+                events[file] = {}
+            events[file][self.HashToIndex(i.Filename)] = i
+        
+        for file in events:
+            self.mkdir(output + "/" + name + "/" + file)
+            gr = GraphGenerator()
+            gr.EventGraph = self.EventGraph
+            gr.Tracer.Events |= events[file]
+            gr.GraphAttribute |= self.GraphAttribute
+            gr.NodeAttribute |= self.NodeAttribute
+            gr.EdgeAttribute |= self.EdgeAttribute
+            gr.CompileEventGraph()
+            if self._PullCode:
+                self += gr
+                return {}
+            self.__DumpCache(gr.Tracer.Events, output + "/" + name + "/" + file)
+            
+            self += gr
+            self.GraphAttribute = {}
+            self.NodeAttribute = {}
+            self.EdgeAttribute = {} 
 
-        self.MakeCache()
-        self.Tracer.Events = self._HashCache["IndexToEvent"]
-        gr = GraphGenerator()
-        gr.ImportTracer(self)
-        gr.EventGraph = self.EventGraph
-        gr.GraphAttribute |= self.GraphAttribute
-        gr.NodeAttribute |= self.NodeAttribute
-        gr.EdgeAttribute |= self.EdgeAttribute
-        gr.CompileEventGraph()
+            evnt = self.Tracer.Events
+            self.Tracer.Events = {}
+            PickleObject(self, self.OutputDirectory + "/" + self.ProjectName + "/Tracers/" + name)
+            self.Tracer.Events = evnt
+
+            self.GraphAttribute = GraphAttribute
+            self.NodeAttribute = NodeAttribute
+            self.EdgeAttribute = EdgeAttribute
 
     def __BuildSampleDirectory(self, InputMap, CacheType, build):
         if build == False:
-            return 
-        
-        for i in InputMap:
-            output = self.OutputDirectory + "/" + self.ProjectName + "/" + CacheType + "/" + i
+            return        
+        for name in InputMap:
+            output = self.OutputDirectory + "/" + self.ProjectName + "/" + CacheType 
             self.mkdir(output)
-            out = {}
-            out |= self.__EventGenerator(InputMap[i], output)
-            out |= self.__GraphGenerator(InputMap[i], output)
-            
-            for k in out:
-                cache = {t.Filename : t for t in self.Tracer.Events.values()}
-                gener = {t.Filename : t for t in out[k].Tracer.Events.values() if t.Filename not in cache}
-                out[k].Tracer.Events = gener
-                file = k.split("/")[-1].split(".")[0]
-                if len(gener) == 0:
-                    continue
- 
-                if self.DumpHDF5:
-                    hdf = HDF5()
-                    hdf.VerboseLevel = self.VerboseLevel
-                    hdf.Threads = self.Threads
-                    hdf.chnk = self.chnk
-                    hdf.Filename = "Events"
-                    hdf.MultiThreadedDump(out[k].Tracer.Events, output + "/" + file)
-                
-                if self.DumpPickle:
-                    PickleObject(out[k].Tracer.Events, output + "/" + file + "/Events")
-
-                events = out[k].Tracer.Events
-                out[k].Tracer.Events = {}
-                PickleObject(out[k].Tracer, self.OutputDirectory + "/" + self.ProjectName + "/Tracers/" + i)
-                out[k].Tracer.Events = events 
-                self += out[k]
-
-
+            self.__EventGenerator(InputMap[name], output, name)
+            self.__GraphGenerator(InputMap[name], output, name)
 
     def __SearchAssets(self, Map, CacheType):
         for Name in Map:
@@ -139,8 +159,8 @@ class Analysis(GraphGenerator):
             
             if len([i for i in Files if i.endswith(".hdf5")]) > 1:
                 hdf = HDF5()
-                hdf.Filename = "Events"
                 for j in SampleDirectory:
+                    hdf.Filename = "Events"
                     hdf.MergeHDF5(root + "/" + j.split("/")[-1]) 
 
             tracer = self.ProjectName + "/Tracers/" + Name
@@ -151,11 +171,20 @@ class Analysis(GraphGenerator):
 
     def Launch(self):
         self.__BuildRootStructure()
-        self.__SearchAssets(self._SampleMap, "EventCache")
-        self.__SearchAssets(self._SampleMap, "DataCache")
+        if self._PullCode == False:
+            self.__SearchAssets(self._SampleMap, "EventCache")
+            self._Cache = {t.Filename : t for t in self.Tracer.Events.values()}
         self.__BuildSampleDirectory(self._SampleMap, "EventCache", self.EventCache)
+    
+        if self._PullCode == False:
+            self.__SearchAssets(self._SampleMap, "DataCache")
+            self._Cache = {t.Filename : t for t in self.Tracer.Events.values() if t.Compiled}
         self.__BuildSampleDirectory(self._SampleMap, "DataCache", self.DataCache)
-        self.__SearchAssets(self._SampleMap, "EventCache")
-        self.__SearchAssets(self._SampleMap, "DataCache")
+       
+        if self._PullCode == False:
+            self.__SearchAssets(self._SampleMap, "EventCache")
+            self.__SearchAssets(self._SampleMap, "DataCache")
         self.MakeCache() 
+
+        self.Settings.DumpSettings(self)
 

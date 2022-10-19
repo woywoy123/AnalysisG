@@ -1,13 +1,13 @@
-from AnalysisTopGNN.IO import WriteDirectory
-from AnalysisTopGNN.Tools import Notification
-from AnalysisTopGNN.Generators import Analysis
-import inspect
-import os, stat 
+from AnalysisTopGNN.Tools import Tools
+from AnalysisTopGNN.Notification import Condor
+from AnalysisTopGNN.Generators import Settings
+#from AnalysisTopGNN.Generators import Analysis
+#import inspect
+#import os, stat 
 
-class Condor(WriteDirectory, Notification):
+class Condor(Tools, Condor):
     def __init__(self):
-        WriteDirectory.__init__(self)
-        Notification.__init__(self)
+        Settings.__init__(self)
         self._Jobs = {}
         self._Time = {}
         self._Memory = {}
@@ -15,41 +15,40 @@ class Condor(WriteDirectory, Notification):
         self._Complete = {}
         self._sequence = {}
         self._Device = {}
-        self.OutputDirectory = "./" 
+        
         self.SkipEventCache = False
         self.SkipDataCache = False
         self.CondaEnv = "GNN"
-        self.ProjectName = None
-        self.Tree = None
+        
+        self.Caller = "CONDOR"
     
     def AddJob(self, name, instance, memory, time, waitfor = None):
         if name not in self._Jobs: 
             self._Jobs[name] = instance
         
-        if name not in self._wait:
-            self._wait[name] = []
+        self.AddListToDict(self._wait, name)
         
-        if waitfor != None:
-            if isinstance(waitfor, str):
-                self._wait[name].append(waitfor)
-            elif isinstance(waitfor, list):
-                self._wait[name] += waitfor 
+        if waitfor == None:
+            pass
+        elif isinstance(waitfor, str):
+            self._wait[name].append(waitfor)
+        elif isinstance(waitfor, list):
+            self._wait[name] += waitfor 
     
         if name not in self._Memory:
             self._Memory[name] = memory
             self._Time[name] = time
 
-        if self.ProjectName == None:
-            self.Warning("INHERITING PROJECT NAME FROM INSTANCE!")
-            self.ProjectName = instance.ProjectName 
-        else:
-            instance.ProjectName = self.ProjectName
+        self.ProjectInheritance(instance)
 
-        if instance.OutputDirectory != None:
+        if self.OutputDirectory:
             instance.OutputDirectory = self.OutputDirectory
 
-        if self.Tree != None:
+        if self.Tree:
             instance.Tree = self.Tree
+        
+        if self.VerboseLevel != 3:
+            instance.VerboseLevel = self.VerboseLevel
     
     def __Sequencer(self):
         def Recursion(inpt, key):
@@ -81,24 +80,41 @@ class Condor(WriteDirectory, Notification):
                 if self.SkipDataCache == True:
                     self._Jobs[j].DataCache = False
                 
-                self.Notify("---------------------------")
-                self.Notify("CURRENTLY RUNNING JOB: " + j)
+                self.RunningJob(j)
+                
                 self._Jobs[j].Launch()
                 self._Complete[j] = True
                 del self._Jobs[j]
                 self._Jobs[j] = None
-        exit()
+        self.FinishExit()
 
     def DumpCondorJobs(self):
         self.__Sequencer()
-        self.MakeDir(self.ProjectName + "/CondorDump")
+        self.mkdir(self.ProjectName + "/CondorDump")
         DAG = []
         for i in self._sequence:
-            self.MakeDir(self.ProjectName + "/CondorDump/" + i)
+            self.mkdir(self.ProjectName + "/CondorDump/" + i)
             for j in self._sequence[i]:
                 configs = []
                 configs += ["from AnalysisTopGNN.Generators import Analysis"]
                 configs += ["Ana = Analysis()"]
+               
+                
+                self._Jobs[j]._PullCode = True
+                self._Jobs[j].Launch()
+
+                Setting = self._Jobs[j].Settings.DumpSettings(self._Jobs[j])
+                trace = Setting["Tracer"].EventInfo
+
+                print(Setting, trace, j)
+
+
+                self._Jobs[j]._PullCode = False
+                exit()
+
+
+
+
                 for k in self._Jobs[j].__dict__:
                     obj = self._Jobs[j].__dict__[k]
                     if k == "Event" and obj != None:

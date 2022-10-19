@@ -34,6 +34,8 @@ class SampleContainer(SampleContainer):
     
     def __add__(self, other):
         _EventInfo1, _EventInfo2 = self.EventInfo, other.EventInfo
+        
+        trees = {}
         for j in _EventInfo2:
             if j not in _EventInfo1:
                 _EventInfo1[j] = _EventInfo2[j]
@@ -41,7 +43,29 @@ class SampleContainer(SampleContainer):
                 if k not in _EventInfo1[j]:
                     _EventInfo1[j][k] = []
                 _EventInfo1[j][k] += _EventInfo2[j][k]
-        
+
+            for k in _EventInfo1[j]:
+                if isinstance(_EventInfo1[j][k], int):
+                    for ev in self.Events.values():
+                        for tr in ev.Trees:
+                            if tr not in trees:
+                                trees[tr] = 0
+                            trees[tr] += 1
+                    for ev in other.Events.values():
+                        for tr in ev.Trees:
+                            if tr not in trees:
+                                trees[tr] = 0
+                            trees[tr] += 1
+                    _EventInfo1[j][k] = trees[k]
+                else:
+                    unique = []
+                    for t in _EventInfo1[j][k]:
+                        if t in unique:
+                            continue
+                        unique.append(t)
+                    _EventInfo1[j][k] = unique
+
+
         smpl_o = {i.Filename : i for i in other.Events.values()}
         Map = {i.Filename : i + smpl_o.pop(i.Filename, None) for i in self.Events.values()}
         Map |= smpl_o 
