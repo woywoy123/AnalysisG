@@ -103,9 +103,9 @@ class HDF5(Tools, IO):
             out = []
             for i in inpt:
                 h = HDF5()
-                h.Filename = OutputDirectory + "/" + i[0] 
-                h.DumpObject(i[1], i[0])
-                out.append([h.Filename, i[0]]) 
+                h.Filename = OutputDirectory + "/" + str(i[0])
+                h.DumpObject(i[1], str(i[0]))
+                out.append([h.Filename, str(i[0])]) 
             return out
 
         if isinstance(ObjectDict, dict) == False:
@@ -125,8 +125,16 @@ class HDF5(Tools, IO):
         if self.Filename.endswith(self._ext) == False:
             self.Filename += self._ext
 
-        self._File = h5py.File(self.Filename, mode = "w", track_order = True)
+        self._File = h5py.File(self.Filename, mode = "a", track_order = True)
+        for i in self._File:
+            for j in Files:
+                if i in j:
+                    Files.pop(Files.index(j))
+                    break
+
         for i in Files:
+            if i.endswith(self.Filename.split("/")[-1]):
+                continue
             name = i.split("/")[-1].replace(self._ext, "")
             self._Ref = self._File.create_dataset(name, track_order = True, dtype = h5py.ref_dtype)
             src = h5py.File(i, mode = "r")
@@ -135,7 +143,7 @@ class HDF5(Tools, IO):
                 for attr in src[key].attrs:
                     self._Ref.attrs[attr] = src[key].attrs[attr]
             os.remove(i)
-
+        self.End()
 
     def End(self):
         self._File.close()

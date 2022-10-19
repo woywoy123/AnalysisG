@@ -5,9 +5,11 @@ from AnalysisTopGNN.Samples.Event import EventContainer
 from AnalysisTopGNN.Tools import Threading
 
 class EventGenerator(EventGenerator, SampleTracer):
-    def __init__(self, InputDir = None, EventStart = 0, EventStop = None):
+    def __init__(self, InputDir = False, EventStart = 0, EventStop = None):
         self.Caller = "EVENTGENERATOR"
-        self.InputDirectory = InputDir
+        self.InputDirectory = {} 
+        if InputDir:
+            self.InputDirectory |= InputDir
         self.EventStart = EventStart
         self.EventStop = EventStop
         self.Event = None
@@ -73,7 +75,7 @@ class EventGenerator(EventGenerator, SampleTracer):
             particles.append(self.GetSourceFile(obj.Objects[p]))
         particles = list(set(particles))
         self.AddInfo("ParticleCode", particles)
-
+        
         self.Files = self.ListFilesInDir(self.InputDirectory, extension = ".root") 
         self.CheckROOTFiles() 
         

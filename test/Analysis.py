@@ -33,6 +33,9 @@ class Analysis(GraphGenerator):
 
         if self.AddDictToDict(self._SampleMap, Name) or SampleDirectory == None:
             return 
+        if isinstance(SampleDirectory, dict):
+            self._SampleMap[Name] |= self.ListFilesInDir(SampleDirectory, ".root")
+            return 
         self._SampleMap[Name] |= self.ListFilesInDir({i : "*" for i in SampleDirectory}, ".root")
 
     def __BuildRootStructure(self): 
@@ -46,33 +49,24 @@ class Analysis(GraphGenerator):
      
     def __EventGenerator(self, InptMap, output):
         if self.EventCache == False:
-            return 
-        for k in self.DictToList(InptMap):
-            for f in k:
-                tmp = f.split("/")
-                self.mkdir(output + "/" + tmp[-1].split(".")[0])
-
-                ev = EventGenerator({"/".join(tmp[:-1]) : tmp[-1]}, self.EventStart, self.EventStop)
-                ev.Event = self.Event
-                ev.EventStart = self.EventStart
-                ev.EventStop = self.EventStop
-                ev.VerboseLevel = self.VerboseLevel
-                ev.SpawnEvents()
-                ev.CompileEvent()
-
-                for i in ev:
-                    print(i.Filename)
-
-                print("----")
-                self = self + ev
-                for i in self:
-                    print(i.Filename)
-
-
+            return {}
+        Output = {}
+        for f in self.DictToList(InptMap):
+            tmp = f.split("/")
+            self.mkdir(output + "/" + tmp[-1].split(".")[0])
+            ev = EventGenerator({"/".join(tmp[:-1]) : tmp[-1]}, self.EventStart, self.EventStop)
+            ev.Event = self.Event
+            ev.EventStart = self.EventStart
+            ev.EventStop = self.EventStop
+            ev.VerboseLevel = self.VerboseLevel
+            ev.SpawnEvents()
+            ev.CompileEvent()
+            Output[f] = ev
+        return Output
 
     def __GraphGenerator(self, InptMap, output):
         if self.DataCache == False:
-            return 
+            return {}
         for k in InptMap:
             for f in InptMap[k]:
                 self.mkdir(output + "/" + f)
@@ -94,64 +88,66 @@ class Analysis(GraphGenerator):
         for i in InputMap:
             output = self.OutputDirectory + "/" + self.ProjectName + "/" + CacheType + "/" + i
             self.mkdir(output)
-            self.__EventGenerator(InputMap, output)
-            self.__GraphGenerator(InputMap, output)
-
-            Objects = {}
-            for k in self:
-                f = self.HashToROOT(k.Filename)
-                print(f)
-                print(self.HashToEvent(k.Filename), k.Filename)
-                f = f.split("/")[-1]
-                if f not in Objects:
-                    Objects[f] = {}
-                Objects[f][k.Filename] = k
-             
-            for f in Objects:
-                name = f.split("/")[-1].split(".")[0]
+            out = {}
+            out |= self.__EventGenerator(InputMap[i], output)
+            out |= self.__GraphGenerator(InputMap[i], output)
+            
+            for k in out:
+                cache = {t.Filename : t for t in self.Tracer.Events.values()}
+                gener = {t.Filename : t for t in out[k].Tracer.Events.values() if t.Filename not in cache}
+                out[k].Tracer.Events = gener
+                file = k.split("/")[-1].split(".")[0]
+                if len(gener) == 0:
+                    continue
+ 
                 if self.DumpHDF5:
                     hdf = HDF5()
                     hdf.VerboseLevel = self.VerboseLevel
                     hdf.Threads = self.Threads
                     hdf.chnk = self.chnk
-                    hdf.Filename = CacheType
-                    hdf.MultiThreadedDump(Objects[f], output + "/" + name)
-                    hdf.MergeHDF5(output + "/" + name)
-
+                    hdf.Filename = "Events"
+                    hdf.MultiThreadedDump(out[k].Tracer.Events, output + "/" + file)
+                
                 if self.DumpPickle:
-                    PickleObject(Objects[f], output + "/" + name + "/" + CacheType)
-            
-            # Clear the Events because these need to pickled in the line above
-            if self.DumpPickle or self.DumpHDF5:
-                self.Tracer.Events = {}
-            PickleObject(self.Tracer, self.OutputDirectory + "/" + self.ProjectName + "/Tracers/" + i) 
+                    PickleObject(out[k].Tracer.Events, output + "/" + file + "/Events")
+
+                events = out[k].Tracer.Events
+                out[k].Tracer.Events = {}
+                PickleObject(out[k].Tracer, self.OutputDirectory + "/" + self.ProjectName + "/Tracers/" + i)
+                out[k].Tracer.Events = events 
+                self += out[k]
+
+
 
     def __SearchAssets(self, Map, CacheType):
         for Name in Map:
             root = self.ProjectName + "/" + CacheType + "/" + Name + "/"
             SampleDirectory = [root + "/" + i for i in self.ls(root)]
-            if len(self.ListFilesInDir({i : "*" for i in SampleDirectory}, ".pkl")) != 0:
-                inpt = ".pkl"
-            elif len(self.ListFilesInDir({i : "*" for i in SampleDirectory}, ".hdf5")) != 0: 
-                inpt = ".hdf5"
+            Files = []
+            Files += self.DictToList(self.ListFilesInDir({i : "*" for i in SampleDirectory}, ".pkl"))
+            Files += self.DictToList(self.ListFilesInDir({i : "*" for i in SampleDirectory}, ".hdf5"))
+            if len(Files) == 0:
+                return 
+            
+            for i in Files:
+                if i.endswith(".pkl"): 
+                    self.Tracer.Events |= {t.Filename : t for t in UnpickleObject(i).values()}
+                if i.endswith(".hdf5"):
+                    hdf = HDF5()
+                    hdf.Filename = i
+                    self.Tracer.Events |= {n : t for n, t in hdf}
+            
+            if len([i for i in Files if i.endswith(".hdf5")]) > 1:
+                hdf = HDF5()
+                hdf.Filename = "Events"
+                for j in SampleDirectory:
+                    hdf.MergeHDF5(root + "/" + j.split("/")[-1]) 
+
+            tracer = self.ProjectName + "/Tracers/" + Name
+            if self.IsFile(tracer + ".pkl"): 
+                self += SampleTracer(UnpickleObject(tracer + ".pkl"))
             else:
                 return 
-            Files = self.ListFilesInDir({i : "*" for i in SampleDirectory}, inpt)
-            self.ImportTracer(UnpickleObject(self.OutputDirectory + "/" + self.ProjectName + "/Tracers/" + Name))
-                
-            events = {}
-            for i in self.DictToList(Files):
-                if i.endswith(".pkl"):
-                    events |= UnpickleObject(i)
-                    continue
-                hdf = HDF5()
-                hdf.Filename = i
-                for tn, obj in hdf:
-                    events |= {tn : obj}
-            self.Tracer.Events |= events
-            
-            Map[Name] = [f.split("/")[-1] for f in Files]
-            setattr(self, CacheType, False)
 
     def Launch(self):
         self.__BuildRootStructure()
@@ -159,5 +155,7 @@ class Analysis(GraphGenerator):
         self.__SearchAssets(self._SampleMap, "DataCache")
         self.__BuildSampleDirectory(self._SampleMap, "EventCache", self.EventCache)
         self.__BuildSampleDirectory(self._SampleMap, "DataCache", self.DataCache)
+        self.__SearchAssets(self._SampleMap, "EventCache")
+        self.__SearchAssets(self._SampleMap, "DataCache")
         self.MakeCache() 
 

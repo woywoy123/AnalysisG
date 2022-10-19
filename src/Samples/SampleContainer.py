@@ -54,7 +54,7 @@ class SampleContainer(SampleContainer):
         self.ROOTInfo = {i.Filename : i for i in roots}
 
         for i in self.ROOTInfo:
-            self.ROOTInfo[i]._HashMap = {hashmap[k] : k for k in self.ROOTInfo[i]._HashMap.values()}
+            self.ROOTInfo[i]._HashMap = {hashmap[k] : k for k in self.ROOTInfo[i]._HashMap.values() if k in hashmap}
         return self
 
 

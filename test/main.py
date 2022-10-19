@@ -4,6 +4,7 @@ import IO
 import EventGraph
 import Exporter
 import Submission
+import Modular 
 
 def Test(F, **kargs):
     import traceback
@@ -48,5 +49,9 @@ if __name__ == '__main__':
     #Test(Exporter.TestEventGeneratorDumper, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
     #Test(Exporter.TestGraphGeneratorDumper, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
 
+    # ==== Test Modules ==== #
+    Test(Modular.TestEventGenerator, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
+
+
     # === Test Submission ==== #
-    Test(Submission.TestAnalysis, GeneralDir = RootDir)
+    #Test(Submission.TestAnalysis, GeneralDir = RootDir)

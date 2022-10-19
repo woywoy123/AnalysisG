@@ -1,4 +1,5 @@
 import os
+import copy
 from glob import glob
 import AnalysisTopGNN
 from .String import *
@@ -35,6 +36,7 @@ class IO(AnalysisTopGNN.Notification.IO, String):
 
     def ListFilesInDir(self, directory, extension, _it = 0):
         F = []
+        directory = copy.deepcopy(directory)
         if isinstance(directory, dict):
             for i in directory:
                 if isinstance(directory[i], list):
@@ -58,6 +60,7 @@ class IO(AnalysisTopGNN.Notification.IO, String):
             for i in F:
                 if len(F[i]) == 0:
                     self.EmptyDirectoryWarning(i)
+                    continue
                 Out[i] = F[i]
             self.FoundFiles(Out)
             return Out

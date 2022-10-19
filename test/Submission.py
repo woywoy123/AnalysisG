@@ -29,7 +29,7 @@ def TestAnalysis(GeneralDir):
         Ana.EventGraph = EventGraphTruthTopChildren
         Ana.AddGraphFeature(Test)
         Ana.Threads = 10
-        Ana.EventStop = 100
+        Ana.EventStop = 10
         Ana.DumpHDF5 = True
         Ana.DumpPickle = True
         Ana.Launch()

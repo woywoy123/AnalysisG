@@ -20,6 +20,8 @@ class SampleTracer(Tools):
             self.Tracer = SampleContainer()
         elif hasattr(Tracer, "Tracer"):
             self.Tracer = Tracer.Tracer
+        elif Tracer.__name__ == "SampleContainer":
+            self.Tracer = Tracer
         else:
             return self.BeginTrace()
         self.Tracer.Initialize(self.Caller)
