@@ -195,7 +195,9 @@ def TestEventGeneratorDumper(Files):
         it+=1 
         if it == 24:
             break
-    hdf.MultiThreadedDump(Objects)
+    hdf.MultiThreadedDump(Objects, "_Pickle/")
+    hdf.MergeHDF5("_Pickle/")
+    hdf.Filename = "_Pickle/UNTITLED.hdf5"
     for name, obj in hdf:
         print(name, obj.Trees["nominal"].TruthTops, obj)
     return True
@@ -226,10 +228,11 @@ def TestGraphGeneratorDumper(Files):
     for i in Gr:
         Objects[i.Filename] = i
         it+=1 
-        if it == 24:
+        if it == 12:
             break
-    hdf.MultiThreadedDump(Objects)
-    
+    hdf.MultiThreadedDump(Objects, "_Pickle/")
+    hdf.MergeHDF5("_Pickle/")
+    hdf.Filename = "_Pickle/UNTITLED.hdf5"
     for name, obj in hdf:
         print(name, obj.Trees["nominal"], obj)
     return True

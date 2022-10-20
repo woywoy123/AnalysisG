@@ -83,6 +83,9 @@ class HDF5(Tools, IO):
             elif isinstance(Val, np.int64):
                 self.__AddToDataSet(objectaddress, Key, Val)
                 return
+            elif isinstance(Val, np.bool_):
+                self.__AddToDataSet(objectaddress, Key, Val)
+                return 
             print("NEED TO FIX THIS. COMING FROM HDF5", ObjPath, objectaddress, Key, Val, type(Val))
 
     def DumpObject(self, obj, Name = False):
@@ -113,7 +116,7 @@ class HDF5(Tools, IO):
             return 
         inpo = [[name, ObjectDict[name]] for name in ObjectDict]
         TH = Threading(inpo, function, self.Threads, self.chnk)
-        TH.VerboseLevel = 3
+        TH.VerboseLevel = self.VerboseLevel
         TH.Start()
        
     def MergeHDF5(self, Directory):
@@ -147,7 +150,9 @@ class HDF5(Tools, IO):
 
     def End(self):
         self._File.close()
+        verb = self.VerboseLevel
         self.__init__()
+        self.VerboseLevel = verb
     
     def __BuildContainer(self, obj, attr, i, typ):
         if typ == "-":

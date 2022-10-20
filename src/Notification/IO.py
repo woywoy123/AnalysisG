@@ -27,4 +27,4 @@ class IO(Notification):
         self.Failure("Wrong input, expected a dictionary but got " + str(type(Inpt)) + " returning.")
     
     def MergingHDF5(self, inpt):
-        self.Success("!Merging: " + inpt + " to " + self.Filename)
+        self.Success("!!Merging: " + inpt + " to " + self.Filename)

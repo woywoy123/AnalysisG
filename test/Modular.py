@@ -1,14 +1,14 @@
 from AnalysisTopGNN.Generators import EventGenerator
 from AnalysisTopGNN.Events import Event
 from AnalysisTopGNN.IO import PickleObject, UnpickleObject
-from Analysis import Analysis
+from AnalysisTopGNN.Generators import Analysis
 
 def TestEventGenerator(Files):
    
     File0 = {"/".join(Files[0].split("/")[:-1]) : [Files[0].split("/")[-1]]}
     File1 = {"/".join(Files[1].split("/")[:-1]) : [Files[1].split("/")[-1]]}   
    
-    End = 100
+    End = 12
 
     ev0 = EventGenerator(File0)
     ev0.Event = Event
@@ -24,9 +24,6 @@ def TestEventGenerator(Files):
     ev1.SpawnEvents()
     ev1.CompileEvent()
    
-    ev0 = UnpickleObject("TMP0")
-    ev1 = UnpickleObject("TMP1")
-
     combined = ev0 + ev1
     print(combined.Tracer)
     
@@ -74,7 +71,7 @@ def TestEventGenerator(Files):
         Ana = Analysis()
         Ana.ProjectName = "TMPProject"
         Ana.InputSample(Name, Dir)
-        Ana.EventCache = False
+        Ana.EventCache = True
         Ana.Event = Event
         Ana.Threads = 12
         Ana.chnk = 4

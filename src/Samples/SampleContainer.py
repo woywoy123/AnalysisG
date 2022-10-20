@@ -70,15 +70,15 @@ class SampleContainer(SampleContainer):
         Map = {i.Filename : i + smpl_o.pop(i.Filename, None) for i in self.Events.values()}
         Map |= smpl_o 
        
-        self.Events = { i : Map[k].UpdateIndex(i) for i, k in zip(range(len(Map)), Map) }
+        self.Events |= { i : Map[k].UpdateIndex(i) for i, k in zip(range(len(Map)), Map) }
         hashmap = {i.Filename : i.EventIndex for i in self.Events.values()}
 
         roots = list(self.ROOTInfo.values()) + list(other.ROOTInfo.values())
         roots = roots if isinstance(roots, list) else [roots]
-        self.ROOTInfo = {i.Filename : i for i in roots}
+        self.ROOTInfo |= {i.Filename : i for i in roots}
 
         for i in self.ROOTInfo:
-            self.ROOTInfo[i]._HashMap = {hashmap[k] : k for k in self.ROOTInfo[i]._HashMap.values() if k in hashmap}
+            self.ROOTInfo[i]._HashMap |= {hashmap[k] : k for k in self.ROOTInfo[i]._HashMap.values() if k in hashmap}
         return self
 
 

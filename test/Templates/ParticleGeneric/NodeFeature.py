@@ -32,7 +32,10 @@ def Index(a):
     return float(a.Index)
 
 def FromRes(a):
-    return a.FromRes
+    try:
+        return a.FromRes
+    except:
+        return float(0)
 
 def FromTop(a):
     return 1

@@ -1,5 +1,7 @@
-from Analysis import Analysis
 from AnalysisTopGNN.Events import EventGraphTruthTopChildren, Event
+from AnalysisTopGNN.Generators import Analysis
+from AnalysisTopGNN.Submission import Condor
+from Templates.EventFeatureTemplate import ApplyFeatures
 
 
 def TestAnalysis(GeneralDir):
@@ -11,12 +13,12 @@ def TestAnalysis(GeneralDir):
         Ana = Analysis()
         Ana.ProjectName = "TMPProject"
         Ana.InputSample(Name, Dir)
-        Ana.EventCache = False
+        Ana.EventCache = True
         Ana.Event = Event
-        Ana.Threads = 12
-        Ana.EventStop = 10
-        Ana.DumpHDF5 = True
-        Ana.DumpPickle = False
+        Ana.Threads = 3
+        Ana.EventStop = 9
+        Ana.DumpHDF5 = False
+        Ana.DumpPickle = True
         Ana.Launch()
         return Ana
 
@@ -24,12 +26,11 @@ def TestAnalysis(GeneralDir):
         Ana = Analysis()
         Ana.ProjectName = "TMPProject"
         Ana.InputSample(Name)
-        Ana.DataCache = False
-        Ana.Event = Event
+        Ana.DataCache = True
         Ana.EventGraph = EventGraphTruthTopChildren
         Ana.AddGraphFeature(Test)
         Ana.Threads = 10
-        Ana.EventStop = 10
+        Ana.EventStop = None
         Ana.DumpHDF5 = True
         Ana.DumpPickle = False
         Ana.Launch()
@@ -54,6 +55,9 @@ def TestAnalysis(GeneralDir):
     for i in gr:
         Objects1[i.Filename] = i
 
+    print(len(Objects1), len(Objects0))
+
+
     for i in Objects0:
         if i not in Objects1:
             print(i, Objects0[i])
@@ -66,63 +70,58 @@ def TestAnalysis(GeneralDir):
 
 
 def TestCondorDumping(GeneralDir):
-    from Analysis import Analysis
-    from AnalysisTopGNN.Submission import Condor
-
-
-
-
     nfs = GeneralDir
     out = "/home/tnom6927/Dokumente/Project/Analysis/bsm4tops-gnn-analysis/AnalysisTopGNN/test"
 
     T = Condor()
-    T.DisableEventCache = True
-    T.DisableDataCache = False
+    T.SkipEventCache = False
+    T.SkipDataCache = False
     T.OutputDirectory = out
     T.Tree = "nominal"
     T.ProjectName = "TopEvaluation"
 
-    # Job for creating samples
-    A1 = Analysis()
-    A1.Threads = 4
-    A1.EventCache = True
-    A1.DumpPickle = True
-    A1.Event = Event
-    A1.InputSample("ttbar", nfs + "ttbar")
-    T.AddJob("ttbar", A1, "10GB", "1h")
+    ## Job for creating samples
+    #A1 = Analysis()
+    #A1.Threads = 4
+    #A1.EventCache = True
+    #A1.DumpPickle = True
+    #A1.Event = Event
+    #A1.InputSample("ttbar", nfs + "ttbar")
+    #T.AddJob("ttbar", A1, "10GB", "1h")
 
-    A2 = Analysis()
-    A2.Threads = 4
-    A2.EventCache = True
-    A1.DumpPickle = True
-    A2.Event = Event
-    A2.InputSample("zmumu", nfs + "Zmumu")
-    T.AddJob("Zmumu", A2, "10GB", "1h")
+    #A2 = Analysis()
+    #A2.Threads = 4
+    #A2.EventCache = True
+    #A2.DumpPickle = True
+    #A2.Event = Event
+    #A2.InputSample("zmumu", nfs + "Zmumu")
+    #T.AddJob("Zmumu", A2, "10GB", "1h")
  
     A3 = Analysis()
     A3.Threads = 4
     A3.EventCache = True
-    A1.DumpPickle = True
+    A3.DumpPickle = True
     A3.Event = Event
     A3.InputSample("t", nfs + "t")
     T.AddJob("t", A3, "10GB", "1h")
 
-    A4 = Analysis()
-    A4.Threads = 4
-    A4.EventCache = True
-    A1.DumpPickle = True
-    A4.Event = Event
-    A4.InputSample("tttt", nfs + "tttt")
-    T.AddJob("tttt", A4, "10GB", "1h")
+    #A4 = Analysis()
+    #A4.Threads = 4
+    #A4.EventCache = True
+    #A4.DumpPickle = True
+    #A4.Event = Event
+    #A4.InputSample("tttt", nfs + "tttt")
+    #T.AddJob("tttt", A4, "10GB", "1h")
 
     # Job for creating Dataloader
-    #D1 = Analysis()
-    #D1.DataCache = True
-    #D1.DumpHDF5 = True
-    #D1.Threads = 12
-    #D1.EventGraph = EventGraphTruthJetLepton
-    #D1.InputSample("t")
-    #TruthJetsFeatures(D1)
+    D1 = Analysis()
+    D1.DataCache = True
+    D1.DumpHDF5 = True
+    D1.Threads = 12
+    D1.EventGraph = EventGraphTruthTopChildren
+    D1.InputSample("t")
+    ApplyFeatures(D1, "TruthChildren")
+    T.AddJob("t_Data", D1, "10GB", "1h", "t")
 
     # Job for creating Dataloader
     #D2 = Analysis()

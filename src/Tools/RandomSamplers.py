@@ -29,7 +29,8 @@ class RandomSamplers(RandomSamplers):
             return Indx    
         return Indx[0:nEvents]
 
-
+    #def MakeTrainingSample(self, TrainingSize = None):
+         
 
 
 

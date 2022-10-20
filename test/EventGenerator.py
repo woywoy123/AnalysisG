@@ -23,10 +23,10 @@ def TestEventGenerator(Files):
     EvtGen.CompileEvent()
     
     Tr = SampleTracer(EvtGen.Tracer) 
-    for i in EvtGen.Events:
-        Tr.IndexToHash(i)
-        Tr.IndexToEvent(i)
-        Tr.IndexToROOT(i)
+    for i in EvtGen:
+        Tr.IndexToHash(i.EventIndex)
+        Tr.IndexToEvent(i.EventIndex)
+        Tr.IndexToROOT(i.EventIndex)
     
     print("Passed Tracing")
     return passedEvents

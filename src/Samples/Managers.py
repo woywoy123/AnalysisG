@@ -86,14 +86,14 @@ class SampleTracer(Tools):
         self.MakeCache()
         ev = self._HashCache["IndexToEvent"]
         self._events = {k : ev[k] for k in ev if ev[k] != None}
-        self._iter = 0
+        self._iter = min(list(self._events))
         return self
 
     def __next__(self):
+        if self._iter >= len(self._events):
+            raise StopIteration()
         ev = self._events[self._iter]
         self._iter += 1
-        if self._iter == len(self._events):
-            raise StopIteration()
         return ev
 
     def __radd__(self, other):

@@ -5,6 +5,7 @@ import EventGraph
 import Exporter
 import Submission
 import Modular 
+import Optimizer
 
 def Test(F, **kargs):
     import traceback
@@ -36,22 +37,24 @@ if __name__ == '__main__':
     
     # ==== Testing IO ==== #
     #Test(IO.TestDirectory, Files = RootDir)
-    
-    # ==== Test EventGenerator ==== #
-    #Test(EventGenerator.TestEventGenerator, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
+    #
+    ## ==== Test EventGenerator ==== #
+    #Test(EventGenerator.TestEventGenerator, Files = {RootDir + "tttt" : ["QU_0.root"], RootDir + "t" : ["QU_14.root"]})
 
-    # ==== Test EventGraph ==== #
+    ## ==== Test EventGraph ==== #
     #Test(EventGraph.TestEventGraph, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
 
-    # ==== Test Merger ==== #
+    ## ==== Test Merger ==== #
     #Test(Exporter.TestEventGenerator, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
     #Test(Exporter.TestGraphGenerator, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
     #Test(Exporter.TestEventGeneratorDumper, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
     #Test(Exporter.TestGraphGeneratorDumper, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
 
-    # ==== Test Modules ==== #
+    ## ==== Test Modules ==== #
     #Test(Modular.TestEventGenerator, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
 
+    ## ==== Test Optimizer ==== # 
+    #Test(Optimizer.TestOptimizer, Files = [RootDir + "tttt/QU_0.root", {RootDir + "t" : ["QU_14.root", "QU_5.root"]}])
 
     # === Test Submission ==== #
     #Test(Submission.TestAnalysis, GeneralDir = RootDir)

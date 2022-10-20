@@ -12,9 +12,10 @@ class EventGenerator(EventGenerator, SampleTracer):
         
         Settings.__init__(self)
         self.InputDirectory = {} 
-        if InputDir:
+        if isinstance(InputDir, dict):
             self.InputDirectory |= InputDir
-        
+        else:
+            self.InputDirectory = InputDir
         self.EventStart = EventStart
         self.EventStop = EventStop
         
@@ -120,6 +121,5 @@ class EventGenerator(EventGenerator, SampleTracer):
         TH = Threading(list(self.Tracer.Events.values()), function, threads = self.Threads, chnk_size = self.chnk)
         TH.VerboseLevel = self.VerboseLevel
         TH.Start()
-        
         for ev in TH._lists:
             self.Tracer.Events[ev.EventIndex] = ev

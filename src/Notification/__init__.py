@@ -9,3 +9,4 @@ from .RandomSamplers import RandomSamplers
 from .FeatureAnalysis import FeatureAnalysis
 from .SampleTracer import SampleTracer
 from .Condor import Condor
+from .Analysis import Analysis

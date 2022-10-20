@@ -10,8 +10,10 @@ class GraphGenerator(GraphGenerator, SampleTracer, Graphs, RandomSamplers):
     def __init__(self):
         Settings.__init__(self)
         Graphs.__init__(self)
-        self.Caller = "GraphGenerator"
-        SampleTracer.__init__(self)
+
+        self.Caller = "GRAPHGENERATOR"
+        SampleTracer.__init__(self, self)
+ 
    
     # Define the observable features
     def AddGraphFeature(self, fx, name = ""):
@@ -75,8 +77,7 @@ class GraphGenerator(GraphGenerator, SampleTracer, Graphs, RandomSamplers):
             self.Tracer.Events[ev].Trees = trees
 
     def CompileEventGraph(self):
-        self.SetDevice()
-        self.CheckSettings()
+
         self.AddInfo("Name", [self.EventGraph.__qualname__])
         self.AddInfo("Path", [self.EventGraph.__module__])
         self.AddInfo("EventCode", [self.GetSourceFile(self.EventGraph)])   
@@ -91,9 +92,12 @@ class GraphGenerator(GraphGenerator, SampleTracer, Graphs, RandomSamplers):
         self.AddInfo("Device", [self.Device])
         self.AddInfo("SelfLoop", [self.SelfLoop])
         self.AddInfo("FullyConnect", [self.FullyConnect])
+
         if self._PullCode:
             return self
 
+        self.SetDevice()
+        self.CheckSettings()
         self.AddSamples(self.Tracer.Events, self.Tree)
         
         def function(inpt):

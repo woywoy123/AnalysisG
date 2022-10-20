@@ -21,6 +21,7 @@ class Settings:
         self.Tracer = None
         self.Tree = False
         self._PullCode = False
+        self.Device = "cpu"
 
         self.InputDirectory = {}
  

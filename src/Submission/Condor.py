@@ -1,9 +1,7 @@
 from AnalysisTopGNN.Tools import Tools
 from AnalysisTopGNN.Notification import Condor
 from AnalysisTopGNN.Generators import Settings
-#from AnalysisTopGNN.Generators import Analysis
-#import inspect
-#import os, stat 
+import os, stat 
 
 class Condor(Tools, Condor):
     def __init__(self):
@@ -95,75 +93,106 @@ class Condor(Tools, Condor):
         for i in self._sequence:
             self.mkdir(self.ProjectName + "/CondorDump/" + i)
             for j in self._sequence[i]:
+
+                if self.SkipDataCache:
+                    self._Jobs[i].DataCache = False
+                if self.SkipEventCache:
+                    self._Jobs[i].EventCache = False
+
                 configs = []
                 configs += ["from AnalysisTopGNN.Generators import Analysis"]
-                configs += ["Ana = Analysis()"]
-               
                 
                 self._Jobs[j]._PullCode = True
                 self._Jobs[j].Launch()
 
                 Setting = self._Jobs[j].Settings.DumpSettings(self._Jobs[j])
                 trace = Setting["Tracer"].EventInfo
-
-                print(Setting, trace, j)
-
-
                 self._Jobs[j]._PullCode = False
-                exit()
+                
+                if "EVENTGENERATOR" in trace:
+                    EventCode = ["from AnalysisTopGNN.Templates import EventTemplate \n"]
+                    EventCode += ["from ParticleCode import * \n\n"]
+                    EventCode += trace["EVENTGENERATOR"]["EventCode"]
+                    
+                    F = open(self.ProjectName + "/CondorDump/" + i + "/EventImplementation.py", "w")
+                    F.write("".join(EventCode))
+                    F.close()
+                  
+                    F = open(self.ProjectName + "/CondorDump/" + i + "/ParticleCode.py", "w")
+                    F.write(trace["EVENTGENERATOR"]["ParticleCode"][0])
+                    F.close()
 
+                    configs += ["from EventImplementation import *\n\n"]
+                    configs += ["Ana = Analysis()"]
+                    configs += ["Ana.Event = " + trace["EVENTGENERATOR"]["Name"][-1]]
+                
+                if "GRAPHGENERATOR" in trace:
 
+                    EventCode = ["from AnalysisTopGNN.Templates import EventGraphTemplate \n\n"]
+                    EventCode += trace["GRAPHGENERATOR"]["EventCode"]
+                    
+                    F = open(self.ProjectName + "/CondorDump/" + i + "/EventGraphImplementation.py", "w")
+                    F.write("".join(EventCode))
+                    F.close()
+                  
+                    
+                    Features = {"GraphFeatures" : {}, "NodeFeatures" : {}, "EdgeFeatures" : {}}
+                    for f in Features:
+                        if f not in trace["GRAPHGENERATOR"]:
+                            continue
 
+                        F = open(self.ProjectName + "/CondorDump/" + i + "/" + f + ".py", "w")
+                        for t in trace["GRAPHGENERATOR"][f]:
+                            F.write("\n".join(list(t.values())))
 
-                for k in self._Jobs[j].__dict__:
-                    obj = self._Jobs[j].__dict__[k]
-                    if k == "Event" and obj != None:
-                        configs += ["from EventImplementation import *"]
-                        configs += ["Ana.Event = " + obj.__name__]
-                        F = open(self.ProjectName + "/CondorDump/" + i + "/EventImplementation.py", "w")
-                        F.write("".join(open(inspect.getfile(obj), "r").readlines()))
+                            f_names = {str(k) : str(t.split(":")[0].split("(")[0].split(" ")[1]) for k, t in zip(t, t.values())}
+                            Features[f] |= f_names
                         F.close()
+                        configs += ["from " + f + " import *"]
 
-                    elif k == "Model" and obj != None:
-                        configs += ["from ModelImplementation import *"]
-                        configs += ["Ana.Model = " + type(obj).__name__ + "()"]
-                        F = open(self.ProjectName + "/CondorDump/" + i + "/ModelImplementation.py", "w")
-                        F.write("".join(open(type(obj).__module__.replace(".", "/") +".py", "r").readlines()))
-                        F.close()
+                    configs += ["from EventGraphImplementation import *\n\n"]
 
-                    elif k == "EventGraph" and obj != None:
-                        configs += ["from EventGraphImplementation import *"]
-                        configs += ["Ana.EventGraph = " + obj.__name__]
-                        F = open(self.ProjectName + "/CondorDump/" + i + "/EventGraphImplementation.py", "w")
-                        F.write("".join(open(inspect.getfile(obj), "r").readlines()))
-                        F.close()
+                    configs += ["Ana = Analysis()"]
+                    configs += ["Ana.EventGraph = " + trace["GRAPHGENERATOR"]["Name"][-1]]
 
-                    elif k.endswith("Attribute"):
-                        F = open(self.ProjectName + "/CondorDump/" + i + "/" + k +".py", "w")
-                        configs += ["from " + k + " import *"]
-                        for l in obj:
-                            configs += ["Ana." + k + '["' + l + '"] = ' + obj[l].__name__]
-                            F.write(inspect.getsource(obj[l]))
-                        F.close()
+                    for f in Features:
+                        configs += ["Ana." + f.replace("Features", "Attribute") + " = {" + ",".join([" '" + p + "' : " + k for p, k in zip(Features[f], Features[f].values())]) + "}" ]
+                
+                for s in Setting:
+                    if s in ["Tracer", "_PullCode"]:
+                        continue
+                    if s == "OutputDirectory":
+                        Setting[s] = self.RemoveTrailing(Setting[s], "/")
+                        Setting[s] = "'" + Setting[s] + "'"
+                    if s == "ProjectName":
+                        Setting[s] = "'" + Setting[s] + "'"
+
+                    if s == "Tree":
+                        Setting[s] = "'" + Setting[s] + "'"
+                    
+                    configs += ["Ana." + s + " = " + str(Setting[s])]
+                
+                for s in self._Jobs[j]._SampleMap:
+                    if len(self._Jobs[j]._SampleMap[s]) == 0:
+                        configs += ["Ana.InputSample('" + s + "')"]
                     else:
-                        if k == "Device":
-                            self._Device[j] = obj
-                        if isinstance(obj, str):
-                            obj = '"' + obj + '"'
-                        configs += ["Ana." + k + " = " + str(obj)]
+                        configs += ["Ana.InputSample('" + s + "', " + str(self._Jobs[j]._SampleMap[s]) + ")"]
+                
                 
             configs += ["Ana.Launch()"]
-            F = open(self.ProjectName + "/CondorDump/" + i + "/Spawn.py", "w")
+            F = open(self.ProjectName + "/CondorDump/" + i + "/main.py", "w")
             F.write("\n".join(configs))
             F.close()
 
             F = open(self.ProjectName + "/CondorDump/" + i + "/Spawn.sh", "w")
-            sk = ["#!/bin/bash", "source ~/.bashrc", 'eval "$(conda shell.bash hook)"', "conda activate GNN", "python " + i + "/Spawn.py"]
+            sk = ["#!/bin/bash", "source ~/.bashrc", 'eval "$(conda shell.bash hook)"', "conda activate " + self.CondaEnv, "python " + i + "/main.py"]
             F.write("\n".join(sk))
             F.close()
             os.chmod(self.ProjectName + "/CondorDump/" + i + "/Spawn.sh", stat.S_IRWXU)
             
-            sk = ["executable = " + i + "/Spawn.sh", "error = results.error.$(ClusterID)", 'Requirements = OpSysAndVer == "CentOS7"']
+            sk = ["executable = " + i + "/Spawn.sh", "error = " + i + "/results.error.$(ClusterID)", 'Requirements = OpSysAndVer == "CentOS7"']
+            if i not in self._Device:
+                self._Device[i] = "cpu"
             if self._Device[i] == "cpu":
                 sk += ["Request_Cpus = " + str(self._Jobs[i].__dict__["Threads"])]
             else:
@@ -203,6 +232,18 @@ class Condor(Tools, Condor):
                 s = "PARENT " + p + " CHILD " + i
                 if s not in DAG:
                     DAG.append(s)
+
         F = open(self.ProjectName + "/CondorDump/DAGSUBMISSION.submit", "w")
         F.write("\n".join(DAG))
+        F.close()
+        
+        F = open(self.ProjectName + "/CondorDump/RunAsBash.sh", "w")
+        F.write("#!/bin/bash\n")
+        for j in DAG:
+            if j.startswith("JOB") == False:
+                continue
+            x = j.split(" ")[-1]
+            x = x.split("/")[0]
+            x += "/Spawn.sh\n"
+            F.write("bash " + x)
         F.close()
