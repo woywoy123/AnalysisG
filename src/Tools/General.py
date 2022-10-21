@@ -50,3 +50,12 @@ class Tools(IO):
             return False
         else:
             return True
+
+    def MergeNestedList(self, inpt):
+        if isinstance(inpt, list) == False:
+            return [inpt]
+
+        out = []
+        for i in inpt:
+            out += self.MergeNestedList(i)
+        return out

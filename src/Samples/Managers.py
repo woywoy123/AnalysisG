@@ -86,6 +86,9 @@ class SampleTracer(Tools):
         self.MakeCache()
         ev = self._HashCache["IndexToEvent"]
         self._events = {k : ev[k] for k in ev if ev[k] != None}
+        if len(self._events) == 0:
+            self._iter = 0
+            return self
         self._iter = min(list(self._events))
         return self
 

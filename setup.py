@@ -21,6 +21,7 @@ setup(
             "AnalysisTopGNN.Generators",
             "AnalysisTopGNN.Plotting", 
             "AnalysisTopGNN.Submission", 
+            "AnalysisTopGNN.Statistics", 
             #"AnalysisTopGNN.Reconstruction",
         ],
         package_dir = {
@@ -33,6 +34,7 @@ setup(
             "AnalysisTopGNN.Templates" : "src/EventTemplates/Templates", 
 
             "AnalysisTopGNN.Features" : "src/Features",
+            "AnalysisTopGNN.Statistics" : "src/Statistics", 
             #"AnalysisTopGNN.Reconstruction" : "src/Reconstruction",
 
             "AnalysisTopGNN.Tools" : "src/Tools",

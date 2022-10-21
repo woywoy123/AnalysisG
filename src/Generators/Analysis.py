@@ -2,6 +2,7 @@ from AnalysisTopGNN.Samples import SampleTracer
 from AnalysisTopGNN.Generators import EventGenerator, GraphGenerator, Settings
 from AnalysisTopGNN.IO import HDF5, PickleObject, UnpickleObject
 from AnalysisTopGNN.Notification import Analysis
+from AnalysisTopGNN.Statistics import SampleNode
 
 class Analysis(Analysis, GraphGenerator):
 
@@ -46,7 +47,10 @@ class Analysis(Analysis, GraphGenerator):
         self.mkdir(self.OutputDirectory + "/" + self.ProjectName)
         self.mkdir(self.OutputDirectory + "/" + self.ProjectName + "/Tracers")
     
-    def __DumpCache(self, events, outdir):
+    def __DumpCache(self, events, outdir, Dump):
+        if Dump == False:
+            return 
+
         gener = {t.Filename : t for t in events.values() if t.Filename not in self._Cache}
         if len(gener) == 0:
             return 
@@ -64,9 +68,7 @@ class Analysis(Analysis, GraphGenerator):
             PickleObject(events, outdir + "/Events")
 
     def __EventGenerator(self, InptMap, output, name):
-        if self.EventCache == False:
-            return
-        
+       
         for f in self.DictToList(InptMap):
             tmp = f.split("/")
             outdir = output + "/" + name + "/" + tmp[-1].split(".")[0]
@@ -84,8 +86,8 @@ class Analysis(Analysis, GraphGenerator):
             self += ev 
             if self._PullCode:
                 return 
-         
-            self.__DumpCache({i.Filename : i for i in ev.Tracer.Events.values()}, outdir)
+
+            self.__DumpCache({i.Filename : i for i in ev.Tracer.Events.values()}, outdir, self.EventCache)
             
             if name not in self.Dump:
                 self.Dump[name] = ev
@@ -93,9 +95,6 @@ class Analysis(Analysis, GraphGenerator):
                 self.Dump[name] += ev
 
     def __GraphGenerator(self, InptMap, output, name):
-        if self.DataCache == False:
-            return 
-        
         GraphAttribute = self.GraphAttribute
         NodeAttribute = self.NodeAttribute
         EdgeAttribute = self.EdgeAttribute
@@ -124,10 +123,12 @@ class Analysis(Analysis, GraphGenerator):
                 events[file] = {}
             events[file][i.Filename] = i
         
+        self._Cache = {t : self._Cache[t] for t in self._Cache if self._Cache[t].Compiled == True}
         for file in events:
             self.mkdir(output + "/" + name + "/" + file)
-            self.__DumpCache(events[file], output + "/" + name + "/" + file)
+            self.__DumpCache(events[file], output + "/" + name + "/" + file, self.DataCache)
         
+
         if name not in self.Dump:
             self.Dump[name] = gr
         else:
@@ -160,7 +161,7 @@ class Analysis(Analysis, GraphGenerator):
                 Tracer.Tracer.Events |= {n : t for n, t in hdf}
         Map[Name] = Tracer
         return True
-    
+
     def Launch(self):
         self.StartingAnalysis()
         self.__BuildRootStructure()
@@ -169,32 +170,94 @@ class Analysis(Analysis, GraphGenerator):
         
         self._CacheEventData = {}
         self._CacheEventData |= self._SampleMap
-
+        
+        self._Cache = {}
         output = self.OutputDirectory + "/" + self.ProjectName + "/"
+        
         for i in self._SampleMap:
-
-            self._Cache = {}
-            self.mkdir(output + "EventCache")
             if self.__SearchAssets(self._CacheEvent, "EventCache", i):
                 self._Cache |= {t.Filename : t for t in self._CacheEvent[i].Tracer.Events.values()}
-            self.__EventGenerator(self._SampleMap[i], output + "/EventCache", i)
-            
-            if self.EventCache and self._PullCode == False: 
-                self.Dump[i].Tracer.Events = {}
-                PickleObject(SampleTracer(self.Dump[i]), output + "Tracers/" + i)
-
-            if self.DataCache == False:
-                continue
-            
-            self._Cache = {}
-            self.mkdir(output + "DataCache")
+                self.Dump[i] = self._CacheEvent[i]
+        
             if self.__SearchAssets(self._CacheEventData, "DataCache", i):
                 self._Cache = {t.Filename : t for t in self._CacheEventData[i].Tracer.Events.values() if t.Compiled}
-            self.__GraphGenerator(self._CacheEvent[i], output + "/DataCache", i)
+                self.Dump[i] = self._CacheEventData[i]
+
+        if self.EventGraph == None and self.DataCache:
+            return self.NoEventGraphImplementation()
+       
+        if self.EventCache == False and  self.DataCache == False:
+            for i in self.Dump:
+                self += self.Dump[i]
+            return 
+        
+        for i in self._SampleMap:
             
-            if self._PullCode == False:
+            if len(self._Cache) == 0 or self.EventCache and self.Event != None:
+                self.__EventGenerator(self._SampleMap[i], output + "/EventCache", i)
+            
+            if self.EventCache and self._PullCode == False: 
+                self.mkdir(output + "EventCache")
                 self.Dump[i].Tracer.Events = {}
                 PickleObject(SampleTracer(self.Dump[i]), output + "Tracers/" + i)
-
+            
+            self._CacheEvent[i] = self.Dump[i]  
+            if self.EventGraph == None:
+                continue
+            self.__GraphGenerator(self._CacheEvent[i], output + "/DataCache", i)
+            
+            if self.DataCache and self._PullCode == False:
+                self.mkdir(output + "DataCache")
+                self.Dump[i].Tracer.Events = {}
+                PickleObject(SampleTracer(self.Dump[i]), output + "Tracers/" + i)
         self.Settings.DumpSettings(self)
 
+    # ====== Additional Interfaces. Will become separate classes later on... ===== #
+    def GenerateTrainingSample(self, TrainingPercentage):
+        if self.IsFile(self.ProjectName + "/Tracers/TrainingTestSamples.pkl"):
+            Training = UnpickleObject(self.ProjectName + "/Tracers/TrainingTestSamples")
+            for i in Training["train_hashes"]:
+                try:
+                    obj = self.HashToEvent(i)
+                except:
+                    continue
+                obj.train = True 
+            for i in Training["test_hashes"]:
+                try:
+                    obj = self.HashToEvent(i)
+                except:
+                    continue
+                obj.train = False
+            return self 
+        inpt = {}
+        for i in self:
+            inpt[i.Filename] = i
+        hashes = self.MakeTrainingSample(inpt, TrainingPercentage)
+        
+        hashes["train_hashes"] = {hsh : self.HashToROOT(hsh) for hsh in hashes["train_hashes"]}
+        hashes["test_hashes"] = {hsh : self.HashToROOT(hsh) for hsh in hashes["test_hashes"]}
+        PickleObject(hashes, self.ProjectName + "/Tracers/TrainingTestSamples")
+
+    def GenerateSampleNodeDistributions(self):
+        self.Launch()
+        Training = False
+        if self.IsFile(self.ProjectName + "/Tracers/TrainingTestSamples.pkl"):
+            Training = UnpickleObject(self.ProjectName + "/Tracers/TrainingTestSamples")
+        
+        if Training:
+            for i in Training["train_hashes"]:
+                try:
+                    obj = self.HashToEvent(i)
+                except:
+                    continue
+                obj.train = True 
+            for i in Training["test_hashes"]:
+                try:
+                    obj = self.HashToEvent(i)
+                except:
+                    continue
+                obj.train = False
+        smpl = SampleNode()
+        smpl.OutDir = self.ProjectName + "/NodeStatistics/"
+        smpl.AddAnalysis(self)
+        smpl.Process()

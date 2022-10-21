@@ -165,4 +165,6 @@ def TestCondorDumping(GeneralDir):
 
     #T.LocalDryRun() 
     T.DumpCondorJobs() 
- 
+    
+    return True
+

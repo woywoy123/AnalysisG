@@ -23,3 +23,15 @@ class Analysis(Notification):
     
     def MissingTracer(self, Directory):
         self.Failure("Tracer not found under: " + Directory + " skipping...")
+
+    def NoEventImplementation(self):
+        ex = "Or do: from AnalysisTopGNN.Events import Event"
+        self.Failure("="*len(ex))
+        self.Failure("No Event Implementation Provided.")
+        self.Failure("See src/EventTemplates/Event.py")
+    
+    def NoEventGraphImplementation(self):
+        message = "EventGraph not defined (obj.EventGraph). See implementations (See src/Events/EventGraphs.py)"
+        self.Failure("="*len(message))
+
+

@@ -7,8 +7,8 @@ matplotlib.use("agg")
 
 import random
 
-from AnalysisTopGNN.IO import WriteDirectory
-from AnalysisTopGNN.Tools import Notification
+from AnalysisTopGNN.Tools import Tools
+from AnalysisTopGNN.Notification import Plotting
 
 
 class Settings:
@@ -76,11 +76,10 @@ class Settings:
         self.PLT.rcdefaults()
         self.MakeFigure()
 
-class CommonFunctions(WriteDirectory, Settings, Notification):
+class CommonFunctions(Tools, Settings, Plotting):
     def __init__(self):
-        WriteDirectory.__init__(self)
         Settings.__init__(self)
-        Notification.__init__(self)
+        self.VerboseLevel = 3
     
     def DefineAxisData(self, Dim, JustData = False):
         self.Set(Dim + "Data", [])
@@ -94,8 +93,7 @@ class CommonFunctions(WriteDirectory, Settings, Notification):
 
     def ApplyInput(self, args):
         for key, val in args.items():
-            if key not in self.__dict__:
-                self.Warning("Provided variable " + key + " not found")
+            if self.InvalidVariableKey(key):
                 continue
             self.__dict__[key] = val
 
@@ -141,7 +139,7 @@ class CommonFunctions(WriteDirectory, Settings, Notification):
         
         x = self.SanitizeData(self.Get(Dims + "Data"))
         if len(x) == 0:
-            self.Warning("NO VALID DATA GIVEN ... Skipping: " + self.Title)
+            self.NoDataGiven()
             return 
         self.Set(Dims + "Data", x)
 
@@ -168,14 +166,10 @@ class CommonFunctions(WriteDirectory, Settings, Notification):
         self.Precompiler()
         if Dir == None:
             Dir = self.OutputDirectory
-        if Dir.endswith("/") == False:
-            Dir += "/"
-        if self.Filename.endswith(".png") == False:
-            self.Filename += ".png"
-    
-        self.MakeDir(Dir)
-        self.ChangeDir(Dir)
+        Dir = self.AddTrailing(Dir, "/")
+        self.Filename = self.AddTrailing(self.Filename, ".png") 
         
+        self.mkdir(Dir)
         self.Compile()
         
         self.Axis.set_title(self.Title)
@@ -183,8 +177,7 @@ class CommonFunctions(WriteDirectory, Settings, Notification):
         self.PLT.ylabel(self.yTitle, size = self.LabelSize)
 
         self.PLT.tight_layout()
-        self.PLT.savefig(self.Filename, dpi = self.DPI)
-        self.ChangeDirToRoot()
+        self.PLT.savefig(Dir + "/" + self.Filename, dpi = self.DPI)
         self.PLT.close("all")
 
-        self.Notify("SAVING FIGURE AS +-> " + Dir + self.Filename)
+        self.SavingFigure(Dir + self.Filename)
