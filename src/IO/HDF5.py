@@ -106,6 +106,7 @@ class HDF5(Tools, IO):
             out = []
             for i in inpt:
                 h = HDF5()
+                h.VerboseLevel = self.VerboseLevel
                 h.Filename = OutputDirectory + "/" + str(i[0])
                 h.DumpObject(i[1], str(i[0]))
                 out.append([h.Filename, str(i[0])]) 
@@ -150,9 +151,7 @@ class HDF5(Tools, IO):
 
     def End(self):
         self._File.close()
-        verb = self.VerboseLevel
         self.__init__()
-        self.VerboseLevel = verb
     
     def __BuildContainer(self, obj, attr, i, typ):
         if typ == "-":

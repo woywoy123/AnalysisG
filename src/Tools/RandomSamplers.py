@@ -1,16 +1,10 @@
-
-#from AnalysisTopGNN.Tools import Notification 
-#from AnalysisTopGNN.IO import ExportToDataScience
-#from AnalysisTopGNN.Parameters import Parameters
-
-#import numpy as np
-#import importlib
-
-from AnalysisTopGNN.Notification import RandomSamplers
 import random
 import numpy as np
-from sklearn.model_selection import ShuffleSplit
+from sklearn.model_selection import ShuffleSplit, KFold
+from torch_geometric.loader import DataLoader
+from torch.utils.data import SubsetRandomSampler
 
+from AnalysisTopGNN.Notification import RandomSamplers
 class RandomSamplers(RandomSamplers):
 
     def __init__(self):
@@ -42,35 +36,15 @@ class RandomSamplers(RandomSamplers):
             pass 
         return {"train_hashes" : All[train_idx], "test_hashes" : All[test_idx]}
 
+    def MakekFolds(self, sample, folds, batch_size = 1, shuffle = True):
+        smpl = len(sample)
+        if len(sample) < folds:
+            return 
 
-
-    #def RecallFromCache(self, SampleList, Directory):
-
-    #    def function(inpt):
-    #        exp = ExportToDataScience()
-    #        exp.VerboseLevel = 0
-    #        out = []
-    #        for i in inpt:
-    #            out += list(exp.ImportEventGraph(i, self.DataCacheDir).values())
-    #        return out
-
-    #    if Directory == None:
-    #        return SampleList
-    #    
-    #    if isinstance(SampleList, str):
-    #        Exp = ExportToDataScience()
-    #        Exp.VerboseLevel = 0
-    #        dic = Exp.ImportEventGraph(SampleList, Directory)
-    #        return dic[list(dic)[0]]
-    #    elif isinstance(SampleList, list) == False: 
-    #        self.Fail("WRONG SAMPLE INPUT! Expected list, got: " + type(SampleList))
-    #    
-    #    TH = Threading(SampleList, function, self.Threads, self.chnk)
-    #    TH.VerboseLevel = self.VerboseLevel
-    #    TH.Caller = self.Caller
-    #    TH.Start()
-    #    self.SetDevice(self.Device, TH._lists)
-    #    return TH._lists
-            
-
-
+        split = KFold(n_splits = folds, shuffle=shuffle)
+        output = {}
+        for fold, (train_idx, test_idx) in enumerate(split.split(np.arange(len(sample)))):
+            output[fold] = []
+            output[fold] += [DataLoader(sample, batch_size=batch_size, sampler = SubsetRandomSampler(train_idx))]
+            output[fold] += [DataLoader(sample, batch_size=batch_size, sampler = SubsetRandomSampler(test_idx))]
+        return output

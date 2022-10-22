@@ -108,6 +108,7 @@ class Analysis(Analysis, GraphGenerator):
         gr.NodeAttribute |= self.NodeAttribute
         gr.EdgeAttribute |= self.EdgeAttribute
         gr.EventStop = self.EventStop
+        gr.Threads = self.Threads
         gr.EventStart = self.EventStart
         gr._PullCode = self._PullCode
         gr.CompileEventGraph()
@@ -127,7 +128,7 @@ class Analysis(Analysis, GraphGenerator):
         for file in events:
             self.mkdir(output + "/" + name + "/" + file)
             self.__DumpCache(events[file], output + "/" + name + "/" + file, self.DataCache)
-        
+        self._Cache = {t.Filename : t for t in self if t.Compiled == True}
 
         if name not in self.Dump:
             self.Dump[name] = gr
@@ -145,7 +146,7 @@ class Analysis(Analysis, GraphGenerator):
         if len(Files) == 0 or self._PullCode:
             return False
         
-        tracer = self.ProjectName + "/Tracers/" + Name
+        tracer = self.ProjectName + "/Tracers/" + CacheType + "/" + Name
         if self.IsFile(tracer + ".pkl"): 
             Tracer = SampleTracer(UnpickleObject(tracer + ".pkl"))
         else:
@@ -185,7 +186,10 @@ class Analysis(Analysis, GraphGenerator):
 
         if self.EventGraph == None and self.DataCache:
             return self.NoEventGraphImplementation()
-       
+
+        if self.Event == None and self.EventCache:
+            return self.NoEventImplementation()
+
         if self.EventCache == False and  self.DataCache == False:
             for i in self.Dump:
                 self += self.Dump[i]
@@ -193,42 +197,40 @@ class Analysis(Analysis, GraphGenerator):
         
         for i in self._SampleMap:
             
-            if len(self._Cache) == 0 or self.EventCache and self.Event != None:
+            if (len(self._Cache) == 0 or self.EventCache) and self.Event != None:
                 self.__EventGenerator(self._SampleMap[i], output + "/EventCache", i)
+            elif self.Event == None and len(self._Cache) == 0:
+                self.NoEventImplementation()
             
             if self.EventCache and self._PullCode == False: 
-                self.mkdir(output + "EventCache")
                 self.Dump[i].Tracer.Events = {}
-                PickleObject(SampleTracer(self.Dump[i]), output + "Tracers/" + i)
+                PickleObject(SampleTracer(self.Dump[i]), output + "Tracers/EventCache/" + i)
             
-            self._CacheEvent[i] = self.Dump[i]  
             if self.EventGraph == None:
                 continue
             self.__GraphGenerator(self._CacheEvent[i], output + "/DataCache", i)
             
             if self.DataCache and self._PullCode == False:
-                self.mkdir(output + "DataCache")
                 self.Dump[i].Tracer.Events = {}
-                PickleObject(SampleTracer(self.Dump[i]), output + "Tracers/" + i)
+                PickleObject(SampleTracer(self.Dump[i]), output + "Tracers/DataCache/" + i)
         self.Settings.DumpSettings(self)
 
     # ====== Additional Interfaces. Will become separate classes later on... ===== #
     def GenerateTrainingSample(self, TrainingPercentage):
+        def MarkSample(smpl, status):
+            for i in smpl:
+                try:
+                    obj = self.HashToEvent(i)
+                except:
+                    continue
+                obj.train = status
+
         if self.IsFile(self.ProjectName + "/Tracers/TrainingTestSamples.pkl"):
             Training = UnpickleObject(self.ProjectName + "/Tracers/TrainingTestSamples")
-            for i in Training["train_hashes"]:
-                try:
-                    obj = self.HashToEvent(i)
-                except:
-                    continue
-                obj.train = True 
-            for i in Training["test_hashes"]:
-                try:
-                    obj = self.HashToEvent(i)
-                except:
-                    continue
-                obj.train = False
+            MarkSample(Training["train_hashes"], True)
+            MarkSample(Training["test_hashes"], False)
             return self 
+
         inpt = {}
         for i in self:
             inpt[i.Filename] = i
@@ -237,26 +239,13 @@ class Analysis(Analysis, GraphGenerator):
         hashes["train_hashes"] = {hsh : self.HashToROOT(hsh) for hsh in hashes["train_hashes"]}
         hashes["test_hashes"] = {hsh : self.HashToROOT(hsh) for hsh in hashes["test_hashes"]}
         PickleObject(hashes, self.ProjectName + "/Tracers/TrainingTestSamples")
+        self.GenerateTrainingSample(TrainingPercentage)
 
     def GenerateSampleNodeDistributions(self):
-        self.Launch()
-        Training = False
         if self.IsFile(self.ProjectName + "/Tracers/TrainingTestSamples.pkl"):
             Training = UnpickleObject(self.ProjectName + "/Tracers/TrainingTestSamples")
+            self.GenerateSampleNodeDistributions(50)
         
-        if Training:
-            for i in Training["train_hashes"]:
-                try:
-                    obj = self.HashToEvent(i)
-                except:
-                    continue
-                obj.train = True 
-            for i in Training["test_hashes"]:
-                try:
-                    obj = self.HashToEvent(i)
-                except:
-                    continue
-                obj.train = False
         smpl = SampleNode()
         smpl.OutDir = self.ProjectName + "/NodeStatistics/"
         smpl.AddAnalysis(self)

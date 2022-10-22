@@ -29,6 +29,9 @@ class Analysis(Notification):
         self.Failure("="*len(ex))
         self.Failure("No Event Implementation Provided.")
         self.Failure("See src/EventTemplates/Event.py")
+        self.Failure(ex)
+        self.Failure("="*len(ex))
+        self.FailureExit("Exiting...")
     
     def NoEventGraphImplementation(self):
         message = "EventGraph not defined (obj.EventGraph). See implementations (See src/Events/EventGraphs.py)"

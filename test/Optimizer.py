@@ -20,6 +20,7 @@ def TestOptimizer(Files):
     #Ana.InputSample("4Tops", Files[0])
     #Ana.EventCache =  True
     #Ana.DumpPickle = True 
+    #Ana.EventStop = None
     #Ana.VerboseLevel = 1
     #Ana.Event = Event
     #Ana.Launch()
@@ -29,21 +30,28 @@ def TestOptimizer(Files):
     Ana.ProjectName = "Optimizer"
     Ana.InputSample("SingleTop")
     Ana.InputSample("4Tops")
-    Ana.DumpHDF5 = True 
+    Ana.DumpHDF5 = True
     Ana.DataCache = False
+    Ana.EventStop = 1000
     Ana.VerboseLevel = 1
+    Ana.EventStop = None
     Ana.Threads = 4
     Ana.EventGraph = EventGraphTruthTopChildren
     ApplyFeatures(Ana, "TruthChildren")
     Ana.Launch()
     Ana.GenerateTrainingSample(90)
-    
+   
+    print(len(Ana))
+
+
     op = ModelTrainer()
     op.Model = BasicBaseLineRecursion()
     op.Tree = "nominal"
+    op.Device = "cuda"
+    op.Optimizer = {"ADAM" : { "lr" : 0.01, "weight_decay" : 0.0001 }}
     op.SplitSampleByNode = True
     op.AddAnalysis(Ana)
-
+    op.Launch()
 
 
 
