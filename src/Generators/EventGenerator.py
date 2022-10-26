@@ -53,7 +53,7 @@ class EventGenerator(EventGenerator, SampleTracer):
             EventObj._Store = val
             EventObj.Tree = File._Tree
             EventObj._SampleIndex = self._iter[File._Tree]
-            tr.ROOTInfo[File.ROOTFile].MakeHash(self._iter[File._Tree]) 
+            tr.ROOTInfo[File.ROOTFile].MakeHash(self._iter[File._Tree])
             tr.Events[it].Trees[File._Tree] = EventObj
             tr.Events[it].EventIndex = it
             tr.EventInfo[self.Caller][File._Tree] += 1

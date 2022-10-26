@@ -79,8 +79,7 @@ class TH1F(Functions):
             self.DefineStyle()
             self.ApplyToPLT()
         if len(self.xData) == 0:
-            self.Warning("EMPTY DATA. SKIPPING!")
-            return
+            self.Warning("EMPTY DATA.")
 
         self.DefineRange("x")
         if self.xBinCentering:
@@ -113,8 +112,8 @@ class CombineTH1F(Functions):
         self.Histogram = None
         self.Stack = False
 
-        self.ApplyInput(kargs)
         self.Caller = "Combine-TH1F"
+        self.ApplyInput(kargs)
     
     def ConsistencyCheck(self):
         H = [self.Histogram] if self.Histogram != None else []

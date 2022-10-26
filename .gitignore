@@ -5,6 +5,9 @@
 *.pyc
 *.pt
 *.hdf5
+*.png
+*.pth
+
 
 **/__pycache__
 **/build

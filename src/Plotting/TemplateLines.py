@@ -2,6 +2,7 @@ from AnalysisTopGNN.Plotting import CommonFunctions
 from AnalysisTopGNN.Plotting.TemplateHistograms import TH1FStack
 import math
 import statistics
+import random
 
 class Functions(CommonFunctions):
     def __init__(self):
@@ -19,11 +20,11 @@ class Functions(CommonFunctions):
         self.DoStatistics = False
    
     def DefineRange(self, Dims):
-        _min  = 1 if self.Get(Dims + "Min") == None else 0
-        _max  = 1 if self.Get(Dims + "Max") == None else 0    
+        _min  = 0 if self.Get(Dims + "Min") == None else min(self.Get(Dims + "Data"))
+        _max  = 1 if self.Get(Dims + "Max") == None else max(self.Get(Dims + "Data")) 
         self.DefineCommonRange(Dims)       
-        self.Set(Dims + "Min", self.Get(Dims + "Min") - 0.1*_min)
-        self.Set(Dims + "Max", self.Get(Dims + "Max") + 0.1*_max)
+        self.Set(Dims + "Min", self.Get(Dims + "Min"))
+        self.Set(Dims + "Max", self.Get(Dims + "Max"))
 
     def ApplyRandomMarker(self, obj):
         ptr = [",", ".", "-", "x", "o", "O"]
@@ -113,6 +114,7 @@ class CombineTLine(Functions):
 
         self.Lines = []
         self.Colors = []
+        self.LegendOn = True
         
         self.ApplyInput(kwargs)
         self.Caller = "COMBINED-TLINE"
@@ -124,10 +126,9 @@ class CombineTLine(Functions):
             i.Compile()
             self.yData += i.yData
             self.xData += i.xData
- 
         self.xData = self.SanitizeData(self.xData)
         self.yData = self.SanitizeData(self.yData)
-        
+         
         self.DefineRange("x")
         self.DefineRange("y")
         
@@ -155,8 +156,9 @@ class CombineTLine(Functions):
        
         for i in self.Lines:
             i.Compile(False)
-
-        self.PLT.legend()
+        
+        if self.LegendOn:
+            self.PLT.legend()
         if self.Logarithmic:
             self.PLT.yscale("log")
 

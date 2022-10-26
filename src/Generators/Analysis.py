@@ -68,7 +68,7 @@ class Analysis(Analysis, GraphGenerator):
             PickleObject(events, outdir + "/Events")
 
     def __EventGenerator(self, InptMap, output, name):
-       
+        
         for f in self.DictToList(InptMap):
             tmp = f.split("/")
             outdir = output + "/" + name + "/" + tmp[-1].split(".")[0]
@@ -82,6 +82,7 @@ class Analysis(Analysis, GraphGenerator):
             ev._PullCode = self._PullCode
             ev.Threads = self.Threads
             ev.SpawnEvents()
+            ev.chnk = self.chnk
             ev.CompileEvent()
             self += ev 
             if self._PullCode:
@@ -93,6 +94,7 @@ class Analysis(Analysis, GraphGenerator):
                 self.Dump[name] = ev
             else:
                 self.Dump[name] += ev
+
 
     def __GraphGenerator(self, InptMap, output, name):
         GraphAttribute = self.GraphAttribute
@@ -109,6 +111,7 @@ class Analysis(Analysis, GraphGenerator):
         gr.EdgeAttribute |= self.EdgeAttribute
         gr.EventStop = self.EventStop
         gr.Threads = self.Threads
+        gr.chnk = self.chnk
         gr.EventStart = self.EventStart
         gr._PullCode = self._PullCode
         gr.CompileEventGraph()
@@ -148,7 +151,7 @@ class Analysis(Analysis, GraphGenerator):
         
         tracer = self.ProjectName + "/Tracers/" + CacheType + "/" + Name
         if self.IsFile(tracer + ".pkl"): 
-            Tracer = SampleTracer(UnpickleObject(tracer + ".pkl"))
+            Tracer = UnpickleObject(tracer + ".pkl")
         else:
             self.MissingTracer(root)
             return False
@@ -204,6 +207,7 @@ class Analysis(Analysis, GraphGenerator):
             
             if self.EventCache and self._PullCode == False: 
                 self.Dump[i].Tracer.Events = {}
+                self.Dump[i]._HashCache = {}
                 PickleObject(SampleTracer(self.Dump[i]), output + "Tracers/EventCache/" + i)
             
             if self.EventGraph == None:
@@ -250,3 +254,4 @@ class Analysis(Analysis, GraphGenerator):
         smpl.OutDir = self.ProjectName + "/NodeStatistics/"
         smpl.AddAnalysis(self)
         smpl.Process()
+

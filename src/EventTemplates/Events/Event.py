@@ -23,6 +23,7 @@ class Event(EventTemplate):
         self.pileup = tag + "_pileup"
         self.leptonSF = tag + "_leptonSF"
         self.globalLeptonTriggerSF = tag + "_globalLeptonTriggerSF"
+        self.weightmc = tag + "_mc"
 
         self.bTagSF_DL1_85 = tag + "_bTagSF_DL1_85"
         self.bTagSF_DL1_77 = tag + "_bTagSF_DL1_77"
@@ -82,6 +83,7 @@ class Event(EventTemplate):
                 if tj == -1:
                     continue
                 self.TruthJets[tj].Children += [self.Jets[i]]
+                self.Jets[i].Parent += [self.TruthJets[tj]]
 
         self.Electrons = self.DictToList(self.Electrons)
         self.Muons = self.DictToList(self.Muons)
@@ -106,6 +108,7 @@ class Event(EventTemplate):
             j.Index = low.Index
             setattr(j, "FromRes", 0)
             self.TopPostFSR[low.Index].Jets.append(j)
+            j.Parent += [self.TopPostFSR[low.Index]]
 
         self.DetectorParticles = []
         self.DetectorParticles += self.Electrons
