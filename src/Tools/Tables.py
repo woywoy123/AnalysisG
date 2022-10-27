@@ -8,6 +8,7 @@ class Tables(Tools):
         self._Rows = {}
         self._matrix = {}
         self.Sum = True
+        self.MinMax = False
         self.Title = None
 
     def AddRowTitle(self, Title, Unit = False):
@@ -53,7 +54,7 @@ class Tables(Tools):
                 return ""
             if col not in inpt[row]:
                 return ""
-
+            out = inpt[row][col][0]
             out = sum(inpt[row][col]) if self.Sum else out
             return out
         
@@ -79,7 +80,7 @@ class Tables(Tools):
                 for col in self._matrix[row]:
                     if col not in dic_col:
                         dic_col[col] = 0
-                    dic_col[col] += sum(self._matrix[row][col])
+                    dic_col[col] += sum(self._matrix[row][col]) 
             dic_col_sum = {}
             for col in dic_col:
                 dic_col_sum[col] = dic_col[col]
@@ -87,23 +88,53 @@ class Tables(Tools):
 
             return dic_col_sum, dic_col
 
+        def ColMarginMax():
+            Min_dict = {}
+            Max_dict = {}
+            rvec = []
+            for col in self._Columns:
+                for r in self._matrix:
+                    if col not in self._matrix[r]:
+                        continue
+                    if col not in Min_dict:
+                        Min_dict[col] = []
+                    if col not in Max_dict:
+                        Max_dict[col] = []
+                    rvec.append(r)
+                    Max_dict[col] += self._matrix[r][col]
+                    Min_dict[col] += self._matrix[r][col]
+            for col in self._Columns: 
+                if col not in Max_dict:
+                    continue
+                max_ = max(Max_dict[col])
+                min_ = min(Min_dict[col])
+                Max_dict[col] = [max_, rvec[Max_dict[col].index(max_)]]
+                Min_dict[col] = [min_, rvec[Min_dict[col].index(min_)]]
+            return Max_dict, Min_dict
+
         rows = list(self._matrix)
         marg_row_s, marg_row_p = ColMargin()
-        output = [self._S.join(self._Columns.keys()) + self._S + " Sum " + self._S + " fraction (%) "]
+        output = [self._S.join(self._Columns.keys())]
+        output[-1] += str(self._S + " Sum " + self._S + " fraction (%) ") if self.Sum else "" 
         for r in rows:
             s = r + self._S + self._S.join([str(Transformer(self._matrix, r, c)) for c in list(self._Columns)[1:]]) 
-            s += self._S + str(marg_row_s[r]) + self._S + marg_row_p[r]
+            s += str(self._S + str(marg_row_s[r]) + self._S + marg_row_p[r]) if self.Sum else ""
             output += [s]
-        
-        col_mrg_s, col_mrg_p = RowMargin()
-        output += ["Sum of Column" + self._S + self._S.join([str(s) for s in col_mrg_s.values()]) + self._S + self._S]
-        output += ["fraction (%)" + self._S + self._S.join([str(s) for s in col_mrg_p.values()]) + self._S + self._S]
+       
+        if self.Sum:
+            col_mrg_s, col_mrg_p = RowMargin()
+            output += ["Sum of Column" + self._S + self._S.join([str(s) for s in col_mrg_s.values()]) + self._S + self._S]
+            output += ["fraction (%)" + self._S + self._S.join([str(s) for s in col_mrg_p.values()]) + self._S + self._S]
+        if self.MinMax:
+            Max, Min = ColMarginMax()
+            output += ["Minimum Value" + self._S + self._S.join([str(s[0]) + " (@ " + str(s[1]) + ")" for s in Min.values()])]
+            output += ["Maximum Value" + self._S + self._S.join([str(s[0]) + " (@ " + str(s[1]) + ")" for s in Max.values()])]
 
         output = self.AlignColumns(output)
 
         spl = output[0].split(self._S)
         output.insert(1, "+".join(["-"*(len(s)+1 if i == 0 else len(s)+2) for i, s in zip(range(len(spl)), spl)]))
-        output.insert(-2, "+".join(["-"*(len(s)+1 if i == 0 else len(s)+2) for i, s in zip(range(len(spl)), spl)]))
+        output.insert(-2 if self.Sum or self.MinMax else len(output), "+".join(["-"*(len(s)+1 if i == 0 else len(s)+2) for i, s in zip(range(len(spl)), spl)])) 
         output.insert(0, "="*(int(len(output[0])/2) - len(str(self.Title))) + " " + str(self.Title) + " " + "="*(int(len(output[0])/2)))
         self.output = output
     

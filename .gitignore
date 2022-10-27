@@ -7,7 +7,7 @@
 *.hdf5
 *.png
 *.pth
-
+*.txt
 
 **/__pycache__
 **/build
