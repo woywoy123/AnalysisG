@@ -27,114 +27,7 @@ class EpochPlots:
 
     def __init__(self):
         pass
-    
-    def NodeTimingHistograms(self):
-        Outdir = self.OutDir + "/Epoch-"+ str(self.Epoch) + "/DebugPlots"
-        Plots = {"yTitle" : "Entries", "xTitle" : "Seconds", "xBins" : 1000, "xMin" : 0}
-        Hists = []
-        for n in self.NodeTimes:
-            Plots["xData"] = self.NodeTimes[n]
-            Plots["Title"] = "Node-" + str(n)
-            H = TH1F(**Plots)
-            Hists.append(H)
-        Plots["OutputDirectory"] = Outdir 
-        Plots["Histograms"] = Hists
-        Plots["Title"] = "Different Node Size Time Distributions"
-        Plots["Filename"] = "NodeSizeTiminingDistribution"
-        T = CombineTH1F(**Plots)
-        T.SaveFigure()
-    
-    def CompileROC(self, Names):
-        Plots = {
-                    "yTitle" : "True Positive Rate", 
-                    "xTitle" : "False Positive Rate", 
-                    "xMin" : 0, "xMax" : 1, 
-                    "yMin" : 0, "yMax" : 1, 
-                }
-        
-        for feat in [i[2:] for i in self.ModelOutputs]:
-            Plots["OutputDirectory"] = self.OutDir + "/Epoch-" + str(self.Epoch) + "/ROC"
-            line = []
-            for name in self.names:
-                ROC = getattr(self, "ROC_" + name)
-                ROC[feat] = Metrics().MakeROC(ROC[feat]["truth"], ROC[feat]["p_score"])
-                Plots["yData"] = ROC[feat]["tpr"]
-                Plots["xData"] = ROC[feat]["fpr"]
-                Plots["Title"] = name
-                L = TLine(**Plots)
-                L.Compile()
-                line.append(L)
-            Plots["Title"] = "Receiver and Operator Curve: " + feat
-            Plots["Lines"] = line
-            Plots["Filename"] = feat
-            C = CombineTLine(**Plots)
-            C.SaveFigure()
-
-    def AccuracyHistograms(self):
-        for feat in [i[2:] for i in self.ModelOutputs]:
-            Outdir = self.OutDir + "/Epoch-"+ str(self.Epoch) + "/DebugPlots"
-            Plots = {
-                        "yTitle" : "Entries", 
-                        "xTitle" : "Accuracy (%)", 
-                        "xBins" : 100, 
-                        "xMin" : 0, "xMax" : 100, 
-                        "Filename" : feat + "_Accuracy", "OutputDirectory" : Outdir
-                    }
-
-            Hists = []
-            for names in self.names:
-                Acc = getattr(self, "Accuracy_" + names)[feat]
-                Plots["Title"] = names
-                Plots["xData"] = [100*k for k in Acc]
-                Hists.append(TH1F(**Plots))    
-            Plots["Title"] = "Accuracy Distribution for Different Samples Feature: " + feat
-            Plots["Histograms"] = Hists
-            CH = CombineTH1F(**Plots)
-            CH.SaveFigure()
-
-    def LossHistograms(self):
-        for feat in [i[2:] for i in self.ModelOutputs]:
-            Outdir = self.OutDir + "/Epoch-"+ str(self.Epoch) + "/DebugPlots"
-            Plots = {
-                        "yTitle" : "Entries", 
-                        "xTitle" : "Loss of Prediction", 
-                        "xBins" : 100, "xMin" : 0,  
-                        "Filename" : feat + "_Loss", "OutputDirectory" : Outdir
-                    }
-
-            Hists = []
-            for names in self.names:
-                Acc = getattr(self, "Loss_" + names)[feat]
-                Plots["Title"] = names
-                Plots["xData"] = Acc
-                Hists.append(TH1F(**Plots))    
-            Plots["Title"] = "Loss Distribution for Different Samples Feature: " + feat
-            Plots["Histograms"] = Hists
-            CH = CombineTH1F(**Plots)
-            CH.SaveFigure()
-
-
-        Outdir = self.OutDir + "/Epoch-"+ str(self.Epoch) + "/DebugPlots"
-        Plots = {
-                    "yTitle" : "Entries", 
-                    "xTitle" : "Loss of Prediction", 
-                    "xBins" : 100, "xMin" : 0, 
-                    "Filename" : "TotalLoss", "OutputDirectory" : Outdir
-                }
-        
-        Hists = []
-        for names in self.names:
-            Loss = getattr(self, "TotalLoss_" + names)
-            Plots["Title"] = names
-            Plots["xData"] = Loss
-            Hists.append(TH1F(**Plots))    
-        Plots["Title"] = "Total Loss Distribution for Different Samples Feature"
-        Plots["Histograms"] = Hists
-        CH = CombineTH1F(**Plots)
-        CH.SaveFigure()
-
-
-    
+   
     def TemplateLine(self, xData, yData, outdir, feature, up, down):
         Plots = {
                     "xTitle" : "Epoch",
@@ -149,6 +42,116 @@ class EpochPlots:
                     "OutputDirectory" : outdir 
                 }
         return Plots
+
+    def TemplateHistograms(self, xTitle, xBins, outdir):
+        Plots = {
+                    "xTitle" : xTitle, 
+                    "yTitle" : "Entries", 
+                    "xBins" : xBins, 
+                    "xMin" : 0, 
+                    "yMin" : 0, 
+                    "OutputDirectory" : outdir, 
+                }
+        return Plots
+
+
+    def NodeTimingHistograms(self):
+        Outdir = self.OutDir + "/Epoch-"+ str(self.Epoch) + "/DebugPlots"
+        Plots = self.TemplateHistograms("Seconds", 100, Outdir)
+        Hists = []
+        for n in self.NodeTimes:
+            Plots["xData"] = self.NodeTimes[n]
+            Plots["Title"] = "Node-" + str(n)
+            Hists.append(TH1F(**Plots))
+        
+        Plots["Histograms"] = Hists
+        Plots["Title"] = "Different Node Size Time Distributions"
+        Plots["Filename"] = "NodeSizeTiminingDistribution"
+        T = CombineTH1F(**Plots)
+        T.SaveFigure()
+    
+    def CompileROC(self, Names, ModelOutputs):
+        Plots = {
+                    "yTitle" : "True Positive Rate", 
+                    "xTitle" : "False Positive Rate", 
+                    "xMin" : 0, "xMax" : 1, 
+                    "yMin" : 0, "yMax" : 1, 
+                }
+        
+        for feat in [i[2:] for i in ModelOutputs]:
+            line = []
+            for name in Names:
+                ROC = getattr(self, "ROC_" + name)
+                ROC[feat] = Metrics().MakeROC(ROC[feat]["truth"], ROC[feat]["p_score"])
+                Plots["yData"] = ROC[feat]["tpr"]
+                Plots["xData"] = ROC[feat]["fpr"]
+                Plots["Title"] = name
+                L = TLine(**Plots)
+                L.Compile()
+                line.append(L)
+            
+            Plots["OutputDirectory"] = self.OutDir + "/Epoch-" + str(self.Epoch) + "/ROC"
+            Plots["Title"] = "Receiver and Operator Curve: " + feat
+            Plots["Lines"] = line
+            Plots["Filename"] = feat
+            C = CombineTLine(**Plots)
+            C.SaveFigure()
+
+    def AccuracyHistograms(self, ModelOutputs):
+        for feat in [i[2:] for i in ModelOutputs]:
+            Outdir = self.OutDir + "/Epoch-"+ str(self.Epoch) + "/DebugPlots"
+            Plots = self.TemplateHistograms("Accuracy (%)", 100, Outdir)
+            Plots["xMax"] = 100
+            
+            Hists = []
+            for names in self.names:
+                Acc = getattr(self, "Accuracy_" + names)[feat]
+                Plots["Title"] = names
+                Plots["xData"] = [k for k in Acc]
+                Hists.append(TH1F(**Plots))    
+            
+            Plots["Filename"] = feat + "_Accuracy"
+            Plots["Title"] = "Accuracy Distribution for Different Samples Feature: " + feat
+            Plots["Histograms"] = Hists
+            CH = CombineTH1F(**Plots)
+            CH.SaveFigure()
+
+    def LossHistograms(self, ModelOutputs):
+        for feat in [i[2:] for i in ModelOutputs]:
+            Outdir = self.OutDir + "/Epoch-"+ str(self.Epoch) + "/DebugPlots"
+            Plots = self.TemplateHistograms("Loss of Prediction", 100, Outdir)
+            
+            Hists = []
+            for names in self.names:
+                Acc = getattr(self, "Loss_" + names)[feat]
+                Plots["Title"] = names
+                Plots["xData"] = Acc
+                Hists.append(TH1F(**Plots))    
+            
+            Plots["Title"] = "Loss Distribution for Different Samples Feature: " + feat
+            Plots["Histograms"] = Hists
+            Plots["Filename"] = feat + "_Loss"
+            
+            CH = CombineTH1F(**Plots)
+            CH.SaveFigure()
+
+
+        Outdir = self.OutDir + "/Epoch-"+ str(self.Epoch) + "/DebugPlots"
+        Plots = self.TemplateHistograms("Loss of Prediction", 100, Outdir)
+        
+        Hists = []
+        for names in self.names:
+            Loss = getattr(self, "TotalLoss_" + names)
+            Plots["Title"] = names
+            Plots["xData"] = Loss
+            Hists.append(TH1F(**Plots))    
+        
+        Plots["Title"] = "Total Loss Distribution for Different Samples Feature"
+        Plots["Filename"] = "TotalLoss"
+        Plots["Histograms"] = Hists
+        CH = CombineTH1F(**Plots)
+        CH.SaveFigure()
+
     
     def AccuracyPlot(self, xData, yData, outdir, mode, feature, up, down):
         Plots = self.TemplateLine(xData, [i*100 for i in yData], outdir + "/Accuracy", mode, up, down)
@@ -200,6 +203,8 @@ class EpochPlots:
             Marker[i] = option.pop(0)
 
     def MakeConsistent(self, inpt, Color, Marker):
+        if len(Color) == 0:
+            return 
         for feat in inpt:
             col = Color[feat]
             for p in inpt[feat]:
@@ -208,54 +213,58 @@ class EpochPlots:
                 
                 p.Plots.Title += "-" + feat
         
-    def MergeNodeTimes(self, NodeTimes, outdir):
-        Plots = self.TemplateLine([], [], outdir + "/Time", None, [], [])
+    def MergeNodeTimes(self, NodeTimes, outdir, Subdir = "Time"):
+        Plots = self.TemplateLine([], [], outdir + "/" + Subdir, None, [], [])
         Plots["Filename"] = "NodeTime"
         Plots["Title"] = "Average Time Spent on n-Nodes"
         Plots["LegendOn"] = False
         Plots["Lines"] = [i.Plots for i in NodeTimes]
-        Com = CombineTLine(**Plots)
-        Com.SaveFigure() 
+        return CombineTLine(**Plots)
 
-    def MergeAUC(self, AUC, Colors, Markers, outdir):
+    def MergeEpochTimes(self, EpochTimes, outdir, Subdir = "Time"):
+        Plots = self.TemplateLine([], [], outdir + "/" + Subdir, None, [], [])
+        Plots["Filename"] = "EpochTime"
+        Plots["Title"] = "Epoch Time"
+        Plots["LegendOn"] = False
+        Plots["Lines"] = [i.Plots for i in EpochTimes]
+        return CombineTLine(**Plots)
+
+    def MergeAUC(self, AUC, Colors, Markers, outdir, Subdir = "AUC"):
         self.MakeConsistent(AUC, Colors, Markers)
-        Plots = self.TemplateLine([], [], outdir + "/AUC", None, [], [])
+        Plots = self.TemplateLine([], [], outdir + "/" + Subdir, None, [], [])
         Plots["yTitle"] = "Area under ROC Curve (Higher is Better)"
         Plots["Lines"] = [i.Plots for feat in AUC for i in AUC[feat]]
         Plots["Filename"] = "AUC"
         Plots["yMax"] = 1
-        Com = CombineTLine(**Plots)
-        Com.SaveFigure()
+        return CombineTLine(**Plots)
     
-    def MergeLoss(self, Loss, Colors, Markers, outdir):
-        Plots = self.TemplateLine([], [], outdir + "/Loss", None, [], [])
+    def MergeLoss(self, Loss, Colors, Markers, outdir, Subdir = "Loss"):
+        Plots = self.TemplateLine([], [], outdir + "/" + Subdir, None, [], [])
         Plots["Filename"] = "TotalLoss"
         Plots["Title"] = "Aggregated Loss of Model Predictions"
         Plots["Lines"] = [i.Plots for i in Loss["Total"]]
         Plots["yMax"] = max([j+k for i in Loss["Total"] for j, k in zip(i.Plots.yData, i.Plots.up_yData) ])
-        Com = CombineTLine(**Plots)
-        Com.SaveFigure()
+        Com1 = CombineTLine(**Plots)
         
         features = list({l : Loss[l] for l in Loss if l != "Total"})
         self.MakeConsistent({l : Loss[l] for l in features}, Colors, Markers)
-        Plots = self.TemplateLine([], [], outdir + "/Loss", None, [], [])
+        Plots = self.TemplateLine([], [], outdir + "/" + Subdir, None, [], [])
         Plots["Filename"] = "AllFeatures"
         Plots["Title"] = "Model Prediction Loss for Features"
         Plots["Lines"] = [j.Plots for i in features for j in Loss[i]]
         Plots["yMax"] = max([j+k for f in features for i in Loss[f] for j, k in zip(i.Plots.yData, i.Plots.up_yData) ])
-        Com = CombineTLine(**Plots)
-        Com.SaveFigure()
+        Com2 = CombineTLine(**Plots)
+        return Com1, Com2
     
-    def MergeAccuracy(self, Accuracy, Colors, Markers, outdir):
+    def MergeAccuracy(self, Accuracy, Colors, Markers, outdir, Subdir = "Accuracy"):
         features = list(Accuracy)
-        self.MakeConsistent(Accuracy, self.Colors, self.Markers)
-        Plots = self.TemplateLine([], [], outdir + "/Accuracy", None, [], [])
+        self.MakeConsistent(Accuracy, Colors, Markers)
+        Plots = self.TemplateLine([], [], outdir + "/" + Subdir, None, [], [])
         Plots["Filename"] = "AllFeatures"
         Plots["Title"] = "Model Prediction Accuracy for Features"
         Plots["Lines"] = [j.Plots for i in features for j in Accuracy[i]]
         Plots["yMax"] = 100
-        Com = CombineTLine(**Plots)
-        Com.SaveFigure()
+        return CombineTLine(**Plots)
 
 
 

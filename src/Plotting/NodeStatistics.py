@@ -1,5 +1,5 @@
 from AnalysisTopGNN.Tools import Tables 
-from AnalysisTopGNN.Plotting import TH1F, CombineTH1F
+from .TemplateHistograms import TH1F, CombineTH1F
 
 class _Container(object): 
 
@@ -91,7 +91,7 @@ class SampleNode:
             THStck.Histograms.append(TH1F(**Plots))
         THStck.SaveFigure()
 
-    def AddAnalysis(self, analysis):
+    def AddNodeSample(self, analysis):
        
         for i in analysis:
             if i.Compiled == False:
@@ -144,6 +144,5 @@ class SampleNode:
                 "Test Sample Node Distribution \n Superimposed by Process ("+ tr +")", 
                 "TestSampleNodeDistribution_" + tr, 
                 self.TestSample[tr])
-
 
 

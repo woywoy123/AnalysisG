@@ -1,57 +1,26 @@
 from AnalysisTopGNN.Model import Model
-from AnalysisTopGNN.Tools import Tools, Tables
-from AnalysisTopGNN.Samples import Epoch
+from AnalysisTopGNN.Tools import Tools, RandomSamplers
+from AnalysisTopGNN.Plotting.ModelComparisonPlots import _Comparison, ModelComparisonPlots
+from AnalysisTopGNN.Plotting.NodeStatistics import SampleNode
+from AnalysisTopGNN.Statistics import Reconstruction
 from AnalysisTopGNN.IO import UnpickleObject
+from AnalysisTopGNN.Samples import Epoch
 
-class TrainingComparison:
-
-    def __init__(self):
-        self.Epoch = None
-        self.ModelStats = {}
-        self.MinMetric = {}
-        self.MaxMetric = {}
-        self.ModelFeatures = {}
-        self.Names = []
-        self.ModelValues = {}
-
-    def Process(self):
-        metrics = []
-        self.Names += list(self.ModelStats)
-
-        for name in self.ModelStats:
-            metrics += [m for m in list(self.ModelStats[name]) if m not in metrics]
-
-        for m in metrics:
-            self.__CompareMetric(m, [self.ModelStats[name][m] for name in self.Names], self.Names)
-
-
-    def __CompareMetric(self, metric, values, names):
-        valu = []
-        if isinstance(values[0], dict):
-            keys = list(set([t for k in values for t in k]))
-            valu = {metric + "_" + str(t) : [k[t][0] for k in values] for t in keys}
-        elif isinstance(values[0], list):
-            valu = {metric : [v[0] for v in values]}
-        else:
-            valu = {metric : values}
-       
-        for m in valu:
-            Min_ = min(valu[m])
-            Max_ = max(valu[m])
-            self.MinMetric[m] = [i for i, v in zip(range(len(valu[m])), valu[m]) if v == Min_]
-            self.MaxMetric[m] = [i for i, v in zip(range(len(valu[m])), valu[m]) if v == Max_]
-            self.ModelValues[m] = {}
-            for model, val in zip(names, valu[m]):
-                self.ModelValues[m][model] = val
-
-class ModelComparison(Tools):
+class ModelComparison(Tools, ModelComparisonPlots, SampleNode, RandomSamplers):
 
     def __init__(self):
         self._Analysis = None
         self._ModelDirectories = {}
         self._ModelSaves = {}
+        
+        self._MassTruth = {}
+        self._MassPrediction = {}
+        self._RecoEfficiency = {}
+
         self.ProjectName = None
         self.Tree = None
+        self.Device = "cuda"
+        self.BatchSize = 5
 
     def AddAnalysis(self, analysis):
         if self._Analysis == None:
@@ -59,121 +28,121 @@ class ModelComparison(Tools):
         else:
             self._Analysis += analysis
     
-    def AddModel(self, Name, Directory):
+    def AddModel(self, Name, Directory, ModelInstance = None):
         if Name not in self._ModelDirectories:
             self._ModelDirectories[Name] = []
         Directory = self.AddTrailing(Directory, "/")
         self._ModelDirectories[Name] = [Directory + i for i in self.ls(Directory) if "Epoch-" in i]
-  
-    
-    def __Plots(self, metric):
-        #/ Continue here with switch /#
-        EpochObj = Epoch()
-        if i == "EpochTime":
-            cont.Plots = self.EpochTimePlot(epochs, cont.yData, outdir)
-            Compile[i] = cont
-        
-        elif i.startswith("NodeTimes"):
-            cont.Plots = self.NodeTimePlot(epochs, cont.yData, outdir, i.split("_")[-1], cont.errData, cont.errData)
-            NodeTimes.append(cont)
-
-        elif i.startswith("FoldTime"):
-            cont.Plots = self.FoldTimePlot(epochs, cont.yData, outdir, cont.errData, cont.errData)
-            Compile[i] = cont
-
-        elif i.startswith("Accuracy"):
-            cont.Plots = self.AccuracyPlot(epochs, cont.yData, outdir, i.split("_")[1], i.split("_")[-1], cont.errData, cont.errData)
-            Accuracy[i.split("_")[-1]].append(cont)
-
-        elif i.startswith("AUC"):
-            cont.Plots = self.AUCPlot(epochs, cont.yData, outdir, i.split("_")[1])
-            AUC[i.split("_")[-1]].append(cont)
-        
-        elif i.startswith("TotalLoss"):
-            cont.Plots = self.LossPlot(epochs, cont.yData, outdir, i.split("_")[-1], cont.errData, cont.errData)
-            Loss["Total"].append(cont)
-
-        elif i.startswith("Loss_"):
-            cont.Plots = self.LossPlot(epochs, cont.yData, outdir, i.split("_")[1], cont.errData, cont.errData)
-            Loss[i.split("_")[-1]].append(cont)
+        self._ModelSaves[Name] = {"ModelInstance": ModelInstance} 
 
     def __CompareTraining(self):
-        score = {}
-        ep = list(self._TrainingContainer)[0]
-        minimize = ["TotalLoss", "Loss", "EpochTime"]
-        minimize = {i : 0 for k in minimize for i in self._TrainingContainer[ep].MinMetric if i.startswith(k) }
-        maximize = ["AUC", "Accuracy"]
-        maximize = {i : 0 for k in maximize for i in self._TrainingContainer[ep].MaxMetric if i.startswith(k) }
-        Names = self._TrainingContainer[ep].Names 
-        
-        Tbl = Tables()
-        Tbl.Title = "SUMMARY"
-        Tbl.AddColumnTitle("Metrics \ Models")
-
-        for n in Names:
-            for k in (list(maximize) + list(minimize)):
-                Tbl.AddValues(k.replace("_", " "), n, 0)
-
-        for ep in self._TrainingContainer:
-            for m in minimize:
-                model = [Names[i] for i in self._TrainingContainer[ep].MinMetric[m]]
-                for k in model:
-                    Tbl.AddValues(m.replace("_", " "), k, 1)
-
-            for m in maximize:
-                model = [Names[i] for i in self._TrainingContainer[ep].MaxMetric[m]]
-                for k in model:
-                    Tbl.AddValues(m.replace("_", " "), k, 1)
-
-        Tbl.Compile()
-        Tbl.DumpTableToFile(self.ProjectName + "/Summary/TrainingComparison")
+        Names = list(self._ModelDirectories)
+        outdir = self.ProjectName + "/Summary/"
         epochs = list(self._TrainingContainer)
         epochs.sort()
-      
-        for i in Names:
-            Tbl = Tables()
-            Tbl.Title = i 
-            Tbl.Sum = False
-            Tbl.MinMax = True
-            Tbl.AddColumnTitle("Epoch \ Metric")
-            for ep in epochs:
-                dic = self._TrainingContainer[ep].ModelValues
-                for metric in dic:
-                    if metric.startswith("NodeTimes"):
-                        continue
-                    Tbl.AddValues(ep, metric, dic[metric][i])
-            
-            Tbl.Compile()
-            Tbl.DumpTableToFile(self.ProjectName + "/Summary/" + i + "/EpochSummary")
         
-        SummedEpoch = {}
-        for i in Names:
-            SummedEpoch[i] = sum(self._ModelDirectories[i])
-            SummedEpoch[i].Compile(self.ProjectName + "/Summary/" + i)
-
-        Plots = {}
-        metrics = list(self._TrainingContainer[epochs[0]].ModelValues)
-        for met in metrics:
-            Plots |= {met : {}}
+        self.Colors = {m : None for m in Names}
+        self.GetConsistentModeColor(self.Colors)
+        self.Tables(self._TrainingContainer) 
+        
+        for met in list(self._TrainingContainer[epochs[0]].ModelValues):
+            Plots = []
             for m in Names:
-                Plots[met][m] = [self._TrainingContainer[ep].ModelValues[met][m] for ep in epochs]
-                
+                data = [self._TrainingContainer[ep].ModelValues[met][m] for ep in epochs]
+                Err = [self._TrainingContainer[ep].ModelValuesError[met][m] for ep in epochs]
+                Lines = self.TemplateLine(m, epochs, data, Err, outdir)
+                Lines.Color = self.Colors[m]
+                Lines.Compile()
+                Plots.append(Lines)
+            
+            plt = self.PlotTime(Plots, met, outdir) if met.startswith("EpochTime") else None
+            plt = self.PlotTime(Plots, met, outdir) if met.startswith("FoldTime") else plt
+            plt = self.PlotTime(Plots, met, outdir) if met.startswith("NodeTimes") else plt
+            plt = self.PlotAUC(Plots, met, outdir) if met.startswith("AUC") else plt
+            plt = self.PlotLoss(Plots, met, outdir) if met.startswith("Loss_") else plt
+            plt = self.PlotLoss(Plots, met, outdir) if met.startswith("TotalLoss_") else plt
+            plt = self.PlotAccuracy(Plots, met, outdir) if met.startswith("Accuracy") else plt
 
+    def __ShowSampleDistribution(self):
+        self.SampleNodes = {}
+        self.Training = {}
+        self.TestSample = {}
+        self.OutDir = self.ProjectName + "/NodeStatistics/"
+        self.AddNodeSample(self._Analysis)
+        self.Process()
+
+    def __ParticleReconstruction(self, model, sample, smpleprc):
+        reco = Reconstruction(model)
+        idx = 0
+        index = 0
+        for data in sample:
+            prc = smpleprc[index]
+            data.to(device = self.Device)
+            
+            reco.TruthMode = False
+            pred = reco(data)
+
+            reco.TruthMode = True
+            truth = reco(data) 
+            
+            for i in range(idx,idx + len(pred)):
+                self._MassTruth[i] = truth[i - idx]
+                self._MassPrediction[i] = pred[i-idx]
+                p = self._Analysis.HashToROOT(prc[i-idx]).split("/")[-2]
+                self._RecoEfficiency[i] = {o : reco.ParticleEfficiency(pred[i - idx][o], truth[i - idx][o], p) for o in pred[i-idx]}
+            idx+= len(pred)
+            index += 1
+    
+    def __EvaluateSample(self, model, smple, Ep, Make):
+        for i in smple:
+            Ep.StartTimer()
+            pred, truth, loss_acc = model.Prediction(i)
+            Ep.StopTimer()
+            Ep.Collect(pred, truth, loss_acc, Make)
+            
+    def __EvaluateSampleType(self, Type):
+        smple, prcsmple = self.MakeSample({i.Filename : i.Trees[self.Tree] for i in self._Analysis if i.Train == Type or Type == None}, True, self.BatchSize)
+        for name in self._ModelSaves:
+            if self._ModelSaves[name]["ModelInstance"] == None:
+                continue
+            model = self._ModelSaves[name]["ModelInstance"] 
+            epochsDict = self._ModelSaves[name]["TorchSave"]
+            epochs = list(epochsDict) 
+            epochs.sort()
+
+            if Type:
+                make = "Train"
+            elif Type == False:
+                make = "Test"
+            elif Type == None:
+                make = "All"
+
+            for ep in epochs:
+                mod = Model(model)
+                mod.Device = self.Device
+                mod.LoadModel(self.abs(epochsDict[ep]))
+                self.__ParticleReconstruction(mod, smple, prcsmple)
+
+                Ep = Epoch(ep)
+                Ep.ModelOutputs += list(mod.GetModelOutputs())
+                Ep.MakeDictionary(make)
+                Ep.Fold = 1
+                Ep.FoldTime[1] = 0
+                self.__EvaluateSample(mod, smple, Ep, make)
+                Ep.Process()
 
     def Compile(self):
         self._TrainingContainer = {}
         for names in self._ModelDirectories:
-            self._ModelSaves[names] = {}
-            self._ModelSaves[names]["TorchSave"] = {int(i.split("-")[-1]) : i + "/TorchSave.pth" for i in self._ModelDirectories[names] if self.IsFile(i + "/TorchSave.pth")}
+            Dict = {int(i.split("-")[-1]) : i + "/TorchSave.pth" for i in self._ModelDirectories[names] if self.IsFile(i + "/TorchSave.pth")}
+            self._ModelSaves[names]["TorchSave"] = Dict
             self._ModelDirectories[names] = [UnpickleObject(i + "/Stats.pkl") for i in self._ModelDirectories[names] if self.IsFile(i+"/Stats.pkl")]
-            
-            for epch in self._ModelDirectories[names]:
-                if epch.Epoch not in self._TrainingContainer:
-                    self._TrainingContainer[epch.Epoch] = TrainingComparison()
-                self._TrainingContainer[epch.Epoch].Epoch = epch.Epoch
-                self._TrainingContainer[epch.Epoch].ModelStats[names] = epch._Package[epch.Epoch]
-                self._TrainingContainer[epch.Epoch].ModelFeatures[names] = epch._Package["OutputNames"]
+            self.TrainingComparison(self._ModelDirectories, self._TrainingContainer, names)
+        
         for ep in self._TrainingContainer:
             self._TrainingContainer[ep].Process()
-        self.__CompareTraining()
+        #self.__CompareTraining()
+        #self.__ShowSampleDistribution()
+        self.__EvaluateSampleType(True) 
+        
 

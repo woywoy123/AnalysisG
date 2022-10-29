@@ -3,8 +3,40 @@ import LorentzVector as LV
 
 class Reconstruction:
 
-    def __init__(self):
+    def __init__(self, model = None):
         self.Caller = "RECONSTRUCTION"
+        self.TruthMode = False if model != None else True
+        self.Model = model
+        self._init = True
+
+    def __switch(self, Sample, pre):
+        shape = pre.size()
+        if shape[1] > 1: 
+            pre = pre.max(1)[0].view(-1)
+        else:
+            pre = pre.view(-1)
+        
+        if shape[0] == Sample.edge_index.size()[1]:
+            return self.MassFromEdgeFeature(Sample, pre).tolist()
+        
+        elif shape[0] == Sample.num_nodes:
+            return self.MassFromNodeFeature(Sample, pre).tolist()
+
+    def __Debatch(self, Inpt, sample):
+        btch = Inpt.batch.unique()
+        smples = [sample.subgraph(sample.batch == b) for b in btch]
+        inpt = [Inpt.subgraph(Inpt.batch == b) for b in btch]
+        return smples, inpt        
+
+    def __call__(self, Sample):
+        self.Model.SampleCompatibility(Sample) if self._init else None
+        self._init = False
+        self.Model._truth = self.TruthMode
+        pred, truth, _ = self.Model.Prediction(Sample)
+
+        Sample, pred = self.__Debatch(pred if self.TruthMode == False else truth, Sample)
+        out = [{o[2:] : self.__switch(j, i[o[2:]]) for o in self.Model._modeloutputs} for i, j in zip(pred, Sample)]
+        return out
 
     def __SummingNodes(self, Sample, msk, edge_index, pt, eta, phi, e):
         
@@ -31,20 +63,19 @@ class Reconstruction:
 
         return LV.MassFromPxPyPzE(Pmu_n).view(-1)
 
-    def MassFromNodeFeature(self, Sample, TargetFeature, pt = "N_pT", eta = "N_eta", phi = "N_phi", e = "N_energy"):
+    def MassFromNodeFeature(self, Sample, pred, pt = "N_pT", eta = "N_eta", phi = "N_phi", e = "N_energy"):
         
         # Get the prediction of the sample 
-        pred = Sample[TargetFeature].to(dtype = int).view(-1)
+        #pred = Sample[TargetFeature].to(dtype = int).view(-1)
         
         # Filter out the nodes which are not equally valued and apply masking
         edge_index = Sample.edge_index
         mask = pred[edge_index[0]] == pred[edge_index[1]]
-        return self.__SummingNodes(mask, Sample, edge_index, pt, eta, phi, e)
+        return self.__SummingNodes(Sample, mask, edge_index, pt, eta, phi, e)
  
-    def MassFromEdgeFeature(self, Sample, TargetFeature, pt = "N_pT", eta = "N_eta", phi = "N_phi", e = "N_energy"):
-        pred = Sample[TargetFeature].to(dtype = int).view(-1)
+    def MassFromEdgeFeature(self, Sample, pred, pt = "N_pT", eta = "N_eta", phi = "N_phi", e = "N_energy"):
         mask = pred == 1
-        return self.__SummingNodes(mask, Sample, Sample.edge_index, pt, eta, phi, e)
+        return self.__SummingNodes(Sample, mask, Sample.edge_index, pt, eta, phi, e)
 
     def ClosestParticle(self, tru, pred):
 

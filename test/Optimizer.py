@@ -13,25 +13,25 @@ def TestOptimizer(Files):
     #Ana.InputSample("4Tops", Files[0])
     #Ana.EventCache =  True
     #Ana.DumpPickle = True
-    #Ana.EventStop = None
     #Ana.chnk = 100
+    #Ana.EventStop = 50
     #Ana.VerboseLevel = 1
     #Ana.Event = Event
     #Ana.Launch()
 
-    #Ana = Analysis()
-    #Ana.ProjectName = "Optimizer"
-    #Ana.InputSample("SingleTop")
-    #Ana.InputSample("4Tops")
-    #Ana.DumpHDF5 = True
-    #Ana.DataCache = False
-    #Ana.EventStop = None
-    #Ana.VerboseLevel = 1
-    #Ana.Threads = 2
-    #Ana.EventGraph = EventGraphTruthJetLepton
-    #ApplyFeatures(Ana, "TruthJets")
-    #Ana.Launch()
-    #Ana.GenerateTrainingSample(90)
+    Ana = Analysis()
+    Ana.ProjectName = "Optimizer"
+    Ana.InputSample("SingleTop")
+    Ana.InputSample("4Tops")
+    Ana.DumpHDF5 = True
+    Ana.DataCache = False
+    Ana.EventStop = None
+    Ana.VerboseLevel = 1
+    Ana.Threads = 2
+    Ana.EventGraph = EventGraphTruthJetLepton
+    ApplyFeatures(Ana, "TruthChildren")
+    Ana.Launch()
+    Ana.GenerateTrainingSample(90)
    
     #op = ModelTrainer()
     #op.ProjectName = "Optimizer"
@@ -39,8 +39,8 @@ def TestOptimizer(Files):
     #op.Model = BasicBaseLineRecursion()
     #op.Tree = "nominal"
     #op.Device = "cuda"
-    #op.BatchSize = 50
-    #op.Optimizer = {"ADAM" : { "lr" : 0.001, "weight_decay" : 0.0001 }}
+    #op.BatchSize = 5
+    #op.Optimizer = {"ADAM" : { "lr" : 0.001, "weight_decay" : 0.001 }}
     #op.Scheduler = {"ExponentialLR" : {"gamma" : 0.9}}
     #op.SplitSampleByNode = False
     #op.AddAnalysis(Ana)
@@ -52,10 +52,10 @@ def TestOptimizer(Files):
     #op.Model = BasicBaseLineRecursion()
     #op.Tree = "nominal"
     #op.Device = "cuda"
-    #op.BatchSize = 50
+    #op.BatchSize = 5
     #op.Optimizer = {"ADAM" : { "lr" : 0.001, "weight_decay" : 0.001 }}
     #op.Scheduler = {"ExponentialLR" : {"gamma" : 0.9}}
-    #op.SplitSampleByNode = False
+    #op.SplitSampleByNode = True
     #op.AddAnalysis(Ana)
     #op.Launch()
  
@@ -64,9 +64,9 @@ def TestOptimizer(Files):
     Mod = ModelComparison()
     Mod.ProjectName = "Optimizer"
     Mod.Tree = "nominal"
-    #Mod.AddAnalysis(Ana)
-    Mod.AddModel("BaseLine", "./Optimizer/BaseLine") 
-    Mod.AddModel("BaseLine_01", "./Optimizer/BaseLine_01") 
+    Mod.AddAnalysis(Ana)
+    Mod.AddModel("BaseLine", "./Optimizer/BaseLine", BasicBaseLineRecursion()) 
+    Mod.AddModel("BaseLine_01", "./Optimizer/BaseLine_01", BasicBaseLineRecursion()) 
     Mod.Compile()
 
 

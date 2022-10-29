@@ -48,3 +48,26 @@ class RandomSamplers(RandomSamplers):
             output[fold] += [DataLoader(sample, batch_size=batch_size, sampler = SubsetRandomSampler(train_idx))]
             output[fold] += [DataLoader(sample, batch_size=batch_size, sampler = SubsetRandomSampler(test_idx))]
         return output
+
+    def MakeSample(self, sample, SortByNodes = False, batch_size = 1):
+        out = {}
+        prcout = {}
+        if SortByNodes:
+            for hash_ in sample:
+                i = sample[hash_]
+                num_nodes = i.num_nodes.item()
+                if num_nodes not in out:
+                    out[num_nodes] = []
+                    prcout[num_nodes] = []
+                prcout[num_nodes].append(hash_)
+                out[num_nodes].append(i)
+        else:
+            out["All"] = list(sample.values())
+            prcout["All"] = list(sample)
+        
+        output = []
+        output_prc = []
+        for i in out:
+            output += [d for d in DataLoader(out[i], batch_size=batch_size)]
+            output_prc += [d for d in DataLoader(prcout[i], batch_size=batch_size)]
+        return output, output_prc

@@ -23,7 +23,10 @@ class Metrics:
                 Data[i] = self.MakeStatics(Data[i])
             return Data
         mean = statistics.mean(Data)
-        std = statistics.stdev(Data)
+        if len(Data) > 2:
+            std = statistics.stdev(Data)
+        else:
+            std = 0
         return [mean, std]
 
 

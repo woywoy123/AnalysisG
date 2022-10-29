@@ -99,7 +99,9 @@ class Model:
         data = data.to_dict()
         Truth = {feat[4:] : data[feat] for feat in self._keymapping}
         Truth["edge_index"] = data["edge_index"]
-        Truth["batch"] = data["batch"]
+        
+        if "batch" in data:
+            Truth["batch"] = data["batch"]
         
         output = {key[2:] : self._modelloss["L_" + key[2:]](Pred[key[2:]], Truth[tru[4:]]) 
                     for tru, key in zip(self._keymapping, self._keymapping.values())} 

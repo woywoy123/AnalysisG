@@ -36,7 +36,7 @@ class Epoch(EpochPlots, Metrics, Tools):
         Accuracy = self.__dict__["Accuracy_" + name]
         TotalLoss = self.__dict__["TotalLoss_" + name]
 
-        indx, count = pred.batch.unique(return_counts = True)
+        indx = pred.batch.unique()
         sub_pred = [pred.subgraph(pred.batch == b) for b in indx]
 
         # Get the average node time 
@@ -49,7 +49,7 @@ class Epoch(EpochPlots, Metrics, Tools):
         # Get the loss for this prediction
         self.TotalLoss = 0
         for key in Accuracy: 
-            Accuracy[key].append(loss_acc[key][1].detach().cpu().item())
+            Accuracy[key].append(100*loss_acc[key][1].detach().cpu().item())
             self.TotalLoss += loss_acc[key][0]        
             Loss[key].append(loss_acc[key][0].detach().cpu().item())
         TotalLoss += [self.TotalLoss.detach().cpu().item()]
@@ -73,9 +73,9 @@ class Epoch(EpochPlots, Metrics, Tools):
         self.TotalLoss = None
         
         self.NodeTimingHistograms()
-        self.AccuracyHistograms()
-        self.LossHistograms()
-        self.CompileROC(self.names)
+        self.AccuracyHistograms(self.ModelOutputs)
+        self.LossHistograms(self.ModelOutputs)
+        self.CompileROC(self.names, self.ModelOutputs)
 
         self._Package[self.Epoch] = {}
         self._Package[self.Epoch] |= {"Accuracy_" + i : self.MakeStatics(self.__dict__["Accuracy_" + i]) for i in self.names }
@@ -172,9 +172,17 @@ class Epoch(EpochPlots, Metrics, Tools):
         for i in Compile:
             Compile[i].Plots.SaveFigure()
         
-        self.MergeNodeTimes(NodeTimes, outdir)
-        self.MergeAUC(AUC, self.Colors, self.Markers, outdir)
-        self.MergeLoss(Loss, self.Colors, self.Markers, outdir)
-        self.MergeAccuracy(Accuracy, self.Colors, self.Markers, outdir)
+        Com = self.MergeNodeTimes(NodeTimes, outdir)
+        Com.SaveFigure()
+        
+        Com = self.MergeAUC(AUC, self.Colors, self.Markers, outdir)
+        Com.SaveFigure()
+        
+        Com1, Com2 = self.MergeLoss(Loss, self.Colors, self.Markers, outdir)
+        Com1.SaveFigure()
+        Com2.SaveFigure()
+
+        Com = self.MergeAccuracy(Accuracy, self.Colors, self.Markers, outdir)
+        Com.SaveFigure()
 
 

@@ -2,7 +2,6 @@ from AnalysisTopGNN.Samples import SampleTracer
 from AnalysisTopGNN.Generators import EventGenerator, GraphGenerator, Settings
 from AnalysisTopGNN.IO import HDF5, PickleObject, UnpickleObject
 from AnalysisTopGNN.Notification import Analysis
-from AnalysisTopGNN.Statistics import SampleNode
 
 class Analysis(Analysis, GraphGenerator):
 
@@ -227,7 +226,7 @@ class Analysis(Analysis, GraphGenerator):
                     obj = self.HashToEvent(i)
                 except:
                     continue
-                obj.train = status
+                obj.Train = status
 
         if self.IsFile(self.ProjectName + "/Tracers/TrainingTestSamples.pkl"):
             Training = UnpickleObject(self.ProjectName + "/Tracers/TrainingTestSamples")
@@ -245,13 +244,4 @@ class Analysis(Analysis, GraphGenerator):
         PickleObject(hashes, self.ProjectName + "/Tracers/TrainingTestSamples")
         self.GenerateTrainingSample(TrainingPercentage)
 
-    def GenerateSampleNodeDistributions(self):
-        if self.IsFile(self.ProjectName + "/Tracers/TrainingTestSamples.pkl"):
-            Training = UnpickleObject(self.ProjectName + "/Tracers/TrainingTestSamples")
-            self.GenerateSampleNodeDistributions(50)
-        
-        smpl = SampleNode()
-        smpl.OutDir = self.ProjectName + "/NodeStatistics/"
-        smpl.AddAnalysis(self)
-        smpl.Process()
 

@@ -76,7 +76,7 @@ class TLine(Functions):
         self.yData = self.SanitizeData(self.yData)
 
         self.down_yData = self.SanitizeData(self.down_yData)
-        self.down_yData = self.SanitizeData(self.up_yData)
+        self.up_yData = self.SanitizeData(self.up_yData)
 
         self.DefineRange("y")
         self.DefineRange("x")
