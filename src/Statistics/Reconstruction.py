@@ -12,7 +12,7 @@ class Reconstruction:
     def __switch(self, Sample, pre):
         shape = pre.size()
         if shape[1] > 1: 
-            pre = pre.max(1)[0].view(-1)
+            pre = pre.max(1)[1].view(-1)
         else:
             pre = pre.view(-1)
         

@@ -54,12 +54,9 @@ class Epoch(EpochPlots, Metrics, Tools):
             Loss[key].append(loss_acc[key][0].detach().cpu().item())
         TotalLoss += [self.TotalLoss.detach().cpu().item()]
 
-        tru = truth.to_dict()
-        pred = pred.to_dict()
         for key in ROC:
-            ROC[key]["truth"] += tru[key].view(-1).detach().cpu().to(dtype = torch.int).tolist()
-            ROC[key]["p_score"] += pred[key].softmax(dim = 1).max(1)[0].view(-1).detach().cpu().tolist()
-
+            ROC[key]["truth"] += truth[key].view(-1).detach().cpu().to(dtype = torch.int).tolist()
+            ROC[key]["p_score"].append(pred[key].softmax(dim = 1).detach().cpu())
         self.FoldTime[self.Fold] += (self.t_e - self.t_s)
     
     def StartTimer(self):
@@ -68,13 +65,14 @@ class Epoch(EpochPlots, Metrics, Tools):
     def StopTimer(self):
         self.t_e = time.time()
     
-    def Process(self):
+    def Process(self, MakeFigure = True):
         self.EpochTime = time.time() - self.EpochTime
         self.TotalLoss = None
         
-        self.NodeTimingHistograms()
-        self.AccuracyHistograms(self.ModelOutputs)
-        self.LossHistograms(self.ModelOutputs)
+        if MakeFigure:
+            self.NodeTimingHistograms()
+            self.AccuracyHistograms(self.ModelOutputs)
+            self.LossHistograms(self.ModelOutputs)
         self.CompileROC(self.names, self.ModelOutputs)
 
         self._Package[self.Epoch] = {}

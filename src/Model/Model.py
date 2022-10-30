@@ -88,7 +88,7 @@ class Model:
         return self._train, self._prediction
         
     def Prediction(self, data):
-        self._model(**{k : data.to_dict()[k] for k in self._modelinputs})
+        self._model(**{k : data[k] for k in self._modelinputs})
         Pred = {feat[2:] : self._model.__dict__[feat] for feat in self._keymapping.values()}
         Pred["edge_index"] = data.edge_index
         Pred["batch"] = data.batch
@@ -96,7 +96,6 @@ class Model:
         if self._truth == False:
             return Data().from_dict(Pred), None, None
        
-        data = data.to_dict()
         Truth = {feat[4:] : data[feat] for feat in self._keymapping}
         Truth["edge_index"] = data["edge_index"]
         

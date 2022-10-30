@@ -1,10 +1,11 @@
 from AnalysisTopGNN.Model import Model
 from AnalysisTopGNN.Tools import Tools, RandomSamplers
-from AnalysisTopGNN.Plotting.ModelComparisonPlots import _Comparison, ModelComparisonPlots
+from AnalysisTopGNN.Plotting.ModelComparisonPlots import _Comparison, DataBlock, ModelComparisonPlots, PredictionContainer 
 from AnalysisTopGNN.Plotting.NodeStatistics import SampleNode
 from AnalysisTopGNN.Statistics import Reconstruction
 from AnalysisTopGNN.IO import UnpickleObject
 from AnalysisTopGNN.Samples import Epoch
+
 
 class ModelComparison(Tools, ModelComparisonPlots, SampleNode, RandomSamplers):
 
@@ -12,15 +13,13 @@ class ModelComparison(Tools, ModelComparisonPlots, SampleNode, RandomSamplers):
         self._Analysis = None
         self._ModelDirectories = {}
         self._ModelSaves = {}
-        
-        self._MassTruth = {}
-        self._MassPrediction = {}
-        self._RecoEfficiency = {}
+       
+        self._Container = {}
+        self._Blocks = {}
 
         self.ProjectName = None
         self.Tree = None
         self.Device = "cuda"
-        self.BatchSize = 5
 
     def AddAnalysis(self, analysis):
         if self._Analysis == None:
@@ -28,22 +27,23 @@ class ModelComparison(Tools, ModelComparisonPlots, SampleNode, RandomSamplers):
         else:
             self._Analysis += analysis
     
-    def AddModel(self, Name, Directory, ModelInstance = None):
+    def AddModel(self, Name, Directory, ModelInstance = None, BatchSize = None):
         if Name not in self._ModelDirectories:
             self._ModelDirectories[Name] = []
         Directory = self.AddTrailing(Directory, "/")
         self._ModelDirectories[Name] = [Directory + i for i in self.ls(Directory) if "Epoch-" in i]
         self._ModelSaves[Name] = {"ModelInstance": ModelInstance} 
+        self._ModelSaves[Name] |= {"BatchSize" : BatchSize}
 
-    def __CompareTraining(self):
+    def __CompareTraining(self, Mode):
         Names = list(self._ModelDirectories)
-        outdir = self.ProjectName + "/Summary/"
+        outdir = self.ProjectName + "/Summary/" + Mode + "/"
         epochs = list(self._TrainingContainer)
         epochs.sort()
         
         self.Colors = {m : None for m in Names}
         self.GetConsistentModeColor(self.Colors)
-        self.Tables(self._TrainingContainer) 
+        self.Tables(self._TrainingContainer, Mode) 
         
         for met in list(self._TrainingContainer[epochs[0]].ModelValues):
             Plots = []
@@ -71,7 +71,7 @@ class ModelComparison(Tools, ModelComparisonPlots, SampleNode, RandomSamplers):
         self.AddNodeSample(self._Analysis)
         self.Process()
 
-    def __ParticleReconstruction(self, model, sample, smpleprc):
+    def __ParticleReconstruction(self, model, sample, smpleprc, container):
         reco = Reconstruction(model)
         idx = 0
         index = 0
@@ -86,30 +86,32 @@ class ModelComparison(Tools, ModelComparisonPlots, SampleNode, RandomSamplers):
             truth = reco(data) 
             
             for i in range(idx,idx + len(pred)):
-                self._MassTruth[i] = truth[i - idx]
-                self._MassPrediction[i] = pred[i-idx]
                 p = self._Analysis.HashToROOT(prc[i-idx]).split("/")[-2]
-                self._RecoEfficiency[i] = {o : reco.ParticleEfficiency(pred[i - idx][o], truth[i - idx][o], p) for o in pred[i-idx]}
+                rec = {o : reco.ParticleEfficiency(pred[i - idx][o], truth[i - idx][o], p) for o in pred[i-idx]}
+                container.ReconstructionEfficiency(rec, truth[i - idx], pred[i-idx])
+
             idx+= len(pred)
             index += 1
     
-    def __EvaluateSample(self, model, smple, Ep, Make):
+    def __EvaluateSample(self, model, smple, Ep):
         for i in smple:
-            Ep.StartTimer()
+            Ep.EpochContainer.StartTimer()
             pred, truth, loss_acc = model.Prediction(i)
-            Ep.StopTimer()
-            Ep.Collect(pred, truth, loss_acc, Make)
+            Ep.EpochContainer.StopTimer()
+            Ep.EpochContainer.Collect(pred, truth, loss_acc, Ep.Make)
             
     def __EvaluateSampleType(self, Type):
-        smple, prcsmple = self.MakeSample({i.Filename : i.Trees[self.Tree] for i in self._Analysis if i.Train == Type or Type == None}, True, self.BatchSize)
         for name in self._ModelSaves:
             if self._ModelSaves[name]["ModelInstance"] == None:
                 continue
+            BatchSize = 1 if self._ModelSaves[name]["BatchSize"] == None else self._ModelSaves[name]["BatchSize"]
+            smple, prcsmple = self.MakeSample({i.Filename : i.Trees[self.Tree] for i in self._Analysis if i.Train == Type or Type == None}, True, BatchSize)
+            
             model = self._ModelSaves[name]["ModelInstance"] 
             epochsDict = self._ModelSaves[name]["TorchSave"]
             epochs = list(epochsDict) 
             epochs.sort()
-
+            
             if Type:
                 make = "Train"
             elif Type == False:
@@ -117,19 +119,50 @@ class ModelComparison(Tools, ModelComparisonPlots, SampleNode, RandomSamplers):
             elif Type == None:
                 make = "All"
 
+            if make not in self._Container:
+                self._Container[make] = {}
+            if name not in self._Container[make]:
+                self._Container[make][name] = []
+        
             for ep in epochs:
                 mod = Model(model)
                 mod.Device = self.Device
                 mod.LoadModel(self.abs(epochsDict[ep]))
-                self.__ParticleReconstruction(mod, smple, prcsmple)
 
-                Ep = Epoch(ep)
-                Ep.ModelOutputs += list(mod.GetModelOutputs())
-                Ep.MakeDictionary(make)
-                Ep.Fold = 1
-                Ep.FoldTime[1] = 0
-                self.__EvaluateSample(mod, smple, Ep, make)
-                Ep.Process()
+                p = PredictionContainer()
+                p.ModelName = name
+                p.Epoch = ep 
+                p.Make = make
+                p.EpochContainer = Epoch(ep)
+                p.EpochContainer.ModelOutputs += list(mod.GetModelOutputs())
+                p.EpochContainer.MakeDictionary(make)
+                p.EpochContainer.Fold = 1
+                p.EpochContainer.FoldTime[1] = 0
+                p.ProjectName = self.ProjectName
+
+                self._Container[make][name].append(p)
+                      
+                self.__ParticleReconstruction(mod, smple, prcsmple, p)
+                self.__EvaluateSample(mod, smple, p)
+                
+                p.CompileEpoch()
+
+    def __ProcessContainer(self, Container, Name):
+        self._TrainingContainer = {}
+        ModelContainer = {}
+        BlockContainer = {}
+        self._Blocks[Name] = DataBlock("Models")
+        for model in Container:
+            epochs = Container[model]
+            ModelContainer[model] = [ep.EpochContainer for ep in epochs]
+            self.TrainingComparison(ModelContainer, self._TrainingContainer, model)
+            BlockContainer[model] = sum(epochs) 
+            BlockContainer[model].CompileMergedEpoch()
+            BlockContainer[model] = BlockContainer[model].Plots
+        self._Blocks[Name].Plots = BlockContainer
+        for ep in self._TrainingContainer:
+            self._TrainingContainer[ep].Process()
+        self.__CompareTraining(Name)
 
     def Compile(self):
         self._TrainingContainer = {}
@@ -141,8 +174,14 @@ class ModelComparison(Tools, ModelComparisonPlots, SampleNode, RandomSamplers):
         
         for ep in self._TrainingContainer:
             self._TrainingContainer[ep].Process()
-        #self.__CompareTraining()
-        #self.__ShowSampleDistribution()
-        self.__EvaluateSampleType(True) 
-        
+        self.__CompareTraining("Training")
+        self.__ShowSampleDistribution()
 
+        self.__EvaluateSampleType(True) 
+        self.__ProcessContainer(self._Container["Train"], "TrainingSample") 
+        self.__EvaluateSampleType(False)
+        self.__ProcessContainer(self._Container["Test"], "TestSample")        
+        self.__EvaluateSampleType(None)
+        self.__ProcessContainer(self._Container["All"], "CompleteSample") 
+        
+        self.Verdict()

@@ -75,7 +75,8 @@ class EpochPlots:
                     "yTitle" : "True Positive Rate", 
                     "xTitle" : "False Positive Rate", 
                     "xMin" : 0, "xMax" : 1, 
-                    "yMin" : 0, "yMax" : 1, 
+                    "yMin" : 0, "yMax" : 1,
+                    "Marker" : ".",
                 }
         
         for feat in [i[2:] for i in ModelOutputs]:

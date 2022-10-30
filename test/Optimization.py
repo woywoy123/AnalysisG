@@ -114,7 +114,7 @@ class ModelTrainer(Tools, RandomSamplers):
                 self._EpochObj.Collect(pred, truth, loss_acc, "Train")
 
                 loss = self._EpochObj.TotalLoss
-                print("--->", loss)
+                print("--->", loss.item())
                 
                 self.Optimizer(step = False) 
                 loss.backward()
@@ -131,12 +131,12 @@ class ModelTrainer(Tools, RandomSamplers):
     def Train(self):
         
         for epoch in range(self.Epochs):
-            outputDir = self.ProjectName + "/" + self.RunName + "/Epoch-"+ str(epoch)
+            outputDir = self.ProjectName + "/TrainedModels/" + self.RunName + "/Epoch-"+ str(epoch)
             self._EpochObj = Epoch(epoch)
             self._EpochObj.ModelOutputs += list(self.Model.GetModelOutputs())
             self._EpochObj.MakeDictionary("Train")
             self._EpochObj.MakeDictionary("Validation")
-            self._EpochObj.OutDir = self.ProjectName + "/" + self.RunName
+            self._EpochObj.OutDir = self.ProjectName + "/TrainedModels/" + self.RunName
             for nodes in self.Samples:
                 print("-->", nodes)
                 self.kFoldTraining(self.Samples[nodes])

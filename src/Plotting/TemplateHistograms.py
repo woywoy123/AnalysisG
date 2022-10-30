@@ -1,6 +1,7 @@
 from AnalysisTopGNN.Plotting import CommonFunctions
 import numpy as np
 import mplhep as hep
+import random
 
 class Functions(CommonFunctions):
 
@@ -21,7 +22,7 @@ class Functions(CommonFunctions):
         self.Set(Dim + "Range", None)
 
     def ApplyRandomTexture(self):
-        if self.Texture:
+        if self.Texture == True:
             ptr = [ "/" , "\\" , "|" , "-" , "+" , "x", "o", "O", ".", "*" ]
             random.shuffle(ptr)
             return ptr[0]

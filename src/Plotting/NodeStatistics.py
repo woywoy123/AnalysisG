@@ -105,9 +105,9 @@ class SampleNode:
                 nodes = i.Trees[tr].num_nodes
 
                 self.SampleNodes[tr].Add(prc, nodes)
-                if i.train == True:
+                if i.Train == True:
                     self.Training[tr].Add(prc, nodes)
-                if i.train == False:
+                if i.Train == False:
                     self.TestSample[tr].Add(prc, nodes)
     
     def Process(self):
