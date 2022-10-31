@@ -98,10 +98,10 @@ class CommonFunctions(Tools, Settings, Plotting):
             self.__dict__[key] = val
 
     def Get(self, var):
-        return getattr(self, var)
+        return self.__dict__[var]
 
     def Set(self, var, val):
-        setattr(self, var, val)
+        self.__dict__[var] = val
 
     def DumpDict(self, Varname = None):
         out = {}

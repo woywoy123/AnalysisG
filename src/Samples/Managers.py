@@ -1,4 +1,3 @@
-import AnalysisTopGNN
 from .SampleContainer import SampleContainer
 from AnalysisTopGNN.Tools import Tools
 

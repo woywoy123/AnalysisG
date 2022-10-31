@@ -7,17 +7,17 @@ from ExampleModel.CheatModel import CheatModel
 
 def TestOptimizer(Files):
     
-    #Ana = Analysis()
-    #Ana.ProjectName = "Optimizer"
-    #Ana.InputSample("SingleTop", Files[1])
-    #Ana.InputSample("4Tops", Files[0])
-    #Ana.EventCache =  True
-    #Ana.DumpPickle = True
-    #Ana.chnk = 100
-    #Ana.EventStop = 500
-    #Ana.VerboseLevel = 1
-    #Ana.Event = Event
-    #Ana.Launch()
+    Ana = Analysis()
+    Ana.ProjectName = "Optimizer"
+    Ana.InputSample("SingleTop", Files[1])
+    Ana.InputSample("4Tops", Files[0])
+    Ana.EventCache =  True
+    Ana.DumpPickle = True
+    Ana.chnk = 100
+    Ana.EventStop = 500
+    Ana.VerboseLevel = 1
+    Ana.Event = Event
+    Ana.Launch()
 
     Ana = Analysis()
     Ana.ProjectName = "Optimizer"

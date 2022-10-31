@@ -1,3 +1,4 @@
+#from .SampleTracer import SampleTracer
 from .Notification import Notification
 from .IO import IO
 from .EventGenerator import EventGenerator
@@ -7,7 +8,6 @@ from .MultiThreading import MultiThreading
 from .GraphGenerator import GraphGenerator
 from .RandomSamplers import RandomSamplers
 from .FeatureAnalysis import FeatureAnalysis
-from .SampleTracer import SampleTracer
 from .Condor import Condor
 from .Analysis import Analysis
 from .Plotting import Plotting

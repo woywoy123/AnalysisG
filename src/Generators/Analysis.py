@@ -195,7 +195,7 @@ class Analysis(Analysis, GraphGenerator):
         if self.EventCache == False and  self.DataCache == False:
             for i in self.Dump:
                 self += self.Dump[i]
-            return 
+            return self
         
         for i in self._SampleMap:
             

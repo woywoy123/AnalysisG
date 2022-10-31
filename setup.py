@@ -2,6 +2,13 @@ from distutils.core import setup
 from setuptools import Extension
 from torch.utils.cpp_extension import BuildExtension, CppExtension
 
+setup(
+        name = "PyTorchCustom", 
+        ext_modules = [
+            CppExtension("LorentzVector", ["src/PyTorchCustom/Source/LorentzVector.cpp"])
+        ],
+        cmdclass = {"build_ext" : BuildExtension}
+    )
 
 setup(
         name = "AnalysisTopGNN", 
@@ -11,12 +18,14 @@ setup(
             "AnalysisTopGNN", 
             "AnalysisTopGNN.Notification", 
             "AnalysisTopGNN.Samples", 
-            "AnalysisTopGNN.Model", 
-            "AnalysisTopGNN.Events", 
-            "AnalysisTopGNN.Particles", 
-            "AnalysisTopGNN.Templates", 
-            "AnalysisTopGNN.Features",  
             "AnalysisTopGNN.Tools", 
+            
+            "AnalysisTopGNN.Model", 
+            "AnalysisTopGNN.Templates", 
+            "AnalysisTopGNN.Particles", 
+            "AnalysisTopGNN.Events", 
+            
+            "AnalysisTopGNN.Features",  
             "AnalysisTopGNN.IO",
             "AnalysisTopGNN.Generators",
             "AnalysisTopGNN.Plotting", 
@@ -27,13 +36,15 @@ setup(
             "AnalysisTopGNN": "src",
             "AnalysisTopGNN.Notification" : "src/Notification",
             "AnalysisTopGNN.Samples" : "src/Samples", 
-            "AnalysisTopGNN.Events" : "src/EventTemplates/Events", 
-            "AnalysisTopGNN.Particles" : "src/EventTemplates/Particles",
+            "AnalysisTopGNN.Tools" : "src/Tools",
+            
+            "AnalysisTopGNN.Model" : "src/Model", 
             "AnalysisTopGNN.Templates" : "src/EventTemplates/Templates", 
+            "AnalysisTopGNN.Particles" : "src/EventTemplates/Particles",
+            "AnalysisTopGNN.Events" : "src/EventTemplates/Events", 
+            
             "AnalysisTopGNN.Features" : "src/Features",
             "AnalysisTopGNN.Statistics" : "src/Statistics", 
-            "AnalysisTopGNN.Tools" : "src/Tools",
-            "AnalysisTopGNN.Model" : "src/Model", 
             "AnalysisTopGNN.IO" : "src/IO",
             "AnalysisTopGNN.Generators" : "src/Generators", 
             "AnalysisTopGNN.Plotting" : "src/Plotting",
@@ -43,10 +54,4 @@ setup(
         long_description = open("README.md").read(), 
     )
 
-setup(
-        name = "PyTorchCustom", 
-        ext_modules = [
-            CppExtension("LorentzVector", ["src/PyTorchCustom/Source/LorentzVector.cpp"])
-        ],
-        cmdclass = {"build_ext" : BuildExtension}
-    )
+

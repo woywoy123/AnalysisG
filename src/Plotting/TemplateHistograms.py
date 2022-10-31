@@ -20,6 +20,7 @@ class Functions(CommonFunctions):
         self.Set(Dim + "Bins", None)
         self.Set(Dim + "BinCentering", False)
         self.Set(Dim + "Range", None)
+        self.Set(Dim + "Step", None)
 
     def ApplyRandomTexture(self):
         if self.Texture == True:
@@ -32,26 +33,34 @@ class Functions(CommonFunctions):
         if self.Get(Dims + "Min") == None or self.Get(Dims + "Max") == None:
             return False
         d_max, d_min, d_bin = self.Get(Dims + "Max"), self.Get(Dims + "Min"), self.Get(Dims + "Bins")
-        return float((d_max - d_min) / (d_bin-1))
+        return float((d_max - d_min) / d_bin) if self.Get(Dims + "Step") == None else self.Get(Dims + "Step")
 
     def CenteringBins(self, Dims):
         wb = self.GetBinWidth(Dims)
-        self.Set(Dims + "Range", (self.Get(Dims + "Min")- wb*0.5, self.Get(Dims + "Max") + wb*0.5))
- 
+        self.Set(Dims + "Range", (self.Get(Dims + "Min")- wb*0.5, self.Get(Dims + "Max") - wb*0.5))
+
     def DefineRange(self, Dims):
         self.DefineCommonRange(Dims)
 
         if self.Get(Dims + "Bins") == None:
             p = set(self.Get(Dims + "Data"))
-            self.Set(Dims + "Bins", max(p) - min(p)+1)
-        
+            self.Set(Dims + "Bins", int(max(p) - min(p)+1))
+
+        if self.Get(Dims + "Step") != None:
+            self.Set(Dims + "Bins", 1+int((self.Get(Dims + "Max") - self.Get(Dims + "Min"))/self.Get(Dims + "Step")))
+            self.Set(Dims + "Max", self.Get(Dims + "Min") + self.Get(Dims + "Step")*(self.Get(Dims + "Bins")))
+
         if self.Get(Dims + "Range") == None:
             self.Set(Dims + "Range", (self.Get(Dims + "Min"), self.Get(Dims + "Max")))
+
+        if self.Get(Dims + "BinCentering"):
+            self.CenteringBins(Dims)
 
 
 class TH1F(Functions):
     def __init__(self, **kargs):
         Functions.__init__(self)
+        self.Caller = "TH1F"
 
         self.DefineAxisData("x")
         self.DefineAxisBins("x")
@@ -79,13 +88,13 @@ class TH1F(Functions):
             self.ResetPLT()
             self.DefineStyle()
             self.ApplyToPLT()
+
         if len(self.xData) == 0:
             self.Warning("EMPTY DATA.")
 
-        self.DefineRange("x")
-        if self.xBinCentering:
-            self.CenteringBins("x")
-
+        if isinstance(self.xTickLabels, list) == False:
+            self.DefineRange("x")
+        
         self.NPHisto = np.histogram(self.xData, bins = self.xBins, range = self.xRange, weights = self.xWeights)
         self.ApplyFormat()
        
@@ -95,6 +104,9 @@ class TH1F(Functions):
         if isinstance(self.xTickLabels, list):
             self.Axis.set_xticks(self.xData)
             self.Axis.set_xticklabels(self.xTickLabels)
+        
+        if self.xStep != None:
+            self.Axis.set_xticks([self.xMin + self.xStep*i for i in range(self.xBins+1)])
 
        
 class CombineTH1F(Functions):
@@ -123,12 +135,12 @@ class CombineTH1F(Functions):
             self.xData += i.xData
         
         self.DefineRange("x")
-        self.CenteringBins("x")
         
         for i in H:
             i.xBins = self.xBins
             i.xMin = self.xMin
             i.xMax = self.xMax
+            i.xRange = i.xRange
             i.xBinCentering = self.xBinCentering
             self.ApplyRandomColor(i)
             i.Compile()
@@ -181,6 +193,10 @@ class CombineTH1F(Functions):
             self.Axis.set_xticks(self.xData)
             self.Axis.set_xticklabels(self.xTickLabels)
 
+        if self.xStep != None:
+            self.Axis.set_xticks([self.xMin + self.xStep*i for i in range(self.xBins)])
+
+        self.PLT.xlim(self.xMin, self.xMax)
 
             
 class TH1FStack(CombineTH1F):
