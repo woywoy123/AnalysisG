@@ -27,18 +27,18 @@ class FeatureAnalysis(FeatureAnalysis):
         
         for c_name in self.GraphAttribute:
             try:
-                self.TestGraphFeature(Event, self.GetEventGraph(), self.GraphAttribute[c_name])    
+                self.TestGraphFeature(Event, self.CopyInstance(self.EventGraph), self.GraphAttribute[c_name])    
             except AttributeError:
                 self.FeatureFailure(c_name, "GRAPH", EventIndex)
 
         for c_name in self.NodeAttribute:
             try:
-                self.TestNodeFeature(Event, self.GetEventGraph(), self.NodeAttribute[c_name])    
+                self.TestNodeFeature(Event, self.CopyInstance(self.EventGraph), self.NodeAttribute[c_name])    
             except AttributeError:
                 self.FeatureFailure(c_name, "NODE", EventIndex)
 
         for c_name in self.EdgeAttribute:
             try:
-                self.TestEdgeFeature(Event, self.GetEventGraph(), self.EdgeAttribute[c_name])    
+                self.TestEdgeFeature(Event, self.CopyInstance(self.EventGraph), self.EdgeAttribute[c_name])    
             except AttributeError:
                 self.FeatureFailure(c_name, "EDGE", EventIndex)

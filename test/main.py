@@ -38,11 +38,11 @@ if __name__ == '__main__':
     
     # ==== Testing IO ==== #
     #Test(IO.TestDirectory, Files = RootDir)
-    #
-    ## ==== Test EventGenerator ==== #
-    #Test(EventGenerator.TestEventGenerator, Files = {RootDir + "tttt" : ["QU_0.root"], RootDir + "t" : ["QU_14.root"]})
+    
+    # ==== Test EventGenerator ==== #
+    Test(EventGenerator.TestEventGenerator, Files = {RootDir + "tttt" : ["QU_0.root"], RootDir + "t" : ["QU_14.root"]})
 
-    ## ==== Test EventGraph ==== #
+    # ==== Test EventGraph ==== #
     #Test(EventGraph.TestEventGraph, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
 
     ## ==== Test Merger ==== #
@@ -56,7 +56,7 @@ if __name__ == '__main__':
 
     ## ==== Test Optimizer ==== # 
     #Test(RandomSampler.TestRandomSampling, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
-    Test(Optimizer.TestOptimizer, Files = [RootDir + "tttt/QU_0.root", {RootDir + "t" : ["QU_14.root", "QU_5.root"]}])
+    #Test(Optimizer.TestOptimizer, Files = [RootDir + "tttt/QU_0.root", {RootDir + "t" : ["QU_14.root", "QU_5.root"]}])
 
     # === Test Submission ==== #
     #Test(Submission.TestAnalysis, GeneralDir = RootDir)

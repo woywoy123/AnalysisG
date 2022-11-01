@@ -1,17 +1,49 @@
-from .SampleContainer import SampleContainer
-from AnalysisTopGNN.Tools import Tools
 
-class SampleTracer(Tools):
+class SampleTracer:
+
+    def __init__(self):
+        pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class _SampleTracer:
 
     def __init__(self, IMPRT = None):
         if IMPRT is None:
             self.Caller = ""
         else:
             self.Caller = IMPRT.Caller
-        self.VerboseLevel = 3
-        self.EventStart = 0
-        self.EventStop = None
-
         self.ImportTracer(IMPRT)
 
     def BeginTrace(self, Tracer = None):
@@ -23,8 +55,6 @@ class SampleTracer(Tools):
             self.Tracer = SampleContainer()
         elif hasattr(Tracer, "Tracer"):
             self.Tracer = Tracer.Tracer
-        elif Tracer.__name__ == "SampleContainer":
-            self.Tracer = Tracer
         else:
             return self.BeginTrace()
         self.Tracer.Initialize(self.Caller)
@@ -44,8 +74,6 @@ class SampleTracer(Tools):
             pass
         elif "Tracer" in Inpt.__dict__:
             self.Tracer = Inpt.Tracer
-        elif Inpt.__name__ == "SampleContainer":
-            self.Tracer = Inpt
         self.BeginTrace(Inpt)
   
     def MakeCache(self):

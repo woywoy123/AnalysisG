@@ -94,7 +94,6 @@ class Analysis(Analysis, GraphGenerator):
             else:
                 self.Dump[name] += ev
 
-
     def __GraphGenerator(self, InptMap, output, name):
         GraphAttribute = self.GraphAttribute
         NodeAttribute = self.NodeAttribute
@@ -192,7 +191,7 @@ class Analysis(Analysis, GraphGenerator):
         if self.Event == None and self.EventCache:
             return self.NoEventImplementation()
 
-        if self.EventCache == False and  self.DataCache == False:
+        if self.EventCache == False and self.DataCache == False:
             for i in self.Dump:
                 self += self.Dump[i]
             return self

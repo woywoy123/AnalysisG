@@ -1,4 +1,3 @@
-#from .SampleTracer import SampleTracer
 from .Notification import Notification
 from .IO import IO
 from .EventGenerator import EventGenerator
@@ -11,3 +10,4 @@ from .FeatureAnalysis import FeatureAnalysis
 from .Condor import Condor
 from .Analysis import Analysis
 from .Plotting import Plotting
+from .Optimization import Optimization

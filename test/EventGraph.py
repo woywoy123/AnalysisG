@@ -8,16 +8,18 @@ def Test(a):
 
 def TestEventGraph(Files):
    
-    Ev = EventGenerator(Files)
-    Ev.EventStart = 0
-    Ev.EventStop = 100
-    Ev.Event = Event
-    Ev.SpawnEvents()
-    Ev.CompileEvent()
+    #Ev = EventGenerator(Files)
+    #Ev.EventStart = 0
+    #Ev.EventStop = 100
+    #Ev.Event = Event
+    #Ev.SpawnEvents()
+    #Ev.CompileEvent()
+    #PickleObject(Ev, "TMP")
+    Ev = UnpickleObject("TMP")
 
     Gr = GraphGenerator()
+    Gr += Ev
     Gr.EventGraph = EventGraphTruthTopChildren
-    Gr.ImportTracer(Ev.Tracer)
     Gr.AddGraphFeature(Test)
     Gr.TestFeatures(10)
     Gr.EventStart = 1

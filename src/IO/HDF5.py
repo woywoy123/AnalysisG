@@ -57,6 +57,7 @@ class HDF5(Tools, IO):
             if self.__Contains(objectaddress) == False:
                 self._Ref.attrs[objectaddress] = ObjPath
             
+
             if isinstance(Val, str):
                 return self.__AddToDataSet(objectaddress, Key, Val)
             elif isinstance(Val, int):
@@ -72,6 +73,8 @@ class HDF5(Tools, IO):
                     self.__AddToDataSet(objectaddress, Key + "#" + str(i), Val[i]) 
                 return 
             elif "Data" in ObjPath:
+                if type(Val).__name__ == "type":
+                    return 
                 for i in list(Val):
                     self.__AddToDataSet(objectaddress, i, Val[i])
                 return

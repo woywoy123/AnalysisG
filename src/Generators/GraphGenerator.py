@@ -5,15 +5,25 @@ from AnalysisTopGNN.Samples import SampleTracer, Graphs
 from AnalysisTopGNN.Tools import RandomSamplers
 from AnalysisTopGNN.Generators import Settings
 
-class GraphGenerator(GraphGenerator, SampleTracer, Graphs, RandomSamplers):
+class GraphGenerator(GraphGenerator, SampleTracer, RandomSamplers):
     
     def __init__(self):
-        Settings.__init__(self)
-        Graphs.__init__(self)
-
+        
         self.Caller = "GRAPHGENERATOR"
+        Settings.__init__(self)
         SampleTracer.__init__(self, self)
- 
+
+
+    def SetAttribute(self, c_name, fx, container):
+        if c_name == "P_" or c_name == "T_":
+            c_name += fx.__name__ 
+        elif c_name == "":
+            c_name += fx.__name__ 
+
+        if c_name not in container:
+            container[c_name] = fx
+        else:
+            self.Warning("Found Duplicate " + c_name + " Attribute")
    
     # Define the observable features
     def AddGraphFeature(self, fx, name = ""):

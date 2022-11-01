@@ -7,12 +7,11 @@ class File(UpROOT):
         self.Trees = []
         self.Branches = []
         self.Leaves = []
-        self.StepSize = 10000
+        self.StepSize = 100
         self.ROOTFile = ROOTFile
 
         self._Reader =  uproot.open(self.ROOTFile, num_workers = Threads)
         self._State = None
-        self.Tracer = False
    
     def _CheckKeys(self, List, Type):
         TMP = []
@@ -63,29 +62,13 @@ class File(UpROOT):
         self.Branches = self._GetBranches()
         self.Leaves = self._GetLeaves() 
 
-        if self.Tracer:
-            self.Tracer.AddROOTFile(self)
-        
-    def GetTreeValues(self, Tree):
-        All = []
-        All += [b.split("/")[-1] for b in self.Branches]
-        All += [l.split("/")[-1] for l in self.Leaves]
-        self._All = All
-        self._Tree = Tree 
- 
     def __iter__(self):
-        self._C = []
-        self._iter = self._Reader[self._Tree].iterate(self._All, library = "ak", step_size = self.StepSize)
+        All = [b.split("/")[-1] for b in self.Branches] + [l.split("/")[-1] for l in self.Leaves]
+        self._iter = {Tree : self._Reader[Tree].iterate(All, library = "ak", step_size = self.StepSize) for Tree in self.Trees}
         return self
 
     def __next__(self):
-        if len(self._C) == 0:
-            self.Iter = next(self._iter)
-            self._C += self.Iter.to_list()
-        
-        if self.Tracer:
-            self.Tracer.ROOTInfo[self.ROOTFile].NextEvent(self._Tree)
-
-        return self._C.pop(0)
+        self.Iter = {Tree : next(self._iter[Tree]).to_list() for Tree in self._iter}
+        return {Tree : self.Iter[Tree].pop(0) for Tree in self.Iter}
 
 

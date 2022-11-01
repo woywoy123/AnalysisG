@@ -1,6 +1,6 @@
-from AnalysisTopGNN.Generators import Analysis
+from AnalysisTopGNN.Generators import Analysis, ModelEvaluator, Optimization
 from AnalysisTopGNN.Events import Event, EventGraphTruthTopChildren, EventGraphTruthJetLepton
-from Optimization import ModelTrainer
+
 from Templates.EventFeatureTemplate import ApplyFeatures
 from ExampleModel.BasicBaseLine import BasicBaseLineRecursion
 from ExampleModel.CheatModel import CheatModel
@@ -27,26 +27,48 @@ def TestOptimizer(Files):
     Ana.DataCache = False
     Ana.EventStop = None
     Ana.VerboseLevel = 1
-    Ana.Threads = 2
+    Ana.Threads = 1
     Ana.EventGraph = EventGraphTruthTopChildren
     ApplyFeatures(Ana, "TruthChildren")
     Ana.Launch()
     Ana.GenerateTrainingSample(90)
-   
-    op = ModelTrainer()
+  
+
+    Ana = Analysis()
+    Ana.ProjectName = "Optimizer"
+    Ana.InputSample("SingleTop")
+    Ana.InputSample("4Tops")
+    Ana.DumpHDF5 = True
+    Ana.DataCache = False
+    Ana.EventStop = None
+    Ana.VerboseLevel = 1
+    Ana.Threads = 1
+    Ana.EventGraph = EventGraphTruthTopChildren
+    ApplyFeatures(Ana, "TruthChildren")
+    Ana.Launch()
+    Ana.GenerateTrainingSample(90)
+  
+
+
+
+
+    return True
+    op = Optimization()
     op.ProjectName = "Optimizer"
     op.RunName = "CheatModel"
     op.Model = CheatModel()
     op.Tree = "nominal"
     op.Device = "cuda"
     op.BatchSize = 10
+    op.DebugMode = False
+    op.ContinueTraining = True
     op.Optimizer = {"ADAM" : { "lr" : 0.001, "weight_decay" : 0.00001 }}
     op.Scheduler = None #{"ExponentialLR" : {"gamma" : 0.9}}
     op.SplitSampleByNode = False
     op.AddAnalysis(Ana)
     op.Launch()
 
-    op = ModelTrainer()
+    op = Optimization()
     op.ProjectName = "Optimizer"
     op.RunName = "BaseLine_01"
     op.Model = BasicBaseLineRecursion()
@@ -59,9 +81,7 @@ def TestOptimizer(Files):
     op.AddAnalysis(Ana)
     op.Launch()
  
-    from ModelComparison import ModelComparison
-
-    Mod = ModelComparison()
+    Mod = ModelEvaluator()
     Mod.ProjectName = "Optimizer"
     Mod.Tree = "nominal"
     Mod.Device = "cuda"

@@ -1,28 +1,12 @@
 from AnalysisTopGNN.Features import FeatureAnalysis
 from AnalysisTopGNN.Tools import Tools
+from AnalysisTopGNN.Generators import Settings
 
-class Graphs(FeatureAnalysis, Tools):
-
+class Graphs:
+    
     def __init__(self):
-        self.Device = True
-        self.SelfLoop = True
-        self.FullyConnect = True
-        self.GraphAttribute = {}
-        self.NodeAttribute = {}
-        self.EdgeAttribute = {}
-        self.EventGraph = None
-        self.Tree = False
+        pass #Settings.__init__(self)
 
-    def SetAttribute(self, c_name, fx, container):
-        if c_name == "P_" or c_name == "T_":
-            c_name += fx.__name__ 
-        elif c_name == "":
-            c_name += fx.__name__ 
-
-        if c_name not in container:
-            container[c_name] = fx
-        else:
-            self.Warning("Found Duplicate " + c_name + " Attribute")
 
     def GetEventGraph(self):
         name = self.EventGraph.__init__.__qualname__.split(".")[-2]
@@ -30,13 +14,14 @@ class Graphs(FeatureAnalysis, Tools):
         return evnt
 
     def MakeGraph(self, event, smplidx):
-        ev = self.GetEventGraph()
+        ev = self.CopyInstance(self.EventGraph)
         try:
             ev = ev(event)
         except AttributeError:
             ev = ev.Escape(ev)
             ev.Event = event
             ev.Particles = []
+
         ev.iter = smplidx
         ev.SelfLoop = self.SelfLoop
         ev.FullyConnect = self.FullyConnect

@@ -1,109 +1,63 @@
 from AnalysisTopGNN.IO import File
-from AnalysisTopGNN.Notification import EventGenerator
-from AnalysisTopGNN.Samples import SampleTracer
 from AnalysisTopGNN.Samples.Event import EventContainer
-from AnalysisTopGNN.Tools import Threading
+from AnalysisTopGNN.Samples.Managers import SampleTracer
+
+from AnalysisTopGNN.Notification import EventGenerator
+from AnalysisTopGNN.Tools import Threading, Tools
 from .Settings import Settings
 
-class EventGenerator(EventGenerator, SampleTracer):
+class EventGenerator(EventGenerator, Settings, Tools, SampleTracer):
     def __init__(self, InputDir = False, EventStart = 0, EventStop = None):
 
         self.Caller = "EVENTGENERATOR"
-        
         Settings.__init__(self)
-        self.InputDirectory = {} 
+
         if isinstance(InputDir, dict):
             self.InputDirectory |= InputDir
         else:
             self.InputDirectory = InputDir
-        self.EventStart = EventStart
-        self.EventStop = EventStop
-        
-        self.Event = None
-
-        self.Settings = Settings()
    
-    def __GetEvent(self):
-        if callable(self.Event):
-            self.Event = self.Event()
-        _, evnt = self.GetObjectFromString(self.Event.__module__, type(self.Event).__name__)
-        return evnt
-
-    def __AddEvent(self, File, val = False):
-        if val:
-            
-            tr = self.Tracer
-            if File._Tree not in tr.EventInfo[self.Caller]:
-                tr.EventInfo[self.Caller][File._Tree] = 0
-            it = tr.EventInfo[self.Caller][File._Tree]
-            
-            if tr.EventStart > it:
-                tr.EventInfo[self.Caller][File._Tree] += 1
-                return False
-
-            if tr.EventStop != None and tr.EventStop < it:
-                tr.EventInfo[self.Caller][File._Tree] += 1
-                return True
-
-            if it not in tr.Events:
-                tr.Events[it] = EventContainer()
-                tr.Events[it].Filename = File.ROOTFile
-
-            EventObj = self.__GetEvent()
-            EventObj._Store = val
-            EventObj.Tree = File._Tree
-            EventObj._SampleIndex = self._iter[File._Tree]
-            tr.ROOTInfo[File.ROOTFile].MakeHash(self._iter[File._Tree])
-            tr.Events[it].Trees[File._Tree] = EventObj
-            tr.Events[it].EventIndex = it
-            tr.EventInfo[self.Caller][File._Tree] += 1
-            return False
-
-        for i in File:
-            if self.__AddEvent(File, i):
-                return True
-            self._iter[File._Tree] += 1
-
     def SpawnEvents(self):
+        def PopulateEvent(eventDict, indx):
+            EC = EventContainer()
+            for tr in EventDict 
+                EC.Tree[tr] = self.CopyInstance(self.Event)
+                EC.Tree[tr]._Store = EventDict[tr]
+                EC.Tree[tr].Tree = tr
+                EC.Tree[tr]._SampleIndex = indx
+            EC.EventIndex = indx
+            return EC
+        
         self.CheckSettings()
         self.CheckEventImplementation()
-        self.BeginTrace()
 
-        Path = self.Event.__module__ + "." + self.Event.__name__
-        self.AddInfo("Name", [self.Event.__name__])
-        self.AddInfo("Module", [self.Event.__module__])
-        self.AddInfo("Path", [Path])
-        self.AddInfo("EventCode", [self.GetSourceFile(self.Event)])
-        obj = self.__GetEvent()
-
-        particles = []
+        self.AddCode(self.Event)
+        obj = self.CopyInstance(self.Event)
         for p in obj.Objects:
-            particles.append(self.GetSourceFile(obj.Objects[p]))
-        particles = list(set(particles))
-        self.AddInfo("ParticleCode", particles)
-        if self._PullCode:
+            self.AddCode(obj.Objects[p])
+        
+        if self._dump:
             return self
 
         self.Files = self.ListFilesInDir(self.InputDirectory, extension = ".root") 
         self.CheckROOTFiles() 
         
-        for i in self.Files:
-            self.AddSamples(i, self.Files[i])
         
         for F in self.DictToList(self.Files):
             F_i = File(F, self.Threads)
-            F_i.Tracer = self.Tracer
             F_i.Trees += obj.Trees
             F_i.Branches += obj.Branches
             F_i.Leaves += obj.Leaves 
             F_i.ValidateKeys()
-            self._iter = {}
-            for tr in F_i.Trees:
-                self._iter[tr] = 0
-                F_i.GetTreeValues(tr)
-                if self.__AddEvent(F_i):
-                    return 
-        
+            indx = 0
+            for ev in F_i:
+                if self.EventStart <= indx:
+                    indx += 1
+                    continue
+                if self.EventStop != None and self.EventStop-1 <= indx:
+                    break
+                event = PopulateEvent(ev, indx)
+
         self.CheckSpawnedEvents()
 
     def CompileEvent(self, ClearVal = True):
@@ -115,7 +69,7 @@ class EventGenerator(EventGenerator, SampleTracer):
                 out.append(k)
             return out
         
-        if self._PullCode:
+        if self._dump:
             return self
 
         TH = Threading(list(self.Tracer.Events.values()), function, threads = self.Threads, chnk_size = self.chnk)

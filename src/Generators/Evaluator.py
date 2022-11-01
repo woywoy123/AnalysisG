@@ -6,8 +6,7 @@ from AnalysisTopGNN.Statistics import Reconstruction
 from AnalysisTopGNN.IO import UnpickleObject
 from AnalysisTopGNN.Samples import Epoch
 
-
-class ModelComparison(Tools, ModelComparisonPlots, SampleNode, RandomSamplers):
+class ModelEvaluator(Tools, ModelComparisonPlots, SampleNode, RandomSamplers):
 
     def __init__(self):
         self._Analysis = None

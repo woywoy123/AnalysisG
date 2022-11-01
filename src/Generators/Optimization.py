@@ -1,78 +1,21 @@
 from AnalysisTopGNN.Tools import Tools, RandomSamplers
-from AnalysisTopGNN.IO import PickleObject, UnpickleObject
+from AnalysisTopGNN.IO import PickleObject
 from AnalysisTopGNN.Samples import Epoch
-from AnalysisTopGNN.Model import Model
-import torch
+from AnalysisTopGNN.Model import Model, Optimizer, Scheduler
+from AnalysisTopGNN.Notification import Optimization
+from AnalysisTopGNN.Samples import SampleTracer
+from .Settings import Settings
 
 
-from torch.optim.lr_scheduler import ExponentialLR, CyclicLR
-class Scheduler:
-
-    def __init__(self, optimizer, keyword, parameters):
-        parameters["optimizer"] = optimizer
-        self.scheduler = None
-        self.scheduler = self.ExponentialLR(parameters) if keyword == "ExponentialLR" else self.scheduler
-        self.scheduler = self.CyclicLR(parameters) if keyword == "CyclicLR" else self.scheduler 
-
-    def ExponentialLR(self, params):
-        return ExponentialLR(**params)
-    
-    def CyclicLR(self, params):
-        return CyclicLR(**params)
-    
-    def __call__(self):
-        self.scheduler.step()
-    
-class Optimizer:
-    
-    def __init__(self, model, keyword, parameters):
-        self.optimizer = None
-        self.optimizer = self.ADAM(model, parameters) if keyword == "ADAM" else self.optimizer
-        self.optimizer = self.StochasticGradientDescent(model, parameters) if keyword == "SGD" else self.optimizer
-        self.name = keyword
-        self.params = parameters
-
-    def ADAM(self, model, params):
-        return torch.optim.Adam(model.parameters(), **params)
-
-    def StochasticGradientDescent(self, model, params):
-        return torch.optim.SGD(model.parameters(), **params)
-    
-    def __call__(self, step):
-        if step:
-            self.optimizer.step() 
-        else:  
-            self.optimizer.zero_grad()
-
-    def DumpState(self, OutputDir):
-        PickleObject(self.optimizer.state_dict(), OutputDir + "/OptimizerState")
-    
-    def LoadState(self, InputDir):
-        self.optimizer.load_state_dict(UnpickleObject(InputDir + "/OptimizerState"))
-
-
-
-class ModelTrainer(Tools, RandomSamplers):
+class Optimization(Tools, RandomSamplers, Optimization, Settings):
 
     def __init__(self):
-        self.Model = None
-        self.Device = None
-
-        self.Epochs = 10
-        self.kFolds = 10
-
-        self.Scheduler = None
-        self.Optimizer = None
-        self.BatchSize = 20
-
+        Settings.__init__(self)
+        self.Settings = Settings()
+        self.Caller = "Optimization"
+        
         self.Samples = {}
-        self.Tree = None
-        self.SplitSampleByNode = False
-
-        self.DoStatistics = True
-
-        self.ProjectName = None
-        self.RuName = None
+        
 
     def AddAnalysis(self, analysis):
         for smpl in analysis:
@@ -100,9 +43,13 @@ class ModelTrainer(Tools, RandomSamplers):
             train = folds[f][0]
             validation = folds[f][1]
             
+            self.StartKfoldInfo(train, validation, f, len(folds))
+
             self.Model.train()
             self._EpochObj.Fold = f
-            self._EpochObj.FoldTime[f] = 0
+            
+            if f not in self._EpochObj.FoldTime:
+                self._EpochObj.FoldTime[f] = 0
 
             self.Model.train()
             for i in train:
@@ -110,12 +57,11 @@ class ModelTrainer(Tools, RandomSamplers):
                 self._EpochObj.StartTimer()
                 pred, truth, loss_acc = self.Model.Prediction(i) 
                 self._EpochObj.StopTimer()
-                
                 self._EpochObj.Collect(pred, truth, loss_acc, "Train")
-
                 loss = self._EpochObj.TotalLoss
-                print("--->", loss.item())
                 
+                self.TrainingInfo(len(train), self._EpochObj, pred, truth, loss_acc, self.DebugMode)
+
                 self.Optimizer(step = False) 
                 loss.backward()
                 self.Optimizer(step = True)
@@ -129,17 +75,27 @@ class ModelTrainer(Tools, RandomSamplers):
 
 
     def Train(self):
-        
         for epoch in range(self.Epochs):
+            self.ShowEpoch(epoch, self.Epochs)
             outputDir = self.ProjectName + "/TrainedModels/" + self.RunName + "/Epoch-"+ str(epoch)
+            
+            if self.IsFile(outputDir + "/TorchSave.pth") and self.ContinueTraining:
+                self.Optimizer.LoadState(outputDir)
+                self.Model.LoadModel(outputDir + "/TorchSave.pth")
+                continue
+            else:
+                self.ContinueTraining = False
+
             self._EpochObj = Epoch(epoch)
             self._EpochObj.ModelOutputs += list(self.Model.GetModelOutputs())
             self._EpochObj.MakeDictionary("Train")
             self._EpochObj.MakeDictionary("Validation")
             self._EpochObj.OutDir = self.ProjectName + "/TrainedModels/" + self.RunName
+            
             for nodes in self.Samples:
-                print("-->", nodes)
+                self.TrainingNodes(nodes)
                 self.kFoldTraining(self.Samples[nodes])
+            
             self._EpochObj.Process()
 
             self.Optimizer.DumpState(outputDir)
@@ -151,6 +107,7 @@ class ModelTrainer(Tools, RandomSamplers):
                 self.Scheduler()
             
     def Launch(self):
+        self.CheckGivenSample(self.Samples)
         sample = list(self.Samples.values())[0][-1]
         optim = list(self.Optimizer)[0] 
         self.Optimizer = Optimizer(self.Model, optim, self.Optimizer[optim])
@@ -158,7 +115,7 @@ class ModelTrainer(Tools, RandomSamplers):
         if self.Scheduler != None:
             scheduler = list(self.Scheduler)[0]
             self.Scheduler = Scheduler(self.Optimizer.optimizer, scheduler, self.Scheduler[scheduler])
-        
+
         self.Model = Model(self.Model)
         self.Model.Device = self.Device
         train, pred = self.Model.SampleCompatibility(sample)

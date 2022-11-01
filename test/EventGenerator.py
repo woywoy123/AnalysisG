@@ -9,8 +9,8 @@ def TestEventGenerator(Files):
     EvtGen.EventStart = 1
     EvtGen.Event = Event
     EvtGen.SpawnEvents()
-    Tracer = EvtGen.Tracer
-   
+  
+    exit()
     passedEvents = False
     for i in Tracer.Events:
         if i == EvtGen.EventStart:

@@ -1,7 +1,46 @@
 from AnalysisTopGNN.Notification import SampleContainer
 from .ROOTFile import ROOTFile
 
-class SampleContainer(SampleContainer):
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class _SampleContainer(SampleContainer):
 
     def __init__(self):
         self.EventInfo = {}
