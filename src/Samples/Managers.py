@@ -1,139 +1,61 @@
+from .SampleContainer import SampleContainer
 
 class SampleTracer:
 
     def __init__(self):
-        pass
+        self.SampleContainer = SampleContainer()
 
+    def ResetSampleContainer(self):
+        self.SampleContainer = SampleContainer()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-class _SampleTracer:
-
-    def __init__(self, IMPRT = None):
-        if IMPRT is None:
-            self.Caller = ""
-        else:
-            self.Caller = IMPRT.Caller
-        self.ImportTracer(IMPRT)
-
-    def BeginTrace(self, Tracer = None):
-        
-        if hasattr(self, "Tracer"):
-            if self.Tracer == None:
-                self.Tracer = SampleContainer()
-        elif Tracer == None:
-            self.Tracer = SampleContainer()
-        elif hasattr(Tracer, "Tracer"):
-            self.Tracer = Tracer.Tracer
-        else:
-            return self.BeginTrace()
-        self.Tracer.Initialize(self.Caller)
-        self.Tracer.VerboseLevel = self.VerboseLevel
-        self.Tracer.EventStart = self.EventStart
-        self.Tracer.EventStop = self.EventStop
-        self.MakeCache()
-
-    def AddInfo(self, key, Inpt):
-        self.Tracer.Add({key : Inpt})
-
-    def AddSamples(self, Directory, Files):
-        self.Tracer.AddSamples(Directory, Files)
-    
-    def ImportTracer(self, Inpt):
-        if Inpt == None:
-            pass
-        elif "Tracer" in Inpt.__dict__:
-            self.Tracer = Inpt.Tracer
-        self.BeginTrace(Inpt)
-  
-    def MakeCache(self):
-        self._HashCache = {}
-        self.AddDictToDict(self._HashCache, "IndexToHash")
-        self.AddDictToDict(self._HashCache, "HashToEvent")
-        self.AddDictToDict(self._HashCache, "HashToFile")
-        self.AddDictToDict(self._HashCache, "IndexToEvent")
-        
-        ROOTInfo = self.Tracer.ROOTInfo
-        Events = self.Tracer.Events
-        
-        self._HashCache["HashToFile"] = {j : i  for i in ROOTInfo for j in list(ROOTInfo[i]._HashMap.values())}
-        self._HashCache["HashToEvent"] = {i.Filename : i for i in Events.values()}
-        self._HashCache["IndexToHash"] = {i.EventIndex : i.Filename for i in Events.values()}
-        self._HashCache["IndexToEvent"] = {i.EventIndex : i for i in Events.values()}
-
-    def IndexToHash(self, index):
-        return self._HashCache["IndexToHash"][index]
-   
-    def HashToIndex(self, _hash):
-        return self._HashCache["HashToEvent"][_hash].EventIndex
-
-    def IndexToEvent(self, Index):
-        return self._HashCache["IndexToEvent"][Index]
-
-    def IndexToROOT(self, index):
-        return self._HashCache["HashToFile"][self._HashCache["IndexToHash"][index]]
+    def AddROOTFile(self, Name, Event):
+        if self.SampleContainer == None:
+            self.SampleContainer = SampleContainer()
+        self.SampleContainer.AddEvent(Name, Event) 
     
     def HashToROOT(self, _hash):
-        return self._HashCache["HashToFile"][_hash] 
+        return self.SampleContainer.HashToROOT(_hash)
 
-    def HashToEvent(self, _hash):
-        return self._HashCache["HashToEvent"][_hash]
+    def GetROOTContainer(self, Name):
+        return self.SampleContainer.ROOTFiles[Name]
+    
+    def list(self):
+        return self.SampleContainer.list()
+
+    def dict(self):
+        return self.SampleContainer.dict()
+
+    def __len__(self):
+        self.__iter__()
+        return len(self._lst)
+    
+    def __contains__(self, key):
+        return key in self.SampleContainer
 
     def __iter__(self):
-        self.MakeCache()
-        ev = self._HashCache["IndexToEvent"]
-        self._events = [ev[k] for k in ev if ev[k] != None]
-        if len(self._events) == 0:
-            raise StopIteration()
+        if self.Caller == "EVENTGENERATOR":
+            self._lst = self.list()
+        elif self.Caller == "GRAPHGENERATOR":
+            self._lst = [i for i in self.list() if i.Compiled]
+        else:
+            self._lst = self.list()
         return self
 
     def __next__(self):
-        if len(self._events) == 0:
+        if len(self._lst) == 0:
             raise StopIteration()
-        ev = self._events.pop(0)
-        return ev
+        return self._lst.pop(0)
+    
+    def __getitem__(self, key):
+        return self.SampleContainer[key]
 
+    def __add__(self, other):
+        self.SampleContainer += other.SampleContainer
+        return self
+        
     def __radd__(self, other):
         if other == 0:
             return self
         else:
             return self.__add__(other)
-
-    def __add__(self, other):
-        self.Tracer += other.Tracer
-        self.MakeCache()
-        return self
     
-    def __len__(self):
-        self.MakeCache()
-        return len(self._HashCache["IndexToEvent"])

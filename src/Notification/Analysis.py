@@ -17,9 +17,10 @@ class Analysis(Notification):
     def FoundCache(self, Directory, Files):
         if len(Files) == 0:
             self.Warning("No cache was found under " + Directory)
-            return  
+            return True
         self.Success("Found cache: ")
         self.Success("\n -> " + "\n -> ".join(Files))
+        return False
     
     def MissingTracer(self, Directory):
         self.Failure("Tracer not found under: " + Directory + " skipping...")

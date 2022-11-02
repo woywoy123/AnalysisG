@@ -21,8 +21,8 @@ class FeatureAnalysis(FeatureAnalysis):
                 self.TestEvent(ev, EventGraph, ev.EventIndex)
             return 
         if hasattr(Event, "Trees"):
-            for tree in Event.Trees:
-                self.TestEvent(Event.Trees[tree], EventGraph, EventIndex)
+            for ev in [e for e in Event.Trees.values()]:
+                self.TestEvent(ev, EventGraph, EventIndex)
             return 
         
         for c_name in self.GraphAttribute:

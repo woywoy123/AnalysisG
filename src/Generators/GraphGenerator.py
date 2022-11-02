@@ -1,18 +1,15 @@
 import torch
 from AnalysisTopGNN.Tools import Threading
 from AnalysisTopGNN.Notification import GraphGenerator
-from AnalysisTopGNN.Samples import SampleTracer, Graphs
+from AnalysisTopGNN.Samples import SampleTracer
 from AnalysisTopGNN.Tools import RandomSamplers
+from AnalysisTopGNN.Features import FeatureAnalysis
 from AnalysisTopGNN.Generators import Settings
 
-class GraphGenerator(GraphGenerator, SampleTracer, RandomSamplers):
+class GraphFeatures(FeatureAnalysis, RandomSamplers):
     
     def __init__(self):
-        
-        self.Caller = "GRAPHGENERATOR"
-        Settings.__init__(self)
-        SampleTracer.__init__(self, self)
-
+        pass
 
     def SetAttribute(self, c_name, fx, container):
         if c_name == "P_" or c_name == "T_":
@@ -64,65 +61,71 @@ class GraphGenerator(GraphGenerator, SampleTracer, RandomSamplers):
     def TestFeatures(self, SamplingSize = 100):
         self.SetDevice()
         self.CheckSettings()
-        Events = self.RandomEvents(self.Tracer.Events, SamplingSize)
+        Events = self.RandomEvents(self.SampleContainer.list(), SamplingSize)
         self.TestEvent(Events, self.EventGraph)
+ 
+
+class GraphGenerator(GraphGenerator, SampleTracer, Settings, GraphFeatures):
+    
+    def __init__(self):
+        
+        self.Caller = "GRAPHGENERATOR"
+        Settings.__init__(self)
+        SampleTracer.__init__(self)
+
+   
+    def __MakeGraph(self, event, smplidx):
+        evobj = self.CopyInstance(self.EventGraph)
+        try:
+            ev = evobj(event)
+        except AttributeError:
+            ev = evobj.Escape(evobj)
+            ev.Event = event
+            ev.Particles = []
+        ev.iter = smplidx
+        ev.SelfLoop = self.SelfLoop
+        ev.FullyConnect = self.FullyConnect
+        ev.EdgeAttr |= self.EdgeAttribute
+        ev.NodeAttr |= self.NodeAttribute
+        ev.GraphAttr |= self.GraphAttribute
+        return ev
 
     def AddSamples(self, Events, Tree):
         for ev in Events:
-            evobj = Events[ev]
-            if self.EventStart > ev:
-                self.Tracer.Events[ev] = None
+            if ev.EventIndex < self.EventStart:
                 continue
-            if self.EventStop != None and self.EventStop < ev:
-                self.Tracer.Events[ev] = None
-                continue
-            if evobj.Compiled:
-                continue
-
-            trees = {}
-            if Tree == False:
-                trees |= {tr : self.MakeGraph(evobj.Trees[tr], ev) for tr in evobj.Trees}
+            elif self.EventStop != None and ev.EventIndex > self.EventStop:
+                break
+            
+            if Tree == None:
+                ev.Trees |= {tr : self.__MakeGraph(ev.Trees[tr], ev.EventIndex) for tr in ev.Trees}
             else:
-                trees |= {Tree : self.MakeGraph(evobj.Trees[Tree], ev)}
-            self.Tracer.Events[ev].Trees = trees
+                ev.Trees |= {Tree : self.__MakeGraph(ev.Trees[Tree], ev.EventIndex)}
 
     def CompileEventGraph(self):
-
-        self.AddInfo("Name", [self.EventGraph.__qualname__])
-        self.AddInfo("Path", [self.EventGraph.__module__])
-        self.AddInfo("EventCode", [self.GetSourceFile(self.EventGraph)])   
+        self.AddCode(self.EventGraph)
         
-        Features = {c_name : self.GetSourceCode(self.GraphAttribute[c_name]) for c_name in self.GraphAttribute}
-        self.AddInfo("GraphFeatures", [Features])
-        Features = {c_name : self.GetSourceCode(self.NodeAttribute[c_name]) for c_name in self.NodeAttribute}   
-        self.AddInfo("NodeFeatures", [Features])
-        Features = {c_name : self.GetSourceCode(self.EdgeAttribute[c_name]) for c_name in self.EdgeAttribute}
-        self.AddInfo("EdgeFeatures", [Features])
-         
-        self.AddInfo("Device", [self.Device])
-        self.AddInfo("SelfLoop", [self.SelfLoop])
-        self.AddInfo("FullyConnect", [self.FullyConnect])
+        Features = {c_name : self.AddCode(self.GraphAttribute[c_name]) for c_name in self.GraphAttribute}
+        Features = {c_name : self.AddCode(self.NodeAttribute[c_name]) for c_name in self.NodeAttribute}   
+        Features = {c_name : self.AddCode(self.EdgeAttribute[c_name]) for c_name in self.EdgeAttribute}
 
-        if self._PullCode:
+        if self._dump:
             return self
 
         self.SetDevice()
         self.CheckSettings()
-        self.AddSamples(self.Tracer.Events, self.Tree)
-        
+        self.AddSamples(self.SampleContainer.list(), self.Tree)
         def function(inpt):
             return [i.MakeGraph() if i != None else True for i in inpt]
 
-        events = list(self.Tracer.Events.values())
-        self.Tracer.Events = {}
-        TH = Threading(events, function, self.Threads, self.chnk)
+        TH = Threading(self.SampleContainer.list(), function, self.Threads, self.chnk)
         TH.VerboseLevel = self.VerboseLevel
         TH.Start()
         for i in TH._lists:
-            if i == True:
+            if i.Compiled == False:
                 continue
-            self.Tracer.Events[i.Filename] = i
+            self.SampleContainer[i.Filename] = i
+
         self.EdgeAttribute = {}
         self.GraphAttribute = {}
         self.NodeAttribute = {}
-        self.MakeCache()

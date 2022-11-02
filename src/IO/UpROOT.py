@@ -7,7 +7,7 @@ class File(UpROOT):
         self.Trees = []
         self.Branches = []
         self.Leaves = []
-        self.StepSize = 100
+        self.StepSize = 1000
         self.ROOTFile = ROOTFile
 
         self._Reader =  uproot.open(self.ROOTFile, num_workers = Threads)
@@ -65,10 +65,12 @@ class File(UpROOT):
     def __iter__(self):
         All = [b.split("/")[-1] for b in self.Branches] + [l.split("/")[-1] for l in self.Leaves]
         self._iter = {Tree : self._Reader[Tree].iterate(All, library = "ak", step_size = self.StepSize) for Tree in self.Trees}
+        self.Iter = {Tree : [] for Tree in self.Trees}
         return self
 
     def __next__(self):
-        self.Iter = {Tree : next(self._iter[Tree]).to_list() for Tree in self._iter}
+        if sum([len(self.Iter[Tree]) for Tree in self.Trees]) == 0:
+            self.Iter = {Tree : next(self._iter[Tree]).to_list() for Tree in self._iter}
         return {Tree : self.Iter[Tree].pop(0) for Tree in self.Iter}
 
 

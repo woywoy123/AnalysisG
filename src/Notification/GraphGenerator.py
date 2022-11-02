@@ -10,8 +10,6 @@ class GraphGenerator(Notification):
         message = False
         if self.EventGraph == None:
             message = "EventGraph not defined (obj.EventGraph). See implementations (See src/Events/EventGraphs.py)"
-        if self.Tracer == None:
-            message = "Tracer not imported. Use; obj.ImportTracer(...)"
         
         if message:
             self.Failure("="*len(message))
@@ -32,5 +30,3 @@ class GraphGenerator(Notification):
             self.Failure("="*len(message))
             self.FailureExit("NO ATTRIBUTES DEFINED!")
         self.Success("!!Data being processed on " + self.Device)
-        
-        self.BeginTrace(self.Tracer)

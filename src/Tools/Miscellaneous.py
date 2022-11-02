@@ -27,5 +27,7 @@ def GetSourceFile(obj):
     
     if obj.__class__.__name__ == "type":
         return GetSourceCode(obj)
-    return "".join(open(inspect.getfile(obj.__class__), "r").readlines())
-
+    try:
+        return "".join(open(inspect.getfile(obj.__class__), "r").readlines())
+    except: 
+        return inspect.getsource(obj)

@@ -18,18 +18,34 @@ class EventContainer(Hashing):
         if self.Compiled: 
             return self
         for i in self.Trees:
-            self.Trees[i] = self.Trees[i].ConvertToData()
+            try:
+                self.Trees[i] = self.Trees[i].ConvertToData()
+            except AttributeError:
+                return self
         self.Compiled = True
         return self
 
     def __add__(self, other):
-        if other == None:
+        if self.Filename != other.Filename:
+            print("here")
+        
+        if isinstance(other, str):
             return self
         
-        if self.Filename != other.Filename:
-            return [self, other]
-        self.Trees |= other.Trees
+        if other.Compiled and self.Compiled == False:
+            self.Trees |= other.Trees
+            self.Compiled = True
+        else:
+            self.Trees = {tr : other.Trees[tr] if tr in other.Trees else self.Trees[tr] for tr in other.Trees}
         return self
+
+    def __eq__(self, other):
+        if type(other) != type(self): return False
+
+        same = True if self.Filename == other.Filename else False
+        same = True if self.Compiled == other.Compiled and same else False
+       
+        return same
 
     def UpdateIndex(self, index):
         self.EventIndex = index

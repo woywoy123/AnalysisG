@@ -2,24 +2,18 @@ import torch
 import h5py
 import numpy as np
 import os
+import sys 
 
 from AnalysisTopGNN.Tools import Tools
 from AnalysisTopGNN.Tools import Threading
 from AnalysisTopGNN.Notification import IO
+from AnalysisTopGNN.Generators.Settings import Settings
 
-class HDF5(Tools, IO):
+class HDF5(Settings, Tools, IO):
 
     def __init__(self):
-        self._File = None
-        self.Filename = "UNTITLED"
-        self._ext = ".hdf5"
-        self._iter = -1
-        self._obj = {}
-
-        self.VerboseLevel = 3
-        self.Threads = 12
-        self.chnk = 2
         self.Caller = "HDF5"
+        Settings.__init__(self)
     
     def Start(self, Name = False, Mode = "w"):
         if self.Filename.endswith(self._ext) == False:
@@ -42,7 +36,13 @@ class HDF5(Tools, IO):
 
     def __AddToDataSet(self, RefName, Key, Val = ""):
         if "AnalysisTopGNN" in str(type(Val)).split("'")[1]:
-            self.DumpObject(Val)
+            if RefName not in self._Tracking:
+                self._Tracking[RefName] = {}
+            if str(hex(id(Val))) not in self._Tracking[RefName]:
+                self._Tracking[RefName][str(hex(id(Val)))] = 0
+            self._Tracking[RefName][str(hex(id(Val)))] += 1
+            if self._Tracking[RefName][str(hex(id(Val)))] < 2:
+                self.DumpObject(Val)
             Val = str(hex(id(Val)))
         elif "torch_geometric" in str(type(Val)).split("'")[1]:
             self.DumpObject(Val.to("cpu"))
@@ -57,7 +57,6 @@ class HDF5(Tools, IO):
             if self.__Contains(objectaddress) == False:
                 self._Ref.attrs[objectaddress] = ObjPath
             
-
             if isinstance(Val, str):
                 return self.__AddToDataSet(objectaddress, Key, Val)
             elif isinstance(Val, int):
@@ -93,8 +92,10 @@ class HDF5(Tools, IO):
 
     def DumpObject(self, obj, Name = False):
         if self._iter == -1:
+            self._Tracking = {}
             self.Start(Name = Name, Mode = "w")
         if Name:
+            self._Tracking = {}
             self.__IncrementRefSet(Name)
 
         objname = str(type(obj)).split("'")[1]

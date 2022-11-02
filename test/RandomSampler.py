@@ -22,12 +22,12 @@ def TestRandomSampling(Files):
     Ana.ProjectName = "RandomSampler"
     Ana.InputSample("SingleTop")
     Ana.InputSample("4Tops")
-    Ana.GenerateTrainingSample(90)
+    #Ana.GenerateTrainingSample(90)
 
     Ana = Analysis()
     Ana.ProjectName = "RandomSampler"
     Ana.InputSample("SingleTop")
     Ana.InputSample("4Tops")
-    Ana.GenerateSampleNodeDistributions()
+    #Ana.GenerateSampleNodeDistributions()
     
     return True

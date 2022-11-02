@@ -1,125 +1,99 @@
 from AnalysisTopGNN.Notification import SampleContainer
 from .ROOTFile import ROOTFile
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-class _SampleContainer(SampleContainer):
+class SampleContainer:
 
     def __init__(self):
-        self.EventInfo = {}
-        self.ROOTInfo = {}
-        self.Events = {}
-        self.VerboseLevel = 3
-        self.EventStart = 0
-        self.EventStop = None
-        self.__name__ = "SampleContainer"
+        self.ROOTFiles = {}
+        self._Hashes = {}
+        self._EventMap = {}
     
-    def Initialize(self, Caller):
-        self.Caller = Caller
-        if Caller not in self.EventInfo:
-            self.EventInfo[Caller] = {}
+    def AddEvent(self, Name, Event):
+        if Name not in self.ROOTFiles:
+            self.ROOTFiles[Name] = ROOTFile(Name)
+        self.ROOTFiles[Name].AddEvent(Event) 
+    
+    def HashToROOT(self, _hash):
+        for name in self.ROOTFiles:
+            if _hash in self.ROOTFiles[name]:
+                return name
 
-    def Add(self, InptDic):
-        self.EventInfo[self.Caller] |= InptDic
+    def list(self, force = False):
+        if len(self._EventMap) != len(self) or force:
+            lst = [ev for name in self.ROOTFiles for ev in self.ROOTFiles[name].list()]
+            self._EventMap = {i : ev for i, ev in zip(range(len(lst)), lst)}
+        return list(self._EventMap.values())
 
-    def AddSamples(self, Directory, Files):
-        self.EventInfo[self.Caller] |= {Directory : Files}
-        self.RegisteredDirectory(Directory)
+    def dict(self):
+        self.hash(True)
+        return self._Hashes
 
-    def AddROOTFile(self, Obj):
-        F = ROOTFile()
-        F.Trees += Obj.Trees
-        F.Branches += Obj.Branches
-        F.Leaves += Obj.Leaves
-        F.EventIndex |= {t : -1 for t in F.Trees}
-        F.Filename = Obj.ROOTFile
-        self.ROOTInfo[Obj.ROOTFile] = F
+    def hash(self, force = False):
+        if len(self._Hashes) != len(self) or force:
+            self._Hashes = {_hash : self.ROOTFiles[name][_hash] for name in self.ROOTFiles for _hash in self.ROOTFiles[name].hash()}
+        return list(self._Hashes.values())
+
+    def __len__(self):
+        return sum([len(self.ROOTFiles[name]) for name in self.ROOTFiles])  
+
+    def __getitem__(self, key):
+        self.hash()
+        self.list()
+        if key in self._Hashes and isinstance(key, str):
+            return self._Hashes[key]
+        if key in self._EventMap:
+            return self._EventMap[key]
+        return False
+    
+    def __setitem__(self, key, obj):
+        self.hash()
+        self.list()
+        for name in self.ROOTFiles:
+            if key not in self.ROOTFiles[name]:
+                continue
+            self.ROOTFiles[name][key] += obj
+            break
     
     def __add__(self, other):
-        _EventInfo1, _EventInfo2 = self.EventInfo, other.EventInfo
-        _Events1, _Events2 = self.Events, other.Events
+        names = list(self.ROOTFiles) + list(other.ROOTFiles)
+        samples = list(self.ROOTFiles.values()) + list(other.ROOTFiles.values())
         
-        Event = list(_Events2.values()) + list(_Events1.values())
-        trees = {}
-        for i in Event:
-            for k in i.Trees:
-                if k not in trees:
-                    trees[k] = []
-                trees[k] += [i.Filename]
-        
-        for j in _EventInfo2:
-            if j not in _EventInfo1:
-                _EventInfo1[j] = _EventInfo2[j]
-            for k in _EventInfo2[j]:
-                if k not in _EventInfo1[j]:
-                    _EventInfo1[j][k] = []
-                if k in trees:
-                    _EventInfo1[j][k] = len(trees[k])
-                    continue
-                _EventInfo1[j][k] += [t for t in _EventInfo2[j][k] if t not in _EventInfo1[j][k]]
-      
-        ev_self = {i.Filename : i for i in self.Events.values()}
-        ev_other = {i.Filename : i for i in other.Events.values()}
-
-        Map = {}
-        Map |= ev_self
-        Map |= ev_other
-        Common = {i.Filename : i for i in Map.values() if i.Filename in ev_self and i.Filename in ev_other}
-        for i in Common:
-            if ev_self[i].Compiled:
-                Map[i].Trees |= ev_self[i].Trees
+        self.ROOTFiles = {}
+        for name, sample in zip(names, samples):
+            if name not in self.ROOTFiles:
+                self.ROOTFiles[name] = sample
                 continue
-            if ev_other[i].Compiled:
-                Map[i].Trees |= ev_other[i].Trees
-                continue
-            Map[i].Trees |= ev_other[i].Trees
-            Map[i].Trees |= ev_self[i].Trees
-        self.Events = { i : Map[k].UpdateIndex(i) for i, k in zip(range(len(Map)), Map) }
-        hashmap = {i.Filename : i.EventIndex for i in self.Events.values()}
-
-        roots = list(self.ROOTInfo.values()) + list(other.ROOTInfo.values())
-        roots = roots if isinstance(roots, list) else [roots]
-        self.ROOTInfo |= {i.Filename : i for i in roots}
-
-        for i in self.ROOTInfo:
-            self.ROOTInfo[i]._HashMap |= {hashmap[k] : k for k in self.ROOTInfo[i]._HashMap.values() if k in hashmap}
+            self.ROOTFiles[name] += sample
+        self.hash()
+        self.list()
         return self
+   
+    def __contains__(self, key):
+        if key in self._Hashes:
+            return True
+        if key in self._EventMap:
+            return True
+        return False
 
+    def ClearEvents(self):
+        for name in self.ROOTFiles:
+            self.ROOTFiles[name].ClearEvents()
+        self.list()
+        self.hash()
+
+    def RestoreEvents(self, events):
+        if isinstance(events, list):
+            events = {i.Filename : i for i in events}
+        rest = {}
+        for i in events:
+            name = self.HashToROOT(i)
+            if name not in rest:
+                rest[name] = []
+            rest[name].append(events[i])
+        
+        for name in rest:
+            self.ROOTFiles[name].RestoreEvents(rest[name])
+        self.list()
+        self.hash()
+    
 

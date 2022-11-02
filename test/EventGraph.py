@@ -8,14 +8,12 @@ def Test(a):
 
 def TestEventGraph(Files):
    
-    #Ev = EventGenerator(Files)
-    #Ev.EventStart = 0
-    #Ev.EventStop = 100
-    #Ev.Event = Event
-    #Ev.SpawnEvents()
-    #Ev.CompileEvent()
-    #PickleObject(Ev, "TMP")
-    Ev = UnpickleObject("TMP")
+    Ev = EventGenerator(Files)
+    Ev.EventStart = 0
+    Ev.EventStop = 100
+    Ev.Event = Event
+    Ev.SpawnEvents()
+    Ev.CompileEvent()
 
     Gr = GraphGenerator()
     Gr += Ev
@@ -23,9 +21,14 @@ def TestEventGraph(Files):
     Gr.AddGraphFeature(Test)
     Gr.TestFeatures(10)
     Gr.EventStart = 1
-    Gr.EventStop = 10 
+    Gr.EventStop = 100
     Gr.CompileEventGraph()
-
+    
+    if len(Gr) != 100:
+        return False
     for i in Gr:
-        print(i)
+        if i.Compiled == False:
+            return False
+        if Gr.HashToROOT(i.Filename) == None:
+            return False
     return True 

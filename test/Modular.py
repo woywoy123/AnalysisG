@@ -25,8 +25,6 @@ def TestEventGenerator(Files):
     ev1.CompileEvent()
    
     combined = ev0 + ev1
-    print(combined.Tracer)
-    
     Object0 = {}
     for i in ev0:
         Object0[i.Filename] = i
@@ -73,7 +71,7 @@ def TestEventGenerator(Files):
         Ana.InputSample(Name, Dir)
         Ana.EventCache = True
         Ana.Event = Event
-        Ana.Threads = 12
+        Ana.Threads = 4
         Ana.chnk = 4
         Ana.EventStart = 0
         Ana.EventStop = End
@@ -87,7 +85,9 @@ def TestEventGenerator(Files):
     
     passing = False
     for i in ev:
-        passing = combined.HashToEvent(i.Filename).Filename == i.Filename
+        passing = ev[i.Filename].Filename == i.Filename
+        if passing == False:
+            return False
     return passing
 
 

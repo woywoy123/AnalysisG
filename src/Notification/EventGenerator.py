@@ -30,5 +30,5 @@ class EventGenerator(Notification):
             self.EventStart = tmp
     
     def CheckSpawnedEvents(self):
-        if len(self.Tracer.Events) == 0:
+        if len(self.SampleContainer) == 0:
             self.Warning("No Events were generated...")

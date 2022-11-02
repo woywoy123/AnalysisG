@@ -30,36 +30,28 @@ def TestEventGenerator(Files):
     ev2 = UnpickleObject("TMP2")
     ev3 = UnpickleObject("TMP3")
 
-    x = SampleTracer(ev1)
-    y = SampleTracer(ev2)
-    z = SampleTracer(ev3) 
-
-    p = sum([x, y])
+    p = sum([ev1, ev2])
     
-    assert len(p) == len(z)
-    print("PASSED: SAME LENGTH", len(p), len(z))
+    assert len(p) == len(ev3)
+    print("PASSED: SAME LENGTH", len(p), len(ev3))
 
-    for i, j in zip(p, z):
+    for i, j in zip(p, ev3):
         assert i.EventIndex == j.EventIndex
     print("PASSED: CONSISTENT INDEX")
 
-    for i, j in zip(p, z):
+    for i, j in zip(p, ev3):
         assert i.Filename == j.Filename
     print("PASSED: SAME FILENAMES")
     
-    for i, j in zip(p, z):
+    for i, j in zip(p, ev3):
         assert len(i.Trees["nominal"].DetectorParticles) == len(j.Trees["nominal"].DetectorParticles)
     print("PASSED: SAME NUMBER OF PARTICLES PER EVENT")
 
     ev1 = UnpickleObject("TMP1")
     ev2 = UnpickleObject("TMP2")
     ev3 = UnpickleObject("TMP3")
-
-    x = SampleTracer(ev1)
-    y = SampleTracer(ev2)
-    z = SampleTracer(ev3) 
-
-    p = sum([x, y, SampleTracer(ev3)])
+    z = UnpickleObject("TMP3")
+    p = sum([ev1, ev2, ev3])
     
     assert len(p) == len(z)
     print("PASSED: SAME LENGTH", len(p), len(z))
@@ -95,7 +87,7 @@ def TestGraphGenerator(Files):
     Ev.CompileEvent()
     
     Gr = GraphGenerator()
-    Gr.ImportTracer(Ev) 
+    Gr += Ev 
     Gr.AddNodeFeature(Test)
     Gr.EventGraph = EventGraphTruthTopChildren
     Gr.CompileEventGraph()
@@ -107,7 +99,7 @@ def TestGraphGenerator(Files):
     T.CompileEvent()
 
     Gr = GraphGenerator()
-    Gr.ImportTracer(T) 
+    Gr += T 
     Gr.AddNodeFeature(Test)
     Gr.EventGraph = EventGraphTruthTopChildren
     Gr.CompileEventGraph()
@@ -119,7 +111,7 @@ def TestGraphGenerator(Files):
     T.CompileEvent()
 
     Gr = GraphGenerator()
-    Gr.ImportTracer(T) 
+    Gr += T
     Gr.AddNodeFeature(Test)
     Gr.EventGraph = EventGraphTruthTopChildren
     Gr.CompileEventGraph()
@@ -127,13 +119,9 @@ def TestGraphGenerator(Files):
 
     ev1 = UnpickleObject("TMP1")
     ev2 = UnpickleObject("TMP2")
-    ev3 = UnpickleObject("TMP3")
+    z = UnpickleObject("TMP3")
 
-    x = SampleTracer(ev1)
-    y = SampleTracer(ev2)
-    z = SampleTracer(ev3) 
-
-    p = sum([x, y])
+    p = sum([ev1, ev2])
     
     assert len(p) == len(z)
     print("PASSED: SAME LENGTH", len(p), len(z))
@@ -153,12 +141,9 @@ def TestGraphGenerator(Files):
     ev1 = UnpickleObject("TMP1")
     ev2 = UnpickleObject("TMP2")
     ev3 = UnpickleObject("TMP3")
+    z = UnpickleObject("TMP3")
 
-    x = SampleTracer(ev1)
-    y = SampleTracer(ev2)
-    z = SampleTracer(ev3) 
-
-    p = sum([x, y, SampleTracer(ev3)])
+    p = sum([ev1, ev2, ev3])
     
     assert len(p) == len(z)
     print("PASSED: SAME LENGTH", len(p), len(z))
@@ -186,8 +171,7 @@ def TestEventGeneratorDumper(Files):
     Ev.Event = Event
     Ev.SpawnEvents()
     Ev.CompileEvent()
-    hdf = HDF5()
-
+    
     Objects = {}
     it = 0
     for i in Ev:
@@ -195,11 +179,18 @@ def TestEventGeneratorDumper(Files):
         it+=1 
         if it == 24:
             break
+
+    hdf = HDF5()
+    hdf.Threads = 12 
     hdf.MultiThreadedDump(Objects, "_Pickle/")
     hdf.MergeHDF5("_Pickle/")
     hdf.Filename = "_Pickle/UNTITLED.hdf5"
     for name, obj in hdf:
         print(name, obj.Trees["nominal"].TruthTops, obj)
+        print(len(Objects[name].Trees["nominal"].DetectorParticles) == len(obj.Trees["nominal"].DetectorParticles))
+        if len(Objects[name].Trees["nominal"].DetectorParticles) == len(obj.Trees["nominal"].DetectorParticles):
+            continue
+        return False
     return True
 
 def TestGraphGeneratorDumper(Files):
@@ -217,7 +208,7 @@ def TestGraphGeneratorDumper(Files):
     Ev.CompileEvent()
     
     Gr = GraphGenerator()
-    Gr.ImportTracer(Ev) 
+    Gr += Ev
     Gr.AddNodeFeature(Test)
     Gr.EventGraph = EventGraphTruthTopChildren
     Gr.CompileEventGraph()
