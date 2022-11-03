@@ -11,3 +11,4 @@ from .Condor import Condor
 from .Analysis import Analysis
 from .Plotting import Plotting
 from .Optimization import Optimization
+from .Evaluator import Evaluator

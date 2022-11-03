@@ -25,7 +25,9 @@ class Base:
         if lvl > self.VerboseLevel:
             return True
         return message.lstrip("!")
-
+    
+    def WhiteSpace(self):
+        print()
 
 class __Failure(Base):
 

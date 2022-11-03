@@ -91,6 +91,42 @@ class _HDF5:
         self.Threads = 12
         self.chnk = 12
 
+class _TrainingSample:
+
+    def __init__(self):
+        self.TrainingSampleName = False
+        self.TrainingPercentage = 80
+
+class _Optimization:
+    def __init__(self):
+        self.SplitSampleByNode = False
+        self.kFolds = 10
+        self.BatchSize = 10
+        self.Model = None
+        self.DebugMode = False
+        self.ContinueTraining = False
+        self.RunName = "UNTITLED"
+        self.Epochs = 10
+        self.Optimizer = None 
+        self.Scheduler = None
+        self.Device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.VerbosityIncrement = 10
+
+class _ModelEvaluator:
+    
+    def __init__(self):
+        self._ModelDirectories = {}
+        self._ModelSaves = {}
+        self.Device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.SampleNodes = {}
+        self.Training = {}
+        self.TestSample = {}
+        self.PlotNodeStatistics = True 
+        self.PlotTrainingStatistics = True
+        self.PlotTrainSample = True 
+        self.PlotTestSample = True 
+        self.PlotEntireSample = True
+        self.PlotEpochDebug = False
 
 class _Analysis:
 
@@ -98,12 +134,19 @@ class _Analysis:
         _General.__init__(self) 
         _EventGenerator.__init__(self)
         _GraphGenerator.__init__(self)
+        _TrainingSample.__init__(self)
+        _Optimization.__init__(self)
+        _ModelEvaluator.__init__(self)
         self._SampleMap = {}
+        
         self.EventCache = False
         self.DataCache = False
+
         self.DumpHDF5 = False
         self.DumpPickle = False
         self.OutputDirectory = "./"
+
+
 
 
 class Settings(_General):
@@ -117,12 +160,18 @@ class Settings(_General):
         if self.Caller == "GRAPHGENERATOR":
             _GraphGenerator.__init__(self)
 
+        if self.Caller == "HDF5":
+            _HDF5.__init__(self)
+
+        if self.Caller == "OPTIMIZATION":
+            _Optimization.__init__(self)
+
+        if self.Caller == "MODELEVALUATOR":
+            _ModelEvaluator.__init__(self)
+
         if self.Caller == "ANALYSIS":
             _Analysis.__init__(self)
 
-        if self.Caller == "HDF5":
-            _HDF5.__init__(self)
-    
     def DumpSettings(self):
         return self.__dict__
     
@@ -130,7 +179,7 @@ class Settings(_General):
         for i in self.__dict__:
             if i not in inpt:
                 continue
-            if i == "_Code" or i == "SampleContainer":
+            if i == "_Code" or i == "SampleContainer" or i == "Caller":
                continue
             self.__dict__[i] = inpt[i]
 

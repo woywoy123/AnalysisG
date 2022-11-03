@@ -16,12 +16,12 @@ class Optimization(Notification):
             self.Success("(Nodes) -> '" + i + "' Number of Graphs: " + str(len(sample[i])))
         
     def TrainingNodes(self, Nodes):
-        msg =  "(" + str(Nodes) + ") ->" + str(len(self.Samples[Nodes]))
+        msg =  "(" + str(Nodes) + ") ->" + str(len(self._Samples[Nodes]))
         self.Success("="*len(msg))
         self.Success(msg)
 
     def StartKfoldInfo(self, train, valid, kfold, folds):
-        msg = "Training Size: " + str(len(train)) + " Validation Size: " + str(len(valid))
+        msg = "Training Size: " + str(len(train)) + " Validation Size: " + str(len(valid)) + " @ Batch Size: " + str(self.BatchSize)
         self.Success("="*len(msg))
         self.Success("kFold: " + str(kfold+1) + " / " + str(folds))
         self.Success(msg)
@@ -30,7 +30,8 @@ class Optimization(Notification):
 
     def TrainingInfo(self, lengthdata, epoch, pred, truth, loss_acc, debug):
         per = int(100*self._it / lengthdata)
-        self.Success("!!==> Progress: " + str(per) + "%")
+        if per%self.VerbosityIncrement == 0:
+            self.Success("!!==> Progress: " + str(per) + "%")
         self._it += 1
         if debug == False:
             return 
@@ -72,5 +73,5 @@ class Optimization(Notification):
     def ShowEpoch(self, Epoch, Epochs):
         self.Success("_"*10 + " Starting Epoch " + str(Epoch+1) + "/" + str(Epochs) + "_"*10)
 
-
-
+    def FileNotFoundWarning(self, Directory, Name):
+        pass

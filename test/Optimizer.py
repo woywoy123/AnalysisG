@@ -11,84 +11,58 @@ def TestOptimizer(Files):
     Ana.ProjectName = "Optimizer"
     Ana.InputSample("SingleTop", Files[1])
     Ana.InputSample("4Tops", Files[0])
-    Ana.EventCache =  True
-    Ana.DumpPickle = True
+    Ana.DataCache = True
+    Ana.DumpHDF5 = True
     Ana.chnk = 100
-    Ana.EventStop = 500
-    Ana.VerboseLevel = 1
+    Ana.EventStop = 1000
+    Ana.VerboseLevel = 3
     Ana.Event = Event
+    Ana.EventGraph = EventGraphTruthTopChildren
+    ApplyFeatures(Ana, "TruthChildren")
     Ana.Launch()
-
+    
     Ana = Analysis()
     Ana.ProjectName = "Optimizer"
     Ana.InputSample("SingleTop")
     Ana.InputSample("4Tops")
-    Ana.DumpHDF5 = True
-    Ana.DataCache = False
-    Ana.EventStop = None
-    Ana.VerboseLevel = 1
-    Ana.Threads = 1
-    Ana.EventGraph = EventGraphTruthTopChildren
-    ApplyFeatures(Ana, "TruthChildren")
+    Ana.DataCache = True
+    Ana.TrainingSampleName = "Test"
+    Ana.TrainingPercentage = 80
     Ana.Launch()
-    Ana.GenerateTrainingSample(90)
   
+    Ana = Analysis()
+    Ana.ProjectName = "Optimizer"
+    Ana.RunName = "CheatModel"
+    Ana.TrainingSampleName = "Test"
+    Ana.Model = CheatModel()
+    Ana.Tree = "nominal"
+    Ana.ContinueTraining = True
+    Ana.BatchSize = 10
+    Ana.Optimizer = {"ADAM" : { "lr" : 0.001, "weight_decay" : 0.00001 }}
+    Ana.Launch()
 
     Ana = Analysis()
     Ana.ProjectName = "Optimizer"
-    Ana.InputSample("SingleTop")
-    Ana.InputSample("4Tops")
-    Ana.DumpHDF5 = True
-    Ana.DataCache = False
-    Ana.EventStop = None
-    Ana.VerboseLevel = 1
-    Ana.Threads = 1
-    Ana.EventGraph = EventGraphTruthTopChildren
-    ApplyFeatures(Ana, "TruthChildren")
+    Ana.RunName = "BaseLine"
+    Ana.TrainingSampleName = "Test"
+    Ana.Model = BasicBaseLineRecursion()
+    Ana.Tree = "nominal"
+    Ana.ContinueTraining = True
+    Ana.BatchSize = 50
+    Ana.Optimizer = {"ADAM" : { "lr" : 0.0001, "weight_decay" : 0.00001 }}
     Ana.Launch()
-    Ana.GenerateTrainingSample(90)
-  
 
-
-
-
-    return True
-    op = Optimization()
-    op.ProjectName = "Optimizer"
-    op.RunName = "CheatModel"
-    op.Model = CheatModel()
-    op.Tree = "nominal"
-    op.Device = "cuda"
-    op.BatchSize = 10
-    op.DebugMode = False
-    op.ContinueTraining = True
-    op.Optimizer = {"ADAM" : { "lr" : 0.001, "weight_decay" : 0.00001 }}
-    op.Scheduler = None #{"ExponentialLR" : {"gamma" : 0.9}}
-    op.SplitSampleByNode = False
-    op.AddAnalysis(Ana)
-    op.Launch()
-
-    op = Optimization()
-    op.ProjectName = "Optimizer"
-    op.RunName = "BaseLine_01"
-    op.Model = BasicBaseLineRecursion()
-    op.Tree = "nominal"
-    op.Device = "cuda"
-    op.BatchSize = 50
-    op.Optimizer = {"ADAM" : { "lr" : 0.0001, "weight_decay" : 0.00001 }}
-    op.Scheduler = None #{"ExponentialLR" : {"gamma" : 0.9}}
-    op.SplitSampleByNode = False
-    op.AddAnalysis(Ana)
-    op.Launch()
- 
-    Mod = ModelEvaluator()
-    Mod.ProjectName = "Optimizer"
-    Mod.Tree = "nominal"
-    Mod.Device = "cuda"
-    Mod.AddAnalysis(Ana)
-    Mod.AddModel("CheatModel", "./Optimizer/TrainedModels/CheatModel", CheatModel(), 50) 
-    Mod.AddModel("BaseLine", "./Optimizer/TrainedModels/BaseLine_01", BasicBaseLineRecursion(), 50) 
-    Mod.Compile()
-
+    Ana = Analysis()
+    Ana.ProjectName = "Optimizer"
+    Ana.Tree = "nominal"
+    Ana.TrainingSampleName = "Test"
+    Ana.PlotNodeStatistics = True
+    Ana.PlotTrainingStatistics = True
+    Ana.PlotTrainSample = True
+    Ana.PlotTestSample = True
+    Ana.PlotEntireSample = True
+    Ana.EvaluateModel("CheatModel", "./Optimizer/TrainedModels/CheatModel", CheatModel(), 10) 
+    Ana.EvaluateModel("BasicBaseLine", "./Optimizer/TrainedModels/BaseLine", BasicBaseLineRecursion(), 50)
+    Ana.Launch()
 
     return True

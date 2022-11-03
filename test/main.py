@@ -55,8 +55,8 @@ if __name__ == '__main__':
     #Test(Modular.TestEventGenerator, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
 
     # ==== Test Optimizer ==== # 
-    Test(RandomSampler.TestRandomSampling, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
-    #Test(Optimizer.TestOptimizer, Files = [RootDir + "tttt/QU_0.root", {RootDir + "t" : ["QU_14.root", "QU_5.root"]}])
+    #Test(RandomSampler.TestRandomSampling, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
+    Test(Optimizer.TestOptimizer, Files = [RootDir + "tttt/QU_0.root", {RootDir + "t" : ["QU_14.root", "QU_5.root"]}])
 
     # === Test Submission ==== #
     #Test(Submission.TestAnalysis, GeneralDir = RootDir)

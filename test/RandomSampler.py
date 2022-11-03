@@ -22,12 +22,10 @@ def TestRandomSampling(Files):
     Ana.ProjectName = "RandomSampler"
     Ana.InputSample("SingleTop")
     Ana.InputSample("4Tops")
-    #Ana.GenerateTrainingSample(90)
-
-    Ana = Analysis()
-    Ana.ProjectName = "RandomSampler"
-    Ana.InputSample("SingleTop")
-    Ana.InputSample("4Tops")
-    #Ana.GenerateSampleNodeDistributions()
+    Ana.TrainingSample = True
+    Ana.DataCache = True
+    Ana.TrainingPercentage = 50
+    Ana.TrainingSampleName = "Test"
+    Ana.Launch()
     
     return True

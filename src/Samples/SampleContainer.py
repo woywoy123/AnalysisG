@@ -33,6 +33,27 @@ class SampleContainer:
             self._Hashes = {_hash : self.ROOTFiles[name][_hash] for name in self.ROOTFiles for _hash in self.ROOTFiles[name].hash()}
         return list(self._Hashes.values())
 
+    def ClearEvents(self):
+        for name in self.ROOTFiles:
+            self.ROOTFiles[name].ClearEvents()
+        self.list()
+        self.hash()
+
+    def RestoreEvents(self, events):
+        if isinstance(events, list):
+            events = {i.Filename : i for i in events}
+        rest = {}
+        for i in events:
+            name = self.HashToROOT(i)
+            if name not in rest:
+                rest[name] = []
+            rest[name].append(events[i])
+        
+        for name in rest:
+            self.ROOTFiles[name].RestoreEvents(rest[name])
+        self.list()
+        self.hash()
+    
     def __len__(self):
         return sum([len(self.ROOTFiles[name]) for name in self.ROOTFiles])  
 
@@ -74,26 +95,4 @@ class SampleContainer:
         if key in self._EventMap:
             return True
         return False
-
-    def ClearEvents(self):
-        for name in self.ROOTFiles:
-            self.ROOTFiles[name].ClearEvents()
-        self.list()
-        self.hash()
-
-    def RestoreEvents(self, events):
-        if isinstance(events, list):
-            events = {i.Filename : i for i in events}
-        rest = {}
-        for i in events:
-            name = self.HashToROOT(i)
-            if name not in rest:
-                rest[name] = []
-            rest[name].append(events[i])
-        
-        for name in rest:
-            self.ROOTFiles[name].RestoreEvents(rest[name])
-        self.list()
-        self.hash()
-    
 

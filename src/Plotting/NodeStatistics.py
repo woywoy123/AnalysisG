@@ -103,13 +103,13 @@ class SampleNode:
                     self.TestSample[tr] = _Container()
                 prc = analysis.HashToROOT(i.Filename).split("/")[-2]
                 nodes = i.Trees[tr].num_nodes
-
+                
                 self.SampleNodes[tr].Add(prc, nodes)
                 if i.Train == True:
                     self.Training[tr].Add(prc, nodes)
                 if i.Train == False:
                     self.TestSample[tr].Add(prc, nodes)
-    
+
     def Process(self):
         for tr in self.SampleNodes:
             out = []
@@ -134,7 +134,7 @@ class SampleNode:
                 "Complete Sample Node Distribution \n Superimposed by Process ("+ tr +")", 
                 "AllSampleNodeDistribution_" + tr, 
                 self.SampleNodes[tr])
-
+            
             self.MakeHistograms(
                 "Training Sample Node Distribution \n Superimposed by Process ("+ tr +")", 
                 "TrainingSampleNodeDistribution_" + tr, 

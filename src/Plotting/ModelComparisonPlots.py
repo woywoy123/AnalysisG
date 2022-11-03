@@ -102,7 +102,6 @@ class PredictionContainerPlots:
         Plots["xData"] = Data
         Plots["Title"] = Title
         L1 = TH1F(**Plots)
-        #L1.Compile()
         return L1
     
     def MergeMass(self, Title, Hists):
@@ -119,7 +118,6 @@ class PredictionContainerPlots:
         Plots["Title"] = Title
         Plots["xData"] = Data
         Plots = TH1F(**Plots)
-        #Plots.Compile()
         return Plots
 
     def MergeEfficiencyHistogram(self, Title, Plots):
@@ -135,7 +133,7 @@ class PredictionContainerPlots:
         Plots["yTitle"] = "Efficiency (%)"
         Plots["yMax"] = 101
         Plots = TLine(**Plots)
-        #Plots.Compile()
+        Plots.Compile()
         return Plots
     
     def MergeEfficiencyLines(self, Title, Lines):
@@ -144,7 +142,6 @@ class PredictionContainerPlots:
         Plots["Lines"] = Lines
         Plots["yMax"] = 101
         Plots = CombineTLine(**Plots)
-        Plots.Compile()
         return Plots
 
 class DataBlock(PredictionContainerPlots, Metrics):
@@ -164,7 +161,7 @@ class DataBlock(PredictionContainerPlots, Metrics):
         p = self.MassPlot(self.Prediction, "Model")
         t = self.MassPlot(self.Truth, "Truth")
         t.Color = p.Color
-        name = "Mass_" + self.Feature + "_Ep" + str(self.Epoch)
+        name = "Mass_" + self.Feature
         Title = "Model Feature Prediction of Invariant Mass Distribution \nSuperimposed on Truth: " + self.Feature + " at Epoch " + str(self.Epoch)
         self.Plots[name] = self.MergeMass(Title, [p, t])
 
@@ -189,29 +186,29 @@ class DataBlock(PredictionContainerPlots, Metrics):
 
 
         Title = "Model Feature Prediction of Invariant Mass \n by Process: " + self.Feature + " at Epoch " + str(self.Epoch)
-        self.Plots["Mass_" + self.Feature + "_Ep" + str(self.Epoch) + "_ByProcess"] = self.MergeMass(Title, list(DataP.values()) + list(DataT.values()))
+        self.Plots["Mass_" + self.Feature + "_ByProcess"] = self.MergeMass(Title, list(DataP.values()) + list(DataT.values()))
     
     def MakeEfficiencyHistogram(self):
         Process = {}
         for prc in self.Process:
             Process[prc] = self.EfficiencyHistogram(self.Process[prc], prc)
-        Title = "Model Prediction Efficiency by Process: " + self.Feature + " at Epoch " + str(self.Epoch)
-        self.Plots["EfficiencyHistogram_" + self.Feature + "_Ep" + str(self.Epoch) + "_ByProcess"] = self.MergeEfficiencyHistogram(Title, list(Process.values()))
+        Title = "Model Feature Prediction ("+self.Feature+") Efficiency by Processes"
+        self.Plots["EfficiencyHistogram_" + self.Feature + "_ByProcess"] = self.MergeEfficiencyHistogram(Title, list(Process.values()))
 
     def MakeProcessEfficiency(self):
         self.Efficiency = {prc : self.EfficiencyLine(self.Epoch, self.Efficiency[prc], prc, self.Error[prc]) for prc in self.Efficiency}
-        Title = "Reconstruction Efficiency by Process - " + self.Feature
+        Title = "Reconstruction Efficiency of Model Feature (" + self.Feature + ") by Processes"
         self.Plots["EfficiencyProcess_"+self.Feature] = self.MergeEfficiencyLines(Title, list(self.Efficiency.values()))
 
-    def MakeOverallEfficiency(self):
+    def MakeAverageEfficiency(self):
         self.Efficiency = self.EfficiencyLine(self.Epoch, self.Efficiency, self.Feature, self.Error)
         Title = "Average Reconstruction Efficiency using Model Feature: " + self.Feature
         self.Plots["AverageEfficiency_" + self.Feature] = self.MergeEfficiencyLines(Title, [self.Efficiency])
     
-    def MakeParticleEfficiency(self):
-        self.Prediction = self.EfficiencyLine(self.Epoch, self.Prediction, self.Feature, [])
+    def MakeOverallParticleEfficiency(self):
+        Prediction = self.EfficiencyLine(self.Epoch, self.Prediction, self.Feature, [])
         Title = "Reconstruction Efficiency using Model Feature: " + self.Feature
-        self.Plots["OverallEfficiency_" + self.Feature] = self.MergeEfficiencyLines(Title, [self.Prediction])
+        self.Plots["OverallEfficiency_" + self.Feature] = self.MergeEfficiencyLines(Title, [Prediction])
 
     def MergeBlockPlots(self):
         self._Color = {model : None for model in self.Plots}
@@ -321,6 +318,7 @@ class PredictionContainer(Metrics):
         self.ModelName = None
         self.Epoch = None
         self.EpochContainer = None
+        self._MakeDebugPlots = True
 
         self._MassBlocks = {}
         self._RecoBlocks = {}
@@ -354,7 +352,7 @@ class PredictionContainer(Metrics):
             self._RecoEpoch[f].Prediction.append(inpt[f]["nrec"])
 
     def CompileEpoch(self):
-        outdir = self.ProjectName + "/" + self.Make + "/" + self.ModelName
+        outdir = self.ProjectName + "/Summary/SampleModes/" + self.Make + "/" + self.ModelName
         Plots = {}
         for f in self._MassBlocks:
             self._MassBlocks[f].MakeMass()
@@ -375,7 +373,7 @@ class PredictionContainer(Metrics):
             Plots[fig].SaveFigure()
         
         self.EpochContainer.OutDir = outdir
-        self.EpochContainer.Process(True)
+        self.EpochContainer.Process(self._MakeDebugPlots)
    
     def __radd__(self, other):
         if other == 0:
@@ -424,8 +422,8 @@ class PredictionContainer(Metrics):
         self.Plots = {}
         for feat in PrcEfficiency:
             PrcEfficiency[feat].MakeProcessEfficiency()
-            RecoEfficiency[feat].MakeOverallEfficiency()
-            RecoEfficiency[feat].MakeParticleEfficiency()
+            RecoEfficiency[feat].MakeAverageEfficiency()
+            RecoEfficiency[feat].MakeOverallParticleEfficiency()
             self.Plots |= PrcEfficiency[feat].Plots
             self.Plots |= RecoEfficiency[feat].Plots 
         

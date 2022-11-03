@@ -26,6 +26,9 @@ class EventContainer(Hashing):
         return self
 
     def __add__(self, other):
+        if other == "":
+            return self
+
         if self.Filename != other.Filename:
             print("here")
         

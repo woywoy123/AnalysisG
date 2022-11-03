@@ -37,6 +37,8 @@ class SampleTracer:
             self._lst = self.list()
         elif self.Caller == "GRAPHGENERATOR":
             self._lst = [i for i in self.list() if i.Compiled]
+        elif self.Caller == "OPTIMIZATION":
+            self._lst = [i for i in self.list() if i.Compiled and (i.Train or i.Train == None)]
         else:
             self._lst = self.list()
         return self

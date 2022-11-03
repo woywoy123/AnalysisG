@@ -1,37 +1,33 @@
 from AnalysisTopGNN.Tools import Tools, RandomSamplers
-from AnalysisTopGNN.IO import PickleObject
-from AnalysisTopGNN.Samples import Epoch
+from AnalysisTopGNN.Samples import SampleTracer, Epoch
 from AnalysisTopGNN.Model import Model, Optimizer, Scheduler
-from AnalysisTopGNN.Notification import Optimization
-from AnalysisTopGNN.Samples import SampleTracer
+from AnalysisTopGNN.IO import PickleObject
 from .Settings import Settings
 
-
-class Optimization(Tools, RandomSamplers, Optimization, Settings):
+from AnalysisTopGNN.Notification import Optimization
+class Optimization(Tools, RandomSamplers, Optimization, Settings, SampleTracer):
 
     def __init__(self):
+        self.Caller = "OPTIMIZATION"
         Settings.__init__(self)
-        self.Settings = Settings()
-        self.Caller = "Optimization"
-        
-        self.Samples = {}
-        
+        SampleTracer.__init__(self)
+        self._Samples = {}
 
-    def AddAnalysis(self, analysis):
-        for smpl in analysis:
-            if smpl.Train == False:
-                continue
-            if smpl.Compiled == False:
-                continue
+   
+    def __MakeSample(self):
+        for smpl in self:
             key = "All"
             if self.SplitSampleByNode:
                 key = smpl.Trees[self.Tree].num_nodes.item()
 
-            if key not in self.Samples:
-                self.Samples[key] = []
+            if key not in self._Samples:
+                self._Samples[key] = []
             smpl.Trees[self.Tree].to(self.Device, non_blocking = True)
 
-            self.Samples[key].append(smpl.Trees[self.Tree])
+            self._Samples[key].append(smpl.Trees[self.Tree])
+
+    def AddAnalysis(self, analysis):        
+        self += analysis
 
     def kFoldTraining(self, sample):
         
@@ -92,9 +88,9 @@ class Optimization(Tools, RandomSamplers, Optimization, Settings):
             self._EpochObj.MakeDictionary("Validation")
             self._EpochObj.OutDir = self.ProjectName + "/TrainedModels/" + self.RunName
             
-            for nodes in self.Samples:
+            for nodes in self._Samples:
                 self.TrainingNodes(nodes)
-                self.kFoldTraining(self.Samples[nodes])
+                self.kFoldTraining(self._Samples[nodes])
             
             self._EpochObj.Process()
 
@@ -107,8 +103,14 @@ class Optimization(Tools, RandomSamplers, Optimization, Settings):
                 self.Scheduler()
             
     def Launch(self):
-        self.CheckGivenSample(self.Samples)
-        sample = list(self.Samples.values())[0][-1]
+        self.Model = self.CopyInstance(self.Model)
+        if self._dump:
+            return 
+
+        self.__MakeSample()
+        self.CheckGivenSample(self._Samples)
+
+        sample = list(self._Samples.values())[0][-1]
         optim = list(self.Optimizer)[0] 
         self.Optimizer = Optimizer(self.Model, optim, self.Optimizer[optim])
     

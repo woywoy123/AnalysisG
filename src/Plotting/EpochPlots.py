@@ -124,10 +124,10 @@ class EpochPlots:
             
             Hists = []
             for names in self.names:
-                Acc = getattr(self, "Loss_" + names)[feat]
+                Loss = getattr(self, "Loss_" + names)[feat]
                 Plots["Title"] = names
-                Plots["xData"] = Acc
-                Hists.append(TH1F(**Plots))    
+                Plots["xData"] = Loss
+                Hists.append(TH1F(**Plots))
             
             Plots["Title"] = "Loss Distribution for Different Samples Feature: " + feat
             Plots["Histograms"] = Hists

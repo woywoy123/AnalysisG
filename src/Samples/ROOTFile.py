@@ -62,6 +62,8 @@ class ROOTFile(Hashing):
             if _hash not in self.HashMap:
                 self.HashMap[_hash] = evnt
                 continue
+            if self._lock or other._lock:
+                continue
             self.HashMap[_hash] += evnt
 
         self.EventMap = self.EventMap if self._lock else {i : ev.UpdateIndex(i) for i, ev in zip(range(len(self.HashMap)), self.HashMap.values())}

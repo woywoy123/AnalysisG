@@ -1,30 +1,26 @@
 from AnalysisTopGNN.Model import Model
-from AnalysisTopGNN.Tools import Tools, RandomSamplers
+from AnalysisTopGNN.Tools import Tools, RandomSamplers, Threading
 from AnalysisTopGNN.Plotting.ModelComparisonPlots import _Comparison, DataBlock, ModelComparisonPlots, PredictionContainer 
 from AnalysisTopGNN.Plotting.NodeStatistics import SampleNode
 from AnalysisTopGNN.Statistics import Reconstruction
-from AnalysisTopGNN.IO import UnpickleObject
-from AnalysisTopGNN.Samples import Epoch
+from AnalysisTopGNN.IO import UnpickleObject, PickleObject
+from AnalysisTopGNN.Samples import Epoch, SampleTracer
+from .Settings import Settings
+from AnalysisTopGNN.Notification import Evaluator
 
-class ModelEvaluator(Tools, ModelComparisonPlots, SampleNode, RandomSamplers):
+class ModelEvaluator(Settings, SampleTracer, Evaluator, Tools, ModelComparisonPlots, SampleNode, RandomSamplers):
 
     def __init__(self):
-        self._Analysis = None
-        self._ModelDirectories = {}
-        self._ModelSaves = {}
+
+        self.Caller = "MODELEVALUATOR"
+        Settings.__init__(self)
+        SampleTracer.__init__(self)
        
         self._Container = {}
         self._Blocks = {}
 
-        self.ProjectName = None
-        self.Tree = None
-        self.Device = "cuda"
-
     def AddAnalysis(self, analysis):
-        if self._Analysis == None:
-            self._Analysis = analysis
-        else:
-            self._Analysis += analysis
+        self += analysis
     
     def AddModel(self, Name, Directory, ModelInstance = None, BatchSize = None):
         if Name not in self._ModelDirectories:
@@ -63,11 +59,8 @@ class ModelEvaluator(Tools, ModelComparisonPlots, SampleNode, RandomSamplers):
             plt = self.PlotAccuracy(Plots, met, outdir) if met.startswith("Accuracy") else plt
 
     def __ShowSampleDistribution(self):
-        self.SampleNodes = {}
-        self.Training = {}
-        self.TestSample = {}
         self.OutDir = self.ProjectName + "/NodeStatistics/"
-        self.AddNodeSample(self._Analysis)
+        self.AddNodeSample(self)
         self.Process()
 
     def __ParticleReconstruction(self, model, sample, smpleprc, container):
@@ -85,7 +78,7 @@ class ModelEvaluator(Tools, ModelComparisonPlots, SampleNode, RandomSamplers):
             truth = reco(data) 
             
             for i in range(idx,idx + len(pred)):
-                p = self._Analysis.HashToROOT(prc[i-idx]).split("/")[-2]
+                p = self.HashToROOT(prc[i-idx]).split("/")[-2]
                 rec = {o : reco.ParticleEfficiency(pred[i - idx][o], truth[i - idx][o], p) for o in pred[i-idx]}
                 container.ReconstructionEfficiency(rec, truth[i - idx], pred[i-idx])
 
@@ -104,26 +97,31 @@ class ModelEvaluator(Tools, ModelComparisonPlots, SampleNode, RandomSamplers):
             if self._ModelSaves[name]["ModelInstance"] == None:
                 continue
             BatchSize = 1 if self._ModelSaves[name]["BatchSize"] == None else self._ModelSaves[name]["BatchSize"]
-            smple, prcsmple = self.MakeSample({i.Filename : i.Trees[self.Tree] for i in self._Analysis if i.Train == Type or Type == None}, True, BatchSize)
+            smple, prcsmple = self.MakeSample({i.Filename : i.Trees[self.Tree] for i in self if i.Train == Type or Type == None}, True, BatchSize)
             
             model = self._ModelSaves[name]["ModelInstance"] 
             epochsDict = self._ModelSaves[name]["TorchSave"]
             epochs = list(epochsDict) 
             epochs.sort()
+           
+            make = "Train" if Type == True else ""
+            make = "Test" if Type == False else make
+            make = "All" if Type == None else make
             
-            if Type:
-                make = "Train"
-            elif Type == False:
-                make = "Test"
-            elif Type == None:
-                make = "All"
-
             if make not in self._Container:
                 self._Container[make] = {}
             if name not in self._Container[make]:
                 self._Container[make][name] = []
         
             for ep in epochs:
+                cacheDir = self.ProjectName + "/TrainedModels/" + name + "/Epoch-" + str(ep) + "/" + make + "Sample"
+                
+                self.MakingCurrentJob(make, name, ep)
+                if self.IsFile(cacheDir + ".pkl"):
+                    p = UnpickleObject(cacheDir)
+                    self._Container[make][name].append(p)
+                    continue
+
                 mod = Model(model)
                 mod.Device = self.Device
                 mod.LoadModel(self.abs(epochsDict[ep]))
@@ -132,6 +130,7 @@ class ModelEvaluator(Tools, ModelComparisonPlots, SampleNode, RandomSamplers):
                 p.ModelName = name
                 p.Epoch = ep 
                 p.Make = make
+                p._MakeDebugPlots = self.PlotEpochDebug
                 p.EpochContainer = Epoch(ep)
                 p.EpochContainer.ModelOutputs += list(mod.GetModelOutputs())
                 p.EpochContainer.MakeDictionary(make)
@@ -144,9 +143,22 @@ class ModelEvaluator(Tools, ModelComparisonPlots, SampleNode, RandomSamplers):
                 self.__ParticleReconstruction(mod, smple, prcsmple, p)
                 self.__EvaluateSample(mod, smple, p)
                 
-                p.CompileEpoch()
+                PickleObject(p, cacheDir)
 
     def __ProcessContainer(self, Container, Name):
+        def function(inpt):
+            for i in inpt:
+                i[0].CompileEpoch()
+            return inpt 
+        
+        lst = [[i, mod + "_" + str(i.Epoch)] for mod in Container for i in Container[mod]]
+        th = Threading(lst, function, self.Threads, self.chnk)
+        th.VerboseLevel = self.VerboseLevel
+        th.Start()
+        for i in th._lists:
+            mod = i[1].split("_")
+            Container[mod[0]][int(mod[1])] = i[0]
+
         self._TrainingContainer = {}
         ModelContainer = {}
         BlockContainer = {}
@@ -164,23 +176,52 @@ class ModelEvaluator(Tools, ModelComparisonPlots, SampleNode, RandomSamplers):
         self.__CompareTraining(Name)
 
     def Compile(self):
+        self.StartModelEvaluator()
+
         self._TrainingContainer = {}
         for names in self._ModelDirectories:
             Dict = {int(i.split("-")[-1]) : i + "/TorchSave.pth" for i in self._ModelDirectories[names] if self.IsFile(i + "/TorchSave.pth")}
             self._ModelSaves[names]["TorchSave"] = Dict
-            self._ModelDirectories[names] = [UnpickleObject(i + "/Stats.pkl") for i in self._ModelDirectories[names] if self.IsFile(i+"/Stats.pkl")]
-            self.TrainingComparison(self._ModelDirectories, self._TrainingContainer, names)
-        
-        for ep in self._TrainingContainer:
-            self._TrainingContainer[ep].Process()
-        self.__CompareTraining("Training")
-        self.__ShowSampleDistribution()
 
-        self.__EvaluateSampleType(True) 
-        self.__ProcessContainer(self._Container["Train"], "TrainingSample") 
-        self.__EvaluateSampleType(False)
-        self.__ProcessContainer(self._Container["Test"], "TestSample")        
-        self.__EvaluateSampleType(None)
-        self.__ProcessContainer(self._Container["All"], "CompleteSample") 
+            models = [UnpickleObject(i + "/Stats.pkl") for i in self._ModelDirectories[names] if self.IsFile(i+"/Stats.pkl")]
+            self._ModelDirectories[names] = models
+            
+            if self.PlotTrainingStatistics:
+                self.TrainingComparison(self._ModelDirectories, self._TrainingContainer, names)
+
+        if self.PlotTrainingStatistics:
+            def function(inpt):
+                for i in inpt:
+                    i[0].Process()
+                return inpt
+
+            lst = [[self._TrainingContainer[i], i] for i in self._TrainingContainer]
+            th = Threading(lst, function, self.Threads, self.chnk)
+            th.VerboseLevel = self.VerboseLevel
+            th.Start()
+            for i in th._lists:
+                self._TrainingContainer[i[1]] = i[0]
+
+            self.MakingPlots("--- Processing the Statistics of Trained Models ---")
+            self.__CompareTraining("Training")
+        
+        if self.PlotNodeStatistics:
+            self.MakingPlots("--- Making Node Sample Distribution ---")
+            self.__ShowSampleDistribution()
+        
+        if self.PlotTrainSample:
+            self.MakingPlots("--- Processing the Training Sample ---")
+            self.__EvaluateSampleType(True) 
+            self.__ProcessContainer(self._Container["Train"], "TrainingSample") 
+        
+        if self.PlotTestSample:
+            self.MakingPlots("--- Processing the Test (Withheld) Sample ---")
+            self.__EvaluateSampleType(False)
+            self.__ProcessContainer(self._Container["Test"], "TestSample")        
+
+        if self.PlotEntireSample:
+            self.MakingPlots("--- Processing the Entire Sample ---")
+            self.__EvaluateSampleType(None)
+            self.__ProcessContainer(self._Container["All"], "CompleteSample") 
         
         self.Verdict()
