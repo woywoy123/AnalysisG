@@ -61,3 +61,9 @@ if __name__ == '__main__':
     # === Test Submission ==== #
     #Test(Submission.TestAnalysis, GeneralDir = RootDir)
     #Test(Submission.TestCondorDumping, GeneralDir = RootDir)
+
+
+    # = Continue with
+    #-> Weird sample bug in the evaluator. Need to look into this more
+    #-> Sample Node Distributions need to be fixed.
+    #-> Integrate into condor submission. 
