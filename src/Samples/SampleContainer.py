@@ -7,6 +7,7 @@ class SampleContainer:
         self.ROOTFiles = {}
         self._Hashes = {}
         self._EventMap = {}
+        self._locked = False
     
     def AddEvent(self, Name, Event):
         if Name not in self.ROOTFiles:
@@ -38,6 +39,7 @@ class SampleContainer:
             self.ROOTFiles[name].ClearEvents()
         self.list()
         self.hash()
+        self._locked = True
 
     def RestoreEvents(self, events):
         if isinstance(events, list):
@@ -51,8 +53,9 @@ class SampleContainer:
         
         for name in rest:
             self.ROOTFiles[name].RestoreEvents(rest[name])
-        self.list()
-        self.hash()
+        self.list(True)
+        self.hash(True)
+        self._locked = False
     
     def __len__(self):
         return sum([len(self.ROOTFiles[name]) for name in self.ROOTFiles])  

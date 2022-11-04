@@ -36,34 +36,29 @@ if __name__ == '__main__':
 
     RootDir = "/home/tnom6927/Downloads/CustomAnalysisTopOutputTest/"
     
-    # ==== Testing IO ==== #
+    ## ==== Testing IO ==== #
     #Test(IO.TestDirectory, Files = RootDir)
-    
-    # ==== Test EventGenerator ==== #
+    #
+    ## ==== Test EventGenerator ==== #
     #Test(EventGenerator.TestEventGenerator, Files = {RootDir + "tttt" : ["QU_0.root"], RootDir + "t" : ["QU_14.root"]})
 
-    # ==== Test EventGraph ==== #
+    ## ==== Test EventGraph ==== #
     #Test(EventGraph.TestEventGraph, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
 
-    ## ==== Test Merger ==== #
+    ### ==== Test Merger ==== #
     #Test(Exporter.TestEventGenerator, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
     #Test(Exporter.TestGraphGenerator, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
     #Test(Exporter.TestEventGeneratorDumper, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
     #Test(Exporter.TestGraphGeneratorDumper, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
 
-    # ==== Test Modules ==== #
+    ## ==== Test Modules ==== #
     #Test(Modular.TestEventGenerator, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
 
-    # ==== Test Optimizer ==== # 
+    ## ==== Test Optimizer ==== # 
     #Test(RandomSampler.TestRandomSampling, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
-    Test(Optimizer.TestOptimizer, Files = [RootDir + "tttt/QU_0.root", {RootDir + "t" : ["QU_14.root", "QU_5.root"]}])
+    #Test(Optimizer.TestOptimizer, Files = [RootDir + "tttt/QU_0.root", {RootDir + "t" : ["QU_14.root", "QU_5.root"]}])
 
     # === Test Submission ==== #
     #Test(Submission.TestAnalysis, GeneralDir = RootDir)
-    #Test(Submission.TestCondorDumping, GeneralDir = RootDir)
+    Test(Submission.TestCondorDumping, GeneralDir = RootDir)
 
-
-    # = Continue with
-    #-> Weird sample bug in the evaluator. Need to look into this more
-    #-> Sample Node Distributions need to be fixed.
-    #-> Integrate into condor submission. 

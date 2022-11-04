@@ -30,7 +30,7 @@ class EventContainer(Hashing):
             return self
 
         if self.Filename != other.Filename:
-            print("here")
+            return [self, other]
         
         if isinstance(other, str):
             return self

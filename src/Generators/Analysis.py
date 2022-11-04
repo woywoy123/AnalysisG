@@ -17,25 +17,49 @@ class Analysis(Analysis, Settings, SampleTracer, Tools, GraphFeatures):
         SampleTracer.__init__(self)
 
     def InputSample(self, Name, SampleDirectory = None):
+        if self._launch == False:
+            self._InputValues.append(["INPUTSAMPLE", {"Name" : Name, "SampleDirectory" : SampleDirectory}])
+            return  
+
         if isinstance(SampleDirectory, str):
             if SampleDirectory.endswith(".root"):
                 SampleDirectory = {"/".join(SampleDirectory.split("/")[:-1]) : SampleDirectory.split("/")[-1]}
             else:
                 SampleDirectory = [SampleDirectory] 
-
+        
         if self.AddDictToDict(self._SampleMap, Name) or SampleDirectory == None:
+            if len(self._SampleMap[Name]) == 0:
+                smple = UnpickleObject(self.OutputDirectory + "/" + self.ProjectName + "/Tracers/" + Name)
+                self._SampleMap[Name] = {}
+                for f in smple.ROOTFiles:
+                    fdir = "/".join(f.split("/")[:-1])
+                    self.AddListToDict(self._SampleMap[Name], fdir)
+                    self._SampleMap[Name][fdir].append(f.split("/")[-1])
             return 
         if isinstance(SampleDirectory, dict):
             self._SampleMap[Name] |= self.ListFilesInDir(SampleDirectory, ".root")
             return 
         self._SampleMap[Name] |= self.ListFilesInDir({i : "*" for i in SampleDirectory}, ".root")
    
-    def EvaluateModel(self, Name, Directory, ModelInstance = None, BatchSize = None):
-        if Name not in self._ModelDirectories:
-            self._ModelDirectories[Name] = []
+    def EvaluateModel(self, Directory, ModelInstance = None, BatchSize = None):
+        if self._launch == False:
+            if ModelInstance != None:
+                ModelInstance = self.CopyModelInstance(ModelInstance)
+            self._InputValues.append(["EVALUATEMODEL", {"Directory": Directory, "ModelInstance" : ModelInstance, "BatchSize": BatchSize}])
+            return  
+
         Directory = self.AddTrailing(Directory, "/")
+        Name = Directory.split("/")[-2]
+
+        if Name in self._ModelDirectories:
+            self.ModelNameAlreadyPresent(Name)
+            return 
+        if len(self.ls(Directory)) == 0:
+            self.InvalidOrEmptyModelDirectory()
+            return 
+
         self._ModelDirectories[Name] = [Directory + i for i in self.ls(Directory) if "Epoch-" in i]
-        self._ModelSaves[Name] = {"ModelInstance": self.CopyInstance(ModelInstance)} 
+        self._ModelSaves[Name] = {"ModelInstance": ModelInstance} 
         self._ModelSaves[Name] |= {"BatchSize" : BatchSize}
 
     def __BuildRootStructure(self): 
@@ -47,11 +71,10 @@ class Analysis(Analysis, Settings, SampleTracer, Tools, GraphFeatures):
         self.mkdir(self.OutputDirectory + "/" + self.ProjectName)
         self.mkdir(self.OutputDirectory + "/" + self.ProjectName + "/Tracers")
 
-    def __DumpCache(self, instance, outdir, Dump, Compiled):
-        if Dump == False:
-            return 
+    def __DumpCache(self, instance, outdir, Compiled):
+        
         if Compiled == False:
-            export = {ev.Filename : ev for ev in instance if ev.Filename not in self}
+            export = {ev.Filename : ev for ev in instance if self[ev.Filename] != ""}
         else:
             export = {ev.Filename : ev for ev in instance if self[ev.Filename].Compiled == Compiled}
         
@@ -69,43 +92,62 @@ class Analysis(Analysis, Settings, SampleTracer, Tools, GraphFeatures):
         if self.DumpPickle:
             PickleObject(export, outdir + "/Events")
 
-    def __EventGenerator(self, InptMap, name):
-        
-        for f in self.DictToList(InptMap):
-            tmp = f.split("/")
-           
-            self.InputDirectory = {"/".join(tmp[:-1]) : tmp[-1]}
-            ev = EventGenerator()
-            ev.RestoreSettings(self.DumpSettings())
-            ev.SpawnEvents()
-            ev.CompileEvent()
-            self.GetCode(ev)
-            if self._dump:
-                return 
-            self.__DumpCache(ev, self.output + "/EventCache/" + name + "/" + tmp[-1].split(".")[0], self.EventCache, False)
-            
-            if self.EventCache:
-                ROOT = ev.GetROOTContainer(f)
-                ROOT.ClearEvents()
-            self += ev
-            
-    def __GraphGenerator(self, InptMap, name):
-        
-        for f in self.DictToList(InptMap):
-            tmp = f.split("/")
-            gr = GraphGenerator()
-            gr.SampleContainer.ROOTFiles[f] = self.GetROOTContainer(f)
-            gr.RestoreSettings(self.DumpSettings())
-            gr.CompileEventGraph()
-            self.GetCode(gr)
-            if self._dump:
-                return 
-            self.__DumpCache(gr, self.output + "/DataCache/" + name + "/" + tmp[-1].split(".")[0], self.DataCache, True)
+    def __EventGenerator(self, name, filedir):
+        if self.Event == None:
+            self.NoEventImplementation()
+            return 
 
-            ROOT = gr.GetROOTContainer(f)
+        ev = EventGenerator()
+        ev.RestoreSettings(self.DumpSettings())
+        ev.InputDirectory = {"/".join(filedir[:-1]) : filedir[-1]}
+        ev.SpawnEvents()
+        ev.CompileEvent()
+        self.GetCode(ev)
+        self += ev 
+        
+        if self.EventCache == False:
+            return 
+        self.__DumpCache(ev, self.output + "/EventCache/" + name + "/" + filedir[-1].split(".")[0], False)
+            
+    def __GraphGenerator(self, name, filedir):
+        if self.EventGraph == None:
+            self.NoEventGraphImplementation()
+            return 
+        
+        direc = "/".join(filedir)
+        gr = GraphGenerator()
+        gr.SampleContainer.ROOTFiles[direc] = self.GetROOTContainer(direc)
+        gr.RestoreSettings(self.DumpSettings())
+        gr.CompileEventGraph()
+        self.GetCode(gr)
+        self += gr 
+
+        if self.DataCache == False:
+            return 
+        self.__DumpCache(gr, self.output + "/DataCache/" + name + "/" + filedir[-1].split(".")[0], True)
+
+    def __GenerateEvents(self, InptMap, name):
+        dc = self.__SearchAssets("DataCache", name)
+        ec = self.__SearchAssets("EventCache", name)
+        
+        for f in self.DictToList(InptMap):
+            tmp = f.split("/")
+            
+            if self.EventCache and ec == False:
+                self.__EventGenerator(name, tmp)
+
+            if self.DataCache and dc == False:
+                if ec == False:
+                    self.__EventGenerator(name, tmp) 
+                self.__GraphGenerator(name, tmp)
+
+            if self.DumpHDF5 == False and self.DumpPickle == False:
+                continue
+            ROOT = self.GetROOTContainer(f)
             ROOT.ClearEvents()
-            self += gr
- 
+        
+            PickleObject(self.SampleContainer, self.output + "/Tracers/" + name) 
+        self.SampleContainer.ClearEvents()
     def __GenerateTrainingSample(self):
         def MarkSample(smpl, status):
             for i in smpl:
@@ -114,28 +156,21 @@ class Analysis(Analysis, Settings, SampleTracer, Tools, GraphFeatures):
         
         if self.TrainingSampleName == False:
             return 
-        
-        if self.IsFile(self.ProjectName + "/Tracers/TrainingSample/" + self.TrainingSampleName + ".pkl"):
-            Training = UnpickleObject(self.ProjectName + "/Tracers/TrainingSample/" + self.TrainingSampleName)
-            self._SampleMap = Training["SampleMap"]
-            for i in self._SampleMap:
-                self.__SearchAssets("DataCache", i)
-            MarkSample(Training["train_hashes"], True)
-            MarkSample(Training["test_hashes"], False)
-            return self 
+
         self.EmptySampleList()
-        inpt = {}
-        for i in self:
-            inpt[i.Filename] = i
+        if self.Training == False:
+            self.CheckPercentage()
+            inpt = {i.Filename : i for i in self}
+            hashes = self.MakeTrainingSample(inpt, self.TrainingPercentage)
+            
+            hashes["train_hashes"] = {hsh : self.HashToROOT(hsh) for hsh in hashes["train_hashes"]}
+            hashes["test_hashes"] = {hsh : self.HashToROOT(hsh) for hsh in hashes["test_hashes"]}
+            hashes["SampleMap"] = self._SampleMap
         
-        self.CheckPercentage()
-        hashes = self.MakeTrainingSample(inpt, self.TrainingPercentage)
-        
-        hashes["train_hashes"] = {hsh : self.HashToROOT(hsh) for hsh in hashes["train_hashes"]}
-        hashes["test_hashes"] = {hsh : self.HashToROOT(hsh) for hsh in hashes["test_hashes"]}
-        hashes["SampleMap"] = self._SampleMap
-        PickleObject(hashes, self.ProjectName + "/Tracers/TrainingSample/" + self.TrainingSampleName)
-        self.__GenerateTrainingSample()
+            PickleObject(hashes, self.ProjectName + "/Tracers/TrainingSample/" + self.TrainingSampleName)
+            self.Training = hashes
+        MarkSample(self.Training["train_hashes"], True)
+        MarkSample(self.Training["test_hashes"], False)
 
     def __Optimization(self):
         if self.Model == None:
@@ -147,22 +182,27 @@ class Analysis(Analysis, Settings, SampleTracer, Tools, GraphFeatures):
         self.GetCode(op)
 
     def __ModelEvaluator(self):
-        if len(self._ModelDirectories) == 0:
+        if len(self._ModelDirectories) == 0 and self.PlotNodeStatistics == False:
             return 
         me = ModelEvaluator()
         me += self
         me.RestoreSettings(self.DumpSettings())
         me.Compile()
 
-
     def __SearchAssets(self, CacheType, Name):
+        if isinstance(Name, list):
+            for i in Name:
+                self.__SearchAssets(CacheType, i)
+            return 
         root = self.output + "/" + CacheType + "/" + Name + "/"
         SampleDirectory = [root + "/" + i for i in self.ls(root)]
         Files = []
         Files += self.DictToList(self.ListFilesInDir({i : "*" for i in SampleDirectory}, ".pkl"))
         Files += self.DictToList(self.ListFilesInDir({i : "*" for i in SampleDirectory}, ".hdf5"))
+        
         if self.FoundCache(root, Files):
             return False
+        
         if self.IsFile(self.output + "/Tracers/" + Name + ".pkl") == False:
             self.MissingTracer(self.output + "/Tracers/" + Name + ".pkl")
             return False
@@ -176,18 +216,36 @@ class Analysis(Analysis, Settings, SampleTracer, Tools, GraphFeatures):
                 events = {_hash : ev for _hash, ev in hdf}
             elif i.endswith(".pkl"):
                 events = UnpickleObject(i)
-            SampleContainer.RestoreEvents(events)
-        self.SampleContainer += SampleContainer
+
+            self.SampleContainer += SampleContainer
+            self.SampleContainer.RestoreEvents(events)
+        return True
 
     def Launch(self):
+        self._launch = True 
+        for i in self._InputValues:
+            if i[0] == "INPUTSAMPLE":
+                self.InputSample(**i[1])
+            elif i[0] == "MODELEVALUATOR":
+                self.InputSample(**i[1])
+
         self.StartingAnalysis()
         self.__BuildRootStructure()
         self.output = self.OutputDirectory + "/" + self.ProjectName
-        
+       
+        self.Training = False
+        if self.TrainingSampleName:
+            fDir = self.ProjectName + "/Tracers/TrainingSample/" + self.TrainingSampleName + ".pkl" 
+            self.Training = UnpickleObject(fDir) if self.IsFile(fDir) else False
+            self._SampleMap = self.Training["SampleMap"] if self.Training else self._SampleMap
+
+        if self.Model != None:
+            self.DataCache = True 
+        if len(self._ModelDirectories) != 0 or self.PlotNodeStatistics:
+            self.DataCache = True 
+
         for i in self._SampleMap:
-            tracername = self.output + "/Tracers/" + i
             
-            self.ResetSampleContainer()   
             if self.TrainingSampleName and (self.Event == None or self.EventGraph == None):
                 search = "EventCache" if self.EventCache else False
                 search = "DataCache" if self.DataCache else search
@@ -195,36 +253,33 @@ class Analysis(Analysis, Settings, SampleTracer, Tools, GraphFeatures):
                     self.CantGenerateTrainingSample()           
                 self.__SearchAssets(search, i)
                 continue
-
-            if self.Event == None and self.EventCache:
-                self.NoEventImplementation()
-
-            if self.DataCache and self.EventGraph == None:
-                self.NoEventGraphImplementation()
-
-            if self.EventCache and self.__SearchAssets("EventCache", i) == False:
-                self.__EventGenerator(self._SampleMap[i], i)
-
-                    
-            if self.DataCache and self.__SearchAssets("DataCache", i):
-                continue
-
-            if self.__SearchAssets("EventCache", i) == False and self.DataCache:
-                if self.Event == None:
-                    self.NoEventImplementation()
-                self.__EventGenerator(self._SampleMap[i], i)
+            self.ResetSampleContainer()   
+            self.__GenerateEvents(self._SampleMap[i], i)
             
-            if self.DataCache: 
-                self.__GraphGenerator(self._SampleMap[i], i)
-            
-            self.SampleContainer.ClearEvents()
-            PickleObject(self.SampleContainer, tracername) 
-
         self.__GenerateTrainingSample()
         self.__Optimization() 
         self.__ModelEvaluator()
 
         self.WhiteSpace()
 
+    
+    def __iter__(self):
+        if self.SampleContainer._locked:
+            tmp = self.OutputDirectory + "/" + self.ProjectName + "/"
+            ec = self.ls(tmp + "/EventCache")
+            dc = self.ls(tmp + "/DataCache")
 
+            if self.EventCache and len(ec) != 0:
+                typ, dx = "EventCache", ec
+            elif self.DataCache and len(dc) != 0:
+                typ, dx = "DataCache", dc
+            else:
+                typ, dx = ("DataCache", dc) if len(dc) > len(ec) else ("EventCache", ec)
+            self.__SearchAssets(typ, dx)
+        self._lst = self.SampleContainer.list()
+        return self
 
+    def __next__(self):
+        if len(self._lst) == 0:
+            raise StopIteration()
+        return self._lst.pop(0)

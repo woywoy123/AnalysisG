@@ -47,7 +47,8 @@ class Settings:
             hep.atlas.text(loc = 2)
             hep.atlas.label(data = self.ATLASData, 
                     year = self.ATLASYear, 
-                    lumi = self.ATLASLumi, 
+                    lumi = self.ATLASLumi,
+                    label = "\nN = " + str(len(self.xData)),
                     com = self.ATLASCom)
             self.PLT.style.use(hep.style.ATLAS)
 

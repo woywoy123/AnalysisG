@@ -15,7 +15,7 @@ def TestOptimizer(Files):
     Ana.DumpHDF5 = True
     Ana.chnk = 100
     Ana.EventStop = 1000
-    Ana.VerboseLevel = 3
+    Ana.VerboseLevel = 1
     Ana.Event = Event
     Ana.EventGraph = EventGraphTruthTopChildren
     ApplyFeatures(Ana, "TruthChildren")
@@ -57,12 +57,12 @@ def TestOptimizer(Files):
     Ana.Tree = "nominal"
     Ana.TrainingSampleName = "Test"
     Ana.PlotNodeStatistics = True
-    Ana.PlotTrainingStatistics = True
-    Ana.PlotTrainSample = True
-    Ana.PlotTestSample = True
-    Ana.PlotEntireSample = True
-    Ana.EvaluateModel("CheatModel", "./Optimizer/TrainedModels/CheatModel", CheatModel(), 10) 
-    Ana.EvaluateModel("BasicBaseLine", "./Optimizer/TrainedModels/BaseLine", BasicBaseLineRecursion(), 50)
+    Ana.PlotTrainingStatistics = False
+    Ana.PlotTrainSample = False
+    Ana.PlotTestSample = False
+    Ana.PlotEntireSample = False
+    Ana.EvaluateModel("./Optimizer/TrainedModels/CheatModel", CheatModel(), 10) 
+    Ana.EvaluateModel("./Optimizer/TrainedModels/BaseLine", BasicBaseLineRecursion(), 50)
     Ana.Launch()
 
     return True

@@ -10,6 +10,7 @@ class EventTemplate(VariableManager):
         self.Leaves = []
         self._Store = None
         self._SampleIndex = -1
+        self.Lumi = 0
 
     def GetKey(self, obj, Excld = []):
         return {j : i for i, j in zip(obj.__dict__.keys(), obj.__dict__.values()) if i not in Excld and isinstance(j, str)}

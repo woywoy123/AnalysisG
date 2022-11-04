@@ -3,8 +3,192 @@ from AnalysisTopGNN.Notification import Condor
 from AnalysisTopGNN.Generators import Settings
 import os, stat 
 
-class Condor(Tools, Condor):
+
+class CondorScript:
+
     def __init__(self):
+        self.ExecPath = None
+        self.ScriptName = None
+        self.OpSysAndVer = "CentOS7"
+        self.Device = None
+        self.Threads = None
+        self.Time = None
+        self.Memory = None
+        self.CondaEnv = None
+        self._config = []
+    
+    def __Memory(self):
+        if self.Memory == None:
+            return
+        fact = 1024 if self.Memory.endswith("GB") else 1
+        self.__AddConfig("+Request_Memory = " + str(fact*float(self.Memory[:-2])))
+    
+    def __Time(self):
+        if self.Time == None:
+            return
+        fact = 60*60 if self.Time.endswith("h") else fact
+        fact = 60 if self.Time.endswith("m") else fact
+        self.__AddConfig("+RequestRuntime = " + str(fact*float(self.Time[:-1])))       
+    
+    def __Exec(self):
+        self.__AddConfig("executable = " + self.ExecPath + "/" + self.ScriptName + ".sh")
+        self.__AddConfig("error = " + self.ExecPath + "/results.error.$(ClusterID)")
+        self.__AddConfig("Requirements = OpSysAndVer == " + self.OpSysAndVer)
+    
+    def __Hardware(self):
+        if self.Device == None:
+            return 
+        string = "Request_GPUs = 1" if self.Device == "cuda" else False
+        if string:
+            self.__AddConfig(string)
+        self.__AddConfig("Request_Cpus = " + str(self.Threads))
+    
+    def Compile(self):
+        self.__Exec()
+        self.__Hardware()
+        self.__Memory()
+        self.__Time()
+        self.__AddConfig("queue")
+
+    def Shell(self):
+        self._config = []
+        self.__AddConfig("#!/bin/bash")
+        self.__AddConfig("source ~/.bashrc")
+        self.__AddConfig('eval "$(conda shell.bash hook)"')
+        self.__AddConfig("conda activate " + self.CondaEnv)
+        self.__AddConfig("python " + self.ExecPath + "/" + self.ScriptName + ".py")
+
+    def __AddConfig(self, inpt):
+        self._config.append(inpt)
+            
+
+class AnalysisScript:
+
+    def __init__(self):
+        self.Code = []
+        self.Script = []
+        self.Name = None
+        self.OutDir = None
+
+    def __Build(self, txt, name):
+        f = open(self.OutDir + "/" + name + ".py", "w")
+        f.write(txt)
+        f.close()
+
+    def GroupHash(self, obj):
+        for i in range(len(self.Script)):
+            _hash = str(hex(id(obj)))
+            if _hash not in self.Script[i]:
+                continue
+            self.Script[i] = self.Script[i].replace("'" + _hash + "'", obj.Name)
+            return self.Script[i].split(" = ")[0].split(".")[-1]
+        return False
+
+    def Compile(self):
+
+        Ad_key = {}
+        Script = ["import sys"]
+        Script += ["sys.path.append('" + "/".join(self.OutDir.split("/")[:-1]) + "/_SharedCode/')"]
+        Script += ["from Event import *"]
+        for i in self.Code:
+
+            key = self.GroupHash(i)
+            if key not in Ad_key and key:
+                Ad_key[key] = []
+
+            if "(ParticleTemplate):" in i.Code:
+                self.__Build(i.Code, "../_SharedCode/Particles")
+                continue
+
+            if "(EventTemplate):" in i.Code:
+                string = ["from AnalysisTopGNN.Templates import EventTemplate", "from Particles import *", "", i.Code]
+                self.__Build("\n".join(string), "../_SharedCode/" + key)
+                del Ad_key[key]
+                continue
+
+            if "(EventGraphTemplate):" in i.Code:
+                Ad_key[key] = ["from AnalysisTopGNN.Templates import EventGraphTemplate", "", i.Code]
+                continue
+            
+            Ad_key[key].append(i.Code)
+        
+        for i in Ad_key:
+            self.__Build("\n".join(Ad_key[i]), i)
+            Script += ["from " + i + " import * "]
+        
+        Script += ["from AnalysisTopGNN.Generators import Analysis"]
+        Script += ["", "ANA = Analysis()"]
+        Script += [i.replace("<*AnalysisName*>", "ANA") for i in self.Script]
+        Script += ["ANA.Launch()"]
+        self.__Build("\n".join(Script), self.Name)
+
+
+
+class JobSpecification(Tools):
+
+    def __init__(self):
+        self.Job = None
+        self.Time = None
+        self.Memory = None
+        self.Device = None
+        self.Name = None
+        self.EventCache = None
+        self.DataCache = None
+        self.CondaEnv = None
+   
+    def __Preconf(self):
+        if self.EventCache != None and self.Job.Event != None:
+            self.Job.EventCache = self.EventCache
+        if self.DataCache != None and self.Job.EventGraph != None:
+            self.Job.DataCache = self.DataCache
+        self.Device = self.Job.Device
+
+    def __Build(self, txt, name, pth, exe = True):
+        f = open(pth + "/" + name, "w")
+        f.write("\n".join(txt))
+        f.close()
+
+        if exe: 
+            os.chmod(pth + "/" + name, stat.S_IRWXU)
+
+    def Launch(self):
+        self.__Preconf()
+        self.Job.Launch()
+    
+    def DumpConfig(self):
+        pth = self.Job.OutputDirectory + "/" + self.Job.ProjectName + "/CondorDump/" + self.Name
+        self.mkdir(pth)
+        self.mkdir(pth + "/../_SharedCode")
+        
+        self.__Preconf()
+        
+        Ana = AnalysisScript()
+        Ana.Script += self.Job.ExportAnalysisScript()
+        Ana.Code += self.Job._Code
+        Ana.Name = "main"
+        Ana.OutDir = pth
+        Ana.Compile()
+       
+        Con = CondorScript()
+        Con.ExecPath = self.Name
+        Con.ScriptName = "main"
+        Con.Threads = self.Job.Threads
+        Con.Time = self.Time
+        Con.Memory = self.Memory
+        Con.CondaEnv = self.CondaEnv 
+
+        Con.Compile()
+        self.__Build(Con._config, self.Name + ".submit", pth)
+        Con.Shell()
+        self.__Build(Con._config, self.Name + ".sh", pth, True)
+
+
+
+
+
+class Condor(Tools, Condor, Settings):
+    def __init__(self):
+        self.Caller = "CONDOR"
         Settings.__init__(self)
         self._Jobs = {}
         self._Time = {}
@@ -13,17 +197,13 @@ class Condor(Tools, Condor):
         self._Complete = {}
         self._sequence = {}
         self._Device = {}
-        
-        self.SkipEventCache = False
-        self.SkipDataCache = False
-        self.CondaEnv = "GNN"
-        
-        self.Caller = "CONDOR"
     
     def AddJob(self, name, instance, memory, time, waitfor = None):
-        if name not in self._Jobs: 
-            self._Jobs[name] = instance
-        
+        if name not in self._Jobs:
+            self._Jobs[name] = JobSpecification()
+            self._Jobs[name].Job = instance
+            self._Jobs[name].Name = name
+
         self.AddListToDict(self._wait, name)
         
         if waitfor == None:
@@ -32,21 +212,10 @@ class Condor(Tools, Condor):
             self._wait[name].append(waitfor)
         elif isinstance(waitfor, list):
             self._wait[name] += waitfor 
-    
-        if name not in self._Memory:
-            self._Memory[name] = memory
-            self._Time[name] = time
-
-        self.ProjectInheritance(instance)
-
-        if self.OutputDirectory:
-            instance.OutputDirectory = self.OutputDirectory
-
-        if self.Tree:
-            instance.Tree = self.Tree
         
-        if self.VerboseLevel != 3:
-            instance.VerboseLevel = self.VerboseLevel
+        self._Jobs[name].Memory = memory
+        self._Jobs[name].Time = time
+        self.ProjectInheritance(instance)
     
     def __Sequencer(self):
         def Recursion(inpt, key):
@@ -73,14 +242,13 @@ class Condor(Tools, Condor):
             for j in self._sequence[i]:
                 if self._Complete[j] == True:
                     continue
-                if self.SkipEventCache == True:
-                    self._Jobs[j].EventCache = False
-                if self.SkipDataCache == True:
-                    self._Jobs[j].DataCache = False
                 
+                self._Jobs[j].EventCache = self.EventCache
+                self._Jobs[j].DataCache = self.DataCache 
                 self.RunningJob(j)
                 
                 self._Jobs[j].Launch()
+                
                 self._Complete[j] = True
                 del self._Jobs[j]
                 self._Jobs[j] = None
@@ -94,134 +262,11 @@ class Condor(Tools, Condor):
             self.mkdir(self.ProjectName + "/CondorDump/" + i)
             for j in self._sequence[i]:
 
-                if self.SkipDataCache:
-                    self._Jobs[i].DataCache = False
-                if self.SkipEventCache:
-                    self._Jobs[i].EventCache = False
-
-                configs = []
-                configs += ["from AnalysisTopGNN.Generators import Analysis"]
+                self._Jobs[j].DataCache = self.DataCache
+                self._Jobs[j].EventCache = self.EventCache
+                self._Jobs[j].CondaEnv = self.CondaEnv
+                self._Jobs[j].DumpConfig()
                 
-                self._Jobs[j]._PullCode = True
-                self._Jobs[j].Launch()
-
-                Setting = self._Jobs[j].Settings.DumpSettings(self._Jobs[j])
-                trace = Setting["Tracer"].EventInfo
-                self._Jobs[j]._PullCode = False
-                
-                if "EVENTGENERATOR" in trace:
-                    EventCode = ["from AnalysisTopGNN.Templates import EventTemplate \n"]
-                    EventCode += ["from ParticleCode import * \n\n"]
-                    EventCode += trace["EVENTGENERATOR"]["EventCode"]
-                    
-                    F = open(self.ProjectName + "/CondorDump/" + i + "/EventImplementation.py", "w")
-                    F.write("".join(EventCode))
-                    F.close()
-                  
-                    F = open(self.ProjectName + "/CondorDump/" + i + "/ParticleCode.py", "w")
-                    F.write(trace["EVENTGENERATOR"]["ParticleCode"][0])
-                    F.close()
-
-                    configs += ["from EventImplementation import *\n\n"]
-                    configs += ["Ana = Analysis()"]
-                    configs += ["Ana.Event = " + trace["EVENTGENERATOR"]["Name"][-1]]
-                
-                if "GRAPHGENERATOR" in trace:
-
-                    EventCode = ["from AnalysisTopGNN.Templates import EventGraphTemplate \n\n"]
-                    EventCode += trace["GRAPHGENERATOR"]["EventCode"]
-                    
-                    F = open(self.ProjectName + "/CondorDump/" + i + "/EventGraphImplementation.py", "w")
-                    F.write("".join(EventCode))
-                    F.close()
-                  
-                    
-                    Features = {"GraphFeatures" : {}, "NodeFeatures" : {}, "EdgeFeatures" : {}}
-                    for f in Features:
-                        if f not in trace["GRAPHGENERATOR"]:
-                            continue
-
-                        F = open(self.ProjectName + "/CondorDump/" + i + "/" + f + ".py", "w")
-                        for t in trace["GRAPHGENERATOR"][f]:
-                            F.write("\n".join(list(t.values())))
-
-                            f_names = {str(k) : str(t.split(":")[0].split("(")[0].split(" ")[1]) for k, t in zip(t, t.values())}
-                            Features[f] |= f_names
-                        F.close()
-                        configs += ["from " + f + " import *"]
-
-                    configs += ["from EventGraphImplementation import *\n\n"]
-
-                    configs += ["Ana = Analysis()"]
-                    configs += ["Ana.EventGraph = " + trace["GRAPHGENERATOR"]["Name"][-1]]
-
-                    for f in Features:
-                        configs += ["Ana." + f.replace("Features", "Attribute") + " = {" + ",".join([" '" + p + "' : " + k for p, k in zip(Features[f], Features[f].values())]) + "}" ]
-                
-                for s in Setting:
-                    if s in ["Tracer", "_PullCode"]:
-                        continue
-                    if s == "OutputDirectory":
-                        Setting[s] = self.RemoveTrailing(Setting[s], "/")
-                        Setting[s] = "'" + Setting[s] + "'"
-                    if s == "ProjectName":
-                        Setting[s] = "'" + Setting[s] + "'"
-
-                    if s == "Tree":
-                        Setting[s] = "'" + Setting[s] + "'"
-                    
-                    configs += ["Ana." + s + " = " + str(Setting[s])]
-                
-                for s in self._Jobs[j]._SampleMap:
-                    if len(self._Jobs[j]._SampleMap[s]) == 0:
-                        configs += ["Ana.InputSample('" + s + "')"]
-                    else:
-                        configs += ["Ana.InputSample('" + s + "', " + str(self._Jobs[j]._SampleMap[s]) + ")"]
-                
-                
-            configs += ["Ana.Launch()"]
-            F = open(self.ProjectName + "/CondorDump/" + i + "/main.py", "w")
-            F.write("\n".join(configs))
-            F.close()
-
-            F = open(self.ProjectName + "/CondorDump/" + i + "/Spawn.sh", "w")
-            sk = ["#!/bin/bash", "source ~/.bashrc", 'eval "$(conda shell.bash hook)"', "conda activate " + self.CondaEnv, "python " + i + "/main.py"]
-            F.write("\n".join(sk))
-            F.close()
-            os.chmod(self.ProjectName + "/CondorDump/" + i + "/Spawn.sh", stat.S_IRWXU)
-            
-            sk = ["executable = " + i + "/Spawn.sh", "error = " + i + "/results.error.$(ClusterID)", 'Requirements = OpSysAndVer == "CentOS7"']
-            if i not in self._Device:
-                self._Device[i] = "cpu"
-            if self._Device[i] == "cpu":
-                sk += ["Request_Cpus = " + str(self._Jobs[i].__dict__["Threads"])]
-            else:
-                sk += ["Request_GPUs = " + str(1)]
- 
-            x = None
-            clust_t = self._Time[i]
-            if clust_t.endswith("h"):
-                x = 60*60*float(clust_t.replace("h", ""))
-            elif clust_t.endswith("m"):
-                x = 60*float(clust_t.replace("m", ""))
-            elif clust_t.endswith("s"):
-                x = float(clust_t.replace("s", ""))
-            if x != None:
-                sk += ["+RequestRuntime = " + str(x)]
-            
-            x = None
-            Mem = self._Memory[i]
-            if Mem.endswith("GB"):
-                x = 1024*float(Mem.replace("GB", ""))
-            elif Mem.endswith("MB"):
-                x = float(Mem.replace("MB", ""))
-            if x != None:
-                sk += ["Request_Memory = " + str(x)]
-            sk += ["queue"]
-
-            F = open(self.ProjectName + "/CondorDump/" + i + "/" + i + ".submit", "w")
-            F.write("\n".join(sk))
-            F.close()
             s = "JOB " + i + " " + i + "/" + i + ".submit"
             if s not in DAG:
                 DAG.append(s)
@@ -239,11 +284,6 @@ class Condor(Tools, Condor):
         
         F = open(self.ProjectName + "/CondorDump/RunAsBash.sh", "w")
         F.write("#!/bin/bash\n")
-        for j in DAG:
-            if j.startswith("JOB") == False:
-                continue
-            x = j.split(" ")[-1]
-            x = x.split("/")[0]
-            x += "/Spawn.sh\n"
-            F.write("bash " + x)
+        for j in self._sequence:
+            F.write("bash " + j + "/" + j +".sh\n")
         F.close()

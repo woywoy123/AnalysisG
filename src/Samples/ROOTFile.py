@@ -62,11 +62,12 @@ class ROOTFile(Hashing):
             if _hash not in self.HashMap:
                 self.HashMap[_hash] = evnt
                 continue
-            if self._lock or other._lock:
+                
+            if isinstance(evnt, str):
                 continue
-            self.HashMap[_hash] += evnt
+            self.HashMap[_hash] = evnt
 
-        self.EventMap = self.EventMap if self._lock else {i : ev.UpdateIndex(i) for i, ev in zip(range(len(self.HashMap)), self.HashMap.values())}
+        self.EventMap = self.EventMap if self._lock else {i : "" if isinstance(ev, str) else ev.UpdateIndex(i) for i, ev in zip(range(len(self.HashMap)), self.HashMap.values())}
         return self
     
     def ClearEvents(self):
@@ -78,7 +79,7 @@ class ROOTFile(Hashing):
 
     def RestoreEvents(self, events):
         if isinstance(events, dict):
-            events = list(events.values())    
+            events = list(events.values())
         self.HashMap |= { i.Filename : i for i in events if i.Filename in self.HashMap }
         self.EventMap |= { i.EventIndex : i for i in events if i.EventIndex in self.EventMap}
         self._lock = False

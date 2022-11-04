@@ -23,7 +23,7 @@ class Event(EventTemplate):
         self.pileup = tag + "_pileup"
         self.leptonSF = tag + "_leptonSF"
         self.globalLeptonTriggerSF = tag + "_globalLeptonTriggerSF"
-        self.weightmc = tag + "_mc"
+        self.Lumi = tag + "_mc"
 
         self.bTagSF_DL1_85 = tag + "_bTagSF_DL1_85"
         self.bTagSF_DL1_77 = tag + "_bTagSF_DL1_77"

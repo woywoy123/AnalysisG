@@ -28,20 +28,17 @@ class Evaluator(Notification):
         self.Success("="*len(string))
         self.Success(string)
         self.Success("="*len(string))
-        self.WhiteSpace()  
        
         models = "!!Models Provided (Epochs):"
         models += " | ".join([i + " (" + str(len(self._ModelDirectories[i])) + ")" for i in self._ModelDirectories])
         self.Success("!!" + "-"*len(models))
         self.Success(models)
         self.Success("!!" + "-"*len(models))
-        self.WhiteSpace()
         
         sample = "!!Samples found: " + " | ".join([i + " (" + str(smpl[i]) + ")" for i in smpl])
         self.Success("!!" + "-"*len(sample))
         self.Success(sample)
         self.Success("!!" + "-"*len(sample))
-        self.WhiteSpace()
     
     def FileNotFoundWarning(self, Directory, Name):
         pass
@@ -51,9 +48,9 @@ class Evaluator(Notification):
         self.Success(String)
 
     def MakingPlots(self, string):
+        self.WhiteSpace()  
         self.Success("="*len(string))
         self.Success(string)
         self.Success("="*len(string))
-        self.WhiteSpace()  
 
 

@@ -16,8 +16,7 @@ class HDF5(Settings, Tools, IO):
         Settings.__init__(self)
     
     def Start(self, Name = False, Mode = "w"):
-        if self.Filename.endswith(self._ext) == False:
-            self.Filename += self._ext
+        self.Filename += self._ext if self.Filename.endswith(self._ext) == False else ""
         self._File = h5py.File(self.Filename, mode = Mode, track_order = True)
         
         if Mode == "w":
@@ -25,12 +24,11 @@ class HDF5(Settings, Tools, IO):
     
     def __IncrementRefSet(self, Name = False):
         self._iter += 1
-        if Name:
-            name = Name 
-        else:
-            name = self._iter
+        name = Name if Name else self._iter
+
         if str(name) in self._File:
             return 
+        
         self.DumpingObjectName(Name)
         self._Ref = self._File.create_dataset(str(name), (1, ), dtype = h5py.ref_dtype)
 
@@ -130,9 +128,8 @@ class HDF5(Settings, Tools, IO):
             return 
         
         self.Filename = Directory + "/" + self.Filename
-        if self.Filename.endswith(self._ext) == False:
-            self.Filename += self._ext
-
+        self.Filename += self._ext if self.Filename.endswith(self._ext) == False else ""
+        
         self._File = h5py.File(self.Filename, mode = "a", track_order = True)
         for i in self._File:
             for j in Files:
@@ -158,10 +155,9 @@ class HDF5(Settings, Tools, IO):
         self.__init__()
     
     def __BuildContainer(self, obj, attr, i, typ):
-        if typ == "-":
-            ins = {}
-        if typ == "#":
-            ins = []
+        ins = {} if typ == "-" else None
+        ins = [] if typ == "#" else ins
+        
         attr = attr.split(typ)
         r = self._Ref.attrs[i]
         val = {attr[1] : r if r not in self._obj else self._obj[r][1]}

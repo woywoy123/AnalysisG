@@ -2,6 +2,8 @@ from AnalysisTopGNN.Events import EventGraphTruthTopChildren, Event
 from AnalysisTopGNN.Generators import Analysis
 from AnalysisTopGNN.Submission import Condor
 from Templates.EventFeatureTemplate import ApplyFeatures
+from ExampleModel.BasicBaseLine import BasicBaseLineRecursion
+from ExampleModel.CheatModel import CheatModel
 
 
 def TestAnalysis(GeneralDir):
@@ -39,13 +41,11 @@ def TestAnalysis(GeneralDir):
     ev = EventGen(GeneralDir + "/t", "SingleTop")
     ev += EventGen(GeneralDir + "/ttbar", "ttbar")
     ev += EventGen(GeneralDir + "/tttt", "Signal")
-    ev += EventGen(GeneralDir + "/Zmumu", "Zmumu")
     ev += EventGen([GeneralDir + "/t", GeneralDir + "/ttbar"], "Combined")
     
     gr = DataGen("SingleTop")
     gr += DataGen("ttbar")
     gr += DataGen("Signal")
-    gr += DataGen("Zmumu")
         
     Objects0 = {}
     for i in ev:
@@ -74,97 +74,116 @@ def TestCondorDumping(GeneralDir):
     out = "/home/tnom6927/Dokumente/Project/Analysis/bsm4tops-gnn-analysis/AnalysisTopGNN/test"
 
     T = Condor()
-    T.SkipEventCache = False
-    T.SkipDataCache = False
+    T.EventCache = True
+    T.DataCache = True
     T.OutputDirectory = out
     T.Tree = "nominal"
     T.ProjectName = "TopEvaluation"
 
-    ## Job for creating samples
-    #A1 = Analysis()
-    #A1.Threads = 4
-    #A1.EventCache = True
-    #A1.DumpPickle = True
-    #A1.Event = Event
-    #A1.InputSample("ttbar", nfs + "ttbar")
-    #T.AddJob("ttbar", A1, "10GB", "1h")
+    # Job for creating samples
+    A1 = Analysis()
+    A1.Threads = 4
+    A1.chnk = 100
+    A1.EventCache = True
+    A1.DumpPickle = True
+    A1.Event = Event
+    A1.InputSample("ttbar", nfs + "ttbar")
 
-    #A2 = Analysis()
-    #A2.Threads = 4
-    #A2.EventCache = True
-    #A2.DumpPickle = True
-    #A2.Event = Event
-    #A2.InputSample("zmumu", nfs + "Zmumu")
-    #T.AddJob("Zmumu", A2, "10GB", "1h")
+    A2 = Analysis()
+    A2.Threads = 4
+    A2.chnk = 100
+    A2.EventCache = True
+    A2.DumpPickle = True
+    A2.Event = Event
+    A2.InputSample("zmumu", nfs + "Zmumu")
  
     A3 = Analysis()
     A3.Threads = 4
+    A3.chnk = 100
     A3.EventCache = True
     A3.DumpPickle = True
     A3.Event = Event
     A3.InputSample("t", nfs + "t")
-    T.AddJob("t", A3, "10GB", "1h")
-
-    #A4 = Analysis()
-    #A4.Threads = 4
-    #A4.EventCache = True
-    #A4.DumpPickle = True
-    #A4.Event = Event
-    #A4.InputSample("tttt", nfs + "tttt")
-    #T.AddJob("tttt", A4, "10GB", "1h")
+    
+    A4 = Analysis()
+    A4.Threads = 4
+    A4.chnk = 100
+    A4.EventCache = True
+    A4.DumpPickle = True
+    A4.Event = Event
+    A4.InputSample("tttt", nfs + "tttt")
 
     # Job for creating Dataloader
     D1 = Analysis()
     D1.DataCache = True
     D1.DumpHDF5 = True
-    D1.Threads = 12
+    D1.Threads = 4
+    D1.chnk = 100
     D1.EventGraph = EventGraphTruthTopChildren
     D1.InputSample("t")
     ApplyFeatures(D1, "TruthChildren")
-    T.AddJob("t_Data", D1, "10GB", "1h", "t")
 
-    # Job for creating Dataloader
-    #D2 = Analysis()
-    #D2.DataCache = True
-    #D2.DumpHDF5 = True
-    #D2.Threads = 12
-    #D2.EventGraph = EventGraphTruthJetLepton
-    #D2.InputSample("tttt")
-    #TruthJetsFeatures(D2)
+    D2 = Analysis()
+    D2.DataCache = True
+    D2.DumpHDF5 = True
+    D2.Threads = 4
+    D2.chnk = 100
+    D2.EventGraph = EventGraphTruthTopChildren
+    D2.InputSample("zmumu")
+    ApplyFeatures(D2, "TruthChildren")
 
-    # Job for creating TrainingSample
-    #T2 = Analysis()
-    #T2.InputSample("tttt")
-    #T2.InputSample("t")
-    #T2.MergeSamples = True
-    #T2.GenerateTrainingSample = True
+    T2 = Analysis()
+    T2.InputSample("zmumu")
+    T2.InputSample("t")
+    T2.DataCache = True
+    T2.TrainingSampleName = "Test"
 
 
-    # Job for optimization
-    #Op = Analysis()
-    #Op.ProjectName = "TopEvaluation"
-    #Op.Device = "cuda"
-    #Op.TrainWithoutCache = True
-    #Op.LearningRate = 0.0001
-    #Op.WeightDecay = 0.0001
-    #Op.kFold = 2
-    #Op.Epochs = 3
-    #Op.BatchSize = 20
-    #Op.RunName = "BasicBaseLineTruthJet"
-    #Op.ONNX_Export = True
-    #Op.TorchScript_Export = True
-    #Op.Model = BasicBaseLineTruthJet()
+    Op1 = Analysis()
+    Op1.Device = "cuda"
+    Op1.Optimizer = {"ADAM" : {"lr" : 0.0001, "weight_decay" : 0.001}}
+    Op1.kFolds = 4
+    Op1.Epochs = 3
+    Op1.BatchSize = 20
+    Op1.RunName = "BasicBase"
+    Op1.TrainingSampleName = "Test"
+    Op1.ContinueTraining = True
+    Op1.Model = BasicBaseLineRecursion()
+
+
+    Op2 = Analysis()
+    Op2.Device = "cuda"
+    Op2.Optimizer = {"ADAM" : {"lr" : 0.0001, "weight_decay" : 0.001}}
+    Op2.kFolds = 4
+    Op2.Epochs = 3
+    Op2.BatchSize = 20
+    Op2.RunName = "BasicBase"
+    Op2.TrainingSampleName = "Test"
+    Op2.ContinueTraining = True
+    Op2.Model = BasicBaseLineRecursion()
 
 
 
-    #T.AddJob("tData", D1, "10GB", "1h", ["t", "Zmumu"])
-    #T.AddJob("ZmumuData", D2, "10GB", "1h", ["t", "Zmumu"])
-    #T.AddJob("DataTraining", T2, "10GB", "1h", ["tData", "ZmumuData"])
+    T.AddJob("t", A3, "10GB", "1h")
+    #T.AddJob("t_Data", D1, "10GB", "1h", "t")
+    #T.AddJob("tttt", A4, "10GB", "1h")
+    T.AddJob("Zmumu", A2, "10GB", "1h")
+    #T.AddJob("ttbar", A1, "10GB", "1h")
 
-    #T.AddJob("TruthJet", Op, "10GB", "1h", ["DataTraining"])
+    T.AddJob("tData", D1, "10GB", "1h", ["t", "Zmumu"])
+    T.AddJob("DataTraining", T2, "10GB", "1h", ["tData", "ZmumuData"])
+    T.AddJob("ZmumuData", D2, "10GB", "1h", ["t", "Zmumu"])
+    
+    T.AddJob("TrainingBase", Op1, "10GB", "1h", ["DataTraining"])
+    T.AddJob("TrainingCheat", Op2, "10GB", "1h", ["DataTraining"])
 
     #T.LocalDryRun() 
     T.DumpCondorJobs() 
     
+    # t -> t_Data (x), tData -> DataTraining
+    # t_Data 
+    # Zmumu -> tData -> ZmumuData -> DataTraining
+
+
     return True
 

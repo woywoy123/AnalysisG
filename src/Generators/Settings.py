@@ -17,7 +17,6 @@ class _Code(Tools):
                 self.Name = Instance.__name__
             except AttributeError:
                 self.Name = type(Instance).__name__
-        
         self.Module = Instance.__module__
         self.Path = self.Module + "." + self.Name
         self.Code = self.GetSourceFile(Instance)
@@ -36,11 +35,9 @@ class _Code(Tools):
         return inst
 
     def __eq__(self, other):
-        for i in other.__dict__:
-            if self.__dict__[i] == other.__dict__[i]:
-                continue 
-            return False
-        return True
+        if self.Code == other.Code:
+            return True 
+        return False
 
 class _General:
 
@@ -61,16 +58,12 @@ class _General:
 class _EventGenerator:
 
     def __init__(self):
-        _General.__init__(self)
-
         self.Event = None
         self.InputDirectory = {}
     
 class _GraphGenerator:
     
     def __init__(self):
-        _General.__init__(self)
-
         self.Device = "cuda" if torch.cuda.is_available() else "cpu"
         self.SelfLoop = True 
         self.FullyConnect = True 
@@ -121,11 +114,11 @@ class _ModelEvaluator:
         self.SampleNodes = {}
         self.Training = {}
         self.TestSample = {}
-        self.PlotNodeStatistics = True 
-        self.PlotTrainingStatistics = True
-        self.PlotTrainSample = True 
-        self.PlotTestSample = True 
-        self.PlotEntireSample = True
+        self.PlotNodeStatistics = False
+        self.PlotTrainingStatistics = False
+        self.PlotTrainSample = False
+        self.PlotTestSample = False
+        self.PlotEntireSample = False
         self.PlotEpochDebug = False
 
 class _Analysis:
@@ -138,22 +131,36 @@ class _Analysis:
         _Optimization.__init__(self)
         _ModelEvaluator.__init__(self)
         self._SampleMap = {}
+        self._InputValues = []
         
         self.EventCache = False
         self.DataCache = False
+        self._launch = False
 
         self.DumpHDF5 = False
         self.DumpPickle = False
         self.OutputDirectory = "./"
 
+class _Condor:
 
-
+    def __init__(self):
+        self.CondaEnv = "GNN"
+        self.EventCache = None
+        self.DataCache = None
+        self.OutputDirectory = None
+        self._dump = True
+        self.ProjectName = None
+        self.VerboseLevel = 0
+        self.Tree = None
 
 class Settings(_General):
     
     def __init__(self):
-        _General.__init__(self)
+        if self.Caller == "CONDOR":
+            _Condor.__init__(self)
+            return 
         
+        _General.__init__(self)
         if self.Caller == "EVENTGENERATOR":
             _EventGenerator.__init__(self)
         
@@ -173,7 +180,41 @@ class Settings(_General):
             _Analysis.__init__(self)
 
     def DumpSettings(self):
-        return self.__dict__
+        return {i : self.__dict__[i] for i in self.__dict__}
+    
+    def ExportAnalysisScript(self):
+        def Hash(obj):
+            return str(hex(id(self.AddCode(obj))))
+
+        dic = self.DumpSettings()
+        
+        exclude = ["Caller", "_Code", "SampleContainer", "_dump"]
+        code = ["Event", "EventGraph", "GraphAttribute", "NodeAttribute", "EdgeAttribute", "Model"] 
+        ana_tmp = _Analysis()
+            
+        out = []
+        for i in dic:
+            if i in exclude:
+                continue
+            if dic[i] == ana_tmp.__dict__[i]:
+                continue
+
+            if i in code:
+                if i == "Event":
+                    Event = self.CopyInstance(dic[i])
+                    ev = {k : Hash(Event.Objects[k]) for k in Event.Objects}
+
+                dic[i] = {k : Hash(dic[i][k]) for k in dic[i]} if isinstance(dic[i], dict) else Hash(dic[i])
+
+            inst = str(dic[i]) if isinstance(dic[i], int) else ""
+            inst = "'" + dic[i] + "'" if isinstance(dic[i], str) else inst
+            inst = str(dic[i]) if isinstance(dic[i], list) else inst
+            inst = str(dic[i]) if dic[i] == None else inst
+            inst = str(dic[i]) if isinstance(dic[i], dict) else inst
+
+            out += ["<*AnalysisName*>." + i + " = " + inst] 
+        return out
+
     
     def RestoreSettings(self, inpt):
         for i in self.__dict__:

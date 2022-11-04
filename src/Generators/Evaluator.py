@@ -22,10 +22,13 @@ class ModelEvaluator(Settings, SampleTracer, Evaluator, Tools, ModelComparisonPl
     def AddAnalysis(self, analysis):
         self += analysis
     
-    def AddModel(self, Name, Directory, ModelInstance = None, BatchSize = None):
-        if Name not in self._ModelDirectories:
-            self._ModelDirectories[Name] = []
+    def AddModel(self, Directory, ModelInstance = None, BatchSize = None):
         Directory = self.AddTrailing(Directory, "/")
+        Name = Directory.split("/")[-2]
+        
+        if Name in self._ModelDirectories:
+            return 
+        
         self._ModelDirectories[Name] = [Directory + i for i in self.ls(Directory) if "Epoch-" in i]
         self._ModelSaves[Name] = {"ModelInstance": ModelInstance} 
         self._ModelSaves[Name] |= {"BatchSize" : BatchSize}
@@ -224,4 +227,5 @@ class ModelEvaluator(Settings, SampleTracer, Evaluator, Tools, ModelComparisonPl
             self.__EvaluateSampleType(None)
             self.__ProcessContainer(self._Container["All"], "CompleteSample") 
         
-        self.Verdict()
+        if len(self._Container) > 0:
+            self.Verdict()

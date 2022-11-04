@@ -7,13 +7,15 @@ class _Container(object):
         self.ROOTNames = {}
         self.Nodes = []
         self._Comp = False
+        self._lumi = 0
     
-    def Add(self, prc, nodes):
+    def Add(self, prc, nodes, lumi):
         if prc not in self.ROOTNames:
             self.ROOTNames[prc] = []
         self.ROOTNames[prc].append(int(nodes))
         self.Nodes.append(int(nodes))
         self._Comp = True
+        self._lumi += float(lumi)
 
     def Process(self):
         self.lenROOT = {}
@@ -74,7 +76,10 @@ class SampleNode:
         Plots["Title"] = Title
         Plots["Filename"] = Filename
         Plots["OutputDirectory"] = self.OutDir
+        Plots["xStep"] = 1
+        Plots["xMin"] = 0
         Plots["xBinCentering"] = True
+        Plots["ATLASLumi"] = Sample._lumi
         THStck = CombineTH1F(**Plots) 
         
         Plots = self.TemplateHistogramSetting()
@@ -103,33 +108,30 @@ class SampleNode:
                     self.TestSample[tr] = _Container()
                 prc = analysis.HashToROOT(i.Filename).split("/")[-2]
                 nodes = i.Trees[tr].num_nodes
+                lumi = i.Trees[tr].Lumi
                 
-                self.SampleNodes[tr].Add(prc, nodes)
+                self.SampleNodes[tr].Add(prc, nodes, lumi)
                 if i.Train == True:
-                    self.Training[tr].Add(prc, nodes)
+                    self.Training[tr].Add(prc, nodes, lumi)
                 if i.Train == False:
-                    self.TestSample[tr].Add(prc, nodes)
+                    self.TestSample[tr].Add(prc, nodes, lumi)
 
     def Process(self):
         for tr in self.SampleNodes:
             out = []
-            out, tbl = self.MakeSummary(
-                    self.SampleNodes[tr], 
-                    "All Samples: Node Summary by Process for " + tr + " tree", 
-                    out)
 
-            out, tbl = self.MakeSummary(
-                    self.Training[tr], 
-                    "Training Samples: Node Summary by Process for " + tr + " tree", 
-                    out)
+            TitleAll = "All Samples: Node Summary by Process for " + tr + " tree - Integrated Luminosity " + str(self.SampleNodes[tr]._lumi)
+            out, tbl = self.MakeSummary(self.SampleNodes[tr], TitleAll, out)
 
-            out, tbl = self.MakeSummary(
-                    self.TestSample[tr], 
-                    "Test Samples: Node Summary by Process for " + tr + " tree", 
-                    out)
+            TitleTraining = "Training Samples: Node Summary by Process for " + tr + " tree - Integrated Luminosity " + str(self.Training[tr]._lumi)
+            out, tbl = self.MakeSummary(self.Training[tr], TitleTraining, out)
+
+            TitleTest = "Test Samples: Node Summary by Process for " + tr + " tree - Integrated Luminosity " + str(self.TestSample[tr]._lumi)
+            out, tbl = self.MakeSummary(self.TestSample[tr], TitleTest, out)
+            
             tbl.output = out
             tbl.DumpTableToFile(self.OutDir + "/SampleNodeStatistics_" + tr)
-           
+          
             self.MakeHistograms(
                 "Complete Sample Node Distribution \n Superimposed by Process ("+ tr +")", 
                 "AllSampleNodeDistribution_" + tr, 

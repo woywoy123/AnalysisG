@@ -15,10 +15,20 @@ class Analysis(Notification):
             self.FailureExit(string)
    
     def StartingAnalysis(self):
-        string = "---" + " Starting Project: " + self.ProjectName + " ---"
-        self.Success("="*len(string))
+        string1 = "---" + " Starting Project: " + self.ProjectName + " ---"
+
+        string = ""
+        string += "> EventGenerator < :: " if self.EventCache and self.Event != None else ""
+        string += "> GraphGenerator < :: " if self.DataCache and self.EventGraph != None else ""
+        string += "> TrainingSampleGenerator < :: " if self.TrainingSampleName else ""
+        string += "> Optimization < :: " if self.Model != None else ""
+        string += "> ModelEvaluator < :: " if len(self._ModelDirectories) != 0 or self.PlotNodeStatistics else ""
+        
+        l = len(string) if len(string1) < len(string) else len(string1)
+        self.Success("="*l)
+        self.Success(string1)
         self.Success(string)
-        self.Success("="*len(string))
+        self.Success("="*l)
 
     def FoundCache(self, Directory, Files):
         if len(Files) == 0:
@@ -56,9 +66,9 @@ class Analysis(Notification):
                 string = "!!--- FOUND EVENT CACHE ---"
 
             if trig:
-                self.Success("-"*len(string))
+                self.Success("!!" + "-"*len(string))
                 self.Success(string)
-                self.Success("-"*len(string))
+                self.Success("!!" + "-"*len(string))
                 trig = False
             self.Success("!!-> " + i)
     
@@ -81,3 +91,9 @@ class Analysis(Notification):
         
         if gr:
             self.Warning("Specified Training Percentage " + gr + ". Setting to 80%")
+
+    def ModelNameAlreadyPresent(self, Name):
+        self.Warning("Model Name already exists. Skipping...")
+
+    def InvalidOrEmptyModelDirectory(self):
+        self.Warning("Given model directory is empty or invalid. Skipping...")
