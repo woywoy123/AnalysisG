@@ -66,7 +66,8 @@ class Event(EventTemplate):
             self.TopPostFSR[i.Index].Children += [i]
 
         for i in self.TopPostFSR:
-            setattr(self.TopPostFSR[i], "Jets", [])
+            setattr(self.TopPostFSR[i], "TruthJets", [])
+            setattr(self.TopPostFSR[i], "Leptons", [])
 
         for i in self.TruthJets:
             self.TruthJets[i].Index = -1
@@ -76,7 +77,7 @@ class Event(EventTemplate):
             for t in self.TruthJets[i].GhostTruthJetMap:
                 if t == -1:
                     continue
-                self.TopPostFSR[t].Jets += [self.TruthJets[i]]
+                self.TopPostFSR[t].TruthJets += [self.TruthJets[i]]
 
         for i in self.Jets:
             for tj in self.Jets[i].JetMapGhost:
@@ -107,7 +108,7 @@ class Event(EventTemplate):
                 continue
             j.Index = low.Index
             setattr(j, "FromRes", 0)
-            self.TopPostFSR[low.Index].Jets.append(j)
+            self.TopPostFSR[low.Index].Leptons.append(j)
             j.Parent += [self.TopPostFSR[low.Index]]
 
         self.DetectorParticles = []
@@ -125,5 +126,6 @@ class Event(EventTemplate):
 
         for i in self.TopPostFSR:
             RecursiveSignal(i.Children, i.FromRes, i.Index)
-            RecursiveSignal(i.Jets, i.FromRes, i.Index)
+            RecursiveSignal(i.TruthJets, i.FromRes, i.Index)
+            RecursiveSignal(i.Leptons, i.FromRes, i.Index)
 

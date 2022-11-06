@@ -26,6 +26,7 @@ class Settings:
         self.ATLASCom = None
         self.Color = None
         self.Colors = []
+        self.NEvents = None
         
     def Layout(self):
         self.FontSize = 10
@@ -34,7 +35,8 @@ class Settings:
         self.LegendSize = 10
 
         self.Logarithmic = False
-        self.Scaling = 1.25
+        self.xScaling = 1.25
+        self.yScaling = 1.25
         self.DPI = 250
     
     def IO(self):
@@ -48,7 +50,7 @@ class Settings:
             hep.atlas.label(data = self.ATLASData, 
                     year = self.ATLASYear, 
                     lumi = self.ATLASLumi,
-                    label = "\nN = " + str(len(self.xData)),
+                    label = "\nN = " + str(len(self.xData) if self.NEvents == None else self.NEvents),
                     com = self.ATLASCom)
             self.PLT.style.use(hep.style.ATLAS)
 
@@ -59,7 +61,7 @@ class Settings:
             pass
     
     def MakeFigure(self): 
-        self.Figure, self.Axis = plt.subplots(figsize = (self.Scaling*6.4, self.Scaling*4.8))
+        self.Figure, self.Axis = plt.subplots(figsize = (self.xScaling*6.4, self.yScaling*4.8))
         self.Axis.set_autoscale_on(True)
     
     def ApplyToPLT(self):

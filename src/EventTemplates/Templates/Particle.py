@@ -35,7 +35,6 @@ class ParticleTemplate(VariableManager):
         else:
             return self.__add__(other)
 
-
     def __add__(self, other):
         
         v = torch.zeros((1, 4))
@@ -53,3 +52,4 @@ class ParticleTemplate(VariableManager):
         particle.Children += [p for p in other.Children if p not in particle.Children]
         
         return particle
+

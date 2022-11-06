@@ -34,6 +34,8 @@ def TruthJetAll(Ana):
 
     nevents = 0
     lumi = 0
+    nevents2 = 0
+    lumi2 = 0
 
     nLep = []
     nTruthJets = []
@@ -60,6 +62,10 @@ def TruthJetAll(Ana):
 
     MassOfZPrime = []
     MassOfZPrime_Lep = [] 
+
+    PT_Res_TruthJets = []
+    PT_Spec_TruthJets = []
+
 
     for i in Ana:
         event = i.Trees["nominal"]
@@ -147,6 +153,40 @@ def TruthJetAll(Ana):
         else:
             MassOfZPrime.append(Zprime)
 
+        for t in tops:
+            if len([c for c in t.Children if abs(c.pdgid) in _leptons]) > 0:
+                particle = sum(t.Leptons + t.TruthJets)
+                if particle == 0:
+                    continue
+                MassOfTops_Lep.append(particle.CalculateMass())
+                if t.FromRes == 1:
+                    _lepS = True
+            else: 
+                particle = sum(t.TruthJets)
+                if particle == 0:
+                    continue
+                MassOfTops.append(particle.CalculateMass())
+        
+        _Res_top = []
+        _Spec_top = []
+        for t in tops: 
+            _lep = False
+            if len([c for c in t.Children if abs(c.pdgid) in _leptons]) > 0:
+                _lep = True
+
+            if t.FromRes == 1 and _lep:
+                break
+            if t.FromRes == 1:
+                _Res_top.append(t) 
+            if t.FromRes == 0:
+                _Spec_top.append(t)
+        
+        if len(_Res_top) == 2:
+            PT_Res_TruthJets += [tj.pt/1000 for t in _Res_top for tj in t.TruthJets]
+            PT_Spec_TruthJets += [tj.pt/1000 for t in _Spec_top for tj in t.TruthJets]
+            nevents2 += 1
+            lumi2 += event.Lumi
+
         nevents += 1
         lumi += event.Lumi
 
@@ -160,6 +200,7 @@ def TruthJetAll(Ana):
     PlotSharedTruthJets(nevents, lumi, NSharedTruthJets_Res_Res, NSharedTruthJets_Res_Spec)
     PlotInvariantMassTop(nevents, lumi, MassOfTops, MassOfTops_Lep)
     PlotInvariantMassZPrime(nevents, lumi, MassOfZPrime, MassOfZPrime_Lep)
+    PlotPTSpecRes(nevents2, lumi2, PT_Spec_TruthJets, PT_Res_TruthJets)
 
 def PlotNDecayProducts(nevents, lumi, nLep, nTruthJets):
     Plots = PlotTemplate(nevents, lumi)
@@ -385,5 +426,31 @@ def PlotInvariantMassZPrime(nevents, lumi, Hadronic, Lepton):
     Plots["Filename"] = "Figure.3.1j"
     com = CombineTH1F(**Plots)
     com.SaveFigure()
+
+def PlotPTSpecRes(nevents, lumi, PT_Spec, PT_Res):
+    Plots = PlotTemplate(nevents, lumi)
+    Plots["Alpha"] = 0.5
+    Plots["xStep"] = 50
+    Plots["xScaling"] = 3
+    Plots["xTitle"] = "Transverse Momenta of Truth Jet (GeV)"
+    
+    Plots["Title"] = "Resonance-TruthJets"
+    Plots["xData"] = PT_Res
+    H = TH1F(**Plots)
+
+    Plots["Title"] = "Spectator-TruthJets"
+    Plots["xData"] = PT_Spec
+    L = TH1F(**Plots)
+
+    Plots["xData"] = []
+    Plots["Histograms"] = [H, L]
+    Plots["Title"] = "Transverse Momenta of Truth-Jets for Events where Both Z' Tops Decay Hadronically"
+    Plots["Filename"] = "Figure.3.1k"
+    com = CombineTH1F(**Plots)
+    com.SaveFigure()
+
+   
+
+
 
 

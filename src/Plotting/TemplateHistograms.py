@@ -92,8 +92,7 @@ class TH1F(Functions):
         if len(self.xData) == 0:
             self.Warning("EMPTY DATA.")
 
-        if isinstance(self.xTickLabels, list) == False:
-            self.DefineRange("x")
+        self.DefineRange("x")
         
         self.NPHisto = np.histogram(self.xData, bins = self.xBins, range = self.xRange, weights = self.xWeights)
         self.ApplyFormat()
@@ -101,13 +100,12 @@ class TH1F(Functions):
         if self.xBinCentering:
             self.Axis.set_xticks(self.xData)
 
+        if self.xStep != None:
+            self.Axis.set_xticks([self.xMin + self.xStep*i for i in range(self.xBins)])
+
         if isinstance(self.xTickLabels, list):
-            self.Axis.set_xticks(self.xData)
             self.Axis.set_xticklabels(self.xTickLabels)
         
-        if self.xStep != None:
-            self.Axis.set_xticks([self.xMin + self.xStep*i for i in range(self.xBins+1)])
-
        
 class CombineTH1F(Functions):
     def __init__(self, **kargs):
@@ -189,13 +187,12 @@ class CombineTH1F(Functions):
         if self.xBinCentering:
             self.Axis.set_xticks(self.xData)
 
-        if isinstance(self.xTickLabels, list):
-            self.Axis.set_xticks(self.xData)
-            self.Axis.set_xticklabels(self.xTickLabels)
-
         if self.xStep != None:
             self.Axis.set_xticks([self.xMin + self.xStep*i for i in range(self.xBins)])
 
+        if isinstance(self.xTickLabels, list):
+            self.Axis.set_xticks(self.xData)
+            self.Axis.set_xticklabels(self.xTickLabels)
         self.PLT.xlim(self.xMin, self.xMax)
 
             

@@ -42,7 +42,7 @@ d: DeltaR between pairs of children from a common top quark - Stack plot
 e: The DeltaR between the four vector of the top quark and its children i.e. how much do the children deviate from the original top trajectory. - Stack Plot
 
 
--> Figure 3.1:
+-> Figure 3.1: Truth Jets 
 a: Distribution of n-Truth Jets and n-leptons in event - Stack plot
 b: Distribution of n-Truth Jets and n-leptons produced by tops in event. Also included the number of background truth jets (i.e. the truth jets not matched to any top)
 c: Distribution of n-Truth Jets excluding the leptonically decaying top (This is based on the TRUTH CHILDREN)
@@ -53,12 +53,15 @@ g: Number of completely lost tops i.e. the ones without any truth jets being mat
 h: Number of shared truth jets across different tops - i.e. are the truth jets going to be merged.
 i: Invariant Mass of Tops derived from Truth Jets - Based on TRUTH CHILDREN!
 j: Invariant Mass of Z' Prime when it decays leptonically and purely hadronic - Based on TRUTH CHILDREN!
+k: PT Distribution of the truth jets originating from Spectator and Resonance top. (both Res tops need to decay Hadronically)
 
 
 
-
--> Figure 4: (x) Not Complete yet....
+-> Figure 4: (x) Not Complete yet.... Jets
 +Do as above but add deltaR between jet and truth jet 
+
+
+
 
 -> Figure 5: (x) Not Complete yet....
 + Do Bruce Analysis.
@@ -70,9 +73,3 @@ j: Invariant Mass of Z' Prime when it decays leptonically and purely hadronic - 
 ~> Remaining jets are your 2nd spectators 
 ~> Form M(Z')
 ~> Fit fit M(Z') 
-
--> Modifications to Bruce's Proposal:
-~> Jets have different levels of b-tagging (Working points) (85, 77, 70, 60, 0)
-~> Match the emitted lepton to any jet nearby for all working points, regardless of PT hardness
-~> Remove the added jet from jet collection 
-~> Select two hardest jets (as before) but at different Working points. i.e. jj_{85, 77, 70, 60}_at_jl_{85, 77, 70, 60, 0}
