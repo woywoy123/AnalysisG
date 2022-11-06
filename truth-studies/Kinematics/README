@@ -1,0 +1,78 @@
+
+Shorts:
+* Res-Lep: Resonance top decaying leptonically
+* Res-Had: Resonance top decaying hadronically
+* Spec-Lep: Spectator top decaying leptonically 
+* Spec-Had: Spectator top decaying hadronically
+* Res: Resonance
+* Truth Jets: These are jets that are have no detector inefficiencies applied to them
+* Truth Children: These are the immediate decay particles from the truth top. These have not emitted any gluon radiation if they are Quarks.
+* Based on TRUTH CHILDREN!: There are two ways of determining whether a top decays leptonically, one being top.Lepton or [ if lepton in top.Children ]. These methods DO NOT necessarily produce the same outcome, .Lepton is the matched DETECTOR lepton to the top.Children. So if a DETECTOR lepton is missing, tops actually decaying leptonically will NOT be considered as such.
+
+
+-> Figure 1.1: No selection criteria on how the Z' decays (i.e. tops can decay leptonically or hadronically)
+a: Mass of Tops which originate from the Z' resonance (1.5 TeV)
+b: Mass of Z' derived from the tops in figure a.
+c: Mass of Spectator Tops
+d: Number of Tops found per event 
+e: Decay modes of tops involved
+f: PT Distribution for Tops undergoing different decay modes
+g: Decay modes of the Z' resonance (either of the tops decays leptonically or all decay hadronically)
+
+-> Figure 1.2: Event selection criteria that the Z' decays HADRONICALLY 
+a: Mass of Tops which originate from the Z' resonance (1.5 TeV)
+b: Mass of Z' derived from the tops in figure a.
+c: Mass of Spectator Tops
+d: Number of Tops found per event 
+e: Decay modes of tops involved
+f: PT Distribution for Tops undergoing different decay modes
+
+-> Figure 2.1: No selection criteria on how the Z' decays (i.e. tops can decay leptonically or hadronically)
+a: Distribution of n-children produced - Stack Plot
+b: PT Distribution for children of tops - Stack Plot
+c: Reconstructed Invariant Top mass from Children - Superimposed
+d: DeltaR between pairs of children from a common top quark - Stack plot
+e: The DeltaR between the four vector of the top quark and its children i.e. how much do the children deviate from the original top trajectory. - Stack Plot
+
+-> Figure 2.2: Event selection criteria that the Z' decays HADRONICALLY 
+a: Distribution of n-children produced - Stack Plot
+b: PT Distribution for children of tops - Stack Plot
+c: Reconstructed Invariant Top mass from Children - Superimposed
+d: DeltaR between pairs of children from a common top quark - Stack plot
+e: The DeltaR between the four vector of the top quark and its children i.e. how much do the children deviate from the original top trajectory. - Stack Plot
+
+
+-> Figure 3.1:
+a: Distribution of n-Truth Jets and n-leptons in event - Stack plot
+b: Distribution of n-Truth Jets and n-leptons produced by tops in event. Also included the number of background truth jets (i.e. the truth jets not matched to any top)
+c: Distribution of n-Truth Jets excluding the leptonically decaying top (This is based on the TRUTH CHILDREN)
+d: DeltaR between truth-jets from common top (This is to test the collimation of the truth jets).
+e: DeltaR between top truth jet and background truth jet
+f: DeltaR between top truth jets of non-mutual top (checks the combinatorial of truth jets i.e. how far away are truth jets from one top to the other)
+g: Number of completely lost tops i.e. the ones without any truth jets being matched.
+h: Number of shared truth jets across different tops - i.e. are the truth jets going to be merged.
+i: Invariant Mass of Tops derived from Truth Jets - Based on TRUTH CHILDREN!
+j: Invariant Mass of Z' Prime when it decays leptonically and purely hadronic - Based on TRUTH CHILDREN!
+
+
+
+
+-> Figure 4: (x) Not Complete yet....
++Do as above but add deltaR between jet and truth jet 
+
+-> Figure 5: (x) Not Complete yet....
++ Do Bruce Analysis.
++ Selection criteria:
+~> Leptonic t: This is spectator 1
+~> 2 Hardest b-tagged jets: these correspond to the Z' daughter tops
+~> attach two other jets to each <somehow> (I use deltaR)
+~> You now have the Z' -> ttbar daughters
+~> Remaining jets are your 2nd spectators 
+~> Form M(Z')
+~> Fit fit M(Z') 
+
+-> Modifications to Bruce's Proposal:
+~> Jets have different levels of b-tagging (Working points) (85, 77, 70, 60, 0)
+~> Match the emitted lepton to any jet nearby for all working points, regardless of PT hardness
+~> Remove the added jet from jet collection 
+~> Select two hardest jets (as before) but at different Working points. i.e. jj_{85, 77, 70, 60}_at_jl_{85, 77, 70, 60, 0}
