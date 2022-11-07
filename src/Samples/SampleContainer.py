@@ -37,8 +37,8 @@ class SampleContainer:
     def ClearEvents(self):
         for name in self.ROOTFiles:
             self.ROOTFiles[name].ClearEvents()
-        self.list()
-        self.hash()
+        self.list(True)
+        self.hash(True)
         self._locked = True
 
     def RestoreEvents(self, events):

@@ -10,12 +10,12 @@ Ana.InputSample("tttt", direc)
 Ana.Event = Event
 #Ana.EventStop = 100
 Ana.chnk = 100
-Ana.EventCache = True
+Ana.EventCache = False
 Ana.DumpPickle = True
 Ana.Launch()
 
-TruthTopsAll(Ana)
-TruthTopsHadron(Ana)
-TruthChildrenAll(Ana)
-TruthChildrenHadron(Ana)
+#TruthTopsAll(Ana)
+#TruthTopsHadron(Ana)
+#TruthChildrenAll(Ana)
+#TruthChildrenHadron(Ana)
 TruthJetAll(Ana)

@@ -2,6 +2,7 @@ from AnalysisTopGNN.Generators import Analysis
 from AnalysisTopGNN.Events import Event
 from AnalysisTopGNN.IO import UnpickleObject, PickleObject
 from AnalysisTopGNN.Plotting import TH1F, CombineTH1F
+import gc
 
 def PlotTemplate(nevents, lumi):
     Plots = {
@@ -191,16 +192,50 @@ def TruthJetAll(Ana):
         lumi += event.Lumi
 
     PlotNDecayProducts(nevents, lumi, nLep, nTruthJets)
+    nLep = []
+    nTruthJets = []
+    gc.collect()
+
     PlotNTruthJets(nevents, lumi, nTopTruthJets, nTopLeptons, nBackgroundTruthJets)
+    nTopTruthJets = []
+    nTopLeptons = []
+    gc.collect()
+
     PlotNTruthJets_ExlLeptonic(nevents, lumi, nTopTruthJets_ExlLep, nBackgroundTruthJets)
+    nBackgroundTruthJets = []
+    nTopTruthJets_ExlLep = []
+    gc.collect()
+
     PlotDeltaRTopsTruthJets(nevents, lumi, DeltaRTopTruthJets_ExlLep, DeltaRTopTruthJetsLep)
-    PlotDeltaRTopsTruthJetsBackground(nevents, lumi, DeltaR_TopTruthJet_Background, DeltaR_TopTruthJetLep_Background)
     PlotDeltaRNonMutualTopTruthJets(nevents, lumi, DeltaRTopTruthJets_ExlLep, DeltaRTopTruthJetsLep, DeltaR_NonMutualTopTruthJets)
+    DeltaRTopTruthJets_ExlLep = []
+    DeltaRTopTruthJetsLep = []
+    DeltaR_NonMutualTopTruthJets = []
+    gc.collect() 
+
+    PlotDeltaRTopsTruthJetsBackground(nevents, lumi, DeltaR_TopTruthJet_Background, DeltaR_TopTruthJetLep_Background)
+    DeltaR_TopTruthJet_Background = []
+    DeltaR_TopTruthJetLep_Background = []
+    gc.collect()
+
     PlotLostTops(nevents, lumi, LostTops)
+    LostTops = []
+    gc.collect()
+
     PlotSharedTruthJets(nevents, lumi, NSharedTruthJets_Res_Res, NSharedTruthJets_Res_Spec)
+    NSharedTruthJets_Res_Res, NSharedTruthJets_Res_Spec = [], []
+    gc.collect()
+
     PlotInvariantMassTop(nevents, lumi, MassOfTops, MassOfTops_Lep)
+    MassOfTops, MassOfTops_Lep = [], []
+    gc.collect()
+
     PlotInvariantMassZPrime(nevents, lumi, MassOfZPrime, MassOfZPrime_Lep)
+    MassOfZPrime, MassOfZPrime_Lep = [], []
+    gc.collect()
+
     PlotPTSpecRes(nevents2, lumi2, PT_Spec_TruthJets, PT_Res_TruthJets)
+    PT_Spec_TruthJets, PT_Res_TruthJets = [], []
 
 def PlotNDecayProducts(nevents, lumi, nLep, nTruthJets):
     Plots = PlotTemplate(nevents, lumi)
@@ -270,6 +305,7 @@ def PlotNTruthJets_ExlLeptonic(nevents, lumi, nTopTruthJets_ExlLep, nBackgroundT
     Plots["Title"] = "Number of Truth-Jets Produced by Tops in Event\n - Excluding the Leptonically Decaying Top"
     Plots["Stack"] = True
     Plots["xBinCentering"] = True 
+    Plots["xMax"] = 24
     Plots["Filename"] = "Figure.3.1c"
     com = CombineTH1F(**Plots)
     com.SaveFigure()
@@ -410,6 +446,7 @@ def PlotInvariantMassZPrime(nevents, lumi, Hadronic, Lepton):
     Plots["Alpha"] = 0.5
     Plots["xStep"] = 50
     Plots["xScaling"] = 3
+    Plots["xMax"] = 2000
     Plots["xTitle"] = "Invariant Mass (GeV)"
     
     Plots["Title"] = "Hadronic"
@@ -430,7 +467,8 @@ def PlotInvariantMassZPrime(nevents, lumi, Hadronic, Lepton):
 def PlotPTSpecRes(nevents, lumi, PT_Spec, PT_Res):
     Plots = PlotTemplate(nevents, lumi)
     Plots["Alpha"] = 0.5
-    Plots["xStep"] = 50
+    Plots["xStep"] = 20
+    Plots["xMax"] = 1100
     Plots["xScaling"] = 3
     Plots["xTitle"] = "Transverse Momenta of Truth Jet (GeV)"
     

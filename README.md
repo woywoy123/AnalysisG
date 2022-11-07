@@ -2,18 +2,20 @@
 
 ## Introduction <a name="introduction"></a>
 The aim of this package is to provide Particle Physicists with an intuitive interface to **Graph Neural Networks**, whilst remaining Analysis agnostic. 
-Specifically, the package was partly inspired by AnalysisTop, which allows for not only event selection customization, but at the individual particle level. 
-This package adopts a similar approach, processed ROOT files (MadGraph5 Delphes, AnalysisTop, ...) containing trees, branches, and leaves are read by the UpROOT package and compiled into Particle pythonic objects.
-The definition of a particle object is completely arbitrary, as long as the relevant leaves and branches are provided (see tutorial later on). 
-In a similar spirit, collision events are compiled into Event python objects, which also allows for flexibility in terms of how particles are related (e.g. Truth Matching), providing a simplistic first step into inspecting samples for a given analysis.
+Following a similar spirit to AnalysisTop, the analyst is able to define a custom event class and define how variables within the ROOT file are related. 
+For instance, if any truth matching to specific detector particles needs to be performed, this would be defined within the event class.
 
-The second phase of the framework is the bridge between the Deep Learning realm and collision events. 
-Similar to the event object definition, event graphs are arbitrarily defined and compiled into the PyTorch Geometric (PyG) Data object, which can be subsequently used in the DataLoader (more on this later).
+The philosophy of this package is that the events within ROOT files are compiled into pythonic objects, where trees, branches and leaves define the relevant objects. 
+Particle objects are defined by customized classes, which inherit some base class and relevant leaves and branches are provided as needed (see tutorial later on). 
+Within the event class any additional truth matching of particles can also be done, hence the customization of events.
+
+The second phase of the framework is to bridge the Deep Learning framework (PyTorch Geometric) and events within ROOT files. 
+Similar to the event object definition, event graphs are arbitrarily defined and compiled into the PyTorch Geometric (PyG) Data object, these can be subsequently interfaced with a GraphLoader (more on this later).
 Event graphs should only contain particles relevant for the analysis, for instance, if some arbitrary model is to be evaluated on Monte Carlo truth particles (simulated particle interactions/decays), only those particles should be selected in the event graph rather than detector observables. 
-Once these graphs are defined, functions can be applied to the graph, which extract relevant particle/event attributes, e.g. particle phi, missing ET, etc.
+Once these graphs have been defined, functions can be applied to the graph, which extract relevant particle/event attributes, e.g. particle phi, missing ET, etc. and add these as features of the graph.
 
-The final step of using the framework would involve the usage of an optimizer, which handles all the Deep Learning (PyTorch) function calls and matches input graph attributes with defined models. 
-As for larger projects, additional tools such as scheduling and condor submission DAG scripts can also be compiled. 
+The final step of using the framework involves an optimization step, where models are trained to event graphs to optimize the model's internal parameters.
+For larger projects additional tools such as scheduling and condor submission DAG scripts are also useful. 
 
 ## Supported Monte Carlo Generators <a name="Generators"></a>
 ROOT files which originate from AnalysisTop can be easily processed and require minimal adjustment to the event compiler.
@@ -23,18 +25,13 @@ ROOT files which originate from AnalysisTop can be easily processed and require 
 ```
 git clone https://github.com/woywoy123/FourTopsAnalysis.git
 ```
-2. Install the following packages: 
-- ```PyTorch Geometric```
-- ```PyTorch``` 
-- ```UpROOT```
-- ```Sklearn```
-- ```HDF5```
+2. Use the shell script to install required packages
+- ```bash SetupAnalysis.sh```
 
 3. Run the following command:
 ```bash 
 python setup.py install 
 ```
-4. Now the package has been installed and can be used in any directory. 
 ---
 
 ## How Do I Make This Code Work With My Samples? <a name="CustomSamples"></a>
@@ -72,23 +69,28 @@ class CustomParticle(ParticleTemplate):
 		self.eta = self.Type + ".ETA"
 		
 ```
-NOTE: When defining attributes for a particle class, it is crucial to match the string to the appropriate ROOT leaf name. For instance, in the above code, the variable PT expects a leaf within a given branch called 'Particle.PT'. If a specific leaf is not found, the associated attribute will be removed and a warning will be issued upon compilation time. 
+- NOTE: When defining attributes in a particle class, it is crucial to match the strings of to the ROOT leaf name. 
+As illustrated in the above code, the variable ```python self.pt``` expects a leaf name 'Particle.PT'. If a specific leaf is not found, the associated attribute will be removed and a warning will be issued upon compilation time. 
 
 #### Inherited Functions and Variables:
 When using the **ParticleTemplate** class, a number of useful functions and attributes are inherited. These are listed below; 
 ```python 
 def DeltaR(P)
 ```
-This function expects another particle with the attributes; **eta, phi, pt, e** and calculates the delta R between the current particle and the given one. 
+- This function expects another particle with the attributes; **eta, phi, pt, e** and calculates the delta R between two particles. 
+
 
 ```python 
 def CalculateMass(lists = None, Name = "Mass"):
 ```
-Calculates the invariant mass of the particle's **eta, phi, pt, e** attributes, if no lists have been provided. By default this function call spawns two new attributes, *Mass_MeV* and *Mass_GeV*. If a list of particles is provided, the **total invariant mass** is calculated. 
-Alternatively, given a list of particles, the ```python sum([...])``` in-built function can be used to calculate the invariant mass of a new instantiated particle object.
+Calculates the invariant mass of the particle using **eta, phi, pt, e** attributes. 
+Alternatively, if a list of particles is given, it will calculate the invariant mass of the list. 
+By default this function creates two new attributes, *Mass_MeV* and *Mass_GeV*. 
+To minimize redundant code, a list of particles can also be summed using python's in-built function ```python sum([...])``` and returns a new particle object.
+However, this returns an integer if the list is empty.
 
 #### To Override Functions:
-Custom particles with conflicting method names can be savely used to override pre-existing methods. 
+Custom particle classes can also override template methods without any repercussion.
 
 
 ### How to define a Custom Event Class: <a name="CustomEventClass"></a>
@@ -98,7 +100,7 @@ Custom particles with conflicting method names can be savely used to override pr
 from AnalysisTopGNN.Templates import EventTemplate 
 from Particles import CustomParticle  
 ```
-2. Similar to the Particle class, let any custom Event inherit the methods from **EventTemplate**. A simple example should look something like this:
+2. Similar to the Particle class, let the custom event inherit methods from **EventTemplate**. A simple example should look something like this:
 ```python  
 class CustomEvent(EventTemplate):
 	def __init__(self):
@@ -127,19 +129,18 @@ class CustomEvent(EventTemplate):
 
 #### The ```self.Objects``` attribute:
 
-The attribute **Objects** is a dictionary of particle implementations.
+The attribute **Objects** is a dictionary, which defines particle templates relevant for the event.
 ```python 
 self.Objects = {
 	"CustomParticleV1" : CustomParticleV1(), 
 	"CustomParticleV2" : CustomParticleV2()
 		}
 ```
-The associated keyword **CustomParticleV1** or **CustomParticleV2** are arbitrary and appear as object attributes. For example, ```self.CustomParticleV1``` will contain CustomParticleV1 objects for the given collision event.
+The associated keyword **CustomParticleV1** or **CustomParticleV2** are arbitrary and appear as object attributes. For example, ```self.CustomParticleV1``` will contain only CustomParticleV1 objects.
 
-#### The ```CompileEvent``` function call:
-This function call is similar ```AnalysisTop's``` CustomEventSaver, here any particle relationships are defined. For instance in **Truth Matching**, a jet might originate from the decay of a top-quark, but the ROOT files may not have an explicit variable to indicate this.
-Such missing variables can be applied to the particle objects and can subsequently be used for some Deep Learning Model or preliminary kinematic studies.
-The event should begin with calling the ```self.CompileParticle``` method and ensures all defined particles are be available. 
+#### The ```CompileEvent``` Method:
+This method is used to define any particle relationships or perform pre-processing of the event.
+For example in **Truth Matching**, a jet might originate from a top-quark which is presevered in the ROOT file through some variable, this variable can be retrieved and used to link the top and the jet.
 
 ### How to define a Custom Event Graph Class: <a name="CustomEventGraphClass"></a>
 #### Basic Example:
@@ -158,18 +159,20 @@ def CustomEventGraph(EventGraphTemplate):
 ```
 
 ## Generator Classes: 
-In this framework generator classes are used to either compile or interface the analysis samples with the Deep Learning realm. 
+In this framework uses a number of generator classes as intermediates to compile required samples. 
+Familiarity with them isn't necessary, but useful, since it will provide more context around settings.
 
 ### EventGenerator:
-This class takes as input some ```Event``` implementation and sample directory, and compiles ROOT files into Python based objects. 
-These objects act as containers and retain file traces for each event.
-Generally, this class should be used for debugging or developing preliminary analysis strategies, since all specified ROOT leaves are available for each Particle/Event. 
+This class takes as input the ```Event``` implementation and sample directory to compile pythonic event objects. 
+These objects act as containers and retain file traces for each event, i.e. which ROOT files were used to compile the event.
+To uniquely tag events the MD5 hash is computed and can be used to reverse look-up the original ROOT filename.
+This class should be used to debug or develop preliminary analysis strategies.  
 
 ### GraphGenerator:
-This class processes the ```EventGenerator``` container and transforms ```Event``` objects into event graphs, where particles are nodes, and any relationships are represented as edges.
-Prior to compilation, simple python functions can be added to extract only relevant attributes from the ```Event```/```Particle``` objects.
-Generally, the output graphs are significantly smaller and are used as input for PyTorch Geometric. 
-Furthermore, this class retains traces of the originating ROOT file and records the associated index of the event. 
+The ```EventGenerator``` interfaces with the ```GraphGenerator``` to convert ```Event``` objects into ```EventGraphs```, where particles are nodes, and relationships are edges.
+For graphs to have any meaning, they require features.
+Typical features to include are the particle's pt, eta, phi, etc., which can be easily added by using Python functions (more on this later).
+Naturally, the same logic is applicable to the event graph and edges.
 
 ### Optimization:
 A class dedicated solely towards interfacing with the Deep Learning frameworks (specifically ```PyTorch```).
