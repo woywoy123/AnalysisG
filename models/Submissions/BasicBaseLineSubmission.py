@@ -38,9 +38,8 @@ def Optimization():
 
 
 
-smplDir = "/home/tnom6927/Downloads/CustomAnalysisTopOutputTest/"
-
-
+smplDir = "/home/<....>/Downloads/CustomAnalysisTopOutputTest/"
+smplDir = "/nfs/dust/atlas/user/<....>/SmallSample/"
 
 Sub = Condor()
 Sub.EventCache = True 

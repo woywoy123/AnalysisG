@@ -61,7 +61,7 @@ class CondorScript:
         self._config.append(inpt)
             
 
-class AnalysisScript:
+class AnalysisScript(AnalysisTopGNN.Tools.General.Tools):
 
     def __init__(self):
         self.Code = []
@@ -87,7 +87,7 @@ class AnalysisScript:
 
         Ad_key = {}
         Script = ["import sys"]
-        Script += ["sys.path.append('" + "/".join(self.OutDir.split("/")[:-1]) + "/_SharedCode/')"]
+        Script += ["sys.path.append('" + self.abs("/".join(self.OutDir.split("/")[:-1]) + "/_SharedCode/')")]
         Script += ["from Event import *"]
         for i in self.Code:
 
