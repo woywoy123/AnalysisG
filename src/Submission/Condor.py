@@ -155,6 +155,7 @@ class JobSpecification(AnalysisTopGNN.Tools.General.Tools):
         self.Job.Launch()
     
     def DumpConfig(self):
+        self.Job.OutputDirectory = self.abs(self.Job.OutputDirectory)
         pth = self.Job.OutputDirectory + "/" + self.Job.ProjectName + "/CondorDump/" + self.Name
         self.mkdir(pth)
         self.mkdir(pth + "/../_SharedCode")
@@ -169,7 +170,7 @@ class JobSpecification(AnalysisTopGNN.Tools.General.Tools):
         Ana.Compile()
        
         Con = CondorScript()
-        Con.ExecPath = self.Name
+        Con.ExecPath = pth
         Con.ScriptName = "main"
         Con.Threads = self.Job.Threads
         Con.Time = self.Time
@@ -179,11 +180,7 @@ class JobSpecification(AnalysisTopGNN.Tools.General.Tools):
         Con.Compile()
         self.__Build(Con._config, self.Name + ".submit", pth)
         Con.Shell()
-        self.__Build(Con._config, self.Name + ".sh", pth, True)
-
-
-
-
+        self.__Build(Con._config, "main.sh", pth, True)
 
 class Condor(AnalysisTopGNN.Tools.General.Tools, Condor, Settings):
     def __init__(self):
@@ -255,10 +252,11 @@ class Condor(AnalysisTopGNN.Tools.General.Tools, Condor, Settings):
 
     def DumpCondorJobs(self):
         self.__Sequencer()
-        self.mkdir(self.OutputDirectory + "/" + self.ProjectName + "/CondorDump")
+        outDir = self.abs(self.OutputDirectory)
+        self.mkdir(outDir + "/" + self.ProjectName + "/CondorDump")
         DAG = []
         for i in self._sequence:
-            self.mkdir(self.OutputDirectory + "/" + self.ProjectName + "/CondorDump/" + i)
+            self.mkdir(outDir + "/" + self.ProjectName + "/CondorDump/" + i)
             for j in self._sequence[i]:
 
                 self._Jobs[j].DataCache = self.DataCache
@@ -277,11 +275,11 @@ class Condor(AnalysisTopGNN.Tools.General.Tools, Condor, Settings):
                 if s not in DAG:
                     DAG.append(s)
 
-        F = open(self.OutputDirectory + "/" + self.ProjectName + "/CondorDump/DAGSUBMISSION.submit", "w")
+        F = open(outDir + "/" + self.ProjectName + "/CondorDump/DAGSUBMISSION.submit", "w")
         F.write("\n".join(DAG))
         F.close()
         
-        F = open(self.OutputDirectory + "/" + self.ProjectName + "/CondorDump/RunAsBash.sh", "w")
+        F = open(outDir + "/" + self.ProjectName + "/CondorDump/RunAsBash.sh", "w")
         F.write("#!/bin/bash\n")
         for j in self._sequence:
             F.write("bash " + j + "/" + j +".sh\n")
