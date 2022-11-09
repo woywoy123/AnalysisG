@@ -13,7 +13,8 @@ class Condor(Notification):
             self.Warning("Inheriting the project name: " + instance.ProjectName)
         
         if self.ProjectName != instance.ProjectName:
-            self.Warning("Renaming incoming project name. If this is unintentional, make sure to instantiate a new Condor instance with the other project name.")
+            if instance.ProjectName != "UNTITLED":
+                self.Warning("Renaming incoming project name. If this is unintentional, make sure to instantiate a new Condor instance with the other project name.")
             instance.ProjectName = self.ProjectName
 
         if self.OutputDirectory != None:

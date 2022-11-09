@@ -1,8 +1,7 @@
-from AnalysisTopGNN.Tools import Tools
+import AnalysisTopGNN
 from AnalysisTopGNN.Notification import Condor
 from AnalysisTopGNN.Generators import Settings
 import os, stat 
-
 
 class CondorScript:
 
@@ -124,7 +123,7 @@ class AnalysisScript:
 
 
 
-class JobSpecification(Tools):
+class JobSpecification(AnalysisTopGNN.Tools.General.Tools):
 
     def __init__(self):
         self.Job = None
@@ -186,7 +185,7 @@ class JobSpecification(Tools):
 
 
 
-class Condor(Tools, Condor, Settings):
+class Condor(AnalysisTopGNN.Tools.General.Tools, Condor, Settings):
     def __init__(self):
         self.Caller = "CONDOR"
         Settings.__init__(self)
@@ -256,10 +255,10 @@ class Condor(Tools, Condor, Settings):
 
     def DumpCondorJobs(self):
         self.__Sequencer()
-        self.mkdir(self.ProjectName + "/CondorDump")
+        self.mkdir(self.OutputDirectory + "/" + self.ProjectName + "/CondorDump")
         DAG = []
         for i in self._sequence:
-            self.mkdir(self.ProjectName + "/CondorDump/" + i)
+            self.mkdir(self.OutputDirectory + "/" + self.ProjectName + "/CondorDump/" + i)
             for j in self._sequence[i]:
 
                 self._Jobs[j].DataCache = self.DataCache
@@ -278,11 +277,11 @@ class Condor(Tools, Condor, Settings):
                 if s not in DAG:
                     DAG.append(s)
 
-        F = open(self.ProjectName + "/CondorDump/DAGSUBMISSION.submit", "w")
+        F = open(self.OutputDirectory + "/" + self.ProjectName + "/CondorDump/DAGSUBMISSION.submit", "w")
         F.write("\n".join(DAG))
         F.close()
         
-        F = open(self.ProjectName + "/CondorDump/RunAsBash.sh", "w")
+        F = open(self.OutputDirectory + "/" + self.ProjectName + "/CondorDump/RunAsBash.sh", "w")
         F.write("#!/bin/bash\n")
         for j in self._sequence:
             F.write("bash " + j + "/" + j +".sh\n")

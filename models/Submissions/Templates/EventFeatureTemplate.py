@@ -2,7 +2,8 @@ import Templates.ParticleGeneric.EdgeFeature as ef
 import Templates.ParticleGeneric.NodeFeature as nf
 import Templates.ParticleGeneric.GraphFeature as gf
 
-from AnalysisTopGNN.Tools.ModelTesting import AddFeature
+def AddFeature(Prefix, dic):
+    return {Prefix + "_" + i : dic[i] for i in dic} 
 
 def TruthJets():
     import Templates.TruthJet.EdgeFeature as tj_ef
@@ -121,15 +122,15 @@ def ApplyFeatures(A, Level):
         fx = Features[i]
         
         if "EF" in i:
-            A.AddEdgeFeature(base, fx)
+            A.AddEdgeFeature(fx, base)
         elif "NF" in i:
-            A.AddNodeFeature(base, fx)
+            A.AddNodeFeature(fx, base)
         elif "GF" in i:
-            A.AddGraphFeature(base, fx)
+            A.AddGraphFeature(fx, base)
 
         elif "ET" in i:
-            A.AddEdgeTruth(base, fx)
+            A.AddEdgeTruth(fx, base)
         elif "NT" in i:
-            A.AddNodeTruth(base, fx)
+            A.AddNodeTruth(fx, base)
         elif "GT" in i:
-            A.AddGraphTruth(base, fx)
+            A.AddGraphTruth(fx, base)
