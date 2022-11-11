@@ -18,7 +18,7 @@ class Analysis(Analysis, Settings, SampleTracer, Tools, GraphFeatures):
 
     def InputSample(self, Name, SampleDirectory = None):
         if self._launch == False:
-            self._InputValues.append(["INPUTSAMPLE", {"Name" : Name, "SampleDirectory" : SampleDirectory}])
+            self._InputValues.append({"INPUTSAMPLE" : {"Name" : Name, "SampleDirectory" : SampleDirectory}})
             return  
 
         if isinstance(SampleDirectory, str):
@@ -42,15 +42,13 @@ class Analysis(Analysis, Settings, SampleTracer, Tools, GraphFeatures):
         self._SampleMap[Name] |= self.ListFilesInDir({i : "*" for i in SampleDirectory}, ".root")
    
     def EvaluateModel(self, Directory, ModelInstance = None, BatchSize = None):
+
+        Directory = self.abs(self.AddTrailing(Directory, "/"))
         if self._launch == False:
-            if ModelInstance != None:
-                ModelInstance = self.CopyModelInstance(ModelInstance)
-            self._InputValues.append(["EVALUATEMODEL", {"Directory": Directory, "ModelInstance" : ModelInstance, "BatchSize": BatchSize}])
+            self._InputValues.append({"EVALUATEMODEL" : {"Directory": Directory, "ModelInstance" : ModelInstance, "BatchSize": BatchSize}})
             return  
 
-        Directory = self.AddTrailing(Directory, "/")
-        Name = Directory.split("/")[-2]
-
+        Name = Directory.split("/")[-1]
         if Name in self._ModelDirectories:
             self.ModelNameAlreadyPresent(Name)
             return 
@@ -58,7 +56,7 @@ class Analysis(Analysis, Settings, SampleTracer, Tools, GraphFeatures):
             self.InvalidOrEmptyModelDirectory()
             return 
 
-        self._ModelDirectories[Name] = [Directory + i for i in self.ls(Directory) if "Epoch-" in i]
+        self._ModelDirectories[Name] = [self.abs(Directory + "/" + i) for i in self.ls(Directory) if "Epoch-" in i]
         self._ModelSaves[Name] = {"ModelInstance": ModelInstance} 
         self._ModelSaves[Name] |= {"BatchSize" : BatchSize}
 
@@ -227,11 +225,12 @@ class Analysis(Analysis, Settings, SampleTracer, Tools, GraphFeatures):
     def Launch(self):
         self._launch = True 
         for i in self._InputValues:
-            if i[0] == "INPUTSAMPLE":
-                self.InputSample(**i[1])
-            elif i[0] == "MODELEVALUATOR":
-                self.InputSample(**i[1])
-
+            name = list(i)[0]
+            if name == "INPUTSAMPLE":
+                self.InputSample(**i["INPUTSAMPLE"])
+            elif name == "EVALUATEMODEL":
+                self.EvaluateModel(**i["EVALUATEMODEL"])
+        
         self.StartingAnalysis()
         self.__BuildRootStructure()
         self.output = self.OutputDirectory + "/" + self.ProjectName
@@ -246,7 +245,7 @@ class Analysis(Analysis, Settings, SampleTracer, Tools, GraphFeatures):
             self.DataCache = True 
         if len(self._ModelDirectories) != 0 or self.PlotNodeStatistics:
             self.DataCache = True 
-
+        
         for i in self._SampleMap:
             
             if self.TrainingSampleName and (self.Event == None or self.EventGraph == None):

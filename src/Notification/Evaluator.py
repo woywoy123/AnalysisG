@@ -53,4 +53,5 @@ class Evaluator(Notification):
         self.Success(string)
         self.Success("="*len(string))
 
-
+    def NewModel(self, ModelName):
+        self.Success("!" + "-"*3 + "> New Model: " + ModelName + " <" + "-"*3)

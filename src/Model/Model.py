@@ -118,6 +118,11 @@ class Model:
             torch.save(self._model.state_dict(), OutputDir + "/TorchSave.pth") 
     
     def LoadModel(self, OutputDir):
+        try:
+            self.__init__(self._model())
+        except:
+            pass
         if OutputDir.endswith(".pth"):
-            self._model.load_state_dict(torch.load(OutputDir))
+            lib = torch.load(OutputDir)
+            self._model.load_state_dict(state_dict = lib)
         self._model.eval()

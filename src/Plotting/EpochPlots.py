@@ -155,7 +155,7 @@ class EpochPlots:
 
     
     def AccuracyPlot(self, xData, yData, outdir, mode, feature, up, down):
-        Plots = self.TemplateLine(xData, [i*100 for i in yData], outdir + "/Accuracy", mode, up, down)
+        Plots = self.TemplateLine(xData, [i for i in yData], outdir + "/Accuracy", mode, up, down)
         Plots |= {"yTitle" : "Accuracy (%)"}
         return TLine(**Plots)
 
@@ -265,7 +265,9 @@ class EpochPlots:
         Plots["Title"] = "Model Prediction Accuracy for Features"
         Plots["Lines"] = [j.Plots for i in features for j in Accuracy[i]]
         Plots["yMax"] = 100
-        return CombineTLine(**Plots)
+        cm = CombineTLine(**Plots)
+        cm.Compile()
+        return cm
 
 
 

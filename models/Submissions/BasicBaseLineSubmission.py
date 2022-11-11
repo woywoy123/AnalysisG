@@ -39,8 +39,8 @@ def Optimization():
 
 
 
-#smplDir = "/home/<....>/Downloads/CustomAnalysisTopOutputTest/"
-smplDir = "/nfs/dust/atlas/user/woywoy12/SmallSample/"
+smplDir = "/home/<...>/Downloads/CustomAnalysisTopOutputTest/"
+smplDir = "/nfs/dust/atlas/user/<...>/SmallSample/"
 
 Sub = Condor()
 Sub.EventCache = True 
@@ -48,245 +48,139 @@ Sub.DataCache = True
 Sub.OutputDirectory = "./Results/"
 Sub.ProjectName = "TopTruthChildrenReconstruction"
 Sub.Tree = "nominal"
-Sub.VerboseLevel = 1
+Sub.VerboseLevel = 3
 
 # ====== Event Generator ======= #
-A1 = EventGen()
-A1.InputSample("tttt", smplDir + "tttt")
+Evnt = ["tttt", "t", "ttbar"]
+for i in Evnt:
+    A = EventGen()
+    A.InputSample(i, smplDir + i)
+    Sub.AddJob(i, A, "12GB" , "1h")
 
-A2 = EventGen()
-A2.InputSample("t", smplDir + "t")
-
-A3 = EventGen()
-A3.InputSample("ttbar", smplDir + "ttbar")
-
-#A4 = EventGen()
-#A4.InputSample("Zmumu", smplDir + "Zmumu")
-
-# ====== Graph Generator ======= #
-D1 = DataGen()
-D1.InputSample("tttt")
-ApplyFeatures(D1, "TruthChildren")
-
-D2 = DataGen()
-D2.InputSample("t")
-ApplyFeatures(D2, "TruthChildren")
-
-D3 = DataGen()
-D3.InputSample("ttbar")
-ApplyFeatures(D3, "TruthChildren")
-#
-#D4 = DataGen()
-#D4.InputSample("Zmumu")
+    D = DataGen()
+    D.InputSample(i)
+    ApplyFeatures(D, "TruthChildren") 
+    Sub.AddJob(i + "_Data", D, "12GB", "1h", [i])
 
 # ======= Merge and Training Sample ======= #
 TrSmpl = DataGen()
-TrSmpl.InputSample("tttt")
-TrSmpl.InputSample("t")
-TrSmpl.InputSample("ttbar")
+for i in Evnt:
+    TrSmpl.InputSample(i)
 TrSmpl.DataCache = True 
 TrSmpl.TrainingSampleName = "topsChildren"
 TrSmpl.TrainingPercentage = 90
+Sub.AddJob("Training", TrSmpl, "12GB", "48h", [i + "_Data" for i in Evnt])
 
-# ======= Change Batch Size ====== #
-i = 1
-Tr1 = Optimization()
-Tr1.TrainingSampleName = "topsChildren"
-Tr1.RunName = "BasicBaseLineRecursion_MRK" + str(i)
-Tr1.BatchSize = 10
-Tr1.Optimizer = {"ADAM" : {"lr" : 0.001, "weight_decay" : 0.001}}
-Tr1.Model = BasicBaseLineRecursion()
+# ======= Model Training ====== #
 
-i += 1
-Tr2 = Optimization()
-Tr2.TrainingSampleName = "topsChildren"
-Tr2.BatchSize = 50
-Tr2.RunName = "BasicBaseLineRecursion_MRK" + str(i)
-Tr2.Optimizer = {"ADAM" : {"lr" : 0.001, "weight_decay" : 0.001}}
-Tr2.Model = BasicBaseLineRecursion()
+Opt = {
+            "Optimizer1" : {"ADAM" : {"lr" : 0.001, "weight_decay" : 0.001}}, 
+            "Optimizer2" : {"ADAM" : {"lr" : 0.001, "weight_decay" : 0.001}}, 
+            "Optimizer3" : {"ADAM" : {"lr" : 0.001, "weight_decay" : 0.001}}, 
+            "Optimizer4" : {"ADAM" : {"lr" : 0.001, "weight_decay" : 0.001}}, 
 
-i += 1
-Tr3 = Optimization()
-Tr3.TrainingSampleName = "topsChildren"
-Tr3.BatchSize = 100
-Tr3.RunName = "BasicBaseLineRecursion_MRK" + str(i)
-Tr3.Optimizer = {"ADAM" : {"lr" : 0.001, "weight_decay" : 0.001}}
-Tr3.Model = BasicBaseLineRecursion()
+            "Optimizer5" : {"ADAM" : {"lr" : 0.0001, "weight_decay" : 0.001}}, 
+            "Optimizer6" : {"ADAM" : {"lr" : 0.001, "weight_decay" : 0.0001}}, 
+            "Optimizer7" : {"ADAM" : {"lr" : 0.0001, "weight_decay" : 0.0001}}, 
+            "Optimizer8" : {"ADAM" : {"lr" : 0.0001, "weight_decay" : 0.0001}}, 
 
-i += 1
-Tr4 = Optimization()
-Tr4.TrainingSampleName = "topsChildren"
-Tr4.BatchSize = 200
-Tr4.RunName = "BasicBaseLineRecursion_MRK" + str(i)
-Tr4.Optimizer = {"ADAM" : {"lr" : 0.001, "weight_decay" : 0.001}}
-Tr4.Model = BasicBaseLineRecursion()
+            "Optimizer9" : {"ADAM" : {"lr" : 0.0001, "weight_decay" : 0.001}},
+            "Optimizer10" : {"ADAM" : {"lr" : 0.001, "weight_decay" : 0.0001}}, 
+            "Optimizer11" : {"ADAM" : {"lr" : 0.0001, "weight_decay" : 0.0001}}, 
+            "Optimizer12" : {"ADAM" : {"lr" : 0.0001, "weight_decay" : 0.0001}},
 
-# ======= Change Learning And Decay ====== #
-i += 1
-Tr5 = Optimization()
-Tr5.TrainingSampleName = "topsChildren"
-Tr5.RunName = "BasicBaseLineRecursion_MRK" + str(i)
-Tr5.BatchSize = 10
-Tr5.Optimizer = {"ADAM" : {"lr" : 0.0001, "weight_decay" : 0.001}}
-Tr5.Model = BasicBaseLineRecursion()
+            "Optimizer13" : {"ADAM" : {"lr" : 0.0001, "weight_decay" : 0.001}}, 
+            "Optimizer14" : {"ADAM" : {"lr" : 0.001, "weight_decay" : 0.0001}}, 
+            "Optimizer15" : {"ADAM" : {"lr" : 0.0001, "weight_decay" : 0.0001}}, 
+            "Optimizer16" : {"ADAM" : {"lr" : 0.0001, "weight_decay" : 0.0001}}, 
 
-i += 1
-Tr6 = Optimization()
-Tr6.TrainingSampleName = "topsChildren"
-Tr6.BatchSize = 50
-Tr6.RunName = "BasicBaseLineRecursion_MRK" + str(i)
-Tr6.Optimizer = {"ADAM" : {"lr" : 0.001, "weight_decay" : 0.0001}}
-Tr6.Model = BasicBaseLineRecursion()
+            "Optimizer17" : {"SGD" : {"lr" : 0.001, "weight_decay" : 0.001, "momentum" : 0.0001}}, 
+            "Optimizer18" : {"SGD" : {"lr" : 0.001, "weight_decay" : 0.001, "momentum" : 0.0005}}, 
+            "Optimizer19" : {"SGD" : {"lr" : 0.001, "weight_decay" : 0.001, "momentum" : 0.001}}, 
+            "Optimizer20" : {"SGD" : {"lr" : 0.001, "weight_decay" : 0.001, "momentum" : 0.0015}}, 
+        }
 
-i += 1
-Tr7 = Optimization()
-Tr7.TrainingSampleName = "topsChildren"
-Tr7.BatchSize = 100
-Tr7.RunName = "BasicBaseLineRecursion_MRK" + str(i)
-Tr7.Optimizer = {"ADAM" : {"lr" : 0.0001, "weight_decay" : 0.0001}}
-Tr7.Model = BasicBaseLineRecursion()
+sched = {
+            "Sched1" : None, 
+            "Sched2" : None, 
+            "Sched3" : None, 
+            "Sched4" : None, 
 
-i += 1
-Tr8 = Optimization()
-Tr8.TrainingSampleName = "topsChildren"
-Tr8.BatchSize = 200
-Tr8.RunName = "BasicBaseLineRecursion_MRK" + str(i)
-Tr8.Optimizer = {"ADAM" : {"lr" : 0.0001, "weight_decay" : 0.0001}}
-Tr8.Model = BasicBaseLineRecursion()
+            "Sched5" : None, 
+            "Sched6" : None, 
+            "Sched7" : None,  
+            "Sched8" : None,  
 
-# ======= Change Scheduler ExponentialLR ====== #
-i += 1
-Tr9 = Optimization()
-Tr9.TrainingSampleName = "topsChildren"
-Tr9.BatchSize = 10
-Tr9.Scheduler = {"ExponentialLR" : {"gamma" : 0.5}}
-Tr9.RunName = "BasicBaseLineRecursion_MRK" + str(i)
-Tr9.Optimizer = {"ADAM" : {"lr" : 0.0001, "weight_decay" : 0.001}}
-Tr9.Model = BasicBaseLineRecursion()
+            "Sched9" : {"ExponentialLR" : {"gamma" : 0.5}},
+            "Sched10" : {"ExponentialLR" : {"gamma" : 1.0}},
+            "Sched11" : {"ExponentialLR" : {"gamma" : 2.0}},
+            "Sched12" : {"ExponentialLR" : {"gamma" : 4.0}},
 
-i += 1
-Tr10 = Optimization()
-Tr10.TrainingSampleName = "topsChildren"
-Tr10.BatchSize = 50
-Tr10.Scheduler = {"ExponentialLR" : {"gamma" : 1.0}}
-Tr10.RunName = "BasicBaseLineRecursion_MRK" + str(i)
-Tr10.Optimizer = {"ADAM" : {"lr" : 0.001, "weight_decay" : 0.0001}}
-Tr10.Model = BasicBaseLineRecursion()
+            "Sched13" : {"CyclicLR" : {"base_lr" : 0.00001, "max_lr" : 0.0001}},
+            "Sched14" : {"CyclicLR" : {"base_lr" : 0.00001, "max_lr" : 0.001}},
+            "Sched15" : {"CyclicLR" : {"base_lr" : 0.00001, "max_lr" : 0.01}},
+            "Sched16" : {"CyclicLR" : {"base_lr" : 0.00001, "max_lr" : 0.1}},
 
-i += 1
-Tr11 = Optimization()
-Tr11.TrainingSampleName = "topsChildren"
-Tr11.BatchSize = 100
-Tr11.Scheduler = {"ExponentialLR" : {"gamma" : 2.0}}
-Tr11.RunName = "BasicBaseLineRecursion_MRK" + str(i)
-Tr11.Optimizer = {"ADAM" : {"lr" : 0.0001, "weight_decay" : 0.0001}}
-Tr11.Model = BasicBaseLineRecursion()
+            "Sched17" : None, 
+            "Sched18" : None, 
+            "Sched19" : None, 
+            "Sched20" : None, 
+        }
 
-i += 1
-Tr12 = Optimization()
-Tr12.TrainingSampleName = "topsChildren"
-Tr12.BatchSize = 200
-Tr12.Scheduler = {"ExponentialLR" : {"gamma" : 4.0}}
-Tr12.RunName = "BasicBaseLineRecursion_MRK" + str(i)
-Tr12.Optimizer = {"ADAM" : {"lr" : 0.0001, "weight_decay" : 0.0001}}
-Tr12.Model = BasicBaseLineRecursion()
+btch = {
+            "BATCH1" : 10, 
+            "BATCH2" : 50, 
+            "BATCH3" : 100, 
+            "BATCH4" : 200, 
 
-# ======= Change Scheduler CyclicLR ====== #
-i += 1
-Tr13 = Optimization()
-Tr13.TrainingSampleName = "topsChildren"
-Tr13.BatchSize = 10
-Tr13.Scheduler = {"CyclicLR" : {"base_lr" : 0.00001, "max_lr" : 0.0001}}
-Tr13.RunName = "BasicBaseLineRecursion_MRK" + str(i)
-Tr13.Optimizer = {"ADAM" : {"lr" : 0.0001, "weight_decay" : 0.001}}
-Tr13.Model = BasicBaseLineRecursion()
+            "BATCH5" : 10, 
+            "BATCH6" : 50,  
+            "BATCH7" : 100,  
+            "BATCH8" : 200,  
 
-i += 1
-Tr14 = Optimization()
-Tr14.TrainingSampleName = "topsChildren"
-Tr14.BatchSize = 50
-Tr14.Scheduler = {"CyclicLR" : {"base_lr" : 0.00001, "max_lr" : 0.001}}
-Tr14.RunName = "BasicBaseLineRecursion_MRK" + str(i)
-Tr14.Optimizer = {"ADAM" : {"lr" : 0.001, "weight_decay" : 0.0001}}
-Tr14.Model = BasicBaseLineRecursion()
+            "BATCH9" : 10,
+            "BATCH10" : 50,
+            "BATCH11" : 100,
+            "BATCH12" : 200,
 
-i += 1
-Tr15 = Optimization()
-Tr15.TrainingSampleName = "topsChildren"
-Tr15.BatchSize = 100
-Tr15.Scheduler = {"CyclicLR" : {"base_lr" : 0.00001, "max_lr" : 0.01}}
-Tr15.RunName = "BasicBaseLineRecursion_MRK" + str(i)
-Tr15.Optimizer = {"ADAM" : {"lr" : 0.0001, "weight_decay" : 0.0001}}
-Tr15.Model = BasicBaseLineRecursion()
+            "BATCH13" : 10,
+            "BATCH14" : 50,
+            "BATCH15" : 100,
+            "BATCH16" : 200,
 
-i += 1
-Tr16 = Optimization()
-Tr16.TrainingSampleName = "topsChildren"
-Tr16.BatchSize = 200
-Tr16.Scheduler = {"CyclicLR" : {"base_lr" : 0.00001, "max_lr" : 0.1}}
-Tr16.RunName = "BasicBaseLineRecursion_MRK" + str(i)
-Tr16.Optimizer = {"ADAM" : {"lr" : 0.0001, "weight_decay" : 0.0001}}
-Tr16.Model = BasicBaseLineRecursion()
+            "BATCH17" : 10,
+            "BATCH18" : 50,
+            "BATCH19" : 100,
+            "BATCH20" : 200,
+        }
 
-# ======= Change Optimizer ====== #
-i += 1
-Tr17 = Optimization()
-Tr17.TrainingSampleName = "topsChildren"
-Tr17.RunName = "BasicBaseLineRecursion_MRK" + str(i)
-Tr17.BatchSize = 10
-Tr17.Optimizer = {"SGD" : {"lr" : 0.001, "weight_decay" : 0.001, "momentum" : 0.0001}}
-Tr17.Model = BasicBaseLineRecursion()
+evlmod = Analysis()
+evlmod.PlotNodeStatistics = True 
+evlmod.PlotTrainingStatistics = True
+evlmod.PlotTrainSample = True 
+evlmod.PlotTestSample = True
+evlmod.PlotEntireSample = True
+evlmod.TrainingSampleName = "topsChildren"
 
-i += 1
-Tr18 = Optimization()
-Tr18.TrainingSampleName = "topsChildren"
-Tr18.BatchSize = 50
-Tr18.RunName = "BasicBaseLineRecursion_MRK" + str(i)
-Tr18.Optimizer = {"SGD" : {"lr" : 0.001, "weight_decay" : 0.001, "momentum" : 0.0005}}
-Tr18.Model = BasicBaseLineRecursion()
+wait = []
+for i in range(len(Opt)):
+    it = str(i+1)
+    op = Optimization()
+    op.RunName = "BasicBaseLineRecursion_MRK" + it 
+    op.BatchSize = btch["BATCH" + it]
+    op.Optimizer = Opt["Optimizer" + it]
+    op.Scheduler = sched["Sched" + it]
+    op.Model = BasicBaseLineRecursion()
+    op.TrainingSampleName = "topsChildren"
+    op.ContinueTraining = True
 
-i += 1
-Tr19 = Optimization()
-Tr19.TrainingSampleName = "topsChildren"
-Tr19.BatchSize = 100
-Tr19.RunName = "BasicBaseLineRecursion_MRK" + str(i)
-Tr19.Optimizer = {"SGD" : {"lr" : 0.001, "weight_decay" : 0.001, "momentum" : 0.001}}
-Tr19.Model = BasicBaseLineRecursion()
+    Sub.AddJob("MRK" + it, op, "12GB", "1h", ["Training"])
+    
+    wait += ["MRK" + it]
+    direc = "./Results/" + Sub.ProjectName  + "/TrainedModels/BasicBaseLineRecursion_MRK" + it
+    evlmod.EvaluateModel(direc, BasicBaseLineRecursion(), btch["BATCH" + it])
 
-i += 1
-Tr20 = Optimization()
-Tr20.TrainingSampleName = "topsChildren"
-Tr20.BatchSize = 200
-Tr20.RunName = "BasicBaseLineRecursion_MRK" + str(i)
-Tr20.Optimizer = {"SGD" : {"lr" : 0.001, "weight_decay" : 0.001, "momentum" : 0.0015}}
-Tr20.Model = BasicBaseLineRecursion()
+Sub.AddJob("Evaluator" , evlmod, "12GB", "1h", wait)
 
-SampleJobsEvent = {"tttt" : A1, "t" : A2, "ttbar" : A3}
-for i in SampleJobsEvent:
-    Sub.AddJob(i, SampleJobsEvent[i], "12GB", "1h")
-
-
-SampleJobsEvent = {"tttt" : A1, "t" : A2, "ttbar" : A3}
-for i in SampleJobsEvent:
-    Sub.AddJob(i, SampleJobsEvent[i], "12GB", "1h")
-
-SampleJobsData = {"tttt" : D1, "t" : D2, "ttbar" : D3}
-for i in SampleJobsData:
-    Sub.AddJob(i + "_Data", SampleJobsData[i], "12GB", "1h", [i])
-
-Sub.AddJob("Training", TrSmpl, "12GB", "48h", [i + "_Data" for i in SampleJobsData])
-
-TrainJobsData = {
-    "MRK1" : Tr1, "MRK2" : Tr2, "MRK3" : Tr3, 
-    "MRK4" : Tr4, "MRK5" : Tr5, "MRK6" : Tr6,
-    "MRK7" : Tr7, "MRK8" : Tr8, "MRK9" : Tr9,
-    "MRK10" : Tr10, "MRK11" : Tr11, "MRK12" : Tr12,
-    "MRK13" : Tr13, "MRK14" : Tr14, "MRK15" : Tr15,
-    "MRK16" : Tr16, "MRK17" : Tr17, "MRK18" : Tr18,
-    "MRK19" : Tr19, "MRK20" : Tr20
-}
-
-for i in TrainJobsData:
-    Sub.AddJob(i, TrainJobsData[i], "12GB", "1h", ["Training"])
 Sub.DumpCondorJobs()
 #Sub.LocalDryRun()

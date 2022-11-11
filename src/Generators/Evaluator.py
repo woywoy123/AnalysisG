@@ -115,7 +115,8 @@ class ModelEvaluator(Settings, SampleTracer, Evaluator, Tools, ModelComparisonPl
                 self._Container[make] = {}
             if name not in self._Container[make]:
                 self._Container[make][name] = []
-        
+            
+            self.NewModel(name)
             for ep in epochs:
                 cacheDir = self.ProjectName + "/TrainedModels/" + name + "/Epoch-" + str(ep) + "/" + make + "Sample"
                 
@@ -155,12 +156,12 @@ class ModelEvaluator(Settings, SampleTracer, Evaluator, Tools, ModelComparisonPl
             return inpt 
         
         lst = [[i, mod + "_" + str(i.Epoch)] for mod in Container for i in Container[mod]]
-        th = Threading(lst, function, self.Threads, self.chnk)
+        th = Threading(lst, function, self.Threads, 2)
         th.VerboseLevel = self.VerboseLevel
         th.Start()
         for i in th._lists:
             mod = i[1].split("_")
-            Container[mod[0]][int(mod[1])] = i[0]
+            Container["_".join(mod[:-1])][int(mod[-1])] = i[0]
 
         self._TrainingContainer = {}
         ModelContainer = {}
@@ -185,7 +186,6 @@ class ModelEvaluator(Settings, SampleTracer, Evaluator, Tools, ModelComparisonPl
         for names in self._ModelDirectories:
             Dict = {int(i.split("-")[-1]) : i + "/TorchSave.pth" for i in self._ModelDirectories[names] if self.IsFile(i + "/TorchSave.pth")}
             self._ModelSaves[names]["TorchSave"] = Dict
-
             models = [UnpickleObject(i + "/Stats.pkl") for i in self._ModelDirectories[names] if self.IsFile(i+"/Stats.pkl")]
             self._ModelDirectories[names] = models
             
@@ -199,7 +199,7 @@ class ModelEvaluator(Settings, SampleTracer, Evaluator, Tools, ModelComparisonPl
                 return inpt
 
             lst = [[self._TrainingContainer[i], i] for i in self._TrainingContainer]
-            th = Threading(lst, function, self.Threads, self.chnk)
+            th = Threading(lst, function, self.Threads, 2)
             th.VerboseLevel = self.VerboseLevel
             th.Start()
             for i in th._lists:

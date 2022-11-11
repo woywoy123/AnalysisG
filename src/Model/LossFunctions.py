@@ -20,7 +20,7 @@ class LossFunctions:
             return truth.view(-1).to(dtype = torch.long), pred
         
         def accuracyfunction(truth, pred):
-            return accuracy(truth.view(-1), pred.max(1)[1].view(-1))
+            return 100*accuracy(truth.view(-1), pred.max(1)[1].view(-1))
         
         return {"loss" : torch.nn.CrossEntropyLoss(), "func" : lossfunction, "accuracy" : accuracyfunction}
     

@@ -49,7 +49,7 @@ class Epoch(EpochPlots, Metrics, Tools):
         # Get the loss for this prediction
         self.TotalLoss = 0
         for key in Accuracy: 
-            Accuracy[key].append(100*loss_acc[key][1].detach().cpu().item())
+            Accuracy[key].append(loss_acc[key][1].detach().cpu().item())
             self.TotalLoss += loss_acc[key][0]        
             Loss[key].append(loss_acc[key][0].detach().cpu().item())
         TotalLoss += [self.TotalLoss.detach().cpu().item()]

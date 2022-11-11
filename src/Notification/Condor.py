@@ -27,3 +27,5 @@ class Condor(Notification):
     def RunningJob(self, name):
         self.Success("Running job: " + name)
 
+    def DumpedJob(self, name, direc):
+        self.Success("Dumped Job: " + name + " to: " + direc)

@@ -19,10 +19,10 @@
 - MRK11: ADAM | lr: 0.0001, wd: 0.0001 | ExponentialLR | 2.0 | Yes | 100
 - MRK12: ADAM | lr: 0.0001, wd: 0.0001 | ExponentialLR | 4.0 | Yes | 200
 
-- MRK13: ADAM | lr: 0.0001, wd: 0.001  | ExponentialLR | base_lr : 0.00001, max_lr : 0.0001 | Yes | 10
-- MRK14: ADAM | lr: 0.001, wd: 0.0001  | ExponentialLR | base_lr : 0.00001, max_lr : 0.001 | Yes | 50
-- MRK15: ADAM | lr: 0.0001, wd: 0.0001 | ExponentialLR | base_lr : 0.00001, max_lr : 0.01 | Yes | 100
-- MRK16: ADAM | lr: 0.0001, wd: 0.0001 | ExponentialLR | base_lr : 0.00001, max_lr : 0.1 | Yes | 200
+- MRK13: ADAM | lr: 0.0001, wd: 0.001  | CyclicLR | base_lr : 0.00001, max_lr : 0.0001 | Yes | 10
+- MRK14: ADAM | lr: 0.001, wd: 0.0001  | CyclicLR | base_lr : 0.00001, max_lr : 0.001 | Yes | 50
+- MRK15: ADAM | lr: 0.0001, wd: 0.0001 | CyclicLR | base_lr : 0.00001, max_lr : 0.01 | Yes | 100
+- MRK16: ADAM | lr: 0.0001, wd: 0.0001 | CyclicLR | base_lr : 0.00001, max_lr : 0.1 | Yes | 200
 
 - MRK17: SGD | lr: 0.0001, wd: 0.001, momentum: 0.0001 | None | None| Yes | 10
 - MRK18: SGD | lr: 0.001, wd: 0.0001, momentum: 0.0005 | None | None | Yes | 50 

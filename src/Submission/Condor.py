@@ -99,8 +99,8 @@ class AnalysisScript(AnalysisTopGNN.Tools.General.Tools):
 
             if "(EventTemplate):" in i.Code:
                 string = ["from AnalysisTopGNN.Templates import EventTemplate", "from Particles import *", "", i.Code]
-                self.__Build("\n".join(string), "../_SharedCode/" + key)
-                del Ad_key[key]
+                self.__Build("\n".join(string), "../_SharedCode/Event")
+                self.Script += ["<*AnalysisName*>.Event = Event"]
                 continue
 
             if "(EventGraphTemplate):" in i.Code:
@@ -256,6 +256,7 @@ class Condor(AnalysisTopGNN.Tools.General.Tools, Condor, Settings):
         DAG = []
         for i in self._sequence:
             self.mkdir(outDir + "/" + self.ProjectName + "/CondorDump/" + i)
+            self.DumpedJob(i, outDir + "/" + self.ProjectName + "/CondorDump/" + i)
             for j in self._sequence[i]:
 
                 self._Jobs[j].DataCache = self.DataCache
@@ -281,5 +282,5 @@ class Condor(AnalysisTopGNN.Tools.General.Tools, Condor, Settings):
         F = open(outDir + "/" + self.ProjectName + "/CondorDump/RunAsBash.sh", "w")
         F.write("#!/bin/bash\n")
         for j in self._sequence:
-            F.write("bash " + j + "/" + j +".sh\n")
+            F.write("bash " + j + "/main.sh\n")
         F.close()

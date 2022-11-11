@@ -189,7 +189,7 @@ class Settings(_General):
         dic = self.DumpSettings()
         
         exclude = ["Caller", "_Code", "SampleContainer", "_dump"]
-        code = ["Event", "EventGraph", "GraphAttribute", "NodeAttribute", "EdgeAttribute", "Model"] 
+        code = ["Event", "EventGraph", "GraphAttribute", "NodeAttribute", "EdgeAttribute", "Model", "_InputValues"] 
         ana_tmp = _Analysis()
             
         out = []
@@ -203,8 +203,15 @@ class Settings(_General):
                 if i == "Event":
                     Event = self.CopyInstance(dic[i])
                     ev = {k : Hash(Event.Objects[k]) for k in Event.Objects}
+                    continue
 
-                dic[i] = {k : Hash(dic[i][k]) for k in dic[i]} if isinstance(dic[i], dict) else Hash(dic[i])
+                elif i == "_InputValues":
+                    for k in self._InputValues:
+                        if "INPUTSAMPLE" in k:
+                            continue
+                        k["EVALUATEMODEL"]["ModelInstance"] = Hash(k["EVALUATEMODEL"]["ModelInstance"])
+                else: 
+                    dic[i] = {k : Hash(dic[i][k]) for k in dic[i]} if isinstance(dic[i], dict) else Hash(dic[i])
 
             inst = str(dic[i]) if isinstance(dic[i], int) else ""
             inst = "'" + dic[i] + "'" if isinstance(dic[i], str) else inst

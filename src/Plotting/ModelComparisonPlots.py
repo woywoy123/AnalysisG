@@ -184,7 +184,6 @@ class DataBlock(PredictionContainerPlots, Metrics):
             DataT[prc].Color = self._Color[prc]
             DataT[prc].Texture = True
 
-
         Title = "Model Feature Prediction of Invariant Mass \n by Process: " + self.Feature + " at Epoch " + str(self.Epoch)
         self.Plots["Mass_" + self.Feature + "_ByProcess"] = self.MergeMass(Title, list(DataP.values()) + list(DataT.values()))
     
