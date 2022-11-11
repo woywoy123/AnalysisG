@@ -154,6 +154,13 @@ btch = {
             "BATCH20" : 200,
         }
 
+def Evaluate(it, evl, Submit, num):
+    mrk = "MRK" + it + "_" + str(num)  
+    evl.TrainingSampleName = "topsChildren"
+    evl.EvaluateModel(direc, BasicBaseLineRecursion(), btch["BATCH" + it])
+    Submit.AddJob(mrk, evl, "12GB", "1h", ["MRK"+it])
+    return [mrk]
+
 evlmod = Analysis()
 evlmod.PlotNodeStatistics = True 
 evlmod.PlotTrainingStatistics = True
@@ -175,12 +182,26 @@ for i in range(len(Opt)):
     op.ContinueTraining = True
 
     Sub.AddJob("MRK" + it, op, "12GB", "1h", ["Training"])
-    
-    wait += ["MRK" + it]
+  
     direc = "./Results/" + Sub.ProjectName  + "/TrainedModels/BasicBaseLineRecursion_MRK" + it
     evlmod.EvaluateModel(direc, BasicBaseLineRecursion(), btch["BATCH" + it])
+ 
+    evl = Analysis()
+    evl.PlotTrainingStatistics = True
+    wait += Evaluate(it, evl, Sub, 1)
+ 
+    evl = Analysis()
+    evl.PlotTrainSample = True 
+    wait += Evaluate(it, evl, Sub, 2)
+
+    evl = Analysis()
+    evl.PlotTestSample = True
+    wait += Evaluate(it, evl, Sub, 3)
+
+    evl = Analysis()
+    evl.PlotEntireSample = True
+    wait += Evaluate(it, evl, Sub, 4)
 
 Sub.AddJob("Evaluator" , evlmod, "12GB", "1h", wait)
-
 Sub.DumpCondorJobs()
 #Sub.LocalDryRun()
