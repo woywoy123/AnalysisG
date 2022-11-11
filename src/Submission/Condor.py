@@ -20,7 +20,7 @@ class CondorScript:
         if self.Memory == None:
             return
         fact = 1024 if self.Memory.endswith("GB") else 1
-        self.__AddConfig("+Request_Memory = " + str(fact*float(self.Memory[:-2])))
+        self.__AddConfig("Request_Memory = " + str(fact*float(self.Memory[:-2])))
     
     def __Time(self):
         if self.Time == None:
@@ -32,11 +32,9 @@ class CondorScript:
     def __Exec(self):
         self.__AddConfig("executable = " + self.ExecPath + "/" + self.ScriptName + ".sh")
         self.__AddConfig("error = " + self.ExecPath + "/results.error.$(ClusterID)")
-        self.__AddConfig("Requirements = OpSysAndVer == " + self.OpSysAndVer)
+        self.__AddConfig('Requirements = OpSysAndVer == "' + self.OpSysAndVer + '"')
     
     def __Hardware(self):
-        if self.Device == None:
-            return 
         string = "Request_GPUs = 1" if self.Device == "cuda" else False
         if string:
             self.__AddConfig(string)
@@ -170,6 +168,7 @@ class JobSpecification(AnalysisTopGNN.Tools.General.Tools):
         Ana.Compile()
        
         Con = CondorScript()
+        Con.Device = self.Device
         Con.ExecPath = pth
         Con.ScriptName = "main"
         Con.Threads = self.Job.Threads

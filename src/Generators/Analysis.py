@@ -94,9 +94,7 @@ class Analysis(Analysis, Settings, SampleTracer, Tools, GraphFeatures):
 
     def __EventGenerator(self, name, filedir):
         if self.Event == None:
-            self.NoEventImplementation()
             return 
-
         ev = EventGenerator()
         ev.RestoreSettings(self.DumpSettings())
         ev.InputDirectory = {"/".join(filedir[:-1]) : filedir[-1]}
@@ -111,7 +109,6 @@ class Analysis(Analysis, Settings, SampleTracer, Tools, GraphFeatures):
             
     def __GraphGenerator(self, name, filedir):
         if self.EventGraph == None:
-            self.NoEventGraphImplementation()
             return 
         
         direc = "/".join(filedir)
@@ -134,11 +131,17 @@ class Analysis(Analysis, Settings, SampleTracer, Tools, GraphFeatures):
             tmp = f.split("/")
             
             if self.EventCache and ec == False:
+                if self.Event == None:
+                    self.NoEventImplementation()
                 self.__EventGenerator(name, tmp)
 
             if self.DataCache and dc == False:
-                if ec == False:
+                if self.Event == None and ec == False:
+                    self.NoEventImplementation()
+                elif ec == False:
                     self.__EventGenerator(name, tmp) 
+                if self.EventGraph == None:
+                    self.NoEventGraphImplementation()
                 self.__GraphGenerator(name, tmp)
 
             if self.DumpHDF5 == False and self.DumpPickle == False:

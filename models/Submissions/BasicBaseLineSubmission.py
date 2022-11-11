@@ -8,7 +8,7 @@ from BasicBaseLineV3.BasicBaseLine import BasicBaseLineRecursion
 def EventGen():
     Ana = Analysis()
     Ana.Event = Event
-    Ana.Threads = 12
+    Ana.Threads = 4
     Ana.chnk = 100
     Ana.EventStop = 100
     Ana.EventCache = True
@@ -18,8 +18,9 @@ def EventGen():
 
 def DataGen():
     Ana = Analysis()
-    Ana.Threads = 12
+    Ana.Threads = 4
     Ana.chnk = 100
+    Ana.EventGraph = EventGraphTruthTopChildren
     Ana.EventStop = 100
     Ana.DataCache = True
     Ana.DumpHDF5 = True
@@ -28,7 +29,7 @@ def DataGen():
 
 def Optimization():
     Ana = Analysis()
-    Ana.Threads = 4
+    Ana.Threads = 2
     Ana.chnk = 10
     Ana.Epochs = 4
     Ana.kFolds = 10
@@ -38,8 +39,8 @@ def Optimization():
 
 
 
-smplDir = "/home/<....>/Downloads/CustomAnalysisTopOutputTest/"
-smplDir = "/nfs/dust/atlas/user/<....>/SmallSample/"
+#smplDir = "/home/<....>/Downloads/CustomAnalysisTopOutputTest/"
+smplDir = "/nfs/dust/atlas/user/woywoy12/SmallSample/"
 
 Sub = Condor()
 Sub.EventCache = True 
@@ -262,16 +263,16 @@ Tr20.Model = BasicBaseLineRecursion()
 
 SampleJobsEvent = {"tttt" : A1, "t" : A2, "ttbar" : A3}
 for i in SampleJobsEvent:
-    Sub.AddJob(i, SampleJobsEvent[i], "12GB", "48h")
+    Sub.AddJob(i, SampleJobsEvent[i], "12GB", "1h")
 
 
 SampleJobsEvent = {"tttt" : A1, "t" : A2, "ttbar" : A3}
 for i in SampleJobsEvent:
-    Sub.AddJob(i, SampleJobsEvent[i], "12GB", "48h")
+    Sub.AddJob(i, SampleJobsEvent[i], "12GB", "1h")
 
 SampleJobsData = {"tttt" : D1, "t" : D2, "ttbar" : D3}
 for i in SampleJobsData:
-    Sub.AddJob(i + "_Data", SampleJobsData[i], "12GB", "48h", [i])
+    Sub.AddJob(i + "_Data", SampleJobsData[i], "12GB", "1h", [i])
 
 Sub.AddJob("Training", TrSmpl, "12GB", "48h", [i + "_Data" for i in SampleJobsData])
 
@@ -286,6 +287,6 @@ TrainJobsData = {
 }
 
 for i in TrainJobsData:
-    Sub.AddJob(i, TrainJobsData[i], "12GB", "48h", ["Training"])
+    Sub.AddJob(i, TrainJobsData[i], "12GB", "1h", ["Training"])
 Sub.DumpCondorJobs()
 #Sub.LocalDryRun()

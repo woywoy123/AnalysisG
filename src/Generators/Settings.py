@@ -64,7 +64,7 @@ class _EventGenerator:
 class _GraphGenerator:
     
     def __init__(self):
-        self.Device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.Device = "cpu"
         self.SelfLoop = True 
         self.FullyConnect = True 
         self.EventGraph = None
@@ -102,7 +102,7 @@ class _Optimization:
         self.Epochs = 10
         self.Optimizer = None 
         self.Scheduler = None
-        self.Device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.Device = "cpu"
         self.VerbosityIncrement = 10
 
 class _ModelEvaluator:
@@ -110,7 +110,7 @@ class _ModelEvaluator:
     def __init__(self):
         self._ModelDirectories = {}
         self._ModelSaves = {}
-        self.Device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.Device = "cpu"
         self.SampleNodes = {}
         self.Training = {}
         self.TestSample = {}

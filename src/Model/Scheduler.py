@@ -12,6 +12,7 @@ class Scheduler:
         return ExponentialLR(**params)
     
     def CyclicLR(self, params):
+        params["cycle_momentum"] = False
         return CyclicLR(**params)
     
     def __call__(self):
