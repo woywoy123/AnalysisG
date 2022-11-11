@@ -42,7 +42,7 @@ class Analysis(Analysis, Settings, SampleTracer, Tools, GraphFeatures):
         self._SampleMap[Name] |= self.ListFilesInDir({i : "*" for i in SampleDirectory}, ".root")
    
     def EvaluateModel(self, Directory, ModelInstance = None, BatchSize = None):
-
+        
         Directory = self.abs(self.AddTrailing(Directory, "/"))
         if self._launch == False:
             self._InputValues.append({"EVALUATEMODEL" : {"Directory": Directory, "ModelInstance" : ModelInstance, "BatchSize": BatchSize}})

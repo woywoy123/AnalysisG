@@ -258,12 +258,15 @@ class Condor(AnalysisTopGNN.Tools.General.Tools, Condor, Settings):
             self.mkdir(outDir + "/" + self.ProjectName + "/CondorDump/" + i)
             self.DumpedJob(i, outDir + "/" + self.ProjectName + "/CondorDump/" + i)
             for j in self._sequence[i]:
-
+                if self._Complete[j] == True:
+                    continue
                 self._Jobs[j].DataCache = self.DataCache
                 self._Jobs[j].EventCache = self.EventCache
                 self._Jobs[j].CondaEnv = self.CondaEnv
                 self._Jobs[j].DumpConfig()
                 
+                self._Complete[j] = True
+
             s = "JOB " + i + " " + i + "/" + i + ".submit"
             if s not in DAG:
                 DAG.append(s)

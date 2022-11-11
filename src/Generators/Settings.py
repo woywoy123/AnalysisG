@@ -187,7 +187,6 @@ class Settings(_General):
             return str(hex(id(self.AddCode(obj))))
 
         dic = self.DumpSettings()
-        
         exclude = ["Caller", "_Code", "SampleContainer", "_dump"]
         code = ["Event", "EventGraph", "GraphAttribute", "NodeAttribute", "EdgeAttribute", "Model", "_InputValues"] 
         ana_tmp = _Analysis()
@@ -221,7 +220,6 @@ class Settings(_General):
 
             out += ["<*AnalysisName*>." + i + " = " + inst] 
         return out
-
     
     def RestoreSettings(self, inpt):
         for i in self.__dict__:
