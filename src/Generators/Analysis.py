@@ -122,8 +122,12 @@ class Analysis(Analysis, Settings, SampleTracer, Tools, GraphFeatures):
         self.__DumpCache(gr, self.output + "/DataCache/" + name + "/" + filedir[-1].split(".")[0], True)
 
     def __GenerateEvents(self, InptMap, name):
-        dc = self.__SearchAssets("DataCache", name)
-        ec = self.__SearchAssets("EventCache", name)
+        if self.DumpHDF5 == True or self.DumpPickle == True:
+            dc = self.__SearchAssets("DataCache", name)
+            ec = self.__SearchAssets("EventCache", name)
+        else:
+            dc = False
+            ec = False
         
         for f in self.DictToList(InptMap):
             tmp = f.split("/")
@@ -146,9 +150,11 @@ class Analysis(Analysis, Settings, SampleTracer, Tools, GraphFeatures):
                 continue
             ROOT = self.GetROOTContainer(f)
             ROOT.ClearEvents()
-        
             PickleObject(self.SampleContainer, self.output + "/Tracers/" + name) 
-        self.SampleContainer.ClearEvents()
+
+        if self.DumpHDF5 == True or self.DumpPickle == True:
+            self.SampleContainer.ClearEvents()
+
     def __GenerateTrainingSample(self):
         def MarkSample(smpl, status):
             for i in smpl:
@@ -279,9 +285,14 @@ class Analysis(Analysis, Settings, SampleTracer, Tools, GraphFeatures):
                 typ, dx = ("DataCache", dc) if len(dc) > len(ec) else ("EventCache", ec)
             self.__SearchAssets(typ, dx)
         self._lst = self.SampleContainer.list()
+        if self.Tree == None:
+            self.Tree = list(self._lst[0].Trees)[0]
+        self.Lumi = 0
         return self
 
     def __next__(self):
         if len(self._lst) == 0:
             raise StopIteration()
-        return self._lst.pop(0)
+        evnt = self._lst.pop(0).Trees[self.Tree]
+        self.Lumi += float(evnt.Lumi)
+        return evnt
