@@ -3,7 +3,16 @@
 OutputDir="./"
 
 cd $OutputDir
-python3 -m venv $OutputDir"/PythonGNN"
+wget https://www.python.org/ftp/python/3.9.7/Python-3.9.7.tgz
+tar -xvf Python-3.9.7.tgz
+rm Python-3.9.7.tgz 
+cd Python-3.9.7
+./configure
+make
+cd ../ 
+./Python-3.9.7/python -m venv PythonGNN
+rm Python-3.9.7
+
 source $OutputDir"/PythonGNN/bin/activate"
 
 # Packages to be installed.
