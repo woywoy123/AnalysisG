@@ -31,10 +31,12 @@ class EventExperimental(EventTemplate):
         for jp in self.TruthJetPartons:
             tjp = self.TruthJetPartons[jp]
             self.Children[tjp.index].TruthJetPartons.append(tjp)
+            tjp.TruthJet.append(self.TruthJets[tjp.TruJetIndex])
 
         for jp in self.JetPartons:
             tjp = self.JetPartons[jp]
             self.Children[tjp.index].JetPartons.append(tjp)
+            tjp.Jet.append(self.Jets[tjp.JetIndex])
 
         for i in self.TruthJets:
             for ti in self.TruthJets[i].index:
@@ -47,7 +49,6 @@ class EventExperimental(EventTemplate):
                 if ti == -1:
                     continue
                 self.Tops[ti].Jets.append(self.Jets[i])
-
 
         self.Tops = list(self.Tops.values())
         self.Children = list(self.Children.values())

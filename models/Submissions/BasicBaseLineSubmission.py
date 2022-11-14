@@ -36,11 +36,8 @@ def Optimization():
     Ana.Device = "cuda"
     return Ana
 
-
-
-
-smplDir = "/home/<...>/Downloads/CustomAnalysisTopOutputTest/"
-smplDir = "/nfs/dust/atlas/user/<...>/SmallSample/"
+smplDir = "/home/tnom6927/Downloads/CustomAnalysisTopOutputTest/"
+#smplDir = "/nfs/dust/atlas/user/<...>/SmallSample/"
 
 Sub = Condor()
 Sub.EventCache = True 
@@ -157,6 +154,7 @@ btch = {
 def Evaluate(it, evl, Submit, num):
     mrk = "MRK" + it + "_" + str(num)  
     evl.TrainingSampleName = "topsChildren"
+    evl.DataCache = True
     evl.EvaluateModel(direc, BasicBaseLineRecursion(), btch["BATCH" + it])
     Submit.AddJob(mrk, evl, "12GB", "1h", ["MRK"+it])
     return [mrk]
@@ -203,5 +201,5 @@ for i in range(len(Opt)):
     wait += Evaluate(it, evl, Sub, 4)
 
 Sub.AddJob("Evaluator" , evlmod, "12GB", "1h", wait)
-Sub.DumpCondorJobs()
-#Sub.LocalDryRun()
+#Sub.DumpCondorJobs()
+Sub.LocalDryRun()

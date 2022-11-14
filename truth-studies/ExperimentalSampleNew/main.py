@@ -32,7 +32,7 @@ for event in Ana:
         
         jets = t.Jets
         jetpart = [jt for k in al for jt in k.JetPartons]
-
+        
         Top.append(t.CalculateMass())
         TopChildren.append(sum(al).CalculateMass())
         
@@ -43,5 +43,9 @@ for event in Ana:
             TopJet.append(sum(jets).CalculateMass())
         if len(jetpart) != 0:
             TopJetParton.append(sum(jetpart).CalculateMass())
+
+    for k in event.TruthJetPartons:
+        jk = event.TruthJetPartons[k].TruthJet
+        print(jk)
 
 

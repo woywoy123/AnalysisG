@@ -47,7 +47,9 @@ class TruthJetPartons(Particle):
         self.charge = self.Type + "_charge"
         self.pdgid = self.Type + "_pdgid"
         self.index = self.Type + "_ChildIndex"
+        self.TruJetIndex = self.Type + "_TruJetIndex"
         Particle.__init__(self)
+        self.TruthJet = []
 
 class Electron(Particle):
 
@@ -77,6 +79,8 @@ class JetPartons(Particle):
         self.charge = self.Type + "_charge"
         self.pdgid = self.Type + "_pdgid"
         self.index = self.Type + "_ChildIndex"
+        self.JetIndex = self.Type + "_JetIndex"
         Particle.__init__(self)
+        self.Jet = []
 
 

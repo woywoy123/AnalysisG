@@ -153,12 +153,21 @@ class _Condor:
         self.VerboseLevel = 0
         self.Tree = None
 
+class _File:
+
+    def __init__(self):
+        self.StepSize = 1000
+        self.VerboseLevel = 3
+        
 class Settings(_General):
     
     def __init__(self):
         if self.Caller == "CONDOR":
             _Condor.__init__(self)
             return 
+        if self.Caller == "FILE":
+            _File.__init__(self)
+            return
         
         _General.__init__(self)
         if self.Caller == "EVENTGENERATOR":

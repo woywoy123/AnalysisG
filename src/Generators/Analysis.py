@@ -61,10 +61,6 @@ class Analysis(Analysis, Settings, SampleTracer, Tools, GraphFeatures):
         self._ModelSaves[Name] |= {"BatchSize" : BatchSize}
 
     def __BuildRootStructure(self): 
-        if self.OutputDirectory:
-            self.OutputDirectory = self.cd(self.OutputDirectory)
-        else:
-            self.OutputDirectory = self.pwd()
         self.OutputDirectory = self.RemoveTrailing(self.OutputDirectory, "/")
         self.mkdir(self.OutputDirectory + "/" + self.ProjectName)
         self.mkdir(self.OutputDirectory + "/" + self.ProjectName + "/Tracers")
@@ -293,6 +289,6 @@ class Analysis(Analysis, Settings, SampleTracer, Tools, GraphFeatures):
     def __next__(self):
         if len(self._lst) == 0:
             raise StopIteration()
-        evnt = self._lst.pop(0).Trees[self.Tree]
-        self.Lumi += float(evnt.Lumi)
+        evnt = self._lst.pop(0)
+        self.Lumi += float(evnt.Trees[self.Tree].Lumi)
         return evnt

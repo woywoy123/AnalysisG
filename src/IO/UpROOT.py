@@ -1,13 +1,14 @@
 from AnalysisTopGNN.Notification import UpROOT
+from AnalysisTopGNN.Generators.Settings import Settings
 import uproot 
 
-class File(UpROOT):
+class File(UpROOT, Settings):
     def __init__(self, ROOTFile, Threads = 1):
         self.Caller = "FILE"
+        Settings.__init__(self)
         self.Trees = []
         self.Branches = []
         self.Leaves = []
-        self.StepSize = 1000
         self.ROOTFile = ROOTFile
 
         self._Reader =  uproot.open(self.ROOTFile, num_workers = Threads)
