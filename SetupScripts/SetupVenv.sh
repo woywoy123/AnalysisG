@@ -11,7 +11,7 @@ cd Python-3.9.7
 make
 cd ../ 
 ./Python-3.9.7/python -m venv PythonGNN
-rm Python-3.9.7
+rm -r Python-3.9.7
 
 source $OutputDir"/PythonGNN/bin/activate"
 
