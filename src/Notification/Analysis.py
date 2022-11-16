@@ -7,6 +7,23 @@ class Analysis(Notification):
 
     def EmptyDirectoryWarning(self, Directory):
         pass
+    
+    def NoSamples(self, SampleMap, name):
+        if len(SampleMap) == 0:
+            self.Failure("No ROOT samples were found in: " + name)
+    
+    def NothingToIterate(self):
+        self.Failure("No samples loaded.")
+    
+    def EventImplementationCommit(self):
+        if self.Event == None:
+            return 
+        Event = self.CopyInstance(self.Event)
+        if Event._CommitHash:
+            msg = ">> Identified commit of Event Implementation: " + Event._CommitHash + " <<" + " (Deprecated)" if Event._Deprecated else ""
+            self.Success("-"*len(msg))
+            self.Success(msg) 
+            self.Success("-"*len(msg))
 
     def EmptySampleList(self):
         if len(self) == 0:

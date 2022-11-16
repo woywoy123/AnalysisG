@@ -23,7 +23,8 @@ setup(
             "AnalysisTopGNN.Model", 
             "AnalysisTopGNN.Templates", 
             "AnalysisTopGNN.Particles", 
-            "AnalysisTopGNN.Events", 
+            "AnalysisTopGNN.Events",
+            "AnalysisTopGNN.Deprecated",
             
             "AnalysisTopGNN.Features",  
             "AnalysisTopGNN.IO",
@@ -41,7 +42,8 @@ setup(
             "AnalysisTopGNN.Model" : "src/Model", 
             "AnalysisTopGNN.Templates" : "src/EventTemplates/Templates", 
             "AnalysisTopGNN.Particles" : "src/EventTemplates/Particles",
-            "AnalysisTopGNN.Events" : "src/EventTemplates/Events", 
+            "AnalysisTopGNN.Events" : "src/EventTemplates/Events",
+            "AnalysisTopGNN.Deprecated" : "src/EventTemplates/Deprecated", 
             
             "AnalysisTopGNN.Features" : "src/Features",
             "AnalysisTopGNN.Statistics" : "src/Statistics", 

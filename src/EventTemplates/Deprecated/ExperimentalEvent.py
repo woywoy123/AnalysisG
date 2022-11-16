@@ -1,4 +1,4 @@
-from AnalysisTopGNN.Particles.ExperimentalParticles import *
+from .ExperimentalParticles import *
 from AnalysisTopGNN.Templates import EventTemplate
 
 class ExperimentalEvent(EventTemplate):

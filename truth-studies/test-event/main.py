@@ -1,16 +1,16 @@
 from AnalysisTopGNN.Generators import Analysis
 from AnalysisTopGNN.Plotting import TH1F
-from Event import *
+from AnalysisTopGNN.Deprecated import Event
 
 Ana = Analysis()
-Direc = "/home/tnom6927/Downloads/CustomAnalysisTopOutputTest/output.root"
-Ana.InputSample("ttbar", Direc)
+Direc = "/home/tnom6927/Downloads/Samples/sm4tops/mc16a/"
+Ana.InputSample("sm4tops", Direc)
 Ana.EventCache = True
 Ana.DumpPickle = False
 Ana.EventStop = 10
 Ana.chnk = 1
 Ana.Threads = 1
-Ana.Event = EventExperimental
+Ana.Event = Event
 Ana.Launch()
 
 

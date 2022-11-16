@@ -247,6 +247,7 @@ class Analysis(Analysis, Settings, SampleTracer, Tools, GraphFeatures):
             self.DataCache = True 
         if len(self._ModelDirectories) != 0 or self.PlotNodeStatistics:
             self.DataCache = True 
+        self.EventImplementationCommit() 
         
         for i in self._SampleMap:
             
@@ -258,6 +259,8 @@ class Analysis(Analysis, Settings, SampleTracer, Tools, GraphFeatures):
                 self.__SearchAssets(search, i)
                 continue
             self.ResetSampleContainer()   
+            
+            self.NoSamples(self._SampleMap[i], i)
             self.__GenerateEvents(self._SampleMap[i], i)
             
         self.__GenerateTrainingSample()
@@ -281,7 +284,13 @@ class Analysis(Analysis, Settings, SampleTracer, Tools, GraphFeatures):
                 typ, dx = ("DataCache", dc) if len(dc) > len(ec) else ("EventCache", ec)
             self.__SearchAssets(typ, dx)
         self._lst = self.SampleContainer.list()
+
+        if len(self._lst) == 0:
+            self.NothingToIterate()
+            return self
+
         if self.Tree == None:
+            print(self._lst[0].Trees)
             self.Tree = list(self._lst[0].Trees)[0]
         self.Lumi = 0
         return self

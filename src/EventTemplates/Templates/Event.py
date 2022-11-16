@@ -11,6 +11,8 @@ class EventTemplate(VariableManager):
         self._Store = None
         self._SampleIndex = -1
         self.Lumi = 0
+        self._Deprecated = False
+        self._CommitHash = False
 
     def GetKey(self, obj, Excld = []):
         return {j : i for i, j in zip(obj.__dict__.keys(), obj.__dict__.values()) if i not in Excld and isinstance(j, str)}
