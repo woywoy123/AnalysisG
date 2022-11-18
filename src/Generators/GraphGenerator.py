@@ -72,8 +72,7 @@ class GraphGenerator(GraphGenerator, SampleTracer, Settings, GraphFeatures):
         self.Caller = "GRAPHGENERATOR"
         Settings.__init__(self)
         SampleTracer.__init__(self)
-
-   
+ 
     def __MakeGraph(self, event, smplidx):
         evobj = self.CopyInstance(self.EventGraph)
         try:

@@ -156,10 +156,6 @@ class Analysis(Analysis, Settings, SampleTracer, Tools, GraphFeatures):
             for i in smpl:
                 obj = self[i]
                 obj.Train = status
-        
-        if self.TrainingSampleName == False:
-            return 
-
         self.EmptySampleList()
         if self.Training == False:
             self.CheckPercentage()
@@ -177,7 +173,8 @@ class Analysis(Analysis, Settings, SampleTracer, Tools, GraphFeatures):
 
     def __Optimization(self):
         if self.Model == None:
-            return 
+            return
+
         op = Optimization()
         op += self
         op.RestoreSettings(self.DumpSettings())
@@ -225,6 +222,7 @@ class Analysis(Analysis, Settings, SampleTracer, Tools, GraphFeatures):
         return True
 
     def Launch(self):
+        self.__CheckSettings()
         self._launch = True 
         for i in self._InputValues:
             name = list(i)[0]
@@ -276,11 +274,14 @@ class Analysis(Analysis, Settings, SampleTracer, Tools, GraphFeatures):
             ec = self.ls(tmp + "/EventCache")
             dc = self.ls(tmp + "/DataCache")
 
+            trig = False
             if self.EventCache and len(ec) != 0:
                 typ, dx = "EventCache", ec
-            elif self.DataCache and len(dc) != 0:
+                trig = True
+            if self.DataCache and len(dc) != 0:
                 typ, dx = "DataCache", dc
-            else:
+                trig = True
+            if trig == False:
                 typ, dx = ("DataCache", dc) if len(dc) > len(ec) else ("EventCache", ec)
             self.__SearchAssets(typ, dx)
         self._lst = self.SampleContainer.list()
@@ -290,7 +291,6 @@ class Analysis(Analysis, Settings, SampleTracer, Tools, GraphFeatures):
             return self
 
         if self.Tree == None:
-            print(self._lst[0].Trees)
             self.Tree = list(self._lst[0].Trees)[0]
         self.Lumi = 0
         return self

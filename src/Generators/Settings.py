@@ -87,7 +87,7 @@ class _HDF5:
 class _TrainingSample:
 
     def __init__(self):
-        self.TrainingSampleName = False
+        self.TrainingSampleName = "UNTITLED"
         self.TrainingPercentage = 80
 
 class _Optimization:
@@ -229,7 +229,18 @@ class Settings(_General):
 
             out += ["<*AnalysisName*>." + i + " = " + inst] 
         return out
-    
+   
+    def CheckSettings(self):
+        S = Settings
+        S.Caller = self.Caller
+        S = S()
+        S.Caller = self.Caller
+        invalid = []
+        for i in self.__dict__:
+            if i not in S.__dict__:
+                invalid.append(i)
+        return invalid
+
     def RestoreSettings(self, inpt):
         for i in self.__dict__:
             if i not in inpt:

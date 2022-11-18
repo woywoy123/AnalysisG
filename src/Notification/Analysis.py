@@ -114,3 +114,9 @@ class Analysis(Notification):
 
     def InvalidOrEmptyModelDirectory(self):
         self.Warning("Given model directory is empty or invalid. Skipping...")
+
+    def __CheckSettings(self):
+        inv = self.CheckSettings()
+        if len(inv) == 0:
+            return 
+        self.Warning("Found the following invalid settings: " + "\n".join(inv))

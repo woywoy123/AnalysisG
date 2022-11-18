@@ -62,19 +62,6 @@ std::vector<torch::Tensor> IncomingEdgeMassCUDA(torch::Tensor AdjMatrix, torch::
 	return {MassFromPxPyPzE(V[0]), V[1].to(options)};
 }
 
-
-
-void Combinatorial(int n, int k, int num, std::vector<torch::Tensor>* out, torch::TensorOptions options)
-{ 
-	if (n == 0)
-	{
-		out -> push_back(torch::tensor(num, options));
-		return; 
-	}
-	if (n -1 >= k){ Combinatorial(n-1, k, num, out, options); }
-	if (k > 0){ Combinatorial(n -1, k -1, num | ( 1 << (n -1)), out, options); }
-}
-
 torch::Tensor PathCombinatorialCUDA(int n, int k)
 {
 	std::vector<torch::Tensor> out;
@@ -86,6 +73,16 @@ torch::Tensor PathCombinatorialCUDA(int n, int k)
 	return PathCombinatorialGPU(n, t);
 }
 
+void Combinatorial(int n, int k, int num, std::vector<torch::Tensor>* out, torch::TensorOptions options)
+{ 
+	if (n == 0)
+	{
+		out -> push_back(torch::tensor(num, options));
+		return; 
+	}
+	if (n -1 >= k){ Combinatorial(n-1, k, num, out, options); }
+	if (k > 0){ Combinatorial(n -1, k -1, num | ( 1 << (n -1)), out, options); }
+}
 
 PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
 {

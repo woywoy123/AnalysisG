@@ -6,15 +6,40 @@ from torch_geometric.nn import MessagePassing, Linear
 
 from LorentzVector import *
 
-from PathNetOptimizer import PathCombinatorial
-from PathNetOptimizerCUDA import PathVector, PathMass, IncomingEdgeVector, IncomingEdgeMass
-
 def MakeMLP(lay):
     out = []
     for i in range(len(lay)-1):
         x1, x2 = lay[i], lay[i+1]
         out += [Linear(x1, x2)]
     return Seq(*out)
+
+class PathNetsBase(MessagePassing):
+
+    def __init__(self):
+        super().__init__(aggr = None, flow = "target_to_source")
+        
+        self.O_edge = None
+        self.L_edge = "CEL"
+        self.C_edge = True 
+
+        self.max = 5
+        self._n = 0
+
+        self._mass = MakeMLP([1, 1024, 1024, 2])
+    
+    def forward(self, i, batch, edge_index, num_nodes, N_eta, N_energy, N_pT, N_phi):
+        Pmu = TensorToPxPyPzE(torch.cat([N_pT, N_eta, N_phi, N_energy], dim = 1)) 
+        self.propagate(edge_index, Pmu = Pmu, batch = batch)
+
+    def message(self, edge_index, Pmu_i, Pmu_j, batch):
+        print(batch[edge_index[0]], batch[edge_index[1]])
+        return Pmu_j
+
+    def aggregate(self, message, index, Pmu):
+        print(len(Pmu))
+        exit()
+
+
 
 class PathNetsTruthJet(MessagePassing):
 

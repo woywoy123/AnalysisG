@@ -27,10 +27,7 @@ void Combinatorial(
 }
 
 
-torch::Tensor PathCombinatorialCPU(
-        int n, 
-        unsigned int max, 
-        std::string device)
+torch::Tensor PathCombinatorialCPU(int n, unsigned int max, std::string device)
 {
 	torch::TensorOptions options = torch::TensorOptions();
 	if (device == "cuda"){options = options.device(torch::kCUDA);}
@@ -125,9 +122,9 @@ std::vector<torch::Tensor> IncomingEdgeMassCPU(
 
 PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
 {
-    m.def("PathCombinatorial",  &PathCombinatorialCPU, "Path Combinatorial");
+    m.def("CombinatorialCPU",  &PathCombinatorialCPU, "Path Combinatorial");
     m.def("PathVector",         &PathVectorCPU, "Summation of four vectors");
     m.def("PathMass",           &PathMassCPU, "Invariant Mass"); 
     m.def("IncomingEdgeVector", &IncomingEdgeVectorCPU, "Computes the aggregated vector for different combinatorial of incoming edges");
-	m.def("IncomingEdgeMass",   &IncomingEdgeMassCPU, "Computes the invariant mass of summed edge combinatorials");
+    m.def("IncomingEdgeMass",   &IncomingEdgeMassCPU, "Computes the invariant mass of summed edge combinatorials");
 }

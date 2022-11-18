@@ -27,6 +27,11 @@ setup(
             "AnalysisTopGNN.Deprecated",
             
             "AnalysisTopGNN.Features",  
+            "AnalysisTopGNN.Features.ParticleGeneric",
+            "AnalysisTopGNN.Features.TruthJet",
+            "AnalysisTopGNN.Features.TruthTop",
+            "AnalysisTopGNN.Features.TruthTopChildren",
+
             "AnalysisTopGNN.IO",
             "AnalysisTopGNN.Generators",
             "AnalysisTopGNN.Plotting", 
@@ -45,7 +50,12 @@ setup(
             "AnalysisTopGNN.Events" : "src/EventTemplates/Events",
             "AnalysisTopGNN.Deprecated" : "src/EventTemplates/Deprecated", 
             
-            "AnalysisTopGNN.Features" : "src/Features",
+            "AnalysisTopGNN.Features" : "src/Features", 
+            "AnalysisTopGNN.Features.ParticleGeneric" : "src/Features/ParticleGeneric",
+            "AnalysisTopGNN.Features.TruthJet" : "src/Features/TruthJet",
+            "AnalysisTopGNN.Features.TruthTop" : "src/Features/TruthTop",
+            "AnalysisTopGNN.Features.TruthTopChildren" : "src/Features/TruthTopChildren",
+
             "AnalysisTopGNN.Statistics" : "src/Statistics", 
             "AnalysisTopGNN.IO" : "src/IO",
             "AnalysisTopGNN.Generators" : "src/Generators", 
