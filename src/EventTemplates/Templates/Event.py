@@ -14,78 +14,77 @@ class EventTemplate(VariableManager):
         self._Deprecated = False
         self._CommitHash = False
 
-    def GetKey(self, obj, Excld = []):
-        return {j : i for i, j in zip(obj.__dict__.keys(), obj.__dict__.values()) if i not in Excld and isinstance(j, str)}
-
     def DefineObjects(self):
         for name in self.Objects:
             self.Leaves += list(self.GetKey(self.Objects[name], ["Index", "Type"]))
         self.Leaves += list(self.GetKey(self, ["Type", "Objects", "iter"]))
+    
+    def __NestedListToList(self, lst):
+        if isinstance(lst, list):
+            return lst
+            out = []
+            for i in lst:
+                out += self.__NestedListToList(i)
+            return out
+        return [lst]
+
+    def GetKey(self, obj, Excld = []):
+        return {j : i for i, j in zip(obj.__dict__.keys(), obj.__dict__.values()) if i not in Excld and isinstance(j, str)}
 
     def _Compile(self, ClearVal = True):
-        def CheckDims(lst):
-            try:
-                out = [len(lst)]
-                for i in lst:
-                    out += CheckDims(i)
-                    return out
-            except:
-                pass
-            return [0]
-
-        def Recursive(lst, name):
-            dims_un = []
-            for i in lst:
-                d = CheckDims(lst[i])
-                if d not in dims_un:
-                    dims_un.append(d)
-            awkward = True if len(dims_un) > 1 else False
-
-            for i in lst:
-                if len(lst[i]) == 0:
+        def MakeParticle(obj, partDic, name):
+            _objm = self.GetKey(obj)
+            for j in _objm:
+                if j not in partDic:
                     continue
-                p = getattr(self, name)
-                if len(p) == len(lst[i]):
-                    for k in p:
-                        val = lst[i][k]
-                        if isinstance(lst[i][k], list) and not awkward:
-                            val = val[0]
-                        setattr(p[k], i, val)
+                obj.__dict__[_objm[j]] = partDic[j]
+            if name not in self.__dict__:
+                self.__dict__[name] = []
+            self.__dict__[name].append(obj)
+
+        def RecursivePopulate(store, name):
+            partDic = {}
+            partDic |= {key : store[key].pop() for key in store if len(store[key]) > 0}
+            if len(partDic) == 0:
+                return None
+            _obj = copy.deepcopy(self.Objects[name])
+            leng = {}
+            for j in partDic:
+                if isinstance(partDic[j], list) == False:
+                    continue
+                if len(partDic[j]) == 0:
+                    continue
+                l = len(partDic[j])
+                if l not in leng:
+                    leng[l] = []
+                leng[l].append({j : partDic[j]})
+          
+            if len(leng) == 0:
+                MakeParticle(_obj, partDic, name)
+            else:
+                key = max(list(leng))
+                if len(leng[key]) < 4:
+                    MakeParticle(_obj, partDic, name)
                 else:
-                    tmp = [l for f in lst[i] for l in f]
-                    indx = [f for f in range(len(lst[i])) for k in lst[i][f]]
-                    for k in p:
-                        setattr(p[k], i, tmp[k])
-                        p[k].Index = indx[k]
-        
-        for name, obj in zip(self.Objects, self.Objects.values()):
-            maps = self.GetKey(obj, ["Type"])
-            tmp = { maps[i] : self._Store[i] for i in self._Store if i in maps }
-
-            n_prt = []
-            for k, p in zip(tmp.values(), tmp.keys()):
-                try:
-                    le = [t for j in k for t in j]
-                except:
-                    le = [j for j in k]
-                n_prt.append(len(le))
-
-            n_prt = min(list(set(n_prt)))
-            x = {k : copy.deepcopy(obj) for k in range(n_prt)}
-            for t in x:
-                setattr(x[t], "Index", t)
-            setattr(self, name, x)
-            Recursive(tmp, name)
+                    RecursivePopulate(partDic, name)
+            return RecursivePopulate(store, name)
         
         maps = self.GetKey(self)
-        tmp = { maps[i] : self._Store[i] for i in self._Store if i in maps }
+        tmp = { i : self._Store[i] for i in maps if i in self._Store }
         for i in tmp:
-            try:
-                tmp[i] = float(tmp[i])
-            except:
-                tmp[i] = float(tmp[i][0])
-            setattr(self, i, tmp[i])
-        self.CompileEvent() 
+            self.__dict__[maps[i]] = tmp[i]
+      
+        objmap = {i : self.GetKey(self.Objects[i]) for i in self.Objects}
+        self._Store = {i : {k : self.__NestedListToList(self._Store[k]) for k in objmap[i] if k in self._Store} for i in objmap }
+        
+        for i in self._Store:
+            RecursivePopulate(self._Store[i], i)
+        
+        for i in self.Objects:
+            self.__dict__[i] = {k : obj for k, obj in zip(range(len(self.__dict__[i])), self.__dict__[i])}
+            
+        self.CompileEvent()
+
 
         if ClearVal:
             del self._Store
@@ -107,11 +106,3 @@ class EventTemplate(VariableManager):
             else:
                 out.append(i)
         return out
-    
-    def CompileParticles(self, ClearVal = False):
-        for i in self.Objects.values():
-            l = getattr(self, i)
-            l = CompileParticles(l, self.Objects[i]).Compile(ClearVal)
-            self.SetAttribute(i, l)
-
- 

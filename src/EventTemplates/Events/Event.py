@@ -1,5 +1,5 @@
 from AnalysisTopGNN.Templates import EventTemplate
-from Particles import *
+from AnalysisTopGNN.Particles.Particles import *
 
 class Event(EventTemplate):
 
@@ -20,13 +20,17 @@ class Event(EventTemplate):
         self.mu = "mu"
 
         self.DefineObjects()
+        
+        self._Deprecated = False
+        self._CommitHash = "master@e633cf7b9b51de362222bd3175bfec8e6c00026f"
 
     def CompileEvent(self):
-        
+        self.JetPartons = { i : self.JetPartons[i] for i in self.JetPartons if self.JetPartons[i].index != []}
+        self.TruthJetPartons = { i : self.TruthJetPartons[i] for i in self.TruthJetPartons if self.TruthJetPartons[i].index != []}
+
         for i in self.Children:
             t = self.Children[i]
             self.Tops[t.index].Children.append(t)
-
        
         for jp in self.TruthJetPartons:
             tjp = self.TruthJetPartons[jp]
