@@ -16,17 +16,19 @@ import torch
 
 #
 #from PathNetOptimizerCUDA import * 
-from PathNetOptimizer import PathCombinatorial, PathVector, PathMass, IncomingEdgeVector, IncomingEdgeMass
+from PathNetOptimizerCUDA import PathVectorCUDA, PathMassCUDA, IncomingEdgeVectorCUDA, IncomingEdgeMassCUDA
+from PathNetOptimizerCPU import CombinatorialCPU
+
 
 n = 5
-AdjM = PathCombinatorial(n, n, "cpu")
+AdjM = CombinatorialCPU(n, n, "cpu")
 TestVect = torch.tensor([[i+1, i+1, i+1, i+1] for i in range(n)], device = "cpu")
 new = torch.cat([TestVect]*n, dim = 0)
 index = torch.tensor([[i] for i in range(n) for j in range(n)], device = "cpu")
 
 print(AdjM)
 print(new)
-
+print(index)
 
 import time
 ts_0 = time.time()
@@ -38,12 +40,11 @@ te_0 = time.time()
 print("------")
 
 ts_1 = time.time()
-v = IncomingEdgeVector(AdjM, new, index)
-print(v)
+v = IncomingEdgeVectorCUDA(AdjM.to(device = "cuda"), new.to(device = "cuda"), index.to(device = "cuda"))
 te_1 = time.time()
 
 print("cpu", te_0 - ts_0, "cuda", te_1 - ts_1)
-for j, i in zip(torch.as_tensor(l, dtype=float), v[0]):
+for j, i, z in zip(torch.as_tensor(l, dtype=float), v[0], v[1]):
     j, i = j.tolist(), i.tolist()
     print(j, i)
     assert i == j

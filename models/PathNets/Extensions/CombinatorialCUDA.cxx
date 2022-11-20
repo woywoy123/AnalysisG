@@ -20,7 +20,7 @@ torch::Tensor MassFromPxPyPzE(torch::Tensor v)
 // CUDA forward declaration
 torch::Tensor PathVectorGPU(torch::Tensor AdjMatrix, torch::Tensor FourVector); 
 std::vector<torch::Tensor> IncomingEdgeVectorGPU(torch::Tensor AdjMatrix, torch::Tensor IncomingEdges, torch::Tensor Index);
-torch::Tensor PathCombinatorialGPU(const int n, torch::Tensor t);
+//torch::Tensor PathCombinatorialGPU(const int n, torch::Tensor t);
 #define CHECK_CUDA(x) TORCH_CHECK(x.device().is_cuda(), "#x must be on CUDA")
 #define CHECK_CONTIGUOUS(x) TORCH_CHECK(x.is_contiguous(), "#x must be contiguous") 
 #define CHECK_INPUT(x) CHECK_CUDA(x); CHECK_CONTIGUOUS(x)
@@ -62,33 +62,21 @@ std::vector<torch::Tensor> IncomingEdgeMassCUDA(torch::Tensor AdjMatrix, torch::
 	return {MassFromPxPyPzE(V[0]), V[1].to(options)};
 }
 
-torch::Tensor PathCombinatorialCUDA(int n, int k)
-{
-	std::vector<torch::Tensor> out;
-	torch::TensorOptions options = torch::TensorOptions().dtype(torch::kFloat).device(torch::kCUDA);
-	for (int i = 1; i < k+1; i++){Combinatorial(n, i, 0, &out, options);}
-	torch::Tensor t = torch::stack(out);
-	CHECK_INPUT(t);
-
-	return PathCombinatorialGPU(n, t);
-}
-
-void Combinatorial(int n, int k, int num, std::vector<torch::Tensor>* out, torch::TensorOptions options)
-{ 
-	if (n == 0)
-	{
-		out -> push_back(torch::tensor(num, options));
-		return; 
-	}
-	if (n -1 >= k){ Combinatorial(n-1, k, num, out, options); }
-	if (k > 0){ Combinatorial(n -1, k -1, num | ( 1 << (n -1)), out, options); }
-}
+//torch::Tensor PathCombinatorialCUDA(int n, int k)
+//{
+//	std::vector<torch::Tensor> out;
+//	torch::TensorOptions options = torch::TensorOptions().dtype(torch::kFloat).device(torch::kCUDA);
+//	for (int i = 1; i < k+1; i++){Combinatorial(n, i, 0, &out, options);}
+//	torch::Tensor t = torch::stack(out);
+//	CHECK_INPUT(t);
+//
+//	return PathCombinatorialGPU(n, t);
+//}
 
 PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
 {
-	m.def("PathCombinatorial", &PathCombinatorialCUDA, "Derive Path Combinatorial");
-	m.def("PathVector", &PathVectorCUDA, "Summation of four vectors");
-	m.def("PathMass", &PathMassCUDA, "Invariant Mass"); 
-	m.def("IncomingEdgeVector", &IncomingEdgeVectorCUDA, "Computes the aggregated vector for different combinatorial of incoming edges");
-	m.def("IncomingEdgeMass", &IncomingEdgeMassCUDA, "Computes the invariant mass of summed edge combinatorials");
+	m.def("PathVectorCUDA", &PathVectorCUDA, "Summation of four vectors");
+	m.def("PathMassCUDA", &PathMassCUDA, "Invariant Mass"); 
+	m.def("IncomingEdgeVectorCUDA", &IncomingEdgeVectorCUDA, "Computes the aggregated vector for different combinatorial of incoming edges");
+	m.def("IncomingEdgeMassCUDA", &IncomingEdgeMassCUDA, "Computes the invariant mass of summed edge combinatorials");
 }

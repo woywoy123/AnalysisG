@@ -5,6 +5,10 @@ import torch_geometric
 from torch_geometric.nn import MessagePassing, Linear
 
 from LorentzVector import *
+from PathNetOptimizerCUDA import *
+from PathNetOptimizerCPU import CombinatorialCPU
+
+torch.set_printoptions(4, profile = "full", linewidth = 100000)
 
 def MakeMLP(lay):
     out = []
@@ -21,67 +25,41 @@ class PathNetsBase(MessagePassing):
         self.O_edge = None
         self.L_edge = "CEL"
         self.C_edge = True 
-
-        self.max = 5
-        self._n = 0
-
-        self._mass = MakeMLP([1, 1024, 1024, 2])
+        
+        self._mass = MakeMLP([1, 128, 2])
     
-    def forward(self, i, batch, edge_index, num_nodes, N_eta, N_energy, N_pT, N_phi):
+    def forward(self, i, batch, edge_index, num_nodes, N_eta, N_energy, N_pT, N_phi, E_T_edge):
         Pmu = TensorToPxPyPzE(torch.cat([N_pT, N_eta, N_phi, N_energy], dim = 1)) 
-        self.propagate(edge_index, Pmu = Pmu, batch = batch)
-
-    def message(self, edge_index, Pmu_i, Pmu_j, batch):
-        print(batch[edge_index[0]], batch[edge_index[1]])
-        return Pmu_j
-
-    def aggregate(self, message, index, Pmu):
-        print(len(Pmu))
-        exit()
-
-
-
-class PathNetsTruthJet(MessagePassing):
-
-    def __init__(self):
-        super().__init__(aggr = None, flow = "target_to_source") 
-
-        #self.O_from_top = None
-        #self.L_from_top = "CEL"
-        #self.C_from_top = True
-
-        self.O_edge = None
-        self.L_edge = "CEL"
-        self.C_edge = True
-
-        self.max = 5
-        self._n = 0
-
-        self._edge = MakeMLP([1, 4096, 4096, 2])
-        self._AdjMatrix = None
-
-    def forward(self, i, edge_index, num_nodes, N_eta, N_energy, N_pT, N_phi):
-        device = edge_index.device
-        Pmu = torch.cat([N_pT, N_eta, N_phi, N_energy], dim = 1)
-        Pmu = TensorToPxPyPzE(Pmu)
-        Mass = MassFromPxPyPzE(Pmu)/1000
-
-        if int(num_nodes) != self._n or self._AdjMatrix == None:
-            self._n = int(num_nodes)
-            self._AdjMatrix = PathCombinatorial(self._n, self.max, str(device).split(":")[0])
-        self.propagate(edge_index, Pmu = Pmu)
+        
+        self._adjM = CombinatorialCPU(num_nodes.item(), 4, "cuda")
+        out = self.propagate(edge_index = edge_index, Pmu = Pmu)
+        self.O_edge = out 
+        return out
 
     def message(self, edge_index, Pmu_i, Pmu_j):
-        return Pmu_j
+        return Pmu_j, edge_index
 
     def aggregate(self, message, index, Pmu):
-        print(index.view(-1, self._n))
+        Pmu_j, edge_index = message
+        mass, adj = IncomingEdgeMassCUDA(self._adjM, Pmu_j, index.view(-1, 1))
+        _edge = self._adjM[adj].view(-1, Pmu.size()[0])
+        _mass = self._mass(mass/1000)
         
-        V, adj = IncomingEdgeVector(self._AdjMatrix, message, index.view(-1, 1))
-        M = MassFromPxPyPzE(V)/1000
-        print(self._AdjMatrix[adj].view(-1, self._n), M)
+        print(_mass)
+        print(_mass[:, 0].view(-1, 1))
+        _zero = _mass[:, 0].view(-1, 1)*_edge
+        _one = _mass[:, 1].view(-1, 1)*_edge
+        
+        mx = adj.max(0)[0]+1
         
 
+        exit()
+
+        _zero = _zero.view(-1, mx, Pmu.size()[0]).sum(1)
+        _one = _one.view(-1, mx, Pmu.size()[0]).sum(1)
 
 
-
+        print(_zero)
+        print(_one) 
+     
+        return torch.cat([_zero[index, edge_index[1]].view(-1, 1), _one[index, edge_index[1]].view(-1, 1)], dim = 1)

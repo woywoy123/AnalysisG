@@ -82,32 +82,32 @@ std::vector<torch::Tensor> IncomingEdgeVectorCPU(
         torch::Tensor Index)
 {
 	torch::TensorOptions options = torch::TensorOptions().dtype(torch::kFloat).device(torch::kCPU); 
-    const unsigned int adj = AdjMatrix.size(0);
-    const unsigned int nodes = AdjMatrix.size(1);
-    torch::Tensor Pmu = torch::zeros({adj*nodes, 4}, options);
-    torch::Tensor Pmu_adj = torch::zeros({adj*nodes, 1}, options);
-    Index = Index.to(options);
-    IncomingEdges = IncomingEdges.to(options);
-    AdjMatrix = AdjMatrix.to(options);
+    	const unsigned int adj = AdjMatrix.size(0);
+    	const unsigned int nodes = AdjMatrix.size(1);
+	torch::Tensor Pmu = torch::zeros({adj*nodes, 4}, options);
+	torch::Tensor Pmu_adj = torch::zeros({adj*nodes, 1}, options);
+    	Index = Index.to(options);
+    	IncomingEdges = IncomingEdges.to(options);
+    	AdjMatrix = AdjMatrix.to(options);
 
-    for (unsigned int i = 0; i < nodes; i++)
-    {
-        for (unsigned int index = 0; index < adj; index++)
-        {
-            for (unsigned int j = 0; j < nodes; j++)
-            {
-                unsigned int ni = Index[j + i*nodes][0].item<int>();
-                if ( ni != i ){continue;}
-                for (unsigned int dim = 0; dim < 4; dim++)
-                {
-                    Pmu[index + i*adj][dim] += AdjMatrix[index][j]*IncomingEdges[j + i*nodes][dim];
-                }
-                Pmu_adj[index + i*adj][0] = Index[j + i*nodes][0];
-            }
-        }
-    }
+    	for (unsigned int i = 0; i < nodes; i++)
+    	{
+    	    for (unsigned int index = 0; index < adj; index++)
+    	    {
+    	        for (unsigned int j = 0; j < nodes; j++)
+    	        {
+    	            unsigned int ni = Index[j + i*nodes][0].item<int>();
+    	            if ( ni != i ){continue;}
+    	            for (unsigned int dim = 0; dim < 4; dim++)
+    	            {
+    	                Pmu[index + i*adj][dim] += AdjMatrix[index][j]*IncomingEdges[j + i*nodes][dim];
+    	            }
+    	            Pmu_adj[index + i*adj][0] = Index[j + i*nodes][0];
+    	        }
+    	    }
+    	}
 
-    return {Pmu, Pmu_adj};
+    	return {Pmu, Pmu_adj};
 }
 
 std::vector<torch::Tensor> IncomingEdgeMassCPU(
@@ -123,8 +123,8 @@ std::vector<torch::Tensor> IncomingEdgeMassCPU(
 PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
 {
     m.def("CombinatorialCPU",  &PathCombinatorialCPU, "Path Combinatorial");
-    m.def("PathVector",         &PathVectorCPU, "Summation of four vectors");
-    m.def("PathMass",           &PathMassCPU, "Invariant Mass"); 
-    m.def("IncomingEdgeVector", &IncomingEdgeVectorCPU, "Computes the aggregated vector for different combinatorial of incoming edges");
-    m.def("IncomingEdgeMass",   &IncomingEdgeMassCPU, "Computes the invariant mass of summed edge combinatorials");
+    m.def("PathVectorCPU",         &PathVectorCPU, "Summation of four vectors");
+    m.def("PathMassCPU",           &PathMassCPU, "Invariant Mass"); 
+    m.def("IncomingEdgeVectorCPU", &IncomingEdgeVectorCPU, "Computes the aggregated vector for different combinatorial of incoming edges");
+    m.def("IncomingEdgeMassCPU",   &IncomingEdgeMassCPU, "Computes the invariant mass of summed edge combinatorials");
 }

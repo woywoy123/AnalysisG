@@ -29,8 +29,11 @@ if __name__ == "__main__":
     Ana.DumpPickle = True
     Ana.InputSample("bsm4top", direc + "/mc16a/DAOD_TOPQ1.21955713._000001.root")
     Ana.Threads = 1
+    Ana.BatchSize = 1
+    Ana.Device = "cuda"
     ApplyFeatures(Ana, "TruthChildren")
     Ana.Model = PathNetsBase()
+    Ana.DebugMode = "accuracy"
     Ana.Optimizer = {"ADAM" : { "lr" : 0.0001, "weight_decay" : 0.0001}}
     Ana.Launch()
 
