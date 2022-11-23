@@ -39,6 +39,7 @@ class TruthJet(Particle):
         self.Type = "truthjet"
         self.index = self.Type + "_TopIndex"
         Particle.__init__(self)
+        self.Partons = []
 
 class TruthJetPartons(Particle):
 
@@ -71,6 +72,7 @@ class Jets(Particle):
         self.Type = "jet"
         self.index = self.Type + "_TopIndex"
         Particle.__init__(self)
+        self.Partons = []
 
 class JetPartons(Particle):
 

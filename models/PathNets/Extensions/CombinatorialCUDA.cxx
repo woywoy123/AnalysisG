@@ -62,17 +62,6 @@ std::vector<torch::Tensor> IncomingEdgeMassCUDA(torch::Tensor AdjMatrix, torch::
 	return {MassFromPxPyPzE(V[0]), V[1].to(options)};
 }
 
-//torch::Tensor PathCombinatorialCUDA(int n, int k)
-//{
-//	std::vector<torch::Tensor> out;
-//	torch::TensorOptions options = torch::TensorOptions().dtype(torch::kFloat).device(torch::kCUDA);
-//	for (int i = 1; i < k+1; i++){Combinatorial(n, i, 0, &out, options);}
-//	torch::Tensor t = torch::stack(out);
-//	CHECK_INPUT(t);
-//
-//	return PathCombinatorialGPU(n, t);
-//}
-
 PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
 {
 	m.def("PathVectorCUDA", &PathVectorCUDA, "Summation of four vectors");

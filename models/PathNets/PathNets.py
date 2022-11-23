@@ -45,8 +45,9 @@ class PathNetsBase(MessagePassing):
         _edge = self._adjM[adj].view(-1, Pmu.size()[0])
         _mass = self._mass(mass/1000)
         
-        print(_mass)
-        print(_mass[:, 0].view(-1, 1))
+        print(adj)
+        print(Pmu_j)
+        print(index)
         _zero = _mass[:, 0].view(-1, 1)*_edge
         _one = _mass[:, 1].view(-1, 1)*_edge
         
@@ -58,8 +59,4 @@ class PathNetsBase(MessagePassing):
         _zero = _zero.view(-1, mx, Pmu.size()[0]).sum(1)
         _one = _one.view(-1, mx, Pmu.size()[0]).sum(1)
 
-
-        print(_zero)
-        print(_one) 
-     
         return torch.cat([_zero[index, edge_index[1]].view(-1, 1), _one[index, edge_index[1]].view(-1, 1)], dim = 1)

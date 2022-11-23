@@ -36,6 +36,3 @@ if __name__ == "__main__":
     Ana.DebugMode = "accuracy"
     Ana.Optimizer = {"ADAM" : { "lr" : 0.0001, "weight_decay" : 0.0001}}
     Ana.Launch()
-
-    #for i in Ana:
-    #    print(i.Trees["nominal"])
