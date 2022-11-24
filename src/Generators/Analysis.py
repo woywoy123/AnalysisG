@@ -40,7 +40,7 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
             self._SampleMap[Name] |= self.ListFilesInDir(SampleDirectory, ".root")
             return 
         self._SampleMap[Name] |= self.ListFilesInDir({i : "*" for i in SampleDirectory}, ".root")
-   
+
     def EvaluateModel(self, Directory, ModelInstance = None, BatchSize = None):
         
         Directory = self.abs(self.AddTrailing(Directory, "/"))
@@ -99,7 +99,7 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
         
         if self.EventCache == False:
             return 
-        self.__DumpCache(ev, self.output + "/EventCache/" + name + "/" + filedir[-1].split(".")[0], False)
+        self.__DumpCache(ev, self.output + "/EventCache/" + name + "/" + filedir[-1], False)
             
     def __GraphGenerator(self, name, filedir):
         if self.EventGraph == None:
@@ -115,7 +115,7 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
 
         if self.DataCache == False:
             return 
-        self.__DumpCache(gr, self.output + "/DataCache/" + name + "/" + filedir[-1].split(".")[0], True)
+        self.__DumpCache(gr, self.output + "/DataCache/" + name + "/" + filedir[-1], True)
 
     def __GenerateEvents(self, InptMap, name):
         if self.DumpHDF5 == True or self.DumpPickle == True:
@@ -168,8 +168,9 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
             hashes["train_hashes"] = {hsh : self.HashToROOT(hsh) for hsh in hashes["train_hashes"]}
             hashes["test_hashes"] = {hsh : self.HashToROOT(hsh) for hsh in hashes["test_hashes"]}
             hashes["SampleMap"] = self._SampleMap
-        
-            PickleObject(hashes, self.ProjectName + "/Tracers/TrainingSample/" + self.TrainingSampleName)
+
+            Name = self.TrainingSampleName if self.TrainingSampleName else "UNTITLED"
+            PickleObject(hashes, self.ProjectName + "/Tracers/TrainingSample/" + Name)
             self.Training = hashes
         MarkSample(self.Training["train_hashes"], True)
         MarkSample(self.Training["test_hashes"], False)
@@ -197,6 +198,7 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
             for i in Name:
                 self.__SearchAssets(CacheType, i)
             return 
+
         root = self.output + "/" + CacheType + "/" + Name + "/"
         SampleDirectory = [root + "/" + i for i in self.ls(root)]
         Files = []

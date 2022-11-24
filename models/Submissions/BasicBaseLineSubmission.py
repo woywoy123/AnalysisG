@@ -36,7 +36,7 @@ def Optimization():
     Ana.Device = "cuda"
     return Ana
 
-smplDir = "/home/tnom6927/Downloads/CustomAnalysisTopOutputTest/"
+smplDir = "/CERN/Samples/Processed/bsm4tops/"
 #smplDir = "/nfs/dust/atlas/user/<...>/SmallSample/"
 
 Sub = Condor()
@@ -48,10 +48,10 @@ Sub.Tree = "nominal"
 Sub.VerboseLevel = 3
 
 # ====== Event Generator ======= #
-Evnt = ["tttt", "t", "ttbar"]
+Evnt = ["bsm-4-tops-mc16a", "bsm-4-tops-mc16d", "bsm-4-tops-mc16e"]
 for i in Evnt:
     A = EventGen()
-    A.InputSample(i, smplDir + i)
+    A.InputSample(i, smplDir + i.split("-")[-1])
     Sub.AddJob(i, A, "12GB" , "1h")
 
     D = DataGen()
@@ -201,5 +201,5 @@ for i in range(len(Opt)):
     wait += Evaluate(it, evl, Sub, 4)
 
 Sub.AddJob("Evaluator" , evlmod, "12GB", "1h", wait)
-Sub.DumpCondorJobs()
-#Sub.LocalDryRun()
+#Sub.DumpCondorJobs()
+Sub.LocalDryRun()

@@ -159,7 +159,7 @@ class JobSpecification(AnalysisTopGNN.Tools.General.Tools, Settings):
         Ana.Compile()
        
         Con = CondorScript()
-        Con.RestoreSettings(self)
+        Con.RestoreSettings(self.DumpSettings())
         Con.ExecPath = pth
         Con.Threads = self.Job.Threads
 
@@ -247,7 +247,7 @@ class Condor(AnalysisTopGNN.Tools.General.Tools, Condor_, Settings):
             for j in self._sequence[i]:
                 if self._Complete[j] == True:
                     continue
-                self._Jobs[j].RestoreSettings(self)
+                self._Jobs[j].RestoreSettings(self.DumpSettings())
                 self._Jobs[j].DumpConfig()
                 
                 self._Complete[j] = True

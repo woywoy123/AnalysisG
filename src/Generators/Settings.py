@@ -87,7 +87,7 @@ class _HDF5:
 class _TrainingSample:
 
     def __init__(self):
-        self.TrainingSampleName = "UNTITLED"
+        self.TrainingSampleName = False
         self.TrainingPercentage = 80
 
 class _Optimization:
@@ -165,6 +165,7 @@ class _CondorScript:
         self.Time = None
         self.Memory = None
         self.CondaEnv = False
+        self.PythonVenv = "$PythonGNN"
 
 class _JobsSpecification:
 
