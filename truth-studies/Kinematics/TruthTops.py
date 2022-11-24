@@ -35,7 +35,7 @@ def TruthTopsAll(Ana):
         Zprime = []
         
         skip = False
-        for t in event.TopPostFSR:
+        for t in event.Tops:
             if t.FromRes == 0:
                 continue
             _lep = False
@@ -43,7 +43,7 @@ def TruthTopsAll(Ana):
                 skip = True
         ResDecayMode.append(0 if skip else 1)
 
-        for t in event.TopPostFSR:
+        for t in event.Tops:
 
             if t.FromRes == 1:
                 TruthTopsRes.append(t.CalculateMass())
@@ -69,7 +69,7 @@ def TruthTopsAll(Ana):
             elif _lep == False and t.FromRes == 0:
                 SpectatorHadron.append(t)
         ZPrimeMass.append(sum(Zprime).CalculateMass())
-        NumTops.append(len(event.TopPostFSR))
+        NumTops.append(len(event.Tops))
     
     PlotsInvariantMassTops(nevents, lumi, TruthTopsRes, TruthSpecTops, ZPrimeMass, NumTops, "1")
     PlotsDecayMode(nevents, lumi, ResonanceLepton, ResonanceHadron, SpectatorHadron, SpectatorLepton, "1")
@@ -95,7 +95,7 @@ def TruthTopsHadron(Ana):
         event = i.Trees["nominal"]
        
         skip = False
-        for t in event.TopPostFSR:
+        for t in event.Tops:
             _lep = False
             for c in t.Children:
                 if abs(c.pdgid) in _leptons:
@@ -108,7 +108,7 @@ def TruthTopsHadron(Ana):
         nevents += 1 
         Zprime = []
  
-        for t in event.TopPostFSR:
+        for t in event.Tops:
 
             if t.FromRes == 1:
                 TruthTopsRes.append(t.CalculateMass())
@@ -134,7 +134,7 @@ def TruthTopsHadron(Ana):
             elif _lep == False and t.FromRes == 0:
                 SpectatorHadron.append(t)
         ZPrimeMass.append(sum(Zprime).CalculateMass())
-        NumTops.append(len(event.TopPostFSR))
+        NumTops.append(len(event.Tops))
 
     PlotsInvariantMassTops(nevents, lumi, TruthTopsRes, TruthSpecTops, ZPrimeMass, NumTops, "2")
     PlotsDecayMode(nevents, lumi, ResonanceLepton, ResonanceHadron, SpectatorHadron, SpectatorLepton, "2")

@@ -81,7 +81,7 @@ class Settings_:
 
 class CommonFunctions(Tools, Settings_, Plotting):
     def __init__(self):
-        Settings.__init__(self)
+        Settings_.__init__(self)
         self.VerboseLevel = 3
     
     def DefineAxisData(self, Dim, JustData = False):

@@ -144,9 +144,12 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
 
             if self.DumpHDF5 == False and self.DumpPickle == False:
                 continue
-            ROOT = self.GetROOTContainer(f)
-            ROOT.ClearEvents()
-            PickleObject(self.SampleContainer, self.output + "/Tracers/" + name) 
+            try:
+                ROOT = self.GetROOTContainer(f)
+                ROOT.ClearEvents()
+                PickleObject(self.SampleContainer, self.output + "/Tracers/" + name) 
+            except:
+                pass
 
         if self.DumpHDF5 == True or self.DumpPickle == True:
             self.SampleContainer.ClearEvents()
@@ -248,8 +251,7 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
         self.EventImplementationCommit() 
         
         for i in self._SampleMap:
-            
-            if self.TrainingSampleName and (self.Event == None or self.EventGraph == None):
+            if self.TrainingSampleName and (self.Event == None and self.EventGraph == None):
                 search = "EventCache" if self.EventCache else False
                 search = "DataCache" if self.DataCache else search
                 if search == False: 
@@ -257,7 +259,6 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
                 self.__SearchAssets(search, i)
                 continue
             self.ResetSampleContainer()   
-            
             self.NoSamples(self._SampleMap[i], i)
             self.__GenerateEvents(self._SampleMap[i], i)
             
@@ -284,7 +285,7 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
             if trig == False:
                 typ, dx = ("DataCache", dc) if len(dc) > len(ec) else ("EventCache", ec)
             self.__SearchAssets(typ, dx)
-        self._lst = self.SampleContainer.list()
+        self._lst = [i for i in self.SampleContainer.list() if i != ""]
 
         if len(self._lst) == 0:
             self.NothingToIterate()

@@ -30,6 +30,8 @@ class Event(EventTemplate):
 
         for i in self.Children:
             t = self.Children[i]
+            if isinstance(t.index, list):
+                continue
             self.Tops[t.index].Children.append(t)
        
         for jp in self.TruthJetPartons:
