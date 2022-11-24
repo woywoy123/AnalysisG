@@ -6,10 +6,10 @@ import sys
 
 from AnalysisTopGNN.Tools import Tools
 from AnalysisTopGNN.Tools import Threading
-from AnalysisTopGNN.Notification import IO
+from AnalysisTopGNN.Notification import IO_
 from AnalysisTopGNN.Generators.Settings import Settings
 
-class HDF5(Settings, Tools, IO):
+class HDF5(Settings, Tools, IO_):
 
     def __init__(self):
         self.Caller = "HDF5"

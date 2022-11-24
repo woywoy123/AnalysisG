@@ -144,7 +144,8 @@ class _Analysis:
 class _Condor:
 
     def __init__(self):
-        self.CondaEnv = "GNN"
+        self.CondaEnv = False
+        self.PythonVenv = "$PythonGNN"
         self.EventCache = None
         self.DataCache = None
         self.OutputDirectory = None
@@ -153,6 +154,31 @@ class _Condor:
         self.VerboseLevel = 0
         self.Tree = None
 
+class _CondorScript:
+
+    def __init__(self):
+        self.ExecPath = None
+        self.ScriptName = "main"
+        self.OpSysAndVer = "CentOS7"
+        self.Device = None
+        self.Threads = None
+        self.Time = None
+        self.Memory = None
+        self.CondaEnv = False
+
+class _JobsSpecification:
+
+    def __init__(self):
+        self.Job = None
+        self.Time = None
+        self.Memory = None
+        self.Device = None
+        self.Name = None
+        self.EventCache = None
+        self.DataCache = None
+        self.CondaEnv = False
+        self.PythonVenv = "$PythonGNN"
+ 
 class _File:
 
     def __init__(self):
@@ -168,6 +194,14 @@ class Settings(_General):
         if self.Caller == "FILE":
             _File.__init__(self)
             return
+
+        if self.Caller == "CONDORSCRIPT":
+            _CondorScript.__init__(self)
+            return 
+
+        if self.Caller == "JOBSPECS":
+            _JobsSpecification.__init__(self)
+            return 
         
         _General.__init__(self)
         if self.Caller == "EVENTGENERATOR":
@@ -187,7 +221,7 @@ class Settings(_General):
 
         if self.Caller == "ANALYSIS":
             _Analysis.__init__(self)
-
+        
     def DumpSettings(self):
         return {i : self.__dict__[i] for i in self.__dict__}
     

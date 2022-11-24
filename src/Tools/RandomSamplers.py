@@ -4,8 +4,8 @@ from sklearn.model_selection import ShuffleSplit, KFold
 from torch_geometric.loader import DataLoader
 from torch.utils.data import SubsetRandomSampler
 
-from AnalysisTopGNN.Notification import RandomSamplers
-class RandomSamplers(RandomSamplers):
+from AnalysisTopGNN.Notification import RandomSamplers_
+class RandomSamplers(RandomSamplers_):
 
     def __init__(self):
         pass

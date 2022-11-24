@@ -2,13 +2,13 @@ import os
 import copy
 from glob import glob
 from .String import *
-from AnalysisTopGNN.Notification import IO
+from AnalysisTopGNN.Notification import IO_
 
 def _IO(directory, extension):
     io = IO()
     return io.ListFilesInDir(directory, extension)
 
-class IO(IO, String):
+class IO(String, IO_):
 
     def __init__(self):
         self.Caller = "IO"

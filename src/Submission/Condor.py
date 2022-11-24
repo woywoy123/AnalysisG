@@ -1,19 +1,13 @@
 import AnalysisTopGNN
-from AnalysisTopGNN.Notification import Condor
+from AnalysisTopGNN.Notification import Condor_
 from AnalysisTopGNN.Generators import Settings
 import os, stat 
 
-class CondorScript:
+class CondorScript(Settings):
 
     def __init__(self):
-        self.ExecPath = None
-        self.ScriptName = None
-        self.OpSysAndVer = "CentOS7"
-        self.Device = None
-        self.Threads = None
-        self.Time = None
-        self.Memory = None
-        self.CondaEnv = None
+        self.Caller = "CONDORSCRIPT"
+        Settings.__init__(self)
         self._config = []
     
     def __Memory(self):
@@ -51,8 +45,11 @@ class CondorScript:
         self._config = []
         self.__AddConfig("#!/bin/bash")
         self.__AddConfig("source ~/.bashrc")
-        self.__AddConfig('eval "$(conda shell.bash hook)"')
-        self.__AddConfig("conda activate " + self.CondaEnv)
+        if self.CondaEnv:
+            self.__AddConfig('eval "$(conda shell.bash hook)"')
+            self.__AddConfig("conda activate " + self.CondaEnv)
+        if self.PythonVenv:
+            self.__AddConfig('source ' + self.PythonVenv)
         self.__AddConfig("python " + self.ExecPath + "/" + self.ScriptName + ".py")
 
     def __AddConfig(self, inpt):
@@ -121,17 +118,11 @@ class AnalysisScript(AnalysisTopGNN.Tools.General.Tools):
 
 
 
-class JobSpecification(AnalysisTopGNN.Tools.General.Tools):
+class JobSpecification(AnalysisTopGNN.Tools.General.Tools, Settings):
 
     def __init__(self):
-        self.Job = None
-        self.Time = None
-        self.Memory = None
-        self.Device = None
-        self.Name = None
-        self.EventCache = None
-        self.DataCache = None
-        self.CondaEnv = None
+        self.Caller = "JOBSPECS"
+        Settings.__init__(self)
    
     def __Preconf(self):
         if self.EventCache != None and self.Job.Event != None:
@@ -168,20 +159,16 @@ class JobSpecification(AnalysisTopGNN.Tools.General.Tools):
         Ana.Compile()
        
         Con = CondorScript()
-        Con.Device = self.Device
+        Con.RestoreSettings(self)
         Con.ExecPath = pth
-        Con.ScriptName = "main"
         Con.Threads = self.Job.Threads
-        Con.Time = self.Time
-        Con.Memory = self.Memory
-        Con.CondaEnv = self.CondaEnv 
 
         Con.Compile()
         self.__Build(Con._config, self.Name + ".submit", pth)
         Con.Shell()
         self.__Build(Con._config, "main.sh", pth, True)
 
-class Condor(AnalysisTopGNN.Tools.General.Tools, Condor, Settings):
+class Condor(AnalysisTopGNN.Tools.General.Tools, Condor_, Settings):
     def __init__(self):
         self.Caller = "CONDOR"
         Settings.__init__(self)
@@ -260,9 +247,7 @@ class Condor(AnalysisTopGNN.Tools.General.Tools, Condor, Settings):
             for j in self._sequence[i]:
                 if self._Complete[j] == True:
                     continue
-                self._Jobs[j].DataCache = self.DataCache
-                self._Jobs[j].EventCache = self.EventCache
-                self._Jobs[j].CondaEnv = self.CondaEnv
+                self._Jobs[j].RestoreSettings(self)
                 self._Jobs[j].DumpConfig()
                 
                 self._Complete[j] = True

@@ -1,7 +1,7 @@
 import sys
-from AnalysisTopGNN.Notification import FeatureAnalysis
+from AnalysisTopGNN.Notification import FeatureAnalysis_
 
-class FeatureAnalysis(FeatureAnalysis):
+class FeatureAnalysis(FeatureAnalysis_):
     def __init__(self):
         pass
 

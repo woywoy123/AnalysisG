@@ -6,9 +6,9 @@ from AnalysisTopGNN.Statistics import Reconstruction
 from AnalysisTopGNN.IO import UnpickleObject, PickleObject
 from AnalysisTopGNN.Samples import Epoch, SampleTracer
 from .Settings import Settings
-from AnalysisTopGNN.Notification import Evaluator
+from AnalysisTopGNN.Notification import Evaluator_
 
-class ModelEvaluator(Settings, SampleTracer, Evaluator, Tools, ModelComparisonPlots, SampleNode, RandomSamplers):
+class ModelEvaluator(Settings, SampleTracer, Evaluator_, Tools, ModelComparisonPlots, SampleNode, RandomSamplers):
 
     def __init__(self):
 

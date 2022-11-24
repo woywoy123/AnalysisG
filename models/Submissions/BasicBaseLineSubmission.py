@@ -201,5 +201,5 @@ for i in range(len(Opt)):
     wait += Evaluate(it, evl, Sub, 4)
 
 Sub.AddJob("Evaluator" , evlmod, "12GB", "1h", wait)
-#Sub.DumpCondorJobs()
-Sub.LocalDryRun()
+Sub.DumpCondorJobs()
+#Sub.LocalDryRun()

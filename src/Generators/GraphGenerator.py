@@ -1,6 +1,6 @@
 import torch
 from AnalysisTopGNN.Tools import Threading
-from AnalysisTopGNN.Notification import GraphGenerator
+from AnalysisTopGNN.Notification import GraphGenerator_
 from AnalysisTopGNN.Samples import SampleTracer
 from AnalysisTopGNN.Tools import RandomSamplers
 from AnalysisTopGNN.Features import FeatureAnalysis
@@ -65,7 +65,7 @@ class GraphFeatures(FeatureAnalysis, RandomSamplers):
         self.TestEvent(Events, self.EventGraph)
  
 
-class GraphGenerator(GraphGenerator, SampleTracer, Settings, GraphFeatures):
+class GraphGenerator(GraphGenerator_, SampleTracer, Settings, GraphFeatures):
     
     def __init__(self):
         

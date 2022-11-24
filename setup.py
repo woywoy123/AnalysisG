@@ -56,10 +56,10 @@ setup(
             "AnalysisTopGNN.Features.TruthTop" : "src/Features/TruthTop",
             "AnalysisTopGNN.Features.TruthTopChildren" : "src/Features/TruthTopChildren",
 
-            "AnalysisTopGNN.Statistics" : "src/Statistics", 
             "AnalysisTopGNN.IO" : "src/IO",
-            "AnalysisTopGNN.Generators" : "src/Generators", 
             "AnalysisTopGNN.Plotting" : "src/Plotting",
+            "AnalysisTopGNN.Statistics" : "src/Statistics", 
+            "AnalysisTopGNN.Generators" : "src/Generators", 
             "AnalysisTopGNN.Submission" : "src/Submission", 
         },
 

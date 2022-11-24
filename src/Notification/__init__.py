@@ -1,14 +1,14 @@
 from .Notification import Notification
-from .IO import IO
-from .EventGenerator import EventGenerator
-from .Sample import SampleContainer
+from .IO import IO as IO_
 from .UpROOT import UpROOT
-from .MultiThreading import MultiThreading
-from .GraphGenerator import GraphGenerator
-from .RandomSamplers import RandomSamplers
-from .FeatureAnalysis import FeatureAnalysis
-from .Condor import Condor
-from .Analysis import Analysis
+from .Sample import SampleContainer
 from .Plotting import Plotting
-from .Optimization import Optimization
-from .Evaluator import Evaluator
+from .MultiThreading import MultiThreading
+from .EventGenerator import EventGenerator as EventGenerator_
+from .RandomSamplers import RandomSamplers as RandomSamplers_
+from .FeatureAnalysis import FeatureAnalysis as FeatureAnalysis_
+from .GraphGenerator import GraphGenerator as GraphGenerator_
+from .Evaluator import Evaluator as Evaluator_
+from .Analysis import Analysis as Analysis_
+from .Optimization import Optimization as Optimization_
+from .Condor import Condor as Condor_

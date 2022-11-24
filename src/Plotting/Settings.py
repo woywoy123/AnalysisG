@@ -11,7 +11,7 @@ from AnalysisTopGNN.Tools import Tools
 from AnalysisTopGNN.Notification import Plotting
 
 
-class Settings:
+class Settings_:
     def __init__(self):
         self.Cosmetics()
         self.Layout()
@@ -79,7 +79,7 @@ class Settings:
         self.PLT.rcdefaults()
         self.MakeFigure()
 
-class CommonFunctions(Tools, Settings, Plotting):
+class CommonFunctions(Tools, Settings_, Plotting):
     def __init__(self):
         Settings.__init__(self)
         self.VerboseLevel = 3

@@ -1,5 +1,5 @@
 from .Miscellaneous import *
-from .IO import IO
+from AnalysisTopGNN.Tools.IO import IO
 
 class Tools(IO):
 

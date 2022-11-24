@@ -4,8 +4,8 @@ from AnalysisTopGNN.Model import Model, Optimizer, Scheduler
 from AnalysisTopGNN.IO import PickleObject
 from .Settings import Settings
 
-from AnalysisTopGNN.Notification import Optimization
-class Optimization(Optimization, Settings, SampleTracer, Tools, RandomSamplers):
+from AnalysisTopGNN.Notification import Optimization_
+class Optimization(Optimization_, Settings, SampleTracer, Tools, RandomSamplers):
 
     def __init__(self):
         self.Caller = "OPTIMIZATION"

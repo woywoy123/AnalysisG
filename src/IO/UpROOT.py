@@ -1,4 +1,4 @@
-from AnalysisTopGNN.Notification import UpROOT
+from AnalysisTopGNN.Notification.UpROOT import UpROOT
 from AnalysisTopGNN.Generators.Settings import Settings
 import uproot 
 

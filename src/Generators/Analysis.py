@@ -1,6 +1,6 @@
 from AnalysisTopGNN.IO import HDF5, PickleObject, UnpickleObject
 from AnalysisTopGNN.Samples import SampleTracer
-from AnalysisTopGNN.Notification import Analysis
+from AnalysisTopGNN.Notification import Analysis_
 from AnalysisTopGNN.Tools import Tools
 
 from AnalysisTopGNN.Generators.GraphGenerator import GraphFeatures
@@ -8,7 +8,7 @@ from AnalysisTopGNN.Generators import EventGenerator, GraphGenerator, Settings
 from AnalysisTopGNN.Generators import ModelEvaluator
 from AnalysisTopGNN.Generators import Optimization
 
-class Analysis(Analysis, Settings, SampleTracer, Tools, GraphFeatures):
+class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
 
     def __init__(self):
 

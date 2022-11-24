@@ -2,11 +2,11 @@ from AnalysisTopGNN.IO import File
 from AnalysisTopGNN.Samples.Event import EventContainer
 from AnalysisTopGNN.Samples.Managers import SampleTracer
 
-from AnalysisTopGNN.Notification import EventGenerator
+from AnalysisTopGNN.Notification import EventGenerator_
 from AnalysisTopGNN.Tools import Threading, Tools
 from .Settings import Settings
 
-class EventGenerator(EventGenerator, Settings, Tools, SampleTracer):
+class EventGenerator(EventGenerator_, Settings, Tools, SampleTracer):
     def __init__(self, InputDir = False, EventStart = 0, EventStop = None):
 
         self.Caller = "EVENTGENERATOR"
