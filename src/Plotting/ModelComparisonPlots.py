@@ -312,7 +312,8 @@ class PredictionContainer(Metrics):
 
     def __init__(self):
         self.Make = None
-        self.ProjectName = None 
+        self.ProjectName = None
+        self.OutputDirectory = "./"
 
         self.ModelName = None
         self.Epoch = None
@@ -351,7 +352,7 @@ class PredictionContainer(Metrics):
             self._RecoEpoch[f].Prediction.append(inpt[f]["nrec"])
 
     def CompileEpoch(self):
-        outdir = self.ProjectName + "/Summary/SampleModes/" + self.Make + "/" + self.ModelName
+        outdir = self.OutputDirectory + "/" + self.ProjectName + "/Summary/SampleModes/" + self.Make + "/" + self.ModelName
         Plots = {}
         for f in self._MassBlocks:
             self._MassBlocks[f].MakeMass()
@@ -429,7 +430,7 @@ class PredictionContainer(Metrics):
         for p in self.Plots:
             fig = self.Plots[p]
             fig.Filename = p
-            fig.OutputDirectory = self.ProjectName + "/Summary/Efficiency/" + self.Make + "/" + self.ModelName
+            fig.OutputDirectory = self.OutputDirectory + "/" + self.ProjectName + "/Summary/Efficiency/" + self.Make + "/" + self.ModelName
             fig.SaveFigure()
 
 
@@ -467,7 +468,7 @@ class ModelComparisonPlots(Plots):
                     Tbl.AddValues(m.replace("_", " "), k, 1)
 
         Tbl.Compile()
-        Tbl.DumpTableToFile(self.ProjectName + "/Summary/" + Mode + "/TrainingComparison")
+        Tbl.DumpTableToFile(self.OutputDirectory + "/" +self.ProjectName + "/Summary/" + Mode + "/TrainingComparison")
         epochs = list(Container)
         epochs.sort()
       
@@ -485,12 +486,12 @@ class ModelComparisonPlots(Plots):
                     Tbl.AddValues(ep, metric, dic[metric][i])
             
             Tbl.Compile()
-            Tbl.DumpTableToFile(self.ProjectName + "/Summary/" + Mode + "/" + i + "/EpochSummary")
+            Tbl.DumpTableToFile(self.OutputDirectory + "/" + self.ProjectName + "/Summary/" + Mode + "/" + i + "/EpochSummary")
         
         SummedEpoch = {}
         for i in Names:
             SummedEpoch[i] = sum(self._ModelDirectories[i])
-            SummedEpoch[i].Compile(self.ProjectName + "/Summary/" + Mode + "/" + i)  
+            SummedEpoch[i].Compile(self.OutputDirectory + "/" + self.ProjectName + "/Summary/" + Mode + "/" + i)  
     
     def TrainingComparison(self, ModelResults, TrainContainer, names):
         for epch in ModelResults[names]:
@@ -511,7 +512,7 @@ class ModelComparisonPlots(Plots):
             self._Blocks[i].MergeBlockPlots()
             for k in self._Blocks[i].Plots:
                 self._Blocks[i].Plots[k].Filename = k.split("_")[0]
-                self._Blocks[i].Plots[k].OutputDirectory = self.ProjectName + "/Summary/Efficiency/" + i + "/" + k.split("_")[-1]
+                self._Blocks[i].Plots[k].OutputDirectory = self.OutputDirectory + "/" + self.ProjectName + "/Summary/Efficiency/" + i + "/" + k.split("_")[-1]
                 self._Blocks[i].Plots[k].SaveFigure()
                 
                 if k.split("_")[0] != "OverallEfficiency":
@@ -522,5 +523,5 @@ class ModelComparisonPlots(Plots):
                     for ep, val in zip(l.xData, l.yData):
                         Tbl.AddValues(ep, model + " (" + i + ")", val)
         Tbl.Compile()
-        Tbl.DumpTableToFile(self.ProjectName + "/Summary/Efficiency/" + i + "/EfficiencyTable.txt")
+        Tbl.DumpTableToFile(self.OutputDirectory + "/" + self.ProjectName + "/Summary/Efficiency/" + i + "/EfficiencyTable.txt")
 

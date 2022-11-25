@@ -47,26 +47,26 @@ Sub.ProjectName = "TopTruthChildrenReconstruction"
 Sub.Tree = "nominal"
 Sub.VerboseLevel = 3
 
-# ====== Event Generator ======= #
-Evnt = ["bsm-4-tops-mc16a", "bsm-4-tops-mc16d", "bsm-4-tops-mc16e"]
-for i in Evnt:
-    A = EventGen()
-    A.InputSample(i, smplDir + i.split("-")[-1])
-    Sub.AddJob(i, A, "12GB" , "1h")
-
-    D = DataGen()
-    D.InputSample(i)
-    ApplyFeatures(D, "TruthChildren") 
-    Sub.AddJob(i + "_Data", D, "12GB", "1h", [i])
-
-# ======= Merge and Training Sample ======= #
-TrSmpl = DataGen()
-for i in Evnt:
-    TrSmpl.InputSample(i)
-TrSmpl.DataCache = True 
-TrSmpl.TrainingSampleName = "topsChildren"
-TrSmpl.TrainingPercentage = 90
-Sub.AddJob("Training", TrSmpl, "12GB", "48h", [i + "_Data" for i in Evnt])
+## ====== Event Generator ======= #
+#Evnt = ["bsm-4-tops-mc16a", "bsm-4-tops-mc16d", "bsm-4-tops-mc16e"]
+#for i in Evnt:
+#    A = EventGen()
+#    A.InputSample(i, smplDir + i.split("-")[-1])
+#    Sub.AddJob(i, A, "12GB" , "1h")
+#
+#    D = DataGen()
+#    D.InputSample(i)
+#    ApplyFeatures(D, "TruthChildren") 
+#    Sub.AddJob(i + "_Data", D, "12GB", "1h", [i])
+#
+## ======= Merge and Training Sample ======= #
+#TrSmpl = DataGen()
+#for i in Evnt:
+#    TrSmpl.InputSample(i)
+#TrSmpl.DataCache = True 
+#TrSmpl.TrainingSampleName = "topsChildren"
+#TrSmpl.TrainingPercentage = 90
+#Sub.AddJob("Training", TrSmpl, "12GB", "48h", [i + "_Data" for i in Evnt])
 
 # ======= Model Training ====== #
 
@@ -179,7 +179,7 @@ for i in range(len(Opt)):
     op.TrainingSampleName = "topsChildren"
     op.ContinueTraining = True
 
-    Sub.AddJob("MRK" + it, op, "12GB", "1h", ["Training"])
+    Sub.AddJob("MRK" + it, op, "12GB", "1h") #, ["Training"])
   
     direc = "./Results/" + Sub.ProjectName  + "/TrainedModels/BasicBaseLineRecursion_MRK" + it
     evlmod.EvaluateModel(direc, BasicBaseLineRecursion(), btch["BATCH" + it])

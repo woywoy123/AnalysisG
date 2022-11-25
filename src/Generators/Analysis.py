@@ -159,7 +159,10 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
             for i in smpl:
                 obj = self[i]
                 obj.Train = status
+        
         self.EmptySampleList()
+        if self.TrainingSampleName == False:
+            return 
         if self.Training == False:
             self.CheckPercentage()
             inpt = {i.Filename : i for i in self}
@@ -170,7 +173,7 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
             hashes["SampleMap"] = self._SampleMap
 
             Name = self.TrainingSampleName if self.TrainingSampleName else "UNTITLED"
-            PickleObject(hashes, self.ProjectName + "/Tracers/TrainingSample/" + Name)
+            PickleObject(hashes, self.output + "/Tracers/TrainingSample/" + Name)
             self.Training = hashes
         MarkSample(self.Training["train_hashes"], True)
         MarkSample(self.Training["test_hashes"], False)
@@ -178,7 +181,6 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
     def __Optimization(self):
         if self.Model == None:
             return
-
         op = Optimization()
         op += self
         op.RestoreSettings(self.DumpSettings())
@@ -242,7 +244,7 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
        
         self.Training = False
         if self.TrainingSampleName:
-            fDir = self.ProjectName + "/Tracers/TrainingSample/" + self.TrainingSampleName + ".pkl" 
+            fDir = self.output + "/Tracers/TrainingSample/" + self.TrainingSampleName + ".pkl" 
             self.Training = UnpickleObject(fDir) if self.IsFile(fDir) else False
             self._SampleMap = self.Training["SampleMap"] if self.Training else self._SampleMap
 

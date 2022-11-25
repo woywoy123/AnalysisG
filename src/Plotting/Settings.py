@@ -142,6 +142,7 @@ class CommonFunctions(Tools, Settings_, Plotting):
         
         x = self.SanitizeData(self.Get(Dims + "Data"))
         if len(x) == 0:
+            self.Title = str(self.Title) if self.Title == None else self.Title
             self.NoDataGiven()
             return 
         self.Set(Dims + "Data", x)

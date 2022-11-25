@@ -15,4 +15,7 @@ class FeatureAnalysis(Notification):
         fail = str(sys.exc_info()[1]).replace("'", "").split(" ")
         self.Failure("(" + mode + "): " + name + " ERROR -> " + " ".join(fail) + EventIndex)
 
-
+    def TotalFailure(self):
+        string = "Feature failures detected... Exiting"
+        self.Failure("="*len(string))
+        self.FailureExit(string)

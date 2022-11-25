@@ -17,34 +17,16 @@ d: DeltaR between process truth tops  (Here we check whether the specatator tops
 e: PT Distribution of tops 
 f: Energy Distribution of tops
 
-
 -> Figure 2.1:
 a: PDGID of Top Decay products
 b: Reconstructed Invariant Top Mass from Children - Divided into Leptonic and Hadronic decay channels
 c: Reconstructed Invariant Mass of scalar H resonance - Lep-Lep, Lep-Had, Had-Had
 d: DeltaR between children of mutual top (this tests how well the children are clustered) - Split into leptonic and hadronic
 e: DeltaR between children and mutual top (tests how much children cluster around the parent top) - Split into leptonic and hadronic
-f: ...
-g: DeltaR between adjacent children as a function of parent top PT (we can use this information to see if the resulting jets are possibly merged or produce large-R jets)
+f: DeltaR between adjacent children as a function of parent top PT (we can use this information to see if the resulting jets are possibly merged or produce large-R jets)
+g: Fractional Top PT distribution transferred to children - Split by PDGID
 
-XXX: Fractional Top PT distribution transferred to children
-
-
-
-
--> Figure 2.1: No selection criteria on how the Z' decays (i.e. tops can decay leptonically or hadronically)
-a: Distribution of n-children produced - Stack Plot
-b: PT Distribution for children of tops - Stack Plot
-c: Reconstructed Invariant Top mass from Children - Superimposed
-d: DeltaR between pairs of children from a common top quark - Stack plot
-e: The DeltaR between the four vector of the top quark and its children i.e. how much do the children deviate from the original top trajectory. - Stack Plot
-
--> Figure 2.2: Event selection criteria that the Z' decays HADRONICALLY 
-a: Distribution of n-children produced - Stack Plot
-b: PT Distribution for children of tops - Stack Plot
-c: Reconstructed Invariant Top mass from Children - Superimposed
-d: DeltaR between pairs of children from a common top quark - Stack plot
-e: The DeltaR between the four vector of the top quark and its children i.e. how much do the children deviate from the original top trajectory. - Stack Plot
+#-----\/ --- needs reworking
 
 
 -> Figure 3.1: Truth Jets 

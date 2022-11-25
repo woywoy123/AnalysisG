@@ -72,12 +72,18 @@ class GraphGenerator(GraphGenerator_, SampleTracer, Settings, GraphFeatures):
         self.Caller = "GRAPHGENERATOR"
         Settings.__init__(self)
         SampleTracer.__init__(self)
+        self._Test = False
  
     def __MakeGraph(self, event, smplidx):
         evobj = self.CopyInstance(self.EventGraph)
+
+        if self._Test == False:
+            self.TestFeatures(10)
+            self._Test = True
         try:
             ev = evobj(event)
         except AttributeError:
+            
             ev = evobj.Escape(evobj)
             ev.Event = event
             ev.Particles = []

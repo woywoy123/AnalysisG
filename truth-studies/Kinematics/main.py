@@ -39,8 +39,15 @@ Ana.Launch()
 # Figures 2.1: "b" and "c"
 #ReconstructedMassFromChildren(Ana)
 
-# Figures 2.1: "d" 
-DeltaRChildren(Ana)
+# Figures 2.1: "d", "e", "f", "g" 
+#DeltaRChildren(Ana)
+
+# Figures 2.1: "g"
+#FractionPTChildren(Ana)
+
+
+
+
 
 
 #TruthTopsAll(Ana)

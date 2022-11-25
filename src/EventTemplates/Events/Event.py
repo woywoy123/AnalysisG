@@ -20,6 +20,8 @@ class Event(EventTemplate):
 
         self.Lumi = "weight_mc"
         self.mu = "mu"
+        self.met = "met_met"
+        self.met_phi = "met_phi"
 
         self.DefineObjects()
         
@@ -42,6 +44,7 @@ class Event(EventTemplate):
             if isinstance(t.index, list):
                 continue
             self.Tops[t.index].Children.append(t)
+            t.__dict__["FromRes"] = self.Tops[t.index].FromRes
 
         for jp in self.TruthJetPartons:
             tjp = self.TruthJetPartons[jp]

@@ -179,7 +179,6 @@ def DeltaRChildren(Ana):
     X = CombineTH1F(**Plots)
     X.SaveFigure()
 
-
     Plots = PlotTemplate(nevents, lumi)
     Plots["Title"] = "$\Delta$R Between Decay Products of Mutual Top \n as a Function of Parent Top Transverse Momenta"
     Plots["yTitle"] = "$\Delta$R"
@@ -192,14 +191,41 @@ def DeltaRChildren(Ana):
     Plots["yMin"] = 0
     Plots["yData"] = ChildrenClusterPT["DelR"]
     Plots["xData"] = ChildrenClusterPT["PT"]
-    Plots["Filename"] = "Figure_2.1g"
+    Plots["Filename"] = "Figure_2.1f"
     X = TH2F(**Plots)
     X.SaveFigure()
 
+def FractionPTChildren(Ana):
+    FractionID = {ID : [] for ID in CounterPDGID}
+    nevents = 0
+    lumi = 0
+    tops = 0
+    for ev in Ana:
+        event = ev.Trees["nominal"]
+        nevents += 1
+        lumi += event.Lumi
+        
+        for t in event.Tops:
+            for c in t.Children:
+                ids = PDGID[abs(c.pdgid)]
+                FractionID[ids] += [c.pt/t.pt]
 
-
-
-
+    Plots = PlotTemplate(nevents, lumi)
+    Plots["Title"] = "Fractional Transverse Momenta Transferred\n to Decay Products from Parent Top"
+    Plots["xTitle"] = "Fraction"
+    Plots["xStep"] = 0.2
+    Plots["xMax"] = 5
+    Plots["Filename"] = "Figure_2.1g"
+    Plots["Histograms"] = []
+    
+    for i in FractionID:
+        _Plots = {}
+        _Plots["Title"] = i
+        _Plots["xData"] = FractionID[i]
+        Plots["Histograms"] += [TH1F(**_Plots)]
+    
+    X = CombineTH1F(**Plots)
+    X.SaveFigure()
 
 
 

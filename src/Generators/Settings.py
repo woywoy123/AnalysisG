@@ -53,6 +53,7 @@ class _General:
 
         self.ProjectName = "UNTITLED"
         self.SampleContainer = None
+        self.OutputDirectory = "./"
 
 
 class _EventGenerator:
@@ -139,7 +140,6 @@ class _Analysis:
 
         self.DumpHDF5 = False
         self.DumpPickle = False
-        self.OutputDirectory = "./"
 
 class _Condor:
 
@@ -148,7 +148,6 @@ class _Condor:
         self.PythonVenv = "$PythonGNN"
         self.EventCache = None
         self.DataCache = None
-        self.OutputDirectory = None
         self._dump = True
         self.ProjectName = None
         self.VerboseLevel = 0
