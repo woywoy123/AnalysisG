@@ -105,7 +105,52 @@ class TH1F(Functions):
 
         if isinstance(self.xTickLabels, list):
             self.Axis.set_xticklabels(self.xTickLabels)
+
+class TH2F(Functions):
+
+    def __init__(self, **kargs):
+        Functions.__init__(self)
+        self.Caller = "TH2F"
+
+        self.DefineAxisData("x")
+        self.DefineAxisBins("x")
+
+        self.DefineAxisData("y")
+        self.DefineAxisBins("y")
         
+        self.DefineAxisData("z")
+        self.DefineAxisBins("z")
+
+        self.ApplyInput(kargs)
+    
+    def ApplyFormat(self):
+        H, yedges, xedges = hep.hist2dplot(self.NPHisto)
+
+    def Compile(self):
+        
+        self.ResetPLT()
+        self.DefineStyle()
+        self.ApplyToPLT()
+
+        self.DefineRange("x")
+        self.DefineRange("y")
+        
+        self.NPHisto = np.histogram2d(self.xData, self.yData, bins = [self.xBins, self.yBins], 
+                                      range = [[self.xMin, self.xMax], [self.yMin, self.yMax]])
+        self.ApplyFormat()
+        
+        if self.xStep != None:
+            self.Axis.set_xticks([self.xMin + self.xStep*i for i in range(self.xBins)])
+
+        if isinstance(self.xTickLabels, list):
+            self.Axis.set_xticklabels(self.xTickLabels)
+
+        if self.yStep != None:
+            self.Axis.set_yticks([self.yMin + self.yStep*i for i in range(self.yBins)])
+
+        if isinstance(self.yTickLabels, list):
+            self.Axis.set_yticklabels(self.yTickLabels)
+ 
        
 class CombineTH1F(Functions):
     def __init__(self, **kargs):
@@ -134,6 +179,14 @@ class CombineTH1F(Functions):
         
         self.DefineRange("x")
         
+        reorder = {}
+        for i in range(len(self.Histograms)):
+            reorder[len(self.Histograms[i].xData)] = i
+        
+        reorg = sorted(reorder)
+        reorg.reverse()
+        self.Histograms = [self.Histograms[reorder[i]] for i in reorg]
+
         for i in H:
             i.xBins = self.xBins
             i.xMin = self.xMin

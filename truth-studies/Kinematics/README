@@ -9,23 +9,28 @@ Shorts:
 * Truth Children: These are the immediate decay particles from the truth top. These have not emitted any gluon radiation if they are Quarks.
 * Based on TRUTH CHILDREN!: There are two ways of determining whether a top decays leptonically, one being top.Lepton or [ if lepton in top.Children ]. These methods DO NOT necessarily produce the same outcome, .Lepton is the matched DETECTOR lepton to the top.Children. So if a DETECTOR lepton is missing, tops actually decaying leptonically will NOT be considered as such.
 
+-> Figure 1.1:
+a: Number of hadronic and leptonically decaying resonance tops (a resonance is classified as hadronic if all tops decay hadronically)
+b: Decay channels of the tops, this is an extension of figure a.
+c: Mass of Resonance from truth tops - Split into whether the top decays leptonically and hadronically (Top decay channel shouldnt impact the mass, but just to be sure)
+d: DeltaR between process truth tops  (Here we check whether the specatator tops are separated from resonance tops)
+e: PT Distribution of tops 
+f: Energy Distribution of tops
 
--> Figure 1.1: No selection criteria on how the Z' decays (i.e. tops can decay leptonically or hadronically)
-a: Mass of Tops which originate from the Z' resonance (1.5 TeV)
-b: Mass of Z' derived from the tops in figure a.
-c: Mass of Spectator Tops
-d: Number of Tops found per event 
-e: Decay modes of tops involved
-f: PT Distribution for Tops undergoing different decay modes
-g: Decay modes of the Z' resonance (either of the tops decays leptonically or all decay hadronically)
 
--> Figure 1.2: Event selection criteria that the Z' decays HADRONICALLY 
-a: Mass of Tops which originate from the Z' resonance (1.5 TeV)
-b: Mass of Z' derived from the tops in figure a.
-c: Mass of Spectator Tops
-d: Number of Tops found per event 
-e: Decay modes of tops involved
-f: PT Distribution for Tops undergoing different decay modes
+-> Figure 2.1:
+a: PDGID of Top Decay products
+b: Reconstructed Invariant Top Mass from Children - Divided into Leptonic and Hadronic decay channels
+c: Reconstructed Invariant Mass of scalar H resonance - Lep-Lep, Lep-Had, Had-Had
+d: DeltaR between children of mutual top (this tests how well the children are clustered) - Split into leptonic and hadronic
+e: DeltaR between children and mutual top (tests how much children cluster around the parent top) - Split into leptonic and hadronic
+f: ...
+g: DeltaR between adjacent children as a function of parent top PT (we can use this information to see if the resulting jets are possibly merged or produce large-R jets)
+
+XXX: Fractional Top PT distribution transferred to children
+
+
+
 
 -> Figure 2.1: No selection criteria on how the Z' decays (i.e. tops can decay leptonically or hadronically)
 a: Distribution of n-children produced - Stack Plot
