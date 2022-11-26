@@ -24,7 +24,7 @@ def mass(a, b):
 
 # ================== Truth ================ #
 def Index(a, b):
-    if a.Index == b.Index:
+    if a.index == b.index:
         return float(1)
     return float(0)
 

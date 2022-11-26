@@ -121,6 +121,7 @@ class _ModelEvaluator:
         self.PlotTestSample = False
         self.PlotEntireSample = False
         self.PlotEpochDebug = False
+        self.PlotModelComparison = False
 
 class _Analysis:
 

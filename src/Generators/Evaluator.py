@@ -157,10 +157,7 @@ class ModelEvaluator(Settings, SampleTracer, Evaluator_, Tools, ModelComparisonP
             return inpt 
         
         lst = [[i, mod + "_" + str(i.Epoch)] for mod in Container for i in Container[mod]]
-        th = Threading(lst, function, self.Threads, 2)
-        th.VerboseLevel = self.VerboseLevel
-        th.Start()
-        for i in th._lists:
+        for i in function(lst):
             mod = i[1].split("_")
             Container["_".join(mod[:-1])][int(mod[-1])] = i[0]
 
@@ -228,5 +225,5 @@ class ModelEvaluator(Settings, SampleTracer, Evaluator_, Tools, ModelComparisonP
             self.__EvaluateSampleType(None)
             self.__ProcessContainer(self._Container["All"], "CompleteSample") 
         
-        if len(self._Container) > 0:
+        if len(self._Container) > 0 and self.PlotModelComparison:
             self.Verdict()

@@ -10,7 +10,7 @@ def EventGen():
     Ana.Event = Event
     Ana.Threads = 4
     Ana.chnk = 100
-    Ana.EventStop = 100
+    #Ana.EventStop = 100
     Ana.EventCache = True
     Ana.DumpHDF5 = False
     Ana.DumpPickle = True
@@ -36,8 +36,8 @@ def Optimization():
     Ana.Device = "cuda"
     return Ana
 
-smplDir = "/CERN/Samples/Processed/bsm4tops/"
-#smplDir = "/nfs/dust/atlas/user/<...>/SmallSample/"
+#smplDir = "/CERN/Samples/Processed/bsm4tops/"
+smplDir = "/nfs/dust/atlas/user/<...>/SmallSample/"
 
 Sub = Condor()
 Sub.EventCache = True 
@@ -47,26 +47,26 @@ Sub.ProjectName = "TopTruthChildrenReconstruction"
 Sub.Tree = "nominal"
 Sub.VerboseLevel = 3
 
-## ====== Event Generator ======= #
-#Evnt = ["bsm-4-tops-mc16a", "bsm-4-tops-mc16d", "bsm-4-tops-mc16e"]
-#for i in Evnt:
-#    A = EventGen()
-#    A.InputSample(i, smplDir + i.split("-")[-1])
-#    Sub.AddJob(i, A, "12GB" , "1h")
-#
-#    D = DataGen()
-#    D.InputSample(i)
-#    ApplyFeatures(D, "TruthChildren") 
-#    Sub.AddJob(i + "_Data", D, "12GB", "1h", [i])
-#
-## ======= Merge and Training Sample ======= #
-#TrSmpl = DataGen()
-#for i in Evnt:
-#    TrSmpl.InputSample(i)
-#TrSmpl.DataCache = True 
-#TrSmpl.TrainingSampleName = "topsChildren"
-#TrSmpl.TrainingPercentage = 90
-#Sub.AddJob("Training", TrSmpl, "12GB", "48h", [i + "_Data" for i in Evnt])
+# ====== Event Generator ======= #
+Evnt = ["bsm-4-tops-mc16a", "bsm-4-tops-mc16d", "bsm-4-tops-mc16e"]
+for i in Evnt:
+    A = EventGen()
+    A.InputSample(i, smplDir + i.split("-")[-1])
+    Sub.AddJob(i, A, "12GB" , "1h")
+
+    D = DataGen()
+    D.InputSample(i)
+    ApplyFeatures(D, "TruthChildren") 
+    Sub.AddJob(i + "_Data", D, "12GB", "1h", [i])
+
+# ======= Merge and Training Sample ======= #
+TrSmpl = DataGen()
+for i in Evnt:
+    TrSmpl.InputSample(i)
+TrSmpl.DataCache = True 
+TrSmpl.TrainingSampleName = "topsChildren"
+TrSmpl.TrainingPercentage = 90
+Sub.AddJob("Training", TrSmpl, "12GB", "48h", [i + "_Data" for i in Evnt])
 
 # ======= Model Training ====== #
 
@@ -166,6 +166,7 @@ evlmod.PlotTrainSample = True
 evlmod.PlotTestSample = True
 evlmod.PlotEntireSample = True
 evlmod.TrainingSampleName = "topsChildren"
+evlmod.PlotModelComparison = True
 
 wait = []
 for i in range(len(Opt)):
@@ -179,7 +180,7 @@ for i in range(len(Opt)):
     op.TrainingSampleName = "topsChildren"
     op.ContinueTraining = True
 
-    Sub.AddJob("MRK" + it, op, "12GB", "1h") #, ["Training"])
+    Sub.AddJob("MRK" + it, op, "12GB", "1h", ["Training"])
   
     direc = "./Results/" + Sub.ProjectName  + "/TrainedModels/BasicBaseLineRecursion_MRK" + it
     evlmod.EvaluateModel(direc, BasicBaseLineRecursion(), btch["BATCH" + it])
@@ -201,5 +202,5 @@ for i in range(len(Opt)):
     wait += Evaluate(it, evl, Sub, 4)
 
 Sub.AddJob("Evaluator" , evlmod, "12GB", "1h", wait)
-#Sub.DumpCondorJobs()
-Sub.LocalDryRun()
+Sub.DumpCondorJobs()
+#Sub.LocalDryRun()
