@@ -1,8 +1,13 @@
 import random
 import numpy as np
 from sklearn.model_selection import ShuffleSplit, KFold
-from torch_geometric.loader import DataLoader
 from torch.utils.data import SubsetRandomSampler
+
+try:
+  from torch_geometric.loader import DataLoader
+except:
+  from torch_geometric.data import DataLoader
+
 
 from AnalysisTopGNN.Notification import RandomSamplers_
 class RandomSamplers(RandomSamplers_):

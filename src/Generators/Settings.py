@@ -183,7 +183,7 @@ class _JobsSpecification:
 class _File:
 
     def __init__(self):
-        self.StepSize = 1000
+        self.StepSize = 5000
         self.VerboseLevel = 3
         
 class Settings(_General):

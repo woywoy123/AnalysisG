@@ -67,32 +67,20 @@ class Event(EventTemplate):
                 if ti == -1:
                     continue
                 self.Tops[ti].Jets.append(self.Jets[i])
-   
-        maps = {}
-        for i in self.TopChildren:
-            if abs(self.TopChildren[i].pdgid) not in [11, 13, 15]:
-                continue
-            maps[i] = self.TopChildren[i]
+  
+        maps = { i : self.TopChildren[i] for i in self.TopChildren if abs(self.TopChildren[i].pdgid) in [11, 13, 15] }
         
         # ==== Electron ==== #
-        if len(self.Electrons) != 0:
-            dist = {}
-            for i in maps:
-                for l in self.Electrons:
-                    dist[maps[i].DeltaR(self.Electrons[l])] = [i, l]
-            
+        if len(self.Electrons) != 0 and len(maps) != 0:
+            dist = { maps[i].DeltaR(self.Electrons[l]) : [i, l] for i in maps for l in self.Electrons } 
             dst = sorted(dist) 
             for i in range(len(self.Electrons)):
                 self.TopChildren[dist[dst[i]][0]].Children.append(self.Electrons[dist[dst[i]][1]])
                 self.Electrons[dist[dst[i]][1]].Parent.append(self.TopChildren[dist[dst[i]][0]])
     
         # ==== Muon ==== #
-        if len(self.Muons) != 0:
-            dist = {}
-            for i in maps:
-                for l in self.Muons:
-                    dist[maps[i].DeltaR(self.Muons[l])] = [i, l]
-            
+        if len(self.Muons) != 0 and len(maps) != 0:
+            dist = { maps[i].DeltaR(self.Muons[l]) : [i, l] for i in maps for l in self.Muons } 
             dst = sorted(dist) 
             for i in range(len(self.Muons)):
                 self.TopChildren[dist[dst[i]][0]].Children.append(self.Muons[dist[dst[i]][1]])
