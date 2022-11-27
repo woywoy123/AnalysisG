@@ -61,6 +61,9 @@ class GraphFeatures(FeatureAnalysis, RandomSamplers):
     def TestFeatures(self, SamplingSize = 100):
         self.SetDevice()
         self.CheckSettings()
+        if self.Caller == "ANALYSIS":
+            self.FeatureTest = True
+            self.Launch()
         Events = self.RandomEvents(self.SampleContainer.list(), SamplingSize)
         self.TestEvent(Events, self.EventGraph)
  

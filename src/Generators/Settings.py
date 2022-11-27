@@ -141,6 +141,7 @@ class _Analysis:
 
         self.DumpHDF5 = False
         self.DumpPickle = False
+        self.FeatureTest = False
 
 class _Condor:
 

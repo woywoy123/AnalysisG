@@ -255,7 +255,7 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
         self.EventImplementationCommit() 
         
         for i in self._SampleMap:
-            if self.TrainingSampleName and (self.Event == None and self.EventGraph == None):
+            if self.TrainingSampleName or (self.Event == None and self.EventGraph == None) or self.FeatureTest:
                 search = "EventCache" if self.EventCache else False
                 search = "DataCache" if self.DataCache else search
                 if search == False: 
