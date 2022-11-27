@@ -44,6 +44,7 @@ class Event(EventTemplate):
             if isinstance(t.index, list):
                 continue
             self.Tops[t.index].Children.append(t)
+            t.Parent.append(self.Tops[t.index])
             t.__dict__["FromRes"] = self.Tops[t.index].FromRes
 
         for jp in self.TruthJetPartons:
@@ -77,6 +78,7 @@ class Event(EventTemplate):
             for i in range(len(self.Electrons)):
                 self.TopChildren[dist[dst[i]][0]].Children.append(self.Electrons[dist[dst[i]][1]])
                 self.Electrons[dist[dst[i]][1]].Parent.append(self.TopChildren[dist[dst[i]][0]])
+                self.Electrons[dist[dst[i]][1]].index += list(set([p.index for p in self.TopChildren[dist[dst[i]][0]].Parent]))
     
         # ==== Muon ==== #
         if len(self.Muons) != 0 and len(maps) != 0:
@@ -85,6 +87,7 @@ class Event(EventTemplate):
             for i in range(len(self.Muons)):
                 self.TopChildren[dist[dst[i]][0]].Children.append(self.Muons[dist[dst[i]][1]])
                 self.Muons[dist[dst[i]][1]].Parent.append(self.TopChildren[dist[dst[i]][0]])
+                self.Muons[dist[dst[i]][1]].index += list(set([p.index for p in self.TopChildren[dist[dst[i]][0]].Parent]))
  
         self.Tops = list(self.Tops.values())
         self.TopChildren = list(self.TopChildren.values())

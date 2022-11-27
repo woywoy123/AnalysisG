@@ -3,5 +3,7 @@ def SignalEvent(ev):
         return 1
     return 0
 
-def NTops(ev):
+def nTops(ev):
     return float(len(ev.Tops))
+
+

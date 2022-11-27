@@ -58,6 +58,7 @@ class Electron(Particle):
         self.Type = "el"
         self.charge = self.Type + "_charge"
         Particle.__init__(self)
+        self.index = []
 
 class Muon(Particle):
     
@@ -65,6 +66,7 @@ class Muon(Particle):
         self.Type = "mu"
         self.charge = self.Type + "_charge"
         Particle.__init__(self)
+        self.index = []
 
 class Jets(Particle):
 

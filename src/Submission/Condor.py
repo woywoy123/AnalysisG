@@ -32,6 +32,7 @@ class CondorScript(Settings):
         string = "Request_GPUs = 1" if self.Device == "cuda" else False
         if string:
             self.__AddConfig(string)
+            return 
         self.__AddConfig("Request_Cpus = " + str(self.Threads))
     
     def Compile(self):
@@ -39,7 +40,7 @@ class CondorScript(Settings):
         self.__Hardware()
         self.__Memory()
         self.__Time()
-        self.__AddConfig("queue")
+        self.__AddConfig("queue 1")
 
     def Shell(self):
         self._config = []
@@ -180,7 +181,7 @@ class Condor(AnalysisTopGNN.Tools.General.Tools, Condor_, Settings):
         self._sequence = {}
         self._Device = {}
     
-    def AddJob(self, name, instance, memory, time, waitfor = None):
+    def AddJob(self, name, instance, memory = None, time = None, waitfor = None):
         if name not in self._Jobs:
             self._Jobs[name] = JobSpecification()
             self._Jobs[name].Job = instance

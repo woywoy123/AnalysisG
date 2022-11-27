@@ -1,12 +1,9 @@
 from AnalysisTopGNN.Generators import Analysis
 from AnalysisTopGNN.Events import Event
-#from TruthTops import *
-#from TruthChildren import *
-#from TruthMatching import *
-from TruthTops_ import *
-from TopChildren_ import *
+from TruthTops import *
+from TopChildren import *
 
-direc = "/CERN/Samples/Processed/bsm4tops/mc16e"
+direc = "/CERN/Samples/SingleLepton/Collections/MadGraphPythia8EvtGen_noallhad_ttH_tttt_m1000"
 Ana = Analysis()
 Ana.InputSample("tttt", direc)
 Ana.Event = Event
@@ -45,7 +42,7 @@ Ana.Launch()
 # Figures 2.1: "g"
 #FractionPTChildren(Ana)
 
-
+# Figures 3.1: 
 
 
 
