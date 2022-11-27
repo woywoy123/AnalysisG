@@ -73,6 +73,8 @@ class HDF5(Settings, Tools, IO_):
             elif "Data" in ObjPath:
                 if Val == None:
                     return 
+                if str(type(Val).__name__) == "type":
+                    return 
                 self.__AddToDataSet(objectaddress, Key, Val.numpy())
                 return
             elif isinstance(Val, bool):
@@ -100,8 +102,10 @@ class HDF5(Settings, Tools, IO_):
 
         objname = str(type(obj)).split("'")[1]
         objectaddress = str(hex(id(obj)))
-        for i in obj.__dict__:
-            self.__Store(objname, objectaddress, i, obj.__dict__[i])
+
+        dic = obj.to_dict() if objname.endswith("Data") else obj.__dict__
+        for i in dic:
+            self.__Store(objname, objectaddress, i, dic[i])
         return True
     
     def MultiThreadedDump(self, ObjectDict, OutputDirectory):
