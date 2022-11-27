@@ -29,6 +29,7 @@ class FeatureAnalysis(FeatureAnalysis_):
         for c_name in self.GraphAttribute:
             try:
                 self.TestGraphFeature(Event, self.CopyInstance(self.EventGraph), self.GraphAttribute[c_name])    
+                self.PassedTest(c_name, "GRAPH")
             except AttributeError:
                 self.FeatureFailure(c_name, "GRAPH", EventIndex)
                 count += 1
@@ -36,6 +37,7 @@ class FeatureAnalysis(FeatureAnalysis_):
         for c_name in self.NodeAttribute:
             try:
                 self.TestNodeFeature(Event, self.CopyInstance(self.EventGraph), self.NodeAttribute[c_name])    
+                self.PassedTest(c_name, "NODE")
             except AttributeError:
                 self.FeatureFailure(c_name, "NODE", EventIndex)
                 count += 1
@@ -43,6 +45,7 @@ class FeatureAnalysis(FeatureAnalysis_):
         for c_name in self.EdgeAttribute:
             try:
                 self.TestEdgeFeature(Event, self.CopyInstance(self.EventGraph), self.EdgeAttribute[c_name])    
+                self.PassedTest(c_name, "EDGE")
             except AttributeError:
                 self.FeatureFailure(c_name, "EDGE", EventIndex)
                 count += 1

@@ -19,3 +19,6 @@ class FeatureAnalysis(Notification):
         string = "Feature failures detected... Exiting"
         self.Failure("="*len(string))
         self.FailureExit(string)
+
+    def PassedTest(self, name, mode):
+        self.Success("!!!(" + mode + ") Passed: " + name)

@@ -1,5 +1,4 @@
-from distutils.core import setup
-from setuptools import Extension
+from setuptools import Extension, setup
 from torch.utils.cpp_extension import BuildExtension, CppExtension
 
 setup(
