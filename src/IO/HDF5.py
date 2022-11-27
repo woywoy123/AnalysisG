@@ -43,7 +43,8 @@ class HDF5(Settings, Tools, IO_):
                 self.DumpObject(Val)
             Val = str(hex(id(Val)))
         elif "torch_geometric" in str(type(Val)).split("'")[1]:
-            self.DumpObject(Val.to("cpu"))
+            Val.to("cpu")
+            self.DumpObject(Val)
             Val = str(hex(id(Val)))
         self._Ref.attrs[RefName + "." + Key] = Val
 
@@ -51,7 +52,7 @@ class HDF5(Settings, Tools, IO_):
         return True if key in self._Ref.attrs else False
 
     def __Store(self, ObjPath, objectaddress, Key, Val):
-            
+
             if self.__Contains(objectaddress) == False:
                 self._Ref.attrs[objectaddress] = ObjPath
             
@@ -70,22 +71,23 @@ class HDF5(Settings, Tools, IO_):
                     self.__AddToDataSet(objectaddress, Key + "#" + str(i), Val[i]) 
                 return 
             elif "Data" in ObjPath:
-                if type(Val).__name__ == "type":
+                if Val == None:
                     return 
-                for i in list(Val):
-                    self.__AddToDataSet(objectaddress, i, Val[i])
+                self.__AddToDataSet(objectaddress, Key, Val.numpy())
                 return
             elif isinstance(Val, bool):
                 self.__AddToDataSet(objectaddress, Key, Val)
                 return 
-            elif isinstance(Val, type(None)):
-                return 
+
             elif isinstance(Val, np.int64):
                 self.__AddToDataSet(objectaddress, Key, Val)
                 return
             elif isinstance(Val, np.bool_):
                 self.__AddToDataSet(objectaddress, Key, Val)
                 return 
+            elif isinstance(Val, type(None)):
+                return 
+
             print("NEED TO FIX THIS. COMING FROM HDF5", ObjPath, objectaddress, Key, Val, type(Val))
 
     def DumpObject(self, obj, Name = False):
