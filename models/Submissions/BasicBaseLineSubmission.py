@@ -93,7 +93,7 @@ btch = {
 #smplDir = "/nfs/dust/atlas/user/woywoy12/Sample/Dilepton/" #MadGraphPythia8EvtGen_noallhad_ttH_tttt_"
 smplDir = "/CERN/Samples/Dilepton/Collections/"
 Evnt = ["ttH_tttt_m1000"]
-Mode = "TruthChildren"
+Mode = "TruthJets"
 
 Sub = Condor()
 Sub.EventCache = True 
@@ -102,7 +102,6 @@ Sub.OutputDirectory = "./Results/"
 Sub.ProjectName = Mode + "Reconstruction"
 Sub.Tree = "nominal"
 Sub.VerboseLevel = 3
-#Sub.CondaEnv = "GNN"
 
 def EventGen():
     Ana = Analysis()
@@ -119,7 +118,10 @@ def DataGen():
     Ana = Analysis()
     Ana.Threads = 12
     Ana.chnk = 100
-    Ana.EventGraph = EventGraphTruthTopChildren
+    if Mode == "TruthChildren":
+        Ana.EventGraph = EventGraphTruthTopChildren
+    elif Mode == "TruthJets":
+        Ana.EventGraph = EventGraphTruthJetLepton
     #Ana.EventStop = 100
     Ana.DataCache = True
     Ana.DumpHDF5 = True
@@ -139,6 +141,7 @@ def Evaluate(it, evl, Submit, num):
     mrk = "MRK" + it + "_" + str(num)  
     evl.TrainingSampleName = "topsChildren"
     evl.DataCache = True
+    evl.Device = "cuda"
     evl.EvaluateModel(direc, BasicBaseLineRecursion(), btch["BATCH" + it])
     Submit.AddJob(mrk, evl, waitfor = ["MRK"+it])
     return [mrk]

@@ -4,7 +4,7 @@ from TruthTops import *
 from TopChildren import *
 from TruthJetMatching import * 
 
-direc = "/CERN/Samples/SingleLepton/Collections/MadGraphPythia8EvtGen_noallhad_ttH_tttt_m1000"
+direc = "/CERN/Samples/SingleLepton/Collections/ttH_tttt_m1000"
 Ana = Analysis()
 Ana.InputSample("tttt", direc)
 Ana.Event = Event
@@ -27,7 +27,7 @@ Ana.Launch()
 # Figures 1.1: "e" and "f"
 #TopKinematics(Ana)
 
-# ------ Top Centric Plots ----- # 
+# ------ Top Child Centric Plots ----- # 
 # Figures 2.1:  "a"
 #TopChildrenPDGID(Ana)
 
@@ -43,9 +43,12 @@ Ana.Launch()
 # Figures 2.1: "g"
 #FractionPTChildren(Ana)
 
-# Figures 3.1: 
+# ------ Truth Jet Centric Plots ----- # 
+# Figures 3.1: "a" - "d"
 TruthJetPartons(Ana)
 
+# Figures 3.1: 
+PartonToChildTruthJet(Ana)
 
 
 #TruthTopsAll(Ana)

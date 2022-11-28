@@ -51,17 +51,20 @@ class Event(EventTemplate):
             tjp = self.TruthJetPartons[jp]
             tjp.TruthJet.append(self.TruthJets[tjp.TruJetIndex])
             self.TruthJets[tjp.TruJetIndex].Partons.append(tjp)
+            tjp.Parent.append(self.TopChildren[tjp.index])
 
         for jp in self.JetPartons:
             tjp = self.JetPartons[jp]
             tjp.Jet.append(self.Jets[tjp.JetIndex])
             self.Jets[tjp.JetIndex].Partons.append(tjp)
+            tjp.Parent.append(self.TopChildren[tjp.index])
 
         for i in self.TruthJets:
             for ti in self.TruthJets[i].index:
                 if ti == -1:
                     continue
                 self.Tops[ti].TruthJets.append(self.TruthJets[i])
+
 
         for i in self.Jets:
             for ti in self.Jets[i].index:
@@ -92,6 +95,7 @@ class Event(EventTemplate):
         self.Tops = list(self.Tops.values())
         self.TopChildren = list(self.TopChildren.values())
         self.Jets = list(self.Jets.values())
+        self.TruthJetPartons = list(self.TruthJetPartons.values())
         self.TruthJets = list(self.TruthJets.values())
         self.Electrons = list(self.Electrons.values())
         self.Muons = list(self.Muons.values())

@@ -118,12 +118,8 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
         self.__DumpCache(gr, self.output + "/DataCache/" + name + "/" + filedir[-1], True)
 
     def __GenerateEvents(self, InptMap, name):
-        if self.DumpHDF5 == True or self.DumpPickle == True:
-            dc = self.__SearchAssets("DataCache", name)
-            ec = self.__SearchAssets("EventCache", name)
-        else:
-            dc = False
-            ec = False
+        dc = self.__SearchAssets("DataCache", name)
+        ec = self.__SearchAssets("EventCache", name)
         
         for f in self.DictToList(InptMap):
             tmp = f.split("/")
@@ -207,7 +203,7 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
         Files += self.DictToList(self.ListFilesInDir({i : "*" for i in SampleDirectory}, ".pkl"))
         Files += self.DictToList(self.ListFilesInDir({i : "*" for i in SampleDirectory}, ".hdf5"))
         
-        if self.FoundCache(root, Files):
+        if self.FoundCache(root, Files) == False:
             return False
         
         if self.IsFile(self.output + "/Tracers/" + Name + ".pkl") == False:
