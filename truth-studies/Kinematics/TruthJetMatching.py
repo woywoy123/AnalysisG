@@ -29,11 +29,6 @@ def PlotTemplate(nevents, lumi):
     return Plots
 
 
-def GetConsistentModeColor(Hists):
-    Plt = CombineTH1F()
-    for i in Hists:
-        Plt.ApplyRandomColor(Hists[i])
-
 def TruthJetPartons(Ana):
     TopTruthJetPartons = copy(CounterPDGID)
     PTFraction = { i : [] for i in CounterPDGID}
@@ -166,3 +161,103 @@ def PartonToChildTruthJet(Ana):
     Plots["xBinCentering"] = True
     x = TH1F(**Plots) 
     x.SaveFigure()
+
+def ReconstructedTopMassTruthJet(Ana):
+    TopMassPartons = {"Had" : [], "Lep" : []} 
+    TopMassTruthJet = {"Had" : [], "Lep" : []} 
+    ResonanceMass = {"Had-Had" : [], "Had-Lep" : [], "Lep-Lep" : []}
+
+    nevents = 0
+    lumi = 0
+
+    resLost = 0
+    resTopsLost = 0
+    n_resTops = 0
+
+    specTopsLost = 0
+    n_specTops = 0
+    
+    TopsLost = 0
+    ntops = 0
+
+    for ev in Ana:
+        event = ev.Trees["nominal"]
+        nevents += 1
+        lumi += event.Lumi
+
+        stringR = {"Had" : [], "Lep" : []}
+        for t in event.Tops:
+
+            lp = "Lep" if sum([1 for c in t.Children if abs(c.pdgid) in _leptons]) > 0 else "Had"
+           
+            topTJ = [x for x in t.TruthJets]
+            topTJ += [c for c in t.Children if abs(c.pdgid) in _leptons]
+
+            topTJ = sum(topTJ)
+           
+            n_resTops += 1 if t.FromRes else 0
+            n_specTops += 0 if t.FromRes else 1
+            
+            ntops += 1
+            if topTJ == 0:
+                TopsLost += 1
+                resTopsLost += 1 if t.FromRes else 0 
+                specTopsLost += 0 if t.FromRes else 1
+                continue
+            
+            TopMassTruthJet[lp].append(topTJ.CalculateMass())
+            if t.FromRes == 1:
+                stringR[lp].append(topTJ)
+ 
+        res = sum([t for l in stringR for t in stringR[l]])
+        if len([t for l in stringR for t in stringR[l]]) < 2:
+            resLost += 1
+            continue
+        ResonanceMass["-".join([k for k in stringR for p in stringR[k]])] += [res.CalculateMass()]
+
+
+    Plots = PlotTemplate(nevents, lumi)
+    Plots["Title"] = "Reconstructed Invariant Top Mass from Truth Jets \n (For Leptonic the Neutrinos are Included)"
+    Plots["xTitle"] = "Invariant Mass (GeV)"
+    Plots["xBins"] = 200
+    Plots["xMax"] = 800
+    Plots["Filename"] = "Figure_3.1f"
+    Plots["Histograms"] = []
+    for i in TopMassTruthJet:
+        _Plots = {}
+        _Plots["Title"] = i
+        _Plots["xData"] = TopMassTruthJet[i]
+        Plots["Histograms"].append(TH1F(**_Plots))
+    x = CombineTH1F(**Plots) 
+    x.SaveFigure()
+
+    Plots = PlotTemplate(nevents, lumi)
+    Plots["Title"] = "Reconstructed Invariant Scalar H Mass from Truth Jets\n (For Leptonic the Neutrinos are Included)"
+    Plots["xTitle"] = "Invariant Mass (GeV)"
+    Plots["xStep"] = 100
+    Plots["xMax"] = 2000
+    Plots["xScaling"] = 2.5
+    Plots["Filename"] = "Figure_3.1g"
+    Plots["Histograms"] = []
+    Plots["Stack"] = True
+    for i in ResonanceMass:
+        _Plots = {}
+        _Plots["Title"] = i
+        _Plots["xData"] = ResonanceMass[i]
+        Plots["Histograms"].append(TH1F(**_Plots))
+    x = CombineTH1F(**Plots) 
+    x.SaveFigure()
+
+    print("(Max Efficiency - Resonance Reconstruction) - " +  str(round(float(1 - float(resLost)/nevents)*100, 2)) + "%")
+    print("(Max Efficiency - Resonance Tops) - " + str(round(float(1 - float(resTopsLost)/n_resTops)*100, 2)) + "%")
+    print("(Max Efficiency - Spectator Tops) - " + str(round(float(1 - float(specTopsLost)/n_specTops)*100, 2)) + "%")
+    print("(Max Efficiency - Tops) - " + str(round(float(1 - float(TopsLost)/ntops)*100, 2)) + "%")
+    print("(Cross Section) - Resonance) - " + str(float((nevents - resLost)/lumi)*0.000001) + "fb")
+
+    return {"ResEff"  : float(1 - float(resLost)/nevents)*100, 
+            "ResTop"  : float(1 - float(resTopsLost)/n_resTops)*100, 
+            "SpecTop" : float(1 - float(specTopsLost)/n_specTops)*100, 
+            "Tops"    : float(1 - float(TopsLost)/ntops)*100, 
+            "x-sec"   : float((nevents - resLost)/lumi)*0.000001}
+
+
