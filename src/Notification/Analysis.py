@@ -87,7 +87,7 @@ class Analysis(Notification):
                 self.Success(string)
                 self.Success("!!" + "-"*len(string))
                 trig = False
-            self.Success("!!-> " + i)
+                self.Success("!!-> " + i)
     
     def CantGenerateTrainingSample(self):
         string = "Can't generate training sample, please choose either 'EventCache' or 'DataCache'"

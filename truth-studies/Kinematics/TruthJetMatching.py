@@ -36,5 +36,6 @@ def TruthJetPartons(Ana):
         event = ev.Trees["nominal"]
         nevents += 1
         lumi += event.Lumi
- 
-
+        
+        for t in tops:
+            print(t.TruthJets)

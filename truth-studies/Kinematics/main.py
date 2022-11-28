@@ -2,6 +2,7 @@ from AnalysisTopGNN.Generators import Analysis
 from AnalysisTopGNN.Events import Event
 from TruthTops import *
 from TopChildren import *
+from TruthJetMatching import * 
 
 direc = "/CERN/Samples/SingleLepton/Collections/MadGraphPythia8EvtGen_noallhad_ttH_tttt_m1000"
 Ana = Analysis()
@@ -43,7 +44,7 @@ Ana.Launch()
 #FractionPTChildren(Ana)
 
 # Figures 3.1: 
-
+TruthJetPartons(Ana)
 
 
 
