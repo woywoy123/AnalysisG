@@ -1,14 +1,29 @@
 from AnalysisTopGNN.Events import Event
 from AnalysisTopGNN.Events import EventGraphTruthTopChildren
+from AnalysisTopGNN.Events import EventGraphTruthJetLepton
 from AnalysisTopGNN.Submission import Condor
 from AnalysisTopGNN.Generators import Analysis
 from Templates.EventFeatureTemplate import ApplyFeatures
 from BasicBaseLineV3.BasicBaseLine import BasicBaseLineRecursion
 
+
+smplDir = "/nfs/dust/atlas/user/woywoy12/Sample/Dilepton/" #MadGraphPythia8EvtGen_noallhad_ttH_tttt_"
+Evnt = ["Small"]
+Mode = "TruthJets" # "TruthChildren"
+
+Sub = Condor()
+Sub.EventCache = True 
+Sub.DataCache = True 
+Sub.OutputDirectory = "./Results/"
+Sub.ProjectName = Mode + "Reconstruction"
+Sub.Tree = "nominal"
+Sub.VerboseLevel = 3
+#Sub.CondaEnv = "GNN"
+
 def EventGen():
     Ana = Analysis()
     Ana.Event = Event
-    Ana.Threads = 4
+    Ana.Threads = 12
     Ana.chnk = 100
     #Ana.EventStop = 100
     Ana.EventCache = True
@@ -18,10 +33,10 @@ def EventGen():
 
 def DataGen():
     Ana = Analysis()
-    Ana.Threads = 4
+    Ana.Threads = 12
     Ana.chnk = 100
-    Ana.EventGraph = EventGraphTruthTopChildren
-    Ana.EventStop = 100
+    Ana.EventGraph = EventGraphTruthJetLepton
+    #Ana.EventStop = 100
     Ana.DataCache = True
     Ana.DumpHDF5 = True
     Ana.DumpPickle = False
@@ -29,26 +44,15 @@ def DataGen():
 
 def Optimization():
     Ana = Analysis()
-    Ana.Threads = 2
+    Ana.Threads = 4
     Ana.chnk = 10
-    Ana.Epochs = 4
+    Ana.Epochs = 100
     Ana.kFolds = 10
     Ana.Device = "cuda"
     return Ana
 
-#smplDir = "/CERN/Samples/Processed/bsm4tops/"
-smplDir = "/nfs/dust/atlas/user/<...>/SmallSample/"
-
-Sub = Condor()
-Sub.EventCache = True 
-Sub.DataCache = True 
-Sub.OutputDirectory = "./Results/"
-Sub.ProjectName = "TopTruthChildrenReconstruction"
-Sub.Tree = "nominal"
-Sub.VerboseLevel = 3
 
 # ====== Event Generator ======= #
-Evnt = ["bsm-4-tops-mc16a", "bsm-4-tops-mc16d", "bsm-4-tops-mc16e"]
 for i in Evnt:
     A = EventGen()
     A.InputSample(i, smplDir + i.split("-")[-1])
@@ -56,7 +60,7 @@ for i in Evnt:
 
     D = DataGen()
     D.InputSample(i)
-    ApplyFeatures(D, "TruthChildren") 
+    ApplyFeatures(D, Mode) 
     Sub.AddJob(i + "_Data", D, "12GB", "1h", [i])
 
 # ======= Merge and Training Sample ======= #
@@ -156,7 +160,7 @@ def Evaluate(it, evl, Submit, num):
     evl.TrainingSampleName = "topsChildren"
     evl.DataCache = True
     evl.EvaluateModel(direc, BasicBaseLineRecursion(), btch["BATCH" + it])
-    Submit.AddJob(mrk, evl, "12GB", "1h", ["MRK"+it])
+    Submit.AddJob(mrk, evl, waitfor = ["MRK"+it])
     return [mrk]
 
 evlmod = Analysis()
@@ -180,7 +184,7 @@ for i in range(len(Opt)):
     op.TrainingSampleName = "topsChildren"
     op.ContinueTraining = True
 
-    Sub.AddJob("MRK" + it, op, "12GB", "1h", ["Training"])
+    Sub.AddJob("MRK" + it, op, waitfor = ["Training"])
   
     direc = "./Results/" + Sub.ProjectName  + "/TrainedModels/BasicBaseLineRecursion_MRK" + it
     evlmod.EvaluateModel(direc, BasicBaseLineRecursion(), btch["BATCH" + it])
@@ -201,6 +205,6 @@ for i in range(len(Opt)):
     evl.PlotEntireSample = True
     wait += Evaluate(it, evl, Sub, 4)
 
-Sub.AddJob("Evaluator" , evlmod, "12GB", "1h", wait)
+Sub.AddJob("Evaluator" , evlmod, waitfor = wait)
 Sub.DumpCondorJobs()
 #Sub.LocalDryRun()
