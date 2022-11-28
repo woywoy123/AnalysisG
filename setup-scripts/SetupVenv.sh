@@ -15,13 +15,13 @@ pip3 install h5py
 pip3 install mplhep
 pip3 install -U scikit-learn
 
-pip3 install torch==1.8.1+cu111 torchvision==0.9.1+cu111 torchaudio==0.8.1 -f https://download.pytorch.org/whl/torch_stable.html
-pip3 install --no-index torch-scatter -f https://pytorch-geometric.com/whl/torch-1.8.1+cu111.html
-pip3 install --no-index torch-sparse -f https://pytorch-geometric.com/whl/torch-1.8.1+cu111.html
-pip3 install --no-index torch-cluster -f https://pytorch-geometric.com/whl/torch-1.8.1+cu111.html
-pip3 install --no-index torch-spline-conv -f https://pytorch-geometric.com/whl/torch-1.8.1+cu111.html
-pip3 install --no-index torch-geometric == 1.7.0
-
+pip3 install torch torchvision torchaudio #torch==1.8.1+cu111 torchvision==0.9.1+cu111 torchaudio==0.8.1 -f https://download.pytorch.org/whl/torch_stable.html
+ver=$(python -c "import torch; print(torch.__version__)")
+pip3 install torch-scatter -f https://pytorch-geometric.com/whl/torch-$ver.html
+pip3 install torch-sparse -f https://pytorch-geometric.com/whl/torch-$ver.html
+pip3 install torch-cluster -f https://pytorch-geometric.com/whl/torch-$ver.html
+pip3 install torch-spline-conv -f https://pytorch-geometric.com/whl/torch-$ver.html
+pip3 install torch-geometric
 pip3 install torchmetrics
 
 
