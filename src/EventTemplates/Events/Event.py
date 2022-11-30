@@ -68,13 +68,14 @@ class Event(EventTemplate):
                 if ti == -1:
                     continue
                 self.Tops[ti].TruthJets.append(self.TruthJets[i])
-
+                self.TruthJets[i].Tops.append(self.Tops[ti])
 
         for i in self.Jets:
             for ti in self.Jets[i].index:
                 if ti == -1:
                     continue
                 self.Tops[ti].Jets.append(self.Jets[i])
+                self.Jets[i].Tops.append(self.Tops[ti])
   
         maps = { i : self.TopChildren[i] for i in self.TopChildren if abs(self.TopChildren[i].pdgid) in [11, 13, 15] }
         

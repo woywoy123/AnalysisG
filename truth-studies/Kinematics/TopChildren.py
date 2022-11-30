@@ -83,7 +83,10 @@ def ReconstructedMassFromChildren(Ana):
                 stringR[lp].append(top)
         
         res = sum([t for l in stringR for t in stringR[l]])
-        ResonanceMass["-".join([k for k in stringR for p in stringR[k]])] += [res.CalculateMass()]
+        try: 
+            ResonanceMass["-".join([k for k in stringR for p in stringR[k]])] += [res.CalculateMass()]
+        except:
+            pass
 
     Plots = PlotTemplate(nevents, lumi)
     Plots["Title"] = "Reconstructed Invariant Top Mass from Immediate Decay Products"

@@ -7,6 +7,7 @@ import Submission
 import Modular 
 import Optimizer
 import RandomSampler
+import TestCython
 
 def Test(F, **kargs):
     import traceback
@@ -60,5 +61,5 @@ if __name__ == '__main__':
 
     # === Test Submission ==== #
     #Test(Submission.TestAnalysis, GeneralDir = RootDir)
-    Test(Submission.TestCondorDumping, GeneralDir = RootDir)
-
+    #Test(Submission.TestCondorDumping, GeneralDir = RootDir)
+    #Test(TestCython.Vector) 

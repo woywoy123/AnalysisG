@@ -1,7 +1,5 @@
 from .Manager import VariableManager
-import math
-import torch
-import LorentzVector
+from AnalysisTopGNN.Vectors import *
 
 class ParticleTemplate(VariableManager):
     def __init__(self):
@@ -11,17 +9,21 @@ class ParticleTemplate(VariableManager):
         self.Children = []
 
     def DeltaR(self, P):
-        return math.sqrt(math.pow(P.eta-self.eta, 2) + math.pow(P.phi-self.phi, 2)) 
+        return deltaR(P.eta, self.eta, P.phi, self.phi)
 
     def CalculateMass(self, lists = None, Name = "Mass"):
         if lists == None:
             lists = [self]
-        v = torch.zeros((1, 4))
+
+        v = [0, 0, 0, 0]
         for i in lists:
-            v += LorentzVector.ToPxPyPzE(i.pt, i.eta, i.phi, i.e, "cpu")
-        m = float(LorentzVector.MassFromPxPyPzE(v))
-        setattr(self, Name + "_MeV", m)
-        setattr(self, Name + "_GeV", m / 1000)
+            v[0] += Px(i.pt, i.phi)
+            v[1] += Py(i.pt, i.phi)
+            v[2] += Py(i.pt, i.eta)
+            v[3] += i.e
+        m = PxPyPzEMass(v[0], v[1], v[2], v[3])
+        self.__dict__[Name + "_MeV"] =  m
+        self.__dict__[Name + "_GeV"] = m / 1000
         return m/1000
     
     def __del__(self):
@@ -37,19 +39,43 @@ class ParticleTemplate(VariableManager):
 
     def __add__(self, other):
         
-        v = torch.zeros((1, 4))
-        v += LorentzVector.ToPxPyPzE(self.pt, self.eta, self.phi, self.e, "cpu")
-        v += LorentzVector.ToPxPyPzE(other.pt, other.eta, other.phi, other.e, "cpu") 
-        pmu = LorentzVector.TensorToPtEtaPhiE(v)
-        pmu = pmu.tolist()[0]
-        
+        x = Px(self.pt, self.phi) + Px(other.pt, other.phi)
+        y = Py(self.pt, self.phi) + Py(other.pt, other.phi)
+        z = Pz(self.pt, self.eta) + Pz(other.pt, other.eta)
+        e = self.e + other.e
+
         particle = ParticleTemplate() 
-        setattr(particle, "pt", pmu[0])
-        setattr(particle, "eta", pmu[1])
-        setattr(particle, "phi", pmu[2])
-        setattr(particle, "e", pmu[3])
+        particle.__dict__["pt"] = PT(x, y)
+        particle.__dict__["eta"] = Eta(x, y, z)
+        particle.__dict__["phi"] = Phi(x, y)
+        particle.__dict__["e"] = e
         particle.Children += self.Children
         particle.Children += [p for p in other.Children if p not in particle.Children]
         
         return particle
+    
+    def DecayLeptonically(self):
+        return True if sum([1 for k in self.Children if abs(k.pdgid) in [11, 12, 13, 14, 15, 16]]) > 0 else False
 
+    def __str__(self, caller = False):
+        PDGID = { 
+        1 : "d"        ,  2 : "u"             ,  3 : "s", 
+                 4 : "c"        ,  5 : "b"             , 11 : "e", 
+                 12 : "$\\nu_e$" , 13 : "$\mu$"         , 14 : "$\\nu_{\mu}$", 
+                 15 : "$\\tau$"  , 16 : "$\\nu_{\\tau}$", 21 : "g", 
+                 22 : "$\\gamma$"}
+        
+        string = ""
+        if "pdgid" in self.__dict__:
+            string += "pdgid: " + str(self.pdgid)
+            string += " Symbol " + PDGID[self.pdgid] + " "
+        string += "eta: " + str(self.eta)
+        string += "phi: " + str(self.phi)
+        string += "pt: " + str(self.pt)
+        
+        if caller:
+            return string
+
+        for i in self.Children:
+            string += " -> " + str(i, True)
+        return string

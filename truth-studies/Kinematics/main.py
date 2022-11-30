@@ -65,3 +65,4 @@ for Mode in Modes:
     
         os.makedirs("./" + Mode + "/" + massPoint, exist_ok = True)
         shutil.move("./Figures", "./" + Mode + "/" + massPoint)
+        exit()

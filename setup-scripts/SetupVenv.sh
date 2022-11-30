@@ -14,8 +14,9 @@ pip3 install uproot awkward
 pip3 install h5py
 pip3 install mplhep
 pip3 install -U scikit-learn
+pip3 install Cython
 
-pip3 install torch torchvision torchaudio #torch==1.8.1+cu111 torchvision==0.9.1+cu111 torchaudio==0.8.1 -f https://download.pytorch.org/whl/torch_stable.html
+pip3 install torch torchvision torchaudio 
 ver=$(python -c "import torch; print(torch.__version__)")
 pip3 install torch-scatter -f https://pytorch-geometric.com/whl/torch-$ver.html
 pip3 install torch-cluster -f https://pytorch-geometric.com/whl/torch-$ver.html
