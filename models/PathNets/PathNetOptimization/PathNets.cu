@@ -115,7 +115,7 @@ __device__ __forceinline__ void _CartSumMass(scalar_t* m_out,
 		const scalar_t* px, const scalar_t* py, 
 		const scalar_t* pz, const scalar_t* e)
 {
-	(*m_out) = (*e) - (*px) - (*py) - (*pz); 
+	(*m_out) = pow((*e), 2) - pow((*px), 2) - pow((*py), 2) - pow((*pz), 2); 
 	(*m_out) = sqrt(abs(*m_out)); 
 }
 
@@ -201,12 +201,12 @@ __global__ void _AggregateKernel(
 	const int indx = blockIdx.x*blockDim.x + threadIdx.x;
 	const int indy = blockIdx.y; 
 	const int indz = blockIdx.z;
-	const int index = indy*output.size(1) + indx;
-	if (index >= NodeIndex.size(0) || indz >= output.size(2)){ return; }
+	const int index = indy*output.size(0) + indx;
+	if (index >= NodeIndex.size(0) || indx >= output.size(0)){return;}
 	
 	scalar_t Node = NodeIndex[index][0]; 
-	if (!EdgeSelect[index][0]){ return; }
-	else if (!ConvertCart){ output[Node][indx][indz] = IncomingEdge[index][indz]; }
+	if (!EdgeSelect[index][0]){}
+	else if (!ConvertCart){ output[Node][indx][indz] += IncomingEdge[index][indz]; }
 	else if (indz == 0){ _pt_to_px(&(output[Node][indx][indz]), &(IncomingEdge[index][0]), &(IncomingEdge[index][2])); }
 	else if (indz == 1){ _pt_to_py(&(output[Node][indx][indz]), &(IncomingEdge[index][0]), &(IncomingEdge[index][2])); }
 	else if (indz == 2){ _pt_to_pz(&(output[Node][indx][indz]), &(IncomingEdge[index][0]), &(IncomingEdge[index][1])); }
