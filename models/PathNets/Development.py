@@ -25,5 +25,5 @@ if __name__ == "__main__":
     ApplyFeatures(Ana, "TruthChildren")
     Ana.Model = PathNetsBase()
     Ana.DebugMode = "accuracy-loss"
-    Ana.Optimizer = {"ADAM" : { "lr" : 0.0001, "weight_decay" : 0.001}}
+    Ana.Optimizer = {"ADAM" : { "lr" : 0.01, "weight_decay" : 0.001}}
     Ana.Launch()

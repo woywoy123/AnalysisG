@@ -1,7 +1,7 @@
 #include <torch/extension.h>
 
 // CUDA forward declaration 
-torch::Tensor ToPxPyPzE_CUDA(torch::Tensor FourVector);
+torch::Tensor Coordinate_CUDA(torch::Tensor FourVector, bool ToCartesian);
 torch::Tensor DeltaR_CUDA(torch::Tensor FourVector1, torch::Tensor FourVector2);
 torch::Tensor AggregateIncomingEdges_CUDA(torch::Tensor IncomingEdges, torch::Tensor NodeIndex, torch::Tensor EdgeSelect, bool ConvertCart);
 torch::Tensor Mass_CUDA(torch::Tensor); 
@@ -13,7 +13,13 @@ torch::Tensor Mass_CUDA(torch::Tensor);
 torch::Tensor ToPxPyPzE(torch::Tensor FourVector)
 {
 	CHECK_INPUT(FourVector); 
-	return ToPxPyPzE_CUDA(FourVector); 
+	return Coordinate_CUDA(FourVector, true); 
+}
+
+torch::Tensor ToPtEtaPhiE(torch::Tensor FourVector)
+{
+	CHECK_INPUT(FourVector); 
+	return Coordinate_CUDA(FourVector, false); 
 }
 
 torch::Tensor ToDeltaR(torch::Tensor FourVector1, torch::Tensor FourVector2)
@@ -41,6 +47,7 @@ torch::Tensor AggregateIncomingEdges(torch::Tensor IncomingEdges, torch::Tensor 
 PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
 {
 	m.def("ToPxPyPzE", &ToPxPyPzE, "To ToPxPyPzE");
+	m.def("ToPtEtaPhiE", &ToPtEtaPhiE, "To PtEtaPhiE"); 
 	m.def("ToDeltaR", &ToDeltaR, "To DeltaR");
 	m.def("Mass", &Mass, "Calculate Mass"); 
 	m.def("AggregateIncomingEdges", &AggregateIncomingEdges, "AggregateIncomingEdges"); 
