@@ -74,22 +74,32 @@ def ReconstructedMassFromChildren(Ana):
         lumi += event.Lumi
         
         stringR = {"Had" : [], "Lep" : []}
+        stringT = {"Had" : [], "Lep" : []}
+        stringTC = {"Had" : [], "Lep" : []}
         for t in event.Tops:
 
             lp = "Lep" if sum([1 for c in t.Children if abs(c.pdgid) in _leptons]) > 0 else "Had"
             top = sum(t.Children)
-            if top == 0:
+            if len(t.Children) == 0:
                 continue
 
             TopMass[lp].append(top.CalculateMass()) 
             if t.FromRes == 1:
+                stringT[lp].append(t)
                 stringR[lp].append(top)
+                stringTC[lp] += t.Children
         
-        res = sum([t for l in stringR for t in stringR[l]])
-        try: 
-            ResonanceMass["-".join([k for k in stringR for p in stringR[k]])] += [res.CalculateMass()]
-        except:
-            pass
+        res = [t for l in stringR for t in stringR[l]]
+        reT = [t for l in stringT for t in stringT[l]]
+        if len(res) != 2:
+            continue
+
+        print("-> ", (reT[0] + reT[1]).CalculateMass())
+        print((res[0] + res[1]).CalculateMass())
+        print([t.FromRes for l in stringTC for t in stringTC[l]])
+        print(sum([t for l in stringR for t in stringR[l]]).CalculateMass())
+        
+        ResonanceMass["-".join([k for k in stringR for p in stringR[k]])] += [sum(res).CalculateMass()]
 
     Plots = PlotTemplate(nevents, lumi)
     Plots["Title"] = "Reconstructed Invariant Top Mass from Immediate Decay Products"
@@ -112,7 +122,9 @@ def ReconstructedMassFromChildren(Ana):
     Plots = PlotTemplate(nevents, lumi)
     Plots["Title"] = "Reconstructed Invariant Scalar H Mass from Top Decay Products"
     Plots["xTitle"] = "Invariant Scalar H Mass (GeV)"
-    Plots["xStep"] = 100
+    Plots["xBins"] = 1000
+    Plots["xMin"] = 0
+    Plots["xMax"] = 2000
     Plots["Filename"] = "Figure_2.1c"
     Plots["Histograms"] = []
 
