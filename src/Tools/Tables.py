@@ -1,5 +1,6 @@
 from .String import String 
 from .General import Tools
+
 class Tables(Tools):
     
     def __init__(self):
@@ -68,6 +69,8 @@ class Tables(Tools):
                 out_n[row] = s  
                 all_s += s
             for row in out_n:
+                if all_s == 0:
+                    all_s = 1
                 out_n[row] = str(round(100*float(out_n[row] / all_s), 4))
             return out_s, out_n
 
