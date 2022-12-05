@@ -4,7 +4,7 @@ from LorentzVector import *
 
 class ParticleTemplate(VariableManager):
     def __init__(self):
-        self.Index = -1
+        self.index = -1
         VariableManager.__init__(self)
         self.Parent = []
         self.Children = []
@@ -34,7 +34,12 @@ class ParticleTemplate(VariableManager):
        
     def __radd__(self, other):
         if other == 0:
-            return self
+            p = ParticleTemplate()
+            p.__dict__["pt"] = self.pt
+            p.__dict__["eta"] = self.eta
+            p.__dict__["phi"] = self.phi
+            p.__dict__["e"] = self.e
+            return p
         else:
             return self.__add__(other)
 
