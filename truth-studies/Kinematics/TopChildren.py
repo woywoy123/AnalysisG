@@ -1,5 +1,7 @@
 from AnalysisTopGNN.Plotting import TH1F, CombineTH1F, TH2F
 from copy import copy
+import torch
+from LorentzVector import *
 
 PDGID = { 1 : "d"        ,  2 : "u"             ,  3 : "s", 
           4 : "c"        ,  5 : "b"             , 11 : "e", 
@@ -46,8 +48,8 @@ def TopChildrenPDGID(Ana):
                 TopChildrenPDGID[pdg] += 1
      
     Plots = PlotTemplate(nevents, lumi)
-    Plots["Title"] = "Fermionic Decay Products of Tops" 
-    Plots["xTitle"] = "Fermion Symbol"
+    Plots["Title"] = "Decay Products of Tops" 
+    Plots["xTitle"] = "Symbol"
     Plots["xData"] = [i for i in range(len(TopChildrenPDGID))]
     Plots["xTickLabels"] = list(TopChildrenPDGID)
     Plots["xBinCentering"] = True 
@@ -78,6 +80,7 @@ def ReconstructedMassFromChildren(Ana):
             top = sum(t.Children)
             if top == 0:
                 continue
+
             TopMass[lp].append(top.CalculateMass()) 
             if t.FromRes == 1:
                 stringR[lp].append(top)
@@ -91,7 +94,9 @@ def ReconstructedMassFromChildren(Ana):
     Plots = PlotTemplate(nevents, lumi)
     Plots["Title"] = "Reconstructed Invariant Top Mass from Immediate Decay Products"
     Plots["xTitle"] = "Invariant Top Mass (GeV)"
-    Plots["xStep"] = 10
+    Plots["xBins"] = 1000
+    Plots["xMin"] = 0
+    Plots["xMax"] = 300
     Plots["Filename"] = "Figure_2.1b"
     Plots["Histograms"] = []
 
