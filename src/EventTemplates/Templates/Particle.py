@@ -23,9 +23,9 @@ class ParticleTemplate(VariableManager):
         for i in lists:
             t1 += ToPxPyPzE(i.pt, i.eta, i.phi, i.e, "cpu")
         m = MassFromPxPyPzE(t1).tolist()[0][0]
-        self.__dict__[Name + "_MeV"] =  m
-        self.__dict__[Name + "_GeV"] = m / 1000
-        return m/1000
+        self.__dict__[Name + "_MeV"] =  float(m)
+        self.__dict__[Name + "_GeV"] = float(m / 1000)
+        return float(m/1000)
     
     def __del__(self):
         for i in self.__dict__:

@@ -12,20 +12,20 @@ Modes = ["SingleLepton"] #, "Dilepton"]
 for Mode in Modes:
     for massPoint in massPoints:
         #direc = "/CERN/Samples/" + Mode + "/Collections/ttH_tttt_m" + massPoint + "/DAOD_TOPQ1.21955717._000001.root"
-        direc = "/home/tnom6927/Downloads/ttH_tttt_m1000"
+        direc = "/home/tnom6927/Downloads/DAOD_TOPQ1.21955743._000003.root"
         Ana = Analysis()
         Ana.InputSample("tttt", direc)
         Ana.Event = Event
         #Ana.EventStop = 100
-        Ana.Threads = 3
+        Ana.Threads = 12
         Ana.chnk = 1000
         Ana.EventCache = True
-        Ana.DumpPickle = False
+        Ana.DumpPickle = True
         Ana.Launch()
         
         ## ------ Top Centric Plots ----- # 
         ## Figures 1.1: "a" and "b"
-        ResonanceDecayModes(Ana)
+        #ResonanceDecayModes(Ana)
         #
         ## Figures 1.1: "c"
         #ResonanceMassFromTops(Ana)
@@ -40,8 +40,8 @@ for Mode in Modes:
         ## Figures 2.1:  "a"
         #TopChildrenPDGID(Ana)
         
-        # Figures 2.1: "b" and "c"
-        ReconstructedMassFromChildren(Ana)
+        ## Figures 2.1: "b" and "c"
+        #ReconstructedMassFromChildren(Ana)
         
         ## Figures 2.1: "d", "e", "f", "g" 
         #DeltaRChildren(Ana)
@@ -49,6 +49,10 @@ for Mode in Modes:
         ## Figures 2.1: "g"
         #FractionPTChildren(Ana)
         #
+
+        # Figures 2.1: "f":
+        MassDiff(Ana)
+
         ## ------ Truth Jet Centric Plots ----- # 
         ## Figures 3.1: "a" - "d"
         #TruthJetPartons(Ana)
