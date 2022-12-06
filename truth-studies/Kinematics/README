@@ -25,6 +25,7 @@ d: DeltaR between children of mutual top (this tests how well the children are c
 e: DeltaR between children and mutual top (tests how much children cluster around the parent top) - Split into leptonic and hadronic
 f: DeltaR between adjacent children as a function of parent top PT (we can use this information to see if the resulting jets are possibly merged or produce large-R jets)
 g: Fractional Top PT distribution transferred to children - Split by PDGID
+f: Invariant mass calculation difference between using Cython and PyTorch
 
 -> Figure 3.1:
 a: PDGID of Truth Jet parton contributions - These are derived from the GhostPartons that define the truth jet
@@ -39,14 +40,12 @@ e: Inefficiency of truth jet parton matching based on truth child PDGID (This is
 f: Reconstructed Invariant Top Mass from Truth Jets - Split into Lepton (+ using the neutrino from truth children - Just to double check that the jets are consistent) and hadronic
 g: Z-Prime from Had-Had, Had-Lep, Lep-Lep (again including neutrino)
 
+h: Counting merged truth jets from Signal and Spectator tops. 
+i: DeltaR Distribution between truth jets originating from the same truth top. This assumed NO Truth Jets shared different tops.
+j: DeltaR Distribution between truth jets originating from different truth tops. This assumed NO Truth Jets shared different tops.
+
+
 #-----\/ --- needs reworking
-
--> Figure 3.1: Truth Jets 
-d: DeltaR between truth-jets from common top (This is to test the collimation of the truth jets).
-e: DeltaR between top truth jet and background truth jet
-f: DeltaR between top truth jets of non-mutual top (checks the combinatorial of truth jets i.e. how far away are truth jets from one top to the other)
-h: Number of shared truth jets across different tops - i.e. are the truth jets going to be merged.
-
 -> Figure 4: (x) Not Complete yet.... Jets
 +Do as above but add deltaR between jet and truth jet 
 

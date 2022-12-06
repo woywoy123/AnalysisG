@@ -2,6 +2,7 @@ from AnalysisTopGNN.Plotting import TH1F, CombineTH1F, TH2F
 from copy import copy
 import torch
 from LorentzVector import *
+from AnalysisTopGNN.Vectors import *
 
 PDGID = { 1 : "d"        ,  2 : "u"             ,  3 : "s", 
           4 : "c"        ,  5 : "b"             , 11 : "e", 
@@ -67,7 +68,6 @@ def ReconstructedMassFromChildren(Ana):
 
     nevents = 0
     lumi = 0
-    tops = 0
     for ev in Ana:
         event = ev.Trees["nominal"]
         nevents += 1
@@ -143,10 +143,8 @@ def DeltaRChildren(Ana):
     TopChildrenCluster = {"Had" : [], "Lep" : []}
     ChildrenClusterPT = {"DelR" : [], "PT" : []} 
 
-
     nevents = 0
     lumi = 0
-    tops = 0
     for ev in Ana:
         event = ev.Trees["nominal"]
         nevents += 1
@@ -221,7 +219,6 @@ def FractionPTChildren(Ana):
     FractionID = {ID : [] for ID in CounterPDGID}
     nevents = 0
     lumi = 0
-    tops = 0
     for ev in Ana:
         event = ev.Trees["nominal"]
         nevents += 1
@@ -250,7 +247,47 @@ def FractionPTChildren(Ana):
     X.SaveFigure()
 
 
+def MassDiff(Ana):
+    Fr = {"Cython" : [], "PyTorch" : [], "TruthTop" : []}
+    nevents = 0
+    lumi = 0
+    for ev in Ana:
+        event = ev.Trees["nominal"]
+        nevents += 1
+        lumi += event.Lumi
+        for t in event.Tops:
+            if len(t.Children) == 0:
+                continue
 
+            Fr["TruthTop"].append(float(t.CalculateMass()))
+            Fr["PyTorch"].append(float(sum(t.Children).CalculateMass()))
+            tv = [0, 0, 0, 0]
+            for c in t.Children:
+                tv[0] += Px(c.pt, c.phi)
+                tv[1] += Py(c.pt, c.phi)
+                tv[2] += Pz(c.pt, c.eta)
+                tv[3] += c.e
+            mass = PxPyPzEMass(tv[0], tv[1], tv[2], tv[3])
+            Fr["Cython"].append(float(mass/1000))
+    Plots = PlotTemplate(nevents, lumi)
+    Plots["Title"] = "Top Mass Reconstruction Using Different Algorithms"
+    Plots["xTitle"] = "Mass (GeV)"
+    Plots["xBins"] =  1000
+    Plots["xMax"] = 200
+    Plots["xMin"] = 120
+    Plots["Stack"] = True
+    Plots["Filename"] = "Figure_2.1f"
+    Plots["Histograms"] = []
+        
+    for i in Fr:
+        _Plots = {}
+        _Plots["Title"] = i
+        _Plots["xData"] = Fr[i]
+        Plots["Histograms"] += [TH1F(**_Plots)]
+    X = CombineTH1F(**Plots)
+    X.Compile()
+    X.SaveFigure()
+   
 
 
 

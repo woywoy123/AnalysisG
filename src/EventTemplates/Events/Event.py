@@ -55,13 +55,9 @@ class Event(EventTemplate):
 
         for jp in self.TruthJetPartons:
             tjp = self.TruthJetPartons[jp]
-
             tjp.TruthJet.append(self.TruthJets[tjp.TruJetIndex])
             self.TruthJets[tjp.TruJetIndex].Partons.append(tjp)
-            try:
-                tjp.Parent.append(self.TopChildren[tjp.index])
-            except: 
-                print(self.TopChildren, tjp.index)
+            tjp.Parent.append(self.TopChildren[tjp.index])
 
         for i in self.Jets:
             for ti in self.Jets[i].index:
