@@ -4,7 +4,7 @@ class Particle(ParticleTemplate):
 
     def __init__(self):
         ParticleTemplate.__init__(self)
-        
+
         self.pt = self.Type + "_pt"
         self.eta = self.Type + "_eta"
         self.phi = self.Type + "_phi"
@@ -40,7 +40,7 @@ class TruthJet(Particle):
         self.Type = "truthjet"
         Particle.__init__(self)
         self.index = self.Type + "_TopIndex"
-        self.Partons = []
+        self.TruthJetPartons = []
         self.Tops = []
 
 class TruthJetPartons(Particle):
@@ -51,7 +51,7 @@ class TruthJetPartons(Particle):
         self.charge = self.Type + "_charge"
         self.pdgid = self.Type + "_pdgid"
         self.index = self.Type + "_ChildIndex"
-        self.TruJetIndex = self.Type + "_TruJetIndex"
+        self.TruthJetIndex = self.Type + "_TruJetIndex"
         self.TruthJet = []
         self.Tops = []
 
@@ -64,7 +64,7 @@ class Electron(Particle):
         self.index = []
 
 class Muon(Particle):
-    
+
     def __init__(self):
         self.Type = "mu"
         Particle.__init__(self)
@@ -77,7 +77,7 @@ class Jets(Particle):
         self.Type = "jet"
         Particle.__init__(self)
         self.index = self.Type + "_TopIndex"
-        self.Partons = []
+        self.JetPartons = []
         self.Tops = []
 
 class JetPartons(Particle):
@@ -90,5 +90,3 @@ class JetPartons(Particle):
         self.index = self.Type + "_ChildIndex"
         self.JetIndex = self.Type + "_JetIndex"
         self.Jet = []
-
-
