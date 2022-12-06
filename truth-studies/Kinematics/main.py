@@ -50,8 +50,8 @@ for Mode in Modes:
         #FractionPTChildren(Ana)
         #
 
-        # Figures 2.1: "f":
-        MassDiff(Ana)
+        ## Figures 2.1: "f":
+        #MassDiff(Ana)
 
         ## ------ Truth Jet Centric Plots ----- # 
         ## Figures 3.1: "a" - "d"
@@ -65,7 +65,17 @@ for Mode in Modes:
         #f = open(Mode + "_" + massPoint + ".txt", "w")
         #f.write("\n".join([i + "-" + str(eff[i]) for i in eff]))
         #f.close()
-    
+   
+        # Figures 3.1: 
+        DeltaRTruthJets(Ana) 
+
+
+
+
+
+
+
+
         #os.makedirs("./" + Mode + "/" + massPoint, exist_ok = True)
         #shutil.move("./Figures", "./" + Mode + "/" + massPoint)
         #exit()

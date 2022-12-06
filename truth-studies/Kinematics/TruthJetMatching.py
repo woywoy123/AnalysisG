@@ -260,4 +260,97 @@ def ReconstructedTopMassTruthJet(Ana):
             "Tops"    : float(1 - float(TopsLost)/ntops)*100, 
             "x-sec"   : float((nevents - resLost)/lumi)*0.000001}
 
+    
 
+def DeltaRTruthJets(Ana):
+    CounterMerged = {"Non-Merged" : 0, "Merged" : 0, "Spec-Merged" : 0, "Spec-Non-Merged" : 0, "Res-Merged" : 0, "Res-Non-Merged" : 0} 
+    DeltaRMutualTop = {"Signal" : [], "Spectator" : []}
+    DeltaRNonMutualTop = {"Sig-Sig" : [], "Spec-Spec" : [], "Sig-Spec" : [], "Spec-Sig" : []}
+
+    ntops = 0
+    nevents = 0
+    lumi = 0
+    for ev in Ana:
+        event = ev.Trees["nominal"]
+        nevents += 1
+        lumi += event.Lumi
+        ntops += len(event.Tops) 
+        
+        checkedtops = []
+        for t in event.Tops:
+            
+            # Check if any of the truth jets are merged (more than one top) if so, skip top
+            merged = True if len([1 for tj in t.TruthJets if len(tj.index) > 1]) > 0 else False
+            if merged:
+                CounterMerged["Merged"] += 1
+                CounterMerged["Res-Merged" if t.FromRes else "Spec-Merged"] += 1
+                continue 
+            CounterMerged["Non-Merged"] += 1 
+            CounterMerged["Res-Non-Merged" if t.FromRes else "Spec-Non-Merged"] += 1
+
+            checked = []
+            for tj in t.TruthJets:
+                for tj2 in t.TruthJets:
+                    if tj2 == tj or tj2 in checked:
+                        continue
+                    DeltaRMutualTop["Signal" if t.FromRes else "Spectator"].append(tj.DeltaR(tj2))
+                checked.append(tj)
+            
+            for t2 in event.Tops:
+                if t2 == t or t2 in checkedtops:
+                    continue
+
+                stn = "Sig" if t.FromRes else "Spec"
+                stn += "-"
+                stn += "Sig" if t2.FromRes else "Spec"
+
+                DeltaRNonMutualTop[stn] += [tj1.DeltaR(tj2) for tj1 in t.TruthJets for tj2 in t2.TruthJets]
+            checkedtops.append(t) 
+            
+    DeltaRNonMutualTop["Sig-Spec"] += DeltaRNonMutualTop["Spec-Sig"] 
+    del DeltaRNonMutualTop["Spec-Sig"]
+
+    Plots = PlotTemplate(nevents, lumi)
+    Plots["Title"] = "Counter of Merged and non-Merged Truth Jets\n Segmented into Spectator and Signal Tops"
+    Plots["xData"] = [i for i in range(len(CounterMerged))]
+    Plots["xWeights"] = [float(i/ntops)*100 for i in CounterMerged.values()]
+    Plots["xTickLabels"] = [i for i in CounterMerged]
+    Plots["xBinCentering"] = True 
+    Plots["xStep"] = 1
+    Plots["Filename"] = "Figure_3.1h"
+    Plots["yTitle"] = "Percentage of Sampled Events (%)"
+    x = TH1F(**Plots)
+    x.SaveFigure() 
+
+    Plots = PlotTemplate(nevents, lumi)
+    Plots["Title"] = "$\Delta$R Between Adjacent Truth Jets Originating from Same \n Signal and Spectator Tops (Considering only non-Merged Truth Jets)"
+    Plots["Histograms"] = []
+    Plots["xStep"] = 0.4
+    Plots["xMin"] = 0
+    Plots["xTitle"] = "$\Delta$Delta"
+    Plots["Filename"] = "Figure_3.1i"
+    
+    for i in DeltaRMutualTop:
+        _Plots = {}
+        _Plots["Title"] = i
+        _Plots["xData"] = DeltaRMutualTop[i]
+        Plots["Histograms"].append(TH1F(**_Plots))
+    x = CombineTH1F(**Plots) 
+    x.SaveFigure()
+
+
+    Plots = PlotTemplate(nevents, lumi)
+    Plots["Title"] = "$\Delta$R Between Adjacent Truth Jets Originating from Different \n Truth Tops (Considering only non-Merged Truth Jets)"
+    Plots["Histograms"] = []
+    Plots["xStep"] = 0.4
+    Plots["xMin"] = 0
+    Plots["xTitle"] = "$\Delta$Delta"
+    Plots["Filename"] = "Figure_3.1j"
+    
+    for i in DeltaRNonMutualTop:
+        _Plots = {}
+        _Plots["Title"] = i
+        _Plots["xData"] = DeltaRNonMutualTop[i]
+        Plots["Histograms"].append(TH1F(**_Plots))
+    x = CombineTH1F(**Plots) 
+    x.SaveFigure()
