@@ -23,24 +23,50 @@ __device__ __forceinline__ void _pt_to_pz(scalar_t* _pz, const scalar_t* _pt, co
 	(*_pz) = (*_pt)*sinh((*_eta)); 
 }
 
+template <typename scalar_t> 
+__device__ __forceinline__ void _pxpy_to_pt(scalar_t* _pt, const scalar_t* _px, const scalar_t* _py)
+{
+	(*_pt) = sqrt( pow((*_px), 2) + pow((*_py), 2) ); 
+}
+
+template <typename scalar_t> 
+__device__ __forceinline__ void _pxpy_to_phi(scalar_t* _phi, const scalar_t* _px, const scalar_t* _py)
+{
+	(*_phi) = atan2((*_py), (*_px));
+}
+
+template <typename scalar_t> 
+__device__ __forceinline__ void _pxpypz_to_eta(scalar_t* _eta, const scalar_t* _px, const scalar_t* _py, const scalar_t* _pz)
+{
+	_pxpy_to_pt(_eta, _px, _py);
+	(*_eta) = asinh((*_pz)/(*_eta)); 
+}
+
 template <typename scalar_t>
-__global__ void PtEtaPhiEPxPyPzEKernel(
+__global__ void CoordinateKernel(
 		const torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> FourVec,
-		torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> output)
+		torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> output, 
+		const bool Cartesian)
 {
 	
 	const int indx = blockIdx.x*blockDim.x + threadIdx.x; 
 	const int comp = blockIdx.y; 
 	if (indx >= output.size(0) || comp >= output.size(1)){return;}
 	
-	if (comp == 0){ _pt_to_px(&(output[indx][0]), &(FourVec[indx][0]), &(FourVec[indx][2])); }
-	else if (comp == 1){ _pt_to_py(&(output[indx][1]), &(FourVec[indx][0]), &(FourVec[indx][2])); }
-	else if (comp == 2){ _pt_to_pz(&(output[indx][2]), &(FourVec[indx][0]), &(FourVec[indx][1])); }
-	else if (comp == 3){ output[indx][3] = FourVec[indx][3]; }
+	if (comp == 3){ output[indx][comp] = FourVec[indx][comp]; return; }		
+	if (Cartesian)
+	{
+		if (comp == 0){ _pt_to_px(&(output[indx][comp]), &(FourVec[indx][0]), &(FourVec[indx][2])); return; }
+		if (comp == 1){ _pt_to_py(&(output[indx][comp]), &(FourVec[indx][0]), &(FourVec[indx][2])); return; }
+		if (comp == 2){ _pt_to_pz(&(output[indx][comp]), &(FourVec[indx][0]), &(FourVec[indx][1])); return; }
+	}
+	if (comp == 0){ _pxpy_to_pt(&(output[indx][comp]), &(FourVec[indx][0]), &(FourVec[indx][1])); return; }
+	if (comp == 1){ _pxpypz_to_eta(&(output[indx][comp]), &(FourVec[indx][0]), &(FourVec[indx][1]), &(FourVec[indx][2])); return; }
+	if (comp == 2){ _pxpy_to_phi(&(output[indx][comp]), &(FourVec[indx][0]), &(FourVec[indx][1])); return; }
 
 }
 
-torch::Tensor ToPxPyPzE_CUDA(torch::Tensor FourVector)
+torch::Tensor Coordinate_CUDA(torch::Tensor FourVector, const bool ToCartesian)
 {
 	const int l = FourVector.size(0);
 	const int threads = 1024; 
@@ -50,11 +76,12 @@ torch::Tensor ToPxPyPzE_CUDA(torch::Tensor FourVector)
 	FourVector = FourVector.to(opt); 
 	torch::Tensor output = torch::zeros({l, 4}, opt);
 	
-	AT_DISPATCH_FLOATING_TYPES(torch::kFloat, "PtEtaPhiEPxPyPzEKernel", ([&]
+	AT_DISPATCH_FLOATING_TYPES(torch::kFloat, "CoordinateKernel", ([&]
 	{
-		PtEtaPhiEPxPyPzEKernel<scalar_t><<<blocks, threads>>>(
+		CoordinateKernel<scalar_t><<<blocks, threads>>>(
 				FourVector.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
-				output.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>()
+				output.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				ToCartesian
 		);
 	})); 
 
@@ -115,8 +142,7 @@ __device__ __forceinline__ void _CartSumMass(scalar_t* m_out,
 		const scalar_t* px, const scalar_t* py, 
 		const scalar_t* pz, const scalar_t* e)
 {
-	(*m_out) = (*e) - (*px) - (*py) - (*pz); 
-	(*m_out) = sqrt(abs(*m_out)); 
+	(*m_out) = sqrt(abs(pow((*e), 2) - pow((*px), 2) - pow((*py), 2) - pow((*pz), 2))); 
 }
 
 template <typename scalar_t>
@@ -201,12 +227,12 @@ __global__ void _AggregateKernel(
 	const int indx = blockIdx.x*blockDim.x + threadIdx.x;
 	const int indy = blockIdx.y; 
 	const int indz = blockIdx.z;
-	const int index = indy*output.size(1) + indx;
-	if (index >= NodeIndex.size(0) || indz >= output.size(2)){ return; }
+	const int index = indy*output.size(0) + indx;
+	if (index >= NodeIndex.size(0) || indx >= output.size(0)){return;}
 	
 	scalar_t Node = NodeIndex[index][0]; 
-	if (!EdgeSelect[index][0]){ return; }
-	else if (!ConvertCart){ output[Node][indx][indz] = IncomingEdge[index][indz]; }
+	if (!EdgeSelect[index][0]){}
+	else if (!ConvertCart){ output[Node][indx][indz] += IncomingEdge[index][indz]; }
 	else if (indz == 0){ _pt_to_px(&(output[Node][indx][indz]), &(IncomingEdge[index][0]), &(IncomingEdge[index][2])); }
 	else if (indz == 1){ _pt_to_py(&(output[Node][indx][indz]), &(IncomingEdge[index][0]), &(IncomingEdge[index][2])); }
 	else if (indz == 2){ _pt_to_pz(&(output[Node][indx][indz]), &(IncomingEdge[index][0]), &(IncomingEdge[index][1])); }

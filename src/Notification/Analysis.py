@@ -19,8 +19,10 @@ class Analysis(Notification):
         if self.Event == None:
             return 
         Event = self.CopyInstance(self.Event)
+
         if Event._CommitHash:
-            msg = ">> Identified commit of Event Implementation: " + Event._CommitHash + " <<" + " (Deprecated)" if Event._Deprecated else ""
+            msg = "!!>> Identified commit of Event Implementation: " + Event._CommitHash
+            msg += " <<" + " (Deprecated)" if Event._Deprecated else ""
             self.Success("-"*len(msg))
             self.Success(msg) 
             self.Success("-"*len(msg))
@@ -50,11 +52,11 @@ class Analysis(Notification):
     def FoundCache(self, Directory, Files):
         if len(Files) == 0:
             self.Warning("No cache was found under " + Directory)
-            return True
-        return False
+            return False
+        return True
     
     def MissingTracer(self, Directory):
-        self.Failure("Tracer not found under: " + Directory + " skipping...")
+        self.Warning("Tracer not found under: " + Directory + " please enable either 'DumpPickle' or 'DumpHDF5'")
 
     def NoEventImplementation(self):
         ex = "Or do: from AnalysisTopGNN.Events import Event"

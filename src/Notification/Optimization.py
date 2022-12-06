@@ -1,5 +1,5 @@
 from .Notification import Notification
-from AnalysisTopGNN.Tools import Tables
+from AnalysisTopGNN.Tools.Tables import Tables
 
 class Optimization(Notification):
 

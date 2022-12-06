@@ -40,7 +40,7 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
             self._SampleMap[Name] |= self.ListFilesInDir(SampleDirectory, ".root")
             return 
         self._SampleMap[Name] |= self.ListFilesInDir({i : "*" for i in SampleDirectory}, ".root")
-   
+
     def EvaluateModel(self, Directory, ModelInstance = None, BatchSize = None):
         
         Directory = self.abs(self.AddTrailing(Directory, "/"))
@@ -99,7 +99,7 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
         
         if self.EventCache == False:
             return 
-        self.__DumpCache(ev, self.output + "/EventCache/" + name + "/" + filedir[-1].split(".")[0], False)
+        self.__DumpCache(ev, self.output + "/EventCache/" + name + "/" + filedir[-1], False)
             
     def __GraphGenerator(self, name, filedir):
         if self.EventGraph == None:
@@ -115,15 +115,11 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
 
         if self.DataCache == False:
             return 
-        self.__DumpCache(gr, self.output + "/DataCache/" + name + "/" + filedir[-1].split(".")[0], True)
+        self.__DumpCache(gr, self.output + "/DataCache/" + name + "/" + filedir[-1], True)
 
     def __GenerateEvents(self, InptMap, name):
-        if self.DumpHDF5 == True or self.DumpPickle == True:
-            dc = self.__SearchAssets("DataCache", name)
-            ec = self.__SearchAssets("EventCache", name)
-        else:
-            dc = False
-            ec = False
+        dc = self.__SearchAssets("DataCache", name)
+        ec = self.__SearchAssets("EventCache", name)
         
         for f in self.DictToList(InptMap):
             tmp = f.split("/")
@@ -159,7 +155,10 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
             for i in smpl:
                 obj = self[i]
                 obj.Train = status
+        
         self.EmptySampleList()
+        if self.TrainingSampleName == False:
+            return 
         if self.Training == False:
             self.CheckPercentage()
             inpt = {i.Filename : i for i in self}
@@ -168,8 +167,9 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
             hashes["train_hashes"] = {hsh : self.HashToROOT(hsh) for hsh in hashes["train_hashes"]}
             hashes["test_hashes"] = {hsh : self.HashToROOT(hsh) for hsh in hashes["test_hashes"]}
             hashes["SampleMap"] = self._SampleMap
-        
-            PickleObject(hashes, self.ProjectName + "/Tracers/TrainingSample/" + self.TrainingSampleName)
+
+            Name = self.TrainingSampleName if self.TrainingSampleName else "UNTITLED"
+            PickleObject(hashes, self.output + "/Tracers/TrainingSample/" + Name)
             self.Training = hashes
         MarkSample(self.Training["train_hashes"], True)
         MarkSample(self.Training["test_hashes"], False)
@@ -177,7 +177,6 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
     def __Optimization(self):
         if self.Model == None:
             return
-
         op = Optimization()
         op += self
         op.RestoreSettings(self.DumpSettings())
@@ -197,13 +196,14 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
             for i in Name:
                 self.__SearchAssets(CacheType, i)
             return 
+
         root = self.output + "/" + CacheType + "/" + Name + "/"
         SampleDirectory = [root + "/" + i for i in self.ls(root)]
         Files = []
         Files += self.DictToList(self.ListFilesInDir({i : "*" for i in SampleDirectory}, ".pkl"))
         Files += self.DictToList(self.ListFilesInDir({i : "*" for i in SampleDirectory}, ".hdf5"))
         
-        if self.FoundCache(root, Files):
+        if self.FoundCache(root, Files) == False:
             return False
         
         if self.IsFile(self.output + "/Tracers/" + Name + ".pkl") == False:
@@ -240,7 +240,7 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
        
         self.Training = False
         if self.TrainingSampleName:
-            fDir = self.ProjectName + "/Tracers/TrainingSample/" + self.TrainingSampleName + ".pkl" 
+            fDir = self.output + "/Tracers/TrainingSample/" + self.TrainingSampleName + ".pkl" 
             self.Training = UnpickleObject(fDir) if self.IsFile(fDir) else False
             self._SampleMap = self.Training["SampleMap"] if self.Training else self._SampleMap
 
@@ -251,7 +251,7 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
         self.EventImplementationCommit() 
         
         for i in self._SampleMap:
-            if self.TrainingSampleName and (self.Event == None and self.EventGraph == None):
+            if self.TrainingSampleName or (self.Event == None and self.EventGraph == None) or self.FeatureTest:
                 search = "EventCache" if self.EventCache else False
                 search = "DataCache" if self.DataCache else search
                 if search == False: 

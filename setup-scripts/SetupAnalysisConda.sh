@@ -18,6 +18,6 @@ pip install networkx[all]
 pip install uproot awkward
 pip install h5py
 pip install mplhep
-
+pip install Cython
 
 

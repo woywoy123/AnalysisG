@@ -13,7 +13,6 @@ class Optimization(Optimization_, Settings, SampleTracer, Tools, RandomSamplers)
         SampleTracer.__init__(self)
         self._Samples = {}
 
-   
     def __MakeSample(self):
         for smpl in self:
             key = "All"
@@ -73,7 +72,7 @@ class Optimization(Optimization_, Settings, SampleTracer, Tools, RandomSamplers)
     def Train(self):
         for epoch in range(self.Epochs):
             self.ShowEpoch(epoch, self.Epochs)
-            outputDir = self.ProjectName + "/TrainedModels/" + self.RunName + "/Epoch-"+ str(epoch)
+            outputDir = self.OutputDirectory + "/" + self.ProjectName + "/TrainedModels/" + self.RunName + "/Epoch-"+ str(epoch)
             
             if self.IsFile(outputDir + "/TorchSave.pth") and self.ContinueTraining:
                 self.Optimizer.LoadState(outputDir)
@@ -86,7 +85,7 @@ class Optimization(Optimization_, Settings, SampleTracer, Tools, RandomSamplers)
             self._EpochObj.ModelOutputs += list(self.Model.GetModelOutputs())
             self._EpochObj.MakeDictionary("Train")
             self._EpochObj.MakeDictionary("Validation")
-            self._EpochObj.OutDir = self.ProjectName + "/TrainedModels/" + self.RunName
+            self._EpochObj.OutDir = self.OutputDirectory + "/" + self.ProjectName + "/TrainedModels/" + self.RunName
             
             for nodes in self._Samples:
                 self.TrainingNodes(nodes)
@@ -106,7 +105,7 @@ class Optimization(Optimization_, Settings, SampleTracer, Tools, RandomSamplers)
         self.Model = self.CopyInstance(self.Model)
         if self._dump:
             return 
-
+        
         self.__MakeSample()
         self.CheckGivenSample(self._Samples)
 

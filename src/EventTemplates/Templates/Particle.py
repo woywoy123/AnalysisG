@@ -1,28 +1,31 @@
-from .Manager import VariableManager
-import math
 import torch
-import LorentzVector
+from .Manager import VariableManager
+from LorentzVector import *
 
 class ParticleTemplate(VariableManager):
     def __init__(self):
-        self.Index = -1
+        self.index = -1
         VariableManager.__init__(self)
         self.Parent = []
         self.Children = []
 
     def DeltaR(self, P):
-        return math.sqrt(math.pow(P.eta-self.eta, 2) + math.pow(P.phi-self.phi, 2)) 
+        t1 = torch.tensor([[P.pt, P.eta, P.phi, P.e]])
+        t2 = torch.tensor([[self.pt, self.eta, self.phi, self.e]])
+        dr = TensorDeltaR(t1, t2).tolist()[0][0]
+        return dr 
 
     def CalculateMass(self, lists = None, Name = "Mass"):
         if lists == None:
             lists = [self]
-        v = torch.zeros((1, 4))
+
+        t1 = torch.tensor([0., 0., 0., 0.])
         for i in lists:
-            v += LorentzVector.ToPxPyPzE(i.pt, i.eta, i.phi, i.e, "cpu")
-        m = float(LorentzVector.MassFromPxPyPzE(v))
-        setattr(self, Name + "_MeV", m)
-        setattr(self, Name + "_GeV", m / 1000)
-        return m/1000
+            t1 += ToPxPyPzE(i.pt, i.eta, i.phi, i.e, "cpu")
+        m = MassFromPxPyPzE(t1).tolist()[0][0]
+        self.__dict__[Name + "_MeV"] =  float(m)
+        self.__dict__[Name + "_GeV"] = float(m / 1000)
+        return float(m/1000)
     
     def __del__(self):
         for i in self.__dict__:
@@ -31,25 +34,54 @@ class ParticleTemplate(VariableManager):
        
     def __radd__(self, other):
         if other == 0:
-            return self
+            p = ParticleTemplate()
+            p.__dict__["pt"] = self.pt
+            p.__dict__["eta"] = self.eta
+            p.__dict__["phi"] = self.phi
+            p.__dict__["e"] = self.e
+            return p
         else:
             return self.__add__(other)
 
     def __add__(self, other):
-        
-        v = torch.zeros((1, 4))
-        v += LorentzVector.ToPxPyPzE(self.pt, self.eta, self.phi, self.e, "cpu")
-        v += LorentzVector.ToPxPyPzE(other.pt, other.eta, other.phi, other.e, "cpu") 
-        pmu = LorentzVector.TensorToPtEtaPhiE(v)
-        pmu = pmu.tolist()[0]
+       
+        P1 = ToPxPyPzE(self.pt, self.eta, self.phi, self.e, "cpu")
+        P2 = ToPxPyPzE(other.pt, other.eta, other.phi, other.e, "cpu")
+        Pmu = TensorToPtEtaPhiE(P1 + P2).tolist()[0]
         
         particle = ParticleTemplate() 
-        setattr(particle, "pt", pmu[0])
-        setattr(particle, "eta", pmu[1])
-        setattr(particle, "phi", pmu[2])
-        setattr(particle, "e", pmu[3])
+        particle.__dict__["pt"] = Pmu[0]
+        particle.__dict__["eta"] = Pmu[1]
+        particle.__dict__["phi"] = Pmu[2]
+        particle.__dict__["e"] = Pmu[3]
         particle.Children += self.Children
         particle.Children += [p for p in other.Children if p not in particle.Children]
         
         return particle
+    
+    def DecayLeptonically(self):
+        return True if sum([1 for k in self.Children if abs(k.pdgid) in [11, 12, 13, 14, 15, 16]]) > 0 else False
 
+    def __str__(self, caller = False):
+        PDGID = { 
+                  1 : "d"           ,  2 : "u"             ,  3 : "s", 
+                  4 : "c"           ,  5 : "b"             ,  6 : "t", 
+                 11 : "e"           , 12 : "$\\nu_e$"      , 13 : "$\mu$",
+                 14 : "$\\nu_{\mu}$", 15 : "$\\tau$"       , 16 : "$\\nu_{\\tau}$", 
+                 21 : "g"           , 22 : "$\\gamma$"}
+        
+        string = ""
+        if "pdgid" in self.__dict__:
+            string += "======== "
+            string += "pdgid: " + str(self.pdgid) + " "
+            string += "Symbol: " + PDGID[abs(self.pdgid)] + " ====\n"
+        string += "eta: " + str(self.eta) + "\n"
+        string += "phi: " + str(self.phi) + "\n"
+        string += "pt: " + str(self.pt) + "\n"
+        
+        if caller:
+            return string
+
+        for i in self.Children:
+            string += " -> " + i.__str__(caller = True) 
+        return string

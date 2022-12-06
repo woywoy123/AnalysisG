@@ -1,6 +1,6 @@
-from distutils.core import setup
-from setuptools import Extension
+from setuptools import Extension, setup
 from torch.utils.cpp_extension import BuildExtension, CppExtension
+import Cython.Build
 
 setup(
         name = "PyTorchCustom", 
@@ -9,6 +9,7 @@ setup(
         ],
         cmdclass = {"build_ext" : BuildExtension}
     )
+
 
 setup(
         name = "AnalysisTopGNN", 
@@ -27,7 +28,6 @@ setup(
             "AnalysisTopGNN.Deprecated",
             
             "AnalysisTopGNN.Features",  
-            "AnalysisTopGNN.Features.ParticleGeneric",
             "AnalysisTopGNN.Features.TruthJet",
             "AnalysisTopGNN.Features.TruthTop",
             "AnalysisTopGNN.Features.TruthTopChildren",
@@ -37,6 +37,7 @@ setup(
             "AnalysisTopGNN.Plotting", 
             "AnalysisTopGNN.Submission", 
             "AnalysisTopGNN.Statistics", 
+            "AnalysisTopGNN.Vectors",
         ],
         package_dir = {
             "AnalysisTopGNN": "src",
@@ -51,7 +52,6 @@ setup(
             "AnalysisTopGNN.Deprecated" : "src/EventTemplates/Deprecated", 
             
             "AnalysisTopGNN.Features" : "src/Features", 
-            "AnalysisTopGNN.Features.ParticleGeneric" : "src/Features/ParticleGeneric",
             "AnalysisTopGNN.Features.TruthJet" : "src/Features/TruthJet",
             "AnalysisTopGNN.Features.TruthTop" : "src/Features/TruthTop",
             "AnalysisTopGNN.Features.TruthTopChildren" : "src/Features/TruthTopChildren",
@@ -61,8 +61,14 @@ setup(
             "AnalysisTopGNN.Statistics" : "src/Statistics", 
             "AnalysisTopGNN.Generators" : "src/Generators", 
             "AnalysisTopGNN.Submission" : "src/Submission", 
+
         },
 
+        ext_modules = [
+                Extension("AnalysisTopGNN.Vectors", 
+                          sources = ["src/Vectors/Lorentz.pyx"]),
+                ],
+        cmdclass = {"build_ext" : Cython.Build.build_ext}, 
         long_description = open("README.md").read(), 
     )
 

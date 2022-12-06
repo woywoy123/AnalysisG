@@ -20,11 +20,12 @@ class Functions(CommonFunctions):
         self.DoStatistics = False
    
     def DefineRange(self, Dims):
-        _min  = 0 if self.Get(Dims + "Min") == None else min(self.Get(Dims + "Data"))
-        _max  = 1 if self.Get(Dims + "Max") == None else max(self.Get(Dims + "Data")) 
+        if len(self.Get(Dims + "Data")) == 0:
+            self.Set(Dims + "Min", 0)
+        
+        if len(self.Get(Dims + "Data")) == 0:
+            self.Set(Dims + "Max", 1)
         self.DefineCommonRange(Dims)       
-        self.Set(Dims + "Min", self.Get(Dims + "Min"))
-        self.Set(Dims + "Max", self.Get(Dims + "Max"))
 
     def ApplyRandomMarker(self, obj):
         ptr = [",", ".", "-", "x", "o", "O"]

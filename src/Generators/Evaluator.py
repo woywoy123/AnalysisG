@@ -35,10 +35,10 @@ class ModelEvaluator(Settings, SampleTracer, Evaluator_, Tools, ModelComparisonP
 
     def __CompareTraining(self, Mode):
         Names = list(self._ModelDirectories)
-        outdir = self.ProjectName + "/Summary/" + Mode + "/"
+        outdir = self.OutputDirectory + "/" + self.ProjectName + "/Summary/" + Mode + "/"
         epochs = list(self._TrainingContainer)
         epochs.sort()
-        
+         
         self.Colors = {m : None for m in Names}
         self.GetConsistentModeColor(self.Colors)
         self.Tables(self._TrainingContainer, Mode) 
@@ -62,7 +62,7 @@ class ModelEvaluator(Settings, SampleTracer, Evaluator_, Tools, ModelComparisonP
             plt = self.PlotAccuracy(Plots, met, outdir) if met.startswith("Accuracy") else plt
 
     def __ShowSampleDistribution(self):
-        self.OutDir = self.ProjectName + "/NodeStatistics/"
+        self.OutDir = self.OutputDirectory + "/" + self.ProjectName + "/NodeStatistics/"
         self.AddNodeSample(self)
         self.Process()
 
@@ -118,7 +118,7 @@ class ModelEvaluator(Settings, SampleTracer, Evaluator_, Tools, ModelComparisonP
             
             self.NewModel(name)
             for ep in epochs:
-                cacheDir = self.ProjectName + "/TrainedModels/" + name + "/Epoch-" + str(ep) + "/" + make + "Sample"
+                cacheDir = self.OutputDirectory + "/" + self.ProjectName + "/TrainedModels/" + name + "/Epoch-" + str(ep) + "/" + make + "Sample"
                 
                 self.MakingCurrentJob(make, name, ep)
                 if self.IsFile(cacheDir + ".pkl"):
@@ -131,6 +131,7 @@ class ModelEvaluator(Settings, SampleTracer, Evaluator_, Tools, ModelComparisonP
                 mod.LoadModel(self.abs(epochsDict[ep]))
 
                 p = PredictionContainer()
+                p.OutputDirectory = self.OutputDirectory
                 p.ModelName = name
                 p.Epoch = ep 
                 p.Make = make
@@ -156,10 +157,7 @@ class ModelEvaluator(Settings, SampleTracer, Evaluator_, Tools, ModelComparisonP
             return inpt 
         
         lst = [[i, mod + "_" + str(i.Epoch)] for mod in Container for i in Container[mod]]
-        th = Threading(lst, function, self.Threads, 2)
-        th.VerboseLevel = self.VerboseLevel
-        th.Start()
-        for i in th._lists:
+        for i in function(lst):
             mod = i[1].split("_")
             Container["_".join(mod[:-1])][int(mod[-1])] = i[0]
 
@@ -227,5 +225,5 @@ class ModelEvaluator(Settings, SampleTracer, Evaluator_, Tools, ModelComparisonP
             self.__EvaluateSampleType(None)
             self.__ProcessContainer(self._Container["All"], "CompleteSample") 
         
-        if len(self._Container) > 0:
+        if len(self._Container) > 0 and self.PlotModelComparison:
             self.Verdict()

@@ -1,26 +1,15 @@
+def edgeTop(a, b):
+    mut = [1 for i in a.index if i in b.index and i > -1]
+    return 1 if sum(mut) > 0 else 0
 
+def edgeChild(a, b):
+    mut = [1 for i in a.Parent for j in b.Parent if i == j]
+    return 1 if sum(mut) > 0 else 0   
 
-
-
-# ============= Truth =================== #
-def Index(a, b):
-    ta = [i.Index for i in a.Children]
-    tb = [i.Index for i in b.Children]
+def edgeRes(a, b):
+    c1 = sum([k.FromRes for i in a.Parent for k in i.Parent])
+    c2 = sum([k.FromRes for i in b.Parent for k in i.Parent])
     
-    if a.Type == "el" or a.Type == "mu":
-        ta.append(a.Index)
-    if b.Type == "el" or b.Type == "mu":
-        tb.append(b.Index)
-
-    if len(ta) == 0:
-        return 0
-    if len(tb) == 0:
-        return 0
-    
-    x = [p for p in ta for j in tb if p == j]
-    if len(x) > 0:
-        return  1
-    else:
-        return 0
-
-
+    if c1 != 0 and c2 != 0:
+        return 1
+    return 0

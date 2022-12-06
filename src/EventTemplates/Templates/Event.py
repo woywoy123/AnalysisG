@@ -60,6 +60,8 @@ class EventTemplate(VariableManager):
                 leng[l].append({j : partDic[j]})
           
             if len(leng) == 0:
+                if len(self.__NestedListToList(partDic)) == 0:
+                    return None
                 MakeParticle(_obj, partDic, name)
             else:
                 key = max(list(leng))
@@ -73,6 +75,7 @@ class EventTemplate(VariableManager):
         tmp = { i : self._Store[i] for i in maps if i in self._Store }
         for i in tmp:
             self.__dict__[maps[i]] = tmp[i]
+            del self._Store[i]
       
         objmap = {i : self.GetKey(self.Objects[i]) for i in self.Objects}
         self._Store = {i : {k : self.__NestedListToList(self._Store[k]) for k in objmap[i] if k in self._Store} for i in objmap }
@@ -81,10 +84,12 @@ class EventTemplate(VariableManager):
             RecursivePopulate(self._Store[i], i)
         
         for i in self.Objects:
-            self.__dict__[i] = {k : obj for k, obj in zip(range(len(self.__dict__[i])), self.__dict__[i])}
-            
-        self.CompileEvent()
+            if i in self.__dict__:
+                self.__dict__[i] = {k : obj for k, obj in zip(range(len(self.__dict__[i])), self.__dict__[i])}
+            else:
+                self.__dict__[i] = {}
 
+        self.CompileEvent()
 
         if ClearVal:
             del self._Store

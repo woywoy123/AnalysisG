@@ -2,12 +2,12 @@
 
 ## Introduction <a name="introduction"></a>
 The aim of this package is to provide Particle Physicists with an intuitive interface to **Graph Neural Networks**, whilst remaining Analysis agnostic. 
-Following a similar spirit to AnalysisTop, the analyst is able to define a custom event class and define how variables within the ROOT file are related. 
-For instance, if any truth matching to specific detector particles needs to be performed, this would be defined within the event class.
+Following a similar spirit to AnalysisTop, the analyst is able to define a custom event class and define how variables within the ROOT files are related. 
+For instance, if any truth particle matching to specific detector particles is needed, this would be defined within the event class.
 
-The philosophy of this package is that the events within ROOT files are compiled into pythonic objects, where trees, branches and leaves define the relevant objects. 
-Particle objects are defined by customized classes, which inherit some base class and relevant leaves and branches are provided as needed (see tutorial later on). 
-Within the event class any additional truth matching of particles can also be done, hence the customization of events.
+The philosophy of this package is that the events within ROOT files are compiled into pythonic objects, where trees, branches and leaves define the relevant object's attributes (e.g. PT, eta, phi, energy,.,..). 
+To create custom particle objects, a base class is inherited, which interprets and compiles the particle as needed (see tutorial below).which interprets and compiles the particle as needed (see tutorial below).
+These particle objects live within event objects that can be used to introduce further complexity, such as truth matching and so forth. 
 
 The second phase of the framework is to bridge the Deep Learning framework (PyTorch Geometric) and events within ROOT files. 
 Similar to the event object definition, event graphs are arbitrarily defined and compiled into the PyTorch Geometric (PyG) Data object, these can be subsequently interfaced with a GraphLoader (more on this later).
@@ -186,4 +186,81 @@ This class has all adjustable parameters of the previously discussed generators 
 For larger scale projects, it is highly recommended to use this class, since it invokes all of the above classes in a completely configurable way. 
 Additionally, this class can interface with the ```Submission``` module, which contains a Condor Directed Acyclic Graph compiler. 
 
+# Analysis Class:
+To start using this class, simply place ```python from AnalysisTopGNN import Analysis``` at the beginning of the analysis project.
+The class itself is a simple wrapper for ```EventGenerator```, ```GraphGenerator``` and ```Optimization``` classes, and can be used to completely initialize the analysis without explicitly importing these classes.
+
+## Getting Started With Your Analysis - Simple Example
+A very simple analysis could look something like this;
+```python 
+from AnalysisTopGNN import Analysis 
+from SomeEventImplementation import CustomEvent
+
+Ana = Analysis()
+Ana.ProjectName = "Example"
+Ana.InputSample(<name of sample>, "/some/sample/directory") # This will scan the entire 'directory' folder for .root files
+Ana.Event = CustomEvent # Import the event implementation as shown in the example above
+Ana.EventCache = True # Tells the compiler to use local
+Ana.Launch()
+
+for event in Ana:
+	print(event)
+``` 
+The above code sniplet will effectively scan for .root files within the given directory and compile associated entries into python objects within the "Example/<name of sample>" directory. 
+By default, the analysis wrapper will use multithreading (12 Cores) to increase compilation speed. 
+However, the above code lacks the ability to store compiled events, making recompiling time consuming and inefficient. 
+Adding the line ```python Ana.DumpPickle = True``` before the ```python Ana.Launch()``` command will dump the compiled events as .pkl files.
+
+### The EventContainer 
+When iterating over the Analysis wrapper (as shown in the above code), EventContainer objects are returned. 
+These contain a number of attributes which track the origin of this event, including the trees from which the customized events are compiled.
+
+
+
+# Object Classes, Attributes and Functions:
+This section lists attributes for classes.
+
+## Generators.Analysis:
+- VerboseLevel (int): The level of verbosity of the object, where 1 being the lowest and 3 the highest.
+- chnk (int): Number of entries that multithreading will compile per job. This option is used to avoid excessive memory usage. 
+- Threads (int): Number of simultaneous threads to use (default is 12)
+- Tree (str): If the ROOT file contains multiple trees, this specifies the tree to compile and ignores others.
+- EventStart (int): The event index that compilation starts from.
+- EventStop (int): The event index where compilation should terminate for each ROOT file.
+- ProjectName (str): The name of the Analysis. This will generate a folder by the given name (default is 'UNTITLED')
+- OutputDirectory (str): The directory where the Analysis should be saved.
+- Event (Event Class): The event implementation to be used for the compilation
+- EventGraph (Event Graph Class): Defines which particles should be used to construct a graph.
+- FullyConnect (bool): Constructs a fully connected graph from the EventGraph (default True)
+- SelfLoop (bool): Whether to add edges connecting the node itself (i = j) (default True)
+- TrainingSampleName (str): Name of the training and test sample.
+- TrainingPercentage (int): Percentage of the total sample to be used for training the Graph Neural Network. The remaining will be withheld for testing the performance on unseen data. (default 80)
+- SplitSampleByNode (bool): Whether to partition the training sample into n-Node training samples (useful for GNNs requiring identical n-Node samples). (default False)
+- kFolds (int): Number folds performed in the training (default 10).
+- BatchSize (int): Number of event graphs to aggregate into a single larger graph. (default 10)
+- Model: Model object to be trained. 
+- DebugMode (str): Providing a string with keywords 'loss', 'accuracy' and 'compare' will increase the verbosity of the training and are useful for debugging.
+- ContinueTraining (bool): Whether to consider previous epochs of the model training. If set to False, previous epochs will be overwritten. (default True)
+- RunName (str): Name of the training project (default 'Untitled')
+- Epochs (int): Number of times to iterate over the entire training sample. (default 10)
+- Device (str): Using 'cuda' will trigger the code to train the model on GPU. 
+- VerbosityIncrement (int): By how many percentage points to nofity the training progress (VerbosityLevel needs to be 3) (default 10)
+
+## Plotting.TH1F:
+- Title (str): Title of the histogram 
+- xTitle (str): x-Axis title
+- xMin (float): Starting range of the histogram 
+- xMax (float): Terminating point of the histogram's range.
+- xBins (int): Number of bins to use in the histogram.
+- xStep (float): By how many units the axis ticks are increased by (If the xMin is provided, TH1F will automatically deduce the number of bins required to define the histogram).
+- OutputDirectory (str): Output directory of the saved figure.
+- Style (str): The keywords 'ATLAS', 'ROOT' are used to indicate how to present the histogram (This is based on the mplhep package).
+- ATLASLumi (float): The luminosity provided to the histogram.
+- NEvents (int): Number of events used to construct the histogram (default is the length of xData)
+- xData (list): A list of the data to populate the histogram with.
+- Filename (str): Name of the saved figure (automatically concatinates .png)
+- xWeights (list): Weights being applied per bin. To use this, one needs to populate xData with a list e.g. ```python [i for i in range(len(xWeights))]```
+- xTickLabels (list): override the default matplotlib histogram ticks for each bin 
+- xBinCentering (bool): Whether to center the bins of a histogram (useful for illustrating classification plots).
+- Logarithmic (bool): Whether to scale the y-axis logarithmically.
 

@@ -4,13 +4,13 @@ class EventGraphTruthTops(EventGraphTemplate):
     def __init__(self, Event = None):
         EventGraphTemplate.__init__(self)
         self.Event = Event
-        self.Particles += self.Event.TruthTops
+        self.Particles += self.Event.Tops
 
 class EventGraphTruthTopChildren(EventGraphTemplate):
     def __init__(self, Event = None):
         EventGraphTemplate.__init__(self)
         self.Event = Event
-        self.Particles += self.Event.Children
+        self.Particles += self.Event.TopChildren
     
 class EventGraphTruthJetLepton(EventGraphTemplate):
     def __init__(self, Event = None):

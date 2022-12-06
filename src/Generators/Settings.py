@@ -53,6 +53,7 @@ class _General:
 
         self.ProjectName = "UNTITLED"
         self.SampleContainer = None
+        self.OutputDirectory = "./"
 
 
 class _EventGenerator:
@@ -87,7 +88,7 @@ class _HDF5:
 class _TrainingSample:
 
     def __init__(self):
-        self.TrainingSampleName = "UNTITLED"
+        self.TrainingSampleName = False
         self.TrainingPercentage = 80
 
 class _Optimization:
@@ -120,6 +121,7 @@ class _ModelEvaluator:
         self.PlotTestSample = False
         self.PlotEntireSample = False
         self.PlotEpochDebug = False
+        self.PlotModelComparison = False
 
 class _Analysis:
 
@@ -139,7 +141,7 @@ class _Analysis:
 
         self.DumpHDF5 = False
         self.DumpPickle = False
-        self.OutputDirectory = "./"
+        self.FeatureTest = False
 
 class _Condor:
 
@@ -148,7 +150,6 @@ class _Condor:
         self.PythonVenv = "$PythonGNN"
         self.EventCache = None
         self.DataCache = None
-        self.OutputDirectory = None
         self._dump = True
         self.ProjectName = None
         self.VerboseLevel = 0
@@ -165,6 +166,7 @@ class _CondorScript:
         self.Time = None
         self.Memory = None
         self.CondaEnv = False
+        self.PythonVenv = "$PythonGNN"
 
 class _JobsSpecification:
 
@@ -182,7 +184,7 @@ class _JobsSpecification:
 class _File:
 
     def __init__(self):
-        self.StepSize = 1000
+        self.StepSize = 5000
         self.VerboseLevel = 3
         
 class Settings(_General):

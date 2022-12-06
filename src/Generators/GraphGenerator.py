@@ -61,6 +61,9 @@ class GraphFeatures(FeatureAnalysis, RandomSamplers):
     def TestFeatures(self, SamplingSize = 100):
         self.SetDevice()
         self.CheckSettings()
+        if self.Caller == "ANALYSIS":
+            self.FeatureTest = True
+            self.Launch()
         Events = self.RandomEvents(self.SampleContainer.list(), SamplingSize)
         self.TestEvent(Events, self.EventGraph)
  
@@ -72,12 +75,18 @@ class GraphGenerator(GraphGenerator_, SampleTracer, Settings, GraphFeatures):
         self.Caller = "GRAPHGENERATOR"
         Settings.__init__(self)
         SampleTracer.__init__(self)
+        self._Test = False
  
     def __MakeGraph(self, event, smplidx):
         evobj = self.CopyInstance(self.EventGraph)
+
+        if self._Test == False:
+            self.TestFeatures(10)
+            self._Test = True
         try:
             ev = evobj(event)
         except AttributeError:
+            
             ev = evobj.Escape(evobj)
             ev.Event = event
             ev.Particles = []
