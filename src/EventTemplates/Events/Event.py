@@ -38,6 +38,7 @@ class Event(EventTemplate):
         
         for c in self.TopChildren.values():
             self.Tops[c.TopIndex].Children.append(c)
+            c.Parent.append(self.Tops[c.TopIndex])
             c.index = c.TopIndex
         
         for tj in self.TruthJets.values():
