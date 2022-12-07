@@ -83,3 +83,18 @@ class JetParton(Particle):
         self.charge = self.Type + "_charge"
         self.pdgid = self.Type + "_pdgid"
 
+class Electron(Particle):
+
+    def __init__(self):
+        self.Type = "el"
+        Particle.__init__(self)
+        self.charge = self.Type + "_charge"
+        self.index = []
+
+class Muon(Particle):
+
+    def __init__(self):
+        self.Type = "mu"
+        Particle.__init__(self)
+        self.charge = self.Type + "_charge"
+        self.index = []
