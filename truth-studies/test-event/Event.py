@@ -8,10 +8,10 @@ class EventExperimental(EventTemplate):
         self.Objects = {
                 "Tops" : Top(), 
                 "Children" : Children(),
-                "TruthJets" : TruthJet(), 
-                "TruthJetPartons" : TruthJetPartons(),
-                "Jets" : Jets(), 
-                "JetPartons" : JetPartons(),
+                "TruthJets" : TruthJet(),
+                "TruthJetPartons" : TruthJetParton(),
+                "Jets" : Jet(), 
+                "JetPartons" : JetParton(),
         }
        
         self.Trees = ["nominal"]
@@ -22,35 +22,43 @@ class EventExperimental(EventTemplate):
         self.DefineObjects()
 
     def CompileEvent(self):
+        self.Tops = {t.index : t for t in self.Tops.values()} 
+        self.Children = {c.index : c for c in self.Children.values()}
+        self.TruthJets = {tj.index : tj for tj in self.TruthJets.values()}
+        self.TruthJetPartons = {tj.index : tj for tj in self.TruthJetPartons.values()}
+        self.Jets = {j.index : j for j in self.Jets.values()}
+        self.JetPartons = {j.index : j for j in self.JetPartons.values()}
         
-        for i in self.Children:
-            t = self.Children[i]
-            self.Tops[t.index].Children.append(t)
-
-       
-        for jp in self.TruthJetPartons:
-            tjp = self.TruthJetPartons[jp]
-            self.Children[tjp.index].TruthJetPartons.append(tjp)
-            tjp.TruthJet.append(self.TruthJets[tjp.TruJetIndex])
-
-        for jp in self.JetPartons:
-            tjp = self.JetPartons[jp]
-            self.Children[tjp.index].JetPartons.append(tjp)
-            tjp.Jet.append(self.Jets[tjp.JetIndex])
-
-        for i in self.TruthJets:
-            for ti in self.TruthJets[i].index:
+        for c in self.Children.values():
+            self.Tops[c.TopIndex].Children.append(c)
+        
+        for tj in self.TruthJets.values():
+            for ti in tj.TopIndex:
                 if ti == -1:
                     continue
-                self.Tops[ti].TruthJets.append(self.TruthJets[i])
-
-        for i in self.Jets:
-            for ti in self.Jets[i].index:
+                tj.Tops.append(self.Tops[ti])
+                self.Tops[ti].TruthJets.append(tj)
+        
+        for tjp in self.TruthJetPartons.values():
+            self.TruthJets[tjp.TruthJetIndex].Parton.append(tjp)
+            tjp.Children.append(self.TruthJets[tjp.TruthJetIndex])
+            for ci in tjp.TopChildIndex:
+                tjp.Parent.append(self.Children[ci])
+ 
+        for j in self.Jets.values():
+            for ti in j.TopIndex:
                 if ti == -1:
                     continue
-                self.Tops[ti].Jets.append(self.Jets[i])
+                j.Tops.append(self.Tops[ti])
+                self.Tops[ti].Jets.append(j)
+        
+        for jp in self.JetPartons.values():
+            self.Jets[jp.JetIndex].Parton.append(jp)
+            jp.Children.append(self.Jets[jp.JetIndex])
+            for ci in jp.TopChildIndex:
+                jp.Parent.append(self.Children[ci])
 
         self.Tops = list(self.Tops.values())
         self.Children = list(self.Children.values())
-        self.Jets = list(self.Jets.values())
         self.TruthJets = list(self.TruthJets.values())
+        self.Jets = list(self.Jets.values())
