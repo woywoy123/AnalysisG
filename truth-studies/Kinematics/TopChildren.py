@@ -262,22 +262,13 @@ def DeltaRLepB(Ana):
 
         for t in event.Tops:
             
-            topChildren_list = [PDGID[abs(c.pdgid)] for c in t.Children]
-            print(f"Top children: {topChildren_list}")
             lepton_thisTop = [c for c in t.Children if abs(c.pdgid) in _charged_leptons]
-            print(f"Number of leptons for this top = {len(lepton_thisTop)}")
             if len(lepton_thisTop) != 1: continue
             for ib,b in enumerate(bquarks):
-                print(f"Checking b-quark {ib}")
                 if b in t.Children:
                     DeltaR_lepB["sameTop"].append(lepton_thisTop[0].DeltaR(b))
-                    print(f"Appending {lepton_thisTop[0].DeltaR(b)} to DeltaR_lepB[sameTop]")
                 else:
                     DeltaR_lepB["differentTop"].append(lepton_thisTop[0].DeltaR(b)) 
-                    print(f"Appending {lepton_thisTop[0].DeltaR(b)} to DeltaR_lepB[differentTop]")
-
-    print(f"len(DeltaR_lepB[sameTop]) = {len(DeltaR_lepB['sameTop'])}")
-    print(f"len(DeltaR_lepB[differentTop]) = {len(DeltaR_lepB['differentTop'])}")
 
     Plots = PlotTemplate(nevents, lumi)
     Plots["Title"] = "$\Delta$R Between Lepton and B-quark"
@@ -337,6 +328,67 @@ def MassDiff(Ana):
     X = CombineTH1F(**Plots)
     X.Compile()
     X.SaveFigure()
+
+def TopChildrenPT(Ana):
+    
+    nevents = 0
+    lumi = 0
+    PtB = {"fromRes": [], "fromSpec": []}
+    PtL = {"fromRes": [], "fromSpec": []}
+
+    for ev in Ana:
+        event = ev.Trees["nominal"]
+        nevents += 1
+        lumi += event.Lumi
+        for t in event.Tops:
+            for c in t.Children:
+                if PDGID[abs(c.pdgid)] == "b":
+                    if t.FromRes: 
+                        PtB["fromRes"].append(c.pt)
+                    else: 
+                        PtB["fromSpec"].append(c.pt)
+                elif abs(c.pdgid) in _charged_leptons:
+                    if t.FromRes: 
+                        PtL["fromRes"].append(c.pt)
+                    else: 
+                        PtL["fromSpec"].append(c.pt)
+     
+    Plots = PlotTemplate(nevents, lumi)
+    Plots["Title"] = "Transverse momentum of b-quarks" 
+    Plots["xTitle"] = "Transverse Momentum (GeV)"
+    Plots["xBins"] = 100
+    Plots["xMin"] = 0
+    Plots["xMax"] = 1000
+    Plots["Filename"] = "Figure_2.1i"
+    Plots["Histograms"] = []
+        
+    for i in PtB:
+        _Plots = {}
+        _Plots["Title"] = i
+        _Plots["xData"] = PtB[i]
+        Plots["Histograms"] += [TH1F(**_Plots)]
+    X = CombineTH1F(**Plots)
+    X = TH1F(**Plots)
+    X.SaveFigure()
+
+    Plots = PlotTemplate(nevents, lumi)
+    Plots["Title"] = "Transverse momentum of leptons" 
+    Plots["xTitle"] = "Transverse Momentum (GeV)"
+    Plots["xBins"] = 100
+    Plots["xMin"] = 0
+    Plots["xMax"] = 1000
+    Plots["Filename"] = "Figure_2.1j"
+    Plots["Histograms"] = []
+        
+    for i in PtL:
+        _Plots = {}
+        _Plots["Title"] = i
+        _Plots["xData"] = PtL[i]
+        Plots["Histograms"] += [TH1F(**_Plots)]
+    X = CombineTH1F(**Plots)
+    X = TH1F(**Plots)
+    X.SaveFigure()
+
    
 
 
