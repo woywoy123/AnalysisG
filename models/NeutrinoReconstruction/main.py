@@ -28,29 +28,29 @@ from neutrino_momentum_reconstruction_python3 import singleNeutrinoSolution as s
 import ROOT as r
 from LorentzVector import ToPx, ToPy, ToPz
 import numpy as np
+from Reimplementation import *
+
+
+
+
 
 met = ev.met 
 phi = ev.met_phi
 
-met_x = ToPx(met, phi)
-met_y = ToPy(met, phi)
+#met_x = ToPx(met, phi)
+#met_y = ToPy(met, phi)
 
 b = singlelepton[0]
 nu = singlelepton[1]
 muon = singlelepton[2]
 
-b_pmc = r.TLorentzVector()
-b_pmc.SetPtEtaPhiE(b.pt, b.eta, b.phi, b.e)
+TestNuSolutionSteps(b, muon)
 
-nu_pmc = r.TLorentzVector()
-nu_pmc.SetPtEtaPhiE(nu.pt, nu.eta, nu.phi, nu.e)
 
-muon_pmc = r.TLorentzVector()
-muon_pmc.SetPtEtaPhiE(muon.pt, muon.eta, muon.phi, muon.e)
 
-sigma = np.array([[1000, 200], [200, 1000]])
-sn = sNS(b_pmc, muon_pmc, met_x, met_y, sigma)
-print("-> Prediction: ", sn.solutions)
-print("-> Cartesian Truth of Neutrinos: ", ToPx(nu.pt, nu.phi), ToPy(nu.pt, nu.phi), ToPx(nu.pt, nu.eta))
-print("-> Pseudo-Rapidity: ", nu.pt, nu.phi, nu.eta)
-print("-> Mass of Top Quark: ", sum(singlelepton).CalculateMass())
+#sigma = np.array([[1000, 200], [200, 1000]])
+#sn = sNS(b_pmc, muon_pmc, met_x, met_y, sigma)
+#print("-> Prediction: ", sn.solutions)
+#print("-> Cartesian Truth of Neutrinos: ", ToPx(nu.pt, nu.phi), ToPy(nu.pt, nu.phi), ToPx(nu.pt, nu.eta))
+#print("-> Pseudo-Rapidity: ", nu.pt, nu.phi, nu.eta)
+#print("-> Mass of Top Quark: ", sum(singlelepton).CalculateMass())
