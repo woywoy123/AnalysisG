@@ -38,6 +38,8 @@ class Event(EventTemplate):
         
         for c in self.TopChildren.values():
             self.Tops[c.TopIndex].Children.append(c)
+            c.Parent.append(self.Tops[c.TopIndex])
+            c.index = c.TopIndex
         
         for tj in self.TruthJets.values():
             for ti in tj.TopIndex:
@@ -45,6 +47,7 @@ class Event(EventTemplate):
                     continue
                 tj.Tops.append(self.Tops[ti])
                 self.Tops[ti].TruthJets.append(tj)
+            tj.index = tj.TopIndex
         
         for tjp in self.TruthJetPartons.values():
             self.TruthJets[tjp.TruthJetIndex].Parton.append(tjp)
@@ -58,7 +61,8 @@ class Event(EventTemplate):
                     continue
                 j.Tops.append(self.Tops[ti])
                 self.Tops[ti].Jets.append(j)
-        
+            j.index = j.TopIndex
+
         for jp in self.JetPartons.values():
             self.Jets[jp.JetIndex].Parton.append(jp)
             jp.Children.append(self.Jets[jp.JetIndex])
@@ -66,25 +70,18 @@ class Event(EventTemplate):
                 jp.Parent.append(self.TopChildren[ci])
 
         maps = { i : self.TopChildren[i] for i in self.TopChildren if abs(self.TopChildren[i].pdgid) in [11, 13, 15] }
-        # ==== Electron ==== #
-        if len(self.Electrons) != 0 and len(maps) != 0:
-            dist = { maps[i].DeltaR(self.Electrons[l]) : [i, l] for i in maps for l in self.Electrons } 
-            dst = sorted(dist) 
-            for i in range(len(self.Electrons)):
-                self.TopChildren[dist[dst[i]][0]].Children.append(self.Electrons[dist[dst[i]][1]])
-                self.Electrons[dist[dst[i]][1]].Parent.append(self.TopChildren[dist[dst[i]][0]])
-                self.Electrons[dist[dst[i]][1]].index += list(set([p.index for p in self.TopChildren[dist[dst[i]][0]].Parent]))
-    
-        # ==== Muon ==== #
-        if len(self.Muons) != 0 and len(maps) != 0:
-            dist = { maps[i].DeltaR(self.Muons[l]) : [i, l] for i in maps for l in self.Muons } 
-            dst = sorted(dist) 
-            for i in range(len(self.Muons)):
-                self.TopChildren[dist[dst[i]][0]].Children.append(self.Muons[dist[dst[i]][1]])
-                self.Muons[dist[dst[i]][1]].Parent.append(self.TopChildren[dist[dst[i]][0]])
-                self.Muons[dist[dst[i]][1]].index += list(set([p.index for p in self.TopChildren[dist[dst[i]][0]].Parent]))
-
-
+        lep = list(self.Electrons.values()) + list(self.Muons.values())
+        dist = { maps[i].DeltaR(j) : (i, j) for i in maps for j in lep }
+        dst = sorted(dist)
+        accept = []
+        for dr in dst:
+            idx, l = dist[dr]
+            if l in accept:
+                continue
+            maps[idx].Children.append(l)
+            l.index = [maps[idx].index]
+            accept.append(l)
+        
         self.Tops = list(self.Tops.values())
         self.TopChildren = list(self.TopChildren.values())
         self.TruthJets = list(self.TruthJets.values())
