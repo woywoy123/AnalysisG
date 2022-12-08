@@ -13,6 +13,7 @@ CounterPDGID = {"d"            : 0, "u"       : 0, "s"              : 0, "c"    
                 "$\\gamma$"    : 0}
  
 _leptons = [11, 12, 13, 14, 15, 16]
+_charged_leptons = [11, 13, 15]
 
 
 def PlotTemplate(nevents, lumi):
@@ -227,6 +228,55 @@ def FractionPTChildren(Ana):
         _Plots = {}
         _Plots["Title"] = i
         _Plots["xData"] = FractionID[i]
+        Plots["Histograms"] += [TH1F(**_Plots)]
+    
+    X = CombineTH1F(**Plots)
+    X.SaveFigure()
+
+def DeltaRLepB(Ana):
+
+    nevents = 0
+    lumi = 0
+    DeltaR_lepB = {"sameTop": [], "differentTop": []}
+    
+    for ev in Ana:
+        event = ev.Trees["nominal"]
+        nevents += 1
+        lumi += event.Lumi
+
+        bquarks = [c for t in event.Tops for c in t.Children if PDGID[abs(c.pdgid)] == "b"]
+
+        for t in event.Tops:
+            
+            topChildren_list = [PDGID[abs(c.pdgid)] for c in t.Children]
+            print(f"Top children: {topChildren_list}")
+            lepton_thisTop = [c for c in t.Children if abs(c.pdgid) in _charged_leptons]
+            print(f"Number of leptons for this top = {len(lepton_thisTop)}")
+            if len(lepton_thisTop) != 1: continue
+            for ib,b in enumerate(bquarks):
+                print(f"Checking b-quark {ib}")
+                if b in t.Children:
+                    DeltaR_lepB["sameTop"].append(lepton_thisTop[0].DeltaR(b))
+                    print(f"Appending {lepton_thisTop[0].DeltaR(b)} to DeltaR_lepB[sameTop]")
+                else:
+                    DeltaR_lepB["differentTop"].append(lepton_thisTop[0].DeltaR(b)) 
+                    print(f"Appending {lepton_thisTop[0].DeltaR(b)} to DeltaR_lepB[differentTop]")
+
+    print(f"len(DeltaR_lepB[sameTop]) = {len(DeltaR_lepB['sameTop'])}")
+    print(f"len(DeltaR_lepB[differentTop]) = {len(DeltaR_lepB['differentTop'])}")
+
+    Plots = PlotTemplate(nevents, lumi)
+    Plots["Title"] = "$\Delta$R Between Lepton and B-quark"
+    Plots["xTitle"] = "$\Delta$R"
+    Plots["xStep"] = 0.2
+    Plots["Filename"] = "Figure_2.1h"
+    Plots["xScaling"] = 2.5
+    Plots["Histograms"] = []
+    
+    for i in DeltaR_lepB:
+        _Plots = {}
+        _Plots["Title"] = i
+        _Plots["xData"] = DeltaR_lepB[i]
         Plots["Histograms"] += [TH1F(**_Plots)]
     
     X = CombineTH1F(**Plots)
