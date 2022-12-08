@@ -14,73 +14,87 @@ class Top(Particle):
 
     def __init__(self):
         self.Type = "top"
+        Particle.__init__(self)
         self.index = self.Type + "_index"
         self.charge = self.Type + "_charge"
         self.pdgid = self.Type + "_pdgid"
         self.FromRes = self.Type + "_FromRes"
-        Particle.__init__(self)
+        self.status = self.Type + "_status"
         self.TruthJets = []
         self.Jets = []
-
+        
 class Children(Particle):
-
+    
     def __init__(self):
         self.Type = "children"
+        Particle.__init__(self)
+
+        self.index = self.Type + "_index"
         self.charge = self.Type + "_charge"
         self.pdgid = self.Type + "_pdgid"
-        self.index = self.Type + "_TopIndex"
-        Particle.__init__(self)
-        self.TruthJetPartons = []
-        self.JetPartons = []
+        self.TopIndex = self.Type + "_TopIndex"
 
-class TruthJet(Particle):
+class TruthJet(Particle): 
 
-    def __init__(self):
-        self.Type = "truthjet"
-        self.index = self.Type + "_TopIndex"
+    def __init__(self): 
+        self.Type = "truthjets"
         Particle.__init__(self)
 
-class TruthJetPartons(Particle):
+        self.index = self.Type + "_index"
+        self.btagged = self.Type + "_btagged"
+        self.TopQuarkCount = self.Type + "_topquarkcount"
+        self.WBosonCount = self.Type + "_wbosoncount"
+        self.TopIndex = self.Type + "_TopIndex"
+        self.Tops = []
+        self.Parton = []
+
+class TruthJetParton(Particle):
 
     def __init__(self):
-        self.Type = "truJparton"
+        self.Type = "TJparton" 
+        Particle.__init__(self)
+
+        self.index = self.Type + "_index"
+        self.TruthJetIndex = self.Type + "_TruthJetIndex" 
+        self.TopChildIndex = self.Type + "_ChildIndex"
         self.charge = self.Type + "_charge"
         self.pdgid = self.Type + "_pdgid"
-        self.index = self.Type + "_ChildIndex"
-        self.TruJetIndex = self.Type + "_TruJetIndex"
+
+class Jet(Particle): 
+
+    def __init__(self): 
+        self.Type = "jet"
         Particle.__init__(self)
-        self.TruthJet = []
+
+        self.index = self.Type + "_index"
+        self.TopIndex = self.Type + "_TopIndex"
+        self.Tops = []
+        self.Parton = []
+
+class JetParton(Particle):
+
+    def __init__(self):
+        self.Type = "Jparton" 
+        Particle.__init__(self)
+
+        self.index = self.Type + "_index"
+        self.JetIndex = self.Type + "_JetIndex" 
+        self.TopChildIndex = self.Type + "_ChildIndex"
+        self.charge = self.Type + "_charge"
+        self.pdgid = self.Type + "_pdgid"
 
 class Electron(Particle):
 
     def __init__(self):
         self.Type = "el"
-        self.charge = self.Type + "_charge"
         Particle.__init__(self)
+        self.charge = self.Type + "_charge"
+        self.index = []
 
 class Muon(Particle):
-    
+
     def __init__(self):
         self.Type = "mu"
+        Particle.__init__(self)
         self.charge = self.Type + "_charge"
-        Particle.__init__(self)
-
-class Jets(Particle):
-
-    def __init__(self):
-        self.Type = "jet"
-        self.index = self.Type + "_TopIndex"
-        Particle.__init__(self)
-
-class JetPartons(Particle):
-
-    def __init__(self):
-        self.Type = "Jparton"
-        self.charge = self.Type + "_charge"
-        self.pdgid = self.Type + "_pdgid"
-        self.index = self.Type + "_ChildIndex"
-        self.JetIndex = self.Type + "_JetIndex"
-        Particle.__init__(self)
-        self.Jet = []
-
-
+        self.index = []

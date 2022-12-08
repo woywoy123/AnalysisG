@@ -1,12 +1,11 @@
 import torch
-from torch.nn import Sequential as Seq
-from torch.nn import ReLU, Sigmoid
+from torch import nn
+from torch.nn import ReLU, Sigmoid, Sequential
 
 import torch_geometric
 from torch_geometric.nn import MessagePassing, Linear
 
-from LorentzVector import *
-from PathNetOptimizerCUDA import AggregateIncomingEdges, Mass, ToDeltaR, ToPxPyPzE
+from PathNetOptimizerCUDA import AggregateIncomingEdges, Mass, ToDeltaR, ToPxPyPzE, ToPtEtaPhiE
 from torch.distributions.bernoulli import Bernoulli
 
 torch.set_printoptions(4, profile = "full", linewidth = 100000)
@@ -15,7 +14,7 @@ def MakeMLP(lay):
     out = []
     for i in range(len(lay)-1):
         x1, x2 = lay[i], lay[i+1]
-        out += [Linear(x1, x2), ReLU(), Linear(x2, x2), Sigmoid()]
+        out += [Linear(x1, x2), Linear(x2, x2), ReLU(), Sigmoid()]
     return Seq(*out)
 
 class PathNetsBase(MessagePassing):
@@ -27,29 +26,55 @@ class PathNetsBase(MessagePassing):
         self.L_edge = "CEL"
         self.C_edge = True 
         
-        end = 1024
-        self._mass = MakeMLP([1, end, 64, 64, end])
-        self._identity = MakeMLP([2, end])
-        self._Bern = MakeMLP([end*2, 2])
-        self._nodeMass = MakeMLP([end*3+2, 128, 128, 2])
-    
+        end = 256
+        #self._eta = MakeMLP([1, end, end])
+        #self._pt = MakeMLP([1, end, end])
+        #self._energy = MakeMLP([1, end, end])
+        #self._phi = MakeMLP([1, end, end])
+
+        self._edgeM = Sequential(
+                Linear(4, end), 
+                Linear(end, end)
+            )
+
+        self._binary = Sequential(
+                Linear(3, end), 
+                Linear(end, 4*end), 
+                Linear(4*end, end), 
+                Linear(end, 2), 
+            )
+
+        self._it = 0
+ 
     def forward(self, i, batch, edge_index, num_nodes, N_eta, N_energy, N_pT, N_phi, E_T_edge):
+ 
+        if self._it == 0:
+            self._it = 1
+            self._edgeindex = edge_index
+            self.O_edge = self.forward(i, batch, edge_index, num_nodes, N_eta, N_energy, N_pT, N_phi, E_T_edge)
+            self._it = 0
+            return None
+        self._it += 1
+
         Pmu = torch.cat([N_pT, N_eta, N_phi, N_energy], dim = 1)
-        out = self.propagate(edge_index = edge_index, Pmu = Pmu)
+        ide = None #torch.cat([self._pt(N_phi), self._eta(N_eta), self._phi(N_phi), self._energy(N_energy)], dim = 1)
 
-        self.O_edge = out 
-        return out
+        O_edge = self.propagate(edge_index = edge_index, Pmu = Pmu, truth = E_T_edge)
+        return O_edge
 
-    def message(self, edge_index, Pmu_i, Pmu_j):
-        idx = self._identity(torch.cat([Mass(ToPxPyPzE(Pmu_i)), Mass(ToPxPyPzE(Pmu_j))], dim = 1))
-        edge = self._mass(Mass(ToPxPyPzE(Pmu_i) + ToPxPyPzE(Pmu_j)))
-        return Pmu_j, edge, idx
+    def message(self, edge_index, Pmu_i, Pmu_j, truth):
+        m_i = Mass(ToPxPyPzE(Pmu_i))
+        m_j = Mass(ToPxPyPzE(Pmu_j))
+        e_m = Mass(ToPxPyPzE(Pmu_j) + ToPxPyPzE(Pmu_i))
+        return Pmu_j, m_i, m_j, e_m, truth 
 
     def aggregate(self, message, index, Pmu):
-        Pmu_j, Pedge, idx = message
+        Pmu_j, e_m, m_i, m_j, accept = message
         
-        ber = self._Bern(torch.cat([Pedge, idx], dim = 1)).softmax(1)
-        accept = Bernoulli(ber[:, 1]).sample().to(dtype = torch.int32).view(-1, 1)
-        pred = self._mass(AggregateIncomingEdges(Pmu_j, index.view(-1, 1), accept, True)).softmax(dim = 1)
+        #mlp = self._binary(torch.cat([e_m, m_i, m_j], dim = 1))
+        #accept = mlp.softmax(1).max(1)[1]
         
-        return self._nodeMass(torch.cat([Pedge, idx, pred[index], ber], dim = 1))
+        m_node = AggregateIncomingEdges(Pmu_j, index.view(-1, 1), accept.view(-1, 1), True)
+        bi = self._binary(torch.cat([accept, m_i-m_j, m_i], dim = 1))
+        bi = nn.Conv1d(1, 2, kernel_size = (2, 1))(bi)
+        return bi

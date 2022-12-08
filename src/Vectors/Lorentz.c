@@ -1899,7 +1899,7 @@ static PyObject *__pyx_pf_14AnalysisTopGNN_7Vectors_4Pz(CYTHON_UNUSED PyObject *
  *     return pt*sinh(eta)
  * 
  * cpdef float PT(float px, float py):             # <<<<<<<<<<<<<<
- *     return (px**2 + py**2)**0.5
+ *     return pow( pow(px, 2) + pow(py, 2), 0.5 )
  * 
  */
 
@@ -1917,19 +1917,19 @@ static float __pyx_f_14AnalysisTopGNN_7Vectors_PT(float __pyx_v_px, float __pyx_
   /* "src/Vectors/Lorentz.pyx":17
  * 
  * cpdef float PT(float px, float py):
- *     return (px**2 + py**2)**0.5             # <<<<<<<<<<<<<<
+ *     return pow( pow(px, 2) + pow(py, 2), 0.5 )             # <<<<<<<<<<<<<<
  * 
  * cpdef float Phi(float px, float py):
  */
   __Pyx_TraceLine(17,0,__PYX_ERR(0, 17, __pyx_L1_error))
-  __pyx_r = pow(((double)(powf(__pyx_v_px, 2.0) + powf(__pyx_v_py, 2.0))), 0.5);
+  __pyx_r = pow((pow(__pyx_v_px, 2.0) + pow(__pyx_v_py, 2.0)), 0.5);
   goto __pyx_L0;
 
   /* "src/Vectors/Lorentz.pyx":16
  *     return pt*sinh(eta)
  * 
  * cpdef float PT(float px, float py):             # <<<<<<<<<<<<<<
- *     return (px**2 + py**2)**0.5
+ *     return pow( pow(px, 2) + pow(py, 2), 0.5 )
  * 
  */
 
@@ -2037,7 +2037,7 @@ static PyObject *__pyx_pf_14AnalysisTopGNN_7Vectors_6PT(CYTHON_UNUSED PyObject *
 }
 
 /* "src/Vectors/Lorentz.pyx":19
- *     return (px**2 + py**2)**0.5
+ *     return pow( pow(px, 2) + pow(py, 2), 0.5 )
  * 
  * cpdef float Phi(float px, float py):             # <<<<<<<<<<<<<<
  *     return atan2(py, px)
@@ -2067,7 +2067,7 @@ static float __pyx_f_14AnalysisTopGNN_7Vectors_Phi(float __pyx_v_px, float __pyx
   goto __pyx_L0;
 
   /* "src/Vectors/Lorentz.pyx":19
- *     return (px**2 + py**2)**0.5
+ *     return pow( pow(px, 2) + pow(py, 2), 0.5 )
  * 
  * cpdef float Phi(float px, float py):             # <<<<<<<<<<<<<<
  *     return atan2(py, px)
@@ -2348,7 +2348,7 @@ static PyObject *__pyx_pf_14AnalysisTopGNN_7Vectors_10Eta(CYTHON_UNUSED PyObject
  *     return asinh(pz/pt)
  * 
  * cpdef float PxPyPzEMass(float px, float py, float pz, float e):             # <<<<<<<<<<<<<<
- *     cdef float s = e**2 - px**2 - py**2 - pz**2
+ *     cdef float s = pow(e, 2) - pow(px, 2) - pow(py, 2) - pow(pz, 2)
  *     if s < 0:
  */
 
@@ -2368,29 +2368,29 @@ static float __pyx_f_14AnalysisTopGNN_7Vectors_PxPyPzEMass(float __pyx_v_px, flo
   /* "src/Vectors/Lorentz.pyx":27
  * 
  * cpdef float PxPyPzEMass(float px, float py, float pz, float e):
- *     cdef float s = e**2 - px**2 - py**2 - pz**2             # <<<<<<<<<<<<<<
+ *     cdef float s = pow(e, 2) - pow(px, 2) - pow(py, 2) - pow(pz, 2)             # <<<<<<<<<<<<<<
  *     if s < 0:
  *         return 0
  */
   __Pyx_TraceLine(27,0,__PYX_ERR(0, 27, __pyx_L1_error))
-  __pyx_v_s = (((powf(__pyx_v_e, 2.0) - powf(__pyx_v_px, 2.0)) - powf(__pyx_v_py, 2.0)) - powf(__pyx_v_pz, 2.0));
+  __pyx_v_s = (((pow(__pyx_v_e, 2.0) - pow(__pyx_v_px, 2.0)) - pow(__pyx_v_py, 2.0)) - pow(__pyx_v_pz, 2.0));
 
   /* "src/Vectors/Lorentz.pyx":28
  * cpdef float PxPyPzEMass(float px, float py, float pz, float e):
- *     cdef float s = e**2 - px**2 - py**2 - pz**2
+ *     cdef float s = pow(e, 2) - pow(px, 2) - pow(py, 2) - pow(pz, 2)
  *     if s < 0:             # <<<<<<<<<<<<<<
  *         return 0
- *     return s**0.5
+ *     return pow(s, 0.5)
  */
   __Pyx_TraceLine(28,0,__PYX_ERR(0, 28, __pyx_L1_error))
   __pyx_t_1 = ((__pyx_v_s < 0.0) != 0);
   if (__pyx_t_1) {
 
     /* "src/Vectors/Lorentz.pyx":29
- *     cdef float s = e**2 - px**2 - py**2 - pz**2
+ *     cdef float s = pow(e, 2) - pow(px, 2) - pow(py, 2) - pow(pz, 2)
  *     if s < 0:
  *         return 0             # <<<<<<<<<<<<<<
- *     return s**0.5
+ *     return pow(s, 0.5)
  * 
  */
     __Pyx_TraceLine(29,0,__PYX_ERR(0, 29, __pyx_L1_error))
@@ -2399,29 +2399,29 @@ static float __pyx_f_14AnalysisTopGNN_7Vectors_PxPyPzEMass(float __pyx_v_px, flo
 
     /* "src/Vectors/Lorentz.pyx":28
  * cpdef float PxPyPzEMass(float px, float py, float pz, float e):
- *     cdef float s = e**2 - px**2 - py**2 - pz**2
+ *     cdef float s = pow(e, 2) - pow(px, 2) - pow(py, 2) - pow(pz, 2)
  *     if s < 0:             # <<<<<<<<<<<<<<
  *         return 0
- *     return s**0.5
+ *     return pow(s, 0.5)
  */
   }
 
   /* "src/Vectors/Lorentz.pyx":30
  *     if s < 0:
  *         return 0
- *     return s**0.5             # <<<<<<<<<<<<<<
+ *     return pow(s, 0.5)             # <<<<<<<<<<<<<<
  * 
  * cpdef float deltaR(float eta1, float eta2, float phi1, float phi2):
  */
   __Pyx_TraceLine(30,0,__PYX_ERR(0, 30, __pyx_L1_error))
-  __pyx_r = pow(((double)__pyx_v_s), 0.5);
+  __pyx_r = pow(__pyx_v_s, 0.5);
   goto __pyx_L0;
 
   /* "src/Vectors/Lorentz.pyx":26
  *     return asinh(pz/pt)
  * 
  * cpdef float PxPyPzEMass(float px, float py, float pz, float e):             # <<<<<<<<<<<<<<
- *     cdef float s = e**2 - px**2 - py**2 - pz**2
+ *     cdef float s = pow(e, 2) - pow(px, 2) - pow(py, 2) - pow(pz, 2)
  *     if s < 0:
  */
 
@@ -2551,10 +2551,10 @@ static PyObject *__pyx_pf_14AnalysisTopGNN_7Vectors_12PxPyPzEMass(CYTHON_UNUSED 
 }
 
 /* "src/Vectors/Lorentz.pyx":32
- *     return s**0.5
+ *     return pow(s, 0.5)
  * 
  * cpdef float deltaR(float eta1, float eta2, float phi1, float phi2):             # <<<<<<<<<<<<<<
- *     return ((eta1 - eta2)**2 + (phi1 - phi2)**2)**0.5
+ *     return pow(pow(eta1 - eta2, 2) + pow(phi1 - phi2, 2), 0.5)
  */
 
 static PyObject *__pyx_pw_14AnalysisTopGNN_7Vectors_15deltaR(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
@@ -2571,17 +2571,17 @@ static float __pyx_f_14AnalysisTopGNN_7Vectors_deltaR(float __pyx_v_eta1, float 
   /* "src/Vectors/Lorentz.pyx":33
  * 
  * cpdef float deltaR(float eta1, float eta2, float phi1, float phi2):
- *     return ((eta1 - eta2)**2 + (phi1 - phi2)**2)**0.5             # <<<<<<<<<<<<<<
+ *     return pow(pow(eta1 - eta2, 2) + pow(phi1 - phi2, 2), 0.5)             # <<<<<<<<<<<<<<
  */
   __Pyx_TraceLine(33,0,__PYX_ERR(0, 33, __pyx_L1_error))
-  __pyx_r = pow(((double)(powf((__pyx_v_eta1 - __pyx_v_eta2), 2.0) + powf((__pyx_v_phi1 - __pyx_v_phi2), 2.0))), 0.5);
+  __pyx_r = pow((pow((__pyx_v_eta1 - __pyx_v_eta2), 2.0) + pow((__pyx_v_phi1 - __pyx_v_phi2), 2.0)), 0.5);
   goto __pyx_L0;
 
   /* "src/Vectors/Lorentz.pyx":32
- *     return s**0.5
+ *     return pow(s, 0.5)
  * 
  * cpdef float deltaR(float eta1, float eta2, float phi1, float phi2):             # <<<<<<<<<<<<<<
- *     return ((eta1 - eta2)**2 + (phi1 - phi2)**2)**0.5
+ *     return pow(pow(eta1 - eta2, 2) + pow(phi1 - phi2, 2), 0.5)
  */
 
   /* function exit code */
@@ -3074,7 +3074,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_TraceCall("__Pyx_PyMODINIT_FUNC PyInit_Vectors(void)", __pyx_f[0], 1, 0, __PYX_ERR(0, 1, __pyx_L1_error));
 
   /* "src/Vectors/Lorentz.pyx":5
- * from libc.math cimport sin, cos, sinh, atan2, asinh
+ * from libc.math cimport sin, cos, sinh, atan2, asinh, pow
  * 
  * __all__ = ["Px", "Py", "Pz", "PT", "Phi", "Eta", "PxPyPzEMass", "deltaR"]             # <<<<<<<<<<<<<<
  * 
@@ -3144,14 +3144,14 @@ if (!__Pyx_RefNanny) {
  *     return pt*sinh(eta)
  * 
  * cpdef float PT(float px, float py):             # <<<<<<<<<<<<<<
- *     return (px**2 + py**2)**0.5
+ *     return pow( pow(px, 2) + pow(py, 2), 0.5 )
  * 
  */
   __Pyx_TraceLine(16,0,__PYX_ERR(0, 16, __pyx_L1_error))
 
 
   /* "src/Vectors/Lorentz.pyx":19
- *     return (px**2 + py**2)**0.5
+ *     return pow( pow(px, 2) + pow(py, 2), 0.5 )
  * 
  * cpdef float Phi(float px, float py):             # <<<<<<<<<<<<<<
  *     return atan2(py, px)
@@ -3174,17 +3174,17 @@ if (!__Pyx_RefNanny) {
  *     return asinh(pz/pt)
  * 
  * cpdef float PxPyPzEMass(float px, float py, float pz, float e):             # <<<<<<<<<<<<<<
- *     cdef float s = e**2 - px**2 - py**2 - pz**2
+ *     cdef float s = pow(e, 2) - pow(px, 2) - pow(py, 2) - pow(pz, 2)
  *     if s < 0:
  */
   __Pyx_TraceLine(26,0,__PYX_ERR(0, 26, __pyx_L1_error))
 
 
   /* "src/Vectors/Lorentz.pyx":32
- *     return s**0.5
+ *     return pow(s, 0.5)
  * 
  * cpdef float deltaR(float eta1, float eta2, float phi1, float phi2):             # <<<<<<<<<<<<<<
- *     return ((eta1 - eta2)**2 + (phi1 - phi2)**2)**0.5
+ *     return pow(pow(eta1 - eta2, 2) + pow(phi1 - phi2, 2), 0.5)
  */
   __Pyx_TraceLine(32,0,__PYX_ERR(0, 32, __pyx_L1_error))
 
@@ -3192,7 +3192,7 @@ if (!__Pyx_RefNanny) {
   /* "src/Vectors/Lorentz.pyx":1
  * # cython: linetrace=True             # <<<<<<<<<<<<<<
  * 
- * from libc.math cimport sin, cos, sinh, atan2, asinh
+ * from libc.math cimport sin, cos, sinh, atan2, asinh, pow
  */
   __Pyx_TraceLine(1,0,__PYX_ERR(0, 1, __pyx_L1_error))
   __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)

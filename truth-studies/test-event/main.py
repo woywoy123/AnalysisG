@@ -1,16 +1,21 @@
 from AnalysisTopGNN.Generators import Analysis
 from AnalysisTopGNN.Plotting import TH1F
-from AnalysisTopGNN.Deprecated import Event
+#from Event import EventExperimental
+#from AnalysisTopGNN.Deprecated import Event
+from AnalysisTopGNN.Events import Event
+
+
 
 Ana = Analysis()
-Direc = "/home/tnom6927/Downloads/Samples/sm4tops/mc16a/"
-Ana.InputSample("sm4tops", Direc)
+Direc = "/CERN/Samples/Dilepton/ttH_tttt_m1000/DAOD_TOPQ1.21955751._000018.root"
+Ana.InputSample("BSM4tops", Direc)
 Ana.EventCache = True
 Ana.DumpPickle = False
-Ana.EventStop = 10
+#Ana.EventStop = 10
+#Ana.EventStart = 434
 Ana.chnk = 1
 Ana.Threads = 1
-Ana.Event = Event
+Ana.Event = Event #Experimental
 Ana.Launch()
 
 
@@ -22,30 +27,6 @@ TopJetParton = []
 TopJet = []
 for event in Ana:
     collect = {}
-    tops = event.Tops
-    
-    for t in tops:
-        al = t.Children
-        
-        trujet = t.TruthJets
-        trujetpart = [jt for k in al for jt in k.TruthJetPartons]
-        
-        jets = t.Jets
-        jetpart = [jt for k in al for jt in k.JetPartons]
-        
-        Top.append(t.CalculateMass())
-        TopChildren.append(sum(al).CalculateMass())
-        
-        TopTruthJet.append(sum(trujet).CalculateMass())
-        TopTruJetParton.append(sum(trujetpart).CalculateMass())
-       
-        if len(jets) != 0:
-            TopJet.append(sum(jets).CalculateMass())
-        if len(jetpart) != 0:
-            TopJetParton.append(sum(jetpart).CalculateMass())
-
-    for k in event.TruthJetPartons:
-        jk = event.TruthJetPartons[k].TruthJet
-        print(jk)
-
+    event = event.Trees["nominal"]
+    print(event.DetectorObjects)
 

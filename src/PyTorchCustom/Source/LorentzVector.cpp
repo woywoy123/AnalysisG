@@ -108,7 +108,8 @@ PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
   m.def("MassFromPtEtaPhiE", &MassFromPtEtaPhiE, "Calculate Invariant Mass");
   m.def("TensorToPxPyPzE", &TensorToPxPyPzE, "Convert Rapidity Tensor to Cartesian");
   m.def("TensorToPtEtaPhiE", &TensorToPtEtaPhiE, "Convert Cartesian to Rapidity"); 
-  m.def("TensorDeltaR", &TensorDeltaR, "Calculate the DeltaR between objects"); 
-
-
+  m.def("TensorDeltaR", &TensorDeltaR, "Calculate the DeltaR between objects");
+  m.def("ToPx", &Px, "Convert to Cartesian");
+  m.def("ToPy", &Py, "Convert to Cartesian");
+  m.def("ToPz", &Pz, "Convert to Cartesian");
 }
