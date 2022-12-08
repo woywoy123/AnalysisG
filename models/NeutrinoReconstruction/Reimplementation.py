@@ -1,6 +1,8 @@
 import ROOT as r
 from LorentzVector import ToPx, ToPy, ToPz
 import math 
+import numpy as np
+import torch
 
 massT = 172.5*1000
 massW = 80.385*1000
@@ -75,5 +77,102 @@ def TestNuSolutionSteps(b, muon):
     Sy_R = (float(x0p_R / Beta_mu_R) - costhetaR * Sx_R) / sinthetaR
     Sy_P = (float(x0p_P / Beta_mu_P) - costhetaP * Sx_P) / sinthetaP
     Comparison("Sy", Sy_R, Sy_P)
+
+    eps2_R = (massW**2 - massNu**2) * (1 - Beta_mu_R**2)
+    eps2_P = (massW**2 - massNu**2) * (1 - Beta_mu_P**2)
+    Comparison("eps2", eps2_R, eps2_P)
+
+    wp_R = (float(Beta_mu_R / Beta_b_R) - costhetaR) / sinthetaR
+    wp_P = (float(Beta_mu_P / Beta_b_P) - costhetaP) / sinthetaP
+    Comparison("w+", wp_R, wp_P)
+
+    wm_R = (-float(Beta_mu_R / Beta_b_R) - costhetaR) / sinthetaR
+    wm_P = (-float(Beta_mu_P / Beta_b_P) - costhetaP) / sinthetaP
+    Comparison("w-", wm_R, wm_P)
+    
+    Omega2_R = wp_R**2 + 1 - Beta_mu_R**2
+    Omega2_P = wp_P**2 + 1 - Beta_mu_P**2
+    Comparison("Omega2", Omega2_R, Omega2_P)
+    
+    x1_R = Sx_R - (Sx_R + wp_R * Sy_R)/Omega2_R
+    x1_P = Sx_P - (Sx_P + wp_P * Sy_P)/Omega2_P
+    Comparison("x1", x1_R, x1_P)
+
+    y1_R = Sy_R - (Sx_R + wp_R * Sy_R)*wp_R/Omega2_R
+    y1_P = Sy_P - (Sx_P + wp_P * Sy_P)*wp_P/Omega2_P
+    Comparison("y1", y1_R, y1_P)
+
+    Z2_R = x1_R**2 * Omega2_R - (Sy_R - wp_R * Sx_R)**2 - (massW**2 - x0_R**2 - eps2_R)
+    Z2_P = x1_P**2 * Omega2_P - (Sy_P - wp_P * Sx_P)**2 - (massW**2 - x0_P**2 - eps2_P)
+    Comparison("Z^2", Z2_R, Z2_P)
+
+    Z_R = math.sqrt(max(0, Z2_R))
+    Z_P = math.sqrt(max(0, Z2_P))
+    Comparison("Z", Z_R, Z_P)
+
+def Rotation(axis, angle):
+    c, s = math.cos(angle), math.sin(angle)
+    R_ = c * np.eye(3)
+
+    # Continue here....
+    print(R_)
+
+
+
+
+
+
+def R_T(b, muon):
+    b_root = r.TLorentzVector() 
+    b_root.SetPtEtaPhiE(b.pt, b.eta, b.phi, b.e)
+
+    mu_root = r.TLorentzVector()
+    mu_root.SetPtEtaPhiE(muon.pt, muon.eta, muon.phi, muon.e)
+    
+    b_xyz_R = b_root.X(), b_root.Y(), b_root.Z()
+    b_xyz_P = ToPx(b.pt, b.phi), ToPy(b.pt, b.phi), ToPz(b.pt, b.eta)
+    print("---- Cartesian Vectors (b-quark) ----") 
+    print("Cartesian Vector (R): ", b_xyz_R)
+    print("Cartesian Vector (P): ", b_xyz_P)
+    
+    Rotation(2, -b_root.Phi())
+
+
+
+
+
+
+def TestSingleNeutrinoSolutionSegment(b, muon, METx, METy, Sigma2):
+    print("---- INVERSE ----")
+    inv_R = np.linalg.inv(Sigma2)
+    inv_P = torch.from_numpy(Sigma2).to(dtype = torch.float32).inverse()
+    print(inv_R)
+    print(inv_P)
+    
+    print("")
+    print("---- STACK 2x3 ----")   
+    stack_R = np.vstack([inv_R, [0, 0]]).T
+    stack_P = torch.cat([inv_P, torch.tensor([0, 0]).view(-1, 1)], dim = 1)
+    print(stack_R)
+    print(stack_P)
+
+    print("")
+    print("---- STACK 3x3 ----")   
+    S2_R = np.vstack([np.vstack([inv_R, [0, 0]]).T, [0, 0, 0]])
+    S2_P = torch.cat([stack_P, torch.tensor([0, 0, 0]).view(1, -1)], dim = 0)
+    print(S2_R)
+    print(S2_P)
+    
+    print("")
+    print("---- V0 ----")
+    V0_R = np.outer([ METx, METy, 0 ], [0, 0, 1]) 
+    V0_P = torch.outer(torch.tensor([METx, METy, 0]), torch.tensor([0, 0, 1]))
+    print(V0_R)
+    print(V0_P)
+    print("")
+
+    R_T(b, muon)
+    
+
 
 

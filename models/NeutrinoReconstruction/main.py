@@ -44,8 +44,8 @@ b = singlelepton[0]
 nu = singlelepton[1]
 muon = singlelepton[2]
 
-TestNuSolutionSteps(b, muon)
-
+#TestNuSolutionSteps(b, muon)
+TestSingleNeutrinoSolutionSegment(b, muon, ToPx(met, phi), ToPy(met, phi), np.array([[2, 1], [1, 2]]))
 
 
 #sigma = np.array([[1000, 200], [200, 1000]])

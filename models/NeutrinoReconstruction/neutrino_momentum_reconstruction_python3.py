@@ -85,17 +85,19 @@ class nuSolutionSet (object ):
         x0p = - (mT2 - mW2 - b.M2())/(2*b.E())
         x0 = - (mW2 - mu.M2() - mN2)/(2* mu.E())
         Bb , Bm = b.Beta(), mu.Beta()
-
         Sx = (x0 * Bm - mu.P()*(1 - Bm **2)) / Bm **2
         Sy = (x0p / Bb - c * Sx) / s
-        
+        eps2 = (mW2 - mN2) * (1 - Bm **2)
         w = (Bm / Bb - c) / s
         w_ = (-Bm / Bb - c) / s
         Om2 = w**2 + 1 - Bm **2
-        eps2 = (mW2 - mN2) * (1 - Bm **2)
+
         x1 = Sx - (Sx + w * Sy)/Om2
         y1 = Sy - (Sx + w * Sy) * w/Om2
+        
         Z2 = x1**2 * Om2 - (Sy - w * Sx)**2 - (mW2 - x0**2 - eps2)
+
+
         Z = math.sqrt(max(0, Z2))
         for item in ['b','mu','c','s','x0','x0p', 'Sx','Sy','w','w_','x1','y1', 'Z','Om2','eps2','mW2']:
             setattr(self, item , eval(item))
@@ -154,7 +156,10 @@ class singleNeutrinoSolution(object ):
         self.solutionSet = nuSolutionSet (b, mu , mW2 , mT2)
         S2 = np.vstack ([np.vstack ([np.linalg.inv(sigma2), [0, 0]]).T, [0, 0, 0]])
         V0 = np.outer ([metX , metY , 0], [0, 0, 1])
+
+
         deltaNu = V0 - self.solutionSet.H
+
         self.X = np.dot(deltaNu.T, S2).dot(deltaNu)
         M = next(XD + XD.T for XD in (self.X.dot( Derivative ()) ,))
         solutions = intersections_ellipses (M, UnitCircle ())
