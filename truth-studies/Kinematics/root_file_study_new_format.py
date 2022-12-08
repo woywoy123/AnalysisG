@@ -18,18 +18,18 @@ def get_data_from_file_new_format(file_name):
                  'top_FromRes',
                  'met_met',
                  'met_phi',
-                 'truthjet_TopIndex',
+                 'truthjets_TopIndex',
                  'top_pt', 'top_e', 'top_eta', 'top_phi', 'top_charge',
-                 'truJparton_pt',
-                 'truJparton_e',
-                 'truJparton_eta',
-                 'truJparton_phi',
-                 'truJparton_charge',
-                 'truJparton_pdgid',
-                 'truJparton_ChildIndex',
-                 'truJparton_TruJetIndex',
+                 # 'TJparton_pt',
+                 # 'TJparton_e',
+                 # 'TJparton_eta',
+                 # 'TJparton_phi',
+                 # 'TJparton_charge',
+                 # 'TJparton_pdgid',
+                 # 'TJparton_ChildIndex',
+                 # 'TJparton_TruthJetIndex',
                 ]
-    for obj_type in ['truthjet']:
+    for obj_type in ['truthjets']:
         var_names += [f'{obj_type}_{var_type}' for var_type in ['pt', 'e', 'eta', 'phi']]
         if obj_type in ['el', 'mu']:
             var_names.append(f'{obj_type}_charge')
@@ -47,7 +47,7 @@ total_top_count = [0]
 
 
 def is_entry_ok(data, ientry, data_type):
-    truthjet_TopIndex = data['truthjet_TopIndex'][ientry]
+    truthjets_TopIndex = data['truthjets_TopIndex'][ientry]
     is_ok = True
     if len(data['top_pt'][ientry]) != 4:
         loss[0] += 1
@@ -87,17 +87,17 @@ def is_entry_ok(data, ientry, data_type):
             loss[3] += 1
             is_ok = False
     c4_ok = True
-    for entry in truthjet_TopIndex:
+    for entry in truthjets_TopIndex:
         if len(entry) > 1:
             c4_ok = False
     if not c4_ok:
         loss[4] += 1
         is_ok = False
     jets_to_tops = {0 : 0, 1 : 0, 2 : 0, 3 : 0, 4 : 0, 5 : 0, 6 : 0, 7 : 0}
-    for truthjet_idx in range(len(data['truthjet_pt'][ientry])):
-        if truthjet_TopIndex[truthjet_idx][0] == -1:
+    for truthjets_idx in range(len(data['truthjets_pt'][ientry])):
+        if truthjets_TopIndex[truthjets_idx][0] == -1:
             continue
-        jets_to_tops[truthjet_TopIndex[truthjet_idx][0]] += 1
+        jets_to_tops[truthjets_TopIndex[truthjets_idx][0]] += 1
     c5_ok = True
     for top_idx in lep_tops:
         if jets_to_tops[top_idx] != 1:
@@ -144,13 +144,13 @@ def reconstruct_mtt(data, ientry):
     top_4vecs = [ROOT.TLorentzVector() for i in range(4)]
     res_4vec = ROOT.TLorentzVector()
     from_res = [int(i) for i in data['top_FromRes'][ientry]]
-    for truthjet_idx in range(len(data['truthjet_pt'][ientry])):
-        top_idx = data['truthjet_TopIndex'][ientry][truthjet_idx][0]
+    for truthjets_idx in range(len(data['truthjets_pt'][ientry])):
+        top_idx = data['truthjets_TopIndex'][ientry][truthjets_idx][0]
         if top_idx != -1 and from_res[top_idx]:
-            res_4vec += make_4vector(data['truthjet_e'][ientry][truthjet_idx],
-                                                   data['truthjet_pt'][ientry][truthjet_idx],
-                                                   data['truthjet_eta'][ientry][truthjet_idx],
-                                                   data['truthjet_phi'][ientry][truthjet_idx]
+            res_4vec += make_4vector(data['truthjets_e'][ientry][truthjets_idx],
+                                                   data['truthjets_pt'][ientry][truthjets_idx],
+                                                   data['truthjets_eta'][ientry][truthjets_idx],
+                                                   data['truthjets_phi'][ientry][truthjets_idx]
                                                   )
     for top_idx in range(4):
         if not from_res[top_idx]:
@@ -209,13 +209,13 @@ def get_nu(data, ientry):
 
     bjets = {}
     count_jets = 0
-    for ijet in range(len(data['truthjet_pt'][ientry])):
+    for ijet in range(len(data['truthjets_pt'][ientry])):
         for itop in lep_tops:
-            if itop in data['truthjet_TopIndex'][ientry][ijet]:
+            if itop in data['truthjets_TopIndex'][ientry][ijet]:
                 count_jets += 1
                 break
-        if data['truthjet_TopIndex'][ientry][ijet][0] in lep_tops:
-            bjets[itop] = (make_4vector(data['truthjet_e'][ientry][ijet], data['truthjet_pt'][ientry][ijet], data['truthjet_eta'][ientry][ijet], data['truthjet_phi'][ientry][ijet]))
+        if data['truthjets_TopIndex'][ientry][ijet][0] in lep_tops:
+            bjets[itop] = (make_4vector(data['truthjets_e'][ientry][ijet], data['truthjets_pt'][ientry][ijet], data['truthjets_eta'][ientry][ijet], data['truthjets_phi'][ientry][ijet]))
     if len(bjets) != 2 or len(leptons) != 2 or len(nus) != 2:
         print(f'Not enough objects {len(bjets)} bjets, {len(leptons)} leptons, {len(nus)} nus, {count_jets} jets')
         return None
@@ -249,13 +249,13 @@ def reconstruct_mtt_reco(data, ientry):
     if nu_4vec == None:
         return None
     res_4vec += nu_4vec
-    for truthjet_idx in range(len(data['truthjet_pt'][ientry])):
-        top_idx = data['truthjet_TopIndex'][ientry][truthjet_idx][0]
+    for truthjets_idx in range(len(data['truthjets_pt'][ientry])):
+        top_idx = data['truthjets_TopIndex'][ientry][truthjets_idx][0]
         if top_idx != -1 and from_res[top_idx]:
-            res_4vec += make_4vector(data['truthjet_e'][ientry][truthjet_idx],
-                                                   data['truthjet_pt'][ientry][truthjet_idx],
-                                                   data['truthjet_eta'][ientry][truthjet_idx],
-                                                   data['truthjet_phi'][ientry][truthjet_idx]
+            res_4vec += make_4vector(data['truthjets_e'][ientry][truthjets_idx],
+                                                   data['truthjets_pt'][ientry][truthjets_idx],
+                                                   data['truthjets_eta'][ientry][truthjets_idx],
+                                                   data['truthjets_phi'][ientry][truthjets_idx]
                                                   )
     for top_idx in range(4):
         if not from_res[top_idx]:
@@ -273,17 +273,9 @@ def reconstruct_mtt_reco(data, ientry):
 
 import os
 file_paths = []
-base_directory = '/nfs/dust/atlas/user/sitnikov/ntuples_for_classifier'
-directories = os.listdir(f'{base_directory}')
-for directory in directories:
-    if ('user.esitniko' in directory and 'job06' in directory) or \
-       'user.tnommens' in directory:
-        print('==================')
-        print(directory)
-        files = os.listdir(f'{base_directory}/{directory}')
-        for file_name in files:
-            print(file_name.split('_')[-1].split('.')[0])
-            file_paths.append(f'{base_directory}/{directory}/{file_name}')
+base_directory = '/nfs/dust/atlas/user/sitnikov/ntuples_for_classifier/ttH_tttt_m1000'
+files = os.listdir(base_directory)
+file_paths = [f'{base_directory}/{file}' for file in files]
 
 
 datas = []
@@ -291,20 +283,14 @@ count_sm = 0
 ccc = 0
 for file_path in file_paths:
     print(file_path)
-    data_type = 'BSM_400' if '312440' in file_path else 'BSM_1000' if '312446' in file_path else 'SM'
-    if data_type == 'SM' and count_sm >= 0:
-        continue
-    if data_type == 'SM':
-        count_sm += 1
-    if data_type == 'BSM_400':
-        continue
+    data_type = 'BSM_1000'
 
-    for array in uproot.iterate(f'{file_path}:nominal', ['truthjet_pt'], step_size=100, library='np'):
-        for chunk in array['truthjet_pt']:
-        # print(array['truthjet_pt'], len(array['truthjet_pt']))
+    for array in uproot.iterate(f'{file_path}:nominal', ['truthjets_pt'], step_size=100, library='np'):
+        for chunk in array['truthjets_pt']:
+        # print(array['truthjets_pt'], len(array['truthjets_pt']))
             ccc += len(chunk)
     data, nentries = get_data_from_file_new_format(file_path)
-    datas.append({'type' : data_type, 'data' : data, 'nentries' : nentries})
+    datas.append({'type' : data_type, 'data' : data, 'nentries' : nentries, 'filename' : file_path})
 
 
 print(ccc)
@@ -319,18 +305,20 @@ mtts_reco = {'SM' : [], 'BSM_400' : [], 'BSM_1000' : []}
 topmasses = {'SM' : [], 'BSM_400' : [], 'BSM_1000' : []}
 mtt_top = {'SM' : [], 'BSM_400' : [], 'BSM_1000' : []}
 count = 0
+good_events = []
 for data_item in datas:
     nentries = data_item['nentries']
     data = data_item['data']
     data_type = data_item['type']
     for ientry in tqdm(range(nentries)):
-        n_truthjets += len(data['truthjet_pt'][ientry])
+        n_truthjets += len(data['truthjets_pt'][ientry])
         count += 1
         if is_entry_ok(data, ientry, data_type):
             # mtt = reconstruct_mtt(data, ientry)
             # mtts[data_type].append(mtt/1000)
             mtt = reconstruct_mtt_reco(data, ientry)
             if mtt:
+                good_events.append((data_item['filename'], ientry))
                 mtts_reco[data_type].append(mtt/1000)
         # tops = [[] for i in range(len(data['top_pt'][ientry]))]
         # tops_ok = [True for i in range(len(tops))]
@@ -347,16 +335,16 @@ for data_item in datas:
         #         top_type[top_idx] = 'Had'
         #     if is_lep:
         #         top_type[top_idx] = 'Lep'
-        # for truthjet_idx in range(len(data['truthjet_pt'][ientry])):
-        #     top_idx = data['truthjet_TopIndex'][ientry][truthjet_idx]
+        # for truthjets_idx in range(len(data['truthjets_pt'][ientry])):
+        #     top_idx = data['truthjets_TopIndex'][ientry][truthjets_idx]
         #     if len(top_idx) != 1:
         #         for idx in top_idx:
         #             tops_ok[idx] = False
         #     elif top_idx[0] != -1:
-        #         tops[top_idx[0]].append( make_4vector(data['truthjet_e'][ientry][truthjet_idx],
-        #                                                data['truthjet_pt'][ientry][truthjet_idx],
-        #                                                data['truthjet_eta'][ientry][truthjet_idx],
-        #                                                data['truthjet_phi'][ientry][truthjet_idx]
+        #         tops[top_idx[0]].append( make_4vector(data['truthjets_e'][ientry][truthjets_idx],
+        #                                                data['truthjets_pt'][ientry][truthjets_idx],
+        #                                                data['truthjets_eta'][ientry][truthjets_idx],
+        #                                                data['truthjets_phi'][ientry][truthjets_idx]
         #                                               ))
         # for top_idx in range(len(data['children_pt'][ientry])):
         #     for child_idx in range(len(data['children_pt'][ientry][top_idx])):
@@ -385,14 +373,16 @@ for data_item in datas:
         #     mtt_top[data_type].append(top4vec.M()/1000)
 
 
-# make_plot(mtts, 'truthjet_mtt/mtt_test', plotting_range=(0, 1500), nbins=200)
-# make_plot(topmasses, 'truthjet_mtt/topmass', plotting_range=(100, 300), nbins=200)
-# make_plot(mtt_top, 'truthjet_mtt/mtt_tops', plotting_range=(0, 1500), nbins=200)
+# make_plot(mtts, 'truthjets_mtt/mtt_test', plotting_range=(0, 1500), nbins=200)
+# make_plot(topmasses, 'truthjets_mtt/topmass', plotting_range=(100, 300), nbins=200)
+# make_plot(mtt_top, 'truthjets_mtt/mtt_tops', plotting_range=(0, 1500), nbins=200)
 import pickle
-# with open('mtt_truth.pkl', 'wb') as pkl:
+# with open('mtt_truth_nf.pkl', 'wb') as pkl:
 #     pickle.dump(mtts, pkl)
-with open('mtt_reco.pkl', 'wb') as pkl:
-    pickle.dump(mtts_reco, pkl)
+# with open('mtt_reco_nf.pkl', 'wb') as pkl:
+#     pickle.dump(mtts_reco, pkl)
+with open('good_events.pkl', 'wb') as pkl:
+    pickle.dump(good_events, pkl)
 
 print(len(mtts['BSM_1000']))
 print(len(mtts_reco['BSM_1000']))
