@@ -343,15 +343,11 @@ def TopChildrenPT(Ana):
         for t in event.Tops:
             for c in t.Children:
                 if PDGID[abs(c.pdgid)] == "b":
-                    if t.FromRes: 
-                        PtB["fromRes"].append(c.pt)
-                    else: 
-                        PtB["fromSpec"].append(c.pt)
+                    if t.FromRes: PtB["fromRes"].append(c.pt/1000.)
+                    else: PtB["fromSpec"].append(c.pt/1000.)
                 elif abs(c.pdgid) in _charged_leptons:
-                    if t.FromRes: 
-                        PtL["fromRes"].append(c.pt)
-                    else: 
-                        PtL["fromSpec"].append(c.pt)
+                    if t.FromRes: PtL["fromRes"].append(c.pt/1000.)
+                    else: PtL["fromSpec"].append(c.pt/1000.)
      
     Plots = PlotTemplate(nevents, lumi)
     Plots["Title"] = "Transverse momentum of b-quarks" 
