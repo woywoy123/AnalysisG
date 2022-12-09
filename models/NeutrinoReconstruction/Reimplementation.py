@@ -110,16 +110,25 @@ def TestNuSolutionSteps(b, muon):
     Z_P = math.sqrt(max(0, Z2_P))
     Comparison("Z", Z_R, Z_P)
 
-def Rotation(axis, angle):
+
+
+
+
+
+
+def Rotation_R(axis, angle):
     c, s = math.cos(angle), math.sin(angle)
-    R_ = c * np.eye(3)
+    R_R = c * np.eye(3)
+    R_P = c * torch.eye(3)
 
-    # Continue here....
-    print(R_)
-
-
-
-
+    #print("")
+    #print("------ Rotation ------")
+    #print(R_R)
+    #print(R_P)
+    #print("") 
+    for i in [-1, 0, 1]:
+        R_R[(axis - i)%3, (axis + i)%3] = i*s + (1 - i*i)
+    return R_R
 
 
 def R_T(b, muon):
@@ -135,9 +144,13 @@ def R_T(b, muon):
     print("Cartesian Vector (R): ", b_xyz_R)
     print("Cartesian Vector (P): ", b_xyz_P)
     
-    Rotation(2, -b_root.Phi())
-
-
+    R_z = Rotation(2, -b_root.Phi())
+    R_y = Rotation(1, 0.5*math.pi -mu_root.Theta())
+    
+    x, y, z = R_y.dot(R_z.dot(b_xyz_R))
+    print("->", Rotation(0, -math.atan2(z, y)))
+    R_x = next(Rotation(0, -math.atan2(z, y)) for x, y, z in (R_y.dot(R_z.dot(b_xyz_R)), ))
+    print("+>", R_x)
 
 
 

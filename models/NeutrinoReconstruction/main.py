@@ -26,7 +26,7 @@ singlelepton = [i for i in ev.TopChildren if i.Parent[0].DecayLeptonically()]
 
 from neutrino_momentum_reconstruction_python3 import singleNeutrinoSolution as sNS
 import ROOT as r
-from LorentzVector import ToPx, ToPy, ToPz
+from PhysicsCPU import ToPx, ToPy, ToPz
 import numpy as np
 from Reimplementation import *
 
