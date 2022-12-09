@@ -97,7 +97,7 @@ def ReconstructedMassFromChildren(Ana):
 
         print("-> ", (reT[0] + reT[1]).CalculateMass())
         print((res[0] + res[1]).CalculateMass())
-        print([t.FromRes for l in stringTC for t in stringTC[l]])
+        print([t.Parent[0].FromRes for l in stringTC for t in stringTC[l]])
         print(sum([t for l in stringR for t in stringR[l]]).CalculateMass())
         
         ResonanceMass["-".join([k for k in stringR for p in stringR[k]])] += [sum(res).CalculateMass()]
@@ -368,7 +368,6 @@ def TopChildrenPT(Ana):
         _Plots["xData"] = PtB[i]
         Plots["Histograms"] += [TH1F(**_Plots)]
     X = CombineTH1F(**Plots)
-    X = TH1F(**Plots)
     X.SaveFigure()
 
     Plots = PlotTemplate(nevents, lumi)
@@ -386,7 +385,6 @@ def TopChildrenPT(Ana):
         _Plots["xData"] = PtL[i]
         Plots["Histograms"] += [TH1F(**_Plots)]
     X = CombineTH1F(**Plots)
-    X = TH1F(**Plots)
     X.SaveFigure()
 
    
