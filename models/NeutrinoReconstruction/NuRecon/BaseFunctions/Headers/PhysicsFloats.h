@@ -16,6 +16,9 @@ namespace PhysicsFloats
 	torch::Tensor Mass2Cartesian(double px, double py, double pz, double e, std::string device);
 	torch::Tensor MassCartesian(double px, double py, double pz, double e, std::string device);
 	
+	torch::Tensor P2Cartesian(double px, double py, double pz, std::string device);
+	torch::Tensor P2Polar(double pt, double eta, double phi, std::string device); 
+
 	torch::Tensor BetaPolar(double pt, double eta, double phi, double e, std::string device);
 	torch::Tensor BetaCartesian(double px, double py, double pz, double e, std::string device);
 	
