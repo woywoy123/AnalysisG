@@ -80,7 +80,6 @@ class nuSolutionSet (object ):
     def __init__(self , b, mu , # Lorentz Vectors
                  mW2=mW**2, mT2=mT**2, mN2=mN **2):
         c = r.Math.VectorUtil.CosTheta(b,mu)
-        # c = CosTheta(b, mu)
         s = math.sqrt(1 - c**2)
         x0p = - (mT2 - mW2 - b.M2())/(2*b.E())
         x0 = - (mW2 - mu.M2() - mN2)/(2* mu.E())

@@ -3,6 +3,7 @@ from LorentzVector import ToPx, ToPy, ToPz
 import math 
 import numpy as np
 import torch
+import Floats
 
 massT = 172.5*1000
 massW = 80.385*1000
@@ -31,7 +32,7 @@ def CosTheta(p1, p2):
 def Beta(p):
     return math.sqrt(ToPx(p.pt, p.phi)**2 + ToPy(p.pt, p.phi)**2 + ToPz(p.pt, p.eta)**2)/p.e
 
-def Comparison(string, root, pred):
+def Comparison(string, root, pred, _torch):
     print(string + " (R) -> ", root)
     print(string + " (P) -> ", pred)
     print("DIFF: ", pred - root)

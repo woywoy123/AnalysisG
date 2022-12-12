@@ -7,13 +7,25 @@ os.environ["CC"] = "gcc-11"
 os.environ["CXX"] = "gcc-11"
 
 setup(
-        name = "PhysicsCPU", 
+        name = "BaseFunctions", 
         package_data = {
-            "PhysicsCPU" : ["BaseFunctions/Headers/Physics.h"]
-            }, 
+            "Floats" : ["BaseFunctions/Headers/PhysicsFloats.h", 
+                        "BaseFunctions/Headers/PhysicsTensors.h"], 
+            "Tensors" : ["BaseFunctions/Headers/PhysicsTensors.h"], }, 
         ext_modules = [
-            CppExtension("PhysicsCPU", ["BaseFunctions/CXX/Physics.cxx"]), 
-
+            CppExtension("Floats", ["BaseFunctions/CXX/PhysicsTensors.cxx", 
+                                    "BaseFunctions/CXX/PhysicsFloats.cxx", 
+                                    "BaseFunctions/Shared/PhysicsFloats.cxx"]), 
+            CppExtension("Tensors", ["BaseFunctions/CXX/PhysicsTensors.cxx", 
+                                     "BaseFunctions/Shared/PhysicsTensors.cxx"]), 
         ],
-        cmdclass = {"build_ext" : BuildExtension},
+        cmdclass = {"build_ext" : BuildExtension}
 )
+#
+#setup(
+#        name = "NuSolution", 
+#        package_data = {
+#            "NuSolFloats" : []
+#
+
+        
