@@ -45,7 +45,7 @@ def TruthJetPartons(Ana):
         topTJ = [l for t in event.Tops for l in t.TruthJets]
         for tj in event.TruthJets:
             pt = tj.pt
-            for p in tj.Partons:
+            for p in tj.Parton:
                 TopTruthJetPartons[PDGID[abs(p.pdgid)]] += 1
                 PTFraction[PDGID[abs(p.pdgid)]].append(p.pt/pt)
                 DeltaRPartonTJ[PDGID[abs(p.pdgid)]].append(tj.DeltaR(p))
@@ -134,7 +134,7 @@ def PartonToChildTruthJet(Ana):
             ChildrenTJIndex[c] = []
             Nchildren[PDGID[abs(event.TopChildren[c].pdgid)]] += 1
         
-        for c in event.TruthJetPartons:
+        for c in event.TruthJetPartons.values():
             for tci in ChildrenIndex:
                 tc = ChildrenIndex[tci]
                 if tc in c.Parent:

@@ -1,15 +1,11 @@
 import numpy as np
-import ROOT as r
+# import ROOT as r
+import vector
 import math
 from scipy.optimize import leastsq
 mT = 172.5*1000 # MeV : top quark mass
 mW = 80.385*1000 # MeV : W boson mass
 mN = 0 # GeV : neutrino mass
-
-# !!!!!! All credit of this code goes to the authors of the paper below !!!!!
-# - https://arxiv.org/pdf/1305.1878.pdf
-
-
 def UnitCircle ():
     '''Unit circle in extended representation '''
     return np.diag ([1, 1, -1])
@@ -68,68 +64,65 @@ def intersections_ellipses (A, B, returnLines =False ):
 
 def CosTheta(v1, v2):
     '''Function to replace ROOT.Math.VectorUtils.CosTheta()'''
-    v1_sq = v1.X()**2 + v1.Y()**2 + v1.Z()**2
-    v2_sq = v2.X()**2 + v2.Y()**2 + v2.Z()**2
+    v1_sq = v1.x**2 + v1.y**2 + v1.z**2
+    v2_sq = v2.x**2 + v2.y**2 + v2.z**2
     if v1_sq == 0 or v2_sq == 0:
         return 0
-    v1v2 = v1.X()*v2.X() + v1.Y()*v2.Y() + v1.Z()*v2.Z()
+    v1v2 = v1.x*v2.x + v1.y*v2.y + v1.z*v2.z
     return v1v2/(v1_sq*v2_sq)**0.5
 
 class nuSolutionSet (object ):
     '''Definitions for nu analytic solution , t->b,mu ,nu '''
     def __init__(self , b, mu , # Lorentz Vectors
                  mW2=mW**2, mT2=mT**2, mN2=mN **2):
-        c = r.Math.VectorUtil.CosTheta(b,mu)
+        # c = r.Math.VectorUtil.CosTheta(b,mu)
+        c = CosTheta(b, mu)
         s = math.sqrt(1 - c**2)
-        x0p = - (mT2 - mW2 - b.M2())/(2*b.E())
-        x0 = - (mW2 - mu.M2() - mN2)/(2* mu.E())
-        Bb , Bm = b.Beta(), mu.Beta()
-        Sx = (x0 * Bm - mu.P()*(1 - Bm **2)) / Bm **2
+        x0p = - (mT2 - mW2 - b.tau2)/(2*b.e)
+        x0 = - (mW2 - mu.tau2 - mN2)/(2* mu.e)
+        Bb , Bm = b.beta, mu.beta
+        Sx = (x0 * Bm - mu.mag*(1 - Bm **2)) / Bm **2
         Sy = (x0p / Bb - c * Sx) / s
-        eps2 = (mW2 - mN2) * (1 - Bm **2)
         w = (Bm / Bb - c) / s
         w_ = (-Bm / Bb - c) / s
         Om2 = w**2 + 1 - Bm **2
-
+        eps2 = (mW2 - mN2) * (1 - Bm **2)
         x1 = Sx - (Sx + w * Sy)/Om2
         y1 = Sy - (Sx + w * Sy) * w/Om2
-        
         Z2 = x1**2 * Om2 - (Sy - w * Sx)**2 - (mW2 - x0**2 - eps2)
-
-
         Z = math.sqrt(max(0, Z2))
         for item in ['b','mu','c','s','x0','x0p', 'Sx','Sy','w','w_','x1','y1', 'Z','Om2','eps2','mW2']:
             setattr(self, item , eval(item))
     @property
     def K(self ):
-        '''Extended rotation from F' to F coord.'''
+        """Extended rotation from F' to F coord."""
         return np.array ([[ self.c, -self.s, 0, 0], [self.s, self.c, 0, 0], [ 0, 0, 1, 0], [ 0, 0, 0, 1]])
     @property
     def A_mu(self ):
         '''F coord.constraint on W momentum : ellipsoid '''
-        B2 = self.mu.Beta ()**2
+        B2 = self.mu.beta**2
         SxB2 = self.Sx * B2
         F = self.mW2 - self.x0 **2 - self.eps2
         return np.array ([[1 -B2 , 0, 0, SxB2], [ 0, 1, 0, 0], [ 0, 0, 1, 0], [SxB2 , 0, 0, F]])
     @property
     def A_b(self ):
         '''F coord.constraint on W momentum : ellipsoid '''
-        K, B = self.K, self.b.Beta ()
+        K, B = self.K, self.b.beta
         mW2 , x0p = self.mW2 , self.x0p
         A_b_ = np.array ([[1 -B*B, 0, 0, B*x0p], [ 0, 1, 0, 0], [ 0, 0, 1, 0], [B*x0p , 0, 0, mW2 -x0p **2]])
         return K.dot(A_b_ ).dot(K.T)
     @property
     def R_T(self ):
         '''Rotation from F coord.to laboratory coord.'''
-        b_xyz = self.b.X(), self.b.Y(), self.b.Z()
-        R_z = R(2, -self.mu.Phi ())
-        R_y = R(1, 0.5* math.pi - self.mu.Theta ())
+        b_xyz = self.b.x, self.b.y, self.b.z
+        R_z = R(2, -self.mu.phi)
+        R_y = R(1, 0.5* math.pi - self.mu.theta)
         R_x = next(R(0,-math.atan2(z,y)) for x,y,z in (R_y.dot(R_z.dot(b_xyz )) ,))
         return R_z.T.dot(R_y.T.dot(R_x.T))
     @property
     def H_tilde(self ):
         '''Transformation of t=[c,s ,1] to p_nu: F coord.'''
-        x1 , y1 , p = self.x1 , self.y1 , self.mu.P()
+        x1 , y1 , p = self.x1 , self.y1 , self.mu.mag
         Z, w, Om = self.Z, self.w, math.sqrt(self.Om2)
         return np.array ([[ Z/Om , 0, x1 -p], [w*Z/Om , 0, y1], [ 0, Z, 0]])
     @property
@@ -147,7 +140,7 @@ class nuSolutionSet (object ):
         return HpInv.T.dot( UnitCircle ()).dot(HpInv)
 
 class singleNeutrinoSolution(object ):
-    '''Most likely neutrino momentum for tt -->lepton+jets '''
+    """Most likely neutrino momentum for tt -->lepton+jets """
     def __init__(self , b, mu , # Lorentz Vectors
                 metX , metY, # Momentum imbalance
                 sigma2 , # Mo.imbalance unc.matrix
@@ -155,10 +148,7 @@ class singleNeutrinoSolution(object ):
         self.solutionSet = nuSolutionSet (b, mu , mW2 , mT2)
         S2 = np.vstack ([np.vstack ([np.linalg.inv(sigma2), [0, 0]]).T, [0, 0, 0]])
         V0 = np.outer ([metX , metY , 0], [0, 0, 1])
-
-
         deltaNu = V0 - self.solutionSet.H
-
         self.X = np.dot(deltaNu.T, S2).dot(deltaNu)
         M = next(XD + XD.T for XD in (self.X.dot( Derivative ()) ,))
         solutions = intersections_ellipses (M, UnitCircle ())

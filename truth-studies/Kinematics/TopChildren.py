@@ -16,6 +16,7 @@ CounterPDGID = {"d"            : 0, "u"       : 0, "s"              : 0, "c"    
                 "$\\gamma$"    : 0}
  
 _leptons = [11, 12, 13, 14, 15, 16]
+_charged_leptons = [11, 13, 15]
 
 
 def PlotTemplate(nevents, lumi):
@@ -96,7 +97,7 @@ def ReconstructedMassFromChildren(Ana):
 
         print("-> ", (reT[0] + reT[1]).CalculateMass())
         print((res[0] + res[1]).CalculateMass())
-        print([t.FromRes for l in stringTC for t in stringTC[l]])
+        print([t.Parent[0].FromRes for l in stringTC for t in stringTC[l]])
         print(sum([t for l in stringR for t in stringR[l]]).CalculateMass())
         
         ResonanceMass["-".join([k for k in stringR for p in stringR[k]])] += [sum(res).CalculateMass()]
@@ -246,6 +247,46 @@ def FractionPTChildren(Ana):
     X = CombineTH1F(**Plots)
     X.SaveFigure()
 
+def DeltaRLepB(Ana):
+
+    nevents = 0
+    lumi = 0
+    DeltaR_lepB = {"sameTop": [], "differentTop": []}
+    
+    for ev in Ana:
+        event = ev.Trees["nominal"]
+        nevents += 1
+        lumi += event.Lumi
+
+        bquarks = [c for t in event.Tops for c in t.Children if PDGID[abs(c.pdgid)] == "b"]
+
+        for t in event.Tops:
+            
+            lepton_thisTop = [c for c in t.Children if abs(c.pdgid) in _charged_leptons]
+            if len(lepton_thisTop) != 1: continue
+            for ib,b in enumerate(bquarks):
+                if b in t.Children:
+                    DeltaR_lepB["sameTop"].append(lepton_thisTop[0].DeltaR(b))
+                else:
+                    DeltaR_lepB["differentTop"].append(lepton_thisTop[0].DeltaR(b)) 
+
+    Plots = PlotTemplate(nevents, lumi)
+    Plots["Title"] = "$\Delta$R Between Lepton and B-quark"
+    Plots["xTitle"] = "$\Delta$R"
+    Plots["xStep"] = 0.2
+    Plots["Filename"] = "Figure_2.1h"
+    Plots["xScaling"] = 2.5
+    Plots["Histograms"] = []
+    
+    for i in DeltaR_lepB:
+        _Plots = {}
+        _Plots["Title"] = i
+        _Plots["xData"] = DeltaR_lepB[i]
+        Plots["Histograms"] += [TH1F(**_Plots)]
+    
+    X = CombineTH1F(**Plots)
+    X.SaveFigure()
+
 
 def MassDiff(Ana):
     Fr = {"Cython" : [], "PyTorch" : [], "TruthTop" : []}
@@ -287,6 +328,61 @@ def MassDiff(Ana):
     X = CombineTH1F(**Plots)
     X.Compile()
     X.SaveFigure()
+
+def TopChildrenPT(Ana):
+    
+    nevents = 0
+    lumi = 0
+    PtB = {"fromRes": [], "fromSpec": []}
+    PtL = {"fromRes": [], "fromSpec": []}
+
+    for ev in Ana:
+        event = ev.Trees["nominal"]
+        nevents += 1
+        lumi += event.Lumi
+        for t in event.Tops:
+            for c in t.Children:
+                if PDGID[abs(c.pdgid)] == "b":
+                    if t.FromRes: PtB["fromRes"].append(c.pt/1000.)
+                    else: PtB["fromSpec"].append(c.pt/1000.)
+                elif abs(c.pdgid) in _charged_leptons:
+                    if t.FromRes: PtL["fromRes"].append(c.pt/1000.)
+                    else: PtL["fromSpec"].append(c.pt/1000.)
+     
+    Plots = PlotTemplate(nevents, lumi)
+    Plots["Title"] = "Transverse momentum of b-quarks" 
+    Plots["xTitle"] = "Transverse Momentum (GeV)"
+    Plots["xBins"] = 100
+    Plots["xMin"] = 0
+    Plots["xMax"] = 1000
+    Plots["Filename"] = "Figure_2.1i"
+    Plots["Histograms"] = []
+        
+    for i in PtB:
+        _Plots = {}
+        _Plots["Title"] = i
+        _Plots["xData"] = PtB[i]
+        Plots["Histograms"] += [TH1F(**_Plots)]
+    X = CombineTH1F(**Plots)
+    X.SaveFigure()
+
+    Plots = PlotTemplate(nevents, lumi)
+    Plots["Title"] = "Transverse momentum of leptons" 
+    Plots["xTitle"] = "Transverse Momentum (GeV)"
+    Plots["xBins"] = 100
+    Plots["xMin"] = 0
+    Plots["xMax"] = 1000
+    Plots["Filename"] = "Figure_2.1j"
+    Plots["Histograms"] = []
+        
+    for i in PtL:
+        _Plots = {}
+        _Plots["Title"] = i
+        _Plots["xData"] = PtL[i]
+        Plots["Histograms"] += [TH1F(**_Plots)]
+    X = CombineTH1F(**Plots)
+    X.SaveFigure()
+
    
 
 
