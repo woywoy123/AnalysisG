@@ -9,6 +9,7 @@ class ROOTFile(Hashing):
         self._lock = False
     
     def MakeHash(self):
+        int: i 
         for i in self.EventMap:
             _hash = self.MD5(self.Filename + "/" + str(self.EventMap[i].EventIndex))
             self.EventMap[i].Filename = _hash
