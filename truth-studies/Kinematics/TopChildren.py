@@ -138,6 +138,54 @@ def ReconstructedMassFromChildren(Ana):
     X = CombineTH1F(**Plots)
     X.SaveFigure()
 
+def ReconstructedMassFromChildrenWithoutNeutrinos(Ana):
+
+    ResonanceMass = {"With neutrinos" : [], "Without neutrinos" : []}
+
+    nevents = 0
+    lumi = 0
+    for ev in Ana:
+        
+        event = ev.Trees["nominal"]
+        nevents += 1
+        lumi += event.Lumi
+
+        children_res = []
+        children_res_nuEx = []
+        
+        for t in event.Tops:
+
+            children_all = [c for c in t.Children]
+            children_nuEx = [c for c in t.Children if abs(c.pdgid) not in [12,14,16]]
+            
+            if len(t.Children) == 0:
+                continue
+
+            if t.FromRes == 1:
+                children_res += children_all
+                children_res_nuEx += children_nuEx
+        
+        ResonanceMass["With neutrinos"] += [sum(children_res).CalculateMass()]
+        ResonanceMass["Without neutrinos"] += [sum(children_res_nuEx).CalculateMass()]
+
+    Plots = PlotTemplate(nevents, lumi)
+    Plots["Title"] = "Reconstructed Invariant Scalar H Mass from Top Decay Products"
+    Plots["xTitle"] = "Invariant Scalar H Mass (GeV)"
+    Plots["xBins"] = 1000
+    Plots["xMin"] = 0
+    Plots["xMax"] = 2000
+    Plots["Filename"] = "Figure_2.1d"
+    Plots["Histograms"] = []
+
+    for i in ResonanceMass:
+        _Plots = {}
+        _Plots["Title"] = i
+        _Plots["xData"] = ResonanceMass[i]
+        Plots["Histograms"].append(TH1F(**_Plots))
+    
+    X = CombineTH1F(**Plots)
+    X.SaveFigure()
+
 
 def DeltaRChildren(Ana):
     ChildrenCluster = {"Had" : [], "Lep" : []}
@@ -169,7 +217,7 @@ def DeltaRChildren(Ana):
     Plots["Title"] = "$\Delta$R Between Decay Products of Mutual Top"
     Plots["xTitle"] = "$\Delta$R"
     Plots["xStep"] = 0.2
-    Plots["Filename"] = "Figure_2.1d"
+    Plots["Filename"] = "Figure_2.1e"
     Plots["xScaling"] = 2.5
     Plots["Histograms"] = []
     
@@ -187,7 +235,7 @@ def DeltaRChildren(Ana):
     Plots["Title"] = "$\Delta$R Between Parent Top and Decay Products"
     Plots["xTitle"] = "$\Delta$R"
     Plots["xStep"] = 0.2
-    Plots["Filename"] = "Figure_2.1e"
+    Plots["Filename"] = "Figure_2.1f"
     Plots["xScaling"] = 2.5
     Plots["Histograms"] = []
     
@@ -212,7 +260,7 @@ def DeltaRChildren(Ana):
     Plots["yMin"] = 0
     Plots["yData"] = ChildrenClusterPT["DelR"]
     Plots["xData"] = ChildrenClusterPT["PT"]
-    Plots["Filename"] = "Figure_2.1f"
+    Plots["Filename"] = "Figure_2.1g"
     X = TH2F(**Plots)
     X.SaveFigure()
 
@@ -235,7 +283,7 @@ def FractionPTChildren(Ana):
     Plots["xTitle"] = "Fraction"
     Plots["xStep"] = 0.2
     Plots["xMax"] = 5
-    Plots["Filename"] = "Figure_2.1g"
+    Plots["Filename"] = "Figure_2.1h"
     Plots["Histograms"] = []
     
     for i in FractionID:
@@ -274,7 +322,7 @@ def DeltaRLepB(Ana):
     Plots["Title"] = "$\Delta$R Between Lepton and B-quark"
     Plots["xTitle"] = "$\Delta$R"
     Plots["xStep"] = 0.2
-    Plots["Filename"] = "Figure_2.1h"
+    Plots["Filename"] = "Figure_2.1i"
     Plots["xScaling"] = 2.5
     Plots["Histograms"] = []
     
@@ -317,7 +365,7 @@ def MassDiff(Ana):
     Plots["xMax"] = 200
     Plots["xMin"] = 120
     Plots["Stack"] = True
-    Plots["Filename"] = "Figure_2.1f"
+    Plots["Filename"] = "Figure_2.1j"
     Plots["Histograms"] = []
         
     for i in Fr:
@@ -329,25 +377,29 @@ def MassDiff(Ana):
     X.Compile()
     X.SaveFigure()
 
-def TopChildrenPT(Ana):
+def TopChildrenKinematics(Ana):
     
     nevents = 0
     lumi = 0
-    PtB = {"fromRes": [], "fromSpec": []}
-    PtL = {"fromRes": [], "fromSpec": []}
+    kinB = {"pt": {"fromRes": [], "fromSpec": []}, "eta": {"fromRes": [], "fromSpec": []}, "phi": {"fromRes": [], "fromSpec": []}}
+    kinL = {"pt": {"fromRes": [], "fromSpec": []}, "eta": {"fromRes": [], "fromSpec": []}, "phi": {"fromRes": [], "fromSpec": []}}
 
     for ev in Ana:
         event = ev.Trees["nominal"]
         nevents += 1
         lumi += event.Lumi
         for t in event.Tops:
+            if t.FromRes: res = "fromRes"
+            else: res = "fromSpec"
             for c in t.Children:
                 if PDGID[abs(c.pdgid)] == "b":
-                    if t.FromRes: PtB["fromRes"].append(c.pt/1000.)
-                    else: PtB["fromSpec"].append(c.pt/1000.)
+                    kinB["pt"][res].append(c.pt/1000.)
+                    kinB["eta"][res].append(c.eta)
+                    kinB["phi"][res].append(c.phi)
                 elif abs(c.pdgid) in _charged_leptons:
-                    if t.FromRes: PtL["fromRes"].append(c.pt/1000.)
-                    else: PtL["fromSpec"].append(c.pt/1000.)
+                    kinL["pt"][res].append(c.pt/1000.)
+                    kinL["eta"][res].append(c.eta)
+                    kinL["phi"][res].append(c.phi)
      
     Plots = PlotTemplate(nevents, lumi)
     Plots["Title"] = "Transverse momentum of b-quarks" 
@@ -355,13 +407,47 @@ def TopChildrenPT(Ana):
     Plots["xBins"] = 100
     Plots["xMin"] = 0
     Plots["xMax"] = 1000
-    Plots["Filename"] = "Figure_2.1i"
+    Plots["Filename"] = "Figure_2.1k"
     Plots["Histograms"] = []
         
-    for i in PtB:
+    for i in kinB["pt"]:
         _Plots = {}
         _Plots["Title"] = i
-        _Plots["xData"] = PtB[i]
+        _Plots["xData"] = kinB["pt"][i]
+        Plots["Histograms"] += [TH1F(**_Plots)]
+    X = CombineTH1F(**Plots)
+    X.SaveFigure()
+
+    Plots = PlotTemplate(nevents, lumi)
+    Plots["Title"] = "Pseudorapidity of b-quarks" 
+    Plots["xTitle"] = "Eta"
+    Plots["xBins"] = 50
+    Plots["xMin"] = -5
+    Plots["xMax"] = 5
+    Plots["Filename"] = "Figure_2.1l"
+    Plots["Histograms"] = []
+        
+    for i in kinB["eta"]:
+        _Plots = {}
+        _Plots["Title"] = i
+        _Plots["xData"] = kinB["eta"][i]
+        Plots["Histograms"] += [TH1F(**_Plots)]
+    X = CombineTH1F(**Plots)
+    X.SaveFigure()
+
+    Plots = PlotTemplate(nevents, lumi)
+    Plots["Title"] = "Azimuth of b-quarks" 
+    Plots["xTitle"] = "Phi"
+    Plots["xBins"] = 70
+    Plots["xMin"] = -3.5
+    Plots["xMax"] = 3.5
+    Plots["Filename"] = "Figure_2.1m"
+    Plots["Histograms"] = []
+        
+    for i in kinB["phi"]:
+        _Plots = {}
+        _Plots["Title"] = i
+        _Plots["xData"] = kinB["phi"][i]
         Plots["Histograms"] += [TH1F(**_Plots)]
     X = CombineTH1F(**Plots)
     X.SaveFigure()
@@ -372,13 +458,47 @@ def TopChildrenPT(Ana):
     Plots["xBins"] = 100
     Plots["xMin"] = 0
     Plots["xMax"] = 1000
-    Plots["Filename"] = "Figure_2.1j"
+    Plots["Filename"] = "Figure_2.1n"
     Plots["Histograms"] = []
         
-    for i in PtL:
+    for i in kinL["pt"]:
         _Plots = {}
         _Plots["Title"] = i
-        _Plots["xData"] = PtL[i]
+        _Plots["xData"] = kinL["pt"][i]
+        Plots["Histograms"] += [TH1F(**_Plots)]
+    X = CombineTH1F(**Plots)
+    X.SaveFigure()
+
+    Plots = PlotTemplate(nevents, lumi)
+    Plots["Title"] = "Pseudorapidity of leptons" 
+    Plots["xTitle"] = "Eta"
+    Plots["xBins"] = 50
+    Plots["xMin"] = -5
+    Plots["xMax"] = 5
+    Plots["Filename"] = "Figure_2.1o"
+    Plots["Histograms"] = []
+        
+    for i in kinL["eta"]:
+        _Plots = {}
+        _Plots["Title"] = i
+        _Plots["xData"] = kinL["eta"][i]
+        Plots["Histograms"] += [TH1F(**_Plots)]
+    X = CombineTH1F(**Plots)
+    X.SaveFigure()
+
+    Plots = PlotTemplate(nevents, lumi)
+    Plots["Title"] = "Azimuth of leptons" 
+    Plots["xTitle"] = "Phi"
+    Plots["xBins"] = 70
+    Plots["xMin"] = -3.5
+    Plots["xMax"] = 3.5
+    Plots["Filename"] = "Figure_2.1p"
+    Plots["Histograms"] = []
+        
+    for i in kinL["phi"]:
+        _Plots = {}
+        _Plots["Title"] = i
+        _Plots["xData"] = kinL["phi"][i]
         Plots["Histograms"] += [TH1F(**_Plots)]
     X = CombineTH1F(**Plots)
     X.SaveFigure()
