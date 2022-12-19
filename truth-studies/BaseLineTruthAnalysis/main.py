@@ -4,6 +4,7 @@ from AnalysisTopGNN.IO import PickleObject, UnpickleObject
 from AnalysisTopGNN.Plotting import TH1F, CombineTH1F
 from SelectionTests import *
 from Dilepton import *
+from TestFromRes import *
 
 massPoints = ["1000"] # ["400", "500", "600", "700", "800", "900", "1000"]
 Modes = ["Dilepton"]#, "SingleLepton"]
@@ -22,8 +23,9 @@ for Mode in Modes:
         Ana.DumpPickle = True
         Ana.Launch()
 
-    Selection(Ana)
-    #DileptonAnalysis(Ana)
+    # Selection(Ana)
+    # DileptonAnalysis(Ana)
+    TestFromRes(Ana)
 
 
 
