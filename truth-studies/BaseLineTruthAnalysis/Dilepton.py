@@ -2,7 +2,6 @@ from AnalysisTopGNN.Generators import Analysis
 from AnalysisTopGNN.Events import Event
 from AnalysisTopGNN.IO import PickleObject, UnpickleObject
 from AnalysisTopGNN.Plotting import TH1F, CombineTH1F
-#import numpy as np
 from itertools import combinations
 
 PDGID = { 1 : "d"        ,  2 : "u"             ,  3 : "s", 
@@ -39,6 +38,14 @@ def DileptonAnalysis(Ana):
     nevents = 0
     neventsNotPassed = 0
     lumi = 0
+    eff_closestLeptonicGroup = 0
+    eff_remainingLeptonicGroup = 0
+    eff_bestHadronicGroup = 0
+    eff_remainingHadronicGroup = 0
+    eff_resonance_had = 0
+    eff_resonance_lep = 0
+    eff_resonance = 0
+
     for ev in Ana:
 
         print("---New event---")
@@ -50,6 +57,7 @@ def DileptonAnalysis(Ana):
         lquarks = []
         bquarks = []
         leptons = []
+
         for p in event.TopChildren:
             if abs(p.pdgid) < 5:
                 lquarks.append(p)
@@ -62,6 +70,7 @@ def DileptonAnalysis(Ana):
         print(f"Number of leptons: {len(leptons)}")
         print(f"Charge of leptons: {[l.charge for l in leptons]}")
 
+        # Only keep same-sign dilepton events with 4 b's and 4 non-b's
         if len(leptons) != 2 or leptons[0].charge != leptons[1].charge or len(bquarks) != 4 or len(lquarks) != 4:
             neventsNotPassed += 1
             continue
@@ -70,63 +79,165 @@ def DileptonAnalysis(Ana):
         closestPairs = []
         while leptons != []:
             lowestDR = 100
-            for il, l in enumerate(leptons):
-                print(f"lepton {il}")
-                for ib, b in enumerate(bquarks):
-                    print(f"b-quark {ib}")
-                    print(f"dR = {l.DeltaR(b)}")
+            for l in leptons:
+                for b in bquarks:
                     if l.DeltaR(b) < lowestDR: # Possibility of adding requirement: if np.sign(b.charge) != np.sign(l.charge)
-                        print("Closest so far")
                         lowestDR = l.DeltaR(b)
                         closestB = b
                         closestL = l
-            print("Removing last closest lepton and b from lists and adding them to closestPairs")
+            # Removing last closest lepton and b from lists and add them to closestPairs
             leptons.remove(closestL)
             bquarks.remove(closestB)
             closestPairs.append([closestB, closestL])
         closestLeptonicGroup = sum(closestPairs[0])
         remainingLeptonicGroup = sum(closestPairs[1])
+
+        ## Assign group with closest dR to resonance
+        # LeptonicResTop = closestLeptonicGroup
+        # LeptonicSpecTop = remainingLeptonicGroup
+        # nFromRes_leptonicGroup = len([p for p in closestPairs[0] if event.Tops[p.TopIndex].FromRes == 0])
+
+        ## Assign group with largest pT to resonance -> best option
         if closestLeptonicGroup.pt > remainingLeptonicGroup.pt:
-            print("Pair with smallest dR has largest pT")
+            print("Lepton/b pair with smallest dR has largest pT")
             LeptonicResTop = closestLeptonicGroup
             LeptonicSpecTop = remainingLeptonicGroup
+            nFromRes_leptonicGroup = len([p for p in closestPairs[0] if event.Tops[p.TopIndex].FromRes == 0]) # FromRes variable is inverted when using TopIndex
         else:
-            print("Remaining pair has largest pT")
+            print("Remaining lepton/b pair has largest pT")
             LeptonicResTop = remainingLeptonicGroup
             LeptonicSpecTop = closestLeptonicGroup
+            nFromRes_leptonicGroup = len([p for p in closestPairs[1] if event.Tops[p.TopIndex].FromRes == 0])
+        print(f"{nFromRes_leptonicGroup} particles in the leptonic resonance group are actually from resonance")
+        if nFromRes_leptonicGroup == 2:
+            eff_resonance_lep += 1
+
+        ## Assign group with smallest eta to resonance
+        # if abs(closestLeptonicGroup.eta) < abs(remainingLeptonicGroup.eta):
+        #     print("Pair with smallest dR has smallest eta")
+        #     LeptonicResTop = closestLeptonicGroup
+        #     LeptonicSpecTop = remainingLeptonicGroup
+        #     nFromRes_leptonicGroup = len([p for p in closestPairs[0] if event.Tops[p.TopIndex].FromRes == 0])
+        # else:
+        #     print("Remaining pair has smallest eta")
+        #     LeptonicResTop = remainingLeptonicGroup
+        #     LeptonicSpecTop = closestLeptonicGroup
+        #     nFromRes_leptonicGroup = len([p for p in closestPairs[1] if event.Tops[p.TopIndex].FromRes == 0])
+
+        # Check if objects within each pair come from the same top
+        if closestPairs[0][0].TopIndex == closestPairs[0][1].TopIndex: 
+            eff_closestLeptonicGroup += 1
+            print(f"Lepton and b in closest group are from same top: {closestPairs[0][0].TopIndex}")
+        else:
+            print(f"Lepton and b in closest group are from different tops: {closestPairs[0][0].TopIndex} and {closestPairs[0][1].TopIndex}")
+        if closestPairs[1][0].TopIndex == closestPairs[1][1].TopIndex: 
+            eff_remainingLeptonicGroup += 1
+            print(f"Lepton and b in remaining group are from same top: {closestPairs[1][0].TopIndex}")
+        else:
+            print(f"Lepton and b in remaining group are from different tops: {closestPairs[1][0].TopIndex} and {closestPairs[1][1].TopIndex}")
 
         # Find the group of one b quark and two jets for which the invariant mass is closest to that of a top quark
         closestGroups = []
         while bquarks != []:
             lowestError = 1e100
-            for ib, b in enumerate(bquarks):
-                print(f"b-quark {ib}")
-                for ipair, pair in enumerate(combinations(lquarks, 2)):
-                    print(f"light quark pair {ipair}")
+            for b in bquarks:
+                for pair in combinations(lquarks, 2):
                     IM = sum([b, pair[0], pair[1]]).CalculateMass()
-                    print(f"IM = {IM}")
                     if abs(topMass - IM) < lowestError:
                         bestB = b
                         bestQuarkPair = pair
                         lowestError = abs(topMass - IM)
-                        print("Lowest error so far")
-            print("Removing last closest group from lists and adding them to closestGroups")
+            # Remove last closest group from lists and add them to closestGroups
             bquarks.remove(bestB)
             lquarks.remove(bestQuarkPair[0])
             lquarks.remove(bestQuarkPair[1])
             closestGroups.append([bestB, bestQuarkPair[0], bestQuarkPair[1]])
-      
         bestHadronicGroup = sum(closestGroups[0])
         remainingHadronicGroup = sum(closestGroups[1])
+        
+        ## Assign group with IM closest to topMass to resonance
+        # HadronicResTop = bestHadronicGroup
+        # HadronicSpecTop = remainingHadronicGroup
+        # nFromRes_hadronicGroup = len([p for p in closestGroups[0] if event.Tops[p.TopIndex].FromRes == 0])
+
+        ## Assign group with largest pT to resonance -> best option
         if bestHadronicGroup.pt > remainingHadronicGroup.pt:
             print("Group with closest mass to top has largest pT")
             HadronicResTop = bestHadronicGroup
             HadronicSpecTop = remainingHadronicGroup
+            nFromRes_hadronicGroup = len([p for p in closestGroups[0] if event.Tops[p.TopIndex].FromRes == 0])
         else:
             print("Remaining group has largest pT")
             HadronicResTop = remainingHadronicGroup
             HadronicSpecTop = bestHadronicGroup
+            nFromRes_hadronicGroup = len([p for p in closestGroups[1] if event.Tops[p.TopIndex].FromRes == 0])
+        print(f"{nFromRes_hadronicGroup} particles in the hadronic resonance group are actually from resonance")
+        if nFromRes_hadronicGroup == 3:
+            eff_resonance_had += 1
 
+        ## Assign group with smallest eta to resonance
+        # if abs(bestHadronicGroup.eta) < abs(remainingHadronicGroup.eta):
+        #     print("Group with closest mass to top has smallest eta")
+        #     HadronicResTop = bestHadronicGroup
+        #     HadronicSpecTop = remainingHadronicGroup
+        #     nFromRes_hadronicGroup = len([p for p in closestGroups[0] if event.Tops[p.TopIndex].FromRes == 0])
+        # else:
+        #     print("Remaining group has smallest eta")
+        #     HadronicResTop = remainingHadronicGroup
+        #     HadronicSpecTop = bestHadronicGroup
+        #     nFromRes_hadronicGroup = len([p for p in closestGroups[1] if event.Tops[p.TopIndex].FromRes == 0])
+        
+        ## Assign groups with dR between them closest to pi to resonance
+        # leptonicGroups = [closestLeptonicGroup, remainingLeptonicGroup]
+        # hadronicGroups = [bestHadronicGroup, remainingHadronicGroup]
+        # resonanceGroups = []
+        # indices = []
+        # while leptonicGroups != []:
+        #     lowestError = 1e100
+        #     for il, lepGroup in enumerate(leptonicGroups):
+        #         print(f"Leptonic group {il}")
+        #         for ih, hadGroup in enumerate(hadronicGroups):
+        #             print(f"Hadronic group {ih}")
+        #             dR = lepGroup.DeltaR(hadGroup)
+        #             print(f"Delta R between them: {dR}")
+        #             if abs(dR - 3.14) < lowestError:
+        #                 bestLep = lepGroup
+        #                 bestHad = hadGroup
+        #                 bestIndexLep = il
+        #                 bestIndexHad = ih
+        #                 lowestError = abs(dR - 3.14)
+        #                 print("Lowest error so far")
+        #     print("Removing last best group from lists and adding them to resonanceGroups")
+        #     leptonicGroups.remove(bestLep)
+        #     hadronicGroups.remove(bestHad)
+        #     resonanceGroups.append([bestLep, bestHad])
+        #     indices.append([bestIndexLep, bestIndexHad])
+
+        # LeptonicResTop = resonanceGroups[0][0]
+        # LeptonicSpecTop = resonanceGroups[1][0]
+        # HadronicResTop = resonanceGroups[0][1]
+        # HadronicSpecTop = resonanceGroups[1][1]
+        # nFromRes_leptonicGroup = len([p for p in closestPairs[indices[0][0]] if event.Tops[p.TopIndex].FromRes == 0])
+        # nFromRes_hadronicGroup = len([p for p in closestGroups[indices[0][1]] if event.Tops[p.TopIndex].FromRes == 0])
+
+        # Check if objects within each group come from the same top
+        if closestGroups[0][0].TopIndex == closestGroups[0][1].TopIndex and closestGroups[0][1].TopIndex == closestGroups[0][2].TopIndex: 
+            eff_bestHadronicGroup += 1
+            print(f"All particles in best hadronic group are from same top: {closestGroups[0][0].TopIndex}")
+        else: 
+            print(f"Particles in best hadronic group are from different tops: {closestGroups[0][0].TopIndex}, {closestGroups[0][1].TopIndex} and {closestGroups[0][2].TopIndex}")
+        
+        if closestGroups[1][0].TopIndex == closestGroups[1][1].TopIndex and closestGroups[1][1].TopIndex == closestGroups[1][2].TopIndex: 
+            eff_remainingHadronicGroup += 1
+            print(f"All particles in remaining hadronic group are from same top: {closestGroups[1][0].TopIndex}")
+        else:
+            print(f"Particles in remaining hadronic group are from different tops: {closestGroups[1][0].TopIndex}, {closestGroups[1][1].TopIndex} and {closestGroups[1][2].TopIndex}")
+
+        if nFromRes_leptonicGroup == 2 and nFromRes_hadronicGroup == 3: 
+            eff_resonance += 1
+            print("All particles assigned to resonance are actually from resonance")
+
+        # Calculate masses of tops and resonance
         print(f"Hadronic top mass: res = {HadronicResTop.CalculateMass()}, spec = {HadronicSpecTop.CalculateMass()}")
         print(f"Leptonic top mass: res = {LeptonicResTop.CalculateMass()}, spec = {LeptonicSpecTop.CalculateMass()}")
         print(f"Resonance mass: {sum([HadronicResTop, LeptonicResTop]).CalculateMass()}")
@@ -136,8 +247,18 @@ def DileptonAnalysis(Ana):
         ReconstructedLepTopMass["Spec"].append(LeptonicSpecTop.CalculateMass())
         ReconstructedResonanceMass.append(sum([HadronicResTop, LeptonicResTop]).CalculateMass())
 
+    # Print out efficiencies
     print(f"Number of events not passed: {neventsNotPassed} / {nevents}")
+    print("Efficiencies:")
+    print(f"Closest leptonic group from same top: {eff_closestLeptonicGroup / (nevents-neventsNotPassed) }")
+    print(f"Remaining leptonic group from same top: {eff_remainingLeptonicGroup / (nevents-neventsNotPassed)}")
+    print(f"Closest hadronic group from same top: {eff_bestHadronicGroup / (nevents-neventsNotPassed)}")
+    print(f"Remaining hadronic group from same top: {eff_remainingHadronicGroup / (nevents-neventsNotPassed)}")
+    print(f"Leptonic decay products correctly assigned to resonance: {eff_resonance_lep / (nevents-neventsNotPassed)}")
+    print(f"Hadronic decay products correctly assigned to resonance: {eff_resonance_had / (nevents-neventsNotPassed)}")
+    print(f"All decay products correctly assigned to resonance: {eff_resonance / (nevents-neventsNotPassed)}")
 
+    # Plotting
     Plots = PlotTemplate(nevents, lumi)
     Plots["Title"] = "Reconstructed Hadronic Top Mass"
     Plots["xTitle"] = "Mass (GeV)"
@@ -188,12 +309,4 @@ def DileptonAnalysis(Ana):
     
     X = CombineTH1F(**Plots)
     X.SaveFigure()
-
-
-
-    
-
-
-
- 
 
