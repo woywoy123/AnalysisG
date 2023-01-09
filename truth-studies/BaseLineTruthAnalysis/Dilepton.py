@@ -96,6 +96,8 @@ def DileptonAnalysis(Ana):
         # LeptonicResTop = closestLeptonicGroup
         # LeptonicSpecTop = remainingLeptonicGroup
         # nFromRes_leptonicGroup = len([p for p in closestPairs[0] if event.Tops[p.TopIndex].FromRes == 0])
+        # if nFromRes_leptonicGroup == 2:
+        #     eff_resonance_lep += 1
 
         ## Assign group with largest pT to resonance -> best option
         if closestLeptonicGroup.pt > remainingLeptonicGroup.pt:
@@ -123,6 +125,8 @@ def DileptonAnalysis(Ana):
         #     LeptonicResTop = remainingLeptonicGroup
         #     LeptonicSpecTop = closestLeptonicGroup
         #     nFromRes_leptonicGroup = len([p for p in closestPairs[1] if event.Tops[p.TopIndex].FromRes == 0])
+        # if nFromRes_leptonicGroup == 2:
+        #     eff_resonance_lep += 1
 
         # Check if objects within each pair come from the same top
         if closestPairs[0][0].TopIndex == closestPairs[0][1].TopIndex: 
@@ -159,6 +163,8 @@ def DileptonAnalysis(Ana):
         # HadronicResTop = bestHadronicGroup
         # HadronicSpecTop = remainingHadronicGroup
         # nFromRes_hadronicGroup = len([p for p in closestGroups[0] if event.Tops[p.TopIndex].FromRes == 0])
+        # if nFromRes_hadronicGroup == 3:
+        #     eff_resonance_had += 1
 
         ## Assign group with largest pT to resonance -> best option
         if bestHadronicGroup.pt > remainingHadronicGroup.pt:
@@ -186,6 +192,8 @@ def DileptonAnalysis(Ana):
         #     HadronicResTop = remainingHadronicGroup
         #     HadronicSpecTop = bestHadronicGroup
         #     nFromRes_hadronicGroup = len([p for p in closestGroups[1] if event.Tops[p.TopIndex].FromRes == 0])
+        # if nFromRes_hadronicGroup == 3:
+        #     eff_resonance_had += 1
         
         ## Assign groups with dR between them closest to pi to resonance
         # leptonicGroups = [closestLeptonicGroup, remainingLeptonicGroup]
@@ -219,6 +227,10 @@ def DileptonAnalysis(Ana):
         # HadronicSpecTop = resonanceGroups[1][1]
         # nFromRes_leptonicGroup = len([p for p in closestPairs[indices[0][0]] if event.Tops[p.TopIndex].FromRes == 0])
         # nFromRes_hadronicGroup = len([p for p in closestGroups[indices[0][1]] if event.Tops[p.TopIndex].FromRes == 0])
+        # if nFromRes_leptonicGroup == 2:
+        #     eff_resonance_lep += 1
+        # if nFromRes_hadronicGroup == 3:
+        #     eff_resonance_had += 1
 
         # Check if objects within each group come from the same top
         if closestGroups[0][0].TopIndex == closestGroups[0][1].TopIndex and closestGroups[0][1].TopIndex == closestGroups[0][2].TopIndex: 

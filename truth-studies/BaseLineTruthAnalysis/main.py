@@ -5,6 +5,7 @@ from AnalysisTopGNN.Plotting import TH1F, CombineTH1F
 from SelectionTests import *
 from Dilepton import *
 from TestFromRes import *
+from Dilepton_withNeutrinoReco import *
 
 massPoints = ["1000"] # ["400", "500", "600", "700", "800", "900", "1000"]
 Modes = ["Dilepton"]#, "SingleLepton"]
@@ -16,7 +17,7 @@ for Mode in Modes:
         Ana.InputSample("tttt", direc)
         Ana.Event = Event
         Ana.EventStop = 100
-        Ana.ProjectName = Mode
+        Ana.ProjectName = Mode + "_EventStop100"
         Ana.Threads = 12
         Ana.chnk = 1000
         Ana.EventCache = True
@@ -24,7 +25,8 @@ for Mode in Modes:
         Ana.Launch()
 
     # Selection(Ana)
-    DileptonAnalysis(Ana)
+    #DileptonAnalysis(Ana)
+    DileptonAnalysis_withNeutrinoReco(Ana)
     # TestFromRes(Ana)
 
 
