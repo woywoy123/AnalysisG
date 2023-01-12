@@ -13,7 +13,7 @@ class ParticleTemplate(VariableManager):
         t1 = torch.tensor([[P.pt, P.eta, P.phi, P.e]])
         t2 = torch.tensor([[self.pt, self.eta, self.phi, self.e]])
         dr = TensorDeltaR(t1, t2).tolist()[0][0]
-        return dr 
+        return dr
 
     def CalculateMass(self, lists = None, Name = "Mass"):
         if lists == None:
@@ -26,12 +26,12 @@ class ParticleTemplate(VariableManager):
         self.__dict__[Name + "_MeV"] =  float(m)
         self.__dict__[Name + "_GeV"] = float(m / 1000)
         return float(m/1000)
-    
+
     def __del__(self):
         for i in self.__dict__:
             val = self.__dict__[i]
             del val, i
-       
+
     def __radd__(self, other):
         if other == 0:
             p = ParticleTemplate()
@@ -44,32 +44,32 @@ class ParticleTemplate(VariableManager):
             return self.__add__(other)
 
     def __add__(self, other):
-       
+
         P1 = ToPxPyPzE(self.pt, self.eta, self.phi, self.e, "cpu")
         P2 = ToPxPyPzE(other.pt, other.eta, other.phi, other.e, "cpu")
         Pmu = TensorToPtEtaPhiE(P1 + P2).tolist()[0]
-        
-        particle = ParticleTemplate() 
+
+        particle = ParticleTemplate()
         particle.__dict__["pt"] = Pmu[0]
         particle.__dict__["eta"] = Pmu[1]
         particle.__dict__["phi"] = Pmu[2]
         particle.__dict__["e"] = Pmu[3]
         particle.Children += self.Children
         particle.Children += [p for p in other.Children if p not in particle.Children]
-        
+
         return particle
-    
+
     def DecayLeptonically(self):
         return True if sum([1 for k in self.Children if abs(k.pdgid) in [11, 12, 13, 14, 15, 16]]) > 0 else False
 
     def __str__(self, caller = False):
-        PDGID = { 
-                  1 : "d"           ,  2 : "u"             ,  3 : "s", 
-                  4 : "c"           ,  5 : "b"             ,  6 : "t", 
+        PDGID = {
+                  1 : "d"           ,  2 : "u"             ,  3 : "s",
+                  4 : "c"           ,  5 : "b"             ,  6 : "t",
                  11 : "e"           , 12 : "$\\nu_e$"      , 13 : "$\mu$",
-                 14 : "$\\nu_{\mu}$", 15 : "$\\tau$"       , 16 : "$\\nu_{\\tau}$", 
+                 14 : "$\\nu_{\mu}$", 15 : "$\\tau$"       , 16 : "$\\nu_{\\tau}$",
                  21 : "g"           , 22 : "$\\gamma$"}
-        
+
         string = ""
         if "pdgid" in self.__dict__:
             string += "======== "
@@ -78,10 +78,26 @@ class ParticleTemplate(VariableManager):
         string += "eta: " + str(self.eta) + "\n"
         string += "phi: " + str(self.phi) + "\n"
         string += "pt: " + str(self.pt) + "\n"
-        
+
         if caller:
             return string
 
         for i in self.Children:
-            string += " -> " + i.__str__(caller = True) 
+            string += " -> " + i.__str__(caller = True)
         return string
+
+    @property
+    def is_lep(self):
+        return False
+
+    @property
+    def is_nu(self):
+        return False
+
+    @property
+    def is_b(self):
+        return False
+
+    @property
+    def is_add(self):
+        return not (self.is_lep or self.is_nu or self.is_b)
