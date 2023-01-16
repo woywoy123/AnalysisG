@@ -23,58 +23,58 @@ for Mode in Modes:
         Ana.DumpPickle = True
         Ana.Launch()
         
-        # # ------ Top Centric Plots ----- # 
-        # # Figures 1.1: "a" and "b"
-        # ResonanceDecayModes(Ana)
+        # ------ Top Centric Plots ----- # 
+        # Figures 1.1: "a" and "b"
+        ResonanceDecayModes(Ana)
         
-        # # Figures 1.1: "c"
-        # ResonanceMassFromTops(Ana)
+        # Figures 1.1: "c"
+        ResonanceMassFromTops(Ana)
         
-        # # Figures 1.1: "d"
-        # DeltaRTops(Ana)
+        # Figures 1.1: "d"
+        DeltaRTops(Ana)
         
-        # # Figures 1.1: "e" and "f"
-        # TopKinematics(Ana)
+        # Figures 1.1: "e" - "f"
+        TopKinematics(Ana)
         
-        # # ------ Top Child Centric Plots ----- # 
-        # # Figures 2.1:  "a"
-        # TopChildrenPDGID(Ana)
+        # ------ Top Child Centric Plots ----- # 
+        # Figures 2.1:  "a"
+        TopChildrenPDGID(Ana)
         
-        # # Figures 2.1: "b" and "c"
-        # ReconstructedMassFromChildren(Ana)
+        # Figures 2.1: "b" - "d"
+        ReconstructedMassFromChildren(Ana)
+        ReconstructedMassFromChildrenWithoutNeutrinos(Ana)
         
-        # # Figures 2.1: "d", "e", "f", "g" 
-        # DeltaRChildren(Ana)
+        # Figures 2.1: "e" - "g" 
+        DeltaRChildren(Ana)
         
-        # # Figures 2.1: "g"
-        # FractionPTChildren(Ana)
-        
+        # Figures 2.1: "h"
+        FractionPTChildren(Ana)
 
-        # # Figures 2.1: "f":
-        # MassDiff(Ana)
-
-        # # Figures 2.1: "h"
-        # DeltaRLepB(Ana)
-
-        # Figures 2.1: "i", "j":
-        TopChildrenPT(Ana)
-
-        # # ------ Truth Jet Centric Plots ----- # 
-        # # Figures 3.1: "a" - "d"
-        # TruthJetPartons(Ana)
+        # Figures 2.1: "i"
+        DeltaRLepB(Ana)
         
-        # # Figures 3.1: "e"
-        # PartonToChildTruthJet(Ana)
+        # Figures 2.1: "j":
+        MassDiff(Ana)
+
+        # Figures 2.1: "k" - "p"
+        TopChildrenKinematics(Ana)
+
+        # ------ Truth Jet Centric Plots ----- # 
+        # Figures 3.1: "a" - "d"
+        TruthJetPartons(Ana)
         
-        # # Figures 3.1: "f" and "g"
-        # eff = ReconstructedTopMassTruthJet(Ana)
-        # f = open(Mode + "_" + massPoint + ".txt", "w")
-        # f.write("\n".join([i + "-" + str(eff[i]) for i in eff]))
-        # f.close()
+        # Figures 3.1: "e"
+        PartonToChildTruthJet(Ana)
+        
+        # Figures 3.1: "f" and "g"
+        eff = ReconstructedTopMassTruthJet(Ana)
+        f = open(Mode + "_" + massPoint + ".txt", "w")
+        f.write("\n".join([i + "-" + str(eff[i]) for i in eff]))
+        f.close()
    
-        # # Figures 3.1: 
-        # DeltaRTruthJets(Ana) 
+        # Figures 3.1: 
+        DeltaRTruthJets(Ana) 
 
-        # os.makedirs("./" + Mode + "/" + massPoint, exist_ok = True)
-        # shutil.move("./Figures", "./" + Mode + "/" + massPoint)
-        # exit()
+        os.makedirs("./" + Mode + "/" + massPoint, exist_ok = True)
+        shutil.move("./Figures", "./" + Mode + "/" + massPoint)
+        exit()

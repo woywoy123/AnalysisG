@@ -3,8 +3,8 @@ from torch.utils.cpp_extension import BuildExtension, CppExtension, CUDAExtensio
 import os
 
 # Make sure the CUDA compilers are consistent with the GCC of the system 
-os.environ["CC"] = "gcc-11"
-os.environ["CXX"] = "gcc-11"
+#os.environ["CC"] = "gcc-11"
+#os.environ["CXX"] = "gcc-11"
 
 setup(
         name = "BaseFunctions", 
