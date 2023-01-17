@@ -29,9 +29,7 @@ git clone https://github.com/woywoy123/FourTopsAnalysis.git
 - ```bash SetupAnalysis.sh```
 
 3. Run the following command:
-```bash 
-python setup.py install 
-```
+```bash bash install.sh```
 ---
 
 ## How Do I Make This Code Work With My Samples? <a name="CustomSamples"></a>
@@ -162,12 +160,6 @@ def CustomEventGraph(EventGraphTemplate):
 In this framework uses a number of generator classes as intermediates to compile required samples. 
 Familiarity with them isn't necessary, but useful, since it will provide more context around settings.
 
-### EventGenerator:
-This class takes as input the ```Event``` implementation and sample directory to compile pythonic event objects. 
-These objects act as containers and retain file traces for each event, i.e. which ROOT files were used to compile the event.
-To uniquely tag events the MD5 hash is computed and can be used to reverse look-up the original ROOT filename.
-This class should be used to debug or develop preliminary analysis strategies.  
-
 ### GraphGenerator:
 The ```EventGenerator``` interfaces with the ```GraphGenerator``` to convert ```Event``` objects into ```EventGraphs```, where particles are nodes, and relationships are edges.
 For graphs to have any meaning, they require features.
@@ -214,6 +206,129 @@ Adding the line ```python Ana.DumpPickle = True``` before the ```python Ana.Laun
 ### The EventContainer 
 When iterating over the Analysis wrapper (as shown in the above code), EventContainer objects are returned. 
 These contain a number of attributes which track the origin of this event, including the trees from which the customized events are compiled.
+
+## Package Classes
+### Tools: 
+#### Description:
+This is a class dedicated to providing generic file structure manipulation. 
+It is analogous to the standard Linux cmd commands (e.g. ```bash ls, cd, pwd```) and allows the user to also pull source code from functions being called. 
+The latter is required for using the condor submission class (more on this later).
+
+#### Methods:
+- ```python lsFiles(directory, extension = None)```: This function will search for all files within the specified directory. Only files with the specified extension are returned if an extension is specified. Note: This method DOES NOT scan sub-directories.
+- ```python ls(directory)```: This function is a wrapper of the ```bash ls``` function. Returns a list of entries within directory (both files and directories).
+- ```python IsFile(directory)```: This function checks if the given path is a file and returns an associated boolean. 
+- ```python ListFilesInDir(directory, extension)```: This function will recursively scan the given directory for all files with a specified extension. The directory provided can be a dict, list or string and will return a corresponding dictionary.
+- ```python pwd()```: Returns current working directory.
+- ```python abs(directory)```: Returns string representation of the full directory.
+- ```python path(inpt)```: Returns the absolute path of the upper directory.
+- ```python filename(inpt)```: Returns the last value of the path after "/". This can be useful for filename extraction.
+- ```python mkdir(directory)```: Creates the entire directory chain but does not replace existing directory structures.
+- ```python cd(directory)```: Changes current working directory to specified path and returns its associated string.
+- ```python GetSourceCode(obj)```: Returns a string representation of the passed object without internal parameters.
+- ```python GetObjectFromString(module, name)```: Creates a new object in memory from the module and name (e.g. from ...<module> import <name>)
+- ```python GetSourceFile(obj)```: Returns the string of the file which implemented the provided object. 
+- ```python MergeListsInDict(inpt)```: Returns a list of all lists merged together in a dictionary. No effort is made in retaining key information.
+- ```python DictToList(inpt)```: Similar to the above, but dictionary key is retained by adding "<key>/" to each entry in associated list.
+- ```python MergeNestedList(inpt)```: Returns a merged list of all lists within a list. 
+
+#### Importing and Usage: 
+- ```python from AnalysisTopGNN.Tools import Tools``` 
+- ```python T = Tools()``` 
+
+### Threading: 
+#### Description:
+A generic class used to exploit multithreading for functions which can be split over multiple CPU threads. 
+The aim is to define a generic function and apply it to all entries of a list. 
+
+#### Methods:
+- ```python Start()```: Starts the mulit-processing over the list. Once complete, the list ```python _lists will become available. 
+
+#### Parameters:
+- VerboseLevel: Adjusts the verbosity of the process. 0 being the lowest and 3 the highest.
+- _lists: Output of the finished tasks.
+
+#### Initialization Parameters:
+- lists: A list of tasks which need to be operated on by some function.
+- Function: An uninitialized function which only has one input parameter and operates over a list. This function also needs to return a list of the same length. 
+- threads: Number of CPU threads to use for the multithreading. Default is 12.
+- chnk_size: This parameter decides how the input list should be split. For instance, if the list is 120 entries long and the parameter is set to 10, the list will be split into 12 equal lists and subsequently merged back to 120 results. Default is None.
+
+#### Importing and Usage:
+- ```python from AnalysisTopGNN.Tools import Threading```
+- ```python def SomeFunction(inpt):
+		out = []
+		for i in inpt:
+			r = ...<Some Logic>...(i)
+			out.append(r)
+		return out
+```
+- ```python TH = Threading(ListOfTasks, SomeFunction, 12, 10)
+	    TH.Start()
+	    Finished = TH._lists
+```
+
+### HDF5: 
+#### Description:
+A wrapper of h5py which, includes additional features specific for this package. 
+This wrapper will convert a given pythonic object into a HDF5 representation and also allows them to be restored into their original state. 
+This is particular useful for exporting PyTorch Data objects or Event objects. 
+
+#### Methods:
+- ```python Start(Name = False, Mode = "w")```: Will open the specified name of the HDF5 file and either read ("r") or write ("w") them.
+- ```python DumpObject(obj, Name = False)```: Decomposes the object into a HDF5 compatible data structure. If Name is a string, an entry will be added with this string, else the entry will be an entry integer. 
+- ```python RebuildObject(Name)```: Provided the HDF5 has been opened, the object associated with 'Name' will be reconstructed.
+- ```python End()```: Closes the file and ends the session. Note, this will also purge instatiated class variables.
+- ```python MultiThreadedDump(ObjectDict, OutputDirectory)```: Executes ```python DumpObject``` over multiple CPU cores. Files are individually written and non merged.
+- ```python MultiThreadedReading(InputFiles)```: Executes ```python RebuildObject``` over multiple CPU cores. Only works if HDF5 files are non merged.
+- ```python MergeHDF5(Directory)```: Merges HDF5 in the given Directory into a single HDF5 file. In the process, original HDF5 are deleted.
+
+#### Parameters: 
+- Filename: Read/Write the HDF5 file with the given name. 
+- VerboseLevel: Adjusts the verbosity of the process. 0 being the lowest and 3 the highest.
+- Threads: Number of CPU threads to use for multithreading. Default is 12.
+- chnk: Number of objects/files per core. Default is 1. 
+- Directory: Specifies the directory to read from. 
+
+#### Magic Methods: 
+- ```python __iter__```: Iterate over HDF5 files. If 'Directory' is specified, reading uses multithreading, else this defaults to single threading.
+
+### EventGenerator (Integrated into Analysis):
+#### Description: 
+This class takes an ```Event``` implementation as input and compiles .root samples in a directory into pythonic event objects. 
+Each event object is tagged with a unique MD5 hash to reverse lookup the originating ROOT file. 
+This class should be used to debug or develop preliminary analysis strategies, since these containers contain all information in the ROOT file.
+
+#### Methods:
+- ```python SpawnEvents()```: Scans the ROOT samples for all required values for compiling the Event implementation (trees, branches, leaves).
+- ```python CompileEvent(ClearVal = True)```: Compiles prescanned files into pythonic event objects. The 'ClearVal' input is for debugging purposes and deletes values no longer required for the compilation. 
+
+#### Importing and Usage:
+from AnalysisTopGNN.Generators import EventGenerator
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
