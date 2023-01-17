@@ -72,7 +72,7 @@ class CustomParticle(ParticleTemplate):
 		
 ```
 - NOTE: When defining attributes in a particle class, it is crucial to match the strings of to the ROOT leaf name. 
-As illustrated in the above code, the variable ```self.pt`` expects a leaf name **Particle.PT**. If a specific leaf is not found, the associated attribute will be removed and a warning will be issued upon compilation time. 
+As illustrated in the above code, the variable ```self.pt``` expects a leaf name **Particle.PT**. If a specific leaf is not found, the associated attribute will be removed and a warning will be issued upon compilation time. 
 
 #### Inherited Functions and Variables:
 When using the **ParticleTemplate** class, a number of useful functions and attributes are inherited. These are listed below; 
@@ -88,7 +88,7 @@ def CalculateMass(lists = None, Name = "Mass"):
 Calculates the invariant mass of the particle using **eta, phi, pt, e** attributes. 
 Alternatively, if a list of particles is given, it will calculate the invariant mass of the list. 
 By default this function creates two new attributes, *Mass_MeV* and *Mass_GeV*. 
-To minimize redundant code, a list of particles can also be summed using python's in-built function ```sum([...])`` and returns a new particle object.
+To minimize redundant code, a list of particles can also be summed using python's in-built function ```sum([...])``` and returns a new particle object.
 However, this returns an integer if the list is empty.
 
 #### To Override Functions:
@@ -97,7 +97,7 @@ Custom particle classes can also override template methods without any repercuss
 
 ### How to define a Custom Event Class: <a name="CustomEventClass"></a>
 #### Basic Example:
-1. Open ```Event.py`` and place the following line at the top; 
+1. Open ```Event.py``` and place the following line at the top; 
 ```python
 from AnalysisTopGNN.Templates import EventTemplate 
 from Particles import CustomParticle  
@@ -140,13 +140,13 @@ self.Objects = {
 ```
 The associated keyword **CustomParticleV1** or **CustomParticleV2** are arbitrary and appear as object attributes. For example, ```self.CustomParticleV1``` will contain only CustomParticleV1 objects.
 
-#### The ```CompileEvent`` Method:
+#### The **CompileEvent** Method:
 This method is used to define any particle relationships or perform pre-processing of the event.
 For example in **Truth Matching**, a jet might originate from a top-quark which is presevered in the ROOT file through some variable, this variable can be retrieved and used to link the top and the jet.
 
 ### How to define a Custom Event Graph Class: <a name="CustomEventGraphClass"></a>
 #### Basic Example:
-1. Open ```EventGraphs.py`` and place the following line at the top; 
+1. Open ```EventGraphs.py``` and place the following line at the top; 
 ```python
 from AnalysisTopGNN.Templates import EventGraphTemplate 
 ```
@@ -165,16 +165,16 @@ In this framework uses a number of generator classes as intermediates to compile
 Familiarity with them isn't necessary, but useful, since it will provide more context around settings.
 
 ### GraphGenerator:
-The ```EventGenerator`` interfaces with the ```GraphGenerator`` to convert ```Event`` objects into ```EventGraphs``, where particles are nodes, and relationships are edges.
+The ```EventGenerator``` interfaces with the ```GraphGenerator``` to convert ```Event``` objects into ```EventGraphs```, where particles are nodes, and relationships are edges.
 For graphs to have any meaning, they require features.
 Typical features to include are the particle's pt, eta, phi, etc., which can be easily added by using Python functions (more on this later).
 Naturally, the same logic is applicable to the event graph and edges.
 
 ### Optimization:
 A class dedicated solely towards interfacing with the Deep Learning frameworks (specifically **PyTorch**).
-``GenerateDataLoader`` containers are imported, along with some model to be tested. 
+```GenerateDataLoader``` containers are imported, along with some model to be tested. 
 Initially, the framework will assess the compatibility between the model and sample by checking common attributes. 
-Following a successful assessment, the ```Optimizer`` will begin training the model and record associated statistics (training/validation loss and accuracy). 
+Following a successful assessment, the ```Optimizer``` will begin training the model and record associated statistics (training/validation loss and accuracy). 
 Once the training has concluded, additional sample information is dumped as .pkl files.
 
 ### Analysis:
@@ -261,7 +261,7 @@ The aim is to define a generic function and apply it to all entries of a list.
 - chnk_size: This parameter decides how the input list should be split. For instance, if the list is 120 entries long and the parameter is set to 10, the list will be split into 12 equal lists and subsequently merged back to 120 results. Default is None.
 
 #### Importing and Usage:
-- ```python 
+```python 
 from AnalysisTopGNN.Tools import Threading
 def SomeFunction(inpt):
 	out = []
