@@ -26,10 +26,14 @@ ROOT files which originate from AnalysisTop can be easily processed and require 
 git clone https://github.com/woywoy123/FourTopsAnalysis.git
 ```
 2. Use the shell script to install required packages
-- ```bash SetupAnalysis.sh```
+```bash 
+bash SetupAnalysis.sh
+```
 
 3. Run the following command:
-```bash bash install.sh```
+```bash 
+bash install.sh
+```
 ---
 
 ## How Do I Make This Code Work With My Samples? <a name="CustomSamples"></a>
@@ -68,7 +72,7 @@ class CustomParticle(ParticleTemplate):
 		
 ```
 - NOTE: When defining attributes in a particle class, it is crucial to match the strings of to the ROOT leaf name. 
-As illustrated in the above code, the variable ```python self.pt``` expects a leaf name 'Particle.PT'. If a specific leaf is not found, the associated attribute will be removed and a warning will be issued upon compilation time. 
+As illustrated in the above code, the variable ```self.pt``` expects a leaf name 'Particle.PT'. If a specific leaf is not found, the associated attribute will be removed and a warning will be issued upon compilation time. 
 
 #### Inherited Functions and Variables:
 When using the **ParticleTemplate** class, a number of useful functions and attributes are inherited. These are listed below; 
@@ -215,7 +219,9 @@ It is analogous to the standard Linux cmd commands (e.g. ```bash ls, cd, pwd```)
 The latter is required for using the condor submission class (more on this later).
 
 #### Methods:
-- ```python lsFiles(directory, extension = None)```: This function will search for all files within the specified directory. Only files with the specified extension are returned if an extension is specified. Note: This method DOES NOT scan sub-directories.
+- ```python 
+lsFiles(directory, extension = None)
+```: This function will search for all files within the specified directory. Only files with the specified extension are returned if an extension is specified. Note: This method DOES NOT scan sub-directories.
 - ```python ls(directory)```: This function is a wrapper of the ```bash ls``` function. Returns a list of entries within directory (both files and directories).
 - ```python IsFile(directory)```: This function checks if the given path is a file and returns an associated boolean. 
 - ```python ListFilesInDir(directory, extension)```: This function will recursively scan the given directory for all files with a specified extension. The directory provided can be a dict, list or string and will return a corresponding dictionary.
