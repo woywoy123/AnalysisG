@@ -55,7 +55,7 @@ src/EventTemplates/Events/EventGraphs.py
 2. Create three files; **Particles.py**, **Event.py**, **EventGraph.py**
 
 ### Defining A Particle Class: <a name="CustomParticleClass"></a>
-1. Open ```Particles.py``` and place the following line at the top; 
+1. Open ``Particles.py`` and place the following line at the top; 
 ```python 
 from AnalysisTopGNN.Templates import ParticleTemplate
 ```
@@ -72,7 +72,7 @@ class CustomParticle(ParticleTemplate):
 		
 ```
 - NOTE: When defining attributes in a particle class, it is crucial to match the strings of to the ROOT leaf name. 
-As illustrated in the above code, the variable ```self.pt``` expects a leaf name 'Particle.PT'. If a specific leaf is not found, the associated attribute will be removed and a warning will be issued upon compilation time. 
+As illustrated in the above code, the variable ```self.pt`` expects a leaf name **Particle.PT**. If a specific leaf is not found, the associated attribute will be removed and a warning will be issued upon compilation time. 
 
 #### Inherited Functions and Variables:
 When using the **ParticleTemplate** class, a number of useful functions and attributes are inherited. These are listed below; 
@@ -88,7 +88,7 @@ def CalculateMass(lists = None, Name = "Mass"):
 Calculates the invariant mass of the particle using **eta, phi, pt, e** attributes. 
 Alternatively, if a list of particles is given, it will calculate the invariant mass of the list. 
 By default this function creates two new attributes, *Mass_MeV* and *Mass_GeV*. 
-To minimize redundant code, a list of particles can also be summed using python's in-built function ```python sum([...])``` and returns a new particle object.
+To minimize redundant code, a list of particles can also be summed using python's in-built function ```sum([...])`` and returns a new particle object.
 However, this returns an integer if the list is empty.
 
 #### To Override Functions:
@@ -97,7 +97,7 @@ Custom particle classes can also override template methods without any repercuss
 
 ### How to define a Custom Event Class: <a name="CustomEventClass"></a>
 #### Basic Example:
-1. Open ```Event.py```and place the following line at the top; 
+1. Open ```Event.py`` and place the following line at the top; 
 ```python
 from AnalysisTopGNN.Templates import EventTemplate 
 from Particles import CustomParticle  
@@ -129,7 +129,7 @@ class CustomEvent(EventTemplate):
 
 ```
 
-#### The ```self.Objects``` attribute:
+#### The ```self.Objects`` attribute:
 
 The attribute **Objects** is a dictionary, which defines particle templates relevant for the event.
 ```python 
@@ -140,13 +140,13 @@ self.Objects = {
 ```
 The associated keyword **CustomParticleV1** or **CustomParticleV2** are arbitrary and appear as object attributes. For example, ```self.CustomParticleV1``` will contain only CustomParticleV1 objects.
 
-#### The ```CompileEvent``` Method:
+#### The ```CompileEvent`` Method:
 This method is used to define any particle relationships or perform pre-processing of the event.
 For example in **Truth Matching**, a jet might originate from a top-quark which is presevered in the ROOT file through some variable, this variable can be retrieved and used to link the top and the jet.
 
 ### How to define a Custom Event Graph Class: <a name="CustomEventGraphClass"></a>
 #### Basic Example:
-1. Open ```EventGraphs.py``` and place the following line at the top; 
+1. Open ```EventGraphs.py`` and place the following line at the top; 
 ```python
 from AnalysisTopGNN.Templates import EventGraphTemplate 
 ```
@@ -165,16 +165,16 @@ In this framework uses a number of generator classes as intermediates to compile
 Familiarity with them isn't necessary, but useful, since it will provide more context around settings.
 
 ### GraphGenerator:
-The ```EventGenerator``` interfaces with the ```GraphGenerator``` to convert ```Event``` objects into ```EventGraphs```, where particles are nodes, and relationships are edges.
+The ```EventGenerator`` interfaces with the ```GraphGenerator`` to convert ```Event`` objects into ```EventGraphs``, where particles are nodes, and relationships are edges.
 For graphs to have any meaning, they require features.
 Typical features to include are the particle's pt, eta, phi, etc., which can be easily added by using Python functions (more on this later).
 Naturally, the same logic is applicable to the event graph and edges.
 
 ### Optimization:
-A class dedicated solely towards interfacing with the Deep Learning frameworks (specifically ```PyTorch```).
-```GenerateDataLoader``` containers are imported, along with some model to be tested. 
+A class dedicated solely towards interfacing with the Deep Learning frameworks (specifically **PyTorch**).
+``GenerateDataLoader`` containers are imported, along with some model to be tested. 
 Initially, the framework will assess the compatibility between the model and sample by checking common attributes. 
-Following a successful assessment, the ```Optimizer``` will begin training the model and record associated statistics (training/validation loss and accuracy). 
+Following a successful assessment, the ```Optimizer`` will begin training the model and record associated statistics (training/validation loss and accuracy). 
 Once the training has concluded, additional sample information is dumped as .pkl files.
 
 ### Analysis:
@@ -183,7 +183,7 @@ For larger scale projects, it is highly recommended to use this class, since it 
 Additionally, this class can interface with the ```Submission``` module, which contains a Condor Directed Acyclic Graph compiler. 
 
 # Analysis Class:
-To start using this class, simply place ```python from AnalysisTopGNN import Analysis``` at the beginning of the analysis project.
+To start using this class, simply place ```from AnalysisTopGNN import Analysis``` at the beginning of the analysis project.
 The class itself is a simple wrapper for ```EventGenerator```, ```GraphGenerator``` and ```Optimization``` classes, and can be used to completely initialize the analysis without explicitly importing these classes.
 
 ## Getting Started With Your Analysis - Simple Example
@@ -205,7 +205,7 @@ for event in Ana:
 The above code sniplet will effectively scan for .root files within the given directory and compile associated entries into python objects within the "Example/<name of sample>" directory. 
 By default, the analysis wrapper will use multithreading (12 Cores) to increase compilation speed. 
 However, the above code lacks the ability to store compiled events, making recompiling time consuming and inefficient. 
-Adding the line ```python Ana.DumpPickle = True``` before the ```python Ana.Launch()``` command will dump the compiled events as .pkl files.
+Adding the line ```Ana.DumpPickle = True``` before the ```Ana.Launch()``` command will dump the compiled events as .pkl files.
 
 ### The EventContainer 
 When iterating over the Analysis wrapper (as shown in the above code), EventContainer objects are returned. 
@@ -215,32 +215,32 @@ These contain a number of attributes which track the origin of this event, inclu
 ### Tools: 
 #### Description:
 This is a class dedicated to providing generic file structure manipulation. 
-It is analogous to the standard Linux cmd commands (e.g. ```bash ls, cd, pwd```) and allows the user to also pull source code from functions being called. 
+It is analogous to the standard Linux cmd commands (e.g. ```ls, cd, pwd```) and allows the user to also pull source code from functions being called. 
 The latter is required for using the condor submission class (more on this later).
 
 #### Methods:
-- ```python 
-lsFiles(directory, extension = None)
-```: This function will search for all files within the specified directory. Only files with the specified extension are returned if an extension is specified. Note: This method DOES NOT scan sub-directories.
-- ```python ls(directory)```: This function is a wrapper of the ```bash ls``` function. Returns a list of entries within directory (both files and directories).
-- ```python IsFile(directory)```: This function checks if the given path is a file and returns an associated boolean. 
-- ```python ListFilesInDir(directory, extension)```: This function will recursively scan the given directory for all files with a specified extension. The directory provided can be a dict, list or string and will return a corresponding dictionary.
-- ```python pwd()```: Returns current working directory.
-- ```python abs(directory)```: Returns string representation of the full directory.
-- ```python path(inpt)```: Returns the absolute path of the upper directory.
-- ```python filename(inpt)```: Returns the last value of the path after "/". This can be useful for filename extraction.
-- ```python mkdir(directory)```: Creates the entire directory chain but does not replace existing directory structures.
-- ```python cd(directory)```: Changes current working directory to specified path and returns its associated string.
-- ```python GetSourceCode(obj)```: Returns a string representation of the passed object without internal parameters.
-- ```python GetObjectFromString(module, name)```: Creates a new object in memory from the module and name (e.g. from ...<module> import <name>)
-- ```python GetSourceFile(obj)```: Returns the string of the file which implemented the provided object. 
-- ```python MergeListsInDict(inpt)```: Returns a list of all lists merged together in a dictionary. No effort is made in retaining key information.
-- ```python DictToList(inpt)```: Similar to the above, but dictionary key is retained by adding "<key>/" to each entry in associated list.
-- ```python MergeNestedList(inpt)```: Returns a merged list of all lists within a list. 
+- ```lsFiles(directory, extension = None)```: This function will search for all files within the specified directory. Only files with the specified extension are returned if an extension is specified. Note: This method DOES NOT scan sub-directories.
+- ```ls(directory)```: This function is a wrapper of the ```ls``` bash function. Returns a list of entries within directory (both files and directories).
+- ```IsFile(directory)```: This function checks if the given path is a file and returns an associated boolean. 
+- ```ListFilesInDir(directory, extension)```: This function will recursively scan the given directory for all files with a specified extension. The directory provided can be a dict, list or string and will return a corresponding dictionary.
+- ```pwd()```: Returns current working directory.
+- ```abs(directory)```: Returns string representation of the full directory.
+- ```path(inpt)```: Returns the absolute path of the upper directory.
+- ```filename(inpt)```: Returns the last value of the path after "/". This can be useful for filename extraction.
+- ```mkdir(directory)```: Creates the entire directory chain but does not replace existing directory structures.
+- ```cd(directory)```: Changes current working directory to specified path and returns its associated string.
+- ```GetSourceCode(obj)```: Returns a string representation of the passed object without internal parameters.
+- ```GetObjectFromString(module, name)```: Creates a new object in memory from the module and name (e.g. from ...<module> import <name>)
+- ```GetSourceFile(obj)```: Returns the string of the file which implemented the provided object. 
+- ```MergeListsInDict(inpt)```: Returns a list of all lists merged together in a dictionary. No effort is made in retaining key information.
+- ```DictToList(inpt)```: Similar to the above, but dictionary key is retained by adding "<key>/" to each entry in associated list.
+- ```MergeNestedList(inpt)```: Returns a merged list of all lists within a list. 
 
 #### Importing and Usage: 
-- ```python from AnalysisTopGNN.Tools import Tools``` 
-- ```python T = Tools()``` 
+```python 
+from AnalysisTopGNN.Tools import Tools
+T = Tools()
+``` 
 
 ### Threading: 
 #### Description:
@@ -248,7 +248,7 @@ A generic class used to exploit multithreading for functions which can be split 
 The aim is to define a generic function and apply it to all entries of a list. 
 
 #### Methods:
-- ```python Start()```: Starts the mulit-processing over the list. Once complete, the list ```python _lists will become available. 
+- ```Start()```: Starts the mulit-processing over the list. Once complete, the list ```_lists``` will become available. 
 
 #### Parameters:
 - VerboseLevel: Adjusts the verbosity of the process. 0 being the lowest and 3 the highest.
@@ -261,17 +261,17 @@ The aim is to define a generic function and apply it to all entries of a list.
 - chnk_size: This parameter decides how the input list should be split. For instance, if the list is 120 entries long and the parameter is set to 10, the list will be split into 12 equal lists and subsequently merged back to 120 results. Default is None.
 
 #### Importing and Usage:
-- ```python from AnalysisTopGNN.Tools import Threading```
-- ```python def SomeFunction(inpt):
-		out = []
-		for i in inpt:
-			r = ...<Some Logic>...(i)
-			out.append(r)
-		return out
-```
-- ```python TH = Threading(ListOfTasks, SomeFunction, 12, 10)
-	    TH.Start()
-	    Finished = TH._lists
+- ```python 
+from AnalysisTopGNN.Tools import Threading
+def SomeFunction(inpt):
+	out = []
+	for i in inpt:
+		r = ...<Some Logic>...(i)
+		out.append(r)
+	return out
+TH = Threading(ListOfTasks, SomeFunction, 12, 10)
+TH.Start()
+Finished = TH._lists
 ```
 
 ### HDF5: 
@@ -281,13 +281,13 @@ This wrapper will convert a given pythonic object into a HDF5 representation and
 This is particular useful for exporting PyTorch Data objects or Event objects. 
 
 #### Methods:
-- ```python Start(Name = False, Mode = "w")```: Will open the specified name of the HDF5 file and either read ("r") or write ("w") them.
-- ```python DumpObject(obj, Name = False)```: Decomposes the object into a HDF5 compatible data structure. If Name is a string, an entry will be added with this string, else the entry will be an entry integer. 
-- ```python RebuildObject(Name)```: Provided the HDF5 has been opened, the object associated with 'Name' will be reconstructed.
-- ```python End()```: Closes the file and ends the session. Note, this will also purge instatiated class variables.
-- ```python MultiThreadedDump(ObjectDict, OutputDirectory)```: Executes ```python DumpObject``` over multiple CPU cores. Files are individually written and non merged.
-- ```python MultiThreadedReading(InputFiles)```: Executes ```python RebuildObject``` over multiple CPU cores. Only works if HDF5 files are non merged.
-- ```python MergeHDF5(Directory)```: Merges HDF5 in the given Directory into a single HDF5 file. In the process, original HDF5 are deleted.
+- ```Start(Name = False, Mode = "w")```: Will open the specified name of the HDF5 file and either read ("r") or write ("w") them.
+- ```DumpObject(obj, Name = False)```: Decomposes the object into a HDF5 compatible data structure. If Name is a string, an entry will be added with this string, else the entry will be an entry integer. 
+- ```RebuildObject(Name)```: Provided the HDF5 has been opened, the object associated with 'Name' will be reconstructed.
+- ```End()```: Closes the file and ends the session. Note, this will also purge instatiated class variables.
+- ```MultiThreadedDump(ObjectDict, OutputDirectory)```: Executes ```DumpObject``` over multiple CPU cores. Files are individually written and non merged.
+- ```MultiThreadedReading(InputFiles)```: Executes ```RebuildObject``` over multiple CPU cores. Only works if HDF5 files are non merged.
+- ```MergeHDF5(Directory)```: Merges HDF5 in the given Directory into a single HDF5 file. In the process, original HDF5 are deleted.
 
 #### Parameters: 
 - Filename: Read/Write the HDF5 file with the given name. 
@@ -297,7 +297,7 @@ This is particular useful for exporting PyTorch Data objects or Event objects.
 - Directory: Specifies the directory to read from. 
 
 #### Magic Methods: 
-- ```python __iter__```: Iterate over HDF5 files. If 'Directory' is specified, reading uses multithreading, else this defaults to single threading.
+- ```__iter__()```: Iterate over HDF5 files. If 'Directory' is specified, reading uses multithreading, else this defaults to single threading.
 
 ### EventGenerator (Integrated into Analysis):
 #### Description: 
@@ -306,36 +306,8 @@ Each event object is tagged with a unique MD5 hash to reverse lookup the origina
 This class should be used to debug or develop preliminary analysis strategies, since these containers contain all information in the ROOT file.
 
 #### Methods:
-- ```python SpawnEvents()```: Scans the ROOT samples for all required values for compiling the Event implementation (trees, branches, leaves).
-- ```python CompileEvent(ClearVal = True)```: Compiles prescanned files into pythonic event objects. The 'ClearVal' input is for debugging purposes and deletes values no longer required for the compilation. 
-
-#### Importing and Usage:
-from AnalysisTopGNN.Generators import EventGenerator
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+- ```SpawnEvents()```: Scans the ROOT samples for all required values for compiling the Event implementation (trees, branches, leaves).
+- ```CompileEvent(ClearVal = True)```: Compiles prescanned files into pythonic event objects. The 'ClearVal' input is for debugging purposes and deletes values no longer required for the compilation. 
 
 
 # Object Classes, Attributes and Functions:
@@ -380,7 +352,7 @@ This section lists attributes for classes.
 - NEvents (int): Number of events used to construct the histogram (default is the length of xData)
 - xData (list): A list of the data to populate the histogram with.
 - Filename (str): Name of the saved figure (automatically concatinates .png)
-- xWeights (list): Weights being applied per bin. To use this, one needs to populate xData with a list e.g. ```python [i for i in range(len(xWeights))]```
+- xWeights (list): Weights being applied per bin. To use this, one needs to populate xData with a list e.g. ```[i for i in range(len(xWeights))]```
 - xTickLabels (list): override the default matplotlib histogram ticks for each bin 
 - xBinCentering (bool): Whether to center the bins of a histogram (useful for illustrating classification plots).
 - Logarithmic (bool): Whether to scale the y-axis logarithmically.
