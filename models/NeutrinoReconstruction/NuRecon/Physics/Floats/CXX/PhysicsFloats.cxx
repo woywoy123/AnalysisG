@@ -1,4 +1,4 @@
-#include "../Headers/PhysicsTensors.h"
+#include "../../Tensors/Headers/PhysicsTensors.h"
 #include "../Headers/PhysicsFloats.h"
 
 torch::TensorOptions PhysicsFloats::Options( std::string device )

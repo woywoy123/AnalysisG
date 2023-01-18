@@ -79,10 +79,19 @@ class nuSolutionSet (object ):
     '''Definitions for nu analytic solution , t->b,mu ,nu '''
     def __init__(self , b, mu , # Lorentz Vectors
                  mW2=mW**2, mT2=mT**2, mN2=mN **2):
+
         c = r.Math.VectorUtil.CosTheta(b,mu)
         s = math.sqrt(1 - c**2)
+       
         x0p = - (mT2 - mW2 - b.M2())/(2*b.E())
         x0 = - (mW2 - mu.M2() - mN2)/(2* mu.E())
+
+
+
+
+
+
+
         Bb , Bm = b.Beta(), mu.Beta()
         Sx = (x0 * Bm - mu.P()*(1 - Bm **2)) / Bm **2
         Sy = (x0p / Bb - c * Sx) / s
@@ -152,6 +161,9 @@ class singleNeutrinoSolution(object ):
                 metX , metY, # Momentum imbalance
                 sigma2 , # Mo.imbalance unc.matrix
                 mW2=mW**2, mT2=mT**2):
+
+
+
         self.solutionSet = nuSolutionSet (b, mu , mW2 , mT2)
         S2 = np.vstack ([np.vstack ([np.linalg.inv(sigma2), [0, 0]]).T, [0, 0, 0]])
         V0 = np.outer ([metX , metY , 0], [0, 0, 1])
