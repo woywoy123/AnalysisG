@@ -87,15 +87,14 @@ class nuSolutionSet (object ):
         x0 = - (mW2 - mu.M2() - mN2)/(2* mu.E())
         Bb , Bm = b.Beta(), mu.Beta()
 
-
-
-
-
         Sx = (x0 * Bm - mu.P()*(1 - Bm **2)) / Bm **2
         Sy = (x0p / Bb - c * Sx) / s
-        eps2 = (mW2 - mN2) * (1 - Bm **2)
+
+        eps2 = (mW2 - mN2) * (1 - Bm**2)
+
         w = (Bm / Bb - c) / s
         w_ = (-Bm / Bb - c) / s
+
         Om2 = w**2 + 1 - Bm **2
 
         x1 = Sx - (Sx + w * Sy)/Om2

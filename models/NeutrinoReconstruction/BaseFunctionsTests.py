@@ -54,3 +54,79 @@ def TestBeta(p):
 
     CompareNumerical(part_root, part_PyT, "Beta")
 
+def TestSValues(b, muon, mTop, mW, mNu):
+    import time 
+    from statistics import mean
+    
+    col = []
+    b_root = r.TLorentzVector()
+    b_root.SetPtEtaPhiE(b.pt, b.eta, b.phi, b.e)
+
+    muon_root = r.TLorentzVector()
+    muon_root.SetPtEtaPhiE(muon.pt, muon.eta, muon.phi, muon.e)
+    
+    its = 10000
+    t1 = time.time()
+    for i in range(its):
+        c = r.Math.VectorUtil.CosTheta(b_root, muon_root)
+        s = math.sqrt(1 - c**2)
+        Bb, Bm = b_root.Beta(), muon_root.Beta() 
+   
+        x0p = - (mTop**2 - mW**2 - b_root.M2())/(2*b_root.E())
+        x0 = - (mW**2 - muon_root.M2() - mNu**2)/(2* muon_root.E())
+
+        Sx_root = (x0 * Bm - muon_root.P()*(1 - Bm **2)) / Bm **2
+        Sy_root = (x0p / Bb - c * Sx_root) / s
+
+    t2 = time.time()
+    print("Time: (" + str(its) + ") ", t2 - t1)
+
+    _b = T.ToPxPyPzE(torch.tensor([[b.pt, b.eta, b.phi, b.e] for i in range(its)]))
+    _mu = T.ToPxPyPzE(torch.tensor([[muon.pt, muon.eta, muon.phi, muon.e] for i in range(its)]))
+
+    _mW = torch.tensor([[mW] for i in range(its)])
+    _mTop = torch.tensor([[mTop] for i in range(its)])
+    _mNu = torch.tensor([[mNu] for i in range(its)])
+    
+    t1 = time.time()
+    x = TS.SxSyCartesian(_b, _mu, _mTop, _mW, _mNu)
+    t2 = time.time()
+    print("Time: (" + str(its) +") ", t2 - t1)
+
+    t1 = time.time()
+    Sx_PyT = FS.SxPolar(b.pt, b.eta, b.phi, b.e, muon.pt, muon.eta, muon.phi, muon.e, mW, mNu, "cpu")
+    Sy_PyT = FS.SyPolar(b.pt, b.eta, b.phi, b.e, muon.pt, muon.eta, muon.phi, muon.e, mTop, mW, mNu, "cpu")
+    CompareNumerical(Sx_root, Sx_PyT.tolist()[0][0], "Sx")
+    CompareNumerical(Sy_root, Sy_PyT.tolist()[0][0], "Sy")
+
+def TestEps_W_Omega(b, muon, mW, mN):
+    b_root = r.TLorentzVector()
+    b_root.SetPtEtaPhiE(b.pt, b.eta, b.phi, b.e)
+
+    muon_root = r.TLorentzVector()
+    muon_root.SetPtEtaPhiE(muon.pt, muon.eta, muon.phi, muon.e)
+    
+    CosTheta = r.Math.VectorUtil.CosTheta(b_root, muon_root)
+    SinTheta = math.sqrt(1 - CosTheta**2)
+
+    eps2_root = ( mW**2 - mN**2 )*( 1 - muon_root.Beta()**2 )
+    eps2_PyT = FS.Eps2Polar(muon.pt, muon.eta, muon.phi, muon.e, mW, mN, "cpu").tolist()[0][0]
+    CompareNumerical(eps2_root, eps2_PyT, "eps2")
+
+    w = ( ( muon_root.Beta()/b_root.Beta() ) - CosTheta ) / SinTheta
+    w_PyT = FS.wPolar(b.pt, b.eta, b.phi, b.e, muon.pt, muon.eta, muon.phi, muon.e, 1, "cpu").tolist()[0][0]
+    CompareNumerical(w, w_PyT, "w")
+
+    w_ = ( - ( muon_root.Beta()/b_root.Beta() ) - CosTheta ) / SinTheta
+    w__PyT = FS.wPolar(b.pt, b.eta, b.phi, b.e, muon.pt, muon.eta, muon.phi, muon.e, -1, "cpu").tolist()[0][0]
+    CompareNumerical(w_, w__PyT, "w_")
+
+    Om2 = w**2 + 1 - muon_root.Beta()**2 
+    Om2_PyT = FS.Omega2Polar(b.pt, b.eta, b.phi, b.e, muon.pt, muon.eta, muon.phi, muon.e, "cpu").tolist()[0][0]
+    CompareNumerical(Om2, Om2_PyT, "Omega2")
+
+
+
+
+
+

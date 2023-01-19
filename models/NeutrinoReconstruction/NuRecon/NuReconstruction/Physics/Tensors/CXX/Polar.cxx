@@ -15,3 +15,12 @@ torch::Tensor PhysicsTensors::BetaPolar(torch::Tensor Vector)
 {
 	return PhysicsTensors::BetaCartesian(PhysicsTensors::ToPxPyPzE(Vector));
 }
+
+torch::Tensor PhysicsTensors::Beta2Polar(torch::Tensor Vector)
+{
+	return PhysicsTensors::Beta2Cartesian(PhysicsTensors::ToPxPyPzE(Vector));
+}
+
+
+
+

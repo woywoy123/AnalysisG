@@ -47,10 +47,14 @@ torch::Tensor PhysicsFloats::PCartesian(float px, float py, float pz, std::strin
 	return torch::sqrt(PhysicsFloats::P2Cartesian(px, py, pz, device));
 }
 
-
 torch::Tensor PhysicsFloats::BetaCartesian(float px, float py, float pz, float e, std::string device)
 {
 	return torch::sqrt(PhysicsFloats::P2Cartesian(px, py, pz, device))/PhysicsFloats::ToTensor(e, device);  
+}
+
+torch::Tensor PhysicsFloats::Beta2Cartesian(float px, float py, float pz, float e, std::string device)
+{
+	return PhysicsFloats::P2Cartesian(px, py, pz, device)/(PhysicsFloats::ToTensor(e, device)).pow(2);  
 }
 
 torch::Tensor PhysicsFloats::CosThetaCartesian(float px1, float px2, float py1, float py2, 

@@ -50,6 +50,12 @@ torch::Tensor PhysicsTensors::BetaCartesian( torch::Tensor Vector )
 	return torch::sqrt(PhysicsTensors::P2Cartesian(Vector))/e; 
 }
 
+torch::Tensor PhysicsTensors::Beta2Cartesian( torch::Tensor Vector )
+{
+	torch::Tensor e = PhysicsTensors::Slicer(Vector, 3, 4).pow(2);
+	return PhysicsTensors::P2Cartesian(Vector)/e; 
+}
+
 torch::Tensor PhysicsTensors::CosThetaCartesian( torch::Tensor v1, torch::Tensor v2 )
 {
 	v1 = PhysicsTensors::Slicer(v1, 0, 3); 

@@ -23,6 +23,9 @@ PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
 	m.def("BetaPolar", &PhysicsFloats::BetaPolar, "BetaPolar"); 
 	m.def("BetaCartesian", &PhysicsFloats::BetaCartesian, "BetaCartesian");
 
+	m.def("Beta2Polar", &PhysicsFloats::Beta2Polar, "Beta2Polar"); 
+	m.def("Beta2Cartesian", &PhysicsFloats::Beta2Cartesian, "Beta2Cartesian");
+
 	m.def("CosThetaCartesian", &PhysicsFloats::CosThetaCartesian, "CosThetaCartesian"); 
 	m.def("SinThetaCartesian", &PhysicsFloats::SinThetaCartesian, "SinThetaCartesian"); 
 }

@@ -30,4 +30,9 @@ torch::Tensor PhysicsFloats::BetaPolar(float pt, float eta, float phi, float e, 
 	return torch::sqrt(PhysicsTensors::P2Cartesian(PhysicsFloats::ToPxPyPzE(pt, eta, phi, e, device)))/e; 
 }
 
+torch::Tensor PhysicsFloats::Beta2Polar(float pt, float eta, float phi, float e, std::string device)
+{
+	torch::Tensor _P2 = PhysicsTensors::P2Cartesian(PhysicsFloats::ToPxPyPzE(pt, eta, phi, e, device)); 
+	return _P2/(PhysicsFloats::ToTensor(e, device)).pow(2); 
+}
 

@@ -27,6 +27,9 @@ namespace PhysicsTensors
 	torch::Tensor BetaPolar(torch::Tensor Polar); 
 	torch::Tensor BetaCartesian(torch::Tensor Cartesian);
 
+	torch::Tensor Beta2Polar(torch::Tensor Polar); 
+	torch::Tensor Beta2Cartesian(torch::Tensor Cartesian);
+
 	torch::Tensor CosThetaCartesian(torch::Tensor CV1, torch::Tensor CV2);
 	torch::Tensor SinThetaCartesian(torch::Tensor CV1, torch::Tensor CV2);
 }

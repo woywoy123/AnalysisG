@@ -14,6 +14,9 @@ PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
 	m.def("BetaPolar", &PhysicsTensors::BetaPolar, "BetaPolar"); 
 	m.def("BetaCartesian", &PhysicsTensors::BetaCartesian, "BetaCartesian");
 
+	m.def("Beta2Polar", &PhysicsTensors::Beta2Polar, "Beta2Polar"); 
+	m.def("Beta2Cartesian", &PhysicsTensors::Beta2Cartesian, "Beta2Cartesian");
+
 	m.def("CosThetaCartesian", &PhysicsTensors::CosThetaCartesian, "CosThetaCartesian"); 
 	m.def("SinThetaCartesian", &PhysicsTensors::SinThetaCartesian, "SinThetaCartesian");
 }
