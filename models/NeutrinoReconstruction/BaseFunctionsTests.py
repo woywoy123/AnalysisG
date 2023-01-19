@@ -1,7 +1,9 @@
 import ROOT as r
 import torch
-import Floats as F
-import Tensors as T
+import NuR.Physics.Floats as F
+import NuR.Physics.Tensors as T
+import NuR.Sols.Floats as FS
+import NuR.Sols.Tensors as TS
 import math
 
 def CompareNumerical(r_ori, r_pyt, string):
@@ -40,5 +42,15 @@ def Testx0(mH, mL, mu_or_b):
     b_root.SetPtEtaPhiE(mu_or_b.pt, mu_or_b.eta, mu_or_b.phi, mu_or_b.e)
     
     x0_root = - (mH**2 - mL**2 - b_root.M2())/(2*b_root.E())
-    x0_PyT = F.x0(mu_or_b.pt, mu_or_b.eta, mu_or_b.phi, mu_or_b.e, mH, mL, "cuda")
-    print(x0_root, x0_PyT)
+    x0_PyT = FS.x0Polar(mu_or_b.pt, mu_or_b.eta, mu_or_b.phi, mu_or_b.e, mH, mL, "cuda").tolist()[0][0]
+    CompareNumerical(x0_root, x0_PyT, "x0")
+
+def TestBeta(p):
+    part_PyT = F.BetaPolar(p.pt, p.eta, p.phi, p.e, "cuda").tolist()[0][0]
+
+    part_root = r.TLorentzVector()
+    part_root.SetPtEtaPhiE(p.pt, p.eta, p.phi, p.e)
+    part_root = part_root.Beta()
+
+    CompareNumerical(part_root, part_PyT, "Beta")
+

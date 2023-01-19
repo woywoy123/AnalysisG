@@ -6,15 +6,22 @@
 
 namespace PhysicsTensors
 {
-	torch::Tensor Slicer(torch::Tensor, int sdim, int edim); 
+        static torch::Tensor Slicer(torch::Tensor Vector, int sdim, int edim)
+        {
+        	return Vector.index({torch::indexing::Slice(), torch::indexing::Slice(sdim, edim)});
+        }
+
 	torch::Tensor ToPxPyPzE(torch::Tensor Polar); 
 	
 	torch::Tensor Mass2Polar(torch::Tensor Polar); 
 	torch::Tensor MassPolar(torch::Tensor Polar); 
+
 	torch::Tensor Mass2Cartesian(torch::Tensor Cartesian);
 	torch::Tensor MassCartesian(torch::Tensor Cartesian); 
 
 	torch::Tensor P2Cartesian(torch::Tensor Cartesian);
+	torch::Tensor PCartesian(torch::Tensor Cartesian);
+
 	torch::Tensor P2Polar(torch::Tensor Polar); 
 	
 	torch::Tensor BetaPolar(torch::Tensor Polar); 

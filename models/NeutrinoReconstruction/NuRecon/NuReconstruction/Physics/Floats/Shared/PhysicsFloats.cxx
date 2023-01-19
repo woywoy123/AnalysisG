@@ -10,8 +10,15 @@ PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
 	
 	m.def("Mass2Polar", &PhysicsFloats::Mass2Polar, "Mass2Polar");
 	m.def("MassPolar", &PhysicsFloats::MassPolar, "MassPolar"); 
+
 	m.def("Mass2Cartesian", &PhysicsFloats::Mass2Cartesian, "Mass2Cartesian"); 
 	m.def("MassCartesian", &PhysicsFloats::MassCartesian, "MassCartesian"); 
+
+	m.def("P2Cartesian", &PhysicsFloats::P2Cartesian, "P2Cartesian"); 
+	m.def("PCartesian", &PhysicsFloats::PCartesian, "PCartesian"); 
+
+	m.def("P2Polar", &PhysicsFloats::P2Polar, "P2Polar"); 
+	m.def("PPolar", &PhysicsFloats::PPolar, "PPolar"); 
 
 	m.def("BetaPolar", &PhysicsFloats::BetaPolar, "BetaPolar"); 
 	m.def("BetaCartesian", &PhysicsFloats::BetaCartesian, "BetaCartesian");

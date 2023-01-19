@@ -6,8 +6,17 @@
 
 namespace PhysicsFloats
 {
-	torch::TensorOptions Options(std::string device);
-	torch::Tensor ToTensor(float var, std::string device);	
+	static torch::TensorOptions Options( std::string device )
+	{
+		torch::TensorOptions options = torch::TensorOptions();
+		if (device == "cuda"){ options = options.device(torch::kCUDA); }
+		return options;
+	}
+
+	static torch::Tensor ToTensor(float var, std::string device)
+	{
+		return torch::tensor({var}, PhysicsFloats::Options(device)).view({-1, 1}); 	
+	}
 
 	torch::Tensor ToPx(float pt, float phi, std::string device); 
 	torch::Tensor ToPy(float pt, float phi, std::string device); 
@@ -16,11 +25,15 @@ namespace PhysicsFloats
 	
 	torch::Tensor Mass2Polar(float pt, float eta, float phi, float e, std::string device); 
 	torch::Tensor MassPolar(float pt, float eta, float phi, float e, std::string device);
+
 	torch::Tensor Mass2Cartesian(float px, float py, float pz, float e, std::string device);
 	torch::Tensor MassCartesian(float px, float py, float pz, float e, std::string device);
 	
 	torch::Tensor P2Cartesian(float px, float py, float pz, std::string device);
 	torch::Tensor P2Polar(float pt, float eta, float phi, std::string device); 
+
+	torch::Tensor PCartesian(float px, float py, float pz, std::string device);
+	torch::Tensor PPolar(float pt, float eta, float phi, std::string device); 
 
 	torch::Tensor BetaPolar(float pt, float eta, float phi, float e, std::string device);
 	torch::Tensor BetaCartesian(float px, float py, float pz, float e, std::string device);

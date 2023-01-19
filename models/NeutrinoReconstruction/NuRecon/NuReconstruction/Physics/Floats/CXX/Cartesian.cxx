@@ -1,18 +1,6 @@
 #include "../../Tensors/Headers/PhysicsTensors.h"
 #include "../Headers/PhysicsFloats.h"
 
-torch::TensorOptions PhysicsFloats::Options( std::string device )
-{
-	torch::TensorOptions options = torch::TensorOptions();
-	if (device == "cuda"){ options = options.device(torch::kCUDA); }
-	return options;
-}
-
-torch::Tensor PhysicsFloats::ToTensor(float var, std::string device)
-{
-	return torch::tensor({var}, PhysicsFloats::Options(device)).view({-1, 1}); 	
-}
-
 torch::Tensor PhysicsFloats::ToPx(float pt, float phi, std::string device)
 {
 	return PhysicsFloats::ToTensor(pt*std::cos(phi), device); 
@@ -38,18 +26,6 @@ torch::Tensor PhysicsFloats::ToPxPyPzE(float pt, float eta, float phi, float E, 
 			}).view({-1, 4}); 
 }
 
-torch::Tensor PhysicsFloats::Mass2Polar(float pt, float eta, float phi, float e, std::string device)
-{
-	torch::Tensor Pmu = PhysicsFloats::ToPxPyPzE(pt, eta, phi, e, device); 
-	return PhysicsTensors::Mass2Cartesian(Pmu); 	
-}
-
-torch::Tensor PhysicsFloats::MassPolar(float pt, float eta, float phi, float e, std::string device)
-{
-	torch::Tensor Pmu = PhysicsFloats::ToPxPyPzE(pt, eta, phi, e, device); 
-	return PhysicsTensors::MassCartesian(Pmu); 	
-}
-
 torch::Tensor PhysicsFloats::Mass2Cartesian(float px, float py, float pz, float e, std::string device)
 {
 	torch::Tensor Pmu = torch::tensor({px, py, pz, e}, PhysicsFloats::Options(device)).view({-1, 4}); 
@@ -66,17 +42,11 @@ torch::Tensor PhysicsFloats::P2Cartesian(float px, float py, float pz, std::stri
 	return torch::tensor({px, py, pz}, PhysicsFloats::Options(device)).pow(2).sum({-1}).view({-1, 1});
 }
 
-torch::Tensor PhysicsFloats::P2Polar(float pt, float eta, float phi, std::string device)
+torch::Tensor PhysicsFloats::PCartesian(float px, float py, float pz, std::string device)
 {
-	return PhysicsFloats::ToPx(pt, phi, device).pow(2) + 
-		PhysicsFloats::ToPy(pt, phi, device).pow(2) + 
-		PhysicsFloats::ToPz(pt, eta, device).pow(2);
+	return torch::sqrt(PhysicsFloats::P2Cartesian(px, py, pz, device));
 }
 
-torch::Tensor PhysicsFloats::BetaPolar(float pt, float eta, float phi, float e, std::string device)
-{
-	return torch::sqrt(PhysicsTensors::P2Cartesian(PhysicsFloats::ToPxPyPzE(pt, eta, phi, e, device)))/e; 
-}
 
 torch::Tensor PhysicsFloats::BetaCartesian(float px, float py, float pz, float e, std::string device)
 {

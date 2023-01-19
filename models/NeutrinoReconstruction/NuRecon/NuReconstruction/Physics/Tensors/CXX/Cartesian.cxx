@@ -1,10 +1,5 @@
 #include "../Headers/PhysicsTensors.h"
 
-torch::Tensor PhysicsTensors::Slicer(torch::Tensor Vector, int sdim, int edim)
-{
-	return Vector.index({torch::indexing::Slice(), torch::indexing::Slice(sdim, edim)});
-}
-
 torch::Tensor PhysicsTensors::ToPxPyPzE(torch::Tensor Vector)
 {
 	Vector = Vector.view({-1, 4}); 
@@ -18,17 +13,6 @@ torch::Tensor PhysicsTensors::ToPxPyPzE(torch::Tensor Vector)
   	torch::Tensor pz = pt*torch::sinh(eta); 
 
   	return torch::cat({px, py, pz, e}, 1); 
-}
-
-torch::Tensor PhysicsTensors::Mass2Polar(torch::Tensor Polar )
-{
-	torch::Tensor Pmu = ToPxPyPzE(Polar); 
-	return PhysicsTensors::Mass2Cartesian(Pmu); 
-}
-
-torch::Tensor PhysicsTensors::MassPolar(torch::Tensor Polar)
-{
-	return PhysicsTensors::Mass2Polar(Polar).sqrt(); 
 }
 
 torch::Tensor PhysicsTensors::Mass2Cartesian(torch::Tensor Cartesian)
@@ -55,15 +39,15 @@ torch::Tensor PhysicsTensors::P2Cartesian(torch::Tensor Cartesian)
 	return (px.pow(2) + py.pow(2) + pz.pow(2)); 
 }
 
-torch::Tensor PhysicsTensors::BetaCartesian( torch::Tensor Vector )
+torch::Tensor PhysicsTensors::PCartesian(torch::Tensor Cartesian)
 {
-	torch::Tensor e  = PhysicsTensors::Slicer(Vector, 3, 4);
-	return torch::sqrt(PhysicsTensors::P2Cartesian(Vector))/e; 
+	return torch::sqrt(PhysicsTensors::P2Cartesian(Cartesian)); 
 }
 
-torch::Tensor PhysicsTensors::BetaPolar(torch::Tensor Vector)
+torch::Tensor PhysicsTensors::BetaCartesian( torch::Tensor Vector )
 {
-	return PhysicsTensors::BetaCartesian(PhysicsTensors::ToPxPyPzE(Vector));
+	torch::Tensor e = PhysicsTensors::Slicer(Vector, 3, 4);
+	return torch::sqrt(PhysicsTensors::P2Cartesian(Vector))/e; 
 }
 
 torch::Tensor PhysicsTensors::CosThetaCartesian( torch::Tensor v1, torch::Tensor v2 )
