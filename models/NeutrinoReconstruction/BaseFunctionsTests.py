@@ -2,8 +2,8 @@ import ROOT as r
 import torch
 import NuR.Physics.Floats as F
 import NuR.Physics.Tensors as T
-import NuR.Sols.Floats as FS
-import NuR.Sols.Tensors as TS
+#import NuR.Sols.Floats as FS
+#import NuR.Sols.Tensors as TS
 import math
 
 def CompareNumerical(r_ori, r_pyt, string):
@@ -193,4 +193,42 @@ def TestxyZ2(b, muon, mT, mW, mN):
     for i in d:
         CompareNumerical(d[i][1], d[i][0], i)
 
+def TestS2V0(sxx, sxy, syx, syy, met, phi):
+    import numpy as np
+    import NuR.SingleNu.Floats as Sf
+    import torch.nn.functional as G
+    
+    sigma2 = [[sxx, sxy], [syx, syy]]
+    sigma2 = np.linalg.inv(sigma2)
+    sigma2 = np.vstack([sigma2, [0, 0]])
+    sigma2 = sigma2.T
+    sigma2 = np.vstack([sigma2, [0, 0, 0]])
+    print(sigma2)
+    
+    print("--------")
+    n = 5
+    matrix = Sf.Sigma2_F(sxx, sxy, syx, syy, "cuda")
+    sxx_ = torch.tensor([sxx for i in range(n) ], dtype = np.float, device = "cuda").view(-1, 1)
+    syx_ = torch.tensor([syx for i in range(n) ], dtype = np.float, device = "cuda").view(-1, 1)
+    sxy_ = torch.tensor([sxy for i in range(n) ], dtype = np.float, device = "cuda").view(-1, 1)
+    syy_ = torch.tensor([syy for i in range(n) ], dtype = np.float, device = "cuda").view(-1, 1)
+    matrix_ = Sf.Sigma2_T(sxx_, sxy_, syx_, syy_)
+    print(matrix_)
+    print("--------") 
 
+    metx = F.ToPx(met, phi, "cuda")
+    metx = torch.cat([metx for i in range(n)], dim = 0)
+    mety = F.ToPy(met, phi, "cuda")
+    mety = torch.cat([mety for i in range(n)], dim = 0)   
+    _tmp = torch.cat([torch.tensor([[0.]], device = "cuda") for i in range(n)], dim = 0)
+    _tmp2 = torch.cat([torch.tensor([[1.]], device = "cuda") for i in range(n)], dim = 0)
+    _tmp2 = torch.cat([_tmp, _tmp, _tmp2], dim = -1).view(-1, 1, 3)
+    _tmp = torch.cat([metx, mety, _tmp], dim = -1)
+
+    V0 = np.outer([metx.tolist()[0][0] , mety.tolist()[0][0] , 0], [0, 0, 1])
+    print(V0)
+    
+    #print(torch.einsum('ij,ijk->ijk', _tmp, _tmp2))
+
+    V0_ = Sf.V0_T(metx, mety)
+    print(V0_)

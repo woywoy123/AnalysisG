@@ -93,6 +93,15 @@ torch::Tensor NuSolutionTensors::Omega2Polar(torch::Tensor _b, torch::Tensor _mu
 	return NuSolutionTensors::Omega2Cartesian(PhysicsTensors::ToPxPyPzE(_b), PhysicsTensors::ToPxPyPzE(_mu)); 
 }
 
+torch::Tensor NuSolutionTensors::AnalyticalSolutionsPolar(torch::Tensor _b, torch::Tensor _mu,
+		torch::Tensor massTop, torch::Tensor massW, torch::Tensor massNu)
+{
+	return NuSolutionTensors::AnalyticalSolutionsCartesian(
+			PhysicsTensors::ToPxPyPzE(_b), 
+			PhysicsTensors::ToPxPyPzE(_mu), 
+			massTop, massW, massNu); 
+}
+
 torch::Tensor NuSolutionTensors::AnalyticalSolutionsCartesian(torch::Tensor _b, torch::Tensor _mu,
 		torch::Tensor massTop, torch::Tensor massW, torch::Tensor massNu)
 {
@@ -161,11 +170,4 @@ torch::Tensor NuSolutionTensors::AnalyticalSolutionsCartesian(torch::Tensor _b, 
 	return torch::cat({costheta, sintheta, x0, x0p, Sx, Sy, w, w_, x, y, z2, Omega2, eps2}, 1); 
 }
 
-torch::Tensor NuSolutionTensors::AnalyticalSolutionsPolar(torch::Tensor _b, torch::Tensor _mu,
-		torch::Tensor massTop, torch::Tensor massW, torch::Tensor massNu)
-{
-	return NuSolutionTensors::AnalyticalSolutionsCartesian(
-			PhysicsTensors::ToPxPyPzE(_b), 
-			PhysicsTensors::ToPxPyPzE(_mu), 
-			massTop, massW, massNu); 
-}
+

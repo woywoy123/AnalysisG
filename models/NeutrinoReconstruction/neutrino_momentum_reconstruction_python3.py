@@ -165,7 +165,6 @@ class singleNeutrinoSolution(object ):
         S2 = np.vstack ([np.vstack ([np.linalg.inv(sigma2), [0, 0]]).T, [0, 0, 0]])
         V0 = np.outer ([metX , metY , 0], [0, 0, 1])
 
-
         deltaNu = V0 - self.solutionSet.H
 
         self.X = np.dot(deltaNu.T, S2).dot(deltaNu)
@@ -185,9 +184,7 @@ class singleNeutrinoSolution(object ):
 
 class doubleNeutrinoSolutions (object ):
     '''Solution pairs of neutrino momenta , tt -> leptons '''
-    def __init__(self , b, b_, mu , mu_, # 4-vectors
-                 metX , metY, # ETmiss
-        mW2=mW**2, mT2=mT **2):
+    def __init__(self , b, b_, mu , mu_, metX , metY, mW2=mW**2, mT2=mT **2):
         self.solutionSets = [ nuSolutionSet (B, M, mW2 , mT2) for B,M in zip ((b,b_),(mu ,mu_ ))]
         V0 = np.outer ([metX , metY , 0], [0, 0, 1])
         self.S = V0 - UnitCircle ()

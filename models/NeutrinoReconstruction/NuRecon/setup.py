@@ -11,15 +11,20 @@ setup(
             "NuR.Physics.Tensors" : [
                 "NuReconstruction/Physics/Tensors/Headers/PhysicsTensors.h"
             ], 
-            "NuR.Sols.Floats" : [
-                "NuReconstruction/Physics/Floats/Headers/PhysicsFloats.h", 
-                "NuReconstruction/Physics/Tensors/Headers/PhysicsTensors.h",
-                "NuReconstruction/NuSolutions/Headers/NuSolFloats.h"
-                "NuReconstruction/NuSolutions/Headers/NuSolTensors.h"
-            ], 
-            "NuR.Sols.Tensors" : [
+            #"NuR.Sols.Floats" : [
+            #    "NuReconstruction/Physics/Floats/Headers/PhysicsFloats.h", 
+            #    "NuReconstruction/Physics/Tensors/Headers/PhysicsTensors.h",
+            #    "NuReconstruction/NuSolutions/Headers/NuSolFloats.h"
+            #    "NuReconstruction/NuSolutions/Headers/NuSolTensors.h"
+            #], 
+            #"NuR.Sols.Tensors" : [
+            #    "NuReconstruction/Physics/Tensors/Headers/PhysicsTensors.h", 
+            #    "NuReconstruction/NuSolutions/Headers/NuSolTensors.h"
+            #], 
+            "NuR.SingleNu.Floats" : [
                 "NuReconstruction/Physics/Tensors/Headers/PhysicsTensors.h", 
-                "NuReconstruction/NuSolutions/Headers/NuSolTensors.h"
+                "NuReconstruction/Physics/Floats/Headers/PhysicsFloats.h", 
+                "NuReconstruction/SingleNeutrino/Headers/Floats.h"
             ], 
         }, 
         ext_modules = [
@@ -42,27 +47,40 @@ setup(
                                 "NuReconstruction/Physics/Floats/Shared/PhysicsFloats.cxx", 
                             ]
             ),
-            CppExtension("NuR.Sols.Tensors", 
+            #CppExtension("NuR.Sols.Tensors", 
+            #                [
+            #                    "NuReconstruction/Physics/Tensors/CXX/Cartesian.cxx", 
+            #                    "NuReconstruction/Physics/Tensors/CXX/Polar.cxx", 
+
+            #                    "NuReconstruction/NuSolutions/CXX/NuSolTensors.cxx", 
+            #                    
+            #                    "NuReconstruction/NuSolutions/Shared/NuSolTensors.cxx"
+            #                ]
+            #),
+            #CppExtension("NuR.Sols.Floats", 
+            #                [
+            #                    "NuReconstruction/Physics/Floats/CXX/Cartesian.cxx",
+            #                    "NuReconstruction/Physics/Floats/CXX/Polar.cxx",
+            #                    "NuReconstruction/Physics/Tensors/CXX/Cartesian.cxx", 
+            #                    "NuReconstruction/Physics/Tensors/CXX/Polar.cxx", 
+
+            #                    "NuReconstruction/NuSolutions/CXX/NuSolFloats.cxx", 
+            #                    "NuReconstruction/NuSolutions/CXX/NuSolTensors.cxx", 
+
+            #                    "NuReconstruction/NuSolutions/Shared/NuSolFloats.cxx"
+            #                ]
+            #), 
+            
+            CppExtension("NuR.SingleNu.Floats", 
                             [
+                                "NuReconstruction/Physics/Floats/CXX/Cartesian.cxx", 
+                                "NuReconstruction/Physics/Floats/CXX/Polar.cxx", 
                                 "NuReconstruction/Physics/Tensors/CXX/Cartesian.cxx", 
                                 "NuReconstruction/Physics/Tensors/CXX/Polar.cxx", 
 
-                                "NuReconstruction/NuSolutions/CXX/NuSolTensors.cxx", 
+                                "NuReconstruction/SingleNeutrino/CXX/Tensors.cxx", 
                                 
-                                "NuReconstruction/NuSolutions/Shared/NuSolTensors.cxx"
-                            ]
-            ),
-            CppExtension("NuR.Sols.Floats", 
-                            [
-                                "NuReconstruction/Physics/Floats/CXX/Cartesian.cxx",
-                                "NuReconstruction/Physics/Floats/CXX/Polar.cxx",
-                                "NuReconstruction/Physics/Tensors/CXX/Cartesian.cxx", 
-                                "NuReconstruction/Physics/Tensors/CXX/Polar.cxx", 
-
-                                "NuReconstruction/NuSolutions/CXX/NuSolFloats.cxx", 
-                                "NuReconstruction/NuSolutions/CXX/NuSolTensors.cxx", 
-
-                                "NuReconstruction/NuSolutions/Shared/NuSolFloats.cxx"
+                                "NuReconstruction/SingleNeutrino/Shared/Floats.cxx", 
                             ]
             ), 
         ], 
