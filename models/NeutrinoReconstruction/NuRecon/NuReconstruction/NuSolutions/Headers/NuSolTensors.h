@@ -24,6 +24,11 @@ namespace NuSolutionTensors
 
 	torch::Tensor Omega2Cartesian(torch::Tensor _b, torch::Tensor _mu); 
 	torch::Tensor Omega2Polar(torch::Tensor _b, torch::Tensor _mu);
+
+	torch::Tensor AnalyticalSolutionsCartesian(torch::Tensor _b, torch::Tensor _mu, 
+			torch::Tensor massTop, torch::Tensor massW, torch::Tensor massNu);
+	torch::Tensor AnalyticalSolutionsPolar(torch::Tensor _b, torch::Tensor _mu, 
+			torch::Tensor massTop, torch::Tensor massW, torch::Tensor massNu);
 }
 
 

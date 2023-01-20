@@ -21,4 +21,3 @@ PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
 	m.def("SinThetaCartesian", &PhysicsTensors::SinThetaCartesian, "SinThetaCartesian");
 }
 
-

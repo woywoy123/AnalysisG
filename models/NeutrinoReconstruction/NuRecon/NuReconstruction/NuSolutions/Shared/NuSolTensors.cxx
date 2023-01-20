@@ -17,5 +17,8 @@ PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
 	m.def("wPolar", &NuSolutionTensors::wPolar, "wPolar"); 
 
 	m.def("Omega2Cartesian", &NuSolutionTensors::Omega2Cartesian, "Omega2Cartesian"); 
-	m.def("Omega2Polar", &NuSolutionTensors::Omega2Polar, "Omega2Polar"); 
+	m.def("Omega2Polar", &NuSolutionTensors::Omega2Polar, "Omega2Polar");
+
+	m.def("AnalyticalSolutionsCartesian", &NuSolutionTensors::AnalyticalSolutionsCartesian, "Intersecting Solutions"); 
+	m.def("AnalyticalSolutionsPolar", &NuSolutionTensors::AnalyticalSolutionsPolar, "Intersecting Solutions"); 
 }

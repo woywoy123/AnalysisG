@@ -99,6 +99,19 @@ def TestSValues(b, muon, mTop, mW, mNu):
     CompareNumerical(Sx_root, Sx_PyT.tolist()[0][0], "Sx")
     CompareNumerical(Sy_root, Sy_PyT.tolist()[0][0], "Sy")
 
+def TestIntermediateValues(b, muon, mT, mW, mN):
+    b_root = r.TLorentzVector()
+    b_root.SetPtEtaPhiE(b.pt, b.eta, b.phi, b.e)
+
+    mu_root = r.TLorentzVector()
+    mu_root.SetPtEtaPhiE(muon.pt, muon.eta, muon.phi, muon.e)
+
+    CompareNumerical(b_root.Px(), F.ToPx(b.pt, b.phi, "cpu").tolist()[0][0], "Px")
+    CompareNumerical(b_root.Py(), F.ToPy(b.pt, b.phi, "cpu").tolist()[0][0], "Py")
+    CompareNumerical(b_root.Pz(), F.ToPz(b.pt, b.eta, "cpu").tolist()[0][0], "Pz")
+    
+    CompareNumerical(b_root.P(), F.PPolar(b.pt, b.eta, b.phi, "cpu").tolist()[0][0], "P")
+
 def TestEps_W_Omega(b, muon, mW, mN):
     b_root = r.TLorentzVector()
     b_root.SetPtEtaPhiE(b.pt, b.eta, b.phi, b.e)
@@ -125,8 +138,59 @@ def TestEps_W_Omega(b, muon, mW, mN):
     Om2_PyT = FS.Omega2Polar(b.pt, b.eta, b.phi, b.e, muon.pt, muon.eta, muon.phi, muon.e, "cpu").tolist()[0][0]
     CompareNumerical(Om2, Om2_PyT, "Omega2")
 
+def TestxyZ2(b, muon, mT, mW, mN):
+    from time import time 
+    its = 100000
+    t1 = time() 
+    b_root = r.TLorentzVector()
+    b_root.SetPtEtaPhiE(b.pt, b.eta, b.phi, b.e)
 
+    mu_root = r.TLorentzVector()
+    mu_root.SetPtEtaPhiE(muon.pt, muon.eta, muon.phi, muon.e)
+    for i in range(its): 
+        c_root = r.Math.VectorUtil.CosTheta(b_root, mu_root)
+        s_root = math.sqrt(1 - c_root**2)
+   
+        x0p = - (mT**2 - mW**2 - b_root.M2())/(2*b_root.E())
+        x0 = - (mW**2 - mu_root.M2() - mN**2)/(2* mu_root.E())
+        Bb , Bm = b_root.Beta(), mu_root.Beta()
 
+        Sx_root = (x0 * Bm - mu_root.P()*(1 - Bm **2)) / Bm **2
+        Sy_root = (x0p / Bb - c_root * Sx_root) / s_root
 
+        eps2 = (mW**2 - mN**2) * (1 - Bm**2)
+
+        w = (Bm / Bb - c_root) / s_root
+        w_ = (-Bm / Bb - c_root) / s_root
+
+        Om2 = w**2 + 1 - Bm **2
+
+        x1 = Sx_root - (Sx_root + w * Sy_root)/Om2
+        y1 = Sy_root - (Sx_root + w * Sy_root) * w/Om2
+        
+        Z = x1**2 * Om2 - (Sy_root - w * Sx_root)**2 - (mW**2 - x0**2 - eps2)
+    t2 = time() 
+    print("Original time: (" + str(its) + ")", t2-t1)
+
+    _b  = torch.tensor([[b.pt, b.eta, b.phi, b.e] for i in range(its)], device = "cpu")
+    _mu = torch.tensor([[muon.pt, muon.eta, muon.phi, muon.e] for i in range(its)], device = "cpu")
+    _mT = torch.tensor([[mT] for i in range(its)], device = "cpu")
+    _mW = torch.tensor([[mW] for i in range(its)], device = "cpu")
+    _mN = torch.tensor([[mN] for i in range(its)], device = "cpu")
+    
+    t1 = time()
+    t = TS.AnalyticalSolutionsPolar(_b, _mu, _mT, _mW, _mN)
+    t2 = time()
+    print("C++ time: (" + str(its) + ")", t2-t1)
+    print(t)
+
+    k = [c_root, s_root, x0, x0p, Sx_root, Sy_root, w, w_, x1, y1, Z, Om2, eps2]
+    keys = ["cos", "sin", "x0", "x0p", "Sx", "Sy", "w", "w-", "x", "y", "Z2", "Omega2", "eps2"]
+
+    d = FS.AnalyticalSolutionsPolar(b.pt, b.eta, b.phi, b.e, muon.pt, muon.eta, muon.phi, muon.e, mT, mW, mN, "cpu").tolist()[0]; 
+    d = { keys[i] : [ d[i], k[i] ] for i in range(len(keys)) }
+    
+    for i in d:
+        CompareNumerical(d[i][1], d[i][0], i)
 
 
