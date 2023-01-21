@@ -1,5 +1,10 @@
 #include "../Headers/PhysicsTensors.h"
 
+torch::Tensor PhysicsTensors::ToThetaPolar(torch::Tensor Vector)
+{
+	return PhysicsTensors::ToThetaCartesian(PhysicsTensors::ToPxPyPz(Vector)); 
+}
+
 torch::Tensor PhysicsTensors::Mass2Polar(torch::Tensor Polar )
 {
 	torch::Tensor Pmu = PhysicsTensors::ToPxPyPzE(Polar); 
@@ -20,7 +25,3 @@ torch::Tensor PhysicsTensors::Beta2Polar(torch::Tensor Vector)
 {
 	return PhysicsTensors::Beta2Cartesian(PhysicsTensors::ToPxPyPzE(Vector));
 }
-
-
-
-

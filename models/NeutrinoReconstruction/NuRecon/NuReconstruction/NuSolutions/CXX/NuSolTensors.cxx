@@ -170,4 +170,20 @@ torch::Tensor NuSolutionTensors::AnalyticalSolutionsCartesian(torch::Tensor _b, 
 	return torch::cat({costheta, sintheta, x0, x0p, Sx, Sy, w, w_, x, y, z2, Omega2, eps2}, 1); 
 }
 
+torch::Tensor NuSolutionTensors::Rotation(torch::Tensor _b, torch::Tensor _mu)
+{
+	
+	torch::Tensor _bC = PhysicsTensors::ToPxPyPz(_b).view({-1, 1, 3});
+	torch::Tensor Rz = PhysicsTensors::Rz( -1*PhysicsTensors::Slicer(_mu, 2, 3));
 
+	torch::Tensor _agl = PhysicsTensors::ToThetaPolar(_mu); 
+	torch::Tensor Ry = PhysicsTensors::Ry( torch::acos(torch::tensor({0}, PhysicsTensors::Options(_agl))) - _agl); 
+	_agl = (Ry * (Rz * _bC).sum({2})).sum({2});
+	torch::Tensor z = PhysicsTensors::Slicer(_agl, 2, 3); 
+	torch::Tensor y = PhysicsTensors::Slicer(_agl, 1, 2); 
+	torch::Tensor Rx = torch::transpose(PhysicsTensors::Rx( -torch::atan2(z, y) ), 1, 2); 
+	Ry = torch::transpose(Ry, 1, 2); 	
+	Rz = torch::transpose(Rz, 1, 2);
+	
+	return torch::matmul(Rz, torch::matmul(Ry, Rx));
+}

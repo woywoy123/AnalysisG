@@ -2,12 +2,27 @@ import ROOT as r
 import torch
 import NuR.Physics.Floats as F
 import NuR.Physics.Tensors as T
+import NuR.SingleNu.Floats as Sf
 #import NuR.Sols.Floats as FS
 #import NuR.Sols.Tensors as TS
 import math
+from time import time 
 
 def CompareNumerical(r_ori, r_pyt, string):
     print("(" + string + ") -> Original: ", r_ori, " ||  Pytorch: ", r_pyt, " || Error (%): ", 100*abs(r_pyt - r_ori)/r_ori)
+
+def CompareListNumerical(r_ori, r_pyt, title = "", string = ""):
+    print("-> " + title)
+    if string == "":
+        for i, j in zip(r_ori, r_pyt):
+            delta = float(sum(i - j))
+            print("ROOT: ", list(i), "PyTorch: ", list(j), delta)
+        print("")
+        return 
+    for i, j, k in zip(r_ori, r_pyt, string):
+        CompareNumerical(i, j, k)
+    print("")
+
 
 def TestFourVector(part):
     p_ = r.TLorentzVector()
@@ -55,7 +70,6 @@ def TestBeta(p):
     CompareNumerical(part_root, part_PyT, "Beta")
 
 def TestSValues(b, muon, mTop, mW, mNu):
-    import time 
     from statistics import mean
     
     col = []
@@ -66,7 +80,7 @@ def TestSValues(b, muon, mTop, mW, mNu):
     muon_root.SetPtEtaPhiE(muon.pt, muon.eta, muon.phi, muon.e)
     
     its = 10000
-    t1 = time.time()
+    t1 = time()
     for i in range(its):
         c = r.Math.VectorUtil.CosTheta(b_root, muon_root)
         s = math.sqrt(1 - c**2)
@@ -78,7 +92,7 @@ def TestSValues(b, muon, mTop, mW, mNu):
         Sx_root = (x0 * Bm - muon_root.P()*(1 - Bm **2)) / Bm **2
         Sy_root = (x0p / Bb - c * Sx_root) / s
 
-    t2 = time.time()
+    t2 = time()
     print("Time: (" + str(its) + ") ", t2 - t1)
 
     _b = T.ToPxPyPzE(torch.tensor([[b.pt, b.eta, b.phi, b.e] for i in range(its)]))
@@ -88,12 +102,12 @@ def TestSValues(b, muon, mTop, mW, mNu):
     _mTop = torch.tensor([[mTop] for i in range(its)])
     _mNu = torch.tensor([[mNu] for i in range(its)])
     
-    t1 = time.time()
+    t1 = time()
     x = TS.SxSyCartesian(_b, _mu, _mTop, _mW, _mNu)
-    t2 = time.time()
+    t2 = time()
     print("Time: (" + str(its) +") ", t2 - t1)
 
-    t1 = time.time()
+    t1 = time()
     Sx_PyT = FS.SxPolar(b.pt, b.eta, b.phi, b.e, muon.pt, muon.eta, muon.phi, muon.e, mW, mNu, "cpu")
     Sy_PyT = FS.SyPolar(b.pt, b.eta, b.phi, b.e, muon.pt, muon.eta, muon.phi, muon.e, mTop, mW, mNu, "cpu")
     CompareNumerical(Sx_root, Sx_PyT.tolist()[0][0], "Sx")
@@ -139,7 +153,6 @@ def TestEps_W_Omega(b, muon, mW, mN):
     CompareNumerical(Om2, Om2_PyT, "Omega2")
 
 def TestxyZ2(b, muon, mT, mW, mN):
-    from time import time 
     its = 100000
     t1 = time() 
     b_root = r.TLorentzVector()
@@ -182,7 +195,6 @@ def TestxyZ2(b, muon, mT, mW, mN):
     t = TS.AnalyticalSolutionsPolar(_b, _mu, _mT, _mW, _mN)
     t2 = time()
     print("C++ time: (" + str(its) + ")", t2-t1)
-    print(t)
 
     k = [c_root, s_root, x0, x0p, Sx_root, Sy_root, w, w_, x1, y1, Z, Om2, eps2]
     keys = ["cos", "sin", "x0", "x0p", "Sx", "Sy", "w", "w-", "x", "y", "Z2", "Omega2", "eps2"]
@@ -195,7 +207,6 @@ def TestxyZ2(b, muon, mT, mW, mN):
 
 def TestS2V0(sxx, sxy, syx, syy, met, phi):
     import numpy as np
-    import NuR.SingleNu.Floats as Sf
     import torch.nn.functional as G
     
     sigma2 = [[sxx, sxy], [syx, syy]]
@@ -232,3 +243,127 @@ def TestS2V0(sxx, sxy, syx, syy, met, phi):
 
     V0_ = Sf.V0_T(metx, mety)
     print(V0_)
+
+def __initFunction(_b, muon, mT, mW, mN):
+    b = r.TLorentzVector()
+    b.SetPtEtaPhiE(_b.pt, _b.eta, _b.phi, _b.e)
+    
+    mu = r.TLorentzVector()
+    mu.SetPtEtaPhiE(muon.pt, muon.eta, muon.phi, muon.e)
+
+    c = r.Math.VectorUtil.CosTheta(b,mu)
+    s = math.sqrt(1 - c**2)
+    
+    x0p = - (mT**2 - mW**2 - b.M2())/(2*b.E())
+    x0 = - (mW**2 - mu.M2() - mN**2)/(2* mu.E())
+    Bb , Bm = b.Beta(), mu.Beta()
+
+    Sx = (x0 * Bm - mu.P()*(1 - Bm **2)) / Bm **2
+    Sy = (x0p / Bb - c * Sx) / s
+
+    eps2 = (mW**2 - mN**2) * (1 - Bm**2)
+
+    w = (Bm / Bb - c) / s
+    w_ = (-Bm / Bb - c) / s
+
+    Om2 = w**2 + 1 - Bm **2
+
+    x1 = Sx - (Sx + w * Sy)/Om2
+    y1 = Sy - (Sx + w * Sy) * w/Om2
+    
+    Z2 = x1**2 * Om2 - (Sy - w * Sx)**2 - (mW**2 - x0**2 - eps2)
+
+
+    Z = math.sqrt(max(0, Z2))
+
+    k = [c, s, x0, x0p, Sx, Sy, w, w_, x1, y1, Z, Om2, eps2]
+    keys = ["cos", "sin", "x0", "x0p", "Sx", "Sy", "w", "w-", "x", "y", "Z2", "Omega2", "eps2"]
+    
+    return { keys[i] : k[i] for i in range(len(keys)) }, b, mu
+        
+
+def TestR_T(met_phi, met, b, muon, mT, mW, mN):
+
+    import numpy as np
+    def RT(c, s, ax):
+        R = np.eye(3)*c
+        for i in [-1, 0, 1]:
+            R[(ax - i)%3, (ax + i)%3] = i*s + (1 - i*i)
+        return R
+
+    def R(angle, axis):
+        '''Rotation matrix about x(0),y(1), or z(2) axis '''
+        c, s = math.cos(angle), math.sin(angle)
+        R = c * np.eye (3)
+        for i in [-1, 0, 1]:
+            R[(axis -i)%3, (axis+i)%3] = i*s + (1 - i*i)
+        return R
+    n = 4
+
+    _b = torch.tensor([[b.pt, b.eta, b.phi] for i in range(n)], device = "cuda")
+    _mu = torch.tensor([[muon.pt, muon.eta, muon.phi] for i in range(n)], device = "cuda")
+    _a = torch.tensor([muon.phi for i in range(n)], device = "cuda")
+
+    sols, b_root, mu_root = __initFunction(b, muon, mT, mW, mN)
+    x_r = b_root.X(), b_root.Y(), b_root.Z()
+    x = F.ToPxPyPz(b.pt, b.eta, b.phi, "cuda").tolist()[0]
+    CompareListNumerical(x_r, x, "ROOT X(), Y(), Z() for b-quark", ["X", "Y", "Z"]) 
+
+    x_r = mu_root.X(), mu_root.Y(), mu_root.Z()
+    x = F.ToPxPyPz(muon.pt, muon.eta, muon.phi, "cuda").tolist()[0]
+    CompareListNumerical(x_r, x, "ROOT X(), Y(), Z() for muon", ["X", "Y", "Z"]) 
+   
+    theta_r = mu_root.Theta()
+    theta_PyT = F.ThetaPolar(muon.pt, muon.eta, muon.phi, "cuda").tolist()[0][0]
+    CompareNumerical(theta_r, theta_PyT, "Theta")
+    print("") 
+
+    # ======= Checking the Rotation ====== #
+    c_r_mu, s_r_mu = math.cos(-mu_root.Phi()), math.sin(mu_root.Phi())
+    
+    Rx_r = RT(c_r_mu, s_r_mu, 0)
+    Rx_PyT = T.Rx(_a).tolist()[0]
+    CompareListNumerical(Rx_r, Rx_PyT, "Rx Rotation")
+ 
+    Ry_r = RT(c_r_mu, s_r_mu, 1)
+    Ry_PyT = T.Ry(_a).tolist()[0]
+    CompareListNumerical(Ry_r, Ry_PyT, "Ry Rotation")
+ 
+    Rz_r = RT(c_r_mu, s_r_mu, 2)
+    Rz_PyT = T.Rz(_a).tolist()[0]
+    CompareListNumerical(Rz_r, Rz_PyT, "Rz Rotation")
+   
+    # ======== Checking Algorihtm ======= #
+    R_z = R(-mu_root.Phi(), 2)
+    R_zPyT = F.Rz(-muon.phi, "cpu").tolist()[0]
+    CompareListNumerical(R_z, R_zPyT, "Rz Muon")
+   
+    R_y = R(0.5* math.pi - mu_root.Theta(), 1)
+    R_yPyT = F.Ry(0.5 * math.pi - F.ThetaPolar(muon.pt, muon.eta, muon.phi, "cpu").tolist()[0][0], "cpu").tolist()[0]
+    CompareListNumerical(R_y, R_yPyT, "Ry Muon")
+
+    b_xyz = b_root.X(), b_root.Y(), b_root.Z()
+    R_x = next(R(-math.atan2(z,y), 0) for x,y,z in (R_y.dot(R_z.dot(b_xyz )) ,))
+
+    Ro_PyT = Sf.R_T(_b, _mu)
+    Res = R_z.T.dot(R_y.T.dot(R_x.T))
+    CompareListNumerical(Res, Ro_PyT.tolist()[0], "Rotation Algo")
+    
+    t1 = time()
+    for i in range(n):
+        R_z = R(-mu_root.Phi(), 2)
+        R_y = R(0.5* math.pi - mu_root.Theta(), 1)
+        R_x = next(R(-math.atan2(z,y), 0) for x,y,z in (R_y.dot(R_z.dot(b_xyz )) ,))
+        Res = R_z.T.dot(R_y.T.dot(R_x.T))
+    t2 = time() 
+    print("Original time: (" + str(n) + ")", t2-t1)
+    
+    t1 = time()
+    Ro_PyT = Sf.R_T(_b, _mu)
+    t2 = time() 
+    print("C++ time: (" + str(n) + ")", t2-t1)
+
+
+
+
+

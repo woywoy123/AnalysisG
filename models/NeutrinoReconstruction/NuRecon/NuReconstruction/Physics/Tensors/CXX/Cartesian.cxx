@@ -15,6 +15,72 @@ torch::Tensor PhysicsTensors::ToPxPyPzE(torch::Tensor Vector)
   	return torch::cat({px, py, pz, e}, 1); 
 }
 
+torch::Tensor PhysicsTensors::ToPxPyPz(torch::Tensor Vector)
+{
+	Vector = Vector.view({-1, 3}); 
+	torch::Tensor pt = PhysicsTensors::Slicer(Vector, 0, 1);  
+  	torch::Tensor eta =  PhysicsTensors::Slicer(Vector, 1, 2); 
+  	torch::Tensor phi =  PhysicsTensors::Slicer(Vector, 2, 3); 
+  	
+	torch::Tensor px = pt*torch::cos(phi); 
+  	torch::Tensor py = pt*torch::sin(phi); 
+  	torch::Tensor pz = pt*torch::sinh(eta); 
+
+  	return torch::cat({px, py, pz}, 1); 
+}
+
+torch::Tensor PhysicsTensors::Rx(torch::Tensor angle)
+{	
+	angle = angle.view({-1, 1, 1}); 
+	torch::Tensor cos = torch::cos(angle).view({-1, 1, 1}); 
+	torch::Tensor sin = torch::sin(angle).view({-1, 1, 1}); 
+	
+	torch::Tensor t0 = torch::zeros(angle.sizes(), PhysicsTensors::Options(angle)); 
+	torch::Tensor t1 = torch::ones(angle.sizes(), PhysicsTensors::Options(angle)); 
+	return torch::cat({
+			torch::cat({t1, t0 , t0  }, 2), 
+			torch::cat({t0, cos, -sin}, 2), 
+			torch::cat({t0, sin,  cos}, 2)
+			}, 1); 
+}
+
+torch::Tensor PhysicsTensors::Ry(torch::Tensor angle)
+{
+	angle = angle.view({-1, 1, 1}); 
+	torch::Tensor cos = torch::cos(angle).view({-1, 1, 1}); 
+	torch::Tensor sin = torch::sin(angle).view({-1, 1, 1}); 
+	
+	torch::Tensor t0 = torch::zeros(angle.sizes(), PhysicsTensors::Options(angle)); 
+	torch::Tensor t1 = torch::ones(angle.sizes(), PhysicsTensors::Options(angle)); 
+	return torch::cat({
+			torch::cat({cos , t0, sin}, 2), 
+			torch::cat({t0  , t1, t0 }, 2), 
+			torch::cat({-sin, t0, cos}, 2)
+			}, 1);  
+}
+
+
+torch::Tensor PhysicsTensors::Rz(torch::Tensor angle)
+{
+	angle = angle.view({-1, 1, 1}); 
+	torch::Tensor cos = torch::cos(angle).view({-1, 1, 1}); 
+	torch::Tensor sin = torch::sin(angle).view({-1, 1, 1}); 
+	
+	torch::Tensor t0 = torch::zeros(angle.sizes(), PhysicsTensors::Options(angle)); 
+	torch::Tensor t1 = torch::ones(angle.sizes(), PhysicsTensors::Options(angle)); 
+	return torch::cat({
+			torch::cat({cos, -sin, t0}, 2), 
+			torch::cat({sin,  cos, t0}, 2), 
+			torch::cat({t0 ,   t0, t1}, 2)
+			}, 1);  
+}
+
+torch::Tensor PhysicsTensors::ToThetaCartesian(torch::Tensor Vector)
+{
+	torch::Tensor z = PhysicsTensors::Slicer(Vector, 2, 3); 
+	return torch::acos(z/PhysicsTensors::PCartesian(Vector)); 
+}
+
 torch::Tensor PhysicsTensors::Mass2Cartesian(torch::Tensor Cartesian)
 {
 	Cartesian = Cartesian.view({-1, 4}); 
@@ -32,7 +98,6 @@ torch::Tensor PhysicsTensors::MassCartesian(torch::Tensor Cartesian)
 
 torch::Tensor PhysicsTensors::P2Cartesian(torch::Tensor Cartesian)
 {
-	Cartesian = Cartesian.view({-1, 4}); 
 	torch::Tensor px = PhysicsTensors::Slicer(Cartesian, 0, 1); 
 	torch::Tensor py = PhysicsTensors::Slicer(Cartesian, 1, 2); 
 	torch::Tensor pz = PhysicsTensors::Slicer(Cartesian, 2, 3);

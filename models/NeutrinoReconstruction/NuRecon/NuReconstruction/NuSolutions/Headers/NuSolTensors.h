@@ -29,6 +29,11 @@ namespace NuSolutionTensors
 			torch::Tensor massTop, torch::Tensor massW, torch::Tensor massNu);
 	torch::Tensor AnalyticalSolutionsPolar(torch::Tensor _b, torch::Tensor _mu, 
 			torch::Tensor massTop, torch::Tensor massW, torch::Tensor massNu);
+
+	torch::Tensor Rotation(torch::Tensor _b, torch::Tensor _mu); 
+
+
+
 }
 
 

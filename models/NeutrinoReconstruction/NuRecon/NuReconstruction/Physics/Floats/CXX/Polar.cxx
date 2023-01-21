@@ -1,5 +1,11 @@
 #include "../../Tensors/Headers/PhysicsTensors.h"
 #include "../Headers/PhysicsFloats.h"
+#include <type_traits>
+
+torch::Tensor PhysicsFloats::ToThetaPolar(double pt, double eta, double phi, std::string device)
+{
+	return PhysicsTensors::ToThetaPolar(PhysicsFloats::ToTensor(pt, eta, phi, device));	
+}
 
 torch::Tensor PhysicsFloats::Mass2Polar(double pt, double eta, double phi, double e, std::string device)
 {
@@ -34,5 +40,20 @@ torch::Tensor PhysicsFloats::Beta2Polar(double pt, double eta, double phi, doubl
 {
 	torch::Tensor _P2 = PhysicsTensors::P2Cartesian(PhysicsFloats::ToPxPyPzE(pt, eta, phi, e, device)); 
 	return _P2/(PhysicsFloats::ToTensor(e, device)).pow(2); 
+}
+
+torch::Tensor PhysicsFloats::Rx(double angle, std::string device)
+{
+	return PhysicsTensors::Rx(PhysicsFloats::ToTensor(angle, device)); 
+}
+
+torch::Tensor PhysicsFloats::Ry(double angle, std::string device)
+{
+	return PhysicsTensors::Ry(PhysicsFloats::ToTensor(angle, device)); 
+}
+
+torch::Tensor PhysicsFloats::Rz(double angle, std::string device)
+{
+	return PhysicsTensors::Rz(PhysicsFloats::ToTensor(angle, device)); 
 }
 

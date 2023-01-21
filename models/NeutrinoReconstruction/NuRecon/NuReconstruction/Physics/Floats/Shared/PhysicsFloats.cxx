@@ -6,7 +6,16 @@ PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
 	m.def("ToPx", &PhysicsFloats::ToPx, "ToPx"); 
 	m.def("ToPy", &PhysicsFloats::ToPy, "ToPy"); 
 	m.def("ToPz", &PhysicsFloats::ToPz, "ToPz"); 
+
 	m.def("ToPxPyPzE", &PhysicsFloats::ToPxPyPzE, "ToPxPyPzE"); 
+	m.def("ToPxPyPz", &PhysicsFloats::ToPxPyPz, "ToPxPyPz"); 
+
+	m.def("Rx", &PhysicsFloats::Rx, "Rx");
+	m.def("Ry", &PhysicsFloats::Ry, "Ry");
+	m.def("Rz", &PhysicsFloats::Rz, "Rz");
+
+	m.def("ThetaPolar", &PhysicsFloats::ToThetaPolar, "Theta"); 
+	m.def("ThetaCartesian", &PhysicsFloats::ToThetaCartesian, "Theta"); 
 	
 	m.def("Mass2Polar", &PhysicsFloats::Mass2Polar, "Mass2Polar");
 	m.def("MassPolar", &PhysicsFloats::MassPolar, "MassPolar"); 

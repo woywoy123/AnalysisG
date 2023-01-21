@@ -23,7 +23,9 @@ setup(
             #], 
             "NuR.SingleNu.Floats" : [
                 "NuReconstruction/Physics/Tensors/Headers/PhysicsTensors.h", 
-                "NuReconstruction/Physics/Floats/Headers/PhysicsFloats.h", 
+                "NuReconstruction/Physics/Floats/Headers/PhysicsFloats.h",
+
+                "NuReconstruction/NuSolutions/Headers/NuSolTensors.h", 
                 "NuReconstruction/SingleNeutrino/Headers/Floats.h"
             ], 
         }, 
@@ -77,6 +79,8 @@ setup(
                                 "NuReconstruction/Physics/Floats/CXX/Polar.cxx", 
                                 "NuReconstruction/Physics/Tensors/CXX/Cartesian.cxx", 
                                 "NuReconstruction/Physics/Tensors/CXX/Polar.cxx", 
+
+                                "NuReconstruction/NuSolutions/CXX/NuSolTensors.cxx", 
 
                                 "NuReconstruction/SingleNeutrino/CXX/Tensors.cxx", 
                                 

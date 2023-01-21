@@ -26,6 +26,20 @@ torch::Tensor PhysicsFloats::ToPxPyPzE(double pt, double eta, double phi, double
 			}).view({-1, 4}); 
 }
 
+torch::Tensor PhysicsFloats::ToPxPyPz(double pt, double eta, double phi, std::string device)
+{
+	return torch::cat({
+				ToPx(pt, phi, device), 
+				ToPy(pt, phi, device), 
+				ToPz(pt, eta, device)
+			}).view({-1, 3}); 
+}
+
+torch::Tensor PhysicsFloats::ToThetaCartesian(double Px, double Py, double Pz, std::string device)
+{
+	return PhysicsTensors::ToThetaCartesian(PhysicsFloats::ToTensor(Px, Py, Pz, device));  
+}
+
 torch::Tensor PhysicsFloats::Mass2Cartesian(double px, double py, double pz, double e, std::string device)
 {
 	torch::Tensor Pmu = torch::tensor({px, py, pz, e}, PhysicsFloats::Options(device)).view({-1, 4}); 

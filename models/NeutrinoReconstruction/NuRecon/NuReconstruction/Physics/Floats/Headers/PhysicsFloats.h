@@ -1,6 +1,7 @@
 #ifndef H_PHYSICS_FLOATS
 #define H_PHYSICS_FLOATS
 
+#include <cmath>
 #include <torch/extension.h>
 #include <iostream>
 
@@ -15,18 +16,32 @@ namespace PhysicsFloats
 
 	static torch::Tensor ToTensor(double var, std::string device)
 	{
-		return torch::tensor({var}, PhysicsFloats::Options(device)).view({-1, 1}); 	
+		return torch::tensor({var}, Options(device)).view({-1, 1}); 	
 	}
 
 	static torch::Tensor ToTensor(double px, double py, double pz, double e, std::string device)
 	{
-	 	return torch::tensor({px, py, pz, e}, PhysicsFloats::Options(device)).view({-1, 4});
+	 	return torch::tensor({px, py, pz, e}, Options(device)).view({-1, 4});
+	}
+
+	static torch::Tensor ToTensor(double px, double py, double pz, std::string device)
+	{
+		return torch::tensor({px, py, pz}, Options(device)).view({-1, 3}); 
 	}
 
 	torch::Tensor ToPx(double pt, double phi, std::string device); 
 	torch::Tensor ToPy(double pt, double phi, std::string device); 
 	torch::Tensor ToPz(double pt, double eta, std::string device); 
+
 	torch::Tensor ToPxPyPzE(double pt, double eta, double phi, double e, std::string device); 
+	torch::Tensor ToPxPyPz(double pt, double eta, double phi, std::string device); 
+
+	torch::Tensor Rx(double angle, std::string device);
+	torch::Tensor Ry(double angle, std::string device);
+	torch::Tensor Rz(double angle, std::string device);
+
+	torch::Tensor ToThetaCartesian(double Px, double Py, double Pz, std::string device);
+	torch::Tensor ToThetaPolar(double pt, double eta, double phi, std::string device); 
 	
 	torch::Tensor Mass2Polar(double pt, double eta, double phi, double e, std::string device); 
 	torch::Tensor MassPolar(double pt, double eta, double phi, double e, std::string device);

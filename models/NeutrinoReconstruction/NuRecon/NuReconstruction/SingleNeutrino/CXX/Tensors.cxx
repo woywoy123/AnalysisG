@@ -2,16 +2,6 @@
 #include "../../Physics/Floats/Headers/PhysicsFloats.h"
 #include "../Headers/Floats.h"
 
-torch::Tensor SingleNu::Floats::Sigma2(double sxx, double sxy, double syx, double syy, std::string device)
-{
-	
-	return SingleNu::Tensors::Sigma2(
-			PhysicsFloats::ToTensor(sxx, device), 
-			PhysicsFloats::ToTensor(sxy, device),
-			PhysicsFloats::ToTensor(syx, device),
-			PhysicsFloats::ToTensor(syy, device)); 
-}
-
 torch::Tensor SingleNu::Tensors::Sigma2(torch::Tensor sxx, torch::Tensor sxy, torch::Tensor syx, torch::Tensor syy)
 {
 	
@@ -31,7 +21,3 @@ torch::Tensor SingleNu::Tensors::V0(torch::Tensor metx, torch::Tensor mety)
 	matrix = torch::einsum("ij,ijk->ijk", {matrix, _m}); 
 	return matrix; 
 }
-
-
-
-
