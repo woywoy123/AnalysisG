@@ -17,7 +17,6 @@ torch::Tensor PhysicsTensors::ToPxPyPzE(torch::Tensor Vector)
 
 torch::Tensor PhysicsTensors::ToPxPyPz(torch::Tensor Vector)
 {
-	Vector = Vector.view({-1, 3}); 
 	torch::Tensor pt = PhysicsTensors::Slicer(Vector, 0, 1);  
   	torch::Tensor eta =  PhysicsTensors::Slicer(Vector, 1, 2); 
   	torch::Tensor phi =  PhysicsTensors::Slicer(Vector, 2, 3); 

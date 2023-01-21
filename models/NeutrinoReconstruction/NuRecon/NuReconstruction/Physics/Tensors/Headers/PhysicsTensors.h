@@ -35,6 +35,7 @@ namespace PhysicsTensors
 	torch::Tensor PCartesian(torch::Tensor Cartesian);
 
 	torch::Tensor P2Polar(torch::Tensor Polar); 
+	torch::Tensor PPolar(torch::Tensor Polar); 
 	
 	torch::Tensor BetaPolar(torch::Tensor Polar); 
 	torch::Tensor BetaCartesian(torch::Tensor Cartesian);

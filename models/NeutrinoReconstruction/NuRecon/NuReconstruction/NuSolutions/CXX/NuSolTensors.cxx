@@ -178,7 +178,8 @@ torch::Tensor NuSolutionTensors::Rotation(torch::Tensor _b, torch::Tensor _mu)
 
 	torch::Tensor _agl = PhysicsTensors::ToThetaPolar(_mu); 
 	torch::Tensor Ry = PhysicsTensors::Ry( torch::acos(torch::tensor({0}, PhysicsTensors::Options(_agl))) - _agl); 
-	_agl = (Ry * (Rz * _bC).sum({2})).sum({2});
+	_agl = (Ry * (Rz * _bC).sum({2}).view({-1, 1, 3})).sum({2});	
+
 	torch::Tensor z = PhysicsTensors::Slicer(_agl, 2, 3); 
 	torch::Tensor y = PhysicsTensors::Slicer(_agl, 1, 2); 
 	torch::Tensor Rx = torch::transpose(PhysicsTensors::Rx( -torch::atan2(z, y) ), 1, 2); 
@@ -186,4 +187,31 @@ torch::Tensor NuSolutionTensors::Rotation(torch::Tensor _b, torch::Tensor _mu)
 	Rz = torch::transpose(Rz, 1, 2);
 	
 	return torch::matmul(Rz, torch::matmul(Ry, Rx));
+}
+
+torch::Tensor NuSolutionTensors::H(torch::Tensor _b, torch::Tensor _mu, 
+		torch::Tensor massTop, torch::Tensor massW, torch::Tensor massNu)
+{
+	torch::Tensor Sol_ = NuSolutionTensors::AnalyticalSolutionsPolar(_b, _mu, massTop, massW, massNu); 
+	
+	torch::Tensor x = PhysicsTensors::Slicer(Sol_, 8, 9); 
+	torch::Tensor y = PhysicsTensors::Slicer(Sol_, 9, 10); 
+	torch::Tensor P = PhysicsTensors::P2Polar(_mu); 
+
+	torch::Tensor Z2 = PhysicsTensors::Slicer(Sol_, 10, 11); 
+	torch::Tensor w = PhysicsTensors::Slicer(Sol_, 7, 8); 
+	torch::Tensor omega = torch::sqrt(PhysicsTensors::Slicer(Sol_, 11, 12)); 
+
+	torch::Tensor R_ = NuSolutionTensors::Rotation(_b, _mu); 
+
+	// Continue here .....
+
+
+	torch::Tensor t0 = torch::zeros(angle.sizes(), PhysicsTensors::Options(angle)); 
+	torch::Tensor t1 = torch::ones(angle.sizes(), PhysicsTensors::Options(angle)); 
+	return R_; //torch::cat({
+		   //     torch::cat({cos, -sin, t0}, 2), 
+		   //     torch::cat({sin,  cos, t0}, 2), 
+		   //     torch::cat({t0 ,   t0, t1}, 2)
+		   //     }, 1);  
 }

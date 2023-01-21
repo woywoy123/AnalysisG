@@ -298,7 +298,7 @@ def TestR_T(met_phi, met, b, muon, mT, mW, mN):
         for i in [-1, 0, 1]:
             R[(axis -i)%3, (axis+i)%3] = i*s + (1 - i*i)
         return R
-    n = 4
+    n = 10000
 
     _b = torch.tensor([[b.pt, b.eta, b.phi] for i in range(n)], device = "cuda")
     _mu = torch.tensor([[muon.pt, muon.eta, muon.phi] for i in range(n)], device = "cuda")
@@ -348,7 +348,7 @@ def TestR_T(met_phi, met, b, muon, mT, mW, mN):
     Ro_PyT = Sf.R_T(_b, _mu)
     Res = R_z.T.dot(R_y.T.dot(R_x.T))
     CompareListNumerical(Res, Ro_PyT.tolist()[0], "Rotation Algo")
-    
+
     t1 = time()
     for i in range(n):
         R_z = R(-mu_root.Phi(), 2)

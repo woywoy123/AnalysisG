@@ -25,3 +25,13 @@ torch::Tensor PhysicsTensors::Beta2Polar(torch::Tensor Vector)
 {
 	return PhysicsTensors::Beta2Cartesian(PhysicsTensors::ToPxPyPzE(Vector));
 }
+
+torch::Tensor PhysicsTensors::P2Polar(torch::Tensor Vector)
+{
+	return PhysicsTensors::P2Cartesian(PhysicsTensors::ToPxPyPz(Vector)); 
+}
+
+torch::Tensor PhysicsTensors::PPolar(torch::Tensor Vector)
+{
+	return PhysicsTensors::PCartesian(PhysicsTensors::ToPxPyPz(Vector)); 
+}

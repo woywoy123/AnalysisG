@@ -14,13 +14,20 @@ namespace SingleNu
 				torch::Tensor sxx, torch::Tensor sxy, 
 				torch::Tensor syx, torch::Tensor syy);
 
-		torch::Tensor V0(
-				torch::Tensor metx, torch::Tensor mety); 
+		torch::Tensor V0(torch::Tensor metx, torch::Tensor mety); 
 
 		static torch::Tensor Rotation(
 				torch::Tensor b_, torch::Tensor mu_)
 		{
 			return NuSolutionTensors::Rotation(b_, mu_); 
+		}
+
+		static torch::Tensor H(
+				torch::Tensor b_, torch::Tensor mu_, 
+				torch::Tensor massTop, torch::Tensor massW, 
+				torch::Tensor massNu)
+		{
+			return NuSolutionTensors::H(b_, mu_, massTop, massW, massNu); 
 		}
 	}
 
@@ -40,7 +47,8 @@ namespace SingleNu
 		static torch::Tensor V0(
 				double metx, double mety, std::string device)
 		{
-			return SingleNu::Tensors::V0(PhysicsFloats::ToTensor(metx, device), 
+			return SingleNu::Tensors::V0(
+					PhysicsFloats::ToTensor(metx, device), 
 					PhysicsFloats::ToTensor(mety, device)); 
 		}
 
@@ -51,6 +59,20 @@ namespace SingleNu
 			return NuSolutionTensors::Rotation(
 					PhysicsFloats::ToTensor(b_pt, b_eta, b_phi, device), 
 					PhysicsFloats::ToTensor(mu_pt, mu_eta, mu_phi, device));
+		}
+		
+		static torch::Tensor H(
+				double b_pt, double b_eta, double b_phi, double b_e, 
+				double mu_pt, double mu_eta, double mu_phi, double mu_e, 
+				double massTop, double massW, double massNu, std::string device)
+		{
+			
+			return NuSolutionTensors::H(
+					PhysicsFloats::ToTensor(b_pt, b_eta, b_phi, b_e, device), 
+					PhysicsFloats::ToTensor(mu_pt, mu_eta, mu_phi, mu_e, device), 
+					PhysicsFloats::ToTensor(massTop, device), 
+					PhysicsFloats::ToTensor(massW, device), 
+					PhysicsFloats::ToTensor(massNu, device));
 		}
 
 
