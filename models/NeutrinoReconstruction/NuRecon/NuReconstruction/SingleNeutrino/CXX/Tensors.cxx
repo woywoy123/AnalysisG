@@ -21,3 +21,25 @@ torch::Tensor SingleNu::Tensors::V0(torch::Tensor metx, torch::Tensor mety)
 	matrix = torch::einsum("ij,ijk->ijk", {matrix, _m}); 
 	return matrix; 
 }
+
+torch::Tensor SingleNu::Tensors::Init(
+		torch::Tensor _b, torch::Tensor _mu, 
+		torch::Tensor massTop, torch::Tensor massW, torch::Tensor massNu,
+		torch::Tensor met, torch::Tensor phi, 
+		torch::Tensor Sxx, torch::Tensor Sxy, torch::Tensor Syx, torch::Tensor Syy)
+{
+	torch::Tensor _bC = PhysicsTensors::ToPxPyPzE(_b); 
+	torch::Tensor _muC = PhysicsTensors::ToPxPyPzE(_mu); 
+	
+	// ======== Algorithm ======= //
+	torch::Tensor Sol_ = NuSolutionTensors::AnalyticalSolutionsCartesian(_bC, _muC, massTop, massW, massNu); 
+	torch::Tensor S2_ = SingleNu::Tensors::Sigma2(Sxx, Sxy, Syx, Syy); 
+	torch::Tensor V0_ = SingleNu::Tensors::V0Polar(met, phi); 
+	torch::Tensor H_ = NuSolutionTensors::H_Algo(_b, _mu, Sol_);
+	
+	torch::Tensor dNu_ = V0_ - H_; 
+	torch::Tensor X_ = torch::matmul( torch::transpose(dNu_, 1, 2), S2_ ).matmul(dNu_); 
+	torch::Tensor D_ = NuSolutionTensors::Derivative(X_); 
+	torch::Tensor M_ = D_ + D_.transpose(1, 2); 
+	return M_;
+}

@@ -3,9 +3,11 @@
 
 #include <torch/extension.h>
 #include <iostream>
+#include "../../Physics/Tensors/Headers/PhysicsTensors.h"
 
 namespace NuSolutionTensors
 {
+	// Some calculations... Wont be moved into main production.
 	torch::Tensor x0Polar(torch::Tensor PolarL, torch::Tensor MassH, torch::Tensor MassL); 
 	torch::Tensor x0Cartesian(torch::Tensor CartesianL, torch::Tensor MassH, torch::Tensor MassL);
 	
@@ -25,18 +27,35 @@ namespace NuSolutionTensors
 	torch::Tensor Omega2Cartesian(torch::Tensor _b, torch::Tensor _mu); 
 	torch::Tensor Omega2Polar(torch::Tensor _b, torch::Tensor _mu);
 
+	
+	// Base Functions which are to be added as main. 
 	torch::Tensor AnalyticalSolutionsCartesian(torch::Tensor _b, torch::Tensor _mu, 
 			torch::Tensor massTop, torch::Tensor massW, torch::Tensor massNu);
-	torch::Tensor AnalyticalSolutionsPolar(torch::Tensor _b, torch::Tensor _mu, 
-			torch::Tensor massTop, torch::Tensor massW, torch::Tensor massNu);
-
 	torch::Tensor Rotation(torch::Tensor _b, torch::Tensor _mu);
-	torch::Tensor H(torch::Tensor _b, torch::Tensor _mu, 
-			torch::Tensor massTop, torch::Tensor massW, torch::Tensor massNu); 
+	torch::Tensor H_Algo(torch::Tensor _b, torch::Tensor _mu, torch::Tensor Sol_); 
+	torch::Tensor Derivative(torch::Tensor X);
+	torch::Tensor UnitCircle(torch::Tensor Op); 
+	torch::Tensor Intersections(torch::Tensor A, torch::Tensor B); 
 
+	// Transformational functions.
+	static torch::Tensor AnalyticalSolutionsPolar(
+			torch::Tensor _b, torch::Tensor _mu,
+			torch::Tensor massTop, torch::Tensor massW, torch::Tensor massNu)
+	{
+		return NuSolutionTensors::AnalyticalSolutionsCartesian(
+				PhysicsTensors::ToPxPyPzE(_b), 
+				PhysicsTensors::ToPxPyPzE(_mu), 
+				massTop, massW, massNu); 
+	}
 
-
-
+	static torch::Tensor H(
+			torch::Tensor _b, torch::Tensor _mu, 
+			torch::Tensor massTop, torch::Tensor massW, torch::Tensor massNu)
+	{
+		torch::Tensor Sol_ = NuSolutionTensors::AnalyticalSolutionsPolar(
+				_b, _mu, massTop, massW, massNu); 
+		return NuSolutionTensors::H_Algo(_b, _mu, Sol_);
+	}
 }
 
 

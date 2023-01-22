@@ -20,5 +20,8 @@ PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
 	m.def("Omega2Polar", &NuSolutionTensors::Omega2Polar, "Omega2Polar");
 
 	m.def("AnalyticalSolutionsCartesian", &NuSolutionTensors::AnalyticalSolutionsCartesian, "Intersecting Solutions"); 
-	m.def("AnalyticalSolutionsPolar", &NuSolutionTensors::AnalyticalSolutionsPolar, "Intersecting Solutions"); 
+	m.def("AnalyticalSolutionsPolar", &NuSolutionTensors::AnalyticalSolutionsPolar, "Intersecting Solutions");
+
+	m.def("Intersections", &NuSolutionTensors::Intersections, "Intersection of Ellipese");
+	m.def("Circle", &NuSolutionTensors::UnitCircle, "Unit Circle"); 
 }

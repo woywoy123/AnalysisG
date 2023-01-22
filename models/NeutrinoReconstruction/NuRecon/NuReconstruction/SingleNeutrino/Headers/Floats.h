@@ -4,6 +4,7 @@
 #include <torch/extension.h>
 #include <iostream>
 #include "../../Physics/Floats/Headers/PhysicsFloats.h"
+#include "../../Physics/Tensors/Headers/PhysicsTensors.h"
 #include "../../NuSolutions/Headers/NuSolTensors.h"
 
 namespace SingleNu
@@ -13,8 +14,20 @@ namespace SingleNu
 		torch::Tensor Sigma2(
 				torch::Tensor sxx, torch::Tensor sxy, 
 				torch::Tensor syx, torch::Tensor syy);
+		torch::Tensor V0(torch::Tensor metx, torch::Tensor mety);
 
-		torch::Tensor V0(torch::Tensor metx, torch::Tensor mety); 
+		torch::Tensor Init(
+			torch::Tensor _b, torch::Tensor _mu, 
+			torch::Tensor massTop, torch::Tensor massW, torch::Tensor massNu,
+			torch::Tensor met, torch::Tensor phi, 
+			torch::Tensor Sxx, torch::Tensor Sxy, torch::Tensor Syx, torch::Tensor Syy); 
+	
+		static torch::Tensor V0Polar(torch::Tensor met, torch::Tensor phi)
+		{
+			return V0(
+				PhysicsTensors::ToPx(met, phi), 
+				PhysicsTensors::ToPy(met, phi)); 
+		}
 
 		static torch::Tensor Rotation(
 				torch::Tensor b_, torch::Tensor mu_)

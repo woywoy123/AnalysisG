@@ -3,6 +3,10 @@
 
 PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
 {
+	m.def("ToPx", &PhysicsTensors::ToPx, "ToPx"); 
+	m.def("ToPy", &PhysicsTensors::ToPy, "ToPy"); 
+	m.def("ToPz", &PhysicsTensors::ToPz, "ToPz"); 
+
 	m.def("ToPxPyPzE", &PhysicsTensors::ToPxPyPzE, "ToPxPyPzE");
 	m.def("ToPxPyPz", &PhysicsTensors::ToPxPyPz, "ToPxPyPz");
 

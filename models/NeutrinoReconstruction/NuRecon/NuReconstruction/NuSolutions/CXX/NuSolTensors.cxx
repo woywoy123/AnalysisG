@@ -93,16 +93,9 @@ torch::Tensor NuSolutionTensors::Omega2Polar(torch::Tensor _b, torch::Tensor _mu
 	return NuSolutionTensors::Omega2Cartesian(PhysicsTensors::ToPxPyPzE(_b), PhysicsTensors::ToPxPyPzE(_mu)); 
 }
 
-torch::Tensor NuSolutionTensors::AnalyticalSolutionsPolar(torch::Tensor _b, torch::Tensor _mu,
-		torch::Tensor massTop, torch::Tensor massW, torch::Tensor massNu)
-{
-	return NuSolutionTensors::AnalyticalSolutionsCartesian(
-			PhysicsTensors::ToPxPyPzE(_b), 
-			PhysicsTensors::ToPxPyPzE(_mu), 
-			massTop, massW, massNu); 
-}
 
-torch::Tensor NuSolutionTensors::AnalyticalSolutionsCartesian(torch::Tensor _b, torch::Tensor _mu,
+torch::Tensor NuSolutionTensors::AnalyticalSolutionsCartesian(
+		torch::Tensor _b, torch::Tensor _mu,
 		torch::Tensor massTop, torch::Tensor massW, torch::Tensor massNu)
 {
 	// ====================== Muon =================================== //
@@ -166,6 +159,7 @@ torch::Tensor NuSolutionTensors::AnalyticalSolutionsCartesian(torch::Tensor _b, 
 	torch::Tensor x = Sx - (_r) / Omega2;
 	torch::Tensor y = Sy - (_r) * w / Omega2; 
 	torch::Tensor z2 = x.pow(2) * Omega2 - (Sy - w * Sx).pow(2) - (massW - x0.pow(2) - eps2); 
+	z2 = torch::sqrt(torch::relu(z2)); 
 	
 	return torch::cat({costheta, sintheta, x0, x0p, Sx, Sy, w, w_, x, y, z2, Omega2, eps2}, 1); 
 }
@@ -189,29 +183,55 @@ torch::Tensor NuSolutionTensors::Rotation(torch::Tensor _b, torch::Tensor _mu)
 	return torch::matmul(Rz, torch::matmul(Ry, Rx));
 }
 
-torch::Tensor NuSolutionTensors::H(torch::Tensor _b, torch::Tensor _mu, 
-		torch::Tensor massTop, torch::Tensor massW, torch::Tensor massNu)
+torch::Tensor NuSolutionTensors::H_Algo(torch::Tensor _b, torch::Tensor _mu, torch::Tensor Sol_)
 {
-	torch::Tensor Sol_ = NuSolutionTensors::AnalyticalSolutionsPolar(_b, _mu, massTop, massW, massNu); 
-	
-	torch::Tensor x = PhysicsTensors::Slicer(Sol_, 8, 9); 
-	torch::Tensor y = PhysicsTensors::Slicer(Sol_, 9, 10); 
-	torch::Tensor P = PhysicsTensors::P2Polar(_mu); 
+	torch::Tensor x = PhysicsTensors::Slicer(Sol_, 8, 9).view({-1, 1, 1}); 
+	torch::Tensor y = PhysicsTensors::Slicer(Sol_, 9, 10).view({-1, 1, 1}); 
+	torch::Tensor P = PhysicsTensors::PPolar(_mu).view({-1, 1, 1}); 
 
-	torch::Tensor Z2 = PhysicsTensors::Slicer(Sol_, 10, 11); 
-	torch::Tensor w = PhysicsTensors::Slicer(Sol_, 7, 8); 
-	torch::Tensor omega = torch::sqrt(PhysicsTensors::Slicer(Sol_, 11, 12)); 
+	torch::Tensor Z = PhysicsTensors::Slicer(Sol_, 10, 11).view({-1, 1, 1}); 
+	torch::Tensor w = PhysicsTensors::Slicer(Sol_, 6, 7).view({-1, 1, 1}); 
+	torch::Tensor omega = torch::sqrt(PhysicsTensors::Slicer(Sol_, 11, 12)).view({-1, 1, 1}); 
 
 	torch::Tensor R_ = NuSolutionTensors::Rotation(_b, _mu); 
+	torch::Tensor t0 = torch::zeros(w.sizes(), PhysicsTensors::Options(w)); 
+	
+	torch::Tensor H_Til = torch::cat({
+		        		torch::cat({Z/omega   , t0, x - P}, 2), 
+		        		torch::cat({w*Z/omega , t0, y    }, 2), 
+		        		torch::cat({t0        ,  Z, t0   }, 2)
+		        	}, 1);  
+	return torch::matmul(R_, H_Til); 
+}
 
-	// Continue here .....
+torch::Tensor NuSolutionTensors::UnitCircle(torch::Tensor X)
+{
+	return torch::diag( torch::tensor({1., 1., -1.}, PhysicsTensors::Options(X)) ).view({-1, 3, 3}); 
+}
 
+torch::Tensor NuSolutionTensors::Derivative(torch::Tensor X)
+{
+	torch::Tensor diag = torch::diag( 
+				torch::tensor({1., 1., 0.}, PhysicsTensors::Options(X)) 
+			).view({-1, 3, 3}); 
+	
+	
+	return X.matmul(
+			PhysicsTensors::Rz(
+				torch::acos(
+					torch::tensor({0}, PhysicsTensors::Options(diag)) 
+				)
+			).matmul(diag)); 
+}
 
-	torch::Tensor t0 = torch::zeros(angle.sizes(), PhysicsTensors::Options(angle)); 
-	torch::Tensor t1 = torch::ones(angle.sizes(), PhysicsTensors::Options(angle)); 
-	return R_; //torch::cat({
-		   //     torch::cat({cos, -sin, t0}, 2), 
-		   //     torch::cat({sin,  cos, t0}, 2), 
-		   //     torch::cat({t0 ,   t0, t1}, 2)
-		   //     }, 1);  
+torch::Tensor NuSolutionTensors::Intersections(torch::Tensor A, torch::Tensor B)
+{
+	torch::Tensor msk = torch::abs(torch::det(A)) < torch::abs(torch::det(B)); 
+	torch::Tensor _tmp = B.clone(); 
+	B.index_put_({msk}, A.index({msk})); 
+	A.index_put_({msk}, _tmp.index({msk}));
+	
+	_tmp = torch::linalg::eigvals(torch::inverse(A).matmul(B)); 
+	_tmp = torch::real(_tmp.index({torch::isreal(_tmp)})).view({-1, 1, 1,}); 
+	return B - _tmp*A; 
 }

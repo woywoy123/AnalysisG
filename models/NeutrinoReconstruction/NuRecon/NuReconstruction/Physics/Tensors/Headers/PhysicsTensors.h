@@ -8,12 +8,17 @@ namespace PhysicsTensors
 {
 	static torch::TensorOptions Options(torch::Tensor ten)
 	{
-		return torch::TensorOptions().device(ten.device()); 
+		return torch::TensorOptions().device(ten.device()).dtype(ten.dtype()); 
 	}
         static torch::Tensor Slicer(torch::Tensor Vector, int sdim, int edim)
         {
         	return Vector.index({torch::indexing::Slice(), torch::indexing::Slice(sdim, edim)});
         }
+
+	static torch::Tensor ToPx(torch::Tensor pt, torch::Tensor phi){ return pt*torch::cos(phi); }
+	static torch::Tensor ToPy(torch::Tensor pt, torch::Tensor phi){ return pt*torch::sin(phi); }
+	static torch::Tensor ToPz(torch::Tensor pt, torch::Tensor eta){ return pt*torch::sinh(eta); }
+
 
 	torch::Tensor ToPxPyPzE(torch::Tensor Polar); 
 	torch::Tensor ToPxPyPz(torch::Tensor Polar); 
