@@ -44,7 +44,7 @@ def TestEventGenerator(Files):
     print("PASSED: SAME FILENAMES")
     
     for i, j in zip(p, ev3):
-        assert len(i.Trees["nominal"].DetectorParticles) == len(j.Trees["nominal"].DetectorParticles)
+        assert len(i.Trees["nominal"].DetectorObjects) == len(j.Trees["nominal"].DetectorObjects)
     print("PASSED: SAME NUMBER OF PARTICLES PER EVENT")
 
     ev1 = UnpickleObject("TMP1")
@@ -65,7 +65,7 @@ def TestEventGenerator(Files):
     print("PASSED: SAME FILENAMES")
     
     for i, j in zip(p, z):
-        assert len(i.Trees["nominal"].DetectorParticles) == len(j.Trees["nominal"].DetectorParticles)
+        assert len(i.Trees["nominal"].DetectorObjects) == len(j.Trees["nominal"].DetectorObjects)
     print("PASSED: SAME NUMBER OF PARTICLES PER EVENT")
 
     return True 
@@ -181,14 +181,23 @@ def TestEventGeneratorDumper(Files):
             break
 
     hdf = HDF5()
-    hdf.Threads = 12 
+    hdf.Threads = 12
+    hdf.Directory = "_Pickle/"
     hdf.MultiThreadedDump(Objects, "_Pickle/")
+    for name, obj in hdf:
+        print(name, obj.Trees["nominal"].Tops, obj)
+        print(len(Objects[name].Trees["nominal"].DetectorObjects) == len(obj.Trees["nominal"].DetectorObjects))
+        if len(Objects[name].Trees["nominal"].DetectorObjects) == len(obj.Trees["nominal"].DetectorObjects):
+            continue
+        return False
+
     hdf.MergeHDF5("_Pickle/")
+    hdf.Directory = False
     hdf.Filename = "_Pickle/UNTITLED.hdf5"
     for name, obj in hdf:
-        print(name, obj.Trees["nominal"].TruthTops, obj)
-        print(len(Objects[name].Trees["nominal"].DetectorParticles) == len(obj.Trees["nominal"].DetectorParticles))
-        if len(Objects[name].Trees["nominal"].DetectorParticles) == len(obj.Trees["nominal"].DetectorParticles):
+        print(name, obj.Trees["nominal"].Tops, obj)
+        print(len(Objects[name].Trees["nominal"].DetectorObjects) == len(obj.Trees["nominal"].DetectorObjects))
+        if len(Objects[name].Trees["nominal"].DetectorObjects) == len(obj.Trees["nominal"].DetectorObjects):
             continue
         return False
     return True
@@ -221,9 +230,9 @@ def TestGraphGeneratorDumper(Files):
         it+=1 
         if it == 12:
             break
-    hdf.MultiThreadedDump(Objects, "_Pickle/")
-    hdf.MergeHDF5("_Pickle/")
-    hdf.Filename = "_Pickle/UNTITLED.hdf5"
+    hdf.MultiThreadedDump(Objects, "_Pickle/Graphs/")
+    hdf.MergeHDF5("_Pickle/Graphs/")
+    hdf.Filename = "_Pickle/Graphs/UNTITLED.hdf5"
     for name, obj in hdf:
         print(name, obj.Trees["nominal"], obj)
     return True

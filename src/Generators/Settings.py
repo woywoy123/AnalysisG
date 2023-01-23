@@ -55,7 +55,6 @@ class _General:
         self.SampleContainer = None
         self.OutputDirectory = "./"
 
-
 class _EventGenerator:
 
     def __init__(self):
@@ -77,13 +76,22 @@ class _HDF5:
 
     def __init__(self):
         self._File = None
-        self.Filename = "UNTITLED"
         self._ext = ".hdf5"
         self._iter = -1
         self._obj = {}
         self.VerboseLevel = 3
         self.Threads = 12
-        self.chnk = 12
+        self.chnk = 1
+        self.Filename = "UNTITLED"
+        self.Directory = False
+
+class _Pickle:
+
+    def __init__(self):
+        self._ext = ".pkl"
+        self.VerboseLevel = 3
+        self.Threads = 12
+        self.chnk = None
 
 class _TrainingSample:
 
@@ -205,6 +213,10 @@ class Settings(_General):
             _JobsSpecification.__init__(self)
             return 
         
+        if self.Caller == "PICKLER":
+            _Pickle.__init__(self)
+            return 
+
         _General.__init__(self)
         if self.Caller == "EVENTGENERATOR":
             _EventGenerator.__init__(self)

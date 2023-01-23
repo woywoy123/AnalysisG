@@ -49,12 +49,9 @@ class Analysis(Notification):
         self.Success(string)
         self.Success("="*l)
 
-    def FoundCache(self, Directory, Files):
-        if len(Files) == 0:
-            self.Warning("No cache was found under " + Directory)
-            return False
-        return True
-    
+    def NoCache(self, Directory):
+        self.Warning("No cache was found under " + Directory)
+
     def MissingTracer(self, Directory):
         self.Warning("Tracer not found under: " + Directory + " please enable either 'DumpPickle' or 'DumpHDF5'")
 
@@ -74,10 +71,16 @@ class Analysis(Notification):
     def FoundFiles(self, Files):
         if len(Files) == 0:
             return 
-        
         trig = True 
-        for i in self.DictToList(Files):
-            if i.endswith(".root") and trig:
+        for i in Files:
+            root = False
+            for k in Files[i]:
+                if k.endswith(".root"):
+                    root = True 
+                    break 
+            
+            string = ""
+            if root and trig:
                 string = "!!--- ADDING TO SAMPLE COLLECTION ---"
             if "DataCache" in i and trig:
                 string = "!!--- FOUND DATA CACHE ---"
@@ -89,7 +92,7 @@ class Analysis(Notification):
                 self.Success(string)
                 self.Success("!!" + "-"*len(string))
                 trig = False
-            self.Success("!!-> " + i)
+            self.Success("!!-> " + i + " (" + str(len(Files[i])) + ")")
     
     def CantGenerateTrainingSample(self):
         string = "Can't generate training sample, please choose either 'EventCache' or 'DataCache'"

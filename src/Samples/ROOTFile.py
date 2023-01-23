@@ -7,9 +7,9 @@ class ROOTFile(Hashing):
         self.Filename = Filename
         self.EventMap = {}
         self._lock = False
+        self._len = -1
     
     def MakeHash(self):
-        int: i 
         for i in self.EventMap:
             _hash = self.MD5(self.Filename + "/" + str(self.EventMap[i].EventIndex))
             self.EventMap[i].Filename = _hash
@@ -17,9 +17,10 @@ class ROOTFile(Hashing):
 
     def AddEvent(self, Event):
         self.EventMap[Event.EventIndex] = Event
+        self._len += 1
     
     def __len__(self):
-        return len(self.EventMap)
+        return self._len
 
     def list(self):
         return list(self.EventMap.values())
@@ -69,6 +70,7 @@ class ROOTFile(Hashing):
             self.HashMap[_hash] = evnt
 
         self.EventMap = self.EventMap if self._lock else {i : "" if isinstance(ev, str) else ev.UpdateIndex(i) for i, ev in zip(range(len(self.HashMap)), self.HashMap.values())}
+        self._len = len(self.EventMap)
         return self
     
     def ClearEvents(self):

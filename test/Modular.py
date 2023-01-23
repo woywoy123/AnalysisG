@@ -90,4 +90,21 @@ def TestEventGenerator(Files):
             return False
     return passing
 
+def TestAnalysis(Files):
+    AnaE = Analysis()
+    AnaE.ProjectName = "Project"
+    AnaE.InputSample("bsm-4t", "/".join(Files[0].split("/")[:-1]))
+    AnaE.InputSample("t", Files[1])
+    AnaE.Event = Event
+    AnaE.EventCache = True
+    AnaE.Threads = 12
+    AnaE.DumpPickle = True
+    #AnaE.Launch()
 
+    
+    it = 0
+    for i in AnaE:
+        #print(i.Trees["nominal"].Tops)
+        it += 1
+    print(it)
+    return True

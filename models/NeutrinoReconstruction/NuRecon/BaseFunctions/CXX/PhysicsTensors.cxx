@@ -46,18 +46,24 @@ torch::Tensor PhysicsTensors::MassCartesian(torch::Tensor Cartesian)
 	return PhysicsTensors::Mass2Cartesian(Cartesian).sqrt(); 
 }
 
+torch::Tensor PhysicsTensors::P2Cartesian(torch::Tensor Cartesian)
+{
+	Cartesian = Cartesian.view({-1, 4}); 
+	torch::Tensor px = __Slicer(Cartesian, 0, 1); 
+	torch::Tensor py = __Slicer(Cartesian, 1, 2); 
+	torch::Tensor pz = __Slicer(Cartesian, 2, 3);
+	return (px.pow(2) + py.pow(2) + pz.pow(2)); 
+}
+
 torch::Tensor PhysicsTensors::BetaCartesian( torch::Tensor Vector )
 {
-	torch::Tensor px = __Slicer(Vector, 0, 1);
-	torch::Tensor py = __Slicer(Vector, 1, 2);
-	torch::Tensor pz = __Slicer(Vector, 2, 3);
 	torch::Tensor e  = __Slicer(Vector, 3, 4);
-	return torch::sqrt((torch::pow(px, 2) + torch::pow(py, 2) + torch::pow(pz, 2)))/e; 
+	return torch::sqrt(PhysicsTensors::P2Cartesian(Vector))/e; 
 }
 
 torch::Tensor PhysicsTensors::BetaPolar(torch::Tensor Vector)
 {
-	return PhysicsTensors::BetaCartesian(PhysicsTensors::ToPxPyPzE( Vector ));
+	return PhysicsTensors::BetaCartesian(PhysicsTensors::ToPxPyPzE(Vector));
 }
 
 torch::Tensor PhysicsTensors::CosThetaCartesian( torch::Tensor v1, torch::Tensor v2 )
