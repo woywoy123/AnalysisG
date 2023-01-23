@@ -8,6 +8,7 @@
 *.png
 *.pth
 *.txt
+*.so
 
 **/__pycache__
 **/build

@@ -13,7 +13,7 @@ def Mag(Vec):
     return math.sqrt(sum([i**2 for i in Vec]))
 
 def MagP(p):
-    p_v = [ToPx(p.pt, p.phi), ToPy(p.pt, p.phi), ToPz(p.pt, p.eta), p.e]
+    p_v = [ToPx(p.pt, p.phi), ToPy(p.pt, p.phi), ToPz(p.pt, p.eta)]
     return Mag(p_v)
         
 

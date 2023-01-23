@@ -22,7 +22,7 @@ class Tools(IO):
         out = []
         for i in inpt:
             out += self.MergeListsInDict(inpt[i])
-        return out
+        return self.MergeNestedList(out)
     
     def DictToList(self, inpt, key = None):
         if isinstance(inpt, str) and key != None:

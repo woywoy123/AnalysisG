@@ -53,20 +53,24 @@ torch::Tensor PhysicsFloats::MassCartesian(double pt, double eta, double phi, do
 	return PhysicsFloats::Mass2Polar(pt, eta, phi, e, device).sqrt(); 	
 }
 
+torch::Tensor PhysicsFloats::P2Cartesian(double px, double py, double pz, std::string device)
+{
+	return torch::tensor({px, py, pz}, __Options(device)).pow(2).sum({-1}).view({-1, 1});
+}
+
+torch::Tensor PhysicsFloats::P2Polar(double pt, double eta, double phi, std::string device)
+{
+	return ToPx(pt, phi, device).pow(2) + ToPy(pt, phi, device).pow(2) + ToPz(pt, eta, device).pow(2);
+}
+
 torch::Tensor PhysicsFloats::BetaPolar(double pt, double eta, double phi, double e, std::string device)
 {
-	return torch::sqrt(
-		torch::pow(ToPx(pt, phi, device), 2) + 
-		torch::pow(ToPy(pt, phi, device), 2) + 
-		torch::pow(ToPz(pt, eta, device), 2))/e; 
+	return torch::sqrt(PhysicsTensors::P2Cartesian(PhysicsFloats::ToPxPyPzE(pt, eta, phi, e, device)))/e; 
 }
 
 torch::Tensor PhysicsFloats::BetaCartesian(double px, double py, double pz, double e, std::string device)
 {
-	return torch::sqrt(
-		torch::pow(torch::tensor({px}, __Options(device)), 2) + 
-		torch::pow(torch::tensor({py}, __Options(device)), 2) + 
-		torch::pow(torch::tensor({pz}, __Options(device)), 2))/torch::tensor({e}, __Options(device)); 
+	return torch::sqrt(PhysicsFloats::P2Cartesian(px, py, pz, device))/torch::tensor({e}, __Options(device)); 
 }
 
 torch::Tensor PhysicsFloats::CosThetaCartesian(double px1, double px2, double py1, double py2, 
@@ -76,4 +80,5 @@ torch::Tensor PhysicsFloats::CosThetaCartesian(double px1, double px2, double py
 	torch::Tensor vec2 = torch::tensor({px2, py2, pz2, e2}, __Options(device)).view({-1, 4});
 	return PhysicsTensors::CosThetaCartesian(vec1, vec2);
 }
+
 

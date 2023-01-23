@@ -6,7 +6,7 @@
 
 namespace NuSolutionFloat
 {
-	torch::Tensor x0p(float bPt, float bEta, float bPhi, float bE, float MassTop, float MassW); 
+	torch::Tensor x0p(double bPt, double bEta, double bPhi, double bE, double MassTop, double MassW); 
 
 
 

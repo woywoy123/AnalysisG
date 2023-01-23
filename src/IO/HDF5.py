@@ -22,6 +22,10 @@ class HDF5(Settings, Tools, IO_):
         if Mode == "w":
             self.__IncrementRefSet(Name)
     
+    def End(self):
+        self._File.close()
+        self.__init__()
+    
     def __IncrementRefSet(self, Name = False):
         self._iter += 1
         name = Name if Name else self._iter
@@ -64,7 +68,7 @@ class HDF5(Settings, Tools, IO_):
                 return self.__AddToDataSet(objectaddress, Key, Val)
             elif isinstance(Val, dict):
                 for i in Val:
-                    self.__AddToDataSet(objectaddress, Key + "-" + i, Val[i])
+                    self.__AddToDataSet(objectaddress, Key + "-" + str(i), Val[i])
                 return 
             elif isinstance(Val, list):
                 for i in range(len(Val)):
@@ -107,58 +111,6 @@ class HDF5(Settings, Tools, IO_):
         for i in dic:
             self.__Store(objname, objectaddress, i, dic[i])
         return True
-    
-    def MultiThreadedDump(self, ObjectDict, OutputDirectory):
-
-        def function(inpt):
-            out = []
-            for i in inpt:
-                h = HDF5()
-                h.VerboseLevel = self.VerboseLevel
-                h.Filename = OutputDirectory + "/" + str(i[0])
-                h.DumpObject(i[1], str(i[0]))
-                out.append([h.Filename, str(i[0])]) 
-            return out
-
-        if isinstance(ObjectDict, dict) == False:
-            self.WrongInputMultiThreading(ObjectDict)
-            return 
-        inpo = [[name, ObjectDict[name]] for name in ObjectDict]
-        TH = Threading(inpo, function, self.Threads, self.chnk)
-        TH.VerboseLevel = self.VerboseLevel
-        TH.Start()
-       
-    def MergeHDF5(self, Directory):
-        Files = self.DictToList(self.ListFilesInDir({Directory : ["*"]}, ".hdf5"))
-        if len(Files) == 0:
-            return 
-        
-        self.Filename = Directory + "/" + self.Filename
-        self.Filename += self._ext if self.Filename.endswith(self._ext) == False else ""
-        
-        self._File = h5py.File(self.Filename, mode = "a", track_order = True)
-        for i in self._File:
-            for j in Files:
-                if i in j:
-                    Files.pop(Files.index(j))
-                    break
-
-        for i in Files:
-            if i.endswith(self.Filename.split("/")[-1]):
-                continue
-            name = i.split("/")[-1].replace(self._ext, "")
-            self._Ref = self._File.create_dataset(name, track_order = True, dtype = h5py.ref_dtype)
-            src = h5py.File(i, mode = "r")
-            self.MergingHDF5(i)
-            for key in src:
-                for attr in src[key].attrs:
-                    self._Ref.attrs[attr] = src[key].attrs[attr]
-            os.remove(i)
-        self.End()
-
-    def End(self):
-        self._File.close()
-        self.__init__()
     
     def __BuildContainer(self, obj, attr, i, typ):
         ins = {} if typ == "-" else None
@@ -212,9 +164,79 @@ class HDF5(Settings, Tools, IO_):
             setattr(obj, attr, self._Ref.attrs[i])
         return [i[1] for i in self._obj.values() if "EventContainer" in str(type(i[1])).split("'")[1]][0]
 
+    def MultiThreadedDump(self, ObjectDict, OutputDirectory):
+        OutputDirectory = self.RemoveTrailing(OutputDirectory, "/") 
+        self.mkdir(OutputDirectory)
+        def function(inpt):
+            out = []
+            for i in inpt:
+                h = HDF5()
+                h.VerboseLevel = self.VerboseLevel
+                h.Filename = OutputDirectory + "/" + str(i[0])
+                h.DumpObject(i[1], str(i[0]))
+                out.append([h.Filename, str(i[0])]) 
+            return out
+
+        if isinstance(ObjectDict, dict) == False:
+            self.WrongInputMultiThreading(ObjectDict)
+            return 
+        inpo = [[name, ObjectDict[name]] for name in ObjectDict]
+        TH = Threading(inpo, function, self.Threads, self.chnk)
+        TH.VerboseLevel = self.VerboseLevel
+        TH.Start()
+    
+    def MultiThreadedReading(self, InputFiles):
+        def function(inpt):
+            out = []
+            for i in inpt:
+                h = HDF5()
+                h.VerboseLevel = self.VerboseLevel
+                h.Filename = self.Directory + "/" + i
+                out.append((i, h.RebuildObject(i)))
+            return out
+
+        TH = Threading(InputFiles, function, self.Threads, self.chnk)
+        TH.VerboseLevel = self.VerboseLevel
+        TH.Start()
+        self._names = TH._lists
+
+    def MergeHDF5(self, Directory):
+        Files = self.DictToList(self.ListFilesInDir({Directory : ["*"]}, ".hdf5"))
+        if len(Files) == 0:
+            return 
+        
+        self.Filename = Directory + "/" + self.Filename
+        self.Filename += self._ext if self.Filename.endswith(self._ext) == False else ""
+        
+        self._File = h5py.File(self.Filename, mode = "a", track_order = True)
+        for i in self._File:
+            for j in Files:
+                if i in j:
+                    Files.pop(Files.index(j))
+                    break
+
+        for i in Files:
+            if i.endswith(self.Filename.split("/")[-1]):
+                continue
+            name = i.split("/")[-1].replace(self._ext, "")
+            self._Ref = self._File.create_dataset(name, track_order = True, dtype = h5py.ref_dtype)
+            src = h5py.File(i, mode = "r")
+            self.MergingHDF5(i)
+            for key in src:
+                for attr in src[key].attrs:
+                    self._Ref.attrs[attr] = src[key].attrs[attr]
+            os.remove(i)
+        self.End()
+
     def __iter__(self):
-        self.Start(Mode = "r")
-        self._names = [i for i in self._File]
+        if self.Directory:
+            self._names = [i.replace(self._ext, "").split("/")[-1] for i in self.DictToList(self.ListFilesInDir({self.Directory : ["*"]}, self._ext))]
+            self.MultiThreadedReading(self._names)
+        else:
+            self.Start(False, "r")
+            self._names = []
+            for i in self._File:
+                self._names.append((i, self.RebuildObject(i)))
         return self
 
     def __next__(self):
@@ -222,6 +244,6 @@ class HDF5(Settings, Tools, IO_):
         if len(self._names) == 0:
             raise StopIteration()
         name = self._names.pop()
-        return (name, self.RebuildObject(name))
+        return name 
 
 
