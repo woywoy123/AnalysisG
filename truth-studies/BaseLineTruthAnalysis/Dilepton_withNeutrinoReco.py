@@ -18,7 +18,7 @@ PDGID = { 1 : "d"        ,  2 : "u"             ,  3 : "s",
  
 _leptons = [11, 12, 13, 14, 15, 16]
 _charged_leptons = [11, 13, 15]
-_neutrinos = [12, 13, 14]
+_neutrinos = [12, 14, 16]
 topMass = 172.5
 
 def PlotTemplate(nevents, lumi):
@@ -28,7 +28,7 @@ def PlotTemplate(nevents, lumi):
                 "yMin" : 0, 
                 "xMax" : None,
                 "xBins" : None,
-                "OutputDirectory" : "./Figures_withNeutrinoReco_truthMET_EventStop100/", 
+                "OutputDirectory" : "./Figures_withNeutrinoReco_EventStop100/", 
                 "Style" : "ATLAS",
                 "ATLASLumi" : lumi,
                 "NEvents" : nevents
@@ -41,8 +41,8 @@ def DileptonAnalysis_withNeutrinoReco(Ana):
     ReconstructedHadTopMass = {"Res": [], "Spec": []}
     ReconstructedLepTopMass = {"Res": [], "Spec": []}
     ReconstructedResonanceMass = []
-    MissingET = {"From ntuples": [], "From neg sum of truth objects": [], "From truth neutrinos": []}
-    MissingETDiff = {"From neg sum of truth objects": [], "From truth neutrinos": []}
+    MissingET = {"From ntuples": [], "From neg sum of truth objects": [], "From neg sum of truth objects incl rad": [], "From truth neutrinos": []}
+    MissingETDiff = {"From neg sum of truth objects": [], "From neg sum of truth objects incl rad": [], "From truth neutrinos": []}
     numSolutions = []
 
     nevents = 0
@@ -84,6 +84,8 @@ def DileptonAnalysis_withNeutrinoReco(Ana):
             neventsNotPassed += 1
             continue
 
+        print(f"Number of top children = {len(event.TopChildren)}")
+        print(f"PDGIDs are {[p.pdgid for p in event.TopChildren]}")
         all_particles = sum(leptons + bquarks + lquarks)
         met = all_particles.pt
         met_x = -all_particles.pt * np.cos(all_particles.phi)
@@ -96,19 +98,29 @@ def DileptonAnalysis_withNeutrinoReco(Ana):
         # met_y2 = sum(neg_sum_y)
         # met2 = math.sqrt(pow(met_x2, 2) + pow(met_y2, 2))
 
+        all_particles_withRad = sum([p for p in event.TopChildren if p.pdgid not in _neutrinos])
+        met_withRad = all_particles_withRad.pt
+        met_withRad_x = -all_particles_withRad.pt * np.cos(all_particles_withRad.phi)
+        met_withRad_y = -all_particles_withRad.pt * np.sin(all_particles_withRad.phi)
+
         event_met_x = event.met * np.cos(event.met_phi)
         event_met_y = event.met * np.sin(event.met_phi)
 
-        # print(f"MET, MET_x and MET_y calculated from partons = {met}, {met_x}, {met_y}")
-        # print(f"MET, MET_x and MET_y from event = {event.met}, {event_met_x}, {event_met_y}")
+        print(f"MET, MET_x and MET_y from event = {event.met}, {event_met_x}, {event_met_y}")
+        print(f"MET, MET_x and MET_y calculated from partons = {met}, {met_x}, {met_y}")
+        print(f"MET, MET_x and MET_y calculated from partons including radiation = {met_withRad}, {met_withRad_x}, {met_withRad_y}")
         MissingET["From ntuples"].append(event.met/1000.)
         MissingET["From neg sum of truth objects"].append(met/1000.)
+        MissingET["From neg sum of truth objects incl rad"].append(met_withRad/1000.)
         MissingETDiff["From neg sum of truth objects"].append(met/1000. - event.met/1000.)
+        MissingETDiff["From neg sum of truth objects incl rad"].append(met_withRad/1000. - event.met/1000.)
         if len(neutrinos) > 0:
+            print(f"Number of neutrinos: {len(neutrinos)}")
             nus = sum(neutrinos)
             MissingET["From truth neutrinos"].append(nus.pt/1000.)
             MissingETDiff["From truth neutrinos"].append(nus.pt/1000. - event.met/1000.)
-            # print(f"MET, MET_x and MET_y from neutrinos = {nus.pt}, {nus.pt * np.cos(nus.phi)}, {nus.pt * np.sin(nus.phi)}")
+            print(f"MET, MET_x and MET_y from neutrinos = {nus.pt}, {nus.pt * np.cos(nus.phi)}, {nus.pt * np.sin(nus.phi)}")
+        print(f"Sum of tops pT = {sum([t for t in event.Tops]).pt}")
         
 
         # Find the group of one b quark and two jets for which the invariant mass is closest to that of a top quark
@@ -186,7 +198,6 @@ def DileptonAnalysis_withNeutrinoReco(Ana):
         # Choose best solution
         lowestError = 1e100
         for s,solution in enumerate(nunu_s):
-            #print(f"Solution {s}")
             groups = []
             nFromRes = []
             for i, nu_s in enumerate(solution):
@@ -310,7 +321,7 @@ def DileptonAnalysis_withNeutrinoReco(Ana):
     Plots["xBins"] = 200
     Plots["xMin"] = 0
     Plots["xMax"] = 1000
-    Plots["Filename"] = "MET"
+    Plots["Filename"] = "MET_withRad"
     Plots["Histograms"] = []
 
     for i in MissingET:
@@ -328,7 +339,7 @@ def DileptonAnalysis_withNeutrinoReco(Ana):
     Plots["xBins"] = 200
     Plots["xMin"] = -500
     Plots["xMax"] = 500
-    Plots["Filename"] = "METDiff"
+    Plots["Filename"] = "METDiff_withRad"
     Plots["Histograms"] = []
 
     for i in MissingETDiff:
