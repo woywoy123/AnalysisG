@@ -102,7 +102,6 @@ class nuSolutionSet (object ):
         
         Z2 = x1**2 * Om2 - (Sy - w * Sx)**2 - (mW2 - x0**2 - eps2)
 
-
         Z = math.sqrt(max(0, Z2))
         for item in ['b','mu','c','s','x0','x0p', 'Sx','Sy','w','w_','x1','y1', 'Z','Om2','eps2','mW2']:
             setattr(self, item , eval(item))
@@ -125,6 +124,19 @@ class nuSolutionSet (object ):
         mW2 , x0p = self.mW2 , self.x0p
         A_b_ = np.array ([[1 -B*B, 0, 0, B*x0p], [ 0, 1, 0, 0], [ 0, 0, 1, 0], [B*x0p , 0, 0, mW2 -x0p **2]])
         return K.dot(A_b_ ).dot(K.T)
+
+    @property
+    def H_perp(self ):
+        '''Transformation of t=[c,s ,1] to pT_nu: lab coord.'''
+        return np.vstack ([self.H[:2], [0, 0, 1]])
+    @property
+    def N(self ):
+        '''Solution ellipse of pT_nu: lab coord.'''
+        HpInv = np.linalg.inv(self.H_perp)
+        return HpInv.T.dot( UnitCircle ()).dot(HpInv)
+
+    
+    # === Implemented ===
     @property
     def R_T(self ):
         '''Rotation from F coord.to laboratory coord.'''
@@ -143,15 +155,9 @@ class nuSolutionSet (object ):
     def H(self ):
         '''Transformation of t=[c,s ,1] to p_nu: lab coord.'''
         return self.R_T.dot(self.H_tilde)
-    @property
-    def H_perp(self ):
-        '''Transformation of t=[c,s ,1] to pT_nu: lab coord.'''
-        return np.vstack ([self.H[:2], [0, 0, 1]])
-    @property
-    def N(self ):
-        '''Solution ellipse of pT_nu: lab coord.'''
-        HpInv = np.linalg.inv(self.H_perp)
-        return HpInv.T.dot( UnitCircle ()).dot(HpInv)
+
+
+
 
 class singleNeutrinoSolution(object ):
     '''Most likely neutrino momentum for tt -->lepton+jets '''
@@ -166,9 +172,9 @@ class singleNeutrinoSolution(object ):
         V0 = np.outer ([metX , metY , 0], [0, 0, 1])
 
         deltaNu = V0 - self.solutionSet.H
-
         self.X = np.dot(deltaNu.T, S2).dot(deltaNu)
         M = next(XD + XD.T for XD in (self.X.dot( Derivative ()) ,))
+
         solutions = intersections_ellipses (M, UnitCircle ())
         self.solutions = sorted(solutions , key=self.calcX2)
 

@@ -3,9 +3,10 @@ import torch
 import NuR.Physics.Floats as F
 import NuR.Physics.Tensors as T
 import NuR.SingleNu.Floats as Sf
-#import NuR.Sols.Floats as FS
-#import NuR.Sols.Tensors as TS
+import NuR.Sols.Floats as FS
+import NuR.Sols.Tensors as TS
 import math
+import numpy as np
 from time import time 
 
 def CompareNumerical(r_ori, r_pyt, string):
@@ -16,13 +17,130 @@ def CompareListNumerical(r_ori, r_pyt, title = "", string = ""):
     if string == "":
         for i, j in zip(r_ori, r_pyt):
             delta = float(sum(i - j))
-            print("ROOT: ", list(i), "PyTorch: ", list(j), delta)
+            print("ROOT: ", list(i), "PyTorch: ", list(j), " || Error (%): ", 100*abs(delta/sum(abs(i))))
         print("")
         return 
     for i, j, k in zip(r_ori, r_pyt, string):
         CompareNumerical(i, j, k)
     print("")
 
+def RT(c, s, ax):
+    R = np.eye(3)*c
+    for i in [-1, 0, 1]:
+        R[(ax - i)%3, (ax + i)%3] = i*s + (1 - i*i)
+    return R
+
+def R(angle, axis):
+    '''Rotation matrix about x(0),y(1), or z(2) axis '''
+    c, s = math.cos(angle), math.sin(angle)
+    R = c * np.eye (3)
+    for i in [-1, 0, 1]:
+        R[(axis -i)%3, (axis+i)%3] = i*s + (1 - i*i)
+    return R
+
+def _H(b_root, mu_root):
+    b_xyz = b_root.X(), b_root.Y(), b_root.Z()
+    R_z = R(-mu_root.Phi(), 2)
+    R_y = R(0.5* math.pi - mu_root.Theta(), 1)
+    R_x = next(R(-math.atan2(z,y), 0) for x,y,z in (R_y.dot(R_z.dot(b_xyz )) ,))
+    return R_z.T.dot(R_y.T.dot(R_x.T))
+
+def Derivative():
+    return R(math.pi / 2, 2).dot(np.diag([1, 1, 0]))
+
+def UnitCircle ():
+    return np.diag ([1, 1, -1])
+
+def intersections_ellipses (A, B, returnLines =False ):
+    LA = np.linalg
+    if abs(LA.det(B)) > abs(LA.det(A)):
+        A,B = B,A
+
+    e = next(e.real for e in LA.eigvals(LA.inv(A).dot(B)) if not e.imag)
+    print(B - e*A)
+    lines = factor_degenerate (B - e*A)
+    exit()
+    points = sum ([ intersections_ellipse_line (A,L) for L in lines ] ,[])
+    return (points ,lines) if returnLines else points
+
+def cofactor(A, i, j):
+    '''Cofactor[i,j] of 3x3 matrix A'''
+    a = A[not i:2 if i==2 else None :2 if i==1 else 1,not j:2 if j==2 else None :2 if j==1 else 1]
+    return ( -1)**(i+j) * (a[0 ,0]*a[1 ,1] - a[1 ,0]*a[0 ,1])
+
+def multisqrt (y):
+    '''Valid real solutions to y=x*x'''
+    return ([] if y < 0 else [0] if y == 0 else (lambda r: [-r, r])( math.sqrt(y)))
+
+def factor_degenerate (G, zero =0):
+    if G[0 ,0] == 0 == G[1 ,1]:
+        return [[G[0,1], 0, G[1 ,2]] , [0, G[0,1], G[0 ,2] - G[1 ,2]]]
+    
+    swapXY = abs(G[0 ,0]) > abs(G[1 ,1])
+    Q = G[(1 ,0 ,2) ,][: ,(1 ,0 ,2)] if swapXY else G
+    Q /= Q[1 ,1]
+    q22 = cofactor(Q, 2 ,2)
+    if -q22 <= zero:
+        lines = [[Q[0,1], Q[1,1], Q[1 ,2]+s] for s in multisqrt (-cofactor(Q, 0, 0))]
+    else:
+        x0 , y0 = [cofactor(Q, i ,2) / q22 for i in [0, 1]]
+        lines = [[m, Q[1,1], -Q[1 ,1]* y0 - m*x0] for m in [Q[0 ,1] + s for s in multisqrt (-q22 )]]
+    return [[L[swapXY],L[not swapXY],L[2]] for L in lines]
+
+def __initFunction(_b, muon, mT, mW, mN):
+    b = r.TLorentzVector()
+    b.SetPtEtaPhiE(_b.pt, _b.eta, _b.phi, _b.e)
+    
+    mu = r.TLorentzVector()
+    mu.SetPtEtaPhiE(muon.pt, muon.eta, muon.phi, muon.e)
+
+    c = r.Math.VectorUtil.CosTheta(b,mu)
+    s = math.sqrt(1 - c**2)
+    
+    x0p = - (mT**2 - mW**2 - b.M2())/(2*b.E())
+    x0 = - (mW**2 - mu.M2() - mN**2)/(2* mu.E())
+    Bb , Bm = b.Beta(), mu.Beta()
+
+    Sx = (x0 * Bm - mu.P()*(1 - Bm **2)) / Bm **2
+    Sy = (x0p / Bb - c * Sx) / s
+
+    eps2 = (mW**2 - mN**2) * (1 - Bm**2)
+
+    w = (Bm / Bb - c) / s
+    w_ = (-Bm / Bb - c) / s
+
+    Om2 = w**2 + 1 - Bm **2
+
+    x1 = Sx - (Sx + w * Sy)/Om2
+    y1 = Sy - (Sx + w * Sy) * w/Om2
+    
+    Z2 = x1**2 * Om2 - (Sy - w * Sx)**2 - (mW**2 - x0**2 - eps2)
+    Z = math.sqrt(max(0, Z2))
+
+    k = [c, s, x0, x0p, Sx, Sy, w, w_, x1, y1, Z, Om2, eps2]
+    keys = ["cos", "sin", "x0", "x0p", "Sx", "Sy", "w", "w-", "x", "y", "Z", "Omega2", "eps2"]
+    
+    return { keys[i] : k[i] for i in range(len(keys)) }, b, mu
+        
+def _MakeS2V0(event, Sxx, Sxy, Syx, Syy):
+    S2 = np.vstack ([np.vstack ([np.linalg.inv([[Sxx, Sxy], [Syx, Syy]]), [0, 0]]).T, [0, 0, 0]])
+    metX = F.ToPx(event.met, event.met_phi, "cpu").tolist()[0][0]
+    metY = F.ToPy(event.met, event.met_phi, "cpu").tolist()[0][0]
+    V0 = np.outer ([metX, metY , 0], [0, 0, 1])
+    return S2, V0     
+
+def _MakeH(b, muon, mT, mW, mN):
+    sols, b_root, mu_root = __initFunction(b, muon, mT, mW, mN)
+    x1 , y1 , p = sols["x"] , sols["y"] , mu_root.P()
+    Z, w, Om = sols["Z"], sols["w"], math.sqrt(sols["Omega2"])
+    
+    H_til = np.array([[ Z/Om , 0, x1 -p], [w*Z/Om , 0, y1], [ 0, Z, 0]])
+    R_ = _H(b_root, mu_root)
+    R_ = R_.dot(H_til)
+    return R_
+
+def _MakeTensor(val, number, device = "cpu", dtp = torch.double):
+    return torch.tensor([val for i in range(number)], device = device, dtype = dtp)
 
 def TestFourVector(part):
     p_ = r.TLorentzVector()
@@ -153,7 +271,7 @@ def TestEps_W_Omega(b, muon, mW, mN):
     CompareNumerical(Om2, Om2_PyT, "Omega2")
 
 def TestxyZ2(b, muon, mT, mW, mN):
-    its = 100000
+    its = 1
     t1 = time() 
     b_root = r.TLorentzVector()
     b_root.SetPtEtaPhiE(b.pt, b.eta, b.phi, b.e)
@@ -196,8 +314,8 @@ def TestxyZ2(b, muon, mT, mW, mN):
     t2 = time()
     print("C++ time: (" + str(its) + ")", t2-t1)
 
-    k = [c_root, s_root, x0, x0p, Sx_root, Sy_root, w, w_, x1, y1, Z, Om2, eps2]
-    keys = ["cos", "sin", "x0", "x0p", "Sx", "Sy", "w", "w-", "x", "y", "Z2", "Omega2", "eps2"]
+    k = [c_root, s_root, x0, x0p, Sx_root, Sy_root, w, w_, x1, y1, max(0, math.sqrt(Z)), Om2, eps2]
+    keys = ["cos", "sin", "x0", "x0p", "Sx", "Sy", "w", "w-", "x", "y", "Z", "Omega2", "eps2"]
 
     d = FS.AnalyticalSolutionsPolar(b.pt, b.eta, b.phi, b.e, muon.pt, muon.eta, muon.phi, muon.e, mT, mW, mN, "cpu").tolist()[0]; 
     d = { keys[i] : [ d[i], k[i] ] for i in range(len(keys)) }
@@ -239,65 +357,10 @@ def TestS2V0(sxx, sxy, syx, syy, met, phi):
     V0 = np.outer([metx.tolist()[0][0] , mety.tolist()[0][0] , 0], [0, 0, 1])
     print(V0)
     
-    #print(torch.einsum('ij,ijk->ijk', _tmp, _tmp2))
-
     V0_ = Sf.V0_T(metx, mety)
     print(V0_)
 
-def __initFunction(_b, muon, mT, mW, mN):
-    b = r.TLorentzVector()
-    b.SetPtEtaPhiE(_b.pt, _b.eta, _b.phi, _b.e)
-    
-    mu = r.TLorentzVector()
-    mu.SetPtEtaPhiE(muon.pt, muon.eta, muon.phi, muon.e)
-
-    c = r.Math.VectorUtil.CosTheta(b,mu)
-    s = math.sqrt(1 - c**2)
-    
-    x0p = - (mT**2 - mW**2 - b.M2())/(2*b.E())
-    x0 = - (mW**2 - mu.M2() - mN**2)/(2* mu.E())
-    Bb , Bm = b.Beta(), mu.Beta()
-
-    Sx = (x0 * Bm - mu.P()*(1 - Bm **2)) / Bm **2
-    Sy = (x0p / Bb - c * Sx) / s
-
-    eps2 = (mW**2 - mN**2) * (1 - Bm**2)
-
-    w = (Bm / Bb - c) / s
-    w_ = (-Bm / Bb - c) / s
-
-    Om2 = w**2 + 1 - Bm **2
-
-    x1 = Sx - (Sx + w * Sy)/Om2
-    y1 = Sy - (Sx + w * Sy) * w/Om2
-    
-    Z2 = x1**2 * Om2 - (Sy - w * Sx)**2 - (mW**2 - x0**2 - eps2)
-
-
-    Z = math.sqrt(max(0, Z2))
-
-    k = [c, s, x0, x0p, Sx, Sy, w, w_, x1, y1, Z, Om2, eps2]
-    keys = ["cos", "sin", "x0", "x0p", "Sx", "Sy", "w", "w-", "x", "y", "Z2", "Omega2", "eps2"]
-    
-    return { keys[i] : k[i] for i in range(len(keys)) }, b, mu
-        
-
-def TestR_T(met_phi, met, b, muon, mT, mW, mN):
-
-    import numpy as np
-    def RT(c, s, ax):
-        R = np.eye(3)*c
-        for i in [-1, 0, 1]:
-            R[(ax - i)%3, (ax + i)%3] = i*s + (1 - i*i)
-        return R
-
-    def R(angle, axis):
-        '''Rotation matrix about x(0),y(1), or z(2) axis '''
-        c, s = math.cos(angle), math.sin(angle)
-        R = c * np.eye (3)
-        for i in [-1, 0, 1]:
-            R[(axis -i)%3, (axis+i)%3] = i*s + (1 - i*i)
-        return R
+def TestR_T(b, muon, mT, mW, mN):
     n = 10000
 
     _b = torch.tensor([[b.pt, b.eta, b.phi] for i in range(n)], device = "cuda")
@@ -362,6 +425,163 @@ def TestR_T(met_phi, met, b, muon, mT, mW, mN):
     Ro_PyT = Sf.R_T(_b, _mu)
     t2 = time() 
     print("C++ time: (" + str(n) + ")", t2-t1)
+
+def TestH(b, muon, mT, mW, mN):
+
+    n = 5
+    device = "cpu"
+    _b = torch.tensor([[b.pt, b.eta, b.phi, b.e] for i in range(n)], device = device, dtype = torch.double).view(-1, 4)
+    _mu = torch.tensor([[muon.pt, muon.eta, muon.phi, muon.e] for i in range(n)], device = device, dtype = torch.double).view(-1, 4)
+    _mT = torch.tensor([[mT] for i in range(n)], device = device, dtype = torch.double).view(-1, 1)
+    _mW = torch.tensor([[mW] for i in range(n)], device = device, dtype = torch.double).view(-1, 1)
+    _mN = torch.tensor([[mN] for i in range(n)], device = device, dtype = torch.double).view(-1, 1)
+
+    sols, b_root, mu_root = __initFunction(b, muon, mT, mW, mN)
+    
+    x1 , y1 , p = sols["x"] , sols["y"] , mu_root.P()
+    Z, w, Om = sols["Z"], sols["w"], math.sqrt(sols["Omega2"])
+    
+    H_til = np.array([[ Z/Om , 0, x1 -p], [w*Z/Om , 0, y1], [ 0, Z, 0]])
+    R_ = _H(b_root, mu_root)
+    R_ = R_.dot(H_til)
+    
+    Z_PyT = Sf.H_T(_b, _mu, _mT, _mW, _mN)
+    CompareListNumerical(R_, Z_PyT.tolist()[0], "H value")
+
+def TestInit(event, Sxx, Sxy, Syx, Syy, b, muon, mT, mW, mN):
+
+    H = _MakeH(b, muon, mT, mW, mN)
+    S2, V0 = _MakeS2V0(event, Sxx, Sxy, Syx, Syy)
+    
+    n = 1000000
+    device = "cuda"
+    _b  = _MakeTensor([b.pt, b.eta, b.phi, b.e], n, device)
+    _mu = _MakeTensor([muon.pt, muon.eta, muon.phi, muon.e], n, device)
+    _mT = _MakeTensor([mT], n, device)
+    _mW = _MakeTensor([mW], n, device)
+    _mN = _MakeTensor([mN], n, device)
+    _met = _MakeTensor([event.met], n, device)
+    _phi = _MakeTensor([event.met_phi], n, device)
+    _Sxx = _MakeTensor([Sxx ], n, device)
+    _Sxy = _MakeTensor([Sxy ], n, device) 
+    _Syx = _MakeTensor([Syx ], n, device) 
+    _Syy = _MakeTensor([Syy ], n, device)
+
+    H_PyT = Sf.H_T(_b, _mu, _mT, _mW, _mN)
+    V0_PyT = Sf.V0Polar_T(_met, _phi)
+    S2_PyT = Sf.Sigma2_T(_Sxx, _Sxy, _Syx, _Syy)
+    
+    deltaNu = V0 - H 
+    X = np.dot(deltaNu.T, S2).dot(deltaNu)
+
+    # ===== M calc ===== 
+    M = next(XD + XD.T for XD in (X.dot( Derivative()), ))
+    M_PyT = Sf.SolT(_b, _mu, _mT, _mW, _mN, _met, _phi, _Sxx, _Sxy, _Syx, _Syy)
+    CompareListNumerical(M, M_PyT.tolist()[0], "M Calculation") 
+
+    # ===== Intersection stuff
+    C = UnitCircle()
+    LA = np.linalg
+    if abs(LA.det(C)) > abs(LA.det(M)):
+        M, C = C, M
+    eig = next(e.real for e in LA.eigvals(LA.inv(M).dot(C)) if not e.imag)
+    G = C - eig*M
+    G_PyT = TS.Intersections(M_PyT, torch.cat([TS.Circle(_b) for i in range(n)], dim = 0))
+
+    # ====== Start ======= #
+    t1 = time()
+    z0 = torch.zeros_like(G_PyT)
+
+    # Case G11, G22 == 0 horizontal + vertical solutions to line intersection 
+    c1 = G_PyT[:, 0, 0] + G_PyT[:, 1, 1] == 0
+    z0[c1, 0, 0] = G_PyT[c1, 0, 1]
+    z0[c1, 0, 2] = G_PyT[c1, 1, 2]
+    z0[c1, 1, 1] = G_PyT[c1, 0, 1]
+    z0[c1, 1, 2] = G_PyT[c1, 0, 2] - G_PyT[c1, 1, 2]
+    
+
+    # ===== Numerical Stability ====== #
+    swp = abs(G_PyT[:, 0, 0]) > abs(G_PyT[:, 1, 1])
+    
+    z0[c1 == False] = G_PyT[c1 == False]
+    z0[swp] = torch.cat([z0[swp, 1, :].view(-1, 1, 3), z0[swp, 0, :].view(-1, 1, 3), z0[swp, 2, :].view(-1, 1, 3)], dim = 1)
+    z0[swp] = torch.cat([z0[swp, :, 1].view(-1, 3, 1), z0[swp, :, 0].view(-1, 3, 1), z0[swp, :, 2].view(-1, 3, 1)], dim = 2)
+    z0[c1 == False] = z0[c1 == False]/(z0[c1 == False, 1, 1].view(-1, 1, 1))
+
+    # make smaller and clear sols 
+    _qf = z0[c1 == False]
+
+    # Calculate cofactors
+    _q00 = _qf[:, [1, 2], :][:, :, [1, 2]].det()
+    _q02 = _qf[:, [1, 2], :][:, :, [0, 1]].det()
+    _q12 = -1*_qf[:, [0, 2], :][:, :, [0, 1]].det()
+    _q22 = _qf[:, [0, 1], :][:, :, [0, 1]].det()
+    
+    _inter = -_q22 <= 0
+    _r_q00 = (_q00 >= 0) * _inter
+    _q00[_r_q00] = torch.sqrt(_q00[_r_q00])
+
+    # ============ Parallel solutions ============== #
+    _parallel_n = torch.cat([_qf[_r_q00, 0, 1].view(-1, 1), 
+                             _qf[_r_q00, 1, 1].view(-1, 1), 
+                            (_qf[_r_q00, 1, 2] - _q00[_r_q00]).view(-1, 1)], dim = 1)
+
+    _parallel_p = torch.cat([_qf[_r_q00, 0, 1].view(-1, 1), 
+                             _qf[_r_q00, 1, 1].view(-1, 1), 
+                            (_qf[_r_q00, 1, 2] + _q00[_r_q00]).view(-1, 1)], dim = 1)
+    
+    x = (c1 == False)*_inter
+    z0[x, 0, :] = _parallel_n
+    z0[x, 1, :] = _parallel_p
+
+    # ============= Intersections ================== # 
+    _inter = _inter == False
+
+    # Q(0, 1) - sqrt(- q22)
+    # Q(1, 1)
+    # -Q(1, 1) * q12/q22 - Q(1, 1) * (Q(0, 1) (-/+) sqrt(- q22))*(q02/q22)
+    _inter_n = torch.cat([(_qf[_inter, 0, 1] - torch.sqrt(-_q22[_inter])).view(-1, 1), 
+                           _qf[_inter, 1, 1].view(-1, 1),
+                          (-_qf[_inter, 1, 1]*(_q12[_inter]/_q22[_inter]) - _qf[_inter, 1, 1] * (_qf[_inter, 0, 1] - torch.sqrt(-_q22[_inter])) * (_q02[_inter] / _q22[_inter])).view(-1, 1)], dim = 1)
+
+    _inter_p = torch.cat([(_qf[_inter, 0, 1] + torch.sqrt(-_q22[_inter])).view(-1, 1),
+                           _qf[_inter, 1, 1].view(-1, 1),
+                          (-_qf[_inter, 1, 1]*(_q12[_inter]/_q22[_inter]) - _qf[_inter, 1, 1] * (_qf[_inter, 0, 1] + torch.sqrt(-_q22[_inter])) * (_q02[_inter] / _q22[_inter])).view(-1, 1)], dim = 1)
+    
+    x = (c1 == False)*_inter
+    z0[x, 0, :] = _inter_n
+    z0[x, 1, :] = _inter_p
+    z0[:, 2, :] = 0
+    t2 = time()
+    t_PyT = t2 - t1
+    print("-- (PyT) -> ", t_PyT)
+
+
+    t1 = time()
+    for t in range(n):
+
+        if G[0, 0] == 0 == G[0, 0]: 
+            s = [[G[0,1], 0, G[1 ,2]] , [0, G[0,1], G[0 ,2] - G[1 ,2]]] 
+        else:
+            swapXY = abs(G[0 ,0]) > abs(G[1 ,1])
+            Q = G[(1 ,0 ,2) ,][: ,(1 ,0 ,2)] if swapXY else G
+            Q /= Q[1 ,1]
+ 
+            q22 = cofactor(Q, 2 ,2)
+            if -q22 <= 0:
+                lines = [[Q[0,1], Q[1,1], Q[1 ,2]+s] for s in multisqrt (-cofactor(Q, 0, 0))]
+            else:
+                x0 , y0 = [cofactor(Q, i ,2) / q22 for i in [0, 1]]
+                lines = [[m, Q[1,1], -Q[1 ,1]* y0 - m*x0] for m in [Q[0 ,1] + s for s in multisqrt (-q22 )]]
+
+    #       return [[L[swapXY],L[not swapXY],L[2]] for L in lines]
+
+    t2 = time()
+    t_Py = t2 - t1
+    print("-- (O) -> ", t_Py)
+
+    print("Performance delta (%)", 100*(t_Py - t_PyT)/t_Py)
+    
 
 
 
