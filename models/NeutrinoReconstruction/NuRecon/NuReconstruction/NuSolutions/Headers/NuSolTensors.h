@@ -37,6 +37,13 @@ namespace NuSolutionTensors
 	torch::Tensor UnitCircle(torch::Tensor Op); 
 	torch::Tensor Intersections(torch::Tensor A, torch::Tensor B); 
 
+	static torch::Tensor cofactor(torch::Tensor A, std::vector<int> selr, std::vector<int> selc)
+	{
+		A = A.index({torch::indexing::Slice(), torch::tensor(selr), torch::indexing::Slice()}); 
+		A = A.index({torch::indexing::Slice(), torch::indexing::Slice(), torch::tensor(selc)}); 
+		return torch::det(A); 
+	}
+	
 	// Transformational functions.
 	static torch::Tensor AnalyticalSolutionsPolar(
 			torch::Tensor _b, torch::Tensor _mu,

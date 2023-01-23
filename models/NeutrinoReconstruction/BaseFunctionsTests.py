@@ -51,6 +51,11 @@ def Derivative():
 def UnitCircle ():
     return np.diag ([1, 1, -1])
 
+def intersections_ellipse_line (ellipse , line , zero =1e-12):
+    _,V = np.linalg.eig(np.cross(line ,ellipse ).T)
+    sols = sorted([(v.real / v[2].real, np.dot(line ,v.real )**2 + np.dot(v.real ,ellipse ).dot(v.real )**2) for v in V.T], key=lambda k: k[1])[:2]
+    return [s for s, k in sols if k < zero]
+
 def intersections_ellipses (A, B, returnLines =False ):
     LA = np.linalg
     if abs(LA.det(B)) > abs(LA.det(A)):
@@ -453,7 +458,7 @@ def TestInit(event, Sxx, Sxy, Syx, Syy, b, muon, mT, mW, mN):
     H = _MakeH(b, muon, mT, mW, mN)
     S2, V0 = _MakeS2V0(event, Sxx, Sxy, Syx, Syy)
     
-    n = 1000000
+    n = 5
     device = "cuda"
     _b  = _MakeTensor([b.pt, b.eta, b.phi, b.e], n, device)
     _mu = _MakeTensor([muon.pt, muon.eta, muon.phi, muon.e], n, device)
@@ -486,76 +491,8 @@ def TestInit(event, Sxx, Sxy, Syx, Syy, b, muon, mT, mW, mN):
         M, C = C, M
     eig = next(e.real for e in LA.eigvals(LA.inv(M).dot(C)) if not e.imag)
     G = C - eig*M
+
     G_PyT = TS.Intersections(M_PyT, torch.cat([TS.Circle(_b) for i in range(n)], dim = 0))
-
-    # ====== Start ======= #
-    t1 = time()
-    z0 = torch.zeros_like(G_PyT)
-
-    # Case G11, G22 == 0 horizontal + vertical solutions to line intersection 
-    c1 = G_PyT[:, 0, 0] + G_PyT[:, 1, 1] == 0
-    z0[c1, 0, 0] = G_PyT[c1, 0, 1]
-    z0[c1, 0, 2] = G_PyT[c1, 1, 2]
-    z0[c1, 1, 1] = G_PyT[c1, 0, 1]
-    z0[c1, 1, 2] = G_PyT[c1, 0, 2] - G_PyT[c1, 1, 2]
-    
-
-    # ===== Numerical Stability ====== #
-    swp = abs(G_PyT[:, 0, 0]) > abs(G_PyT[:, 1, 1])
-    
-    z0[c1 == False] = G_PyT[c1 == False]
-    z0[swp] = torch.cat([z0[swp, 1, :].view(-1, 1, 3), z0[swp, 0, :].view(-1, 1, 3), z0[swp, 2, :].view(-1, 1, 3)], dim = 1)
-    z0[swp] = torch.cat([z0[swp, :, 1].view(-1, 3, 1), z0[swp, :, 0].view(-1, 3, 1), z0[swp, :, 2].view(-1, 3, 1)], dim = 2)
-    z0[c1 == False] = z0[c1 == False]/(z0[c1 == False, 1, 1].view(-1, 1, 1))
-
-    # make smaller and clear sols 
-    _qf = z0[c1 == False]
-
-    # Calculate cofactors
-    _q00 = _qf[:, [1, 2], :][:, :, [1, 2]].det()
-    _q02 = _qf[:, [1, 2], :][:, :, [0, 1]].det()
-    _q12 = -1*_qf[:, [0, 2], :][:, :, [0, 1]].det()
-    _q22 = _qf[:, [0, 1], :][:, :, [0, 1]].det()
-    
-    _inter = -_q22 <= 0
-    _r_q00 = (_q00 >= 0) * _inter
-    _q00[_r_q00] = torch.sqrt(_q00[_r_q00])
-
-    # ============ Parallel solutions ============== #
-    _parallel_n = torch.cat([_qf[_r_q00, 0, 1].view(-1, 1), 
-                             _qf[_r_q00, 1, 1].view(-1, 1), 
-                            (_qf[_r_q00, 1, 2] - _q00[_r_q00]).view(-1, 1)], dim = 1)
-
-    _parallel_p = torch.cat([_qf[_r_q00, 0, 1].view(-1, 1), 
-                             _qf[_r_q00, 1, 1].view(-1, 1), 
-                            (_qf[_r_q00, 1, 2] + _q00[_r_q00]).view(-1, 1)], dim = 1)
-    
-    x = (c1 == False)*_inter
-    z0[x, 0, :] = _parallel_n
-    z0[x, 1, :] = _parallel_p
-
-    # ============= Intersections ================== # 
-    _inter = _inter == False
-
-    # Q(0, 1) - sqrt(- q22)
-    # Q(1, 1)
-    # -Q(1, 1) * q12/q22 - Q(1, 1) * (Q(0, 1) (-/+) sqrt(- q22))*(q02/q22)
-    _inter_n = torch.cat([(_qf[_inter, 0, 1] - torch.sqrt(-_q22[_inter])).view(-1, 1), 
-                           _qf[_inter, 1, 1].view(-1, 1),
-                          (-_qf[_inter, 1, 1]*(_q12[_inter]/_q22[_inter]) - _qf[_inter, 1, 1] * (_qf[_inter, 0, 1] - torch.sqrt(-_q22[_inter])) * (_q02[_inter] / _q22[_inter])).view(-1, 1)], dim = 1)
-
-    _inter_p = torch.cat([(_qf[_inter, 0, 1] + torch.sqrt(-_q22[_inter])).view(-1, 1),
-                           _qf[_inter, 1, 1].view(-1, 1),
-                          (-_qf[_inter, 1, 1]*(_q12[_inter]/_q22[_inter]) - _qf[_inter, 1, 1] * (_qf[_inter, 0, 1] + torch.sqrt(-_q22[_inter])) * (_q02[_inter] / _q22[_inter])).view(-1, 1)], dim = 1)
-    
-    x = (c1 == False)*_inter
-    z0[x, 0, :] = _inter_n
-    z0[x, 1, :] = _inter_p
-    z0[:, 2, :] = 0
-    t2 = time()
-    t_PyT = t2 - t1
-    print("-- (PyT) -> ", t_PyT)
-
 
     t1 = time()
     for t in range(n):
@@ -574,13 +511,42 @@ def TestInit(event, Sxx, Sxy, Syx, Syy, b, muon, mT, mW, mN):
                 x0 , y0 = [cofactor(Q, i ,2) / q22 for i in [0, 1]]
                 lines = [[m, Q[1,1], -Q[1 ,1]* y0 - m*x0] for m in [Q[0 ,1] + s for s in multisqrt (-q22 )]]
 
-    #       return [[L[swapXY],L[not swapXY],L[2]] for L in lines]
+            lines = [[L[swapXY],L[not swapXY],L[2]] for L in lines]
 
     t2 = time()
     t_Py = t2 - t1
-    print("-- (O) -> ", t_Py)
+    #print("-- (O) -> ", t_Py)
+    #print(lines)
+    
+    c_pyt = torch.cat([TS.Circle(_b) for i in range(n)], dim = 0)
 
-    print("Performance delta (%)", 100*(t_Py - t_PyT)/t_Py)
+    print(G_PyT[0][0], M_PyT[0])
+    print(lines[0], M)
+    
+    print("---") 
+    print(torch.linalg.cross(G_PyT[0][0], M_PyT[0]))
+    print(np.cross(lines[0], M))
+    
+    exit()
+
+    _, V = np.linalg.eig(np.cross(lines[0], M).T)
+    print("--")
+    print(V.T)
+
+    def FNK(inpt):
+        r = inpt.real
+        v1 = r/r[2]
+        v2 = np.dot(lines[0], r)**2 + np.dot(r, M).dot(r)**2 
+        print(v2, v1)
+
+    print([FNK(k.T) for k in V.T])
+    print("--")
+
+
+    sols = sorted([(v.real / v[2].real, np.dot(lines[0], v.real )**2 + np.dot(v.real, M).dot(v.real)**2) for v in V.T], key=lambda k: k[1])[:2]
+    print(sols)
+
+    #print("Performance delta (%)", 100*(t_Py - t_PyT)/t_Py)
     
 
 
