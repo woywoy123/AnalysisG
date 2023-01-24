@@ -40,6 +40,7 @@ torch::Tensor SingleNu::Tensors::Init(
 	torch::Tensor dNu_ = V0_ - H_; 
 	torch::Tensor X_ = torch::matmul( torch::transpose(dNu_, 1, 2), S2_ ).matmul(dNu_); 
 	torch::Tensor D_ = NuSolutionTensors::Derivative(X_); 
-	torch::Tensor M_ = D_ + D_.transpose(1, 2); 
-	return M_;
+	torch::Tensor M_ = D_ + D_.transpose(1, 2);
+	torch::Tensor C_ = NuSolutionTensors::UnitCircle(_mu).repeat({_mu.sizes()[0], 1, 1}); 
+	return NuSolutionTensors::Intersections(M_, C_, 0.0001);
 }

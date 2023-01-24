@@ -224,7 +224,7 @@ torch::Tensor NuSolutionTensors::Derivative(torch::Tensor X)
 			).matmul(diag)); 
 }
 
-torch::Tensor NuSolutionTensors::Intersections(torch::Tensor A, torch::Tensor B)
+torch::Tensor NuSolutionTensors::Intersections(torch::Tensor A, torch::Tensor B, float cutoff)
 {
 	torch::Tensor msk = torch::abs(torch::det(A)) < torch::abs(torch::det(B)); 
 	torch::Tensor _tmp = B.clone(); 
@@ -356,7 +356,7 @@ torch::Tensor NuSolutionTensors::Intersections(torch::Tensor A, torch::Tensor B)
 				_t2.view({-1, 2, 3, 1})
 			}, -1); 
 	
-	torch::Tensor sel = std::get<0>(idx) < 1; 
+	torch::Tensor sel = std::get<0>(idx) < cutoff; 
 	sel = torch::cat({
 				sel.view({-1, 2, 3, 1}), 
 				sel.view({-1, 2, 3, 1}), 

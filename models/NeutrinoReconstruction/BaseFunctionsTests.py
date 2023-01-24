@@ -43,6 +43,7 @@ def _H(b_root, mu_root):
     R_z = R(-mu_root.Phi(), 2)
     R_y = R(0.5* math.pi - mu_root.Theta(), 1)
     R_x = next(R(-math.atan2(z,y), 0) for x,y,z in (R_y.dot(R_z.dot(b_xyz )) ,))
+
     return R_z.T.dot(R_y.T.dot(R_x.T))
 
 def Derivative():
@@ -89,12 +90,33 @@ def factor_degenerate (G, zero =0):
         lines = [[m, Q[1,1], -Q[1 ,1]* y0 - m*x0] for m in [Q[0 ,1] + s for s in multisqrt (-q22 )]]
     return [[L[swapXY],L[not swapXY],L[2]] for L in lines]
 
+
+def SingleNeutrino(b, muon, mT, mW, mN, metX, metY, sigma2):
+    sols, b, mu = __initFunction(b, muon, mT, mW, mN) 
+    
+    S2 = np.vstack ([np.vstack ([np.linalg.inv(sigma2), [0, 0]]).T, [0, 0, 0]])
+    V0 = np.outer ([metX , metY , 0], [0, 0, 1])
+   
+    x1 , y1 , p = sols["x"] , sols["y"] , mu.P()
+    Z, w, Om = sols["Z"], sols["w"], math.sqrt(sols["Omega2"])
+    x = [[ Z/Om , 0, x1 -p], [w*Z/Om , 0, y1], [ 0, Z, 0]]
+    H_til = np.array(x)
+    
+    R_ = _H(b, mu)
+    R_ = R_.dot(H_til)
+ 
+    deltaNu = V0 - R_ 
+    X = np.dot(deltaNu.T, S2).dot(deltaNu)
+    M = next(XD + XD.T for XD in (X.dot( Derivative ()) ,))
+    return intersections_ellipses (M, UnitCircle ())
+
+
 def __initFunction(_b, muon, mT, mW, mN):
     b = r.TLorentzVector()
-    b.SetPtEtaPhiE(_b.pt/1000, _b.eta, _b.phi, _b.e/1000)
+    b.SetPtEtaPhiE(_b.pt, _b.eta, _b.phi, _b.e)
     
     mu = r.TLorentzVector()
-    mu.SetPtEtaPhiE(muon.pt/1000, muon.eta, muon.phi, muon.e/1000)
+    mu.SetPtEtaPhiE(muon.pt, muon.eta, muon.phi, muon.e)
 
     c = r.Math.VectorUtil.CosTheta(b,mu)
     s = math.sqrt(1 - c**2)
@@ -126,8 +148,8 @@ def __initFunction(_b, muon, mT, mW, mN):
         
 def _MakeS2V0(event, Sxx, Sxy, Syx, Syy):
     S2 = np.vstack ([np.vstack ([np.linalg.inv([[Sxx, Sxy], [Syx, Syy]]), [0, 0]]).T, [0, 0, 0]])
-    metX = F.ToPx(event.met/1000, event.met_phi, "cpu").tolist()[0][0]
-    metY = F.ToPy(event.met/1000, event.met_phi, "cpu").tolist()[0][0]
+    metX = F.ToPx(event.met, event.met_phi, "cpu").tolist()[0][0]
+    metY = F.ToPy(event.met, event.met_phi, "cpu").tolist()[0][0]
     V0 = np.outer ([metX, metY , 0], [0, 0, 1])
     return S2, V0     
 
@@ -439,11 +461,12 @@ def TestH(b, muon, mT, mW, mN):
     _mN = torch.tensor([[mN] for i in range(n)], device = device, dtype = torch.double).view(-1, 1)
 
     sols, b_root, mu_root = __initFunction(b, muon, mT, mW, mN)
-    
+   
     x1 , y1 , p = sols["x"] , sols["y"] , mu_root.P()
     Z, w, Om = sols["Z"], sols["w"], math.sqrt(sols["Omega2"])
-    
-    H_til = np.array([[ Z/Om , 0, x1 -p], [w*Z/Om , 0, y1], [ 0, Z, 0]])
+    x = [[ Z/Om , 0, x1 -p], [w*Z/Om , 0, y1], [ 0, Z, 0]]
+    H_til = np.array(x)
+
     R_ = _H(b_root, mu_root)
     R_ = R_.dot(H_til)
     
@@ -452,130 +475,37 @@ def TestH(b, muon, mT, mW, mN):
 
 def TestInit(event, Sxx, Sxy, Syx, Syy, b, muon, mT, mW, mN):
 
-    H = _MakeH(b, muon, mT, mW, mN)
-    S2, V0 = _MakeS2V0(event, Sxx, Sxy, Syx, Syy)
-    
-    n = 1000
+
+    n = 100000
     device = "cuda"
-    _b  = _MakeTensor([b.pt/1000, b.eta, b.phi, b.e/1000], n, device)
-    _mu = _MakeTensor([muon.pt/1000, muon.eta, muon.phi, muon.e/1000], n, device)
+    _b  = _MakeTensor([b.pt, b.eta, b.phi, b.e], n, device)
+    _mu = _MakeTensor([muon.pt, muon.eta, muon.phi, muon.e], n, device)
     _mT = _MakeTensor([mT], n, device)
     _mW = _MakeTensor([mW], n, device)
     _mN = _MakeTensor([mN], n, device)
-    _met = _MakeTensor([event.met/1000], n, device)
+    _met = _MakeTensor([event.met], n, device)
     _phi = _MakeTensor([event.met_phi], n, device)
     _Sxx = _MakeTensor([Sxx ], n, device)
     _Sxy = _MakeTensor([Sxy ], n, device) 
     _Syx = _MakeTensor([Syx ], n, device) 
     _Syy = _MakeTensor([Syy ], n, device)
 
-    H_PyT = Sf.H_T(_b, _mu, _mT, _mW, _mN)
-    V0_PyT = Sf.V0Polar_T(_met, _phi)
-    S2_PyT = Sf.Sigma2_T(_Sxx, _Sxy, _Syx, _Syy)
-    
-    deltaNu = V0 - H 
-    X = np.dot(deltaNu.T, S2).dot(deltaNu)
 
+    x = F.ToPx(event.met, event.met_phi, "cpu").tolist()[0][0]
+    y = F.ToPy(event.met, event.met_phi, "cpu").tolist()[0][0]
     # ===== M calc ===== 
-    M = next(XD + XD.T for XD in (X.dot( Derivative()), ))
-    M_PyT = Sf.SolT(_b, _mu, _mT, _mW, _mN, _met, _phi, _Sxx, _Sxy, _Syx, _Syy)
-    CompareListNumerical(M, M_PyT.tolist()[0], "M Calculation") 
-
-    # ===== Intersection stuff
-    C = UnitCircle()
-    LA = np.linalg
-    if abs(LA.det(C)) > abs(LA.det(M)):
-        M, C = C, M
-    eig = next(e.real for e in LA.eigvals(LA.inv(M).dot(C)) if not e.imag)
-    G = C - eig*M
     
-    for t in range(n):
-
-        if G[0, 0] == 0 == G[0, 0]: 
-            s = [[G[0,1], 0, G[1 ,2]] , [0, G[0,1], G[0 ,2] - G[1 ,2]]] 
-        else:
-            swapXY = abs(G[0 ,0]) > abs(G[1 ,1])
-            Q = G[(1 ,0 ,2) ,][: ,(1 ,0 ,2)] if swapXY else G
-            Q /= Q[1 ,1]
- 
-            q22 = cofactor(Q, 2 ,2)
-            if -q22 <= 0:
-                lines = [[Q[0,1], Q[1,1], Q[1 ,2]+s] for s in multisqrt (-cofactor(Q, 0, 0))]
-            else:
-                x0 , y0 = [cofactor(Q, i ,2) / q22 for i in [0, 1]]
-                lines = [[m, Q[1,1], -Q[1 ,1]* y0 - m*x0] for m in [Q[0 ,1] + s for s in multisqrt (-q22 )]]
-
-            lines = [[float(L[swapXY]), float(L[not swapXY]), float(L[2])] for L in lines]
-
-    #t2 = time()
-    #t_Py = t2 - t1
-    ##print("-- (O) -> ", t_Py)
-    ##print(lines)
-    #
-    #print("---> Solutions")
-    #for i, j in zip(G_PyT[0].tolist(), lines):
-    #    print(sum([i[t] - j[t] for t in range(len(i))]))
-
-    #for i, j in zip(M_PyT[0], M):
-    #     print(float(sum([i[t] - j[t] for t in range(len(i))])))
-    #print("-------------------")
-
-    #print("---") 
-    #l = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-    #k = [[7, 8, 9], [4, 5, 6], [1, 2, 3]]
-    #print(np.cross(np.array(k[0]), np.array(l)))
-    #print(torch.tensor([k[0]]).cross(torch.tensor(l), dim = 1))
-    
-    #cutoff = 1
-    #_, V = np.linalg.eig(np.cross(lines[0], M).T)
-    #V = V.T
-    
-    #V_PyT = torch.cross(G_PyT.view(-1, 2, 1, 3), M_PyT.view(-1, 1, 3, 3), dim = 3).transpose(2, 3)
-    #print(G_PyT)
-    #exit()
-    #_, V_PyT = torch.linalg.eig(V_PyT)
-    #V_PyT = torch.transpose(V_PyT, 2, 3)
-    #V_PyT = V_PyT.real
-    #V_PyT[:, :, 0:2, :] = -V_PyT[:, :, 0:2, :]
-
-    ## ===== vector / val of z axis (???)
-    #d1 = (G_PyT.view(-1, 2, 1, 3)*V_PyT).sum(3).pow(2)
-
-    #v_ = V_PyT.reshape(-1, 2, 3, 3)
-    #M_PyT = M_PyT.view(-1, 1, 3, 3)
-    #
-    #tmp = torch.matmul(v_, M_PyT)
-    #tmp = (tmp * v_).sum(-1).pow(2)
-    #out = (d1 + tmp).view(-1, 2, 3)
-    #
-    #_t = V_PyT / V_PyT[:, :, :, 2].view(-1, 2, 3, 1)
-
-    #out, i_ = out.sort(dim = 2, descending = False)
-    #_t0 = _t[:, :, :, 0].gather(dim = 2, index = i_)
-    #_t1 = _t[:, :, :, 1].gather(dim = 2, index = i_)
-    #_t2 = _t[:, :, :, 2].gather(dim = 2, index = i_)
-    #_t = torch.cat([_t0.view(-1, 2, 3, 1), _t1.view(-1, 2, 3, 1), _t2.view(-1, 2, 3, 1)], dim = -1)
-    #out = out < cutoff
-    #out = torch.cat([out.view(-1, 2, 3, 1)]*3, dim = -1)
-    #_t[out == False] = 0 
-    #
-    #p_ = _t.sum(1)
-    
+    print("Device: ", device)
     t1 = time()
     for i in range(n):
-        r_ = intersections_ellipses(C, M)
-    diff = time() - t1
-    print("Python: ", diff) 
-
-    C = torch.cat([TS.Circle(_b) for i in range(n)], dim = 0)
-    t1 = time()
-    p_ = TS.Intersections(M_PyT, C)
-    diff2 = time() - t1
-    print("C++: ", diff2)
-
-
-    CompareListNumerical(r_, p_.tolist()[0])
-
-
-
+        r_sol = SingleNeutrino(b, muon, mT, mW, mN, x, y, [[Sxx, Sxy], [Syx, Syy]])
+    t2 = time()
+    print("Python (" + str(n) + "): ", t2 - t1)
+    
+    t1c = time()
+    _sol = Sf.SolT(_b, _mu, _mT, _mW, _mN, _met, _phi, _Sxx, _Sxy, _Syx, _Syy)
+    t2c = time()
+    print("C++ (" + str(n) + "): ", t2c - t1c)
+    CompareListNumerical([r_sol[1], r_sol[0]], _sol.tolist()[0], "Init ") 
+    print("Improvement (x): ", (t2 - t1)/(t2c - t1c))
 
