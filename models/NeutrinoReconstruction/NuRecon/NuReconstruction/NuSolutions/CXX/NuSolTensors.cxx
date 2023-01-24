@@ -311,8 +311,58 @@ torch::Tensor NuSolutionTensors::Intersections(torch::Tensor A, torch::Tensor B)
 			z0.index({torch::indexing::Slice(), 0, torch::indexing::Slice()}).view({-1, 1, 3}), 
 			z0.index({torch::indexing::Slice(), 1, torch::indexing::Slice()}).view({-1, 1, 3})}, 1); 
 	
-	//z0 = torch::cross(z0, B, 2);  
+	// Intersection Ellipse line
+	torch::Tensor V = torch::cross(z0.view({-1, 2, 1, 3}), A.view({-1, 1, 3, 3}), 3); 
+	V = torch::transpose(V, 2, 3); 
+	V = std::get<1>(torch::linalg::eig(V));
+	V = torch::transpose(V, 2, 3); 
+	V = torch::real(V); 
+	
+	torch::Tensor _t = V / (V.index({
+			torch::indexing::Slice(), 
+			torch::indexing::Slice(), 
+			torch::indexing::Slice(), 
+			2}).view({-1, 2, 3, 1})); 
 
-	return z0; 
+	torch::Tensor d1 = torch::sum(((z0.view({-1, 2, 1, 3}))*V), {3}).pow(2);
+	torch::Tensor V_ = torch::reshape(V, {-1, 2, 3, 3}); 
+
+	_tmp = torch::matmul(V_, A.view({-1, 1, 3, 3})); 
+	_tmp = torch::sum((_tmp * V_), {-1}).pow(2); 
+	_tmp = (d1 + _tmp).view({-1, 2, 3});  
+
+	std::tuple<torch::Tensor, torch::Tensor> idx = _tmp.sort(2); 
+	torch::Tensor _t0 = torch::gather(_t.index({
+				torch::indexing::Slice(), 
+				torch::indexing::Slice(), 
+				torch::indexing::Slice(), 
+				0}), 2, std::get<1>(idx)); 
+
+	torch::Tensor _t1 = torch::gather(_t.index({
+				torch::indexing::Slice(), 
+				torch::indexing::Slice(), 
+				torch::indexing::Slice(), 
+				1}), 2, std::get<1>(idx)); 
+
+	torch::Tensor _t2 = torch::gather(_t.index({
+				torch::indexing::Slice(), 
+				torch::indexing::Slice(), 
+				torch::indexing::Slice(), 
+				2}), 2, std::get<1>(idx)); 
+
+	_t = torch::cat({
+				_t0.view({-1, 2, 3, 1}), 
+				_t1.view({-1, 2, 3, 1}), 
+				_t2.view({-1, 2, 3, 1})
+			}, -1); 
+	
+	torch::Tensor sel = std::get<0>(idx) < 1; 
+	sel = torch::cat({
+				sel.view({-1, 2, 3, 1}), 
+				sel.view({-1, 2, 3, 1}), 
+				sel.view({-1, 2, 3, 1})
+			}, -1); 
+	_t.index_put_({sel == false}, 0); 
+	return _t.sum({1}); 
 
 }

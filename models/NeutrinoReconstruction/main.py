@@ -28,8 +28,8 @@ b = singlelepton[5]
 muon = singlelepton[13]
 nu = singlelepton[14]
 
-mW = 80.385*1000 # MeV : W Boson Mass
-mT = 172.5*1000  # MeV : t Quark Mass
+mW = 80.385 #*1000 # MeV : W Boson Mass
+mT = 172.5 #*1000  # MeV : t Quark Mass
 mN = 0           # GeV : Neutrino Mass
 
 from BaseFunctionsTests import *
@@ -77,4 +77,4 @@ from BaseFunctionsTests import *
 #TestH(b, muon, mT, mW, mN)
 
 print("--------- Comparing Init ----------")
-TestInit(ev, 100, 0, 0, 100, b, muon, mT, mW, mN)
+TestInit(ev, 10, 0, 0, 10, b, muon, mT, mW, mN)

@@ -60,11 +60,8 @@ def intersections_ellipses (A, B, returnLines =False ):
     LA = np.linalg
     if abs(LA.det(B)) > abs(LA.det(A)):
         A,B = B,A
-
     e = next(e.real for e in LA.eigvals(LA.inv(A).dot(B)) if not e.imag)
-    print(B - e*A)
     lines = factor_degenerate (B - e*A)
-    exit()
     points = sum ([ intersections_ellipse_line (A,L) for L in lines ] ,[])
     return (points ,lines) if returnLines else points
 
@@ -94,10 +91,10 @@ def factor_degenerate (G, zero =0):
 
 def __initFunction(_b, muon, mT, mW, mN):
     b = r.TLorentzVector()
-    b.SetPtEtaPhiE(_b.pt, _b.eta, _b.phi, _b.e)
+    b.SetPtEtaPhiE(_b.pt/1000, _b.eta, _b.phi, _b.e/1000)
     
     mu = r.TLorentzVector()
-    mu.SetPtEtaPhiE(muon.pt, muon.eta, muon.phi, muon.e)
+    mu.SetPtEtaPhiE(muon.pt/1000, muon.eta, muon.phi, muon.e/1000)
 
     c = r.Math.VectorUtil.CosTheta(b,mu)
     s = math.sqrt(1 - c**2)
@@ -129,8 +126,8 @@ def __initFunction(_b, muon, mT, mW, mN):
         
 def _MakeS2V0(event, Sxx, Sxy, Syx, Syy):
     S2 = np.vstack ([np.vstack ([np.linalg.inv([[Sxx, Sxy], [Syx, Syy]]), [0, 0]]).T, [0, 0, 0]])
-    metX = F.ToPx(event.met, event.met_phi, "cpu").tolist()[0][0]
-    metY = F.ToPy(event.met, event.met_phi, "cpu").tolist()[0][0]
+    metX = F.ToPx(event.met/1000, event.met_phi, "cpu").tolist()[0][0]
+    metY = F.ToPy(event.met/1000, event.met_phi, "cpu").tolist()[0][0]
     V0 = np.outer ([metX, metY , 0], [0, 0, 1])
     return S2, V0     
 
@@ -458,14 +455,14 @@ def TestInit(event, Sxx, Sxy, Syx, Syy, b, muon, mT, mW, mN):
     H = _MakeH(b, muon, mT, mW, mN)
     S2, V0 = _MakeS2V0(event, Sxx, Sxy, Syx, Syy)
     
-    n = 5
+    n = 1000
     device = "cuda"
-    _b  = _MakeTensor([b.pt, b.eta, b.phi, b.e], n, device)
-    _mu = _MakeTensor([muon.pt, muon.eta, muon.phi, muon.e], n, device)
+    _b  = _MakeTensor([b.pt/1000, b.eta, b.phi, b.e/1000], n, device)
+    _mu = _MakeTensor([muon.pt/1000, muon.eta, muon.phi, muon.e/1000], n, device)
     _mT = _MakeTensor([mT], n, device)
     _mW = _MakeTensor([mW], n, device)
     _mN = _MakeTensor([mN], n, device)
-    _met = _MakeTensor([event.met], n, device)
+    _met = _MakeTensor([event.met/1000], n, device)
     _phi = _MakeTensor([event.met_phi], n, device)
     _Sxx = _MakeTensor([Sxx ], n, device)
     _Sxy = _MakeTensor([Sxy ], n, device) 
@@ -491,10 +488,7 @@ def TestInit(event, Sxx, Sxy, Syx, Syy, b, muon, mT, mW, mN):
         M, C = C, M
     eig = next(e.real for e in LA.eigvals(LA.inv(M).dot(C)) if not e.imag)
     G = C - eig*M
-
-    G_PyT = TS.Intersections(M_PyT, torch.cat([TS.Circle(_b) for i in range(n)], dim = 0))
-
-    t1 = time()
+    
     for t in range(n):
 
         if G[0, 0] == 0 == G[0, 0]: 
@@ -511,44 +505,76 @@ def TestInit(event, Sxx, Sxy, Syx, Syy, b, muon, mT, mW, mN):
                 x0 , y0 = [cofactor(Q, i ,2) / q22 for i in [0, 1]]
                 lines = [[m, Q[1,1], -Q[1 ,1]* y0 - m*x0] for m in [Q[0 ,1] + s for s in multisqrt (-q22 )]]
 
-            lines = [[L[swapXY],L[not swapXY],L[2]] for L in lines]
+            lines = [[float(L[swapXY]), float(L[not swapXY]), float(L[2])] for L in lines]
 
-    t2 = time()
-    t_Py = t2 - t1
-    #print("-- (O) -> ", t_Py)
-    #print(lines)
+    #t2 = time()
+    #t_Py = t2 - t1
+    ##print("-- (O) -> ", t_Py)
+    ##print(lines)
+    #
+    #print("---> Solutions")
+    #for i, j in zip(G_PyT[0].tolist(), lines):
+    #    print(sum([i[t] - j[t] for t in range(len(i))]))
+
+    #for i, j in zip(M_PyT[0], M):
+    #     print(float(sum([i[t] - j[t] for t in range(len(i))])))
+    #print("-------------------")
+
+    #print("---") 
+    #l = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+    #k = [[7, 8, 9], [4, 5, 6], [1, 2, 3]]
+    #print(np.cross(np.array(k[0]), np.array(l)))
+    #print(torch.tensor([k[0]]).cross(torch.tensor(l), dim = 1))
     
-    c_pyt = torch.cat([TS.Circle(_b) for i in range(n)], dim = 0)
-
-    print(G_PyT[0][0], M_PyT[0])
-    print(lines[0], M)
+    #cutoff = 1
+    #_, V = np.linalg.eig(np.cross(lines[0], M).T)
+    #V = V.T
     
-    print("---") 
-    print(torch.linalg.cross(G_PyT[0][0], M_PyT[0]))
-    print(np.cross(lines[0], M))
+    #V_PyT = torch.cross(G_PyT.view(-1, 2, 1, 3), M_PyT.view(-1, 1, 3, 3), dim = 3).transpose(2, 3)
+    #print(G_PyT)
+    #exit()
+    #_, V_PyT = torch.linalg.eig(V_PyT)
+    #V_PyT = torch.transpose(V_PyT, 2, 3)
+    #V_PyT = V_PyT.real
+    #V_PyT[:, :, 0:2, :] = -V_PyT[:, :, 0:2, :]
+
+    ## ===== vector / val of z axis (???)
+    #d1 = (G_PyT.view(-1, 2, 1, 3)*V_PyT).sum(3).pow(2)
+
+    #v_ = V_PyT.reshape(-1, 2, 3, 3)
+    #M_PyT = M_PyT.view(-1, 1, 3, 3)
+    #
+    #tmp = torch.matmul(v_, M_PyT)
+    #tmp = (tmp * v_).sum(-1).pow(2)
+    #out = (d1 + tmp).view(-1, 2, 3)
+    #
+    #_t = V_PyT / V_PyT[:, :, :, 2].view(-1, 2, 3, 1)
+
+    #out, i_ = out.sort(dim = 2, descending = False)
+    #_t0 = _t[:, :, :, 0].gather(dim = 2, index = i_)
+    #_t1 = _t[:, :, :, 1].gather(dim = 2, index = i_)
+    #_t2 = _t[:, :, :, 2].gather(dim = 2, index = i_)
+    #_t = torch.cat([_t0.view(-1, 2, 3, 1), _t1.view(-1, 2, 3, 1), _t2.view(-1, 2, 3, 1)], dim = -1)
+    #out = out < cutoff
+    #out = torch.cat([out.view(-1, 2, 3, 1)]*3, dim = -1)
+    #_t[out == False] = 0 
+    #
+    #p_ = _t.sum(1)
     
-    exit()
+    t1 = time()
+    for i in range(n):
+        r_ = intersections_ellipses(C, M)
+    diff = time() - t1
+    print("Python: ", diff) 
 
-    _, V = np.linalg.eig(np.cross(lines[0], M).T)
-    print("--")
-    print(V.T)
-
-    def FNK(inpt):
-        r = inpt.real
-        v1 = r/r[2]
-        v2 = np.dot(lines[0], r)**2 + np.dot(r, M).dot(r)**2 
-        print(v2, v1)
-
-    print([FNK(k.T) for k in V.T])
-    print("--")
+    C = torch.cat([TS.Circle(_b) for i in range(n)], dim = 0)
+    t1 = time()
+    p_ = TS.Intersections(M_PyT, C)
+    diff2 = time() - t1
+    print("C++: ", diff2)
 
 
-    sols = sorted([(v.real / v[2].real, np.dot(lines[0], v.real )**2 + np.dot(v.real, M).dot(v.real)**2) for v in V.T], key=lambda k: k[1])[:2]
-    print(sols)
-
-    #print("Performance delta (%)", 100*(t_Py - t_PyT)/t_Py)
-    
-
+    CompareListNumerical(r_, p_.tolist()[0])
 
 
 
