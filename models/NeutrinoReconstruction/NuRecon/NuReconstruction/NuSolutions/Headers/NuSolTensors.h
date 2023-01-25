@@ -35,7 +35,7 @@ namespace NuSolutionTensors
 	torch::Tensor H_Algo(torch::Tensor _b, torch::Tensor _mu, torch::Tensor Sol_); 
 	torch::Tensor Derivative(torch::Tensor X);
 	torch::Tensor UnitCircle(torch::Tensor Op); 
-	torch::Tensor Intersections(torch::Tensor A, torch::Tensor B, float cutoff); 
+	std::vector<torch::Tensor> Intersections(torch::Tensor A, torch::Tensor B, float cutoff); 
 
 	static torch::Tensor cofactor(torch::Tensor A, std::vector<int> selr, std::vector<int> selc)
 	{

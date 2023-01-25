@@ -38,11 +38,15 @@ def multisqrt (y):
 def factor_degenerate (G, zero =0):
     '''Linear factors of degenerate quadratic polynomial '''
     if G[0 ,0] == 0 == G[1 ,1]:
+        print("-> ", G)
         return [[G[0,1], 0, G[1 ,2]] , [0, G[0,1], G[0 ,2] - G[1 ,2]]]
+
+
     swapXY = abs(G[0 ,0]) > abs(G[1 ,1])
     Q = G[(1 ,0 ,2) ,][: ,(1 ,0 ,2)] if swapXY else G
     Q /= Q[1 ,1]
     q22 = cofactor(Q, 2 ,2)
+    print(":>", q22, Q)
     if -q22 <= zero:
         lines = [[Q[0,1], Q[1,1], Q[1 ,2]+s] for s in multisqrt (-cofactor(Q, 0, 0))]
     else:
@@ -62,8 +66,11 @@ def intersections_ellipses (A, B, returnLines =False ):
     if abs(LA.det(B)) > abs(LA.det(A)):
         A,B = B,A
     e = next(e.real for e in LA.eigvals(LA.inv(A).dot(B)) if not e.imag)
+    print(B - e*A)
     lines = factor_degenerate (B - e*A)
+    print(lines)
     points = sum ([ intersections_ellipse_line (A,L) for L in lines ] ,[])
+    print(points)
     return (points ,lines) if returnLines else points
 
 def CosTheta(v1, v2):

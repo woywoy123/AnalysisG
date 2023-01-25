@@ -41,16 +41,24 @@ std::vector<torch::Tensor> SingleNu::Tensors::Init(
 	torch::Tensor X_ = torch::matmul( torch::transpose(dNu_, 1, 2), S2_ ).matmul(dNu_); 
 	torch::Tensor D_ = NuSolutionTensors::Derivative(X_); 
 	torch::Tensor M_ = D_ + D_.transpose(1, 2);
-	torch::Tensor C_ = NuSolutionTensors::UnitCircle(_mu).repeat({_mu.sizes()[0], 1, 1}); 
-	Sol_ = NuSolutionTensors::Intersections(M_, C_, 0.0001);
-	
-	torch::Tensor NuSols = torch::sum(H_.view({-1, 1, 3, 3})*Sol_.view({-1, 3, 1, 3}), 3); 
-	NuSols = NuSols.index({torch::indexing::Slice(), torch::indexing::Slice(0, 2), torch::indexing::Slice()}); 
 
-	torch::Tensor chi2 = torch::sum(Sol_.view({-1, 3, 1, 3}) * X_.view({-1, 1, 3, 3}), 3);
-	chi2 = torch::sum(chi2.view({-1, 3, 1, 3}) * Sol_.view({-1, 1, 3, 3}), 3);
-	chi2 = chi2.diagonal(0, 1, 2).index({torch::indexing::Slice(), torch::indexing::Slice(0, 2)});
-	chi2 = chi2.view({-1, 2, 1}); 
-	
-	return std::vector<torch::Tensor>{NuSols, chi2}; 
+	// Protection against events where the dNU_ matrix is completely 0
+	torch::Tensor _SkipEvent = M_.sum({-1}).sum({-1}) == 0.;
+
+	torch::Tensor C_ = NuSolutionTensors::UnitCircle(_mu).repeat({_mu.sizes()[0], 1, 1}); 
+	std::vector<torch::Tensor> p = NuSolutionTensors::Intersections(
+				M_.index({_SkipEvent == false}), 
+				C_.index({_SkipEvent == false}), 0.0001);
+
+	//Sol_ = NuSolutionTensors::Intersections(M_, C_, 0.0001);
+
+	//torch::Tensor NuSols = torch::sum(H_.view({-1, 1, 3, 3})*Sol_.view({-1, 3, 1, 3}), 3); 
+	//NuSols = NuSols.index({torch::indexing::Slice(), torch::indexing::Slice(0, 2), torch::indexing::Slice()}); 
+
+	//torch::Tensor chi2 = torch::sum(Sol_.view({-1, 3, 1, 3}) * X_.view({-1, 1, 3, 3}), 3);
+	//chi2 = torch::sum(chi2.view({-1, 3, 1, 3}) * Sol_.view({-1, 1, 3, 3}), 3);
+	//chi2 = chi2.diagonal(0, 1, 2).index({torch::indexing::Slice(), torch::indexing::Slice(0, 2)});
+	//chi2 = chi2.view({-1, 2, 1}); 
+
+	return p; //std::vector<torch::Tensor>{Sol_}; //NuSols, chi2}; 
 }
