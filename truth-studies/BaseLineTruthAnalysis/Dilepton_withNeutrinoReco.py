@@ -28,7 +28,7 @@ def PlotTemplate(nevents, lumi):
                 "yMin" : 0, 
                 "xMax" : None,
                 "xBins" : None,
-                "OutputDirectory" : "./Figures_withNeutrinoReco_EventStop100/", 
+                "OutputDirectory" : "./Figures_withNeutrinoReco_truthMET_EventStop100/", 
                 "Style" : "ATLAS",
                 "ATLASLumi" : lumi,
                 "NEvents" : nevents
@@ -55,6 +55,8 @@ def DileptonAnalysis_withNeutrinoReco(Ana):
     eff_resonance_had = 0
     eff_resonance_lep = 0
     eff_resonance = 0
+    
+    # nDifferentSolutionsPermutations = 0
 
     for ev in Ana:
 
@@ -87,9 +89,9 @@ def DileptonAnalysis_withNeutrinoReco(Ana):
         print(f"Number of top children = {len(event.TopChildren)}")
         print(f"PDGIDs are {[p.pdgid for p in event.TopChildren]}")
         all_particles = sum(leptons + bquarks + lquarks)
-        met = all_particles.pt
-        met_x = -all_particles.pt * np.cos(all_particles.phi)
-        met_y = -all_particles.pt * np.sin(all_particles.phi)
+        met = all_particles.pt / 1000.
+        met_x = -(all_particles.pt / 1000.) * np.cos(all_particles.phi)
+        met_y = -(all_particles.pt / 1000.) * np.sin(all_particles.phi)
 
         ## This gives the same result as above
         # neg_sum_x = [-p.pt * np.cos(p.phi) for p in (leptons + bquarks + lquarks)]
@@ -99,28 +101,29 @@ def DileptonAnalysis_withNeutrinoReco(Ana):
         # met2 = math.sqrt(pow(met_x2, 2) + pow(met_y2, 2))
 
         all_particles_withRad = sum([p for p in event.TopChildren if p.pdgid not in _neutrinos])
-        met_withRad = all_particles_withRad.pt
-        met_withRad_x = -all_particles_withRad.pt * np.cos(all_particles_withRad.phi)
-        met_withRad_y = -all_particles_withRad.pt * np.sin(all_particles_withRad.phi)
+        met_withRad = all_particles_withRad.pt / 1000.
+        met_withRad_x = -(all_particles_withRad.pt / 1000.) * np.cos(all_particles_withRad.phi)
+        met_withRad_y = -(all_particles_withRad.pt / 1000.) * np.sin(all_particles_withRad.phi)
 
-        event_met_x = event.met * np.cos(event.met_phi)
-        event_met_y = event.met * np.sin(event.met_phi)
+        event_met = event.met / 1000.
+        event_met_x = (event.met / 1000.) * np.cos(event.met_phi)
+        event_met_y = (event.met / 1000.) * np.sin(event.met_phi)
 
-        print(f"MET, MET_x and MET_y from event = {event.met}, {event_met_x}, {event_met_y}")
-        print(f"MET, MET_x and MET_y calculated from partons = {met}, {met_x}, {met_y}")
-        print(f"MET, MET_x and MET_y calculated from partons including radiation = {met_withRad}, {met_withRad_x}, {met_withRad_y}")
-        MissingET["From ntuples"].append(event.met/1000.)
-        MissingET["From neg sum of truth objects"].append(met/1000.)
-        MissingET["From neg sum of truth objects incl rad"].append(met_withRad/1000.)
-        MissingETDiff["From neg sum of truth objects"].append(met/1000. - event.met/1000.)
-        MissingETDiff["From neg sum of truth objects incl rad"].append(met_withRad/1000. - event.met/1000.)
+        # print(f"MET, MET_x and MET_y from event = {event.met}, {event_met_x}, {event_met_y}")
+        # print(f"MET, MET_x and MET_y calculated from partons = {met}, {met_x}, {met_y}")
+        # print(f"MET, MET_x and MET_y calculated from partons including radiation = {met_withRad}, {met_withRad_x}, {met_withRad_y}")
+        MissingET["From ntuples"].append(event_met)
+        MissingET["From neg sum of truth objects"].append(met)
+        MissingET["From neg sum of truth objects incl rad"].append(met_withRad)
+        MissingETDiff["From neg sum of truth objects"].append(met - event_met)
+        MissingETDiff["From neg sum of truth objects incl rad"].append(met_withRad - event_met)
         if len(neutrinos) > 0:
-            print(f"Number of neutrinos: {len(neutrinos)}")
+            #print(f"Number of neutrinos: {len(neutrinos)}")
             nus = sum(neutrinos)
             MissingET["From truth neutrinos"].append(nus.pt/1000.)
-            MissingETDiff["From truth neutrinos"].append(nus.pt/1000. - event.met/1000.)
-            print(f"MET, MET_x and MET_y from neutrinos = {nus.pt}, {nus.pt * np.cos(nus.phi)}, {nus.pt * np.sin(nus.phi)}")
-        print(f"Sum of tops pT = {sum([t for t in event.Tops]).pt}")
+            MissingETDiff["From truth neutrinos"].append(nus.pt/1000. - event_met)
+            #print(f"MET, MET_x and MET_y from neutrinos = {nus.pt}, {nus.pt * np.cos(nus.phi)}, {nus.pt * np.sin(nus.phi)}")
+        #print(f"Sum of tops pT = {sum([t for t in event.Tops]).pt}")
         
 
         # Find the group of one b quark and two jets for which the invariant mass is closest to that of a top quark
@@ -151,13 +154,18 @@ def DileptonAnalysis_withNeutrinoReco(Ana):
 
         # Assign group with largest pT to resonance 
         if bestHadronicGroup.pt > remainingHadronicGroup.pt:
+            print("Best hadronic group has highest pt: assigning it to resonance")
             HadronicResTop = bestHadronicGroup
             HadronicSpecTop = remainingHadronicGroup
             nFromRes_hadronicGroup = len([p for p in closestGroups[0] if event.Tops[p.TopIndex].FromRes == 0])
+            print(f"FromRes for this group is {[event.Tops[p.TopIndex].FromRes for p in closestGroups[0]]}")
         else:
+            print("Second best hadronic group has highest pt: assigning it to resonance")
             HadronicResTop = remainingHadronicGroup
             HadronicSpecTop = bestHadronicGroup
             nFromRes_hadronicGroup = len([p for p in closestGroups[1] if event.Tops[p.TopIndex].FromRes == 0])
+            print(f"FromRes for this group is {[event.Tops[p.TopIndex].FromRes for p in closestGroups[1]]}")
+        print(f"nFromRes_hadronicGroup = {nFromRes_hadronicGroup}")
         if nFromRes_hadronicGroup == 3:
             eff_resonance_had += 1
 
@@ -184,42 +192,77 @@ def DileptonAnalysis_withNeutrinoReco(Ana):
             eff_remainingLeptonicGroup += 1
 
         # Turn Children objects into vector objects
-        closestPairsVec = [[vector.obj(pt=closestPairs[j][i].pt, phi=closestPairs[j][i].phi, eta=closestPairs[j][i].eta, E=closestPairs[j][i].e) for i in range(len(closestPairs[j]))] for j in range(len(closestPairs))]
+        closestPairsVec = [[vector.obj(pt=closestPairs[j][i].pt/1000., phi=closestPairs[j][i].phi, eta=closestPairs[j][i].eta, E=closestPairs[j][i].e/1000.) for i in range(len(closestPairs[j]))] for j in range(len(closestPairs))]
 
         # Neutrino reconstruction
         try:
-            nu_solutions = doubleNeutrinoSolutions(closestPairsVec[0][0], closestPairsVec[1][0], closestPairsVec[0][1], closestPairsVec[1][1], met_x, met_y)
+            nu_solutions = doubleNeutrinoSolutions((closestPairsVec[0][0], closestPairsVec[1][0]), (closestPairsVec[0][1], closestPairsVec[1][1]), (met_x, met_y))
             nunu_s = nu_solutions.nunu_s
             numSolutions.append(len(nunu_s))
         except np.linalg.LinAlgError:
             numSolutions.append(0)
             continue
+
+        ## Testing the effect of changing the order and b quarks and leptons in neutrino reconstruction
+        # try:
+        #     nu_solutions_perm = doubleNeutrinoSolutions((closestPairsVec[1][0], closestPairsVec[0][0]), (closestPairsVec[1][1], closestPairsVec[0][1]), (met_x, met_y))
+        #     nunu_s_perm = nu_solutions_perm.nunu_s
+        # except np.linalg.LinAlgError:
+        #     continue
+
+        # different = False
+        # if len(nunu_s) != len(nunu_s_perm): 
+        #     print(f"Permutations give different number of solutions: {len(nunu_s)} vs {len(nunu_s_perm)}.")
+        #     different = True
+        # else:
+        #     for solution in nunu_s:
+        #         for nu_s in solution:
+        #             for j,pj in enumerate(nu_s):
+        #                 match = any([True for s in range(len(nunu_s_perm)) for n in range(len(nunu_s_perm[s])) if abs(pj - nunu_s_perm[s][n][j]) < 10e-4])
+        #                 if not match: different = True
+
+        # if different == True: 
+        #     nDifferentSolutionsPermutations += 1
+        #     print(f"Event {nevents} - Permutations give different solutions:")
+        #     print(f"Solutions with normal order: \n{nunu_s}")
+        #     print(f"Solutions with inverted order: \n{nunu_s_perm}")
+
+
+        print(f"Number of neutrino solutions: {numSolutions[-1]}")
         
         # Choose best solution
         lowestError = 1e100
         for s,solution in enumerate(nunu_s):
+            #print(f"Solution {s}")
             groups = []
             nFromRes = []
             for i, nu_s in enumerate(solution):
+                #print(f"Neutrino {i}")
                 nu_vec = vector.obj(px=nu_s[0], py=nu_s[1], pz=nu_s[2], E=math.sqrt(sum(pow(element, 2) for element in nu_s)))
                 group = nu_vec + closestPairsVec[i][0] + closestPairsVec[i][1]
+                #print(f"Reconstructed top mass: {group.mass}")
                 groups.append(group)
                 nFromRes.append(len([p for p in closestPairs[i] if event.Tops[p.TopIndex].FromRes == 0]))
-            error = abs(topMass - groups[0].mass/1000.) + abs(topMass - groups[1].mass/1000.)
+                #print(f"FromRes for partial leptonic group is {[event.Tops[p.TopIndex].FromRes for p in closestPairs[i]]}")
+            error = abs(topMass - groups[0].mass) + abs(topMass - groups[1].mass)
             if error < lowestError:
+                #print("Lowest error so far")
                 leptonicGroups = groups
                 lowestError = error
                 nFromRes_leptonicGroups = nFromRes
 
         # Assign group with largest pT to resonance -> best option
         if leptonicGroups[0].pt > leptonicGroups[1].pt:
+            print("Leptonic group 0 has largest pt: assigning it to resonance")
             LeptonicResTop = leptonicGroups[0]
             LeptonicSpecTop = leptonicGroups[1]
             nFromRes_leptonicGroup = nFromRes_leptonicGroups[0]
         else:
+            print("Leptonic group 1 has largest pt: assigning it to resonance")
             LeptonicResTop = leptonicGroups[1]
             LeptonicSpecTop = leptonicGroups[0]
             nFromRes_leptonicGroup = nFromRes_leptonicGroups[1]
+        print(f"nFromRes_leptonicGroup = {nFromRes_leptonicGroup}")
         if nFromRes_leptonicGroup == 2:
             eff_resonance_lep += 1
 
@@ -227,16 +270,16 @@ def DileptonAnalysis_withNeutrinoReco(Ana):
             eff_resonance += 1
 
         # Calculate masses of tops and resonance
-        HadronicResTopVec = vector.obj(pt=HadronicResTop.pt, eta=HadronicResTop.eta, phi=HadronicResTop.phi, E=HadronicResTop.e)
-        HadronicSpecTopVec = vector.obj(pt=HadronicSpecTop.pt, eta=HadronicSpecTop.eta, phi=HadronicSpecTop.phi, E=HadronicSpecTop.e)
-        print(f"Hadronic top mass: res = {HadronicResTopVec.mass/1000.}, spec = {HadronicSpecTopVec.mass/1000.}")
-        print(f"Leptonic top mass: res = {LeptonicResTop.mass/1000.}, spec = {LeptonicSpecTop.mass/1000.}")
-        print(f"Resonance mass: {(HadronicResTopVec + LeptonicResTop).mass/1000.}")
-        ReconstructedHadTopMass["Res"].append(HadronicResTopVec.mass/1000.)
-        ReconstructedHadTopMass["Spec"].append(HadronicSpecTopVec.mass/1000.)
-        ReconstructedLepTopMass["Res"].append(LeptonicResTop.mass/1000.)
-        ReconstructedLepTopMass["Spec"].append(LeptonicSpecTop.mass/1000.)
-        ReconstructedResonanceMass.append((HadronicResTopVec + LeptonicResTop).mass/1000.)
+        HadronicResTopVec = vector.obj(pt=HadronicResTop.pt/1000., eta=HadronicResTop.eta, phi=HadronicResTop.phi, E=HadronicResTop.e/1000.)
+        HadronicSpecTopVec = vector.obj(pt=HadronicSpecTop.pt/1000., eta=HadronicSpecTop.eta, phi=HadronicSpecTop.phi, E=HadronicSpecTop.e/1000.)
+        print(f"Hadronic top mass: res = {HadronicResTopVec.mass}, spec = {HadronicSpecTopVec.mass}")
+        print(f"Leptonic top mass: res = {LeptonicResTop.mass}, spec = {LeptonicSpecTop.mass}")
+        print(f"Resonance mass: {(HadronicResTopVec + LeptonicResTop).mass}")
+        ReconstructedHadTopMass["Res"].append(HadronicResTopVec.mass)
+        ReconstructedHadTopMass["Spec"].append(HadronicSpecTopVec.mass)
+        ReconstructedLepTopMass["Res"].append(LeptonicResTop.mass)
+        ReconstructedLepTopMass["Spec"].append(LeptonicSpecTop.mass)
+        ReconstructedResonanceMass.append((HadronicResTopVec + LeptonicResTop).mass)
 
     # Print out efficiencies
     print(f"Number of events not passed: {neventsNotPassed} / {nevents}")
@@ -248,6 +291,8 @@ def DileptonAnalysis_withNeutrinoReco(Ana):
     print(f"Leptonic decay products correctly assigned to resonance: {eff_resonance_lep / (nevents-neventsNotPassed)}")
     print(f"Hadronic decay products correctly assigned to resonance: {eff_resonance_had / (nevents-neventsNotPassed)}")
     print(f"All decay products correctly assigned to resonance: {eff_resonance / (nevents-neventsNotPassed)}")
+
+    #print(f"Number of events where neutrino solutions were different for permutations: {nDifferentSolutionsPermutations}")
 
     # Plotting
     Plots = PlotTemplate(nevents, lumi)

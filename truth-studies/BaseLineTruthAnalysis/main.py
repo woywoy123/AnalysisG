@@ -17,7 +17,7 @@ for Mode in Modes:
         Ana.InputSample("tttt", direc)
         Ana.Event = Event
         Ana.EventStop = 100
-        Ana.ProjectName = Mode + "_EventStop100"
+        Ana.ProjectName = Mode + (f"_EventStop{Ana.EventStop}" if Ana.EventStop else "")
         Ana.Threads = 12
         Ana.chnk = 1000
         Ana.EventCache = True
