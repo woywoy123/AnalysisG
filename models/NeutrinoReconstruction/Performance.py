@@ -20,18 +20,6 @@ device = "cpu"
 def CompareNumerical(r_ori, r_pyt, string):
     print("(" + string + ") -> Original: ", r_ori, " ||  Pytorch: ", r_pyt, " || Error (%): ", 100*abs(r_pyt - r_ori)/r_ori)
 
-def CompareListNumerical(r_ori, r_pyt, title = "", string = ""):
-    print("-> " + title)
-    if string == "":
-        for i, j in zip(r_ori, r_pyt):
-            delta = float(sum(i - j))
-            print("ROOT: ", list(i), "PyTorch: ", list(j), " || Error (%): ", 100*abs(delta/sum(abs(i))))
-        print("")
-        return 
-    for i, j, k in zip(r_ori, r_pyt, string):
-        CompareNumerical(i, j, k)
-    print("")
-
 def _MakeTensor(val, n, device = "cpu", dtp = torch.double):
     return torch.tensor([val for i in range(n)], device = device, dtype = dtp)
 
@@ -117,14 +105,67 @@ vl = UnpickleObject("TMP")
 #res["PT"] = SingleNeutrinoPyT([vl["b"][1]]*100, [vl["lep"][1]]*100, [vl["ev"][1]]*100)
 c = SingleNeutrinoPyT(vl["b"], vl["lep"], vl["ev"])
 
+
+def Recursion(inpt1, inpt2):
+    if isinstance(inpt1, list) == False:
+        try:
+            return abs(inpt1 - inpt2)/(inpt1)
+        except ZeroDivisionError:
+            return abs(inpt1 - intp2)
+
+    diff = 0
+    for i, j in zip(inpt1, inpt2):
+        diff += Recursion(i, j)
+    return diff 
+
+
+import numpy as np
+
+
 it = -1
-for i in range(43, len(c[0])):
+kill = 0
+for i in range(len(c[1])):
     it += 1
-
-    SingleNeutrino(vl["b"][i], vl["lep"][i], vl["ev"][i]).nu
-    print("->", c[0][i])
-
-    print(it)
-    print("----")
-    break
     
+    if c[0][i] == True:
+        it -= 1
+        continue
+
+    sol = np.array(SingleNeutrino(vl["b"][i], vl["lep"][i], vl["ev"][i]).s).tolist()
+    sol_ = c[1][it].tolist()
+    if Recursion(sol, sol_) < 0.01:
+        continue
+    print(it)
+    print("---")
+
+    print(np.array(sol_))
+    print("")
+    print(np.array(sol))
+    #deviation = False
+    #for k in range(len(sol)):
+    #    for t in range(len(sol[k])):
+    #        try:
+    #            diff = (abs(float(sol_[k][t]) - sol[k][t])/sol[k][t])*100
+    #            if diff < 1:
+    #                continue 
+    #            deviation = True 
+    #        except:
+    #            try:
+    #                for l in range(len(sol[k][t])):
+    #                    diff = (abs(float(sol_[k][t][l]) - sol[k][t][l])/sol[k][t][l])*100
+    #                    if diff < 1:
+    #                        continue 
+    #                    deviation = True 
+    #                    break
+    #            except:
+    #                deviation = True
+    #
+    #if deviation:
+    #    print(sol)
+    #    print(c[1][it])
+    #    print(it)
+    #    kill += 1
+    #if kill == 2:
+    #    break
+    #
+

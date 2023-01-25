@@ -59,6 +59,9 @@ std::vector<torch::Tensor> SingleNu::Tensors::Init(
 	//chi2 = torch::sum(chi2.view({-1, 3, 1, 3}) * Sol_.view({-1, 1, 3, 3}), 3);
 	//chi2 = chi2.diagonal(0, 1, 2).index({torch::indexing::Slice(), torch::indexing::Slice(0, 2)});
 	//chi2 = chi2.view({-1, 2, 1}); 
+	
+	std::vector<torch::Tensor> tmp = {_SkipEvent}; 
+	tmp.insert(tmp.end(), p.begin(), p.end()); 
 
-	return p; //std::vector<torch::Tensor>{Sol_}; //NuSols, chi2}; 
+	return tmp;  //std::vector<torch::Tensor>{Sol_}; //NuSols, chi2}; 
 }

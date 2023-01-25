@@ -226,6 +226,7 @@ torch::Tensor NuSolutionTensors::Derivative(torch::Tensor X)
 
 std::vector<torch::Tensor> NuSolutionTensors::Intersections(torch::Tensor A, torch::Tensor B, float cutoff)
 {
+
 	torch::Tensor msk = torch::abs(torch::det(A)) < torch::abs(torch::det(B)); 
 	torch::Tensor _tmp = B.index({msk}); 
 	
@@ -239,7 +240,6 @@ std::vector<torch::Tensor> NuSolutionTensors::Intersections(torch::Tensor A, tor
 	r_ = torch::gather(r_, 1, msk).view({-1, 1, 1}); 	
 	torch::Tensor G = (B - r_*A); 
 	
-	return {G}; 
 	// ===== Solutions ===== //
 	torch::Tensor z0 = torch::zeros_like(G); 
 	
@@ -250,23 +250,22 @@ std::vector<torch::Tensor> NuSolutionTensors::Intersections(torch::Tensor A, tor
 	z0.index_put_({msk, 1, 1}, G.index({msk, 0, 1})); 
 	z0.index_put_({msk, 1, 2}, G.index({msk, 0, 2}) - G.index({msk, 1, 2})); 
 
-	// ====== Check if G00 > G11 and swap for numerical stability ====== //
-	torch::Tensor swp = torch::abs(G.index({torch::indexing::Slice(), 0, 0})) > torch::abs(G.index({torch::indexing::Slice(), 1, 1})); 
-	
-	z0.index_put_({msk == false}, G.index({msk == false}));  
-	z0.index_put_({swp}, torch::cat({
-				z0.index({swp, 1, torch::indexing::Slice()}).view({-1, 1, 3}), 
-				z0.index({swp, 0, torch::indexing::Slice()}).view({-1, 1, 3}), 
-				z0.index({swp, 2, torch::indexing::Slice()}).view({-1, 1, 3})}, 1)); 
-	z0.index_put_({swp}, torch::cat({
-				z0.index({swp, torch::indexing::Slice(), 1}).view({-1, 1, 3}), 
-				z0.index({swp, torch::indexing::Slice(), 0}).view({-1, 1, 3}), 
-				z0.index({swp, torch::indexing::Slice(), 2}).view({-1, 1, 3})}, 1)); 
-	z0.index_put_({msk == false}, z0.index({msk == false})/(z0.index({msk == false, 1, 1}).view({-1, 1, 1}))); 
-
-
 	// ====== Reduce tensor size by ignoring msk true cases ====== //
+	z0.index_put_({msk == false}, G.index({msk == false}));  
 	torch::Tensor Q = z0.index({msk == false}); 
+
+	// ====== Check if G00 > G11 and swap for numerical stability ====== //
+	torch::Tensor swp = torch::abs(Q.index({torch::indexing::Slice(), 0, 0})) > torch::abs(Q.index({torch::indexing::Slice(), 1, 1})); 
+
+	Q.index_put_({swp}, torch::cat({
+				Q.index({swp, 1, torch::indexing::Slice()}).view({-1, 1, 3}), 
+				Q.index({swp, 0, torch::indexing::Slice()}).view({-1, 1, 3}), 
+				Q.index({swp, 2, torch::indexing::Slice()}).view({-1, 1, 3})}, 1)); 
+	Q.index_put_({swp}, torch::cat({
+				Q.index({swp, torch::indexing::Slice(), 1}).view({-1, 1, 3}), 
+				Q.index({swp, torch::indexing::Slice(), 0}).view({-1, 1, 3}), 
+				Q.index({swp, torch::indexing::Slice(), 2}).view({-1, 1, 3})}, 1)); 
+	Q = Q/(Q.index({torch::indexing::Slice(), 1, 1}).view({-1, 1, 1})); 
 	
 	// Calculate the cofactors - this checks if intersection
 	torch::Tensor q00 = NuSolutionTensors::cofactor(Q, {1, 2}, {1, 2});
@@ -274,8 +273,7 @@ std::vector<torch::Tensor> NuSolutionTensors::Intersections(torch::Tensor A, tor
 	torch::Tensor q12 = -1*NuSolutionTensors::cofactor(Q, {0, 2}, {0, 1}); 
 	torch::Tensor q22 = NuSolutionTensors::cofactor(Q, {0, 1}, {0, 1}); 
 	torch::Tensor _inter = -q22 <= 0;
-	torch::Tensor _r00 = (-q00 >= 0)*_inter*(swp == false); 
-	return {z0, q22}; 	
+	torch::Tensor _r00 = (-q00 >= 0)*_inter; 
 
 	// =========== Parallel solutions =========== //
 	torch::Tensor _para_n = torch::cat({
@@ -288,11 +286,11 @@ std::vector<torch::Tensor> NuSolutionTensors::Intersections(torch::Tensor A, tor
 					Q.index({_r00, 1, 1}).view({-1, 1}), 
 					(Q.index({_r00, 1, 2}) + torch::sqrt(-q00.index({_r00}))).view({-1, 1})}, 1); 
 
-	z0.index_put_({_r00, 0, torch::indexing::Slice()}, _para_n); 
-	z0.index_put_({_r00, 1, torch::indexing::Slice()}, _para_p); 
-
+	Q.index_put_({_r00, 0, torch::indexing::Slice()}, _para_n); 
+	Q.index_put_({_r00, 1, torch::indexing::Slice()}, _para_p); 
+	
 	// =========== Intersecting solutions ======== //
-	_inter = (_inter == false)*(swp == false); 
+	_inter = (_inter == false);  
 	torch::Tensor _int_n = torch::cat({
 					(Q.index({_inter, 0, 1}) - torch::sqrt(-q22.index({_inter}))).view({-1, 1}), 
 					Q.index({_inter, 1, 1}).view({-1, 1}),
@@ -307,24 +305,29 @@ std::vector<torch::Tensor> NuSolutionTensors::Intersections(torch::Tensor A, tor
 					 -Q.index({_inter, 1, 1})*(Q.index({_inter, 0, 1}) 
 						 + torch::sqrt(-q22.index({_inter})))*(q02.index({_inter})/q22.index({_inter}))).view({-1, 1})}, 1); 
 	
-	z0.index_put_({_inter, 0, torch::indexing::Slice()}, _int_n); 
-	z0.index_put_({_inter, 1, torch::indexing::Slice()}, _int_p); 
-	z0.index_put_({torch::indexing::Slice(), 2, torch::indexing::Slice()}, 0);
-	z0.index_put_({swp}, torch::cat({
-				z0.index({swp, torch::indexing::Slice(), 1}).view({-1, 3, 1}), 
-				z0.index({swp, torch::indexing::Slice(), 0}).view({-1, 3, 1}), 
-				z0.index({swp, torch::indexing::Slice(), 2}).view({-1, 3, 1})}, 2)); 
+	Q.index_put_({_inter, 0, torch::indexing::Slice()}, _int_n); 
+	Q.index_put_({_inter, 1, torch::indexing::Slice()}, _int_p); 
+	
+	// Swap the X and Y componets with swp.
+	Q.index_put_({swp}, torch::cat({
+	      		Q.index({swp, torch::indexing::Slice(), 1}).view({-1, 3, 1}), 
+	      		Q.index({swp, torch::indexing::Slice(), 0}).view({-1, 3, 1}), 
+	      		Q.index({swp, torch::indexing::Slice(), 2}).view({-1, 3, 1})}, 2)); 
+
+	z0.index_put_({msk == false}, Q);
+
 	z0 = torch::cat({
 			z0.index({torch::indexing::Slice(), 0, torch::indexing::Slice()}).view({-1, 1, 3}), 
 			z0.index({torch::indexing::Slice(), 1, torch::indexing::Slice()}).view({-1, 1, 3})}, 1); 
 	
 	// Intersection Ellipse line
-	torch::Tensor V = torch::cross(z0.view({-1, 2, 1, 3}), A.view({-1, 1, 3, 3}), 3); 
+	torch::Tensor V = torch::cross(z0.view({-1, 2, 1, 3}), A.view({-1, 1, 3, 3}), 3);
 	V = torch::transpose(V, 2, 3); 
 	V = std::get<1>(torch::linalg::eig(V));
-	V = torch::transpose(V, 2, 3); 
 	V = torch::real(V); 
 	
+	return {V}; 
+
 	torch::Tensor _t = V / (V.index({
 			torch::indexing::Slice(), 
 			torch::indexing::Slice(), 
