@@ -108,8 +108,10 @@ def SingleNeutrino(b, muon, mT, mW, mN, metX, metY, sigma2):
     deltaNu = V0 - R_ 
     X = np.dot(deltaNu.T, S2).dot(deltaNu)
     M = next(XD + XD.T for XD in (X.dot( Derivative ()) ,))
-    return intersections_ellipses (M, UnitCircle ())
-
+    sols = intersections_ellipses (M, UnitCircle ())
+    def calcX2(t):
+        return np.dot(t, X).dot(t)
+    return [[calcX2(t), R_.dot(t)] for t in sols]
 
 def __initFunction(_b, muon, mT, mW, mN):
     b = r.TLorentzVector()
@@ -475,8 +477,7 @@ def TestH(b, muon, mT, mW, mN):
 
 def TestInit(event, Sxx, Sxy, Syx, Syy, b, muon, mT, mW, mN):
 
-
-    n = 100000
+    n = 2
     device = "cuda"
     _b  = _MakeTensor([b.pt, b.eta, b.phi, b.e], n, device)
     _mu = _MakeTensor([muon.pt, muon.eta, muon.phi, muon.e], n, device)
@@ -489,7 +490,6 @@ def TestInit(event, Sxx, Sxy, Syx, Syy, b, muon, mT, mW, mN):
     _Sxy = _MakeTensor([Sxy ], n, device) 
     _Syx = _MakeTensor([Syx ], n, device) 
     _Syy = _MakeTensor([Syy ], n, device)
-
 
     x = F.ToPx(event.met, event.met_phi, "cpu").tolist()[0][0]
     y = F.ToPy(event.met, event.met_phi, "cpu").tolist()[0][0]
@@ -505,7 +505,11 @@ def TestInit(event, Sxx, Sxy, Syx, Syy, b, muon, mT, mW, mN):
     t1c = time()
     _sol = Sf.SolT(_b, _mu, _mT, _mW, _mN, _met, _phi, _Sxx, _Sxy, _Syx, _Syy)
     t2c = time()
+    
     print("C++ (" + str(n) + "): ", t2c - t1c)
-    CompareListNumerical([r_sol[1], r_sol[0]], _sol.tolist()[0], "Init ") 
+    for i in range(2):
+        for j in range(3):
+            CompareNumerical(r_sol[i][1].tolist()[j], _sol[0][0].tolist()[1-i][j], "Neutrino Solutions")
+        CompareNumerical(r_sol[i][0], _sol[1].tolist()[0][1-i][0], "Chi2")
     print("Improvement (x): ", (t2 - t1)/(t2c - t1c))
 

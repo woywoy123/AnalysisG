@@ -34,47 +34,47 @@ mN = 0           # GeV : Neutrino Mass
 
 from BaseFunctionsTests import *
 
-#print("---- Comparing the Four Vectors ----")
-#print("-> b-quark")
-#TestFourVector(b)
-#print("-> muon")
-#TestFourVector(muon)
-#print("-> neutrino")
-#TestFourVector(nu)
-#
-#print("---- Comparing CosTheta and SinTheta ----")
-#TestCosTheta(b, muon)
-#
-#print("---- Comparing x0 ----")
-#print("b + W:")
-#Testx0(mT, mW, b)
-#
-#print("nu + mu:")
-#Testx0(mW, mN, muon)
-#
-#print("----- Comparing Beta -----")
-#print("b")
-#TestBeta(b)
-#
-#print("muon")
-#TestBeta(muon)
-#
-#print("------ Comparing SxSy --------")
-#TestSValues(b, muon, mT, mW, mN)
-#
-#print("------- Comparing Eps W(_) Omega -------")
-#TestIntermediateValues(b, muon, mT, mW, mN)
-#TestEps_W_Omega(b, muon, mW, mN)
-#
-#print("------- Comparing x, y, Z2 --------")
-#TestxyZ2(b, muon, mT, mW, mN)
-#
-#print("-------- Comparing S2 V0 --------")
-#TestS2V0(1, 2, 3, 4, ev.met_phi, ev.met)
-#
-#print("--------- Comparing H values --------")
-#TestR_T(b, muon, mT, mW, mN)
-#TestH(b, muon, mT, mW, mN)
+print("---- Comparing the Four Vectors ----")
+print("-> b-quark")
+TestFourVector(b)
+print("-> muon")
+TestFourVector(muon)
+print("-> neutrino")
+TestFourVector(nu)
+
+print("---- Comparing CosTheta and SinTheta ----")
+TestCosTheta(b, muon)
+
+print("---- Comparing x0 ----")
+print("b + W:")
+Testx0(mT, mW, b)
+
+print("nu + mu:")
+Testx0(mW, mN, muon)
+
+print("----- Comparing Beta -----")
+print("b")
+TestBeta(b)
+
+print("muon")
+TestBeta(muon)
+
+print("------ Comparing SxSy --------")
+TestSValues(b, muon, mT, mW, mN)
+
+print("------- Comparing Eps W(_) Omega -------")
+TestIntermediateValues(b, muon, mT, mW, mN)
+TestEps_W_Omega(b, muon, mW, mN)
+
+print("------- Comparing x, y, Z2 --------")
+TestxyZ2(b, muon, mT, mW, mN)
+
+print("-------- Comparing S2 V0 --------")
+TestS2V0(1, 2, 3, 4, ev.met_phi, ev.met)
+
+print("--------- Comparing H values --------")
+TestR_T(b, muon, mT, mW, mN)
+TestH(b, muon, mT, mW, mN)
 
 print("--------- Comparing Init ----------")
 TestInit(ev, 10, 0, 0, 10, b, muon, mT, mW, mN)

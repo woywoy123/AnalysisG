@@ -22,7 +22,7 @@ torch::Tensor SingleNu::Tensors::V0(torch::Tensor metx, torch::Tensor mety)
 	return matrix; 
 }
 
-torch::Tensor SingleNu::Tensors::Init(
+std::vector<torch::Tensor> SingleNu::Tensors::Init(
 		torch::Tensor _b, torch::Tensor _mu, 
 		torch::Tensor massTop, torch::Tensor massW, torch::Tensor massNu,
 		torch::Tensor met, torch::Tensor phi, 
@@ -42,5 +42,15 @@ torch::Tensor SingleNu::Tensors::Init(
 	torch::Tensor D_ = NuSolutionTensors::Derivative(X_); 
 	torch::Tensor M_ = D_ + D_.transpose(1, 2);
 	torch::Tensor C_ = NuSolutionTensors::UnitCircle(_mu).repeat({_mu.sizes()[0], 1, 1}); 
-	return NuSolutionTensors::Intersections(M_, C_, 0.0001);
+	Sol_ = NuSolutionTensors::Intersections(M_, C_, 0.0001);
+	
+	torch::Tensor NuSols = torch::sum(H_.view({-1, 1, 3, 3})*Sol_.view({-1, 3, 1, 3}), 3); 
+	NuSols = NuSols.index({torch::indexing::Slice(), torch::indexing::Slice(0, 2), torch::indexing::Slice()}); 
+
+	torch::Tensor chi2 = torch::sum(Sol_.view({-1, 3, 1, 3}) * X_.view({-1, 1, 3, 3}), 3);
+	chi2 = torch::sum(chi2.view({-1, 3, 1, 3}) * Sol_.view({-1, 1, 3, 3}), 3);
+	chi2 = chi2.diagonal(0, 1, 2).index({torch::indexing::Slice(), torch::indexing::Slice(0, 2)});
+	chi2 = chi2.view({-1, 2, 1}); 
+	
+	return std::vector<torch::Tensor>{NuSols, chi2}; 
 }

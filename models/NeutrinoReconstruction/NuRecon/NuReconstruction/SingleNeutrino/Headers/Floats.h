@@ -16,7 +16,7 @@ namespace SingleNu
 				torch::Tensor syx, torch::Tensor syy);
 		torch::Tensor V0(torch::Tensor metx, torch::Tensor mety);
 
-		torch::Tensor Init(
+		std::vector<torch::Tensor> Init(
 			torch::Tensor _b, torch::Tensor _mu, 
 			torch::Tensor massTop, torch::Tensor massW, torch::Tensor massNu,
 			torch::Tensor met, torch::Tensor phi, 

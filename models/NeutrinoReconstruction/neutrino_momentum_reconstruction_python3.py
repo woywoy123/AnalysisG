@@ -156,9 +156,6 @@ class nuSolutionSet (object ):
         '''Transformation of t=[c,s ,1] to p_nu: lab coord.'''
         return self.R_T.dot(self.H_tilde)
 
-
-
-
 class singleNeutrinoSolution(object ):
     '''Most likely neutrino momentum for tt -->lepton+jets '''
     def __init__(self , b, mu , # Lorentz Vectors

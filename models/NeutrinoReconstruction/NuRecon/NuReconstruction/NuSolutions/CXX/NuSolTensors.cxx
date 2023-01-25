@@ -363,6 +363,6 @@ torch::Tensor NuSolutionTensors::Intersections(torch::Tensor A, torch::Tensor B,
 				sel.view({-1, 2, 3, 1})
 			}, -1); 
 	_t.index_put_({sel == false}, 0); 
-	return _t.sum({1}); 
+	return _t.sum({1}); // Careful with the summation...
 
 }
