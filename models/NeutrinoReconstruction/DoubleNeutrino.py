@@ -10,7 +10,7 @@ from neutrino_momentum_reconstruction_python3 import doubleNeutrinoSolutions
 mW = 80.385*1000 # MeV : W Boson Mass
 mT = 172.5*1000  # MeV : t Quark Mass
 mN = 0           # GeV : Neutrino Mass
-device = "cpu"
+device = "cuda"
 
 def CompareNumerical(r_ori, r_pyt, string):
     print("(" + string + ") -> Original: ", r_ori, " ||  Pytorch: ", r_pyt, " || Error (%): ", 100*abs(r_pyt - r_ori)/r_ori)
@@ -99,3 +99,33 @@ def ParticleCollectors(ev):
 vl = UnpickleObject("TMP")
 s_ = DoubleNeutrinoPyT(vl["b"], vl["lep"], vl["ev"])
 s_r = DoubleNeutrino(vl["b"][0], vl["lep"][0], vl["ev"][0])
+
+print("")
+print(s_r.S[0])
+print("")
+print(s_r.S[1])
+
+print("----")
+print(s_[0][0])
+print("")
+print(s_[1][0])
+
+print(s_[2][0])
+
+
+
+##k = 0
+#for i, j in zip(s_[0], s_[1]):
+#    print("---")
+#    i[2, :] = 0
+#    i[2, 2] = 1
+#    print(i)
+#    torch.linalg.inv(i)
+#
+#    j[2, :] = 0
+#    j[2, 2] = 1
+#    print(j)
+#    torch.linalg.inv(j)
+#    print(k) 
+#
+#    k+=1

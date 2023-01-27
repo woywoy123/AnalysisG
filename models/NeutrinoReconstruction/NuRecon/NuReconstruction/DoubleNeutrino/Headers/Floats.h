@@ -16,6 +16,18 @@ namespace DoubleNu
 			torch::Tensor _mu1, torch::Tensor _mu2,
 			torch::Tensor massTop, torch::Tensor massW, torch::Tensor massNu,
 			torch::Tensor met, torch::Tensor phi); 
+		
+		torch::Tensor N(torch::Tensor H); 
+		torch::Tensor V0(torch::Tensor metx, torch::Tensor mety);
+		static torch::Tensor V0Polar(torch::Tensor met, torch::Tensor phi)
+		{
+			return V0(
+				PhysicsTensors::ToPx(met, phi), 
+				PhysicsTensors::ToPy(met, phi)); 
+		}
+
+
+
 	}
 }
 
