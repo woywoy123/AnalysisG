@@ -224,7 +224,7 @@ torch::Tensor NuSolutionTensors::Derivative(torch::Tensor X)
 			).matmul(diag)); 
 }
 
-std::vector<torch::Tensor> NuSolutionTensors::Intersections(torch::Tensor A, torch::Tensor B, float cutoff)
+torch::Tensor NuSolutionTensors::Intersections(torch::Tensor A, torch::Tensor B, float cutoff)
 {
 
 	torch::Tensor msk = torch::abs(torch::det(A)) < torch::abs(torch::det(B)); 
@@ -236,7 +236,7 @@ std::vector<torch::Tensor> NuSolutionTensors::Intersections(torch::Tensor A, tor
 	_tmp = torch::linalg::eigvals(torch::inverse(A).matmul(B)); 
 	torch::Tensor r_ = torch::real(_tmp); 
 	msk = torch::isreal(_tmp)*(r_ != 0);
-	msk = torch::argmax(msk*torch::arange(3, 0, -1), -1, true); 
+	msk = torch::argmax(msk*torch::arange(3, 0, -1, PhysicsTensors::Options(A)), -1, true); 
 	r_ = torch::gather(r_, 1, msk).view({-1, 1, 1}); 	
 	torch::Tensor G = (B - r_*A); 
 	
@@ -289,7 +289,7 @@ std::vector<torch::Tensor> NuSolutionTensors::Intersections(torch::Tensor A, tor
 	Q.index_put_({_r00, 0, torch::indexing::Slice()}, _para_n); 
 	Q.index_put_({_r00, 1, torch::indexing::Slice()}, _para_p); 
 	
-	// =========== Intersecting solutions ======== //
+      // =========== Intersecting solutions ======== //
 	_inter = (_inter == false);  
 	torch::Tensor _int_n = torch::cat({
 					(Q.index({_inter, 0, 1}) - torch::sqrt(-q22.index({_inter}))).view({-1, 1}), 
@@ -324,16 +324,14 @@ std::vector<torch::Tensor> NuSolutionTensors::Intersections(torch::Tensor A, tor
 	torch::Tensor V = torch::cross(z0.view({-1, 2, 1, 3}), A.view({-1, 1, 3, 3}), 3);
 	V = torch::transpose(V, 2, 3); 
 	V = std::get<1>(torch::linalg::eig(V));
-	V = torch::real(V); 
+	V = torch::real(V);
+	V = torch::transpose(V, 2, 3); 
 	
-	return {V}; 
-
 	torch::Tensor _t = V / (V.index({
 			torch::indexing::Slice(), 
 			torch::indexing::Slice(), 
 			torch::indexing::Slice(), 
 			2}).view({-1, 2, 3, 1})); 
-
 	torch::Tensor d1 = torch::sum(((z0.view({-1, 2, 1, 3}))*V), {3}).pow(2);
 	torch::Tensor V_ = torch::reshape(V, {-1, 2, 3, 3}); 
 
@@ -341,24 +339,27 @@ std::vector<torch::Tensor> NuSolutionTensors::Intersections(torch::Tensor A, tor
 	_tmp = torch::sum((_tmp * V_), {-1}).pow(2); 
 	_tmp = (d1 + _tmp).view({-1, 2, 3});  
 
-	std::tuple<torch::Tensor, torch::Tensor> idx = _tmp.sort(2); 
+	std::tuple<torch::Tensor, torch::Tensor> idx = _tmp.sort(2, true);
+	torch::Tensor sel = std::get<0>(idx) >= cutoff;
+	torch::Tensor id = std::get<1>(idx); 
+
 	torch::Tensor _t0 = torch::gather(_t.index({
 				torch::indexing::Slice(), 
 				torch::indexing::Slice(), 
 				torch::indexing::Slice(), 
-				0}), 2, std::get<1>(idx)); 
+				0}), 2, id); 
 
 	torch::Tensor _t1 = torch::gather(_t.index({
 				torch::indexing::Slice(), 
 				torch::indexing::Slice(), 
 				torch::indexing::Slice(), 
-				1}), 2, std::get<1>(idx)); 
+				1}), 2, id); 
 
 	torch::Tensor _t2 = torch::gather(_t.index({
 				torch::indexing::Slice(), 
 				torch::indexing::Slice(), 
 				torch::indexing::Slice(), 
-				2}), 2, std::get<1>(idx)); 
+				2}), 2, id); 
 
 	_t = torch::cat({
 				_t0.view({-1, 2, 3, 1}), 
@@ -366,13 +367,11 @@ std::vector<torch::Tensor> NuSolutionTensors::Intersections(torch::Tensor A, tor
 				_t2.view({-1, 2, 3, 1})
 			}, -1); 
 	
-	torch::Tensor sel = std::get<0>(idx) < cutoff; 
 	sel = torch::cat({
 				sel.view({-1, 2, 3, 1}), 
 				sel.view({-1, 2, 3, 1}), 
 				sel.view({-1, 2, 3, 1})
 			}, -1); 
-	_t.index_put_({sel == false}, 0);
-	return {_t.sum({1})}; // Careful with the summation...
-
+	_t.index_put_({sel}, 0);
+	return _t; 
 }

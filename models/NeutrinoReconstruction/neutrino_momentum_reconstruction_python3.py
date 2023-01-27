@@ -38,7 +38,6 @@ def multisqrt (y):
 def factor_degenerate (G, zero =0):
     '''Linear factors of degenerate quadratic polynomial '''
     if G[0 ,0] == 0 == G[1 ,1]:
-        print("-> ", G)
         return [[G[0,1], 0, G[1 ,2]] , [0, G[0,1], G[0 ,2] - G[1 ,2]]]
 
     swapXY = abs(G[0 ,0]) > abs(G[1 ,1])
@@ -47,7 +46,6 @@ def factor_degenerate (G, zero =0):
 
     q22 = cofactor(Q, 2 ,2)
     if -q22 <= zero:
-        print("HERE")
         lines = [[Q[0,1], Q[1,1], Q[1 ,2]+s] for s in multisqrt (-cofactor(Q, 0, 0))]
     else:
         x0 , y0 = [cofactor(Q, i ,2) / q22 for i in [0, 1]]
@@ -57,7 +55,6 @@ def factor_degenerate (G, zero =0):
 def intersections_ellipse_line (ellipse , line , zero =1e-12):
     '''Points of intersection between ellipse and line '''
     _,V = np.linalg.eig(np.cross(line ,ellipse ).T)
-    return V.real
     sols = sorted([(v.real / v[2].real, np.dot(line ,v.real )**2 + np.dot(v.real ,ellipse ).dot(v.real )**2) for v in V.T], key=lambda k: k[1])[:2]
     return [s for s, k in sols if k < zero]
 
@@ -68,13 +65,6 @@ def intersections_ellipses (A, B, returnLines =False ):
         A,B = B,A
     e = next(e.real for e in LA.eigvals(LA.inv(A).dot(B)) if not e.imag)
     lines = factor_degenerate (B - e*A)
-    
-    x = []
-    for l in lines:
-        x.append(intersections_ellipse_line(A, l))
-    return x
-
-
     points = sum ([ intersections_ellipse_line (A,L) for L in lines ] ,[])
     return (points ,lines) if returnLines else points
 
@@ -183,8 +173,9 @@ class singleNeutrinoSolution(object ):
         deltaNu = V0 - self.solutionSet.H
         self.X = np.dot(deltaNu.T, S2).dot(deltaNu)
         M = next(XD + XD.T for XD in (self.X.dot( Derivative ()) ,))
-        self.s = intersections_ellipses (M, UnitCircle ())
-        #self.solutions = sorted(solutions , key=self.calcX2)
+        
+        solutions = intersections_ellipses(M, UnitCircle ())
+        self.solutions = sorted(solutions, key=self.calcX2)
 
     def calcX2(self , t):
         return np.dot(t, self.X).dot(t)

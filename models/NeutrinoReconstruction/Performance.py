@@ -7,6 +7,7 @@ import torch
 import NuR.SingleNu.Floats as Sf
 import NuR.Physics.Floats as F
 from time import time
+import numpy as np
 
 Sxx = 100
 Sxy = 0
@@ -60,51 +61,45 @@ def ParticleCollectors(ev):
     t = [ t for t in ev.Tops if t.DecayLeptonically()][0]
     return [b, lep, nu, ev, t]
 
-#direc = "/home/tnom6927/Downloads/samples/SingleTop/m700/DAOD_TOPQ1.21955710._000003.root"
-#Ana = Analysis()
-#Ana.InputSample("bsm700", direc)
-#Ana.Event = Event
-#Ana.EventCache = True
-#Ana.DumpPickle = True 
-#Ana.Launch()
-#
-#vl = {"b" : [], "lep" : [], "nu" : [], "ev" : [], "t" : []}
-#for i in Ana:
-#    ev = i.Trees["nominal"]
-#    tops = [ t for t in ev.Tops if t.DecayLeptonically()]
-#
-#    if len(tops) == 1:
-#        k = ParticleCollectors(ev)
-#        vl["b"].append(k[0])
-#        vl["lep"].append(k[1])
-#        vl["nu"].append(k[2])
-#        vl["ev"].append(k[3])
-#        vl["t"].append(k[4])
-#
-#res = {"Or" : [], "PT" : []}
-#t1p = time()    
-##for i in range(len(vl["b"])):
-##    res["Or"].append(SingleNeutrino(vl["b"][i], vl["lep"][i], vl["ev"][i]))
-#t2p = time()
-#
-#t1c = time()
-##for i in range(len(vl["b"])):
-#    print(i)
+direc = "/home/tnom6927/Downloads/samples/SingleTop/m700/DAOD_TOPQ1.21955710._000003.root"
+Ana = Analysis()
+Ana.InputSample("bsm700", direc)
+Ana.Event = Event
+Ana.EventCache = True
+Ana.DumpPickle = True 
+Ana.Launch()
 
-#PickleObject(vl, "TMP")
-#vl = UnpickleObject("TMP")
-#res["PT"] = SingleNeutrinoPyT([vl["b"][1]]*100, [vl["lep"][1]]*100, [vl["ev"][1]]*100)
-#t2c = time()
+vl = {"b" : [], "lep" : [], "nu" : [], "ev" : [], "t" : []}
+for i in Ana:
+    ev = i.Trees["nominal"]
+    tops = [ t for t in ev.Tops if t.DecayLeptonically()]
 
-#print("Python: ", t2p - t1p)
-#print("C++: ", t2c - t1c)
+    if len(tops) == 1:
+        k = ParticleCollectors(ev)
+        vl["b"].append(k[0])
+        vl["lep"].append(k[1])
+        vl["nu"].append(k[2])
+        vl["ev"].append(k[3])
+        vl["t"].append(k[4])
 
+res = {"Or" : [], "PT" : []}
+t1p = time()    
+for i in range(len(vl["b"])):
+    res["Or"].append(SingleNeutrino(vl["b"][i], vl["lep"][i], vl["ev"][i]))
+t2p = time()
 
+t1c = time()
+res["PT"] = SingleNeutrinoPyT(vl["b"], vl["lep"], vl["ev"])
+t2c = time()
+
+print("Python: ", t2p - t1p)
+print("C++: ", t2c - t1c)
+print("Improvement Factor: ", (t2p - t1p)/(t2c - t1c))
+
+exit()
 ### Debugging 
 vl = UnpickleObject("TMP")
-#res["PT"] = SingleNeutrinoPyT([vl["b"][1]]*100, [vl["lep"][1]]*100, [vl["ev"][1]]*100)
 c = SingleNeutrinoPyT(vl["b"], vl["lep"], vl["ev"])
-
 
 def Recursion(inpt1, inpt2):
     if isinstance(inpt1, list) == False:
@@ -119,53 +114,32 @@ def Recursion(inpt1, inpt2):
     return diff 
 
 
-import numpy as np
-
 
 it = -1
 kill = 0
 for i in range(len(c[1])):
     it += 1
-    
+
     if c[0][i] == True:
         it -= 1
         continue
-
-    sol = np.array(SingleNeutrino(vl["b"][i], vl["lep"][i], vl["ev"][i]).s).tolist()
+    try:
+        s = SingleNeutrino(vl["b"][i], vl["lep"][i], vl["ev"][i])
+        sol = s.nu.tolist()
+        chi = s.chi2.tolist()
+    except:
+        sol = []
+        chi = None
     sol_ = c[1][it].tolist()
+    chi_ = c[2][it].tolist()[0]
     if Recursion(sol, sol_) < 0.01:
         continue
-    print(it)
+
     print("---")
-
-    print(np.array(sol_))
-    print("")
-    print(np.array(sol))
-    #deviation = False
-    #for k in range(len(sol)):
-    #    for t in range(len(sol[k])):
-    #        try:
-    #            diff = (abs(float(sol_[k][t]) - sol[k][t])/sol[k][t])*100
-    #            if diff < 1:
-    #                continue 
-    #            deviation = True 
-    #        except:
-    #            try:
-    #                for l in range(len(sol[k][t])):
-    #                    diff = (abs(float(sol_[k][t][l]) - sol[k][t][l])/sol[k][t][l])*100
-    #                    if diff < 1:
-    #                        continue 
-    #                    deviation = True 
-    #                    break
-    #            except:
-    #                deviation = True
-    #
-    #if deviation:
-    #    print(sol)
-    #    print(c[1][it])
-    #    print(it)
-    #    kill += 1
-    #if kill == 2:
-    #    break
-    #
-
+    print(it)
+    print("++++ Momentum of Neutrino ++++")
+    print("ROOT: ", np.array(sol))    
+    print("PyTorch: ", np.array(sol_))
+    print("--- Chi2 of Prediction ---")    
+    print("ROOT: ", chi)   
+    print("PyTorch: ", chi_)
