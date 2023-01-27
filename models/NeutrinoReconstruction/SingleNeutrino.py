@@ -97,8 +97,8 @@ print("C++: ", t2c - t1c)
 print("Improvement Factor: ", (t2p - t1p)/(t2c - t1c))
 
 exit()
+
 ### Debugging 
-vl = UnpickleObject("TMP")
 c = SingleNeutrinoPyT(vl["b"], vl["lep"], vl["ev"])
 
 def Recursion(inpt1, inpt2):
