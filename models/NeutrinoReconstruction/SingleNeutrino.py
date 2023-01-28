@@ -61,7 +61,7 @@ def ParticleCollectors(ev):
     t = [ t for t in ev.Tops if t.DecayLeptonically()][0]
     return [b, lep, nu, ev, t]
 
-direc = "/home/tnom6927/Downloads/samples/SingleTop/m700/DAOD_TOPQ1.21955710._000003.root"
+direc = "<Some Directory>"
 Ana = Analysis()
 Ana.InputSample("bsm700", direc)
 Ana.Event = Event
@@ -112,8 +112,6 @@ def Recursion(inpt1, inpt2):
     for i, j in zip(inpt1, inpt2):
         diff += Recursion(i, j)
     return diff 
-
-
 
 it = -1
 kill = 0

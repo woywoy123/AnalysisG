@@ -2,24 +2,24 @@ from AnalysisTopGNN import Analysis
 from AnalysisTopGNN.Events import Event
 from AnalysisTopGNN.IO import PickleObject, UnpickleObject
 
-#direc = "/home/tnom6927/Downloads/samples/tttt/QU_0.root"
-#Ana = Analysis()
-#Ana.InputSample("bsm1000", direc)
-#Ana.Event = Event
-#Ana.EventCache = True
-#Ana.DumpPickle = True 
-#Ana.Launch()
-#
-#
-#for i in Ana:
-#    ev = i.Trees["nominal"]
-#    
-#    it = 0
-#    for t in ev.Tops:
-#        it += 1 if t.DecayLeptonically() else 0
-#    if it == 1:
-#        PickleObject(ev, "TMP")
-#        break
+direc = "<Some Directory>"
+Ana = Analysis()
+Ana.InputSample("bsm1000", direc)
+Ana.Event = Event
+Ana.EventCache = True
+Ana.DumpPickle = True 
+Ana.Launch()
+
+
+for i in Ana:
+    ev = i.Trees["nominal"]
+    
+    it = 0
+    for t in ev.Tops:
+        it += 1 if t.DecayLeptonically() else 0
+    if it == 1:
+        PickleObject(ev, "TMP")
+        break
 
 ev = UnpickleObject("TMP")
 singlelepton = [i for i in ev.TopChildren if i.Parent[0].DecayLeptonically()]

@@ -15,18 +15,11 @@ class ParticleTemplate(VariableManager):
         dr = TensorDeltaR(t1, t2).tolist()[0][0]
         return dr
 
-    def CalculateMass(self, lists = None, Name = "Mass"):
-        if lists == None:
-            lists = [self]
-
-        t1 = torch.tensor([0., 0., 0., 0.])
-        for i in lists:
-            t1 += ToPxPyPzE(i.pt, i.eta, i.phi, i.e, "cpu")
-        m = MassFromPxPyPzE(t1).tolist()[0][0]
-        self.__dict__[Name + "_MeV"] =  float(m)
-        self.__dict__[Name + "_GeV"] = float(m / 1000)
-        return float(m/1000)
-
+    @property
+    def Mass(self):
+        t = torch.tensor([self.pt, self.eta, self.phi, self.e])
+        return MassFromPtEtaPhiE(t).tolist()[0][0] / 1000
+    
     def __del__(self):
         for i in self.__dict__:
             val = self.__dict__[i]

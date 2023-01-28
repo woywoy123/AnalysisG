@@ -4,7 +4,6 @@
 
 using namespace torch::indexing;
 
-
 float Px(float pt, float phi){ return pt*std::cos(phi); }
 float Py(float pt, float phi){ return pt*std::sin(phi); }
 float Pz(float pt, float eta){ return pt*std::sinh(eta); }

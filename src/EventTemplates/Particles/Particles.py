@@ -1,4 +1,5 @@
 from AnalysisTopGNN.Templates import ParticleTemplate
+import math 
 
 class Particle(ParticleTemplate):
 
@@ -146,3 +147,33 @@ class Muon(Particle):
     @property
     def is_lep(self):
         return True
+
+class Neutrino(ParticleTemplate):
+    
+    def __init__(self):
+        self.Type = "nu"
+        ParticleTemplate.__init__(self)
+        self.px = None 
+        self.py = None 
+        self.pz = None 
+
+    @property
+    def is_nu(self):
+        return True
+
+    @property
+    def pt(self):
+        return math.sqrt( self.px**2 + self.py**2 )
+    
+    @property
+    def phi(self):
+        return math.atan2( self.py, self.px )
+
+    @property
+    def eta(self):
+        return math.asinh( self.pz/ self.pt )
+    
+    @property
+    def e(self):
+        return math.sqrt( self.px**2 + self.py**2 + self.pz**2 )
+
