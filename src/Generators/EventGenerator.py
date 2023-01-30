@@ -35,6 +35,7 @@ class EventGenerator(EventGenerator_, Settings, Tools, SampleTracer):
 
         self.AddCode(self.Event)
         obj = self.CopyInstance(self.Event)
+        self.CheckVariableNames(obj)
         for p in obj.Objects:
             self.AddCode(obj.Objects[p])
         

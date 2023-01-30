@@ -74,6 +74,7 @@ class EventTemplate(VariableManager):
                     MakeParticle(copy.deepcopy(self.Objects[name]), partDic, name)
                 else:
                     RecursivePopulate(partDic, name)
+
             return RecursivePopulate(store, name)
         
         maps = self.GetKey(self)
