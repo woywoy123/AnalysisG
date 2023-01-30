@@ -22,7 +22,7 @@ class Top(Particle):
         self.status = self.Type + "_status"
         self.TruthJets = []
         self.Jets = []
-
+    
 class Children(Particle):
 
     def __init__(self):
@@ -146,3 +146,12 @@ class Muon(Particle):
     @property
     def is_lep(self):
         return True
+
+class Neutrino(ParticleTemplate):
+    
+    def __init__(self):
+        self.Type = "nu"
+        ParticleTemplate.__init__(self)
+        self.px = None 
+        self.py = None 
+        self.pz = None 

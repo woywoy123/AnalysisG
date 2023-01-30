@@ -162,6 +162,7 @@ class _Condor:
         self.ProjectName = None
         self.VerboseLevel = 0
         self.Tree = None
+        self.OutputDirectory = None
 
 class _CondorScript:
 

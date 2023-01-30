@@ -18,7 +18,9 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
 
     def InputSample(self, Name, SampleDirectory = None):
         if self._launch == False:
-            self._InputValues.append({"INPUTSAMPLE" : {"Name" : Name, "SampleDirectory" : SampleDirectory}})
+            self._InputValues.append({"INPUTSAMPLE" : 
+                                      {"Name" : Name, 
+                                       "SampleDirectory" : SampleDirectory}})
             return  
 
         if isinstance(SampleDirectory, str):
@@ -45,7 +47,10 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
         
         Directory = self.abs(self.AddTrailing(Directory, "/"))
         if self._launch == False:
-            self._InputValues.append({"EVALUATEMODEL" : {"Directory": Directory, "ModelInstance" : ModelInstance, "BatchSize": BatchSize}})
+            self._InputValues.append({"EVALUATEMODEL" : 
+                                      {"Directory": Directory, 
+                                       "ModelInstance" : ModelInstance, 
+                                       "BatchSize": BatchSize}})
             return  
 
         Name = Directory.split("/")[-1]
@@ -62,8 +67,13 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
 
     def __BuildRootStructure(self): 
         self.OutputDirectory = self.RemoveTrailing(self.OutputDirectory, "/")
-        self.mkdir(self.OutputDirectory + "/" + self.ProjectName)
-        self.mkdir(self.OutputDirectory + "/" + self.ProjectName + "/Tracers")
+        if self.DumpPickle or self.DumpHDF5:
+            self.mkdir(self.OutputDirectory + "/" + self.ProjectName)
+            self.mkdir(self.OutputDirectory + "/" + self.ProjectName + "/Tracers")
+            self.output = self.OutputDirectory + "/" + self.ProjectName
+            self.cd(self.output)
+        self.output = "." 
+
 
     def __DumpCache(self, instance, outdir, Compiled):
         
@@ -72,7 +82,7 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
         else:
             export = {ev.Filename : ev for ev in instance if self[ev.Filename].Compiled == Compiled}
         
-        if len(export) == 0:
+        if self.DumpHDF5 == False and self.DumpPickle == False:
             return 
         
         self.mkdir(outdir)
@@ -99,6 +109,7 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
         
         if self.EventCache == False:
             return 
+
         self.__DumpCache(ev, self.output + "/EventCache/" + name + "/" + filedir[-1], False)
             
     def __GraphGenerator(self, name, filedir):
@@ -106,12 +117,15 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
             return 
         
         direc = "/".join(filedir)
-        gr = GraphGenerator()
-        gr.SampleContainer.ROOTFiles[direc] = self.GetROOTContainer(direc)
-        gr.RestoreSettings(self.DumpSettings())
-        gr.CompileEventGraph()
-        self.GetCode(gr)
-        self += gr 
+        try:
+            gr = GraphGenerator()
+            gr.SampleContainer.ROOTFiles[direc] = self.GetROOTContainer(direc)
+            gr.RestoreSettings(self.DumpSettings())
+            gr.CompileEventGraph()
+            self.GetCode(gr)
+            self += gr 
+        except KeyError:
+            return 
 
         if self.DataCache == False:
             return 
@@ -123,26 +137,23 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
         
         for f in self.DictToList(InptMap):
             tmp = f.split("/")
-            
-            if self.EventCache and ec == False:
+            if self.EventCache and ec == None:
                 if self.Event == None:
                     self.NoEventImplementation()
                 self.__EventGenerator(name, tmp)
-
-            if self.DataCache and dc == False:
-                if self.Event == None and ec == False:
+            
+            if self.DataCache and dc == None:
+                if self.Event == None and ec == None:
                     self.NoEventImplementation()
-                elif ec == False:
+                elif ec == None:
                     self.__EventGenerator(name, tmp) 
                 if self.EventGraph == None:
                     self.NoEventGraphImplementation()
                 self.__GraphGenerator(name, tmp)
 
-            if self.DumpHDF5 == False and self.DumpPickle == False:
-                continue
-            self.SampleContainer.ClearEvents()
-            PickleObject(self.SampleContainer, self.output + "/Tracers/" + name) 
-
+            if self.DumpHDF5 or self.DumpPickle:
+                self.SampleContainer.ClearEvents()
+                PickleObject(self.SampleContainer, self.output + "/Tracers/" + name) 
 
     def __GenerateTrainingSample(self):
         def MarkSample(smpl, status):
@@ -192,16 +203,16 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
             for i in Name:
                 self.__SearchAssets(CacheType, i)
             return 
-
+        
         if CacheType == "EventCache" and self.EventCache == False:
             return 
         if CacheType == "DataCache" and self.DataCache == False:
             return 
-
+        
         if self.IsFile(self.output + "/Tracers/" + Name + ".pkl") == False:
             if self.DumpPickle == False and self.DumpHDF5 == False:
                 self.MissingTracer(self.output + "/Tracers/" + Name + ".pkl")
-            return False
+            return 
         SampleContainer = UnpickleObject(self.output + "/Tracers/" + Name + ".pkl")
 
         root = self.output + "/" + CacheType + "/" + Name 
@@ -232,7 +243,7 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
        
         else:
             self.NoCache(root)
-            return False
+            return 
 
     def Launch(self):
         self.__CheckSettings()
@@ -246,7 +257,6 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
         
         self.StartingAnalysis()
         self.__BuildRootStructure()
-        self.output = self.OutputDirectory + "/" + self.ProjectName
        
         self.Training = False
         if self.TrainingSampleName:
@@ -269,10 +279,10 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
                 self.__SearchAssets(search, i)
                 continue
             if self.DumpHDF5 or self.DumpPickle:
-                self.ResetSampleContainer()   
+                self.ResetSampleContainer()  
+
             self.NoSamples(self._SampleMap[i], i)
             self.__GenerateEvents(self._SampleMap[i], i)
-            
         self.__GenerateTrainingSample()
         self.__Optimization() 
         self.__ModelEvaluator()

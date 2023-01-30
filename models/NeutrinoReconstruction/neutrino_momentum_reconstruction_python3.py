@@ -38,10 +38,13 @@ def multisqrt (y):
 def factor_degenerate (G, zero =0):
     '''Linear factors of degenerate quadratic polynomial '''
     if G[0 ,0] == 0 == G[1 ,1]:
+        print("-")
         return [[G[0,1], 0, G[1 ,2]] , [0, G[0,1], G[0 ,2] - G[1 ,2]]]
+
     swapXY = abs(G[0 ,0]) > abs(G[1 ,1])
     Q = G[(1 ,0 ,2) ,][: ,(1 ,0 ,2)] if swapXY else G
     Q /= Q[1 ,1]
+
     q22 = cofactor(Q, 2 ,2)
     if -q22 <= zero:
         lines = [[Q[0,1], Q[1,1], Q[1 ,2]+s] for s in multisqrt (-cofactor(Q, 0, 0))]
@@ -79,16 +82,22 @@ class nuSolutionSet (object ):
     '''Definitions for nu analytic solution , t->b,mu ,nu '''
     def __init__(self , b, mu , # Lorentz Vectors
                  mW2=mW**2, mT2=mT**2, mN2=mN **2):
+
         c = r.Math.VectorUtil.CosTheta(b,mu)
         s = math.sqrt(1 - c**2)
+       
         x0p = - (mT2 - mW2 - b.M2())/(2*b.E())
         x0 = - (mW2 - mu.M2() - mN2)/(2* mu.E())
         Bb , Bm = b.Beta(), mu.Beta()
+
         Sx = (x0 * Bm - mu.P()*(1 - Bm **2)) / Bm **2
         Sy = (x0p / Bb - c * Sx) / s
-        eps2 = (mW2 - mN2) * (1 - Bm **2)
+
+        eps2 = (mW2 - mN2) * (1 - Bm**2)
+
         w = (Bm / Bb - c) / s
         w_ = (-Bm / Bb - c) / s
+
         Om2 = w**2 + 1 - Bm **2
 
         x1 = Sx - (Sx + w * Sy)/Om2
@@ -96,10 +105,10 @@ class nuSolutionSet (object ):
         
         Z2 = x1**2 * Om2 - (Sy - w * Sx)**2 - (mW2 - x0**2 - eps2)
 
-
         Z = math.sqrt(max(0, Z2))
         for item in ['b','mu','c','s','x0','x0p', 'Sx','Sy','w','w_','x1','y1', 'Z','Om2','eps2','mW2']:
             setattr(self, item , eval(item))
+
     @property
     def K(self ):
         '''Extended rotation from F' to F coord.'''
@@ -118,6 +127,18 @@ class nuSolutionSet (object ):
         mW2 , x0p = self.mW2 , self.x0p
         A_b_ = np.array ([[1 -B*B, 0, 0, B*x0p], [ 0, 1, 0, 0], [ 0, 0, 1, 0], [B*x0p , 0, 0, mW2 -x0p **2]])
         return K.dot(A_b_ ).dot(K.T)
+
+    @property
+    def H_perp(self ):
+        '''Transformation of t=[c,s ,1] to pT_nu: lab coord.'''
+        return np.vstack ([self.H[:2], [0, 0, 1]])
+    @property
+    def N(self ):
+        '''Solution ellipse of pT_nu: lab coord.'''
+        HpInv = np.linalg.inv(self.H_perp)
+        return HpInv.T.dot( UnitCircle() ).dot( HpInv )
+    
+    # === Implemented ===
     @property
     def R_T(self ):
         '''Rotation from F coord.to laboratory coord.'''
@@ -136,15 +157,6 @@ class nuSolutionSet (object ):
     def H(self ):
         '''Transformation of t=[c,s ,1] to p_nu: lab coord.'''
         return self.R_T.dot(self.H_tilde)
-    @property
-    def H_perp(self ):
-        '''Transformation of t=[c,s ,1] to pT_nu: lab coord.'''
-        return np.vstack ([self.H[:2], [0, 0, 1]])
-    @property
-    def N(self ):
-        '''Solution ellipse of pT_nu: lab coord.'''
-        HpInv = np.linalg.inv(self.H_perp)
-        return HpInv.T.dot( UnitCircle ()).dot(HpInv)
 
 class singleNeutrinoSolution(object ):
     '''Most likely neutrino momentum for tt -->lepton+jets '''
@@ -152,17 +164,19 @@ class singleNeutrinoSolution(object ):
                 metX , metY, # Momentum imbalance
                 sigma2 , # Mo.imbalance unc.matrix
                 mW2=mW**2, mT2=mT**2):
+
         self.solutionSet = nuSolutionSet (b, mu , mW2 , mT2)
+
         S2 = np.vstack ([np.vstack ([np.linalg.inv(sigma2), [0, 0]]).T, [0, 0, 0]])
         V0 = np.outer ([metX , metY , 0], [0, 0, 1])
 
-
         deltaNu = V0 - self.solutionSet.H
-
         self.X = np.dot(deltaNu.T, S2).dot(deltaNu)
         M = next(XD + XD.T for XD in (self.X.dot( Derivative ()) ,))
-        solutions = intersections_ellipses (M, UnitCircle ())
-        self.solutions = sorted(solutions , key=self.calcX2)
+        
+        solutions = intersections_ellipses(M, UnitCircle ())
+        self.solutions = sorted(solutions, key=self.calcX2)
+
     def calcX2(self , t):
         return np.dot(t, self.X).dot(t)
     @property
@@ -175,16 +189,16 @@ class singleNeutrinoSolution(object ):
 
 class doubleNeutrinoSolutions (object ):
     '''Solution pairs of neutrino momenta , tt -> leptons '''
-    def __init__(self , b, b_, mu , mu_, # 4-vectors
-                 metX , metY, # ETmiss
-        mW2=mW**2, mT2=mT **2):
+    def __init__(self , b, b_, mu , mu_, metX , metY, mW2=mW**2, mT2=mT **2):
         self.solutionSets = [ nuSolutionSet (B, M, mW2 , mT2) for B,M in zip ((b,b_),(mu ,mu_ ))]
         V0 = np.outer ([metX , metY , 0], [0, 0, 1])
         self.S = V0 - UnitCircle ()
         N, N_ = [ss.N for ss in self.solutionSets ]
+       
         n_ = self.S.T.dot(N_).dot(self.S)
         v = intersections_ellipses(N, n_)
         v_ = [self.S.dot(sol) for sol in v]
+        
         if not v and leastsq:
             es = [ss.H_perp for ss in self.solutionSets ]
             met = np.array ([metX , metY , 1])

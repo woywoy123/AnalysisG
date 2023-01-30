@@ -19,6 +19,9 @@ class Condor(Notification):
 
         if self.OutputDirectory != None:
             instance.OutputDirectory = self.OutputDirectory
+        else:
+            self.OutputDirectory = "./"
+            self.Warning("Variable OutputDirectory undefined, assuming current working directory; " + self.pwd())
         
         if self.Tree != None:
             instance.Tree = self.Tree

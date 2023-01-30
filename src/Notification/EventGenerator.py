@@ -32,3 +32,9 @@ class EventGenerator(Notification):
     def CheckSpawnedEvents(self):
         if len(self.SampleContainer) == 0:
             self.Warning("No Events were generated...")
+
+    def CheckVariableNames(self, Obj):
+        if len(Obj.Trees) == 0:
+            ex = "The Event implementation has an empy self.Trees variable!"
+            self.Failure("="*len(ex))
+            self.FailureExit(ex)
