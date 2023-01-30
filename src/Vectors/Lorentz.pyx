@@ -27,7 +27,7 @@ cpdef float PxPyPzEMass(float px, float py, float pz, float e):
     cdef float s = pow(e, 2) - pow(px, 2) - pow(py, 2) - pow(pz, 2)
     if s < 0:
         return 0
-    return pow(s, 0.5)
+    return pow(s, 0.5)/1000
 
 cpdef float deltaR(float eta1, float eta2, float phi1, float phi2):
     return pow(pow(eta1 - eta2, 2) + pow(phi1 - phi2, 2), 0.5)

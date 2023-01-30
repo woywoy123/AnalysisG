@@ -9,6 +9,7 @@
 *.pth
 *.txt
 *.so
+*.c
 
 **/__pycache__
 **/build

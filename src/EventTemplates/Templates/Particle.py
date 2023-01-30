@@ -1,6 +1,5 @@
-import torch
 from .Manager import VariableManager
-from LorentzVector import *
+from AnalysisTopGNN.Vectors import * 
 
 class ParticleTemplate(VariableManager):
     def __init__(self):
@@ -10,16 +9,67 @@ class ParticleTemplate(VariableManager):
         self.Children = []
 
     def DeltaR(self, P):
-        t1 = torch.tensor([[P.pt, P.eta, P.phi, P.e]])
-        t2 = torch.tensor([[self.pt, self.eta, self.phi, self.e]])
-        dr = TensorDeltaR(t1, t2).tolist()[0][0]
-        return dr
-
+        return deltaR(P.eta, self.eta, P.phi, self.phi)
+    
     @property
     def Mass(self):
-        t = torch.tensor([self.pt, self.eta, self.phi, self.e])
-        return MassFromPtEtaPhiE(t).tolist()[0][0] / 1000
+        return PxPyPzEMass(self._px, self._py, self._pz, self.e)
+
+    def _istype(self, lst):
+        if "pdgid" in self.__dict__:
+            return abs(self.pdgid) in lst
+        return False
+
+    @property
+    def is_lep(self):
+        return self._istype([11, 13, 15])
+
+    @property
+    def is_nu(self):
+        return self._istype([12, 14])
+
+    @property
+    def is_b(self):
+        return self._istype([5])
+
+    @property
+    def is_add(self):
+        return not (self.is_lep or self.is_nu or self.is_b)
+
+    @property
+    def _px(self):
+        return Px(self.pt, self.phi)
+
+    @property
+    def _py(self):
+        return Py(self.pt, self.phi)
+
+    @property
+    def _pz(self):
+        return Pz(self.pt, self.eta)
+
+    @property
+    def _eta(self):
+        if len([1 for i in ["px", "py", "pz"] if i in self.__dict__]) == 3:
+            return Eta(self.px, self.py, self.pz)
+        return self.eta
+
+    @property
+    def _phi(self):
+        if len([1 for i in ["px", "py"] if i in self.__dict__]) == 2:
+            return Phi(self.px, self.py)
+        return self.phi
+
+    @property
+    def _pt(self):
+        if len([1 for i in ["px", "py"] if i in self.__dict__]) == 2:
+            return PT(self.px, self.py)
+        return self.pt
     
+    @property
+    def LeptonicDecay(self):
+        return sum([1 for k in self.Children if abs(k.pdgid) in [11, 12, 13, 14, 15, 16]]) > 0
+
     def __del__(self):
         for i in self.__dict__:
             val = self.__dict__[i]
@@ -51,10 +101,7 @@ class ParticleTemplate(VariableManager):
         particle.Children += [p for p in other.Children if p not in particle.Children]
 
         return particle
-
-    def DecayLeptonically(self):
-        return True if sum([1 for k in self.Children if abs(k.pdgid) in [11, 12, 13, 14, 15, 16]]) > 0 else False
-
+    
     def __str__(self, caller = False):
         PDGID = {
                   1 : "d"           ,  2 : "u"             ,  3 : "s",
@@ -79,18 +126,3 @@ class ParticleTemplate(VariableManager):
             string += " -> " + i.__str__(caller = True)
         return string
 
-    @property
-    def is_lep(self):
-        return False
-
-    @property
-    def is_nu(self):
-        return False
-
-    @property
-    def is_b(self):
-        return False
-
-    @property
-    def is_add(self):
-        return not (self.is_lep or self.is_nu or self.is_b)

@@ -1,5 +1,4 @@
 from AnalysisTopGNN.Templates import ParticleTemplate
-import math 
 
 class Particle(ParticleTemplate):
 
@@ -23,7 +22,7 @@ class Top(Particle):
         self.status = self.Type + "_status"
         self.TruthJets = []
         self.Jets = []
-
+    
 class Children(Particle):
 
     def __init__(self):
@@ -156,24 +155,3 @@ class Neutrino(ParticleTemplate):
         self.px = None 
         self.py = None 
         self.pz = None 
-
-    @property
-    def is_nu(self):
-        return True
-
-    @property
-    def pt(self):
-        return math.sqrt( self.px**2 + self.py**2 )
-    
-    @property
-    def phi(self):
-        return math.atan2( self.py, self.px )
-
-    @property
-    def eta(self):
-        return math.asinh( self.pz/ self.pt )
-    
-    @property
-    def e(self):
-        return math.sqrt( self.px**2 + self.py**2 + self.pz**2 )
-
