@@ -48,10 +48,9 @@ class ROOTFile(Hashing):
             return self
          
     def __contains__(self, key):
-        self.hash()
-        if IsIn([key], self.HashMap):
+        if IsIn([str(key)], self.HashMap):
             return True 
-        if IsIn([key], self.EventMap):
+        if IsIn([str(key)], self.EventMap):
             return True
         return False
 

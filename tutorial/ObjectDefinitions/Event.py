@@ -1,5 +1,5 @@
 from AnalysisTopGNN.Templates import EventTemplate
-from Particles import Jet, Top
+from ObjectDefinitions.Particles import Jet, Top
 
 class Event(EventTemplate):
 

@@ -67,10 +67,11 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
 
     def __BuildRootStructure(self): 
         self.OutputDirectory = self.RemoveTrailing(self.OutputDirectory, "/")
-        if self.DumpPickle or self.DumpHDF5:
+        if (self.DumpPickle or self.DumpHDF5) or self.TrainingSampleName:
             self.mkdir(self.OutputDirectory + "/" + self.ProjectName)
             self.mkdir(self.OutputDirectory + "/" + self.ProjectName + "/Tracers")
             self.output = self.OutputDirectory + "/" + self.ProjectName
+            self._tmp = self.pwd()
             self.cd(self.output)
         self.output = "." 
 
@@ -176,7 +177,7 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
         
         if self.TrainingSampleName == False:
             return 
-        
+         
         self.EmptySampleList()
         if self.Training == False:
             self.CheckPercentage()
@@ -246,7 +247,7 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
             hdf.Caller = self.Caller
             hdf.VerboseLevel = 0
             hdf.MultiThreadedReading(_hdf)
-            events = {_hash : ev for _hash, ev in hdf._name}
+            events = {_hash : ev for _hash, ev in hdf._names}
             
             self.SampleContainer += SampleContainer
             self.SampleContainer.RestoreEvents(events)
@@ -291,11 +292,15 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
                 continue
             self.NoSamples(self._SampleMap[i], i)
             self.__GenerateEvents(self._SampleMap[i], i)
+        
         self.__GenerateTrainingSample()
         self.__Optimization() 
         self.__ModelEvaluator()
 
         self.WhiteSpace()
+        self.output = self.pwd()
+        self.cd(self._tmp)
+
     
     def __iter__(self):
         if self.SampleContainer._locked or self._launch == False:
