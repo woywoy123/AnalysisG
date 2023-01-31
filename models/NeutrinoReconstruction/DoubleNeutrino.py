@@ -82,10 +82,10 @@ class SampleROOT:
 def Difference(tru, pred):
     diff = 0
     for i in range(2):
-        diff += ( (tru[i].pt - pred[i].pt) / tru[i].pt )**2 
-        diff += ( (tru[i].eta - pred[i].eta) / tru[i].eta )**2
-        diff += ( (tru[i].phi - pred[i].phi) / tru[i].phi )**2
-        diff += ( (tru[i].e - pred[i].e) / tru[i].e )**2
+        diff += ( (tru[i].pt - pred[i]._pt) / tru[i].pt )**2 
+        diff += ( (tru[i].eta - pred[i]._eta) / tru[i].eta )**2
+        diff += ( (tru[i].phi - pred[i]._phi) / tru[i].phi )**2
+        diff += ( (tru[i].e - pred[i]._e) / tru[i].e )**2
     return math.sqrt(diff)
 
 def MakeParticle(inpt):
@@ -96,8 +96,8 @@ def MakeParticle(inpt):
     return Nu
 
 def ParticleCollectors(ev):
-    t1 = [ t for t in ev.Tops if t.DecayLeptonically()][0]
-    t2 = [ t for t in ev.Tops if t.DecayLeptonically()][1]
+    t1 = [ t for t in ev.Tops if t.LeptonicDecay][0]
+    t2 = [ t for t in ev.Tops if t.LeptonicDecay][1]
     
     out = []
     prt = { abs(p.pdgid) : p for p in t1.Children }
@@ -114,20 +114,20 @@ def ParticleCollectors(ev):
 
     return out
 
-direc = "<Some Directory>"
+direc = "/home/tnom6927/Downloads/samples/Dilepton/ttH_tttt_m1000/"
 Ana = Analysis()
 Ana.InputSample("bsm1000", direc)
 Ana.Event = Event
 Ana.EventCache = True
 Ana.DumpPickle = True 
-Ana.chnk = 1000
+Ana.chnk = 100
 Ana.Launch()
 
 it = 0
 vl = {"b" : [], "lep" : [], "nu" : [], "ev" : [], "t" : []}
 for i in Ana:
     ev = i.Trees["nominal"]
-    tops = [ t for t in ev.Tops if t.DecayLeptonically()]
+    tops = [ t for t in ev.Tops if t.LeptonicDecay]
 
     if len(tops) == 2:
         k = ParticleCollectors(ev)
@@ -136,11 +136,6 @@ for i in Ana:
         vl["nu"].append( [k[0][2], k[1][2]])
         vl["t"].append(  [k[0][3], k[1][3]])
         vl["ev"].append(ev)
-
-    if it == 100:
-        break
-    it += 1
-
 
 T = SampleTensor(vl["b"], vl["lep"], vl["ev"], vl["t"])
 R = SampleROOT(vl["b"], vl["lep"], vl["ev"], vl["t"])
@@ -229,10 +224,10 @@ for i in range(T.n):
     x.sort()
     close_P = close_P[x[0]]
     error_Python.append(x[0])
-    PT_Python += [k.pt/1000 for k in close_P]
-    Phi_Python += [k.phi for k in close_P]
-    Eta_Python += [k.eta for k in close_P]
-    E_Python += [k.e/1000 for k in close_P]
+    PT_Python += [k._pt/1000 for k in close_P]
+    Phi_Python += [k._phi for k in close_P]
+    Eta_Python += [k._eta for k in close_P]
+    E_Python += [k._e/1000 for k in close_P]
     Mass_Python += [sum([close_P[0], vl["b"][i][0], vl["lep"][i][0]]).Mass]
     Mass_Python += [sum([close_P[1], vl["b"][i][1], vl["lep"][i][1]]).Mass]
 
@@ -240,10 +235,10 @@ for i in range(T.n):
     x.sort()
     close_T = close_T[x[0]]
     error_Torch.append(x[0])
-    PT_Torch += [k.pt/1000 for k in close_T]
-    Phi_Torch += [k.phi for k in close_T]
-    Eta_Torch += [k.eta for k in close_T]
-    E_Torch += [k.e/1000 for k in close_T]
+    PT_Torch += [k._pt/1000 for k in close_T]
+    Phi_Torch += [k._phi for k in close_T]
+    Eta_Torch += [k._eta for k in close_T]
+    E_Torch += [k._e/1000 for k in close_T]
     Mass_Torch += [sum([close_T[0], vl["b"][i][0], vl["lep"][i][0]]).Mass]
     Mass_Torch += [sum([close_T[1], vl["b"][i][1], vl["lep"][i][1]]).Mass]
 

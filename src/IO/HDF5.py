@@ -190,9 +190,10 @@ class HDF5(Settings, Tools, IO_):
             out = []
             for i in inpt:
                 h = HDF5()
+                name = i.split("/")[-1].replace(self._ext, "") 
                 h.VerboseLevel = self.VerboseLevel
-                h.Filename = self.Directory + "/" + i
-                out.append((i, h.RebuildObject(i)))
+                h.Filename = i
+                out.append((name, h.RebuildObject(name)))
             return out
 
         TH = Threading(InputFiles, function, self.Threads, self.chnk)
