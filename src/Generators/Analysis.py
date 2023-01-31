@@ -134,27 +134,40 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
     def __GenerateEvents(self, InptMap, name):
         dc = self.__SearchAssets("DataCache", name)
         ec = self.__SearchAssets("EventCache", name)
-        
+       
+        if self.EventCache and ec == None:
+            pass
+        elif self.DataCache and dc == None:
+            pass
+        else:
+            return 
+
+        if self.DumpHDF5 or self.DumpPickle:
+            self.ResetSampleContainer()  
+
         for f in self.DictToList(InptMap):
             tmp = f.split("/")
             if self.EventCache and ec == None:
                 if self.Event == None:
                     self.NoEventImplementation()
+                    continue
                 self.__EventGenerator(name, tmp)
-            
+                self.SampleContainer.ClearEvents()
+                PickleObject(self.SampleContainer, self.output + "/Tracers/" + name) 
+ 
             if self.DataCache and dc == None:
                 if self.Event == None and ec == None:
                     self.NoEventImplementation()
+                    continue
                 elif ec == None:
                     self.__EventGenerator(name, tmp) 
                 if self.EventGraph == None:
                     self.NoEventGraphImplementation()
+                    continue
                 self.__GraphGenerator(name, tmp)
-
-            if self.DumpHDF5 or self.DumpPickle:
                 self.SampleContainer.ClearEvents()
                 PickleObject(self.SampleContainer, self.output + "/Tracers/" + name) 
-
+    
     def __GenerateTrainingSample(self):
         def MarkSample(smpl, status):
             for i in smpl:
@@ -214,17 +227,15 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
                 self.MissingTracer(self.output + "/Tracers/" + Name + ".pkl")
             return 
         SampleContainer = UnpickleObject(self.output + "/Tracers/" + Name + ".pkl")
-
         root = self.output + "/" + CacheType + "/" + Name 
         SampleDirectory = [root + "/" + i for i in self.ls(root)]
-        
+
         _pkl = self.DictToList(self.ListFilesInDir({i : "*" for i in SampleDirectory}, ".pkl"))
         if len(_pkl) != 0:
             pkl = Pickle()
             pkl.Caller = self.Caller
             pkl.VerboseLevel = 0
             events = pkl.MultiThreadedReading(_pkl)
-            
             self.SampleContainer += SampleContainer
             self.SampleContainer.RestoreEvents(events)
             return True
@@ -278,9 +289,6 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
                     self.CantGenerateTrainingSample()
                 self.__SearchAssets(search, i)
                 continue
-            if self.DumpHDF5 or self.DumpPickle:
-                self.ResetSampleContainer()  
-
             self.NoSamples(self._SampleMap[i], i)
             self.__GenerateEvents(self._SampleMap[i], i)
         self.__GenerateTrainingSample()
@@ -291,10 +299,13 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
     
     def __iter__(self):
         if self.SampleContainer._locked or self._launch == False:
-            self.output = self.OutputDirectory + "/" + self.ProjectName
+            
             ec = self.ls(self.output + "/EventCache")
             dc = self.ls(self.output + "/DataCache")
-
+            if len(self._SampleMap) != 0:
+                ec = [i for i in self._SampleMap if i in ec]
+                dc = [i for i in self._SampleMap if i in dc]
+            
             trig = False
             if self.EventCache and len(ec) != 0:
                 typ, dx = "EventCache", ec

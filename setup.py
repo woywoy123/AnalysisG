@@ -51,7 +51,6 @@ setup(
             "AnalysisTopGNN.Statistics" : "src/Statistics", 
             "AnalysisTopGNN.Generators" : "src/Generators", 
             "AnalysisTopGNN.Submission" : "src/Submission", 
-
         },
 
         ext_modules = [

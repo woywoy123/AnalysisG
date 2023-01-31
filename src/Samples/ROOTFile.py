@@ -1,4 +1,5 @@
 from .Hashing import Hashing 
+from AnalysisTopGNN.Vectors import IsIn
 
 class ROOTFile(Hashing):
     
@@ -31,27 +32,26 @@ class ROOTFile(Hashing):
         return list(self.HashMap)
     
     def __getitem__(self, key):
-        if key in self.HashMap:
+        if IsIn([key], self.HashMap):
             return self.HashMap[key]
-        if key in self.EventMap:
+        if IsIn([key], self.EventMap):
             return self.EventMap[key]
         return False
     
     def __setitem__(self, key, obj):
-        if key in self.hash() and self._lock == False:
+        if IsIn([key], self.HashMap) and self._lock == False:
             self.EventMap[self.HashMap[key].EventIndex] 
             return self
-
-        if key in self.EventMap and self._lock == False:
+        if IsIn([key], self.EventMap) and self._lock == False:
             self.HashMap[self.EventMap[key].Filename] = obj
             self.EventMap[key] = obj
             return self
          
     def __contains__(self, key):
         self.hash()
-        if key in self.HashMap:
+        if IsIn([key], self.HashMap):
             return True 
-        if key in self.EventMap:
+        if IsIn([key], self.EventMap):
             return True
         return False
 
@@ -61,7 +61,7 @@ class ROOTFile(Hashing):
         
         self.HashMap = {}
         for _hash, evnt in zip(hashes, evnts):
-            if _hash not in self.HashMap:
+            if IsIn([_hash], self.HashMap) == False: 
                 self.HashMap[_hash] = evnt
                 continue
                 
@@ -83,6 +83,6 @@ class ROOTFile(Hashing):
     def RestoreEvents(self, events):
         if isinstance(events, dict):
             events = list(events.values())
-        self.HashMap |= { i.Filename : i for i in events if i.Filename in self.HashMap }
-        self.EventMap |= { i.EventIndex : i for i in events if i.EventIndex in self.EventMap}
+        self.HashMap |= { i.Filename : i for i in events if IsIn([i.Filename], self.HashMap) }
+        self.EventMap |= { i.EventIndex : i for i in events if i.EventIndex in self.EventMap }
         self._lock = False
