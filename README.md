@@ -6,7 +6,7 @@ Following a similar spirit to AnalysisTop, the analyst is able to define a custo
 For instance, if any truth particle matching to specific detector particles is needed, this would be defined within the event class.
 
 The philosophy of this package is that the events within ROOT files are compiled into pythonic objects, where trees, branches and leaves define the relevant object's attributes (e.g. PT, eta, phi, energy,.,..). 
-To create custom particle objects, a base class is inherited, which interprets and compiles the particle as needed (see tutorial below).which interprets and compiles the particle as needed (see tutorial below).
+To create custom particle objects, a base class is inherited, which interprets and compiles the particle as needed (see tutorial below).
 These particle objects live within event objects that can be used to introduce further complexity, such as truth matching and so forth. 
 
 The second phase of the framework is to bridge the Deep Learning framework (PyTorch Geometric) and events within ROOT files. 
@@ -23,18 +23,13 @@ ROOT files which originate from AnalysisTop can be easily processed and require 
 ## Getting Started <a name="GettingStarted"></a>
 1. First clone this repository:
 ```
-git clone https://github.com/woywoy123/FourTopsAnalysis.git
+git clone https://github.com/woywoy123/AnalysisTopGNN.git
 ```
-2. Use the shell script to install required packages
+2. Depending on which environment is being used, enter the first command for conda or the second for generating a PyVenv;
 ```bash 
-bash SetupAnalysis.sh
+cd ./AnalysisTopGNN/setup-scripts && bash SetupAnalysisConda.sh
+cd ./AnalysisTopGNN/setup-scripts && bash SetupVenv.sh
 ```
-
-3. Run the following command:
-```bash 
-bash install.sh
-```
----
 
 ## How Do I Make This Code Work With My Samples? <a name="CustomSamples"></a>
 
@@ -129,7 +124,7 @@ class CustomEvent(EventTemplate):
 
 ```
 
-#### The ```self.Objects`` attribute:
+#### The ``self.Objects`` attribute:
 
 The attribute **Objects** is a dictionary, which defines particle templates relevant for the event.
 ```python 

@@ -26,3 +26,6 @@ pip install Cython
 
 cd ../
 pip install .
+
+cd PyTorchCustom
+pip install .
