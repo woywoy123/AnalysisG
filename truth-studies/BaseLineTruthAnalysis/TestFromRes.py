@@ -2,8 +2,6 @@ from AnalysisTopGNN.Generators import Analysis
 from AnalysisTopGNN.Events import Event
 from AnalysisTopGNN.IO import PickleObject, UnpickleObject
 from AnalysisTopGNN.Plotting import TH1F, CombineTH1F
-#import numpy as np
-from itertools import combinations
 
 PDGID = { 1 : "d"        ,  2 : "u"             ,  3 : "s", 
           4 : "c"        ,  5 : "b"             , 11 : "e", 
@@ -23,6 +21,13 @@ def TestFromRes(Ana):
         print("---New event---")
         
         event = ev.Trees["nominal"]
+
+        tops = event.Tops 
+        print("Accessing top.index", [t.index for t in tops])
+        print("Accessing top.FromRes", [t.FromRes for t in tops])
+        print("Accessing child.TopIndex from tops.Children", [[c.TopIndex for c in t.Children] for t in tops])
+        print("Accessing child.TopIndex from Event.TopChildren", [c.TopIndex for c in event.TopChildren])
+        print("Using child.TopIndex as an index to access list", [[tops[c.TopIndex].index for c in t.Children] for t in tops]) 
 
         # Method 1
         lquarks = []
@@ -57,6 +62,7 @@ def TestFromRes(Ana):
         print(f"Light quarks: {lquarks2}")
         print(f"b quarks: {bquarks2}")
         print(f"Leptons: {leptons2}")
+        exit()
 
         
 

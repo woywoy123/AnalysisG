@@ -67,11 +67,11 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
 
     def __BuildRootStructure(self): 
         self.OutputDirectory = self.RemoveTrailing(self.OutputDirectory, "/")
+        self._tmp = self.pwd()
         if (self.DumpPickle or self.DumpHDF5) or self.TrainingSampleName:
             self.mkdir(self.OutputDirectory + "/" + self.ProjectName)
             self.mkdir(self.OutputDirectory + "/" + self.ProjectName + "/Tracers")
             self.output = self.OutputDirectory + "/" + self.ProjectName
-            self._tmp = self.pwd()
             self.cd(self.output)
         self.output = "." 
 
@@ -153,8 +153,10 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
                     self.NoEventImplementation()
                     continue
                 self.__EventGenerator(name, tmp)
-                self.SampleContainer.ClearEvents()
-                PickleObject(self.SampleContainer, self.output + "/Tracers/" + name) 
+                
+                if self.DumpPickle or self.DumpHDF5:
+                    self.SampleContainer.ClearEvents()
+                    PickleObject(self.SampleContainer, self.output + "/Tracers/" + name) 
  
             if self.DataCache and dc == None:
                 if self.Event == None and ec == None:
@@ -166,8 +168,10 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
                     self.NoEventGraphImplementation()
                     continue
                 self.__GraphGenerator(name, tmp)
-                self.SampleContainer.ClearEvents()
-                PickleObject(self.SampleContainer, self.output + "/Tracers/" + name) 
+
+                if self.DumpPickle or self.DumpHDF5:
+                    self.SampleContainer.ClearEvents()
+                    PickleObject(self.SampleContainer, self.output + "/Tracers/" + name) 
     
     def __GenerateTrainingSample(self):
         def MarkSample(smpl, status):
