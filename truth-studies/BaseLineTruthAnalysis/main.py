@@ -24,8 +24,8 @@ for Mode in Modes:
         Ana.Launch()
 
     # Selection(Ana)
-    DileptonAnalysis(Ana)
-    # TestFromRes(Ana)
+    # DileptonAnalysis(Ana)
+    TestFromRes(Ana)
 
 
 

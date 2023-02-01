@@ -83,7 +83,9 @@ class Event(EventTemplate):
             accept.append(l)
         
         self.Tops = list(self.Tops.values())
+        self.Tops.reverse()
         self.TopChildren = list(self.TopChildren.values())
+        self.TopChildren.reverse()
         self.TruthJets = list(self.TruthJets.values())
         self.Jets = list(self.Jets.values())
         self.Electrons = list(self.Electrons.values())
