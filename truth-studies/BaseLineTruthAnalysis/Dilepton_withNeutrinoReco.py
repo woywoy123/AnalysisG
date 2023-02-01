@@ -132,7 +132,7 @@ def DileptonAnalysis_withNeutrinoReco(Ana):
             lowestError = 1e100
             for b in bquarks:
                 for pair in combinations(lquarks, 2):
-                    IM = sum([b, pair[0], pair[1]]).CalculateMass()
+                    IM = sum([b, pair[0], pair[1]]).Mass
                     if abs(topMass - IM) < lowestError:
                         bestB = b
                         bestQuarkPair = pair
@@ -157,13 +157,13 @@ def DileptonAnalysis_withNeutrinoReco(Ana):
             print("Best hadronic group has highest pt: assigning it to resonance")
             HadronicResTop = bestHadronicGroup
             HadronicSpecTop = remainingHadronicGroup
-            nFromRes_hadronicGroup = len([p for p in closestGroups[0] if event.Tops[p.TopIndex].FromRes == 0])
+            nFromRes_hadronicGroup = len([p for p in closestGroups[0] if event.Tops[p.TopIndex].FromRes == 1])
             print(f"FromRes for this group is {[event.Tops[p.TopIndex].FromRes for p in closestGroups[0]]}")
         else:
             print("Second best hadronic group has highest pt: assigning it to resonance")
             HadronicResTop = remainingHadronicGroup
             HadronicSpecTop = bestHadronicGroup
-            nFromRes_hadronicGroup = len([p for p in closestGroups[1] if event.Tops[p.TopIndex].FromRes == 0])
+            nFromRes_hadronicGroup = len([p for p in closestGroups[1] if event.Tops[p.TopIndex].FromRes == 1])
             print(f"FromRes for this group is {[event.Tops[p.TopIndex].FromRes for p in closestGroups[1]]}")
         print(f"nFromRes_hadronicGroup = {nFromRes_hadronicGroup}")
         if nFromRes_hadronicGroup == 3:
@@ -242,7 +242,7 @@ def DileptonAnalysis_withNeutrinoReco(Ana):
                 group = nu_vec + closestPairsVec[i][0] + closestPairsVec[i][1]
                 #print(f"Reconstructed top mass: {group.mass}")
                 groups.append(group)
-                nFromRes.append(len([p for p in closestPairs[i] if event.Tops[p.TopIndex].FromRes == 0]))
+                nFromRes.append(len([p for p in closestPairs[i] if event.Tops[p.TopIndex].FromRes == 1]))
                 #print(f"FromRes for partial leptonic group is {[event.Tops[p.TopIndex].FromRes for p in closestPairs[i]]}")
             error = abs(topMass - groups[0].mass) + abs(topMass - groups[1].mass)
             if error < lowestError:
