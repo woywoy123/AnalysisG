@@ -1,5 +1,5 @@
-#ifndef H_VECTOR_TOCARTESIAN_C
-#define H_VECTOR_TOCARTESIAN_C
+#ifndef H_TRANSFORM_TOCARTESIAN_C
+#define H_TRANSFORM_TOCARTESIAN_C
 
 #include <torch/extension.h>
 torch::Tensor _Px(torch::Tensor _pt, torch::Tensor _phi); 
@@ -11,7 +11,7 @@ torch::Tensor _PxPyPz(torch::Tensor _pt, torch::Tensor _eta, torch::Tensor _phi)
 #define CHECK_CONTIGUOUS(x) TORCH_CHECK(x.is_contiguous(), "#x must be contiguous")
 #define CHECK_INPUT(x) CHECK_CUDA(x); CHECK_CONTIGUOUS(x)
 
-namespace VectorCUDA
+namespace TransformCUDA
 {
 	const torch::Tensor Px(torch::Tensor pt, torch::Tensor phi)
 	{

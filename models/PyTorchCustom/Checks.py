@@ -2,6 +2,8 @@ import torch
 
 def AssertEquivalence(truth, pred, threshold = 0.001):
     diff = truth - pred
+    if truth == 0:
+        truth += 1
     diff = (diff/truth)*100
     if diff < threshold:
         return True 
@@ -22,7 +24,6 @@ def AssertEquivalenceRecursive(truth, pred, threshold = 0.001):
             if AssertEquivalenceRecursive(i, j, threshold) == False:
                 return False 
         return True 
-
 
 def MakeTensor(inpt, device = "cpu"):
     return torch.tensor([inpt], device = device)

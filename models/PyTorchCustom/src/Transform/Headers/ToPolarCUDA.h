@@ -1,5 +1,5 @@
-#ifndef H_VECTOR_TOPOLAR_C
-#define H_VECTOR_TOPOLAR_C
+#ifndef H_TRANSFORM_TOPOLAR_C
+#define H_TRANSFORM_TOPOLAR_C
 
 #include <torch/extension.h>
 torch::Tensor _Pt(torch::Tensor _px, torch::Tensor _py);  
@@ -11,7 +11,7 @@ torch::Tensor _PtEtaPhi(torch::Tensor _px, torch::Tensor _py, torch::Tensor _pz)
 #define CHECK_CONTIGUOUS(x) TORCH_CHECK(x.is_contiguous(), "#x must be contiguous")
 #define CHECK_INPUT(x) CHECK_CUDA(x); CHECK_CONTIGUOUS(x)
 
-namespace VectorCUDA
+namespace TransformCUDA
 {
 	const torch::Tensor PT(torch::Tensor px, torch::Tensor py)
 	{

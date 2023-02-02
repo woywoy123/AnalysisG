@@ -1,15 +1,15 @@
-#ifndef H_VECTOR_TOCARTESIAN_F
-#define H_VECTOR_TOCARTESIAN_F
+#ifndef H_TRANSFORM_TOCARTESIAN_F
+#define H_TRANSFORM_TOCARTESIAN_F
 
 #include <iostream>
 #include <torch/extension.h>
 
-namespace VectorFloats
+namespace TransformFloats
 {
 	double Px(double pt, double phi); 
 	double Py(double pt, double phi); 
 	double Pz(double pt, double eta);
-	std::vector<double> PxPyPz(double pt, double eta, double phi); 
+	std::vector<double> PxPyPz(double pt, double eta, double phi);
 }
 
 #endif 

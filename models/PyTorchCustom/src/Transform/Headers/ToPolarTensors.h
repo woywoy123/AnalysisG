@@ -1,9 +1,9 @@
-#ifndef H_VECTOR_TOPOLAR_T
-#define H_VECTOR_TOPOLAR_T
+#ifndef H_TRANSFORM_TOPOLAR_T
+#define H_TRANSFORM_TOPOLAR_T
 
 #include<torch/extension.h>
 
-namespace VectorTensors
+namespace TransformTensors
 {
 	torch::Tensor PT(torch::Tensor px, torch::Tensor py); 
 	torch::Tensor Phi(torch::Tensor px, torch::Tensor py);

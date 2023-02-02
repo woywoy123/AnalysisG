@@ -1,7 +1,7 @@
 import torch
-import PyC.Vectors.Floats as F
-import PyC.Vectors.Tensors as T
-import PyC.Vectors.CUDA as C
+import PyC.Transform.Floats as F
+import PyC.Transform.Tensors as T
+import PyC.Transform.CUDA as C
 from AnalysisTopGNN import Analysis
 from AnalysisTopGNN.Events import Event
 from time import time
@@ -97,7 +97,6 @@ AssertEquivalenceRecursive(cpu_r, cuda_r)
 
 print("--- Testing Performance Between C++ and CUDA of PxPyPz ---")
 print("Speed Factor (> 1 is better): ", diff1 / diff2)
-
 
 CPU = torch.tensor(_tmp2, device = "cpu")
 CUDA = torch.tensor(_tmp2, device = "cuda")

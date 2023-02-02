@@ -1,9 +1,9 @@
-#ifndef H_VECTOR_TOCARTESIAN_T
-#define H_VECTOR_TOCARTESIAN_T
+#ifndef H_TRANSFORM_TOCARTESIAN_T
+#define H_TRANSFORM_TOCARTESIAN_T
 
 #include <torch/extension.h>
 
-namespace VectorTensors
+namespace TransformTensors
 {
 	torch::Tensor Px(torch::Tensor pt, torch::Tensor phi); 
 	torch::Tensor Py(torch::Tensor pt, torch::Tensor phi); 
