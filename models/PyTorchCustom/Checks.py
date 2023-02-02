@@ -27,4 +27,3 @@ def AssertEquivalenceRecursive(truth, pred, threshold = 0.001):
 def MakeTensor(inpt, device = "cpu"):
     return torch.tensor([inpt], device = device)
 
-

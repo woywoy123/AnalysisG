@@ -18,8 +18,14 @@ setup(
                 Vector_H + "ToCartesianFloats.h", 
                 Vector_H + "ToPolarFloats.h"
             ], 
-            "PyC.Vectors.Tensors" : [Vector_H + "ToCartesianTensors.h"],
-            "PyC.Vectors.CUDA" : [Vector_H + "ToCartesianCUDA.h"]
+            "PyC.Vectors.Tensors" : [
+                Vector_H + "ToCartesianTensors.h", 
+                Vector_H + "ToPolarTensors.h", 
+            ],
+            "PyC.Vectors.CUDA" : [
+                Vector_H + "ToCartesianCUDA.h", 
+                Vector_H + "ToPolarCUDA.h"
+            ]
         }, 
 
         ext_modules = [
@@ -28,13 +34,20 @@ setup(
                 Vector_C + "ToPolarFloats.cxx", 
                 Vector_S + "Floats.cxx"
             ]),
-            CppExtension("PyC.Vectors.Tensors", [Vector_C + "ToCartesianTensors.cxx", Vector_S + "Tensors.cxx"]), 
+            CppExtension("PyC.Vectors.Tensors", [
+                Vector_C + "ToCartesianTensors.cxx", 
+                Vector_C + "ToPolarTensors.cxx", 
+                Vector_S + "Tensors.cxx"
+            ]), 
             CUDAExtension("PyC.Vectors.CUDA", [
-                                            Vector_S + "CUDA.cxx", 
                                             Vector_Cu + "Cartesian.cu",
                                             Vector_Cu + "CartesianKernel.cu", 
-                                            Vector_Cu + "CartesianTorch.cu"
-                                               ]), 
+                                            Vector_Cu + "CartesianTorch.cu", 
+                                            Vector_Cu + "Polar.cu",
+                                            Vector_Cu + "PolarKernel.cu", 
+                                            Vector_Cu + "PolarTorch.cu", 
+                                            Vector_S + "CUDA.cxx", 
+            ]), 
         ], 
         cmdclass = {"build_ext" : BuildExtension}
 )
