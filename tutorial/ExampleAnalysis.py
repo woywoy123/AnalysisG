@@ -1,32 +1,26 @@
 from AnalysisTopGNN import Analysis
-from Event import Event 
-from EventGraph import SimpleDataGraph
-from Features import *
-from GNN import ExampleGNN
-
-
-from AnalysisTopGNN import Analysis
 from Event import Event
 from AnalysisTopGNN.Plotting import TH1F
-
 
 # // ======================== Running the Event Compiler ============================= //
 # Sample 1: Resonance Top Sample
 Ana = Analysis()
-Ana.InputSample("Test", "/home/tnom6927/Downloads/samples/tttt/DAOD_TOPQ1.21955717._000003.root")
+Ana.InputSample("bsm4t-1000", "/home/tnom6927/Downloads/samples/tttt/DAOD_TOPQ1.21955717._000003.root")
 Ana.Event = Event
 Ana.EventCache = True
 Ana.Threads = 12
+Ana.EventStop = 100 # < How many events to generate
 Ana.VerboseLevel = 1
 Ana.Launch()
 
 # Sample 2: Adding some Background 
 Ana2 = Analysis()
-Ana2.InputSample("Test", "/home/tnom6927/Downloads/samples/t/QU_14.root")
+Ana2.InputSample("SingleTop", "/home/tnom6927/Downloads/samples/t/QU_14.root")
 Ana2.Event = Event
 Ana2.EventCache = True
 Ana2.Threads = 12
 Ana2.VerboseLevel = 1
+Ana2.DumpPickle = True # < Entirely optional if you want to avoid having to recompile each time
 Ana2.Launch()
 
 All = Ana + Ana2
@@ -36,7 +30,6 @@ for i in All:
     
     # Access the event properties 
     ev = i.Trees["nominal"]
-
 
     # ===== Some nice additional features ===== #
     # Get the event hash

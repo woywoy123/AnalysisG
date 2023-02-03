@@ -13,7 +13,7 @@ class ParticleTemplate(VariableManager):
     
     @property
     def Mass(self):
-        return PxPyPzEMass(self._px, self._py, self._pz, self.e)
+        return PxPyPzEMass(self._px, self._py, self._pz, self._e)
 
     def _istype(self, lst):
         if IsIn(["pdgid"], self.__dict__):
@@ -86,28 +86,23 @@ class ParticleTemplate(VariableManager):
     def __radd__(self, other):
         if other == 0:
             p = ParticleTemplate()
-            p.__dict__["pt"] = self.pt
-            p.__dict__["eta"] = self.eta
-            p.__dict__["phi"] = self.phi
-            p.__dict__["e"] = self.e
+            p.__dict__["px"] = self._px
+            p.__dict__["py"] = self._py
+            p.__dict__["pz"] = self._pz
+            p.__dict__["e"] = self._e
+            p._eta, p._pt, p._phi, p._e 
             return p
         else:
             return self.__add__(other)
 
     def __add__(self, other):
-        px = self._px + other._px
-        py = self._py + other._py
-        pz = self._pz + other._pz
-        e = self._e + other._e 
         particle = ParticleTemplate()
-        particle.__dict__["px"] = px
-        particle.__dict__["py"] = py
-        particle.__dict__["pz"] = pz 
-        particle.__dict__["e"] = e
+        particle.__dict__["px"] = self._px + other._px
+        particle.__dict__["py"] = self._py + other._py
+        particle.__dict__["pz"] = self._pz + other._pz 
+        particle.__dict__["e"] = self._e + other._e 
 
-        particle._eta
-        particle._pt
-        particle._phi
+        particle._eta, particle._pt, particle._phi, particle._e 
 
         particle.Children += self.Children
         particle.Children += [p for p in other.Children if p not in particle.Children]
