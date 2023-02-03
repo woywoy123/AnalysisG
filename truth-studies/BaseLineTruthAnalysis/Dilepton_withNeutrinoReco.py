@@ -145,30 +145,6 @@ def DileptonAnalysis_withNeutrinoReco(Ana):
         bestHadronicGroup = sum(closestGroups[0])
         remainingHadronicGroup = sum(closestGroups[1])
 
-        # Check if objects within each group come from the same top
-        if closestGroups[0][0].TopIndex == closestGroups[0][1].TopIndex and closestGroups[0][1].TopIndex == closestGroups[0][2].TopIndex: 
-            eff_bestHadronicGroup += 1
-        
-        if closestGroups[1][0].TopIndex == closestGroups[1][1].TopIndex and closestGroups[1][1].TopIndex == closestGroups[1][2].TopIndex: 
-            eff_remainingHadronicGroup += 1
-
-        # Assign group with largest pT to resonance 
-        if bestHadronicGroup.pt > remainingHadronicGroup.pt:
-            print("Best hadronic group has highest pt: assigning it to resonance")
-            HadronicResTop = bestHadronicGroup
-            HadronicSpecTop = remainingHadronicGroup
-            nFromRes_hadronicGroup = len([p for p in closestGroups[0] if event.Tops[p.TopIndex].FromRes == 1])
-            print(f"FromRes for this group is {[event.Tops[p.TopIndex].FromRes for p in closestGroups[0]]}")
-        else:
-            print("Second best hadronic group has highest pt: assigning it to resonance")
-            HadronicResTop = remainingHadronicGroup
-            HadronicSpecTop = bestHadronicGroup
-            nFromRes_hadronicGroup = len([p for p in closestGroups[1] if event.Tops[p.TopIndex].FromRes == 1])
-            print(f"FromRes for this group is {[event.Tops[p.TopIndex].FromRes for p in closestGroups[1]]}")
-        print(f"nFromRes_hadronicGroup = {nFromRes_hadronicGroup}")
-        if nFromRes_hadronicGroup == 3:
-            eff_resonance_had += 1
-
         # Match remaining leptons with their closest b quarks
         closestPairs = []
         while leptons != []:
@@ -184,13 +160,6 @@ def DileptonAnalysis_withNeutrinoReco(Ana):
             bquarks.remove(closestB)
             closestPairs.append([closestB, closestL])
 
-        # Check if objects within each pair come from the same top
-        if closestPairs[0][0].TopIndex == closestPairs[0][1].TopIndex: 
-            eff_closestLeptonicGroup += 1
-
-        if closestPairs[1][0].TopIndex == closestPairs[1][1].TopIndex: 
-            eff_remainingLeptonicGroup += 1
-
         # Turn Children objects into vector objects
         closestPairsVec = [[vector.obj(pt=closestPairs[j][i].pt/1000., phi=closestPairs[j][i].phi, eta=closestPairs[j][i].eta, E=closestPairs[j][i].e/1000.) for i in range(len(closestPairs[j]))] for j in range(len(closestPairs))]
 
@@ -201,6 +170,7 @@ def DileptonAnalysis_withNeutrinoReco(Ana):
             numSolutions.append(len(nunu_s))
         except np.linalg.LinAlgError:
             numSolutions.append(0)
+            neventsNotPassed += 1
             continue
 
         ## Testing the effect of changing the order and b quarks and leptons in neutrino reconstruction
@@ -266,8 +236,38 @@ def DileptonAnalysis_withNeutrinoReco(Ana):
         if nFromRes_leptonicGroup == 2:
             eff_resonance_lep += 1
 
+        # Assign group with largest pT to resonance 
+        if bestHadronicGroup.pt > remainingHadronicGroup.pt:
+            print("Best hadronic group has highest pt: assigning it to resonance")
+            HadronicResTop = bestHadronicGroup
+            HadronicSpecTop = remainingHadronicGroup
+            nFromRes_hadronicGroup = len([p for p in closestGroups[0] if event.Tops[p.TopIndex].FromRes == 1])
+            print(f"FromRes for this group is {[event.Tops[p.TopIndex].FromRes for p in closestGroups[0]]}")
+        else:
+            print("Second best hadronic group has highest pt: assigning it to resonance")
+            HadronicResTop = remainingHadronicGroup
+            HadronicSpecTop = bestHadronicGroup
+            nFromRes_hadronicGroup = len([p for p in closestGroups[1] if event.Tops[p.TopIndex].FromRes == 1])
+            print(f"FromRes for this group is {[event.Tops[p.TopIndex].FromRes for p in closestGroups[1]]}")
+        print(f"nFromRes_hadronicGroup = {nFromRes_hadronicGroup}")
+        if nFromRes_hadronicGroup == 3:
+            eff_resonance_had += 1
+
         if nFromRes_leptonicGroup == 2 and nFromRes_hadronicGroup == 3: 
             eff_resonance += 1
+
+        # Check if objects within each group come from the same top
+        if closestPairs[0][0].TopIndex == closestPairs[0][1].TopIndex: 
+            eff_closestLeptonicGroup += 1
+
+        if closestPairs[1][0].TopIndex == closestPairs[1][1].TopIndex: 
+            eff_remainingLeptonicGroup += 1
+
+        if closestGroups[0][0].TopIndex == closestGroups[0][1].TopIndex and closestGroups[0][1].TopIndex == closestGroups[0][2].TopIndex: 
+            eff_bestHadronicGroup += 1
+        
+        if closestGroups[1][0].TopIndex == closestGroups[1][1].TopIndex and closestGroups[1][1].TopIndex == closestGroups[1][2].TopIndex: 
+            eff_remainingHadronicGroup += 1
 
         # Calculate masses of tops and resonance
         HadronicResTopVec = vector.obj(pt=HadronicResTop.pt/1000., eta=HadronicResTop.eta, phi=HadronicResTop.phi, E=HadronicResTop.e/1000.)
@@ -282,15 +282,21 @@ def DileptonAnalysis_withNeutrinoReco(Ana):
         ReconstructedResonanceMass.append((HadronicResTopVec + LeptonicResTop).mass)
 
     # Print out efficiencies
-    print(f"Number of events not passed: {neventsNotPassed} / {nevents}")
-    print("Efficiencies:")
-    print(f"Closest leptonic group from same top: {eff_closestLeptonicGroup / (nevents-neventsNotPassed) }")
-    print(f"Remaining leptonic group from same top: {eff_remainingLeptonicGroup / (nevents-neventsNotPassed)}")
-    print(f"Closest hadronic group from same top: {eff_bestHadronicGroup / (nevents-neventsNotPassed)}")
-    print(f"Remaining hadronic group from same top: {eff_remainingHadronicGroup / (nevents-neventsNotPassed)}")
-    print(f"Leptonic decay products correctly assigned to resonance: {eff_resonance_lep / (nevents-neventsNotPassed)}")
-    print(f"Hadronic decay products correctly assigned to resonance: {eff_resonance_had / (nevents-neventsNotPassed)}")
-    print(f"All decay products correctly assigned to resonance: {eff_resonance / (nevents-neventsNotPassed)}")
+    string = ""
+    string += f"Number of events passed: {nevents-neventsNotPassed} / {nevents} \n"
+    string += "Efficiencies: \n"
+    string += f"Closest leptonic group from same top: {eff_closestLeptonicGroup / (nevents-neventsNotPassed) } \n"
+    string += f"Remaining leptonic group from same top: {eff_remainingLeptonicGroup / (nevents-neventsNotPassed)} \n"
+    string += f"Closest hadronic group from same top: {eff_bestHadronicGroup / (nevents-neventsNotPassed)} \n"
+    string += f"Remaining hadronic group from same top: {eff_remainingHadronicGroup / (nevents-neventsNotPassed)} \n"
+    string += f"Leptonic decay products correctly assigned to resonance: {eff_resonance_lep / (nevents-neventsNotPassed)} \n" 
+    string += f"Hadronic decay products correctly assigned to resonance: {eff_resonance_had / (nevents-neventsNotPassed)} \n"
+    string += f"All decay products correctly assigned to resonance: {eff_resonance / (nevents-neventsNotPassed)}" 
+    print(string)
+
+    f = open("Dilepton_withNeutrinoReco_efficiencies.txt", "w")
+    f.write(string)
+    f.close()
 
     #print(f"Number of events where neutrino solutions were different for permutations: {nDifferentSolutionsPermutations}")
 

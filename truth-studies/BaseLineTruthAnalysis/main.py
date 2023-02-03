@@ -26,8 +26,8 @@ for Mode in Modes:
 
     # Selection(Ana)
     #DileptonAnalysis(Ana)
-    #DileptonAnalysis_withNeutrinoReco(Ana)
-    TestFromRes(Ana)
+    DileptonAnalysis_withNeutrinoReco(Ana)
+    #TestFromRes(Ana)
 
 
 
