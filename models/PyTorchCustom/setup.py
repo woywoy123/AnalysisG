@@ -12,9 +12,10 @@ Operators_C  = "src/Operators/CXX/"
 Operators_S  = "src/Operators/Shared/"
 Operators_Cu = "src/Operators/CUDA/"
 
-
-
-
+Physics_H  = "src/Physics/Headers/"
+Physics_C  = "src/Physics/CXX/"
+Physics_S  = "src/Physics/Shared/"
+Physics_Cu = "src/Physics/CUDA/"
 
 #os.environ["CC"] = "gcc-11"
 #os.environ["CXX"] = "gcc-11"
@@ -35,12 +36,25 @@ setup(
                 Transform_H + "ToCartesianCUDA.h", 
                 Transform_H + "ToPolarCUDA.h"
             ], 
+
             "PyC.Operators.Tensors" : [
                 Operators_H + "Tensors.h" 
             ],
             "PyC.Operators.CUDA" : [
                 Operators_H + "CUDA.h"
             ], 
+
+            "PyC.Physics.Tensors.Cartesian" : [
+                Transform_H + "ToPolarTensors.h", 
+                Physics_H + "FromCartesianTensors.h",
+                Physics_H + "Tensors.h"
+            ],
+
+            "PyC.Physics.Tensors.Polar" : [
+                Transform_H + "ToCartesianTensors.h", 
+                Physics_H + "FromPolarTensors.h",
+                Physics_H + "Tensors.h"
+            ],
         }, 
 
         ext_modules = [
@@ -49,11 +63,13 @@ setup(
                 Transform_C + "ToPolarFloats.cxx", 
                 Transform_S + "Floats.cxx"
             ]),
+
             CppExtension("PyC.Transform.Tensors", [
                 Transform_C + "ToCartesianTensors.cxx", 
                 Transform_C + "ToPolarTensors.cxx", 
                 Transform_S + "Tensors.cxx"
             ]),
+
             CUDAExtension("PyC.Transform.CUDA", [
                 Transform_Cu + "Cartesian.cu",
                 Transform_Cu + "CartesianKernel.cu", 
@@ -63,16 +79,30 @@ setup(
                 Transform_Cu + "PolarTorch.cu", 
                 Transform_S  + "CUDA.cxx", 
             ]),
+
             CppExtension("PyC.Operators.Tensors", [
                 Operators_C + "Tensors.cxx", 
                 Operators_S + "Tensors.cxx", 
             ]), 
+
             CUDAExtension("PyC.Operators.CUDA", [
                 Operators_Cu + "Operators.cu", 
                 Operators_Cu + "OperatorsKernel.cu", 
                 Operators_Cu + "OperatorsTorch.cu", 
                 Operators_S  + "CUDA.cxx"
             ]),
+
+            CppExtension("PyC.Physics.Tensors.Cartesian", [
+                Transform_C + "ToPolarTensors.cxx",
+                Physics_C + "Tensors.cxx",
+                Physics_S + "CartesianTensors.cxx"
+            ]), 
+
+            CppExtension("PyC.Physics.Tensors.Polar", [
+                Transform_C + "ToCartesianTensors.cxx",
+                Physics_C + "Tensors.cxx",
+                Physics_S + "PolarTensors.cxx"
+            ]), 
 
         ], 
         cmdclass = {"build_ext" : BuildExtension}
