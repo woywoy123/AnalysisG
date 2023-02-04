@@ -9,12 +9,7 @@ namespace PhysicsPolarTensors
 {
 	const std::vector<torch::Tensor> _Transform(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi)
 	{
-		torch::Tensor Pmc = TransformTensors::PxPyPz(pt, eta, phi);
-		return {
-			Pmc.index({torch::indexing::Slice(), 0}), 
-			Pmc.index({torch::indexing::Slice(), 1}), 
-			Pmc.index({torch::indexing::Slice(), 2})
-		}; 
+		return {TransformTensors::Px(pt, phi), TransformTensors::Py(pt, phi), TransformTensors::Pz(pt, eta)}; 
 	}
 
 	const torch::Tensor P2(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi)

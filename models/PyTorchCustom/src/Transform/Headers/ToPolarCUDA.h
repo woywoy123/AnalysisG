@@ -38,10 +38,7 @@ namespace TransformCUDA
 		return _Eta(px, py, pz);  
 	}
 
-	const torch::Tensor PtEtaPhi(
-			torch::Tensor px,  
-			torch::Tensor py, 
-			torch::Tensor pz)
+	const torch::Tensor PtEtaPhi(torch::Tensor px, torch::Tensor py, torch::Tensor pz)
 	{
 		CHECK_INPUT(px); 
 		CHECK_INPUT(py); 
