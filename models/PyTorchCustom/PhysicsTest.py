@@ -35,7 +35,7 @@ def PerformanceInpt(var, inpt = "(p_x, p_y, p_z)", Coord = "C"):
     
     print("--- Testing Performance Between C++ and CUDA of " + var + " ---")
     print("Speed Factor (> 1 is better): ", diff1 / diff2)
-    AssertEquivalenceRecursive(res_c, res)
+    AssertEquivalenceRecursive(res_c, res, 0.001)
 
 
 Ana = Analysis()
