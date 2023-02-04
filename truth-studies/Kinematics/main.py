@@ -16,7 +16,7 @@ for Mode in Modes:
         Ana = Analysis()
         Ana.InputSample("tttt", direc)
         Ana.Event = Event
-        Ana.EventStop = 100
+        #Ana.EventStop = 100
         Ana.Threads = 12
         Ana.chnk = 1000
         Ana.EventCache = True
