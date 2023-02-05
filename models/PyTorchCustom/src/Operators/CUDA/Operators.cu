@@ -14,3 +14,14 @@ __device__ __forceinline__ void _costheta(scalar_t* _o, const scalar_t* v12, con
 	(*_o) = (*v1v2) / sqrt( (*v12) * (*v22) );
 }
 
+template <typename scalar_t>
+__device__ __forceinline__ scalar_t _sin(const scalar_t angle)
+{
+	return sin(angle); 
+}
+
+template <typename scalar_t>
+__device__ __forceinline__ scalar_t _cos(const scalar_t angle)
+{
+	return cos(angle); 
+}

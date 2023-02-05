@@ -13,6 +13,15 @@ def CosTheta(v1, v2):
     return v1v2/(v1_sq*v2_sq)**0.5
 
 
+def R(axis, angle):
+    '''Rotation matrix about x(0),y(1), or z(2) axis'''
+    c, s = math.cos(angle), math.sin(angle)
+    R = c * np.eye(3)
+    for i in [-1, 0, 1]:
+        R[(axis-i) % 3, (axis+i) % 3] = i*s + (1 - i*i)
+    return R
+
+
 class SolutionSet(object):
     '''Definitions for nu analytic solution, t->b,mu,nu'''
 
@@ -42,3 +51,28 @@ class SolutionSet(object):
                      'Sx','Sy','w','w_','x1','y1',
                      'Z','Om2','eps2','mW2']:
             setattr(self, item, eval(item))
+
+    @property
+    def H_tilde(self):
+        '''Transformation of t=[c,s,1] to p_nu: F coord.'''
+        x1, y1, p = self.x1, self.y1, self.mu.mag
+        Z, w, Om = self.Z, self.w, math.sqrt(self.Om2)
+        return np.array([[  Z/Om, 0, x1-p],
+                         [w*Z/Om, 0,   y1],
+                         [     0, Z,    0]])
+
+    @property
+    def H(self):
+        '''Transformation of t=[c,s,1] to p_nu: lab coord.'''
+        return self.R_T.dot(self.H_tilde)
+
+    @property
+    def R_T(self):
+        '''Rotation from F coord. to laboratory coord.'''
+        b_xyz = self.b.x, self.b.y, self.b.z
+        R_z = R(2, -self.mu.phi)
+        R_y = R(1, 0.5*math.pi - self.mu.theta)
+        R_x = next(R(0,-math.atan2(z,y))
+                   for x,y,z in (R_y.dot(R_z.dot(b_xyz)),))
+        return R_z.T.dot(R_y.T.dot(R_x.T))
+

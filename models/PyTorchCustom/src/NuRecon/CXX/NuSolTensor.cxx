@@ -1,7 +1,4 @@
 #include "../Headers/NuSolTensor.h"
-#include "../../Physics/Headers/Tensors.h"
-#include "../../Transform/Headers/ToCartesianTensors.h"
-#include "../../Operators/Headers/Tensors.h"
 
 std::vector<torch::Tensor> NuSolTensors::_Format(torch::Tensor t, int dim)
 {
@@ -85,3 +82,30 @@ torch::Tensor NuSolTensors::_Solutions(
 	return torch::cat({ c_, s_, x0, x0p, Sx, Sy, w, w_, x1, y1, Z, O2, e2}, -1); 
 }
 
+torch::Tensor NuSolTensors::H_Matrix(torch::Tensor Sols_, torch::Tensor b_px, torch::Tensor b_py, torch::Tensor b_pz, torch::Tensor mu_phi, torch::Tensor mu_pz, torch::Tensor mu_P)
+{
+	torch::Tensor x1 = Sols_.index({torch::indexing::Slice(), 8}).view({-1, 1}); 
+	torch::Tensor y1 = Sols_.index({torch::indexing::Slice(), 9}).view({-1, 1}); 
+	torch::Tensor Z = Sols_.index({torch::indexing::Slice(), 10}).view({-1, 1}); 
+	torch::Tensor Om = torch::sqrt(Sols_.index({torch::indexing::Slice(), 11}).view({-1, 1}));
+	torch::Tensor w  = Sols_.index({torch::indexing::Slice(), 6}).view({-1, 1}); 
+
+	torch::Tensor t0 = torch::zeros_like(x1); 
+	torch::Tensor tmp_ = Z/Om; 
+	torch::Tensor H_ = torch::cat({ tmp_, t0, x1 - mu_P, w*tmp_, t0, y1, t0, Z, t0 }, -1).view({-1, 3, 3}); 
+
+	torch::Tensor theta_ = PhysicsTensors::Theta_(mu_P, mu_pz); 
+	torch::Tensor Rz = OperatorsTensors::Rz(-mu_phi); 
+	torch::Tensor Ry = OperatorsTensors::Ry(Constants::Pi_2(theta_) - theta_);
+	
+	torch::Tensor Rx = torch::matmul(Rz, torch::cat({b_px, b_py, b_pz}, -1).view({-1, 3, 1}));
+	Rx = torch::matmul(Ry, Rx.view({-1, 3, 1})); 
+	Rx = -torch::atan2(Rx.index({torch::indexing::Slice(), 2}), Rx.index({torch::indexing::Slice(), 1})).view({-1, 1}); 
+	Rx = OperatorsTensors::Rx(Rx); 
+
+	Rx = torch::transpose(Rx, 1, 2); 
+	Ry = torch::transpose(Ry, 1, 2); 
+	Rz = torch::transpose(Rz, 1, 2); 
+	
+	return torch::matmul(torch::matmul(Rz, torch::matmul(Ry, Rx)), H_); 
+}

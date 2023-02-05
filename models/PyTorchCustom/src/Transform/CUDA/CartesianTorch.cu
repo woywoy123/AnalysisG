@@ -11,7 +11,7 @@ torch::Tensor _Px(torch::Tensor _pt, torch::Tensor _phi)
 	const int threads = 1024; 
 	const dim3 blocks((l+threads -1)/threads); 
 	
-	AT_DISPATCH_FLOATING_TYPES(torch::kFloat, "_PxK", ([&]
+	AT_DISPATCH_FLOATING_TYPES(_pt.type(), "_PxK", ([&]
 	{
 		_PxK<scalar_t><<<blocks, threads>>>(
 				_pt.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
@@ -32,7 +32,7 @@ torch::Tensor _Py(torch::Tensor _pt, torch::Tensor _phi)
 	const int threads = 1024; 
 	const dim3 blocks((l+threads -1)/threads); 
 	
-	AT_DISPATCH_FLOATING_TYPES(torch::kFloat, "_PyK", ([&]
+	AT_DISPATCH_FLOATING_TYPES(_pt.type(), "_PyK", ([&]
 	{
 		_PyK<scalar_t><<<blocks, threads>>>(
 				_pt.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
@@ -53,7 +53,7 @@ torch::Tensor _Pz(torch::Tensor _pt, torch::Tensor _eta)
 	const int threads = 1024; 
 	const dim3 blocks((l+threads -1)/threads); 
 	
-	AT_DISPATCH_FLOATING_TYPES(torch::kFloat, "_PzK", ([&]
+	AT_DISPATCH_FLOATING_TYPES(_pt.type(), "_PzK", ([&]
 	{
 		_PzK<scalar_t><<<blocks, threads>>>(
 				_pt.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
@@ -76,7 +76,7 @@ torch::Tensor _PxPyPz(torch::Tensor _pt, torch::Tensor _eta, torch::Tensor _phi)
 	const int threads = 1024; 
 	const dim3 blocks((l+threads -1)/threads, 3, 1); 
 	
-	AT_DISPATCH_FLOATING_TYPES(torch::kFloat, "_PxPyPzK", ([&]
+	AT_DISPATCH_FLOATING_TYPES(_pt.type(), "_PxPyPzK", ([&]
 	{
 		_PxPyPzK<scalar_t><<<blocks, threads>>>(
 				_pt.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),  

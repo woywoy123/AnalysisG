@@ -43,6 +43,11 @@ torch::Tensor PhysicsTensors::Theta(torch::Tensor px, torch::Tensor py, torch::T
 	return torch::acos(pz/P(px, py, pz)); 
 }
 
+torch::Tensor PhysicsTensors::Theta_(torch::Tensor P_, torch::Tensor pz)
+{	
+	return torch::acos(pz/P_); 
+}
+
 torch::Tensor PhysicsTensors::Mt2(torch::Tensor pz, torch::Tensor e)
 {
 	return e.pow(2) - pz.pow(2); 

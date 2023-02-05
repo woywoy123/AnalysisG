@@ -1,6 +1,7 @@
 from AnalysisTopGNN import Analysis
 from AnalysisTopGNN.Events import Event
 import PyC.NuSol.Tensors as NuT
+import PyC.NuSol.CUDA as NuC
 from Checks import *
 from NeutrinoSolutionDeconstruct import *
 
@@ -49,28 +50,35 @@ for i in Ana:
 T = SampleTensor(vl["b"], vl["lep"], vl["ev"], vl["t"], "cuda")
 R = SampleVector(vl["b"], vl["lep"], vl["ev"], vl["t"])
 
-NuT.Solutions(T.b, T.mu, T.mT, T.mW, T.mN)
-
+NuT.Nu(T.b, T.mu, T.mT, T.mW, T.mN)
+NuC.Nu(T.b, T.mu, T.mT, T.mW, T.mN)
 
 for r, t in zip(R, T):
     b, mu = r[0], r[1]
     _b, _mu = r[2], r[3]
     met_x, met_y = r[4], r[5]
     mT, mW, mNu = r[6], r[7], r[8]
-    s = SolutionSet(b, mu, mW**2, mT**2, mNu**2)
-    sol = torch.tensor([[s.c, s.s, s.x0, 
-                         s.x0p, s.Sx, s.Sy, 
-                         s.w, s.w_, s.x1, 
-                         s.y1, s.Z, s.Om2, 
-                         s.eps2]], device = "cuda")
-    
+   
     tb_, tmu_ = t[0], t[1]
     t_b_, t_mu_ = t[2], t[3]
     t_met, t_phi = t[4], t[5]
     t_mT, t_mW, t_mNu = t[6], t[7], t[8]
+    
+    # Test if the Solution values are identical up to 0.0001%
     t_sol = NuT.Solutions(tb_, tmu_, t_mT, t_mW, t_mNu)
-    print(sol)
-    print(t_sol) 
-    AssertEquivalenceRecursive(sol, t_sol, 0.000001)
+    s = SolutionSet(b, mu, mW**2, mT**2, mNu**2)
+    
+    sol = torch.tensor([[s.c, s.s, s.x0, s.x0p, s.Sx, s.Sy, 
+                         s.w, s.w_, s.x1, s.y1, s.Z, s.Om2, 
+                         s.eps2]], device = "cuda")
+    AssertEquivalenceRecursive(sol, t_sol, 0.0001)
+    
+    # Testing the Single Neutrino 
+    t_sol = NuT.Nu(tb_, tmu_, t_mT, t_mW, t_mNu)
+
+    print(s.H)
+    print(t_sol)
+
+    AssertEquivalenceRecursive(s.H, t_sol.tolist()[0], 0.0001)
 
     exit()

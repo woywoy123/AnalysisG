@@ -23,3 +23,50 @@ torch::Tensor OperatorsTensors::SinTheta(torch::Tensor v1, torch::Tensor v2)
 {
 	return _SinTheta(CosTheta(v1, v2)); 
 }
+
+torch::Tensor OperatorsTensors::Rx(torch::Tensor angle)
+{	
+	angle = angle.view({-1, 1});
+	torch::Tensor cos = torch::cos(angle); 
+	torch::Tensor sin = torch::sin(angle); 
+	
+	torch::Tensor t0 = torch::zeros_like(angle); 
+	torch::Tensor t1 = torch::ones_like(angle);
+
+	return torch::cat({t1,  t0,   t0, 
+			   t0, cos, -sin, 
+			   t0, sin,  cos}, -1).view({-1, 3, 3}); 
+}
+
+torch::Tensor OperatorsTensors::Ry(torch::Tensor angle)
+{
+	angle = angle.view({-1, 1});
+	torch::Tensor cos = torch::cos(angle); 
+	torch::Tensor sin = torch::sin(angle); 
+	
+	torch::Tensor t0 = torch::zeros_like(angle); 
+	torch::Tensor t1 = torch::ones_like(angle);
+
+	return torch::cat({cos, t0, sin, 
+			    t0, t1,  t0, 
+			  -sin, t0, cos}, -1).view({-1, 3, 3});
+}
+
+torch::Tensor OperatorsTensors::Rz(torch::Tensor angle)
+{
+	angle = angle.view({-1, 1});
+	torch::Tensor cos = torch::cos(angle); 
+	torch::Tensor sin = torch::sin(angle); 
+	
+	torch::Tensor t0 = torch::zeros_like(angle); 
+	torch::Tensor t1 = torch::ones_like(angle);
+
+	return torch::cat({cos, -sin, t0, 
+			   sin,  cos, t0, 
+			    t0,   t0, t1}, -1).view({-1, 3, 3}); 
+}
+
+torch::Tensor Constants::Pi_2(torch::Tensor v)
+{ 
+	return torch::acos(torch::zeros_like(v)); 
+}
