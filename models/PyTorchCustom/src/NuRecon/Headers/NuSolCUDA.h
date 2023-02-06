@@ -8,8 +8,9 @@
 #include "../../Operators/Headers/CUDA.h"
 
 torch::Tensor _Solutions(
-		std::vector<torch::Tensor> b_P, std::vector<torch::Tensor> b_C, 
-		std::vector<torch::Tensor> mu_P, std::vector<torch::Tensor> mu_C, 
+		torch::Tensor _muP2, torch::Tensor _bP2, 
+		torch::Tensor _mu_e, torch::Tensor _b_e, 
+		torch::Tensor _cos, torch::Tensor _sin, 
 		torch::Tensor mT2, torch::Tensor mW2, torch::Tensor mNu2); 
 
 #define CHECK_CUDA(x) TORCH_CHECK(x.device().is_cuda(), "#x must be on CUDA")
@@ -26,13 +27,18 @@ namespace NuSolCUDA
 		std::vector<torch::Tensor> mu_P, std::vector<torch::Tensor> mu_C, 
 		torch::Tensor massT2, torch::Tensor massW2, torch::Tensor massNu2)
 	{
-		_CheckTensors(b_P); 
-		_CheckTensors(b_C); 
-		_CheckTensors(mu_P); 
-		_CheckTensors(mu_C); 
-		_CheckTensors({massT2, massW2, massNu2});
+		_CheckTensors({massT2, massW2, massNu2});	
+		torch::Tensor _muP2 = PhysicsCUDA::P2(mu_C[0], mu_C[1], mu_C[2]);	
+		torch::Tensor _bP2 = PhysicsCUDA::P2(b_C[0], b_C[1], b_C[2]); 
 
-		return _Solutions(b_P, b_C, mu_P, mu_C, massT2, massW2, massNu2);
+		torch::Tensor _cos = OperatorsCUDA::CosTheta(
+				torch::cat({b_C[0], b_C[1], b_C[2]}, -1), 
+				torch::cat({mu_C[0], mu_C[1], mu_C[2]}, -1)
+		);
+
+		torch::Tensor _sin = OperatorsCUDA::_SinTheta(_cos); 
+
+		return _Solutions(_muP2, _bP2, mu_C[3], b_C[3], _cos, _sin, massT2, massW2, massNu2);
 	}
 	
 	const torch::Tensor H_Matrix(

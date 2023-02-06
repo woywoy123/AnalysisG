@@ -1,66 +1,40 @@
 #include "NuSolKernel.cu"
 
 torch::Tensor _Solutions(
-		std::vector<torch::Tensor> b_P, std::vector<torch::Tensor> b_C, 
-		std::vector<torch::Tensor> mu_P, std::vector<torch::Tensor> mu_C, 
+		torch::Tensor _muP2, torch::Tensor _bP2, 
+		torch::Tensor _mu_e, torch::Tensor _b_e, 
+		torch::Tensor _cos, torch::Tensor _sin,
 		torch::Tensor mT2, torch::Tensor mW2, torch::Tensor mNu2)
 {
+
+	const int x = _mu_e.size(0);
+	const int threads = 1024;
 	
-	torch::Tensor c_ = torch::zeros_like(b_P[0]);  
-	torch::Tensor s_ = torch::zeros_like(b_P[0]); 
-	torch::Tensor x0p = torch::zeros_like(b_P[0]); 
-	torch::Tensor x0 = torch::zeros_like(b_P[0]); 
-		
-	const int x = c_.size(0); 
-	const int threads = 1024;	
+	const int y = 5; 
+	const dim3 blocks((x + threads -1)/threads, y); 
+	torch::Tensor out_ = torch::cat({_cos, _sin}, -1); 
+	torch::Tensor x0_ = torch::zeros_like(out_); 
+	torch::Tensor w_ = torch::zeros_like(out_); 
+	torch::Tensor Om2_ = torch::zeros_like(out_); 
 
+	AT_DISPATCH_FLOATING_TYPES(out_.scalar_type(), "_SolsK", ([&]
+	{
+		_baseValsK<scalar_t><<<blocks, threads>>>(
+				_muP2.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_bP2.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_mu_e.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_b_e.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_cos.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+				_sin.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				mT2.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				mW2.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				mNu2.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				x0_.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				w_.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				Om2_.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				x, y
+		); 
+	})); 
 
-	//const int x = c_size(0); 
-
-
-	//const int x = v1.size(0); 
-	//const int y = v1.size(1); 
-	//const int threads = 1024; 
-	//torch::Tensor _v12 = torch::zeros_like(v1);
-	//torch::Tensor _v22 = torch::zeros_like(v1);
-	//torch::Tensor _V1V2 = torch::zeros_like(v1);
-
-	//const dim3 blocks((x + threads -1) / threads, y); 
-	//const dim3 blocks2((x + threads -1) / threads); 
-	//AT_DISPATCH_FLOATING_TYPES(v1.type(), "_Dot2K", ([&]
-	//{
-	//	_Dot2K<scalar_t><<<blocks, threads>>>(
-	//			v1.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
-	//			v1.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
-	//			_v12.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
-	//			x, y
-	//	); 
-	//	_Dot2K<scalar_t><<<blocks, threads>>>(
-	//			v2.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
-	//			v2.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
-	//			_v22.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
-	//			x, y
-	//	); 
-	//	_Dot2K<scalar_t><<<blocks, threads>>>(
-	//			v1.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
-	//			v2.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
-	//			_V1V2.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
-	//			x, y
-	//	); 
-	//})); 
-	//_V1V2 = _V1V2.sum({-1}, true);
-	//_v12 = _v12.sum({-1}, true);
-	//_v22 = _v22.sum({-1}, true);
-	//AT_DISPATCH_FLOATING_TYPES(v1.type(), "_CosThetaK", ([&]
-	//{
-	//	_CosThetaK<scalar_t><<<blocks2, threads>>>(
-	//			_v12.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
-	//			_v22.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
-	//			_V1V2.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
-	//			x
-	//	); 
-	//})); 
-
-
-	return c_; 
+	return out_;  
 }

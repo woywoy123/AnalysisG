@@ -14,9 +14,9 @@ torch::Tensor _Px(torch::Tensor _pt, torch::Tensor _phi)
 	AT_DISPATCH_FLOATING_TYPES(_pt.type(), "_PxK", ([&]
 	{
 		_PxK<scalar_t><<<blocks, threads>>>(
-				_pt.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_phi.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_px.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>()
+				_pt.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_phi.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_px.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>()
 		); 
 	}));
 	return _px; 
@@ -35,9 +35,9 @@ torch::Tensor _Py(torch::Tensor _pt, torch::Tensor _phi)
 	AT_DISPATCH_FLOATING_TYPES(_pt.type(), "_PyK", ([&]
 	{
 		_PyK<scalar_t><<<blocks, threads>>>(
-				_pt.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_phi.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_py.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>()
+				_pt.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_phi.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_py.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>()
 		); 
 	}));
 	return _py; 
@@ -56,9 +56,9 @@ torch::Tensor _Pz(torch::Tensor _pt, torch::Tensor _eta)
 	AT_DISPATCH_FLOATING_TYPES(_pt.type(), "_PzK", ([&]
 	{
 		_PzK<scalar_t><<<blocks, threads>>>(
-				_pt.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_eta.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_pz.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>()
+				_pt.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_eta.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_pz.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>()
 		); 
 	}));
 	return _pz; 
@@ -79,10 +79,10 @@ torch::Tensor _PxPyPz(torch::Tensor _pt, torch::Tensor _eta, torch::Tensor _phi)
 	AT_DISPATCH_FLOATING_TYPES(_pt.type(), "_PxPyPzK", ([&]
 	{
 		_PxPyPzK<scalar_t><<<blocks, threads>>>(
-				_pt.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),  
-				_eta.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_phi.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
-				_out.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>()
+				_pt.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),  
+				_eta.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_phi.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+				_out.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>()
 		); 
 	})); 
 	return _out; 

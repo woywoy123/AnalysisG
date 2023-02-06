@@ -3,9 +3,9 @@
 
 template <typename scalar_t>
 __global__ void _PxK(
-		const torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> pt, 
-		const torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> phi, 
-		torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> _px)
+		const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pt, 
+		const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> phi, 
+		torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> _px)
 {
 	const int indx = blockIdx.x*blockDim.x + threadIdx.x; 
 
@@ -15,9 +15,9 @@ __global__ void _PxK(
 
 template <typename scalar_t>
 __global__ void _PyK(
-		const torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> pt, 
-		const torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> phi, 
-		torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> _py)
+		const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pt, 
+		const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> phi, 
+		torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> _py)
 {
 	const int indx = blockIdx.x*blockDim.x + threadIdx.x; 
 
@@ -27,9 +27,9 @@ __global__ void _PyK(
 
 template <typename scalar_t>
 __global__ void _PzK(
-		const torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> pt, 
-		const torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> eta, 
-		torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> _pz)
+		const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pt, 
+		const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> eta, 
+		torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> _pz)
 {
 	const int indx = blockIdx.x*blockDim.x + threadIdx.x; 
 
@@ -39,10 +39,10 @@ __global__ void _PzK(
 
 template <typename scalar_t>
 __global__ void _PxPyPzK(
-		const torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> pt, 
-		const torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> eta, 
-		const torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> phi, 
-		torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> _out)
+		const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pt, 
+		const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> eta, 
+		const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> phi, 
+		torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> _out)
 {
 	const int indx = blockIdx.x*blockDim.x + threadIdx.x; 
 	const int indy = blockIdx.y; 

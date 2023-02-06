@@ -2,8 +2,8 @@
 
 template <typename scalar_t>
 __global__ void _P2K(
-		const torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> _p, 
-		torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> _p2, 
+		const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> _p, 
+		torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> _p2, 
 		const int x)
 {
 	const int indx = blockIdx.x * blockDim.x + threadIdx.x; 
@@ -13,7 +13,7 @@ __global__ void _P2K(
 
 template <typename scalar_t>
 __global__ void _SqrtK(
-		torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> _p, 
+		torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> _p, 
 		const int x)
 {
 	const int indx = blockIdx.x * blockDim.x + threadIdx.x; 
@@ -23,8 +23,8 @@ __global__ void _SqrtK(
 
 template <typename scalar_t>
 __global__ void _Beta2K(
-		const torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> _e,
-		torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> _p, 
+		const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> _e,
+		torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> _p, 
 		const int x)
 {
 	const int indx = blockIdx.x * blockDim.x + threadIdx.x;
@@ -34,9 +34,9 @@ __global__ void _Beta2K(
 
 template <typename scalar_t>
 __global__ void _DivK(
-		const torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> _v1,
-		const torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> _v2, 
-		torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> _v, 
+		const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> _v1,
+		const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> _v2, 
+		torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> _v, 
 		const int x)
 {
 	const int indx = blockIdx.x * blockDim.x + threadIdx.x;
@@ -46,8 +46,8 @@ __global__ void _DivK(
 
 template <typename scalar_t>
 __global__ void _SubPowv1_v2K(
-		const torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> _v1,
-		torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> _v, 
+		const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> _v1,
+		torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> _v, 
 		const int x)
 {
 	const int indx = blockIdx.x * blockDim.x + threadIdx.x;
@@ -57,9 +57,9 @@ __global__ void _SubPowv1_v2K(
 
 template <typename scalar_t>
 __global__ void _acos_v1_v2K(
-		const torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> _v1,
-		const torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> _v2, 
-		torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> _v, 
+		const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> _v1,
+		const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> _v2, 
+		torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> _v, 
 		const int x)
 {
 	const int indx = blockIdx.x * blockDim.x + threadIdx.x;
@@ -69,9 +69,9 @@ __global__ void _acos_v1_v2K(
 
 template <typename scalar_t>
 __global__ void _Diff_pow2_v1_v2K(
-		const torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> _v1,
-		const torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> _v2, 
-		torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> _v, 
+		const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> _v1,
+		const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> _v2, 
+		torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> _v, 
 		const int x)
 {
 	const int indx = blockIdx.x * blockDim.x + threadIdx.x;

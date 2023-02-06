@@ -14,9 +14,9 @@ torch::Tensor _Pt(torch::Tensor _px, torch::Tensor _py)
 	AT_DISPATCH_FLOATING_TYPES(torch::kFloat, "_PtK", ([&]
 	{
 		_PtK<scalar_t><<<blocks, threads>>>(
-				_px.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_py.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_pt.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>()
+				_px.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_py.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_pt.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>()
 		); 
 	}));
 	return _pt; 
@@ -35,9 +35,9 @@ torch::Tensor _Phi(torch::Tensor _px, torch::Tensor _py)
 	AT_DISPATCH_FLOATING_TYPES(torch::kFloat, "_PhiK", ([&]
 	{
 		_PhiK<scalar_t><<<blocks, threads>>>(
-				_px.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_py.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_phi.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>()
+				_px.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_py.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_phi.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>()
 		); 
 	}));
 	return _phi; 
@@ -57,10 +57,10 @@ torch::Tensor _Eta(torch::Tensor _px, torch::Tensor _py, torch::Tensor _pz)
 	AT_DISPATCH_FLOATING_TYPES(torch::kFloat, "_EtaK", ([&]
 	{
 		_EtaK<scalar_t><<<blocks, threads>>>(
-				_px.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_py.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_pz.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_eta.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>()
+				_px.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_py.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_pz.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_eta.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>()
 		); 
 	}));
 	return _eta; 
@@ -81,10 +81,10 @@ torch::Tensor _PtEtaPhi(torch::Tensor _px, torch::Tensor _py, torch::Tensor _pz)
 	AT_DISPATCH_FLOATING_TYPES(torch::kFloat, "_PtEtaPhiK", ([&]
 	{
 		_PtEtaPhiK<scalar_t><<<blocks, threads>>>(
-				_px.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_py.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_pz.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_out.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>()
+				_px.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_py.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_pz.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_out.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>()
 		); 
 	}));
 	return _out; 

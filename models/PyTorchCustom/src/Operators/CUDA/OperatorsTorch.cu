@@ -8,7 +8,7 @@ torch::Tensor _Dot(torch::Tensor v1, torch::Tensor v2)
 	torch::Tensor _out = torch::zeros_like(v1); 
 	
 	const dim3 blocks((l + threads -1) / threads, d); 
-	AT_DISPATCH_FLOATING_TYPES(v1.type(), "_Dot2K", ([&]
+	AT_DISPATCH_FLOATING_TYPES(v1.scalar_type(), "_Dot2K", ([&]
 	{
 		_Dot2K<scalar_t><<<blocks, threads>>>(
 				v1.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
@@ -32,7 +32,7 @@ torch::Tensor _CosTheta(torch::Tensor v1, torch::Tensor v2)
 
 	const dim3 blocks((x + threads -1) / threads, y); 
 	const dim3 blocks2((x + threads -1) / threads); 
-	AT_DISPATCH_FLOATING_TYPES(v1.type(), "_Dot2K", ([&]
+	AT_DISPATCH_FLOATING_TYPES(v1.scalar_type(), "_Dot2K", ([&]
 	{
 		_Dot2K<scalar_t><<<blocks, threads>>>(
 				v1.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
@@ -56,7 +56,7 @@ torch::Tensor _CosTheta(torch::Tensor v1, torch::Tensor v2)
 	_V1V2 = _V1V2.sum({-1}, true);
 	_v12 = _v12.sum({-1}, true);
 	_v22 = _v22.sum({-1}, true);
-	AT_DISPATCH_FLOATING_TYPES(v1.type(), "_CosThetaK", ([&]
+	AT_DISPATCH_FLOATING_TYPES(v1.scalar_type(), "_CosThetaK", ([&]
 	{
 		_CosThetaK<scalar_t><<<blocks2, threads>>>(
 				_v12.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
@@ -72,11 +72,11 @@ torch::Tensor _Rx(torch::Tensor angle)
 {
 	const int threads = 1024; 
 	const int x = angle.size(0); 
-	torch::TensorOptions op = torch::TensorOptions().dtype( angle.dtype() ).device( angle.device() ); 
+	torch::TensorOptions op = torch::TensorOptions().dtype( angle.scalar_type() ).device( angle.device() ); 
 	torch::Tensor _rx = torch::zeros({x, 3, 3}, op); 
 	
 	const dim3 blocks((x + threads -1) / threads, 3, 3); 
-	AT_DISPATCH_FLOATING_TYPES(angle.type(), "_RxK", ([&]
+	AT_DISPATCH_FLOATING_TYPES(angle.scalar_type(), "_RxK", ([&]
 	{
 		_RxK<scalar_t><<<blocks, threads>>>(
 				angle.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
@@ -90,11 +90,11 @@ torch::Tensor _Ry(torch::Tensor angle)
 {
 	const int threads = 1024; 
 	const int x = angle.size(0); 
-	torch::TensorOptions op = torch::TensorOptions().dtype( angle.dtype() ).device( angle.device() ); 
+	torch::TensorOptions op = torch::TensorOptions().dtype( angle.scalar_type() ).device( angle.device() ); 
 	torch::Tensor _ry = torch::zeros({x, 3, 3}, op); 
 	
 	const dim3 blocks((x + threads -1) / threads, 3, 3); 
-	AT_DISPATCH_FLOATING_TYPES(angle.type(), "_RyK", ([&]
+	AT_DISPATCH_FLOATING_TYPES(angle.scalar_type(), "_RyK", ([&]
 	{
 		_RyK<scalar_t><<<blocks, threads>>>(
 				angle.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
@@ -108,11 +108,11 @@ torch::Tensor _Rz(torch::Tensor angle)
 {
 	const int threads = 1024; 
 	const int x = angle.size(0); 
-	torch::TensorOptions op = torch::TensorOptions().dtype( angle.dtype() ).device( angle.device() ); 
+	torch::TensorOptions op = torch::TensorOptions().dtype( angle.scalar_type() ).device( angle.device() ); 
 	torch::Tensor _rz = torch::zeros({x, 3, 3}, op); 
 	
 	const dim3 blocks((x + threads -1) / threads, 3, 3); 
-	AT_DISPATCH_FLOATING_TYPES(angle.type(), "_RzK", ([&]
+	AT_DISPATCH_FLOATING_TYPES(angle.scalar_type(), "_RzK", ([&]
 	{
 		_RzK<scalar_t><<<blocks, threads>>>(
 				angle.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 

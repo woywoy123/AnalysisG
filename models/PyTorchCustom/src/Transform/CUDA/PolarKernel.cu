@@ -3,9 +3,9 @@
 
 template <typename scalar_t>
 __global__ void _PtK(
-		const torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> px, 
-		const torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> py, 
-		torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> _pt)
+		const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> px, 
+		const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> py, 
+		torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> _pt)
 {
 	const int indx = blockIdx.x*blockDim.x + threadIdx.x; 
 
@@ -15,9 +15,9 @@ __global__ void _PtK(
 
 template <typename scalar_t>
 __global__ void _PhiK(
-		const torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> px, 
-		const torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> py, 
-		torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> _phi)
+		const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> px, 
+		const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> py, 
+		torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> _phi)
 {
 	const int indx = blockIdx.x*blockDim.x + threadIdx.x; 
 
@@ -27,10 +27,10 @@ __global__ void _PhiK(
 
 template <typename scalar_t>
 __global__ void _EtaK(
-		const torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> px, 
-		const torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> py, 
-		const torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> pz, 
-		torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> _eta)
+		const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> px, 
+		const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> py, 
+		const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pz, 
+		torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> _eta)
 {
 	const int indx = blockIdx.x*blockDim.x + threadIdx.x; 
 
@@ -40,10 +40,10 @@ __global__ void _EtaK(
 
 template <typename scalar_t>
 __global__ void _PtEtaPhiK(
-		const torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> px, 
-		const torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> py, 
-		const torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> pz, 
-		torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> _out)
+		const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> px, 
+		const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> py, 
+		const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pz, 
+		torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> _out)
 {
 	const int indx = blockIdx.x*blockDim.x + threadIdx.x; 
 	const int indy = blockIdx.y; 

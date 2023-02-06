@@ -11,18 +11,18 @@ torch::Tensor _P2(torch::Tensor px, torch::Tensor py, torch::Tensor pz)
 	AT_DISPATCH_FLOATING_TYPES(pz.type(), "_P2K", ([&] 
 	{
 		_P2K<scalar_t><<<blocks, threads>>>(
-				px.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_p2.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				px.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_p2.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		); 
 		_P2K<scalar_t><<<blocks, threads>>>(
-				py.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_p2.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				py.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_p2.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		); 
 		_P2K<scalar_t><<<blocks, threads>>>(
-				pz.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_p2.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				pz.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_p2.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		); 
 	})); 
@@ -40,22 +40,22 @@ torch::Tensor _P(torch::Tensor px, torch::Tensor py, torch::Tensor pz)
 	AT_DISPATCH_FLOATING_TYPES(pz.type(), "_PK", ([&] 
 	{
 		_P2K<scalar_t><<<blocks, threads>>>(
-				px.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_p.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				px.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_p.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		); 
 		_P2K<scalar_t><<<blocks, threads>>>(
-				py.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_p.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				py.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_p.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		); 
 		_P2K<scalar_t><<<blocks, threads>>>(
-				pz.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_p.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				pz.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_p.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		);
 		_SqrtK<scalar_t><<<blocks, threads>>>(
-				_p.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				_p.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		); 
 	})); 
@@ -72,23 +72,23 @@ torch::Tensor _Beta2(torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch
 	AT_DISPATCH_FLOATING_TYPES(pz.type(), "_PK", ([&] 
 	{
 		_P2K<scalar_t><<<blocks, threads>>>(
-				px.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_b2.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				px.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_b2.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		); 
 		_P2K<scalar_t><<<blocks, threads>>>(
-				py.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_b2.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				py.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_b2.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		); 
 		_P2K<scalar_t><<<blocks, threads>>>(
-				pz.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_b2.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				pz.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_b2.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		);
 		_Beta2K<scalar_t><<<blocks, threads>>>(
-				e.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
-				_b2.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				e.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+				_b2.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		); 
 	})); 
@@ -106,28 +106,28 @@ torch::Tensor _Beta(torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch:
 	AT_DISPATCH_FLOATING_TYPES(pz.type(), "_PK", ([&] 
 	{
 		_P2K<scalar_t><<<blocks, threads>>>(
-				px.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_b.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				px.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_b.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		); 
 		_P2K<scalar_t><<<blocks, threads>>>(
-				py.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_b.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				py.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_b.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		); 
 		_P2K<scalar_t><<<blocks, threads>>>(
-				pz.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_b.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				pz.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_b.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		);
 		_SqrtK<scalar_t><<<blocks, threads>>>(
-				_b.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				_b.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		); 
 		_DivK<scalar_t><<<blocks, threads>>>(
-				_b.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
-				e.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
-				_b.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				_b.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+				e.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+				_b.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		); 
 	})); 
@@ -144,23 +144,23 @@ torch::Tensor _M2(torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::T
 	AT_DISPATCH_FLOATING_TYPES(pz.type(), "_PK", ([&] 
 	{
 		_P2K<scalar_t><<<blocks, threads>>>(
-				px.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_m2.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				px.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_m2.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		); 
 		_P2K<scalar_t><<<blocks, threads>>>(
-				py.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_m2.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				py.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_m2.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		); 
 		_P2K<scalar_t><<<blocks, threads>>>(
-				pz.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_m2.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				pz.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_m2.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		);
 		_SubPowv1_v2K<scalar_t><<<blocks, threads>>>(
-				e.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_m2.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				e.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_m2.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		);
 	})); 
@@ -177,27 +177,27 @@ torch::Tensor _M(torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Te
 	AT_DISPATCH_FLOATING_TYPES(pz.type(), "_PK", ([&] 
 	{
 		_P2K<scalar_t><<<blocks, threads>>>(
-				px.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_m.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				px.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_m.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		); 
 		_P2K<scalar_t><<<blocks, threads>>>(
-				py.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_m.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				py.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_m.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		); 
 		_P2K<scalar_t><<<blocks, threads>>>(
-				pz.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_m.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				pz.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_m.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		);
 		_SubPowv1_v2K<scalar_t><<<blocks, threads>>>(
-				e.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_m.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				e.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_m.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		);
 		_SqrtK<scalar_t><<<blocks, threads>>>(
-				_m.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				_m.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		); 
 	})); 
@@ -215,13 +215,13 @@ torch::Tensor _Mt2(torch::Tensor pz, torch::Tensor e)
 	AT_DISPATCH_FLOATING_TYPES(pz.type(), "_PK", ([&] 
 	{
 		_P2K<scalar_t><<<blocks, threads>>>(
-				pz.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_mt2.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				pz.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_mt2.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		); 
 		_SubPowv1_v2K<scalar_t><<<blocks, threads>>>(
-				e.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_mt2.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				e.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_mt2.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		);
 	})); 
@@ -238,17 +238,17 @@ torch::Tensor _Mt(torch::Tensor pz, torch::Tensor e)
 	AT_DISPATCH_FLOATING_TYPES(pz.type(), "_PK", ([&] 
 	{
 		_P2K<scalar_t><<<blocks, threads>>>(
-				pz.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_mt.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				pz.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_mt.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		);
 		_SubPowv1_v2K<scalar_t><<<blocks, threads>>>(
-				e.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_mt.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				e.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_mt.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		);
 		_SqrtK<scalar_t><<<blocks, threads>>>(
-				_mt.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				_mt.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		); 
 	})); 
@@ -265,32 +265,32 @@ torch::Tensor _Theta(torch::Tensor px, torch::Tensor py, torch::Tensor pz)
 	AT_DISPATCH_FLOATING_TYPES(pz.type(), "_PK", ([&] 
 	{
 		_P2K<scalar_t><<<blocks, threads>>>(
-				pz.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_theta.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				pz.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_theta.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		);
 
 		_P2K<scalar_t><<<blocks, threads>>>(
-				py.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_theta.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				py.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_theta.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		);
 
 		_P2K<scalar_t><<<blocks, threads>>>(
-				px.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_theta.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				px.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_theta.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		);
 
 		_SqrtK<scalar_t><<<blocks, threads>>>(
-				_theta.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				_theta.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		); 
 
 		_acos_v1_v2K<scalar_t><<<blocks, threads>>>(
-				pz.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_theta.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
-				_theta.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				pz.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_theta.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+				_theta.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		);
 	})); 
@@ -308,21 +308,21 @@ torch::Tensor _DeltaR(torch::Tensor eta1, torch::Tensor eta2, torch::Tensor phi1
 	AT_DISPATCH_FLOATING_TYPES(phi2.type(), "_PK", ([&] 
 	{
 		_Diff_pow2_v1_v2K<scalar_t><<<blocks, threads>>>(
-				eta1.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				eta2.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_dR.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				eta1.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				eta2.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_dR.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		);
 
 		_Diff_pow2_v1_v2K<scalar_t><<<blocks, threads>>>(
-				phi1.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				phi2.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(), 
-				_dR.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				phi1.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				phi2.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_dR.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		);
 
 		_SqrtK<scalar_t><<<blocks, threads>>>(
-				_dR.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+				_dR.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
 				l
 		); 
 	})); 
