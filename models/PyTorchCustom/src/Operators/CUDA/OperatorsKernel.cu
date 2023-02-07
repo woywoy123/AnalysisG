@@ -15,6 +15,35 @@ __global__ void _Dot2K(
 	_v1xv2(&_out[indx][indy], &v1[indx][indy], &v2[indx][indy]); 
 }
 
+
+template <typename scalar_t>
+__global__ void _Dot3K(
+		const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> v1, 
+		const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> v2, 
+		torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> _out, 
+		const int x, const int y, const int z1, const int z2)
+{
+	
+	const int indx = blockIdx.x*blockDim.x + threadIdx.x; 
+	const int indy = blockIdx.y;
+	const int indz = blockIdx.z; 
+	if (indx >= x || indy >= y || indz >= z1 ){return;}
+	_out[indx][indy][indz] = v1[indx][indy][indz] * v2[indx][indz][(indy >= z2) ? z2-1 : indy];  
+}
+
+template <typename scalar_t>
+__global__ void _Sum3K(
+		const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> v1, 
+		torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> _out, 
+		const int x, const int y, const int z)
+{
+	
+	const int indx = blockIdx.x*blockDim.x + threadIdx.x; 
+	const int indy = blockIdx.y;
+	if (indx >= x || indy >= y){return;}
+	for (int i(0); i < z; ++i){_recsum(&_out[indx][indy][0], v1[indx][indy][i]);}
+}
+
 template <typename scalar_t> 
 __global__ void _CosThetaK(
 		const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> _v12, 

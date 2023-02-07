@@ -25,3 +25,9 @@ __device__ __forceinline__ scalar_t _cos(const scalar_t angle)
 {
 	return cos(angle); 
 }
+
+template <typename scalar_t> 
+__device__ __forceinline__ void _recsum(scalar_t* out, const scalar_t inpt)
+{
+	(*out) = (*out) + inpt;  
+}

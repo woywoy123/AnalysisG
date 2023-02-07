@@ -8,6 +8,7 @@ torch::Tensor _CosTheta(torch::Tensor v1, torch::Tensor v2);
 torch::Tensor _Rx(torch::Tensor angle); 
 torch::Tensor _Ry(torch::Tensor angle); 
 torch::Tensor _Rz(torch::Tensor angle); 
+torch::Tensor _Mul(torch::Tensor v1, torch::Tensor v2); 
 
 #define CHECK_CUDA(x) TORCH_CHECK(x.device().is_cuda(), "#x must be on CUDA")
 #define CHECK_CONTIGUOUS(x) TORCH_CHECK(x.is_contiguous(), "#x must be contiguous")
@@ -20,6 +21,13 @@ namespace OperatorsCUDA
 		CHECK_INPUT(v1); 
 		CHECK_INPUT(v2); 
 		return _Dot(v1, v2).sum({-1}, true); 
+	}
+
+	const torch::Tensor Mul(torch::Tensor v1, torch::Tensor v2)
+	{
+		CHECK_INPUT(v1); 
+		CHECK_INPUT(v2); 
+		return _Mul(v1, v2); 
 	}
 
 	const torch::Tensor CosTheta(torch::Tensor v1, torch::Tensor v2)

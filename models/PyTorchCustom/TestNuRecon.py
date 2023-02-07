@@ -4,6 +4,7 @@ import PyC.NuSol.Tensors as NuT
 import PyC.NuSol.CUDA as NuC
 from Checks import *
 from NeutrinoSolutionDeconstruct import *
+from time import time
 
 def ParticleCollectors(ev):
     t1 = [ t for t in ev.Tops if t.LeptonicDecay][0]
@@ -51,8 +52,23 @@ T = SampleTensor(vl["b"], vl["lep"], vl["ev"], vl["t"], "cuda")
 R = SampleVector(vl["b"], vl["lep"], vl["ev"], vl["t"])
 
 NuT.Nu(T.b, T.mu, T.mT, T.mW, T.mN)
-NuC.Nu(T.b, T.mu, T.mT, T.mW, T.mN)
 
+t1 = time()
+t_sol = NuT.Nu(T.b, T.mu, T.mT, T.mW, T.mN)
+diff1 = time() - t1 
+
+t1 = time()
+t_solC = NuC.Nu(T.b, T.mu, T.mT, T.mW, T.mN)
+diff2 = time() - t1
+
+print(t_sol[0])
+print(t_solC[0])
+print(AssertEquivalenceRecursive(t_sol.tolist(), t_solC.tolist()))
+print("--- Testing Performance Between C++ and CUDA of Rz ---")
+print("Speed Factor (> 1 is better): ", diff1 / diff2)
+
+
+exit()
 for r, t in zip(R, T):
     b, mu = r[0], r[1]
     _b, _mu = r[2], r[3]

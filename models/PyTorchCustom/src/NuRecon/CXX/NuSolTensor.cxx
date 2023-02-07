@@ -64,12 +64,13 @@ torch::Tensor NuSolTensors::_Solutions(
 	
 	torch::Tensor c_ = OperatorsTensors::CosTheta(torch::cat({b_px, b_py, b_pz}, -1), torch::cat({mu_px, mu_py, mu_pz}, -1)); 
 	torch::Tensor s_ = OperatorsTensors::_SinTheta(c_);
-	torch::Tensor e2 = (massW2 - massNu2) * ( 1 - muB2 ); 
 
 	torch::Tensor tmp_ = muB / bB; 
 	torch::Tensor w_ = ( - tmp_ - c_ ) / s_; 
 	torch::Tensor w = ( tmp_ - c_ ) / s_; 
+	
 	torch::Tensor O2 = w.pow(2) + 1 - muB2;
+	torch::Tensor e2 = (massW2 - massNu2) * ( 1 - muB2 ); 
 	
 	torch::Tensor Sx = (x0 * muB - PhysicsTensors::P(mu_px, mu_py, mu_pz) * ( 1 - muB2 )) / muB2; 
 	torch::Tensor Sy = ( (x0p / bB) - c_ * Sx ) / s_; 
@@ -77,6 +78,7 @@ torch::Tensor NuSolTensors::_Solutions(
 	tmp_ = Sx + w*Sy; 
 	torch::Tensor x1 = Sx - tmp_ / O2; 
 	torch::Tensor y1 = Sy - tmp_ * (w / O2); 
+
 	torch::Tensor Z = torch::sqrt(torch::relu(x1.pow(2) * O2 - ( Sy - w*Sx ).pow(2) - ( massW2 - x0.pow(2) - e2 ))); 
 
 	return torch::cat({ c_, s_, x0, x0p, Sx, Sy, w, w_, x1, y1, Z, O2, e2}, -1); 

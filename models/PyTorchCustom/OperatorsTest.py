@@ -80,4 +80,24 @@ print(AssertEquivalenceRecursive(Exp.tolist(), exp.tolist()))
 print("--- Testing Performance Between C++ and CUDA of Rz ---")
 print("Speed Factor (> 1 is better): ", diff1 / diff2)
 
+T1_matrix = torch.tensor([[i for i in range(3)] for j in range(10000)], device = "cuda", dtype = torch.float64)
+x= C.Rz(T1_matrix)
+y = torch.tensor([[[k for i in range(1)] for k in range(3)] for t in range(10000)], device = "cuda", dtype = torch.float64)
+
+t1 = time()
+c = torch.matmul(x, y)
+diff1 = time() - t1 
+
+t1 = time()
+l = C.Mul(x, y)
+diff2 = time() - t1
+
+print(AssertEquivalenceRecursive(c.tolist(), l.tolist()))
+print("--- Testing Performance Between C++ and CUDA of Rz ---")
+print("Speed Factor (> 1 is better): ", diff1 / diff2)
+
+
+
+
+
 

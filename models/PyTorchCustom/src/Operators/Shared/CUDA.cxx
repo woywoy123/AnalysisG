@@ -8,4 +8,5 @@ PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
 	m.def("Rx", &OperatorsCUDA::Rx, "Rx");
 	m.def("Ry", &OperatorsCUDA::Ry, "Ry");
 	m.def("Rz", &OperatorsCUDA::Rz, "Rz");
+	m.def("Mul", &OperatorsCUDA::Mul, "Mul");
 }
