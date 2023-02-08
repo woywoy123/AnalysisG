@@ -103,7 +103,7 @@ namespace SingleNuCUDA
 		torch::Tensor mNu2 = OperatorsCUDA::Dot(mNu, mNu); 
 		
 		torch::Tensor sols_ = NuSolCUDA::Solutions(b_P, b_C, mu_P, mu_C, mT2, mW2, mNu2);
-		torch::Tensor H_ = NuSolCUDA::H_Matrix(sols_, b_C, mu_C, mu_P[0], mu_P[2]); 	
+		torch::Tensor H_ = NuSolCUDA::H_Matrix(sols_, b_C, mu_C, muP_, mu_P[2]); 	
 
 		return H_;
 	}

@@ -51,21 +51,26 @@ for i in Ana:
 T = SampleTensor(vl["b"], vl["lep"], vl["ev"], vl["t"], "cuda")
 R = SampleVector(vl["b"], vl["lep"], vl["ev"], vl["t"])
 
-NuT.Nu(T.b, T.mu, T.mT, T.mW, T.mN)
 
-t1 = time()
-t_sol = NuT.Nu(T.b, T.mu, T.mT, T.mW, T.mN)
-diff1 = time() - t1 
 
-t1 = time()
-t_solC = NuC.Nu(T.b, T.mu, T.mT, T.mW, T.mN)
-diff2 = time() - t1
+diff = [[], []]
+for t in range(10000):
+    t1 = time()
+    t_sol = NuT.Nu(T.b, T.mu, T.mT, T.mW, T.mN)
+    t2 = time()
+    diff1 = t2 - t1 
+    diff[0].append(diff1)
+    
+    t1 = time()
+    t_solC = NuC.Nu(T.b, T.mu, T.mT, T.mW, T.mN)
+    t2 = time()
+    diff2 = t2 - t1
+    diff[1].append(diff2)
 
-print(t_sol[0])
-print(t_solC[0])
+print(sum(diff[0]), sum(diff[1]))
 print(AssertEquivalenceRecursive(t_sol.tolist(), t_solC.tolist()))
-print("--- Testing Performance Between C++ and CUDA of Rz ---")
-print("Speed Factor (> 1 is better): ", diff1 / diff2)
+print("--- Testing Performance Between C++ and CUDA of Nu ---")
+print("Speed Factor (> 1 is better): ", (sum(diff[0])) / sum(diff[1]))
 
 
 exit()

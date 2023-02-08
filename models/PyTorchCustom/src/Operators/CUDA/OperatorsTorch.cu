@@ -24,16 +24,20 @@ torch::Tensor _Dot(torch::Tensor v1, torch::Tensor v2)
 torch::Tensor _Mul(torch::Tensor v1, torch::Tensor v2)
 {
 	const int x = v1.size(0); 
-	const int y = v1.size(1); 
-	
-	const int z1 = v1.size(2);
-	const int z2 = v2.size(2);
-	const int threads = 1024; 
-	const dim3 blocks((x + threads -1) / threads, y, z1); 
-	const dim3 blocks2((x + threads -1) / threads, y); 
+	const int _t = v1.size(-1);
+	const int y = v1.size(-2); 
+	const int z = v2.size(-1);
 
+	const int threads = 1024; 
+	const dim3 blocks((x + threads -1) / threads, _t*z*y); 
+	const dim3 blocks2((x + threads -1) / threads, y, z); 
+	
+	torch::Tensor _tmp = torch::zeros(
+			{x, _t, y, z}, 
+			torch::TensorOptions().dtype(v1.scalar_type()).device(v1.device()));
+	
 	torch::Tensor _out = torch::zeros(
-			{x, y, 1}, 
+			{x, y, z}, 
 			torch::TensorOptions().dtype(v1.scalar_type()).device(v1.device()));
 	
 
@@ -42,20 +46,17 @@ torch::Tensor _Mul(torch::Tensor v1, torch::Tensor v2)
 		_Dot3K<scalar_t><<<blocks, threads>>>(
 				v1.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
 				v2.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-				v1.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-				x, y, z1, z2
+				_tmp.packed_accessor64<scalar_t, 4, torch::RestrictPtrTraits>(), 
+				x, _t, y, z
 		);
 		_Sum3K<scalar_t><<<blocks2, threads>>>(
-				v1.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+				_tmp.packed_accessor64<scalar_t, 4, torch::RestrictPtrTraits>(), 
 				_out.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-				x, y, z1
+				x, _t, y, z
 		); 
 	})); 
-
-	return _out; 
+	return _out;
 }
-
-
 
 torch::Tensor _CosTheta(torch::Tensor v1, torch::Tensor v2)
 {

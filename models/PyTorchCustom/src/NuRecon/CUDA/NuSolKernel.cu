@@ -127,14 +127,14 @@ __global__ void _HMatrix(
 	const int indz = blockIdx.z;
 	
 	if (indx >= x || indy >= y || indz >= z){return;}
-	if (indy == 0 || indz == 1){ return; }
-	if (indy == 1 || indz == 1){ return; }
-	if (indy == 2 || indz == 0){ return; }
-	if (indy == 2 || indz == 2){ return; }
+	if (indy == 0 && indz == 1){ return; }
+	if (indy == 1 && indz == 1){ return; }
+	if (indy == 2 && indz == 0){ return; }
+	if (indy == 2 && indz == 2){ return; }
 
-	if (indy == 0 || indz == 0){ out[indx][indy][indz] = sols_[indx][10]/_sqrt(sols_[indx][11]); return; }
-	if (indy == 0 || indz == 2){ out[indx][indy][indz] = sols_[indx][8] - muP_[indx][0]; return; }
-	if (indy == 1 || indz == 0){ out[indx][indy][indz] = (sols_[indx][10]/_sqrt(sols_[indx][11]))*sols_[indx][6]; return; }
-	if (indy == 1 || indz == 2){ out[indx][indy][indz] = sols_[indx][9]; return; }
-	if (indy == 2 || indz == 1){ out[indx][indy][indz] = sols_[indx][10]; return; }
+	if (indy == 0 && indz == 0){ out[indx][indy][indz] = sols_[indx][10]/_sqrt(sols_[indx][11]); return; }
+	if (indy == 0 && indz == 2){ out[indx][indy][indz] = sols_[indx][8] - muP_[indx][0]; return; }
+	if (indy == 1 && indz == 0){ out[indx][indy][indz] = (sols_[indx][10]/_sqrt(sols_[indx][11]))*sols_[indx][6]; return; }
+	if (indy == 1 && indz == 2){ out[indx][indy][indz] = sols_[indx][9]; return; }
+	if (indy == 2 && indz == 1){ out[indx][indy][indz] = sols_[indx][10]; return; }
 }
