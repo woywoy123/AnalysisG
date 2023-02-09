@@ -15,9 +15,6 @@ namespace OperatorsTensors
 	torch::Tensor Rz(torch::Tensor angle);
 
 }
-
-
-
 #endif
 
 #ifndef H_CONSTANTS_TENSORS

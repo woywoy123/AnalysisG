@@ -68,5 +68,7 @@ torch::Tensor OperatorsTensors::Rz(torch::Tensor angle)
 
 torch::Tensor Constants::Pi_2(torch::Tensor v)
 { 
-	return torch::acos(torch::zeros_like(v)); 
+	return torch::acos( torch::zeros(v.size(0), 
+				torch::TensorOptions().dtype(v.dtype()).device(v.device())).view({-1, 1})
+			);
 }

@@ -51,10 +51,15 @@ def PerformanceInpt(var, inpt = "(p_x, p_y, p_z)", Coord = "C"):
 
 class SampleTensor:
 
-    def __init__(self, b, mu, ev, top, device = "cpu"):
+    def __init__(self, b, mu, ev, top, device = "cpu", S = [[100, 0], [0, 100]]):
         self.device = device
         self.n = len(b)
         
+        self.Sxx = self.MakeTensor(S[0][0])
+        self.Sxy = self.MakeTensor(S[0][1])
+        self.Syx = self.MakeTensor(S[1][0])
+        self.Syy = self.MakeTensor(S[1][1])
+
         self.b = self.MakeKinematics(0, b)
         self.mu = self.MakeKinematics(0, mu)
         
@@ -90,8 +95,6 @@ class SampleTensor:
                 self.b_[self.it], self.mu_[self.it], 
                 self.met[self.it], self.phi[self.it], 
                 self.mT[self.it], self.mW[self.it], self.mN[self.it]]
-
-
 
 class SampleVector:
     def __init__(self, b, mu, ev, top):

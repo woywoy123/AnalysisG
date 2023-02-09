@@ -21,6 +21,12 @@ def R(axis, angle):
         R[(axis-i) % 3, (axis+i) % 3] = i*s + (1 - i*i)
     return R
 
+def Derivative():
+    '''Matrix to differentiate [cos(t),sin(t),1]'''
+    return R(2, math.pi / 2).dot(np.diag([1, 1, 0]))
+
+
+
 
 class SolutionSet(object):
     '''Definitions for nu analytic solution, t->b,mu,nu'''
@@ -75,4 +81,23 @@ class SolutionSet(object):
         R_x = next(R(0,-math.atan2(z,y))
                    for x,y,z in (R_y.dot(R_z.dot(b_xyz)),))
         return R_z.T.dot(R_y.T.dot(R_x.T))
+
+class singleNeutrinoSolution(object):
+    '''Most likely neutrino momentum for tt-->lepton+jets'''
+    def __init__(self, b, mu, met, sigma2, mW2, mT2):
+        metX, metY = met
+        self.solutionSet = SolutionSet(b, mu, mW2, mT2, 0)
+        S2 = np.vstack([np.vstack([np.linalg.inv(sigma2),
+                                   [0, 0]]).T, [0, 0, 0]])
+        V0 = np.outer([metX, metY, 0], [0, 0, 1])
+        deltaNu = V0 - self.solutionSet.H
+        self.X = np.dot(deltaNu.T, S2).dot(deltaNu)
+        M = next(XD + XD.T for XD in (self.X.dot(Derivative()),))
+        self.V0 = M 
+        return 
+
+
+        solutions = intersections_ellipses(M, UnitCircle())
+        self.solutions = sorted(solutions, key=self.calcX2)
+
 

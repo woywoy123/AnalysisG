@@ -22,6 +22,8 @@ torch::Tensor _H_Matrix(
 
 
 torch::Tensor _H_Matrix(torch::Tensor sols, torch::Tensor mu_P); 
+torch::Tensor _Pi_2(torch::Tensor V);
+torch::Tensor _Unit(torch::Tensor v, std::vector<int> diag); 
 
 
 
@@ -82,12 +84,44 @@ namespace NuSolCUDA
 
 		return OperatorsCUDA::Mul(OperatorsCUDA::Mul(Rz, OperatorsCUDA::Mul(Ry, Rx)), H_); 
 	}
+
+	const torch::Tensor Derivative(torch::Tensor x)
+	{
+		return OperatorsCUDA::Mul(OperatorsCUDA::Rz(_Pi_2(x)), _Unit(x, {1, 1, 0}));
+	}
+
+
+
 }
 
 namespace SingleNuCUDA
 {
-	const torch::Tensor Nu(torch::Tensor b, torch::Tensor mu, torch::Tensor mT, torch::Tensor mW, torch::Tensor mNu)
+	const torch::Tensor Sigma2(
+			torch::Tensor Sxx, torch::Tensor Sxy, 
+			torch::Tensor Syx, torch::Tensor Syy)
 	{
+		torch::Tensor _S = torch::cat({Sxx, Sxy, Syx, Syy}, -1).view({-1, 2, 2});
+		_S = torch::inverse(_S); 
+		_S = torch::pad(_S, {0, 1, 0, 1}, "constant", 0);
+		_S = torch::transpose(_S, 1, 2);
+		return _S.contiguous(); 
+	}
+
+	const torch::Tensor V0(torch::Tensor metx, torch::Tensor mety)
+	{
+		torch::Tensor matrix = torch::cat({metx, mety}, -1).view({-1, 2});
+		matrix = torch::pad(matrix, {0, 1, 0, 0}, "constant", 0).view({-1, 3, 1}); 
+		torch::Tensor t0 = torch::zeros_like(matrix); 
+		return torch::cat({t0, t0, matrix}, -1); 
+	}
+
+	const torch::Tensor Nu(torch::Tensor b, torch::Tensor mu, 
+			torch::Tensor met, torch::Tensor phi, 
+			torch::Tensor Sxx, torch::Tensor Sxy, torch::Tensor Syx, torch::Tensor Syy,
+			torch::Tensor mT, torch::Tensor mW, torch::Tensor mNu)
+	{
+
+
 		// ---- Polar Version of Particles ---- //
 		std::vector<torch::Tensor> b_P = NuSolCUDA::_Format(b.view({-1, 4}), 4);
 		std::vector<torch::Tensor> mu_P = NuSolCUDA::_Format(mu.view({-1, 4}), 4); 
@@ -96,16 +130,30 @@ namespace SingleNuCUDA
 		std::vector<torch::Tensor> b_C = NuSolCUDA::_Format(TransformCUDA::PxPyPz(b_P[0], b_P[1], b_P[2]), 3); 
 		std::vector<torch::Tensor> mu_C = NuSolCUDA::_Format(TransformCUDA::PxPyPz(mu_P[0], mu_P[1], mu_P[2]), 3); 
 		torch::Tensor muP_ = PhysicsCUDA::P(mu_C[0], mu_C[1], mu_C[2]); 
+
+		// ---- Cartesian Version of Event Met ---- //
+		NuSolCUDA::_CheckTensors({met, phi}); 
+		torch::Tensor met_x = TransformCUDA::Px(met, phi); 
+		torch::Tensor met_y = TransformCUDA::Py(met, phi);
 		
 		// ---- Precalculate the Mass Squared ---- //
 		torch::Tensor mT2 = OperatorsCUDA::Dot(mT, mT); 
 		torch::Tensor mW2 = OperatorsCUDA::Dot(mW, mW); 
 		torch::Tensor mNu2 = OperatorsCUDA::Dot(mNu, mNu); 
 		
+		// ---- MET uncertainity ---- //	
+		torch::Tensor S2_ = Sigma2(Sxx, Sxy, Syx, Syy);	
+		
 		torch::Tensor sols_ = NuSolCUDA::Solutions(b_P, b_C, mu_P, mu_C, mT2, mW2, mNu2);
-		torch::Tensor H_ = NuSolCUDA::H_Matrix(sols_, b_C, mu_C, muP_, mu_P[2]); 	
-
-		return H_;
+		torch::Tensor H_ = NuSolCUDA::H_Matrix(sols_, b_C, mu_C, muP_, mu_P[2]); 
+	
+		torch::Tensor delta_ = V0(met_x, met_y) - H_; 
+		torch::Tensor X_ = OperatorsCUDA::Mul(torch::transpose(delta_, 1, 2).contiguous(), S2_); 
+		X_ = OperatorsCUDA::Mul(X_, delta_).view({-1, 3, 3}); 
+		
+		torch::Tensor M_ = OperatorsCUDA::Mul(X_, NuSolCUDA::Derivative(X_)); 
+		M_ = M_ + torch::transpose(M_, 1, 2); 
+		return M_;
 	}
 
 }

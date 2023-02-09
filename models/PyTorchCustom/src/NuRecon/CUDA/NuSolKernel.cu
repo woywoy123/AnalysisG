@@ -138,3 +138,25 @@ __global__ void _HMatrix(
 	if (indy == 1 && indz == 2){ out[indx][indy][indz] = sols_[indx][9]; return; }
 	if (indy == 2 && indz == 1){ out[indx][indy][indz] = sols_[indx][10]; return; }
 }
+
+template <typename scalar_t>
+__global__ void _Pi2(
+		torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> out_, 
+		const int x)
+{
+	const int indx = blockIdx.x*blockDim.x + threadIdx.x; 
+	if (indx >= x){ return; }
+	out_[indx][0] = acos(out_[indx][0]);
+}
+
+template <typename scalar_t>
+__global__ void _Unit_(
+		torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> out_, 
+		torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> diag_, 
+		const int x)
+{
+	const int indx = blockIdx.x*blockDim.x + threadIdx.x; 
+	const int indy = blockIdx.y; 
+	if (indx >= x){ return; }
+	out_[indx][indy][indy] = diag_[indy]; 
+}

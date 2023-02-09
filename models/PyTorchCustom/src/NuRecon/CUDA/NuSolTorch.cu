@@ -95,3 +95,43 @@ torch::Tensor _H_Matrix(torch::Tensor sols, torch::Tensor mu_P)
 	})); 
 	return out_; 
 }
+
+torch::Tensor _Pi_2(torch::Tensor v)
+{
+	const int x = v.size(0); 
+	const int threads = 1024; 
+	const dim3 blocks( (x + threads -1)/threads ); 
+	torch::TensorOptions op = torch::TensorOptions().device(v.device()).dtype(v.dtype()); 
+	torch::Tensor _out = torch::zeros({x, 1}, op); 
+
+	AT_DISPATCH_FLOATING_TYPES(_out.scalar_type(), "_pi2", ([&]
+	{
+		_Pi2<scalar_t><<<blocks, threads>>>(
+				_out.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+				x
+		); 
+	})); 
+
+	return _out; 
+}
+
+torch::Tensor _Unit(torch::Tensor v, std::vector<int> diag)
+{
+	const int x = v.size(0); 
+	const int threads = 1024; 
+	const dim3 blocks( (x + threads -1)/threads, 3 ); 
+	torch::TensorOptions op = torch::TensorOptions().device(v.device()).dtype(v.dtype()); 
+	torch::Tensor _out = torch::zeros({x, 3, 3}, op); 
+	torch::Tensor _diag = torch::tensor(diag, op);
+	
+	AT_DISPATCH_FLOATING_TYPES(_out.scalar_type(), "_Unit", ([&]
+	{
+		_Unit_<scalar_t><<<blocks, threads>>>(
+				_out.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+				_diag.packed_accessor64<scalar_t, 1, torch::RestrictPtrTraits>(),
+				x
+		); 
+	})); 
+
+	return _out;
+}
