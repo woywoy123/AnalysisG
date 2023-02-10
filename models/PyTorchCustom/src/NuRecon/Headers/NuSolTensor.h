@@ -19,12 +19,13 @@ namespace NuSolTensors
 		torch::Tensor b_e, torch::Tensor mu_e,
 		torch::Tensor massT2, torch::Tensor massW2, torch::Tensor massNu2); 
 	
-	
 	torch::Tensor H_Matrix(
 			torch::Tensor Sols_, std::vector<torch::Tensor> b_C, 
 			torch::Tensor mu_phi, torch::Tensor mu_pz, torch::Tensor mu_P); 
 
 	torch::Tensor Solutions(torch::Tensor b, torch::Tensor mu, torch::Tensor mT, torch::Tensor mW, torch::Tensor mNu);
+	torch::Tensor Intersections(torch::Tensor A, torch::Tensor B); 
+	
 }
 
 namespace SingleNuTensor
@@ -36,5 +37,19 @@ namespace SingleNuTensor
 			torch::Tensor Sxx, torch::Tensor Sxy, torch::Tensor Syx, torch::Tensor Syy, 
 			torch::Tensor mT, torch::Tensor mW, torch::Tensor mNu);
 }
+
+namespace DoubleNuTensor 
+{
+	torch::Tensor NuNu(
+			torch::Tensor b, torch::Tensor b_, 
+			torch::Tensor mu, torch::Tensor mu_, 
+			torch::Tensor met, torch::Tensor phi, 
+			torch::Tensor mT, torch::Tensor mW, torch::Tensor mNu
+	); 
+}
+
+
+
+
 
 #endif 

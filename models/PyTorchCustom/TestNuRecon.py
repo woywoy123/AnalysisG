@@ -26,7 +26,7 @@ def ParticleCollectors(ev):
     return out
 
 Ana = Analysis()
-#Ana.InputSample("bsm4t-100")
+Ana.InputSample("bsm4t-100")
 Ana.InputSample("bsm4t-1000")
 Ana.Event = Event
 Ana.EventStop = 10000
@@ -53,16 +53,16 @@ T = SampleTensor(vl["b"], vl["lep"], vl["ev"], vl["t"], "cuda", [[100, 0], [0, 1
 R = SampleVector(vl["b"], vl["lep"], vl["ev"], vl["t"])
 print(len(vl["b"]))
 
-
+its = 10000
 diff = [[], []]
-for t in range(10000):
+for t in range(its):
     t1 = time()
     t_sol = NuT.Nu(T.b, T.mu, T.met, T.phi, T.Sxx, T.Sxy, T.Syx, T.Syy, T.mT, T.mW, T.mN)
     t2 = time()
     diff1 = t2 - t1 
     diff[0].append(diff1)
 
-for t in range(10000):   
+for t in range(its):   
     t1 = time()
     t_solC = NuC.Nu(T.b, T.mu, T.met, T.phi, T.Sxx, T.Sxy, T.Syx, T.Syy, T.mT, T.mW, T.mN)
     t2 = time()
@@ -74,11 +74,35 @@ print(AssertEquivalenceRecursive(t_sol.tolist(), t_solC.tolist()))
 print("--- Testing Performance Between C++ and CUDA of Nu ---")
 print("Speed Factor (> 1 is better): ", (sum(diff[0])) / sum(diff[1]))
 
+diff = [[], []]
+for t in range(its):
+    t1 = time()
+    t_sol = NuT.NuNu(T.b, T.b_, T.mu, T.mu_, T.met, T.phi, T.mT, T.mW, T.mN)
+    t2 = time()
+    diff1 = t2 - t1 
+    diff[0].append(diff1)
+
+for t in range(its):   
+    t1 = time()
+    t_solC = NuC.NuNu(T.b, T.b_, T.mu, T.mu_, T.met, T.phi, T.mT, T.mW, T.mN)
+    t2 = time()
+    diff2 = t2 - t1
+    diff[1].append(diff2)
+
+print(sum(diff[0]), sum(diff[1]))
+print(AssertEquivalenceRecursive(t_sol.tolist(), t_solC.tolist()))
+print("--- Testing Performance Between C++ and CUDA of NuNu ---")
+print("Speed Factor (> 1 is better): ", (sum(diff[0])) / sum(diff[1]))
+
 t_sol = NuT.Nu(T.b, T.mu, T.met, T.phi, T.Sxx, T.Sxy, T.Syx, T.Syy, T.mT, T.mW, T.mN)
 _sol = NuC.Nu(T.b, T.mu, T.met, T.phi, T.Sxx, T.Sxy, T.Syx, T.Syy, T.mT, T.mW, T.mN)
 AssertEquivalenceRecursive(t_sol, _sol)
+
+t_sol = NuT.NuNu(T.b, T.b_, T.mu, T.mu_, T.met, T.phi, T.mT, T.mW, T.mN)
+_sol = NuC.NuNu(T.b, T.b_, T.mu, T.mu_, T.met, T.phi, T.mT, T.mW, T.mN)
+AssertEquivalenceRecursive(t_sol, _sol)
+
 exit()
-print("")
 for r, t in zip(R, T):
     b, mu = r[0], r[1]
     _b, _mu = r[2], r[3]
@@ -96,8 +120,11 @@ for r, t in zip(R, T):
     t_sol = NuT.Nu(tb_, tmu_, t_met, t_phi, sxx, sxy, syx, syy, t_mT, t_mW, t_mNu)
    
 
-    #print(AssertEquivalenceRecursive(sol.V0.tolist(), t_sol.tolist()[0], 0.00001))
+    #if AssertEquivalenceRecursive(sol.V0, t_sol.tolist()[0], 0.00001):
+    #    continue
 
     print(t_sol)
     print(sol.V0)
+
+
     exit()

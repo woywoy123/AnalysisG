@@ -42,12 +42,12 @@ setup(
             #    Transform_H + "ToPolarCUDA.h"
             #], 
 
-            "PyC.Operators.Tensors" : [
-                Operators_H + "Tensors.h" 
-            ],
-            "PyC.Operators.CUDA" : [
-                Operators_H + "CUDA.h"
-            ], 
+            #"PyC.Operators.Tensors" : [
+            #    Operators_H + "Tensors.h" 
+            #],
+            #"PyC.Operators.CUDA" : [
+            #    Operators_H + "CUDA.h"
+            #], 
 
             #"PyC.Physics.Tensors.Cartesian" : [
             #    Transform_H + "ToPolarTensors.h", 
@@ -79,20 +79,20 @@ setup(
             #    NuRecon_H + "NuSolTensor.h",
             #], 
 
-            #"PyC.NuSol.Tensors" : [
-            #    Transform_H + "ToCartesianTensors.h", 
-            #    Physics_H + "Tensors.h",
-            #    Operators_H + "Tensors.h",
+            "PyC.NuSol.Tensors" : [
+                Transform_H + "ToCartesianTensors.h", 
+                Physics_H + "Tensors.h",
+                Operators_H + "Tensors.h",
 
-            #    NuRecon_H + "NuSolTensor.h",
-            #], 
-            #"PyC.NuSol.CUDA" : [
-            #    Transform_H + "ToCartesianCUDA.h", 
-            #    Physics_H + "CUDA.h", 
-            #    Operators_H + "CUDA.h", 
+                NuRecon_H + "NuSolTensor.h",
+            ], 
+            "PyC.NuSol.CUDA" : [
+                Transform_H + "ToCartesianCUDA.h", 
+                Physics_H + "CUDA.h", 
+                Operators_H + "CUDA.h", 
 
-            #    NuRecon_H + "NuSolCUDA.h",
-            #], 
+                NuRecon_H + "NuSolCUDA.h",
+            ], 
         }, 
 
         ext_modules = [
@@ -118,17 +118,17 @@ setup(
             #    Transform_S  + "CUDA.cxx", 
             #]),
 
-            CppExtension("PyC.Operators.Tensors", [
-                Operators_C + "Tensors.cxx", 
-                Operators_S + "Tensors.cxx", 
-            ]), 
+            #CppExtension("PyC.Operators.Tensors", [
+            #    Operators_C + "Tensors.cxx", 
+            #    Operators_S + "Tensors.cxx", 
+            #]), 
 
-            CUDAExtension("PyC.Operators.CUDA", [
-                Operators_Cu + "Operators.cu", 
-                Operators_Cu + "OperatorsKernel.cu", 
-                Operators_Cu + "OperatorsTorch.cu", 
-                Operators_S  + "CUDA.cxx"
-            ]),
+            #CUDAExtension("PyC.Operators.CUDA", [
+            #    Operators_Cu + "Operators.cu", 
+            #    Operators_Cu + "OperatorsKernel.cu", 
+            #    Operators_Cu + "OperatorsTorch.cu", 
+            #    Operators_S  + "CUDA.cxx"
+            #]),
 
             #CppExtension("PyC.Physics.Tensors.Cartesian", [
             #    Transform_C + "ToPolarTensors.cxx",
@@ -166,35 +166,36 @@ setup(
             #    Physics_S + "PolarCUDA.cxx",
             #]), 
 
-            #CppExtension("PyC.NuSol.Tensors", [
-            #    Transform_C + "ToCartesianTensors.cxx", 
-            #    Physics_C + "Tensors.cxx",
-            #    Operators_C + "Tensors.cxx",
+            CppExtension("PyC.NuSol.Tensors", [
+                Transform_C + "ToCartesianTensors.cxx", 
+                Physics_C + "Tensors.cxx",
+                Operators_C + "Tensors.cxx",
 
-            #    NuRecon_C + "NuSolTensor.cxx",
-            #    NuRecon_C + "SingleNuTensor.cxx",
-            #    NuRecon_S + "Tensor.cxx"
-            #]), 
+                NuRecon_C + "NuSolTensor.cxx",
+                NuRecon_C + "SingleNuTensor.cxx",
+                NuRecon_C + "DoubleNuTensor.cxx",
+                NuRecon_S + "Tensor.cxx"
+            ]), 
 
-            #CUDAExtension("PyC.NuSol.CUDA", [
-            #    Transform_Cu + "Cartesian.cu",
-            #    Transform_Cu + "CartesianKernel.cu", 
-            #    Transform_Cu + "CartesianTorch.cu", 
+            CUDAExtension("PyC.NuSol.CUDA", [
+                Transform_Cu + "Cartesian.cu",
+                Transform_Cu + "CartesianKernel.cu", 
+                Transform_Cu + "CartesianTorch.cu", 
 
-            #    Physics_Cu + "Physics.cu", 
-            #    Physics_Cu + "PhysicsKernel.cu",
-            #    Physics_Cu + "PhysicsTorch.cu", 
+                Physics_Cu + "Physics.cu", 
+                Physics_Cu + "PhysicsKernel.cu",
+                Physics_Cu + "PhysicsTorch.cu", 
 
-            #    Operators_Cu + "Operators.cu", 
-            #    Operators_Cu + "OperatorsKernel.cu", 
-            #    Operators_Cu + "OperatorsTorch.cu", 
+                Operators_Cu + "Operators.cu", 
+                Operators_Cu + "OperatorsKernel.cu", 
+                Operators_Cu + "OperatorsTorch.cu", 
 
-            #    NuRecon_Cu + "NuSol.cu", 
-            #    NuRecon_Cu + "NuSolKernel.cu", 
-            #    NuRecon_Cu + "NuSolTorch.cu", 
+                NuRecon_Cu + "NuSol.cu", 
+                NuRecon_Cu + "NuSolKernel.cu", 
+                NuRecon_Cu + "NuSolTorch.cu", 
 
-            #    NuRecon_S + "CUDA.cxx"
-            #]), 
+                NuRecon_S + "CUDA.cxx"
+            ]), 
         ], 
         cmdclass = {"build_ext" : BuildExtension}
 )

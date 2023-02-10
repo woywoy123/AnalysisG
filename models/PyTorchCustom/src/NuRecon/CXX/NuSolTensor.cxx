@@ -94,18 +94,18 @@ torch::Tensor NuSolTensors::H_Matrix(torch::Tensor Sols_, std::vector<torch::Ten
 	return torch::matmul(torch::matmul(Rz, torch::matmul(Ry, Rx)), H_); 
 }
 
+torch::Tensor NuSolTensors::Intersections(torch::Tensor A, torch::Tensor B)
+{
 
-
-
-
-
-
-
-
-
-
-
-
+	// Perform the variable swaps 
+	torch::Tensor swp = torch::abs(torch::det(B)) > torch::abs(torch::det(A));
+	torch::Tensor _tmp = B.index({swp}); 
+	B.index_put_({swp}, A.index({swp})); 
+	A.index_put_({swp}, _tmp);
+	
+	_tmp = torch::inverse(A).matmul(B); 
+	return _tmp; 
+}
 
 
 

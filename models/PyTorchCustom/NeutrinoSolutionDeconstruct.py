@@ -25,8 +25,53 @@ def Derivative():
     '''Matrix to differentiate [cos(t),sin(t),1]'''
     return R(2, math.pi / 2).dot(np.diag([1, 1, 0]))
 
+def UnitCircle():
+    '''Unit circle in extended representation'''
+    return np.diag([1, 1, -1])
 
 
+def multisqrt(y):
+    '''Valid real solutions to y=x*x'''
+    return ([] if y < 0 else
+            [0] if y == 0 else
+            (lambda r: [-r, r])(math.sqrt(y)))
+
+
+def factor_degenerate(G, zero=0):
+    '''Linear factors of degenerate quadratic polynomial'''
+    if G[0,0] == 0 == G[1,1]:
+        return [[G[0,1], 0, G[1,2]],
+                [0, G[0,1], G[0,2] - G[1,2]]]
+
+    swapXY = abs(G[0,0]) > abs(G[1,1])
+    Q = G[(1,0,2),][:,(1,0,2)] if swapXY else G
+    Q /= Q[1,1]
+    q22 = cofactor(Q, (2,2))
+
+    if -q22 <= zero:
+        lines = [[Q[0,1], Q[1,1], Q[1,2]+s]
+                 for s in multisqrt(-cofactor(Q, (0,0)))]
+    else:
+        x0, y0 = [cofactor(Q,(i,2)) / q22 for i in [0, 1]]
+        lines = [[m, Q[1,1], -Q[1,1]*y0 - m*x0]
+                 for m in [Q[0,1] + s
+                           for s in multisqrt(-q22)]]
+
+    return [[L[swapXY],L[not swapXY],L[2]] for L in lines]
+
+def intersections_ellipses(A, B, returnLines=False):
+    '''Points of intersection between two ellipses'''
+    LA = np.linalg
+    if abs(LA.det(B)) > abs(LA.det(A)): A,B = B,A
+    
+    #e = next(e.real for e in LA.eigvals(LA.inv(A).dot(B)) if not e.imag)
+    return [e.real for e in LA.eigvals(LA.inv(A).dot(B))]
+
+
+    lines = factor_degenerate(B - e*A)
+    points = sum([intersections_ellipse_line(A,L)
+                  for L in lines],[])
+    return (points,lines) if returnLines else points
 
 class SolutionSet(object):
     '''Definitions for nu analytic solution, t->b,mu,nu'''
@@ -93,11 +138,29 @@ class singleNeutrinoSolution(object):
         deltaNu = V0 - self.solutionSet.H
         self.X = np.dot(deltaNu.T, S2).dot(deltaNu)
         M = next(XD + XD.T for XD in (self.X.dot(Derivative()),))
-        self.V0 = M 
-        return 
-
 
         solutions = intersections_ellipses(M, UnitCircle())
+        self.V0 = solutions 
+        return 
+
         self.solutions = sorted(solutions, key=self.calcX2)
 
+class doubleNeutrinoSolutions(object):
+    '''Solution pairs of neutrino momenta, tt -> leptons'''
+    def __init__(self, bs, mus, met, mW2, mT2):
+        b, b_ = bs
+        mu, mu_ = mus
+        metX, metY = met
+        self.solutionSets = [nuSolutionSet(B, M, mW2, mT2)
+                             for B,M in zip((b,b_),(mu,mu_))]
 
+        V0 = np.outer([metX, metY, 0], [0, 0, 1])
+        self.S = V0 - UnitCircle()
+        self.V0 = self.S
+        return 
+
+        N, N_ = [ss.N for ss in self.solutionSets]
+        n_ = self.S.T.dot(N_).dot(self.S)
+
+        v = intersections_ellipses(N, n_)
+        #v_ = [self.S.dot(sol) for sol in v]

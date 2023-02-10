@@ -59,8 +59,6 @@ torch::Tensor SingleNuTensor::Nu(
 	torch::Tensor M_ = X_.matmul(NuSolTensors::Derivative(X_)); 
 	M_ = M_ + torch::transpose(M_, 1, 2); 	
 
-	return M_; 
-
-
+	return NuSolTensors::Intersections(M_, NuSolTensors::UnitCircle(M_)); 
 }
 
