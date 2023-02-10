@@ -111,3 +111,60 @@ __global__ void _RzK(
 	if (indy == 0 && indz == 1){ _out[indx][indy][indz] = -_sin(agl[indx][0]); return; }
 	if (indy == indz && indz == 2){ _out[indx][indy][indz] = 1; return; }	
 }
+
+template <typename scalar_t>
+__global__ void _CoFactors(
+		const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> inpt, 
+		torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> _tmp, 
+		torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> _out, 
+		const int x, const int y, const int z)
+{
+	const int indx = blockIdx.x * blockDim.x + threadIdx.x; 
+	const int indy = blockIdx.y; 
+	const int indz = blockIdx.z;
+	const int ith = indx*y*z + indy*z + indz;
+
+	if (indx >= x){return;}
+	
+	int _i = 0; 
+	for (int i(0); i < y*z; ++i)
+	{
+		int _c = i%y;
+		int _r = (i/y)%z;
+		if (_c == indz || _r == indy){ continue; }
+		_tmp[ith][_i] = inpt[indx][_r][_c]; 
+		_i++; 
+	}
+	_out[indx][indy][indz] = pow(-1, indy+indz)*(_tmp[ith][0]*_tmp[ith][3] - _tmp[ith][1]*_tmp[ith][2]); 
+}
+
+template <typename scalar_t>
+__global__ void _Det(
+		const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> Matrix, 
+		const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> Coef, 
+		torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> _out, 
+		const int x, const int y)
+{
+
+	const int indx = blockIdx.x * blockDim.x + threadIdx.x; 
+	const int indy = blockIdx.y; 
+	if (indx >= x || indy >= y){ return; }
+	_out[indx][indy] = Coef[indx][0][indy]*Matrix[indx][0][indy]; 
+}
+
+
+template <typename scalar_t>
+__global__ void _Inv(
+		const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> Coef, 
+		const torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> Det, 
+		torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> _out, 
+		const int x, const int y, const int z)
+{
+
+	const int indx = blockIdx.x * blockDim.x + threadIdx.x; 
+	const int indy = blockIdx.y; 
+	const int indz = blockIdx.z;
+	if (indx >= x || indy >= y || indz >= z){ return; }
+	
+	if (Det[indx] != 0){ _out[indx][indy][indz] = Coef[indx][indz][indy]/Det[indx]; }
+}

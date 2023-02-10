@@ -93,7 +93,7 @@ l = C.Mul(x, y)
 diff2 = time() - t1
 
 print(AssertEquivalenceRecursive(c.tolist(), l.tolist()))
-print("--- Testing Performance Between C++ and CUDA of Rz ---")
+print("--- Testing Performance Between C++ and CUDA of Mul ---")
 print("Speed Factor (> 1 is better): ", diff1 / diff2)
 
 y = torch.tensor([[[k/(1+t) for i in range(3)] for k in range(3)] for t in range(100)], device = "cuda", dtype = torch.float64)
@@ -113,6 +113,24 @@ for t in range(10000):
     diff[1].append(diff2)
 
 print(AssertEquivalenceRecursive(c.tolist(), l.tolist()))
-print("--- Testing Performance Between C++ and CUDA of Rz ---")
+print("--- Testing Performance Between C++ and CUDA of MatMul ---")
+print("Speed Factor (> 1 is better): ", (sum(diff[0])) / sum(diff[1]))
+
+m = torch.tensor([[[1/(i+1), 4, 7/(i+1)], [3, i, 5], [-1/(i+1), 9, 1]] for i in range(10000)], dtype = torch.float64, device = "cuda")
+diff = [[], []]
+for t in range(10000):
+    t1 = time()
+    c = torch.inverse(m)
+    t2 = time()
+    diff1 = t2 - t1 
+    diff[0].append(diff1)
+    
+    t1 = time()
+    l = C.Inv(m)
+    t2 = time()
+    diff2 = t2 - t1
+    diff[1].append(diff2)
+print(AssertEquivalenceRecursive(c.tolist(), l.tolist()))
+print("--- Testing Performance Between C++ and CUDA of Inverse ---")
 print("Speed Factor (> 1 is better): ", (sum(diff[0])) / sum(diff[1]))
 

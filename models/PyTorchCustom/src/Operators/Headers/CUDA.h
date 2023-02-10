@@ -9,6 +9,10 @@ torch::Tensor _Rx(torch::Tensor angle);
 torch::Tensor _Ry(torch::Tensor angle); 
 torch::Tensor _Rz(torch::Tensor angle); 
 torch::Tensor _Mul(torch::Tensor v1, torch::Tensor v2); 
+torch::Tensor _Cofactors(torch::Tensor v1); 
+torch::Tensor _Determinant(torch::Tensor cofact, torch::Tensor Matrix);
+torch::Tensor _Inverse(torch::Tensor cofact, torch::Tensor Dets);
+torch::Tensor _inv(torch::Tensor Matrix); 
 
 #define CHECK_CUDA(x) TORCH_CHECK(x.device().is_cuda(), "#x must be on CUDA")
 #define CHECK_CONTIGUOUS(x) TORCH_CHECK(x.is_contiguous(), "#x must be contiguous")
@@ -29,6 +33,34 @@ namespace OperatorsCUDA
 		CHECK_INPUT(v2); 
 		return _Mul(v1, v2); 
 	}
+
+	const torch::Tensor Cofactors(torch::Tensor v1)
+	{
+		CHECK_INPUT(v1); 
+		return _Cofactors(v1); 
+	}
+
+	const torch::Tensor Determinant(torch::Tensor Cofactors, torch::Tensor Matrix)
+	{
+		CHECK_INPUT(Cofactors); 
+		CHECK_INPUT(Matrix); 
+		return _Determinant(Cofactors, Matrix); 
+	}
+
+	const torch::Tensor Inverse(torch::Tensor Cofactors, torch::Tensor dets)
+	{
+		CHECK_INPUT(Cofactors);
+		CHECK_INPUT(dets); 
+
+		return _Inverse(Cofactors, dets);
+	}
+
+	const torch::Tensor Inv(torch::Tensor matrix)
+	{
+		CHECK_INPUT(matrix);
+		return _inv(matrix);
+	}
+
 
 	const torch::Tensor CosTheta(torch::Tensor v1, torch::Tensor v2)
 	{
