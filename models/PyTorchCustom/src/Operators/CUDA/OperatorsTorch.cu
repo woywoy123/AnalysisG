@@ -228,6 +228,41 @@ torch::Tensor _Inverse(torch::Tensor Cofact, torch::Tensor Dets)
 	return _out;	
 }
 
+torch::Tensor _det(torch::Tensor Matrix)
+{
+	const int threads = 1024; 
+	const int x = Matrix.size(0); 
+	const int y = Matrix.size(-2); 
+	const int z = Matrix.size(-1); 
+
+	torch::Tensor _out = torch::zeros_like(Matrix); 
+	torch::Tensor _tmp = torch::zeros({x*y*z, 4}, _MakeOp(Matrix)); 
+	torch::Tensor _det = torch::zeros({x, y}, _MakeOp(Matrix)); 
+	
+	const dim3 blocks( (x + threads -1) / threads, y, z);
+	const dim3 blocks2( (x + threads -1) / threads, y ); 
+
+	AT_DISPATCH_FLOATING_TYPES(Matrix.scalar_type(), "_Det", ([&]
+	{
+		_CoFactors<scalar_t><<<blocks, threads>>>(
+				Matrix.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+				_tmp.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				_out.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+				x, y, z
+		); 
+
+		_Det<scalar_t><<<blocks2, threads>>>(
+				Matrix.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+				_out.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+				_det.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+				x, y
+		);
+		_det = _det.sum(-1);
+	})); 
+
+	return _det; 
+}
+
 torch::Tensor _inv(torch::Tensor Matrix)
 {
 	const int threads = 1024; 

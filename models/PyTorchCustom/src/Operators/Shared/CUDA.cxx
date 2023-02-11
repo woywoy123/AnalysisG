@@ -13,4 +13,5 @@ PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
 	m.def("Determinant", &OperatorsCUDA::Determinant, "Determinant");
 	m.def("Inverse", &OperatorsCUDA::Inverse, "Inverse");
 	m.def("Inv", &OperatorsCUDA::Inv, "Inv");
+	m.def("Det", &OperatorsCUDA::Det, "Det");
 }

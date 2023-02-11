@@ -30,6 +30,13 @@ torch::Tensor NuSolTensors::Derivative(torch::Tensor x)
 	return _o.matmul(_UnitCircle(x, {1, 1, 0}));
 }
 
+torch::Tensor NuSolTensors::V0(torch::Tensor metx, torch::Tensor mety)
+{
+	torch::Tensor matrix = torch::cat({metx, mety}, -1).view({-1, 2});
+	matrix = torch::pad(matrix, {0, 1, 0, 0}, "constant", 0).view({-1, 3, 1}); 
+	torch::Tensor t0 = torch::zeros_like(matrix); 
+	return torch::cat({t0, t0, matrix}, -1); 
+}
 
 torch::Tensor NuSolTensors::_Solutions(
 		std::vector<torch::Tensor> b_C, std::vector<torch::Tensor> mu_C, 
@@ -94,6 +101,106 @@ torch::Tensor NuSolTensors::H_Matrix(torch::Tensor Sols_, std::vector<torch::Ten
 	return torch::matmul(torch::matmul(Rz, torch::matmul(Ry, Rx)), H_); 
 }
 
+torch::Tensor NuSolTensors::Cofactors(torch::Tensor Matrix, int i, int j)
+{
+	std::vector<int> rows; 
+	std::vector<int> col; 
+	for (int k(0); k < 3; ++k)
+	{
+		if (k != i){rows.push_back(k);}
+		if (k != j){col.push_back(k);}
+	}
+	Matrix = Matrix.index({torch::indexing::Slice(), torch::tensor(rows), torch::indexing::Slice()});
+	Matrix = Matrix.index({torch::indexing::Slice(), torch::indexing::Slice(), torch::tensor(col)});
+	return pow(-1, i+j)*torch::det(Matrix.view({-1, 2, 2})); 
+}
+
+torch::Tensor NuSolTensors::HorizontalVertical(torch::Tensor G)
+{
+	torch::Tensor G01 = G.index({torch::indexing::Slice(), 0, 1}).view({-1, 1, 1}); 
+	torch::Tensor G02 = G.index({torch::indexing::Slice(), 0, 2}).view({-1, 1, 1}); 
+	torch::Tensor G12 = G.index({torch::indexing::Slice(), 1, 2}).view({-1, 1, 1}); 
+	torch::Tensor t0 = zeros_like(G01); 
+	return torch::cat({ G01, t0, G12, t0, G01, G02 - G12, t0, t0, t0}, -1).view({-1, 3, 3}); 
+}
+
+torch::Tensor NuSolTensors::Parallel(torch::Tensor G)
+{
+	torch::Tensor g00 = -NuSolTensors::Cofactors(G, 0, 0); 
+	torch::Tensor G00 = G.index({torch::indexing::Slice(), 0, 0}); 
+	torch::Tensor G01 = G.index({torch::indexing::Slice(), 0, 1}); 
+	torch::Tensor G11 = G.index({torch::indexing::Slice(), 1, 1});
+	torch::Tensor G12 = G.index({torch::indexing::Slice(), 1, 2});
+	torch::Tensor t0 = torch::zeros_like(G12); 
+	torch::Tensor G_ = torch::zeros_like(G); 
+	
+	// ----- Populate cases where g00 is 0
+	torch::Tensor y0 = g00 == 0.; 	
+	G_.index_put_({y0}, torch::cat({
+				G01.index({y0}).view({-1, 1, 1}), G11.index({y0}).view({-1, 1, 1}), G12.index({y0}).view({-1, 1, 1}), 
+				 t0.index({y0}).view({-1, 1, 1}),  t0.index({y0}).view({-1, 1, 1}),  t0.index({y0}).view({-1, 1, 1}), 
+				 t0.index({y0}).view({-1, 1, 1}),  t0.index({y0}).view({-1, 1, 1}),  t0.index({y0}).view({-1, 1, 1})
+	}, -1).view({-1, 3, 3})); 
+	
+	// ----- Populate cases where -g00 > 0
+	torch::Tensor yr = g00 > 0.; 
+	G_.index_put_({yr}, torch::cat({
+				G01.index({yr}).view({-1, 1, 1}), 
+				G11.index({yr}).view({-1, 1, 1}), 
+				(G12.index({yr}) - torch::sqrt(g00.index({yr}))).view({-1, 1, 1}),
+
+				G01.index({yr}).view({-1, 1, 1}), 
+				G11.index({yr}).view({-1, 1, 1}), 
+				(G12.index({yr}) + torch::sqrt(g00.index({yr}))).view({-1, 1, 1}),
+
+				torch::cat({t0.index({yr}), t0.index({yr}), t0.index({yr})}, -1).view({-1, 1, 3})
+	}, -1).view({-1, 3, 3})); 
+	return G_; 
+}
+
+torch::Tensor NuSolTensors::Intersecting(torch::Tensor G, torch::Tensor g22)
+{
+	torch::Tensor x0 = (NuSolTensors::Cofactors(G, 0, 2) / g22); 
+	torch::Tensor y0 = (NuSolTensors::Cofactors(G, 1, 2) / g22); 
+	torch::Tensor G11 = G.index({torch::indexing::Slice(), 1, 1}); 
+	torch::Tensor G01 = G.index({torch::indexing::Slice(), 0, 1}); 
+	torch::Tensor t0 = torch::zeros_like(G01); 
+	
+	// Case 1: -g22 < 0 - No Solution  - ignore
+	torch::Tensor G_ = torch::zeros_like(G);
+	
+	// Case 2: -g22 == 0 - One Solution 
+	torch::Tensor _s1 = -g22 == 0.; 
+	G_.index_put_({_s1}, torch::cat({
+			G01.index({_s1}).view({-1, 1, 1}), 
+			G11.index({_s1}).view({-1, 1, 1}), 
+			((-G11.index({_s1}) * y0.index({_s1})) - (G01.index({_s1}) * x0.index({_s1}))).view({-1, 1, 1}), 
+
+			torch::cat({t0.index({_s1}), t0.index({_s1}), t0.index({_s1})}, -1).view({-1, 1, 3}), 
+			torch::cat({t0.index({_s1}), t0.index({_s1}), t0.index({_s1})}, -1).view({-1, 1, 3})
+	}, -1).view({-1, 3, 3})); 
+
+	// Case 3; -g22 > 0 - Two Solutions 
+	torch::Tensor _s2 = -g22 > 0.;
+	torch::Tensor _s = torch::sqrt(-g22.index({_s2})); 
+
+	G_.index_put_({_s2}, torch::cat({
+			// Solution 1
+			(G01.index({_s2}) - _s).view({-1, 1, 1}), 
+			(G11.index({_s2})).view({-1, 1, 1}), 
+			(-G11.index({_s2}) * y0.index({_s2}) - (G01.index({_s2}) - _s) * x0.index({_s2})).view({-1, 1, 1}), 
+
+			// Solution 2
+			(G01.index({_s2}) + _s).view({-1, 1, 1}), 
+			(G11.index({_s2})).view({-1, 1, 1}), 
+			(-G11.index({_s2}) * y0.index({_s2}) - (G01.index({_s2}) + _s) * x0.index({_s2})).view({-1, 1, 1}), 
+
+			torch::cat({t0.index({_s2}), t0.index({_s2}), t0.index({_s2})}, -1).view({-1, 1, 3}) // Zeros 
+	}, -1).view({-1, 3, 3})); 
+	return G_; 
+}
+
+
 torch::Tensor NuSolTensors::Intersections(torch::Tensor A, torch::Tensor B)
 {
 
@@ -103,8 +210,54 @@ torch::Tensor NuSolTensors::Intersections(torch::Tensor A, torch::Tensor B)
 	B.index_put_({swp}, A.index({swp})); 
 	A.index_put_({swp}, _tmp);
 	
-	_tmp = torch::inverse(A).matmul(B); 
-	return _tmp; 
+	// Find the non imaginary eigenvalue solutions
+	_tmp = torch::linalg::eigvals(torch::inverse(A).matmul(B)); 
+	torch::Tensor _r = torch::real(_tmp); 
+	torch::Tensor msk = torch::isreal(_tmp)*torch::arange(3, 0, -1, torch::TensorOptions().device(A.device())); 
+	msk = torch::argmax(msk, -1, true); 
+	_r = torch::gather(_r, 1, msk).view({-1, 1, 1}); 
+	torch::Tensor G = B - _r*A;
+	torch::Tensor _out = zeros_like(G); 
+	
+	// Get the diagonals of the matrix
+	torch::Tensor G00 = G.index({torch::indexing::Slice(), 0, 0}); 
+	torch::Tensor G11 = G.index({torch::indexing::Slice(), 1, 1}); 
+
+	// ----- Numerical Stability part ----- // 
+	swp = torch::abs(G00) > torch::abs(G11); 
+	G.index_put_({swp}, torch::cat({
+				G.index({swp, 1, torch::indexing::Slice()}).view({-1, 1, 3}), 
+				G.index({swp, 0, torch::indexing::Slice()}).view({-1, 1, 3}), 
+				G.index({swp, 2, torch::indexing::Slice()}).view({-1, 1, 3})}, 1)); 
+	G.index_put_({swp}, torch::cat({
+				G.index({swp, torch::indexing::Slice(), 1}).view({-1, 3, 1}), 
+				G.index({swp, torch::indexing::Slice(), 0}).view({-1, 3, 1}), 
+				G.index({swp, torch::indexing::Slice(), 2}).view({-1, 3, 1})}, 2)); 
+	G = G/(G.index({torch::indexing::Slice(), 1, 1}).view({-1, 1, 1})); 
+	
+	torch::Tensor g22 = NuSolTensors::Cofactors(G, 2, 2);
+	// 1. ----- Case where the solutions are Horizontal and Vertical ----- //
+	torch::Tensor G00_G11 = (G00 == 0) * (G11 == 0); 
+	torch::Tensor SolG_HV = NuSolTensors::HorizontalVertical(G.index({G00_G11}));
+	_out.index_put_({G00_G11}, SolG_HV); 
+
+	// 2. ------ Case where the solutions are parallel 
+	torch::Tensor g22__ = (-g22 <= 0.) * (G00_G11 == false); 	
+	torch::Tensor SolG_Para = NuSolTensors::Parallel(G.index({g22__})); 
+	_out.index_put_({g22__}, SolG_Para);
+
+	// 3. ------- Case where the solutions are intersecting 
+	torch::Tensor g22_ = (-g22 > 0.) * (G00_G11 == false); 
+	torch::Tensor SolG_Int = NuSolTensors::Intersecting(G.index({g22_}), g22.index({g22_})); 
+	_out.index_put_({g22_}, SolG_Int);
+
+	// Swap the XY if they were swapped previously 	
+	_tmp = torch::cat({
+			_out.index({swp, torch::indexing::Slice(), 1}).view({-1, 3, 1}), 
+			_out.index({swp, torch::indexing::Slice(), 0}).view({-1, 3, 1}), 
+			_out.index({swp, torch::indexing::Slice(), 2}).view({-1, 3, 1})}, 2);
+	_out.index_put_({swp}, _tmp); 
+	return _out; 
 }
 
 

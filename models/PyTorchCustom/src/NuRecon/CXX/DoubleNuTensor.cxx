@@ -1,5 +1,16 @@
 #include "../Headers/NuSolTensor.h"
 
+torch::Tensor DoubleNuTensor::N(torch::Tensor H)
+{
+	torch::Tensor H_ = torch::clone(H); 
+	H_.index_put_({torch::indexing::Slice(), 2, torch::indexing::Slice()}, 0); 
+	H_.index_put_({torch::indexing::Slice(), 2, 2}, 1);
+	H_ = torch::inverse(H_); 
+	torch::Tensor H_T = torch::transpose(H_, 1, 2); 
+	H_T = torch::matmul(H_T, NuSolTensors::UnitCircle(H_)); 
+	return torch::matmul(H_T, H_); 
+}
+
 torch::Tensor DoubleNuTensor::NuNu(
 			torch::Tensor b, torch::Tensor b_, 
 			torch::Tensor mu, torch::Tensor mu_, 
@@ -40,8 +51,16 @@ torch::Tensor DoubleNuTensor::NuNu(
 	// Starting the algorithm 
 	torch::Tensor sols_ = NuSolTensors::_Solutions(b_C, mu_C, b_e, mu_e, mT2, mW2, mNu2);
 	torch::Tensor sols__ = NuSolTensors::_Solutions(b__C, mu__C, b__e, mu__e, mT2, mW2, mNu2);
+	
+	torch::Tensor H_ = NuSolTensors::H_Matrix(sols_, b_C, mu_P[2], mu_C[2], muP_); 
+	torch::Tensor H__ = NuSolTensors::H_Matrix(sols__, b__C, mu__P[2], mu__C[2], muP__); 
+	torch::Tensor SkipEvent = (torch::det(H_) != 0)*(torch::det(H__) != 0);
+	
+	torch::Tensor N_ = DoubleNuTensor::N(H_.index({SkipEvent})); 
+	torch::Tensor N__ = DoubleNuTensor::N(H__.index({SkipEvent})); 
 
-	torch::Tensor S_ = SingleNuTensor::V0(met_x, met_y) - NuSolTensors::UnitCircle(mNu2); 
-
-	return S_;
+	torch::Tensor S_ = NuSolTensors::V0(met_x.index({SkipEvent}), met_y.index({SkipEvent})) - NuSolTensors::UnitCircle(mNu2.index({SkipEvent})); 
+	torch::Tensor n_ = torch::matmul(torch::matmul(S_.transpose(1, 2), N__), S_); 
+	
+	return NuSolTensors::Intersections(N_, n_);
 }

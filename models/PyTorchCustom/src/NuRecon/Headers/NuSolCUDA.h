@@ -73,9 +73,9 @@ namespace NuSolCUDA
 	}
 	
 	const torch::Tensor H_Matrix(
-			torch::Tensor Sols_, 
-			std::vector<torch::Tensor> b_C, std::vector<torch::Tensor> mu_C,
-			torch::Tensor mu_P, torch::Tensor mu_phi) 
+			torch::Tensor Sols_, std::vector<torch::Tensor> b_C, 
+			std::vector<torch::Tensor> mu_C, torch::Tensor mu_P, 
+			torch::Tensor mu_phi) 
 	{
 		torch::Tensor H_ = _H_Matrix(Sols_, mu_P); 
 		torch::Tensor theta_ = PhysicsCUDA::Theta(mu_C[0], mu_C[1], mu_C[2]);
@@ -113,7 +113,8 @@ namespace NuSolCUDA
 		
 		_tmp = OperatorsCUDA::Inverse(CofactA, DetA); 
 		_tmp = OperatorsCUDA::Mul(_tmp, B);
-		return _tmp; 
+		_tmp = torch::linalg::eigvals(_tmp); 
+		return torch::real(_tmp); 
 	}
 }
 
@@ -176,6 +177,17 @@ namespace SingleNuCUDA
 
 namespace DoubleNuCUDA
 {
+	const torch::Tensor N(torch::Tensor H)
+	{
+		torch::Tensor H_ = torch::clone(H); 
+		H_.index_put_({torch::indexing::Slice(), 2, torch::indexing::Slice()}, 0); 
+		H_.index_put_({torch::indexing::Slice(), 2, 2}, 1);
+		H_ = OperatorsCUDA::Inv(H_.contiguous());
+		torch::Tensor H_T = torch::transpose(H_, 1, 2).contiguous(); 
+		H_T = OperatorsCUDA::Mul(H_T, _Unit(H_, {1, 1, -1})); 
+		return OperatorsCUDA::Mul(H_T, H_); 
+	}
+
 	const torch::Tensor NuNu(
 			torch::Tensor b, torch::Tensor b_, 
 			torch::Tensor mu, torch::Tensor mu_, 
@@ -193,7 +205,6 @@ namespace DoubleNuCUDA
 		std::vector<torch::Tensor> b__C = NuSolCUDA::_Format(TransformCUDA::PxPyPz(b__P[0], b__P[1], b__P[2]), 3); 
 		std::vector<torch::Tensor> mu_C = NuSolCUDA::_Format(TransformCUDA::PxPyPz(mu_P[0], mu_P[1], mu_P[2]), 3); 
 		std::vector<torch::Tensor> mu__C = NuSolCUDA::_Format(TransformCUDA::PxPyPz(mu__P[0], mu__P[1], mu__P[2]), 3); 
-
 		torch::Tensor muP_ = PhysicsCUDA::P(mu_C[0], mu_C[1], mu_C[2]); 
 		torch::Tensor muP__ = PhysicsCUDA::P(mu__C[0], mu__C[1], mu__C[2]); 
 
@@ -207,19 +218,24 @@ namespace DoubleNuCUDA
 		torch::Tensor mW2 = OperatorsCUDA::Dot(mW, mW); 
 		torch::Tensor mNu2 = OperatorsCUDA::Dot(mNu, mNu); 
 
-		// Starting the algorithm 
+		// ---- Starting the algorithm ---- //
 		torch::Tensor sols_ = NuSolCUDA::Solutions(b_P, b_C, mu_P, mu_C, mT2, mW2, mNu2);
 		torch::Tensor sols__ = NuSolCUDA::Solutions(b__P, b__C, mu__P, mu__C, mT2, mW2, mNu2);
+		
+		torch::Tensor H_ = NuSolCUDA::H_Matrix(sols_, b_C, mu_C, muP_, mu_P[2]); 
+		torch::Tensor H__ = NuSolCUDA::H_Matrix(sols__, b__C, mu__C, muP__, mu__P[2]); 
 
-		torch::Tensor S_ = NuSolCUDA::V0(met_x, met_y) - _Unit(mT2, {1, 1, -1});
 
-		return S_;
+		// ---- Protection Against non-invertible Matrices ---- //
+		torch::Tensor SkipEvent = OperatorsCUDA::Dot(OperatorsCUDA::Det(H_), OperatorsCUDA::Det(H__)) != 0; 
+			
+		torch::Tensor N_ = DoubleNuCUDA::N(H_.index({SkipEvent})); 
+		torch::Tensor N__ = DoubleNuCUDA::N(H__.index({SkipEvent})); 
 
+		torch::Tensor S_ = NuSolCUDA::V0(met_x.index({SkipEvent}), met_y.index({SkipEvent})) - _Unit(mT2.index({SkipEvent}), {1, 1, -1});
+		torch::Tensor n_ = OperatorsCUDA::Mul(OperatorsCUDA::Mul(S_.transpose(1, 2).contiguous(), N__), S_); 
+
+		return NuSolCUDA::Intersection(N_, n_);
 	}
-
-
-
 }
-
-
 #endif 

@@ -13,6 +13,11 @@ def CosTheta(v1, v2):
     return v1v2/(v1_sq*v2_sq)**0.5
 
 
+def cofactor(A, i, j):
+    '''Cofactor[i,j] of 3x3 matrix A'''
+    a = A[not i:2 if i==2 else None :2 if i==1 else 1,not j:2 if j==2 else None :2 if j==1 else 1]
+    return ( -1)**(i+j) * (a[0 ,0]*a[1 ,1] - a[1 ,0]*a[0 ,1])
+
 def R(axis, angle):
     '''Rotation matrix about x(0),y(1), or z(2) axis'''
     c, s = math.cos(angle), math.sin(angle)
@@ -42,20 +47,16 @@ def factor_degenerate(G, zero=0):
     if G[0,0] == 0 == G[1,1]:
         return [[G[0,1], 0, G[1,2]],
                 [0, G[0,1], G[0,2] - G[1,2]]]
-
     swapXY = abs(G[0,0]) > abs(G[1,1])
     Q = G[(1,0,2),][:,(1,0,2)] if swapXY else G
     Q /= Q[1,1]
-    q22 = cofactor(Q, (2,2))
-
+    q22 = cofactor(Q, 2,2)
     if -q22 <= zero:
         lines = [[Q[0,1], Q[1,1], Q[1,2]+s]
-                 for s in multisqrt(-cofactor(Q, (0,0)))]
+                 for s in multisqrt(-cofactor(Q, 0,0))]
     else:
-        x0, y0 = [cofactor(Q,(i,2)) / q22 for i in [0, 1]]
-        lines = [[m, Q[1,1], -Q[1,1]*y0 - m*x0]
-                 for m in [Q[0,1] + s
-                           for s in multisqrt(-q22)]]
+        x0, y0 = [cofactor(Q, i, 2) / q22 for i in [0, 1]]
+        lines = [[m, Q[1,1], -Q[1,1]*y0 - m*x0] for m in [Q[0,1] + s for s in multisqrt(-q22)]]
 
     return [[L[swapXY],L[not swapXY],L[2]] for L in lines]
 
@@ -64,11 +65,9 @@ def intersections_ellipses(A, B, returnLines=False):
     LA = np.linalg
     if abs(LA.det(B)) > abs(LA.det(A)): A,B = B,A
     
-    #e = next(e.real for e in LA.eigvals(LA.inv(A).dot(B)) if not e.imag)
-    return [e.real for e in LA.eigvals(LA.inv(A).dot(B))]
-
-
+    e = next(e.real for e in LA.eigvals(LA.inv(A).dot(B)) if not e.imag)
     lines = factor_degenerate(B - e*A)
+    return lines
     points = sum([intersections_ellipse_line(A,L)
                   for L in lines],[])
     return (points,lines) if returnLines else points
@@ -117,6 +116,18 @@ class SolutionSet(object):
         '''Transformation of t=[c,s,1] to p_nu: lab coord.'''
         return self.R_T.dot(self.H_tilde)
 
+
+    @property
+    def H_perp(self):
+        '''Transformation of t=[c,s,1] to pT_nu: lab coord.'''
+        return np.vstack([self.H[:2], [0, 0, 1]])
+
+    @property
+    def N(self):
+        '''Solution ellipse of pT_nu: lab coord.'''
+        HpInv = np.linalg.inv(self.H_perp)
+        return HpInv.T.dot(UnitCircle()).dot(HpInv)
+
     @property
     def R_T(self):
         '''Rotation from F coord. to laboratory coord.'''
@@ -151,16 +162,13 @@ class doubleNeutrinoSolutions(object):
         b, b_ = bs
         mu, mu_ = mus
         metX, metY = met
-        self.solutionSets = [nuSolutionSet(B, M, mW2, mT2)
+        self.solutionSets = [SolutionSet(B, M, mW2, mT2, 0)
                              for B,M in zip((b,b_),(mu,mu_))]
 
         V0 = np.outer([metX, metY, 0], [0, 0, 1])
         self.S = V0 - UnitCircle()
-        self.V0 = self.S
-        return 
-
         N, N_ = [ss.N for ss in self.solutionSets]
         n_ = self.S.T.dot(N_).dot(self.S)
-
         v = intersections_ellipses(N, n_)
+        self.V0 = v
         #v_ = [self.S.dot(sol) for sol in v]

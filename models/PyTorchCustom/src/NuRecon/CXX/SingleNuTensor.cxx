@@ -11,13 +11,7 @@ torch::Tensor SingleNuTensor::Sigma2(
 	return _S; 
 }
 
-torch::Tensor SingleNuTensor::V0(torch::Tensor metx, torch::Tensor mety)
-{
-	torch::Tensor matrix = torch::cat({metx, mety}, -1).view({-1, 2});
-	matrix = torch::pad(matrix, {0, 1, 0, 0}, "constant", 0).view({-1, 3, 1}); 
-	torch::Tensor t0 = torch::zeros_like(matrix); 
-	return torch::cat({t0, t0, matrix}, -1); 
-}
+
 
 torch::Tensor SingleNuTensor::Nu(
 		torch::Tensor b, torch::Tensor mu, 
@@ -52,7 +46,7 @@ torch::Tensor SingleNuTensor::Nu(
 	torch::Tensor H_ = NuSolTensors::H_Matrix(sols_, b_C, mu_P[2], mu_C[2], muP_); 
 	torch::Tensor S2_ = SingleNuTensor::Sigma2(Sxx, Sxy, Syx, Syy); 
 
-	torch::Tensor delta_ = SingleNuTensor::V0(MetX, MetY) - H_; 
+	torch::Tensor delta_ = NuSolTensors::V0(MetX, MetY) - H_; 
 	torch::Tensor X_ = torch::matmul(torch::transpose(delta_, 1, 2), S2_); 
 	X_ = torch::matmul(X_, delta_).view({-1, 3, 3});
 

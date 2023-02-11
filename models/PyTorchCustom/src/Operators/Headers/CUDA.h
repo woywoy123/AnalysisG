@@ -13,6 +13,7 @@ torch::Tensor _Cofactors(torch::Tensor v1);
 torch::Tensor _Determinant(torch::Tensor cofact, torch::Tensor Matrix);
 torch::Tensor _Inverse(torch::Tensor cofact, torch::Tensor Dets);
 torch::Tensor _inv(torch::Tensor Matrix); 
+torch::Tensor _det(torch::Tensor Matrix); 
 
 #define CHECK_CUDA(x) TORCH_CHECK(x.device().is_cuda(), "#x must be on CUDA")
 #define CHECK_CONTIGUOUS(x) TORCH_CHECK(x.is_contiguous(), "#x must be contiguous")
@@ -20,38 +21,36 @@ torch::Tensor _inv(torch::Tensor Matrix);
 
 namespace OperatorsCUDA
 {
+
+	const void _CheckTensors(std::vector<torch::Tensor> T){for (torch::Tensor x : T){CHECK_INPUT(x);}}
+
 	const torch::Tensor Dot(torch::Tensor v1, torch::Tensor v2)
-	{
-		CHECK_INPUT(v1); 
-		CHECK_INPUT(v2); 
-		return _Dot(v1, v2).sum({-1}, true); 
+	{ 
+		_CheckTensors({v1, v1}); 
+		return _Dot(v1, v2).sum({-1}, true);
 	}
 
 	const torch::Tensor Mul(torch::Tensor v1, torch::Tensor v2)
-	{
-		CHECK_INPUT(v1); 
-		CHECK_INPUT(v2); 
+	{ 
+		_CheckTensors({v1, v2}); 
 		return _Mul(v1, v2); 
 	}
 
 	const torch::Tensor Cofactors(torch::Tensor v1)
 	{
-		CHECK_INPUT(v1); 
+		_CheckTensors({v1}); 
 		return _Cofactors(v1); 
 	}
 
 	const torch::Tensor Determinant(torch::Tensor Cofactors, torch::Tensor Matrix)
-	{
-		CHECK_INPUT(Cofactors); 
-		CHECK_INPUT(Matrix); 
+	{ 
+		_CheckTensors({Cofactors, Matrix}); 
 		return _Determinant(Cofactors, Matrix); 
 	}
 
 	const torch::Tensor Inverse(torch::Tensor Cofactors, torch::Tensor dets)
 	{
-		CHECK_INPUT(Cofactors);
-		CHECK_INPUT(dets); 
-
+		_CheckTensors({Cofactors, dets}); 
 		return _Inverse(Cofactors, dets);
 	}
 
@@ -61,12 +60,15 @@ namespace OperatorsCUDA
 		return _inv(matrix);
 	}
 
+	const torch::Tensor Det(torch::Tensor Matrix)
+	{
+		CHECK_INPUT(Matrix);
+		return _det(Matrix); 
+	}
 
 	const torch::Tensor CosTheta(torch::Tensor v1, torch::Tensor v2)
 	{
-		CHECK_INPUT(v1);
-		CHECK_INPUT(v2);
-
+		_CheckTensors({v1, v2}); 
 		return _CosTheta(v1, v2); 
 	}
 
@@ -77,9 +79,8 @@ namespace OperatorsCUDA
 
 	const torch::Tensor SinTheta(torch::Tensor v1, torch::Tensor v2)
 	{
-		CHECK_INPUT(v1);
-		CHECK_INPUT(v2);
-		
+
+		_CheckTensors({v1, v2}); 
 		return _SinTheta(_CosTheta(v1, v2)); 
 	}
 
