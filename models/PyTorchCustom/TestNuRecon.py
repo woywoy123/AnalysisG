@@ -108,8 +108,20 @@ _sol = NuC.Nu(T.b, T.mu, T.met, T.phi, T.Sxx, T.Sxy, T.Syx, T.Syy, T.mT, T.mW, T
 #print(t_sol)
 
 t_sol = NuT.NuNu(T.b, T.b_, T.mu, T.mu_, T.met, T.phi, T.mT, T.mW, T.mN)
+_sol = NuC.NuNu(T.b, T.b_, T.mu, T.mu_, T.met, T.phi, T.mT, T.mW, T.mN)
+
+for i, j in zip(t_sol, _sol):
+    print("")
+    print(i)
+    print(j)
+#
+#
+#
+#exit()
 #if AssertEquivalenceRecursive(t_sol, _sol) == False:
 #    print("Not EQUAL!!!!")
+#
+exit()
 for r, t in zip(R, T):
     b, mu = r[0], r[1]
     _b, _mu = r[2], r[3]
@@ -139,7 +151,7 @@ for r, t in zip(R, T):
     t_sol = NuT.NuNu(tb_, t_b_, tmu_, t_mu_, t_met, t_phi, t_mT, t_mW, t_mNu)
     
     print("")
- 
+    
     if AssertEquivalenceRecursive(sol.V0, t_sol.tolist()[0]) == False:
         print("")
         print("------ Double -----")

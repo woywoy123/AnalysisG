@@ -160,3 +160,152 @@ __global__ void _Unit_(
 	if (indx >= x){ return; }
 	out_[indx][indy][indy] = diag_[indy]; 
 }
+
+template <typename scalar_t>
+__global__ void _FacSol1(
+		const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> G, 
+		torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> _out, 
+		const int x)
+{
+
+	const int indx = blockIdx.x*blockDim.x + threadIdx.x; 
+	const int indy = blockIdx.y; 
+	const int indz = blockIdx.z;
+
+	if (indx >= x){ return; }
+	if ( G[indx][0][0] != 0 && G[indx][1][1] != 0 ){ return; }
+
+	if (indy == indz){ _out[indx][indy][indz] = G[indx][0][1]; return; }
+	if (indy == 0){ _out[indx][0][2] = G[indx][1][2]; return; }	
+	if (indy == 1){ _out[indx][1][2] = G[indx][0][2] - G[indx][1][2]; return; }
+}
+
+template <typename scalar_t>
+__global__ void _Swp1(
+		const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> G, 
+		torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> _out, 
+		const int x)
+{
+
+	const int indx = blockIdx.x*blockDim.x + threadIdx.x; 
+	const int indy = blockIdx.y; 
+	const int indz = blockIdx.z;
+
+	if (indx >= x){ return; }
+	if ( G[indx][0][0] == 0 && G[indx][1][1] == 0 ){ return; }
+	if ( abs(G[indx][0][0]) < abs(G[indx][1][1]))
+	{
+		_out[indx][indy][indz] = G[indx][indy][indz]; 
+		return; 
+	}
+	if (indy == 2)
+	{
+		_out[indx][indy][indz] = G[indx][indy][indz]; 
+		return; 
+	}
+	_out[indx][indy][indz] = G[indx][1-indy][indz]; 	
+}
+
+template <typename scalar_t>
+__global__ void _Swp2(
+		const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> G, 
+		torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> _out, 
+		const int x)
+{
+	const int indx = blockIdx.x*blockDim.x + threadIdx.x; 
+	const int indy = blockIdx.y;
+
+	if (indx >= x){ return; }
+	if ( G[indx][0][0] == 0 && G[indx][1][1] == 0 ){ return; }
+
+	if ( abs(G[indx][0][0]) < abs(G[indx][1][1]) ){ return; }
+	const scalar_t tmp = _out[indx][indy][0]; 
+	_out[indx][indy][0] = _out[indx][indy][1]; 
+	_out[indx][indy][1] = tmp; 
+}
+
+template <typename scalar_t>
+__global__ void _DivG(
+		const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> G, 
+		const torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> _tmp, 
+		torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> _out, 
+		const int x)
+{
+	const int indx = blockIdx.x*blockDim.x + threadIdx.x; 
+	const int indy = blockIdx.y;
+	const int indz = blockIdx.z;
+
+	if (indx >= x){ return; }
+	if ( G[indx][0][0] == 0 && G[indx][1][1] == 0 ){ return; }
+	_out[indx][indy][indz] = _out[indx][indy][indz] / _tmp[indx]; 
+}
+
+template <typename scalar_t>
+__global__ void _FacSol2(
+		const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> G, 
+		const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> Q, 
+		const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> Cofact, 
+		torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> _out, 
+		const int x)
+{
+	const int indx = blockIdx.x*blockDim.x + threadIdx.x; 
+	const int indy = blockIdx.y;
+	const int indz = blockIdx.z;
+
+	if (indx >= x){ return; }
+	if ( G[indx][0][0] == 0 && G[indx][1][1] == 0 ){ return; }
+
+	const scalar_t g22 = Cofact[indx][2][2]; 
+	_out[indx][indy][indz] = 0; 
+	
+	if (-g22 <= 0.)
+	{
+		const scalar_t g00 = -Cofact[indx][0][0]; 
+		
+		// Negative solution
+		if (indy == 0 && indz == 0 && g00 >= 0){ _out[indx][0][indz] = Q[indx][0][1]; return; }
+		if (indy == 0 && indz == 1 && g00 >= 0){ _out[indx][0][indz] = Q[indx][1][1]; return; }
+		if (indy == 0 && indz == 2 && g00 >= 0){ _out[indx][0][indz] = Q[indx][1][2] - sqrt(g00); return; }
+			
+		// Positive solution 
+		if (indy == 1 && indz == 0 && g00 > 0){ _out[indx][1][indz] = Q[indx][0][1]; return; }
+		if (indy == 1 && indz == 1 && g00 > 0){ _out[indx][1][indz] = Q[indx][1][1]; return; }
+		if (indy == 1 && indz == 2 && g00 > 0){ _out[indx][1][indz] = Q[indx][1][2] + sqrt(g00); return; }
+	}
+
+
+	if (-g22 > 0.)
+	{
+		const scalar_t x0 = Cofact[indx][0][2] / g22; 
+		const scalar_t y0 = Cofact[indx][1][2] / g22;
+
+		if (indy == 0 && indz == 0)
+		{ 
+			_out[indx][0][0] = Q[indx][0][1] - sqrt( -g22 ); 
+			return; 
+		}	
+
+		if (indy == 1 && indz == 0)
+		{ 
+			_out[indx][1][0] = Q[indx][0][1] + sqrt( -g22 ); 
+			return; 
+
+		}	
+
+		if ((indy == 0 || indy == 1) && indz == 1){ _out[indx][indy][1] = Q[indx][1][1]; return; }	
+		
+		if (indy == 0 && indz == 2)
+		{ 
+			_out[indx][0][2] = -Q[indx][1][1] * y0 - (Q[indx][0][1] - sqrt( -g22 )) * x0;
+			return;   
+		}
+
+		if (indy == 1 && indz == 2)
+		{ 
+			_out[indx][1][2] = -Q[indx][1][1] * y0 - (Q[indx][0][1] + sqrt( -g22 )) * x0;
+			return;   
+		}
+	}
+}
+
+

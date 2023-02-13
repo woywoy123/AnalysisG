@@ -24,8 +24,8 @@ torch::Tensor _H_Matrix(
 torch::Tensor _H_Matrix(torch::Tensor sols, torch::Tensor mu_P); 
 torch::Tensor _Pi_2(torch::Tensor V);
 torch::Tensor _Unit(torch::Tensor v, std::vector<int> diag); 
-
-
+torch::Tensor _Factorization(torch::Tensor G); 
+torch::Tensor _Factorization(torch::Tensor G, torch::Tensor Q, torch::Tensor Cofactors); 
 
 #define CHECK_CUDA(x) TORCH_CHECK(x.device().is_cuda(), "#x must be on CUDA")
 #define CHECK_CONTIGUOUS(x) TORCH_CHECK(x.is_contiguous(), "#x must be contiguous")
@@ -100,21 +100,22 @@ namespace NuSolCUDA
 
 	const torch::Tensor Intersection(torch::Tensor A, torch::Tensor B)
 	{
-		torch::Tensor CofactA = OperatorsCUDA::Cofactors(A); 		
-		torch::Tensor DetA = OperatorsCUDA::Determinant(CofactA, A); 
-		
-		torch::Tensor CofactB = OperatorsCUDA::Cofactors(B); 
-		torch::Tensor DetB = OperatorsCUDA::Determinant(CofactB, B); 
-		
-		torch::Tensor swp = torch::abs(DetB) > torch::abs(DetA);
+
+		torch::Tensor swp = torch::abs(OperatorsCUDA::Det(B)) > torch::abs(OperatorsCUDA::Det(A));
 		torch::Tensor _tmp = B.index({swp}); 
 		B.index_put_({swp}, A.index({swp})); 
 		A.index_put_({swp}, _tmp);
 		
-		_tmp = OperatorsCUDA::Inverse(CofactA, DetA); 
+		_tmp = OperatorsCUDA::Inv(A); 
 		_tmp = OperatorsCUDA::Mul(_tmp, B);
 		_tmp = torch::linalg::eigvals(_tmp); 
-		return torch::real(_tmp); 
+		torch::Tensor _r = torch::real(_tmp); 
+		torch::Tensor msk = torch::isreal(_tmp)*torch::arange(3, 0, -1, torch::TensorOptions().device(A.device())); 
+		msk = torch::argmax(msk, -1, true); 
+		_r = torch::gather(_r, 1, msk).view({-1, 1, 1}); 
+		torch::Tensor G = B - _r*A;
+		torch::Tensor Q = _Factorization(G); 
+		return _Factorization(G, Q, OperatorsCUDA::Cofactors(Q)); 
 	}
 }
 
@@ -227,12 +228,17 @@ namespace DoubleNuCUDA
 
 
 		// ---- Protection Against non-invertible Matrices ---- //
-		torch::Tensor SkipEvent = OperatorsCUDA::Dot(OperatorsCUDA::Det(H_), OperatorsCUDA::Det(H__)) != 0; 
-			
-		torch::Tensor N_ = DoubleNuCUDA::N(H_.index({SkipEvent})); 
-		torch::Tensor N__ = DoubleNuCUDA::N(H__.index({SkipEvent})); 
+		torch::Tensor SkipEvent = OperatorsCUDA::Dot(OperatorsCUDA::Det(H_).view({-1, 1}), OperatorsCUDA::Det(H__).view({-1, 1})) != 0.; 
+		SkipEvent = SkipEvent.view({-1}); 
+		H_ = H_.index({SkipEvent}); 
+		H__ = H__.index({SkipEvent}); 
+		met_x = met_x.index({SkipEvent}); 
+		met_y = met_y.index({SkipEvent});
 
-		torch::Tensor S_ = NuSolCUDA::V0(met_x.index({SkipEvent}), met_y.index({SkipEvent})) - _Unit(mT2.index({SkipEvent}), {1, 1, -1});
+		torch::Tensor N_ = DoubleNuCUDA::N(H_); 
+		torch::Tensor N__ = DoubleNuCUDA::N(H__); 
+
+		torch::Tensor S_ = NuSolCUDA::V0(met_x, met_y) - _Unit(met_y, {1, 1, -1});
 		torch::Tensor n_ = OperatorsCUDA::Mul(OperatorsCUDA::Mul(S_.transpose(1, 2).contiguous(), N__), S_); 
 
 		return NuSolCUDA::Intersection(N_, n_);

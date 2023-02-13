@@ -38,7 +38,6 @@ def multisqrt (y):
 def factor_degenerate (G, zero =0):
     '''Linear factors of degenerate quadratic polynomial '''
     if G[0 ,0] == 0 == G[1 ,1]:
-        print("-")
         return [[G[0,1], 0, G[1 ,2]] , [0, G[0,1], G[0 ,2] - G[1 ,2]]]
 
     swapXY = abs(G[0 ,0]) > abs(G[1 ,1])

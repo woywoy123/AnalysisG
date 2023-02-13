@@ -135,3 +135,78 @@ torch::Tensor _Unit(torch::Tensor v, std::vector<int> diag)
 
 	return _out;
 }
+
+torch::Tensor _Factorization(torch::Tensor G)
+{
+	const int threads = 1024; 
+	const int x = G.size(0); 
+	const int t_th = (x + threads - 1)/threads; 
+	const dim3 blocks13(t_th, 3); 
+	const dim3 blocks22(t_th, 2, 2); 
+	const dim3 blocks33(t_th, 3, 3);
+
+	torch::Tensor _out = torch::zeros_like(G);
+	torch::Tensor _tmp = _out.index({torch::indexing::Slice(), 1, 1}).clone(); 
+	AT_DISPATCH_FLOATING_TYPES(_out.scalar_type(), "_Factorization", ([&]
+	{
+		_FacSol1<scalar_t><<<blocks22, threads>>>(
+				G.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+				_out.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+				x
+		); 
+
+		_Swp1<scalar_t><<<blocks33, threads>>>(
+				G.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+				_out.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+				x
+		); 
+
+		_Swp2<scalar_t><<<blocks13, threads>>>(
+				G.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+				_out.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+				x
+		); 
+		_tmp = _out.index({torch::indexing::Slice(), 1, 1}).clone();	
+		_DivG<scalar_t><<<blocks33, threads>>>(
+				G.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+				_tmp.packed_accessor64<scalar_t, 1, torch::RestrictPtrTraits>(), 
+				_out.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+				x
+		); 
+
+
+	})); 
+
+	return _out; 
+}
+
+torch::Tensor _Factorization(torch::Tensor G, torch::Tensor Q, torch::Tensor Cofactors)
+{
+	const int threads = 1024; 
+	const int x = G.size(0); 
+	const int t_th = (x + threads - 1)/threads; 
+	const dim3 blocks33(t_th, 3, 3);
+	torch::Tensor _out = torch::zeros_like(G);
+
+	AT_DISPATCH_FLOATING_TYPES(_out.scalar_type(), "_Factorization", ([&]
+	{
+		_FacSol2<scalar_t><<<blocks33, threads>>>(
+				G.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+				Cofactors.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+				Q.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+				_out.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+				x
+		); 
+	})); 
+
+	return _out; 
+
+}
+
+
+
+
+
+
+
+

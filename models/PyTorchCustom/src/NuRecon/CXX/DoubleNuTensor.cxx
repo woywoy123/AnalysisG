@@ -55,6 +55,11 @@ torch::Tensor DoubleNuTensor::NuNu(
 	torch::Tensor H_ = NuSolTensors::H_Matrix(sols_, b_C, mu_P[2], mu_C[2], muP_); 
 	torch::Tensor H__ = NuSolTensors::H_Matrix(sols__, b__C, mu__P[2], mu__C[2], muP__); 
 	torch::Tensor SkipEvent = (torch::det(H_) != 0)*(torch::det(H__) != 0);
+
+	H_ = H_.index({SkipEvent}); 
+	H__ = H__.index({SkipEvent}); 
+	met_x = met_x.index({SkipEvent}); 
+	met_y = met_y.index({SkipEvent});
 	
 	torch::Tensor N_ = DoubleNuTensor::N(H_.index({SkipEvent})); 
 	torch::Tensor N__ = DoubleNuTensor::N(H__.index({SkipEvent})); 

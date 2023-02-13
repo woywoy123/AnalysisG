@@ -31,11 +31,6 @@ def R(axis, angle):
     return R
 
 
-def Derivative():
-    '''Matrix to differentiate [cos(t),sin(t),1]'''
-    return R(2, math.pi / 2).dot(np.diag([1, 1, 0]))
-
-
 def multisqrt(y):
     '''Valid real solutions to y=x*x'''
     return ([] if y < 0 else

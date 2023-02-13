@@ -217,7 +217,7 @@ torch::Tensor NuSolTensors::Intersections(torch::Tensor A, torch::Tensor B)
 	msk = torch::argmax(msk, -1, true); 
 	_r = torch::gather(_r, 1, msk).view({-1, 1, 1}); 
 	torch::Tensor G = B - _r*A;
-	torch::Tensor _out = zeros_like(G); 
+	
 	
 	// Get the diagonals of the matrix
 	torch::Tensor G00 = G.index({torch::indexing::Slice(), 0, 0}); 
@@ -236,6 +236,8 @@ torch::Tensor NuSolTensors::Intersections(torch::Tensor A, torch::Tensor B)
 	G = G/(G.index({torch::indexing::Slice(), 1, 1}).view({-1, 1, 1})); 
 	
 	torch::Tensor g22 = NuSolTensors::Cofactors(G, 2, 2);
+	torch::Tensor _out = zeros_like(G); 
+	
 	// 1. ----- Case where the solutions are Horizontal and Vertical ----- //
 	torch::Tensor G00_G11 = (G00 == 0) * (G11 == 0); 
 	torch::Tensor SolG_HV = NuSolTensors::HorizontalVertical(G.index({G00_G11}));
@@ -251,12 +253,12 @@ torch::Tensor NuSolTensors::Intersections(torch::Tensor A, torch::Tensor B)
 	torch::Tensor SolG_Int = NuSolTensors::Intersecting(G.index({g22_}), g22.index({g22_})); 
 	_out.index_put_({g22_}, SolG_Int);
 
-	// Swap the XY if they were swapped previously 	
-	_tmp = torch::cat({
-			_out.index({swp, torch::indexing::Slice(), 1}).view({-1, 3, 1}), 
-			_out.index({swp, torch::indexing::Slice(), 0}).view({-1, 3, 1}), 
-			_out.index({swp, torch::indexing::Slice(), 2}).view({-1, 3, 1})}, 2);
-	_out.index_put_({swp}, _tmp); 
+	//// Swap the XY if they were swapped previously 	
+	//_tmp = torch::cat({
+	//		_out.index({swp, torch::indexing::Slice(), 1}).view({-1, 3, 1}), 
+	//		_out.index({swp, torch::indexing::Slice(), 0}).view({-1, 3, 1}), 
+	//		_out.index({swp, torch::indexing::Slice(), 2}).view({-1, 3, 1})}, 2);
+	//_out.index_put_({swp}, _tmp); 
 	return _out; 
 }
 
