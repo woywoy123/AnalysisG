@@ -110,10 +110,10 @@ _sol = NuC.Nu(T.b, T.mu, T.met, T.phi, T.Sxx, T.Sxy, T.Syx, T.Syy, T.mT, T.mW, T
 t_sol = NuT.NuNu(T.b, T.b_, T.mu, T.mu_, T.met, T.phi, T.mT, T.mW, T.mN)
 _sol = NuC.NuNu(T.b, T.b_, T.mu, T.mu_, T.met, T.phi, T.mT, T.mW, T.mN)
 
-for i, j in zip(t_sol, _sol):
-    print("")
-    print(i)
-    print(j)
+#for i, j in zip(t_sol, _sol):
+#    print("")
+#    print(i)
+#    print(j)
 #
 #
 #
@@ -121,7 +121,7 @@ for i, j in zip(t_sol, _sol):
 #if AssertEquivalenceRecursive(t_sol, _sol) == False:
 #    print("Not EQUAL!!!!")
 #
-exit()
+it = 0
 for r, t in zip(R, T):
     b, mu = r[0], r[1]
     _b, _mu = r[2], r[3]
@@ -135,31 +135,42 @@ for r, t in zip(R, T):
     sxx, sxy = T.Sxx[T.it], T.Sxy[T.it]
     syx, syy = T.Syx[T.it], T.Syy[T.it]
 
-    sol = singleNeutrinoSolution(b, mu, (met_x, met_y), [[100, 0], [0, 100]], mW**2, mT**2)
-    t_sol = NuT.Nu(tb_, tmu_, t_met, t_phi, sxx, sxy, syx, syy, t_mT, t_mW, t_mNu)
-    if AssertEquivalenceRecursive(sol.V0, t_sol.tolist()[0]) == False:
-        print("------ Single -----")
-        print("Not EQUAL!!!!")  
-        print(t_sol)
-        print("")
-        print(sol.V0)
-    
+    #sol = singleNeutrinoSolution(b, mu, (met_x, met_y), [[100, 0], [0, 100]], mW**2, mT**2)
+    #t_sol = NuT.Nu(tb_, tmu_, t_met, t_phi, sxx, sxy, syx, syy, t_mT, t_mW, t_mNu)
+    # if AssertEquivalenceRecursive(sol.V0, t_sol.tolist()[0]) == False:
+    #     print("------ Single -----")
+    #     print("Not EQUAL!!!!")  
+    #     print(t_sol)
+    #     print("")
+    #     print(sol.V0)
+    #
     try:
         sol = doubleNeutrinoSolutions((b, _b), (mu, _mu), (met_x, met_y), mW**2, mT**2)
     except:
         continue
     t_sol = NuT.NuNu(tb_, t_b_, tmu_, t_mu_, t_met, t_phi, t_mT, t_mW, t_mNu)
     
+    print("---")
     print("")
-    
-    if AssertEquivalenceRecursive(sol.V0, t_sol.tolist()[0]) == False:
-        print("")
-        print("------ Double -----")
-        print("Not EQUAL!!!!")
-        print(t_sol[0])
-        print("")
-        print(sol.V0)
-        exit()
+    print(_sol[0][it])
+    print("")
+    print(_sol[1][it])
+    print("") 
+    print(_sol[2][it])
+    print("")
+    print(np.array(sol.V0))
+    it+= 1
 
+    #if AssertEquivalenceRecursive(sol.V0, t_sol.tolist()[0]) == False:
+    #    print("")
+    #    print("------ Double -----")
+    #    print("Not EQUAL!!!!")
+    #    print(t_sol[0])
+    #    print("")
+    #    print(sol.V0)
+    #    exit()
+    
+    if it == 10:
+        exit()
     
    

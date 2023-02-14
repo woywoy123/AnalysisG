@@ -309,3 +309,52 @@ __global__ void _FacSol2(
 }
 
 
+template <typename scalar_t>
+__global__ void _SwapXY_(
+		const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> G, 
+		const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> Q, 
+		torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> _out, 
+		const int x)
+{
+
+	const int indx = blockIdx.x*blockDim.x + threadIdx.x; 
+	const int indy = blockIdx.y;
+	const int indz = blockIdx.z;
+	
+	if (indx >= x){return;}
+	
+	if (abs(G[indx][0][0]) > abs(G[indx][1][1]) && indz < 2)
+	{
+		_out[indx][indy][1-indz] = Q[indx][indy][indz];
+		return; 
+	}
+	_out[indx][indy][indz] = Q[indx][indy][indz];
+}
+
+template <typename scalar_t>
+__global__ void _EllipseLines_(
+		const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> Lines, 
+		const torch::PackedTensorAccessor64<scalar_t, 4, torch::RestrictPtrTraits> Q, 
+		torch::PackedTensorAccessor64<scalar_t, 4, torch::RestrictPtrTraits> _out, 
+		const int x, const int y, const int z)
+{
+
+	const int indx = blockIdx.x*blockDim.x + threadIdx.x; 
+	const int indy = blockIdx.y;
+	const int indz = blockIdx.z%z;
+	const int _iy = indy/y; 
+	const int _y = indy%y;
+
+	if (indx >= x){return;}
+		
+	if (Q[indx][_iy][_y][2] == 0){ _out[indx][_iy][_y][indz] = 0; return; }
+	_out[indx][_iy][_y][indz] = Q[indx][_iy][_y][indz]/Q[indx][_iy][_y][2]; 
+
+
+
+
+
+
+}
+
+

@@ -192,21 +192,55 @@ torch::Tensor _Factorization(torch::Tensor G, torch::Tensor Q, torch::Tensor Cof
 	{
 		_FacSol2<scalar_t><<<blocks33, threads>>>(
 				G.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-				Cofactors.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-				Q.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+				Q.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+				Cofactors.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
 				_out.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
 				x
 		); 
 	})); 
-
 	return _out; 
-
 }
 
+torch::Tensor _SwapXY(torch::Tensor G, torch::Tensor Q)
+{
+	const int threads = 1024; 
+	const int x = G.size(0);
+	const dim3 blocks((x + threads - 1)/threads, 3, 3); 
+	
+	torch::Tensor _out = torch::zeros_like(G); 
+	AT_DISPATCH_FLOATING_TYPES(_out.scalar_type(), "_SwapXY", ([&]
+	{
+		_SwapXY_<scalar_t><<<blocks, threads>>>(
+				G.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+				Q.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+				_out.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+				x
+		); 
+	})); 
+	return _out; 
+}
+
+torch::Tensor _EllipseLines(torch::Tensor Lines, torch::Tensor Q, torch::Tensor A)
+{
+	const int threads = 1024; 
+	const int x = Lines.size(0); 
+	const int y = Lines.size(-2); 
+	const int z = y; 
+	
+	torch::Tensor _out = torch::zeros_like(Q); 
+	torch::Tensor _diag = torch::zeros_like(Q);
+
+	const dim3 blocks( (x + threads -1)/threads, y*y, z*z); 
+	AT_DISPATCH_FLOATING_TYPES(_out.scalar_type(), "_EllipseLines", ([&]
+	{
+		_EllipseLines_<scalar_t><<<blocks, threads>>>(
+				Lines.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+				Q.packed_accessor64<scalar_t, 4, torch::RestrictPtrTraits>(),
+				_out.packed_accessor64<scalar_t, 4, torch::RestrictPtrTraits>(), 
+				x, y, z
+		); 
+	})); 
+	return _out; 
 
 
-
-
-
-
-
+}

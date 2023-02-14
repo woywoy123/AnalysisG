@@ -253,12 +253,12 @@ torch::Tensor NuSolTensors::Intersections(torch::Tensor A, torch::Tensor B)
 	torch::Tensor SolG_Int = NuSolTensors::Intersecting(G.index({g22_}), g22.index({g22_})); 
 	_out.index_put_({g22_}, SolG_Int);
 
-	//// Swap the XY if they were swapped previously 	
-	//_tmp = torch::cat({
-	//		_out.index({swp, torch::indexing::Slice(), 1}).view({-1, 3, 1}), 
-	//		_out.index({swp, torch::indexing::Slice(), 0}).view({-1, 3, 1}), 
-	//		_out.index({swp, torch::indexing::Slice(), 2}).view({-1, 3, 1})}, 2);
-	//_out.index_put_({swp}, _tmp); 
+	// Swap the XY if they were swapped previously 	
+	_tmp = torch::cat({
+			_out.index({swp, torch::indexing::Slice(), 1}).view({-1, 3, 1}), 
+			_out.index({swp, torch::indexing::Slice(), 0}).view({-1, 3, 1}), 
+			_out.index({swp, torch::indexing::Slice(), 2}).view({-1, 3, 1})}, 2);
+	_out.index_put_({swp}, _tmp); 
 	return _out; 
 }
 

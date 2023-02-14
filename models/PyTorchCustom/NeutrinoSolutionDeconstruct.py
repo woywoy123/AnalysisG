@@ -12,6 +12,16 @@ def CosTheta(v1, v2):
     v1v2 = v1.x*v2.x + v1.y*v2.y + v1.z*v2.z
     return v1v2/(v1_sq*v2_sq)**0.5
 
+# A = ellipse, Q[i] = line
+def intersections_ellipse_line(ellipse, line, zero=1e-12):
+    '''Points of intersection between ellipse and line'''
+    _,V = np.linalg.eig(np.cross(line,ellipse).T)
+    sols = sorted([(v.real / v[2].real, np.dot(line,v.real)**2 +
+                    np.dot(v.real,ellipse).dot(v.real)**2) for v in V.T],
+                  key=lambda k: k[1])[:2]
+        
+    return [[v.real/v[2].real] for v in V.T]
+    return [s for s, k in sols if k < zero]
 
 def cofactor(A, i, j):
     '''Cofactor[i,j] of 3x3 matrix A'''
@@ -57,7 +67,7 @@ def factor_degenerate(G, zero=0):
     else:
         x0, y0 = [cofactor(Q, i, 2) / q22 for i in [0, 1]]
         lines = [[m, Q[1,1], -Q[1,1]*y0 - m*x0] for m in [Q[0,1] + s for s in multisqrt(-q22)]]
-
+    
     return [[L[swapXY],L[not swapXY],L[2]] for L in lines]
 
 def intersections_ellipses(A, B, returnLines=False):
@@ -67,9 +77,8 @@ def intersections_ellipses(A, B, returnLines=False):
     
     e = next(e.real for e in LA.eigvals(LA.inv(A).dot(B)) if not e.imag)
     lines = factor_degenerate(B - e*A)
-    return lines
-    points = sum([intersections_ellipse_line(A,L)
-                  for L in lines],[])
+    #points = sum([intersections_ellipse_line(A,L) for L in lines],[])
+    return np.array([intersections_ellipse_line(A,L) for L in lines])
     return (points,lines) if returnLines else points
 
 class SolutionSet(object):

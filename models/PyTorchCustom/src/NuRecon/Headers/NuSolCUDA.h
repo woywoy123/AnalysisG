@@ -1,6 +1,7 @@
 #ifndef H_NUSOL_CUDA
 #define H_NUSOL_CUDA 
 
+#include <iostream>
 #include <torch/extension.h>
 #include <iostream>
 #include "../../Physics/Headers/CUDA.h"
@@ -26,6 +27,8 @@ torch::Tensor _Pi_2(torch::Tensor V);
 torch::Tensor _Unit(torch::Tensor v, std::vector<int> diag); 
 torch::Tensor _Factorization(torch::Tensor G); 
 torch::Tensor _Factorization(torch::Tensor G, torch::Tensor Q, torch::Tensor Cofactors); 
+torch::Tensor _SwapXY(torch::Tensor G, torch::Tensor Q);
+torch::Tensor _EllipseLines(torch::Tensor Lines, torch::Tensor Q, torch::Tensor A); 
 
 #define CHECK_CUDA(x) TORCH_CHECK(x.device().is_cuda(), "#x must be on CUDA")
 #define CHECK_CONTIGUOUS(x) TORCH_CHECK(x.is_contiguous(), "#x must be contiguous")
@@ -98,7 +101,7 @@ namespace NuSolCUDA
 		return OperatorsCUDA::Mul(OperatorsCUDA::Rz(_Pi_2(x)), _Unit(x, {1, 1, 0}));
 	}
 
-	const torch::Tensor Intersection(torch::Tensor A, torch::Tensor B)
+	const std::vector<torch::Tensor> Intersection(torch::Tensor A, torch::Tensor B)
 	{
 
 		torch::Tensor swp = torch::abs(OperatorsCUDA::Det(B)) > torch::abs(OperatorsCUDA::Det(A));
@@ -115,7 +118,30 @@ namespace NuSolCUDA
 		_r = torch::gather(_r, 1, msk).view({-1, 1, 1}); 
 		torch::Tensor G = B - _r*A;
 		torch::Tensor Q = _Factorization(G); 
-		return _Factorization(G, Q, OperatorsCUDA::Cofactors(Q)); 
+		Q = _Factorization(G, Q, OperatorsCUDA::Cofactors(Q)); 
+		Q = _SwapXY(G, Q); 
+		torch::Tensor Lines = Q; 	
+		
+		Q = Q.view({-1, 3, 1, 3}); 	
+		_tmp = torch::zeros_like(Q); 
+		Q = torch::cat({Q, Q, Q}, 2).view({-1, 9, 1, 3}); 
+		_tmp = torch::cat({_tmp, _tmp, _tmp}, 1); 
+		Q = torch::cat({_tmp, Q}, 2); 
+		
+		_tmp = torch::cat({A.view({-1, 1, 3, 3}), A.view({-1, 1, 3, 3}), A.view({-1, 1, 3, 3})}, 1).view({-1, 9, 1, 3}); 
+		Q = torch::cat({Q, _tmp}, 2); 
+		Q = OperatorsCUDA::Cofactors(Q.view({-1, 3, 3})); 
+		Q = Q.index({torch::indexing::Slice(), 0, torch::indexing::Slice()}).view({-1, 3, 3, 3}); 
+
+		Q = std::get<1>(torch::linalg::eig(torch::transpose(Q, 2, 3))); 
+		Q = torch::real(Q);
+		Q = torch::transpose(Q, 2, 3); 
+
+		_tmp = _EllipseLines(Lines, Q, A); 
+		
+		return {Q, Lines, _tmp}; 
+
+		
 	}
 }
 
@@ -133,7 +159,7 @@ namespace SingleNuCUDA
 	}
 
 
-	const torch::Tensor Nu(torch::Tensor b, torch::Tensor mu, 
+	const std::vector<torch::Tensor> Nu(torch::Tensor b, torch::Tensor mu, 
 			torch::Tensor met, torch::Tensor phi, 
 			torch::Tensor Sxx, torch::Tensor Sxy, torch::Tensor Syx, torch::Tensor Syy,
 			torch::Tensor mT, torch::Tensor mW, torch::Tensor mNu)
@@ -189,11 +215,9 @@ namespace DoubleNuCUDA
 		return OperatorsCUDA::Mul(H_T, H_); 
 	}
 
-	const torch::Tensor NuNu(
-			torch::Tensor b, torch::Tensor b_, 
-			torch::Tensor mu, torch::Tensor mu_, 
-			torch::Tensor met, torch::Tensor phi, 
-			torch::Tensor mT, torch::Tensor mW, torch::Tensor mNu)
+	const std::vector<torch::Tensor> NuNu(
+			torch::Tensor b, torch::Tensor b_, torch::Tensor mu, torch::Tensor mu_, 
+			torch::Tensor met, torch::Tensor phi, torch::Tensor mT, torch::Tensor mW, torch::Tensor mNu)
 	{
 		// ---- Polar Version of Particles ---- //
 		std::vector<torch::Tensor> b_P = NuSolCUDA::_Format(b.view({-1, 4}), 4);
