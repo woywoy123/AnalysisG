@@ -28,7 +28,7 @@ torch::Tensor _Unit(torch::Tensor v, std::vector<int> diag);
 torch::Tensor _Factorization(torch::Tensor G); 
 torch::Tensor _Factorization(torch::Tensor G, torch::Tensor Q, torch::Tensor Cofactors); 
 torch::Tensor _SwapXY(torch::Tensor G, torch::Tensor Q);
-torch::Tensor _EllipseLines(torch::Tensor Lines, torch::Tensor Q, torch::Tensor A); 
+std::vector<torch::Tensor> _EllipseLines(torch::Tensor Lines, torch::Tensor Q, torch::Tensor A); 
 
 #define CHECK_CUDA(x) TORCH_CHECK(x.device().is_cuda(), "#x must be on CUDA")
 #define CHECK_CONTIGUOUS(x) TORCH_CHECK(x.is_contiguous(), "#x must be contiguous")
@@ -137,9 +137,9 @@ namespace NuSolCUDA
 		Q = torch::real(Q);
 		Q = torch::transpose(Q, 2, 3); 
 
-		_tmp = _EllipseLines(Lines, Q, A); 
+		return _EllipseLines(Lines, Q, A); 
 		
-		return {Q, Lines, _tmp}; 
+		return {Q, Lines, _tmp, A}; 
 
 		
 	}

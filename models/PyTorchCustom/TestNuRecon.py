@@ -103,8 +103,8 @@ its = 10000
 #print("--- Testing Performance Between C++ and CUDA of NuNu ---")
 #print("Speed Factor (> 1 is better): ", (sum(diff[0])) / sum(diff[1]))
 
-t_sol = NuT.Nu(T.b, T.mu, T.met, T.phi, T.Sxx, T.Sxy, T.Syx, T.Syy, T.mT, T.mW, T.mN)
-_sol = NuC.Nu(T.b, T.mu, T.met, T.phi, T.Sxx, T.Sxy, T.Syx, T.Syy, T.mT, T.mW, T.mN)
+#t_sol = NuT.Nu(T.b, T.mu, T.met, T.phi, T.Sxx, T.Sxy, T.Syx, T.Syy, T.mT, T.mW, T.mN)
+#_sol = NuC.Nu(T.b, T.mu, T.met, T.phi, T.Sxx, T.Sxy, T.Syx, T.Syy, T.mT, T.mW, T.mN)
 #print(t_sol)
 
 t_sol = NuT.NuNu(T.b, T.b_, T.mu, T.mu_, T.met, T.phi, T.mT, T.mW, T.mN)
@@ -144,22 +144,22 @@ for r, t in zip(R, T):
     #     print("")
     #     print(sol.V0)
     #
-    try:
-        sol = doubleNeutrinoSolutions((b, _b), (mu, _mu), (met_x, met_y), mW**2, mT**2)
-    except:
-        continue
-    t_sol = NuT.NuNu(tb_, t_b_, tmu_, t_mu_, t_met, t_phi, t_mT, t_mW, t_mNu)
+    sol = doubleNeutrinoSolutions((b, _b), (mu, _mu), (met_x, met_y), mW**2, mT**2)
+    #t_sol = NuT.NuNu(tb_, t_b_, tmu_, t_mu_, t_met, t_phi, t_mT, t_mW, t_mNu)
     
-    print("---")
-    print("")
+    print("-------------------------------------")
     print(_sol[0][it])
     print("")
     print(_sol[1][it])
-    print("") 
+    print("")
     print(_sol[2][it])
     print("")
-    print(np.array(sol.V0))
-    it+= 1
+    print(sol.V0)
+    print("")
+    print("")
+
+    it += 1
+
 
     #if AssertEquivalenceRecursive(sol.V0, t_sol.tolist()[0]) == False:
     #    print("")
@@ -170,7 +170,7 @@ for r, t in zip(R, T):
     #    print(sol.V0)
     #    exit()
     
-    if it == 10:
+    if it == 4:
         exit()
     
    

@@ -18,9 +18,8 @@ def intersections_ellipse_line(ellipse, line, zero=1e-12):
     _,V = np.linalg.eig(np.cross(line,ellipse).T)
     sols = sorted([(v.real / v[2].real, np.dot(line,v.real)**2 +
                     np.dot(v.real,ellipse).dot(v.real)**2) for v in V.T],
-                  key=lambda k: k[1])[:2]
-        
-    return [[v.real/v[2].real] for v in V.T]
+                  key=lambda k: k[1])#[:2]
+
     return [s for s, k in sols if k < zero]
 
 def cofactor(A, i, j):

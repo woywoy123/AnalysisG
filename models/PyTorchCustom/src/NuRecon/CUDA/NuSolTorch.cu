@@ -1,4 +1,5 @@
 #include "NuSolKernel.cu"
+#include <iostream>
 
 torch::Tensor _Solutions(
 		torch::Tensor _muP2, torch::Tensor _bP2, 
@@ -220,27 +221,57 @@ torch::Tensor _SwapXY(torch::Tensor G, torch::Tensor Q)
 	return _out; 
 }
 
-torch::Tensor _EllipseLines(torch::Tensor Lines, torch::Tensor Q, torch::Tensor A)
+std::vector<torch::Tensor> _EllipseLines(torch::Tensor Lines, torch::Tensor Q, torch::Tensor A)
 {
 	const int threads = 1024; 
 	const int x = Lines.size(0); 
 	const int y = Lines.size(-2); 
 	const int z = y; 
 	
-	torch::Tensor _out = torch::zeros_like(Q); 
-	torch::Tensor _diag = torch::zeros_like(Q);
+	torch::Tensor _out = torch::zeros_like(Q);
+	torch::Tensor out = torch::zeros_like(Q); 
+	torch::Tensor _diagL = torch::zeros_like(Q);
+	torch::Tensor _diagA = torch::zeros_like(Q);
+	const double _cutoff = 1e-12;
 
-	const dim3 blocks( (x + threads -1)/threads, y*y, z*z); 
+	const dim3 blocks( (x + threads -1)/threads, y*y, z);
+	const dim3 block2( (x + threads -1)/threads, y); 
 	AT_DISPATCH_FLOATING_TYPES(_out.scalar_type(), "_EllipseLines", ([&]
 	{
 		_EllipseLines_<scalar_t><<<blocks, threads>>>(
 				Lines.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+				A.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
 				Q.packed_accessor64<scalar_t, 4, torch::RestrictPtrTraits>(),
 				_out.packed_accessor64<scalar_t, 4, torch::RestrictPtrTraits>(), 
+				_diagL.packed_accessor64<scalar_t, 4, torch::RestrictPtrTraits>(),
+				_diagA.packed_accessor64<scalar_t, 4, torch::RestrictPtrTraits>(), 
 				x, y, z
+		);
+		_diagL = _diagL.sum({-1}); 
+		_diagA = _diagA.sum({-1}); 
+
+		_EllipseLines_<scalar_t><<<block2, threads>>>(
+				_diagL.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+				_diagA.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+				x, y
 		); 
 	})); 
-	return _out; 
+	std::tuple<torch::Tensor, torch::Tensor> idx = _diagA.sort(2, false);
+	torch::Tensor id = std::get<1>(idx);
+	id = id.to(out.dtype()); 
+	_diagA = std::get<0>(idx); 
+	
+	AT_DISPATCH_FLOATING_TYPES(_out.scalar_type(), "_gathering", ([&]
+	{
+		_gather_<scalar_t><<<blocks, threads>>>(
+				_out.packed_accessor64<scalar_t, 4, torch::RestrictPtrTraits>(),
+				id.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+				_diagA.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+				out.packed_accessor64<scalar_t, 4, torch::RestrictPtrTraits>(), 
+				x, y, z, _cutoff 
+		); 
+	})); 
+	return {_diagA, out, _out, id}; 
 
 
 }
