@@ -34,6 +34,7 @@ def TruthJetPartons(Ana):
     PTFraction = { i : [] for i in CounterPDGID}
     DeltaRPartonTJ = { i : [] for i in CounterPDGID}
     TruthJetPT = { "Top" : [], "Background" : [] }
+    NumPartons = { "Top" : [], "Background" : [] }
 
     nevents = 0
     lumi = 0
@@ -42,7 +43,9 @@ def TruthJetPartons(Ana):
         nevents += 1
         lumi += event.Lumi
         
+        print(f"Number of truth jets = {len(event.TruthJets)}")
         topTJ = [l for t in event.Tops for l in t.TruthJets]
+        print(f"Number of truth jets from tops = {len(topTJ)}")
         for tj in event.TruthJets:
             pt = tj.pt
             for p in tj.Parton:
@@ -51,9 +54,13 @@ def TruthJetPartons(Ana):
                 DeltaRPartonTJ[PDGID[abs(p.pdgid)]].append(tj.DeltaR(p))
             
             if tj in topTJ:
+                print(f"Truth jet from top has {len(tj.Parton)} partons contributing")
                 TruthJetPT["Top"].append(tj.pt/1000)
+                NumPartons["Top"].append(len(tj.Parton))
             else:
+                print(f"Truth jet from background has {len(tj.Parton)} partons contributing")
                 TruthJetPT["Background"].append(tj.pt/1000)
+                NumPartons["Background"].append(len(tj.Parton))
 
     Plots = PlotTemplate(nevents, lumi)
     Plots["Title"] = "Parton Contributions of Truth Jets (GhostParton)"
@@ -70,7 +77,7 @@ def TruthJetPartons(Ana):
     Plots = PlotTemplate(nevents, lumi)
     Plots["Title"] = "Fractional PT Contribution to Truth Jet (Stacked)"
     Plots["xTitle"] = "Transverse Momenta ($PT_{parton}$/$PT_{tj}$)"
-    Plots["xStep"] = 10
+    Plots["xStep"] = 1
     Plots["Filename"] = "Figure_3.1b"
     Plots["Histograms"] = []
     Plots["Stack"] = True
@@ -86,8 +93,9 @@ def TruthJetPartons(Ana):
     Plots = PlotTemplate(nevents, lumi)
     Plots["Title"] = "$\Delta$R Between Contributing Parton and Truth Jet (Stacked)"
     Plots["xTitle"] = "$\Delta$R Between Parton and Truth Jet"
-    Plots["xStep"] = 0.25
-    Plots["xScaling"] = 2.5
+    Plots["xStep"] = 0.05
+    Plots["xMax"] = 0.5
+    #Plots["xScaling"] = 2.5
     Plots["Filename"] = "Figure_3.1c"
     Plots["Histograms"] = []
     Plots["Stack"] = False
@@ -115,6 +123,22 @@ def TruthJetPartons(Ana):
         Plots["Histograms"].append(TH1F(**_Plots))
     x = CombineTH1F(**Plots) 
     x.SaveFigure()
+
+    Plots = PlotTemplate(nevents, lumi)
+    Plots["Title"] = "Number of contributing partons"
+    Plots["xTitle"] = "#"
+    Plots["xStep"] = 1
+    Plots["xBinCentering"] = True
+    Plots["xMin"] = -1
+    Plots["Filename"] = "Figure_3.1d.2"
+    Plots["Histograms"] = []
+    for i in NumPartons:
+        _Plots = {}
+        _Plots["Title"] = i
+        _Plots["xData"] = NumPartons[i]
+        Plots["Histograms"].append(TH1F(**_Plots))
+    X = CombineTH1F(**Plots)
+    X.SaveFigure()
 
 def PartonToChildTruthJet(Ana):
     MissedChild = {i : 0 for i in CounterPDGID}
