@@ -76,8 +76,7 @@ def intersections_ellipses(A, B, returnLines=False):
     
     e = next(e.real for e in LA.eigvals(LA.inv(A).dot(B)) if not e.imag)
     lines = factor_degenerate(B - e*A)
-    #points = sum([intersections_ellipse_line(A,L) for L in lines],[])
-    return np.array([intersections_ellipse_line(A,L) for L in lines])
+    points = sum([intersections_ellipse_line(A,L) for L in lines], [])
     return (points,lines) if returnLines else points
 
 class SolutionSet(object):
@@ -159,9 +158,6 @@ class singleNeutrinoSolution(object):
         M = next(XD + XD.T for XD in (self.X.dot(Derivative()),))
 
         solutions = intersections_ellipses(M, UnitCircle())
-        self.V0 = solutions 
-        return 
-
         self.solutions = sorted(solutions, key=self.calcX2)
 
 class doubleNeutrinoSolutions(object):
@@ -170,13 +166,22 @@ class doubleNeutrinoSolutions(object):
         b, b_ = bs
         mu, mu_ = mus
         metX, metY = met
-        self.solutionSets = [SolutionSet(B, M, mW2, mT2, 0)
-                             for B,M in zip((b,b_),(mu,mu_))]
+        self.solutionSets = [SolutionSet(B, M, mW2, mT2, 0) for B,M in zip((b,b_),(mu,mu_))]
 
         V0 = np.outer([metX, metY, 0], [0, 0, 1])
         self.S = V0 - UnitCircle()
         N, N_ = [ss.N for ss in self.solutionSets]
         n_ = self.S.T.dot(N_).dot(self.S)
         v = intersections_ellipses(N, n_)
-        self.V0 = v
-        #v_ = [self.S.dot(sol) for sol in v]
+        v_ = [self.S.dot(sol) for sol in v]
+
+        for k, v in {'perp': v, 'perp_': v_, 'n_': n_}.items():
+            setattr(self, k, v)
+
+    @property
+    def nunu_s(self):
+        '''Solution pairs for neutrino momenta'''
+        K, K_ = [ss.H.dot(np.linalg.inv(ss.H_perp)) for ss in self.solutionSets]
+        return [(K.dot(s), K_.dot(s_)) for s, s_ in zip(self.perp, self.perp_)]
+
+

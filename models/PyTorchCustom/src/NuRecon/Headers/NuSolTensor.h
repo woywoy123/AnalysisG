@@ -31,16 +31,16 @@ namespace NuSolTensors
 
 	torch::Tensor HorizontalVertical(torch::Tensor G);
 	torch::Tensor Parallel(torch::Tensor G); 
-	torch::Tensor Intersections(torch::Tensor G, torch::Tensor g22); 
-	torch::Tensor Intersecting(torch::Tensor A, torch::Tensor B); 
+	torch::Tensor Intersecting(torch::Tensor G, torch::Tensor g22); 
+	std::vector<torch::Tensor> Intersection(torch::Tensor A, torch::Tensor B, double cutoff); 
 	
 }
 
 namespace SingleNuTensor
 {
 	torch::Tensor Sigma2(torch::Tensor Sxx, torch::Tensor Sxy, torch::Tensor Syx, torch::Tensor Syy); 
-	torch::Tensor Nu(torch::Tensor b, torch::Tensor mu, 
-			torch::Tensor met, torch::Tensor phi, 
+	std::vector<torch::Tensor> Nu(
+			torch::Tensor b, torch::Tensor mu, torch::Tensor met, torch::Tensor phi, 
 			torch::Tensor Sxx, torch::Tensor Sxy, torch::Tensor Syx, torch::Tensor Syy, 
 			torch::Tensor mT, torch::Tensor mW, torch::Tensor mNu);
 }
@@ -48,12 +48,12 @@ namespace SingleNuTensor
 namespace DoubleNuTensor 
 {
 	torch::Tensor N(torch::Tensor H); 
+	torch::Tensor H_Perp(torch::Tensor H); 
 
-	torch::Tensor NuNu(
-			torch::Tensor b, torch::Tensor b_, 
-			torch::Tensor mu, torch::Tensor mu_, 
+	std::vector<torch::Tensor> NuNu(
+			torch::Tensor b, torch::Tensor b_, torch::Tensor mu, torch::Tensor mu_, 
 			torch::Tensor met, torch::Tensor phi, 
-			torch::Tensor mT, torch::Tensor mW, torch::Tensor mNu
+			torch::Tensor mT, torch::Tensor mW, torch::Tensor mNu, double cutoff
 	); 
 }
 

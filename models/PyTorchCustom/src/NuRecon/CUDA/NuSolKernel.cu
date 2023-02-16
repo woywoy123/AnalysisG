@@ -395,6 +395,6 @@ __global__ void _gather_(
 	const int _y = indy%y; 
 
 	if (indx >= x){return;}
-	//if (_diagA[indx][_iy][ _id[indx][_iy][_y] ] >= cutoff){return;}
+	if (_diagA[indx][_iy][ _id[indx][_iy][_y] ] >= cutoff){return;}
 	out[indx][_iy][ _id[indx][_iy][_y]  ][indz] = _out[indx][_iy][ _y ][indz]; 
 }

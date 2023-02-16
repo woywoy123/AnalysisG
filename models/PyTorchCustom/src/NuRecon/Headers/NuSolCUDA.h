@@ -21,14 +21,13 @@ torch::Tensor _H_Matrix(
 		torch::Tensor mu_phi, torch::Tensor mu_pz, torch::Tensor mu_P, 
 		torch::Tensor mu_theta, torch::Tensor Rx, torch::Tensor Ry, torch::Tensor Rz); 
 
-
 torch::Tensor _H_Matrix(torch::Tensor sols, torch::Tensor mu_P); 
 torch::Tensor _Pi_2(torch::Tensor V);
 torch::Tensor _Unit(torch::Tensor v, std::vector<int> diag); 
 torch::Tensor _Factorization(torch::Tensor G); 
 torch::Tensor _Factorization(torch::Tensor G, torch::Tensor Q, torch::Tensor Cofactors); 
 torch::Tensor _SwapXY(torch::Tensor G, torch::Tensor Q);
-std::vector<torch::Tensor> _EllipseLines(torch::Tensor Lines, torch::Tensor Q, torch::Tensor A); 
+std::vector<torch::Tensor> _EllipseLines(torch::Tensor Lines, torch::Tensor Q, torch::Tensor A, double cutoff); 
 
 #define CHECK_CUDA(x) TORCH_CHECK(x.device().is_cuda(), "#x must be on CUDA")
 #define CHECK_CONTIGUOUS(x) TORCH_CHECK(x.is_contiguous(), "#x must be contiguous")
@@ -101,7 +100,7 @@ namespace NuSolCUDA
 		return OperatorsCUDA::Mul(OperatorsCUDA::Rz(_Pi_2(x)), _Unit(x, {1, 1, 0}));
 	}
 
-	const std::vector<torch::Tensor> Intersection(torch::Tensor A, torch::Tensor B)
+	const std::vector<torch::Tensor> Intersection(torch::Tensor A, torch::Tensor B, double cutoff)
 	{
 
 		torch::Tensor swp = torch::abs(OperatorsCUDA::Det(B)) > torch::abs(OperatorsCUDA::Det(A));
@@ -137,11 +136,7 @@ namespace NuSolCUDA
 		Q = torch::real(Q);
 		Q = torch::transpose(Q, 2, 3); 
 
-		return _EllipseLines(Lines, Q, A); 
-		
-		return {Q, Lines, _tmp, A}; 
-
-		
+		return _EllipseLines(Lines, Q, A, cutoff); 
 	}
 }
 
@@ -197,19 +192,25 @@ namespace SingleNuCUDA
 		
 		torch::Tensor M_ = OperatorsCUDA::Mul(X_, NuSolCUDA::Derivative(X_)); 
 		M_ = M_ + torch::transpose(M_, 1, 2); 
-		return NuSolCUDA::Intersection(M_, _Unit(M_, {1, 1, -1}));
+		return NuSolCUDA::Intersection(M_, _Unit(M_, {1, 1, -1}), 1e-12);
 	}
 
 }
 
 namespace DoubleNuCUDA
 {
-	const torch::Tensor N(torch::Tensor H)
+	const torch::Tensor H_perp(torch::Tensor H)
 	{
 		torch::Tensor H_ = torch::clone(H); 
 		H_.index_put_({torch::indexing::Slice(), 2, torch::indexing::Slice()}, 0); 
 		H_.index_put_({torch::indexing::Slice(), 2, 2}, 1);
-		H_ = OperatorsCUDA::Inv(H_.contiguous());
+		return H_.contiguous();
+	}
+
+	const torch::Tensor N(torch::Tensor H)
+	{
+		torch::Tensor H_ = H_perp(H); 
+		H_ = OperatorsCUDA::Inv(H_);
 		torch::Tensor H_T = torch::transpose(H_, 1, 2).contiguous(); 
 		H_T = OperatorsCUDA::Mul(H_T, _Unit(H_, {1, 1, -1})); 
 		return OperatorsCUDA::Mul(H_T, H_); 
@@ -217,7 +218,8 @@ namespace DoubleNuCUDA
 
 	const std::vector<torch::Tensor> NuNu(
 			torch::Tensor b, torch::Tensor b_, torch::Tensor mu, torch::Tensor mu_, 
-			torch::Tensor met, torch::Tensor phi, torch::Tensor mT, torch::Tensor mW, torch::Tensor mNu)
+			torch::Tensor met, torch::Tensor phi, torch::Tensor mT, torch::Tensor mW, torch::Tensor mNu,
+			double cutoff)
 	{
 		// ---- Polar Version of Particles ---- //
 		std::vector<torch::Tensor> b_P = NuSolCUDA::_Format(b.view({-1, 4}), 4);
@@ -250,7 +252,6 @@ namespace DoubleNuCUDA
 		torch::Tensor H_ = NuSolCUDA::H_Matrix(sols_, b_C, mu_C, muP_, mu_P[2]); 
 		torch::Tensor H__ = NuSolCUDA::H_Matrix(sols__, b__C, mu__C, muP__, mu__P[2]); 
 
-
 		// ---- Protection Against non-invertible Matrices ---- //
 		torch::Tensor SkipEvent = OperatorsCUDA::Dot(OperatorsCUDA::Det(H_).view({-1, 1}), OperatorsCUDA::Det(H__).view({-1, 1})) != 0.; 
 		SkipEvent = SkipEvent.view({-1}); 
@@ -264,8 +265,29 @@ namespace DoubleNuCUDA
 
 		torch::Tensor S_ = NuSolCUDA::V0(met_x, met_y) - _Unit(met_y, {1, 1, -1});
 		torch::Tensor n_ = OperatorsCUDA::Mul(OperatorsCUDA::Mul(S_.transpose(1, 2).contiguous(), N__), S_); 
+		
+		// ----- Launching the Intersection code ------- //
+		std::vector<torch::Tensor> _sol = NuSolCUDA::Intersection(N_, n_, cutoff);
+		torch::Tensor v = _sol[1].index({
+				torch::indexing::Slice(), 0,
+				torch::indexing::Slice(torch::indexing::None, 2), 
+				torch::indexing::Slice()}).view({-1, 2, 3});
 
-		return NuSolCUDA::Intersection(N_, n_);
+		torch::Tensor v_ = _sol[1].index({
+				torch::indexing::Slice(), 1, 
+				torch::indexing::Slice(torch::indexing::None, 2), 
+				torch::indexing::Slice()}).view({-1, 2, 3});
+		
+		v = torch::cat({v, v_}, 1);
+		v_ = torch::sum(S_.view({-1, 1, 3, 3})*v.view({-1, 4, 1, 3}), -1);
+		
+		// ------ Neutrino Solutions -------- //
+		torch::Tensor K = OperatorsCUDA::Mul(H_, OperatorsCUDA::Inv( H_perp(H_) )); 
+		torch::Tensor K_ = OperatorsCUDA::Mul(H__, OperatorsCUDA::Inv( H_perp(H__) )); 
+		
+		K = (K.view({-1, 1, 3, 3}) * v.view({-1, 4, 1, 3})).sum(-1); 
+		K_ = (K_.view({-1, 1, 3, 3}) * v_.view({-1, 4, 1, 3})).sum(-1); 
+		return {SkipEvent == false, K, K_, v, v_, n_, _sol[0], _sol[1]}; 
 	}
 }
 #endif 

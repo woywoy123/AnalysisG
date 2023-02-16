@@ -13,9 +13,8 @@ torch::Tensor SingleNuTensor::Sigma2(
 
 
 
-torch::Tensor SingleNuTensor::Nu(
-		torch::Tensor b, torch::Tensor mu, 
-		torch::Tensor met, torch::Tensor phi, 
+std::vector<torch::Tensor> SingleNuTensor::Nu(
+		torch::Tensor b, torch::Tensor mu, torch::Tensor met, torch::Tensor phi, 
 		torch::Tensor Sxx, torch::Tensor Sxy, torch::Tensor Syx, torch::Tensor Syy, 
 		torch::Tensor mT, torch::Tensor mW, torch::Tensor mNu)
 {
@@ -53,6 +52,6 @@ torch::Tensor SingleNuTensor::Nu(
 	torch::Tensor M_ = X_.matmul(NuSolTensors::Derivative(X_)); 
 	M_ = M_ + torch::transpose(M_, 1, 2); 	
 
-	return NuSolTensors::Intersections(M_, NuSolTensors::UnitCircle(M_)); 
+	return NuSolTensors::Intersection(M_, NuSolTensors::UnitCircle(M_), 1e-12); 
 }
 

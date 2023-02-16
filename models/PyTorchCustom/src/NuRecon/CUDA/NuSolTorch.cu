@@ -221,7 +221,7 @@ torch::Tensor _SwapXY(torch::Tensor G, torch::Tensor Q)
 	return _out; 
 }
 
-std::vector<torch::Tensor> _EllipseLines(torch::Tensor Lines, torch::Tensor Q, torch::Tensor A)
+std::vector<torch::Tensor> _EllipseLines(torch::Tensor Lines, torch::Tensor Q, torch::Tensor A, double cutoff)
 {
 	const int threads = 1024; 
 	const int x = Lines.size(0); 
@@ -232,7 +232,7 @@ std::vector<torch::Tensor> _EllipseLines(torch::Tensor Lines, torch::Tensor Q, t
 	torch::Tensor out = torch::zeros_like(Q); 
 	torch::Tensor _diagL = torch::zeros_like(Q);
 	torch::Tensor _diagA = torch::zeros_like(Q);
-	const double _cutoff = 1e-12;
+	const double _cutoff = cutoff;
 
 	const dim3 blocks( (x + threads -1)/threads, y*y, z);
 	const dim3 block2( (x + threads -1)/threads, y); 
@@ -259,6 +259,7 @@ std::vector<torch::Tensor> _EllipseLines(torch::Tensor Lines, torch::Tensor Q, t
 	std::tuple<torch::Tensor, torch::Tensor> idx = _diagA.sort(2, false);
 	torch::Tensor id = std::get<1>(idx);
 	id = id.to(out.dtype()); 
+	_diagL = _diagA; 
 	_diagA = std::get<0>(idx); 
 	
 	AT_DISPATCH_FLOATING_TYPES(_out.scalar_type(), "_gathering", ([&]
@@ -271,7 +272,7 @@ std::vector<torch::Tensor> _EllipseLines(torch::Tensor Lines, torch::Tensor Q, t
 				x, y, z, _cutoff 
 		); 
 	})); 
-	return {_diagA, out, _out, id}; 
+	return {_diagA, out}; 
 
 
 }

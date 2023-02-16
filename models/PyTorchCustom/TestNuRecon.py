@@ -62,7 +62,7 @@ T = SampleTensor(vl["b"], vl["lep"], vl["ev"], vl["t"], "cuda", [[100, 0], [0, 1
 R = SampleVector(vl["b"], vl["lep"], vl["ev"], vl["t"])
 print(len(vl["b"]))
 
-its = 10000
+its = 100
 #diff = [[], []]
 #for t in range(its):
 #    t1 = time()
@@ -86,20 +86,20 @@ its = 10000
 #diff = [[], []]
 #for t in range(its):
 #    t1 = time()
-#    t_sol = NuT.NuNu(T.b, T.b_, T.mu, T.mu_, T.met, T.phi, T.mT, T.mW, T.mN)
+#    t_sol = NuT.NuNu(T.b, T.b_, T.mu, T.mu_, T.met, T.phi, T.mT, T.mW, T.mN, 1e-12)
 #    t2 = time()
 #    diff1 = t2 - t1 
 #    diff[0].append(diff1)
 #
 #for t in range(its):   
 #    t1 = time()
-#    t_solC = NuC.NuNu(T.b, T.b_, T.mu, T.mu_, T.met, T.phi, T.mT, T.mW, T.mN)
+#    t_solC = NuC.NuNu(T.b, T.b_, T.mu, T.mu_, T.met, T.phi, T.mT, T.mW, T.mN, 1e-12)
 #    t2 = time()
 #    diff2 = t2 - t1
 #    diff[1].append(diff2)
 #
 #print(sum(diff[0]), sum(diff[1]))
-#print(AssertEquivalenceRecursive(t_sol.tolist(), t_solC.tolist()))
+##print(AssertEquivalenceRecursive(t_sol.tolist(), t_solC.tolist()))
 #print("--- Testing Performance Between C++ and CUDA of NuNu ---")
 #print("Speed Factor (> 1 is better): ", (sum(diff[0])) / sum(diff[1]))
 
@@ -107,20 +107,13 @@ its = 10000
 #_sol = NuC.Nu(T.b, T.mu, T.met, T.phi, T.Sxx, T.Sxy, T.Syx, T.Syy, T.mT, T.mW, T.mN)
 #print(t_sol)
 
-t_sol = NuT.NuNu(T.b, T.b_, T.mu, T.mu_, T.met, T.phi, T.mT, T.mW, T.mN)
-_sol = NuC.NuNu(T.b, T.b_, T.mu, T.mu_, T.met, T.phi, T.mT, T.mW, T.mN)
+t_sol = NuT.NuNu(T.b, T.b_, T.mu, T.mu_, T.met, T.phi, T.mT, T.mW, T.mN, 1e-12)
+_sol = NuC.NuNu(T.b, T.b_, T.mu, T.mu_, T.met, T.phi, T.mT, T.mW, T.mN, 1e-12)
 
-#for i, j in zip(t_sol, _sol):
-#    print("")
-#    print(i)
-#    print(j)
-#
-#
-#
-#exit()
-#if AssertEquivalenceRecursive(t_sol, _sol) == False:
-#    print("Not EQUAL!!!!")
-#
+invt_sol = NuT.NuNu(T.b_, T.b, T.mu_, T.mu, T.met, T.phi, T.mT, T.mW, T.mN, 1e-12)
+inv_sol = NuC.NuNu(T.b_, T.b, T.mu_, T.mu, T.met, T.phi, T.mT, T.mW, T.mN, 1e-12)
+
+
 it = 0
 for r, t in zip(R, T):
     b, mu = r[0], r[1]
@@ -144,33 +137,75 @@ for r, t in zip(R, T):
     #     print("")
     #     print(sol.V0)
     #
-    sol = doubleNeutrinoSolutions((b, _b), (mu, _mu), (met_x, met_y), mW**2, mT**2)
-    #t_sol = NuT.NuNu(tb_, t_b_, tmu_, t_mu_, t_met, t_phi, t_mT, t_mW, t_mNu)
     
-    print("-------------------------------------")
-    print(_sol[0][it])
+    print(invt_sol[0][it])
+    print("---------------- New Event ---------------------")
+    print("_______ (b, b_, mu, mu_) ______")
+    sol = doubleNeutrinoSolutions((b, _b), (mu, _mu), (met_x, met_y), mW**2, mT**2)
+
+    print("PyTorch CUDA")
+    for i, j in zip(_sol[1][it], _sol[2][it]):
+        print(i.tolist(), j.tolist())
+    
     print("")
-    print(_sol[1][it])
+    print("PyTorch")
+    for i, j in zip(t_sol[1][it], t_sol[2][it]):
+        print(i.tolist(), j.tolist())
+    
+    print("") 
+    print("Original")
+    for i, j in sol.nunu_s:
+        print(i, j)
+
+
+    print("_______ (b_, b, mu_, mu) ______")
+    sol = doubleNeutrinoSolutions((_b, b), (_mu, mu), (met_x, met_y), mW**2, mT**2)
+    print("PyTorch CUDA")
+    for i, j in zip(inv_sol[2][it], inv_sol[1][it]):
+        print(i.tolist(), j.tolist())
+    
     print("")
-    print(_sol[2][it])
-    print("")
-    print(sol.V0)
-    print("")
+    print("PyTorch")
+    for i, j in zip(invt_sol[2][it], invt_sol[1][it]):
+        print(i.tolist(), j.tolist())
+    
+    print("") 
+    print("Original")
+    for j, i in sol.nunu_s:
+        print(i, j)
+    
     print("")
 
     it += 1
-
-
-    #if AssertEquivalenceRecursive(sol.V0, t_sol.tolist()[0]) == False:
-    #    print("")
-    #    print("------ Double -----")
-    #    print("Not EQUAL!!!!")
-    #    print(t_sol[0])
-    #    print("")
-    #    print(sol.V0)
-    #    exit()
+    if it == 8:
+        exit()
     
-    if it == 4:
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    it += 1
+    if it == 8:
         exit()
     
    

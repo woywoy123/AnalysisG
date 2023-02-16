@@ -201,7 +201,7 @@ torch::Tensor NuSolTensors::Intersecting(torch::Tensor G, torch::Tensor g22)
 }
 
 
-torch::Tensor NuSolTensors::Intersections(torch::Tensor A, torch::Tensor B)
+std::vector<torch::Tensor> NuSolTensors::Intersection(torch::Tensor A, torch::Tensor B, double cutoff)
 {
 
 	// Perform the variable swaps 
@@ -258,8 +258,65 @@ torch::Tensor NuSolTensors::Intersections(torch::Tensor A, torch::Tensor B)
 			_out.index({swp, torch::indexing::Slice(), 1}).view({-1, 3, 1}), 
 			_out.index({swp, torch::indexing::Slice(), 0}).view({-1, 3, 1}), 
 			_out.index({swp, torch::indexing::Slice(), 2}).view({-1, 3, 1})}, 2);
-	_out.index_put_({swp}, _tmp); 
-	return _out; 
+	_out.index_put_({swp}, _tmp);
+
+	// ------ Intersection of line with Ellipse ------ //
+	torch::Tensor V = torch::cross(_out.view({-1, 3, 1, 3}), A.view({-1, 1, 3, 3}), 3); 
+	V = torch::transpose(V, 2, 3); 
+	V = std::get<1>(torch::linalg::eig(V));
+	V = torch::real(V);
+	V = torch::transpose(V, 2, 3); 
+	
+	torch::Tensor _t = V / (V.index({
+			torch::indexing::Slice(), 
+			torch::indexing::Slice(), 
+			torch::indexing::Slice(), 
+			2}).view({-1, 3, 3, 1})); 
+	
+	torch::Tensor d1 = torch::sum(((_out.view({-1, 3, 1, 3}))*V), 3).pow(2);
+	torch::Tensor V_ = torch::reshape(V, {-1, 3, 3, 3}); 
+
+	_tmp = torch::matmul(V_, A.view({-1, 1, 3, 3})); 
+	_tmp = torch::sum((_tmp * V_), {-1}).pow(2); 
+	_tmp = (d1 + _tmp).view({-1, 3, 3});  
+
+	std::tuple<torch::Tensor, torch::Tensor> idx = _tmp.sort(2, false);
+	torch::Tensor diag = std::get<0>(idx); 
+	torch::Tensor sel = diag >= cutoff;
+	torch::Tensor id = std::get<1>(idx); 
+
+	torch::Tensor _t0 = torch::gather(_t.index({
+				torch::indexing::Slice(), 
+				torch::indexing::Slice(), 
+				torch::indexing::Slice(), 
+				0}), 2, id); 
+
+	torch::Tensor _t1 = torch::gather(_t.index({
+				torch::indexing::Slice(), 
+				torch::indexing::Slice(), 
+				torch::indexing::Slice(), 
+				1}), 2, id); 
+
+	torch::Tensor _t2 = torch::gather(_t.index({
+				torch::indexing::Slice(), 
+				torch::indexing::Slice(), 
+				torch::indexing::Slice(), 
+				2}), 2, id); 
+
+	_t = torch::cat({
+				_t0.view({-1, 3, 3, 1}), 
+				_t1.view({-1, 3, 3, 1}), 
+				_t2.view({-1, 3, 3, 1})
+			}, -1); 
+	
+	sel = torch::cat({
+				sel.view({-1, 3, 3, 1}), 
+				sel.view({-1, 3, 3, 1}), 
+				sel.view({-1, 3, 3, 1})
+			}, -1); 
+	_t.index_put_({sel}, 0);
+
+	return {diag, _t}; 
 }
 
 

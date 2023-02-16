@@ -11,7 +11,7 @@ torch::Tensor _Pt(torch::Tensor _px, torch::Tensor _py)
 	const int threads = 1024; 
 	const dim3 blocks((l+threads -1)/threads); 
 	
-	AT_DISPATCH_FLOATING_TYPES(torch::kFloat, "_PtK", ([&]
+	AT_DISPATCH_FLOATING_TYPES(_px.scalar_type(), "_PtK", ([&]
 	{
 		_PtK<scalar_t><<<blocks, threads>>>(
 				_px.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
@@ -32,7 +32,7 @@ torch::Tensor _Phi(torch::Tensor _px, torch::Tensor _py)
 	const int threads = 1024; 
 	const dim3 blocks((l+threads -1)/threads); 
 	
-	AT_DISPATCH_FLOATING_TYPES(torch::kFloat, "_PhiK", ([&]
+	AT_DISPATCH_FLOATING_TYPES(_px.scalar_type(), "_PhiK", ([&]
 	{
 		_PhiK<scalar_t><<<blocks, threads>>>(
 				_px.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
@@ -54,7 +54,7 @@ torch::Tensor _Eta(torch::Tensor _px, torch::Tensor _py, torch::Tensor _pz)
 	const int threads = 1024; 
 	const dim3 blocks((l+threads -1)/threads); 
 	
-	AT_DISPATCH_FLOATING_TYPES(torch::kFloat, "_EtaK", ([&]
+	AT_DISPATCH_FLOATING_TYPES(_px.scalar_type(), "_EtaK", ([&]
 	{
 		_EtaK<scalar_t><<<blocks, threads>>>(
 				_px.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
@@ -78,7 +78,7 @@ torch::Tensor _PtEtaPhi(torch::Tensor _px, torch::Tensor _py, torch::Tensor _pz)
 	const int threads = 1024; 
 	const dim3 blocks((l+threads -1)/threads, 2); 
 	
-	AT_DISPATCH_FLOATING_TYPES(torch::kFloat, "_PtEtaPhiK", ([&]
+	AT_DISPATCH_FLOATING_TYPES(_px.scalar_type(), "_PtEtaPhiK", ([&]
 	{
 		_PtEtaPhiK<scalar_t><<<blocks, threads>>>(
 				_px.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
