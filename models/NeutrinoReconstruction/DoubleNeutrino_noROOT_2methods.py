@@ -68,7 +68,8 @@ class SampleVector:
             self.met_x.append(x)
             self.met_y.append(y)
 
-        self.mT = [top[i][0].Mass*1000 for i in range(self.n)] 
+        #self.mT = [top[i][0].Mass*1000 for i in range(self.n)] 
+        self.mT = [mT for i in range(self.n)]
         self.mW = [mW for i in range(self.n)]
         self.mN = [mN for i in range(self.n)]
 
@@ -162,15 +163,6 @@ t2p = time()
 tp = t2p - t1p 
 print("Python: ", tp)
 print("Speed Factor (> 1 is better): ", tp/tc)
-
-s_inv = Sf.SolT(T.b_, T.b, T.mu_, T.mu, T.mT, T.mW, T.mN, T.met, T.phi, 1e-12)
-sinv = []
-for i in range(R.n):
-    try:
-        sinv.append(doubleNeutrinoSolutions(R.b_[i], R.b[i], R.mu_[i], R.mu[i], R.met_x[i], R.met_y[i], mT2 = R.mT[i]**2))
-    except:
-        sinv.append(None)
-
 
 error_Torch = []
 error_Python = []

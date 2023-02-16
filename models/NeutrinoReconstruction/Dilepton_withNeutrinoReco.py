@@ -108,12 +108,10 @@ def ParticleGroups(ev):
 
 # Calculate a metric to determine the best neutrino solution
 def Difference(leptonic_groups, neutrinos):
-    print("In Difference()")
     diff = 0
     for g,group in enumerate(leptonic_groups):
         top_group = sum([group[0], group[1], neutrinos[g]])
         diff += abs(mT_GeV - top_group.Mass)
-        print(f"For group {g}, mass of l/b/nu is {top_group.Mass}")
     return diff
 
 # Transform neutrino solution into Neutrino object
