@@ -71,7 +71,7 @@ std::vector<torch::Tensor> DoubleNuTensor::NuNu(
 	torch::Tensor N_ = DoubleNuTensor::N(H_); 
 	torch::Tensor N__ = DoubleNuTensor::N(H__); 
 
-	torch::Tensor S_ = NuSolTensors::V0(met_x, met_y) - NuSolTensors::UnitCircle(mNu2); 
+	torch::Tensor S_ = NuSolTensors::V0(met_x, met_y) - NuSolTensors::UnitCircle(met_y); 
 	torch::Tensor n_ = torch::matmul(torch::matmul(S_.transpose(1, 2), N__), S_); 
 
 	// ----- Launching the Intersection code ------- //
@@ -79,22 +79,22 @@ std::vector<torch::Tensor> DoubleNuTensor::NuNu(
 
 	torch::Tensor v = _sol[1].index({
 			torch::indexing::Slice(), 0,
-			torch::indexing::Slice(torch::indexing::None, 2), 
-			torch::indexing::Slice()}).view({-1, 2, 3});
+			torch::indexing::Slice(), 
+			torch::indexing::Slice()}).view({-1, 3, 3});
 
 	torch::Tensor v_ = _sol[1].index({
 			torch::indexing::Slice(), 1, 
-			torch::indexing::Slice(torch::indexing::None, 2), 
-			torch::indexing::Slice()}).view({-1, 2, 3});
+			torch::indexing::Slice(), 
+			torch::indexing::Slice()}).view({-1, 3, 3});
 	
 	v = torch::cat({v, v_}, 1);
-	v_ = torch::sum(S_.view({-1, 1, 3, 3})*v.view({-1, 4, 1, 3}), -1);
+	v_ = torch::sum(S_.view({-1, 1, 3, 3})*v.view({-1, 6, 1, 3}), -1);
 	
 	// ------ Neutrino Solutions -------- //
 	torch::Tensor K = torch::matmul(H_, torch::inverse( DoubleNuTensor::H_Perp(H_) )); 
 	torch::Tensor K_ = torch::matmul(H__, torch::inverse( DoubleNuTensor::H_Perp(H__) )); 
 	
-	K = (K.view({-1, 1, 3, 3}) * v.view({-1, 4, 1, 3})).sum(-1); 
-	K_ = (K_.view({-1, 1, 3, 3}) * v_.view({-1, 4, 1, 3})).sum(-1); 
-	return {SkipEvent == false, K, K_, v, v_, n_, _sol[0], _sol[1]}; 
+	K = (K.view({-1, 1, 3, 3}) * v.view({-1, 6, 1, 3})).sum(-1); 
+	K_ = (K_.view({-1, 1, 3, 3}) * v_.view({-1, 6, 1, 3})).sum(-1); 
+	return {SkipEvent == false, K, K_, v, v_, n_, _sol[2], _sol[3]}; 
 }

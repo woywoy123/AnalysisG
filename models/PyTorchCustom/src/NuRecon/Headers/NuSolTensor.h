@@ -42,7 +42,8 @@ namespace SingleNuTensor
 	std::vector<torch::Tensor> Nu(
 			torch::Tensor b, torch::Tensor mu, torch::Tensor met, torch::Tensor phi, 
 			torch::Tensor Sxx, torch::Tensor Sxy, torch::Tensor Syx, torch::Tensor Syy, 
-			torch::Tensor mT, torch::Tensor mW, torch::Tensor mNu);
+			torch::Tensor mT, torch::Tensor mW, torch::Tensor mNu, double cutoff
+	);
 }
 
 namespace DoubleNuTensor 
@@ -56,9 +57,5 @@ namespace DoubleNuTensor
 			torch::Tensor mT, torch::Tensor mW, torch::Tensor mNu, double cutoff
 	); 
 }
-
-
-
-
 
 #endif 

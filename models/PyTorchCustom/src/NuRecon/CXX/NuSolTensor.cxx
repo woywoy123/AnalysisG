@@ -234,7 +234,7 @@ std::vector<torch::Tensor> NuSolTensors::Intersection(torch::Tensor A, torch::Te
 				G.index({swp, torch::indexing::Slice(), 0}).view({-1, 3, 1}), 
 				G.index({swp, torch::indexing::Slice(), 2}).view({-1, 3, 1})}, 2)); 
 	G = G/(G.index({torch::indexing::Slice(), 1, 1}).view({-1, 1, 1})); 
-	
+
 	torch::Tensor g22 = NuSolTensors::Cofactors(G, 2, 2);
 	torch::Tensor _out = zeros_like(G); 
 	
@@ -279,12 +279,34 @@ std::vector<torch::Tensor> NuSolTensors::Intersection(torch::Tensor A, torch::Te
 	_tmp = torch::matmul(V_, A.view({-1, 1, 3, 3})); 
 	_tmp = torch::sum((_tmp * V_), {-1}).pow(2); 
 	_tmp = (d1 + _tmp).view({-1, 3, 3});  
-
+	
 	std::tuple<torch::Tensor, torch::Tensor> idx = _tmp.sort(2, false);
 	torch::Tensor diag = std::get<0>(idx); 
 	torch::Tensor sel = diag >= cutoff;
 	torch::Tensor id = std::get<1>(idx); 
 
+	
+	// ------------ Unsorted ------------- //
+	torch::Tensor v = _t.index({
+			torch::indexing::Slice(), 0,
+			torch::indexing::Slice(), 
+			torch::indexing::Slice()}).view({-1, 1, 3, 3});
+
+	torch::Tensor v_ = _t.index({
+			torch::indexing::Slice(), 1, 
+			torch::indexing::Slice(), 
+			torch::indexing::Slice()}).view({-1, 1, 3, 3});
+	v = torch::cat({v, v_}, 1);
+	v = torch::nan_to_num(v, 0, 0);
+
+	_tmp = _tmp.index({
+			torch::indexing::Slice(), 
+			torch::indexing::Slice(torch::indexing::None, 2), 
+			torch::indexing::Slice()}).view({-1, 2, 3});
+	// ----------------------------------- //
+
+
+	// ------------ Sorted ------------- //
 	torch::Tensor _t0 = torch::gather(_t.index({
 				torch::indexing::Slice(), 
 				torch::indexing::Slice(), 
@@ -302,8 +324,7 @@ std::vector<torch::Tensor> NuSolTensors::Intersection(torch::Tensor A, torch::Te
 				torch::indexing::Slice(), 
 				torch::indexing::Slice(), 
 				2}), 2, id); 
-
-	_t = torch::cat({
+	_t2 = torch::cat({
 				_t0.view({-1, 3, 3, 1}), 
 				_t1.view({-1, 3, 3, 1}), 
 				_t2.view({-1, 3, 3, 1})
@@ -314,13 +335,14 @@ std::vector<torch::Tensor> NuSolTensors::Intersection(torch::Tensor A, torch::Te
 				sel.view({-1, 3, 3, 1}), 
 				sel.view({-1, 3, 3, 1})
 			}, -1); 
-	_t.index_put_({sel}, 0);
+	diag = diag.index({
+			torch::indexing::Slice(), 
+			torch::indexing::Slice(torch::indexing::None, 2), 
+			torch::indexing::Slice()}).view({-1, 2, 3});
+	_t2.index_put_({sel}, 0);
 
-	return {diag, _t}; 
+	return {diag, _t2, _tmp, v}; 
 }
-
-
-
 
 torch::Tensor NuSolTensors::Solutions(torch::Tensor b, torch::Tensor mu, torch::Tensor mT, torch::Tensor mW, torch::Tensor mNu)
 {

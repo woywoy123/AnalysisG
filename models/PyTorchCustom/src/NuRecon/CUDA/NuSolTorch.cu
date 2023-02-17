@@ -267,12 +267,31 @@ std::vector<torch::Tensor> _EllipseLines(torch::Tensor Lines, torch::Tensor Q, t
 		_gather_<scalar_t><<<blocks, threads>>>(
 				_out.packed_accessor64<scalar_t, 4, torch::RestrictPtrTraits>(),
 				id.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
-				_diagA.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+				_diagL.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
 				out.packed_accessor64<scalar_t, 4, torch::RestrictPtrTraits>(), 
 				x, y, z, _cutoff 
 		); 
 	})); 
-	return {_diagA, out}; 
 
+	torch::Tensor v = _out.index({
+			torch::indexing::Slice(), 0,
+			torch::indexing::Slice(), 
+			torch::indexing::Slice()}).view({-1, 1, 3, 3});
 
+	torch::Tensor v_ = _out.index({
+			torch::indexing::Slice(), 1, 
+			torch::indexing::Slice(), 
+			torch::indexing::Slice()}).view({-1, 1, 3, 3});
+	v = torch::cat({v, v_}, 1);
+
+	_diagL = _diagL.index({
+			torch::indexing::Slice(), 
+			torch::indexing::Slice(torch::indexing::None, 2), 
+			torch::indexing::Slice()}).view({-1, 2, 3});
+
+	_diagA = _diagA.index({
+			torch::indexing::Slice(), 
+			torch::indexing::Slice(torch::indexing::None, 2), 
+			torch::indexing::Slice()}).view({-1, 2, 3});
+	return {_diagA, out, _diagL, v}; 
 }

@@ -30,6 +30,45 @@ def AssertEquivalenceRecursive(truth, pred, threshold = 0.001):
                 return False 
         return True 
 
+def AssertSolutionSets(truth, pred1, pred2, threshold):
+    
+    p1, p2 = [], []
+    for k, p in zip(pred1, pred2):
+        if sum(k) == 0 and sum(p) == 0:
+            continue
+        p1.append(k)
+        p2.append(p)
+    if len(truth) == 0:
+        if len(p1) + len(p2) != 0:
+            print(p1, p2, truth)
+
+    for i, j in truth:
+        diff1 = {}
+        diff2 = {}
+        for k, p in zip(p1, p2):
+            if sum(k) == 0 and sum(p) == 0:
+                continue
+            diff1[sum([abs((l1 -l2)/l1)*100 for l1, l2 in zip(k, i.tolist())])**0.5] = [k, i.tolist()] 
+            diff2[sum([abs((l1 -l2)/l1)*100 for l1, l2 in zip(p, j.tolist())])**0.5] = [p, j.tolist()] 
+        
+        l = list(diff1)
+        l.sort()
+        trig = False
+        if l[0] > threshold:
+            print(diff1[l[0]])
+            trig = True
+
+        l = list(diff2)
+        l.sort()
+        if l[0] > threshold:
+            print(diff2[l[0]])
+            trig = True
+        if trig:
+            return True 
+    return False
+
+
+
 def MakeTensor(inpt, device = "cpu"):
     return torch.tensor([inpt], device = device)
 

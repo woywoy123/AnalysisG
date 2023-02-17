@@ -289,10 +289,13 @@ __global__ void _FacSol2(
 		{ 
 			_out[indx][1][0] = Q[indx][0][1] + sqrt( -g22 ); 
 			return; 
-
 		}	
 
-		if ((indy == 0 || indy == 1) && indz == 1){ _out[indx][indy][1] = Q[indx][1][1]; return; }	
+		if ((indy == 0 || indy == 1) && indz == 1)
+		{ 
+			_out[indx][indy][1] = Q[indx][1][1]; 
+			return; 
+		}	
 		
 		if (indy == 0 && indz == 2)
 		{ 
@@ -383,7 +386,7 @@ template <typename scalar_t>
 __global__ void _gather_(
 		const torch::PackedTensorAccessor64<scalar_t, 4, torch::RestrictPtrTraits> _out, 
 		const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> _id, 
-		const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> _diagA, 
+		const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> _diag, 
 		torch::PackedTensorAccessor64<scalar_t, 4, torch::RestrictPtrTraits> out,
 		const int x, const int y, const int z, const double cutoff)
 {
@@ -395,6 +398,6 @@ __global__ void _gather_(
 	const int _y = indy%y; 
 
 	if (indx >= x){return;}
-	if (_diagA[indx][_iy][ _id[indx][_iy][_y] ] >= cutoff){return;}
+	if (_diag[indx][_iy][ _y ] >= cutoff){return;}
 	out[indx][_iy][ _id[indx][_iy][_y]  ][indz] = _out[indx][_iy][ _y ][indz]; 
 }

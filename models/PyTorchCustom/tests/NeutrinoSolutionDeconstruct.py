@@ -18,8 +18,7 @@ def intersections_ellipse_line(ellipse, line, zero=1e-12):
     _,V = np.linalg.eig(np.cross(line,ellipse).T)
     sols = sorted([(v.real / v[2].real, np.dot(line,v.real)**2 +
                     np.dot(v.real,ellipse).dot(v.real)**2) for v in V.T],
-                  key=lambda k: k[1])#[:2]
-
+                  key=lambda k: k[1])#[:2] #Removing the two solution constraint
     return [s for s, k in sols if k < zero]
 
 def cofactor(A, i, j):
@@ -159,6 +158,17 @@ class singleNeutrinoSolution(object):
 
         solutions = intersections_ellipses(M, UnitCircle())
         self.solutions = sorted(solutions, key=self.calcX2)
+    def calcX2(self, t):
+        return np.dot(t, self.X).dot(t)
+
+    @property
+    def chi2(self):
+        return self.calcX2(self.solutions[0])
+
+    @property
+    def nu(self):
+        '''Solution for neutrino momentum'''
+        return self.solutionSet.H.dot(self.solutions[0])
 
 class doubleNeutrinoSolutions(object):
     '''Solution pairs of neutrino momenta, tt -> leptons'''
@@ -174,7 +184,7 @@ class doubleNeutrinoSolutions(object):
         n_ = self.S.T.dot(N_).dot(self.S)
         v = intersections_ellipses(N, n_)
         v_ = [self.S.dot(sol) for sol in v]
-
+        
         for k, v in {'perp': v, 'perp_': v_, 'n_': n_}.items():
             setattr(self, k, v)
 

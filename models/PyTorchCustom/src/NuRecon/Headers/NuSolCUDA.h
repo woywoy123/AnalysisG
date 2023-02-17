@@ -119,8 +119,9 @@ namespace NuSolCUDA
 		torch::Tensor Q = _Factorization(G); 
 		Q = _Factorization(G, Q, OperatorsCUDA::Cofactors(Q)); 
 		Q = _SwapXY(G, Q); 
-		torch::Tensor Lines = Q; 	
+		torch::Tensor Lines = Q;
 		
+		// ------- Cross Product ------ //
 		Q = Q.view({-1, 3, 1, 3}); 	
 		_tmp = torch::zeros_like(Q); 
 		Q = torch::cat({Q, Q, Q}, 2).view({-1, 9, 1, 3}); 
@@ -131,7 +132,8 @@ namespace NuSolCUDA
 		Q = torch::cat({Q, _tmp}, 2); 
 		Q = OperatorsCUDA::Cofactors(Q.view({-1, 3, 3})); 
 		Q = Q.index({torch::indexing::Slice(), 0, torch::indexing::Slice()}).view({-1, 3, 3, 3}); 
-
+		// ------- End of Cross Product ------ //
+		
 		Q = std::get<1>(torch::linalg::eig(torch::transpose(Q, 2, 3))); 
 		Q = torch::real(Q);
 		Q = torch::transpose(Q, 2, 3); 
@@ -157,7 +159,7 @@ namespace SingleNuCUDA
 	const std::vector<torch::Tensor> Nu(torch::Tensor b, torch::Tensor mu, 
 			torch::Tensor met, torch::Tensor phi, 
 			torch::Tensor Sxx, torch::Tensor Sxy, torch::Tensor Syx, torch::Tensor Syy,
-			torch::Tensor mT, torch::Tensor mW, torch::Tensor mNu)
+			torch::Tensor mT, torch::Tensor mW, torch::Tensor mNu, double cutoff)
 	{
 
 
@@ -179,20 +181,74 @@ namespace SingleNuCUDA
 		torch::Tensor mT2 = OperatorsCUDA::Dot(mT, mT); 
 		torch::Tensor mW2 = OperatorsCUDA::Dot(mW, mW); 
 		torch::Tensor mNu2 = OperatorsCUDA::Dot(mNu, mNu); 
-		
-		// ---- MET uncertainity ---- //	
-		torch::Tensor S2_ = Sigma2(Sxx, Sxy, Syx, Syy);	
-		
+			
 		torch::Tensor sols_ = NuSolCUDA::Solutions(b_P, b_C, mu_P, mu_C, mT2, mW2, mNu2);
 		torch::Tensor H_ = NuSolCUDA::H_Matrix(sols_, b_C, mu_C, muP_, mu_P[2]); 
-	
+		
+		// ---- Protection Against non-invertible Matrices ---- //
+		torch::Tensor SkipEvent = OperatorsCUDA::Det(H_) != 0;
+		H_ = H_.index({SkipEvent}); 
+		met_x = met_x.index({SkipEvent}); 
+		met_y = met_y.index({SkipEvent});
+		Sxx = Sxx.index({SkipEvent}).view({-1, 1}); 
+		Sxy = Sxy.index({SkipEvent}).view({-1, 1}); 
+		Syx = Syx.index({SkipEvent}).view({-1, 1}); 
+		Syy = Syy.index({SkipEvent}).view({-1, 1});
+
+		// ---- MET uncertainity ---- //	
+		torch::Tensor S2_ = Sigma2(Sxx, Sxy, Syx, Syy);	
+
 		torch::Tensor delta_ = NuSolCUDA::V0(met_x, met_y) - H_; 
 		torch::Tensor X_ = OperatorsCUDA::Mul(torch::transpose(delta_, 1, 2).contiguous(), S2_); 
 		X_ = OperatorsCUDA::Mul(X_, delta_).view({-1, 3, 3}); 
 		
 		torch::Tensor M_ = OperatorsCUDA::Mul(X_, NuSolCUDA::Derivative(X_)); 
 		M_ = M_ + torch::transpose(M_, 1, 2); 
-		return NuSolCUDA::Intersection(M_, _Unit(M_, {1, 1, -1}), 1e-12);
+		
+		std::vector<torch::Tensor> _sol = NuSolCUDA::Intersection(M_, _Unit(M_, {1, 1, -1}), cutoff);
+		torch::Tensor v = _sol[1].index({
+				torch::indexing::Slice(), 0,
+				torch::indexing::Slice(), 
+				torch::indexing::Slice()}).view({-1, 3, 3});
+
+		torch::Tensor v_ = _sol[1].index({
+				torch::indexing::Slice(), 1, 
+				torch::indexing::Slice(), 
+				torch::indexing::Slice()}).view({-1, 3, 3});
+		
+		v = torch::cat({v, v_}, 1);
+		torch::Tensor chi2 = (v.view({-1, 6, 1, 3}) * X_.view({-1, 1, 3, 3})).sum({-1}); 
+		chi2 = (chi2.view({-1, 6, 3}) * v.view({-1, 6, 3})).sum(-1); 
+		
+		std::tuple<torch::Tensor, torch::Tensor> idx = chi2.sort(1, false);
+		torch::Tensor diag = std::get<0>(idx); 
+		torch::Tensor id = std::get<1>(idx); 
+		
+		// ------------ Sorted ------------- //
+		torch::Tensor _t0 = torch::gather(v.index({
+					torch::indexing::Slice(), 
+					torch::indexing::Slice(), 
+					0}), 1, id).view({-1, 6}); 
+
+		torch::Tensor _t1 = torch::gather(v.index({
+					torch::indexing::Slice(), 
+					torch::indexing::Slice(), 
+					1}), 1, id).view({-1, 6}); 
+
+		torch::Tensor _t2 = torch::gather(v.index({
+					torch::indexing::Slice(), 
+					torch::indexing::Slice(), 
+					2}), 1, id).view({-1, 6}); 
+
+		torch::Tensor msk = (diag!=0.)*torch::arange(6, 0, -1, torch::TensorOptions().device(v.device())); 
+		msk = torch::argmax(msk, -1, true); 
+		_t0 = torch::gather(_t0, 1, msk).view({-1, 1, 1}); 
+		_t1 = torch::gather(_t1, 1, msk).view({-1, 1, 1}); 
+		_t2 = torch::gather(_t2, 1, msk).view({-1, 1, 1}); 
+		_t2 = torch::cat({_t0, _t1, _t2}, -1); 
+		_t2 = (H_*_t2).sum(-1); 
+	
+		return {SkipEvent == false, _t2, chi2, (H_.view({-1, 1, 3, 3})*v.view({-1, 6, 1, 3})).sum(-1)}; 
 	}
 
 }
@@ -218,8 +274,8 @@ namespace DoubleNuCUDA
 
 	const std::vector<torch::Tensor> NuNu(
 			torch::Tensor b, torch::Tensor b_, torch::Tensor mu, torch::Tensor mu_, 
-			torch::Tensor met, torch::Tensor phi, torch::Tensor mT, torch::Tensor mW, torch::Tensor mNu,
-			double cutoff)
+			torch::Tensor met, torch::Tensor phi, 
+			torch::Tensor mT, torch::Tensor mW, torch::Tensor mNu, double cutoff)
 	{
 		// ---- Polar Version of Particles ---- //
 		std::vector<torch::Tensor> b_P = NuSolCUDA::_Format(b.view({-1, 4}), 4);
@@ -270,24 +326,24 @@ namespace DoubleNuCUDA
 		std::vector<torch::Tensor> _sol = NuSolCUDA::Intersection(N_, n_, cutoff);
 		torch::Tensor v = _sol[1].index({
 				torch::indexing::Slice(), 0,
-				torch::indexing::Slice(torch::indexing::None, 2), 
-				torch::indexing::Slice()}).view({-1, 2, 3});
+				torch::indexing::Slice(), 
+				torch::indexing::Slice()}).view({-1, 3, 3});
 
 		torch::Tensor v_ = _sol[1].index({
 				torch::indexing::Slice(), 1, 
-				torch::indexing::Slice(torch::indexing::None, 2), 
-				torch::indexing::Slice()}).view({-1, 2, 3});
+				torch::indexing::Slice(), 
+				torch::indexing::Slice()}).view({-1, 3, 3});
 		
 		v = torch::cat({v, v_}, 1);
-		v_ = torch::sum(S_.view({-1, 1, 3, 3})*v.view({-1, 4, 1, 3}), -1);
+		v_ = torch::sum(S_.view({-1, 1, 3, 3})*v.view({-1, 6, 1, 3}), -1);
 		
 		// ------ Neutrino Solutions -------- //
 		torch::Tensor K = OperatorsCUDA::Mul(H_, OperatorsCUDA::Inv( H_perp(H_) )); 
 		torch::Tensor K_ = OperatorsCUDA::Mul(H__, OperatorsCUDA::Inv( H_perp(H__) )); 
 		
-		K = (K.view({-1, 1, 3, 3}) * v.view({-1, 4, 1, 3})).sum(-1); 
-		K_ = (K_.view({-1, 1, 3, 3}) * v_.view({-1, 4, 1, 3})).sum(-1); 
-		return {SkipEvent == false, K, K_, v, v_, n_, _sol[0], _sol[1]}; 
+		K = (K.view({-1, 1, 3, 3}) * v.view({-1, 6, 1, 3})).sum(-1); 
+		K_ = (K_.view({-1, 1, 3, 3}) * v_.view({-1, 6, 1, 3})).sum(-1); 
+		return {SkipEvent == false, K, K_, v, v_, n_, _sol[2], _sol[3]}; 
 	}
 }
 #endif 

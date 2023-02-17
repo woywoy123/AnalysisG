@@ -11,12 +11,10 @@ torch::Tensor SingleNuTensor::Sigma2(
 	return _S; 
 }
 
-
-
 std::vector<torch::Tensor> SingleNuTensor::Nu(
 		torch::Tensor b, torch::Tensor mu, torch::Tensor met, torch::Tensor phi, 
 		torch::Tensor Sxx, torch::Tensor Sxy, torch::Tensor Syx, torch::Tensor Syy, 
-		torch::Tensor mT, torch::Tensor mW, torch::Tensor mNu)
+		torch::Tensor mT, torch::Tensor mW, torch::Tensor mNu, double cutoff)
 {
 	// Convert Polar to vectors 
 	std::vector<torch::Tensor> b_P = NuSolTensors::_Format(b.view({-1, 4}), 4);
@@ -43,6 +41,18 @@ std::vector<torch::Tensor> SingleNuTensor::Nu(
 	// Starting the algorithm 
 	torch::Tensor sols_ = NuSolTensors::_Solutions(b_C, mu_C, b_e, mu_e, mT2, mW2, mNu2);
 	torch::Tensor H_ = NuSolTensors::H_Matrix(sols_, b_C, mu_P[2], mu_C[2], muP_); 
+
+	// ---- Protection Against non-invertible Matrices ---- //
+	torch::Tensor SkipEvent = torch::det(H_) != 0;
+	H_ = H_.index({SkipEvent}); 
+	MetX = MetX.index({SkipEvent}); 
+	MetY = MetY.index({SkipEvent});
+	Sxx = Sxx.index({SkipEvent}).view({-1, 1}); 
+	Sxy = Sxy.index({SkipEvent}).view({-1, 1}); 
+	Syx = Syx.index({SkipEvent}).view({-1, 1}); 
+	Syy = Syy.index({SkipEvent}).view({-1, 1});
+
+	// ---- MET uncertainity ---- //	
 	torch::Tensor S2_ = SingleNuTensor::Sigma2(Sxx, Sxy, Syx, Syy); 
 
 	torch::Tensor delta_ = NuSolTensors::V0(MetX, MetY) - H_; 
@@ -52,6 +62,50 @@ std::vector<torch::Tensor> SingleNuTensor::Nu(
 	torch::Tensor M_ = X_.matmul(NuSolTensors::Derivative(X_)); 
 	M_ = M_ + torch::transpose(M_, 1, 2); 	
 
-	return NuSolTensors::Intersection(M_, NuSolTensors::UnitCircle(M_), 1e-12); 
+	std::vector<torch::Tensor> _sol = NuSolTensors::Intersection(M_, NuSolTensors::UnitCircle(M_), cutoff); 
+
+	torch::Tensor v = _sol[1].index({
+			torch::indexing::Slice(), 0,
+			torch::indexing::Slice(), 
+			torch::indexing::Slice()}).view({-1, 3, 3});
+
+	torch::Tensor v_ = _sol[1].index({
+			torch::indexing::Slice(), 1, 
+			torch::indexing::Slice(), 
+			torch::indexing::Slice()}).view({-1, 3, 3});
+	
+	v = torch::cat({v, v_}, 1);
+	torch::Tensor chi2 = (v.view({-1, 6, 1, 3}) * X_.view({-1, 1, 3, 3})).sum({-1}); 
+	chi2 = (chi2.view({-1, 6, 3}) * v.view({-1, 6, 3})).sum(-1); 
+	
+	std::tuple<torch::Tensor, torch::Tensor> idx = chi2.sort(1, false);
+	torch::Tensor diag = std::get<0>(idx); 
+	torch::Tensor id = std::get<1>(idx); 
+	
+	// ------------ Sorted ------------- //
+	torch::Tensor _t0 = torch::gather(v.index({
+				torch::indexing::Slice(), 
+				torch::indexing::Slice(), 
+				0}), 1, id).view({-1, 6}); 
+
+	torch::Tensor _t1 = torch::gather(v.index({
+				torch::indexing::Slice(), 
+				torch::indexing::Slice(), 
+				1}), 1, id).view({-1, 6}); 
+
+	torch::Tensor _t2 = torch::gather(v.index({
+				torch::indexing::Slice(), 
+				torch::indexing::Slice(), 
+				2}), 1, id).view({-1, 6}); 
+
+	torch::Tensor msk = (diag!=0.)*torch::arange(6, 0, -1, torch::TensorOptions().device(v.device())); 
+	msk = torch::argmax(msk, -1, true); 
+	_t0 = torch::gather(_t0, 1, msk).view({-1, 1, 1}); 
+	_t1 = torch::gather(_t1, 1, msk).view({-1, 1, 1}); 
+	_t2 = torch::gather(_t2, 1, msk).view({-1, 1, 1}); 
+	_t2 = torch::cat({_t0, _t1, _t2}, -1); 
+	_t2 = (H_*_t2).sum(-1); 
+
+	return {SkipEvent == false, _t2, chi2, (H_.view({-1, 1, 3, 3})*v.view({-1, 6, 1, 3})).sum(-1)}; 
 }
 
