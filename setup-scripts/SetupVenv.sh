@@ -27,7 +27,10 @@ ver=$(echo "$ver" | cut -d'+' -f1)
 pip3 install torch-sparse torch-spline-conv -f https://pytorch-geometric.com/whl/torch-$ver+cpu.html
 
 cd ../
-python setup.py install
+pip3 install .
+
+cd PyTorchCustom
+pip3 install .
 
 echo "export PythonGNN=$PWD/setup-scripts/PythonGNN/bin/activate" >> ~/.bashrc
 

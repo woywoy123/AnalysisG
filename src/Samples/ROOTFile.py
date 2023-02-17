@@ -1,4 +1,5 @@
 from .Hashing import Hashing 
+from AnalysisTopGNN.Vectors import IsIn
 
 class ROOTFile(Hashing):
     
@@ -7,6 +8,7 @@ class ROOTFile(Hashing):
         self.Filename = Filename
         self.EventMap = {}
         self._lock = False
+        self._len = -1
     
     def MakeHash(self):
         for i in self.EventMap:
@@ -16,9 +18,10 @@ class ROOTFile(Hashing):
 
     def AddEvent(self, Event):
         self.EventMap[Event.EventIndex] = Event
+        self._len += 1
     
     def __len__(self):
-        return len(self.EventMap)
+        return self._len
 
     def list(self):
         return list(self.EventMap.values())
@@ -29,27 +32,25 @@ class ROOTFile(Hashing):
         return list(self.HashMap)
     
     def __getitem__(self, key):
-        if key in self.HashMap:
+        if IsIn([key], self.HashMap):
             return self.HashMap[key]
-        if key in self.EventMap:
+        if IsIn([key], self.EventMap):
             return self.EventMap[key]
         return False
     
     def __setitem__(self, key, obj):
-        if key in self.hash() and self._lock == False:
+        if IsIn([key], self.HashMap) and self._lock == False:
             self.EventMap[self.HashMap[key].EventIndex] 
             return self
-
-        if key in self.EventMap and self._lock == False:
+        if IsIn([key], self.EventMap) and self._lock == False:
             self.HashMap[self.EventMap[key].Filename] = obj
             self.EventMap[key] = obj
             return self
          
     def __contains__(self, key):
-        self.hash()
-        if key in self.HashMap:
+        if IsIn([str(key)], self.HashMap):
             return True 
-        if key in self.EventMap:
+        if IsIn([str(key)], self.EventMap):
             return True
         return False
 
@@ -59,7 +60,7 @@ class ROOTFile(Hashing):
         
         self.HashMap = {}
         for _hash, evnt in zip(hashes, evnts):
-            if _hash not in self.HashMap:
+            if IsIn([_hash], self.HashMap) == False: 
                 self.HashMap[_hash] = evnt
                 continue
                 
@@ -68,6 +69,7 @@ class ROOTFile(Hashing):
             self.HashMap[_hash] = evnt
 
         self.EventMap = self.EventMap if self._lock else {i : "" if isinstance(ev, str) else ev.UpdateIndex(i) for i, ev in zip(range(len(self.HashMap)), self.HashMap.values())}
+        self._len = len(self.EventMap)
         return self
     
     def ClearEvents(self):
@@ -80,6 +82,6 @@ class ROOTFile(Hashing):
     def RestoreEvents(self, events):
         if isinstance(events, dict):
             events = list(events.values())
-        self.HashMap |= { i.Filename : i for i in events if i.Filename in self.HashMap }
-        self.EventMap |= { i.EventIndex : i for i in events if i.EventIndex in self.EventMap}
+        self.HashMap |= { i.Filename : i for i in events if IsIn([i.Filename], self.HashMap) }
+        self.EventMap |= { i.EventIndex : i for i in events if i.EventIndex in self.EventMap }
         self._lock = False

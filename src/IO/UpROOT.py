@@ -1,17 +1,17 @@
 from AnalysisTopGNN.Notification.UpROOT import UpROOT
 from AnalysisTopGNN.Generators.Settings import Settings
+from AnalysisTopGNN.Tools import Threading
 import uproot 
 
 class File(UpROOT, Settings):
-    def __init__(self, ROOTFile, Threads = 1):
+    def __init__(self, ROOTFile):
         self.Caller = "FILE"
         Settings.__init__(self)
         self.Trees = []
         self.Branches = []
         self.Leaves = []
         self.ROOTFile = ROOTFile
-
-        self._Reader =  uproot.open(self.ROOTFile, num_workers = Threads)
+        self._Reader =  uproot.open(self.ROOTFile)
         self._State = None
    
     def _CheckKeys(self, List, Type):
@@ -65,13 +65,12 @@ class File(UpROOT, Settings):
 
     def __iter__(self):
         All = [b.split("/")[-1] for b in self.Branches] + [l.split("/")[-1] for l in self.Leaves]
-        self._iter = {Tree : self._Reader[Tree].iterate(All, library = "ak", step_size = self.StepSize) for Tree in self.Trees}
-        self.Iter = {Tree : [] for Tree in self.Trees}
+        self._iter = {Tree : self._Reader[Tree].iterate(All, library = "np", step_size = self.StepSize) for Tree in self.Trees}
+        self.Iter = {Tree : {key : [] for key in All} for Tree in self.Trees}
         return self
 
     def __next__(self):
-        if sum([len(self.Iter[Tree]) for Tree in self.Trees]) == 0:
-            self.Iter = {Tree : next(self._iter[Tree]).to_list() for Tree in self._iter}
-        return {Tree : self.Iter[Tree].pop(0) for Tree in self.Iter}
-
-
+        if sum([sum([len(self.Iter[Tree][br]) for br in self.Iter[Tree]]) for Tree in self.Trees]) == 0:
+            self.Iter = {Tree : next(self._iter[Tree]) for Tree in self._iter}
+            self.Iter = {Tree : {key : val.tolist() for key, val in zip(self.Iter[Tree], self.Iter[Tree].values())} for Tree in self.Iter}
+        return {Tree : {key : val.pop() for key, val in zip(self.Iter[Tree], self.Iter[Tree].values())} for Tree in self.Iter}

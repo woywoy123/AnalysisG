@@ -49,7 +49,7 @@ class CondorScript(Settings):
         if self.CondaEnv:
             self.__AddConfig('eval "$(conda shell.bash hook)"')
             self.__AddConfig("conda activate " + self.CondaEnv)
-        if self.PythonVenv:
+        elif self.PythonVenv:
             self.__AddConfig('source ' + self.PythonVenv)
         self.__AddConfig("python " + self.ExecPath + "/" + self.ScriptName + ".py")
 

@@ -22,8 +22,9 @@ class EventTemplate(VariableManager):
     def __NestedListToList(self, lst):
         if isinstance(lst, list):
             return lst
+        elif isinstance(lst, dict): 
             out = []
-            for i in lst:
+            for i in lst.values():
                 out += self.__NestedListToList(i)
             return out
         return [lst]
@@ -44,10 +45,15 @@ class EventTemplate(VariableManager):
 
         def RecursivePopulate(store, name):
             partDic = {}
-            partDic |= {key : store[key].pop() for key in store if len(store[key]) > 0}
+            try:
+                tmp = {key : store[key][0].tolist() for key in store if len(store[key]) > 0}
+                partDic |= {key : store[key].pop().tolist() for key in tmp}
+            except AttributeError:
+                partDic |= {key : store[key].pop() for key in store if len(store[key]) > 0}
+           
             if len(partDic) == 0:
                 return None
-            _obj = copy.deepcopy(self.Objects[name])
+            
             leng = {}
             for j in partDic:
                 if isinstance(partDic[j], list) == False:
@@ -58,17 +64,17 @@ class EventTemplate(VariableManager):
                 if l not in leng:
                     leng[l] = []
                 leng[l].append({j : partDic[j]})
-          
+            
             if len(leng) == 0:
-                if len(self.__NestedListToList(partDic)) == 0:
-                    return None
-                MakeParticle(_obj, partDic, name)
+                if len(self.__NestedListToList(partDic)) != 0:
+                    MakeParticle(copy.deepcopy(self.Objects[name]), partDic, name)
             else:
                 key = max(list(leng))
                 if len(leng[key]) < 4:
-                    MakeParticle(_obj, partDic, name)
+                    MakeParticle(copy.deepcopy(self.Objects[name]), partDic, name)
                 else:
                     RecursivePopulate(partDic, name)
+
             return RecursivePopulate(store, name)
         
         maps = self.GetKey(self)

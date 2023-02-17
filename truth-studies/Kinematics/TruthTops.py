@@ -170,6 +170,8 @@ def TopKinematics(Ana):
     nevents = 0
     TopsTypesPT = {"Res" : [], "Spec" : []}
     TopsTypesE = {"Res" : [], "Spec" : []}
+    TopsTypesEta = {"Res" : [], "Spec" : []}
+    TopsTypesPhi = {"Res" : [], "Spec" : []}
 
     for ev in Ana:
         event = ev.Trees["nominal"]
@@ -179,6 +181,8 @@ def TopKinematics(Ana):
         for t in event.Tops:
             TopsTypesPT["Res" if t.FromRes == 1 else "Spec"] += [t.pt / 1000]
             TopsTypesE["Res" if t.FromRes == 1 else "Spec"] += [t.e / 1000]
+            TopsTypesEta["Res" if t.FromRes == 1 else "Spec"] += [t.eta]
+            TopsTypesPhi["Res" if t.FromRes == 1 else "Spec"] += [t.phi]
 
     Plots = PlotTemplate(nevents, lumi)
     Plots["Title"] = "Transverse Momenta of Tops Originating from Scalar H and Spectator Tops"
@@ -214,6 +218,44 @@ def TopKinematics(Ana):
     Plots["xStep"] = 100
     Plots["xScaling"] = 2.5
     Plots["Filename"] = "Figure_1.1f"
+
+    X = CombineTH1F(**Plots)
+    X.SaveFigure()
+
+    Plots = PlotTemplate(nevents, lumi)
+    Plots["Title"] = "Pseudorapidity of Tops Originating from Scalar H and Spectator Tops"
+    Plots["xTitle"] = "Eta"
+    Plots["xBins"] = 50
+    Plots["xMin"] = -5
+    Plots["xMax"] = 5
+    Plots["Histograms"] = []
+
+    for i in TopsTypesEta:
+        _Plots = {}
+        _Plots["Title"] = i
+        _Plots["xData"] = TopsTypesEta[i]
+        Plots["Histograms"] += [TH1F(**_Plots)]
+    
+    Plots["Filename"] = "Figure_1.1g"
+
+    X = CombineTH1F(**Plots)
+    X.SaveFigure()
+
+    Plots = PlotTemplate(nevents, lumi)
+    Plots["Title"] = "Azimuth of Tops Originating from Scalar H and Spectator Tops"
+    Plots["xTitle"] = "Phi"
+    Plots["xBins"] = 70
+    Plots["xMin"] = -3.5
+    Plots["xMax"] = 3.5
+    Plots["Histograms"] = []
+
+    for i in TopsTypesPhi:
+        _Plots = {}
+        _Plots["Title"] = i
+        _Plots["xData"] = TopsTypesPhi[i]
+        Plots["Histograms"] += [TH1F(**_Plots)]
+    
+    Plots["Filename"] = "Figure_1.1h"
 
     X = CombineTH1F(**Plots)
     X.SaveFigure()

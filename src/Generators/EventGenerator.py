@@ -35,6 +35,7 @@ class EventGenerator(EventGenerator_, Settings, Tools, SampleTracer):
 
         self.AddCode(self.Event)
         obj = self.CopyInstance(self.Event)
+        self.CheckVariableNames(obj)
         for p in obj.Objects:
             self.AddCode(obj.Objects[p])
         
@@ -46,7 +47,7 @@ class EventGenerator(EventGenerator_, Settings, Tools, SampleTracer):
         
         it = -1
         for F in self.DictToList(self.Files):
-            F_i = File(F, self.Threads)
+            F_i = File(F)
             F_i.Trees += obj.Trees
             F_i.Branches += obj.Branches
             F_i.Leaves += obj.Leaves 
@@ -55,9 +56,8 @@ class EventGenerator(EventGenerator_, Settings, Tools, SampleTracer):
             for ev in F_i:
                 indx += 1
                 it += 1
-                if self.EventStart < it and self.EventStart != -1:
+                if self.EventStart > it and self.EventStart != -1:
                     continue
-                self.EventStart = -1
                 if self.EventStop != None and self.EventStop < it:
                     break
                 event = PopulateEvent(ev, indx, F)

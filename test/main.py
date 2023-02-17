@@ -35,11 +35,17 @@ def Test(F, **kargs):
 
 if __name__ == '__main__':
 
-    RootDir = "/home/tnom6927/Downloads/CustomAnalysisTopOutputTest/"
+    RootDir = "/home/tnom6927/Downloads/samples/"
     
     ## ==== Testing IO ==== #
-    #Test(IO.TestDirectory, Files = RootDir)
-    #
+    #TextFileDir = "./TestCaseFiles/Tools/TestFiles/"
+    #Test(IO.TestlsFiles, Directory = TextFileDir)
+    #Test(IO.Testls, Directory = TextFileDir)
+    #Test(IO.TestIsFile, Directory = TextFileDir)
+    #Test(IO.TestListFilesInDir, Directory = TextFileDir)
+    #Test(IO.TestSourceCodeExtraction)
+    #Test(IO.TestDataMerging)
+
     ## ==== Test EventGenerator ==== #
     #Test(EventGenerator.TestEventGenerator, Files = {RootDir + "tttt" : ["QU_0.root"], RootDir + "t" : ["QU_14.root"]})
 
@@ -54,6 +60,7 @@ if __name__ == '__main__':
 
     ## ==== Test Modules ==== #
     #Test(Modular.TestEventGenerator, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
+    #Test(Modular.TestAnalysis, Files = [RootDir + "tttt/QU_0.root", RootDir + "ttbar/DAOD_TOPQ1.27296306._000077.root"])
 
     ## ==== Test Optimizer ==== # 
     #Test(RandomSampler.TestRandomSampling, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
@@ -62,4 +69,3 @@ if __name__ == '__main__':
     # === Test Submission ==== #
     #Test(Submission.TestAnalysis, GeneralDir = RootDir)
     #Test(Submission.TestCondorDumping, GeneralDir = RootDir)
-    #Test(TestCython.Vector) 

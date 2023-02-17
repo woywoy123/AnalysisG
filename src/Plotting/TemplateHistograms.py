@@ -181,13 +181,14 @@ class CombineTH1F(Functions):
         
         reorder = {}
         for i in range(len(self.Histograms)):
-            reorder[len(self.Histograms[i].xData)] = i
+            if len(self.Histograms[i].xData) not in reorder:
+                reorder[len(self.Histograms[i].xData)] = []
+            reorder[len(self.Histograms[i].xData)].append(i)
         
         reorg = sorted(reorder)
         reorg.reverse()
-        self.Histograms = [self.Histograms[reorder[i]] for i in reorg]
-
-        for i in H:
+        self.Histograms = [self.Histograms[k] for i in reorg for k in reorder[i]]
+        for i in self.Histograms:
             i.xBins = self.xBins
             i.xMin = self.xMin
             i.xMax = self.xMax

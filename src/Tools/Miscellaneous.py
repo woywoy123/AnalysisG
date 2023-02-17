@@ -20,7 +20,7 @@ def GetSourceCode(obj):
     try:
         return inspect.getsource(obj)
     except:
-        return insect.getsource(obj.__class__)
+        return inspect.getsource(obj.__class__)
 
 
 def GetSourceFile(obj):

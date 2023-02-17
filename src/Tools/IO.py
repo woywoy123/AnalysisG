@@ -4,10 +4,6 @@ from glob import glob
 from .String import *
 from AnalysisTopGNN.Notification import IO_
 
-def _IO(directory, extension):
-    io = IO()
-    return io.ListFilesInDir(directory, extension)
-
 class IO(String, IO_):
 
     def __init__(self):
@@ -29,7 +25,7 @@ class IO(String, IO_):
 
     def IsFile(self, directory):
         if os.path.isfile(directory):
-            return directory
+            return True
         else:
             self.FileNotFoundWarning(self.path(directory), directory.split("/")[-1])
             return False

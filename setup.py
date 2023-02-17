@@ -1,15 +1,5 @@
 from setuptools import Extension, setup
-from torch.utils.cpp_extension import BuildExtension, CppExtension
 import Cython.Build
-
-setup(
-        name = "PyTorchCustom", 
-        ext_modules = [
-            CppExtension("LorentzVector", ["src/PyTorchCustom/Source/LorentzVector.cpp"])
-        ],
-        cmdclass = {"build_ext" : BuildExtension}
-    )
-
 
 setup(
         name = "AnalysisTopGNN", 
@@ -61,13 +51,13 @@ setup(
             "AnalysisTopGNN.Statistics" : "src/Statistics", 
             "AnalysisTopGNN.Generators" : "src/Generators", 
             "AnalysisTopGNN.Submission" : "src/Submission", 
-
         },
 
         ext_modules = [
                 Extension("AnalysisTopGNN.Vectors", 
-                          sources = ["src/Vectors/Lorentz.pyx"]),
+                sources = ["src/Vectors/Lorentz.pyx"]),
                 ],
+
         cmdclass = {"build_ext" : Cython.Build.build_ext}, 
         long_description = open("README.md").read(), 
     )

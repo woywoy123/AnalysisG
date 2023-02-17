@@ -1,5 +1,5 @@
-from AnalysisTopGNN.Templates import EventTemplate
 from AnalysisTopGNN.Particles.Particles import *
+from AnalysisTopGNN.Templates import EventTemplate
 
 class Event(EventTemplate):
 
@@ -8,10 +8,10 @@ class Event(EventTemplate):
         self.Objects = {
                 "Tops" : Top(), 
                 "TopChildren" : Children(),
-                "TruthJets" : TruthJet(), 
-                "TruthJetPartons" : TruthJetPartons(),
-                "Jets" : Jets(),
-                "JetPartons" : JetPartons(),
+                "TruthJets" : TruthJet(),
+                "TruthJetPartons" : TruthJetParton(),
+                "Jets" : Jet(), 
+                "JetPartons" : JetParton(),
                 "Electrons" : Electron(), 
                 "Muons" : Muon(),
         }
@@ -26,82 +26,68 @@ class Event(EventTemplate):
         self.DefineObjects()
         
         self._Deprecated = False
-        self._CommitHash = "master@e633cf7b9b51de362222bd3175bfec8e6c00026f"
+        self._CommitHash = "master@7d70c412a65160d897d0253cbb42e5accf2c5bcf"
 
     def CompileEvent(self):
-        self.JetPartons = { i : self.JetPartons[i] for i in self.JetPartons if self.JetPartons[i].index != []}
-        self.TruthJetPartons = { i : self.TruthJetPartons[i] for i in self.TruthJetPartons if self.TruthJetPartons[i].index != []}
-
-        # ---- Remove Null children ---- #
-        for i in self.TopChildren:
-            if isinstance(self.TopChildren[i].eta, float):
-                continue
-            self.TopChildren[i] = None
-        self.TopChildren = { i : self.TopChildren[i] for i in self.TopChildren if self.TopChildren[i] != None }
-
-        for i in self.TopChildren:
-            t = self.TopChildren[i]
-            if isinstance(t.index, list):
-                continue
-            self.Tops[t.index].Children.append(t)
-            t.Parent.append(self.Tops[t.index])
-            t.__dict__["FromRes"] = self.Tops[t.index].FromRes
-
-        for jp in self.TruthJetPartons:
-            tjp = self.TruthJetPartons[jp]
-            if tjp.TruJetIndex in self.TruthJets:
-                tjp.TruthJet.append(self.TruthJets[tjp.TruJetIndex])
-                self.TruthJets[tjp.TruJetIndex].Partons.append(tjp)
-            if tjp.index in self.TopChildren:
-                tjp.Parent.append(self.TopChildren[tjp.index])
-
-        for jp in self.JetPartons:
-            tjp = self.JetPartons[jp]
-            if tjp.JetIndex in self.Jets:
-                tjp.Jet.append(self.Jets[tjp.JetIndex])
-                self.Jets[tjp.JetIndex].Partons.append(tjp)
-            if tjp.index in self.TopChildren:
-                tjp.Parent.append(self.TopChildren[tjp.index])
-
-        for i in self.TruthJets:
-            for ti in self.TruthJets[i].index:
-                if ti == -1:
-                    continue
-                self.Tops[ti].TruthJets.append(self.TruthJets[i])
-                self.TruthJets[i].Tops.append(self.Tops[ti])
-
-        for i in self.Jets:
-            for ti in self.Jets[i].index:
-                if ti == -1:
-                    continue
-                self.Tops[ti].Jets.append(self.Jets[i])
-                self.Jets[i].Tops.append(self.Tops[ti])
-  
-        maps = { i : self.TopChildren[i] for i in self.TopChildren if abs(self.TopChildren[i].pdgid) in [11, 13, 15] }
+        self.Tops = {t.index : t for t in self.Tops.values()}
+        self.TopChildren = {c.index : c for c in self.TopChildren.values() if isinstance(c.index, int)}
+        self.TruthJets = {tj.index : tj for tj in self.TruthJets.values()}
+        self.TruthJetPartons = {tj.index : tj for tj in self.TruthJetPartons.values()}
+        self.Jets = {j.index : j for j in self.Jets.values()}
+        self.JetPartons = {j.index : j for j in self.JetPartons.values()}
         
-        # ==== Electron ==== #
-        if len(self.Electrons) != 0 and len(maps) != 0:
-            dist = { maps[i].DeltaR(self.Electrons[l]) : [i, l] for i in maps for l in self.Electrons } 
-            dst = sorted(dist) 
-            for i in range(len(self.Electrons)):
-                self.TopChildren[dist[dst[i]][0]].Children.append(self.Electrons[dist[dst[i]][1]])
-                self.Electrons[dist[dst[i]][1]].Parent.append(self.TopChildren[dist[dst[i]][0]])
-                self.Electrons[dist[dst[i]][1]].index += list(set([p.index for p in self.TopChildren[dist[dst[i]][0]].Parent]))
-    
-        # ==== Muon ==== #
-        if len(self.Muons) != 0 and len(maps) != 0:
-            dist = { maps[i].DeltaR(self.Muons[l]) : [i, l] for i in maps for l in self.Muons } 
-            dst = sorted(dist) 
-            for i in range(len(self.Muons)):
-                self.TopChildren[dist[dst[i]][0]].Children.append(self.Muons[dist[dst[i]][1]])
-                self.Muons[dist[dst[i]][1]].Parent.append(self.TopChildren[dist[dst[i]][0]])
-                self.Muons[dist[dst[i]][1]].index += list(set([p.index for p in self.TopChildren[dist[dst[i]][0]].Parent]))
+        for c in self.TopChildren.values():
+            self.Tops[c.TopIndex].Children.append(c)
+            c.Parent.append(self.Tops[c.TopIndex])
+            c.index = c.TopIndex
+        
+        for tj in self.TruthJets.values():
+            for ti in tj.TopIndex:
+                if ti == -1:
+                    continue
+                tj.Tops.append(self.Tops[ti])
+                self.Tops[ti].TruthJets.append(tj)
+            tj.index = tj.TopIndex
+        
+        for tjp in self.TruthJetPartons.values():
+            self.TruthJets[tjp.TruthJetIndex].Parton.append(tjp)
+            tjp.Children.append(self.TruthJets[tjp.TruthJetIndex])
+            for ci in tjp.TopChildIndex:
+                tjp.Parent.append(self.TopChildren[ci])
  
+        for j in self.Jets.values():
+            for ti in j.TopIndex:
+                if ti == -1:
+                    continue
+                j.Tops.append(self.Tops[ti])
+                self.Tops[ti].Jets.append(j)
+            j.index = j.TopIndex
+
+        for jp in self.JetPartons.values():
+            self.Jets[jp.JetIndex].Parton.append(jp)
+            jp.Children.append(self.Jets[jp.JetIndex])
+            for ci in jp.TopChildIndex:
+                jp.Parent.append(self.TopChildren[ci])
+
+        maps = { i : self.TopChildren[i] for i in self.TopChildren if abs(self.TopChildren[i].pdgid) in [11, 13, 15] }
+        lep = list(self.Electrons.values()) + list(self.Muons.values())
+        dist = { maps[i].DeltaR(j) : (i, j) for i in maps for j in lep }
+        dst = sorted(dist)
+        accept = []
+        for dr in dst:
+            idx, l = dist[dr]
+            if l in accept:
+                continue
+            maps[idx].Children.append(l)
+            l.index = [maps[idx].index]
+            accept.append(l)
+        
         self.Tops = list(self.Tops.values())
+        self.Tops.reverse()
         self.TopChildren = list(self.TopChildren.values())
-        self.Jets = list(self.Jets.values())
-        self.TruthJetPartons = list(self.TruthJetPartons.values())
+        self.TopChildren.reverse()
         self.TruthJets = list(self.TruthJets.values())
+        self.Jets = list(self.Jets.values())
         self.Electrons = list(self.Electrons.values())
         self.Muons = list(self.Muons.values())
 
