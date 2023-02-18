@@ -86,7 +86,8 @@ PkgH = {
                 NuRecon_H + "NuSolTensor.h",
             ], 
             "PyC.NuSol.CUDA" : [
-                Transform_H + "ToCartesianCUDA.h", 
+                Transform_H + "ToCartesianCUDA.h",
+                Transform_H + "ToPolarCUDA.h", 
                 Physics_H + "CUDA.h", 
                 Operators_H + "CUDA.h", 
 
@@ -181,6 +182,10 @@ PkgC = {
                 Transform_Cu + "CartesianKernel.cu", 
                 Transform_Cu + "CartesianTorch.cu", 
 
+                Transform_Cu + "Polar.cu",
+                Transform_Cu + "PolarKernel.cu", 
+                Transform_Cu + "PolarTorch.cu", 
+
                 Physics_Cu + "Physics.cu", 
                 Physics_Cu + "PhysicsKernel.cu",
                 Physics_Cu + "PhysicsTorch.cu", 
@@ -198,9 +203,11 @@ PkgC = {
 }
 
 Pkg = [
-        "PyC.Transform.Floats", "PyC.Transform.Tensors", "PyC.Transform.CUDA", "PyC.Operators.Tensors", "PyC.Operators.CUDA", 
-        "PyC.Physics.Tensors.Cartesian", "PyC.Physics.CUDA.Cartesian", "PyC.Physics.Tensors.Polar", "PyC.Physics.CUDA.Polar", 
-        "PyC.NuSol.Tensors", "PyC.NuSol.Tensors", "PyC.NuSol.CUDA"
+        "PyC.Transform.Floats", "PyC.Transform.Tensors", "PyC.Transform.CUDA", 
+        #"PyC.Operators.Tensors", "PyC.Operators.CUDA", 
+        #"PyC.Physics.Tensors.Cartesian", "PyC.Physics.CUDA.Cartesian", "PyC.Physics.Tensors.Polar", "PyC.Physics.CUDA.Polar", 
+        #"PyC.NuSol.Tensors", 
+        "PyC.NuSol.CUDA"
         ]
 if torch.cuda.is_available() == False:
     Pkg = [i for i in Pkg if i.endswith("CUDA") == False]

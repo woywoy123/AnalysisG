@@ -21,8 +21,52 @@ torch::Tensor _det(torch::Tensor Matrix);
 
 namespace OperatorsCUDA
 {
-
 	const void _CheckTensors(std::vector<torch::Tensor> T){for (torch::Tensor x : T){CHECK_INPUT(x);}}
+	const torch::Tensor TransferToCUDA(std::vector<double> inpt)
+	{
+		torch::TensorOptions op = torch::TensorOptions().dtype(torch::kFloat64); 
+		torch::Tensor v = torch::from_blob(inpt.data(), {(int)inpt.size()}, op); 
+		v = v.view({-1, 1}).clone(); 
+		v = v.to(torch::kCUDA); 
+		CHECK_INPUT(v); 
+		return v; 
+	}
+
+	const torch::Tensor CosTheta(torch::Tensor v1, torch::Tensor v2)
+	{
+		_CheckTensors({v1, v2}); 
+		return _CosTheta(v1, v2); 
+	}
+
+	const torch::Tensor _SinTheta(torch::Tensor cos)
+	{
+		return torch::sqrt(1 - _Dot(cos, cos)); 
+	}
+
+	const torch::Tensor SinTheta(torch::Tensor v1, torch::Tensor v2)
+	{
+
+		_CheckTensors({v1, v2}); 
+		return _SinTheta(_CosTheta(v1, v2)); 
+	}
+
+	const torch::Tensor Rx(torch::Tensor angle)
+	{
+		CHECK_INPUT(angle);
+		return _Rx(angle); 
+	}
+
+	const torch::Tensor Ry(torch::Tensor angle)
+	{
+		CHECK_INPUT(angle);
+		return _Ry(angle); 
+	}
+
+	const torch::Tensor Rz(torch::Tensor angle)
+	{
+		CHECK_INPUT(angle);
+		return _Rz(angle); 
+	}
 
 	const torch::Tensor Dot(torch::Tensor v1, torch::Tensor v2)
 	{ 
@@ -66,41 +110,7 @@ namespace OperatorsCUDA
 		return _det(Matrix); 
 	}
 
-	const torch::Tensor CosTheta(torch::Tensor v1, torch::Tensor v2)
-	{
-		_CheckTensors({v1, v2}); 
-		return _CosTheta(v1, v2); 
-	}
 
-	const torch::Tensor _SinTheta(torch::Tensor cos)
-	{
-		return torch::sqrt(1 - _Dot(cos, cos)); 
-	}
-
-	const torch::Tensor SinTheta(torch::Tensor v1, torch::Tensor v2)
-	{
-
-		_CheckTensors({v1, v2}); 
-		return _SinTheta(_CosTheta(v1, v2)); 
-	}
-
-	const torch::Tensor Rx(torch::Tensor angle)
-	{
-		CHECK_INPUT(angle);
-		return _Rx(angle); 
-	}
-
-	const torch::Tensor Ry(torch::Tensor angle)
-	{
-		CHECK_INPUT(angle);
-		return _Ry(angle); 
-	}
-
-	const torch::Tensor Rz(torch::Tensor angle)
-	{
-		CHECK_INPUT(angle);
-		return _Rz(angle); 
-	}
 }
 
 #endif 

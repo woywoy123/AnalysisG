@@ -6,6 +6,7 @@
 #include <iostream>
 #include "../../Physics/Headers/CUDA.h"
 #include "../../Transform/Headers/ToCartesianCUDA.h"
+#include "../../Transform/Headers/ToPolarCUDA.h"
 #include "../../Operators/Headers/CUDA.h"
 
 torch::Tensor _Solutions(
@@ -37,6 +38,21 @@ std::vector<torch::Tensor> _EllipseLines(torch::Tensor Lines, torch::Tensor Q, t
 namespace NuSolCUDA
 {
 	const void _CheckTensors(std::vector<torch::Tensor> T){for (torch::Tensor x : T){CHECK_INPUT(x);}}
+	const std::vector<torch::Tensor> _MetXY(torch::Tensor met, torch::Tensor phi)
+	{
+		met = met.view({-1, 1}).contiguous(); 
+		phi = phi.view({-1, 1}).contiguous(); 
+		NuSolCUDA::_CheckTensors({met, phi}); 
+		return { TransformCUDA::Px(met, phi), TransformCUDA::Py(met, phi) }; 
+	}
+	const std::vector<torch::Tensor> _Format1D(std::vector<torch::Tensor> inpt)
+	{
+		std::vector<torch::Tensor> out = {}; 
+		out.reserve(inpt.size());
+		for (unsigned int i = 0; i < inpt.size(); ++i){ out.push_back(inpt[i].view({-1, 1}).to(torch::kFloat64)); }
+		return out; 
+	}
+
 	const std::vector<torch::Tensor> _Format(torch::Tensor t, int dim)
 	{
 		std::vector<torch::Tensor> _out; 
@@ -45,6 +61,17 @@ namespace NuSolCUDA
 			_out.push_back((t.index({torch::indexing::Slice(), i}).view({-1, 1}).contiguous())); 
 		}
 		return _out; 
+	}
+
+	const std::vector<torch::Tensor> _Format(std::vector<std::vector<double>> inpt)
+	{
+		std::vector<torch::Tensor> out = {}; 
+		out.reserve(inpt.size()); 
+		for (unsigned int i = 0; i < inpt.size(); ++i)
+		{
+			out.push_back(OperatorsCUDA::TransferToCUDA(inpt[i]).view({-1, inpt[i].size()})); 
+		}
+		return NuSolCUDA::_Format(torch::cat(out, 0), inpt[0].size()); 
 	}
 
 	const torch::Tensor Solutions(
@@ -76,8 +103,7 @@ namespace NuSolCUDA
 	
 	const torch::Tensor H_Matrix(
 			torch::Tensor Sols_, std::vector<torch::Tensor> b_C, 
-			std::vector<torch::Tensor> mu_C, torch::Tensor mu_P, 
-			torch::Tensor mu_phi) 
+			std::vector<torch::Tensor> mu_C, torch::Tensor mu_P, torch::Tensor mu_phi) 
 	{
 		torch::Tensor H_ = _H_Matrix(Sols_, mu_P); 
 		torch::Tensor theta_ = PhysicsCUDA::Theta(mu_C[0], mu_C[1], mu_C[2]);
@@ -155,35 +181,22 @@ namespace SingleNuCUDA
 		return _S.contiguous(); 
 	}
 
-
-	const std::vector<torch::Tensor> Nu(torch::Tensor b, torch::Tensor mu, 
-			torch::Tensor met, torch::Tensor phi, 
+	const std::vector<torch::Tensor> Nu(
+			std::vector<torch::Tensor> b_P, std::vector<torch::Tensor> mu_P, 
+			std::vector<torch::Tensor> b_C, std::vector<torch::Tensor> mu_C,
+			torch::Tensor met_x, torch::Tensor met_y, 
 			torch::Tensor Sxx, torch::Tensor Sxy, torch::Tensor Syx, torch::Tensor Syy,
 			torch::Tensor mT, torch::Tensor mW, torch::Tensor mNu, double cutoff)
 	{
-
-
-		// ---- Polar Version of Particles ---- //
-		std::vector<torch::Tensor> b_P = NuSolCUDA::_Format(b.view({-1, 4}), 4);
-		std::vector<torch::Tensor> mu_P = NuSolCUDA::_Format(mu.view({-1, 4}), 4); 
-		
-		// ---- Cartesian Version of Particles ---- //
-		std::vector<torch::Tensor> b_C = NuSolCUDA::_Format(TransformCUDA::PxPyPz(b_P[0], b_P[1], b_P[2]), 3); 
-		std::vector<torch::Tensor> mu_C = NuSolCUDA::_Format(TransformCUDA::PxPyPz(mu_P[0], mu_P[1], mu_P[2]), 3); 
-		torch::Tensor muP_ = PhysicsCUDA::P(mu_C[0], mu_C[1], mu_C[2]); 
-
-		// ---- Cartesian Version of Event Met ---- //
-		NuSolCUDA::_CheckTensors({met, phi}); 
-		torch::Tensor met_x = TransformCUDA::Px(met, phi); 
-		torch::Tensor met_y = TransformCUDA::Py(met, phi);
-		
+	
 		// ---- Precalculate the Mass Squared ---- //
 		torch::Tensor mT2 = OperatorsCUDA::Dot(mT, mT); 
 		torch::Tensor mW2 = OperatorsCUDA::Dot(mW, mW); 
 		torch::Tensor mNu2 = OperatorsCUDA::Dot(mNu, mNu); 
-			
+
+		// ---- Calculate the Solutions ---- //
 		torch::Tensor sols_ = NuSolCUDA::Solutions(b_P, b_C, mu_P, mu_C, mT2, mW2, mNu2);
-		torch::Tensor H_ = NuSolCUDA::H_Matrix(sols_, b_C, mu_C, muP_, mu_P[2]); 
+		torch::Tensor H_ = NuSolCUDA::H_Matrix(sols_, b_C, mu_C, PhysicsCUDA::P(mu_C[0], mu_C[1], mu_C[2]), mu_P[2]); 
 		
 		// ---- Protection Against non-invertible Matrices ---- //
 		torch::Tensor SkipEvent = OperatorsCUDA::Det(H_) != 0;
@@ -194,12 +207,10 @@ namespace SingleNuCUDA
 		Sxy = Sxy.index({SkipEvent}).view({-1, 1}); 
 		Syx = Syx.index({SkipEvent}).view({-1, 1}); 
 		Syy = Syy.index({SkipEvent}).view({-1, 1});
-
-		// ---- MET uncertainity ---- //	
-		torch::Tensor S2_ = Sigma2(Sxx, Sxy, Syx, Syy);	
-
+		// ---------------------------------------------------- //
+		
 		torch::Tensor delta_ = NuSolCUDA::V0(met_x, met_y) - H_; 
-		torch::Tensor X_ = OperatorsCUDA::Mul(torch::transpose(delta_, 1, 2).contiguous(), S2_); 
+		torch::Tensor X_ = OperatorsCUDA::Mul(torch::transpose(delta_, 1, 2).contiguous(), Sigma2(Sxx, Sxy, Syx, Syy)); 
 		X_ = OperatorsCUDA::Mul(X_, delta_).view({-1, 3, 3}); 
 		
 		torch::Tensor M_ = OperatorsCUDA::Mul(X_, NuSolCUDA::Derivative(X_)); 
@@ -253,6 +264,194 @@ namespace SingleNuCUDA
 
 }
 
+
+namespace NuCUDA
+{
+	const std::vector<torch::Tensor> NuPtEtaPhiE(
+			torch::Tensor b, torch::Tensor mu, torch::Tensor met, torch::Tensor phi, 
+			torch::Tensor Sxx, torch::Tensor Sxy, torch::Tensor Syx, torch::Tensor Syy, 
+			torch::Tensor mT, torch::Tensor mW, torch::Tensor mNu, double cutoff)
+	{
+
+		// ---- Polar Version of Particles ---- //
+		std::vector<torch::Tensor> b_P = NuSolCUDA::_Format(b.view({-1, 4}), 4);
+		std::vector<torch::Tensor> mu_P = NuSolCUDA::_Format(mu.view({-1, 4}), 4); 
+		
+		// ---- Cartesian Version of Particles ---- //
+		std::vector<torch::Tensor> b_C = NuSolCUDA::_Format(TransformCUDA::PxPyPz(b_P[0], b_P[1], b_P[2]), 3); 
+		std::vector<torch::Tensor> mu_C = NuSolCUDA::_Format(TransformCUDA::PxPyPz(mu_P[0], mu_P[1], mu_P[2]), 3); 
+
+		// ---- Cartesian Version of Event Met ---- //
+		std::vector<torch::Tensor> _met = NuSolCUDA::_MetXY(met, phi);
+
+		// ---- Standardize Tensors ---- //
+		std::vector<torch::Tensor> _S = NuSolCUDA::_Format1D({Sxx, Sxy, Syx, Syy}); 
+		std::vector<torch::Tensor> _m = NuSolCUDA::_Format1D({mT, mW, mNu}); 
+
+		return SingleNuCUDA::Nu(b_P, mu_P, b_C, mu_C, _met[0], _met[1], _S[0], _S[1], _S[2], _S[3], _m[0], _m[1], _m[2], cutoff); 
+	}
+
+	const std::vector<torch::Tensor> NuPxPyPzE(
+			torch::Tensor b, torch::Tensor mu, torch::Tensor met_x, torch::Tensor met_y, 
+			torch::Tensor Sxx, torch::Tensor Sxy, torch::Tensor Syx, torch::Tensor Syy, 
+			torch::Tensor mT, torch::Tensor mW, torch::Tensor mNu, double cutoff)
+	{
+
+		// ---- Cartesian Version of Particles ---- //
+		std::vector<torch::Tensor> b_C = NuSolCUDA::_Format(b.view({-1, 4}), 4);
+		std::vector<torch::Tensor> mu_C = NuSolCUDA::_Format(mu.view({-1, 4}), 4); 
+		
+		// ---- Polar Version of Particles ---- //
+		std::vector<torch::Tensor> b_P = NuSolCUDA::_Format(TransformCUDA::PtEtaPhi(b_C[0], b_C[1], b_C[2]), 3); 
+		std::vector<torch::Tensor> mu_P = NuSolCUDA::_Format(TransformCUDA::PtEtaPhi(mu_C[0], mu_C[1], mu_C[2]), 3); 
+		b_P.insert(b_P.end(), b_C[3]); 
+		mu_P.insert(mu_P.end(), mu_C[3]); 
+		
+		// ---- Cartesian Version of Event Met ---- //
+		std::vector<torch::Tensor> _met = NuSolCUDA::_Format1D({met_x, met_y});
+
+		// ---- Standardize Tensors ---- //
+		std::vector<torch::Tensor> _S = NuSolCUDA::_Format1D({Sxx, Sxy, Syx, Syy}); 
+		std::vector<torch::Tensor> _m = NuSolCUDA::_Format1D({mT, mW, mNu}); 
+
+		return SingleNuCUDA::Nu(b_P, mu_P, b_C, mu_C, _met[0], _met[1], _S[0], _S[1], _S[2], _S[3], _m[0], _m[1], _m[2], cutoff); 
+	}
+
+
+	const std::vector<torch::Tensor> Nu_AsDouble_PtEtaPhiE(
+			double b_pt, double b_eta, double b_phi, double b_e, 
+			double mu_pt, double mu_eta, double mu_phi, double mu_e, 
+			double met, double phi,
+			double Sxx, double Sxy, double Syx, double Syy, 
+			double mT, double mW, double mNu, double cutoff)
+	{
+		// ---- Make into Tensors ---- //
+		torch::Tensor b = OperatorsCUDA::TransferToCUDA({b_pt, b_eta, b_phi, b_e}).view({-1, 4}); 
+		torch::Tensor mu = OperatorsCUDA::TransferToCUDA({mu_pt, mu_eta, mu_phi, mu_e}).view({-1, 4}); 
+
+		std::vector<torch::Tensor> _met = NuSolCUDA::_Format(OperatorsCUDA::TransferToCUDA({met, phi}).view({-1, 2}), 2); 
+		torch::Tensor met_x = TransformCUDA::Px(_met[0], _met[1]); 
+		torch::Tensor met_y = TransformCUDA::Py(_met[0], _met[1]);
+		
+		std::vector<torch::Tensor> _S = NuSolCUDA::_Format(OperatorsCUDA::TransferToCUDA({Sxx, Sxy, Syx, Syy}).view({-1, 4}), 4);
+		std::vector<torch::Tensor> _m = NuSolCUDA::_Format(OperatorsCUDA::TransferToCUDA({mT, mW, mNu}).view({-1, 3}), 3);
+
+		// ---- Polar Version of Particles ---- //
+		std::vector<torch::Tensor> b_P = NuSolCUDA::_Format(b, 4);
+		std::vector<torch::Tensor> mu_P = NuSolCUDA::_Format(mu, 4); 
+		
+		// ---- Cartesian Version of Particles ---- //
+		std::vector<torch::Tensor> b_C = NuSolCUDA::_Format(TransformCUDA::PxPyPz(b_P[0], b_P[1], b_P[2]), 3); 
+		std::vector<torch::Tensor> mu_C = NuSolCUDA::_Format(TransformCUDA::PxPyPz(mu_P[0], mu_P[1], mu_P[2]), 3); 
+
+		return SingleNuCUDA::Nu(b_P, mu_P, b_C, mu_C, met_x, met_y, _S[0], _S[1], _S[2], _S[4], _m[0], _m[1], _m[2], cutoff); 
+	}
+
+	const std::vector<torch::Tensor> Nu_AsDouble_PxPyPzE(
+			double b_px, double b_py, double b_pz, double b_e, 
+			double mu_px, double mu_py, double mu_pz, double mu_e, 
+			double met_x, double met_y,
+			double Sxx, double Sxy, double Syx, double Syy, 
+			double mT, double mW, double mNu, double cutoff)
+	{
+		// ---- Make into Tensors ---- //
+		torch::Tensor b = OperatorsCUDA::TransferToCUDA({b_px, b_py, b_pz, b_e}).view({-1, 4}); 
+		torch::Tensor mu = OperatorsCUDA::TransferToCUDA({mu_px, mu_py, mu_pz, mu_e}).view({-1, 4}); 
+		std::vector<torch::Tensor> _met = NuSolCUDA::_Format(OperatorsCUDA::TransferToCUDA({met_x, met_y}).view({-1, 2}), 2); 
+		std::vector<torch::Tensor> _S = NuSolCUDA::_Format(OperatorsCUDA::TransferToCUDA({Sxx, Sxy, Syx, Syy}).view({-1, 4}), 4);
+		std::vector<torch::Tensor> _m = NuSolCUDA::_Format(OperatorsCUDA::TransferToCUDA({mT, mW, mNu}).view({-1, 3}), 3);
+
+		// ---- Cartesian Version of Particles ---- //
+		std::vector<torch::Tensor> b_C = NuSolCUDA::_Format(b, 4);
+		std::vector<torch::Tensor> mu_C = NuSolCUDA::_Format(mu, 4); 
+		
+		// ---- Polar Version of Particles ---- //
+		std::vector<torch::Tensor> b_P = NuSolCUDA::_Format(TransformCUDA::PtEtaPhi(b_C[0], b_C[1], b_C[2]), 3); 
+		std::vector<torch::Tensor> mu_P = NuSolCUDA::_Format(TransformCUDA::PtEtaPhi(mu_C[0], mu_C[1], mu_C[2]), 3); 
+
+		return SingleNuCUDA::Nu(b_P, mu_P, b_C, mu_C, _met[0], _met[1], _S[0], _S[1], _S[2], _S[4], _m[0], _m[1], _m[2], cutoff); 
+	}
+
+	const std::vector<torch::Tensor> Nu_AsDoubleList_PtEtaPhiE(
+			std::vector<std::vector<double>> b, std::vector<std::vector<double>> mu, 
+			std::vector<std::vector<double>> met, std::vector<std::vector<double>> S, 
+			std::vector<std::vector<double>> Mass, double cutoff)
+	{
+		// ---- Make into Tensors ---- //
+		std::vector<torch::Tensor> _b, _mu, _met, _S, _m; 
+
+		_b.reserve(b.size()); 
+		_mu.reserve(b.size()); 
+		_met.reserve(b.size());
+		_S.reserve(b.size());
+		_m.reserve(b.size()); 
+
+		for (unsigned int i(0); i < b.size(); ++i)
+		{
+			_b.push_back(OperatorsCUDA::TransferToCUDA(b[i]).view({-1, 4})); 
+			_mu.push_back(OperatorsCUDA::TransferToCUDA(mu[i]).view({-1, 4})); 
+			_met.push_back(OperatorsCUDA::TransferToCUDA(met[i]).view({-1, 2}));
+			_S.push_back(OperatorsCUDA::TransferToCUDA(S[i]).view({-1, 4})); 
+			_m.push_back(OperatorsCUDA::TransferToCUDA(Mass[i]).view({-1, 3})); 
+		}
+
+		// ---- Polar Version of Particles ---- //
+		std::vector<torch::Tensor> b_P = NuSolCUDA::_Format(torch::cat(_b, 0), 4); 
+		std::vector<torch::Tensor> mu_P = NuSolCUDA::_Format(torch::cat(_mu, 0), 4); 
+
+		// ---- Polar Version of Particles ---- //
+		std::vector<torch::Tensor> b_C = NuSolCUDA::_Format(TransformCUDA::PxPyPz(b_P[0], b_P[1], b_P[2]), 3); 
+		std::vector<torch::Tensor> mu_C = NuSolCUDA::_Format(TransformCUDA::PxPyPz(mu_P[0], mu_P[1], mu_P[2]), 3); 
+
+		_S = NuSolCUDA::_Format(torch::cat(_S, 0), 4); 
+		_m = NuSolCUDA::_Format(torch::cat(_m, 0), 3); 
+		
+		_met = NuSolCUDA::_Format(torch::cat(_met, 0), 2);
+		torch::Tensor met_x = TransformCUDA::Px(_met[0], _met[1]); 
+		torch::Tensor met_y = TransformCUDA::Py(_met[0], _met[1]);
+
+		return SingleNuCUDA::Nu(b_P, mu_P, b_C, mu_C, met_x, met_y, _S[0], _S[1], _S[2], _S[4], _m[0], _m[1], _m[2], cutoff); 
+	}
+
+	const std::vector<torch::Tensor> Nu_AsDoubleList_PxPyPzE(
+			std::vector<std::vector<double>> b, std::vector<std::vector<double>> mu, 
+			std::vector<std::vector<double>> met, std::vector<std::vector<double>> S, 
+			std::vector<std::vector<double>> Mass, double cutoff)
+	{
+		// ---- Make into Tensors ---- //
+		std::vector<torch::Tensor> _b, _mu, _met, _S, _m; 
+
+		_b.reserve(b.size()); 
+		_mu.reserve(b.size()); 
+		_met.reserve(b.size());
+		_S.reserve(b.size());
+		_m.reserve(b.size()); 
+
+		for (unsigned int i(0); i < b.size(); ++i)
+		{
+			_b.push_back(OperatorsCUDA::TransferToCUDA(b[i]).view({-1, 4})); 
+			_mu.push_back(OperatorsCUDA::TransferToCUDA(mu[i]).view({-1, 4})); 
+			_met.push_back(OperatorsCUDA::TransferToCUDA(met[i]).view({-1, 2}));
+			_S.push_back(OperatorsCUDA::TransferToCUDA(S[i]).view({-1, 4})); 
+			_m.push_back(OperatorsCUDA::TransferToCUDA(Mass[i]).view({-1, 3})); 
+		}
+
+		// ---- Cartesian Version of Particles ---- //
+		std::vector<torch::Tensor> b_C = NuSolCUDA::_Format(torch::cat(_b, 0), 4); 
+		std::vector<torch::Tensor> mu_C = NuSolCUDA::_Format(torch::cat(_mu, 0), 4); 
+		
+		// ---- Polar Version of Particles ---- //
+		std::vector<torch::Tensor> b_P = NuSolCUDA::_Format(TransformCUDA::PtEtaPhi(b_C[0], b_C[1], b_C[2]), 3); 
+		std::vector<torch::Tensor> mu_P = NuSolCUDA::_Format(TransformCUDA::PtEtaPhi(mu_C[0], mu_C[1], mu_C[2]), 3); 
+
+		_S = NuSolCUDA::_Format(torch::cat(_S, 0), 4); 
+		_m = NuSolCUDA::_Format(torch::cat(_m, 0), 3); 
+		_met = NuSolCUDA::_Format(torch::cat(_met, 0), 2);
+
+		return SingleNuCUDA::Nu(b_P, mu_P, b_C, mu_C, _met[0], _met[1], _S[0], _S[1], _S[2], _S[4], _m[0], _m[1], _m[2], cutoff); 
+	}
+}
+
 namespace DoubleNuCUDA
 {
 	const torch::Tensor H_perp(torch::Tensor H)
@@ -273,29 +472,15 @@ namespace DoubleNuCUDA
 	}
 
 	const std::vector<torch::Tensor> NuNu(
-			torch::Tensor b, torch::Tensor b_, torch::Tensor mu, torch::Tensor mu_, 
-			torch::Tensor met, torch::Tensor phi, 
+			std::vector<torch::Tensor> b_P, std::vector<torch::Tensor> b__P, std::vector<torch::Tensor> mu_P, std::vector<torch::Tensor> mu__P, 
+			std::vector<torch::Tensor> b_C, std::vector<torch::Tensor> b__C, std::vector<torch::Tensor> mu_C, std::vector<torch::Tensor> mu__C, 
+			torch::Tensor met_x, torch::Tensor met_y, 
 			torch::Tensor mT, torch::Tensor mW, torch::Tensor mNu, double cutoff)
 	{
-		// ---- Polar Version of Particles ---- //
-		std::vector<torch::Tensor> b_P = NuSolCUDA::_Format(b.view({-1, 4}), 4);
-		std::vector<torch::Tensor> b__P = NuSolCUDA::_Format(b_.view({-1, 4}), 4);
-		std::vector<torch::Tensor> mu_P = NuSolCUDA::_Format(mu.view({-1, 4}), 4); 
-		std::vector<torch::Tensor> mu__P = NuSolCUDA::_Format(mu_.view({-1, 4}), 4); 
-		
-		// ---- Cartesian Version of Particles ---- //
-		std::vector<torch::Tensor> b_C = NuSolCUDA::_Format(TransformCUDA::PxPyPz(b_P[0], b_P[1], b_P[2]), 3); 
-		std::vector<torch::Tensor> b__C = NuSolCUDA::_Format(TransformCUDA::PxPyPz(b__P[0], b__P[1], b__P[2]), 3); 
-		std::vector<torch::Tensor> mu_C = NuSolCUDA::_Format(TransformCUDA::PxPyPz(mu_P[0], mu_P[1], mu_P[2]), 3); 
-		std::vector<torch::Tensor> mu__C = NuSolCUDA::_Format(TransformCUDA::PxPyPz(mu__P[0], mu__P[1], mu__P[2]), 3); 
+ 
 		torch::Tensor muP_ = PhysicsCUDA::P(mu_C[0], mu_C[1], mu_C[2]); 
 		torch::Tensor muP__ = PhysicsCUDA::P(mu__C[0], mu__C[1], mu__C[2]); 
 
-		// ---- Cartesian Version of Event Met ---- //
-		NuSolCUDA::_CheckTensors({met, phi}); 
-		torch::Tensor met_x = TransformCUDA::Px(met, phi); 
-		torch::Tensor met_y = TransformCUDA::Py(met, phi);
-		
 		// ---- Precalculate the Mass Squared ---- //
 		torch::Tensor mT2 = OperatorsCUDA::Dot(mT, mT); 
 		torch::Tensor mW2 = OperatorsCUDA::Dot(mW, mW); 
@@ -346,4 +531,43 @@ namespace DoubleNuCUDA
 		return {SkipEvent == false, K, K_, v, v_, n_, _sol[2], _sol[3]}; 
 	}
 }
+
+namespace NuNuCUDA
+{
+	const std::vector<torch::Tensor> NuNuPtEtaPhiE(
+			torch::Tensor b, torch::Tensor b_, torch::Tensor mu, torch::Tensor mu_,
+			torch::Tensor met, torch::Tensor phi, 
+			torch::Tensor mT, torch::Tensor mW, torch::Tensor mNu, double cutoff)
+	{
+		
+		// ---- Polar Version of Particles ---- //
+		std::vector<torch::Tensor> b_P = NuSolCUDA::_Format(b.view({-1, 4}), 4);
+		std::vector<torch::Tensor> b__P = NuSolCUDA::_Format(b_.view({-1, 4}), 4);
+		std::vector<torch::Tensor> mu_P = NuSolCUDA::_Format(mu.view({-1, 4}), 4); 
+		std::vector<torch::Tensor> mu__P = NuSolCUDA::_Format(mu_.view({-1, 4}), 4); 
+		
+		// ---- Cartesian Version of Particles ---- //
+		std::vector<torch::Tensor> b_C = NuSolCUDA::_Format(TransformCUDA::PxPyPz(b_P[0], b_P[1], b_P[2]), 3); 
+		std::vector<torch::Tensor> b__C = NuSolCUDA::_Format(TransformCUDA::PxPyPz(b__P[0], b__P[1], b__P[2]), 3); 
+		std::vector<torch::Tensor> mu_C = NuSolCUDA::_Format(TransformCUDA::PxPyPz(mu_P[0], mu_P[1], mu_P[2]), 3); 
+		std::vector<torch::Tensor> mu__C = NuSolCUDA::_Format(TransformCUDA::PxPyPz(mu__P[0], mu__P[1], mu__P[2]), 3);
+
+		// ---- Cartesian Version of Event Met ---- //
+		NuSolCUDA::_CheckTensors({met, phi}); 
+		torch::Tensor met_x = TransformCUDA::Px(met, phi); 
+		torch::Tensor met_y = TransformCUDA::Py(met, phi);
+
+		return DoubleNuCUDA::NuNu(b_P, b__P, mu_P, mu__P, b_C, b__C, mu_C, mu__C, met_x, met_y, mT, mW, mNu, cutoff); 
+
+	}
+
+
+
+
+
+}
+
+
+
+
 #endif 

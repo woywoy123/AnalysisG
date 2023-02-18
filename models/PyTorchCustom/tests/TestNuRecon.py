@@ -85,14 +85,14 @@ for i in range(its):
 
 for t in range(its):
     t1 = time()
-    t_sol = NuT.Nu(T.b, T.mu, T.met, T.phi, T.Sxx, T.Sxy, T.Syx, T.Syy, T.mT, T.mW, T.mN, 1e-12)
+    t_sol = NuT.NuPtEtaPhiE(T.b, T.mu, T.met, T.phi, T.Sxx, T.Sxy, T.Syx, T.Syy, T.mT, T.mW, T.mN, 1e-12)
     t2 = time()
     diff1 = t2 - t1 
     diff[1].append(diff1)
 
 for t in range(its):   
     t1 = time()
-    t_solC = NuC.Nu(T.b, T.mu, T.met, T.phi, T.Sxx, T.Sxy, T.Syx, T.Syy, T.mT, T.mW, T.mN, 1e-12)
+    t_solC = NuC.NuPtEtaPhiE(T.b, T.mu, T.met, T.phi, T.Sxx, T.Sxy, T.Syx, T.Syy, T.mT, T.mW, T.mN, 1e-12)
     t2 = time()
     diff2 = t2 - t1
     diff[2].append(diff2)
@@ -128,14 +128,14 @@ for i in range(its):
 
 for t in range(its):
     t1 = time()
-    t_sol = NuT.NuNu(T.b, T.b_, T.mu, T.mu_, T.met, T.phi, T.mT, T.mW, T.mN, 1e-12)
+    t_sol = NuT.NuNuPtEtaPhiE(T.b, T.b_, T.mu, T.mu_, T.met, T.phi, T.mT, T.mW, T.mN, 1e-12)
     t2 = time()
     diff1 = t2 - t1 
     diff[1].append(diff1)
 
 for t in range(its):   
     t1 = time()
-    t_solC = NuC.NuNu(T.b, T.b_, T.mu, T.mu_, T.met, T.phi, T.mT, T.mW, T.mN, 1e-12)
+    t_solC = NuC.NuNuPtEtaPhiE(T.b, T.b_, T.mu, T.mu_, T.met, T.phi, T.mT, T.mW, T.mN, 1e-12)
     t2 = time()
     diff2 = t2 - t1
     diff[2].append(diff2)
