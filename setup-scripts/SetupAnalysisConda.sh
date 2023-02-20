@@ -25,7 +25,7 @@ pip install Cython
 pip install vector
 
 cd ../
-pip install .
+pip install setup.py
 
 cd PyTorchCustom
-pip install .
+pip install setup.py

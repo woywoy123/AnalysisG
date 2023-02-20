@@ -30,6 +30,31 @@ def AssertEquivalenceRecursive(truth, pred, threshold = 0.001):
                 return False 
         return True 
 
+def AssertSimilarSets(pred1, pred2, threshold):
+    if len(pred1) != len(pred2):
+        return False
+    p1, p2 = [], []
+    for i, j in zip(pred1, pred2):
+        if sum(i) != 0:
+            p1.append(i)
+        if sum(j) != 0:
+            p2.append(j)
+    
+    for i in p1:
+        diff1 = {}
+        for k in p2:
+            diff1[sum([abs((l1 -l2)/l1)*100 for l1, l2 in zip(k, i)])**0.5] = [k, i] 
+        l = list(diff1)
+        l.sort()
+        trig = False
+        if l[0] > threshold:
+            print(l[0], diff1[l[0]])
+            trig = True
+        if trig:
+            return True 
+    return False
+
+
 def AssertSolutionSets(truth, pred1, pred2, threshold):
     
     p1, p2 = [], []

@@ -2,12 +2,21 @@
 
 PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
 {
-	m.def("NuPtEtaPhiE", &NuCUDA::NuPtEtaPhiE, "Nu");
-	m.def("NuPxPyPzE", &NuCUDA::NuPxPyPzE, "Nu");
-	m.def("NuDoublePtEtaPhiE", &NuCUDA::Nu_AsDouble_PtEtaPhiE, "Nu");
-	m.def("NuDoublePxPyPzE", &NuCUDA::Nu_AsDouble_PxPyPzE, "Nu");
-	m.def("NuListPtEtaPhiE", &NuCUDA::Nu_AsDoubleList_PtEtaPhiE, "Nu");
-	m.def("NuListPxPyPzE", &NuCUDA::Nu_AsDoubleList_PxPyPzE, "Nu");
+	m.def("NuPtEtaPhiE", &NuCUDA::PtEtaPhiE, "Nu");
+	m.def("NuPxPyPzE", &NuCUDA::PxPyPzE, "Nu");
 
-	m.def("NuNu", &DoubleNuCUDA::NuNu, "NuNu");
+	m.def("NuDoublePtEtaPhiE", &NuCUDA::PtEtaPhiE_Double, "Nu");
+	m.def("NuDoublePxPyPzE", &NuCUDA::PxPyPzE_Double, "Nu");
+
+	m.def("NuListPtEtaPhiE", &NuCUDA::PtEtaPhiE_DoubleList, "Nu");
+	m.def("NuListPxPyPzE", &NuCUDA::PxPyPzE_DoubleList, "Nu");
+
+	m.def("NuNuPtEtaPhiE", &NuNuCUDA::PtEtaPhiE, "NuNu");
+	m.def("NuNuPxPyPzE", &NuNuCUDA::PxPyPzE, "NuNu");
+
+	m.def("NuNuDoublePtEtaPhiE", &NuNuCUDA::PtEtaPhiE_Double, "NuNu");
+	m.def("NuNuDoublePxPyPzE", &NuNuCUDA::PxPyPzE_Double, "NuNu");
+	
+	m.def("NuNuListPtEtaPhiE", &NuNuCUDA::PtEtaPhiE_DoubleList, "NuNu");
+	m.def("NuNuListPxPyPzE", &NuNuCUDA::PxPyPzE_DoubleList, "NuNu");
 }

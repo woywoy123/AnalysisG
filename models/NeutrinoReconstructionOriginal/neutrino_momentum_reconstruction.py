@@ -264,7 +264,5 @@ class doubleNeutrinoSolutions(object):
     @property
     def nunu_s(self):
         '''Solution pairs for neutrino momenta'''
-        K, K_ = [ss.H.dot(np.linalg.inv(ss.H_perp))
-                 for ss in self.solutionSets]
-        return [(K.dot(s), K_.dot(s_))
-                for s, s_ in zip(self.perp, self.perp_)]
+        K, K_ = [ss.H.dot(np.linalg.inv(ss.H_perp)) for ss in self.solutionSets]
+        return [(K.dot(s), K_.dot(s_)) for s, s_ in zip(self.perp, self.perp_)]
