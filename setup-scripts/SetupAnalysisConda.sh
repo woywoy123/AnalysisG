@@ -4,6 +4,7 @@ source ~/.bashrc
 
 cd ~
 source ~/anaconda3/etc/profile.d/conda.sh
+cd -
 conda activate base
 conda env remove -n GNN
 conda create --name GNN python=3.10 --yes
@@ -25,7 +26,7 @@ pip install Cython
 pip install vector
 
 cd ../
-pip install setup.py
+pip install .
 
-cd PyTorchCustom
-pip install setup.py
+cd torch-extensions
+pip install .

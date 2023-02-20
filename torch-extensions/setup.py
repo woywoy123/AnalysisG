@@ -1,9 +1,9 @@
 from setuptools import setup 
 from torch.utils.cpp_extension import BuildExtension, CppExtension, CUDAExtension
 import torch
-#import os 
-#os.environ["CC"] = "gcc-11"
-#os.environ["CXX"] = "gcc-11"
+import os 
+os.environ["CC"] = "gcc-11"
+os.environ["CXX"] = "gcc-11"
 
 Transform_H  = "src/Transform/Headers/"
 Transform_C  = "src/Transform/CXX/"
@@ -215,7 +215,7 @@ Pkg = [
 if torch.cuda.is_available() == False:
     Pkg = [i for i in Pkg if i.endswith("CUDA") == False]
 setup(
-        name = "torch-hepp", 
+        name = "AnalysisTopGNN-Extensions", 
         version = "1.0", 
         package_data = { i : PkgH[i] for i in Pkg }, 
         ext_modules = [ CUDAExtension(i, PkgC[i]) if i.endswith("CUDA") else CppExtension(i, PkgC[i]) for i in Pkg ], 

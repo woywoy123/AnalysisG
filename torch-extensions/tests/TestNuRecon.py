@@ -28,13 +28,13 @@ def ParticleCollectors(ev):
 
     return out
 
-makeSample = False
+makeSample = True
 its = 100
 errorMargin = 2 # Percentage for double Neutrino
 
 if makeSample:
     Ana = Analysis()
-    Ana.InputSample("bsm4t-1000", "/home/tnom6927/Downloads/samples/Dilepton/ttH_tttt_m1000")
+    Ana.InputSample("bsm4t-1000", "/home/tnom6927/Downloads/samples/Dilepton/ttH_tttt_m1000/DAOD_TOPQ1.21955717._000001.root")
     Ana.Event = Event
     #Ana.EventStop = 100
     Ana.EventCache = True
@@ -42,6 +42,7 @@ if makeSample:
     Ana.chnk = 100
     Ana.VerboseLevel = 2
     Ana.Launch()
+    l = len(Ana)
     
     it = 0
     vl = {"b" : [], "lep" : [], "nu" : [], "ev" : [], "t" : []}
@@ -58,10 +59,9 @@ if makeSample:
             vl["ev"].append(ev)
             it+=1
         
-        if it == 1000:
+        if it == 1000 or l == it:
             PickleObject(vl, "TMP")
-            break
-    
+
 vl = UnpickleObject("TMP")
 T = SampleTensor(vl["b"], vl["lep"], vl["ev"], vl["t"], "cuda", [[100, 0], [0, 100]])
 R = SampleVector(vl["b"], vl["lep"], vl["ev"], vl["t"])

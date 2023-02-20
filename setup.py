@@ -61,5 +61,3 @@ setup(
         cmdclass = {"build_ext" : Cython.Build.build_ext}, 
         long_description = open("README.md").read(), 
     )
-
-
