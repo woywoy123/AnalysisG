@@ -164,7 +164,7 @@ DeltaR(tensor eta1, tensor eta2, tensor phi1, tensor phi2)) -> Tensor(n x 1)
 ```
 
 ### NuRecon:
-- PyC.NuSol.Tensor 
+- PyC.NuSol.Tensors
 - PyC.NuSol.CUDA
 
 #### Functions:

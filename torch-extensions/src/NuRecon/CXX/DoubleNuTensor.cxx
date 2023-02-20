@@ -81,6 +81,10 @@ std::vector<torch::Tensor> DoubleNuTensor::NuNu(
 	
 	K = (K.view({-1, 1, 3, 3}) * v.view({-1, 6, 1, 3})).sum(-1); 
 	K_ = (K_.view({-1, 1, 3, 3}) * v_.view({-1, 6, 1, 3})).sum(-1); 
+	
+	K = torch::nan_to_num(K, 0, 0); 
+	K_ = torch::nan_to_num(K_, 0, 0); 
+
 	return {SkipEvent == false, K, K_, v, v_, n_, _sol[2], _sol[3]}; 
 }
 

@@ -188,12 +188,12 @@ else:
 
 print("======================= Testing Consistency of Double Neutrino Reconstruction =================== ")
 # ------ Testing normal order ------ #
-t_sol = NuT.NuNu(T.b, T.b_, T.mu, T.mu_, T.met, T.phi, T.mT, T.mW, T.mN, 1e-12)
-_sol = NuC.NuNu(T.b, T.b_, T.mu, T.mu_, T.met, T.phi, T.mT, T.mW, T.mN, 1e-12)
+t_sol = NuT.NuNuPtEtaPhiE(T.b, T.b_, T.mu, T.mu_, T.met, T.phi, T.mT, T.mW, T.mN, 1e-12)
+_sol = NuC.NuNuPtEtaPhiE(T.b, T.b_, T.mu, T.mu_, T.met, T.phi, T.mT, T.mW, T.mN, 1e-12)
 
 # ------ Testing reverse order ------ #
-invt_sol = NuT.NuNu(T.b_, T.b, T.mu_, T.mu, T.met, T.phi, T.mT, T.mW, T.mN, 1e-12)
-inv_sol = NuC.NuNu(T.b_, T.b, T.mu_, T.mu, T.met, T.phi, T.mT, T.mW, T.mN, 1e-12)
+invt_sol = NuT.NuNuPtEtaPhiE(T.b_, T.b, T.mu_, T.mu, T.met, T.phi, T.mT, T.mW, T.mN, 1e-12)
+inv_sol = NuC.NuNuPtEtaPhiE(T.b_, T.b, T.mu_, T.mu, T.met, T.phi, T.mT, T.mW, T.mN, 1e-12)
 it = 0
 for r, t in zip(R, T):
     b, mu = r[0], r[1]

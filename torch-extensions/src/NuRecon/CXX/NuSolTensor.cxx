@@ -329,7 +329,6 @@ std::vector<torch::Tensor> NuSolTensors::Intersection(torch::Tensor A, torch::Te
 	torch::Tensor diag = std::get<0>(idx); 
 	torch::Tensor sel = diag >= cutoff;
 	torch::Tensor id = std::get<1>(idx); 
-
 	
 	// ------------ Unsorted ------------- //
 	torch::Tensor v = _t.index({
@@ -385,7 +384,6 @@ std::vector<torch::Tensor> NuSolTensors::Intersection(torch::Tensor A, torch::Te
 			torch::indexing::Slice(torch::indexing::None, 2), 
 			torch::indexing::Slice()}).view({-1, 2, 3});
 	_t2.index_put_({sel}, 0);
-
 	return {diag, _t2, _tmp, v}; 
 }
 

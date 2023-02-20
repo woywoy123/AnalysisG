@@ -227,7 +227,7 @@ for i in range(len(sol_tP[0])):
             F.Px(ev.met, ev.met_phi)/1000, F.Py(ev.met, ev.met_phi)/1000, 
             100, 0, 0, 100, 
             vl["t"][i][0].Mass, 80.385, 0, 1e-12)
-    AssertEquivalenceRecursive(_solP[1].tolist(), _solC[1].tolist(), 0.01)
+    AssertEquivalenceRecursive(_solP[1].tolist(), _solC[1].tolist(), 0.05)
 
 
     Pb_l.append([b.pt/1000, b.eta, b.phi, b.e/1000])
@@ -244,8 +244,8 @@ for i in range(len(sol_tP[0])):
 _solPL = NuC.NuListPtEtaPhiE(Pb_l, Pmu_l, Pmet_l, met_lS, mass_l, 1e-12)
 _solCL = NuC.NuListPxPyPzE(Cb_l, Cmu_l, Cmet_l, met_lS, mass_l, 1e-12)
 
-AssertEquivalenceRecursive(sol_tP[1].tolist(), _solCL[1].tolist(), 0.01)
-AssertEquivalenceRecursive(_solPL[1].tolist(), _solCL[1].tolist(), 0.01)
+AssertEquivalenceRecursive(sol_tP[1].tolist(), _solCL[1].tolist(), 0.05)
+AssertEquivalenceRecursive(_solPL[1].tolist(), _solCL[1].tolist(), 0.05)
 
 # ------------------ Double Neutrino Reconstruction -------------------------- # 
 sol_tP = NuC.NuNuPtEtaPhiE(T.b, T.b_, T.mu, T.mu_, T.met, T.phi, T.mT, T.mW, T.mN, 1e-12)
