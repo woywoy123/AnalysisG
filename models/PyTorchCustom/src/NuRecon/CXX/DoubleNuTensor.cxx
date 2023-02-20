@@ -18,35 +18,16 @@ torch::Tensor DoubleNuTensor::N(torch::Tensor H)
 }
 
 std::vector<torch::Tensor> DoubleNuTensor::NuNu(
-			torch::Tensor b, torch::Tensor b_, torch::Tensor mu, torch::Tensor mu_, 
-			torch::Tensor met, torch::Tensor phi, 
-			torch::Tensor mT, torch::Tensor mW, torch::Tensor mNu, double cutoff)
+		std::vector<torch::Tensor> b_P, std::vector<torch::Tensor> b__P, std::vector<torch::Tensor> mu_P, std::vector<torch::Tensor> mu__P, 
+		std::vector<torch::Tensor> b_C, std::vector<torch::Tensor> b__C, std::vector<torch::Tensor> mu_C, std::vector<torch::Tensor> mu__C, 
+		torch::Tensor met_x, torch::Tensor met_y, 
+		torch::Tensor mT, torch::Tensor mW, torch::Tensor mNu, double cutoff)
 {
-
-	// ---- Polar Version of Particles ---- //
-	std::vector<torch::Tensor> b_P = NuSolTensors::_Format(b.view({-1, 4}), 4);
-	std::vector<torch::Tensor> b__P = NuSolTensors::_Format(b_.view({-1, 4}), 4);
-	std::vector<torch::Tensor> mu_P = NuSolTensors::_Format(mu.view({-1, 4}), 4); 
-	std::vector<torch::Tensor> mu__P = NuSolTensors::_Format(mu_.view({-1, 4}), 4); 
-	
-	// ---- Cartesian Version of Particles ---- //
-	std::vector<torch::Tensor> b_C = NuSolTensors::_Format(TransformTensors::PxPyPz(b_P[0], b_P[1], b_P[2]), 3); 
-	std::vector<torch::Tensor> b__C = NuSolTensors::_Format(TransformTensors::PxPyPz(b__P[0], b__P[1], b__P[2]), 3); 
-	std::vector<torch::Tensor> mu_C = NuSolTensors::_Format(TransformTensors::PxPyPz(mu_P[0], mu_P[1], mu_P[2]), 3); 
-	std::vector<torch::Tensor> mu__C = NuSolTensors::_Format(TransformTensors::PxPyPz(mu__P[0], mu__P[1], mu__P[2]), 3); 
-	
-	// ----- Some useful values ------ //
-	torch::Tensor muP_ = PhysicsTensors::P(mu_C[0], mu_C[1], mu_C[2]); 
-	torch::Tensor mu_e   = mu_P[3]; 
-	torch::Tensor b_e = b_P[3]; 
-
-	torch::Tensor muP__ = PhysicsTensors::P(mu__C[0], mu__C[1], mu__C[2]); 
-	torch::Tensor mu__e   = mu__P[3]; 
-	torch::Tensor b__e = b__P[3]; 
-
-	// ---- Cartesian Version of Event Met ---- //
-	torch::Tensor met_x = TransformTensors::Px(met, phi); 
-	torch::Tensor met_y = TransformTensors::Py(met, phi);
+	// ---- Format Input Vectors ---- // 
+	NuSolTensors::_FixEnergyTensor(&b_C, &b_P); 
+	NuSolTensors::_FixEnergyTensor(&mu_C, &mu_P); 
+	NuSolTensors::_FixEnergyTensor(&b__C, &b__P); 
+	NuSolTensors::_FixEnergyTensor(&mu__C, &mu__P); 
 	
 	// ---- Precalculate the Mass Squared ---- //
 	torch::Tensor mT2 = mT.view({-1, 1}).pow(2); 
@@ -54,12 +35,11 @@ std::vector<torch::Tensor> DoubleNuTensor::NuNu(
 	torch::Tensor mNu2 = mNu.view({-1, 1}).pow(2);
 	
 	// ---- Starting the algorithm ----- //
-	torch::Tensor sols_ = NuSolTensors::_Solutions(b_C, mu_C, b_e, mu_e, mT2, mW2, mNu2);
-	torch::Tensor sols__ = NuSolTensors::_Solutions(b__C, mu__C, b__e, mu__e, mT2, mW2, mNu2);
+	torch::Tensor sols_ = NuSolTensors::Solutions(b_C, mu_C, b_P[3], mu_P[3], mT2, mW2, mNu2);
+	torch::Tensor sols__ = NuSolTensors::Solutions(b__C, mu__C, b__P[3], mu__P[3], mT2, mW2, mNu2);
 	
-	torch::Tensor H_ = NuSolTensors::H_Matrix(sols_, b_C, mu_P[2], mu_C[2], muP_); 
-	torch::Tensor H__ = NuSolTensors::H_Matrix(sols__, b__C, mu__P[2], mu__C[2], muP__); 
-
+	torch::Tensor H_ = NuSolTensors::H_Matrix(sols_, b_C, mu_P[2], mu_C[2], PhysicsTensors::P(mu_C[0], mu_C[1], mu_C[2])); 
+	torch::Tensor H__ = NuSolTensors::H_Matrix(sols__, b__C, mu__P[2], mu__C[2], PhysicsTensors::P(mu__C[0], mu__C[1], mu__C[2])); 
 
 	// ---- Protection Against non-invertible Matrices ---- //
 	torch::Tensor SkipEvent = (torch::det(H_) != 0)*(torch::det(H__) != 0);
@@ -67,7 +47,12 @@ std::vector<torch::Tensor> DoubleNuTensor::NuNu(
 	H__ = H__.index({SkipEvent}); 
 	met_x = met_x.index({SkipEvent}); 
 	met_y = met_y.index({SkipEvent});
-	
+
+	if (H_.size(0) == 0)
+	{
+		return {SkipEvent == false, SkipEvent == false, SkipEvent == false, SkipEvent == false, SkipEvent == false};
+	}
+
 	torch::Tensor N_ = DoubleNuTensor::N(H_); 
 	torch::Tensor N__ = DoubleNuTensor::N(H__); 
 
@@ -97,4 +82,160 @@ std::vector<torch::Tensor> DoubleNuTensor::NuNu(
 	K = (K.view({-1, 1, 3, 3}) * v.view({-1, 6, 1, 3})).sum(-1); 
 	K_ = (K_.view({-1, 1, 3, 3}) * v_.view({-1, 6, 1, 3})).sum(-1); 
 	return {SkipEvent == false, K, K_, v, v_, n_, _sol[2], _sol[3]}; 
+}
+
+std::vector<torch::Tensor> NuNuTensor::PtEtaPhiE(
+		torch::Tensor b, torch::Tensor b_, torch::Tensor mu, torch::Tensor mu_,
+		torch::Tensor met, torch::Tensor phi, 
+		torch::Tensor mT, torch::Tensor mW, torch::Tensor mNu, double cutoff)
+{
+	
+	// ---- Polar Version of Particles ---- //
+	std::vector<torch::Tensor> b_P = NuSolTensors::_Format(b.view({-1, 4}), 4);
+	std::vector<torch::Tensor> b__P = NuSolTensors::_Format(b_.view({-1, 4}), 4);
+	std::vector<torch::Tensor> mu_P = NuSolTensors::_Format(mu.view({-1, 4}), 4); 
+	std::vector<torch::Tensor> mu__P = NuSolTensors::_Format(mu_.view({-1, 4}), 4); 
+	
+	// ---- Cartesian Version of Particles ---- //
+	std::vector<torch::Tensor> b_C = NuSolTensors::_Format(TransformTensors::PxPyPz(b_P[0], b_P[1], b_P[2]), 3); 
+	std::vector<torch::Tensor> b__C = NuSolTensors::_Format(TransformTensors::PxPyPz(b__P[0], b__P[1], b__P[2]), 3); 
+	std::vector<torch::Tensor> mu_C = NuSolTensors::_Format(TransformTensors::PxPyPz(mu_P[0], mu_P[1], mu_P[2]), 3); 
+	std::vector<torch::Tensor> mu__C = NuSolTensors::_Format(TransformTensors::PxPyPz(mu__P[0], mu__P[1], mu__P[2]), 3);
+
+	// ---- Cartesian Version of Event Met ---- //
+	std::vector<torch::Tensor> _met = NuSolTensors::_MetXY(met, phi); 
+	
+	return DoubleNuTensor::NuNu(b_P, b__P, mu_P, mu__P, b_C, b__C, mu_C, mu__C, _met[0], _met[1], mT, mW, mNu, cutoff); 
+}
+
+std::vector<torch::Tensor> NuNuTensor::PxPyPzE(
+		torch::Tensor b, torch::Tensor b_, torch::Tensor mu, torch::Tensor mu_,
+		torch::Tensor met_x, torch::Tensor met_y, 
+		torch::Tensor mT, torch::Tensor mW, torch::Tensor mNu, double cutoff)
+{
+
+	// ---- Cartesian Version of Particles ---- //
+	std::vector<torch::Tensor> b_C = NuSolTensors::_Format(b.view({-1, 4}), 4);
+	std::vector<torch::Tensor> b__C = NuSolTensors::_Format(b_.view({-1, 4}), 4);
+	std::vector<torch::Tensor> mu_C = NuSolTensors::_Format(mu.view({-1, 4}), 4); 
+	std::vector<torch::Tensor> mu__C = NuSolTensors::_Format(mu_.view({-1, 4}), 4);
+
+	// ---- Polar Version of Particles ---- //
+	std::vector<torch::Tensor> b_P = NuSolTensors::_Format(TransformTensors::PtEtaPhi(b_C[0], b_C[1], b_C[2]), 3); 
+	std::vector<torch::Tensor> b__P = NuSolTensors::_Format(TransformTensors::PtEtaPhi(b__C[0], b__C[1], b__C[2]), 3); 
+	std::vector<torch::Tensor> mu_P = NuSolTensors::_Format(TransformTensors::PtEtaPhi(mu_C[0], mu_C[1], mu_C[2]), 3); 
+	std::vector<torch::Tensor> mu__P = NuSolTensors::_Format(TransformTensors::PtEtaPhi(mu__C[0], mu__C[1], mu__C[2]), 3);
+
+	// ---- Standardize Tensors ---- //
+	std::vector<torch::Tensor> _met = NuSolTensors::_Format1D({met_x, met_y});
+	std::vector<torch::Tensor> _m = NuSolTensors::_Format1D({mT, mW, mNu}); 
+
+	return DoubleNuTensor::NuNu(b_P, b__P, mu_P, mu__P, b_C, b__C, mu_C, mu__C, _met[0], _met[1], _m[0], _m[1], _m[2], cutoff);
+}
+
+
+std::vector<torch::Tensor> NuNuTensor::PtEtaPhiE_Double(
+		double b_pt, double b_eta, double b_phi, double b_e, 
+		double b__pt, double b__eta, double b__phi, double b__e, 
+		double mu_pt, double mu_eta, double mu_phi, double mu_e, 
+		double mu__pt, double mu__eta, double mu__phi, double mu__e, 
+		double met, double phi,
+		double mT, double mW, double mNu, double cutoff)
+{
+	// ---- Polar Version of Particles ---- //
+	std::vector<torch::Tensor> b_P = NuSolTensors::_Format({{b_pt, b_eta, b_phi, b_e}});
+	std::vector<torch::Tensor> b__P = NuSolTensors::_Format({{b__pt, b__eta, b__phi, b__e}});
+	std::vector<torch::Tensor> mu_P = NuSolTensors::_Format({{mu_pt, mu_eta, mu_phi, mu_e}});
+	std::vector<torch::Tensor> mu__P = NuSolTensors::_Format({{mu__pt, mu__eta, mu__phi, mu__e}});
+
+	// ---- Polar Version of Particles ---- //
+	std::vector<torch::Tensor> b_C = NuSolTensors::_Format(TransformTensors::PxPyPz(b_P[0], b_P[1], b_P[2]), 3); 
+	std::vector<torch::Tensor> b__C = NuSolTensors::_Format(TransformTensors::PxPyPz(b__P[0], b__P[1], b__P[2]), 3); 
+	std::vector<torch::Tensor> mu_C = NuSolTensors::_Format(TransformTensors::PxPyPz(mu_P[0], mu_P[1], mu_P[2]), 3); 
+	std::vector<torch::Tensor> mu__C = NuSolTensors::_Format(TransformTensors::PxPyPz(mu__P[0], mu__P[1], mu__P[2]), 3);
+
+	// ---- Make into Tensors ---- //
+	std::vector<torch::Tensor> _m = NuSolTensors::_Format({{mT, mW, mNu}}); 
+	std::vector<torch::Tensor> _met = NuSolTensors::_Format({{met, phi}});
+	_met = NuSolTensors::_MetXY(_met[0], _met[1]); 
+	
+	return DoubleNuTensor::NuNu(b_P, b__P, mu_P, mu__P, b_C, b__C, mu_C, mu__C, _met[0], _met[1], _m[0], _m[1], _m[2], cutoff);
+}
+
+ std::vector<torch::Tensor> NuNuTensor::PxPyPzE_Double(
+		double b_px, double b_py, double b_pz, double b_e, 
+		double b__px, double b__py, double b__pz, double b__e, 
+		double mu_px, double mu_py, double mu_pz, double mu_e, 
+		double mu__px, double mu__py, double mu__pz, double mu__e, 
+		double met_x, double met_y,
+		double mT, double mW, double mNu, double cutoff)
+{
+
+	// ---- Cartesian Version of Particles ---- //
+	std::vector<torch::Tensor> b_C = NuSolTensors::_Format({{b_px, b_py, b_pz, b_e}});
+	std::vector<torch::Tensor> b__C = NuSolTensors::_Format({{b__px, b__py, b__pz, b__e}});
+	std::vector<torch::Tensor> mu_C = NuSolTensors::_Format({{mu_px, mu_py, mu_pz, mu_e}});
+	std::vector<torch::Tensor> mu__C = NuSolTensors::_Format({{mu__px, mu__py, mu__pz, mu__e}});
+
+	// ---- Polar Version of Particles ---- //
+	std::vector<torch::Tensor> b_P = NuSolTensors::_Format(TransformTensors::PtEtaPhi(b_C[0], b_C[1], b_C[2]), 3); 
+	std::vector<torch::Tensor> b__P = NuSolTensors::_Format(TransformTensors::PtEtaPhi(b__C[0], b__C[1], b__C[2]), 3); 
+	std::vector<torch::Tensor> mu_P = NuSolTensors::_Format(TransformTensors::PtEtaPhi(mu_C[0], mu_C[1], mu_C[2]), 3); 
+	std::vector<torch::Tensor> mu__P = NuSolTensors::_Format(TransformTensors::PtEtaPhi(mu__C[0], mu__C[1], mu__C[2]), 3);
+
+	// ---- Make into Tensors ---- //
+	std::vector<torch::Tensor> _met = NuSolTensors::_Format({{met_x, met_y}});
+	std::vector<torch::Tensor> _m = NuSolTensors::_Format({{mT, mW, mNu}}); 
+	
+	return DoubleNuTensor::NuNu(b_P, b__P, mu_P, mu__P, b_C, b__C, mu_C, mu__C, _met[0], _met[1], _m[0], _m[1], _m[2], cutoff);
+}
+
+ std::vector<torch::Tensor> NuNuTensor::PtEtaPhiE_DoubleList(
+		std::vector<std::vector<double>> b, std::vector<std::vector<double>> b_, 
+		std::vector<std::vector<double>> mu, std::vector<std::vector<double>> mu_, 
+		std::vector<std::vector<double>> met, std::vector<std::vector<double>> Mass, double cutoff)
+{
+	
+	// ---- Polar Version of Particles ---- //
+	std::vector<torch::Tensor> b_P = NuSolTensors::_Format(b);
+	std::vector<torch::Tensor> b__P = NuSolTensors::_Format(b_);
+	std::vector<torch::Tensor> mu_P = NuSolTensors::_Format(mu);
+	std::vector<torch::Tensor> mu__P = NuSolTensors::_Format(mu_);
+
+	// ---- Polar Version of Particles ---- //
+	std::vector<torch::Tensor> b_C = NuSolTensors::_Format(TransformTensors::PxPyPz(b_P[0], b_P[1], b_P[2]), 3); 
+	std::vector<torch::Tensor> b__C = NuSolTensors::_Format(TransformTensors::PxPyPz(b__P[0], b__P[1], b__P[2]), 3); 
+	std::vector<torch::Tensor> mu_C = NuSolTensors::_Format(TransformTensors::PxPyPz(mu_P[0], mu_P[1], mu_P[2]), 3); 
+	std::vector<torch::Tensor> mu__C = NuSolTensors::_Format(TransformTensors::PxPyPz(mu__P[0], mu__P[1], mu__P[2]), 3);
+
+	// ---- Make into Tensors ---- //
+	std::vector<torch::Tensor> _met = NuSolTensors::_Format(met);
+	_met = NuSolTensors::_MetXY(_met[0], _met[1]); 
+	std::vector<torch::Tensor> _m = NuSolTensors::_Format(Mass); 
+	
+	return DoubleNuTensor::NuNu(b_P, b__P, mu_P, mu__P, b_C, b__C, mu_C, mu__C, _met[0], _met[1], _m[0], _m[1], _m[2], cutoff);
+}
+
+ std::vector<torch::Tensor> NuNuTensor::PxPyPzE_DoubleList(
+		std::vector<std::vector<double>> b, std::vector<std::vector<double>> b_, 
+		std::vector<std::vector<double>> mu, std::vector<std::vector<double>> mu_, 
+		std::vector<std::vector<double>> met, std::vector<std::vector<double>> Mass, double cutoff)
+{
+	// ---- Polar Version of Particles ---- //
+	std::vector<torch::Tensor> b_C = NuSolTensors::_Format(b);
+	std::vector<torch::Tensor> b__C = NuSolTensors::_Format(b_);
+	std::vector<torch::Tensor> mu_C = NuSolTensors::_Format(mu);
+	std::vector<torch::Tensor> mu__C = NuSolTensors::_Format(mu_);
+
+	// ---- Polar Version of Particles ---- //
+	std::vector<torch::Tensor> b_P = NuSolTensors::_Format(TransformTensors::PtEtaPhi(b_C[0], b_C[1], b_C[2]), 3); 
+	std::vector<torch::Tensor> b__P = NuSolTensors::_Format(TransformTensors::PtEtaPhi(b__C[0], b__C[1], b__C[2]), 3); 
+	std::vector<torch::Tensor> mu_P = NuSolTensors::_Format(TransformTensors::PtEtaPhi(mu_C[0], mu_C[1], mu_C[2]), 3); 
+	std::vector<torch::Tensor> mu__P = NuSolTensors::_Format(TransformTensors::PtEtaPhi(mu__C[0], mu__C[1], mu__C[2]), 3);
+
+	// ---- Make into Tensors ---- //
+	std::vector<torch::Tensor> _met = NuSolTensors::_Format(met);
+	std::vector<torch::Tensor> _m = NuSolTensors::_Format(Mass); 
+	
+	return DoubleNuTensor::NuNu(b_P, b__P, mu_P, mu__P, b_C, b__C, mu_C, mu__C, _met[0], _met[1], _m[0], _m[1], _m[2], cutoff);
 }

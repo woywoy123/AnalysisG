@@ -1,16 +1,6 @@
 #include "../Headers/NuSolTensor.h"
 #include <cstddef>
 
-std::vector<torch::Tensor> NuSolTensors::_Format(torch::Tensor t, int dim)
-{
-	std::vector<torch::Tensor> _out; 
-	for (int i = 0; i < dim; ++i)
-	{
-		_out.push_back(t.index({torch::indexing::Slice(), i}).view({-1, 1})); 
-	}
-	return _out; 
-}
-
 torch::Tensor NuSolTensors::x0(torch::Tensor _pe, torch::Tensor _pm2, torch::Tensor mH2, torch::Tensor mL2)
 {
 	return -(mH2 - mL2 - _pm2)/(2*_pe); 
@@ -23,6 +13,7 @@ torch::Tensor NuSolTensors::_UnitCircle(torch::Tensor x, std::vector<int> diag)
 	std::vector<torch::Tensor> _out(x.size(0), circ); 
 	return torch::cat(_out, 0); 
 }
+torch::Tensor NuSolTensors::UnitCircle(torch::Tensor x){return _UnitCircle(x, {1, 1, -1});}
 
 torch::Tensor NuSolTensors::Derivative(torch::Tensor x)
 {
@@ -38,7 +29,7 @@ torch::Tensor NuSolTensors::V0(torch::Tensor metx, torch::Tensor mety)
 	return torch::cat({t0, t0, matrix}, -1); 
 }
 
-torch::Tensor NuSolTensors::_Solutions(
+torch::Tensor NuSolTensors::Solutions(
 		std::vector<torch::Tensor> b_C, std::vector<torch::Tensor> mu_C, 
 		torch::Tensor b_e, torch::Tensor mu_e,
 		torch::Tensor massT2, torch::Tensor massW2, torch::Tensor massNu2)
@@ -113,6 +104,60 @@ torch::Tensor NuSolTensors::Cofactors(torch::Tensor Matrix, int i, int j)
 	Matrix = Matrix.index({torch::indexing::Slice(), torch::tensor(rows), torch::indexing::Slice()});
 	Matrix = Matrix.index({torch::indexing::Slice(), torch::indexing::Slice(), torch::tensor(col)});
 	return pow(-1, i+j)*torch::det(Matrix.view({-1, 2, 2})); 
+}
+
+std::vector<torch::Tensor> NuSolTensors::_MetXY(torch::Tensor met, torch::Tensor phi)
+{
+	met = met.view({-1, 1}).contiguous(); 
+	phi = phi.view({-1, 1}).contiguous(); 
+	return {TransformTensors::Px(met, phi), TransformTensors::Py(met, phi)};
+}
+
+std::vector<torch::Tensor> NuSolTensors::_Format(torch::Tensor t, int dim)
+{
+	std::vector<torch::Tensor> _out; 
+	for (int i = 0; i < dim; ++i)
+	{
+		_out.push_back((t.index({torch::indexing::Slice(), i}).view({-1, 1}).contiguous())); 
+	}
+	return _out; 
+}
+
+std::vector<torch::Tensor> NuSolTensors::_Format1D(std::vector<torch::Tensor> inpt)
+{
+	std::vector<torch::Tensor> out = {}; 
+	out.reserve(inpt.size());
+	for (unsigned int i = 0; i < inpt.size(); ++i){ out.push_back(inpt[i].view({-1, 1}).to(torch::kFloat64)); }
+	return out; 
+}
+
+std::vector<torch::Tensor> NuSolTensors::_Format(std::vector<std::vector<double>> inpt)
+{
+	std::vector<torch::Tensor> out = {}; 
+	out.reserve(inpt.size()); 
+	for (unsigned int i = 0; i < inpt.size(); ++i)
+	{
+		out.push_back(NuSolTensors::_TransferToTensor(inpt[i]).view({-1, inpt[i].size()})); 
+	}
+	return NuSolTensors::_Format(torch::cat(out, 0), inpt[0].size()); 
+}
+
+torch::Tensor NuSolTensors::_TransferToTensor(std::vector<double> inpt)
+{
+	torch::TensorOptions op = torch::TensorOptions().dtype(torch::kFloat64); 
+	torch::Tensor v = torch::from_blob(inpt.data(), {(int)inpt.size()}, op); 
+	v = v.view({-1, 1}).clone(); 
+	v = v.to(torch::kCPU); 
+	return v; 
+}
+
+void NuSolTensors::_FixEnergyTensor(std::vector<torch::Tensor>* v1, std::vector<torch::Tensor>* v2)
+{
+	if (v1 -> size() == 4)
+	{
+		v2 -> insert(v2 -> end(), (*v1)[3]); 
+		v1 -> erase(v1 -> begin() + 3); 
+	}
 }
 
 torch::Tensor NuSolTensors::HorizontalVertical(torch::Tensor G)
@@ -344,21 +389,3 @@ std::vector<torch::Tensor> NuSolTensors::Intersection(torch::Tensor A, torch::Te
 	return {diag, _t2, _tmp, v}; 
 }
 
-torch::Tensor NuSolTensors::Solutions(torch::Tensor b, torch::Tensor mu, torch::Tensor mT, torch::Tensor mW, torch::Tensor mNu)
-{
-	std::vector<torch::Tensor> b_P = _Format(b.view({-1, 4}), 4);
-	std::vector<torch::Tensor> b_C = _Format(TransformTensors::PxPyPz(b_P[0], b_P[1], b_P[2]), 3); 
-	torch::Tensor b_e = b_P[3]; 
-	
-	std::vector<torch::Tensor> mu_P = _Format(mu.view({-1, 4}), 4); 
-	std::vector<torch::Tensor> mu_C = _Format(TransformTensors::PxPyPz(mu_P[0], mu_P[1], mu_P[2]), 3); 
-	torch::Tensor mu_e   = mu_P[3]; 
-	
-	mT = mT.view({-1, 1}).pow(2);
-	mW = mW.view({-1, 1}).pow(2);
-	mNu = mNu.view({-1, 1}).pow(2); 
-
-	return NuSolTensors::_Solutions(b_C, mu_C, b_P[3], mu_P[3], mT, mW, mNu); 
-}
-
-torch::Tensor NuSolTensors::UnitCircle(torch::Tensor x){return _UnitCircle(x, {1, 1, -1});}

@@ -14,6 +14,14 @@ namespace PhysicsCartesianTensors
 
 	const torch::Tensor M2(torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e){return PhysicsTensors::M2(px, py, pz, e);}
 	const torch::Tensor M(torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e){return PhysicsTensors::M(px, py, pz, e);}
+	const torch::Tensor Mass(torch::Tensor Pmu)
+	{ 
+		return PhysicsTensors::M(
+				Pmu.index({torch::indexing::Slice(), 0}).view({-1, 1}), 
+				Pmu.index({torch::indexing::Slice(), 1}).view({-1, 1}), 
+				Pmu.index({torch::indexing::Slice(), 2}).view({-1, 1}), 
+				Pmu.index({torch::indexing::Slice(), 3}).view({-1, 1}));  
+	}
 
 	const torch::Tensor Mt2(torch::Tensor pz, torch::Tensor e){return PhysicsTensors::Mt2(pz, e);}
 	const torch::Tensor Mt(torch::Tensor pz, torch::Tensor e){return PhysicsTensors::Mt(pz, e);}

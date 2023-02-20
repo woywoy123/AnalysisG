@@ -273,9 +273,7 @@ namespace SingleNuCUDA
 	
 		return {SkipEvent == false, _t2, chi2, (H_.view({-1, 1, 3, 3})*v.view({-1, 6, 1, 3})).sum(-1)}; 
 	}
-
 }
-
 
 namespace NuCUDA
 {
@@ -486,6 +484,7 @@ namespace DoubleNuCUDA
 		{
 			return {SkipEvent == false, SkipEvent == false, SkipEvent == false, SkipEvent == false, SkipEvent == false};
 		}
+
 		torch::Tensor N_ = DoubleNuCUDA::N(H_); 
 		torch::Tensor N__ = DoubleNuCUDA::N(H__); 
 		torch::Tensor S_ = NuSolCUDA::V0(met_x, met_y) - _Unit(met_y, {1, 1, -1});
@@ -538,10 +537,9 @@ namespace NuNuCUDA
 
 		// ---- Cartesian Version of Event Met ---- //
 		NuSolCUDA::_CheckTensors({met, phi}); 
-		torch::Tensor met_x = TransformCUDA::Px(met, phi); 
-		torch::Tensor met_y = TransformCUDA::Py(met, phi);
-
-		return DoubleNuCUDA::NuNu(b_P, b__P, mu_P, mu__P, b_C, b__C, mu_C, mu__C, met_x, met_y, mT, mW, mNu, cutoff); 
+		std::vector<torch::Tensor> _met = NuSolCUDA::_MetXY(met, phi); 
+		
+		return DoubleNuCUDA::NuNu(b_P, b__P, mu_P, mu__P, b_C, b__C, mu_C, mu__C, _met[0], _met[1], mT, mW, mNu, cutoff); 
 	}
 
 	const std::vector<torch::Tensor> PxPyPzE(
@@ -591,12 +589,11 @@ namespace NuNuCUDA
 		std::vector<torch::Tensor> mu__C = NuSolCUDA::_Format(TransformCUDA::PxPyPz(mu__P[0], mu__P[1], mu__P[2]), 3);
 
 		// ---- Make into Tensors ---- //
-		std::vector<torch::Tensor> _met = NuSolCUDA::_Format({{met, phi}});
-		torch::Tensor met_x = TransformCUDA::Px(_met[0], _met[1]); 
-		torch::Tensor met_y = TransformCUDA::Py(_met[0], _met[1]);
 		std::vector<torch::Tensor> _m = NuSolCUDA::_Format({{mT, mW, mNu}}); 
+		std::vector<torch::Tensor> _met = NuSolCUDA::_Format({{met, phi}});
+		_met = NuSolCUDA::_MetXY(_met[0], _met[1]); 
 		
-		return DoubleNuCUDA::NuNu(b_P, b__P, mu_P, mu__P, b_C, b__C, mu_C, mu__C, met_x, met_y, _m[0], _m[1], _m[2], cutoff);
+		return DoubleNuCUDA::NuNu(b_P, b__P, mu_P, mu__P, b_C, b__C, mu_C, mu__C, _met[0], _met[1], _m[0], _m[1], _m[2], cutoff);
 	}
 
 	const std::vector<torch::Tensor> PxPyPzE_Double(
@@ -647,11 +644,10 @@ namespace NuNuCUDA
 
 		// ---- Make into Tensors ---- //
 		std::vector<torch::Tensor> _met = NuSolCUDA::_Format(met);
-		torch::Tensor met_x = TransformCUDA::Px(_met[0], _met[1]); 
-		torch::Tensor met_y = TransformCUDA::Py(_met[0], _met[1]);
+		_met = NuSolCUDA::_MetXY(_met[0], _met[1]); 
 		std::vector<torch::Tensor> _m = NuSolCUDA::_Format(Mass); 
 		
-		return DoubleNuCUDA::NuNu(b_P, b__P, mu_P, mu__P, b_C, b__C, mu_C, mu__C, met_x, met_y, _m[0], _m[1], _m[2], cutoff);
+		return DoubleNuCUDA::NuNu(b_P, b__P, mu_P, mu__P, b_C, b__C, mu_C, mu__C, _met[0], _met[1], _m[0], _m[1], _m[2], cutoff);
 	}
 
 	const std::vector<torch::Tensor> PxPyPzE_DoubleList(

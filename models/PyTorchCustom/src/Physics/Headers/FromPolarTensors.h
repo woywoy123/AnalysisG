@@ -49,6 +49,17 @@ namespace PhysicsPolarTensors
 		return PhysicsTensors::M(Pmc[0], Pmc[1], Pmc[2], e);
 	}
 
+	const torch::Tensor Mass(torch::Tensor Pmu)
+	{ 
+		std::vector<torch::Tensor> Pmc = _Transform(
+				Pmu.index({torch::indexing::Slice(), 0}).view({-1, 1}), 
+				Pmu.index({torch::indexing::Slice(), 1}).view({-1, 1}), 
+				Pmu.index({torch::indexing::Slice(), 2}).view({-1, 1})); 
+		return PhysicsTensors::M(
+				Pmc[0], Pmc[1], Pmc[2],
+				Pmu.index({torch::indexing::Slice(), 3}).view({-1, 1}));  
+	}
+
 	const torch::Tensor Mt2(torch::Tensor pt, torch::Tensor eta, torch::Tensor e)
 	{
 		return PhysicsTensors::Mt2(TransformTensors::Pz(pt, eta), e);

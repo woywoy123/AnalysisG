@@ -80,6 +80,8 @@ PkgH = {
 
             "PyC.NuSol.Tensors" : [
                 Transform_H + "ToCartesianTensors.h", 
+                Transform_H + "ToPolarTensors.h",
+
                 Physics_H + "Tensors.h",
                 Operators_H + "Tensors.h",
 
@@ -167,7 +169,9 @@ PkgC = {
         ], 
 
         "PyC.NuSol.Tensors" : [
-                Transform_C + "ToCartesianTensors.cxx", 
+                Transform_C + "ToCartesianTensors.cxx",
+                Transform_C + "ToPolarTensors.cxx", 
+
                 Physics_C + "Tensors.cxx",
                 Operators_C + "Tensors.cxx",
 
@@ -204,10 +208,9 @@ PkgC = {
 
 Pkg = [
         "PyC.Transform.Floats", "PyC.Transform.Tensors", "PyC.Transform.CUDA", 
-        #"PyC.Operators.Tensors", "PyC.Operators.CUDA", 
-        #"PyC.Physics.Tensors.Cartesian", "PyC.Physics.CUDA.Cartesian", "PyC.Physics.Tensors.Polar", "PyC.Physics.CUDA.Polar", 
-        #"PyC.NuSol.Tensors", 
-        "PyC.NuSol.CUDA"
+        "PyC.Operators.Tensors", "PyC.Operators.CUDA", 
+        "PyC.Physics.Tensors.Cartesian", "PyC.Physics.CUDA.Cartesian", "PyC.Physics.Tensors.Polar", "PyC.Physics.CUDA.Polar", 
+        "PyC.NuSol.Tensors", "PyC.NuSol.CUDA"
         ]
 if torch.cuda.is_available() == False:
     Pkg = [i for i in Pkg if i.endswith("CUDA") == False]

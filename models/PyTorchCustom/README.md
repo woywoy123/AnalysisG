@@ -7,6 +7,7 @@ The primary focus is to port and unify already written code in the repository in
 - Transform: A namespace used to transform between ATLAS's coordinate system back to cartesian and vice versa.
 - Operators: Optimized PyTorch code used to apply to arbitrary vectors, and speed up common function calls, such as dot products. 
 - Physics: A namesapce used to write Physics centric functions, that are used to extract relevant quantities from vectors.
+- NuRecon: A namespace dedicated to Single and Double Neutrino reconstruction. The algorithm is a reimplementation of arXiv: 1305.1878v2.
 
 ## How To Use:
 ```bash 
@@ -20,14 +21,39 @@ pip install .
 - PyC.Transform.CUDA
 
 #### Functions:
-- Px: Convert to Px
-- Py: Convert to Py
-- Pz: Convert to Pz
-- PxPyPz: Convert into Cartesian simultaneously
-- PT: Convert to PT from Cartesian 
-- Phi: Convert to Phi from Cartesian 
-- Eta: Convert to Eta from Cartesian 
-- PtEtaPhi: Convert into Polar simultaneously
+- Description: Conversion to Cartesian System
+```python 
+Px(pt, phi)
+```
+```python 
+Py(pt, phi)
+```
+```python 
+Pz(pt, eta)
+```
+-- Output: l x 1 Tensor 
+- Description: Conversion to Cartesian System simultaneously 
+```python 
+PxPyPz(pt, eta, phi)
+```
+-- Output: l x 3 Tensor 
+
+- Description: Conversion to ATLAS System
+```python 
+PT(px, py)
+```
+```python 
+Eta(px, py, pz)
+```
+```python 
+Phi(px, py)
+```
+-- Output: l x 1 Tensor 
+- Description: Conversion to ATLAS System simultaneously 
+```python 
+PtEtaPhi(px, py, pz)
+```
+-- Output: l x 3 Tensor 
 
 ### Operators:
 - PyC.Operators.Tensors
