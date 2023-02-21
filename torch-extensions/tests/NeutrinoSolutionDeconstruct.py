@@ -21,6 +21,13 @@ def intersections_ellipse_line(ellipse, line, zero=1e-12):
                   key=lambda k: k[1])#[:2] #Removing the two solution constraint
     return [s for s, k in sols if k < zero]
 
+# A = ellipse, Q[i] = line
+def intersections_diagonal_number(ellipse, line, zero=1e-12):
+    '''Points of intersection between ellipse and line'''
+    _,V = np.linalg.eig(np.cross(line,ellipse).T)
+    sols = sorted([np.dot(line,v.real)**2 + np.dot(v.real,ellipse).dot(v.real)**2 for v in V.T])#[:2]
+    return sols 
+
 def cofactor(A, i, j):
     '''Cofactor[i,j] of 3x3 matrix A'''
     a = A[not i:2 if i==2 else None :2 if i==1 else 1,not j:2 if j==2 else None :2 if j==1 else 1]
@@ -76,7 +83,8 @@ def intersections_ellipses(A, B, returnLines=False):
     e = next(e.real for e in LA.eigvals(LA.inv(A).dot(B)) if not e.imag)
     lines = factor_degenerate(B - e*A)
     points = sum([intersections_ellipse_line(A,L) for L in lines], [])
-    return (points,lines) if returnLines else points
+    diag = sum([intersections_diagonal_number(A, L) for L in lines], [])
+    return points, diag #(points,lines) if returnLines else points
 
 class SolutionSet(object):
     '''Definitions for nu analytic solution, t->b,mu,nu'''
@@ -156,7 +164,7 @@ class singleNeutrinoSolution(object):
         self.X = np.dot(deltaNu.T, S2).dot(deltaNu)
         M = next(XD + XD.T for XD in (self.X.dot(Derivative()),))
 
-        solutions = intersections_ellipses(M, UnitCircle())
+        solutions, diag = intersections_ellipses(M, UnitCircle())
         self.solutions = sorted(solutions, key=self.calcX2)
     def calcX2(self, t):
         return np.dot(t, self.X).dot(t)
@@ -182,8 +190,9 @@ class doubleNeutrinoSolutions(object):
         self.S = V0 - UnitCircle()
         N, N_ = [ss.N for ss in self.solutionSets]
         n_ = self.S.T.dot(N_).dot(self.S)
-        v = intersections_ellipses(N, n_)
+        v, diag = intersections_ellipses(N, n_)
         v_ = [self.S.dot(sol) for sol in v]
+        self.diag = diag
         
         for k, v in {'perp': v, 'perp_': v_, 'n_': n_}.items():
             setattr(self, k, v)

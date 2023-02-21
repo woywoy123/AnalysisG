@@ -231,8 +231,7 @@ class doubleNeutrinoSolutions(object):
         b, b_ = bs
         mu, mu_ = mus
         metX, metY = met
-        self.solutionSets = [nuSolutionSet(B, M, mW2, mT2)
-                             for B,M in zip((b,b_),(mu,mu_))]
+        self.solutionSets = [nuSolutionSet(B, M, mW2, mT2) for B,M in zip((b,b_),(mu,mu_))]
 
         V0 = np.outer([metX, metY, 0], [0, 0, 1])
         self.S = V0 - UnitCircle()
@@ -242,21 +241,19 @@ class doubleNeutrinoSolutions(object):
 
         v = intersections_ellipses(N, n_)
         v_ = [self.S.dot(sol) for sol in v]
+        
+        #if not v and leastsq:
+        #    es = [ss.H_perp for ss in self.solutionSets]
+        #    met = np.array([metX, metY, 1])
 
-        if not v and leastsq:
-            es = [ss.H_perp for ss in self.solutionSets]
-            met = np.array([metX, metY, 1])
+        #    def nus(ts):
+        #        return tuple(e.dot([math.cos(t), math.sin(t), 1]) for e, t in zip(es, ts))
 
-            def nus(ts):
-                return tuple(e.dot([math.cos(t), math.sin(t), 1])
-                             for e, t in zip(es, ts))
+        #    def residuals(params):
+        #        return sum(nus(params), -met)[:2]
 
-            def residuals(params):
-                return sum(nus(params), -met)[:2]
-
-            ts,_ = leastsq(residuals, [0, 0],
-                           ftol=5e-5, epsfcn=0.01)
-            v, v_ = [[i] for i in nus(ts)]
+        #    ts,_ = leastsq(residuals, [0, 0], ftol=5e-5, epsfcn=0.01)
+        #    v, v_ = [[i] for i in nus(ts)]
 
         for k, v in {'perp': v, 'perp_': v_, 'n_': n_}.items():
             setattr(self, k, v)
