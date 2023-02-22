@@ -28,7 +28,7 @@ def ParticleCollectors(ev):
 
     return out
 
-makeSample = True
+makeSample = False
 its = 100
 errorMargin = 2 # Percentage for double Neutrino
 
@@ -59,8 +59,8 @@ if makeSample:
             vl["ev"].append(ev)
             it+=1
         
-        if it == 1000 or l == it:
-            PickleObject(vl, "TMP")
+if makeSample:
+    PickleObject(vl, "TMP")
 
 vl = UnpickleObject("TMP")
 T = SampleTensor(vl["b"], vl["lep"], vl["ev"], vl["t"], "cuda", [[100, 0], [0, 100]])
@@ -126,19 +126,29 @@ for i in range(its):
     t2 = time()
     diff[0].append(t2 - t1)
 
-for t in range(its):
-    t1 = time()
-    t_sol = NuT.NuNuPtEtaPhiE(T.b, T.b_, T.mu, T.mu_, T.met, T.phi, T.mT, T.mW, T.mN, 1e-12)
-    t2 = time()
-    diff1 = t2 - t1 
-    diff[1].append(diff1)
 
-for t in range(its):   
-    t1 = time()
-    t_solC = NuC.NuNuPtEtaPhiE(T.b, T.b_, T.mu, T.mu_, T.met, T.phi, T.mT, T.mW, T.mN, 1e-12)
-    t2 = time()
-    diff2 = t2 - t1
-    diff[2].append(diff2)
+
+b = torch.cat([T.b for i in range(its)], 0)
+b_ = torch.cat([T.b_ for i in range(its)], 0)
+mu = torch.cat([T.mu for i in range(its)], 0)
+mu_ = torch.cat([T.mu_ for i in range(its)], 0)
+met = torch.cat([T.met for i in range(its)], 0)
+phi = torch.cat([T.phi for i in range(its)], 0)
+mT = torch.cat([T.mT for i in range(its)], 0)
+mW = torch.cat([T.mW for i in range(its)], 0)
+mN = torch.cat([T.mN for i in range(its)], 0)
+
+t1 = time()
+t_sol = NuT.NuNuPtEtaPhiE(b, b_, mu, mu_, met, phi, mT, mW, mN, 1e-12)
+t2 = time()
+diff1 = t2 - t1 
+diff[1].append(diff1)
+
+t1 = time()
+t_solC = NuC.NuNuPtEtaPhiE(b, b_, mu, mu_, met, phi, mT, mW, mN, 1e-12)
+t2 = time()
+diff2 = t2 - t1
+diff[2].append(diff2)
 
 print(sum(diff[0]), sum(diff[1]))
 print("--- Testing Performance Between Original and C++ of NuNu ---")
@@ -152,10 +162,11 @@ print(sum(diff[1]), sum(diff[2]))
 print("--- Testing Performance Between C++ and CUDA of NuNu ---")
 print("Speed Factor (> 1 is better): ", (sum(diff[1])) / sum(diff[2]))
 
+exit()
 
 print("======================= Testing Consistency of Single Neutrino Reconstruction =================== ")
-_sol = NuC.Nu(T.b, T.mu, T.met, T.phi, T.Sxx, T.Sxy, T.Syx, T.Syy, T.mT, T.mW, T.mN, 1e-12)
-t_sol = NuT.Nu(T.b, T.mu, T.met, T.phi, T.Sxx, T.Sxy, T.Syx, T.Syy, T.mT, T.mW, T.mN, 1e-12)
+_sol = NuC.NuPtEtaPhiE(T.b, T.mu, T.met, T.phi, T.Sxx, T.Sxy, T.Syx, T.Syy, T.mT, T.mW, T.mN, 1e-12)
+t_sol = NuT.NuPtEtaPhiE(T.b, T.mu, T.met, T.phi, T.Sxx, T.Sxy, T.Syx, T.Syy, T.mT, T.mW, T.mN, 1e-12)
 Fail = False
 it = 0
 for r, t in zip(R, T):

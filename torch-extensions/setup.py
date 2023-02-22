@@ -209,7 +209,8 @@ PkgC = {
 Pkg = [
         "PyC.Transform.Floats", "PyC.Transform.Tensors", "PyC.Transform.CUDA", 
         "PyC.Operators.Tensors", "PyC.Operators.CUDA", 
-        "PyC.Physics.Tensors.Cartesian", "PyC.Physics.CUDA.Cartesian", "PyC.Physics.Tensors.Polar", "PyC.Physics.CUDA.Polar", 
+        "PyC.Physics.Tensors.Cartesian", "PyC.Physics.CUDA.Cartesian", 
+        "PyC.Physics.Tensors.Polar", "PyC.Physics.CUDA.Polar", 
         "PyC.NuSol.Tensors", "PyC.NuSol.CUDA"
         ]
 if torch.cuda.is_available() == False:

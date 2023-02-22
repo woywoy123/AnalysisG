@@ -443,6 +443,54 @@ namespace DoubleNuCUDA
 		H_T = OperatorsCUDA::Mul(H_T, _Unit(H_, {1, 1, -1})); 
 		return OperatorsCUDA::Mul(H_T, H_); 
 	}
+	
+	const std::vector<torch::Tensor> Residuals(
+					torch::Tensor H_perp, torch::Tensor H__perp, 
+					torch::Tensor met_x, torch::Tensor met_y, torch::Tensor resid)
+	{
+		pybind11::gil_scoped_release no_gil; 
+		H_perp = H_perp.index({resid}).view({-1, 3, 3}); 
+		H__perp = H__perp.index({resid}).view({-1, 3, 3}); 
+		met_x = met_x.index({resid}).view({-1, 1}); 
+		met_y = met_y.index({resid}).view({-1, 1});
+
+		if (met_x.size(0) == 0){ return {}; }
+	
+		torch::Tensor t1 = torch::ones_like(met_y);
+		torch::Tensor MET = torch::cat({met_x, met_y, t1}, -1); 	
+		
+		torch::Tensor t0 = torch::zeros_like(met_x); 
+		torch::Tensor pi = torch::cos(t0)*2; 
+		t0 = torch::cat({t0, t0}, -1); 
+	
+		torch::Tensor t = torch::zeros({met_x.size(0), 1}, torch::TensorOptions().dtype(t0.dtype()).device(t0.device()).requires_grad(true)); 
+		torch::Tensor t_ = torch::zeros({met_x.size(0), 1}, torch::TensorOptions().dtype(t0.dtype()).device(t0.device()).requires_grad(true));
+		
+		torch::optim::AdamOptions set(0.5); 
+		torch::optim::Adam opti({t, t_}, set); 
+		
+		torch::Tensor nu; 
+		torch::Tensor nu_;
+		torch::Tensor nus; 
+		for (int i(0); i < 100; ++i)
+		{
+			nu = (H_perp*(torch::cat({torch::cos(pi*t), torch::sin(pi*t), t1}, -1).view({-1, 1, 3}))).sum(-1); 
+			nu_ = (H__perp*(torch::cat({torch::cos(pi*t_), torch::sin(pi*t_), t1}, -1).view({-1, 1, 3}))).sum(-1);
+			nus = (nu_ + nu - MET).index({torch::indexing::Slice(), torch::indexing::Slice(torch::indexing::None, 2)}).view({-1, 2}); 
+			
+			opti.zero_grad(); 
+			torch::Tensor loss = torch::nn::functional::mse_loss(nus, t0); 
+			loss.backward(); 
+			opti.step();
+		}
+
+		nu = (H_perp*(torch::cat({torch::cos(pi*t), torch::sin(pi*t), t1}, -1).view({-1, 1, 3}))).sum(-1).detach().clone().view({-1, 1, 3}); 
+		nu_ = (H__perp*(torch::cat({torch::cos(pi*t_), torch::sin(pi*t_), t1}, -1).view({-1, 1, 3}))).sum(-1).detach().clone().view({-1, 1, 3});
+		t0 = torch::zeros_like(nu);
+		nu = torch::cat({nu, t0, t0, t0, t0, t0}, -2).view({-1, 6, 3}); 
+		nu_ = torch::cat({nu_, t0, t0, t0, t0, t0}, -2).view({-1, 6, 3}); 
+		return {nu, nu_};  
+	}
 
 	const std::vector<torch::Tensor> NuNu(
 			std::vector<torch::Tensor> b_P, std::vector<torch::Tensor> b__P, std::vector<torch::Tensor> mu_P, std::vector<torch::Tensor> mu__P, 
@@ -479,11 +527,14 @@ namespace DoubleNuCUDA
 		H__ = H__.index({SkipEvent}); 
 		met_x = met_x.index({SkipEvent}); 
 		met_y = met_y.index({SkipEvent});
-		
+
 		if (H_.size(0) == 0)
 		{
 			return {SkipEvent == false, SkipEvent == false, SkipEvent == false, SkipEvent == false, SkipEvent == false};
 		}
+
+		torch::Tensor H__P = H_perp(H__);
+		torch::Tensor H_P = H_perp(H_); 
 
 		torch::Tensor N_ = DoubleNuCUDA::N(H_); 
 		torch::Tensor N__ = DoubleNuCUDA::N(H__); 
@@ -502,12 +553,21 @@ namespace DoubleNuCUDA
 				torch::indexing::Slice(), 
 				torch::indexing::Slice()}).view({-1, 3, 3});
 		
+		torch::Tensor resid = torch::sum(torch::sum(v + v_, -1), -1) == 0.0;
+		std::vector<torch::Tensor> lstsq = Residuals(H_P, H__P, met_x, met_y, resid); 
+
 		v = torch::cat({v, v_}, 1);
 		v_ = torch::sum(S_.view({-1, 1, 3, 3})*v.view({-1, 6, 1, 3}), -1);
-		
+	
+		if (lstsq.size() != 0)
+		{
+			v.index_put_({resid}, lstsq[0]); 
+			v_.index_put_({resid}, lstsq[1]); 
+		}
+
 		// ------ Neutrino Solutions -------- //
-		torch::Tensor K = OperatorsCUDA::Mul(H_, OperatorsCUDA::Inv( H_perp(H_) )); 
-		torch::Tensor K_ = OperatorsCUDA::Mul(H__, OperatorsCUDA::Inv( H_perp(H__) )); 
+		torch::Tensor K = OperatorsCUDA::Mul(H_, OperatorsCUDA::Inv( H_P )); 
+		torch::Tensor K_ = OperatorsCUDA::Mul(H__, OperatorsCUDA::Inv( H__P )); 
 		
 		K = (K.view({-1, 1, 3, 3}) * v.view({-1, 6, 1, 3})).sum(-1); 
 		K_ = (K_.view({-1, 1, 3, 3}) * v_.view({-1, 6, 1, 3})).sum(-1); 

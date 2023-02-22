@@ -95,6 +95,9 @@ namespace DoubleNuTensor
 {
 	torch::Tensor N(torch::Tensor H); 
 	torch::Tensor H_Perp(torch::Tensor H); 
+	std::vector<torch::Tensor> Residuals(
+			torch::Tensor H_perp, torch::Tensor H__perp, 
+			torch::Tensor metx, torch::Tensor mety, torch::Tensor resid); 
 
 	std::vector<torch::Tensor> NuNu(
 			std::vector<torch::Tensor> b_P, std::vector<torch::Tensor> b__P, 
