@@ -141,6 +141,7 @@ class _Analysis:
         _Optimization.__init__(self)
         _ModelEvaluator.__init__(self)
         self._SampleMap = {}
+        self._Selection = {}
         self._InputValues = []
         
         self.EventCache = False
@@ -195,13 +196,24 @@ class _File:
     def __init__(self):
         self.StepSize = 5000
         self.VerboseLevel = 3
-        
+
+class _Selection:
+
+    def __init__(self):
+        self.Tree = None
+        self._OutDir = False
+        self._hash = None
+        self._Residual = []
+        self._CutFlow = {}
+        self._TimeStats = []
+ 
 class Settings(_General):
     
     def __init__(self):
         if self.Caller == "CONDOR":
             _Condor.__init__(self)
             return 
+
         if self.Caller == "FILE":
             _File.__init__(self)
             return
@@ -216,6 +228,10 @@ class Settings(_General):
         
         if self.Caller == "PICKLER":
             _Pickle.__init__(self)
+            return 
+        
+        if self.Caller == "SELECTION":
+            _Selection.__init__(self)
             return 
 
         _General.__init__(self)

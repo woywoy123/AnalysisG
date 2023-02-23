@@ -2,6 +2,7 @@ from AnalysisTopGNN.IO import HDF5, Pickle, PickleObject, UnpickleObject
 from AnalysisTopGNN.Samples import SampleTracer
 from AnalysisTopGNN.Notification import Analysis_
 from AnalysisTopGNN.Tools import Tools
+from AnalysisTopGNN.Tools import Threading
 
 from AnalysisTopGNN.Generators.GraphGenerator import GraphFeatures
 from AnalysisTopGNN.Generators import EventGenerator, GraphGenerator, Settings
@@ -65,6 +66,12 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
         self._ModelSaves[Name] = {"ModelInstance": ModelInstance} 
         self._ModelSaves[Name] |= {"BatchSize" : BatchSize}
 
+    def AddSelection(self, Name, inpt):
+        if "__name__" in inpt.__dict__:
+            inpt = inpt()
+        self._Selection[Name] = inpt
+        self.AddedSelection(Name)
+
     def __BuildRootStructure(self): 
         self.OutputDirectory = self.RemoveTrailing(self.OutputDirectory, "/")
         self._tmp = self.pwd()
@@ -74,7 +81,6 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
             self.output = self.OutputDirectory + "/" + self.ProjectName
             self.cd(self.output)
         self.output = "." 
-
 
     def __DumpCache(self, instance, outdir, Compiled):
         
@@ -260,6 +266,22 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
         else:
             self.NoCache(root)
             return 
+    
+    def __Selection(self):
+        def _select(inpt):
+            out = []
+            for k in inpt:
+                tmp = k[0]()
+                tmp._OutDir = "Selection/" + k[2]
+                tmp._EventPreprocessing(k[1])
+                out.append(tmp)
+            return out 
+        
+        s = self.list() 
+        for i in self._Selection: 
+            self.mkdir("Selections/" + i)
+            th = Threading([[self._Selection[i], k, i] for k in s], _select, self.Threads, self.chnk)
+            th.Start()
 
     def Launch(self):
         self.__CheckSettings()
@@ -300,6 +322,7 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
         self.__GenerateTrainingSample()
         self.__Optimization() 
         self.__ModelEvaluator()
+        self.__Selection()
 
         self.WhiteSpace()
         self.output = self.pwd()
@@ -307,8 +330,8 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
 
     
     def __iter__(self):
+        self.__BuildRootStructure()
         if self.SampleContainer._locked or self._launch == False:
-            
             ec = self.ls(self.output + "/EventCache")
             dc = self.ls(self.output + "/DataCache")
             if len(self._SampleMap) != 0:

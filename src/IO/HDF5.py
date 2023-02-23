@@ -231,7 +231,9 @@ class HDF5(Settings, Tools, IO_):
 
     def __iter__(self):
         if self.Directory:
-            self._names = [i.replace(self._ext, "").split("/")[-1] for i in self.DictToList(self.ListFilesInDir({self.Directory : ["*"]}, self._ext))]
+            if self.Directory.endswith("/"):
+                self.Directory = self.Directory[:-1]
+            self._names = [self.Directory + "/" + i.replace(self._ext, "").split("/")[-1] for i in self.DictToList(self.ListFilesInDir({self.Directory : ["*"]}, self._ext))]
             self.MultiThreadedReading(self._names)
         else:
             self.Start(False, "r")

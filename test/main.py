@@ -7,7 +7,7 @@ import Submission
 import Modular 
 import Optimizer
 import RandomSampler
-import TestCython
+import Selection
 
 def Test(F, **kargs):
     import traceback
@@ -37,8 +37,8 @@ if __name__ == '__main__':
 
     RootDir = "/home/tnom6927/Downloads/samples/"
     
-    ## ==== Testing IO ==== #
-    #TextFileDir = "./TestCaseFiles/Tools/TestFiles/"
+    # ==== Testing IO ==== #
+    TextFileDir = "./TestCaseFiles/Tools/TestFiles/"
     #Test(IO.TestlsFiles, Directory = TextFileDir)
     #Test(IO.Testls, Directory = TextFileDir)
     #Test(IO.TestIsFile, Directory = TextFileDir)
@@ -52,15 +52,19 @@ if __name__ == '__main__':
     ## ==== Test EventGraph ==== #
     #Test(EventGraph.TestEventGraph, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
 
-    ### ==== Test Merger ==== #
+    ## ==== Test Merger ==== #
     #Test(Exporter.TestEventGenerator, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
     #Test(Exporter.TestGraphGenerator, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
     #Test(Exporter.TestEventGeneratorDumper, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
     #Test(Exporter.TestGraphGeneratorDumper, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
 
-    ## ==== Test Modules ==== #
+    # ==== Test Modules ==== #
     #Test(Modular.TestEventGenerator, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
     #Test(Modular.TestAnalysis, Files = [RootDir + "tttt/QU_0.root", RootDir + "ttbar/DAOD_TOPQ1.27296306._000077.root"])
+
+    # ==== Test Selection ===== #
+    Test(Selection.TestSelection, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
+
 
     ## ==== Test Optimizer ==== # 
     #Test(RandomSampler.TestRandomSampling, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])

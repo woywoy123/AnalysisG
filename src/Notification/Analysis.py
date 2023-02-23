@@ -119,6 +119,9 @@ class Analysis(Notification):
 
     def InvalidOrEmptyModelDirectory(self):
         self.Warning("Given model directory is empty or invalid. Skipping...")
+    
+    def AddedSelection(self, Name):
+        self.Success("Added Selection (" + Name +") to Analysis. The output will be within the project folder under 'Selections/" + Name + "'.")
 
     def __CheckSettings(self):
         inv = self.CheckSettings()

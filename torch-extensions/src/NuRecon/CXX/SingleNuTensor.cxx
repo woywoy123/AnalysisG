@@ -41,13 +41,16 @@ std::vector<torch::Tensor> SingleNuTensor::Nu(
 	H_ = H_.index({SkipEvent}); 
 	met_x = met_x.index({SkipEvent}); 
 	met_y = met_y.index({SkipEvent});
+	if (H_.size(0) == 0){return {SkipEvent == false, SkipEvent == false, SkipEvent == false};}
+	// ---------------------------------------------------- //
+	
+	// ---- MET uncertainity ---- //	
 	Sxx = Sxx.index({SkipEvent}).view({-1, 1}); 
 	Sxy = Sxy.index({SkipEvent}).view({-1, 1}); 
 	Syx = Syx.index({SkipEvent}).view({-1, 1}); 
 	Syy = Syy.index({SkipEvent}).view({-1, 1});
-
-	// ---- MET uncertainity ---- //	
 	torch::Tensor S2_ = SingleNuTensor::Sigma2(Sxx, Sxy, Syx, Syy); 
+	// -------------------------- //
 
 	torch::Tensor delta_ = NuSolTensors::V0(met_x, met_y) - H_; 
 	torch::Tensor X_ = torch::matmul(torch::transpose(delta_, 1, 2), S2_); 
