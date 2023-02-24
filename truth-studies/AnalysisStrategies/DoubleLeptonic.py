@@ -60,6 +60,13 @@ class ChildrenSelection(Selection):
         self.nuNumber = [12, 14, 16]
         self.Excl = self.lepNum + self.nuNumber
 
+    
+    def _Test1(self, event):
+        ....
+
+
+
+
     def Selection(self, event):
         # Selection 1: on the Children: 
         # - Select the two most energetic children, provided they are quarks.

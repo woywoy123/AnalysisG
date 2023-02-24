@@ -96,8 +96,10 @@ class Selection(Settings, Tools):
         else:
             self._Residual += [o] if o != None else []
         if self._OutDir:
-            print("here", self._OutDir + "/" + self._hash)
-            PickleObject(self, self._OutDir + "/" + self._hash)
+            o = self._OutDir
+            PickleObject(self.__dict__, self._OutDir + "/" + self._hash)
+            self.__init__()
+            self._OutDir = o
         del event
             
     def __call__(self, Ana = None):
@@ -105,4 +107,43 @@ class Selection(Settings, Tools):
             return self
         for i in Ana:
             self._EventPreprocessing(i)
-
+   
+    def __eq__(self, other):
+        t1 = self.GetSourceCode(self)
+        t2 = other.GetSourceCode(other)
+        return t1 == t2
+    
+    def __radd__(self, other):
+        if other == 0:
+            return self
+        return self.__add__(other)
+    
+    def __add__(self, other):
+        if isinstance(other, list):
+            out = []
+            for i in other:
+                out += [self.__add__(i)[-1]]
+            out.append(i)
+            return out
+        if self != other:
+            return [self, other]
+        
+        self._Code = []
+        out = self.CopyInstance(self)
+        out.__init__()
+        for i in out.__dict__:
+            if i == "_hash":
+                out._hash = [self._hash] if isinstance(self._hash, str) else self._hash
+                out._hash += [other._hash] if isinstance(other._hash, str) else other._hash
+                continue
+            if i in ["Trees", "_OutDir", "Tree", "Type"]:
+                out.__dict__[i] = self.__dict__[i]
+                continue 
+            out.__dict__[i] = self.MergeData(self.__dict__[i], other.__dict__[i])
+        return out
+    
+    def RestoreSettings(self, inpt):
+        for i in inpt:
+            self.__dict__[i] = inpt[i]
+        return self
+            

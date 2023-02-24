@@ -62,8 +62,8 @@ if __name__ == '__main__':
     #Test(Modular.TestEventGenerator, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
     #Test(Modular.TestAnalysis, Files = [RootDir + "tttt/QU_0.root", RootDir + "ttbar/DAOD_TOPQ1.27296306._000077.root"])
 
-    # ==== Test Selection ===== #
-    Test(Selection.TestSelection, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
+    ## ==== Test Selection ===== #
+    #Test(Selection.TestSelection, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
 
 
     ## ==== Test Optimizer ==== # 
@@ -73,3 +73,4 @@ if __name__ == '__main__':
     # === Test Submission ==== #
     #Test(Submission.TestAnalysis, GeneralDir = RootDir)
     #Test(Submission.TestCondorDumping, GeneralDir = RootDir)
+    Test(Submission.TestSelectionDumping, GeneralDir = RootDir)

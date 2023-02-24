@@ -142,7 +142,9 @@ class _Analysis:
         _ModelEvaluator.__init__(self)
         self._SampleMap = {}
         self._Selection = {}
+        self._MSelection = {}
         self._InputValues = []
+        self._lst = []
         
         self.EventCache = False
         self.DataCache = False
@@ -254,7 +256,7 @@ class Settings(_General):
             _Analysis.__init__(self)
         
     def DumpSettings(self):
-        return {i : self.__dict__[i] for i in self.__dict__}
+        return self.__dict__ 
     
     def ExportAnalysisScript(self):
         def Hash(obj):
@@ -282,7 +284,10 @@ class Settings(_General):
                     for k in self._InputValues:
                         if "INPUTSAMPLE" in k:
                             continue
-                        k["EVALUATEMODEL"]["ModelInstance"] = Hash(k["EVALUATEMODEL"]["ModelInstance"])
+                        elif "EVALUATEMODEL" in k:
+                            k["EVALUATEMODEL"]["ModelInstance"] = Hash(k["EVALUATEMODEL"]["ModelInstance"])
+                        elif "ADDSELECTION" in k:
+                            k["ADDSELECTION"]["inpt"] = Hash(k["ADDSELECTION"]["inpt"])
                 else: 
                     dic[i] = {k : Hash(dic[i][k]) for k in dic[i]} if isinstance(dic[i], dict) else Hash(dic[i])
 

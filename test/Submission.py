@@ -187,3 +187,86 @@ def TestCondorDumping(GeneralDir):
 
     return True
 
+def TestSelectionDumping(GeneralDir):
+    nfs = GeneralDir
+    out = "/home/tnom6927/Dokumente/Project/Analysis/bsm4tops-gnn-analysis/AnalysisTopGNN/test"
+
+    T = Condor()
+    T.EventCache = True
+    T.DataCache = True
+    T.OutputDirectory = out
+    T.Tree = "nominal"
+    T.CondaEnv = "GNN"
+    T.ProjectName = "TopEvaluation"
+
+    # Job for creating samples
+    A1 = Analysis()
+    A1.Threads = 4
+    A1.chnk = 100
+    A1.EventCache = True
+    A1.DumpPickle = True
+    A1.Event = Event
+    A1.InputSample("ttbar", nfs + "ttbar")
+
+    A3 = Analysis()
+    A3.Threads = 4
+    A3.chnk = 100
+    A3.EventCache = True
+    A3.DumpPickle = True
+    A3.Event = Event
+    A3.InputSample("t", nfs + "t")
+    
+    A4 = Analysis()
+    A4.Threads = 4
+    A4.chnk = 100
+    A4.EventCache = True
+    A4.DumpPickle = True
+    A4.Event = Event
+    A4.InputSample("tttt", nfs + "tttt")
+    
+    from ExampleSelection import Example2, Example
+
+    D1 = Analysis()
+    D1.Threads = 4
+    D1.chnk = 100
+    D1.Event = Event
+    D1.InputSample("t")
+    D1.AddSelection("Example", Example)
+
+    D2 = Analysis()
+    D2.Threads = 4
+    D2.chnk = 100
+    D2.Event = Event
+    D2.InputSample("ttbar")
+    D2.AddSelection("Example", Example)
+
+    D3 = Analysis()
+    D3.Threads = 4
+    D3.chnk = 100
+    D3.Event = Event
+    D3.InputSample("tttt")
+    D3.AddSelection("Example", Example)
+
+    M1 = Analysis()
+    M1.Threads = 4
+    M1.chnk = 100
+    M1.MergeSelection("Example")
+
+
+    T.AddJob("tSel", D1, "10GB", "1h", ["t"])
+    T.AddJob("ttbarSel", D2, "10GB", "1h", ["ttbar"])
+    T.AddJob("ttttSel", D3, "10GB", "1h", ["tttt"])
+
+    T.AddJob("t", A3, "10GB", "1h")
+    T.AddJob("tttt", A4, "10GB", "1h")
+    T.AddJob("ttbar", A1, "10GB", "1h")
+ 
+    T.AddJob("Merged", M1, "10GB", "1h", ["tSel", "ttbarSel", "ttttSel"])
+    T.DumpCondorJobs() 
+
+
+    from AnalysisTopGNN.IO import UnpickleObject
+    x = UnpickleObject("./TopEvaluation/Selections/Merged/Example.pkl")
+    if x == None:
+        return False
+    return True 

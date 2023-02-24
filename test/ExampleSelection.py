@@ -14,4 +14,19 @@ class Example(Selection):
         
         return "Success->Example"
 
+class Example2(Selection):
+
+    def __init__(self):
+        Selection.__init__(self)
+        self.Top = {"Truth" : []}
+        self.Children = {"Truth" : []}
+
+    def Selection(self, event):
+        self.Top["Truth"] += [t.Mass for t in event.Tops]
+        self.Children["Truth"] += [c.Mass for c in event.TopChildren]
+        self.Children["Test"] = {}
+        self.Children["Test"]["t"] = [1]
+        
+        return "Success->Example"
+
 

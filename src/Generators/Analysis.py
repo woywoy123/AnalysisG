@@ -8,20 +8,16 @@ from AnalysisTopGNN.Generators.GraphGenerator import GraphFeatures
 from AnalysisTopGNN.Generators import EventGenerator, GraphGenerator, Settings
 from AnalysisTopGNN.Generators import ModelEvaluator
 from AnalysisTopGNN.Generators import Optimization
+from AnalysisTopGNN.Templates import Selection
 
-class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
+class Interface:
 
     def __init__(self):
-
-        self.Caller = "ANALYSIS"
-        Settings.__init__(self) 
-        SampleTracer.__init__(self)
+        pass
 
     def InputSample(self, Name, SampleDirectory = None):
         if self._launch == False:
-            self._InputValues.append({"INPUTSAMPLE" : 
-                                      {"Name" : Name, 
-                                       "SampleDirectory" : SampleDirectory}})
+            self._InputValues.append({"INPUTSAMPLE" : {"Name" : Name, "SampleDirectory" : SampleDirectory}})
             return  
 
         if isinstance(SampleDirectory, str):
@@ -33,6 +29,8 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
         if self.AddDictToDict(self._SampleMap, Name) or SampleDirectory == None:
             if len(self._SampleMap[Name]) == 0:
                 smple = UnpickleObject(self.OutputDirectory + "/" + self.ProjectName + "/Tracers/" + Name)
+                if smple == None:
+                    return 
                 self._SampleMap[Name] = {}
                 for f in smple.ROOTFiles:
                     fdir = "/".join(f.split("/")[:-1])
@@ -48,16 +46,14 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
         
         Directory = self.abs(self.AddTrailing(Directory, "/"))
         if self._launch == False:
-            self._InputValues.append({"EVALUATEMODEL" : 
-                                      {"Directory": Directory, 
-                                       "ModelInstance" : ModelInstance, 
-                                       "BatchSize": BatchSize}})
+            self._InputValues.append({"EVALUATEMODEL" : {"Directory": Directory, "ModelInstance" : ModelInstance, "BatchSize": BatchSize}})
             return  
 
         Name = Directory.split("/")[-1]
         if Name in self._ModelDirectories:
             self.ModelNameAlreadyPresent(Name)
             return 
+
         if len(self.ls(Directory)) == 0:
             self.InvalidOrEmptyModelDirectory()
             return 
@@ -69,13 +65,32 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
     def AddSelection(self, Name, inpt):
         if "__name__" in inpt.__dict__:
             inpt = inpt()
+
+        if self._launch == False:
+            self._InputValues.append({"ADDSELECTION" : {"Name" : Name, "inpt" : inpt}})
+            return 
+
         self._Selection[Name] = inpt
         self.AddedSelection(Name)
+    
+    def MergeSelection(self, Name):
+        if self._launch == False:
+            self._InputValues.append({"MERGESELECTION" : {"Name" : Name}})
+            return 
+        self._MSelection[Name] = True
+
+class Analysis(Interface, Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
+
+    def __init__(self):
+        Interface.__init__(self)
+        self.Caller = "ANALYSIS"
+        Settings.__init__(self) 
+        SampleTracer.__init__(self)
 
     def __BuildRootStructure(self): 
         self.OutputDirectory = self.RemoveTrailing(self.OutputDirectory, "/")
         self._tmp = self.pwd()
-        if (self.DumpPickle or self.DumpHDF5) or self.TrainingSampleName:
+        if self.DumpPickle or self.DumpHDF5 or self.TrainingSampleName or len(self._MSelection) > 0 or len(self._Selection) > 0:
             self.mkdir(self.OutputDirectory + "/" + self.ProjectName)
             self.mkdir(self.OutputDirectory + "/" + self.ProjectName + "/Tracers")
             self.output = self.OutputDirectory + "/" + self.ProjectName
@@ -272,27 +287,49 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
             out = []
             for k in inpt:
                 tmp = k[0]()
-                tmp._OutDir = "Selection/" + k[2]
+                tmp._OutDir = self.output + "/Selections/" + k[2]
                 tmp._EventPreprocessing(k[1])
                 out.append(tmp)
             return out 
-        
-        s = self.list() 
-        for i in self._Selection: 
-            self.mkdir("Selections/" + i)
-            th = Threading([[self._Selection[i], k, i] for k in s], _select, self.Threads, self.chnk)
-            th.Start()
+        def _rebuild(inpt):
+            out = []
+            for k in inpt:
+                t = pkl.UnpickleObject(k)
+                out.append(Selection().RestoreSettings(t))
+                self.rm(k)
+            return out
 
+        pkl = Pickle()
+        pkl.Caller = self.Caller
+        pkl.VerboseLevel = 0
+
+        s = self.list() 
+        for i in self._Selection:
+            self.mkdir(self.output + "/Selections/" + i)
+            th = Threading([[self._Selection[i], k, i] for k in s], _select, self.Threads, self.chnk)
+            th.VerboseLevel = self.VerboseLevel
+            th.Start()
+        
+        for i in self._MSelection:
+            l = [self.output + "/Selections/" + i + "/" + k for k in self.ls(self.output + "/Selections/" + i)]
+            th = Threading(l, _rebuild, self.Threads, self.chnk)
+            th.VerboseLevel = self.VerboseLevel
+            th.Start()
+            pkl.PickleObject(sum(th._lists), i, self.output + "/Selections/Merged/")
+    
     def Launch(self):
         self.__CheckSettings()
         self._launch = True 
         for i in self._InputValues:
             name = list(i)[0]
             if name == "INPUTSAMPLE":
-                self.InputSample(**i["INPUTSAMPLE"])
+                self.InputSample(**i[name])
             elif name == "EVALUATEMODEL":
-                self.EvaluateModel(**i["EVALUATEMODEL"])
-        
+                self.EvaluateModel(**i[name])
+            elif name == "ADDSELECTION": 
+                self.AddSelection(**i[name])
+            elif name == "MERGESELECTION": 
+                self.MergeSelection(**i[name])
         self.StartingAnalysis()
         self.__BuildRootStructure()
        
@@ -328,7 +365,6 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
         self.output = self.pwd()
         self.cd(self._tmp)
 
-    
     def __iter__(self):
         self.__BuildRootStructure()
         if self.SampleContainer._locked or self._launch == False:
@@ -349,7 +385,8 @@ class Analysis(Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
                 typ, dx = ("DataCache", dc) if len(dc) > len(ec) else ("EventCache", ec)
             self.__SearchAssets(typ, dx)
         self._lst = [i for i in self.SampleContainer.list() if i != ""]
-
+        self.cd(self._tmp)
+        
         if len(self._lst) == 0:
             self.NothingToIterate()
             return self

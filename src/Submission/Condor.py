@@ -86,7 +86,6 @@ class AnalysisScript(AnalysisTopGNN.Tools.General.Tools):
         Script += ["sys.path.append('" + self.abs("/".join(self.OutDir.split("/")[:-1]) + "/_SharedCode/')")]
         Script += ["from Event import *"]
         for i in self.Code:
-
             key = self.GroupHash(i)
             if key not in Ad_key and key:
                 Ad_key[key] = []
@@ -105,6 +104,10 @@ class AnalysisScript(AnalysisTopGNN.Tools.General.Tools):
                 Ad_key[key] = ["from AnalysisTopGNN.Templates import EventGraphTemplate", "", i.Code]
                 continue
             
+            if "(Selection):" in i.Code:
+                Ad_key[key] = ["from AnalysisTopGNN.Templates import Selection", "", i.Code]
+                continue
+
             Ad_key[key].append(i.Code)
         
         for i in Ad_key:
