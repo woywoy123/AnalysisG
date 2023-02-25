@@ -204,31 +204,27 @@ class Condor(AnalysisTopGNN.Tools.General.Tools, Condor_, Settings):
         self.ProjectInheritance(instance)
     
     def __Sequencer(self):
-        def Recursion(inpt, key):
-            dic = []
-            dic.append(key)
+        def Recursion(inpt, key = None, start = None):
+            if key == None and start == None:
+                out = {}
+                for i in inpt:
+                    out[i] = [k for k in Recursion(inpt[i], i, inpt).split("<-") if k != i]
+                return out
+            if len(inpt) == 0:
+                return key
             for i in inpt:
-                dic += Recursion(self._wait[i], i)
-            return dic
-        
+                key += "<-" + Recursion(start[i], i, start)
+            return key 
+        self._sequence = Recursion(self._wait) 
         for i in self._wait:
-            out = Recursion(self._wait[i], i)
-            new = []
-            out.reverse()
-            for k in out:
-                if k in new:
-                    continue
-                new.append(k)
-            self._sequence[i] = new
             self._Complete[i] = False
 
     def LocalDryRun(self):
         self.__Sequencer()
         for i in self._sequence:
-            for j in self._sequence[i]:
-                if self._Complete[j] == True:
-                    continue
-                
+            jb = [i] if len(self._sequence[i]) == 0 else self._sequence[i]
+            jb = [i for i in jb if self._Complete[i] == False]
+            for j in jb:
                 self._Jobs[j].EventCache = self.EventCache
                 self._Jobs[j].DataCache = self.DataCache 
                 self.RunningJob(j)
@@ -244,28 +240,24 @@ class Condor(AnalysisTopGNN.Tools.General.Tools, Condor_, Settings):
         self.__Sequencer()
         outDir = self.abs(self.OutputDirectory)
         self.mkdir(outDir + "/" + self.ProjectName + "/CondorDump")
-        DAG = []
+        DAG = ["JOB " + i + " " + i + "/" + i + ".submit" for i in self._sequence]
         for i in self._sequence:
+            jb = [i] if len(self._sequence[i]) == 0 else self._sequence[i]
+            jb = [i for i in jb if self._Complete[i] == False]
+
             self.mkdir(outDir + "/" + self.ProjectName + "/CondorDump/" + i)
             self.DumpedJob(i, outDir + "/" + self.ProjectName + "/CondorDump/" + i)
-            for j in self._sequence[i]:
-                if self._Complete[j] == True:
-                    continue
+
+            for p in reversed(self._sequence[i]):
+                s = "PARENT " + p + " CHILD " + i
+                if s not in DAG and p in self._wait[i]:
+                    DAG.append(s)
+
+            for j in jb:
                 self._Jobs[j].RestoreSettings(self.DumpSettings())
                 self._Jobs[j].DumpConfig()
                 
                 self._Complete[j] = True
-
-            s = "JOB " + i + " " + i + "/" + i + ".submit"
-            if s not in DAG:
-                DAG.append(s)
-            
-            for p in self._sequence[i]:
-                if p == i:
-                    continue
-                s = "PARENT " + p + " CHILD " + i
-                if s not in DAG:
-                    DAG.append(s)
 
         F = open(outDir + "/" + self.ProjectName + "/CondorDump/DAGSUBMISSION.submit", "w")
         F.write("\n".join(DAG))
@@ -273,6 +265,17 @@ class Condor(AnalysisTopGNN.Tools.General.Tools, Condor_, Settings):
         
         F = open(outDir + "/" + self.ProjectName + "/CondorDump/RunAsBash.sh", "w")
         F.write("#!/bin/bash\n")
+        
+        jb = []
+        self._Complete = { i : False for i in self._Complete }
+
+        self._sequence = { j : [j] + self._sequence[j] for j in self._sequence }
         for j in self._sequence:
-            F.write("bash " + j + "/main.sh\n")
+            for k in reversed(self._sequence[j]):
+                if self._Complete[k]:
+                    continue
+                self._Complete[k] = True
+                F.write("bash " + k + "/main.sh\n")
+            
+
         F.close()

@@ -104,5 +104,15 @@ def TestAnalysis(Files):
     it = 0
     for i in AnaE:
         it += 1
-    print(it)
     return True
+
+def TestLargeSample(File):
+    AnaE = Analysis()
+    AnaE.ProjectName = "Project"
+    AnaE.InputSample("l", File)
+    AnaE.Threads = 12
+    AnaE.chnk = 10
+    AnaE.EventStop = 1200
+    AnaE.Event = Event
+    AnaE.EventCache = True
+    AnaE.Launch()

@@ -109,6 +109,8 @@ class Selection(Settings, Tools):
             self._EventPreprocessing(i)
    
     def __eq__(self, other):
+        if other == None:
+            return False
         t1 = self.GetSourceCode(self)
         t2 = other.GetSourceCode(other)
         return t1 == t2
@@ -123,7 +125,7 @@ class Selection(Settings, Tools):
             out = []
             for i in other:
                 out += [self.__add__(i)[-1]]
-            out.append(i)
+            out.append(self)
             return out
         if self != other:
             return [self, other]

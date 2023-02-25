@@ -6,6 +6,33 @@ from ExampleModel.BasicBaseLine import BasicBaseLineRecursion
 from ExampleModel.CheatModel import CheatModel
 
 
+def TestSequence():
+    x = {
+            'tSel': ['t'], 
+            'ttbarSel': ['ttbar'], 
+            'ttttSel': ['tttt'], 
+            't': [], 
+            'tttt': [], 
+            'ttbar': [], 
+            'Merged': ['tSel', 'ttbarSel', 'ttttSel']
+        }
+    def Recursion(inpt, key = None, start = None):
+        if key == None and start == None:
+            out = {}
+            for i in inpt:
+                out[i] = [k for k in Recursion(inpt[i], i, inpt).split("<-") if k != i]
+            return out
+        if len(inpt) == 0:
+            return key
+        for i in inpt:
+            key += "<-" + Recursion(start[i], i, start)
+        return key 
+
+    Recursion(x)
+    
+    return True
+
+
 def TestAnalysis(GeneralDir):
 
     def Test(ev):
@@ -256,14 +283,15 @@ def TestSelectionDumping(GeneralDir):
     T.AddJob("tSel", D1, "10GB", "1h", ["t"])
     T.AddJob("ttbarSel", D2, "10GB", "1h", ["ttbar"])
     T.AddJob("ttttSel", D3, "10GB", "1h", ["tttt"])
+    
+    T.AddJob("Merged", M1, "10GB", "1h", ["tSel", "ttbarSel", "ttttSel"])
 
     T.AddJob("t", A3, "10GB", "1h")
-    T.AddJob("tttt", A4, "10GB", "1h")
+    T.AddJob("tttt", A4, "10GB", "1h", ["ttbar"])
     T.AddJob("ttbar", A1, "10GB", "1h")
  
-    T.AddJob("Merged", M1, "10GB", "1h", ["tSel", "ttbarSel", "ttttSel"])
     T.DumpCondorJobs() 
-
+    #T.LocalDryRun()
 
     from AnalysisTopGNN.IO import UnpickleObject
     x = UnpickleObject("./TopEvaluation/Selections/Merged/Example.pkl")

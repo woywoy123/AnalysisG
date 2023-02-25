@@ -5,12 +5,6 @@ class MultiThreading(Notification):
     def __init__(self):
        pass
 
-    def StartingJobs(self, ith):
-        self.Success("!!!STARTED JOB " + str(ith+1) + "/" + str(len(self._chnk)))
-    
-    def FinishedJobs(self, w):
-        self.Success("!!!WORKER FINISHED " + str(w) + "/" + str(self._threads))
-
     def RecoveredThread(self, w):
         self.Warning("A Thread has failed. Switching to main thread. Worker: " + str(w))
 

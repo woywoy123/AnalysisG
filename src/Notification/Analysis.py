@@ -71,6 +71,10 @@ class Analysis(Notification):
         message = "EventGraph not defined (obj.EventGraph). See implementations (See src/Events/EventGraphs.py)"
         self.Failure("="*len(message))
     
+    def ReadingFileDirectory(self, f):
+        self.Success("!!Reading Files in Directory '" + f + "':")
+        return f
+
     def FoundFiles(self, Files):
         if len(Files) == 0:
             return 

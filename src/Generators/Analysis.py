@@ -79,6 +79,7 @@ class Interface:
             return 
         self._MSelection[Name] = True
 
+
 class Analysis(Interface, Analysis_, Settings, SampleTracer, GraphFeatures, Tools):
 
     def __init__(self):
@@ -122,10 +123,10 @@ class Analysis(Interface, Analysis_, Settings, SampleTracer, GraphFeatures, Tool
         if self.Event == None:
             return 
         ev = EventGenerator()
+        ev.Caller = self.Caller
         ev.RestoreSettings(self.DumpSettings())
         ev.InputDirectory = {"/".join(filedir[:-1]) : filedir[-1]}
         ev.SpawnEvents()
-        ev.CompileEvent()
         self.GetCode(ev)
         self += ev 
         
@@ -166,9 +167,12 @@ class Analysis(Interface, Analysis_, Settings, SampleTracer, GraphFeatures, Tool
 
         if self.DumpHDF5 or self.DumpPickle:
             self.ResetSampleContainer()  
-
+        
+        _r = ""
         for f in self.DictToList(InptMap):
             tmp = f.split("/")
+            if _r != tmp[-2]:
+                _r = self.ReadingFileDirectory(tmp[-2])
             if self.EventCache and ec == None:
                 if self.Event == None:
                     self.NoEventImplementation()
@@ -199,8 +203,8 @@ class Analysis(Interface, Analysis_, Settings, SampleTracer, GraphFeatures, Tool
             for i in smpl:
                 obj = self[i]
                 obj.Train = status
-        
-        if self.TrainingSampleName == False:
+       
+        if not self.TrainingSampleName:
             return 
          
         self.EmptySampleList()
@@ -291,19 +295,26 @@ class Analysis(Interface, Analysis_, Settings, SampleTracer, GraphFeatures, Tool
                 tmp._EventPreprocessing(k[1])
                 out.append(tmp)
             return out 
+        
         def _rebuild(inpt):
             out = []
             for k in inpt:
                 t = pkl.UnpickleObject(k)
                 out.append(Selection().RestoreSettings(t))
                 self.rm(k)
+            inpt = sum(out)
+            inpt = inpt if isinstance(inpt, list) else [inpt]
+            out = [""]*(len(out)-len(inpt)) + inpt
             return out
+        
+        if not self.__SwitchTable():
+            return  
 
         pkl = Pickle()
         pkl.Caller = self.Caller
         pkl.VerboseLevel = 0
 
-        s = self.list() 
+        s = self.list()
         for i in self._Selection:
             self.mkdir(self.output + "/Selections/" + i)
             th = Threading([[self._Selection[i], k, i] for k in s], _select, self.Threads, self.chnk)
@@ -315,8 +326,22 @@ class Analysis(Interface, Analysis_, Settings, SampleTracer, GraphFeatures, Tool
             th = Threading(l, _rebuild, self.Threads, self.chnk)
             th.VerboseLevel = self.VerboseLevel
             th.Start()
+            th._lists = [k for k in th._lists if isinstance(k, str) == False]
             pkl.PickleObject(sum(th._lists), i, self.output + "/Selections/Merged/")
-    
+   
+    def __SwitchTable(self):
+        if self.TrainingSampleName:
+            return True 
+        if self.Event == None and self.EventGraph == None:
+            return True 
+        if self.FeatureTest: 
+            return True 
+        if len(self._Selection) > 0:
+            return True 
+        if len(self._MSelection) > 0:
+            return True 
+        return False
+
     def Launch(self):
         self.__CheckSettings()
         self._launch = True 
@@ -346,10 +371,10 @@ class Analysis(Interface, Analysis_, Settings, SampleTracer, GraphFeatures, Tool
         self.EventImplementationCommit() 
         
         for i in self._SampleMap:
-            if self.TrainingSampleName or (self.Event == None and self.EventGraph == None) or self.FeatureTest:
+            if self.__SwitchTable():
                 search = "EventCache" if self.EventCache else False
                 search = "DataCache" if self.DataCache else search
-                if search == False: 
+                if search == False and self.TrainingSampleName: 
                     self.CantGenerateTrainingSample()
                 self.__SearchAssets(search, i)
                 continue
@@ -383,6 +408,7 @@ class Analysis(Interface, Analysis_, Settings, SampleTracer, GraphFeatures, Tool
                 trig = True
             if trig == False:
                 typ, dx = ("DataCache", dc) if len(dc) > len(ec) else ("EventCache", ec)
+
             self.__SearchAssets(typ, dx)
         self._lst = [i for i in self.SampleContainer.list() if i != ""]
         self.cd(self._tmp)
