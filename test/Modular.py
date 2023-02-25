@@ -116,3 +116,5 @@ def TestLargeSample(File):
     AnaE.Event = Event
     AnaE.EventCache = True
     AnaE.Launch()
+
+    return True
