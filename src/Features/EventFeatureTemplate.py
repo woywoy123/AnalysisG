@@ -127,8 +127,6 @@ def TruthJets():
     Features |= AddFeature("GT", GT)
     return Features
 
-
-
 def ApplyFeatures(A, Level):
     if Level == "TruthTops":
         Features = TruthTops()

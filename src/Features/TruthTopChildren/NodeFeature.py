@@ -17,7 +17,7 @@ def charge(a):
     return float(a.charge)
 
 def mass(a):
-    return float(a.CalculateMass())
+    return float(a.Mass)
 
 def pdgid(a):
     return float(a.pdgid)
