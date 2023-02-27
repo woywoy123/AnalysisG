@@ -148,6 +148,7 @@ class Muon(Particle):
         return True
 
 class Neutrino(ParticleTemplate):
+<<<<<<< Updated upstream
     
     def __init__(self):
         self.Type = "nu"
@@ -155,3 +156,28 @@ class Neutrino(ParticleTemplate):
         self.px = None 
         self.py = None 
         self.pz = None
+=======
+
+    def __init__(self, px=None, py=None, pz=None):
+        self.Type = "nu"
+        ParticleTemplate.__init__(self)
+        self.px = px
+        self.py = py
+        self.pz = pz
+
+    @property
+    def phi(self):
+        return self._phi
+
+    @property
+    def eta(self):
+        return self._eta
+
+    @property
+    def pt(self):
+        return self._pt
+
+    @property
+    def e(self):
+        return self._e
+>>>>>>> Stashed changes
