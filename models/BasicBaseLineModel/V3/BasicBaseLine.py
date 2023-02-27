@@ -17,15 +17,22 @@ class BasicBaseLineRecursion(MessagePassing):
         self.L_edge = "CEL"
         self.C_edge = True
 
+        self.O_res = None 
+        self.L_res = "CEL"
+        self.C_res = True
+
         end = 64
         self._isEdge = Seq(Linear(end*4, end), ReLU(), Linear(end, 256), Sigmoid(), Linear(256, 128), ReLU(), Linear(128, 2))
         self._isMass = Seq(Linear(1, end), Linear(end, end))
+        
+        self._isResEdge = Seq(Linear(end*4, end), ReLU(), Linear(end, 256), Sigmoid(), Linear(256, 128), ReLU(), Linear(128, 2))
         self._it = 0
 
     def forward(self, i, edge_index, N_pT, N_eta, N_phi, N_energy, N_mass):
         if self._it == 0:
             self.device = N_pT.device
             self.edge_mlp = torch.zeros((edge_index.shape[1], 2), device = self.device)
+            self.res_mlp = torch.zeros((edge_index.shape[1], 2), device = self.device)
             self.node_count = torch.ones((N_pT.shape[0], 1), device = self.device)
             self.index_map = to_dense_adj(edge_index)[0] 
             self.index_map[self.index_map != 0] = torch.arange(self.index_map.sum(), device = self.device)
@@ -39,6 +46,7 @@ class BasicBaseLineRecursion(MessagePassing):
             return self.forward(i, edge_index_new, Pmu[:, 0:1], Pmu[:, 1:2], Pmu[:, 2:3], Pmu[:, 3:4], N_mass)
         self._it = 0
         self.O_edge = self.edge_mlp
+        self.O_res = self.res_mlp
         return self.O_edge
 
     def message(self, edge_index, Pmc_i, Pmc_j, Pmu_i, Pmu_j, Mass_i, Mass_j):
@@ -52,11 +60,20 @@ class BasicBaseLineRecursion(MessagePassing):
         ni_mass = self._isMass(Mass_i/1000)
         nj_mass = self._isMass(Mass_j/1000)
 
-        mlp = self._isEdge(torch.cat([e_mass_mlp, torch.abs(ni_mass-nj_mass), torch.abs(e_mass_mlp - ni_mass - nj_mass), e_mass_mlp + ni_mass + nj_mass], dim = 1))
-        return edge_index[1], mlp, Pmc_j
+        mlp = self._isEdge(torch.cat([
+                        e_mass_mlp, torch.abs(ni_mass-nj_mass), 
+                        torch.abs(e_mass_mlp - ni_mass - nj_mass), 
+                        e_mass_mlp + ni_mass + nj_mass], dim = 1))
+        
+        res = self._isResEdge(torch.cat([
+                        e_mass_mlp, torch.abs(ni_mass-nj_mass), 
+                        torch.abs(e_mass_mlp - ni_mass - nj_mass), 
+                        e_mass_mlp + ni_mass + nj_mass], dim = 1))
+
+        return edge_index[1], mlp, Pmc_j, res
 
     def aggregate(self, message, index, Pmc, Pmu, Mass):
-        edge_index, mlp_mass, Pmc_j = message
+        edge_index, mlp_mass, Pmc_j, res = message
         edge = mlp_mass.max(dim = 1)[1]
         
         max_c = (edge == 1).nonzero().view(-1)
@@ -76,6 +93,8 @@ class BasicBaseLineRecursion(MessagePassing):
         self.node_count[edge_index[max_c]] = 0
         
         self.edge_mlp[idx_all] += mlp_mass
+        self.res_mlp[idx_all] += res
+
         edge_index = torch.cat([index[edge == 0].view(1, -1), edge_index[edge == 0].view(1, -1)], dim = 0)
         edge_index = add_remaining_self_loops(edge_index, num_nodes = Pmu.shape[0])[0]
         px, py, pz, e = Pmc_i[:, 0], Pmc_i[:, 1], Pmc_i[:, 2], Pmc_i[:, 3].view(-1, 1)
