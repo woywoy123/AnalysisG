@@ -8,6 +8,7 @@ class _Code(Tools):
         self.Module = None 
         self.Path = None 
         self.Code = None 
+        self._File = None
 
     def DumpCode(self, Instance):
         try:
@@ -20,6 +21,7 @@ class _Code(Tools):
         self.Module = Instance.__module__
         self.Path = self.Module + "." + self.Name
         self.Code = self.GetSourceFile(Instance)
+        self._File = self.GetSourceFileDirectory(Instance)
     
     def CopyInstance(self, Instance):
         if callable(Instance):

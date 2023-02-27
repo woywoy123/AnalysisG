@@ -28,6 +28,9 @@ class Selection(Settings, Tools):
         self._TimeStats.append(time() - self.__t1)
 
     def Selection(self, event):
+        return True
+
+    def Strategy(self, event):
         pass
 
     def MakeNu(self, s_):
@@ -85,9 +88,11 @@ class Selection(Settings, Tools):
         
         if self._hash == None:
             self._hash = event.Filename
-
+        
+        if self.Selection(event.Trees[self.Tree]) == False:
+            return  
         self._t1
-        o = self.Selection(event.Trees[self.Tree])
+        o = self.Strategy(event.Trees[self.Tree])
         self._t2
         if isinstance(o, str) and "->" in o:
             if o not in self._CutFlow:

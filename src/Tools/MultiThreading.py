@@ -54,6 +54,7 @@ class Threading(MultiThreading):
         self._lists = lists
         self._function = Function
         self.Caller = "MULTITHREADING"
+        self.Title = "TOTAL JOB PROGRESS"
         self.VerboseLevel = 3
         
         self.AlertOnEmptyList()
@@ -78,7 +79,7 @@ class Threading(MultiThreading):
         lock = torch.multiprocessing.Manager().Lock()
         with lock:
             bar = tqdm(
-                    desc = f'TOTAL JOB PROGRESS', total = len(self._chnk), 
+                    desc = self.Title, total = len(self._chnk), 
                     position = 0, leave = None, 
                     colour = "GREEN", dynamic_ncols = True)
 

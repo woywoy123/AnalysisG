@@ -117,11 +117,13 @@ class Analysis(Interface, Analysis_, Settings, SampleTracer, GraphFeatures, Tool
         if self.DumpPickle:
             pkl = Pickle()
             pkl.RestoreSettings(self.DumpSettings())
+            pkl.PickleObject([ i._File for i in self._Code ], "ClassDef", outdir)
             pkl.MultiThreadedDump(export, outdir)
 
     def __EventGenerator(self, name, filedir):
         if self.Event == None:
             return 
+
         ev = EventGenerator()
         ev.Caller = self.Caller
         ev.RestoreSettings(self.DumpSettings())
@@ -265,7 +267,7 @@ class Analysis(Interface, Analysis_, Settings, SampleTracer, GraphFeatures, Tool
             pkl = Pickle()
             pkl.Caller = self.Caller
             pkl.VerboseLevel = 0
-            events = pkl.MultiThreadedReading(_pkl)
+            events = pkl.MultiThreadedReading(_pkl, Name)
             self.SampleContainer += SampleContainer
             self.SampleContainer.RestoreEvents(events)
             return True
@@ -318,12 +320,14 @@ class Analysis(Interface, Analysis_, Settings, SampleTracer, GraphFeatures, Tool
         for i in self._Selection:
             self.mkdir(self.output + "/Selections/" + i)
             th = Threading([[self._Selection[i], k, i] for k in s], _select, self.Threads, self.chnk)
+            th.Title = "EXECUTING SELECTION (" + i + ")"
             th.VerboseLevel = self.VerboseLevel
             th.Start()
         
         for i in self._MSelection:
             l = [self.output + "/Selections/" + i + "/" + k for k in self.ls(self.output + "/Selections/" + i)]
             th = Threading(l, _rebuild, self.Threads, self.chnk)
+            th.Title = "MERGING SELECTION (" + i + ")"
             th.VerboseLevel = self.VerboseLevel
             th.Start()
             th._lists = [k for k in th._lists if isinstance(k, str) == False]
@@ -371,6 +375,8 @@ class Analysis(Interface, Analysis_, Settings, SampleTracer, GraphFeatures, Tool
         self.EventImplementationCommit() 
         
         for i in self._SampleMap:
+            self.NoSamples(self._SampleMap[i], i)
+            self.__GenerateEvents(self._SampleMap[i], i)
             if self.__SwitchTable():
                 search = "EventCache" if self.EventCache else False
                 search = "DataCache" if self.DataCache else search
@@ -378,8 +384,6 @@ class Analysis(Interface, Analysis_, Settings, SampleTracer, GraphFeatures, Tool
                     self.CantGenerateTrainingSample()
                 self.__SearchAssets(search, i)
                 continue
-            self.NoSamples(self._SampleMap[i], i)
-            self.__GenerateEvents(self._SampleMap[i], i)
         
         self.__GenerateTrainingSample()
         self.__Optimization() 

@@ -59,7 +59,7 @@ class EventGenerator(EventGenerator_, Settings, Tools, SampleTracer):
         if self._dump:
             return self
 
-        self.Files = self.ListFilesInDir(self.InputDirectory, extension = ".root") 
+        self.Files = self.ListFilesInDir(self.InputDirectory, extension = ".root")
         self.CheckROOTFiles()  
         
         it = -1
@@ -80,6 +80,7 @@ class EventGenerator(EventGenerator_, Settings, Tools, SampleTracer):
 
             th = Threading(cmp, function, self.Threads, self.chnk)
             th.VerboseLevel = self.VerboseLevel
+            th.Title = "READING/COMPILING EVENT"
             th.Start()
             for i in th._lists:
                 self.AddROOTFile(F, i)

@@ -39,10 +39,6 @@ class MakeTruth(Selection):
         self.Truth["Had"]["Children"] += [ sum(x.Children).Mass for x in h ]
         self.Truth["Had"*len(h_) + "Lep"*len(l_)]["Children"] += [sum([i for k in h_ + l_ for i in k.Children]).Mass]
 
-
-
-
-
 class ChildrenSelection(Selection):
 
     def __init__(self):
@@ -59,13 +55,6 @@ class ChildrenSelection(Selection):
         self.lepNum = [11, 13, 15]
         self.nuNumber = [12, 14, 16]
         self.Excl = self.lepNum + self.nuNumber
-
-    
-    def _Test1(self, event):
-        ....
-
-
-
 
     def Selection(self, event):
         # Selection 1: on the Children: 
@@ -169,14 +158,4 @@ class ChildrenSelection(Selection):
 #y = ChildrenSelection()
 #y(Ana)
 #print(y._CutFlow)
-
-
-Ana = Analysis()
-Ana.Event = Event
-Ana.EventCache = True 
-Ana.DumpPickle = True 
-Ana.InputSample("SM", "/home/tnom6927/Downloads/LISA/LisaSamples/user.esitniko.412043.aMcAtNloPythia8EvtGen.DAOD_TOPQ1.e7101_a875_r9364_p4514.SM4tops_mc16a_job07_output_root/user.esitniko.32411527._000001.output.root")
-Ana.chnk = 1000
-Ana.Launch()
-
 

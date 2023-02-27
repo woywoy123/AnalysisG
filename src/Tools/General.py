@@ -15,6 +15,9 @@ class Tools(IO):
     def GetSourceFile(self, obj):
         return GetSourceFile(obj)
 
+    def GetSourceFileDirectory(self, obj):
+        return GetSourceFileDirectory(obj)
+
     def MergeListsInDict(self, inpt):
         if isinstance(inpt, list):
             return inpt
