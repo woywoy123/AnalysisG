@@ -36,6 +36,16 @@ namespace PhysicsCartesianCUDA
 		return PhysicsCUDA::M(px, py, pz, e); 
 	}
 
+	const torch::Tensor Mass(torch::Tensor Pmu)
+	{ 
+		return PhysicsCUDA::M(
+				Pmu.index({torch::indexing::Slice(), 0}).view({-1, 1}), 
+				Pmu.index({torch::indexing::Slice(), 1}).view({-1, 1}), 
+				Pmu.index({torch::indexing::Slice(), 2}).view({-1, 1}), 
+				Pmu.index({torch::indexing::Slice(), 3}).view({-1, 1}));  
+	}
+
+
 	const torch::Tensor Mt2(torch::Tensor pz, torch::Tensor e)
 	{ 
 		return PhysicsCUDA::Mt2(pz, e); 

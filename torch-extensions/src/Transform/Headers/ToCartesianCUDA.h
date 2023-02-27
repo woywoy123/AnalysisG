@@ -13,39 +13,40 @@ torch::Tensor _PxPyPz(torch::Tensor _pt, torch::Tensor _eta, torch::Tensor _phi)
 
 namespace TransformCUDA
 {
+	const std::vector<torch::Tensor> _Ccheck(std::vector<torch::Tensor> imp)
+	{
+		std::vector<torch::Tensor> out; 
+		for (torch::Tensor x : imp)
+		{ 
+			x = x.view({-1, 1}).contiguous(); 
+			CHECK_INPUT(x); 
+			out.push_back(x); 
+		}
+		return out; 
+	}
+
 	const torch::Tensor Px(torch::Tensor pt, torch::Tensor phi)
 	{
-		CHECK_INPUT(pt); 
-		CHECK_INPUT(phi); 
-
-		return _Px(pt, phi); 
+		std::vector<torch::Tensor> _o = _Ccheck({pt, phi}); 
+		return _Px(_o[0], _o[1]); 
 	}
 
 	const torch::Tensor Py(torch::Tensor pt, torch::Tensor phi)
 	{
-		CHECK_INPUT(pt); 
-		CHECK_INPUT(phi); 
-
-		return _Py(pt, phi); 
+		std::vector<torch::Tensor> _o = _Ccheck({pt, phi}); 
+		return _Py(_o[0], _o[1]); 
 	}
 
 	const torch::Tensor Pz(torch::Tensor pt, torch::Tensor eta)
 	{
-		CHECK_INPUT(pt); 
-		CHECK_INPUT(eta); 
-
-		return _Pz(pt, eta); 
+		std::vector<torch::Tensor> _o = _Ccheck({pt, eta}); 
+		return _Pz(_o[0], _o[1]); 
 	}
 
-	const torch::Tensor PxPyPz(
-			torch::Tensor pt, 
-			torch::Tensor eta, 
-			torch::Tensor phi)
+	const torch::Tensor PxPyPz(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi)
 	{
-		CHECK_INPUT(pt); 
-		CHECK_INPUT(eta); 
-		CHECK_INPUT(phi); 
-		return _PxPyPz(pt, eta, phi); 
+		std::vector<torch::Tensor> _o = _Ccheck({pt, eta, phi}); 
+		return _PxPyPz(_o[0], _o[1], _o[2]); 
 	}
 }
 

@@ -90,10 +90,11 @@ class Analysis(Interface, Analysis_, Settings, SampleTracer, GraphFeatures, Tool
 
     def __BuildRootStructure(self): 
         self.OutputDirectory = self.RemoveTrailing(self.OutputDirectory, "/")
+        if self._tmp:
+            return 
         self._tmp = self.pwd()
         if self.DumpPickle or self.DumpHDF5 or self.TrainingSampleName or len(self._MSelection) > 0 or len(self._Selection) > 0:
             self.mkdir(self.OutputDirectory + "/" + self.ProjectName)
-            self.mkdir(self.OutputDirectory + "/" + self.ProjectName + "/Tracers")
             self.output = self.OutputDirectory + "/" + self.ProjectName
             self.cd(self.output)
         self.output = "." 
@@ -168,7 +169,6 @@ class Analysis(Interface, Analysis_, Settings, SampleTracer, GraphFeatures, Tool
         gr.CompileEventGraph()
         self.GetCode(gr)
         self += gr 
-
         if self.DataCache == False:
             return 
 
@@ -221,7 +221,6 @@ class Analysis(Interface, Analysis_, Settings, SampleTracer, GraphFeatures, Tool
             hashes["train_hashes"] = {hsh : self.HashToROOT(hsh) for hsh in hashes["train_hashes"]}
             hashes["test_hashes"] = {hsh : self.HashToROOT(hsh) for hsh in hashes["test_hashes"]}
             hashes["SampleMap"] = self._SampleMap
-
             Name = self.TrainingSampleName if self.TrainingSampleName else "UNTITLED"
             PickleObject(hashes, self.output + "/Tracers/TrainingSample/" + Name)
             self.Training = hashes

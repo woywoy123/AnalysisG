@@ -100,5 +100,7 @@ class SampleContainer:
             return True
         if key in self._EventMap:
             return True
+        if key in self.ROOTFiles:
+            return True 
         return False
 

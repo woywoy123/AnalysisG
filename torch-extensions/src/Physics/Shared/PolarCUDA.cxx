@@ -9,6 +9,7 @@ PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
 
 	m.def("M2", &PhysicsPolarCUDA::M2, "M2");
 	m.def("M", &PhysicsPolarCUDA::M, "M");
+	m.def("Mass", &PhysicsPolarCUDA::Mass, "Mass");
 	
 	m.def("Mt2", &PhysicsPolarCUDA::Mt2, "Mt2");
 	m.def("Mt", &PhysicsPolarCUDA::Mt, "Mt");

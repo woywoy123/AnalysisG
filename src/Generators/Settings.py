@@ -151,6 +151,7 @@ class _Analysis:
         self.EventCache = False
         self.DataCache = False
         self._launch = False
+        self._tmp = False
 
         self.DumpHDF5 = False
         self.DumpPickle = False

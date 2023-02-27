@@ -2,7 +2,9 @@ import torch
 from torch_geometric.nn import MessagePassing
 from torch.nn import Sequential as Seq, Linear, ReLU, Sigmoid, Tanh
 import torch.nn.functional as F
-from LorentzVector import *
+import PyC.Transform.CUDA as Cu
+import PyC.Physics.CUDA.Polar as PcP
+import PyC.Physics.CUDA.Cartesian as PcC
 from torch_geometric.utils import to_dense_adj, add_remaining_self_loops, dense_to_sparse
 
 torch.set_printoptions(4, profile = "full", linewidth = 100000)
@@ -29,7 +31,7 @@ class BasicBaseLineRecursion(MessagePassing):
             self.index_map[self.index_map != 0] = torch.arange(self.index_map.sum(), device = self.device)
             self.index_map = self.index_map.to(dtype = torch.long)
         Pmu = torch.cat([N_pT, N_eta, N_phi, N_energy], dim = 1)
-        Pmc = TensorToPxPyPzE(Pmu)
+        Pmc = torch.cat([Cu.PxPyPz(N_pT, N_eta, N_phi), N_energy], -1)
         
         edge_index_new, Pmu, N_mass = self.propagate(edge_index, Pmc = Pmc, Pmu = Pmu, Mass = N_mass)
         if torch.sum(self.index_map[edge_index_new]) != torch.sum(self.index_map[edge_index]):
@@ -40,8 +42,11 @@ class BasicBaseLineRecursion(MessagePassing):
         return self.O_edge
 
     def message(self, edge_index, Pmc_i, Pmc_j, Pmu_i, Pmu_j, Mass_i, Mass_j):
-        e_dr = TensorDeltaR(Pmu_i, Pmu_j)
-        e_mass = MassFromPxPyPzE(Pmc_i + Pmc_j)
+        eta_i, eta_j = Pmu_i[:, 1], Pmu_j[:, 1]
+        phi_i, phi_j = Pmu_i[:, 2], Pmu_j[:, 2]
+
+        e_dr = PcP.DeltaR(eta_i, eta_j, phi_i, phi_j)
+        e_mass = PcC.Mass(Pmc_i + Pmc_j)
 
         e_mass_mlp = self._isMass(e_mass/1000)
         ni_mass = self._isMass(Mass_i/1000)
@@ -73,4 +78,5 @@ class BasicBaseLineRecursion(MessagePassing):
         self.edge_mlp[idx_all] += mlp_mass
         edge_index = torch.cat([index[edge == 0].view(1, -1), edge_index[edge == 0].view(1, -1)], dim = 0)
         edge_index = add_remaining_self_loops(edge_index, num_nodes = Pmu.shape[0])[0]
-        return edge_index, TensorToPtEtaPhiE(Pmc_i), MassFromPxPyPzE(Pmc_i)
+        px, py, pz, e = Pmc_i[:, 0], Pmc_i[:, 1], Pmc_i[:, 2], Pmc_i[:, 3].view(-1, 1)
+        return edge_index, torch.cat([Cu.PtEtaPhi(px, py, pz), e], dim = -1), PcC.Mass(Pmc_i)

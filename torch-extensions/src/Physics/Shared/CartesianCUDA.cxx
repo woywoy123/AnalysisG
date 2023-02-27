@@ -9,6 +9,7 @@ PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
 
 	m.def("M2", &PhysicsCartesianCUDA::M2, "M2");
 	m.def("M", &PhysicsCartesianCUDA::M, "M");
+	m.def("Mass", &PhysicsCartesianCUDA::Mass, "Mass");
 	
 	m.def("Mt2", &PhysicsCartesianCUDA::Mt2, "Mt2");
 	m.def("Mt", &PhysicsCartesianCUDA::Mt, "Mt");

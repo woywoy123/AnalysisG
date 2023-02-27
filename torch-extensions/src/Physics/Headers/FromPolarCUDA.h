@@ -47,6 +47,17 @@ namespace PhysicsPolarCUDA
 		std::vector<torch::Tensor> Pmu = _Conv(pt, eta, phi); 
 		return PhysicsCUDA::M(Pmu[0], Pmu[1], Pmu[2], e); 
 	}
+	
+	const torch::Tensor Mass(torch::Tensor Pmu)
+	{ 
+		std::vector<torch::Tensor> Pmc = _Conv(
+				Pmu.index({torch::indexing::Slice(), 0}).view({-1, 1}), 
+				Pmu.index({torch::indexing::Slice(), 1}).view({-1, 1}), 
+				Pmu.index({torch::indexing::Slice(), 2}).view({-1, 1})); 
+		return PhysicsCUDA::M(
+				Pmc[0], Pmc[1], Pmc[2],
+				Pmu.index({torch::indexing::Slice(), 3}).view({-1, 1}));  
+	}
 
 	const torch::Tensor Mt2(torch::Tensor pt, torch::Tensor eta, torch::Tensor e)
 	{ 
