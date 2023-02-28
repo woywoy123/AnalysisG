@@ -211,7 +211,7 @@ class Analysis(Interface, Analysis_, Settings, SampleTracer, GraphFeatures, Tool
        
         if not self.TrainingSampleName:
             return 
-         
+        
         self.EmptySampleList()
         if self.Training == False:
             self.CheckPercentage()
@@ -233,9 +233,11 @@ class Analysis(Interface, Analysis_, Settings, SampleTracer, GraphFeatures, Tool
             return
         op = Optimization()
         op += self
+        self.cd(self._tmp)
         op.RestoreSettings(self.DumpSettings())
         op.Launch()
         self.GetCode(op)
+        self.cd(self._tmp)
 
     def __ModelEvaluator(self):
         if len(self._ModelDirectories) == 0 and self.PlotNodeStatistics == False:
@@ -396,9 +398,9 @@ class Analysis(Interface, Analysis_, Settings, SampleTracer, GraphFeatures, Tool
         self.WhiteSpace()
         self.output = self.pwd()
         self.cd(self._tmp)
+        self._tmp = False
 
     def __iter__(self):
-        self.__BuildRootStructure()
         if self.SampleContainer._locked or self._launch == False:
             ec = self.ls(self.output + "/EventCache")
             dc = self.ls(self.output + "/DataCache")
@@ -418,8 +420,6 @@ class Analysis(Interface, Analysis_, Settings, SampleTracer, GraphFeatures, Tool
 
             self.__SearchAssets(typ, dx)
         self._lst = [i for i in self.SampleContainer.list() if i != ""]
-        self.cd(self._tmp)
-        
         if len(self._lst) == 0:
             self.NothingToIterate()
             return self
