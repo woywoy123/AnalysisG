@@ -425,18 +425,19 @@ def PlotTemplate():
     plt["yTitle"] = "Entries (arb.)"
     return plt
 
-#Ana = Analysis()
-##Ana.InputSample("bsm-1000", "/home/tnom6927/Downloads/samples/Dilepton/ttH_tttt_m1000/DAOD_TOPQ1.21955717._000001.root")
-#Ana.InputSample("bsm-1000-all", "/home/tnom6927/Downloads/samples/Dilepton/ttH_tttt_m1000")
-#Ana.AddSelection("top-count", TopCounter)
-#Ana.AddSelection("truth", Truth)
-#Ana.MergeSelection("top-count")
-#Ana.MergeSelection("truth")
-#Ana.Event = Event 
-#Ana.EventCache = True 
-#Ana.DumpPickle = True 
-#Ana.Launch()
+Ana = Analysis()
+#Ana.InputSample("bsm-1000", "/home/tnom6927/Downloads/samples/Dilepton/ttH_tttt_m1000/DAOD_TOPQ1.21955717._000001.root")
+Ana.InputSample("bsm-1000-all", "/home/tnom6927/Downloads/samples/Dilepton/ttH_tttt_m1000")
+Ana.AddSelection("top-count", TopCounter)
+Ana.AddSelection("truth", Truth)
+Ana.MergeSelection("top-count")
+Ana.MergeSelection("truth")
+Ana.Event = Event 
+Ana.EventCache = True 
+Ana.DumpPickle = True 
+Ana.Launch()
 
+exit()
 x = UnpickleObject("./UNTITLED/Selections/Merged/truth.pkl")
 
 nn = NuNu(x)
@@ -474,6 +475,28 @@ print("(Jets) SPEED (Original/Non-CUDA): " + str(nn.Time["Original"][i]/nn.Time[
 print("(Jets) SPEED (Original/CUDA): " + str(nn.Time["Original"][i]/nn.Time["CUDA"][i]))
 print("(Jets) SPEED (CPU/CUDA): " + str(nn.Time["CPU"][i]/nn.Time["CUDA"][i]))
 print("(Jets) SPEED (Non-CUDA/CUDA): " + str(nn.Time["Non-CUDA"][i]/nn.Time["CUDA"][i]))
+
+
+for key in its:
+    hst = []
+    p = PlotTemplate()
+    p["xData"] = its[key][2]["Original"]
+    p["Title"] = "Reconstructed"
+    hst.append(TH1F(**p))
+
+    p = PlotTemplate()
+    p["xData"] = its[key][2]["TRUTH"]
+    p["Title"] = "Truth"
+    hst.append(TH1F(**p))
+
+    p = PlotTemplate()
+    p["Histograms"] = hst
+    p["Title"] = "Reconstructed Invariant Top Mass From Reconstructed Neutrinos - " + key
+    p["xStep"] = 10
+    y = CombineTH1F(**p)
+    y.Filename = "Mass" + key + "NuNu_OriginalOnly"
+    y.SaveFigure()
+
 
 for i in its:
     hst = []
