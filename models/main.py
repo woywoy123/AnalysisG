@@ -9,13 +9,13 @@ Ana = Analysis()
 Ana.ProjectName = "PROJECT"
 Ana.InputSample("bsm-1000", "/home/tnom6927/Downloads/samples/Dilepton/ttH_tttt_m1000/DAOD_TOPQ1.21955717._000001.root")
 Ana.Event = Event 
-Ana.EventCache = True 
+Ana.EventCache = False 
 
 Ana.EventGraph = EventGraphChildrenNoNu
-Ana.DataCache = True 
-#Ana.EventStop = 100
+Ana.DataCache = True
+Ana.EventStop = 100
 
-Ana.DumpPickle = True 
+Ana.DumpPickle = False 
 ApplyFeatures(Ana, "TruthChildren")
 Ana.TrainingSampleName = "Children"
 Ana.Device = "cuda"
