@@ -15,13 +15,15 @@ Ana.EventGraph = EventGraphChildrenNoNu
 Ana.DataCache = True
 Ana.EventStop = 100
 
-Ana.DumpPickle = False 
+Ana.DumpPickle = False
+Ana.DumpHDF5 = True
 ApplyFeatures(Ana, "TruthChildren")
 Ana.TrainingSampleName = "Children"
 Ana.Device = "cuda"
 Ana.kFolds = 10
 Ana.Epochs = 10
-Ana.BatchSize = 10
+Ana.BatchSize = 2
+Ana.ContinueTraining = False
 Ana.Optimizer = {"ADAM" : {"lr" : 0.001, "weight_decay" : 0.001}}
 Ana.Model = Recursion()
 #Ana.DebugMode = "loss"
