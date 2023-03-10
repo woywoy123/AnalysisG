@@ -1,157 +1,156 @@
 import torch
 from torch_geometric.nn import MessagePassing
-from torch.nn import Sequential as Seq, Linear, ReLU, Sigmoid, Tanh
+from torch.nn import Sequential as Seq, Linear, ReLU, Sigmoid, Tanh, Softmax
 import torch.nn.functional as F
 import PyC.NuSol.CUDA as NuC
 import PyC.Transform.CUDA as TC
 import PyC.Physics.CUDA.Cartesian as PCC
-from torch_geometric.utils import to_dense_adj, dense_to_sparse, softmax
+from torch_geometric.utils import to_dense_adj, dense_to_sparse, softmax, sort_edge_index
 
 torch.set_printoptions(4, profile = "full", linewidth = 100000)
+torch.autograd.set_detect_anomaly(True)
+
 
 class Recursion(MessagePassing):
-
     def __init__(self):
         super().__init__()
     
         self.O_edge = None 
         self.L_edge = "CEL"
+        self.C_edge = True
 
-        #self.O_res = None 
-        #self.L_res = "CEL"
+        self.O_edge_res = None 
+        self.L_edge_res = "CEL"
 
-        #self.O_signal = None 
-        #self.L_signal = "CEL"
+        self.O_signal = None 
+        self.L_signal = "CEL"
         
-        end = 64
+        end = 256
         self._Mass = Seq(
-                        Linear(2, end), 
-                        ReLU(), Linear(end, 256), 
-                        ReLU(), Linear(256, 64), 
-                        ReLU(), Linear(64, 2), Sigmoid()
+                        Linear(1, end),
+                        Tanh(),
+                        Linear(end, 2), 
+                        ReLU(), 
+                        Linear(2, end),
+                        Tanh(), 
+                        Linear(end, 2), 
+                        Sigmoid()
         )
 
-    def _ProbabilityMap(self, edge_index, probability):
-        edge, prob = dense_to_sparse(to_dense_adj(edge_index, edge_attr = probability)[0]*self._sigP[self._iter])
-        _msk = prob > 0
-        prob = softmax(prob[_msk], edge[:, _msk][0])
-        return to_dense_adj(edge, edge_attr = prob, max_num_nodes = self._N.sum(-1))[0]
+        self._TopoSig = Seq(
+                            Linear(2, end), 
+                            Tanh(), 
+                            Linear(end, 2), 
+                            ReLU(), 
+                            Linear(2, end), 
+                            Tanh(), 
+                            Linear(end, 2)
+        )
 
-    def _Bayesian(self, next_node, prob_map):
-        # ------ Bayesian Part ------ #
-        # P( +(-) | e_i ) = gamma[:, 1][i]
-        #p_e_i = 
-        return torch.gather(prob_map, 1, next_node)
-
-        # P(e_i) = 1/((nodes-1) - iteration) 
-        e_i = 1/(n_ - self._iter)
-
-        # P( +(-) | e/_i ) = 1 - \sum_{j != i} P( + | e_j )
-        p_ne_i = torch.sum(prob_map, dim = -1, keepdim = True) - e_i
-        
-        # P( e/_i ) = 1 - P(e_i)
-        ne_i = (1 - e_i)
-
-        # P(e_i | +(-)) = ( P(+(-) | e_i) x P(e_i) )/( P(+(-) | e_i) x P(e_i) + P(+(-) | ne_i) x P(ne_i) )
-        return (p_e_i * e_i) / ( p_e_i * e_i + p_ne_i * ne_i )
-
-    def _SelectEdges(self, edge_index, Px_i, Py_i, Pz_i, E_i, Px_j, Py_j, Pz_j, E_j):
-        Px_ij, Py_ij, Pz_ij, E_ij = Px_i + Px_j, Py_i + Py_j, Pz_i + Pz_j, E_i + E_j,
-        M_i , M_j ,  M_ij = PCC.M(Px_i, Py_i, Pz_i, E_i), PCC.M(Px_j, Py_j, Pz_j, E_j), PCC.M(Px_ij, Py_ij, Pz_ij, E_ij)
-        gamma = self._Mass(torch.cat([M_ij, abs(M_i - M_j)], -1))
-        gamma = F.softmax(gamma, dim = -1)
-        p0, p1 = gamma[:, 0], gamma[:, 1]
-        
-        prob_map_ = self._ProbabilityMap(edge_index, p0)
-        prob_map = self._ProbabilityMap(edge_index, p1)
-        msk = prob_map.sum(-1) > 0
-        next_node = torch.unique(edge_index[0]).view(-1, 1).fill_(-1)
-        n_ = next_node.size()[0]
-        next_node[msk] = torch.multinomial(prob_map[msk], num_samples = 1)
-        
-        self._iter += 1
-        n_sigP = self._sigP[self._iter - 1].clone()
-
-
-        print(next_node[msk])
-
-        n_sigP.scatter_(1, next_node[msk], torch.zeros_like(next_node[msk]).to(dtype = n_sigP.dtype))
-        print(n_sigP.sum(-1, keepdim = True))
-
-
-        self._sigP = torch.cat([self._sigP, n_sigP.view(1, n_, n_)], 0)
-        
-        self._PSel_[msk, self._iter] = self._Bayesian(next_node[msk], prob_map_[msk]).view(-1)
-        self._PSel[msk, self._iter] = self._Bayesian(next_node[msk], prob_map[msk]).view(-1)
-        self._PMap[:, self._iter] = next_node.view(-1)
-        self._PathMass[msk, self._iter] = torch.gather(to_dense_adj(edge_index, edge_attr = M_ij.view(-1))[0][msk], 1, next_node[msk]).view(-1)
-
-        Pmc = torch.zeros_like(next_node).to(dtype = Px_i.dtype)
-        Pmc = torch.cat([Pmc, Pmc, Pmc, Pmc], -1)
-        Pmc[msk, 0] = torch.gather(to_dense_adj(edge_index, edge_attr = Px_ij)[0][msk], 1, next_node[msk]).view(-1)
-        Pmc[msk, 1] = torch.gather(to_dense_adj(edge_index, edge_attr = Py_ij)[0][msk], 1, next_node[msk]).view(-1)
-        Pmc[msk, 2] = torch.gather(to_dense_adj(edge_index, edge_attr = Pz_ij)[0][msk], 1, next_node[msk]).view(-1)
-        Pmc[msk, 3] = torch.gather(to_dense_adj(edge_index, edge_attr = E_ij)[0][msk], 1, next_node[msk]).view(-1)
-        return Pmc[:, 0], Pmc[:, 1], Pmc[:, 2], Pmc[:, 3]
-         
-    def _RecursivePathMass(self, edge_index, Px, Py, Pz, E, Px_, Py_, Pz_, E_):
-        
+        self._Sig = Seq(
+                        Linear(4, end), 
+                        Tanh(), 
+                        Linear(end, 2), 
+                        ReLU(), 
+                        Linear(2, end), 
+                        Tanh(), 
+                        Linear(end, 2)
+        )
+    
+    def _RecursivePath(self, edge_index, Px, Py, Pz, E, Px_, Py_, Pz_, E_):
         src, dst = edge_index
-        Px_j, Py_j, Pz_j, E_j = Px[dst], Py[dst], Pz[dst], E[dst]
-        Px_i, Py_i, Pz_i, E_i = Px_[src], Py_[src], Pz_[src], E_[src]
-        Px_, Py_, Pz_, E_ = self._SelectEdges(edge_index, Px_i, Py_i, Pz_i, E_i, Px_j, Py_j, Pz_j, E_j)
-       
-        print(self._sigP[self._iter])
-        if self._sigP[self._iter].sum(-1).sum(-1) == 0:
-            self._iter = 0
-            return True
-        return self._RecursivePathMass(edge_index, Px, Py, Pz, E, Px_, Py_, Pz_, E_) 
+        Px_ij, Py_ij, Pz_ij, E_ij = Px_[src] + Px[dst], Py_[src] + Py[dst], Pz_[src] + Pz[dst], E_[src] + E[dst]
+        M_i, M_j, M_ij = PCC.M(Px_[src], Py_[src], Pz_[src], E_[src])/1000, PCC.M(Px[dst], Py[dst], Pz[dst], E[dst])/1000, PCC.M(Px_ij, Py_ij, Pz_ij, E_ij)/1000
+        gamma = self._Mass(M_ij) #torch.cat([M_i, M_ij, M_i - M_j, M_i + M_j], -1))       
+        p0 = to_dense_adj(edge_index, edge_attr = gamma[:, 0])[0]*self._SelMap
+        p1 = to_dense_adj(edge_index, edge_attr = gamma[:, 1])[0]*self._SelMap
+        
+        self._w0 += gamma[:, 0]
+        self._w1 += gamma[:, 1]
 
-    def forward(self, i, batch, edge_index, N_pT, N_eta, N_phi, N_energy, G_met, G_met_phi):
-        pt, eta, phi, E = N_pT/1000, N_eta, N_phi, (N_energy/1000)
+        msk = (self._SelMap.sum(-1, keepdim = True) > 0).view(-1)
+        if msk.sum(-1) == 0:
+            return 
+        
+        next_node = torch.unique(edge_index[0]).view(-1, 1).to(dtype = edge_index[0].dtype)
+        if self._iter != 0:
+            next_node = next_node.fill_(-1)
+            next_node[msk] = torch.multinomial(p1[msk], num_samples = 1)
+
+        Px_[msk] += torch.gather(Px, 0, next_node[msk].view(-1))
+        Py_[msk] += torch.gather(Py, 0, next_node[msk].view(-1))
+        Pz_[msk] += torch.gather(Pz, 0, next_node[msk].view(-1))
+        E_[msk] += torch.gather(E, 0, next_node[msk].view(-1))
+        
+        # Record the running Kinematics
+        self._PmC[0, msk, self._iter] = Px_[msk]
+        self._PmC[1, msk, self._iter] = Py_[msk]
+        self._PmC[2, msk, self._iter] = Pz_[msk]
+        self._PmC[3, msk, self._iter] = E_[msk]
+
+        # Update the selection map and path
+        _SelMap = self._SelMap.clone()
+        _SelMap[msk] *= self._SelMap[msk].scatter_(1, next_node[msk], torch.zeros_like(next_node[msk]))
+        self._SelMap = self._SelMap*_SelMap
+        self._PMap[:, self._iter] = next_node.view(-1)
+        
+        # Record the weights of this path
+        self._w0Path[msk, self._iter] += torch.gather(p0[msk], 1, next_node[msk]).view(-1)
+        self._w1Path[msk, self._iter] += torch.gather(p1[msk], 1, next_node[msk]).view(-1)
+
+        self._iter += 1
+        return self._RecursivePath(edge_index, Px, Py, Pz, E, Px_, Py_, Pz_, E_)
+
+    def forward(self, i, num_nodes, batch, edge_index, N_pT, N_eta, N_phi, N_energy, G_met, G_met_phi, E_T_edge):
+        pt, eta, phi, E = N_pT, N_eta, N_phi, N_energy
         PxPyPz = TC.PxPyPz(pt, eta, phi)
         Px, Py, Pz, E = PxPyPz[:, 0], PxPyPz[:, 1], PxPyPz[:, 2], E.view(-1)
 
         self._device = N_pT.device
         self._iter = 0
-       
-        _, self._N = batch.unique(return_counts = True)
-        self._Batch = batch
         
-        # Tracks the overall paths traversed 
-        self._PMap = to_dense_adj(edge_index)[0].zero_().to(dtype = edge_index[0].dtype)
-        self._PMap[:, self._iter] = torch.unique(edge_index[0])
+        # Define the maximum length tensor
+        _x = torch.zeros((num_nodes, batch.unique(return_counts = True)[1].max()), device = self._device)
 
-        # Tracks which nodes have already been used for path derivation 
-        self._sigP = (torch.ones_like(self._PMap).fill_diagonal_(0)*to_dense_adj(edge_index)[0]).view(1, N_pT.size()[0], N_pT.size()[0])
+        # Track the overall paths traversed
+        self._PMap = _x.clone()
+        self._PMap[:, self._iter] = torch.unique(edge_index[0]) 
 
-        # Tracks the path mass 
-        OwnMass = PCC.M(Px, Py, Pz, E)
-        self._PathMass = torch.zeros_like(self._PMap).to(dtype = N_phi.dtype) 
-        self._PathMass[:, self._iter] = OwnMass.view(-1)
+        # Tracks which nodes have not been selected yet
+        self._SelMap = to_dense_adj(edge_index)[0].to(dtype = edge_index[0].dtype)
 
-        # Tracks the probability of (not)selecting an edge at each iteration
-        self._PSel_ = torch.zeros_like(self._PMap).to(dtype = N_phi.dtype) 
-        self._PSel = torch.zeros_like(self._PMap).to(dtype = N_phi.dtype)
+        # Store MLP prediction weights of path selected 
+        self._w0Path = _x.clone() 
+        self._w1Path = _x.clone() 
+        self._w0 = edge_index[0].clone().zero_().to(dtype = _x.dtype)
+        self._w1 = edge_index[0].clone().zero_().to(dtype = _x.dtype)
+
+        # Store the Kinematics after each node selection 
+        self._PmC = _x.clone().view(1, _x.size()[0], _x.size()[1])
+        self._PmC = torch.cat([self._PmC, self._PmC, self._PmC, self._PmC], 0)
+        self._PmC[0, :, self._iter] = Px
+        self._PmC[1, :, self._iter] = Py
+        self._PmC[2, :, self._iter] = Pz
+        self._PmC[3, :, self._iter] = E
         
-        _P = self._Mass(torch.cat([OwnMass, abs(OwnMass - OwnMass)], -1))
-        self._PSel_[:, self._iter] = _P[:, 0]
-        self._PSel[:, self._iter] = _P[:, 1]
-        
-        self._RecursivePathMass(edge_index, Px, Py, Pz, E, Px, Py, Pz, E)
-        
-        # Correctly map the output
-        print(self._PMap)
-        remapped = dense_to_sparse(self._PMap.to(dtype = edge_index[0].dtype)+1)[1]-1
-        indx, rev_map = remapped.view(-1, N_phi.size()[0]).sort(-1)
-        
+        self._TRU = E_T_edge
 
-        print(self._PSel)
-        p0 = torch.gather(self._PSel_.view(-1, N_phi.size()[0]), 1, rev_map)
-        p1 = torch.gather(self._PSel.view(-1, N_phi.size()[0]), 1, rev_map)
-        self.O_edge = torch.cat([p0.view(-1, 1), p1.view(-1, 1)], -1) 
-        #self.O_edge = self.O_edge[to_dense_adj(edge_index).view(-1) == 1]
+        # Start the Recursion
+        self._RecursivePath(edge_index, Px, Py, Py, E, Px.clone(), Py.clone(), Pz.clone(), E.clone())
 
+        # Construct the Edge MLP 
+        msk = self._PMap > -1
+        edge_ = torch.cat([edge_index[0].view(1, -1), self._PMap[msk].view(1, -1)], 0)
+        _, self._w0Path = sort_edge_index(edge_, edge_attr = self._w0Path[msk])
+        _, self._w1Path = sort_edge_index(edge_, edge_attr = self._w1Path[msk])
+            
+        # Sum the MLP layers
+        self._w0Path, self._w1Path = self._w0 + self._w0Path, self._w1 + self._w1Path
+        self.O_edge = torch.cat([self._w0Path.view(-1, 1), self._w1Path.view(-1, 1)], -1)
+        
+        self.O_edge_res = self._TopoSig(self.O_edge)
+        
+        _x = torch.zeros((len(i), 4), device = self._device)
+        _x[batch[edge_index[0]]] += torch.cat([self.O_edge, self.O_edge_res], -1)
+        self.O_signal = self._Sig(_x)
 
-        exit()
-        return self.O_edge
