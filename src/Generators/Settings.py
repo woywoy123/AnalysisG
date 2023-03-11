@@ -114,7 +114,7 @@ class _Optimization:
         self.Optimizer = None 
         self.Scheduler = None
         self.Device = "cpu"
-        self.VerbosityIncrement = 10
+        self.VerbosityIncrement = 10 # Might need deprecation...
 
 class _ModelEvaluator:
     

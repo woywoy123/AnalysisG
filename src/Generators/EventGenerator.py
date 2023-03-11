@@ -81,7 +81,7 @@ class EventGenerator(EventGenerator_, Settings, Tools, SampleTracer):
                 it += 1
                 if self.EventStart > it and self.EventStart != -1:
                     continue
-                if self.EventStop != None and self.EventStop < it:
+                if self.EventStop != None and self.EventStop-1 < it:
                     break
                 cmp.append([F_i, indx, obj]) 
             
