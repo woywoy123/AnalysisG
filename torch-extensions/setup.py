@@ -212,9 +212,11 @@ Pkg = [
         "PyC.Physics.Tensors.Cartesian", "PyC.Physics.CUDA.Cartesian", 
         "PyC.Physics.Tensors.Polar", "PyC.Physics.CUDA.Polar", 
         "PyC.NuSol.Tensors", "PyC.NuSol.CUDA"
-        ]
+]
+
 if torch.cuda.is_available() == False:
     Pkg = [i for i in Pkg if i.endswith("CUDA") == False]
+
 setup(
         name = "AnalysisTopGNN-Extensions", 
         version = "1.0", 

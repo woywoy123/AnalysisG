@@ -1,5 +1,4 @@
 from AnalysisTopGNN.Tools import Tools
-import torch 
 
 class _Code(Tools):
 

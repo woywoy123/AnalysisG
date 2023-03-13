@@ -1,7 +1,6 @@
 from AnalysisTopGNN.IO import File
 from AnalysisTopGNN.Samples.Event import EventContainer
 from AnalysisTopGNN.Samples.Managers import SampleTracer
-
 from AnalysisTopGNN.Notification import EventGenerator_
 from AnalysisTopGNN.Tools import Threading, Tools
 from .Settings import Settings, _Code
