@@ -1,9 +1,9 @@
 [build-system]
-requires = ["setuptools", "wheel", "cython", "numpy==1.23.5", "pip"]
+requires = ["setuptools", "torch", "pip"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "AnalysisTopGNN"
-version = "2.1"
+name = "AnalysisTopGNN-Extensions"
+version = "1.1"
 readme = "README.md"
 authors = [{name = "woywoy123"}]
