@@ -1,5 +1,7 @@
 from setuptools import setup, Extension
 import Cython.Build
+import pip
+pip.main(["install", "torch==1.13.1"])
 
 setup(
         ext_modules = [
