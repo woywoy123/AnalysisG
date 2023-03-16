@@ -1,8 +1,6 @@
+import torch
 from torch.utils.cpp_extension import BuildExtension
 from setuptools import setup
-import pip
-pip.main(["install", "torch==1.13.1"])
-import torch
 import os
 
 _dir = "src/"
@@ -73,14 +71,13 @@ PkgC = [
                 NuCu + "NuSol.cu", NuCu + "NuSolKernel.cu", NuCu + "NuSolTorch.cu", NuS + "CUDA.cxx"
         ]
 ]
-_cmd = {
-                "name" : "AnalysisTopGNN-Extensions", "version" : "1.1", 
-                "package_data" : {}, "ext_modules" : [], 
-                "cmdclass" : {"build_ext" : BuildExtension}
-}
 
+_cmd = {"package_data" : {}, "ext_modules" : [], "cmdclass" : {"build_ext" : BuildExtension}}
 for i in range(len(PkgL)):
-        if os.environ.get("CUDA_PATH") != None and "CUDA" in PkgL[i]:
+        _cu = os.environ.get("CUDA_PATH")
+        if (_cu == None or _cu == "") and "CUDA" in PkgL[i]:
+                continue
+        if "CUDA" in PkgL[i]:
                 from torch.utils.cpp_extension import CUDAExtension
                 _cmd["ext_modules"].append(CUDAExtension( PkgL[i], PkgC[i] ))
                 _cmd["package_data"][ PkgL[i] ] = PkgH[i]
