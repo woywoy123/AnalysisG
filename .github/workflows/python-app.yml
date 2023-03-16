@@ -10,11 +10,6 @@ on:
 jobs:
         build:
                 runs-on: ubuntu-latest
-                include:
-                        - runs-on: ubuntu-latest
-                          compiler: gcc
-                          gcc: 11
-                          cuda: "11.8"
                 steps:
                         - uses: actions/checkout@v3
                         - uses: actions/setup-python@v4
