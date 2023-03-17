@@ -51,14 +51,17 @@ class ParticleTemplate(VariableManager):
     @phi.setter
     def phi(self, value):
         self._phi = value
+        self._px = None 
 
     @eta.setter
     def eta(self, value):
         self._eta = value
+        self._px = None 
 
     @pt.setter
     def pt(self, value):
         self._pt = value
+        self._px = None 
 
     @e.setter
     def e(self, value):

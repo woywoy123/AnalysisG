@@ -1,9 +1,0 @@
-[build-system]
-requires = ["setuptools", "wheel", "pip", "torch"]
-build-backend = "setuptools.build_meta"
-
-[project]
-name = "AnalysisTopGNN-Extensions"
-version = "1.1"
-readme = "README.md"
-authors = [{name = "woywoy123"}]

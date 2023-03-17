@@ -1,12 +1,13 @@
 from AnalysisTopGNN.Generators import EventGenerator, GraphGenerator
-from AnalysisTopGNN.IO import UnpickleObject, PickleObject
+from AnalysisTopGNN.IO import UnpickleObject, PickleObject, HDF5
 from AnalysisTopGNN.Events import Event, EventGraphChildren
-from AnalysisTopGNN.Samples import SampleTracer
-from AnalysisTopGNN.IO import HDF5
 
-def TestEventGenerator(Files):
-    File1 = Files[0]
-    File2 = Files[1] 
+smpl = "./TestCaseFiles/Sample/"
+Files = {smpl + "tttt" : ["output.root"], smpl + "tttt_m400" : ["smpl1.root", "smpl2.root", "smpl3.root"]}
+
+def test_EventGenerator():
+    File1 = [list(Files)[0] + "/" + i for i in Files[list(Files)[0]]]
+    File2 = [list(Files)[1] + "/" + i for i in Files[list(Files)[1]]]
 
     Ev = EventGenerator(File1) 
     Ev.Event = Event
@@ -32,7 +33,6 @@ def TestEventGenerator(Files):
     ev1 = UnpickleObject("TMP1")
     ev2 = UnpickleObject("TMP2")
     ev3 = UnpickleObject("TMP3")
-
     p = sum([ev1, ev2])
     
     assert len(p) == len(ev3)
@@ -70,27 +70,23 @@ def TestEventGenerator(Files):
     for i, j in zip(p, z):
         assert len(i.Trees["nominal"].DetectorObjects) == len(j.Trees["nominal"].DetectorObjects)
     print("PASSED: SAME NUMBER OF PARTICLES PER EVENT")
+    ev1.rm("_Pickle")
 
-    return True 
 
-
-def Test(a):
+def _fx(a):
     return a.eta
 
-def TestGraphGenerator(Files):
-    from AnalysisTopGNN.Generators import GraphGenerator
-    from AnalysisTopGNN.Events import EventGraphChildren
-
-    File1 = Files[0]
-    File2 = Files[1] 
-
+def test_graphgenerator():
+    File1 = [list(Files)[0] + "/" + i for i in Files[list(Files)[0]]]
+    File2 = [list(Files)[1] + "/" + i for i in Files[list(Files)[1]]]
+    
     Ev = EventGenerator(File1) 
     Ev.Event = Event
     Ev.SpawnEvents()
     
     Gr = GraphGenerator()
     Gr += Ev 
-    Gr.AddNodeFeature(Test, "TEST")
+    Gr.AddNodeFeature(_fx, "TEST")
     Gr.EventGraph = EventGraphChildren
     Gr.CompileEventGraph()
     PickleObject(Gr, "TMP1")
@@ -101,7 +97,7 @@ def TestGraphGenerator(Files):
 
     Gr = GraphGenerator()
     Gr += T 
-    Gr.AddNodeFeature(Test, "TEST")
+    Gr.AddNodeFeature(_fx, "TEST")
     Gr.EventGraph = EventGraphChildren
     Gr.CompileEventGraph()
     PickleObject(Gr, "TMP2")
@@ -112,7 +108,7 @@ def TestGraphGenerator(Files):
 
     Gr = GraphGenerator()
     Gr += T
-    Gr.AddNodeFeature(Test, "TEST")
+    Gr.AddNodeFeature(_fx, "TEST")
     Gr.EventGraph = EventGraphChildren
     Gr.CompileEventGraph()
     PickleObject(Gr, "TMP3")
@@ -159,37 +155,27 @@ def TestGraphGenerator(Files):
     for i, j in zip(p, z):
         assert i.Trees["nominal"].num_nodes == j.Trees["nominal"].num_nodes
     print("PASSED: SAME NUMBER OF PARTICLES PER EVENT")
+    Ev.rm("_Pickle")
 
-    return True 
-
-
-def TestEventGeneratorDumper(Files):
-
-    File1 = Files[0]
-
-    Ev = EventGenerator(File1) 
-    Ev.Event = Event
+def test_EventGeneratorDumper():
+    Ev = EventGenerator(Files) 
+    Ev.Event = Event 
+    Ev.EventStop = 14
     Ev.SpawnEvents()
     
     Objects = {}
-    it = 0
     for i in Ev:
         Objects[i.Filename] = i
-        it+=1 
-        if it == 24:
-            break
 
     hdf = HDF5()
-    hdf.Threads = 12
+    hdf.Threads = 2
     hdf.VerboseLevel = 0
     hdf.Directory = "./_Pickle/"
     hdf.MultiThreadedDump(Objects, "./_Pickle/")
     for name, obj in hdf:
         print(name, obj.Trees["nominal"].Tops, obj)
         print(len(Objects[name].Trees["nominal"].DetectorObjects) == len(obj.Trees["nominal"].DetectorObjects))
-        if len(Objects[name].Trees["nominal"].DetectorObjects) == len(obj.Trees["nominal"].DetectorObjects):
-            continue
-        return False
+        assert len(Objects[name].Trees["nominal"].DetectorObjects) == len(obj.Trees["nominal"].DetectorObjects)
 
     hdf.MergeHDF5("_Pickle/")
     hdf.Directory = False
@@ -197,38 +183,29 @@ def TestEventGeneratorDumper(Files):
     for name, obj in hdf:
         print(name, obj.Trees["nominal"].Tops, obj)
         print(len(Objects[name].Trees["nominal"].DetectorObjects) == len(obj.Trees["nominal"].DetectorObjects))
-        if len(Objects[name].Trees["nominal"].DetectorObjects) == len(obj.Trees["nominal"].DetectorObjects):
-            continue
-        return False
-    return True
+        assert len(Objects[name].Trees["nominal"].DetectorObjects) == len(obj.Trees["nominal"].DetectorObjects)
+    hdf.rm("_Pickle")
 
-def TestGraphGeneratorDumper(Files):
-    from AnalysisTopGNN.Generators import GraphGenerator
-    from AnalysisTopGNN.Events import EventGraphChildren
-    
-    File1 = Files[0]
-
-    Ev = EventGenerator(File1) 
-    Ev.Event = Event
+def test_GraphGeneratorDumper():
+    Ev = EventGenerator(Files) 
+    Ev.Event = Event 
+    Ev.EventStop = 14
     Ev.SpawnEvents()
     
     Gr = GraphGenerator()
     Gr += Ev
-    Gr.AddNodeFeature(Test)
+    Gr.AddNodeFeature(_fx)
     Gr.EventGraph = EventGraphChildren
     Gr.CompileEventGraph()
 
     hdf = HDF5()
     Objects = {}
-    it = 0
     for i in Gr:
         Objects[i.Filename] = i
-        it+=1 
-        if it == 12:
-            break
     hdf.MultiThreadedDump(Objects, "_Pickle/Graphs/")
     hdf.MergeHDF5("_Pickle/Graphs/")
     hdf.Filename = "_Pickle/Graphs/UNTITLED.hdf5"
     for name, obj in hdf:
-        print(name, obj.Trees["nominal"], obj)
-    return True
+        assert name == obj.Filename
+        assert bool(Objects[name].Trees["nominal"].num_nodes == obj.Trees["nominal"].num_nodes)
+    hdf.rm("_Pickle")

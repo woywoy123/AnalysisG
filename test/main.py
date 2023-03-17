@@ -1,8 +1,4 @@
 import sys
-import EventGenerator
-import IO
-import EventGraph
-import Exporter
 import Submission
 import Modular 
 import Optimizer
@@ -34,30 +30,6 @@ def Test(F, **kargs):
     print(result)
 
 
-if __name__ == '__main__':
-
-    RootDir = "/home/tnom6927/Downloads/samples/"
-    
-    ## ==== Testing IO ==== #
-    #TextFileDir = "./TestCaseFiles/Tools/TestFiles/"
-    #Test(IO.TestlsFiles, Directory = TextFileDir)
-    #Test(IO.Testls, Directory = TextFileDir)
-    #Test(IO.TestIsFile, Directory = TextFileDir)
-    #Test(IO.TestListFilesInDir, Directory = TextFileDir)
-    #Test(IO.TestSourceCodeExtraction)
-    #Test(IO.TestDataMerging)
-
-    ## ==== Test EventGenerator ==== #
-    #Test(EventGenerator.TestEventGenerator, Files = {RootDir + "tttt" : ["QU_0.root"], RootDir + "t" : ["QU_14.root"]})
-
-    ## ==== Test EventGraph ==== #
-    #Test(EventGraph.TestEventGraph, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
-
-    ## ==== Test Merger ==== #
-    #Test(Exporter.TestEventGenerator, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
-    #Test(Exporter.TestGraphGenerator, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
-    #Test(Exporter.TestEventGeneratorDumper, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
-    #Test(Exporter.TestGraphGeneratorDumper, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
 
     ## ==== Test Modules ==== #
     #Test(Modular.TestEventGenerator, Files = [RootDir + "tttt/QU_0.root", RootDir + "t/QU_14.root"])
@@ -75,4 +47,4 @@ if __name__ == '__main__':
     #Test(Submission.TestSequence)
     #Test(Submission.TestAnalysis, GeneralDir = RootDir)
     #Test(Submission.TestCondorDumping, GeneralDir = RootDir)
-    Test(Submission.TestSelectionDumping, GeneralDir = RootDir)
+    #Test(Submission.TestSelectionDumping, GeneralDir = RootDir)

@@ -81,7 +81,8 @@ class GraphGenerator(GraphGenerator_, SampleTracer, Settings, GraphFeatures):
         evobj = self.CopyInstance(self.EventGraph)
 
         if self._Test == False:
-            self.TestFeatures(10)
+            smpl = len(self.SampleContainer.list())
+            self.TestFeatures( 10 if smpl > 10 else smpl )
             self._Test = True
         try:
             ev = evobj(event)

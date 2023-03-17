@@ -3,7 +3,10 @@ from AnalysisTopGNN.Templates import ParticleTemplate
 from AnalysisTopGNN.Generators import Settings
 from AnalysisTopGNN.Tools import Tools
 from AnalysisTopGNN.IO import PickleObject
-from PyC.NuSol.Tensors import NuDoublePtEtaPhiE, NuNuDoublePtEtaPhiE
+try:
+    from PyC.NuSol.Tensors import NuDoublePtEtaPhiE, NuNuDoublePtEtaPhiE
+except: 
+    pass
 
 class Neutrino(ParticleTemplate):
     
