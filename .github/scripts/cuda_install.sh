@@ -21,5 +21,4 @@ sudo apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda
 sudo apt-get update
 
 # Install CUDA
-sudo apt-get -y install cuda-11.7
-
+sudo apt-get -y install cuda-${CUDA}
