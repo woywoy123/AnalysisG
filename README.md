@@ -1,5 +1,4 @@
 # A Graph Neural Network Framework for High Energy Particle Physics
-
 ## Introduction <a name="introduction"></a>
 The aim of this package is to provide Particle Physicists with an intuitive interface to **Graph Neural Networks**, whilst remaining Analysis agnostic. 
 Following a similar spirit to AnalysisTop, the physicist defines a custom event class and matches variables within ROOT files to objects that they are a representation of.

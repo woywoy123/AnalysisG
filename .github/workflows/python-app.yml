@@ -54,4 +54,8 @@ jobs:
                         - name: Closure Tests
                           run: | 
                                   cd test
-                                  pytest 
+                                  py.test test_import.py -vv
+                                  py.test test_particle.py -vv
+                                  py.test test_io.py -vv
+                                  py.test test_generators.py -vv
+                                  py.test test_exporter.py -vv

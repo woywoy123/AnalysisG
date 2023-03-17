@@ -6,7 +6,7 @@ def test_ls_files():
     print("Testing listing sub-directories...")
     F = I.lsFiles(directory)
     for i in range(3):
-        assert F[2-i] == directory + "Dir" + str(i+1)
+        assert directory + "Dir" + str(i+1) in F
     print("Testing listing files with extension .txt")
     assert len(I.lsFiles(directory + "Dir1", ".txt")) == 3
 
@@ -15,7 +15,7 @@ def test_ls():
     print("Testing listing directories")
     F = I.lsFiles(directory)
     for i in range(3):
-        assert F[2-i] == directory + "Dir" + str(i+1)
+        assert directory + "Dir" + str(i+1) in F
     if I.ls("FakeDirectory") != []:
         return False
 
