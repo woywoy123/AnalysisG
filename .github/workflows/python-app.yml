@@ -19,11 +19,11 @@ jobs:
                                           version: "cu118"
                                           torch: 1.13.0
                                           gcc: 11
-                                        - os: ubuntu-latest
-                                          cuda: ""
-                                          version: "cpu"
-                                          torch: 1.13.0
-                                          gcc: 11
+                                          #- os: ubuntu-latest
+                                          #  cuda: ""
+                                          #  version: "cpu"
+                                          #  torch: 1.13.0
+                                          #  gcc: 11
                 steps:
                         - uses: actions/checkout@v3
                         - uses: actions/setup-python@v4
@@ -49,4 +49,8 @@ jobs:
                         - name: Building Torch-Extensions
                           run: |
                                   cd torch-extensions 
-                                  pip install .
+                                  FLAGS=""
+                                  if [[ ${{ matrix.cuda }} != "" ]]
+                                  then 
+                                        FLAGS=--force_cuda
+                                  python setup.py install $FLAGS
