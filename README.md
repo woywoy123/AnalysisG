@@ -25,10 +25,19 @@ The framework was originally designed for samples produced via AnalysisTop, howe
 ```
 git clone https://github.com/woywoy123/AnalysisTopGNN.git
 ```
-2. Depending on which environment is being used, enter the first command for Conda or the second for generating a PyVenv;
+2. Nagivate to setup-scripts and choose whether to use Conda or PyVenv, and open the script. 
 ```bash 
-cd ./AnalysisTopGNN/setup-scripts && bash SetupAnalysisConda.sh
-cd ./AnalysisTopGNN/setup-scripts && bash SetupVenv.sh
+cd ./AnalysisTopGNN/setup-scripts
+```
+3. Open the selected installer in your desired text editor and adjust the environment parameters according to your environment.
+By default the following settings are assumed. 
+```bash 
+CUDA_PATH=/usr/local/cuda-11.8 # Defines the cuda path 
+VERSION=cu118 # The version to use for cuda. If set to 'cpu', cuda will be disabled 
+TORCH=1.13.0  # Version of torch to install
+MAX_JOBS=12   # Number of threads to use for compilation
+CC=gcc-11     # GCC compiler version, see https://stackoverflow.com/questions/6622454/cuda-incompatible-with-my-gcc-version
+CXX=g++-11
 ```
 
 ## How Do I Make This Code Work With My Samples? <a name="CustomSamples"></a>
@@ -248,6 +257,7 @@ for event in Ana:
 ``` 
 
 ### Attributes and Functions:
+#### Attributes
 - `VerboseLevel`: 
 An integer which increases the verbosity of the framework, with 3 being the highest and 0 the lowest.
 - `Threads`: 
@@ -293,7 +303,25 @@ Whether to continue the training from the last known checkpoint (after each epoc
 - `Optimizer`:
 Takes as input a nested dictionary, where the first key specifies the minimizer and the subsequent dictionary the parameters. 
 Current choices are; `SGD` - Stochastic Gradient Descent and `ADAM`.
-### Default Parameters:
+- `Scheduler`: 
+Takes as input a nested dictionary, where the first key specifies the scheduler for modulating the learning rate. Options are; `ExponentialLR` and `CyclicLR`. 
+- `Device`: 
+The device used to run `PyTorch` training on. This also applies to where to store graphs during compilation.
+- `EventCache`: 
+Specifies whether to generate a cache after constructing `Event` objects. If this is enabled without specifying a `ProjectName`, a folder called `UNTITLED` is generated.
+- `DataCache`:
+specifies whether to generate a cache after constructing graph objects. If this is enabled without having an event cache, the `Event` attribute needs to be set. 
+- `FeatureTest`: 
+A parameter mostly concerning graph generation. It checks whether the supplied features are compatible with the `Event` python object. 
+If any of the features fail, an alert is issued. 
+- `DumpHDF5`: 
+Specifies whether to save constructed events/graphs into HDF5 containers. 
+For `Event` objects, this is rather slow but very fast for graphs
+- `DumpPickle`: 
+Specifies whether to save constructed events/graphs as pickle files.
+This is a much faster alternative to HDF5, however it requires the original implementation of the Event to be supplied. 
+
+#### Default Parameters:
 | **Attribute**        | **Default Value** | **Expected Type** |                    **Examples** |
 |:---------------------|:-----------------:|:-----------------:|:-------------------------------:|
 | VerboseLevel         |                 3 |             `int` |                                 | 
@@ -319,6 +347,89 @@ Current choices are; `SGD` - Stochastic Gradient Descent and `ADAM`.
 | RunName              |          UNTITLED |             `str` |                                 |
 | Epochs               |                10 |             `int` |                                 |
 | Optimizer            |              None |            `dict` |      `{"ADAM" : {"lr" : 0.001}` |
+| Scheduler            |              None |            `dict` |                                 |
+| Device               |               cpu |            `str`  |			`cuda`   |
+| EventCache           |             False |            `bool` |                                 |
+| DataCache            |             False |            `bool` |                                 |
+| FeatureTest          |             False |            `bool` |                                 |
+| DumpHDF5             |             False |            `bool` |                                 |
+| DumpPickle           |             False |            `bool` |                                 |
+
+#### Functions:
+```python 
+def InputSample(Name, SampleDirectory)
+```
+This function is used to specify the directory or sample to use for the analysis. 
+The `Name` parameter expects a string, which assigns a name to `SampleDirectory` and is used for book-keeping. 
+`SampleDirectory` can be either a string, which directory points to the ROOT file or a nested dictionary with keys representing the path and values being either a string or list of ROOT files. 
+```python 
+def AddSelection(Name, inpt)
+``` 
+The `Name` parameter specifies the name of the selection criteria, for instance, `MyAwesomeSelection`. 
+The `inpt` specifies the `Selection` implementation to use, more on this later. 
+```python 
+def MergeSelection(Name)
+```
+This function allows for post selection output to be merged into a single pickle file. 
+During the execution of the `Selection` implementation, multiple threads are spawned, which individually save the output of each event selection, meaning a lot of files being written and making it less ideal for inspecting the data.
+Merging combines all the internal data into one single file and deletes files being merged. 
+
+```python 
+def 
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```python 
+def Launch()
+```
+Launches the Analysis with the specified parameters.
+
+
+
+
+```python 
+def DumpSettings(): 
+``` 
+Returns a directory of the settings used to configure the `Analysis` object. 
+```python 
+def RestoreSettings(inpt):
+```
+Expects a dictionary of parameters used to configure the object.
+```python 
+def ExportAnalysisScript():
+```
+Returns a list of strings representing the configuration of the object.
+
+#### Magic Functions:
+```python 
+# Iteration
+[i for i in Analysis]
+
+# Length operator
+len(Analysis)
+
+# Summation operator 
+Analysis3 = Analysis1 + Analysis2
+AnalysisSum = [Analysis1, Analysis2, ..., AnalysisN]
+```
+
+
+
+
+
 
 
 

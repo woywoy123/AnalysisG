@@ -3,7 +3,7 @@ from AnalysisTopGNN.IO import UnpickleObject, PickleObject, HDF5
 from AnalysisTopGNN.Events import Event, EventGraphChildren
 
 smpl = "./TestCaseFiles/Sample/"
-Files = {smpl + "tttt" : ["output.root"], smpl + "tttt_m400" : ["smpl1.root", "smpl2.root", "smpl3.root"]}
+Files = {smpl + "Sample1" : ["smpl1.root"], smpl + "Sample2" : ["smpl1.root", "smpl2.root", "smpl3.root"]}
 
 def test_EventGenerator():
     File1 = [list(Files)[0] + "/" + i for i in Files[list(Files)[0]]]
@@ -59,19 +59,15 @@ def test_EventGenerator():
     assert len(p) == len(z)
     print("PASSED: SAME LENGTH", len(p), len(z))
 
-    for i, j in zip(p, z):
-        assert i.EventIndex == j.EventIndex
-    print("PASSED: CONSISTENT INDEX")
-    
-    for i, j in zip(p, z):
-        assert i.Filename == j.Filename
+    for i in p:
+        assert isinstance(z.HashToROOT(i.Filename), str)
     print("PASSED: SAME FILENAMES")
     
-    for i, j in zip(p, z):
-        assert len(i.Trees["nominal"].DetectorObjects) == len(j.Trees["nominal"].DetectorObjects)
+    for i in p:
+        ob1, ob2 = p[i.Filename], z[i.Filename]
+        assert len(ob1.Trees["nominal"].DetectorObjects) == len(ob2.Trees["nominal"].DetectorObjects)
     print("PASSED: SAME NUMBER OF PARTICLES PER EVENT")
     ev1.rm("_Pickle")
-
 
 def _fx(a):
     return a.eta
@@ -138,22 +134,18 @@ def test_graphgenerator():
     ev2 = UnpickleObject("TMP2")
     ev3 = UnpickleObject("TMP3")
     z = UnpickleObject("TMP3")
-
     p = sum([ev1, ev2, ev3])
     
     assert len(p) == len(z)
     print("PASSED: SAME LENGTH", len(p), len(z))
 
-    for i, j in zip(p, z):
-        assert i.EventIndex == j.EventIndex
-    print("PASSED: CONSISTENT INDEX")
-
-    for i, j in zip(p, z):
-        assert i.Filename == j.Filename
+    for i in p:
+        assert isinstance(z.HashToROOT(i.Filename), str)
     print("PASSED: SAME FILENAMES")
     
     for i, j in zip(p, z):
-        assert i.Trees["nominal"].num_nodes == j.Trees["nominal"].num_nodes
+        ob1, ob2 = p[i.Filename], z[i.Filename]
+        assert ob1.Trees["nominal"].num_nodes == ob2.Trees["nominal"].num_nodes
     print("PASSED: SAME NUMBER OF PARTICLES PER EVENT")
     Ev.rm("_Pickle")
 

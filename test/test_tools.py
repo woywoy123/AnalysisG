@@ -3,12 +3,17 @@ from AnalysisTopGNN.Events import Event
 from AnalysisTopGNN.Events import EventGraphTruthJetLepton
 from Templates.EventFeatureTemplate import ApplyFeatures
 
-def TestRandomSampling(Files):
+
+smpl = "./TestCaseFiles/Sample/"
+Files = {smpl + "Sample1" : ["smpl1.root"], smpl + "Sample2" : ["smpl1.root", "smpl2.root", "smpl3.root"]}
+
+def test_random_sampling():
+    lst = list(Files)
 
     Ana = Analysis()
     Ana.ProjectName = "RandomSampler"
-    Ana.InputSample("SingleTop", Files[0])
-    Ana.InputSample("4Tops", Files[1])
+    Ana.InputSample("SingleTop", {lst[0] : Files[lst[0]]})
+    Ana.InputSample("4Tops", {lst[1] : Files[lst[1]]})
     Ana.Event = Event
     Ana.EventGraph = EventGraphTruthJetLepton
     Ana.EventStop = 10
@@ -26,5 +31,5 @@ def TestRandomSampling(Files):
     Ana.TrainingPercentage = 50
     Ana.TrainingSampleName = "Test"
     Ana.Launch()
-    
-    return True
+    Ana.rm("RandomSampler")
+   

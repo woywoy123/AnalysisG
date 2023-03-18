@@ -83,7 +83,9 @@ class EventGenerator(EventGenerator_, Settings, Tools, SampleTracer):
                 if self.EventStop != None and self.EventStop-1 < it:
                     break
                 cmp.append([F_i, indx, obj]) 
-            
+            if len(cmp) == 0:
+                break
+
             th = Threading(cmp, _MakeEvents, self.Threads, self.chnk)
             th.VerboseLevel = self.VerboseLevel
             th.Title = "READING/COMPILING EVENT"

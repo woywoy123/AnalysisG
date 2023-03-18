@@ -13,6 +13,7 @@ class EventTemplate(VariableManager):
         self.Lumi = 0
         self._Deprecated = False
         self._CommitHash = False
+        self.eventNumber = "eventNumber"
 
     def DefineObjects(self):
         for name in self.Objects:
