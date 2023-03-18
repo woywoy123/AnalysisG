@@ -23,10 +23,6 @@ jobs:
                                           torch: 1.13.0
                                           gcc: 11
                                         - os: ubuntu-latest
-                                          cuda: "11.7"
-                                          version: "cu117"
-                                          gcc: 11
-                                        - os: ubuntu-latest
                                           cuda: ""
                                           version: "cpu"
                                           torch: 1.13.0
@@ -67,3 +63,4 @@ jobs:
                                   py.test test_io.py -vv
                                   py.test test_generators.py -vv
                                   py.test test_exporter.py -vv
+                                  py.test test_tools.py
