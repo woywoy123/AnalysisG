@@ -377,30 +377,9 @@ During the execution of the `Selection` implementation, multiple threads are spa
 Merging combines all the internal data into one single file and deletes files being merged. 
 
 ```python 
-def 
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-```python 
 def Launch()
 ```
 Launches the Analysis with the specified parameters.
-
-
-
 
 ```python 
 def DumpSettings(): 
@@ -427,14 +406,6 @@ len(Analysis)
 Analysis3 = Analysis1 + Analysis2
 AnalysisSum = [Analysis1, Analysis2, ..., AnalysisN]
 ```
-
-
-
-
-
-
-
-
 
 # Incomplete Documentation (Work in Progress):
 ## Tools.General:
