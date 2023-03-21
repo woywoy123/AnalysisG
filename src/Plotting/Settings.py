@@ -47,9 +47,10 @@ class Settings_:
     def DefineStyle(self):
         if self.Style == "ATLAS":
             hep.atlas.text(loc = 2)
-            hep.atlas.label(data = self.ATLASData, 
+            hep.atlas.label(
+                    data = self.ATLASData, 
                     year = self.ATLASYear, 
-                    lumi = self.ATLASLumi,
+                    lumi = round(self.ATLASLumi, 4),
                     label = "\nN = " + str(len(self.xData) if self.NEvents == None else self.NEvents),
                     com = self.ATLASCom)
             self.PLT.style.use(hep.style.ATLAS)

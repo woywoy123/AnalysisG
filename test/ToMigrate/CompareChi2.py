@@ -39,6 +39,7 @@ Ana.Event = Event
 #Ana.EventStop = 100
 Ana.EventCache = True
 Ana.DumpPickle = True 
+Ana.Tree = "nominal"
 Ana.chnk = 100
 Ana.VerboseLevel = 2
 Ana.Launch()

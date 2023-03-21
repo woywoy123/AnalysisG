@@ -86,6 +86,7 @@ class SampleContainer:
         self.list()
         if isinstance(key, str) == False:
             return False
+        v = self.ROOTFiles.get(key)
         if key in self.ROOTFiles:
             return self.ROOTFiles[key]
         if key in self._Hashes:
@@ -134,7 +135,7 @@ class SampleContainer:
         
         if key in self.ROOTFiles:
             return True
-        if self.__len__ != len(self._Hashes):
+        if self.__len__() != len(self._Hashes):
             self.hash(True)
         if key in self._Hashes:
             return True

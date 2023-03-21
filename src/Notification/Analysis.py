@@ -136,3 +136,6 @@ class Analysis(Notification):
             return 
         self.Warning("Found the following invalid settings: " + "\n".join(inv))
         time.sleep(5)
+
+    def Finished(self):
+        self.Success("Finished Analysis")

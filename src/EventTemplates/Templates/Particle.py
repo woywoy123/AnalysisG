@@ -139,6 +139,16 @@ class ParticleTemplate(VariableManager):
 
         return particle
 
+    def __eq__(self, other):
+        if len(self.__dict__) != len(other.__dict__):
+            return False
+        for i in self.__dict__:
+            if i not in other.__dict__:
+                return False
+            if self.__dict__[i] != other.__dict__[i]:
+                return False
+        return True
+
     def __str__(self, caller = False):
         PDGID = {
                   1 : "d"           ,  2 : "u"             ,  3 : "s",

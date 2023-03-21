@@ -22,10 +22,9 @@ class Interface:
 
         if isinstance(SampleDirectory, str):
             if SampleDirectory.endswith(".root"):
-                SampleDirectory = {"/".join(SampleDirectory.split("/")[:-1]) : SampleDirectory.split("/")[-1]}
+                SampleDirectory = {"/".join(SampleDirectory.split("/")[:-1]) : [SampleDirectory.split("/")[-1]]}
             else:
                 SampleDirectory = [SampleDirectory] 
-        
         if self.AddDictToDict(self._SampleMap, Name) or SampleDirectory == None:
             root = self.OutputDirectory + "/" + self.ProjectName + "/Tracers/"
             tracers = { root + i + "/" + Name : "*" for i in ["DataCache", "EventCache"]}
@@ -41,7 +40,7 @@ class Interface:
                 self._SampleMap[Name][directory].append(i.split("/")[-1])
             self.ResetSampleContainer()
             return 
-
+        
         if isinstance(SampleDirectory, dict):
             self._SampleMap[Name] |= self.ListFilesInDir(SampleDirectory, ".root")
             return 
@@ -97,15 +96,6 @@ class Analysis(Interface, Analysis_, Settings, SampleTracer, GraphFeatures, Tool
         Settings.__init__(self) 
         SampleTracer.__init__(self)
     
-    @property
-    def _TempDisableCache(self):
-        self.__Cache = (self.DumpPickle, self.DumpHDF5)
-        self.DumpPickle, self.DumpHDF5 = False, False
-    
-    @property
-    def _TempEnableCache(self):
-        self.DumpPickle, self.DumpHDF5 = self.__Cache 
-
     def __BuildRootStructure(self): 
         self.OutputDirectory = self.RemoveTrailing(self.OutputDirectory, "/")
         if self._tmp:
@@ -140,7 +130,8 @@ class Analysis(Interface, Analysis_, Settings, SampleTracer, GraphFeatures, Tool
         while True:
             f = next(it)
             tmp = f.split("/")
-            _r = self.ReadingFileDirectory(tmp[-2]) if _r != tmp[-2] else _r
+            if f not in self:
+                _r = self.ReadingFileDirectory(tmp[-2]) if _r != tmp[-2] else _r
             
             if self.Event != None and f not in self:
                 self.SampleContainer += self.__EventGenerator(name, tmp).SampleContainer
@@ -161,8 +152,8 @@ class Analysis(Interface, Analysis_, Settings, SampleTracer, GraphFeatures, Tool
             if files[-1] == f:
                 break
 
-            if self.DumpPickle or self.DumpHDF5:
-                self.ResetSampleContainer()
+        if self.DumpPickle or self.DumpHDF5:
+            self.ResetSampleContainer()
 
     def __EventGenerator(self, name, filedir):
         ev = EventGenerator()
@@ -373,10 +364,9 @@ class Analysis(Interface, Analysis_, Settings, SampleTracer, GraphFeatures, Tool
         pkl.Caller = self.Caller
         pkl.VerboseLevel = 0
 
-        s = self.list()
         for i in self._Selection:
             self.mkdir(self.output + "/Selections/" + i)
-            th = Threading([[self._Selection[i], k, i] for k in s], _select, self.Threads, self.chnk)
+            th = Threading([[self._Selection[i], k, i] for k in self], _select, self.Threads, self.chnk)
             th.Title = "EXECUTING SELECTION (" + i + ")"
             th.VerboseLevel = self.VerboseLevel
             th.Start()
@@ -424,27 +414,38 @@ class Analysis(Interface, Analysis_, Settings, SampleTracer, GraphFeatures, Tool
         self.__ModelEvaluator()
         self.__Selection()
 
+        self.Finished()
         self.WhiteSpace()
         self.cd(self._tmp)
         self._tmp = False
 
     def __iter__(self):
-        if self._launch == False:
-            self.Launch()
-        
         Dumped = self.DumpPickle or self.DumpHDF5
-
         CacheType = "EventCache" if self.EventCache else None
         CacheType = "DataCache" if self.DataCache else CacheType
-        
-        self._lst = { "Cache" : None, "Data" : iter(self.SampleContainer.list()), "Tracers" : None, "Current" : []}
-        if len(self._SampleMap) != 0 and CacheType != None and Dumped:
+            
+        smpls = {i["INPUTSAMPLE"]["Name"] : None for i in self._InputValues if "INPUTSAMPLE" in i}
+        self._lst = { "Data" : iter(self.SampleContainer.list()), "Tracers" : None, "Current" : []}
+        if len(smpls) != 0 and CacheType != None and Dumped:
             self.ResetSampleContainer()
-            self._lst["Cache"] = self.output + "/Tracers/" + CacheType + "/"
-            self._lst["Tracers"] = iter([ self._lst["Cache"] + i + "/" +j for i in self._SampleMap for j in self.ls(self._lst["Cache"] + i) ])
-            CacheType = self.output + "/" + CacheType + "/"
-            self._lst["Cache"] = iter([ CacheType + i + "/" + j for i in self._SampleMap for j in self.ls(CacheType + i) ])
-            self._lst["Data"] = iter([ [i + "/" + j for j in self.ls(i)] for i in self._lst["Cache"]  ])
+            
+            cache = "/Tracers/" + CacheType + "/"
+            if self._tmp == False:
+                self.__BuildRootStructure()
+                cache = self.pwd() + "/" + self.output + cache
+                self.cd(self._tmp)
+                self._tmp = False
+            else:
+                cache = self.output + cache
+            self._lst["Tracers"] = [ cache + i + "/" + j for i in smpls for j in self.ls(cache + i) ]
+            self._lst["Data"] = [ i.replace("/Tracers", "").replace(".pkl", "") for i in self._lst["Tracers"] ]
+            self._lst["Data"] = iter([ [i + "/" + j for j in self.ls(i)] for i in self._lst["Data"] ])
+            self._lst["Tracers"] = iter(self._lst["Tracers"])
+        
+        if self._lst["Tracers"] == None and self._launch == False:
+            self.Launch()
+            return self.__iter__()
+
         self.Lumi = 0
         return self
 
@@ -475,6 +476,7 @@ class Analysis(Interface, Analysis_, Settings, SampleTracer, GraphFeatures, Tool
             self.SampleContainer += SampleContainer
 
             event = self._lst["Current"].pop(0)
+
         if self.Tree == None:
             self.Tree = list(event.Trees)[0]
         self.Lumi += float(event.Trees[self.Tree].Lumi)

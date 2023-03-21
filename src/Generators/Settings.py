@@ -151,6 +151,7 @@ class _Analysis:
         self.DataCache = False
         self._launch = False
         self._tmp = False
+        self.output = None
 
         self.DumpHDF5 = False
         self.DumpPickle = False
@@ -210,6 +211,7 @@ class _Selection:
         self._Residual = []
         self._CutFlow = {}
         self._TimeStats = []
+        self._EventWeights = []
  
 class Settings(_General):
     

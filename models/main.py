@@ -21,9 +21,10 @@ Ana.DumpHDF5 = True
 ApplyFeatures(Ana, "TruthChildren")
 Ana.TrainingSampleName = "Children"
 Ana.Device = "cuda"
+Ana.Tree = "nominal"
 Ana.kFolds = 10
 Ana.Epochs = 10
-Ana.BatchSize = 10
+Ana.BatchSize = 50
 Ana.ContinueTraining = False
 Ana.Optimizer = {"ADAM" : {"lr" : 0.001, "weight_decay" : 1e-4}}
 Ana.Model = Recursion()

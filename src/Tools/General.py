@@ -73,7 +73,12 @@ class Tools(IO):
                 elif isinstance(ob1[i] if i in l1 else ob2[i], list):
                     out[i] = self.MergeData(ob1[i], ob2[i])
                 else:
-                    out[i] = ob1[i] + ob2[i]
+                    o = ob1[i] + ob2[i] if i in ob1 and i in ob2 else None
+                    if o == None:
+                        o = ob1[i] if o == None and i in ob1 else o
+                        o = ob2[i] if o == None and i in ob2 else o
+                    out[i] = o
+
             return out
         if isinstance(ob1, list) and isinstance(ob2, list):
             l1, l2 = len(ob1), len(ob2)
