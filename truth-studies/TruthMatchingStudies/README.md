@@ -30,6 +30,9 @@ Depicts the various kinematics of the spectator/signal tops being produced from 
 - **EventNTruthJetAndJets**:
 This study aims to identify the loss in truth jets by having off-diagonal elements in a 2D plot. 
 It also explores the MET vs n-Lepton correlations.
+- **EventMETImbalance**:
+A set of plots which explore the missing transverse discrepency between measurement from the detector simulation and the truth neutrinos.
+
 
 
 ## Figures Produced:
@@ -66,6 +69,25 @@ Energy Distribution of tops
 Pseudorapidity of tops 
 - **Figure_1.1h**
 Azimuthal angle of tops
+
+### EventNTruthJetAndJets:
+- **N-TruthJets_n-Jets**
+A plot, depicating on a per event basis, the number of truth jets vs reconstructed jets (i.e. observed jets).
+Ideally, this would be as diagonal as possible to indicate no truth jet loss
+- **MissingET_n-TruthLep**:
+A plot illustrating how the number of leptonically decaying tops contribute to the missing transverse momenta of the event.
+
+### EventMETImbalance:
+- **4-TopSystem-Pz_PT**
+A 2D plot illustrating non-zero PT components from the 4-top system. 
+This is due to the samples not capturing the partons originating from the colliding protons. 
+- **AngleRelativeToBeamPipe**
+The angle between the Pz component and the PT of the 4-top system. 
+Ideally, a strong clustering around the 0-rad mark should be observed, anything else is indicating that not all the MET can be accounted for by only looking at truth neutrinos.
+- **AngleRelativeToBeamPipe-Rotated**
+The angle between the Pz component and the PT of the 4-top system, after rotating the system according to the imbalance angle.
+This plot is majorly a closure test to assure the rotation was implemented correctly and should yield a peak at 0.
+
 
 
 

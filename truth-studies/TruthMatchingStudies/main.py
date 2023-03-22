@@ -21,7 +21,8 @@ toRun = [
         #"ResonanceMassFromTops", 
         #"ResonanceDeltaRTops", 
         #"ResonanceTopKinematics", 
-        "EventNTruthJetAndJets", 
+        #"EventNTruthJetAndJets", 
+        "EventMETImbalance", 
         
 ]
 
@@ -32,6 +33,7 @@ studies = {
             "ResonanceDeltaRTops" : RTT_Sel.ResonanceDeltaRTops, 
             "ResonanceTopKinematics" : RTT_Sel.ResonanceTopKinematics,
             "EventNTruthJetAndJets" : ETE_Sel.EventNTruthJetAndJets, 
+            "EventMETImbalance" : ETE_Sel.EventMETImbalance,
 }
 
 studiesPlots = {
@@ -41,6 +43,7 @@ studiesPlots = {
                     "ResonanceDeltaRTops" : RTT_Plot.ResonanceDeltaRTops, 
                     "ResonanceTopKinematics" : RTT_Plot.ResonanceTopKinematics,
                     "EventNTruthJetAndJets" : ETE_Plot.EventNTruthJetAndJets,
+                    "EventMETImbalance" : ETE_Plot.EventMETImbalance,
 }
 
 
@@ -62,7 +65,7 @@ Ana.Event = Event
 Ana.EventStop = 1000
 Ana.EventCache = True
 Ana.DumpPickle = True
-Ana.Launch()
+#Ana.Launch()
 
 # Runs the plotting code
 for i in toRun:
