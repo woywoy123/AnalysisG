@@ -93,9 +93,6 @@ def EventMETImbalance(x):
     tc = CombineTH1F(**Plots_)
     tc.SaveFigure()
 
-
-
-
     Plots = {}
     Plots["Title"] = "4-Tops"
     Plots["xBins"] = 400
@@ -119,4 +116,85 @@ def EventMETImbalance(x):
     tc = CombineTH1F(**Plots_)
     tc.SaveFigure()
 
+    Plots = {}
+    Plots["Title"] = "Measured"
+    Plots["xBins"] = 400
+    Plots["xMin"] = 0
+    Plots["xData"] = x.MET
+    tht = TH1F(**Plots)
 
+    Plots = {}
+    Plots["Title"] = "TruthNeutrino"
+    Plots["xBins"] = 400
+    Plots["xMin"] = 0
+    Plots["xData"] = x.NeutrinoET
+    thc = TH1F(**Plots)
+
+    Plots_ = TemplatePlotsTH1F(x)
+    Plots_["Title"] = "Missing Transverse Energy"
+    Plots_["xTitle"] = "Missing Transverse Energy (GeV)"
+    Plots_["Histograms"] = [tht, thc]
+    Plots_["xStep"] = 100
+    Plots_["xMin"] = 0
+    Plots_["Filename"] = "MissingET"
+    tc = CombineTH1F(**Plots_)
+    tc.SaveFigure()
+
+
+    Plots = {}
+    Plots["xBins"] = 1000
+    Plots["xData"] = x.METDelta
+    thc = TH1F(**Plots)
+
+    Plots_ = TemplatePlotsTH1F(x)
+    Plots_["Histograms"] = [thc]
+    Plots_["Title"] = r"Missing Transverse Energy Difference (Measured - $\Sigma \nu$)"
+    Plots_["xTitle"] = "$\Delta$ Missing Transverse Energy (GeV)"
+    Plots_["xMin"] = -500
+    Plots_["xMax"] = 500
+    Plots_["xStep"] = 50
+    Plots_["Filename"] = "Difference-MissingET"
+    tc = CombineTH1F(**Plots_)
+    tc.SaveFigure()
+
+
+    Plots = {}
+    Plots["Title"] = "Measured"
+    Plots["xBins"] = 400
+    Plots["xMin"] = 0
+    Plots["xData"] = x.MET
+    tht = TH1F(**Plots)
+
+    Plots = {}
+    Plots["Title"] = "TruthNeutrino"
+    Plots["xBins"] = 400
+    Plots["xMin"] = 0
+    Plots["xData"] = x.r_NeutrinoET
+    thc = TH1F(**Plots)
+
+    Plots_ = TemplatePlotsTH1F(x)
+    Plots_["Title"] = "Missing Transverse Energy - After Rotating Neutrinos"
+    Plots_["xTitle"] = "Missing Transverse Energy (GeV)"
+    Plots_["Histograms"] = [tht, thc]
+    Plots_["xStep"] = 100
+    Plots_["xMin"] = 0
+    Plots_["Filename"] = "MissingET-Rotated"
+    tc = CombineTH1F(**Plots_)
+    tc.SaveFigure()
+
+
+    Plots = {}
+    Plots["xBins"] = 1000
+    Plots["xData"] = x.r_METDelta
+    thc = TH1F(**Plots)
+
+    Plots_ = TemplatePlotsTH1F(x)
+    Plots_["Histograms"] = [thc]
+    Plots_["Title"] = r"Missing Transverse Energy Difference (Measured - $\Sigma \nu$) - Rotated"
+    Plots_["xTitle"] = "$\Delta$ Missing Transverse Energy (GeV)"
+    Plots_["xMin"] = -500
+    Plots_["xMax"] = 500
+    Plots_["xStep"] = 50
+    Plots_["Filename"] = "difference-MissingET-Rotated"
+    tc = CombineTH1F(**Plots_)
+    tc.SaveFigure()

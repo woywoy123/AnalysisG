@@ -33,36 +33,6 @@ def PlotTemplate(nevents, lumi):
             }
     return Plots
 
-def TopChildrenPDGID(Ana):
-    TopChildrenPDGID = copy(CounterPDGID)
-    
-    nevents = 0
-    lumi = 0
-    tops = 0
-    for ev in Ana:
-        event = ev.Trees["nominal"]
-        nevents += 1
-        lumi += event.Lumi
-        for t in event.Tops:
-            tops += 1
-            for c in t.Children:
-                pdg = PDGID[abs(c.pdgid)]
-                TopChildrenPDGID[pdg] += 1
-     
-    Plots = PlotTemplate(nevents, lumi)
-    Plots["Title"] = "Decay Products of Tops" 
-    Plots["xTitle"] = "Symbol"
-    Plots["xData"] = [i for i in range(len(TopChildrenPDGID))]
-    Plots["xTickLabels"] = list(TopChildrenPDGID)
-    Plots["xBinCentering"] = True 
-    Plots["xStep"] = 1
-    Plots["xWeights"] = [float(i / tops) for i in TopChildrenPDGID.values()]
-    Plots["Filename"] = "Figure_2.1a"
-    Plots["Normalize"] = False
-    Plots["yTitle"] = "Fraction of Times Top Decays Into PDGID"
-    x = TH1F(**Plots)
-    x.SaveFigure()
-
 def ReconstructedMassFromChildren(Ana):
     TopMass = {"Had" : [], "Lep" : []}
     ResonanceMass = {"Had-Had" : [], "Had-Lep" : [], "Lep-Lep" : []}
@@ -95,11 +65,6 @@ def ReconstructedMassFromChildren(Ana):
         if len(res) != 2:
             continue
 
-        print("-> ", (reT[0] + reT[1]).CalculateMass())
-        print((res[0] + res[1]).CalculateMass())
-        print([t.Parent[0].FromRes for l in stringTC for t in stringTC[l]])
-        print(sum([t for l in stringR for t in stringR[l]]).CalculateMass())
-        
         ResonanceMass["-".join([k for k in stringR for p in stringR[k]])] += [sum(res).CalculateMass()]
 
     Plots = PlotTemplate(nevents, lumi)
@@ -335,47 +300,6 @@ def DeltaRLepB(Ana):
     X = CombineTH1F(**Plots)
     X.SaveFigure()
 
-
-def MassDiff(Ana):
-    Fr = {"Cython" : [], "PyTorch" : [], "TruthTop" : []}
-    nevents = 0
-    lumi = 0
-    for ev in Ana:
-        event = ev.Trees["nominal"]
-        nevents += 1
-        lumi += event.Lumi
-        for t in event.Tops:
-            if len(t.Children) == 0:
-                continue
-
-            Fr["TruthTop"].append(float(t.CalculateMass()))
-            Fr["PyTorch"].append(float(sum(t.Children).CalculateMass()))
-            tv = [0, 0, 0, 0]
-            for c in t.Children:
-                tv[0] += Px(c.pt, c.phi)
-                tv[1] += Py(c.pt, c.phi)
-                tv[2] += Pz(c.pt, c.eta)
-                tv[3] += c.e
-            mass = PxPyPzEMass(tv[0], tv[1], tv[2], tv[3])
-            Fr["Cython"].append(float(mass/1000))
-    Plots = PlotTemplate(nevents, lumi)
-    Plots["Title"] = "Top Mass Reconstruction Using Different Algorithms"
-    Plots["xTitle"] = "Mass (GeV)"
-    Plots["xBins"] =  1000
-    Plots["xMax"] = 200
-    Plots["xMin"] = 120
-    Plots["Stack"] = True
-    Plots["Filename"] = "Figure_2.1j"
-    Plots["Histograms"] = []
-        
-    for i in Fr:
-        _Plots = {}
-        _Plots["Title"] = i
-        _Plots["xData"] = Fr[i]
-        Plots["Histograms"] += [TH1F(**_Plots)]
-    X = CombineTH1F(**Plots)
-    X.Compile()
-    X.SaveFigure()
 
 def TopChildrenKinematics(Ana):
     

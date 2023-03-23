@@ -32,7 +32,8 @@ This study aims to identify the loss in truth jets by having off-diagonal elemen
 It also explores the MET vs n-Lepton correlations.
 - **EventMETImbalance**:
 A set of plots which explore the missing transverse discrepency between measurement from the detector simulation and the truth neutrinos.
-
+- **TopDecayModes**:
+Plots indicating to which children the Top-Quark decays into. 
 
 
 ## Figures Produced:
@@ -67,35 +68,43 @@ PT Distribution of tops
 Energy Distribution of tops
 - **Figure_1.1g**:
 Pseudorapidity of tops 
-- **Figure_1.1h**
+- **Figure_1.1h**:
 Azimuthal angle of tops
 
 ### EventNTruthJetAndJets:
-- **N-TruthJets_n-Jets**
+- **N-TruthJets_n-Jets**:
 A plot, depicating on a per event basis, the number of truth jets vs reconstructed jets (i.e. observed jets).
 Ideally, this would be as diagonal as possible to indicate no truth jet loss
 - **MissingET_n-TruthLep**:
 A plot illustrating how the number of leptonically decaying tops contribute to the missing transverse momenta of the event.
 
 ### EventMETImbalance:
-- **4-TopSystem-Pz_PT**
+- **4-TopSystem-Pz_PT**:
 A 2D plot illustrating non-zero PT components from the 4-top system. 
 This is due to the samples not capturing the partons originating from the colliding protons. 
-- **AngleRelativeToBeamPipe**
+- **AngleRelativeToBeamPipe**:
 The angle between the Pz component and the PT of the 4-top system. 
 Ideally, a strong clustering around the 0-rad mark should be observed, anything else is indicating that not all the MET can be accounted for by only looking at truth neutrinos.
-- **AngleRelativeToBeamPipe-Rotated**
+- **AngleRelativeToBeamPipe-Rotated**:
 The angle between the Pz component and the PT of the 4-top system, after rotating the system according to the imbalance angle.
 This plot is majorly a closure test to assure the rotation was implemented correctly and should yield a peak at 0.
+- **MissingET**:
+A plot illustrating the distributions of the Missing Energy in the Transverse direction as measured in simulation and reconstructed from Truth Neutrinos.
+- **difference-MissingET**:
+The observed difference between measurement and truth neutrinos.
+- **MissingET-Rotated**:
+A plot illustrating the distribution of the missing Energy in the Transverse direction as measured in simulation, but with the truth neutrinos being rotated into a reference frame where the 4-top system momentum balance is zero.
+- **difference-MissingET-Rotated**:
+The observed difference between measurement and rotated truth neutrinos.
 
-
-
+### TopDecayModes:
+- **Figure_2.1a**:
+A plot depicting the fraction by which the Top-Quark decays into. 
 
 
 
 <!--
 -> Figure 2.1:
-a: PDGID of Top Decay products
 b: Reconstructed Invariant Top Mass from Children - Divided into Leptonic and Hadronic decay channels
 c: Reconstructed Invariant Mass of scalar H resonance - Lep-Lep, Lep-Had, Had-Had
 d: DeltaR between children of mutual top (this tests how well the children are clustered) - Split into leptonic and hadronic

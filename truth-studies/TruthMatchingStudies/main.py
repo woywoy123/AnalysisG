@@ -11,6 +11,10 @@ import PlottingCode.ResonanceTruthTops as RTT_Plot
 import Studies.Event.TruthEvent as ETE_Sel
 import PlottingCode.TruthEvent as ETE_Plot
 
+import Studies.TruthTops.TopDecay as TTT_Sel
+import PlottingCode.TopDecay as TTT_Plot
+
+
 import os 
 
 smpl = os.environ["Samples"]
@@ -22,8 +26,8 @@ toRun = [
         #"ResonanceDeltaRTops", 
         #"ResonanceTopKinematics", 
         #"EventNTruthJetAndJets", 
-        "EventMETImbalance", 
-        
+        #"EventMETImbalance",
+        "TopDecayModes", 
 ]
 
 studies = {
@@ -34,6 +38,7 @@ studies = {
             "ResonanceTopKinematics" : RTT_Sel.ResonanceTopKinematics,
             "EventNTruthJetAndJets" : ETE_Sel.EventNTruthJetAndJets, 
             "EventMETImbalance" : ETE_Sel.EventMETImbalance,
+            "TopDecayModes" : TTT_Sel.TopDecayModes, 
 }
 
 studiesPlots = {
@@ -44,6 +49,7 @@ studiesPlots = {
                     "ResonanceTopKinematics" : RTT_Plot.ResonanceTopKinematics,
                     "EventNTruthJetAndJets" : ETE_Plot.EventNTruthJetAndJets,
                     "EventMETImbalance" : ETE_Plot.EventMETImbalance,
+                    "TopDecayModes" : TTT_Plot.TopDecayModes,
 }
 
 
@@ -65,7 +71,7 @@ Ana.Event = Event
 Ana.EventStop = 1000
 Ana.EventCache = True
 Ana.DumpPickle = True
-#Ana.Launch()
+Ana.Launch()
 
 # Runs the plotting code
 for i in toRun:

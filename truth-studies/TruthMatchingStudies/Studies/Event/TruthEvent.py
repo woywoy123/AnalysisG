@@ -27,14 +27,16 @@ class EventMETImbalance(Selection):
 
                 self.Children_angle = []
 
-
                 self.r_Top4_angle = []
                 self.r_Children_angle = []
 
-                #self.NeutrinoET = []
-                #self.TruthChildrenNoNus = []
-                #self.MET = []
-        
+                self.NeutrinoET = []
+                self.MET = []
+                self.METDelta = []
+
+                self.r_NeutrinoET = []
+                self.r_METDelta = []
+ 
         def Selection(self, event):
                 return len(event.Tops) == 4
 
@@ -43,6 +45,13 @@ class EventMETImbalance(Selection):
                 pt_, pz_ = particle.pt, particle.pz
                 pt = pt_*math.cos(-angle) + pz_*math.sin(-angle)
                 pz = pz_*math.cos(-angle) - pt_*math.sin(-angle)
+                particle.pt, particle.pz = pt, pz
+
+        def RotationP(self, particle, angle):
+                import math
+                pt_, pz_ = particle.pt, particle.pz
+                pt = pt_*math.cos(angle) + pz_*math.sin(angle)
+                pz = pz_*math.cos(angle) - pt_*math.sin(angle)
                 particle.pt, particle.pz = pt, pz
 
         def Strategy(self, event):
@@ -63,4 +72,19 @@ class EventMETImbalance(Selection):
                 
                 self.Rotation(c4, imb_angle)
                 self.r_Children_angle.append(math.atan(c4.pt/c4.pz))
- 
+                
+                # Missing MET 
+                nuPT = sum([i for i in event.TopChildren if abs(i.pdgid) in [12, 14, 16]])
+                self.NeutrinoET += [nuPT.pt/1000] 
+                self.MET += [event.met / 1000]
+                self.METDelta += [nuPT.pt/1000 - event.met/1000]
+
+                self.RotationP(nuPT, imb_angle)
+                self.r_NeutrinoET += [nuPT.pt/1000] 
+                self.r_METDelta += [nuPT.pt/1000 - event.met/1000]
+
+
+
+
+
+

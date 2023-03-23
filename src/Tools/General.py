@@ -91,4 +91,9 @@ class Tools(IO):
                 else: 
                     return ob1 + ob2
             return out
+        if isinstance(ob1, int) and isinstance(ob2, int):
+            return ob1 + ob2
+        if isinstance(ob1, float) and isinstance(ob2, float):
+            return ob1 + ob2
+
 

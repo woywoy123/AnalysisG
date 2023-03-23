@@ -27,6 +27,7 @@ class Settings_:
         self.Color = None
         self.Colors = []
         self.NEvents = None
+        self.LaTeX = True
         
     def Layout(self):
         self.FontSize = 10
@@ -72,7 +73,7 @@ class Settings_:
             "legend.fontsize" : self.LegendSize, 
             "figure.titlesize" : self.TitleSize
             })
-        self.PLT.rcParams["text.usetex"] = True
+        self.PLT.rcParams["text.usetex"] = self.LaTeX
     
     def ResetPLT(self):
         plt.close("all")
