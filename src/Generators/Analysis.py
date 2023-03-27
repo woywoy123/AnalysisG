@@ -152,7 +152,7 @@ class Analysis(Interface, Analysis_, Settings, SampleTracer, GraphFeatures, Tool
             if files[-1] == f:
                 break
 
-        if self.DumpPickle or self.DumpHDF5:
+        if (self.DumpPickle or self.DumpHDF5) and self.Model == None:
             self.ResetSampleContainer()
 
     def __EventGenerator(self, name, filedir):
@@ -242,7 +242,6 @@ class Analysis(Interface, Analysis_, Settings, SampleTracer, GraphFeatures, Tool
 
         if search == False and self.TrainingSampleName: 
             self.CantGenerateTrainingSample()
-
         self.EmptySampleList()
         if self.Training == False:
             self.CheckPercentage()
