@@ -26,7 +26,7 @@ Ana.kFolds = 10
 Ana.Epochs = 10
 Ana.BatchSize = 1
 Ana.ContinueTraining = False
-Ana.Optimizer = {"ADAM" : {"lr" : 1e-1, "weight_decay" : 1e-4}}
+Ana.Optimizer = {"ADAM" : {"lr" : 1e-2, "weight_decay" : 1e-4}}
 Ana.Model = Recursion()
 Ana.DebugMode = "loss"
 Ana.Launch()

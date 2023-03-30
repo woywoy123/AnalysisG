@@ -26,7 +26,7 @@ class Recursion(MessagePassing):
 
         self._MassMLP = Seq(
                 Linear(1, end),
-                Linear(end, 2)
+                Linear(end, 2), 
         )
 
         self.aggr_module_max = aggr_resolver("max")
@@ -36,30 +36,42 @@ class Recursion(MessagePassing):
         tmp = PCC.Mass(self._Pmc[edge_index[0]] + Pmc_i)
         #tmp = torch.cat([tmp, PCC.Mass(self._Pmc[edge_index[0]])], -1)
         mlp = self._MassMLP(tmp)
-        softmax(mlp[:, 1], edge_index[0])
-        return self._T[self._msk].view(-1), mlp, self._Pmc[edge_index[1]], edge_index[0]
+        ti = softmax(mlp[:, 1], edge_index[0])
+        tj = softmax(mlp[:, 1], edge_index[1])
+ 
+        ti_ = softmax(mlp[:, 0], edge_index[0])
+        tj_ = softmax(mlp[:, 0], edge_index[1])
+        
+        #t = self._T[self._msk].view(-1)
+        # Continue here.....
 
-    def aggregate(self, message, index, pmc):
+        scale = (ti + tj)/((ti_ + tj_))
+        print(scale)
+        return scale, mlp, self._Pmc[edge_index[1]], edge_index[0]
+
+    def aggregate(self, message, index, Pmc):
         prob, mlp, pmc_, src = message
+        msk, msk_ = self._msk.clone(), self._msk.clone()
         
-        prob_ = self.aggr_module_max(prob.view(-1, 1), src)
-        edge_sel = (prob_.view(-1)[src] == prob).view(-1)
-        src_, dst_, mlp_ = src[edge_sel], index[edge_sel], mlp[edge_sel]
-        mlp_ = self.aggr_module_add(mlp_, src_)
-        msk, pmc_ = self._msk.clone(), pmc_[edge_sel].clone()
+        prob_ = self.aggr_module_max(prob.view(-1, 1), src).view(-1)
+        edge_sel = (prob_[src] == prob)
+        edge_sel *= (prob_[src] != 0)
+
+        src_, dst_ = src[edge_sel], index[edge_sel]
+        pmc = scatter(pmc_[edge_sel], src_, 0, dim_size = len(Pmc)) + Pmc
         
-        # Very weird bug. Inconsistent four vector...
-        pmc = scatter(pmc_, src_, 0, dim_size = len(pmc)) + pmc.clone()
-
-        print(pmc)
-        self.O_edge[msk] = mlp
-        self.O_edge[msk] += mlp_[src] + mlp_[index]
-
+        mlp_ = self._MassMLP(PCC.Mass(pmc[src_])) + self._MassMLP(PCC.Mass(pmc[dst_]))
+        msk_[self._msk] *= edge_sel
+       
+        if src_.size()[0] == 0:
+            src_, dst_ = src.fill_(-1), index.fill_(-1)
         edge_index_ = torch.cat([src_.view(1, -1), dst_.view(1, -1)], 0)
         self._Path = torch.cat([self._Path, edge_index_], -1)
+        
+        self.O_edge[msk] += prob.view(-1, 1)*mlp
+        self.O_edge[msk_] += (mlp_ - mlp[edge_sel])*prob[edge_sel].view(-1, 1)
 
-        self._msk[msk] = self._msk[msk] * (edge_sel == False) * (mlp.max(-1)[1] == 1)
-      
+        self._msk[msk_] *= (mlp[edge_sel].max(-1)[1] != mlp_.max(-1)[1])
         return pmc
  
     def forward(self, i, num_nodes, batch, edge_index, N_pT, N_eta, N_phi, N_energy, G_met, G_met_phi, E_T_edge):
@@ -70,24 +82,27 @@ class Recursion(MessagePassing):
         
         self._Pmc = Pmc
         self._T = E_T_edge
+        
+        _, inv, count = torch.unique(edge_index[0], return_counts = True, return_inverse = True)
+        self._prior = 1/count[inv]
 
-        print(to_dense_adj(edge_index, edge_attr = E_T_edge.view(-1))[0])
-        tmp = PCC.Mass(Pmc[src])
+        tmp = PCC.Mass(Pmc[src] + Pmc[dst] * self._msk.view(-1, 1))
         #tmp = torch.cat([tmp, PCC.Mass(Pmc[src])], -1)
         tmp = self._MassMLP(tmp)
-        
         self.O_edge = torch.zeros_like(tmp)
         self.O_edge[self._msk == False] = tmp[self._msk == False]
         self._Path = edge_index[:, self._msk == False]
         
-        pmc_ = Pmc
-        pmc_ = self.propagate(edge_index[:, self._msk], Pmc = pmc_.clone(), pmc = pmc_.clone())
-        pmc_ = self.propagate(edge_index[:, self._msk], Pmc = pmc_.clone(), pmc = pmc_.clone())
-        
-        print(PCC.Mass(pmc_))
-
-
-
+        pmc_ = Pmc.clone()
+        while True:
+            if self._Path[0].size()[0] != self._msk[self._msk == False].size()[0]:
+                break
+            pmc_ = self.propagate(edge_index[:, self._msk], Pmc = pmc_)
+            
+            if self._msk.sum(-1) == 0:
+                break
+        print(to_dense_adj(self._Path))
+       
 
         print(to_dense_adj(edge_index, edge_attr = self.O_edge.max(-1)[1])[0])
 
