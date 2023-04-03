@@ -5,7 +5,8 @@ import torch.nn.functional as F
 import PyC.NuSol.CUDA as NuC
 import PyC.Transform.CUDA as TC
 import PyC.Physics.CUDA.Cartesian as PCC
-from torch_geometric.utils import to_dense_adj, sort_edge_index, dense_to_sparse, softmax, scatter
+from torch_geometric.utils import to_dense_adj, sort_edge_index, dense_to_sparse, softmax, scatter, degree
+from time import sleep
 from torch_geometric.nn.resolver import aggregation_resolver as aggr_resolver
 
 
@@ -22,89 +23,115 @@ class Recursion(MessagePassing):
         self.L_edge = "CEL"
         self.C_edge = True
 
-        end = 32
+        end = 64
 
         self._MassMLP = Seq(
-                Linear(1, end),
-                Linear(end, 2), 
+                Linear(1, end*4),
+                Linear(end*4, end), 
         )
 
-        self.aggr_module_max = aggr_resolver("max")
         self.aggr_module_add = aggr_resolver("add")
 
-    def message(self, edge_index, Pmc_i, Pmc_j):
-        tmp = PCC.Mass(self._Pmc[edge_index[0]] + Pmc_i)
-        #tmp = torch.cat([tmp, PCC.Mass(self._Pmc[edge_index[0]])], -1)
-        mlp = self._MassMLP(tmp)
-        ti = softmax(mlp[:, 1], edge_index[0])
-        tj = softmax(mlp[:, 1], edge_index[1])
- 
-        ti_ = softmax(mlp[:, 0], edge_index[0])
-        tj_ = softmax(mlp[:, 0], edge_index[1])
-        
-        #t = self._T[self._msk].view(-1)
-        # Continue here.....
+    def LinkPrediction(self, pred):
+        x0 = dense_to_sparse(pred[0].matmul(pred[0].t()))[1].view(-1, 1)
+        x1 = dense_to_sparse(pred[1].matmul(pred[1].t()))[1].view(-1, 1)
+        return torch.cat([x0, x1], -1)
 
-        scale = (ti + tj)/((ti_ + tj_))
-        print(scale)
-        return scale, mlp, self._Pmc[edge_index[1]], edge_index[0]
-
-    def aggregate(self, message, index, Pmc):
-        prob, mlp, pmc_, src = message
-        msk, msk_ = self._msk.clone(), self._msk.clone()
-        
-        prob_ = self.aggr_module_max(prob.view(-1, 1), src).view(-1)
-        edge_sel = (prob_[src] == prob)
-        edge_sel *= (prob_[src] != 0)
-
-        src_, dst_ = src[edge_sel], index[edge_sel]
-        pmc = scatter(pmc_[edge_sel], src_, 0, dim_size = len(Pmc)) + Pmc
-        
-        mlp_ = self._MassMLP(PCC.Mass(pmc[src_])) + self._MassMLP(PCC.Mass(pmc[dst_]))
-        msk_[self._msk] *= edge_sel
+    def message(self, edge_index, _pmc_i, _pmc_j, Pmc_i, Pmc_j):
+        src, dst = edge_index
+        nodes = torch.cat([src, dst], -1).max()+1
        
-        if src_.size()[0] == 0:
-            src_, dst_ = src.fill_(-1), index.fill_(-1)
-        edge_index_ = torch.cat([src_.view(1, -1), dst_.view(1, -1)], 0)
-        self._Path = torch.cat([self._Path, edge_index_], -1)
-        
-        self.O_edge[msk] += prob.view(-1, 1)*mlp
-        self.O_edge[msk_] += (mlp_ - mlp[edge_sel])*prob[edge_sel].view(-1, 1)
+        pmc_i = PCC.Mass(Pmc_j + _pmc_i)
+        pmc_j = PCC.Mass(Pmc_i + _pmc_j)
 
-        self._msk[msk_] *= (mlp[edge_sel].max(-1)[1] != mlp_.max(-1)[1])
-        return pmc
- 
+        #pmc_i = PCC.Mass(_pmc_i + Pmc_j)
+        print(to_dense_adj(edge_index, edge_attr = pmc_j.view(-1)))
+        print(to_dense_adj(edge_index, edge_attr = pmc_j.view(-1)))
+
+        mlp = self._MassMLP(pmc_j)
+
+        sel = self._T[self._msk] 
+        sel += 0.0001
+        sel = sel.view(-1)
+
+        msk = torch.multinomial(sel, num_samples = len(src.unique()))
+        
+        idx = edge_index[:, msk]
+        msk = to_dense_adj(edge_index)[0]
+        msk_ = to_dense_adj(idx, max_num_nodes = nodes)[0]
+        msk += msk_ + msk_.t()
+
+        print(msk)
+        msk = (dense_to_sparse(msk)[1]  != 1)*(sel > 0.1)
+        msk = msk.view(-1, 1)
+       
+        return mlp, (_pmc_j + Pmc_j + Pmc_i)*msk, msk.view(-1) == 1, src
+
+    def aggregate(self, message, index, Pmc, _pmc):
+        (mlp, pmc_j, msk, src), dst = message, index
+
+         
+
+
+        eij_ = torch.cat([src.view(1, -1), dst.view(1, -1)], 0)[:, msk]
+        self._Path = eij_ if self._Path == None else torch.cat([self._Path, eij_], -1) 
+
+        _indx = index.unique()
+        _pmc[_indx] += self.aggr_module_add(pmc_j, dst)
+        _pmc += Pmc
+        m_ij = PCC.Mass(_pmc)
+        
+        self._MassMatrix.append(to_dense_adj(self._Path, edge_attr = m_ij.view(-1)[self._Path[0]]))
+        print(self._MassMatrix[-1])
+        
+        print("___")
+
+
+
+        mlp_ = self._MassMLP(m_ij)
+
+
+        #mlp_[_indx] += self.aggr_module_add(mlp, index)[_indx]/degree(index)[_indx].view(-1, 1)
+        #mlp += mlp_[edge_index[0]]
+        
+        return _pmc, msk, mlp
+
     def forward(self, i, num_nodes, batch, edge_index, N_pT, N_eta, N_phi, N_energy, G_met, G_met_phi, E_T_edge):
         pt, eta, phi, E = N_pT/1000, N_eta, N_phi, N_energy/1000
         Pmc = torch.cat([TC.PxPyPz(pt, eta, phi), E.view(-1, 1)], -1)
         src, dst = edge_index
-        self._msk = src != dst
         
-        self._Pmc = Pmc
-        self._T = E_T_edge
-        
-        _, inv, count = torch.unique(edge_index[0], return_counts = True, return_inverse = True)
-        self._prior = 1/count[inv]
-
-        tmp = PCC.Mass(Pmc[src] + Pmc[dst] * self._msk.view(-1, 1))
-        #tmp = torch.cat([tmp, PCC.Mass(Pmc[src])], -1)
-        tmp = self._MassMLP(tmp)
-        self.O_edge = torch.zeros_like(tmp)
-        self.O_edge[self._msk == False] = tmp[self._msk == False]
-        self._Path = edge_index[:, self._msk == False]
-        
-        pmc_ = Pmc.clone()
-        while True:
-            if self._Path[0].size()[0] != self._msk[self._msk == False].size()[0]:
-                break
-            pmc_ = self.propagate(edge_index[:, self._msk], Pmc = pmc_)
-            
-            if self._msk.sum(-1) == 0:
-                break
-        print(to_dense_adj(self._Path))
+        self._T = E_T_edge.clone()
+        self._Path = None
+        self.O_edge = None
        
+        self._msk = src == src
+        self._MassMatrix = []
 
-        print(to_dense_adj(edge_index, edge_attr = self.O_edge.max(-1)[1])[0])
+        pmc_ = torch.zeros_like(Pmc)
+        while True:
+            pmc_, msk, mlp_ = self.propagate(edge_index[:, self._msk], _pmc = pmc_,  Pmc = Pmc)
+            
+            msk_ = self._msk.clone()
+            self._msk[msk_] *= msk == False
+
+            if self.O_edge == None:
+                self.O_edge = mlp_
+
+            if (msk_ != self._msk).sum(-1) == 0 or self._msk.sum(-1) == 0:
+                break
+            self.O_edge[msk_] += mlp_
+
+            sleep(0.5)
+        
+        exit()
+        x0 = to_dense_adj(edge_index, edge_attr = self.O_edge[:, 0])
+        x1 = to_dense_adj(edge_index, edge_attr = self.O_edge[:, 1])
+        self.O_edge = torch.cat([x0, x1], 0)
+        self.O_edge = self.LinkPrediction(self.O_edge)
+
+        print(self.O_edge)
+        print(to_dense_adj(edge_index, edge_attr = self.O_edge.max(-1)[1])[0]) #* self.O_edge.max(-1)[0])[0])
 
 
 
