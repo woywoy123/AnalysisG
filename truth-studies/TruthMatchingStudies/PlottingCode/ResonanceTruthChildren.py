@@ -14,7 +14,7 @@ def PlotTemplate(x):
             }
     return Plots
 
-def ResonanceMassFromChildren(x)
+def ResonanceMassFromChildren(x):
 
     for i in x.ResonanceMass:
         _Plots = {}

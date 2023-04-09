@@ -39,20 +39,17 @@ class EventMETImbalance(Selection):
  
         def Selection(self, event):
                 return len(event.Tops) == 4
+        
 
         def Rotation(self, particle, angle):
                 import math
-                pt_, pz_ = particle.pt, particle.pz
-                pt = pt_*math.cos(-angle) + pz_*math.sin(-angle)
-                pz = pz_*math.cos(-angle) - pt_*math.sin(-angle)
-                particle.pt, particle.pz = pt, pz
+                px_, py_, pz_ = particle.px, particle.py, particle.pz
+                py_ = py_*math.cos(angle) - pz_*math.sin(angle)
+                pz_ = py_*math.sin(angle) + pz_*math.cos(angle)
+                particle.px, particle.py, particle.pz = px_, py_, pz_
 
         def RotationP(self, particle, angle):
-                import math
-                pt_, pz_ = particle.pt, particle.pz
-                pt = pt_*math.cos(angle) + pz_*math.sin(angle)
-                pz = pz_*math.cos(angle) - pt_*math.sin(angle)
-                particle.pt, particle.pz = pt, pz
+                self.Rotation(particle, -angle)
 
         def Strategy(self, event):
                 import math
@@ -67,10 +64,10 @@ class EventMETImbalance(Selection):
                 c4 = sum(event.TopChildren)
                 self.Children_angle.append(math.atan(c4.pt/c4.pz))
                 
-                self.Rotation(t4, imb_angle)
+                self.RotationP(t4, imb_angle)
                 self.r_Top4_angle.append(math.atan(t4.pt/t4.pz))
                 
-                self.Rotation(c4, imb_angle)
+                self.RotationP(c4, imb_angle)
                 self.r_Children_angle.append(math.atan(c4.pt/c4.pz))
                 
                 # Missing MET 
