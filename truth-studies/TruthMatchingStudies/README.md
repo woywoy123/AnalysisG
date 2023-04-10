@@ -108,8 +108,18 @@ The observed difference between measurement and rotated truth neutrinos.
 ### EventNuNuSolutions:
 - **Number-of-solutions**:
 Number of returned neutrino solutions with and without rotation of the 4-top system.
-
-
+- **Delta-Missing-MET-NoRotation**:
+A TH2F plot of the missing energy in the x and y direction without rotating the truth children into the 4-top system
+- **Delta-Missing-MET-Rotation**:
+A TH2F plot of the missing energy in the x and y direction with rotating the truth children into the 4-top system
+- **Top-Mass-Delta-NoRotation**:
+A mass difference plot of the truth mass and the reconstructed top from neutrino solutions. 
+This plot aims to identify potential patterns when not rotating the reference frame of the truth children into the 4-top system.
+- **Top-Mass-Delta-Rotation**:
+A mass difference plot of the truth mass and the reconstructed top from neutrino solutions. 
+This plot aims to identify potential patterns when rotating the reference frame of the truth children into the 4-top system.
+- **MET-Ratio**:
+A TH2F plot of the MET and truth neutrino's pt with and without rotation.
 
 ### TopDecayModes:
 - **Figure_2.1a**:

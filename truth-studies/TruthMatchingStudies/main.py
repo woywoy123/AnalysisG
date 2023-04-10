@@ -77,8 +77,8 @@ for i in toRun:
     Ana.AddSelection(i, studies[i])
     Ana.MergeSelection(i)
 
-Ana.ProjectName = "_Project-Large"
-Ana.InputSample("BSM-4t-DL-1000") #, smpl + "ttH_tttt_m1000") #/DAOD_TOPQ1.21955717._000001.root")
+Ana.ProjectName = "_Project"
+Ana.InputSample("BSM-4t-DL-1000", smpl + "ttH_tttt_m1000/DAOD_TOPQ1.21955717._000001.root")
 #Ana.InputSample("BSM-4t-DL-900", smpl + "ttH_tttt_m900/")
 #Ana.InputSample("BSM-4t-DL-800", smpl + "ttH_tttt_m800/")
 #Ana.InputSample("BSM-4t-DL-700", smpl + "ttH_tttt_m700/")
@@ -96,7 +96,7 @@ Ana.Launch()
 #    studies[i] = studies[i]()
 #    studies[i](Ana)
 #    print(studies[i]._CutFlow)
-
+#
 
 # Runs the plotting code
 for i in toRun:

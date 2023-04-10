@@ -26,14 +26,18 @@ class EventNuNuSolutions(Selection):
         return True
 
     def Rotation(self, particle, angle):
-            import math
-            px_, py_, pz_ = particle.px, particle.py, particle.pz
-            py_ = py_*math.cos(angle) - pz_*math.sin(angle)
-            pz_ = py_*math.sin(angle) + pz_*math.cos(angle)
-            particle.px, particle.py, particle.pz = px_, py_, pz_
+        import math
+        px_, py_, pz_ = particle.px, particle.py, particle.pz
+        py = py_*math.cos(angle) - pz_*math.sin(angle)
+        pz = py_*math.sin(angle) + pz_*math.cos(angle)
+        particle.px = px_
+        particle.py = py
+        particle.pz = pz
+        particle.pt = None
+        return particle 
 
     def RotationP(self, particle, angle):
-            self.Rotation(particle, -angle)
+        return self.Rotation(particle, -angle)
 
     def Strategy(self, event):
         import math
@@ -58,9 +62,9 @@ class EventNuNuSolutions(Selection):
 
         n_sols, nu_sum = len(sols), (nu1 + nu2)
         self.NuNuSolutions["No-Rotation"].append(n_sols)
-        self.Truth_MET_NuNu_Delta["No-Rotation"] += [nu_sum.pt/met]
-        self.Truth_MET_xy_Delta["No-Rotation-x"] += [met_x - nu_sum.px]
-        self.Truth_MET_xy_Delta["No-Rotation-y"] += [met_y - nu_sum.py]
+        self.Truth_MET_NuNu_Delta["No-Rotation"] += [abs(nu_sum.pt/met)]
+        self.Truth_MET_xy_Delta["No-Rotation-x"] += [(met_x - nu_sum.px)/1000]
+        self.Truth_MET_xy_Delta["No-Rotation-y"] += [(met_y - nu_sum.py)/1000]
 
         if n_sols not in self.TopMassDelta["No-Rotation"]:
             self.TopMassDelta["No-Rotation"][n_sols] = []
@@ -69,19 +73,21 @@ class EventNuNuSolutions(Selection):
            
         # ====================== Rotated ========================== #
         t4 = sum(event.Tops)
-        angle = math.atan(t4.pt/t4.pz)
-        for i, j in zip(t1.Children, t2.Children):
-            self.RotationP(i, angle), self.RotationP(j, angle)
-        self.RotationP(t1, angle), self.RotationP(t2, angle)
+        angle = math.atan2(t4.pt, t4.pz)
+        self.RotationP(t1, angle),   self.RotationP(t2, angle)
+        self.RotationP(nu1, angle),  self.RotationP(nu2, angle)
+        self.RotationP(lep1, angle), self.RotationP(lep2, angle)
+        self.RotationP(b1, angle),   self.RotationP(b2, angle)
+
         t_Mass = (t1.Mass + t2.Mass)/2
         W_Mass = ((nu1 + lep1).Mass + (nu2 + lep2).Mass)/2
         sols = self.NuNu(b1, b2, lep1, lep2, event, t_Mass, W_Mass)
 
         n_sols, nu_sum = len(sols), (nu1 + nu2)
         self.NuNuSolutions["Rotation"].append(n_sols)
-        self.Truth_MET_NuNu_Delta["Rotation"] += [nu_sum.pt/met]
-        self.Truth_MET_xy_Delta["Rotation-x"] += [met_x - nu_sum.px]
-        self.Truth_MET_xy_Delta["Rotation-y"] += [met_y - nu_sum.py]
+        self.Truth_MET_NuNu_Delta["Rotation"] += [abs(nu_sum.pt/met)]
+        self.Truth_MET_xy_Delta["Rotation-x"] += [(met_x - nu_sum.px)/1000]
+        self.Truth_MET_xy_Delta["Rotation-y"] += [(met_y - nu_sum.py)/1000]
 
         if n_sols not in self.TopMassDelta["Rotation"]:
             self.TopMassDelta["Rotation"][n_sols] = []

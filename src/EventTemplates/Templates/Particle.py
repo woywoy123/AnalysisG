@@ -9,8 +9,8 @@ class ParticleTemplate(VariableManager):
         VariableManager.__init__(self)
         self.Parent = []
         self.Children = []
-        for property in ['phi', 'eta', 'pt', 'e', 'px', 'py', 'pz']:
-            self.__dict__['_' + property] = None
+        for p in ['phi', 'eta', 'pt', 'e', 'px', 'py', 'pz']:
+            self.__dict__['_' + p] = None
 
     @property
     def px(self):

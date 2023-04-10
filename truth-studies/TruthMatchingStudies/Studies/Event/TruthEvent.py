@@ -55,7 +55,7 @@ class EventMETImbalance(Selection):
                 import math
                 t4 = sum(event.Tops)
 
-                imb_angle = math.atan(t4.pt/t4.pz)
+                imb_angle = math.atan2(t4.pt, t4.pz)
 
                 self.PT_4Tops.append(t4.pt/1000)
                 self.Pz_4Tops.append(t4.pz/1000)
