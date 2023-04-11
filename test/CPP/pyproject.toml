@@ -3,6 +3,5 @@ requires = ["pip", "setuptools", "wheel", "cython"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "AnalysisTopGNN-Tracers"
-version = "1.0"
-authors = [{name = "woywoy123"}]
+name = "AnalysisG-dev"
+version = "3.0"

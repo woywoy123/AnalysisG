@@ -1,4 +1,15 @@
-from setuptools import setup
+from setuptools import setup, Extension
 from Cython.Build import cythonize
 
-setup(ext_modules = cythonize("src/Samples/Cython/Event.pyx"))
+ext_mod = [
+    Extension(
+                name = "AnalysisG.Templates", 
+                sources = [
+                    "src/Templates/Cython/Particles.pyx", 
+                    "src/Templates/CXX/Particles.cxx", 
+                ], 
+            )
+    ]
+setup(
+        ext_modules = cythonize(ext_mod),
+)
