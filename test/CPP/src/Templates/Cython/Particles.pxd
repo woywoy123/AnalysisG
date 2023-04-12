@@ -1,8 +1,43 @@
+from libcpp.string cimport string
+from libcpp cimport bool
+
+cdef extern from "../Headers/Tools.h" namespace "Tools":
+    pass
+
 cdef extern from "../Headers/Particles.h" namespace "CyTemplate":
     cdef cppclass CyParticle:
         CyParticle() except +
-
+        CyParticle(double px, double py, double pz, double e) except + 
+        CyParticle operator+(const CyParticle& p1) except +   
+        bool operator==(const CyParticle& p1) except +   
+        
         # Book keeping variables
         signed int index; 
+        
+        # State indicator
+        bool _edited; 
 
+        # Getter Functions
+        double px() except +
+        double py() except +
+        double pz() except + 
+        double pt() except +
+        double eta() except +
+        double phi() except +
+        double e() except +
+        double Mass() except +
+        double DeltaR(const CyParticle& p) except +
+
+        # Setter Functions
+        void px(double val) except + 
+        void py(double val) except + 
+        void pz(double val) except +  
+        void pt(double val) except + 
+        void eta(double val) except + 
+        void phi(double val) except +
+        void e(double val) except + 
+        void Mass(double val) except +
+        
+        string Hash() except +
+        void _UpdateState() except +
 

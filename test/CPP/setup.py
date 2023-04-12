@@ -6,7 +6,8 @@ ext_mod = [
                 name = "AnalysisG.Templates", 
                 sources = [
                     "src/Templates/Cython/Particles.pyx", 
-                    "src/Templates/CXX/Particles.cxx", 
+                    "src/Templates/CXX/Particles.cxx",
+                    "src/Templates/CXX/Tools.cxx", 
                 ], 
             )
     ]
