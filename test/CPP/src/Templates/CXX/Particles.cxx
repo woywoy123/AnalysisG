@@ -185,3 +185,48 @@ double CyTemplate::CyParticle::DeltaR(const CyTemplate::CyParticle& p)
     sum += std::pow(std::atan(std::tan(this -> _eta)) - std::atan(std::tan(p._eta)), 2); 
     return std::pow(sum, 0.5); 
 }
+
+// Particle Functions 
+signed int CyTemplate::CyParticle::pdgid()
+{
+    return this -> _pdgid; 
+}
+
+void CyTemplate::CyParticle::pdgid(signed int id)
+{
+    this -> _pdgid = id; 
+}
+
+double CyTemplate::CyParticle::charge()
+{
+    return this -> _charge; 
+}
+
+void CyTemplate::CyParticle::charge(double id)
+{
+    this -> _charge = id; 
+}
+
+std::string CyTemplate::CyParticle::symbol()
+{
+    std::map<int, std::string> sym = {
+                 {1, "d"}, {2, "u"}, {3, "s"}, {4, "c"}, {5, "b"}, {6, "t"},
+                 {11, "e"}, {12, "nu_e"}, {13, "mu"}, {14, "nu_mu"}, {15, "tau"}, {16, "nu_{tau}"},
+                 {21, "g"}, {22, "gamma"}
+    }; 
+
+    std::stringstream ss; 
+    ss << sym[std::abs(this -> _pdgid)];
+    return ss.str(); 
+}
+
+bool CyTemplate::CyParticle::is(std::vector<signed int> p)
+{
+    for (signed int i : p){ if (std::abs(i) == std::abs(this -> _pdgid)) { return true; }}
+    return false; 
+}
+
+bool CyTemplate::CyParticle::is_b(){ return this -> is({5}); }
+bool CyTemplate::CyParticle::is_nu(){ return this -> is(this -> _nudef); }
+bool CyTemplate::CyParticle::is_lep(){ return this -> is(this -> _lepdef); }
+

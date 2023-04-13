@@ -1,5 +1,7 @@
 #include <iostream>
 #include <cmath>
+#include <vector>
+#include <map>
 
 #ifndef CYTEMPLATE_H
 #define CYTEMPLATE_H
@@ -66,6 +68,19 @@ namespace CyTemplate
             void Mass(double val);  
             // ============== End Physics ================ //
 
+            // ============== Particle ================ //
+            // Getter Functions
+            signed int pdgid(); 
+            double charge(); 
+            std::string symbol();
+            bool is_lep(), is_nu(), is_b(); 
+
+            // Setter Functions
+            void pdgid(signed int id), charge(double val); 
+            std::vector<signed int> _lepdef = {11, 13, 15};
+            std::vector<signed int> _nudef = {12, 14, 16}; 
+            // ============== End Physics ================ //
+
             std::string Hash(); 
             void _UpdateState();
 
@@ -79,11 +94,18 @@ namespace CyTemplate
             double _pz = 0; 
             double _e = 0; 
             double _mass = 0; 
-            signed int pdgid = 0; 
+            double _charge = 0;
 
+            // PDGID Definitions 
+            signed int _pdgid = 0;
+            std::string _symbol = ""; 
+            
+            bool is(std::vector<signed int> p); 
+            
+            // Book keeping 
             std::string _hash; 
  
-
+            
     };
 }
 #endif 

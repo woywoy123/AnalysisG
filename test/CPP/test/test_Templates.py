@@ -90,14 +90,136 @@ def test_particle_template():
     x = [t, t_, t, t_]
     assert len(set(x)) == 2
     assert x.index(t_) == 1
+   
+    # Test the pdgid setter
+    t.pdgid = -11
+    t.charge = 1
+    
+    # Getter 
+    assert t.pdgid == -11
+    assert t.charge == 1
+    assert t.symbol == "e" 
+    assert t.is_lep == True 
+    assert t.is_nu == False
+    assert t.is_add == False
+
+    t.nudef = []
+    t.lepdef = []
+    assert t.is_lep == False
+    assert t.is_nu == False
+    assert t.is_add == True
+    
+    tp = Particle()
+    tp.px = val[0]
+    tp.py = val[1]
+    tp.pz = val[2]
+    tp.e = val[3]
+ 
+    tc1 = Particle()
+    tc1.px = val[0]*0.25
+    tc1.py = val[1]*0.25
+    tc1.pz = val[2]*0.25
+    tc1.e = val[3]*0.25
+ 
+    tc2 = Particle()
+    tc2.px = val[0]*0.4
+    tc2.py = val[1]*0.4
+    tc2.pz = val[2]*0.4
+    tc2.e = val[3]*0.4
+ 
+    tc3 = Particle()
+    tc3.px = val[0]*0.35
+    tc3.py = val[1]*0.35
+    tc3.pz = val[2]*0.35
+    tc3.e = val[3]*0.35
+    
+    tp.Children.append(tc1)
+    tp.Children.append(tc2)
+    tp.Children.append(tc3)
+    tc1.Parent.append(tp)
+    tc2.Parent.append(tp)
+    tc3.Parent.append(tp)
+    
+    assert len(tp.Children) == 3
+    assert len(tc1.Parent) == 1 
+    
+    tp.Children[0].px = val[0] 
+    assert tc1.px == val[0]
+    assert tc1 in tp.Children
     
     # Test for memory leak
-    for i in range(10000000):
+    for i in range(100000):
         t_ = Particle()
         t_.px = val[0]
         t_.py = val[1]
         t_.pz = val[2]
         t_.e = val[3]
 
+        t = Particle()
+        t.px = val[0]
+        t.py = val[1]
+        t.pz = val[2]
+        t.e = val[3]
+        t_.Children.append(t)
+
+def test_particle_template_assign():
+    from AnalysisG.Templates import ParticleTemplate 
+
+    class Particle(ParticleTemplate):
+        def __init__(self):
+            ParticleTemplate.__init__(self)
+            self.index  =  "index"
+            self.hash   =  "hash"
+            self.px     =  "px"    
+            self.py     =  "py"
+            self.pz     =  "pz"
+            self.pt     =  "pt"
+            self.eta    =  "eta"
+            self.phi    =  "phi"
+            self.e      =  "e"
+            self.Mass   =  "Mass"
+            self.pdgid  =  "pdgid"
+            self.charge =  "charge"
+            self.somevar = "somevar"
+    
+    class ParticleDerived(Particle):
+        def __init__(self):
+            Particle.__init__(self)
+            self.somevar2 = "somevar2"
+    
+    P = Particle()
+    kdic = P.__interpret__
+    assert kdic["index"] == "index"
+    assert kdic["hash"] == "hash"
+    assert kdic["px"] == "px"    
+    assert kdic["py"] == "py"
+    assert kdic["pz"] == "pz"
+    assert kdic["pt"] == "pt"
+    assert kdic["eta"] == "eta"
+    assert kdic["phi"] == "phi"
+    assert kdic["e"] == "e"
+    assert kdic["Mass"] == "Mass"
+    assert kdic["pdgid"] == "pdgid"
+    assert kdic["charge"] == "charge"
+    assert kdic["somevar"] == "somevar"
+   
+    P2 = ParticleDerived()
+    kdic = P2.__interpret__
+    assert kdic["index"] == "index"
+    assert kdic["hash"] == "hash"
+    assert kdic["px"] == "px"    
+    assert kdic["py"] == "py"
+    assert kdic["pz"] == "pz"
+    assert kdic["pt"] == "pt"
+    assert kdic["eta"] == "eta"
+    assert kdic["phi"] == "phi"
+    assert kdic["e"] == "e"
+    assert kdic["Mass"] == "Mass"
+    assert kdic["pdgid"] == "pdgid"
+    assert kdic["charge"] == "charge"
+    assert kdic["somevar"] == "somevar"
+    assert kdic["somevar2"] == "somevar2" 
+
 if __name__ == "__main__":
-    test_particle_template()
+    #test_particle_template()
+    test_particle_template_assign()

@@ -9,7 +9,8 @@ ext_mod = [
                     "src/Templates/CXX/Particles.cxx",
                     "src/Templates/CXX/Tools.cxx", 
                 ], 
-            )
+    ), 
+
     ]
 setup(
         ext_modules = cythonize(ext_mod),
