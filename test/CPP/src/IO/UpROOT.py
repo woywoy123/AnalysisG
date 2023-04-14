@@ -17,6 +17,7 @@ class UpROOT(_UpROOT, Settings):
             self.InvalidROOTFileInput
             self.ROOTFile = False
             return 
+        self.Keys = {}
         self._it = False 
 
     @property
@@ -34,7 +35,7 @@ class UpROOT(_UpROOT, Settings):
                 k__ = k_ + "/" + i
                 try:
                     k_n = inpt[k__].keys()
-                    self._struct[k__] = inpt[k__].iterate(library = "np", step_size = self.StepSize)
+                    self._struct[k__] = None
                 except AttributeError:
                     continue
                 Recursion(inpt, k__, k_n)
@@ -48,7 +49,7 @@ class UpROOT(_UpROOT, Settings):
 
         f = self.ROOTFile[fname]
         self._struct = {}
-        self._missed = {}
+        self._missed = {"TREE" : [], "BRANCH" : [], "LEAF" : []}
         
         Recursion(f, "", f.keys())
         
@@ -56,6 +57,7 @@ class UpROOT(_UpROOT, Settings):
         for i in self.Trees:
             found |= {k : self._struct[k] for k in self._struct if i in k}
         self.CheckValidKeys(self.Trees, found, "TREE")
+        found = {}
 
         for i in self.Branches:
             found |= {k : self._struct[k] for k in self._struct if i in k}
@@ -65,7 +67,26 @@ class UpROOT(_UpROOT, Settings):
             found |= {k : self._struct[k] for k in self._struct if i in k}
         self.CheckValidKeys(self.Leaves, found, "LEAF")
         
-        self.ROOTFile[fname] = {"found" : found, "missed" : self._missed}
+        self.Keys[fname] = {"found" : found, "missed" : self._missed}
         self.AllKeysFound(fname)        
         
         self.ScanKeys
+
+    def __iter__(self):
+        self.ScanKeys
+        t = {r : T for T in self.Trees for r in self.ROOTFile if T not in self.Keys[r]["missed"]["TREE"]}
+        get = [i.split("/")[-1] for i in self.Keys[list(self.ROOTFile)[0]]["found"]]
+        self._root = uproot.concatenate(t, get, library = "np", step_size = self.StepSize)
+        return self 
+    
+    def __len__(self):
+        self.__iter__()
+        return len(self._root[list(self._root)[-1]])
+
+    def __next__(self):
+        try:
+            r = {k : self._root[k][-1] for k in self._root}
+        except IndexError:
+            raise StopIteration
+        self._root = {k : self._root[k][:-1] for k in self._root}
+        return r

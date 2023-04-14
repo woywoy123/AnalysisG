@@ -7,11 +7,21 @@ ext_mod = [
                 sources = [
                     "src/Templates/Cython/Particles.pyx", 
                     "src/Templates/CXX/Particles.cxx",
+
                     "src/Templates/CXX/Tools.cxx", 
                 ], 
     ), 
+    #Extension(
+    #            name = "AnalysisG.Templates", 
+    #            sources = [
+    #                "src/Templates/Cython/Event.pyx", 
+    #                "src/Templates/CXX/Event.cxx",
 
-    ]
+    #                "src/Templates/CXX/Tools.cxx", 
+    #            ], 
+    #), 
+]
+
 setup(
         ext_modules = cythonize(ext_mod),
 )

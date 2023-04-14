@@ -229,4 +229,3 @@ bool CyTemplate::CyParticle::is(std::vector<signed int> p)
 bool CyTemplate::CyParticle::is_b(){ return this -> is({5}); }
 bool CyTemplate::CyParticle::is_nu(){ return this -> is(this -> _nudef); }
 bool CyTemplate::CyParticle::is_lep(){ return this -> is(this -> _lepdef); }
-

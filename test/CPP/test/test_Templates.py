@@ -1,5 +1,19 @@
 import math
 
+
+def test_simple_particle_template():
+    from AnalysisG.Templates import ParticleTemplate 
+    class Particle(ParticleTemplate):
+        def __init__(self):
+            ParticleTemplate.__init__(self)
+            self.px = "hello"   
+
+    x = Particle()
+    
+
+
+
+
 def test_particle_template():
 
     from AnalysisG.Templates import ParticleTemplate 
@@ -220,6 +234,21 @@ def test_particle_template_assign():
     assert kdic["somevar"] == "somevar"
     assert kdic["somevar2"] == "somevar2" 
 
+def test_event_template():
+    from AnalysisG.Templates import EventTemplate
+
+
+
+
+
+
+
+
+
 if __name__ == "__main__":
+    test_simple_particle_template()
     #test_particle_template()
-    test_particle_template_assign()
+    #test_particle_template_assign()
+    #test_event_template()
+
+    pass

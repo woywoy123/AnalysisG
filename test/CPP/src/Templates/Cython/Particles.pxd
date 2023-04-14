@@ -1,5 +1,6 @@
 from libcpp.string cimport string
 from libcpp.vector cimport vector
+from libcpp.map cimport map
 from libcpp cimport bool
 
 cdef extern from "../Headers/Tools.h" namespace "Tools":
@@ -14,6 +15,7 @@ cdef extern from "../Headers/Particles.h" namespace "CyTemplate":
         
         # Book keeping variables
         signed int index; 
+        map[string, string] _leafs; 
         
         # State indicator
         bool _edited; 
@@ -50,7 +52,6 @@ cdef extern from "../Headers/Particles.h" namespace "CyTemplate":
         void Mass(double val) except +
         void pdgid(signed int val) except +
         void charge(double val) except +
-        
+
         string Hash() except +
         void _UpdateState() except +
-
