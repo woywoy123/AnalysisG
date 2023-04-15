@@ -8,5 +8,6 @@ namespace Tools
 {
     std::string Hashing(std::string inpt); 
     std::string ToString(double inpt); 
+    std::string ToString(signed int inpt); 
 }
 #endif 

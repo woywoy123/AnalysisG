@@ -3,7 +3,7 @@ from Cython.Build import cythonize
 
 ext_mod = [
     Extension(
-                name = "AnalysisG.Templates", 
+                name = "AnalysisG.Templates.ParticleTemplates", 
                 sources = [
                     "src/Templates/Cython/Particles.pyx", 
                     "src/Templates/CXX/Particles.cxx",
@@ -11,15 +11,25 @@ ext_mod = [
                     "src/Templates/CXX/Tools.cxx", 
                 ], 
     ), 
+    Extension(
+                name = "AnalysisG.Templates.EventTemplates", 
+                sources = [
+                    "src/Templates/Cython/Event.pyx", 
+                    "src/Templates/CXX/Event.cxx",
+
+                    "src/Templates/CXX/Tools.cxx", 
+                ], 
+    ), 
+
     #Extension(
-    #            name = "AnalysisG.Templates", 
+    #            name = "AnalysisG.Tracer.EventTemplates", 
     #            sources = [
     #                "src/Templates/Cython/Event.pyx", 
     #                "src/Templates/CXX/Event.cxx",
 
     #                "src/Templates/CXX/Tools.cxx", 
     #            ], 
-    #), 
+    #),
 ]
 
 setup(

@@ -71,6 +71,7 @@ namespace CyTemplate
 
             // ============== Particle ================ //
             // Getter Functions
+            std::string Type = ""; 
             signed int pdgid(); 
             double charge(); 
             std::string symbol();

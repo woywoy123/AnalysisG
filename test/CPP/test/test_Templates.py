@@ -218,19 +218,184 @@ def test_particle_template_assign():
     assert kdic["somevar2"] == "somevar2" 
 
 def test_event_template():
+    root1 = "./samples/sample1/smpl1.root"
     from AnalysisG.Templates import EventTemplate
 
+    class Event(EventTemplate):
+        def __init__(self):
+            EventTemplate.__init__(self)
+            self.index = "eventNumber"
+            self.weight = "weight_mc"
+            self.Trees = ["nominal"]
+            self.met_phi = "met_phi"
+            self.CommitHash = "..."
+            self.Deprecated = False
+    
+    ev = Event()
+    val = ev.__interpret__
+    assert "eventNumber" in val["event"]["index"]
+    assert "weight_mc" in val["event"]["weight"]
+    assert "met_phi" in val["event"]["met_phi"]
+    assert "CommitHash" not in val["event"]
+    assert "Deprecated" not in val["event"]
+    assert "Trees" not in val["event"]
+    assert "Branches" not in val["event"]
+    assert "Leaves" not in val["event"]
+    assert "Objects" not in val["event"]
+    
+    ev.index = 0
+    ev.hash = root1
+    assert len(ev.hash) == 18
+
+    ev2 = Event()
+    ev2.index = 1
+    ev2.hash = root1
+    assert ev2 != ev
 
 
+def test_event_particle_template():
+    from AnalysisG.Templates import EventTemplate
+    from AnalysisG.Templates import ParticleTemplate
+    
+    class Particle(ParticleTemplate):
+        def __init__(self):
+            ParticleTemplate.__init__(self)
+            self.pt = self.Type + "_pt"
+            self.eta = self.Type + "_eta"
+            self.phi = self.Type + "_phi"
+            self.e = self.Type + "_e"
+    
+    class Top(Particle):
+        
+        def __init__(self):
+            self.Type = "top"
+            Particle.__init__(self) 
+             
+    class Children(Particle):
+        
+        def __init__(self):
+            self.Type = "children"
+            Particle.__init__(self) 
+             
+    class Event(EventTemplate):
+        def __init__(self):
+            EventTemplate.__init__(self)
+            self.Objects = {
+                    "top" : Top, 
+                    "Children" : Children()
+            }
+            self.index = "eventNumber"
+            self.weight = "weight_mc"
+            self.Trees = ["nominal"]
+            self.met_phi = "met_phi"
+            self.CommitHash = "..."
+            self.Deprecated = False
+    
+    ev = Event()
+    vals = ev.__interpret__
+    assert "eventNumber" == vals["event"]["index"]
+    assert "weight_mc" == vals["event"]["weight"]
+    assert "met_phi" == vals["event"]["met_phi"]
 
+    assert "top_pt" == vals["top"]["pt"]
+    assert "top_phi" == vals["top"]["phi"]
+    assert "top_eta" == vals["top"]["eta"]
+    assert "top_e" == vals["top"]["e"]
 
+    assert "children_pt" == vals["Children"]["pt"]
+    assert "children_phi" == vals["Children"]["phi"]
+    assert "children_eta" == vals["Children"]["eta"]
+    assert "children_e" == vals["Children"]["e"]
 
+    assert len(ev.Leaves) == 22
 
+def test_event_particle_template_populate():
+    root1 = "./samples/sample1/smpl1.root"
+    from AnalysisG.IO import UpROOT
+    from AnalysisG.Templates import EventTemplate
+    from AnalysisG.Templates import ParticleTemplate
+    
+    class Particle(ParticleTemplate):
+        def __init__(self):
+            ParticleTemplate.__init__(self)
+            self.pt = self.Type + "_pt"
+            self.eta = self.Type + "_eta"
+            self.phi = self.Type + "_phi"
+            self.e = self.Type + "_e"
+ 
+    class Top(Particle):
+        
+        def __init__(self):
+            self.Type = "top"
+            Particle.__init__(self) 
+
+    class Children(Particle):
+        
+        def __init__(self):
+            self.Type = "children"
+            Particle.__init__(self) 
+            
+    class Event(EventTemplate):
+        def __init__(self):
+            EventTemplate.__init__(self)
+            self.Objects = {
+                    "top" : Top(), 
+                    "Children" : Children,  
+            }
+            self.index = "eventNumber"
+            self.weight = "weight_mc"
+            self.Trees = ["nominal", "truth"]
+            self.met_phi = "met_phi"
+            self.CommitHash = "..."
+            self.Deprecated = False
+
+    ev = Event()
+    ev.__interpret__
+    
+    io = UpROOT(root1)
+    io.Trees = ev.Trees
+    io.Leaves = ev.Leaves
+
+    lst, lstc, lstt = [], [], []
+    n_children = 0
+    n_tops = 0
+    for i in io:
+        x = ev.clone
+        x.__compiler__(i)
+        assert len([k.Tree for k in x.Trees]) == 2
+        assert sum([sum([k.index >= 0, k.weight != 0]) for k in x.Trees]) == 4
+        
+        t1, t2 = x.Trees
+        t1.hash, t2.hash = root1, root1
+        
+        n_children += len(x.Children)
+        n_tops += len(x.top)
+
+        lst.append(x)
+        lstc += [t for t in x.Children.values()]
+
+        lstt += [t for t in x.top.values()]
+        assert len(x.hash) == 18
+        assert t1 != t2
+    
+    n_events = len(lst)
+    assert n_events != 0
+    assert n_children != 0
+    assert n_tops != 0
+    assert n_events == len(set(lst))
+    assert n_children == len(set(lstc))
+    assert n_tops == len(set(lstt))
+
+def test_root_tracer():
+    pass
 
 
 if __name__ == "__main__":
-    #test_particle_template()
-    #test_particle_template_assign()
+    test_particle_template()
+    test_particle_template_assign()
     test_event_template()
+    test_event_particle_template()
+    test_event_particle_template_populate() 
+    test_root_tracer()
 
     pass

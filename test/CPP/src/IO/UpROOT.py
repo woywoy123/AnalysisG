@@ -60,11 +60,11 @@ class UpROOT(_UpROOT, Settings):
         found = {}
 
         for i in self.Branches:
-            found |= {k : self._struct[k] for k in self._struct if i in k}
+            found |= {k : self._struct[k] for k in self._struct if i in k.split("/")}
         self.CheckValidKeys(self.Branches, found, "BRANCH")
         
         for i in self.Leaves:
-            found |= {k : self._struct[k] for k in self._struct if i in k}
+            found |= {k : self._struct[k] for k in self._struct if i in k.split("/")}
         self.CheckValidKeys(self.Leaves, found, "LEAF")
         
         self.Keys[fname] = {"found" : found, "missed" : self._missed}
@@ -74,9 +74,12 @@ class UpROOT(_UpROOT, Settings):
 
     def __iter__(self):
         self.ScanKeys
-        t = {r : T for T in self.Trees for r in self.ROOTFile if T not in self.Keys[r]["missed"]["TREE"]}
-        get = [i.split("/")[-1] for i in self.Keys[list(self.ROOTFile)[0]]["found"]]
-        self._root = uproot.concatenate(t, get, library = "np", step_size = self.StepSize)
+        keys = self.Keys[list(self.ROOTFile)[0]]["found"]
+        
+        t = { T : [r for r in self.ROOTFile if T not in self.Keys[r]["missed"]["TREE"]] for T in self.Trees }
+        get = {tr : [i.split("/")[-1] for i in keys if tr in i] for tr in t}
+        self._root = {tr : uproot.concatenate([r + ":" + tr for r in t[tr]], get[tr], library = "np", step_size = self.StepSize) for tr in get}
+        self._root = {tr + "/" + l : self._root[tr][l] for tr in self._root for l in self._root[tr]} 
         return self 
     
     def __len__(self):
@@ -85,7 +88,7 @@ class UpROOT(_UpROOT, Settings):
 
     def __next__(self):
         try:
-            r = {k : self._root[k][-1] for k in self._root}
+            r = {k : self._root[k][-1].tolist() for k in self._root}
         except IndexError:
             raise StopIteration
         self._root = {k : self._root[k][:-1] for k in self._root}

@@ -2,7 +2,6 @@ from AnalysisG.IO import UpROOT
 
 root1 = "./samples/sample1/smpl1.root"
 root2 = "./samples/sample1/smpl2.root"
-rootl = "/home/tnom6927/Downloads/samples/Dilepton/output.root"
 
 def test_uproot():
     
@@ -27,6 +26,17 @@ def test_uproot():
     io.Leaves = ["met_met"]
     assert len(io) == 165
 
+    io = UpROOT([root1, root2])
+    io.Trees = ["nominal", "truth"] 
+    io.Leaves = ["weight_mc", "weight_pileup", "met_phi"]
+  
+    for i in io:
+        assert "nominal/weight_mc" in i
+        assert "truth/weight_mc" in i
+        assert "nominal/weight_pileup" in i
+        assert "truth/weight_pileup" in i
+        assert "nominal/met_phi" in i
+        assert "truth/met_phi" not in i
 
 if __name__ == "__main__":
     test_uproot()

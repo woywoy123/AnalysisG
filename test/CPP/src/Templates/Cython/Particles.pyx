@@ -8,23 +8,16 @@ cdef class ParticleTemplate:
     cdef CyParticle* ptr
     cdef public list Children
     cdef public list Parent
-    cdef dict _leafs
+    cdef dict _leaves
 
     def __cinit__(self):
         self.ptr = new CyParticle()
-        self._leafs = {}
+        self._leaves = {}
     
     def __init__(self):
         self.Children = []
         self.Parent = []
   
-    @property
-    def __interpret__(self):
-        cdef str i, v
-        for i, v in zip(self.__dict__, self.__dict__.values()):
-            self._leafs[i] = v
-        return self._leafs
-
     def __dealloc__(self):
         del self.ptr
  
@@ -61,7 +54,53 @@ cdef class ParticleTemplate:
         i += "   phi: " + str(self.phi) + "\n"
         i += "energy: " + str(self.e) + "\n"
         return i
-    
+
+    @property
+    def __interpret__(self) -> void:
+        cdef str i
+        for i, v in zip(self.__dict__, self.__dict__.values()):
+            self._leaves[i] = v
+        return self._leaves
+
+    @__interpret__.setter
+    def __interpret__(self, dict inpt):
+        
+        cdef str k
+        cdef dict x
+        try:
+            inpt = {k : inpt[k].tolist() for k in inpt}
+        except:
+            pass
+
+        while True:
+            try:
+                x = {k : inpt[k].pop() for k in inpt}
+                self.__interpret__ = x
+            except AttributeError:
+                p = self.clone
+                self.Children.append(p)
+                x = { k : setattr(p, k, inpt[k]) for k in inpt }
+                break
+            except IndexError:
+                break
+
+
+    @property
+    def clone(self):
+        v = self.__new__(self.__class__)
+        v.__init__()
+        v.__interpret__
+        v.Type = self.Type
+        return v
+
+    @property
+    def Type(self) -> str:
+        return self.ptr.Type.decode("UTF-8")
+
+    @Type.setter
+    def Type(self, str val) -> void:
+        self.ptr.Type = val.encode("UTF-8")
+
     @property 
     def index(self) -> int:
         return self.ptr.index
@@ -70,7 +109,7 @@ cdef class ParticleTemplate:
     def index(self, val: Union[int, float, str]) -> void: 
         if isinstance(val, int): self.ptr.index = val
         elif isinstance(val, float): self.ptr.index = <int>val
-        elif isinstance(val, str): self._leafs["index"] = val
+        elif isinstance(val, str): self._leaves["index"] = val
     
     @property
     def hash(self) -> str:
@@ -85,7 +124,7 @@ cdef class ParticleTemplate:
     @px.setter
     def px(self, val: Union[str, float]) -> void:
         if isinstance(val, float): self.ptr.px(<double>val)
-        elif isinstance(val, str): self._leafs["px"] = val
+        elif isinstance(val, str): self._leaves["px"] = val
 
     @property
     def py(self) -> double:
@@ -95,7 +134,7 @@ cdef class ParticleTemplate:
     @py.setter
     def py(self, val: Union[str, float]) -> void:
         if isinstance(val, float): self.ptr.py(<double>val)
-        elif isinstance(val, str): self._leafs["py"] = val
+        elif isinstance(val, str): self._leaves["py"] = val
 
     @property
     def pz(self) -> double:
@@ -105,7 +144,7 @@ cdef class ParticleTemplate:
     @pz.setter
     def pz(self, val: Union[str, float]) -> void:
         if isinstance(val, float): self.ptr.pz(<double> val)
-        elif isinstance(val, str): self._leafs["pz"] = val
+        elif isinstance(val, str): self._leaves["pz"] = val
 
     @property
     def pt(self) -> double:
@@ -115,7 +154,7 @@ cdef class ParticleTemplate:
     @pt.setter
     def pt(self, val: Union[str, float]) -> void:
         if isinstance(val, float): self.ptr.pt(<double> val)
-        elif isinstance(val, str): self._leafs["pt"] = val
+        elif isinstance(val, str): self._leaves["pt"] = val
 
     @property
     def eta(self) -> double:
@@ -125,7 +164,7 @@ cdef class ParticleTemplate:
     @eta.setter
     def eta(self, val: Union[str, float]) -> void:
         if isinstance(val, float): self.ptr.eta(<double> val)
-        elif isinstance(val, str): self._leafs["eta"] = val
+        elif isinstance(val, str): self._leaves["eta"] = val
 
     @property
     def phi(self) -> double:
@@ -135,7 +174,7 @@ cdef class ParticleTemplate:
     @phi.setter
     def phi(self, val: Union[str, float]) -> void:
         if isinstance(val, float): self.ptr.phi(<double> val)
-        elif isinstance(val, str): self._leafs["phi"] = val
+        elif isinstance(val, str): self._leaves["phi"] = val
     
     @property
     def e(self) -> double:
@@ -145,7 +184,7 @@ cdef class ParticleTemplate:
     @e.setter 
     def e(self, val: Union[str, float]) -> void:
         if isinstance(val, float): self.ptr.e(<double>val)
-        elif isinstance(val, str): self._leafs["e"] = val
+        elif isinstance(val, str): self._leaves["e"] = val
     
     @property
     def Mass(self) -> double:
@@ -154,7 +193,7 @@ cdef class ParticleTemplate:
     @Mass.setter
     def Mass(self, val: Union[str, float]) -> void:
         if isinstance(val, float): self.ptr.Mass(<double>val)
-        elif isinstance(val, str): self._leafs["Mass"] = val
+        elif isinstance(val, str): self._leaves["Mass"] = val
     
     def DeltaR(ParticleTemplate self, ParticleTemplate other) -> double:
         return self.ptr.DeltaR(other.ptr[0])
@@ -166,7 +205,7 @@ cdef class ParticleTemplate:
     @pdgid.setter
     def pdgid(self, val: Union[str, float, int]) -> void:
         if isinstance(val, int): self.ptr.pdgid(<int>val)
-        elif isinstance(val, str): self._leafs["pdgid"] = val
+        elif isinstance(val, str): self._leaves["pdgid"] = val
 
     @property
     def charge(self) -> float:
@@ -176,7 +215,7 @@ cdef class ParticleTemplate:
     def charge(self, val: Union[str, float, int]) -> void:
         if isinstance(val, float): self.ptr.charge(<double>val)
         elif isinstance(val, int): self.ptr.charge(<double>val)
-        elif isinstance(val, str): self._leafs["charge"] = val
+        elif isinstance(val, str): self._leaves["charge"] = val
     
     @property
     def symbol(self) -> str:
@@ -214,3 +253,6 @@ cdef class ParticleTemplate:
     def nudef(self, vector[signed int] val) -> void:
         self.ptr._nudef = val
    
+    @property
+    def _init(self) -> bool:
+        return True
