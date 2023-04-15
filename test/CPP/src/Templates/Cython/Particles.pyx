@@ -1,12 +1,8 @@
 #distutils: language = c++
 from libcpp.string cimport string
-from libcpp.vector cimport vector
-from libcpp.map cimport map
 from typing import Union
+from libcpp.vector cimport vector
 from Particles cimport CyParticle
-
-def proxy(obj, arg):
-    elif isinstance(arg, str): obj(<string>arg.encode("UTF-8"))
 
 cdef class ParticleTemplate:
     cdef CyParticle* ptr
@@ -71,8 +67,10 @@ cdef class ParticleTemplate:
         return self.ptr.index
     
     @index.setter
-    def index(self, val: Union[int]) -> void: 
-        self.index(val)
+    def index(self, val: Union[int, float, str]) -> void: 
+        if isinstance(val, int): self.ptr.index = val
+        elif isinstance(val, float): self.ptr.index = <int>val
+        elif isinstance(val, str): self._leafs["index"] = val
     
     @property
     def hash(self) -> str:
@@ -86,7 +84,7 @@ cdef class ParticleTemplate:
     
     @px.setter
     def px(self, val: Union[str, float]) -> void:
-        if isinstance(val, float): self.ptr.px(<double> arg)
+        if isinstance(val, float): self.ptr.px(<double>val)
         elif isinstance(val, str): self._leafs["px"] = val
 
     @property
@@ -96,7 +94,7 @@ cdef class ParticleTemplate:
 
     @py.setter
     def py(self, val: Union[str, float]) -> void:
-        if isinstance(val, float): self.ptr.py(<double> arg)
+        if isinstance(val, float): self.ptr.py(<double>val)
         elif isinstance(val, str): self._leafs["py"] = val
 
     @property
@@ -105,8 +103,9 @@ cdef class ParticleTemplate:
         return self.ptr.pz()
 
     @pz.setter
-    def pz(self, double val) -> void:
-        self.ptr.pz(val)
+    def pz(self, val: Union[str, float]) -> void:
+        if isinstance(val, float): self.ptr.pz(<double> val)
+        elif isinstance(val, str): self._leafs["pz"] = val
 
     @property
     def pt(self) -> double:
@@ -114,8 +113,9 @@ cdef class ParticleTemplate:
         return self.ptr.pt()
 
     @pt.setter
-    def pt(self, double val) -> void:
-        self.ptr.pt(val)
+    def pt(self, val: Union[str, float]) -> void:
+        if isinstance(val, float): self.ptr.pt(<double> val)
+        elif isinstance(val, str): self._leafs["pt"] = val
 
     @property
     def eta(self) -> double:
@@ -123,8 +123,9 @@ cdef class ParticleTemplate:
         return self.ptr.eta()
 
     @eta.setter
-    def eta(self, double val) -> void:
-        self.ptr.eta(val)
+    def eta(self, val: Union[str, float]) -> void:
+        if isinstance(val, float): self.ptr.eta(<double> val)
+        elif isinstance(val, str): self._leafs["eta"] = val
 
     @property
     def phi(self) -> double:
@@ -132,8 +133,9 @@ cdef class ParticleTemplate:
         return self.ptr.phi()
 
     @phi.setter
-    def phi(self, double val) -> void:
-        self.ptr.phi(val)
+    def phi(self, val: Union[str, float]) -> void:
+        if isinstance(val, float): self.ptr.phi(<double> val)
+        elif isinstance(val, str): self._leafs["phi"] = val
     
     @property
     def e(self) -> double:
@@ -141,16 +143,18 @@ cdef class ParticleTemplate:
         return self.ptr.e()
 
     @e.setter 
-    def e(self, double val) -> void:
-        self.ptr.e(val)
+    def e(self, val: Union[str, float]) -> void:
+        if isinstance(val, float): self.ptr.e(<double>val)
+        elif isinstance(val, str): self._leafs["e"] = val
     
     @property
     def Mass(self) -> double:
         return self.ptr.Mass()
     
     @Mass.setter
-    def Mass(self, double val) -> void:
-        self.ptr.Mass(val)
+    def Mass(self, val: Union[str, float]) -> void:
+        if isinstance(val, float): self.ptr.Mass(<double>val)
+        elif isinstance(val, str): self._leafs["Mass"] = val
     
     def DeltaR(ParticleTemplate self, ParticleTemplate other) -> double:
         return self.ptr.DeltaR(other.ptr[0])
@@ -160,16 +164,19 @@ cdef class ParticleTemplate:
         return self.ptr.pdgid()
 
     @pdgid.setter
-    def pdgid(self, int val) -> void:
-        self.ptr.pdgid(val)
+    def pdgid(self, val: Union[str, float, int]) -> void:
+        if isinstance(val, int): self.ptr.pdgid(<int>val)
+        elif isinstance(val, str): self._leafs["pdgid"] = val
 
     @property
-    def charge(self) -> int:
+    def charge(self) -> float:
         return self.ptr.charge()
 
     @charge.setter
-    def charge(self, int val) -> void:
-        self.ptr.charge(val)
+    def charge(self, val: Union[str, float, int]) -> void:
+        if isinstance(val, float): self.ptr.charge(<double>val)
+        elif isinstance(val, int): self.ptr.charge(<double>val)
+        elif isinstance(val, str): self._leafs["charge"] = val
     
     @property
     def symbol(self) -> str:
@@ -206,31 +213,4 @@ cdef class ParticleTemplate:
     @nudef.setter
     def nudef(self, vector[signed int] val) -> void:
         self.ptr._nudef = val
-    
-    ## ___ PROTECTION AGAINST STRING NAMESPACE OF SETTER ____ # 
-    #cdef void index(self, str v): self._leafs["index"] = v
-    #cdef void hash(self, str v): self._leafs["hash"] = v
-    #cdef void px(self, str v): self._leafs["px"] = v       
-    #cdef void py(self, str v): self._leafs["py"] = v
-    #cdef void pz(self, str v): self._leafs["pz"] = v
-    #cdef void pt(self, str v): self._leafs["pt"] = v
-    #cdef void eta(self, str v): self._leafs["eta"] = v
-    #cdef void phi(self, str v): self._leafs["phi"] = v
-    #cdef void e(self, str v): self._leafs["e"] = v
-    #cdef void Mass(self, str v): self._leafs["Mass"] = v
-    #cdef void pdgid(self, str v): self._leafs["pdgid"] = v
-    #cdef void charge(self, str v): self._leafs["charge"] = v
-
-    ## ___ C-TYPE INPUT ___ #
-    #cdef void index(self, int val): self.ptr.index = val
-    #cdef void px(self, double val): self.ptr.px(val)
-    #cdef void py(self, double val): self.ptr.py(val)
-    #cdef void pz(self, double val): self.ptr.pz(val)
-    #cdef void pt(self, double val): self.ptr.pt(val)
-    #cdef void eta(self, double val): self.ptr.eta(val)
-    #cdef void phi(self, double val): self.ptr.phi(val)
-    #cdef void e(self, double val): self.ptr.e(val)
-    #cdef void Mass(self, double val): self.ptr.Mass(val)
-    #cdef void pdgid(self, int val): self.ptr.pdgid(val)
-    #cdef void charge(self, int val): self.ptr.charge(val)
    

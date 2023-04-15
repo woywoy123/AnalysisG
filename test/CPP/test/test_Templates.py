@@ -1,19 +1,5 @@
 import math
 
-
-def test_simple_particle_template():
-    from AnalysisG.Templates import ParticleTemplate 
-    class Particle(ParticleTemplate):
-        def __init__(self):
-            ParticleTemplate.__init__(self)
-            self.px = "hello"   
-
-    x = Particle()
-    
-
-
-
-
 def test_particle_template():
 
     from AnalysisG.Templates import ParticleTemplate 
@@ -183,7 +169,6 @@ def test_particle_template_assign():
         def __init__(self):
             ParticleTemplate.__init__(self)
             self.index  =  "index"
-            self.hash   =  "hash"
             self.px     =  "px"    
             self.py     =  "py"
             self.pz     =  "pz"
@@ -204,7 +189,6 @@ def test_particle_template_assign():
     P = Particle()
     kdic = P.__interpret__
     assert kdic["index"] == "index"
-    assert kdic["hash"] == "hash"
     assert kdic["px"] == "px"    
     assert kdic["py"] == "py"
     assert kdic["pz"] == "pz"
@@ -220,7 +204,6 @@ def test_particle_template_assign():
     P2 = ParticleDerived()
     kdic = P2.__interpret__
     assert kdic["index"] == "index"
-    assert kdic["hash"] == "hash"
     assert kdic["px"] == "px"    
     assert kdic["py"] == "py"
     assert kdic["pz"] == "pz"
@@ -246,9 +229,8 @@ def test_event_template():
 
 
 if __name__ == "__main__":
-    test_simple_particle_template()
     #test_particle_template()
     #test_particle_template_assign()
-    #test_event_template()
+    test_event_template()
 
     pass
