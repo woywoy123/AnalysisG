@@ -25,3 +25,12 @@ std::string Tools::ToString(signed int inpt)
     ss << inpt;
     return ss.str(); 
 }
+
+std::vector<std::string> Tools::Split(const std::string &s, char delim)
+{
+    std::vector<std::string> r; 
+    std::stringstream ss (s); 
+    std::string item; 
+    while (getline(ss, item, delim)){ r.push_back(item); }
+    return r; 
+}

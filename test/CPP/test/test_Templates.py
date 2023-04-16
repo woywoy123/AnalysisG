@@ -386,16 +386,9 @@ def test_event_particle_template_populate():
     assert n_children == len(set(lstc))
     assert n_tops == len(set(lstt))
 
-def test_root_tracer():
-    pass
-
-
 if __name__ == "__main__":
     test_particle_template()
     test_particle_template_assign()
     test_event_template()
     test_event_particle_template()
     test_event_particle_template_populate() 
-    test_root_tracer()
-
-    pass

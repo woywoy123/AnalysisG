@@ -21,15 +21,15 @@ ext_mod = [
                 ], 
     ), 
 
-    #Extension(
-    #            name = "AnalysisG.Tracer.EventTemplates", 
-    #            sources = [
-    #                "src/Templates/Cython/Event.pyx", 
-    #                "src/Templates/CXX/Event.cxx",
+    Extension(
+                name = "AnalysisG.Tracer", 
+                sources = [
+                    "src/Templates/Cython/ROOT.pyx", 
+                    "src/Templates/CXX/ROOT.cxx",
 
-    #                "src/Templates/CXX/Tools.cxx", 
-    #            ], 
-    #),
+                    "src/Templates/CXX/Tools.cxx", 
+                ], 
+    ),
 ]
 
 setup(

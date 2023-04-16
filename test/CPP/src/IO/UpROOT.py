@@ -73,23 +73,43 @@ class UpROOT(_UpROOT, Settings):
         self.ScanKeys
 
     def __iter__(self):
-        self.ScanKeys
+        if len(self.Keys) != len(self.ROOTFile): self.ScanKeys
         keys = self.Keys[list(self.ROOTFile)[0]]["found"]
         
-        t = { T : [r for r in self.ROOTFile if T not in self.Keys[r]["missed"]["TREE"]] for T in self.Trees }
-        get = {tr : [i.split("/")[-1] for i in keys if tr in i] for tr in t}
-        self._root = {tr : uproot.concatenate([r + ":" + tr for r in t[tr]], get[tr], library = "np", step_size = self.StepSize) for tr in get}
-        self._root = {tr + "/" + l : self._root[tr][l] for tr in self._root for l in self._root[tr]} 
+        self._t = { T : [r for r in self.ROOTFile if T not in self.Keys[r]["missed"]["TREE"]] for T in self.Trees }
+        self._get = {tr : [i.split("/")[-1] for i in keys if tr in i] for tr in self._t}
+        dct = {
+                tr : {
+                    "files" : {r : tr for r in self._t[tr]}, 
+                    "library" : "np", 
+                    "step_size" : self.StepSize, 
+                    "report" : True, 
+                    "how" : dict, 
+                    "expressions" : self._get[tr], 
+                } 
+                for tr in self._get}
+        self._root = {tr : uproot.iterate(**dct[tr]) for tr in dct}
+        self._r = None
+        self._cur_r = None
+        self._EventIndex = 0
         return self 
     
     def __len__(self):
         self.__iter__()
-        return len(self._root[list(self._root)[-1]])
+        v = {tr : sum([uproot.open(r + ":" + tr).num_entries for r in self._t[tr]]) for tr in self._get}
+        return list(v.values())[0]
 
     def __next__(self):
         try:
-            r = {k : self._root[k][-1].tolist() for k in self._root}
-        except IndexError:
-            raise StopIteration
-        self._root = {k : self._root[k][:-1] for k in self._root}
-        return r
+            r = {key : self._r[key][0].pop() for key in self._r}
+            _r = self._r[list(r)[0]][1]
+            fname = _r.file_path
+            self._EventIndex = 0 if self._cur_r != fname else self._EventIndex+1
+            self._cur_r = fname
+
+            r |= {"ROOT" : fname, "EventIndex" : self._EventIndex}
+            return r
+        except:
+            r = {tr : next(self._root[tr]) for tr in self._root}
+            self._r = {tr + "/" + l : [r[tr][0][l].tolist(), r[tr][1]] for tr in r for l in r[tr][0]}            
+            return self.__next__()
