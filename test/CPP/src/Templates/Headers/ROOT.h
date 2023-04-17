@@ -5,6 +5,7 @@
 #include <map> 
 #include <vector>
 #include <thread>
+#include <future>
 
 namespace CyTracer
 {
@@ -123,6 +124,8 @@ namespace CyTracer
             bool ContainsROOT(std::string root); 
             bool ContainsHash(std::string hash); 
             int length = 0; 
+            int Threads = 1;
+            int ChunkSize = 100; 
 
         private:
             std::map<std::string, CyROOT*> _ROOTMap = {}; 

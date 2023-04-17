@@ -37,6 +37,29 @@ cdef class EventTemplate:
         cdef EventTemplate o = other 
         return s.hash == o.hash
 
+    def __getstate__(self):
+        state = {}
+        state_keys = list(self.__interpret__)
+        state_keys += list(self.__dict__)  
+        state_keys += [i for i in self.__dir__() if not i.startswith("_")]
+        tester = self.clone 
+        for i in set(state_keys):
+            try: 
+                v = getattr(self, i)
+                setattr(tester, i, v)
+            except AttributeError: continue
+            if type(v).__name__ == "builtin_function_or_method": continue
+            if type(v).__name__ == "method": continue
+            state |= {i : v}
+        del tester
+        del self
+        return state
+
+    def __setstate__(self, inpt):
+        for i in inpt:
+            try: setattr(self, i, inpt[i])
+            except: pass
+
     @property
     def __interpret__(self) -> dict:
         cdef str i
@@ -56,11 +79,10 @@ cdef class EventTemplate:
         for i in self._leaves:
             col += list(self._leaves[i].values())
         self.Leaves += col
-        self._Objects["event"] = self
         return self._leaves
     
     @__interpret__.setter
-    def __interpret__(self, dict val) -> void:
+    def __interpret__(self, dict val):
         cdef str i
         for i in val:
             setattr(self, i, val[i])
@@ -69,29 +91,34 @@ cdef class EventTemplate:
         cdef str i, k, tr
         cdef dict val, _inpt
         cdef EventTemplate ev
+        cdef list Obj = list(self._Objects) + ["event"] 
         
+        cdef list out = []
         for tr in self._Trees:
-            ev = self if self._Trees[0] == tr else self.clone
+            ev = self.clone
             ev.__interpret__
             ev.Tree = tr
             _inpt = {k.split(tr + "/")[-1] : inpt[k] for k in inpt if tr in k}
-            for i in list(ev._Objects):
+
+            for i in Obj:
                 val = ev._leaves[i] if i == "event" else ev._Objects[i].__interpret__
                 val = {k : _inpt[val[k]] for k in val if val[k] in _inpt}
                 if len(val) == 0: 
                     del ev._Objects[i]
                     continue
-                
+                 
+                if i == "event": 
+                    ev.__interpret__ = val
+                    continue
                 ev._Objects[i].__interpret__ = val
-                if i == "event": continue
                 setattr(ev, i, {p : ev._Objects[i].Children[p] for p in range(len(ev._Objects[i].Children))})
-                del ev._Objects[i]
-            self._Trees[self._Trees.index(tr)] = ev
-            ev._leaves = {}
-            ev._Leaves = []
-            ev._Branches = []
+                obj = ev._Objects[i]
+                del obj
+            
+            out.append(ev)
             inpt = {k : inpt[k] for k in inpt if tr not in k}
         del inpt
+        return out
     
     def CompileEvent(self):
         pass

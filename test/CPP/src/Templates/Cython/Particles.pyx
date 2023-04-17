@@ -4,7 +4,7 @@ from typing import Union
 from libcpp.vector cimport vector
 from Particles cimport CyParticle
 
-cdef class ParticleTemplate:
+cdef class ParticleTemplate(object):
     cdef CyParticle* ptr
     cdef public list Children
     cdef public list Parent
@@ -55,10 +55,35 @@ cdef class ParticleTemplate:
         i += "energy: " + str(self.e) + "\n"
         return i
 
+    def __getstate__(self):
+        state = {}
+        state_keys = list(self.__interpret__)
+        state_keys += list(self.__dict__)  
+        state_keys += [i for i in self.__dir__() if not i.startswith("_")]
+        tester = self.clone 
+        for i in set(state_keys):
+            try: 
+                v = getattr(self, i)
+                setattr(tester, i, v)
+            except AttributeError: continue
+            except IndexError: continue
+            if type(v).__name__ == "builtin_function_or_method": continue
+            state |= {i : v}
+        del tester
+        del self
+        return state
+
+    def __setstate__(self, inpt):
+        for i in inpt:
+            try: setattr(self, i, inpt[i])
+            except: pass
+
     @property
     def __interpret__(self) -> void:
         cdef str i
         for i, v in zip(self.__dict__, self.__dict__.values()):
+            if isinstance(v, list): continue
+            if isinstance(v, dict): continue
             self._leaves[i] = v
         return self._leaves
 
@@ -83,7 +108,6 @@ cdef class ParticleTemplate:
                 break
             except IndexError:
                 break
-
 
     @property
     def clone(self):

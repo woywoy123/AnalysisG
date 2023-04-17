@@ -5,12 +5,12 @@ from libcpp cimport bool
 cdef extern from "../Headers/Tools.h" namespace "Tools":
     pass
 
-cdef extern from "../Headers/Particles.h" namespace "CyTemplate":
-    cdef cppclass CyParticle:
-        CyParticle() except +
-        CyParticle(double px, double py, double pz, double e) except + 
-        CyParticle operator+(const CyParticle& p1) except +   
-        bool operator==(const CyParticle& p1) except +   
+cdef extern from "../Headers/Particles.h" namespace "CyTemplate" nogil:
+    cdef cppclass CyParticle nogil:
+        CyParticle() nogil except +
+        CyParticle(double px, double py, double pz, double e) nogil except + 
+        CyParticle operator+(const CyParticle& p1) nogil except +   
+        bool operator==(const CyParticle& p1) nogil except +   
         
         # Book keeping variables
         signed int index; 
@@ -24,10 +24,10 @@ cdef extern from "../Headers/Particles.h" namespace "CyTemplate":
         string Type; 
 
         # Getter Functions
-        double px() except +
-        double py() except +
-        double pz() except + 
-        double pt() except +
+        double px() nogil except +
+        double py() nogil except +
+        double pz() nogil except + 
+        double pt() nogil except +
         double eta() except +
         double phi() except +
         double e() except +

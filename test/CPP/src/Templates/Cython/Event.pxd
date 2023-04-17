@@ -4,9 +4,9 @@ from libcpp cimport bool
 cdef extern from "../Headers/Tools.h" namespace "Tools":
     pass
 
-cdef extern from "../Headers/Event.h" namespace "CyTemplate":
-    cdef cppclass CyEvent:
-        CyEvent() except +
+cdef extern from "../Headers/Event.h" namespace "CyTemplate" nogil:
+    cdef cppclass CyEvent nogil:
+        CyEvent() nogil except +
         
         signed int index; 
         double weight; 
@@ -14,5 +14,5 @@ cdef extern from "../Headers/Event.h" namespace "CyTemplate":
         string tree; 
         string commit_hash; 
         
-        void Hash(string val); 
+        void Hash(string val) nogil except +
         string Hash(); 

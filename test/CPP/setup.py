@@ -1,5 +1,6 @@
 from setuptools import setup, Extension
 from Cython.Build import cythonize
+import os 
 
 ext_mod = [
     Extension(
@@ -27,6 +28,14 @@ ext_mod = [
                     "src/Templates/Cython/ROOT.pyx", 
                     "src/Templates/CXX/ROOT.cxx",
 
+                    "src/Templates/CXX/Tools.cxx", 
+                ], 
+    ),
+
+    Extension(
+                name = "AnalysisG._Tools", 
+                sources = [
+                    "src/Templates/Cython/Tools.pyx", 
                     "src/Templates/CXX/Tools.cxx", 
                 ], 
     ),

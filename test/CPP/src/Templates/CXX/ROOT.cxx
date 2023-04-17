@@ -97,25 +97,41 @@ bool CyTracer::CySampleTracer::ContainsHash(std::string hash)
 
 std::map<std::string, bool> CyTracer::CySampleTracer::FastSearch(std::vector<std::string> Hashes)
 {
-    auto search = [](bool* found, std::map<std::string, CyROOT*>* _hashes, std::string* hash)
+    auto search = [](std::vector<bool>* found, std::map<std::string, CyROOT*>* _hashes, std::vector<std::string>* hash)
     {
-        if (_hashes -> find(*hash) == _hashes -> end()){ *found = false; }
-        *found = true; 
+        for (int v(0); v < hash -> size(); ++v)
+        {
+            if (_hashes -> find(hash -> at(v)) == _hashes -> end()){ found -> push_back(false); }
+            found -> push_back(true);  
+        }
     }; 
+    
+
+    std::vector<std::vector<std::string>> q_hash = Tools::Chunk(Hashes, this -> ChunkSize); 
+    std::vector<std::vector<bool>> q_found; 
+    std::vector<std::thread*> tmp; 
+    for (int v(0); v < q_hash.size(); ++v)
+    {
+        std::vector<bool> f = {}; 
+        q_found.push_back(f);  
+        std::thread* p = new std::thread(search, &q_found[v], &(this -> _ROOTHash), &q_hash[v]); 
+        tmp.push_back(p); 
+        
+        if (tmp.size() < this -> Threads){ continue; }
+
+        for (std::thread* t : tmp){ t -> join(); delete t; }
+        tmp = {}; 
+    }
+    for (std::thread* t : tmp){ t -> join(); delete t; }
+    tmp = {}; 
 
     std::map<std::string, bool> r; 
-    std::vector<std::thread*> tmp; 
-    for (std::string v : Hashes)
-    { 
-        r[v] = false; 
-
-        std::thread* p = new std::thread(search, &r[v], &(this -> _ROOTHash), &v);
-        tmp.push_back(p);
-
-        // add threading limit....
+    for (int v(0); v < q_hash.size(); ++v)
+    {
+        for (int j(0); j < q_hash[v].size(); ++j)
+        {
+            r[q_hash[v][j]] = q_found[v][j]; 
+        }
     }
-    
-    for (std::thread* t : tmp){ t -> join(); delete t; }
-
     return r; 
 }

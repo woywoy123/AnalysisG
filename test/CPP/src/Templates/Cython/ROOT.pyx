@@ -56,21 +56,21 @@ cdef class SampleTracer:
         return {key.decode("UTF-8") : fnd for key, fnd in self.ptr.FastSearch(v)}
 
 
-    def AddEvent(self, Event, root, index) -> void:
+    def AddEvent(self, Events, root, index) -> void:
         cdef int i; 
-        for i in range(len(Event.Trees)):
-            if Event.Trees[i].index == -1: Event.Trees[i].index = index
-            Event.Trees[i].hash = root
+        for i in range(len(Events)):
+            if Events.index == -1: Events.index = index
+            Events[i].hash = root
             
-            if self.ptr.ContainsHash(Event.Trees[i].hash.encode("UTF-8")): continue
+            if self.ptr.ContainsHash(Events[i].hash.encode("UTF-8")): continue
             _ev = new CyEvent()
-            _ev.Tree = Event.Trees[i].Tree.encode("UTF-8")
-            _ev.Hash = Event.Trees[i].hash.encode("UTF-8")
+            _ev.Tree = Events[i].Tree.encode("UTF-8")
+            _ev.Hash = Events[i].hash.encode("UTF-8")
             _ev.ROOT = root.encode("UTF-8")
             _ev.EventIndex = <int>index
             _ev.Event = True
             self.ptr.AddEvent(_ev) 
-            self.HashMap[Event.Trees[i].hash] = Event.Trees[i]
+            self.HashMap[Events[i].hash] = Events[i]
 
     def __iter__(self):
         self._itv = self.ptr.HashList()

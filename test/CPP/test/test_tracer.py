@@ -82,9 +82,8 @@ def test_tracer_addEvent():
     for r in roothashes:
         for hsh in roothashes[r]:
             assert r == tr.HashToROOT(hsh)
-   
-    lst = [i for j in range(10) for i in hashes ]
-    print(tr.FastHashSearch(lst))
+    lst = [i for j in range(1000) for i in hashes ]
+    assert sum(tr.FastHashSearch(lst).values()) == len(hashes)
 
 
 if __name__ == "__main__":
