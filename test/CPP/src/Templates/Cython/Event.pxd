@@ -15,4 +15,4 @@ cdef extern from "../Headers/Event.h" namespace "CyTemplate" nogil:
         string commit_hash; 
         
         void Hash(string val) nogil except +
-        string Hash(); 
+        string Hash() nogil except +

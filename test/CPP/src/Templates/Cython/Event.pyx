@@ -42,17 +42,16 @@ cdef class EventTemplate:
         state_keys = list(self.__interpret__)
         state_keys += list(self.__dict__)  
         state_keys += [i for i in self.__dir__() if not i.startswith("_")]
-        tester = self.clone 
+        self._leaves = {"event" : {}} 
         for i in set(state_keys):
-            try: 
-                v = getattr(self, i)
-                setattr(tester, i, v)
+            if i == "clone": continue
+            
+            try: v = getattr(self, i)
             except AttributeError: continue
+            
             if type(v).__name__ == "builtin_function_or_method": continue
             if type(v).__name__ == "method": continue
             state |= {i : v}
-        del tester
-        del self
         return state
 
     def __setstate__(self, inpt):
@@ -69,9 +68,9 @@ cdef class EventTemplate:
             if isinstance(v, dict): continue
             if i in exl: continue
             self._leaves["event"][i] = v
+        
         for i in self._Objects:
-            if self._Objects[i]._init != True:
-                self._Objects[i] = self._Objects[i]()
+            if self._Objects[i]._init != False: self._Objects[i] = self._Objects[i]()
             self._leaves[i] = self._Objects[i].__interpret__
         
         cdef list col = []
@@ -116,6 +115,7 @@ cdef class EventTemplate:
                 del obj
             
             out.append(ev)
+            ev._Objects = {}
             inpt = {k : inpt[k] for k in inpt if tr not in k}
         del inpt
         return out

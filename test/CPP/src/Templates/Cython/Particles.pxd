@@ -28,29 +28,30 @@ cdef extern from "../Headers/Particles.h" namespace "CyTemplate" nogil:
         double py() nogil except +
         double pz() nogil except + 
         double pt() nogil except +
-        double eta() except +
-        double phi() except +
-        double e() except +
-        double Mass() except +
-        double DeltaR(const CyParticle& p) except +
-        signed int pdgid() except +
-        double charge() except +
-        string symbol() except +
-        bool is_lep() except +
-        bool is_nu() except +
-        bool is_b() except +
+        double eta() nogil except +
+        double phi() nogil except +
+        double e() nogil except +
+        double Mass() nogil except +
+        double DeltaR(const CyParticle& p) nogil except +
+        signed int pdgid() nogil except +
+        double charge() nogil except +
+        string symbol() nogil except +
+        bool is_lep() nogil except +
+        bool is_nu() nogil except +
+        bool is_b() nogil except +
 
         # Setter Functions
-        void px(double val) except + 
-        void py(double val) except + 
-        void pz(double val) except +  
-        void pt(double val) except + 
-        void eta(double val) except + 
-        void phi(double val) except +
-        void e(double val) except + 
-        void Mass(double val) except +
-        void pdgid(signed int val) except +
-        void charge(double val) except +
+        void px(double val) nogil except + 
+        void py(double val) nogil except + 
+        void pz(double val) nogil except +  
+        void pt(double val) nogil except + 
+        void eta(double val) nogil except + 
+        void phi(double val) nogil except +
+        void e(double val) nogil except + 
+        void Mass(double val) nogil except +
+        void pdgid(signed int val) nogil except +
+        void charge(double val) nogil except +
+        void symbol(string val) nogil except +
 
-        string Hash() except +
-        void _UpdateState() except +
+        string Hash() nogil except +
+        void _UpdateState() nogil except +

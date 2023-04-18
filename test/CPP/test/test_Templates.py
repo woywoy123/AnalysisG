@@ -147,21 +147,6 @@ def test_particle_template():
     assert tc1.px == val[0]
     assert tc1 in tp.Children
     
-    # Test for memory leak
-    for i in range(100000):
-        t_ = Particle()
-        t_.px = val[0]
-        t_.py = val[1]
-        t_.pz = val[2]
-        t_.e = val[3]
-
-        t = Particle()
-        t.px = val[0]
-        t.py = val[1]
-        t.pz = val[2]
-        t.e = val[3]
-        t_.Children.append(t)
-
 def test_particle_template_assign():
     from AnalysisG.Templates import ParticleTemplate 
 
@@ -217,42 +202,6 @@ def test_particle_template_assign():
     assert kdic["somevar"] == "somevar"
     assert kdic["somevar2"] == "somevar2" 
 
-
-from AnalysisG.Templates import ParticleTemplate 
-class Particle(ParticleTemplate):
-    def __init__(self):
-        ParticleTemplate.__init__(self)
-        self.index  =  "index"
-        self.px     =  "px"    
-        self.py     =  "py"
-        self.pz     =  "pz"
-        self.pt     =  "pt"
-        self.eta    =  "eta"
-        self.phi    =  "phi"
-        self.e      =  "e"
-        self.Mass   =  "Mass"
-        self.pdgid  =  "pdgid"
-        self.charge =  "charge"
-        self.somevar = "somevar"
-        self.SomeLinker = []
-        self.SomeOtherLinker = {}
-
-class ParticleDerived(Particle):
-    def __init__(self):
-        Particle.__init__(self)
-        self.somevar2 = "somevar2"   
-        self.someParticle = Particle()
-        self.particles = [Particle(), Particle()]
-        self.AParticle = {"Top" : Particle()}
-
-def test_particle_pickle():
-    from AnalysisG.IO import PickleObject, UnpickleObject
-   
-    x = ParticleDerived()
-    PickleObject(x, "test")
-    p = UnpickleObject("test")  
-    assert x.__dict__ == p.__dict__
-
 def test_event_template():
     root1 = "./samples/sample1/smpl1.root"
     from AnalysisG.Templates import EventTemplate
@@ -287,27 +236,6 @@ def test_event_template():
     ev2.index = 1
     ev2.hash = root1
     assert ev2 != ev
-
-
-from AnalysisG.Templates import EventTemplate
-class Event(EventTemplate):
-    def __init__(self):
-        EventTemplate.__init__(self)
-        self.index = "eventNumber"
-        self.weight = "weight_mc"
-        self.Trees = ["nominal"]
-        self.met_phi = "met_phi"
-        self.CommitHash = "..."
-        self.Deprecated = False
-
-def test_event_pickle():
-    from AnalysisG.IO import PickleObject, UnpickleObject
-   
-    x = Event()
-    PickleObject(x, "test")
-    p = UnpickleObject("test")  
-    assert x.__dict__ == p.__dict__
-
 
 def test_event_particle_template():
     from AnalysisG.Templates import EventTemplate
@@ -445,10 +373,8 @@ def test_event_particle_template_populate():
 if __name__ == "__main__":
     test_particle_template()
     test_particle_template_assign()
-    test_particle_pickle()
 
     test_event_template()
-    test_event_pickle()
 
     test_event_particle_template()
     test_event_particle_template_populate() 

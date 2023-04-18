@@ -2,6 +2,7 @@
 from libcpp.string cimport string
 from typing import Union
 from libcpp.vector cimport vector
+from libcpp cimport bool
 from Particles cimport CyParticle
 
 cdef class ParticleTemplate(object):
@@ -9,10 +10,12 @@ cdef class ParticleTemplate(object):
     cdef public list Children
     cdef public list Parent
     cdef dict _leaves
+    cdef bool _state
 
     def __cinit__(self):
         self.ptr = new CyParticle()
         self._leaves = {}
+        self._state = False
     
     def __init__(self):
         self.Children = []
@@ -25,13 +28,12 @@ cdef class ParticleTemplate(object):
         if isinstance(self, int): return other
         if isinstance(other, int): return self
 
-        cdef ParticleTemplate p = ParticleTemplate()
         cdef ParticleTemplate s = self
         cdef ParticleTemplate o = other 
-
         s.ptr._UpdateState()
         o.ptr._UpdateState()
-        p.ptr[0] = s.ptr[0] + o.ptr[0]
+        cdef ParticleTemplate p = self.clone 
+        p.ptr[0] = p.ptr[0] + o.ptr[0]
         return p
     
     def __eq__(self, other) -> bool:
@@ -60,17 +62,12 @@ cdef class ParticleTemplate(object):
         state_keys = list(self.__interpret__)
         state_keys += list(self.__dict__)  
         state_keys += [i for i in self.__dir__() if not i.startswith("_")]
-        tester = self.clone 
         for i in set(state_keys):
-            try: 
-                v = getattr(self, i)
-                setattr(tester, i, v)
+            if i == "clone": continue
+            try: v = getattr(self, i)
             except AttributeError: continue
-            except IndexError: continue
             if type(v).__name__ == "builtin_function_or_method": continue
             state |= {i : v}
-        del tester
-        del self
         return state
 
     def __setstate__(self, inpt):
@@ -79,7 +76,9 @@ cdef class ParticleTemplate(object):
             except: pass
 
     @property
-    def __interpret__(self) -> void:
+    def __interpret__(self):
+        if self._init: return self._leaves
+
         cdef str i
         for i, v in zip(self.__dict__, self.__dict__.values()):
             if isinstance(v, list): continue
@@ -92,29 +91,30 @@ cdef class ParticleTemplate(object):
         
         cdef str k
         cdef dict x
+        
         try:
+            inpt = {k : inpt[self._leaves[k]] for k in self._leaves}
             inpt = {k : inpt[k].tolist() for k in inpt}
         except:
-            pass
-
+            try: inpt = {k : inpt[k].tolist() for k in inpt}
+            except: pass
+        
         while True:
-            try:
-                x = {k : inpt[k].pop() for k in inpt}
-                self.__interpret__ = x
+            try: self.__interpret__ = {k : inpt[k].pop() for k in inpt}
             except AttributeError:
                 p = self.clone
-                self.Children.append(p)
                 x = { k : setattr(p, k, inpt[k]) for k in inpt }
+                p._init = True
+                self.Children.append(p)
                 break
-            except IndexError:
-                break
+            except IndexError: break
 
     @property
     def clone(self):
         v = self.__new__(self.__class__)
         v.__init__()
-        v.__interpret__
         v.Type = self.Type
+        v.__interpret__
         return v
 
     @property
@@ -244,6 +244,10 @@ cdef class ParticleTemplate(object):
     @property
     def symbol(self) -> str:
         return self.ptr.symbol().decode("UTF-8")
+
+    @symbol.setter
+    def symbol(self, string value):
+        self.ptr.symbol(value.decode("UTF-8")); 
     
     @property
     def is_lep(self) -> bool:
@@ -279,4 +283,8 @@ cdef class ParticleTemplate(object):
    
     @property
     def _init(self) -> bool:
-        return True
+        return self._state
+    
+    @_init.setter
+    def _init(self, bool val): self._state = val
+        

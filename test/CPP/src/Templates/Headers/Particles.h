@@ -79,11 +79,12 @@ namespace CyTemplate
 
             // Setter Functions
             void pdgid(signed int id), charge(double val); 
+            void symbol(std::string val); 
             std::vector<signed int> _lepdef = {11, 13, 15};
             std::vector<signed int> _nudef = {12, 14, 16}; 
             // ============== End Physics ================ //
 
-            std::string Hash(); 
+            std::string Hash();
             void _UpdateState();
 
         private:
@@ -105,7 +106,7 @@ namespace CyTemplate
             bool is(std::vector<signed int> p); 
             
             // Book keeping 
-            std::string _hash; 
+            std::string _hash = ""; 
  
             
     };

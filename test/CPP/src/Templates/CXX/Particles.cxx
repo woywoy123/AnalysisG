@@ -220,6 +220,11 @@ std::string CyTemplate::CyParticle::symbol()
     return ss.str(); 
 }
 
+void CyTemplate::CyParticle::symbol(std::string inpt)
+{
+    this -> _symbol = inpt; 
+}
+
 bool CyTemplate::CyParticle::is(std::vector<signed int> p)
 {
     for (signed int i : p){ if (std::abs(i) == std::abs(this -> _pdgid)) { return true; }}

@@ -38,21 +38,6 @@ class Children(Particle):
     def FromRes(self):
         return self.Parent[0].FromRes
 
-    def __Sel(self, lst):
-        return True if abs(self.pdgid) in lst else False
-
-    @property
-    def is_lep(self):
-        return self.__Sel([11, 13])
-
-    @property
-    def is_nu(self):
-        return self.__Sel([12, 14])
-
-    @property
-    def is_b(self):
-        return self.__Sel([5])
-
 class TruthJet(Particle):
     def __init__(self):
         self.Type = "truthjets"
@@ -65,10 +50,6 @@ class TruthJet(Particle):
         self.TopIndex = self.Type + "_TopIndex"
         self.Tops = []
         self.Parton = []
-
-    @property
-    def is_b(self):
-        return self.is_b_var == 5
 
     @property
     def FromRes(self):
@@ -129,10 +110,6 @@ class Electron(Particle):
         self.charge = self.Type + "_charge"
         self.index = []
 
-    @property
-    def is_lep(self):
-        return True
-
 class Muon(Particle):
 
     def __init__(self):
@@ -140,10 +117,6 @@ class Muon(Particle):
         Particle.__init__(self)
         self.charge = self.Type + "_charge"
         self.index = []
-
-    @property
-    def is_lep(self):
-        return True
 
 class Neutrino(ParticleTemplate):
     def __init__(self, px=None, py=None, pz=None):
