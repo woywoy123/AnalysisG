@@ -224,7 +224,6 @@ def test_event_multithreading():
         try: assert len([events_j[i.hash] for i in events]) == len(events)
         except KeyError: raise AssertionError
         
-        print(psutil.virtual_memory().percent)
         if mem == 0: mem = psutil.virtual_memory().percent
         assert psutil.virtual_memory().percent - mem < 1
   
@@ -233,7 +232,7 @@ def test_event_multithreading():
 
 
 if __name__ == "__main__":
-    #test_particle_pickle()
-    #test_particle_multithreading()
-    #test_event_pickle()
+    test_particle_pickle()
+    test_particle_multithreading()
+    test_event_pickle()
     test_event_multithreading()

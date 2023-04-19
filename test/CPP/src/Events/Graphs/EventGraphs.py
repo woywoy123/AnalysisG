@@ -1,34 +1,34 @@
-from AnalysisTopGNN.Templates import EventGraphTemplate
+from AnalysisG.Templates import GraphTemplate
 
-class EventGraphTops(EventGraphTemplate):
+class GraphTops(GraphTemplate):
     def __init__(self, Event = None):
-        EventGraphTemplate.__init__(self)
+        GraphTemplate.__init__(self)
         self.Event = Event
         self.Particles += self.Event.Tops
 
-class EventGraphChildren(EventGraphTemplate):
+class GraphChildren(GraphTemplate):
     def __init__(self, Event = None):
-        EventGraphTemplate.__init__(self)
+        GraphTemplate.__init__(self)
         self.Event = Event
         self.Particles += self.Event.TopChildren
 
-class EventGraphChildrenNoNu(EventGraphTemplate):
+class GraphChildrenNoNu(GraphTemplate):
     def __init__(self, Event = None):
-        EventGraphTemplate.__init__(self)
+        GraphTemplate.__init__(self)
         self.Event = Event
         self.Particles += [i for i in self.Event.TopChildren if abs(i.pdgid) not in [12, 14, 16]]
 
-class EventGraphTruthJetLepton(EventGraphTemplate):
+class GraphTruthJetLepton(GraphTemplate):
     def __init__(self, Event = None):
-        EventGraphTemplate.__init__(self)
+        GraphTemplate.__init__(self)
         self.Event = Event
         self.Particles += self.Event.TruthJets
         self.Particles += self.Event.Electrons
         self.Particles += self.Event.Muons
 
-class EventGraphDetector(EventGraphTemplate):
+class GraphDetector(GraphTemplate):
     def __init__(self, Event = None):
-        EventGraphTemplate.__init__(self)
+        GraphTemplate.__init__(self)
         self.Event = Event
         self.Particles += self.Event.DetectorParticles
 

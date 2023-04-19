@@ -23,12 +23,7 @@ namespace CyTracer
             ~CyEvent();
 
             // Operators 
-            bool operator==(CyEvent* p)
-            {
-                if (this -> Hash != p -> Hash){ return false; } 
-                if (this -> Graph != p -> Graph){ return false; } 
-                return true; 
-            }
+            bool operator==(CyEvent* p); 
 
             // Event Definitions 
             std::string Tree = ""; 
@@ -66,41 +61,13 @@ namespace CyTracer
 
             // Functions 
             std::vector<std::string> HashList(); 
-            
-            bool operator==(CyROOT* p)
-            {
-                if (this -> Filename != p -> Filename){ return false; }            
-                if (this -> SourcePath != p -> SourcePath){ return false; }            
-                if (this -> length != p -> length){ return false; }
-                std::map<std::string, CyEvent*>::iterator it; 
-                for (it = this -> HashMap.begin(); it != this -> HashMap.end(); ++it)
-                {
-                    std::string hash = it -> first; 
-                    if (p -> HashMap[hash] == 0){ return false; }
-                    if (p -> HashMap[hash] != it -> second){ return false; }
-                }
-                return true;  
-            }
 
-            CyROOT operator+(CyROOT* p)
-            {
-                if (this == p){ return (*this); }
-                CyTracer::CyROOT R; 
-                R.Filename = this -> Filename;  
-                R.SourcePath = this -> SourcePath; 
-                R.CachePath = this -> CachePath; 
-                R.HashMap = this -> HashMap; 
-                R.length = this -> length; 
-                 
-                std::map<std::string, CyEvent*>::iterator it; 
-                for (it = p -> HashMap.begin(); it != p -> HashMap.begin(); ++it)
-                {
-                    if (R.HashMap[it -> first] != 0){continue;}
-                    R.HashMap[it -> first] = it -> second;
-                    R.length += 1; 
-                }
-                return R; 
-            }
+            // Book keeping
+            std::vector<CySampleTracer*> _Tracers = {};
+            
+            // Operators
+            bool operator==(CyROOT* p); 
+            CyROOT* operator+(CyROOT* p); 
     }; 
 
     class CySampleTracer
@@ -126,6 +93,10 @@ namespace CyTracer
             int length = 0; 
             int Threads = 1;
             int ChunkSize = 100; 
+
+            // Operators 
+            bool operator==(CySampleTracer* p); 
+            CySampleTracer* operator+(CySampleTracer* p); 
 
         private:
             std::map<std::string, CyROOT*> _ROOTMap = {}; 

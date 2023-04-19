@@ -136,7 +136,15 @@ cdef class EventTemplate:
     def index(self, val: Union[int, str]):
         if isinstance(val, int): self.ptr.index = val
         elif isinstance(val, str): self._leaves["event"]["index"] = val
-   
+    
+    @property
+    def weight(self) -> float: return self.ptr.weight
+
+    @weight.setter
+    def weight(self, val: Union[str, float]):
+        if isinstance(val, str): self._leaves["event"]["weight"] = val
+        else: self.ptr.weight = <double> val
+
     @property
     def Tree(self) -> str: return self.ptr.tree.decode("UTF-8")
 
@@ -192,4 +200,5 @@ cdef class EventTemplate:
     @Objects.setter
     def Objects(self, val: Union[dict]) -> void:
         self._Objects = val
+    
 

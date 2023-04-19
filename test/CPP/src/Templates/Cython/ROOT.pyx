@@ -43,8 +43,33 @@ cdef class SampleTracer:
         if self.ptr.length == 0: self.ptr.HashList()
         return self.ptr.length
 
+    def __add__(self, other) -> SampleTracer:
+        if isinstance(self, int): return other
+        if isinstance(other, int): return self
+
+        cdef SampleTracer s = self
+        cdef SampleTracer o = other
+        cdef SampleTracer p = self.clone
+        p.ptr = s.ptr[0] + o.ptr
+        for i in s.HashMap: p.HashMap[i] = s.HashMap[i] 
+        for i in o.HashMap: p.HashMap[i] = o.HashMap[i]
+        return p
+    
+    def __iadd__(self, other):
+        cdef SampleTracer s = self
+        cdef SampleTracer o = other
+        s.ptr = s.ptr[0] + o.ptr
+        for i in o.HashMap: s.HashMap[i] = o.HashMap[i]
+        return s
+
     def HashToROOT(self, str key) -> str:
         return self.ptr.HashToROOT(key.encode("UTF-8")).decode("UTF-8")
+
+    @property
+    def clone(self):
+        v = self.__new__(self.__class__)
+        v.__init__()
+        return v
 
     def FastHashSearch(self, hashes) -> dict:
         cdef vector[string] v
@@ -55,8 +80,7 @@ cdef class SampleTracer:
         for i in range(len(hashes)): v.push_back(hashes[i].encode("UTF-8"))
         return {key.decode("UTF-8") : fnd for key, fnd in self.ptr.FastSearch(v)}
 
-
-    def AddEvent(self, Events, root, index) -> void:
+    def AddEvent(self, Events, root, index):
         cdef int i; 
         for i in range(len(Events)):
             if Events.index == -1: Events.index = index

@@ -1690,6 +1690,7 @@ static const char __pyx_k_method[] = "method";
 static const char __pyx_k_reduce[] = "__reduce__";
 static const char __pyx_k_typing[] = "typing";
 static const char __pyx_k_values[] = "values";
+static const char __pyx_k_weight[] = "weight";
 static const char __pyx_k_Branches[] = "Branches";
 static const char __pyx_k_Children[] = "Children";
 static const char __pyx_k_getstate[] = "__getstate__";
@@ -1751,6 +1752,7 @@ static PyObject *__pyx_n_s_startswith;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_typing;
 static PyObject *__pyx_n_s_values;
+static PyObject *__pyx_n_s_weight;
 static PyObject *__pyx_n_s_zip;
 static int __pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate___cinit__(struct __pyx_obj_9AnalysisG_9Templates_14EventTemplates_EventTemplate *__pyx_v_self); /* proto */
 static int __pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_2__init__(CYTHON_UNUSED struct __pyx_obj_9AnalysisG_9Templates_14EventTemplates_EventTemplate *__pyx_v_self); /* proto */
@@ -1766,6 +1768,8 @@ static PyObject *__pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate
 static PyObject *__pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_5clone___get__(struct __pyx_obj_9AnalysisG_9Templates_14EventTemplates_EventTemplate *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_5index___get__(struct __pyx_obj_9AnalysisG_9Templates_14EventTemplates_EventTemplate *__pyx_v_self); /* proto */
 static int __pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_5index_2__set__(struct __pyx_obj_9AnalysisG_9Templates_14EventTemplates_EventTemplate *__pyx_v_self, PyObject *__pyx_v_val); /* proto */
+static PyObject *__pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_6weight___get__(struct __pyx_obj_9AnalysisG_9Templates_14EventTemplates_EventTemplate *__pyx_v_self); /* proto */
+static int __pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_6weight_2__set__(struct __pyx_obj_9AnalysisG_9Templates_14EventTemplates_EventTemplate *__pyx_v_self, PyObject *__pyx_v_val); /* proto */
 static PyObject *__pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_4Tree___get__(struct __pyx_obj_9AnalysisG_9Templates_14EventTemplates_EventTemplate *__pyx_v_self); /* proto */
 static int __pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_4Tree_2__set__(struct __pyx_obj_9AnalysisG_9Templates_14EventTemplates_EventTemplate *__pyx_v_self, PyObject *__pyx_v_val); /* proto */
 static PyObject *__pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_5Trees___get__(struct __pyx_obj_9AnalysisG_9Templates_14EventTemplates_EventTemplate *__pyx_v_self); /* proto */
@@ -4422,6 +4426,140 @@ static int __pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_5inde
 /* "src/Templates/Cython/Event.pyx":141
  * 
  *     @property
+ *     def weight(self) -> float: return self.ptr.weight             # <<<<<<<<<<<<<<
+ * 
+ *     @weight.setter
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_6weight_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_6weight_1__get__(PyObject *__pyx_v_self) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_6weight___get__(((struct __pyx_obj_9AnalysisG_9Templates_14EventTemplates_EventTemplate *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_6weight___get__(struct __pyx_obj_9AnalysisG_9Templates_14EventTemplates_EventTemplate *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__get__", 0);
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_self->ptr->weight); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 141, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("AnalysisG.Templates.EventTemplates.EventTemplate.weight.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "src/Templates/Cython/Event.pyx":144
+ * 
+ *     @weight.setter
+ *     def weight(self, val: Union[str, float]):             # <<<<<<<<<<<<<<
+ *         if isinstance(val, str): self._leaves["event"]["weight"] = val
+ *         else: self.ptr.weight = <double> val
+ */
+
+/* Python wrapper */
+static int __pyx_pw_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_6weight_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_val); /*proto*/
+static int __pyx_pw_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_6weight_3__set__(PyObject *__pyx_v_self, PyObject *__pyx_v_val) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
+  __pyx_r = __pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_6weight_2__set__(((struct __pyx_obj_9AnalysisG_9Templates_14EventTemplates_EventTemplate *)__pyx_v_self), ((PyObject *)__pyx_v_val));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static int __pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_6weight_2__set__(struct __pyx_obj_9AnalysisG_9Templates_14EventTemplates_EventTemplate *__pyx_v_self, PyObject *__pyx_v_val) {
+  int __pyx_r;
+  __Pyx_RefNannyDeclarations
+  int __pyx_t_1;
+  int __pyx_t_2;
+  PyObject *__pyx_t_3 = NULL;
+  double __pyx_t_4;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("__set__", 0);
+
+  /* "src/Templates/Cython/Event.pyx":145
+ *     @weight.setter
+ *     def weight(self, val: Union[str, float]):
+ *         if isinstance(val, str): self._leaves["event"]["weight"] = val             # <<<<<<<<<<<<<<
+ *         else: self.ptr.weight = <double> val
+ * 
+ */
+  __pyx_t_1 = PyString_Check(__pyx_v_val); 
+  __pyx_t_2 = (__pyx_t_1 != 0);
+  if (__pyx_t_2) {
+    if (unlikely(__pyx_v_self->_leaves == Py_None)) {
+      PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
+      __PYX_ERR(0, 145, __pyx_L1_error)
+    }
+    __pyx_t_3 = __Pyx_PyDict_GetItem(__pyx_v_self->_leaves, __pyx_n_s_event); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 145, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    if (unlikely(PyObject_SetItem(__pyx_t_3, __pyx_n_s_weight, __pyx_v_val) < 0)) __PYX_ERR(0, 145, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    goto __pyx_L3;
+  }
+
+  /* "src/Templates/Cython/Event.pyx":146
+ *     def weight(self, val: Union[str, float]):
+ *         if isinstance(val, str): self._leaves["event"]["weight"] = val
+ *         else: self.ptr.weight = <double> val             # <<<<<<<<<<<<<<
+ * 
+ *     @property
+ */
+  /*else*/ {
+    __pyx_t_4 = __pyx_PyFloat_AsDouble(__pyx_v_val); if (unlikely((__pyx_t_4 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 146, __pyx_L1_error)
+    __pyx_v_self->ptr->weight = ((double)__pyx_t_4);
+  }
+  __pyx_L3:;
+
+  /* "src/Templates/Cython/Event.pyx":144
+ * 
+ *     @weight.setter
+ *     def weight(self, val: Union[str, float]):             # <<<<<<<<<<<<<<
+ *         if isinstance(val, str): self._leaves["event"]["weight"] = val
+ *         else: self.ptr.weight = <double> val
+ */
+
+  /* function exit code */
+  __pyx_r = 0;
+  goto __pyx_L0;
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_AddTraceback("AnalysisG.Templates.EventTemplates.EventTemplate.weight.__set__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = -1;
+  __pyx_L0:;
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "src/Templates/Cython/Event.pyx":149
+ * 
+ *     @property
  *     def Tree(self) -> str: return self.ptr.tree.decode("UTF-8")             # <<<<<<<<<<<<<<
  * 
  *     @property
@@ -4449,7 +4587,7 @@ static PyObject *__pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_decode_cpp_string(__pyx_v_self->ptr->tree, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 141, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_decode_cpp_string(__pyx_v_self->ptr->tree, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 149, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -4466,7 +4604,7 @@ static PyObject *__pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate
   return __pyx_r;
 }
 
-/* "src/Templates/Cython/Event.pyx":156
+/* "src/Templates/Cython/Event.pyx":164
  * 
  *     @Tree.setter
  *     def Tree(self, str val) -> void:             # <<<<<<<<<<<<<<
@@ -4483,7 +4621,7 @@ static int __pyx_pw_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_4Tree
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_val), (&PyString_Type), 1, "val", 1))) __PYX_ERR(0, 156, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_val), (&PyString_Type), 1, "val", 1))) __PYX_ERR(0, 164, __pyx_L1_error)
   __pyx_r = __pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_4Tree_2__set__(((struct __pyx_obj_9AnalysisG_9Templates_14EventTemplates_EventTemplate *)__pyx_v_self), ((PyObject*)__pyx_v_val));
 
   /* function exit code */
@@ -4505,20 +4643,20 @@ static int __pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_4Tree
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "src/Templates/Cython/Event.pyx":157
+  /* "src/Templates/Cython/Event.pyx":165
  *     @Tree.setter
  *     def Tree(self, str val) -> void:
  *         self.ptr.tree = val.encode("UTF-8")             # <<<<<<<<<<<<<<
  * 
  *     @Trees.setter
  */
-  __pyx_t_1 = __Pyx_CallUnboundCMethod1(&__pyx_umethod_PyString_Type_encode, __pyx_v_val, __pyx_kp_s_UTF_8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 157, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_CallUnboundCMethod1(&__pyx_umethod_PyString_Type_encode, __pyx_v_val, __pyx_kp_s_UTF_8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 165, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 157, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 165, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_self->ptr->tree = __pyx_t_2;
 
-  /* "src/Templates/Cython/Event.pyx":156
+  /* "src/Templates/Cython/Event.pyx":164
  * 
  *     @Tree.setter
  *     def Tree(self, str val) -> void:             # <<<<<<<<<<<<<<
@@ -4538,7 +4676,7 @@ static int __pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_4Tree
   return __pyx_r;
 }
 
-/* "src/Templates/Cython/Event.pyx":144
+/* "src/Templates/Cython/Event.pyx":152
  * 
  *     @property
  *     def Trees(self) -> list: return self._Trees             # <<<<<<<<<<<<<<
@@ -4575,7 +4713,7 @@ static PyObject *__pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate
   return __pyx_r;
 }
 
-/* "src/Templates/Cython/Event.pyx":160
+/* "src/Templates/Cython/Event.pyx":168
  * 
  *     @Trees.setter
  *     def Trees(self, val: Union[str, list]) -> void:             # <<<<<<<<<<<<<<
@@ -4608,7 +4746,7 @@ static int __pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_5Tree
   __Pyx_RefNannySetupContext("__set__", 0);
   __Pyx_INCREF(__pyx_v_val);
 
-  /* "src/Templates/Cython/Event.pyx":161
+  /* "src/Templates/Cython/Event.pyx":169
  *     @Trees.setter
  *     def Trees(self, val: Union[str, list]) -> void:
  *         if isinstance(val, str): val = [val]             # <<<<<<<<<<<<<<
@@ -4618,7 +4756,7 @@ static int __pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_5Tree
   __pyx_t_1 = PyString_Check(__pyx_v_val); 
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
-    __pyx_t_3 = PyList_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 161, __pyx_L1_error)
+    __pyx_t_3 = PyList_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 169, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_INCREF(__pyx_v_val);
     __Pyx_GIVEREF(__pyx_v_val);
@@ -4627,23 +4765,23 @@ static int __pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_5Tree
     __pyx_t_3 = 0;
   }
 
-  /* "src/Templates/Cython/Event.pyx":162
+  /* "src/Templates/Cython/Event.pyx":170
  *     def Trees(self, val: Union[str, list]) -> void:
  *         if isinstance(val, str): val = [val]
  *         self._Trees += val             # <<<<<<<<<<<<<<
  * 
  *     @Branches.setter
  */
-  __pyx_t_3 = PyNumber_InPlaceAdd(__pyx_v_self->_Trees, __pyx_v_val); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 162, __pyx_L1_error)
+  __pyx_t_3 = PyNumber_InPlaceAdd(__pyx_v_self->_Trees, __pyx_v_val); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 170, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (!(likely(PyList_CheckExact(__pyx_t_3))||((__pyx_t_3) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_3)->tp_name), 0))) __PYX_ERR(0, 162, __pyx_L1_error)
+  if (!(likely(PyList_CheckExact(__pyx_t_3))||((__pyx_t_3) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_3)->tp_name), 0))) __PYX_ERR(0, 170, __pyx_L1_error)
   __Pyx_GIVEREF(__pyx_t_3);
   __Pyx_GOTREF(__pyx_v_self->_Trees);
   __Pyx_DECREF(__pyx_v_self->_Trees);
   __pyx_v_self->_Trees = ((PyObject*)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "src/Templates/Cython/Event.pyx":160
+  /* "src/Templates/Cython/Event.pyx":168
  * 
  *     @Trees.setter
  *     def Trees(self, val: Union[str, list]) -> void:             # <<<<<<<<<<<<<<
@@ -4664,7 +4802,7 @@ static int __pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_5Tree
   return __pyx_r;
 }
 
-/* "src/Templates/Cython/Event.pyx":147
+/* "src/Templates/Cython/Event.pyx":155
  * 
  *     @property
  *     def Branches(self) -> list: return self._Branches             # <<<<<<<<<<<<<<
@@ -4701,7 +4839,7 @@ static PyObject *__pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate
   return __pyx_r;
 }
 
-/* "src/Templates/Cython/Event.pyx":165
+/* "src/Templates/Cython/Event.pyx":173
  * 
  *     @Branches.setter
  *     def Branches(self, val: Union[str, list]) -> void:             # <<<<<<<<<<<<<<
@@ -4734,7 +4872,7 @@ static int __pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_8Bran
   __Pyx_RefNannySetupContext("__set__", 0);
   __Pyx_INCREF(__pyx_v_val);
 
-  /* "src/Templates/Cython/Event.pyx":166
+  /* "src/Templates/Cython/Event.pyx":174
  *     @Branches.setter
  *     def Branches(self, val: Union[str, list]) -> void:
  *         if isinstance(val, str): val = [val]             # <<<<<<<<<<<<<<
@@ -4744,7 +4882,7 @@ static int __pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_8Bran
   __pyx_t_1 = PyString_Check(__pyx_v_val); 
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
-    __pyx_t_3 = PyList_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 166, __pyx_L1_error)
+    __pyx_t_3 = PyList_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 174, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_INCREF(__pyx_v_val);
     __Pyx_GIVEREF(__pyx_v_val);
@@ -4753,23 +4891,23 @@ static int __pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_8Bran
     __pyx_t_3 = 0;
   }
 
-  /* "src/Templates/Cython/Event.pyx":167
+  /* "src/Templates/Cython/Event.pyx":175
  *     def Branches(self, val: Union[str, list]) -> void:
  *         if isinstance(val, str): val = [val]
  *         self._Branches += val             # <<<<<<<<<<<<<<
  * 
  *     @Leaves.setter
  */
-  __pyx_t_3 = PyNumber_InPlaceAdd(__pyx_v_self->_Branches, __pyx_v_val); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 167, __pyx_L1_error)
+  __pyx_t_3 = PyNumber_InPlaceAdd(__pyx_v_self->_Branches, __pyx_v_val); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 175, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (!(likely(PyList_CheckExact(__pyx_t_3))||((__pyx_t_3) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_3)->tp_name), 0))) __PYX_ERR(0, 167, __pyx_L1_error)
+  if (!(likely(PyList_CheckExact(__pyx_t_3))||((__pyx_t_3) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_3)->tp_name), 0))) __PYX_ERR(0, 175, __pyx_L1_error)
   __Pyx_GIVEREF(__pyx_t_3);
   __Pyx_GOTREF(__pyx_v_self->_Branches);
   __Pyx_DECREF(__pyx_v_self->_Branches);
   __pyx_v_self->_Branches = ((PyObject*)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "src/Templates/Cython/Event.pyx":165
+  /* "src/Templates/Cython/Event.pyx":173
  * 
  *     @Branches.setter
  *     def Branches(self, val: Union[str, list]) -> void:             # <<<<<<<<<<<<<<
@@ -4790,7 +4928,7 @@ static int __pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_8Bran
   return __pyx_r;
 }
 
-/* "src/Templates/Cython/Event.pyx":150
+/* "src/Templates/Cython/Event.pyx":158
  * 
  *     @property
  *     def Leaves(self) -> list: return self._Leaves             # <<<<<<<<<<<<<<
@@ -4827,7 +4965,7 @@ static PyObject *__pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate
   return __pyx_r;
 }
 
-/* "src/Templates/Cython/Event.pyx":170
+/* "src/Templates/Cython/Event.pyx":178
  * 
  *     @Leaves.setter
  *     def Leaves(self, val: Union[str, list]) -> void:             # <<<<<<<<<<<<<<
@@ -4860,7 +4998,7 @@ static int __pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_6Leav
   __Pyx_RefNannySetupContext("__set__", 0);
   __Pyx_INCREF(__pyx_v_val);
 
-  /* "src/Templates/Cython/Event.pyx":171
+  /* "src/Templates/Cython/Event.pyx":179
  *     @Leaves.setter
  *     def Leaves(self, val: Union[str, list]) -> void:
  *         if isinstance(val, str): val = [val]             # <<<<<<<<<<<<<<
@@ -4870,7 +5008,7 @@ static int __pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_6Leav
   __pyx_t_1 = PyString_Check(__pyx_v_val); 
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
-    __pyx_t_3 = PyList_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 171, __pyx_L1_error)
+    __pyx_t_3 = PyList_New(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 179, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_INCREF(__pyx_v_val);
     __Pyx_GIVEREF(__pyx_v_val);
@@ -4879,23 +5017,23 @@ static int __pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_6Leav
     __pyx_t_3 = 0;
   }
 
-  /* "src/Templates/Cython/Event.pyx":172
+  /* "src/Templates/Cython/Event.pyx":180
  *     def Leaves(self, val: Union[str, list]) -> void:
  *         if isinstance(val, str): val = [val]
  *         self._Leaves += val             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __pyx_t_3 = PyNumber_InPlaceAdd(__pyx_v_self->_Leaves, __pyx_v_val); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 172, __pyx_L1_error)
+  __pyx_t_3 = PyNumber_InPlaceAdd(__pyx_v_self->_Leaves, __pyx_v_val); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 180, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (!(likely(PyList_CheckExact(__pyx_t_3))||((__pyx_t_3) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_3)->tp_name), 0))) __PYX_ERR(0, 172, __pyx_L1_error)
+  if (!(likely(PyList_CheckExact(__pyx_t_3))||((__pyx_t_3) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_3)->tp_name), 0))) __PYX_ERR(0, 180, __pyx_L1_error)
   __Pyx_GIVEREF(__pyx_t_3);
   __Pyx_GOTREF(__pyx_v_self->_Leaves);
   __Pyx_DECREF(__pyx_v_self->_Leaves);
   __pyx_v_self->_Leaves = ((PyObject*)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "src/Templates/Cython/Event.pyx":170
+  /* "src/Templates/Cython/Event.pyx":178
  * 
  *     @Leaves.setter
  *     def Leaves(self, val: Union[str, list]) -> void:             # <<<<<<<<<<<<<<
@@ -4916,7 +5054,7 @@ static int __pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_6Leav
   return __pyx_r;
 }
 
-/* "src/Templates/Cython/Event.pyx":153
+/* "src/Templates/Cython/Event.pyx":161
  * 
  *     @property
  *     def Objects(self) -> dict: return self._Objects             # <<<<<<<<<<<<<<
@@ -4953,7 +5091,7 @@ static PyObject *__pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate
   return __pyx_r;
 }
 
-/* "src/Templates/Cython/Event.pyx":193
+/* "src/Templates/Cython/Event.pyx":201
  * 
  *     @Objects.setter
  *     def Objects(self, val: Union[dict]) -> void:             # <<<<<<<<<<<<<<
@@ -4983,13 +5121,14 @@ static int __pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_7Obje
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "src/Templates/Cython/Event.pyx":194
+  /* "src/Templates/Cython/Event.pyx":202
  *     @Objects.setter
  *     def Objects(self, val: Union[dict]) -> void:
  *         self._Objects = val             # <<<<<<<<<<<<<<
  * 
+ * 
  */
-  if (!(likely(PyDict_CheckExact(__pyx_v_val))||((__pyx_v_val) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_v_val)->tp_name), 0))) __PYX_ERR(0, 194, __pyx_L1_error)
+  if (!(likely(PyDict_CheckExact(__pyx_v_val))||((__pyx_v_val) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "dict", Py_TYPE(__pyx_v_val)->tp_name), 0))) __PYX_ERR(0, 202, __pyx_L1_error)
   __pyx_t_1 = __pyx_v_val;
   __Pyx_INCREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
@@ -4998,7 +5137,7 @@ static int __pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_7Obje
   __pyx_v_self->_Objects = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "src/Templates/Cython/Event.pyx":193
+  /* "src/Templates/Cython/Event.pyx":201
  * 
  *     @Objects.setter
  *     def Objects(self, val: Union[dict]) -> void:             # <<<<<<<<<<<<<<
@@ -5018,7 +5157,7 @@ static int __pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_7Obje
   return __pyx_r;
 }
 
-/* "src/Templates/Cython/Event.pyx":175
+/* "src/Templates/Cython/Event.pyx":183
  * 
  *     @property
  *     def hash(self) -> str: return self.ptr.Hash().decode("UTF-8")             # <<<<<<<<<<<<<<
@@ -5053,9 +5192,9 @@ static PyObject *__pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate
     __pyx_t_1 = __pyx_v_self->ptr->Hash();
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 175, __pyx_L1_error)
+    __PYX_ERR(0, 183, __pyx_L1_error)
   }
-  __pyx_t_2 = __Pyx_decode_cpp_string(__pyx_t_1, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 175, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_decode_cpp_string(__pyx_t_1, 0, PY_SSIZE_T_MAX, NULL, NULL, PyUnicode_DecodeUTF8); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 183, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
@@ -5072,7 +5211,7 @@ static PyObject *__pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate
   return __pyx_r;
 }
 
-/* "src/Templates/Cython/Event.pyx":178
+/* "src/Templates/Cython/Event.pyx":186
  * 
  *     @hash.setter
  *     def hash(self, str val) -> void:             # <<<<<<<<<<<<<<
@@ -5089,7 +5228,7 @@ static int __pyx_pw_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_4hash
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_val), (&PyString_Type), 1, "val", 1))) __PYX_ERR(0, 178, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_val), (&PyString_Type), 1, "val", 1))) __PYX_ERR(0, 186, __pyx_L1_error)
   __pyx_r = __pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_4hash_2__set__(((struct __pyx_obj_9AnalysisG_9Templates_14EventTemplates_EventTemplate *)__pyx_v_self), ((PyObject*)__pyx_v_val));
 
   /* function exit code */
@@ -5111,25 +5250,25 @@ static int __pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_4hash
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "src/Templates/Cython/Event.pyx":179
+  /* "src/Templates/Cython/Event.pyx":187
  *     @hash.setter
  *     def hash(self, str val) -> void:
  *         self.ptr.Hash(val.encode("UTF-8"))             # <<<<<<<<<<<<<<
  * 
  *     @property
  */
-  __pyx_t_1 = __Pyx_CallUnboundCMethod1(&__pyx_umethod_PyString_Type_encode, __pyx_v_val, __pyx_kp_s_UTF_8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 179, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_CallUnboundCMethod1(&__pyx_umethod_PyString_Type_encode, __pyx_v_val, __pyx_kp_s_UTF_8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 187, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 179, __pyx_L1_error)
+  __pyx_t_2 = __pyx_convert_string_from_py_std__in_string(__pyx_t_1); if (unlikely(PyErr_Occurred())) __PYX_ERR(0, 187, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   try {
     __pyx_v_self->ptr->Hash(__pyx_t_2);
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 179, __pyx_L1_error)
+    __PYX_ERR(0, 187, __pyx_L1_error)
   }
 
-  /* "src/Templates/Cython/Event.pyx":178
+  /* "src/Templates/Cython/Event.pyx":186
  * 
  *     @hash.setter
  *     def hash(self, str val) -> void:             # <<<<<<<<<<<<<<
@@ -5149,7 +5288,7 @@ static int __pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_4hash
   return __pyx_r;
 }
 
-/* "src/Templates/Cython/Event.pyx":182
+/* "src/Templates/Cython/Event.pyx":190
  * 
  *     @property
  *     def Deprecated(self) -> bool: return self.ptr.deprecated             # <<<<<<<<<<<<<<
@@ -5179,7 +5318,7 @@ static PyObject *__pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__get__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->ptr->deprecated); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 182, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyBool_FromLong(__pyx_v_self->ptr->deprecated); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 190, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -5196,7 +5335,7 @@ static PyObject *__pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate
   return __pyx_r;
 }
 
-/* "src/Templates/Cython/Event.pyx":185
+/* "src/Templates/Cython/Event.pyx":193
  * 
  *     @Deprecated.setter
  *     def Deprecated(self, bool val) -> void:             # <<<<<<<<<<<<<<
@@ -5215,7 +5354,7 @@ static int __pyx_pw_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_10Dep
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__ (wrapper)", 0);
   assert(__pyx_arg_val); {
-    __pyx_v_val = __Pyx_PyObject_IsTrue(__pyx_arg_val); if (unlikely((__pyx_v_val == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(0, 185, __pyx_L3_error)
+    __pyx_v_val = __Pyx_PyObject_IsTrue(__pyx_arg_val); if (unlikely((__pyx_v_val == ((bool)-1)) && PyErr_Occurred())) __PYX_ERR(0, 193, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L3_error:;
@@ -5235,7 +5374,7 @@ static int __pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_10Dep
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__set__", 0);
 
-  /* "src/Templates/Cython/Event.pyx":186
+  /* "src/Templates/Cython/Event.pyx":194
  *     @Deprecated.setter
  *     def Deprecated(self, bool val) -> void:
  *         self.ptr.deprecated = val             # <<<<<<<<<<<<<<
@@ -5244,7 +5383,7 @@ static int __pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_10Dep
  */
   __pyx_v_self->ptr->deprecated = __pyx_v_val;
 
-  /* "src/Templates/Cython/Event.pyx":185
+  /* "src/Templates/Cython/Event.pyx":193
  * 
  *     @Deprecated.setter
  *     def Deprecated(self, bool val) -> void:             # <<<<<<<<<<<<<<
@@ -5258,7 +5397,7 @@ static int __pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_10Dep
   return __pyx_r;
 }
 
-/* "src/Templates/Cython/Event.pyx":189
+/* "src/Templates/Cython/Event.pyx":197
  * 
  *     @property
  *     def _init(self) -> bool:             # <<<<<<<<<<<<<<
@@ -5284,7 +5423,7 @@ static PyObject *__pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "src/Templates/Cython/Event.pyx":190
+  /* "src/Templates/Cython/Event.pyx":198
  *     @property
  *     def _init(self) -> bool:
  *         return True             # <<<<<<<<<<<<<<
@@ -5296,7 +5435,7 @@ static PyObject *__pyx_pf_9AnalysisG_9Templates_14EventTemplates_13EventTemplate
   __pyx_r = Py_True;
   goto __pyx_L0;
 
-  /* "src/Templates/Cython/Event.pyx":189
+  /* "src/Templates/Cython/Event.pyx":197
  * 
  *     @property
  *     def _init(self) -> bool:             # <<<<<<<<<<<<<<
@@ -5880,6 +6019,20 @@ static int __pyx_setprop_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_
   }
 }
 
+static PyObject *__pyx_getprop_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_weight(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_6weight_1__get__(o);
+}
+
+static int __pyx_setprop_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_weight(PyObject *o, PyObject *v, CYTHON_UNUSED void *x) {
+  if (v) {
+    return __pyx_pw_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_6weight_3__set__(o, v);
+  }
+  else {
+    PyErr_SetString(PyExc_NotImplementedError, "__del__");
+    return -1;
+  }
+}
+
 static PyObject *__pyx_getprop_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_Tree(PyObject *o, CYTHON_UNUSED void *x) {
   return __pyx_pw_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_4Tree_1__get__(o);
 }
@@ -5996,6 +6149,7 @@ static struct PyGetSetDef __pyx_getsets_9AnalysisG_9Templates_14EventTemplates_E
   {(char *)"__interpret__", __pyx_getprop_9AnalysisG_9Templates_14EventTemplates_13EventTemplate___interpret__, __pyx_setprop_9AnalysisG_9Templates_14EventTemplates_13EventTemplate___interpret__, (char *)0, 0},
   {(char *)"clone", __pyx_getprop_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_clone, 0, (char *)0, 0},
   {(char *)"index", __pyx_getprop_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_index, __pyx_setprop_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_index, (char *)0, 0},
+  {(char *)"weight", __pyx_getprop_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_weight, __pyx_setprop_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_weight, (char *)0, 0},
   {(char *)"Tree", __pyx_getprop_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_Tree, __pyx_setprop_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_Tree, (char *)0, 0},
   {(char *)"Trees", __pyx_getprop_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_Trees, __pyx_setprop_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_Trees, (char *)0, 0},
   {(char *)"Branches", __pyx_getprop_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_Branches, __pyx_setprop_9AnalysisG_9Templates_14EventTemplates_13EventTemplate_Branches, (char *)0, 0},
@@ -6169,6 +6323,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {&__pyx_n_s_typing, __pyx_k_typing, sizeof(__pyx_k_typing), 0, 0, 1, 1},
   {&__pyx_n_s_values, __pyx_k_values, sizeof(__pyx_k_values), 0, 0, 1, 1},
+  {&__pyx_n_s_weight, __pyx_k_weight, sizeof(__pyx_k_weight), 0, 0, 1, 1},
   {&__pyx_n_s_zip, __pyx_k_zip, sizeof(__pyx_k_zip), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
 };

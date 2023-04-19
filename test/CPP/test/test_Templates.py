@@ -345,21 +345,21 @@ def test_event_particle_template_populate():
     n_tops = 0
     for i in io:
         x = ev.clone
-        x.__compiler__(i)
-        assert len([k.Tree for k in x.Trees]) == 2
-        assert sum([sum([k.index >= 0, k.weight != 0]) for k in x.Trees]) == 4
+        Trees = x.__compiler__(i)
+        assert len(Trees) == 2
+        assert sum([sum([k.index >= 0, k.weight != 0]) for k in Trees]) == 4
         
-        t1, t2 = x.Trees
+        t1, t2 = Trees
         t1.hash, t2.hash = root1, root1
         
-        n_children += len(x.Children)
-        n_tops += len(x.top)
+        n_children += len(t1.Children)
+        n_tops += len(t1.top)
 
-        lst.append(x)
-        lstc += [t for t in x.Children.values()]
+        lst.append(t1)
+        lstc += [t for t in t1.Children.values()]
 
-        lstt += [t for t in x.top.values()]
-        assert len(x.hash) == 18
+        lstt += [t for t in t1.top.values()]
+        assert len(t1.hash) == 18
         assert t1 != t2
     
     n_events = len(lst)

@@ -12,14 +12,12 @@ class GraphTemplate:
         self.GraphAttr = {}
         self.Event = ""
         self.Particles = []
-        self.iter = -1
+        self.index = -1
     
     def Escape(ev):
         new_self = object.__new__(ev)
-        try:
-            new_self.__init__()
-        except:
-            pass
+        try: new_self.__init__()
+        except: pass
         return new_self
 
     def CreateParticleNodes(self):
@@ -35,10 +33,8 @@ class GraphTemplate:
         self.Edges = []
         for i in self.Nodes:
             for j in self.Nodes:
-                if self.SelfLoop == False and i == j:
-                    continue 
-                if self.FullyConnect == False and i != j:
-                    continue
+                if self.SelfLoop == False and i == j: continue 
+                if self.FullyConnect == False and i != j: continue
                 self.Edges.append([i, j])
         self.G.add_edges_from(self.Edges)
 
@@ -46,19 +42,14 @@ class GraphTemplate:
         # Anticipates Errors when certain particles dont have an attribute
         def ErrorHandler(fx, *args):
             try: 
-                if len(args) == 1:
-                    return fx(args[0])
-                else:
-                    return fx(args[0], args[1])
-            except AttributeError:
-                return 0
+                if len(args) == 1: return fx(args[0])
+                return fx(args[0], args[1])
+            except AttributeError: return 0
 
         def ApplyToGraph(Dict, Map2 = None, Preprocess = False):
             for key in Dict:
-                if key[:2] != "P_" and Preprocess == True:
-                    continue
-                elif key[:2] == "P_" and Preprocess == False:
-                    continue
+                if key[:2] != "P_" and Preprocess == True: continue
+                elif key[:2] == "P_" and Preprocess == False: continue
 
                 fx = Dict[key]
                 attr_v = []
@@ -73,9 +64,7 @@ class GraphTemplate:
                 else:
                     attr_v += [[ ErrorHandler(fx, self.NodeParticleMap[n[0]], self.NodeParticleMap[n[1]]) ] for n in Map2]
                     k = "E_"
-                
-                if Preprocess == True:
-                    continue
+                if Preprocess == True: continue
                 setattr(self.Data, k + key, torch.tensor(attr_v, dtype = torch.float))
                 
         self.CreateParticleNodes()
@@ -95,10 +84,13 @@ class GraphTemplate:
         ApplyToGraph(self.EdgeAttr, self.Edges)
 
         self.Data.num_nodes = torch.tensor(len(self.Particles))
-        setattr(self.Data, "ni", torch.tensor([[self.iter] for k in range(len(self.Particles))]))
-        setattr(self.Data, "i", torch.tensor(self.iter))
-        setattr(self.Data, "Lumi", torch.tensor(self.Event.Lumi))
+        setattr(self.Data, "ni", torch.tensor([[self.index] for k in range(len(self.Particles))]))
+        setattr(self.Data, "i", torch.tensor(self.index))
+        setattr(self.Data, "weight", torch.tensor(self.Event.weight))
 
+
+    @property
+    def purge(self):
         self.__Clean(self.Particles)
         self.__Clean(self.Event.__dict__)
         del self.GraphAttr
@@ -111,11 +103,9 @@ class GraphTemplate:
         return self.Data
     
     def __Clean(self, obj):
-        if isinstance(obj, list):
-            for k in obj:
-                self.__Clean(k)
+        if isinstance(obj, list): 
+            for k in obj: self.__Clean(k)
             return 
-
         elif isinstance(obj, dict):
             k = []
             k += list(obj.keys())

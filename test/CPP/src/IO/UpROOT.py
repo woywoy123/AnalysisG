@@ -1,21 +1,19 @@
-import uproot 
-from AnalysisG.Settings import Settings
+from AnalysisG.Generators.Interfaces import _Interface
 from AnalysisG.Notification import _UpROOT
+from AnalysisG.Settings import Settings
+import uproot 
 
-class UpROOT(_UpROOT, Settings):
+class UpROOT(_UpROOT, Settings, _Interface):
     
-    def __init__(self, ROOTFile):
+    def __init__(self, ROOTFiles = None):
         self.Caller = "Up-ROOT"
         Settings.__init__(self)
-        self.ROOTFile = {}
-        if isinstance(ROOTFile, str):
-            self.ROOTFile = { ROOTFile : uproot.open(ROOTFile)}
-        elif isinstance(ROOTFile, list):
-            self.ROOTFile = {i : uproot.open(i) for i in ROOTFile}
-        
-        if len(self.ROOTFile) == 0:
+        self.InputSamples(ROOTFiles)
+        ROOTFile = [i + "/" + k for i in self.Files for k in self.Files[i]]
+        self.File = {i : uproot.open(i) for i in ROOTFile}
+        if len(self.File) == 0:
             self.InvalidROOTFileInput
-            self.ROOTFile = False
+            self.File = False
             return 
         self.Keys = {}
         self._it = False 
@@ -23,12 +21,11 @@ class UpROOT(_UpROOT, Settings):
     @property
     def _StartIter(self):
         if self._it: return
-        self._it = iter(list(self.ROOTFile))
+        self._it = iter(list(self.File))
 
     @property
     def ScanKeys(self):
-        if not self.ROOTFile:
-            return False
+        if not self.File: return False
         
         def Recursion(inpt, k_, keys):
             for i in keys:
@@ -36,18 +33,16 @@ class UpROOT(_UpROOT, Settings):
                 try:
                     k_n = inpt[k__].keys()
                     self._struct[k__] = None
-                except AttributeError:
-                    continue
+                except AttributeError: continue
                 Recursion(inpt, k__, k_n)
-        
         self._StartIter
-        try:
-            fname = next(self._it)
+        
+        try: fname = next(self._it)
         except StopIteration:
             self._it = False
             return 
 
-        f = self.ROOTFile[fname]
+        f = self.File[fname]
         self._struct = {}
         self._missed = {"TREE" : [], "BRANCH" : [], "LEAF" : []}
         
@@ -73,10 +68,10 @@ class UpROOT(_UpROOT, Settings):
         self.ScanKeys
 
     def __iter__(self):
-        if len(self.Keys) != len(self.ROOTFile): self.ScanKeys
-        keys = self.Keys[list(self.ROOTFile)[0]]["found"]
+        if len(self.Keys) != len(self.File): self.ScanKeys
+        keys = self.Keys[list(self.File)[0]]["found"]
         
-        self._t = { T : [r for r in self.ROOTFile if T not in self.Keys[r]["missed"]["TREE"]] for T in self.Trees }
+        self._t = { T : [r for r in self.File if T not in self.Keys[r]["missed"]["TREE"]] for T in self.Trees }
         self._get = {tr : [i.split("/")[-1] for i in keys if tr in i] for tr in self._t}
         dct = {
                 tr : {
@@ -102,8 +97,12 @@ class UpROOT(_UpROOT, Settings):
     def __next__(self):
         try:
             r = {key : self._r[key][0].pop() for key in self._r}
-            _r = self._r[list(r)[0]][1]
-            fname = _r.file_path
+            fname = self._r[list(r)[0]][1].file_path
+                
+            if self._cur_r != fname:
+                self._bar = self._MakeBar(uproot.open(fname + ":" + list(r)[0].split("/")[0]).num_entries, fname)[1]
+            self._bar.update(1)
+
             self._EventIndex = 0 if self._cur_r != fname else self._EventIndex+1
             self._cur_r = fname
 

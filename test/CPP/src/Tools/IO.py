@@ -16,6 +16,7 @@ class Code:
         self._Hash = None
         self._File = None
         self.DumpCode(Instance)
+        self._Instance = Instance
 
     def DumpCode(self, Instance):
         try: self._Name = Instance.__qualname__
@@ -32,13 +33,13 @@ class Code:
         self._Hash = Hash(self._Code)
         self._File = GetSourceFileDirectory(Instance)
     
-    def CopyInstance(self, Instance):
+    @property
+    def clone(self):
+        Instance = self._Instance
         if callable(Instance):
             try: Inst = Instance()
             except: Inst = Instance
-
             Inst = Instance
-        if self._Name == None: self.DumpCode(Instance)
         _, inst = StringToObject(self._Module, self._Name)
         return inst
 

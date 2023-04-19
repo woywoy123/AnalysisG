@@ -1,7 +1,8 @@
 from AnalysisG.Templates import EventTemplate
 from AnalysisG.Templates import ParticleTemplate
 from AnalysisG.IO import UpROOT
-    
+from AnalysisG.Tracer import SampleTracer
+
 class Particle(ParticleTemplate):
     def __init__(self):
         ParticleTemplate.__init__(self)
@@ -37,7 +38,6 @@ class Event(EventTemplate):
         self.Deprecated = False
 
 def test_tracer_addEvent(): 
-    from AnalysisG.Tracer import SampleTracer
 
     tr = SampleTracer()
 
@@ -55,11 +55,11 @@ def test_tracer_addEvent():
     for i in io:
         x = ev.clone
         root, index = i["ROOT"], i["EventIndex"]
-        x.__compiler__(i)
+        trees = x.__compiler__(i)
 
-        tr.AddEvent(x, root, index)         
-        hashes |= {p.hash : p for p in x.Trees}
-        roothashes[root] += [p.hash for p in x.Trees]
+        tr.AddEvent(trees, root, index)         
+        hashes |= {p.hash : p for p in trees}
+        roothashes[root] += [p.hash for p in trees]
 
     assert len(io)*2 == len(tr)
     
@@ -85,6 +85,47 @@ def test_tracer_addEvent():
     lst = [i for j in range(1000) for i in hashes ]
     assert sum(tr.FastHashSearch(lst).values()) == len(hashes)
 
+def test_tracer_operators():
+    def Make(root):
+        ev = Event()
+        ev.__interpret__
+        io = UpROOT(root)
+        io.Trees = ev.Trees
+        io.Leaves = ev.Leaves
+        out = []
+        for i in io:
+            root, index = i["ROOT"], i["EventIndex"]
+            trees = ev.__compiler__(i)
+            out.append([trees, root, index]) 
+        return out
+
+
+    root1 = "./samples/sample1/smpl1.root"
+    root2 = "./samples/sample1/smpl2.root"
+    
+    tr1 = SampleTracer()
+    for i in Make(root1): tr1.AddEvent(i[0], i[1], i[2])
+    l1 = len(tr1)
+
+    tr2 = SampleTracer()
+    for i in Make(root2): tr2.AddEvent(i[0], i[1], i[2])
+    l2 = len(tr2)
+     
+    trsum = tr1 + tr2 
+    lsum = len(trsum)    
+    
+    assert lsum == l2 + l1
+    assert len(tr1) == l1
+    assert len(tr2) == l2
+    
+    for i in tr1: assert trsum[i.hash]
+    for i in tr2: assert trsum[i.hash]
+
+    del tr1
+    del tr2
+    
+    assert len([trsum.HashToROOT(i.hash) for i in trsum]) == lsum
+
 
 if __name__ == "__main__":
-    test_tracer_addEvent()
+    test_tracer_operators()

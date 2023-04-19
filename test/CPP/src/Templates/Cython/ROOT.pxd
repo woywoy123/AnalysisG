@@ -48,3 +48,5 @@ cdef extern from "../Headers/ROOT.h" namespace "CyTracer":
         bool ContainsROOT(string root) except+ 
         bool ContainsHash(string hash) except+ 
 
+        bool operator==(CySampleTracer* smple) except+
+        CySampleTracer* operator+(CySampleTracer* smple) except+ 

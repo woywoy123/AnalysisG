@@ -5,23 +5,34 @@ class _General:
         self.Threads = 6
         self.chnk = 10
         self._Code = {}
+        self.EventStart = -1
+        self.EventStop = None
 
 class _UpROOT:
     
     def __init__(self):
-        self.StepSize = 100000
+        self.StepSize = 1000
         self.Trees = []
         self.Branches = []
         self.Leaves = []
-        self.ROOTFile = None
+        self.Files = {}
 
 class _EventGenerator:
     
     def __init__(self):
-        self.EventStart = 0
-        self.EventStop = -1
         self.Event = None
         self.Files = {}
+
+class _GraphGenerator:
+
+    def __init__(self):
+        self.Device = "cpu"
+        self.EventGraph = None
+        self.SelfLoop = True
+        self.FullyConnect = True
+        self.GraphAttribute = {}
+        self.NodeAttribute = {}
+        self.EdgeAttribute = {}
 
 class _Pickle:
 
@@ -36,3 +47,4 @@ class Settings:
         if self.Caller == "UP-ROOT": _UpROOT.__init__(self)
         if self.Caller == "PICKLER": _Pickle.__init__(self)
         if self.Caller == "EVENTGENERATOR": _EventGenerator.__init__(self) 
+        if self.Caller == "GRAPHGENERATOR": _GraphGenerator.__init__(self) 

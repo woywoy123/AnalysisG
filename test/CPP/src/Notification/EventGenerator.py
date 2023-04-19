@@ -7,16 +7,15 @@ class _EventGenerator(Notification):
 
     @property
     def CheckEventImplementation(self):
-        if self.Event == None:
-            ex = "Or do: from AnalysisTopGNN.Events import Event"
-            self.Failure("="*len(ex))
-            self.Failure("No Event Implementation Provided.")
-            self.Failure("var = " + self.Caller.capitalize() + "()")
-            self.Failure("var.Event")
-            self.Failure("See src/Events/Event.py or 'tutorial'")
-            self.Failure("="*len(ex))
-            return False
-        return True
+        if self.Event != None: return True
+        ex = "Or do: from AnalysisTopGNN.Events import Event"
+        self.Failure("="*len(ex))
+        self.Failure("No Event Implementation Provided.")
+        self.Failure("var = " + self.Caller.capitalize() + "()")
+        self.Failure("var.Event")
+        self.Failure("See src/Events/Event.py or 'tutorial'")
+        self.Failure("="*len(ex))
+        return False
     
     @property
     def CheckROOTFiles(self):
@@ -34,4 +33,26 @@ class _EventGenerator(Notification):
         self.Failure(mess)
         self.Failure("="*len(mess))
         return self
+    
+    @property
+    def CheckVariableNames(self):
+        if len(self.Event.Trees) != 0: return True
+        
+        ex = "The Event implementation has an empty self.Trees variable!"
+        self.Failure("="*len(ex))
+        self.Failure(ex)
+        self.Failure("="*len(ex))
+        return False
+
+    @property
+    def CheckSpawnedEvents(self):
+        if len(self) == 0: self.Warning("No Events were generated...")
+    
+    @property
+    def CheckSettings(self):
+        if self.EventStop == None: return 
+        if self.EventStop > self.EventStart: return 
+        self.Warning("EventStart is larger than EventStop. Switching.")
+        self.EventStop, self.EventStart = self.EventStart, self.EventStop
+        
 

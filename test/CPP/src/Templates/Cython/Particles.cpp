@@ -1249,14 +1249,6 @@ static CYTHON_INLINE void __Pyx__ExceptionReset(PyThreadState *tstate, PyObject 
 #define __Pyx_ExceptionReset(type, value, tb)  PyErr_SetExcInfo(type, value, tb)
 #endif
 
-/* PyErrExceptionMatches.proto */
-#if CYTHON_FAST_THREAD_STATE
-#define __Pyx_PyErr_ExceptionMatches(err) __Pyx_PyErr_ExceptionMatchesInState(__pyx_tstate, err)
-static CYTHON_INLINE int __Pyx_PyErr_ExceptionMatchesInState(PyThreadState* tstate, PyObject* err);
-#else
-#define __Pyx_PyErr_ExceptionMatches(err)  PyErr_ExceptionMatches(err)
-#endif
-
 /* GetException.proto */
 #if CYTHON_FAST_THREAD_STATE
 #define __Pyx_GetException(type, value, tb)  __Pyx__GetException(__pyx_tstate, type, value, tb)
@@ -1422,6 +1414,14 @@ static CYTHON_INLINE int __Pyx_PyObject_SetAttrStr(PyObject* obj, PyObject* attr
 #else
 #define __Pyx_PyObject_DelAttrStr(o,n)   PyObject_DelAttr(o,n)
 #define __Pyx_PyObject_SetAttrStr(o,n,v) PyObject_SetAttr(o,n,v)
+#endif
+
+/* PyErrExceptionMatches.proto */
+#if CYTHON_FAST_THREAD_STATE
+#define __Pyx_PyErr_ExceptionMatches(err) __Pyx_PyErr_ExceptionMatchesInState(__pyx_tstate, err)
+static CYTHON_INLINE int __Pyx_PyErr_ExceptionMatchesInState(PyThreadState* tstate, PyObject* err);
+#else
+#define __Pyx_PyErr_ExceptionMatches(err)  PyErr_ExceptionMatches(err)
 #endif
 
 /* ListAppend.proto */
@@ -1669,8 +1669,8 @@ extern int __pyx_module_is_main_AnalysisG__Templates__ParticleTemplates;
 int __pyx_module_is_main_AnalysisG__Templates__ParticleTemplates = 0;
 
 /* Implementation of 'AnalysisG.Templates.ParticleTemplates' */
-static PyObject *__pyx_builtin_AttributeError;
 static PyObject *__pyx_builtin_zip;
+static PyObject *__pyx_builtin_AttributeError;
 static PyObject *__pyx_builtin_IndexError;
 static PyObject *__pyx_builtin_TypeError;
 static PyObject *__pyx_builtin_range;
@@ -2197,7 +2197,7 @@ static PyObject *__pyx_pf_9AnalysisG_9Templates_17ParticleTemplates_16ParticleTe
  *         s.ptr._UpdateState()
  *         o.ptr._UpdateState()             # <<<<<<<<<<<<<<
  *         cdef ParticleTemplate p = self.clone
- *         p.ptr[0] = p.ptr[0] + o.ptr[0]
+ *         p.ptr[0] = s.ptr[0] + o.ptr[0]
  */
   try {
     __pyx_v_o->ptr->_UpdateState();
@@ -2210,7 +2210,7 @@ static PyObject *__pyx_pf_9AnalysisG_9Templates_17ParticleTemplates_16ParticleTe
  *         s.ptr._UpdateState()
  *         o.ptr._UpdateState()
  *         cdef ParticleTemplate p = self.clone             # <<<<<<<<<<<<<<
- *         p.ptr[0] = p.ptr[0] + o.ptr[0]
+ *         p.ptr[0] = s.ptr[0] + o.ptr[0]
  *         return p
  */
   __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_clone); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 35, __pyx_L1_error)
@@ -2222,12 +2222,12 @@ static PyObject *__pyx_pf_9AnalysisG_9Templates_17ParticleTemplates_16ParticleTe
   /* "src/Templates/Cython/Particles.pyx":36
  *         o.ptr._UpdateState()
  *         cdef ParticleTemplate p = self.clone
- *         p.ptr[0] = p.ptr[0] + o.ptr[0]             # <<<<<<<<<<<<<<
+ *         p.ptr[0] = s.ptr[0] + o.ptr[0]             # <<<<<<<<<<<<<<
  *         return p
  * 
  */
   try {
-    __pyx_t_4 = ((__pyx_v_p->ptr[0]) + (__pyx_v_o->ptr[0]));
+    __pyx_t_4 = ((__pyx_v_s->ptr[0]) + (__pyx_v_o->ptr[0]));
   } catch(...) {
     __Pyx_CppExn2PyErr();
     __PYX_ERR(0, 36, __pyx_L1_error)
@@ -2236,7 +2236,7 @@ static PyObject *__pyx_pf_9AnalysisG_9Templates_17ParticleTemplates_16ParticleTe
 
   /* "src/Templates/Cython/Particles.pyx":37
  *         cdef ParticleTemplate p = self.clone
- *         p.ptr[0] = p.ptr[0] + o.ptr[0]
+ *         p.ptr[0] = s.ptr[0] + o.ptr[0]
  *         return p             # <<<<<<<<<<<<<<
  * 
  *     def __eq__(self, other) -> bool:
@@ -2945,7 +2945,7 @@ static PyObject *__pyx_pf_9AnalysisG_9Templates_17ParticleTemplates_16ParticleTe
  *         for i in set(state_keys):
  *             if i == "clone": continue             # <<<<<<<<<<<<<<
  *             try: v = getattr(self, i)
- *             except AttributeError: continue
+ *             except: continue
  */
     __pyx_t_9 = (__Pyx_PyString_Equals(__pyx_v_i, __pyx_n_s_clone, Py_EQ)); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 66, __pyx_L1_error)
     if (__pyx_t_9) {
@@ -2956,7 +2956,7 @@ static PyObject *__pyx_pf_9AnalysisG_9Templates_17ParticleTemplates_16ParticleTe
  *         for i in set(state_keys):
  *             if i == "clone": continue
  *             try: v = getattr(self, i)             # <<<<<<<<<<<<<<
- *             except AttributeError: continue
+ *             except: continue
  *             if type(v).__name__ == "builtin_function_or_method": continue
  */
     {
@@ -2985,12 +2985,11 @@ static PyObject *__pyx_pf_9AnalysisG_9Templates_17ParticleTemplates_16ParticleTe
       /* "src/Templates/Cython/Particles.pyx":68
  *             if i == "clone": continue
  *             try: v = getattr(self, i)
- *             except AttributeError: continue             # <<<<<<<<<<<<<<
+ *             except: continue             # <<<<<<<<<<<<<<
  *             if type(v).__name__ == "builtin_function_or_method": continue
  *             state |= {i : v}
  */
-      __pyx_t_12 = __Pyx_PyErr_ExceptionMatches(__pyx_builtin_AttributeError);
-      if (__pyx_t_12) {
+      /*except:*/ {
         __Pyx_AddTraceback("AnalysisG.Templates.ParticleTemplates.ParticleTemplate.__getstate__", __pyx_clineno, __pyx_lineno, __pyx_filename);
         if (__Pyx_GetException(&__pyx_t_1, &__pyx_t_2, &__pyx_t_4) < 0) __PYX_ERR(0, 68, __pyx_L11_except_error)
         __Pyx_GOTREF(__pyx_t_1);
@@ -3003,14 +3002,13 @@ static PyObject *__pyx_pf_9AnalysisG_9Templates_17ParticleTemplates_16ParticleTe
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
         goto __pyx_L15_try_continue;
       }
-      goto __pyx_L11_except_error;
       __pyx_L11_except_error:;
 
       /* "src/Templates/Cython/Particles.pyx":67
  *         for i in set(state_keys):
  *             if i == "clone": continue
  *             try: v = getattr(self, i)             # <<<<<<<<<<<<<<
- *             except AttributeError: continue
+ *             except: continue
  *             if type(v).__name__ == "builtin_function_or_method": continue
  */
       __Pyx_XGIVEREF(__pyx_t_13);
@@ -3029,7 +3027,7 @@ static PyObject *__pyx_pf_9AnalysisG_9Templates_17ParticleTemplates_16ParticleTe
 
     /* "src/Templates/Cython/Particles.pyx":69
  *             try: v = getattr(self, i)
- *             except AttributeError: continue
+ *             except: continue
  *             if type(v).__name__ == "builtin_function_or_method": continue             # <<<<<<<<<<<<<<
  *             state |= {i : v}
  *         return state
@@ -3043,7 +3041,7 @@ static PyObject *__pyx_pf_9AnalysisG_9Templates_17ParticleTemplates_16ParticleTe
     }
 
     /* "src/Templates/Cython/Particles.pyx":70
- *             except AttributeError: continue
+ *             except: continue
  *             if type(v).__name__ == "builtin_function_or_method": continue
  *             state |= {i : v}             # <<<<<<<<<<<<<<
  *         return state
@@ -8799,8 +8797,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_AttributeError = __Pyx_GetBuiltinName(__pyx_n_s_AttributeError); if (!__pyx_builtin_AttributeError) __PYX_ERR(0, 68, __pyx_L1_error)
   __pyx_builtin_zip = __Pyx_GetBuiltinName(__pyx_n_s_zip); if (!__pyx_builtin_zip) __PYX_ERR(0, 83, __pyx_L1_error)
+  __pyx_builtin_AttributeError = __Pyx_GetBuiltinName(__pyx_n_s_AttributeError); if (!__pyx_builtin_AttributeError) __PYX_ERR(0, 104, __pyx_L1_error)
   __pyx_builtin_IndexError = __Pyx_GetBuiltinName(__pyx_n_s_IndexError); if (!__pyx_builtin_IndexError) __PYX_ERR(0, 110, __pyx_L1_error)
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 2, __pyx_L1_error)
   __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(1, 61, __pyx_L1_error)
@@ -10071,31 +10069,6 @@ static CYTHON_INLINE void __Pyx__ExceptionReset(PyThreadState *tstate, PyObject 
 }
 #endif
 
-/* PyErrExceptionMatches */
-#if CYTHON_FAST_THREAD_STATE
-static int __Pyx_PyErr_ExceptionMatchesTuple(PyObject *exc_type, PyObject *tuple) {
-    Py_ssize_t i, n;
-    n = PyTuple_GET_SIZE(tuple);
-#if PY_MAJOR_VERSION >= 3
-    for (i=0; i<n; i++) {
-        if (exc_type == PyTuple_GET_ITEM(tuple, i)) return 1;
-    }
-#endif
-    for (i=0; i<n; i++) {
-        if (__Pyx_PyErr_GivenExceptionMatches(exc_type, PyTuple_GET_ITEM(tuple, i))) return 1;
-    }
-    return 0;
-}
-static CYTHON_INLINE int __Pyx_PyErr_ExceptionMatchesInState(PyThreadState* tstate, PyObject* err) {
-    PyObject *exc_type = tstate->curexc_type;
-    if (exc_type == err) return 1;
-    if (unlikely(!exc_type)) return 0;
-    if (unlikely(PyTuple_Check(err)))
-        return __Pyx_PyErr_ExceptionMatchesTuple(exc_type, err);
-    return __Pyx_PyErr_GivenExceptionMatches(exc_type, err);
-}
-#endif
-
 /* GetException */
 #if CYTHON_FAST_THREAD_STATE
 static int __Pyx__GetException(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb)
@@ -10738,6 +10711,31 @@ static CYTHON_INLINE int __Pyx_PyObject_SetAttrStr(PyObject* obj, PyObject* attr
         return tp->tp_setattr(obj, PyString_AS_STRING(attr_name), value);
 #endif
     return PyObject_SetAttr(obj, attr_name, value);
+}
+#endif
+
+/* PyErrExceptionMatches */
+#if CYTHON_FAST_THREAD_STATE
+static int __Pyx_PyErr_ExceptionMatchesTuple(PyObject *exc_type, PyObject *tuple) {
+    Py_ssize_t i, n;
+    n = PyTuple_GET_SIZE(tuple);
+#if PY_MAJOR_VERSION >= 3
+    for (i=0; i<n; i++) {
+        if (exc_type == PyTuple_GET_ITEM(tuple, i)) return 1;
+    }
+#endif
+    for (i=0; i<n; i++) {
+        if (__Pyx_PyErr_GivenExceptionMatches(exc_type, PyTuple_GET_ITEM(tuple, i))) return 1;
+    }
+    return 0;
+}
+static CYTHON_INLINE int __Pyx_PyErr_ExceptionMatchesInState(PyThreadState* tstate, PyObject* err) {
+    PyObject *exc_type = tstate->curexc_type;
+    if (exc_type == err) return 1;
+    if (unlikely(!exc_type)) return 0;
+    if (unlikely(PyTuple_Check(err)))
+        return __Pyx_PyErr_ExceptionMatchesTuple(exc_type, err);
+    return __Pyx_PyErr_GivenExceptionMatches(exc_type, err);
 }
 #endif
 

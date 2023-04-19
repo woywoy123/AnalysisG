@@ -10,8 +10,6 @@ def test_pickle():
     p = UnpickleObject("Test")
     assert x == p
 
-
-
 if __name__ == "__main__":
     test_hash()
     test_pickle()

@@ -33,7 +33,7 @@ cdef class ParticleTemplate(object):
         s.ptr._UpdateState()
         o.ptr._UpdateState()
         cdef ParticleTemplate p = self.clone 
-        p.ptr[0] = p.ptr[0] + o.ptr[0]
+        p.ptr[0] = s.ptr[0] + o.ptr[0]
         return p
     
     def __eq__(self, other) -> bool:
@@ -65,7 +65,7 @@ cdef class ParticleTemplate(object):
         for i in set(state_keys):
             if i == "clone": continue
             try: v = getattr(self, i)
-            except AttributeError: continue
+            except: continue
             if type(v).__name__ == "builtin_function_or_method": continue
             state |= {i : v}
         return state
