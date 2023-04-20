@@ -1,4 +1,4 @@
-from AnalysisG.Generators import EventGenerator, GraphGenerator
+from AnalysisG.Generators import EventGenerator, GraphGenerator, SelectionGenerator 
 from AnalysisG.Events.Events.Event import Event
 from AnalysisG.Events.Graphs.EventGraphs import GraphChildren
 
@@ -57,37 +57,69 @@ def test_event_generator_more():
     for event in EvtGen: assert event == EvtGen[event.hash]
 
 
+def _fx(a): return 1
+
 def test_eventgraph():
     Files = {
                 smpl + "sample1" : ["smpl1.root"], 
-                #smpl + "sample2" : ["smpl1.root", "smpl2.root", "smpl3.root"]
+                smpl + "sample2" : ["smpl1.root", "smpl2.root", "smpl3.root"]
     }
 
-    def _fx(a):
-        return 1
-
-
-
     Ev = EventGenerator(Files)
-    Ev.Event = Event 
+    Ev.Event = Event
+    Ev.Threads = 1
     Ev.EventStop = 100
     Ev.MakeEvents
     
+    for i in Ev:
+        assert i.Event 
+        assert i.hash
+        assert i.met
+
     Gr = GraphGenerator(Ev)
     Gr.EventGraph = GraphChildren
     Gr.AddGraphFeature(_fx)
-    Gr.Threads = 1
+    Gr.Threads = 2
+    Gr.Device = "cuda"
     Gr.MakeGraphs
-    #Gr.TestFeatures(len(Ev))
-    #Gr.CompileEventGraph()
    
-    #assert len(Gr) == len(Ev)
-    #for i in Gr:
-    #    assert i.Compiled
-    #    assert Gr.HashToROOT(i.Filename) != None
+    assert len(Gr) == len(Ev)
+    for i in Gr:
+        assert i.Graph 
+        assert i.hash 
+        assert i.i >= 0
+        assert i.weight 
+        assert i.G__fx
 
+def test_selection_generator():
+    Files = {
+                smpl + "sample1" : ["smpl1.root"], 
+                smpl + "sample2" : ["smpl1.root", "smpl2.root", "smpl3.root"]
+    }
+
+    from examples.ExampleSelection import Example, Example2
+
+    Ev = EventGenerator(Files)
+    Ev.Event = Event
+    Ev.Threads = 1
+    Ev.EventStop = 100
+    Ev.MakeEvents
+
+    sel = SelectionGenerator(Ev)
+    sel += Ev
+    sel.Threads = 2
+    sel.AddSelection("Example", Example)
+    sel.AddSelection("Example2", Example2)
+    sel.MakeSelection
+
+    assert sel.result["Example2"].CutFlow["Success->Example"] == len(Ev)
+    assert len(sel.result["Example2"].TimeStats) == len(Ev)
+    assert len(Ev)*4 == len(sel.result["Example2"].Top["Truth"])
 
 if __name__ == "__main__":
     #test_event_generator()
     #test_event_generator_more()
-    test_eventgraph()
+    #test_eventgraph()
+    test_selection_generator() 
+
+    pass

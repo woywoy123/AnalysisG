@@ -29,10 +29,8 @@ class _Interface(Tools):
             else: self.Files |= {val : self.ListFilesInDir(val, ".root")}
 
     def _StartStop(self, it: Union[int]):
-        if self.EventStart > it and self.EventStart != -1:
-            return False
-        if self.EventStop != None and self.EventStop-1 < it:
-            return None
+        if self.EventStart > it and self.EventStart != -1: return False
+        if self.EventStop != None and self.EventStop-1 < it: return None
         return True
 
     def _MakeBar(self, inpt: Union[int], CustTitle: Union[None, str] = None):
@@ -81,6 +79,9 @@ class _Interface(Tools):
 
     def AddEdgePreprocessing(self, name, fx):
         self.SetAttribute("P_" + name, fx, self.EdgeAttribute)
-
-   
     
+    def AddSelection(self, name: Union[str], function):
+        self.Selections[name] = function
+
+    def MergeSelection(self, name: Union[str]):
+        self.Merge[name] = True 

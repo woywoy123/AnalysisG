@@ -79,7 +79,7 @@ namespace CyTracer
             // Destructor 
             ~CySampleTracer(); 
             
-            void AddEvent(CyEvent* event); 
+            void AddEvent(CyEvent* event);
 
             // Converters
             std::vector<std::string> HashList();
@@ -88,6 +88,8 @@ namespace CyTracer
             std::string HashToROOT(std::string Hash);
             std::vector<std::string> ROOTtoHashList(std::string root); 
             std::map<std::string, bool> FastSearch(std::vector<std::string> Hashes); 
+            CyEvent* HashToEvent(std::string Hash); 
+
             bool ContainsROOT(std::string root); 
             bool ContainsHash(std::string hash); 
             int length = 0; 

@@ -21,15 +21,14 @@ class Code:
     def DumpCode(self, Instance):
         try: self._Name = Instance.__qualname__
         except AttributeError:
-
             try: self._Name = Instance.__name__
             except AttributeError: self._Name = type(Instance).__name__
-
         try: self._Module = Instance.__module__
         except AttributeError: self._Module = Instance.__package__
 
         self._Path = self._Module + "." + self._Name
-        self._Code = GetSourceFile(Instance)
+        self._FileCode = GetSourceFile(Instance)
+        self._Code = GetSourceCode(Instance)
         self._Hash = Hash(self._Code)
         self._File = GetSourceFileDirectory(Instance)
     
@@ -72,10 +71,8 @@ class IO(String, _IO):
         directory = copy.deepcopy(directory)
         if isinstance(directory, dict):
             for i in directory:
-                if isinstance(directory[i], list):
-                    directory[i] = [i + "/" + k for k in directory[i]]
-                else:
-                    directory[i] = [i + "/" + directory[i]]
+                if isinstance(directory[i], list): directory[i] = [i + "/" + k for k in directory[i]]
+                else: directory[i] = [i + "/" + directory[i]]
                 F += self.ListFilesInDir([k for k in self.ListFilesInDir(directory[i], extension, _it+1)], extension, _it+1)
         elif isinstance(directory, list):
             F += [t for k in directory for t in self.ListFilesInDir(k, extension, _it+1)]

@@ -5,6 +5,48 @@ from libcpp.vector cimport vector
 from libcpp.map cimport map
 from libcpp cimport bool
 
+cdef class Event:
+    cdef CyEvent* ptr
+    cdef public list _instance
+
+    def __cinit__(self):
+        self.ptr = NULL
+
+    def __init__(self):
+        self._instance = []
+ 
+    def _wrap(self, val):
+        self._instance.append(val)
+   
+    def __getattr__(self, attr):
+        return getattr(self._instance[0], attr)
+
+    def __getstate__(self):
+        out = {}
+        out["_instance"] = self._instance
+        return out
+    
+    def __setstate__(self, inpt):
+        setattr(self, "_instance", inpt["_instance"])
+
+    @property
+    def index(self) -> int: return self.ptr.EventIndex 
+
+    @property
+    def Graph(self) -> bool: return self.ptr.Graph
+    
+    @property
+    def Event(self) -> bool: return self.ptr.Event
+
+    @property
+    def hash(self) -> string: return self.ptr.Hash.decode("UTF-8")
+
+    @property 
+    def ROOT(self) -> string: return self.ptr.ROOT.decode("UTF-8")
+
+    
+
+
 cdef class SampleTracer:
     cdef CySampleTracer* ptr
     cdef dict HashMap
@@ -70,6 +112,18 @@ cdef class SampleTracer:
         v = self.__new__(self.__class__)
         v.__init__()
         return v
+    
+    @property
+    def Threads(self) -> int: return self.ptr.Threads
+
+    @property
+    def chnk(self) -> int: return self.ptr.ChunkSize
+
+    @Threads.setter
+    def Threads(self, int val): self.ptr.Threads = val
+
+    @chnk.setter
+    def chnk(self, int val): self.ptr.ChunkSize = val
 
     def FastHashSearch(self, hashes) -> dict:
         cdef vector[string] v
@@ -95,6 +149,16 @@ cdef class SampleTracer:
             _ev.Event = True
             self.ptr.AddEvent(_ev) 
             self.HashMap[Events[i].hash] = Events[i]
+    
+    def AddGraph(self, Events):
+        cdef int i;
+        cdef str hash; 
+        cdef CyEvent* event;
+        for i in range(len(Events)):
+            hash, evnt = Events[i]
+            self.HashMap[hash] = evnt 
+            event = self.ptr.HashToEvent(<string>hash.encode("UTF-8"))
+            event.Graph = True 
 
     def __iter__(self):
         self._itv = self.ptr.HashList()
@@ -104,7 +168,10 @@ cdef class SampleTracer:
 
     def __next__(self):
         if self._its == self._ite: raise StopIteration
-        v = self.HashMap[self._itv[self._its].decode("UTF-8")]
+        cdef str hash = self._itv[self._its].decode("UTF-8")
+        ev = Event()
+        ev._wrap(self.HashMap[hash])
+        ev.ptr = self.ptr.HashToEvent(<string>hash.encode("UTF-8"))
         self._its += 1
-        return v
+        return ev
         

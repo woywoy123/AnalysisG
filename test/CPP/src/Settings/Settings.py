@@ -7,6 +7,7 @@ class _General:
         self._Code = {}
         self.EventStart = -1
         self.EventStop = None
+        self._Device = "cpu"
 
 class _UpROOT:
     
@@ -26,13 +27,19 @@ class _EventGenerator:
 class _GraphGenerator:
 
     def __init__(self):
-        self.Device = "cpu"
         self.EventGraph = None
         self.SelfLoop = True
         self.FullyConnect = True
         self.GraphAttribute = {}
         self.NodeAttribute = {}
         self.EdgeAttribute = {}
+
+class _SelectionGenerator:
+    
+    def __init__(self):
+        self.Selections = {}
+        self.Merge = {}
+
 
 class _Pickle:
 
@@ -48,3 +55,13 @@ class Settings:
         if self.Caller == "PICKLER": _Pickle.__init__(self)
         if self.Caller == "EVENTGENERATOR": _EventGenerator.__init__(self) 
         if self.Caller == "GRAPHGENERATOR": _GraphGenerator.__init__(self) 
+        if self.Caller == "SELECTIONGENERATOR": _SelectionGenerator.__init__(self)
+    
+    @property
+    def Device(self):
+        return self._Device
+
+    @Device.setter
+    def Device(self, val):
+        import torch
+        self._Device = val if val == "cuda" and torch.cuda.is_available() else "cpu"

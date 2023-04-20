@@ -1,73 +1,57 @@
 from AnalysisG.Templates import ParticleTemplate
-#from AnalysisTopGNN.Generators import Settings
-#from AnalysisTopGNN.Tools import Tools
-#from AnalysisTopGNN.IO import PickleObject
-import statistics
+from AnalysisG.Tools import Code, Tools
 from time import time 
+import statistics
 
-try:
-    from PyC.NuSol.Tensors import NuDoublePtEtaPhiE, NuNuDoublePtEtaPhiE
-except: 
-    pass
-
-try:
-    from PyC.Transform.Floats import Px, Py
-except:
-    pass
+try: from PyC.NuSol.Tensors import NuDoublePtEtaPhiE, NuNuDoublePtEtaPhiE
+except: pass
+try: from PyC.Transform.Floats import Px, Py
+except: pass
 
 class Neutrino(ParticleTemplate):
     
     def __init__(self):
         self.Type = "nu"
         ParticleTemplate.__init__(self)
-        self.px = None 
-        self.py = None 
-        self.pz = None
 
-class SelectionTemplate(): #Settings, Tools):
+class SelectionTemplate(Tools): 
     def __init__(self):
-        self.Caller = "SELECTION"
-        Settings.__init__(self)
+        self.hash = None
+        self.ROOTName = None
+        self.Residual = []
+        self.CutFlow = {}
+        self.TimeStats = []
+        self.AllWeights = []
+        self.SelWeights = [] 
     
     @property
-    def _t1(self):
-        self.__t1 = time()
+    def _t1(self): self.__t1 = time()
     
     @property 
-    def _t2(self):
-        self._TimeStats.append(time() - self.__t1)
+    def _t2(self): self.TimeStats.append(time() - self.__t1)
     
     @property
-    def AverageTime(self):
-        return statistics.mean(self._TimeStats)
+    def AverageTime(self): return statistics.mean(self.TimeStats)
     
     @property
-    def StdevTime(self):
-        return statistics.stdev(self._TimeStats)
+    def StdevTime(self): return statistics.stdev(self.TimeStats)
     
     @property
-    def Luminosity(self):
-        return ((sum(self._SelectionEventWeights))) / sum(self._AllEventWeights)
+    def Luminosity(self): return ((sum(self.SelWeights))) / sum(self.AllWeights)
     
     @property
-    def NEvents(self):
-        return len(self._SelectionEventWeights)
+    def NEvents(self): return len(self.AllWeights)
 
-    def Selection(self, event):
-        return True
+    def Selection(self, event): return True
 
-    def Strategy(self, event):
-        pass
+    def Strategy(self, event): pass
 
-    def Px(self, val, phi):
-        return Px(val, phi)
+    def Px(self, val, phi): return Px(val, phi)
 
-    def Py(self, val, phi):
-        return Py(val, phi)
+    def Py(self, val, phi): return Py(val, phi)
 
     def MakeNu(self, s_):
-        if sum(s_) == 0.:
-            return None
+        if sum(s_) == 0.: return None
         nu = Neutrino()
         nu.px = s_[0]*1000
         nu.py = s_[1]*1000
@@ -86,8 +70,7 @@ class SelectionTemplate(): #Settings, Tools):
         skip = sol[0].tolist()[0]
         _s1 = sol[1].tolist()[0]
         _s2 = sol[2].tolist()[0]
-        if skip:
-            return []
+        if skip: return []
         o = [ [self.MakeNu(k), self.MakeNu(j)] for k, j in zip(_s1, _s2) ]
         return [p for p in o if p[0] != None and p[1] != None]
    
@@ -98,10 +81,8 @@ class SelectionTemplate(): #Settings, Tools):
                 ev.met/1000., ev.met_phi, 
                 S[0], S[1], S[2], S[3], mT, mW, mN, zero)
         skip = sol[0].tolist()[0]
-        if skip:
-            return []
-        _s1 = sol[1].tolist()[0]
-        return [self.MakeNu(_s1)]
+        if skip: return []
+        return [self.MakeNu(sol[1].tolist()[0])]
 
     def Sort(self, inpt, descending = False):
         if isinstance(inpt, list):
@@ -109,96 +90,53 @@ class SelectionTemplate(): #Settings, Tools):
             return inpt
         _tmp = list(inpt)
         _tmp.sort()
-        if descending:
-            _tmp.reverse()
+        if descending: _tmp.reverse()
         inpt = {k : inpt[k] for k in _tmp}
         return inpt
     
     def _EventPreprocessing(self, event):
-        if self.Tree == None:
-            self.Tree = list(event.Trees)[0]
-        
-        if self._hash == None:
-            self._hash = event.Filename
-        
-        self._AllEventWeights += [event.Trees[self.Tree].Lumi]        
-        if self.Selection(event.Trees[self.Tree]) == False:
-            if "Rejected::Selection" not in self._CutFlow:
-                self._CutFlow["Rejected::Selection"] = 0
-            self._CutFlow["Rejected::Selection"] += 1
-            return 
-        
+        self.AllWeights += [event.weight]        
+        if self.Selection(event) == False:
+            if "Rejected::Selection" not in self.CutFlow: self.CutFlow["Rejected::Selection"] = 0
+            self.CutFlow["Rejected::Selection"] += 1
+            return False
         self._t1
-        o = self.Strategy(event.Trees[self.Tree])
+        o = self.Strategy(event)
         self._t2
         
         if isinstance(o, str) and "->" in o:
-            if o not in self._CutFlow:
-                self._CutFlow[o] = 0
-            self._CutFlow[o] += 1
-        else:
-            self._Residual += [o] if o != None else []
-        self._SelectionEventWeights += [event.Trees[self.Tree].Lumi] 
-
-        if self._OutDir:
-            o = self._OutDir
-            PickleObject(self.__dict__, self._OutDir + "/" + self._hash)
-            self.__init__()
-            self._OutDir = o
-        del event
+            if o not in self.CutFlow: self.CutFlow[o] = 0
+            self.CutFlow[o] += 1
+        else: self.Residual += [o] if o != None else []
+        self.SelWeights += [event.weight] 
+        return True
             
     def __call__(self, Ana = None):
-        if Ana == None:
-            return self
-        for i in Ana:
-            self._EventPreprocessing(i)
+        if Ana == None: return self
+        for i in Ana: self._EventPreprocessing(i)
    
     def __eq__(self, other):
-        if other == None:
-            return False
-        t1 = self.GetSourceCode(self)
-        t2 = other.GetSourceCode(other)
-        return t1 == t2
+        if other == None: return False
+        return Code(other)._Hash == Code(self)._Hash
     
     def __radd__(self, other):
-        if other == 0:
-            return self
+        if other == 0: return self
         return self.__add__(other)
     
     def __add__(self, other):
-        if isinstance(other, list):
-            out = []
-            for i in other:
-                out += [self.__add__(i)[-1]]
-            out.append(self)
-            return out
-        if self != other:
-            return [self, other]
-        
-        self._Code = []
-        out = self.CopyInstance(self)
-        out.__init__()
-        keys = set(list(out.__dict__) + list(other.__dict__))
+        keys = set(list(self.__dict__) + list(other.__dict__))
         for i in keys:
-            if i == "_hash":
-                out._hash = [self._hash] if isinstance(self._hash, str) else self._hash
-                out._hash += [other._hash] if isinstance(other._hash, str) else other._hash
-                continue
-            if i in ["Trees", "_OutDir", "Tree", "Type", "Caller"]:
-                out.__dict__[i] = self.__dict__[i]
-                continue 
             if i == "_CutFlow":
                 k_ = set(list(self.__dict__[i]) + list(other.__dict__[i]))
                 self.__dict__[i] |= {l : 0 for l in k_ if l not in self.__dict__[i]}
                 other.__dict__[i] |= {l : 0 for l in k_ if l not in other.__dict__[i]}
             if i not in self.__dict__:
-                self.__dict__[i] == other.__dict__[i]
+                self.__dict__[i] = other.__dict__[i]
                 continue
-            out.__dict__[i] = self.MergeData(self.__dict__[i], other.__dict__[i])
-        return out
+            self.__dict__[i] = self.MergeData(self.__dict__[i], other.__dict__[i])
+        return self
     
     def RestoreSettings(self, inpt):
-        for i in inpt:
-            self.__dict__[i] = inpt[i]
+        for i in inpt: self.__dict__[i] = inpt[i]
         return self
             

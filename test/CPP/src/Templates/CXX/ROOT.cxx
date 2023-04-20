@@ -74,6 +74,12 @@ void CyTracer::CySampleTracer::AddEvent(CyTracer::CyEvent* event)
     event -> ROOTFile -> HashMap[event -> Hash] = event;
 }
 
+CyTracer::CyEvent* CyTracer::CySampleTracer::HashToEvent(std::string Hash)
+{
+    CyTracer::CyROOT* root = this -> _ROOTHash[Hash]; 
+    return root -> HashMap[Hash]; 
+}
+
 std::string CyTracer::CySampleTracer::HashToROOT(std::string Hash)
 {
     if (this -> _ROOTHash[Hash] == 0){ return "None"; }

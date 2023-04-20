@@ -126,6 +126,6 @@ def test_tracer_operators():
     
     assert len([trsum.HashToROOT(i.hash) for i in trsum]) == lsum
 
-
 if __name__ == "__main__":
+    test_tracer_addEvent()
     test_tracer_operators()

@@ -34,7 +34,9 @@ cdef extern from "../Headers/ROOT.h" namespace "CyTracer":
     cdef cppclass CySampleTracer:
         CySampleTracer() except + 
          
-        int length;  
+        int length;
+        int Threads; 
+        int ChunkSize; 
 
         void AddEvent(CyEvent* event) except+
         map[string, bool] FastSearch(vector[string] hashes) except+
@@ -43,10 +45,11 @@ cdef extern from "../Headers/ROOT.h" namespace "CyTracer":
         vector[string] HashList() except+
             
         # Lookups 
-        string HashToROOT(string Hash) except+
-        vector[string] ROOTtoHashList(string root) except+
-        bool ContainsROOT(string root) except+ 
-        bool ContainsHash(string hash) except+ 
+        CyEvent* HashToEvent(string Hash) except +
+        string HashToROOT(string Hash) except +
+        vector[string] ROOTtoHashList(string root) except +
+        bool ContainsROOT(string root) except + 
+        bool ContainsHash(string hash) except + 
 
-        bool operator==(CySampleTracer* smple) except+
-        CySampleTracer* operator+(CySampleTracer* smple) except+ 
+        bool operator==(CySampleTracer* smple) except +
+        CySampleTracer* operator+(CySampleTracer* smple) except + 

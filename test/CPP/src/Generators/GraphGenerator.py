@@ -5,6 +5,7 @@ from AnalysisG.Tracer import SampleTracer
 from AnalysisG.Settings import Settings
 from .Interfaces import _Interface
 from typing import Union
+from time import sleep
 
 class GraphGenerator(_GraphGenerator, Settings, SampleTracer, _Interface):
     
@@ -20,14 +21,14 @@ class GraphGenerator(_GraphGenerator, Settings, SampleTracer, _Interface):
     def _CompileGraph(inpt, _prgbar):
         lock, bar = _prgbar
         for i in range(len(inpt)):
-            try: 
-                inpt[i].ConvertToData()
-                inpt[i] = inpt[i].purge
+            hash_, gr_ = inpt[i]
+            try: gr_.ConvertToData()
             except AttributeError: pass
             if lock == None: bar.update(1)
             else:
                 with lock: bar.update(1)
                 sleep(0.001) # This actually improves speed!!!
+            inpt[i] = [hash_, gr_.purge]
         if lock == None: del bar
         return inpt
 
@@ -39,12 +40,10 @@ class GraphGenerator(_GraphGenerator, Settings, SampleTracer, _Interface):
         if "EventGraph" not in self._Code: self._Code["EventGraph"] = []
         self._Code["EventGraph"].append(Code(self.EventGraph))
         
-        Features = {}
-        Features |= {c_name : Code(self.GraphAttribute[c_name]) for c_name in self.GraphAttribute}
-        Features |= {c_name : Code(self.NodeAttribute[c_name]) for c_name in self.NodeAttribute}   
-        Features |= {c_name : Code(self.EdgeAttribute[c_name]) for c_name in self.EdgeAttribute}
+        self._Code["GraphAttribute"] = {c_name : Code(self.GraphAttribute[c_name]) for c_name in self.GraphAttribute}
+        self._Code["NodeAttribute"]  = {c_name : Code(self.NodeAttribute[c_name]) for c_name in self.NodeAttribute}   
+        self._Code["EdgeAttribute"]  = {c_name : Code(self.EdgeAttribute[c_name]) for c_name in self.EdgeAttribute}
        
-
         inpt = []
         for ev, i in zip(self, range(len(self))):
             if self._StartStop(i) == False: continue
@@ -62,15 +61,11 @@ class GraphGenerator(_GraphGenerator, Settings, SampleTracer, _Interface):
             gr.index = ev.index
             gr.SelfLoop = self.SelfLoop
             gr.FullyConnect = self.FullyConnect
-            inpt.append(gr)
+            inpt.append([ev.hash, gr])
              
         if self.Threads > 1:
             th = Threading(inpt, self._CompileGraph, self.Threads, self.chnk)
             th.Title = self.Caller
             th.Start
         out = th._lists if self.Threads > 1 else self._CompileGraph(inpt, self._MakeBar(len(inpt)))
-        
-        print(out)
-        #for i in out: self.AddEvent(i[0], i[1], i[2])
- 
-
+        self.AddGraph(out) 
