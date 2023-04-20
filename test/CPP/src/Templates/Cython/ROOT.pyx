@@ -29,6 +29,11 @@ cdef class Event:
     def __setstate__(self, inpt):
         setattr(self, "_instance", inpt["_instance"])
 
+    def __eq__(self, other) -> bool:
+        if isinstance(self, str): return False
+        if isinstance(other, str): return False
+        return self.hash == other.hash and self.Event == other.Event
+
     @property
     def index(self) -> int: return self.ptr.EventIndex 
 
@@ -43,9 +48,6 @@ cdef class Event:
 
     @property 
     def ROOT(self) -> string: return self.ptr.ROOT.decode("UTF-8")
-
-    
-
 
 cdef class SampleTracer:
     cdef CySampleTracer* ptr
@@ -75,10 +77,17 @@ cdef class SampleTracer:
         cdef list out = []
         if self.ptr.ContainsROOT(i): 
             r = self.ptr.ROOTtoHashList(i)
-            for i in r: out.append(self.HashMap[i]) 
+            for i in r:
+                ev = Event()
+                ev._wrap(self.HashMap[i.decode("UTF-8")])
+                ev.ptr = self.ptr.HashToEvent(i)
+                out.append(ev)
             return out
         if self.ptr.ContainsHash(i): 
-            return self.HashMap[key]
+            ev = Event()
+            ev._wrap(self.HashMap[key])
+            ev.ptr = self.ptr.HashToEvent(<string>key.encode("UTF-8"))
+            return ev
         return False
 
     def __len__(self) -> int:

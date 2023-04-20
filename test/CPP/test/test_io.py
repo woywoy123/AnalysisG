@@ -11,14 +11,15 @@ def test_uproot():
     io.Leaves = ["children_index", "nothing"]
     io.ScanKeys
     
-    assert "nominal-1" in io.Keys[root1]["missed"]["TREE"]
-    assert "nominal-1" in io.Keys[root2]["missed"]["TREE"]    
+    root1_, root2_ = list(io.Keys)
+    assert "nominal-1" in io.Keys[root1_]["missed"]["TREE"]
+    assert "nominal-1" in io.Keys[root2_]["missed"]["TREE"]    
 
-    assert "hello" in io.Keys[root1]["missed"]["BRANCH"]
-    assert "hello" in io.Keys[root2]["missed"]["BRANCH"]    
+    assert "hello" in io.Keys[root1_]["missed"]["BRANCH"]
+    assert "hello" in io.Keys[root2_]["missed"]["BRANCH"]    
 
-    assert "nothing" in io.Keys[root1]["missed"]["LEAF"]
-    assert "nothing" in io.Keys[root2]["missed"]["LEAF"]    
+    assert "nothing" in io.Keys[root1_]["missed"]["LEAF"]
+    assert "nothing" in io.Keys[root2_]["missed"]["LEAF"]    
 
     io = UpROOT([root1, root2])
     io.Trees = ["nominal"] 

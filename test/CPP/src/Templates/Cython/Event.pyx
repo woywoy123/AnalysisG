@@ -1,12 +1,12 @@
 #distutils: language = c++
-from Event cimport CyEvent
+from Templates cimport CyEventTemplate
 from libcpp.string cimport string
 from libcpp.map cimport map
 from libcpp cimport bool
 from typing import Union
 
 cdef class EventTemplate:
-    cdef CyEvent* ptr
+    cdef CyEventTemplate* ptr
     cdef dict _leaves
     cdef list _Trees
     cdef list _Branches 
@@ -14,7 +14,7 @@ cdef class EventTemplate:
     cdef dict _Objects
 
     def __cinit__(self):
-        self.ptr = new CyEvent()
+        self.ptr = new CyEventTemplate()
         self._Trees = []
         self._Branches = []
         self._Leaves = []
@@ -45,10 +45,8 @@ cdef class EventTemplate:
         self._leaves = {"event" : {}} 
         for i in set(state_keys):
             if i == "clone": continue
-            
             try: v = getattr(self, i)
             except AttributeError: continue
-            
             if type(v).__name__ == "builtin_function_or_method": continue
             if type(v).__name__ == "method": continue
             state |= {i : v}
@@ -86,7 +84,7 @@ cdef class EventTemplate:
         for i in val:
             setattr(self, i, val[i])
 
-    def __compiler__(self, inpt: Union[dict]) -> void:
+    def __compiler__(self, inpt: Union[dict]):
         cdef str i, k, tr
         cdef dict val, _inpt
         cdef EventTemplate ev
@@ -161,21 +159,21 @@ cdef class EventTemplate:
     def Objects(self) -> dict: return self._Objects
 
     @Tree.setter
-    def Tree(self, str val) -> void: 
+    def Tree(self, str val): 
         self.ptr.tree = val.encode("UTF-8")
 
     @Trees.setter
-    def Trees(self, val: Union[str, list]) -> void:
+    def Trees(self, val: Union[str, list]):
         if isinstance(val, str): val = [val]
         self._Trees += val 
    
     @Branches.setter
-    def Branches(self, val: Union[str, list]) -> void:
+    def Branches(self, val: Union[str, list]):
         if isinstance(val, str): val = [val]
         self._Branches += val 
    
     @Leaves.setter
-    def Leaves(self, val: Union[str, list]) -> void:
+    def Leaves(self, val: Union[str, list]):
         if isinstance(val, str): val = [val]
         self._Leaves += val 
 
@@ -183,14 +181,14 @@ cdef class EventTemplate:
     def hash(self) -> str: return self.ptr.Hash().decode("UTF-8")
     
     @hash.setter
-    def hash(self, str val) -> void:
+    def hash(self, str val):
         self.ptr.Hash(val.encode("UTF-8"))
 
     @property
     def Deprecated(self) -> bool: return self.ptr.deprecated
 
     @Deprecated.setter
-    def Deprecated(self, bool val) -> void:
+    def Deprecated(self, bool val):
         self.ptr.deprecated = val
 
     @property
@@ -198,7 +196,7 @@ cdef class EventTemplate:
         return True
 
     @Objects.setter
-    def Objects(self, val: Union[dict]) -> void:
+    def Objects(self, val: Union[dict]):
         self._Objects = val
     
 

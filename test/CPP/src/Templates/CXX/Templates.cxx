@@ -1,18 +1,29 @@
-#include "../Headers/Particles.h"
-#include "../Headers/Tools.h"
+#include "../Headers/Templates.h"
 
-CyTemplate::CyParticle::CyParticle(){}
-CyTemplate::CyParticle::CyParticle(double px, double py, double pz, double e)
+CyTemplate::CyEventTemplate::CyEventTemplate(){}
+CyTemplate::CyEventTemplate::~CyEventTemplate(){}
+
+std::string CyTemplate::CyEventTemplate::Hash(){ return this -> _hash; }
+void CyTemplate::CyEventTemplate::Hash(std::string inpt)
+{
+    if (this -> _hash != ""){return;}
+    if (inpt.size() == 18){ this -> _hash = inpt; return; }
+    inpt = inpt + "/" + Tools::ToString(this -> index) + "/" + (this -> tree); 
+    this -> _hash = Tools::Hashing(inpt); 
+}
+
+
+CyTemplate::CyParticleTemplate::CyParticleTemplate(){}
+CyTemplate::CyParticleTemplate::CyParticleTemplate(double px, double py, double pz, double e)
 {
     this -> _px = px; 
     this -> _py = py; 
     this -> _pz = pz; 
     this -> _e = e; 
 }
+CyTemplate::CyParticleTemplate::~CyParticleTemplate(){}
 
-CyTemplate::CyParticle::~CyParticle(){}
-
-void CyTemplate::CyParticle::_UpdateState()
+void CyTemplate::CyParticleTemplate::_UpdateState()
 {
     if (!this -> _edited){ return; }
     this -> px(); 
@@ -27,7 +38,7 @@ void CyTemplate::CyParticle::_UpdateState()
     this -> _edited = false; 
 }
 
-std::string CyTemplate::CyParticle::Hash()
+std::string CyTemplate::CyParticleTemplate::Hash()
 {
     if (this -> _edited)
     {
@@ -42,7 +53,7 @@ std::string CyTemplate::CyParticle::Hash()
 }
 
 // Cartesian Conversion functions
-double CyTemplate::CyParticle::px()
+double CyTemplate::CyParticleTemplate::px()
 {
     if (this -> _edited && this -> _pt && this -> _phi)
     {
@@ -51,7 +62,7 @@ double CyTemplate::CyParticle::px()
     return this -> _px; 
 }
 
-double CyTemplate::CyParticle::py()
+double CyTemplate::CyParticleTemplate::py()
 {
     if (this -> _edited && this -> _pt && this -> _phi)
     {
@@ -60,7 +71,7 @@ double CyTemplate::CyParticle::py()
     return this -> _py; 
 }
 
-double CyTemplate::CyParticle::pz()
+double CyTemplate::CyParticleTemplate::pz()
 {
     if (this -> _edited && this -> _pt && this -> _eta)
     {
@@ -70,7 +81,7 @@ double CyTemplate::CyParticle::pz()
 }
 
 // Polar Conversion functions
-double CyTemplate::CyParticle::pt()
+double CyTemplate::CyParticleTemplate::pt()
 {
     if (this -> _edited && this -> _px && this -> _py)
     {
@@ -83,7 +94,7 @@ double CyTemplate::CyParticle::pt()
     return this -> _pt; 
 }
 
-double CyTemplate::CyParticle::eta()
+double CyTemplate::CyParticleTemplate::eta()
 {
     if (this -> _edited) { this -> pt(); this -> pz(); }
     if (this -> _edited && this -> _pz && this -> _pt)
@@ -93,7 +104,7 @@ double CyTemplate::CyParticle::eta()
     return this -> _eta; 
 }
 
-double CyTemplate::CyParticle::phi()
+double CyTemplate::CyParticleTemplate::phi()
 {
     if (this -> _edited && this -> _py && this -> _px)
     {
@@ -102,7 +113,7 @@ double CyTemplate::CyParticle::phi()
     return this -> _phi; 
 }
 
-double CyTemplate::CyParticle::e()
+double CyTemplate::CyParticleTemplate::e()
 {
     if (this -> _edited)
     {
@@ -117,51 +128,51 @@ double CyTemplate::CyParticle::e()
 }
 
 // Cartesian Conversion functions
-void CyTemplate::CyParticle::px(double val)
+void CyTemplate::CyParticleTemplate::px(double val)
 { 
     this -> _px = val; 
     this -> _edited = true; 
 }
 
-void CyTemplate::CyParticle::py(double val)
+void CyTemplate::CyParticleTemplate::py(double val)
 { 
     this -> _py = val; 
     this -> _edited = true; 
 }
 
-void CyTemplate::CyParticle::pz(double val)
+void CyTemplate::CyParticleTemplate::pz(double val)
 { 
     this -> _pz = val; 
     this -> _edited = true; 
 }
 
 // Polar Conversion functions
-void CyTemplate::CyParticle::pt(double val)
+void CyTemplate::CyParticleTemplate::pt(double val)
 { 
     this -> _pt = val; 
     this -> _edited = true; 
 }
 
-void CyTemplate::CyParticle::eta(double val)
+void CyTemplate::CyParticleTemplate::eta(double val)
 { 
     this -> _eta = val; 
     this -> _edited = true; 
 }
 
-void CyTemplate::CyParticle::phi(double val)
+void CyTemplate::CyParticleTemplate::phi(double val)
 { 
     this -> _phi = val; 
     this -> _edited = true; 
 }
 
-void CyTemplate::CyParticle::e(double val)
+void CyTemplate::CyParticleTemplate::e(double val)
 {
     this -> _e = val; 
     this -> _edited = true; 
 }
 
 // Physics Functions 
-double CyTemplate::CyParticle::Mass()
+double CyTemplate::CyParticleTemplate::Mass()
 {
     double sum = 0; 
     sum += std::pow(this -> _e, 2); 
@@ -173,13 +184,13 @@ double CyTemplate::CyParticle::Mass()
     return this -> _mass; 
 }
 
-void CyTemplate::CyParticle::Mass(double val)
+void CyTemplate::CyParticleTemplate::Mass(double val)
 {
     this -> _mass = val; 
     this -> _edited = true; 
 }
 
-double CyTemplate::CyParticle::DeltaR(const CyTemplate::CyParticle& p)
+double CyTemplate::CyParticleTemplate::DeltaR(const CyTemplate::CyParticleTemplate& p)
 {
     double sum = std::pow(this -> _eta - p._eta, 2); 
     sum += std::pow(std::atan(std::tan(this -> _eta)) - std::atan(std::tan(p._eta)), 2); 
@@ -187,27 +198,27 @@ double CyTemplate::CyParticle::DeltaR(const CyTemplate::CyParticle& p)
 }
 
 // Particle Functions 
-signed int CyTemplate::CyParticle::pdgid()
+signed int CyTemplate::CyParticleTemplate::pdgid()
 {
     return this -> _pdgid; 
 }
 
-void CyTemplate::CyParticle::pdgid(signed int id)
+void CyTemplate::CyParticleTemplate::pdgid(signed int id)
 {
     this -> _pdgid = id; 
 }
 
-double CyTemplate::CyParticle::charge()
+double CyTemplate::CyParticleTemplate::charge()
 {
     return this -> _charge; 
 }
 
-void CyTemplate::CyParticle::charge(double id)
+void CyTemplate::CyParticleTemplate::charge(double id)
 {
     this -> _charge = id; 
 }
 
-std::string CyTemplate::CyParticle::symbol()
+std::string CyTemplate::CyParticleTemplate::symbol()
 {
     std::map<int, std::string> sym = {
                  {1, "d"}, {2, "u"}, {3, "s"}, {4, "c"}, {5, "b"}, {6, "t"},
@@ -220,17 +231,17 @@ std::string CyTemplate::CyParticle::symbol()
     return ss.str(); 
 }
 
-void CyTemplate::CyParticle::symbol(std::string inpt)
+void CyTemplate::CyParticleTemplate::symbol(std::string inpt)
 {
     this -> _symbol = inpt; 
 }
 
-bool CyTemplate::CyParticle::is(std::vector<signed int> p)
+bool CyTemplate::CyParticleTemplate::is(std::vector<signed int> p)
 {
     for (signed int i : p){ if (std::abs(i) == std::abs(this -> _pdgid)) { return true; }}
     return false; 
 }
 
-bool CyTemplate::CyParticle::is_b(){ return this -> is({5}); }
-bool CyTemplate::CyParticle::is_nu(){ return this -> is(this -> _nudef); }
-bool CyTemplate::CyParticle::is_lep(){ return this -> is(this -> _lepdef); }
+bool CyTemplate::CyParticleTemplate::is_b(){ return this -> is({5}); }
+bool CyTemplate::CyParticleTemplate::is_nu(){ return this -> is(this -> _nudef); }
+bool CyTemplate::CyParticleTemplate::is_lep(){ return this -> is(this -> _lepdef); }

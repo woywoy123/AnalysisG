@@ -37,7 +37,7 @@ class EventGenerator(_EventGenerator, Settings, SampleTracer, _Interface):
 
     @property
     def MakeEvents(self):
-        if not self.CheckEventImplementation: return self
+        if not self.CheckEventImplementation: return False
         self.CheckSettings
 
         if "Event" not in self._Code: self._Code["Event"] = []
@@ -49,8 +49,8 @@ class EventGenerator(_EventGenerator, Settings, SampleTracer, _Interface):
         except TypeError: self.Event = self.Event()
         except: return self.ObjectCollectFailure
         self._Code["Objects"] = {i : Code(self.Event.Objects[i]) for i in self.Event.Objects}
-        if not self.CheckROOTFiles: return self
-        if not self.CheckVariableNames: return self 
+        if not self.CheckROOTFiles: return False
+        if not self.CheckVariableNames: return False
 
         ev = self.Event
         ev.__interpret__

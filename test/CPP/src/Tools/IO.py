@@ -71,14 +71,16 @@ class IO(String, _IO):
         directory = copy.deepcopy(directory)
         if isinstance(directory, dict):
             for i in directory:
-                if isinstance(directory[i], list): directory[i] = [i + "/" + k for k in directory[i]]
+                if i.endswith(extension): F += [i]
+                elif isinstance(directory[i], list): directory[i] = [i + "/" + k for k in directory[i]]
                 else: directory[i] = [i + "/" + directory[i]]
                 F += self.ListFilesInDir([k for k in self.ListFilesInDir(directory[i], extension, _it+1)], extension, _it+1)
         elif isinstance(directory, list):
             F += [t for k in directory for t in self.ListFilesInDir(k, extension, _it+1)]
         elif isinstance(directory, str):
             if directory.endswith("*"): F += self.lsFiles(directory[:-2], extension)
-            else: F += [directory.replace("//", "/")]
+            elif directory.endswith(extension): F += [directory]
+            elif len(self.lsFiles(directory, extension)) != 0: F += self.lsFiles(directory, extension)
             F = [i for i in F if self.IsFile(i)] 
 
         if _it == 0:
@@ -94,6 +96,7 @@ class IO(String, _IO):
             return Out
         return F
     
+    @property
     def pwd(self): return os.getcwd()
 
     def abs(self, directory): return os.path.abspath(directory)
@@ -111,6 +114,7 @@ class IO(String, _IO):
         except IsADirectoryError:
             import shutil
             shutil.rmtree(self.abs(directory))
+        except FileNotFoundError: pass
 
     def cd(self, directory):
         os.chdir(directory)

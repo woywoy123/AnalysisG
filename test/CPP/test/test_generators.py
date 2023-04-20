@@ -1,4 +1,4 @@
-from AnalysisG.Generators import EventGenerator, GraphGenerator, SelectionGenerator 
+from AnalysisG.Generators import EventGenerator, GraphGenerator, SelectionGenerator, Analysis
 from AnalysisG.Events.Events.Event import Event
 from AnalysisG.Events.Graphs.EventGraphs import GraphChildren
 
@@ -116,10 +116,24 @@ def test_selection_generator():
     assert len(sel.result["Example2"].TimeStats) == len(Ev)
     assert len(Ev)*4 == len(sel.result["Example2"].Top["Truth"])
 
+def test_Analysis():
+    Sample1 = {smpl + "sample1" : ["smpl1.root"]}
+    Sample2 = smpl + "sample2"
+    
+    Ana = Analysis()
+    Ana.ProjectName = "_Test"
+    Ana.InputSample("Sample1", Sample1)
+    Ana.InputSample("Sample2", Sample2)
+    Ana.PurgeCache = False
+    Ana.OutputDirectory = "../test/"
+    Ana.EventStop = 100
+    Ana.Launch
+
+
 if __name__ == "__main__":
     #test_event_generator()
     #test_event_generator_more()
     #test_eventgraph()
-    test_selection_generator() 
-
+    #test_selection_generator() 
+    test_Analysis()
     pass

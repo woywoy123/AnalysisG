@@ -5,12 +5,12 @@ from libcpp cimport bool
 cdef extern from "../Headers/Tools.h" namespace "Tools":
     pass
 
-cdef extern from "../Headers/Particles.h" namespace "CyTemplate" nogil:
-    cdef cppclass CyParticle nogil:
-        CyParticle() nogil except +
-        CyParticle(double px, double py, double pz, double e) nogil except + 
-        CyParticle operator+(const CyParticle& p1) nogil except +   
-        bool operator==(const CyParticle& p1) nogil except +   
+cdef extern from "../Headers/Templates.h" namespace "CyTemplate" nogil:
+    cdef cppclass CyParticleTemplate nogil:
+        CyParticleTemplate() nogil except +
+        CyParticleTemplate(double px, double py, double pz, double e) nogil except + 
+        CyParticleTemplate operator+(const CyParticleTemplate& p1) nogil except +   
+        bool operator==(const CyParticleTemplate& p1) nogil except +   
         
         # Book keeping variables
         signed int index; 
@@ -32,7 +32,7 @@ cdef extern from "../Headers/Particles.h" namespace "CyTemplate" nogil:
         double phi() nogil except +
         double e() nogil except +
         double Mass() nogil except +
-        double DeltaR(const CyParticle& p) nogil except +
+        double DeltaR(const CyParticleTemplate& p) nogil except +
         signed int pdgid() nogil except +
         double charge() nogil except +
         string symbol() nogil except +
@@ -55,3 +55,16 @@ cdef extern from "../Headers/Particles.h" namespace "CyTemplate" nogil:
 
         string Hash() nogil except +
         void _UpdateState() nogil except +
+
+    cdef cppclass CyEventTemplate nogil:
+        CyEventTemplate() nogil except +
+        
+        signed int index; 
+        double weight; 
+        bool deprecated; 
+        string tree; 
+        string commit_hash; 
+        
+        void Hash(string val) nogil except +
+        string Hash() nogil except +
+

@@ -85,30 +85,31 @@ def test_tracer_addEvent():
     lst = [i for j in range(1000) for i in hashes ]
     assert sum(tr.FastHashSearch(lst).values()) == len(hashes)
 
-def test_tracer_operators():
-    def Make(root):
-        ev = Event()
-        ev.__interpret__
-        io = UpROOT(root)
-        io.Trees = ev.Trees
-        io.Leaves = ev.Leaves
-        out = []
-        for i in io:
-            root, index = i["ROOT"], i["EventIndex"]
-            trees = ev.__compiler__(i)
-            out.append([trees, root, index]) 
-        return out
 
+def EventMaker(root):
+    ev = Event()
+    ev.__interpret__
+    io = UpROOT(root)
+    io.Trees = ev.Trees
+    io.Leaves = ev.Leaves
+    out = []
+    for i in io:
+        root, index = i["ROOT"], i["EventIndex"]
+        trees = ev.__compiler__(i)
+        out.append([trees, root, index]) 
+    return out
+
+def test_tracer_operators():
 
     root1 = "./samples/sample1/smpl1.root"
     root2 = "./samples/sample1/smpl2.root"
     
     tr1 = SampleTracer()
-    for i in Make(root1): tr1.AddEvent(i[0], i[1], i[2])
+    for i in EventMaker(root1): tr1.AddEvent(i[0], i[1], i[2])
     l1 = len(tr1)
 
     tr2 = SampleTracer()
-    for i in Make(root2): tr2.AddEvent(i[0], i[1], i[2])
+    for i in EventMaker(root2): tr2.AddEvent(i[0], i[1], i[2])
     l2 = len(tr2)
      
     trsum = tr1 + tr2 
@@ -126,6 +127,18 @@ def test_tracer_operators():
     
     assert len([trsum.HashToROOT(i.hash) for i in trsum]) == lsum
 
+def test_tracer_hdf5():
+    #// Continue here....
+    
+
+
+
+
+
 if __name__ == "__main__":
-    test_tracer_addEvent()
-    test_tracer_operators()
+    #test_tracer_addEvent()
+    #test_tracer_operators()
+    test_tracer_hdf5()
+    
+
+

@@ -8,25 +8,7 @@ class _Interface(Tools):
         pass
 
     def InputSamples(self, val: Union[dict[str], list[str], str, None]):
-        if isinstance(val, dict): 
-            for i in val:
-                if len(val[i]) != 0: 
-                    self.Files |= {i : [v for v in val[i] if v.endswith(".root")]}
-                    continue
-                self.Files |= self.ListFilesInDir(i, ".root")
-
-        elif isinstance(val, list): 
-            for i in val:
-                if i.endswith(".root"): 
-                    _dir = "/".join(i.split("/")[:-1])
-                    if _dir not in self.Files: self.Files[_dir] = []
-                    self.Files[_dir].append(i.split("/")[-1])
-                    continue
-                self.Files |= self.ListFilesInDir(i, ".root")
-
-        elif isinstance(val, str): 
-            if val.endswith(".root"): self.Files |= {"/".join(val.split("/")[:-1]) : [val.split("/")[-1]]}
-            else: self.Files |= {val : self.ListFilesInDir(val, ".root")}
+        self.Files = self.ListFilesInDir(val, ".root")
 
     def _StartStop(self, it: Union[int]):
         if self.EventStart > it and self.EventStart != -1: return False
@@ -35,7 +17,7 @@ class _Interface(Tools):
 
     def _MakeBar(self, inpt: Union[int], CustTitle: Union[None, str] = None):
         _dct = {}
-        _dct["desc"] = CustTitle if CustTitle == None else f'Progress {self.Caller}'
+        _dct["desc"] = f'Progress {self.Caller}' if CustTitle is None else CustTitle
         _dct["leave"] = False
         _dct["colour"] = "GREEN"
         _dct["dynamic_ncols"] = True
@@ -83,5 +65,8 @@ class _Interface(Tools):
     def AddSelection(self, name: Union[str], function):
         self.Selections[name] = function
 
-    def MergeSelection(self, name: Union[str]):
-        self.Merge[name] = True 
+    def InputSample(self, name: Union[str], Samples: Union[str, dict, list, None] = None):
+        self.Files = {}
+        self.InputSamples(Samples)
+        self.SampleMap[name] = self.Files
+

@@ -40,6 +40,21 @@ class _SelectionGenerator:
         self.Selections = {}
         self.Merge = {}
 
+class _Analysis:
+    
+    def __init__(self):
+        _UpROOT.__init__(self)
+        _Pickle.__init__(self)
+        _EventGenerator.__init__(self) 
+        _GraphGenerator.__init__(self) 
+        _SelectionGenerator.__init__(self)
+        self._cPWD = None
+        self.ProjectName = "UNTITLED"
+        self.OutputDirectory = None
+        self.SampleMap = {}
+        self.EventCache = False
+        self.DataCache = False
+        self.PurgeCache = False
 
 class _Pickle:
 
@@ -49,13 +64,15 @@ class _Pickle:
 
 class Settings:
     
-    def __init__(self):
+    def __init__(self, caller = False):
+        if caller: self.Caller = caller
         _General.__init__(self)
         if self.Caller == "UP-ROOT": _UpROOT.__init__(self)
         if self.Caller == "PICKLER": _Pickle.__init__(self)
         if self.Caller == "EVENTGENERATOR": _EventGenerator.__init__(self) 
         if self.Caller == "GRAPHGENERATOR": _GraphGenerator.__init__(self) 
         if self.Caller == "SELECTIONGENERATOR": _SelectionGenerator.__init__(self)
+        if self.Caller == "ANALYSIS": _Analysis.__init__(self)
     
     @property
     def Device(self):
@@ -65,3 +82,9 @@ class Settings:
     def Device(self, val):
         import torch
         self._Device = val if val == "cuda" and torch.cuda.is_available() else "cpu"
+
+    def ImportSettings(self, inpt):
+        if not issubclass(type(inpt), Settings): return 
+        s = Settings(self.Caller)
+        for i in s.__dict__: setattr(self, i, getattr(inpt, i))
+       

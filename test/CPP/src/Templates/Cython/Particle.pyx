@@ -1,19 +1,19 @@
 #distutils: language = c++
 from libcpp.string cimport string
-from typing import Union
 from libcpp.vector cimport vector
 from libcpp cimport bool
-from Particles cimport CyParticle
+from typing import Union
+from Templates cimport CyParticleTemplate
 
 cdef class ParticleTemplate(object):
-    cdef CyParticle* ptr
+    cdef CyParticleTemplate* ptr
     cdef public list Children
     cdef public list Parent
     cdef dict _leaves
     cdef bool _state
 
     def __cinit__(self):
-        self.ptr = new CyParticle()
+        self.ptr = new CyParticleTemplate()
         self._leaves = {}
         self._state = False
     
@@ -122,7 +122,7 @@ cdef class ParticleTemplate(object):
         return self.ptr.Type.decode("UTF-8")
 
     @Type.setter
-    def Type(self, str val) -> void:
+    def Type(self, str val):
         self.ptr.Type = val.encode("UTF-8")
 
     @property 
@@ -130,7 +130,7 @@ cdef class ParticleTemplate(object):
         return self.ptr.index
     
     @index.setter
-    def index(self, val: Union[int, float, str]) -> void: 
+    def index(self, val: Union[int, float, str]): 
         if isinstance(val, int): self.ptr.index = val
         elif isinstance(val, float): self.ptr.index = <int>val
         elif isinstance(val, str): self._leaves["index"] = val
@@ -146,7 +146,7 @@ cdef class ParticleTemplate(object):
         return self.ptr.px()
     
     @px.setter
-    def px(self, val: Union[str, float]) -> void:
+    def px(self, val: Union[str, float]):
         if isinstance(val, float): self.ptr.px(<double>val)
         elif isinstance(val, str): self._leaves["px"] = val
 
@@ -156,7 +156,7 @@ cdef class ParticleTemplate(object):
         return self.ptr.py()
 
     @py.setter
-    def py(self, val: Union[str, float]) -> void:
+    def py(self, val: Union[str, float]):
         if isinstance(val, float): self.ptr.py(<double>val)
         elif isinstance(val, str): self._leaves["py"] = val
 
@@ -166,7 +166,7 @@ cdef class ParticleTemplate(object):
         return self.ptr.pz()
 
     @pz.setter
-    def pz(self, val: Union[str, float]) -> void:
+    def pz(self, val: Union[str, float]):
         if isinstance(val, float): self.ptr.pz(<double> val)
         elif isinstance(val, str): self._leaves["pz"] = val
 
@@ -176,7 +176,7 @@ cdef class ParticleTemplate(object):
         return self.ptr.pt()
 
     @pt.setter
-    def pt(self, val: Union[str, float]) -> void:
+    def pt(self, val: Union[str, float]):
         if isinstance(val, float): self.ptr.pt(<double> val)
         elif isinstance(val, str): self._leaves["pt"] = val
 
@@ -186,7 +186,7 @@ cdef class ParticleTemplate(object):
         return self.ptr.eta()
 
     @eta.setter
-    def eta(self, val: Union[str, float]) -> void:
+    def eta(self, val: Union[str, float]):
         if isinstance(val, float): self.ptr.eta(<double> val)
         elif isinstance(val, str): self._leaves["eta"] = val
 
@@ -196,7 +196,7 @@ cdef class ParticleTemplate(object):
         return self.ptr.phi()
 
     @phi.setter
-    def phi(self, val: Union[str, float]) -> void:
+    def phi(self, val: Union[str, float]):
         if isinstance(val, float): self.ptr.phi(<double> val)
         elif isinstance(val, str): self._leaves["phi"] = val
     
@@ -206,7 +206,7 @@ cdef class ParticleTemplate(object):
         return self.ptr.e()
 
     @e.setter 
-    def e(self, val: Union[str, float]) -> void:
+    def e(self, val: Union[str, float]):
         if isinstance(val, float): self.ptr.e(<double>val)
         elif isinstance(val, str): self._leaves["e"] = val
     
@@ -215,7 +215,7 @@ cdef class ParticleTemplate(object):
         return self.ptr.Mass()
     
     @Mass.setter
-    def Mass(self, val: Union[str, float]) -> void:
+    def Mass(self, val: Union[str, float]):
         if isinstance(val, float): self.ptr.Mass(<double>val)
         elif isinstance(val, str): self._leaves["Mass"] = val
     
@@ -227,7 +227,7 @@ cdef class ParticleTemplate(object):
         return self.ptr.pdgid()
 
     @pdgid.setter
-    def pdgid(self, val: Union[str, float, int]) -> void:
+    def pdgid(self, val: Union[str, float, int]):
         if isinstance(val, int): self.ptr.pdgid(<int>val)
         elif isinstance(val, str): self._leaves["pdgid"] = val
 
@@ -236,7 +236,7 @@ cdef class ParticleTemplate(object):
         return self.ptr.charge()
 
     @charge.setter
-    def charge(self, val: Union[str, float, int]) -> void:
+    def charge(self, val: Union[str, float, int]):
         if isinstance(val, float): self.ptr.charge(<double>val)
         elif isinstance(val, int): self.ptr.charge(<double>val)
         elif isinstance(val, str): self._leaves["charge"] = val
@@ -274,11 +274,11 @@ cdef class ParticleTemplate(object):
         return self.ptr._nudef 
 
     @lepdef.setter
-    def lepdef(self, vector[signed int] val) -> void:
+    def lepdef(self, vector[signed int] val):
         self.ptr._lepdef = val
 
     @nudef.setter
-    def nudef(self, vector[signed int] val) -> void:
+    def nudef(self, vector[signed int] val):
         self.ptr._nudef = val
    
     @property

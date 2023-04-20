@@ -32,7 +32,7 @@ class _EventGenerator(Notification):
         self.Failure("="*len(mess))
         self.Failure(mess)
         self.Failure("="*len(mess))
-        return self
+        return False
     
     @property
     def CheckVariableNames(self):

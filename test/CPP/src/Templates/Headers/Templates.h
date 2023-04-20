@@ -1,27 +1,49 @@
-#include <iostream>
+#include <string>
+#include <map>
 #include <cmath>
 #include <vector>
-#include <map>
+#include <iostream>
+#include "../Headers/Tools.h"
 
-#ifndef CYTEMPLATE_H
-#define CYTEMPLATE_H
+#ifndef __CYTEMPLATE__H
+#define __CYTEMPLATE__H
 
 namespace CyTemplate
 {
-    class CyParticle
+    class CyEventTemplate
+    {
+        public:
+            CyEventTemplate(); 
+            ~CyEventTemplate(); 
+            
+            signed int index = -1;
+            double weight = 1; 
+            bool deprecated = false; 
+            std::string tree = ""; 
+            std::string commit_hash = ""; 
+           
+            std::string Hash();  
+            void Hash(std::string val); 
+        
+        private:
+            std::string _hash = ""; 
+
+    }; 
+    
+    class CyParticleTemplate
     {
         public:
             // Constructors 
-            CyParticle(); 
-            CyParticle(double px, double py, double pz, double e); 
+            CyParticleTemplate(); 
+            CyParticleTemplate(double px, double py, double pz, double e); 
 
             // Destructor 
-            ~CyParticle(); 
+            ~CyParticleTemplate(); 
 
             // Operators
-            CyParticle operator+(const CyParticle& p)
+            CyParticleTemplate operator+(const CyParticleTemplate& p)
             {
-                CyParticle p2; 
+                CyParticleTemplate p2; 
                 p2._px = this -> _px + p._px; 
                 p2._py = this -> _py + p._py; 
                 p2._pz = this -> _pz + p._pz; 
@@ -29,7 +51,7 @@ namespace CyTemplate
                 return p2; 
             }
 
-            void operator+=(const CyParticle& p)
+            void operator+=(const CyParticleTemplate& p)
             {
                 this -> _px += p._px; 
                 this -> _py += p._py; 
@@ -37,7 +59,7 @@ namespace CyTemplate
                 this ->  _e += p._e; 
             }
 
-            bool operator==(const CyParticle& p2)
+            bool operator==(const CyParticleTemplate& p2)
             {
                 return (this -> _hash) == (p2._hash); 
             }
@@ -63,7 +85,7 @@ namespace CyTemplate
             
             // ============== Physics ================ //
             // Getter Functions
-            double Mass(), DeltaR(const CyParticle& p);  
+            double Mass(), DeltaR(const CyParticleTemplate& p);  
 
             // Setter Functions
             void Mass(double val);  
@@ -107,8 +129,8 @@ namespace CyTemplate
             
             // Book keeping 
             std::string _hash = ""; 
- 
-            
     };
 }
+
 #endif 
+

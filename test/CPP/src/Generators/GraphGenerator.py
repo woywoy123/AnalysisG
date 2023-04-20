@@ -34,8 +34,8 @@ class GraphGenerator(_GraphGenerator, Settings, SampleTracer, _Interface):
 
     @property 
     def MakeGraphs(self):
-        if not self.CheckGraphImplementation: return self
-        if not self.CheckSettings: return self
+        if not self.CheckGraphImplementation: return False
+        if not self.CheckSettings: return False
 
         if "EventGraph" not in self._Code: self._Code["EventGraph"] = []
         self._Code["EventGraph"].append(Code(self.EventGraph))

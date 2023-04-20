@@ -63,9 +63,6 @@ class Event(EventTemplate):
         self.somethingelse = sum(x)
         self.p2 = self.somethingelse.Mass != 0
 
-
-
-
 def test_particle_pickle():
     root1 = "./samples/sample1/smpl1.root"
     x = TruthJet()

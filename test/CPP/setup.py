@@ -4,24 +4,22 @@ import os
 
 ext_mod = [
     Extension(
-                name = "AnalysisG.Templates.ParticleTemplates", 
+                name = "AnalysisG.Templates.ParticleTemplate", 
                 sources = [
-                    "src/Templates/Cython/Particles.pyx", 
-                    "src/Templates/CXX/Particles.cxx",
-
+                    "src/Templates/Cython/Particle.pyx", 
+                    "src/Templates/CXX/Templates.cxx",
                     "src/Templates/CXX/Tools.cxx", 
                 ], 
     ), 
     Extension(
-                name = "AnalysisG.Templates.EventTemplates", 
+                name = "AnalysisG.Templates.EventTemplate", 
                 sources = [
                     "src/Templates/Cython/Event.pyx", 
-                    "src/Templates/CXX/Event.cxx",
+                    "src/Templates/CXX/Templates.cxx",
 
                     "src/Templates/CXX/Tools.cxx", 
                 ], 
     ), 
-
     Extension(
                 name = "AnalysisG.Tracer", 
                 sources = [
@@ -31,7 +29,6 @@ ext_mod = [
                     "src/Templates/CXX/Tools.cxx", 
                 ], 
     ),
-
     Extension(
                 name = "AnalysisG._Tools", 
                 sources = [

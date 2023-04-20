@@ -76,11 +76,6 @@ def test_data_merging():
     assert T.MergeNestedList(l) == ["1", "2", "3", "4", "5", "6", "2"]
 
 
-
-
-
-
-
 if __name__ == "__main__":
     test_hash()
     test_pickle()
