@@ -2,8 +2,14 @@
 from ROOT cimport CySampleTracer, CyROOT, CyEvent
 from libcpp.string cimport string
 from libcpp.vector cimport vector
-from libcpp.map cimport map
+from libcpp.map cimport map, pair
 from libcpp cimport bool
+import h5py
+import os
+import pickle 
+import codecs
+from tqdm import tqdm
+from typing import Union 
 
 cdef class Event:
     cdef CyEvent* ptr
@@ -44,21 +50,28 @@ cdef class Event:
     def Event(self) -> bool: return self.ptr.Event
 
     @property
-    def hash(self) -> string: return self.ptr.Hash.decode("UTF-8")
+    def hash(self) -> str: return self.ptr.Hash.decode("UTF-8")
 
     @property 
-    def ROOT(self) -> string: return self.ptr.ROOT.decode("UTF-8")
+    def ROOT(self) -> str: return self.ptr.ROOT.decode("UTF-8")
+   
+    @property
+    def CachePath(self) -> str: return self.ptr.ROOTFile.CachePath.decode("UTF-8")
 
 cdef class SampleTracer:
     cdef CySampleTracer* ptr
-    cdef dict HashMap
     cdef vector[string] _itv
+    cdef dict HashMap
     cdef int _its
     cdef int _ite
+    cdef str OutDir 
+    cdef bool _EventCache 
+    cdef bool _DataCache
 
     def __cinit__(self):
         self.ptr = new CySampleTracer()
         self.HashMap = {}
+        self.OutDir = os.getcwd()
 
     def __dealloc__(self):
         del self.ptr
@@ -91,7 +104,7 @@ cdef class SampleTracer:
         return False
 
     def __len__(self) -> int:
-        if self.ptr.length == 0: self.ptr.HashList()
+        if self.ptr.length == 0: self.ptr.length = self.ptr._ROOTHash.size()
         return self.ptr.length
 
     def __add__(self, other) -> SampleTracer:
@@ -100,11 +113,12 @@ cdef class SampleTracer:
 
         cdef SampleTracer s = self
         cdef SampleTracer o = other
-        cdef SampleTracer p = self.clone
-        p.ptr = s.ptr[0] + o.ptr
-        for i in s.HashMap: p.HashMap[i] = s.HashMap[i] 
-        for i in o.HashMap: p.HashMap[i] = o.HashMap[i]
-        return p
+        cdef SampleTracer t = self.clone
+        del t.ptr
+        t.ptr = s.ptr[0] + o.ptr
+        for i in s.HashMap: t.HashMap[i] = s.HashMap[i] 
+        for i in o.HashMap: t.HashMap[i] = o.HashMap[i]
+        return t
     
     def __iadd__(self, other):
         cdef SampleTracer s = self
@@ -133,6 +147,31 @@ cdef class SampleTracer:
 
     @chnk.setter
     def chnk(self, int val): self.ptr.ChunkSize = val
+    
+    @property
+    def OutputDirectory(self):
+        return self.OutDir
+    
+    @OutputDirectory.setter
+    def OutputDirectory(self, str val):
+        if val is None: return 
+        self.OutDir = val
+    
+    @property
+    def EventCache(self) -> bool:
+        return self._EventCache 
+
+    @EventCache.setter
+    def EventCache(self, val) -> bool:
+        self._EventCache = val
+
+    @property
+    def DataCache(self) -> bool:
+        return self._DataCache 
+
+    @DataCache.setter
+    def DataCache(self, val) -> bool:
+        self._DataCache = val
 
     def FastHashSearch(self, hashes) -> dict:
         cdef vector[string] v
@@ -156,6 +195,7 @@ cdef class SampleTracer:
             _ev.ROOT = root.encode("UTF-8")
             _ev.EventIndex = <int>index
             _ev.Event = True
+            
             self.ptr.AddEvent(_ev) 
             self.HashMap[Events[i].hash] = Events[i]
     
@@ -168,6 +208,136 @@ cdef class SampleTracer:
             self.HashMap[hash] = evnt 
             event = self.ptr.HashToEvent(<string>hash.encode("UTF-8"))
             event.Graph = True 
+            event.Event = False
+    
+    @property
+    def DumpTracer(self):
+        cdef pair[string, CyROOT*] root
+        cdef pair[string, CyEvent*] event; 
+        cdef CyROOT* r
+        cdef CyEvent* e
+       
+        try: os.mkdir(self.OutDir + "/Tracer/")
+        except FileExistsError: pass
+
+        for root in self.ptr._ROOTMap:
+            r = root.second
+            f = h5py.File(self.OutDir + "/Tracer/" + r.CachePath.decode("UTF-8") + ".hdf5", "a")
+            for event in r.HashMap:
+                e = event.second
+                try: ref = f.create_dataset(event.first.decode("UTF-8"), (1), dtype = h5py.ref_dtype)
+                except ValueError: ref = f[event.first.decode("UTF-8")]
+                
+                ref.attrs["Tree"] = e.Tree
+                ref.attrs["TrainMode"] = e.TrainMode
+                ref.attrs["Hash"] = e.Hash
+                ref.attrs["ROOT"] = e.ROOT
+                ref.attrs["EventIndex"] = e.EventIndex
+                ref.attrs["CachedEvent"] = e.CachedEvent
+                ref.attrs["CachedGraph"] = e.CachedGraph
+            f.close()
+    
+    @property
+    def DumpEvents(self):
+        cdef CyEvent* e
+        cdef str out
+        cdef str file = ""
+        
+        _, bar = self._MakeBar(len(self), "DUMPING EVENTS")
+        for i in self:
+            e = self.ptr.HashToEvent(<string>i.hash.encode("UTF-8"))
+            if e.CachedEvent and e.Event: continue
+            elif e.CachedGraph and e.Graph: continue
+            
+            bar.update(1)
+            out = self.OutDir + "/"
+            if i.Event: out += "EventCache/"
+            elif i.Graph: out += "DataCache/"
+            else: continue
+
+            if file == "":
+                try: os.mkdir(out)
+                except FileExistsError: pass
+
+            out += i.CachePath
+            if file != out: f = h5py.File(out + ".hdf5", "a")
+             
+            try: ref = f.create_dataset(i.hash, (1), dtype = h5py.ref_dtype)
+            except ValueError: ref = f[i.hash]
+
+            if i.Event: e.CachedEvent = True
+            else: e.CachedGraph = True
+            ref.attrs["Event"] = codecs.encode(pickle.dumps(i), "base64").decode() 
+
+            file = out if file != "" else file
+            if file != out: f.close()
+        del bar
+        self.DumpTracer
+
+    @property
+    def RestoreTracer(self):
+        cdef str i, k
+        cdef CyROOT* R
+        cdef CyEvent* E
+        cdef vector[string] search
+        cdef dict maps 
+        cdef list get
+
+        for i in [self.OutDir + "/Tracer/" + i for i in os.listdir(self.OutDir + "/Tracer/") if ".hdf5" in i]:
+            f = h5py.File(i)
+            maps = self.FastHashSearch([k for k in f])
+            get = [i for i in maps if not maps[i]] 
+            if len(get) == 0: continue
+            for i in get:
+                ref = f[i]
+                E = new CyEvent()
+                E.Tree = <string>ref.attrs["Tree"].encode("UTF-8")
+                E.TrainMode = <string>ref.attrs["TrainMode"].encode("UTF-8")
+                E.Hash = <string>ref.attrs["Hash"].encode("UTF-8")
+                E.ROOT = <string>ref.attrs["ROOT"].encode("UTF-8")
+                E.EventIndex = ref.attrs["EventIndex"]
+                E.CachedEvent = ref.attrs["CachedEvent"]
+                E.CachedGraph = ref.attrs["CachedGraph"]
+                E.ROOTFile = R
+                self.ptr.AddEvent(E)
+                
+    @property
+    def RestoreEvents(self):
+        self.RestoreTracer 
+        cdef pair[string, CyROOT*] c
+        cdef pair[string, CyEvent*] e
+        cdef CyROOT* r_
+        cdef CyEvent* e_
+        cdef str get
+        
+        for c in self.ptr._ROOTMap:
+            r_ = c.second
+            get = self.OutDir + "/"
+            get += "DataCache" if self.DataCache else "EventCache"
+            get += "/" + r_.CachePath.decode("UTF-8")
+            f = h5py.File(get + ".hdf5")
+            
+            get = "RESTORING EVENTS (" + ("DataCache" if self.DataCache else "EventCache") + "): "
+            _, bar = self._MakeBar(r_.HashMap.size(), get + c.first.decode("UTF-8"))
+            for e in r_.HashMap:
+                bar.update(1)
+                e_ = e.second        
+                if e_.CachedEvent == False and e_.CachedGraph == False: continue
+                elif e_.CachedGraph == False and self.DataCache: continue
+                elif e_.CachedEvent == False and self.EventCache: continue
+                 
+                get = e.first.decode("UTF-8")
+                self.HashMap[get] = pickle.loads(codecs.decode(f[get].attrs["Event"].encode("UTF-8"), "base64"))
+            del bar
+
+    def _MakeBar(self, inpt: Union[int], CustTitle: Union[None, str] = None):
+        _dct = {}
+        _dct["desc"] = f'Progress {self.Caller}' if CustTitle is None else CustTitle
+        _dct["leave"] = False
+        _dct["colour"] = "GREEN"
+        _dct["dynamic_ncols"] = True
+        _dct["total"] = inpt
+        return (None, tqdm(**_dct))
 
     def __iter__(self):
         self._itv = self.ptr.HashList()
@@ -180,7 +350,7 @@ cdef class SampleTracer:
         cdef str hash = self._itv[self._its].decode("UTF-8")
         ev = Event()
         ev._wrap(self.HashMap[hash])
-        ev.ptr = self.ptr.HashToEvent(<string>hash.encode("UTF-8"))
+        ev.ptr = self.ptr[0].HashToEvent(<string>hash.encode("UTF-8"))
         self._its += 1
         return ev
         

@@ -16,10 +16,11 @@ cdef extern from "../Headers/ROOT.h" namespace "CyTracer":
         bool Graph;
         bool Event; 
         bool CachedEvent; 
-        bool CachedGraph; 
+        bool CachedGraph;
 
         string ReturnROOTFile(); 
-        string ReturnCachePath(); 
+        string ReturnCachePath();
+        CyROOT* ROOTFile; 
 
     cdef cppclass CyROOT:
         CyROOT() except +
@@ -27,6 +28,8 @@ cdef extern from "../Headers/ROOT.h" namespace "CyTracer":
         string Filename; 
         string SourcePath; 
         string CachePath; 
+        map[string, CyEvent*] HashMap; 
+        vector[CySampleTracer*] _Tracers; 
 
         bool operator==(CyROOT* root) except+
         CyROOT operator+(CyROOT* root) except+
@@ -37,6 +40,8 @@ cdef extern from "../Headers/ROOT.h" namespace "CyTracer":
         int length;
         int Threads; 
         int ChunkSize; 
+        map[string, CyROOT*] _ROOTMap; 
+        map[string, CyROOT*] _ROOTHash; 
 
         void AddEvent(CyEvent* event) except+
         map[string, bool] FastSearch(vector[string] hashes) except+

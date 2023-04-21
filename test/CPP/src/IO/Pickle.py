@@ -14,7 +14,7 @@ class Pickle(Tools, Settings):
         direc = self.RemoveTrailing(direc, "/")
         filename = self.filename(filename)
          
-        if self.RemoveTrailing(self.pwd(), "/") == direc: direc += "/" + Dir
+        if self.RemoveTrailing(self.pwd, "/") == direc: direc += "/" + Dir
         
         self.mkdir(direc)
         f = open(direc + "/" + filename, "wb")
@@ -26,7 +26,7 @@ class Pickle(Tools, Settings):
         direc = self.path(filename)
         filename = self.filename(filename)
 
-        if self.RemoveTrailing(self.pwd(), "/") == direc: direc += "/" + Dir
+        if self.RemoveTrailing(self.pwd, "/") == direc: direc += "/" + Dir
         if self.IsFile(direc + "/" + filename) == False: return 
 
         f = open(direc + "/" + filename, "rb")

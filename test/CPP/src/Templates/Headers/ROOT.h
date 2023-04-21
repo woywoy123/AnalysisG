@@ -78,11 +78,16 @@ namespace CyTracer
             
             // Destructor 
             ~CySampleTracer(); 
-            
-            void AddEvent(CyEvent* event);
+           
+            int length = 0; 
+            int Threads = 1;
+            int ChunkSize = 100; 
+            std::map<std::string, CyROOT*> _ROOTMap = {}; 
+            std::map<std::string, CyROOT*> _ROOTHash = {}; 
 
             // Converters
             std::vector<std::string> HashList();
+            void AddEvent(CyEvent* event);
             
             // Lookups 
             std::string HashToROOT(std::string Hash);
@@ -92,17 +97,10 @@ namespace CyTracer
 
             bool ContainsROOT(std::string root); 
             bool ContainsHash(std::string hash); 
-            int length = 0; 
-            int Threads = 1;
-            int ChunkSize = 100; 
 
             // Operators 
             bool operator==(CySampleTracer* p); 
-            CySampleTracer* operator+(CySampleTracer* p); 
-
-        private:
-            std::map<std::string, CyROOT*> _ROOTMap = {}; 
-            std::map<std::string, CyROOT*> _ROOTHash = {}; 
+            CySampleTracer* operator+(CySampleTracer* p);
      }; 
 }
 #endif

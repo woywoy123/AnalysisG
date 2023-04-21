@@ -1,6 +1,5 @@
 from setuptools import setup, Extension
 from Cython.Build import cythonize
-import os 
 
 ext_mod = [
     Extension(

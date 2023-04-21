@@ -2,6 +2,7 @@ from AnalysisG.Templates import EventTemplate
 from AnalysisG.Templates import ParticleTemplate
 from AnalysisG.IO import UpROOT
 from AnalysisG.Tracer import SampleTracer
+import shutil
 
 class Particle(ParticleTemplate):
     def __init__(self):
@@ -128,9 +129,44 @@ def test_tracer_operators():
     assert len([trsum.HashToROOT(i.hash) for i in trsum]) == lsum
 
 def test_tracer_hdf5():
-    #// Continue here....
+    root1 = "./samples/sample1/smpl1.root"
+    root2 = "./samples/sample1/smpl2.root"
     
+    tr1 = SampleTracer()
+    for i in EventMaker(root1): tr1.AddEvent(i[0], i[1], i[2])
+    l1 = len(tr1)
 
+    tr2 = SampleTracer()
+    for i in EventMaker(root2): tr2.AddEvent(i[0], i[1], i[2])
+    l2 = len(tr2)
+
+    #tr1.DumpEvents
+    #tr2.DumpEvents
+
+    for i in tr1:
+        tr1[i.hash]
+        #print(tr1[i.hash])
+    del tr1
+    del tr2
+    from time import sleep
+    sleep(1)
+    print("....") 
+
+    return 
+    s = SampleTracer()
+    s.EventCache = True
+    s.RestoreEvents
+
+    shutil.rmtree("EventCache")
+    shutil.rmtree("Tracer")
+    
+    for i in s:
+        pass
+        #i.hash
+        #print(s[i.hash])
+    from time import sleep
+    sleep(1)
+    print("__")
 
 
 

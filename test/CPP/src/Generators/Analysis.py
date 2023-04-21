@@ -48,10 +48,11 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         gr = GraphGenerator(self)
         gr.ImportSettings(self)
         return gr.MakeGraphs
-    
+         
     @property
     def Launch(self):
         self.__build__
+        print(self.SampleMap)
         for i in self.SampleMap:
             self.samples = self.SampleMap[i]
             #self.__Event__ 

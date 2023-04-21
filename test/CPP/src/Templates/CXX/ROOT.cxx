@@ -9,15 +9,31 @@ CyTracer::CyEvent::~CyEvent(){}
 
 CyTracer::CyROOT::~CyROOT()
 {
-    std::map<std::string, CyEvent*>::iterator it_e; 
-    if ((this -> _Tracers).size() != 0){ return; }
+    std::map<std::string, CyEvent*>::iterator it_e;
     for (it_e = this -> HashMap.begin(); it_e != this -> HashMap.end(); ++it_e)
     {
+        std::cout << "event" << std::endl;
         delete it_e -> second; 
     }
 }
 
-CyTracer::CySampleTracer::~CySampleTracer(){}
+CyTracer::CySampleTracer::~CySampleTracer()
+{
+    std::map<std::string, CyROOT*>::iterator it; 
+    for (it = this -> _ROOTMap.begin(); it != this -> _ROOTMap.end(); ++it)
+    {
+        //const int l = (*it -> second)._Tracers.size(); 
+        std::cout << "> " << it -> first << std::endl;
+        //for (unsigned int i(0); i < l; ++i)
+        //{
+        //    //if (r -> _Tracers[i] != this){continue;}
+        //    std::cout << i << std::endl; 
+        //    //r -> _Tracers.push_back(r -> _Tracers[i]);  
+        //}
+        //std::cout << r -> _Tracers.size() << std::endl; 
+        //r -> _Tracers = Update;
+    }
+}
 
 std::string CyTracer::CyEvent::ReturnROOTFile()
 { 
@@ -45,8 +61,8 @@ void CyTracer::CySampleTracer::AddEvent(CyTracer::CyEvent* event)
     if (this -> _ROOTMap[event -> ROOT] == 0)
     {
         // Split the file path into a vector
-        std::vector<std::string> val = Tools::Split( event -> ROOT, '/');
-        
+        std::vector<std::string> val = Tools::Split( event -> ROOT, '/' );
+
         // Constuct a new ROOT container object
         CyTracer::CyROOT* r = new CyTracer::CyROOT(); 
 
@@ -55,7 +71,7 @@ void CyTracer::CySampleTracer::AddEvent(CyTracer::CyEvent* event)
         
         // Extract the source directory
         for (std::string v : val){ r -> SourcePath += v + "/"; }
-        
+        r -> CachePath = Tools::Hashing(r -> SourcePath) + "-" + Tools::Split(r -> Filename, '.')[0];  
         // Add the ROOT filename to the collection
         this -> _ROOTMap[event -> ROOT] = r; 
 
@@ -122,7 +138,6 @@ std::map<std::string, bool> CyTracer::CySampleTracer::FastSearch(std::vector<std
             found -> push_back(true);  
         }
     }; 
-    
 
     std::vector<std::vector<std::string>> q_hash = Tools::Chunk(Hashes, this -> ChunkSize); 
     std::vector<std::vector<bool>> q_found; 
@@ -188,7 +203,14 @@ CyTracer::CyROOT* CyTracer::CyROOT::operator+(CyROOT* p)
     for (CySampleTracer* i : p -> _Tracers)
     { 
         bool same = false; 
-        for (CySampleTracer* _k : r -> _Tracers){ if (_k == i){same = true; break;}}
+        for (CySampleTracer* _k : r -> _Tracers)
+        { 
+            if (_k == i)
+            {
+                same = true; 
+                break;
+            }
+        }
         if (same){continue;}
         r -> _Tracers.push_back(i); 
     }
@@ -230,25 +252,20 @@ CyTracer::CySampleTracer* CyTracer::CySampleTracer::operator+(CySampleTracer* p)
     r -> _ROOTMap = this -> _ROOTMap; 
     r -> _ROOTHash = this -> _ROOTHash; 
     r -> _ROOTHash.insert( p -> _ROOTHash.begin(), p -> _ROOTHash.end()); 
-
+    
     std::map<std::string, CyROOT*>::iterator it; 
     for (it = p -> _ROOTMap.begin(); it != p -> _ROOTMap.end(); ++it)
     {
         std::string key = it -> first; 
-        if (r -> _ROOTMap[key] == 0)
-        {
-            r -> _ROOTMap[key] = it -> second; 
-            it -> second -> _Tracers.push_back(r); 
-            continue; 
-        }
-        if (r -> _ROOTMap[key] == it -> second)
-        { 
-            r -> _ROOTMap[key] -> _Tracers.push_back(r); 
-            continue; 
-        }
-        r -> _ROOTMap[key] = *(r -> _ROOTMap[key]) + it -> second; 
+        CyROOT* root = it -> second; 
+
+        if (r -> _ROOTMap[key] == 0){ r -> _ROOTMap[key] = root; }
+        else { r -> _ROOTMap[key] = *(r -> _ROOTMap[key]) + root; }
     }
-    
+    for (it = r -> _ROOTMap.begin(); it != r -> _ROOTMap.end(); ++it)
+    {
+        it -> second -> _Tracers.push_back(r); 
+    }
 
     return r; 
 }

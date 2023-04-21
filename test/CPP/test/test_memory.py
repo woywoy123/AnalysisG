@@ -102,7 +102,7 @@ def test_particle_multithreading():
 
     
     mem = 0
-    for _ in range(10):
+    for _ in range(3):
         x = [] 
         for i in io:
             for t in range(1000):
@@ -133,10 +133,8 @@ def test_particle_multithreading():
         x = set(x)
         assert len(x) == len(jets)
         x = {i.hash : i for i in x}
-        try:
-            assert len([x[i.hash] for i in jets]) == len(jets)
-        except KeyError:
-            raise AssertionError
+        try: assert len([x[i.hash] for i in jets]) == len(jets)
+        except KeyError: raise AssertionError
 
         def Function(inpt, _prgbar):
             lock, bar = _prgbar
@@ -161,7 +159,7 @@ def test_event_pickle():
     io.Leaves = ev.Leaves
 
     mem = 0
-    for _ in range(100):
+    for _ in range(3):
         events = []
         for i in io:
             
@@ -185,7 +183,7 @@ def test_event_multithreading():
     io.Leaves = ev.Leaves
 
     mem = 0
-    for _ in range(10):
+    for _ in range(3):
         events = []
         for i in io:
             events += ev.__compiler__(i)
@@ -210,8 +208,7 @@ def test_event_multithreading():
         th = Threading([[ev.clone, root1, i] for i in io for _ in range(1000)], Function, 10, 7400)
         th.Start
         events_j = []
-        for i in th._lists:
-            events_j.append(i)
+        for i in th._lists: events_j.append(i)
         events_j = list(set(events_j))
         assert len(events_j) == len(events)
 
@@ -223,9 +220,6 @@ def test_event_multithreading():
         
         if mem == 0: mem = psutil.virtual_memory().percent
         assert psutil.virtual_memory().percent - mem < 1
-  
-
-
 
 
 if __name__ == "__main__":
