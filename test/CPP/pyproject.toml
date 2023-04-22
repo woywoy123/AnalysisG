@@ -1,9 +1,0 @@
-[build-system]
-requires = ["pip", "setuptools", "wheel", "cython", "numpy"]
-build-backend = "setuptools.build_meta"
-
-[project]
-name = "AnalysisG-dev"
-version = "3.0"
-authors = [{name = "woywoy123"}]
-readme = "README.md"

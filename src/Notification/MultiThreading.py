@@ -1,6 +1,6 @@
 from .Notification import Notification
 
-class MultiThreading(Notification):
+class _MultiThreading(Notification):
 
     def __init__(self):
        pass

@@ -1,58 +1,44 @@
-from AnalysisTopGNN.Tools import Tools
+from AnalysisG.IO import UpROOT
 
-directory = "./TestCaseFiles/Tools/TestFiles/"
-def test_ls_files():
-    I = Tools()
-    print("Testing listing sub-directories...")
-    F = I.lsFiles(directory)
-    for i in range(3):
-        assert directory + "Dir" + str(i+1) in F
-    print("Testing listing files with extension .txt")
-    assert len(I.lsFiles(directory + "Dir1", ".txt")) == 3
+root1 = "./samples/sample1/smpl1.root"
+root2 = "./samples/sample1/smpl2.root"
 
-def test_ls():
-    I = Tools()
-    print("Testing listing directories")
-    F = I.lsFiles(directory)
-    for i in range(3):
-        assert directory + "Dir" + str(i+1) in F
-    if I.ls("FakeDirectory") != []:
-        return False
-
-def test_is_file():
-    I = Tools()
-    for i in range(3):
-        assert I.IsFile(directory + "Dir" + str(i+1) + "/" + str(i+1) + ".txt") == True
-    assert I.IsFile(directory + "Dir1") == False
-
-def test_list_files_in_dir():
-    D = {directory + "/Dir1" : ["1.txt"], directory + "/Dir2" : "2.txt", directory + "/Dir3/" : "*"}
-    I = Tools()
-    O = I.ListFilesInDir(D, ".txt")
-    assert "1.txt" in O[I.abs(directory + "/Dir1")]
-    assert "2.txt" in O[I.abs(directory + "/Dir2")]
-    assert "1.txt" in O[I.abs(directory + "/Dir3")]
-    assert "2.txt" in O[I.abs(directory + "/Dir3")]
-    assert "3.txt" in O[I.abs(directory + "/Dir3")]
-
-def test_source_code_extraction():
-
-    class HelloWorld:
-        def __init__(self, hello, world = "world"):
-            pass
-        
-        def Test(self):
-            return True
-
-    T = Tools()
-    H = HelloWorld("H")
-    assert "HelloWorld" in T.GetSourceCode(H) and "AnalysisTopGNN" not in T.GetSourceCode(H)
-    assert T.GetSourceFile(H) == "".join(open("./test_io.py", "r").readlines())
-
-def test_data_merging():
+def test_uproot():
     
-    T = Tools()
-    d = {"1": [["1", "2"], ["3", "4"], ["5", "6"], [["2"]]], "2": ["5", "6"], "3": [["1", "2"], ["3", "4"]]}
-    assert T.MergeListsInDict(d) == ["1", "2", "3", "4", "5", "6", "2", "5", "6", "1", "2", "3", "4"]
-    l = [["1", "2"], ["3", "4"], ["5", "6"], [["2"]]]
-    assert T.MergeNestedList(l) == ["1", "2", "3", "4", "5", "6", "2"]
+    io = UpROOT([root1, root2])
+    io.Trees = ["nominal", "nominal-1"] 
+    io.Branches = ["children_index", "hello"]
+    io.Leaves = ["children_index", "nothing"]
+    io.ScanKeys
+    
+    root1_, root2_ = list(io.Keys)
+    assert "nominal-1" in io.Keys[root1_]["missed"]["TREE"]
+    assert "nominal-1" in io.Keys[root2_]["missed"]["TREE"]    
+
+    assert "hello" in io.Keys[root1_]["missed"]["BRANCH"]
+    assert "hello" in io.Keys[root2_]["missed"]["BRANCH"]    
+
+    assert "nothing" in io.Keys[root1_]["missed"]["LEAF"]
+    assert "nothing" in io.Keys[root2_]["missed"]["LEAF"]    
+
+    io = UpROOT([root1, root2])
+    io.Trees = ["nominal"] 
+    io.Branches = ["children_index"]
+    io.Leaves = ["met_met"]
+    assert len(io) == 165
+
+    io = UpROOT([root1, root2])
+    io.Trees = ["nominal", "truth"] 
+    io.Leaves = ["weight_mc", "weight_pileup", "met_phi"]
+  
+    for i in io:
+        assert "nominal/weight_mc" in i
+        assert "truth/weight_mc" in i
+        assert "nominal/weight_pileup" in i
+        assert "truth/weight_pileup" in i
+        assert "nominal/met_phi" in i
+        assert "truth/met_phi" not in i
+
+if __name__ == "__main__":
+    test_uproot()
+

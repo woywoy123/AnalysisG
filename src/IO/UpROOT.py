@@ -1,81 +1,114 @@
-from AnalysisTopGNN.Notification.UpROOT import UpROOT
-from AnalysisTopGNN.Generators.Settings import Settings
-from AnalysisTopGNN.Tools import Threading
+from AnalysisG.Generators.Interfaces import _Interface
+from AnalysisG.Notification import _UpROOT
+from AnalysisG.Settings import Settings
 import uproot 
 
-class File(UpROOT, Settings):
-    def __init__(self, ROOTFile):
-        self.Caller = "FILE"
+class UpROOT(_UpROOT, Settings, _Interface):
+    
+    def __init__(self, ROOTFiles = None):
+        self.Caller = "Up-ROOT"
         Settings.__init__(self)
-        self.Trees = []
-        self.Branches = []
-        self.Leaves = []
-        self.ROOTFile = ROOTFile
-        self._Reader =  uproot.open(self.ROOTFile)
-        self._State = None
-   
-    def _CheckKeys(self, List, Type):
-        TMP = []
+        self.InputSamples(ROOTFiles)
+        ROOTFile = [i + "/" + k for i in self.Files for k in self.Files[i]]
+        self.File = {i : uproot.open(i) for i in ROOTFile}
+        if len(self.File) == 0:
+            self.InvalidROOTFileInput
+            self.File = False
+            return 
+        self.Keys = {}
+        self._it = False 
 
-        t = []
-        for i in [k for k in self._State.keys() if "/" not in k]:
-            if ";" in i:
-                i = i.split(";")[0]
-            t.append(i)
+    @property
+    def _StartIter(self):
+        if self._it: return
+        self._it = iter(list(self.File))
 
-        for i in List:
-            if i not in t:
-                continue
-            TMP.append(i)
-            
-        return TMP
-    
-    def _GetKeys(self, List1, List2, Type):
-        TMP = []
-        for i in List1:
-            self._State = self._Reader[i]
-            TMP += [i + "/" + j for j in self._CheckKeys(List2, Type)]
-             
-        for i in TMP:
-            if i.split("/")[-1] in List2:
-                List2.pop(List2.index(i.split("/")[-1]))
+    @property
+    def ScanKeys(self):
+        if not self.File: return False
         
-        if len(List1) == 0:
-            return []
-        self.SkippedKey(Type, List2) 
-        return TMP
+        def Recursion(inpt, k_, keys):
+            for i in keys:
+                k__ = k_ + "/" + i
+                try:
+                    k_n = inpt[k__].keys()
+                    self._struct[k__] = None
+                except AttributeError: continue
+                Recursion(inpt, k__, k_n)
+        self._StartIter
+        
+        try: fname = next(self._it)
+        except StopIteration:
+            self._it = False
+            return 
 
-    def _GetBranches(self):
-        return self._GetKeys(self.Trees, self.Branches, "BRANCH")
-    
-    def _GetLeaves(self):
-        leaves = []
-        leaves += self._GetKeys(self.Branches, self.Leaves, "LEAF")
-        leaves += self._GetKeys(self.Trees, self.Leaves, "LEAF")
-        return leaves 
-    
-    def ValidateKeys(self):
-        self.Leaves = list(set(self.Leaves))
-        self.Branches = list(set(self.Branches))
-        self.Trees = list(set(self.Trees))
-        self._State = self._Reader 
-        self.Trees = self._CheckKeys(self.Trees, "TREE")
-        self.Branches = self._GetBranches()
-        self.Leaves = self._GetLeaves() 
-    
-    def __len__(self):
-        self.ReadingFile(self.ROOTFile)
-        return self._Reader[self.Trees[-1]].num_entries
+        f = self.File[fname]
+        self._struct = {}
+        self._missed = {"TREE" : [], "BRANCH" : [], "LEAF" : []}
+        
+        Recursion(f, "", f.keys())
+        
+        found = {}
+        for i in self.Trees:
+            found |= {k : self._struct[k] for k in self._struct if i in k}
+        self.CheckValidKeys(self.Trees, found, "TREE")
+        found = {}
+
+        for i in self.Branches:
+            found |= {k : self._struct[k] for k in self._struct if i in k.split("/")}
+        self.CheckValidKeys(self.Branches, found, "BRANCH")
+        
+        for i in self.Leaves:
+            found |= {k : self._struct[k] for k in self._struct if i in k.split("/")}
+        self.CheckValidKeys(self.Leaves, found, "LEAF")
+        
+        self.Keys[fname] = {"found" : found, "missed" : self._missed}
+        self.AllKeysFound(fname)        
+        
+        self.ScanKeys
 
     def __iter__(self):
-        self.ReadingFile(self.ROOTFile)
-        All = [b.split("/")[-1] for b in self.Branches] + [l.split("/")[-1] for l in self.Leaves]
-        self._iter = {Tree : self._Reader[Tree].iterate(All, library = "np", step_size = self.StepSize) for Tree in self.Trees}
-        self.Iter = {Tree : {key : [] for key in All} for Tree in self.Trees}
-        return self
+        if len(self.Keys) != len(self.File): self.ScanKeys
+        keys = self.Keys[list(self.File)[0]]["found"]
+        
+        self._t = { T : [r for r in self.File if T not in self.Keys[r]["missed"]["TREE"]] for T in self.Trees }
+        self._get = {tr : [i.split("/")[-1] for i in keys if tr in i] for tr in self._t}
+        dct = {
+                tr : {
+                    "files" : {r : tr for r in self._t[tr]}, 
+                    "library" : "np", 
+                    "step_size" : self.StepSize, 
+                    "report" : True, 
+                    "how" : dict, 
+                    "expressions" : self._get[tr], 
+                } 
+                for tr in self._get}
+        self._root = {tr : uproot.iterate(**dct[tr]) for tr in dct}
+        self._r = None
+        self._cur_r = None
+        self._EventIndex = 0
+        return self 
+    
+    def __len__(self):
+        self.__iter__()
+        v = {tr : sum([uproot.open(r + ":" + tr).num_entries for r in self._t[tr]]) for tr in self._get}
+        return list(v.values())[0]
 
     def __next__(self):
-        if sum([sum([len(self.Iter[Tree][br]) for br in self.Iter[Tree]]) for Tree in self.Trees]) == 0:
-            self.Iter = {Tree : next(self._iter[Tree]) for Tree in self._iter}
-            self.Iter = {Tree : {key : val.tolist() for key, val in zip(self.Iter[Tree], self.Iter[Tree].values())} for Tree in self.Iter}
-        return {Tree : {key : val.pop() for key, val in zip(self.Iter[Tree], self.Iter[Tree].values())} for Tree in self.Iter}
+        try:
+            r = {key : self._r[key][0].pop() for key in self._r}
+            fname = self._r[list(r)[0]][1].file_path
+                
+            if self._cur_r != fname:
+                self._bar = self._MakeBar(uproot.open(fname + ":" + list(r)[0].split("/")[0]).num_entries, fname)[1]
+            self._bar.update(1)
+
+            self._EventIndex = 0 if self._cur_r != fname else self._EventIndex+1
+            self._cur_r = fname
+
+            r |= {"ROOT" : fname, "EventIndex" : self._EventIndex}
+            return r
+        except:
+            r = {tr : next(self._root[tr]) for tr in self._root}
+            self._r = {tr + "/" + l : [r[tr][0][l].tolist(), r[tr][1]] for tr in r for l in r[tr][0]}            
+            return self.__next__()

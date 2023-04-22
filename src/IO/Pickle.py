@@ -1,5 +1,5 @@
-from AnalysisTopGNN.Tools import Tools, Threading
-from AnalysisTopGNN.Generators.Settings import Settings
+from AnalysisG.Tools import Tools, Threading
+from AnalysisG.Settings import Settings
 import pickle 
 import sys
 
@@ -14,8 +14,7 @@ class Pickle(Tools, Settings):
         direc = self.RemoveTrailing(direc, "/")
         filename = self.filename(filename)
          
-        if self.RemoveTrailing(self.pwd(), "/") == direc:
-            direc += "/" + Dir
+        if self.RemoveTrailing(self.pwd, "/") == direc: direc += "/" + Dir
         
         self.mkdir(direc)
         f = open(direc + "/" + filename, "wb")
@@ -26,11 +25,10 @@ class Pickle(Tools, Settings):
         filename = self.AddTrailing(filename, self._ext)
         direc = self.path(filename)
         filename = self.filename(filename)
-        if self.RemoveTrailing(self.pwd(), "/") == direc:
-            direc += "/" + Dir
-        
-        if self.IsFile(direc + "/" + filename) == False:
-            return 
+
+        if self.RemoveTrailing(self.pwd, "/") == direc: direc += "/" + Dir
+        if self.IsFile(direc + "/" + filename) == False: return 
+
         f = open(direc + "/" + filename, "rb")
         obj = pickle.load(f)
         f.close()
@@ -46,7 +44,7 @@ class Pickle(Tools, Settings):
          
         inpo = [[name, ObjectDict[name]] for name in ObjectDict]
         TH = Threading(inpo, function, self.Threads, self.chnk) 
-        TH.VerboseLevel = self.VerboseLevel
+        TH.Verbose = self.Verbose
         TH.Title = "DUMPING PICKLES " 
         TH.Title += "" if Name == None else "(" + Name + ")"
         TH.Start()
@@ -54,7 +52,7 @@ class Pickle(Tools, Settings):
     def MultiThreadedReading(self, InputFiles, Name = None):
         def function(inpt):
             out = []
-            for i in inpt:
+            for i in inpt: 
                 out.append([i.split("/")[-1].replace(self._ext, ""), self.UnpickleObject(i)])
             return out
         
@@ -62,22 +60,17 @@ class Pickle(Tools, Settings):
         if len(ClassDef) > 0:
             for i in ClassDef:
                 defs = self.UnpickleObject(InputFiles[i])
-                for j in defs:
-                    sys.path.append("/".join(j.split("/")[:-1]))
+                for j in defs: sys.path.append("/".join(j.split("/")[:-1]))
+
         InputFiles = [ InputFiles[i] for i in range(len(InputFiles)) if i not in ClassDef ]
         
         TH = Threading(InputFiles, function, self.Threads, self.chnk)
-        TH.VerboseLevel = self.VerboseLevel
+        TH.Verbose = self.Verbose
         TH.Title = "READING PICKLES " 
         TH.Title += "" if Name == None else "(" + Name + ")"
         TH.Start()
         return {i[0] : i[1] for i in TH._lists}
 
-def _UnpickleObject(filename):
-    io = Pickle()
-    return io.UnpickleObject(filename)
-    
-def _PickleObject(obj, filename):
-    io = Pickle()
-    io.PickleObject(obj, filename)
+def _UnpickleObject(filename): return Pickle().UnpickleObject(filename)
+def _PickleObject(obj, filename): Pickle().PickleObject(obj, filename)
     

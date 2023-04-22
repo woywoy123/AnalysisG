@@ -1,5 +1,4 @@
-from .UpROOT import File
+from .UpROOT import UpROOT
 from .Pickle import Pickle
-from .Pickle import _PickleObject as PickleObject
 from .Pickle import _UnpickleObject as UnpickleObject
-from .HDF5 import HDF5
+from .Pickle import _PickleObject as PickleObject

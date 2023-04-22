@@ -1,6 +1,6 @@
 from .Notification import Notification
 
-class IO(Notification):
+class _IO(Notification):
 
     def __init__(self):
         pass

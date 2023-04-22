@@ -1,98 +1,78 @@
-from AnalysisTopGNN.IO import File
-from AnalysisTopGNN.Samples.Event import EventContainer
-from AnalysisTopGNN.Samples.Managers import SampleTracer
-from AnalysisTopGNN.Notification import EventGenerator_
-from AnalysisTopGNN.Tools import Threading, Tools
-from .Settings import Settings, _Code
+from AnalysisG.Notification import _EventGenerator
+from AnalysisG.Tools import Code, Threading
+from AnalysisG.Tracer import SampleTracer
+from AnalysisG.Settings import Settings
+from AnalysisG.IO import UpROOT
+from .Interfaces import _Interface
+from typing import Union
+from time import sleep
 
-def _MakeEvents(inpt, _prgbar):
-     
-    lock, bar = _prgbar
-    _e = inpt[0][2]
-    r = inpt[0][0]
-    inpt = [i[1] for i in inpt] 
+class EventGenerator(_EventGenerator, Settings, SampleTracer, _Interface):
     
-    All = [b.split("/")[-1] for b in r.Branches] + [l.split("/")[-1] for l in r.Leaves]
-    __iter = {Tree : r._Reader[Tree].iterate(All, library = "np", step_size = len(inpt), entry_start = min(inpt), entry_stop = max(inpt)+1 ) for Tree in r.Trees}
-    __iter = {Tree : next(__iter[Tree]) for Tree in __iter}
-    root = r.ROOTFile
-    
-    it = 0
-    out = []
-    for i in inpt:
-        o = EventContainer()
-        o.EventIndex = i
-        for tr in r.Trees: 
-            o.Trees[tr] = _Code().CopyInstance(_e)
-            o.Trees[tr]._Store = {k : __iter[tr][k][it].tolist() for k in __iter[tr]} 
-            o.Trees[tr].Tree = tr
-            o.Trees[tr]._SampleIndex = i
-            o.Filename = root
-        o.MakeEvent(True)
-        with lock:
-            bar.update(1)
-        out.append([root, o])
-        it += 1
-
-    __iter = None 
-    return out
-
-class EventGenerator(EventGenerator_, Settings, Tools, SampleTracer):
-    def __init__(self, InputDir = False, EventStart = -1, EventStop = None):
-
+    def __init__(self,  val = None):
         self.Caller = "EVENTGENERATOR"
         Settings.__init__(self)
         SampleTracer.__init__(self)
+        self.InputSamples(val) 
+    
+    @staticmethod 
+    def _CompileEvent(inpt, _prgbar):
+        lock, bar = _prgbar
+        for i in range(len(inpt)):
+            vals, ev = inpt[i]
+            root, index = vals["ROOT"], vals["EventIndex"]
+            res = ev.__compiler__(vals)
+            for k in res: k.CompileEvent()
+            for k in res: k.index = index if k.index == -1 else k.index
+            for k in res: k.hash = root
 
-        if isinstance(InputDir, dict):
-            self.InputDirectory |= InputDir
-        else:
-            self.InputDirectory = InputDir
-        self.EventStart = EventStart
-        self.EventStop = EventStop
+            inpt[i] = [res, root, index]
+            del ev
+            if lock == None: bar.update(1)
+            else:
+                with lock: bar.update(1)
+                sleep(0.001) # This actually improves speed!!!
+        if lock == None: del bar
+        return inpt
 
-    def SpawnEvents(self):
+    @property
+    def MakeEvents(self):
+        if not self.CheckEventImplementation: return False
+        self.CheckSettings
+
+        if "Event" not in self._Code: self._Code["Event"] = []
+        self._Code["Event"].append(Code(self.Event))
+        try: 
+            dc = self.Event.Objects
+            if not isinstance(dc, dict): raise AttributeError
+        except AttributeError: self.Event = self.Event()
+        except TypeError: self.Event = self.Event()
+        except: return self.ObjectCollectFailure
+        self._Code["Objects"] = {i : Code(self.Event.Objects[i]) for i in self.Event.Objects}
+        if not self.CheckROOTFiles: return False
+        if not self.CheckVariableNames: return False
+
+        ev = self.Event
+        ev.__interpret__
+
+        io = UpROOT(self.Files)
+        io.Verbose = self.Verbose
+        io.Trees = ev.Trees
+        io.Leaves = ev.Leaves 
         
-        self.CheckSettings()
-        self.CheckEventImplementation()
-
-        self.AddCode(self.Event)
-        obj = self.CopyInstance(self.Event)
-        self.CheckVariableNames(obj)
-        for p in obj.Objects:
-            self.AddCode(obj.Objects[p])
+        inpt = []
+        for v, i in zip(io, range(len(io))):
+            if self._StartStop(i) == False: continue
+            if self._StartStop(i) == None: break
+            inpt.append([v, ev.clone])
         
-        if self._dump:
-            return self
+        if self.Threads > 1:
+            th = Threading(inpt, self._CompileEvent, self.Threads, self.chnk)
+            th.Start
+        out = th._lists if self.Threads > 1 else self._CompileEvent(inpt, self._MakeBar(len(inpt)))
 
-        self.Files = self.ListFilesInDir(self.InputDirectory, extension = ".root")
-        self.CheckROOTFiles()  
+        for i in out: self.AddEvent(i[0], i[1], i[2])
         
-        it = -1
-        for F in self.DictToList(self.Files):
-            F_i = File(F)
-            F_i.Trees += obj.Trees
-            F_i.Branches += obj.Branches
-            F_i.Leaves += obj.Leaves 
-            F_i.ValidateKeys()
-            cmp = []
-            for indx in range(len(F_i)):
-                it += 1
-                if self.EventStart > it and self.EventStart != -1:
-                    continue
-                if self.EventStop != None and self.EventStop-1 < it:
-                    break
-                cmp.append([F_i, indx, obj]) 
-            if len(cmp) == 0:
-                break
+        return self.CheckSpawnedEvents
 
-            th = Threading(cmp, _MakeEvents, self.Threads, self.chnk)
-            th.VerboseLevel = self.VerboseLevel
-            th.Title = "READING/COMPILING EVENT"
-            cmp = None
-            th.Start()
-            for i in th._lists:
-                self.AddROOTFile(i[0], i[1])
-            del th
-        self.CheckSpawnedEvents()
 
