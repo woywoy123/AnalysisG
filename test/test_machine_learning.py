@@ -62,8 +62,6 @@ def test_feature_analysis():
     Ana.AddGraphTruth(fx, "NotAFeature")
     assert Ana.Launch == False
 
-
-
 if __name__ == "__main__":
     #test_random_sampling()
     #test_feature_analysis()

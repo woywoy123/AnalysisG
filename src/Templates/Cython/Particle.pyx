@@ -287,4 +287,9 @@ cdef class ParticleTemplate(object):
     
     @_init.setter
     def _init(self, bool val): self._state = val
+       
+    @property
+    def LeptonicDecay(self):
+        return len([i for i in self.Children if i.is_nu]) != 0
         
+ 

@@ -193,7 +193,7 @@ void CyTemplate::CyParticleTemplate::Mass(double val)
 double CyTemplate::CyParticleTemplate::DeltaR(const CyTemplate::CyParticleTemplate& p)
 {
     double sum = std::pow(this -> _eta - p._eta, 2); 
-    sum += std::pow(std::atan(std::tan(this -> _eta)) - std::atan(std::tan(p._eta)), 2); 
+    sum += std::pow(std::atan(std::tan(this -> _phi)) - std::atan(std::tan(p._phi)), 2); 
     return std::pow(sum, 0.5); 
 }
 

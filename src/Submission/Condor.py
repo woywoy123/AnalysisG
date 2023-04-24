@@ -1,6 +1,6 @@
-import AnalysisTopGNN
-from AnalysisTopGNN.Notification import Condor_
-from AnalysisTopGNN.Generators import Settings
+import AnalysisG
+from AnalysisG.Notification import _Condor
+from AnalysisG.Settings import Settings
 import os, stat 
 
 class CondorScript(Settings):
@@ -129,19 +129,15 @@ class JobSpecification(AnalysisTopGNN.Tools.General.Tools, Settings):
         Settings.__init__(self)
    
     def __Preconf(self):
-        if self.EventCache != None and self.Job.Event != None:
-            self.Job.EventCache = self.EventCache
-        if self.DataCache != None and self.Job.EventGraph != None:
-            self.Job.DataCache = self.DataCache
+        if self.EventCache != None and self.Job.Event != None: self.Job.EventCache = self.EventCache
+        if self.DataCache != None and self.Job.EventGraph != None: self.Job.DataCache = self.DataCache
         self.Device = self.Job.Device
 
     def __Build(self, txt, name, pth, exe = True):
         f = open(pth + "/" + name, "w")
         f.write("\n".join(txt))
         f.close()
-
-        if exe: 
-            os.chmod(pth + "/" + name, stat.S_IRWXU)
+        if exe: os.chmod(pth + "/" + name, stat.S_IRWXU)
 
     def Launch(self):
         self.__Preconf()
@@ -192,12 +188,9 @@ class Condor(AnalysisTopGNN.Tools.General.Tools, Condor_, Settings):
 
         self.AddListToDict(self._wait, name)
         
-        if waitfor == None:
-            pass
-        elif isinstance(waitfor, str):
-            self._wait[name].append(waitfor)
-        elif isinstance(waitfor, list):
-            self._wait[name] += waitfor 
+        if waitfor == None: pass
+        elif isinstance(waitfor, str): self._wait[name].append(waitfor)
+        elif isinstance(waitfor, list): self._wait[name] += waitfor 
         
         self._Jobs[name].Memory = memory
         self._Jobs[name].Time = time
@@ -207,25 +200,20 @@ class Condor(AnalysisTopGNN.Tools.General.Tools, Condor_, Settings):
         def Recursion(inpt, key = None, start = None):
             if key == None and start == None:
                 out = {}
-                for i in inpt:
-                    out[i] = [k for k in Recursion(inpt[i], i, inpt).split("<-") if k != i]
+                for i in inpt: out[i] = [k for k in Recursion(inpt[i], i, inpt).split("<-") if k != i]
                 return out
-            if len(inpt) == 0:
-                return key
-            for i in inpt:
-                key += "<-" + Recursion(start[i], i, start)
+            if len(inpt) == 0: return key
+            for i in inpt: key += "<-" + Recursion(start[i], i, start)
             return key 
         self._sequence = Recursion(self._wait) 
-        for i in self._wait:
-            self._Complete[i] = False
+        for i in self._wait: self._Complete[i] = False
 
     def LocalDryRun(self):
         self.__Sequencer()
         self._sequence = { j : [j] + self._sequence[j] for j in self._sequence }
         for t in self._sequence:
             for j in reversed(self._sequence[t]):
-                if self._Complete[j]:
-                    continue
+                if self._Complete[j]: continue
                 self._Jobs[j].EventCache = self.EventCache
                 self._Jobs[j].DataCache = self.DataCache 
                 self.RunningJob(j)
@@ -251,8 +239,7 @@ class Condor(AnalysisTopGNN.Tools.General.Tools, Condor_, Settings):
 
             for p in reversed(self._sequence[i]):
                 s = "PARENT " + p + " CHILD " + i
-                if s not in DAG and p in self._wait[i]:
-                    DAG.append(s)
+                if s not in DAG and p in self._wait[i]: DAG.append(s)
 
             for j in jb:
                 self._Jobs[j].RestoreSettings(self.DumpSettings())
@@ -273,10 +260,7 @@ class Condor(AnalysisTopGNN.Tools.General.Tools, Condor_, Settings):
         self._sequence = { j : [j] + self._sequence[j] for j in self._sequence }
         for j in self._sequence:
             for k in reversed(self._sequence[j]):
-                if self._Complete[k]:
-                    continue
+                if self._Complete[k]: continue
                 self._Complete[k] = True
                 F.write("bash " + k + "/main.sh\n")
-            
-
         F.close()

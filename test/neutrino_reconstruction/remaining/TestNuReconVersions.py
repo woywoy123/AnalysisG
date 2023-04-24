@@ -26,8 +26,6 @@ def ParticleCollectors(ev):
 def MakeTensor_(inpt, indx):
     return torch.tensor([[ i[indx]._px/1000, i[indx]._py/1000, i[indx]._pz/1000, i[indx]._e/1000 ] for i in inpt], dtype = torch.float64, device = "cuda")
 
-
-
 Ana = Analysis()
 Ana.InputSample("bsm4t-1000", "/home/tnom6927/Downloads/samples/Dilepton/ttH_tttt_m1000/DAOD_TOPQ1.21955717._000001.root")
 Ana.Event = Event
@@ -51,10 +49,6 @@ for i in Ana:
         vl["t"].append(  [k[0][3], k[1][3]])
         vl["ev"].append(ev)
         it+=1
-
-    
-    if it == 1000:
-        break
 
 Skip = False
 try:

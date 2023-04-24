@@ -191,7 +191,7 @@ PkgC = {
 }
 
 _cmd = {
-                "name" : "AnalysisTopGNN-Extensions", 
+                "name" : "AnalysisG-Extensions", 
                 "readme" : "README.md", 
                 "version" : "1.1", 
                 "package_data" : {}, 

@@ -7,11 +7,9 @@ mN = 0           # GeV : Neutrino Mass
 
 def AssertEquivalence(truth, pred, threshold = 0.0001):
     diff = abs(truth - pred)
-    if truth == 0:
-        truth += 1
+    if truth == 0: truth += 1
     diff = abs((diff/truth))*100
-    if diff < threshold:
-        return True 
+    if diff < threshold: return True 
     print("-> ", diff, truth, pred)
     return False
 

@@ -1,5 +1,5 @@
 # A Graph Neural Network Framework for High Energy Particle Physics
-[![AnalysisTopGNN-Building-Action](https://github.com/woywoy123/AnalysisTopGNN/actions/workflows/python-app.yml/badge.svg?branch=master)](https://github.com/woywoy123/AnalysisTopGNN/actions/workflows/python-app.yml)
+[![AnalysisG-Building-Action](https://github.com/woywoy123/AnalysisTopGNN/actions/workflows/python-app.yml/badge.svg?branch=master)](https://github.com/woywoy123/AnalysisTopGNN/actions/workflows/python-app.yml)
 
 ## Introduction <a name="introduction"></a>
 The aim of this package is to provide Particle Physicists with an intuitive interface to **Graph Neural Networks**, whilst remaining Analysis agnostic. 
@@ -25,11 +25,11 @@ The framework was originally designed for samples produced via AnalysisTop, howe
 ## Getting Started <a name="GettingStarted"></a>
 1. First clone this repository:
 ```
-git clone https://github.com/woywoy123/AnalysisTopGNN.git
+git clone https://github.com/woywoy123/AnalysisG.git
 ```
 2. Nagivate to setup-scripts and choose whether to use Conda or PyVenv, and open the script. 
 ```bash 
-cd ./AnalysisTopGNN/setup-scripts
+cd ./AnalysisG/setup-scripts
 ```
 3. Open the selected installer in your desired text editor and adjust the environment parameters according to your environment.
 By default the following settings are assumed. 
@@ -55,9 +55,9 @@ If the event needs additional tweaking, e.g. particle matching, the **CompileEve
 
 A few simple/complex examples can be found under; 
 ```bash 
-src/EventTemplates/Particles/Particles.py
-src/EventTemplates/Events/Event.py
-src/EventTemplates/Events/EventGraphs.py
+src/Events/Particles/Particles.py
+src/Events/Events/Event.py
+src/Events/Graphs/EventGraphs.py
 ```
 
 ### Tutorial (A Step by Step Guide):
@@ -68,19 +68,19 @@ src/EventTemplates/Events/EventGraphs.py
 This section aims to illustrate a very simple example of how to create a custom particle, which the framework can use to construct the particle.
 1. Open ``Particles.py`` and place the following line on the top
 ```python 
-from AnalysisTopGNN.Templates import ParticleTemplate
+from AnalysisG.Templates import ParticleTemplate
 ```
 2. Let our custom particle class inherit functions from the template class, a simple example should look something like this:
 ```python 
 class CustomParticle(ParticleTemplate): # <--- Inherit functions from ParticleTemplate
-	def __init__(self):
-                # initialize internal variables, Children, Parent, index
-		ParticleTemplate.__init__(self) 
+    def __init__(self):
+        # initialize internal variables, Children, Parent, index
+        ParticleTemplate.__init__(self) 
                 
-		self.Type = "Particle" # <--- Optional
-		self.pt = self.Type + ".PT"
-                self.eta = "Particle.ETA" # <--- A name within the ROOT file's leaf
-                #... <Some Other Desired Particle Properties> ...
+        self.Type = "Particle" # <--- Optional
+        self.pt = self.Type + ".PT"
+        self.eta = "Particle.ETA" # <--- A name within the ROOT file's leaf
+        #... <Some Other Desired Particle Properties> ...
 ```
 
 In the above example, the framework is expecting the ROOT file to contain particle leaves for `Particle.PT` and `Particle.ETA`. 
@@ -121,6 +121,9 @@ True if the particle's decay products are leptonic (requires `Children` to have 
 - `Children -> list`: 
 A list which links decay products for the particle.
 - `Parent -> list`: 
+A list which links the particle to its parent particle 
+- `hash -> str`: 
+Returns an 18 character long unique hex code used to identify the particle
 
 #### Magic Functions:
 ```python
@@ -135,57 +138,51 @@ print(p)
 # Equivalence 
 same = p1 == p2
 diff = p1 != p2
-contains = i in SomeParticleList	
-```
+contains = i in SomeParticleList
 
+# Can use set without altering the kinematics of the particles
+p1, p2 = set([p1, p2, p1, p2])
+```
 
 #### How to define a Custom Event Class (`Event.py`): <a name="CustomEventClass"></a>
 #### Basic Example:
 1. Open `Event.py` and place the following lines at the top; 
 ```python
-from AnalysisTopGNN.Templates import EventTemplate 
+from AnalysisG.Templates import EventTemplate 
 from Particles import CustomParticle # <--- The example particle class implemented above
 ```
 2. Similar to the Particle class, let the custom event inherit methods from **EventTemplate**. 
 A simple example should look something like this:
 ```python  
 class CustomEvent(EventTemplate):
-	def __init__(self):
-		EventTemplate.__init__(self)
-		
-		self.Type = "Event"
-		self.runNumber = self.Type + ".Number" # <--- Example event leaf variable
-
-                # Specify the trees you want to use for each event.
-                self.Tree = ["nominal", "..."] 
-
-                # If there are any relevant branches add these as well.
-		self.Branches = ["Particle"] 
-
-                # Add particles/additional objects constituting the event
-		self.Objects = {
-			"ArbitraryParticleName" : CustomParticle()
-				}
+    def __init__(self):
+        EventTemplate.__init__(self)
 	
-                # Event luminosity which is used for computing the 
-                # integrated luminosity for a sum of events.
-		self.Lumi = 0 
+        self.Type = "Event"
+        self.runNumber = self.Type + ".Number" # <--- Example event leaf variable
 
-		# Define all the attributes above this function.
-		self.DefineObjects()
-	
-	def CompileEvent(self): 
-		# Particle names defined in self.Objects will appear 
-                # in this code segment as self.<Some Random Name>. 
-                # For example; 
-		print(self.ArbitraryParticleName)
-                # returns a dictionary of particles in the event.
-                
-                # Some function to convert a dictionary to a list
-		self.ArbitraryParticleName = self.DictToList(self.ArbitraryParticleName)
+        # Specify the trees you want to use for each event.
+        self.Tree = ["nominal", "..."] 
+
+        # If there are any relevant branches add these as well.
+        self.Branches = ["Particle"] 
+
+        # Add particles/additional objects constituting the event
+        self.Objects = {
+            "ArbitraryParticleName" : CustomParticle()
+        }
+        # Event luminosity which is used for computing the 
+        # integrated luminosity for a sum of events.
+        self.weight = 0 
+
+    def CompileEvent(self): 
+        # Particle names defined in self.Objects will appear 
+        # in this code segment as self.<Some Random Name>. 
+        # For example; 
+        print(self.ArbitraryParticleName)
+        # returns a dictionary of particles in the event.
 		
-		# ... <Some Compiler Logic - Particle Matching etc.>
-
+        # ... <Some Compiler Logic - Particle Matching etc.>
 ```
 
 #### The ``self.Objects`` attribute:
@@ -215,45 +212,44 @@ The **EventTemplate** class comes with a few pre-set attributes, which can be mo
 A list of trees to use for constructing the event. If this list is left empty, then the framework defaults to `Branches`. 
 - `Branches -> list`: 
 A list of branches to scan through and construct objects from within the given `Tree`.
-- `Lumi -> (default: 0) float`: 
-The luminosity contribution of the event. 
-- `_Deprecated -> boolean`: 
+- `weight -> (default: 0) float`: 
+The weight contribution of the event. 
+- `Deprecated -> boolean`: 
 A book-keeping variable used to indicate whether the event implementation is old or outdated. 
-- `_CommitHash -> str`: 
+- `CommitHash -> str`: 
 A book-keeping variable used to specify which commit of `AnalysisTop` was used to produce the ROOT sample.
 This can be useful when needing to reference which commit this implementation is compatible with.
 - `CompileEvent -> None`: 
 An empty function, which can be overridden to include additional linking to particle objects. 
 
-
 ### How to define a Custom Event Graph Class (`EventGraphs.py`): <a name="CustomEventGraphClass"></a>
 #### Basic Example:
 1. Open `EventGraphs.py` and place the following line at the top; 
 ```python
-from AnalysisTopGNN.Templates import EventGraphTemplate 
+from AnalysisG.Templates import GraphTemplate 
 ```
-2. Similar to the Particle class, let the custom Event Graph class inherit methods from `EventGraphTemplate`.
+2. Similar to the Particle class, let the custom Event Graph class inherit methods from `GraphTemplate`.
 3. A simple example should look something like this:
 ```python 
-def CustomEventGraph(EventGraphTemplate):
-	def __init__(self, Event):
-		EventGraphTemplate.__init__(self)
+def CustomEventGraph(GraphTemplate):
+    def __init__(self, Event = None):
+        GraphTemplate.__init__(self)
 
-                # Adds the event to the graph (needed for Graph Level Attributes).
-		self.Event = Event 
-                
-                # Select particles relevant for the analysis. 
-		self.Particles += <Event.SomeParticles> 
+        # Adds the event to the graph (needed for Graph Level Attributes).
+        self.Event = Event 
+        
+        # Select particles relevant for the analysis. 
+        self.Particles += <Event.SomeParticles> 
 ```
 
 ## The Analysis Class: 
-This is the main interface of the package, it is used to configure the **Event/EventGraph** constructors, including **Graph Neural Network** training and many other things, which will be shown as an example.
+This is the main interface of the package, it is used to configure the **Event/Graph** constructors, including **Graph Neural Network** training and many other things, which will be shown as an example.
 
 ### A Minimal Example:
 To get started, create a new python file `<SomeName>.py` and open it.
 At the top, add the following line: 
 ```python 
-from AnalysisTopGNN import Analysis
+from AnalysisG import Analysis
 from SomeEventImplementation import CustomEvent
 ```
 Now instantiate the class and specify the analysis parameters.
@@ -267,7 +263,7 @@ Ana.EventCache = True
 Ana.Launch()
 
 for event in Ana:
-	print(event)
+    print(event)
 ``` 
 
 ### Attributes and Functions:
@@ -280,8 +276,6 @@ The number of CPU threads to use for running the framework.
 An integer which regulates the number of entries to process for each given core. 
 This is particularly relevant when constructing events, as to avoid memory issues. 
 As an example, if Threads is set to 2 and `chnk` is set to 10, then 10 events will be processed per core. 
-- `Tree`: 
-The tree the analysis should process. If set to `None`, all trees will be considered.
 - `EventStart`: 
 The event to start from given a set of ROOT samples. Useful for debugging specific events.
 - `EventStop`: 
@@ -290,6 +284,10 @@ The number of events to generate.
 Specifies the output folder of the analysis. If the folder is non-existent, a folder will be created.
 - `OutputDirectory`: 
 Specifies the output directory of the analysis. This is useful if the output needs to be placed outside of the working directory.
+- `EventCache`: 
+Specifies whether to generate a cache after constructing `Event` objects. If this is enabled without specifying a `ProjectName`, a folder called `UNTITLED` is generated.
+- `DataCache`:
+specifies whether to generate a cache after constructing graph objects. If this is enabled without having an event cache, the `Event` attribute needs to be set. 
 - `Event`: 
 Specifies the event implementation to use for constructing the Event objects from ROOT Files.
 - `EventGraph`:
@@ -298,12 +296,8 @@ Specifies the event graph implementation to use for constructing graphs.
 Given an event graph implementation, add edges to particle nodes which connect to themselves.
 - `FullyConnect`:
 Given an event graph implementation, create a fully connected graph.
-- `TrainingSampleName`: 
-Generate and save a list of events, with the given name, which should be assigned the to training.
 - `TrainingPercentage`:
 Assign some percentage to training and reserve the remaining for testing.
-- `SplitSampleByNode`:
-Sort event graphs by the number of nodes. This might be required if the given model is not immune to varying number of nodes.
 - `kFolds`:
 Number of folds to use for training 
 - `BatchSize`:
@@ -321,19 +315,9 @@ Current choices are; `SGD` - Stochastic Gradient Descent and `ADAM`.
 Takes as input a nested dictionary, where the first key specifies the scheduler for modulating the learning rate. Options are; `ExponentialLR` and `CyclicLR`. 
 - `Device`: 
 The device used to run `PyTorch` training on. This also applies to where to store graphs during compilation.
-- `EventCache`: 
-Specifies whether to generate a cache after constructing `Event` objects. If this is enabled without specifying a `ProjectName`, a folder called `UNTITLED` is generated.
-- `DataCache`:
-specifies whether to generate a cache after constructing graph objects. If this is enabled without having an event cache, the `Event` attribute needs to be set. 
 - `FeatureTest`: 
 A parameter mostly concerning graph generation. It checks whether the supplied features are compatible with the `Event` python object. 
 If any of the features fail, an alert is issued. 
-- `DumpHDF5`: 
-Specifies whether to save constructed events/graphs into HDF5 containers. 
-For `Event` objects, this is rather slow but very fast for graphs
-- `DumpPickle`: 
-Specifies whether to save constructed events/graphs as pickle files.
-This is a much faster alternative to HDF5, however it requires the original implementation of the Event to be supplied. 
 
 #### Default Parameters:
 | **Attribute**        | **Default Value** | **Expected Type** |                    **Examples** |
@@ -352,7 +336,6 @@ This is a much faster alternative to HDF5, however it requires the original impl
 | FullyConnect         |              True |            `bool` |                                 |
 | TrainingSampleName   |             False |             `str` |                                 |
 | TrainingPercentage   |                80 |             `int` |                                 |
-| SplitSampleByNode    |             False |            `bool` |                                 |
 | kFolds               |                10 |             `int` |                                 |
 | BatchSize            |                10 |             `int` |                                 |
 | Model                |              None |          GNNModel |                                 |
@@ -366,8 +349,6 @@ This is a much faster alternative to HDF5, however it requires the original impl
 | EventCache           |             False |            `bool` |                                 |
 | DataCache            |             False |            `bool` |                                 |
 | FeatureTest          |             False |            `bool` |                                 |
-| DumpHDF5             |             False |            `bool` |                                 |
-| DumpPickle           |             False |            `bool` |                                 |
 
 #### Functions:
 ```python 
@@ -389,7 +370,7 @@ During the execution of the `Selection` implementation, multiple threads are spa
 Merging combines all the internal data into one single file and deletes files being merged. 
 
 ```python 
-def Launch()
+def Launch
 ```
 Launches the Analysis with the specified parameters.
 
@@ -419,7 +400,7 @@ Analysis3 = Analysis1 + Analysis2
 AnalysisSum = [Analysis1, Analysis2, ..., AnalysisN]
 ```
 
-## AnalysisTopGNN.Plotting.TH1F/CombineTH1F/TH2F
+## AnalysisG.Plotting.TH1F/CombineTH1F/TH2F
 A class dedicated to plotting histograms using the `mplhep` package as a backend to format figures.
 This class adds some additional features to simplify writing simple plotting code, such as bin centering. 
 
@@ -590,13 +571,6 @@ Selects a random texture for the histograms.
 - TemplateLines.TLineStack 
 
 ## IO:
-- HDF5.Start
-- HDF5.End
-- HDF5.DumpObject
-- HDF5.RebuildObject 
-- HDF5.MultiThreadedDump
-- HDF5.MultiThreadedReading 
-- HDF5.MergeHDF5
 - Pickle.PickleObject
 - Pickle.UnpickleObject
 - Pickle.MultiThreadedDump
@@ -610,11 +584,3 @@ Selects a random texture for the histograms.
 - Nu 
 - Sort 
 
-## Generators.Settings
-- DumpSettings 
-- ExportAnalysisScript 
-- CheckSettings
-- RestoreSettings
-- AddCode 
-- CopyInstance 
-- GetCode 

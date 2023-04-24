@@ -35,8 +35,8 @@ namespace PhysicsCartesianTensors
 		torch::Tensor _eta1 = TransformTensors::Eta(px1, py1, pz1); 	
 		torch::Tensor _eta2 = TransformTensors::Eta(px2, py2, pz2); 	
 
-		torch::Tensor _phi1 = TransformTensors::Phi(px1, py1); 	
-		torch::Tensor _phi2 = TransformTensors::Phi(px2, py2); 	
+		torch::Tensor _phi1 = torch::atan(torch::tan(TransformTensors::Phi(px1, py1))); 	
+		torch::Tensor _phi2 = torch::atan(torch::tan(TransformTensors::Phi(px2, py2))); 	
 		
 		return PhysicsTensors::DeltaR(_eta1, _eta2, _phi1, _phi2);
 	}

@@ -162,8 +162,6 @@ print(sum(diff[1]), sum(diff[2]))
 print("--- Testing Performance Between C++ and CUDA of NuNu ---")
 print("Speed Factor (> 1 is better): ", (sum(diff[1])) / sum(diff[2]))
 
-exit()
-
 print("======================= Testing Consistency of Single Neutrino Reconstruction =================== ")
 _sol = NuC.NuPtEtaPhiE(T.b, T.mu, T.met, T.phi, T.Sxx, T.Sxy, T.Syx, T.Syy, T.mT, T.mW, T.mN, 1e-12)
 t_sol = NuT.NuPtEtaPhiE(T.b, T.mu, T.met, T.phi, T.Sxx, T.Sxy, T.Syx, T.Syy, T.mT, T.mW, T.mN, 1e-12)
