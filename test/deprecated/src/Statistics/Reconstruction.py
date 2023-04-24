@@ -15,14 +15,11 @@ class Reconstruction:
 
     def __switch(self, Sample, pre):
         shape = pre.size()
-        if shape[1] > 1: 
-            pre = pre.max(1)[1].view(-1)
-        else:
-            pre = pre.view(-1)
+        if shape[1] > 1: pre = pre.max(1)[1].view(-1)
+        else: pre = pre.view(-1)
         
         if shape[0] == Sample.edge_index.size()[1]:
             return self.MassFromEdgeFeature(Sample, pre).tolist()
-        
         elif shape[0] == Sample.num_nodes:
             return self.MassFromNodeFeature(Sample, pre).tolist()
 
@@ -68,9 +65,6 @@ class Reconstruction:
 
     def MassFromNodeFeature(self, Sample, pred, pt = "N_pT", eta = "N_eta", phi = "N_phi", e = "N_energy"):
         
-        # Get the prediction of the sample 
-        #pred = Sample[TargetFeature].to(dtype = int).view(-1)
-        
         # Filter out the nodes which are not equally valued and apply masking
         edge_index = Sample.edge_index
         mask = pred[edge_index[0]] == pred[edge_index[1]]
@@ -83,17 +77,14 @@ class Reconstruction:
     def ClosestParticle(self, tru, pred):
 
         res = []
-        if len(tru) == 0:
-            return res
-        if len(pred) == 0:
-            return pred 
+        if len(tru) == 0: return res
+        if len(pred) == 0: return pred 
         p = pred.pop(0)
         max_tru, min_tru = max(tru), min(tru)
         col = True if p <= max_tru and p >= min_tru else False
 
         if col == False:
-            if len(pred) == 0:
-                return res
+            if len(pred) == 0: return res
             return self.ClosestParticle(tru, pred)
 
         diff = [ abs(p - t) for t in tru ]

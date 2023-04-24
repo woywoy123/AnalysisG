@@ -2,64 +2,62 @@ import random
 import numpy as np
 from sklearn.model_selection import ShuffleSplit, KFold
 from torch.utils.data import SubsetRandomSampler
-#from AnalysisTopGNN.Notification import RandomSamplers_
+from AnalysisG.Notification import _RandomSamplers
+from AnalysisG.Settings import Settings
 try: from torch_geometric.loader import DataLoader
 except: from torch_geometric.data import DataLoader
 
-class RandomSamplers:
+class RandomSamplers(_RandomSamplers, Settings):
 
     def __init__(self):
-        pass
+        self.Caller = "RANDOMSAMPLER"
+        Settings.__init__(self)
     
-    def RandomEvents(self, Events, nEvents):
-        Indx = []
-        if isinstance(Events, dict): Indx += list(Events.values())
-        else: Indx += Events
-        
+    def RandomizeEvents(self, Events, nEvents):
+        if isinstance(Events, dict): Indx = list(Events.values())
+        else: Indx = Events
         random.shuffle(Indx)
         if len(Events) >= nEvents: return Indx[0:nEvents]
         self.NotEnoughEvents(Events, nEvents)
-        return Indx    
+        return {i.hash : i for i in Indx}   
 
     def MakeTrainingSample(self, Sample, TrainingSize = 50):
         if isinstance(Sample, dict) == False: return self.ExpectedDictionarySample(type(Sample))
         All = np.array(list(Sample))
         self.RandomizingSamples(len(All), TrainingSize)
         rs = ShuffleSplit(n_splits = 1, test_size = float((100 - TrainingSize)/100), random_state = 42)
-        for train_idx, test_idx in rs.split(All): pass 
+        for train_idx, test_idx in rs.split(All): pass
+        
+        for i in All[train_idx]: Sample[i].TrainMode = "train" 
+        for i in All[test_idx]: Sample[i].TrainMode = "test" 
         return {"train_hashes" : All[train_idx], "test_hashes" : All[test_idx]}
 
-    def MakekFolds(self, sample, folds, batch_size = 1, shuffle = True):
-        smpl = len(sample)
-        if len(sample) < folds: return 
+    def MakekFolds(self, sample, folds, batch_size = 1, shuffle = True, asHashes = False):
+        if isinstance(sample, dict):
+            try: sample = {i : sample[i] for i in sample if sample[i].TrainMode != "test"}
+            except AttributeError: pass
+            sample = list(sample) if asHashes else list(sample.values()) 
+        elif isinstance(sample, list): 
+            try: sample = [i.hash if asHashes else i for i in sample if i.TrainMode != "test"]
+            except AttributeError: pass
+        else: return False
 
+        if len(sample) < folds: return False
         split = KFold(n_splits = folds, shuffle=shuffle)
-        output = {}
-        for fold, (train_idx, test_idx) in enumerate(split.split(np.arange(len(sample)))):
-            output[fold] = []
-            output[fold] += [DataLoader(sample, batch_size=batch_size, sampler = SubsetRandomSampler(train_idx))]
-            output[fold] += [DataLoader(sample, batch_size=batch_size, sampler = SubsetRandomSampler(test_idx))]
+        output = {f+1 : {"train" : None, "leave-out" : None} for f in range(folds)}
+        for f, (train_idx, test_idx) in enumerate(split.split(np.arange(len(sample)))):
+            output[f+1]["train"] = DataLoader(sample, batch_size=batch_size, sampler = SubsetRandomSampler(train_idx))
+            output[f+1]["leave-out"] = DataLoader(sample, batch_size=batch_size, sampler = SubsetRandomSampler(test_idx))
         return output
 
-    def MakeSample(self, sample, SortByNodes = False, batch_size = 1):
-        out = {}
-        prcout = {}
-        if SortByNodes:
-            for hash_ in sample:
-                i = sample[hash_]
-                num_nodes = i.num_nodes.item()
-                if num_nodes not in out:
-                    out[num_nodes] = []
-                    prcout[num_nodes] = []
-                prcout[num_nodes].append(hash_)
-                out[num_nodes].append(i)
-        else:
-            out["All"] = list(sample.values())
-            prcout["All"] = list(sample)
+    def MakeDataLoader(self, sample, SortByNodes = False, batch_size = 1):
+        if isinstance(sample, dict): sample = list(sample.values())
+        elif isinstance(sample, list): pass
+        else: return False 
         
-        output = []
-        output_prc = []
-        for i in out:
-            output += [d for d in DataLoader(out[i], batch_size=batch_size)]
-            output_prc += [d for d in DataLoader(prcout[i], batch_size=batch_size)]
-        return output, output_prc
+        output = {} 
+        if SortByNodes: 
+            for i in sample: output[i.num_nodes.item()] = [i] if i.num_nodes.item() not in output else [i]
+        else: output["All"] = sample
+        for i in output: output[i] = DataLoader(output[i], batch_size=batch_size)
+        return output

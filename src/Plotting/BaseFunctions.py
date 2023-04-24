@@ -8,46 +8,11 @@ matplotlib.use("agg")
 import random
 
 from AnalysisG.Tools import Tools
-from AnalysisG.Notification import Plotting
+from AnalysisG.Notification import _Plotting
 
-class Settings_:
+class BaseFunctions(Tools, _Plotting):
     def __init__(self):
-        self.Cosmetics()
-        self.Layout()
-        self.IO()
-        self.ResetPLT()
-
-    def Cosmetics(self):
-        self.Style = None
-        self.ATLASData = False
-        self.ATLASYear = None
-        self.ATLASLumi = None
-        self.ATLASCom = None
-        self.Color = None
-        self.Colors = []
-        self.NEvents = None
-        self.LaTeX = True
-        
-    def Layout(self):
-        self.FontSize = 10
-        self.LabelSize = 12.5
-        self.TitleSize = 10
-        self.LegendSize = 10
-
-        self.Logarithmic = False
-        self.xScaling = 1.25
-        self.yScaling = 1.25
-        self.DPI = 250
-    
-    def IO(self):
-        self.Title = None
-        self.Filename = None
-        self.OutputDirectory = "Plots"
-
-class BaseFunctions(Tools, Settings_, Plotting):
-    def __init__(self):
-        Settings_.__init__(self)
-        self.Verbose = 3
+        pass
    
     def DefineStyle(self):
         if self.Style == "ATLAS":
@@ -59,12 +24,7 @@ class BaseFunctions(Tools, Settings_, Plotting):
                     label = "\nN = " + str(len(self.xData) if self.NEvents == None else self.NEvents),
                     com = self.ATLASCom)
             self.PLT.style.use(hep.style.ATLAS)
-
-        if self.Style == "ROOT":
-            self.PLT.style.use(hep.style.ROOT)
-
-        if self.Style == None:
-            pass
+        if self.Style == "ROOT": self.PLT.style.use(hep.style.ROOT)
     
     def MakeFigure(self): 
         self.Figure, self.Axis = plt.subplots(figsize = (self.xScaling*6.4, self.yScaling*4.8))
@@ -97,8 +57,7 @@ class BaseFunctions(Tools, Settings_, Plotting):
 
     def ApplyInput(self, args):
         for key, val in args.items():
-            if self.InvalidVariableKey(key):
-                continue
+            if self.InvalidVariableKey(key): continue
             self.__dict__[key] = val
 
     def Get(self, var):
@@ -110,37 +69,27 @@ class BaseFunctions(Tools, Settings_, Plotting):
     def DumpDict(self, Varname = None):
         out = {}
         for i in self.__dict__:
-            if i in ["PLT", "Figure", "Axis"]:
-                continue 
-
+            if i in ["PLT", "Figure", "Axis"]: continue 
             obj = []
             if isinstance(self.__dict__[i], list):
-                obj = {hex(id(k)) : k.DumpDict(i) for k in self.__dict__[i] if "AnalysisTopGNN" in type(k).__module__}
-            
-            if len(obj) == 0:
-                out[i] = self.__dict__[i]
-            else:
-                out["Rebuild"] = obj
+                obj = {hex(id(k)) : k.DumpDict(i) for k in self.__dict__[i] if "AnalysisG" in type(k).__module__}
+            if len(obj) == 0: out[i] = self.__dict__[i]
+            else: out["Rebuild"] = obj
         out["_ID"] = hex(id(self))
         out["_TYPE"] = type(self).__name__
-        if Varname != None:
-            out["_Varname"] = Varname
+        if Varname != None: out["_Varname"] = Varname
         return out
 
     def SanitizeData(self, var):
         out = []
         for i in range(len(var)):
-            if var[i] == None:
-                continue
-            if math.isinf(var[i]): 
-                continue
-            if math.isnan(var[i]):
-                continue
+            if var[i] == None: continue
+            if math.isinf(var[i]): continue
+            if math.isnan(var[i]): continue
             out.append(var[i]) 
         return out 
 
     def DefineCommonRange(self, Dims):
-        
         x = self.SanitizeData(self.Get(Dims + "Data"))
         if len(x) == 0:
             self.Title = str(self.Title) if self.Title == None else self.Title
@@ -148,11 +97,8 @@ class BaseFunctions(Tools, Settings_, Plotting):
             return 
         self.Set(Dims + "Data", x)
 
-        if self.Get(Dims + "Min") == None:
-            self.Set(Dims + "Min", min(self.Get(Dims + "Data")))
-
-        if self.Get(Dims + "Max") == None:
-            self.Set(Dims + "Max", max(self.Get(Dims + "Data")))
+        if self.Get(Dims + "Min") == None: self.Set(Dims + "Min", min(self.Get(Dims + "Data")))
+        if self.Get(Dims + "Max") == None: self.Set(Dims + "Max", max(self.Get(Dims + "Data")))
    
     def ApplyRandomColor(self, obj):
         color = next(self.Axis._get_lines.prop_cycler)["color"]
@@ -169,8 +115,7 @@ class BaseFunctions(Tools, Settings_, Plotting):
 
     def SaveFigure(self, Dir = None):
         self.Precompiler()
-        if Dir == None:
-            Dir = self.OutputDirectory
+        if Dir == None: Dir = self.OutputDirectory
         Dir = self.AddTrailing(Dir, "/")
         self.Filename = self.AddTrailing(self.Filename, ".png") 
         

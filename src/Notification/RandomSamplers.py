@@ -1,6 +1,6 @@
 from .Notification import Notification
 
-class RandomSamplers(Notification):
+class _RandomSamplers(Notification):
 
     def __init__(self):
         pass
@@ -14,4 +14,4 @@ class RandomSamplers(Notification):
         self.Success("!!!Generating: " + str(TrainingSize) + " as training and " + str(100 - TrainingSize) + " as test sample.")
 
     def ExpectedDictionarySample(self, Type):
-        self.Failure("Expected a dictionary of samples, but got: " + str(Type))
+        return self.Failure("Expected a dictionary of samples, but got: " + str(Type))

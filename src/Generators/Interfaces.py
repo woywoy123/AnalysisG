@@ -65,8 +65,9 @@ class _Interface(Tools):
     def AddSelection(self, name: Union[str], function):
         self.Selections[name] = function
 
-    def InputSample(self, Name: Union[str], SampleDirectory: Union[str, dict, list, None] = None):
+    def InputSample(self, Name: Union[str] = None, SampleDirectory: Union[str, dict, list, None] = None):
         self.Files = {}
         self.InputSamples(SampleDirectory)
+        if Name == None: Name = ""
         self.SampleMap[Name] = self.Files
 

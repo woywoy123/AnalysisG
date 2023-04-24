@@ -1,21 +1,17 @@
-from AnalysisTopGNN.Plotting import CommonFunctions
+from .BaseFunctions import BaseFunctions
+from AnalysisG.Settings import Settings
 import numpy as np
 import mplhep as hep
 import random
 
-class Functions(CommonFunctions):
+class Functions(BaseFunctions, Settings):
 
     def __init__(self):
-        CommonFunctions.__init__(self)
-
-        # --- Histogram Cosmetic Styles --- #
-        self.Texture = False
-        self.Alpha = 0.5
-        self.FillHist = "fill"
-        
-        # --- Data Display --- #
-        self.Normalize = None    
-    
+        self.Caller = "PLOTTING"
+        BaseFunctions.__init__(self)
+        Settings.__init__(self)
+        self.ResetPLT()
+ 
     def DefineAxisBins(self, Dim):
         self.Set(Dim + "Bins", None)
         self.Set(Dim + "BinCentering", False)
@@ -30,8 +26,7 @@ class Functions(CommonFunctions):
         return 
 
     def GetBinWidth(self, Dims):
-        if self.Get(Dims + "Min") == None or self.Get(Dims + "Max") == None:
-            return False
+        if self.Get(Dims + "Min") == None or self.Get(Dims + "Max") == None: return False
         d_max, d_min, d_bin = self.Get(Dims + "Max"), self.Get(Dims + "Min"), self.Get(Dims + "Bins")
         return float((d_max - d_min) / d_bin) if self.Get(Dims + "Step") == None else self.Get(Dims + "Step")
 
@@ -89,22 +84,14 @@ class TH1F(Functions):
             self.DefineStyle()
             self.ApplyToPLT()
 
-        if len(self.xData) == 0:
-            self.Warning("EMPTY DATA.")
-
+        if len(self.xData) == 0: self.Warning("EMPTY DATA.")
         self.DefineRange("x")
-        
         self.NPHisto = np.histogram(self.xData, bins = self.xBins, range = self.xRange, weights = self.xWeights)
         self.ApplyFormat()
        
-        if self.xBinCentering:
-            self.Axis.set_xticks(self.xData)
-
-        if self.xStep != None:
-            self.Axis.set_xticks([self.xMin + self.xStep*i for i in range(self.xBins)])
-
-        if isinstance(self.xTickLabels, list):
-            self.Axis.set_xticklabels(self.xTickLabels)
+        if self.xBinCentering: self.Axis.set_xticks(self.xData)
+        if self.xStep != None: self.Axis.set_xticks([self.xMin + self.xStep*i for i in range(self.xBins)])
+        if isinstance(self.xTickLabels, list): self.Axis.set_xticklabels(self.xTickLabels)
 
 class TH2F(Functions):
 
@@ -139,17 +126,10 @@ class TH2F(Functions):
                                       range = [[self.xMin, self.xMax], [self.yMin, self.yMax]])
         self.ApplyFormat()
         
-        if self.xStep != None:
-            self.Axis.set_xticks([self.xMin + self.xStep*i for i in range(self.xBins)])
-
-        if isinstance(self.xTickLabels, list):
-            self.Axis.set_xticklabels(self.xTickLabels)
-
-        if self.yStep != None:
-            self.Axis.set_yticks([self.yMin + self.yStep*i for i in range(self.yBins)])
-
-        if isinstance(self.yTickLabels, list):
-            self.Axis.set_yticklabels(self.yTickLabels)
+        if self.xStep != None: self.Axis.set_xticks([self.xMin + self.xStep*i for i in range(self.xBins)])
+        if isinstance(self.xTickLabels, list): self.Axis.set_xticklabels(self.xTickLabels)
+        if self.yStep != None: self.Axis.set_yticks([self.yMin + self.yStep*i for i in range(self.yBins)])
+        if isinstance(self.yTickLabels, list): self.Axis.set_yticklabels(self.yTickLabels)
  
        
 class CombineTH1F(Functions):
@@ -230,8 +210,7 @@ class CombineTH1F(Functions):
             Labels.append(i.Title)
             i.NPHisto = (i.NPHisto[0]/Sum, i.NPHisto[1])
             Numpies.append(i.NPHisto)
-            if self.Stack:
-                continue
+            if self.Stack: continue
             i.ApplyFormat()
         
         if self.Stack:
@@ -244,12 +223,8 @@ class CombineTH1F(Functions):
                     binticks = True)
 
         self.PLT.legend()
-        if self.Logarithmic:
-            self.PLT.yscale("log")
-
-        if self.xBinCentering:
-            self.Axis.set_xticks(self.xData)
-
+        if self.Logarithmic: self.PLT.yscale("log")
+        if self.xBinCentering: self.Axis.set_xticks(self.xData)
         if self.xStep != None:
             self.Axis.set_xticks([self.xMin + self.xStep*i for i in range(self.xBins)])
 
@@ -267,29 +242,21 @@ class TH1FStack(CombineTH1F):
         CombineTH1F.__init__(self, **kargs)
    
     def __Recursive(self, inpt, search):
-        if isinstance(inpt, dict) == False:
-            return inpt
+        if isinstance(inpt, dict) == False: return inpt
         if search in inpt:
-            if isinstance(inpt[search], list):
-                return inpt[search]
+            if isinstance(inpt[search], list): return inpt[search]
             out = []
-            for k in inpt[search]:
-                out += [k]*inpt[search][k]
+            for k in inpt[search]: out += [k]*inpt[search][k]
             return out
         return [l for i in inpt for l in self.__Recursive(inpt[i], search)]
 
     def __Organize(self):
 
         Hists = {}
-        try:
-            Hists |= { key : None for key in self.Histograms }
-        except TypeError:
-            Hists = self.Histograms
-        
-        if isinstance(self.Histogram, str):
-            Hists |= { self.Histogram : None }
-        elif isinstance(self.Histogram, dict):
-            self.Histogram = TH1F(**self.Histogram)
+        try: Hists |= { key : None for key in self.Histograms }
+        except TypeError: Hists = self.Histograms
+        if isinstance(self.Histogram, str): Hists |= { self.Histogram : None }
+        elif isinstance(self.Histogram, dict): self.Histogram = TH1F(**self.Histogram)
 
         self.Histograms = {}
         for i in Hists:
@@ -304,11 +271,8 @@ class TH1FStack(CombineTH1F):
         self.__Organize()
         hists = []
         for i in self.Histograms:
-            if self.Histogram == i:
-                self.Histogram = TH1F(**self.Histograms[i])
-            else:
-                hists.append(TH1F(**self.Histograms[i]))
+            if self.Histogram == i: self.Histogram = TH1F(**self.Histograms[i])
+            else: hists.append(TH1F(**self.Histograms[i]))
         self.Histograms = hists
-
 
 

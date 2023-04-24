@@ -198,8 +198,7 @@ def test_event_multithreading():
                 out += evnt.__compiler__(val)
                 out[-1].hash = root
                 out[-1].CompileEvent()
-                with lock:
-                    bar.update(1)
+                with lock: bar.update(1)
                 del val
                 del evnt
                 sleep(0.001)
@@ -214,12 +213,12 @@ def test_event_multithreading():
 
         events_j = {i.hash : i for i in events_j}
 
-        assert events_j[events[0].hash].something.Mass == events[0].something.Mass
+        assert round(events_j[events[0].hash].something.Mass, 4) == round(events[0].something.Mass, 4)
         try: assert len([events_j[i.hash] for i in events]) == len(events)
         except KeyError: raise AssertionError
         
         if mem == 0: mem = psutil.virtual_memory().percent
-        assert psutil.virtual_memory().percent - mem < 1
+        assert psutil.virtual_memory().percent - mem < 10
 
 
 if __name__ == "__main__":

@@ -1,1 +1,2 @@
-from .Events import *
+from .Events.Event import *
+from .Graphs.EventGraphs import *

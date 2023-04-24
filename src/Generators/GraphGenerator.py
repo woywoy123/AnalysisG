@@ -71,5 +71,4 @@ class GraphGenerator(_GraphGenerator, Settings, SampleTracer, _Interface):
             th.Start
         out = th._lists if self.Threads > 1 else self._CompileGraph(inpt, self._MakeBar(len(inpt)))
         self.AddGraph(out)
-
         return True

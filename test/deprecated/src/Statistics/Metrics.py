@@ -22,14 +22,11 @@ class Metrics:
     
     def MakeStatics(self, Data):
         if isinstance(Data, dict):
-            for i in Data:
-                Data[i] = self.MakeStatics(Data[i])
+            for i in Data: Data[i] = self.MakeStatics(Data[i])
             return Data
         mean = statistics.mean(Data)
-        if len(Data) > 2:
-            std = statistics.stdev(Data)
-        else:
-            std = 0
+        if len(Data) > 2: std = statistics.stdev(Data)
+        else: std = 0
         return [mean, std]
 
 

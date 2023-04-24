@@ -127,12 +127,9 @@ def TruthJets():
     return Features
 
 def ApplyFeatures(A, Level):
-    if Level == "TruthTops":
-        Features = TruthTops()
-    elif Level == "TruthChildren":
-        Features = TruthTopChildren()
-    elif Level == "TruthJets":
-        Features = TruthJets()
+    if Level == "TruthTops": Features = TruthTops()
+    elif Level == "TruthChildren": Features = TruthTopChildren()
+    elif Level == "TruthJets": Features = TruthJets()
     else:
         print("failed")
         exit()

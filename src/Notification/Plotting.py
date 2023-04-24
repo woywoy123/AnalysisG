@@ -1,6 +1,6 @@
 from .Notification import Notification
 
-class Plotting(Notification):
+class _Plotting(Notification):
 
     def __init__(self):
         pass

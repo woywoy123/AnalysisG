@@ -61,6 +61,12 @@ cdef class Event:
     @property
     def CachePath(self) -> str: return self.ptr.ROOTFile.CachePath.decode("UTF-8")
 
+    @property
+    def TrainMode(self) -> str: return self.ptr.TrainMode.decode("UTF-8")
+
+    @TrainMode.setter
+    def TrainMode(self, val): self.ptr.TrainMode = <string>val.encode("UTF-8")
+
 cdef class SampleTracer:
     cdef CySampleTracer* ptr
     cdef vector[string] _itv
@@ -83,7 +89,7 @@ cdef class SampleTracer:
 
     def __init__(self):
         pass
-
+    
     def __contains__(self, str key) -> bool:
         if key.endswith(".root"): key = os.path.abspath(key)
         if self.ptr.ContainsROOT(key.encode("UTF-8")): return True 
@@ -187,6 +193,10 @@ cdef class SampleTracer:
     @SampleName.setter
     def SampleName(self, val) -> str:
         self._SampleName = val
+
+    @property
+    def todict(self) -> dict:
+        return self.HashMap    
 
     def FastHashSearch(self, hashes) -> dict:
         cdef vector[string] v

@@ -17,10 +17,8 @@ class Optimizer:
         return torch.optim.SGD(model.parameters(), **params)
     
     def __call__(self, step):
-        if step:
-            self.optimizer.step() 
-        else:  
-            self.optimizer.zero_grad()
+        if step: self.optimizer.step() 
+        else: self.optimizer.zero_grad()
 
     def DumpState(self, OutputDir):
         PickleObject(self.optimizer.state_dict(), OutputDir + "/OptimizerState")

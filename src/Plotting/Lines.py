@@ -1,46 +1,39 @@
-from AnalysisTopGNN.Plotting import CommonFunctions
-from AnalysisTopGNN.Plotting.TemplateHistograms import TH1FStack
+from AnalysisG.Settings import Settings
+from .BaseFunctions import BaseFunctions
+from .Histograms import TH1FStack
 import math
 import statistics
 import random
 
-class Functions(CommonFunctions):
+class Functions(BaseFunctions, Settings):
     def __init__(self):
-        CommonFunctions.__init__(self)
-
-        # --- Cosmetic --- #
-        self.LineStyle = None
-        self.Marker = None
+        self.Caller = "PLOTTING"
+        BaseFunctions.__init__(self)
+        Settings.__init__(self)
+        self.ResetPLT()
  
         # --- Line Properties --- #
         self.DefineAxisData("x")
         self.DefineAxisData("y")
         self.DefineAxisData("up_y", True)
         self.DefineAxisData("down_y", True)
-        self.DoStatistics = False
    
     def DefineRange(self, Dims):
-        if len(self.Get(Dims + "Data")) == 0:
-            self.Set(Dims + "Min", 0)
-        
-        if len(self.Get(Dims + "Data")) == 0:
-            self.Set(Dims + "Max", 1)
+        if len(self.Get(Dims + "Data")) == 0: self.Set(Dims + "Min", 0)
+        if len(self.Get(Dims + "Data")) == 0: self.Set(Dims + "Max", 1)
         self.DefineCommonRange(Dims)       
 
     def ApplyRandomMarker(self, obj):
         ptr = [",", ".", "-", "x", "o", "O"]
-        if obj.Marker == True:
-            random.shuffle(ptr)
-        elif obj.Marker != None:
-            return 
+        if obj.Marker == True: random.shuffle(ptr)
+        elif obj.Marker != None: return 
         obj.Marker = ptr[0] 
     
     def MakeStatistics(self, inpt):
         if isinstance(inpt, dict):
             xinpt = list(inpt.keys())
             inpt = list(inpt.values())
-        else:
-            xinpt = [i+1 for i in range(len(inpt))]            
+        else: xinpt = [i+1 for i in range(len(inpt))]            
 
         output = {}
         for i in range(len(inpt)):
@@ -81,9 +74,7 @@ class TLine(Functions):
         self.DefineRange("y")
         self.DefineRange("x")
         
-        if len(self.xData) != len(self.yData):
-            return 
-
+        if len(self.xData) != len(self.yData): return 
         if len(self.up_yData) != 0 and len(self.down_yData) != 0:
             self.PLT.errorbar(x = self.xData, y = self.yData, yerr = [self.up_yData, self.down_yData], 
                         linestyle = self.LineStyle, color = self.Color, marker = self.Marker, 
@@ -98,10 +89,8 @@ class TLine(Functions):
             self.PLT.xlim(self.xMin, self.xMax)
             self.PLT.ylim(self.yMin, self.yMax)
 
-        if self.Logarithmic:
-            self.PLT.yscale("log")
-        if self.DoStatistics:
-            self.xData = self._temp
+        if self.Logarithmic: self.PLT.yscale("log")
+        if self.DoStatistics: self.xData = self._temp
 
         if isinstance(self.xTickLabels, list):
             self.Axis.set_xticks(self.xData)
@@ -111,10 +100,6 @@ class CombineTLine(Functions):
 
     def __init__(self, **kwargs):
         Functions.__init__(self)
-
-        self.Lines = []
-        self.Colors = []
-        self.LegendOn = True
         
         self.ApplyInput(kwargs)
         self.Caller = "COMBINED-TLINE"
@@ -138,10 +123,8 @@ class CombineTLine(Functions):
             i.yMin = self.yMin
             i.yMax = self.yMax
 
-            if self.xTitle == None:
-                self.xTitle = i.xTitle
-            if self.yTitle == None:
-                self.yTitle = i.yTitle
+            if self.xTitle == None: self.xTitle = i.xTitle
+            if self.yTitle == None: self.yTitle = i.yTitle
             
             self.ApplyRandomColor(i)
             self.ApplyRandomMarker(i)
@@ -154,13 +137,10 @@ class CombineTLine(Functions):
         self.DefineStyle()
         self.ApplyToPLT()
        
-        for i in self.Lines:
-            i.Compile(False)
+        for i in self.Lines: i.Compile(False)
         
-        if self.LegendOn:
-            self.PLT.legend()
-        if self.Logarithmic:
-            self.PLT.yscale("log")
+        if self.LegendOn: self.PLT.legend()
+        if self.Logarithmic: self.PLT.yscale("log")
 
         self.PLT.title(self.Title)
         self.PLT.xlabel(self.xTitle)
@@ -175,33 +155,25 @@ class CombineTLine(Functions):
 class TLineStack(CombineTLine):
     def __init__(self, **kargs):
         self.Data = []
-        self.MakeStaticHistograms = True
-        self.ROC = False
         CombineTLine.__init__(self, **kargs)
     
     def __Recursive(self, inpt, search):
-        if isinstance(inpt, dict) == False:
-            return inpt
+        if isinstance(inpt, dict) == False: return inpt
         if search in inpt:
-            if isinstance(inpt[search], list):
-                return inpt[search]
+            if isinstance(inpt[search], list): return inpt[search]
             out = []
-            for k in inpt[search]:
-                out += [k]*inpt[search][k]
+            for k in inpt[search]: out += [k]*inpt[search][k]
             return out
         return [l for i in inpt for l in self.__Recursive(inpt[i], search)]
 
     def __Organize(self):
         def ScanDict(string, dic):
-            for i in range(len(string)):
-                return ScanDict(string[i+1:], dic[string[i]]) 
+            for i in range(len(string)): return ScanDict(string[i+1:], dic[string[i]]) 
             return dic
 
         def Switch(inpt):
-            if isinstance(inpt, str):
-                return ScanDict(inpt.split("/"), self.Data)
-            else:
-                return inpt
+            if isinstance(inpt, str): return ScanDict(inpt.split("/"), self.Data)
+            return inpt
 
         self._Hists = {}
         self.Lines = { T : {} for T in self.Lines }
@@ -218,8 +190,7 @@ class TLineStack(CombineTLine):
             if self.DoStatistics:
                 sort = {}
                 for y, x in zip(params["yData"], params["xData"]):
-                    if x not in sort:
-                        sort[x] = []
+                    if x not in sort: sort[x] = []
                     sort[x].append(y)
                 params["xData"] = sort
                 params["yData"] = []
@@ -245,9 +216,13 @@ class TLineStack(CombineTLine):
             Plot["xBins"] = 100
             Plot["xTitle"] = self.yTitle
             Plot["Title"] = "Data Points Summed Along the x-Axis: " + self.Filename 
-            Plot["Histograms"] = [{"Title" :  t,
-                                   "xData" : [k for val in list(self.Lines[t]["xData"].values()) for k in val]} 
-                                   for t in self.Lines]
+            Plot["Histograms"] = [
+                                    {
+                                        "Title" :  t,
+                                        "xData" : [k for val in list(self.Lines[t]["xData"].values()) for k in val]
+                                    } 
+                                    for t in self.Lines
+            ]
             Plot["Filename"] = "xProjection_" + self.Filename
             Plot["OutputDirectory"] = self.OutputDirectory + "/ProjectionPlots/" + self.Filename
             self._Hists["Projections"] = TH1FStack(**Plot) 
@@ -255,8 +230,7 @@ class TLineStack(CombineTLine):
     def Precompiler(self):
         self.__Organize()
         tmp = []
-        for i in self._Hists:
-            self._Hists[i].SaveFigure()
+        for i in self._Hists: self._Hists[i].SaveFigure()
         for i in self.Lines:
             x = TLine(**self.Lines[i])
             x.Compile()

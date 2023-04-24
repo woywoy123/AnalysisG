@@ -7,3 +7,5 @@ from .EventGenerator import _EventGenerator
 from .GraphGenerator import _GraphGenerator
 from .SelectionGenerator import _SelectionGenerator 
 from .Analysis import _Analysis
+from .RandomSamplers import _RandomSamplers
+from .Plotting import _Plotting 

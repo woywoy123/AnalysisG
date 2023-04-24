@@ -40,6 +40,22 @@ class _SelectionGenerator:
         self.Selections = {}
         self.Merge = {}
 
+class _RandomSampler:
+    
+    def __init__(self):
+        self.nEvents = 10
+        self.TrainingSize = False
+        self.BatchSize = 1
+        self.Shuffle = True
+        self.kFolds = False
+
+class _FeatureAnalysis:
+    def __init__(self):
+        self.GraphAttribute = {}
+        self.NodeAttribute = {}
+        self.EdgeAttribute = {} 
+        self.TestFeatures = False
+
 class _Analysis:
     
     def __init__(self):
@@ -48,6 +64,8 @@ class _Analysis:
         _EventGenerator.__init__(self) 
         _GraphGenerator.__init__(self) 
         _SelectionGenerator.__init__(self)
+        _RandomSampler.__init__(self)
+        _FeatureAnalysis.__init__(self)
         self._cPWD = None
         self.ProjectName = "UNTITLED"
         self.OutputDirectory = None
@@ -60,7 +78,52 @@ class _Pickle:
 
     def __init__(self):
         self._ext = ".pkl"
-        self.Verbose = 3
+
+class _Plotting:
+    def __init__(self):
+
+        self.Style = None
+        self.ATLASData = False
+        self.ATLASYear = None
+        self.ATLASLumi = None
+        self.ATLASCom = None
+        self.Color = None
+        self.Colors = []
+        self.NEvents = None
+        self.LaTeX = True
+        
+        self.FontSize = 10
+        self.LabelSize = 12.5
+        self.TitleSize = 10
+        self.LegendSize = 10
+
+        self.Logarithmic = False
+        self.xScaling = 1.25
+        self.yScaling = 1.25
+        self.DPI = 250
+    
+        self.Title = None
+        self.Filename = None
+        self.OutputDirectory = "Plots"
+
+         # --- Histogram Cosmetic Styles --- #
+        self.Texture = False
+        self.Alpha = 0.5
+        self.FillHist = "fill"
+        
+        # --- Data Display --- #
+        self.Normalize = None    
+        
+        # --- Cosmetic --- #
+        self.LineStyle = None
+        self.Marker = None
+        self.DoStatistics = False
+        self.MakeStaticHistograms = False
+        self.Lines = []
+        self.LegendOn = True
+ 
+
+
 
 class Settings:
     
@@ -72,6 +135,9 @@ class Settings:
         if self.Caller == "EVENTGENERATOR": _EventGenerator.__init__(self) 
         if self.Caller == "GRAPHGENERATOR": _GraphGenerator.__init__(self) 
         if self.Caller == "SELECTIONGENERATOR": _SelectionGenerator.__init__(self)
+        if self.Caller == "RANDOMSAMPLER": _RandomSampler.__init__(self)
+        if self.Caller == "FEATUREANALYSIS": _FeatureAnalysis.__init__(self)
+        if self.Caller == "PLOTTING": _Plotting.__init__(self)
         if self.Caller == "ANALYSIS": _Analysis.__init__(self)
     
     @property
