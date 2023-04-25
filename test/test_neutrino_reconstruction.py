@@ -356,12 +356,508 @@ def test_operators():
     print("--- Testing Performance Between C++ and CUDA of Inverse ---")
     print("Speed Factor (> 1 is better): ", (sum(diff[0])) / sum(diff[1]))
 
+def test_single_nu():
+    from AnalysisG import Analysis
+
+    Ana = Analysis()
+    Ana.InputSample("SingleLepton", "./samples/single_lepton")
+    Ana.Event = Event
+    #Ana.EventStop = 100
+    Ana.EventCache = True 
+    #Ana.PurgeCache = True
+    Ana.Verbose = 2
+    Ana.Launch
+    
+    out = {"b" : [], "nu" : [], "lep" : [], "metx" : [], "mety" : [], "t" : []}    
+    it = 0
+    for i in Ana:
+        lep = [x for x in i.Tops if x.LeptonicDecay]
+        if len(lep) == 1:
+            children = {abs(c.pdgid) : c for c in lep[0].Children}
+            b = children[5]
+            nu = [children[c] for c in children if c in [12, 14, 16]][0]
+            lep_ = [children[c] for c in children if c in [11, 13, 15]][0]
+            out["b"].append(b)
+            out["nu"].append(nu)
+            out["lep"].append(lep_) 
+            out["t"].append(lep[0])
+            out["metx"].append(F.Px(i.met, i.met_phi)) 
+            out["mety"].append(F.Py(i.met, i.met_phi))
+            it += 1
 
 
+    for i in range(it):
+        failed = False
+        b, nu, lep, t, metx, mety = [out[key][i] for key in ["b", "nu", "lep", "t", "metx", "mety"]]
+        bv, lepv = ParticleToVector(b), ParticleToVector(lep)
 
+        sol = singleNeutrinoSolution(bv, lepv, (metx, mety), [[100, 0], [0, 100]], (nu+lep).Mass**2, t.Mass**2)
+        try: failed = sol.nu
+        except IndexError: failed = True
+
+        skip, solT, chi2, other = NuT.NuDoublePxPyPzE(
+                                b.px, b.py, b.pz, b.e, 
+                                lep.px, lep.py, lep.pz, lep.e, 
+                                metx, mety, 100, 0, 0, 100, t.Mass, (nu+lep).Mass, 0, 1e-8)
+        if isinstance(failed, bool) and failed == True: continue
+        elif sum(solT.tolist()[0]) == 0 and not isinstance(failed, bool): 
+            print("->", failed, solT.tolist()[0])
+            continue
+        if not AssertEquivalenceList(solT.tolist()[0], failed):
+            other = other.tolist()[0]
+            alternative = len([True for s in other if AssertEquivalenceList(failed, s)])
+            assert alternative > 0
+            continue
+        assert AssertEquivalenceList(solT.tolist()[0], failed)
+
+
+def test_double_nu():
+    from AnalysisG import Analysis
+
+    Ana = Analysis()
+    Ana.InputSample("Dilepton", "./samples/dilepton")
+    Ana.Event = Event
+    Ana.EventCache = True 
+    Ana.PurgeCache = True
+    Ana.Verbose = 2
+    Ana.Launch
+    
+    out = {"b" : [], "nu" : [], "lep" : [], "metx" : [], "mety" : [], "t" : []}    
+    it = 0
+    for i in Ana:
+        lep = [x for x in i.Tops if x.LeptonicDecay]
+        if len(lep) == 2:
+            children = [{abs(c.pdgid) : c for c in t.Children} for t in lep]
+            b, b_ = children[0][5], children[1][5]
+            nu, nu_ = [children[t][p] for t in range(len(children)) for p in children[t] if p in [12, 14, 16]]
+            l, l_ = [children[t][p] for t in range(len(children)) for p in children[t] if p in [11, 13, 15]]
+            out["b"].append([b, b_])
+            out["nu"].append([nu, nu_])
+            out["lep"].append([l, l_]) 
+            out["t"].append([lep[0], lep[1]])
+            out["metx"].append(F.Px(i.met, i.met_phi)) 
+            out["mety"].append(F.Py(i.met, i.met_phi))
+            it += 1
+    
+    errorMargin = 2 # Allow for a 2% delta between the original and new implementation 
+    for i in range(it):
+        failed = False
+        metx, mety = [out[key][i] for key in ["metx", "mety"]]
+        b, nu, lep, t = [out[key][i][0] for key in ["b", "nu", "lep", "t"]]
+        b_, nu_, lep_, t_  = [out[key][i][1] for key in ["b", "nu", "lep", "t"]]
+
+        bv, lepv = ParticleToVector(b), ParticleToVector(lep)
+        bv_, lepv_ = ParticleToVector(b_), ParticleToVector(lep_)
+
+        try: 
+            sol = doubleNeutrinoSolutions((bv, bv_), (lepv, lepv_), (metx, mety), (nu+lep).Mass**2, t.Mass**2)
+            failed = sol.nunu_s
+            leasq = sol.lsq
+        except IndexError: failed = True
+        except: failed = True
+
+        bv, lepv = ParticleToTensor(b), ParticleToTensor(lep)
+        bv_, lepv_ = ParticleToTensor(b_), ParticleToTensor(lep_)
+        metx, mety = MakeTensor(metx, "cuda"), MakeTensor(mety, "cuda")
+        mW, mT, mNu = MakeTensor((nu+lep).Mass, "cuda"), MakeTensor(t.Mass, "cuda"), MakeTensor(0, "cuda")
+
+        val = NuT.NuNuPxPyPzE(bv, bv_, lepv, lepv_, metx, mety, mT, mW, mNu, 1e-8)
+
+        if len(val) == 3 and isinstance(failed, bool): continue
+        skip, solT1, solT2, _, _, _, _, _ = val
+        skip, solT1, solT2 = skip.tolist()[0], solT1.tolist()[0], solT2.tolist()[0]
+
+        if skip and isinstance(failed, bool): continue
+        sol1, sol2 = [s.tolist() for s, _ in failed], [s.tolist() for _, s in failed]
+        solT1, solT2 = [k for k in solT1 if sum(k) != 0], [k for k in solT2 if sum(k) != 0]
+ 
+        try_ = True
+        for s1, s2 in zip(sol1, sol2):
+            for sT1, sT2 in zip(solT1, solT2):
+                if not AssertEquivalenceList(s1, sT1, errorMargin) or not AssertEquivalenceList(s2, sT2, errorMargin): continue
+                try_ = False
+                break
+            if try_ == False: break
+        if not try_: continue
+        if leasq: continue
+        assert False
+
+def test_speed():
+    if is_cuda == False: return 
+    from AnalysisG import Analysis
+
+    Ana = Analysis()
+    Ana.InputSample("DiLepton", "./samples/dilepton")
+    Ana.Event = Event
+    Ana.EventCache = True 
+    Ana.PurgeCache = True
+    Ana.Verbose = 2
+    Ana.Launch
+    its = 1
+    it = 0
+    
+    vl = {"b" : [], "lep" : [], "nu" : [], "ev" : [], "t" : []}
+    for ev in Ana:
+        tops = [ t for t in ev.Tops if t.LeptonicDecay]
+    
+        if len(tops) == 2:
+            k = ParticleCollectors(ev)
+            vl["b"].append(  [k[0][0], k[1][0]])
+            vl["lep"].append([k[0][1], k[1][1]])
+            vl["nu"].append( [k[0][2], k[1][2]])
+            vl["t"].append(  [k[0][3], k[1][3]])
+            vl["ev"].append(ev)
+            it+=1
+    
+    T = SampleTensor(vl["b"], vl["lep"], vl["ev"], vl["t"], "cuda", [[100, 0], [0, 100]])
+    R = SampleVector(vl["b"], vl["lep"], vl["ev"], vl["t"])
+    print("======================= Testing Speed of Single Neutrino Reconstruction ===================")
+    diff = [[], [], []]
+    for i in range(its):
+        t1 = time()
+        for r, t in zip(R, T):
+            b, mu = r[0], r[1]
+            met_x, met_y = r[4], r[5]
+            mT, mW, mNu = r[6], r[7], r[8]
+            try:
+                sol = singleNeutrinoSolution(b, mu, (met_x, met_y), [[100, 0], [0, 100]], mW**2, mT**2)
+                sol.nu
+            except: continue
+        t2 = time()
+        diff[0].append(t2 - t1)
+    
+    for t in range(its):
+        t1 = time()
+        t_sol = NuT.NuPtEtaPhiE(T.b, T.mu, T.met, T.phi, T.Sxx, T.Sxy, T.Syx, T.Syy, T.mT, T.mW, T.mN, 1e-12)
+        t2 = time()
+        diff1 = t2 - t1 
+        diff[1].append(diff1)
+    
+    for t in range(its):   
+        t1 = time()
+        t_solC = NuC.NuPtEtaPhiE(T.b, T.mu, T.met, T.phi, T.Sxx, T.Sxy, T.Syx, T.Syy, T.mT, T.mW, T.mN, 1e-12)
+        t2 = time()
+        diff2 = t2 - t1
+        diff[2].append(diff2)
+    
+    print(sum(diff[0]), sum(diff[1]))
+    print("--- Testing Performance Between Original and C++ of Nu ---")
+    print("Speed Factor (> 1 is better): ", (sum(diff[0])) / sum(diff[1]))
+    
+    print(sum(diff[0]), sum(diff[2]))
+    print("--- Testing Performance Between Original and CUDA of Nu ---")
+    print("Speed Factor (> 1 is better): ", (sum(diff[0])) / sum(diff[2]))
+    
+    print(sum(diff[1]), sum(diff[2]))
+    print("--- Testing Performance Between C++ and CUDA of Nu ---")
+    print("Speed Factor (> 1 is better): ", (sum(diff[1])) / sum(diff[2]))
+
+    print("======================= Testing Speed of Double Neutrino Reconstruction ===================")
+    diff = [[], [], []]
+    for i in range(its):
+        t1 = time()
+        for r, t in zip(R, T):
+            b, mu = r[0], r[1]
+            _b, _mu = r[2], r[3]
+            met_x, met_y = r[4], r[5]
+            mT, mW, mNu = r[6], r[7], r[8]
+            try:
+                sol = doubleNeutrinoSolutions((_b, b), (_mu, mu), (met_x, met_y), mW**2, mT**2)
+                sol.nunu_s
+            except: continue
+        t2 = time()
+        diff[0].append(t2 - t1)
+    
+    b = torch.cat([T.b for i in range(its)], 0)
+    b_ = torch.cat([T.b_ for i in range(its)], 0)
+    mu = torch.cat([T.mu for i in range(its)], 0)
+    mu_ = torch.cat([T.mu_ for i in range(its)], 0)
+    met = torch.cat([T.met for i in range(its)], 0)
+    phi = torch.cat([T.phi for i in range(its)], 0)
+    mT = torch.cat([T.mT for i in range(its)], 0)
+    mW = torch.cat([T.mW for i in range(its)], 0)
+    mN = torch.cat([T.mN for i in range(its)], 0)
+    
+    t1 = time()
+    t_sol = NuT.NuNuPtEtaPhiE(b, b_, mu, mu_, met, phi, mT, mW, mN, 1e-12)
+    t2 = time()
+    diff1 = t2 - t1 
+    diff[1].append(diff1)
+    
+    t1 = time()
+    t_solC = NuC.NuNuPtEtaPhiE(b, b_, mu, mu_, met, phi, mT, mW, mN, 1e-12)
+    t2 = time()
+    diff2 = t2 - t1
+    diff[2].append(diff2)
+    
+    print(sum(diff[0]), sum(diff[1]))
+    print("--- Testing Performance Between Original and C++ of NuNu ---")
+    print("Speed Factor (> 1 is better): ", (sum(diff[0])) / sum(diff[1]))
+    
+    print("--- Testing Performance Between Original and CUDA of NuNu ---")
+    print("Speed Factor (> 1 is better): ", (sum(diff[0])) / sum(diff[2]))
+    
+    print("--- Testing Performance Between C++ and CUDA of NuNu ---")
+    print("Speed Factor (> 1 is better): ", (sum(diff[1])) / sum(diff[2]))
+   
+
+def test_version_consistency():
+    if is_cuda == False: return 
+    from AnalysisG import Analysis
+
+    Ana = Analysis()
+    Ana.InputSample("DiLepton", "./samples/dilepton")
+    Ana.Event = Event
+    Ana.EventCache = True 
+    Ana.PurgeCache = True
+    Ana.Verbose = 2
+    Ana.Launch
+
+    it = 0
+    vl = {"b" : [], "lep" : [], "nu" : [], "ev" : [], "t" : []}
+    for ev in Ana:
+        tops = [ t for t in ev.Tops if t.LeptonicDecay]
+        if len(tops) != 2: continue
+        k = ParticleCollectors(ev)
+        vl["b"].append(  [k[0][0], k[1][0]])
+        vl["lep"].append([k[0][1], k[1][1]])
+        vl["nu"].append( [k[0][2], k[1][2]])
+        vl["t"].append(  [k[0][3], k[1][3]])
+        vl["ev"].append(ev)
+        it+=1
+
+    b1c = MakeTensor_(vl["b"], 0)
+    b2c = MakeTensor_(vl["b"], 1)
+    mu1c = MakeTensor_(vl["lep"], 0)
+    mu2c = MakeTensor_(vl["lep"], 1)
+    
+    metx = torch.tensor([ [F.Px(i.met, i.met_phi)/1000] for i in vl["ev"] ], dtype = torch.float64, device = "cuda")
+    mety = torch.tensor([ [F.Py(i.met, i.met_phi)/1000] for i in vl["ev"] ], dtype = torch.float64, device = "cuda")
+    T = SampleTensor(vl["b"], vl["lep"], vl["ev"], vl["t"], "cuda", [[100, 0], [0, 100]])
+    
+    # ------------------ Single Neutrino Reconstruction -------------------------- # 
+    sol_tP = NuC.NuPtEtaPhiE(T.b, T.mu, T.met, T.phi, T.Sxx, T.Sxy, T.Syx, T.Syy, T.mT, T.mW, T.mN, 1e-12)
+    sol_tC = NuC.NuPxPyPzE(b1c, mu1c, metx, mety, T.Sxx, T.Sxy, T.Syx, T.Syy, T.mT, T.mW, T.mN, 1e-12)
+    AssertEquivalenceRecursive(sol_tC[1].tolist(), sol_tP[1].tolist(), 0.01)
+    
+    Pb_l, Pmu_l, Pmet_l = [], [], []
+    Cb_l, Cmu_l, Cmet_l = [], [], []
+    met_lS, mass_l = [], []
+    
+    for i in range(len(sol_tP[0])):
+        b, mu, ev = vl["b"][i][0], vl["lep"][i][0], vl["ev"][i]
+        _solP = NuC.NuDoublePtEtaPhiE(
+                b.pt/1000, b.eta, b.phi, b.e/1000, 
+                mu.pt/1000, mu.eta, mu.phi, mu.e/1000, 
+                ev.met/1000, ev.met_phi, 
+                100, 0, 0, 100, 
+                vl["t"][i][0].Mass/1000, 80.385, 0, 1e-12)
+       
+        _solC = NuC.NuDoublePxPyPzE(
+                b.px/1000, b.py/1000, b.pz/1000, b.e/1000, 
+                mu.px/1000, mu.py/1000, mu.pz/1000, mu.e/1000, 
+                F.Px(ev.met, ev.met_phi)/1000, F.Py(ev.met, ev.met_phi)/1000, 
+                100, 0, 0, 100, 
+                vl["t"][i][0].Mass/1000, 80.385, 0, 1e-12)
+        assert AssertEquivalenceRecursive(_solP[1].tolist(), _solC[1].tolist(), 0.01)
+    
+        Pb_l.append([b.pt/1000, b.eta, b.phi, b.e/1000])
+        Pmu_l.append([mu.pt/1000, mu.eta, mu.phi, mu.e/1000])
+        Pmet_l.append([ev.met/1000, ev.met_phi])
+     
+        Cb_l.append([b.px/1000, b.py/1000, b.pz/1000, b.e/1000])
+        Cmu_l.append([mu.px/1000, mu.py/1000, mu.pz/1000, mu.e/1000])
+        Cmet_l.append([F.Px(ev.met, ev.met_phi)/1000, F.Py(ev.met, ev.met_phi)/1000])
+    
+        met_lS.append([100, 0, 0, 100])
+        mass_l.append([vl["t"][i][0].Mass/1000, 80.385, 0])
+    
+    _solPL = NuC.NuListPtEtaPhiE(Pb_l, Pmu_l, Pmet_l, met_lS, mass_l, 1e-12)
+    _solCL = NuC.NuListPxPyPzE(Cb_l, Cmu_l, Cmet_l, met_lS, mass_l, 1e-12)
+    
+    assert AssertEquivalenceRecursive(sol_tP[1].tolist(), _solCL[1].tolist(), 0.1)
+    assert AssertEquivalenceRecursive(_solPL[1].tolist(), _solCL[1].tolist(), 0.1)
+    
+    # ------------------ Double Neutrino Reconstruction -------------------------- # 
+    sol_tP = NuC.NuNuPtEtaPhiE(T.b, T.b_, T.mu, T.mu_, T.met, T.phi, T.mT, T.mW, T.mN, 1e-12)
+    sol_tC = NuC.NuNuPxPyPzE(b1c, b2c, mu1c, mu2c, metx, mety, T.mT, T.mW, T.mN, 1e-12)
+    for i, j in zip(sol_tC[3], sol_tP[3]): assert AssertSimilarSets(i.tolist(), j.tolist(), 1)
+    for i, j in zip(sol_tC[4], sol_tP[4]): assert AssertSimilarSets(i.tolist(), j.tolist(), 1)
+    
+    Pb, Pmu, Pmet = [], [], []
+    Pb_, Pmu_ = [], []
+    
+    Cb, Cmu, Cmet = [], [], []
+    Cb_, Cmu_ = [], []
+    
+    it = 0
+    for i in range(len(sol_tP[0])):
+        b, mu, ev = vl["b"][i][0], vl["lep"][i][0], vl["ev"][i]
+        b_, mu_ = vl["b"][i][1], vl["lep"][i][1]
+        
+        Pb.append([b.pt/1000, b.eta, b.phi, b.e/1000])
+        Pb_.append([b_.pt/1000, b_.eta, b_.phi, b_.e/1000])
+        
+        Pmu.append([mu.pt/1000, mu.eta, mu.phi, mu.e/1000])
+        Pmu_.append([mu_.pt/1000, mu_.eta, mu_.phi, mu_.e/1000])
+        
+        Pmet.append([ev.met/1000, ev.met_phi])
+    
+        Cb.append([b.px/1000, b.py/1000, b.pz/1000, b.e/1000])
+        Cb_.append([b_.px/1000, b_.py/1000, b_.pz/1000, b_.e/1000])
+        
+        Cmu.append([mu.px/1000, mu.py/1000, mu.pz/1000, mu.e/1000])
+        Cmu_.append([mu_.px/1000, mu_.py/1000, mu_.pz/1000, mu_.e/1000])
+        
+        Cmet.append([F.Px(ev.met, ev.met_phi)/1000, F.Py(ev.met, ev.met_phi)/1000])
+    
+        _solP = NuC.NuNuDoublePtEtaPhiE(
+                Pb[-1][0],    Pb[-1][1],   Pb[-1][2],   Pb[-1][3], 
+                Pb_[-1][0],   Pb_[-1][1],  Pb_[-1][2],  Pb_[-1][3], 
+                Pmu[-1][0],   Pmu[-1][1],  Pmu[-1][2],  Pmu[-1][3], 
+                Pmu_[-1][0],  Pmu_[-1][1], Pmu_[-1][2], Pmu_[-1][3], 
+                Pmet[-1][0],  Pmet[-1][1],
+                mass_l[i][0], mass_l[i][1], mass_l[i][2], 
+                1e-12)
+        if _solP[0]: continue
+        assert AssertSimilarSets(sol_tP[3][it].tolist(), _solP[3][0].tolist(), 1)
+        it += 1
+        
+        _solC = NuC.NuNuDoublePxPyPzE(
+                Cb[-1][0],   Cb[-1][1],   Cb[-1][2],   Cb[-1][3], 
+                Cb_[-1][0],  Cb_[-1][1],  Cb_[-1][2],  Cb_[-1][3], 
+                Cmu[-1][0],  Cmu[-1][1],  Cmu[-1][2],  Cmu[-1][3], 
+                Cmu_[-1][0], Cmu_[-1][1], Cmu_[-1][2], Cmu_[-1][3], 
+                Cmet[-1][0], Cmet[-1][1],
+                mass_l[i][0], mass_l[i][1], mass_l[i][2], 
+                1e-12)
+        assert AssertSimilarSets(_solC[3][0].tolist(), _solP[3][0].tolist(), 1)
+    
+    sol_tP = NuC.NuNuListPtEtaPhiE(Pb, Pb_, Pmu, Pmu_, Pmet, mass_l, 1e-12)
+    sol_tC = NuC.NuNuListPxPyPzE(Cb, Cb_, Cmu, Cmu_, Cmet, mass_l, 1e-12)
+    for i, j in zip(sol_tC[3], sol_tP[3]): assert AssertSimilarSets(i.tolist(), j.tolist(), 1)
+    for i, j in zip(sol_tC[4], sol_tP[4]): assert AssertSimilarSets(i.tolist(), j.tolist(), 1)
+
+    b1c = MakeTensor_(vl["b"], 0)
+    b2c = MakeTensor_(vl["b"], 1)
+    mu1c = MakeTensor_(vl["lep"], 0)
+    mu2c = MakeTensor_(vl["lep"], 1)
+    
+    metx = torch.tensor([ [F.Px(i.met, i.met_phi)/1000] for i in vl["ev"] ], dtype = torch.float64, device = "cuda")
+    mety = torch.tensor([ [F.Py(i.met, i.met_phi)/1000] for i in vl["ev"] ], dtype = torch.float64, device = "cuda")
+    T = SampleTensor(vl["b"], vl["lep"], vl["ev"], vl["t"], "cuda", [[100, 0], [0, 100]])
+    
+    # ------------------ Single Neutrino Reconstruction -------------------------- # 
+    sol_tP = NuC.NuPtEtaPhiE(T.b, T.mu, T.met, T.phi, T.Sxx, T.Sxy, T.Syx, T.Syy, T.mT, T.mW, T.mN, 1e-12)
+    sol_tC = NuC.NuPxPyPzE(b1c, mu1c, metx, mety, T.Sxx, T.Sxy, T.Syx, T.Syy, T.mT, T.mW, T.mN, 1e-12)
+    assert AssertEquivalenceRecursive(sol_tC[1].tolist(), sol_tP[1].tolist(), 0.01)
+    
+    Pb_l, Pmu_l, Pmet_l = [], [], []
+    Cb_l, Cmu_l, Cmet_l = [], [], []
+    met_lS, mass_l = [], []
+    
+    for i in range(len(sol_tP[0])):
+        b, mu, ev = vl["b"][i][0], vl["lep"][i][0], vl["ev"][i]
+        _solP = NuC.NuDoublePtEtaPhiE(
+                b.pt/1000, b.eta, b.phi, b.e/1000, 
+                mu.pt/1000, mu.eta, mu.phi, mu.e/1000, 
+                ev.met/1000, ev.met_phi, 
+                100, 0, 0, 100, 
+                vl["t"][i][0].Mass/1000, 80.385, 0, 1e-12)
+       
+        _solC = NuC.NuDoublePxPyPzE(
+                b.px/1000, b.py/1000, b.pz/1000, b.e/1000, 
+                mu.px/1000, mu.py/1000, mu.pz/1000, mu.e/1000, 
+                F.Px(ev.met, ev.met_phi)/1000, F.Py(ev.met, ev.met_phi)/1000, 
+                100, 0, 0, 100, 
+                vl["t"][i][0].Mass/1000, 80.385, 0, 1e-12)
+        assert AssertEquivalenceRecursive(_solP[1].tolist(), _solC[1].tolist(), 0.05)
+    
+    
+        Pb_l.append([b.pt/1000, b.eta, b.phi, b.e/1000])
+        Pmu_l.append([mu.pt/1000, mu.eta, mu.phi, mu.e/1000])
+        Pmet_l.append([ev.met/1000, ev.met_phi])
+     
+        Cb_l.append([b.px/1000, b.py/1000, b.pz/1000, b.e/1000])
+        Cmu_l.append([mu.px/1000, mu.py/1000, mu.pz/1000, mu.e/1000])
+        Cmet_l.append([F.Px(ev.met, ev.met_phi)/1000, F.Py(ev.met, ev.met_phi)/1000])
+    
+        met_lS.append([100, 0, 0, 100])
+        mass_l.append([vl["t"][i][0].Mass/1000, 80.385, 0])
+    
+    _solPL = NuC.NuListPtEtaPhiE(Pb_l, Pmu_l, Pmet_l, met_lS, mass_l, 1e-12)
+    _solCL = NuC.NuListPxPyPzE(Cb_l, Cmu_l, Cmet_l, met_lS, mass_l, 1e-12)
+    
+    assert AssertEquivalenceRecursive(sol_tP[1].tolist(), _solCL[1].tolist(), 0.05)
+    assert AssertEquivalenceRecursive(_solPL[1].tolist(), _solCL[1].tolist(), 0.05)
+    
+    # ------------------ Double Neutrino Reconstruction -------------------------- # 
+    sol_tP = NuC.NuNuPtEtaPhiE(T.b, T.b_, T.mu, T.mu_, T.met, T.phi, T.mT, T.mW, T.mN, 1e-12)
+    sol_tC = NuC.NuNuPxPyPzE(b1c, b2c, mu1c, mu2c, metx, mety, T.mT, T.mW, T.mN, 1e-12)
+    for i, j in zip(sol_tC[3], sol_tP[3]): assert AssertSimilarSets(i.tolist(), j.tolist(), 1)
+    for i, j in zip(sol_tC[4], sol_tP[4]): assert AssertSimilarSets(i.tolist(), j.tolist(), 1)
+    
+    Pb, Pmu, Pmet = [], [], []
+    Pb_, Pmu_ = [], []
+    
+    Cb, Cmu, Cmet = [], [], []
+    Cb_, Cmu_ = [], []
+    
+    it = 0
+    for i in range(len(sol_tP[0])):
+        b, mu, ev = vl["b"][i][0], vl["lep"][i][0], vl["ev"][i]
+        b_, mu_ = vl["b"][i][1], vl["lep"][i][1]
+        
+        Pb.append([b.pt/1000, b.eta, b.phi, b.e/1000])
+        Pb_.append([b_.pt/1000, b_.eta, b_.phi, b_.e/1000])
+        
+        Pmu.append([mu.pt/1000, mu.eta, mu.phi, mu.e/1000])
+        Pmu_.append([mu_.pt/1000, mu_.eta, mu_.phi, mu_.e/1000])
+        
+        Pmet.append([ev.met/1000, ev.met_phi])
+    
+        Cb.append([b.px/1000, b.py/1000, b.pz/1000, b.e/1000])
+        Cb_.append([b_.px/1000, b_.py/1000, b_.pz/1000, b_.e/1000])
+        
+        Cmu.append([mu.px/1000, mu.py/1000, mu.pz/1000, mu.e/1000])
+        Cmu_.append([mu_.px/1000, mu_.py/1000, mu_.pz/1000, mu_.e/1000])
+        
+        Cmet.append([F.Px(ev.met, ev.met_phi)/1000, F.Py(ev.met, ev.met_phi)/1000])
+    
+        _solP = NuC.NuNuDoublePtEtaPhiE(
+                Pb[-1][0],    Pb[-1][1],   Pb[-1][2],   Pb[-1][3], 
+                Pb_[-1][0],   Pb_[-1][1],  Pb_[-1][2],  Pb_[-1][3], 
+                Pmu[-1][0],   Pmu[-1][1],  Pmu[-1][2],  Pmu[-1][3], 
+                Pmu_[-1][0],  Pmu_[-1][1], Pmu_[-1][2], Pmu_[-1][3], 
+                Pmet[-1][0],  Pmet[-1][1],
+                mass_l[i][0], mass_l[i][1], mass_l[i][2], 
+                1e-12)
+        if _solP[0]: continue
+        assert AssertSimilarSets(sol_tP[3][it].tolist(), _solP[3][0].tolist(), 1)
+        it += 1
+        
+        _solC = NuC.NuNuDoublePxPyPzE(
+                Cb[-1][0],   Cb[-1][1],   Cb[-1][2],   Cb[-1][3], 
+                Cb_[-1][0],  Cb_[-1][1],  Cb_[-1][2],  Cb_[-1][3], 
+                Cmu[-1][0],  Cmu[-1][1],  Cmu[-1][2],  Cmu[-1][3], 
+                Cmu_[-1][0], Cmu_[-1][1], Cmu_[-1][2], Cmu_[-1][3], 
+                Cmet[-1][0], Cmet[-1][1],
+                mass_l[i][0], mass_l[i][1], mass_l[i][2], 
+                1e-12)
+    
+        assert AssertSimilarSets(_solC[3][0].tolist(), _solP[3][0].tolist(), 1)
+    
+    sol_tP = NuC.NuNuListPtEtaPhiE(Pb, Pb_, Pmu, Pmu_, Pmet, mass_l, 1e-12)
+    sol_tC = NuC.NuNuListPxPyPzE(Cb, Cb_, Cmu, Cmu_, Cmet, mass_l, 1e-12)
+    for i, j in zip(sol_tC[3], sol_tP[3]): assert AssertSimilarSets(i.tolist(), j.tolist(), 1)
+    for i, j in zip(sol_tC[4], sol_tP[4]): assert AssertSimilarSets(i.tolist(), j.tolist(), 1)
+ 
 if __name__ == "__main__":
     #test_transformation()
     #test_physics()
     #test_operators()
-
+    #test_single_nu()
+    #test_double_nu()
+    #test_speed()
+    test_version_consistency()
     pass

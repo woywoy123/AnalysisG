@@ -185,7 +185,6 @@ class doubleNeutrinoSolutions(object):
         mu, mu_ = mus
         metX, metY = met
         self.solutionSets = [SolutionSet(B, M, mW2, mT2, 0) for B,M in zip((b,b_),(mu,mu_))]
-
         V0 = np.outer([metX, metY, 0], [0, 0, 1])
         self.S = V0 - UnitCircle()
         N, N_ = [ss.N for ss in self.solutionSets]
@@ -194,6 +193,7 @@ class doubleNeutrinoSolutions(object):
         v_ = [self.S.dot(sol) for sol in v]
         self.diag = diag
        
+        self.lsq = False
         if not v and leastsq:
             es = [ss.H_perp for ss in self.solutionSets]
             met = np.array([metX, metY, 1])
@@ -208,8 +208,7 @@ class doubleNeutrinoSolutions(object):
             ts,_ = leastsq(residuals, [0, 0],
                            ftol=5e-5, epsfcn=0.01)
             v, v_ = [[i] for i in nus(ts)]
-
-
+            self.lsq = True 
 
         for k, v in {'perp': v, 'perp_': v_, 'n_': n_}.items():
             setattr(self, k, v)

@@ -8,6 +8,7 @@ class _General:
         self.EventStart = -1
         self.EventStop = None
         self._Device = "cpu"
+        self._condor = False
 
 class _UpROOT:
     
@@ -122,8 +123,44 @@ class _Plotting:
         self.Lines = []
         self.LegendOn = True
  
+class _Condor:
 
+    def __init__(self):
+        self.CondaEnv = False
+        self.PythonVenv = "$PythonGNN"
+        self.EventCache = None
+        self.DataCache = None
+        self._dump = True
+        self.ProjectName = None
+        self.VerboseLevel = 0
+        self.Tree = None
+        self.OutputDirectory = None
 
+class _CondorScript:
+
+    def __init__(self):
+        self.ExecPath = None
+        self.ScriptName = "main"
+        self.OpSysAndVer = "CentOS7"
+        self.Device = None
+        self.Threads = None
+        self.Time = None
+        self.Memory = None
+        self.CondaEnv = False
+        self.PythonVenv = "$PythonGNN"
+
+class _JobSpecification:
+
+    def __init__(self):
+        self.Job = None
+        self.Time = None
+        self.Memory = None
+        self.Device = None
+        self.Name = None
+        self.EventCache = None
+        self.DataCache = None
+        self.CondaEnv = False
+        self.PythonVenv = "$PythonGNN"
 
 class Settings:
     
@@ -139,6 +176,10 @@ class Settings:
         if self.Caller == "FEATUREANALYSIS": _FeatureAnalysis.__init__(self)
         if self.Caller == "PLOTTING": _Plotting.__init__(self)
         if self.Caller == "ANALYSIS": _Analysis.__init__(self)
+
+        if self.Caller == "CONDOR": _Condor.__init__(self)
+        if self.Caller == "JOBSPECS": _JobSpecification.__init__(self)
+        if self.Caller == "CONDORSCRIPT": _CondorScript.__init__(self)
     
     @property
     def Device(self):
@@ -153,4 +194,29 @@ class Settings:
         if not issubclass(type(inpt), Settings): return 
         s = Settings(self.Caller)
         for i in s.__dict__: setattr(self, i, getattr(inpt, i))
-       
+    
+    @property    
+    def DumpSettings(self):
+        default = Settings(self.Caller)
+        out = {}
+        for i in default.__dict__: 
+            if self.__dict__[i] == default.__dict__[i]: continue
+            out[i] = self.__dict__[i]
+        return out
+ 
+    @property 
+    def ExportAnalysisScript(self):
+        from AnalysisG.Tools import Code 
+
+        default = Settings(self.Caller)
+        out = []
+        basic =  ["int", "dict", "str"]
+        for i in self.__dict__:
+            if default.__dict__[i] == self.__dict__[i]: continue 
+            if i == "_Code": continue
+            if type(self.__dict__[i]).__name__ not in basic: 
+                self._Code[i] = Code(self.__dict__[i])
+                out += ["<*AnalysisName*>." + i + "=" + self._Code[i]._Hash]
+                continue 
+            out += ["<*AnalysisName*>." + i + "=" + str(self.__dict__[i])] 
+        return out 

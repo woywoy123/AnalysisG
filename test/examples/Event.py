@@ -1,5 +1,5 @@
 from AnalysisG.Templates import EventTemplate
-from ObjectDefinitions.Particles import Jet, Top
+from .Particles import Jet, Top
 
 class Event(EventTemplate):
 
@@ -19,8 +19,7 @@ class Event(EventTemplate):
                 "Tops" : Top()
                 }
         # ===== End of declaration ===== #
-        self.DefineObjects()
-        self._CommitHash = "<Some Hash For Bookkeeping>"
+        self.CommitHash = "<Some Hash For Bookkeeping>"
     
     def CompileEvent(self): 
         # Create njets variable for the event 

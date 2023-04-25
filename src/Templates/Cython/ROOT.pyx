@@ -361,7 +361,7 @@ cdef class SampleTracer:
             
             f = h5py.File(get)
             get = "RESTORING EVENTS (" + ("DataCache" if DataCache else "EventCache") + "): "
-            _, bar = self._MakeBar(r_.HashMap.size(), get + c.first.decode("UTF-8"))
+            _, bar = self._MakeBar(r_.HashMap.size(), get + c.first.decode("UTF-8").split("/")[-1])
             for e in r_.HashMap:
                 bar.update(1)
                 e_ = e.second   

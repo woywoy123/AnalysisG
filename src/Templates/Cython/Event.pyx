@@ -31,6 +31,7 @@ cdef class EventTemplate:
         return int(self.hash[:8], 0)
 
     def __eq__(self, other) -> bool:
+        if other == None: return False
         if isinstance(self, str): return False
         if isinstance(other, str): return False
         cdef EventTemplate s = self

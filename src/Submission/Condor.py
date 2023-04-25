@@ -11,14 +11,12 @@ class CondorScript(Settings):
         self._config = []
     
     def __Memory(self):
-        if self.Memory == None:
-            return
+        if self.Memory == None: return
         fact = 1024 if self.Memory.endswith("GB") else 1
         self.__AddConfig("Request_Memory = " + str(fact*float(self.Memory[:-2])))
     
     def __Time(self):
-        if self.Time == None:
-            return
+        if self.Time == None: return
         fact = 60*60 if self.Time.endswith("h") else fact
         fact = 60 if self.Time.endswith("m") else fact
         self.__AddConfig("+RequestRuntime = " + str(fact*float(self.Time[:-1])))       
@@ -30,9 +28,7 @@ class CondorScript(Settings):
     
     def __Hardware(self):
         string = "Request_GPUs = 1" if self.Device == "cuda" else False
-        if string:
-            self.__AddConfig(string)
-            return 
+        if string: return self.__AddConfig(string)
         self.__AddConfig("Request_Cpus = " + str(self.Threads))
     
     def Compile(self):
@@ -57,7 +53,7 @@ class CondorScript(Settings):
         self._config.append(inpt)
             
 
-class AnalysisScript(AnalysisTopGNN.Tools.General.Tools):
+class AnalysisScript(AnalysisG.Tools.General.Tools):
 
     def __init__(self):
         self.Code = []
@@ -70,42 +66,32 @@ class AnalysisScript(AnalysisTopGNN.Tools.General.Tools):
         f.write(txt)
         f.close()
 
-    def GroupHash(self, obj):
-        for i in range(len(self.Script)):
-            _hash = str(hex(id(obj)))
-            if _hash not in self.Script[i]:
-                continue
-            self.Script[i] = self.Script[i].replace("'" + _hash + "'", obj.Name)
-            return self.Script[i].split(" = ")[0].split(".")[-1]
-        return False
-
     def Compile(self):
-
+        from AnalysisG.Templates import ParticleTemplate
+        from AnalysisG.Templates import EventTemplate
         Ad_key = {}
-        Script = ["import sys"]
-        Script += ["sys.path.append('" + self.abs("/".join(self.OutDir.split("/")[:-1]) + "/_SharedCode/')")]
-        Script += ["from Event import *"]
+        Script = []
+        #Script = ["import sys"]
+        #Script += ["sys.path.append('" + self.abs("/".join(self.OutDir.split("/")[:-1]) + "/_SharedCode/')")]
+        #Script += ["from Event import *"]
         for i in self.Code:
-            key = self.GroupHash(i)
-            if key not in Ad_key and key:
-                Ad_key[key] = []
 
-            if "(ParticleTemplate):" in i.Code:
-                self.__Build(i.Code, "../_SharedCode/Particles")
+            if issubclass(type(i.clone), ParticleTemplate):
+                self.__Build(i._Code, "../_SharedCode/Particles")
                 continue
 
-            if "(EventTemplate):" in i.Code:
-                string = ["from AnalysisTopGNN.Templates import EventTemplate", "from Particles import *", "", i.Code]
+            if issubclass(type(i.clone), EventTemplate):
+                string = ["from AnalysisG.Templates import EventTemplate", "from Particles import *", "", i._Code]
                 self.__Build("\n".join(string), "../_SharedCode/Event")
-                self.Script += ["<*AnalysisName*>.Event = Event"]
+                self.Script += ["<*AnalysisName*>.Event = " + i._Hash]
                 continue
 
-            if "(EventGraphTemplate):" in i.Code:
-                Ad_key[key] = ["from AnalysisTopGNN.Templates import EventGraphTemplate", "", i.Code]
+            if "(GraphTemplate):" in i.Code:
+                Ad_key[key] = ["from AnalysisG.Templates import EventGraphTemplate", "", i.Code]
                 continue
             
-            if "(Selection):" in i.Code:
-                Ad_key[key] = ["from AnalysisTopGNN.Templates import Selection", "", i.Code]
+            if "(SelectionTemplate):" in i.Code:
+                Ad_key[key] = ["from AnalysisG.Templates import SelectionTemplate", "", i.Code]
                 continue
 
             Ad_key[key].append(i.Code)
@@ -114,7 +100,7 @@ class AnalysisScript(AnalysisTopGNN.Tools.General.Tools):
             self.__Build("\n".join(Ad_key[i]), i)
             Script += ["from " + i + " import * "]
         
-        Script += ["from AnalysisTopGNN.Generators import Analysis"]
+        Script += ["from AnalysisG.Generators import Analysis"]
         Script += ["", "ANA = Analysis()"]
         Script += [i.replace("<*AnalysisName*>", "ANA") for i in self.Script]
         Script += ["ANA.Launch()"]
@@ -122,42 +108,35 @@ class AnalysisScript(AnalysisTopGNN.Tools.General.Tools):
 
 
 
-class JobSpecification(AnalysisTopGNN.Tools.General.Tools, Settings):
+class JobSpecification(AnalysisG.Tools.General.Tools, Settings):
 
     def __init__(self):
         self.Caller = "JOBSPECS"
         Settings.__init__(self)
    
-    def __Preconf(self):
-        if self.EventCache != None and self.Job.Event != None: self.Job.EventCache = self.EventCache
-        if self.DataCache != None and self.Job.EventGraph != None: self.Job.DataCache = self.DataCache
-        self.Device = self.Job.Device
-
     def __Build(self, txt, name, pth, exe = True):
         f = open(pth + "/" + name, "w")
         f.write("\n".join(txt))
         f.close()
         if exe: os.chmod(pth + "/" + name, stat.S_IRWXU)
-
-    def Launch(self):
-        self.__Preconf()
-        self.Job.Launch()
+    
+    @property
+    def Launch(self): self.Job.Launch
     
     def DumpConfig(self):
+        self.Job.__build__
         self.Job.OutputDirectory = self.abs(self.Job.OutputDirectory)
         pth = self.Job.OutputDirectory + "/" + self.Job.ProjectName + "/CondorDump/" + self.Name
         self.mkdir(pth)
         self.mkdir(pth + "/../_SharedCode")
-        
-        self.__Preconf()
-        
+              
         Ana = AnalysisScript()
-        Ana.Script += self.Job.ExportAnalysisScript()
-        Ana.Code += self.Job._Code
+        Ana.Script += self.Job.ExportAnalysisScript
+        Ana.Code += [i for i in self.Job._Code.values()]
         Ana.Name = "main"
         Ana.OutDir = pth
         Ana.Compile()
-       
+        exit() 
         Con = CondorScript()
         Con.RestoreSettings(self.DumpSettings())
         Con.ExecPath = pth
@@ -168,7 +147,7 @@ class JobSpecification(AnalysisTopGNN.Tools.General.Tools, Settings):
         Con.Shell()
         self.__Build(Con._config, "main.sh", pth, True)
 
-class Condor(AnalysisTopGNN.Tools.General.Tools, Condor_, Settings):
+class Condor(AnalysisG.Tools.General.Tools, _Condor, Settings):
     def __init__(self):
         self.Caller = "CONDOR"
         Settings.__init__(self)
@@ -185,17 +164,15 @@ class Condor(AnalysisTopGNN.Tools.General.Tools, Condor_, Settings):
             self._Jobs[name] = JobSpecification()
             self._Jobs[name].Job = instance
             self._Jobs[name].Name = name
-
         self.AddListToDict(self._wait, name)
-        
         if waitfor == None: pass
         elif isinstance(waitfor, str): self._wait[name].append(waitfor)
         elif isinstance(waitfor, list): self._wait[name] += waitfor 
-        
         self._Jobs[name].Memory = memory
         self._Jobs[name].Time = time
         self.ProjectInheritance(instance)
     
+    @property 
     def __Sequencer(self):
         def Recursion(inpt, key = None, start = None):
             if key == None and start == None:
@@ -207,9 +184,10 @@ class Condor(AnalysisTopGNN.Tools.General.Tools, Condor_, Settings):
             return key 
         self._sequence = Recursion(self._wait) 
         for i in self._wait: self._Complete[i] = False
-
+    
+    @property
     def LocalDryRun(self):
-        self.__Sequencer()
+        self.__Sequencer
         self._sequence = { j : [j] + self._sequence[j] for j in self._sequence }
         for t in self._sequence:
             for j in reversed(self._sequence[t]):
@@ -224,9 +202,10 @@ class Condor(AnalysisTopGNN.Tools.General.Tools, Condor_, Settings):
                 del self._Jobs[j]
                 self._Jobs[j] = None
         self.FinishExit()
-
+    
+    @property
     def DumpCondorJobs(self):
-        self.__Sequencer()
+        self.__Sequencer
         outDir = self.abs(self.OutputDirectory)
         self.mkdir(outDir + "/" + self.ProjectName + "/CondorDump")
         DAG = ["JOB " + i + " " + i + "/" + i + ".submit" for i in self._sequence]
@@ -242,7 +221,7 @@ class Condor(AnalysisTopGNN.Tools.General.Tools, Condor_, Settings):
                 if s not in DAG and p in self._wait[i]: DAG.append(s)
 
             for j in jb:
-                self._Jobs[j].RestoreSettings(self.DumpSettings())
+                self._Jobs[j].ImportSettings(self.DumpSettings)
                 self._Jobs[j].DumpConfig()
                 
                 self._Complete[j] = True

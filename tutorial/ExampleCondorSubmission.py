@@ -1,5 +1,5 @@
-from AnalysisTopGNN import Analysis 
-from AnalysisTopGNN.Submission import Condor 
+from AnalysisG import Analysis 
+from AnalysisG.Submission import Condor 
 from ObjectDefinitions.Event import Event 
 from ObjectDefinitions.EventGraph import SimpleDataGraph
 from ObjectDefinitions.GNN import ExampleGNN
@@ -10,8 +10,7 @@ def MakeEvents(SampleName, Directory):
     Ana.InputSample(SampleName, Directory)
     Ana.Event = Event
     Ana.EventCache = True
-    Ana.DumpPickle = True # < Dumps events as pickle files 
-    Ana.VerboseLevel = 1
+    Ana.Verbose = 1
     Ana.Threads = 12
     return Ana
 
@@ -19,8 +18,7 @@ def MakeGraphs(SampleName):
     Graph = Analysis()
     Graph.InputSample(SampleName)
     Graph.DataCache = True 
-    Graph.DumpHDF5 = True 
-    Graph.VerboseLevel = 1
+    Graph.Verbose = 1
     Graph.Event = Event
     Graph.EventGraph = SimpleDataGraph
     
@@ -42,7 +40,7 @@ def MakeGraphs(SampleName):
     Graph.SelfLoop = True 
     return Graph 
 
-SampleDir = "/home/tnom6927/Downloads/samples"
+SampleDir = "<some directory>"
 
 #Sample 1: Resonance Top Sample
 tttt = MakeEvents("tttt", SampleDir + "/tttt/DAOD_TOPQ1.21955717._000003.root")

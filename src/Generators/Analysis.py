@@ -26,7 +26,6 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         self._cPWD = self.pwd
         if self.OutputDirectory is None: self.OutputDirectory = self.pwd
         else: self.OutputDirectory = self.abs(self.OutputDirectory)
-        
         self.OutputDirectory = self.AddTrailing(self.OutputDirectory, "/") + self.ProjectName
         if self.PurgeCache: self._WarningPurge
         self._BuildingCache 
@@ -35,9 +34,11 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
     def __Selection__(self):
         sel = SelectionGenerator(self)
         sel.ImportSettings(self)
+        print(sel._condor)
         for name in self.Selections: sel.AddSelection(name, self.Selections[name])
-        sel.MakeSelection
-    
+        if self._condor: return sel.MakeSelection
+        sel.MakeSelection 
+ 
     @property 
     def __Event__(self):
         process = {}
@@ -97,9 +98,10 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         return self.EmptySampleList
 
     @property
-    def Launch(self):
+    def Launch(self):   
+        if self._condor: return self
         self.__build__
-        tracer = self._CheckForTracer
+        tracer = False if len(self.ls(self.OutputDirectory)) == 0 else self._CheckForTracer
         for i in self.SampleMap:
             self.Files = self.SampleMap[i]
             self.SampleName = i

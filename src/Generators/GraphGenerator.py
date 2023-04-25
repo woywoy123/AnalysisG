@@ -39,11 +39,12 @@ class GraphGenerator(_GraphGenerator, Settings, SampleTracer, _Interface):
 
         if "EventGraph" not in self._Code: self._Code["EventGraph"] = []
         self._Code["EventGraph"].append(Code(self.EventGraph))
-        
         self._Code["GraphAttribute"] = {c_name : Code(self.GraphAttribute[c_name]) for c_name in self.GraphAttribute}
         self._Code["NodeAttribute"]  = {c_name : Code(self.NodeAttribute[c_name]) for c_name in self.NodeAttribute}   
         self._Code["EdgeAttribute"]  = {c_name : Code(self.EdgeAttribute[c_name]) for c_name in self.EdgeAttribute}
-       
+        if self._condor: return self      
+
+ 
         inpt = []
         for ev, i in zip(self, range(len(self))):
             if self._StartStop(i) == False: continue

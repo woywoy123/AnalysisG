@@ -1,7 +1,6 @@
 import torch 
 from torch_geometric.nn import MessagePassing
 from torch.nn import Sequential as Seq, Linear, ReLU, Sigmoid
-from LorentzVector import *
 
 class ExampleGNN(MessagePassing):
 

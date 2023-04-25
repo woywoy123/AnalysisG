@@ -16,6 +16,7 @@ class _Analysis(Notification):
             bar.update(1)
         self.rm(self.OutputDirectory + "/EventCache") 
         self.rm(self.OutputDirectory + "/DataCache")         
+        self.rm(self.OutputDirectory + "/Tracer")
 
     @property
     def _BuildingCache(self):
@@ -29,14 +30,14 @@ class _Analysis(Notification):
     @property
     def _CheckForTracer(self):
         f = self.ls(self.OutputDirectory + "/Tracer/")
-        if len(f) == 0: return not self.Warning("Tracer directory not found. Generating")
+        if len(f) == 0 and (self.EventCache or self.DataCache): return not self.Warning("Tracer directory not found. Generating")
 
         tracers = {i.split("-")[0] : i.split("-")[1].replace(".hdf5", ".root") for i in f}
         matched = {}
         for i in self.SampleMap:
             matched |= {self.Hash(t + "/") : [t + "/" + l for l in self.SampleMap[i][t]] for t in self.SampleMap[i]}
         self.WhiteSpace()
-        self.Success("Tracer directory found: ")
+        if len(tracers) > 0: self.Success("Tracer directory found: ")
         for i in tracers:
             try: f = matched[i]
             except KeyError: 

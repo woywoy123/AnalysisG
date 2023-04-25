@@ -51,6 +51,7 @@ class EventGenerator(_EventGenerator, Settings, SampleTracer, _Interface):
         self._Code["Objects"] = {i : Code(self.Event.Objects[i]) for i in self.Event.Objects}
         if not self.CheckROOTFiles: return False
         if not self.CheckVariableNames: return False
+        if self._condor: return self
 
         ev = self.Event
         ev.__interpret__

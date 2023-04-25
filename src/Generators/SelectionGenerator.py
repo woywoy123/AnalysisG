@@ -42,7 +42,8 @@ class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface
         if "Selections" not in self._Code: self._Code["Selections"] = []
         code = { name : Code(self.Selections[name]) for name in self.Selections}
         self._Code["Selections"].append(code)
-        
+        if self._condor: return self 
+ 
         inpt = []
         for name in self.Selections:
             for ev, i in zip(self, range(len(self))):
