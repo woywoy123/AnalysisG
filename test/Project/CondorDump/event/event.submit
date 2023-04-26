@@ -1,0 +1,5 @@
+executable = /home/tnom6927/Dokumente/Project/Analysis/bsm4tops-gnn-analysis/AnalysisTopGNN/test/Project/CondorDump/event/main.sh
+error = /home/tnom6927/Dokumente/Project/Analysis/bsm4tops-gnn-analysis/AnalysisTopGNN/test/Project/CondorDump/event/results.error.$(ClusterID)
+Requirements = OpSysAndVer == "CentOS7"
+Request_Cpus = 2
+queue 1

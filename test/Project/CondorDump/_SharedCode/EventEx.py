@@ -1,5 +1,5 @@
 from AnalysisG.Templates import EventTemplate
-from .Particles import Jet, Top
+from Particles import Jet, Top
 
 class EventEx(EventTemplate):
 

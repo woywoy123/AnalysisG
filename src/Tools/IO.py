@@ -27,10 +27,10 @@ class Code:
         except AttributeError: self._Module = Instance.__package__
 
         self._Path = self._Module + "." + self._Name
-        self._FileCode = GetSourceFile(Instance)
         self._Code = GetSourceCode(Instance)
         self._Hash = Hash(self._Code)
         self._File = GetSourceFileDirectory(Instance)
+        self._FileCode = "".join(open(self._File, "r").readlines())
     
     @property
     def clone(self):
@@ -44,6 +44,10 @@ class Code:
 
     def __eq__(self, other):
         return self._Hash == other._Hash
+    
+    def __str__(self):
+        return self._Hash
+
 
 class IO(String, _IO):
 

@@ -1,0 +1,3 @@
+JOB example example/example.submit
+JOB event event/event.submit
+PARENT event CHILD example

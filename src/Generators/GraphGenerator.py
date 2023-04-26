@@ -32,18 +32,20 @@ class GraphGenerator(_GraphGenerator, Settings, SampleTracer, _Interface):
         if lock == None: del bar
         return inpt
 
+    def __collect__(self, inpt, key):
+        x = {c_name : Code(inpt[c_name]) for c_name in inpt}
+        if len(x) != 0: self._Code[key] = x 
+
     @property 
     def MakeGraphs(self):
         if not self.CheckGraphImplementation: return False
         if not self.CheckSettings: return False
 
-        if "EventGraph" not in self._Code: self._Code["EventGraph"] = []
-        self._Code["EventGraph"].append(Code(self.EventGraph))
-        self._Code["GraphAttribute"] = {c_name : Code(self.GraphAttribute[c_name]) for c_name in self.GraphAttribute}
-        self._Code["NodeAttribute"]  = {c_name : Code(self.NodeAttribute[c_name]) for c_name in self.NodeAttribute}   
-        self._Code["EdgeAttribute"]  = {c_name : Code(self.EdgeAttribute[c_name]) for c_name in self.EdgeAttribute}
-        if self._condor: return self      
-
+        self._Code["EventGraph"] = Code(self.EventGraph)
+        self.__collect__(self.GraphAttribute, "GraphAttribute")
+        self.__collect__(self.NodeAttribute, "NodeAttribute")
+        self.__collect__(self.EdgeAttribute, "EdgeAttribute")
+        if self._condor: return self._Code
  
         inpt = []
         for ev, i in zip(self, range(len(self))):
@@ -51,7 +53,7 @@ class GraphGenerator(_GraphGenerator, Settings, SampleTracer, _Interface):
             if self._StartStop(i) == None: break
             if ev.Graph: continue
 
-            gr = self._Code["EventGraph"][-1].clone
+            gr = self._Code["EventGraph"].clone
             try: gr = gr(ev)
             except AttributeError:
                 gr = gr.Escape(gr)

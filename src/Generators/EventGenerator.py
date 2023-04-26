@@ -39,19 +39,18 @@ class EventGenerator(_EventGenerator, Settings, SampleTracer, _Interface):
     def MakeEvents(self):
         if not self.CheckEventImplementation: return False
         self.CheckSettings
-
-        if "Event" not in self._Code: self._Code["Event"] = []
-        self._Code["Event"].append(Code(self.Event))
+        
+        self._Code["Event"] = Code(self.Event)
         try: 
             dc = self.Event.Objects
             if not isinstance(dc, dict): raise AttributeError
         except AttributeError: self.Event = self.Event()
         except TypeError: self.Event = self.Event()
         except: return self.ObjectCollectFailure
-        self._Code["Objects"] = {i : Code(self.Event.Objects[i]) for i in self.Event.Objects}
+        self._Code["Particles"] = {i : Code(self.Event.Objects[i]) for i in self.Event.Objects}
+        if self._condor: return self._Code
         if not self.CheckROOTFiles: return False
         if not self.CheckVariableNames: return False
-        if self._condor: return self
 
         ev = self.Event
         ev.__interpret__
@@ -71,9 +70,7 @@ class EventGenerator(_EventGenerator, Settings, SampleTracer, _Interface):
             th = Threading(inpt, self._CompileEvent, self.Threads, self.chnk)
             th.Start
         out = th._lists if self.Threads > 1 else self._CompileEvent(inpt, self._MakeBar(len(inpt)))
-
         for i in out: self.AddEvent(i[0], i[1], i[2])
-        
         return self.CheckSpawnedEvents
 
 

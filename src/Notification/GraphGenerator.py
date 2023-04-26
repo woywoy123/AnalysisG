@@ -26,6 +26,7 @@ class _GraphGenerator(Notification):
 
     @property
     def CheckSettings(self):
+        if self._condor: return True
         attrs = 3
         attrs -= 1*self.Warning("NO EDGE FEATURES PROVIDED")  if len(list(self.EdgeAttribute)) == 0 else 0
         attrs -= 1*self.Warning("NO NODE FEATURES PROVIDED")  if len(list(self.NodeAttribute)) == 0 else 0

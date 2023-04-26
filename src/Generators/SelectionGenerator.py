@@ -38,11 +38,11 @@ class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface
 
     @property
     def MakeSelection(self):
-        if self.CheckSettings: return self
+        if self.CheckSettings: return False
         if "Selections" not in self._Code: self._Code["Selections"] = []
         code = { name : Code(self.Selections[name]) for name in self.Selections}
         self._Code["Selections"].append(code)
-        if self._condor: return self 
+        if self._condor: return self._Code
  
         inpt = []
         for name in self.Selections:

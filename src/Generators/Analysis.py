@@ -22,22 +22,21 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
     def __build__(self):
         
         if self._cPWD is not None: return 
-        self.StartingAnalysis
+        if not self._condor: self.StartingAnalysis
         self._cPWD = self.pwd
         if self.OutputDirectory is None: self.OutputDirectory = self.pwd
         else: self.OutputDirectory = self.abs(self.OutputDirectory)
         self.OutputDirectory = self.AddTrailing(self.OutputDirectory, "/") + self.ProjectName
         if self.PurgeCache: self._WarningPurge
-        self._BuildingCache 
+        if not self._condor: self._BuildingCache 
 
     @property
     def __Selection__(self):
         sel = SelectionGenerator(self)
         sel.ImportSettings(self)
-        print(sel._condor)
         for name in self.Selections: sel.AddSelection(name, self.Selections[name])
-        if self._condor: return sel.MakeSelection
-        sel.MakeSelection 
+        sel.MakeSelection
+        sel.result
  
     @property 
     def __Event__(self):
@@ -96,12 +95,32 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
     def __preiteration__(self):
         if len(self) == 0: self.Launch
         return self.EmptySampleList
+    
+    @property
+    def __CollectCode__(self):
+        code = {}
+        if self.Event is not None:
+            ev = EventGenerator()
+            ev.ImportSettings(self)
+            code |= ev.MakeEvents
+        
+        if self.EventGraph is not None:
+            gr = GraphGenerator()
+            gr.ImportSettings(self)
+            code |= gr.MakeGraphs
+        
+        if len(self.Selections) != 0:
+            sel = SelectionGenerator(self)
+            sel.ImportSettings(self)
+            for name in self.Selections: sel.AddSelection(name, self.Selections[name])
+            selCode = sel.MakeSelection
+        return code
 
     @property
     def Launch(self):   
-        if self._condor: return self
+        if self._condor: return self.__CollectCode__
         self.__build__
-        tracer = False if len(self.ls(self.OutputDirectory)) == 0 else self._CheckForTracer
+        tracer = self._CheckForTracer
         for i in self.SampleMap:
             self.Files = self.SampleMap[i]
             self.SampleName = i

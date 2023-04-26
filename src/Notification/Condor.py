@@ -23,3 +23,17 @@ class _Condor(Notification):
     
     def RunningJob(self, name): self.Success("Running job: " + name)
     def DumpedJob(self, name, direc): self.Success("Dumped Job: " + name + " to: " + direc)
+    
+    @property
+    def _CheckEnvironment(self):
+        if self.PythonVenv is not None: return 
+        if self.CondaEnv is not None: return 
+        messages = [
+            "No Environment set! Please specify the environment to use.", 
+            "- For Conda: set the condor instance attribute <condor>.CondaEnv = <some name>", 
+            "- For PyVenv: set the condor instance attribute <condor>.PythonVenv = <some path> or $<bashrc alias>"
+        ]
+        m = max([len(i) for i in messages])
+        self.Failure("="*m) 
+        for i in messages[:-1]: self.Failure(i)
+        self.FailureExit(messages[-1])

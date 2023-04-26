@@ -31,6 +31,7 @@ class _Analysis(Notification):
     def _CheckForTracer(self):
         f = self.ls(self.OutputDirectory + "/Tracer/")
         if len(f) == 0 and (self.EventCache or self.DataCache): return not self.Warning("Tracer directory not found. Generating")
+        elif len(f) == 0: return not self.Warning("No Tracer directory found... Generating just samples without cache!")
 
         tracers = {i.split("-")[0] : i.split("-")[1].replace(".hdf5", ".root") for i in f}
         matched = {}

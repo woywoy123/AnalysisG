@@ -126,8 +126,8 @@ class _Plotting:
 class _Condor:
 
     def __init__(self):
-        self.CondaEnv = False
-        self.PythonVenv = "$PythonGNN"
+        self.CondaEnv = None
+        self.PythonVenv = None
         self.EventCache = None
         self.DataCache = None
         self._dump = True
@@ -146,8 +146,8 @@ class _CondorScript:
         self.Threads = None
         self.Time = None
         self.Memory = None
-        self.CondaEnv = False
-        self.PythonVenv = "$PythonGNN"
+        self.CondaEnv = None
+        self.PythonVenv = None
 
 class _JobSpecification:
 
@@ -157,10 +157,8 @@ class _JobSpecification:
         self.Memory = None
         self.Device = None
         self.Name = None
-        self.EventCache = None
-        self.DataCache = None
-        self.CondaEnv = False
-        self.PythonVenv = "$PythonGNN"
+        self.CondaEnv = None
+        self.PythonVenv = None
 
 class Settings:
     
@@ -193,30 +191,19 @@ class Settings:
     def ImportSettings(self, inpt):
         if not issubclass(type(inpt), Settings): return 
         s = Settings(self.Caller)
-        for i in s.__dict__: setattr(self, i, getattr(inpt, i))
+        for i in s.__dict__: 
+            try: setattr(self, i, getattr(inpt, i))
+            except AttributeError: continue
     
     @property    
     def DumpSettings(self):
         default = Settings(self.Caller)
         out = {}
         for i in default.__dict__: 
-            if self.__dict__[i] == default.__dict__[i]: continue
-            out[i] = self.__dict__[i]
+            if i.startswith("_"): continue
+            try: getattr(self, i) == default.__dict__[i]
+            except KeyError: continue
+            if getattr(self, i) == default.__dict__[i]: continue
+            out[i] = getattr(self, i)
         return out
  
-    @property 
-    def ExportAnalysisScript(self):
-        from AnalysisG.Tools import Code 
-
-        default = Settings(self.Caller)
-        out = []
-        basic =  ["int", "dict", "str"]
-        for i in self.__dict__:
-            if default.__dict__[i] == self.__dict__[i]: continue 
-            if i == "_Code": continue
-            if type(self.__dict__[i]).__name__ not in basic: 
-                self._Code[i] = Code(self.__dict__[i])
-                out += ["<*AnalysisName*>." + i + "=" + self._Code[i]._Hash]
-                continue 
-            out += ["<*AnalysisName*>." + i + "=" + str(self.__dict__[i])] 
-        return out 
