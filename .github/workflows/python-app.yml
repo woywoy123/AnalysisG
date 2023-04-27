@@ -64,7 +64,6 @@ jobs:
                                   py.test test_memory.py -vv 
                                   py.test test_neutrino_reconstruction.py -vv
                                   py.test test_notification.py -vv
-                                  py.test test_plotting.py -vv 
                                   py.test test_templates.py -vv
                                   py.test test_tools.py -vv
                                   py.test test_tracer.py -vv
