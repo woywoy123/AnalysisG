@@ -6,6 +6,8 @@ lsetup "gcc gcc620_x86_64_slc6"
 lsetup "python 3.9.14-x86_64-centos7"
 python3 -m venv PythonGNN
 source ./PythonGNN/bin/activate
+echo "alias PythonGNN=$PWD/PythonGNN/bin/activate" >> ~/.bashrc
+echo "alias GNN='source $PWD/PythonGNN/bin/activate'" >> ~/.bashrc
 
 #export CUDA_PATH=/usr/local/cuda-11.8
 export VERSION=cpu
@@ -17,5 +19,4 @@ export MAX_JOBS=12
 cd ../
 bash setup.sh
 
-echo "alias PythonGNN=$PWD/PythonGNN/bin/activate" >> ~/.bashrc
-echo "alias GNN='source $PWD/PythonGNN/bin/activate'" >> ~/.bashrc
+
