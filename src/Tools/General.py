@@ -59,15 +59,14 @@ class Tools(IO):
                         o = ob2[i] if o == None and i in ob2 else o
                     out[i] = o
             return out
-
         if isinstance(ob1, list) and isinstance(ob2, list):
             l1, l2 = len(ob1), len(ob2)
             out = []
             for i in range(l1 if l1 > l2 else l2):
                 if isinstance(ob1[i] if i >= l2 else ob2[i], dict):
-                    out[i] = self.MergeData(ob1[i], ob2[i])
+                    out.append(self.MergeData(ob1[i], ob2[i]))
                 if isinstance(ob1[i] if i >= l2 else ob2[i], list):
-                    out[i] = self.MergeData(ob1[i], ob2[i])
+                    out.append(self.MergeData(ob1[i] if l1 > i else [], ob2[i] if l2 > i else []))
                 else: 
                     return ob1 + ob2
             return out

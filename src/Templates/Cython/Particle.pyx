@@ -37,6 +37,7 @@ cdef class ParticleTemplate(object):
         return p
     
     def __eq__(self, other) -> bool:
+        if not issubclass(type(other), ParticleTemplate): return False
         cdef ParticleTemplate s = self
         cdef ParticleTemplate o = other 
         s.ptr._UpdateState()
