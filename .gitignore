@@ -7,9 +7,9 @@
 *.hdf5
 *.png
 *.pth
-*.txt
 *.so
 *.c
+*.txt
 *.cpp
 
 **/__pycache__

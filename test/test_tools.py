@@ -54,17 +54,18 @@ def test_list_files_in_dir():
     assert "2.txt" in O[I.abs(directory + "/Dir3")]
     assert "3.txt" in O[I.abs(directory + "/Dir3")]
 
+
+class HelloWorld:
+    def __init__(self, hello, world = "world"):
+        pass
+    
+    def Test(self):
+        return True
+
 def test_source_code_extraction():
 
-    class HelloWorld:
-        def __init__(self, hello, world = "world"):
-            pass
-        
-        def Test(self):
-            return True
-
     H = HelloWorld("H")
-    assert "HelloWorld" in Code(H)._Path 
+    assert "HelloWorld" in Code(H)._Name 
     assert Code(H)._FileCode == "".join(open("./test_tools.py", "r").readlines())
 
 def test_data_merging():
@@ -77,10 +78,10 @@ def test_data_merging():
 
 
 if __name__ == "__main__":
-    test_hash()
-    test_pickle()
-    test_merge_data()
-    test_data_merging()
+    #test_hash()
+    #test_pickle()
+    #test_merge_data()
+    #test_data_merging()
     test_ls_files()
     test_is_file()
     test_list_files_in_dir()

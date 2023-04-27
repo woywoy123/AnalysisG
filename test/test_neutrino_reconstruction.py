@@ -412,6 +412,7 @@ def test_single_nu():
 
 
 def test_double_nu():
+    if is_cuda == False: return 
     from AnalysisG import Analysis
 
     Ana = Analysis()

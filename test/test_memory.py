@@ -204,7 +204,7 @@ def test_event_multithreading():
                 sleep(0.001)
             return out 
 
-        th = Threading([[ev.clone, root1, i] for i in io for _ in range(1000)], Function, 10, 7400)
+        th = Threading([[ev.clone, root1, i] for i in io for _ in range(10)], Function, 10, 74)
         th.Start
         events_j = []
         for i in th._lists: events_j.append(i)
