@@ -151,7 +151,7 @@ std::map<std::string, bool> CyTracer::CySampleTracer::FastSearch(std::vector<std
     std::vector<std::thread*> tmp; 
     for (unsigned int v(0); v < q_hash.size(); ++v)
     {
-        std::vector<bool>* f = new std::vector(q_hash[v].size(), false); 
+        std::vector<bool>* f = new std::vector<bool>(q_hash[v].size(), false); 
         q_found.push_back(f);
 
         std::thread* p = new std::thread(search, f, &(this -> _ROOTHash), &q_hash[v]); 
