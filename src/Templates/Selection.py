@@ -114,7 +114,7 @@ class SelectionTemplate(Tools):
     def __call__(self, Ana = None):
         if Ana == None: return self
         for i in Ana: self._EventPreprocessing(i)
-   
+    
     def __eq__(self, other):
         if other == None: return False
         return Code(other)._Hash == Code(self)._Hash
@@ -126,6 +126,7 @@ class SelectionTemplate(Tools):
     def __add__(self, other):
         keys = set(list(self.__dict__) + list(other.__dict__))
         for i in keys:
+            if isinstance(self.__dict__[i], str): continue
             if i == "_CutFlow":
                 k_ = set(list(self.__dict__[i]) + list(other.__dict__[i]))
                 self.__dict__[i] |= {l : 0 for l in k_ if l not in self.__dict__[i]}
@@ -134,7 +135,10 @@ class SelectionTemplate(Tools):
                 self.__dict__[i] = other.__dict__[i]
                 continue
             self.__dict__[i] = self.MergeData(self.__dict__[i], other.__dict__[i])
-        return self
+        
+        out = SelectionTemplate()
+        for i in self.__dict__: setattr(out, i, self.__dict__[i])  
+        return out
     
     def RestoreSettings(self, inpt):
         for i in inpt: self.__dict__[i] = inpt[i]

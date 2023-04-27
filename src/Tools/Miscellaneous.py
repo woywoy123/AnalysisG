@@ -5,7 +5,8 @@ import sys, os
 def StringToObject(module, name):
     modul = importlib.import_module(module)
     obj = getattr(modul, name)
-    return CheckObjectInputs(obj)
+    try: return CheckObjectInputs(obj)
+    except AttributeError: return (None, obj)
 
 def CheckObjectInputs(obj):
     _def = obj.__init__.__defaults__

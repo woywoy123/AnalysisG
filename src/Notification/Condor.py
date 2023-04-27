@@ -37,3 +37,10 @@ class _Condor(Notification):
         self.Failure("="*m) 
         for i in messages[:-1]: self.Failure(i)
         self.FailureExit(messages[-1])
+    
+    def _CheckWaitFor(self, start, key):
+        if key in start: return True
+        message = "The key for one of the waitfor variables is incorrect: " + key
+        self.Warning(message)
+        return False 
+

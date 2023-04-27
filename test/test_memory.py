@@ -222,7 +222,7 @@ def test_event_multithreading():
 
 
 if __name__ == "__main__":
-    test_particle_pickle()
-    test_particle_multithreading()
-    test_event_pickle()
+    #test_particle_pickle()
+    #test_particle_multithreading()
+    #test_event_pickle()
     test_event_multithreading()

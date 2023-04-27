@@ -17,12 +17,12 @@ class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface
         _SelectionGenerator.__init__(self, inpt)
   
     @staticmethod 
-    def _CompileSelection(inpt, _prgbar):
+    def __compile__(inpt, _prgbar):
         lock, bar = _prgbar
         output = {}
         for i in range(len(inpt)):
-            name, sel, event, hash, ROOT = inpt[i] 
-            sel.hash = hash 
+            name, sel, event, hash_, ROOT = inpt[i] 
+            sel.hash = hash_ 
             sel.ROOTName = ROOT
             sel._EventPreprocessing(event)
 
@@ -36,32 +36,39 @@ class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface
         if lock == None: del bar
         return [output]
 
+    def __collect__(self, inpt, key):
+        x = {c_name : Code(inpt[c_name]) for c_name in inpt}
+        if len(x) != 0: self._Code[key] = x 
+    
+    @property
+    def __merge__(self):
+        self.result = {i : self.Merge[i].pop(0) for i in self.Merge}
+        for name in self.Merge: self.result[name] += sum(self.Merge[name])
+    
     @property
     def MakeSelection(self):
-        if self.CheckSettings: return False
-        if "Selections" not in self._Code: self._Code["Selections"] = []
-        code = { name : Code(self.Selections[name]) for name in self.Selections}
-        self._Code["Selections"].append(code)
+        self.__collect__(self.Selections, "Selections") 
         if self._condor: return self._Code
- 
+        if len(self.Merge) != 0: pass
+        elif self.CheckSettings: return False
+        
         inpt = []
         for name in self.Selections:
+            if name not in self.Merge: self.Merge[name] = []
             for ev, i in zip(self, range(len(self))):
                 if self._StartStop(i) == False: continue
                 if self._StartStop(i) == None: break
-                sel = self._Code["Selections"][-1][name].clone
+                sel = self._Code["Selections"][name].clone
                 inpt.append([name, sel, ev, ev.hash, ev.ROOT])
-        
+        if len(inpt) == 0 and len(self.Merge) != 0: return self.__merge__
         if self.Threads > 1:
-            th = Threading(inpt, self._CompileSelection, self.Threads, 2)
+            th = Threading(inpt, self.__compile__, self.Threads, 2)
             th.Title = self.Caller
             th.Start
-        out = th._lists if self.Threads > 1 else self._CompileSelection(inpt, self._MakeBar(len(inpt)))
+            out = th._lists
+        else: out = self.__compile__(inpt, self._MakeBar(len(inpt)))
         
-        result = {}
         for i in out: 
             if i is None: continue
-            for name in i:
-                if name not in result: result[name] = i[name]
-                else: result[name] += i[name]
-        self.result = result
+            for name in i: self.Merge[name].append(i[name])
+        self.__merge__

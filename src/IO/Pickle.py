@@ -55,13 +55,7 @@ class Pickle(Tools, Settings):
             for i in inpt: 
                 out.append([i.split("/")[-1].replace(self._ext, ""), self.UnpickleObject(i)])
             return out
-        
-        ClassDef = [i for i in range(len(InputFiles)) if "ClassDef" in InputFiles[i]]
-        if len(ClassDef) > 0:
-            for i in ClassDef:
-                defs = self.UnpickleObject(InputFiles[i])
-                for j in defs: sys.path.append("/".join(j.split("/")[:-1]))
-
+#
         InputFiles = [ InputFiles[i] for i in range(len(InputFiles)) if i not in ClassDef ]
         
         TH = Threading(InputFiles, function, self.Threads, self.chnk)

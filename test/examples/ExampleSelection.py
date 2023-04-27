@@ -9,7 +9,7 @@ class Example(SelectionTemplate):
 
     def Strategy(self, event):
         self.Top["Truth"] += [t.Mass for t in event.Tops]
-        self.Children["Truth"] += [c.Mass for c in event.TopChildren]
+        self.Children["Truth"] += [c.Mass for c in event.Children]
         
         return "Success->Example"
 
@@ -22,7 +22,7 @@ class Example2(SelectionTemplate):
 
     def Strategy(self, event):
         self.Top["Truth"] += [t.Mass for t in event.Tops]
-        self.Children["Truth"] += [c.Mass for c in event.TopChildren]
+        self.Children["Truth"] += [c.Mass for c in event.Children]
         self.Children["Test"] = {}
         self.Children["Test"]["t"] = [1]
         

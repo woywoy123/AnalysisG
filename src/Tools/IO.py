@@ -15,16 +15,28 @@ class Code:
         self._Code = None 
         self._Hash = None
         self._File = None
-        self.DumpCode(Instance)
+        self._subclass = ""
         self._Instance = Instance
+        self.DumpCode(Instance)
 
     def DumpCode(self, Instance):
+        from AnalysisG.Templates import ParticleTemplate
+        from AnalysisG.Templates import EventTemplate
+        from AnalysisG.Templates import GraphTemplate
+        from AnalysisG.Templates import SelectionTemplate
         try: self._Name = Instance.__qualname__
         except AttributeError:
             try: self._Name = Instance.__name__
             except AttributeError: self._Name = type(Instance).__name__
         try: self._Module = Instance.__module__
         except AttributeError: self._Module = Instance.__package__
+        
+        self._subclass = "" 
+        cl = self.clone
+        if issubclass(type(cl), ParticleTemplate): self._subclass += "from AnalysisG.Templates import ParticleTemplate"
+        elif issubclass(type(cl), EventTemplate): self._subclass += "from AnalysisG.Templates import EventTemplate"
+        elif issubclass(type(cl), GraphTemplate): self._subclass += "from AnalysisG.Templates import GraphTemplate"
+        elif issubclass(type(cl), SelectionTemplate): self._subclass += "from AnalysisG.Templates import SelectionTemplate"
 
         self._Path = self._Module + "." + self._Name
         self._Code = GetSourceCode(Instance)
@@ -38,16 +50,19 @@ class Code:
         if callable(Instance):
             try: Inst = Instance()
             except: Inst = Instance
-            Inst = Instance
         _, inst = StringToObject(self._Module, self._Name)
         return inst
+    
+    @property 
+    def purge(self):
+        self._Instance = None
+        return self
 
     def __eq__(self, other):
         return self._Hash == other._Hash
     
     def __str__(self):
         return self._Hash
-
 
 class IO(String, _IO):
 
@@ -122,7 +137,7 @@ class IO(String, _IO):
 
     def cd(self, directory):
         os.chdir(directory)
-        return self.pwd()
+        return self.pwd
     
     def Hash(self, string): return Hash(string)
 

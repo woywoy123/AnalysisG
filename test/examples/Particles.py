@@ -28,4 +28,10 @@ class Top(LazyDefinition):
         LazyDefinition.__init__(self)
         self.FromResonance = self.Type + "_FromRes"
 
+class TopChildren(LazyDefinition):
+   
+    def __init__(self):
+        self.Type = "children"
+        LazyDefinition.__init__(self)
+        self.index = self.Type + "_index"
 

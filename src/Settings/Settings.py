@@ -40,6 +40,7 @@ class _SelectionGenerator:
     def __init__(self):
         self.Selections = {}
         self.Merge = {}
+        self.result = {}
 
 class _RandomSampler:
     

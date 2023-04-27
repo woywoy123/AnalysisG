@@ -2,6 +2,7 @@ import AnalysisG
 from AnalysisG.Notification import _Condor
 from AnalysisG.Settings import Settings
 import os, stat 
+import subprocess
 
 class CondorScript(Settings):
 
@@ -45,8 +46,7 @@ class CondorScript(Settings):
         if self.CondaEnv is not None:
             self.__AddConfig('eval "$(conda shell.bash hook)"')
             self.__AddConfig("conda activate " + self.CondaEnv)
-        elif self.PythonVenv is not None:
-            self.__AddConfig('source ' + self.PythonVenv)
+        elif self.PythonVenv is not None: self.__AddConfig('source ' + self.PythonVenv)
         self.__AddConfig("python " + self.ExecPath + "/" + self.ScriptName + ".py")
 
     def __AddConfig(self, inpt):
@@ -68,7 +68,6 @@ class AnalysisScript(AnalysisG.Tools.General.Tools, Settings):
         f.close()
 
     def Compile(self):
-        from AnalysisG.Templates import GraphTemplate
         s_dir = self.abs("/".join(self.OutDir.split("/")[:-1])) + "/_SharedCode/"
         shared = {}
         shared["code"] = {}
@@ -97,14 +96,17 @@ class AnalysisScript(AnalysisG.Tools.General.Tools, Settings):
             else:
                 if type(self.Code[i]).__name__ == "Code": 
                     shared["imports"] += ["from " + self.Code[i]._Name + " import " + self.Code[i]._Name]
-                    self.__Build(self.Code[i]._FileCode, self.Code[i]._Name)
+                    self.__Build(self.Code[i]._subclass + "\n\n" + self.Code[i]._Code, self.Code[i]._Name)
                     script += ["<*Analysis*>." + i + " = " + self.Code[i]._Name]
                 else: 
-                    shared["imports"] += ["from " + i + " import " + ", ".join(self.Code[i])]
-                    self.__Build("\n".join([self.Code[i][j]._Code for j in self.Code[i]]), i)
+                    shared["imports"] += ["from " + i + " import " + ", ".join([self.Code[i][j]._Name for j in self.Code[i]])]
+
+                    _buildCode = "\n".join(set([self.Code[i][j]._subclass for j in self.Code[i]]))
+                    for j in self.Code[i]: _buildCode += "\n\n" + self.Code[i][j]._Code
+                    self.__Build(_buildCode, i)
                     script += ["<*Analysis*>." + i + " = {"]
-                    for j in self.Code[i]: script[-1] += "'" + j + "'" + " : " + str(self.Code[i][j]._Name) 
-                    script[-1] += "}" 
+                    for j in self.Code[i]: script[-1] += "'" + j + "'" + " : " + self.Code[i][j]._Name + ", "
+                    script[-1] = ", ".join( script[-1].split(", ")[:-1] ) + "}"
 
         for i in shared["code"]:
             fname = i.split("/")[-1]
@@ -167,6 +169,7 @@ class Condor(AnalysisG.Tools.General.Tools, _Condor, Settings):
         self._Complete = {}
         self._sequence = {}
         self._Device = {}
+        self._dumped = False
     
     def AddJob(self, name, instance, memory = None, time = None, waitfor = None):
         if name not in self._Jobs:
@@ -193,13 +196,13 @@ class Condor(AnalysisG.Tools.General.Tools, _Condor, Settings):
                 for i in inpt: out[i] = [k for k in Recursion(inpt[i], i, inpt).split("<-") if k != i]
                 return out
             if len(inpt) == 0: return key
-            for i in inpt: key += "<-" + Recursion(start[i], i, start)
+            for i in inpt: key += "<-" + Recursion(start[i], i, start) if self._CheckWaitFor(start, i) else ""
             return key 
         self._sequence = Recursion(self._wait) 
         for i in self._wait: self._Complete[i] = False
     
     @property
-    def LocalDryRun(self):
+    def LocalRun(self):
         self.__Sequencer
         self._sequence = { j : [j] + self._sequence[j] for j in self._sequence }
         for t in self._sequence:
@@ -212,7 +215,21 @@ class Condor(AnalysisG.Tools.General.Tools, _Condor, Settings):
                 del self._Jobs[j]
                 self._Jobs[j] = None
         self.FinishExit()
-    
+   
+    @property
+    def TestCondorShell(self):
+        pwd = self.pwd
+        self.cd(self.abs(self.OutputDirectory + "/" + self.ProjectName + "/CondorDump"))
+        subprocess.call(["sh", "RunAsBash.sh"])
+        self.cd(pwd)
+
+    @property
+    def SubmitToCondor(self):
+        if self._dumped == False: self.DumpCondorJobs
+        self.cd(self.abs(self.OutputDirectory + "/" + self.ProjectName + "/CondorDump"))
+        subprocess.call(["sh", "condor_submit_dag DAGSUBMISSION.submit"])
+        self.cd(pwd)
+
     @property
     def DumpCondorJobs(self):
         self._CheckEnvironment
@@ -240,8 +257,6 @@ class Condor(AnalysisG.Tools.General.Tools, _Condor, Settings):
             self._Jobs[j].DumpConfig()
             self._Complete[j] = True 
 
-
-
         F = open(outDir + "/" + self.ProjectName + "/CondorDump/DAGSUBMISSION.submit", "w")
         F.write("\n".join(DAG))
         F.close()
@@ -259,3 +274,4 @@ class Condor(AnalysisG.Tools.General.Tools, _Condor, Settings):
                 self._Complete[k] = True
                 F.write("bash " + k + "/main.sh\n")
         F.close()
+        self._dumped = True

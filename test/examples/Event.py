@@ -1,5 +1,5 @@
 from AnalysisG.Templates import EventTemplate
-from .Particles import Jet, Top
+from .Particles import Jet, Top, TopChildren
 
 class EventEx(EventTemplate):
 
@@ -16,8 +16,9 @@ class EventEx(EventTemplate):
 
         self.Objects = {
                 "SomeJets" : Jet(), 
-                "Tops" : Top()
-                }
+                "Tops" : Top(), 
+                "Children" : TopChildren(), 
+        }
         # ===== End of declaration ===== #
         self.CommitHash = "<Some Hash For Bookkeeping>"
     
@@ -35,3 +36,4 @@ class EventEx(EventTemplate):
         # (Optional) Convert the dictionary to particle list.
         self.SomeJets = list(self.SomeJets.values())
         self.Tops = list(self.Tops.values())
+        self.Children = list(self.Children.values())

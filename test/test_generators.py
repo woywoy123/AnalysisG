@@ -113,7 +113,7 @@ def test_event_generator_merge():
     
     def EventGen(Dir, Name):
         Ana = Analysis()
-        Ana.ProjectName = "TMPProject"
+        Ana.ProjectName = "Project"
         Ana.InputSample(Name, Dir)
         Ana.EventCache = True
         Ana.Event = Event
@@ -131,7 +131,7 @@ def test_event_generator_merge():
         assert ev[i.hash].hash == i.hash
         it += 1
     assert it != 0
-    ev.rm("TMPProject")
+    ev.rm("Project")
 
 def _fx(a): return 1
 
@@ -164,9 +164,9 @@ def test_eventgraph():
 
 def test_selection_generator():
     from examples.ExampleSelection import Example, Example2
-
+    from examples.Event import EventEx
     Ev = EventGenerator(Files)
-    Ev.Event = Event
+    Ev.Event = EventEx
     Ev.Threads = 1
     Ev.EventStop = 100
     Ev.MakeEvents
@@ -363,19 +363,19 @@ def test_analysis_data_event_cache_diff_sample():
     Ana2.rm("Project")
 
 if __name__ == "__main__":
-    test_event_generator()
-    test_event_generator_more()
-    test_event_generator_merge()
-    test_eventgraph()
+    #test_event_generator()
+    #test_event_generator_more()
+    #test_event_generator_merge()
+    #test_eventgraph()
     test_selection_generator() 
-    test_Analysis()
-    test_analysis_event_nocache()
-    test_analysis_event_nocache_nolaunch()
-    test_analysis_event_cache()
-    test_analysis_event_cache_diff_sample()
-    test_analysis_data_nocache()
-    test_analysis_data_nocache_nolaunch()
-    test_analysis_data_cache()
-    test_analysis_data_cache_diff_sample()
-    test_analysis_data_event_cache_diff_sample()
+    #test_Analysis()
+    #test_analysis_event_nocache()
+    #test_analysis_event_nocache_nolaunch()
+    #test_analysis_event_cache()
+    #test_analysis_event_cache_diff_sample()
+    #test_analysis_data_nocache()
+    #test_analysis_data_nocache_nolaunch()
+    #test_analysis_data_cache()
+    #test_analysis_data_cache_diff_sample()
+    #test_analysis_data_event_cache_diff_sample()
     pass

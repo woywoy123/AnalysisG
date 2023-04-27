@@ -62,8 +62,12 @@ class _Interface(Tools):
     def AddEdgePreprocessing(self, name, fx):
         self.SetAttribute("P_" + name, fx, self.EdgeAttribute)
     
+    # Selection generator     
     def AddSelection(self, name: Union[str], function):
         self.Selections[name] = function
+
+    def MergeSelection(self, name: Union[str]):
+        self.Merge[name] = []
 
     def InputSample(self, Name: Union[str] = None, SampleDirectory: Union[str, dict, list, None] = None):
         self.Files = {}

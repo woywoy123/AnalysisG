@@ -6,7 +6,7 @@ from .EventGenerator import EventGenerator
 from .GraphGenerator import GraphGenerator 
 from AnalysisG.Tracer import SampleTracer
 from AnalysisG.Settings import Settings
-from AnalysisG.IO import PickleObject
+from AnalysisG.IO import PickleObject, UnpickleObject
 from .Interfaces import _Interface
 
 class Analysis(_Analysis, Settings, SampleTracer, _Interface):
@@ -32,11 +32,21 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
 
     @property
     def __Selection__(self):
+        if len(self.Selections) == 0 and len(self.Merge) == 0: return 
+        pth = self.OutputDirectory + "/Selections/"
+        
         sel = SelectionGenerator(self)
+        mrg = True if len(self.Merge) != 0 else False
+        for name in self.Merge: self.Merge[name] = [UnpickleObject(pth + name + "/" + i) for i in self.ls(pth + name)]
         sel.ImportSettings(self)
-        for name in self.Selections: sel.AddSelection(name, self.Selections[name])
+        sel.Caller = "ANALYSIS::SELECTIONS"
         sel.MakeSelection
-        sel.result
+        for name in sel.result: 
+            out = pth 
+            if mrg: out += "Merged/"
+            out += name if mrg else name + "/" + sel.result[name].hash
+            PickleObject(sel.result[name], out)
+        del sel
  
     @property 
     def __Event__(self):
@@ -49,6 +59,7 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         self.Files = process 
         ev = EventGenerator()
         ev.ImportSettings(self)
+        ev.Caller = "ANALYSIS::EVENT"
         if not ev.MakeEvents: return False
         self += ev
         if self.EventCache: self.DumpEvents
@@ -70,6 +81,7 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         self.Files = process 
         gr = GraphGenerator(self)
         gr.ImportSettings(self)
+        gr.Caller = "ANALYSIS::GRAPH"
         if not gr.MakeGraphs: return False
         self += gr
         if self.DataCache: self.DumpEvents
@@ -88,14 +100,11 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         output = {}
         if self.TrainingSize: output = r.MakeTrainingSample(self.todict, self.TrainingSize) 
         if self.kFolds: output |= r.MakekFolds(self.todict, self.kFolds, self.BatchSize, self.Shuffle, True)
-        if len(output) == 0: return   
-        self.mkdir(self.OutputDirectory + "/Training/")
-        PickleObject(output, self.OutputDirectory + "/Training/Sample")
-
-    def __preiteration__(self):
-        if len(self) == 0: self.Launch
-        return self.EmptySampleList
-    
+        if len(output) == 0: return  
+        pth = self.OutputDirectory + "/Training/" 
+        self.mkdir(pth)
+        PickleObject(output, pth + "Sample")
+   
     @property
     def __CollectCode__(self):
         code = {}
@@ -113,7 +122,7 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
             sel = SelectionGenerator(self)
             sel.ImportSettings(self)
             for name in self.Selections: sel.AddSelection(name, self.Selections[name])
-            selCode = sel.MakeSelection
+            code |= sel.MakeSelection
         return code
 
     @property
@@ -127,7 +136,13 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
             if tracer: self.RestoreEvents
             if not self.__Event__: return False
             if not self.__Graph__: return False
-        if len(self.Selections) != 0: self.__Selection__
+        
+        self.__Selection__
         if self.TrainingSize or self.kFolds: self.__RandomSampler__
         self.WhiteSpace()
         return True
+
+    def __preiteration__(self):
+        if len(self) == 0: self.Launch
+        return self.EmptySampleList
+ 
