@@ -1,3 +1,4 @@
+psutil==5.9.4
 matplotlib==3.7.0 
 tqdm==4.64.1  
 uproot==4.3.5  
