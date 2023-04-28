@@ -122,7 +122,10 @@ cdef class SampleTracer:
         return False
 
     def __len__(self) -> int:
-        if self.ptr.length == 0: self.ptr.length = self.ptr._ROOTHash.size()
+        if not self.EventCache and not self.DataCache: self._itv = self.ptr.HashList()
+        else: self._itv = self.ptr.GetCacheType(self.EventCache, self.DataCache)
+        self._ite = self._itv.size()
+        self.ptr.length = self._ite
         return self.ptr.length
 
     def __add__(self, other) -> SampleTracer:
@@ -170,40 +173,31 @@ cdef class SampleTracer:
     def chnk(self, int val): self.ptr.ChunkSize = val
     
     @property
-    def OutputDirectory(self):
-        return self.OutDir
+    def OutputDirectory(self): return self.OutDir
     
     @OutputDirectory.setter
-    def OutputDirectory(self, str val):
-        self.OutDir = val
+    def OutputDirectory(self, str val): self.OutDir = val
     
     @property
-    def EventCache(self) -> bool:
-        return self._EventCache 
+    def EventCache(self) -> bool: return self._EventCache 
 
     @EventCache.setter
-    def EventCache(self, val) -> bool:
-        self._EventCache = val
+    def EventCache(self, val) -> bool: self._EventCache = val
 
     @property
-    def DataCache(self) -> bool:
-        return self._DataCache 
+    def DataCache(self) -> bool: return self._DataCache 
 
     @DataCache.setter
-    def DataCache(self, val) -> bool:
-        self._DataCache = val
+    def DataCache(self, val) -> bool: self._DataCache = val
     
     @property
-    def SampleName(self) -> str:
-        return self._SampleName 
+    def SampleName(self) -> str: return self._SampleName 
 
     @SampleName.setter
-    def SampleName(self, val) -> str:
-        self._SampleName = val
+    def SampleName(self, val) -> str: self._SampleName = val
 
     @property
-    def todict(self) -> dict:
-        return self.HashMap    
+    def todict(self) -> dict: return self.HashMap    
 
     def FastHashSearch(self, hashes) -> dict:
         cdef vector[string] v
@@ -421,10 +415,8 @@ cdef class SampleTracer:
             self._its = 0
             self._ite = 0
             return self
-
-        self._itv = self.ptr.HashList()
+        if self.ptr.length == 0: len(self)
         self._its = 0
-        self._ite = self._itv.size()
         return self
 
     def __next__(self):

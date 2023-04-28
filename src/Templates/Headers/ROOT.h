@@ -91,14 +91,16 @@ namespace CyTracer
             void AddEvent(CyEvent* event);
             
             // Lookups 
-            std::string HashToROOT(std::string Hash);
-            std::vector<std::string> ROOTtoHashList(std::string root); 
-            std::map<std::string, bool> FastSearch(std::vector<std::string> Hashes); 
-            CyEvent* HashToEvent(std::string Hash); 
-
             bool ContainsROOT(std::string root); 
             bool ContainsHash(std::string hash); 
+            CyEvent* HashToEvent(std::string Hash);
+            std::string HashToROOT(std::string Hash);
+            std::vector<std::string> ROOTtoHashList(std::string root); 
+            std::map<std::string, bool> FastSearch(std::vector<std::string> Hashes);
 
+            // Getters 
+            std::vector<std::string> GetCacheType(bool EventCache, bool DataType); 
+            
             // Operators 
             bool operator==(CySampleTracer* p); 
             CySampleTracer* operator+(CySampleTracer* p);

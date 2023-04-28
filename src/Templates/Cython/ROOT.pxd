@@ -46,6 +46,7 @@ cdef extern from "../Headers/ROOT.h" namespace "CyTracer":
 
         void AddEvent(CyEvent* event) except+
         map[string, bool] FastSearch(vector[string] hashes) except+
+        vector[string] GetCacheType(bool EventCache, bool DataType) except+        
 
         # Converters
         vector[string] HashList() except+

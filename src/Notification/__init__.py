@@ -10,3 +10,5 @@ from .Analysis import _Analysis
 from .RandomSamplers import _RandomSamplers
 from .Plotting import _Plotting 
 from .Condor import _Condor
+from .Optimization import _Optimizer
+from .Model import _ModelWrapper

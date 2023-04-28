@@ -157,7 +157,7 @@ std::map<std::string, bool> CyTracer::CySampleTracer::FastSearch(std::vector<std
         std::thread* p = new std::thread(search, f, &(this -> _ROOTHash), &q_hash[v]); 
         tmp.push_back(p); 
         
-        if (tmp.size() < this -> Threads){ continue; }
+        if ((int)tmp.size() < this -> Threads){ continue; }
 
         for (std::thread* t : tmp){ t -> join(); delete t; }
         tmp = {}; 
@@ -174,6 +174,63 @@ std::map<std::string, bool> CyTracer::CySampleTracer::FastSearch(std::vector<std
         delete q_found[v];
     }
     return r; 
+}
+
+std::vector<std::string> CyTracer::CySampleTracer::GetCacheType(bool EventCache, bool DataCache)
+{
+    auto sG = [](std::vector<CyEvent*>* out, std::vector<std::string>* hashes, std::map<std::string, CyROOT*>* src)
+    {
+        for (std::string h_ : *hashes)
+        {
+            CyEvent* e = src -> at(h_) -> HashMap[h_]; 
+            if (!e -> Graph){continue;}
+            out -> push_back(e); 
+        }
+    }; 
+
+    auto sE = [](std::vector<CyEvent*>* out, std::vector<std::string>* hashes, std::map<std::string, CyROOT*>* src)
+    {
+        for (std::string h_ : *hashes)
+        {
+            CyEvent* e = src -> at(h_) -> HashMap[h_]; 
+            if (!e -> Event){continue;}
+            out -> push_back(e); 
+        }
+    }; 
+ 
+    std::vector<std::vector<std::string>> q_hash = Tools::Chunk(this -> HashList(), this -> ChunkSize); 
+    std::vector<std::vector<CyTracer::CyEvent*>*> q_found; 
+    std::vector<std::thread*> tmp; 
+    for (unsigned int v(0); v < q_hash.size(); ++v)
+    {
+        std::vector<CyTracer::CyEvent*>* f = new std::vector<CyTracer::CyEvent*>(); 
+        q_found.push_back(f);
+       
+        if (EventCache)
+        {
+            std::thread* p = new std::thread(sE, f, &(q_hash[v]), &(this -> _ROOTHash)); 
+            tmp.push_back(p); 
+        }
+        else if (DataCache)
+        {
+            std::thread* p = new std::thread(sG, f, &(q_hash[v]), &(this -> _ROOTHash)); 
+            tmp.push_back(p); 
+        }
+        for (std::thread* t : tmp){ t -> join(); delete t; }
+        tmp = {}; 
+    }  
+
+    std::vector<std::string> Output; 
+    for (unsigned int v(0); v < q_found.size(); ++v)
+    {
+        for (unsigned int j(0); j < q_found[v] -> size(); ++j)
+        {
+            CyEvent* o = q_found[v] -> at(j);
+            Output.push_back(o -> hash); 
+        }
+        delete q_found[v];
+    }
+    return Output;
 }
 
 // Operators 

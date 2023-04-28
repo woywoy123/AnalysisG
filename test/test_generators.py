@@ -80,36 +80,25 @@ def test_event_generator_merge():
     combined.MakeEvents
 
     Object0 = {}
-    for i in ev0:
-        Object0[i.hash] = i
+    for i in ev0: Object0[i.hash] = i
     
     Object1 = {}
-    for i in ev1:
-        Object1[i.hash] = i
+    for i in ev1: Object1[i.hash] = i
     
     ObjectSum = {}
-    for i in combined:
-        ObjectSum[i.hash] = i
+    for i in combined: ObjectSum[i.hash] = i
 
     assert len(ObjectSum) == len(Object0) + len(Object1)
     assert len(combined) == len(ev0) + len(ev1)
 
-    for i in Object0:
-        assert ObjectSum[i] == Object0[i]
-
-    for i in Object1:
-        assert ObjectSum[i] == Object1[i]
+    for i in Object0: assert ObjectSum[i] == Object0[i]
+    for i in Object1: assert ObjectSum[i] == Object1[i]
 
     combined = ev0 + ev1
     ObjectSum = {}
-    for i in combined:
-        ObjectSum[i.hash] = i
-    
-    for i in Object0:
-        assert ObjectSum[i] == Object0[i]
-
-    for i in Object1:
-        assert ObjectSum[i] == Object1[i]
+    for i in combined: ObjectSum[i.hash] = i
+    for i in Object0: assert ObjectSum[i] == Object0[i]
+    for i in Object1: assert ObjectSum[i] == Object1[i]
     
     def EventGen(Dir, Name):
         Ana = Analysis()
@@ -363,19 +352,19 @@ def test_analysis_data_event_cache_diff_sample():
     Ana2.rm("Project")
 
 if __name__ == "__main__":
-    #test_event_generator()
-    #test_event_generator_more()
-    #test_event_generator_merge()
-    #test_eventgraph()
+    test_event_generator()
+    test_event_generator_more()
+    test_event_generator_merge()
+    test_eventgraph()
     test_selection_generator() 
-    #test_Analysis()
-    #test_analysis_event_nocache()
-    #test_analysis_event_nocache_nolaunch()
-    #test_analysis_event_cache()
-    #test_analysis_event_cache_diff_sample()
-    #test_analysis_data_nocache()
-    #test_analysis_data_nocache_nolaunch()
-    #test_analysis_data_cache()
-    #test_analysis_data_cache_diff_sample()
-    #test_analysis_data_event_cache_diff_sample()
+    test_Analysis()
+    test_analysis_event_nocache()
+    test_analysis_event_nocache_nolaunch()
+    test_analysis_event_cache()
+    test_analysis_event_cache_diff_sample()
+    test_analysis_data_nocache()
+    test_analysis_data_nocache_nolaunch()
+    test_analysis_data_cache()
+    test_analysis_data_cache_diff_sample()
+    test_analysis_data_event_cache_diff_sample()
     pass

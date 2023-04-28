@@ -15,7 +15,7 @@ class CheatModel(MessagePassing):
         super().__init__(aggr = None, flow = "target_to_source")
         self.O_edge = None
         self.L_edge = "CEL"
-        self.C_edge = True
+        self.C_edge = False
 
         end = 16
         self._isEdge = Seq(Linear(end*3 +1, end), ReLU(), Linear(end, 2))

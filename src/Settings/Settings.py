@@ -161,6 +161,12 @@ class _JobSpecification:
         self.CondaEnv = None
         self.PythonVenv = None
 
+class _Optimizer:
+
+    def __init__(self):
+        self.Model = None
+        self.ProjectName = "UNTITLED"
+
 class Settings:
     
     def __init__(self, caller = False):
@@ -173,12 +179,12 @@ class Settings:
         if self.Caller == "SELECTIONGENERATOR": _SelectionGenerator.__init__(self)
         if self.Caller == "RANDOMSAMPLER": _RandomSampler.__init__(self)
         if self.Caller == "FEATUREANALYSIS": _FeatureAnalysis.__init__(self)
-        if self.Caller == "PLOTTING": _Plotting.__init__(self)
+        if self.Caller == "OPTIMIZER": _Optimizer.__init__(self) 
         if self.Caller == "ANALYSIS": _Analysis.__init__(self)
-
         if self.Caller == "CONDOR": _Condor.__init__(self)
         if self.Caller == "JOBSPECS": _JobSpecification.__init__(self)
         if self.Caller == "CONDORSCRIPT": _CondorScript.__init__(self)
+        if self.Caller == "PLOTTING": _Plotting.__init__(self)
     
     @property
     def Device(self):

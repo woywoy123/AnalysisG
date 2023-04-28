@@ -1,9 +1,102 @@
-import torch 
+from AnalysisG.Notification import _ModelWrapper
+from .LossFunctions import LossFunctions
+from torch_geometric.data import Data
+import torch
 try:
     import PyC.Physics.Tensors.Polar as PT
     import PyC.Physics.Tensors.Cartesian as CT
 except:
     pass
+
+class ModelWrapper(_ModelWrapper):
+
+    def __init__(self, model):
+        self.Caller = "MODEL"
+        self.Verbose = 3 
+
+        self._Model = model
+        self._inputs = {}
+        self._outputs = {}
+        
+        # Mappings 
+        self.o_mapping = {}
+        self.i_mapping = {}
+
+        self._train = True
+        self._truth = True
+
+        self._GetModelInputs
+        self._build 
+        self.OutputDirectory = None
+        
+
+    def _scan(self, inpt, key):
+        return {k : inpt[k] for k in inpt if k.startswith(key)}
+    
+    def _mapping(self, inpt, key):   
+        return {"O" + k[3:] : k for k in inpt if k.startswith(key) and "O" + k[3:] in self._outputs}
+ 
+    @property
+    def _GetModelInputs(self):
+        code = self._Model.forward.__code__
+        self._inputs = {key : None for key in code.co_varnames[:code.co_argcount] if key != "self"}
+        return self._inputs
+  
+    @property
+    def _build(self):
+        self._outputs = self._scan(self._Model.__dict__, "O_")
+        mod = self._Model.__dict__["_modules"]
+        mod = {i : mod[i] for i in mod}
+        mod |= self._Model.__dict__
+        c = self._scan(self._Model.__dict__, "C_")
+        loss = self._scan(mod, "L_")
+        self._loss = {l[2:] : LossFunctions(loss[l], c["C_" + l[2:]] if "C_" + l[2:] in c else False) for l in loss}
+        
+    def SampleCompatibility(self, smpl):
+        smpl = list(smpl.to_dict())
+        self.i_mapping = {k : smpl[smpl.index(k)] for k in self._inputs if k in smpl}
+      
+        self.o_mapping  = self._mapping(smpl, "E_T_")
+        self.o_mapping |= self._mapping(smpl, "N_T_")
+        self.o_mapping |= self._mapping(smpl, "G_T_")
+
+        if not self._iscompatible: return False
+        return True 
+  
+    def __call__(self, data):
+        self._Model(**{k : getattr(data, k) for k in self.i_mapping})        
+
+        dc = self._Model.__dict__
+        pred = {"batch" : data.batch, "edge_index" : data.edge_index}
+        if self._truth: pred |= {self.o_mapping[k] : dc[k] for k in self.o_mapping}
+        else: pred |= {k : dc[k] for k in self._outputs}  
+        if not self._truth: return Data().from_dict(pred), None
+
+        loss = {o[2:] : self._loss[o[2:]](pred[t], getattr(data, t)) for o, t in zip(self.o_mapping, self.o_mapping.values())}
+        return Data().from_dict(pred), loss
+ 
+    @property 
+    def train(self): return self._train
+
+    @train.setter
+    def train(self, val): 
+        if val: self._Model.train()
+        else: self._Model.eval()
+        self._train = val
+
+    @property
+    def dump(self):
+        torch.save(self._model.state_dict(), self.OutputDirectory + "/TorchSave.pth") 
+   
+    @property 
+    def load(self):
+        try: self.__init__(self._Model())
+        except: pass
+        if self.OutputDirectory.endswith(".pth"):
+            lib = torch.load(OutputDir)
+            self._model.load_state_dict(state_dict = lib)
+        self._model.eval()
+
 
 class Reconstruction:
 
@@ -108,5 +201,4 @@ class Reconstruction:
         return out
 
 
-      
 

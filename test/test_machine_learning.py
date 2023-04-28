@@ -3,6 +3,7 @@ from AnalysisG import Analysis
 from AnalysisG.Events import Event, GraphChildren
 from AnalysisG.Templates import ApplyFeatures
 from AnalysisG.Templates import FeatureAnalysis
+from AnalysisG.Generators import Optimizer
 
 root1 = "./samples/sample1/smpl1.root"
 
@@ -62,7 +63,30 @@ def test_feature_analysis():
     Ana.AddGraphTruth(fx, "NotAFeature")
     assert Ana.Launch == False
 
+def test_optimizer():
+    from models.CheatModel import CheatModel
+    Ana = Analysis()
+    Ana.InputSample(None, root1)
+    Ana.Event = Event
+    Ana.ProjectName = "Project"
+    Ana.EventGraph = GraphChildren 
+    ApplyFeatures(Ana, "TruthChildren")
+    Ana.EventStop = 50
+    Ana.DataCache = True
+    Ana.Launch
+
+    op = Optimizer(Ana)
+    op.Model = CheatModel
+    op.Device = "cuda"
+    op.Launch
+    
+
+
+
+
+
 if __name__ == "__main__":
     #test_random_sampling()
     #test_feature_analysis()
+    test_optimizer()
     pass
