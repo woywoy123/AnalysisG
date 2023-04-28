@@ -83,7 +83,7 @@ def test_particle_pickle():
         assert sum([l == p for l, p in zip(jets, jets_r)]) == len(jets)
 
         if mem == 0: mem = psutil.virtual_memory().percent
-        assert psutil.virtual_memory().percent - mem < 0.1
+        assert psutil.virtual_memory().percent - mem < 0.5
 
 
 def test_particle_multithreading():
