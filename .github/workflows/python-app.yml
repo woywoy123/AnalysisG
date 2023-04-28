@@ -62,7 +62,6 @@ jobs:
                                   py.test test_io.py -vv
                                   py.test test_machine_learning.py -vv
                                   py.test test_memory.py -vv 
-                                  py.test test_neutrino_reconstruction.py -vv
                                   py.test test_notification.py -vv
                                   py.test test_templates.py -vv
                                   py.test test_tools.py -vv

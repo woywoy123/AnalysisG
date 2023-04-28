@@ -138,9 +138,9 @@ class SelectionTemplate(Tools):
                 continue
             self.__dict__[i] = self.MergeData(self.__dict__[i], other.__dict__[i])
         
-        #out = SelectionTemplate()
-        #for i in self.__dict__: setattr(out, i, self.__dict__[i])  
-        return self
+        out = SelectionTemplate()
+        for i in self.__dict__: setattr(out, i, self.__dict__[i])  
+        return out
     
     def RestoreSettings(self, inpt):
         for i in inpt: self.__dict__[i] = inpt[i]
