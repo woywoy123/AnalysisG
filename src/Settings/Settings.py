@@ -68,6 +68,7 @@ class _Analysis:
         _SelectionGenerator.__init__(self)
         _RandomSampler.__init__(self)
         _FeatureAnalysis.__init__(self)
+        _Optimizer.__init__(self)
         self._cPWD = None
         self.ProjectName = "UNTITLED"
         self.OutputDirectory = None
@@ -164,8 +165,23 @@ class _JobSpecification:
 class _Optimizer:
 
     def __init__(self):
-        self.Model = None
         self.ProjectName = "UNTITLED"
+
+        self.Optimizer = None
+        self.Scheduler = None 
+        self.SchedulerParams = {}
+        self.OptimizerParams = {}
+        
+        self.OutputDirectory = None
+        self.RunName = "RUN"
+        self.Epoch = None
+        self.Epochs = 10
+        self.kFold = None
+        self.DebugMode = False
+        self.TrainingName = "Sample"
+
+        self.Model = None
+        self.ContinueTraining = False
 
 class Settings:
     

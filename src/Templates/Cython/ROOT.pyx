@@ -182,24 +182,24 @@ cdef class SampleTracer:
     def EventCache(self) -> bool: return self._EventCache 
 
     @EventCache.setter
-    def EventCache(self, val) -> bool: self._EventCache = val
+    def EventCache(self, bool val): self._EventCache = val
 
     @property
     def DataCache(self) -> bool: return self._DataCache 
 
     @DataCache.setter
-    def DataCache(self, val) -> bool: self._DataCache = val
+    def DataCache(self, bool val): self._DataCache = val
     
     @property
     def SampleName(self) -> str: return self._SampleName 
 
     @SampleName.setter
-    def SampleName(self, val) -> str: self._SampleName = val
+    def SampleName(self, str val): self._SampleName = val
 
     @property
-    def todict(self) -> dict: return self.HashMap    
+    def todict(self) -> dict: return {i.hash : i for i in self}
 
-    def FastHashSearch(self, hashes) -> dict:
+    def FastHashSearch(self, list hashes) -> dict:
         cdef vector[string] v
         cdef int i
         cdef string key
@@ -397,6 +397,24 @@ cdef class SampleTracer:
                 if DataCache: e_.Graph = True
             for k in files: os.remove(k)
             del bar
+
+    def ForceTheseHashes(self, inpt: Union[dict, list]) -> None:
+        cdef list smpl = inpt if isinstance(inpt, list) else list(inpt)
+        cdef str i
+        
+        self._itv.clear()
+        for i in smpl: self._itv.push_back(i.encode("UTF-8"))
+        self._ite = self._itv.size()
+
+    def MarkTheseHashes(self, inpt: Union[dict, list], str label) -> None:
+        cdef list smpl = inpt if isinstance(inpt, list) else list(inpt)
+        cdef string lab = label.encode("UTF-8")
+        cdef CyEvent* ev
+        cdef str i
+
+        for i in inpt: 
+            ev = self.ptr.HashToEvent(i.encode("UTF-8"))
+            ev.TrainMode = lab
 
     def _MakeBar(self, inpt: Union[int], CustTitle: Union[None, str] = None):
         _dct = {}

@@ -95,15 +95,17 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
  
     @property 
     def __RandomSampler__(self):
+        pth = self.OutputDirectory + "/Training/DataSets/" 
+        if not self.TrainingSize and not self.kFolds: return 
+        if self.TrainingName + ".pkl" in self.ls(pth): return 
         r = RandomSamplers()
         r.Caller = self.Caller
         output = {}
         if self.TrainingSize: output = r.MakeTrainingSample(self.todict, self.TrainingSize) 
         if self.kFolds: output |= r.MakekFolds(self.todict, self.kFolds, self.BatchSize, self.Shuffle, True)
         if len(output) == 0: return  
-        pth = self.OutputDirectory + "/Training/" 
         self.mkdir(pth)
-        PickleObject(output, pth + "Sample")
+        PickleObject(output, pth + self.TrainingName)
    
     @property
     def __CollectCode__(self):
@@ -138,7 +140,7 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
             if not self.__Graph__: return False
         
         self.__Selection__
-        if self.TrainingSize or self.kFolds: self.__RandomSampler__
+        self.__RandomSampler__
         self.WhiteSpace()
         return True
 

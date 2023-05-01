@@ -73,11 +73,14 @@ def test_optimizer():
     ApplyFeatures(Ana, "TruthChildren")
     Ana.EventStop = 50
     Ana.DataCache = True
+    Ana.kFolds = 10
     Ana.Launch
 
     op = Optimizer(Ana)
     op.Model = CheatModel
     op.Device = "cuda"
+    op.Optimizer = "ADAM"
+    op.ContinueTraining = False
     op.Launch
     
 

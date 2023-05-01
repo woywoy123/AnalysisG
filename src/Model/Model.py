@@ -13,6 +13,9 @@ class ModelWrapper(_ModelWrapper):
     def __init__(self, model):
         self.Caller = "MODEL"
         self.Verbose = 3 
+        self.OutputDirectory = None
+        self.RunName = None
+        self.Epoch = None
 
         self._Model = model
         self._inputs = {}
@@ -27,8 +30,6 @@ class ModelWrapper(_ModelWrapper):
 
         self._GetModelInputs
         self._build 
-        self.OutputDirectory = None
-        
 
     def _scan(self, inpt, key):
         return {k : inpt[k] for k in inpt if k.startswith(key)}
@@ -53,6 +54,7 @@ class ModelWrapper(_ModelWrapper):
         self._loss = {l[2:] : LossFunctions(loss[l], c["C_" + l[2:]] if "C_" + l[2:] in c else False) for l in loss}
         
     def SampleCompatibility(self, smpl):
+        self._pth = self.OutputDirectory + "/" + self.RunName 
         smpl = list(smpl.to_dict())
         self.i_mapping = {k : smpl[smpl.index(k)] for k in self._inputs if k in smpl}
       
@@ -73,6 +75,7 @@ class ModelWrapper(_ModelWrapper):
         if not self._truth: return Data().from_dict(pred), None
 
         loss = {o[2:] : self._loss[o[2:]](pred[t], getattr(data, t)) for o, t in zip(self.o_mapping, self.o_mapping.values())}
+        self._l = loss
         return Data().from_dict(pred), loss
  
     @property 
@@ -86,17 +89,22 @@ class ModelWrapper(_ModelWrapper):
 
     @property
     def dump(self):
-        torch.save(self._model.state_dict(), self.OutputDirectory + "/TorchSave.pth") 
+        out = {"epoch" : self.Epoch, "model" : self._Model.state_dict()}
+        torch.save(out, self._pth + "/" + str(self.Epoch) + "/TorchSave.pth")
    
     @property 
     def load(self):
         try: self.__init__(self._Model())
         except: pass
-        if self.OutputDirectory.endswith(".pth"):
-            lib = torch.load(OutputDir)
-            self._model.load_state_dict(state_dict = lib)
-        self._model.eval()
+        lib = torch.load(self._pth + "/" + str(self.Epoch) + "/TorchSave.pth")
+        self._Model.load_state_dict(lib["model"])
+        self._Model.eval()
 
+    @property
+    def backward(self):
+        loss = sum([self._l[x]["loss"] for x in self._l])
+        if self._train: loss.backward()
+        return loss
 
 class Reconstruction:
 

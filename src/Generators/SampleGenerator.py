@@ -34,6 +34,7 @@ class RandomSamplers(_RandomSamplers, Settings):
 
     def MakekFolds(self, sample, folds, batch_size = 1, shuffle = True, asHashes = False):
         if isinstance(sample, dict):
+            smpl = [i for i in sample.values()]
             try: sample = {i : sample[i] for i in sample if sample[i].TrainMode != "test"}
             except AttributeError: pass
             sample = list(sample) if asHashes else list(sample.values()) 
@@ -41,7 +42,6 @@ class RandomSamplers(_RandomSamplers, Settings):
             try: sample = [i.hash if asHashes else i for i in sample if i.TrainMode != "test"]
             except AttributeError: pass
         else: return False
-
         if len(sample) < folds: return False
         split = KFold(n_splits = folds, shuffle=shuffle)
         output = {f+1 : {"train" : None, "leave-out" : None} for f in range(folds)}
