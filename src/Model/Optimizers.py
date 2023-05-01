@@ -14,7 +14,6 @@ class OptimizerWrapper(Settings):
  
     @property 
     def SetOptimizer(self):
-        self._mod = self.Model._Model
         self._pth = self.OutputDirectory + "/" + self.RunName
         if self.Optimizer == "ADAM": self._op = torch.optim.Adam(self._mod.parameters(), **self.OptimizerParams)
         elif self.Optimizer == "SDG": self._op = torch.optim.SGD(self._mod.parameters(), **self.OptimizerParams)

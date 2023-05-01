@@ -17,7 +17,6 @@ class _Optimizer(Notification):
         l = len(self)
         if l == 0: return self.Warning("No Sample Graphs found")
         self.Success("Found " + str(l) + " Sample Graphs") 
-        self._nsamples = l
         return False
 
     @property
@@ -39,14 +38,29 @@ class _Optimizer(Notification):
         self.Epoch = 0
         pth = self.OutputDirectory + "/" + self.RunName
         f = self.ls(pth)
-        
         if not self.ContinueTraining: return 
         if len(f) == 0: return self.Warning("No prior training was found under: " + pth + ". Generating...")
-        self.Epoch = max([int(i) for i in f if self.IsFile(pth + "/" + i + "/TorchSave.pth")])
-        self.Model.Epoch = self.Epoch
-        self.Model.load 
-        self._op.Epoch = self.Epoch 
-        self._op.load 
+        
+        kfolds = list(self.kFold) 
+        for epochs in f: 
+            _kf = {k for k in self.ls(pth + "/" + epochs) if self.IsFile(pth + "/" + epochs + "/" + k + "/TorchSave.pth") and k in kfolds}
+            if len(_kf) == 0: continue
+            self.Epoch = int(epochs) if int(epochs) > self.Epoch else self.Epoch
+            kf = _kf
+        epochs = str(self.Epoch)
+        for i in kf:
+            self._kModels[i]._pth = self.OutputDirectory + "/" + self.RunName 
+            self._kModels[i].Epoch = epochs + "/" + i 
+            self._kModels[i].load
+            self._kOp[i]._pth = self.OutputDirectory + "/" + self.RunName 
+            self._kOp[i].Epoch = epochs + "/" + i 
+            self._kOp[i].load
+        for i in list(self._kModels):
+            if i in kf: continue
+            del self._kModels[i] 
+            del self._kOp[i]
+            del self._DataLoader[i]
+            self.Warning("Removing " + i + " from training session. Due to inconsistent epoch.")
 
     @property
     def _searchdatasplits(self):
@@ -55,7 +69,8 @@ class _Optimizer(Notification):
         if len(ls) == 0: return self.Warning("No sample splitting found (k-Fold). Trainig on entire sample.") 
         if self.TrainingName + ".pkl" in ls: 
             f = UnpickleObject(pth + self.TrainingName)
-            if self.kFold == None: self.kFold = iter([f[i] for i in f])
-            else: self.kFold = f[self.kFold]
+            if self.kFold == None: self.kFold = f
+            elif isinstance(self.kFold, int): self.kFold = {"k-" + str(self.kFold) : f["k-" + str(self.kFold)]}
+            else: self.kFold = {self.kFold : f[self.kFold]}
             return self.Success("Found the training sample: " + self.TrainingName)
         self.Warning("The given training sample name was not found, but found the following: " + "\n-> ".join(ls))

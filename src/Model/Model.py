@@ -2,11 +2,8 @@ from AnalysisG.Notification import _ModelWrapper
 from .LossFunctions import LossFunctions
 from torch_geometric.data import Data
 import torch
-try:
-    import PyC.Physics.Tensors.Polar as PT
-    import PyC.Physics.Tensors.Cartesian as CT
-except:
-    pass
+import PyC.Transform.Tensors as PT
+import PyC.Physics.Tensors.Cartesian as CT
 
 class ModelWrapper(_ModelWrapper):
 
@@ -30,6 +27,26 @@ class ModelWrapper(_ModelWrapper):
 
         self._GetModelInputs
         self._build 
+        
+        # Mass reconstruction part 
+        self.TruthMode = False
+        self.Keys = {"pt" : "N_pT", "eta" : "N_eta", "phi" : "N_phi", "e" : "N_energy"}
+
+
+    def __call__(self, data):
+        self._Model(**{k : getattr(data, k) for k in self.i_mapping})        
+
+        dc = self._Model.__dict__
+        pred = {"batch" : data.batch, "edge_index" : data.edge_index}
+        if self._truth: pred |= {self.o_mapping[k] : dc[k] for k in self.o_mapping}
+        else: pred |= {k : dc[k] for k in self._outputs}  
+        if not self._truth: return Data().from_dict(pred), None
+
+        loss = {o[2:] : self._loss[o[2:]](pred[t], getattr(data, t)) for o, t in zip(self.o_mapping, self.o_mapping.values())}
+        self._l = loss
+        self.Data = data
+        self.Pred = Data().from_dict(pred)
+        return self.Pred, loss
 
     def _scan(self, inpt, key):
         return {k : inpt[k] for k in inpt if k.startswith(key)}
@@ -65,19 +82,6 @@ class ModelWrapper(_ModelWrapper):
         if not self._iscompatible: return False
         return True 
   
-    def __call__(self, data):
-        self._Model(**{k : getattr(data, k) for k in self.i_mapping})        
-
-        dc = self._Model.__dict__
-        pred = {"batch" : data.batch, "edge_index" : data.edge_index}
-        if self._truth: pred |= {self.o_mapping[k] : dc[k] for k in self.o_mapping}
-        else: pred |= {k : dc[k] for k in self._outputs}  
-        if not self._truth: return Data().from_dict(pred), None
-
-        loss = {o[2:] : self._loss[o[2:]](pred[t], getattr(data, t)) for o, t in zip(self.o_mapping, self.o_mapping.values())}
-        self._l = loss
-        return Data().from_dict(pred), loss
- 
     @property 
     def train(self): return self._train
 
@@ -94,8 +98,6 @@ class ModelWrapper(_ModelWrapper):
    
     @property 
     def load(self):
-        try: self.__init__(self._Model())
-        except: pass
         lib = torch.load(self._pth + "/" + str(self.Epoch) + "/TorchSave.pth")
         self._Model.load_state_dict(lib["model"])
         self._Model.eval()
@@ -106,48 +108,41 @@ class ModelWrapper(_ModelWrapper):
         if self._train: loss.backward()
         return loss
 
-class Reconstruction:
+    @property
+    def device(self): return self._Model.device
+    
+    @device.setter
+    def device(self, val): self._Model = self._Model.to(val)
 
-    def __init__(self, model = None):
-        self.Caller = "RECONSTRUCTION"
-        self.TruthMode = False if model != None else True
-        self.Model = model
-        self._init = True
+    def _switch(self, sample, pred):
+        shape = pred.size()
+        if shape[1] > 1: pred = pred.max(1)[1]
+        pred = pred.view(-1) 
+        if shape[0] == sample.edge_index.size()[1]: return self.MassEdgeFeature(sample, pred).tolist()
+        elif shape[0] == sample.num_nodes: return self.MassEdgeFeature(sample, pred).tolist()
+        else: return []
 
-    def __switch(self, Sample, pre):
-        shape = pre.size()
-        if shape[1] > 1: pre = pre.max(1)[1].view(-1)
-        else: pre = pre.view(-1)
-        
-        if shape[0] == Sample.edge_index.size()[1]:
-            return self.MassFromEdgeFeature(Sample, pre).tolist()
-        elif shape[0] == Sample.num_nodes:
-            return self.MassFromNodeFeature(Sample, pre).tolist()
-
-    def __Debatch(self, Inpt, sample):
-        btch = Inpt.batch.unique()
+    def _debatch(self, inpt, sample):
+        btch = inpt.batch.unique()
         smples = [sample.subgraph(sample.batch == b) for b in btch]
-        inpt = [Inpt.subgraph(Inpt.batch == b) for b in btch]
+        inpt = [inpt.subgraph(inpt.batch == b) for b in btch]
         return smples, inpt        
 
-    def __call__(self, Sample):
-        self.Model.SampleCompatibility(Sample) if self._init else None
-        self._init = False
-        self.Model._truth = self.TruthMode
-        pred, truth, _ = self.Model.Prediction(Sample)
+    @property
+    def mass(self):
+        data = self.Data if self.TruthMode else self.Pred 
+        sample, pred = self._debatch(data, self.Data)
+        return [{o[2:] : self._switch(j, i[self.o_mapping[o]]) for o in self.o_mapping} for i, j in zip(pred, sample)]       
 
-        Sample, pred = self.__Debatch(pred if self.TruthMode == False else truth, Sample)
-        out = [{o[2:] : self.__switch(j, i[o[2:]]) for o in self.Model._modeloutputs} for i, j in zip(pred, Sample)]
-        return out
-
-    def __SummingNodes(self, Sample, msk, edge_index, pt, eta, phi, e):
-        
-        device = edge_index.device
-        Pmu = torch.cat([PT.PxPyPz(Sample[pt], Sample[eta], Sample[phi]), Sample[e]], dim = -1)
+    @property
+    def __SummingNodes(self): 
+        Pmu = {i : self._data[self.Keys[i]] for i in self.Keys}
+        Pmu = torch.cat([PT.PxPyPz(Pmu["pt"], Pmu["eta"], Pmu["phi"]), Pmu["e"]], dim = -1)
         
         # Get the prediction of the sample and extract from the topology the number of unique classes
-        edge_index_r = edge_index[0][msk == True]
-        edge_index_s = edge_index[1][msk == True]
+        edge_index = self._data.edge_index 
+        edge_index_r = edge_index[0][self._mask == True]
+        edge_index_s = edge_index[1][self._mask == True]
 
         # Weird floating point inaccuracy. When using Unique, the values seem to change slightly
         Pmu = Pmu.to(dtype = torch.long)
@@ -156,7 +151,7 @@ class Reconstruction:
 
         #Make sure to find self loops - Avoid double counting 
         excluded_self = edge_index[1] == edge_index[0]
-        excluded_self[msk == True] = False
+        excluded_self[self._mask == True] = False
         Pmu_n[edge_index[0][excluded_self]] += Pmu[edge_index[1][excluded_self]]
    
         Pmu_n = (Pmu_n/1000).to(dtype = torch.long)
@@ -164,19 +159,19 @@ class Reconstruction:
 
         return CT.Mass(Pmu_n).view(-1)
 
-    def MassFromNodeFeature(self, Sample, pred, pt = "N_pT", eta = "N_eta", phi = "N_phi", e = "N_energy"):
+    def MassNodeFeature(self, Sample, pred):
         
         # Filter out the nodes which are not equally valued and apply masking
-        edge_index = Sample.edge_index
-        mask = pred[edge_index[0]] == pred[edge_index[1]]
-        return self.__SummingNodes(Sample, mask, edge_index, pt, eta, phi, e)
+        self._data = Sample
+        self._mask = pred[self._data.edge_index[0]] == pred[self._data.edge_index[1]]
+        return self.__SummingNodes
  
-    def MassFromEdgeFeature(self, Sample, pred, pt = "N_pT", eta = "N_eta", phi = "N_phi", e = "N_energy"):
-        mask = pred == 1
-        return self.__SummingNodes(Sample, mask, Sample.edge_index, pt, eta, phi, e)
+    def MassEdgeFeature(self, Sample, pred):
+        self._data = Sample
+        self._mask = pred == 1
+        return self.__SummingNodes
 
     def ClosestParticle(self, tru, pred):
-
         res = []
         if len(tru) == 0: return res
         if len(pred) == 0: return pred 
@@ -193,20 +188,21 @@ class Reconstruction:
         res += self.ClosestParticle(tru, pred)
         res.append(p)
         return res 
-    
-    def ParticleEfficiency(self, pred, truth, proc):
-        t_, p_ = [], []
-        t_ += truth
-        p_ += pred 
-
-        p = self.ClosestParticle(t_, p_)
-        p_l, t_l = len(p), len(truth)
-
-        perf = float(p_l/t_l)*100
-
-        out = {"Prc" : proc, "%" : perf, "nrec" : p_l, "ntru" : t_l}
+  
+    @property 
+    def ParticleEfficiency(self):
+        self.TruthMode = True
+        t = self.mass
         
-        return out
-
-
-
+        self.TruthMode = False
+        p = self.mass
+        output = []
+        for b in range(len(t)):
+            out = {}
+            for f in t[b]:
+                pred, truth = p[b][f], t[b][f]
+                pred = self.ClosestParticle(truth, pred)
+                p_l, t_l = len(pred), len(truth)
+                out[f] = {"%" : float(p_l/(t_l if t_l != 0 else 1))*100, "nrec" : p_l, "ntru" : t_l}
+            output.append(out)       
+        return output

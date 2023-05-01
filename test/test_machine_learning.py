@@ -73,6 +73,7 @@ def test_optimizer():
     ApplyFeatures(Ana, "TruthChildren")
     Ana.EventStop = 50
     Ana.DataCache = True
+    Ana.PurgeCache = True
     Ana.kFolds = 10
     Ana.Launch
 
@@ -81,6 +82,9 @@ def test_optimizer():
     op.Device = "cuda"
     op.Optimizer = "ADAM"
     op.ContinueTraining = False
+    op.DebugMode = False
+    op.EnableReconstruction = True
+    op.BatchSize = 2
     op.Launch
     
 

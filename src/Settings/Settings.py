@@ -182,6 +182,9 @@ class _Optimizer:
 
         self.Model = None
         self.ContinueTraining = False
+        self.SortByNodes = False
+        self.BatchSize = 1
+        self.EnableReconstruction = False
 
 class Settings:
     

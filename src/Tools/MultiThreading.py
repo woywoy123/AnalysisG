@@ -62,8 +62,7 @@ class TemplateThreading:
 
     def Purge(self):
         for i in self._i:
-            for j in i:
-                del j
+            for j in i: del j
 
 
 class Threading(_MultiThreading):

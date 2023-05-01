@@ -4,8 +4,7 @@ from sklearn.model_selection import ShuffleSplit, KFold
 from torch.utils.data import SubsetRandomSampler
 from AnalysisG.Notification import _RandomSamplers
 from AnalysisG.Settings import Settings
-try: from torch_geometric.loader import DataLoader
-except: from torch_geometric.data import DataLoader
+from torch_geometric.loader import DataListLoader
 
 class RandomSamplers(_RandomSamplers, Settings):
 
@@ -43,11 +42,12 @@ class RandomSamplers(_RandomSamplers, Settings):
             except AttributeError: pass
         else: return False
         if len(sample) < folds: return False
+        sample = np.array(sample)
         split = KFold(n_splits = folds, shuffle=shuffle)
-        output = {f+1 : {"train" : None, "leave-out" : None} for f in range(folds)}
+        output = {"k-" + str(f+1) : {"train" : None, "leave-out" : None} for f in range(folds)}
         for f, (train_idx, test_idx) in enumerate(split.split(np.arange(len(sample)))):
-            output[f+1]["train"] = DataLoader(sample, batch_size=batch_size, sampler = SubsetRandomSampler(train_idx))
-            output[f+1]["leave-out"] = DataLoader(sample, batch_size=batch_size, sampler = SubsetRandomSampler(test_idx))
+            output["k-" + str(f+1)]["train"] = sample[train_idx].tolist() 
+            output["k-" + str(f+1)]["leave-out"] = sample[test_idx].tolist() 
         return output
 
     def MakeDataLoader(self, sample, SortByNodes = False, batch_size = 1):
@@ -58,6 +58,6 @@ class RandomSamplers(_RandomSamplers, Settings):
         output = {} 
         if SortByNodes: 
             for i in sample: output[i.num_nodes.item()] = [i] if i.num_nodes.item() not in output else [i]
-        else: output["All"] = sample
-        for i in output: output[i] = DataLoader(output[i], batch_size=batch_size)
+        else: output["all"] = sample
+        for i in output: output[i] = DataListLoader(output[i], batch_size=batch_size)
         return output

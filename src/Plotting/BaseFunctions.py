@@ -47,8 +47,7 @@ class BaseFunctions(Tools, _Plotting):
  
     def DefineAxisData(self, Dim, JustData = False):
         self.Set(Dim + "Data", [])
-        if JustData: 
-            return 
+        if JustData: return 
         self.Set(Dim + "Min", None)
         self.Set(Dim + "Max", None)
         self.Set(Dim + "Weights", None)
@@ -118,7 +117,6 @@ class BaseFunctions(Tools, _Plotting):
         if Dir == None: Dir = self.OutputDirectory
         Dir = self.AddTrailing(Dir, "/")
         self.Filename = self.AddTrailing(self.Filename, ".png") 
-        
         self.mkdir(Dir)
         self.Compile()
         
