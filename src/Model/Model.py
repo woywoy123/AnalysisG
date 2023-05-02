@@ -160,8 +160,6 @@ class ModelWrapper(_ModelWrapper):
         return CT.Mass(Pmu_n).view(-1)
 
     def MassNodeFeature(self, Sample, pred):
-        
-        # Filter out the nodes which are not equally valued and apply masking
         self._data = Sample
         self._mask = pred[self._data.edge_index[0]] == pred[self._data.edge_index[1]]
         return self.__SummingNodes

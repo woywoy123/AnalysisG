@@ -165,7 +165,7 @@ class Threading(_MultiThreading):
         if self.Verbose == 0: return 
         self._dct["desc"] = self.Title
         self._dct["position"] = 0
-        self._dct["leave"] = None
+        self._dct["leave"] = False
         self._dct["colour"] = "GREEN"
         self._dct["dynamic_ncols"] = True
         self._dct["total"] = len(self._chnk)

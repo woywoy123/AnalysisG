@@ -17,6 +17,7 @@ class _Analysis(Notification):
         self.rm(self.OutputDirectory + "/EventCache") 
         self.rm(self.OutputDirectory + "/DataCache")         
         self.rm(self.OutputDirectory + "/Tracer")
+        self.rm(self.OutputDirectory + "/Training/DataSets")
 
     @property
     def _BuildingCache(self):
@@ -66,9 +67,8 @@ class _Analysis(Notification):
         string = ""
         string += " > EventGenerator < :: " if self.Event != None else ("> EventCache < :: " if self.EventCache else "")
         string += " > GraphGenerator < :: " if self.EventGraph != None else ("> DataCache < :: " if self.DataCache else "")
-#        string += "> TrainingSampleGenerator < :: " if self.TrainingSampleName else ""
-#        string += "> Optimization < :: " if self.Model != None else ""
-#        string += "> ModelEvaluator < :: " if len(self._ModelDirectories) != 0 or self.PlotNodeStatistics else ""
+        string += "> SampleGenerator < :: " if self.kFolds else ""
+        string += "> Optimization < :: " if self.Model != None else ""
         string += " > Selections < :: " if len(self.Selections) != 0 else ""
         string += " > Merging Selections < :: " if len(self.Merge) != 0 else ""
         

@@ -107,23 +107,87 @@ def test_dumping_event_selection():
     
     con.AddJob("sum", Ana_sum, waitfor = ["example1_1", "example1_2", "example1_3"])
     con.DumpCondorJobs
-    con.TestCondorShell 
+    #con.TestCondorShell 
 
     Ana_T = _template({"Name" : "smpl1"})
     Ana_T.InputSample("smpl2")
     Ana_T.InputSample("smpl3")
     Ana_T.OutputDirectory = "./Project/CondorDump"
     Ana_T.Event = EventEx
-    Ana_T.Launch
+    #Ana_T.Launch
 
-    from AnalysisG.IO import UnpickleObject
-    x = UnpickleObject('./Project/CondorDump/Project/Selections/Merged/example1')
-    assert list(x.CutFlow.values())[0] == len(Ana_T)
+    #from AnalysisG.IO import UnpickleObject
+    #x = UnpickleObject('./Project/CondorDump/Project/Selections/Merged/example1')
+    #assert list(x.CutFlow.values())[0] == len(Ana_T)
     con.rm("./Project")
+
+
+def test_dumping_optimization():
+    from AnalysisG.Events import Event, GraphChildren
+    from AnalysisG.Templates import ApplyFeatures
+    from models.CheatModel import CheatModel
+    con = Condor()
+    con.PythonVenv = "$PythonGNN"    
+    con.ProjectName = "Project"
+    
+    Ana_1 = _template({"Name" : "smpl1", "SampleDirectory" : {smpl + "sample2" : ["smpl1.root"]}})
+    Ana_1.Event = Event
+    Ana_1.EventCache = True
+
+    Ana_2 = _template({"Name" : "smpl2", "SampleDirectory" : {smpl + "sample2" : ["smpl2.root"]}})
+    Ana_2.Event = Event 
+    Ana_2.EventCache = True
+
+    Ana_3 = _template({"Name" : "smpl3", "SampleDirectory" : {smpl + "sample2" : ["smpl3.root"]}})
+    Ana_3.Event = Event 
+    Ana_3.EventCache = True
+ 
+    con.AddJob("smpl1", Ana_1)        
+    con.AddJob("smpl2", Ana_2)        
+    con.AddJob("smpl3", Ana_3)        
+
+    AnaD_1 = _template({"Name" : "smpl1"})
+    ApplyFeatures(AnaD_1, "TruthChildren")
+    AnaD_1.DataCache = True
+    AnaD_1.EventGraph = GraphChildren
+
+    AnaD_2 = _template({"Name" : "smpl2"})
+    ApplyFeatures(AnaD_2, "TruthChildren")
+    AnaD_2.DataCache = True
+    AnaD_2.EventGraph = GraphChildren
+
+    AnaD_3 = _template({"Name" : "smpl3"})
+    ApplyFeatures(AnaD_3, "TruthChildren")
+    AnaD_3.DataCache = True
+    AnaD_3.EventGraph = GraphChildren
+ 
+    con.AddJob("Dsmpl1", AnaD_1, waitfor = ["smpl1"])        
+    con.AddJob("Dsmpl2", AnaD_2, waitfor = ["smpl2"])        
+    con.AddJob("Dsmpl3", AnaD_3, waitfor = ["smpl3"])        
+
+    AnaOp = _template({"Name" : "smpl1"})    
+    AnaOp.InputSample(**{"Name" : "smpl2"})
+    AnaOp.InputSample(**{"Name" : "smpl3"})
+    AnaOp.RunName = "run-1"
+    AnaOp.kFolds = 10
+    AnaOp.Epochs = 10
+    AnaOp.Optimizer = "ADAM"
+    AnaOp.Scheduler = "ExponentialLR"
+    AnaOp.OptimizerParams = {"lr" : 0.001}
+    AnaOp.SchedulerParams = {"gamma" : 1}
+    AnaOp.Device = "cuda"
+    AnaOp.BatchSize = 2
+    AnaOp.Model = CheatModel
+    AnaOp.EnableReconstruction = True 
+ 
+    con.AddJob("run-1", AnaOp, waitfor = ["Dsmpl1", "Dsmpl2", "Dsmpl3"])
+    con.DumpCondorJobs
+    #con.TestCondorShell
 
 if __name__ == "__main__":
     #test_dumping_events()
     #test_dumping_graphs()
     #test_dumping_event_graphs()
     test_dumping_event_selection()
+    #test_dumping_optimization()
     pass

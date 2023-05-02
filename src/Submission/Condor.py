@@ -98,10 +98,16 @@ class AnalysisScript(AnalysisG.Tools.General.Tools, Settings):
                     shared["imports"] += ["from " + self.Code[i]._Name + " import " + self.Code[i]._Name]
                     self.__Build(self.Code[i]._subclass + "\n\n" + self.Code[i]._Code, self.Code[i]._Name)
                     script += ["<*Analysis*>." + i + " = " + self.Code[i]._Name]
-                else: 
+                else:
+                    _buildCode = ""
+                    for j in self.Code[i]: 
+                        for k in self.Code[i][j]._Get: 
+                            _buildCode += "import sys\n" if "import sys" not in _buildCode else ""
+                            _buildCode += "sys.path.append('" + "/".join(k.split("/")[:-1]) + "')\n"
+                            _buildCode += "from " + k.split("/")[-1].replace(".py", "") + " import *\n"
+                        for k in self.Code[i][j]._Import: _buildCode += "from " + k + " import *\n"
                     shared["imports"] += ["from " + i + " import " + ", ".join([self.Code[i][j]._Name for j in self.Code[i]])]
-
-                    _buildCode = "\n".join(set([self.Code[i][j]._subclass for j in self.Code[i]]))
+                    _buildCode += "\n".join(set([self.Code[i][j]._subclass for j in self.Code[i]]))
                     for j in self.Code[i]: _buildCode += "\n\n" + self.Code[i][j]._Code
                     self.__Build(_buildCode, i)
                     script += ["<*Analysis*>." + i + " = {"]

@@ -413,6 +413,7 @@ cdef class SampleTracer:
         cdef str i
 
         for i in inpt: 
+            if not self.ptr.ContainsHash(i.encode("UTF-8")): continue
             ev = self.ptr.HashToEvent(i.encode("UTF-8"))
             ev.TrainMode = lab
 

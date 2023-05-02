@@ -15,10 +15,10 @@ class _Condor(Notification):
                 self.Warning("Renaming incoming project name. If this is unintentional, make sure to instantiate a new Condor instance with the other project name.")
             instance.ProjectName = self.ProjectName
 
-        if self.OutputDirectory != None: instance.OutputDirectory = self.OutputDirectory
-        elif instance.OutputDirectory != None: self.OutputDirectory = instance.OutputDirectory
+        if self.OutputDirectory is not None: instance.OutputDirectory = self.abs(self.OutputDirectory)
+        elif instance.OutputDirectory is not None: self.OutputDirectory = self.abs(instance.OutputDirectory)
         else:
-            self.OutputDirectory = "./"
+            self.OutputDirectory = self.abs("./")
             self.Warning("Variable OutputDirectory undefined, assuming current working directory; " + self.pwd)
     
     def RunningJob(self, name): self.Success("Running job: " + name)

@@ -99,7 +99,8 @@ void CyTracer::CySampleTracer::AddEvent(CyTracer::CyEvent* event)
 
 CyTracer::CyEvent* CyTracer::CySampleTracer::HashToEvent(std::string hash)
 {
-    CyTracer::CyROOT* root = this -> _ROOTHash[hash]; 
+    if (this -> _ROOTHash.count(hash) == 0){ return NULL; }
+    CyTracer::CyROOT* root = this -> _ROOTHash[hash];
     return root -> HashMap[hash]; 
 }
 

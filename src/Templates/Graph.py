@@ -2,6 +2,14 @@ import torch
 import networkx as nx
 from torch_geometric.data import Data
 
+class NoneEvent:
+
+    def __init__(self):
+        pass
+    
+    def __getattr__(self, inpt):
+        return []
+
 class GraphTemplate:
     def __init__(self):
         self.Particles = []
@@ -10,15 +18,24 @@ class GraphTemplate:
         self.EdgeAttr = {}
         self.NodeAttr = {}
         self.GraphAttr = {}
-        self.Event = ""
+        self._Event = None
         self.Particles = []
         self.index = -1
-    
-    def Escape(ev):
-        new_self = object.__new__(ev)
+ 
+    def Escape(self, ev):
+        new_self = self.__new__(self.__class__)
         try: new_self.__init__()
         except: pass
         return new_self
+    
+    @property
+    def Event(self):
+        return self._Event
+    
+    @Event.setter
+    def Event(self, val):
+        if val is not None: self._Event = val 
+        else: self._Event = NoneEvent()
 
     def CreateParticleNodes(self):
         self.G = nx.Graph()
@@ -95,7 +112,7 @@ class GraphTemplate:
         del self.GraphAttr
         del self.NodeAttr
         del self.EdgeAttr
-        del self.Event
+        del self._Event
         del self.G
         del self.Nodes
         del self.Edges

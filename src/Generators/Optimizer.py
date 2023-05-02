@@ -2,12 +2,13 @@ from AnalysisG.Model.Optimizers import OptimizerWrapper
 from AnalysisG.Notification import _Optimizer
 from AnalysisG.Evaluation.Epoch import Epoch
 from .SampleGenerator import RandomSamplers
+from AnalysisG.Tools import Code, Threading
 from AnalysisG.Tracer import SampleTracer
 from AnalysisG.Model import ModelWrapper
 from AnalysisG.Settings import Settings
 from torch_geometric.data import Batch
 from .Interfaces import _Interface
-from AnalysisG.Tools import Code, Threading
+from multiprocessing import Process
 
 class Optimizer(_Optimizer, _Interface, SampleTracer, RandomSamplers):
 
@@ -36,6 +37,7 @@ class Optimizer(_Optimizer, _Interface, SampleTracer, RandomSamplers):
             self._op.step
             
             if not self.DebugMode: bar.update(1)
+            if self.DebugMode: self._showloss
             if not self.EnableReconstruction: continue
             self.Model.TruthMode = True 
             truth = self.Model.mass
@@ -48,6 +50,15 @@ class Optimizer(_Optimizer, _Interface, SampleTracer, RandomSamplers):
                 for f in pred[b]: dc[f]["mass"] += pred[b][f]
                 for f in eff[b]: dc[f]["nrec"].append(eff[b][f]["nrec"])       
                 for f in eff[b]: dc[f]["ntru"].append(eff[b][f]["ntru"])
+
+    def __dump_plots__(self, dumper, end = False):
+        if len(dumper) == self.Threads and not end: return dumper
+        def func(inpt): 
+            for i in inpt: i.dump 
+
+        th = Process(target = func, args = (dumper, ))
+        th.start()
+        return [] 
 
     @property 
     def __train__(self):
@@ -94,16 +105,13 @@ class Optimizer(_Optimizer, _Interface, SampleTracer, RandomSamplers):
                 self._op.dump
                 self.Model.dump
                 dumper.append(self._ep)
-            
-        def func(inpt): 
-            for i in inpt: 
-                i.dump 
-            return []
-
-        th = Threading(dumper, func, self.Threads, 1)
-        th.Start
-            
-
+                dumper = self.__dump_plots__(dumper)
+        dumper = self.__dump_plots__(dumper, True)         
+    @property 
+    def GetCode(self):
+        if "Model" in self._Code: return self._Code["Model"]
+        self._Code["Model"] = Code(self.Model)
+        return self.GetCode
  
     @property
     def Launch(self):
@@ -112,8 +120,7 @@ class Optimizer(_Optimizer, _Interface, SampleTracer, RandomSamplers):
         if self._NoModel: return False
         if self._NoSampleGraph: return False
         self.OutputDirectory += "/Training"
-        self._Code["Model"] = Code(self.Model)
-        self.Model = ModelWrapper(self._Code["Model"].clone)
+        self.Model = ModelWrapper(self.GetCode.clone)
         self.Model.OutputDirectory = self.OutputDirectory
         self.Model.RunName = self.RunName
         
@@ -154,5 +161,5 @@ class Optimizer(_Optimizer, _Interface, SampleTracer, RandomSamplers):
                 self._DataLoader[k][s] = self.MakeDataLoader([i.clone().to(self.Device) for i in self], self.SortByNodes, self.BatchSize)
                 self._DataLoader[k][s] = [Batch().from_data_list(t) for i in self._DataLoader[k][s].values() for t in i]
                 self._nsamples[k][s] = len(self._DataLoader[k][s])
-        self._searchtraining
+        if not self._searchtraining: return
         self.__train__

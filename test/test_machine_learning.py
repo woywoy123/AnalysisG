@@ -27,10 +27,10 @@ def test_random_sampling():
     for i in x["test_hashes"]: assert "test" == smpls[i].TrainMode
     
     x = r.MakekFolds(smpls, 10)  
-    train = {i+1 : [] for i in range(10)}
+    train = {"k-" + str(i+1) : [] for i in range(10)}
     for f in x:
-        for smpl in x[f]["train"]: train[f] += smpl.i.tolist()
-        for smpl in x[f]["leave-out"]: assert smpl.i.tolist()[0] not in train[f] 
+        for smpl in x[f]["train"]: train[f] += [smpl.hash]
+        for smpl in x[f]["leave-out"]: assert smpl.hash not in train[f] 
     
     x = r.MakeDataLoader(smpls, SortByNodes = True)
     assert 12 in x
@@ -38,8 +38,8 @@ def test_random_sampling():
     assert 14 in x
 
     x = r.MakeDataLoader(smpls)
-    assert "All" in x
-    assert len(x["All"]) == len(Ana)
+    assert "all" in x
+    assert len(x["all"]) == len(Ana)
 
 def test_feature_analysis():
     Ana = Analysis()
@@ -86,14 +86,37 @@ def test_optimizer():
     op.EnableReconstruction = True
     op.BatchSize = 2
     op.Launch
-    
+   
+    op.rm("Project") 
 
-
-
-
+def test_optimizer_analysis():
+    from models.CheatModel import CheatModel
+    Ana = Analysis()
+    Ana.InputSample(None, root1)
+    Ana.ProjectName = "Project"
+    Ana.Event = Event
+    Ana.EventGraph = GraphChildren
+    ApplyFeatures(Ana, "TruthChildren")
+    Ana.DataCache = True 
+    Ana.kFolds = 2
+    Ana.kFold = 1
+    Ana.Epochs = 20
+    Ana.Optimizer = "ADAM"
+    Ana.RunName = "RUN"
+    Ana.DebugMode = True
+    Ana.OptimizerParams = {"lr" : 0.001}
+    Ana.Scheduler = "ExponentialLR"
+    Ana.ContinueTraining = False
+    Ana.SchedulerParams = {"gamma" : 1}
+    Ana.Device = "cuda"
+    Ana.Model = CheatModel
+    Ana.EnableReconstruction = True 
+    Ana.BatchSize = 1
+    Ana.Launch
 
 if __name__ == "__main__":
     #test_random_sampling()
     #test_feature_analysis()
-    test_optimizer()
+    #test_optimizer()
+    #test_optimizer_analysis()
     pass

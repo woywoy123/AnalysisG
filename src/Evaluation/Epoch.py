@@ -44,6 +44,7 @@ class Metrics:
         th.xData = self.losshist 
         th.xBins = 100
         th.Title = self.mode
+        th.LaTeX = False
         th.xTitle = "Loss"
         return th
 
@@ -53,6 +54,7 @@ class Metrics:
         th.xBins = 100
         th.xData = self.accuracyhist 
         th.Title = self.mode
+        th.LaTeX = False
         th.xTitle = "Accuracy"
         return th
 
@@ -64,6 +66,7 @@ class Metrics:
         th.xMin = 0
         th.xData = self.mass 
         th.Title = self.mode
+        th.LaTeX = False
         th.xTitle = "Mass (GeV)"
         return th
 
@@ -74,6 +77,7 @@ class Metrics:
         th.xBins = 500
         th.xMin = 0
         th.xData = self.mass_t
+        th.LaTeX = False
         th.Title = "truth"
         th.xTitle = "Mass (GeV)"
         return th
@@ -84,6 +88,7 @@ class Metrics:
         th = TH1F()
         th.xData = self.nreco
         th.Title = self.mode
+        th.LaTeX = False
         th.xTitle = "Number of Particles Reconstructed"
         return th
 
@@ -92,7 +97,9 @@ class Metrics:
         if len(self.ntru) == 0: return 
         th = TH1F()
         th.xData = self.ntru
+        th.xMin = 0
         th.Title = "truth"
+        th.LaTeX = False
         th.xTitle = "True Number of Particles"
         return th
  
@@ -104,6 +111,7 @@ class Metrics:
         th.xBins = max(self.nodes)+1
         th.xMin = 0
         th.xMax = max(self.nodes)
+        th.LaTeX = False
         th.xTitle = "n-Nodes"
         return th
  
@@ -192,8 +200,10 @@ class Epoch:
         except: d, t = "", title
         th.Title = title.replace("/", "-")
         th.Filename = t
+        th.LaTeX = False
         th.OutputDirectory = self.OutputDirectory + "/" + self.RunName + "/" + self.Epoch + "/" + d
         th.Verbose = 0
+        th.xMin = 0
         th.SaveFigure()
 
     @property
@@ -209,6 +219,7 @@ class Epoch:
             try:
                 x, y = v.ROC[0], t.ROC[0]
                 tc = CombineTLine()
+                tc.LaTeX = False
                 tc.title = i[2:]
                 tc.Lines = [x, y]
                 tc.OutputDirectory = self.OutputDirectory + "/" + self.RunName + "/" + self.Epoch

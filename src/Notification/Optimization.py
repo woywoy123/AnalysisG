@@ -38,7 +38,7 @@ class _Optimizer(Notification):
         self.Epoch = 0
         pth = self.OutputDirectory + "/" + self.RunName
         f = self.ls(pth)
-        if not self.ContinueTraining: return 
+        if not self.ContinueTraining: return True
         if len(f) == 0: return self.Warning("No prior training was found under: " + pth + ". Generating...")
         
         kfolds = list(self.kFold) 
@@ -51,10 +51,12 @@ class _Optimizer(Notification):
         for i in kf:
             self._kModels[i]._pth = self.OutputDirectory + "/" + self.RunName 
             self._kModels[i].Epoch = epochs + "/" + i 
-            self._kModels[i].load
+            try: self._kModels[i].load
+            except KeyError: return not self.Failure("Loading Model Failed. Exiting...")
             self._kOp[i]._pth = self.OutputDirectory + "/" + self.RunName 
             self._kOp[i].Epoch = epochs + "/" + i 
-            self._kOp[i].load
+            try: self._kOp[i].load
+            except KeyError: return not self.Failure("Loading Optimizer Failed. Exiting...")
         for i in list(self._kModels):
             if i in kf: continue
             del self._kModels[i] 
@@ -70,7 +72,19 @@ class _Optimizer(Notification):
         if self.TrainingName + ".pkl" in ls: 
             f = UnpickleObject(pth + self.TrainingName)
             if self.kFold == None: self.kFold = f
-            elif isinstance(self.kFold, int): self.kFold = {"k-" + str(self.kFold) : f["k-" + str(self.kFold)]}
-            else: self.kFold = {self.kFold : f[self.kFold]}
+            elif isinstance(self.kFold, int) and "k-" + str(self.kFold) in f: self.kFold = {"k-" + str(self.kFold) : f["k-" + str(self.kFold)]}
+            elif "k-" + str(self.kFold) in f: self.kFold = {self.kFold : f[self.kFold]}
+            else: 
+                self.Warning("Given k-Fold not found. Assuming the following folds: " + "\n-> ".join([""] + list(f)))
+                self.kFold = f
             return self.Success("Found the training sample: " + self.TrainingName)
         self.Warning("The given training sample name was not found, but found the following: " + "\n-> ".join(ls))
+
+    @property
+    def _showloss(self): 
+        string = ["Epoch-kFold: " + self.Epoch]
+        if self._op._sc is not None: string[-1] += " Current LR: {:.10f}".format(self._op._sc.get_lr()[0])
+        for f in self.Model._l: 
+            string.append("Feature: {}, Loss: {:.10f}, Accuracy: {:.10f}".format(f, self.Model._l[f]["loss"], self.Model._l[f]["acc"]))
+        print("\n-> ".join(string)) 
+

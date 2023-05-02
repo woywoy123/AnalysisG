@@ -33,17 +33,50 @@ class Code:
         
         self._subclass = "" 
         cl = self.clone
+        try: cl = cl()
+        except: pass 
         if issubclass(type(cl), ParticleTemplate): self._subclass += "from AnalysisG.Templates import ParticleTemplate"
         elif issubclass(type(cl), EventTemplate): self._subclass += "from AnalysisG.Templates import EventTemplate"
         elif issubclass(type(cl), GraphTemplate): self._subclass += "from AnalysisG.Templates import GraphTemplate"
         elif issubclass(type(cl), SelectionTemplate): self._subclass += "from AnalysisG.Templates import SelectionTemplate"
-
+        
         self._Path = self._Module + "." + self._Name
         self._Code = GetSourceCode(Instance)
         self._Hash = Hash(self._Code)
         self._File = GetSourceFileDirectory(Instance)
         self._FileCode = "".join(open(self._File, "r").readlines())
-    
+        self._Get, self._Import = self.checkdependency
+
+
+    @property
+    def checkdependency(self):
+        imports = {}
+        cur = ""
+        for i in self._FileCode.split("\n"):
+            if "import" not in i and "from" not in i: continue
+            if "AnalysisG" in i or "PyC" in i: continue 
+            for t in i.split(" "):
+                if t == "from":  cur = t      
+                if t == "import": cur = t
+                if cur not in imports: imports[cur] = []
+                elif cur == t: continue
+                else: 
+                    if "," in t: imports[cur] += t.split(",")
+                    else: imports[cur].append(t)
+        if "from" not in imports: return [], []
+        files = {}
+        for i in set(imports["from"]): files[i] = "/".join(self._File.split("/")[:-1]) + "/" + i + ".py"
+        get = []
+        for i in files:
+            if not os.path.isfile(files[i]): continue 
+            for j in list(imports["import"]): 
+                found = j in "".join([k for k in ("".join(open(files[i], "r").readlines())).split("\n") if "class" in k or "def" in k])
+                if found: imports["import"].pop(imports["import"].index(j))
+                try: imports["from"].pop(imports["from"].index(i))
+                except: pass
+            get.append(files[i])  
+        return get, imports["from"]
+ 
     @property
     def clone(self):
         Instance = self._Instance

@@ -47,6 +47,7 @@ class OptimizerWrapper(Settings):
     
     @property
     def SetScheduler(self):
+        self.SchedulerParams["optimizer"] = self._op
         if self.Scheduler == "ExponentialLR": self._sc = ExponentialLR(**self.SchedulerParams)
         if self.Scheduler == "CyclicLR": self._sc = CyclicLR(**self.SchedulerParams)
         if self._sc == None: return False

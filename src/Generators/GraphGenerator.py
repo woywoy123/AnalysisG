@@ -55,10 +55,7 @@ class GraphGenerator(_GraphGenerator, Settings, SampleTracer, _Interface):
 
             gr = self._Code["EventGraph"].clone
             try: gr = gr(ev)
-            except AttributeError:
-                gr = gr.Escape(gr)
-                gr.Event = ev
-                gr.Particles = []
+            except AttributeError: gr = gr(None)
             gr.GraphAttr |= self.GraphAttribute     
             gr.NodeAttr |= self.NodeAttribute     
             gr.EdgeAttr |= self.EdgeAttribute    

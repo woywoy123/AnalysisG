@@ -1,3 +1,4 @@
+from AnalysisG.IO import PickleObject, UnpickleObject
 from .SelectionGenerator import SelectionGenerator 
 from AnalysisG.Templates import FeatureAnalysis
 from AnalysisG.Notification import _Analysis
@@ -6,8 +7,8 @@ from .EventGenerator import EventGenerator
 from .GraphGenerator import GraphGenerator 
 from AnalysisG.Tracer import SampleTracer
 from AnalysisG.Settings import Settings
-from AnalysisG.IO import PickleObject, UnpickleObject
 from .Interfaces import _Interface
+from .Optimizer import Optimizer
 
 class Analysis(_Analysis, Settings, SampleTracer, _Interface):
     
@@ -106,7 +107,13 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         if len(output) == 0: return  
         self.mkdir(pth)
         PickleObject(output, pth + self.TrainingName)
-   
+
+    @property 
+    def __Optimizer__(self):
+        if self.Model == None and self.Optimizer == None: return
+        op = Optimizer(self)
+        op.Launch
+ 
     @property
     def __CollectCode__(self):
         code = {}
@@ -125,6 +132,8 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
             sel.ImportSettings(self)
             for name in self.Selections: sel.AddSelection(name, self.Selections[name])
             code |= sel.MakeSelection
+        if self.Model is not None:
+            code["Model"] = Optimizer(self).GetCode
         return code
 
     @property
@@ -141,6 +150,7 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         
         self.__Selection__
         self.__RandomSampler__
+        self.__Optimizer__
         self.WhiteSpace()
         return True
 
