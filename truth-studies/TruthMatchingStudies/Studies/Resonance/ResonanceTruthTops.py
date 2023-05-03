@@ -1,9 +1,9 @@
-from AnalysisTopGNN.Templates import Selection
+from AnalysisG.Templates import SelectionTemplate
 
-class ResonanceDecayModes(Selection):
+class ResonanceDecayModes(SelectionTemplate):
 
     def __init__(self):
-        Selection.__init__(self)
+        SelectionTemplate.__init__(self)
         self.ResDecayMode = {"H" : 0, "L": 0, "HH" : 0, "HL" : 0, "LL" : 0}
         self.TopDecayMode = {"Spec-H" : 0, "Spec-L" : 0, "Res-H" : 0, "Res-L" : 0}
 
@@ -32,10 +32,10 @@ class ResonanceDecayModes(Selection):
         r_dec = "HL" if r_dec == "LH" else r_dec 
         self.ResDecayMode[r_dec]+=1
 
-class ResonanceMassFromTops(Selection):
+class ResonanceMassFromTops(SelectionTemplate):
 
     def __init__(self):
-        Selection.__init__(self)
+        SelectionTemplate.__init__(self)
         self.ResDecayMode = {"HH" : [], "HL" : [], "LL" : []}
     
     def Selection(self, event):
@@ -49,10 +49,10 @@ class ResonanceMassFromTops(Selection):
         dec = "HL" if dec == "LH" else dec 
         self.ResDecayMode[dec] += [sum(resT).Mass]
 
-class ResonanceDeltaRTops(Selection):
+class ResonanceDeltaRTops(SelectionTemplate):
     
     def __init__(self):
-        Selection.__init__(self)
+        SelectionTemplate.__init__(self)
         self.TopsTypes = {"Res-Spec" : [], "Res-Res" : [], "Spec-Spec" : []}
 
     def Selection(self, event):
@@ -72,10 +72,10 @@ class ResonanceDeltaRTops(Selection):
                 self.TopsTypes["-".join([k for k in string for p in range(string[k])])].append(t1.DeltaR(t2))
             fin.append(t1)
 
-class ResonanceTopKinematics(Selection):
+class ResonanceTopKinematics(SelectionTemplate):
 
     def __init__(self):
-        Selection.__init__(self)
+        SelectionTemplate.__init__(self)
         self.TopsTypesPT = {"Res" : [], "Spec" : []}
         self.TopsTypesE = {"Res" : [], "Spec" : []}
         self.TopsTypesEta = {"Res" : [], "Spec" : []}

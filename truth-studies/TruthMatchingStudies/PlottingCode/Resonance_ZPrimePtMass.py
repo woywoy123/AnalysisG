@@ -1,4 +1,4 @@
-from AnalysisTopGNN.Plotting import TH2F
+from AnalysisG.Plotting import TH2F
 
 def TemplateTH2F(Title, Data, f_title):
     th2 = TH2F()

@@ -41,6 +41,12 @@ MAX_JOBS=12   # Number of threads to use for compilation
 CC=gcc-11     # GCC compiler version, see https://stackoverflow.com/questions/6622454/cuda-incompatible-with-my-gcc-version
 CXX=g++-11
 ```
+4. **Attention for cluster users**: Add these commands to your `.bashrc`:
+```bash 
+export ATLAS_LOCAL_ROOT_BASE=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase
+source ${ATLAS_LOCAL_ROOT_BASE}/user/atlasLocalSetup.sh
+lsetup "gcc gcc620_x86_64_slc6"
+```
 
 ## How Do I Make This Code Work With My Samples? <a name="CustomSamples"></a>
 
@@ -65,7 +71,7 @@ src/Events/Graphs/EventGraphs.py
 - Create three empty files; `Particles.py`, `Event.py`, `EventGraph.py`, we will edit these one by one. 
 
 #### Defining A Particle Class (`Particles.py`): <a name="CustomParticleClass"></a>
-This section aims to illustrate a very simple example of how to create a custom particle, which the framework can use to construct the particle.
+This section aims to illustrate a very simple example of how to create a custom particle definition, with the framework.
 1. Open ``Particles.py`` and place the following line on the top
 ```python 
 from AnalysisG.Templates import ParticleTemplate
@@ -85,7 +91,7 @@ class CustomParticle(ParticleTemplate): # <--- Inherit functions from ParticleTe
 
 In the above example, the framework is expecting the ROOT file to contain particle leaves for `Particle.PT` and `Particle.ETA`. 
 However, after the object has been constructed, these attributes can be simply called via `<some particle>.pt` or `<some particle>.eta`.
-If during the construction step, that is, when the framework scans ROOT files, notices missing leaf keys, a warning will be issued and corresponding attribute is skipped.
+If during the construction step, that is, when the framework scans ROOT files, notices missing leaf keys, a warning will be issued and the corresponding attribute is skipped.
 
 #### Attributes and Functions:
 The **ParticleTemplate** class comes with numerous useful functions that can be overridden, if needed. 
@@ -268,7 +274,7 @@ for event in Ana:
 
 ### Attributes and Functions:
 #### Attributes
-- `VerboseLevel`: 
+- `Verbose`: 
 An integer which increases the verbosity of the framework, with 3 being the highest and 0 the lowest.
 - `Threads`: 
 The number of CPU threads to use for running the framework. 
@@ -300,19 +306,26 @@ Given an event graph implementation, create a fully connected graph.
 Assign some percentage to training and reserve the remaining for testing.
 - `kFolds`:
 Number of folds to use for training 
+- `kFold`:
+Explicitly use this kFold during training. This can be quite useful when doing parallel traning, since each kFold is trained completely independently. 
 - `BatchSize`:
 How many Event Graphs to group into a single graph.
 - `Model`:
 The model to be trained, more on this later.
 - `DebugMode`:
-Increases the verbosity during training. This can be set to; "loss", "accuracy", "compare" (compare prediction to truth) or a combination of these e.g. "loss-accuracy".
+Expects a boolean, if this is set to `True`, a complete print out of the training is displayed. 
 - `ContinueTraining`:
 Whether to continue the training from the last known checkpoint (after each epoch).
 - `Optimizer`:
-Takes as input a nested dictionary, where the first key specifies the minimizer and the subsequent dictionary the parameters. 
+Expects a string of the specific optimizer to use.
 Current choices are; `SGD` - Stochastic Gradient Descent and `ADAM`.
-- `Scheduler`: 
-Takes as input a nested dictionary, where the first key specifies the scheduler for modulating the learning rate. Options are; `ExponentialLR` and `CyclicLR`. 
+- `OptimizerParams`: 
+A dictionary containing the specific input parameters for the chosen `Optimizer`.
+- `Scheduler`:
+Expects a string of the specific scheduler to use. 
+Current choices are; `ExponentialLR` and `CyclicLR`. 
+- `SchedulerParams`: 
+A dictionary containing the specific input parameters for the chosen `Scheduler`.
 - `Device`: 
 The device used to run `PyTorch` training on. This also applies to where to store graphs during compilation.
 - `FeatureTest`: 
@@ -322,7 +335,7 @@ If any of the features fail, an alert is issued.
 #### Default Parameters:
 | **Attribute**        | **Default Value** | **Expected Type** |                    **Examples** |
 |:---------------------|:-----------------:|:-----------------:|:-------------------------------:|
-| VerboseLevel         |                 3 |             `int` |                                 | 
+| Verbose              |                 3 |             `int` |                                 | 
 | Threads              |                12 |             `int` |                                 |
 | chnk                 |                12 |             `int` |                                 |
 | Tree                 |              None |             `str` |                                 |

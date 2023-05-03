@@ -135,7 +135,7 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         if self.Model is not None:
             code["Model"] = Optimizer(self).GetCode
         return code
-
+    
     @property
     def Launch(self):   
         if self._condor: return self.__CollectCode__
@@ -147,13 +147,13 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
             if tracer: self.RestoreEvents
             if not self.__Event__: return False
             if not self.__Graph__: return False
-        
+        if self.EmptySampleList: return False 
         self.__Selection__
         self.__RandomSampler__
         self.__Optimizer__
         self.WhiteSpace()
         return True
-
+    
     def __preiteration__(self):
         if len(self) == 0: self.Launch
         return self.EmptySampleList

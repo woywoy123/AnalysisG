@@ -32,7 +32,7 @@ class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface
             if lock == None: bar.update(1)
             else:
                 with lock: bar.update(1)
-                sleep(0.001) # This actually improves speed!!!
+                sleep(0.01)
         if lock == None: del bar
         return [output]
 
@@ -42,9 +42,11 @@ class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface
     
     @property
     def __merge__(self):
-        self.result = {i : self.Merge[i].pop(0) for i in self.Merge}
-        for name in self.Merge: self.result[name] += sum(self.Merge[name])
-    
+        for name in self.Merge:
+            if len(self.Merge[name]) == 0: continue
+            self.result[name] = sum(self.Merge[name])
+            self.Merge[name] = []
+ 
     @property
     def MakeSelection(self):
         self.__collect__(self.Selections, "Selections") 
@@ -52,23 +54,25 @@ class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface
         if len(self.Merge) != 0: pass
         elif self.CheckSettings: return False
         
-        inpt = []
         for name in self.Selections:
             if name not in self.Merge: self.Merge[name] = []
+            inpt = []
             for ev, i in zip(self, range(len(self))):
                 if self._StartStop(i) == False: continue
                 if self._StartStop(i) == None: break
                 sel = self._Code["Selections"][name].clone
                 inpt.append([name, sel, ev, ev.hash, ev.ROOT])
-        if len(inpt) == 0 and len(self.Merge) != 0: return self.__merge__
-        if self.Threads > 1:
-            th = Threading(inpt, self.__compile__, self.Threads, 2)
-            th.Title = self.Caller
-            th.Start
-            out = th._lists
-        else: out = self.__compile__(inpt, self._MakeBar(len(inpt)))
+
+            if len(inpt) == 0 and len(self.Merge) != 0: return self.__merge__
+            if self.Threads > 1:
+                th = Threading(inpt, self.__compile__, self.Threads, self.chnk)
+                th.Title = self.Caller + "::" + name
+                th.Start
+                out = th._lists
+            else: out = self.__compile__(inpt, self._MakeBar(len(inpt)))
         
-        for i in out: 
-            if i is None: continue
-            for name in i: self.Merge[name].append(i[name])
+            for i in out: 
+                if i is None: continue
+                for name in i: self.Merge[name].append(i[name])
+            self.__merge__
         self.__merge__

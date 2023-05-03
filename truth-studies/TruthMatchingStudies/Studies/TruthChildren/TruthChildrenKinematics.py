@@ -1,9 +1,9 @@
-from AnalysisTopGNN.Templates import Selection
+from AnalysisG.Templates import SelectionTemplate
 
-class DeltaRChildren(Selection):
+class DeltaRChildren(SelectionTemplate):
     
     def __init__(self):
-        Selection.__init__(self)
+        SelectionTemplate.__init__(self)
         self.ChildrenCluster = {
                         "Had-DelR" : [], "Lep-DelR" : [],
                         "Had-top-PT" : [], "Lep-top-PT" : [], 
@@ -61,10 +61,10 @@ class DeltaRChildren(Selection):
                 self.MatchedChildren["False-Top-Spec-Spec"] += [l[0]]
 
 
-class Kinematics(Selection):
+class Kinematics(SelectionTemplate):
     
     def __init__(self):
-        Selection.__init__(self)
+        SelectionTemplate.__init__(self)
         self.FractionalPT = {}
         self.FractionalEnergy = {}
 
@@ -76,9 +76,9 @@ class Kinematics(Selection):
     def Strategy(self, event):
         for t in event.Tops:
             for c in t.Children:
-                if c.Symbol not in self.FractionalPT:
-                    self.FractionalPT[c.Symbol] = []
-                if c.Symbol not in self.FractionalEnergy:
-                    self.FractionalEnergy[c.Symbol] = []
-                self.FractionalPT[c.Symbol] += [c.pt/t.pt]
-                self.FractionalEnergy[c.Symbol] += [c.e/t.e]
+                if c.symbol not in self.FractionalPT:
+                    self.FractionalPT[c.symbol] = []
+                if c.symbol not in self.FractionalEnergy:
+                    self.FractionalEnergy[c.symbol] = []
+                self.FractionalPT[c.symbol] += [c.pt/t.pt]
+                self.FractionalEnergy[c.symbol] += [c.e/t.e]

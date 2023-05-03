@@ -1,9 +1,9 @@
-from AnalysisTopGNN.Templates import Selection
+from AnalysisG.Templates import SelectionTemplate
 
-class EventNTruthJetAndJets(Selection):
+class EventNTruthJetAndJets(SelectionTemplate):
 
         def __init__(self):
-                Selection.__init__(self)
+                SelectionTemplate.__init__(self)
                 self.TruthJets = []
                 self.Jets = []
                 self.MET = []
@@ -17,10 +17,10 @@ class EventNTruthJetAndJets(Selection):
                 self.nLep.append(len([ i for i in event.TopChildren if abs(i.pdgid) in lep ]))
 
 
-class EventMETImbalance(Selection):
+class EventMETImbalance(SelectionTemplate):
 
         def __init__(self):
-                Selection.__init__(self)
+                SelectionTemplate.__init__(self)
                 self.PT_4Tops = []
                 self.Pz_4Tops = []
                 self.Top4_angle = []

@@ -1,6 +1,6 @@
-from AnalysisTopGNN import Analysis 
-from AnalysisTopGNN.Events import Event 
-from AnalysisTopGNN.IO import UnpickleObject
+from AnalysisG import Analysis 
+from AnalysisG.Events import Event 
+from AnalysisG.IO import UnpickleObject
 
 from Studies.Resonance.ZPrimePtMass import ZPrimeMatrix
 import PlottingCode.Resonance_ZPrimePtMass as ZPrime
@@ -77,23 +77,22 @@ for i in toRun:
     Ana.AddSelection(i, studies[i])
     Ana.MergeSelection(i)
 
-
-
-
+smpls = "" #"/DileptonCollection/MadGraphPythia8EvtGen_noallhad_"
 Ana.ProjectName = "_Project"
-Ana.InputSample("BSM-4t-DL-1000", smpl + "/DileptonCollection/MadGraphPythia8EvtGen_noallhad_ttH_tttt_m1000")
-#Ana.InputSample("BSM-4t-DL-900", smpl + "/DileptonCollection/MadGraphPythia8EvtGen_noallhad_ttH_tttt_m900/")
-#Ana.InputSample("BSM-4t-DL-800", smpl + "/DileptonCollection/MadGraphPythia8EvtGen_noallhad_ttH_tttt_m800/")
-#Ana.InputSample("BSM-4t-DL-700", smpl + "/DileptonCollection/MadGraphPythia8EvtGen_noallhad_ttH_tttt_m700/")
-#Ana.InputSample("BSM-4t-DL-600", smpl + "/DileptonCollection/MadGraphPythia8EvtGen_noallhad_ttH_tttt_m600/")
-#Ana.InputSample("BSM-4t-DL-500", smpl + "/DileptonCollection/MadGraphPythia8EvtGen_noallhad_ttH_tttt_m500/")
-#Ana.InputSample("BSM-4t-DL-400", smpl + "/DileptonCollection/MadGraphPythia8EvtGen_noallhad_ttH_tttt_m400/")
+Ana.InputSample("BSM-4t-DL-1000_s", smpl + smpls + "/ttH_tttt_m1000/")
+#Ana.InputSample("BSM-4t-DL-900", smpl + smpls + "/ttH_tttt_m900/")
+#Ana.InputSample("BSM-4t-DL-800", smpl + smpls + "/ttH_tttt_m800/")
+#Ana.InputSample("BSM-4t-DL-700", smpl + smpls + "/ttH_tttt_m700/")
+#Ana.InputSample("BSM-4t-DL-600", smpl + smpls + "/ttH_tttt_m600/")
+#Ana.InputSample("BSM-4t-DL-500", smpl + smpls + "/ttH_tttt_m500/")
+#Ana.InputSample("BSM-4t-DL-400", smpl + smpls + "/ttH_tttt_m400/")
 Ana.Event = Event 
 #Ana.EventStop = 1000
+Ana.Threads = 6
+Ana.chnk = 1000
 Ana.EventCache = True
-Ana.DumpPickle = True
-Ana.Threads = 30
-#Ana.Launch()
+#Ana.PurgeCache = True
+Ana.Launch
 
 ## Debugging purposes
 #for i in toRun:

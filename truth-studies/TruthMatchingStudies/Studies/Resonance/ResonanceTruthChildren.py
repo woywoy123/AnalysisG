@@ -1,9 +1,9 @@
-from AnalysisTopGNN.Templates import Selection 
+from AnalysisG.Templates import SelectionTemplate 
 
-class ResonanceMassFromChildren(Selection):
+class ResonanceMassFromChildren(SelectionTemplate):
 
     def __init__(self):
-        Selection.__init__(self)
+        SelectionTemplate.__init__(self)
         self.ResonanceMass = {"Had-Had" : [], "Had-Lep" : [], "Lep-Lep" : []}
     
     def Selection(self, event):

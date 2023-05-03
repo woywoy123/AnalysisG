@@ -1,9 +1,9 @@
-from AnalysisTopGNN.Templates import Selection
+from AnalysisG.Templates import SelectionTemplate
 
-class EventNuNuSolutions(Selection):
+class EventNuNuSolutions(SelectionTemplate):
     
     def __init__(self):
-        Selection.__init__(self)
+        SelectionTemplate.__init__(self)
         self.NuNuSolutions = {"No-Rotation" : [], "Rotation" : []}
         self.TopMassDelta = {"No-Rotation" : {}, "Rotation" : {}}
         self.Truth_MET_NuNu_Delta = {"No-Rotation" : [], "Rotation" : []}

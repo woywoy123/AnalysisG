@@ -1,4 +1,4 @@
-from AnalysisTopGNN.Plotting import TH1F, CombineTH1F, TH2F
+from AnalysisG.Plotting import TH1F, CombineTH1F, TH2F
 
 def PlotTemplate(x):
     Plots = {

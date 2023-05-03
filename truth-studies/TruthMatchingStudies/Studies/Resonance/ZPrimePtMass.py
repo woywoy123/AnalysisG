@@ -1,9 +1,9 @@
-from AnalysisTopGNN.Templates import Selection 
+from AnalysisG.Templates import SelectionTemplate 
 
-class ZPrimeMatrix(Selection):
+class ZPrimeMatrix(SelectionTemplate):
 
     def __init__(self):
-        Selection.__init__(self)
+        SelectionTemplate.__init__(self)
         
         self.ZMatrixTops = {"Mass" : [], "PT" : []}
        
