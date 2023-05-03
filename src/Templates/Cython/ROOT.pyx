@@ -8,6 +8,7 @@ from libcpp cimport bool
 import h5py
 import os
 import sys
+import shutil
 import pickle 
 import codecs
 from tqdm import tqdm
@@ -377,14 +378,15 @@ cdef class SampleTracer:
             _, bar = self._MakeBar(r_.HashMap.size(), get + c.first.decode("UTF-8").split("/")[-1])
             
             if not DataCache: 
+                try: os.mkdir("./tmp")
+                except FileExistsError: pass
                 for k in f["code"].attrs:
                     Code = pickle.loads(codecs.decode(f["code"].attrs[k].encode("UTF-8"), "base64"))
                     k = Code._File.split("/")[-1]
-                    mk = open("./" + k, "w")
+                    mk = open("./tmp/" + k, "w")
                     mk.write(Code._FileCode)
                     mk.close()
-                    files["./" + k] = None
-                for k in files: sys.path.append(k)
+                sys.path.append("./tmp/")
             for e in r_.HashMap:
                 bar.update(1)
                 e_ = e.second   
@@ -395,7 +397,8 @@ cdef class SampleTracer:
                 self.HashMap[get] = pickle.loads(codecs.decode(f[get].attrs["Event"].encode("UTF-8"), "base64"))
                 if EventCache: e_.Event = True
                 if DataCache: e_.Graph = True
-            for k in files: os.remove(k)
+            try: shutil.rmtree("./tmp")
+            except FileNotFoundError: pass
             del bar
 
     def ForceTheseHashes(self, inpt: Union[dict, list]) -> None:

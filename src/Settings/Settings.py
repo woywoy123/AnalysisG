@@ -206,8 +206,7 @@ class Settings:
         if self.Caller == "PLOTTING": _Plotting.__init__(self)
     
     @property
-    def Device(self):
-        return self._Device
+    def Device(self): return self._Device
 
     @Device.setter
     def Device(self, val):
@@ -217,7 +216,7 @@ class Settings:
     def ImportSettings(self, inpt):
         if not issubclass(type(inpt), Settings): return 
         s = Settings(self.Caller)
-        for i in s.__dict__: 
+        for i in s.__dict__:
             try: setattr(self, i, getattr(inpt, i))
             except AttributeError: continue
     

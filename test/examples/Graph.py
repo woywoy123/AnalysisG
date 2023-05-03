@@ -5,4 +5,4 @@ class DataGraph(GraphTemplate):
     def __init__(self, Event = None):
         GraphTemplate.__init__(self)
         self.Event = Event 
-        self.Particles += Event.Tops
+        self.Particles += self.Event.Tops

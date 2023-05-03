@@ -93,6 +93,10 @@ class AnalysisScript(AnalysisG.Tools.General.Tools, Settings):
                 shared["code"][self.Code[i]._Name] += [self.Code[i]._Code]
             elif i == "Particles": 
                 for part in self.Code[i].values(): shared["code"][part._File] = [part._FileCode]
+            elif i == "Model": 
+                    shared["imports"] += ["from " + self.Code[i]._Name + " import " + self.Code[i]._Name]
+                    self.__Build(self.Code[i]._FileCode, self.Code[i]._Name)
+                    script += ["<*Analysis*>." + i + " = " + self.Code[i]._Name]               
             else:
                 if type(self.Code[i]).__name__ == "Code": 
                     shared["imports"] += ["from " + self.Code[i]._Name + " import " + self.Code[i]._Name]
@@ -105,7 +109,10 @@ class AnalysisScript(AnalysisG.Tools.General.Tools, Settings):
                             _buildCode += "import sys\n" if "import sys" not in _buildCode else ""
                             _buildCode += "sys.path.append('" + "/".join(k.split("/")[:-1]) + "')\n"
                             _buildCode += "from " + k.split("/")[-1].replace(".py", "") + " import *\n"
-                        for k in self.Code[i][j]._Import: _buildCode += "from " + k + " import *\n"
+                        for k in self.Code[i][j]._Import: 
+                            _buildCode += "try: from " + k + " import *\n"
+                            _buildCode += "except: pass\n"                           
+
                     shared["imports"] += ["from " + i + " import " + ", ".join([self.Code[i][j]._Name for j in self.Code[i]])]
                     _buildCode += "\n".join(set([self.Code[i][j]._subclass for j in self.Code[i]]))
                     for j in self.Code[i]: _buildCode += "\n\n" + self.Code[i][j]._Code
@@ -140,13 +147,13 @@ class JobSpecification(AnalysisG.Tools.General.Tools, Settings):
     def Launch(self): self.Job.Launch
     
     def DumpConfig(self):
-        conf = self.Job.DumpSettings
-         
         self.Job.__build__
         pth = self.Job.OutputDirectory + "/CondorDump/" + self.Name
         self.mkdir(pth)
         self.mkdir(pth + "/../_SharedCode")
         
+        self.Job.OutputDirectory = "/".join(self.Job.OutputDirectory.split("/")[:-1])
+        conf = self.Job.DumpSettings
         Ana = AnalysisScript()
         Ana.Name = "main"
         Ana.OutDir = pth
