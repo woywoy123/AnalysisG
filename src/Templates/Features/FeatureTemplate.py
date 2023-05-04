@@ -38,34 +38,28 @@ def TruthTopChildren():
             "energy" : tc_nf.energy, 
             "pT"     : tc_nf.pT, 
             "phi"    : tc_nf.phi, 
-            "mass"   : tc_nf.mass, 
-            "charge" : tc_nf.charge, 
     }
     
     GF = {
- 
             "met"     : tc_gf.MET, 
             "met_phi" : tc_gf.MET_Phi
         }
-
     
     GT = {
             "signal"  : tc_gf.Signal, 
-            "ntops"   : tc_gf.nTops,
-            "nlep"    : tc_gf.nLeptons, 
-            "nNu"     : tc_gf.nNeutrinos,
         }
 
     NT = {
             "node_res" : tc_nf.FromRes, 
-            "top" : tc_nf.FromTop, 
-            "islep"  : tc_nf.islepton, 
-            "isNu"   : tc_nf.isneutrino, 
+            "node_top" : tc_nf.FromTop, 
+            "node_islep"  : tc_nf.islepton, 
+            "node_isNu"   : tc_nf.isneutrino, 
         }
     
     ET = {
             "edge_res"  : tc_ef.ResEdge,
-            "edge" : tc_ef.edge
+            "edge_top" : tc_ef.edge, 
+            "edge_lep" : tc_ef.LepEdge
         }
     
     Features = {}

@@ -241,7 +241,7 @@ class Condor(AnalysisG.Tools.General.Tools, _Condor, Settings):
         if self._dumped == False: self.DumpCondorJobs
         pwd = self.pwd
         self.cd(self.abs(self.OutputDirectory + "/" + self.ProjectName + "/CondorDump"))
-        subprocess.call(["sh", "cat DAGSUBMISSION.submit"])
+        subprocess.Popen(["condor_submit_dag", "DAGSUBMISSION.submit"])
         self.cd(pwd)
 
     @property

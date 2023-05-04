@@ -94,19 +94,21 @@ class Optimizer(_Optimizer, _Interface, SampleTracer, RandomSamplers):
                     mode = next(self._DL)
                     self._dl = self._dl = self._DataLoader[k][mode]
                     self._len = self._nsamples[k][mode]
+
+                    self.Model.train = False
+                    self._ep.train = False
+                    self._op.train = False
+                    self.__this_epoch__
                 except StopIteration: self._len = 0 
-                
-                self.Model.train = False
-                self._ep.train = False
-                self._op.train = False
-                self.__this_epoch__
                 
                 self._op.stepsc
                 self._op.dump
                 self.Model.dump
                 dumper.append(self._ep)
                 dumper = self.__dump_plots__(dumper)
-        dumper = self.__dump_plots__(dumper, True)         
+
+        dumper = self.__dump_plots__(dumper, True)        
+ 
     @property 
     def GetCode(self):
         if "Model" in self._Code: return self._Code["Model"]
@@ -156,6 +158,7 @@ class Optimizer(_Optimizer, _Interface, SampleTracer, RandomSamplers):
             self._nsamples[k] = {}
             self._DataLoader[k] = {}
             for s in self.kFold[k]: 
+                self.kFold[k][s] = self.MergeNestedList(self.kFold[k][s])
                 self.MarkTheseHashes(self.kFold[k][s], s)
                 self.ForceTheseHashes(self.kFold[k][s])
                 self._DataLoader[k][s] = self.MakeDataLoader([i.clone().to(self.Device) for i in self], self.SortByNodes, self.BatchSize)

@@ -193,7 +193,8 @@ class Epoch:
     def plots(self, title, a, b, c = None, d = None):
         if a == b: return 
         th = CombineTH1F()
-        th.Histograms += [a, b] 
+        if a is not None: th.Histograms += [a]
+        if b is not None: th.Histograms += [b]
         if c is not None: th.Histograms += [c]
         if d is not None: th.Histograms += [d]
         try: d, t = title.split("/")
@@ -209,26 +210,45 @@ class Epoch:
     @property
     def dump(self):
            
-        train = self._makehists(self._train, "train")
-        val = self._makehists(self._val, "validation")
-        self.plots("Nodes", train["nodes"].NodeHist, val["nodes"].NodeHist)
+        try: 
+            train = self._makehists(self._train, "train")
+            tn = train["nodes"].NodeHist
+        except: tn = None 
+
+        try: 
+            val = self._makehists(self._val, "validation")
+            vn = val["nodes"].NodeHist
+        except: vn = None 
+
+        self.plots("Nodes", tn, vn)
         for i in self.o_model: 
-            t, v = train[i[2:]], val[i[2:]]
-            self.plots(i[2:] + "/Loss", t.LossHist, v.LossHist)
-            self.plots(i[2:] + "/Accuracy", t.AccuracyHist, v.AccuracyHist)
             try:
-                x, y = v.ROC[0], t.ROC[0]
-                tc = CombineTLine()
-                tc.LaTeX = False
-                tc.title = i[2:]
-                tc.Lines = [x, y]
-                tc.OutputDirectory = self.OutputDirectory + "/" + self.RunName + "/" + self.Epoch
-                tc.Filename = i[2:] + "/ROC" 
-                tc.Verbose = 0
-                tc.SaveFigure()
-            except IndexError: pass
-            if v.MassTHist.xData == None: continue
-            t.MassTHist.xData += v.MassTHist.xData
-            self.plots(i[2:] + "/Mass", t.MassTHist, v.MassHist, t.MassHist)
+                t = train[i[2:]]
+                tl, ta = t.LossHist, t.AccuracyHist
+            except: t, tl, ta = None, None, None
+
+            try:
+                v = val[i[2:]]
+                vl, va = v.LossHist, v.AccuracyHist
+            except: v, vl, va = None, None, None
+
+            self.plots(i[2:] + "/Loss", tl, vl)
+            self.plots(i[2:] + "/Accuracy", ta, va)
+            tc = CombineTLine()
+            
+            try: tc.Lines += [t.ROC[0]]
+            except: pass
+            try: tc.Lines += [v.ROC[0]]
+            except: pass
+
+            tc.LaTeX = False
+            tc.title = i[2:]
+            tc.OutputDirectory = self.OutputDirectory + "/" + self.RunName + "/" + self.Epoch
+            tc.Filename = i[2:] + "/ROC" 
+            tc.Verbose = 0
+            tc.SaveFigure()
+           
+            if v != None and v.MassTHist.xData != None: t.MassTHist.xData += v.MassTHist.xData
+            self.plots(i[2:] + "/Mass", t.MassTHist, None if v == None else v.MassHist, t.MassHist)
 
         PickleObject(self, self.OutputDirectory + "/" + self.RunName + "/" + str(self.Epoch) + "/Stats")

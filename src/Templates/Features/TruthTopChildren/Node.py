@@ -1,28 +1,12 @@
-def eta(a):
-    return float(a.eta)
-
-def phi(a):
-    return float(a.phi)
-
-def eta(a):
-    return float(a.eta)
-
-def energy(a):
-    return float(a.e)
-
-def pT(a):
-    return float(a.pt)
-
-def charge(a):
-    return float(a.charge)
-
-def mass(a):
-    return float(a.Mass)
+def eta(a): return float(a.eta)
+def phi(a): return float(a.phi)
+def energy(a): return float(a.e)
+def pT(a): return float(a.pt)
+def charge(a): return float(a.charge)
 
 # ---- Truth ---- #
 def FromRes(a):
-    if "FromRes" in a.__dict__:
-        return float(a.FromRes)
+    if "FromRes" in a.__dict__: return float(a.FromRes)
     return 0
 
 def FromTop(a):
