@@ -33,7 +33,7 @@ toRun = [
         "ResonanceDeltaRTops", 
         "ResonanceTopKinematics", 
         "EventNTruthJetAndJets", 
-        "EventMETImbalance",
+        #"EventMETImbalance",
         "TopDecayModes", 
         "ResonanceMassFromChildren", 
         "DeltaRChildren", 
@@ -79,7 +79,7 @@ for i in toRun:
 
 smpls = "" #"/DileptonCollection/MadGraphPythia8EvtGen_noallhad_"
 Ana.ProjectName = "_Project"
-Ana.InputSample("BSM-4t-DL-1000_s", smpl + smpls + "/ttH_tttt_m1000/")
+Ana.InputSample("BSM-4t-DL-1000_s", smpl + smpls + "/ttH_tttt_m1000/") #DAOD_TOPQ1.21955743._000001.root")
 #Ana.InputSample("BSM-4t-DL-900", smpl + smpls + "/ttH_tttt_m900/")
 #Ana.InputSample("BSM-4t-DL-800", smpl + smpls + "/ttH_tttt_m800/")
 #Ana.InputSample("BSM-4t-DL-700", smpl + smpls + "/ttH_tttt_m700/")
@@ -87,18 +87,18 @@ Ana.InputSample("BSM-4t-DL-1000_s", smpl + smpls + "/ttH_tttt_m1000/")
 #Ana.InputSample("BSM-4t-DL-500", smpl + smpls + "/ttH_tttt_m500/")
 #Ana.InputSample("BSM-4t-DL-400", smpl + smpls + "/ttH_tttt_m400/")
 Ana.Event = Event 
-#Ana.EventStop = 1000
-Ana.Threads = 6
+#Ana.EventStop = 10000
+Ana.Threads = 12
 Ana.chnk = 1000
 Ana.EventCache = True
-#Ana.PurgeCache = True
+Ana.PurgeCache = True
 Ana.Launch
 
 ## Debugging purposes
 #for i in toRun:
 #    studies[i] = studies[i]()
 #    studies[i](Ana)
-#    print(studies[i]._CutFlow)
+#    print(studies[i].CutFlow)
 #
 
 # Runs the plotting code

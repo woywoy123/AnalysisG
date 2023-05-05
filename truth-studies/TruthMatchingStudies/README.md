@@ -78,6 +78,10 @@ Energy Distribution of tops
 Pseudorapidity of tops 
 - **Figure_1.1h**:
 Azimuthal angle of tops
+- **Figure_1.1i**
+A TH2F plot of the truth top's pT and energy 
+- **Figure_1.1j**
+A TH2F plot of the truth top's pT and pseduo-rapidity
 
 ### EventNTruthJetAndJets:
 - **N-TruthJets_n-Jets**:
@@ -148,6 +152,10 @@ A TH2F plot of the originating top's PT and only Leptonically decaying top child
 This aims to verify whether a correlation between the top's PT and the clustering of children is present. 
 - **Figure_2.1i**:
 A plot illustrating the fractional PT being transferred to truth children from associated top.
+- **Figure_2.1j**:
+A plot illustrating the fractional 
+
+
 
 <!--
 -> Figure 3.1:

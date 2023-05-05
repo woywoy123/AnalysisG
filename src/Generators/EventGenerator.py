@@ -6,6 +6,7 @@ from AnalysisG.IO import UpROOT
 from .Interfaces import _Interface
 from typing import Union
 from time import sleep
+import pickle
 
 class EventGenerator(_EventGenerator, Settings, SampleTracer, _Interface):
     
@@ -20,6 +21,7 @@ class EventGenerator(_EventGenerator, Settings, SampleTracer, _Interface):
         lock, bar = _prgbar
         for i in range(len(inpt)):
             vals, ev = inpt[i]
+            ev = pickle.loads(ev)
             root, index = vals["ROOT"], vals["EventIndex"]
             res = ev.__compiler__(vals)
             for k in res: k.CompileEvent()
@@ -64,7 +66,7 @@ class EventGenerator(_EventGenerator, Settings, SampleTracer, _Interface):
         for v, i in zip(io, range(len(io))):
             if self._StartStop(i) == False: continue
             if self._StartStop(i) == None: break
-            inpt.append([v, ev.clone])
+            inpt.append([v, pickle.dumps(ev.clone)])
         
         if self.Threads > 1:
             th = Threading(inpt, self._CompileEvent, self.Threads, self.chnk)

@@ -9,6 +9,7 @@ class _General:
         self.EventStop = None
         self._Device = "cpu"
         self._condor = False
+        self.OutputDirectory = None
 
 class _UpROOT:
     
@@ -40,7 +41,6 @@ class _SelectionGenerator:
     def __init__(self):
         self.Selections = {}
         self.Merge = {}
-        self.result = {}
 
 class _RandomSampler:
     
@@ -71,7 +71,6 @@ class _Analysis:
         _Optimizer.__init__(self)
         self._cPWD = None
         self.ProjectName = "UNTITLED"
-        self.OutputDirectory = None
         self.SampleMap = {}
         self.EventCache = False
         self.DataCache = False
@@ -172,7 +171,6 @@ class _Optimizer:
         self.SchedulerParams = {}
         self.OptimizerParams = {}
         
-        self.OutputDirectory = None
         self.RunName = "RUN"
         self.Epoch = None
         self.Epochs = 10

@@ -100,7 +100,8 @@ class UpROOT(_UpROOT, Settings, _Interface):
             fname = self._r[list(r)[0]][1].file_path
                 
             if self._cur_r != fname:
-                self._bar = self._MakeBar(uproot.open(fname + ":" + list(r)[0].split("/")[0]).num_entries, fname)[1]
+                s = uproot.open(fname + ":" + list(r)[0].split("/")[0]).num_entries
+                self._bar = self._MakeBar(s, fname.split("/")[-1])[1]
             self._bar.update(1)
 
             self._EventIndex = 0 if self._cur_r != fname else self._EventIndex+1

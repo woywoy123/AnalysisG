@@ -20,8 +20,9 @@ def DeltaRChildren(x):
     Plots["Title"] = "$\Delta$R Between Truth Children Originating from Mutual Top"
     Plots["xTitle"] = "$\Delta$R"
     Plots["xStep"] = 0.2
+    Plots["xMax"] = 5
+    Plots["xBins"] = 100
     Plots["Filename"] = "Figure_2.1d"
-    Plots["xScaling"] = 2.5
     Plots["Histograms"] = []
     
     for i in ["Res-DelR", "Spec-DelR"]:
@@ -37,8 +38,9 @@ def DeltaRChildren(x):
     Plots["Title"] = "$\Delta$R Between Parent Top and Hadronic-Leptonic Children."
     Plots["xTitle"] = "$\Delta$R"
     Plots["xStep"] = 0.2
+    Plots["xMax"] = 4
+    Plots["xBins"] = 100
     Plots["Filename"] = "Figure_2.1e"
-    Plots["xScaling"] = 2.5
     Plots["Histograms"] = []
     
     for i in ["Lep", "Had"]:
@@ -54,8 +56,9 @@ def DeltaRChildren(x):
     Plots["Title"] = "$\Delta$R Clustering of Children Pair"
     Plots["xTitle"] = "$\Delta$R"
     Plots["xStep"] = 0.2
+    Plots["xBins"] = 100
+    Plots["xMax"] = 3
     Plots["Filename"] = "Figure_2.1f"
-    Plots["xScaling"] = 2.5
     Plots["Stack"] = True
     Plots["yTitle"] = "Fraction of Cases (%)"
     Plots["Normalize"] = "%"
@@ -76,15 +79,15 @@ def DeltaRChildren(x):
     X.SaveFigure()
 
     Plots = PlotTemplate(x)
-    Plots["Title"] = "$\Delta$R Between Decay Products of Mutual Top as a Function of Parent Top Transverse Momenta (Hadronic)"
+    Plots["Title"] = "$\Delta$R Between Decay Products of Mutual Top \n as a Function of Parent Top Transverse Momenta (Hadronic)"
     Plots["yTitle"] = "$\Delta$R"
     Plots["xTitle"] = "Transverse Momentum (GeV)"
     Plots["yStep"] = 0.2
-    Plots["xStep"] = 50
-    Plots["xScaling"] = 3
-    Plots["yScaling"] = 3
+    Plots["xStep"] = 100
+    Plots["xBins"] = 500
+    Plots["yBins"] = 500
     Plots["yMin"] = 0
-    Plots["yMax"] = 6.6
+    Plots["yMax"] = 5.0
     Plots["xMin"] = 0
     Plots["xMax"] = 1250
     Plots["yData"] = x.ChildrenCluster["Had-DelR"]
@@ -94,15 +97,15 @@ def DeltaRChildren(x):
     X.SaveFigure()
 
     Plots = PlotTemplate(x)
-    Plots["Title"] = "$\Delta$R Between Decay Products of Mutual Top as a Function of Parent Top Transverse Momenta (Leptonic)"
+    Plots["Title"] = "$\Delta$R Between Decay Products of Mutual Top \n as a Function of Parent Top Transverse Momenta (Leptonic)"
     Plots["yTitle"] = "$\Delta$R"
     Plots["xTitle"] = "Transverse Momentum (GeV)"
-    Plots["yStep"] = 0.2
-    Plots["xStep"] = 50
-    Plots["xScaling"] = 3
-    Plots["yScaling"] = 3
+    Plots["yStep"] = 0.25
+    Plots["xStep"] = 100
+    Plots["xBins"] = 500
+    Plots["yBins"] = 500
     Plots["yMin"] = 0
-    Plots["yMax"] = 6.6
+    Plots["yMax"] = 5
     Plots["xMin"] = 0
     Plots["xMax"] = 1250
     Plots["yData"] = x.ChildrenCluster["Lep-DelR"]
@@ -115,10 +118,13 @@ def Kinematics(x):
     Plots = PlotTemplate(x)
     Plots["Title"] = "Fractional Transverse Momenta Transferred\n to Decay Products from Parent Top"
     Plots["xTitle"] = "Fraction"
-    Plots["xStep"] = 0.2
-    Plots["xMax"] = 4
+    Plots["xStep"] = 0.1
+    Plots["xMax"] = 2
+    Plots["xBins"] = 100
+    Plots["yTitle"] = "Percentage of all Tops (%)"
     Plots["Filename"] = "Figure_2.1i"
     Plots["Stack"] = True
+    Plots["Normalize"] = "%"
     Plots["Histograms"] = []
     
     for i in x.FractionalPT:
@@ -133,10 +139,13 @@ def Kinematics(x):
     Plots = PlotTemplate(x)
     Plots["Title"] = "Fraction of Top Energy Transferred to Decay Products"
     Plots["xTitle"] = "Fraction"
-    Plots["xStep"] = 0.2
-    Plots["xMax"] = 4
+    Plots["xStep"] = 0.1
+    Plots["xMax"] = 2
+    Plots["xBins"] = 100
+    Plots["yTitle"] = "Percentage of all Tops (%)"
     Plots["Filename"] = "Figure_2.1j"
     Plots["Stack"] = True
+    Plots["Normalize"] = "%"
     Plots["Histograms"] = []
     
     for i in x.FractionalEnergy:

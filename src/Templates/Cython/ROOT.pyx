@@ -13,14 +13,15 @@ import pickle
 import codecs
 from tqdm import tqdm
 from typing import Union 
-from AnalysisG.Tools import Code
+from AnalysisG.Tools import Code, Threading
 
 cdef class Event:
     cdef CyEvent* ptr
     cdef public list _instance
-
+    cdef public bool _demanded
     def __cinit__(self):
         self.ptr = NULL
+        self._demanded = False
 
     def __init__(self):
         self._instance = []
@@ -29,6 +30,7 @@ cdef class Event:
         self._instance.append(val)
    
     def __getattr__(self, attr):
+        self.demand()
         return getattr(self._instance[0], attr)
 
     def __getstate__(self):
@@ -46,6 +48,13 @@ cdef class Event:
         try: return self.Event == other.Event
         except AttributeError: return True
 
+    def demand(self) -> None:
+        if self._demanded: return
+        try: self._instance[0] = pickle.loads(self._instance[0])
+        except TypeError: pass
+        self._demanded = True
+        return 
+ 
     @property
     def index(self) -> int: return self.ptr.EventIndex 
 
@@ -132,7 +141,6 @@ cdef class SampleTracer:
     def __add__(self, other) -> SampleTracer:
         if isinstance(self, int): return other
         if isinstance(other, int): return self
-
         cdef SampleTracer s = self
         cdef SampleTracer o = other
         cdef SampleTracer t = self.clone
@@ -145,11 +153,13 @@ cdef class SampleTracer:
         return t
     
     def __iadd__(self, other):
+        cdef int threads = self.Threads
         cdef SampleTracer s = self
         cdef SampleTracer o = other
         s.ptr = s.ptr[0] + o.ptr
         s.HashMap |= o.HashMap
         s._Codes |= o._Codes
+        s.Threads = threads
         return s
 
     def HashToROOT(self, str key) -> str:
@@ -278,11 +288,24 @@ cdef class SampleTracer:
     
     @property
     def DumpEvents(self):
-        cdef CyEvent* e
-        cdef str out, l, file
-        file = ""
-        _, bar = self._MakeBar(len(self), "DUMPING EVENTS")
+        def Function(inpt, _prgbar):
+            lock, bar = _prgbar
+            for j in range(len(inpt)):
+                inpt[j] = [inpt[j][0], codecs.encode(inpt[j][1], "base64").decode()]
+                with lock: bar.update(1)
+            return inpt
 
+        cdef CyEvent* e
+        cdef str out, l
+        cdef file = ""
+
+        th = Threading([[i.hash, pickle.dumps(i)] for i in self], Function, self.Threads)
+        th.Title = "TRACER::DUMPING"
+        th.Start
+        cdef dict Encodes = {i[0] : i[1] for i in th._lists}
+        del th 
+
+        _, bar = self._MakeBar(len(self), "TRACER::DUMPING EVENTS")
         for i in self:
             e = self.ptr.HashToEvent(<string>i.hash.encode("UTF-8"))
 
@@ -305,7 +328,7 @@ cdef class SampleTracer:
             
             if i.Event: e.CachedEvent = True
             else: e.CachedGraph = True
-            ref.attrs["Event"] = codecs.encode(pickle.dumps(i), "base64").decode() 
+            ref.attrs["Event"] = Encodes[i.hash]
 
             file = out if file != "" else file
             if file != out: 
@@ -350,6 +373,13 @@ cdef class SampleTracer:
     
     @property
     def RestoreEvents(self):
+        def Function(inpt, _prgbar):
+            lock, bar = _prgbar
+            for j in range(len(inpt)):
+                inpt[j][1] = codecs.decode(inpt[j][1].encode("UTF-8"), "base64")
+                with lock: bar.update(1)
+            return inpt 
+        
         self.RestoreTracer 
         cdef pair[string, CyROOT*] c
         cdef pair[string, CyEvent*] e
@@ -374,7 +404,7 @@ cdef class SampleTracer:
             if not os.path.isfile(get): continue
             
             f = h5py.File(get)
-            get = "RESTORING EVENTS (" + ("DataCache" if DataCache else "EventCache") + "): "
+            get = "TRACER::READING EVENTS (" + ("DataCache" if DataCache else "EventCache") + "): "
             _, bar = self._MakeBar(r_.HashMap.size(), get + c.first.decode("UTF-8").split("/")[-1])
             
             if not DataCache: 
@@ -394,12 +424,19 @@ cdef class SampleTracer:
                 elif e_.CachedGraph == False and DataCache: continue
                 elif e_.CachedEvent == False and EventCache: continue
                 get = e.first.decode("UTF-8")
-                self.HashMap[get] = pickle.loads(codecs.decode(f[get].attrs["Event"].encode("UTF-8"), "base64"))
+                self.HashMap[get] = f[get].attrs["Event"]
                 if EventCache: e_.Event = True
                 if DataCache: e_.Graph = True
-            try: shutil.rmtree("./tmp")
-            except FileNotFoundError: pass
-            del bar
+
+        th = Threading([[k, self.HashMap[k]] for k in self.HashMap], Function, self.Threads)
+        th.Title = "TRACER::DECODING"
+        th.Start
+
+        cdef list t
+        for t in th._lists: self.HashMap[t[0]] = t[1]
+        #try: shutil.rmtree("./tmp")
+        #except FileNotFoundError: pass
+        del th
 
     def ForceTheseHashes(self, inpt: Union[dict, list]) -> None:
         cdef list smpl = inpt if isinstance(inpt, list) else list(inpt)

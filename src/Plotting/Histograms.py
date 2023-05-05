@@ -36,12 +36,23 @@ class Functions(BaseFunctions, Settings):
 
     def DefineRange(self, Dims):
         self.DefineCommonRange(Dims)
+ 
+        trig = False
+        if self.Get(Dims + "Bins") != None: trig = True
 
+        if self.Get(Dims + "Weights") == None: pass
+        elif len(self.Get(Dims + "Data")) == 0 and len(self.Get(Dims + "Weights")) != 0:
+            self.Set(Dims + "Bins", len(self.Get(Dims + "Weights")))
+            self.Set(Dims + "Data", [i for i in range(len(self.Get(Dims + "Weights")))])
+            self.DefineCommonRange(Dims) 
+            trig = False
+        
         if self.Get(Dims + "Bins") == None:
             p = set(self.Get(Dims + "Data"))
             self.Set(Dims + "Bins", int(max(p) - min(p)+1))
-
-        if self.Get(Dims + "Step") != None:
+            trig = True
+        
+        if self.Get(Dims + "Step") != None and trig == False:
             self.Set(Dims + "Bins", 1+int((self.Get(Dims + "Max") - self.Get(Dims + "Min"))/self.Get(Dims + "Step")))
             self.Set(Dims + "Max", self.Get(Dims + "Min") + self.Get(Dims + "Step")*(self.Get(Dims + "Bins")))
 
@@ -121,14 +132,13 @@ class TH2F(Functions):
 
         self.DefineRange("x")
         self.DefineRange("y")
-        
         self.NPHisto = np.histogram2d(self.xData, self.yData, bins = [self.xBins, self.yBins], 
                                       range = [[self.xMin, self.xMax], [self.yMin, self.yMax]])
         self.ApplyFormat()
         
-        if self.xStep != None: self.Axis.set_xticks([self.xMin + self.xStep*i for i in range(self.xBins)])
+        if self.xStep != None: self.Axis.set_xticks([self.xMin + self.xStep*i for i in range(int((self.xMax - self.xMin)/self.xStep) +1)])
         if isinstance(self.xTickLabels, list): self.Axis.set_xticklabels(self.xTickLabels)
-        if self.yStep != None: self.Axis.set_yticks([self.yMin + self.yStep*i for i in range(self.yBins)])
+        if self.yStep != None: self.Axis.set_yticks([self.yMin + self.yStep*i for i in range(int((self.yMax - self.yMin)/self.yStep) +1)])
         if isinstance(self.yTickLabels, list): self.Axis.set_yticklabels(self.yTickLabels)
  
        

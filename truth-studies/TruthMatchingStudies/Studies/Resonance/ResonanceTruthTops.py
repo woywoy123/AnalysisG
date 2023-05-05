@@ -15,7 +15,7 @@ class ResonanceDecayModes(SelectionTemplate):
     def Strategy(self, event):
         resT = [t for t in event.Tops if t.FromRes == 1]
         specT = [t for t in event.Tops if t.FromRes == 0]
-
+        
         t1, t2 = resT
         r_dec1, r_dec2 = "L" if t1.LeptonicDecay else "H", "L" if t2.LeptonicDecay else "H"
         self.TopDecayMode["Res-" + r_dec1] += 1 
@@ -47,7 +47,7 @@ class ResonanceMassFromTops(SelectionTemplate):
         t1, t2 = resT
         dec = ("L" if t1.LeptonicDecay else "H") + ("L" if t2.LeptonicDecay else "H")
         dec = "HL" if dec == "LH" else dec 
-        self.ResDecayMode[dec] += [sum(resT).Mass]
+        self.ResDecayMode[dec] += [sum(resT).Mass/1000]
 
 class ResonanceDeltaRTops(SelectionTemplate):
     

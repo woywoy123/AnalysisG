@@ -30,8 +30,7 @@ def EventNTruthJetAndJets(x):
     Plots["yTitle"] = "n-Jets"
     Plots["xStep"] = 1
     Plots["yStep"] = 1
-    Plots["xScaling"] = 2
-    Plots["yScaling"] = 2
+    Plots["xScaling"] = 1.5
     Plots["xData"] = x.TruthJets
     Plots["yData"] = x.Jets
 
@@ -57,19 +56,23 @@ def EventNTruthJetAndJets(x):
 
 def EventMETImbalance(x):
     Plots = TemplatePlotsTH2F(x)
-    Plots["Title"] = "4-Top System Transverse Momentum vs Pz (Momentum Down Beam Pipe)"
+    Plots["Title"] = "4-Top System Transverse Momentum as a \n Function of Pz (Momentum Down Beam Pipe)"
     Plots["xTitle"] = "Momentum Vector in Z-direction (GeV)"
     Plots["yTitle"] = "Transverse Momentum (GeV)"
-    Plots["xStep"] = 100
-    Plots["yStep"] = 50
-    Plots["xScaling"] = 3
-    Plots["yScaling"] = 2
+    Plots["xStep"] = 200
+    Plots["yStep"] = 200
+    Plots["xMin"] = -1000
+    Plots["xMax"] = 1000
+    Plots["yMin"] = 0
+    Plots["yMax"] = 1000
+    Plots["xBins"] = 200
+    Plots["yBins"] = 200
     Plots["xData"] = x.Pz_4Tops
     Plots["yData"] = x.PT_4Tops
     Plots["Filename"] = "4-TopSystem-Pz_PT"
     th = TH2F(**Plots)
     th.SaveFigure()
-
+    
     Plots = {}
     Plots["Title"] = "4-Tops"
     Plots["xBins"] = 400
@@ -88,6 +91,7 @@ def EventMETImbalance(x):
     Plots_["Histograms"] = [tht, thc]
     Plots_["xStep"] = 0.2
     Plots_["xMin"] = -1.8
+    Plots_["xBins"] = 400
     Plots_["xMax"] = 1.8
     Plots_["Filename"] = "AngleRelativeToBeamPipe"
     tc = CombineTH1F(**Plots_)
@@ -112,10 +116,12 @@ def EventMETImbalance(x):
     Plots_["xStep"] = 0.2
     Plots_["xMin"] = -1.8
     Plots_["xMax"] = 1.8
+    Plots_["xBins"] = 400
     Plots_["Filename"] = "AngleRelativeToBeamPipe-Rotated"
     tc = CombineTH1F(**Plots_)
     tc.SaveFigure()
-
+    
+    exit()
     Plots = {}
     Plots["Title"] = "Measured"
     Plots["xBins"] = 400

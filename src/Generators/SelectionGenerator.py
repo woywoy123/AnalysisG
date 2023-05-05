@@ -1,4 +1,5 @@
 from AnalysisG.Notification import _SelectionGenerator
+from AnalysisG.IO import PickleObject, UnpickleObject
 from AnalysisG.Tools import Code, Threading 
 from .EventGenerator import EventGenerator
 from AnalysisG.Tracer import SampleTracer
@@ -21,7 +22,7 @@ class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface
         lock, bar = _prgbar
         output = {}
         for i in range(len(inpt)):
-            name, sel, event, hash_, ROOT = inpt[i] 
+            name, sel, event, hash_, ROOT, pth = inpt[i] 
             sel.hash = hash_ 
             sel.ROOTName = ROOT
             sel._EventPreprocessing(event)
@@ -32,9 +33,9 @@ class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface
             if lock == None: bar.update(1)
             else:
                 with lock: bar.update(1)
-                sleep(0.01)
         if lock == None: del bar
-        return [output]
+        for name in output: PickleObject(output[name], pth + name + "/" + output[name].hash)
+        return []
 
     def __collect__(self, inpt, key):
         x = {c_name : Code(inpt[c_name]) for c_name in inpt}
@@ -44,7 +45,8 @@ class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface
     def __merge__(self):
         for name in self.Merge:
             if len(self.Merge[name]) == 0: continue
-            self.result[name] = sum(self.Merge[name])
+            sm = sum([UnpickleObject(i) for i in self.Merge[name]])
+            PickleObject(sm, self.OutputDirectory + "/Selections/Merged/" + name)
             self.Merge[name] = []
  
     @property
@@ -53,26 +55,26 @@ class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface
         if self._condor: return self._Code
         if len(self.Merge) != 0: pass
         elif self.CheckSettings: return False
+        self.pth = self.OutputDirectory + "/Selections/"       
         
         for name in self.Selections:
-            if name not in self.Merge: self.Merge[name] = []
             inpt = []
             for ev, i in zip(self, range(len(self))):
                 if self._StartStop(i) == False: continue
                 if self._StartStop(i) == None: break
                 sel = self._Code["Selections"][name].clone
-                inpt.append([name, sel, ev, ev.hash, ev.ROOT])
+                inpt.append([name, sel, ev, ev.hash, ev.ROOT, self.pth])
 
-            if len(inpt) == 0 and len(self.Merge) != 0: return self.__merge__
+            if len(inpt) == 0: return self.__merge__
             if self.Threads > 1:
                 th = Threading(inpt, self.__compile__, self.Threads, self.chnk)
                 th.Title = self.Caller + "::" + name
                 th.Start
-                out = th._lists
-            else: out = self.__compile__(inpt, self._MakeBar(len(inpt)))
-        
-            for i in out: 
-                if i is None: continue
-                for name in i: self.Merge[name].append(i[name])
-            self.__merge__
-        self.__merge__
+            else: self.__compile__(inpt, self._MakeBar(len(inpt)))
+       
+
+        if len(self.Merge) == 0: return 
+        for name in self.Merge:
+            self.Merge[name] = [self.pth + name + "/" + i for i in self.ls(self.pth + name + "/")]
+            self.__merge__ 
+

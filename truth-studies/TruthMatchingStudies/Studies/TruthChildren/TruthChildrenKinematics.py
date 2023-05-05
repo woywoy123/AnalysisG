@@ -30,8 +30,7 @@ class DeltaRChildren(SelectionTemplate):
             com = []
             for c in t.Children:
                 for c2 in t.Children:
-                    if c2 == c or c2 in com:
-                        continue
+                    if c2 == c or c2 in com: continue
                     self.ChildrenCluster[lp + "-DelR"] += [c2.DeltaR(c)]
                     self.ChildrenCluster[res + "-DelR"] += [c2.DeltaR(c)]
                     self.ChildrenCluster[lp + "-top-PT"] += [t.pt/1000]
@@ -43,8 +42,7 @@ class DeltaRChildren(SelectionTemplate):
         for c1 in children:
             dic = {} 
             for c2 in children:
-                if c1 == c2:
-                    continue
+                if c1 == c2: continue
                 dic[c1.DeltaR(c2)] = [c1.Parent[0] == c2.Parent[0], c1.FromRes + c2.FromRes]
             l = list(dic)
             l.sort()

@@ -1,4 +1,4 @@
-from AnalysisG.Plotting import TH1F, CombineTH1F
+from AnalysisG.Plotting import TH1F, CombineTH1F, TH2F
 
 def PlotTemplate(nevents, lumi):
     Plots = {
@@ -26,8 +26,8 @@ def ResonanceDecayModes(x):
     Plots["xWeights"] = [
             x.ResDecayMode["L"], x.ResDecayMode["H"], 
             x.ResDecayMode["HH"], x.ResDecayMode["HL"], x.ResDecayMode["LL"]]
-    Plots["xMin"] = 0
     Plots["xStep"] = 1
+    Plots["xBins"] = 5
     Plots["xBinCentering"] = True 
     Plots["Filename"] = "Figure_1.1a"
     F = TH1F(**Plots)
@@ -42,7 +42,6 @@ def ResonanceDecayModes(x):
             "Spec-Lep (" + str(x.TopDecayMode["Spec-L"]) + ")", 
             "Spec-Had (" + str(x.TopDecayMode["Spec-H"]) + ")"]
 
-    Plots["xData"] = [0, 1, 2, 3]
     Plots["xWeights"] = [
             x.TopDecayMode["Res-L"], x.TopDecayMode["Res-H"],
             x.TopDecayMode["Spec-L"], x.TopDecayMode["Spec-H"]]
@@ -59,24 +58,19 @@ def ResonanceMassFromTops(x):
     for k in x.ResDecayMode:
         _Plots = {}
         dec = ""
-        if k == "HH":
-            dec = "Hadronic"
-        if k == "HL":
-            dec = "Hadronic-Leptonic"
-        if k == "LL":
-            dec = "Leptonic"
-        if dec == "":
-            continue 
+        if k == "HH": dec = "Hadronic"
+        if k == "HL": dec = "Hadronic-Leptonic"
+        if k == "LL": dec = "Leptonic"
+        if dec == "": continue 
         _Plots["Title"] = dec
         _Plots["xData"] = x.ResDecayMode[k]
         _Plots["xBins"] = 100
         Plots["Histograms"] += [TH1F(**_Plots)]
     
-    Plots["Title"] = "Invariant Mass of Scalar H Resonance Derived from Truth Tops (Stack Plot)"
+    Plots["Title"] = "Invariant Mass of Scalar H Resonance Derived \n from Truth Tops (Stack Plot)"
     Plots["xTitle"] = "Invariant Mass (GeV)"
     Plots["xMin"] = 0
-    Plots["xStep"] = 100
-    Plots["xScaling"] = 2.5
+    Plots["xStep"] = 250
     Plots["Stack"] = True
     Plots["Filename"] = "Figure_1.1c"
     X = CombineTH1F(**Plots)
@@ -96,19 +90,20 @@ def ResonanceDeltaRTops(x):
     Plots["xTitle"] = "$\Delta$R (a.u)"
     Plots["xMin"] = 0
     Plots["xStep"] = 0.25
-    Plots["xScaling"] = 2.5 
+    Plots["xBins"] = 100
+    Plots["xMax"] = 4
     Plots["Filename"] = "Figure_1.1d"
     X = CombineTH1F(**Plots)
     X.SaveFigure()
 
 def ResonanceTopKinematics(x):
     Plots = PlotTemplate(x.NEvents, x.Luminosity)
-    Plots["Title"] = "Transverse Momenta of Tops Originating from Scalar H and Spectator Tops"
+    Plots["Title"] = "Transverse Momenta of Tops Originating from \n Scalar H and Spectator Tops"
     Plots["xTitle"] = "Transverse Momenta (GeV)"
     Plots["Histograms"] = []
     Plots["xMin"] = 0
     Plots["xStep"] = 100
-    Plots["xScaling"] = 2.5
+    Plots["xMax"] = 1200
     Plots["Filename"] = "Figure_1.1e"
 
     for i in x.TopsTypesPT:
@@ -128,7 +123,7 @@ def ResonanceTopKinematics(x):
     Plots["Histograms"] = []
     Plots["xMin"] = 0
     Plots["xStep"] = 100
-    Plots["xScaling"] = 2.5
+    Plots["xMax"] = 2000
     Plots["Filename"] = "Figure_1.1f"
 
     for i in x.TopsTypesE:
@@ -147,6 +142,7 @@ def ResonanceTopKinematics(x):
     Plots["xMin"] = -5
     Plots["xMax"] = 5
     Plots["xStep"] = 0.5
+    Plots["xBins"] = 500
     Plots["Histograms"] = []
     Plots["Filename"] = "Figure_1.1g"
 
@@ -166,6 +162,7 @@ def ResonanceTopKinematics(x):
     Plots["xMin"] = -3.5
     Plots["xMax"] = 3.5
     Plots["xStep"] = 0.5
+    Plots["xBins"] = 500
     Plots["Histograms"] = []
     Plots["Filename"] = "Figure_1.1h"
     
@@ -178,4 +175,37 @@ def ResonanceTopKinematics(x):
     
     X = CombineTH1F(**Plots)
     X.SaveFigure()
+
+    Plots = PlotTemplate(x.NEvents, x.Luminosity)
+    Plots["Title"] = "Transverse Momenta of Truth Tops (Spectator and Signal) \n as a Function of Energy"
+    Plots["xBins"] = 500
+    Plots["yBins"] = 500
+    Plots["xMin"] = 0
+    Plots["yMin"] = 0
+    Plots["xMax"] = 2000
+    Plots["yMax"] = 2000 
+    Plots["xTitle"] = "Energy (GeV)"
+    Plots["yTitle"] = "Transverse Momenta (GeV)" 
+    Plots["Filename"] = "Figure_1.1i"
+    Plots["xData"] = x.TopsTypesE["Res"] + x.TopsTypesE["Spec"]
+    Plots["yData"] = x.TopsTypesPT["Res"] + x.TopsTypesPT["Spec"]
+    t = TH2F(**Plots)
+    t.SaveFigure()
+
+    Plots = PlotTemplate(x.NEvents, x.Luminosity)
+    Plots["Title"] = "Transverse Momenta of Truth Tops (Spectator and Signal) \n as a Function of Pseudo-Rapidity"
+    Plots["xBins"] = 500
+    Plots["yBins"] = 500
+    Plots["xMin"] = -5
+    Plots["yMin"] = 0
+    Plots["xMax"] = 5
+    Plots["yMax"] = 2000 
+    Plots["xTitle"] = "Pseudo Rapidity"
+    Plots["yTitle"] = "Transverse Momenta (GeV)" 
+    Plots["Filename"] = "Figure_1.1j"
+    Plots["xData"] = x.TopsTypesEta["Res"] + x.TopsTypesEta["Spec"]
+    Plots["yData"] = x.TopsTypesPT["Res"] + x.TopsTypesPT["Spec"]
+    t = TH2F(**Plots)
+    t.SaveFigure()
+
 

@@ -24,7 +24,6 @@ def TopDecayModes(x):
     Plots["xBinCentering"] = True 
     Plots["xStep"] = 1
     Plots["Normalize"] = False 
-    Plots["xData"] = [i for i in range(len(x.CounterPDGID))]
 
     Plots["xWeights"] = [float(i / x.TopCounter) for i in x.CounterPDGID.values()]
     Plots["Filename"] = "Figure_2.1a"
@@ -34,9 +33,9 @@ def TopDecayModes(x):
     Plots = PlotTemplate(x)
     Plots["Title"] = "Reconstructed Invariant Top Mass from Immediate Decay Products"
     Plots["xTitle"] = "Invariant Top Mass (GeV)"
-    Plots["xBins"] = 1000
-    Plots["xMin"] = 0
-    Plots["xMax"] = 300
+    Plots["xMin"] = 120
+    Plots["xStep"] = 10
+    Plots["xMax"] = 240
     Plots["Filename"] = "Figure_2.1b"
     Plots["Histograms"] = []
     
@@ -44,6 +43,7 @@ def TopDecayModes(x):
         _Plots = {}
         _Plots["Title"] = i
         _Plots["xData"] = x.TopMassTC[i]
+        _Plots["xBins"] = 1000
         Plots["Histograms"].append(TH1F(**_Plots))
     plt = CombineTH1F(**Plots)
     plt.SaveFigure()

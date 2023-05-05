@@ -35,18 +35,10 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
     def __Selection__(self):
         if len(self.Selections) == 0 and len(self.Merge) == 0: return 
         pth = self.OutputDirectory + "/Selections/"
-        
         sel = SelectionGenerator(self)
-        mrg = True if len(self.Merge) != 0 else False
-        for name in self.Merge: self.Merge[name] = [UnpickleObject(pth + name + "/" + i) for i in self.ls(pth + name)]
         sel.ImportSettings(self)
         sel.Caller = "ANALYSIS::SELECTIONS"
         sel.MakeSelection
-        for name in sel.result: 
-            out = pth 
-            if mrg: out += "Merged/"
-            out += name if mrg else name + "/" + sel.result[name].hash
-            PickleObject(sel.result[name], out)
         del sel
  
     @property 
@@ -56,7 +48,8 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
             f = [j for j in self.Files[i] if i + "/" + j not in self]
             if len(f) != 0: process[i] = f
         if len(process) == 0: return True 
-        if self.Event == None: return False  
+        if self.Event == None: return False
+        if self.EventStop != None and len(self) >= self.EventStop: return True 
         self.Files = process 
         ev = EventGenerator()
         ev.ImportSettings(self)

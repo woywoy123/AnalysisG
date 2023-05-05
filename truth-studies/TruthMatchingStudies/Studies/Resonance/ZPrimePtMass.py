@@ -28,7 +28,7 @@ class ZPrimeMatrix(SelectionTemplate):
 
         tops = [t for t in event.Tops if t.FromRes == 1]
         ZP = sum(tops)
-        self.ZMatrixTops["Mass"].append(ZP.Mass)
+        self.ZMatrixTops["Mass"].append(ZP.Mass/1000)
         self.ZMatrixTops["PT"].append(ZP.pt/1000) 
         
         decay = {"HL" : [], "HH" : [], "LL" : [], "LH" : []}
@@ -40,7 +40,7 @@ class ZPrimeMatrix(SelectionTemplate):
         self.ZMatrixChildren_DecayChain[dec] += 1
         
         ZC = sum(decay[dec])
-        self.ZMatrixChildren["Mass"].append(ZC.Mass)
+        self.ZMatrixChildren["Mass"].append(ZC.Mass/1000)
         self.ZMatrixChildren["PT"].append(ZC.pt/1000)
 
         uniqTJ = t1.TruthJets + t2.TruthJets
@@ -49,7 +49,7 @@ class ZPrimeMatrix(SelectionTemplate):
         self.ZMatrixTJ_NTJ["NumTops"] += [len({hex(id(j)) : 0 for i in uniqTJ for j in i.Tops})]
       
         tj = sum(list(tj.values()) + leps)
-        self.ZMatrixTJ["Mass"] += [tj.Mass]
+        self.ZMatrixTJ["Mass"] += [tj.Mass/1000]
         self.ZMatrixTJ["PT"] += [tj.pt/1000]
        
         uniqJ = t1.Jets + t2.Jets
@@ -58,5 +58,5 @@ class ZPrimeMatrix(SelectionTemplate):
         self.ZMatrixJ_NJ["NumTops"] += [len({hex(id(j)) : 0 for i in uniqJ for j in i.Tops})]
       
         jets = sum(list(jets.values()) + leps)
-        self.ZMatrixJ["Mass"] += [jets.Mass]
+        self.ZMatrixJ["Mass"] += [jets.Mass/1000]
         self.ZMatrixJ["PT"] += [jets.pt/1000]

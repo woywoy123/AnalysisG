@@ -61,6 +61,8 @@ class EventMETImbalance(SelectionTemplate):
                 self.Pz_4Tops.append(t4.pz/1000)
                 self.Top4_angle.append(imb_angle)
 
+                print(imb_angle)
+
                 c4 = sum(event.TopChildren)
                 self.Children_angle.append(math.atan(c4.pt/c4.pz))
                 
