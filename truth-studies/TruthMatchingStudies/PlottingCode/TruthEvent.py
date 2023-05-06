@@ -93,6 +93,8 @@ def EventMETImbalance(x):
     Plots_["xMin"] = -1.8
     Plots_["xBins"] = 400
     Plots_["xMax"] = 1.8
+    Plots_["yMax"] = 0.1
+    Plots_["Normalize"] = True
     Plots_["Filename"] = "AngleRelativeToBeamPipe"
     tc = CombineTH1F(**Plots_)
     tc.SaveFigure()
@@ -117,6 +119,8 @@ def EventMETImbalance(x):
     Plots_["xMin"] = -1.8
     Plots_["xMax"] = 1.8
     Plots_["xBins"] = 400
+    Plots_["yMax"] = 0.1
+    Plots_["Normalize"] = True
     Plots_["Filename"] = "AngleRelativeToBeamPipe-Rotated"
     tc = CombineTH1F(**Plots_)
     tc.SaveFigure()
@@ -142,6 +146,7 @@ def EventMETImbalance(x):
     Plots_["xStep"] = 100
     Plots_["xMin"] = 0
     Plots_["xMax"] = 1000
+    Plots_["yMax"] = 0.1
     Plots_["Normalize"] = True
     Plots_["Filename"] = "MissingET"
     tc = CombineTH1F(**Plots_)
@@ -161,6 +166,7 @@ def EventMETImbalance(x):
     Plots_["xMax"] = 500
     Plots_["xStep"] = 50
     Plots_["Normalize"] = True
+    Plots_["yMax"] = 0.1
     Plots_["Filename"] = "Difference-MissingET"
     tc = CombineTH1F(**Plots_)
     tc.SaveFigure()
@@ -188,6 +194,7 @@ def EventMETImbalance(x):
     Plots_["xMin"] = 0
     Plots_["xMax"] = 1000
     Plots_["Normalize"] = True
+    Plots_["yMax"] = 0.1
     Plots_["Filename"] = "MissingET-Rotated"
     tc = CombineTH1F(**Plots_)
     tc.SaveFigure()
@@ -205,6 +212,7 @@ def EventMETImbalance(x):
     Plots_["xMin"] = -500
     Plots_["xMax"] = 500
     Plots_["xStep"] = 50
+    Plots_["yMax"] = 0.1
     Plots_["Normalize"] = True
     Plots_["Filename"] = "difference-MissingET-Rotated"
     tc = CombineTH1F(**Plots_)

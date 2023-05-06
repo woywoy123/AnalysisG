@@ -187,7 +187,6 @@ def test_tracer_hdf5():
         k = sum([s for l in range(1000)])
         del s
 
-    shutil.rmtree("UNTITLED")
     shutil.rmtree("Tracer")
     shutil.rmtree("tmp")
  

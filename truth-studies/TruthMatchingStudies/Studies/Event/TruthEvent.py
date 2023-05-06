@@ -55,18 +55,18 @@ class EventMETImbalance(SelectionTemplate):
         def Strategy(self, event):
                 import math
                 t4 = sum(event.Tops)
-                imb_angle = math.atan(t4.pt / t4.pz)
+                imb_angle = math.atan2(t4.pt, t4.pz)
                 self.PT_4Tops.append(t4.pt/1000)
                 self.Pz_4Tops.append(t4.pz/1000)
+                
                 self.Top4_angle.append(imb_angle)
                 self.Rotation(t4, -imb_angle)
-
-                self.r_Top4_angle.append(math.atan(t4.pt/t4.pz))
-                c4 = sum(event.TopChildren)
-                self.Children_angle.append(math.atan(c4.pt/c4.pz))
+                self.r_Top4_angle.append(math.atan2(t4.pt, t4.pz))
                 
+                c4 = sum(event.TopChildren)
+                self.Children_angle.append(math.atan2(c4.pt, c4.pz))
                 self.Rotation(c4, -imb_angle)
-                self.r_Children_angle.append(math.atan(c4.pt/c4.pz))
+                self.r_Children_angle.append(math.atan2(c4.pt, c4.pz))
                 
                 # Missing MET 
                 nuPT = sum([i for i in event.TopChildren if abs(i.pdgid) in [12, 14, 16]])

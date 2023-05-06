@@ -205,9 +205,9 @@ class CombineTH1F(Functions):
         elif self.Normalize and self.Histogram != None: 
             Sum = self.Histogram.NPHisto[0].sum()
         elif self.Normalize == True: 
-            Sum = sum([i.NPHisto[0].sum() for i in self.Histograms])
+            Sum = sum([i.NPHisto[0].sum() for i in self.Histograms])/len(self.Histograms)
         elif self.Normalize == "%" and self.Histogram == None:
-            Sum = sum([i.NPHisto[0].sum() for i in self.Histograms])*0.01
+            Sum = sum([i.NPHisto[0].sum() for i in self.Histograms])/len(self.Histograms)*0.01
 
         if self.Histogram != None:
             try:
@@ -243,9 +243,10 @@ class CombineTH1F(Functions):
         if isinstance(self.xTickLabels, list):
             self.Axis.set_xticks(self.xData)
             self.Axis.set_xticklabels(self.xTickLabels)
+        
         self.PLT.xlim(self.xMin, self.xMax)
-
-            
+        self.PLT.ylim(self.yMin, self.yMax)
+ 
 class TH1FStack(CombineTH1F):
 
     def __init__(self, **kargs):
