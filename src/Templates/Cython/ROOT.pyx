@@ -219,30 +219,28 @@ cdef class SampleTracer:
         for i in range(len(hashes)): v.push_back(hashes[i].encode("UTF-8"))
         return {key.decode("UTF-8") : fnd for key, fnd in self.ptr.FastSearch(v)}
 
-    def AddEvent(self, Events, root, index):
-        cdef int i
-        cdef str p 
+    def AddEvent(self, dict Events):
+        cdef str i, p
         cdef dict x
+        cdef list hashes = list(Events)
         if len(self._Codes) == 0: 
-            cl = Code(Events[0])
+            p = hashes[0]
+            cl = Code(pickle.loads(Events[p]["pkl"]))
             x = cl.clone.Objects
             self._Codes |= {t._Name : t.purge for t in [Code(x[p]) for p in x]}
             self._Codes[cl._Name] = cl.purge
             del cl
-
-        for i in range(len(Events)):
-            if Events[i].index == -1: Events[i].index = index
-            Events[i].hash = root
-
-            if self.ptr.ContainsHash(Events[i].hash.encode("UTF-8")): continue
+        x = self.FastHashSearch(hashes)    
+        for i in x:
+            if x[i]: continue
             _ev = new CyEvent()
-            _ev.Tree = Events[i].Tree.encode("UTF-8")
-            _ev.hash = Events[i].hash.encode("UTF-8")
-            _ev.ROOT = root.encode("UTF-8")
-            _ev.EventIndex = <unsigned int>Events[i].index
+            _ev.Tree = Events[i]["Tree"].encode("UTF-8")
+            _ev.hash = i.encode("UTF-8")
+            _ev.ROOT = Events[i]["ROOT"].encode("UTF-8")
+            _ev.EventIndex = <unsigned int>Events[i]["index"]
             _ev.Event = True
             self.ptr.AddEvent(_ev) 
-            self.HashMap[Events[i].hash] = Events[i]
+            self.HashMap[i] = Events[i]["pkl"]
 
     def AddGraph(self, Events):
         cdef int i;
@@ -250,7 +248,7 @@ cdef class SampleTracer:
         cdef CyEvent* event;
         for i in range(len(Events)):
             hash, evnt = Events[i]
-            self.HashMap[hash] = evnt 
+            self.HashMap[hash] = pickle.dumps(evnt)
             event = self.ptr.HashToEvent(<string>hash.encode("UTF-8"))
             event.Graph = True 
             event.Event = False
@@ -296,39 +294,40 @@ cdef class SampleTracer:
             return inpt
 
         cdef CyEvent* e
+        cdef CyROOT* r 
         cdef str out, l
         cdef file = ""
 
-        th = Threading([[i.hash, pickle.dumps(i)] for i in self], Function, self.Threads)
+        th = Threading([[i, self.HashMap[i]] for i in self.HashMap], Function, self.Threads)
         th.Title = "TRACER::DUMPING"
         th.Start
         cdef dict Encodes = {i[0] : i[1] for i in th._lists}
         del th 
 
         _, bar = self._MakeBar(len(self), "TRACER::DUMPING EVENTS")
-        for i in self:
-            e = self.ptr.HashToEvent(<string>i.hash.encode("UTF-8"))
-
-            if e.CachedEvent and i.Event: continue
-            elif e.CachedGraph and i.Graph: continue
+        for i in self.HashMap:
+            e = self.ptr.HashToEvent(<string>i.encode("UTF-8"))
+            r = self.ptr.HashToCyROOT(<string>i.encode("UTF-8"))
+            if e.CachedEvent and e.Event: continue
+            elif e.CachedGraph and e.Graph: continue
             
             bar.update(1)
-            if i.Event: out = self.OutDir + "/EventCache/"
-            elif i.Graph: out = self.OutDir + "/DataCache/"
+            if e.Event: out = self.OutDir + "/EventCache/"
+            elif e.Graph: out = self.OutDir + "/DataCache/"
             else: continue
             
             if file == "":
                 try: os.mkdir(out)
                 except FileExistsError: pass
 
-            out += i.CachePath
+            out += r.CachePath.decode("UTF-8")
             if file != out: f = h5py.File(out + ".hdf5", "a")
-            try: ref = f.create_dataset(i.hash, (1), dtype = h5py.ref_dtype)
-            except ValueError: ref = f[i.hash]
+            try: ref = f.create_dataset(i, (1), dtype = h5py.ref_dtype)
+            except ValueError: ref = f[i]
             
-            if i.Event: e.CachedEvent = True
+            if e.Event: e.CachedEvent = True
             else: e.CachedGraph = True
-            ref.attrs["Event"] = Encodes[i.hash]
+            ref.attrs["Event"] = Encodes[i]
 
             file = out if file != "" else file
             if file != out: 
@@ -434,8 +433,6 @@ cdef class SampleTracer:
 
         cdef list t
         for t in th._lists: self.HashMap[t[0]] = t[1]
-        #try: shutil.rmtree("./tmp")
-        #except FileNotFoundError: pass
         del th
 
     def ForceTheseHashes(self, inpt: Union[dict, list]) -> None:

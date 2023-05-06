@@ -27,14 +27,18 @@ class EventGenerator(_EventGenerator, Settings, SampleTracer, _Interface):
             for k in res: k.CompileEvent()
             for k in res: k.index = index if k.index == -1 else k.index
             for k in res: k.hash = root
-
-            inpt[i] = [res, root, index]
+                
+            inpt[i] = {}    
+            for k in list(res):
+                inpt[i][k.hash] = {}
+                inpt[i][k.hash]["pkl"] = pickle.dumps(k) 
+                inpt[i][k.hash]["index"] = k.index
+                inpt[i][k.hash]["Tree"] = k.Tree
+                inpt[i][k.hash]["ROOT"] = root
+                del k
             del ev
-            if lock == None: bar.update(1)
-            else:
+            if lock != None:
                 with lock: bar.update(1)
-                sleep(0.001) # This actually improves speed!!!
-        if lock == None: del bar
         return inpt
 
     @property
@@ -63,16 +67,19 @@ class EventGenerator(_EventGenerator, Settings, SampleTracer, _Interface):
         io.Leaves = ev.Leaves 
         
         inpt = []
+        ev = pickle.dumps(ev)  
         for v, i in zip(io, range(len(io))):
             if self._StartStop(i) == False: continue
             if self._StartStop(i) == None: break
-            inpt.append([v, pickle.dumps(ev.clone)])
+            inpt.append([v, ev])
         
         if self.Threads > 1:
             th = Threading(inpt, self._CompileEvent, self.Threads, self.chnk)
             th.Start
         out = th._lists if self.Threads > 1 else self._CompileEvent(inpt, self._MakeBar(len(inpt)))
-        for i in out: self.AddEvent(i[0], i[1], i[2])
+        ev = {}
+        for i in out: ev |= i
+        self.AddEvent(ev)
         return self.CheckSpawnedEvents
 
 

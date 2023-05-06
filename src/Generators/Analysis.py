@@ -135,16 +135,18 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         self.__build__
         tracer = self._CheckForTracer
         for i in self.SampleMap:
+
             self.Files = self.SampleMap[i]
             self.SampleName = i
             if tracer: self.RestoreEvents
             if not self.__Event__: return False
             if not self.__Graph__: return False
-        if self.EmptySampleList: return False 
         self.__Selection__
         self.__RandomSampler__
         self.__Optimizer__
         self.WhiteSpace()
+        self.rm("./tmp")
+        if self.EmptySampleList: return False 
         return True
     
     def __preiteration__(self):

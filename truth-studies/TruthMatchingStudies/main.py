@@ -87,11 +87,11 @@ Ana.InputSample("BSM-4t-DL-1000_s", smpl + smpls + "/ttH_tttt_m1000/") #DAOD_TOP
 #Ana.InputSample("BSM-4t-DL-500", smpl + smpls + "/ttH_tttt_m500/")
 #Ana.InputSample("BSM-4t-DL-400", smpl + smpls + "/ttH_tttt_m400/")
 Ana.Event = Event 
-#Ana.EventStop = 10000
+Ana.EventStop = 10000
 Ana.Threads = 12
 Ana.chnk = 1000
 Ana.EventCache = True
-Ana.PurgeCache = True
+Ana.PurgeCache = False
 Ana.Launch
 
 ## Debugging purposes

@@ -152,6 +152,7 @@ def test_eventgraph():
         assert i.G__fx
 
 def test_selection_generator():
+    from AnalysisG.IO import UnpickleObject
     from examples.ExampleSelection import Example, Example2
     from examples.Event import EventEx
     Ev = EventGenerator(Files)
@@ -165,11 +166,15 @@ def test_selection_generator():
     sel.Threads = 2
     sel.AddSelection("Example", Example)
     sel.AddSelection("Example2", Example2)
+    sel.MergeSelection("Example2")
     sel.MakeSelection
 
-    assert sel.result["Example2"].CutFlow["Success->Example"] == len(Ev)
-    assert len(sel.result["Example2"].TimeStats) == len(Ev)
-    assert len(Ev)*4 == len(sel.result["Example2"].Top["Truth"])
+    res = UnpickleObject("./Selections/Merged/Example2")
+
+    assert res.CutFlow["Success->Example"] == len(Ev)
+    assert len(res.TimeStats) == len(Ev)
+    assert len(Ev)*4 == len(res.Top["Truth"])
+    sel.rm("./Selections")
 
 def test_Analysis():
     Sample1 = {smpl + "sample1" : ["smpl1.root"]}
@@ -355,16 +360,16 @@ if __name__ == "__main__":
     #test_event_generator()
     #test_event_generator_more()
     #test_event_generator_merge()
-    test_eventgraph()
+    #test_eventgraph()
     #test_selection_generator() 
     #test_Analysis()
     #test_analysis_event_nocache()
     #test_analysis_event_nocache_nolaunch()
-    #test_analysis_event_cache()
-    #test_analysis_event_cache_diff_sample()
+    test_analysis_event_cache()
+    test_analysis_event_cache_diff_sample()
     #test_analysis_data_nocache()
     #test_analysis_data_nocache_nolaunch()
-    #test_analysis_data_cache()
-    #test_analysis_data_cache_diff_sample()
-    #test_analysis_data_event_cache_diff_sample()
+    test_analysis_data_cache()
+    test_analysis_data_cache_diff_sample()
+    test_analysis_data_event_cache_diff_sample()
     pass

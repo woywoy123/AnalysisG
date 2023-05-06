@@ -94,6 +94,7 @@ namespace CyTracer
             bool ContainsROOT(std::string root); 
             bool ContainsHash(std::string hash); 
             CyEvent* HashToEvent(std::string Hash);
+            CyROOT* HashToCyROOT(std::string Hash); 
             std::string HashToROOT(std::string Hash);
             std::vector<std::string> ROOTtoHashList(std::string root); 
             std::map<std::string, bool> FastSearch(std::vector<std::string> Hashes);

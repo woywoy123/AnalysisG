@@ -41,6 +41,7 @@ class _SelectionGenerator:
     def __init__(self):
         self.Selections = {}
         self.Merge = {}
+        self.OutputDirectory = "./"
 
 class _RandomSampler:
     

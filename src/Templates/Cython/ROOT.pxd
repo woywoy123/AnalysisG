@@ -53,6 +53,7 @@ cdef extern from "../Headers/ROOT.h" namespace "CyTracer":
             
         # Lookups 
         CyEvent* HashToEvent(string Hash) except +
+        CyROOT* HashToCyROOT(string Hash) except +
         string HashToROOT(string Hash) except +
         vector[string] ROOTtoHashList(string root) except +
         bool ContainsROOT(string root) except + 

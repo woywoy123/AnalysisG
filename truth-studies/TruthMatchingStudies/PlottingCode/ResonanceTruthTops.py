@@ -22,12 +22,10 @@ def ResonanceDecayModes(x):
             "Had-Lep (" + str(x.ResDecayMode["HL"]) + ")", 
             "Lep-Lep (" + str(x.ResDecayMode["LL"]) + ")"]
 
-    Plots["xData"] = [0, 1, 2, 3, 4]
     Plots["xWeights"] = [
             x.ResDecayMode["L"], x.ResDecayMode["H"], 
             x.ResDecayMode["HH"], x.ResDecayMode["HL"], x.ResDecayMode["LL"]]
     Plots["xStep"] = 1
-    Plots["xBins"] = 5
     Plots["xBinCentering"] = True 
     Plots["Filename"] = "Figure_1.1a"
     F = TH1F(**Plots)

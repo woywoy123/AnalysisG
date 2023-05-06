@@ -40,6 +40,7 @@ def test_dumping_events():
     for i in Ana: x.append(i.hash)
     assert len(x) != 0
     Ana.rm("./Project")
+    Ana.rm("./tmp")
 
 def Feat(a):
     return 1
@@ -107,6 +108,7 @@ def test_dumping_event_selection():
     con.AddJob("example1_3", Ana_s3, waitfor = ["smpl1", "smpl2", "smpl3"])   
    
     Ana_sum = Analysis()
+    Ana_sum.ProjectName = "Project"
     Ana_sum.MergeSelection("example1")
     
     con.AddJob("sum", Ana_sum, waitfor = ["example1_1", "example1_2", "example1_3"])
@@ -194,6 +196,6 @@ def test_dumping_optimization():
 if __name__ == "__main__":
     #test_dumping_events()
     #test_dumping_graphs()
-    #test_dumping_event_selection()
+    test_dumping_event_selection()
     #test_dumping_optimization()
     pass

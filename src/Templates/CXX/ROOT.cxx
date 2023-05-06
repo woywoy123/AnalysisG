@@ -104,6 +104,12 @@ CyTracer::CyEvent* CyTracer::CySampleTracer::HashToEvent(std::string hash)
     return root -> HashMap[hash]; 
 }
 
+CyTracer::CyROOT* CyTracer::CySampleTracer::HashToCyROOT(std::string hash)
+{
+    if (this -> _ROOTHash.count(hash) == 0){ return NULL; }
+    return this -> _ROOTHash[hash];
+}
+
 std::string CyTracer::CySampleTracer::HashToROOT(std::string hash)
 {
     if (this -> _ROOTHash.count(hash) == 0){ return "None"; }
