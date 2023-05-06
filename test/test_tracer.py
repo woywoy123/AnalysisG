@@ -2,6 +2,7 @@ from AnalysisG.Templates import EventTemplate
 from AnalysisG.Templates import ParticleTemplate
 from AnalysisG.IO import UpROOT
 from AnalysisG.Tracer import SampleTracer
+import pickle
 import shutil
 import os
 
@@ -58,10 +59,12 @@ def test_tracer_addEvent():
         x = ev.clone
         root, index = i["ROOT"], i["EventIndex"]
         trees = x.__compiler__(i)
-
-        tr.AddEvent(trees, root, index)         
+        for i in trees: i.CompileEvent() 
+        for i in trees: i.index = index
+        for i in trees: i.hash = root
+        inpt = { i.hash : {"pkl" : pickle.dumps(i), "index" : i.index, "Tree" : i.Tree, "ROOT" : root} for i in trees}
+        tr.AddEvent(inpt)         
         hashes |= {p.hash : p for p in trees}
-        
         if root not in roothashes: roothashes[root] = []
         roothashes[root] += [p.hash for p in trees]
 
@@ -95,11 +98,14 @@ def EventMaker(root):
     io = UpROOT(root)
     io.Trees = ev.Trees
     io.Leaves = ev.Leaves
-    out = []
+    out = {}
     for i in io:
         root, index = i["ROOT"], i["EventIndex"]
         trees = ev.__compiler__(i)
-        out.append([trees, root, index]) 
+        for i in trees: i.CompileEvent() 
+        for i in trees: i.index = index
+        for i in trees: i.hash = root
+        out |= { i.hash : {"pkl" : pickle.dumps(i), "index" : i.index, "Tree" : i.Tree, "ROOT" : root} for i in trees}
     return out
 
 def test_tracer_operators():
@@ -108,11 +114,11 @@ def test_tracer_operators():
     root2 = os.path.abspath("./samples/sample1/smpl2.root")
     
     tr1 = SampleTracer()
-    for i in EventMaker(root1): tr1.AddEvent(i[0], i[1], i[2])
+    tr1.AddEvent(EventMaker(root1))
     l1 = len(tr1)
 
     tr2 = SampleTracer()
-    for i in EventMaker(root2): tr2.AddEvent(i[0], i[1], i[2])
+    tr2.AddEvent(EventMaker(root2))
     l2 = len(tr2)
      
     trsum = tr1 + tr2 
@@ -135,13 +141,13 @@ def test_tracer_hdf5():
     root2 = os.path.abspath("./samples/sample1/smpl2.root")
     
     tr1 = SampleTracer()
-    for i in EventMaker(root1): tr1.AddEvent(i[0], i[1], i[2])
+    tr1.AddEvent(EventMaker(root1))
     l1 = len(tr1)
 
     tr2 = SampleTracer()
-    for i in EventMaker(root2): tr2.AddEvent(i[0], i[1], i[2])
+    tr2.AddEvent(EventMaker(root2))
     l2 = len(tr2)
-
+     
     tr1.DumpEvents
     tr2.DumpEvents
         
@@ -181,8 +187,9 @@ def test_tracer_hdf5():
         k = sum([s for l in range(1000)])
         del s
 
-    shutil.rmtree("EventCache")
+    shutil.rmtree("UNTITLED")
     shutil.rmtree("Tracer")
+    shutil.rmtree("tmp")
  
 if __name__ == "__main__":
     test_tracer_addEvent()

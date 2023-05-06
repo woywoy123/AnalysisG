@@ -204,6 +204,8 @@ class CombineTH1F(Functions):
             self.Normalize = False
         elif self.Normalize and self.Histogram != None: 
             Sum = self.Histogram.NPHisto[0].sum()
+        elif self.Normalize == True: 
+            Sum = sum([i.NPHisto[0].sum() for i in self.Histograms])
         elif self.Normalize == "%" and self.Histogram == None:
             Sum = sum([i.NPHisto[0].sum() for i in self.Histograms])*0.01
 

@@ -30,8 +30,6 @@ cdef class ParticleTemplate(object):
 
         cdef ParticleTemplate s = self
         cdef ParticleTemplate o = other 
-        s.ptr._UpdateState()
-        o.ptr._UpdateState()
         cdef ParticleTemplate p = self.clone 
         p.ptr[0] = s.ptr[0] + o.ptr[0]
         return p
@@ -40,8 +38,8 @@ cdef class ParticleTemplate(object):
         if not issubclass(type(other), ParticleTemplate): return False
         cdef ParticleTemplate s = self
         cdef ParticleTemplate o = other 
-        s.ptr._UpdateState()
-        o.ptr._UpdateState()
+        s.ptr.Hash()
+        o.ptr.Hash()
         return s.ptr[0] == o.ptr[0]
     
     def __hash__(self) -> int:
@@ -138,12 +136,10 @@ cdef class ParticleTemplate(object):
     
     @property
     def hash(self) -> str:
-        self.ptr._UpdateState()
         return self.ptr.Hash().decode("UTF-8")
     
     @property
     def px(self) -> double:
-        self.ptr._UpdateState()
         return self.ptr.px()
     
     @px.setter
@@ -153,7 +149,6 @@ cdef class ParticleTemplate(object):
 
     @property
     def py(self) -> double:
-        self.ptr._UpdateState()
         return self.ptr.py()
 
     @py.setter
@@ -163,7 +158,6 @@ cdef class ParticleTemplate(object):
 
     @property
     def pz(self) -> double:
-        self.ptr._UpdateState()
         return self.ptr.pz()
 
     @pz.setter
@@ -173,7 +167,6 @@ cdef class ParticleTemplate(object):
 
     @property
     def pt(self) -> double:
-        self.ptr._UpdateState()
         return self.ptr.pt()
 
     @pt.setter
@@ -183,7 +176,6 @@ cdef class ParticleTemplate(object):
 
     @property
     def eta(self) -> double:
-        self.ptr._UpdateState()
         return self.ptr.eta()
 
     @eta.setter
@@ -193,7 +185,6 @@ cdef class ParticleTemplate(object):
 
     @property
     def phi(self) -> double:
-        self.ptr._UpdateState()
         return self.ptr.phi()
 
     @phi.setter
@@ -203,7 +194,6 @@ cdef class ParticleTemplate(object):
     
     @property
     def e(self) -> double:
-        self.ptr._UpdateState()
         return self.ptr.e()
 
     @e.setter 

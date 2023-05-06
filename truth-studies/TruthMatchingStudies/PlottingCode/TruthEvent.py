@@ -121,7 +121,6 @@ def EventMETImbalance(x):
     tc = CombineTH1F(**Plots_)
     tc.SaveFigure()
     
-    exit()
     Plots = {}
     Plots["Title"] = "Measured"
     Plots["xBins"] = 400
@@ -143,6 +142,7 @@ def EventMETImbalance(x):
     Plots_["xStep"] = 100
     Plots_["xMin"] = 0
     Plots_["xMax"] = 1000
+    Plots_["Normalize"] = True
     Plots_["Filename"] = "MissingET"
     tc = CombineTH1F(**Plots_)
     tc.SaveFigure()
@@ -160,6 +160,7 @@ def EventMETImbalance(x):
     Plots_["xMin"] = -500
     Plots_["xMax"] = 500
     Plots_["xStep"] = 50
+    Plots_["Normalize"] = True
     Plots_["Filename"] = "Difference-MissingET"
     tc = CombineTH1F(**Plots_)
     tc.SaveFigure()
@@ -186,6 +187,7 @@ def EventMETImbalance(x):
     Plots_["xStep"] = 100
     Plots_["xMin"] = 0
     Plots_["xMax"] = 1000
+    Plots_["Normalize"] = True
     Plots_["Filename"] = "MissingET-Rotated"
     tc = CombineTH1F(**Plots_)
     tc.SaveFigure()
@@ -203,6 +205,7 @@ def EventMETImbalance(x):
     Plots_["xMin"] = -500
     Plots_["xMax"] = 500
     Plots_["xStep"] = 50
+    Plots_["Normalize"] = True
     Plots_["Filename"] = "difference-MissingET-Rotated"
     tc = CombineTH1F(**Plots_)
     tc.SaveFigure()

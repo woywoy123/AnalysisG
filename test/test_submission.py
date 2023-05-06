@@ -34,10 +34,10 @@ def test_dumping_events():
     con.DumpCondorJobs 
     con.TestCondorShell
     
-    Ana = _template()
-    Ana.ProjectName = "Project"
+    Ana2 = _template()
+    Ana2.ProjectName = "Project"
     x = []
-    for i in Ana: x.append(i.hash)
+    for i in Ana2: x.append(i.hash)
     assert len(x) != 0
     Ana.rm("./Project")
     Ana.rm("./tmp")
@@ -194,8 +194,8 @@ def test_dumping_optimization():
     con.rm("./Project")
 
 if __name__ == "__main__":
-    #test_dumping_events()
+    test_dumping_events()
     #test_dumping_graphs()
-    test_dumping_event_selection()
+    #test_dumping_event_selection()
     #test_dumping_optimization()
     pass

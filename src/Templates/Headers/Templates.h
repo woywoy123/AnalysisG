@@ -47,7 +47,8 @@ namespace CyTemplate
                 p2._px = this -> _px + p._px; 
                 p2._py = this -> _py + p._py; 
                 p2._pz = this -> _pz + p._pz; 
-                p2._e  = this ->  _e + p._e; 
+                p2._e  = this ->  _e + p._e;
+                p2._initC = true;
                 return p2; 
             }
 
@@ -56,19 +57,21 @@ namespace CyTemplate
                 this -> _px += p._px; 
                 this -> _py += p._py; 
                 this -> _pz += p._pz; 
-                this ->  _e += p._e; 
+                this ->  _e += p._e;
+                this -> _initC = true; 
             }
 
             bool operator==(const CyParticleTemplate& p2)
             {
-                return (this -> _hash) == (p2._hash); 
+                return this -> Hash() == p2._hash; 
             }
             
             // Book keeping variables
             signed int index = -1;
  
             // State indicator
-            bool _edited = true; 
+            bool _initC = false; 
+            bool _initP = false; 
             
             // ============== Transformation ================ //
             // Getter Functions
@@ -107,7 +110,6 @@ namespace CyTemplate
             // ============== End Physics ================ //
 
             std::string Hash();
-            void _UpdateState();
 
         private:
             // Internal Kinematic Variables

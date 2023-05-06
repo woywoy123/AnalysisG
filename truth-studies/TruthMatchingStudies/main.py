@@ -1,6 +1,6 @@
 from AnalysisG import Analysis 
 from AnalysisG.Events import Event 
-from AnalysisG.IO import UnpickleObject
+from AnalysisG.IO import UnpickleObject, PickleObject
 
 from Studies.Resonance.ZPrimePtMass import ZPrimeMatrix
 import PlottingCode.Resonance_ZPrimePtMass as ZPrime
@@ -27,18 +27,18 @@ import os
 smpl = os.environ["Samples"]
 
 toRun = [
-        "ZPrimeMatrix", 
-        "ResonanceDecayModes", 
-        "ResonanceMassFromTops", 
-        "ResonanceDeltaRTops", 
-        "ResonanceTopKinematics", 
-        "EventNTruthJetAndJets", 
-        #"EventMETImbalance",
-        "TopDecayModes", 
-        "ResonanceMassFromChildren", 
-        "DeltaRChildren", 
-        "Kinematics", 
-        "EventNuNuSolutions", 
+        #"ZPrimeMatrix", 
+        #"ResonanceDecayModes", 
+        #"ResonanceMassFromTops", 
+        #"ResonanceDeltaRTops", 
+        #"ResonanceTopKinematics", 
+        #"EventNTruthJetAndJets", 
+        "EventMETImbalance",
+        #"TopDecayModes", 
+        #"ResonanceMassFromChildren", 
+        #"DeltaRChildren", 
+        #"Kinematics", 
+        #"EventNuNuSolutions", 
 ]
 
 studies = {
@@ -73,9 +73,9 @@ studiesPlots = {
 
 Ana = Analysis()
 
-for i in toRun:
-    Ana.AddSelection(i, studies[i])
-    Ana.MergeSelection(i)
+#for i in toRun:
+#    Ana.AddSelection(i, studies[i])
+#    Ana.MergeSelection(i)
 
 smpls = "" #"/DileptonCollection/MadGraphPythia8EvtGen_noallhad_"
 Ana.ProjectName = "_Project"
@@ -92,15 +92,15 @@ Ana.Threads = 12
 Ana.chnk = 1000
 Ana.EventCache = True
 Ana.PurgeCache = False
-Ana.Launch
+#Ana.Launch
 
-## Debugging purposes
-#for i in toRun:
-#    studies[i] = studies[i]()
-#    studies[i](Ana)
-#    print(studies[i].CutFlow)
-#
+# Debugging purposes
+for i in toRun:
+    studies[i] = studies[i]()
+    studies[i](Ana)
+    print(studies[i].CutFlow)
 
+PickleObject(studies[i], Ana.ProjectName + "/Selections/Merged/" + i + ".pkl") 
 # Runs the plotting code
 for i in toRun:
     x = UnpickleObject(Ana.ProjectName + "/Selections/Merged/" + i + ".pkl")

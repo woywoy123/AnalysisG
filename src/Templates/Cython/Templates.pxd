@@ -16,8 +16,9 @@ cdef extern from "../Headers/Templates.h" namespace "CyTemplate" nogil:
         signed int index; 
         
         # State indicator
-        bool _edited; 
-        
+        bool _editedC; 
+        bool _editedP;        
+ 
         # Particle def 
         vector[signed int] _lepdef; 
         vector[signed int] _nudef;
@@ -54,7 +55,6 @@ cdef extern from "../Headers/Templates.h" namespace "CyTemplate" nogil:
         void symbol(string val) nogil except +
 
         string Hash() nogil except +
-        void _UpdateState() nogil except +
 
     cdef cppclass CyEventTemplate nogil:
         CyEventTemplate() nogil except +
