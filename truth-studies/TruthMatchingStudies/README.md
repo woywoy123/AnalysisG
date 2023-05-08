@@ -42,7 +42,8 @@ Plots indicating to which children the Top-Quark decays into.
 Plots relating to the resonance being reconstructed from the top truth children, where the resonance tops decay either Hadronically, Leptonically or Hadronically-Leptonically.
 - **TruthChildrenKinematics**:
 This selection implementation aims to investigate the delta-R dependency of the parent top PT and how closely clustered the children are together. 
-
+- **ResonanceFromTruthJets**:
+Plots the invariant Mass of the injected resonance using truth jets and truth leptons.
 
 ## Figures Produced:
 ### ZPrimeMatrix:

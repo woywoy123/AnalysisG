@@ -70,7 +70,7 @@ src/Events/Graphs/EventGraphs.py
 - First create a new analysis directory `AnalysisName` or simply navigate to `cd tutorial` within this repository.
 - Create three empty files; `Particles.py`, `Event.py`, `EventGraph.py`, we will edit these one by one. 
 
-#### Defining A Particle Class (`Particles.py`): <a name="CustomParticleClass"></a>
+### Defining A Particle Class (`Particles.py`): <a name="CustomParticleClass"></a>
 This section aims to illustrate a very simple example of how to create a custom particle definition, with the framework.
 1. Open ``Particles.py`` and place the following line on the top
 ```python 
@@ -93,43 +93,66 @@ In the above example, the framework is expecting the ROOT file to contain partic
 However, after the object has been constructed, these attributes can be simply called via `<some particle>.pt` or `<some particle>.eta`.
 If during the construction step, that is, when the framework scans ROOT files, notices missing leaf keys, a warning will be issued and the corresponding attribute is skipped.
 
-#### Attributes and Functions:
-The **ParticleTemplate** class comes with numerous useful functions that can be overridden, if needed. 
-A full list is given below:
-- `px -> float`: 
-Computes the `x` component of a Cartesian momentum vector (requires `pt` and `phi`).
-- `py -> float`: 
-Computes the `y` component of a Cartesian momentum vector (requires `pt` and `phi`).
-- `pz -> float`: 
-Computes the `z` component of a Cartesian momentum vector (requires `pt` and `eta`).
-- `eta -> float`: 
-Computes the pseudorapidity (requires `px`, `py` and `pz`).
-- `phi -> float`: 
-Computes the polar angle around the beam pipe (requires `px` and `py`).
-- `pt -> float`: 
-Computes the transverse momentum (requires `px` and `py`).
-- `e -> float` : 
-Computes the particle's energy from given kinematics. If `m` is given, the energy is computed using the Energy-Momentum relation.
-- `Mass -> float`: 
-Computes the particle's invariant mass (requires `px`, `py`, `pz` and `e`). The output will be in the same units as the four vectors.
-- `DeltaR(particle) -> float`: 
-Computes the DeltaR between two particles from `eta` and `phi`. 
-- `is_lep -> boolean`: 
-True if the pdgid is consistent with a lepton (requires `pdgid` as integer).
-- `is_nu -> boolean`: 
-True if the pdgid is consistent with a neutrino (requires `pdgid` as integer).
-- `is_b -> boolean`: 
-True if the pdgid is consistent with a b-quark (requires `pdgid` as integer).
-- `is_add -> boolean`: 
-True if the particle is neither a lepton, neutrino or b-quark (requires `pdgid` as integer).
-- `LeptonicDecay -> boolean`: 
-True if the particle's decay products are leptonic (requires `Children` to have particle objects with `pdgid`).
-- `Children -> list`: 
-A list which links decay products for the particle.
-- `Parent -> list`: 
-A list which links the particle to its parent particle 
-- `hash -> str`: 
-Returns an 18 character long unique hex code used to identify the particle
+#### Attributes: 
+The **ParticleTemplate** class has a number of useful attributes, which are actually hidden functions (in python language; Getter/Setter).
+This template class has been substantially optimized and delegated to a C++/Cython backend engine, which can still be interfaced with python.
+Attributes marked with a `*` means this variable can be set via a string, which refers to a leaf in a ROOT file. 
+A full list is given below: 
+- `*(int) index`: 
+By default this is set to `-1` but expects either a string or an integer.
+- `(Particle) clone`:
+Return a clone of the particle object type (not its properties).
+- `(str) Type`:
+Expects a string label that the particle represents, but can also be left blank.
+- `(str) hash`:
+Returns a hex string, which gives the particle a unique tag (useful for checking for duplicate particles).
+- `*(float) px`:
+Returns the `x` component of a Cartesian momentum vector. Can be set as float or calculated from `pt` and `phi`.
+- `*(float) py`:
+Returns the `y` component of a Cartesian momentum vector. Can be set as float or calculated from `pt` and `phi`.
+- `*(float) pz`:
+Returns the `z` component of a Cartesian momentum vector. Can be set as float or calculated from `pt` and `eta`.
+- `*(float) pt`:
+Returns the `pt` transverse momenta. Can be set as float or calculated from `px` and `py`.
+- `*(float) phi`:
+Returns the azimuthal angle. Can be set as float or calculated from `px` and `py`.
+- `*(float) eta`: 
+Computes the pseudorapidity. Can be set as float or calculated from `px`, `py` and `pz`.
+- `*(float) e` : 
+Returns the energy of the particle. Can be directly set via a float.
+- `*(float) Mass`:
+Returns the Mass of the particle using the particle's 4-vector. Can be set as float or computed from `px, py, pz, e` and `pt, eta, phi, e`.
+- `*(int) pdgid`:
+Returns the pdgid of the particle (by default `0`). Can be set from int.
+- `*(float) charge`:
+Returns the charge of the particle as a float (by default `0`). Can be set from int.
+- `*(str) symbol`:
+Returns the string representation of the particle (useful for plotting). Can be set from a string.
+- `(bool) is_lep`:
+Returns whether the particle pdgid is a lepton.
+- `(bool) is_nu`:
+Returns whether the particle pdgid is a neutrino.
+- `(bool) is_b`:
+Returns whether the particle pdgid is a b-quark.
+- `(bool) is_add`:
+Returns whether `True`, if the particle is neither lepton, neutrino or b-quark.
+- `list[int] lepdef`:
+The current lepton definition (default [11, 13, 15]). Expects a list of pdgids that are considered leptons.
+- `list[int] nudef`:
+The current neutrino definition (default [12, 14, 16]). Expects a list of pdgids that are considered neutrinos.
+- `(bool) LeptonicDecay`:
+Checks whether the children of the particle are leptonic. 
+- `list[Particles] Parent`:
+A variable used to manually add a parent particle to this particle. Returns an empty list by default.
+- `list[Particles] Children`:
+A variable used to manually add a children particles to this particle (decay products). Returns an empty list by default.
+
+#### Functions:
+```python 
+def DeltaR(ParticleTemplate p):
+```
+Computes the $\Delta$R between two particles. Expects a particle to be inherited from from `ParticleTemplate`. 
+If two particles have a $\varphi_1$ = $2\pi - 0.1\pi$ and $0.1\pi$, respectively, then the $\tan^{-1}(\tan(\varphi))$ operation is used to prevent wrapping.
 
 #### Magic Functions:
 ```python
@@ -150,7 +173,7 @@ contains = i in SomeParticleList
 p1, p2 = set([p1, p2, p1, p2])
 ```
 
-#### How to define a Custom Event Class (`Event.py`): <a name="CustomEventClass"></a>
+### How to define a Custom Event Class (`Event.py`): <a name="CustomEventClass"></a>
 #### Basic Example:
 1. Open `Event.py` and place the following lines at the top; 
 ```python
@@ -212,23 +235,21 @@ This method is used to define any particle relationships or perform pre-processi
 It is not intended to be used for event selection or cuts, but rather a space to organize and link objects together.
 For instance, if the given ROOT files contain some mapping between particles then, this section of the implementation allows the Physicist to match the particle's parents/children.
 
-### Attributes and Functions:
+### Attributes:
 The **EventTemplate** class comes with a few pre-set attributes, which can be modified as needed, these are given below:
-- `Trees -> list`: 
+- `(list[str]) Trees`: 
 A list of trees to use for constructing the event. If this list is left empty, then the framework defaults to `Branches`. 
-- `Branches -> list`: 
+- `(list[str] Branches`: 
 A list of branches to scan through and construct objects from within the given `Tree`.
-- `weight -> (default: 0) float`: 
-The weight contribution of the event. 
-- `Deprecated -> boolean`: 
+- `(float) weight`: 
+The weight contribution of the event. Defaults to `1`.
+- `(bool) Deprecated`: 
 A book-keeping variable used to indicate whether the event implementation is old or outdated. 
-- `CommitHash -> str`: 
+- `(str) CommitHash`: 
 A book-keeping variable used to specify which commit of `AnalysisTop` was used to produce the ROOT sample.
 This can be useful when needing to reference which commit this implementation is compatible with.
-- `CompileEvent -> None`: 
-An empty function, which can be overridden to include additional linking to particle objects. 
 
-### How to define a Custom Event Graph Class (`EventGraphs.py`): <a name="CustomEventGraphClass"></a>
+### Defining a Custom Event Graph Class (`EventGraphs.py`): <a name="CustomEventGraphClass"></a>
 #### Basic Example:
 1. Open `EventGraphs.py` and place the following line at the top; 
 ```python
@@ -245,7 +266,131 @@ def CustomEventGraph(GraphTemplate):
         self.Event = Event 
         
         # Select particles relevant for the analysis. 
-        self.Particles += <Event.SomeParticles> 
+        # Make sure to use 'self.Event', as this catches potentially 
+        # missing attributes of the event.
+        self.Particles += self.Event.<SomeParticles>  
+```
+
+### (Optional) Define a Custom Selection Class: 
+#### Basic Example:
+1. Open/Create `Selection.py` and place the following line at the top; 
+```python 
+from AnalysisG.Templates import SelectionTemplate
+```
+2. Let the your selection class inherit methods from `SelectionTemplate`
+3. A simple example should look something like this: 
+```python 
+def SomeCoolSelection(SelectionTemplate):
+    def __init__(self):
+        SelectionTemplate.__init__(self)
+        
+        # Add some attributes you want to capture in this selection 
+        # This can be a nested list/dictionary or a mixture of both
+        self.SomeParticleStuff = {"lep" : [], "had" : []} 
+        self.SomeCounter = {"lep" : 0, "had" : 0}
+
+    def Selection(self, event):
+        if len(event.<SomeParticles>) == 0: return False # Reject the event 
+        return True # Accept this event and continue to the Strategy function.
+
+    def Strategy(self, event):
+        # Recall the ROOT file from which this event is from 
+        print(self.ROOTName)
+        
+        # Get the event hash (useful for debugging)
+        print(self.hash)
+
+        for i in event.<SomeParticles>:
+            # <.... Do some cool Analysis ....>
+
+            # Prematurely escape the function
+            if i.accept: return "Accepted -> Particles"
+            
+            # Add stuff to the attributes:
+            self.SomeParticleStuff["lep"].append(i.Mass)
+            
+            if i.is_lep: self.SomeCounter["lep"] += 1
+```
+
+#### Attributes:
+- `(string) ROOTName`
+Returns the current ROOT file this event belongs to.
+- `(float) AverageTime`
+Returns the average time required to process a bunch of events.
+- `(float) StdevTime`
+Returns the standard deviation of the time required to process a bunch of events.
+- `(float) Luminosity` 
+The total luminosity of a bunch of events passing the selection function. 
+- `(int) NEvents`:
+Number of events processed. 
+- `(dict) CutFlow`:
+Statistics involving events (not)-passing the `Selection` function.
+If during the `Strategy` a string is returned with `->`, a key is created within this dictionary and a counter is automatically instantiated.
+- `AllWeights`:
+All collected event weights of (not)-passing events. 
+- `SelWeights`:
+Event weights collected which pass the `Selection` function.
+
+#### Functions:
+```python 
+def Selection(event): 
+```
+Returns by default `True` but can be overridden to add custom selection criteria.
+
+```python 
+Strategy(event): 
+```
+A function which allows the analyst to extract additional information from events and implement additional complex clustering algorithms.
+
+```python 
+def Px(met, phi):
+```
+A function which converts polar coordinates to Cartesian x-component.
+
+```python 
+def Py(met, phi):
+```
+A function which converts polar coordinates to Cartesian y-component.
+
+```python 
+def MakeNu(3_vector):
+```
+A function which generates a new neutrino particle object with a given set of Cartesian 3-momentum vector.
+
+```python
+def NuNu(quark1, quark2, lep1, lep2, event, mT = 172.5, mW = 80.379, mN = 0, zero = 1e-12)
+```
+Invokes the `DoubleNeutrino` reconstruction algorithm with the given quark and lepton pairs for this event. 
+This function returns either an empty list, or a list of neutrino objects with possible solution vectors.
+
+```python
+def Nu(quark, lep, event, S = [100, 0, 0, 100], mT = 172.5, mW = 80.379, mN = 0, zero = 1e-12)
+```
+Invokes the `SingleNeutrino` reconstruction algorithm with the given quark and lepton pair for this event. 
+This function returns either an empty list, or a list of neutrino objects with possible solution vectors.
+The variable `S` is the uncertainty on the MET of the event. 
+
+#### Magic Functions:
+```python 
+Ana = Analysis()
+
+Sel = SomeCoolSelection()
+
+# Use the Analysis class to run this on a single thread
+Sel(Ana) 
+
+# Adding Selections 
+selected = []
+for i in Ana:
+    Sel = SomeCoolSelection()
+    selected.append(Sel(i))
+total = sum(selected)
+
+# Equivalence 
+Sel1 = SomeCoolSelection()
+Sel2 = SomeOtherSelection()
+Sel1 == Sel2 
+Sel1 != Sel2
 ```
 
 ## The Analysis Class: 
@@ -358,7 +503,7 @@ If any of the features fail, an alert is issued.
 | Epochs               |                10 |             `int` |                                 |
 | Optimizer            |              None |            `dict` |      `{"ADAM" : {"lr" : 0.001}` |
 | Scheduler            |              None |            `dict` |                                 |
-| Device               |               cpu |            `str`  |			`cuda`   |
+| Device               |               cpu |            `str`  |			            `cuda`   |
 | EventCache           |             False |            `bool` |                                 |
 | DataCache            |             False |            `bool` |                                 |
 | FeatureTest          |             False |            `bool` |                                 |
