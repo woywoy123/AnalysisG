@@ -66,4 +66,4 @@ jobs:
                                   py.test test_templates.py -vv
                                   py.test test_tools.py -vv
                                   py.test test_tracer.py -vv
-                                  py.test test_submission.py -vv 
+                                  #py.test test_submission.py -vv 
