@@ -49,7 +49,8 @@ class Functions(BaseFunctions, Settings):
         
         if self.Get(Dims + "Bins") == None:
             p = set(self.Get(Dims + "Data"))
-            self.Set(Dims + "Bins", int(max(p) - min(p)+1))
+            dif = (max(p) if len(p) != 0 else 1) - (min(p) if len(p) != 0 else 0) +1 
+            self.Set(Dims + "Bins", int(dif))
             trig = True
         
         if self.Get(Dims + "Step") != None and trig == False:
@@ -95,7 +96,9 @@ class TH1F(Functions):
             self.DefineStyle()
             self.ApplyToPLT()
 
-        if len(self.xData) == 0: self.Warning("EMPTY DATA.")
+        if len(self.xData) == 0 and self.xWeights == None: self.Warning("EMPTY DATA.")
+        elif len(self.xData) == 0 and len(self.xWeights) == 0: self.Warning("EMPTY DATA.")
+
         self.DefineRange("x")
         self.NPHisto = np.histogram(self.xData, bins = self.xBins, range = self.xRange, weights = self.xWeights)
         self.ApplyFormat()
@@ -164,8 +167,7 @@ class CombineTH1F(Functions):
     def ConsistencyCheck(self):
         H = [self.Histogram] if self.Histogram != None else []
         H += self.Histograms
-        for i in H:
-            self.xData += i.xData
+        for i in H: self.xData += i.xData
         
         self.DefineRange("x")
         
@@ -210,10 +212,8 @@ class CombineTH1F(Functions):
             Sum = sum([i.NPHisto[0].sum() for i in self.Histograms])/len(self.Histograms)*0.01
 
         if self.Histogram != None:
-            try:
-                self.Histograms.NPHisto
-            except AttributeError:
-                self.Histogram.Compile()
+            try: self.Histograms.NPHisto
+            except AttributeError: self.Histogram.Compile()
             self.Histogram.NPHisto = (self.Histogram.NPHisto[0] / Sum, self.Histogram.NPHisto[1])
             self.Histogram.ApplyFormat()
             Labels.append(self.Histogram.Title)

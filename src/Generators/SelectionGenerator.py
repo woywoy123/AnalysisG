@@ -47,6 +47,7 @@ class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface
             if len(self.Merge[name]) == 0: continue
             sm = sum([UnpickleObject(i) for i in self.Merge[name]])
             PickleObject(sm, self.OutputDirectory + "/Selections/Merged/" + name)
+            for i in self.Merge[name]: self.rm(i)
             self.Merge[name] = []
  
     @property

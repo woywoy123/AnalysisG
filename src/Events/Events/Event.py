@@ -42,9 +42,8 @@ class Event(EventTemplate):
         
         for tj in self.TruthJets.values():
             for ti in tj.TopIndex:
-                if ti == -1:
-                    continue
-                tj.Tops.append(self.Tops[ti])
+                if ti == -1: continue
+                tj.Tops += [self.Tops[ti]]
                 self.Tops[ti].TruthJets.append(tj)
             tj.index = tj.TopIndex
         
@@ -56,8 +55,7 @@ class Event(EventTemplate):
  
         for j in self.Jets.values():
             for ti in j.TopIndex:
-                if ti == -1:
-                    continue
+                if ti == -1: continue
                 j.Tops.append(self.Tops[ti])
                 self.Tops[ti].Jets.append(j)
             j.index = j.TopIndex
@@ -75,8 +73,7 @@ class Event(EventTemplate):
         accept = []
         for dr in dst:
             idx, l = dist[dr]
-            if l in accept:
-                continue
+            if l in accept: continue
             maps[idx].Children.append(l)
             l.index = [maps[idx].index]
             accept.append(l)

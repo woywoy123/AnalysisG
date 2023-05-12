@@ -1,10 +1,10 @@
 from AnalysisG.Notification import _IO
-from .String import *
-from .Miscellaneous import *
-import os
-import copy
-from glob import glob
 from AnalysisG._Tools import Hash
+from .Miscellaneous import *
+from .String import *
+from glob import glob
+import copy
+import os
 
 class Code:
 

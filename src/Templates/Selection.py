@@ -1,4 +1,5 @@
-from AnalysisG.Templates import ParticleTemplate
+from AnalysisG.Templates import ParticleTemplate, EventTemplate
+from AnalysisG.Tracer import SampleTracer
 from AnalysisG.Tools import Code, Tools
 from time import time 
 import statistics
@@ -95,11 +96,16 @@ class SelectionTemplate(Tools):
         return inpt
     
     def _EventPreprocessing(self, event):
-        self.AllWeights += [event.weight]        
+        self.AllWeights += [event.weight]   
+
+        if "Rejected::Selection" not in self.CutFlow: self.CutFlow["Rejected::Selection"] = 0
+        if "Passed::Selection" not in self.CutFlow: self.CutFlow["Passed::Selection"] = 0    
+        
         if self.Selection(event) == False:
-            if "Rejected::Selection" not in self.CutFlow: self.CutFlow["Rejected::Selection"] = 0
             self.CutFlow["Rejected::Selection"] += 1
             return False
+        self.CutFlow["Passed::Selection"] += 1
+        
         self._t1
         o = self.Strategy(event)
         self._t2
@@ -113,8 +119,13 @@ class SelectionTemplate(Tools):
             
     def __call__(self, Ana = None):
         if Ana == None: return self
-        for i in Ana: self._EventPreprocessing(i)
-    
+        if issubclass(type(Ana), EventTemplate): return self._EventProcessing(Ana)
+        if issubclass(type(Ana), SampleTracer) == False: return 
+        for i in Ana: 
+            self.hash = i.hash
+            self.ROOTName = i.ROOT
+            self._EventPreprocessing(i)
+   
     def __eq__(self, other):
         if other == 0: return False
         return Code(other)._Hash == Code(self)._Hash

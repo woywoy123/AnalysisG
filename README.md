@@ -14,8 +14,8 @@ To streamline the transition between ROOT and PyTorch Geometric (a Deep Learning
 These simply define which particles should be used to construct nodes on a PyTorch Geometric (PyG) Data object. Edge, Node and Graph features can be added separately as simple python functions (see tutorial below).
 Post event graph construction, events are delegated to an optimization step, which trains a specified model with those graphs. 
 
-To avoid having to deal with additional boiler plate book keeping code, the framework tracks the event to the originating ROOT file using MD5 hashing. 
-The MD5 hash is constructed by concatenating the directory, ROOT filename and event number into a single string and computing the associated hash. 
+To avoid having to deal with additional boiler plate book keeping code, the framework tracks the event to the originating ROOT file using a hashing algorithm. 
+The hash is constructed by concatenating the directory, ROOT filename and event number into a single string and computing the associated hash. 
 This ensures each event can be easily traced back to its original ROOT file. 
 
 
@@ -353,7 +353,7 @@ def Py(met, phi):
 A function which converts polar coordinates to Cartesian y-component.
 
 ```python 
-def MakeNu(3_vector):
+def MakeNu(list[px, py, pz]):
 ```
 A function which generates a new neutrino particle object with a given set of Cartesian 3-momentum vector.
 
@@ -381,9 +381,9 @@ Sel(Ana)
 
 # Adding Selections 
 selected = []
-for i in Ana:
+for event in Ana:
     Sel = SomeCoolSelection()
-    selected.append(Sel(i))
+    selected.append(Sel(event))
 total = sum(selected)
 
 # Equivalence 
@@ -507,6 +507,7 @@ If any of the features fail, an alert is issued.
 | EventCache           |             False |            `bool` |                                 |
 | DataCache            |             False |            `bool` |                                 |
 | FeatureTest          |             False |            `bool` |                                 |
+|:---------------------|:-----------------:|:-----------------:|:-------------------------------:|
 
 #### Functions:
 ```python 
@@ -733,12 +734,4 @@ Selects a random texture for the histograms.
 - Pickle.UnpickleObject
 - Pickle.MultiThreadedDump
 - Pickle.MultiThreadedReading
-
-## EventTemplates.Templates.Selection 
-- Selection 
-- Strategy
-- MakeNu 
-- NuNu
-- Nu 
-- Sort 
 

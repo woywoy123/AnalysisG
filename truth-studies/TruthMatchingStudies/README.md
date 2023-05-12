@@ -42,8 +42,18 @@ Plots indicating to which children the Top-Quark decays into.
 Plots relating to the resonance being reconstructed from the top truth children, where the resonance tops decay either Hadronically, Leptonically or Hadronically-Leptonically.
 - **TruthChildrenKinematics**:
 This selection implementation aims to investigate the delta-R dependency of the parent top PT and how closely clustered the children are together. 
-- **ResonanceFromTruthJets**:
-Plots the invariant Mass of the injected resonance using truth jets and truth leptons.
+- **ResonanceMassTruthJets**:
+Plots the invariant Mass of the injected resonance using truth jets and assoicated truth leptons.
+The general event selections to produce these plots are as follows:
+    - The event needs to have exactly two tops originating from a resonance 
+    - If any of the truth jets from a resonant top also contains a non-resonant top contribution, the event is rejected.
+    - However, if a truth jet contains two tops, and both are marked as resonant, then the event is included.
+- **ResonanceMassTruthJetsNoSelection**:
+Similar to **ResonanceMassTruthJets** except that no selection criteria is applied (except the basic 4-top event and 2-Resonant tops). 
+A few additional kinematic plots are also created, e.g. $\Delta R$ between truth jets, n-Tops merged, etc.
+
+
+
 
 ## Figures Produced:
 ### ZPrimeMatrix:
@@ -154,7 +164,28 @@ This aims to verify whether a correlation between the top's PT and the clusterin
 - **Figure_2.1i**:
 A plot illustrating the fractional PT being transferred to truth children from associated top.
 - **Figure_2.1j**:
-A plot illustrating the fractional 
+A plot illustrating the fraction of energy being transmitted to the truth children from parent top.
+
+### ResonanceMassTruthJets:
+- **Figure_3.1a**:
+A plot of the truth matched reconstructed resonance from truth jets. 
+If the resonance had leptonic tops, the truth lepton and neutrino were added to the truth jets.
+- **Figure_3.1b**:
+A plot of the cutflow statistics.
+    - "REJECT -> NOT-TWO-TOPS": Cases where the event passed the initial selection criteria, but the truth jets being selected didn't have a total of two tops. 
+    - "Rejected::Selection": Event failed the selection criteria 
+    - "Passed::Selection": Event passed the selection criteria 
+
+- **Figure_3.(x)c**:
+Plots of the truth jet resonance for each decay mode overlayed with the associated truth tops. 
+- **Figure_3.1d**:
+A plot of the number of Truth Jets contributing to the respective resonance decay topology.
+
+### ResonanceMassTruthJetsNoSelection:
+- **Figre_3.(x)e**:
+A collection of plots illustrating the invariant mass of the resonance derived from the Truth Jets (with associated leptons and neutrinos if tops decay leptonically) and truth tops. 
+
+
 
 
 

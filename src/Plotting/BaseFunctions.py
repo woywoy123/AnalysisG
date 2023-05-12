@@ -92,7 +92,8 @@ class BaseFunctions(Tools, _Plotting):
         x = self.SanitizeData(self.Get(Dims + "Data"))
         if len(x) == 0:
             self.Title = str(self.Title) if self.Title == None else self.Title
-            self.NoDataGiven()
+            if self.Get(Dims + "Weights") == None: self.NoDataGiven()
+            elif len(self.Get(Dims + "Weights")) == 0:  self.NoDataGiven()
             return 
         self.Set(Dims + "Data", x)
 
