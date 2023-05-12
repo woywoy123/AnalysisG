@@ -74,16 +74,14 @@ cdef class EventTemplate:
         
         cdef list col = []
         col += self.Branches
-        for i in self._leaves:
-            col += list(self._leaves[i].values())
+        for i in self._leaves: col += list(self._leaves[i].values())
         self.Leaves += col
         return self._leaves
     
     @__interpret__.setter
     def __interpret__(self, dict val):
         cdef str i
-        for i in val:
-            setattr(self, i, val[i])
+        for i in val: setattr(self, i, val[i])
 
     def __compiler__(self, inpt: Union[dict]):
         cdef str i, k, tr
@@ -101,10 +99,9 @@ cdef class EventTemplate:
             for i in Obj:
                 val = ev._leaves[i] if i == "event" else ev._Objects[i].__interpret__
                 val = {k : _inpt[val[k]] for k in val if val[k] in _inpt}
-                if len(val) == 0: 
+                if len(val) == 0 and i in ev._Objects: 
                     del ev._Objects[i]
                     continue
-                 
                 if i == "event": 
                     ev.__interpret__ = val
                     continue
