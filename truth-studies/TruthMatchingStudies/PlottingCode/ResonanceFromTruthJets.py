@@ -106,9 +106,50 @@ def ResonanceMassTruthJetsNoSelection(con):
         m_hist["Histograms"] = hists
         m_hist["xStep"] = 100
         m_hist["xMax"] = 1500 
+        m_hist["xTitle"] = "Invariant Mass (GeV)"
         m_hist["Filename"] = "Figure_3." + str(it) + "e"
         cm = CombineTH1F(**m_hist)  
         cm.SaveFigure()
         it += 1
+
+    m_hist = PlotTemplate(con) 
+    m_hist["Title"] = "Resonance Invariant Mass Plot from Different Top contributions"
+    m_hist["xStep"] = 100
+    m_hist["xMax"] = 1500 
+    m_hist["xTitle"] = "Invariant Mass (GeV)"
+    m_hist["Filename"] = "Figure_3.1f"
+    m_hist["Histograms"] = []
+
+    for cont in con.ResMassNTopContributions:
+        hist = PlotTemplate(con) 
+        hist["Title"] = str(cont) + " - Tops"
+        hist["xData"] = con.ResMassNTopContributions[cont]
+        hist["xBins"] = 1000
+        m_hist["Histograms"] += [TH1F(**hist)]
+    cm = CombineTH1F(**m_hist)  
+    cm.SaveFigure()
+    
+    
+    m_hist = PlotTemplate(con) 
+    m_hist["Title"] = "Top Contributions by Decay Topology"
+    m_hist["xStep"] = 1
+    m_hist["xTitle"] = "Number of Top Contributions"
+    m_hist["xBinCentering"] = True
+    m_hist["Histograms"] = []
+    m_hist["Filename"] = "Figure_3.1g"
+
+    for cont in con.ResNTopContributions:
+        hist = PlotTemplate(con) 
+        hist["Title"] = cont
+        hist["xData"] = con.ResNTopContributions[cont]
+        hist["xBins"] = 4
+        m_hist["Histograms"] += [TH1F(**hist)]
+    cm = CombineTH1F(**m_hist)  
+    cm.SaveFigure()
+    
+    
+
+
+
 
 

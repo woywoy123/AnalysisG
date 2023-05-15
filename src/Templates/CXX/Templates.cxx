@@ -170,9 +170,8 @@ double CyTemplate::CyParticleTemplate::Mass()
 void CyTemplate::CyParticleTemplate::Mass(double val){this -> _mass = val;}
 double CyTemplate::CyParticleTemplate::DeltaR(const CyTemplate::CyParticleTemplate& p)
 {
-    double sum = std::pow(this -> _eta - p._eta, 2); 
-    sum += std::pow(std::atan(std::tan(this -> _phi)) - std::atan(std::tan(p._phi)), 2); 
-    return std::pow(sum, 0.5); 
+    double sum = M_PI - fabs(fmod(fabs(this -> _phi - p._phi), 2*M_PI) - M_PI); 
+    return std::pow(std::pow(sum, 2) + std::pow(this -> _eta - p._eta, 2), 0.5); 
 }
 
 // Particle Functions 
@@ -186,8 +185,9 @@ std::string CyTemplate::CyParticleTemplate::symbol()
 {
     std::map<int, std::string> sym = {
                  {1, "d"}, {2, "u"}, {3, "s"}, {4, "c"}, {5, "b"}, {6, "t"},
-                 {11, "e"}, {12, "nu_e"}, {13, "mu"}, {14, "nu_mu"}, {15, "tau"}, {16, "nu_{tau}"},
-                 {21, "g"}, {22, "gamma"}
+                 {11, "e"}, {12, "$\\nu_{e}$"}, {13, "$\\mu$"}, {14, "$\\nu_{\\mu}$"}, 
+                 {15, "$\\tau$"}, {16, "$\\nu_{\\tau}$"},
+                 {21, "g"}, {22, "$\\gamma$"}
     }; 
 
     std::stringstream ss; 

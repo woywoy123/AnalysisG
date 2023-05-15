@@ -507,7 +507,6 @@ If any of the features fail, an alert is issued.
 | EventCache           |             False |            `bool` |                                 |
 | DataCache            |             False |            `bool` |                                 |
 | FeatureTest          |             False |            `bool` |                                 |
-|:---------------------|:-----------------:|:-----------------:|:-------------------------------:|
 
 #### Functions:
 ```python 
@@ -663,6 +662,8 @@ Weights to be used to scale the bin content.
 This is particularly useful for using `xTickLabels`.
 - **Normalize**:
 Whether to normalize the data. Options are; `%`, `True` or `False`.
+- **IncludeOverflow**:
+Whether to dedicate the last bin in the histogram for values beyond the specified maximum range.
 
 #### Functions (IO):
 ```python 

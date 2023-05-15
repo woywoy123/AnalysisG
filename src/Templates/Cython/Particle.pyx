@@ -220,6 +220,7 @@ cdef class ParticleTemplate(object):
     @pdgid.setter
     def pdgid(self, val: Union[str, float, int]):
         if isinstance(val, int): self.ptr.pdgid(<int>val)
+        elif isinstance(val, float): self.ptr.pdgid(<int>val)
         elif isinstance(val, str): self._leaves["pdgid"] = val
 
     @property

@@ -68,7 +68,7 @@ void CyTracer::CySampleTracer::AddEvent(CyTracer::CyEvent* event)
     if (this -> _ROOTMap.count(event -> ROOT) == 0)
     {
         // Split the file path into a vector
-        std::vector<std::string> val = Tools::Split( event -> ROOT, '/' );
+        std::vector<std::string> val = Tools::Split( event -> ROOT, "/" );
 
         // Constuct a new ROOT container object
         CyTracer::CyROOT* r = new CyTracer::CyROOT(); 
@@ -78,7 +78,7 @@ void CyTracer::CySampleTracer::AddEvent(CyTracer::CyEvent* event)
         
         // Extract the source directory
         for (std::string v : val){ r -> SourcePath += v + "/"; }
-        r -> CachePath = Tools::Hashing(r -> SourcePath) + "-" + Tools::Split(r -> Filename, '.')[0];  
+        r -> CachePath = Tools::Hashing(r -> SourcePath) + "-" + Tools::Split(r -> Filename, ".root")[0];  
         // Add the ROOT filename to the collection
         this -> _ROOTMap[event -> ROOT] = r; 
 

@@ -63,6 +63,11 @@ class Functions(BaseFunctions, Settings):
         if self.Get(Dims + "BinCentering"):
             self.CenteringBins(Dims)
 
+        if self.Get(Dims + "Max") != None and self.IncludeOverflow:
+            max_ = self.Get(Dims + "Max")
+            data = self.Get(Dims + "Data") 
+            data = [i if i < max_ else max_ for i in data]
+            self.Set(Dims + "Data", data)
 
 class TH1F(Functions):
     def __init__(self, **kargs):
@@ -187,7 +192,8 @@ class CombineTH1F(Functions):
             i.xBins = bins
             i.xMin = self.xMin
             i.xMax = self.xMax
-            i.xRange = i.xRange
+            i.xRange = self.xRange
+            i.IncludeOverflow = self.IncludeOverflow
             i.xBinCentering = self.xBinCentering
             self.ApplyRandomColor(i)
             i.Compile()

@@ -23,19 +23,17 @@ std::string Tools::ToString(double inpt)
     return ss.str(); 
 }
 
-//std::string Tools::ToString(int inpt)
-//{
-//    std::stringstream ss; 
-//    ss << inpt;
-//    return ss.str(); 
-//}
-
-std::vector<std::string> Tools::Split(const std::string &s, char delim)
+std::vector<std::string> Tools::Split(const std::string &s, std::string delim)
 {
     std::vector<std::string> r; 
-    std::stringstream ss (s); 
-    std::string item; 
-    while (getline(ss, item, delim)){ r.push_back(item); }
+    std::string spl = s;
+    size_t pos = 0; 
+    while ((pos = spl.find(delim)) != std::string::npos)
+    {
+        r.push_back(spl.substr(0, pos)); 
+        spl.erase(0, pos + delim.length());  
+    }
+    r.push_back(spl);
     return r; 
 }
 

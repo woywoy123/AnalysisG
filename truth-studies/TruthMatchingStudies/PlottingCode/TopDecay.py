@@ -1,6 +1,5 @@
 from AnalysisG.Plotting import TH1F, TH2F, CombineTH1F
 
-
 def PlotTemplate(x):
     Plots = {
                 "yTitle" : "Entries (a.u.)",

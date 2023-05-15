@@ -1,4 +1,4 @@
-from AnalysisG.Templates import ParticleTemplate, EventTemplate
+from AnalysisG.Templates import ParticleTemplate
 from AnalysisG.Tracer import SampleTracer
 from AnalysisG.Tools import Code, Tools
 from time import time 
@@ -118,8 +118,7 @@ class SelectionTemplate(Tools):
         return True
             
     def __call__(self, Ana = None):
-        if Ana == None: return self
-        if issubclass(type(Ana), EventTemplate): return self._EventProcessing(Ana)
+        if type(Ana).__name__ == "Event": return self._EventPreprocessing(Ana)
         if issubclass(type(Ana), SampleTracer) == False: return 
         for i in Ana: 
             self.hash = i.hash

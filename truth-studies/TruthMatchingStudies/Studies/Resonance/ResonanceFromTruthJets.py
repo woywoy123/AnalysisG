@@ -112,19 +112,3 @@ class ResonanceMassTruthJetsNoSelection(SelectionTemplate):
         self.ResNTopContributions[string] += [len(tops)]
         if len(tops) not in self.ResMassNTopContributions: self.ResMassNTopContributions[len(tops)] = []
         self.ResMassNTopContributions[len(tops)] += [resMass]
-        
-        
-         
-       
-
-      
-
-
-
-
- 
-
-
-
-
-

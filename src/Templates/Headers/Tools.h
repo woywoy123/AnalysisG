@@ -10,8 +10,7 @@ namespace Tools
 {
     std::string Hashing(std::string inpt); 
     std::string ToString(double inpt); 
-    //std::string ToString(signed int inpt); 
-    std::vector<std::string> Split(const std::string &s, char delim);
+    std::vector<std::string> Split(const std::string &s, std::string delim);
 
     std::vector<std::vector<std::string>> Chunk(const std::vector<std::string>& v, int N); 
 }

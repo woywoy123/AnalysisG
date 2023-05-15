@@ -116,6 +116,7 @@ class _Plotting:
         
         # --- Data Display --- #
         self.Normalize = None    
+        self.IncludeOverflow = False
         
         # --- Cosmetic --- #
         self.LineStyle = None
