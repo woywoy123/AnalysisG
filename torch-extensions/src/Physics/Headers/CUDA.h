@@ -3,6 +3,8 @@
 
 #include <torch/extension.h>
 #include <utility>
+#include <cmath>
+
 torch::Tensor _P2(torch::Tensor px, torch::Tensor py, torch::Tensor pz); 
 torch::Tensor _P(torch::Tensor px, torch::Tensor py, torch::Tensor pz); 
 
@@ -106,7 +108,7 @@ namespace PhysicsCUDA
 			torch::Tensor eta1, torch::Tensor eta2,
 			torch::Tensor phi1, torch::Tensor phi2)
 	{
-		std::vector<torch::Tensor> _o = _format({eta1, eta2, torch::atan(torch::tan(phi1)), torch::atan(torch::tan(phi2))});
+		std::vector<torch::Tensor> _o = _format({eta1, eta2, phi1, phi2});
 		return _DeltaR(_o[0], _o[1], _o[2], _o[3]);
 	}
 }

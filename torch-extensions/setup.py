@@ -1,6 +1,6 @@
-import torch
 from torch.utils.cpp_extension import BuildExtension
 from setuptools import setup
+import torch
 import os
 
 _dir = "src/"
@@ -192,7 +192,6 @@ PkgC = {
 
 _cmd = {
                 "name" : "AnalysisG-Extensions", 
-                "readme" : "README.md", 
                 "version" : "1.1", 
                 "package_data" : {}, 
                 "ext_modules" : [], 
@@ -201,8 +200,7 @@ _cmd = {
 
 for i in PkgH:
         _cu = os.environ.get("CUDA_PATH")
-        if (_cu == None or _cu == "") and "CUDA" in i:
-                continue
+        if (_cu == None or _cu == "") and "CUDA" in i: continue
         if "CUDA" in i:
                 from torch.utils.cpp_extension import CUDAExtension
                 _cmd["ext_modules"].append(CUDAExtension( i, PkgC[i] ))

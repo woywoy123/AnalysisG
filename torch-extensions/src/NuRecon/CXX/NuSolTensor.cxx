@@ -137,7 +137,7 @@ std::vector<torch::Tensor> NuSolTensors::_Format(std::vector<std::vector<double>
 	out.reserve(inpt.size()); 
 	for (unsigned int i = 0; i < inpt.size(); ++i)
 	{
-		out.push_back(NuSolTensors::_TransferToTensor(inpt[i]).view({-1, inpt[i].size()})); 
+		out.push_back(NuSolTensors::_TransferToTensor(inpt[i]).view({-1, (long int)inpt[i].size()})); 
 	}
 	return NuSolTensors::_Format(torch::cat(out, 0), inpt[0].size()); 
 }

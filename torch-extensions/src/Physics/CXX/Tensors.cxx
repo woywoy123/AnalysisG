@@ -1,4 +1,5 @@
 #include "../Headers/Tensors.h"
+#include <cmath>
 
 torch::Tensor PhysicsTensors::P2(torch::Tensor px, torch::Tensor py, torch:: Tensor pz)
 {
@@ -62,5 +63,9 @@ torch::Tensor PhysicsTensors::DeltaR(
 		torch::Tensor eta1, torch::Tensor eta2, 
 		torch::Tensor phi1, torch::Tensor phi2)
 {
-	return torch::sqrt((eta1 - eta2).pow(2) + (phi1 - phi2).pow(2)); 
+    torch::Tensor dphi = (phi1 - phi2); 
+    torch::Tensor pi = torch::ones_like(phi1)*M_PI; 
+    dphi = torch::fmod(torch::abs(dphi), 2*pi); 
+    dphi = pi - torch::abs(dphi - pi); 
+	return torch::sqrt((eta1 - eta2).pow(2) + dphi.pow(2)); 
 }

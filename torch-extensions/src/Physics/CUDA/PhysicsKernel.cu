@@ -78,3 +78,15 @@ __global__ void _Diff_pow2_v1_v2K(
 	if (indx >= x) {return;}
 	_v[indx][0] += _diff_pow2_v1_v2(_v1[indx][0], _v2[indx][0]); 
 }
+
+template <typename scalar_t>
+__global__ void _Diff_pow2_v1_v2K_bfly(
+		const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> _v1,
+		const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> _v2, 
+		torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> _v, 
+		const int x)
+{
+	const int indx = blockIdx.x * blockDim.x + threadIdx.x;
+	if (indx >= x) {return;}
+	_v[indx][0] += _diff_pow2_v1_v2_bfly(_v1[indx][0], _v2[indx][0]); 
+}

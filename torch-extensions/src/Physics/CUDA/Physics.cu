@@ -1,6 +1,7 @@
 #include <torch/extension.h>
 #include <cuda.h>
 #include <cuda_runtime.h>
+#include <cmath>
 
 template <typename scalar_t>
 __device__ __forceinline__ scalar_t _pow(const scalar_t p)
@@ -44,4 +45,9 @@ __device__ __forceinline__ scalar_t _diff_pow2_v1_v2(const scalar_t v1, const sc
 	return _pow(v2 - v1);
 }
 
+template <typename scalar_t>
+__device__ __forceinline__ scalar_t _diff_pow2_v1_v2_bfly(const scalar_t v1, const scalar_t v2)
+{
+	return _pow( M_PI - fabs(fmod(fabs(v2 - v1),  2*M_PI) - M_PI) );
+}
 

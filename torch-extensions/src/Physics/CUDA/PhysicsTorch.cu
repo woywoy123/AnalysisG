@@ -314,7 +314,7 @@ torch::Tensor _DeltaR(torch::Tensor eta1, torch::Tensor eta2, torch::Tensor phi1
 				l
 		);
 
-		_Diff_pow2_v1_v2K<scalar_t><<<blocks, threads>>>(
+		_Diff_pow2_v1_v2K_bfly<scalar_t><<<blocks, threads>>>(
 				phi1.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
 				phi2.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
 				_dR.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),

@@ -130,6 +130,7 @@ def test_physics():
     
     pt, eta, phi, e = [], [], [], []
     pt1, eta1, phi1, e1 = [], [], [], []
+    deltaR = []
     for event in Ana:
         top = event.Tops[0]
         top2 = event.Tops[1]
@@ -138,7 +139,7 @@ def test_physics():
         theta_r = top_r.theta
         theta_p = TC.Theta(tx, ty, tz)
         assert AssertEquivalenceRecursive([[theta_r]], theta_p) 
-        
+ 
         p_r = math.sqrt(top.px**2 + top.py**2 + top.pz**2)
         p_p = TC.P(tx, ty, tz)
         assert AssertEquivalenceRecursive([[p_r]], p_p) 
@@ -167,7 +168,8 @@ def test_physics():
     
             pt1.append([top2.pt]), eta1.append([top2.eta])
             phi1.append([top2.phi]), e1.append([top2.e])
-     
+            deltaR.append([top.DeltaR(top2)])
+    
     if is_cuda == False: return   
 
     print(" ======= Cartesian stuff ======= ")
@@ -206,7 +208,8 @@ def test_physics():
     _pt2 = torch.tensor(pt1, device = "cuda")
     _eta2 = torch.tensor(eta1, device = "cuda")
     _phi2 = torch.tensor(phi1, device = "cuda")
-    _e2 = torch.tensor(e1, device = "cuda")
+    _e2 = torch.tensor(e1, device = "cuda") 
+    _dr = torch.tensor(deltaR, device = "cuda")
    
     PerformanceInpt(TP.P, CP.P, _pt, _eta, _phi)
     PerformanceInpt(TP.P2, CP.P2, _pt, _eta, _phi)
@@ -222,6 +225,10 @@ def test_physics():
     print("")
     PerformanceInpt(TP.Theta, CP.Theta, _pt, _eta, _phi)
     PerformanceInpt(TP.DeltaR, CP.DeltaR, _eta, _eta2, _phi, _phi2)
+    print("") 
+    assert AssertEquivalenceRecursive(deltaR, TP.DeltaR(_eta, _eta2, _phi, _phi2)) 
+    print("passed")
+
 
 def test_operators():
     if is_cuda == False: return 
@@ -855,10 +862,10 @@ def test_version_consistency():
  
 if __name__ == "__main__":
     #test_transformation()
-    #test_physics()
+    test_physics()
     #test_operators()
     #test_single_nu()
     #test_double_nu()
     #test_speed()
-    test_version_consistency()
+    #test_version_consistency()
     pass
