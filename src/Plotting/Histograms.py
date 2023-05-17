@@ -39,6 +39,11 @@ class Functions(BaseFunctions, Settings):
  
         trig = False
         if self.Get(Dims + "Bins") != None: trig = True
+        if isinstance(self.Get(Dims + "TickLabels"), list) and len(self.Get(Dims + "TickLabels")) != 0: 
+            self.Set(Dims + "Bins", len(self.Get(Dims + "TickLabels"))) 
+            self.Set(Dims + "TickLabels", self.Get(Dims + "TickLabels") + [""]) 
+            self.Set(Dims + "Max", self.Get(Dims + "Bins"))
+            self.Set(Dims + "Min", 0)
 
         if self.Get(Dims + "Weights") == None: pass
         elif len(self.Get(Dims + "Data")) == 0 and len(self.Get(Dims + "Weights")) != 0:
@@ -147,7 +152,9 @@ class TH2F(Functions):
         if self.xStep != None: self.Axis.set_xticks([self.xMin + self.xStep*i for i in range(int((self.xMax - self.xMin)/self.xStep) +1)])
         if isinstance(self.xTickLabels, list): self.Axis.set_xticklabels(self.xTickLabels)
         if self.yStep != None: self.Axis.set_yticks([self.yMin + self.yStep*i for i in range(int((self.yMax - self.yMin)/self.yStep) +1)])
-        if isinstance(self.yTickLabels, list): self.Axis.set_yticklabels(self.yTickLabels)
+        if isinstance(self.yTickLabels, list): 
+            self.Axis.set_yticks([i+0.5 if self.yBinCentering else i for i in range(len(self.yTickLabels))])
+            self.Axis.set_yticklabels(self.yTickLabels)
  
        
 class CombineTH1F(Functions):
@@ -185,8 +192,10 @@ class CombineTH1F(Functions):
         reorg = sorted(reorder)
         reorg.reverse()
         self.Histograms = [self.Histograms[k] for i in reorg for k in reorder[i]]
-        
+       
+
         bins = set([i.xBins for i in self.Histograms if i.xBins != None])
+        if self.xBinCentering and len(bins) == 0: self.xBins -= 1 
         bins = self.xBins if len(bins) == 0 else max(bins)
         for i in self.Histograms:
             i.xBins = bins
@@ -243,9 +252,7 @@ class CombineTH1F(Functions):
         self.PLT.legend()
         if self.Logarithmic: self.PLT.yscale("log")
         if self.xBinCentering: self.Axis.set_xticks(self.xData)
-        if self.xStep != None:
-            self.Axis.set_xticks([self.xMin + self.xStep*i for i in range(self.xBins)])
-
+        if self.xStep != None: self.Axis.set_xticks([self.xMin + self.xStep*i for i in range(self.xBins)])
         if isinstance(self.xTickLabels, list):
             self.Axis.set_xticks(self.xData)
             self.Axis.set_xticklabels(self.xTickLabels)

@@ -218,5 +218,22 @@ A composite plot illustrating the invariant mass of the top quark derived from t
 - **Figure_3.1l**:
 A composite plot illustrating the invariant mass of the truth jet, categorized by the number of tops contributing to the associated truth jet.
 
-
-
+### **ReonanceMassJetsTruthLeptons** 
+A study focused on using the reco jets to reconstruct the invariant mass of the resonance. 
+If the resonant tops decay leptonically, then the truth children leptons are used. 
+The selection for this study is set to only pass events with exactly two resonant tops and overall 4-tops at truth level.
+- **Figure_4.1a**:
+A plot of the truth matched reconstructed resonance from reco jets. 
+If resonant tops decay leptonically, the truth lepton and neutrino are used along with the associated jets.
+- **Figure_4.(x)b**:
+A collection of individual plots of **Figure_4.1a**, with comparable distributions to truth tops and truth jets.
+- **Figure_4.1c**:
+A plot illustrating the n-jet composition of individual decay topologies. 
+It is expected that for events where the resonant tops decaying leptonically, fewer jets are contributing to the reconstruction, whereas only hadronic decays would produce more jets.
+- **Figure_4.2c**:
+An extension plot of **Figure_4.1c**, where the invariant resonance mass is partitioned into the number of jets contributing to the reconstruction. 
+- **Figure_4.1d**:
+A plot illustrating how a given decay topology of the resonant tops impacts cases where associated jets have different tops contributing to them.
+Ideally, each decay topology produces jets which only have one top contributing to the jet, or only two resonant top contributions. 
+Worst case is when both spectator and resonant tops are contributing to the same jet, thus contaminating the reconstructed resonance mass. 
+Ideal cases are marked with a ( * ).
