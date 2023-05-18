@@ -266,9 +266,9 @@ cdef class SampleTracer:
         for root in self.ptr._ROOTMap:
             r = root.second
             f = h5py.File(self.OutDir + "/Tracer/" + r.CachePath.decode("UTF-8") + ".hdf5", "a")
-            try: ref = f.create_dataset("SampleNames", (1), dtype = h5py.ref_dtype)
-            except ValueError: ref = f["SampleNames"]
-            if self._SampleName != "": ref.attrs[self._SampleName] = True
+            try: ref_s = f.create_dataset("SampleNames", (1), dtype = h5py.ref_dtype)
+            except ValueError: ref_s = f["SampleNames"]
+            if self._SampleName != "": ref_s.attrs[self._SampleName] = True
 
             for event in r.HashMap:
                 e = event.second
@@ -282,6 +282,7 @@ cdef class SampleTracer:
                 ref.attrs["EventIndex"] = e.EventIndex
                 ref.attrs["CachedEvent"] = e.CachedEvent
                 ref.attrs["CachedGraph"] = e.CachedGraph
+
             f.close()
     
     @property
@@ -354,11 +355,10 @@ cdef class SampleTracer:
                 try: f["SampleNames"].attrs[self._SampleName]
                 except KeyError: continue
             except KeyError: pass
-
+            
             maps = self.FastHashSearch([k for k in f if k != "SampleNames" and k != "code"])
-            get = [i for i in maps if not maps[i]]
-            if len(get) == 0: continue
-            for i in get:
+            for i in maps:
+                if maps[i]: continue
                 ref = f[i]
                 E = new CyEvent()
                 E.Tree = <string>ref.attrs["Tree"].encode("UTF-8")

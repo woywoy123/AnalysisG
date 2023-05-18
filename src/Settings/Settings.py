@@ -7,6 +7,7 @@ class _General:
         self._Code = {}
         self.EventStart = -1
         self.EventStop = None
+        self.SampleName = ""
         self._Device = "cpu"
         self._condor = False
         self.OutputDirectory = None
@@ -120,6 +121,7 @@ class _Plotting:
         
         # --- Cosmetic --- #
         self.LineStyle = None
+        self.LineWidth = 1
         self.Marker = None
         self.DoStatistics = False
         self.MakeStaticHistograms = False

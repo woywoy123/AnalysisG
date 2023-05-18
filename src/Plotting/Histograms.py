@@ -23,6 +23,7 @@ class Functions(BaseFunctions, Settings):
             ptr = [ "/" , "\\" , "|" , "-" , "+" , "x", "o", "O", ".", "*" ]
             random.shuffle(ptr)
             return ptr[0]
+        elif self.Texture != False: return self.Texture
         return 
 
     def GetBinWidth(self, Dims):
@@ -93,7 +94,7 @@ class TH1F(Functions):
                 density = self.Normalize, 
                 label = self.Title,
                 binticks = True, 
-                linewidth = 3,
+                linewidth = self.LineWidth,
                 alpha = self.Alpha,
                 edgecolor = self.Color, 
                 color = self.Color, 
@@ -195,7 +196,7 @@ class CombineTH1F(Functions):
        
 
         bins = set([i.xBins for i in self.Histograms if i.xBins != None])
-        if self.xBinCentering and len(bins) == 0: self.xBins -= 1 
+        #if self.xBinCentering and len(bins) == 0: self.xBins -= 1 
         bins = self.xBins if len(bins) == 0 else max(bins)
         for i in self.Histograms:
             i.xBins = bins

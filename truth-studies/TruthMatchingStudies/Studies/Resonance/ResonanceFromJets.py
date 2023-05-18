@@ -68,5 +68,3 @@ class ResonanceMassJets(SelectionTemplate):
         if ntops == "Res-Res": modes = "*" + modes
         if ntops not in self.ResMassNTops: self.ResMassNTops["(" + modes + ") " + ntops] = []        
         self.ResMassNTops["(" + modes + ") " + ntops].append(res_j.Mass/1000)
-
-

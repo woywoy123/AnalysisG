@@ -218,7 +218,7 @@ A composite plot illustrating the invariant mass of the top quark derived from t
 - **Figure_3.1l**:
 A composite plot illustrating the invariant mass of the truth jet, categorized by the number of tops contributing to the associated truth jet.
 
-### **ReonanceMassJetsTruthLeptons** 
+### **ResonanceMassJetsTruthLeptons** 
 A study focused on using the reco jets to reconstruct the invariant mass of the resonance. 
 If the resonant tops decay leptonically, then the truth children leptons are used. 
 The selection for this study is set to only pass events with exactly two resonant tops and overall 4-tops at truth level.
@@ -237,3 +237,23 @@ A plot illustrating how a given decay topology of the resonant tops impacts case
 Ideally, each decay topology produces jets which only have one top contributing to the jet, or only two resonant top contributions. 
 Worst case is when both spectator and resonant tops are contributing to the same jet, thus contaminating the reconstructed resonance mass. 
 Ideal cases are marked with a ( * ).
+- **Figure_4.2d**:
+A TH2F version of **Figure_4.1d**. 
+Ideal cases are marked with a ( * ).
+
+### **TopMassJets**:
+A study focusing mostly on reconstructing top quarks from detector based jets and comparing the reconstruction to truth jets. 
+- **Figure_4.1a**:
+A plot illustrating the reconstructed invariant top mass from (truth) jets according to their decay topology.
+- **Figure_4.1b**:
+A plot indicating the number of (truth) jets contributing to a reconstructed top.
+This plot is used to check whether the number of truth jets and detector jets contributing to a top are similar. 
+- **Figure_4.1c**:
+A stack plot of the reconstructed invariant top mass split into the number of jet contributions, along with the decay topology. 
+- **Figure_4.1d**:
+A plot of the reconstructed invariant top mass using the leptonical decay mode with truth children leptons and detector leptons (with truth neutrinos).
+- **Figure_4.1e**:
+A plot of the reconstructed invariant top mass using only the hadronic decay mode, partitioned into the number of jet contributions.
+- **Figure_4.(x)f**:
+A collection of TH2F plots where the average clustering ($Delta$R) is plotted against the reconstructed invariant top mass. 
+The plots are sorted by decay mode where, Hadronic/Leptonic only are first and second respectively, followed by a combined plot.

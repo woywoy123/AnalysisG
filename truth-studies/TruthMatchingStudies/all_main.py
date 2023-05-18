@@ -37,7 +37,6 @@ import PlottingCode.EventNeutrino as EN_Plot
 import os 
 import shutil
 
-smpl = os.environ["Samples"]
 
 toRun = [
         #"ZPrimeMatrix", 
@@ -102,39 +101,41 @@ studiesPlots = {
             "TopMassJets" : TJ_Plot.TopMassJets, 
 }
 
-Ana = Analysis()
-for i in toRun:
-    Ana.AddSelection(i, studies[i])
-    Ana.MergeSelection(i)
+Masses = ["1000", "900", "800", "700", "600", "500", "400"]
+Topo = ["Dilepton", "SingleLepton"]
+smpl = os.environ["Samples"]
+os.makedirs("./FigureCollection", exist_ok = True)
 
-smpls = "" #"/DileptonCollection/MadGraphPythia8EvtGen_noallhad_"
-Ana.ProjectName = "_ProjectL"
-Ana.InputSample("BSM-4t-DL-1000", smpl + smpls + "/ttH_tttt_m1000/")
-Ana.InputSample("BSM-4t-DL-900", smpl + smpls + "/ttH_tttt_m900/")
-#Ana.InputSample("BSM-4t-DL-800", smpl + smpls + "/ttH_tttt_m800/")
-#Ana.InputSample("BSM-4t-DL-700", smpl + smpls + "/ttH_tttt_m700/")
-#Ana.InputSample("BSM-4t-DL-600", smpl + smpls + "/ttH_tttt_m600/")
-#Ana.InputSample("BSM-4t-DL-500", smpl + smpls + "/ttH_tttt_m500/")
-#Ana.InputSample("BSM-4t-DL-400", smpl + smpls + "/ttH_tttt_m400/")
-Ana.Event = Event 
-#Ana.EventStop = 2000
-Ana.Threads = 12
-Ana.chnk = 1000
-Ana.EventCache = True
-Ana.PurgeCache = False
-Ana.Launch
+SampleNames = {}
+for topo in Topo:
+    for m in Masses:
+        smpls = "" #"/" + topo + "Collection/MadGraphPythia8EvtGen_noallhad_"
+        SampleNames |= {"BSM-4t-" + ("SL" if topo == "SingleLepton" else "DL") + "-" + m : smpl + "ttH_tttt_m" + m}
 
-## Debugging purposes
-#for i in toRun:
-#    studies[i] = studies[i]()
-#    studies[i](Ana)
-#    print(studies[i].CutFlow)
-#    PickleObject(studies[i], Ana.ProjectName + "/Selections/Merged/" + i + ".pkl") 
-
-# Runs the plotting code
-for i in toRun:
-    x = UnpickleObject(Ana.ProjectName + "/Selections/Merged/" + i + ".pkl")
-    print("Making Plots for: " + i)
-    studiesPlots[i](x)
-
+it = 1
+for smpl in SampleNames:
+    Ana = Analysis()
+    for i in toRun: Ana.AddSelection(i, studies[i])
+    for i in toRun: Ana.MergeSelection(i)
+    
+    Ana.ProjectName = "_ProjectL"
+    Ana.InputSample(smpl, SampleNames[smpl])
+    Ana.Event = Event 
+    Ana.EventStop = 1000
+    Ana.Threads = 12
+    Ana.chnk = 1000
+    Ana.EventCache = True
+    Ana.PurgeCache = False
+    Ana.Launch
+    
+    # Runs the plotting code
+    for i in toRun:
+        x = UnpickleObject(Ana.ProjectName + "/Selections/Merged/" + i + ".pkl")
+        print("Making Plots for: " + i)
+        studiesPlots[i](x)
+    
+    print("Finished: " + smpl + ": " + str(it) + "/" + str(len(SampleNames)))
+    shutil.move("./Figures", "./FigureCollection/" + smpl)
+    it += 1
+    
 

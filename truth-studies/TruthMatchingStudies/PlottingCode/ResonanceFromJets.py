@@ -15,7 +15,6 @@ def PlotTemplate(x):
     return Plots
 
 def ResonanceMassJets(inpt):
-    plt = False
 
     res = PlotTemplate(inpt)
     res["Title"] = "Reconstructed Resonance Invariant Mass From Jets \n Partitioned into Decay Topology"
@@ -35,7 +34,7 @@ def ResonanceMassJets(inpt):
         res["Histograms"].append(TH1F(**m_hist))
 
     com = CombineTH1F(**res)
-    if plt: com.SaveFigure()
+    com.SaveFigure()
 
     it = 1 
     for mode in inpt.ResMassJets:
@@ -66,7 +65,7 @@ def ResonanceMassJets(inpt):
         res["Histograms"].append(TH1F(**m_hist))
 
         com = CombineTH1F(**res)
-        if plt: com.SaveFigure()
+        com.SaveFigure()
         it += 1
     
     res = PlotTemplate(inpt)
@@ -83,7 +82,7 @@ def ResonanceMassJets(inpt):
         m_hist["xData"] = inpt.ResMassNJets[mode]
         res["Histograms"].append(TH1F(**m_hist))
     com = CombineTH1F(**res)
-    if plt: com.SaveFigure() 
+    com.SaveFigure() 
 
 
     res = PlotTemplate(inpt)
@@ -108,7 +107,7 @@ def ResonanceMassJets(inpt):
         m_hist["xData"] = xdata[mode]
         res["Histograms"].append(TH1F(**m_hist))
     com = CombineTH1F(**res)
-    if plt: com.SaveFigure() 
+    com.SaveFigure() 
 
     res = PlotTemplate(inpt)
     res["Title"] = "Reconstructed Resonance Invariant Mass From Jets \n Partitioned into n-Top Contributions and Decay Topology"
@@ -126,7 +125,7 @@ def ResonanceMassJets(inpt):
         m_hist["xData"] = inpt.ResMassNTops[mode]
         res["Histograms"].append(TH1F(**m_hist))
     com = CombineTH1F(**res)
-    if plt: com.SaveFigure() 
+    com.SaveFigure() 
 
     res_2D = PlotTemplate(inpt)
     res_2D["Title"] = "Reconstructed Resonance Invariant Mass From Jets \n (*Ideal Cases)"

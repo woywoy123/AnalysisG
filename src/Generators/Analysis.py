@@ -44,6 +44,7 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
     @property 
     def __Event__(self):
         process = {}
+
         for i in list(self.Files): 
             f = [j for j in self.Files[i] if i + "/" + j not in self]
             if len(f) != 0: process[i] = f
@@ -55,8 +56,8 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         ev.ImportSettings(self)
         ev.Caller = "ANALYSIS::EVENT"
         if not ev.MakeEvents: return False
+        if self.EventCache: ev.DumpEvents
         self += ev
-        if self.EventCache: self.DumpEvents
         return True 
 
     @property

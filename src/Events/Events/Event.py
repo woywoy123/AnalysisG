@@ -76,6 +76,7 @@ class Event(EventTemplate):
             if l in accept: continue
             maps[idx].Children.append(l)
             l.index = [maps[idx].index]
+            l.Parent += maps[idx].Parent
             accept.append(l)
         
         self.Tops = list(self.Tops.values())

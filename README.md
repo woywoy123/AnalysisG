@@ -152,7 +152,7 @@ A variable used to manually add a children particles to this particle (decay pro
 def DeltaR(ParticleTemplate p):
 ```
 Computes the $\Delta$R between two particles. Expects a particle to be inherited from from `ParticleTemplate`. 
-If two particles have a $\varphi_1$ = $2\pi - 0.1\pi$ and $0.1\pi$, respectively, then the $\tan^{-1}(\tan(\varphi))$ operation is used to prevent wrapping.
+If two particles have a $\varphi_1$ = $2\pi - 0.1\pi$ and $0.1\pi$, respectively, then angles are renormalized to obtain the lowest relative angle.
 
 #### Magic Functions:
 ```python
