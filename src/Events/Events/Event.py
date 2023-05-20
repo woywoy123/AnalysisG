@@ -28,6 +28,7 @@ class Event(EventTemplate):
         self.CommitHash = "master@7d70c412a65160d897d0253cbb42e5accf2c5bcf"
 
     def CompileEvent(self):
+        self.DetectorObjects = []
         self.Tops = {t.index : t for t in self.Tops.values()}
         self.TopChildren = {c.index : c for c in self.TopChildren.values() if isinstance(c.index, int)}
         self.TruthJets = {tj.index : tj for tj in self.TruthJets.values()}

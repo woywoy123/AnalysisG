@@ -1,133 +1,100 @@
+import AnalysisG.Templates.Features.TruthTop as T
+import AnalysisG.Templates.Features.TruthTopChildren as TC
+import AnalysisG.Templates.Features.TruthJet as TJ
+import AnalysisG.Templates.Features.Jet
+
+def TruthTops():
+    # Edge: Truth 
+    ET = {"res_edge" : T.Edge.res_edge}
+
+    # Node: Truth 
+    NT = {"res_node" : T.Node.res_node}
+
+    # Graph: Truth 
+    GT = {
+            "signal" : T.Graph.signal, 
+            "ntops" : T.Graph.ntops, 
+    }
+
+    # Node: Feature 
+    NF = {
+            "eta" : T.Node.eta, 
+            "energy" : T.Node.energy, 
+            "pT" : T.Node.pT, 
+            "phi" : T.Node.phi, 
+    }
+    
+    # Graph: Feature 
+    GF = {
+            "met" : T.Graph.met, 
+            "phi" : T.Graph.phi, 
+    }
+
+    Features = {}
+    Features |= AddFeature("ET", ET)
+    Features |= AddFeature("NT", NT)
+    Features |= AddFeature("GT", GT)
+
+    Features |= AddFeature("NF", NF)
+    Features |= AddFeature("GF", GF)
+
+    return Features
+
+def TruthChildren():
+
+    # Edge: Truth 
+    ET = {
+            "res_edge" : TC.Edge.res_edge, 
+            "top_edge" : TC.Edge.top_edge, 
+            "lep_edge" : TC.Edge.lep_edge, 
+    }
+
+    # Node: Truth 
+    NT = {
+            "res_node" : TC.Node.res_node, 
+    }
+
+    # Graph: Truth 
+    GT = {
+            "signal" : TC.Graph.signal, 
+            "ntops" : TC.Graph.ntops,
+            "n_nu" : TC.Graph.n_nu,  
+    }
+
+    # Node: Feature 
+    NF = {
+            "eta" : TC.Node.eta, 
+            "energy" : TC.Node.energy, 
+            "pT" : TC.Node.pT, 
+            "phi" : TC.Node.phi, 
+            "is_b" : TC.Node.is_b, 
+            "is_lep" : TC.Node.is_lep, 
+            "is_nu" : TC.Node.is_nu, 
+    }
+ 
+    # Graph: Feature 
+    GF = {
+            "met" : TC.Graph.met, 
+            "phi" : TC.Graph.phi, 
+    }
+
+    Features = {}
+    Features |= AddFeature("ET", ET)
+    Features |= AddFeature("NT", NT)
+    Features |= AddFeature("GT", GT)
+
+    Features |= AddFeature("NF", NF)
+    Features |= AddFeature("GF", GF)
+
+    return Features
+
+
 def AddFeature(Prefix, dic):
     return {Prefix + "_" + i : dic[i] for i in dic} 
 
-def TruthTops():
-    import AnalysisG.Templates.Features.TruthTop.Edge as t_ef
-    import AnalysisG.Templates.Features.TruthTop.Node as t_nf
-    import AnalysisG.Templates.Features.TruthTop.Graph as t_gf
-
-    # Node: Kinematics 
-    NF = {
-            "eta" : t_nf.eta, 
-            "energy" : t_nf.energy, 
-            "pT" : t_nf.pT, 
-            "phi" : t_nf.phi,
-            "mass" : t_nf.mass
-        }
-    
-    NT = {"res" : t_nf.FromRes}
-    GT = {"signal" : t_gf.SignalEvent}
-    GF = {"ntops" : t_gf.nTops}
-    ET = {"edge" : t_ef.edge}
-
-    Features = {}
-    Features |= AddFeature("NF", NF)
-    Features |= AddFeature("NT", NT)
-    Features |= AddFeature("GF", GF)
-    Features |= AddFeature("GT", GT)
-    Features |= AddFeature("ET", ET)
-    return Features       
-
-def TruthTopChildren():
-    import AnalysisG.Templates.Features.TruthTopChildren.Graph as tc_gf
-    import AnalysisG.Templates.Features.TruthTopChildren.Node as tc_nf
-    import AnalysisG.Templates.Features.TruthTopChildren.Edge as tc_ef
-
-    NF = {
-            "eta"    : tc_nf.eta, 
-            "energy" : tc_nf.energy, 
-            "pT"     : tc_nf.pT, 
-            "phi"    : tc_nf.phi, 
-    }
-    
-    GF = {
-            "met"     : tc_gf.MET, 
-            "met_phi" : tc_gf.MET_Phi
-        }
-    
-    GT = {
-            "signal"  : tc_gf.Signal, 
-        }
-
-    NT = {
-            "node_res" : tc_nf.FromRes, 
-            "node_top" : tc_nf.FromTop, 
-            "node_islep"  : tc_nf.islepton, 
-            "node_isNu"   : tc_nf.isneutrino, 
-        }
-    
-    ET = {
-            "edge_res"  : tc_ef.ResEdge,
-            "edge_top" : tc_ef.edge, 
-            "edge_lep" : tc_ef.LepEdge
-        }
-    
-    Features = {}
-    Features |= AddFeature("GF", GF)
-    Features |= AddFeature("NF", NF)
-    Features |= AddFeature("ET", ET)
-    Features |= AddFeature("NT", NT)
-    Features |= AddFeature("GT", GT)
-    return Features
-
-def TruthJets():
-    import AnalysisG.Templates.Features.TruthJet.Edge as tj_ef
-    import AnalysisG.Templates.Features.TruthJet.Node as tj_nf
-    import AnalysisG.Templates.Features.TruthJet.Graph as tj_gf
-
-    # Node: Generic Particle Properties
-    NF = {
-            "eta"    : tj_nf.eta, 
-            "energy" : tj_nf.energy, 
-            "pT"     : tj_nf.pT, 
-            "phi"    : tj_nf.phi, 
-            "mass"   : tj_nf.mass, 
-            "charge" : tj_nf.charge, 
-            "islep"  : tj_nf.islepton, 
-
-    }
-   
-    NT = {
-            "mrgT"   : tj_nf.mergedTop, 
-            "top"    : tj_nf.FromTop, 
-            "res"    : tj_nf.FromRes, 
-    }
-
-    ET = {
-            "edge"   : tj_ef.edgeTop, 
-            "edgeCh" : tj_ef.edgeChild, 
-            "res"    : tj_ef.edgeRes, 
-    }
-    
-    GF = {
-            "nJ"     : tj_gf.nJets, 
-            "nL"     : tj_gf.nLeptons, 
-            "met"    : tj_gf.MET, 
-            "met_phi" : tj_gf.MET_Phi,
-    }
-    
-    GT = {
-            "ntops"     : tj_gf.nTops, 
-            "signal"     : tj_gf.Signal, 
-    }
- 
-
-    Features = {}
-    Features |= AddFeature("NF", NF)
-    Features |= AddFeature("NT", NT)
-    Features |= AddFeature("ET", ET)
-    Features |= AddFeature("GF", GF)
-    Features |= AddFeature("GT", GT)
-    return Features
-
 def ApplyFeatures(A, Level):
     if Level == "TruthTops": Features = TruthTops()
-    elif Level == "TruthChildren": Features = TruthTopChildren()
-    elif Level == "TruthJets": Features = TruthJets()
-    else:
-        print("failed")
-        exit()
-
+    elif Level == "TruthChildren": Features = TruthChildren()
 
     for i in Features:
         base = "_".join(i.split("_")[1:])
@@ -139,3 +106,4 @@ def ApplyFeatures(A, Level):
         elif "ET" in i: A.AddEdgeTruth(fx, base)
         elif "NT" in i: A.AddNodeTruth(fx, base)
         elif "GT" in i: A.AddGraphTruth(fx, base)
+

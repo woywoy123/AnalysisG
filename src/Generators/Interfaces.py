@@ -10,6 +10,12 @@ class _Interface(Tools):
     def InputSamples(self, val: Union[dict[str], list[str], str, None]):
         self.Files = self.ListFilesInDir(val, ".root")
 
+    def InputSample(self, Name: Union[str] = None, SampleDirectory: Union[str, dict, list, None] = None):
+        self.Files = {}
+        self.InputSamples(SampleDirectory)
+        if Name == None: Name = ""
+        self.SampleMap[Name] = self.Files
+
     def _StartStop(self, it: Union[int]):
         if self.EventStart > it and self.EventStart != -1: return False
         if self.EventStop != None and self.EventStop-1 < it: return None
@@ -69,9 +75,4 @@ class _Interface(Tools):
     def MergeSelection(self, name: Union[str]):
         self.Merge[name] = []
 
-    def InputSample(self, Name: Union[str] = None, SampleDirectory: Union[str, dict, list, None] = None):
-        self.Files = {}
-        self.InputSamples(SampleDirectory)
-        if Name == None: Name = ""
-        self.SampleMap[Name] = self.Files
 

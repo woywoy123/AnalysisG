@@ -1,18 +1,15 @@
-def edge(a, b):
-    if a.index == b.index: return 1
-    return 0
+def res_edge(a, b): 
+    tops = a.Parent + b.Parent
+    return sum([i.FromRes for i in tops]) == 2
 
-def ResEdge(a, b):
-    p = a.Parent + b.Parent
-    p = list(set(p))
-    if len(p) == 1: return p[0].FromRes
-    if len(p) != 2: return 0
-    return p[0].FromRes * p[1].FromRes
+def top_edge(a, b):
+    try: return a.Parent[0] == b.Parent[0]
+    except: return False
 
-def LepEdge(a, b):
-    p = a.Parent + b.Parent
-    p = list(set(p)) 
-    if len(p) > 1: return 0
-    l = len([i for i in p[0].Children if i.is_lep or i.is_nu]) 
-    return 0 if l == 0 else 1
-
+def lep_edge(a, b):
+    tops = list(set(a.Parent + b.Parent))
+    if len(tops) != 1: return False
+    is_b = (a.is_b + b.is_b) > 0
+    is_lep = (a.is_lep + b.is_lep) > 0
+    return is_b and is_lep
+     

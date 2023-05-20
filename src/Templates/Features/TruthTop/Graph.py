@@ -1,9 +1,7 @@
-def SignalEvent(ev):
-    if sum([i.FromRes for i in ev.Tops]) == 2:
-        return 1
-    return 0
+def signal(ev): 
+    try: return len([i for i in ev.Tops if i.FromRes == 1]) == 2
+    except: 0
+def ntops(ev): return len(ev.Tops)
 
-def nTops(ev):
-    return float(len(ev.Tops))
-
-
+def met(ev): return ev.met
+def phi(ev): return ev.met_phi

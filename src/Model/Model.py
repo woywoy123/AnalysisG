@@ -7,12 +7,17 @@ import PyC.Physics.Tensors.Cartesian as CT
 
 class ModelWrapper(_ModelWrapper):
 
-    def __init__(self, model):
+    def __init__(self, model = None):
         self.Caller = "MODEL"
         self.Verbose = 3 
         self.OutputDirectory = None
         self.RunName = None
         self.Epoch = None
+
+        # Mass reconstruction part 
+        self.TruthMode = True if model is None else False
+        self._truth = True
+        self.Keys = {"pt" : "N_pT", "eta" : "N_eta", "phi" : "N_phi", "e" : "N_energy"}
 
         self._Model = model
         self._inputs = {}
@@ -23,15 +28,10 @@ class ModelWrapper(_ModelWrapper):
         self.i_mapping = {}
 
         self._train = True
-        self._truth = True
 
         self._GetModelInputs
         self._build 
         
-        # Mass reconstruction part 
-        self.TruthMode = False
-        self.Keys = {"pt" : "N_pT", "eta" : "N_eta", "phi" : "N_phi", "e" : "N_energy"}
-
 
     def __call__(self, data):
         self._Model(**{k : getattr(data, k) for k in self.i_mapping})        
@@ -56,12 +56,14 @@ class ModelWrapper(_ModelWrapper):
  
     @property
     def _GetModelInputs(self):
+        if self.TruthMode: return 
         code = self._Model.forward.__code__
         self._inputs = {key : None for key in code.co_varnames[:code.co_argcount] if key != "self"}
         return self._inputs
   
     @property
     def _build(self):
+        if self.TruthMode: return 
         self._outputs = self._scan(self._Model.__dict__, "O_")
         mod = self._Model.__dict__["_modules"]
         mod = {i : mod[i] for i in mod}
@@ -151,17 +153,19 @@ class ModelWrapper(_ModelWrapper):
 
         #Make sure to find self loops - Avoid double counting 
         excluded_self = edge_index[1] == edge_index[0]
+        excluded_self[excluded_self] = False
         excluded_self[self._mask == True] = False
         Pmu_n[edge_index[0][excluded_self]] += Pmu[edge_index[1][excluded_self]]
    
         Pmu_n = (Pmu_n/1000).to(dtype = torch.long)
         Pmu_n = torch.unique(Pmu_n, dim = 0)
+        Pmu_n = CT.Mass(Pmu_n).view(-1)
+        return Pmu_n[Pmu_n > 0]
 
-        return CT.Mass(Pmu_n).view(-1)
-
-    def MassNodeFeature(self, Sample, pred):
+    def MassNodeFeature(self, Sample, pred, excl_zero = True):
         self._data = Sample
-        self._mask = pred[self._data.edge_index[0]] == pred[self._data.edge_index[1]]
+        if excl_zero: self._mask = pred[self._data.edge_index[0]] * pred[self._data.edge_index[1]] > 0
+        else: self._mask = pred[self._data.edge_index[0]] == pred[self._data.edge_index[1]]
         return self.__SummingNodes
  
     def MassEdgeFeature(self, Sample, pred):
