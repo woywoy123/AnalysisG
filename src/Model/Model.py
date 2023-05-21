@@ -156,9 +156,10 @@ class ModelWrapper(_ModelWrapper):
         excluded_self[excluded_self] = False
         excluded_self[self._mask == True] = False
         Pmu_n[edge_index[0][excluded_self]] += Pmu[edge_index[1][excluded_self]]
-   
+ 
         Pmu_n = (Pmu_n/1000).to(dtype = torch.long)
         Pmu_n = torch.unique(Pmu_n, dim = 0)
+
         Pmu_n = CT.Mass(Pmu_n).view(-1)
         return Pmu_n[Pmu_n > 0]
 

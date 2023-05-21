@@ -111,7 +111,7 @@ class AnalysisScript(AnalysisG.Tools.General.Tools, Settings):
                             _buildCode += "from " + k.split("/")[-1].replace(".py", "") + " import *\n"
                         for k in self.Code[i][j]._Import: 
                             _buildCode += "try: from " + k + " import *\n"
-                            _buildCode += "except: pass\n"                           
+                            _buildCode += "except: pass\n"
 
                     shared["imports"] += ["from " + i + " import " + ", ".join([self.Code[i][j]._Name for j in self.Code[i]])]
                     _buildCode += "\n".join(set([self.Code[i][j]._subclass for j in self.Code[i]]))

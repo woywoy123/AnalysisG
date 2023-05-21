@@ -76,6 +76,7 @@ def test_dumping_graphs():
 def test_dumping_event_selection():
     
     con = Condor()
+    con.rm("./Project")
     con.PythonVenv = "$PythonGNN"
     con.ProjectName = "Project"
 
@@ -132,7 +133,9 @@ def test_dumping_optimization():
     from AnalysisG.Events import Event, GraphChildren
     from AnalysisG.Templates import ApplyFeatures
     from models.CheatModel import CheatModel
+
     con = Condor()
+    con.rm("./Project")
     con.PythonVenv = "$PythonGNN"    
     con.ProjectName = "Project"
     
@@ -195,7 +198,6 @@ def test_dumping_optimization():
 
 if __name__ == "__main__":
     test_dumping_events()
-    #test_dumping_graphs()
-    #test_dumping_event_selection()
-    #test_dumping_optimization()
-    pass
+    test_dumping_graphs()
+    test_dumping_event_selection()
+    test_dumping_optimization()

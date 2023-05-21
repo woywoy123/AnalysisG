@@ -1,7 +1,7 @@
 import AnalysisG.Templates.Features.TruthTop as T
 import AnalysisG.Templates.Features.TruthTopChildren as TC
 import AnalysisG.Templates.Features.TruthJet as TJ
-import AnalysisG.Templates.Features.Jet
+import AnalysisG.Templates.Features.Jet as J
 
 def TruthTops():
     # Edge: Truth 
@@ -75,9 +75,60 @@ def TruthChildren():
     # Graph: Feature 
     GF = {
             "met" : TC.Graph.met, 
-            "phi" : TC.Graph.phi, 
+            "phi" : TC.Graph.phi,
+            "n_lep" : TC.Graph.n_lep,  
     }
 
+    Features = {}
+    Features |= AddFeature("ET", ET)
+    Features |= AddFeature("NT", NT)
+    Features |= AddFeature("GT", GT)
+
+    Features |= AddFeature("NF", NF)
+    Features |= AddFeature("GF", GF)
+    
+    return Features
+
+def TruthJets():
+    # Edge: Truth 
+    ET = {
+            "res_edge" : TJ.Edge.res_edge, 
+            "top_edge" : TJ.Edge.top_edge, 
+            "lep_edge" : TJ.Edge.lep_edge, 
+    }
+
+    # Node: Truth 
+    NT = {
+            "res_node" : TJ.Node.res_node, 
+            "one_top" : TJ.Node.one_top,  # <-- non merged top truth jets
+            "top_node" : TJ.Node.top_node,  # <-- including merged top truth jets
+    }
+
+    # Graph: Truth 
+    GT = {
+            "signal" : TJ.Graph.signal, 
+            "ntops" : TJ.Graph.ntops,
+            "n_nu" : TJ.Graph.n_nu, 
+    }
+
+    # Node: Feature 
+    NF = {
+            "eta" : TJ.Node.eta, 
+            "energy" : TJ.Node.energy, 
+            "pT" : TJ.Node.pT, 
+            "phi" : TJ.Node.phi, 
+            "is_b" : TJ.Node.is_b, 
+            "is_lep" : TJ.Node.is_lep, 
+            "is_nu" : TJ.Node.is_nu, 
+    }
+ 
+    # Graph: Feature 
+    GF = {
+            "met" : TJ.Graph.met, 
+            "phi" : TJ.Graph.phi,
+            "n_lep" : TJ.Graph.n_lep, 
+            "n_jets" : TJ.Graph.njets,  
+    }
     Features = {}
     Features |= AddFeature("ET", ET)
     Features |= AddFeature("NT", NT)
@@ -88,6 +139,55 @@ def TruthChildren():
 
     return Features
 
+def Jets():
+    # Edge: Truth 
+    ET = {
+            "res_edge" : J.Edge.res_edge, 
+            "top_edge" : J.Edge.top_edge, 
+            "lep_edge" : J.Edge.lep_edge, 
+    }
+
+    # Node: Truth 
+    NT = {
+            "res_node" : J.Node.res_node, 
+            "one_top" :  J.Node.one_top,  # <-- non merged top truth jets
+            "top_node" : J.Node.top_node,  # <-- including merged top truth jets
+    }
+
+    # Graph: Truth 
+    GT = {
+            "signal" : J.Graph.signal, 
+            "ntops" : J.Graph.ntops,
+            "n_nu" : J.Graph.n_nu, 
+    }
+
+    # Node: Feature 
+    NF = {
+            "eta" : J.Node.eta, 
+            "energy" : J.Node.energy, 
+            "pT" : J.Node.pT, 
+            "phi" : J.Node.phi, 
+            "is_b" : J.Node.is_b, 
+            "is_lep" : J.Node.is_lep, 
+            "is_nu" : J.Node.is_nu, 
+    }
+ 
+    # Graph: Feature 
+    GF = {
+            "met" : J.Graph.met, 
+            "phi" : J.Graph.phi,
+            "n_lep" : J.Graph.n_lep, 
+            "n_jets" : J.Graph.njets,  
+    }
+    Features = {}
+    Features |= AddFeature("ET", ET)
+    Features |= AddFeature("NT", NT)
+    Features |= AddFeature("GT", GT)
+
+    Features |= AddFeature("NF", NF)
+    Features |= AddFeature("GF", GF)
+
+    return Features
 
 def AddFeature(Prefix, dic):
     return {Prefix + "_" + i : dic[i] for i in dic} 
@@ -95,6 +195,9 @@ def AddFeature(Prefix, dic):
 def ApplyFeatures(A, Level):
     if Level == "TruthTops": Features = TruthTops()
     elif Level == "TruthChildren": Features = TruthChildren()
+    elif Level == "TruthJets": Features = TruthJets()
+    elif Level == "Jets": Features = Jets()
+    else: print("INVALID CHOICE!")
 
     for i in Features:
         base = "_".join(i.split("_")[1:])

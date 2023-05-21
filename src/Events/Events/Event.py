@@ -51,8 +51,7 @@ class Event(EventTemplate):
         for tjp in self.TruthJetPartons.values():
             self.TruthJets[tjp.TruthJetIndex].Parton.append(tjp)
             tjp.Children.append(self.TruthJets[tjp.TruthJetIndex])
-            for ci in tjp.TopChildIndex:
-                tjp.Parent.append(self.TopChildren[ci])
+            for ci in tjp.TopChildIndex: tjp.Parent.append(self.TopChildren[ci])
  
         for j in self.Jets.values():
             for ti in j.TopIndex:
@@ -64,8 +63,7 @@ class Event(EventTemplate):
         for jp in self.JetPartons.values():
             self.Jets[jp.JetIndex].Parton.append(jp)
             jp.Children.append(self.Jets[jp.JetIndex])
-            for ci in jp.TopChildIndex:
-                jp.Parent.append(self.TopChildren[ci])
+            for ci in jp.TopChildIndex: jp.Parent.append(self.TopChildren[ci])
 
         maps = { i : self.TopChildren[i] for i in self.TopChildren if abs(self.TopChildren[i].pdgid) in [11, 13, 15] }
         lep = list(self.Electrons.values()) + list(self.Muons.values())

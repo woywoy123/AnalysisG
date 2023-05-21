@@ -7,7 +7,6 @@ def one_top(a):
     p_ = set(p)
     return len([t for t in p_ if t.Type == "top"]) == 1
 
-
 def top_node(a):
     p = []
     try: p += a.Parent

@@ -44,7 +44,7 @@ class TruthJet(Particle):
         Particle.__init__(self)
 
         self.index = self.Type + "_index"
-        self.is_b_var = self.Type + "_btagged"
+        self.pdgid = self.Type + "_btagged"
         self.TopQuarkCount = self.Type + "_topquarkcount"
         self.WBosonCount = self.Type + "_wbosoncount"
         self.TopIndex = self.Type + "_TopIndex"
@@ -107,7 +107,7 @@ class Jet(Particle):
     @property
     def FromRes(self):
         if len(self.Tops) == 0: return False
-        return self.Tops[0].FromRes
+        return len([t for t in self.Tops if t.FromRes == 1]) > 0
 
 class JetParton(Particle):
 
@@ -128,6 +128,9 @@ class Electron(Particle):
         Particle.__init__(self)
         self.charge = self.Type + "_charge"
         self.index = []
+    
+    @property
+    def is_lep(self): return True
 
 class Muon(Particle):
 
@@ -136,6 +139,9 @@ class Muon(Particle):
         Particle.__init__(self)
         self.charge = self.Type + "_charge"
         self.index = []
+
+    @property
+    def is_lep(self): return True
 
 class Neutrino(ParticleTemplate):
     def __init__(self, px=None, py=None, pz=None):

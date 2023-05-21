@@ -35,6 +35,9 @@ class Code:
         cl = self.clone
         try: cl = cl()
         except: pass 
+        if cl == None:
+            try: cl = Instance()
+            except: pass       
         if issubclass(type(cl), ParticleTemplate): self._subclass += "from AnalysisG.Templates import ParticleTemplate"
         elif issubclass(type(cl), EventTemplate): self._subclass += "from AnalysisG.Templates import EventTemplate"
         elif issubclass(type(cl), GraphTemplate): self._subclass += "from AnalysisG.Templates import GraphTemplate"
@@ -46,7 +49,6 @@ class Code:
         self._File = GetSourceFileDirectory(Instance)
         self._FileCode = "".join(open(self._File, "r").readlines())
         self._Get, self._Import = self.checkdependency
-
 
     @property
     def checkdependency(self):

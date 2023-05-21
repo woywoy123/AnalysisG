@@ -35,7 +35,6 @@ def top_edge(a, b):
     sc *= len([t for t in p2 if t in p1]) > 0
     return sc 
 
-
 def lep_edge(a, b):
     b_ = (a.is_b + b.is_b) > 0  
     l_ = (a.is_lep + b.is_lep) > 0
