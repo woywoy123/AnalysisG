@@ -39,24 +39,26 @@ import shutil
 
 
 toRun = [
-        #"ZPrimeMatrix", 
-        #"ResonanceDecayModes", 
-        #"ResonanceMassFromTops", 
-        #"ResonanceDeltaRTops", 
-        #"ResonanceTopKinematics", 
-        #"EventNTruthJetAndJets", 
-        #"EventMETImbalance",
-        #"TopDecayModes", 
-        #"ResonanceMassFromChildren", 
-        #"DeltaRChildren", 
-        #"Kinematics", 
-        #"EventNuNuSolutions", 
-        #"ResonanceMassTruthJets", 
-        #"ResonanceMassTruthJetsNoSelection", 
-        #"TopMassTruthJets", 
-        #"TopTruthJetsKinematics", 
-        #"ResonanceMassJets", 
+        "ZPrimeMatrix", 
+        "ResonanceDecayModes", 
+        "ResonanceMassFromTops", 
+        "ResonanceDeltaRTops", 
+        "ResonanceTopKinematics", 
+        "EventNTruthJetAndJets", 
+        "EventMETImbalance",
+        "TopDecayModes", 
+        "ResonanceMassFromChildren", 
+        "DeltaRChildren", 
+        "Kinematics", 
+        "EventNuNuSolutions", 
+        "ResonanceMassTruthJets", 
+        "ResonanceMassTruthJetsNoSelection", 
+        "TopMassTruthJets", 
+        "TopTruthJetsKinematics", 
+        "ResonanceMassJets", 
         "TopMassJets", 
+        "MergedTopsTruthJets", 
+        "MergedTopsJets"
 ]
 
 studies = {
@@ -76,8 +78,10 @@ studies = {
             "ResonanceMassTruthJetsNoSelection" : RTJ_Sel.ResonanceMassTruthJetsNoSelection, 
             "TopMassTruthJets" : TTJ_Sel.TopMassTruthJets, 
             "TopTruthJetsKinematics" : TTJ_Sel.TopTruthJetsKinematics, 
+            "MergedTopsTruthJets" : TTJ_Sel.MergedTopsTruthJets, 
             "ResonanceMassJets" : RJJ_Sel.ResonanceMassJets, 
             "TopMassJets" : TJ_Sel.TopMassJets, 
+            "MergedTopsJets" : TJ_Sel.MergedTopsJets, 
 }
 
 studiesPlots = {
@@ -97,8 +101,10 @@ studiesPlots = {
             "ResonanceMassTruthJetsNoSelection" : RTJ_Plot.ResonanceMassTruthJetsNoSelection, 
             "TopMassTruthJets" : TTJ_Plot.TopMassTruthJets, 
             "TopTruthJetsKinematics" : TTJ_Plot.TopTruthJetsKinematics, 
+            "MergedTopsTruthJets" : TTJ_Plot.MergedTopsTruthJets,
             "ResonanceMassJets" : RJJ_Plot.ResonanceMassJets, 
             "TopMassJets" : TJ_Plot.TopMassJets, 
+            "MergedTopsJets" : TJ_Plot.MergedTopsJets, 
 }
 
 Masses = ["1000", "900", "800", "700", "600", "500", "400"]
@@ -110,7 +116,7 @@ SampleNames = {}
 for topo in Topo:
     for m in Masses:
         smpls = "" #"/" + topo + "Collection/MadGraphPythia8EvtGen_noallhad_"
-        SampleNames |= {"BSM-4t-" + ("SL" if topo == "SingleLepton" else "DL") + "-" + m : smpl + "ttH_tttt_m" + m}
+        SampleNames |= {"BSM-4t-" + ("SL" if topo == "SingleLepton" else "DL") + "-" + m : smpl + smpls + "ttH_tttt_m" + m}
 
 it = 1
 for smpl in SampleNames:
@@ -121,7 +127,7 @@ for smpl in SampleNames:
     Ana.ProjectName = "_ProjectL"
     Ana.InputSample(smpl, SampleNames[smpl])
     Ana.Event = Event 
-    Ana.EventStop = 1000
+    #Ana.EventStop = 1000
     Ana.Threads = 12
     Ana.chnk = 1000
     Ana.EventCache = True

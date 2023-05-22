@@ -108,3 +108,95 @@ class TopTruthJetsKinematics(SelectionTemplate):
             self.TopMass["NoGluons"].append(sum(gluonless).Mass/1000)
             self.TopMass["Nominal"].append(sum(t.TruthJets).Mass/1000)
 
+class MergedTopsTruthJets(SelectionTemplate):
+
+    def __init__(self):
+        SelectionTemplate.__init__(self)
+        self.TruthJetPT = []
+        self.TruthJetEnergy = []
+        self.PartonPT = {}
+        self.PartonEnergy = {}
+        self.PartonDr = {}
+        self.ChildPartonPT = {}
+        self.ChildPartonEnergy = {}
+        self.ChildPartonDr = {}
+        self.dRChildPartonJetAxis = {}
+        self.NumberOfConstituentsInJet = {}
+        self.TopsTruthJets = {}
+        self.TopsTruthJetsMerged = {}
+        self.TopsTruthJetsNoPartons = {}
+        self.TopsTruthJetsCut = {0.95 : [], 0.9 : [], 0.8 : [], 0.7 : []}
+
+    def Selection(self, event):
+        if len(event.Tops) != 4: return False
+        if len([i for i in event.Tops if i.LeptonicDecay]) > 2: return False
+        return True 
+
+    def Strategy(self, event):
+        truthjets = event.TruthJets
+        for tj in truthjets:
+            if len(tj.Tops) < 2: continue
+            self.TruthJetPT.append(tj.pt/1000)
+            self.TruthJetEnergy.append(tj.e/1000)
+            tmp = {}
+            
+            for ptrn in tj.Parton:
+                if ptrn.symbol not in self.PartonDr:
+                    self.PartonPT[ptrn.symbol] = []
+                    self.PartonEnergy[ptrn.symbol] = []
+                    self.PartonDr[ptrn.symbol] = []
+                if ptrn.symbol not in tmp: tmp[ptrn.symbol] = 0
+                tmp[ptrn.symbol] += 1
+
+                self.PartonPT[ptrn.symbol].append(ptrn.pt/1000)
+                self.PartonEnergy[ptrn.symbol].append(ptrn.e/1000)
+                self.PartonDr[ptrn.symbol].append(ptrn.DeltaR(tj))
+
+                for c in ptrn.Parent:
+                    if ptrn.symbol not in self.ChildPartonPT:
+                        self.ChildPartonPT[ptrn.symbol] = []
+                        self.ChildPartonEnergy[ptrn.symbol] = [] 
+                        self.ChildPartonDr[ptrn.symbol] = []      
+                        self.dRChildPartonJetAxis[ptrn.symbol] = []           
+
+                    self.ChildPartonPT[ptrn.symbol].append(c.pt/1000)
+                    self.ChildPartonEnergy[ptrn.symbol].append(c.e/1000)
+                    self.ChildPartonDr[ptrn.symbol].append(ptrn.DeltaR(c))               
+                    self.dRChildPartonJetAxis[ptrn.symbol].append(tj.DeltaR(c))
+
+            for key in tmp: 
+                if key not in self.NumberOfConstituentsInJet: self.NumberOfConstituentsInJet[key] = []
+                self.NumberOfConstituentsInJet[key].append(tmp[key])
+
+        for t in event.Tops:
+            if t.LeptonicDecay: continue 
+            if len(t.TruthJets) == 0: continue
+            nmerged = len(set([x for tj in t.TruthJets for x in tj.Tops]))
+            if nmerged not in self.TopsTruthJets: 
+                self.TopsTruthJets[nmerged] = []
+                self.TopsTruthJetsNoPartons[nmerged] = []
+
+            self.TopsTruthJets[nmerged].append(sum(t.TruthJets).Mass / 1000)
+            tjets = []
+            tj_cuts = {0.95 : [], 0.9 : [], 0.8 : [], 0.7 : []}
+            for tj in t.TruthJets: 
+                prt_energy_all = []
+                prt_this_top = [] 
+                if len(tj.Parton) == 0: continue
+                for prt in tj.Parton:
+                    prt_energy_all.append(prt.e/1000) 
+                    prt_this_top += [prt.e / 1000] if t == prt.Parent[0].Parent[0] else []
+                frac = sum(prt_this_top) / sum(prt_energy_all)
+                if nmerged not in self.TopsTruthJetsMerged: self.TopsTruthJetsMerged[nmerged] = []
+                self.TopsTruthJetsMerged[nmerged].append(frac)
+                tjets.append(tj) 
+               
+                for cut in tj_cuts:
+                    if frac < cut: continue
+                    if nmerged == 1: continue
+                    tj_cuts[cut].append(tj)
+            self.TopsTruthJetsNoPartons[nmerged].append(sum(tjets).Mass/1000)
+            for cut in self.TopsTruthJetsCut:
+                if len(tj_cuts[cut]) == 0: continue 
+                self.TopsTruthJetsCut[cut].append(sum(tj_cuts[cut]).Mass/1000)
+

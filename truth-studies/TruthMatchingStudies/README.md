@@ -150,7 +150,7 @@ A plot illustrating the fraction of energy being transmitted to the truth childr
 
 
 ### **ResonanceMassTruthJets**:
-Plots the invariant Mass of the injected resonance using truth jets and assoicated truth leptons.
+Plots the invariant Mass of the injected resonance using truth jets and associated truth leptons.
 The general event selections to produce these plots are as follows:
     - The event needs to have exactly two tops originating from a resonance 
     - If any of the truth jets from a resonant top also contains a non-resonant top contribution, the event is rejected.
@@ -165,7 +165,7 @@ A plot of the cutflow statistics.
     - "Passed::Selection": Event passed the selection criteria 
 
 - **Figure_3.(x)c**:
-Plots of the truth jet resonance for each decay mode overlayed with the associated truth tops. 
+Plots of the truth jet resonance for each decay mode overlaid with the associated truth tops. 
 - **Figure_3.1d**:
 A plot of the number of Truth Jets contributing to the respective resonance decay topology.
 
@@ -195,7 +195,7 @@ A TH2F plot summarizing plots **Figure_3.(x)b**.
 A plot showcasing the reconstructed invariant mass dependency on number of tops merging into matched truth jets.
 
 ### **TopTruthJetsKinematics**:
-A study focused around the kinematics of truth mathched truth jets to tops. 
+A study focused around the kinematics of truth matched truth jets to tops. 
 - **Figure_3.1f**:
 A plot depicting the $\Delta R$ between truth jets matched to a mutual top, compared to background (non mutual).
 Background in this context implies the $\Delta R$ of truth jets not matched to a mutual top.
@@ -218,7 +218,7 @@ A composite plot illustrating the invariant mass of the top quark derived from t
 - **Figure_3.1l**:
 A composite plot illustrating the invariant mass of the truth jet, categorized by the number of tops contributing to the associated truth jet.
 
-### **ResonanceMassJetsTruthLeptons** 
+### **ResonanceMassJets** 
 A study focused on using the reco jets to reconstruct the invariant mass of the resonance. 
 If the resonant tops decay leptonically, then the truth children leptons are used. 
 The selection for this study is set to only pass events with exactly two resonant tops and overall 4-tops at truth level.
@@ -251,9 +251,97 @@ This plot is used to check whether the number of truth jets and detector jets co
 - **Figure_4.1c**:
 A stack plot of the reconstructed invariant top mass split into the number of jet contributions, along with the decay topology. 
 - **Figure_4.1d**:
-A plot of the reconstructed invariant top mass using the leptonical decay mode with truth children leptons and detector leptons (with truth neutrinos).
+A plot of the reconstructed invariant top mass using the leptonic decay mode with truth children leptons and detector leptons (with truth neutrinos).
 - **Figure_4.1e**:
 A plot of the reconstructed invariant top mass using only the hadronic decay mode, partitioned into the number of jet contributions.
 - **Figure_4.(x)f**:
-A collection of TH2F plots where the average clustering ($Delta$R) is plotted against the reconstructed invariant top mass. 
+A collection of TH2F plots where the average clustering ($\Delta$R) is plotted against the reconstructed invariant top mass. 
 The plots are sorted by decay mode where, Hadronic/Leptonic only are first and second respectively, followed by a combined plot.
+
+### **MergedTopsTruthJets**:
+A study dedicated to understanding the parton content of truth matched jets in which multiple tops contribute. 
+The primary focus is on hadronically decaying tops, since these appear to be poorly reconstructed. 
+- **Figure_3.1a**:
+A plot illustrating the transverse momentum distribution of partons contained in truth jet with multiple top contributions.
+- **Figure_3.2a**:
+A plot illustrating the energy distribution of partons contained in truth jet with multiple top contributions.
+- **Figure_3.3a**:
+A plot of the $\Delta$R distribution between the truth jet axis and the contributing partons.
+- **Figure_3.4a**:
+A heat map of the $\Delta$R between the Truth Jet Axis and the contributing partons as a function of the Parton's energy, where only Gluons are considered.
+- **Figure_3.5a**:
+A heat map of the $\Delta$R between the Truth Jet Axis and the contributing partons as a function of the Parton's energy, where Gluons are excluded.
+- **Figure_3.1b**:
+A plot illustrating the transverse momentum distribution of truth children matched to truth jets via the contributing partons for truth jet with multiple top contributions.
+- **Figure_3.2b**:
+A plot illustrating the energy distribution of truth children matched to truth jets with multiple top contributions.
+- **Figure_3.3b**:
+A plot of the $\Delta$R distribution between the contributing parton and matched truth child.
+- **Figure_3.4b**:
+A plot of the $\Delta$R distribution between the truth jet axis and matched truth children.
+- **Figure_3.5b**:
+A heat map of the $\Delta$R between contributing Partons and the matched Truth Child as a function of the Truth Child's energy, where only Gluons are considered.
+- **Figure_3.6b**:
+A heat map of the $\Delta$R between contributing Partons and the matched Truth Child as a function of the Truth Child's energy, where Gluons excluded.
+- **Figure_3.1c**:
+A composite plot of how frequently a given parton symbol occurs within a truth jet for top merged jets.
+- **Figure_3.2c**:
+A composite plot of the reconstructed invariant top mass from only hadronically decaying tops, partitioned into the number of tops contributing to truth jets.
+- **Figure_3.3c**:
+A composite plot of the reconstructed invariant top mass from only hadronically decaying tops, partitioned into the number of tops contributing to truth jets. 
+This plot is used for visualizing a possible bug during sample production. 
+Some truth jets were found to not contain any partons.
+- **Figure_3.4c**:
+A composite plot of the fractional energy contributed to a truth jet from a top's parton.
+This plot aims to identify whether there are cases where a given top might be matched to a truth jet, but its energy contribution is insignificant and should probably be unmatched to this truth jet. 
+- **Figure_3.5c**:
+A composite plot of the invariant top mass using different energy fraction cuts as shown in **Figure_3.4c**. 
+Considered truth top jets are required to have at least one truth jet with more than one top contribution.
+
+### **MergedTopsJets**:
+A study dedicated to understanding the parton content of truth matched jets in which multiple tops contribute. 
+The primary focus is on hadronically decaying tops, since these appear to be poorly reconstructed. 
+- **Figure_4.1a**:
+A plot illustrating the transverse momentum distribution of partons contained in jet with multiple top contributions.
+- **Figure_4.2a**:
+A plot illustrating the energy distribution of partons contained in jet with multiple top contributions.
+- **Figure_4.3a**:
+A plot of the $\Delta$R distribution between the jet axis and the contributing partons.
+- **Figure_4.4a**:
+A heat map of the $\Delta$R between the Jet Axis and the contributing partons as a function of the Parton's energy, where only Gluons are considered.
+- **Figure_4.5a**:
+A heat map of the $\Delta$R between the Jet Axis and the contributing partons as a function of the Parton's energy, where Gluons are excluded.
+- **Figure_4.1b**:
+A plot illustrating the transverse momentum distribution of truth children matched to jets via the contributing partons for jet with multiple top contributions.
+- **Figure_4.2b**:
+A plot illustrating the energy distribution of truth children matched to jets with multiple top contributions.
+- **Figure_4.3b**:
+A plot of the $\Delta$R distribution between the contributing parton and matched truth child.
+- **Figure_4.4b**:
+A plot of the $\Delta$R distribution between the jet axis and matched truth children.
+- **Figure_4.5b**:
+A heat map of the $\Delta$R between contributing Partons and the matched Truth Child as a function of the Truth Child's energy, where only Gluons are considered.
+- **Figure_4.6b**:
+A heat map of the $\Delta$R between contributing Partons and the matched Truth Child as a function of the Truth Child's energy, where Gluons excluded.
+- **Figure_4.1c**:
+A composite plot of how frequently a given parton symbol occurs within a jet for top merged jets.
+- **Figure_4.2c**:
+A composite plot of the reconstructed invariant top mass from only hadronically decaying tops, partitioned into the number of tops contributing to jets.
+- **Figure_4.3c**:
+A composite plot of the reconstructed invariant top mass from only hadronically decaying tops, partitioned into the number of tops contributing to jets. 
+This plot is used for visualizing a possible bug during sample production. 
+Some jets were found to not contain any partons.
+- **Figure_4.4c**:
+A composite plot of the fractional energy contributed to a jet from a top's parton.
+This plot aims to identify whether there are cases where a given top might be matched to a jet, but its energy contribution might be insignificant and should probably be unmatched to this jet. 
+- **Figure_4.5c**:
+A composite plot of the invariant top mass using different energy fraction cuts as shown in **Figure_4.4c**. 
+Considered truth top jets are required to have at least one jet with more than one top contribution.
+
+
+
+
+
+
+
+

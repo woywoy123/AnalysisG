@@ -203,3 +203,293 @@ def TopMassJets(inpt):
     hist_2["yData"] = inpt.DeltaRJets["Lep"] + inpt.DeltaRJets["Had"]
     th = TH2F(**hist_2)
     th.SaveFigure() 
+
+def MergedTopsJets(inpt):
+    
+    hist = PlotTemplate(inpt)
+    hist["Title"] = "Jet Parton Transverse Momentum of \n Top Merged Jets (Partitioned into PDGID)"
+    hist["xTitle"] = "Transverse Momentum (GeV)" 
+    hist["IncludeOverflow"] = True 
+    hist["xStep"] = 100
+    hist["xMax"] = 800
+    hist["xBins"] = 250
+    hist["Filename"] = "Figure_4.1a"
+    hist["Histograms"] = []
+ 
+    for sym in inpt.PartonPT:
+        plt = {}
+        plt["Title"] = str(sym)
+        plt["xData"] = inpt.PartonPT[sym]
+        hist["Histograms"].append(TH1F(**plt))
+    com = CombineTH1F(**hist)
+    com.SaveFigure()
+
+    hist = PlotTemplate(inpt)
+    hist["Title"] = "Top Merged Jet Parton Energy \n (Partitioned into PDGID)"
+    hist["xTitle"] = "Energy (GeV)" 
+    hist["IncludeOverflow"] = True 
+    hist["xStep"] = 100
+    hist["xMax"] = 800
+    hist["xBins"] = 250
+    hist["Filename"] = "Figure_4.2a"
+    hist["Histograms"] = []
+ 
+    for sym in inpt.PartonEnergy:
+        plt = {}
+        plt["Title"] = str(sym)
+        plt["xData"] = inpt.PartonEnergy[sym]
+        hist["Histograms"].append(TH1F(**plt))
+    com = CombineTH1F(**hist)
+    com.SaveFigure()
+
+    hist = PlotTemplate(inpt)
+    hist["Title"] = "$\Delta$R Between Jet Axis and Partons contained in \n Top Merged Jets (Partitioned into PDGID)"
+    hist["xTitle"] = "$\Delta$R Between Jet Axis and Partons" 
+    hist["IncludeOverflow"] = True 
+    hist["xStep"] = 0.1
+    hist["xMax"] = 1.0
+    hist["xBins"] = 250
+    hist["Filename"] = "Figure_4.3a"
+    hist["Histograms"] = []
+ 
+    for sym in inpt.PartonDr:
+        plt = {}
+        plt["Title"] = str(sym)
+        plt["xData"] = inpt.PartonDr[sym]
+        hist["Histograms"].append(TH1F(**plt))
+    com = CombineTH1F(**hist)
+    com.SaveFigure()
+
+    hist2D = PlotTemplateTH2F(inpt)
+    hist2D["Title"] = "$\Delta$R Between Jet Axis and Contributing Partons \n as a Function of Parton's Energy (Only Gluons)"
+    hist2D["xTitle"] = "Parton Energy (GeV)"
+    hist2D["yTitle"] = "$\Delta R$"
+    hist2D["yMax"] = 1.0
+    hist2D["xMax"] = 1000
+    hist2D["xMin"] = 0
+    hist2D["yBins"] = 250
+    hist2D["xBins"] = 250
+    hist2D["xStep"] = 100
+    hist2D["yStep"] = 0.1
+    hist2D["yData"] = [i for m in inpt.PartonDr for i in inpt.PartonDr[m] if m == "g"]
+    hist2D["xData"] = [i for m in inpt.PartonEnergy for i in inpt.PartonEnergy[m] if m == "g"]
+    hist2D["Filename"] = "Figure_4.4a"
+    hist2D = TH2F(**hist2D)
+    hist2D.SaveFigure()
+
+    hist2D = PlotTemplateTH2F(inpt)
+    hist2D["Title"] = "$\Delta$R Between Jet Axis and Contributing Partons \n as a Function of Parton's Energy (Without Gluons)"
+    hist2D["xTitle"] = "Parton Energy (GeV)"
+    hist2D["yTitle"] = "$\Delta R$"
+    hist2D["yMax"] = 1.0
+    hist2D["xMax"] = 1000
+    hist2D["xMin"] = 0
+    hist2D["yBins"] = 250
+    hist2D["xBins"] = 250
+    hist2D["xStep"] = 100
+    hist2D["yStep"] = 0.1
+    hist2D["yData"] = [i for m in inpt.PartonDr for i in inpt.PartonDr[m] if m != "g"]
+    hist2D["xData"] = [i for m in inpt.PartonEnergy for i in inpt.PartonEnergy[m] if m != "g"]
+    hist2D["Filename"] = "Figure_4.5a"
+    hist2D = TH2F(**hist2D)
+    hist2D.SaveFigure()
+
+    hist = PlotTemplate(inpt)
+    hist["Title"] = "Transverse Momentum of Truth Children Matched to \n Jet Contributing Parton (Partitioned into PDGID)"
+    hist["xTitle"] = "Transverse Momentum (GeV)" 
+    hist["IncludeOverflow"] = True 
+    hist["xStep"] = 100
+    hist["xMax"] = 800
+    hist["xBins"] = 250
+    hist["Filename"] = "Figure_4.1b"
+    hist["Histograms"] = []
+ 
+    for sym in inpt.ChildPartonPT:
+        plt = {}
+        plt["Title"] = str(sym)
+        plt["xData"] = inpt.ChildPartonPT[sym]
+        hist["Histograms"].append(TH1F(**plt))
+    com = CombineTH1F(**hist)
+    com.SaveFigure()
+
+    hist = PlotTemplate(inpt)
+    hist["Title"] = "Energy of Truth Children Matched to \n Jet Contributing Parton (Partitioned into PDGID)"
+    hist["xTitle"] = "Energy (GeV)" 
+    hist["IncludeOverflow"] = True 
+    hist["xStep"] = 100
+    hist["xMax"] = 800
+    hist["xBins"] = 250
+    hist["Filename"] = "Figure_4.2b"
+    hist["Histograms"] = []
+ 
+    for sym in inpt.ChildPartonEnergy:
+        plt = {}
+        plt["Title"] = str(sym)
+        plt["xData"] = inpt.ChildPartonEnergy[sym]
+        hist["Histograms"].append(TH1F(**plt))
+    com = CombineTH1F(**hist)
+    com.SaveFigure()
+
+    hist = PlotTemplate(inpt)
+    hist["Title"] = "$\Delta$R Between Parton and Truth Child (Partitioned into Parton PDGID)"
+    hist["xTitle"] = "$\Delta$R Between Parton and Truth Child" 
+    hist["IncludeOverflow"] = True 
+    hist["xStep"] = 0.1
+    hist["xMax"] = 1.0
+    hist["xBins"] = 250
+    hist["Filename"] = "Figure_4.3b"
+    hist["Histograms"] = []
+ 
+    for sym in inpt.ChildPartonDr:
+        plt = {}
+        plt["Title"] = str(sym)
+        plt["xData"] = inpt.ChildPartonDr[sym]
+        hist["Histograms"].append(TH1F(**plt))
+    com = CombineTH1F(**hist)
+    com.SaveFigure()
+
+    hist = PlotTemplate(inpt)
+    hist["Title"] = "$\Delta$R Between Jet Axis and Truth Child \n (Partitioned into Parton PDGID)"
+    hist["xTitle"] = "$\Delta$R Between Jet Axis and Truth Child" 
+    hist["IncludeOverflow"] = True 
+    hist["xStep"] = 0.2
+    hist["xMax"] = 3.0
+    hist["xBins"] = 400
+    hist["Filename"] = "Figure_4.4b"
+    hist["Histograms"] = []
+ 
+    for sym in inpt.dRChildPartonJetAxis:
+        plt = {}
+        plt["Title"] = str(sym)
+        plt["xData"] = inpt.dRChildPartonJetAxis[sym]
+        hist["Histograms"].append(TH1F(**plt))
+    com = CombineTH1F(**hist)
+    com.SaveFigure()
+
+    hist2D = PlotTemplateTH2F(inpt)
+    hist2D["Title"] = "$\Delta$R Between Contributing Parton and Truth Child as a \n Function of Child's Energy (Only Gluons)"
+    hist2D["xTitle"] = "Child Energy (GeV)"
+    hist2D["yTitle"] = "$\Delta R$ Between Parton and Truth Child"
+    hist2D["yMax"] = 1.0
+    hist2D["xMax"] = 1000
+    hist2D["xMin"] = 0
+    hist2D["yBins"] = 250
+    hist2D["xBins"] = 250
+    hist2D["xStep"] = 100
+    hist2D["yStep"] = 0.1
+    hist2D["yData"] = [i for m in inpt.ChildPartonDr for i in inpt.ChildPartonDr[m] if m == "g"]
+    hist2D["xData"] = [i for m in inpt.ChildPartonEnergy for i in inpt.ChildPartonEnergy[m] if m == "g"]
+    hist2D["Filename"] = "Figure_4.5b"
+    hist2D = TH2F(**hist2D)
+    hist2D.SaveFigure()
+    
+    hist2D = PlotTemplateTH2F(inpt)
+    hist2D["Title"] = "$\Delta$R Between Contributing Parton and Truth Child as a \n Function of Child's Energy (Without Gluons)"
+    hist2D["xTitle"] = "Child Energy (GeV)"
+    hist2D["yTitle"] = "$\Delta R$ Between Parton and Truth Child"
+    hist2D["yMax"] = 1.0
+    hist2D["xMax"] = 1000
+    hist2D["xMin"] = 0
+    hist2D["yBins"] = 250
+    hist2D["xBins"] = 250
+    hist2D["xStep"] = 100
+    hist2D["yStep"] = 0.1
+    hist2D["yData"] = [i for m in inpt.ChildPartonDr for i in inpt.ChildPartonDr[m] if m != "g"]
+    hist2D["xData"] = [i for m in inpt.ChildPartonEnergy for i in inpt.ChildPartonEnergy[m] if m != "g"]
+    hist2D["Filename"] = "Figure_4.6b"
+    hist2D = TH2F(**hist2D)
+    hist2D.SaveFigure()
+
+    hist = PlotTemplate(inpt)
+    hist["Title"] = "Parton Type Contribution Frequency Found in Top Merged Jets"
+    hist["xTitle"] = "Frequency of Parton Symbol in Jets"
+    hist["IncludeOverflow"] = True 
+    hist["xStep"] = 1
+    hist["xMax"] = 20
+    hist["xBins"] = 20
+    hist["xBinCentering"] = True
+    hist["Filename"] = "Figure_4.1c"
+    hist["Histograms"] = []
+ 
+    for sym in inpt.NumberOfConstituentsInJet:
+        plt = {}
+        plt["Title"] = str(sym)
+        plt["xData"] = inpt.NumberOfConstituentsInJet[sym]
+        hist["Histograms"].append(TH1F(**plt))
+    com = CombineTH1F(**hist)
+    com.SaveFigure()
+
+    hist = PlotTemplate(inpt)
+    hist["Title"] = "Reconstructed Invariant Top Mass using the Hadronic \n Decay Topology from Jets"
+    hist["xTitle"] = "Invariant Mass (GeV)"
+    hist["IncludeOverflow"] = True 
+    hist["xStep"] = 20
+    hist["xMax"] = 400
+    hist["xBins"] = 400
+    hist["Filename"] = "Figure_4.2c"
+    hist["Histograms"] = []
+ 
+    for sym in inpt.TopsJets:
+        plt = {}
+        plt["Title"] = str(sym) + "-Tops"
+        plt["xData"] = inpt.TopsJets[sym]
+        hist["Histograms"].append(TH1F(**plt))
+    com = CombineTH1F(**hist)
+    com.SaveFigure()
+
+    hist = PlotTemplate(inpt)
+    hist["Title"] = "Reconstructed Invariant Top Mass using the Hadronic \n Decay Topology from Jets \n (A possible bug where No Partons are matched to Truth Jets)"
+    hist["xTitle"] = "Invariant Mass (GeV)"
+    hist["IncludeOverflow"] = True 
+    hist["xStep"] = 20
+    hist["xMax"] = 400
+    hist["xBins"] = 400
+    hist["Filename"] = "Figure_4.3c"
+    hist["Histograms"] = []
+ 
+    for sym in inpt.TopsJetsNoPartons:
+        plt = {}
+        plt["Title"] = str(sym) + "-Tops"
+        plt["xData"] = inpt.TopsJetsNoPartons[sym]
+        hist["Histograms"].append(TH1F(**plt))
+    com = CombineTH1F(**hist)
+    com.SaveFigure()
+
+    hist = PlotTemplate(inpt)
+    hist["Title"] = "Fractional Contribution of a given Top's Parton to a Jet"
+    hist["xTitle"] = "Fractional Energy Contribution of Partons from a Given Top in Jet"
+    hist["IncludeOverflow"] = True 
+    hist["xStep"] = 0.1
+    hist["xMax"] = 1.1
+    hist["xBins"] = 100
+    hist["yMin"] = 1
+    hist["Logarithmic"] = True
+    hist["Filename"] = "Figure_4.4c"
+    hist["Histograms"] = []
+ 
+    for sym in inpt.TopsJetsMerged:
+        plt = {}
+        plt["Title"] = str(sym) + "-Tops"
+        plt["xData"] = inpt.TopsJetsMerged[sym]
+        hist["Histograms"].append(TH1F(**plt))
+    com = CombineTH1F(**hist)
+    com.SaveFigure()
+
+    hist = PlotTemplate(inpt)
+    hist["Title"] = "Reconstructed Invariant Top Mass using the Hadronic \n Decay Topology from Jets using different Energy Fraction Cuts"
+    hist["xTitle"] = "Invariant Mass (GeV)"
+    hist["IncludeOverflow"] = True 
+    hist["xStep"] = 20
+    hist["xMax"] = 400
+    hist["xBins"] = 200
+    hist["Alpha"] = 0.1
+    hist["Filename"] = "Figure_4.5c"
+    hist["Histograms"] = []
+ 
+    for sym in inpt.TopsJetsCut:
+        plt = {}
+        plt["Title"] = str(sym) + "-Cut"
+        plt["xData"] = inpt.TopsJetsCut[sym]
+        hist["Histograms"].append(TH1F(**plt))
+    com = CombineTH1F(**hist)
+    com.SaveFigure()

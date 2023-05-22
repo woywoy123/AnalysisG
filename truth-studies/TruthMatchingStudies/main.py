@@ -57,7 +57,9 @@ toRun = [
         #"TopMassTruthJets", 
         #"TopTruthJetsKinematics", 
         #"ResonanceMassJets", 
-        "TopMassJets", 
+        #"TopMassJets", 
+        #"MergedTopsTruthJets", 
+        "MergedTopsJets"
 ]
 
 studies = {
@@ -77,8 +79,10 @@ studies = {
             "ResonanceMassTruthJetsNoSelection" : RTJ_Sel.ResonanceMassTruthJetsNoSelection, 
             "TopMassTruthJets" : TTJ_Sel.TopMassTruthJets, 
             "TopTruthJetsKinematics" : TTJ_Sel.TopTruthJetsKinematics, 
+            "MergedTopsTruthJets" : TTJ_Sel.MergedTopsTruthJets, 
             "ResonanceMassJets" : RJJ_Sel.ResonanceMassJets, 
             "TopMassJets" : TJ_Sel.TopMassJets, 
+            "MergedTopsJets" : TJ_Sel.MergedTopsJets, 
 }
 
 studiesPlots = {
@@ -98,19 +102,17 @@ studiesPlots = {
             "ResonanceMassTruthJetsNoSelection" : RTJ_Plot.ResonanceMassTruthJetsNoSelection, 
             "TopMassTruthJets" : TTJ_Plot.TopMassTruthJets, 
             "TopTruthJetsKinematics" : TTJ_Plot.TopTruthJetsKinematics, 
+            "MergedTopsTruthJets" : TTJ_Plot.MergedTopsTruthJets,
             "ResonanceMassJets" : RJJ_Plot.ResonanceMassJets, 
             "TopMassJets" : TJ_Plot.TopMassJets, 
+            "MergedTopsJets" : TJ_Plot.MergedTopsJets, 
 }
 
 Ana = Analysis()
-for i in toRun:
-    Ana.AddSelection(i, studies[i])
-    Ana.MergeSelection(i)
-
 smpls = "" #"/DileptonCollection/MadGraphPythia8EvtGen_noallhad_"
-Ana.ProjectName = "_ProjectL"
+Ana.ProjectName = "_Project"
 Ana.InputSample("BSM-4t-DL-1000", smpl + smpls + "/ttH_tttt_m1000/")
-Ana.InputSample("BSM-4t-DL-900", smpl + smpls + "/ttH_tttt_m900/")
+#Ana.InputSample("BSM-4t-DL-900", smpl + smpls + "/ttH_tttt_m900/")
 #Ana.InputSample("BSM-4t-DL-800", smpl + smpls + "/ttH_tttt_m800/")
 #Ana.InputSample("BSM-4t-DL-700", smpl + smpls + "/ttH_tttt_m700/")
 #Ana.InputSample("BSM-4t-DL-600", smpl + smpls + "/ttH_tttt_m600/")
@@ -122,14 +124,17 @@ Ana.Threads = 12
 Ana.chnk = 1000
 Ana.EventCache = True
 Ana.PurgeCache = False
+#for i in toRun:
+#    Ana.AddSelection(i, studies[i])
+#    Ana.MergeSelection(i)
 Ana.Launch
 
-## Debugging purposes
-#for i in toRun:
-#    studies[i] = studies[i]()
-#    studies[i](Ana)
-#    print(studies[i].CutFlow)
-#    PickleObject(studies[i], Ana.ProjectName + "/Selections/Merged/" + i + ".pkl") 
+# Debugging purposes
+for i in toRun:
+    studies[i] = studies[i]()
+    studies[i](Ana)
+    print(studies[i].CutFlow)
+    PickleObject(studies[i], Ana.ProjectName + "/Selections/Merged/" + i + ".pkl") 
 
 # Runs the plotting code
 for i in toRun:
