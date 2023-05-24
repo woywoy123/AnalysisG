@@ -7,7 +7,16 @@ class _UpROOT(Notification):
     @property
     def InvalidROOTFileInput(self):
         self.Failure("Invalid Input. Provide either a string/list of ROOT file/s")
-    
+  
+    @property
+    def FailedAMI(self):
+        self.Failure("PyAMI not available... Skipping...")
+ 
+    def FoundMetaData(self, smpl, dsid, generator = False):
+        msg = "METADATA " + self.filename(smpl) + " -> DSID: " + str(dsid) 
+        if generator: msg += " Generator: " + generator
+        self.Success(msg)
+
     def ReadingFile(self, Name):
         x = ", ".join([t + " - " + str(self._Reader[t].num_entries) for t in self.Trees])
         self.Success("!!!(Reading) -> " + Name.split("/")[-1] + " (" + x + ")")
