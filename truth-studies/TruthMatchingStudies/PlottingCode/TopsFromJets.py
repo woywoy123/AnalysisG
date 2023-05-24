@@ -7,7 +7,7 @@ def PlotTemplate(x):
                 "yMin" : 0, 
                 "xMax" : None,
                 "xBins" : None,
-                "OutputDirectory" : "./Figures/TopsFromJets", 
+                "OutputDirectory" : "./Figures/" + x.__class__.__name__, 
                 "Style" : "ATLAS",
                 "ATLASLumi" : x.Luminosity,
                 "NEvents" : x.NEvents
@@ -18,7 +18,7 @@ def PlotTemplateTH2F(x):
     Plots = {
                 "xMin" : 0, 
                 "yMin" : 0, 
-                "OutputDirectory" : "./Figures/TopsFromJets", 
+                "OutputDirectory" : "./Figures/" + x.__class__.__name__, 
                 "Style" : "ATLAS",
                 "ATLASLumi" : x.Luminosity,
                 "NEvents" : x.NEvents
@@ -210,8 +210,10 @@ def MergedTopsJets(inpt):
     hist["Title"] = "Jet Parton Transverse Momentum of \n Top Merged Jets (Partitioned into PDGID)"
     hist["xTitle"] = "Transverse Momentum (GeV)" 
     hist["IncludeOverflow"] = True 
-    hist["xStep"] = 100
-    hist["xMax"] = 800
+    hist["Logarithmic"] = True
+    hist["xStep"] = 50
+    hist["xMax"] = 300
+    hist["yMin"] = 1
     hist["xBins"] = 250
     hist["Filename"] = "Figure_4.1a"
     hist["Histograms"] = []
@@ -223,13 +225,15 @@ def MergedTopsJets(inpt):
         hist["Histograms"].append(TH1F(**plt))
     com = CombineTH1F(**hist)
     com.SaveFigure()
-
+    
     hist = PlotTemplate(inpt)
     hist["Title"] = "Top Merged Jet Parton Energy \n (Partitioned into PDGID)"
     hist["xTitle"] = "Energy (GeV)" 
     hist["IncludeOverflow"] = True 
-    hist["xStep"] = 100
-    hist["xMax"] = 800
+    hist["Logarithmic"] = True
+    hist["yMin"] = 1
+    hist["xStep"] = 50
+    hist["xMax"] = 500
     hist["xBins"] = 250
     hist["Filename"] = "Figure_4.2a"
     hist["Histograms"] = []
@@ -264,8 +268,9 @@ def MergedTopsJets(inpt):
     hist2D["Title"] = "$\Delta$R Between Jet Axis and Contributing Partons \n as a Function of Parton's Energy (Only Gluons)"
     hist2D["xTitle"] = "Parton Energy (GeV)"
     hist2D["yTitle"] = "$\Delta R$"
-    hist2D["yMax"] = 1.0
-    hist2D["xMax"] = 1000
+    hist2D["IncludeOverflow"] = True
+    hist2D["yMax"] = 0.6
+    hist2D["xMax"] = 500
     hist2D["xMin"] = 0
     hist2D["yBins"] = 250
     hist2D["xBins"] = 250
@@ -281,8 +286,9 @@ def MergedTopsJets(inpt):
     hist2D["Title"] = "$\Delta$R Between Jet Axis and Contributing Partons \n as a Function of Parton's Energy (Without Gluons)"
     hist2D["xTitle"] = "Parton Energy (GeV)"
     hist2D["yTitle"] = "$\Delta R$"
-    hist2D["yMax"] = 1.0
-    hist2D["xMax"] = 1000
+    hist2D["IncludeOverflow"] = True
+    hist2D["yMax"] = 0.6
+    hist2D["xMax"] = 500
     hist2D["xMin"] = 0
     hist2D["yBins"] = 250
     hist2D["xBins"] = 250
@@ -334,7 +340,9 @@ def MergedTopsJets(inpt):
     hist["Title"] = "$\Delta$R Between Parton and Truth Child (Partitioned into Parton PDGID)"
     hist["xTitle"] = "$\Delta$R Between Parton and Truth Child" 
     hist["IncludeOverflow"] = True 
+    hist["Logarithmic"] = True
     hist["xStep"] = 0.1
+    hist["yMin"] = 1
     hist["xMax"] = 1.0
     hist["xBins"] = 250
     hist["Filename"] = "Figure_4.3b"
@@ -352,8 +360,10 @@ def MergedTopsJets(inpt):
     hist["Title"] = "$\Delta$R Between Jet Axis and Truth Child \n (Partitioned into Parton PDGID)"
     hist["xTitle"] = "$\Delta$R Between Jet Axis and Truth Child" 
     hist["IncludeOverflow"] = True 
+    hist["Logarithmic"] = True
     hist["xStep"] = 0.2
     hist["xMax"] = 3.0
+    hist["yMin"] = 1
     hist["xBins"] = 400
     hist["Filename"] = "Figure_4.4b"
     hist["Histograms"] = []
@@ -388,11 +398,12 @@ def MergedTopsJets(inpt):
     hist2D["xTitle"] = "Child Energy (GeV)"
     hist2D["yTitle"] = "$\Delta R$ Between Parton and Truth Child"
     hist2D["yMax"] = 1.0
-    hist2D["xMax"] = 1000
+    hist2D["xMax"] = 600
+    hist2D["IncludeOverflow"] = True
     hist2D["xMin"] = 0
-    hist2D["yBins"] = 250
-    hist2D["xBins"] = 250
-    hist2D["xStep"] = 100
+    hist2D["yBins"] = 100
+    hist2D["xBins"] = 100
+    hist2D["xStep"] = 50
     hist2D["yStep"] = 0.1
     hist2D["yData"] = [i for m in inpt.ChildPartonDr for i in inpt.ChildPartonDr[m] if m != "g"]
     hist2D["xData"] = [i for m in inpt.ChildPartonEnergy for i in inpt.ChildPartonEnergy[m] if m != "g"]

@@ -44,7 +44,7 @@ class ResonanceMassTruthJets(SelectionTemplate):
         tops = []
         for tj in jetcontainer: tops += tj.Tops
         tops = list(set(tops))
-        if len(tops) != 2: return "REJECT -> NOT-TWO-TOPS"
+        if len(tops) != 2: return "Reject -> Invalid-Tops"
         
         # Check which decay mode the parent tops underwent to produce jets 
         t1, t2 = tops

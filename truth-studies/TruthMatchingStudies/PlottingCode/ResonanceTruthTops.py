@@ -1,18 +1,18 @@
 from AnalysisG.Plotting import TH1F, CombineTH1F, TH2F
 
-def PlotTemplate(nevents, lumi):
+def PlotTemplate(x):
     Plots = {
                 "Style" : "ATLAS",
-                "NEvents" : nevents, 
-                "ATLASLumi" : lumi,
-                "OutputDirectory" : "./Figures/ResonanceTruthTops", 
+                "NEvents" : x.NEvents, 
+                "ATLASLumi" : x.Luminosity,
+                "OutputDirectory" : "./Figures/" + x.__class__.__name__, 
                 "yTitle" : "Entries (a.u.)",
                 "yMin" : 0,
             }
     return Plots
 
 def ResonanceDecayModes(x):
-    Plots = PlotTemplate(x.NEvents, x.Luminosity)
+    Plots = PlotTemplate(x)
     Plots["Title"] = "Decay Mode of the Resonance" 
     Plots["xTitle"] = "Decay Mode of scalar H (a.u)"
     Plots["xTickLabels"] = [
@@ -31,7 +31,7 @@ def ResonanceDecayModes(x):
     F = TH1F(**Plots)
     F.SaveFigure()
     
-    Plots = PlotTemplate(x.NEvents, x.Luminosity)
+    Plots = PlotTemplate(x)
     Plots["Title"] = "Decay Mode of all Tops" 
     Plots["xTitle"] = "Decay Mode of Tops (a.u)"
     Plots["xTickLabels"] = [
@@ -51,7 +51,7 @@ def ResonanceDecayModes(x):
     F.SaveFigure()
 
 def ResonanceMassFromTops(x):
-    Plots = PlotTemplate(x.NEvents, x.Luminosity)
+    Plots = PlotTemplate(x)
     Plots["Histograms"] = []
     for k in x.ResDecayMode:
         _Plots = {}
@@ -75,7 +75,7 @@ def ResonanceMassFromTops(x):
     X.SaveFigure()
 
 def ResonanceDeltaRTops(x):
-    Plots = PlotTemplate(x.NEvents, x.Luminosity)
+    Plots = PlotTemplate(x)
     Plots["Histograms"] = []
     for k in x.TopsTypes:
         _Plots = {}
@@ -95,7 +95,7 @@ def ResonanceDeltaRTops(x):
     X.SaveFigure()
 
 def ResonanceTopKinematics(x):
-    Plots = PlotTemplate(x.NEvents, x.Luminosity)
+    Plots = PlotTemplate(x)
     Plots["Title"] = "Transverse Momenta of Tops Originating from \n Scalar H and Spectator Tops"
     Plots["xTitle"] = "Transverse Momenta (GeV)"
     Plots["Histograms"] = []
@@ -115,7 +115,7 @@ def ResonanceTopKinematics(x):
     X.SaveFigure()
     
 
-    Plots = PlotTemplate(x.NEvents, x.Luminosity)
+    Plots = PlotTemplate(x)
     Plots["Title"] = "Energy of Tops Originating from Scalar H and Spectator Tops"
     Plots["xTitle"] = "Energy (GeV)"
     Plots["Histograms"] = []
@@ -134,7 +134,7 @@ def ResonanceTopKinematics(x):
     X = CombineTH1F(**Plots)
     X.SaveFigure()
 
-    Plots = PlotTemplate(x.NEvents, x.Luminosity)
+    Plots = PlotTemplate(x)
     Plots["Title"] = "Pseudorapidity of Tops Originating from Scalar H and Spectator Tops"
     Plots["xTitle"] = "Eta"
     Plots["xMin"] = -5
@@ -154,7 +154,7 @@ def ResonanceTopKinematics(x):
     X = CombineTH1F(**Plots)
     X.SaveFigure()
 
-    Plots = PlotTemplate(x.NEvents, x.Luminosity)
+    Plots = PlotTemplate(x)
     Plots["Title"] = "Azimuth of Tops Originating from Scalar H and Spectator Tops"
     Plots["xTitle"] = "Phi"
     Plots["xMin"] = -3.5
@@ -174,7 +174,7 @@ def ResonanceTopKinematics(x):
     X = CombineTH1F(**Plots)
     X.SaveFigure()
 
-    Plots = PlotTemplate(x.NEvents, x.Luminosity)
+    Plots = PlotTemplate(x)
     Plots["Title"] = "Transverse Momenta of Truth Tops (Spectator and Signal) \n as a Function of Energy"
     Plots["xBins"] = 500
     Plots["yBins"] = 500
@@ -190,7 +190,7 @@ def ResonanceTopKinematics(x):
     t = TH2F(**Plots)
     t.SaveFigure()
 
-    Plots = PlotTemplate(x.NEvents, x.Luminosity)
+    Plots = PlotTemplate(x)
     Plots["Title"] = "Transverse Momenta of Truth Tops (Spectator and Signal) \n as a Function of Pseudo-Rapidity"
     Plots["xBins"] = 500
     Plots["yBins"] = 500

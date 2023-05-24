@@ -7,7 +7,7 @@ def PlotTemplate(x):
                 "yMin" : 0, 
                 "xMax" : None,
                 "xBins" : None,
-                "OutputDirectory" : "./Figures/ResonanceTruthChildren", 
+                "OutputDirectory" : "./Figures/" + x.__class__.__name__, 
                 "Style" : "ATLAS",
                 "ATLASLumi" : x.Luminosity,
                 "NEvents" : x.NEvents
@@ -25,6 +25,7 @@ def ResonanceMassFromChildren(x):
     Plots["Histograms"] = []
 
     for i in x.ResonanceMass:
+        if len(x.ResonanceMass[i]) == 0: continue
         _Plots = {}
         _Plots["Title"] = i
         _Plots["xData"] = x.ResonanceMass[i]

@@ -59,7 +59,7 @@ class DeltaRChildren(SelectionTemplate):
                 self.MatchedChildren["False-Top-Spec-Spec"] += [l[0]]
 
 
-class Kinematics(SelectionTemplate):
+class TruthChildrenKinematics(SelectionTemplate):
     
     def __init__(self):
         SelectionTemplate.__init__(self)

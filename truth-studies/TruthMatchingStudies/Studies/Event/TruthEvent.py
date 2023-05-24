@@ -10,11 +10,10 @@ class EventNTruthJetAndJets(SelectionTemplate):
                 self.nLep = []
                 
         def Strategy(self, event):
-                lep = [11, 13, 15]
                 self.TruthJets.append(len(event.TruthJets))
                 self.Jets.append( len(event.Jets))
                 self.MET.append(event.met/1000)
-                self.nLep.append(len([ i for i in event.TopChildren if abs(i.pdgid) in lep ]))
+                self.nLep.append(len([ i for i in event.TopChildren if i.is_lep ]))
 
 
 class EventMETImbalance(SelectionTemplate):
@@ -39,7 +38,6 @@ class EventMETImbalance(SelectionTemplate):
  
         def Selection(self, event):
                 return len(event.Tops) == 4
-        
 
         def Rotation(self, particle, angle):
                 import math
@@ -50,7 +48,6 @@ class EventMETImbalance(SelectionTemplate):
                 py = -pz_*math.sin(angle) + py_*math.cos(angle)
                 particle.py = py
                 particle.pz = pz
-
 
         def Strategy(self, event):
                 import math

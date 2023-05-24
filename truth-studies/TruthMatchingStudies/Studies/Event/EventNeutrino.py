@@ -13,16 +13,12 @@ class EventNuNuSolutions(SelectionTemplate):
         }
    
     def Selection(self, event):
-        if sum([1 for i in event.Tops if i.LeptonicDecay]) != 2:
-            return False
+        if sum([1 for i in event.Tops if i.LeptonicDecay]) != 2: return False
         t1, t2 = [i for i in event.Tops if i.LeptonicDecay]
         c1, c2 = t1.Children, t2.Children
-        if len(c1) != 3 or len(c2) != 3:
-            return False
-        if len([1 for c in c1 if c.is_b]) == 0:
-            return False
-        if len([1 for c in c2 if c.is_b]) == 0:
-            return False
+        if len(c1) != 3 or len(c2) != 3: return False
+        if len([1 for c in c1 if c.is_b]) == 0: return False
+        if len([1 for c in c2 if c.is_b]) == 0: return False
         return True
 
     def Rotation(self, particle, angle):
@@ -41,12 +37,9 @@ class EventNuNuSolutions(SelectionTemplate):
 
     def Strategy(self, event):
         import math
-        def Nu(top):
-            return [i for i in top.Children if abs(i.pdgid) in [12, 14, 16]][0]
-        def Lep(top):
-            return [i for i in top.Children if abs(i.pdgid) in [11, 13, 15]][0]
-        def BQuark(top):
-            return [i for i in top.Children if i.is_b][0]
+        def Nu(top): return [i for i in top.Children if abs(i.pdgid) in [12, 14, 16]][0]
+        def Lep(top): return [i for i in top.Children if abs(i.pdgid) in [11, 13, 15]][0]
+        def BQuark(top): return [i for i in top.Children if i.is_b][0]
 
         t1, t2 = [i for i in event.Tops if i.LeptonicDecay]
         nu1, nu2 = Nu(t1), Nu(t2)
@@ -66,11 +59,11 @@ class EventNuNuSolutions(SelectionTemplate):
         self.Truth_MET_xy_Delta["No-Rotation-x"] += [(met_x - nu_sum.px)/1000]
         self.Truth_MET_xy_Delta["No-Rotation-y"] += [(met_y - nu_sum.py)/1000]
 
-        if n_sols not in self.TopMassDelta["No-Rotation"]:
+        if n_sols not in self.TopMassDelta["No-Rotation"] and n_sols != 0:
             self.TopMassDelta["No-Rotation"][n_sols] = []
         for i in sols:
-            self.TopMassDelta["No-Rotation"][n_sols] += [(i[0] + lep1 + b1).Mass - t1.Mass, (i[1] + lep2 + b2).Mass - t2.Mass]
-           
+            self.TopMassDelta["No-Rotation"][n_sols] += [(i[0] + lep1 + b1).Mass/1000 - t1.Mass/1000, (i[1] + lep2 + b2).Mass/1000 - t2.Mass/1000]
+ 
         # ====================== Rotated ========================== #
         t4 = sum(event.Tops)
         angle = math.atan2(t4.pt, t4.pz)
@@ -89,8 +82,8 @@ class EventNuNuSolutions(SelectionTemplate):
         self.Truth_MET_xy_Delta["Rotation-x"] += [(met_x - nu_sum.px)/1000]
         self.Truth_MET_xy_Delta["Rotation-y"] += [(met_y - nu_sum.py)/1000]
 
-        if n_sols not in self.TopMassDelta["Rotation"]:
+        if n_sols not in self.TopMassDelta["Rotation"] and n_sols != 0:
             self.TopMassDelta["Rotation"][n_sols] = []
         for i in sols:
-            self.TopMassDelta["Rotation"][n_sols] += [(i[0] + lep1 + b1).Mass - t1.Mass, (i[1] + lep2 + b2).Mass - t2.Mass]
+            self.TopMassDelta["Rotation"][n_sols] += [(i[0] + lep1 + b1).Mass/1000 - t1.Mass/1000, (i[1] + lep2 + b2).Mass/1000 - t2.Mass/1000]
  

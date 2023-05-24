@@ -9,7 +9,6 @@
 ### Fitting Notes:
 - Fit the resultant m(Z') distribution
 
-
 ## Double Leptonic:
 ### Selection Criteria:
 - Select the two most energetic children, provided they are quarks.

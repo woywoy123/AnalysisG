@@ -121,19 +121,21 @@ class MergedTopsJets(SelectionTemplate):
             for tj in t.Jets: 
                 prt_energy_all = []
                 prt_this_top = [] 
+                ntops = len(tj.Tops)
                 if len(tj.Parton) == 0: continue
                 for prt in tj.Parton:
                     prt_energy_all.append(prt.e/1000) 
                     prt_this_top += [prt.e / 1000] if t == prt.Parent[0].Parent[0] else []
                 frac = sum(prt_this_top) / sum(prt_energy_all)
-                if nmerged not in self.TopsJetsMerged: self.TopsJetsMerged[nmerged] = []
-                self.TopsJetsMerged[nmerged].append(frac)
+                if ntops not in self.TopsJetsMerged: self.TopsJetsMerged[ntops] = []
+                self.TopsJetsMerged[ntops].append(frac)
                 tjets.append(tj) 
                
                 for cut in tj_cuts:
                     if frac < cut: continue
                     if nmerged == 1: continue
                     tj_cuts[cut].append(tj)
+            if len(tjets) == 0: continue
             self.TopsJetsNoPartons[nmerged].append(sum(tjets).Mass/1000)
             for cut in self.TopsJetsCut:
                 if len(tj_cuts[cut]) == 0: continue 

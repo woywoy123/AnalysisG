@@ -7,7 +7,7 @@ def PlotTemplate(x):
                 "yMin" : 0, 
                 "xMax" : None,
                 "xBins" : None,
-                "OutputDirectory" : "./Figures/TruthChildrenKinematics", 
+                "OutputDirectory" : "./Figures/" + x.__class__.__name__, 
                 "Style" : "ATLAS",
                 "ATLASLumi" : x.Luminosity,
                 "NEvents" : x.NEvents
@@ -82,7 +82,7 @@ def DeltaRChildren(x):
     Plots["Title"] = "$\Delta$R Between Decay Products of Mutual Top \n as a Function of Parent Top Transverse Momenta (Hadronic)"
     Plots["yTitle"] = "$\Delta$R"
     Plots["xTitle"] = "Transverse Momentum (GeV)"
-    Plots["yStep"] = 0.2
+    Plots["yStep"] = 0.25
     Plots["xStep"] = 100
     Plots["xBins"] = 500
     Plots["yBins"] = 500
@@ -114,7 +114,7 @@ def DeltaRChildren(x):
     X = TH2F(**Plots)
     X.SaveFigure()
 
-def Kinematics(x):
+def TruthChildrenKinematics(x):
     Plots = PlotTemplate(x)
     Plots["Title"] = "Fractional Transverse Momenta Transferred\n to Decay Products from Parent Top"
     Plots["xTitle"] = "Fraction"

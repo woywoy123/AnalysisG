@@ -7,7 +7,7 @@ def PlotTemplate(x):
                 "yMin" : 0, 
                 "xMax" : None,
                 "xBins" : None,
-                "OutputDirectory" : "./Figures/ResonanceFromJets", 
+                "OutputDirectory" : "./Figures/" + x.__class__.__name__, 
                 "Style" : "ATLAS",
                 "ATLASLumi" : x.Luminosity,
                 "NEvents" : x.NEvents
@@ -72,6 +72,9 @@ def ResonanceMassJets(inpt):
     res["Title"] = "Number of Jets Contributing to Resonance \n Partitioned into Decay Topology"
     res["xTitle"] = "n-Jets"
     res["xStep"] = 1
+    res["xBins"] = 12
+    res["xMax"] = 12
+    res["IncludeOverflow"] = True
     res["xBinCentering"] = True
     res["Filename"] = "Figure_4.1c"
     res["Histograms"] = []
@@ -83,7 +86,6 @@ def ResonanceMassJets(inpt):
         res["Histograms"].append(TH1F(**m_hist))
     com = CombineTH1F(**res)
     com.SaveFigure() 
-
 
     res = PlotTemplate(inpt)
     res["Title"] = "Reconstructed Resonance Invariant Mass From Jets \n Partitioned into n-Jet Contributions"

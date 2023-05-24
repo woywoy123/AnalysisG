@@ -50,6 +50,8 @@ class ResonanceMassJets(SelectionTemplate):
             tjets += t.TruthJets
             if not t.LeptonicDecay: continue
             leps += [c for c in t.Children if c.is_nu or c.is_lep]      
+
+        if len(jetcontainer + leps) == 0: return "ERROR -> No Particles"
  
         modes.sort()
         modes = "-".join(modes)

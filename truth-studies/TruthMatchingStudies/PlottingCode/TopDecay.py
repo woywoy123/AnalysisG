@@ -7,7 +7,7 @@ def PlotTemplate(x):
                 "yMin" : 0, 
                 "xMax" : None,
                 "xBins" : None,
-                "OutputDirectory" : "./Figures/TopDecayModes", 
+                "OutputDirectory" : "./Figures/" + x.__class__.__name__, 
                 "Style" : "ATLAS",
                 "ATLASLumi" : x.Luminosity,
                 "NEvents" : x.NEvents

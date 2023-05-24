@@ -228,7 +228,7 @@ class CombineTH1F(Functions):
             Sum = sum([i.NPHisto[0].sum() for i in self.Histograms])/len(self.Histograms)*0.01
 
         if self.Histogram != None:
-            try: self.Histograms.NPHisto
+            try: self.Histogram.NPHisto
             except AttributeError: self.Histogram.Compile()
             self.Histogram.NPHisto = (self.Histogram.NPHisto[0] / Sum, self.Histogram.NPHisto[1])
             self.Histogram.ApplyFormat()

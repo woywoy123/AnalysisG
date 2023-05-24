@@ -7,7 +7,7 @@ def PlotTemplate(x):
                 "yMin" : 0, 
                 "xMax" : None,
                 "xBins" : None,
-                "OutputDirectory" : "./Figures/ResonanceFromTruthJets", 
+                "OutputDirectory" : "./Figures/" + x.__class__.__name__, 
                 "Style" : "ATLAS",
                 "ATLASLumi" : x.Luminosity,
                 "NEvents" : x.NEvents
@@ -37,7 +37,7 @@ def ResonanceMassTruthJets(con):
     stat = PlotTemplate(con)
     stat["Title"] = "Status Codes of the Event Selection"
     stat["xWeights"] = [con.CutFlow[i] for i in con.CutFlow]
-    stat["xTickLabels"] = [i + "\n (" + str(con.CutFlow[i]) + ")" for i in con.CutFlow]
+    stat["xTickLabels"] = [i.replace(" ", "").replace("->", "::") + "\n (" + str(con.CutFlow[i]) + ")" for i in con.CutFlow]
     stat["xStep"] = 1
     stat["Filename"] = "Figure_3.1b"
     stat["xBinCentering"] = True

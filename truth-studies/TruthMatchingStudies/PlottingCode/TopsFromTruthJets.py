@@ -7,7 +7,7 @@ def PlotTemplate(x):
                 "yMin" : 0, 
                 "xMax" : None,
                 "xBins" : None,
-                "OutputDirectory" : "./Figures/TopsFromTruthJets", 
+                "OutputDirectory" : "./Figures/" + x.__class__.__name__, 
                 "Style" : "ATLAS",
                 "ATLASLumi" : x.Luminosity,
                 "NEvents" : x.NEvents
@@ -21,7 +21,7 @@ def PlotTemplateTH2F(x):
     th2.NEvents = x.NEvents
     th2.xMin = 0
     th2.yMin = 0
-    th2.OutputDirectory = "./Figures/TopsFromTruthJets"
+    th2.OutputDirectory = "./Figures/" + x.__class__.__name__
     return th2
 
 def TopMassTruthJets(inpt):
@@ -106,7 +106,7 @@ def TopMassTruthJets(inpt):
     m.xTitle = "Invariant Mass (GeV)"
     m.yTitle = "n-Truth Jets"
     m.yStep = 1
-    m.xStep = 50
+    m.xStep = 20
     m.xBins = 200
     m.xMax = 250
     m.xMin = 100
@@ -152,7 +152,6 @@ def TopTruthJetsKinematics(inpt):
         plt = {}
         plt["Title"] = dr.replace("-dR", "")
         plt["xData"] = inpt.DeltaRTJ_[dr]
-        plt["xBins"] = 250
         hist["Histograms"].append(TH1F(**plt))
     
     com = CombineTH1F(**hist) 
@@ -164,8 +163,8 @@ def TopTruthJetsKinematics(inpt):
     hist2D.yTitle = "$\Delta R$"
     hist2D.yMax = 4
     hist2D.xMax = 1500
-    hist2D.yBins = 500
-    hist2D.xBins = 500
+    hist2D.yBins = 250
+    hist2D.xBins = 250
     hist2D.xStep = 100
     hist2D.yStep = 0.4
     hist2D.yData = [i for m in inpt.DeltaRTJ_ for i in inpt.DeltaRTJ_[m] if "dR" in m]
@@ -179,8 +178,8 @@ def TopTruthJetsKinematics(inpt):
     hist2D.yTitle = "$\Delta R$"
     hist2D.yMax = 4
     hist2D.xMax = 1500
-    hist2D.yBins = 500
-    hist2D.xBins = 500
+    hist2D.yBins = 250
+    hist2D.xBins = 250
     hist2D.xStep = 100
     hist2D.yStep = 0.4
     hist2D.yData = [i for m in inpt.DeltaRTJ_ for i in inpt.DeltaRTJ_[m] if "dR" in m]
@@ -198,11 +197,11 @@ def TopTruthJetsKinematics(inpt):
     hist["Title"] = "$\Delta R$ Of Top Matched Truth Jet Ghost Parton Composition \n Partitioned into PDGID Symbol"
     hist["xTitle"] = "$\Delta R$"
     hist["Filename"] = "Figure_3.1i"
-    hist["xMax"] = 4
+    hist["xMax"] = 1
     hist["xBins"] = 250
     hist["Logarithmic"] = True
     hist["yMin"] = 1
-    hist["xStep"] = 0.25
+    hist["xStep"] = 0.1
     hist["Histograms"] = []
 
     for sym in xdata:
@@ -219,13 +218,13 @@ def TopTruthJetsKinematics(inpt):
     hist2D.Title = "Truth Jet Ghost Matched Parton's $\Delta R$ \n as a Function of $\eta$"
     hist2D.xTitle = "Pseudo-Rapiditiy $\eta$"
     hist2D.yTitle = "$\Delta R$"
-    hist2D.yMax = 3.6
-    hist2D.xMax = 5
-    hist2D.xMin = -5
-    hist2D.yBins = 250
-    hist2D.xBins = 250
-    hist2D.xStep = 0.5
-    hist2D.yStep = 0.4
+    hist2D.yMax = 1.0
+    hist2D.xMax = 4.0
+    hist2D.xMin = -4.0
+    hist2D.yBins = 200
+    hist2D.xBins = 200
+    hist2D.xStep = 0.4
+    hist2D.yStep = 0.1
     hist2D.yData = [i for m in inpt.TopTruthJet_parton for i in inpt.TopTruthJet_parton[m] if "dR" in m]
     hist2D.xData = [i for m in inpt.TopTruthJet_parton for i in inpt.TopTruthJet_parton[m] if "eta" in m]
     hist2D.Filename = "Figure_3.2i"
@@ -236,13 +235,13 @@ def TopTruthJetsKinematics(inpt):
     hist2D.Title = "Truth Jet Ghost Matched Parton's $\Delta R$ \n as a Function of $\phi$"
     hist2D.xTitle = "Azimuthal Angle - $\phi$ (Radians)"
     hist2D.yTitle = "$\Delta R$"
-    hist2D.yMax = 3.6
+    hist2D.yMax = 1.0
     hist2D.xMax = 3.2
     hist2D.xMin = -3.2
-    hist2D.yBins = 250
-    hist2D.xBins = 250
+    hist2D.yBins = 200
+    hist2D.xBins = 200
     hist2D.xStep = 0.4
-    hist2D.yStep = 0.4
+    hist2D.yStep = 0.1
     hist2D.yData = [i for m in inpt.TopTruthJet_parton for i in inpt.TopTruthJet_parton[m] if "dR" in m]
     hist2D.xData = [i for m in inpt.TopTruthJet_parton for i in inpt.TopTruthJet_parton[m] if "phi" in m]
     hist2D.Filename = "Figure_3.3i"
@@ -298,12 +297,12 @@ def TopTruthJetsKinematics(inpt):
     hist["Title"] = "Truth Jet Invariant Mass Partitioned into n-Top Contributions"
     hist["xTitle"] = "Invariant Mass (GeV)"
     hist["Filename"] = "Figure_3.1l"
-    hist["xMax"] = 400
+    hist["xMax"] = 300
     hist["xBins"] = 500
     hist["Logarithmic"] = True
     hist["IncludeOverflow"] = True
     hist["yMin"] = 1
-    hist["xStep"] = 40
+    hist["xStep"] = 20
     hist["Histograms"] = []
 
     for sym in inpt.JetMassNTop:
@@ -320,8 +319,10 @@ def MergedTopsTruthJets(inpt):
     hist["Title"] = "Truth Jet Parton Transverse Momentum of \n Top Merged Truth Jets (Partitioned into PDGID)"
     hist["xTitle"] = "Transverse Momentum (GeV)" 
     hist["IncludeOverflow"] = True 
-    hist["xStep"] = 100
-    hist["xMax"] = 800
+    hist["Logarithmic"] = True
+    hist["xStep"] = 50
+    hist["xMax"] = 300
+    hist["yMin"] = 1
     hist["xBins"] = 250
     hist["Filename"] = "Figure_3.1a"
     hist["Histograms"] = []
@@ -338,8 +339,10 @@ def MergedTopsTruthJets(inpt):
     hist["Title"] = "Top Merged Truth Jet Parton Energy \n (Partitioned into PDGID)"
     hist["xTitle"] = "Energy (GeV)" 
     hist["IncludeOverflow"] = True 
-    hist["xStep"] = 100
-    hist["xMax"] = 800
+    hist["Logarithmic"] = True
+    hist["yMin"] = 1
+    hist["xStep"] = 50
+    hist["xMax"] = 500
     hist["xBins"] = 250
     hist["Filename"] = "Figure_3.2a"
     hist["Histograms"] = []
@@ -374,8 +377,9 @@ def MergedTopsTruthJets(inpt):
     hist2D.Title = "$\Delta$R Between Truth Jet Axis and Contributing Partons \n as a Function of Parton's Energy (Only Gluons)"
     hist2D.xTitle = "Parton Energy (GeV)"
     hist2D.yTitle = "$\Delta R$"
-    hist2D.yMax = 1.0
-    hist2D.xMax = 1000
+    hist2D.IncludeOverflow = True
+    hist2D.yMax = 0.6
+    hist2D.xMax = 500
     hist2D.xMin = 0
     hist2D.yBins = 250
     hist2D.xBins = 250
@@ -385,13 +389,14 @@ def MergedTopsTruthJets(inpt):
     hist2D.xData = [i for m in inpt.PartonEnergy for i in inpt.PartonEnergy[m] if m == "g"]
     hist2D.Filename = "Figure_3.4a"
     hist2D.SaveFigure()
-
+    
     hist2D = PlotTemplateTH2F(inpt)
     hist2D.Title = "$\Delta$R Between Truth Jet Axis and Contributing Partons \n as a Function of Parton's Energy (Without Gluons)"
     hist2D.xTitle = "Parton Energy (GeV)"
     hist2D.yTitle = "$\Delta R$"
-    hist2D.yMax = 1.0
-    hist2D.xMax = 1000
+    hist2D.IncludeOverflow = True
+    hist2D.yMax = 0.6
+    hist2D.xMax = 500
     hist2D.xMin = 0
     hist2D.yBins = 250
     hist2D.xBins = 250
@@ -442,7 +447,9 @@ def MergedTopsTruthJets(inpt):
     hist["Title"] = "$\Delta$R Between Parton and Truth Child (Partitioned into Parton PDGID)"
     hist["xTitle"] = "$\Delta$R Between Parton and Truth Child" 
     hist["IncludeOverflow"] = True 
+    hist["Logarithmic"] = True
     hist["xStep"] = 0.1
+    hist["yMin"] = 1
     hist["xMax"] = 1.0
     hist["xBins"] = 250
     hist["Filename"] = "Figure_3.3b"
@@ -460,8 +467,10 @@ def MergedTopsTruthJets(inpt):
     hist["Title"] = "$\Delta$R Between Truth Jet Axis and Truth Child \n (Partitioned into Parton PDGID)"
     hist["xTitle"] = "$\Delta$R Between Truth Jet Axis and Truth Child" 
     hist["IncludeOverflow"] = True 
+    hist["Logarithmic"] = True
     hist["xStep"] = 0.2
     hist["xMax"] = 3.0
+    hist["yMin"] = 1
     hist["xBins"] = 400
     hist["Filename"] = "Figure_3.4b"
     hist["Histograms"] = []
@@ -495,17 +504,18 @@ def MergedTopsTruthJets(inpt):
     hist2D.xTitle = "Child Energy (GeV)"
     hist2D.yTitle = "$\Delta R$ Between Parton and Truth Child"
     hist2D.yMax = 1.0
-    hist2D.xMax = 1000
+    hist2D.xMax = 600
+    hist2D.IncludeOverflow = True
     hist2D.xMin = 0
-    hist2D.yBins = 250
-    hist2D.xBins = 250
-    hist2D.xStep = 100
+    hist2D.yBins = 100
+    hist2D.xBins = 100
+    hist2D.xStep = 50
     hist2D.yStep = 0.1
     hist2D.yData = [i for m in inpt.ChildPartonDr for i in inpt.ChildPartonDr[m] if m != "g"]
     hist2D.xData = [i for m in inpt.ChildPartonEnergy for i in inpt.ChildPartonEnergy[m] if m != "g"]
     hist2D.Filename = "Figure_3.6b"
     hist2D.SaveFigure()
-
+    
     hist = PlotTemplate(inpt)
     hist["Title"] = "Parton Type Contribution Frequency Found in Top Merged Truth Jets"
     hist["xTitle"] = "Frequency of Parton Symbol in Truth Jets"

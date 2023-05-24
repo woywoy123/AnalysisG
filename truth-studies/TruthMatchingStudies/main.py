@@ -50,7 +50,7 @@ toRun = [
         #"TopDecayModes", 
         #"ResonanceMassFromChildren", 
         #"DeltaRChildren", 
-        #"Kinematics", 
+        #"TruthChildrenKinematics", 
         #"EventNuNuSolutions", 
         #"ResonanceMassTruthJets", 
         #"ResonanceMassTruthJetsNoSelection", 
@@ -73,7 +73,7 @@ studies = {
             "TopDecayModes" : TTT_Sel.TopDecayModes, 
             "ResonanceMassFromChildren" : RTC_Sel.ResonanceMassFromChildren,
             "DeltaRChildren" : TCK_Sel.DeltaRChildren,
-            "Kinematics" : TCK_Sel.Kinematics, 
+            "TruthChildrenKinematics" : TCK_Sel.TruthChildrenKinematics, 
             "EventNuNuSolutions" : EN_Sel.EventNuNuSolutions, 
             "ResonanceMassTruthJets" : RTJ_Sel.ResonanceMassTruthJets, 
             "ResonanceMassTruthJetsNoSelection" : RTJ_Sel.ResonanceMassTruthJetsNoSelection, 
@@ -96,7 +96,7 @@ studiesPlots = {
             "TopDecayModes" : TTT_Plot.TopDecayModes,
             "ResonanceMassFromChildren" : RTC_Plot.ResonanceMassFromChildren, 
             "DeltaRChildren" : TCK_Plot.DeltaRChildren,
-            "Kinematics" : TCK_Plot.Kinematics, 
+            "TruthChildrenKinematics" : TCK_Plot.TruthChildrenKinematics, 
             "EventNuNuSolutions" : EN_Plot.EventNuNuSolutions, 
             "ResonanceMassTruthJets" : RTJ_Plot.ResonanceMassTruthJets,
             "ResonanceMassTruthJetsNoSelection" : RTJ_Plot.ResonanceMassTruthJetsNoSelection, 
@@ -119,7 +119,7 @@ Ana.InputSample("BSM-4t-DL-1000", smpl + smpls + "/ttH_tttt_m1000/")
 #Ana.InputSample("BSM-4t-DL-500", smpl + smpls + "/ttH_tttt_m500/")
 #Ana.InputSample("BSM-4t-DL-400", smpl + smpls + "/ttH_tttt_m400/")
 Ana.Event = Event 
-#Ana.EventStop = 2000
+Ana.EventStop = 2000
 Ana.Threads = 12
 Ana.chnk = 1000
 Ana.EventCache = True
@@ -127,14 +127,14 @@ Ana.PurgeCache = False
 #for i in toRun:
 #    Ana.AddSelection(i, studies[i])
 #    Ana.MergeSelection(i)
-Ana.Launch
+#Ana.Launch
 
 # Debugging purposes
-for i in toRun:
-    studies[i] = studies[i]()
-    studies[i](Ana)
-    print(studies[i].CutFlow)
-    PickleObject(studies[i], Ana.ProjectName + "/Selections/Merged/" + i + ".pkl") 
+#for i in toRun:
+#    studies[i] = studies[i]()
+#    studies[i](Ana)
+#    print(studies[i].CutFlow)
+#    PickleObject(studies[i], Ana.ProjectName + "/Selections/Merged/" + i + ".pkl") 
 
 # Runs the plotting code
 for i in toRun:

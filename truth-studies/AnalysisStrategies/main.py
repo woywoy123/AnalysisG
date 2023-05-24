@@ -9,12 +9,12 @@ smpl = os.environ["Samples"]
 
 if "Dilepton" in smpl: smpl = "/".join(smpl.split("/")[:-2]) + "/"
 
-singlelep = smpl + "SingleLepton/ttH_tttt_m1000/" #DAOD_TOPQ1.21955717._000001.root"
+singlelep = smpl + "SingleLepton/ttH_tttt_m1000/DAOD_TOPQ1.21955717._000001.root"
 dilepton  = smpl + "Dilepton/ttH_tttt_m1000/DAOD_TOPQ1.21955717._000001.root"
 
 
 Ana = Analysis()
-Ana.ProjectName = "SingleLepton"
+Ana.ProjectName = "_ProjectSL"
 Ana.Event = Event
 Ana.EventCache = True
 Ana.chnk = 1000
@@ -23,11 +23,10 @@ Ana.AddSelection("SingleLepton", SingleLepton)
 Ana.MergeSelection("SingleLepton")
 Ana.Launch
 
-
 # Debugging Section 
-#st = SingleLepton()
-#for i in Ana:
-#    st(i)
+st = SingleLepton()
+for i in Ana:
+    st(i)
 
 i = "SingleLepton"
 
