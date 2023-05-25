@@ -49,7 +49,7 @@ toRun = [
         "TopDecayModes", 
         "ResonanceMassFromChildren", 
         "DeltaRChildren", 
-        "Kinematics", 
+        "TruthChildrenKinematics", 
         "EventNuNuSolutions", 
         "ResonanceMassTruthJets", 
         "ResonanceMassTruthJetsNoSelection", 
@@ -72,7 +72,7 @@ studies = {
             "TopDecayModes" : TTT_Sel.TopDecayModes, 
             "ResonanceMassFromChildren" : RTC_Sel.ResonanceMassFromChildren,
             "DeltaRChildren" : TCK_Sel.DeltaRChildren,
-            "Kinematics" : TCK_Sel.Kinematics, 
+            "TruthChildrenKinematics" : TCK_Sel.TruthChildrenKinematics, 
             "EventNuNuSolutions" : EN_Sel.EventNuNuSolutions, 
             "ResonanceMassTruthJets" : RTJ_Sel.ResonanceMassTruthJets, 
             "ResonanceMassTruthJetsNoSelection" : RTJ_Sel.ResonanceMassTruthJetsNoSelection, 
@@ -95,7 +95,7 @@ studiesPlots = {
             "TopDecayModes" : TTT_Plot.TopDecayModes,
             "ResonanceMassFromChildren" : RTC_Plot.ResonanceMassFromChildren, 
             "DeltaRChildren" : TCK_Plot.DeltaRChildren,
-            "Kinematics" : TCK_Plot.Kinematics, 
+            "TruthChildrenKinematics" : TCK_Plot.TruthChildrenKinematics, 
             "EventNuNuSolutions" : EN_Plot.EventNuNuSolutions, 
             "ResonanceMassTruthJets" : RTJ_Plot.ResonanceMassTruthJets,
             "ResonanceMassTruthJetsNoSelection" : RTJ_Plot.ResonanceMassTruthJetsNoSelection, 
@@ -108,7 +108,7 @@ studiesPlots = {
 }
 
 Masses = ["1000", "900", "800", "700", "600", "500", "400"]
-Topo = ["Dilepton", "SingleLepton"]
+Topo = ["Dilepton"] #, "SingleLepton"]
 smpl = os.environ["Samples"]
 os.makedirs("./FigureCollection", exist_ok = True)
 
@@ -137,11 +137,10 @@ for smpl in SampleNames:
     # Runs the plotting code
     for i in toRun:
         x = UnpickleObject(Ana.ProjectName + "/Selections/Merged/" + i + ".pkl")
+        x.__class__.__name__ = i
         print("Making Plots for: " + i)
         studiesPlots[i](x)
     
     print("Finished: " + smpl + ": " + str(it) + "/" + str(len(SampleNames)))
     shutil.move("./Figures", "./FigureCollection/" + smpl)
     it += 1
-    
-
