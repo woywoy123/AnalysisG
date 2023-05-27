@@ -16,7 +16,6 @@ class ModelWrapper(_ModelWrapper):
 
         # Mass reconstruction part 
         self.TruthMode = True if model is None else False
-        self._truth = True
         self.Keys = {"pt" : "N_pT", "eta" : "N_eta", "phi" : "N_phi", "e" : "N_energy"}
 
         self._Model = model
@@ -27,6 +26,7 @@ class ModelWrapper(_ModelWrapper):
         self.o_mapping = {}
         self.i_mapping = {}
 
+        self._truth = True
         self._train = True
 
         self._GetModelInputs
@@ -89,9 +89,9 @@ class ModelWrapper(_ModelWrapper):
 
     @train.setter
     def train(self, val): 
-        if val: self._Model.train()
-        else: self._Model.eval()
         self._train = val
+        if self._train: self._Model.train()
+        else: self._Model.eval()
 
     @property
     def dump(self):
@@ -194,6 +194,7 @@ class ModelWrapper(_ModelWrapper):
   
     @property 
     def ParticleEfficiency(self):
+        tmp = self.TruthMode 
         self.TruthMode = True
         t = self.mass
         
@@ -207,5 +208,6 @@ class ModelWrapper(_ModelWrapper):
                 pred = self.ClosestParticle(truth, pred)
                 p_l, t_l = len(pred), len(truth)
                 out[f] = {"%" : float(p_l/(t_l if t_l != 0 else 1))*100, "nrec" : p_l, "ntru" : t_l}
-            output.append(out)       
+            output.append(out) 
+        self.TruthMode = tmp      
         return output

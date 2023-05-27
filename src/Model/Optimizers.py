@@ -15,6 +15,7 @@ class OptimizerWrapper(Settings):
     @property 
     def SetOptimizer(self):
         self._pth = self.OutputDirectory + "/" + self.RunName
+        if len(self.OptimizerParams) == 0: return False
         if self.Optimizer == "ADAM": self._op = torch.optim.Adam(self._mod.parameters(), **self.OptimizerParams)
         elif self.Optimizer == "SDG": self._op = torch.optim.SGD(self._mod.parameters(), **self.OptimizerParams)
         else: return False
@@ -37,19 +38,20 @@ class OptimizerWrapper(Settings):
 
     @property
     def step(self): 
-        if self.train: self._op.step()
-        else: None
+        if not self.train: return 
+        self._op.step()
     
     @property
     def zero(self): 
-        if self.train: self._op.zero_grad()
-        else: None
+        if not self.train: return 
+        self._op.zero_grad()
     
     @property
     def SetScheduler(self):
         self.SchedulerParams["optimizer"] = self._op
         if self.Scheduler == "ExponentialLR": self._sc = ExponentialLR(**self.SchedulerParams)
         if self.Scheduler == "CyclicLR": self._sc = CyclicLR(**self.SchedulerParams)
+        if len(self.SchedulerParams) == 0: return False
         if self._sc == None: return False
         return True
     

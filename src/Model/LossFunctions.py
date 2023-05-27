@@ -11,7 +11,7 @@ class LossFunctions:
         elif _loss == "HEL":  self.HingeEmbeddingLoss()
         elif _loss == "KLD":  self.KLDivergenceLoss()
         else: self.NoDefault()
-        if _class == True: self._class = self.ToDigit
+        if self._class: self._class = self.ToDigit
 
     @property
     def loss(self): 
@@ -30,6 +30,7 @@ class LossFunctions:
         self._loss = torch.nn.CrossEntropyLoss()
         self._func = funct
         self._acc = accuracyfunction
+        self._class = False
     
     def MeanSquareErrorLoss(self):
         def accuracyfunction(truth, pred): 
@@ -62,7 +63,9 @@ class LossFunctions:
  
     def __call__(self, pred, truth):
         self.pred, self.truth = pred, truth
+        
         if self._class == False: pass
         else: self.pred = self._class(self.pred)
-        return {"loss" : self.loss, "acc" : self.accuracy}
+        loss = self.loss
+        return {"loss" : loss, "acc" : self.accuracy}
 

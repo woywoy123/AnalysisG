@@ -1,7 +1,6 @@
 from AnalysisG.IO import UpROOT
 
 def test_pyami():
-    d = "samples/dilepton/DAOD_TOPQ1.21955717._000001.root"
     smpl = UpROOT("samples/dilepton/")
     meta = smpl.GetAmiMeta
     assert len(meta) == 1
@@ -16,9 +15,17 @@ def test_pyami():
     for i in smpl:
         print(i) 
 
+def test_ami_injection():
+    smpl = UpROOT("samples/dilepton/")
+    smpl.Trees = ["nominal"]
+    smpl.Leaves = ["weight_mc", "eventNumber"]
 
-
-
+    lst = [] 
+    for i in smpl:
+        meta = i["MetaData"]
+        assert "dilepton" not in meta.GetDAOD(i["nominal/eventNumber"])[0]
 
 if __name__ == "__main__":
-    test_pyami()    
+    #test_pyami()    
+    test_ami_injection()
+    pass

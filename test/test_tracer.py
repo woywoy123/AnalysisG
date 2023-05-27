@@ -57,12 +57,11 @@ def test_tracer_addEvent():
     roothashes = {}
     for i in io:
         x = ev.clone
-        root, index = i["ROOT"], i["EventIndex"]
+        root, index, meta = i["ROOT"], i["EventIndex"], i["MetaData"]
         trees = x.__compiler__(i)
         for i in trees: i.CompileEvent() 
-        for i in trees: i.index = index
-        for i in trees: i.hash = root
-        inpt = { i.hash : {"pkl" : pickle.dumps(i), "index" : i.index, "Tree" : i.Tree, "ROOT" : root} for i in trees}
+        root = meta.thisSet + "/" + meta.thisDAOD
+        inpt = { i.hash : {"pkl" : pickle.dumps(i), "index" : i.index, "Tree" : i.Tree, "ROOT" : root, "Meta" : meta} for i in trees}
         tr.AddEvent(inpt)         
         hashes |= {p.hash : p for p in trees}
         if root not in roothashes: roothashes[root] = []
@@ -100,12 +99,11 @@ def EventMaker(root):
     io.Leaves = ev.Leaves
     out = {}
     for i in io:
-        root, index = i["ROOT"], i["EventIndex"]
+        root, index, meta = i["ROOT"], i["EventIndex"], i["MetaData"]
         trees = ev.__compiler__(i)
+        root = meta.thisSet + "/" + meta.thisDAOD
         for i in trees: i.CompileEvent() 
-        for i in trees: i.index = index
-        for i in trees: i.hash = root
-        out |= { i.hash : {"pkl" : pickle.dumps(i), "index" : i.index, "Tree" : i.Tree, "ROOT" : root} for i in trees}
+        out |= { i.hash : {"pkl" : pickle.dumps(i), "index" : i.index, "Tree" : i.Tree, "ROOT" : root, "Meta" : meta} for i in trees}
     return out
 
 def test_tracer_operators():
@@ -141,10 +139,12 @@ def test_tracer_hdf5():
     root2 = os.path.abspath("./samples/sample1/smpl2.root")
     
     tr1 = SampleTracer()
+    tr1.OutputDirectory = "Project"
     tr1.AddEvent(EventMaker(root1))
     l1 = len(tr1)
 
     tr2 = SampleTracer()
+    tr2.OutputDirectory = "Project"
     tr2.AddEvent(EventMaker(root2))
     l2 = len(tr2)
      
@@ -152,10 +152,10 @@ def test_tracer_hdf5():
     tr2.DumpEvents
         
     s = SampleTracer()
+    s.OutputDirectory = "Project"
     s.EventCache = True
     s.RestoreEvents
-
-   
+ 
     for i in tr1: break
     assert len(s[i.ROOT]) == len(tr1)
 
@@ -173,6 +173,7 @@ def test_tracer_hdf5():
     
     for i in tr1: assert i.hash
     for i in tr2: assert i.hash
+    for i in tr2: assert i.cross_section
     
     del tr1
     del tr2
@@ -181,17 +182,20 @@ def test_tracer_hdf5():
     for i in range(10):
         
         s = SampleTracer()
+        s.OutputDirectory = "Project"
         s.EventCache = True 
         s.RestoreEvents
         
         k = sum([s for l in range(1000)])
         del s
 
-    shutil.rmtree("Tracer")
-    shutil.rmtree("tmp")
+    try:
+        shutil.rmtree("Project")
+        shutil.rmtree("tmp")
+    except: pass
  
 if __name__ == "__main__":
-    test_tracer_addEvent()
-    test_tracer_operators()
+    #test_tracer_addEvent()
+    #test_tracer_operators()
     test_tracer_hdf5()
     

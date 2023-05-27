@@ -18,7 +18,7 @@ class FeatureAnalysis(_FeatureAnalysis, Settings):
 
     def TestEvent(self, Event, EventGraph, EventIndex = None):
         if isinstance(Event, list):
-            for ev in Event: 
+            for ev in Event:
                 if self.TestEvent(ev, EventGraph, " " + str(ev.index)): return True
             return False
         

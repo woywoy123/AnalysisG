@@ -22,19 +22,17 @@ class EventGenerator(_EventGenerator, Settings, SampleTracer, _Interface):
         for i in range(len(inpt)):
             vals, ev = inpt[i]
             ev = pickle.loads(ev)
-            root, index = vals["ROOT"], vals["EventIndex"]
             res = ev.__compiler__(vals)
             for k in res: k.CompileEvent()
-            for k in res: k.index = index if k.index == -1 else k.index
-            for k in res: k.hash = root
-                
+            
             inpt[i] = {}    
             for k in list(res):
                 inpt[i][k.hash] = {}
                 inpt[i][k.hash]["pkl"] = pickle.dumps(k) 
                 inpt[i][k.hash]["index"] = k.index
                 inpt[i][k.hash]["Tree"] = k.Tree
-                inpt[i][k.hash]["ROOT"] = root
+                inpt[i][k.hash]["ROOT"] = vals["MetaData"].thisSet + "/" + vals["MetaData"].thisDAOD
+                inpt[i][k.hash]["Meta"] = vals["MetaData"]
                 del k
             del ev
             if lock != None:

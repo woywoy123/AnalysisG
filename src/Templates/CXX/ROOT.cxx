@@ -112,7 +112,7 @@ CyTracer::CyROOT* CyTracer::CySampleTracer::HashToCyROOT(std::string hash)
 
 std::string CyTracer::CySampleTracer::HashToROOT(std::string hash)
 {
-    if (this -> _ROOTHash.count(hash) == 0){ return "None"; }
+    if (this -> _ROOTHash.count(hash) == 0){ return ""; }
     CyROOT* r = this -> _ROOTHash[hash]; 
     return (r -> SourcePath) + (r -> Filename); 
 }
@@ -139,7 +139,7 @@ bool CyTracer::CySampleTracer::ContainsROOT(std::string root)
 
 bool CyTracer::CySampleTracer::ContainsHash(std::string hash)
 {
-    return this -> HashToROOT(hash) != "None"; 
+    return (this -> HashToROOT(hash)).size() > 0; 
 }
 
 std::map<std::string, bool> CyTracer::CySampleTracer::FastSearch(std::vector<std::string> Hashes)

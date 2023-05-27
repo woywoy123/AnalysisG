@@ -19,8 +19,7 @@ def test_event_generator():
     EvtGen.Threads = 1
     EvtGen.MakeEvents
     lst = {}
-    for i in EvtGen:
-        lst[i.hash] = i
+    for i in EvtGen: lst[i.hash] = i
     assert len(lst) == 40
     
     EvtGen_ = EventGenerator({root1: []})
@@ -30,8 +29,7 @@ def test_event_generator():
     EvtGen_.Threads = 2
     EvtGen_.MakeEvents
     lst_ = {}
-    for i in EvtGen_:
-        lst_[i.hash] = i
+    for i in EvtGen_: lst_[i.hash] = i
     assert len(lst_) == len(lst)
     for i in lst_:
         ev_, ev = lst_[i], lst[i]
@@ -321,6 +319,7 @@ def test_analysis_data_cache_diff_sample():
     assert len(AnaE) != 0
     assert len(AnaS) != 0
     assert len([i for i in AnaS if i.hash in AnaE]) == len(AnaE)
+
     AnaE.rm("Project")
 
 def test_analysis_data_event_cache_diff_sample():
@@ -365,11 +364,11 @@ if __name__ == "__main__":
     #test_Analysis()
     #test_analysis_event_nocache()
     #test_analysis_event_nocache_nolaunch()
-    test_analysis_event_cache()
-    test_analysis_event_cache_diff_sample()
+    #test_analysis_event_cache()
+    #test_analysis_event_cache_diff_sample()
     #test_analysis_data_nocache()
     #test_analysis_data_nocache_nolaunch()
-    test_analysis_data_cache()
+    #test_analysis_data_cache()
     test_analysis_data_cache_diff_sample()
-    test_analysis_data_event_cache_diff_sample()
+    #test_analysis_data_event_cache_diff_sample()
     pass

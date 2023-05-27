@@ -32,22 +32,20 @@ class RandomSamplers(_RandomSamplers, Settings):
         return {"train_hashes" : All[train_idx], "test_hashes" : All[test_idx]}
 
     def MakekFolds(self, sample, folds, batch_size = 1, shuffle = True, asHashes = False):
-        if isinstance(sample, dict):
-            smpl = [i for i in sample.values()]
-            try: sample = {i : sample[i] for i in sample if sample[i].TrainMode != "test"}
-            except AttributeError: pass
-            sample = list(sample) if asHashes else list(sample.values()) 
-        elif isinstance(sample, list): 
-            try: sample = [i.hash if asHashes else i for i in sample if i.TrainMode != "test"]
-            except AttributeError: pass
+        if isinstance(sample, dict): 
+            try: smpl = [i.hash for i in list(sample.values()) if i.TrainMode != "test"]
+            except AttributeError: return False
+        elif isinstance(sample, list): return self.MakeFolds({i.hash : i for i in sample}, folds, batch_size, shuffle)
         else: return False
         if len(sample) < folds: return False
-        sample = np.array(sample)
         split = KFold(n_splits = folds, shuffle=shuffle)
         output = {"k-" + str(f+1) : {"train" : None, "leave-out" : None} for f in range(folds)}
-        for f, (train_idx, test_idx) in enumerate(split.split(np.arange(len(sample)))):
-            output["k-" + str(f+1)]["train"] = sample[train_idx].tolist() 
-            output["k-" + str(f+1)]["leave-out"] = sample[test_idx].tolist() 
+
+        smpl = np.array(smpl)
+        for f, (train_idx, test_idx) in enumerate(split.split(np.arange(len(smpl)))):
+            train_idx, test_idx = smpl[train_idx].tolist(), smpl[test_idx].tolist()
+            output["k-" + str(f+1)]["train"] = train_idx if asHashes else [sample[i] for i in train_idx]
+            output["k-" + str(f+1)]["leave-out"] = test_idx if asHashes else [sample[i] for i in test_idx]
         return output
 
     def MakeDataLoader(self, sample, SortByNodes = False, batch_size = 1):

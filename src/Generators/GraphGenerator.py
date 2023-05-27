@@ -27,7 +27,6 @@ class GraphGenerator(_GraphGenerator, Settings, SampleTracer, _Interface):
             if lock == None: bar.update(1)
             else:
                 with lock: bar.update(1)
-                sleep(0.001) # This actually improves speed!!!
             inpt[i] = [hash_, gr_.purge]
         if lock == None: del bar
         return inpt

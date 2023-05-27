@@ -9,6 +9,7 @@ root1 = "./samples/sample1/smpl1.root"
 
 def test_random_sampling():
     Ana = Analysis()
+    Ana.Project = "Project_ML"
     Ana.InputSample(None, root1)
     Ana.Event = Event
     Ana.EventGraph = GraphChildren
@@ -16,7 +17,6 @@ def test_random_sampling():
     Ana.Launch
    
     smpls = Ana.todict
-    
     r = RandomSamplers()
     x = r.RandomizeEvents(smpls, 74)
     assert len(x) == len(smpls)
@@ -40,9 +40,11 @@ def test_random_sampling():
     x = r.MakeDataLoader(smpls)
     assert "all" in x
     assert len(x["all"]) == len(Ana)
+    Ana.rm("Project_ML")
 
 def test_feature_analysis():
     Ana = Analysis()
+    Ana.ProjectName = "TestFeature"
     Ana.InputSample(None, root1)
     Ana.Event = Event
     Ana.EventGraph = GraphChildren 
@@ -54,6 +56,7 @@ def test_feature_analysis():
     def fx(a): return a.NotAFeature
 
     Ana = Analysis()
+    Ana.ProjectName = "TestFeature"
     Ana.InputSample(None, root1)
     Ana.Event = Event
     Ana.EventGraph = GraphChildren 
@@ -63,37 +66,42 @@ def test_feature_analysis():
     Ana.AddGraphTruth(fx, "NotAFeature")
     assert Ana.Launch == False
 
+    Ana.rm("TestFeature")
+
+
 def test_optimizer():
     from models.CheatModel import CheatModel
     Ana = Analysis()
     Ana.InputSample(None, root1)
     Ana.Event = Event
-    Ana.ProjectName = "Project"
+    Ana.ProjectName = "TestOptimizer"
     Ana.EventGraph = GraphChildren 
     ApplyFeatures(Ana, "TruthChildren")
-    Ana.EventStop = 50
+    Ana.EventStop = 100
+    Ana.kFolds = 4
     Ana.DataCache = True
     Ana.PurgeCache = True
-    Ana.kFolds = 10
     Ana.Launch
 
     op = Optimizer(Ana)
+    op.ProjectName = "TestOptimizer"
     op.Model = CheatModel
     op.Device = "cuda"
     op.Optimizer = "ADAM"
+    op.OptimizerParams = {"lr" : 0.001}
     op.ContinueTraining = False
-    op.DebugMode = False
     op.EnableReconstruction = True
-    op.BatchSize = 2
+    op.Batch = 1
+    op.Epochs = 20
     op.Launch
    
-    op.rm("Project") 
+    op.rm("TestOptimizer") 
 
 def test_optimizer_analysis():
     from models.CheatModel import CheatModel
     Ana = Analysis()
     Ana.InputSample(None, root1)
-    Ana.ProjectName = "Project"
+    Ana.ProjectName = "TestOptimizerAnalysis"
     Ana.Event = Event
     Ana.EventGraph = GraphChildren
     ApplyFeatures(Ana, "TruthChildren")
@@ -113,6 +121,7 @@ def test_optimizer_analysis():
     Ana.EnableReconstruction = True 
     Ana.BatchSize = 1
     Ana.Launch
+    Ana.rm("TestOptimizerAnalysis")
 
 if __name__ == "__main__":
     #test_random_sampling()

@@ -113,6 +113,12 @@ cdef class EventTemplate:
             out.append(ev)
             ev._Objects = {}
             inpt = {k : inpt[k] for k in inpt if tr not in k}
+            if ev.index == -1: ev.index = inpt["EventIndex"]
+            if not inpt["MetaData"].init: root = inpt["ROOT"]
+            else: 
+                root, dataset = inpt["MetaData"].GetDAOD(ev.index)
+                root = dataset + "/" + root
+            ev.hash = root
         del inpt
         return out
     

@@ -20,95 +20,6 @@ class Optimizer(_Optimizer, _Interface, SampleTracer, RandomSamplers):
         if issubclass(type(inpt), SampleTracer): self += inpt
         if issubclass(type(inpt), Settings): self.ImportSettings(inpt)
 
-    @property
-    def __this_epoch__(self):
-        if self._len== 0: return 
-        if not self.DebugMode:
-            title = "(Training) " if self.Model.train else "(Validation) "
-            title += "Epoch " + str(self.Epoch).split("/")[0] + "/" + str(self.Epochs) + " k-Fold: " + str(self.Epoch).split("/")[1]
-            _, bar = self._MakeBar(self._len, title)          
-        for smpl in self._dl: 
-            self._op.zero
-            self._ep.start
-            pred, loss = self.Model(smpl)
-            self._ep.end
-            self._ep.Collect(smpl, pred, loss)
-            self.Model.backward
-            self._op.step
-            
-            if not self.DebugMode: bar.update(1)
-            if self.DebugMode: self._showloss
-            if not self.EnableReconstruction: continue
-            self.Model.TruthMode = True 
-            truth = self.Model.mass
-            self.Model.TruthMode = False 
-            pred = self.Model.mass
-            eff = self.Model.ParticleEfficiency 
-            dc = self._ep._train if self._ep.train else self._ep._val
-            for b in range(len(truth)):
-                for f in truth[b]: dc[f]["mass_t"] += truth[b][f]
-                for f in pred[b]: dc[f]["mass"] += pred[b][f]
-                for f in eff[b]: dc[f]["nrec"].append(eff[b][f]["nrec"])       
-                for f in eff[b]: dc[f]["ntru"].append(eff[b][f]["ntru"])
-
-    def __dump_plots__(self, dumper, end = False):
-        if len(dumper) == self.Threads and not end: return dumper
-        def func(inpt): 
-            for i in inpt: i.dump 
-
-        th = Process(target = func, args = (dumper, ))
-        th.start()
-        return [] 
-
-    @property 
-    def __train__(self):
-        dumper = []
-        for i in range(self.Epoch, self.Epochs):
-            for k in self._kModels:
-                self.Epoch = str(i+1) + "/" + str(k)
-                self.mkdir(self.OutputDirectory + "/" + self.RunName + "/" + str(self.Epoch))
-                
-                self.Model = self._kModels[k] 
-                self.Model.Epoch = str(i+1) + "/" + str(k)
-                self._op = self._kOp[k]
-                self._DL = iter(self._DataLoader[k])
-
-                self._ep = Epoch()
-                self._ep.o_model = self.Model.o_mapping 
-                self._ep.i_model = self.Model.i_mapping 
-                self._ep.RunName = self.RunName 
-                self._ep.OutputDirectory = self.OutputDirectory
-                self._ep.init
-                self._op.Epoch = str(i+1) + "/" + str(k)
-                self._ep.Epoch = str(i+1) + "/" + str(k)
-               
-                mode = next(self._DL) 
-                self._dl = self._DataLoader[k][mode]
-                self._len = self._nsamples[k][mode]
-                self.Model.train = True
-                self._ep.train = True
-                self._op.train = True
-                self.__this_epoch__
- 
-                try: 
-                    mode = next(self._DL)
-                    self._dl = self._dl = self._DataLoader[k][mode]
-                    self._len = self._nsamples[k][mode]
-
-                    self.Model.train = False
-                    self._ep.train = False
-                    self._op.train = False
-                    self.__this_epoch__
-                except StopIteration: self._len = 0 
-                
-                self._op.stepsc
-                self._op.dump
-                self.Model.dump
-                dumper.append(self._ep)
-                dumper = self.__dump_plots__(dumper)
-
-        dumper = self.__dump_plots__(dumper, True)        
- 
     @property 
     def GetCode(self):
         if "Model" in self._Code: return self._Code["Model"]
@@ -165,4 +76,101 @@ class Optimizer(_Optimizer, _Interface, SampleTracer, RandomSamplers):
                 self._DataLoader[k][s] = [Batch().from_data_list(t) for i in self._DataLoader[k][s].values() for t in i]
                 self._nsamples[k][s] = len(self._DataLoader[k][s])
         if not self._searchtraining: return
+        self._threads = []
         self.__train__
+        self.__dump_plots__()
+
+    @property 
+    def __train__(self):
+        for i in range(self.Epoch, self.Epochs):
+            for k in self._kModels:
+                self.Epoch = str(i+1) + "/" + str(k)
+                self.mkdir(self.OutputDirectory + "/" + self.RunName + "/" + str(self.Epoch))
+                self._op = self._kOp[k]
+                self._op.Epoch = self.Epoch
+                
+                self.Model = self._kModels[k] 
+                self.Model.Epoch = self.Epoch
+                self._DL = iter(self._DataLoader[k])
+
+                self._ep = Epoch()
+                self._ep.o_model = self.Model.o_mapping 
+                self._ep.i_model = self.Model.i_mapping 
+                self._ep.RunName = self.RunName 
+                self._ep.OutputDirectory = self.OutputDirectory
+                self._ep.init
+                self._ep.Epoch = self.Epoch
+                 
+                mode = next(self._DL) 
+                self._dl = self._DataLoader[k][mode]
+                self._len = self._nsamples[k][mode]
+                self.Model.train = True
+                self._ep.train = True
+                self._op.train = self.Model.train
+                
+                self.__this_epoch__
+
+                try: 
+                    mode = next(self._DL)
+                    self._dl = self._dl = self._DataLoader[k][mode]
+                    self._len = self._nsamples[k][mode]
+                    self.Model.train = False
+                    self._ep.train = False
+                    self._op.train = False
+                    self.__this_epoch__
+                except: self._len = 0 
+                
+                self._op.stepsc
+                self._op.dump
+                self.Model.dump
+                self.__dump_plots__(self._ep)
+
+    @property
+    def __this_epoch__(self):
+        if self._len == 0: return 
+        if not self.DebugMode:
+            title = "(Training) " if self.Model.train else "(Validation) "
+            title += "Epoch " + str(self.Epoch).split("/")[0] + "/"
+            title += str(self.Epochs) + " k-Fold: " + str(self.Epoch).split("/")[1]
+            _, bar = self._MakeBar(self._len, title)          
+        
+        for smpl in self._dl:
+            self._op.zero
+            self._ep.start
+            pred, loss = self.Model(smpl)
+            self._ep.end
+            self.Model.backward
+            self._op.step
+            self._ep.Collect(smpl, pred, loss)
+            if not self.DebugMode: bar.update(1)
+            if self.DebugMode: self._showloss
+            if not self.EnableReconstruction: continue
+            self.Model.TruthMode = True 
+            truth = self.Model.mass
+
+            self.Model.TruthMode = False 
+            pred = self.Model.mass
+
+            eff = self.Model.ParticleEfficiency 
+            dc = self._ep._train if self._ep.train else self._ep._val
+            for b in range(len(truth)):
+                for f in truth[b]: dc[f]["mass_t"] += truth[b][f]
+                for f in pred[b]:  dc[f]["mass"] += pred[b][f]
+                for f in eff[b]:   dc[f]["nrec"] += [eff[b][f]["nrec"]]
+                for f in eff[b]:   dc[f]["ntru"] += [eff[b][f]["ntru"]]
+
+    def __dump_plots__(self, inpt = None):
+        if inpt is None: 
+            while len(self._threads) > 0:
+                self._threads = [t for t in self._threads if t.is_alive()]        
+            return 
+       
+        while len(self._threads) > self.Threads:
+            self._threads = [t for t in self._threads if t.is_alive()]        
+        
+        def func(inpt): inpt.dump 
+        th = Process(target = func, args = (inpt, ))
+        th.start()
+        self._threads.append(th)
+
+

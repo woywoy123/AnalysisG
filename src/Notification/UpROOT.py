@@ -11,6 +11,11 @@ class _UpROOT(Notification):
     @property
     def FailedAMI(self):
         self.Failure("PyAMI not available... Skipping...")
+    
+    @property
+    def NoVOMSAuth(self):
+        self.Failure("No VOMS session was found. Make sure you authenticate. Skipping MetaData")
+
  
     def FoundMetaData(self, smpl, dsid, generator = False):
         msg = "METADATA " + self.filename(smpl) + " -> DSID: " + str(dsid) 

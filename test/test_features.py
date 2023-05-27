@@ -322,9 +322,9 @@ def test_jets():
 
 if __name__ == "__main__":
 
-    #Ana = Analysis()
+    Ana = Analysis()
     #Ana.rm("_Project")
-    #test_truth_top()
+    test_truth_top()
     #test_truth_children()    
     #test_truthjets()
     #test_jets()

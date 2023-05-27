@@ -136,7 +136,6 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         self.__build__
         tracer = self._CheckForTracer
         for i in self.SampleMap:
-
             self.Files = self.SampleMap[i]
             self.SampleName = i
             if tracer: self.RestoreEvents

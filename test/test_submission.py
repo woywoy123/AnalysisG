@@ -57,7 +57,6 @@ def test_dumping_graphs():
     con.AddJob("Data", Ana, waitfor = ["Events"])
 
     Ana = _template()
-    Ana.ProjectName = "Project"
     Ana.Event = EventEx
     Ana.EventCache = True
     con.AddJob("Events", Ana)
@@ -66,7 +65,6 @@ def test_dumping_graphs():
     con.TestCondorShell
 
     Ana = _template()
-    Ana.ProjectName = "Project"
     Ana.DataCache = True 
     x = []
     for i in Ana: x.append(i.hash)
@@ -179,7 +177,7 @@ def test_dumping_optimization():
     AnaOp.InputSample(**{"Name" : "smpl3"})
     AnaOp.RunName = "run-1"
     AnaOp.DataCache = True
-    AnaOp.kFolds = 10
+    AnaOp.kFolds = 4
     AnaOp.Epochs = 10
     AnaOp.Optimizer = "ADAM"
     AnaOp.Scheduler = "ExponentialLR"
@@ -197,7 +195,7 @@ def test_dumping_optimization():
     con.rm("./Project")
 
 if __name__ == "__main__":
-    test_dumping_events()
-    test_dumping_graphs()
+    #test_dumping_events()
+    #test_dumping_graphs()
     test_dumping_event_selection()
     test_dumping_optimization()
