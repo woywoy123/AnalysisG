@@ -8,7 +8,22 @@ import os
 
 Mode = "TruthChildren"
 GNN = "BasicGraphNeuralNetwork" 
-Names = {"m400" : "ttH_tttt_m400", "m1000" : "ttH_tttt_m1000"}
+Names = {
+          "other" : "other", 
+          "t"     : "t", 
+          "tt"    : "tt", 
+          "ttbar" : "ttbar", 
+          "ttH"   : "ttH", 
+          "SM4t"  : "tttt", 
+          "ttX"   : "ttX", 
+          "ttXll" : "ttXll", 
+          "ttXqq" : "ttXqq", 
+          "ttZ-1000" : "ttZ-1000", 
+          "V"     : "V", 
+          "Vll"   : "Vll", 
+          "Vqq"   : "Vqq"
+}
+
 kFolds = 10
 
 if   Mode == "TruthChildren": gr = GraphChildren
