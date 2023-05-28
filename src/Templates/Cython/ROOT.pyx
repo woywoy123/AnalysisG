@@ -29,7 +29,8 @@ cdef class Event:
     def __getattr__(self, attr):
         self.demand()
         try: return getattr(self._instance[0], attr)
-        except AttributeError: return getattr(self._instance[1], attr)
+        except AttributeError: pass
+        return getattr(self._instance[1], attr)
 
     def __getstate__(self):
         out = {}
@@ -40,8 +41,12 @@ cdef class Event:
         if isinstance(self, str): return False
         if isinstance(other, str): return False
         if self.hash != other.hash: return False
+        if self.Tree != other.Tree: return False
         try: return self.Event == other.Event
-        except AttributeError: return False
+        except AttributeError: pass
+        try: return self.Graph == other.Graph 
+        except AttributeError: pass
+        return False
 
     def demand(self) -> None:
         if self._demanded: return
@@ -52,6 +57,9 @@ cdef class Event:
  
     @property
     def index(self) -> int: return self.ptr.EventIndex 
+
+    @property
+    def Tree(self) -> str: return self.ptr.Tree.decode("UTF-8")
 
     @property
     def Graph(self) -> bool: return self.ptr.Graph

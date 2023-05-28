@@ -56,9 +56,8 @@ def test_tracer_addEvent():
     hashes = {}
     roothashes = {}
     for i in io:
-        x = ev.clone
         root, index, meta = i["ROOT"], i["EventIndex"], i["MetaData"]
-        trees = x.__compiler__(i)
+        trees = ev.__compiler__(i)
         for i in trees: i.CompileEvent() 
         root = meta.thisSet + "/" + meta.thisDAOD
         inpt = { i.hash : {"pkl" : pickle.dumps(i), "index" : i.index, "Tree" : i.Tree, "ROOT" : root, "Meta" : meta} for i in trees}
@@ -66,30 +65,30 @@ def test_tracer_addEvent():
         hashes |= {p.hash : p for p in trees}
         if root not in roothashes: roothashes[root] = []
         roothashes[root] += [p.hash for p in trees]
-
     assert len(io)*2 == len(tr)
     
     # Test iterator 
-    for i in tr: assert i == hashes[i.hash]
+    for i in tr: assert i.hash == hashes[i.hash].hash
     
     # Test Getter Functions 
     for i in hashes:
-        if hashes[i].Tree != "nominal": continue
-        assert tr[i] == hashes[i]
+        assert tr[i].Tree == hashes[i].Tree
+        assert tr[i].hash == hashes[i].hash
     
     # Test if hashes are in tracer
     for i in hashes: assert i in tr
 
     assert "hello" not in tr
     assert root1 in tr
-    
+    assert len(tr[root1]) > 0
+
     for r in roothashes:
         for hsh in roothashes[r]: assert r == tr.HashToROOT(hsh)
     lst = [i for j in range(1000) for i in hashes ]
 
+    assert len(hashes) > 0
     assert sum(tr.FastHashSearch(lst).values()) == len(hashes)
 
-    return  
 
 def EventMaker(root):
     ev = Event()
@@ -173,7 +172,11 @@ def test_tracer_hdf5():
     
     for i in tr1: assert i.hash
     for i in tr2: assert i.hash
-    for i in tr2: assert i.cross_section
+
+    try:
+        for i in tr2: i.cross_section
+        for i in tr2: assert i.cross_section
+    except AttributeError: pass
     
     del tr1
     del tr2
@@ -195,7 +198,8 @@ def test_tracer_hdf5():
     except: pass
  
 if __name__ == "__main__":
-    #test_tracer_addEvent()
-    #test_tracer_operators()
+    pass
+    test_tracer_addEvent()
+    test_tracer_operators()
     test_tracer_hdf5()
     

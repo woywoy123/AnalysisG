@@ -20,15 +20,9 @@ cdef class EventTemplate:
         self._Leaves = []
         self._Objects = {}
         self._leaves = {"event" : {}}
-    
-    def __init__(self):
-        pass
-
-    def __dealloc__(self):
-        del self.ptr
-
-    def __hash__(self) -> int:
-        return int(self.hash[:8], 0)
+    def __init__(self): pass
+    def __dealloc__(self): del self.ptr
+    def __hash__(self) -> int: return int(self.hash[:8], 0)
 
     def __eq__(self, other) -> bool:
         if other == None: return False
@@ -122,8 +116,7 @@ cdef class EventTemplate:
         del inpt
         return out
     
-    def CompileEvent(self):
-        pass
+    def CompileEvent(self): pass
 
     @property
     def clone(self):
@@ -185,22 +178,18 @@ cdef class EventTemplate:
     def hash(self) -> str: return self.ptr.Hash().decode("UTF-8")
     
     @hash.setter
-    def hash(self, str val):
-        self.ptr.Hash(val.encode("UTF-8"))
+    def hash(self, str val): self.ptr.Hash(val.encode("UTF-8"))
 
     @property
     def Deprecated(self) -> bool: return self.ptr.deprecated
 
     @Deprecated.setter
-    def Deprecated(self, bool val):
-        self.ptr.deprecated = val
+    def Deprecated(self, bool val): self.ptr.deprecated = val
 
     @property
-    def _init(self) -> bool:
-        return True
+    def _init(self) -> bool: return True
 
     @Objects.setter
-    def Objects(self, val: Union[dict]):
-        self._Objects = val
+    def Objects(self, val: Union[dict]): self._Objects = val
     
 
