@@ -251,6 +251,9 @@ class CombineTH1F(Functions):
                     binticks = True)
 
         self.PLT.legend()
+        if self.xMin == self.xMax: 
+            self.xStep = 0.1
+            self.xMax = self.xBins / self.xStep
         if self.Logarithmic: self.PLT.yscale("log")
         if self.xBinCentering: self.Axis.set_xticks(self.xData)
         if self.xStep != None: self.Axis.set_xticks([self.xMin + self.xStep*i for i in range(self.xBins)])

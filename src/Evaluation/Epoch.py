@@ -24,8 +24,11 @@ class Metrics:
         truth = torch.tensor(self.roc["truth"])
         pscores = torch.tensor(self.roc["pscore"])
         out = []
-        for i in range(self.roc["dim"]-1):
-            fpr, tpr, _ = roc_curve(np.array(truth.view(-1)), np.array(pscores[:, i+1].view(-1)))
+        for i in range(1):
+            if len(truth.view(-1).unique()) < 2: continue
+            try:
+                fpr, tpr, _ = roc_curve(np.array(truth.view(-1)), np.array(pscores[:, i+1].view(-1)))
+            except: continue
             fpr, tpr = fpr.tolist(), tpr.tolist()
             a = float(auc(fpr, tpr))
             t = TLine()
@@ -109,6 +112,7 @@ class Metrics:
         th.xData = self.nodes
         th.Title = self.mode
         th.xBins = max(self.nodes)+1
+        th.xStep = 2
         th.xMin = 0
         th.xMax = max(self.nodes)
         th.LaTeX = False
@@ -158,7 +162,7 @@ class Epoch:
 
     def Collect(self, truth, pred, loss):
         lst = self._train if self.train else self._val 
-        nodes = truth.num_nodes.tolist()
+        nodes = truth.batch.unique(return_counts = True)[1].tolist()
         if isinstance(nodes, list): lst["nodes"] += nodes
         else: lst["nodes"] += [nodes]
         for o, t in zip(self.o_model, self.o_model.values()):
@@ -205,6 +209,7 @@ class Epoch:
         th.OutputDirectory = self.OutputDirectory + "/" + self.RunName + "/" + self.Epoch + "/" + d
         th.Verbose = 0
         th.xMin = 0
+        if len(th.Histograms) == 0: return 
         th.SaveFigure()
 
     @property
@@ -234,21 +239,20 @@ class Epoch:
 
             self.plots(i[2:] + "/Loss", tl, vl)
             self.plots(i[2:] + "/Accuracy", ta, va)
-            tc = CombineTLine()
             
-            try: tc.Lines += [t.ROC[0]]
-            except: pass
-            try: tc.Lines += [v.ROC[0]]
-            except: pass
-
+            tc = CombineTLine()
             tc.LaTeX = False
-            tc.title = i[2:]
+            tc.title = "ROC-Curve " + i[2:]
             tc.OutputDirectory = self.OutputDirectory + "/" + self.RunName + "/" + self.Epoch
             tc.Filename = i[2:] + "/ROC" 
             tc.Verbose = 0
-            tc.SaveFigure()
+            if t is not None: tc.Lines += t.ROC
+            if v is not None: tc.Lines += v.ROC
+            if len(tc.Lines) != 0: tc.SaveFigure()
            
-            if v != None and v.MassTHist.xData != None: t.MassTHist.xData += v.MassTHist.xData
-            self.plots(i[2:] + "/Mass", t.MassTHist, None if v == None else v.MassHist, t.MassHist)
+            if t is None: continue 
+            if v is not None: t.MassTHist.xData += v.MassTHist.xData
+            
+            self.plots(i[2:] + "/Mass", t.MassTHist, None if v is None else v.MassHist, t.MassHist)
 
         PickleObject(self, self.OutputDirectory + "/" + self.RunName + "/" + str(self.Epoch) + "/Stats")

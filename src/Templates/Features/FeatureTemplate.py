@@ -76,7 +76,8 @@ def TruthChildren():
     GF = {
             "met" : TC.Graph.met, 
             "phi" : TC.Graph.phi,
-            "n_lep" : TC.Graph.n_lep,  
+            "n_lep" : TC.Graph.n_lep, 
+            "n_jets" : TC.Graph.n_jets, 
     }
 
     Features = {}

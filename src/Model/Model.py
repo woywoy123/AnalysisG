@@ -121,7 +121,7 @@ class ModelWrapper(_ModelWrapper):
         if shape[1] > 1: pred = pred.max(1)[1]
         pred = pred.view(-1) 
         if shape[0] == sample.edge_index.size()[1]: return self.MassEdgeFeature(sample, pred).tolist()
-        elif shape[0] == sample.num_nodes: return self.MassEdgeFeature(sample, pred).tolist()
+        elif shape[0] == sample.num_nodes: return self.MassNodeFeature(sample, pred).tolist()
         else: return []
 
     def _debatch(self, inpt, sample):

@@ -38,6 +38,7 @@ class Optimizer(_Optimizer, _Interface, SampleTracer, RandomSamplers):
         self.Model.RunName = self.RunName
         
         for smpl in self: break
+        smpl = Batch().from_data_list([smpl.clone().to(self.Device)])
         if not self.Model.SampleCompatibility(smpl): return self._notcompatible
         
         self._op = OptimizerWrapper()

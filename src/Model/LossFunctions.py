@@ -1,5 +1,5 @@
 import torch
-from torchmetrics.functional import accuracy
+from torchmetrics.classification import MulticlassAccuracy
 
 class LossFunctions:
     def __init__(self, _loss, _class = False):
@@ -20,12 +20,12 @@ class LossFunctions:
 
     @property
     def accuracy(self): return self._acc(self.truth, self.pred)
-
     def ToDigit(self, inpt): return torch.round(inpt) 
 
     def CrossEntropyLoss(self):
         def accuracyfunction(truth, pred):
-            return 100*accuracy(truth.view(-1), pred.max(1)[1].view(-1))
+            acc = MulticlassAccuracy(num_classes = pred.size()[1]).to(truth.device) 
+            return 100*acc(pred.max(1)[1].view(-1), truth.view(-1))
         def funct(truth, pred): return truth.view(-1).to(dtype = torch.long), pred 
         self._loss = torch.nn.CrossEntropyLoss()
         self._func = funct
@@ -63,7 +63,6 @@ class LossFunctions:
  
     def __call__(self, pred, truth):
         self.pred, self.truth = pred, truth
-        
         if self._class == False: pass
         else: self.pred = self._class(self.pred)
         loss = self.loss
