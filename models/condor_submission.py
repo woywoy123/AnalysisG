@@ -6,7 +6,7 @@ from AnalysisG.Events import Event
 from AnalysisG import Analysis 
 import os
 
-Mode = "TruthChildren"
+Mode = "TruthJets"
 GNN = "BasicGraphNeuralNetwork" 
 kFolds = 10
 Quant = 24
@@ -28,7 +28,7 @@ Names = {
 
 
 if   Mode == "TruthChildren": gr = GraphChildren
-elif Mode == "TruthJets": gr = GraphTruthJets
+elif Mode == "TruthJets": gr = GraphTruthJet
 elif Mode == "Jets": gr = GraphDetector
 else: print("failure"); exit()
 
@@ -90,7 +90,7 @@ Sub.ProjectName = "Project_" + Mode
 Sub.Verbose = 3
 
 all_jbs = []
-for name in []: #Names:
+for name in Names:
     evnt = EventGen(name, Names[name])
     data = DataGen(name, Names[name])
     

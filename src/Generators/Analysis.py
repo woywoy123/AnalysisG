@@ -129,6 +129,7 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
 
     @property
     def __LoadSample__(self):
+        self.__build__
         tracer = self._CheckForTracer
         for i in self.SampleMap:
             self.Files = self.SampleMap[i]
@@ -171,7 +172,6 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         self.__RandomSampler__
         self.__Optimizer__
         self.WhiteSpace()
-        self.rm("./tmp")
         if self.EmptySampleList: return self.__LoadSample__ 
         return True
     

@@ -91,11 +91,12 @@ class AMI:
         import pyAMI.client
         import pyAMI.atlas.api as atlas
 
-        def sig(signum, frame): raise Exception("PyAmi timeout")
-        signal.signal(signal.SIGALRM, sig)
+        def _sig(signum, frame): return ""
+
+        signal.signal(signal.SIGALRM, _sig)
         signal.alarm(10)
         try: res = atlas.list_datasets(self._client, dataset_number = [pattern], type = "DAOD_TOPQ1")
-        except Exception: return False
+        except: return False
  
         if len(res) == 0: return {}
         try: 

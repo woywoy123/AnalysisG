@@ -20,7 +20,6 @@ try:
     import PyC.NuSol.CUDA as NuC
 except: is_cuda = False
 
-
 import math
 from time import time
 from check import *
@@ -31,9 +30,11 @@ Files = {
 
 def _MakeSample():
     Ana = Analysis()
+    Ana.ProjectName = "NeutrinoProject"
     Ana.InputSample("", Files) 
     Ana.Event = Event 
     Ana.EventCache = True 
+    Ana.PurgeCache = True
     Ana.Launch
     return Ana
 
@@ -90,7 +91,8 @@ def test_transformation():
 
             assert AssertEquivalenceList(lc, C.PxPyPz(c_pt, c_eta, c_phi)[0])
             assert AssertEquivalenceList(lp, C.PtEtaPhi(c_px, c_py, c_pz)[0])
-    
+   
+    Ana.rm("NeutrinoProject") 
     if is_cuda == False: return 
     # ===== Test the performance difference ===== #
     CPU = torch.tensor(_polar, device = "cpu")
@@ -122,6 +124,7 @@ def test_transformation():
     AssertEquivalenceRecursive(cpu_r, cuda_r)
     print("--- Testing Performance Between C++ and CUDA of PtEtaPhi ---")
     print("Speed Factor (> 1 is better): ", diff1 / diff2)
+    Ana.rm("NeutrinoProject")
 
 def test_physics():
     Ana = _MakeSample()
@@ -169,7 +172,8 @@ def test_physics():
             pt1.append([top2.pt]), eta1.append([top2.eta])
             phi1.append([top2.phi]), e1.append([top2.e])
             deltaR.append([top.DeltaR(top2)])
-    
+
+    Ana.rm("NeutrinoProject")
     if is_cuda == False: return   
 
     print(" ======= Cartesian stuff ======= ")
@@ -364,14 +368,12 @@ def test_operators():
     print("Speed Factor (> 1 is better): ", (sum(diff[0])) / sum(diff[1]))
 
 def test_single_nu():
-    from AnalysisG import Analysis
 
     Ana = Analysis()
     Ana.InputSample("SingleLepton", "./samples/single_lepton")
     Ana.Event = Event
-    #Ana.EventStop = 100
     Ana.EventCache = True 
-    #Ana.PurgeCache = True
+    Ana.PurgeCache = True
     Ana.Verbose = 2
     Ana.Launch
     
@@ -391,8 +393,8 @@ def test_single_nu():
             out["metx"].append(F.Px(i.met, i.met_phi)) 
             out["mety"].append(F.Py(i.met, i.met_phi))
             it += 1
-
-
+    
+    Ana.rm("UNTITLED")
     for i in range(it):
         failed = False
         b, nu, lep, t, metx, mety = [out[key][i] for key in ["b", "nu", "lep", "t", "metx", "mety"]]
@@ -417,10 +419,8 @@ def test_single_nu():
             continue
         assert AssertEquivalenceList(solT.tolist()[0], failed)
 
-
 def test_double_nu():
     if is_cuda == False: return 
-    from AnalysisG import Analysis
 
     Ana = Analysis()
     Ana.InputSample("Dilepton", "./samples/dilepton")
@@ -447,6 +447,7 @@ def test_double_nu():
             out["mety"].append(F.Py(i.met, i.met_phi))
             it += 1
     
+    Ana.rm("UNTITLED")
     errorMargin = 2 # Allow for a 2% delta between the original and new implementation 
     for i in range(it):
         failed = False
@@ -492,7 +493,6 @@ def test_double_nu():
 
 def test_speed():
     if is_cuda == False: return 
-    from AnalysisG import Analysis
 
     Ana = Analysis()
     Ana.InputSample("DiLepton", "./samples/dilepton")
@@ -517,6 +517,7 @@ def test_speed():
             vl["ev"].append(ev)
             it+=1
     
+    Ana.rm("UNTITLED")
     T = SampleTensor(vl["b"], vl["lep"], vl["ev"], vl["t"], "cuda", [[100, 0], [0, 100]])
     R = SampleVector(vl["b"], vl["lep"], vl["ev"], vl["t"])
     print("======================= Testing Speed of Single Neutrino Reconstruction ===================")
@@ -634,6 +635,7 @@ def test_version_consistency():
         vl["ev"].append(ev)
         it+=1
 
+    Ana.rm("UNTITLED")
     b1c = MakeTensor_(vl["b"], 0)
     b2c = MakeTensor_(vl["b"], 1)
     mu1c = MakeTensor_(vl["lep"], 0)
@@ -862,10 +864,10 @@ def test_version_consistency():
  
 if __name__ == "__main__":
     #test_transformation()
-    test_physics()
+    #test_physics()
     #test_operators()
     #test_single_nu()
-    #test_double_nu()
+    test_double_nu()
     #test_speed()
     #test_version_consistency()
     pass
