@@ -154,19 +154,23 @@ class JobSpecification(AnalysisG.Tools.General.Tools, Settings):
         
         self.Job.OutputDirectory = "/".join(self.Job.OutputDirectory.split("/")[:-1])
         conf = self.Job.DumpSettings
+        
         Ana = AnalysisScript()
         Ana.Name = "main"
         Ana.OutDir = pth
         Ana.Code |= self.Job.Launch
         Ana.Config |= conf
         Ana.Compile()
-        
+
+        self.ImportSettings(self.Job)       
+ 
         Con = CondorScript()
         Con.ImportSettings(self)
         Con.ExecPath = pth
+        Con.Device = self.Device
         Con.Threads = self.Job.Threads
-
         Con.Compile()
+
         self.__Build(Con._config, self.Name + ".submit", pth)
         Con.Shell()
         self.__Build(Con._config, "main.sh", pth, True)
@@ -181,10 +185,10 @@ class Condor(AnalysisG.Tools.General.Tools, _Condor, Settings):
         self._wait = {}
         self._Complete = {}
         self._sequence = {}
-        self._Device = {}
         self._dumped = False
     
     def AddJob(self, name, instance, memory = None, time = None, waitfor = None):
+
         if name not in self._Jobs:
             self._Jobs[name] = JobSpecification()
             self._Jobs[name].Job = instance
@@ -192,7 +196,6 @@ class Condor(AnalysisG.Tools.General.Tools, _Condor, Settings):
             self._Jobs[name].Name = name
             if self.EventCache is not None: self._Jobs[name].Job.EventCache = self.EventCache
             if self.DataCache is not None: self._Jobs[name].Job.DataCache = self.DataCache
-
         self.AddListToDict(self._wait, name)
         if waitfor == None: pass
         elif isinstance(waitfor, str): self._wait[name].append(waitfor)

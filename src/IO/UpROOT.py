@@ -1,6 +1,7 @@
 from AnalysisG.Generators.Interfaces import _Interface
 from AnalysisG.Notification import _UpROOT
 from AnalysisG.Settings import Settings
+import signal
 import uproot 
 import json
 
@@ -89,9 +90,13 @@ class AMI:
         if self._client is None: return {}
         import pyAMI.client
         import pyAMI.atlas.api as atlas
+
+        def sig(signum, frame): raise Exception("PyAmi timeout")
+        signal.signal(signal.SIGALRM, sig)
+        signal.alarm(10)
         try: res = atlas.list_datasets(self._client, dataset_number = [pattern], type = "DAOD_TOPQ1")
-        except: return False
-        
+        except Exception: return False
+ 
         if len(res) == 0: return {}
         try: 
             if amitag: 

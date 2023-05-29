@@ -29,6 +29,9 @@ class RandomSamplers(_RandomSamplers, Settings):
         
         for i in All[train_idx]: Sample[i].TrainMode = "train" 
         for i in All[test_idx]: Sample[i].TrainMode = "test" 
+    
+        self.RandomizingSize(len(train_idx), len(test_idx))
+
         return {"train_hashes" : All[train_idx], "test_hashes" : All[test_idx]}
 
     def MakekFolds(self, sample, folds, batch_size = 1, shuffle = True, asHashes = False):

@@ -32,12 +32,15 @@ class _Analysis(Notification):
         f = self.ls(self.OutputDirectory + "/Tracer/")
         if len(f) == 0 and (self.EventCache or self.DataCache): return not self.Warning("Tracer directory not found. Generating")
         elif len(f) == 0: return not self.Warning("No Tracer directory found... Generating just samples without cache!")
+        f = [t + "/" + i for t in f for i in self.ls(self.OutputDirectory + "/Tracer/" + t)]
         tracers = {i : [t for t in h5py.File(self.OutputDirectory + "/Tracer/" + i)["MetaData"].attrs] for i in f if i.endswith(".hdf5")}
-        f = ["Tracers Found:"] if len(tracers) > 0 else ["No Tracers Found"]
+        f = ["!Tracers Found:"] if len(tracers) > 0 else ["No Tracers Found"]
         for tr in tracers: f += [" (" + tr + ") -> " + i for i in tracers[tr]]
         msg = "\n".join(f)
-        if len(tracers) > 0: self.Success(msg)         
+        msg += ""
+        if len(tracers) > 0: self.Success("!" + msg)      
         else: self.Warning(msg)
+        self.WhiteSpace()
         return len(tracers) > 0
 
     @property

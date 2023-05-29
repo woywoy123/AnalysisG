@@ -8,23 +8,24 @@ import os
 
 Mode = "TruthChildren"
 GNN = "BasicGraphNeuralNetwork" 
+kFolds = 10
+Quant = 24
 Names = {
-          "other" : "other", 
-          "t"     : "t", 
-          "tt"    : "tt", 
-          "ttbar" : "ttbar", 
-          "ttH"   : "ttH", 
-          "SM4t"  : "tttt", 
-          "ttX"   : "ttX", 
-          "ttXll" : "ttXll", 
-          "ttXqq" : "ttXqq", 
+          #"other" : "other", 
+          #"t"     : "t", 
+          #"tt"    : "tt", 
+          #"ttbar" : "ttbar", 
+          #"ttH"   : "ttH", 
+          #"SM4t"  : "tttt", 
+          #"ttX"   : "ttX", 
+          #"ttXll" : "ttXll", 
+          #"ttXqq" : "ttXqq", 
           "ttZ-1000" : "ttZ-1000", 
           "V"     : "V", 
-          "Vll"   : "Vll", 
-          "Vqq"   : "Vqq"
+          #"Vll"   : "Vll", 
+          #"Vqq"   : "Vqq"
 }
 
-kFolds = 10
 
 if   Mode == "TruthChildren": gr = GraphChildren
 elif Mode == "TruthJets": gr = GraphTruthJets
@@ -36,53 +37,77 @@ else: print("failure"); exit()
 
 
 def EventGen(name = None, daod = ""):
+    pth = os.environ["Samples"] + daod
     Ana = Analysis()
-    Ana.Event = Event 
-    Ana.chnk = 100
-    Ana.Threads = 12
-    Ana.InputSample(name, os.environ["Samples"] + daod)
-    return Ana
+    smpl = Ana.ListFilesInDir(pth, ".root")
+    Ana = Ana.Quantize(smpl[pth], Quant)
+    out = []
+    for i in Ana:
+        ana = Analysis()
+        ana.Event = Event 
+        ana.EventCache = True
+        ana.chnk = 1000
+        ana.Threads = 12
+        ana.InputSample(name, {pth : i})
+        out.append(ana)
+    return out
 
-def DataGen(name = None):
+def DataGen(name = None, daod = ""):
+    pth = os.environ["Samples"] + daod
     Ana = Analysis()
-    Ana.InputSample(name)
-    Ana.EventGraph = gr
-    ApplyFeatures(Ana, Mode) 
-    Ana.TrainingSize = 90
-    return Ana
+    smpl = Ana.ListFilesInDir(pth, ".root")
+    Ana = Ana.Quantize(smpl[pth], Quant)
+    out = []
+    for i in Ana:
+        ana = Analysis()
+        ana.EventGraph = gr
+        ana.DataCache = True
+        ana.chnk = 1000
+        ana.Threads = 12
+        ana.InputSample(name, {pth : i})
+        ApplyFeatures(ana, Mode) 
+        out.append(ana)
+    return out
    
 def Optim(op, op_para, sc, sc_para, batch, k, kF):
     Ana = Analysis()
-    Ana.Device = "cuda"
     Ana.kFold = k
     Ana.kFolds = kF
-    Ana.ContinueTraining = True
     Ana.Optimizer = op
     Ana.Scheduler = sc
     Ana.OptimizerParams = op_para
     Ana.SchedulerParams = sc_para 
     Ana.EnableReconstruction = True 
+    Ana.ContinueTraining = True
+    Ana.DataCache = True
     Ana.BatchSize = batch 
     Ana.Model = model
+    Ana.Device = "cuda"
     return Ana 
  
 Sub = Condor()
-Sub.EventCache = True 
-Sub.DataCache = True
 Sub.ProjectName = "Project_" + Mode
 Sub.Verbose = 3
 
 all_jbs = []
-for name in Names:
+for name in []: #Names:
     evnt = EventGen(name, Names[name])
-    jb_ev_ = "evnt_" + name
-    Sub.AddJob(jb_ev_, evnt, "8GB", "4h")
-     
-    data = DataGen(name)
-    jb_da_ = "data_" + name
-    Sub.AddJob(jb_da_, data, "8GB", "4h", waitfor = [jb_ev_])
+    data = DataGen(name, Names[name])
+    
+    jb_ev_ = "evnt_" + name + "-"
+    jb_da_ = "data_" + name + "-"
 
-    all_jbs.append(jb_da_)
+    for k in range(len(evnt)):
+        break
+        Sub.AddJob(jb_ev_ + str(k), evnt[k], "8GB", "4h")
+        Sub.AddJob(jb_da_ + str(k), data[k], "8GB", "4h", waitfor = [jb_ev_ + str(k)])
+        all_jbs.append(jb_da_ + str(k))
+
+mrg = Analysis()
+mrg.TrainingSize = 90
+mrg.kFolds = 10
+mrg.DataCache = True 
+Sub.AddJob("merger", mrg, "8GB", "8h", waitfor = all_jbs)
 
 op_it, sc_it, b_it = iter(Opt), iter(sched), iter(btch)
 
@@ -97,7 +122,8 @@ for _ in range(len(Opt)):
     for k in range(kFolds):
         op_ana = Optim(op, op_par, sc, sc_par, b, k+1, kFolds)  
         op_ana.RunName = name
-        Sub.AddJob(name + "kF-" + str(k+1), op_ana, "8GB", "8h", waitfor = all_jbs)
+        Sub.AddJob(name + "kF-" + str(k+1), op_ana, "8GB", "8h", waitfor = "merger")
+
 Sub.PythonVenv = "$PythonGNN"
 Sub.DumpCondorJobs
 

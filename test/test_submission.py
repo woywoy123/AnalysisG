@@ -196,6 +196,6 @@ def test_dumping_optimization():
 
 if __name__ == "__main__":
     #test_dumping_events()
-    #test_dumping_graphs()
-    test_dumping_event_selection()
-    test_dumping_optimization()
+    test_dumping_graphs()
+    #test_dumping_event_selection()
+    #test_dumping_optimization()

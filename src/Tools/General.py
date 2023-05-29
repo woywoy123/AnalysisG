@@ -33,6 +33,10 @@ class Tools(IO):
             return False
         return True
 
+    def Quantize(self, inpt, size):
+        for i in range(0, len(inpt), size):
+            yield inpt[i : i + size] 
+
     def MergeNestedList(self, inpt):
         if isinstance(inpt, list) == False: return [inpt]
         out = []

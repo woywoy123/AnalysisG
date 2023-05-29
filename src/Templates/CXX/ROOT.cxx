@@ -78,7 +78,8 @@ void CyTracer::CySampleTracer::AddEvent(CyTracer::CyEvent* event)
         
         // Extract the source directory
         for (std::string v : val){ r -> SourcePath += v + "/"; }
-        r -> CachePath = Tools::Hashing(r -> SourcePath) + "-" + Tools::Split(r -> Filename, ".root")[0];  
+        r -> CachePath = Tools::Hashing(r -> SourcePath) + "/" + Tools::Split(r -> Filename, ".root")[0]; 
+ 
         // Add the ROOT filename to the collection
         this -> _ROOTMap[event -> ROOT] = r; 
 

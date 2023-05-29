@@ -101,16 +101,24 @@ class SelectionTemplate(Tools):
 
         if "Rejected::Selection" not in self.CutFlow: self.CutFlow["Rejected::Selection"] = 0
         if "Passed::Selection" not in self.CutFlow: self.CutFlow["Passed::Selection"] = 0    
-        
-        if self.Selection(event) == False:
+        try: res = self.Selection(event)     
+        except: res = False
+ 
+        if res == False:
             self.CutFlow["Rejected::Selection"] += 1
             return False
         self.CutFlow["Passed::Selection"] += 1
         
-        self._t1
-        o = self.Strategy(event)
-        self._t2
-        
+        try: 
+            self._t1
+            o = self.Strategy(event)
+            self._t2
+        except: 
+            msg = "Error::Strategy"
+            if msg not in self.CutFlow: self.CutFlow[msg] = 0
+            self.CutFlow[msg] += 1
+            return False    
+ 
         if isinstance(o, str) and "->" in o:
             if o not in self.CutFlow: self.CutFlow[o] = 0
             self.CutFlow[o] += 1

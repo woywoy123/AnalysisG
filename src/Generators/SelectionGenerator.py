@@ -25,7 +25,8 @@ class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface
             name, sel, event, hash_, ROOT, pth = inpt[i] 
             sel.hash = hash_ 
             sel.ROOTName = ROOT
-            sel._EventPreprocessing(event)
+            try: sel._EventPreprocessing(event)
+            except: continue
 
             if name not in output: output[name] = sel
             else: output[name]+=sel
@@ -63,6 +64,7 @@ class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface
             for ev, i in zip(self, range(len(self))):
                 if self._StartStop(i) == False: continue
                 if self._StartStop(i) == None: break
+                if ev.Graph: continue
                 sel = self._Code["Selections"][name].clone
                 inpt.append([name, sel, ev, ev.hash, ev.ROOT, self.pth])
 

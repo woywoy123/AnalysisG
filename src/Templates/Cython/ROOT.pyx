@@ -95,6 +95,7 @@ cdef class SampleTracer:
     cdef bool _DataCache
     cdef str _SampleName
     cdef dict _Codes
+    cdef dict _Files
 
     def __cinit__(self):
         self.ptr = new CySampleTracer()
@@ -103,6 +104,7 @@ cdef class SampleTracer:
         self.OutDir = os.getcwd()
         self._SampleName = ""
         self._Codes = {}
+        self._Files = {}
 
     def __dealloc__(self): del self.ptr
     def __init__(self): pass
@@ -125,7 +127,7 @@ cdef class SampleTracer:
         if r.size() > 0: 
             for _i in r:
                 daod = self._HashMeta[_i].decode("UTF-8")
-                if len(daod) != 18: 
+                if len(daod) == 0: 
                     self.RestoreMeta
                     daod = self._HashMeta[_i].decode("UTF-8")
                 ev = Event()
@@ -156,7 +158,10 @@ cdef class SampleTracer:
 
     def __len__(self) -> int:
         if not self.EventCache and not self.DataCache: self._itv = self.ptr.HashList()
-        else: self._itv = self.ptr.GetCacheType(self.EventCache, self.DataCache)
+        elif self.EventCache: self._itv = self.ptr.GetCacheType(self.EventCache, self.DataCache)
+        elif self.DataCache: self._itv = self.ptr.GetCacheType(self.EventCache, self.DataCache)
+        else: self._itv = self.ptr.HashList()
+
         self._ite = self._itv.size()
         self.ptr.length = self._ite
         self.RestoreMeta
@@ -238,6 +243,12 @@ cdef class SampleTracer:
     @property
     def todict(self) -> dict: return {i.hash : i for i in self}
 
+    @property 
+    def Files(self) -> dict: return self._Files
+    
+    @Files.setter
+    def Files(self, dict val): self._Files = val    
+
     def FastHashSearch(self, list hashes) -> dict:
         cdef vector[string] v
         cdef int i
@@ -251,7 +262,7 @@ cdef class SampleTracer:
         cdef str i, p
         cdef dict x
         cdef list hashes = list(Events)
-        if len(self._Codes) == 0: 
+        if len(self._Codes) == 0 and len(hashes) != 0: 
             p = hashes[0]
             cl = Code(pickle.loads(Events[p]["pkl"]))
             x = cl.clone.Objects
@@ -278,8 +289,9 @@ cdef class SampleTracer:
         cdef CyEvent* event;
         for i in range(len(Events)):
             hash, evnt = Events[i]
-            self.HashMap[hash] = pickle.dumps(evnt)
-            event = self.ptr.HashToEvent(<string>hash.encode("UTF-8"))
+            if evnt is None: continue
+            self.HashMap[hash] = evnt
+            event = self.ptr.HashToEvent(hash.encode("UTF-8"))
             event.Graph = True 
             event.Event = False
 
@@ -290,15 +302,16 @@ cdef class SampleTracer:
         cdef CyROOT* r
         cdef CyEvent* e
         cdef str _meta
+        cdef str out
       
-        try: os.mkdir(self.OutDir)
-        except FileExistsError: pass
-        try: os.mkdir(self.OutDir + "/Tracer")
-        except FileExistsError: pass
- 
         for root in self.ptr._ROOTMap:
             r = root.second
-            f = h5py.File(self.OutDir + "/Tracer/" + r.CachePath.decode("UTF-8") + ".hdf5", "a")
+            
+            out = self.OutDir + "/Tracer/" + r.CachePath.decode("UTF-8")
+            try: os.makedirs("/".join(out.split("/")[:-1]))
+            except FileExistsError: pass
+
+            f = h5py.File(out + ".hdf5", "a")
             try: ref_s = f.create_dataset("SampleNames", (1), dtype = h5py.ref_dtype)
             except ValueError: ref_s = f["SampleNames"]
             if self._SampleName != "": ref_s.attrs[self._SampleName] = True
@@ -347,23 +360,24 @@ cdef class SampleTracer:
         cdef dict Encodes = {i[0] : i[1] for i in th._lists}
         del th 
 
-        _, bar = self._MakeBar(len(self), "TRACER::DUMPING EVENTS")
+        l = "TRACER::DUMPING EVENTS (" + ("DataCache" if self.DataCache else "EventCache") + ")"
+        _, bar = self._MakeBar(len(self.HashMap), l)
         for i in self.HashMap:
-            e = self.ptr.HashToEvent(<string>i.encode("UTF-8"))
-            r = self.ptr.HashToCyROOT(<string>i.encode("UTF-8"))
+            e = self.ptr.HashToEvent(i.encode("UTF-8"))
+            r = self.ptr.HashToCyROOT(i.encode("UTF-8"))
+
+            bar.update(1)
             if e.CachedEvent and e.Event: continue
             elif e.CachedGraph and e.Graph: continue
             
-            bar.update(1)
-            if e.Event: out = self.OutDir + "/EventCache/"
+            if e.Event:   out = self.OutDir + "/EventCache/"
             elif e.Graph: out = self.OutDir + "/DataCache/"
             else: continue
             
-            if file == "":
-                try: os.mkdir(out)
-                except FileExistsError: pass
-
             out += r.CachePath.decode("UTF-8")
+            try: os.makedirs("/".join(out.split("/")[:-1]))
+            except FileExistsError: pass
+
             if file != out: f = h5py.File(out + ".hdf5", "a")
             try: ref = f.create_dataset(i, (1), dtype = h5py.ref_dtype)
             except ValueError: ref = f[i]
@@ -386,27 +400,34 @@ cdef class SampleTracer:
         cdef str i, k
         cdef CyROOT* R
         cdef CyEvent* E
-        cdef vector[string] search
         cdef dict maps 
-        cdef list get
+        cdef list get 
 
-        for i in [self.OutDir + "/Tracer/" + i for i in os.listdir(self.OutDir + "/Tracer/") if ".hdf5" in i]:
+        get = [self.OutDir + "/Tracer/" + i for i in os.listdir(self.OutDir + "/Tracer/")]
+        get = [i + "/" + k for i in get for k in os.listdir(i) if k.endswith(".hdf5")]
+
+        for i in get:
             f = h5py.File(i)
             try:
                 if self._SampleName == "": raise KeyError
                 try: f["SampleNames"].attrs[self._SampleName]
                 except KeyError: continue
             except KeyError: pass
-            self.HashMeta |= {i : self._decoder(f["MetaData"].attrs[i]) for i in f["MetaData"].attrs}
+            maps = {i : self._decoder(f["MetaData"].attrs[i]) for i in f["MetaData"].attrs}
             
+            if len(self._Files) == 0: pass
+            elif len([i for i in self._Files for k in self._Files[i] if i + "/" + k in maps]) == 0: continue
+
+            self.HashMeta |= maps
             maps = self.FastHashSearch([k for k in f if k != "SampleNames" and k != "code" and k != "MetaData"])
+            
             for i in maps:
                 if maps[i]: continue
                 ref = f[i]
                 E = new CyEvent()
-                E.Tree = <string>ref.attrs["Tree"].encode("UTF-8")
-                E.TrainMode = <string>ref.attrs["TrainMode"].encode("UTF-8")
-                E.ROOT = <string>ref.attrs["ROOT"].encode("UTF-8")
+                E.Tree = ref.attrs["Tree"].encode("UTF-8")
+                E.TrainMode = ref.attrs["TrainMode"].encode("UTF-8")
+                E.ROOT = ref.attrs["ROOT"].encode("UTF-8")
                 E.EventIndex = <unsigned int>ref.attrs["EventIndex"]
                 E.CachedEvent = ref.attrs["CachedEvent"]
                 E.CachedGraph = ref.attrs["CachedGraph"]
@@ -444,7 +465,6 @@ cdef class SampleTracer:
         cdef CyEvent* e_
         cdef str get, k
         cdef bool DataCache, EventCache
-        cdef dict files = {}
         cdef list reco = []
 
         for c in self.ptr._ROOTMap:
@@ -457,13 +477,10 @@ cdef class SampleTracer:
             get += r_.CachePath.decode("UTF-8") + ".hdf5"
             if not os.path.isfile(get): 
                 get = get.replace("/DataCache/", "/EventCache/")
-                DataCache = False
-                EventCache = True
-            if not os.path.isfile(get): continue
+                DataCache, EventCache = False, True
             
-            f = h5py.File(get)
-            get = "TRACER::READING EVENTS (" + ("DataCache" if DataCache else "EventCache") + "): "
-            _, bar = self._MakeBar(r_.HashMap.size(), get + c.first.decode("UTF-8").split("/")[-1])
+            try: f = h5py.File(get)
+            except: continue
             
             if not DataCache: 
                 try: os.mkdir("./tmp")
@@ -475,7 +492,10 @@ cdef class SampleTracer:
                     mk.write(Code._FileCode)
                     mk.close()
                 sys.path.append("./tmp/")
-
+            
+            get = "TRACER::READING EVENTS (" + ("DataCache" if DataCache else "EventCache") + "): "
+            _, bar = self._MakeBar(r_.HashMap.size(), get + c.first.decode("UTF-8").split("/")[-1])
+            
             for e in r_.HashMap:
                 bar.update(1)
                 e_ = e.second   
@@ -521,7 +541,7 @@ cdef class SampleTracer:
     def _MakeBar(self, inpt: Union[int], CustTitle: Union[None, str] = None):
         _dct = {}
         _dct["desc"] = f'Progress {self.Caller}' if CustTitle is None else CustTitle
-        _dct["leave"] = False
+        _dct["leave"] = True
         _dct["colour"] = "GREEN"
         _dct["dynamic_ncols"] = True
         _dct["total"] = inpt
@@ -531,8 +551,7 @@ cdef class SampleTracer:
 
     def __iter__(self):
         if self.__preiteration__(): 
-            self._its = 0
-            self._ite = 0
+            self._its, self._ite = 0, 0
             return self
         if self.ptr.length == 0: len(self)
         self._its = 0
@@ -542,11 +561,12 @@ cdef class SampleTracer:
         if self._its == self._ite: raise StopIteration
         cdef string _hash = self._itv[self._its]
         cdef str hash = _hash.decode("UTF-8")
-        
+        self._its += 1
+
         ev = Event()
-        ev._wrap(self.HashMap[hash])
+        try: ev._wrap(self.HashMap[hash])
+        except: return self.__next__()
         ev._wrap(self.HashMeta[self._HashMeta[_hash].decode("UTF-8")])
         ev.ptr = self.ptr[0].HashToEvent(_hash)
-        self._its += 1
         return ev
         

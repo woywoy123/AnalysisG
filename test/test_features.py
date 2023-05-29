@@ -24,6 +24,7 @@ def _MakeSample():
 def _MakeGraph(Ana, Graph, mode):
     ApplyFeatures(Ana, mode) 
     Ana.EventGraph = Graph
+    Ana.EventCache = False
     Ana.DataCache = True
     Ana.Launch
     return Ana
@@ -54,6 +55,7 @@ def test_truth_top():
         assert i.G_met
 
         it += 1
+    assert it > 0
     Ana.rm("_Project")
 
 def test_truth_children():
@@ -98,7 +100,7 @@ def test_truth_children():
         assert len(edge_lep[it]) == len(_leps)
         assert sum([k == j for k, j in zip(_leps, edge_lep[it])]) == len(edge_lep[it])
         it+=1
-
+    assert it > 0
     Ana.rm("_Project")
 
 def test_truthjets():
@@ -203,6 +205,7 @@ def test_truthjets():
         assert diff < 1
 
         it += 1 
+    assert it > 0
     Ana.rm("_Project")
 
 def test_jets():
@@ -318,15 +321,14 @@ def test_jets():
         assert diff < 1
 
         it += 1 
+    assert it > 0
     Ana.rm("_Project")
 
 if __name__ == "__main__":
 
-    Ana = Analysis()
-    #Ana.rm("_Project")
     test_truth_top()
-    #test_truth_children()    
-    #test_truthjets()
-    #test_jets()
+    test_truth_children()    
+    test_truthjets()
+    test_jets()
     
     pass

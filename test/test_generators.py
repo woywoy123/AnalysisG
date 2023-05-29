@@ -34,8 +34,10 @@ def test_event_generator():
     for i in lst_:
         ev_, ev = lst_[i], lst[i]
         sum([t_ == t for t_, t in zip(ev_.Tops, ev.Tops)]) == len(ev.Tops)
+
         for t_, t in zip(ev_.Tops, ev.Tops):
             for c_, c in zip(t_.Children, t.Children): assert c_ == c
+
         assert len(ev_.TopChildren) == len(ev.TopChildren)
         for t_, t in zip(ev_.TopChildren, ev.TopChildren): assert t_ == t
         
@@ -356,19 +358,19 @@ def test_analysis_data_event_cache_diff_sample():
     Ana2.rm("Project")
 
 if __name__ == "__main__":
-    #test_event_generator()
-    #test_event_generator_more()
-    #test_event_generator_merge()
-    #test_eventgraph()
-    #test_selection_generator() 
-    #test_Analysis()
-    #test_analysis_event_nocache()
-    #test_analysis_event_nocache_nolaunch()
-    #test_analysis_event_cache()
-    #test_analysis_event_cache_diff_sample()
-    #test_analysis_data_nocache()
-    #test_analysis_data_nocache_nolaunch()
-    #test_analysis_data_cache()
+    test_event_generator()
+    test_event_generator_more()
+    test_event_generator_merge()
+    test_eventgraph()
+    test_selection_generator() 
+    test_Analysis()
+    test_analysis_event_nocache()
+    test_analysis_event_nocache_nolaunch()
+    test_analysis_event_cache()
+    test_analysis_event_cache_diff_sample()
+    test_analysis_data_nocache()
+    test_analysis_data_nocache_nolaunch()
+    test_analysis_data_cache()
     test_analysis_data_cache_diff_sample()
     #test_analysis_data_event_cache_diff_sample()
     pass

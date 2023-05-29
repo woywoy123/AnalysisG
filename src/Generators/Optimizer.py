@@ -29,7 +29,6 @@ class Optimizer(_Optimizer, _Interface, SampleTracer, RandomSamplers):
     @property
     def Launch(self):
 
-        self.DataCache = True 
         if self._NoModel: return False
         if self._NoSampleGraph: return False
         self.OutputDirectory += "/Training"

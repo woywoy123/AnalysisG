@@ -6,6 +6,7 @@ from AnalysisG.Settings import Settings
 from .Interfaces import _Interface
 from typing import Union
 from time import sleep
+import pickle
 
 class GraphGenerator(_GraphGenerator, Settings, SampleTracer, _Interface):
     
@@ -22,12 +23,18 @@ class GraphGenerator(_GraphGenerator, Settings, SampleTracer, _Interface):
         lock, bar = _prgbar
         for i in range(len(inpt)):
             hash_, gr_ = inpt[i]
+            gr_ = pickle.loads(gr_)
             try: gr_.ConvertToData()
-            except AttributeError: pass
+            except: pass
             if lock == None: bar.update(1)
             else:
                 with lock: bar.update(1)
-            inpt[i] = [hash_, gr_.purge]
+            try: 
+                gr_ = gr_.purge
+                gr_ = pickle.dumps(gr_)
+            except: gr_ = None
+            inpt[i] = [hash_, gr_]
+
         if lock == None: del bar
         return inpt
 
@@ -61,7 +68,7 @@ class GraphGenerator(_GraphGenerator, Settings, SampleTracer, _Interface):
             gr.index = ev.index
             gr.SelfLoop = self.SelfLoop
             gr.FullyConnect = self.FullyConnect
-            inpt.append([ev.hash, gr])
+            inpt.append([ev.hash, pickle.dumps(gr)])
         
         if len(inpt) == 0: return True
         if self.Threads > 1:

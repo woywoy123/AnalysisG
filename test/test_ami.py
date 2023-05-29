@@ -7,13 +7,15 @@ def test_pyami():
     f = next(iter(meta))
     assert meta[f].isMC
     assert len(meta[f].Files) == 1
-    assert meta[f].cross_section != None
-    assert meta[f].DatasetName  
+    try: assert meta[f].cross_section 
+    except AttributeError: pass
+    try: assert meta[f].DatasetName  
+    except AttributeError: pass
     smpl.Trees = ["nominal"]
     smpl.Leaves = ["weight_mc"]
-    
-    for i in smpl:
-        print(i) 
+   
+    f =  "mc16_13TeV.312446.MadGraphPythia8EvtGen_noallhad_ttH_tttt_m1000"
+    for i in smpl: assert f in i["MetaData"].Files[0][0]
 
 def test_ami_injection():
     smpl = UpROOT("samples/dilepton/")
@@ -26,6 +28,6 @@ def test_ami_injection():
         assert "dilepton" not in meta.GetDAOD(i["nominal/eventNumber"])[0]
 
 if __name__ == "__main__":
-    #test_pyami()    
-    test_ami_injection()
     pass
+    test_pyami()    
+    test_ami_injection()

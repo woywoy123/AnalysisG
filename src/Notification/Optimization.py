@@ -38,6 +38,7 @@ class _Optimizer(Notification):
         self.Epoch = 0
         pth = self.OutputDirectory + "/" + self.RunName
         f = self.ls(pth)
+        kf = []
         if not self.ContinueTraining: return True
         if len(f) == 0: return self.Warning("No prior training was found under: " + pth + ". Generating...")
         
@@ -47,6 +48,7 @@ class _Optimizer(Notification):
             if len(_kf) == 0: continue
             self.Epoch = int(epochs) if int(epochs) > self.Epoch else self.Epoch
             kf = _kf
+
         epochs = str(self.Epoch)
         for i in kf:
             self._kModels[i]._pth = self.OutputDirectory + "/" + self.RunName 
@@ -68,7 +70,7 @@ class _Optimizer(Notification):
     def _searchdatasplits(self):
         pth = self.OutputDirectory + "/DataSets/"
         ls = self.ls(pth)
-        if len(ls) == 0: return self.Warning("No sample splitting found (k-Fold). Trainig on entire sample.") 
+        if len(ls) == 0: return self.Warning("No sample splitting found (k-Fold). Training on entire sample.") 
         if self.TrainingName + ".pkl" in ls: 
             f = UnpickleObject(pth + self.TrainingName)
             if self.kFold == None: self.kFold = f

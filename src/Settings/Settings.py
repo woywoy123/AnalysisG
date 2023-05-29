@@ -225,6 +225,7 @@ class Settings:
     @property    
     def DumpSettings(self):
         default = Settings(self.Caller)
+        default.__dict__["Device"] = "cpu"
         out = {}
         for i in default.__dict__: 
             if i.startswith("_"): continue

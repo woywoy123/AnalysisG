@@ -125,7 +125,7 @@ def test_optimizer_analysis():
 
 if __name__ == "__main__":
     #test_random_sampling()
-    #test_feature_analysis()
+    test_feature_analysis()
     #test_optimizer()
     #test_optimizer_analysis()
     pass

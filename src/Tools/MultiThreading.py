@@ -39,7 +39,6 @@ class TemplateThreading:
         _r = self._f(**_l)
         
         if "_prgbar" not in _l: return _r
-
         lock, bar = _l["_prgbar"]
         with lock: bar.close()
         return _r
@@ -47,9 +46,7 @@ class TemplateThreading:
     def Exec(self, q):
         while True:
             _v = q.recv()
-            if _v == True:
-                q.close()
-                break
+            if _v == True: q.close(); break; 
             
             try: q.send(self._Prc(_v))
             except: q.send(False)
@@ -57,8 +54,7 @@ class TemplateThreading:
             for i in _v: del i
         del self
 
-    def MainThread(self):
-        return self._Prc(self._i[1])
+    def MainThread(self): return self._Prc(self._i[1])
 
     def Purge(self):
         for i in self._i:

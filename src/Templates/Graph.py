@@ -116,6 +116,7 @@ class GraphTemplate:
         del self.G
         del self.Nodes
         del self.Edges
+        setattr(self.Data, "__name__", self.__class__.__name__)
         return self.Data
     
     def __Clean(self, obj):

@@ -34,12 +34,18 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
     @property
     def __Selection__(self):
         if len(self.Selections) == 0 and len(self.Merge) == 0: return 
+        tmp = self.DataCache
+        self.DataCache = False
+        self.EventCache = True
+        if not self.__LoadSample__: return False
+
         pth = self.OutputDirectory + "/Selections/"
         sel = SelectionGenerator(self)
         sel.ImportSettings(self)
         sel.Caller = "ANALYSIS::SELECTIONS"
         sel.MakeSelection
         del sel
+        self.DataCache = tmp
  
     @property 
     def __Event__(self):
@@ -84,6 +90,9 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
    
     @property
     def __FeatureAnalysis__(self):
+        if self.EventGraph is None: return True
+        if not self.TestFeatures: return 
+
         f = FeatureAnalysis()
         f.ImportSettings(self)
         return f.TestEvent([i for i, _ in zip(self, range(self.nEvents))], self.EventGraph) 
@@ -93,6 +102,11 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         pth = self.OutputDirectory + "/Training/DataSets/" 
         if not self.TrainingSize and not self.kFolds: return 
         if self.TrainingName + ".pkl" in self.ls(pth): return 
+
+        self.EventCache = False
+        self.DataCache = True
+        if not self.__LoadSample__: return False
+ 
         r = RandomSamplers()
         r.Caller = self.Caller
         output = {}
@@ -105,8 +119,28 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
     @property 
     def __Optimizer__(self):
         if self.Model == None and self.Optimizer == None: return
+        
+        self.EventCache = False
+        self.DataCache = True
+        if not self.__LoadSample__: return False
+       
         op = Optimizer(self)
         op.Launch
+
+    @property
+    def __LoadSample__(self):
+        tracer = self._CheckForTracer
+        for i in self.SampleMap:
+            self.Files = self.SampleMap[i]
+            self.SampleName = i
+            if tracer: self.RestoreEvents
+            if not self.__Event__: return False
+            if not self.__Graph__: return False
+        if len(self.SampleMap) == 0: self.RestoreEvents
+        if self.EventCache: self.RestoreEvents
+        if self.DataCache: self.RestoreEvents
+        if len(self) == 0: return False
+        else: return True 
  
     @property
     def __CollectCode__(self):
@@ -126,30 +160,22 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
             sel.ImportSettings(self)
             for name in self.Selections: sel.AddSelection(name, self.Selections[name])
             code |= sel.MakeSelection
-        if self.Model is not None:
-            code["Model"] = Optimizer(self).GetCode
+        if self.Model is not None: code["Model"] = Optimizer(self).GetCode
         return code
     
     @property
     def Launch(self):   
         if self._condor: return self.__CollectCode__
         self.__build__
-        tracer = self._CheckForTracer
-        for i in self.SampleMap:
-            self.Files = self.SampleMap[i]
-            self.SampleName = i
-            if tracer: self.RestoreEvents
-            if not self.__Event__: return False
-            if not self.__Graph__: return False
         self.__Selection__
         self.__RandomSampler__
         self.__Optimizer__
         self.WhiteSpace()
         self.rm("./tmp")
-        if self.EmptySampleList: return False 
+        if self.EmptySampleList: return self.__LoadSample__ 
         return True
     
     def __preiteration__(self):
-        if len(self) == 0: self.Launch
+        if len(self) == 0: return not self.__LoadSample__
         return self.EmptySampleList
  
