@@ -407,7 +407,9 @@ cdef class SampleTracer:
         get = [i + "/" + k for i in get for k in os.listdir(i) if k.endswith(".hdf5")]
 
         for i in get:
-            f = h5py.File(i)
+            try: f = h5py.File(i, "r")
+            except: continue
+
             try:
                 if self._SampleName == "": raise KeyError
                 try: f["SampleNames"].attrs[self._SampleName]

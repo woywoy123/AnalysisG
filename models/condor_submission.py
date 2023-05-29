@@ -9,21 +9,21 @@ import os
 Mode = "TruthJets"
 GNN = "BasicGraphNeuralNetwork" 
 kFolds = 10
-Quant = 24
+Quant = 20
 Names = {
-          #"other" : "other", 
-          #"t"     : "t", 
-          #"tt"    : "tt", 
-          #"ttbar" : "ttbar", 
-          #"ttH"   : "ttH", 
-          #"SM4t"  : "tttt", 
-          #"ttX"   : "ttX", 
-          #"ttXll" : "ttXll", 
-          #"ttXqq" : "ttXqq", 
+          "other" : "other", 
+          "t"     : "t", 
+          "tt"    : "tt", 
+          "ttbar" : "ttbar", 
+          "ttH"   : "ttH", 
+          "SM4t"  : "tttt", 
+          "ttX"   : "ttX", 
+          "ttXll" : "ttXll", 
+          "ttXqq" : "ttXqq", 
           "ttZ-1000" : "ttZ-1000", 
           "V"     : "V", 
-          #"Vll"   : "Vll", 
-          #"Vqq"   : "Vqq"
+          "Vll"   : "Vll", 
+          "Vqq"   : "Vqq"
 }
 
 
@@ -61,6 +61,7 @@ def DataGen(name = None, daod = ""):
     for i in Ana:
         ana = Analysis()
         ana.EventGraph = gr
+        ana.EventCache = True
         ana.DataCache = True
         ana.chnk = 1000
         ana.Threads = 12
@@ -92,22 +93,24 @@ Sub.Verbose = 3
 all_jbs = []
 for name in Names:
     evnt = EventGen(name, Names[name])
-    data = DataGen(name, Names[name])
-    
     jb_ev_ = "evnt_" + name + "-"
-    jb_da_ = "data_" + name + "-"
-
     for k in range(len(evnt)):
-        break
         Sub.AddJob(jb_ev_ + str(k), evnt[k], "8GB", "4h")
-        Sub.AddJob(jb_da_ + str(k), data[k], "8GB", "4h", waitfor = [jb_ev_ + str(k)])
-        all_jbs.append(jb_da_ + str(k))
+        all_jbs.append(jb_ev_ + str(k))
+
+all_da = []
+for name in Names:
+    data = DataGen(name, Names[name])
+    jb_da_ = "data_" + name + "-"
+    for k in range(len(data)):
+        Sub.AddJob(jb_da_ + str(k), data[k], "8GB", "4h", waitfor = all_jbs)
+        all_da.append(jb_da_ + str(k))
 
 mrg = Analysis()
 mrg.TrainingSize = 90
 mrg.kFolds = 10
 mrg.DataCache = True 
-Sub.AddJob("merger", mrg, "8GB", "8h", waitfor = all_jbs)
+Sub.AddJob("merger", mrg, "8GB", "8h", waitfor = all_da)
 
 op_it, sc_it, b_it = iter(Opt), iter(sched), iter(btch)
 
