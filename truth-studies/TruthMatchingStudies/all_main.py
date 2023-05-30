@@ -115,8 +115,8 @@ os.makedirs("./FigureCollection", exist_ok = True)
 SampleNames = {}
 for topo in Topo:
     for m in Masses:
-        smpls = "" #"/" + topo + "Collection/MadGraphPythia8EvtGen_noallhad_"
-        SampleNames |= {"BSM-4t-" + ("SL" if topo == "SingleLepton" else "DL") + "-" + m : smpl + smpls + "ttH_tttt_m" + m}
+        smpls = "" # + topo + "Sorted/"
+        SampleNames |= {"BSM-4t-" + ("SL" if topo == "SingleLepton" else "DL") + "-" + m : smpl + smpls + "ttZ-" + m}
 
 it = 1
 for smpl in SampleNames:
@@ -142,5 +142,6 @@ for smpl in SampleNames:
         studiesPlots[i](x)
     
     print("Finished: " + smpl + ": " + str(it) + "/" + str(len(SampleNames)))
-    shutil.move("./Figures", "./FigureCollection/" + smpl)
+    os.rename("./Figures", "./" + smpl)
+    shutil.move(smpl, "./FigureCollection/")
     it += 1

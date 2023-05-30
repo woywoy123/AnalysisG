@@ -21,10 +21,10 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
   
     @property
     def __build__(self):
-        
         if self._cPWD is not None: return 
         if not self._condor: self.StartingAnalysis
         self._cPWD = self.pwd
+
         if self.OutputDirectory is None: self.OutputDirectory = self.pwd
         else: self.OutputDirectory = self.abs(self.OutputDirectory)
         self.OutputDirectory = self.AddTrailing(self.OutputDirectory, "/") + self.ProjectName
@@ -50,7 +50,6 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
     @property 
     def __Event__(self):
         process = {}
-
         for i in list(self.Files): 
             f = [j for j in self.Files[i] if i + "/" + j not in self]
             if len(f) != 0: process[i] = f
@@ -131,17 +130,19 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
     def __LoadSample__(self):
         self.__build__
         tracer = self._CheckForTracer
+        if len(self.SampleMap) == 0 and tracer: self.RestoreEvents
+
         for i in self.SampleMap:
             self.Files = self.SampleMap[i]
             self.SampleName = i
             if tracer: self.RestoreEvents
             if not self.__Event__: return False
             if not self.__Graph__: return False
-        if len(self.SampleMap) == 0: self.RestoreEvents
+
         if self.EventCache: self.RestoreEvents
         if self.DataCache: self.RestoreEvents
         if len(self) == 0: return False
-        else: return True 
+        return True 
  
     @property
     def __CollectCode__(self):

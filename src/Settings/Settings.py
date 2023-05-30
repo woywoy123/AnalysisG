@@ -71,6 +71,7 @@ class _Analysis:
         _RandomSampler.__init__(self)
         _FeatureAnalysis.__init__(self)
         _Optimizer.__init__(self)
+        _General.__init__(self)
         self._cPWD = None
         self.ProjectName = "UNTITLED"
         self.SampleMap = {}
