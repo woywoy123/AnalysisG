@@ -10,13 +10,15 @@ cdef extern from "../Headers/ROOT.h" namespace "CyTracer":
         string Tree; 
         string TrainMode; 
         string hash; 
-        string ROOT; 
+        string ROOT;   
 
         unsigned int EventIndex; 
+        unsigned int num_nodes; 
         bool Graph;
         bool Event; 
         bool CachedEvent; 
         bool CachedGraph;
+        string pkl; 
 
         string ReturnROOTFile(); 
         string ReturnCachePath();

@@ -34,7 +34,6 @@ def test_event_generator():
     for i in lst_:
         ev_, ev = lst_[i], lst[i]
         sum([t_ == t for t_, t in zip(ev_.Tops, ev.Tops)]) == len(ev.Tops)
-
         for t_, t in zip(ev_.Tops, ev.Tops):
             for c_, c in zip(t_.Children, t.Children): assert c_ == c
 
@@ -49,19 +48,24 @@ def test_event_generator():
 
 
 def test_event_generator_more():
+    print("")
     EvtGen = EventGenerator(Files)
     EvtGen.EventStop = 1000
     EvtGen.EventStart = 50
     EvtGen.Event = Event
     EvtGen.MakeEvents
     assert len(EvtGen) != 0
-    for event in EvtGen: assert event == EvtGen[event.hash]
+    tmp = []
+    for event in EvtGen: 
+        assert event == EvtGen[event.hash]
+        tmp.append(event)
+    assert len(EvtGen) == len(tmp)
 
 
 def test_event_generator_merge():
     f = list(Files)
     File0 = {f[0] : [Files[f[0]][0]]}
-    File1 = {f[1] : [Files[f[1]][0]]}
+    File1 = {f[1] : [Files[f[1]][1]]}
     
     _Files = {}
     _Files |= File0
@@ -74,7 +78,7 @@ def test_event_generator_merge():
     ev1 = EventGenerator(File1)
     ev1.Event = Event
     ev1.MakeEvents
-  
+    
     combined = EventGenerator(_Files)
     combined.Event = Event
     combined.MakeEvents
@@ -93,14 +97,14 @@ def test_event_generator_merge():
 
     for i in Object0: assert ObjectSum[i] == Object0[i]
     for i in Object1: assert ObjectSum[i] == Object1[i]
-
+    
     combined = ev0 + ev1
     ObjectSum = {}
     for i in combined: ObjectSum[i.hash] = i
     for i in Object0: assert ObjectSum[i] == Object0[i]
     for i in Object1: assert ObjectSum[i] == Object1[i]
-    
-    def EventGen(Dir, Name):
+   
+    def EventGen_(Dir, Name):
         Ana = Analysis()
         Ana.ProjectName = "Project"
         Ana.InputSample(Name, Dir)
@@ -110,17 +114,26 @@ def test_event_generator_merge():
         Ana.EventStart = 0
         Ana.EventStop = 10
         Ana.Launch
+        
         return Ana
 
-    ev = EventGen(File0, "Tops")
-    ev += EventGen(File1, "Top")
-    
+    ev1 = EventGen_(File0, "Top")
+    for i in ev1: assert i.Event
+    ev2 = EventGen_(File1, "Tops")
+    for i in ev2: assert i.Event
+    ev1 += ev2
     it = 0
-    for i in ev:
-        assert ev[i.hash].hash == i.hash
+    for i in ev1:        
+        assert ev1[i.hash].hash == i.hash
         it += 1
-    assert it != 0
-    ev.rm("Project")
+    ev1.EventCache = False
+    assert it == 20
+    
+    a_ev = EventGen_(None, None)
+    assert len(ev1) == len(a_ev)
+    
+    ev1.rm("Project")
+    ev1.rm("tmp")
 
 def _fx(a): return 1
 
@@ -156,12 +169,14 @@ def test_selection_generator():
     from examples.ExampleSelection import Example, Example2
     from examples.Event import EventEx
     Ev = EventGenerator(Files)
+    Ev.OutputDirectory = "Project"
     Ev.Event = EventEx
     Ev.Threads = 1
     Ev.EventStop = 100
     Ev.MakeEvents
 
     sel = SelectionGenerator(Ev)
+    sel.OutputDirectory = "Project"
     sel += Ev
     sel.Threads = 2
     sel.AddSelection("Example", Example)
@@ -169,12 +184,11 @@ def test_selection_generator():
     sel.MergeSelection("Example2")
     sel.MakeSelection
 
-    res = UnpickleObject("./Selections/Merged/Example2")
-
+    res = UnpickleObject("./Project/Selections/Merged/Example2")
     assert res.CutFlow["Success->Example"] == len(Ev)
     assert len(res.TimeStats) == len(Ev)
     assert len(Ev)*4 == len(res.Top["Truth"])
-    sel.rm("./Selections")
+    sel.rm("./Project/")
 
 def test_Analysis():
     Sample1 = {smpl + "sample1" : ["smpl1.root"]}
@@ -188,6 +202,7 @@ def test_Analysis():
     Ana.OutputDirectory = "../test/"
     Ana.EventStop = 100
     assert Ana.Launch == False
+    Ana.rm("_Test")
 
 def _template( default = True):
     AnaE = Analysis()
@@ -372,5 +387,5 @@ if __name__ == "__main__":
     test_analysis_data_nocache_nolaunch()
     test_analysis_data_cache()
     test_analysis_data_cache_diff_sample()
-    #test_analysis_data_event_cache_diff_sample()
+    test_analysis_data_event_cache_diff_sample()
     pass

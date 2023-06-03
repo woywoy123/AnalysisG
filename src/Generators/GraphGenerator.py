@@ -29,12 +29,13 @@ class GraphGenerator(_GraphGenerator, Settings, SampleTracer, _Interface):
             if lock == None: bar.update(1)
             else:
                 with lock: bar.update(1)
+            
             try: 
                 gr_ = gr_.purge
+                num_nodes = gr_.num_nodes.item()
                 gr_ = pickle.dumps(gr_)
-            except: gr_ = None
-            inpt[i] = [hash_, gr_]
-
+            except: gr_ = None; num_nodes = 0
+            inpt[i] = [hash_, gr_, num_nodes]
         if lock == None: del bar
         return inpt
 
@@ -54,11 +55,14 @@ class GraphGenerator(_GraphGenerator, Settings, SampleTracer, _Interface):
         if self._condor: return self._Code
  
         inpt = []
-        for ev, i in zip(self, range(len(self))):
+        s = len(self)
+        _, bar = self._MakeBar(s, "PREPARING GRAPH COMPILER")
+        for ev, i in zip(self, range(s)):
             if self._StartStop(i) == False: continue
             if self._StartStop(i) == None: break
+            bar.update(1)
             if ev.Graph: continue
-
+            
             gr = self._Code["EventGraph"].clone
             try: gr = gr(ev)
             except AttributeError: gr = gr(None)

@@ -35,7 +35,7 @@ class Event(EventTemplate):
         self.TruthJetPartons = {tj.index : tj for tj in self.TruthJetPartons.values()}
         self.Jets = {j.index : j for j in self.Jets.values()}
         self.JetPartons = {j.index : j for j in self.JetPartons.values()}
-        
+      
         for c in self.TopChildren.values():
             self.Tops[c.TopIndex].Children.append(c)
             c.Parent.append(self.Tops[c.TopIndex])

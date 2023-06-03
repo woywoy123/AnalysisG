@@ -31,11 +31,15 @@ namespace CyTracer
             std::string hash = "";
             std::string ROOT = ""; 
             
+            // A pickle preserved state string
+            std::string pkl = ""; 
+            
             unsigned int EventIndex = 0; 
+            unsigned int num_nodes = 0; 
             bool Graph = false; 
             bool Event = false; 
             bool CachedEvent = false; 
-            bool CachedGraph = false; 
+            bool CachedGraph = false;
 
             std::string ReturnROOTFile(); 
             std::string ReturnCachePath(); 

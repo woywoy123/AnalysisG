@@ -14,7 +14,9 @@ class _Optimizer(Notification):
 
     @property
     def _NoSampleGraph(self):
-        l = len(self)
+        hashes = self.GetDataCacheHashes
+        l = len(hashes)
+        self.RestoreTheseHashes(hashes[:self.BatchSize])
         if l == 0: return self.Warning("No Sample Graphs found")
         self.Success("Found " + str(l) + " Sample Graphs") 
         return False
@@ -36,7 +38,7 @@ class _Optimizer(Notification):
     @property 
     def _searchtraining(self):
         self.Epoch = 0
-        pth = self.OutputDirectory + "/" + self.RunName
+        pth = self._outDir + "/" + self.RunName
         f = self.ls(pth)
         kf = []
         if not self.ContinueTraining: return True
@@ -51,11 +53,11 @@ class _Optimizer(Notification):
 
         epochs = str(self.Epoch)
         for i in kf:
-            self._kModels[i]._pth = self.OutputDirectory + "/" + self.RunName 
+            self._kModels[i]._pth = self._outDir + "/" + self.RunName 
             self._kModels[i].Epoch = epochs + "/" + i 
             try: self._kModels[i].load
             except KeyError: return not self.Failure("Loading Model Failed. Exiting...")
-            self._kOp[i]._pth = self.OutputDirectory + "/" + self.RunName 
+            self._kOp[i]._pth = self._outDir + "/" + self.RunName 
             self._kOp[i].Epoch = epochs + "/" + i 
             try: self._kOp[i].load
             except KeyError: return not self.Failure("Loading Optimizer Failed. Exiting...")
@@ -68,7 +70,7 @@ class _Optimizer(Notification):
 
     @property
     def _searchdatasplits(self):
-        pth = self.OutputDirectory + "/DataSets/"
+        pth = self._outDir + "/DataSets/"
         ls = self.ls(pth)
         if len(ls) == 0: return self.Warning("No sample splitting found (k-Fold). Training on entire sample.") 
         if self.TrainingName + ".pkl" in ls: 

@@ -33,13 +33,17 @@ def test_random_sampling():
         for smpl in x[f]["leave-out"]: assert smpl.hash not in train[f] 
     
     x = r.MakeDataLoader(smpls, SortByNodes = True)
-    assert 12 in x
-    assert 13 in x
-    assert 14 in x
+    nodes = {}
+    for smpl in [t[0] for t in x]:
+        ev = Ana[smpl].num_nodes
+        if ev not in nodes: nodes[ev] = 0
+        nodes[ev] += 1 
+    assert 12 in nodes
+    assert 13 in nodes
+    assert 14 in nodes
 
     x = r.MakeDataLoader(smpls)
-    assert "all" in x
-    assert len(x["all"]) == len(Ana)
+    assert sum(nodes.values()) == len(Ana)
     Ana.rm("Project_ML")
 
 def test_feature_analysis():
@@ -124,8 +128,8 @@ def test_optimizer_analysis():
     Ana.rm("TestOptimizerAnalysis")
 
 if __name__ == "__main__":
-    #test_random_sampling()
-    test_feature_analysis()
+    test_random_sampling()
+    #test_feature_analysis()
     #test_optimizer()
     #test_optimizer_analysis()
     pass

@@ -191,7 +191,7 @@ std::vector<std::string> CyTracer::CySampleTracer::GetCacheType(bool EventCache,
         for (std::string h_ : *hashes)
         {
             CyEvent* e = src -> at(h_) -> HashMap[h_]; 
-            if (!e -> Graph){continue;}
+            if (!e -> Graph && !e -> CachedGraph){continue;}
             out -> push_back(e); 
         }
     }; 
@@ -201,11 +201,11 @@ std::vector<std::string> CyTracer::CySampleTracer::GetCacheType(bool EventCache,
         for (std::string h_ : *hashes)
         {
             CyEvent* e = src -> at(h_) -> HashMap[h_]; 
-            if (!e -> Event){continue;}
+            if (!e -> Event && !e -> CachedEvent){continue;}
             out -> push_back(e); 
         }
     }; 
- 
+    
     std::vector<std::vector<std::string>> q_hash = Tools::Chunk(this -> HashList(), this -> ChunkSize); 
     std::vector<std::vector<CyTracer::CyEvent*>*> q_found; 
     std::vector<std::thread*> tmp; 
@@ -213,28 +213,17 @@ std::vector<std::string> CyTracer::CySampleTracer::GetCacheType(bool EventCache,
     {
         std::vector<CyTracer::CyEvent*>* f = new std::vector<CyTracer::CyEvent*>(); 
         q_found.push_back(f);
-       
-        if (EventCache)
-        {
-            std::thread* p = new std::thread(sE, f, &(q_hash[v]), &(this -> _ROOTHash)); 
-            tmp.push_back(p); 
-        }
-        else if (DataCache)
-        {
-            std::thread* p = new std::thread(sG, f, &(q_hash[v]), &(this -> _ROOTHash)); 
-            tmp.push_back(p); 
-        }
-        for (std::thread* t : tmp){ t -> join(); delete t; }
-        tmp = {}; 
+        if (EventCache){ tmp.push_back(new std::thread(sE, f, &(q_hash[v]), &(this -> _ROOTHash))); continue; }
+        if (DataCache ){ tmp.push_back(new std::thread(sG, f, &(q_hash[v]), &(this -> _ROOTHash))); continue; }
     }  
+    for (std::thread* t : tmp){ t -> join(); delete t; }
 
     std::vector<std::string> Output; 
     for (unsigned int v(0); v < q_found.size(); ++v)
     {
         for (unsigned int j(0); j < q_found[v] -> size(); ++j)
         {
-            CyEvent* o = q_found[v] -> at(j);
-            Output.push_back(o -> hash); 
+            Output.push_back(q_found[v] -> at(j) -> hash); 
         }
         delete q_found[v];
     }
@@ -298,7 +287,7 @@ CyTracer::CyROOT* CyTracer::CyROOT::operator+(CyROOT* p)
             r -> HashMap[key] = it -> second; 
             continue; 
         }
-
+         
         if (r -> HashMap[key] == p -> HashMap[key]){ continue; }
         r -> HashMap[key] = it -> second;  
     }

@@ -10,6 +10,8 @@ def test_pickle():
     PickleObject(x, "Test")
     p = UnpickleObject("Test")
     assert x == p
+    T = Tools()
+    T.rm("./_Pickle")
 
 def test_merge_data():
     x1 = {"All" : [2], "a" : 1, "b" : {"test1" : 0}}

@@ -5,6 +5,7 @@ from torch.utils.data import SubsetRandomSampler
 from AnalysisG.Notification import _RandomSamplers
 from AnalysisG.Settings import Settings
 from torch_geometric.loader import DataListLoader
+from AnalysisG.Tracer import SampleTracer
 
 class RandomSamplers(_RandomSamplers, Settings):
 
@@ -26,13 +27,12 @@ class RandomSamplers(_RandomSamplers, Settings):
         self.RandomizingSamples(len(All), TrainingSize)
         rs = ShuffleSplit(n_splits = 1, test_size = float((100 - TrainingSize)/100), random_state = 42)
         for train_idx, test_idx in rs.split(All): pass
-        
         for i in All[train_idx]: Sample[i].TrainMode = "train" 
         for i in All[test_idx]: Sample[i].TrainMode = "test" 
     
         self.RandomizingSize(len(train_idx), len(test_idx))
 
-        return {"train_hashes" : All[train_idx], "test_hashes" : All[test_idx]}
+        return {"train_hashes" : All[train_idx].tolist(), "test_hashes" : All[test_idx].tolist()}
 
     def MakekFolds(self, sample, folds, batch_size = 1, shuffle = True, asHashes = False):
         if isinstance(sample, dict): 
@@ -54,11 +54,12 @@ class RandomSamplers(_RandomSamplers, Settings):
     def MakeDataLoader(self, sample, SortByNodes = False, batch_size = 1):
         if isinstance(sample, dict): sample = list(sample.values())
         elif isinstance(sample, list): pass
+        elif issubclass(type(sample), SampleTracer): pass
         else: return False 
         
         output = {} 
-        if SortByNodes: 
-            for i in sample: output[i.num_nodes.item()] = [i] if i.num_nodes.item() not in output else [i]
-        else: output["all"] = sample
-        for i in output: output[i] = DataListLoader(output[i], batch_size=batch_size)
-        return output
+        for i in sample: 
+            key = "all" if not SortByNodes else i.num_nodes
+            if key not in output: output[key] = []
+            output[key] += [i.hash]
+        return [j for i in output for j in DataListLoader(output[i], batch_size=batch_size)]

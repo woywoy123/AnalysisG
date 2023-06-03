@@ -58,7 +58,7 @@ class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface
         if len(self.Merge) != 0: pass
         elif self.CheckSettings: return False
         self.pth = self.OutputDirectory + "/Selections/"       
-        
+       
         for name in self.Selections:
             inpt = []
             for ev, i in zip(self, range(len(self))):

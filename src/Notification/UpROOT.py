@@ -10,7 +10,7 @@ class _UpROOT(Notification):
   
     @property
     def FailedAMI(self):
-        self.Failure("PyAMI not available... Skipping...")
+        self.Warning("PyAMI not available... Skipping...")
     
     @property
     def NoVOMSAuth(self):

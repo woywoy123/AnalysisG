@@ -38,8 +38,8 @@ class EventGenerator(_EventGenerator, Settings, SampleTracer, _Interface):
                 inpt[i][k.hash]["Meta"] = vals["MetaData"]
                 del k
             del ev
-            if lock != None:
-                with lock: bar.update(1)
+            if lock is None: bar.update(1); continue
+            with lock: bar.update(1)
         return inpt
 
     @property

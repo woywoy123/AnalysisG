@@ -61,6 +61,6 @@ class __Warning(Base):
 
 class Notification(__Failure, __Success, __Warning):
 
-    def __init__(self):
-        self.Verbose = 3
-        self.Caller = ""
+    def __init__(self, verb = 3, caller = ""):
+        self.Verbose = verb
+        self.Caller = caller

@@ -45,7 +45,7 @@ class _Analysis(Notification):
 
     @property
     def EmptySampleList(self):
-        if len(self) != 0: return False
+        if self.len != 0: return False
         string = "No samples found in cache. Checking again..."
         self.Failure("="*len(string))
         self.Failure(string)
