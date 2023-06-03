@@ -38,7 +38,7 @@ class Optimizer(_Optimizer, _Interface, SampleTracer, RandomSamplers):
         self.Model.RunName = self.RunName
         
         for smpl in self: break
-        smpl = self.BatchTheseHashes([smpl.hash], "test", "cuda")
+        smpl = self.BatchTheseHashes([smpl.hash], "test", self.Device)
         if not self.Model.SampleCompatibility(smpl): return self._notcompatible
         
         self._op = OptimizerWrapper()
