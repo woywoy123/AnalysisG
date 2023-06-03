@@ -148,9 +148,7 @@ cdef class SampleTracer:
                 
                 _meta = self._HashMeta[_key]
                 if _meta.size() == 0: pass
-                else: 
-                    ev._wrap(self.HashMeta[_meta.decode("UTF-8")])
-                    continue
+                else: ev._wrap(self.HashMeta[_meta.decode("UTF-8")]); continue
 
                 meta = (ev.ptr.ROOTFile.SourcePath + ev.ptr.ROOTFile.Filename).decode("UTF-8")
                 for daod in self.HashMeta:

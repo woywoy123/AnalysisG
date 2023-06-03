@@ -90,7 +90,7 @@ def test_optimizer():
     op = Optimizer(Ana)
     op.ProjectName = "TestOptimizer"
     op.Model = CheatModel
-    op.Device = "cuda"
+    op.Device = "cpu"
     op.Optimizer = "ADAM"
     op.OptimizerParams = {"lr" : 0.001}
     op.ContinueTraining = False
@@ -120,7 +120,7 @@ def test_optimizer_analysis():
     Ana.Scheduler = "ExponentialLR"
     Ana.ContinueTraining = False
     Ana.SchedulerParams = {"gamma" : 1}
-    Ana.Device = "cuda"
+    Ana.Device = "cpu"
     Ana.Model = CheatModel
     Ana.EnableReconstruction = True 
     Ana.BatchSize = 1
@@ -128,8 +128,8 @@ def test_optimizer_analysis():
     Ana.rm("TestOptimizerAnalysis")
 
 if __name__ == "__main__":
-    test_random_sampling()
+    #test_random_sampling()
     #test_feature_analysis()
-    #test_optimizer()
-    #test_optimizer_analysis()
+    test_optimizer()
+    test_optimizer_analysis()
     pass

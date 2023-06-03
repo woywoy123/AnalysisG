@@ -214,7 +214,7 @@ class Settings:
     @Device.setter
     def Device(self, val):
         import torch
-        self._Device = val if val == "cuda" and torch.cuda.is_available() else "cpu"
+        self._Device = val if "cuda" in val and torch.cuda.is_available() else "cpu"
 
     def ImportSettings(self, inpt):
         if not issubclass(type(inpt), Settings): return 
