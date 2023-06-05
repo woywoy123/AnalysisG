@@ -9,21 +9,21 @@ import os
 Mode = "TruthJets"
 GNN = "BasicGraphNeuralNetwork" 
 kFolds = 10
-Quant = 20
+Quant = 5
 Names = {
-          "other" : "other", 
+          #"other" : "other", 
           "t"     : "t", 
-          "tt"    : "tt", 
-          "ttbar" : "ttbar", 
-          "ttH"   : "ttH", 
-          "SM4t"  : "tttt", 
-          "ttX"   : "ttX", 
-          "ttXll" : "ttXll", 
-          "ttXqq" : "ttXqq", 
+          #"tt"    : "tt", 
+          #"ttbar" : "ttbar", 
+          #"ttH"   : "ttH", 
+          #"SM4t"  : "tttt", 
+          #"ttX"   : "ttX", 
+          #"ttXll" : "ttXll", 
+          #"ttXqq" : "ttXqq", 
           "ttZ-1000" : "ttZ-1000", 
           "V"     : "V", 
-          "Vll"   : "Vll", 
-          "Vqq"   : "Vqq"
+          #"Vll"   : "Vll", 
+          #"Vqq"   : "Vqq"
 }
 
 
@@ -116,7 +116,7 @@ op_it, sc_it, b_it = iter(Opt), iter(sched), iter(btch)
 
 for _ in range(len(Opt)):
     n, n_, b_ = next(op_it), next(sc_it), next(b_it)
-    name = "-".join([n, n_, b_])
+    name = GNN + "-".join([n, n_, b_])
 
     op, op_par = Opt[n]
     sc, sc_par = sched[n_]
