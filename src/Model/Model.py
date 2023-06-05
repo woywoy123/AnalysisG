@@ -103,6 +103,7 @@ class ModelWrapper(_ModelWrapper):
         lib = torch.load(self._pth + "/" + str(self.Epoch) + "/TorchSave.pth")
         self._Model.load_state_dict(lib["model"])
         self._Model.eval()
+        return self._pth + " @ " + str(self.Epoch)
 
     @property
     def backward(self):

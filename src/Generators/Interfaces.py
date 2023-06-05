@@ -21,10 +21,10 @@ class _Interface(Tools):
         if self.EventStop != None and self.EventStop-1 < it: return None
         return True
 
-    def _MakeBar(self, inpt: Union[int], CustTitle: Union[None, str] = None):
+    def _MakeBar(self, inpt: Union[int], CustTitle: Union[None, str] = None, Leave = False):
         _dct = {}
         _dct["desc"] = f'Progress {self.Caller}' if CustTitle is None else CustTitle
-        _dct["leave"] = False
+        _dct["leave"] = Leave
         _dct["colour"] = "GREEN"
         _dct["dynamic_ncols"] = True
         _dct["total"] = inpt

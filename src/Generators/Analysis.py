@@ -105,8 +105,9 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
     @property 
     def __RandomSampler__(self):
         pth = self.OutputDirectory + "/Training/DataSets/" 
-        if not self.TrainingSize and not self.kFolds: return 
+        if not self.TrainingSize: return 
         if self.TrainingName + ".pkl" in self.ls(pth): return 
+        if not self.kFolds: self.kFolds = 1
 
         output = {}
         r = RandomSamplers()

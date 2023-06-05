@@ -19,7 +19,7 @@ class _ModelWrapper(Notification):
     def _iscompatible(self):
         run = 0
         inpt = len(self._inputs) == len(self.i_mapping)
-        if inpt: self.Success("All inputs Ok!")
+        if inpt: self.Success(self.RunName + ":: -> INPUT Ok! <-")
         else: 
             for i in self._inputs:
                 try: self.Success("-> " + self._dress(self.i_mapping[i]))
@@ -27,7 +27,7 @@ class _ModelWrapper(Notification):
             return False
 
         inpt = len(self._outputs) == len(self.o_mapping)
-        if inpt and self._train: self.Success("All outputs Ok!")
+        if inpt and self._train: self.Success(self.RunName + ":: <- Outputs Ok! ->")
         elif not self._train and len(self._outputs) != 0: return self.Success("Inference Ok!")
         else: 
             for i in self._outputs:

@@ -54,9 +54,8 @@ class Optimizer(_Optimizer, _Interface, SampleTracer, RandomSamplers):
         self._kOp = {}
         self._DataLoader = {}
         self._nsamples = {}
-        if self.kFold is None: self.kFold = {"train" : {"all" : [list(self.todict)]}}
+        if self.kFold is None: self.kFold = {"train" : {"all" : self.GetDataCacheHashes}}
         for k in self.kFold:
-            if "hashes" in k: continue
             self._kModels[k] = ModelWrapper(self._Code["Model"].clone)
             self._kModels[k].OutputDirectory = self._outDir
             self._kModels[k].RunName = self.RunName
@@ -96,17 +95,23 @@ class Optimizer(_Optimizer, _Interface, SampleTracer, RandomSamplers):
             self._ep.train = _train
             self._op.train = _train
 
-        for i in range(self.Epoch, self.Epochs):
+        for ep in range(self.Epoch, self.Epochs):
             for k in self._kModels:
+                _ep = str(ep+1) + "/" + str(k)
+                if self.ContinueTraining:
+                    mod = self._kModels[k].Epoch
+                    if mod is None: pass
+                    elif mod.endswith(_ep): continue
+                    elif int(mod.split("/")[0]) > ep + 1: continue 
+
                 self._it = iter(self.kFold[k])
 
-                self.Epoch = str(i+1) + "/" + str(k)
-                self.mkdir(self._outDir + "/" + self.RunName + "/" + str(self.Epoch))
+                self.mkdir(self._outDir + "/" + self.RunName + "/" + _ep)
                 self._op = self._kOp[k]
-                self._op.Epoch = self.Epoch
+                self._op.Epoch = _ep
                 
                 self.Model = self._kModels[k] 
-                self.Model.Epoch = self.Epoch
+                self.Model.Epoch = _ep
 
                 self._ep = Epoch()
                 self._ep.o_model = self.Model.o_mapping 
@@ -114,7 +119,7 @@ class Optimizer(_Optimizer, _Interface, SampleTracer, RandomSamplers):
                 self._ep.RunName = self.RunName 
                 self._ep.OutputDirectory = self._outDir
                 self._ep.init
-                self._ep.Epoch = self.Epoch
+                self._ep.Epoch = _ep
                
                 ApplyMode(k)
                 Train(True)
@@ -132,12 +137,12 @@ class Optimizer(_Optimizer, _Interface, SampleTracer, RandomSamplers):
     @property
     def __this_epoch__(self):
         if self._len == 0: return 
-        kF = str(self.Epoch).split("/")[1]
+        kF = self._ep.Epoch.split("/")[1]
         if not self.DebugMode:
             title = "(Training) " if self.Model.train else "(Validation) "
-            title += "Epoch " + str(self.Epoch).split("/")[0] + "/"
+            title += "Epoch " + str(self._ep.Epoch).split("/")[0] + "/"
             title += str(self.Epochs) + " k-Fold: " + kF
-            _, bar = self._MakeBar(self._len, title)          
+            _, bar = self._MakeBar(self._len, title, True)          
      
         kF =  "-" + str(kF) + "-" + self.mode
         for smpl, index in zip(self._dl, range(len(self._dl))):

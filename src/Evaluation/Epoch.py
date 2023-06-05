@@ -58,6 +58,9 @@ class Metrics:
         th.xData = self.accuracyhist 
         th.Title = self.mode
         th.LaTeX = False
+        th.xMax = 100
+        th.xMin = 0
+        th.xStep = 10
         th.xTitle = "Accuracy"
         return th
 
@@ -69,13 +72,14 @@ class Metrics:
         th.xMin = 0
         th.xData = self.mass 
         th.Title = self.mode
+        th.xStep = 100
         th.LaTeX = False
         th.xTitle = "Mass (GeV)"
         return th
 
     @property 
     def MassTHist(self):
-        if len(self.mass_t) == 0: return        
+        if len(self.mass_t) == 0: return 
         th = TH1F()
         th.xBins = 500
         th.xMin = 0
@@ -101,6 +105,7 @@ class Metrics:
         th = TH1F()
         th.xData = self.ntru
         th.xMin = 0
+        th.xMax = 5
         th.Title = "truth"
         th.LaTeX = False
         th.xTitle = "True Number of Particles"
@@ -112,7 +117,7 @@ class Metrics:
         th.xData = self.nodes
         th.Title = self.mode
         th.xBins = max(self.nodes)+1
-        th.xStep = 2
+        th.xStep = 1
         th.xMin = 0
         th.xMax = max(self.nodes)
         th.LaTeX = False
@@ -250,8 +255,9 @@ class Epoch:
             if v is not None: tc.Lines += v.ROC
             if len(tc.Lines) != 0: tc.SaveFigure()
            
-            if t is None: continue 
-            if v is not None: t.MassTHist.xData += v.MassTHist.xData
+            if t is None or t.MassTHist is None: continue 
+            if v is not None and v.MassTHist is not None: 
+                t.MassTHist.xData += v.MassTHist.xData
             
             self.plots(i[2:] + "/Mass", t.MassTHist, None if v is None else v.MassHist, t.MassHist)
 

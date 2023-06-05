@@ -127,9 +127,57 @@ def test_optimizer_analysis():
     Ana.Launch
     Ana.rm("TestOptimizerAnalysis")
 
+
+def test_parallel_analysis():
+    from models.CheatModel import CheatModel
+    
+    Ana = Analysis()
+    Ana.ProjectName = "Project"
+    Ana.InputSample(None, root1)
+    Ana.Event = Event 
+    Ana.EventGraph = GraphChildren 
+    ApplyFeatures(Ana, "TruthChildren")
+    Ana.DataCache = True 
+    Ana.Launch 
+
+    Ana = Analysis()
+    Ana.ProjectName = "Project"
+    Ana.DataCache = True
+    Ana.TrainingSize = 50
+    Ana.kFolds = 10
+    Ana.Launch
+
+    Ana = Analysis()
+    Ana.ProjectName = "Project"
+    Ana.Epochs = 5
+    Ana.kFold = ["k-1", "k-2"]
+    Ana.Optimizer = "ADAM"
+    Ana.OptimizerParams = {"lr" : 0.001}
+    Ana.Device = "cpu"
+    Ana.Model = CheatModel
+    Ana.ContinueTraining = True
+    Ana.BatchSize = 1
+    Ana.Launch
+
+    Ana = Analysis()
+    Ana.ProjectName = "Project"
+    Ana.Epochs = 5
+    Ana.kFold = ["k-1"]
+    Ana.ContinueTraining = True
+    Ana.Optimizer = "ADAM"
+    Ana.OptimizerParams = {"lr" : 0.001}
+    Ana.Device = "cpu"
+    Ana.Model = CheatModel
+    Ana.BatchSize = 1
+    Ana.Launch
+
+    Ana.rm("Project")
+
+
 if __name__ == "__main__":
     #test_random_sampling()
     #test_feature_analysis()
-    test_optimizer()
+    #test_optimizer()
     test_optimizer_analysis()
+    test_parallel_analysis()
     pass

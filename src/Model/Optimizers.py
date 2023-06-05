@@ -35,6 +35,7 @@ class OptimizerWrapper(Settings):
         self.Epoch = v["epoch"]
         self._op.load_state_dict(v["optim"])
         if self._sc is not None: self._sc.load_state_dict(v["sched"])
+        return self._pth + " @ " + str(self.Epoch)
 
     @property
     def step(self): 
