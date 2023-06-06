@@ -101,6 +101,7 @@ class Optimizer(_Optimizer, _Interface, SampleTracer, RandomSamplers):
                 if self.ContinueTraining:
                     mod = self._kModels[k].Epoch
                     if mod is None: pass
+                    elif mod == "": pass
                     elif mod.endswith(_ep): continue
                     elif int(mod.split("/")[0]) > ep + 1: continue 
 
@@ -132,7 +133,7 @@ class Optimizer(_Optimizer, _Interface, SampleTracer, RandomSamplers):
                 self._op.stepsc
                 self._op.dump
                 self.Model.dump
-                self.__dump_plots__(self._ep)
+                if not self.DebugMode: self.__dump_plots__(self._ep)
 
     @property
     def __this_epoch__(self):
@@ -153,9 +154,9 @@ class Optimizer(_Optimizer, _Interface, SampleTracer, RandomSamplers):
             self._ep.end
             self.Model.backward
             self._op.step
-            self._ep.Collect(smpl, pred, loss)
-        
+            
             if not self.DebugMode: bar.update(1)
+            if not self.DebugMode: self._ep.Collect(smpl, pred, loss)
             if self.DebugMode: self._showloss
             if self.Device != "cpu" and self.GPUMemory > 80: self.FlushBatchCache 
             if not self.EnableReconstruction: continue
