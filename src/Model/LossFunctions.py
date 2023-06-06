@@ -19,12 +19,14 @@ class LossFunctions:
         return self._loss(p, t)
 
     @property
-    def accuracy(self): return self._acc(self.truth, self.pred)
+    def accuracy(self): 
+        truth, pred = self.truth.clone().to("cpu"), self.pred.clone().detach().to("cpu")
+        return self._acc(truth, pred)
     def ToDigit(self, inpt): return torch.round(inpt) 
 
     def CrossEntropyLoss(self):
         def accuracyfunction(truth, pred):
-            acc = MulticlassAccuracy(num_classes = pred.size()[1]).to(truth.device) 
+            acc = MulticlassAccuracy(num_classes = pred.size()[1])
             return 100*acc(pred.max(1)[1].view(-1), truth.view(-1))
         def funct(truth, pred): return truth.view(-1).to(dtype = torch.long), pred 
         self._loss = torch.nn.CrossEntropyLoss()

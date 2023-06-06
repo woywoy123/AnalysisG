@@ -18,19 +18,19 @@ Ana.Event = Event
 
 Ana.EventGraph = modes[mode]
 Ana.DataCache = True
-Ana.EventStop = 10
+#Ana.EventStop = 10
 
 ApplyFeatures(Ana, mode)
 Ana.TrainingSampleName = mode
 Ana.Device = "cuda"
 Ana.kFolds = 1
-Ana.Epochs = 100000
-Ana.BatchSize = 1
+Ana.Epochs = 10000
+Ana.BatchSize = 10
 Ana.ContinueTraining = False
 Ana.Optimizer = "ADAM" 
 Ana.OptimizerParams = {"lr" : 1e-4, "weight_decay" : 1e-3}
 Ana.Model = RecursiveGraphNeuralNetwork
-Ana.DebugMode = True
+Ana.DebugMode = False
 Ana.EnableReconstruction = False
 Ana.PurgeCache = False
 Ana.Launch

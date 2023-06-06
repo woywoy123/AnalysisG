@@ -31,7 +31,7 @@ class ModelWrapper(_ModelWrapper):
 
         self._GetModelInputs
         self._build 
-        
+        self._inject_tools
 
     def __call__(self, data):
         self._Model(**{k : getattr(data, k) for k in self.i_mapping})        
@@ -53,6 +53,11 @@ class ModelWrapper(_ModelWrapper):
     
     def _mapping(self, inpt, key):   
         return {"O" + k[3:] : k for k in inpt if k.startswith(key) and "O" + k[3:] in self._outputs}
+
+    @property
+    def _inject_tools(self):
+        self._Model.MassEdgeFeature = self.MassEdgeFeature
+        self._Model.MassNodeFeature = self.MassNodeFeature
  
     @property
     def _GetModelInputs(self):
@@ -139,7 +144,8 @@ class ModelWrapper(_ModelWrapper):
 
     @property
     def __SummingNodes(self): 
-        Pmu = {i : self._data[self.Keys[i]] for i in self.Keys}
+        try: Pmu = {i : self._data[self.Keys[i]] for i in self.Keys}
+        except TypeError: Pmu = {i : getattr(self._data, self.Keys[i]) for i in self.Keys}
         Pmu = torch.cat([PT.PxPyPz(Pmu["pt"], Pmu["eta"], Pmu["phi"]), Pmu["e"]], dim = -1)
         
         # Get the prediction of the sample and extract from the topology the number of unique classes

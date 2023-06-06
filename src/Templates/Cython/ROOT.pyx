@@ -570,9 +570,10 @@ cdef class SampleTracer:
     def FlushBatchCache(self): 
         cdef str key
         cdef dict tmp = {}
-        for key in self._DataBatchCache: 
+        for key in list(self._DataBatchCache): 
             if self._DataBatchCache[key].i.device == "cpu":
-                del self._DataBatchCache[key]
+                d = self._DataBatchCache[key]
+                del d
                 continue
             
             if self.GPUMemory < 80: tmp[key] = self._DataBatchCache[key]
