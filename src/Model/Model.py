@@ -1,128 +1,220 @@
+from AnalysisG.Notification import _ModelWrapper
 from .LossFunctions import LossFunctions
 from torch_geometric.data import Data
 import torch
+import PyC.Transform.Tensors as PT
+import PyC.Physics.Tensors.Cartesian as CT
 
-class Model:
+class ModelWrapper(_ModelWrapper):
 
-    def __init__(self, model):
-        self._modelinputs = {}
-        self._modeloutputs = {}
-        self._modelloss = {}
-        self._modelclassifiers = {}
+    def __init__(self, model = None):
+        self.Caller = "MODEL"
+        self.Verbose = 3 
+        self.OutputDirectory = None
+        self.RunName = None
+        self.Epoch = None
 
-        self._graphtruthkeys = {}
-        self._nodetruthkeys = {}
-        self._edgetruthkeys = {}
-        self._keymapping = {}
+        # Mass reconstruction part 
+        self.TruthMode = True if model is None else False
+        self.Keys = {"pt" : "N_pT", "eta" : "N_eta", "phi" : "N_phi", "e" : "N_energy"}
 
-        self._train = None
-        self._prediction = None
-        self._truth = False
-        self.Device = None
-        self._model = model
-        self.GetModelInputs(self._model)
-        self.GetModelOutputs(self._model)
-        self.GetModelLossFunction(self._model)
-        self.GetModelClassifiers(self._model)
+        self._Model = model
+        self._inputs = {}
+        self._outputs = {}
+        
+        # Mappings 
+        self.o_mapping = {}
+        self.i_mapping = {}
 
-        self.TorchSave = True
-        self.TorchScript = False
+        self._truth = True
+        self._train = True
 
-    def GetModelInputs(self, model):
-        code = model.forward.__code__
-        inputs = code.co_varnames[1:code.co_argcount]
-        self._modelinputs |= {key : None for key in inputs}
-        return self._modelinputs
+        self._GetModelInputs
+        self._build 
+        self._inject_tools
+
+    def __call__(self, data):
+        self._Model(**{k : getattr(data, k) for k in self.i_mapping})        
+
+        dc = self._Model.__dict__
+        pred = {"batch" : data.batch, "edge_index" : data.edge_index}
+        if self._truth: pred |= {self.o_mapping[k] : dc[k] for k in self.o_mapping}
+        else: pred |= {k : dc[k] for k in self._outputs}  
+        if not self._truth: return Data().from_dict(pred), None
+
+        loss = {o[2:] : self._loss[o[2:]](pred[t], getattr(data, t)) for o, t in zip(self.o_mapping, self.o_mapping.values())}
+        self._l = loss
+        self.Data = data
+        self.Pred = Data().from_dict(pred)
+        return self.Pred, loss
+
+    def _scan(self, inpt, key):
+        return {k : inpt[k] for k in inpt if k.startswith(key)}
     
-    def _GetModelParameters(self, model, Prefix):
-        return {key : model.__dict__[key] for key in list(model.__dict__) if key.startswith(Prefix)}
+    def _mapping(self, inpt, key):   
+        return {"O" + k[3:] : k for k in inpt if k.startswith(key) and "O" + k[3:] in self._outputs}
 
-    def GetModelOutputs(self, model = None):
-        if len(self._modeloutputs) != 0:
-            return self._modeloutputs
-        self._modeloutputs |= self._GetModelParameters(model, "O_")
-        return self._modeloutputs
+    @property
+    def _inject_tools(self):
+        self._Model.MassEdgeFeature = self.MassEdgeFeature
+        self._Model.MassNodeFeature = self.MassNodeFeature
+ 
+    @property
+    def _GetModelInputs(self):
+        if self.TruthMode: return 
+        code = self._Model.forward.__code__
+        self._inputs = {key : None for key in code.co_varnames[:code.co_argcount] if key != "self"}
+        return self._inputs
+  
+    @property
+    def _build(self):
+        if self.TruthMode: return 
+        self._outputs = self._scan(self._Model.__dict__, "O_")
+        mod = self._Model.__dict__["_modules"]
+        mod = {i : mod[i] for i in mod}
+        mod |= self._Model.__dict__
+        c = self._scan(self._Model.__dict__, "C_")
+        loss = self._scan(mod, "L_")
+        self._loss = {l[2:] : LossFunctions(loss[l], c["C_" + l[2:]] if "C_" + l[2:] in c else False) for l in loss}
+        
+    def SampleCompatibility(self, smpl):
+        self._pth = self.OutputDirectory + "/" + self.RunName 
+        smpl = list(smpl.to_dict())
+        self.i_mapping = {k : smpl[smpl.index(k)] for k in self._inputs if k in smpl}
+      
+        self.o_mapping  = self._mapping(smpl, "E_T_")
+        self.o_mapping |= self._mapping(smpl, "N_T_")
+        self.o_mapping |= self._mapping(smpl, "G_T_")
 
-    def GetModelLossFunction(self, model):
-        if len(self._modelloss) != 0:
-            return self._modelloss
-        self._modelloss = self._GetModelParameters(model, "L_")
-        self._modelloss = {key : LossFunctions(self._modelloss[key]) for key in list(self._modelloss)}
-        return self._modelloss
+        if not self._iscompatible: return False
+        return True 
+  
+    @property 
+    def train(self): return self._train
+
+    @train.setter
+    def train(self, val): 
+        self._train = val
+        if self._train: self._Model.train()
+        else: self._Model.eval()
+
+    @property
+    def dump(self):
+        out = {"epoch" : self.Epoch, "model" : self._Model.state_dict()}
+        torch.save(out, self._pth + "/" + str(self.Epoch) + "/TorchSave.pth")
+   
+    @property 
+    def load(self):
+        lib = torch.load(self._pth + "/" + str(self.Epoch) + "/TorchSave.pth")
+        self._Model.load_state_dict(lib["model"])
+        self._Model.eval()
+        return self._pth + " @ " + str(self.Epoch)
+
+    @property
+    def backward(self):
+        loss = sum([self._l[x]["loss"] for x in self._l])
+        if self._train: loss.backward()
+        return loss
+
+    @property
+    def device(self): return self._Model.device
     
-    def GetModelClassifiers(self, model):
-        return self._GetModelParameters(model, "C_")
+    @device.setter
+    def device(self, val): self._Model = self._Model.to(val)
 
-    def SampleCompatibility(self, sample):
-        self._model = self._model.to(self.Device)
-        def MakeKey(smpl, key_T, modeldict):
-            return {key : "O_" + key[len(key_T):] for key in smplkeys if "O_" + key[len(key_T):] in modeldict}
-        
-        def Compatible(smpl, mdl):
-            sdic = list(smpl.values())
-            if sum([1 for i in mdl if i in sdic]) == 0:
-                return {}
-            return smpl
-        
-        if self._train == self._prediction != None:
-            return self._train, self._prediction
+    def _switch(self, sample, pred):
+        shape = pred.size()
+        if shape[1] > 1: pred = pred.max(1)[1]
+        pred = pred.view(-1) 
+        if shape[0] == sample.edge_index.size()[1]: return self.MassEdgeFeature(sample, pred).tolist()
+        elif shape[0] == sample.num_nodes: return self.MassNodeFeature(sample, pred).tolist()
+        else: return []
 
-        smplkeys = list(sample.to_dict())
-        self._graphtruthkeys |= MakeKey(smplkeys, "G_T_", self._modeloutputs)
-        self._nodetruthkeys |= MakeKey(smplkeys, "N_T_", self._modeloutputs)
-        self._edgetruthkeys |= MakeKey(smplkeys, "E_T_", self._modeloutputs)
+    def _debatch(self, inpt, sample):
+        btch = inpt.batch.unique()
+        smples = [sample.subgraph(sample.batch == b) for b in btch]
+        inpt = [inpt.subgraph(inpt.batch == b) for b in btch]
+        return smples, inpt        
 
-        self._keymapping |= self._graphtruthkeys
-        self._keymapping |= self._nodetruthkeys 
-        self._keymapping |= self._edgetruthkeys 
-        self._truth = len(self._keymapping) >= len(self._modeloutputs)
-        
-        out = {}
-        out |= Compatible(self._graphtruthkeys, self._modeloutputs)
-        out |= Compatible(self._nodetruthkeys, self._modeloutputs)
-        out |= Compatible(self._edgetruthkeys, self._modeloutputs)
-        
-        self._train = True if len(out) == len(self._modelinputs) else False    
-        self._prediction = len(MakeKey(smplkeys, "O_", self._modelinputs)) == len(self._modelinputs)
-            
-        return self._train, self._prediction
-        
-    def Prediction(self, data):
-        self._model(**{k : data[k] for k in self._modelinputs})
-        Pred = {feat[2:] : self._model.__dict__[feat] for feat in self._keymapping.values()}
-        Pred["edge_index"] = data.edge_index
-        Pred["batch"] = data.batch
-        
-        if self._truth == False:
-            return Data().from_dict(Pred), None, None
-       
-        Truth = {feat[4:] : data[feat] for feat in self._keymapping}
-        Truth["edge_index"] = data["edge_index"]
-        
-        if "batch" in data:
-            Truth["batch"] = data["batch"]
-        
-        output = {key[2:] : self._modelloss["L_" + key[2:]](Pred[key[2:]], Truth[tru[4:]]) 
-                    for tru, key in zip(self._keymapping, self._keymapping.values())} 
+    @property
+    def mass(self):
+        data = self.Data if self.TruthMode else self.Pred 
+        sample, pred = self._debatch(data, self.Data)
+        return [{o[2:] : self._switch(j, i[self.o_mapping[o]]) for o in self.o_mapping} for i, j in zip(pred, sample)]       
 
-        return  Data().from_dict(Pred), Data().from_dict(Truth), output
+    @property
+    def __SummingNodes(self): 
+        try: Pmu = {i : self._data[self.Keys[i]] for i in self.Keys}
+        except TypeError: Pmu = {i : getattr(self._data, self.Keys[i]) for i in self.Keys}
+        Pmu = torch.cat([PT.PxPyPz(Pmu["pt"], Pmu["eta"], Pmu["phi"]), Pmu["e"]], dim = -1)
+        
+        # Get the prediction of the sample and extract from the topology the number of unique classes
+        edge_index = self._data.edge_index 
+        edge_index_r = edge_index[0][self._mask == True]
+        edge_index_s = edge_index[1][self._mask == True]
 
-    def eval(self):
-        self._model.eval()
+        # Weird floating point inaccuracy. When using Unique, the values seem to change slightly
+        Pmu = Pmu.to(dtype = torch.long)
+        Pmu_n = torch.zeros(Pmu.shape, device = Pmu.device, dtype = torch.long)
+        Pmu_n.index_add_(0, edge_index_r, Pmu[edge_index_s])
 
-    def train(self):
-        self._model.train()
-    
-    def DumpModel(self, OutputDir):
-        if self.TorchSave:
-            torch.save(self._model.state_dict(), OutputDir + "/TorchSave.pth") 
-    
-    def LoadModel(self, OutputDir):
-        try:
-            self.__init__(self._model())
-        except:
-            pass
-        if OutputDir.endswith(".pth"):
-            lib = torch.load(OutputDir)
-            self._model.load_state_dict(state_dict = lib)
-        self._model.eval()
+        #Make sure to find self loops - Avoid double counting 
+        excluded_self = edge_index[1] == edge_index[0]
+        excluded_self[excluded_self] = False
+        excluded_self[self._mask == True] = False
+        Pmu_n[edge_index[0][excluded_self]] += Pmu[edge_index[1][excluded_self]]
+ 
+        Pmu_n = (Pmu_n/1000).to(dtype = torch.long)
+        Pmu_n = torch.unique(Pmu_n, dim = 0)
+
+        Pmu_n = CT.Mass(Pmu_n).view(-1)
+        return Pmu_n[Pmu_n > 0]
+
+    def MassNodeFeature(self, Sample, pred, excl_zero = True):
+        self._data = Sample
+        if excl_zero: self._mask = pred[self._data.edge_index[0]] * pred[self._data.edge_index[1]] > 0
+        else: self._mask = pred[self._data.edge_index[0]] == pred[self._data.edge_index[1]]
+        return self.__SummingNodes
+ 
+    def MassEdgeFeature(self, Sample, pred):
+        self._data = Sample
+        self._mask = pred == 1
+        return self.__SummingNodes
+
+    def ClosestParticle(self, tru, pred):
+        res = []
+        if len(tru) == 0: return res
+        if len(pred) == 0: return pred 
+        p = pred.pop(0)
+        max_tru, min_tru = max(tru), min(tru)
+        col = True if p <= max_tru and p >= min_tru else False
+
+        if col == False:
+            if len(pred) == 0: return res
+            return self.ClosestParticle(tru, pred)
+
+        diff = [ abs(p - t) for t in tru ]
+        tru.pop(diff.index(min(diff)))
+        res += self.ClosestParticle(tru, pred)
+        res.append(p)
+        return res 
+  
+    @property 
+    def ParticleEfficiency(self):
+        tmp = self.TruthMode 
+        self.TruthMode = True
+        t = self.mass
+        
+        self.TruthMode = False
+        p = self.mass
+        output = []
+        for b in range(len(t)):
+            out = {}
+            for f in t[b]:
+                pred, truth = p[b][f], t[b][f]
+                pred = self.ClosestParticle(truth, pred)
+                p_l, t_l = len(pred), len(truth)
+                out[f] = {"%" : float(p_l/(t_l if t_l != 0 else 1))*100, "nrec" : p_l, "ntru" : t_l}
+            output.append(out) 
+        self.TruthMode = tmp      
+        return output

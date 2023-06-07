@@ -1,6 +1,6 @@
 from .Notification import Notification
 
-class Plotting(Notification):
+class _Plotting(Notification):
 
     def __init__(self):
         pass
@@ -15,4 +15,4 @@ class Plotting(Notification):
         self.Warning("NO VALID DATA GIVEN ... Skipping: " + self.Title)
 
     def SavingFigure(self, output):
-        self.Success("SAVING FIGURE AS +-> " + output)
+        self.Success("!!SAVING FIGURE AS +-> " + output)

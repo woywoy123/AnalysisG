@@ -1,139 +1,84 @@
-import torch
-from AnalysisTopGNN.Tools import Threading
-from AnalysisTopGNN.Notification import GraphGenerator_
-from AnalysisTopGNN.Samples import SampleTracer
-from AnalysisTopGNN.Tools import RandomSamplers
-from AnalysisTopGNN.Features import FeatureAnalysis
-from AnalysisTopGNN.Generators import Settings
+from AnalysisG.Generators.EventGenerator import EventGenerator
+from AnalysisG.Notification import _GraphGenerator
+from AnalysisG.Tools import Code, Threading
+from AnalysisG.Tracer import SampleTracer
+from AnalysisG.Settings import Settings
+from .Interfaces import _Interface
+from typing import Union
+from time import sleep
+import pickle
 
-class GraphFeatures(FeatureAnalysis, RandomSamplers):
+class GraphGenerator(_GraphGenerator, Settings, SampleTracer, _Interface):
     
-    def __init__(self):
-        pass
-
-    def SetAttribute(self, c_name, fx, container):
-        if c_name == "P_" or c_name == "T_":
-            c_name += fx.__name__ 
-        elif c_name == "":
-            c_name += fx.__name__ 
-
-        if c_name not in container:
-            container[c_name] = fx
-        else:
-            self.Warning("Found Duplicate " + c_name + " Attribute")
-   
-    # Define the observable features
-    def AddGraphFeature(self, fx, name = ""):
-        self.SetAttribute(name, fx, self.GraphAttribute)
-
-    def AddNodeFeature(self, fx, name = ""):
-        self.SetAttribute(name, fx, self.NodeAttribute)
-
-    def AddEdgeFeature(self, fx, name = ""):
-        self.SetAttribute(name, fx, self.EdgeAttribute)
-
-    
-    # Define the truth features used for supervised learning 
-    def AddGraphTruth(self, fx, name = ""):
-        self.SetAttribute("T_" + name, fx, self.GraphAttribute)
-
-    def AddNodeTruth(self, fx, name = ""):
-        self.SetAttribute("T_" + name, fx, self.NodeAttribute)
-
-    def AddEdgeTruth(self, fx, name = ""):
-        self.SetAttribute("T_" + name, fx, self.EdgeAttribute)
-
-    
-    # Define any last minute changes to attributes before adding to graph
-    def AddGraphPreprocessing(self, name, fx):
-        self.SetAttribute("P_" + name, fx, self.GraphAttribute)
-
-    def AddNodePreprocessing(self, name, fx):
-        self.SetAttribute("P_" + name, fx, self.NodeAttribute)
-
-    def AddEdgePreprocessing(self, name, fx):
-        self.SetAttribute("P_" + name, fx, self.EdgeAttribute)
-
-    def SetDevice(self):
-        if self.Device:
-            self.Device = "cuda" if torch.cuda.is_available() else "cpu"
-    
-    def TestFeatures(self, SamplingSize = 100):
-        self.SetDevice()
-        self.CheckSettings()
-        if self.Caller == "ANALYSIS":
-            self.FeatureTest = True
-            self.Launch()
-        Events = self.RandomEvents(self.SampleContainer.list(), SamplingSize)
-        self.TestEvent(Events, self.EventGraph)
- 
-
-class GraphGenerator(GraphGenerator_, SampleTracer, Settings, GraphFeatures):
-    
-    def __init__(self):
+    def __init__(self, inpt: Union[EventGenerator, None] = None):
         
         self.Caller = "GRAPHGENERATOR"
         Settings.__init__(self)
         SampleTracer.__init__(self)
-        self._Test = False
+        _Interface.__init__(self)
+        _GraphGenerator.__init__(self, inpt)
  
-    def __MakeGraph(self, event, smplidx):
-        evobj = self.CopyInstance(self.EventGraph)
-
-        if self._Test == False:
-            self.TestFeatures(10)
-            self._Test = True
-        try:
-            ev = evobj(event)
-        except AttributeError:
-            
-            ev = evobj.Escape(evobj)
-            ev.Event = event
-            ev.Particles = []
-        ev.iter = smplidx
-        ev.SelfLoop = self.SelfLoop
-        ev.FullyConnect = self.FullyConnect
-        ev.EdgeAttr |= self.EdgeAttribute
-        ev.NodeAttr |= self.NodeAttribute
-        ev.GraphAttr |= self.GraphAttribute
-        return ev
-
-    def AddSamples(self, Events, Tree):
-        for ev in Events:
-            if ev.EventIndex < self.EventStart:
-                continue
-            elif self.EventStop != None and ev.EventIndex > self.EventStop:
-                break
-            
-            if Tree == None:
-                ev.Trees |= {tr : self.__MakeGraph(ev.Trees[tr], ev.EventIndex) for tr in ev.Trees}
+    @staticmethod 
+    def _CompileGraph(inpt, _prgbar):
+        lock, bar = _prgbar
+        for i in range(len(inpt)):
+            hash_, gr_ = inpt[i]
+            gr_ = pickle.loads(gr_)
+            try: gr_.ConvertToData()
+            except: pass
+            if lock == None: bar.update(1)
             else:
-                ev.Trees |= {Tree : self.__MakeGraph(ev.Trees[Tree], ev.EventIndex)}
+                with lock: bar.update(1)
+            
+            try: 
+                gr_ = gr_.purge
+                num_nodes = gr_.num_nodes.item()
+                gr_ = pickle.dumps(gr_)
+            except: gr_ = None; num_nodes = 0
+            inpt[i] = [hash_, gr_, num_nodes]
+        if lock == None: del bar
+        return inpt
 
-    def CompileEventGraph(self):
-        self.AddCode(self.EventGraph)
+    def __collect__(self, inpt, key):
+        x = {c_name : Code(inpt[c_name]) for c_name in inpt}
+        if len(x) != 0: self._Code[key] = x 
+
+    @property 
+    def MakeGraphs(self):
+        if not self.CheckGraphImplementation: return False
+        if not self.CheckSettings: return False
+
+        self._Code["EventGraph"] = Code(self.EventGraph)
+        self.__collect__(self.GraphAttribute, "GraphAttribute")
+        self.__collect__(self.NodeAttribute, "NodeAttribute")
+        self.__collect__(self.EdgeAttribute, "EdgeAttribute")
+        if self._condor: return self._Code
+ 
+        inpt = []
+        s = len(self)
+        _, bar = self._MakeBar(s, "PREPARING GRAPH COMPILER")
+        for ev, i in zip(self, range(s)):
+            if self._StartStop(i) == False: continue
+            if self._StartStop(i) == None: break
+            bar.update(1)
+            if ev.Graph: continue
+            
+            gr = self._Code["EventGraph"].clone
+            try: gr = gr(ev)
+            except AttributeError: gr = gr(None)
+            gr.GraphAttr |= self.GraphAttribute     
+            gr.NodeAttr |= self.NodeAttribute     
+            gr.EdgeAttr |= self.EdgeAttribute    
+            gr.index = ev.index
+            gr.SelfLoop = self.SelfLoop
+            gr.FullyConnect = self.FullyConnect
+            inpt.append([ev.hash, pickle.dumps(gr)])
         
-        Features = {c_name : self.AddCode(self.GraphAttribute[c_name]) for c_name in self.GraphAttribute}
-        Features = {c_name : self.AddCode(self.NodeAttribute[c_name]) for c_name in self.NodeAttribute}   
-        Features = {c_name : self.AddCode(self.EdgeAttribute[c_name]) for c_name in self.EdgeAttribute}
-
-        if self._dump:
-            return self
-
-        self.SetDevice()
-        self.CheckSettings()
-        self.AddSamples(self.SampleContainer.list(), self.Tree)
-        def function(inpt):
-            return [i.MakeGraph() if i != None else True for i in inpt]
-
-        TH = Threading(self.SampleContainer.list(), function, self.Threads, self.chnk)
-        TH.VerboseLevel = self.VerboseLevel
-        TH.Start()
-        for i in TH._lists:
-            if i.Compiled == False:
-                continue
-            self.SampleContainer[i.Filename] = i
-
-        self.EdgeAttribute = {}
-        self.GraphAttribute = {}
-        self.NodeAttribute = {}
+        if len(inpt) == 0: return True
+        if self.Threads > 1:
+            th = Threading(inpt, self._CompileGraph, self.Threads, self.chnk)
+            th.Title = self.Caller
+            th.Start
+        out = th._lists if self.Threads > 1 else self._CompileGraph(inpt, self._MakeBar(len(inpt)))
+        self.AddGraph(out)
+        return True

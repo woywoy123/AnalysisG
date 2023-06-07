@@ -1,4 +1,2 @@
-from .Settings import *
-from .TemplateHistograms import *
-from .TemplateLines import TLine, CombineTLine
-
+from .Histograms import *
+from .Lines import *

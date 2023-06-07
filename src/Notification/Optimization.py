@@ -1,77 +1,105 @@
-from .Notification import Notification
-from AnalysisTopGNN.Tools import Tables
+from .Notification import Notification 
+from AnalysisG.IO import UnpickleObject
 
-class Optimization(Notification):
-
+class _Optimizer(Notification):
+    
     def __init__(self):
         pass
 
-    def CheckGivenSample(self, sample):
-        if len(sample) == 0:
-            msg = "Samples have not been compiled. Rerun with 'DataCache = True' and try again."
-            self.Failure("="*len(msg))
-            self.FailureExit(msg)
-        
-        for i in sample:
-            self.Success("(Nodes) -> '" + i + "' Number of Graphs: " + str(len(sample[i])))
-        
-    def TrainingNodes(self, Nodes):
-        msg =  "(" + str(Nodes) + ") ->" + str(len(self._Samples[Nodes]))
-        self.Success("="*len(msg))
-        self.Success(msg)
+    @property
+    def _NoModel(self):
+        if self.Model is not None: return False
+        self.Warning("No Model was given.")
+        return True
 
-    def StartKfoldInfo(self, train, valid, kfold, folds):
-        msg = "Training Size: " + str(len(train)) + " Validation Size: " + str(len(valid)) + " @ Batch Size: " + str(self.BatchSize)
-        self.Success("="*len(msg))
-        self.Success("kFold: " + str(kfold+1) + " / " + str(folds))
-        self.Success(msg)
-        self.Success("="*len(msg))
-        self._it = 0
+    @property
+    def _NoSampleGraph(self):
+        hashes = self.GetDataCacheHashes
+        l = len(hashes)
+        self.RestoreTheseHashes(hashes[:self.BatchSize])
+        if l == 0: return self.Warning("No Sample Graphs found")
+        self.Success("Found " + str(l) + " Sample Graphs") 
+        return False
 
-    def TrainingInfo(self, lengthdata, epoch, pred, truth, loss_acc, debug):
-        per = int(100*self._it / lengthdata)
-        if per%self.VerbosityIncrement == 0:
-            self.Success("!!==> Progress: " + str(per) + "%")
-        self._it += 1
-        if debug == False:
+    @property
+    def _notcompatible(self):
+        return self.Failure("Model not compatible with given input graph sample.")
+
+    @property 
+    def _setoptimizer(self):
+        if not self._op.SetOptimizer: return self.Failure("Invalid Optimizer.")
+        return not self.Success("Set the optimizer to: " + self._op.Optimizer)
+
+    @property 
+    def _setscheduler(self):
+        if not self._op.SetScheduler: return 
+        self.Success("Set the scheduler to: " + self._op.Scheduler)
+
+    @property 
+    def _searchtraining(self):
+        self.Epoch = 0
+        pth = self._outDir + "/" + self.RunName
+        epochs = self.ls(pth)
+        kf = []
+        if not self.ContinueTraining: return True
+        if len(epochs) == 0: return self.Warning("No prior training was found under: " + pth + ". Generating...")
+        epochs = [int(ep) for ep in epochs]
+        epochs.sort()
+        for ep in epochs:
+            path = pth + "/" + str(ep) + "/"
+            for k in self.ls(path):
+                kPath = path + k + "/TorchSave.pth"
+                if not self.IsFile(kPath): continue 
+                if k not in self._kModels: continue
+                self._kModels[k]._pth = self._outDir + "/" + self.RunName 
+                self._kOp[k]._pth = self._outDir + "/" + self.RunName 
+                self._kModels[k].Epoch = str(ep) + "/" + k         
+                self._kOp[k].Epoch = str(ep) + "/" + k
+
+        for i in self._kModels:
+            if self._kModels[i].Epoch is None: self._kModels[i].Epoch = ""; continue
+            try: self.Success("Model loaded: " + self._kModels[i].load)
+            except KeyError: return not self.Warning("Loading Model Failed. Skipping loading...")
+            try: self.Success("Optimizer loaded: " + self._kOp[i].load)
+            except KeyError: return not self.Warning("Loading Optimizer Failed. Skipping loading...")
+        return True
+
+    @property
+    def _searchdatasplits(self):
+        pth = self._outDir + "/DataSets/"
+        ls = self.ls(pth)
+        if len(ls) == 0 and self.kFold is not None: 
+            self.kFold = None
+            return self.Warning("No sample splitting found (k-Fold). Training on entire sample.") 
+        elif len(ls) == 0:
+            self.Warning("Provided kFold not found. Training on entire sample.")
+            self.kFold = None 
             return 
-       
-        if "loss" in debug:
-            for i in loss_acc:
-                self.Success("Loss (" + i + ") -> " + str(loss_acc[i][0].item()))
-            self.Success("Loss (Total Loss) -> " + str(epoch.TotalLoss.item()))
-
-        if "accuracy" in debug:
-            for i in loss_acc:
-                self.Success("Accuracy (" + i + ") -> " + str(loss_acc[i][1].item()))
+        if self.TrainingName + ".pkl" not in ls: return self.Warning("The given training sample name was not found, but found the following: " + "\n-> ".join(ls))
         
-        if "compare" in debug:
-            c_names = self.Model.GetModelClassifiers(self.Model._model)
-            Tbl = Tables()
-            Tbl.Sum = False
-            Tbl.Title = "Prediction Comparison Table"
-            Tbl.AddColumnTitle("Index")
-            
-            for i in c_names:
-                p_ = pred[i[2:]]
-                t_ = truth[i[2:]].view(-1)
-                if c_names[i]:
-                    p_ = p_.max(1)[1] 
+        f = UnpickleObject(pth + self.TrainingName)
+        if isinstance(self.kFold, int): k = ["k-" + str(self.kFold)]
+        elif isinstance(self.kFold, str): k = [self.kFold]
+        elif isinstance(self.kFold, list): k = ["k-" + str(t) if isinstance(t, int) else t for t in self.kFold]
+        elif self.kFold is None: k = [k for k in f if not k.endswith("_hashes")]
+        else: k = [f]
 
-                Tbl.AddColumnTitle("Pr ("+i[2:] + ")")
-                Tbl.AddColumnTitle("Tr ("+i[2:] + ")")
-                Tbl.AddColumnTitle("Co ("+i[2:] + ")")
-                k = 0
-                for t, j, c in zip(t_.tolist(), p_.tolist(), (p_ - t_).tolist()):
-                    Tbl.AddValues(k, "Pr ("+i[2:] + ")", t)
-                    Tbl.AddValues(k, "Tr ("+i[2:] + ")", j)
-                    Tbl.AddValues(k, "Co ("+i[2:] + ")", c)
-                    k += 1
-                Tbl.Compile()
-                print("\n".join(Tbl.output))
-    
-    def ShowEpoch(self, Epoch, Epochs):
-        self.Success("_"*10 + " Starting Epoch " + str(Epoch+1) + "/" + str(Epochs) + "_"*10)
+        try: self.kFold = { kF : f[kF] for kF in k }       
+        except KeyError: 
+            msg = "Given k-Fold not found. But found the following folds: "
+            l = len(msg)
+            msg += "\n-> ".join([""] + list(f))
+            self.Failure(msg) 
+            return self.FailureExit("="*l)
+        self.Success("Found the training sample: " + self.TrainingName)
+        self.Success("Training Sets Detected: " + "\n-> ".join([""] + list(self.kFold)))
 
-    def FileNotFoundWarning(self, Directory, Name):
-        pass
+
+    @property
+    def _showloss(self): 
+        string = ["Epoch-kFold: " + self._ep.Epoch]
+        if self._op._sc is not None: string[-1] += " Current LR: {:.10f}".format(self._op._sc.get_lr()[0])
+        for f in self.Model._l: 
+            string.append("Feature: {}, Loss: {:.10f}, Accuracy: {:.10f}".format(f, self.Model._l[f]["loss"], self.Model._l[f]["acc"]))
+        print("\n-> ".join(string)) 
+

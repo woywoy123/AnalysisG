@@ -1,47 +1,67 @@
 from .Notification import Notification
+from time import sleep
+import h5py
 
-class Analysis(Notification):
-
+class _Analysis(Notification):
+    
     def __init__(self):
         pass
-
-    def EmptyDirectoryWarning(self, Directory):
-        pass
     
-    def NoSamples(self, SampleMap, name):
-        if len(SampleMap) == 0:
-            self.Failure("No ROOT samples were found in: " + name)
-    
-    def NothingToIterate(self):
-        self.Failure("No samples loaded.")
-    
-    def EventImplementationCommit(self):
-        if self.Event == None:
-            return 
-        Event = self.CopyInstance(self.Event)
+    @property
+    def _WarningPurge(self):
+        self.Warning("'PurgeCache' enabled! You have 10 seconds to cancel.")
+        self.Warning("Directory (DataCache/EventCache): " + self.OutputDirectory)
+        _, bar = self._MakeBar(10, "PURGE-TIMER")
+        for i in range(10): sleep(1); bar.update(1); 
+        self.rm(self.OutputDirectory + "/EventCache") 
+        self.rm(self.OutputDirectory + "/DataCache")         
+        self.rm(self.OutputDirectory + "/Tracer")
+        self.rm(self.OutputDirectory + "/Training/DataSets")
 
-        if Event._CommitHash:
-            msg = "!!>> Identified commit of Event Implementation: " + Event._CommitHash
-            msg += " <<" + " (Deprecated)" if Event._Deprecated else ""
-            self.Success("-"*len(msg))
-            self.Success(msg) 
-            self.Success("-"*len(msg))
+    @property
+    def _BuildingCache(self):
+        if self.EventCache: 
+            self.mkdir(self.OutputDirectory + "/EventCache")
+            self.Success("Created EventCache under: " + self.OutputDirectory)
+        if self.DataCache:  
+            self.mkdir(self.OutputDirectory + "/DataCache")
+            self.Success("Created DataCache under: " + self.OutputDirectory)
 
+    @property
+    def _CheckForTracer(self):
+        f = self.ls(self.OutputDirectory + "/Tracer/")
+        if len(f) == 0 and (self.EventCache or self.DataCache): return not self.Warning("Tracer directory not found. Generating")
+        elif len(f) == 0: return not self.Warning("No Tracer directory found... Generating just samples without cache!")
+        f = [t + "/" + i for t in f for i in self.ls(self.OutputDirectory + "/Tracer/" + t)]
+        tracers = {i : [t for t in h5py.File(self.OutputDirectory + "/Tracer/" + i)["MetaData"].attrs] for i in f if i.endswith(".hdf5")}
+        f = ["!Tracers Found:"] if len(tracers) > 0 else ["No Tracers Found"]
+        for tr in tracers: f += [" (" + tr + ") -> " + i for i in tracers[tr]]
+        msg = "\n".join(f)
+        msg += ""
+        if len(tracers) > 0: self.Success("!" + msg)      
+        else: self.Warning(msg)
+        self.WhiteSpace()
+        return len(tracers) > 0
+
+    @property
     def EmptySampleList(self):
-        if len(self) == 0:
-            string = "No samples found in cache. Exiting..."
-            self.Failure("="*len(string))
-            self.FailureExit(string)
-   
+        if self.len != 0: return False
+        string = "No samples found in cache. Checking again..."
+        self.Failure("="*len(string))
+        self.Failure(string)
+        self.Failure("="*len(string))
+        return True
+
+    @property
     def StartingAnalysis(self):
         string1 = "---" + " Starting Project: " + self.ProjectName + " ---"
-
         string = ""
-        string += "> EventGenerator < :: " if self.EventCache and self.Event != None else ""
-        string += "> GraphGenerator < :: " if self.DataCache and self.EventGraph != None else ""
-        string += "> TrainingSampleGenerator < :: " if self.TrainingSampleName else ""
+        string += " > EventGenerator < :: " if self.Event != None else ("> EventCache < :: " if self.EventCache else "")
+        string += " > GraphGenerator < :: " if self.EventGraph != None else ("> DataCache < :: " if self.DataCache else "")
+        string += "> SampleGenerator < :: " if self.kFolds else ""
         string += "> Optimization < :: " if self.Model != None else ""
-        string += "> ModelEvaluator < :: " if len(self._ModelDirectories) != 0 or self.PlotNodeStatistics else ""
+        string += " > Selections < :: " if len(self.Selections) != 0 else ""
+        string += " > Merging Selections < :: " if len(self.Merge) != 0 else ""
         
         l = len(string) if len(string1) < len(string) else len(string1)
         self.Success("="*l)
@@ -49,76 +69,4 @@ class Analysis(Notification):
         self.Success(string)
         self.Success("="*l)
 
-    def FoundCache(self, Directory, Files):
-        if len(Files) == 0:
-            self.Warning("No cache was found under " + Directory)
-            return False
-        return True
-    
-    def MissingTracer(self, Directory):
-        self.Warning("Tracer not found under: " + Directory + " please enable either 'DumpPickle' or 'DumpHDF5'")
 
-    def NoEventImplementation(self):
-        ex = "Or do: from AnalysisTopGNN.Events import Event"
-        self.Failure("="*len(ex))
-        self.Failure("No Event Implementation Provided.")
-        self.Failure("See src/EventTemplates/Event.py")
-        self.Failure(ex)
-        self.Failure("="*len(ex))
-        self.FailureExit("Exiting...")
-    
-    def NoEventGraphImplementation(self):
-        message = "EventGraph not defined (obj.EventGraph). See implementations (See src/Events/EventGraphs.py)"
-        self.Failure("="*len(message))
-    
-    def FoundFiles(self, Files):
-        if len(Files) == 0:
-            return 
-        
-        trig = True 
-        for i in self.DictToList(Files):
-            if i.endswith(".root") and trig:
-                string = "!!--- ADDING TO SAMPLE COLLECTION ---"
-            if "DataCache" in i and trig:
-                string = "!!--- FOUND DATA CACHE ---"
-            if "EventCache" in i and trig:
-                string = "!!--- FOUND EVENT CACHE ---"
-
-            if trig:
-                self.Success("!!" + "-"*len(string))
-                self.Success(string)
-                self.Success("!!" + "-"*len(string))
-                trig = False
-            self.Success("!!-> " + i)
-    
-    def CantGenerateTrainingSample(self):
-        string = "Can't generate training sample, please choose either 'EventCache' or 'DataCache'"
-        self.Failure("="*len(string))
-        self.FailureExit(string)
-
-    def FileNotFoundWarning(self, Directory, Name):
-        pass
-
-    def CheckPercentage(self):
-        gr = False
-        if self.TrainingPercentage > 100:
-            self.TrainingPercentage = 80
-            gr = "greater than 100%"
-        if self.TrainingPercentage <= 0:
-            self.TrainingPercentage = 80
-            gr = "less than 0%"
-        
-        if gr:
-            self.Warning("Specified Training Percentage " + gr + ". Setting to 80%")
-
-    def ModelNameAlreadyPresent(self, Name):
-        self.Warning("Model Name already exists. Skipping...")
-
-    def InvalidOrEmptyModelDirectory(self):
-        self.Warning("Given model directory is empty or invalid. Skipping...")
-
-    def __CheckSettings(self):
-        inv = self.CheckSettings()
-        if len(inv) == 0:
-            return 
-        self.Warning("Found the following invalid settings: " + "\n".join(inv))

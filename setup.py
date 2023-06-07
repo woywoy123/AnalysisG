@@ -1,75 +1,42 @@
-from setuptools import Extension, setup
-from torch.utils.cpp_extension import BuildExtension, CppExtension
-import Cython.Build
+from setuptools import setup, Extension
+from Cython.Build import cythonize
+
+ext_mod = [
+    Extension(
+                name = "AnalysisG.Templates.ParticleTemplate", 
+                sources = [
+                    "src/Templates/Cython/Particle.pyx", 
+                    "src/Templates/CXX/Templates.cxx",
+                    "src/Templates/CXX/Tools.cxx", 
+                ], 
+    ), 
+    Extension(
+                name = "AnalysisG.Templates.EventTemplate", 
+                sources = [
+                    "src/Templates/Cython/Event.pyx", 
+                    "src/Templates/CXX/Templates.cxx",
+
+                    "src/Templates/CXX/Tools.cxx", 
+                ], 
+    ), 
+    Extension(
+                name = "AnalysisG.Tracer", 
+                sources = [
+                    "src/Templates/Cython/ROOT.pyx", 
+                    "src/Templates/CXX/ROOT.cxx",
+
+                    "src/Templates/CXX/Tools.cxx", 
+                ], 
+    ),
+    Extension(
+                name = "AnalysisG._Tools", 
+                sources = [
+                    "src/Templates/Cython/Tools.pyx", 
+                    "src/Templates/CXX/Tools.cxx", 
+                ], 
+    ),
+]
 
 setup(
-        name = "PyTorchCustom", 
-        ext_modules = [
-            CppExtension("LorentzVector", ["src/PyTorchCustom/Source/LorentzVector.cpp"])
-        ],
-        cmdclass = {"build_ext" : BuildExtension}
-    )
-
-
-setup(
-        name = "AnalysisTopGNN", 
-        version = "2.0", 
-
-        packages = [
-            "AnalysisTopGNN", 
-            "AnalysisTopGNN.Notification", 
-            "AnalysisTopGNN.Samples", 
-            "AnalysisTopGNN.Tools", 
-            
-            "AnalysisTopGNN.Model", 
-            "AnalysisTopGNN.Templates", 
-            "AnalysisTopGNN.Particles", 
-            "AnalysisTopGNN.Events",
-            "AnalysisTopGNN.Deprecated",
-            
-            "AnalysisTopGNN.Features",  
-            "AnalysisTopGNN.Features.TruthJet",
-            "AnalysisTopGNN.Features.TruthTop",
-            "AnalysisTopGNN.Features.TruthTopChildren",
-
-            "AnalysisTopGNN.IO",
-            "AnalysisTopGNN.Generators",
-            "AnalysisTopGNN.Plotting", 
-            "AnalysisTopGNN.Submission", 
-            "AnalysisTopGNN.Statistics", 
-            "AnalysisTopGNN.Vectors",
-        ],
-        package_dir = {
-            "AnalysisTopGNN": "src",
-            "AnalysisTopGNN.Notification" : "src/Notification",
-            "AnalysisTopGNN.Samples" : "src/Samples", 
-            "AnalysisTopGNN.Tools" : "src/Tools",
-            
-            "AnalysisTopGNN.Model" : "src/Model", 
-            "AnalysisTopGNN.Templates" : "src/EventTemplates/Templates", 
-            "AnalysisTopGNN.Particles" : "src/EventTemplates/Particles",
-            "AnalysisTopGNN.Events" : "src/EventTemplates/Events",
-            "AnalysisTopGNN.Deprecated" : "src/EventTemplates/Deprecated", 
-            
-            "AnalysisTopGNN.Features" : "src/Features", 
-            "AnalysisTopGNN.Features.TruthJet" : "src/Features/TruthJet",
-            "AnalysisTopGNN.Features.TruthTop" : "src/Features/TruthTop",
-            "AnalysisTopGNN.Features.TruthTopChildren" : "src/Features/TruthTopChildren",
-
-            "AnalysisTopGNN.IO" : "src/IO",
-            "AnalysisTopGNN.Plotting" : "src/Plotting",
-            "AnalysisTopGNN.Statistics" : "src/Statistics", 
-            "AnalysisTopGNN.Generators" : "src/Generators", 
-            "AnalysisTopGNN.Submission" : "src/Submission", 
-
-        },
-
-        ext_modules = [
-                Extension("AnalysisTopGNN.Vectors", 
-                          sources = ["src/Vectors/Lorentz.pyx"]),
-                ],
-        cmdclass = {"build_ext" : Cython.Build.build_ext}, 
-        long_description = open("README.md").read(), 
-    )
-
-
+        ext_modules = cythonize(ext_mod, nthreads = 12),
+)
