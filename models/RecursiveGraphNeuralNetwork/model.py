@@ -1,10 +1,7 @@
 import torch
 from torch_geometric.nn import MessagePassing, LayerNorm
-from torch_geometric.utils import scatter
-from torch.nn import Sequential as Seq
-from torch.nn import Linear, ReLU, Sigmoid, Tanh
-
-import torch.nn.functional as F
+from torch_geometric.nn.models import MLP
+from torch_geometric.utils import remove_self_loops
 
 try: import PyC.Transform.CUDA as Tr
 except: import PyC.Transform.Tensors as Tr
@@ -18,6 +15,8 @@ except: import PyC.Physics.Tensors.Cartesian as PC
 try: import PyC.Operators.CUDA as OP
 except: import PyC.Operators.Tensors as OP
 
+try: import PyC.NuSol.CUDA as NuSol
+except: import PyC.NuSol.Tensor as NuSol
 
 torch.set_printoptions(4, profile = "full", linewidth = 100000)
 
@@ -29,141 +28,114 @@ class ParticleRecursion(MessagePassing):
 
     def __init__(self):
         super().__init__(aggr = None, flow = "target_to_source")
-        end = 16
+        end = 32
+
+        self.edge = None
+
+        ef = 3
+        self._norm_i = LayerNorm(ef, mode = "node")
+        self._inpt = MLP([ef, end])
+        self._edge = MLP([end, 2])
+
+        self._norm_r = LayerNorm(end, mode = "node")
+        self._rnn = MLP([end*2, end*2, end*2, end]) 
+    
+    def edge_updater(self, edge_index, batch, Pmc, Pmu, PiD): 
+        i, j = edge_index[0], edge_index[1]
+        mlp, _ = self.message(batch[i], batch[j], Pmc[i], Pmc[j], Pmu[i], Pmu[j], PiD[i], PiD[j])
+        if self.edge is None: self.edge = self._norm_r(mlp); return 
+
+    def message(self, batch_i, batch_j, Pmc_i, Pmc_j, Pmu_i, Pmu_j, PiD_i, PiD_j):
+        m_i, m_j, m_ij = PC.Mass(Pmc_i), PC.Mass(Pmc_j), PC.Mass(Pmc_i + Pmc_j)
+        f_ij = torch.cat([m_i + m_j, m_ij, torch.abs(m_i - m_j)], -1)
+        f_ij = f_ij + self._norm_i(f_ij)
+        return self._inpt(f_ij), Pmc_j 
+
+    def aggregate(self, message, index, Pmc):
+        mlp_ij, Pmc_j = message
       
-        self._it = 0 
-        self.edge = None 
-        self._norm = LayerNorm(16)
-        self._isEdge = Seq(Linear(16,  end), Linear(end, end), Linear(end, 16))
-
-        self._norm_m = LayerNorm(5)
-        self._isMass = Seq(Linear(5, end), Linear(end, end), Linear(end, 5))
-
-        self._norm_r = LayerNorm(23)
-        self._rnn = Seq(Linear(23, end), Linear(end, end), Linear(end, 2))
-
-    def M(self, pmc): return PC.Mass(pmc)
- 
-    def message(self, edge_index, Pmc_i, Pmc_j, Pmu_i, Pmu_j, type__i, type__j):
-        eta_i, eta_j = Pmu_i[:, 1].view(-1, 1), Pmu_j[:, 1].view(-1, 1)
-        phi_i, phi_j = Pmu_i[:, 2].view(-1, 1), Pmu_j[:, 2].view(-1, 1)
-        delta_r = PP.DeltaR(eta_i, eta_j, phi_i, phi_j)
-       
-        idx = (edge_index[0] != edge_index[1]).view(-1, 1)
-        m_i, m_j = PC.Mass(Pmc_i), PC.Mass(Pmc_j)
-        m_ij = PC.Mass(Pmc_i + Pmc_j*idx)
-
-        feat_i, feat_j = torch.cat([Pmc_i, type__i, m_i], -1), torch.cat([Pmc_j, type__j, m_j], -1)
-        tmp = self._norm(torch.cat([delta_r, m_ij, feat_i - feat_j, feat_i], -1))
+        msk = self._idx == 1 
+        torch.cat([mlp_ij, self.edge[msk]], -1)
+        self.edge[msk] = self._norm_r(self._rnn(torch.cat([mlp_ij, self.edge[msk]], -1)))
         
-        mlp = self._isEdge(tmp) + tmp
-        return mlp, Pmc_j
- 
-    def aggregate(self, message, index, Pmc, type_, batch):
-        mlp_ij, pmc_j = message
-       
-        # Make a new prediction of the node mass
-        pmc ,  _pmc,  __pmc =  Pmc[index], self._pmc[index], self._pmc[index] + pmc_j
-        mass, _mass, __mass = self.M(pmc),     self.M(_pmc), self.M(__pmc)
-        batch = batch[index]
+        sel = self._edge(self.edge[msk])
+        sel = sel.max(-1)[1]
+        self._idx[msk] *= (sel == 0).to(dtype = torch.int)
 
-        masses = torch.cat([mass - _mass, mass, _mass - __mass, _mass, __mass], -1)
-        masses = self._norm_m(masses, batch = batch)
-        mlp_m = self._isMass(masses) + masses
+        Pmc = Pmc.clone()
+        Pmc.index_add_(0, index[sel == 1], Pmc_j[sel == 1])
+        Pmu = Tr.PtEtaPhi(Pmc[:, 0].view(-1, 1), Pmc[:, 1].view(-1, 1), Pmc[:, 2].view(-1, 1))
+        Pmu = torch.cat([Pmu, Pmc[:, 3].view(-1, 1)], -1)
+        return sel, Pmc, Pmu
 
-        inpt = [mass, _mass] if self.edge is None else [self.edge]
-        inpt += [mlp_m, mlp_ij]
-        inpt = torch.cat(inpt, -1)
-        self.edge = self._rnn(self._norm_r(inpt, batch = batch))
- 
-        if self.edge is None: self.edge = self._rnn()
-        else: self.edge = self._rnn(torch.cat([self.edge, mlp_m, mlp_ij], -1)) 
- 
-        # Make a MLP prediction on which edges are to be connected
-        sel = self.edge.max(-1)[1]
-        msk = (sel*self._idx) == 1
-        
-        # Sum incoming edges provided they are predicted to be connected and not self-loops
-        self._pmc[index[msk]] += pmc_j[msk]
-        
-        # Update the unused edges and try them again 
-        self._idx *= (sel == 0).to(dtype = torch.int)
+    def forward(self, i, edge_index, batch, Pmc, Pmu, PiD):
 
-        return self._pmc, self.edge
-
-    def forward(self, i, edge_index, batch, N_pT, N_eta, N_phi, N_energy, N_is_lep, N_is_b):
-        Pmu = torch.cat([N_pT, N_eta, N_phi, N_energy], -1)
-        Pmc = torch.cat([Tr.PxPyPz(N_pT, N_eta, N_phi), N_energy], -1)
-        type_ = Misc = torch.cat([N_is_lep, N_is_b], -1)
-        
-        if self.edge is None: 
+        if self.edge is None:
             self._idx = torch.ones_like(edge_index[0])
-            self._idx *= (edge_index[0] != edge_index[1]) # Prevent double counting 
-            self._pmc = Pmc.clone()
-            self._it = 1
+            self._idx *= edge_index[0] != edge_index[1]
+            self.edge_updater(edge_index, batch = batch, Pmc = Pmc, Pmu = Pmu, PiD = PiD)
+            edge_index, _ = remove_self_loops(edge_index)
 
-        _idx = self._idx.clone()
-        Pmc_n, mlp_pred = self.propagate(edge_index, Pmc = Pmc, Pmu = Pmu, type_ = type_, batch = batch)
-        if (self._idx - _idx).sum(-1) == 0: return mlp_pred
-        self._it += 1
-        return self.forward(i, edge_index, batch, N_pT, N_eta, N_phi, N_energy, N_is_lep, N_is_b)
-
+        _idx = self._idx.clone()        
+        sel, Pmc, Pmu = self.propagate(edge_index, batch = batch, Pmc = Pmc, Pmu = Pmu, PiD = PiD)
+        edge_index = edge_index[:, sel == 0]       
+        if edge_index.size()[1] == 0: pass
+        elif (_idx != self._idx).sum(-1) != 0: return self.forward(i, edge_index, batch, Pmc, Pmu, PiD)
+        mlp = self._edge(self.edge) 
+        self.edge = None 
+        return mlp
 
 class RecursiveGraphNeuralNetwork(MessagePassing):
 
     def __init__(self):
-        super().__init__( aggr = "max" )
+        super().__init__( aggr = None, flow = "target_to_source")
         
         self.O_top_edge = None 
         self.L_top_edge = "CEL"
-        
-        self.O_res_edge = None 
-        self.L_res_edge = "CEL"
+        self._edgeRNN = ParticleRecursion()
 
-        self.O_signal = None 
-        self.L_signal = "CEL"
-    
-        self.O_ntops = None
-        self.L_ntops = "CEL"       
+    def message(self, edge_index, Pmc_i, Pmc_j, PiD_i, PiD_j):
+        # Find edges where the source/dest are a b and lep
+        _lep_b = ((PiD_i + PiD_j) == 1).sum(-1) == 2
+        _lep_b = _lep_b == 1
+        c_t, s_t = OP.CosTheta(Pmc_i, Pmc_j), OP.SinTheta(Pmc_i, Pmc_j)
+        e_feat = torch.cat([c_t, s_t, _lep_b.view(-1, 1)], -1)
+        return e_feat, _lep_b, Pmc_j, edge_index[1]
+
+    def aggregate(self, message, index, batch, Pmc, PiD, met, phi):
+        e_feat, msk, Pmc_j, index_j = message
+        e_ij = index[msk]
+        
+        this_lep = Pmc[e_ij]  * PiD[e_ij][:, 0].view(-1, 1)
+        this_b   = Pmc_j[msk] * (PiD[e_ij][:, 1] == 0).view(-1, 1)
+
+        matrix = torch.cat([this_lep, this_b, index[msk].view(-1, 1), index_j[msk].view(-1, 1)], -1)
+        this_matrix = matrix[(matrix != 0).sum(-1) > 3]
+
+        e_ij = this_matrix[:, -2:]
+        a, a_ = e_ij[:, 0].unique(sorted = False, return_inverse = True)
+        b, b_ = e_ij[:, 1].unique(sorted = False, return_inverse = True)
+        e_ij = e_ij[a_ == b_]
+
+        li_bj_node = this_matrix[:, :-2].view(-1, 8)
+        li_bj_node = li_bj_node[a_ == b_]
+
+
+
+
+
+        exit()
+
+
+
+
  
-        self._istop = ParticleRecursion()
-        self._isres = ParticleRecursion()
+    def forward(self, i, edge_index, batch, G_met, G_phi, G_n_jets, N_pT, N_eta, N_phi, N_energy, N_is_lep, N_is_b):
+        Pmc = torch.cat([Tr.PxPyPz(N_pT, N_eta, N_phi), N_energy], -1)
+        Pmu = torch.cat([N_pT, N_eta, N_phi, N_energy], -1)
+        PiD = torch.cat([N_is_lep, N_is_b], -1)
+        batch = batch.view(-1, 1)
 
-        self._mlp = Seq(Linear(12, 12), Linear(12, 4))
-        self._norm = LayerNorm(8)
-        self._mlp_n = Seq(Linear(8, 8), LayerNorm(8), Linear(8, 8), Linear(8, 5))
-        self._mlp_s = Seq(Linear(8, 8), LayerNorm(8), Linear(8, 8), Linear(8, 2))
-
-
-    def message(self, Pmc_i, Pmc_j):
-        return self._mlp( torch.cat([Pmc_i, Pmc_j - Pmc_i], -1) )
-
-    def forward(self, i, edge_index, batch, G_met, G_phi, G_n_jets, N_pT, N_eta, N_phi, N_energy, N_is_lep, N_is_b, E_T_res_edge):
-
-        self._istop.edge = None 
-        self._isres.edge = None
-        self.O_top_edge = self._istop(i, edge_index, batch, N_pT, N_eta, N_phi, N_energy, N_is_lep, N_is_b)   
-        self.O_res_edge = self._isres(i, edge_index, batch, N_pT, N_eta, N_phi, N_energy, N_is_lep, N_is_b)   
-        dot = OP.Dot(self.O_res_edge, self.O_top_edge)
-        self.O_res_edge = dot*self.O_res_edge + (1-dot)*self.O_top_edge
-
-        Pmc = torch.cat([Tr.PxPyPz(N_pT, N_eta, N_phi), N_energy, N_is_lep, N_is_b], -1)
-        conv = self.propagate(edge_index, Pmc = Pmc)
-
-        px_, py_ = Tr.Px(G_met, G_phi), Tr.Py(G_met, G_phi)
-        dx, dy = px_[batch] - Pmc[:, 0].view(-1, 1), py_[batch] - Pmc[:, 1].view(-1, 1)
-        conv = torch.cat([conv, torch.sqrt(dx.pow(2) + dy.pow(2)), G_n_jets[batch], N_is_lep, N_is_b], -1)
-        conv = self._norm(conv, batch = batch) + conv
-
-        ntop = torch.zeros_like(G_met)          
-        ntop = torch.cat([ntop for _ in torch.arange(8)], -1)
-        ntop[batch] += conv
-        self.O_ntops = self._mlp_n(ntop)
-
-        sig = torch.zeros_like(G_met)          
-        sig = torch.cat([sig for _ in torch.arange(8)], -1)
-        sig[batch] += conv
-        self.O_signal = self._mlp_s(sig) 
+        self.propagate(edge_index, batch = batch, Pmc = Pmc, PiD = PiD, met = G_met, phi = G_phi)
         
- 
-        
+        self.O_top_edge = self._edgeRNN(i, edge_index, batch, Pmc, Pmu, PiD)

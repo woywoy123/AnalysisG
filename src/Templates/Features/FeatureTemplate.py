@@ -193,12 +193,21 @@ def Jets():
 def AddFeature(Prefix, dic):
     return {Prefix + "_" + i : dic[i] for i in dic} 
 
-def ApplyFeatures(A, Level):
+def ApplyFeatures(A, Level = None):
+    if Level is not None: pass
+    else: 
+        name = A.EventGraph.__name__
+        if "Tops" in name: Level = "TruthTops"
+        elif "Children" in name: Level = "TruthChildren"
+        elif "TruthJet" in name: Level = "TruthJets"
+        elif "GraphJet" in name or "Detector" in name: "Jets"
+        else: Level = ""
+
     if Level == "TruthTops": Features = TruthTops()
     elif Level == "TruthChildren": Features = TruthChildren()
     elif Level == "TruthJets": Features = TruthJets()
     elif Level == "Jets": Features = Jets()
-    else: print("INVALID CHOICE!")
+    else: print("INVALID CHOICE!"); exit()
 
     for i in Features:
         base = "_".join(i.split("_")[1:])

@@ -1,14 +1,17 @@
 from AnalysisG import Analysis 
 from AnalysisG.Events import Event
-from AnalysisG.Events import GraphChildren, GraphTruthJet, GraphDetector
+from AnalysisG.Events import GraphChildren, GraphChildrenNoNu
+
+
+from AnalysisG.Events import GraphTruthJet, GraphDetector
 from AnalysisG.Templates import ApplyFeatures
 from BasicGraphNeuralNetwork.model import BasicGraphNeuralNetwork
 from RecursiveGraphNeuralNetwork.model import RecursiveGraphNeuralNetwork
 
 
-mode = "TruthChildren"
-modes = {"TruthChildren" : GraphChildren, "TruthJets" : GraphTruthJet, "Jets" : GraphDetector}
-
+mode = "TruthChildrenNoNu"
+modes = { "TruthJets" : GraphTruthJet, "Jets" : GraphDetector}
+modes |= {"TruthChildren" : GraphChildren, "TruthChildrenNoNu" : GraphChildrenNoNu}
 
 Ana = Analysis()
 Ana.ProjectName = "Project"
@@ -18,19 +21,20 @@ Ana.Event = Event
 
 Ana.EventGraph = modes[mode]
 Ana.DataCache = True
-#Ana.EventStop = 10
+Ana.EventStop = 10
 
-ApplyFeatures(Ana, mode)
+
+ApplyFeatures(Ana)
 Ana.TrainingSampleName = mode
 Ana.Device = "cuda"
 Ana.kFolds = 1
 Ana.Epochs = 10000
-Ana.BatchSize = 10
+Ana.BatchSize = 2
 Ana.ContinueTraining = False
 Ana.Optimizer = "ADAM" 
 Ana.OptimizerParams = {"lr" : 1e-4, "weight_decay" : 1e-3}
 Ana.Model = RecursiveGraphNeuralNetwork
-Ana.DebugMode = False
+Ana.DebugMode = True
 Ana.EnableReconstruction = False
 Ana.PurgeCache = False
 Ana.Launch
