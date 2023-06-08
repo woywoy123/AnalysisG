@@ -94,48 +94,106 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
         self.L_top_edge = "CEL"
         self._edgeRNN = ParticleRecursion()
 
-    def message(self, edge_index, Pmc_i, Pmc_j, PiD_i, PiD_j):
+    def NuNuCombinatorial(self, edge_index, batch, Pmu, PiD, G_met, G_phi):
+        i, j, batch = edge_index[0], edge_index[1], batch.view(-1)
+
         # Find edges where the source/dest are a b and lep
-        _lep_b = ((PiD_i + PiD_j) == 1).sum(-1) == 2
-        _lep_b = _lep_b == 1
-        c_t, s_t = OP.CosTheta(Pmc_i, Pmc_j), OP.SinTheta(Pmc_i, Pmc_j)
-        e_feat = torch.cat([c_t, s_t, _lep_b.view(-1, 1)], -1)
-        return e_feat, _lep_b, Pmc_j, edge_index[1]
-
-    def aggregate(self, message, index, batch, Pmc, PiD, met, phi):
-        e_feat, msk, Pmc_j, index_j = message
-        e_ij = index[msk]
+        msk = (((PiD[i] + PiD[j]) == 1).sum(-1) == 2) == 1
         
-        this_lep = Pmc[e_ij]  * PiD[e_ij][:, 0].view(-1, 1)
-        this_b   = Pmc_j[msk] * (PiD[e_ij][:, 1] == 0).view(-1, 1)
+        # Block out nodes which are neither leptons or b-jets
+        _i, _j = i[msk], j[msk]
+        
+        # Find the pairs where source particle is the lepton and the destination is a b-jet
+        this_lep_i = (PiD[_i][:, 0] == 1).view(-1, 1)
+        this_b_i   = (PiD[_j][:, 1] == 1).view(-1, 1)
+        p_msk_i = torch.cat([this_lep_i, this_b_i], -1).sum(-1) == 2 # enforce this 
 
-        matrix = torch.cat([this_lep, this_b, index[msk].view(-1, 1), index_j[msk].view(-1, 1)], -1)
-        this_matrix = matrix[(matrix != 0).sum(-1) > 3]
+        # Find the pairs where destination particle is the lepton and the source is a b-jet
+        this_lep_j = (PiD[_j][:, 0] == 1).view(-1, 1)
+        this_b_j   = (PiD[_i][:, 1] == 1).view(-1, 1)
+        p_msk_j = torch.cat([this_lep_j, this_b_j], -1).sum(-1) == 2       
 
-        e_ij = this_matrix[:, -2:]
-        a, a_ = e_ij[:, 0].unique(sorted = False, return_inverse = True)
-        b, b_ = e_ij[:, 1].unique(sorted = False, return_inverse = True)
-        e_ij = e_ij[a_ == b_]
+        # Make sure the that source == destination (destination == source) particle index
+        msk_ij = edge_index[:, msk][:, p_msk_i][0] == edge_index[:, msk][:, p_msk_j][1]
+        msk_ji = edge_index[:, msk][:, p_msk_i][1] == edge_index[:, msk][:, p_msk_j][0]
+        msk_ = msk_ji * msk_ij # eliminates non-overlapping cases
 
-        li_bj_node = this_matrix[:, :-2].view(-1, 8)
-        li_bj_node = li_bj_node[a_ == b_]
+        # Find the original particle index in the event
+        par_ij = edge_index[:, msk][:, p_msk_i][:, msk_]
+
+        # create proxy particle indices (these are used to assign NON-TOPOLOGICALLY CONNECTED PARTICLE PAIRS)
+        # e.g. 1 -> 2, 3 -> 4 is ok, but 1 -> 2, 1 -> 4 is not ok (they share the same lepton/b-quark).
+        # This means NuNu(p1, p1, p2, p4) would be incorrect, we want NuNu(p1, p3, p2, p4)
+        nodes = par_ij.size()[1]
+        dst = torch.tensor([i for i in torch.arange(nodes)], dtype = torch.int, device = par_ij.device).view(1, -1)
+        src = torch.cat([torch.ones_like(dst)*i for i in torch.arange(nodes)], -1).view(-1)
+        dst = torch.cat([dst for _ in torch.arange(nodes)], -1).view(-1)
+
+        # Check whether the particles involved for these proxy node pairs are from the same event (batch). 
+        b_i = batch.view(-1)[par_ij[0][src]].view(-1)
+        b_j = batch.view(-1)[par_ij[1][dst]].view(-1)
+        
+        # Make sure we dont double count. We do want cases where [p1, p3, p2, p4] <=> [p3, p1, p4, p2]
+        # But not [p1, p1, p2, p4] <=> [p1, p1, p4, p2]
+        b_ = (b_j == b_i) * (src != dst)
+
+        # Get the original particle index of the b-jet and lepton for each event
+        NuNu_i = par_ij[:, src[b_]]
+        NuNu_j = par_ij[:, dst[b_]]
+
+        # Make it look nicer
+        NuNu_ = torch.cat([NuNu_i.t(), NuNu_j.t()], -1)
+
+        b1, b2 = NuNu_[:, 1], NuNu_[:, 3]
+        l1, l2 = NuNu_[:, 0], NuNu_[:, 2]
+       
+        mT = torch.ones_like(b1.view(-1, 1))*172.62*1000
+        mW = torch.ones_like(b1.view(-1, 1))*80.385*1000
+        mN = torch.zeros_like(mW)
+        met, phi = G_met[batch[b1]], G_phi[batch[b1]]
+        res = NuSol.NuNuPtEtaPhiE(Pmu[b1], Pmu[b2], Pmu[l1], Pmu[l2], met, phi, mT, mW, mN, 10e-8) 
+        SkipEvent = res[0]
+        
+        if len(res) == 5: return SkipEvent    
+        _pt, _eta, _phi, _e = Pmu[:, 0], Pmu[:, 1], Pmu[:, 2], Pmu[:, 3]
+        p3_v = Tr.PxPyPz(_pt, _eta, _phi)
+
+        l1, l2 = l1[SkipEvent == False], l2[SkipEvent == False] 
+        nu1, nu2 = res[1], res[2]
+        l1_v, l2_v = p3_v[l1].view(-1, 1, 3), p3_v[l2].view(-1, 1, 3)
+        W_1, W_2 = (nu1 + l1_v).view(-1, 3), (nu2 + l2_v).view(-1, 3)
+
+        # Create a reverse look-up map of the leptons being used (edge_index)
+        nu1_msk, nu2_msk = nu1 == 0, nu2 == 0
+        l1_map = (torch.ones_like(nu1_msk[:, :, :1])*(l1.view(-1, 1, 1))).view(-1, 1)
+        l2_map = (torch.ones_like(nu2_msk[:, :, :1])*(l2.view(-1, 1, 1))).view(-1, 1)
+        
+        # Remove Zero values solutions
+        nu1_msk, nu2_msk = nu1_msk.sum(-1).view(-1) > 0, nu2_msk.sum(-1).view(-1) > 0
+        l1_map, l2_map = l1_map[nu1_msk], l2_map[nu2_msk]
+        l1l2_map = torch.cat([l1_map, l2_map], -1)
+        W_1, W_2 = W_1[nu1_msk], W_2[nu2_msk]
 
 
-
-
+        # Continue here .....
+        print(l1l2_map.size())
+        exit()
+        print(l1l2_map)
+        print(W_1)
+        print(W_2)
 
         exit()
 
 
-
-
- 
-    def forward(self, i, edge_index, batch, G_met, G_phi, G_n_jets, N_pT, N_eta, N_phi, N_energy, N_is_lep, N_is_b):
+    def forward(self, i, edge_index, batch, G_met, G_phi, G_n_jets, N_pT, N_eta, N_phi, N_energy, N_is_lep, N_is_b, G_T_n_nu):
         Pmc = torch.cat([Tr.PxPyPz(N_pT, N_eta, N_phi), N_energy], -1)
         Pmu = torch.cat([N_pT, N_eta, N_phi, N_energy], -1)
         PiD = torch.cat([N_is_lep, N_is_b], -1)
         batch = batch.view(-1, 1)
 
-        self.propagate(edge_index, batch = batch, Pmc = Pmc, PiD = PiD, met = G_met, phi = G_phi)
+        self.NuNuCombinatorial(edge_index, batch, Pmu, PiD, G_met, G_phi)
+
+        
+        #self.propagate(edge_index, batch = batch, Pmc = Pmc, PiD = PiD, met = G_met, phi = G_phi)
         
         self.O_top_edge = self._edgeRNN(i, edge_index, batch, Pmc, Pmu, PiD)

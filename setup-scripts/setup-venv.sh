@@ -9,12 +9,12 @@ source ./PythonGNN/bin/activate
 echo "export PythonGNN=$PWD/PythonGNN/bin/activate" >> ~/.bashrc
 echo "alias GNN='source $PWD/PythonGNN/bin/activate'" >> ~/.bashrc
 
-#export CUDA_PATH=/usr/local/cuda-11.8
-export VERSION=cpu
-export TORCH=1.13.0
+export CUDA_PATH=/usr/local/cuda-11.8
+export VERSION=cu118 # e.g. cu116, cu118, etc.
+export TORCH=2.0.0
 export MAX_JOBS=12
-#export CC=gcc-620
-#export CXX=g++-620
+export CC=gcc-11 # gcc-620
+export CXX=g++-11 #g++-620
 
 cd ../
 bash setup.sh

@@ -21,7 +21,7 @@ Ana.Event = Event
 
 Ana.EventGraph = modes[mode]
 Ana.DataCache = True
-Ana.EventStop = 10
+Ana.EventStop = 1000
 
 
 ApplyFeatures(Ana)
@@ -29,7 +29,7 @@ Ana.TrainingSampleName = mode
 Ana.Device = "cuda"
 Ana.kFolds = 1
 Ana.Epochs = 10000
-Ana.BatchSize = 2
+Ana.BatchSize = 100
 Ana.ContinueTraining = False
 Ana.Optimizer = "ADAM" 
 Ana.OptimizerParams = {"lr" : 1e-4, "weight_decay" : 1e-3}
