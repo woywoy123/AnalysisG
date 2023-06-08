@@ -21,7 +21,7 @@ class BaseFunctions(Tools, _Plotting):
                     data = self.ATLASData, 
                     year = self.ATLASYear, 
                     lumi = round(self.ATLASLumi, 4),
-                    label = "\nN = " + str(len(self.xData) if self.NEvents == None else self.NEvents),
+                    label = "\n$N_{events}$ = " + str(len(self.xData) if self.NEvents == None else self.NEvents),
                     com = self.ATLASCom)
             self.PLT.style.use(hep.style.ATLAS)
         if self.Style == "ROOT": self.PLT.style.use(hep.style.ROOT)
