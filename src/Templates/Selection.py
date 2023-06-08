@@ -41,7 +41,7 @@ class SelectionTemplate(Tools):
     def Luminosity(self): return ((sum(self.SelWeights))) / sum(self.AllWeights)
     
     @property
-    def NEvents(self): return len(self.AllWeights)
+    def NEvents(self): return len(self.SelWeights)
 
     def Selection(self, event): return True
 
