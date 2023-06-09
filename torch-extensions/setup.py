@@ -203,11 +203,11 @@ for i in PkgH:
         if (_cu == None or _cu == "") and "CUDA" in i: continue
         if "CUDA" in i:
                 from torch.utils.cpp_extension import CUDAExtension
-                _cmd["ext_modules"].append(CUDAExtension( i, PkgC[i], extra_compile_args = ["std=c++14"]))
+                _cmd["ext_modules"].append(CUDAExtension( i, PkgC[i], extra_compile_args = ["-std=c++14"]))
                 _cmd["package_data"][ i ] = PkgH[i]
                 continue
         from torch.utils.cpp_extension import CppExtension
         _cmd["package_data"][ i ] = PkgH[i]
-        _cmd["ext_modules"].append(CppExtension( i, PkgC[i], extra_compile_args = ["std=c++14"]))
+        _cmd["ext_modules"].append(CppExtension( i, PkgC[i], extra_compile_args = ["-std=c++14"]))
 
 setup(**_cmd)
