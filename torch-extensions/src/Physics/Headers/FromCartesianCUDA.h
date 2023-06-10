@@ -1,8 +1,8 @@
 #ifndef H_PHYSICS_CUDA_C
 #define H_PHYSICS_CUDA_C
 
-#include "CUDA.h"
 #include "../../Transform/Headers/ToPolarCUDA.h"
+#include "CUDA.h"
 
 namespace PhysicsCartesianCUDA
 {

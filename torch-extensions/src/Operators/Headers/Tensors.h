@@ -1,6 +1,7 @@
+#include <torch/extension.h>
+
 #ifndef H_OPERATORS_TENSORS
 #define H_OPERATORS_TENSORS
-#include <torch/extension.h>
 
 namespace OperatorsTensors
 {

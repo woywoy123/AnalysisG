@@ -1,4 +1,3 @@
-#include <torch/extension.h>
 #include "PolarKernel.cu"
 
 torch::Tensor _Pt(torch::Tensor _px, torch::Tensor _py)

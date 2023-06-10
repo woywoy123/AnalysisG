@@ -1,3 +1,4 @@
+#include <torch/extension.h>
 #include "Operators.cu"
 
 template <typename scalar_t> 

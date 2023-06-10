@@ -2,9 +2,6 @@
 #define H_PHYSICS_CUDA
 
 #include <torch/extension.h>
-#include <utility>
-#include <cmath>
-
 torch::Tensor _P2(torch::Tensor px, torch::Tensor py, torch::Tensor pz); 
 torch::Tensor _P(torch::Tensor px, torch::Tensor py, torch::Tensor pz); 
 

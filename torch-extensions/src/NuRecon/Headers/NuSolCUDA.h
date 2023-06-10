@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <torch/extension.h>
-#include <iostream>
+//#include "../CUDA/NuSolTorch.cu"
 #include "../../Physics/Headers/CUDA.h"
 #include "../../Transform/Headers/ToCartesianCUDA.h"
 #include "../../Transform/Headers/ToPolarCUDA.h"
@@ -69,7 +69,7 @@ namespace NuSolCUDA
 		out.reserve(inpt.size()); 
 		for (unsigned int i = 0; i < inpt.size(); ++i)
 		{
-			out.push_back(OperatorsCUDA::TransferToCUDA(inpt[i]).view({-1, inpt[i].size()})); 
+			out.push_back(OperatorsCUDA::TransferToCUDA(inpt[i]).view({-1, (unsigned int)inpt[i].size()})); 
 		}
 		return NuSolCUDA::_Format(torch::cat(out, 0), inpt[0].size()); 
 	}
