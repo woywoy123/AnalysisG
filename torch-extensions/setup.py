@@ -89,8 +89,9 @@ for pkg in PACKAGES:
     deps = _recursive(PACKAGES[pkg])
     HEADER = [k for k in deps if _check(k, ".h")]
     CXX = [k for k in deps if _check(k, ".cxx")]
-    CU = [k for k in deps if _check(k, ".cu") and cuda]
-   
+    CU = [k for k in deps if _check(k, ".cu")]
+    if not cuda: CU = []
+    
     dic = {"name" : pkg, "sources": CXX + CU, "extra_compile_args" : ["-std=c++14"]} 
     INST_.append(CppExtension(**dic) if len(CU) == 0 else CUDAExtension(**dic))
     INST_H[pkg] = HEADER
