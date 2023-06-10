@@ -2,7 +2,6 @@
 #define H_OPERATORS_CUDA
 
 #include <torch/extension.h>
-
 torch::Tensor _Dot(torch::Tensor v1, torch::Tensor v2);
 torch::Tensor _CosTheta(torch::Tensor v1, torch::Tensor v2);
 torch::Tensor _Rx(torch::Tensor angle); 

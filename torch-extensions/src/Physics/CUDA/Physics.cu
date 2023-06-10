@@ -1,6 +1,5 @@
-#include <torch/extension.h>
-#include <cuda.h>
 #include <cuda_runtime.h>
+#include <cuda.h>
 #include <cmath>
 
 template <typename scalar_t>
