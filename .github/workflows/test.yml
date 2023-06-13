@@ -43,7 +43,7 @@ jobs:
               uses: "actions/checkout@v3"
 
             - name: "Config-CUDA"
-              if: ${{ matrix.cuda }} != "cpu"
+              if: ${{ matrix.cuda != 'cpu' }}
               uses: Jimver/cuda-toolkit@v0.2.10
               id: cuda-toolkit
               with:
