@@ -1,5 +1,5 @@
 from AnalysisG.Tools import Tools
-from typing import Union
+from typing import Union, Dict, List
 from tqdm import tqdm 
 
 class _Interface(Tools):
@@ -7,10 +7,10 @@ class _Interface(Tools):
     def __init__(self):
         pass
 
-    def InputSamples(self, val: Union[dict[str], list[str], str, None]):
+    def InputSamples(self, val: Union[Dict[str], List[str], str, None]):
         self.Files = self.ListFilesInDir(val, ".root")
 
-    def InputSample(self, Name: Union[str] = None, SampleDirectory: Union[str, dict, list, None] = None):
+    def InputSample(self, Name: Union[str] = None, SampleDirectory: Union[str, Dict, List, None] = None):
         self.Files = {}
         self.InputSamples(SampleDirectory)
         if Name == None: Name = ""
