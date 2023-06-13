@@ -2,8 +2,10 @@ from AnalysisG.Notification import _ModelWrapper
 from .LossFunctions import LossFunctions
 from torch_geometric.data import Data
 import torch
-import PyC.Transform.Tensors as PT
-import PyC.Physics.Tensors.Cartesian as CT
+try: 
+    import PyC.Transform.Tensors as PT
+    import PyC.Physics.Tensors.Cartesian as CT
+except: pass
 
 class ModelWrapper(_ModelWrapper):
 
@@ -31,7 +33,6 @@ class ModelWrapper(_ModelWrapper):
 
         self._GetModelInputs
         self._build 
-        self._inject_tools
 
     def __call__(self, data):
         self._Model(**{k : getattr(data, k) for k in self.i_mapping})        
@@ -85,6 +86,9 @@ class ModelWrapper(_ModelWrapper):
         self.o_mapping  = self._mapping(smpl, "E_T_")
         self.o_mapping |= self._mapping(smpl, "N_T_")
         self.o_mapping |= self._mapping(smpl, "G_T_")
+        
+        try:self._inject_tools
+        except: pass
 
         if not self._iscompatible: return False
         return True 
