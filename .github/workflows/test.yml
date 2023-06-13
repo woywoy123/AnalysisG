@@ -60,16 +60,11 @@ jobs:
                 python -m pip install tox tox-gh-actions 
 
             - name: "AnalysisG-Install"
-              run: pip install .
-
-            - name: "PostInstall-PyAmi"
-              run: CONFIG_PYAMI
-
-            - name: "PostInstall-CUDA"
-              run: CHECK_CUDA
-
-            - name: "PostInstall-PyC"
-              run: POST_INSTALL_PYC
+              run: | 
+                    pip install .
+                    CONFIG_PYAMI
+                    CHECK_CUDA
+                    POST_INSTALL_PYC
             
             - name: "Running using ${{ matrix.python-version }}"
               run: cd test && python -m tox
