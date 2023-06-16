@@ -1,0 +1,19 @@
+stages:
+  - build
+  - testing
+
+install:
+    stage: build
+    script:
+        - ls
+        - pip install virtualenv
+        - cd setup-scripts
+        - bash setup-venv.sh
+        - source ../source-this.sh
+
+testing:
+    stage: testing
+    script:
+        - pip install tox
+        - tox .
+
