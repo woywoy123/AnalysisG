@@ -4,6 +4,10 @@ from AnalysisG.Settings import Settings
 import signal
 import uproot 
 import json
+import warnings
+try: import pyAMI.client; import pyAMI.atlas.api as atlas
+except: pass
+
 
 class MetaData(object):
 
@@ -81,24 +85,21 @@ class AMI:
         except: self.cfg = False
     
     @property
-    def init(self):
-        import pyAMI.client
-        import pyAMI.atlas.api as atlas
+    def init(self): 
+        warnings.filterwarnings("ignore")
         self._client = pyAMI.client.Client("atlas") 
     
     def search(self, pattern, amitag = False):
-        if self._client is None: return {}
-        import pyAMI.client
-        import pyAMI.atlas.api as atlas
-
         def _sig(signum, frame): return ""
-
+        if self._client is None: return {}
         signal.signal(signal.SIGALRM, _sig)
         signal.alarm(10)
+        warnings.filterwarnings("ignore")
         try: res = atlas.list_datasets(self._client, dataset_number = [pattern], type = "DAOD_TOPQ1")
         except: return False
  
         if len(res) == 0: return {}
+        warnings.filterwarnings("ignore")
         try: 
             if amitag: 
                 tags = set(amitag.split("_"))

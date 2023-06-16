@@ -1,5 +1,6 @@
 from AnalysisG.Events import Event
 from AnalysisG import Analysis
+from conftest import clean_dir
 import torch
 
 from neutrino_reconstruction.NeutrinoSolutionDeconstruct import *
@@ -91,8 +92,8 @@ def test_transformation():
 
             assert AssertEquivalenceList(lc, C.PxPyPz(c_pt, c_eta, c_phi)[0])
             assert AssertEquivalenceList(lp, C.PtEtaPhi(c_px, c_py, c_pz)[0])
-   
-    Ana.rm("NeutrinoProject") 
+  
+    clean_dir() 
     if is_cuda == False: return 
     # ===== Test the performance difference ===== #
     CPU = torch.tensor(_polar, device = "cpu")
@@ -124,7 +125,7 @@ def test_transformation():
     AssertEquivalenceRecursive(cpu_r, cuda_r)
     print("--- Testing Performance Between C++ and CUDA of PtEtaPhi ---")
     print("Speed Factor (> 1 is better): ", diff1 / diff2)
-    Ana.rm("NeutrinoProject")
+    clean_dir()
 
 def test_physics():
     Ana = _MakeSample()
@@ -173,7 +174,7 @@ def test_physics():
             phi1.append([top2.phi]), e1.append([top2.e])
             deltaR.append([top.DeltaR(top2)])
 
-    Ana.rm("NeutrinoProject")
+    clean_dir()
     if is_cuda == False: return   
 
     print(" ======= Cartesian stuff ======= ")
@@ -447,7 +448,7 @@ def test_double_nu():
             out["mety"].append(F.Py(i.met, i.met_phi))
             it += 1
     
-    Ana.rm("UNTITLED")
+    clean_dir()
     errorMargin = 2 # Allow for a 2% delta between the original and new implementation 
     for i in range(it):
         failed = False
@@ -517,7 +518,7 @@ def test_speed():
             vl["ev"].append(ev)
             it+=1
     
-    Ana.rm("UNTITLED")
+    clean_dir()
     T = SampleTensor(vl["b"], vl["lep"], vl["ev"], vl["t"], "cuda", [[100, 0], [0, 100]])
     R = SampleVector(vl["b"], vl["lep"], vl["ev"], vl["t"])
     print("======================= Testing Speed of Single Neutrino Reconstruction ===================")
@@ -612,7 +613,6 @@ def test_speed():
 
 def test_version_consistency():
     if is_cuda == False: return 
-    from AnalysisG import Analysis
 
     Ana = Analysis()
     Ana.InputSample("DiLepton", "./samples/dilepton")
@@ -635,7 +635,7 @@ def test_version_consistency():
         vl["ev"].append(ev)
         it+=1
 
-    Ana.rm("UNTITLED")
+    clean_dir()
     b1c = MakeTensor_(vl["b"], 0)
     b2c = MakeTensor_(vl["b"], 1)
     mu1c = MakeTensor_(vl["lep"], 0)

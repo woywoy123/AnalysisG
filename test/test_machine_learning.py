@@ -4,6 +4,7 @@ from AnalysisG.Events import Event, GraphChildren
 from AnalysisG.Templates import ApplyFeatures
 from AnalysisG.Templates import FeatureAnalysis
 from AnalysisG.Generators import Optimizer
+from conftest import clean_dir
 
 root1 = "./samples/sample1/smpl1.root"
 
@@ -44,7 +45,7 @@ def test_random_sampling():
 
     x = r.MakeDataLoader(smpls)
     assert sum(nodes.values()) == len(Ana)
-    Ana.rm("Project_ML")
+    clean_dir()
 
 def test_feature_analysis():
     Ana = Analysis()
@@ -70,7 +71,7 @@ def test_feature_analysis():
     Ana.AddGraphTruth(fx, "NotAFeature")
     assert Ana.Launch == False
 
-    Ana.rm("TestFeature")
+    clean_dir()
 
 
 def test_optimizer():
@@ -99,7 +100,7 @@ def test_optimizer():
     op.Epochs = 20
     op.Launch
    
-    op.rm("TestOptimizer") 
+    clean_dir()
 
 def test_optimizer_analysis():
     from models.CheatModel import CheatModel
@@ -125,7 +126,7 @@ def test_optimizer_analysis():
     Ana.EnableReconstruction = True 
     Ana.BatchSize = 1
     Ana.Launch
-    Ana.rm("TestOptimizerAnalysis")
+    clean_dir()
 
 
 def test_parallel_analysis():
@@ -171,7 +172,7 @@ def test_parallel_analysis():
     Ana.BatchSize = 1
     Ana.Launch
 
-    Ana.rm("Project")
+    clean_dir()
 
 
 if __name__ == "__main__":

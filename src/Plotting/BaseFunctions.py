@@ -1,14 +1,13 @@
-import mplhep as hep
-import math
-
-import matplotlib
-import matplotlib.pyplot as plt
-matplotlib.use("agg")
-
-import random
-
+import warnings
+warnings.filterwarnings("ignore")
 from AnalysisG.Tools import Tools
 from AnalysisG.Notification import _Plotting
+import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use("agg")
+import mplhep as hep
+import math
+import random
 
 class BaseFunctions(Tools, _Plotting):
     def __init__(self):

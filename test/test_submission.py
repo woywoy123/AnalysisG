@@ -1,8 +1,14 @@
 from AnalysisG import Analysis 
-from AnalysisG.Submission import Condor
+from AnalysisG.Events import Event, GraphChildren
 from examples.Event import EventEx
 from examples.Graph import DataGraph
 from examples.ExampleSelection import Example, Example2
+from AnalysisG.Templates import ApplyFeatures
+from models.CheatModel import CheatModel
+from AnalysisG.IO import UnpickleObject
+
+from AnalysisG.Submission import Condor
+from conftest import clean_dir
 
 smpl = "./samples/"
 Files = {
@@ -39,8 +45,8 @@ def test_dumping_events():
     x = []
     for i in Ana2: x.append(i.hash)
     assert len(x) != 0
-    Ana.rm("./Project")
-    Ana.rm("./tmp")
+    
+    clean_dir() 
 
 def Feat(a):
     return 1
@@ -69,7 +75,7 @@ def test_dumping_graphs():
     x = []
     for i in Ana: x.append(i.hash)
     assert len(x) != 0
-    Ana.rm("./Project")
+    clean_dir()
     
 def test_dumping_event_selection():
     
@@ -121,19 +127,13 @@ def test_dumping_event_selection():
     Ana_T.Event = EventEx
     Ana_T.Launch
 
-    from AnalysisG.IO import UnpickleObject
     x = UnpickleObject('./Project/Selections/Merged/example1')
     assert list(x.CutFlow.values())[0] == len(Ana_T)
-    con.rm("./Project")
+    clean_dir()
 
 
 def test_dumping_optimization():
-    from AnalysisG.Events import Event, GraphChildren
-    from AnalysisG.Templates import ApplyFeatures
-    from models.CheatModel import CheatModel
-
     con = Condor()
-    con.rm("./Project")
     con.PythonVenv = "$PythonGNN"    
     con.ProjectName = "Project"
     
@@ -192,7 +192,7 @@ def test_dumping_optimization():
     con.AddJob("run-1", AnaOp, waitfor = ["Dsmpl1", "Dsmpl2", "Dsmpl3"])
     con.DumpCondorJobs
     con.TestCondorShell
-    con.rm("./Project")
+    clean_dir()
 
 if __name__ == "__main__":
     #test_dumping_events()

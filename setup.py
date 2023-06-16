@@ -37,9 +37,7 @@ ext_mod = [
     ),
 ]
 
-
-if __name__ == "__main__":
-    setup(ext_modules = cythonize(ext_mod, nthreads = 12))
+setup(ext_modules = cythonize(ext_mod, nthreads = 12))
 
 
 

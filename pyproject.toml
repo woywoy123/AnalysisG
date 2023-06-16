@@ -1,15 +1,16 @@
 [build-system]
-requires = ["setuptools", "cython"]
+requires = ["setuptools>=61.0.0", "cython"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "AnalysisG"
 version = "3.1"
 authors = [{name = "woywoy123"}]
-readme = "README.md"
+readme.content-type = "text/markdown"
+readme.file = "README.md"
 requires-python = ">=3.7"
 dependencies = [
-    "torch==2.0.1", 
+    "torch", 
     "numpy", 
     "uproot", 
     "h5py", 
@@ -17,16 +18,21 @@ dependencies = [
     "networkx", 
     "scikit-learn", 
     "torchmetrics", 
-    "vector", 
     "torch-geometric", 
     "pyAMI-atlas==5.1.0.1", 
+
 ]
 classifiers = [
-    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Programming Language :: Cython", 
     "Programming Language :: C++"
 ]
-
 
 [tool.setuptools.package-dir]
 "AnalysisG" = "src"
@@ -44,34 +50,29 @@ classifiers = [
 "AnalysisG.Model" = "src/Model"
 "AnalysisG.Evaluation" = "src/Evaluation"
 
+[tool.setuptools.package-data]
+"*" = ["*.pyx", "*.pxd", "*.cxx", "*.h"]
+
 [project.scripts]
 CONFIG_PYAMI = "AnalysisG.Settings:CONFIG_PYAMI"
 CHECK_CUDA = "AnalysisG.Settings:CHECK_CUDA"
 POST_INSTALL_PYC = "AnalysisG.Settings:POST_INSTALL_PYC"
 
-[project.optional-dependencies]
-test = [
-    "tox", 
-    "pytest"
-]
-
-
 [tool.pytest.ini_options]
-testpaths = ["test"]
 addopts = "-p no:cacheprovider"
 python_files = [
-    "test/test_ami.py", 
-    "test/test_dataloader_quantization.py", 
-    "test/test_features.py", 
-    "test/test_generators.py", 
-    "test/test_io.py", 
-    "test/test_machine_learning.py", 
-    "test/test_memory.py", 
-    "test/test_neutrino_reconstruction.py", 
-    "test/test_notification.py", 
-    "test/test_templates.py", 
-    "test/test_tools.py", 
-    "test/test_tracer.py"
+    "test_ami.py", 
+    "test_dataloader_quantization.py", 
+    "test_features.py", 
+    "test_generators.py", 
+    "test_io.py", 
+    "test_machine_learning.py", 
+    "test_memory.py", 
+    "test_neutrino_reconstruction.py", 
+    "test_notification.py", 
+    "test_templates.py", 
+    "test_tools.py", 
+    "test_tracer.py"
 ]
 
 [tool.coverage.run]

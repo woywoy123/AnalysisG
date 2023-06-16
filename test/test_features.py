@@ -5,6 +5,7 @@ from AnalysisG.Model import ModelWrapper
 from AnalysisG import Analysis
 import torch
 torch.set_printoptions(4, profile = "full", linewidth = 100000)
+from conftest import clean_dir
 
 smpl = "./samples/"
 Files = {
@@ -56,7 +57,7 @@ def test_truth_top():
 
         it += 1
     assert it > 0
-    Ana.rm("_Project")
+    clean_dir()
 
 def test_truth_children():
     Ana = _MakeSample()
@@ -101,7 +102,7 @@ def test_truth_children():
         assert sum([k == j for k, j in zip(_leps, edge_lep[it])]) == len(edge_lep[it])
         it+=1
     assert it > 0
-    Ana.rm("_Project")
+    clean_dir()
 
 def test_truthjets():
     
@@ -206,7 +207,7 @@ def test_truthjets():
 
         it += 1 
     assert it > 0
-    Ana.rm("_Project")
+    clean_dir()
 
 def test_jets():
     
@@ -322,7 +323,7 @@ def test_jets():
 
         it += 1 
     assert it > 0
-    Ana.rm("_Project")
+    clean_dir()
 
 if __name__ == "__main__":
 

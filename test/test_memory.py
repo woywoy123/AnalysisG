@@ -4,6 +4,7 @@ from AnalysisG.IO import PickleObject, UnpickleObject, UpROOT
 from AnalysisG.Tools import Threading 
 from time import sleep
 import psutil 
+from conftest import clean_dir
 
 class Particle(ParticleTemplate):
     def __init__(self):
@@ -85,6 +86,7 @@ def test_particle_pickle():
         if mem == 0: mem = psutil.virtual_memory().percent
         assert psutil.virtual_memory().percent - mem < 0.5
 
+    clean_dir()
 
 def test_particle_multithreading():
     root1 = "./samples/sample1/smpl1.root"
@@ -173,6 +175,8 @@ def test_event_pickle():
 
         if mem == 0: mem = psutil.virtual_memory().percent
         assert psutil.virtual_memory().percent - mem < 1
+
+    clean_dir()
 
 def test_event_multithreading():
     root1 = "./samples/sample1/smpl1.root"

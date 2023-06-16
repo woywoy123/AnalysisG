@@ -192,9 +192,7 @@ _cmd = {
 }
 
 for i in PkgH:
-        _cu = os.environ.get("CUDA_PATH")
-        if (_cu == None or _cu == "") and "CUDA" in i: continue
-        if not torch.cuda.is_available(): continue
+        if not torch.cuda.is_available() and "CUDA" in i: continue
         if "CUDA" in i:
                 from torch.utils.cpp_extension import CUDAExtension
                 _cmd["ext_modules"].append(CUDAExtension( i, PkgC[i], extra_compile_args = ["-std=c++14"]))

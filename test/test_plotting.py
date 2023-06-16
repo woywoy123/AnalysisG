@@ -1,3 +1,5 @@
+from conftest import clean_dir
+
 def test_th1f():
     from AnalysisG.Plotting import TH1F
     
@@ -10,7 +12,7 @@ def test_th1f():
     t.Filename = "th1f"
     t.SaveFigure()
 
-    t.rm("./Plots")
+    clean_dir()
 
 def test_th2f():
     from AnalysisG.Plotting import TH2F
@@ -20,7 +22,8 @@ def test_th2f():
     t.yData = [1, 2, 3, 4, 5]
     t.Filename = "th2f"
     t.SaveFigure()
-    t.rm("./Plots")
+
+    clean_dir()
 
 def test_th1Combine():
     from AnalysisG.Plotting import TH1F, CombineTH1F
@@ -44,7 +47,8 @@ def test_th1Combine():
     TH.xBinCentering = True
     TH.Filename = "Combined"
     TH.SaveFigure() 
-    TH.rm("./Plots")
+
+    clean_dir()
 
 def test_tline():
     from AnalysisG.Plotting import TLine
@@ -62,7 +66,8 @@ def test_tline():
     t.Filename = "tline-stats"
     t.Title = "hello"
     t.SaveFigure()
-    t.rm("./Plots")
+
+    clean_dir()
 
 def test_tlineCombine():
     from AnalysisG.Plotting import TLine, CombineTLine  
@@ -78,7 +83,8 @@ def test_tlineCombine():
         tc.Lines.append(t)
     tc.Filename = "combiend"
     tc.SaveFigure()
-    tc.rm("./Plots")
+
+    clean_dir()
 
 if __name__ == "__main__":
     test_th1f()

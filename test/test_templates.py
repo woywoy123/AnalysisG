@@ -1,9 +1,10 @@
+from AnalysisG.Templates import ParticleTemplate 
+from AnalysisG.Templates import EventTemplate
+from AnalysisG.IO import UpROOT
 import math
 
 def test_particle_template():
 
-    from AnalysisG.Templates import ParticleTemplate 
-    
     def Px(pt, phi): return pt*math.cos(phi)
     def Py(pt, phi): return pt*math.sin(phi)
     def Pz(pt, eta): return pt*math.sinh(eta)
@@ -148,7 +149,6 @@ def test_particle_template():
     assert tc1 in tp.Children
     
 def test_particle_template_assign():
-    from AnalysisG.Templates import ParticleTemplate 
 
     class Particle(ParticleTemplate):
         def __init__(self):
@@ -204,7 +204,6 @@ def test_particle_template_assign():
 
 def test_event_template():
     root1 = "./samples/sample1/smpl1.root"
-    from AnalysisG.Templates import EventTemplate
 
     class Event(EventTemplate):
         def __init__(self):
@@ -238,9 +237,6 @@ def test_event_template():
     assert ev2 != ev
 
 def test_event_particle_template():
-    from AnalysisG.Templates import EventTemplate
-    from AnalysisG.Templates import ParticleTemplate
-    
     class Particle(ParticleTemplate):
         def __init__(self):
             ParticleTemplate.__init__(self)
@@ -295,9 +291,6 @@ def test_event_particle_template():
 
 def test_event_particle_template_populate():
     root1 = "./samples/sample1/smpl1.root"
-    from AnalysisG.IO import UpROOT
-    from AnalysisG.Templates import EventTemplate
-    from AnalysisG.Templates import ParticleTemplate
     
     class Particle(ParticleTemplate):
         def __init__(self):
@@ -372,10 +365,9 @@ def test_event_particle_template_populate():
 
 
 def test_event_othersample():
-    return 
     from examples.Belle import EventBelle
-    from AnalysisG.IO import UpROOT
 
+    return 
     smple = ""
 
     ev = EventBelle()
@@ -388,7 +380,6 @@ def test_event_othersample():
         x = ev.__compiler__(i)
         x[0].CompileEvent()
         assert x[0].particle[0].px
-    return 
 
 if __name__ == "__main__":
     #test_particle_template()

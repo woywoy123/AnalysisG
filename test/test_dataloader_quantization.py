@@ -2,9 +2,12 @@ from AnalysisG import Analysis
 from AnalysisG.Events import Event, GraphChildren 
 from AnalysisG.Templates import ApplyFeatures 
 from AnalysisG.Generators import Optimizer
+from torch_geometric.loader import DataListLoader
+import torch
+import time 
+from conftest import clean_dir
 
 smpl = "samples/dilepton/"
-
 
 def test_normal():  
     ana = Analysis(smpl)
@@ -28,13 +31,9 @@ def test_normal():
         assert i.Graph
         lst.append(i)
     assert len(lst) != 0
-    ana.rm("UNTITLED")
+    clean_dir()
 
 def test_quant():
-    from torch_geometric.loader import DataListLoader
-    import torch
-    import time 
-
     ana = Analysis(smpl)
     ana.EventCache = True
     ana.Event = Event 
@@ -66,8 +65,8 @@ def test_quant():
         fl.append(time.time() - t)
         if k == 0: continue
         assert fl[0] > fl[-1]
-    ana.rm("UNTITLED")
     assert len(fl) != 0
+    clean_dir()
 
 
 if __name__ == "__main__":

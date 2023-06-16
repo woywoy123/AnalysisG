@@ -22,3 +22,5 @@
 **/_Pickle
 **/logs
 **/PythonGNN
+**/.tox
+**/.coverage*

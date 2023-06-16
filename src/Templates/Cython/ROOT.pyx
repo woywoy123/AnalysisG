@@ -1,4 +1,4 @@
-#distutils: language = c++
+# distutils: language = c++
 # cython: language_level=3
 from ROOT cimport CySampleTracer, CyROOT, CyEvent
 from libcpp.string cimport string
@@ -12,7 +12,7 @@ import shutil
 import pickle 
 import codecs
 from tqdm import tqdm
-from typing import Union 
+from typing import Union, Dict, List
 from AnalysisG.Tools import Code, Threading
 from AnalysisG.Notification.Notification import Notification
 from torch_geometric.loader import DataListLoader
@@ -533,14 +533,14 @@ cdef class SampleTracer:
             e_.pkl = f[hash_.decode("UTF-8")].attrs["Event"].encode("UTF-8") 
             e_.Event = self._EventCache; e_.Graph = self._DataCache
 
-    def ForceTheseHashes(self, inpt: Union[dict, list]) -> None:
+    def ForceTheseHashes(self, inpt: Union[Dict, List]) -> None:
         inpt = inpt if isinstance(inpt, list) else list(inpt)
         cdef str i 
         self._itv = [i.encode("UTF-8") for i in inpt]
         self._ite = self._itv.size()
         self.ptr.length = self._ite
 
-    def MarkTheseHashes(self, inpt: Union[dict, list], str label) -> None:
+    def MarkTheseHashes(self, inpt: Union[Dict, list], str label) -> None:
         inpt = inpt if isinstance(inpt, list) else list(inpt)
         cdef str i
         cdef vector[string] smpl = [i.encode("UTF-8") for i in inpt]
@@ -580,7 +580,7 @@ cdef class SampleTracer:
             else: del self._DataBatchCache[key]; torch.cuda.empty_cache() 
         self._DataBatchCache = tmp
 
-    def FlushTheseHashes(self, inpt: Union[list] = []): 
+    def FlushTheseHashes(self, inpt: Union[List] = []): 
         cdef str i 
         cdef vector[string] hashes
         cdef string hash_

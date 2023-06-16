@@ -16,7 +16,7 @@ try: import PyC.Operators.CUDA as OP
 except: import PyC.Operators.Tensors as OP
 
 try: import PyC.NuSol.CUDA as NuSol
-except: import PyC.NuSol.Tensor as NuSol
+except: import PyC.NuSol.Tensors as NuSol
 
 torch.set_printoptions(4, profile = "full", linewidth = 100000)
 
@@ -28,7 +28,7 @@ class ParticleRecursion(MessagePassing):
 
     def __init__(self):
         super().__init__(aggr = None, flow = "target_to_source")
-        end = 32
+        end = 64
 
         self.edge = None
 
@@ -93,6 +93,10 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
         self.O_top_edge = None 
         self.L_top_edge = "CEL"
         self._edgeRNN = ParticleRecursion()
+
+        self.O_res_edge = None 
+        self.L_res_edge = "CEL"
+        self._resRNN = ParticleRecursion()
 
     def NuNuCombinatorial(self, edge_index, batch, Pmu, PiD, G_met, G_phi):
         i, j, batch = edge_index[0], edge_index[1], batch.view(-1)
@@ -191,9 +195,8 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
         PiD = torch.cat([N_is_lep, N_is_b], -1)
         batch = batch.view(-1, 1)
 
-        self.NuNuCombinatorial(edge_index, batch, Pmu, PiD, G_met, G_phi)
-
-        
+        #self.NuNuCombinatorial(edge_index, batch, Pmu, PiD, G_met, G_phi)
         #self.propagate(edge_index, batch = batch, Pmc = Pmc, PiD = PiD, met = G_met, phi = G_phi)
         
         self.O_top_edge = self._edgeRNN(i, edge_index, batch, Pmc, Pmu, PiD)
+        self.O_res_edge = self._resRNN(i, edge_index, batch, Pmc, Pmu, PiD)

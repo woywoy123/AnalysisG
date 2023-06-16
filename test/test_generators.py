@@ -1,6 +1,7 @@
 from AnalysisG.Generators import EventGenerator, GraphGenerator, SelectionGenerator, Analysis
 from AnalysisG.Events.Events.Event import Event
 from AnalysisG.Events.Graphs.EventGraphs import GraphChildren
+from conftest import clean_dir
 
 smpl = "./samples/"
 Files = {
@@ -45,6 +46,7 @@ def test_event_generator():
 
         assert len(ev_.DetectorObjects) == len(ev.DetectorObjects)
         for tj_, tj in zip(ev_.DetectorObjects, ev.DetectorObjects): assert tj_ == tj
+    clean_dir() 
 
 
 def test_event_generator_more():
@@ -60,7 +62,7 @@ def test_event_generator_more():
         assert event == EvtGen[event.hash]
         tmp.append(event)
     assert len(EvtGen) == len(tmp)
-
+    clean_dir()
 
 def test_event_generator_merge():
     f = list(Files)
@@ -131,9 +133,7 @@ def test_event_generator_merge():
     
     a_ev = EventGen_(None, None)
     assert len(ev1) == len(a_ev)
-    
-    ev1.rm("Project")
-    ev1.rm("tmp")
+    clean_dir() 
 
 def _fx(a): return 1
 
@@ -163,6 +163,7 @@ def test_eventgraph():
         assert i.i >= 0
         assert i.weight 
         assert i.G__fx
+    clean_dir()
 
 def test_selection_generator():
     from AnalysisG.IO import UnpickleObject
@@ -188,7 +189,7 @@ def test_selection_generator():
     assert res.CutFlow["Success->Example"] == len(Ev)
     assert len(res.TimeStats) == len(Ev)
     assert len(Ev)*4 == len(res.Top["Truth"])
-    sel.rm("./Project/")
+    clean_dir()
 
 def test_Analysis():
     Sample1 = {smpl + "sample1" : ["smpl1.root"]}
@@ -202,7 +203,7 @@ def test_Analysis():
     Ana.OutputDirectory = "../test/"
     Ana.EventStop = 100
     assert Ana.Launch == False
-    Ana.rm("_Test")
+    clean_dir()
 
 def _template( default = True):
     AnaE = Analysis()
@@ -242,8 +243,7 @@ def test_analysis_event_cache():
     AnaE.Launch
    
     assert len([i for i in AnaE if i.Event]) != 0
-    
-    AnaE.rm("Project")
+    clean_dir()
 
 def test_analysis_event_cache_diff_sample():
     
@@ -267,7 +267,7 @@ def test_analysis_event_cache_diff_sample():
 
     AnaS = Ana2 + Ana1
     assert len([i for i in AnaE if i.hash not in AnaS]) == 0
-    AnaE.rm("Project")
+    clean_dir()
 
 def test_analysis_data_nocache():
 
@@ -305,7 +305,7 @@ def test_analysis_data_cache():
 
     assert len([i for i in AnaE if i.Graph]) != 0
 
-    AnaE.rm("Project")
+    clean_dir()
 
 
 def test_analysis_data_cache_diff_sample():
@@ -337,7 +337,7 @@ def test_analysis_data_cache_diff_sample():
     assert len(AnaS) != 0
     assert len([i for i in AnaS if i.hash in AnaE]) == len(AnaE)
 
-    AnaE.rm("Project")
+    clean_dir()
 
 def test_analysis_data_event_cache_diff_sample():
     
@@ -370,7 +370,7 @@ def test_analysis_data_event_cache_diff_sample():
 
     assert len([i for i in Ana2 if i.Graph]) != 0
 
-    Ana2.rm("Project")
+    clean_dir()
 
 if __name__ == "__main__":
     test_event_generator()
