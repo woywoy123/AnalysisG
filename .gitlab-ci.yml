@@ -9,10 +9,10 @@ install:
         - pip install virtualenv
         - cd setup-scripts
         - bash setup-venv.sh
+        - pip install tox
 
 testing:
     stage: testing
     script:
-        - pip install tox
-        - tox .
+        - tox -e .
 
