@@ -123,20 +123,20 @@ cdef class SampleTracer:
 
     def __dealloc__(self): del self.ptr
     def __init__(self): pass
-    
+
     def __contains__(self, str key) -> bool:
         if key.endswith(".root"): key = os.path.abspath(key)
-        if self.ptr.ContainsROOT(key.encode("UTF-8")): return True 
+        if self.ptr.ContainsROOT(key.encode("UTF-8")): return True
         if self.ptr.ContainsHash(key.encode("UTF-8")): return True
         if key in self.HashMeta: return True
         return False
-    
+
     def __getitem__(self, str key):
         cdef string _key = key.encode("UTF-8")
         cdef string _meta
         cdef str daod, meta
         cdef list out = []
-      
+
         cdef vector[string] v = self.ptr.ROOTtoHashList(_key)
         if v.size() == 0 and self.ptr.ContainsHash(_key): v = [_key]
         if v.size() > 0:
@@ -145,7 +145,7 @@ cdef class SampleTracer:
                 ev.ptr = self.ptr.HashToEvent(_key)
                 ev._wrap(ev.ptr.pkl)
                 out.append(ev)
-                
+
                 _meta = self._HashMeta[_key]
                 if _meta.size() == 0: pass
                 else: ev._wrap(self.HashMeta[_meta.decode("UTF-8")]); continue
@@ -154,14 +154,14 @@ cdef class SampleTracer:
                 for daod in self.HashMeta:
                     M = self.HashMeta[daod]
                     if not M.MatchROOTName(meta): continue
-                    self._HashMeta[_key] = daod.encode("UTF-8")  
+                    self._HashMeta[_key] = daod.encode("UTF-8")
                     ev._wrap(M)
-        
+
         if len(out) == 1: return out[0]
         elif len(out) > 1: return out
-      
+
         if key.endswith(".root"): key = os.path.abspath(key)
-        if key in self.HashMeta: 
+        if key in self.HashMeta:
             for daod in self.HashMeta[key].Files:
                 try: out += self[self.HashMeta[key].thisSet + daod]
                 except: continue
@@ -188,7 +188,7 @@ cdef class SampleTracer:
         t._Codes |= s._Codes
         t._Codes |= o._Codes
         return t
-    
+
     def __iadd__(self, other):
         cdef SampleTracer s = self
         cdef SampleTracer o = other
@@ -197,7 +197,7 @@ cdef class SampleTracer:
         s._Codes |= o._Codes
         s.Threads = <int>self.Threads
         return s
-    
+
     @property
     def clone(self):
         v = self.__new__(self.__class__)
@@ -209,17 +209,17 @@ cdef class SampleTracer:
         cdef bool fnd
         cdef vector[string] v = [i.encode("UTF-8") for i in hashes]
         return {key.decode("UTF-8") : fnd for key, fnd in self.ptr.FastSearch(v)}
-    
+
     def HashToROOT(self, str key) -> str: return self._HashMeta[key.encode("UTF-8")].decode("UTF-8")
-     
+
     @property
-    def GetDataCacheHashes(self) -> list: 
+    def GetDataCacheHashes(self) -> list:
         cdef string i
         cdef vector[string] v = self.ptr.GetCacheType(False, True)
         return [i.decode("UTF-8") for i in v]
 
     @property
-    def GetEventCacheHashes(self) -> list: 
+    def GetEventCacheHashes(self) -> list:
         cdef string i
         cdef vector[string] v = self.ptr.GetCacheType(True, False)
         return [i.decode("UTF-8") for i in v]
@@ -231,12 +231,13 @@ cdef class SampleTracer:
     def EventCacheLen(self) -> int: return self.ptr.GetCacheType(True, False).size()
 
     def _decoder(self, str inpt): return pickle.loads(codecs.decode(inpt.encode("UTF-8"), "base64"))
+
     def _encoder(self, inpt) -> str: return codecs.encode(pickle.dumps(inpt), "base64").decode()
- 
+
     def _rebuild_code(self, str pth, ref) -> None:
         cdef str k
         try: os.makedirs(pth)
-        except FileExistsError: sys.path.append(pth); return 
+        except FileExistsError: sys.path.append(pth); return
         for k in ref["code"].attrs:
             Code = self._decoder(ref["code"].attrs[k])
             k = Code._File.split("/")[-1]
@@ -244,7 +245,7 @@ cdef class SampleTracer:
             mk.write(Code._FileCode)
             mk.close()
         sys.path.append(pth)
-    
+
     @property
     def Threads(self) -> int: return self.ptr.Threads
 
@@ -256,27 +257,27 @@ cdef class SampleTracer:
 
     @chnk.setter
     def chnk(self, int val): self.ptr.ChunkSize = val
-    
+
     @property
     def OutputDirectory(self): return self.OutDir
-    
+
     @OutputDirectory.setter
     def OutputDirectory(self, str val): self.OutDir = val
-    
+
     @property
-    def EventCache(self) -> bool: return self._EventCache 
+    def EventCache(self) -> bool: return self._EventCache
 
     @EventCache.setter
     def EventCache(self, bool val): self._EventCache = val
 
     @property
-    def DataCache(self) -> bool: return self._DataCache 
+    def DataCache(self) -> bool: return self._DataCache
 
     @DataCache.setter
     def DataCache(self, bool val): self._DataCache = val
-    
+
     @property
-    def SampleName(self) -> str: return self._SampleName 
+    def SampleName(self) -> str: return self._SampleName
 
     @SampleName.setter
     def SampleName(self, str val): self._SampleName = val

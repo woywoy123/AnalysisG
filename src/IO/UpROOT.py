@@ -6,7 +6,7 @@ import uproot
 import json
 import warnings
 try: import pyAMI.client; import pyAMI.atlas.api as atlas
-except: pass
+except ModuleNotFoundError: pass
 
 
 class MetaData(object):
@@ -52,7 +52,7 @@ class MetaData(object):
         _index = {}
         for i in self.Files:
             fname, ix = i[0].split("/")[-1], i[1]
-            if fname not in self.DAOD: _nevents += ix; continue; 
+            if fname not in self.DAOD: _nevents += ix; continue
             if fname.endswith(".1"): fname = fname[:-2]
             _index |= {self.eventNumber[idx] : fname for idx in range(_nevents, _nevents + ix)}
             _nevents += ix 
@@ -64,7 +64,7 @@ class MetaData(object):
         try:
             self.thisDAOD = self._index[val]
             self.thisSet = self.DatasetName 
-        except: pass
+        except KeyError: pass
         return (self.thisDAOD, self.thisSet)
     
     def MatchROOTName(self, val):
@@ -85,10 +85,10 @@ class AMI:
         except: self.cfg = False
     
     @property
-    def init(self): 
+    def init(self):
         warnings.filterwarnings("ignore")
-        self._client = pyAMI.client.Client("atlas") 
-    
+        self._client = pyAMI.client.Client("atlas")
+
     def search(self, pattern, amitag = False):
         def _sig(signum, frame): return ""
         if self._client is None: return {}

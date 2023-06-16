@@ -64,7 +64,7 @@ jobs:
               run: pip install .
             
             - name: "Running using ${{ matrix.python-version }}"
-              run: python -m tox
+              run: tox .
 
             - name: "Upload coverage"
               uses: actions/upload-artifact@v3
@@ -122,7 +122,7 @@ jobs:
               echo "### Total coverage: ${TOTAL}%" >> $GITHUB_STEP_SUMMARY
 
           - name: "Make badge"
-            uses: schneegans/dynamic-badges-action@v1.4.0
+            uses: schneegans/dynamic-badges-action@v1.6.0
             with:
               auth: ${{ secrets.GIST_TOKEN }}
               gistID: 6fee1eff8f987ac756a20133618659a1   # replace with your real Gist id.
