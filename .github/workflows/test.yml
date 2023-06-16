@@ -27,7 +27,6 @@ jobs:
         name: "Python ${{ matrix.python-version }} on ${{ matrix.os }} with ${{ matrix.cuda }}"
         runs-on: "${{ matrix.os }}"
         strategy: 
-                max-parallel: 4
                 fail-fast: false
                 matrix:
                     os: 
@@ -77,24 +76,24 @@ jobs:
                 name: covdata
                 path: ./test/.coverage.*
             
-            - name: "Purge Cache"
-              run: |
-                  gh extension install actions/gh-actions-cache
-                  
-                  REPO=${{ github.repository }}
+            #- name: "Purge Cache"
+            #  run: |
+            #      gh extension install actions/gh-actions-cache
+            #      
+            #      REPO=${{ github.repository }}
         
-                  echo "Fetching list of cache key"
-                  cacheKeysForPR=$(gh actions-cache list -R $REPO -B master | cut -f 1 )
+            #      echo "Fetching list of cache key"
+            #      cacheKeysForPR=$(gh actions-cache list -R $REPO -B master | cut -f 1 )
         
-                  set +e
-                  echo "Deleting caches..."
-                  for cacheKey in $cacheKeysForPR
-                  do
-                      gh actions-cache delete $cacheKey -R $REPO -B master --confirm
-                  done
-                  echo "Done"
-              env:
-                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            #      set +e
+            #      echo "Deleting caches..."
+            #      for cacheKey in $cacheKeysForPR
+            #      do
+            #          gh actions-cache delete $cacheKey -R $REPO -B master --confirm
+            #      done
+            #      echo "Done"
+            #  env:
+            #      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
     coverage:
         name: Coverage
@@ -119,6 +118,8 @@ jobs:
 
           - name: "Combine"
             run: |
+              echo $(ls *.json -a)
+              echo $(ls ./test/*.json -a)
               python -m tox -e coverage
               export TOTAL=$(python -c "import json;print(json.load(open('coverage.json'))['totals']['percent_covered_display'])")
               echo "total=$TOTAL" >> $GITHUB_ENV
