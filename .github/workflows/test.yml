@@ -120,6 +120,7 @@ jobs:
             run: |
               echo $(ls * -a)
               echo $(ls ./test/* -a)
+              echo $(ls /home/runner/work/AnalysisG/AnalysisG/* -a)
               python -m tox -e coverage
               export TOTAL=$(python -c "import json;print(json.load(open('coverage.json'))['totals']['percent_covered_display'])")
               echo "total=$TOTAL" >> $GITHUB_ENV
@@ -129,7 +130,7 @@ jobs:
             uses: schneegans/dynamic-badges-action@v1.6.0
             with:
               auth: ${{ secrets.GIST_TOKEN }}
-              gistID: 6fee1eff8f987ac756a20133618659a1   # replace with your real Gist id.
+              gistID: 6fee1eff8f987ac756a20133618659a1
               filename: covbadge.json
               label: Coverage
               message: ${{ env.total }}%
