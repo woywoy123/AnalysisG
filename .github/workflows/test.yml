@@ -64,7 +64,7 @@ jobs:
               run: pip install .
             
             - name: "Running using ${{ matrix.python-version }}"
-              run: tox .
+              run: tox
 
             - name: "Upload coverage"
               uses: actions/upload-artifact@v3
