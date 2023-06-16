@@ -22,6 +22,7 @@ jobs:
         name: "Python ${{ matrix.python-version }} on ${{ matrix.os }} with ${{ matrix.cuda }}"
         runs-on: "${{ matrix.os }}"
         strategy: 
+                max-parallel: 4
                 fail-fast: false
                 matrix:
                     os: 
@@ -60,63 +61,75 @@ jobs:
                 python -m pip install tox tox-gh-actions 
 
             - name: "AnalysisG-Install"
-              run: | 
-                    pip install .
-                    CONFIG_PYAMI
-                    CHECK_CUDA
-                    POST_INSTALL_PYC
+              run: pip install .
             
             - name: "Running using ${{ matrix.python-version }}"
-              run: 
-                    | 
-                     cd test
-                     #python -m tox
+              run: python -m tox
 
-            #- name: "Upload coverage"
-            #  uses: actions/upload-artifact@v3
-            #  with:
-            #    name: covdata
-            #    path: .coverage.*
+            - name: "Upload coverage"
+              uses: actions/upload-artifact@v3
+              with:
+                name: covdata
+                path: .coverage.*
 
-#    coverage:
-#        name: Coverage
-#        needs: build
-#        runs-on: ubuntu-latest
-#        steps:
-#          - name: "Check out the repo"
-#            uses: "actions/checkout@v3"
-#
-#          - name: "Set up Python"
-#            uses: "actions/setup-python@v4"
-#            with:
-#              python-version: "3.10"
-#
-#          - name: "Install dependencies"
-#            run: |
-#              python -m pip install tox tox-gh-actions
-#
-#          - name: "Download coverage data"
-#            uses: actions/download-artifact@v3
-#            with:
-#              name: covdata
-#
-#          - name: "Combine"
-#            run: |
-#              python -m tox -e coverage
-#              export TOTAL=$(python -c "import json;print(json.load(open('coverage.json'))['totals']['percent_covered_display'])")
-#              echo "total=$TOTAL" >> $GITHUB_ENV
-#              echo "### Total coverage: ${TOTAL}%" >> $GITHUB_STEP_SUMMARY
-#
-#          - name: "Make badge"
-#            uses: schneegans/dynamic-badges-action@v1.4.0
-#            with:
-#              auth: ${{ secrets.GIST_TOKEN }}
-#              gistID: 6fee1eff8f987ac756a20133618659a1   # replace with your real Gist id.
-#              filename: covbadge.json
-#              label: Coverage
-#              message: ${{ env.total }}%
-#              minColorRange: 50
-#              maxColorRange: 90
-#              valColorRange: ${{ env.total }}
-#
+            - name: "Purge this cache"
+              uses: actions/github-script@v6
+              with:
+                script: |
+                  console.log("About to clear")
+                  const caches = await github.rest.actions.getActionsCacheList({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                  })
+                  for (const cache of caches.data.actions_caches) {
+                    console.log(cache)
+                    github.rest.actions.deleteActionsCacheById({
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      cache_id: cache.id,
+                    })
+                  }
+                  console.log("Clear completed")
+
+    coverage:
+        name: Coverage
+        needs: build
+        runs-on: ubuntu-latest
+        steps:
+          - name: "Check out the repo"
+            uses: "actions/checkout@v3"
+
+          - name: "Set up Python"
+            uses: "actions/setup-python@v4"
+            with:
+              python-version: "3.10"
+
+          - name: "Install dependencies"
+            run: |
+              python -m pip install tox tox-gh-actions
+
+          - name: "Download coverage data"
+            uses: actions/download-artifact@v3
+            with:
+              name: covdata
+
+          - name: "Combine"
+            run: |
+              python -m tox -e coverage
+              export TOTAL=$(python -c "import json;print(json.load(open('coverage.json'))['totals']['percent_covered_display'])")
+              echo "total=$TOTAL" >> $GITHUB_ENV
+              echo "### Total coverage: ${TOTAL}%" >> $GITHUB_STEP_SUMMARY
+
+          - name: "Make badge"
+            uses: schneegans/dynamic-badges-action@v1.4.0
+            with:
+              auth: ${{ secrets.GIST_TOKEN }}
+              gistID: 6fee1eff8f987ac756a20133618659a1   # replace with your real Gist id.
+              filename: covbadge.json
+              label: Coverage
+              message: ${{ env.total }}%
+              minColorRange: 50
+              maxColorRange: 90
+              valColorRange: ${{ env.total }}
+
 
