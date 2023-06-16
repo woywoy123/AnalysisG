@@ -2,7 +2,7 @@ from AnalysisG.Generators.Interfaces import _Interface
 from AnalysisG.Notification import _UpROOT
 from AnalysisG.Settings import Settings
 import signal
-import uproot 
+import uproot
 import json
 import warnings
 try: import pyAMI.client; import pyAMI.atlas.api as atlas
@@ -13,19 +13,19 @@ class MetaData(object):
 
     def __init__(self):
         self._vars = {
-            "version" : "version", 
-            "DatasetName" : "logicalDatasetName", 
-            "nFiles" : "nFiles", 
-            "total_events" : "totalEvents", 
-            "cross_section" : "crossSection", 
-            "generator_tune" : "generatorTune", 
-            "keywords" : "keywords", 
-            "subcampaign" : "subcampaign", 
+            "version" : "version",
+            "DatasetName" : "logicalDatasetName",
+            "nFiles" : "nFiles",
+            "total_events" : "totalEvents",
+            "cross_section" : "crossSection",
+            "generator_tune" : "generatorTune",
+            "keywords" : "keywords",
+            "subcampaign" : "subcampaign",
             "short" : "physicsShort",
-            "isMC" : "isMC", 
+            "isMC" : "isMC",
             "Files" : "inputFiles",
-            "DAOD" : "DAOD", 
-            "eventNumber" : "eventNumber", 
+            "DAOD" : "DAOD",
+            "eventNumber" : "eventNumber",
         }
         self._index = {}
         self.thisDAOD = ""
@@ -39,16 +39,16 @@ class MetaData(object):
             if key not in data: continue
             setattr(self, i, data[key])
 
-    @property 
+    @property
     def MakeIndex(self):
         try: raise StopIteration if len(self.DAOD) == 0 else None
-        except: return 
+        except StopIteration: return
         try: raise StopIteration if len(self.Files) == 0 else None
-        except: return 
+        except StopIteration: return
         try: raise StopIteration if len(self.eventNumber) == 0 else None
-        except: return 
+        except StopIteration: return
 
-        _nevents = 0 
+        _nevents = 0
         _index = {}
         for i in self.Files:
             fname, ix = i[0].split("/")[-1], i[1]
