@@ -118,8 +118,8 @@ jobs:
 
           - name: "Combine"
             run: |
-              echo $(ls *.json -a)
-              echo $(ls ./test/*.json -a)
+              echo $(ls * -a)
+              echo $(ls ./test/* -a)
               python -m tox -e coverage
               export TOTAL=$(python -c "import json;print(json.load(open('coverage.json'))['totals']['percent_covered_display'])")
               echo "total=$TOTAL" >> $GITHUB_ENV
