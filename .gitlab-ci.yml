@@ -9,7 +9,6 @@ install:
         - pip install virtualenv
         - cd setup-scripts
         - bash setup-venv.sh
-        - source ./setup-scripts/source-this.sh
 
 testing:
     stage: testing

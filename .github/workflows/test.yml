@@ -70,7 +70,7 @@ jobs:
               uses: actions/upload-artifact@v3
               with:
                 name: covdata
-                path: .coverage.*
+                path: .coverage*
             
             - name: "Purge Cache"
               run: |
