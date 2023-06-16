@@ -15,7 +15,8 @@ def POST_INSTALL_PYTORCH():
     avail = _getcmd("python3 -c 'import torch; print(torch.cuda.is_available())'")
     ver = _getcmd("python3 -c 'import torch; print(torch.version.__version__)'").split("+")[0]
     if "False" in avail: cu = "cpu"
-    if ver != "2.0.1": ver = "1.13.0"
+    if "2.0" not in ver: ver = "1.13.0"
+    else: ver = "2.0.0"
     return ver + "+" + cu.replace("\n", "")
 
 def POST_INSTALL_PYG( device = "" ):
