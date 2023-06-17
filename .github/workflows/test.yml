@@ -63,15 +63,14 @@ jobs:
               uses: "actions/setup-python@v4"
               with: 
                 python-version: "${{ matrix.python-version }}"
-                cache: 'pip'
-
+                
             - name: "Installing dependencies"
               run: |
                 python -m pip install --upgrade pip
                 python -m pip install tox tox-gh-actions 
 
             - name: "AnalysisG-Install"
-              run: pip install .
+              run: pip install --no-cache-dir .
             
             - name: "Running using ${{ matrix.python-version }}"
               run: python -m tox
