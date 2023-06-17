@@ -1,15 +1,48 @@
 stages:
-  - build
-  - testing
+    - tox-test-matrix
+    - tox-latest-cuda
+    - build-image 
 
-buildingCPU:
-    stage: build
+.parallel-matrix-cpu:
+    parallel:
+        matrix:
+            - PY:
+                - "3.7"
+                - "3.8"
+                - "3.9"
+                - "3.10"
+                - "3.11"
+
+tox-test-cpu:
+    stage: tox-test-matrix
+    parallel: !reference [.parallel-matrix-cpu, parallel]
+    image: python:$PY
+
+    variables:
+        PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+    cache:
+        paths:
+            - .cache/pip
+            - venv/
+        before_script:
+            - pip install virtualenv
+            - virtualenv venv
+            - source venv/bin/activate
+        script:
+            - pip install tox
+            - tox -e $PY
+
+tox-test-cuda:
+    stage: tox-latest-cuda
+    image: pytorch:latest
     script:
-        - cd setup-scripts
-        - bash setup-venv.sh
+        - pip install tox
+        - tox -e "3.11"
 
-testing:
-    stage: testing
-    script:
-        - tox -e .
-
+build:
+    stage: build-image
+    script: 
+        - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+        - docker build -t $CI_REGISTRY_IMAGE:latest .
+        - docker push $CI_REGISTRY_IMAGE:latest
+        

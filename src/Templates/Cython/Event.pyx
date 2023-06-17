@@ -1,4 +1,6 @@
 #distutils: language = c++
+#cython: language_level = 3
+
 from Templates cimport CyEventTemplate
 from libcpp.string cimport string
 from libcpp.map cimport map

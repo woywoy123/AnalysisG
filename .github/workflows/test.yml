@@ -1,6 +1,6 @@
 # https://nedbatchelder.com/blog/202209/making_a_coverage_badge.html
 
-name: Building-AnalysisTopGNN
+name: Building-Tox-Testing
 on:
     pull_request:
         branches:
@@ -27,7 +27,7 @@ jobs:
         name: "Python ${{ matrix.python-version }} on ${{ matrix.os }} with ${{ matrix.cuda }}"
         runs-on: "${{ matrix.os }}"
         strategy: 
-                max-parallel: 2
+                max-parallel: 1
                 fail-fast: false
                 matrix:
                     os: 
