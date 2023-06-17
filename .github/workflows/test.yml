@@ -46,7 +46,7 @@ jobs:
         steps:
             - name: "Purge ubuntu image"
               run: |
-                apt autoremove -y 
+                sudo apt autoremove -y 
                     
             - name: "Checkout the repo"
               uses: "actions/checkout@v3"
