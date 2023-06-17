@@ -44,12 +44,7 @@ jobs:
                         - '11.7.1'
                         - '11.7.0'
                         - 'cpu'
-        steps:
-            - name: "Purge ubuntu image"
-              run: |
-                sudo apt autoremove -y 
-                sudo apt clean
-                    
+        steps:      
             - name: "Checkout the repo"
               uses: "actions/checkout@v3"
 
@@ -71,6 +66,11 @@ jobs:
                 python -m pip install --upgrade pip
                 python -m pip install tox tox-gh-actions 
             
+            - name: "Purge ubuntu image"
+              run: |
+                sudo apt autoremove -y 
+                sudo apt clean
+                
             - name: "Running using ${{ matrix.python-version }}"
               run: python -m tox
 
@@ -79,25 +79,6 @@ jobs:
               with:
                 name: covdata
                 path: .coverage.*
-            
-            - name: "Purge Cache"
-              run: |
-                  gh extension install actions/gh-actions-cache
-                  
-                  REPO=${{ github.repository }}
-        
-                  echo "Fetching list of cache key"
-                  cacheKeysForPR=$(gh actions-cache list -R $REPO -B master | cut -f 1 )
-        
-                  set +e
-                  echo "Deleting caches..."
-                  for cacheKey in $cacheKeysForPR
-                  do
-                      gh actions-cache delete $cacheKey -R $REPO -B master --confirm
-                  done
-                  echo "Done"
-              env:
-                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
     coverage:
         name: Coverage
