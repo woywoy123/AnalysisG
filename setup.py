@@ -11,14 +11,14 @@ ext_mod = [
                 ], 
     ), 
     Extension(
-                name = "AnalysisG.Templates.EventTemplate", 
+                name = "AnalysisG.Templates.EventTemplate",
                 sources = [
-                    "src/Templates/Cython/Event.pyx", 
+                    "src/Templates/Cython/Event.pyx",
                     "src/Templates/CXX/Templates.cxx",
 
-                    "src/Templates/CXX/Tools.cxx", 
-                ], 
-    ), 
+                    "src/Templates/CXX/Tools.cxx",
+                ],
+    ),
     Extension(
                 name = "AnalysisG.Tracer", 
                 sources = [
