@@ -2,14 +2,11 @@ stages:
   - build
   - testing
 
-install:
+buildingCPU:
     stage: build
     script:
-        - ls
-        - pip install virtualenv
         - cd setup-scripts
         - bash setup-venv.sh
-        - pip install tox
 
 testing:
     stage: testing
