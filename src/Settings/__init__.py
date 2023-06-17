@@ -64,10 +64,8 @@ def POST_INSTALL_PYC():
     import pathlib
 
     print("------- CONFIGURING TORCH-EXTENSIONS (PYC) -------")
-    this_pth = str(pathlib.Path(__file__).parent.resolve())
-    this_pth = str(pathlib.Path(this_pth + "/../../torch-extensions/").resolve())
     p = subprocess.Popen(
-        [sys.executable, "-m", "pip", "install", "-v", this_pth],
+        [sys.executable, "-m", "pip", "install", "-v", "./torch-extensions/"],
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
