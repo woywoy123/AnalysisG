@@ -24,13 +24,13 @@ tox-test-cpu:
         paths:
             - .cache/pip
             - venv/
-        before_script:
-            - pip install virtualenv
-            - virtualenv venv
-            - source venv/bin/activate
-        script:
-            - pip install tox
-            - tox -e $PY
+    before_script:
+        - pip install virtualenv
+        - virtualenv venv
+        - source venv/bin/activate
+    script:
+        - pip install tox
+        - tox -e $PY
 
 tox-test-cuda:
     stage: tox-latest-cuda
