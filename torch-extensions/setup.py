@@ -175,6 +175,14 @@ _cmd = {
 cu = ""
 if "CUDA_PATH" in os.environ:
     cu = os.environ["CUDA_PATH"]
+else:
+    import subprocess
+    try:
+        o = subprocess.check_output("which nvcc", stderr = subprocess.STDOUT, shell = True)
+        cu = o.decode("UTF-8")
+        os.environ["CUDA_PATH"] = cu
+    except subprocess.CalledProcessError:
+        pass
 
 for i in PkgH:
     if len(cu) == 0 and "CUDA" in i:

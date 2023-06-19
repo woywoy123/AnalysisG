@@ -140,7 +140,7 @@ def test_dumping_event_selection():
     Ana_T.Launch
 
     x = UnpickleObject("./Project/Selections/Merged/example1")
-    assert list(x.CutFlow.values())[0] == len(Ana_T)
+    assert x.CutFlow["Passed::Selection"] == len(Ana_T)
     clean_dir()
 
 
