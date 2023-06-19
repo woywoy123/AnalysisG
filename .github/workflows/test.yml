@@ -70,18 +70,18 @@ jobs:
               uses: "actions/setup-python@v4"
               with: 
                 python-version: "${{ matrix.python-version }}"
-                
-            - name: "Installing dependencies"
-              run: |
-                python -m pip install --upgrade pip
-                python -m pip install tox tox-gh-actions 
-            
+           
             - name: "Purge ubuntu image"
               run: |
                 sudo apt autoremove -y 
                 sudo apt clean
                 sudo rm -rf "/usr/local/share/boost"
                 sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+
+            - name: "Installing dependencies"
+              run: |
+                python -m pip install --upgrade pip
+                python -m pip install tox tox-gh-actions 
                 
             - name: "Running using ${{ matrix.python-version }}"
               run: python -m tox
