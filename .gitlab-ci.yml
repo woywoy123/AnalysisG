@@ -1,6 +1,5 @@
 stages:
     - tox-test-matrix
-    - tox-latest-cuda
     - build-image 
 
 workflow:
@@ -35,13 +34,6 @@ tox-test-cpu:
     script:
         - pip install tox
         - tox -e $PY
-
-tox-test-cuda:
-    stage: tox-latest-cuda
-    image: pytorch/pytorch:latest
-    script:
-        - pip install tox
-        - tox -e "3.11"
 
 build:
     stage: build-image

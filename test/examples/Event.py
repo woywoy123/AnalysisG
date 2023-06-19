@@ -1,7 +1,6 @@
 from AnalysisG.Templates import EventTemplate
 from .Particles import Jet, Top, TopChildren
 
-
 class EventEx(EventTemplate):
     def __init__(self):
         EventTemplate.__init__(self)

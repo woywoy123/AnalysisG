@@ -34,3 +34,4 @@ class TopChildren(LazyDefinition):
         self.Type = "children"
         LazyDefinition.__init__(self)
         self.index = self.Type + "_index"
+

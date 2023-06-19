@@ -17,7 +17,7 @@ echo 'source $PythonGNN' >> source_this.sh
 
 source ./source_this.sh
 cd ../
-pip install -v .
+pip install --no-cache-dir -v .
 CONFIG_PYAMI
 CHECK_CUDA
 POST_INSTALL_PYC
