@@ -25,10 +25,7 @@ class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface
             name, sel, event, hash_, ROOT, pth = inpt[i]
             sel.hash = hash_
             sel.ROOTName = ROOT
-            try:
-                sel._EventPreprocessing(event)
-            except:
-                continue
+            sel._EventPreprocessing(event)
 
             if name not in output:
                 output[name] = sel

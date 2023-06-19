@@ -17,20 +17,26 @@ def CONFIG_PYAMI():
 
 def POST_INSTALL_PYTORCH():
     print(_getcmd("pip install torch"))
-    cu = "cu" + _getcmd("python -c 'import torch; print(torch.version.cuda)'").replace(
-        ".", ""
-    )
-    avail = _getcmd("python3 -c 'import torch; print(torch.cuda.is_available())'")
-    ver = _getcmd("python3 -c 'import torch; print(torch.version.__version__)'").split(
-        "+"
-    )[0]
-    if "False" in avail:
+
+    try:
+        cu = "cu" + _getcmd("python -c 'import torch; print(torch.version.cuda)'")
+        avail = _getcmd("python -c 'import torch; print(torch.cuda.is_available())'")
+        ver = _getcmd("python -c 'import torch; print(torch.version.__version__)'")
+    except:
+        cu = "cu" + _getcmd("python3 -c 'import torch; print(torch.version.cuda)'")
+        avail = _getcmd("python3 -c 'import torch; print(torch.cuda.is_available())'")
+        ver = _getcmd("python3 -c 'import torch; print(torch.version.__version__)'")
+
+    cu = cu.replace(".", "").replace("\n", "")
+    avail = bool(avail.replace("\n", ""))
+    ver = ver.split("+")[0]
+    if not avail:
         cu = "cpu"
     if "2.0" not in ver:
         ver = "1.13.0"
     else:
         ver = "2.0.0"
-    return ver + "+" + cu.replace("\n", "")
+    return ver + "+" + cu
 
 
 def POST_INSTALL_PYG(device=""):

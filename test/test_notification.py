@@ -52,3 +52,4 @@ if __name__ == "__main__":
     test_notification_verbose2()
     test_notification_verbose1()
     test_notification_verbose0()
+    pass

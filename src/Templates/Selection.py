@@ -170,8 +170,8 @@ class SelectionTemplate(Tools):
             self._t1
             o = self.Strategy(event)
             self._t2
-        except:
-            msg = "Error::Strategy"
+        except Exception as e:
+            msg = "Error::Strategy::( " + str(e) + " )"
             if msg not in self.CutFlow:
                 self.CutFlow[msg] = 0
             self.CutFlow[msg] += 1
@@ -209,6 +209,9 @@ class SelectionTemplate(Tools):
     def __add__(self, other):
         if other == 0:
             return self
+        if other != self:
+            return self
+
         keys = set(list(self.__dict__) + list(other.__dict__))
         for i in keys:
             if i.startswith("_SelectionTemplate"):
@@ -224,12 +227,8 @@ class SelectionTemplate(Tools):
                 continue
             self.__dict__[i] = self.MergeData(self.__dict__[i], other.__dict__[i])
 
-        out = SelectionTemplate()
+        out = self.__class__()
+        out.hash = self.hash
         for i in self.__dict__:
             setattr(out, i, self.__dict__[i])
         return out
-
-    def RestoreSettings(self, inpt):
-        for i in inpt:
-            self.__dict__[i] = inpt[i]
-        return self

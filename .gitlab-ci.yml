@@ -34,7 +34,7 @@ tox-test-cpu:
 
 tox-test-cuda:
     stage: tox-latest-cuda
-    image: pytorch:latest
+    image: pytorch/pytorch:latest
     script:
         - pip install tox
         - tox -e "3.11"
