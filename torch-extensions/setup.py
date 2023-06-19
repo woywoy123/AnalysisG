@@ -183,6 +183,8 @@ else:
         os.environ["CUDA_PATH"] = cu
     except subprocess.CalledProcessError:
         pass
+    if not torch.cuda.is_available():
+        cu = ""
 
 for i in PkgH:
     if len(cu) == 0 and "CUDA" in i:

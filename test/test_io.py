@@ -1,10 +1,12 @@
 from AnalysisG.IO import UpROOT
+import uproot
+import numpy as np
 
 root1 = "./samples/sample1/smpl1.root"
 root2 = "./samples/sample1/smpl2.root"
 
 
-def test_uproot():
+def test_uproot_read():
     io = UpROOT([root1, root2])
     io.Trees = ["nominal", "nominal-1"]
     io.Branches = ["children_index", "hello"]
@@ -40,5 +42,24 @@ def test_uproot():
         assert "truth/met_phi" not in i
 
 
+
+def test_uproot_write():
+    return 
+    x = uproot.recreate("output.root")
+    x["someTree"] = {"test" : np.array([[i for i in range(10)]])}
+    x["someTree"].extend({"test" : np.array([[i*2 for i in range(11)]])})
+    x.close()
+
+    u = UpROOT({"." : "output.root"})
+    u.Trees = ["someTree"]
+    u.Branches = ["test"]
+    for i in u:
+        print(i)
+
+
+
+
 if __name__ == "__main__":
-    test_uproot()
+    #test_uproot_read()
+    test_uproot_write()
+    pass

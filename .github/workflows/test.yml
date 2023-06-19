@@ -50,10 +50,10 @@ jobs:
                         - "3.11"
 
                     cuda:
-                        - '11.8.0'
-                        - '11.7.1'
-                        - '11.7.0'
                         - 'cpu'
+                        - '11.8.0'
+                        #- '11.7.1'
+                        #- '11.7.0'
         steps:      
             - name: "Checkout the repo"
               uses: "actions/checkout@v3"
