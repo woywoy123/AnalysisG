@@ -1,4 +1,5 @@
 from AnalysisG.Notification import _SelectionGenerator
+from AnalysisG.Templates import SelectionTemplate
 from AnalysisG.IO import PickleObject, UnpickleObject
 from AnalysisG.Tools import Code, Threading
 from .EventGenerator import EventGenerator
@@ -7,6 +8,9 @@ from AnalysisG.Settings import Settings
 from .Interfaces import _Interface
 from typing import Union
 from time import sleep
+import codecs
+import pickle
+import sys
 
 
 class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface):
@@ -53,8 +57,12 @@ class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface
         for name in self.Merge:
             if len(self.Merge[name]) == 0:
                 continue
-            sm = sum([UnpickleObject(i) for i in self.Merge[name]])
-            PickleObject(sm, self.OutputDirectory + "/Selections/Merged/" + name)
+            co = self._Code["Selections"][name]
+            sys.path.append("/".join(co._File.split("/")[:-1]))
+            sm = sum(
+                [UnpickleObject(i) for i in self.Merge[name] if not i.endswith(".py")]
+            )
+            PickleObject(sm._dump, self.OutputDirectory + "/Selections/Merged/" + name)
             for i in self.Merge[name]:
                 self.rm(i)
             self.Merge[name] = []
@@ -69,6 +77,16 @@ class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface
         elif self.CheckSettings:
             return False
         self.pth = self.OutputDirectory + "/Selections/"
+        if "Selections" in self._Code:
+            for name in self._Code["Selections"]:
+                self.mkdir(self.pth + name)
+                self._Code["Selections"][name].purge
+                f = open(self.pth + name + ".py", "w")
+                f.write(self._encoder(self._Code["Selections"][name]))
+                f.close()
+                self._Code["Selections"][name] = self._decoder(
+                    "".join(open(self.pth + name + ".py", "r").readlines())
+                )
 
         for name in self.Selections:
             inpt = []
@@ -93,8 +111,10 @@ class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface
 
         if len(self.Merge) == 0:
             return
+        self._Code["Selections"] = {}
         for name in self.Merge:
             self.Merge[name] = [
                 self.pth + name + "/" + i for i in self.ls(self.pth + name + "/")
             ]
+            self._Code["Selections"][name] = self._decoder("".join(open(self.pth + name + ".py", "r").readlines()))
             self.__merge__

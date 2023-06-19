@@ -213,8 +213,8 @@ class JobSpecification(AnalysisG.Tools.General.Tools, Settings):
         Ana = AnalysisScript()
         Ana.Name = "main"
         Ana.OutDir = pth
-        Ana.Code |= self.Job.Launch
-        Ana.Config |= conf
+        Ana.Code.update(self.Job.Launch)
+        Ana.Config.update(conf)
         Ana.Compile()
 
         self.ImportSettings(self.Job)

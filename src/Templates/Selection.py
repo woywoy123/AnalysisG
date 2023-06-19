@@ -232,3 +232,10 @@ class SelectionTemplate(Tools):
         for i in self.__dict__:
             setattr(out, i, self.__dict__[i])
         return out
+
+    @property
+    def _dump(self):
+        out = SelectionTemplate()
+        for i in self.__dict__:
+            out.__dict__[i] = self.__dict__[i]
+        return out

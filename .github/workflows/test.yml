@@ -9,6 +9,10 @@ on:
         paths-ignore:
             - '**.md'
             - '**.txt'
+            - 'models'
+            - 'setup-scripts'
+            - 'tutorial'
+            - 'Dockerfile'
  
     push:
         branches:
@@ -17,7 +21,11 @@ on:
         paths-ignore:
             - '**.md'
             - '**.txt'
-
+            - 'models'
+            - 'setup-scripts'
+            - 'tutorial'
+            - 'Dockerfile'
+ 
 defaults:
     run: 
         shell: bash
@@ -72,6 +80,8 @@ jobs:
               run: |
                 sudo apt autoremove -y 
                 sudo apt clean
+                sudo rm -rf "/usr/local/share/boost"
+                sudo rm -rf "$AGENT_TOOLSDIRECTORY"
                 
             - name: "Running using ${{ matrix.python-version }}"
               run: python -m tox

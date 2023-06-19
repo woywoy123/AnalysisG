@@ -3,6 +3,10 @@ stages:
     - tox-latest-cuda
     - build-image 
 
+workflow:
+    rules:
+        - if: $CI_COMMIT_BRANCH == "master"
+
 .parallel-matrix-cpu:
     parallel:
         matrix:
