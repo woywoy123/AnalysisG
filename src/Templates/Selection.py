@@ -80,28 +80,12 @@ class SelectionTemplate(Tools):
         self, q1, q2, l1, l2, ev, mT=172.5 * 1000, mW=80.379 * 1000, mN=0, zero=1e-12
     ):
         sol = NuNuDoublePtEtaPhiE(
-            q1.pt,
-            q1.eta,
-            q1.phi,
-            q1.e,
-            q2.pt,
-            q2.eta,
-            q2.phi,
-            q2.e,
-            l1.pt,
-            l1.eta,
-            l1.phi,
-            l1.e,
-            l2.pt,
-            l2.eta,
-            l2.phi,
-            l2.e,
-            ev.met,
-            ev.met_phi,
-            mT,
-            mW,
-            mN,
-            zero,
+            q1.pt, q1.eta, q1.phi, q1.e,
+            q2.pt, q2.eta, q2.phi, q2.e,
+            l1.pt, l1.eta, l1.phi, l1.e,
+            l2.pt, l2.eta, l2.phi, l2.e,
+            ev.met, ev.met_phi,
+            mT, mW, mN, zero,
         )
 
         skip = sol[0].tolist()[0]
@@ -112,26 +96,16 @@ class SelectionTemplate(Tools):
         o = [[self.MakeNu(k), self.MakeNu(j)] for k, j in zip(_s1, _s2)]
         return [p for p in o if p[0] != None and p[1] != None]
 
-    def Nu(self, q1, l1, ev, S=[100, 0, 0, 100], mT=172.5, mW=80.379, mN=0, zero=1e-12):
+    def Nu(
+        self, q1, l1, ev, S=[100, 0, 0, 100], mT=172.5, mW=80.379, mN=0, zero=1e-12
+    ):
         sol = NuDoublePtEtaPhiE(
-            q1.pt / 1000.0,
-            q1.eta,
-            q1.phi,
-            q1.e / 1000.0,
-            l1.pt / 1000.0,
-            l1.eta,
-            l1.phi,
-            l1.e / 1000.0,
-            ev.met / 1000.0,
-            ev.met_phi,
-            S[0],
-            S[1],
-            S[2],
-            S[3],
-            mT,
-            mW,
-            mN,
-            zero,
+            q1.pt, q1.eta, q1.phi, q1.e,
+            l1.pt, l1.eta, l1.phi, l1.e,
+            ev.met, ev.met_phi,
+            S[0], S[1],
+            S[2], S[3],
+            mT, mW, mN, zero,
         )
         skip = sol[0].tolist()[0]
         if skip:
@@ -166,16 +140,18 @@ class SelectionTemplate(Tools):
             return False
         self.CutFlow["Passed::Selection"] += 1
 
-        try:
-            self._t1
-            o = self.Strategy(event)
-            self._t2
-        except Exception as e:
-            msg = "Error::Strategy::( " + str(e) + " )"
-            if msg not in self.CutFlow:
-                self.CutFlow[msg] = 0
-            self.CutFlow[msg] += 1
-            return False
+
+        self._t1
+        o = self.Strategy(event)
+        self._t2
+
+#       try:
+#       except Exception as e:
+#            msg = "Error::Strategy::( " + str(e) + " )"
+#            if msg not in self.CutFlow:
+#                self.CutFlow[msg] = 0
+#            self.CutFlow[msg] += 1
+#            return False
 
         if isinstance(o, str) and "->" in o:
             if o not in self.CutFlow:

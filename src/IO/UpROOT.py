@@ -46,15 +46,9 @@ class MetaData(object):
     @property
     def MakeIndex(self):
         try:
-            raise StopIteration if len(self.DAOD) == 0 else None
-        except StopIteration:
-            return
-        try:
-            raise StopIteration if len(self.Files) == 0 else None
-        except StopIteration:
-            return
-        try:
-            raise StopIteration if len(self.eventNumber) == 0 else None
+            next(iter(self.DAOD))
+            next(iter(self.Files))
+            next(iter(self.eventNumber))
         except StopIteration:
             return
 

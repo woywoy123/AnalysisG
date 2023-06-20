@@ -42,11 +42,11 @@ class ParticleRecursion(MessagePassing):
         self.edge = None
 
         ef = 3
-        self._norm_i = LayerNorm(ef, mode="node")
+        self._norm_i = LayerNorm(ef, mode="graph")
         self._inpt = MLP([ef, end])
         self._edge = MLP([end, 2])
 
-        self._norm_r = LayerNorm(end, mode="node")
+        self._norm_r = LayerNorm(end, mode="graph")
         self._rnn = MLP([end * 2, end * 2, end * 2, end])
 
     def edge_updater(self, edge_index, batch, Pmc, Pmu, PiD):
@@ -114,9 +114,9 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
         self.L_top_edge = "CEL"
         self._edgeRNN = ParticleRecursion()
 
-        self.O_res_edge = None
-        self.L_res_edge = "CEL"
-        self._resRNN = ParticleRecursion()
+        #self.O_res_edge = None
+        #self.L_res_edge = "CEL"
+        #self._resRNN = ParticleRecursion()
 
     def NuNuCombinatorial(self, edge_index, batch, Pmu, PiD, G_met, G_phi):
         i, j, batch = edge_index[0], edge_index[1], batch.view(-1)
@@ -179,64 +179,70 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
         mW = torch.ones_like(b1.view(-1, 1)) * 80.385 * 1000
         mN = torch.zeros_like(mW)
         met, phi = G_met[batch[b1]], G_phi[batch[b1]]
-        res = NuSol.NuNuPtEtaPhiE(
+        _sols = NuSol.NuNuPtEtaPhiE(
             Pmu[b1], Pmu[b2], Pmu[l1], Pmu[l2], met, phi, mT, mW, mN, 10e-8
         )
-        SkipEvent = res[0]
+        SkipEvent = _sols[0]
 
-        if len(res) == 5:
-            return SkipEvent
-        _pt, _eta, _phi, _e = Pmu[:, 0], Pmu[:, 1], Pmu[:, 2], Pmu[:, 3]
-        p3_v = Tr.PxPyPz(_pt, _eta, _phi)
+        if len(_sols) == 5:
+            return False
 
+        # Get the Neutrino Solutions
+        Pmc_nu1, Pmc_nu2 = _sols[1], _sols[2]
+
+        # Create a mask such that 0 valued solutions are excluded
+        nu1_msk = Pmc_nu1.sum(-1, keepdim = True) != 0
+        nu2_msk = Pmc_nu2.sum(-1, keepdim = True) != 0
+        _msk = (nu1_msk*nu2_msk).view(-1, 6)
+
+        # Compute the Neutrino 4-vector 
+        _e1, _e2 = Pmc_nu1.pow(2), Pmc_nu2.pow(2)
+        _e1, _e2 = _e1.sum(-1, keepdim = True), _e2.sum(-1, keepdim = True)
+        _e1, _e2 = _e1.pow(0.5), _e2.pow(0.5)
+        Pmc_nu1, Pmc_nu2 = torch.cat([Pmc_nu1, _e1], -1), torch.cat([Pmc_nu2, _e2], -1)
+
+        # Remove l which are marked as a skip event.
         l1, l2 = l1[SkipEvent == False], l2[SkipEvent == False]
-        nu1, nu2 = res[1], res[2]
-        l1_v, l2_v = p3_v[l1].view(-1, 1, 3), p3_v[l2].view(-1, 1, 3)
-        W_1, W_2 = (nu1 + l1_v).view(-1, 3), (nu2 + l2_v).view(-1, 3)
 
-        # Create a reverse look-up map of the leptons being used (edge_index)
-        nu1_msk, nu2_msk = nu1 == 0, nu2 == 0
-        l1_map = (torch.ones_like(nu1_msk[:, :, :1]) * (l1.view(-1, 1, 1))).view(-1, 1)
-        l2_map = (torch.ones_like(nu2_msk[:, :, :1]) * (l2.view(-1, 1, 1))).view(-1, 1)
+        # Further Remove pairs based on null neutrino solutions 
+        l1, l2 = (l1.view(-1, 1)*_msk)[_msk], (l2.view(-1, 1)*_msk)[_msk]
 
-        # Remove Zero values solutions
-        nu1_msk, nu2_msk = nu1_msk.sum(-1).view(-1) > 0, nu2_msk.sum(-1).view(-1) > 0
-        l1_map, l2_map = l1_map[nu1_msk], l2_map[nu2_msk]
-        l1l2_map = torch.cat([l1_map, l2_map], -1)
-        W_1, W_2 = W_1[nu1_msk], W_2[nu2_msk]
+        # Collect only the leptons from the original vector and match them to the neutrino
+        lep1 = Tr.PxPyPz(Pmu[l1][:, 0].view(-1, 1), Pmu[l1][:, 1].view(-1, 1), Pmu[l1][:, 2].view(-1, 1))
+        lep2 = Tr.PxPyPz(Pmu[l2][:, 0].view(-1, 1), Pmu[l2][:, 1].view(-1, 1), Pmu[l2][:, 2].view(-1, 1))
 
-        # Continue here .....
-        print(l1l2_map.size())
-        exit()
-        print(l1l2_map)
-        print(W_1)
-        print(W_2)
+        W1 = torch.cat([lep1, Pmu[l1][:, 3].view(-1, 1)], -1) + Pmc_nu1[_msk]
+        W2 = torch.cat([lep2, Pmu[l2][:, 3].view(-1, 1)], -1) + Pmc_nu2[_msk]
 
-        exit()
+        W1 = torch.cat([Tr.PtEtaPhi(W1[:, 0].view(-1, 1), W1[:, 1].view(-1, 1), W1[:, 2].view(-1, 1)), W1[:, 3].view(-1, 1)], -1)
+        W2 = torch.cat([Tr.PtEtaPhi(W2[:, 0].view(-1, 1), W2[:, 1].view(-1, 1), W2[:, 2].view(-1, 1)), W2[:, 3].view(-1, 1)], -1)
+
+        return W1, W2, l1, l2
+
 
     def forward(
-        self,
-        i,
-        edge_index,
-        batch,
-        G_met,
-        G_phi,
-        G_n_jets,
-        N_pT,
-        N_eta,
-        N_phi,
-        N_energy,
-        N_is_lep,
-        N_is_b,
-        G_T_n_nu,
+        self, i, edge_index, batch, G_met, G_phi, G_n_jets,
+        N_pT, N_eta, N_phi, N_energy, N_is_lep, N_is_b, G_T_n_nu,
     ):
         Pmc = torch.cat([Tr.PxPyPz(N_pT, N_eta, N_phi), N_energy], -1)
         Pmu = torch.cat([N_pT, N_eta, N_phi, N_energy], -1)
         PiD = torch.cat([N_is_lep, N_is_b], -1)
         batch = batch.view(-1, 1)
 
-        # self.NuNuCombinatorial(edge_index, batch, Pmu, PiD, G_met, G_phi)
+        o = self.NuNuCombinatorial(edge_index, batch, Pmu, PiD, G_met, G_phi)
+        if not o: pass
+        else:
+            W1, W2, l1, l2 = o
+            #print(W1)
+            #print(W2)
+            #print(l1)
+            #print(l2)
+            # continue here.... Replace the leptons with the W's and greate multiple graphs 
         # self.propagate(edge_index, batch = batch, Pmc = Pmc, PiD = PiD, met = G_met, phi = G_phi)
 
+        #print(Pmu)
+
         self.O_top_edge = self._edgeRNN(i, edge_index, batch, Pmc, Pmu, PiD)
-        self.O_res_edge = self._resRNN(i, edge_index, batch, Pmc, Pmu, PiD)
+        #self.O_res_edge = self._resRNN(i, edge_index, batch, Pmc, Pmu, PiD)
+
+        print(to_dense_adj(edge_index, edge_attr = self.O_top_edge.max(-1)[1]))

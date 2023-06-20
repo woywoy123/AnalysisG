@@ -1,8 +1,9 @@
 from .Settings import Settings
-
+import subprocess
+from subprocess import Popen, PIPE, STDOUT
+from pwinput import pwinput
 
 def _getcmd(cmd):
-    import subprocess
 
     return subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True).decode(
         "UTF-8"
@@ -14,6 +15,18 @@ def CONFIG_PYAMI():
     print(_getcmd('echo "y" | ami_atlas_post_install'))
     print("-------- FINISHED PYAMI ---------")
 
+def AUTH_PYAMI():
+    print("Please specify the directory where your .globus directory is located.")
+    globu = input("(default: ~/.globus): ")
+    globu = "~/.globus" if globu == "" else globu
+    p = Popen(
+        ["voms-proxy-init", "-certdir", globu, "-verify"],
+        stdout = PIPE, stdin = PIPE, stderr = STDOUT
+    )
+
+    print("Provide the password to decrypt the PEM files. Leave blank and press enter for no password.")
+    code = pwinput("Password: ")
+    stdout = p.communicate(code.encode("UTF-8"))
 
 def POST_INSTALL_PYTORCH():
     print(_getcmd("pip install torch"))
