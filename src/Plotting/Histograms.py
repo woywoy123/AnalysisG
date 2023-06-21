@@ -326,7 +326,7 @@ class CombineTH1F(Functions):
                 binticks=True,
             )
 
-        self.PLT.legend()
+        self.PLT.legend(loc=self.LegendLoc)
         if self.xMin == self.xMax:
             self.xStep = 0.1
             self.xMax = self.xBins / self.xStep
