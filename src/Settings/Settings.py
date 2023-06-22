@@ -102,7 +102,7 @@ class _Plotting:
         self.LabelSize = 12.5
         self.TitleSize = 10
         self.LegendSize = 10
-	self.LegendLoc = 'upper left'
+        self.LegendLoc = 'upper left'
 
         self.Logarithmic = False
         self.xScaling = 1.25
