@@ -68,7 +68,7 @@ pth = "/home/tnom6927/Downloads/samples"
 #Ana.InputSample("bsm-1000", {pth + "/Dilepton_/ttH_tttt_m1000/" : bsm4t})
 #Ana.Event = Event
 #Ana.EventCache = True
-#Ana.EventStop = 1000
+##Ana.EventStop = 1000
 #Ana.PurgeCache = False
 #Ana.Launch
 #
@@ -77,7 +77,7 @@ pth = "/home/tnom6927/Downloads/samples"
 #Ana.InputSample("ttbar", {pth + "/Dilepton/ttbar/" : ttbar})
 #Ana.Event = Event
 #Ana.EventCache = True
-#Ana.EventStop = 100
+##Ana.EventStop = 100
 #Ana.Launch
 #
 #Ana = Analysis()
@@ -87,21 +87,29 @@ pth = "/home/tnom6927/Downloads/samples"
 #Ana.EventGraph = modes[mode]
 #Ana.DataCache = True
 #ApplyFeatures(Ana)
-#Ana.kFolds = 2
+#Ana.Launch
+
+#Ana = Analysis()
+#Ana.ProjectName = "Project"
+#Ana.InputSample("bsm-1000")
+#Ana.InputSample("ttbar")
+#Ana.DataCache = True
+#Ana.kFolds = 10
 #Ana.TrainingSize = 90
+#Ana.TrainingName = "k10"
 #Ana.Launch
 
 Ana = Analysis()
 Ana.ProjectName = "Project"
-Ana.TrainingSampleName = mode
+Ana.TrainingName = "k10"
 Ana.Device = "cuda"
 Ana.kFold = 1
 Ana.Epochs = 100
-Ana.BatchSize = 2
+Ana.BatchSize = 20
 Ana.ContinueTraining = False
 Ana.Optimizer = "ADAM"
 Ana.OptimizerParams = {"lr": 1e-3, "weight_decay": 1e-3}
 Ana.Model = RecursiveGraphNeuralNetwork
-Ana.DebugMode = True
+Ana.DebugMode = False
 Ana.EnableReconstruction = False
 Ana.Launch

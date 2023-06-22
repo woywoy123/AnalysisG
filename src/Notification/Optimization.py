@@ -21,7 +21,7 @@ class _Optimizer(Notification):
         if l == 0:
             return self.Warning("No Sample Graphs found")
         self.Success("Found " + str(l) + " Sample Graphs")
-        return False
+        return hashes
 
     @property
     def _notcompatible(self):

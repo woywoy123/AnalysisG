@@ -3,7 +3,7 @@ class _General:
         self.Caller = "" if "Caller" not in self.__dict__ else self.Caller.upper()
         self.Verbose = 3
         self.Threads = 6
-        self.chnk = 10
+        self.chnk = 100
         self._Code = {}
         self.EventStart = -1
         self.EventStop = None
@@ -141,7 +141,6 @@ class _Condor:
         self._dump = True
         self.ProjectName = None
         self.VerboseLevel = 0
-        self.Tree = None
         self.OutputDirectory = None
 
 
