@@ -35,7 +35,8 @@ class Optimizer(_Optimizer, _Interface, SampleTracer, RandomSamplers):
         self.DataCache = True
         if self._NoModel:
             return False
-        if self._NoSampleGraph:
+        hashes = self._NoSampleGraph
+        if isinstance(hashes, bool):
             return False
         self._outDir = self.OutputDirectory + "/Training"
         self.Model = ModelWrapper(self.GetCode.clone)
@@ -63,7 +64,7 @@ class Optimizer(_Optimizer, _Interface, SampleTracer, RandomSamplers):
         self._DataLoader = {}
         self._nsamples = {}
         if self.kFold is None:
-            self.kFold = {"train": {"all": self.GetDataCacheHashes}}
+            self.kFold = {"train": {"all": hashes}}
         for k in self.kFold:
             self._kModels[k] = ModelWrapper(self._Code["Model"].clone)
             self._kModels[k].OutputDirectory = self._outDir

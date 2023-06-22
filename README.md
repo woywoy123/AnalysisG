@@ -465,40 +465,42 @@ Current choices are; `ExponentialLR` and `CyclicLR`.
 A dictionary containing the specific input parameters for the chosen `Scheduler`.
 - `Device`: 
 The device used to run `PyTorch` training on. This also applies to where to store graphs during compilation.
-- `FeatureTest`: 
+- `TestFeature`: 
 A parameter mostly concerning graph generation. It checks whether the supplied features are compatible with the `Event` python object. 
 If any of the features fail, an alert is issued. 
 
 #### Default Parameters:
-| **Attribute**        | **Default Value** | **Expected Type** |                    **Examples** |
-|:---------------------|:-----------------:|:-----------------:|:-------------------------------:|
-| Verbose              |                 3 |             `int` |                                 | 
-| Threads              |                12 |             `int` |                                 |
-| chnk                 |                12 |             `int` |                                 |
-| Tree                 |              None |             `str` |                                 |
-| EventStart           |                 0 |             `int` |                                 |
-| EventStop            |              None |             `int` |                                 |
-| ProjectName          |          UNTITLED |             `str` |                                 |
-| OutputDirectory      |                ./ |             `str` |                                 |
-| Event                |              None |       EventObject |                                 |
-| EventGraph           |              None |  EventGraphObject |                                 |
-| SelfLoop             |              True |            `bool` |                                 |
-| FullyConnect         |              True |            `bool` |                                 |
-| TrainingSampleName   |             False |             `str` |                                 |
-| TrainingPercentage   |                80 |             `int` |                                 |
-| kFolds               |                10 |             `int` |                                 |
-| BatchSize            |                10 |             `int` |                                 |
-| Model                |              None |          GNNModel |                                 |
-| DebugMode            |             False |             `str` | `loss`, `accuracy`, `compare`   |
-| ContinueTraining     |             False |            `bool` |                                 |
-| RunName              |          UNTITLED |             `str` |                                 |
-| Epochs               |                10 |             `int` |                                 |
-| Optimizer            |              None |            `dict` |      `{"ADAM" : {"lr" : 0.001}` |
-| Scheduler            |              None |            `dict` |                                 |
-| Device               |               cpu |            `str`  |			            `cuda`   |
-| EventCache           |             False |            `bool` |                                 |
-| DataCache            |             False |            `bool` |                                 |
-| FeatureTest          |             False |            `bool` |                                 |
+| **Attribute**        | **Default Value**  | **Expected Type** |                    **Examples** |
+|:---------------------|:------------------:|:-----------------:|:-------------------------------:|
+| Verbose              |                  3 |             `int` |                                 | 
+| Threads              |                  6 |             `int` |                                 |
+| chnk                 |                100 |             `int` |                                 |
+| EventStart           |                  0 |             `int` |                                 |
+| EventStop            |               None |             `int` |                                 |
+| ProjectName          |           UNTITLED |             `str` |                                 |
+| OutputDirectory      |                 ./ |             `str` |                                 |
+| Event                |               None |       EventObject |                                 |
+| EventGraph           |               None |  EventGraphObject |                                 |
+| SelfLoop             |               True |            `bool` |                                 |
+| FullyConnect         |               True |            `bool` |                                 |
+| TrainingName         |           `Sample` |             `str` |                                 |
+| TrainingSize         |              False |             `int` |                                 |
+| kFolds               |              False |             `int` |                                 |
+| BatchSize            |                  1 |             `int` |                                 |
+| Model                |               None |          GNNModel |                                 |
+| DebugMode            |              False |            `bool` | `loss`, `accuracy`, `compare`   |
+| EnableReconstruction |              False |            `bool` |                                 |
+| ContinueTraining     |              False |            `bool` |                                 |
+| RunName              |                RUN |             `str` |                                 |
+| Epochs               |                 10 |             `int` |                                 |
+| Optimizer            |               None |            `str`  |      `"ADAM"`                   |
+| Scheduler            |               None |            `str`  |      `"CyclicLR"`               |
+| OptimizerParams      |               {}   |            `dict` | `{"lr": 1e-3, "weight_decay": 1e-3}` |
+| SchedulerParams      |               {}   |            `dict` | `{"base_lr": xxx, "max_lr": xxx}`    |
+| Device               |                cpu |            `str`  |			            `cuda`    |
+| EventCache           |              False |            `bool` |                                 |
+| DataCache            |              False |            `bool` |                                 |
+| TestFeatures         |              False |            `bool` |                                 |
 
 #### Functions:
 ```python 
@@ -506,12 +508,14 @@ def InputSample(Name, SampleDirectory)
 ```
 This function is used to specify the directory or sample to use for the analysis. 
 The `Name` parameter expects a string, which assigns a name to `SampleDirectory` and is used for book-keeping. 
-`SampleDirectory` can be either a string, which directory points to the ROOT file or a nested dictionary with keys representing the path and values being either a string or list of ROOT files. 
+`SampleDirectory` can be either a string, pointing to a ROOT file or a nested dictionary with keys indicating the path and values being a string or list of ROOT files. 
+
 ```python 
 def AddSelection(Name, inpt)
 ``` 
 The `Name` parameter specifies the name of the selection criteria, for instance, `MyAwesomeSelection`. 
 The `inpt` specifies the `Selection` implementation to use, more on this later. 
+
 ```python 
 def MergeSelection(Name)
 ```
@@ -525,17 +529,20 @@ def Launch
 Launches the Analysis with the specified parameters.
 
 ```python 
-def DumpSettings(): 
+def DumpSettings: 
 ``` 
 Returns a directory of the settings used to configure the `Analysis` object. 
+
 ```python 
-def RestoreSettings(inpt):
+def ImportSettings(inpt):
 ```
 Expects a dictionary of parameters used to configure the object.
+
 ```python 
-def ExportAnalysisScript():
+def Quantize(inpt, size):
 ```
-Returns a list of strings representing the configuration of the object.
+Expects a dictionary with lists of ROOT files, that need to be split into smaller lists (defined by size).
+For instance, given a size of 2, a list of 100 ROOT files will be split into 50 lists with length 2.
 
 #### Magic Functions:
 ```python 
@@ -683,44 +690,10 @@ def ApplyRandomTexture(obj)
 ```
 Selects a random texture for the histograms.
 
-# Incomplete Documentation (Work in Progress):
-## Tools.General:
-- GetSourceCode 
-- GetObjectFromString 
-- GetSourceFile
-- MergeListsInDict 
-- DictToList
-- AddDictToDict
-- AddListToDict
-- MergeNestedList 
-
-## Tools.IO:
-- lsFiles
-- ls
-- IsFile 
-- ListFilesInDir 
-- pwd
-- abs
-- path
-- filename 
-- mkdir 
-- rm 
-- cd
-
-## Tools.MultiThreading.Threading:
-- Start
-- _lists
-
 ## Submission.Condor:
 - AddJob 
 - LocalDryRun 
 - DumpCondorJobs 
-
-## Plotting:
-- TemplateHistograms.TH1FStack
-- TemplateLines.TLine 
-- TemplateLines.CombineTLine 
-- TemplateLines.TLineStack 
 
 ## IO:
 - Pickle.PickleObject

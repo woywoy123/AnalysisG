@@ -5,31 +5,17 @@ from torch_geometric.utils import remove_self_loops
 
 try:
     import PyC.Transform.CUDA as Tr
-except:
-    import PyC.Transform.Tensors as Tr
-
-try:
     import PyC.Physics.CUDA.Polar as PP
-except:
-    import PyC.Physics.Tensors.Polar as PP
-
-try:
     import PyC.Physics.CUDA.Cartesian as PC
-except:
-    import PyC.Physics.Tensors.Cartesian as PC
-
-try:
     import PyC.Operators.CUDA as OP
-except:
-    import PyC.Operators.Tensors as OP
-
-try:
     import PyC.NuSol.CUDA as NuSol
 except:
+    import PyC.Transform.Tensors as Tr
+    import PyC.Physics.Tensors.Polar as PP
+    import PyC.Physics.Tensors.Cartesian as PC
+    import PyC.Operators.Tensors as OP
     import PyC.NuSol.Tensors as NuSol
-
 torch.set_printoptions(4, profile="full", linewidth=100000)
-
 from time import sleep
 from torch_geometric.utils import to_dense_adj
 
@@ -37,16 +23,16 @@ from torch_geometric.utils import to_dense_adj
 class ParticleRecursion(MessagePassing):
     def __init__(self):
         super().__init__(aggr=None, flow="target_to_source")
-        end = 64
+        end = 32
 
         self.edge = None
 
         ef = 3
-        self._norm_i = LayerNorm(ef, mode="graph")
+        self._norm_i = LayerNorm(ef, mode="node")
         self._inpt = MLP([ef, end])
         self._edge = MLP([end, 2])
 
-        self._norm_r = LayerNorm(end, mode="graph")
+        self._norm_r = LayerNorm(end, mode="node")
         self._rnn = MLP([end * 2, end * 2, end * 2, end])
 
     def edge_updater(self, edge_index, batch, Pmc, Pmu, PiD):
@@ -108,15 +94,11 @@ class ParticleRecursion(MessagePassing):
 
 class RecursiveGraphNeuralNetwork(MessagePassing):
     def __init__(self):
-        super().__init__(aggr=None, flow="target_to_source")
+        super().__init__(aggr = "max")
 
         self.O_top_edge = None
         self.L_top_edge = "CEL"
         self._edgeRNN = ParticleRecursion()
-
-        #self.O_res_edge = None
-        #self.L_res_edge = "CEL"
-        #self._resRNN = ParticleRecursion()
 
     def NuNuCombinatorial(self, edge_index, batch, Pmu, PiD, G_met, G_phi):
         i, j, batch = edge_index[0], edge_index[1], batch.view(-1)
@@ -179,13 +161,14 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
         mW = torch.ones_like(b1.view(-1, 1)) * 80.385 * 1000
         mN = torch.zeros_like(mW)
         met, phi = G_met[batch[b1]], G_phi[batch[b1]]
+
         _sols = NuSol.NuNuPtEtaPhiE(
             Pmu[b1], Pmu[b2], Pmu[l1], Pmu[l2], met, phi, mT, mW, mN, 10e-8
         )
-        SkipEvent = _sols[0]
 
         if len(_sols) == 5:
             return False
+        SkipEvent = _sols[0]
 
         # Get the Neutrino Solutions
         Pmc_nu1, Pmc_nu2 = _sols[1], _sols[2]
@@ -214,35 +197,36 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
         W1 = torch.cat([lep1, Pmu[l1][:, 3].view(-1, 1)], -1) + Pmc_nu1[_msk]
         W2 = torch.cat([lep2, Pmu[l2][:, 3].view(-1, 1)], -1) + Pmc_nu2[_msk]
 
-        W1 = torch.cat([Tr.PtEtaPhi(W1[:, 0].view(-1, 1), W1[:, 1].view(-1, 1), W1[:, 2].view(-1, 1)), W1[:, 3].view(-1, 1)], -1)
-        W2 = torch.cat([Tr.PtEtaPhi(W2[:, 0].view(-1, 1), W2[:, 1].view(-1, 1), W2[:, 2].view(-1, 1)), W2[:, 3].view(-1, 1)], -1)
+        Pmu_W1 = torch.cat([Tr.PtEtaPhi(W1[:, 0].view(-1, 1), W1[:, 1].view(-1, 1), W1[:, 2].view(-1, 1)), W1[:, 3].view(-1, 1)], -1)
+        Pmu_W2 = torch.cat([Tr.PtEtaPhi(W2[:, 0].view(-1, 1), W2[:, 1].view(-1, 1), W2[:, 2].view(-1, 1)), W2[:, 3].view(-1, 1)], -1)
 
-        return W1, W2, l1, l2
-
+        return Pmu_W1, Pmu_W2, W1, W2, l1, l2
 
     def forward(
         self, i, edge_index, batch, G_met, G_phi, G_n_jets,
         N_pT, N_eta, N_phi, N_energy, N_is_lep, N_is_b, G_T_n_nu,
     ):
+
         Pmc = torch.cat([Tr.PxPyPz(N_pT, N_eta, N_phi), N_energy], -1)
         Pmu = torch.cat([N_pT, N_eta, N_phi, N_energy], -1)
         PiD = torch.cat([N_is_lep, N_is_b], -1)
         batch = batch.view(-1, 1)
 
         o = self.NuNuCombinatorial(edge_index, batch, Pmu, PiD, G_met, G_phi)
-        if not o: pass
+
+        top_edges = self._edgeRNN(i, edge_index, batch, Pmc, Pmu, PiD)
+        if not o: self.O_top_edge = top_edges
         else:
-            W1, W2, l1, l2 = o
-            #print(W1)
-            #print(W2)
-            #print(l1)
-            #print(l2)
-            # continue here.... Replace the leptons with the W's and greate multiple graphs 
-        # self.propagate(edge_index, batch = batch, Pmc = Pmc, PiD = PiD, met = G_met, phi = G_phi)
+            Pmu_W1, Pmu_W2, Pmc_W1, Pmc_W2, l1, l2 = o
+            for k in torch.arange(l1.size()[0]):
+                Pmu_c = Pmu.clone()
+                Pmu_c[l1[k]] = Pmu_W1[k]
+                Pmu_c[l2[k]] = Pmu_W2[k]
 
-        #print(Pmu)
+                Pmc_c = Pmc.clone()
+                Pmc_c[l1[k]] = Pmc_W1[k]
+                Pmc_c[l2[k]] = Pmc_W2[k]
 
-        self.O_top_edge = self._edgeRNN(i, edge_index, batch, Pmc, Pmu, PiD)
-        #self.O_res_edge = self._resRNN(i, edge_index, batch, Pmc, Pmu, PiD)
-
-        print(to_dense_adj(edge_index, edge_attr = self.O_top_edge.max(-1)[1]))
+                top_edges += self._edgeRNN(i, edge_index, batch, Pmc_c, Pmu_c, PiD)
+            top_edges /= (l1.size()[0]+1)
+        self.O_top_edge = top_edges
