@@ -5,135 +5,135 @@
 #include <torch/torch.h>
 #include "kernel.cu"
 
-const dim3 BLOCKS(
-    torch::Tensor t, const unsigned int threads, const unsigned int len
-)
+const dim3 P_BLOCKS(const unsigned int threads, const unsigned int len)
 {
     const dim3 blocks( (len + threads -1) / threads ); 
     return blocks; 
 }
 
-const dim3 BLOCKS(
-    torch::Tensor t, const unsigned int threads, const unsigned int len, 
-    const unsigned int dy, const unsigned int dz
+const dim3 P_BLOCKS(
+    const unsigned int threads, const unsigned int len, 
+    const unsigned int dy,      const unsigned int dz 
 )
 {
     const dim3 blocks( (len + threads -1) / threads, dy, dz); 
     return blocks; 
 }
 
-torch::Tensor _Px(torch::Tensor pt, torch::Tensor phi)
+torch::Tensor _Pt(torch::Tensor px, torch::Tensor py)
 {
-    pt = pt.view({-1, 1}).contiguous(); 
-    phi = phi.view({-1, 1}).contiguous();
-    CHECK_INPUT(pt); CHECK_INPUT(phi);  
+    px = px.view({-1, 1}).contiguous(); 
+    py = py.view({-1, 1}).contiguous(); 
+    CHECK_INPUT(px); CHECK_INPUT(py); 
     
-    torch::Tensor px = torch::zeros_like(pt);
-    const unsigned int threads = 1024;   
+    torch::Tensor pt = torch::zeros_like(px);
     const unsigned int len = pt.size(0); 
-    const dim3 blk = BLOCKS(pt, threads, len); 
-    
-    AT_DISPATCH_FLOATING_TYPES(pt.scalar_type(), "PxK", ([&]
+    const unsigned int threads = 1024; 
+    const dim3 blk = P_BLOCKS(threads, len); 
+
+    AT_DISPATCH_FLOATING_TYPES(pt.scalar_type(), "PtK", ([&]
     {
-        PxK<scalar_t><<<blk, threads>>>(
-            pt.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
-           phi.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+        PtK<scalar_t><<<blk, threads>>>(
             px.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
-            len
-        );
-    })); 
-    return px;  
-}
-
-torch::Tensor _Py(torch::Tensor pt, torch::Tensor phi)
-{
-    pt = pt.view({-1, 1}).contiguous(); 
-    phi = phi.view({-1, 1}).contiguous(); 
-    CHECK_INPUT(pt); CHECK_INPUT(phi);  
-
-    torch::Tensor py = torch::zeros_like(pt);
-    const unsigned int threads = 1024;   
-    const unsigned int len = pt.size(0); 
-    const dim3 blk = BLOCKS(pt, threads, len); 
-    
-    AT_DISPATCH_FLOATING_TYPES(pt.scalar_type(), "PyK", ([&]
-    {
-        PyK<scalar_t><<<blk, threads>>>(
-            pt.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
-           phi.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
             py.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+            pt.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
             len
-        );
+        ); 
     })); 
-    return py;  
+    return pt; 
 }
 
-torch::Tensor _Pz(torch::Tensor pt, torch::Tensor eta)
+torch::Tensor _Eta(torch::Tensor px, torch::Tensor py, torch::Tensor pz)
 {
-    pt = pt.view({-1, 1}).contiguous(); 
-    eta = eta.view({-1, 1}).contiguous(); 
-    CHECK_INPUT(pt); CHECK_INPUT(eta);  
-
-    torch::Tensor pz = torch::zeros_like(pt);
-    const unsigned int threads = 1024;   
-    const unsigned int len = pt.size(0); 
-    const dim3 blk = BLOCKS(pt, threads, len); 
+    px = px.view({-1, 1}).contiguous(); 
+    py = py.view({-1, 1}).contiguous(); 
+    pz = pz.view({-1, 1}).contiguous();
+    CHECK_INPUT(px); CHECK_INPUT(py); CHECK_INPUT(pz);
     
-    AT_DISPATCH_FLOATING_TYPES(pt.scalar_type(), "PzK", ([&]
+    torch::Tensor eta = torch::zeros_like(px);
+    const unsigned int len = eta.size(0); 
+    const unsigned int threads = 1024; 
+    const dim3 blk = P_BLOCKS(threads, len); 
+
+    AT_DISPATCH_FLOATING_TYPES(eta.scalar_type(), "EtaK", ([&]
     {
-        PzK<scalar_t><<<blk, threads>>>(
-            pt.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
-           eta.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+        EtaK<scalar_t><<<blk, threads>>>(
+            px.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+            py.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
             pz.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+           eta.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
             len
-        );
+        ); 
     })); 
-    return pz;  
+    return eta; 
 }
 
-torch::Tensor _PxPyPz(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi)
+torch::Tensor _Phi(torch::Tensor px, torch::Tensor py)
 {
-    pt  = pt.view({-1, 1}).contiguous(); 
-    eta = phi.view({-1, 1}).contiguous(); 
-    phi = phi.view({-1, 1}).contiguous();     
-
-    torch::Tensor out = torch::zeros_like(pt);
-    out = torch::cat({out, out, out}, -1).contiguous(); 
-    CHECK_INPUT(pt); CHECK_INPUT(eta); CHECK_INPUT(phi); CHECK_INPUT(out); 
-
-    const unsigned int len = pt.size(0); 
-    const unsigned int threads = 1024;   
-    const dim3 blk = BLOCKS(pt, threads, len, 3, 1); 
+    px = px.view({-1, 1}).contiguous(); 
+    py = py.view({-1, 1}).contiguous(); 
+    CHECK_INPUT(px); CHECK_INPUT(py);
     
-    AT_DISPATCH_FLOATING_TYPES(pt.scalar_type(), "PxPyPzK", ([&]
+    torch::Tensor phi = torch::zeros_like(px);
+    const unsigned int len = phi.size(0); 
+    const unsigned int threads = 1024; 
+    const dim3 blk = P_BLOCKS(threads, len); 
+
+    AT_DISPATCH_FLOATING_TYPES(phi.scalar_type(), "PhiK", ([&]
     {
-        PxPyPzK<scalar_t><<<blk, threads>>>(
-            pt.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
-           eta.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+        PhiK<scalar_t><<<blk, threads>>>(
+            px.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+            py.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
            phi.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+            len
+        ); 
+    })); 
+    return phi; 
+}
+
+torch::Tensor _PtEtaPhi(torch::Tensor px, torch::Tensor py, torch::Tensor pz)
+{
+    px = px.view({-1, 1}).contiguous(); 
+    py = py.view({-1, 1}).contiguous();    
+    pz = pz.view({-1, 1}).contiguous(); 
+
+    torch::Tensor out = torch::zeros_like(px);
+    out = torch::cat({out, out, out}, -1).contiguous(); 
+    CHECK_INPUT(px); CHECK_INPUT(py); CHECK_INPUT(pz); CHECK_INPUT(out); 
+
+    const unsigned int len = px.size(0); 
+    const unsigned int threads = 1024; 
+    const dim3 blk = P_BLOCKS(threads, len, 2, 1);  
+
+    AT_DISPATCH_FLOATING_TYPES(px.scalar_type(), "PtEtaPhiK", ([&]
+    {
+        PtEtaPhiK<scalar_t><<<blk, threads>>>(
+            px.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+            py.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+            pz.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
            out.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
             len
         );
     })); 
-    return out;  
+    return out; 
 }
 
-torch::Tensor _PxPyPzE(torch::Tensor Pmu)
+torch::Tensor _PtEtaPhiE(torch::Tensor Pmc)
 {
-    torch::Tensor out = torch::zeros_like(Pmu);
-    CHECK_INPUT(out); CHECK_INPUT(Pmu); 
+    torch::Tensor out = torch::zeros_like(Pmc); 
+    CHECK_INPUT(out); CHECK_INPUT(Pmc); 
 
-    const unsigned int len = out.size(0); 
-    const unsigned int threads = 1024;   
-    const dim3 blk = BLOCKS(out, threads, len, 4, 1); 
-    
-    AT_DISPATCH_FLOATING_TYPES(out.scalar_type(), "PxPyPz3K", ([&]
+    const unsigned int len = Pmc.size(0); 
+    const unsigned int threads = 1024; 
+    const dim3 blk = P_BLOCKS(threads, len, 3, 1);  
+
+    AT_DISPATCH_FLOATING_TYPES(out.scalar_type(), "PtEtaPhiEK", ([&]
     {
-        PxPyPzEK<scalar_t><<<blk, threads>>>(
-            Pmu.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+        PtEtaPhiEK<scalar_t><<<blk, threads>>>(
+            Pmc.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
             out.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
             len
         );
     })); 
-    return out;  
+    return out; 
 }

@@ -10,7 +10,8 @@ find_package(Torch REQUIRED)
 
 
 add_subdirectory(cartesian-cuda)
+add_subdirectory(polar-cuda)
 
 add_library(TransformCuda SHARED transform-cuda.cxx)
-target_link_libraries(TransformCuda PRIVATE cartesian-cuda Python::Python)
+target_link_libraries(TransformCuda PRIVATE cartesian-cuda polar-cuda Python::Python)
 target_compile_options(TransformCuda PRIVATE $<$<COMPILE_LANGUAGE::CUDA>:-ccbin g++-9>)

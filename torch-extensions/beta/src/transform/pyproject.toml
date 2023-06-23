@@ -19,6 +19,5 @@ minimum-version = "0.2"
 
 cmake.args = []
 
-
 cmake.verbose = true 
 logging.level = "INFO"

@@ -5,17 +5,15 @@
 #include <torch/torch.h>
 #include "kernel.cu"
 
-const dim3 BLOCKS(
-    torch::Tensor t, const unsigned int threads, const unsigned int len
-)
+const dim3 C_BLOCKS(const unsigned int threads, const unsigned int len)
 {
     const dim3 blocks( (len + threads -1) / threads ); 
     return blocks; 
 }
 
-const dim3 BLOCKS(
-    torch::Tensor t, const unsigned int threads, const unsigned int len, 
-    const unsigned int dy, const unsigned int dz
+const dim3 C_BLOCKS(
+    const unsigned int threads, const unsigned int len, 
+    const unsigned int dy,      const unsigned int dz
 )
 {
     const dim3 blocks( (len + threads -1) / threads, dy, dz); 
@@ -31,7 +29,7 @@ torch::Tensor _Px(torch::Tensor pt, torch::Tensor phi)
     torch::Tensor px = torch::zeros_like(pt);
     const unsigned int threads = 1024;   
     const unsigned int len = pt.size(0); 
-    const dim3 blk = BLOCKS(pt, threads, len); 
+    const dim3 blk = C_BLOCKS(threads, len); 
     
     AT_DISPATCH_FLOATING_TYPES(pt.scalar_type(), "PxK", ([&]
     {
@@ -54,7 +52,7 @@ torch::Tensor _Py(torch::Tensor pt, torch::Tensor phi)
     torch::Tensor py = torch::zeros_like(pt);
     const unsigned int threads = 1024;   
     const unsigned int len = pt.size(0); 
-    const dim3 blk = BLOCKS(pt, threads, len); 
+    const dim3 blk = C_BLOCKS(threads, len); 
     
     AT_DISPATCH_FLOATING_TYPES(pt.scalar_type(), "PyK", ([&]
     {
@@ -77,7 +75,7 @@ torch::Tensor _Pz(torch::Tensor pt, torch::Tensor eta)
     torch::Tensor pz = torch::zeros_like(pt);
     const unsigned int threads = 1024;   
     const unsigned int len = pt.size(0); 
-    const dim3 blk = BLOCKS(pt, threads, len); 
+    const dim3 blk = C_BLOCKS(threads, len); 
     
     AT_DISPATCH_FLOATING_TYPES(pt.scalar_type(), "PzK", ([&]
     {
@@ -103,7 +101,7 @@ torch::Tensor _PxPyPz(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi)
 
     const unsigned int len = pt.size(0); 
     const unsigned int threads = 1024;   
-    const dim3 blk = BLOCKS(pt, threads, len, 3, 1); 
+    const dim3 blk = C_BLOCKS(threads, len, 3, 1); 
     
     AT_DISPATCH_FLOATING_TYPES(pt.scalar_type(), "PxPyPzK", ([&]
     {
@@ -125,7 +123,7 @@ torch::Tensor _PxPyPzE(torch::Tensor Pmu)
 
     const unsigned int len = out.size(0); 
     const unsigned int threads = 1024;   
-    const dim3 blk = BLOCKS(out, threads, len, 4, 1); 
+    const dim3 blk = C_BLOCKS(threads, len, 4, 1); 
     
     AT_DISPATCH_FLOATING_TYPES(out.scalar_type(), "PxPyPz3K", ([&]
     {

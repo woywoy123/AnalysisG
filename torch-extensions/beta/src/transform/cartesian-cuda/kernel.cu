@@ -50,7 +50,7 @@ __global__ void PxPyPzK(
     if (idx >= length || idy >= 3){ return; }
     if (idy == 0){ px_(&out[idx][idy], &pt[idx][0], &phi[idx][0]); return; }
     if (idy == 1){ py_(&out[idx][idy], &pt[idx][0], &phi[idx][0]); return; }
-    if (idy == 2){ pz_(&out[idx][idy], &pt[idx][0], &eta[idx][0]); return; }
+    pz_(&out[idx][idy], &pt[idx][0], &eta[idx][0]);
 } 
 
 template <typename scalar_t>
@@ -66,5 +66,5 @@ __global__ void PxPyPzEK(
     if (idy == 0){ px_(&out[idx][idy], &Pmu[idx][0], &Pmu[idx][2]); return; }
     if (idy == 1){ py_(&out[idx][idy], &Pmu[idx][0], &Pmu[idx][2]); return; }
     if (idy == 2){ pz_(&out[idx][idy], &Pmu[idx][0], &Pmu[idx][1]); return; }
-    if (idy == 3){ out[idx][idy] = Pmu[idx][idy]; return; }
+    out[idx][idy] = Pmu[idx][idy];
 } 
