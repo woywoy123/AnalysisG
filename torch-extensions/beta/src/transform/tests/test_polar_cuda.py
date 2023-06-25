@@ -11,6 +11,7 @@ def ptetaphie():
     t = torch.tensor([1, 1, 1, 1], device = "cuda", dtype = torch.float64).view(-1, 1)
     pxpypzE = get("TransformCuda", "PtEtaPhiE")(torch.cat([t, t, t, t], -1))
 
+
 if __name__ == "__main__":
     loads()
     pt()

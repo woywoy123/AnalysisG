@@ -3,7 +3,7 @@ requires = ["scikit-build-core"]
 build-backend = "scikit_build_core.build"
 
 [project]
-name = "ExG-Transform"
+name = "PyExt"
 version = "0.1"
 requires-python = ">=3.7"
 authors = [
