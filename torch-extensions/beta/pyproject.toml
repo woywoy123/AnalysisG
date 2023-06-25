@@ -19,6 +19,7 @@ ninja.minimum-version = "1.5"
 minimum-version = "0.2"
 
 cmake.args = []
+cmake.source-dir = "src"
 
 cmake.verbose = true 
 logging.level = "INFO"

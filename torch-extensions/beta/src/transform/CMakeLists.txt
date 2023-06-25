@@ -1,12 +1,8 @@
 cmake_minimum_required(VERSION 3.15 FATAL_ERROR)
-
-project(transform VERSION ${PROJECT_VERSION} LANGUAGES CXX CUDA)
+project(transform VERSION ${SKBUILD_PROJECT_VERSION} LANGUAGES CXX CUDA)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
-
-find_package(Python REQUIRED COMPONENTS Development)
-find_package(Torch REQUIRED)
 
 add_subdirectory(cartesian-floats)
 add_subdirectory(polar-floats)
@@ -21,6 +17,17 @@ target_link_libraries(TransformTensors PRIVATE ${TORCH_LIBRARIES} Python::Python
 add_subdirectory(cartesian-cuda)
 add_subdirectory(polar-cuda)
 add_library(TransformCuda SHARED transform-cuda.cxx)
-target_link_libraries(TransformCuda PRIVATE cartesian-cuda polar-cuda Python::Python)
-target_compile_options(TransformCuda PRIVATE $<$<COMPILE_LANGUAGE::CUDA>:-ccbin g++-10>)
+target_link_libraries(TransformCuda PRIVATE ${TORCH_LIBRARIES} Python::Python cartesian-cuda polar-cuda)
+
+add_library(transform "")
+target_sources(transform
+        PUBLIC 
+            ${CMAKE_CURRENT_LIST_DIR}/cartesian-cuda/cartesian.cu
+            ${CMAKE_CURRENT_LIST_DIR}/cartesian-cuda/cartesian.h
+            ${CMAKE_CURRENT_LIST_DIR}/cartesian-cuda/kernel.cu
+            ${CMAKE_CURRENT_LIST_DIR}/cartesian-cuda/torch.cu
+)
+target_link_libraries(transform PUBLIC ${TORCH_LIBRARIES})
+target_include_directories(transform PUBLIC ${CMAKE_CURRENT_LIST_DIR})
+
 

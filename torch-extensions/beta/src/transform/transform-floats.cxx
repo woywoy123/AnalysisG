@@ -1,6 +1,6 @@
 #include <torch/extension.h>
-#include "cartesian-floats/cartesian.h"
-#include "polar-floats/polar.h"
+#include <transform/cartesian-floats/cartesian.h>
+#include <transform/polar-floats/polar.h>
 
 TORCH_LIBRARY(TransformFloats, m)
 {

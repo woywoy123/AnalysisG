@@ -1,6 +1,6 @@
 import torch
 
-def loads(inpt = "../build/libTransformFloats.so"): torch.ops.load_library(inpt)
+def loads(inpt = "../build/transform/libTransformFloats.so"): torch.ops.load_library(inpt)
 def get(libs, out): return getattr(getattr(torch.ops, libs), out)
 
 def px(): px = get("TransformFloats", "Px")(1, 1)

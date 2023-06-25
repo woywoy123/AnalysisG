@@ -1,7 +1,7 @@
 import torch
 
 t = torch.tensor([1, 1, 1, 1], device = "cuda", dtype = torch.float64)
-def loads(inpt = "../build/libTransformCuda.so"): torch.ops.load_library(inpt)
+def loads(inpt = "../build/transform/libTransformCuda.so"): torch.ops.load_library(inpt)
 def get(libs, out): return getattr(getattr(torch.ops, libs), out)
 def px(): px = get("TransformCuda", "Px")(t, t)
 def py(): py = get("TransformCuda", "Py")(t, t)

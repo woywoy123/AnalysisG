@@ -1,15 +1,11 @@
 *.pkl
 *.swp
-*.nbc
-*.nbi
 *.pyc
-*.pt
 *.hdf5
 *.png
 *.pth
 *.so
 *.c
-*.txt
 *.cpp
 
 **/__pycache__
@@ -24,4 +20,4 @@
 **/PythonGNN
 **/.tox
 **/.coverage*
-setup-scripts/source_this.sh
+**/source_this.sh

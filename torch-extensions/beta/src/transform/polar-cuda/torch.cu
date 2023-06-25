@@ -1,17 +1,19 @@
+#ifndef TRANSFORM_CUDA_POLAR_KERNEL_H
+#define TRANSFORM_CUDA_POLAR_KERNEL_H
+#include <torch/torch.h>
+#include "kernel.cu"
+
 #define CHECK_CUDA(x) TORCH_CHECK(x.device().is_cuda(), "#x must be on CUDA")
 #define CHECK_CONTIGUOUS(x) TORCH_CHECK(x.is_contiguous(), "#x must be contiguous")
 #define CHECK_INPUT(x) CHECK_CUDA(x); CHECK_CONTIGUOUS(x)
 
-#include <torch/torch.h>
-#include "kernel.cu"
-
-const dim3 P_BLOCKS(const unsigned int threads, const unsigned int len)
+static const dim3 BLOCKS(const unsigned int threads, const unsigned int len)
 {
     const dim3 blocks( (len + threads -1) / threads ); 
     return blocks; 
 }
 
-const dim3 P_BLOCKS(
+static const dim3 BLOCKS(
     const unsigned int threads, const unsigned int len, 
     const unsigned int dy,      const unsigned int dz 
 )
@@ -29,7 +31,7 @@ torch::Tensor _Pt(torch::Tensor px, torch::Tensor py)
     torch::Tensor pt = torch::zeros_like(px);
     const unsigned int len = pt.size(0); 
     const unsigned int threads = 1024; 
-    const dim3 blk = P_BLOCKS(threads, len); 
+    const dim3 blk = BLOCKS(threads, len); 
 
     AT_DISPATCH_FLOATING_TYPES(pt.scalar_type(), "PtK", ([&]
     {
@@ -53,7 +55,7 @@ torch::Tensor _Eta(torch::Tensor px, torch::Tensor py, torch::Tensor pz)
     torch::Tensor eta = torch::zeros_like(px);
     const unsigned int len = eta.size(0); 
     const unsigned int threads = 1024; 
-    const dim3 blk = P_BLOCKS(threads, len); 
+    const dim3 blk = BLOCKS(threads, len); 
 
     AT_DISPATCH_FLOATING_TYPES(eta.scalar_type(), "EtaK", ([&]
     {
@@ -77,7 +79,7 @@ torch::Tensor _Phi(torch::Tensor px, torch::Tensor py)
     torch::Tensor phi = torch::zeros_like(px);
     const unsigned int len = phi.size(0); 
     const unsigned int threads = 1024; 
-    const dim3 blk = P_BLOCKS(threads, len); 
+    const dim3 blk = BLOCKS(threads, len); 
 
     AT_DISPATCH_FLOATING_TYPES(phi.scalar_type(), "PhiK", ([&]
     {
@@ -103,7 +105,7 @@ torch::Tensor _PtEtaPhi(torch::Tensor px, torch::Tensor py, torch::Tensor pz)
 
     const unsigned int len = px.size(0); 
     const unsigned int threads = 1024; 
-    const dim3 blk = P_BLOCKS(threads, len, 2, 1);  
+    const dim3 blk = BLOCKS(threads, len, 2, 1);  
 
     AT_DISPATCH_FLOATING_TYPES(px.scalar_type(), "PtEtaPhiK", ([&]
     {
@@ -125,7 +127,7 @@ torch::Tensor _PtEtaPhiE(torch::Tensor Pmc)
 
     const unsigned int len = Pmc.size(0); 
     const unsigned int threads = 1024; 
-    const dim3 blk = P_BLOCKS(threads, len, 3, 1);  
+    const dim3 blk = BLOCKS(threads, len, 3, 1);  
 
     AT_DISPATCH_FLOATING_TYPES(out.scalar_type(), "PtEtaPhiEK", ([&]
     {
@@ -137,3 +139,5 @@ torch::Tensor _PtEtaPhiE(torch::Tensor Pmc)
     })); 
     return out; 
 }
+
+#endif

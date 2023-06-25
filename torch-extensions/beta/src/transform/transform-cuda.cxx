@@ -1,6 +1,6 @@
 #include <torch/extension.h>
-#include "cartesian-cuda/cartesian.h"
-#include "polar-cuda/polar.h"
+#include <transform/cartesian-cuda/cartesian.h>
+#include <transform/polar-cuda/polar.h>
 
 TORCH_LIBRARY(TransformCuda, m)
 {

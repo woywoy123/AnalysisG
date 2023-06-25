@@ -1,7 +1,7 @@
 import torch
 
 t = 1
-def loads(inpt = "../build/libTransformFloats.so"): torch.ops.load_library(inpt)
+def loads(inpt = "../build/transform/libTransformFloats.so"): torch.ops.load_library(inpt)
 def get(libs, out): return getattr(getattr(torch.ops, libs), out)
 def pt(): px = get("TransformFloats", "Pt")(t, t)
 def eta(): py = get("TransformFloats", "Eta")(t, t, t)

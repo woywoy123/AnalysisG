@@ -1,6 +1,6 @@
 #include <torch/extension.h>
-#include "cartesian-tensors/cartesian.h"
-#include "polar-tensors/polar.h"
+#include <transform/cartesian-tensors/cartesian.h>
+#include <transform/polar-tensors/polar.h>
 
 TORCH_LIBRARY(TransformTensors, m)
 {

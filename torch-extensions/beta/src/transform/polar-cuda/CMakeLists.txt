@@ -5,6 +5,7 @@ target_sources(polar-cuda
         ${CMAKE_CURRENT_LIST_DIR}/polar.cu
         ${CMAKE_CURRENT_LIST_DIR}/kernel.cu
         ${CMAKE_CURRENT_LIST_DIR}/torch.cu
+
 )
 
 target_link_libraries(polar-cuda PUBLIC ${TORCH_LIBRARIES})
