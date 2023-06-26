@@ -6,5 +6,5 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 add_subdirectory(physics-cuda)
-add_library(PhysicsPolar SHARED physics-cuda.cxx)
-target_link_libraries(PhysicsPolar PUBLIC ${TORCH_LIBRARIES} Python::Python transform physics-cuda)
+#add_library(PhysicsPolar SHARED physics-cuda.cxx)
+#target_link_libraries(PhysicsPolar PUBLIC ${TORCH_LIBRARIES} Python::Python transform physics-cuda)

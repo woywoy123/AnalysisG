@@ -12,11 +12,72 @@ namespace Transform
 {
     namespace CUDA
     {
-        const torch::Tensor Px(torch::Tensor pt, torch::Tensor phi){return _Px(pt, phi);} 
-        const torch::Tensor Py(torch::Tensor pt, torch::Tensor phi){return _Py(pt, phi);} 
-        const torch::Tensor Pz(torch::Tensor pt, torch::Tensor eta){return _Pz(pt, eta);} 
-        const torch::Tensor PxPyPz(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi){return _PxPyPz(pt, eta, phi);} 
-        const torch::Tensor PxPyPzE(torch::Tensor Pmu){return _PxPyPzE(Pmu);} 
+        static const torch::Tensor Cclip(torch::Tensor inpt, int dim)
+        { 
+            return inpt.index({torch::indexing::Slice(), dim}); 
+        }
+        const torch::Tensor Px(torch::Tensor pt, torch::Tensor phi)
+        {
+            return _Px(pt, phi);
+        } 
+
+        const torch::Tensor Px(torch::Tensor pmu)
+        {
+            torch::Tensor pt = Transform::CUDA::Cclip(pmu, 0);
+            torch::Tensor phi = Transform::CUDA::Cclip(pmu, 2);
+            return _Px(pt, phi);  
+        }
+
+        const torch::Tensor Py(torch::Tensor pt, torch::Tensor phi)
+        {
+            return _Py(pt, phi);
+        } 
+
+        const torch::Tensor Py(torch::Tensor pmu)
+        {
+            torch::Tensor pt = Transform::CUDA::Cclip(pmu, 0); 
+            torch::Tensor phi = Transform::CUDA::Cclip(pmu, 2); 
+            return _Py(pt, phi);
+        } 
+
+        const torch::Tensor Pz(torch::Tensor pt, torch::Tensor eta)
+        {
+            return _Pz(pt, eta);
+        }
+
+        const torch::Tensor Pz(torch::Tensor pmu)
+        {
+            torch::Tensor pt = Transform::CUDA::Cclip(pmu, 0); 
+            torch::Tensor eta = Transform::CUDA::Cclip(pmu, 1); 
+            return _Pz(pt, eta);
+        }
+
+        const torch::Tensor PxPyPz(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi)
+        {
+            return _PxPyPz(pt, eta, phi);
+        }
+
+        const torch::Tensor PxPyPz(torch::Tensor pmu)
+        {
+            torch::Tensor pt = Transform::CUDA::Cclip(pmu, 0); 
+            torch::Tensor eta = Transform::CUDA::Cclip(pmu, 1); 
+            torch::Tensor phi = Transform::CUDA::Cclip(pmu, 2);  
+            return _PxPyPz(pt, eta, phi);
+        }
+
+        const torch::Tensor PxPyPzE(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi, torch::Tensor e)
+        {
+            pt = pt.view({-1, 1}); 
+            eta = eta.view({-1, 1}); 
+            phi = phi.view({-1, 1}); 
+            e = e.view({-1, 1}); 
+            return _PxPyPzE(torch::cat({pt, eta, phi, e}, -1));
+        } 
+
+        const torch::Tensor PxPyPzE(torch::Tensor Pmu)
+        {
+            return _PxPyPzE(Pmu);
+        } 
     }
 }
 

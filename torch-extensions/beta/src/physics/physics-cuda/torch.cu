@@ -22,47 +22,68 @@ static const dim3 BLOCKS(
     return blocks; 
 }
 
+torch::Tensor _P2(torch::Tensor Pmc)
+{
+    Pmc = Pmc.contiguous().clone(); 
+    CHECK_INPUT(Pmc); 
+    const unsigned int len = Pmc.size(0); 
+    const unsigned int threads = 1024; 
+    const dim3 blk_ = BLOCKS(threads, len, 3, 1); 
+    const dim3 blk  = BLOCKS(threads, len); 
+    AT_DISPATCH_FLOATING_TYPES(Pmc.scalar_type(), "Px2Py2Pz2K", ([&]
+    { 
+        Px2Py2Pz2K<scalar_t><<< blk_, threads >>>(
+            Pmc.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+            len, 3); 
+        SumK<scalar_t><<< blk, threads >>>(
+            Pmc.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+            len, 3); 
+    })); 
+    return Pmc.index({torch::indexing::Slice(), 0}).view({-1, 1}).clone(); 
+}
 
 torch::Tensor _P2(torch::Tensor px, torch::Tensor py, torch::Tensor pz)
 {
     px =  px.view({-1, 1}).contiguous(); 
     py =  px.view({-1, 1}).contiguous(); 
     pz =  px.view({-1, 1}).contiguous(); 
-    torch::Tensor pmc = torch::cat({px, py, pz}, -1); 
-    torch::Tensor p2 = torch::zeros_like(px); 
-    CHECK_INPUT(px); CHECK_INPUT(py); CHECK_INPUT(pz);
-    CHECK_INPUT(p2); CHECK_INPUT(pmc); 
-    
-    const unsigned int len = px.size(0); 
-    const unsigned int threads = 1024; 
-    const dim3 blk_ = BLOCKS(threads, len, 3, 1); 
-    AT_DISPATCH_FLOATING_TYPES(px.scalar_type(), "Px2Py2Pz2K", ([&]
-    { 
-        Px2Py2Pz2K<scalar_t><<< blk_, threads >>>(
-            pmc.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
-            len); 
-    })); 
-
-    return pmc; 
+    torch::Tensor Pmc = torch::cat({px, py, pz}, -1); 
+    return _P2(Pmc); 
 }
 
-torch::Tensor _P2(torch::Tensor Pmc)
+torch::Tensor _P(torch::Tensor Pmc)
 {
-    Pmc = Pmc.contiguous(); 
-    torch::Tensor p2 = torch::zeros_like(Pmc); 
-    CHECK_INPUT(p2); CHECK_INPUT(Pmc); 
-    
+    Pmc = Pmc.contiguous().clone(); 
+    CHECK_INPUT(Pmc); 
     const unsigned int len = Pmc.size(0); 
     const unsigned int threads = 1024; 
     const dim3 blk_ = BLOCKS(threads, len, 3, 1); 
+    const dim3 blk  = BLOCKS(threads, len); 
+    const dim3 blk_s = BLOCKS(threads, len, 1, 1); 
     AT_DISPATCH_FLOATING_TYPES(Pmc.scalar_type(), "Px2Py2Pz2K", ([&]
     { 
         Px2Py2Pz2K<scalar_t><<< blk_, threads >>>(
             Pmc.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
-            len); 
+            len, 3); 
+        SumK<scalar_t><<< blk, threads >>>(
+            Pmc.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+            len, 3); 
+        SqrtK<scalar_t><<< blk_s, threads >>>(
+            Pmc.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+            len, 0, 0);  
     })); 
-
-    return Pmc; 
+    return Pmc.index({torch::indexing::Slice(), 0}).view({-1, 1}).clone(); 
 }
+
+torch::Tensor _P(torch::Tensor px, torch::Tensor py, torch::Tensor pz)
+{
+    px =  px.view({-1, 1}).contiguous(); 
+    py =  px.view({-1, 1}).contiguous(); 
+    pz =  px.view({-1, 1}).contiguous(); 
+    torch::Tensor Pmc = torch::cat({px, py, pz}, -1); 
+    return _P(Pmc); 
+}
+
+
 
 #endif

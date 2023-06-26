@@ -8,10 +8,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 find_package(Python REQUIRED COMPONENTS Development)
 find_package(Torch REQUIRED)
 
-include_directories(${CMAKE_SOURCE_DIR})
-include_directories(${CMAKE_SOURCE_DIR}/transform)
-include_directories(${CMAKE_SOURCE_DIR}/physics)
-
 add_subdirectory(transform)
 add_subdirectory(physics)
+add_subdirectory(interface)
+
+include_directories(${CMAKE_SOURCE_DIR}/transform)
+include_directories(${CMAKE_SOURCE_DIR}/physics)
+include_directories(${CMAKE_SOURCE_DIR}/interface)
 

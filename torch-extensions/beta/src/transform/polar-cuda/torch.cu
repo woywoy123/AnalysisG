@@ -22,6 +22,11 @@ static const dim3 BLOCKS(
     return blocks; 
 }
 
+static const torch::Tensor clip(torch::Tensor inpt, int dim)
+{
+    return inpt.index({torch::indexing::Slice(), dim}); 
+}
+
 torch::Tensor _Pt(torch::Tensor px, torch::Tensor py)
 {
     px = px.view({-1, 1}).contiguous(); 
