@@ -12,7 +12,12 @@ add_subdirectory(transform)
 add_subdirectory(physics)
 add_subdirectory(interface)
 
-include_directories(${CMAKE_SOURCE_DIR}/transform)
-include_directories(${CMAKE_SOURCE_DIR}/physics)
-include_directories(${CMAKE_SOURCE_DIR}/interface)
+install(TARGETS pyc_cuda   DESTINATION ${SKBUILD_PROJECT_NAME})
+install(TARGETS pyc_tensor DESTINATION ${SKBUILD_PROJECT_NAME})
+
+# Configure the Python package directory 
+install(DIRECTORY DESTINATION ${SKBUILD_PROJECT_NAME}/Transform)
+install(FILES ${CMAKE_SOURCE_DIR}/py_interface/__init__.py            DESTINATION ${SKBUILD_PROJECT_NAME})
+install(FILES ${CMAKE_SOURCE_DIR}/py_interface/Transform/__init__.py  DESTINATION ${SKBUILD_PROJECT_NAME}/Transform)
+install(FILES ${CMAKE_SOURCE_DIR}/py_interface/Transform/transform.py DESTINATION ${SKBUILD_PROJECT_NAME}/Transform)
 

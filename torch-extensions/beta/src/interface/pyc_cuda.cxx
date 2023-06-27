@@ -27,5 +27,28 @@ torch::Tensor pyc::transform::combined::PxPyPzE(torch::Tensor pmu){ return Trans
 
 TORCH_LIBRARY(pyc_cuda, m)
 {
-    m.def("transform_separate_Px", &pyc::transform::separate::Px); 
+    // transformation classes for CUDA
+    m.def("transform_separate_Px",        &pyc::transform::separate::Px);
+    m.def("transform_separate_Py",        &pyc::transform::separate::Py);
+    m.def("transform_separate_Pz",        &pyc::transform::separate::Pz);
+    m.def("transform_separate_PxPyPz",    &pyc::transform::separate::PxPyPz);
+    m.def("transform_separate_PxPyPzE",   &pyc::transform::separate::PxPyPzE);
+
+    m.def("transform_combined_Px",        &pyc::transform::combined::Px);
+    m.def("transform_combined_Py",        &pyc::transform::combined::Py);
+    m.def("transform_combined_Pz",        &pyc::transform::combined::Pz);
+    m.def("transform_combined_PxPyPz",    &pyc::transform::combined::PxPyPz);
+    m.def("transform_combined_PxPyPzE",   &pyc::transform::combined::PxPyPzE);
+
+    m.def("transform_separate_Pt",        &pyc::transform::separate::Pt);
+    m.def("transform_separate_Phi",       &pyc::transform::separate::Phi);
+    m.def("transform_separate_Eta",       &pyc::transform::separate::Eta);
+    m.def("transform_separate_PtEtaPhi",  &pyc::transform::separate::PtEtaPhi);
+    m.def("transform_separate_PtEtaPhiE", &pyc::transform::separate::PtEtaPhiE);
+
+    m.def("transform_combined_Pt",        &pyc::transform::combined::Pt);
+    m.def("transform_combined_Phi",       &pyc::transform::combined::Phi);
+    m.def("transform_combined_Eta",       &pyc::transform::combined::Eta);
+    m.def("transform_combined_PtEtaPhi",  &pyc::transform::combined::PtEtaPhi);
+    m.def("transform_combined_PtEtaPhiE", &pyc::transform::combined::PtEtaPhiE);
 }

@@ -10,8 +10,13 @@ namespace Transform
 	    torch::Tensor Py(torch::Tensor pt, torch::Tensor phi); 
 	    torch::Tensor Pz(torch::Tensor pt, torch::Tensor eta); 
 	    torch::Tensor PxPyPz(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi);
-        torch::Tensor PxPyPzE(torch::Tensor Pmu);
+        torch::Tensor PxPyPzE(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi, torch::Tensor E); 
 
+	    torch::Tensor Px(torch::Tensor pmu); 
+	    torch::Tensor Py(torch::Tensor pmu); 
+	    torch::Tensor Pz(torch::Tensor pmu); 
+	    torch::Tensor PxPyPz(torch::Tensor pmu);
+        torch::Tensor PxPyPzE(torch::Tensor pmu); 
     }
 }
 

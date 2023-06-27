@@ -1,5 +1,10 @@
 #include "cartesian.h"
 
+torch::Tensor Cclip(torch::Tensor inpt, int dim)
+{ 
+    return inpt.index({torch::indexing::Slice(), dim}); 
+}
+
 torch::Tensor Transform::Tensors::Px(torch::Tensor pt, torch::Tensor phi)
 {
         pt = pt.view({-1, 1});
@@ -29,13 +34,47 @@ torch::Tensor Transform::Tensors::PxPyPz(torch::Tensor pt, torch::Tensor eta, to
 	return torch::cat({_px, _py, _pz}, -1);
 }
 
-torch::Tensor Transform::Tensors::PxPyPzE(torch::Tensor Pmu)
+torch::Tensor Transform::Tensors::PxPyPzE(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi, torch::Tensor e)
 {
-    Pmu = Pmu.view({-1, 4}); 
-    torch::Tensor pt  = Pmu.index({torch::indexing::Slice(), 0}).view({-1, 1}); 
-    torch::Tensor eta = Pmu.index({torch::indexing::Slice(), 1}).view({-1, 1}); 
-    torch::Tensor phi = Pmu.index({torch::indexing::Slice(), 2}).view({-1, 1}); 
-    torch::Tensor e   = Pmu.index({torch::indexing::Slice(), 3}).view({-1, 1}); 
+    return torch::cat({Transform::Tensors::PxPyPz(pt, eta, phi), e.view({-1, 1})}, -1);
+}
+
+torch::Tensor Transform::Tensors::Px(torch::Tensor pmu)
+{
+    torch::Tensor pt  = Cclip(pmu, 0);
+    torch::Tensor phi = Cclip(pmu, 2);
+    return Transform::Tensors::Px(pt, phi);  
+}
+
+torch::Tensor Transform::Tensors::Py(torch::Tensor pmu)
+{
+    torch::Tensor pt  = Cclip(pmu, 0); 
+    torch::Tensor phi = Cclip(pmu, 2); 
+    return Transform::Tensors::Py(pt, phi);
+} 
+
+torch::Tensor Transform::Tensors::Pz(torch::Tensor pmu)
+{
+    torch::Tensor pt  = Cclip(pmu, 0); 
+    torch::Tensor eta = Cclip(pmu, 1); 
+    return Transform::Tensors::Pz(pt, eta);
+}
+
+torch::Tensor Transform::Tensors::PxPyPz(torch::Tensor pmu)
+{
+    torch::Tensor pt  = Cclip(pmu, 0); 
+    torch::Tensor eta = Cclip(pmu, 1); 
+    torch::Tensor phi = Cclip(pmu, 2);  
+    return Transform::Tensors::PxPyPz(pt, eta, phi);
+}
+
+torch::Tensor Transform::Tensors::PxPyPzE(torch::Tensor pmu)
+{
+    pmu = pmu.view({-1, 4}); 
+    torch::Tensor pt  = Cclip(pmu, 0); 
+    torch::Tensor eta = Cclip(pmu, 1); 
+    torch::Tensor phi = Cclip(pmu, 2); 
+    torch::Tensor e   = Cclip(pmu, 3); 
 
     torch::Tensor _px = Transform::Tensors::Px(pt, phi);
 	torch::Tensor _py = Transform::Tensors::Py(pt, phi); 
