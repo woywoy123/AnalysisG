@@ -74,7 +74,7 @@ torch::Tensor Transform::Tensors::PxPyPzE(torch::Tensor pmu)
     torch::Tensor pt  = Cclip(pmu, 0); 
     torch::Tensor eta = Cclip(pmu, 1); 
     torch::Tensor phi = Cclip(pmu, 2); 
-    torch::Tensor e   = Cclip(pmu, 3); 
+    torch::Tensor e   = Cclip(pmu, 3).view({-1, 1}); 
 
     torch::Tensor _px = Transform::Tensors::Px(pt, phi);
 	torch::Tensor _py = Transform::Tensors::Py(pt, phi); 

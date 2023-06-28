@@ -9,3 +9,9 @@ add_library(pyc_tensor SHARED
     ${CMAKE_CURRENT_LIST_DIR}/pyc_tensors.cxx
 )
 target_link_libraries(pyc_tensor PUBLIC ${TORCH_LIBRARIES} Python::Python transform_ten)
+
+add_library(pyc_float SHARED
+    ${CMAKE_CURRENT_LIST_DIR}/pyc_floats.h
+    ${CMAKE_CURRENT_LIST_DIR}/pyc_floats.cxx
+)
+target_link_libraries(pyc_float PUBLIC ${TORCH_LIBRARIES} Python::Python transform_fl)

@@ -21,11 +21,54 @@ def __iscu(inpt):
     if CUDA_SO is not None: return False
     return len([1 for i in inpt if i.is_cuda]) == len(inpt)
 
-def __getfn(fn, lst):
+def __getfn_s(fn, lst):
     t = __isten(lst)
     if t and __iscu(lst): return __cuda_s(fn)
     if t: return __tensor_s(fn)
-    else: return __float_s(fn)
+    return __float_s(fn)
 
-def Px(pt, phi): return __getfn("Px", [pt, phi])(pt, phi)
+def __getfn_c(fn, lst):
+    t = __isten(lst)
+    if t and __iscu(lst): return __cuda_c(fn)
+    if t: return __tensor_c(fn)
+    return __float_c(fn)
 
+def Px(ten1, ten2 = None):
+    if ten2 is None: return __getfn_c("Px", [ten1])(ten1)
+    return __getfn_s("Px", [ten1, ten2])(ten1, ten2)
+
+def Py(ten1, ten2 = None):
+    if ten2 is None: return __getfn_c("Py", [ten1])(ten1)
+    return __getfn_s("Py", [ten1, ten2])(ten1, ten2)
+
+def Pz(ten1, ten2 = None):
+    if ten2 is None: return __getfn_c("Pz", [ten1])(ten1)
+    return __getfn_s("Pz", [ten1, ten2])(ten1, ten2)
+
+def PxPyPz(ten1, ten2 = None, ten3 = None):
+    if ten2 is None and ten3 is None: return __getfn_c("PxPyPz", [ten1])(ten1)
+    return __getfn_s("PxPyPz", [ten1, ten2, ten3])(ten1, ten2, ten3)
+
+def PxPyPzE(ten1, ten2 = None, ten3 = None, ten4 = None):
+    if ten2 is None and ten3 is None and ten4 is None: return __getfn_c("PxPyPzE", [ten1])(ten1)
+    return __getfn_s("PxPyPzE", [ten1, ten2, ten3, ten4])(ten1, ten2, ten3, ten4)
+
+def Pt(ten1, ten2 = None):
+    if ten2 is None: return __getfn_c("Pt", [ten1])(ten1)
+    return __getfn_s("Pt", [ten1, ten2])(ten1, ten2)
+
+def Eta(ten1, ten2 = None, ten3 = None):
+    if ten2 is None and ten3 is None: return __getfn_c("Eta", [ten1])(ten1)
+    return __getfn_s("Eta", [ten1, ten2, ten3])(ten1, ten2, ten3)
+
+def Phi(ten1, ten2 = None):
+    if ten2 is None: return __getfn_c("Phi", [ten1])(ten1)
+    return __getfn_s("Phi", [ten1, ten2])(ten1, ten2)
+
+def PtEtaPhi(ten1, ten2 = None, ten3 = None):
+    if ten2 is None and ten3 is None: return __getfn_c("PtEtaPhi", [ten1])(ten1)
+    return __getfn_s("PtEtaPhi", [ten1, ten2, ten3])(ten1, ten2, ten3)
+
+def PtEtaPhiE(ten1, ten2 = None, ten3 = None, ten4 = None):
+    if ten2 is None and ten3 is None and ten4 is None: return __getfn_c("PtEtaPhiE", [ten1])(ten1)
+    return __getfn_s("PtEtaPhiE", [ten1, ten2, ten3, ten4])(ten1, ten2, ten3, ten4)

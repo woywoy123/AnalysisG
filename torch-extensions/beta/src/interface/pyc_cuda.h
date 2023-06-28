@@ -1,8 +1,8 @@
 #ifndef H_PYC_CUDA_
 #define H_PYC_CUDA_
 
-#include "../transform/cartesian-cuda/cartesian.h"
-#include "../transform/polar-cuda/polar.h"
+#include <transform/cartesian-cuda/cartesian.h>
+#include <transform/polar-cuda/polar.h>
 
 namespace pyc
 {

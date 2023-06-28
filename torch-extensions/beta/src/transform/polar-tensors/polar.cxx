@@ -1,6 +1,6 @@
 #include "polar.h"
 
-torch::Tensor clip(torch::Tensor inpt, int dim)
+torch::Tensor Pclip(torch::Tensor inpt, int dim)
 { 
     return inpt.index({torch::indexing::Slice(), dim}); 
 }
@@ -41,25 +41,25 @@ torch::Tensor Transform::Tensors::PtEtaPhiE(torch::Tensor px, torch::Tensor py, 
 
 torch::Tensor Transform::Tensors::Pt(torch::Tensor pmc)
 {
-	return Transform::Tensors::Pt(clip(pmc, 0), clip(pmc, 1));
+	return Transform::Tensors::Pt(Pclip(pmc, 0), Pclip(pmc, 1));
 }
 
 torch::Tensor Transform::Tensors::Eta(torch::Tensor pmc)
 {
-	return Transform::Tensors::Eta(clip(pmc, 0), clip(pmc, 1), clip(pmc, 2));
+	return Transform::Tensors::Eta(Pclip(pmc, 0), Pclip(pmc, 1), Pclip(pmc, 2));
 }
 
 torch::Tensor Transform::Tensors::Phi(torch::Tensor pmc)
 {
-    return Transform::Tensors::Phi(clip(pmc, 0), clip(pmc, 1));
+    return Transform::Tensors::Phi(Pclip(pmc, 0), Pclip(pmc, 1));
 } 
 
 torch::Tensor Transform::Tensors::PtEtaPhi(torch::Tensor pmc)
 {
-    return Transform::Tensors::PtEtaPhi(clip(pmc, 0), clip(pmc, 1), clip(pmc, 2)); 
+    return Transform::Tensors::PtEtaPhi(Pclip(pmc, 0), Pclip(pmc, 1), Pclip(pmc, 2)); 
 }
 
 torch::Tensor Transform::Tensors::PtEtaPhiE(torch::Tensor pmc)
 {
-    return torch::cat({Transform::Tensors::PtEtaPhiE(pmc), clip(pmc, 4).view({-1, 1})}, -1);
+    return torch::cat({Transform::Tensors::PtEtaPhi(pmc), Pclip(pmc, 3).view({-1, 1})}, -1);
 }

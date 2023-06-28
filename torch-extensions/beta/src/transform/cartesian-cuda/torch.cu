@@ -92,7 +92,7 @@ torch::Tensor _Pz(torch::Tensor pt, torch::Tensor eta)
 torch::Tensor _PxPyPz(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi)
 {
     pt  = pt.view({-1, 1}).contiguous(); 
-    eta = phi.view({-1, 1}).contiguous(); 
+    eta = eta.view({-1, 1}).contiguous(); 
     phi = phi.view({-1, 1}).contiguous();     
 
     torch::Tensor out = torch::zeros_like(pt);

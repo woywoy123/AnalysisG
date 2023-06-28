@@ -13,8 +13,14 @@ namespace Transform
         double Py(double pt, double phi); 
         double Pz(double pt, double eta); 
         std::vector<double> PxPyPz(double pt, double eta, double phi); 
-    }
+        std::vector<double> PxPyPzE(double pt, double eta, double phi, double e); 
 
+        std::vector<double> Px(std::vector<std::vector<double>> pmu); 
+        std::vector<double> Py(std::vector<std::vector<double>> pmu); 
+        std::vector<double> Pz(std::vector<std::vector<double>> pmu); 
+        std::vector<std::vector<double>> PxPyPz(std::vector<std::vector<double>> pmu); 
+        std::vector<std::vector<double>> PxPyPzE(std::vector<std::vector<double>> pmu); 
+    }
 }
 
 #endif
