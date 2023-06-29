@@ -14,11 +14,20 @@ add_subdirectory(interface)
 
 install(TARGETS pyc_cuda   DESTINATION ${SKBUILD_PROJECT_NAME})
 install(TARGETS pyc_tensor DESTINATION ${SKBUILD_PROJECT_NAME})
-install(TARGETS pyc_float DESTINATION ${SKBUILD_PROJECT_NAME})
+install(TARGETS pyc_float  DESTINATION ${SKBUILD_PROJECT_NAME})
 
 # Configure the Python package directory 
 install(DIRECTORY DESTINATION ${SKBUILD_PROJECT_NAME}/Transform)
 install(FILES ${CMAKE_SOURCE_DIR}/py_interface/__init__.py            DESTINATION ${SKBUILD_PROJECT_NAME})
 install(FILES ${CMAKE_SOURCE_DIR}/py_interface/Transform/__init__.py  DESTINATION ${SKBUILD_PROJECT_NAME}/Transform)
 install(FILES ${CMAKE_SOURCE_DIR}/py_interface/Transform/transform.py DESTINATION ${SKBUILD_PROJECT_NAME}/Transform)
+
+install(DIRECTORY DESTINATION ${SKBUILD_PROJECT_NAME}/Physics)
+install(DIRECTORY DESTINATION ${SKBUILD_PROJECT_NAME}/Physics/Polar)
+install(DIRECTORY DESTINATION ${SKBUILD_PROJECT_NAME}/Physics/Cartesian)
+install(FILES ${CMAKE_SOURCE_DIR}/py_interface/Physics/__init__.py  DESTINATION ${SKBUILD_PROJECT_NAME}/Physics)
+install(FILES ${CMAKE_SOURCE_DIR}/py_interface/Physics/Polar/__init__.py  DESTINATION ${SKBUILD_PROJECT_NAME}/Physics/Polar)
+install(FILES ${CMAKE_SOURCE_DIR}/py_interface/Physics/Polar/polar.py  DESTINATION ${SKBUILD_PROJECT_NAME}/Physics/Polar)
+install(FILES ${CMAKE_SOURCE_DIR}/py_interface/Physics/Cartesian/__init__.py  DESTINATION ${SKBUILD_PROJECT_NAME}/Physics/Cartesian)
+install(FILES ${CMAKE_SOURCE_DIR}/py_interface/Physics/Cartesian/cartesian.py  DESTINATION ${SKBUILD_PROJECT_NAME}/Physics/Cartesian)
 

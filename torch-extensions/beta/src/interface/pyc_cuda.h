@@ -3,6 +3,9 @@
 
 #include <transform/cartesian-cuda/cartesian.h>
 #include <transform/polar-cuda/polar.h>
+#include <physics/physics-cuda/physics.h>
+#include <physics/physics-cuda/cartesian.h>
+#include <physics/physics-cuda/polar.h>
 
 namespace pyc
 {
@@ -37,6 +40,47 @@ namespace pyc
             torch::Tensor PxPyPzE(torch::Tensor pmu); 
         }
     }  
+
+    namespace physics
+    {
+        namespace cartesian
+        {
+            namespace separate
+            {
+                torch::Tensor P2(torch::Tensor px, torch::Tensor py, torch::Tensor pz); 
+                torch::Tensor P(torch::Tensor px, torch::Tensor py, torch::Tensor pz);
+                torch::Tensor Beta2(torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e);
+                torch::Tensor Beta(torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e);
+            }
+
+            namespace combined 
+            {
+                torch::Tensor P2(torch::Tensor pmc); 
+                torch::Tensor P(torch::Tensor pmc); 
+                torch::Tensor Beta2(torch::Tensor pmc); 
+                torch::Tensor Beta(torch::Tensor pmc); 
+            }
+        }
+        namespace polar
+        {
+
+            namespace separate
+            {
+                torch::Tensor P2(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi); 
+                torch::Tensor P(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi); 
+                torch::Tensor Beta2(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi, torch::Tensor e); 
+                torch::Tensor Beta(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi, torch::Tensor e); 
+            }
+
+            namespace combined 
+            {
+                torch::Tensor P2(torch::Tensor pmc); 
+                torch::Tensor P(torch::Tensor pmc); 
+                torch::Tensor Beta2(torch::Tensor pmc); 
+                torch::Tensor Beta(torch::Tensor pmc); 
+            }
+        }
+    }
 }
 
 #endif

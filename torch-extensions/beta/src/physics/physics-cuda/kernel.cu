@@ -22,7 +22,23 @@ __global__ void SumK(
 {
     const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
     if (idx >= length){ return; }
-    for (unsigned int x(1); x < dim_len-1; ++x){ sum(pmc[idx][0], pmc[idx][x], pmc[idx][x+1]); }
+    for (unsigned int x(1); x < dim_len-1; ++x)
+    { 
+        sum(pmc[idx][0], pmc[idx][x], pmc[idx][x+1]); 
+    }
+}
+
+template <typename scalar_t>
+__global__ void Div_ij_K(
+        torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmc, 
+        torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> div, 
+        const unsigned int length, 
+        const unsigned int i, 
+        const unsigned int j)
+{
+    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    if (idx >= length){ return; }
+    _div_ij(pmc[idx][i], div[idx][j]);  
 }
 
 template <typename scalar_t>
@@ -33,8 +49,7 @@ __global__ void SqrtK(
         const unsigned int dim_max)
 {
     const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x;
-    const unsigned int idy = blockIdx.y;
-    if (idx >= length || idy < dim_min || dim_max < idy){ return; }   
+    const unsigned int idy = blockIdx.y + dim_min;
+    if (idx >= length || dim_max < idy){ return; }   
     _sqrt(pmc[idx][idy], pmc[idx][idy]);  
-
 }

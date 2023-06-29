@@ -1,74 +1,80 @@
+import inspect
 import torch
 import os
 
 CUDA_SO   = "/".join(__file__.split("/")[:-2]) + "/libpyc_cuda.so"
 FLOAT_SO  = "/".join(__file__.split("/")[:-2]) + "/libpyc_float.so"
 TENSOR_SO = "/".join(__file__.split("/")[:-2]) + "/libpyc_tensor.so"
-CUDA_SO   = False if not os.path.isfile(CUDA_SO)   else torch.ops.load_library(CUDA_SO)
-TENSOR_SO = False if not os.path.isfile(TENSOR_SO) else torch.ops.load_library(TENSOR_SO)
-FLOAT_SO  = False if not os.path.isfile(FLOAT_SO)  else torch.ops.load_library(FLOAT_SO)
+torch.ops.load_library(CUDA_SO)   if os.path.isfile(CUDA_SO) else None
+torch.ops.load_library(TENSOR_SO) if os.path.isfile(TENSOR_SO) else None
+torch.ops.load_library(FLOAT_SO)  if os.path.isfile(FLOAT_SO) else None
 
-def __cuda_s(fn):   return getattr(torch.ops.pyc_cuda,   "transform_separate_" + fn)
-def __tensor_s(fn): return getattr(torch.ops.pyc_tensor, "transform_separate_" + fn)
-def __float_s(fn):  return getattr(torch.ops.pyc_float,  "transform_separate_" + fn)
+cmb = "transform_combined_"
+sgl = "transform_separate_"
 
-def __cuda_c(fn):   return getattr(torch.ops.pyc_cuda,   "transform_combined_" + fn)
-def __tensor_c(fn): return getattr(torch.ops.pyc_tensor, "transform_combined_" + fn)
-def __float_c(fn):  return getattr(torch.ops.pyc_float,  "transform_combined_" + fn)
+def __router__(inpt, get, trig_cmb, cmb, sgl):
+    inpt = [i for i in inpt if i is not None]
+    comb = cmb if len(inpt) == trig_cmb else sgl
+    comb += get
+    fx = {}
+    if len([i for i in inpt if torch.is_tensor(i)]) == 0: 
+        fx = torch.ops.pyc_float
+    elif len([i for i in inpt if i.is_cuda]) == 0:
+        fx = torch.ops.pyc_tensor
+    else:
+        fx = torch.ops.pyc_cuda
 
-def __isten(inpt): return len([1 for i in inpt if torch.is_tensor(i)]) == len(inpt)
-def __iscu(inpt):
-    if CUDA_SO is not None: return False
-    return len([1 for i in inpt if i.is_cuda]) == len(inpt)
-
-def __getfn_s(fn, lst):
-    t = __isten(lst)
-    if t and __iscu(lst): return __cuda_s(fn)
-    if t: return __tensor_s(fn)
-    return __float_s(fn)
-
-def __getfn_c(fn, lst):
-    t = __isten(lst)
-    if t and __iscu(lst): return __cuda_c(fn)
-    if t: return __tensor_c(fn)
-    return __float_c(fn)
+    try: return fx.__dict__[comb], inpt
+    except KeyError: pass
+    return getattr(fx, comb), inpt
 
 def Px(ten1, ten2 = None):
-    if ten2 is None: return __getfn_c("Px", [ten1])(ten1)
-    return __getfn_s("Px", [ten1, ten2])(ten1, ten2)
+    name = inspect.currentframe().f_code.co_name
+    fn, inpt = __router__([ten1, ten2], name, 1, cmb, sgl)
+    return fn(*inpt)
 
 def Py(ten1, ten2 = None):
-    if ten2 is None: return __getfn_c("Py", [ten1])(ten1)
-    return __getfn_s("Py", [ten1, ten2])(ten1, ten2)
+    name = inspect.currentframe().f_code.co_name
+    fn, inpt = __router__([ten1, ten2], name, 1, cmb, sgl)
+    return fn(*inpt)
 
 def Pz(ten1, ten2 = None):
-    if ten2 is None: return __getfn_c("Pz", [ten1])(ten1)
-    return __getfn_s("Pz", [ten1, ten2])(ten1, ten2)
+    name = inspect.currentframe().f_code.co_name
+    fn, inpt = __router__([ten1, ten2], name, 1, cmb, sgl)
+    return fn(*inpt)
 
 def PxPyPz(ten1, ten2 = None, ten3 = None):
-    if ten2 is None and ten3 is None: return __getfn_c("PxPyPz", [ten1])(ten1)
-    return __getfn_s("PxPyPz", [ten1, ten2, ten3])(ten1, ten2, ten3)
+    name = inspect.currentframe().f_code.co_name
+    fn, inpt = __router__([ten1, ten2, ten3], name, 1, cmb, sgl)
+    return fn(*inpt)
 
 def PxPyPzE(ten1, ten2 = None, ten3 = None, ten4 = None):
-    if ten2 is None and ten3 is None and ten4 is None: return __getfn_c("PxPyPzE", [ten1])(ten1)
-    return __getfn_s("PxPyPzE", [ten1, ten2, ten3, ten4])(ten1, ten2, ten3, ten4)
+    name = inspect.currentframe().f_code.co_name
+    fn, inpt = __router__([ten1, ten2, ten3, ten4], name, 1, cmb, sgl)
+    return fn(*inpt)
 
 def Pt(ten1, ten2 = None):
-    if ten2 is None: return __getfn_c("Pt", [ten1])(ten1)
-    return __getfn_s("Pt", [ten1, ten2])(ten1, ten2)
+    name = inspect.currentframe().f_code.co_name
+    fn, inpt = __router__([ten1, ten2], name, 1, cmb, sgl)
+    return fn(*inpt)
 
 def Eta(ten1, ten2 = None, ten3 = None):
-    if ten2 is None and ten3 is None: return __getfn_c("Eta", [ten1])(ten1)
-    return __getfn_s("Eta", [ten1, ten2, ten3])(ten1, ten2, ten3)
+    name = inspect.currentframe().f_code.co_name
+    fn, inpt = __router__([ten1, ten2, ten3], name, 1, cmb, sgl)
+    return fn(*inpt)
 
 def Phi(ten1, ten2 = None):
-    if ten2 is None: return __getfn_c("Phi", [ten1])(ten1)
-    return __getfn_s("Phi", [ten1, ten2])(ten1, ten2)
+    name = inspect.currentframe().f_code.co_name
+    fn, inpt = __router__([ten1, ten2], name, 1, cmb, sgl)
+    return fn(*inpt)
 
 def PtEtaPhi(ten1, ten2 = None, ten3 = None):
-    if ten2 is None and ten3 is None: return __getfn_c("PtEtaPhi", [ten1])(ten1)
-    return __getfn_s("PtEtaPhi", [ten1, ten2, ten3])(ten1, ten2, ten3)
+    name = inspect.currentframe().f_code.co_name
+    fn, inpt = __router__([ten1, ten2, ten3], name, 1, cmb, sgl)
+    return fn(*inpt)
 
 def PtEtaPhiE(ten1, ten2 = None, ten3 = None, ten4 = None):
-    if ten2 is None and ten3 is None and ten4 is None: return __getfn_c("PtEtaPhiE", [ten1])(ten1)
-    return __getfn_s("PtEtaPhiE", [ten1, ten2, ten3, ten4])(ten1, ten2, ten3, ten4)
+    name = inspect.currentframe().f_code.co_name
+    fn, inpt = __router__([ten1, ten2, ten3, ten4], name, 1, cmb, sgl)
+    return fn(*inpt)
+

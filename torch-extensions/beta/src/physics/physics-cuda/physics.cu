@@ -18,3 +18,9 @@ __device__ __forceinline__ void _sqrt(scalar_t &p, const scalar_t &p2)
 {
 	p = (p2 < 0) ? 0 : sqrt(p2);
 }
+
+template <typename scalar_t>
+__device__ __forceinline__ void _div_ij(scalar_t &pi, const scalar_t &pj)
+{
+    pi = (pj == 0) ? 0 : pi / pj; 
+}
