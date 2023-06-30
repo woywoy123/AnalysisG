@@ -3,11 +3,9 @@ import vector
 import inspect
 
 def create_vector_cartesian(px, py, pz, e):
-    print("->", inspect.stack()[1][3])
     return vector.obj(px = px, py = py, pz = pz, E = e)
 
 def create_vector_polar(pt, eta, phi, e):
-    print("->", inspect.stack()[1][3])
     return vector.obj(pt = pt, eta = eta, phi = phi, E = e)
 
 def create_tensor_cpu_1d(inpt = [1., 2., 3., 4.]):
@@ -22,7 +20,9 @@ def rounder(inpt1, inpt2, d = 5):
         try: i1 = round(inpt1[0], d)
         except: i1 = round(inpt1, d)
     i2 = round(inpt2, d)
-    return i1 == i2
+    res = i1 == i2
+    if not res: print(i1, i2)
+    return res
 
 def rounder_l(inpt1, inpt2, d = 5):
     try: inpt1 = inpt1.view(-1).tolist()
@@ -32,4 +32,34 @@ def rounder_l(inpt1, inpt2, d = 5):
     dif = sum([abs(round(i - j, d))/j for i, j in zip(inpt1, inpt2)])
     return dif*100 < 1
 
+def assert_cuda_cartesian(base, func, pos, func2, pw = 1):
+    print("->", inspect.stack()[1][3])
+    f = getattr(getattr(base, "Cartesian"), func)
+    p1 = getattr(create_vector_cartesian(1, 2, 3, 4), func2)**pw
+    d1 = create_tensor_cpu_1d().to(device = "cuda")
+    assert rounder(f(*[d1[:, i] for i in pos]), p1)
+    assert rounder(f(d1), p1)
 
+def assert_cuda_polar(base, func, pos, func2, pw = 1):
+    print("->", inspect.stack()[1][3])
+    f = getattr(getattr(base, "Polar"), func)
+    p1 = getattr(create_vector_polar(1, 2, 3, 4), func2)**pw
+    d1 = create_tensor_cpu_1d().to(device = "cuda")
+    assert rounder(f(*[d1[:, i] for i in pos]), p1)
+    assert rounder(f(d1), p1)
+
+def assert_tensor_cartesian(base, func, pos, func2, pw = 1):
+    print("->", inspect.stack()[1][3])
+    f = getattr(getattr(base, "Cartesian"), func)
+    p1 = getattr(create_vector_cartesian(1, 2, 3, 4), func2)**pw
+    d1 = create_tensor_cpu_1d()
+    assert rounder(f(*[d1[:, i] for i in pos]), p1)
+    assert rounder(f(d1), p1)
+
+def assert_tensor_polar(base, func, pos, func2, pw = 1):
+    print("->", inspect.stack()[1][3])
+    f = getattr(getattr(base, "Polar"), func)
+    p1 = getattr(create_vector_polar(1, 2, 3, 4), func2)**pw
+    d1 = create_tensor_cpu_1d()
+    assert rounder(f(*[d1[:, i] for i in pos]), p1)
+    assert rounder(f(d1), p1)

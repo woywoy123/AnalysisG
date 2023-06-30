@@ -10,17 +10,20 @@ add_subdirectory(polar-floats)
 add_subdirectory(cartesian-tensors)
 add_subdirectory(polar-tensors)
 
-add_subdirectory(cartesian-cuda)
-add_subdirectory(polar-cuda)
-
 add_library(transform_fl  "")
 add_library(transform_ten "")
-add_library(transform_cu  "")
 
 target_link_libraries(transform_fl  PUBLIC ${TORCH_LIBRARIES} cartesian-floats  polar-floats)
 target_link_libraries(transform_ten PUBLIC ${TORCH_LIBRARIES} cartesian-tensors polar-tensors)
-target_link_libraries(transform_cu  PUBLIC ${TORCH_LIBRARIES} cartesian-cuda    polar-cuda)
 
 target_include_directories(transform_fl  PUBLIC ${CMAKE_SOURCE_DIR})
 target_include_directories(transform_ten PUBLIC ${CMAKE_SOURCE_DIR})
-target_include_directories(transform_cu  PUBLIC ${CMAKE_SOURCE_DIR})
+
+if(DEFINED CMAKE_CUDA_COMPILER)
+    add_subdirectory(cartesian-cuda)
+    add_subdirectory(polar-cuda)
+    
+    add_library(transform_cu  "")
+    target_link_libraries(transform_cu PUBLIC ${TORCH_LIBRARIES} cartesian-cuda polar-cuda)
+    target_include_directories(transform_cu PUBLIC ${CMAKE_SOURCE_DIR})
+endif()

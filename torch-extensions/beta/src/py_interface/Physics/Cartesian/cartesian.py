@@ -9,10 +9,17 @@ torch.ops.load_library(CUDA_SO)   if os.path.isfile(CUDA_SO) else None
 torch.ops.load_library(TENSOR_SO) if os.path.isfile(TENSOR_SO) else None
 torch.ops.load_library(FLOAT_SO)  if os.path.isfile(FLOAT_SO) else None
 
+cmb_ = __file__.split("/")[-1].rstrip(".py")
+mod_ = __file__.split("/")
+mod_ = mod_[mod_.index("pyext")+1].lower()
+
+__name_c__ = mod_ + "_combined_" + cmb_ + "_"
+__name_s__ = mod_ + "_separate_" + cmb_ + "_"
+
 def __router__(
         inpt, get, trig_cmb,
-        cmb = "physics_combined_cartesian_",
-        sgl = "physics_separate_cartesian_"
+        cmb = __name_c__,
+        sgl = __name_s__
     ):
 
     inpt = [i for i in inpt if i is not None]
@@ -49,3 +56,35 @@ def Beta2(ten1, ten2 = None, ten3 = None, ten4 = None):
     name = inspect.currentframe().f_code.co_name
     fn, inpt = __router__([ten1, ten2, ten3, ten4], name, 1)
     return fn(*inpt)
+
+def M2(ten1, ten2 = None, ten3 = None, ten4 = None):
+    name = inspect.currentframe().f_code.co_name
+    fn, inpt = __router__([ten1, ten2, ten3, ten4], name, 1)
+    return fn(*inpt)
+
+def M(ten1, ten2 = None, ten3 = None, ten4 = None):
+    name = inspect.currentframe().f_code.co_name
+    fn, inpt = __router__([ten1, ten2, ten3, ten4], name, 1)
+    return fn(*inpt)
+
+def Mt2(ten1, ten2 = None):
+    name = inspect.currentframe().f_code.co_name
+    fn, inpt = __router__([ten1, ten2], name, 1)
+    return fn(*inpt)
+
+def Mt(ten1, ten2 = None):
+    name = inspect.currentframe().f_code.co_name
+    fn, inpt = __router__([ten1, ten2], name, 1)
+    return fn(*inpt)
+
+def Theta(ten1, ten2 = None, ten3 = None):
+    name = inspect.currentframe().f_code.co_name
+    fn, inpt = __router__([ten1, ten2, ten3], name, 1)
+    return fn(*inpt)
+
+def DeltaR(ten1, ten2, ten3 = None, ten4 = None, ten5 = None, ten6 = None):
+    name = inspect.currentframe().f_code.co_name
+    fn, inpt = __router__([ten1, ten2, ten3, ten4, ten5, ten6], name, 2)
+    return fn(*inpt)
+
+

@@ -1,6 +1,4 @@
-# https://nedbatchelder.com/blog/202209/making_a_coverage_badge.html
-
-name: Building-Tox-Testing
+name: PyC-Tox-Testing
 on:
     pull_request:
         branches:
@@ -9,30 +7,20 @@ on:
         paths-ignore:
             - '**.md'
             - '**.txt'
-            - 'models'
-            - 'setup-scripts'
-            - 'tutorial'
-            - 'Dockerfile'
- 
     push:
         branches:
             - "master"
 
         paths-ignore:
             - '**.md'
-            - '**.txt'
-            - 'models'
-            - 'setup-scripts'
-            - 'tutorial'
-            - 'Dockerfile'
- 
+
 defaults:
     run: 
         shell: bash
 
 jobs:
     build:
-        name: "Python ${{ matrix.python-version }} on ${{ matrix.os }}"
+        name: "Python ${{ matrix.python-version }} on ${{ matrix.os }} with ${{ matrix.cuda }}"
         runs-on: "${{ matrix.os }}"
         strategy: 
                 fail-fast: false
@@ -49,9 +37,22 @@ jobs:
                         - "3.10"
                         - "3.11"
 
+                    cuda:
+                       #- 'cpu'
+                        - '11.8.0'
+                        - '11.7.1'
+                        - '11.7.0'
         steps:      
             - name: "Checkout the repo"
               uses: "actions/checkout@v3"
+
+            - name: "Config-CUDA"
+              if: ${{ matrix.cuda != 'cpu' }}
+              uses: Jimver/cuda-toolkit@v0.2.10
+              id: cuda-toolkit
+              with:
+                cuda: ${{ matrix.cuda }}
+                method: 'network'
 
             - name: "Configuring Python - ${{ matrix.python-version }}"
               uses: "actions/setup-python@v4"
@@ -60,6 +61,8 @@ jobs:
            
             - name: "Purge ubuntu image"
               run: |
+                sudo apt autoremove -y 
+                sudo apt clean
                 sudo rm -rf "/usr/local/share/boost"
                 sudo rm -rf "$AGENT_TOOLSDIRECTORY"
 
@@ -113,8 +116,6 @@ jobs:
               filename: covbadge.json
               label: Coverage
               message: ${{ env.total }}%
-              minColorRange: 0
-              maxColorRange: 100
+              minColorRange: 50
+              maxColorRange: 90
               valColorRange: ${{ env.total }}
-
-

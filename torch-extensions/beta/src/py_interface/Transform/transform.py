@@ -9,10 +9,18 @@ torch.ops.load_library(CUDA_SO)   if os.path.isfile(CUDA_SO) else None
 torch.ops.load_library(TENSOR_SO) if os.path.isfile(TENSOR_SO) else None
 torch.ops.load_library(FLOAT_SO)  if os.path.isfile(FLOAT_SO) else None
 
-cmb = "transform_combined_"
-sgl = "transform_separate_"
+mod_ = __file__.split("/")
+mod_ = mod_[mod_.index("pyext")+1].lower()
 
-def __router__(inpt, get, trig_cmb, cmb, sgl):
+__name_c__ = mod_ + "_combined_"
+__name_s__ = mod_ + "_separate_"
+
+def __router__(
+        inpt, get, trig_cmb,
+        cmb = __name_c__,
+        sgl = __name_s__
+    ):
+
     inpt = [i for i in inpt if i is not None]
     comb = cmb if len(inpt) == trig_cmb else sgl
     comb += get
@@ -30,51 +38,51 @@ def __router__(inpt, get, trig_cmb, cmb, sgl):
 
 def Px(ten1, ten2 = None):
     name = inspect.currentframe().f_code.co_name
-    fn, inpt = __router__([ten1, ten2], name, 1, cmb, sgl)
+    fn, inpt = __router__([ten1, ten2], name, 1)
     return fn(*inpt)
 
 def Py(ten1, ten2 = None):
     name = inspect.currentframe().f_code.co_name
-    fn, inpt = __router__([ten1, ten2], name, 1, cmb, sgl)
+    fn, inpt = __router__([ten1, ten2], name, 1)
     return fn(*inpt)
 
 def Pz(ten1, ten2 = None):
     name = inspect.currentframe().f_code.co_name
-    fn, inpt = __router__([ten1, ten2], name, 1, cmb, sgl)
+    fn, inpt = __router__([ten1, ten2], name, 1)
     return fn(*inpt)
 
 def PxPyPz(ten1, ten2 = None, ten3 = None):
     name = inspect.currentframe().f_code.co_name
-    fn, inpt = __router__([ten1, ten2, ten3], name, 1, cmb, sgl)
+    fn, inpt = __router__([ten1, ten2, ten3], name, 1)
     return fn(*inpt)
 
 def PxPyPzE(ten1, ten2 = None, ten3 = None, ten4 = None):
     name = inspect.currentframe().f_code.co_name
-    fn, inpt = __router__([ten1, ten2, ten3, ten4], name, 1, cmb, sgl)
+    fn, inpt = __router__([ten1, ten2, ten3, ten4], name, 1)
     return fn(*inpt)
 
 def Pt(ten1, ten2 = None):
     name = inspect.currentframe().f_code.co_name
-    fn, inpt = __router__([ten1, ten2], name, 1, cmb, sgl)
+    fn, inpt = __router__([ten1, ten2], name, 1)
     return fn(*inpt)
 
 def Eta(ten1, ten2 = None, ten3 = None):
     name = inspect.currentframe().f_code.co_name
-    fn, inpt = __router__([ten1, ten2, ten3], name, 1, cmb, sgl)
+    fn, inpt = __router__([ten1, ten2, ten3], name, 1)
     return fn(*inpt)
 
 def Phi(ten1, ten2 = None):
     name = inspect.currentframe().f_code.co_name
-    fn, inpt = __router__([ten1, ten2], name, 1, cmb, sgl)
+    fn, inpt = __router__([ten1, ten2], name, 1)
     return fn(*inpt)
 
 def PtEtaPhi(ten1, ten2 = None, ten3 = None):
     name = inspect.currentframe().f_code.co_name
-    fn, inpt = __router__([ten1, ten2, ten3], name, 1, cmb, sgl)
+    fn, inpt = __router__([ten1, ten2, ten3], name, 1)
     return fn(*inpt)
 
 def PtEtaPhiE(ten1, ten2 = None, ten3 = None, ten4 = None):
     name = inspect.currentframe().f_code.co_name
-    fn, inpt = __router__([ten1, ten2, ten3, ten4], name, 1, cmb, sgl)
+    fn, inpt = __router__([ten1, ten2, ten3, ten4], name, 1)
     return fn(*inpt)
 
