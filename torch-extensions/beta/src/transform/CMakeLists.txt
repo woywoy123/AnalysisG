@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15 FATAL_ERROR)
-project(transform VERSION ${SKBUILD_PROJECT_VERSION} LANGUAGES CXX CUDA)
+project(transform VERSION ${SKBUILD_PROJECT_VERSION} LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -19,7 +19,7 @@ target_link_libraries(transform_ten PUBLIC ${TORCH_LIBRARIES} cartesian-tensors 
 target_include_directories(transform_fl  PUBLIC ${CMAKE_SOURCE_DIR})
 target_include_directories(transform_ten PUBLIC ${CMAKE_SOURCE_DIR})
 
-if(DEFINED CMAKE_CUDA_COMPILER)
+if(CMAKE_CUDA_COMPILER)
     add_subdirectory(cartesian-cuda)
     add_subdirectory(polar-cuda)
     

@@ -26,16 +26,17 @@ jobs:
                 fail-fast: false
                 matrix:
                     os:
+                        - ubuntu-18.04
                         - ubuntu-20.04
                         - ubuntu-22.04
                         - ubuntu-latest
 
                     python-version:
                         - "3.7"
-                        - "3.8"
-                        - "3.9"
-                        - "3.10"
-                        - "3.11"
+                          #- "3.8"
+                          #- "3.9"
+                          #- "3.10"
+                          #- "3.11"
 
                     cuda:
                        #- 'cpu'
@@ -52,7 +53,7 @@ jobs:
               id: cuda-toolkit
               with:
                 cuda: ${{ matrix.cuda }}
-                method: 'network'
+                  #method: 'network'
 
             - name: "Configuring Python - ${{ matrix.python-version }}"
               uses: "actions/setup-python@v4"

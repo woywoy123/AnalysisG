@@ -1,4 +1,4 @@
-if(DEFINED CMAKE_CUDA_COMPILER)
+if(CMAKE_CUDA_COMPILER)
     add_library(pyc_cuda SHARED
         ${CMAKE_CURRENT_LIST_DIR}/pyc_cuda.h
         ${CMAKE_CURRENT_LIST_DIR}/pyc_cuda.cxx
@@ -7,7 +7,7 @@ if(DEFINED CMAKE_CUDA_COMPILER)
     target_link_libraries(pyc_cuda 
         PUBLIC 
             ${TORCH_LIBRARIES} 
-            Python::Python 
+            pybind11::module 
             transform_cu 
             physics-cuda
     )
@@ -21,7 +21,7 @@ add_library(pyc_tensor SHARED
 target_link_libraries(pyc_tensor 
     PUBLIC 
         ${TORCH_LIBRARIES} 
-        Python::Python 
+        pybind11::module
         physics-cartesian 
         physics-polar
         transform_ten
@@ -35,6 +35,6 @@ add_library(pyc_float SHARED
 target_link_libraries(pyc_float 
     PUBLIC 
         ${TORCH_LIBRARIES} 
-        Python::Python 
+        pybind11::module
         transform_fl
 )

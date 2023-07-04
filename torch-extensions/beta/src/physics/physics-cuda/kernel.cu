@@ -22,9 +22,10 @@ __global__ void SumK(
 {
     const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
     if (idx >= length){ return; }
-    for (unsigned int x(1); x < dim_len-1; ++x)
+    for (unsigned int x(0); x < dim_len; (x += 2))
     { 
-        sum(pmc[idx][0], pmc[idx][x], pmc[idx][x+1]); 
+        if (x + 2 >= dim_len){sum(pmc[idx][0], pmc[idx][x+1]); return; }
+        sum(pmc[idx][0], pmc[idx][x+1], pmc[idx][x+2]); 
     }
 }
 
