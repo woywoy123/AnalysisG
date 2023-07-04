@@ -3,6 +3,7 @@
 
 torch::Tensor _Dot(torch::Tensor v1, torch::Tensor v2); 
 torch::Tensor _Mul(torch::Tensor v1, torch::Tensor v2); 
+torch::Tensor _CosTheta(torch::Tensor v1, torch::Tensor v2); 
 
 namespace Operators
 {
@@ -16,6 +17,11 @@ namespace Operators
         const torch::Tensor Mul(torch::Tensor v1, torch::Tensor v2)
         {
             return _Mul(v1, v2); 
+        }
+
+        const torch::Tensor CosTheta(torch::Tensor v1, torch::Tensor v2)
+        {
+            return _CosTheta(v1, v2); 
         }
     }
 }

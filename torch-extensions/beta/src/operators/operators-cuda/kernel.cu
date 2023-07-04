@@ -16,18 +16,21 @@ __global__ void _DotK(
 
 template <typename scalar_t>
 __global__ void _DotK(
-        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> v1,
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> out,
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> v1, 
         const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> v2, 
         const unsigned int dim_z, 
         const unsigned int dim_i1,
         const unsigned int dim_co, 
-        const unsigned int dim_j2)
+        const unsigned int grid)
 {
     const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
     const unsigned int idy = blockIdx.y; 
     const unsigned int idz = blockIdx.z; 
-    if (idz >= dim_z || idy >= dim_co || idx >= dim_i1*dim_j2){return;}
-    dot_ij(v1[idz][idy*dim_co+idx][idx%dim_j2], v2[idz][idy][idx%dim_j2]); 
+    if (idz >= dim_z || idy >= dim_co || idx >= grid){return;}
+    const unsigned int id = idx/dim_i1;
+    const unsigned int idx_ = idx%dim_i1; 
+    dot_ij(out[idz][idx_][idy + id*dim_co], v1[idz][idx_][idy], v2[idz][idy][id]); 
 }
 
 template <typename scalar_t>
@@ -64,5 +67,23 @@ __global__ void _SumK(
     }
 }
 
+template <typename scalar_t>
+__global__ void _DotK(
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> out, 
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> v1, 
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> v2, 
+        unsigned int dim_x, 
+        unsigned int dim_y, 
+        unsigned int dim_z)
+{
+    const unsigned int idx = blockIdx.x * blockDim.x * threadIdx.x; 
+    const unsigned int idy = blockIdx.y; 
+    const unsigned int idz = blockIdx.z; 
+    if (idx >= dim_x || idy >= dim_y || idz >= dim_z){return;}
+    if (idz == 0){ dot_ij(out[idx][idy][idz], v1[idx][idy], v1[idx][idy]); return; }
+    if (idz == 1){ dot_ij(out[idx][idy][idz], v2[idx][idy], v2[idx][idy]); return; }
+    dot_ij(out[idx][idy][idz], v1[idx][idy], v2[idx][idy]); 
 
 
+}
+        
