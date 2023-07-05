@@ -97,23 +97,172 @@ torch::Tensor _CosTheta(torch::Tensor v1, torch::Tensor v2)
 
     v2 = v2.contiguous(); 
     v1 = v1.contiguous(); 
-    torch::Tensor tmp = torch::zeros({x, y, 3}, _MakeOp(v1)); 
+    torch::Tensor tmp = torch::zeros({x, y, 3}, _MakeOp(v1));
+    torch::Tensor out = torch::zeros({x, 3}, _MakeOp(v1));  
     CHECK_INPUT(v1); CHECK_INPUT(v2); 
     const dim3 blk = BLOCKS(threads, x, y, 3); 
+    const dim3 blk_ = BLOCKS(threads, x, 3); 
+    const dim3 blk__ = BLOCKS(threads, x); 
     AT_DISPATCH_FLOATING_TYPES(v1.scalar_type(), "COSTHETA", ([&]
     {
         _DotK<scalar_t><<< blk, threads >>>(
                 tmp.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-                v1.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-                v2.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-                x, y, 3); 
-
-
-    }
-
-
-
-
+                v1.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+                v2.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+                x, y);
+        _SumK<scalar_t><<< blk_, threads >>>(
+                out.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+                tmp.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                x, y); 
+        _CosThetaK<scalar_t><<< blk__, threads >>>(
+                out.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+                x); 
+    })); 
+    return out.index({torch::indexing::Slice(), 0}).view({-1, 1}); 
 }
+
+torch::Tensor _SinTheta(torch::Tensor v1, torch::Tensor v2)
+{
+    const unsigned int x = v1.size(0); 
+    const unsigned int y = v1.size(1); 
+    const unsigned int threads = 1024; 
+
+    v2 = v2.contiguous(); 
+    v1 = v1.contiguous(); 
+    torch::Tensor tmp = torch::zeros({x, y, 3}, _MakeOp(v1));
+    torch::Tensor out = torch::zeros({x, 3}, _MakeOp(v1));  
+    CHECK_INPUT(v1); CHECK_INPUT(v2); 
+    const dim3 blk = BLOCKS(threads, x, y, 3); 
+    const dim3 blk_ = BLOCKS(threads, x, 3); 
+    const dim3 blk__ = BLOCKS(threads, x); 
+    AT_DISPATCH_FLOATING_TYPES(v1.scalar_type(), "SINTHETA", ([&]
+    {
+        _DotK<scalar_t><<< blk, threads >>>(
+                tmp.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+                v1.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+                v2.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+                x, y);
+        _SumK<scalar_t><<< blk_, threads >>>(
+                out.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+                tmp.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                x, y); 
+        _SinThetaK<scalar_t><<< blk__, threads >>>(
+                out.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+                x); 
+    })); 
+    return out.index({torch::indexing::Slice(), 0}).view({-1, 1}); 
+}
+
+torch::Tensor _Rot(torch::Tensor angle, const unsigned int dim)
+{
+    const unsigned int x = angle.size(0); 
+    const unsigned int threads = 1024; 
+    const dim3 blk = BLOCKS(threads, x, 3, 3); 
+    angle = angle.view({-1, 1}).contiguous(); 
+    CHECK_INPUT(angle); 
+
+    torch::Tensor out = torch::zeros({x, 3, 3}, _MakeOp(angle));
+    AT_DISPATCH_FLOATING_TYPES(angle.scalar_type(), "Rot", ([&]
+    {
+        _RotK<scalar_t><<< blk, threads >>>(
+                out.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+                angle.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+                x, dim); 
+    })); 
+    return out; 
+}
+
+torch::Tensor _CoFactors(torch::Tensor matrix)
+{
+    const unsigned int x = matrix.size(0); 
+    const unsigned int threads = 1024; 
+    const dim3 blk = BLOCKS(threads, x, 3, 3);  
+    torch::Tensor out = torch::zeros_like(matrix);
+    CHECK_INPUT(matrix);  
+
+    AT_DISPATCH_FLOATING_TYPES(matrix.scalar_type(), "Cofactor", ([&]
+    {
+        _CoFactorK<scalar_t><<< blk, threads >>>(
+                out.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+                matrix.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+                x, 3); 
+    })); 
+
+    return out; 
+}
+
+torch::Tensor _Det(torch::Tensor matrix)
+{
+    const unsigned int x = matrix.size(0); 
+    const unsigned int threads = 1024; 
+    const dim3 blk = BLOCKS(threads, x, 1, 3);
+    const dim3 blk_ = BLOCKS(threads, x);
+    torch::Tensor tmp = torch::zeros({x, 1, 3}, _MakeOp(matrix));
+    torch::Tensor out = torch::zeros({x, 1}, _MakeOp(matrix));
+    AT_DISPATCH_FLOATING_TYPES(matrix.scalar_type(), "Determinant", ([&]
+    {
+        _CoFactorK<scalar_t><<< blk, threads >>>(
+                tmp.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+                matrix.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+                x, 1); 
+
+        _DetDotK<scalar_t><<< blk, threads >>>(
+                tmp.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+                tmp.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+                matrix.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+                x);
+
+        _DetSumK<scalar_t><<< blk_, threads >>>(
+                out.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+                tmp.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+                x);
+    })); 
+    return out; 
+}
+
+torch::Tensor _Inv(torch::Tensor matrix)
+{
+    const unsigned int x = matrix.size(0); 
+    const unsigned int threads = 1024; 
+    const dim3 blk_ = BLOCKS(threads, x);
+    const dim3 blk__ = BLOCKS(threads, x, 1, 3);
+    const dim3 blk = BLOCKS(threads, x, 3, 3);
+    torch::Tensor coef = torch::zeros({x, 3, 3}, _MakeOp(matrix));
+    torch::Tensor det = torch::zeros({x, 1}, _MakeOp(matrix));
+    torch::Tensor out = torch::zeros({x, 3, 3}, _MakeOp(matrix));
+    AT_DISPATCH_FLOATING_TYPES(matrix.scalar_type(), "Determinant", ([&]
+    {
+        _CoFactorK<scalar_t><<< blk, threads >>>(
+                  coef.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+                matrix.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+                x, 3); 
+
+        _DetDotK<scalar_t><<< blk__, threads >>>(
+                   out.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+                  coef.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+                matrix.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+                x);
+
+        _DetSumK<scalar_t><<< blk_, threads >>>(
+                det.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+                out.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+                x);
+    
+        _InvK<scalar_t><<< blk, threads >>>(
+                 out.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+                 det.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+                coef.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+                x);
+    })); 
+    return out; 
+}
+
+
+
+
+
+
+
+
 
 #endif
