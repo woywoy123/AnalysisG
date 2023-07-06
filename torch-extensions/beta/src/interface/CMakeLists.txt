@@ -10,6 +10,7 @@ if(CMAKE_CUDA_COMPILER)
             pybind11::module 
             transform_cu 
             physics-cuda
+            operators-cuda
     )
 endif()
 
@@ -25,6 +26,7 @@ target_link_libraries(pyc_tensor
         physics-cartesian 
         physics-polar
         transform_ten
+        operators-tensor
 )
 
 add_library(pyc_float SHARED

@@ -63,10 +63,6 @@ namespace Operators
         {
             return _Inv(matrix); 
         }
-
-
-
-
     }
 }
 #endif

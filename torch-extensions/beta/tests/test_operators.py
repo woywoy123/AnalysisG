@@ -1,8 +1,8 @@
-import torch
-import random
 from time import time
+import random
+import pyext
+import torch
 torch.set_printoptions(4, profile="full", linewidth=100000)
-torch.ops.load_library("../build/operators/libop_cuda.so")
 
 def _makeMatrix(l, m, n, tmp):
     x = torch.tensor(
@@ -25,7 +25,7 @@ def _compareMulti(l, m, n, tmp):
     tm = time() - t1
 
     t1 = time()
-    x_cu = torch.ops.op_cuda.mul(x, y)
+    x_cu = pyext.Operators.Mul(x, y)
     t_cu = time() - t1
     print(tm/t_cu)
     _AttestEqual(x_, x_cu)
@@ -54,11 +54,11 @@ def test_costheta():
     y = torch.tensor([[random.random() for i in range(1000)] for _ in range(100)], device = "cuda", dtype = torch.float64)
 
     t1 = time()
-    cu = torch.ops.op_cuda.CosTheta(x, y)
+    cu = pyext.Operators.CosTheta(x, y)
     t_cu = time() - t1
 
     t1 = time()
-    cu = torch.ops.op_cuda.CosTheta(x, y)
+    cu = pyext.Operators.CosTheta(x, y)
     t_cu = time() - t1
 
     t1 = time()
@@ -76,11 +76,11 @@ def test_sintheta():
     y = torch.tensor([[random.random() for i in range(1000)] for _ in range(100)], device = "cuda", dtype = torch.float64)
 
     t1 = time()
-    cu = torch.ops.op_cuda.SinTheta(x, y)
+    cu = pyext.Operators.SinTheta(x, y)
     t_cu = time() - t1
 
     t1 = time()
-    cu = torch.ops.op_cuda.SinTheta(x, y)
+    cu = pyext.Operators.SinTheta(x, y)
     t_cu = time() - t1
 
     t1 = time()
@@ -98,7 +98,7 @@ def test_sintheta():
 def test_rx():
     x = torch.tensor([[random.random()] for i in range(10)], device = "cuda", dtype = torch.float64)
     t1 = time()
-    x_ = torch.ops.op_cuda.Rx(x)
+    x_ = pyext.Operators.Rx(x)
     t_cu = time() - t1
 
     z = torch.zeros_like(x)
@@ -111,7 +111,7 @@ def test_rx():
 def test_ry():
     x = torch.tensor([[random.random()] for i in range(10)], device = "cuda", dtype = torch.float64)
     t1 = time()
-    x_ = torch.ops.op_cuda.Ry(x)
+    x_ = pyext.Operators.Ry(x)
     t_cu = time() - t1
 
     z = torch.zeros_like(x)
@@ -125,7 +125,7 @@ def test_ry():
 def test_rz():
     x = torch.tensor([[random.random()] for i in range(10)], device = "cuda", dtype = torch.float64)
     t1 = time()
-    x_ = torch.ops.op_cuda.Rz(x)
+    x_ = pyext.Operators.Rz(x)
     t_cu = time() - t1
 
     z = torch.zeros_like(x)
@@ -138,7 +138,7 @@ def test_rz():
 def test_cofactor():
     x = torch.tensor([[[(i+1) + (k+1) for i in range(3)] for k in range(3)] for i in range(2)], device = "cuda", dtype = torch.float64)
     t1 = time()
-    x_ = torch.ops.op_cuda.CoFactors(x)
+    x_ = pyext.Operators.CoFactors(x)
     t_cu = time() - t1
 
     x = torch.tensor([[-1, 2, -1, 2, -4, 2, -1, 2, -1] for i in range(2)], device = "cuda", dtype = torch.float64).view(-1, 3, 3)
@@ -147,7 +147,7 @@ def test_cofactor():
 def test_det():
     x = torch.tensor([[[random.random()*10 for i in range(3)] for k in range(3)] for i in range(100)], device = "cuda", dtype = torch.float64)
     t1 = time()
-    x_ = torch.ops.op_cuda.Determinant(x)
+    x_ = pyext.Operators.Determinant(x)
     t_cu = time() - t1
 
     t1 = time()
@@ -158,18 +158,90 @@ def test_det():
 
 def test_inverse():
     x = torch.tensor([[[random.random()*10 for i in range(3)] for k in range(3)] for i in range(10000)], device = "cuda", dtype = torch.float64)
+
+    det = pyext.Operators.Determinant(x).view(-1)
     t1 = time()
-    x_ = torch.ops.op_cuda.Inverse(x)
+    x_ = pyext.Operators.Inverse(x)
     t_cu = time() - t1
 
     t1 = time()
     x_t = torch.inverse(x)
     t_t = time() - t1
     print(t_t/t_cu)
-    _AttestEqual(x_t, x_)
+    _AttestEqual(x_t[det != 0], x_[det != 0])
+
+def test_equivalence():
+    def _compareMUL(l, m, n, tmp):
+        x, y = _makeMatrix(l, m, n, tmp)
+        t1 = time()
+        x_cu = pyext.Operators.Mul(x, y)
+        t_cu = time() - t1
+
+        x, y = x.to(device = "cpu"), y.to(device = "cpu")
+        t1 = time()
+        x_ = pyext.Operators.Mul(x, y)
+        tm = time() - t1
+        print(tm/t_cu)
+
+        _AttestEqual(x_, x_cu)
+    def _Rot(inpt): 
+        x = torch.tensor([[random.random() for i in range(1)] for _ in range(100)], device = "cuda", dtype = torch.float64)
+
+        t1 = time()
+        cu = inpt(x)
+        t_cu = time() - t1
+
+        x = x.to(device = "cpu")
+        t1 = time()
+        t = inpt(x)
+        t_m = time() - t1
+        _AttestEqual(t, cu.to(device = "cpu"))
+        print(t_m/t_cu)
+
+
+    # CHECK MUL
+    _compareMulti(10, 10, 10, 10)
+    _compareMulti(10, 17, 10, 10)
+    _compareMulti(10, 10, 17, 10)
+    _compareMulti(10, 15, 18, 5)
+    _compareMulti(10, 18, 15, 5)
+    _compareMulti(10, 15, 15, 5)
+
+    # CHECK COS/SIN THETA
+    x = torch.tensor([[random.random() for i in range(1000)] for _ in range(100)], device = "cuda", dtype = torch.float64)
+    y = torch.tensor([[random.random() for i in range(1000)] for _ in range(100)], device = "cuda", dtype = torch.float64)
+
+    t1 = time()
+    cu = pyext.Operators.CosTheta(x, y)
+    t_cu = time() - t1
+
+    x, y = x.to(device = "cpu"), y.to(device = "cpu")
+    t1 = time()
+    t = pyext.Operators.CosTheta(x, y)
+    t_m = time() - t1
+    _AttestEqual(t, cu.to(device = "cpu"))
+    print(t_m/t_cu)
+
+    x = torch.tensor([[random.random() for i in range(1000)] for _ in range(100)], device = "cuda", dtype = torch.float64)
+    y = torch.tensor([[random.random() for i in range(1000)] for _ in range(100)], device = "cuda", dtype = torch.float64)
+
+    t1 = time()
+    cu = pyext.Operators.SinTheta(x, y)
+    t_cu = time() - t1
+
+    x, y = x.to(device = "cpu"), y.to(device = "cpu")
+    t1 = time()
+    t = pyext.Operators.SinTheta(x, y)
+    t_m = time() - t1
+    _AttestEqual(t, cu.to(device = "cpu"))
+    print(t_m/t_cu)
+
+    _Rot(pyext.Operators.Rx)
+    _Rot(pyext.Operators.Ry)
+    _Rot(pyext.Operators.Rz)
+
 
 if __name__ == "__main__":
-    pass
     test_matrix_multi()
     test_costheta()
     test_sintheta()
@@ -179,4 +251,5 @@ if __name__ == "__main__":
     test_cofactor()
     test_det()
     test_inverse()
+    test_equivalence()
 

@@ -83,6 +83,20 @@ torch::Tensor pyc::physics::polar::separate::DeltaR(torch::Tensor eta1, torch::T
 } 
 torch::Tensor pyc::physics::polar::combined::DeltaR(torch::Tensor pmu1, torch::Tensor pmu2){ return Physics::Tensors::Polar::DeltaR(pmu1, pmu2); } 
 
+// Operators
+torch::Tensor pyc::operators::Dot(torch::Tensor v1, torch::Tensor v2){ return Operators::Tensors::Dot(v1, v2); }
+torch::Tensor pyc::operators::Mul(torch::Tensor v1, torch::Tensor v2){ return Operators::Tensors::Mul(v1, v2); }
+torch::Tensor pyc::operators::CosTheta(torch::Tensor v1, torch::Tensor v2){ return Operators::Tensors::CosTheta(v1, v2); }
+torch::Tensor pyc::operators::SinTheta(torch::Tensor v1, torch::Tensor v2){ return Operators::Tensors::SinTheta(v1, v2); }
+
+torch::Tensor pyc::operators::Rx(torch::Tensor angle){ return Operators::Tensors::Rx(angle); }
+torch::Tensor pyc::operators::Ry(torch::Tensor angle){ return Operators::Tensors::Ry(angle); }
+torch::Tensor pyc::operators::Rz(torch::Tensor angle){ return Operators::Tensors::Rz(angle); }
+
+torch::Tensor pyc::operators::CoFactors(torch::Tensor matrix){ return Operators::Tensors::CoFactors(matrix); }
+torch::Tensor pyc::operators::Determinant(torch::Tensor matrix){ return Operators::Tensors::Determinant(matrix); }
+torch::Tensor pyc::operators::Inverse(torch::Tensor matrix){ return Operators::Tensors::Inverse(matrix); }
+
 TORCH_LIBRARY(pyc_tensor, m)
 {
     // transformation classes for Tensor
@@ -159,4 +173,17 @@ TORCH_LIBRARY(pyc_tensor, m)
     m.def("physics_combined_cartesian_DeltaR", &pyc::physics::cartesian::combined::DeltaR);      
     m.def("physics_separate_polar_DeltaR", &pyc::physics::polar::separate::DeltaR);
     m.def("physics_combined_polar_DeltaR", &pyc::physics::polar::combined::DeltaR);
+
+    m.def("operators_Dot", &pyc::operators::Dot); 
+    m.def("operators_Mul", &pyc::operators::Mul); 
+    m.def("operators_CosTheta", &pyc::operators::CosTheta); 
+    m.def("operators_SinTheta", &pyc::operators::SinTheta); 
+
+    m.def("operators_Rx", &pyc::operators::Rx); 
+    m.def("operators_Ry", &pyc::operators::Ry); 
+    m.def("operators_Rz", &pyc::operators::Rz); 
+ 
+    m.def("operators_CoFactors", &pyc::operators::CoFactors); 
+    m.def("operators_Determinant", &pyc::operators::Determinant); 
+    m.def("operators_Inverse", &pyc::operators::Inverse); 
 }

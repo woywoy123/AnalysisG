@@ -1,6 +1,7 @@
 import torch
 import vector
 import inspect
+import pickle
 
 def create_vector_cartesian(px, py, pz, e):
     return vector.obj(px = px, py = py, pz = pz, E = e)
@@ -63,3 +64,49 @@ def assert_tensor_polar(base, func, pos, func2, pw = 1):
     d1 = create_tensor_cpu_1d()
     assert rounder(f(*[d1[:, i] for i in pos]), p1)
     assert rounder(f(d1), p1)
+
+class Particle:
+    def __init__(self, pt, eta, phi, e):
+        self.pt = pt
+        self.eta = eta
+        self.phi = phi
+        self.e = e
+
+    @property
+    def vec(self): 
+        dct = {
+                "pt" : self.pt, 
+                "eta" : self.eta, 
+                "phi" : self.phi, 
+                "energy" : self.e
+        }
+        return vector.obj(**dct)
+
+    @property
+    def ten(self):
+        vec = [self.pt, self.eta, self.phi, self.e]
+        vec = torch.tensor([vec], dtype = torch.float64)
+        if torch.cuda.is_available(): vec = vec.to(device = "cuda")
+        return vec
+
+class event:
+    def __init__(self, met, phi):
+        self.met = met
+        self.phi = phi
+
+def loads( n ):
+    f = open("data/" + n + "NeutrinoEvents.pkl", "rb")
+    obj = pickle.load(f)
+    f.close()
+    return obj
+
+def loadDouble(): return loads("Double")
+def loadSingle(): return loads("Single")
+
+
+
+
+
+
+
+
