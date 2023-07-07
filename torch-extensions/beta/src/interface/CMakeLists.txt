@@ -11,6 +11,7 @@ if(CMAKE_CUDA_COMPILER)
             transform_cu 
             physics-cuda
             operators-cuda
+            nusol-cuda
     )
 endif()
 

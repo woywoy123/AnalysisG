@@ -46,6 +46,16 @@ This function expects either a single tensor/float of a particle's 4-vector, or 
     - `Transform::Tensors`
     - `Transform::Floats`
 
+ - Physics:
+    - `Physics::CUDA`
+    - `Physics::Tensors`
+    - `Physics::CUDA::Cartesian`
+    - `Physics::CUDA::Polar`
+
+- Operators:
+    - `Operators::CUDA`
+    - `Operators::Tensors`
+
 ### Transform:
 ```cpp
 // To Cartesian Coordinates using tensors
@@ -117,4 +127,113 @@ std::vector<std::vector<double>> PtEtaPhi(std::vector<std::vector<double>> pmc);
 
 std::vector<double> PtEtaPhiE(double px, double py, double pz, double e);
 std::vector<std::vector<double>> PtEtaPhiE(std::vector<std::vector<double>> pmc); 
+```
+### Physics:
+```cpp
+// using the namespace Physics::<CUDA/Tensors>
+// Momentum**2
+torch::Tensor P2(torch::Tensor pmc); 
+torch::Tensor P2(torch::Tensor px, torch::Tensor py, torch::Tensor pz); 
+
+// Momentum
+torch::Tensor P(torch::Tensor pmc); 
+torch::Tensor P(torch::Tensor px, torch::Tensor py, torch::Tensor pz); 
+
+// 4-vector Properties
+torch::Tensor Beta2(torch::Tensor pmc); 
+torch::Tensor Beta2(torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e); 
+torch::Tensor Beta(torch::Tensor pmc); 
+torch::Tensor Beta(torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e); 
+
+// Particle Properties
+// Mass**2
+torch::Tensor M2(torch::Tensor pmc); 
+torch::Tensor M2(torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e); 
+
+// Mass
+torch::Tensor M(torch::Tensor pmc); 
+torch::Tensor M(torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e); 
+
+// Transverse Mass ** 2
+torch::Tensor Mt2(torch::Tensor pmc); 
+torch::Tensor Mt2(torch::Tensor pz, torch::Tensor e); 
+
+// Transverse Mass
+torch::Tensor Mt(torch::Tensor pmc); 
+torch::Tensor Mt(torch::Tensor pz, torch::Tensor e); 
+
+// Angle between between the Pz component and the momentum magnitude
+// theta = cos^-1(pz/p)
+torch::Tensor Theta(torch::Tensor pmc); 
+torch::Tensor Theta(torch::Tensor px, torch::Tensor py, torch::Tensor pz); 
+
+// Radial distance between two particle vectors
+torch::Tensor DeltaR(torch::Tensor pmu1, torch::Tensor pmu2);
+torch::Tensor DeltaR(torch::Tensor eta1, torch::Tensor eta2, torch::Tensor phi1, torch::Tensor phi2); 
+
+// using the namespace Physics::<CUDA/Tensors>::Cartesian
+torch::Tensor P2(torch::Tensor px, torch::Tensor py, torch::Tensor pz); 
+torch::Tensor P2(torch::Tensor pmc); 
+torch::Tensor P(torch::Tensor px, torch::Tensor py, torch::Tensor pz); 
+torch::Tensor P(torch::Tensor pmc); 
+torch::Tensor Beta2(torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e); 
+torch::Tensor Beta2(torch::Tensor pmc); 
+torch::Tensor Beta(torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e); 
+torch::Tensor Beta(torch::Tensor pmc); 
+torch::Tensor M2(torch::Tensor pmc); 
+torch::Tensor M2(torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e); 
+torch::Tensor M(torch::Tensor pmc); 
+torch::Tensor M(torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e); 
+torch::Tensor Mt2(torch::Tensor pmc); 
+torch::Tensor Mt2(torch::Tensor pz, torch::Tensor e); 
+torch::Tensor Mt(torch::Tensor pmc); 
+torch::Tensor Mt(torch::Tensor pz, torch::Tensor e); 
+torch::Tensor Theta(torch::Tensor pmc); 
+torch::Tensor Theta(torch::Tensor px, torch::Tensor py, torch::Tensor pz); 
+torch::Tensor DeltaR(torch::Tensor pmc1, torch::Tensor pmc2); 
+torch::Tensor DeltaR(torch::Tensor px1, torch::Tensor px2, torch::Tensor py1, torch::Tensor py2, torch::Tensor pz1, torch::Tensor pz2); 
+
+// using the namespace Physics::<CUDA/Tensors>::Polar
+torch::Tensor P2(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi)
+torch::Tensor P2(torch::Tensor Pmu)
+torch::Tensor P(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi)
+torch::Tensor P(torch::Tensor Pmu)
+torch::Tensor Beta2(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi, torch::Tensor e)
+torch::Tensor Beta2(torch::Tensor pmu)
+torch::Tensor Beta(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi, torch::Tensor e)
+torch::Tensor Beta(torch::Tensor pmu)
+torch::Tensor M2(torch::Tensor pmu)
+torch::Tensor M2(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi, torch::Tensor e)
+torch::Tensor M(torch::Tensor pmu)
+torch::Tensor M(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi, torch::Tensor e)
+torch::Tensor Mt2(torch::Tensor pmu)
+torch::Tensor Mt2(torch::Tensor pt, torch::Tensor eta, torch::Tensor e)
+torch::Tensor Mt(torch::Tensor pmu)
+torch::Tensor Mt(torch::Tensor pt, torch::Tensor eta, torch::Tensor e)
+torch::Tensor Theta(torch::Tensor pmu)
+torch::Tensor Theta(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi)
+torch::Tensor DeltaR(torch::Tensor pmu1, torch::Tensor pmu2)
+torch::Tensor DeltaR(torch::Tensor eta1, torch::Tensor eta2, torch::Tensor phi1, torch::Tensor phi2)
+```
+
+### Operators:
+
+```cpp
+// Customly designed CUDA operators (normal C++ wrappers are just torch methods)
+torch::Tensor Dot(torch::Tensor v1, torch::Tensor v2); 
+torch::Tensor Mul(torch::Tensor v1, torch::Tensor v2); 
+
+// Angle Between Tensors
+torch::Tensor CosTheta(torch::Tensor v1, torch::Tensor v2); 
+torch::Tensor SinTheta(torch::Tensor v1, torch::Tensor v2); 
+
+// Rotation Matrix Generators
+torch::Tensor Rx(torch::Tensor angle); 
+torch::Tensor Ry(torch::Tensor angle); 
+torch::Tensor Rz(torch::Tensor angle); 
+
+// Matrix related operators
+torch::Tensor CoFactors(torch::Tensor matrix); 
+torch::Tensor Determinant(torch::Tensor matrix); 
+torch::Tensor Inverse(torch::Tensor matrix); 
 ```

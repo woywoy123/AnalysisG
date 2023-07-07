@@ -93,6 +93,20 @@ class event:
     def __init__(self, met, phi):
         self.met = met
         self.phi = phi
+   
+    @property
+    def vec(self):
+        return vector.obj(pt = self.met, phi = self.phi)
+
+    @property
+    def ten(self):
+        vec = torch.tensor([self.vec.px, self.vec.py], dtype = torch.float64).view(-1, 2)
+        if torch.cuda.is_available(): vec = vec.to(device = "cuda")
+        return vec
+
+
+
+
 
 def loads( n ):
     f = open("data/" + n + "NeutrinoEvents.pkl", "rb")

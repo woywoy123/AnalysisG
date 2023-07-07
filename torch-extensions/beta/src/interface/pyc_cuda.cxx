@@ -97,6 +97,18 @@ torch::Tensor pyc::operators::CoFactors(torch::Tensor matrix){ return Operators:
 torch::Tensor pyc::operators::Determinant(torch::Tensor matrix){ return Operators::CUDA::Determinant(matrix); }
 torch::Tensor pyc::operators::Inverse(torch::Tensor matrix){ return Operators::CUDA::Inverse(matrix); }
 
+torch::Tensor pyc::nusol::BaseMatrix(torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Tensor masses)
+{ 
+    return NuSol::CUDA::BaseMatrix(pmc_b, pmc_mu, masses); 
+}
+
+torch::Tensor pyc::nusol::Nu(
+        torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Tensor met_xy, 
+        torch::Tensor masses, torch::Tensor sigma)
+{ 
+    return NuSol::CUDA::Nu(pmc_b, pmc_mu, met_xy, masses, sigma); 
+}
+
 TORCH_LIBRARY(pyc_cuda, m)
 {
     // transformation classes for CUDA
@@ -186,4 +198,7 @@ TORCH_LIBRARY(pyc_cuda, m)
     m.def("operators_CoFactors", &pyc::operators::CoFactors); 
     m.def("operators_Determinant", &pyc::operators::Determinant); 
     m.def("operators_Inverse", &pyc::operators::Inverse); 
+
+    m.def("nusol_BaseMatrix", &pyc::nusol::BaseMatrix);
+    m.def("nusol_Nu", &pyc::nusol::Nu);  
 }

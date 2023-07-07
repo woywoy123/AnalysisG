@@ -33,106 +33,105 @@ namespace Physics
 {
     namespace CUDA
     {
-        const torch::Tensor P2(torch::Tensor pmc)
+        inline torch::Tensor P2(torch::Tensor pmc)
         { 
             return _P2(pmc); 
         }
         
-        const torch::Tensor P2(torch::Tensor px, torch::Tensor py, torch::Tensor pz)
+        inline torch::Tensor P2(torch::Tensor px, torch::Tensor py, torch::Tensor pz)
         { 
             return _P2(px, py, pz); 
         }
 
-        const torch::Tensor P(torch::Tensor pmc)
+        inline torch::Tensor P(torch::Tensor pmc)
         { 
             return _P(pmc); 
         }
 
-        const torch::Tensor P(torch::Tensor px, torch::Tensor py, torch::Tensor pz)
+        inline torch::Tensor P(torch::Tensor px, torch::Tensor py, torch::Tensor pz)
         { 
             return _P(px, py, pz); 
         }
 
-        const torch::Tensor Beta2(torch::Tensor pmc)
+        inline torch::Tensor Beta2(torch::Tensor pmc)
         { 
             return _Beta2(pmc); 
         }
 
-        const torch::Tensor Beta2(torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e)
+        inline torch::Tensor Beta2(torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e)
         { 
             return _Beta2(px, py, pz, e); 
         }
         
-        const torch::Tensor Beta(torch::Tensor pmc)
+        inline torch::Tensor Beta(torch::Tensor pmc)
         { 
             return _Beta(pmc); 
         }
 
-        const torch::Tensor Beta(torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e)
+        inline torch::Tensor Beta(torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e)
         { 
             return _Beta(px, py, pz, e); 
         }
 
-        const torch::Tensor M2(torch::Tensor pmc)
+        inline torch::Tensor M2(torch::Tensor pmc)
         { 
             return _M2(pmc); 
         }
 
-        const torch::Tensor M2(torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e)
+        inline torch::Tensor M2(torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e)
         { 
             return _M2(px, py, pz, e); 
         }
         
-        const torch::Tensor M(torch::Tensor pmc)
+        inline torch::Tensor M(torch::Tensor pmc)
         { 
             return _M(pmc); 
         }
 
-        const torch::Tensor M(torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e)
+        inline torch::Tensor M(torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e)
         { 
             return _M(px, py, pz, e); 
         }
 
-        const torch::Tensor Mt2(torch::Tensor pmc)
+        inline torch::Tensor Mt2(torch::Tensor pmc)
         { 
             return _Mt2(pmc); 
         }
 
-        const torch::Tensor Mt2(torch::Tensor pz, torch::Tensor e)
+        inline torch::Tensor Mt2(torch::Tensor pz, torch::Tensor e)
         { 
             return _Mt2(pz, e); 
         }
         
-        const torch::Tensor Mt(torch::Tensor pmc)
+        inline torch::Tensor Mt(torch::Tensor pmc)
         { 
             return _Mt(pmc); 
         }
 
-        const torch::Tensor Mt(torch::Tensor pz, torch::Tensor e)
+        inline torch::Tensor Mt(torch::Tensor pz, torch::Tensor e)
         { 
             return _Mt(pz, e); 
         }
 
-        const torch::Tensor Theta(torch::Tensor pmc)
+        inline torch::Tensor Theta(torch::Tensor pmc)
         { 
             return _Theta(pmc); 
         }
 
-        const torch::Tensor Theta(torch::Tensor px, torch::Tensor py, torch::Tensor pz)
+        inline torch::Tensor Theta(torch::Tensor px, torch::Tensor py, torch::Tensor pz)
         { 
             return _Theta(px, py, pz); 
         }
 
-        const torch::Tensor DeltaR(torch::Tensor pmu1, torch::Tensor pmu2)
+        inline torch::Tensor DeltaR(torch::Tensor pmu1, torch::Tensor pmu2)
         { 
             return _DeltaR(pmu1, pmu2); 
         }
 
-        const torch::Tensor DeltaR(torch::Tensor eta1, torch::Tensor eta2, torch::Tensor phi1, torch::Tensor phi2)
+        inline torch::Tensor DeltaR(torch::Tensor eta1, torch::Tensor eta2, torch::Tensor phi1, torch::Tensor phi2)
         { 
             return _DeltaR(eta1, eta2, phi1, phi2); 
         }
-
     }
 }
 #endif

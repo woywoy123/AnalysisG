@@ -7,6 +7,7 @@
 #include <physics/physics-cuda/cartesian.h>
 #include <physics/physics-cuda/polar.h>
 #include <operators/operators-cuda/operators.h>
+#include <nusol/nusol-cuda/nusol.h>
 
 namespace pyc
 {
@@ -120,6 +121,13 @@ namespace pyc
         torch::Tensor CoFactors(torch::Tensor matrix);
         torch::Tensor Determinant(torch::Tensor matrix); 
         torch::Tensor Inverse(torch::Tensor matrix); 
+    }
+
+    namespace nusol
+    {
+        torch::Tensor BaseMatrix(torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Tensor masses); 
+        torch::Tensor Nu(torch::Tensor pmc_b, torch::Tensor pmc_mu, 
+                         torch::Tensor met_xy, torch::Tensor masses, torch::Tensor sigma); 
     }
 }
 

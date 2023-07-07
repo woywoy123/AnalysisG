@@ -17,6 +17,7 @@ if(CMAKE_CUDA_COMPILER)
 else()
     message(STATUS "NO CUDA INSTALLATION FOUND, INSTALLING CPU VERSION ONLY!")
 endif()
+
 find_package(Python REQUIRED COMPONENTS Development)
 find_package(pybind11 REQUIRED)
 find_package(Torch REQUIRED)
@@ -24,6 +25,7 @@ find_package(Torch REQUIRED)
 add_subdirectory(transform)
 add_subdirectory(physics)
 add_subdirectory(operators)
+add_subdirectory(nusol)
 add_subdirectory(interface)
 
 if(CMAKE_CUDA_COMPILER)
@@ -51,3 +53,11 @@ install(FILES ${CMAKE_SOURCE_DIR}/py_interface/Physics/Cartesian/cartesian.py DE
 install(DIRECTORY DESTINATION ${SKBUILD_PROJECT_NAME}/Operators)
 install(FILES ${CMAKE_SOURCE_DIR}/py_interface/Operators/__init__.py    DESTINATION ${SKBUILD_PROJECT_NAME}/Operators)
 install(FILES ${CMAKE_SOURCE_DIR}/py_interface/Operators/operators.py   DESTINATION ${SKBUILD_PROJECT_NAME}/Operators)
+
+install(DIRECTORY DESTINATION ${SKBUILD_PROJECT_NAME}/NuSol)
+install(FILES ${CMAKE_SOURCE_DIR}/py_interface/NuSol/__init__.py    DESTINATION ${SKBUILD_PROJECT_NAME}/NuSol)
+install(FILES ${CMAKE_SOURCE_DIR}/py_interface/NuSol/nusol.py   DESTINATION ${SKBUILD_PROJECT_NAME}/NuSol)
+
+
+
+

@@ -50,12 +50,8 @@ def test_matrix_multi():
     _compareMulti(10, 15, 15, 5)
 
 def test_costheta():
-    x = torch.tensor([[random.random() for i in range(1000)] for _ in range(100)], device = "cuda", dtype = torch.float64)
-    y = torch.tensor([[random.random() for i in range(1000)] for _ in range(100)], device = "cuda", dtype = torch.float64)
-
-    t1 = time()
-    cu = pyext.Operators.CosTheta(x, y)
-    t_cu = time() - t1
+    x = torch.tensor([[random.random()*100 for i in range(10)] for _ in range(100)], device = "cuda", dtype = torch.float64)
+    y = torch.tensor([[random.random()*100 for i in range(10)] for _ in range(100)], device = "cuda", dtype = torch.float64)
 
     t1 = time()
     cu = pyext.Operators.CosTheta(x, y)

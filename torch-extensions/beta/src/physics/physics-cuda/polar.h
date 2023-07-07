@@ -131,8 +131,6 @@ namespace Physics
             {
                 return Physics::CUDA::DeltaR(eta1, eta2, phi1, phi2); 
             }
-
-
         }
     }
 }

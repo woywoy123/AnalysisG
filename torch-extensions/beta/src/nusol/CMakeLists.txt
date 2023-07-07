@@ -8,11 +8,3 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 if(CMAKE_CUDA_COMPILER)
     add_subdirectory(nusol-cuda)
 endif()
-
-add_library(nusol_cuda SHARED nusol.cxx)
-target_link_libraries(nusol_cuda
-    PUBLIC 
-        ${TORCH_LIBRARIES}
-        pybind11::module
-        nusol-cuda
-)

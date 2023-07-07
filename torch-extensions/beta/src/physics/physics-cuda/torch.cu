@@ -45,7 +45,7 @@ torch::Tensor _P2(torch::Tensor Pmc)
             len, 0, 2); 
         SumK<scalar_t><<< blk, threads >>>(
             Pmc.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
-            len, 3); 
+            len, 2); 
     })); 
     return Pmc.index({torch::indexing::Slice(), 0}).view({-1, 1}); 
 }
@@ -73,7 +73,7 @@ torch::Tensor _P(torch::Tensor Pmc)
 
         SumK<scalar_t><<< blk, threads >>>(
             Pmc.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
-            len, 3); 
+            len, 2); 
 
         SqrtK<scalar_t><<< blk_s, threads >>>(
             Pmc.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
@@ -105,7 +105,7 @@ torch::Tensor _Beta2(torch::Tensor pmc)
 
         SumK<scalar_t><<< blk_, threads >>>(
                 pmc.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
-                len, 3); 
+                len, 2); 
 
         Div_ij_K<scalar_t><<< blk_, threads >>>(
                 pmc.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
@@ -138,7 +138,7 @@ torch::Tensor _Beta(torch::Tensor pmc)
 
         SumK<scalar_t><<< blk_, threads >>>(
                 pmc.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
-                len, 3);
+                len, 2);
 
         SqrtK<scalar_t><<< blk_, threads >>>(
                 pmc.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
@@ -173,7 +173,7 @@ torch::Tensor _M2(torch::Tensor pmc)
                 len, 0, 3); 
         SumK<scalar_t><<< blk_, threads >>>(
                 pmc.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
-                len, 3); 
+                len, 2); 
         Sub_ij_K<scalar_t><<< blk_, threads >>>(
                 pmc.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
                 len, 3, 0);
@@ -202,7 +202,7 @@ torch::Tensor _M(torch::Tensor pmc)
                 len, 0, 3); 
         SumK<scalar_t><<< blk_, threads >>>(
                 pmc.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
-                len, 3); 
+                len, 2); 
         Sub_ij_K<scalar_t><<< blk_, threads >>>(
                 pmc.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
                 len, 3, 0);
@@ -323,7 +323,7 @@ torch::Tensor _Theta(torch::Tensor pmc_)
                 len, 0, 2);
         SumK<scalar_t><<< blk_, threads >>>(
                 pmc.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
-                len, 3); 
+                len, 2); 
         Sqrt_i_K<scalar_t><<< blk_, threads >>>(
                 pmc.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
                 len, 0); 
@@ -352,7 +352,7 @@ torch::Tensor _Theta(torch::Tensor px, torch::Tensor py, torch::Tensor pz)
                 len, 0, 2);
         SumK<scalar_t><<< blk_, threads >>>(
                 pmc.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
-                len, 3); 
+                len, 2); 
         Sqrt_i_K<scalar_t><<< blk_, threads >>>(
                 pmc.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
                 len, 0); 

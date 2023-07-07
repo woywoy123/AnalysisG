@@ -89,10 +89,10 @@ torch::Tensor _Mul(torch::Tensor v1, torch::Tensor v2)
     return out; 
 }
 
-torch::Tensor _CosTheta(torch::Tensor v1, torch::Tensor v2)
+torch::Tensor _CosTheta(torch::Tensor v1, torch::Tensor v2, signed int limit)
 {
     const unsigned int x = v1.size(0); 
-    const unsigned int y = v1.size(1); 
+    const unsigned int y = (limit < 0) ? v1.size(1) : limit; 
     const unsigned int threads = 1024; 
 
     v2 = v2.contiguous(); 
@@ -100,8 +100,8 @@ torch::Tensor _CosTheta(torch::Tensor v1, torch::Tensor v2)
     torch::Tensor tmp = torch::zeros({x, y, 3}, _MakeOp(v1));
     torch::Tensor out = torch::zeros({x, 3}, _MakeOp(v1));  
     CHECK_INPUT(v1); CHECK_INPUT(v2); 
-    const dim3 blk = BLOCKS(threads, x, y, 3); 
-    const dim3 blk_ = BLOCKS(threads, x, 3); 
+    const dim3 blk   = BLOCKS(threads, x, y, 3); 
+    const dim3 blk_  = BLOCKS(threads, x, 3); 
     const dim3 blk__ = BLOCKS(threads, x); 
     AT_DISPATCH_FLOATING_TYPES(v1.scalar_type(), "COSTHETA", ([&]
     {
@@ -121,10 +121,10 @@ torch::Tensor _CosTheta(torch::Tensor v1, torch::Tensor v2)
     return out.index({torch::indexing::Slice(), 0}).view({-1, 1}); 
 }
 
-torch::Tensor _SinTheta(torch::Tensor v1, torch::Tensor v2)
+torch::Tensor _SinTheta(torch::Tensor v1, torch::Tensor v2, signed int limit)
 {
     const unsigned int x = v1.size(0); 
-    const unsigned int y = v1.size(1); 
+    const unsigned int y = (limit < 0) ? v1.size(1) : limit; 
     const unsigned int threads = 1024; 
 
     v2 = v2.contiguous(); 
