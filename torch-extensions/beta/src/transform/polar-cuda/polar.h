@@ -12,29 +12,29 @@ namespace Transform
 {
     namespace CUDA
     {
-        static const torch::Tensor Pclip(torch::Tensor inpt, int dim)
+        inline torch::Tensor Pclip(torch::Tensor inpt, int dim)
         { 
             return inpt.index({torch::indexing::Slice(), dim}); 
         }
 
-        const torch::Tensor Pt(torch::Tensor px, torch::Tensor py)
+        inline torch::Tensor Pt(torch::Tensor px, torch::Tensor py)
         {
             return _Pt(px, py);
         } 
 
-        const torch::Tensor Pt(torch::Tensor pmc)
+        inline torch::Tensor Pt(torch::Tensor pmc)
         {
             torch::Tensor px = Transform::CUDA::Pclip(pmc, 0); 
             torch::Tensor py = Transform::CUDA::Pclip(pmc, 1); 
             return _Pt(px, py); 
         }
 
-        const torch::Tensor Eta(torch::Tensor px, torch::Tensor py, torch::Tensor pz)
+        inline torch::Tensor Eta(torch::Tensor px, torch::Tensor py, torch::Tensor pz)
         {
             return _Eta(px, py, pz);
         } 
 
-        const torch::Tensor Eta(torch::Tensor pmc)
+        inline torch::Tensor Eta(torch::Tensor pmc)
         {
             torch::Tensor px = Transform::CUDA::Pclip(pmc, 0); 
             torch::Tensor py = Transform::CUDA::Pclip(pmc, 1); 
@@ -42,24 +42,24 @@ namespace Transform
             return _Eta(px, py, pz); 
         }
 
-        const torch::Tensor Phi(torch::Tensor px, torch::Tensor py)
+        inline torch::Tensor Phi(torch::Tensor px, torch::Tensor py)
         {
             return _Phi(px, py);
         } 
         
-        const torch::Tensor Phi(torch::Tensor pmc)
+        inline torch::Tensor Phi(torch::Tensor pmc)
         {
             torch::Tensor px = Transform::CUDA::Pclip(pmc, 0); 
             torch::Tensor py = Transform::CUDA::Pclip(pmc, 1); 
             return _Phi(px, py); 
         }
 
-        const torch::Tensor PtEtaPhi(torch::Tensor px, torch::Tensor py, torch::Tensor pz)
+        inline torch::Tensor PtEtaPhi(torch::Tensor px, torch::Tensor py, torch::Tensor pz)
         {
             return _PtEtaPhi(px, py, pz);
         }
         
-        const torch::Tensor PtEtaPhi(torch::Tensor pmc)
+        inline torch::Tensor PtEtaPhi(torch::Tensor pmc)
         {
             torch::Tensor px = Transform::CUDA::Pclip(pmc, 0); 
             torch::Tensor py = Transform::CUDA::Pclip(pmc, 1); 
@@ -67,7 +67,7 @@ namespace Transform
             return _PtEtaPhi(px, py, pz); 
         }
 
-        const torch::Tensor PtEtaPhiE(torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e)
+        inline torch::Tensor PtEtaPhiE(torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e)
         {
             px = px.view({-1, 1}); 
             py = py.view({-1, 1}); 
@@ -76,7 +76,7 @@ namespace Transform
             return _PtEtaPhiE(torch::cat({px, py, pz, e}, -1));
         }
 
-        const torch::Tensor PtEtaPhiE(torch::Tensor pmc)
+        inline torch::Tensor PtEtaPhiE(torch::Tensor pmc)
         {
             return _PtEtaPhiE(pmc);
         }

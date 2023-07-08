@@ -1,5 +1,25 @@
 #include <torch/torch.h>
 #include "nusol.cu"
+#include "operators.cu"
+#include "cmath"
+
+template <typename scalar_t>
+__global__ void _ShapeKernel(
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> out, 
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> inpt, 
+        const unsigned int len_i, 
+        const unsigned int len_k, 
+        const unsigned int len_j, 
+        const bool assign)
+{
+    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    const unsigned int idy = blockIdx.y; 
+    const unsigned int idz = blockIdx.z; 
+
+    if (idx >= len_i || idy >= len_k || idz >= len_j){ return; }
+    if (assign){ out[idx][idy][idz] = inpt[(idx >= inpt.size(0)) ? 0 : idx][idy][idz]; return; }
+    if (idy == idz){ out[idx][idy][idz] = inpt[0][0][idz]; }
+}
 
 template <typename scalar_t>
 __global__ void _H_Base(
@@ -14,7 +34,7 @@ __global__ void _H_Base(
  
         const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> cos, 
         const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> mass2, 
-        const unsigned int dim_i)
+        const unsigned int dim_i, const unsigned int dim_m)
 {
     const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
     const unsigned int idy = blockIdx.y; 
@@ -22,12 +42,16 @@ __global__ void _H_Base(
     if (idx >= dim_i || idy >= 3 || idz >= 3){ return; }    
     if (idy <= 1 && idz == 1){ return; }
     if (idy == 2 && (idz == 0 || idz == 2)){ return; }
+    
+    scalar_t   mass2_W   = mass2[(idx >= dim_m) ? 0 : idx][0]; 
+    scalar_t   mass2_top = mass2[(idx >= dim_m) ? 0 : idx][1]; 
+    scalar_t   mass2_nu  = mass2[(idx >= dim_m) ? 0 : idx][2];     
+    mass2_W   *= mass2_W;  
+    mass2_top *= mass2_top; 
+    mass2_nu  *= mass2_nu;  
 
     scalar_t beta_mu   = sqrt(beta2_mu[idx][0]);
     scalar_t beta_b    = sqrt(beta2_b[idx][0]); 
-    scalar_t mass2_W   = mass2[idx][0]*mass2[idx][0];  
-    scalar_t mass2_top = mass2[idx][1]*mass2[idx][1];  
-    scalar_t mass2_nu  = mass2[idx][2]*mass2[idx][2];
     scalar_t sin       = sqrt(1 - cos[idx][0]*cos[idx][0]);   
  
     scalar_t x0p  = _x0(mass2_top, mass2_W, mass2_b[idx][0], pmc_b[idx][3]); 
@@ -54,28 +78,71 @@ __global__ void _H_Base(
 }
 
 template <typename scalar_t>
-__global__ void _Nu_deltaK(
+__global__ void _Base_Matrix_H_Kernel(
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> Ry, 
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> Rz, 
+
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> RyT, 
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> RzT, 
+
+        torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> phi, 
+        torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> theta, 
+        const unsigned int dim_x)
+{
+    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    const unsigned int idy = blockIdx.y; 
+    const unsigned int idz = blockIdx.z; 
+    if (idx >= dim_x || idy >= 6 || idz  >= 3){return;}
+    if (idy < 3)
+    { 
+        _rz(Rz[idx][idy][idz], -phi[idx][0], idy, idz); 
+        RzT[idx][idz][idy] = Rz[idx][idy][idz]; 
+    }
+    else
+    {
+        _pihalf(theta[idx][0]); 
+        _ry(Ry[idx][idy%3][idz], theta[idx][0], idy%3, idz); 
+        RyT[idx][idz][idy%3] = Ry[idx][idy%3][idz]; 
+    }
+}
+
+template <typename scalar_t>
+__global__ void _Base_Matrix_H_Kernel(
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> Rx, 
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> RxT, 
+        const unsigned int dim_x)
+{
+    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    const unsigned int idy = blockIdx.y; 
+    const unsigned int idz = blockIdx.z; 
+    if (idx >= dim_x || idy >= 3 || idz  >= 3){return;}
+    _rx(RxT[idx][idz][idy], -atan2(Rx[idx][2][0], Rx[idx][1][0]), idy, idz); 
+}
+
+template <typename scalar_t>
+__global__ void _V0_deltaK(
         torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> X, 
-        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> met_xy, 
-        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> sig,  
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> dNu, 
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> met_xy, 
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> shape,  
         const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> H, 
-        const unsigned int dim_i, const unsigned int sig_i)
+        const unsigned int dim_i)
 {
     const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
     const unsigned int idy = blockIdx.y; 
     const unsigned int idz = blockIdx.z; 
     if (idx >= dim_i || idy >= 3 || idz >= 3){ return; } 
-    scalar_t sig_    = 0; 
-    scalar_t _met_yz = 0; 
-    scalar_t _met_zy = 0; 
-    if (idx < sig_i){ sig_ = sig[idx][idz][idy]; }
-    else {sig_ = sig[0][idz][idy]; }
-    if (idy == 2 && idz == 2){ sig_ = 0; }
 
-    if (idy <= 1 && idz == 2){ _met_yz = met_xy[idx][idy]; }
-    if (idz <= 1 && idy == 2){ _met_zy = met_xy[idx][idz]; }
-    _met_yz = _met_yz - H[idx][idy][idz]; 
-    // need to fix this!
-    X[idx][idy][idz] = (_met_zy - H[idx][idz][idy])*sig_; //*_met_yz; 
+    dNu[idx][idy][idz] = met_xy[idx][idy][2 - idz] - H[idx][idy][idz]; 
+    scalar_t dot_ji = 0; 
+    for (unsigned int i(0); i < 3; ++i)
+    {
+        dot_ji += (met_xy[idx][i][2 - idz] - H[idx][i][idz])*shape[idx][idy][i]; 
+    }
+    X[idx][idz][idy] = dot_ji; 
 } 
+
+
+
+
 

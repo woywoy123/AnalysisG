@@ -1,4 +1,5 @@
 #include <cuda.h>
+#include <cmath>
 
 template <typename scalar_t>
 __device__ __forceinline__ scalar_t _x0(const scalar_t &m_hvy2, const scalar_t &m_lght2, const scalar_t &m_p2, const scalar_t &energy)
@@ -53,6 +54,8 @@ __device__ __forceinline__ scalar_t _Z(
     return sqrt(tmp); 
 }
 
- 
-
-
+template <typename scalar_t>
+__device__ __forceinline__ void _pihalf(scalar_t &theta)
+{
+    theta = 0.5*M_PI - theta; 
+}

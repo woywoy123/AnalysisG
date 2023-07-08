@@ -17,6 +17,14 @@ def costheta(v1, v2):
 
 def UnitCircle(): return np.diag([1, 1, -1])
 
+def R(axis, angle):
+    """Rotation matrix about x(0),y(1), or z(2) axis"""
+    c, s = math.cos(angle), math.sin(angle)
+    R = c * np.eye(3)
+    for i in [-1, 0, 1]:
+        R[(axis - i) % 3, (axis + i) % 3] = i * s + (1 - i * i)
+    return R
+
 
 class NuSol(object):
     def __init__(self, b, mu, ev = None, mW2 = mW**2, mT2 = mT**2, mN2 = mN**2):
@@ -102,9 +110,17 @@ class NuSol(object):
     def X(self):
         S2 = np.vstack([np.vstack([np.linalg.inv([[100, 9], [50, 100]]), [0, 0]]).T, [0, 0, 0]])
         V0 = np.outer([self.METx, self.METy, 0], [0, 0, 1])
-        dNu = V0 - self.BaseMatrix
-        return np.dot(dNu.T, S2) #.dot(dNu)
+        dNu = V0 - self.H
+        return np.dot(dNu.T, S2).dot(dNu)
 
+    @property
+    def R_T(self):
+        b_xyz = self.b.x, self.b.y, self.b.z
+        R_z = R(2, -self.mu.phi)
+        R_y = R(1, 0.5 * math.pi - self.mu.theta)
+        R_x = next(R(0, -math.atan2(z, y)) for x, y, z in (R_y.dot(R_z.dot(b_xyz)),))
+        return R_z.T.dot(R_y.T.dot(R_x.T))
 
-
-
+    @property
+    def H(self):
+        return self.R_T.dot(self.BaseMatrix)
