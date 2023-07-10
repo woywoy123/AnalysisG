@@ -6,31 +6,38 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 from libcpp.map cimport map, pair
 from libcpp cimport bool
+from typing import Union, Dict, List
+from AnalysisG.Tools import Code, Threading
+from AnalysisG.Notification.Notification import Notification
+from torch_geometric.loader import DataListLoader
+from torch_geometric.data import Batch
+from tqdm import tqdm
+import torch
 import h5py
 import os
 import sys
 import shutil
 import pickle
 import codecs
-from tqdm import tqdm
-from typing import Union, Dict, List
-from AnalysisG.Tools import Code, Threading
-from AnalysisG.Notification.Notification import Notification
-from torch_geometric.loader import DataListLoader
-from torch_geometric.data import Batch
-import torch
 
 cdef class Event:
     cdef CyEvent* ptr
     cdef public list _instance
     cdef public bool _demanded
+    cdef public int _index
+    cdef public str _Tree
+    cdef public str _hash
+    cdef public str _ROOT
+
     def __cinit__(self):
         self.ptr = NULL
         self._demanded = False
 
     def __init__(self): self._instance = []
     def _wrap(self, val): self._instance.append(val)
-    def __setstate__(self, inpt): setattr(self, "_instance", inpt["_instance"])
+    def __setstate__(self, inpt):
+        for i in inpt: setattr(self, i, inpt[i])
+
     def __getattr__(self, attr):
         self.demand()
         try: return getattr(self._instance[0], attr)
@@ -39,9 +46,13 @@ cdef class Event:
         except: pass
         raise AttributeError
 
-    def __getstate__(self):
+    def __getstate__(self) -> dict:
         out = {}
         out["_instance"] = self._instance
+        out["_index"] = self.index
+        out["_Tree"] = self.Tree
+        out["_hash"] = self.hash
+        out["_ROOT"] = self.ROOT
         return out
 
     def __eq__(self, other) -> bool:
@@ -62,10 +73,34 @@ cdef class Event:
         return
 
     @property
-    def index(self) -> int: return self.ptr.EventIndex
+    def index(self) -> int: return self._index
+
+    @index.setter
+    def index(self, int val): self._index = val
 
     @property
-    def Tree(self) -> str: return self.ptr.Tree.decode("UTF-8")
+    def Tree(self) -> str: return self._Tree
+
+    @Tree.setter
+    def Tree(self, str val): self._Tree = val
+
+    @property
+    def hash(self) -> str: return self._hash
+
+    @hash.setter
+    def hash(self, str val): self._hash = val
+
+    @property
+    def ROOT(self) -> str: return self._ROOT
+
+    @ROOT.setter
+    def ROOT(self, str val): self._ROOT = val
+
+    @property
+    def TrainMode(self) -> str: return self.ptr.TrainMode.decode("UTF-8")
+
+    @TrainMode.setter
+    def TrainMode(self, str val) -> str: self.ptr.TrainMode = val.encode("UTF-8")
 
     @property
     def Graph(self) -> bool: return self.ptr.Graph
@@ -74,19 +109,7 @@ cdef class Event:
     def Event(self) -> bool: return self.ptr.Event
 
     @property
-    def hash(self) -> str: return self.ptr.hash.decode("UTF-8")
-
-    @property
-    def ROOT(self) -> str: return self.ptr.ROOT.decode("UTF-8")
-
-    @property
     def CachePath(self) -> str: return self.ptr.ROOTFile.CachePath.decode("UTF-8")
-
-    @property
-    def TrainMode(self) -> str: return self.ptr.TrainMode.decode("UTF-8")
-
-    @TrainMode.setter
-    def TrainMode(self, val) -> str: self.ptr.TrainMode = val.encode("UTF-8")
 
     @property
     def CachedGraph(self) -> bool: return self.ptr.CachedGraph
@@ -230,9 +253,11 @@ cdef class SampleTracer:
     @property
     def EventCacheLen(self) -> int: return self.ptr.GetCacheType(True, False).size()
 
-    def _decoder(self, str inpt): return pickle.loads(codecs.decode(inpt.encode("UTF-8"), "base64"))
+    @staticmethod
+    def _decoder(str inpt): return pickle.loads(codecs.decode(inpt.encode("UTF-8"), "base64"))
 
-    def _encoder(self, inpt) -> str: return codecs.encode(pickle.dumps(inpt), "base64").decode()
+    @staticmethod
+    def _encoder(inpt) -> str: return codecs.encode(pickle.dumps(inpt), "base64").decode()
 
     def _rebuild_code(self, str pth, ref) -> None:
         cdef str k
@@ -620,7 +645,7 @@ cdef class SampleTracer:
         self.ptr.length = self._ite
         return self
 
-    def __next__(self):
+    def __next__(self) -> Event:
         if self._its == self._ite: raise StopIteration
         cdef str i, meta
         cdef string _hash, _meta
@@ -631,10 +656,13 @@ cdef class SampleTracer:
         if _hash.size() != 0: event = self.ptr.HashToEvent(_hash)
         else: return self.__next__()
         if event == NULL: return self.__next__()
-
-        ev = Event()
+        cdef Event ev = Event()
         ev.ptr = event
         ev._wrap(ev.ptr.pkl)
+        ev.index = ev.ptr.EventIndex
+        ev.Tree = ev.ptr.Tree.decode("UTF-8")
+        ev.hash = ev.ptr.hash.decode("UTF-8")
+        ev.ROOT = ev.ptr.ROOT.decode("UTF-8")
 
         _meta = self._HashMeta[_hash]
         if _meta.size() == 0: meta = (event.ROOTFile.SourcePath + event.ROOTFile.Filename).decode("UTF-8")

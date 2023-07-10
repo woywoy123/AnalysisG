@@ -10,7 +10,7 @@ torch::Tensor _Base_Matrix(torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Ten
 torch::Tensor _Base_Matrix_H(torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Tensor masses_W_top_nu); 
 
 torch::Tensor _DotMatrix(torch::Tensor MET_xy, torch::Tensor Sigma, torch::Tensor H);
-torch::Tensor _NuNu_Matrix(torch::Tensor MET_xy); 
+torch::Tensor _Intersection(torch::Tensor A, torch::Tensor B); 
 
 namespace NuSol
 {
@@ -21,7 +21,12 @@ namespace NuSol
         {
             return _Base_Matrix(pmc_b, pmc_mu, masses);             
         }
-       
+      
+        const torch::Tensor Intersection(torch::Tensor A, torch::Tensor B)
+        {
+            return _Intersection(A, B);  
+        } 
+
         const torch::Tensor Nu(
                 torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Tensor MET_xy, 
                 torch::Tensor masses, torch::Tensor sigma)

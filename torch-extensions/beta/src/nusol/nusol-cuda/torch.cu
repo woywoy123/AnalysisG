@@ -188,8 +188,26 @@ torch::Tensor _DotMatrix(torch::Tensor MET_xy, torch::Tensor H, torch::Tensor Sh
     return Operators::CUDA::Mul(X, dNu); 
 }
 
-
-
-
+torch::Tensor _Intersection(torch::Tensor A, torch::Tensor B)
+{
+    torch::Tensor det_A = Operators::CUDA::Determinant(A); 
+    torch::Tensor det_B = Operators::CUDA::Determinant(B); 
+    const unsigned int dim_i = det_A.size(0); 
+    const unsigned int threads = 1024; 
+    const dim3 blk = BLOCKS(threads, dim_i, 3, 3); 
+    AT_DISPATCH_FLOATING_TYPES(det_A.scalar_type(), "Swap", ([&]
+    {
+        _SwapAB_K<scalar_t><<< blk, threads >>>(
+                det_A.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+                det_B.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+                A.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+                B.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+                dim_i); 
+    })); 
+    torch::Tensor x; 
+    x = Operators::CUDA::Inverse(A);
+    x = Operators::CUDA::Dot(x, B);  
+    return x; 
+}
 
 #endif

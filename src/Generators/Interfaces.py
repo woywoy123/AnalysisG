@@ -7,6 +7,9 @@ class _Interface(Tools):
     def __init__(self):
         pass
 
+    def InputSelection(self, val: Union[str]):
+        self.Files = self.ListFilesInDir(val, ".hdf5")
+
     def InputSamples(self, val: Union[Dict, List, str, None]):
         self.Files = self.ListFilesInDir(val, ".root")
 

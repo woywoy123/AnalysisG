@@ -1,6 +1,8 @@
+from nusol import NuSol, costheta, intersections_ellipses, UnitCircle
 import pyext
 import torch
-from nusol import NuSol, costheta
+import numpy as np
+import math
 from common import *
 mW = 80.385*1000
 mT = 172.0*1000
@@ -52,11 +54,23 @@ def test_nusol_nu():
     x = abs((pred - truth).sum(-1).sum(-1)) > 10e-1
     assert x.sum(-1) == 0
 
+def test_intersection():
+    x = loadSingle()
+    ita = iter(x)
+    for i in range(len(x)):
+        x_ = next(ita)
+        ev, lep, b = x_[0], x_[1], x_[2]
+        nu = NuSol(b.vec, lep.vec, ev.vec)
+        print(intersections_ellipses(nu.M, UnitCircle()))
 
-
-
+        lep_ = pyext.Transform.PxPyPzE(lep.ten)
+        bquark_ = pyext.Transform.PxPyPzE(bquark.ten)
+        pred = pyext.NuSol.Nu(bquark_, lep_, ev.ten, masses, S2)
+        #print(pyext.NuSol.Intersection(
+        sleep(1)
 
 if __name__ == "__main__":
     #test_nusol_base()
-    test_nusol_nu()
+    #test_nusol_nu()
+    test_intersection()
 

@@ -109,6 +109,11 @@ torch::Tensor pyc::nusol::Nu(
     return NuSol::CUDA::Nu(pmc_b, pmc_mu, met_xy, masses, sigma); 
 }
 
+torch::Tensor pyc::nusol::Intersection(torch::Tensor A, torch::Tensor B)
+{ 
+    return NuSol::CUDA::Intersection(A, B); 
+}
+
 TORCH_LIBRARY(pyc_cuda, m)
 {
     // transformation classes for CUDA
@@ -201,4 +206,6 @@ TORCH_LIBRARY(pyc_cuda, m)
 
     m.def("nusol_BaseMatrix", &pyc::nusol::BaseMatrix);
     m.def("nusol_Nu", &pyc::nusol::Nu);  
+
+    m.def("nusol_Intersection", &pyc::nusol::Intersection); 
 }

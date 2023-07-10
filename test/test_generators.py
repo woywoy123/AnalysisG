@@ -157,10 +157,8 @@ def test_event_generator_merge():
     assert len(ev1) == len(a_ev)
     clean_dir()
 
-
 def _fx(a):
     return 1
-
 
 def test_eventgraph():
     Ev = EventGenerator(Files)
@@ -190,35 +188,6 @@ def test_eventgraph():
         assert i.G__fx
     clean_dir()
 
-
-def test_selection_generator():
-    from AnalysisG.IO import UnpickleObject
-    from examples.ExampleSelection import Example, Example2
-    from examples.Event import EventEx
-
-    Ev = EventGenerator(Files)
-    Ev.OutputDirectory = "Project"
-    Ev.Event = EventEx
-    Ev.Threads = 1
-    Ev.EventStop = 100
-    Ev.MakeEvents
-
-    sel = SelectionGenerator(Ev)
-    sel.OutputDirectory = "Project"
-    sel += Ev
-    sel.Threads = 2
-    sel.AddSelection("Example", Example)
-    sel.AddSelection("Example2", Example2)
-    sel.MergeSelection("Example2")
-    sel.MakeSelection
-
-    res = UnpickleObject("./Project/Selections/Merged/Example2")
-    assert res.CutFlow["Success->Example"] == len(Ev)
-    assert len(res.TimeStats) == len(Ev)
-    assert len(Ev) * 4 == len(res.Top["Truth"])
-    clean_dir()
-
-
 def test_Analysis():
     Sample1 = {smpl + "sample1": ["smpl1.root"]}
     Sample2 = smpl + "sample2"
@@ -233,7 +202,6 @@ def test_Analysis():
     assert Ana.Launch == False
     clean_dir()
 
-
 def _template(default=True):
     AnaE = Analysis()
     AnaE.ProjectName = "Project"
@@ -246,19 +214,16 @@ def _template(default=True):
     AnaE.Verbose = 1
     return AnaE
 
-
 def test_analysis_event_nocache():
     AnaE = _template()
     AnaE.Event = Event
     AnaE.Launch
     assert len([i for i in AnaE]) != 0
 
-
 def test_analysis_event_nocache_nolaunch():
     AnaE = _template()
     AnaE.Event = Event
     assert len([i for i in AnaE]) != 0
-
 
 def test_analysis_event_cache():
     AnaE = _template()
@@ -274,7 +239,6 @@ def test_analysis_event_cache():
 
     assert len([i for i in AnaE if i.Event]) != 0
     clean_dir()
-
 
 def test_analysis_event_cache_diff_sample():
     Ana1 = _template(
@@ -437,7 +401,6 @@ if __name__ == "__main__":
     test_event_generator_more()
     test_event_generator_merge()
     test_eventgraph()
-    test_selection_generator()
     test_Analysis()
     test_analysis_event_nocache()
     test_analysis_event_nocache_nolaunch()

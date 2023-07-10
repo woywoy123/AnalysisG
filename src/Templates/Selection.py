@@ -2,6 +2,7 @@ from AnalysisG.Templates import ParticleTemplate
 from AnalysisG.Tracer import SampleTracer
 from AnalysisG.Tools import Code, Tools
 from time import time
+import traceback
 import statistics
 
 try:
@@ -24,8 +25,12 @@ class SelectionTemplate(Tools):
     def __init__(self):
         self.hash = None
         self.ROOTName = None
+        self.Tree = None
+        self.index = 0
+        self.AllowFailure = False
         self.Residual = []
         self.CutFlow = {}
+        self.Errors = {}
         self.TimeStats = []
         self.AllWeights = []
         self.SelWeights = []
@@ -130,28 +135,25 @@ class SelectionTemplate(Tools):
             self.CutFlow["Rejected::Selection"] = 0
         if "Passed::Selection" not in self.CutFlow:
             self.CutFlow["Passed::Selection"] = 0
-        try:
-            res = self.Selection(event)
-        except:
-            res = False
+        try: res = self.Selection(event)
+        except: res = False
 
         if res == False:
             self.CutFlow["Rejected::Selection"] += 1
             return False
         self.CutFlow["Passed::Selection"] += 1
 
-
         self._t1
-        o = self.Strategy(event)
+        if self.AllowFailure:
+            try: o = self.Strategy(event)
+            except:
+                self._t2
+                string = ""
+                if string not in self.Errors: self.Errors[string] = 0
+                self.Errors[string] += 1
+                return False
+        else: o = self.Strategy(event)
         self._t2
-
-#       try:
-#       except Exception as e:
-#            msg = "Error::Strategy::( " + str(e) + " )"
-#            if msg not in self.CutFlow:
-#                self.CutFlow[msg] = 0
-#            self.CutFlow[msg] += 1
-#            return False
 
         if isinstance(o, str) and "->" in o:
             if o not in self.CutFlow:

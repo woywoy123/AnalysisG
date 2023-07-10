@@ -59,3 +59,15 @@ __device__ __forceinline__ void _pihalf(scalar_t &theta)
 {
     theta = 0.5*M_PI - theta; 
 }
+
+template <typename scalar_t>
+__device__ __forceinline__ void _swapAB(scalar_t &A, scalar_t &B, const scalar_t &DetA, const scalar_t &DetB)
+{
+    scalar_t a = A; 
+    scalar_t b = B; 
+    if ( abs(DetB) > abs(DetA) )
+    {
+        A = b; 
+        B = a; 
+    }
+}

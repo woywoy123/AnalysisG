@@ -25,6 +25,91 @@ def R(axis, angle):
         R[(axis - i) % 3, (axis + i) % 3] = i * s + (1 - i * i)
     return R
 
+def Derivative():
+    """Matrix to differentiate [cos(t),sin(t),1]"""
+    return R(2, math.pi / 2).dot(np.diag([1, 1, 0]))
+
+def multisqrt(y):
+    """Valid real solutions to y=x*x"""
+    return [] if y < 0 else [0] if y == 0 else (lambda r: [-r, r])(math.sqrt(y))
+
+
+# A = ellipse, Q[i] = line
+def intersections_ellipse_line(ellipse, line, zero=1e-12):
+    """Points of intersection between ellipse and line"""
+    _, V = np.linalg.eig(np.cross(line, ellipse).T)
+    sols = sorted(
+        [
+            (
+                v.real / v[2].real,
+                np.dot(line, v.real) ** 2 + np.dot(v.real, ellipse).dot(v.real) ** 2,
+            )
+            for v in V.T
+        ],
+        key=lambda k: k[1],
+    )  # [:2] #Removing the two solution constraint
+    return [s for s, k in sols if k < zero]
+
+# A = ellipse, Q[i] = line
+def intersections_diagonal_number(ellipse, line, zero=1e-12):
+    """Points of intersection between ellipse and line"""
+    _, V = np.linalg.eig(np.cross(line, ellipse).T)
+    sols = sorted(
+        [
+            np.dot(line, v.real) ** 2 + np.dot(v.real, ellipse).dot(v.real) ** 2
+            for v in V.T
+        ]
+    )  # [:2]
+    return sols
+
+def cofactor(A, i, j):
+    """Cofactor[i,j] of 3x3 matrix A"""
+    a = A[
+        not i : 2 if i == 2 else None : 2 if i == 1 else 1,
+        not j : 2 if j == 2 else None : 2 if j == 1 else 1,
+    ]
+    return (-1) ** (i + j) * (a[0, 0] * a[1, 1] - a[1, 0] * a[0, 1])
+
+def factor_degenerate(G, zero=0):
+    """Linear factors of degenerate quadratic polynomial"""
+    if G[0, 0] == 0 == G[1, 1]:
+        return [[G[0, 1], 0, G[1, 2]], [0, G[0, 1], G[0, 2] - G[1, 2]]]
+    swapXY = abs(G[0, 0]) > abs(G[1, 1])
+    Q = G[(1, 0, 2),][:, (1, 0, 2)] if swapXY else G
+    Q /= Q[1, 1]
+    q22 = cofactor(Q, 2, 2)
+    if -q22 <= zero:
+        lines = [[Q[0, 1], Q[1, 1], Q[1, 2] + s] for s in multisqrt(-cofactor(Q, 0, 0))]
+    else:
+        x0, y0 = [cofactor(Q, i, 2) / q22 for i in [0, 1]]
+        lines = [
+            [m, Q[1, 1], -Q[1, 1] * y0 - m * x0]
+            for m in [Q[0, 1] + s for s in multisqrt(-q22)]
+        ]
+
+    return [[L[swapXY], L[not swapXY], L[2]] for L in lines]
+
+def intersections_ellipses(A, B, returnLines=False):
+    """Points of intersection between two ellipses"""
+    LA = np.linalg
+    if abs(LA.det(B)) > abs(LA.det(A)):
+        A, B = B, A
+    print(A)
+    print(B)
+    x = LA.inv(A).dot(B)
+    if LA.det(x) == 0: return
+    print(x)
+    x = LA.eigvals(x)
+    print(x)
+    exit()
+
+    e = next(e.real for e in LA.eigvals(LA.inv(A).dot(B)) if not e.imag)
+    lines = factor_degenerate(B - e * A)
+    points = sum([intersections_ellipse_line(A, L) for L in lines], [])
+    diag = sum([intersections_diagonal_number(A, L) for L in lines], [])
+    return points, diag  # (points,lines) if returnLines else points
+
+
 
 class NuSol(object):
     def __init__(self, b, mu, ev = None, mW2 = mW**2, mT2 = mT**2, mN2 = mN**2):
@@ -106,13 +191,6 @@ class NuSol(object):
             [self.w * self.Z / math.sqrt(self.Om2), 0   , self.y1              ], 
             [0,                                   self.Z, 0                    ]])
     
-    @property 
-    def X(self):
-        S2 = np.vstack([np.vstack([np.linalg.inv([[100, 9], [50, 100]]), [0, 0]]).T, [0, 0, 0]])
-        V0 = np.outer([self.METx, self.METy, 0], [0, 0, 1])
-        dNu = V0 - self.H
-        return np.dot(dNu.T, S2).dot(dNu)
-
     @property
     def R_T(self):
         b_xyz = self.b.x, self.b.y, self.b.z
@@ -124,3 +202,16 @@ class NuSol(object):
     @property
     def H(self):
         return self.R_T.dot(self.BaseMatrix)
+
+    @property 
+    def X(self):
+        S2 = np.vstack([np.vstack([np.linalg.inv([[100, 9], [50, 100]]), [0, 0]]).T, [0, 0, 0]])
+        V0 = np.outer([self.METx, self.METy, 0], [0, 0, 1])
+        dNu = V0 - self.H
+        return np.dot(dNu.T, S2).dot(dNu)
+
+    @property 
+    def M(self): return next(XD + XD.T for XD in (self.X.dot(Derivative()),))
+
+
+

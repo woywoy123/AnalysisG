@@ -1,7 +1,7 @@
 #include <torch/torch.h>
 #include "nusol.cu"
 #include "operators.cu"
-#include "cmath"
+#include <cmath>
 
 template <typename scalar_t>
 __global__ void _ShapeKernel(
@@ -142,7 +142,17 @@ __global__ void _V0_deltaK(
     X[idx][idz][idy] = dot_ji; 
 } 
 
-
-
-
-
+template <typename scalar_t>
+__global__ void _SwapAB_K(
+        torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> DetA, 
+        torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> DetB,
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> A, 
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> B,
+        const unsigned int dim_i)
+{
+    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    const unsigned int idy = blockIdx.y; 
+    const unsigned int idz = blockIdx.z; 
+    if (idx >= dim_i || idy >= 3 || idz >= 3){ return; }
+    _swapAB(A[idx][idy][idz], B[idx][idy][idz], DetA[idx][0], DetB[idx][0]); 
+} 
