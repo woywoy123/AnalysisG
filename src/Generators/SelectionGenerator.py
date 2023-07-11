@@ -60,8 +60,15 @@ class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface
             ref = fo.create_dataset(name, (1), dtype = h5py.ref_dtype)
             for h in self.Merge[name]:
                 f = h5py.File(h, "r")
-                for key in f.keys(): ref.attrs[key] = f[key].attrs[name]
+                for key in f.keys():
+                    if key == "code":
+                        x = fo.create_dataset("code", (1), dtype = h5py.ref_dtype)
+                        x.attrs[name] = f[key].attrs[name]
+                        continue
+                    ref.attrs[key] = f[key].attrs[name]
+                f.close()
                 self.rm(h)
+            fo.close()
             self.Merge[name] = []
             self.rm(self.OutputDirectory + "/Selections/" + name)
 
@@ -78,7 +85,7 @@ class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface
             f = h5py.File(self.pth + name + "/" + Hash(name) + ".hdf5", "w")
             ref = f.create_dataset("code", (1), dtype = h5py.ref_dtype)
             sel = self._encoder(self._Code["Selections"][name].clone)
-            try: ref.attrs[name] = sel
+            try: ref.attrs[name] = self._encoder(self._Code["Selections"][name])
             except ValueError: self._rebuild_code(f["code"][name], self.pth + name)
             inpt = []
             for ev, i in zip(self, range(len(self))):

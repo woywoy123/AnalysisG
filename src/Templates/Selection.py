@@ -156,8 +156,7 @@ class SelectionTemplate(Tools):
         self._t2
 
         if isinstance(o, str) and "->" in o:
-            if o not in self.CutFlow:
-                self.CutFlow[o] = 0
+            if o not in self.CutFlow: self.CutFlow[o] = 0
             self.CutFlow[o] += 1
         else:
             self.Residual += [o] if o != None else []

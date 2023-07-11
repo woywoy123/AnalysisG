@@ -262,7 +262,7 @@ cdef class SampleTracer:
     def _rebuild_code(self, str pth, ref) -> None:
         cdef str k
         try: os.makedirs(pth)
-        except FileExistsError: sys.path.append(pth); return
+        except FileExistsError: pass
         for k in ref["code"].attrs:
             Code = self._decoder(ref["code"].attrs[k])
             k = Code._File.split("/")[-1]

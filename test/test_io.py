@@ -44,7 +44,7 @@ def test_uproot_read():
 
 
 def test_uproot_write():
-    return 
+    return
     x = uproot.recreate("output.root")
     x["someTree"] = {"test" : np.array([[i for i in range(10)]])}
     x["someTree"].extend({"test" : np.array([[i*2 for i in range(11)]])})

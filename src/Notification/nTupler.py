@@ -4,5 +4,3 @@ class _nTupler(Notification):
 
     def __init__(self):
         pass
-
-
