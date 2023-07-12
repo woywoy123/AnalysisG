@@ -131,17 +131,17 @@ class SelectionTemplate(Tools):
     def _EventPreprocessing(self, event):
         self.AllWeights += [event.weight]
 
-        if "Rejected::Selection" not in self.CutFlow:
-            self.CutFlow["Rejected::Selection"] = 0
-        if "Passed::Selection" not in self.CutFlow:
-            self.CutFlow["Passed::Selection"] = 0
+        if "Rejected-Selection" not in self.CutFlow:
+            self.CutFlow["Rejected-Selection"] = 0
+        if "Passed-Selection" not in self.CutFlow:
+            self.CutFlow["Passed-Selection"] = 0
         try: res = self.Selection(event)
         except: res = False
 
         if res == False:
-            self.CutFlow["Rejected::Selection"] += 1
+            self.CutFlow["Rejected-Selection"] += 1
             return False
-        self.CutFlow["Passed::Selection"] += 1
+        self.CutFlow["Passed-Selection"] += 1
 
         self._t1
         if self.AllowFailure:
@@ -176,7 +176,9 @@ class SelectionTemplate(Tools):
     def __eq__(self, other):
         if other == 0:
             return False
-        return Code(other)._Hash == Code(self)._Hash
+        x = Code(other)._Hash == Code(self)._Hash
+        x *= other.Tree == self.Tree
+        return x
 
     def __radd__(self, other):
         if other == 0:
@@ -194,6 +196,8 @@ class SelectionTemplate(Tools):
             if i.startswith("_SelectionTemplate"):
                 continue
             if isinstance(self.__dict__[i], str):
+                continue
+            if isinstance(self.__dict__[i], bool):
                 continue
             if i == "_CutFlow":
                 k_ = set(list(self.__dict__[i]) + list(other.__dict__[i]))

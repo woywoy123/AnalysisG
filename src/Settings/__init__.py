@@ -27,6 +27,7 @@ def AUTH_PYAMI():
     print("Provide the password to decrypt the PEM files. Leave blank and press enter for no password.")
     code = pwinput("Password: ")
     stdout = p.communicate(code.encode("UTF-8"))
+    print(stdout)
 
 def POST_INSTALL_PYTORCH():
     print(_getcmd("pip install torch"))

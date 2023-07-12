@@ -1,6 +1,7 @@
 from AnalysisG.Generators.Interfaces import _Interface
 from AnalysisG.Notification import _UpROOT
 from AnalysisG.Settings import Settings
+from uproot.exceptions import KeyInFileError
 import signal
 import uproot
 import json
@@ -39,8 +40,7 @@ class MetaData(object):
     def add(self, data):
         for i in self._vars:
             key = self._vars[i]
-            if key not in data:
-                continue
+            if key not in data: continue
             setattr(self, i, data[key])
 
     @property
@@ -73,31 +73,25 @@ class MetaData(object):
         try:
             self.thisDAOD = self._index[val]
             self.thisSet = self.DatasetName
-        except KeyError:
-            pass
+        except KeyError: pass
         return (self.thisDAOD, self.thisSet)
 
     def MatchROOTName(self, val):
-        if self.thisSet not in val:
-            return False
+        if self.thisSet not in val: return False
         try:
             for i in self.inputFiles:
-                if i not in val:
-                    continue
+                if i not in val: continue
                 return True
             return False
-        except:
-            return self.thisDAOD in val
+        except: return self.thisDAOD in val
 
 
 class AMI:
     def __init__(self):
         self.cfg = True
         self._client = None
-        try:
-            self.init
-        except:
-            self.cfg = False
+        try: self.init
+        except: self.cfg = False
 
     @property
     def init(self):
@@ -105,11 +99,9 @@ class AMI:
         self._client = pyAMI.client.Client("atlas")
 
     def search(self, pattern, amitag=False):
-        def _sig(signum, frame):
-            return ""
+        def _sig(signum, frame): return ""
 
-        if self._client is None:
-            return {}
+        if self._client is None: return {}
         signal.signal(signal.SIGALRM, _sig)
         signal.alarm(10)
         warnings.filterwarnings("ignore")
@@ -117,36 +109,27 @@ class AMI:
             res = atlas.list_datasets(
                 self._client, dataset_number=[pattern], type="DAOD_TOPQ1"
             )
-        except:
-            return False
+        except: return False
 
-        if len(res) == 0:
-            return {}
+        if len(res) == 0: return {}
         warnings.filterwarnings("ignore")
         try:
             if amitag:
                 tags = set(amitag.split("_"))
-                name = [
-                    i["ldn"]
-                    for i in res
-                    if len([t for t in tags if t in i["ldn"]]) == len(tags)
-                ]
-                if len(name) == 0:
-                    pass
-                else:
-                    res = name[0]
-            else:
-                res = res[0]["ldn"]
+                name = []
+                for i in res:
+                    l = [t for t in tags if t in i["ldn"]]
+                    if len(l) != len(tags): continue
+                    name += [i["ldn"]]
+                if len(name) == 0: pass
+                else: res = name[0]
+            else: res = res[0]["ldn"]
             out = dict(atlas.get_dataset_info(self._client, res)[0])
-            out |= {
-                "DAOD": [
-                    i["LFN"]
-                    for i in atlas.list_files(self._client, out["logicalDatasetName"])
-                ]
-            }
+            this = atlas.list_files(self._client, out["logicalDatasetName"])
+            this = [ i["LFN"] for i in this ]
+            out.update({"DAOD": this})
             return out
-        except:
-            return {}
+        except: return {}
 
 
 class UpROOT(_UpROOT, Settings, _Interface):
@@ -167,14 +150,12 @@ class UpROOT(_UpROOT, Settings, _Interface):
 
     @property
     def _StartIter(self):
-        if self._it:
-            return
+        if self._it: return
         self._it = iter(list(self.File))
 
     @property
     def ScanKeys(self):
-        if not self.File:
-            return False
+        if not self.File: return False
 
         def Recursion(inpt, k_, keys):
             for i in keys:
@@ -182,14 +163,11 @@ class UpROOT(_UpROOT, Settings, _Interface):
                 try:
                     k_n = inpt[k__].keys()
                     self._struct[k__] = None
-                except AttributeError:
-                    continue
-                Recursion(inpt, k__, k_n)
-
+                except AttributeError: continue
+                try: Recursion(inpt, k__, k_n)
+                except RecursionError: continue
         self._StartIter
-
-        try:
-            fname = next(self._it)
+        try: fname = next(self._it)
         except StopIteration:
             self._it = False
             return
@@ -216,7 +194,6 @@ class UpROOT(_UpROOT, Settings, _Interface):
                 {k: self._struct[k] for k in self._struct if i in k.split("/")}
             )
         self.CheckValidKeys(self.Leaves, found, "LEAF")
-
         self.Keys[fname] = {"found": found, "missed": self._missed}
         self.AllKeysFound(fname)
 
@@ -226,88 +203,64 @@ class UpROOT(_UpROOT, Settings, _Interface):
     def GetAmiMeta(self):
         meta = {}
         ami = AMI()
-        if not ami.cfg:
-            self.FailedAMI
+        if not ami.cfg: self.FailedAMI
         for i in self.File:
-            if i in self.MetaData:
-                continue
-            try:
-                data = [
-                    k
-                    for k in uproot.iterate(
-                        i + ":sumWeights",
-                        ["dsid", "AMITag", "generators"],
-                        how=dict,
-                        library="np",
-                    )
-                ][0]
-            except:
-                data = {}
+            if i in self.MetaData: continue
+            command = {
+                    "files" : i + ":sumWeights",
+                    "expressions" : ["dsid", "AMITag", "generators"], 
+                    "how" : dict, 
+                    "library" : "np"
+            }
+            try: data = [k for k in uproot.iterate(**command)]
+            except KeyInFileError: data = []
+            data = {} if len(data) == 0 else data[0]
 
-            try:
-                tracker = [
-                    k
-                    for k in uproot.iterate(
-                        i + ":AnalysisTracking",
-                        ["jsonData"],
-                        how=dict,
-                        library="np",
-                        step_size=100,
-                    )
-                ][0]["jsonData"]
-                tracker = json.loads(
-                    "\n".join(
-                        [
-                            k
-                            for k in tracker.tolist()[0].split("\n")
-                            if "BtagCDIPath" not in k
-                        ]
-                    )
-                )  # Some files have a weird missing ","
-                data["inputConfig"] = tracker["inputConfig"]
-                data["inputFiles"] = tracker["inputFiles"]
-                data["configSettings"] = tracker["configSettings"]
-            except:
-                data["inputConfig"] = {}
-                data["inputFiles"] = {}
-                data["configSettings"] = {}
+            command["files"] = i + ":AnalysisTracking"
+            command["expressions"] = ["jsonData"]
+            command["step_size"] = 100
 
-            try:
-                data["eventNumber"] = [
-                    k
-                    for k in uproot.iterate(
-                        i + ":truth", ["eventNumber"], how=dict, library="np"
-                    )
-                ][0]["eventNumber"]
-                data["eventNumber"] = data["eventNumber"].tolist()
-            except:
-                pass
+            try: tracker = [k for k in uproot.iterate(**command)]
+            except KeyInFileError: tracker = []
+            tracker = "" if len(tracker) == 0 else tracker[0]["jsonData"].tolist()[0]
+            tracker = "\n".join(
+                        [ k for k in tracker.split("\n") if "BtagCDIPath" not in k ]
+                    ) # Some files have a weird missing ","
+            if len(tracker) != 0: tracker = json.loads(tracker)
+            lst = ["inputConfig", "inputFiles", "configSettings"]
+            data.update({ i : tracker[i] for i in lst if i in tracker })
+
+            command["files"] = i + ":truth"
+            command["expressions"] = ["eventNumber"]
+            del command["step_size"]
+
+            try: evnt = [k for k in uproot.iterate(**command)]
+            except KeyInFileError: evnt = []
+            if len(evnt) == 0: pass
+            else: evnt = evnt[0]
+            x = "eventNumber"
+            if x in evnt: data[x] = evnt[x].tolist()
 
             meta[i] = MetaData()
-            if "dsid" not in data:
-                continue
+            if "dsid" not in data: continue
             dsid = str(data["dsid"].tolist()[0])
             if "generators" in data:
-                gen = data["generators"].tolist()[0].replace("+", "")
-            else:
-                gen = False
+                gen = data["generators"]
+                gen = gen.tolist()[0]
+                get = gen.replace("+", "")
+            else: gen = False
 
-            if "AMITag" in data:
-                tag = data["AMITag"].tolist()[0]
-            else:
-                tag = False
-            if tag:
-                _tags = dsid + "-" + ".".join(set(tag.split("_")))
-            else:
-                _tags = dsid
+            if "AMITag" in data: tag = data["AMITag"].tolist()[0]
+            else: tag = False
+            if tag: _tags = dsid + "-" + ".".join(set(tag.split("_")))
+            else: _tags = dsid
 
             meta[i].add(data["inputConfig"])
             meta[i].add(data)
             meta[i]._vars.update(data["configSettings"])
             meta[i].add(data["configSettings"])
 
-            if not ami.cfg:
-                continue
+            if not ami.cfg: continue
             if _tags not in self._dsid_meta:
                 self._dsid_meta[_tags] = ami.search(dsid, tag)
             if self._dsid_meta[_tags] == False:
@@ -332,15 +285,23 @@ class UpROOT(_UpROOT, Settings, _Interface):
         return list(v.values())[0]
 
     def __iter__(self):
-        if len(self.Keys) != len(self.File):
-            self.ScanKeys
+        if len(self.Keys) != len(self.File): self.ScanKeys
         keys = self.Keys[list(self.File)[0]]["found"]
+        self._t = {}
+        self._get = {}
         self.GetAmiMeta
-        self._t = {
-            T: [r for r in self.File if T not in self.Keys[r]["missed"]["TREE"]]
-            for T in self.Trees
-        }
-        self._get = {tr: [i.split("/")[-1] for i in keys if tr in i] for tr in self._t}
+        tr = []
+        tmp = [j for z in keys for j in z.split("/")]
+        for i in self.Trees:
+            for k in tmp: tr += [k] if i in k else []
+
+        for T in set(tr):
+            for r in self.File:
+                if T in self.Keys[r]["missed"]["TREE"]: continue
+                if T not in self._t: self._t[T] = []
+                self._t[T] += [r]
+                self._get[T] = [i.split("/")[-1] for i in keys if T in i]
+
         dct = {
             tr: {
                 "files": {r: tr for r in self._t[tr]},
@@ -352,7 +313,7 @@ class UpROOT(_UpROOT, Settings, _Interface):
             }
             for tr in self._get
         }
-        self._root = {tr: uproot.iterate(**dct[tr]) for tr in dct}
+        self._root = {tr.split(";")[0]: uproot.iterate(**dct[tr]) for tr in dct}
         self._r = None
         self._cur_r = None
         self._EventIndex = 0
@@ -360,8 +321,7 @@ class UpROOT(_UpROOT, Settings, _Interface):
         return self
 
     def __next__(self):
-        if len(self._root) == 0:
-            raise StopIteration
+        if len(self._root) == 0: raise StopIteration
         try:
             r = {key: self._r[key][0].pop() for key in self._r}
             fname = self._r[list(r)[0]][1].file_path

@@ -32,9 +32,17 @@ cdef class Event:
     def __cinit__(self):
         self.ptr = NULL
         self._demanded = False
+        self._index = -1
 
     def __init__(self): self._instance = []
-    def _wrap(self, val): self._instance.append(val)
+    def _wrap(self, val) -> None: 
+        self._instance.append(val)
+        if self.index != -1: return 
+        self.index = self.ptr.EventIndex
+        self.Tree = self.ptr.Tree.decode("UTF-8")
+        self.hash = self.ptr.hash.decode("UTF-8")
+        self.ROOT = self.ptr.ROOT.decode("UTF-8")
+
     def __setstate__(self, inpt):
         for i in inpt: setattr(self, i, inpt[i])
 
@@ -261,12 +269,14 @@ cdef class SampleTracer:
 
     def _rebuild_code(self, str pth, ref) -> None:
         cdef str k
+        cdef list its
         try: os.makedirs(pth)
         except FileExistsError: pass
-        for k in ref["code"].attrs:
-            Code = self._decoder(ref["code"].attrs[k])
-            k = Code._File.split("/")[-1]
-            mk = open(pth + k, "w")
+        if isinstance(ref, str): its = [ref]
+        else: its = [ref["code"].attrs[k] for k in ref["code"].attrs]
+        for k in its:
+            Code = self._decoder(k)
+            mk = open(pth + Code._File.split("/")[-1], "w")
             mk.write(Code._FileCode)
             mk.close()
         sys.path.append(pth)
@@ -659,10 +669,6 @@ cdef class SampleTracer:
         cdef Event ev = Event()
         ev.ptr = event
         ev._wrap(ev.ptr.pkl)
-        ev.index = ev.ptr.EventIndex
-        ev.Tree = ev.ptr.Tree.decode("UTF-8")
-        ev.hash = ev.ptr.hash.decode("UTF-8")
-        ev.ROOT = ev.ptr.ROOT.decode("UTF-8")
 
         _meta = self._HashMeta[_hash]
         if _meta.size() == 0: meta = (event.ROOTFile.SourcePath + event.ROOTFile.Filename).decode("UTF-8")

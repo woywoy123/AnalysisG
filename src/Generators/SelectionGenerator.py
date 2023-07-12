@@ -22,10 +22,11 @@ class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface
     def __compile__(inpt, _prgbar):
         lock, bar = _prgbar
         output = {}
+        code = {}
         fname = ""
         for i in range(len(inpt)):
-            name, sel, event, pth = inpt[i]
-            sel = SampleTracer._decoder(sel)
+            name, sel_, event, pth = inpt[i]
+            sel = SampleTracer._decoder(sel_).clone
             sel.hash = event.hash
             sel.ROOTName = event.ROOT
             sel.index = event.index
@@ -34,16 +35,20 @@ class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface
             fname = Hash(fname + sel.hash)
             if name not in output: output[name] = []
             output[name].append(sel)
-
+            try: code[name]
+            except KeyError: code[name] = [sel_]
             if lock == None: bar.update(1)
             else:
                 with lock: bar.update(1)
         if lock == None: del bar
         for name in output:
             f = h5py.File(pth + name + "/" + fname + ".hdf5", "w")
-            for sel in output[name]:
-                ref = f.create_dataset(sel.hash, (1), dtype = h5py.ref_dtype)
-                ref.attrs[name] = SampleTracer._encoder(sel)
+            ref = f.create_dataset(name, (1), dtype = h5py.ref_dtype)
+            for sel in output[name]: ref.attrs[sel.hash] = SampleTracer._encoder(sel)
+
+            try: ref.attrs["code"] = next(iter(code[name]))
+            except KeyError: pass
+
             f.close()
         return []
 
@@ -60,12 +65,8 @@ class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface
             ref = fo.create_dataset(name, (1), dtype = h5py.ref_dtype)
             for h in self.Merge[name]:
                 f = h5py.File(h, "r")
-                for key in f.keys():
-                    if key == "code":
-                        x = fo.create_dataset("code", (1), dtype = h5py.ref_dtype)
-                        x.attrs[name] = f[key].attrs[name]
-                        continue
-                    ref.attrs[key] = f[key].attrs[name]
+                f_ = f[name]
+                for key in f_.attrs: ref.attrs[key] = f_.attrs[key]
                 f.close()
                 self.rm(h)
             fo.close()
@@ -82,11 +83,7 @@ class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface
         self.pth = self.OutputDirectory + "/Selections/"
         for name in self.Selections:
             self.mkdir(self.pth + name)
-            f = h5py.File(self.pth + name + "/" + Hash(name) + ".hdf5", "w")
-            ref = f.create_dataset("code", (1), dtype = h5py.ref_dtype)
-            sel = self._encoder(self._Code["Selections"][name].clone)
-            try: ref.attrs[name] = self._encoder(self._Code["Selections"][name])
-            except ValueError: self._rebuild_code(f["code"][name], self.pth + name)
+            sel = self._encoder(self._Code["Selections"][name])
             inpt = []
             for ev, i in zip(self, range(len(self))):
                 if self._StartStop(i) == False: continue
@@ -104,7 +101,8 @@ class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface
         if len(self.Merge) == 0: return
         self._Code["Selections"] = {}
         for name in self.Merge:
+            pths = self.pth + name + "/"
             self.Merge[name] = [
-                self.pth + name + "/" + i for i in self.ls(self.pth + name + "/")
+                 pths + i for i in self.ls(pths) if i.endswith(".hdf5")
             ]
             self.__merge__
