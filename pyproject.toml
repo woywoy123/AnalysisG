@@ -60,5 +60,3 @@ AUTH_PYAMI = "AnalysisG.Settings:AUTH_PYAMI"
 CHECK_CUDA = "AnalysisG.Settings:CHECK_CUDA"
 POST_INSTALL_PYC = "AnalysisG.Settings:POST_INSTALL_PYC"
 
-[tool.black]
-target-version = ["py39"]

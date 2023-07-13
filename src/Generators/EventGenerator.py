@@ -82,12 +82,12 @@ class EventGenerator(_EventGenerator, Settings, SampleTracer, _Interface):
 
         inpt = []
         ev = pickle.dumps(ev)
-        i = 0
+        i = -1
         for v in io:
+            i += 1
             if self._StartStop(i) == False: continue
             if self._StartStop(i) == None: break
             inpt.append([v, ev])
-            i += 1
         if self.Threads > 1:
             th = Threading(inpt, self._CompileEvent, self.Threads, self.chnk)
             th.Start
