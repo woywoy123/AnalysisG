@@ -10,5 +10,5 @@ sphinx:
   configuration: docs/conf.py
 
 python:
-  install: 
-    pip install groundwork-sphinx-theme
+  install:
+    - requirements: docs/requirements.txt
