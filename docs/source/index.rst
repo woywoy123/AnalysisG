@@ -1,8 +1,3 @@
-.. AnalysisG documentation master file, created by
-   sphinx-quickstart on Fri Jul 14 00:56:40 2023.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 A Graph Neural Network Analysis Framework for High Energy Physics!
 ==================================================================
 
@@ -38,3 +33,18 @@ Index and Directories:
 .. toctree::
   quick-start/installation
   quick-start/getting-started.rst
+
+
+Documentation and Codebase Status
+*********************************
+.. image:: https://readthedocs.org/projects/analysisg/badge/?version=latest
+    :target: https://analysisg.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
+
+
+
+
+
+
+
+
