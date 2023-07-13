@@ -205,7 +205,6 @@ class UpROOT(_UpROOT, Settings, _Interface):
         ami = AMI()
         if not ami.cfg: self.FailedAMI
         for i in self.File:
-            if i in self.MetaData: continue
             command = {
                     "files" : i + ":sumWeights",
                     "expressions" : ["dsid", "AMITag", "generators"], 
@@ -215,7 +214,6 @@ class UpROOT(_UpROOT, Settings, _Interface):
             try: data = [k for k in uproot.iterate(**command)]
             except KeyInFileError: data = []
             data = {} if len(data) == 0 else data[0]
-
             command["files"] = i + ":AnalysisTracking"
             command["expressions"] = ["jsonData"]
             command["step_size"] = 100
@@ -259,7 +257,7 @@ class UpROOT(_UpROOT, Settings, _Interface):
             meta[i].add(data)
             meta[i]._vars.update(data["configSettings"])
             meta[i].add(data["configSettings"])
-
+            if i in self.MetaData: continue
             if not ami.cfg: continue
             if _tags not in self._dsid_meta:
                 self._dsid_meta[_tags] = ami.search(dsid, tag)
@@ -282,7 +280,7 @@ class UpROOT(_UpROOT, Settings, _Interface):
             tr: sum([uproot.open(r + ":" + tr).num_entries for r in self._t[tr]])
             for tr in self._get
         }
-        return list(v.values())[0]
+        return max(list(v.values()))
 
     def __iter__(self):
         if len(self.Keys) != len(self.File): self.ScanKeys
@@ -314,37 +312,51 @@ class UpROOT(_UpROOT, Settings, _Interface):
             for tr in self._get
         }
         self._root = {tr.split(";")[0]: uproot.iterate(**dct[tr]) for tr in dct}
-        self._r = None
-        self._cur_r = None
+        self._r = {}
+        self._tracking = {}
+        self._curr = (None, None)
         self._EventIndex = 0
-        self._meta = None
         return self
 
     def __next__(self):
         if len(self._root) == 0: raise StopIteration
-        try:
-            r = {key: self._r[key][0].pop() for key in self._r}
-            fname = self._r[list(r)[0]][1].file_path
+        if len(self._r) == 0:
+            r = {tr : next(self._root[tr]) for tr in self._root}
+            for tree in r:
+                val = r[tree][0]
+                val = { tree + "/" + key : val[key].tolist() for key in val}
+                self._r.update(val)
+                self._tracking[tree] = r[tree][1]
 
-            if self._cur_r != fname:
-                s = uproot.open(fname + ":" + list(r)[0].split("/")[0]).num_entries
-                self.Success("READING -> " + fname.split("/")[-1] + " (" + str(s) + ")")
-                self._meta = self.MetaData[fname]
-                self._meta.thisDAOD = fname.split("/")[-1]
-                self._meta.thisSet = "/".join(fname.split("/")[:-1])
-                self._meta.ROOTName = fname
+        r = {}
+        for key in self._r:
+            if len(self._r[key]) == 0: continue
+            tr = key.split("/")[0]
+            r[key] = self._r[key].pop(0)
 
-            self._EventIndex = 0 if self._cur_r != fname else self._EventIndex + 1
-            self._cur_r = fname
-            r.update({"MetaData": self._meta})
-            r.update({"ROOT": fname, "EventIndex": self._EventIndex})
-            return r
-
-        except (IndexError, TypeError):
-            r = {tr: next(self._root[tr]) for tr in self._root}
-            self._r = {
-                tr + "/" + l: [r[tr][0][l].tolist(), r[tr][1]]
-                for tr in r
-                for l in r[tr][0]
-            }
+        if len(r) == 0:
+            self._r = r
             return self.__next__()
+
+        self._EventIndex += 1
+        fname_p = self._tracking[tr].file_path
+        meta, _fname = self._curr
+        r.update(
+            { "MetaData" : meta, "ROOT" : _fname, "EventIndex" : self._EventIndex}
+        )
+
+        if _fname == fname_p: return r
+        self._EventIndex = 0
+        x = {tr: uproot.open(fname_p + ":" + tr).num_entries for tr in self._tracking}
+        x = " ".join([tr + " - " + str(x[tr]) for tr in x])
+        fname_n = fname_p.split("/")[-1]
+        self.Success("READING -> " + fname_n + " (Trees: " + x + ")")
+        meta = self.MetaData[fname_p]
+        meta.thisDAOD = fname_n
+        meta.ROOTName = fname_p
+        meta.thisSet  = "/".join(fname_p.split("/")[:-1])
+        self._curr = (meta, fname_p)
+        r.update(
+            { "MetaData" : meta, "ROOT" : fname_p, "EventIndex" : self._EventIndex}
+        )
+        return r

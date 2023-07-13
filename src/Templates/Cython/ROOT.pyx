@@ -194,8 +194,8 @@ cdef class SampleTracer:
         if key.endswith(".root"): key = os.path.abspath(key)
         if key in self.HashMeta:
             for daod in self.HashMeta[key].Files:
-                try: out += self[self.HashMeta[key].thisSet + daod]
-                except: continue
+                out += self[self.HashMeta[key].thisSet + daod]
+            if len(out) == 0: out += [ i for i in self if i.ROOTName == key ]
             return out
         return out
 

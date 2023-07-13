@@ -18,7 +18,7 @@ def CONFIG_PYAMI():
 def AUTH_PYAMI():
     print("Please specify the directory where your .globus directory is located.")
     globu = input("(default: ~/.globus): ")
-    globu = "~/.globus" if globu == "" else globu
+    globu = "~/.globus/" if globu == "" else globu
     p = Popen(
         ["voms-proxy-init", "-certdir", globu, "-verify"],
         stdout = PIPE, stdin = PIPE, stderr = STDOUT

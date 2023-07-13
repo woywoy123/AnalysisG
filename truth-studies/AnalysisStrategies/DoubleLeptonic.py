@@ -1,20 +1,21 @@
-from AnalysisTopGNN import Analysis 
-from AnalysisTopGNN.Events import Event 
-from AnalysisTopGNN.Templates import Selection
+from AnalysisG import Analysis 
+from AnalysisG.Events import Event 
+from AnalysisG.Templates import SelectionTemplates
 
-class MakeTruth(Selection):
+class MakeTruth(SelectionTemplates):
 
     def __init__(self):
-        AnalysisTemplate.__init__(self)
+        SelectionTemplates.__init__(self)
 
         self.Truth = {
-                       "Lep" : {"Top" : [], "Children" : []}, 
-                       "Had" : {"Top" : [], "Children" : []}, 
-                    "HadHad" : {"Top" : [], "Children" : []}, 
-                    "LepLep" : {"Top" : [], "Children" : []}, 
-                    "HadLep" : {"Top" : [], "Children" : []}, 
-                    "LepHad" : {"Top" : [], "Children" : []}, 
+                "Lep" : {"Top" : [], "Children" : [], "TruthJets" : []}, 
+                "Had" : {"Top" : [], "Children" : [], "TruthJets" : []}, 
+             "HadHad" : {"Top" : [], "Children" : [], "TruthJets" : []}, 
+             "LepLep" : {"Top" : [], "Children" : [], "TruthJets" : []}, 
+             "HadLep" : {"Top" : [], "Children" : [], "TruthJets" : []}, 
+             "LepHad" : {"Top" : [], "Children" : [], "TruthJets" : []}, 
         }
+        self.ROOTSamples = []
 
     def Selection(self, event):
 
@@ -38,6 +39,7 @@ class MakeTruth(Selection):
         self.Truth["Lep"]["Children"] += [ sum(x.Children).Mass for x in l ]
         self.Truth["Had"]["Children"] += [ sum(x.Children).Mass for x in h ]
         self.Truth["Had"*len(h_) + "Lep"*len(l_)]["Children"] += [sum([i for k in h_ + l_ for i in k.Children]).Mass]
+
 
 class ChildrenSelection(Selection):
 

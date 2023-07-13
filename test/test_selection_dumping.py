@@ -21,6 +21,9 @@ def _template(merge = True):
     Ev.Threads = 1
     Ev.EventStop = 100
     Ev.MakeEvents
+    x = 0
+    for i in Ev: x+=1
+    assert x == 100
 
     sel = SelectionGenerator(Ev)
     sel.OutputDirectory = "Project"

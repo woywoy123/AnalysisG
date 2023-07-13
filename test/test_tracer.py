@@ -54,11 +54,13 @@ def test_tracer_addEvent():
 
     hashes = {}
     roothashes = {}
+    len_nom, len_tru = 0, 0
     for i in io:
+        if "nominal/eventNumber" in i: len_nom += 1
+        if "truth/eventNumber" in i: len_tru += 1
         root, index, meta = i["ROOT"], i["EventIndex"], i["MetaData"]
         trees = ev.__compiler__(i)
-        for i in trees:
-            i.CompileEvent()
+        for i in trees: i.CompileEvent()
         root = meta.thisSet + "/" + meta.thisDAOD
         inpt = {
             i.hash: {
@@ -72,14 +74,13 @@ def test_tracer_addEvent():
         }
         tr.AddEvent(inpt)
         hashes.update({p.hash: p for p in trees})
-        if root not in roothashes:
-            roothashes[root] = []
+        if root not in roothashes: roothashes[root] = []
         roothashes[root] += [p.hash for p in trees]
-    assert len(io) * 2 == len(tr)
+
+    assert len_tru + len_nom == len(tr)
 
     # Test iterator
-    for i in tr:
-        assert i.hash == hashes[i.hash].hash
+    for i in tr: assert i.hash == hashes[i.hash].hash
 
     # Test Getter Functions
     for i in hashes:
@@ -87,8 +88,7 @@ def test_tracer_addEvent():
         assert tr[i].hash == hashes[i].hash
 
     # Test if hashes are in tracer
-    for i in hashes:
-        assert i in tr
+    for i in hashes: assert i in tr
 
     assert "hello" not in tr
     assert root1 in tr
@@ -96,7 +96,7 @@ def test_tracer_addEvent():
 
     for r in roothashes:
         for hsh in roothashes[r]:
-            assert r == tr.HashToROOT(hsh)
+            assert tr[hsh].ROOTName == tr.HashToROOT(hsh)
     lst = [i for j in range(1000) for i in hashes]
 
     assert len(hashes) > 0
@@ -240,6 +240,6 @@ def test_tracer_hdf5():
 
 if __name__ == "__main__":
     test_tracer_addEvent()
-    test_tracer_operators()
-    test_tracer_hdf5()
+    #test_tracer_operators()
+    #test_tracer_hdf5()
     pass

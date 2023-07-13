@@ -32,15 +32,11 @@ class _UpROOT(Notification):
         self.Success("!!!(Reading) -> " + Name.split("/")[-1] + " (" + x + ")")
 
     def CheckValidKeys(self, requested, found, Type):
-        if len(requested) == 0:
-            return
-
+        if len(requested) == 0: return
         for i in requested:
             if len([k for k in found if i in k]) > 0:
                 continue
-
-            if Type not in self._missed:
-                self._missed[Type] = []
+            if Type not in self._missed: self._missed[Type] = []
             self._missed[Type].append(i)
             self.Warning("SKIPPED: " + Type + "::" + i)
 

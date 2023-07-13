@@ -33,15 +33,20 @@ def test_uproot_read():
     io.Trees = ["nominal", "truth"]
     io.Leaves = ["weight_mc", "weight_pileup", "met_phi"]
 
+    len_nom, len_truth = 0, 0
     for i in io:
-        assert "nominal/weight_mc" in i
-        assert "truth/weight_mc" in i
-        assert "nominal/weight_pileup" in i
-        assert "truth/weight_pileup" in i
-        assert "nominal/met_phi" in i
-        assert "truth/met_phi" not in i
-
-
+        if "truth/weight_mc" in i:
+            assert "truth/weight_mc" in i
+            assert "truth/weight_pileup" in i
+            assert "truth/met_phi" not in i
+            len_truth += 1
+        if "nominal/weight_mc" in i:
+            assert "nominal/weight_mc" in i
+            assert "nominal/weight_pileup" in i
+            assert "nominal/met_phi" in i
+            len_nom += 1
+    assert len_truth == 2000
+    assert len_nom == 165
 
 def test_uproot_write():
     return
@@ -60,6 +65,6 @@ def test_uproot_write():
 
 
 if __name__ == "__main__":
-    #test_uproot_read()
+    test_uproot_read()
     test_uproot_write()
     pass

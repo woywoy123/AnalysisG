@@ -22,15 +22,11 @@ class EventGenerator(_EventGenerator, Settings, SampleTracer, _Interface):
         for i in range(len(inpt)):
             vals, ev = inpt[i]
             ev = pickle.loads(ev)
-
             inpt[i] = {}
             try:
                 res = ev.__compiler__(vals)
-                for k in res:
-                    k.CompileEvent()
-            except:
-                continue
-
+                for k in res: k.CompileEvent()
+            except: continue
             for k in list(res):
                 inpt[i][k.hash] = {}
                 inpt[i][k.hash]["pkl"] = pickle.dumps(k)
@@ -86,13 +82,12 @@ class EventGenerator(_EventGenerator, Settings, SampleTracer, _Interface):
 
         inpt = []
         ev = pickle.dumps(ev)
-        for v, i in zip(io, range(len(io))):
-            if self._StartStop(i) == False:
-                continue
-            if self._StartStop(i) == None:
-                break
+        i = 0
+        for v in io:
+            if self._StartStop(i) == False: continue
+            if self._StartStop(i) == None: break
             inpt.append([v, ev])
-
+            i += 1
         if self.Threads > 1:
             th = Threading(inpt, self._CompileEvent, self.Threads, self.chnk)
             th.Start

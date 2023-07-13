@@ -89,11 +89,11 @@ cdef class EventTemplate:
         cdef list out = []
 
         for tr in self._Trees:
+            _inpt = {k.split(tr + "/")[-1] : inpt[k] for k in inpt if tr in k}
+            if len(_inpt) == 0: continue
             ev = self.clone
             ev.__interpret__
             ev.Tree = tr
-            _inpt = {k.split(tr + "/")[-1] : inpt[k] for k in inpt if tr in k}
-
             for i in Obj:
                 val = ev._leaves[i] if i == "event" else ev._Objects[i].__interpret__
                 val = {k : _inpt[val[k]] for k in val if val[k] in _inpt}
