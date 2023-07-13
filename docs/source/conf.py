@@ -10,6 +10,7 @@ project = 'AnalysisG'
 copyright = '2023, woywoy123'
 author = 'woywoy123'
 release = '0.1'
+master_doc = 'index'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
