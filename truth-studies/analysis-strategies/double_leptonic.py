@@ -1,19 +1,53 @@
-from AnalysisG import Analysis 
-from AnalysisG.Events import Event 
-from AnalysisG.Templates import SelectionTemplates
+from AnalysisG.Templates import SelectionTemplate
 
+class DiLeptonic(SelectionTemplate):
+
+    def __init__(self):
+        SelectionTemplate.__init__(self)
+
+        self.Masses = {
+                "Lep-Had" : [], 
+                "Lep-Lep" : [], 
+                "Had-Had" : []
+        }
+        self.Process = ""
+        self.AllowFailure = False
+        self._truthmode = "children"
+
+    def Selection(self, event):
+        particles = []
+        if self._truthmode == "children": particles = [i for i in event.TopChildren]
+        
+        if len([i for i in particles if i.is_lep]) != 2: return False
+        if len([i for i in particles if i.is_b]) != 4: return False
+        return True
+
+    def Strategy(self, event):
+        # Case 1: on the Children: 
+        # - Select the two most energetic children, provided they are quarks.
+        # - Assign either leptons or other children to these two based on the lowest deltaR. 
+        #   -> If quarks are lowest deltaR: Use two additional quark children 
+        #   -> If lepton is matched: Use single/double neutrino reconstruction code.
+        # - Derive the Top and the resonance mass
+
+        print(event)
+
+        exit()
+
+
+# Deprecated.....
 class MakeTruth(SelectionTemplates):
 
     def __init__(self):
         SelectionTemplates.__init__(self)
 
         self.Truth = {
-                "Lep" : {"Top" : [], "Children" : [], "TruthJets" : []}, 
-                "Had" : {"Top" : [], "Children" : [], "TruthJets" : []}, 
-             "HadHad" : {"Top" : [], "Children" : [], "TruthJets" : []}, 
-             "LepLep" : {"Top" : [], "Children" : [], "TruthJets" : []}, 
-             "HadLep" : {"Top" : [], "Children" : [], "TruthJets" : []}, 
-             "LepHad" : {"Top" : [], "Children" : [], "TruthJets" : []}, 
+                "Lep" : {"Top" : [], "Children" : [], "TruthJets" : []},
+                "Had" : {"Top" : [], "Children" : [], "TruthJets" : []},
+             "HadHad" : {"Top" : [], "Children" : [], "TruthJets" : []},
+             "LepLep" : {"Top" : [], "Children" : [], "TruthJets" : []},
+             "HadLep" : {"Top" : [], "Children" : [], "TruthJets" : []},
+             "LepHad" : {"Top" : [], "Children" : [], "TruthJets" : []},
         }
         self.ROOTSamples = []
 
@@ -24,17 +58,17 @@ class MakeTruth(SelectionTemplates):
         tops = [k for k in event.Tops if len(k.Children) > 0]
         l  = [t for t in tops if t.LeptonicDecay]
         l_ = [t for t in tops if t.LeptonicDecay and t.FromRes == 1]
-        
+
         h  = [t for t in tops if not t.LeptonicDecay]
         h_ = [t for t in tops if not t.LeptonicDecay and t.FromRes == 1]
 
         if len(sum(h_ + l_).Children) == 0:
             return "Failed->NoResonanceChildren"
-        
+
         self.Truth["Lep"]["Top"] += [x.Mass for x in l]
         self.Truth["Had"]["Top"] += [x.Mass for x in h]
         self.Truth["Had"*len(h_) + "Lep"*len(l_)]["Top"] += [sum(h_ + l_).Mass]
-        
+
         # -> Children 
         self.Truth["Lep"]["Children"] += [ sum(x.Children).Mass for x in l ]
         self.Truth["Had"]["Children"] += [ sum(x.Children).Mass for x in h ]
@@ -46,14 +80,14 @@ class ChildrenSelection(Selection):
     def __init__(self):
         AnalysisTemplate.__init__(self)
         self.Reconstruction = {
-               "Lep" : {"Children" : []}, 
-               "Had" : {"Children" : []}, 
-            "HadHad" : {"Children" : []}, 
-            "LepLep" : {"Children" : []}, 
-            "HadLep" : {"Children" : []}, 
-            "LepHad" : {"Children" : []}, 
+               "Lep" : {"Children" : []},
+               "Had" : {"Children" : []},
+            "HadHad" : {"Children" : []},
+            "LepLep" : {"Children" : []},
+            "HadLep" : {"Children" : []},
+            "LepHad" : {"Children" : []},
         }
-        
+
         self.lepNum = [11, 13, 15]
         self.nuNumber = [12, 14, 16]
         self.Excl = self.lepNum + self.nuNumber
@@ -65,8 +99,8 @@ class ChildrenSelection(Selection):
         #   -> If quarks are lowest deltaR: Use two additional quark children 
         #   -> If lepton is matched: Use single/double neutrino reconstruction code.
         # - Derive the Top and the resonance mass
-        children = event.TopChildren 
-        
+        children = event.TopChildren
+
         # ---- Get two highest PT quark children ----- # 
         ch = self.Sort({ c.pt/1000 : c for c in children if abs(c.pdgid) not in self.Excl }, True)
         ch = list(ch.values())[:2]
@@ -146,18 +180,12 @@ class ChildrenSelection(Selection):
         return "Success->Hadron"
  
 
-#Ana = Analysis()
-#Ana.Event = Event
-#Ana.EventCache = True 
-#Ana.DumpPickle = True 
-#Ana.InputSample("bsm-1000", "/home/tnom6927/Downloads/samples/Dilepton/ttH_tttt_m1000/DAOD_TOPQ1.21955717._000001.root")
-#Ana.chnk = 1000
-#Ana.Launch()
-#
-#x = MakeTruth()
-#x(Ana)
-#
-#y = ChildrenSelection()
-#y(Ana)
-#print(y._CutFlow)
+
+
+
+
+
+
+
+
 

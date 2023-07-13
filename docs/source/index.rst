@@ -28,12 +28,16 @@ To avoid having to deal with additional boiler plate book keeping code, the fram
 The hash is constructed by concatenating the directory, ROOT filename and event number into a single string and computing the associated hash. 
 This ensures each event can be easily traced back to its original ROOT file. 
 
-Index and Directories:
-**********************
+Index and Directories
+*********************
 .. toctree::
   quick-start/installation
   quick-start/getting-started.rst
 
+Analysis and Truth Studies Documentation
+****************************************
+.. toctree::
+  studies/analysis-strategies
 
 Documentation and Codebase Status
 *********************************
@@ -41,10 +45,10 @@ Documentation and Codebase Status
     :target: https://analysisg.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
 
+.. image:: https://github.com/woywoy123/AnalysisTopGNN/actions/workflows/test.yml/badge.svg?branch=master
+   :target: https://github.com/woywoy123/AnalysisTopGNN/actions/workflows/test.yml/badge.svg?branch=master
+   :alt: Build Status
 
-
-
-
-
-
-
+.. image:: https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/woywoy123/6fee1eff8f987ac756a20133618659a1/raw/covbadge.json
+   :target: https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/woywoy123/6fee1eff8f987ac756a20133618659a1/raw/covbadge.json
+   :alt: Coverage Report

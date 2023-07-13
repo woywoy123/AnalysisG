@@ -37,10 +37,7 @@ class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface
             output[name].append(sel)
             try: code[name]
             except KeyError: code[name] = [sel_]
-            if lock == None: bar.update(1)
-            else:
-                with lock: bar.update(1)
-        if lock == None: del bar
+            if lock is not None: bar.update(1)
         for name in output:
             f = h5py.File(pth + name + "/" + fname + ".hdf5", "w")
             ref = f.create_dataset(name, (1), dtype = h5py.ref_dtype)
@@ -96,7 +93,7 @@ class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface
                 th = Threading(inpt, self.__compile__, self.Threads, self.chnk)
                 th.Title = self.Caller + "::" + name
                 th.Start
-            else: self.__compile__(inpt, self._MakeBar(len(inpt)))
+            else: self.__compile__(inpt, (None, None))
 
         if len(self.Merge) == 0: return
         self._Code["Selections"] = {}

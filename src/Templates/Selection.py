@@ -135,8 +135,11 @@ class SelectionTemplate(Tools):
             self.CutFlow["Rejected-Selection"] = 0
         if "Passed-Selection" not in self.CutFlow:
             self.CutFlow["Passed-Selection"] = 0
-        try: res = self.Selection(event)
-        except: res = False
+
+        if self.AllowFailure:
+            try: res = self.Selection(event)
+            except: res = False
+        else: res = self.Selection(event)
 
         if res == False:
             self.CutFlow["Rejected-Selection"] += 1

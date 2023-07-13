@@ -1,23 +1,30 @@
-*.pkl
-*.swp
-*.pyc
+# Random build related directories
+**/__pycache__
+**/build
+**/*.egg*
+**/_Pickle
+**/PythonGNN
+
+# Cache types 
 *.hdf5
-*.png
-*.pth
+*.pkl
+
+# Cython and C++ compiler code 
+*.pyc
 *.so
 *.c
 *.cpp
 
-**/__pycache__
-**/build
-**/dist
-**/*.egg*
-**/_Models
-**/Plots
-**/_Cache
-**/_Pickle
-**/logs
-**/PythonGNN
+# Models
+*.pth
+
+# Installer stuff
+# setup-scripts/source_this.sh
+
+# Vim related swaps 
+*.swp
+
+# Testing stuff 
 **/.tox
 **/.coverage*
-**/source_this.sh
+**/*EventCache*
