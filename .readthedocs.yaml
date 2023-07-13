@@ -11,4 +11,4 @@ sphinx:
 
 python:
   install: 
-    - pip install groundwork-sphinx-theme
+    pip install groundwork-sphinx-theme

@@ -9,6 +9,8 @@ on:
         paths-ignore:
             - '**.md'
             - '**.txt'
+            - '.readthedocs.yaml'
+            - 'docs'
             - 'models'
             - 'setup-scripts'
             - 'tutorial'
