@@ -345,6 +345,10 @@ def test_event_particle_template_populate():
             t1, t2 = Trees
             t1.hash, t2.hash = root1, root1
 
+            c = sum([len(k) for k in i["nominal/children_e"]])
+            x = [float(k) for j in i["nominal/children_e"] for k in j]
+            assert len(t1.Children) == c
+            assert sum(x) == sum([t.e for t in t1.Children.values()])
             n_children += len(t1.Children)
             n_tops += len(t1.top)
 

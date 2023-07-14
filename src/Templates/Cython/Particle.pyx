@@ -89,37 +89,39 @@ cdef class ParticleTemplate(object):
 
     @__interpret__.setter
     def __interpret__(self, dict inpt):
-        cdef str k
+        cdef str k 
         cdef dict x
-        cdef bool index
-        cdef bool attr
+        cdef bool get
 
-        try:
-            inpt = {k : inpt[self._leaves[k]] for k in self._leaves}
-            inpt = {k : inpt[k].tolist() for k in inpt}
-        except:
-            try: inpt = {k : inpt[k].tolist() for k in inpt}
-            except: pass
+        try: inpt = {k : inpt[self._leaves[k]] for k in self._leaves}
+        except KeyError: pass
 
         while True:
-            try: 
-                x = {}
-                end = False
-                attr = False
-                for k in inpt: 
-                    try: x[k] = inpt[k].pop()
-                    except AttributeError: attr = True
-                    except IndexError: end = True
-                self.__interpret__ = x
-                if attr: raise AttributeError
-                if end: raise IndexError
-            except AttributeError:
+            x = {}
+            get = False
+            for k in list(inpt):
+                try: inpt[k] = inpt[k].tolist()
+                except AttributeError: pass
+
+                try: x[k] = inpt[k].pop()
+                except AttributeError: x[k] = inpt[k]
+                except IndexError: pass
+
+                if k not in x: continue
+
+                try: x[k] = x[k].item()
+                except AttributeError: pass
+
+                try: len(x[k])
+                except TypeError: get = True
+
+            if len(x) == 0: break
+            if not get: self.__interpret__ = x
+            else:
                 p = self.clone
-                x = { k : setattr(p, k, inpt[k]) for k in inpt }
+                p.__setstate__(x)
                 p._init = True
                 self.Children.append(p)
-                break
-            except IndexError: break
 
     @property
     def clone(self):
@@ -291,7 +293,8 @@ cdef class ParticleTemplate(object):
         return self._state
 
     @_init.setter
-    def _init(self, bool val): self._state = val
+    def _init(self, bool val): 
+        self._state = val
 
     @property
     def LeptonicDecay(self):

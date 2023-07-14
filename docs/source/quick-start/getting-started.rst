@@ -74,18 +74,32 @@ Within the **event.py** file, simply use the **EventTemplate** and add a few dec
             self.Objects = {
                 "ArbitraryParticleName" : CustomParticle()
             }
+
             # Event luminosity which is used for computing the 
             # integrated luminosity for a sum of events.
-            self.weight = 1
+            self.weight = 1 # can be hard coded like this or assigned a string 
 
         def CompileEvent(self):
             # Particle names defined in self.Objects will appear 
             # in this code segment as self.<Some Random Name>.
             # For example; 
-            print(self.ArbitraryParticleName)
+            for i in self.ArbitraryParticleName:
+                self.ArbitraryParticleName[k].pt
             # returns a dictionary of particles in the event.
-	    	
+
             # ... <Some Compiler Logic - Particle Matching etc.>
+
+
+An In-depth Explanation Of EventTemplate
+****************************************
+Unlike the **ParticleTemplate**, the **EventTemplate** contains much more logic and adjustable parameters.
+The most import attributes are the **Objects**, **Tree** and **Branches**, where the former is a dictionary specifying the particles to be used in the event and the latter being lists of string indicating the tree/branch to scan through. 
+Content defined in the **Object** dictionary is used to generated the same number of particles in the event as there are in the ROOT leaf entry for that event. 
+Furthermore, even if the leaf is a branch where the content is a nested **std::vector**, the framework will assume the sum of those particles. 
+For example, if the leaf content has a length of 3, and it is a nested **std::vector** of length 4, then 12 particles will be generated. 
+
+
+
 
 .. toctree:: 
    particles
