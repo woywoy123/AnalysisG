@@ -91,6 +91,8 @@ cdef class ParticleTemplate(object):
     def __interpret__(self, dict inpt):
         cdef str k
         cdef dict x
+        cdef bool index
+        cdef bool attr
 
         try:
             inpt = {k : inpt[self._leaves[k]] for k in self._leaves}
@@ -100,7 +102,17 @@ cdef class ParticleTemplate(object):
             except: pass
 
         while True:
-            try: self.__interpret__ = {k : inpt[k].pop() for k in inpt}
+            try: 
+                x = {}
+                end = False
+                attr = False
+                for k in inpt: 
+                    try: x[k] = inpt[k].pop()
+                    except AttributeError: attr = True
+                    except IndexError: end = True
+                self.__interpret__ = x
+                if attr: raise AttributeError
+                if end: raise IndexError
             except AttributeError:
                 p = self.clone
                 x = { k : setattr(p, k, inpt[k]) for k in inpt }

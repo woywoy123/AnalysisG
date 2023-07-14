@@ -37,7 +37,55 @@ A very simple example would look like the following code.
 
 An In-depth Explanation Of ParticleTemplate
 *******************************************
-placeholder 
+The idea behind the **ParticleTemplate** class is that the user specifies the ROOT leaf strings for each particle, such that arbitrary names can be assigned to attributes. 
+With the exception of some magic attributes (more on this later), attributes can be assigned to arbitrary string within the ROOT samples.
+In the back-end, the framework will scan these attribute strings and check whether they are present within the ROOT samples. 
+One might wonder why in the above example no tree or branch declaration was made, this is because this will be assigned by the **Event** implementation. 
+This approach allows one to define particle classes once and recycle the code for different trees or branches. 
+
+Event Definitions
+*****************
+To create an event implementation, simply navigate to the **Event** folder and create a new python file called for example, **event.py**. 
+Similar to the **particle.py** case, the name of the file can be completely arbitrary. 
+Within the **event.py** file, simply use the **EventTemplate** and add a few declarations, as below:
+
+.. code-block:: python 
+   :caption: A simple Event
+
+    import sys 
+    sys.path.append("../Particles")
+    from particles import CustomParticle
+    from AnalysisG.Templates import EventTemplate
+
+    class CustomEvent(EventTemplate):
+        def __init__(self):
+            EventTemplate.__init__(self)
+
+            self.Type = "Event"
+            self.runNumber = self.Type + ".Number" # <--- Example event leaf variable
+
+            # Specify the trees you want to use for each event.
+            self.Tree = ["nominal", "..."] 
+
+            # If there are any relevant branches add these as well.
+            self.Branches = ["Particle"] 
+
+            # Add particles/additional objects constituting the event
+            self.Objects = {
+                "ArbitraryParticleName" : CustomParticle()
+            }
+            # Event luminosity which is used for computing the 
+            # integrated luminosity for a sum of events.
+            self.weight = 1
+
+        def CompileEvent(self):
+            # Particle names defined in self.Objects will appear 
+            # in this code segment as self.<Some Random Name>.
+            # For example; 
+            print(self.ArbitraryParticleName)
+            # returns a dictionary of particles in the event.
+	    	
+            # ... <Some Compiler Logic - Particle Matching etc.>
 
 .. toctree:: 
    particles
