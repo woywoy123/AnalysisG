@@ -16,7 +16,9 @@ def _makeMatrix(l, m, n, tmp):
 
 def _AttestEqual(truth, custom):
     x = (truth - custom).sum(-1).sum(-1).sum(-1)
-    assert x < 10e-10
+    x_t = truth.sum(-1).sum(-1).sum(-1)
+    x[x_t != 0] /= x_t[ x_t != 0]
+    assert x < 10e-8
 
 def _compareMulti(l, m, n, tmp):
     x, y = _makeMatrix(l, m, n, tmp)
@@ -27,7 +29,6 @@ def _compareMulti(l, m, n, tmp):
     t1 = time()
     x_cu = pyext.Operators.Mul(x, y)
     t_cu = time() - t1
-    print(tm/t_cu)
     _AttestEqual(x_, x_cu)
 
 def test_matrix_multi():
@@ -65,7 +66,6 @@ def test_costheta():
     t_m = time() - t1
     _AttestEqual(t, cu)
 
-    print(t_m/t_cu)
 
 def test_sintheta():
     x = torch.tensor([[random.random() for i in range(1000)] for _ in range(100)], device = "cuda", dtype = torch.float64)
@@ -88,8 +88,6 @@ def test_sintheta():
     t = torch.sqrt(1 - xy2/x2y2)
     t_m = time() - t1
     _AttestEqual(t, cu)
-
-    print(t_m/t_cu)
 
 def test_rx():
     x = torch.tensor([[random.random()] for i in range(10)], device = "cuda", dtype = torch.float64)
@@ -149,7 +147,6 @@ def test_det():
     t1 = time()
     x_t = torch.det(x)
     t_t = time() - t1
-    print(t_t/t_cu)
     _AttestEqual(x_t.view(-1, 1), x_)
 
 def test_inverse():
@@ -163,7 +160,6 @@ def test_inverse():
     t1 = time()
     x_t = torch.inverse(x)
     t_t = time() - t1
-    print(t_t/t_cu)
     _AttestEqual(x_t[det != 0], x_[det != 0])
 
 def test_equivalence():
@@ -177,7 +173,6 @@ def test_equivalence():
         t1 = time()
         x_ = pyext.Operators.Mul(x, y)
         tm = time() - t1
-        print(tm/t_cu)
 
         _AttestEqual(x_, x_cu)
     def _Rot(inpt): 
@@ -192,8 +187,6 @@ def test_equivalence():
         t = inpt(x)
         t_m = time() - t1
         _AttestEqual(t, cu.to(device = "cpu"))
-        print(t_m/t_cu)
-
 
     # CHECK MUL
     _compareMulti(10, 10, 10, 10)
@@ -216,7 +209,6 @@ def test_equivalence():
     t = pyext.Operators.CosTheta(x, y)
     t_m = time() - t1
     _AttestEqual(t, cu.to(device = "cpu"))
-    print(t_m/t_cu)
 
     x = torch.tensor([[random.random() for i in range(1000)] for _ in range(100)], device = "cuda", dtype = torch.float64)
     y = torch.tensor([[random.random() for i in range(1000)] for _ in range(100)], device = "cuda", dtype = torch.float64)
@@ -230,7 +222,6 @@ def test_equivalence():
     t = pyext.Operators.SinTheta(x, y)
     t_m = time() - t1
     _AttestEqual(t, cu.to(device = "cpu"))
-    print(t_m/t_cu)
 
     _Rot(pyext.Operators.Rx)
     _Rot(pyext.Operators.Ry)

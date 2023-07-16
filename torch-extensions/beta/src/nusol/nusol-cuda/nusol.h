@@ -1,5 +1,3 @@
-#include <operators.h>
-
 #ifndef H_NUSOL_CUDA
 #define H_NUSOL_CUDA
 
@@ -11,6 +9,8 @@ torch::Tensor _Base_Matrix_H(torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::T
 
 torch::Tensor _DotMatrix(torch::Tensor MET_xy, torch::Tensor Sigma, torch::Tensor H);
 torch::Tensor _Intersection(torch::Tensor A, torch::Tensor B); 
+
+torch::Tensor _Nu(torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Tensor met_xy, torch::Tensor masses, torch::Tensor sigma); 
 
 namespace NuSol
 {
@@ -31,11 +31,7 @@ namespace NuSol
                 torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Tensor MET_xy, 
                 torch::Tensor masses, torch::Tensor sigma)
         {
-            torch::Tensor H = _Base_Matrix_H(pmc_b, pmc_mu, masses); 
-            torch::Tensor shape = _Shape_Matrix(H, {0, 0, 1});
-            sigma = _Expand_Matrix(H, sigma.view({-1, 2, 2})) + shape; 
-            sigma = Operators::CUDA::Inverse(sigma) - shape;
-            return _DotMatrix(MET_xy, H, sigma); 
+            return _Nu(pmc_b, pmc_mu, MET_xy, masses, sigma); 
         }
     }
 }

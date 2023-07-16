@@ -19,7 +19,7 @@ else()
 endif()
 
 find_package(Python REQUIRED COMPONENTS Development)
-find_package(pybind11 REQUIRED)
+#find_package(pybind11 REQUIRED)
 find_package(Torch REQUIRED)
 
 add_subdirectory(transform)
@@ -32,8 +32,8 @@ if(CMAKE_CUDA_COMPILER)
     install(TARGETS pyc_cuda DESTINATION ${SKBUILD_PROJECT_NAME})
 endif()
 
-install(TARGETS pyc_tensor DESTINATION ${SKBUILD_PROJECT_NAME})
-install(TARGETS pyc_float  DESTINATION ${SKBUILD_PROJECT_NAME})
+#install(TARGETS pyc_tensor DESTINATION ${SKBUILD_PROJECT_NAME})
+#install(TARGETS pyc_float  DESTINATION ${SKBUILD_PROJECT_NAME})
 
 # Configure the Python package directory 
 install(DIRECTORY DESTINATION ${SKBUILD_PROJECT_NAME}/Transform)

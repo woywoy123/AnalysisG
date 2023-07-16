@@ -206,8 +206,81 @@ torch::Tensor _Intersection(torch::Tensor A, torch::Tensor B)
     })); 
     torch::Tensor x; 
     x = Operators::CUDA::Inverse(A);
-    x = Operators::CUDA::Dot(x, B);  
+    x = Operators::CUDA::Mul(x, B);
+    x = torch::linalg::eigvals(x); 
+    
+    const unsigned int dim_eig = x.size(-1); 
+    torch::TensorOptions op = torch::TensorOptions().dtype(torch::kBool).device(x.device());
+    torch::Tensor msk = torch::zeros({dim_i, dim_eig}, op); 
+    torch::Tensor G = torch::zeros({dim_i, dim_eig, 3, 3}, _MakeOp(det_A)); 
+
+    const dim3 blk_ = BLOCKS(threads, dim_i, 9, dim_eig); 
+    AT_DISPATCH_ALL_TYPES_AND_COMPLEX(x.scalar_type(), "imaginary", ([&]
+    {
+        _imagineK<scalar_t><<< blk_, threads >>>(
+            G.packed_accessor64<scalar_t, 4, torch::RestrictPtrTraits>(), 
+            //msk.packed_accessor64<bool, 2, torch::RestrictPtrTraits>(), 
+            x.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+            //A.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+            //B.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+            dim_eig, dim_i); 
+    }));  
+
+
+
+
     return x; 
 }
+
+
+
+
+
+
+
+
+torch::Tensor _Nu(
+        torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Tensor met_xy, 
+        torch::Tensor masses, torch::Tensor sigma)
+{
+    torch::Tensor H = _Base_Matrix_H(pmc_b, pmc_mu, masses); 
+    torch::Tensor shape = _Shape_Matrix(H, {0, 0, 1});
+    sigma = _Expand_Matrix(H, sigma.view({-1, 2, 2})) + shape; 
+    sigma = Operators::CUDA::Inverse(sigma) - shape;
+    torch::Tensor X = _DotMatrix(met_xy, H, sigma); 
+    
+    const unsigned int dim_i = sigma.size(0); 
+    const unsigned int threads = 1024; 
+    const dim3 blk = BLOCKS(threads, dim_i, 3, 3); 
+    AT_DISPATCH_FLOATING_TYPES(sigma.scalar_type(), "derivative", ([&]
+    {
+        _DerivativeK<scalar_t><<< blk, threads >>>(
+            sigma.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+            X.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+            dim_i); 
+    })); 
+
+    sigma = Operators::CUDA::Mul(X, sigma); 
+
+    AT_DISPATCH_FLOATING_TYPES(sigma.scalar_type(), "derivative", ([&]
+    {
+        _transSumK<scalar_t><<< blk, threads >>>(
+            shape.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+            sigma.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+            dim_i); 
+    })); 
+
+    return shape; 
+}
+
+
+
+
+
+
+
+
+
+
 
 #endif

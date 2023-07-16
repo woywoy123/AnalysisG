@@ -1,4 +1,4 @@
-from nusol import NuSol, costheta, intersections_ellipses, UnitCircle
+from nusol import NuSol, costheta, intersections_ellipses, UnitCircle, Derivative
 import pyext
 import torch
 import numpy as np
@@ -35,7 +35,7 @@ def test_nusol_nu():
         x_ = next(ita)
         ev, lep, bquark = x_[0], x_[1], x_[2]
         nu = NuSol(bquark.vec, lep.vec, ev.vec)
-        lst.append(torch.tensor(nu.X).view(-1, 3, 3))
+        lst.append(torch.tensor(nu.M).view(-1, 3, 3))
 
         lep_ = pyext.Transform.PxPyPzE(lep.ten)
         bquark_ = pyext.Transform.PxPyPzE(bquark.ten)
@@ -61,12 +61,21 @@ def test_intersection():
         x_ = next(ita)
         ev, lep, b = x_[0], x_[1], x_[2]
         nu = NuSol(b.vec, lep.vec, ev.vec)
-        print(intersections_ellipses(nu.M, UnitCircle()))
 
+        unit = UnitCircle()
+        intersections_ellipses(nu.M, unit)
+
+        unit = torch.tensor(unit, device = "cuda", dtype = torch.float64)
         lep_ = pyext.Transform.PxPyPzE(lep.ten)
-        bquark_ = pyext.Transform.PxPyPzE(bquark.ten)
-        pred = pyext.NuSol.Nu(bquark_, lep_, ev.ten, masses, S2)
-        #print(pyext.NuSol.Intersection(
+        bquark_ = pyext.Transform.PxPyPzE(b.ten)
+        M = pyext.NuSol.Nu(bquark_, lep_, ev.ten, masses, S2)
+        inter = pyext.Intersection(M, unit.view(-1, 3, 3))
+        print(inter)
+
+        #print(torch.real(inter))
+        #print(torch.isreal(inter))
+#        print(torch.gather(torch.isreal(inter
+
         sleep(1)
 
 if __name__ == "__main__":

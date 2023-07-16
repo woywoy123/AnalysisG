@@ -143,6 +143,35 @@ __global__ void _V0_deltaK(
 } 
 
 template <typename scalar_t>
+__global__ void _DerivativeK(
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> out, 
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> X, 
+        const unsigned int dim_i)
+{
+    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    const unsigned int idy = blockIdx.y; 
+    const unsigned int idz = blockIdx.z; 
+    if ( idx >= dim_i || idy >= 3 || idz >= 3 ){ return; }
+    out[idx][idy][idz] = 0; 
+    if (idy == 2 || idz == 2){ return; }
+    _pihalf(out[idx][idy][idz]);  
+    _rz(out[idx][idy][idz], out[idx][idy][idz], idy, idz); 
+}
+
+template <typename scalar_t>
+__global__ void _transSumK(
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> out, 
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> in, 
+        const unsigned int dim_i)
+{
+    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    const unsigned int idy = blockIdx.y; 
+    const unsigned int idz = blockIdx.z; 
+    if ( idx >= dim_i || idy >= 3 || idz >= 3 ){ return; }
+    out[idx][idy][idz] = in[idx][idy][idz] + in[idx][idz][idy]; 
+}
+
+template <typename scalar_t>
 __global__ void _SwapAB_K(
         torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> DetA, 
         torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> DetB,
@@ -156,3 +185,28 @@ __global__ void _SwapAB_K(
     if (idx >= dim_i || idy >= 3 || idz >= 3){ return; }
     _swapAB(A[idx][idy][idz], B[idx][idy][idz], DetA[idx][0], DetB[idx][0]); 
 } 
+
+template <typename scalar_t>
+__global__ void _imagineK(
+        torch::PackedTensorAccessor64<scalar_t, 4, torch::RestrictPtrTraits> out,
+        //torch::PackedTensorAccessor<bool, 2, torch::RestrictPtrTraits> msk,
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> eigs,   
+        //const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> A, 
+        //const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> B, 
+        const unsigned int dim_eig, const unsigned int dim_i)
+{
+    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    const unsigned int idy = blockIdx.y%3; 
+    const unsigned int idz = blockIdx.y/3; 
+    const unsigned int id_eig = blockIdx.z; 
+    if ( idx >= dim_i || idy >= 3 || id_eig >= dim_eig ){ return; }
+     
+
+
+
+
+
+
+
+
+}

@@ -30,7 +30,7 @@ build-dir = "build"
 wheel.license-files = []
 minimum-version = "0.2"
 logging.level = "INFO"
-ninja.make-fallback = false
+ninja.make-fallback = true
 
 [tool.scikit-build.cmake]
 minimum-version = "3.15"

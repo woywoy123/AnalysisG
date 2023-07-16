@@ -94,16 +94,10 @@ def intersections_ellipses(A, B, returnLines=False):
     LA = np.linalg
     if abs(LA.det(B)) > abs(LA.det(A)):
         A, B = B, A
-    print(A)
-    print(B)
-    x = LA.inv(A).dot(B)
-    if LA.det(x) == 0: return
-    print(x)
-    x = LA.eigvals(x)
-    print(x)
-    exit()
-
+    print(LA.eigvals(LA.inv(A).dot(B)))
     e = next(e.real for e in LA.eigvals(LA.inv(A).dot(B)) if not e.imag)
+    print(e)
+    return e
     lines = factor_degenerate(B - e * A)
     points = sum([intersections_ellipse_line(A, L) for L in lines], [])
     diag = sum([intersections_diagonal_number(A, L) for L in lines], [])
