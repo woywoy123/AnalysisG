@@ -77,6 +77,8 @@ def factor_degenerate(G, zero=0):
     swapXY = abs(G[0, 0]) > abs(G[1, 1])
     Q = G[(1, 0, 2),][:, (1, 0, 2)] if swapXY else G
     Q /= Q[1, 1]
+    print(cofactor(Q, 0, 0), cofactor(Q, 0, 2), cofactor(Q, 1, 2), cofactor(Q, 2, 2))
+    return
     q22 = cofactor(Q, 2, 2)
     if -q22 <= zero:
         lines = [[Q[0, 1], Q[1, 1], Q[1, 2] + s] for s in multisqrt(-cofactor(Q, 0, 0))]
@@ -94,11 +96,9 @@ def intersections_ellipses(A, B, returnLines=False):
     LA = np.linalg
     if abs(LA.det(B)) > abs(LA.det(A)):
         A, B = B, A
-    print(LA.eigvals(LA.inv(A).dot(B)))
     e = next(e.real for e in LA.eigvals(LA.inv(A).dot(B)) if not e.imag)
-    print(e)
-    return e
     lines = factor_degenerate(B - e * A)
+    return  
     points = sum([intersections_ellipse_line(A, L) for L in lines], [])
     diag = sum([intersections_diagonal_number(A, L) for L in lines], [])
     return points, diag  # (points,lines) if returnLines else points

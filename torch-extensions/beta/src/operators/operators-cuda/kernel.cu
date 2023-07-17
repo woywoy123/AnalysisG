@@ -145,8 +145,8 @@ __global__ void _CoFactorK(
     const unsigned int idy = blockIdx.y; 
     const unsigned int idz = blockIdx.z; 
     if (idx >= dim_x || idy >= dim_y || idz  >= 3){return;}
-    const unsigned int _y[] = {1, 1, 2, 2, 0, 0, 2, 2, 0, 0, 1, 1}; 
-    const unsigned int _z[] = {1, 2, 1, 2, 0, 2, 0, 2, 0, 1, 0, 1}; 
+    const unsigned int _y[12] = {1, 1, 2, 2, 0, 0, 2, 2, 0, 0, 1, 1}; 
+    const unsigned int _z[12] = {1, 2, 1, 2, 0, 2, 0, 2, 0, 1, 0, 1}; 
     const unsigned int idy_ = idy*4; 
     const unsigned int idz_ = idz*4; 
     _det(

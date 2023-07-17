@@ -26,19 +26,22 @@ __device__ __forceinline__ scalar_t _w(const scalar_t &beta_mu, const scalar_t &
 }
 
 template <typename scalar_t>
-__device__ __forceinline__ scalar_t _omega2(const scalar_t &w, const scalar_t &mu_beta2)
+__device__ __forceinline__ scalar_t _omega2(
+        const scalar_t &w, const scalar_t &mu_beta2)
 {
     return w*w + 1 - mu_beta2; 
 }
 
 template <typename scalar_t>
-__device__ __forceinline__ scalar_t _epsilon2(const scalar_t &mass2_W, const scalar_t &mass2_nu, const scalar_t &beta2_mu)
+__device__ __forceinline__ scalar_t _epsilon2(
+        const scalar_t &mass2_W, const scalar_t &mass2_nu, const scalar_t &beta2_mu)
 {
     return (mass2_W - mass2_nu)*(1 - beta2_mu); 
 }
 
 template <typename scalar_t>
-__device__ __forceinline__ scalar_t _coef(const scalar_t &Sx, const scalar_t &Sy, const scalar_t &w, const scalar_t &Omega2)
+__device__ __forceinline__ scalar_t _coef(
+        const scalar_t &Sx, const scalar_t &Sy, const scalar_t &w, const scalar_t &Omega2)
 {
     return (Sx + w*Sy)/Omega2; 
 }
@@ -61,7 +64,8 @@ __device__ __forceinline__ void _pihalf(scalar_t &theta)
 }
 
 template <typename scalar_t>
-__device__ __forceinline__ void _swapAB(scalar_t &A, scalar_t &B, const scalar_t &DetA, const scalar_t &DetB)
+__device__ __forceinline__ void _swapAB(
+        scalar_t &A, scalar_t &B, const scalar_t &DetA, const scalar_t &DetB)
 {
     scalar_t a = A; 
     scalar_t b = B; 
@@ -71,3 +75,19 @@ __device__ __forceinline__ void _swapAB(scalar_t &A, scalar_t &B, const scalar_t
         B = a; 
     }
 }
+
+__device__ __forceinline__ void _imageG(double &G, 
+        double const &A, double const &B, const double &rel, const double &img)
+{
+    if (img != 0){ return; }
+    G = B - rel*A; 
+}
+
+__device__ __forceinline__ double _det( 
+        const double &a, const double &b, const double &c, const double &d)
+{
+    return a*d - c*b; 
+}
+
+
+

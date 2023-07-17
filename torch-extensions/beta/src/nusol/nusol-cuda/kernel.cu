@@ -1,7 +1,7 @@
 #include <torch/torch.h>
+#include <cmath>
 #include "nusol.cu"
 #include "operators.cu"
-#include <cmath>
 
 template <typename scalar_t>
 __global__ void _ShapeKernel(
@@ -188,25 +188,80 @@ __global__ void _SwapAB_K(
 
 template <typename scalar_t>
 __global__ void _imagineK(
-        torch::PackedTensorAccessor64<scalar_t, 4, torch::RestrictPtrTraits> out,
-        //torch::PackedTensorAccessor<bool, 2, torch::RestrictPtrTraits> msk,
-        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> eigs,   
-        //const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> A, 
-        //const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> B, 
+        torch::PackedTensorAccessor64<double, 4, torch::RestrictPtrTraits> G,
+        const torch::PackedTensorAccessor64<double, 3, torch::RestrictPtrTraits> A,
+        const torch::PackedTensorAccessor64<double, 3, torch::RestrictPtrTraits> B,
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> eigs, 
         const unsigned int dim_eig, const unsigned int dim_i)
 {
     const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
     const unsigned int idy = blockIdx.y%3; 
     const unsigned int idz = blockIdx.y/3; 
     const unsigned int id_eig = blockIdx.z; 
-    if ( idx >= dim_i || idy >= 3 || id_eig >= dim_eig ){ return; }
-     
-
-
-
-
-
-
-
-
+    if ( idx >= dim_i || idy >= 3 || idz >= 3 || id_eig >= dim_eig ){ return; }
+    const c10::complex<double> cmplx = eigs[idx][id_eig];
+    _imageG(G[idx][id_eig][idy][idz], A[idx][idy][idz], B[idx][idy][idz], cmplx.real(), cmplx.imag()); 
 }
+
+template <typename scalar_t>
+__global__ void _degenerateK(
+        torch::PackedTensorAccessor64<double, 4, torch::RestrictPtrTraits> L,
+        const torch::PackedTensorAccessor64<double, 4, torch::RestrictPtrTraits> G,
+        const unsigned int dim_eig, const unsigned int dim_i, 
+        unsigned int* sy, unsigned int* sz)
+{
+
+    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    const unsigned int idy = blockIdx.y%3; 
+    const unsigned int idz = blockIdx.y/3; 
+    const unsigned int id_eig = blockIdx.z; 
+
+    if ( idx >= dim_i || blockIdx.y >= 9 || id_eig >= dim_eig ){ return; }
+
+    const bool _dg = G[idx][id_eig][0][0] == 0 && G[idx][id_eig][1][1] == 0; 
+    if (_dg && idy == 2){ return; }
+    if (_dg && idy == 0)
+    {
+        if (idz == 0){ L[idx][id_eig][idy][idz] = G[idx][id_eig][0][1]; }
+        else if (idz == 1){ L[idx][id_eig][idy][idz] = 0; }
+        else if (idz == 2){ L[idx][id_eig][idy][idz] = G[idx][id_eig][1][2]; }
+        return; 
+    }
+    
+    if (_dg && idy == 1)
+    {
+        if (idz == 0){ L[idx][id_eig][idy][idz] = 0; }
+        else if (idz == 1){ L[idx][id_eig][idy][idz] = G[idx][id_eig][0][1]; }
+        else if (idz == 2){ L[idx][id_eig][idy][idz] = G[idx][id_eig][0][2] - G[idx][id_eig][1][2]; }
+        return; 
+    }
+
+    const bool _swp = abs(G[idx][id_eig][0][0]) > abs(G[idx][id_eig][1][1]); 
+    const unsigned int _o = (_swp) ? 0 : 9; 
+    double _l   = G[idx][id_eig][sy[blockIdx.y + _o]][sz[blockIdx.y + _o]]; 
+    double _l11 = G[idx][id_eig][sy[_o + 4]][sz[_o + 4]]; 
+    L[idx][id_eig][idy][idz] =  _l / _l11; 
+}
+
+template <typename scalar_t>
+__global__ void _CoFactorK(
+        torch::PackedTensorAccessor64<double, 4, torch::RestrictPtrTraits> G, 
+        torch::PackedTensorAccessor64<double, 4, torch::RestrictPtrTraits> L, 
+        const unsigned int dim_eig, const unsigned int dim_i,
+        unsigned int* dy, unsigned int* dz)
+{
+
+    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    const unsigned int idy = (blockIdx.y%3)*4; 
+    const unsigned int idz = (blockIdx.y/3)*4; 
+    const unsigned int id_eig = blockIdx.z; 
+    if ( idx >= dim_i || blockIdx.y >= 9 || id_eig >= dim_eig ){ return; }
+    
+    G[idx][id_eig][blockIdx.y%3][blockIdx.y/3] = _det(
+            L[idx][id_eig][dy[idy  ]][dz[idz  ]], L[idx][id_eig][dy[idy+1]][dz[idz+1]], 
+            L[idx][id_eig][dy[idy+2]][dz[idz+2]], L[idx][id_eig][dy[idy+3]][dz[idz+3]]);
+    if ((blockIdx.y%3+blockIdx.y/3)%2 == 1){ G[idx][id_eig][blockIdx.y%3][blockIdx.y/3] *= -1; }
+}
+
+
+

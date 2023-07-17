@@ -204,32 +204,80 @@ torch::Tensor _Intersection(torch::Tensor A, torch::Tensor B)
                 B.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
                 dim_i); 
     })); 
-    torch::Tensor x; 
-    x = Operators::CUDA::Inverse(A);
-    x = Operators::CUDA::Mul(x, B);
-    x = torch::linalg::eigvals(x); 
+    torch::Tensor imag; 
+    imag = Operators::CUDA::Inverse(A);
+    imag = Operators::CUDA::Mul(imag, B);
+    imag = torch::linalg::eigvals(imag); 
     
-    const unsigned int dim_eig = x.size(-1); 
-    torch::TensorOptions op = torch::TensorOptions().dtype(torch::kBool).device(x.device());
-    torch::Tensor msk = torch::zeros({dim_i, dim_eig}, op); 
-    torch::Tensor G = torch::zeros({dim_i, dim_eig, 3, 3}, _MakeOp(det_A)); 
-
+    const unsigned int dim_eig = imag.size(-1); 
     const dim3 blk_ = BLOCKS(threads, dim_i, 9, dim_eig); 
-    AT_DISPATCH_ALL_TYPES_AND_COMPLEX(x.scalar_type(), "imaginary", ([&]
+    const torch::TensorOptions op = _MakeOp(A); 
+    torch::Tensor G = torch::zeros({dim_i, dim_eig, 3, 3}, op); 
+    torch::Tensor L = torch::zeros({dim_i, dim_eig, 3, 3}, op); 
+
+
+    unsigned int size_swap = sizeof(unsigned int)*18; 
+    unsigned int size_det  = sizeof(unsigned int)*12;
+
+    // Oh the joy of C++.....
+    unsigned int *sy, *sz, *dy, *dz;
+
+    unsigned int _y[18] = {
+        1, 1, 1, 0, 0, 0, 2, 2, 2, 
+        0, 0, 0, 1, 1, 1, 2, 2, 2
+    };
+
+    unsigned int _z[18] = {
+        1, 0, 2, 1, 0, 2, 1, 0, 2, 
+        0, 1, 2, 0, 1, 2, 0, 1, 2
+    }; 
+
+    unsigned int _dy[12] = {
+        1, 1, 2, 2, 
+        0, 0, 2, 2, 
+        0, 0, 1, 1
+    }; 
+
+    unsigned int _dz[12] = {
+        1, 2, 1, 2, 
+        0, 2, 0, 2, 
+        0, 1, 0, 1
+    }; 
+
+    cudaMalloc(&sy, size_swap); 
+    cudaMalloc(&sz, size_swap); 
+    cudaMalloc(&dy, size_det); 
+    cudaMalloc(&dz, size_det); 
+    cudaMemcpy(sy, &_y , size_swap, cudaMemcpyHostToDevice); 
+    cudaMemcpy(sz, &_z , size_swap, cudaMemcpyHostToDevice); 
+    cudaMemcpy(dy, &_dy, size_det , cudaMemcpyHostToDevice); 
+    cudaMemcpy(dz, &_dz, size_det , cudaMemcpyHostToDevice); 
+
+    AT_DISPATCH_FLOATING_AND_COMPLEX_TYPES(imag.scalar_type(), "imaginary", ([&]
     {
         _imagineK<scalar_t><<< blk_, threads >>>(
-            G.packed_accessor64<scalar_t, 4, torch::RestrictPtrTraits>(), 
-            //msk.packed_accessor64<bool, 2, torch::RestrictPtrTraits>(), 
-            x.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
-            //A.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-            //B.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+            G.packed_accessor64<double, 4, torch::RestrictPtrTraits>(), 
+            A.packed_accessor64<double, 3, torch::RestrictPtrTraits>(), 
+            B.packed_accessor64<double, 3, torch::RestrictPtrTraits>(), 
+            imag.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
             dim_eig, dim_i); 
+        
+        _degenerateK<scalar_t><<< blk_, threads >>>(
+            L.packed_accessor64<double, 4, torch::RestrictPtrTraits>(), 
+            G.packed_accessor64<double, 4, torch::RestrictPtrTraits>(), 
+            dim_eig, dim_i, sy, sz); 
+
+        _CoFactorK<scalar_t><<< blk_, threads >>>(
+            G.packed_accessor64<double, 4, torch::RestrictPtrTraits>(), 
+            L.packed_accessor64<double, 4, torch::RestrictPtrTraits>(), 
+            dim_eig, dim_i, dy, dz); 
     }));  
 
-
-
-
-    return x; 
+    cudaFree(sy); 
+    cudaFree(sz); 
+    cudaFree(dy); 
+    cudaFree(dz); 
+    return G; 
 }
 
 
