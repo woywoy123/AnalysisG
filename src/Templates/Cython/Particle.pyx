@@ -26,15 +26,16 @@ cdef class ParticleTemplate(object):
     def __dealloc__(self):
         del self.ptr
 
-    def __add__(self, other) -> ParticleTemplate:
-        if isinstance(self, int): return other
-        if isinstance(other, int): return self
+    def __add__(ParticleTemplate self, ParticleTemplate other) -> ParticleTemplate:
+        cdef ParticleTemplate _p = self.clone
+        _p.ptr[0] += self.ptr[0]
+        _p.ptr[0] += other.ptr[0]
+        return _p
 
-        cdef ParticleTemplate s = self
-        cdef ParticleTemplate o = other
-        cdef ParticleTemplate p = self.clone
-        p.ptr[0] = s.ptr[0] + o.ptr[0]
-        return p
+    def __radd__(ParticleTemplate self, other) -> ParticleTemplate:
+        if not issubclass(other.__class__, ParticleTemplate):
+            return self.__add__(self.clone)
+        return self.__add__(other)
 
     def __eq__(self, other) -> bool:
         if not issubclass(other.__class__, ParticleTemplate): return False
@@ -89,7 +90,7 @@ cdef class ParticleTemplate(object):
 
     @__interpret__.setter
     def __interpret__(self, dict inpt):
-        cdef str k 
+        cdef str k
         cdef dict x
         cdef bool get
 
@@ -206,7 +207,7 @@ cdef class ParticleTemplate(object):
     def phi(self, val: Union[str, float]):
         if isinstance(val, float): self.ptr.phi(<double> val)
         elif isinstance(val, str): self._leaves["phi"] = val
- 
+
     @property
     def e(self) -> double:
         return self.ptr.e()
@@ -225,7 +226,7 @@ cdef class ParticleTemplate(object):
         if isinstance(val, float): self.ptr.Mass(<double>val)
         elif isinstance(val, str): self._leaves["Mass"] = val
 
-    def DeltaR(ParticleTemplate self, ParticleTemplate other) -> double:
+    def DeltaR(self, ParticleTemplate other) -> float:
         return self.ptr.DeltaR(other.ptr[0])
 
     @property

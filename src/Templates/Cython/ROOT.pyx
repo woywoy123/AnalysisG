@@ -35,7 +35,8 @@ cdef class Event:
         self._index = -1
 
     def __init__(self): self._instance = []
-    def _wrap(self, val) -> None: 
+
+    def _wrap(self, val) -> None:
         self._instance.append(val)
         if self.index != -1: return 
         self.index = self.ptr.EventIndex
@@ -207,8 +208,7 @@ cdef class SampleTracer:
         return self.ptr.length
 
     def __add__(self, other) -> SampleTracer:
-        if isinstance(other, int): return self
-        if isinstance(self, int): return other
+        if not issubclass(other.__class__, SampleTracer): return self
         cdef SampleTracer s = self
         cdef SampleTracer o = other
         cdef SampleTracer t = self.clone
