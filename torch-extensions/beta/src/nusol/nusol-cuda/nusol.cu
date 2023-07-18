@@ -89,5 +89,22 @@ __device__ __forceinline__ double _det(
     return a*d - c*b; 
 }
 
+__device__ __forceinline__ double _qsub(
+        const double &q12, const double &coef00, const unsigned int &lim)
+{
+    if ( coef00 == 0 ){ return q12; }
+    if (lim == 0){ return q12 + sqrt(-coef00); }
+    return q12 - sqrt(-coef00); 
+}
+
+
+__device__ __forceinline__ double _qsub(
+        const double &q01, const double &q11,
+        const double &coef02, const double &coef12, const double &coef22,
+        const unsigned int &lim)
+{
+    return - (q11 * coef12 + _qsub(q01, coef22, lim) * coef02)/coef22; 
+}
+
 
 

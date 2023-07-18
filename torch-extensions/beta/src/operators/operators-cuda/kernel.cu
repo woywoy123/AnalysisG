@@ -139,23 +139,24 @@ template <typename scalar_t>
 __global__ void _CoFactorK(
         torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> out, 
         const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> mtx, 
-        const unsigned int dim_x, const unsigned int dim_y)
+        const unsigned int dim_x, const unsigned int dim_y, 
+        unsigned int* dy, unsigned int* dz)
 {
     const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
     const unsigned int idy = blockIdx.y; 
     const unsigned int idz = blockIdx.z; 
     if (idx >= dim_x || idy >= dim_y || idz  >= 3){return;}
-    const unsigned int _y[12] = {1, 1, 2, 2, 0, 0, 2, 2, 0, 0, 1, 1}; 
-    const unsigned int _z[12] = {1, 2, 1, 2, 0, 2, 0, 2, 0, 1, 0, 1}; 
     const unsigned int idy_ = idy*4; 
     const unsigned int idz_ = idz*4; 
+    
     _det(
             out[idx][idy][idz], 
-            mtx[idx][_y[idy_  ]][_z[idz_  ]], 
-            mtx[idx][_y[idy_+1]][_z[idz_+1]], 
-            mtx[idx][_y[idy_+2]][_z[idz_+2]], 
-            mtx[idx][_y[idy_+3]][_z[idz_+3]]
+            mtx[idx][dy[idy_  ]][dz[idz_  ]], 
+            mtx[idx][dy[idy_+1]][dz[idz_+1]], 
+            mtx[idx][dy[idy_+2]][dz[idz_+2]], 
+            mtx[idx][dy[idy_+3]][dz[idz_+3]]
     ); 
+
     if ((idy+idz)%2 == 1){ out[idx][idy][idz] *= -1; }
 }
 

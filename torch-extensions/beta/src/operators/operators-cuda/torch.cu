@@ -180,14 +180,37 @@ torch::Tensor _CoFactors(torch::Tensor matrix)
     torch::Tensor out = torch::zeros_like(matrix);
     CHECK_INPUT(matrix);  
 
+
+    unsigned int size = sizeof(unsigned int)*12; 
+    unsigned int *dy, *dz; 
+
+    unsigned int _dy[12] = {
+        1, 1, 2, 2, 
+        0, 0, 2, 2, 
+        0, 0, 1, 1
+    }; 
+
+    unsigned int _dz[12] = {
+        1, 2, 1, 2, 
+        0, 2, 0, 2, 
+        0, 1, 0, 1
+    }; 
+
+    cudaMalloc(&dy, size); 
+    cudaMalloc(&dz, size); 
+    cudaMemcpy(dy, &_dy, size, cudaMemcpyHostToDevice); 
+    cudaMemcpy(dz, &_dz, size, cudaMemcpyHostToDevice); 
+
     AT_DISPATCH_FLOATING_TYPES(matrix.scalar_type(), "Cofactor", ([&]
     {
         _CoFactorK<scalar_t><<< blk, threads >>>(
                 out.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
                 matrix.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-                x, 3); 
+                x, 3, dy, dz); 
     })); 
 
+    cudaFree(dy); 
+    cudaFree(dz); 
     return out; 
 }
 
@@ -199,12 +222,33 @@ torch::Tensor _Det(torch::Tensor matrix)
     const dim3 blk_ = BLOCKS(threads, x);
     torch::Tensor tmp = torch::zeros({x, 1, 3}, _MakeOp(matrix));
     torch::Tensor out = torch::zeros({x, 1}, _MakeOp(matrix));
+
+    unsigned int size = sizeof(unsigned int)*12; 
+    unsigned int *dy, *dz; 
+
+    unsigned int _dy[12] = {
+        1, 1, 2, 2, 
+        0, 0, 2, 2, 
+        0, 0, 1, 1
+    }; 
+
+    unsigned int _dz[12] = {
+        1, 2, 1, 2, 
+        0, 2, 0, 2, 
+        0, 1, 0, 1
+    }; 
+
+    cudaMalloc(&dy, size); 
+    cudaMalloc(&dz, size); 
+    cudaMemcpy(dy, &_dy, size, cudaMemcpyHostToDevice); 
+    cudaMemcpy(dz, &_dz, size, cudaMemcpyHostToDevice); 
+
     AT_DISPATCH_FLOATING_TYPES(matrix.scalar_type(), "Determinant", ([&]
     {
         _CoFactorK<scalar_t><<< blk, threads >>>(
                 tmp.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
                 matrix.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-                x, 1); 
+                x, 1, dy, dz); 
 
         _DetDotK<scalar_t><<< blk, threads >>>(
                 tmp.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
@@ -217,6 +261,9 @@ torch::Tensor _Det(torch::Tensor matrix)
                 tmp.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
                 x);
     })); 
+    
+    cudaFree(dy); 
+    cudaFree(dz); 
     return out; 
 }
 
@@ -230,12 +277,33 @@ torch::Tensor _Inv(torch::Tensor matrix)
     torch::Tensor coef = torch::zeros({x, 3, 3}, _MakeOp(matrix));
     torch::Tensor det = torch::zeros({x, 1}, _MakeOp(matrix));
     torch::Tensor out = torch::zeros({x, 3, 3}, _MakeOp(matrix));
+
+    unsigned int size = sizeof(unsigned int)*12; 
+    unsigned int *dy, *dz; 
+
+    unsigned int _dy[12] = {
+        1, 1, 2, 2, 
+        0, 0, 2, 2, 
+        0, 0, 1, 1
+    }; 
+
+    unsigned int _dz[12] = {
+        1, 2, 1, 2, 
+        0, 2, 0, 2, 
+        0, 1, 0, 1
+    }; 
+
+    cudaMalloc(&dy, size); 
+    cudaMalloc(&dz, size); 
+    cudaMemcpy(dy, &_dy, size, cudaMemcpyHostToDevice); 
+    cudaMemcpy(dz, &_dz, size, cudaMemcpyHostToDevice); 
+
     AT_DISPATCH_FLOATING_TYPES(matrix.scalar_type(), "Determinant", ([&]
     {
         _CoFactorK<scalar_t><<< blk, threads >>>(
                   coef.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
                 matrix.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-                x, 3); 
+                x, 3, dy, dz); 
 
         _DetDotK<scalar_t><<< blk__, threads >>>(
                    out.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
@@ -254,15 +322,9 @@ torch::Tensor _Inv(torch::Tensor matrix)
                 coef.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
                 x);
     })); 
+
+    cudaFree(dy); 
+    cudaFree(dz);  
     return out; 
 }
-
-
-
-
-
-
-
-
-
 #endif

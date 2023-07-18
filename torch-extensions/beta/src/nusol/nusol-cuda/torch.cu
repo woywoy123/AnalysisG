@@ -190,6 +190,7 @@ torch::Tensor _DotMatrix(torch::Tensor MET_xy, torch::Tensor H, torch::Tensor Sh
 
 torch::Tensor _Intersection(torch::Tensor A, torch::Tensor B)
 {
+    const double null = 0; 
     torch::Tensor det_A = Operators::CUDA::Determinant(A); 
     torch::Tensor det_B = Operators::CUDA::Determinant(B); 
     const unsigned int dim_i = det_A.size(0); 
@@ -213,8 +214,9 @@ torch::Tensor _Intersection(torch::Tensor A, torch::Tensor B)
     const dim3 blk_ = BLOCKS(threads, dim_i, 9, dim_eig); 
     const torch::TensorOptions op = _MakeOp(A); 
     torch::Tensor G = torch::zeros({dim_i, dim_eig, 3, 3}, op); 
-    torch::Tensor L = torch::zeros({dim_i, dim_eig, 3, 3}, op); 
-
+    torch::Tensor L = torch::zeros({dim_i, dim_eig, 3, 3}, op);
+    torch::Tensor O = torch::zeros({dim_i, dim_eig, 3, 3}, op);
+    torch::Tensor swp = torch::zeros({dim_i, dim_eig}, op.dtype(torch::kBool));  
 
     unsigned int size_swap = sizeof(unsigned int)*18; 
     unsigned int size_det  = sizeof(unsigned int)*12;
@@ -264,20 +266,29 @@ torch::Tensor _Intersection(torch::Tensor A, torch::Tensor B)
         
         _degenerateK<scalar_t><<< blk_, threads >>>(
             L.packed_accessor64<double, 4, torch::RestrictPtrTraits>(), 
+            swp.packed_accessor32<bool, 2, torch::RestrictPtrTraits>(), 
             G.packed_accessor64<double, 4, torch::RestrictPtrTraits>(), 
             dim_eig, dim_i, sy, sz); 
 
         _CoFactorK<scalar_t><<< blk_, threads >>>(
             G.packed_accessor64<double, 4, torch::RestrictPtrTraits>(), 
             L.packed_accessor64<double, 4, torch::RestrictPtrTraits>(), 
-            dim_eig, dim_i, dy, dz); 
+            dim_eig, dim_i, dy, dz);
+
+        _FactorizeK<scalar_t><<< blk_, threads >>>(
+            O.packed_accessor64<double, 4, torch::RestrictPtrTraits>(),  
+            L.packed_accessor64<double, 4, torch::RestrictPtrTraits>(), 
+            G.packed_accessor64<double, 4, torch::RestrictPtrTraits>(),
+            dim_eig, dim_i, null); 
+
+
     }));  
 
     cudaFree(sy); 
     cudaFree(sz); 
     cudaFree(dy); 
     cudaFree(dz); 
-    return G; 
+    return O; 
 }
 
 

@@ -16,29 +16,31 @@ if(CMAKE_CUDA_COMPILER)
     )
 endif()
 
-#add_library(pyc_tensor SHARED
-#    ${CMAKE_CURRENT_LIST_DIR}/pyc_tensors.h
-#    ${CMAKE_CURRENT_LIST_DIR}/pyc_tensors.cxx
-#)
-#
-#target_link_libraries(pyc_tensor 
-#    PUBLIC 
-#        ${TORCH_LIBRARIES} 
-#        pybind11::module
-#        physics-cartesian 
-#        physics-polar
-#        transform_ten
-#        operators-tensor
-#)
-#
-#add_library(pyc_float SHARED
-#    ${CMAKE_CURRENT_LIST_DIR}/pyc_floats.h
-#    ${CMAKE_CURRENT_LIST_DIR}/pyc_floats.cxx
-#)
-#
-#target_link_libraries(pyc_float 
-#    PUBLIC 
-#        ${TORCH_LIBRARIES} 
-#        pybind11::module
-#        transform_fl
-#)
+add_library(pyc_tensor SHARED
+    ${CMAKE_CURRENT_LIST_DIR}/pyc_tensors.h
+    ${CMAKE_CURRENT_LIST_DIR}/pyc_tensors.cxx
+)
+
+target_link_libraries(pyc_tensor 
+    PUBLIC 
+        ${TORCH_LIBRARIES} 
+        #pybind11::module
+        Python::Python
+        physics-cartesian 
+        physics-polar
+        transform_ten
+        operators-tensor
+)
+
+add_library(pyc_float SHARED
+    ${CMAKE_CURRENT_LIST_DIR}/pyc_floats.h
+    ${CMAKE_CURRENT_LIST_DIR}/pyc_floats.cxx
+)
+
+target_link_libraries(pyc_float 
+    PUBLIC 
+        ${TORCH_LIBRARIES} 
+        #pybind11::module
+        Python::Python
+        transform_fl
+)

@@ -206,6 +206,7 @@ __global__ void _imagineK(
 template <typename scalar_t>
 __global__ void _degenerateK(
         torch::PackedTensorAccessor64<double, 4, torch::RestrictPtrTraits> L,
+        torch::PackedTensorAccessor32<bool, 2, torch::RestrictPtrTraits> swps,
         const torch::PackedTensorAccessor64<double, 4, torch::RestrictPtrTraits> G,
         const unsigned int dim_eig, const unsigned int dim_i, 
         unsigned int* sy, unsigned int* sz)
@@ -236,11 +237,13 @@ __global__ void _degenerateK(
         return; 
     }
 
-    const bool _swp = abs(G[idx][id_eig][0][0]) > abs(G[idx][id_eig][1][1]); 
+    bool _swp = abs(G[idx][id_eig][0][0]) > abs(G[idx][id_eig][1][1]); 
+    if (idy == 0 && idz == 0){ swps[idx][id_eig] = _swp; }
     const unsigned int _o = (_swp) ? 0 : 9; 
     double _l   = G[idx][id_eig][sy[blockIdx.y + _o]][sz[blockIdx.y + _o]]; 
     double _l11 = G[idx][id_eig][sy[_o + 4]][sz[_o + 4]]; 
     L[idx][id_eig][idy][idz] =  _l / _l11; 
+    
 }
 
 template <typename scalar_t>
@@ -263,5 +266,59 @@ __global__ void _CoFactorK(
     if ((blockIdx.y%3+blockIdx.y/3)%2 == 1){ G[idx][id_eig][blockIdx.y%3][blockIdx.y/3] *= -1; }
 }
 
+template <typename scalar_t>
+__global__ void _FactorizeK(
+        torch::PackedTensorAccessor64<double, 4, torch::RestrictPtrTraits> O, 
+        torch::PackedTensorAccessor64<double, 4, torch::RestrictPtrTraits> Q, 
+        torch::PackedTensorAccessor64<double, 4, torch::RestrictPtrTraits> QCoef, 
+        const unsigned int dim_eig, const unsigned int dim_i, const double null)
+{
 
+    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    const unsigned int idy = (blockIdx.y%3); 
+    const unsigned int idz = (blockIdx.y/3); 
+    const unsigned int id_eig = blockIdx.z; 
+    if ( idx >= dim_i || blockIdx.y >= 9 || id_eig >= dim_eig ){ return; }
+
+    double cq22 = QCoef[idx][id_eig][2][2];
+    double q01 = Q[idx][id_eig][0][1]; 
+    double q11 = Q[idx][id_eig][1][1]; 
+
+    if ( -cq22 <= null)
+    {
+        double cq00 = QCoef[idx][id_eig][0][0]; 
+        if (-cq00 < 0 ){ return; } 
+        
+        const unsigned int l = (cq00 == 0) ? 0 : 1; 
+        if (idy <= l && idz == 0){ O[idx][id_eig][idy][idz] = q01; return; }
+        if (idy <= l && idz == 1){ O[idx][id_eig][idy][idz] = q11; return; }
+        if (idy <= l && idz == 2)
+        { 
+            O[idx][id_eig][idy][idz] = _qsub(Q[idx][id_eig][1][2], cq00, idy);
+            return; 
+        }
+        return; 
+    } 
+    if ( -cq22 < 0 ){ return; }
+    const unsigned int l = (cq22 == 0) ? 0 : 1;  
+    if (idy <= l && idz == 0)
+    {
+        O[idx][id_eig][idy][idz] = _qsub(q01, cq22, idy); 
+        return; 
+    }
+
+    if (idy <= l && idz == 1)
+    {
+        O[idx][id_eig][idy][idz] = q11; 
+        return; 
+    }
+
+    if (idy <= l && idz == 2)
+    {
+        double cq02 = QCoef[idx][id_eig][0][2]; 
+        double cq12 = QCoef[idx][id_eig][1][2]; 
+        O[idx][id_eig][idy][idz] = _qsub(q01, q11, cq02, cq12, cq22, idy); 
+        return; 
+    }
+}
 
