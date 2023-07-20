@@ -70,11 +70,9 @@ def test_intersection():
         bquark_ = pyext.Transform.PxPyPzE(b.ten)
         M = pyext.NuSol.Nu(bquark_, lep_, ev.ten, masses, S2)
         inter = pyext.Intersection(M, unit.view(-1, 3, 3))
-        print(inter)
 
-        #print(torch.real(inter))
-        #print(torch.isreal(inter))
-#        print(torch.gather(torch.isreal(inter
+        print(inter)
+        print("----")
 
         sleep(1)
 

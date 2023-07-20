@@ -121,6 +121,7 @@ namespace pyc
         torch::Tensor CoFactors(torch::Tensor matrix);
         torch::Tensor Determinant(torch::Tensor matrix); 
         torch::Tensor Inverse(torch::Tensor matrix); 
+        torch::Tensor Cross(torch::Tensor mat1, torch::Tensor mat2); 
     }
 
     namespace nusol

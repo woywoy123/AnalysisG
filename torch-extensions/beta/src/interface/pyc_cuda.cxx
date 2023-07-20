@@ -96,6 +96,7 @@ torch::Tensor pyc::operators::Rz(torch::Tensor angle){ return Operators::CUDA::R
 torch::Tensor pyc::operators::CoFactors(torch::Tensor matrix){ return Operators::CUDA::CoFactors(matrix); }
 torch::Tensor pyc::operators::Determinant(torch::Tensor matrix){ return Operators::CUDA::Determinant(matrix); }
 torch::Tensor pyc::operators::Inverse(torch::Tensor matrix){ return Operators::CUDA::Inverse(matrix); }
+torch::Tensor pyc::operators::Cross(torch::Tensor mat1, torch::Tensor mat2){ return Operators::CUDA::Cross(mat1, mat2); }
 
 torch::Tensor pyc::nusol::BaseMatrix(torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Tensor masses)
 { 
@@ -203,6 +204,7 @@ TORCH_LIBRARY(pyc_cuda, m)
     m.def("operators_CoFactors", &pyc::operators::CoFactors); 
     m.def("operators_Determinant", &pyc::operators::Determinant); 
     m.def("operators_Inverse", &pyc::operators::Inverse); 
+    m.def("operators_Cross", &pyc::operators::Cross); 
 
     m.def("nusol_BaseMatrix", &pyc::nusol::BaseMatrix);
     m.def("nusol_Nu", &pyc::nusol::Nu);  

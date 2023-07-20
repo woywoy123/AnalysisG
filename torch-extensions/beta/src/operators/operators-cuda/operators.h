@@ -8,7 +8,8 @@ torch::Tensor _SinTheta(torch::Tensor v1, torch::Tensor v2, signed int limit);
 torch::Tensor _Rot(torch::Tensor angle, const unsigned int dim); 
 torch::Tensor _CoFactors(torch::Tensor matrix); 
 torch::Tensor _Det(torch::Tensor matrix); 
-torch::Tensor _Inv(torch::Tensor matrix); 
+torch::Tensor _Inv(torch::Tensor matrix);
+torch::Tensor _Cross(torch::Tensor mat1, torch::Tensor mat2);
 
 namespace Operators
 {
@@ -62,6 +63,11 @@ namespace Operators
         inline torch::Tensor Inverse(torch::Tensor matrix)
         {
             return _Inv(matrix); 
+        }
+
+        inline torch::Tensor Cross(torch::Tensor mat1, torch::Tensor mat2)
+        {
+            return _Cross(mat1, mat2); 
         }
     }
 }

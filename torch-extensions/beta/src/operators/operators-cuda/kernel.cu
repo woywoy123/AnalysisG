@@ -200,4 +200,19 @@ __global__ void _InvK(
     out[idx][idz][idy] = (1/det[idx][0]) * coef[idx][idy][idz]; 
 }
 
+template <typename scalar_t>
+__global__ void _CrossK(
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> out, 
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> mat1, 
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> mat2, 
+        const unsigned int dim_i)
+{
 
+    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    const unsigned int idy = blockIdx.y; 
+    const unsigned int idz = blockIdx.z; 
+    if (idx >= dim_i || idy >= 1 || idz >= 3 ){ return; } 
+    out[idx][1][idz] = mat1[(idx/3)][idx%3][idz]; 
+    out[idx][2][idz] = mat2[(idx/3)][idx%3][idz]; 
+
+}

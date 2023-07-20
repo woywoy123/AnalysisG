@@ -327,4 +327,52 @@ torch::Tensor _Inv(torch::Tensor matrix)
     cudaFree(dz);  
     return out; 
 }
+
+torch::Tensor _Cross(torch::Tensor mat1, torch::Tensor mat2)
+{
+    const unsigned int x = mat1.size(0)*3; 
+    const unsigned int threads = 1024; 
+    const dim3 blk = BLOCKS(threads, x, 1, 3); 
+    torch::Tensor form = torch::zeros({x, 3, 3}, _MakeOp(mat1));
+    torch::Tensor out  = torch::zeros({x, 1, 3}, _MakeOp(mat1));
+
+    unsigned int size = sizeof(unsigned int)*12; 
+    unsigned int *dy, *dz; 
+
+    unsigned int _dy[12] = {
+        1, 1, 2, 2, 
+        0, 0, 2, 2, 
+        0, 0, 1, 1
+    }; 
+
+    unsigned int _dz[12] = {
+        1, 2, 1, 2, 
+        0, 2, 0, 2, 
+        0, 1, 0, 1
+    }; 
+
+    cudaMalloc(&dy, size); 
+    cudaMalloc(&dz, size); 
+    cudaMemcpy(dy, &_dy, size, cudaMemcpyHostToDevice); 
+    cudaMemcpy(dz, &_dz, size, cudaMemcpyHostToDevice); 
+
+    AT_DISPATCH_FLOATING_TYPES(mat1.scalar_type(), "Cross", ([&]
+    {
+        _CrossK<scalar_t><<< blk, threads >>>(
+                form.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+                mat1.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+                mat2.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+                x); 
+
+        _CoFactorK<scalar_t><<< blk, threads >>>(
+                out.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+                form.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),                
+                x, 1, dy, dz); 
+    })); 
+    
+    cudaFree(dy); 
+    cudaFree(dz);  
+    return out.view({-1, 3, 3});  
+}
+
 #endif

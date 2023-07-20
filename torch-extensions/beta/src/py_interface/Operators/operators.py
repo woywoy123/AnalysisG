@@ -84,3 +84,9 @@ def Inverse(ten1):
     fn, inpt = __router__([ten1], name, 1)
     return fn(*inpt)
 
+def Cross(ten1, ten2):
+    name = inspect.currentframe().f_code.co_name
+    fn, inpt = __router__([ten1, ten2], name, 2)
+    return fn(*inpt)
+
+

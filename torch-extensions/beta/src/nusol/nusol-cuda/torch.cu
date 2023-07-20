@@ -281,14 +281,21 @@ torch::Tensor _Intersection(torch::Tensor A, torch::Tensor B)
             G.packed_accessor64<double, 4, torch::RestrictPtrTraits>(),
             dim_eig, dim_i, null); 
 
-
+        _SwapXY_K<scalar_t><<< blk_, threads >>>(
+            G.packed_accessor64<double, 4, torch::RestrictPtrTraits>(),
+            O.packed_accessor64<double, 4, torch::RestrictPtrTraits>(),  
+            swp.packed_accessor32<bool, 2, torch::RestrictPtrTraits>(), 
+            dim_eig, dim_i); 
     }));  
-
+ 
+    O = torch::linalg_cross(G.view({-1, 3, 1, 3}), A.view({-1, 1, 3, 3})); 
+    O = torch::transpose(O, 2, 3);
+    imag = std::get<1>(torch::linalg::eig(O)); 
     cudaFree(sy); 
     cudaFree(sz); 
     cudaFree(dy); 
     cudaFree(dz); 
-    return O; 
+    return imag; 
 }
 
 

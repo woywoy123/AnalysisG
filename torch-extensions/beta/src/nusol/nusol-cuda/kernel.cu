@@ -322,3 +322,33 @@ __global__ void _FactorizeK(
     }
 }
 
+template <typename scalar_t>
+__global__ void _SwapXY_K(
+        torch::PackedTensorAccessor64<double, 4, torch::RestrictPtrTraits> G, 
+        torch::PackedTensorAccessor64<double, 4, torch::RestrictPtrTraits> O, 
+        torch::PackedTensorAccessor32<bool, 2, torch::RestrictPtrTraits> swps, 
+        const unsigned int dim_eig, const unsigned int dim_i)
+{
+
+    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    const unsigned int idy = blockIdx.y/3; 
+    const unsigned int idz = blockIdx.y%3; 
+    const unsigned int id_eig = blockIdx.z; 
+    if ( idx >= dim_i || idy >= 3 || idz >= 3 || id_eig >= dim_eig ){ return; }
+    if ( idz == 2 )
+    { 
+        G[idx][id_eig][idy][2] = O[idx][id_eig][idy][2]; 
+        return; 
+    }
+    const bool swp = swps[idx][id_eig]; 
+    if (swp)
+    {
+        G[idx][id_eig][idy][1 - idz] = O[idx][id_eig][idy][idz]; 
+        return; 
+    }
+    G[idx][id_eig][idy][idz] = O[idx][id_eig][idy][idz];   
+
+
+
+
+}

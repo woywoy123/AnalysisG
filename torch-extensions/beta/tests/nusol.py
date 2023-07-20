@@ -70,7 +70,7 @@ def cofactor(A, i, j):
     ]
     return (-1) ** (i + j) * (a[0, 0] * a[1, 1] - a[1, 0] * a[0, 1])
 
-def factor_degenerate(G, zero=1):
+def factor_degenerate(G, zero=0):
     """Linear factors of degenerate quadratic polynomial"""
     if G[0, 0] == 0 == G[1, 1]:
         return [[G[0, 1], 0, G[1, 2]], [0, G[0, 1], G[0, 2] - G[1, 2]]]
@@ -92,7 +92,12 @@ def intersections_ellipses(A, B, returnLines=False):
         A, B = B, A
     e = next(e.real for e in LA.eigvals(LA.inv(A).dot(B)) if not e.imag)
     lines = factor_degenerate(B - e * A)
-    return  
+
+    for line in lines:
+        _, V = np.linalg.eig(np.cross(line, A).T)
+        print(V)
+
+    return
     points = sum([intersections_ellipse_line(A, L) for L in lines], [])
     diag = sum([intersections_diagonal_number(A, L) for L in lines], [])
     return points, diag  # (points,lines) if returnLines else points
