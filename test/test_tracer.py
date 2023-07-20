@@ -4,6 +4,7 @@ from AnalysisG.IO import UpROOT
 from AnalysisG.Tracer import SampleTracer
 import pickle
 import shutil
+import psutil
 import os
 
 
@@ -184,36 +185,27 @@ def test_tracer_hdf5():
     s.RestoreTracer
     s.RestoreEvents
 
-    for i in tr1:
-        break
+    for i in tr1: break
     assert len(s[i.ROOT]) == len(tr1)
 
-    for i in tr2:
-        break
+    for i in tr2: break
     assert len(s[i.ROOT]) == len(tr2)
 
-    for i in tr1:
-        assert s[i.hash]
-    for i in tr2:
-        assert s[i.hash]
+    for i in tr1: assert s[i.hash]
+    for i in tr2: assert s[i.hash]
 
     trsum = tr1 + tr2
-    for i in s:
-        assert trsum[i.hash]
+    for i in s: assert trsum[i.hash]
 
     del s
     del trsum
 
-    for i in tr1:
-        assert i.hash
-    for i in tr2:
-        assert i.hash
+    for i in tr1: assert i.hash
+    for i in tr2: assert i.hash
 
     try:
-        for i in tr2:
-            i.cross_section
-        for i in tr2:
-            assert i.cross_section
+        for i in tr2: i.cross_section
+        for i in tr2: assert i.cross_section
     except AttributeError:
         pass
 
@@ -221,6 +213,7 @@ def test_tracer_hdf5():
     del tr2
 
     # Check for memory leaks
+    mem = 0
     for i in range(10):
         s = SampleTracer()
         s.OutputDirectory = "Project"
@@ -229,6 +222,9 @@ def test_tracer_hdf5():
         s.RestoreEvents
 
         k = sum([s for l in range(1000)])
+        if mem == 0:
+            mem = psutil.virtual_memory().percent
+        assert psutil.virtual_memory().percent - mem < 0.5
         del s
 
     try:
@@ -239,7 +235,7 @@ def test_tracer_hdf5():
 
 
 if __name__ == "__main__":
-    test_tracer_addEvent()
+    #test_tracer_addEvent()
     #test_tracer_operators()
-    #test_tracer_hdf5()
+    test_tracer_hdf5()
     pass

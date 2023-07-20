@@ -79,9 +79,8 @@ cdef class ParticleTemplate(object):
 
     @property
     def __interpret__(self):
-        if self._init: return self._leaves
-
         cdef str i
+        if self._init: return self._leaves
         for i, v in zip(self.__dict__, self.__dict__.values()):
             if isinstance(v, list): continue
             if isinstance(v, dict): continue
@@ -94,7 +93,9 @@ cdef class ParticleTemplate(object):
         cdef dict x
         cdef bool get
 
-        try: inpt = {k : inpt[self._leaves[k]] for k in self._leaves}
+        try:
+            inpt = {k.split("/")[-1] : inpt[k] for k in inpt}
+            inpt = {k : inpt[self._leaves[k]] for k in self._leaves}
         except KeyError: pass
 
         while True:

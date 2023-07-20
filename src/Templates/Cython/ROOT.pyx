@@ -207,20 +207,23 @@ cdef class SampleTracer:
         self.ptr.length = self._itv.size()
         return self.ptr.length
 
-    def __add__(self, other) -> SampleTracer:
-        if not issubclass(other.__class__, SampleTracer): return self
-        cdef SampleTracer s = self
-        cdef SampleTracer o = other
+    def __add__(SampleTracer self, SampleTracer other) -> SampleTracer:
         cdef SampleTracer t = self.clone
         del t.ptr
-        t.ptr = s.ptr[0] + o.ptr
-        t.HashMeta.update(s.HashMeta)
-        t.HashMeta.update(o.HashMeta)
-        t._Codes.update(s._Codes)
-        t._Codes.update(o._Codes)
+        t.ptr = self.ptr[0] + other.ptr
+        t.HashMeta.update(self.HashMeta)
+        t._Codes.update(self._Codes)
+
+        t.HashMeta.update(other.HashMeta)
+        t._Codes.update(other._Codes)
         return t
 
-    def __iadd__(self, other):
+    def __radd__(self, other) -> SampleTracer:
+        if not issubclass(other.__class__, SampleTracer):
+            return self.__add__(self.clone)
+        return self.__add__(other)
+
+    def __iadd__(self, other) -> SampleTracer:
         cdef SampleTracer s = self
         cdef SampleTracer o = other
         s.ptr = s.ptr[0] + o.ptr
@@ -544,6 +547,7 @@ cdef class SampleTracer:
                 if not e_.CachedGraph and not e_.CachedEvent: continue
                 e_.pkl = f[e.first.decode("UTF-8")].attrs["Event"].encode("UTF-8")
                 e_.Event = EventCache; e_.Graph = DataCache
+            bar = None
 
     def RestoreTheseHashes(self, list hashes = []) -> None:
         self.ptr.length = 0
