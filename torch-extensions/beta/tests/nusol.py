@@ -47,7 +47,7 @@ def intersections_ellipse_line(ellipse, line, zero=1e-12):
             for v in V.T
         ],
         key=lambda k: k[1],
-    )  # [:2] #Removing the two solution constraint
+    )[:2]
     return [s for s, k in sols if k < zero]
 
 # A = ellipse, Q[i] = line
@@ -59,7 +59,7 @@ def intersections_diagonal_number(ellipse, line, zero=1e-12):
             np.dot(line, v.real) ** 2 + np.dot(v.real, ellipse).dot(v.real) ** 2
             for v in V.T
         ]
-    )  # [:2]
+    )[:2]
     return sols
 
 def cofactor(A, i, j):
@@ -85,24 +85,15 @@ def factor_degenerate(G, zero=0):
         lines = [ [m, Q[1, 1], -Q[1, 1] * y0 - m * x0] for m in [Q[0, 1] + s for s in multisqrt(-q22)] ]
     return [[L[swapXY], L[not swapXY], L[2]] for L in lines]
 
-def intersections_ellipses(A, B, returnLines=False):
+def intersections_ellipses(A, B, returnLines=False, zero = 10e-6):
     """Points of intersection between two ellipses"""
     LA = np.linalg
-    if abs(LA.det(B)) > abs(LA.det(A)):
-        A, B = B, A
+    if abs(LA.det(B)) > abs(LA.det(A)): A, B = B, A
     e = next(e.real for e in LA.eigvals(LA.inv(A).dot(B)) if not e.imag)
     lines = factor_degenerate(B - e * A)
-
-    for line in lines:
-        _, V = np.linalg.eig(np.cross(line, A).T)
-        print(V)
-
-    return
-    points = sum([intersections_ellipse_line(A, L) for L in lines], [])
-    diag = sum([intersections_diagonal_number(A, L) for L in lines], [])
-    return points, diag  # (points,lines) if returnLines else points
-
-
+    points = sum([intersections_ellipse_line(A, L, zero) for L in lines], [])
+    diag = sum([intersections_diagonal_number(A, L, zero) for L in lines], [])
+    return points, diag
 
 class NuSol(object):
     def __init__(self, b, mu, ev = None, mW2 = mW**2, mT2 = mT**2, mN2 = mN**2):
@@ -111,8 +102,9 @@ class NuSol(object):
         self.mW2 = mW2
         self.mT2 = mT2
         self.mN2 = mN2
-        self.METx = ev.px
-        self.METy = ev.py
+        if ev is None: return
+        self.METx = float(ev.px)
+        self.METy = float(ev.py)
 
     @property
     def b(self): return self._b
@@ -180,10 +172,10 @@ class NuSol(object):
     @property 
     def BaseMatrix(self):
         return np.array([
-            [self.Z/math.sqrt(self.Om2)           , 0   , self.x1 - self.mu.mag], 
-            [self.w * self.Z / math.sqrt(self.Om2), 0   , self.y1              ], 
+            [self.Z/math.sqrt(self.Om2)           , 0   , self.x1 - self.mu.mag],
+            [self.w * self.Z / math.sqrt(self.Om2), 0   , self.y1              ],
             [0,                                   self.Z, 0                    ]])
-    
+
     @property
     def R_T(self):
         b_xyz = self.b.x, self.b.y, self.b.z

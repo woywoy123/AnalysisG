@@ -47,8 +47,9 @@ def Nu(ten1, ten2, ten3, ten4, ten5):
     fn, inpt = __router__([ten1, ten2, ten3, ten4, ten5], name, 1)
     return fn(*inpt)
 
-def Intersection(ten1, ten2):
+def Intersection(ten1, ten2, null = 10e-10):
     name = inspect.currentframe().f_code.co_name
     fn, inpt = __router__([ten1, ten2], name, 1)
+    inpt += [null]
     return fn(*inpt)
 

@@ -188,14 +188,15 @@ torch::Tensor _DotMatrix(torch::Tensor MET_xy, torch::Tensor H, torch::Tensor Sh
     return Operators::CUDA::Mul(X, dNu); 
 }
 
-torch::Tensor _Intersection(torch::Tensor A, torch::Tensor B)
+std::tuple<torch::Tensor, torch::Tensor> _Intersection(torch::Tensor A, torch::Tensor B, const double null)
 {
-    const double null = 0; 
-    torch::Tensor det_A = Operators::CUDA::Determinant(A); 
-    torch::Tensor det_B = Operators::CUDA::Determinant(B); 
-    const unsigned int dim_i = det_A.size(0); 
+    const unsigned int dim_i = A.size(0); 
     const unsigned int threads = 1024; 
     const dim3 blk = BLOCKS(threads, dim_i, 3, 3); 
+    
+    torch::Tensor det_A = Operators::CUDA::Determinant(A); 
+    torch::Tensor det_B = Operators::CUDA::Determinant(B); 
+    
     AT_DISPATCH_FLOATING_TYPES(det_A.scalar_type(), "Swap", ([&]
     {
         _SwapAB_K<scalar_t><<< blk, threads >>>(
@@ -205,14 +206,16 @@ torch::Tensor _Intersection(torch::Tensor A, torch::Tensor B)
                 B.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
                 dim_i); 
     })); 
+
     torch::Tensor imag; 
     imag = Operators::CUDA::Inverse(A);
     imag = Operators::CUDA::Mul(imag, B);
     imag = torch::linalg::eigvals(imag); 
     
+    const torch::TensorOptions op = _MakeOp(A); 
     const unsigned int dim_eig = imag.size(-1); 
     const dim3 blk_ = BLOCKS(threads, dim_i, 9, dim_eig); 
-    const torch::TensorOptions op = _MakeOp(A); 
+
     torch::Tensor G = torch::zeros({dim_i, dim_eig, 3, 3}, op); 
     torch::Tensor L = torch::zeros({dim_i, dim_eig, 3, 3}, op);
     torch::Tensor O = torch::zeros({dim_i, dim_eig, 3, 3}, op);
@@ -287,23 +290,56 @@ torch::Tensor _Intersection(torch::Tensor A, torch::Tensor B)
             swp.packed_accessor32<bool, 2, torch::RestrictPtrTraits>(), 
             dim_eig, dim_i); 
     }));  
- 
-    O = torch::linalg_cross(G.view({-1, 3, 1, 3}), A.view({-1, 1, 3, 3})); 
-    O = torch::transpose(O, 2, 3);
-    imag = std::get<1>(torch::linalg::eig(O)); 
+
+    imag = torch::linalg_cross(G.view({-1, dim_eig*dim_eig, 1, 3}), A.view({-1, 1, 3, 3})); 
+    imag = torch::transpose(imag, 2, 3);
+    imag = std::get<1>(torch::linalg::eig(imag));
+    imag = torch::transpose(imag, 2, 3).view({dim_i, -1, 3, 3}).contiguous();
+
+    std::vector<signed long> dims = {dim_i, dim_eig*2, 3, 3}; 
+    swp = torch::zeros(dims, op);  
+    O = torch::zeros(dims, op);
+    L = torch::zeros(dims, op);
+    const dim3 blk__ = BLOCKS(threads, dim_i, dims[1]*3, 3); 
+
+    AT_DISPATCH_FLOATING_AND_COMPLEX_TYPES(imag.scalar_type(), "intersections", ([&]
+    {
+        _intersectionK<scalar_t><<< blk__, threads >>>(
+            O.packed_accessor64<double, 4, torch::RestrictPtrTraits>(), 
+            L.packed_accessor64<double, 4, torch::RestrictPtrTraits>(), 
+          swp.packed_accessor64<double, 4, torch::RestrictPtrTraits>(),
+
+            A.packed_accessor64<double, 3, torch::RestrictPtrTraits>(), 
+            G.packed_accessor64<double, 4, torch::RestrictPtrTraits>(), 
+         imag.packed_accessor64<scalar_t, 4, torch::RestrictPtrTraits>(),
+            dim_i, dims[1]); 
+    })); 
+
+    torch::Tensor diag = torch::pow(O.sum({-1}), 2) + torch::pow(L.sum({-1}), 2); 
+    torch::Tensor id   = std::get<1>(diag.sort(-1, false)); 
+    
+    torch::Tensor diag_sol = torch::zeros({dim_i, dim_eig*2, 3   }, op); 
+    torch::Tensor sols_vec = torch::zeros({dim_i, dim_eig*2, 3, 3}, op); 
+    const dim3 blk_r = BLOCKS(threads, dim_i, dim_eig*2, 9);  
+    AT_DISPATCH_FLOATING_TYPES(diag_sol.scalar_type(), "sols", ([&]
+    {
+        _SolsK<scalar_t><<< blk_r, threads >>>(
+            diag_sol.packed_accessor64<double, 3, torch::RestrictPtrTraits>(), 
+            sols_vec.packed_accessor64<double, 4, torch::RestrictPtrTraits>(), 
+            
+                  id.packed_accessor32<long, 3, torch::RestrictPtrTraits>(),  
+                diag.packed_accessor64<double, 3, torch::RestrictPtrTraits>(), 
+                 swp.packed_accessor64<double, 4, torch::RestrictPtrTraits>(), 
+                dim_i, dim_eig, null);  
+    })); 
+
     cudaFree(sy); 
     cudaFree(sz); 
     cudaFree(dy); 
     cudaFree(dz); 
-    return imag; 
+
+    return {sols_vec, diag_sol};
 }
-
-
-
-
-
-
-
 
 torch::Tensor _Nu(
         torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Tensor met_xy, 
@@ -338,15 +374,4 @@ torch::Tensor _Nu(
 
     return shape; 
 }
-
-
-
-
-
-
-
-
-
-
-
 #endif

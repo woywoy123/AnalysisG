@@ -8,7 +8,7 @@ torch::Tensor _Base_Matrix(torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Ten
 torch::Tensor _Base_Matrix_H(torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Tensor masses_W_top_nu); 
 
 torch::Tensor _DotMatrix(torch::Tensor MET_xy, torch::Tensor Sigma, torch::Tensor H);
-torch::Tensor _Intersection(torch::Tensor A, torch::Tensor B); 
+std::tuple<torch::Tensor, torch::Tensor> _Intersection(torch::Tensor A, torch::Tensor B, const double null); 
 
 torch::Tensor _Nu(torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Tensor met_xy, torch::Tensor masses, torch::Tensor sigma); 
 
@@ -17,14 +17,16 @@ namespace NuSol
     namespace CUDA
     {
         // masses = [W, Top, Neutrino]
-        const torch::Tensor BaseMatrix(torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Tensor masses)
+        const torch::Tensor BaseMatrix(
+                torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Tensor masses)
         {
             return _Base_Matrix(pmc_b, pmc_mu, masses);             
         }
       
-        const torch::Tensor Intersection(torch::Tensor A, torch::Tensor B)
+        const std::tuple<torch::Tensor, torch::Tensor> Intersection(
+                torch::Tensor A, torch::Tensor B, const double null)
         {
-            return _Intersection(A, B);  
+            return _Intersection(A, B, null);  
         } 
 
         const torch::Tensor Nu(

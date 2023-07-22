@@ -110,9 +110,9 @@ torch::Tensor pyc::nusol::Nu(
     return NuSol::CUDA::Nu(pmc_b, pmc_mu, met_xy, masses, sigma); 
 }
 
-torch::Tensor pyc::nusol::Intersection(torch::Tensor A, torch::Tensor B)
+std::tuple<torch::Tensor, torch::Tensor> pyc::nusol::Intersection(torch::Tensor A, torch::Tensor B, const double null)
 { 
-    return NuSol::CUDA::Intersection(A, B); 
+    return NuSol::CUDA::Intersection(A, B, null); 
 }
 
 TORCH_LIBRARY(pyc_cuda, m)

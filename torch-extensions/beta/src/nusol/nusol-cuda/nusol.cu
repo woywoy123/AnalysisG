@@ -77,7 +77,7 @@ __device__ __forceinline__ void _swapAB(
 }
 
 __device__ __forceinline__ void _imageG(double &G, 
-        double const &A, double const &B, const double &rel, const double &img)
+        const double &A, const double &B, const double &rel, const double &img)
 {
     if (img != 0){ return; }
     G = B - rel*A; 
@@ -97,7 +97,6 @@ __device__ __forceinline__ double _qsub(
     return q12 - sqrt(-coef00); 
 }
 
-
 __device__ __forceinline__ double _qsub(
         const double &q01, const double &q11,
         const double &coef02, const double &coef12, const double &coef22,
@@ -106,5 +105,8 @@ __device__ __forceinline__ double _qsub(
     return - (q11 * coef12 + _qsub(q01, coef22, lim) * coef02)/coef22; 
 }
 
-
+__device__ __forceinline__ double _mul_ij(const double &line_i, const double &rel)
+{
+    return rel*line_i;  
+}
 

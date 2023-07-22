@@ -126,10 +126,15 @@ namespace pyc
 
     namespace nusol
     {
-        torch::Tensor BaseMatrix(torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Tensor masses); 
-        torch::Tensor Nu(torch::Tensor pmc_b, torch::Tensor pmc_mu, 
-                         torch::Tensor met_xy, torch::Tensor masses, torch::Tensor sigma); 
-        torch::Tensor Intersection(torch::Tensor A, torch::Tensor B); 
+        torch::Tensor BaseMatrix(
+                torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Tensor masses); 
+
+        torch::Tensor Nu(
+                torch::Tensor pmc_b, torch::Tensor pmc_mu, 
+                torch::Tensor met_xy, torch::Tensor masses, torch::Tensor sigma); 
+
+        std::tuple<torch::Tensor, torch::Tensor> Intersection(
+                torch::Tensor A, torch::Tensor B, const double null); 
     }
 }
 

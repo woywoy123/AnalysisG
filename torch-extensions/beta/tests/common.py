@@ -93,7 +93,7 @@ class event:
     def __init__(self, met, phi):
         self.met = met
         self.phi = phi
-   
+
     @property
     def vec(self):
         return vector.obj(pt = self.met, phi = self.phi)
@@ -104,10 +104,6 @@ class event:
         if torch.cuda.is_available(): vec = vec.to(device = "cuda")
         return vec
 
-
-
-
-
 def loads( n ):
     f = open("data/" + n + "NeutrinoEvents.pkl", "rb")
     obj = pickle.load(f)
@@ -116,11 +112,4 @@ def loads( n ):
 
 def loadDouble(): return loads("Double")
 def loadSingle(): return loads("Single")
-
-
-
-
-
-
-
 
