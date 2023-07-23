@@ -416,3 +416,65 @@ __global__ void _SolsK(
     sols_vec[idx][idy][idz3][idz3m] = vecs[idx][idy][trgt][idz3m]; 
 }
 
+template <typename scalar_t> 
+__global__ void _Y_dot_X_dot_Y(
+    torch::PackedTensorAccessor64<double, 3, torch::RestrictPtrTraits> s_out, 
+    torch::PackedTensorAccessor64<double, 3, torch::RestrictPtrTraits> s_vec, 
+    const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> X, 
+    const torch::PackedTensorAccessor64<double, 4, torch::RestrictPtrTraits> sols_vec, 
+    const unsigned int dim_i, const unsigned int dim_eig, const unsigned int dim_j)
+{
+    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    const unsigned int idy = blockIdx.y; 
+    const unsigned int idz = blockIdx.z;
+    
+    if (idx >= dim_i || idy >= dim_eig || idz >= dim_j*dim_j){ return; }
+    const unsigned int idz3 = idz/3; 
+    const unsigned int idz3m = idz%3; 
+
+    if (sols_vec[idx][idy][idz3][idz3m] == 0)
+    {
+        s_out[idx][3*idy + idz3][idz3m] = 1e10; 
+        return; 
+    }
+
+    double coef = 0; 
+    for (unsigned int x(0); x < 3; ++x)
+    {
+        coef += _mul_ij(sols_vec[idx][idy][idz3][x], X[idx][x][idz3m]);
+    }
+    s_out[idx][3*idy + idz3][idz3m] = _mul_ij(coef, sols_vec[idx][idy][idz3][idz3m]);
+    s_vec[idx][3*idy + idz3][idz3m] = sols_vec[idx][idy][idz3][idz3m];
+}
+
+template <typename scalar_t>
+__global__ void _NuK(
+        torch::PackedTensorAccessor64<double, 3, torch::RestrictPtrTraits> O_sol_vec, 
+        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> O_sol_chi2,
+
+        const torch::PackedTensorAccessor32<long    , 2, torch::RestrictPtrTraits> id,
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> H, 
+
+        const torch::PackedTensorAccessor64<double  , 3, torch::RestrictPtrTraits> sol_vec, 
+        const torch::PackedTensorAccessor64<double  , 2, torch::RestrictPtrTraits> sol_chi2, 
+        const unsigned int dim_i, const unsigned int dim_eig, const unsigned int dim_j)
+{
+    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    const unsigned int idy = blockIdx.y; 
+    const unsigned int idz = blockIdx.z; 
+    if ( idx >= dim_i || idy >= dim_eig || idz >= dim_j ){ return; }
+
+    const unsigned int idz3 = idz/3; 
+    const unsigned int idz3m = idz%3; 
+    const unsigned int trgt = id[idx][3*idy + idz3];
+
+    double chi2 = sol_chi2[idx][trgt]; 
+    if (chi2 == 3*1e10){ return; }
+    if (idz3m == 0){O_sol_chi2[idx][3*idy + idz3] = chi2;}
+   
+    for (unsigned int x(0); x < 3; ++x)
+    {
+        O_sol_vec[idx][3*idy + idz3][idz3m] += _mul_ij(H[idx][idz3m][x], sol_vec[idx][trgt][x]); 
+    }
+}
+

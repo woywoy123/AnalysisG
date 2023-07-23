@@ -1,4 +1,5 @@
-from nusol import NuSol, costheta, intersections_ellipses, UnitCircle, Derivative
+from nusol import NuSol, costheta, intersections_ellipses, UnitCircle, Derivative, SingleNu
+from time import sleep, time
 import pyext
 import torch
 import numpy as np
@@ -9,7 +10,7 @@ mT = 172.0*1000
 mN = 0
 masses = torch.tensor([[mW, mT, mN]], dtype = torch.float64, device = "cuda")
 S2 = torch.tensor([[100, 9], [50, 100]], dtype = torch.float64, device = "cuda")
-from time import sleep, time
+precision = 10e-10
 
 def test_nusol_base():
     x = loadSingle()
@@ -41,14 +42,17 @@ def test_nusol_nu():
         bquark_ = pyext.Transform.PxPyPzE(bquark.ten)
         inpt.append([bquark_, lep_, ev.ten])
 
+    truth = torch.cat(lst, 0)
+
     bquark_ = torch.cat([i[0] for i in inpt], 0)
     lep_    = torch.cat([i[1] for i in inpt], 0)
     ev_     = torch.cat([i[2] for i in inpt], 0)
 
     t1 = time()
-    pred = pyext.NuSol.Nu(bquark_, lep_, ev_, masses, S2).to(device = "cpu")
-    print("n-Events: " + str(len(x)) + " @ ", time() - t1)
-    truth = torch.cat(lst, 0)
+    pred = pyext.NuSol.Nu(bquark_, lep_, ev_, masses, S2, -1)
+    t1 = time() - t1
+    pred = pred.to(device = "cpu")
+    print("n-Events: " + str(len(x)) + " @ ", t1)
 
     x = abs((pred - truth).sum(-1).sum(-1)) > 10e-1
     assert x.sum(-1) == 0
@@ -61,7 +65,6 @@ def test_intersection():
     res = []
 
     # Numerical differences in C++ and Python appear below this number
-    precision = 10e-10
     for i in range(len(x)):
         x_ = next(ita)
         ev, lep, b = x_[0], x_[1], x_[2]
@@ -121,8 +124,27 @@ def test_intersection():
     t_ = time() - t1
     print("-> Timer: ", t_/nEvents, "per event @ ", nEvents, "events")
 
+def test_nu():
+
+    x = loadSingle()
+    ita = iter(x)
+
+    for i in range(len(x)):
+        x_ = next(ita)
+        if i != 1: continue
+        ev, lep, b = x_[0], x_[1], x_[2]
+        nu = SingleNu(b.vec, lep.vec, ev.vec)
+        nu_t = nu.nu
+        
+        lep_cu = pyext.Transform.PxPyPzE(lep.ten)
+        b_cu   = pyext.Transform.PxPyPzE(b.ten)
+        nu_cu  = pyext.NuSol.Nu(b_cu, lep_cu, ev.ten, masses, S2, precision)
+        print(nu_cu)
+        exit()
+
 if __name__ == "__main__":
-    test_nusol_base()
-    test_nusol_nu()
-    test_intersection()
+    #test_nusol_base()
+    #test_nusol_nu()
+    #test_intersection()
+    test_nu()
 

@@ -188,15 +188,33 @@ class NuSol(object):
     def H(self):
         return self.R_T.dot(self.BaseMatrix)
 
-    @property 
+    @property
     def X(self):
         S2 = np.vstack([np.vstack([np.linalg.inv([[100, 9], [50, 100]]), [0, 0]]).T, [0, 0, 0]])
         V0 = np.outer([self.METx, self.METy, 0], [0, 0, 1])
         dNu = V0 - self.H
         return np.dot(dNu.T, S2).dot(dNu)
 
-    @property 
+    @property
     def M(self): return next(XD + XD.T for XD in (self.X.dot(Derivative()),))
+
+
+class SingleNu(NuSol):
+
+    def __init__(self, b, nu, ev):
+        NuSol.__init__(self, b, nu, ev)
+        self._M = self.M
+
+        sols, diag = intersections_ellipses(self._M, UnitCircle())
+        self.sols = sorted(sols, key = self.calcX2)
+
+    def calcX2(self, t): return np.dot(t, self.X).dot(t)
+
+    @property
+    def chi2(self): return self.calcX2(self.sols[0])
+
+    @property
+    def nu(self): return self.H.dot(self.sols[0])
 
 
 

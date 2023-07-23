@@ -103,17 +103,30 @@ torch::Tensor pyc::nusol::BaseMatrix(torch::Tensor pmc_b, torch::Tensor pmc_mu, 
     return NuSol::CUDA::BaseMatrix(pmc_b, pmc_mu, masses); 
 }
 
-torch::Tensor pyc::nusol::Nu(
-        torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Tensor met_xy, 
-        torch::Tensor masses, torch::Tensor sigma)
-{ 
-    return NuSol::CUDA::Nu(pmc_b, pmc_mu, met_xy, masses, sigma); 
-}
-
-std::tuple<torch::Tensor, torch::Tensor> pyc::nusol::Intersection(torch::Tensor A, torch::Tensor B, const double null)
+std::tuple<torch::Tensor, torch::Tensor> pyc::nusol::Intersection(
+        torch::Tensor A, torch::Tensor B, const double null)
 { 
     return NuSol::CUDA::Intersection(A, B, null); 
 }
+
+torch::Tensor pyc::nusol::Nu(
+        torch::Tensor pmc_b, torch::Tensor pmc_mu, 
+        torch::Tensor met_xy, torch::Tensor masses, 
+        torch::Tensor sigma, const double null)
+{ 
+    std::map<std::string, torch::Tensor> out; 
+    if (null == -1)
+    {
+        out = NuSol::CUDA::Nu(pmc_b, pmc_mu, met_xy, masses, sigma); 
+        return out["M"]; 
+    }
+    else
+    {
+        out = NuSol::CUDA::Nu(pmc_b, pmc_mu, met_xy, masses, sigma, null);
+    }
+    return out["H"]; 
+}
+
 
 TORCH_LIBRARY(pyc_cuda, m)
 {

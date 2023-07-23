@@ -3,6 +3,7 @@
 #include <operators.h>
 #include <physics.h>
 #include <vector>
+#include <map>
 
 #ifndef NUSOL_CUDA_KERNEL_H
 #define NUSOL_CUDA_KERNEL_H
@@ -60,7 +61,8 @@ torch::Tensor _Shape_Matrix(torch::Tensor inpt, std::vector<long> vec)
     return out; 
 } 
 
-torch::Tensor _Expand_Matrix(torch::Tensor inpt, torch::Tensor source)
+torch::Tensor _Expand_Matrix(
+        torch::Tensor inpt, torch::Tensor source)
 {
     const unsigned int threads = 1024; 
     const unsigned int len_i = inpt.size(0);
@@ -80,7 +82,8 @@ torch::Tensor _Expand_Matrix(torch::Tensor inpt, torch::Tensor source)
     return out; 
 } 
 
-torch::Tensor _Base_Matrix(torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Tensor masses_W_top_nu)
+torch::Tensor _Base_Matrix(
+        torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Tensor masses_W_top_nu)
 {
     const unsigned int threads = 1024; 
     const unsigned int len_i = pmc_b.size(0); 
@@ -117,7 +120,8 @@ torch::Tensor _Base_Matrix(torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Ten
     return out; 
 } 
 
-torch::Tensor _Base_Matrix_H(torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Tensor masses)
+torch::Tensor _Base_Matrix_H(
+        torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Tensor masses)
 {
     torch::Tensor base = _Base_Matrix(pmc_b, pmc_mu, masses); 
     torch::Tensor phi   = Transform::CUDA::Phi(pmc_mu); 
@@ -163,7 +167,8 @@ torch::Tensor _Base_Matrix_H(torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::T
     return Operators::CUDA::Mul(Rx, base);
 }
 
-torch::Tensor _DotMatrix(torch::Tensor MET_xy, torch::Tensor H, torch::Tensor Shape)
+torch::Tensor _DotMatrix(
+        torch::Tensor MET_xy, torch::Tensor H, torch::Tensor Shape)
 {
     const unsigned int dim_i = MET_xy.size(0); 
     const unsigned int threads = 1024; 
@@ -188,7 +193,8 @@ torch::Tensor _DotMatrix(torch::Tensor MET_xy, torch::Tensor H, torch::Tensor Sh
     return Operators::CUDA::Mul(X, dNu); 
 }
 
-std::tuple<torch::Tensor, torch::Tensor> _Intersection(torch::Tensor A, torch::Tensor B, const double null)
+std::tuple<torch::Tensor, torch::Tensor> _Intersection(
+        torch::Tensor A, torch::Tensor B, const double null)
 {
     const unsigned int dim_i = A.size(0); 
     const unsigned int threads = 1024; 
@@ -341,19 +347,20 @@ std::tuple<torch::Tensor, torch::Tensor> _Intersection(torch::Tensor A, torch::T
     return {sols_vec, diag_sol};
 }
 
-torch::Tensor _Nu(
-        torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Tensor met_xy, 
-        torch::Tensor masses, torch::Tensor sigma)
+std::map<std::string, torch::Tensor> _Nu(
+        torch::Tensor pmc_b, torch::Tensor pmc_mu, 
+        torch::Tensor met_xy, torch::Tensor masses, 
+        torch::Tensor sigma)
 {
     torch::Tensor H = _Base_Matrix_H(pmc_b, pmc_mu, masses); 
     torch::Tensor shape = _Shape_Matrix(H, {0, 0, 1});
     sigma = _Expand_Matrix(H, sigma.view({-1, 2, 2})) + shape; 
     sigma = Operators::CUDA::Inverse(sigma) - shape;
     torch::Tensor X = _DotMatrix(met_xy, H, sigma); 
-    
+ 
     const unsigned int dim_i = sigma.size(0); 
     const unsigned int threads = 1024; 
-    const dim3 blk = BLOCKS(threads, dim_i, 3, 3); 
+    const dim3 blk = BLOCKS(threads, dim_i, 3, 3);
     AT_DISPATCH_FLOATING_TYPES(sigma.scalar_type(), "derivative", ([&]
     {
         _DerivativeK<scalar_t><<< blk, threads >>>(
@@ -363,7 +370,6 @@ torch::Tensor _Nu(
     })); 
 
     sigma = Operators::CUDA::Mul(X, sigma); 
-
     AT_DISPATCH_FLOATING_TYPES(sigma.scalar_type(), "derivative", ([&]
     {
         _transSumK<scalar_t><<< blk, threads >>>(
@@ -372,6 +378,73 @@ torch::Tensor _Nu(
             dim_i); 
     })); 
 
-    return shape; 
+    std::map<std::string, torch::Tensor> output;
+    output["M"] = shape; 
+    output["H"] = H;
+    output["X"] = X; 
+    return output; 
 }
+
+std::map<std::string, torch::Tensor> _Nu(
+        torch::Tensor pmc_b, torch::Tensor pmc_mu, 
+        torch::Tensor met_xy, torch::Tensor masses, 
+        torch::Tensor sigma, const double null)
+{
+    std::map<std::string, torch::Tensor> nu; 
+    nu = _Nu(pmc_b, pmc_mu, met_xy, masses, sigma); 
+
+    torch::Tensor M = nu["M"]; 
+    torch::Tensor H = nu["H"]; 
+    torch::Tensor X = nu["X"]; 
+
+    std::tuple<torch::Tensor, torch::Tensor> sols; 
+    sols = _Intersection(M, _Shape_Matrix(M, {1, 1, -1}), null); 
+
+    torch::Tensor sec = std::get<0>(sols);  
+    const torch::TensorOptions op = _MakeOp(sec); 
+    const unsigned int threads = 1024; 
+    const unsigned int dim_i = sec.size(0);
+    const unsigned int dim_eig = sec.size(1);  
+    const unsigned int dim_j = 3; 
+
+    std::vector<signed long> dims = {dim_i, dim_eig*3, dim_j}; 
+    torch::Tensor sol_chi2 = torch::zeros(dims, op); 
+    torch::Tensor sol_vecs = torch::zeros(dims, op); 
+
+    const dim3 blk = BLOCKS(threads, dim_i, dim_eig, dim_j*dim_j); 
+    AT_DISPATCH_FLOATING_TYPES(X.scalar_type(), "chi2", ([&]
+    {
+        _Y_dot_X_dot_Y<scalar_t><<< blk, threads >>>(
+            sol_chi2.packed_accessor64<double, 3, torch::RestrictPtrTraits>(), 
+            sol_vecs.packed_accessor64<double, 3, torch::RestrictPtrTraits>(), 
+
+            X.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+            sec.packed_accessor64<double, 4, torch::RestrictPtrTraits>(), 
+            dim_i, dim_eig, dim_j); 
+    })); 
+    sol_chi2 = sol_chi2.sum(-1);
+    torch::Tensor id = std::get<1>(sol_chi2.sort(-1, false)); 
+    
+    torch::Tensor _nu_v = torch::zeros(dims, op); 
+    torch::Tensor _chi2 = torch::zeros_like(sol_chi2); 
+    AT_DISPATCH_FLOATING_TYPES(H.scalar_type(), "Nu", ([&]
+    {
+        _NuK<scalar_t><<< blk, threads >>>(
+            _nu_v.packed_accessor64<double, 3, torch::RestrictPtrTraits>(), 
+            _chi2.packed_accessor64<double, 2, torch::RestrictPtrTraits>(), 
+
+            id.packed_accessor32<long, 2, torch::RestrictPtrTraits>(), 
+            H.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+
+            sol_vecs.packed_accessor64<double, 3, torch::RestrictPtrTraits>(), 
+            sol_chi2.packed_accessor64<double, 2, torch::RestrictPtrTraits>(), 
+            dim_i, dim_eig, dim_j*dim_j); 
+    })); 
+
+    std::map<std::string, torch::Tensor> output; 
+    output["NuVec"] = _nu_v; 
+    output["chi2"] = _chi2; 
+    return output;  
+}
+
 #endif
