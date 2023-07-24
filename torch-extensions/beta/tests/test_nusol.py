@@ -1,10 +1,14 @@
-from nusol import NuSol, costheta, intersections_ellipses, UnitCircle, Derivative, SingleNu
 from time import sleep, time
 import pyext
 import torch
 import numpy as np
 import math
 from common import *
+from nusol import (
+        NuSol, intersections_ellipses, 
+        UnitCircle, SingleNu, DoubleNu
+)
+
 mW = 80.385*1000
 mT = 172.0*1000
 mN = 0
@@ -76,7 +80,7 @@ def test_intersection():
         unit = torch.tensor(unit, device = "cuda", dtype = torch.float64)
         lep_ = pyext.Transform.PxPyPzE(lep.ten)
         bquark_ = pyext.Transform.PxPyPzE(b.ten)
-        M = pyext.NuSol.Nu(bquark_, lep_, ev.ten, masses, S2)
+        M = pyext.NuSol.Nu(bquark_, lep_, ev.ten, masses, S2, -1)
         M_container.append(M)
         U_container.append(unit.view(-1, 3, 3))
         pts, dig = pyext.Intersection(M, unit.view(-1, 3, 3), precision)
@@ -128,23 +132,86 @@ def test_nu():
 
     x = loadSingle()
     ita = iter(x)
-
+    compare = []
+    inpts = {"b_cu" : [], "lep_cu" : [], "ev_cu" : [], 
+             "m_cu" : [], "s2" : []}
     for i in range(len(x)):
         x_ = next(ita)
-        if i != 1: continue
         ev, lep, b = x_[0], x_[1], x_[2]
         nu = SingleNu(b.vec, lep.vec, ev.vec)
-        nu_t = nu.nu
-        
+        nu_t = torch.tensor(np.array(nu.nu), device = "cpu", dtype = torch.float64)
+
         lep_cu = pyext.Transform.PxPyPzE(lep.ten)
         b_cu   = pyext.Transform.PxPyPzE(b.ten)
-        nu_cu  = pyext.NuSol.Nu(b_cu, lep_cu, ev.ten, masses, S2, precision)
-        print(nu_cu)
-        exit()
+        inpts["b_cu"].append(b_cu)
+        inpts["lep_cu"].append(lep_cu)
+        inpts["m_cu"].append(masses)
+        inpts["ev_cu"].append(ev.ten)
+        inpts["s2"].append(S2.view(-1, 2, 2))
+        _cu  = pyext.NuSol.Nu(b_cu, lep_cu, ev.ten, masses, S2, precision)
+        nu_cu = _cu[0].to(device = "cpu").view(-1, 3)
+        compare.append(nu_cu)
+        if len(nu_cu) == 0: assert len(nu_t) == 0
+        for pr_t in nu_t:
+            lim = False
+            for pr_cu in nu_cu:
+                s = pr_t - pr_cu
+                s = s.sum(-1).sum(-1)
+                if s > 10e-4: continue
+                lim = True
+                break
+
+            if not lim:
+                print("----->>> Failure <<< ----")
+                print("@ -> ", i)
+                print(nu_t)
+                print(nu_cu)
+                print("-------------------------")
+            assert lim
+
+    b_cu = torch.cat(inpts["b_cu"], dim = 0)
+    lep_cu = torch.cat(inpts["lep_cu"], dim = 0)
+    ev_cu = torch.cat(inpts["ev_cu"], dim = 0)
+    mass_cu = torch.cat(inpts["m_cu"], dim = 0)
+    s2_cu = torch.cat(inpts["s2"], dim = 0)
+    _cu = pyext.NuSol.Nu(b_cu, lep_cu, ev_cu, masses, S2, precision)[0].to(device = "cpu")
+    _cu = _cu[_cu.sum(-1) != 0]
+
+    t = torch.cat(compare, dim = 0)
+    assert len(t[t - _cu > 1e-8]) == 0
+
+    _cu = pyext.NuSol.Nu(b_cu, lep_cu, ev_cu, mass_cu, s2_cu, precision)[0].to(device = "cpu")
+    _cu = _cu[_cu.sum(-1) != 0]
+    assert len(t[t - _cu > 1e-8]) == 0
+
+def test_nunu():
+
+    x = loadDouble()
+    ita = iter(x)
+    for i in range(len(x)):
+        x_ = next(ita)
+        if i != 3: continue
+        ev, l1, l2, b1, b2 = x_
+        metx, mety = ev.ten[:, 0], ev.ten[:, 1]
+        _b1 = pyext.Transform.PxPyPzE(b1.ten)
+        _l1 = pyext.Transform.PxPyPzE(l1.ten)
+        _b2 = pyext.Transform.PxPyPzE(b2.ten)
+        _l2 = pyext.Transform.PxPyPzE(l2.ten)
+        nunu_cu = pyext.NuSol.NuNu(_b1, _b2, _l1, _l2, metx, mety, masses)
+        print(nunu_cu[0])
+        print(nunu_cu[1])
+        nunu_t = DoubleNu((b1.vec, b2.vec), (l1.vec, l2.vec), ev)
+
+
+
+
+
+
 
 if __name__ == "__main__":
     #test_nusol_base()
     #test_nusol_nu()
     #test_intersection()
-    test_nu()
+    #test_nu()
+    test_nunu()
 

@@ -47,7 +47,7 @@ def intersections_ellipse_line(ellipse, line, zero=1e-12):
             for v in V.T
         ],
         key=lambda k: k[1],
-    )[:2]
+    )#[:2]
     return [s for s, k in sols if k < zero]
 
 # A = ellipse, Q[i] = line
@@ -59,7 +59,7 @@ def intersections_diagonal_number(ellipse, line, zero=1e-12):
             np.dot(line, v.real) ** 2 + np.dot(v.real, ellipse).dot(v.real) ** 2
             for v in V.T
         ]
-    )[:2]
+    )#[:2]
     return sols
 
 def cofactor(A, i, j):
@@ -74,6 +74,7 @@ def factor_degenerate(G, zero=0):
     """Linear factors of degenerate quadratic polynomial"""
     if G[0, 0] == 0 == G[1, 1]:
         return [[G[0, 1], 0, G[1, 2]], [0, G[0, 1], G[0, 2] - G[1, 2]]]
+
     swapXY = abs(G[0, 0]) > abs(G[1, 1])
     Q = G[(1, 0, 2),][:, (1, 0, 2)] if swapXY else G
     Q /= Q[1, 1]
@@ -90,7 +91,7 @@ def intersections_ellipses(A, B, returnLines=False, zero = 10e-6):
     LA = np.linalg
     if abs(LA.det(B)) > abs(LA.det(A)): A, B = B, A
     e = next(e.real for e in LA.eigvals(LA.inv(A).dot(B)) if not e.imag)
-    lines = factor_degenerate(B - e * A)
+    lines = factor_degenerate(B - e * A, zero)
     points = sum([intersections_ellipse_line(A, L, zero) for L in lines], [])
     diag = sum([intersections_diagonal_number(A, L, zero) for L in lines], [])
     return points, diag
@@ -198,6 +199,14 @@ class NuSol(object):
     @property
     def M(self): return next(XD + XD.T for XD in (self.X.dot(Derivative()),))
 
+    @property
+    def H_perp(self):
+        return np.vstack([self.H[:2], [0, 0, 1]])
+
+    @property
+    def N(self):
+        return np.linalg.inv(self.H_perp)
+
 
 class SingleNu(NuSol):
 
@@ -211,10 +220,78 @@ class SingleNu(NuSol):
     def calcX2(self, t): return np.dot(t, self.X).dot(t)
 
     @property
-    def chi2(self): return self.calcX2(self.sols[0])
+    def chi2(self): return [self.calcX2(self.sols[i]) for i in range(len(self.sols))]
 
     @property
-    def nu(self): return self.H.dot(self.sols[0])
+    def nu(self): return [self.H.dot(self.sols[i]) for i in range(len(self.sols))]
 
 
+class DoubleNu(NuSol):
+
+    def __init__(self, bs, mus, ev):
+        b, b_ = bs
+        mu, mu_ = mus
+
+        sol1 = NuSol(b , mu )
+        sol2 = NuSol(b_, mu_)
+
+        V0 = np.outer([ev.vec.px, ev.vec.py, 0], [0, 0, 1])
+        self.S = V0 - UnitCircle()
+
+        N, N_ = sol1.N, sol2.N
+        n_ = self.S.T.dot(N_).dot(self.S)
+        v, diag = intersections_ellipses(N, n_, False, 10e-10)
+
+        v_ = [self.S.dot(sol) for sol in v]
+        self.solutionSets = [sol1, sol2]
+        #self.nunu_s
+        print(np.array(v))
+        print("--")
+        print(np.array(v_))
+        exit()
+        self.solutionSets = [
+            SolutionSet(B, M, mW2, mT2, 0) for B, M in zip((b, b_), (mu, mu_))
+        ]
+        N, N_ = [ss.N for ss in self.solutionSets]
+
+        V0 = np.outer([metX, metY, 0], [0, 0, 1])
+        self.S = V0 - UnitCircle()
+        n_ = self.S.T.dot(N_).dot(self.S)
+
+
+
+        v, diag = intersections_ellipses(N, n_)
+        v_ = [self.S.dot(sol) for sol in v]
+        self.diag = diag
+
+        self.lsq = False
+        if not v and leastsq:
+            es = [ss.H_perp for ss in self.solutionSets]
+            met = np.array([metX, metY, 1])
+
+            def nus(ts):
+                return tuple(
+                    e.dot([math.cos(t), math.sin(t), 1]) for e, t in zip(es, ts)
+                )
+
+            def residuals(params):
+                return sum(nus(params), -met)[:2]
+
+            ts, _ = leastsq(residuals, [0, 0], ftol=5e-5, epsfcn=0.01)
+            v, v_ = [[i] for i in nus(ts)]
+            self.lsq = True
+
+        for k, v in {"perp": v, "perp_": v_, "n_": n_}.items():
+            setattr(self, k, v)
+
+    @property
+    def nunu_s(self):
+        """Solution pairs for neutrino momenta"""
+        K, K_ = [ss.H.dot(np.linalg.inv(ss.H_perp)) for ss in self.solutionSets]
+        print(K)
+        print(K_)
+        #print(K_[0])
+        #print(K_[1])
+        exit()
+        return [(K.dot(s), K_.dot(s_)) for s, s_ in zip(self.perp, self.perp_)]
 
