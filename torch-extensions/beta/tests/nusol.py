@@ -35,7 +35,7 @@ def multisqrt(y):
 
 
 # A = ellipse, Q[i] = line
-def intersections_ellipse_line(ellipse, line, zero=1e-12):
+def intersections_ellipse_line(ellipse, line, zero=1e-10):
     """Points of intersection between ellipse and line"""
     _, V = np.linalg.eig(np.cross(line, ellipse).T)
     sols = sorted(
@@ -51,7 +51,7 @@ def intersections_ellipse_line(ellipse, line, zero=1e-12):
     return [s for s, k in sols if k < zero]
 
 # A = ellipse, Q[i] = line
-def intersections_diagonal_number(ellipse, line, zero=1e-12):
+def intersections_diagonal_number(ellipse, line, zero=1e-10):
     """Points of intersection between ellipse and line"""
     _, V = np.linalg.eig(np.cross(line, ellipse).T)
     sols = sorted(
@@ -86,7 +86,7 @@ def factor_degenerate(G, zero=0):
         lines = [ [m, Q[1, 1], -Q[1, 1] * y0 - m * x0] for m in [Q[0, 1] + s for s in multisqrt(-q22)] ]
     return [[L[swapXY], L[not swapXY], L[2]] for L in lines]
 
-def intersections_ellipses(A, B, returnLines=False, zero = 10e-6):
+def intersections_ellipses(A, B, returnLines=False, zero = 10e-10):
     """Points of intersection between two ellipses"""
     LA = np.linalg
     if abs(LA.det(B)) > abs(LA.det(A)): A, B = B, A
@@ -205,7 +205,8 @@ class NuSol(object):
 
     @property
     def N(self):
-        return np.linalg.inv(self.H_perp)
+        hinv = np.linalg.inv(self.H_perp)
+        return hinv.T.dot(UnitCircle()).dot(hinv)
 
 
 class SingleNu(NuSol):
@@ -240,29 +241,12 @@ class DoubleNu(NuSol):
 
         N, N_ = sol1.N, sol2.N
         n_ = self.S.T.dot(N_).dot(self.S)
-        v, diag = intersections_ellipses(N, n_, False, 10e-10)
-
-        v_ = [self.S.dot(sol) for sol in v]
-        self.solutionSets = [sol1, sol2]
-        #self.nunu_s
-        print(np.array(v))
-        print("--")
-        print(np.array(v_))
-        exit()
-        self.solutionSets = [
-            SolutionSet(B, M, mW2, mT2, 0) for B, M in zip((b, b_), (mu, mu_))
-        ]
-        N, N_ = [ss.N for ss in self.solutionSets]
-
-        V0 = np.outer([metX, metY, 0], [0, 0, 1])
-        self.S = V0 - UnitCircle()
-        n_ = self.S.T.dot(N_).dot(self.S)
-
-
-
         v, diag = intersections_ellipses(N, n_)
         v_ = [self.S.dot(sol) for sol in v]
-        self.diag = diag
+        self.solutionSets = [sol1, sol2]
+        for k, v in {"perp": v, "perp_": v_, "n_": n_}.items():
+            setattr(self, k, v)
+        return; 
 
         self.lsq = False
         if not v and leastsq:
@@ -288,10 +272,5 @@ class DoubleNu(NuSol):
     def nunu_s(self):
         """Solution pairs for neutrino momenta"""
         K, K_ = [ss.H.dot(np.linalg.inv(ss.H_perp)) for ss in self.solutionSets]
-        print(K)
-        print(K_)
-        #print(K_[0])
-        #print(K_[1])
-        exit()
         return [(K.dot(s), K_.dot(s_)) for s, s_ in zip(self.perp, self.perp_)]
 

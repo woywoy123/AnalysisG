@@ -448,6 +448,43 @@ __global__ void _Y_dot_X_dot_Y(
     s_vec[idx][idy_][idz3m] = sols_vec[idx][idy][idz3][idz3m];
 }
 
+
+template <typename scalar_t> 
+__global__ void _YT_dot_X_dot_Y(
+    torch::PackedTensorAccessor64<scalar_t, 4, torch::RestrictPtrTraits> O1, 
+    torch::PackedTensorAccessor64<scalar_t, 4, torch::RestrictPtrTraits> O2, 
+
+    const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> Y1, 
+    const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> X1, 
+
+    const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> Y2, 
+    const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> X2, 
+    const unsigned int dim_i, const unsigned int dim_j, const unsigned int dim_k)
+{
+    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    const unsigned int idy = blockIdx.y; 
+    const unsigned int idz = blockIdx.z;
+    
+    if (idx >= dim_i || idy >= dim_j*dim_j*dim_j || idz >= dim_k){ return; }
+    const unsigned int idy3  = (idy/(dim_j*dim_j)); 
+
+    const unsigned int idy_  = idy%dim_j; 
+    const unsigned int idy3m = (idy/3)%dim_j;
+
+    scalar_t* val; 
+    const bool swp = idz == 0;
+    if (swp){ val = &O1[idx][idy3][idy3m][idy_]; }
+    else    { val = &O2[idx][idy3][idy3m][idy_]; }
+    
+    for (unsigned int x(0); x < dim_j; ++x)
+    {
+        if (swp){ *val += _mul_ij(Y1[idx][x][idy3m], X1[idx][x][idy_]); }
+        else    { *val += _mul_ij(Y2[idx][x][idy3m], X2[idx][x][idy_]); }   
+    }
+    if (swp){ *val = _mul_ij(*val, Y1[idx][idy_][idy3]); }
+    else    { *val = _mul_ij(*val, Y2[idx][idy_][idy3]); }   
+}
+
 template <typename scalar_t>
 __global__ void _NuK(
         torch::PackedTensorAccessor64<double, 3, torch::RestrictPtrTraits> O_sol_vec, 
@@ -499,30 +536,91 @@ __global__ void _H_perp_K(
 
 template <typename scalar_t>
 __global__ void _DotK(
-        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> K1, 
-        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> K2,
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> v, 
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> v_,
 
-        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> H1, 
-        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> H2,
-
-        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> N1, 
-        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> N2,
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> S, 
+        const torch::PackedTensorAccessor64<scalar_t, 4, torch::RestrictPtrTraits> sol, 
         const unsigned int dim_i, const unsigned int dim_j, const unsigned int dim_k)
 {
     const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
     const unsigned int idy = blockIdx.y; 
     const unsigned int idz = blockIdx.z; 
     if ( idx >= dim_i || idy >= dim_j || idz >= dim_k){ return; }
-   
-    const unsigned int idy_ = idy/3;
-    const unsigned int idz_ = idy%3;  
-    const bool swp = idz == 0; 
+    const unsigned int idy3  = idy/3; 
+    const unsigned int idy3m = idy%3;
+  
+    if (idz < 3){ v[idx][idy][idz] = sol[idx][idy3][idy3m][idz]; return; }
 
-    scalar_t* val = (swp) ? &K1[idx][idy_][idz_] : &K2[idx][idy_][idz_]; 
-    (*val) = 0.; 
+    scalar_t* val = &v_[idx][idy][idz-3]; 
     for (unsigned int x(0); x < 3; ++x)
-    { 
-        if (swp){ *val += H1[idx][idy_][x]*N1[idx][x][idz_]; }
-        else    { *val += H2[idx][idy_][x]*N2[idx][x][idz_]; }
+    {
+         *val += _mul_ij(S[idx][idz-3][x], sol[idx][idy3][idy3m][x]); 
     }
 }
+
+template <typename scalar_t>
+__global__ void _K_Kern(
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> K1, 
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> K2,
+
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> H1, 
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> H_inv1, 
+
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> H2, 
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> H_inv2, 
+
+        const unsigned int dim_i, const unsigned int dim_j, const unsigned int dim_k)
+{
+    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    const unsigned int idy = blockIdx.y; 
+    const unsigned int idz = blockIdx.z; 
+    if ( idx >= dim_i || idy >= dim_j || idz >= dim_k){ return; }
+    const unsigned int idy3  = idy/3; 
+    const unsigned int idy3m = idy%3;
+
+    const bool swp = idz == 0; 
+    scalar_t* val = (swp) ? &K1[idx][idy3][idy3m] : &K2[idx][idy3][idy3m];   
+    for (unsigned int x(0); x < 3; ++x)
+    { 
+        if (swp){ *val += _mul_ij(H1[idx][idy3][x], H_inv1[idx][x][idy3m]); }
+        else    { *val += _mul_ij(H2[idx][idy3][x], H_inv2[idx][x][idy3m]); }
+    } 
+}
+
+template <typename scalar_t>
+__global__ void _NuNuK(
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> nu, 
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> nu_,
+        torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> dig, 
+
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> K1, 
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> K2, 
+
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> v, 
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> v_, 
+
+        const torch::PackedTensorAccessor32<long    , 2, torch::RestrictPtrTraits> id, 
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> diag, 
+        const unsigned int dim_i, const unsigned int dim_j, const unsigned int dim_k)
+{
+    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    const unsigned int idy = blockIdx.y; 
+    const unsigned int idz = blockIdx.z; 
+    if ( idx >= dim_i || idy >= dim_j || idz >= dim_k){ return; }
+    const unsigned int idz3m = idz%3; 
+    const unsigned int idz3  = idz/3; 
+    const unsigned int tid = id[idx][idy];  
+    const bool swp = idz3 == 0; 
+    if (swp){ dig[idx][idy] = diag[idx][tid]; }
+
+    for (unsigned int x(0); x < 3; ++x)
+    {  
+        if (swp){ nu[idx][idy][idz3m] += _mul_ij(K1[idx][idz3m][x],  v[idx][tid][x]); }
+        else   { nu_[idx][idy][idz3m] += _mul_ij(K2[idx][idz3m][x], v_[idx][tid][x]); }
+    }
+
+}
+
+
+

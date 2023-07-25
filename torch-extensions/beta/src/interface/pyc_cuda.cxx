@@ -134,7 +134,12 @@ std::vector<torch::Tensor> pyc::nusol::NuNu(
     out = NuSol::CUDA::NuNu(
             pmc_b1, pmc_b2, pmc_l1, pmc_l2, 
             met_x , met_y, masses, null);
-    return {out["v1"], out["v2"]}; 
+    return {
+        out["NuVec_1"] , out["NuVec_2"], 
+        out["diagonal"], out["n_"],     
+        out["H_perp_1"], out["H_perp_2"],
+        out["NoSols"]
+    }; 
 }
 
 TORCH_LIBRARY(pyc_cuda, m)
