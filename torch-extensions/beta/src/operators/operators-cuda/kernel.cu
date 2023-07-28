@@ -16,21 +16,20 @@ __global__ void _DotK(
 
 template <typename scalar_t>
 __global__ void _DotK(
-        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> out,
-        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> v1, 
-        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> v2, 
-        const unsigned int dim_z, 
-        const unsigned int dim_i1,
-        const unsigned int dim_co, 
-        const unsigned int grid)
+        torch::PackedTensorAccessor64<scalar_t, 4, torch::RestrictPtrTraits> out,
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> v1,  
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> v2,        
+        const unsigned int len_ten, const unsigned int dim_j, 
+        const unsigned int dim_k  , const unsigned int len_dim)
 {
-    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
-    const unsigned int idy = blockIdx.y; 
+    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x;
+    const unsigned int idy = blockIdx.y;
     const unsigned int idz = blockIdx.z; 
-    if (idz >= dim_z || idy >= dim_co || idx >= grid){return;}
-    const unsigned int id = idx/dim_i1;
-    const unsigned int idx_ = idx%dim_i1; 
-    dot_ij(out[idz][idx_][idy + id*dim_co], v1[idz][idx_][idy], v2[idz][idy][id]); 
+    if (idx >= len_ten || idy >= dim_j*dim_k || idz >= len_dim){ return; }
+    const unsigned int idyj = idy/dim_k;
+    const unsigned int idyk = idy%dim_k; 
+
+    out[idx][idyj][idyk][idz] = v1[idx][idyj][idz]*v2[idx][idz][idyk]; 
 }
 
 template <typename scalar_t>
@@ -83,21 +82,15 @@ __global__ void _SumK(
 template <typename scalar_t>
 __global__ void _SumK(
         torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> out, 
-        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> mul, 
-        const unsigned int dim_z,
-        const unsigned int dim_x,  
-        const unsigned int dim_y, 
-        const unsigned int range)
+        torch::PackedTensorAccessor64<scalar_t, 4, torch::RestrictPtrTraits> out_, 
+        const unsigned int dim_i, const unsigned int dim_j,  
+        const unsigned int dim_k, const unsigned int dim_)
 {
     const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
     const unsigned int idy = blockIdx.y; 
     const unsigned int idz = blockIdx.z; 
-    if (idz >= dim_z || idy >= dim_y || idx >= dim_x){return;}
-    
-    for (unsigned int i(0); i < range; ++i)
-    {
-        sum(out[idz][idx][idy], mul[idz][idx][range*idy+i]);  
-    }
+    if (idx >= dim_i || idy >= dim_j || idz >= dim_k){return;}
+    for (unsigned int x(0); x < dim_; ++x){ out[idx][idy][idz] += out_[idx][idy][idz][x]; }
 }
 
 template <typename scalar_t>
@@ -212,7 +205,10 @@ __global__ void _CrossK(
     const unsigned int idy = blockIdx.y; 
     const unsigned int idz = blockIdx.z; 
     if (idx >= dim_i || idy >= 1 || idz >= 3 ){ return; } 
-    out[idx][1][idz] = mat1[(idx/3)][idx%3][idz]; 
-    out[idx][2][idz] = mat2[(idx/3)][idx%3][idz]; 
+    const unsigned int idx3 = idx/3; 
+    const unsigned int idx3m = idx%3; 
+
+    out[idx][1][idz] = mat1[(idx3)][idx3m][idz]; 
+    out[idx][2][idz] = mat2[(idx3)][idx3m][idz]; 
 
 }

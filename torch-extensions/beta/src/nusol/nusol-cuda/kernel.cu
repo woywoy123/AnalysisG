@@ -93,6 +93,8 @@ __global__ void _Base_Matrix_H_Kernel(
     const unsigned int idy = blockIdx.y; 
     const unsigned int idz = blockIdx.z; 
     if (idx >= dim_x || idy >= 6 || idz  >= 3){return;}
+    const unsigned int idy3m = idy%3; 
+
     if (idy < 3)
     { 
         _rz(Rz[idx][idy][idz], -phi[idx][0], idy, idz); 
@@ -101,15 +103,64 @@ __global__ void _Base_Matrix_H_Kernel(
     else
     {
         _pihalf(theta[idx][0]); 
-        _ry(Ry[idx][idy%3][idz], theta[idx][0], idy%3, idz); 
-        RyT[idx][idz][idy%3] = Ry[idx][idy%3][idz]; 
+        _ry(Ry[idx][idy3m][idz], theta[idx][0], idy3m, idz); 
+        RyT[idx][idz][idy3m] = Ry[idx][idy3m][idz]; 
+    }
+}
+
+template <typename scalar_t>
+__global__ void _Rz_Rx_Ry_dot_K(
+        torch::PackedTensorAccessor64<scalar_t, 4, torch::RestrictPtrTraits> Rx, 
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> _Rx, 
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> _Ry, 
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> _Rz, 
+        const unsigned int dim_i, const unsigned int dim_j, const unsigned int dim_k)
+{
+    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x;
+    const unsigned int idy = blockIdx.y; 
+    const unsigned int idz = blockIdx.z; 
+    if (idx >= dim_i || idy >= dim_j*dim_j || idz >= dim_k){ return; }
+    const unsigned int idy3 = idy/dim_j; 
+    const unsigned int idy3m = idy%dim_j; 
+
+    scalar_t* val = &Rx[idx][idz][idy3][idy3m]; 
+    *val = 0; 
+    for (unsigned int x(0); x < dim_k; ++x)
+    {
+        *val += _Rz[idx][idy3m][x]*_Rx[idx][x][idy3]; 
+    }
+    *val = _Ry[idx][idz][idy3m]*(*val); 
+}
+
+template <typename scalar_t>
+__global__ void _dot_K(
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> base_out, 
+        const torch::PackedTensorAccessor64<scalar_t, 4, torch::RestrictPtrTraits> _Rx, 
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> base, 
+        const unsigned int dim_i, const unsigned int dim_j, const unsigned int dim_k)
+{
+    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x;
+    const unsigned int idy = blockIdx.y; 
+    const unsigned int idz = blockIdx.z; 
+    if (idx >= dim_i || idy >= dim_j || idz >= dim_k){ return; }
+
+    scalar_t* val = &base_out[idx][idy][idz]; 
+    *val = 0; 
+    for (unsigned int x(0); x < dim_k; ++x)
+    {
+        scalar_t _r = 0; 
+        for (unsigned int y(0); y < dim_k; ++y)
+        {
+            _r += _Rx[idx][idy][x][y]; 
+        }
+        *val += _r * base[idx][x][idz];  
     }
 }
 
 template <typename scalar_t>
 __global__ void _Base_Matrix_H_Kernel(
-        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> Rx, 
         torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> RxT, 
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> Rx, 
         const unsigned int dim_x)
 {
     const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
@@ -398,12 +449,14 @@ __global__ void _SolsK(
         const torch::PackedTensorAccessor32<long, 3, torch::RestrictPtrTraits> id, 
         const torch::PackedTensorAccessor64<double, 3, torch::RestrictPtrTraits> diag, 
         const torch::PackedTensorAccessor64<double, 4, torch::RestrictPtrTraits> vecs, 
+        const torch::PackedTensorAccessor64<bool, 2, torch::RestrictPtrTraits> ignore, 
         const unsigned int dim_i, const unsigned int dim_j, const double null)
 {
     const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
     const unsigned int idy = blockIdx.y; 
     const unsigned int idz = blockIdx.z; 
     if ( idx >= dim_i || idy >= dim_j*2 || idz >= 9 ){ return; }
+    if (ignore[idx][0]){ return; }
     const unsigned int idz3 = idz/3; 
     const unsigned int idz3m = idz%3;   
 
@@ -421,7 +474,7 @@ __global__ void _Y_dot_X_dot_Y(
     torch::PackedTensorAccessor64<double, 3, torch::RestrictPtrTraits> s_out, 
     torch::PackedTensorAccessor64<double, 3, torch::RestrictPtrTraits> s_vec, 
     const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> X, 
-    const torch::PackedTensorAccessor64<double, 4, torch::RestrictPtrTraits> sols_vec, 
+    const torch::PackedTensorAccessor64<double  , 4, torch::RestrictPtrTraits> sols_vec, 
     const unsigned int dim_i, const unsigned int dim_eig, const unsigned int dim_j)
 {
     const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 

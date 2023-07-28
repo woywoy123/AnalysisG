@@ -141,13 +141,13 @@ def test_cross():
 
 
 if __name__ == "__main__":
-#    test_matrix_multi()
-#    test_costheta()
-#    test_sintheta()
-#    test_rx()
-#    test_ry()
-#    test_rz()
-#    test_cofactor()
-#    test_det()
-#    test_inverse()
+    test_matrix_multi()
+    test_costheta()
+    test_sintheta()
+    test_rx()
+    test_ry()
+    test_rz()
+    test_cofactor()
+    test_det()
+    test_inverse()
     test_cross()

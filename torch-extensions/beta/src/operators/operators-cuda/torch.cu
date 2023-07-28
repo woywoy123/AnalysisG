@@ -57,36 +57,37 @@ torch::Tensor _Dot(torch::Tensor v1, torch::Tensor v2)
 
 torch::Tensor _Mul(torch::Tensor v1, torch::Tensor v2)
 {
+    const torch::TensorOptions op = _MakeOp(v1); 
     const unsigned int  n_ten = v1.size(0); 
-    const unsigned int len_i1 = v1.size(1); 
-    const unsigned int len_co = v1.size(2); 
-    const unsigned int len_j2 = v2.size(2); 
     const unsigned int threads = 1024; 
-    const unsigned int grid = len_i1*len_j2; 
 
-    v2 = v2.contiguous(); 
-    v1 = v1.contiguous(); 
-    torch::Tensor out =  torch::zeros({n_ten, len_i1, len_j2}, _MakeOp(v1)); 
-    torch::Tensor tmp_ = torch::zeros({n_ten, len_i1, len_j2*len_co}, _MakeOp(v1)); 
-    CHECK_INPUT(v2); CHECK_INPUT(v1); 
+    // these need to be the same for contraction
+    const unsigned int len_k1 = v1.size(2); 
+    const unsigned int len_j2 = v2.size(1); 
+    const unsigned int len_dim = (len_k1 > len_j2) ? len_j2 : len_k1; 
 
-    const dim3 blk  = BLOCKS(threads, grid, len_co, n_ten); 
-    const dim3 blk_ = BLOCKS(threads, len_i1, len_j2, n_ten); 
-    AT_DISPATCH_FLOATING_TYPES(v2.scalar_type(), "MUL", ([&]
+    const unsigned int len_j1 = v1.size(1); 
+    const unsigned int len_k2 = v2.size(2); 
+
+    torch::Tensor out  = torch::zeros({n_ten, len_j1, len_k2, len_dim}, op); 
+    torch::Tensor out_ = torch::zeros({n_ten, len_j1, len_k2}, op); 
+  
+    const dim3 blk = BLOCKS(threads, n_ten, len_k2*len_j1, len_dim); 
+    const dim3 blks = BLOCKS(threads, n_ten, len_j1, len_k2); 
+    AT_DISPATCH_FLOATING_TYPES(out.scalar_type(), "MUL", ([&]
     {
         _DotK<scalar_t><<< blk, threads >>>(
-                tmp_.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-                  v1.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-                  v2.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-                n_ten, len_i1, len_co, grid); 
-
-        _SumK<scalar_t><<< blk_, threads >>>(
-                 out.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-                tmp_.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-                n_ten, len_i1, len_j2, len_co); 
+                out.packed_accessor64<scalar_t, 4, torch::RestrictPtrTraits>(), 
+                v1.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+                v2.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+                n_ten, len_j1, len_k2, len_dim); 
+        
+        _SumK<scalar_t><<< blks, threads >>>(
+                out_.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                out.packed_accessor64<scalar_t, 4, torch::RestrictPtrTraits>(),
+                n_ten, len_j1, len_k2, len_dim);
     })); 
-
-    return out; 
+    return out_;
 }
 
 torch::Tensor _CosTheta(torch::Tensor v1, torch::Tensor v2, signed int limit)
@@ -267,7 +268,7 @@ torch::Tensor _Det(torch::Tensor matrix)
     return out; 
 }
 
-torch::Tensor _Inv(torch::Tensor matrix)
+std::tuple<torch::Tensor, torch::Tensor> _Inv(torch::Tensor matrix)
 {
     const unsigned int x = matrix.size(0); 
     const unsigned int threads = 1024; 
@@ -325,7 +326,7 @@ torch::Tensor _Inv(torch::Tensor matrix)
 
     cudaFree(dy); 
     cudaFree(dz);  
-    return out; 
+    return {out, det == 0}; 
 }
 
 torch::Tensor _Cross(torch::Tensor mat1, torch::Tensor mat2)

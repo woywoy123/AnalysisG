@@ -71,6 +71,7 @@ class Particle:
         self.eta = eta
         self.phi = phi
         self.e = e
+        self._cuda = torch.cuda.is_available()
 
     @property
     def vec(self): 
@@ -86,13 +87,22 @@ class Particle:
     def ten(self):
         vec = [self.pt, self.eta, self.phi, self.e]
         vec = torch.tensor([vec], dtype = torch.float64)
-        if torch.cuda.is_available(): vec = vec.to(device = "cuda")
+        vec = vec.to(device = self.cuda)
         return vec
+
+    @property
+    def cuda(self):
+        return "cuda" if self._cuda else "cpu"
+
+    @cuda.setter
+    def cuda(self, v):
+        self._cuda = v
 
 class event:
     def __init__(self, met, phi):
         self.met = met
         self.phi = phi
+        self._cuda = torch.cuda.is_available()
 
     @property
     def vec(self):
@@ -101,8 +111,16 @@ class event:
     @property
     def ten(self):
         vec = torch.tensor([self.vec.px, self.vec.py], dtype = torch.float64).view(-1, 2)
-        if torch.cuda.is_available(): vec = vec.to(device = "cuda")
+        vec = vec.to(device = self.cuda)
         return vec
+
+    @property
+    def cuda(self):
+        return "cuda" if self._cuda else "cpu"
+
+    @cuda.setter
+    def cuda(self, v):
+        self._cuda = v
 
 def loads( n ):
     f = open("data/" + n + "NeutrinoEvents.pkl", "rb")

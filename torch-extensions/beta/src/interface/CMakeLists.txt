@@ -29,7 +29,8 @@ target_link_libraries(pyc_tensor
         physics-cartesian 
         physics-polar
         transform_ten
-        operators-tensor
+        operators-tensor 
+        nusol-tensor
 )
 
 add_library(pyc_float SHARED
