@@ -217,8 +217,7 @@ std::tuple<torch::Tensor, torch::Tensor> _DotMatrix(
     return {Operators::CUDA::Mul(X, dNu), dNu}; 
 }
 
-std::tuple<torch::Tensor, torch::Tensor> _Intersection(
-        torch::Tensor A, torch::Tensor B, const double null)
+std::tuple<torch::Tensor, torch::Tensor> _Intersection(torch::Tensor A, torch::Tensor B, const double null)
 {
     const unsigned int dim_i = A.size(0); 
     const unsigned int threads = 1024; 
@@ -238,7 +237,9 @@ std::tuple<torch::Tensor, torch::Tensor> _Intersection(
     })); 
 
     std::tuple<torch::Tensor, torch::Tensor> v = Operators::CUDA::Inverse(A, true);
+    torch::Tensor ignore = std::get<1>(v); 
     torch::Tensor imag = std::get<0>(v); 
+
     imag = Operators::CUDA::Mul(imag, B);
     imag = torch::linalg::eigvals(imag); 
     
@@ -346,12 +347,12 @@ std::tuple<torch::Tensor, torch::Tensor> _Intersection(
             dim_i, dims[1]); 
     })); 
 
-    torch::Tensor ignore = std::get<1>(v); 
     torch::Tensor diag = torch::pow(O.sum({-1}), 2) + torch::pow(L.sum({-1}), 2); 
     torch::Tensor id   = std::get<1>(diag.sort(-1, false)); 
     
     torch::Tensor diag_sol = torch::zeros({dim_i, dim_eig*2, 3   }, op); 
     torch::Tensor sols_vec = torch::zeros({dim_i, dim_eig*2, 3, 3}, op); 
+
     const dim3 blk_r = BLOCKS(threads, dim_i, dim_eig*2, 9);  
     AT_DISPATCH_FLOATING_TYPES(diag_sol.scalar_type(), "sols", ([&]
     {
@@ -482,6 +483,7 @@ std::map<std::string, torch::Tensor> _Nu(
             torch::indexing::Slice(), 
             torch::indexing::Slice(dims[1] - max_len, torch::indexing::None)
     }); 
+
     return output;  
 }
 
@@ -542,14 +544,15 @@ std::map<std::string, torch::Tensor> _NuNu(
     X = _DotMatrix(met_xy, circl, N2); 
     torch::Tensor n_ = std::get<0>(X); 
     torch::Tensor S  = std::get<1>(X); 
+
     X = _Intersection(N1, n_, null);
+    const unsigned int dim_eig = std::get<0>(X).size(1);
+    std::vector<signed long> dims = {dim_i, dim_eig*3, dim_j}; 
 
     torch::Tensor sol  = std::get<0>(X); 
     torch::Tensor diag = std::get<1>(X).view({dim_i, -1});
     torch::Tensor id   = std::get<1>(diag.sort(-1, false)); 
     
-    const unsigned int dim_eig = std::get<0>(X).size(1);
-    std::vector<signed long> dims = {dim_i, dim_eig*3, dim_j}; 
     torch::Tensor v    = torch::zeros(dims, op);
     torch::Tensor v_   = torch::zeros(dims, op);
 
@@ -605,11 +608,13 @@ std::map<std::string, torch::Tensor> _NuNu(
             torch::indexing::Slice(0, max_len), 
             torch::indexing::Slice()
     }); 
+
     output["NuVec_2"] = nu_.index({
             torch::indexing::Slice(), 
             torch::indexing::Slice(0, max_len), 
             torch::indexing::Slice()
     }); 
+
     output["diagonal"] = dnu.index({
             torch::indexing::Slice(), 
             torch::indexing::Slice(0, max_len)

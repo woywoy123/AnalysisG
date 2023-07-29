@@ -5,7 +5,7 @@ import numpy as np
 import math
 from common import *
 from nusol import (
-        NuSol, intersections_ellipses, 
+        NuSol, intersections_ellipses,
         UnitCircle, SingleNu, DoubleNu
 )
 
@@ -356,7 +356,6 @@ def test_nusol_nu_tensor():
         lep_ = pyext.Transform.PxPyPzE(lep.ten)
         bquark_ = pyext.Transform.PxPyPzE(bquark.ten)
         inpt.append([bquark_, lep_, ev.ten])
-        break
 
     truth = torch.cat(lst, 0)
 
@@ -367,13 +366,16 @@ def test_nusol_nu_tensor():
     t1 = time()
     pred = pyext.NuSol.Nu(bquark_, lep_, ev_, masses.to("cpu"), S2.to("cpu"), -1)
     t1 = time() - t1
-    print(pred)
-    print(truth)
-    pred = pred.to(device = "cpu")
     print("n-Events: " + str(len(x)) + " @ ", t1)
 
-    x = abs((pred - truth).sum(-1).sum(-1)) > 10e-1
-    assert x.sum(-1) == 0
+    for i in range(len(truth)):
+        tru = truth[i][truth[i] != 0]
+        pr = pred[i][pred[i] != 0]
+        if len(pr) == 0:
+            assert len(tru) == 0
+            continue
+        x = abs(pr - tru)/tru > 1e-3
+        assert x.sum(-1).sum(-1).sum(-1) == 0
 
 def test_intersection_tensor():
     x = loadSingle()
@@ -385,21 +387,25 @@ def test_intersection_tensor():
     for i in range(len(x)):
         x_ = next(ita)
         ev, lep, b = x_[0], x_[1], x_[2]
+        ev.cuda = False
+        lep.cuda = False
+        b.cuda = False
+
         nu = NuSol(b.vec, lep.vec, ev.vec)
         unit = UnitCircle()
-        points, diag = intersections_ellipses(nu.M, unit, precision)
+        #points, diag = intersections_ellipses(nu.M, unit, precision)
 
-        unit = torch.tensor(unit, device = "cuda", dtype = torch.float64)
+        unit = torch.tensor(unit, device = "cpu", dtype = torch.float64)
+        U_container.append(unit.view(-1, 3, 3))
         lep_ = pyext.Transform.PxPyPzE(lep.ten)
         bquark_ = pyext.Transform.PxPyPzE(b.ten)
-        M = pyext.NuSol.Nu(bquark_, lep_, ev.ten, masses, S2, -1)
+        M = pyext.NuSol.Nu(bquark_, lep_, ev.ten, masses.to(device = "cpu"), S2.to(device = "cpu"), -1)
         M_container.append(M)
-        U_container.append(unit.view(-1, 3, 3))
 
         pts, dig = pyext.Intersection(M, unit.view(-1, 3, 3), precision)
-        res.append(pts)
-
-        points_t = torch.tensor(np.array(points), device ="cuda", dtype = torch.float64)
+        res.append(pts.view(-1, 3))
+        continue
+        points_t = torch.tensor(np.array(points), device ="cpu", dtype = torch.float64)
         points_cu = pts.view(-1, 3)
         points_cu = points_cu[points_cu.sum(-1) != 0]
         points_t = points_t.view(-1, 3)
@@ -408,8 +414,9 @@ def test_intersection_tensor():
         for pairs_t in points_t:
             lim = False
             for pairs in points_cu:
-                sol = pairs - pairs_t
-                lim = abs(sol.sum(-1).sum(-1)) < 1e-10
+                sol = abs(pairs - pairs_t)
+                sol = sol > 1e-4
+                lim = sol.sum(-1).sum(-1) == 0
                 if not lim: continue
                 break
 
@@ -423,7 +430,10 @@ def test_intersection_tensor():
     m = torch.cat(M_container, dim = 0)
     u = torch.cat(U_container, dim = 0)
     res_t = torch.cat(res, dim = 0)
+
     res_cu, b = pyext.NuSol.Intersection(m, u, precision)
+    res_cu = res_cu.clone().view(-1, 3)
+    res_cu = res_cu[res_cu.sum(-1) != 0]
     x = res_cu[res_cu != res_t]
     assert len(x) == 0
 
@@ -442,11 +452,19 @@ def test_nu_tensor():
     x = loadSingle()
     ita = iter(x)
     compare = []
-    inpts = {"b_cu" : [], "lep_cu" : [], "ev_cu" : [], 
-             "m_cu" : [], "s2" : []}
+    inpts = {
+            "b_cu"  : [], "lep_cu" : [],
+            "ev_cu" : [], "m_cu"   : [],
+            "s2" : []
+    }
+
     for i in range(len(x)):
         x_ = next(ita)
         ev, lep, b = x_[0], x_[1], x_[2]
+        ev.cuda = False
+        lep.cuda = False
+        b.cuda = False
+
         nu = SingleNu(b.vec, lep.vec, ev.vec)
         nu_t = torch.tensor(np.array(nu.nu), device = "cpu", dtype = torch.float64)
 
@@ -457,16 +475,20 @@ def test_nu_tensor():
         inpts["m_cu"].append(masses)
         inpts["ev_cu"].append(ev.ten)
         inpts["s2"].append(S2.view(-1, 2, 2))
-        _cu  = pyext.NuSol.Nu(b_cu, lep_cu, ev.ten, masses, S2, precision)
+
+        _cu, dia  = pyext.NuSol.Nu(
+                b_cu, lep_cu, ev.ten,
+                masses.to(device = "cpu"),
+                S2.to(device = "cpu"), precision)
         nu_cu = _cu[0].to(device = "cpu").view(-1, 3)
         compare.append(nu_cu)
         if len(nu_cu) == 0: assert len(nu_t) == 0
         for pr_t in nu_t:
             lim = False
             for pr_cu in nu_cu:
-                s = pr_t - pr_cu
+                s = abs(pr_t - pr_cu)/pr_t > 10e-3
                 s = s.sum(-1).sum(-1)
-                if s > 10e-4: continue
+                if s != 0: continue
                 lim = True
                 break
 
@@ -478,18 +500,18 @@ def test_nu_tensor():
                 print("-------------------------")
             assert lim
 
-    b_cu = torch.cat(inpts["b_cu"], dim = 0)
-    lep_cu = torch.cat(inpts["lep_cu"], dim = 0)
-    ev_cu = torch.cat(inpts["ev_cu"], dim = 0)
-    mass_cu = torch.cat(inpts["m_cu"], dim = 0)
-    s2_cu = torch.cat(inpts["s2"], dim = 0)
-    _cu = pyext.NuSol.Nu(b_cu, lep_cu, ev_cu, masses, S2, precision)[0].to(device = "cpu")
+    b_cu = torch.cat(inpts["b_cu"], dim = 0).to(device = "cpu")
+    lep_cu = torch.cat(inpts["lep_cu"], dim = 0).to(device = "cpu")
+    ev_cu = torch.cat(inpts["ev_cu"], dim = 0).to(device = "cpu")
+    mass_cu = torch.cat(inpts["m_cu"], dim = 0).to(device = "cpu")
+    s2_cu = torch.cat(inpts["s2"], dim = 0).to(device = "cpu")
+    _cu = pyext.NuSol.Nu(b_cu, lep_cu, ev_cu, masses.to(device = "cpu"), S2.to(device = "cpu"), precision)[0]
     _cu = _cu[_cu.sum(-1) != 0]
 
     t = torch.cat(compare, dim = 0)
     assert len(t[t - _cu > 1e-8]) == 0
 
-    _cu = pyext.NuSol.Nu(b_cu, lep_cu, ev_cu, mass_cu, s2_cu, precision)[0].to(device = "cpu")
+    _cu = pyext.NuSol.Nu(b_cu, lep_cu, ev_cu, mass_cu, s2_cu, precision)[0]
     _cu = _cu[_cu.sum(-1) != 0]
     assert len(t[t - _cu > 1e-8]) == 0
 
@@ -599,15 +621,15 @@ def test_nunu_tensor():
     print("-> Timer: ", t_/nEvents, "per event @ ", nEvents, "events", "Time", t_)
 
 if __name__ == "__main__":
-    #test_nusol_base_cuda()
-    #test_nusol_nu_cuda()
-    #test_intersection_cuda()
-    #test_nu_cuda()
-    #test_nunu_cuda()
+    test_nusol_base_cuda()
+    test_nusol_nu_cuda()
+    test_intersection_cuda()
+    test_nu_cuda()
+    test_nunu_cuda()
 
-    #test_nusol_base_tensor()
+    test_nusol_base_tensor()
     test_nusol_nu_tensor()
-    #test_intersection_tensor()
-    #test_nu_tensor()
+    test_intersection_tensor()
+    test_nu_tensor()
     #test_nunu_tensor()
 

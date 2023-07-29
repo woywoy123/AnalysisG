@@ -92,6 +92,10 @@ class Particle:
 
     @property
     def cuda(self):
+        try:
+            return "cuda" if self._cuda else "cpu"
+        except:
+            self._cuda = torch.cuda.is_available()
         return "cuda" if self._cuda else "cpu"
 
     @cuda.setter
@@ -116,6 +120,10 @@ class event:
 
     @property
     def cuda(self):
+        try:
+            return "cuda" if self._cuda else "cpu"
+        except:
+            self._cuda = torch.cuda.is_available()
         return "cuda" if self._cuda else "cpu"
 
     @cuda.setter

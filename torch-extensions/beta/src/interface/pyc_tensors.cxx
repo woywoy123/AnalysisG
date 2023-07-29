@@ -225,7 +225,7 @@ TORCH_LIBRARY(pyc_tensor, m)
     m.def("operators_Inverse",     &pyc::operators::Inverse); 
 
     m.def("nusol_BaseMatrix",   &pyc::nusol::BaseMatrix);
-    //m.def("nusol_Intersection", &pyc::nusol::Intersection); 
+    m.def("nusol_Intersection", &pyc::nusol::Intersection); 
 
     m.def("nusol_Nu",   &pyc::nusol::Nu);
     //m.def("nusol_NuNu", &pyc::nusol::NuNu);   

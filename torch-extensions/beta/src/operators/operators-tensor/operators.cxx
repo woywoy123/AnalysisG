@@ -69,18 +69,18 @@ torch::Tensor Operators::Tensors::CoFactors(torch::Tensor matrix)
         int _y[] = {1, 2, 1, 2, 0, 2, 0, 2, 0, 1, 0, 1}; 
       
         std::vector<torch::Tensor> out;  
-        for (unsigned int i(0); i < 3; ++i)
+        for (int i(0); i < 3; ++i)
         {
-            for (unsigned int j(0); j < 3; ++j)
+            for (int j(0); j < 3; ++j)
             {
                 int idx = 4*i; 
                 int idy = 4*j; 
                 torch::Tensor a = matrix.index({torch::indexing::Slice(), _x[idx  ], _y[idy  ]}).view({-1, 1}); 
-                torch::Tensor d = matrix.index({torch::indexing::Slice(), _x[idx+1], _y[idy+1]}).view({-1, 1}); 
+                torch::Tensor b = matrix.index({torch::indexing::Slice(), _x[idx+1], _y[idy+1]}).view({-1, 1}); 
                 torch::Tensor c = matrix.index({torch::indexing::Slice(), _x[idx+2], _y[idy+2]}).view({-1, 1}); 
-                torch::Tensor b = matrix.index({torch::indexing::Slice(), _x[idx+3], _y[idy+3]}).view({-1, 1}); 
+                torch::Tensor d = matrix.index({torch::indexing::Slice(), _x[idx+3], _y[idy+3]}).view({-1, 1}); 
                 torch::Tensor minor = a*d - b*c; 
-                minor = minor*( 1 - ((idx+idy)%2)*2 );  
+                minor = minor*( 1 - ((i+j)%2)*2 );  
                 out.push_back(minor); 
             }
         } 

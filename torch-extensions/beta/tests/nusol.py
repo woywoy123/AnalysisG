@@ -44,7 +44,7 @@ def intersections_ellipse_line(ellipse, line, zero=1e-10):
                 v.real / v[2].real,
                 np.dot(line, v.real) ** 2 + np.dot(v.real, ellipse).dot(v.real) ** 2,
             )
-            for v in V.T
+            for v in V.T if v[2].real != 0
         ],
         key=lambda k: k[1],
     )#[:2]
@@ -225,7 +225,6 @@ class SingleNu(NuSol):
 
     @property
     def nu(self): return [self.H.dot(self.sols[i]) for i in range(len(self.sols))]
-
 
 class DoubleNu(NuSol):
 
