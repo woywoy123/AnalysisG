@@ -141,7 +141,7 @@ namespace pyc
         std::vector<torch::Tensor> NuNu(
                 torch::Tensor pmc_b1, torch::Tensor pmc_b2, 
                 torch::Tensor pmc_l1, torch::Tensor pmc_l2, 
-                torch::Tensor met_x , torch::Tensor met_y, 
+                torch::Tensor met_xy, 
                 torch::Tensor masses, const double null); 
     }
 }

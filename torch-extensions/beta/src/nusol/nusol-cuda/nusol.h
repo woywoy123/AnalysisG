@@ -45,27 +45,27 @@ namespace NuSol
 
         const std::map<std::string, torch::Tensor> Nu(
                 torch::Tensor pmc_b, torch::Tensor pmc_mu, 
-                torch::Tensor MET_xy, torch::Tensor masses, 
+                torch::Tensor met_xy, torch::Tensor masses, 
                 torch::Tensor sigma)
         {
-            return _Nu(pmc_b, pmc_mu, MET_xy, masses, sigma); 
+            return _Nu(pmc_b, pmc_mu, met_xy, masses, sigma); 
         }
 
         const std::map<std::string, torch::Tensor> Nu(
                 torch::Tensor pmc_b, torch::Tensor pmc_mu, 
-                torch::Tensor MET_xy, torch::Tensor masses, 
+                torch::Tensor met_xy, 
+                torch::Tensor masses, 
                 torch::Tensor sigma, const double null)
         {
-            return _Nu(pmc_b, pmc_mu, MET_xy, masses, sigma, null); 
+            return _Nu(pmc_b, pmc_mu, met_xy, masses, sigma, null); 
         }
 
         const std::map<std::string, torch::Tensor> NuNu(
                 torch::Tensor pmc_b1, torch::Tensor pmc_b2, 
                 torch::Tensor pmc_l1, torch::Tensor pmc_l2,
-                torch::Tensor met_x , torch::Tensor met_y , 
+                torch::Tensor met_xy, 
                 torch::Tensor masses, const double null)
         {
-            torch::Tensor met_xy = torch::cat({met_x.view({-1, 1}), met_y.view({-1, 1})}, -1); 
             return _NuNu(pmc_b1, pmc_b2, pmc_l1, pmc_l2, met_xy, masses, null); 
         }
     }

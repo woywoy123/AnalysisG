@@ -40,11 +40,7 @@ def test_nusol_base_cuda():
     inpt["bq"]  = torch.cat([inpt["bq"] for _ in range(multi)], dim = 0)
     inpt["lep"] = torch.cat([inpt["lep"] for _ in range(multi)], dim = 0)
     nEvents = inpt["lep"].size(0)
-
-    t_ = time()
     _cu = pyext.NuSol.BaseMatrix(inpt["bq"], inpt["lep"], masses)
-    t_ = time() - t_
-    print("-> Timer: ", t_/nEvents, "per event @ ", nEvents, "events", "Time", t_)
 
 def test_nusol_nu_cuda():
     x = loadSingle()
@@ -69,12 +65,8 @@ def test_nusol_nu_cuda():
     lep_    = torch.cat([i[1] for i in inpt], 0)
     ev_     = torch.cat([i[2] for i in inpt], 0)
 
-    t1 = time()
     pred = pyext.NuSol.Nu(bquark_, lep_, ev_, masses, S2, -1)
-    t1 = time() - t1
     pred = pred.to(device = "cpu")
-    print("n-Events: " + str(len(x)) + " @ ", t1)
-
     x = abs((pred - truth).sum(-1).sum(-1)) > 10e-1
     assert x.sum(-1) == 0
 
@@ -135,10 +127,7 @@ def test_intersection_cuda():
     nEvents = sum([m.size(0) for k in range(multi)])
     m = torch.cat([m for k in range(multi)], dim = 0).clone()
     u = torch.cat([u for k in range(multi)], dim = 0).clone()
-    t1 = time()
     pyext.NuSol.Intersection(m, u, precision)
-    t_ = time() - t1
-    print("-> Timer: ", t_/nEvents, "per event @ ", nEvents, "events")
 
 def test_nu_cuda():
 
@@ -205,13 +194,13 @@ def test_nunu_cuda():
     inpts = {
                 "b1_cu" : [], "b2_cu" : [],
                 "l1_cu" : [], "l2_cu" : [],
-                "ev_px" : [], "ev_py" : []
+                "met_xy" : []
     }
 
     for i in range(len(x)):
         x_ = next(ita)
         ev, l1, l2, b1, b2 = x_
-        metx, mety = ev.ten[:, 0], ev.ten[:, 1]
+        met_xy = ev.ten
         _b1 = pyext.Transform.PxPyPzE(b1.ten)
         _l1 = pyext.Transform.PxPyPzE(l1.ten)
         _b2 = pyext.Transform.PxPyPzE(b2.ten)
@@ -223,10 +212,9 @@ def test_nunu_cuda():
         inpts["l1_cu"].append(_l1)
         inpts["l2_cu"].append(_l2)
 
-        inpts["ev_px"].append(metx)
-        inpts["ev_py"].append(mety)
+        inpts["met_xy"].append(met_xy)
 
-        nunu_cu = pyext.NuSol.NuNu(_b1, _b2, _l1, _l2, metx, mety, masses, precision)
+        nunu_cu = pyext.NuSol.NuNu(_b1, _b2, _l1, _l2, met_xy, masses, precision)
         c_nu, c_nu_ = nunu_cu[0].to(device = "cpu"), nunu_cu[1].to(device = "cpu")
         compare["nu1"].append(c_nu.view(-1, 3))
         compare["nu2"].append(c_nu_.view(-1, 3))
@@ -268,13 +256,12 @@ def test_nunu_cuda():
     l1_cu    = torch.cat(inpts["l1_cu"], dim = 0)
     b2_cu    = torch.cat(inpts["b2_cu"], dim = 0)
     l2_cu    = torch.cat(inpts["l2_cu"], dim = 0)
-    px_cu    = torch.cat(inpts["ev_px"], dim = 0)
-    py_cu    = torch.cat(inpts["ev_py"], dim = 0)
+    met_cu   = torch.cat(inpts["met_xy"], dim = 0)
 
     nu1_t = torch.cat(compare["nu1"], dim = 0)
     nu2_t = torch.cat(compare["nu2"], dim = 0)
 
-    _cu = pyext.NuSol.NuNu(b1_cu, b2_cu, l1_cu, l2_cu, px_cu, py_cu, masses, precision)
+    _cu = pyext.NuSol.NuNu(b1_cu, b2_cu, l1_cu, l2_cu, met_cu, masses, precision)
     nu1, nu2 = _cu[0].to(device = "cpu"), _cu[1].to(device = "cpu")
     msk = nu1.sum(-1) != 0
     nu1 = nu1[msk]
@@ -289,17 +276,10 @@ def test_nunu_cuda():
     nEvents = sum([b1_cu.size(0) for k in range(multi)])
     b1_cu = torch.cat([b1_cu for k in range(multi)], dim = 0).clone()
     l1_cu = torch.cat([l1_cu for k in range(multi)], dim = 0).clone()
-
     b2_cu = torch.cat([b2_cu for k in range(multi)], dim = 0).clone()
     l2_cu = torch.cat([l2_cu for k in range(multi)], dim = 0).clone()
-
-    px_cu = torch.cat([px_cu for k in range(multi)], dim = 0).clone()
-    py_cu = torch.cat([py_cu for k in range(multi)], dim = 0).clone()
-
-    t_ = time()
-    _cu = pyext.NuSol.NuNu(b1_cu, b2_cu, l1_cu, l2_cu, px_cu, py_cu, masses, precision)
-    t_ = time() - t_
-    print("-> Timer: ", t_/nEvents, "per event @ ", nEvents, "events", "Time", t_)
+    met_cu = torch.cat([met_cu for k in range(multi)], dim = 0).clone()
+    _cu = pyext.NuSol.NuNu(b1_cu, b2_cu, l1_cu, l2_cu, met_cu, masses, precision)
 
 def test_nusol_base_tensor():
     x = loadSingle()
@@ -330,11 +310,7 @@ def test_nusol_base_tensor():
     inpt["bq"]  = torch.cat([inpt["bq"] for _ in range(multi)], dim = 0)
     inpt["lep"] = torch.cat([inpt["lep"] for _ in range(multi)], dim = 0)
     nEvents = inpt["lep"].size(0)
-
-    t_ = time()
     _cu = pyext.NuSol.BaseMatrix(inpt["bq"], inpt["lep"], masses.to("cpu"))
-    t_ = time() - t_
-    print("-> Timer: ", t_/nEvents, "per event @ ", nEvents, "events", "Time", t_)
 
 def test_nusol_nu_tensor():
     x = loadSingle()
@@ -363,11 +339,7 @@ def test_nusol_nu_tensor():
     lep_    = torch.cat([i[1] for i in inpt], 0)
     ev_     = torch.cat([i[2] for i in inpt], 0)
 
-    t1 = time()
     pred = pyext.NuSol.Nu(bquark_, lep_, ev_, masses.to("cpu"), S2.to("cpu"), -1)
-    t1 = time() - t1
-    print("n-Events: " + str(len(x)) + " @ ", t1)
-
     for i in range(len(truth)):
         tru = truth[i][truth[i] != 0]
         pr = pred[i][pred[i] != 0]
@@ -393,7 +365,7 @@ def test_intersection_tensor():
 
         nu = NuSol(b.vec, lep.vec, ev.vec)
         unit = UnitCircle()
-        #points, diag = intersections_ellipses(nu.M, unit, precision)
+        points, diag = intersections_ellipses(nu.M, unit, precision)
 
         unit = torch.tensor(unit, device = "cpu", dtype = torch.float64)
         U_container.append(unit.view(-1, 3, 3))
@@ -404,7 +376,6 @@ def test_intersection_tensor():
 
         pts, dig = pyext.Intersection(M, unit.view(-1, 3, 3), precision)
         res.append(pts.view(-1, 3))
-        continue
         points_t = torch.tensor(np.array(points), device ="cpu", dtype = torch.float64)
         points_cu = pts.view(-1, 3)
         points_cu = points_cu[points_cu.sum(-1) != 0]
@@ -442,10 +413,7 @@ def test_intersection_tensor():
     nEvents = sum([m.size(0) for k in range(multi)])
     m = torch.cat([m for k in range(multi)], dim = 0).clone()
     u = torch.cat([u for k in range(multi)], dim = 0).clone()
-    t1 = time()
     pyext.NuSol.Intersection(m, u, precision)
-    t_ = time() - t1
-    print("-> Timer: ", t_/nEvents, "per event @ ", nEvents, "events")
 
 def test_nu_tensor():
 
@@ -524,13 +492,21 @@ def test_nunu_tensor():
     inpts = {
                 "b1_cu" : [], "b2_cu" : [],
                 "l1_cu" : [], "l2_cu" : [],
-                "ev_px" : [], "ev_py" : []
+                "met_xy" : []
     }
 
     for i in range(len(x)):
         x_ = next(ita)
         ev, l1, l2, b1, b2 = x_
-        metx, mety = ev.ten[:, 0], ev.ten[:, 1]
+        ev.cuda = False
+        l1.cuda = False
+        l2.cuda = False
+        b1.cuda = False
+        b2.cuda = False
+
+
+
+        metxy = ev.ten
         _b1 = pyext.Transform.PxPyPzE(b1.ten)
         _l1 = pyext.Transform.PxPyPzE(l1.ten)
         _b2 = pyext.Transform.PxPyPzE(b2.ten)
@@ -542,14 +518,12 @@ def test_nunu_tensor():
         inpts["l1_cu"].append(_l1)
         inpts["l2_cu"].append(_l2)
 
-        inpts["ev_px"].append(metx)
-        inpts["ev_py"].append(mety)
+        inpts["met_xy"].append(metxy)
 
-        nunu_cu = pyext.NuSol.NuNu(_b1, _b2, _l1, _l2, metx, mety, masses, precision)
-        c_nu, c_nu_ = nunu_cu[0].to(device = "cpu"), nunu_cu[1].to(device = "cpu")
+        nunu_cu = pyext.NuSol.NuNu(_b1, _b2, _l1, _l2, metxy, masses.to(device = "cpu"), precision)
+        c_nu, c_nu_ = nunu_cu[0], nunu_cu[1]
         compare["nu1"].append(c_nu.view(-1, 3))
         compare["nu2"].append(c_nu_.view(-1, 3))
-
         try: sols = DoubleNu((b1.vec, b2.vec), (l1.vec, l2.vec), ev).nunu_s
         except np.linalg.LinAlgError: sols = []
 
@@ -559,14 +533,11 @@ def test_nunu_tensor():
 
         for t_nui, t_nuj in zip(t_nu, t_nu_):
             lim = False
-            sum_i_, sum_j_ = 1000, 1000
             for c_nui, c_nuj in zip(c_nu[0], c_nu_[0]):
-                sum_i = abs((t_nui - c_nui)/t_nui).sum(-1)
-                sum_j = abs((t_nuj - c_nuj)/t_nuj).sum(-1)
-                if sum_i_ > sum_i and sum_j_ > sum_j: 
-                    sum_i_ = sum_i
-                    sum_j_ = sum_j
-                if sum_i > 1 or sum_j > 1: continue
+                sum_i = abs((t_nui - c_nui)/t_nui) > 0.1
+                sum_j = abs((t_nuj - c_nuj)/t_nuj) > 0.1
+                sum_i, sum_j = sum_i.sum(-1).sum(-1), sum_j.sum(-1).sum(-1)
+                if sum_i != 0 or sum_j != 0: continue
                 lim = True
                 break
 
@@ -578,8 +549,6 @@ def test_nunu_tensor():
                 print("-----")
                 print(c_nu[0])
                 print(c_nu_[0])
-                print("diff")
-                print(sum_i_, sum_j_)
                 print("-------------------------")
             assert lim
 
@@ -587,23 +556,26 @@ def test_nunu_tensor():
     l1_cu    = torch.cat(inpts["l1_cu"], dim = 0)
     b2_cu    = torch.cat(inpts["b2_cu"], dim = 0)
     l2_cu    = torch.cat(inpts["l2_cu"], dim = 0)
-    px_cu    = torch.cat(inpts["ev_px"], dim = 0)
-    py_cu    = torch.cat(inpts["ev_py"], dim = 0)
+    met_cu    = torch.cat(inpts["met_xy"], dim = 0)
 
     nu1_t = torch.cat(compare["nu1"], dim = 0)
     nu2_t = torch.cat(compare["nu2"], dim = 0)
 
-    _cu = pyext.NuSol.NuNu(b1_cu, b2_cu, l1_cu, l2_cu, px_cu, py_cu, masses, precision)
-    nu1, nu2 = _cu[0].to(device = "cpu"), _cu[1].to(device = "cpu")
+    _cu = pyext.NuSol.NuNu(b1_cu, b2_cu, l1_cu, l2_cu, met_cu, masses.to(device = "cpu"), precision)
+    nu1, nu2 = _cu[0], _cu[1]
     msk = nu1.sum(-1) != 0
     nu1 = nu1[msk]
     nu2 = nu2[msk]
+
+    nu1_t = nu1_t[nu1_t.sum(-1) != 0]
+    nu2_t = nu2_t[nu2_t.sum(-1) != 0]
+
     msk1 = (nu1_t - nu1).sum(-1) != 0
     msk2 = (nu2_t - nu2).sum(-1) != 0
     assert msk1.sum(-1) == 0
     assert msk2.sum(-1) == 0
 
-    # test speed
+    # test memory
     multi = 200
     nEvents = sum([b1_cu.size(0) for k in range(multi)])
     b1_cu = torch.cat([b1_cu for k in range(multi)], dim = 0).clone()
@@ -612,13 +584,8 @@ def test_nunu_tensor():
     b2_cu = torch.cat([b2_cu for k in range(multi)], dim = 0).clone()
     l2_cu = torch.cat([l2_cu for k in range(multi)], dim = 0).clone()
 
-    px_cu = torch.cat([px_cu for k in range(multi)], dim = 0).clone()
-    py_cu = torch.cat([py_cu for k in range(multi)], dim = 0).clone()
-
-    t_ = time()
-    _cu = pyext.NuSol.NuNu(b1_cu, b2_cu, l1_cu, l2_cu, px_cu, py_cu, masses, precision)
-    t_ = time() - t_
-    print("-> Timer: ", t_/nEvents, "per event @ ", nEvents, "events", "Time", t_)
+    met_cu = torch.cat([met_cu for k in range(multi)], dim = 0).clone()
+    _cu = pyext.NuSol.NuNu(b1_cu, b2_cu, l1_cu, l2_cu, met_cu, masses.to(device = "cpu"), precision)
 
 if __name__ == "__main__":
     test_nusol_base_cuda()
@@ -631,5 +598,5 @@ if __name__ == "__main__":
     test_nusol_nu_tensor()
     test_intersection_tensor()
     test_nu_tensor()
-    #test_nunu_tensor()
+    test_nunu_tensor()
 

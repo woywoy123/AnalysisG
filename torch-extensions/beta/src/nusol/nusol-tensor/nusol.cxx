@@ -1,205 +1,6 @@
-#include <transform/polar-tensors/polar.h>
 #include <operators.h>
 #include <physics.h>
 #include "nusol.h"
-
-torch::TensorOptions Tooling::MakeOp(torch::Tensor x)
-{
-    torch::TensorOptions op = torch::TensorOptions().device(x.device()).dtype(x.dtype()); 
-    return op; 
-}
-
-torch::Tensor Tooling::Pi_2(torch::Tensor x)
-{
-    torch::TensorOptions op = MakeOp(x); 
-    const unsigned int dim_i = x.size(0); 
-    torch::Tensor z = torch::zeros({dim_i, 1}, op); 
-    return torch::acos(z); 
-}
-
-torch::Tensor Tooling::x0(torch::Tensor pmc, torch::Tensor _pm2, torch::Tensor mH2, torch::Tensor mL2)
-{
-    torch::Tensor e = pmc.index({torch::indexing::Slice(), 3}).view({-1, 1}); 
-    return -(mH2 - mL2 - _pm2)/(2*e); 
-}
-
-torch::Tensor Tooling::Sigma(torch::Tensor x, torch::Tensor sigma)
-{
-    sigma = sigma.view({-1, 2, 2}); 
-    const unsigned int dim_i = x.size(0);
-    const unsigned int dim_i_ = sigma.size(0); 
-    const torch::TensorOptions op = Tooling::MakeOp(x); 
-    if (dim_i != dim_i_)
-    {
-        torch::Tensor tmp = torch::ones({dim_i, 2, 2}, op); 
-        sigma = tmp * sigma[0]; 
-    }
-    sigma = torch::inverse(sigma); 
-    sigma = torch::pad(sigma, {0, 1, 0, 1}, "constant", 0);
-    sigma = torch::transpose(sigma, 1, 2);
-    return sigma; 
-}
-
-torch::Tensor Tooling::MET(torch::Tensor met_xy)
-{
-    torch::Tensor matrix = met_xy.view({-1, 2});
-    matrix = torch::pad(matrix, {0, 1, 0, 0}, "constant", 0).view({-1, 3, 1}); 
-    torch::Tensor t0 = torch::zeros_like(matrix); 
-    return torch::cat({t0, t0, matrix}, -1); 
-}
-
-std::map<std::string, torch::Tensor> Tooling::GetMasses(torch::Tensor L, torch::Tensor masses)
-{
-    const unsigned int dim_i = L.size(0);
-    masses = masses.view({-1, 3}); 
-    const unsigned int dim_i_ = masses.size(0); 
-    if (dim_i != dim_i_)
-    {
-        torch::Tensor tmp = torch::ones({dim_i, 3}, MakeOp(masses)); 
-        masses = tmp*(masses[0]); 
-    }
-    std::map<std::string, torch::Tensor> out; 
-    out["W2"] = torch::pow(masses.index({torch::indexing::Slice(), 0}), 2).view({dim_i, 1});  
-    out["T2"] = torch::pow(masses.index({torch::indexing::Slice(), 1}), 2).view({dim_i, 1});  
-    out["N2"] = torch::pow(masses.index({torch::indexing::Slice(), 2}), 2).view({dim_i, 1});  
-    return out; 
-}
-
-torch::Tensor Tooling::Rotation(torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Tensor base)
-{
-    torch::Tensor pmc_b3  = pmc_b.index( {torch::indexing::Slice(), torch::indexing::Slice(0, 3)}); 
-    torch::Tensor pmc_mu3 = pmc_mu.index({torch::indexing::Slice(), torch::indexing::Slice(0, 3)}); 
-
-    torch::Tensor muphi = Transform::Tensors::Phi(pmc_mu); 
-    torch::Tensor theta = Physics::Tensors::Theta(pmc_mu); 
-
-    torch::Tensor Rz = Operators::Tensors::Rz(-muphi); 
-    torch::Tensor Ry = Operators::Tensors::Ry(Tooling::Pi_2(theta) - theta); 
-
-    torch::Tensor Rx = torch::matmul(Rz, pmc_b3.view({-1, 3, 1}));
-    Rx = torch::matmul(Ry, Rx.view({-1, 3, 1})); 
-    Rx = -torch::atan2(
-            Rx.index({torch::indexing::Slice(), 2}), 
-            Rx.index({torch::indexing::Slice(), 1})
-    ).view({-1, 1}); 
-
-    Rx = Operators::Tensors::Rx(Rx); 
-    Rx = torch::transpose(Rx, 1, 2); 
-    Ry = torch::transpose(Ry, 1, 2); 
-    Rz = torch::transpose(Rz, 1, 2); 
-
-    return torch::matmul(torch::matmul(Rz, torch::matmul(Ry, Rx)), base); 
-}
-
-torch::Tensor Tooling::Shape(torch::Tensor x, std::vector<int> diag)
-{
-    const torch::TensorOptions op = Tooling::MakeOp(x);
-    torch::Tensor shape = torch::diag(torch::tensor(diag, op)).view({-1, 3, 3}); 
-    torch::Tensor ones = torch::ones({x.size(0), 3, 3}, op); 
-    shape = (ones*shape).view({-1, 3, 3}); 
-    return shape; 
-}
-
-torch::Tensor Tooling::HorizontalVertical(torch::Tensor G)
-{
-    torch::Tensor G01 = G.index({torch::indexing::Slice(), 0, 1}).view({-1, 1, 1}); 
-    torch::Tensor G02 = G.index({torch::indexing::Slice(), 0, 2}).view({-1, 1, 1}); 
-    torch::Tensor G12 = G.index({torch::indexing::Slice(), 1, 2}).view({-1, 1, 1}); 
-    torch::Tensor t0 = zeros_like(G01); 
-    return torch::cat({ G01, t0, G12, t0, G01, G02 - G12, t0, t0, t0}, -1).view({-1, 3, 3}); 
-}
-
-torch::Tensor Tooling::Parallel(torch::Tensor G, torch::Tensor CoF)
-{
-    torch::Tensor g00 = -CoF.index({torch::indexing::Slice(), 0, 0}); 
-    torch::Tensor G00 = G.index({torch::indexing::Slice(), 0, 0}); 
-    torch::Tensor G01 = G.index({torch::indexing::Slice(), 0, 1}); 
-    torch::Tensor G11 = G.index({torch::indexing::Slice(), 1, 1});
-    torch::Tensor G12 = G.index({torch::indexing::Slice(), 1, 2});
-    torch::Tensor t0 = torch::zeros_like(G12); 
-    torch::Tensor G_ = torch::zeros_like(G); 
-    std::vector<signed long> dims = {-1, 1, 1};  
-
-    // ----- Populate cases where g00 is 0
-    torch::Tensor y0 = g00 == 0.; 	
-    G_.index_put_({y0}, torch::cat({
-                G01.index({y0}).view(dims), G11.index({y0}).view(dims), G12.index({y0}).view(dims), 
-                 t0.index({y0}).view(dims),  t0.index({y0}).view(dims),  t0.index({y0}).view(dims), 
-                 t0.index({y0}).view(dims),  t0.index({y0}).view(dims),  t0.index({y0}).view(dims)
-    }, -1).view({-1, 3, 3})); 
-    
-    // ----- Populate cases where -g00 > 0
-    torch::Tensor yr = g00 > 0.; 
-    G_.index_put_({yr}, torch::cat({
-                G01.index({yr}).view(dims), 
-                G11.index({yr}).view(dims), 
-                (G12.index({yr}) - torch::sqrt(g00.index({yr}))).view(dims),
-                
-                G01.index({yr}).view(dims), 
-                G11.index({yr}).view(dims), 
-                (G12.index({yr}) + torch::sqrt(g00.index({yr}))).view(dims),
-                
-                torch::cat({t0.index({yr}), t0.index({yr}), t0.index({yr})}, -1).view({-1, 1, 3})
-    }, -1).view({-1, 3, 3})); 
-    return G_; 
-}
-
-torch::Tensor Tooling::Intersecting(torch::Tensor G, torch::Tensor g22, torch::Tensor CoF)
-{
-    std::vector<signed long> dim11 = {-1, 1, 1}; 
-    std::vector<signed long> dim13 = {-1, 1, 3};
-
-    torch::Tensor g02 = CoF.index({torch::indexing::Slice(), 0, 2}); 
-    torch::Tensor g12 = CoF.index({torch::indexing::Slice(), 1, 2}); 
-    
-    torch::Tensor x0 = (g02 / g22); 
-    torch::Tensor y0 = (g12 / g22); 
-    torch::Tensor G11 = G.index({torch::indexing::Slice(), 1, 1}); 
-    torch::Tensor G01 = G.index({torch::indexing::Slice(), 0, 1}); 
-    torch::Tensor t0 = torch::zeros_like(G01); 
-
-    // Case 1: -g22 < 0 - No Solution  - ignore
-    torch::Tensor G_ = torch::zeros_like(G);
-
-    // Case 2: -g22 == 0 - One Solution 
-    torch::Tensor _s1 = -g22 == 0.; 
-    torch::Tensor _s1_s = _s1.sum(-1);  
-    
-    // Case 3; -g22 > 0 - Two Solutions 
-    torch::Tensor _s2 = -g22 > 0.;  
-    torch::Tensor _s2_s = _s2.sum(-1);
-
-    if (_s1_s.item<int>() > 0)
-    {
-        // ---------- Case 2 ----------- //   
-        G_.index_put_({_s1}, torch::cat({
-                G01.index({_s1}).view(dim11), 
-                G11.index({_s1}).view(dim11), 
-                ((-G11.index({_s1}) * y0.index({_s1})) - (G01.index({_s1}) * x0.index({_s1}))).view(dim11), 
-
-                torch::cat({t0.index({_s1}), t0.index({_s1}), t0.index({_s1})}, -1).view(dim13), 
-                torch::cat({t0.index({_s1}), t0.index({_s1}), t0.index({_s1})}, -1).view(dim13)
-        }, -1).view({-1, 3, 3})); 
-    }
-    if (_s2_s.item<int>() > 0)
-    {
-        // ---------- Case 3 ----------- //   
-        torch::Tensor _s = torch::sqrt(-g22.index({_s2})); 
-        G_.index_put_({_s2}, torch::cat({
-                // Solution 1
-                (G01.index({_s2}) - _s).view(dim11), 
-                (G11.index({_s2})).view(dim11), 
-                (-G11.index({_s2}) * y0.index({_s2}) - (G01.index({_s2}) - _s) * x0.index({_s2})).view(dim11), 
-
-                // Solution 2
-                (G01.index({_s2}) + _s).view(dim11), 
-                (G11.index({_s2})).view(dim11), 
-                (-G11.index({_s2}) * y0.index({_s2}) - (G01.index({_s2}) + _s) * x0.index({_s2})).view(dim11), 
-                torch::cat({t0.index({_s2}), t0.index({_s2}), t0.index({_s2})}, -1).view(dim13) // Zeros 
-        }, -1).view({-1, 3, 3})); 
-    }
-    return G_; 
-}
 
 torch::Tensor NuSol::Tensor::BaseMatrix(torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Tensor masses)
 {
@@ -279,7 +80,7 @@ std::tuple<torch::Tensor, torch::Tensor> NuSol::Tensor::Intersection(torch::Tens
     torch::Tensor G11 = G.index({torch::indexing::Slice(), 1, 1}); 
     
     // ----- Numerical Stability part ----- // 
-    swp = torch::abs(G00) > torch::abs(G11); 
+swp = torch::abs(G00) > torch::abs(G11); 
     G.index_put_({swp}, torch::cat({
     			G.index({swp, 1, torch::indexing::Slice()}).view(dim13), 
     			G.index({swp, 0, torch::indexing::Slice()}).view(dim13), 
@@ -302,7 +103,7 @@ std::tuple<torch::Tensor, torch::Tensor> NuSol::Tensor::Intersection(torch::Tens
     torch::Tensor g22_    = (-g22 >  0.) * (G00_G11 == false); 
 
     // 1. ----- Case where the solutions are Horizontal and Vertical ----- //
-    torch::Tensor SolG_HV = Tooling::HorizontalVertical(G.index({G00_G11}));
+torch::Tensor SolG_HV = Tooling::HorizontalVertical(G.index({G00_G11}));
     
     // 2. ------ Case where the solutions are parallel 
     torch::Tensor SolG_Para = Tooling::Parallel(G.index({g22__}), CoF.index({g22__})); 
@@ -456,10 +257,83 @@ std::map<std::string, torch::Tensor> NuSol::Tensor::Nu(
 }
 
 std::map<std::string, torch::Tensor> NuSol::Tensor::NuNu(
-        torch::Tensor pmc_b1, torch::Tensor pmc_b2, torch::Tensor pmc_l1, torch::Tensor pmc_l2, 
-        torch::Tensor met_x , torch::Tensor met_y, torch::Tensor masses, const double null)
+        torch::Tensor pmc_b1, torch::Tensor pmc_b2, 
+        torch::Tensor pmc_l1, torch::Tensor pmc_l2, 
+        torch::Tensor met_xy, torch::Tensor masses, const double null)
 {
+    torch::Tensor H1, H2, H1_perp, H2_perp, N1, N2, S, n_, none;
+    torch::Tensor zero, _v, __v, _d; 
+    const torch::TensorOptions op = Tooling::MakeOp(met_xy); 
+
     std::map<std::string, torch::Tensor> output; 
+    std::tuple<torch::Tensor, torch::Tensor> sols; 
+
+    // ---------------- Prepare all needed matrices ----------------- //
+    H1 = NuSol::Tensor::BaseMatrix(pmc_b1, pmc_l1, masses); 
+    H2 = NuSol::Tensor::BaseMatrix(pmc_b2, pmc_l2, masses);
+
+    // --- protection against non-invertible matrices --- //
+    none =  (torch::det(H1) == 0);  
+    none += (torch::det(H2) == 0);
+    none = none == 0; 
+    output["NoSols"] = none; 
+    const unsigned int dim_i = met_xy.index({none}).size(0); 
+
+    if (dim_i == 0)
+    { 
+        output["n_"]      = torch::zeros({1, 3}, op); 
+        output["NuVec_1"] = torch::zeros({1, 3}, op); 
+        output["NuVec_2"] = torch::zeros({1, 3}, op);        
+        output["H_perp_1"] = H1; 
+        output["H_perp_2"] = H2;
+        return output; 
+    }
+    
+    H1 = Tooling::Rotation(pmc_b1.index({none}), pmc_l1.index({none}), H1.index({none})); 
+    H2 = Tooling::Rotation(pmc_b2.index({none}), pmc_l2.index({none}), H2.index({none})); 
+ 
+    H1_perp = Tooling::H_perp(H1); 
+    H2_perp = Tooling::H_perp(H2); 
+      
+    N1 = Tooling::N(H1_perp); 
+    N2 = Tooling::N(H2_perp); 
+
+    S = Tooling::MET(met_xy.index({none})) - Tooling::Shape(met_xy.index({none}), {1, 1, -1});  
+    n_ = torch::matmul(torch::matmul(S.transpose(1, 2), N2), S); 
+    
+    // ---------------- Start Algorithm ----------------- //
+    sols = NuSol::Tensor::Intersection(N1, n_, null); 
+    torch::Tensor d = std::get<1>(sols); 
+    torch::Tensor v = std::get<0>(sols).view({dim_i, -1, 1, 3}); 
+    torch::Tensor v_ = torch::sum(S.view({dim_i, 1, 3, 3}) * v, -1).view({dim_i, -1, 1, 3}); 
+
+    torch::Tensor K1 = torch::matmul(H1, torch::inverse(H1_perp)).view({dim_i, 1, 3, 3});
+    torch::Tensor K2 = torch::matmul(H2, torch::inverse(H2_perp)).view({dim_i, 1, 3, 3});
+
+    v  = (K1 * v).sum(-1);
+    v_ = (K2 * v_).sum(-1);
+
+    unsigned int dim_j  = v.size(1); 
+    unsigned int dim_k  = v.size(2); 
+    unsigned int dim_i_ = none.size(0); 
+    
+    zero = torch::zeros({dim_i_, dim_j, dim_k}, op); 
+    _d = torch::zeros({dim_i_, dim_j}, op); 
+    _d.index_put_({none}, d); 
+    
+    _v = zero.clone(); 
+    _v.index_put_({none}, v); 
+
+    __v = zero.clone(); 
+    __v.index_put_({none}, v_); 
+    
+    output["NuVec_1"] = _v;  
+    output["NuVec_2"] = __v; 
+    output["diagonal"] = _d; 
+
+    output["n_"] = n_; 
+    output["H_perp_1"] = H1_perp; 
+    output["H_perp_2"] = H2_perp; 
 
     return output; 
 }

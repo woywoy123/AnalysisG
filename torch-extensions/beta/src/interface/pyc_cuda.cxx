@@ -123,11 +123,13 @@ std::vector<torch::Tensor> pyc::nusol::Nu(
 }
 
 std::vector<torch::Tensor> pyc::nusol::NuNu(
-        torch::Tensor pmc_b1, torch::Tensor pmc_b2, torch::Tensor pmc_l1, torch::Tensor pmc_l2, 
-        torch::Tensor met_x , torch::Tensor met_y, torch::Tensor masses, const double null)
+        torch::Tensor pmc_b1, torch::Tensor pmc_b2, 
+        torch::Tensor pmc_l1, torch::Tensor pmc_l2, 
+        torch::Tensor met_xy, 
+        torch::Tensor masses, const double null)
 { 
     std::map<std::string, torch::Tensor> out; 
-    out = NuSol::CUDA::NuNu(pmc_b1, pmc_b2, pmc_l1, pmc_l2, met_x , met_y, masses, null);
+    out = NuSol::CUDA::NuNu(pmc_b1, pmc_b2, pmc_l1, pmc_l2, met_xy, masses, null);
     return { 
         out["NuVec_1"] , out["NuVec_2"], out["diagonal"], out["n_"],     
         out["H_perp_1"], out["H_perp_2"], out["NoSols"]

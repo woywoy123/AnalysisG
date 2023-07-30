@@ -38,17 +38,6 @@ def __router__(
     except KeyError: pass
     return getattr(fx, comb), inpt
 
-def BaseMatrix(ten1, ten2, ten3):
-    name = inspect.currentframe().f_code.co_name
-    fn, inpt = __router__([ten1, ten2, ten3], name, 1)
-    return fn(*inpt)
-
-def Intersection(ten1, ten2, null = 10e-10):
-    name = inspect.currentframe().f_code.co_name
-    fn, inpt = __router__([ten1, ten2], name, 1)
-    inpt += [null]
-    return fn(*inpt)
-
 def Nu(ten1, ten2, ten3, ten4, ten5, null = 10e-10):
     name = inspect.currentframe().f_code.co_name
     fn, inpt = __router__([ten1, ten2, ten3, ten4, ten5], name, 1)
@@ -61,3 +50,5 @@ def NuNu(b1, b2, l1, l2, metxy, mass, null = 10e-10):
     fn, inpt = __router__([b1, b2, l1, l2, metxy, mass], name, 1)
     inpt += [null]
     return fn(*inpt)
+
+

@@ -55,9 +55,10 @@ install(FILES ${CMAKE_SOURCE_DIR}/py_interface/Operators/__init__.py    DESTINAT
 install(FILES ${CMAKE_SOURCE_DIR}/py_interface/Operators/operators.py   DESTINATION ${SKBUILD_PROJECT_NAME}/Operators)
 
 install(DIRECTORY DESTINATION ${SKBUILD_PROJECT_NAME}/NuSol)
+install(DIRECTORY DESTINATION ${SKBUILD_PROJECT_NAME}/NuSol/Polar)
+install(DIRECTORY DESTINATION ${SKBUILD_PROJECT_NAME}/NuSol/Cartesian)
 install(FILES ${CMAKE_SOURCE_DIR}/py_interface/NuSol/__init__.py    DESTINATION ${SKBUILD_PROJECT_NAME}/NuSol)
 install(FILES ${CMAKE_SOURCE_DIR}/py_interface/NuSol/nusol.py   DESTINATION ${SKBUILD_PROJECT_NAME}/NuSol)
-
-
-
+install(FILES ${CMAKE_SOURCE_DIR}/py_interface/NuSol/Polar/__init__.py    DESTINATION ${SKBUILD_PROJECT_NAME}/NuSol/Polar)
+install(FILES ${CMAKE_SOURCE_DIR}/py_interface/NuSol/Polar/nusol.py   DESTINATION ${SKBUILD_PROJECT_NAME}/NuSol/Polar)
 
