@@ -17,9 +17,7 @@ dependencies = [
     "networkx", 
     "scikit-learn", 
     "torchmetrics", 
-    "torch-geometric",
-    "torch_scatter", 
-    "torch_sparse",  
+    "torch-geometric", 
     "pwinput", 
     "pyAMI-atlas==5.1.0.1"
 ]
