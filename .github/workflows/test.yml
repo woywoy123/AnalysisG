@@ -1,10 +1,11 @@
 # https://nedbatchelder.com/blog/202209/making_a_coverage_badge.html
 
-name: Building-Tox-Testing
+name: tox-testing-analysisG
 on:
     pull_request:
         branches:
             - "master"
+            - "dev"
 
         paths-ignore:
             - '**.md'

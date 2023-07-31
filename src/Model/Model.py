@@ -4,8 +4,8 @@ from torch_geometric.data import Data
 import torch
 
 try:
-    import PyC.Transform.Tensors as PT
-    import PyC.Physics.Tensors.Cartesian as CT
+    import pyc.Transform as PT
+    import pyc.Physics.Cartesian as CT
 except:
     pass
 

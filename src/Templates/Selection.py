@@ -4,15 +4,8 @@ from AnalysisG.Tools import Code, Tools
 from time import time
 import traceback
 import statistics
-
-try:
-    from PyC.NuSol.Tensors import NuDoublePtEtaPhiE, NuNuDoublePtEtaPhiE
-except:
-    pass
-try:
-    from PyC.Transform.Floats import Px, Py
-except:
-    pass
+try: import pyc
+except: pass
 
 
 class Neutrino(ParticleTemplate):
@@ -66,10 +59,10 @@ class SelectionTemplate(Tools):
         pass
 
     def Px(self, val, phi):
-        return Px(val, phi)
+        return pyc.Transform.Px(val, phi)
 
     def Py(self, val, phi):
-        return Py(val, phi)
+        return pyc.Transform.Py(val, phi)
 
     def MakeNu(self, s_):
         if sum(s_) == 0.0:
@@ -84,38 +77,39 @@ class SelectionTemplate(Tools):
     def NuNu(
         self, q1, q2, l1, l2, ev, mT=172.5 * 1000, mW=80.379 * 1000, mN=0, zero=1e-12
     ):
-        sol = NuNuDoublePtEtaPhiE(
-            q1.pt, q1.eta, q1.phi, q1.e,
-            q2.pt, q2.eta, q2.phi, q2.e,
-            l1.pt, l1.eta, l1.phi, l1.e,
-            l2.pt, l2.eta, l2.phi, l2.e,
-            ev.met, ev.met_phi,
-            mT, mW, mN, zero,
-        )
 
-        skip = sol[0].tolist()[0]
-        _s1 = sol[1].tolist()[0]
-        _s2 = sol[2].tolist()[0]
-        if skip:
-            return []
+        inpt = []
+        inpt.append([[q1.pt, q1.eta, q1.phi, q1.e]])
+        inpt.append([[q2.pt, q2.eta, q2.phi, q2.e]])
+        inpt.append([[l1.pt, l1.eta, l1.phi, l1.e]])
+        inpt.append([[l2.pt, l2.eta, l2.phi, l2.e]])
+
+        inpt.append([[ev.met, ev.met_phi]])
+        inpt.append([[mW, mT, mN]])
+        inpt.append(zero)
+
+        sol = pyc.NuSol.Polar.NuNu(*inpt)
+
+        _s1 = sol[0].tolist()[0]
+        _s2 = sol[1].tolist()[0]
         o = [[self.MakeNu(k), self.MakeNu(j)] for k, j in zip(_s1, _s2)]
         return [p for p in o if p[0] != None and p[1] != None]
 
     def Nu(
         self, q1, l1, ev, S=[100, 0, 0, 100], mT=172.5, mW=80.379, mN=0, zero=1e-12
     ):
-        sol = NuDoublePtEtaPhiE(
-            q1.pt, q1.eta, q1.phi, q1.e,
-            l1.pt, l1.eta, l1.phi, l1.e,
-            ev.met, ev.met_phi,
-            S[0], S[1],
-            S[2], S[3],
-            mT, mW, mN, zero,
-        )
-        skip = sol[0].tolist()[0]
-        if skip:
-            return []
-        return [self.MakeNu(sol[1].tolist()[0])]
+        inpt = []
+        inpt.append([[q1.pt, q1.eta, q1.phi, q1.e]])
+        inpt.append([[l1.pt, l1.eta, l1.phi, l1.e]])
+
+        inpt.append([[ev.met, ev.met_phi]])
+        inpt.append([[mW, mT, mN]])
+
+        inpt.append([[S[0], S[1]], [S[2], S[3]]])
+        inpt.append(zero)
+        sol = pyc.NuSol.Polar.Nu(*inpt)
+
+        return [self.MakeNu(sol[0].tolist()[0])]
 
     def Sort(self, inpt, descending=False):
         if isinstance(inpt, list):
