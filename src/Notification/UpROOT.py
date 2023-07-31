@@ -5,15 +5,12 @@ class _UpROOT(Notification):
     def __init__(self):
         pass
 
-    @property
     def InvalidROOTFileInput(self):
         self.Failure("Invalid Input. Provide either a string/list of ROOT file/s")
 
-    @property
     def FailedAMI(self):
         self.Warning("PyAMI not available... Skipping...")
 
-    @property
     def NoVOMSAuth(self):
         self.Failure(
             "No VOMS session was found. Make sure you authenticate. Skipping MetaData"
