@@ -38,11 +38,11 @@ def test_import_tools():
 
 
 def test_import_pyc():
-    import PyC
-    import PyC.Physics.Tensors.Cartesian as TC
-    import PyC.Physics.Tensors.Polar as TP
-    import PyC.Operators.Tensors as TO
-    import PyC.NuSol.Tensors as NuT
+    import pyc
+    import pyc.Physics.Cartesian as TC
+    import pyc.Physics.Polar as TP
+    import pyc.Operators as TO
+    import pyc.NuSol as NuT
 
 
 def test_import_events():
