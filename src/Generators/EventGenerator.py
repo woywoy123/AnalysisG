@@ -45,7 +45,6 @@ class EventGenerator(_EventGenerator, Settings, SampleTracer, _Interface):
                 bar.update(1)
         return inpt
 
-    @property
     def MakeEvents(self):
         if not self.CheckEventImplementation:
             return False
