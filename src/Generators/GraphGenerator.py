@@ -50,7 +50,6 @@ class GraphGenerator(_GraphGenerator, Settings, SampleTracer, _Interface):
         if len(x) != 0:
             self._Code[key] = x
 
-    @property
     def MakeGraphs(self):
         if not self.CheckGraphImplementation:
             return False
