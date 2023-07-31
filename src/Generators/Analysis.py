@@ -27,7 +27,6 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
             return
         self.InputSample(Name, SampleDirectory)
 
-    @property
     def __build__(self):
         if self._cPWD is not None:
             return
@@ -47,7 +46,6 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         if not self._condor:
             self._BuildingCache
 
-    @property
     def __Event__(self):
         process = {}
         for i in list(self.Files):
@@ -74,7 +72,6 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         self += ev
         return True
 
-    @property
     def __Graph__(self):
         if self.EventGraph == None:
             return True
@@ -87,7 +84,7 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         self.RestoreEvents
         failed = False
         if self.TestFeatures:
-            failed = self.__FeatureAnalysis__
+            failed = self.__FeatureAnalysis__()
         if failed:
             return False
 
@@ -103,7 +100,6 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         self += gr
         return True
 
-    @property
     def __FeatureAnalysis__(self):
         if self.EventGraph is None:
             return True
@@ -115,7 +111,6 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         f.ImportSettings(self)
         return f.TestEvent([i for i in self], self.EventGraph)
 
-    @property
     def __Selection__(self):
         if len(self.Selections) == 0 and len(self.Merge) == 0:
             return
@@ -131,7 +126,6 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         sel.MakeSelection
         del sel
 
-    @property
     def __RandomSampler__(self):
         pth = self.OutputDirectory + "/Training/DataSets/"
         if not self.TrainingSize:
@@ -157,14 +151,12 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         self.mkdir(pth)
         PickleObject(output, pth + self.TrainingName)
 
-    @property
     def __Optimizer__(self):
         if self.Model == None and self.Optimizer == None:
             return
         op = Optimizer(self)
-        op.Launch
+        op.Launch()
 
-    @property
     def __CollectCode__(self):
         code = {}
         if self.Event is not None:
@@ -187,31 +179,29 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
             code["Model"] = Optimizer(self).GetCode
         return code
 
-    @property
     def Launch(self):
         if self._condor:
-            return self.__CollectCode__
-        if not self.__LoadSample__:
+            return self.__CollectCode__()
+        if not self.__LoadSample__():
             return False
-        self.__build__
-        self.__Selection__
-        self.__RandomSampler__
-        self.__Optimizer__
+        self.__build__()
+        self.__Selection__()
+        self.__RandomSampler__()
+        self.__Optimizer__()
         self.WhiteSpace()
         return True
 
-    @property
     def __LoadSample__(self):
-        self.__build__
+        self.__build__()
         tracer = self._CheckForTracer
         for i in self.SampleMap:
             self.Files = self.SampleMap[i]
             self.SampleName = i
             if tracer:
                 self.RestoreTracer
-            if not self.__Event__:
+            if not self.__Event__():
                 return False
-            if not self.__Graph__:
+            if not self.__Graph__():
                 return False
         if self.len == 0:
             self.RestoreTracer
@@ -223,7 +213,7 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         if self.len == 0:
             if self._cPWD is not None and self.len != 0:
                 return False
-            ok = self.__LoadSample__
+            ok = self.__LoadSample__()
             return not ok
         if self.EventCache:
             self.RestoreEvents
