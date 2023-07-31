@@ -53,7 +53,6 @@ class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface
         x = {c_name: Code(inpt[c_name]) for c_name in inpt}
         if len(x) != 0: self._Code[key] = x
 
-    @property
     def __merge__(self):
         for name in self.Merge:
             if len(self.Merge[name]) == 0: continue
@@ -70,7 +69,6 @@ class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface
             self.Merge[name] = []
             self.rm(self.OutputDirectory + "/Selections/" + name)
 
-    @property
     def MakeSelection(self):
         self.__collect__(self.Selections, "Selections")
         if self._condor: return self._Code
@@ -88,7 +86,7 @@ class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface
                 if ev.Graph: continue
                 inpt.append([name, sel, ev, self.pth])
 
-            if len(inpt) == 0: return self.__merge__
+            if len(inpt) == 0: return self.__merge__()
             if self.Threads > 1:
                 th = Threading(inpt, self.__compile__, self.Threads, self.chnk)
                 th.Title = self.Caller + "::" + name
@@ -102,4 +100,4 @@ class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface
             self.Merge[name] = [
                  pths + i for i in self.ls(pths) if i.endswith(".hdf5")
             ]
-            self.__merge__
+            self.__merge__()
