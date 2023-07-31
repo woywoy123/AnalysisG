@@ -23,14 +23,12 @@ class Optimizer(_Optimizer, _Interface, SampleTracer, RandomSamplers):
         if issubclass(type(inpt), Settings):
             self.ImportSettings(inpt)
 
-    @property
     def GetCode(self):
         if "Model" in self._Code:
             return self._Code["Model"]
         self._Code["Model"] = Code(self.Model)
-        return self.GetCode
+        return self.GetCode()
 
-    @property
     def Launch(self):
         self.DataCache = True
         if self._NoModel:
@@ -39,7 +37,7 @@ class Optimizer(_Optimizer, _Interface, SampleTracer, RandomSamplers):
         if isinstance(hashes, bool):
             return False
         self._outDir = self.OutputDirectory + "/Training"
-        self.Model = ModelWrapper(self.GetCode.clone)
+        self.Model = ModelWrapper(self.GetCode().clone)
         self.Model.OutputDirectory = self._outDir
         self.Model.RunName = self.RunName
 
@@ -84,10 +82,9 @@ class Optimizer(_Optimizer, _Interface, SampleTracer, RandomSamplers):
         if not self._searchtraining:
             return
         self._threads = []
-        self.__train__
+        self.__train__()
         self.__dump_plots__()
 
-    @property
     def __train__(self):
         def ApplyMode(k_):
             try:
@@ -143,13 +140,13 @@ class Optimizer(_Optimizer, _Interface, SampleTracer, RandomSamplers):
 
                 ApplyMode(k)
                 Train(True)
-                self.__this_epoch__
+                self.__this_epoch__()
 
                 if ApplyMode(k):
                     Train(False)
                 else:
                     self._len = 0
-                self.__this_epoch__
+                self.__this_epoch__()
 
                 self._op.stepsc
                 self._op.dump
@@ -157,7 +154,6 @@ class Optimizer(_Optimizer, _Interface, SampleTracer, RandomSamplers):
                 if not self.DebugMode:
                     self.__dump_plots__(self._ep)
 
-    @property
     def __this_epoch__(self):
         if self._len == 0:
             return
