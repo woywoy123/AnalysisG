@@ -14,8 +14,10 @@ torch::Tensor format_(std::vector<torch::Tensor> inpt)
 
 torch::Tensor Physics::Tensors::P2(torch::Tensor pmc)
 {
-    torch::Tensor pmc_ = pmc.index({torch::indexing::Slice(), torch::indexing::Slice(0, 3)}); 
-    return pmc_.pow(2).sum({-1}).view({-1, 1}); 
+    torch::Tensor pmc_ = pmc.index({torch::indexing::Slice(), torch::indexing::Slice(0, 3)}).clone(); 
+    pmc_ = pmc_.pow(2);
+    pmc_ = pmc_.sum({-1}); 
+    return pmc_.view({-1, 1}); 
 }
 
 torch::Tensor Physics::Tensors::P2(torch::Tensor px, torch::Tensor py, torch::Tensor pz)
@@ -35,7 +37,7 @@ torch::Tensor Physics::Tensors::P(torch::Tensor px, torch::Tensor py, torch::Ten
 
 torch::Tensor Physics::Tensors::Beta2(torch::Tensor pmc)
 {
-    torch::Tensor e = pmc.index({torch::indexing::Slice(), torch::indexing::Slice(3, 4)});
+    torch::Tensor e = pmc.index({torch::indexing::Slice(), torch::indexing::Slice(3, 4)}).clone();
     return Physics::Tensors::P2(pmc)/(e.pow(2)); 
 }
 
@@ -46,7 +48,7 @@ torch::Tensor Physics::Tensors::Beta2(torch::Tensor px, torch::Tensor py, torch:
 
 torch::Tensor Physics::Tensors::Beta(torch::Tensor pmc)
 {
-    torch::Tensor e = pmc.index({torch::indexing::Slice(), torch::indexing::Slice(3, 4)});
+    torch::Tensor e = pmc.index({torch::indexing::Slice(), torch::indexing::Slice(3, 4)}).clone();
     return Physics::Tensors::P(pmc)/e; 
 }
 
@@ -57,7 +59,8 @@ torch::Tensor Physics::Tensors::Beta(torch::Tensor px, torch::Tensor py, torch::
 
 torch::Tensor Physics::Tensors::M2(torch::Tensor pmc)
 {
-    torch::Tensor mass = pmc.index({torch::indexing::Slice(), torch::indexing::Slice(3, 4)}).pow(2); 
+    torch::Tensor mass = pmc.index({torch::indexing::Slice(), torch::indexing::Slice(3, 4)}).clone(); 
+    mass = mass.pow(2); 
     mass -= Physics::Tensors::P2(pmc); 
     return torch::relu(mass);
 }

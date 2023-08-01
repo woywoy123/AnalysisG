@@ -29,6 +29,7 @@ target_link_libraries(pyc_tensor
         transform_ten
         operators-tensor 
         nusol-tensor
+        graph-tensor
 )
 
 add_library(pyc_float SHARED

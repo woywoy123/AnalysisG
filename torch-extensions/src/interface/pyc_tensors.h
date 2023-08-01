@@ -8,6 +8,7 @@
 #include <physics/physics-tensor/polar.h>
 #include <operators/operators-tensor/operators.h>
 #include <nusol/nusol-tensor/nusol.h>
+#include <graph/graph-tensor/graph.h>
 
 namespace pyc
 {
