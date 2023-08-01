@@ -2,15 +2,16 @@ import random
 import pyc
 import torch
 torch.set_printoptions(4, profile="full", linewidth=100000)
+device = "cuda" if torch.cuda.is_available() else "cpu"
 
 def _makeMatrix(l, m, n, tmp):
     x = torch.tensor(
-            [[[random.random() for i in range(tmp)] for k in range(n)] for t in range(l)], 
-            device = "cuda", dtype = torch.float64)
+            [[[random.random() for i in range(tmp)] for k in range(n)] for t in range(l)],
+            device = device, dtype = torch.float64)
 
     y = torch.tensor(
-            [[[random.random() for i in range(m)] for k in range(tmp)] for t in range(l)], 
-            device = "cuda", dtype = torch.float64)
+            [[[random.random() for i in range(m)] for k in range(tmp)] for t in range(l)],
+            device = device, dtype = torch.float64)
     return x, y
 
 def _AttestEqual(truth, custom):
@@ -45,8 +46,8 @@ def test_matrix_multi():
     _compareMulti(10, 15, 15, 5)
 
 def test_costheta():
-    x = torch.tensor([[random.random()*100 for i in range(10)] for _ in range(100)], device = "cuda", dtype = torch.float64)
-    y = torch.tensor([[random.random()*100 for i in range(10)] for _ in range(100)], device = "cuda", dtype = torch.float64)
+    x = torch.tensor([[random.random()*100 for i in range(10)] for _ in range(100)], device = device, dtype = torch.float64)
+    y = torch.tensor([[random.random()*100 for i in range(10)] for _ in range(100)], device = device, dtype = torch.float64)
 
     cu = pyc.Operators.CosTheta(x, y)
     xy = (x*y).sum(-1, keepdim = True)
@@ -57,8 +58,8 @@ def test_costheta():
 
 
 def test_sintheta():
-    x = torch.tensor([[random.random() for i in range(1000)] for _ in range(100)], device = "cuda", dtype = torch.float64)
-    y = torch.tensor([[random.random() for i in range(1000)] for _ in range(100)], device = "cuda", dtype = torch.float64)
+    x = torch.tensor([[random.random() for i in range(1000)] for _ in range(100)], device = device, dtype = torch.float64)
+    y = torch.tensor([[random.random() for i in range(1000)] for _ in range(100)], device = device, dtype = torch.float64)
 
     cu = pyc.Operators.SinTheta(x, y)
 
@@ -71,7 +72,7 @@ def test_sintheta():
     _AttestEqual(t, cu)
 
 def test_rx():
-    x = torch.tensor([[random.random()] for i in range(10)], device = "cuda", dtype = torch.float64)
+    x = torch.tensor([[random.random()] for i in range(10)], device = device, dtype = torch.float64)
     x_ = pyc.Operators.Rx(x)
 
     z = torch.zeros_like(x)
@@ -82,7 +83,7 @@ def test_rx():
     _AttestEqual(tru, x_)
 
 def test_ry():
-    x = torch.tensor([[random.random()] for i in range(10)], device = "cuda", dtype = torch.float64)
+    x = torch.tensor([[random.random()] for i in range(10)], device = device, dtype = torch.float64)
     x_ = pyc.Operators.Ry(x)
 
     z = torch.zeros_like(x)
@@ -94,7 +95,7 @@ def test_ry():
     _AttestEqual(tru, x_)
 
 def test_rz():
-    x = torch.tensor([[random.random()] for i in range(10)], device = "cuda", dtype = torch.float64)
+    x = torch.tensor([[random.random()] for i in range(10)], device = device, dtype = torch.float64)
     x_ = pyc.Operators.Rz(x)
 
     z = torch.zeros_like(x)
@@ -105,19 +106,19 @@ def test_rz():
     _AttestEqual(tru, x_)
 
 def test_cofactor():
-    x = torch.tensor([[[(i+1) + (k+1) for i in range(3)] for k in range(3)] for i in range(2)], device = "cuda", dtype = torch.float64)
+    x = torch.tensor([[[(i+1) + (k+1) for i in range(3)] for k in range(3)] for i in range(2)], device = device, dtype = torch.float64)
     x_ = pyc.Operators.CoFactors(x)
-    x = torch.tensor([[-1, 2, -1, 2, -4, 2, -1, 2, -1] for i in range(2)], device = "cuda", dtype = torch.float64).view(-1, 3, 3)
+    x = torch.tensor([[-1, 2, -1, 2, -4, 2, -1, 2, -1] for i in range(2)], device = device, dtype = torch.float64).view(-1, 3, 3)
     _AttestEqual(x, x_)
 
 def test_det():
-    x = torch.tensor([[[random.random()*10 for i in range(3)] for k in range(3)] for i in range(100)], device = "cuda", dtype = torch.float64)
+    x = torch.tensor([[[random.random()*10 for i in range(3)] for k in range(3)] for i in range(100)], device = device, dtype = torch.float64)
     x_t = torch.det(x)
     x_ = pyc.Operators.Determinant(x)
     _AttestEqual(x_t.view(-1, 1), x_)
 
 def test_inverse():
-    x = torch.tensor([[[random.random()*10 for i in range(3)] for k in range(3)] for i in range(10000)], device = "cuda", dtype = torch.float64)
+    x = torch.tensor([[[random.random()*10 for i in range(3)] for k in range(3)] for i in range(10000)], device = device, dtype = torch.float64)
     det = pyc.Operators.Determinant(x).view(-1)
 
     x_ = pyc.Operators.Inverse(x)
@@ -125,10 +126,11 @@ def test_inverse():
     _AttestEqual(x_t[det != 0], x_[det != 0])
 
 def test_cross():
+    if device != "cuda": return 
     def rdm(): return [random.random()*100, random.random()*100, random.random()*100]
 
-    x = torch.tensor([ [rdm() for _ in range(3)] for _ in range(1000) ], device = "cuda", dtype = torch.float64)
-    y = torch.tensor([ [rdm() for _ in range(3)] for _ in range(1000) ], device = "cuda", dtype = torch.float64)
+    x = torch.tensor([ [rdm() for _ in range(3)] for _ in range(1000) ], device = device, dtype = torch.float64)
+    y = torch.tensor([ [rdm() for _ in range(3)] for _ in range(1000) ], device = device, dtype = torch.float64)
 
     x_t = torch.linalg.cross(y, x)
     x_cu = pyc.Operators.Cross(y, x)

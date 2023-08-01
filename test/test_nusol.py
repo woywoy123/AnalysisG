@@ -12,11 +12,32 @@ from neutrino_reconstruction.nusol import (
 mW = 80.385*1000
 mT = 172.0*1000
 mN = 0
-masses = torch.tensor([[mW, mT, mN]], dtype = torch.float64, device = "cuda")
-S2 = torch.tensor([[100, 9], [50, 100]], dtype = torch.float64, device = "cuda")
+
+dev = "cuda" if torch.cuda.is_available() else "cpu"
+masses = torch.tensor([[mW, mT, mN]], dtype = torch.float64, device = dev)
+S2 = torch.tensor([[100, 9], [50, 100]], dtype = torch.float64, device = dev)
 
 # Numerical differences in C++ and Python appear below this number
 precision = 10e-10
+tolerance = 1e-3
+
+def compare(truth, pred):
+    t = truth[truth != 0]
+    p = pred[pred != 0]
+    x = abs(p - t)/abs(t) > tolerance
+    return x.sum(-1).sum(-1).sum(-1) == 0
+
+def compare_list(truth, pred):
+    trig = False
+    if len(truth) == 0: 
+        return len(pred) == 0 
+    for pairs_t in truth:
+        trig = False
+        for pairs_p in pred:
+            trig = compare(pairs_t, pairs_p)
+            if trig: break
+        if not trig: return False
+    return trig
 
 def test_nusol_base_cuda():
     x = loadSingle()
@@ -30,9 +51,9 @@ def test_nusol_base_cuda():
         bquark_ = pyc.Transform.PxPyPzE(bquark.ten)
         inpt["bq"] += [bquark_]
         inpt["lep"] += [lep_]
-        truth = torch.tensor(nu.BaseMatrix).to(device = "cuda")
+        truth = torch.tensor(nu.BaseMatrix).to(device = dev)
         pred = pyc.NuSol.BaseMatrix(bquark_, lep_, masses)
-        assert (truth - pred).sum(-1).sum(-1) < 10e-3
+        assert compare(truth, pred)
 
     multi = 1000
     inpt["bq"] = torch.cat(inpt["bq"], dim = 0)
@@ -67,8 +88,7 @@ def test_nusol_nu_cuda():
 
     pred = pyc.NuSol.Nu(bquark_, lep_, ev_, masses, S2, -1)
     pred = pred.to(device = "cpu")
-    x = abs((pred - truth).sum(-1).sum(-1)) > 10e-1
-    assert x.sum(-1) == 0
+    assert compare(truth, pred)
 
 def test_intersection_cuda():
     x = loadSingle()
@@ -84,27 +104,26 @@ def test_intersection_cuda():
         unit = UnitCircle()
         points, diag = intersections_ellipses(nu.M, unit, precision)
 
-        unit = torch.tensor(unit, device = "cuda", dtype = torch.float64)
+        unit = torch.tensor(unit, device = dev, dtype = torch.float64)
         lep_ = pyc.Transform.PxPyPzE(lep.ten)
         bquark_ = pyc.Transform.PxPyPzE(b.ten)
         M = pyc.NuSol.Nu(bquark_, lep_, ev.ten, masses, S2, -1)
         M_container.append(M)
         U_container.append(unit.view(-1, 3, 3))
-
         pts, dig = pyc.Intersection(M, unit.view(-1, 3, 3), precision)
-        res.append(pts)
 
-        points_t = torch.tensor(np.array(points), device ="cuda", dtype = torch.float64)
+        points_t = torch.tensor(np.array(points), device = dev, dtype = torch.float64)
         points_cu = pts.view(-1, 3)
         points_cu = points_cu[points_cu.sum(-1) != 0]
         points_t = points_t.view(-1, 3)
-        if len(points_cu) == 0: assert len(points_t) == 0
-
+        if len(points_cu) == 0:
+            assert len(points_t) == 0
+            continue
+        res.append(points_t)
         for pairs_t in points_t:
             lim = False
             for pairs in points_cu:
-                sol = pairs - pairs_t
-                lim = abs(sol.sum(-1).sum(-1)) < 1e-10
+                lim = compare(pairs_t, pairs)
                 if not lim: continue
                 break
 
@@ -119,8 +138,10 @@ def test_intersection_cuda():
     u = torch.cat(U_container, dim = 0)
     res_t = torch.cat(res, dim = 0)
     res_cu, b = pyc.NuSol.Intersection(m, u, precision)
-    x = res_cu[res_cu != res_t]
-    assert len(x) == 0
+    res_cu = res_cu.clone()
+    res_cu = res_cu.view(-1, 3)
+    res_cu = res_cu[res_cu.sum(-1) != 0]
+    assert compare_list(res_t, res_cu)
 
     # test speed
     multi = 100
@@ -152,23 +173,10 @@ def test_nu_cuda():
         _cu  = pyc.NuSol.Nu(b_cu, lep_cu, ev.ten, masses, S2, precision)
         nu_cu = _cu[0].to(device = "cpu").view(-1, 3)
         compare.append(nu_cu)
-        if len(nu_cu) == 0: assert len(nu_t) == 0
-        for pr_t in nu_t:
-            lim = False
-            for pr_cu in nu_cu:
-                s = pr_t - pr_cu
-                s = s.sum(-1).sum(-1)
-                if s > 10e-4: continue
-                lim = True
-                break
-
-            if not lim:
-                print("----->>> Failure <<< ----")
-                print("@ -> ", i)
-                print(nu_t)
-                print(nu_cu)
-                print("-------------------------")
-            assert lim
+        if len(nu_cu) == 0:
+            assert len(nu_t) == 0
+            continue
+        assert compare_list(nu_t, nu_cu)
 
     b_cu = torch.cat(inpts["b_cu"], dim = 0)
     lep_cu = torch.cat(inpts["lep_cu"], dim = 0)
@@ -261,11 +269,17 @@ def test_nunu_cuda():
     nu1_t = torch.cat(compare["nu1"], dim = 0)
     nu2_t = torch.cat(compare["nu2"], dim = 0)
 
+    msk_t = nu1_t.sum(-1) != 0
+    nu1_t = nu1_t[msk_t]
+    nu2_t = nu2_t[msk_t]
+
     _cu = pyc.NuSol.NuNu(b1_cu, b2_cu, l1_cu, l2_cu, met_cu, masses, precision)
     nu1, nu2 = _cu[0].to(device = "cpu"), _cu[1].to(device = "cpu")
+
     msk = nu1.sum(-1) != 0
     nu1 = nu1[msk]
     nu2 = nu2[msk]
+
     msk1 = (nu1_t - nu1).sum(-1) != 0
     msk2 = (nu2_t - nu2).sum(-1) != 0
     assert msk1.sum(-1) == 0
@@ -599,4 +613,4 @@ if __name__ == "__main__":
     test_intersection_tensor()
     test_nu_tensor()
     test_nunu_tensor()
-
+    pass

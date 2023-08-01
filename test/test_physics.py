@@ -1,5 +1,6 @@
 from neutrino_reconstruction.common import *
 import pyc.Physics as Physics
+device = "cuda" if torch.cuda.is_available() else "cpu"
 
 def test_polar_p2():
     assert_cuda_polar(Physics, "P2", [0, 1, 2], "p2")
@@ -74,12 +75,12 @@ def test_cartesian_theta():
     assert_tensor_cartesian(Physics, "Theta", [0, 1, 2], "theta")
 
 def test_polar_deltaR():
-    d1 = create_tensor_cpu_1d().to(device = "cuda")
-    d2 = create_tensor_cpu_1d().to(device = "cuda")*2
+    d1 = create_tensor_cpu_1d().to(device = device)
+    d2 = create_tensor_cpu_1d().to(device = device)*2
     p1 = create_vector_polar(1, 2, 3, 4)
     p2 = create_vector_polar(2, 4, 6, 8)
-    mrg = torch.cat([d1, d2], -1)
     dr = p1.deltaR(p2)
+    mrg = torch.cat([d1, d2], -1)
     assert rounder(Physics.Polar.DeltaR(*[mrg[:, i] for i in [1, 5, 2, 6]]), dr)
     assert rounder(Physics.Polar.DeltaR(d1, d2), dr)
 
@@ -89,8 +90,8 @@ def test_polar_deltaR():
     assert rounder(Physics.Polar.DeltaR(d1, d2), dr)
 
 def test_cartesian_deltaR():
-    d1 = create_tensor_cpu_1d().to(device = "cuda")
-    d2 = create_tensor_cpu_1d().to(device = "cuda")*2
+    d1 = create_tensor_cpu_1d().to(device = device)
+    d2 = create_tensor_cpu_1d().to(device = device)*2
     p1 = create_vector_cartesian(1, 2, 3, 4)
     p2 = create_vector_cartesian(2, 4, 6, 8)
     mrg = torch.cat([d1, d2], -1)

@@ -25,6 +25,7 @@ def Attestation(truth, pred):
 
 def tensor_nu(coord, device = "cpu"):
     x = loadSingle()
+    device = device if torch.cuda.is_available() else "cpu"
     masses = torch.tensor([[mW, mT, mN]], dtype = torch.float64, device = device)
     S2 = torch.tensor([[100, 9], [50, 100]], dtype = torch.float64, device = device)
     inpt = {"bq" : [], "lep" : [], "ev" : [], "mass" : [], "s2" : []}
@@ -47,6 +48,7 @@ def tensor_nu(coord, device = "cpu"):
     return {"bq" : bq, "lep" : lep, "ev" : ev, "mass" : masses, "S2" : S2}
 
 def reference_nu(device = "cpu"):
+    device = device if torch.cuda.is_available() else "cpu"
     inpt = tensor_nu("cart", device)
     cu = pyc.NuSol.Nu(
             inpt["bq"], inpt["lep"], inpt["ev"],
@@ -75,7 +77,8 @@ def test_nu_cuda_polar_separate():
 def test_nu_cuda_cartesian_combined():
     truth = reference_nu("cuda")
     x = tensor_nu("cart", "cuda")
-    pred = pyc.NuSol.Cartesian.Nu(x["bq"], x["lep"], x["ev"], x["mass"], x["S2"], precision)
+    pred = pyc.NuSol.Cartesian.Nu(
+            x["bq"], x["lep"], x["ev"], x["mass"], x["S2"], precision)
     Attestation(truth[0], pred[0])
 
 def test_nu_cuda_cartesian_separate():
@@ -93,6 +96,7 @@ def test_nu_cuda_cartesian_separate():
 
 def tensor_nunu(coord, device = "cpu"):
     x = loadDouble()
+    device = device if torch.cuda.is_available() else "cpu"
     masses = torch.tensor([[mW, mT, mN]], dtype = torch.float64, device = device)
     inpt = {"bq1" : [], "bq2" : [], "lep1" : [], "lep2" : [], "ev" : []}
     cu = True if device == "cuda" else False
@@ -120,6 +124,7 @@ def tensor_nunu(coord, device = "cpu"):
     return {"bq1" : bq1, "bq2" : bq2, "lep1" : lep1, "lep2" : lep2, "ev" : ev, "mass" : masses}
 
 def reference_nunu(device = "cpu"):
+    device = device if torch.cuda.is_available() else "cpu"
     inpt = tensor_nunu("cart", device)
     inpt = [i for i in inpt.values()] + [precision]
     cu = pyc.NuSol.NuNu(*inpt)

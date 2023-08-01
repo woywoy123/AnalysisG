@@ -3,6 +3,7 @@ import vector
 import inspect
 import json
 import pyc
+device = "cuda" if torch.cuda.is_available() else "cpu"
 
 def create_vector_cartesian(px, py, pz, e):
     return vector.obj(px = px, py = py, pz = pz, E = e)
@@ -38,7 +39,7 @@ def assert_cuda_cartesian(base, func, pos, func2, pw = 1):
     print("->", inspect.stack()[1][3])
     f = getattr(getattr(base, "Cartesian"), func)
     p1 = getattr(create_vector_cartesian(1, 2, 3, 4), func2)**pw
-    d1 = create_tensor_cpu_1d().to(device = "cuda")
+    d1 = create_tensor_cpu_1d().to(device = device)
     assert rounder(f(*[d1[:, i] for i in pos]), p1)
     assert rounder(f(d1), p1)
 
@@ -46,7 +47,7 @@ def assert_cuda_polar(base, func, pos, func2, pw = 1):
     print("->", inspect.stack()[1][3])
     f = getattr(getattr(base, "Polar"), func)
     p1 = getattr(create_vector_polar(1, 2, 3, 4), func2)**pw
-    d1 = create_tensor_cpu_1d().to(device = "cuda")
+    d1 = create_tensor_cpu_1d().to(device = device)
     assert rounder(f(*[d1[:, i] for i in pos]), p1)
     assert rounder(f(d1), p1)
 
