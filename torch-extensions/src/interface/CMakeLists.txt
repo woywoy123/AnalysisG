@@ -7,8 +7,7 @@ if(CMAKE_CUDA_COMPILER)
     target_link_libraries(pyc_cuda 
         PUBLIC 
             ${TORCH_LIBRARIES} 
-            #pybind11::module 
-            Python::Python
+            pybind11::module 
             transform_cu 
             physics-cuda
             operators-cuda
@@ -24,8 +23,7 @@ add_library(pyc_tensor SHARED
 target_link_libraries(pyc_tensor 
     PUBLIC 
         ${TORCH_LIBRARIES} 
-        #pybind11::module
-        Python::Python
+        pybind11::module
         physics-cartesian 
         physics-polar
         transform_ten
@@ -41,8 +39,7 @@ add_library(pyc_float SHARED
 target_link_libraries(pyc_float 
     PUBLIC 
         ${TORCH_LIBRARIES} 
-        #pybind11::module
-        Python::Python
+        pybind11::module
         transform_fl
         nusol-floats
 )
