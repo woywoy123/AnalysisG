@@ -83,7 +83,7 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
             return True
         self.RestoreEvents()
         failed = False
-        if self.TestFeatures():
+        if self.TestFeatures:
             failed = self.__FeatureAnalysis__()
         if failed:
             return False
