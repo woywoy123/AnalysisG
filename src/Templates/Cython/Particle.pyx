@@ -120,12 +120,11 @@ cdef class ParticleTemplate(object):
             if len(x) == 0: break
             if not get: self.__interpret__ = x
             else:
-                p = self.clone
+                p = self.clone()
                 p.__setstate__(x)
                 p._init = True
                 self.Children.append(p)
 
-    @property
     def clone(self):
         v = self.__new__(self.__class__)
         v.__init__()

@@ -320,10 +320,8 @@ cdef class SampleTracer:
     @SampleName.setter
     def SampleName(self, str val): self._SampleName = val
 
-    @property
     def todict(self) -> dict: return {i.hash : i for i in self}
 
-    @property
     def tolist(self) -> list: return [i for i in self]
 
     @property
@@ -373,9 +371,8 @@ cdef class SampleTracer:
             event.num_nodes = num_nodes
             event.pkl = codecs.encode(evnt, "base64")
 
-    @property
     def DumpTracer(self):
-
+        print('dumping tracer')
         cdef pair[string, CyROOT*] root
         cdef pair[string, CyEvent*] event
         cdef CyROOT* r
@@ -417,7 +414,6 @@ cdef class SampleTracer:
 
             f.close()
 
-    @property
     def DumpEvents(self):
 
         cdef CyEvent* e
@@ -463,16 +459,14 @@ cdef class SampleTracer:
                 except ValueError: ref = f["code"]
                 for l in self._Codes: ref.attrs[l] = self._encoder(self._Codes[l])
                 f.close()
-        self.DumpTracer
+        self.DumpTracer()
 
-    @property
     def RestoreTracer(self):
         cdef str i, k
         cdef CyROOT* R
         cdef CyEvent* E
         cdef dict maps
         cdef list get
-
         try: get = [self.OutDir + "/Tracer/" + i for i in os.listdir(self.OutDir + "/Tracer/")]
         except FileNotFoundError: return
         get = [i + "/" + k for i in get for k in os.listdir(i) if k.endswith(".hdf5")]
@@ -508,7 +502,6 @@ cdef class SampleTracer:
                 E.Hash()
                 self.ptr.AddEvent(E)
 
-    @property
     def RestoreEvents(self) -> None:
 
         cdef pair[string, CyROOT*] c
@@ -592,7 +585,6 @@ cdef class SampleTracer:
             ev = self.ptr.HashToEvent(_i)
             ev.TrainMode = lab
 
-    @property
     def SortNumNodes(self):
         cdef map[int, vector[string]] nodes_hash
         cdef pair[int, vector[string]] _n
@@ -606,7 +598,6 @@ cdef class SampleTracer:
         cdef tuple v = torch.cuda.mem_get_info()
         return (1 - v[0]/v[1])*100
 
-    @property
     def FlushBatchCache(self):
         cdef str key
         cdef dict tmp = {}

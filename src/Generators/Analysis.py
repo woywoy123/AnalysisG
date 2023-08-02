@@ -31,7 +31,7 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         if self._cPWD is not None:
             return
         if not self._condor:
-            self.StartingAnalysis
+            self.StartingAnalysis()
         self._cPWD = self.pwd
 
         if self.OutputDirectory is None:
@@ -42,9 +42,9 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
             self.AddTrailing(self.OutputDirectory, "/") + self.ProjectName
         )
         if self.PurgeCache:
-            self._WarningPurge
+            self._WarningPurge()
         if not self._condor:
-            self._BuildingCache
+            self._BuildingCache()
 
     def __Event__(self):
         process = {}
@@ -63,7 +63,7 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         ev = EventGenerator()
         ev.ImportSettings(self)
         ev.Caller = "ANALYSIS::EVENT"
-        if not ev.MakeEvents:
+        if not ev.MakeEvents():
             return False
 
         ev.EventCache = self.EventCache
@@ -81,9 +81,9 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
             process.update(self.Files)
         if len(process) == 0 and len(self.Files) != 0:
             return True
-        self.RestoreEvents
+        self.RestoreEvents()
         failed = False
-        if self.TestFeatures:
+        if self.TestFeatures():
             failed = self.__FeatureAnalysis__()
         if failed:
             return False
@@ -91,12 +91,12 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         gr = GraphGenerator(self)
         gr.ImportSettings(self)
         gr.Caller = "ANALYSIS::GRAPH"
-        if not gr.MakeGraphs:
+        if not gr.MakeGraphs():
             return False
 
         gr.DataCache = self.DataCache
         if self.DataCache:
-            gr.DumpEvents
+            gr.DumpEvents()
         self += gr
         return True
 
@@ -105,7 +105,7 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
             return True
         if not self.TestFeatures:
             return
-        tests = [i for i, _ in zip(self.GetEventCacheHashes, range(self.nEvents))]
+        tests = [i for i, _ in zip(self.GetEventCacheHashes(), range(self.nEvents))]
         self.ForceTheseHashes(tests)
         f = FeatureAnalysis()
         f.ImportSettings(self)
@@ -117,13 +117,13 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         if self.EventCacheLen == 0:
             return
         self.EventCache = True
-        self.RestoreEvents
+        self.RestoreEvents()
 
         pth = self.OutputDirectory + "/Selections/"
         sel = SelectionGenerator(self)
         sel.ImportSettings(self)
         sel.Caller = "ANALYSIS::SELECTIONS"
-        sel.MakeSelection
+        sel.MakeSelection()
         del sel
 
     def __RandomSampler__(self):
@@ -162,21 +162,21 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         if self.Event is not None:
             ev = EventGenerator()
             ev.ImportSettings(self)
-            code.update(ev.MakeEvents)
+            code.update(ev.MakeEvents())
 
         if self.EventGraph is not None:
             gr = GraphGenerator()
             gr.ImportSettings(self)
-            code.update(gr.MakeGraphs)
+            code.update(gr.MakeGraphs())
 
         if len(self.Selections) != 0:
             sel = SelectionGenerator(self)
             sel.ImportSettings(self)
             for name in self.Selections:
                 sel.AddSelection(name, self.Selections[name])
-            code.update(sel.MakeSelection)
+            code.update(sel.MakeSelection())
         if self.Model is not None:
-            code["Model"] = Optimizer(self).GetCode
+            code["Model"] = Optimizer(self).GetCode()
         return code
 
     def Launch(self):
@@ -193,18 +193,19 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
 
     def __LoadSample__(self):
         self.__build__()
-        tracer = self._CheckForTracer
+        tracer = self._CheckForTracer()
         for i in self.SampleMap:
             self.Files = self.SampleMap[i]
             self.SampleName = i
             if tracer:
-                self.RestoreTracer
+                self.RestoreTracer()
             if not self.__Event__():
                 return False
             if not self.__Graph__():
                 return False
         if self.len == 0:
-            self.RestoreTracer
+            print('restoring tracer')
+            self.RestoreTracer()
         if len(self) == 0:
             return False
         return True
@@ -216,7 +217,7 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
             ok = self.__LoadSample__()
             return not ok
         if self.EventCache:
-            self.RestoreEvents
+            self.RestoreEvents()
         if self.DataCache:
-            self.RestoreEvents
-        return self.EmptySampleList
+            self.RestoreEvents()
+        return self.EmptySampleList()
