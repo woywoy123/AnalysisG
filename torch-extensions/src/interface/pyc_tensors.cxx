@@ -459,7 +459,7 @@ TORCH_LIBRARY(pyc_tensor, m)
     m.def("nusol_separate_polar_NuNu", &pyc::nusol::polar::separate::NuNu); 
     m.def("nusol_combined_cartesian_NuNu", &pyc::nusol::cartesian::combined::NuNu); 
     m.def("nusol_separate_cartesian_NuNu", &pyc::nusol::cartesian::separate::NuNu); 
-
+  
     m.def("graph_base_combined_edge_aggregation", &pyc::graph::edge_aggregation); 
     m.def("graph_base_combined_node_aggregation", &pyc::graph::node_aggregation); 
 

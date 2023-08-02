@@ -85,4 +85,3 @@ install(FILES ${CMAKE_SOURCE_DIR}/py_interface/Graph/Polar/polar.py DESTINATION 
 install(DIRECTORY DESTINATION ${SKBUILD_PROJECT_NAME}/Graph/Cartesian)
 install(FILES ${CMAKE_SOURCE_DIR}/py_interface/Graph/Cartesian/__init__.py DESTINATION ${SKBUILD_PROJECT_NAME}/Graph/Cartesian)
 install(FILES ${CMAKE_SOURCE_DIR}/py_interface/Graph/Cartesian/cartesian.py DESTINATION ${SKBUILD_PROJECT_NAME}/Graph/Cartesian)
-

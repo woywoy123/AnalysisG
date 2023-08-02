@@ -10,6 +10,7 @@
 #include <nusol/nusol-tensor/nusol.h>
 #include <graph/graph-tensor/graph.h>
 
+
 namespace pyc
 {
     namespace transform
@@ -212,7 +213,6 @@ namespace pyc
             }
         }
     }
-    
     namespace graph
     {
         std::vector<std::vector<torch::Tensor>> dress(
@@ -282,6 +282,4 @@ namespace pyc
         }
     }
 }
-
-
 #endif
