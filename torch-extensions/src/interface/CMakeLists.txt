@@ -12,6 +12,7 @@ if(CMAKE_CUDA_COMPILER)
             physics-cuda
             operators-cuda
             nusol-cuda
+            graph-cuda
     )
 endif()
 
@@ -29,6 +30,7 @@ target_link_libraries(pyc_tensor
         transform_ten
         operators-tensor 
         nusol-tensor
+        graph-tensor
 )
 
 add_library(pyc_float SHARED
