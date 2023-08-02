@@ -372,7 +372,6 @@ cdef class SampleTracer:
             event.pkl = codecs.encode(evnt, "base64")
 
     def DumpTracer(self):
-        print('dumping tracer')
         cdef pair[string, CyROOT*] root
         cdef pair[string, CyEvent*] event
         cdef CyROOT* r

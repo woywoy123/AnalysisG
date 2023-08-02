@@ -220,9 +220,6 @@ def test_tracer_hdf5():
         s.EventCache = True
         s.RestoreTracer()
         s.RestoreEvents()
-        print(len(s), '\n\n')
-        print([s for l in range(10)], '\n\n')
-        print(len(s+s), '\n\n')
         k = sum([s for l in range(1000)])
         if mem == 0:
             mem = psutil.virtual_memory().percent

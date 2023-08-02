@@ -68,7 +68,7 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
 
         ev.EventCache = self.EventCache
         if self.EventCache:
-            ev.DumpEvents
+            ev.DumpEvents()
         self += ev
         return True
 
@@ -204,7 +204,6 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
             if not self.__Graph__():
                 return False
         if self.len == 0:
-            print('restoring tracer')
             self.RestoreTracer()
         if len(self) == 0:
             return False
