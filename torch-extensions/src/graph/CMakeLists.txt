@@ -6,6 +6,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 add_subdirectory(graph-tensor)
 
-#if(CMAKE_CUDA_COMPILER)
-#    add_subdirectory(physics-cuda)
-#endif()
+if(CMAKE_CUDA_COMPILER)
+    add_subdirectory(graph-cuda)
+endif()

@@ -212,6 +212,76 @@ namespace pyc
             }
         }
     }
+    
+    namespace graph
+    {
+        std::vector<std::vector<torch::Tensor>> dress(
+                std::map<std::string, std::vector<torch::Tensor>> inpt); 
+
+        std::vector<std::vector<torch::Tensor>> edge_aggregation(
+                torch::Tensor edge_index, torch::Tensor prediction, 
+                torch::Tensor node_feature, const bool include_zero); 
+
+        std::vector<std::vector<torch::Tensor>> node_aggregation(
+                torch::Tensor edge_index, torch::Tensor prediction, 
+                torch::Tensor node_feature, const bool include_zero); 
+
+
+        namespace polar
+        {
+            namespace combined
+            {
+                std::vector<std::vector<torch::Tensor>> edge_pmu(
+                        torch::Tensor edge_index, torch::Tensor prediction, 
+                        torch::Tensor pmu, const bool include_zero); 
+
+                std::vector<std::vector<torch::Tensor>> node_pmu(
+                        torch::Tensor edge_index, torch::Tensor prediction, 
+                        torch::Tensor pmu, const bool include_zero); 
+           }
+
+            namespace separate
+            {
+                 std::vector<std::vector<torch::Tensor>> edge_pmu(
+                        torch::Tensor edge_index, torch::Tensor prediction, 
+                        torch::Tensor pt, torch::Tensor eta, torch::Tensor phi, torch::Tensor e,  
+                        const bool include_zero); 
+
+                 std::vector<std::vector<torch::Tensor>> node_pmu(
+                        torch::Tensor edge_index, torch::Tensor prediction, 
+                        torch::Tensor pt, torch::Tensor eta, torch::Tensor phi, torch::Tensor e,  
+                        const bool include_zero);  
+            }
+        }
+
+        namespace cartesian
+        {
+            namespace combined
+            {
+                std::vector<std::vector<torch::Tensor>> edge_pmc(
+                        torch::Tensor edge_index, torch::Tensor prediction, 
+                        torch::Tensor pmc, const bool include_zero); 
+
+                std::vector<std::vector<torch::Tensor>> node_pmc(
+                        torch::Tensor edge_index, torch::Tensor prediction, 
+                        torch::Tensor pmc, const bool include_zero);  
+            }
+
+            namespace separate
+            {
+                std::vector<std::vector<torch::Tensor>> edge_pmc(
+                      torch::Tensor edge_index, torch::Tensor prediction, 
+                      torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e,  
+                      const bool include_zero); 
+
+                std::vector<std::vector<torch::Tensor>> node_pmc(
+                      torch::Tensor edge_index, torch::Tensor prediction, 
+                      torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e,  
+                      const bool include_zero);  
+            }
+        }
+    }
 }
+
 
 #endif

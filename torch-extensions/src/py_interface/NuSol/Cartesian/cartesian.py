@@ -45,7 +45,7 @@ class Cartesian:
 
     @staticmethod
     def Nu(*args, null = 10e-10):
-        null, ten = (args[-1], args[:-1]) if isinstance(args[-1], float) else (args, null)
+        null, ten = (args[-1], args[:-1]) if isinstance(args[-1], float) else (null, args)
         tens = [i for i in args if torch.is_tensor(i)]
         name = inspect.currentframe().f_code.co_name
         fn, inpt = __router__(list(ten), name, 5)
@@ -54,7 +54,7 @@ class Cartesian:
 
     @staticmethod
     def NuNu(*args, null = 10e-10):
-        null, ten = (args[-1], args[:-1]) if isinstance(args[-1], float) else (args, null)
+        null, ten = (args[-1], args[:-1]) if isinstance(args[-1], float) else (null, args)
         tens = [i for i in args if torch.is_tensor(i)]
         name = inspect.currentframe().f_code.co_name
         fn, inpt = __router__(list(ten), name, 6)

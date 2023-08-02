@@ -71,4 +71,18 @@ install(DIRECTORY DESTINATION ${SKBUILD_PROJECT_NAME}/NuSol/Cartesian)
 install(FILES ${CMAKE_SOURCE_DIR}/py_interface/NuSol/Cartesian/__init__.py  DESTINATION ${SKBUILD_PROJECT_NAME}/NuSol/Cartesian)
 install(FILES ${CMAKE_SOURCE_DIR}/py_interface/NuSol/Cartesian/cartesian.py DESTINATION ${SKBUILD_PROJECT_NAME}/NuSol/Cartesian)
 
+install(DIRECTORY DESTINATION ${SKBUILD_PROJECT_NAME}/Graph)
+install(FILES ${CMAKE_SOURCE_DIR}/py_interface/Graph/__init__.py DESTINATION ${SKBUILD_PROJECT_NAME}/Graph)
+
+install(DIRECTORY DESTINATION ${SKBUILD_PROJECT_NAME}/Graph/Base)
+install(FILES ${CMAKE_SOURCE_DIR}/py_interface/Graph/Base/__init__.py DESTINATION ${SKBUILD_PROJECT_NAME}/Graph/Base)
+install(FILES ${CMAKE_SOURCE_DIR}/py_interface/Graph/Base/base.py DESTINATION ${SKBUILD_PROJECT_NAME}/Graph/Base)
+
+install(DIRECTORY DESTINATION ${SKBUILD_PROJECT_NAME}/Graph/Polar)
+install(FILES ${CMAKE_SOURCE_DIR}/py_interface/Graph/Polar/__init__.py DESTINATION ${SKBUILD_PROJECT_NAME}/Graph/Polar)
+install(FILES ${CMAKE_SOURCE_DIR}/py_interface/Graph/Polar/polar.py DESTINATION ${SKBUILD_PROJECT_NAME}/Graph/Polar)
+
+install(DIRECTORY DESTINATION ${SKBUILD_PROJECT_NAME}/Graph/Cartesian)
+install(FILES ${CMAKE_SOURCE_DIR}/py_interface/Graph/Cartesian/__init__.py DESTINATION ${SKBUILD_PROJECT_NAME}/Graph/Cartesian)
+install(FILES ${CMAKE_SOURCE_DIR}/py_interface/Graph/Cartesian/cartesian.py DESTINATION ${SKBUILD_PROJECT_NAME}/Graph/Cartesian)
 

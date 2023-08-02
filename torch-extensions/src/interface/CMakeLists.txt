@@ -12,6 +12,7 @@ if(CMAKE_CUDA_COMPILER)
             physics-cuda
             operators-cuda
             nusol-cuda
+            graph-cuda
     )
 endif()
 

@@ -1,4 +1,5 @@
 from random import random
+import pyc
 import torch
 
 def test_edge_feature_aggregation():
@@ -22,13 +23,12 @@ def test_edge_feature_aggregation():
             msk = (pred.view(-1) == i)*msk_self
             e_i, e_j = edge_index[:, msk.view(-1)]
             pair_m[e_i, e_j] = e_j
-            pair_m, indx = pair_m.sort(-1, True)
+            pair_m, _ = pair_m.sort(-1, True)
 
             # aggregate the incoming edges
             pmu_i = torch.zeros_like(pmu)
             for this, j in zip(range(p), pair_m):
                 pmu_i[this] += pmu[j[j > -1], :].sum(0)
-
             # find the unique node aggregation
             clusters, revert = pair_m.unique(dim = 0, return_inverse = True)
             pmu_u = torch.zeros(len(clusters), pmu.size(1))
@@ -36,12 +36,22 @@ def test_edge_feature_aggregation():
                 get = j[j > -1]
                 pmu_u[this] += pmu[get, :].sum(0)
 
-            output[i] = {}
-            output[i]["clusters"] = clusters
-            output[i]["unique_sum"] = pmu_u
-            output[i]["reverse_clusters"] = revert
-            output[i]["node_sum"] = pmu_i
+            output[int(i)] = {}
+            output[int(i)]["clusters"] = clusters
+            output[int(i)]["unique_sum"] = pmu_u
+            output[int(i)]["reverse_clusters"] = revert
+            output[int(i)]["node_sum"] = pmu_i
         return output
+
+    def compare(truth, pred):
+        for i in truth:
+            res_t = truth[i]
+            res_c = pred[i]
+            for k in res_t:
+                val_t = res_t[k].to(device = "cpu")
+                val_c = res_c[k].to(device = "cpu")
+                attest = abs(val_t - val_c) > 0
+                assert attest.sum(-1).sum(-1) == 0
 
     # create a node feature of length 10
     n = 4
@@ -62,7 +72,8 @@ def test_edge_feature_aggregation():
     dic = {cls : {n : nodes[n].clone() for n in range(n_nodes)} for cls in range(n_cls)}
     for i, src, dst in zip(edges_t, edge_i, edge_j):
         if src == dst: continue
-        dic[i.item()][src.item()] += nodes[dst]
+        i = i.item()
+        dic[i][src.item()] += nodes[dst]
 
     res = {}
     for cls in dic:
@@ -71,13 +82,56 @@ def test_edge_feature_aggregation():
             res[cls].append(dic[cls][node].view(1, -1))
         res[cls] = torch.cat(res[cls], dim = 0)
     out = aggregation(edge_index, edges_t, nodes, True)
-
     for i in out:
-        nodes = res[i.item()]
-        attest = nodes != out[i]["node_sum"]
+        nodes_ = res[i]
+        attest = nodes_ != out[i]["node_sum"]
         assert attest.sum(-1).sum(-1) == 0
 
 
+    x = pyc.Graph.Base.edge_aggregation(edge_index, edges_t, nodes, True)
+    compare(out, x)
+
+    dev = "cuda" if torch.cuda.is_available() else "cpu"
+    edge_index = edge_index.to(device = dev)
+    edges_t = edges_t.to(device = dev)
+    nodes = nodes.to(device = dev)
+    cu = pyc.Graph.Base.edge_aggregation(edge_index, edges_t, nodes, True)
+    compare(out, cu)
+
+
+    a, b, c, d = [nodes[:, i] for i in range(4)]
+    x = pyc.Graph.Cartesian.edge(edge_index, edges_t, a, b, c, d, True)
+    compare(out, x)
+
+    x = pyc.Graph.Cartesian.edge(edge_index, edges_t, nodes, True)
+    compare(out, x)
+
+    node_t = edges_t.view(-1, n_nodes)[:, 0]
+    a, b, c, d = [nodes[:, i] for i in range(4)]
+    x = pyc.Graph.Cartesian.node(edge_index, node_t, a, b, c, d, True)
+    x1 = pyc.Graph.Cartesian.node(edge_index, node_t, nodes, True)
+    compare(x1, x)
+
+    edge_index = edge_index.to(device = "cpu")
+    edges_t = edges_t.to(device = "cpu")
+    nodes = nodes.to(device = "cpu")
+    a, b, c, d = [nodes[:, i] for i in range(4)]
+    x = pyc.Graph.Cartesian.edge(edge_index, edges_t, a, b, c, d, True)
+    compare(out, x)
+
+    x = pyc.Graph.Cartesian.edge(edge_index, edges_t, nodes, True)
+    compare(out, x)
+
+    node_t = edges_t.view(-1, n_nodes)[:, 0]
+    a, b, c, d = [nodes[:, i] for i in range(4)]
+    x = pyc.Graph.Cartesian.node(edge_index, node_t, a, b, c, d, True)
+    x1 = pyc.Graph.Cartesian.node(edge_index, node_t, nodes, True)
+    compare(x1, x)
 
 if __name__ == "__main__":
     test_edge_feature_aggregation()
+
+
+
+
+
