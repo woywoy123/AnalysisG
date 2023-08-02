@@ -93,6 +93,17 @@ def test_particle_pickle():
 
 
 def test_particle_multithreading():
+    def Functions(inpt, _prgbar):
+        lock, bar = _prgbar
+        out = []
+        for i in inpt:
+            j_, d_ = i
+            j_ = pickle.loads(j_).clone
+            j_.__interpret__ = d_
+            out.append(pickle.dumps(j_))
+            with lock: bar.update(1)
+        return out
+
     root1 = "./samples/sample1/smpl1.root"
     j = TruthJet()
     vals = j.__interpret__
@@ -100,72 +111,31 @@ def test_particle_multithreading():
     io.Trees = ["nominal"]
     io.Leaves = list(vals.values())
 
+    excl = ["MetaData", "ROOT", "EventIndex"]
     jets = []
     for i in io:
         jet = j.clone
-        jet.__interpret__ = {
-            k.split("/")[-1]: i[k] for k in i if k.split("/")[-1] in io.Leaves
-        }
+        jet.__interpret__ = {k : i[k] for k in i if k not in excl}
         jets += jet.Children
+        assert jets[-1].px != 0
+        assert jets[-1].pt != 0
 
     mem = 0
     for _ in range(3):
         x = []
         for i in io:
-            for t in range(1000):
-                x.append(
-                    [
-                        j,
-                        {
-                            k.split("/")[-1]: i[k]
-                            for k in i
-                            if k.split("/")[-1] in io.Leaves
-                        },
-                    ]
-                )
-
-        def Function(inpt, _prgbar):
-            lock, bar = _prgbar
-            out = []
-            for i in inpt:
-                t, val = i
-                p = t.clone
-                p.__interpret__ = val
-                out.append(p.Children)
-                with lock:
-                    bar.update(1)
-                del p
-                del t
-                del val
-            return out
-
-        th = Threading(x, Function, 4, 2500)
+            _dct = {k: i[k] for k in i if k not in excl}
+            x.append([pickle.dumps(j), _dct])
+        th = Threading(x*1000, Functions, 10, 2500)
         th.Start
         x = []
-        for i in th._lists:
-            x += i
-
+        for i in th._lists: x += pickle.loads(i).Children
         x = set(x)
-        assert len(x) == len(jets)
         x = {i.hash: i for i in x}
-        try:
-            assert len([x[i.hash] for i in jets]) == len(jets)
-        except KeyError:
-            raise AssertionError
-
-        def Function(inpt, _prgbar):
-            lock, bar = _prgbar
-            for i in inpt:
-                p = i.clone
-                del p
-                del i
-            return []
-
-        th = Threading([j for _ in range(10000)], Function, 5, 2000)
-        th.Start
-
-        if mem == 0:
-            mem = psutil.virtual_memory().percent
+        assert len(x) == len(jets)
+        assert len([x[i.hash] for i in jets]) == len(jets)
+        for i in list(x): del x[i]
+        if mem == 0: mem = psutil.virtual_memory().percent
         assert mem - psutil.virtual_memory().percent < 1
 
 
@@ -251,7 +221,7 @@ def test_event_multithreading():
 
 
 if __name__ == "__main__":
-    # test_particle_pickle()
-    # test_particle_multithreading()
+    #test_particle_pickle()
+    #test_particle_multithreading()
     #test_event_pickle()
     test_event_multithreading()

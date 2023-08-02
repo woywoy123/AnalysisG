@@ -4,6 +4,7 @@
 **/*.egg*
 **/_Pickle
 **/PythonGNN
+setup-scripts/source_this.sh
 
 # Cache types 
 *.hdf5
@@ -28,3 +29,4 @@
 **/.tox
 **/.coverage*
 **/*EventCache*
+

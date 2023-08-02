@@ -1,16 +1,15 @@
 [build-system]
-requires = ["setuptools>=61.0.0", "Cython", "wheel"]
+requires = ["setuptools>=61.0.0", "cython==3.0.0", "wheel", "torch"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "AnalysisG"
-version = "3.1"
+version = "3.2"
 authors = [{name = "woywoy123"}]
 readme.content-type = "text/markdown"
 readme.file = "README.md"
 requires-python = ">=3.7"
 dependencies = [
-    "torch", 
     "numpy", 
     "uproot", 
     "h5py", 
@@ -57,6 +56,5 @@ classifiers = [
 [project.scripts]
 CONFIG_PYAMI = "AnalysisG.Settings:CONFIG_PYAMI"
 AUTH_PYAMI = "AnalysisG.Settings:AUTH_PYAMI"
-CHECK_CUDA = "AnalysisG.Settings:CHECK_CUDA"
 POST_INSTALL_PYC = "AnalysisG.Settings:POST_INSTALL_PYC"
 
