@@ -16,7 +16,7 @@ This will generate a new Python environment called **GNN**, which can be sourced
     cd AnalysisG/setup-scripts && bash setup-venv.sh
 
 If you are running the framework on a HPC cluster, for instance **lxplus** or some other Linux environment, make sure to have at least **GCC 6.20** enabled.
-As an example, on **lxplus** machines, one can add the following to their bashrc file: 
+For example, on **lxplus** machines, add the following lines to the bashrc file: 
 
 .. code-block:: console
    
@@ -24,19 +24,30 @@ As an example, on **lxplus** machines, one can add the following to their bashrc
     source ${ATLAS_LOCAL_ROOT_BASE}/user/atlasLocalSetup.sh
     lsetup "gcc gcc620_x86_64_slc6"
 
-Or alternatively, run the installer as highlighted once and then create a **shell** alias which sources the framework's setup scripts. 
-This could look something like this: 
+If making large changes to the .bashrc is not desired, simply add an alias to it and point the **source** command to the **setup-scripts** folder as shown below:
 
 .. code-block:: console 
 
    alias GNN='source <some path to repository>/setup-scripts/source_this.sh
 
-So now one only has to type in **GNN** into their bash console once to have everything setup. 
+This will create a command called **GNN** and when executed will setup the Analysis environment. 
 
 Additional Software Setup
 =========================
-Analysis-G is dependent on one additional package, which can be found under **torch-extensions**.
-This package directory is completely independent of the framework and contains several modules that contain physics specific functions. 
-These are written in **C++ and CUDA**, and compiled using **CMake** using a Python build tool called **scikit-build-core**. 
-Once compiled, modules will be available under the library name, **PyC**, which stands for **Python-C++/CUDA**.
+Analysis-G is partly dependent on **PyC** and can be installed via the command **POST_INSTALL_PYC**.
+Unlike most **PyTorch** packages, the installation process is rather seemless. 
+During the build process, the package will scan for **nvcc** (CUDA compiler), and will install the appropriate **PyTorch** version (CUDA/CPU). 
 
+As mentioned in the introduction page of these docs, modules found in this package are completely written in C++.
+If CUDA is available, then the package will also proceed to install the native CUDA kernel implementations. 
+This however can be a very long and computationally expensive build process.
+
+Unlike the nominal **PyTorch** setup-tools recommended tutorial, the installation process utilizes an advanced cmake builder called **scikit-build-core**.
+This allows for code modifications to be made without having to repetitively recompile unmodified code and wasting computational resources. 
+
+Once installed, the module can be used via: 
+
+.. code-block:: python 
+   import pyc
+
+More of about this module will be discussed later in the docs. 

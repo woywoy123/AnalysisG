@@ -51,3 +51,102 @@ def POST_INSTALL_PYC():
     t.join()
     print("------- DONE CONFIGURING TORCH-EXTENSIONS (PYC) -------")
 
+def make_analysis():
+    from AnalysisG.Tools import Tools
+    tool = Tools()
+    this_dir = tool.pwd
+    tool.mkdir("Analysis")
+    tool.mkdir("Analysis/Objects")
+
+    event = [
+            "from AnalysisG.Templates import EventTemplate",
+            "from Particles import MyParticle", 
+            "",
+            "class MyEvent(EventTemplate):",
+            "",
+            "   def __init__(self)",
+            "       EventTemplate.__init__(self)",
+            "       self.Objects = {'SomeParticle' : MyParticle}",
+            "       self.Trees = ['<some tree>']",
+            "       self.Branches = ['<some branches (optional)>']",
+            "       self.index = '<some index leaf name>'",
+            "       self.CommitHash = '<some hash (optional)>'",
+            "",
+            "   def CompileEvent(self):",
+            "",
+            "       # add some matching logic (optional)",
+            "       #print the particles in this event",
+            "       print(self.SomeParticle)",
+    ]
+    f = open(this_dir + "/Analysis/Objects/Event.py", "w")
+    f.write("\n".join(event))
+    f.close()
+
+    particle = [
+            "from AnalysisG.Templates import ParticleTemplate",
+            "",
+            "class MyParticle(ParticleTemplate):",
+            "",
+            "   def __init__(self):",
+            "       ParticleTemplate.__init__(self)",
+            "       self.Type = 'some particle type'",
+            "       self.pt = self.Type  + '_' + <ROOT leaf string>",
+            "       self.eta = self.Type + '_' + <ROOT leaf string>",
+            "       self.phi = self.Type + '_' + <ROOT leaf string>",
+            "       self.e   = self.Type + '_' + <ROOT leaf string>",
+    ]
+    f = open(this_dir + "/Analysis/Objects/Particles.py", "w")
+    f.write("\n".join(particle))
+    f.close()
+
+
+    graph = [
+            "from AnalysisG.Templates import GraphTemplate",
+            "",
+            "class MyGraph(GraphTemplate):",
+            "",
+            "   def __init__(self, Event = None):",
+            "       GraphTemplate.__init__(self)",
+            "       self.Event = Event",
+            "       self.Particles += self.Event.SomeParticle",
+    ]
+    f = open(this_dir + "/Analysis/Objects/Graph.py", "w")
+    f.write("\n".join(graph))
+    f.close()
+
+    selection = [
+            "from AnalysisG.Templates import SelectionTemplate",
+            "",
+            "class Selection(SelectionTemplate):",
+            "",
+            "   def __init__(self, Event = None):",
+            "       SelectionTemplate.__init__(self)",
+            "       self.SomeDictionary = {}",
+            "       self.SomeList = []",
+            "",
+            "   def Selection(self, event):",
+            "       return True",
+            "",
+            "   def Strategy(self, event):",
+            "       pass"
+    ]
+
+    f = open(this_dir + "/Analysis/Objects/Selection.py", "w")
+    f.write("\n".join(selection))
+    f.close()
+
+    analysis = [
+            "from AnalysisG import Analysis",
+            "from Objects.Event import MyEvent",
+            "from Objects.Graph import MyGraph", 
+            "",
+            "Ana = Analysis()",
+            "Ana.Event = MyEvent", 
+            "Ana.EventGraph = MyGraph", 
+            "Ana.EventCache = True # Creates hdf5 files", 
+            "Ana.DataCache = True # Creates hdf5 files for graphs", 
+            "Ana.Launch"
+    ]
+    f = open(this_dir + "/Analysis/main.py", "w")
+    f.write("\n".join(analysis))
+    f.close()
