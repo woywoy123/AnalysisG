@@ -280,6 +280,7 @@ Although the above is a simple example, the complexity can be increased and furt
                 for k in tempLink[index]:
                     k.Parent.append(i)
 
+.. _complex-events 
 
 Complex CompileEvent Example
 ____________________________

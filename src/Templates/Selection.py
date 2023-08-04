@@ -65,51 +65,57 @@ class SelectionTemplate(Tools):
         return pyc.Transform.Py(val, phi)
 
     def MakeNu(self, s_):
-        if sum(s_) == 0.0:
-            return None
+        if s_ == 0.0: return None
+        if len(s_) == 0: return None
         nu = Neutrino()
         nu.px = s_[0]
         nu.py = s_[1]
         nu.pz = s_[2]
-        nu.e = (nu.px**2 + nu.py**2 + nu.pz**2) ** 0.5
+        #nu.e = (nu.px**2 + nu.py**2 + nu.pz**2) ** 0.5
         return nu
 
     def NuNu(
-        self, q1, q2, l1, l2, ev, mT=172.5 * 1000, mW=80.379 * 1000, mN=0, zero=1e-12
+        self, q1, q2, l1, l2, ev,
+        mT=172.5 * 1000, mW=80.379 * 1000, mN=0, zero=1e-12,
+        gev = False
     ):
-
+        scale = 1/1000 if gev else 1
         inpt = []
-        inpt.append([[q1.pt, q1.eta, q1.phi, q1.e]])
-        inpt.append([[q2.pt, q2.eta, q2.phi, q2.e]])
-        inpt.append([[l1.pt, l1.eta, l1.phi, l1.e]])
-        inpt.append([[l2.pt, l2.eta, l2.phi, l2.e]])
+        inpt.append([[q1.pt*scale, q1.eta, q1.phi, q1.e*scale]])
+        inpt.append([[q2.pt*scale, q2.eta, q2.phi, q2.e*scale]])
+        inpt.append([[l1.pt*scale, l1.eta, l1.phi, l1.e*scale]])
+        inpt.append([[l2.pt*scale, l2.eta, l2.phi, l2.e*scale]])
 
-        inpt.append([[ev.met, ev.met_phi]])
-        inpt.append([[mW, mT, mN]])
+        inpt.append([[ev.met*scale, ev.met_phi]])
+        inpt.append([[mW*scale, mT*scale, mN*scale]])
         inpt.append(zero)
 
         sol = pyc.NuSol.Polar.NuNu(*inpt)
+        _s1, _s2, diag, n_, h_per1, h_per2, nsols = sol
 
-        _s1 = sol[0].tolist()[0]
-        _s2 = sol[1].tolist()[0]
-        o = [[self.MakeNu(k), self.MakeNu(j)] for k, j in zip(_s1, _s2)]
+        o = [[self.MakeNu(k), self.MakeNu(j)] for k, j in zip(_s1.tolist(), _s2.tolist())]
         return [p for p in o if p[0] != None and p[1] != None]
 
     def Nu(
-        self, q1, l1, ev, S=[100, 0, 0, 100], mT=172.5, mW=80.379, mN=0, zero=1e-12
+        self, q1, l1, ev,
+        S=[100, 0, 0, 100],
+        mT=172.5*1000, mW=80.379*1000, mN=0, zero=1e-12,
+        gev = False
     ):
-        inpt = []
-        inpt.append([[q1.pt, q1.eta, q1.phi, q1.e]])
-        inpt.append([[l1.pt, l1.eta, l1.phi, l1.e]])
+        scale = 1/1000 if gev else 1
 
-        inpt.append([[ev.met, ev.met_phi]])
-        inpt.append([[mW, mT, mN]])
+        inpt = []
+        inpt.append([[q1.pt*scale, q1.eta, q1.phi, q1.e*scale]])
+        inpt.append([[l1.pt*scale, l1.eta, l1.phi, l1.e*scale]])
+
+        inpt.append([[ev.met*scale, ev.met_phi]])
+        inpt.append([[mW*scale, mT*scale, mN*scale]])
 
         inpt.append([[S[0], S[1]], [S[2], S[3]]])
         inpt.append(zero)
-        sol = pyc.NuSol.Polar.Nu(*inpt)
-
-        return [self.MakeNu(sol[0].tolist()[0])]
+        sol, chi2 = pyc.NuSol.Polar.Nu(*inpt)
+        nus = [self.MakeNu(s) for s in sol.tolist()]
+        return nus
 
     def Sort(self, inpt, descending=False):
         if isinstance(inpt, list):
@@ -117,8 +123,7 @@ class SelectionTemplate(Tools):
             return inpt
         _tmp = list(inpt)
         _tmp.sort()
-        if descending:
-            _tmp.reverse()
+        if descending: _tmp.reverse()
         inpt = {k: inpt[k] for k in _tmp}
         return inpt
 

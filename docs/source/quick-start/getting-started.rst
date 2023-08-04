@@ -181,7 +181,7 @@ To implement a selection, open the **selection.py** and inherit the **SelectionT
     from AnaylsisG.Templates import SelectionTemplate
 
     class MySelection(SelectionTemplate):
-        
+
         def __init__(self):
             self.ClusterMasses = {}
             self.ParticleMasses = []

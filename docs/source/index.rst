@@ -109,6 +109,7 @@ Analysis and Truth Studies Documentation
 ****************************************
 .. toctree::
   studies/analysis-strategies
+  studies/neutrino-reconstruction.rst
 
 Documentation and Codebase Status
 *********************************

@@ -7,9 +7,11 @@ smpl = os.environ["Samples"]
 
 Ana = Analysis()
 Ana.OutputDirectory = "./Reconstruction"
-Ana.SampleInput("bsm1000", smpl+"/ttZ-1000/")
+Ana.InputSample("bsm1000", smpl+"/ttZ-1000/")
+Ana.AddSelection("neutrino", NeutrinoReconstruction)
 Ana.EventStop = 1000
 Ana.Event = Event
+Ana.Threads = 1
 Ana.EventCache = True
 Ana.Launch
 
