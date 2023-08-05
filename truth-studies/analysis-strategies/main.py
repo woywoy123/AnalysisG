@@ -6,7 +6,6 @@ smpls = os.environ["Samples"]
 
 which_analysis = "double-leptonic:DiLeptonic"
 
-
 _ana = which_analysis.split(":")
 if _ana[0] == "double-leptonic": ana = DiLeptonic()
 

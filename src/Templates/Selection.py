@@ -64,14 +64,14 @@ class SelectionTemplate(Tools):
     def Py(self, val, phi):
         return pyc.Transform.Py(val, phi)
 
-    def MakeNu(self, s_):
+    def MakeNu(self, s_, gev = False):
         if s_ == 0.0: return None
         if len(s_) == 0: return None
         nu = Neutrino()
-        nu.px = s_[0]
-        nu.py = s_[1]
-        nu.pz = s_[2]
-        #nu.e = (nu.px**2 + nu.py**2 + nu.pz**2) ** 0.5
+        nu.px = s_[0]*(1000 if gev else 1)
+        nu.py = s_[1]*(1000 if gev else 1)
+        nu.pz = s_[2]*(1000 if gev else 1)
+        nu.e = (nu.px**2 + nu.py**2 + nu.pz**2) ** 0.5
         return nu
 
     def NuNu(
@@ -93,7 +93,9 @@ class SelectionTemplate(Tools):
         sol = pyc.NuSol.Polar.NuNu(*inpt)
         _s1, _s2, diag, n_, h_per1, h_per2, nsols = sol
 
-        o = [[self.MakeNu(k), self.MakeNu(j)] for k, j in zip(_s1.tolist(), _s2.tolist())]
+        o = []
+        for k, j in zip(_s1[0].tolist(), _s2[0].tolist()):
+            o.append([self.MakeNu(k, gev), self.MakeNu(j, gev)])
         return [p for p in o if p[0] != None and p[1] != None]
 
     def Nu(
@@ -114,7 +116,7 @@ class SelectionTemplate(Tools):
         inpt.append([[S[0], S[1]], [S[2], S[3]]])
         inpt.append(zero)
         sol, chi2 = pyc.NuSol.Polar.Nu(*inpt)
-        nus = [self.MakeNu(s) for s in sol.tolist()]
+        nus = [self.MakeNu(s, gev) for s in sol[0].tolist()]
         return nus
 
     def Sort(self, inpt, descending=False):

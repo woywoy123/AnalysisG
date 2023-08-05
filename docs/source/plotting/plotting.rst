@@ -1,5 +1,5 @@
-Plotting (TH1F, TH2F, Combined)
-*******************************
+Plotting (TH1F, TH2F, CombineTH1F)
+**********************************
 
 A class dedicated to plotting histograms using the `mplhep` package as a backend to format figures.
 This class adds some additional features to simplify writing simple plotting code, such as bin centering. 
@@ -123,11 +123,14 @@ _________________
 
 - ``xBins``:
     The number of bins to construct the histogram with.
+
 - ``xBinCentering``:
     Whether to center the bins of the histograms. 
     This can be relevant for classification plots.
+
 - ``xStep``:
     The step size of placing a label on the x-Axis, e.g. 0, 100, 200, ..., (n-1)x100.
+
 - ``yStep``:
     The step size of placing a label on the y-Axis, e.g. 0, 100, 200, ..., (n-1)x100.
 
@@ -170,3 +173,128 @@ _____________________
 
 - ``ApplyRandomTexture(obj)``:
     Selects a random texture for the histograms.
+
+Example Code Usage
+__________________
+
+
+A simple TH1F plot
+==================
+
+.. code-block:: python 
+
+    from AnalysisG.Plotting import TH1F
+
+    th = TH1F()
+    th.xBins = 100
+    th.xMax = 100
+    th.xMin = 0
+    th.xData = [i for i in range(100)]
+    th.Title = "some title"
+    th.xTitle = "x-Axis"
+    th.yTitle = "y-Axis"
+    th.Filename = "some-name"
+    th.OutputDirectory = "./Some/Path/"
+    th.SaveFigure()
+
+
+A TH1F plot with bin centering 
+==============================
+
+.. code-block:: python 
+
+    from AnalysisG.Plotting import TH1F
+
+    th = TH1F()
+    th.xMin = 0
+    th.xStep = 20
+    #th.xMax = 100 <- dont include a maximum
+    th.xBins = 100 # <- rather define the number of bins
+    th.xBinCentering = True
+    th.xData = [i for i in range(100)]
+    th.Title = "some title"
+    th.xTitle = "x-Axis"
+    th.yTitle = "y-Axis"
+    th.Filename = "some-name"
+    th.OutputDirectory = "./Some/Path/"
+    th.SaveFigure()
+
+Combining two or more TH1F plots 
+================================
+
+.. code-block:: python 
+
+    from AnalysisG.Plotting import TH1F, CombineTH1F
+
+    # Define the settings to apply to all histograms
+    th = CombineTH1F()
+    th.xMin = 0
+    th.xStep = 20
+    th.xMax = 100
+    th.Title = "some title"
+    th.xTitle = "x-Axis"
+    th.yTitle = "y-Axis"
+    th.Filename = "some-name"
+    th.OutputDirectory = "./Some/Path/"
+
+    # Iterate over your data
+    for i in MyDataDictionary:
+
+        # Create a new TH1F instance
+        th_ = TH1F()
+        th_.Title = i
+
+        # Populate this instance with some data
+        th_.xData = MyDataDictionary[i]
+
+        # Append the instance to the Histograms attribute
+        th.Histograms.append(th_)
+
+    th.SaveFigure()
+
+
+    # To make the above code shorter, we can create a dictionary
+    # of commands e.g. 
+    tmp = {"xMin" : 0, "xStep" : 20, ... , "Histograms" : []}
+
+    # and then do the same loop over the data, but populate the Histograms 
+    # key in the tmp dictionary 
+
+    for i in MyDataDictionary:
+        tmp2 = {"xData" : MyDataDictionary[i], "Title" : i}
+        tmp["Histograms"].append(TH1F(**tmp2))
+
+    th = CombineTH1F(**tmp)
+    th.SaveFigure()
+
+
+A simple TH2F plot
+==================
+
+.. code-block:: python 
+
+    from AnalysisG.Plotting import TH2F
+
+    th2 = TH2F()
+    th2.Title = "Some distribution plot"
+    th2.xTitle = "x-Title"
+    th2.yTitle = "y-Title"
+
+    th2.xMin = 0
+    th2.yMin = 0
+
+    th2.xMax = 100
+    th2.yMax = 100
+
+    th2.xBins = 100
+    th2.yBins = 100
+
+    th2.xData = [i for i in range(100)]
+    th2.yData = [i for i in range(100)]
+    th2.Filename = "Some_File"
+    th2.OutputDirectory = "./some/path"
+    th2.SaveFigure()
+
+
+
+

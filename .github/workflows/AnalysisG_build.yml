@@ -8,6 +8,14 @@ on:
       paths:
         - "src"
 
+  push:
+      branches:
+        - "master"
+        - "dev"
+
+      paths:
+        - "src"
+
 defaults:
   run:
     shell: bash
