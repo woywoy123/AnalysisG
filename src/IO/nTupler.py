@@ -16,7 +16,6 @@ class container(SampleTracer):
         self.FilePath = None
         self._h5 = None
         self.Path = None
-        self.Threads = 6
 
     def _strip(self, inpt):
         msg = "Syntax Error! Format is '<selection name> -> <variable> -> <key>' "
@@ -64,6 +63,7 @@ class nTupler(_Interface, _nTupler):
         self.Caller = "nTupler"
         self.Verbose = 3
         self.chnk = 1000
+        self.Threads = 6
         self.Files = []
         self.__it = None
         self._it = None
