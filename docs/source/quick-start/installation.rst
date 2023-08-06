@@ -48,6 +48,7 @@ This allows for code modifications to be made without having to repetitively rec
 Once installed, the module can be used via: 
 
 .. code-block:: python 
+
    import pyc
 
 More of about this module will be discussed later in the docs. 
