@@ -132,7 +132,6 @@ class GraphTemplate:
         setattr(self.Data, "i", torch.tensor(self.index))
         setattr(self.Data, "weight", torch.tensor(self.Event.weight))
 
-    @property
     def purge(self):
         self.__Clean(self.Particles)
         self.__Clean(self.Event.__dict__)

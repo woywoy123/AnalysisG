@@ -104,11 +104,10 @@ class Threading(_MultiThreading):
         self._indx = [[i, i + cpu_ev] for i in range(0, len(lists), cpu_ev)]
         self.__lists = {i: None for i in range(len(lists))}
 
-    @property
     def Start(self):
         if len(self.__lists) == 0:
             return self._lists
-        self._Progress
+        self._Progress()
 
         self._exc = {}
         for i in range(self._threads):
@@ -167,7 +166,7 @@ class Threading(_MultiThreading):
 
             self._exc[f][2].started = False
             self._exc[f][2].Purge()
-            self._Update
+            self._Update()
 
             tmp = [f] if len(self._chnk) > 0 else []
             running = tmp + [r for r in running if r != f]
@@ -179,7 +178,7 @@ class Threading(_MultiThreading):
             it = iter(running)
             f = next(it)
         del self._exc
-        self._Close
+        self._Close()
         return self.__lists
 
     @property
@@ -190,7 +189,6 @@ class Threading(_MultiThreading):
             else list(self.__lists.values())
         )
 
-    @property
     def _Progress(self):
         if self.Verbose == 0:
             return
@@ -206,7 +204,6 @@ class Threading(_MultiThreading):
 
         self._dct["obj"] = (lock, bar)
 
-    @property
     def _Update(self):
         if len(self._dct) == 0:
             return
@@ -214,7 +211,6 @@ class Threading(_MultiThreading):
         with lock:
             bar.update(1)
 
-    @property
     def _Close(self):
         if len(self._dct) == 0:
             return

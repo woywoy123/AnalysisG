@@ -38,7 +38,7 @@ class Code:
             self._Module = Instance.__package__
 
         self._subclass = ""
-        cl = self.clone
+        cl = self.clone()
         try:
             cl = cl()
         except:
@@ -62,9 +62,8 @@ class Code:
         self._Hash = Hash(self._Code)
         self._File = GetSourceFileDirectory(Instance)
         self._FileCode = "".join(open(self._File, "r").readlines())
-        self._Get, self._Import = self.checkdependency
+        self._Get, self._Import = self.checkdependency()
 
-    @property
     def checkdependency(self):
         imports = {}
         cur = ""
@@ -113,7 +112,6 @@ class Code:
             get.append(files[i])
         return get, imports["from"]
 
-    @property
     def clone(self):
         Instance = self._Instance
         if callable(Instance):
@@ -124,7 +122,6 @@ class Code:
         _, inst = StringToObject(self._Module, self._Name)
         return inst
 
-    @property
     def purge(self):
         self._Instance = None
         return self
@@ -206,7 +203,6 @@ class IO(String, _IO):
             return Out
         return F
 
-    @property
     def pwd(self):
         return os.getcwd()
 
@@ -237,7 +233,7 @@ class IO(String, _IO):
 
     def cd(self, directory):
         os.chdir(directory)
-        return self.pwd
+        return self.pwd()
 
     def Hash(self, string):
         return Hash(string)

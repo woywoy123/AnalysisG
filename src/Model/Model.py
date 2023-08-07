@@ -33,8 +33,8 @@ class ModelWrapper(_ModelWrapper):
         self._truth = True
         self._train = True
 
-        self._GetModelInputs
-        self._build
+        self._GetModelInputs()
+        self._build()
 
     def __call__(self, data):
         self._Model(**{k: getattr(data, k) for k in self.i_mapping})
@@ -67,12 +67,10 @@ class ModelWrapper(_ModelWrapper):
             if k.startswith(key) and "O" + k[3:] in self._outputs
         }
 
-    @property
     def _inject_tools(self):
         self._Model.MassEdgeFeature = self.MassEdgeFeature
         self._Model.MassNodeFeature = self.MassNodeFeature
 
-    @property
     def _GetModelInputs(self):
         if self.TruthMode: return
         code = self._Model.forward.__code__
@@ -81,7 +79,6 @@ class ModelWrapper(_ModelWrapper):
         }
         return self._inputs
 
-    @property
     def _build(self):
         if self.TruthMode: return
         self._outputs = self._scan(self._Model.__dict__, "O_")
@@ -106,7 +103,7 @@ class ModelWrapper(_ModelWrapper):
         self.o_mapping.update(self._mapping(smpl, "N_T_"))
         self.o_mapping.update(self._mapping(smpl, "G_T_"))
 
-        try: self._inject_tools
+        try: self._inject_tools()
         except: pass
 
         if not self._iscompatible: return False
@@ -122,19 +119,16 @@ class ModelWrapper(_ModelWrapper):
         if self._train: self._Model.train()
         else: self._Model.eval()
 
-    @property
     def dump(self):
         out = {"epoch": self.Epoch, "model": self._Model.state_dict()}
         torch.save(out, self._pth + "/" + str(self.Epoch) + "/TorchSave.pth")
 
-    @property
     def load(self):
         lib = torch.load(self._pth + "/" + str(self.Epoch) + "/TorchSave.pth")
         self._Model.load_state_dict(lib["model"])
         self._Model.eval()
         return self._pth + " @ " + str(self.Epoch)
 
-    @property
     def backward(self):
         loss = sum([self._l[x]["loss"] for x in self._l])
         if self._train: loss.backward()
@@ -174,7 +168,6 @@ class ModelWrapper(_ModelWrapper):
             for i, j in zip(pred, sample)
         ]
 
-    @property
     def __SummingNodes(self):
         try:
             Pmu = {i: self._data[self.Keys[i]] for i in self.Keys}
@@ -215,12 +208,12 @@ class ModelWrapper(_ModelWrapper):
             self._mask = (
                 pred[self._data.edge_index[0]] == pred[self._data.edge_index[1]]
             )
-        return self.__SummingNodes
+        return self.__SummingNodes()
 
     def MassEdgeFeature(self, Sample, pred):
         self._data = Sample
         self._mask = pred == 1
-        return self.__SummingNodes
+        return self.__SummingNodes()
 
     def ClosestParticle(self, tru, pred):
         res = []
@@ -240,7 +233,6 @@ class ModelWrapper(_ModelWrapper):
         res.append(p)
         return res
 
-    @property
     def ParticleEfficiency(self):
         tmp = self.TruthMode
         self.TruthMode = True

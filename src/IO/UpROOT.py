@@ -43,7 +43,6 @@ class MetaData(object):
             if key not in data: continue
             setattr(self, i, data[key])
 
-    @property
     def MakeIndex(self):
         try:
             next(iter(self.DAOD))
@@ -90,10 +89,9 @@ class AMI:
     def __init__(self):
         self.cfg = True
         self._client = None
-        try: self.init
+        try: self.init()
         except: self.cfg = False
 
-    @property
     def init(self):
         warnings.filterwarnings("ignore")
         self._client = pyAMI.client.Client("atlas")
@@ -148,12 +146,10 @@ class UpROOT(_UpROOT, Settings, _Interface):
         self._dsid_meta = {}
         self._it = False
 
-    @property
     def _StartIter(self):
         if self._it: return
         self._it = iter(list(self.File))
 
-    @property
     def ScanKeys(self):
         if not self.File: return False
 
@@ -166,7 +162,7 @@ class UpROOT(_UpROOT, Settings, _Interface):
                 except AttributeError: continue
                 try: Recursion(inpt, k__, k_n)
                 except RecursionError: continue
-        self._StartIter
+        self._StartIter()
         try: fname = next(self._it)
         except StopIteration:
             self._it = False
@@ -197,9 +193,8 @@ class UpROOT(_UpROOT, Settings, _Interface):
         self.Keys[fname] = {"found": found, "missed": self._missed}
         self.AllKeysFound(fname)
 
-        self.ScanKeys
+        self.ScanKeys()
 
-    @property
     def GetAmiMeta(self):
         meta = {}
         ami = AMI()
@@ -269,7 +264,7 @@ class UpROOT(_UpROOT, Settings, _Interface):
                 continue
             self.FoundMetaData(i, _tags, gen)
             meta[i].add(self._dsid_meta[_tags])
-            meta[i].MakeIndex
+            meta[i].MakeIndex()
 
         self.MetaData.update(meta)
         return self.MetaData
@@ -283,11 +278,11 @@ class UpROOT(_UpROOT, Settings, _Interface):
         return max(list(v.values()))
 
     def __iter__(self):
-        if len(self.Keys) != len(self.File): self.ScanKeys
+        if len(self.Keys) != len(self.File): self.ScanKeys()
         keys = self.Keys[list(self.File)[0]]["found"]
         self._t = {}
         self._get = {}
-        self.GetAmiMeta
+        self.GetAmiMeta()
         tr = []
         tmp = [j for z in keys for j in z.split("/")]
         for i in self.Trees:
