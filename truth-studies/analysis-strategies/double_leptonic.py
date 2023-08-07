@@ -14,27 +14,109 @@ class DiLeptonic(SelectionTemplate):
         self.AllowFailure = False
         self._truthmode = "children"
 
+    def ParticleRouter(self, event):
+        if self._truthmode == "children": 
+            particles = [i for i in event.TopChildren]
+        return particles
+
+
     def Selection(self, event):
-        particles = []
-        if self._truthmode == "children": particles = [i for i in event.TopChildren]
-        
+        particles = self.ParticleRouter(event)
         if len([i for i in particles if i.is_lep]) != 2: return False
         if len([i for i in particles if i.is_b]) != 4: return False
         return True
 
-    def Strategy(self, event):
-        # Case 1: on the Children: 
-        # - Select the two most energetic children, provided they are quarks.
-        # - Assign either leptons or other children to these two based on the lowest deltaR. 
-        #   -> If quarks are lowest deltaR: Use two additional quark children 
-        #   -> If lepton is matched: Use single/double neutrino reconstruction code.
-        # - Derive the Top and the resonance mass
+    def Highest_b(self, particles):
+        if self._truthmode == "children":
+            highb = { c.pt : c for c in particles if c.is_b}
+        highpt = sorted(highb, reverse = True)
+        if len(highb) >= 2: highpt = highpt[:2]
+        high_ptb = [highb[c] for c in highpt]
+        return high_ptb
 
-        print(event)
+    def Strategy(self, event):
+        particles = self.ParticleRouter(event)
+
+        # find the highest pT b-quarks or bjets
+        highb = self.Highest_b(particles)
+
+        # Remove these b's from the list particle candidates and other b quarks
+        particles = [ i for i in particles if i not in highb and not i.is_b]
+
+        # Compute the DeltaR between b's
+        delR_P = {p.DeltaR(c) : [p, c] for p in highb for c in particles}
+        delR = sorted(delR_P)
+
+        # Construct the seeds by selecting only the closest particle from the list 
+        # and determining whether the closest was a lepton or quark
+        candidates = {x : [x] for x in highb}
+        for can in highb:
+            it = iter(delR)
+            this = None
+            dR = None
+            while True:
+                try: dR = next(it)
+                except StopIteration: break
+
+                # check if the candidate is in the deltaR pairs
+                if can not in delR_P[dR]: continue
+
+                # Select this pair and make it public
+                this = delR_P[dR]
+
+                # Remove this pair from the dic
+                delR_P = {r : delR_P[r] for r in delR_P if r != dR}
+                delR   = [r for r in delR if r != dR]
+                break
+
+            if dR is None: break
+            if this is None: continue
+            candidates[can].append(this[-1])
+
+        # Now check whether the closest particle is a lepton or quark type
+        type_dic = {}
+        for can in candidates:
+            type_can = candidates[can][-1]
+            if can is type_can: type_dic[can] = []
+            if type_can.is_lep: type_dic[can] = [can, type_can]
+            else:
+                # find an additional quark or jet
+                type_dic[can] = [can, type_can]
+                for dr in delR_P:
+                    this = delR_P[dr]
+                    if can not in this: continue
+                    if this[-1].is_lep: continue
+                    type_dic[can].append(this[-1])
+                    break
+        # if the number of the number of b's is less than 2, reject the event
+        if len(type_dic) < 2: return
+        if sum([len(type_dic[can]) == 0 for can in type_dic]) == 1: return
+
+        # count the number of leptons in this candidate list
+        n_lep = sum([sum([c.is_lep for c in type_dic[can]]) for can in type_dic])
+        if n_lep == 0:
+            Mass = sum([c for can in type_dic for c in type_dic[can]]).Mass
+        elif n_lep == 1:
+            Mass = [] 
+
+
+        print(candidates)
+        
+
+
+
 
         exit()
 
 
+
+
+
+
+
+
+
+"""
 # Deprecated.....
 class MakeTruth(SelectionTemplates):
 
@@ -178,14 +260,4 @@ class ChildrenSelection(Selection):
         self.Reconstruction["Had"]["Children"] += [t1.Mass]
         self.Reconstruction["HadHad"]["Children"] += [(t1+t2).Mass]
         return "Success->Hadron"
- 
-
-
-
-
-
-
-
-
-
-
+"""
