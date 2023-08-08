@@ -13,7 +13,7 @@ class _Optimizer(Notification):
         return True
 
     def _NoSampleGraph(self):
-        hashes = self.GetDataCacheHashes
+        hashes = self.GetDataCacheHashes()
         l = len(hashes)
         self.RestoreTheseHashes(hashes[: self.BatchSize])
         if l == 0:

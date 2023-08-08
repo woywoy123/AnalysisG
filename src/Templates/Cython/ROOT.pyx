@@ -246,13 +246,11 @@ cdef class SampleTracer:
 
     def HashToROOT(self, str key) -> str: return self._HashMeta[key.encode("UTF-8")].decode("UTF-8")
 
-    @property
     def GetDataCacheHashes(self) -> list:
         cdef string i
         cdef vector[string] v = self.ptr.GetCacheType(False, True)
         return [i.decode("UTF-8") for i in v]
 
-    @property
     def GetEventCacheHashes(self) -> list:
         cdef string i
         cdef vector[string] v = self.ptr.GetCacheType(True, False)
