@@ -21,7 +21,7 @@ def _MakeSample():
     Ana.InputSample(None, Files)
     Ana.Event = Event
     Ana.EventCache = True
-    Ana.Launch
+    Ana.Launch()
     return Ana
 
 
@@ -30,7 +30,7 @@ def _MakeGraph(Ana, Graph, mode):
     Ana.EventGraph = Graph
     Ana.EventCache = False
     Ana.DataCache = True
-    Ana.Launch
+    Ana.Launch()
     return Ana
 
 
