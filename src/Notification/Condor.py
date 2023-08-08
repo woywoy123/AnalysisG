@@ -26,7 +26,7 @@ class _Condor(Notification):
             self.OutputDirectory = self.abs("./")
             self.Warning(
                 "Variable OutputDirectory undefined, assuming current working directory; "
-                + self.pwd
+                + self.pwd()
             )
 
     def RunningJob(self, name):

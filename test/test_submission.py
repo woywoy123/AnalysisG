@@ -39,8 +39,8 @@ def test_dumping_events():
     con.PythonVenv = "$PythonGNN"
     con.ProjectName = "Project"
     con.AddJob("example", Ana)
-    con.DumpCondorJobs
-    con.TestCondorShell
+    con.DumpCondorJobs()
+    con.TestCondorShell()
 
     Ana2 = _template()
     Ana2.EventCache = True
@@ -72,8 +72,8 @@ def test_dumping_graphs():
     Ana.EventCache = True
     con.AddJob("Events", Ana)
 
-    con.DumpCondorJobs
-    con.TestCondorShell
+    con.DumpCondorJobs()
+    con.TestCondorShell()
 
     Ana = _template()
     Ana.DataCache = True
@@ -129,8 +129,8 @@ def test_dumping_event_selection():
     Ana_sum.MergeSelection("example1")
 
     con.AddJob("sum", Ana_sum, waitfor=["example1_1", "example1_2", "example1_3"])
-    con.DumpCondorJobs
-    con.TestCondorShell
+    con.DumpCondorJobs()
+    con.TestCondorShell()
 
     Ana_T = _template({"Name": "smpl1"})
     Ana_T.InputSample("smpl2")
@@ -205,13 +205,13 @@ def test_dumping_optimization():
     AnaOp.EnableReconstruction = True
 
     con.AddJob("run-1", AnaOp, waitfor=["Dsmpl1", "Dsmpl2", "Dsmpl3"])
-    con.DumpCondorJobs
-    con.TestCondorShell
+    con.DumpCondorJobs()
+    con.TestCondorShell()
     clean_dir()
 
 
 if __name__ == "__main__":
-    # test_dumping_events()
-    # test_dumping_graphs()
+    test_dumping_events()
+    test_dumping_graphs()
     test_dumping_event_selection()
-    # test_dumping_optimization()
+    test_dumping_optimization()

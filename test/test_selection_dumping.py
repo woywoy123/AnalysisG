@@ -20,7 +20,7 @@ def _template(merge = True):
     Ev.Event = EventEx
     Ev.Threads = 1
     Ev.EventStop = 100
-    Ev.MakeEvents
+    Ev.MakeEvents()
     x = 0
     for i in Ev: x+=1
     assert x == 100
@@ -34,7 +34,7 @@ def _template(merge = True):
     if not merge: return sel.MakeSelection
     sel.MergeSelection("Example2")
     sel.MergeSelection("Example")
-    sel.MakeSelection
+    sel.MakeSelection()
 
 def test_selection_generator():
     _template()
@@ -142,7 +142,7 @@ def test_selection_root():
 
 if __name__ == "__main__":
     test_selection_generator()
-    test_selection_merge()
-    test_selection_not_merged()
-    test_selection_root()
+    # test_selection_merge()
+    # test_selection_not_merged()
+    # test_selection_root()
 

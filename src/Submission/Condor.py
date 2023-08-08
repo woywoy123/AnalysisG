@@ -197,7 +197,6 @@ class JobSpecification(AnalysisG.Tools.General.Tools, Settings):
         if exe:
             os.chmod(pth + "/" + name, stat.S_IRWXU)
 
-    @property
     def Launch(self):
         self.Job.Launch()
 
@@ -213,7 +212,7 @@ class JobSpecification(AnalysisG.Tools.General.Tools, Settings):
         Ana = AnalysisScript()
         Ana.Name = "main"
         Ana.OutDir = pth
-        Ana.Code.update(self.Job.Launch)
+        Ana.Code.update(self.Job.Launch())
         Ana.Config.update(conf)
         Ana.Compile()
 
@@ -288,7 +287,6 @@ class Condor(AnalysisG.Tools.General.Tools, _Condor, Settings):
         for i in self._wait:
             self._Complete[i] = False
 
-    @property
     def LocalRun(self):
         self.__Sequencer
         self._sequence = {j: [j] + self._sequence[j] for j in self._sequence}
@@ -304,14 +302,12 @@ class Condor(AnalysisG.Tools.General.Tools, _Condor, Settings):
                 self._Jobs[j] = None
         self.FinishExit()
 
-    @property
     def TestCondorShell(self):
         pwd = self.pwd()
         self.cd(self.abs(self.OutputDirectory + "/" + self.ProjectName + "/CondorDump"))
         subprocess.call(["sh", "RunAsBash.sh"])
         self.cd(pwd)
 
-    @property
     def SubmitToCondor(self):
         if self._dumped == False:
             self.DumpCondorJobs
@@ -320,7 +316,6 @@ class Condor(AnalysisG.Tools.General.Tools, _Condor, Settings):
         subprocess.Popen(["condor_submit_dag", "DAGSUBMISSION.submit"])
         self.cd(pwd)
 
-    @property
     def DumpCondorJobs(self):
         self._CheckEnvironment()
         self.__Sequencer
