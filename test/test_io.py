@@ -11,7 +11,7 @@ def test_uproot_read():
     io.Trees = ["nominal", "nominal-1"]
     io.Branches = ["children_index", "hello"]
     io.Leaves = ["children_index", "nothing"]
-    io.ScanKeys
+    io.ScanKeys()
 
     root1_, root2_ = list(io.Keys)
     assert "nominal-1" in io.Keys[root1_]["missed"]["TREE"]
