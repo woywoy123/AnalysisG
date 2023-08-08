@@ -51,3 +51,13 @@ def test_import_events():
     from AnalysisG.Events import GraphChildren
     from AnalysisG.Events import GraphTruthJet
     from AnalysisG.Events import GraphJet
+
+if __name__ == "__main__":
+    test_import_anaG()
+    test_import_events()
+    test_import_generator()
+    test_import_io()
+    test_import_model()
+    test_import_pyc()
+    test_import_templates()
+    test_import_tools()
