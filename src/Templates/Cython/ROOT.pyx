@@ -208,7 +208,7 @@ cdef class SampleTracer:
         return self.ptr.length
 
     def __add__(SampleTracer self, SampleTracer other) -> SampleTracer:
-        cdef SampleTracer t = self.clone()
+        cdef SampleTracer t = self.clone
         del t.ptr
         t.ptr = self.ptr[0] + other.ptr
         t.HashMeta.update(self.HashMeta)
@@ -220,7 +220,7 @@ cdef class SampleTracer:
 
     def __radd__(self, other) -> SampleTracer:
         if not issubclass(other.__class__, SampleTracer):
-            return self.__add__(self.clone())
+            return self.__add__(self.clone)
         return self.__add__(other)
 
     def __iadd__(self, other) -> SampleTracer:

@@ -153,7 +153,6 @@ def test_event_generator_merge():
     assert it == 20
 
     a_ev = EventGen_(None, None)
-    print(len(ev1), len(a_ev))
     assert len(ev1) == len(a_ev)
     clean_dir()
 
