@@ -138,7 +138,7 @@ class UpROOT(_UpROOT, Settings, _Interface):
         ROOTFile = [i + "/" + k for i in self.Files for k in self.Files[i]]
         self.File = {i: uproot.open(i) for i in ROOTFile}
         if len(self.File) == 0:
-            self.InvalidROOTFileInput
+            self.InvalidROOTFileInput()
             self.File = False
             return
         self.Keys = {}
@@ -198,7 +198,7 @@ class UpROOT(_UpROOT, Settings, _Interface):
     def GetAmiMeta(self):
         meta = {}
         ami = AMI()
-        if not ami.cfg: self.FailedAMI
+        if not ami.cfg: self.FailedAMI()
         for i in self.File:
             command = {
                     "files" : i + ":sumWeights",
@@ -258,7 +258,7 @@ class UpROOT(_UpROOT, Settings, _Interface):
                 self._dsid_meta[_tags] = ami.search(dsid, tag)
             if self._dsid_meta[_tags] == False:
                 ami.cfg = False
-                self.NoVOMSAuth
+                self.NoVOMSAuth()
                 continue
             elif len(self._dsid_meta[_tags]) == 0:
                 continue

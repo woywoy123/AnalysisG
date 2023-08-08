@@ -26,7 +26,7 @@ class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface
         fname = ""
         for i in range(len(inpt)):
             name, sel_, event, pth = inpt[i]
-            sel = SampleTracer._decoder(sel_).clone
+            sel = SampleTracer._decoder(sel_).clone()
             sel.hash = event.hash
             sel.ROOTName = event.ROOT
             sel.index = event.index
@@ -73,7 +73,7 @@ class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface
         self.__collect__(self.Selections, "Selections")
         if self._condor: return self._Code
         if len(self.Merge) != 0: pass
-        elif self.CheckSettings: return False
+        elif self.CheckSettings(): return False
 
         self.pth = self.OutputDirectory + "/Selections/"
         for name in self.Selections:
@@ -90,7 +90,7 @@ class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface
             if self.Threads > 1:
                 th = Threading(inpt, self.__compile__, self.Threads, self.chnk)
                 th.Title = self.Caller + "::" + name
-                th.Start
+                th.Start()
             else: self.__compile__(inpt, (None, None))
 
         if len(self.Merge) == 0: return

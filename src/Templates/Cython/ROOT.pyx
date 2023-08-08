@@ -208,7 +208,7 @@ cdef class SampleTracer:
         return self.ptr.length
 
     def __add__(SampleTracer self, SampleTracer other) -> SampleTracer:
-        cdef SampleTracer t = self.clone
+        cdef SampleTracer t = self.clone()
         del t.ptr
         t.ptr = self.ptr[0] + other.ptr
         t.HashMeta.update(self.HashMeta)
@@ -220,7 +220,7 @@ cdef class SampleTracer:
 
     def __radd__(self, other) -> SampleTracer:
         if not issubclass(other.__class__, SampleTracer):
-            return self.__add__(self.clone)
+            return self.__add__(self.clone())
         return self.__add__(other)
 
     def __iadd__(self, other) -> SampleTracer:
@@ -340,9 +340,9 @@ cdef class SampleTracer:
         if len(self._Codes) == 0 and len(hashes) != 0:
             p = hashes[0]
             cl = Code(pickle.loads(Events[p]["pkl"]))
-            x = cl.clone.Objects
-            self._Codes.update({t._Name : t.purge for t in [Code(x[p]) for p in x]})
-            self._Codes[cl._Name] = cl.purge
+            x = cl.clone().Objects
+            self._Codes.update({t._Name : t.purge() for t in [Code(x[p]) for p in x]})
+            self._Codes[cl._Name] = cl.purge()
             del cl
 
         x = self.FastHashSearch(hashes)

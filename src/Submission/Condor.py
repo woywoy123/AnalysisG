@@ -199,16 +199,16 @@ class JobSpecification(AnalysisG.Tools.General.Tools, Settings):
 
     @property
     def Launch(self):
-        self.Job.Launch
+        self.Job.Launch()
 
     def DumpConfig(self):
-        self.Job.__build__
+        self.Job.__build__()
         pth = self.Job.OutputDirectory + "/CondorDump/" + self.Name
         self.mkdir(pth)
         self.mkdir(pth + "/../_SharedCode")
 
         self.Job.OutputDirectory = "/".join(self.Job.OutputDirectory.split("/")[:-1])
-        conf = self.Job.DumpSettings
+        conf = self.Job.DumpSettings()
 
         Ana = AnalysisScript()
         Ana.Name = "main"
@@ -298,7 +298,7 @@ class Condor(AnalysisG.Tools.General.Tools, _Condor, Settings):
                     continue
                 self.RunningJob(j)
                 self._Jobs[j].Job._condor = False
-                self._Jobs[j].Launch
+                self._Jobs[j].Launch()
                 self._Complete[j] = True
                 del self._Jobs[j]
                 self._Jobs[j] = None
@@ -306,7 +306,7 @@ class Condor(AnalysisG.Tools.General.Tools, _Condor, Settings):
 
     @property
     def TestCondorShell(self):
-        pwd = self.pwd
+        pwd = self.pwd()
         self.cd(self.abs(self.OutputDirectory + "/" + self.ProjectName + "/CondorDump"))
         subprocess.call(["sh", "RunAsBash.sh"])
         self.cd(pwd)
@@ -315,14 +315,14 @@ class Condor(AnalysisG.Tools.General.Tools, _Condor, Settings):
     def SubmitToCondor(self):
         if self._dumped == False:
             self.DumpCondorJobs
-        pwd = self.pwd
+        pwd = self.pwd()
         self.cd(self.abs(self.OutputDirectory + "/" + self.ProjectName + "/CondorDump"))
         subprocess.Popen(["condor_submit_dag", "DAGSUBMISSION.submit"])
         self.cd(pwd)
 
     @property
     def DumpCondorJobs(self):
-        self._CheckEnvironment
+        self._CheckEnvironment()
         self.__Sequencer
         outDir = self.abs(self.OutputDirectory)
         self.mkdir(outDir + "/" + self.ProjectName + "/CondorDump")

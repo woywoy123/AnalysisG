@@ -32,10 +32,10 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
             return
         if not self._condor:
             self.StartingAnalysis()
-        self._cPWD = self.pwd
+        self._cPWD = self.pwd()
 
         if self.OutputDirectory is None:
-            self.OutputDirectory = self.pwd
+            self.OutputDirectory = self.pwd()
         else:
             self.OutputDirectory = self.abs(self.OutputDirectory)
         self.OutputDirectory = (
@@ -139,11 +139,11 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         r = RandomSamplers()
         r.Caller = self.Caller
         if self.TrainingSize:
-            output = r.MakeTrainingSample(self.todict, self.TrainingSize)
+            output = r.MakeTrainingSample(self.todict(), self.TrainingSize)
         if self.kFolds:
             output.update(
                 r.MakekFolds(
-                    self.todict, self.kFolds, self.BatchSize, self.Shuffle, True
+                    self.todict(), self.kFolds, self.BatchSize, self.Shuffle, True
                 )
             )
         if len(output) == 0:

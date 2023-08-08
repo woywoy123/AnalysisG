@@ -25,12 +25,12 @@ class _Optimizer(Notification):
         return self.Failure("Model not compatible with given input graph sample.")
 
     def _setoptimizer(self):
-        if not self._op.SetOptimizer:
+        if not self._op.SetOptimizer():
             return self.Failure("Invalid Optimizer.")
         return not self.Success("Set the optimizer to: " + self._op.Optimizer)
 
     def _setscheduler(self):
-        if not self._op.SetScheduler:
+        if not self._op.SetScheduler():
             return
         self.Success("Set the scheduler to: " + self._op.Scheduler)
 
@@ -65,11 +65,11 @@ class _Optimizer(Notification):
                 self._kModels[i].Epoch = ""
                 continue
             try:
-                self.Success("Model loaded: " + self._kModels[i].load)
+                self.Success("Model loaded: " + self._kModels[i].load())
             except KeyError:
                 return not self.Warning("Loading Model Failed. Skipping loading...")
             try:
-                self.Success("Optimizer loaded: " + self._kOp[i].load)
+                self.Success("Optimizer loaded: " + self._kOp[i].load())
             except KeyError:
                 return not self.Warning("Loading Optimizer Failed. Skipping loading...")
         return True

@@ -27,14 +27,14 @@ cdef class ParticleTemplate(object):
         del self.ptr
 
     def __add__(ParticleTemplate self, ParticleTemplate other) -> ParticleTemplate:
-        cdef ParticleTemplate _p = self.clone
+        cdef ParticleTemplate _p = self.clone()
         _p.ptr[0] += self.ptr[0]
         _p.ptr[0] += other.ptr[0]
         return _p
 
     def __radd__(ParticleTemplate self, other) -> ParticleTemplate:
         if not issubclass(other.__class__, ParticleTemplate):
-            return self.__add__(self.clone)
+            return self.__add__(self.clone())
         return self.__add__(other)
 
     def __eq__(self, other) -> bool:

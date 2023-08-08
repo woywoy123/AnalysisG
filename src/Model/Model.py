@@ -106,7 +106,7 @@ class ModelWrapper(_ModelWrapper):
         try: self._inject_tools()
         except: pass
 
-        if not self._iscompatible: return False
+        if not self._iscompatible(): return False
         return True
 
     @property
