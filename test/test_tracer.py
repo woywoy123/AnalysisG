@@ -234,7 +234,7 @@ def test_tracer_hdf5():
 
 
 if __name__ == "__main__":
-    #test_tracer_addEvent()
-    #test_tracer_operators()
+    test_tracer_addEvent()
+    test_tracer_operators()
     test_tracer_hdf5()
     pass
