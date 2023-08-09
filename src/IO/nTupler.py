@@ -164,7 +164,7 @@ class nTupler(_Interface, _nTupler):
         for name in o:
             if self.Threads > 1:
                 th = Threading(o[name], self.function, self.Threads, self.chnk)
-                th.Start
+                th.Start()
                 o[name] = sum([i for i in th._lists if i is not None])
             else: o[name] = sum(o[name])
         return o
