@@ -16,7 +16,7 @@ def Attestation(truth, pred):
             if r.sum(-1).sum(-1) == 0: continue
             check = False
             for k in j:
-                b = abs(r - k)
+                b = abs(r - k)/abs(r)
                 if k.sum(-1).sum(-1) == 0: continue
                 if (b > tolerance).sum(-1).sum(-1) != 0: continue
                 check = True

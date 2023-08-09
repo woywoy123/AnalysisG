@@ -121,6 +121,7 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
 
         pth = self.OutputDirectory + "/Selections/"
         sel = SelectionGenerator(self)
+        sel.Threads = self.Threads # Fix after merge
         sel.ImportSettings(self)
         sel.Caller = "ANALYSIS::SELECTIONS"
         sel.MakeSelection()

@@ -57,4 +57,4 @@ classifiers = [
 CONFIG_PYAMI = "AnalysisG.Settings:CONFIG_PYAMI"
 AUTH_PYAMI = "AnalysisG.Settings:AUTH_PYAMI"
 POST_INSTALL_PYC = "AnalysisG.Settings:POST_INSTALL_PYC"
-
+make_analysis="AnalysisG.Settings:make_analysis"

@@ -38,7 +38,7 @@ static const dim3 BLOCKS(
 
 static const torch::TensorOptions _MakeOp(torch::Tensor v1)
 {
-	return torch::TensorOptions().dtype(v1.scalar_type()).device(v1.device()); 
+    return torch::TensorOptions().dtype(v1.scalar_type()).device(v1.device()); 
 }
 
 static const std::map<std::string, torch::Tensor> _convert(torch::Tensor met_phi)
@@ -105,6 +105,7 @@ static const torch::Tensor _Expand_Matrix(torch::Tensor inpt, torch::Tensor sour
     const unsigned int len_i = inpt.size(0);
     const unsigned int len_k = source.size(1); 
     source = source.view({source.size(0), len_k, -1}); 
+  
     const unsigned int len_j = source.size(2); 
     const dim3 blk = BLOCKS(threads, len_i, len_k, len_j);
     torch::Tensor out = torch::zeros_like(inpt); 

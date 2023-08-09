@@ -1,7 +1,7 @@
 from AnalysisG.Generators.Interfaces import _Interface
 from AnalysisG.Notification.nTupler import _nTupler
 from AnalysisG.Tracer import SampleTracer
-from AnalysisG.Tools import Hash
+from AnalysisG.Tools import Hash, Threading
 from typing import Union
 import numpy as np
 import uproot
@@ -18,12 +18,14 @@ class container(SampleTracer):
         self.Path = None
 
     def _strip(self, inpt):
-        msg = "Syntax Error! Format is '<selection name> -> <variable> -> <key>'"
+        msg = "Syntax Error! Format is '<selection name> -> <variable> -> <key>' "
+        msg += "If you want to get the entire object, use append the '->' to the tree "
+        msg += "e.g. 'tree -> '"
         if "->" not in inpt: return msg
         inpt = inpt.split("->")
         self.SelectionName = inpt.pop(0).strip(" ")
         self.Variable = inpt.pop(0).strip(" ")
-        if len(inpt) == 0: return  
+        if len(inpt) == 0: return
         self.Path = "/".join(inpt)
         self.Path = self.Path.replace(" ", "")
 
@@ -58,6 +60,8 @@ class nTupler(_Interface, _nTupler):
     def __init__(self, inpt = None):
         self.Caller = "nTupler"
         self.Verbose = 3
+        self.chnk = 1000
+        self.Threads = 6
         self.Files = []
         self.__it = None
         self._it = None
@@ -113,16 +117,16 @@ class nTupler(_Interface, _nTupler):
             sel = i.SelectionName
             if sel not in self.output:
                 self.output[sel] = [OutDir, sel, i.Tree, i.FilePath, {}]
- 
-            if i.Path is not None: 
-                if i.Path not in dct: 
+
+            if i.Path is not None:
+                if i.Path not in dct:
                     self._KeyNotFound(var, i.Path, list(dct))
                     continue
                 self.output[sel][-1].update({var + "/" + i.Path : dct[i.Path]})
             elif None in dct: self.output[sel][-1].update({var : dct[None]})
             else: self.output[sel][-1].update({var + "/" + i : dct[i] for i in dct})
-        for i in self.output:
-            self.__uproot__(*self.output[i])
+
+        for i in self.output: self.__uproot__(*self.output[i])
 
     def __scrape__(self, file):
         for tree in self._DumpThis:
@@ -131,24 +135,38 @@ class nTupler(_Interface, _nTupler):
                 self._Container[-1].Tree = tree
                 self._Container[-1].FilePath = file
                 res = self._Container[-1]._strip(entry)
-                skip = self._Container[-1].hdf5()
-                if skip is True:
-                    del self._Container[-1]
-                    continue
-                if res is None: continue
-                else: self.Warning(res)
-
+                skip = True
+                if res is not None: self.Failure(res)
+                else: skip = self._Container[-1].hdf5()
+                if skip is True: del self._Container[-1]
+                  
     def __Dumps__(self):
         self._Container = []
         files = self.DictToList(self.Files)
         for file in files: self.__scrape__(file)
-
+          
+    @staticmethod
+    def function(inpt, _prgbar):
+        lock, bar = _prgbar
+        seed = inpt.pop(0)
+        for i in inpt:
+            seed += i
+            with lock: bar.update(1)
+        return [seed]
+      
     def merged(self):
         o = {}
         for i in self:
             name = i.__class__.__name__
-            if name not in o: o[name] = i
-            else: o[name] += i
+            if name not in o: o[name] = [i]
+            else: o[name] += [i]
+
+        for name in o:
+            if self.Threads > 1:
+                th = Threading(o[name], self.function, self.Threads, self.chnk)
+                th.Start
+                o[name] = sum([i for i in th._lists if i is not None])
+            else: o[name] = sum(o[name])
         return o
 
     def __iter__(self):

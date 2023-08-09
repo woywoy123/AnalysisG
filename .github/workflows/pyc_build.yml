@@ -8,6 +8,14 @@ on:
       paths:
         - "torch-extensions"
 
+  push:
+      branches:
+        - "master"
+        - "dev"
+
+      paths:
+        - "torch-extensions"
+
 defaults:
   run:
     shell: bash
