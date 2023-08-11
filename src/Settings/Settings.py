@@ -16,6 +16,7 @@ class _General:
 class _UpROOT:
     def __init__(self):
         self.StepSize = 1000
+        self.DisablePyAMI = False
         self.Trees = []
         self.Branches = []
         self.Leaves = []
@@ -25,6 +26,7 @@ class _UpROOT:
 class _EventGenerator:
     def __init__(self):
         self.Event = None
+        self.DisablePyAMI = False
         self.Files = {}
 
 
@@ -79,6 +81,7 @@ class _Analysis:
         self.EventCache = False
         self.DataCache = False
         self.PurgeCache = False
+        self.DisablePyAMI = False
 
 
 class _Pickle:
@@ -193,8 +196,7 @@ class _Optimizer:
 
 class Settings:
     def __init__(self, caller=False):
-        if caller:
-            self.Caller = caller
+        if caller: self.Caller = caller
         _General.__init__(self)
         if self.Caller == "UP-ROOT":
             _UpROOT.__init__(self)
@@ -241,22 +243,18 @@ class Settings:
             return
         s = Settings(self.Caller)
         for i in s.__dict__:
-            try:
-                setattr(self, i, getattr(inpt, i))
-            except AttributeError:
-                continue
+            try: setattr(self, i, getattr(inpt, i))
+            except AttributeError: continue
 
     def DumpSettings(self):
         default = Settings(self.Caller)
         default.__dict__["Device"] = "cpu"
         out = {}
         for i in default.__dict__:
-            if i.startswith("_"):
-                continue
+            if i.startswith("_"): continue
             try:
                 getattr(self, i) == default.__dict__[i]
-            except KeyError:
-                continue
+            except KeyError: continue
             if getattr(self, i) == default.__dict__[i]:
                 continue
             out[i] = getattr(self, i)

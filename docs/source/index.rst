@@ -56,6 +56,7 @@ Advanced Object Definitions
   quick-start/events.rst
   quick-start/particles.rst
   quick-start/selection.rst
+  quick-start/graphs.rst
 
 Analysis and Other Generators
 *****************************

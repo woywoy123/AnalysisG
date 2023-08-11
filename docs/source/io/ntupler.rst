@@ -33,7 +33,7 @@ ___________________
    ntuple.This("SelectionName ->", "Tree")
 
    # Converting the HDF5 back into the orignal object
-   SelObj = ntuple.merged
+   SelObj = ntuple.merged()
 
     # Or iterate over the file event by event 
     for i in ntuple:

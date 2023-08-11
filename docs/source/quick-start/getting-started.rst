@@ -46,7 +46,7 @@ For now, a primitive example, would look like the code below:
             ParticleTemplate.__init__(self)
 
             # optional but useful for making templates
-            self.Type = "Particle"  
+            self.Type = "Particle"
 
             # Define the four vector 
             self.pt = self.Type + ".pt"
@@ -137,7 +137,7 @@ The answer is during the Analysis object phase, which will be illustrated below:
 
 .. code-block:: python 
 
-    from AnalysisG import Analysis 
+    from AnalysisG import Analysis
     from Objects.event import MyEvent
     from Objects.graphs import MyGraph
 
@@ -147,12 +147,13 @@ The answer is during the Analysis object phase, which will be illustrated below:
 
 
     Ana = Analysis()
-    Ana.Event = MyEvent 
-    Ana.EventGraph = MyGraph 
+    Ana.Event = MyEvent
+    Ana.EventGraph = MyGraph
     Ana.AddEdgeFeature(some_edge, "delta_px")
     Ana.AddNodeFeature(some_node, "px")
     Ana.AddGraphFeature(some_graph, "weight")
-    Ana.Launch
+    Ana.AddNodeTruth(some_truth, "attribute")
+    Ana.Launch()
 
 
 There is a lot going on in the above example, this can be summarized as follows: 
@@ -164,6 +165,23 @@ There is a lot going on in the above example, this can be summarized as follows:
 Another question might arise, "I havnt defined the attributes **.px**, does the above code work for me?", the answer is yes. 
 The **ParticleTemplate** has several inbuilt functions which allow the user to seamlessly switch between coordinate systems.
 Some of these attributes will be discussed under the **Advanced section**.
+
+To access the graph attributes, the graph compiler appends prefixes to the attribute names, corresponding to the graph variable. 
+For instance, a node attribute, would have the format, ``N_px``, where ``N`` corresponds to **Node**. 
+For truth attributes, the format would be ``N_T_<truth attribute>``, where ``T`` implies **Truth**.
+In the example above, to access all of the attributes, this would look like shown below:
+
+.. code-block:: python 
+
+    for gr in Ana:
+        gr.E_delta_px # - Edge (delta_px)
+        gr.N_px       # - Node (px)
+        gr.G_weight   # - Graph (weight)
+        gr.N_T_attribute # - Node Truth (attribute)
+
+One might wonder whether all the ``PyTorch Geometric`` functionality is available, and the answer is absolutely!
+In the ``Graph`` object being interfaced with is in-fact ``PyTorch Geometric``!
+As an example, see ``tutorial/ExampleGraphAnalysis.py``.
 
 .. _selection-start:
 

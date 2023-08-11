@@ -19,14 +19,23 @@ class BaseFunctions(Tools, _Plotting):
     def DefineStyle(self):
         if self.Style == "ATLAS":
             hep.atlas.text(loc=2)
-            hep.atlas.label(
-                data=self.ATLASData,
-                year=self.ATLASYear,
-                lumi=round(self.ATLASLumi, 4),
-                label="\n$N_{events}$ = "
-                + str(len(self.xData) if self.NEvents == None else self.NEvents),
-                com=self.ATLASCom,
-            )
+            inpt = {
+                    "data" : "ATLASData",
+                    "year" : "ATLASYear",
+                    "lumi" : "ATLASLumi",
+                    "com" : "ATLASCom"
+            }
+            dict_ = {}
+            for i in inpt:
+                val = getattr(self, inpt[i])
+                if val is None: continue
+                if i == "lumi": val = round(val, 4)
+                dict_[i] = val
+            label = "\n$N_{events}$ = "
+            if self.NEvents is None: label += str(len(self.xData))
+            else: label += str(self.NEvents)
+            dict_["label"] = label
+            hep.atlas.label(**dict_)
             self.PLT.style.use(hep.style.ATLAS)
         if self.Style == "ROOT":
             self.PLT.style.use(hep.style.ROOT)

@@ -96,7 +96,7 @@ ____________________
     Ana.InputSample(<name of sample>, "/some/sample/directory")
     Ana.Event = CustomEvent
     Ana.EventCache = True
-    Ana.Launch
+    Ana.Launch()
  
     for event in Ana:
         print(event)

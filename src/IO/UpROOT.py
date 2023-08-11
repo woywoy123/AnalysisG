@@ -235,6 +235,7 @@ class UpROOT(_UpROOT, Settings, _Interface):
             if x in evnt: data[x] = evnt[x].tolist()
 
             meta[i] = MetaData()
+            if self.DisablePyAMI: continue
             if "dsid" not in data: continue
             dsid = str(data["dsid"].tolist()[0])
             if "generators" in data:

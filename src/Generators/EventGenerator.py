@@ -41,8 +41,7 @@ class EventGenerator(_EventGenerator, Settings, SampleTracer, _Interface):
             if lock is None:
                 bar.update(1)
                 continue
-            with lock:
-                bar.update(1)
+            with lock: bar.update(1)
         return inpt
 
     def MakeEvents(self):
@@ -64,12 +63,9 @@ class EventGenerator(_EventGenerator, Settings, SampleTracer, _Interface):
         self._Code["Particles"] = {
             i: Code(self.Event.Objects[i]) for i in self.Event.Objects
         }
-        if self._condor:
-            return self._Code
-        if not self.CheckROOTFiles():
-            return False
-        if not self.CheckVariableNames():
-            return False
+        if self._condor: return self._Code
+        if not self.CheckROOTFiles(): return False
+        if not self.CheckVariableNames(): return False
 
         ev = self.Event
         ev.__interpret__
@@ -78,6 +74,7 @@ class EventGenerator(_EventGenerator, Settings, SampleTracer, _Interface):
         io.Verbose = self.Verbose
         io.Trees = ev.Trees
         io.Leaves = ev.Leaves
+        io.DisablePyAMI = self.DisablePyAMI
 
         inpt = []
         ev = pickle.dumps(ev)

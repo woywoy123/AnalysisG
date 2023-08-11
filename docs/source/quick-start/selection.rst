@@ -1,11 +1,15 @@
-Introduction 
-************
+Advanced Usage of SelectionTemplate
+***********************************
+
+Introduction
+____________
 As previously outlined in :ref:`selection-start`, the **SelectionTemplate** is an inheritable module of the Analysis-G framework, and provides the user to generate customized analysis strategies for extracting information out of ROOT samples. 
 This module differs from the **EventTemplate** in several key aspects, one of which being that the output of the selection class can be written as ROOT n-tuples and subsequently passed into some additional fitting tool for example, ``TRexFitter`` or ``PyHF``. 
 Additionally, the class does not require the recompilation of events, and is therefore much faster and customizable for running analyses.
 
 Primitive Attributes
-********************
+____________________
+
 - ``ROOTName``:
     Returns the current ROOT filename of the given event being processed.
 
@@ -55,7 +59,7 @@ Primitive Attributes
 
 
 Primitive Functions
-*******************
+___________________
 
 - ``Selection(event)``: 
     Returns by default **True** but can be overridden to add custom selection criteria.
@@ -108,7 +112,8 @@ _______________
     Sel1 != Sel2  # Returns False since Sel1 and Sel2 are different implementations
 
 Semi-Advanced Selection Example
-*******************************
+_______________________________
+
 .. code-block:: python
 
     class SimpleSelection(SelectionTemplate):

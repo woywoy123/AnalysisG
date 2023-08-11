@@ -28,10 +28,8 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         self.InputSample(Name, SampleDirectory)
 
     def __build__(self):
-        if self._cPWD is not None:
-            return
-        if not self._condor:
-            self.StartingAnalysis()
+        if self._cPWD is not None: return
+        if not self._condor: self.StartingAnalysis()
         self._cPWD = self.pwd()
 
         if self.OutputDirectory is None:
@@ -41,21 +39,16 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         self.OutputDirectory = (
             self.AddTrailing(self.OutputDirectory, "/") + self.ProjectName
         )
-        if self.PurgeCache:
-            self._WarningPurge()
-        if not self._condor:
-            self._BuildingCache()
+        if self.PurgeCache: self._WarningPurge()
+        if not self._condor: self._BuildingCache()
 
     def __Event__(self):
         process = {}
         for i in list(self.Files):
             f = [j for j in self.Files[i] if i + "/" + j not in self]
-            if len(f) != 0:
-                process[i] = f
-        if len(process) == 0:
-            return True
-        if self.Event == None:
-            return False
+            if len(f) != 0: process[i] = f
+        if len(process) == 0: return True
+        if self.Event == None: return False
         if self.EventStop != None and len(self) >= self.EventStop:
             return True
 
@@ -63,18 +56,15 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         ev = EventGenerator()
         ev.ImportSettings(self)
         ev.Caller = "ANALYSIS::EVENT"
-        if not ev.MakeEvents():
-            return False
+        if not ev.MakeEvents(): return False
 
         ev.EventCache = self.EventCache
-        if self.EventCache:
-            ev.DumpEvents()
+        if self.EventCache: ev.DumpEvents()
         self += ev
         return True
 
     def __Graph__(self):
-        if self.EventGraph == None:
-            return True
+        if self.EventGraph == None: return True
 
         process = {}
         if self.EventCacheLen != self.DataCacheLen:
@@ -83,28 +73,22 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
             return True
         self.RestoreEvents()
         failed = False
-        if self.TestFeatures:
-            failed = self.__FeatureAnalysis__()
-        if failed:
-            return False
+        if self.TestFeatures: failed = self.__FeatureAnalysis__()
+        if failed: return False
 
         gr = GraphGenerator(self)
         gr.ImportSettings(self)
         gr.Caller = "ANALYSIS::GRAPH"
-        if not gr.MakeGraphs():
-            return False
+        if not gr.MakeGraphs(): return False
 
         gr.DataCache = self.DataCache
-        if self.DataCache:
-            gr.DumpEvents()
+        if self.DataCache: gr.DumpEvents()
         self += gr
         return True
 
     def __FeatureAnalysis__(self):
-        if self.EventGraph is None:
-            return True
-        if not self.TestFeatures:
-            return
+        if self.EventGraph is None: return True
+        if not self.TestFeatures: return
         tests = [i for i, _ in zip(self.GetEventCacheHashes(), range(self.nEvents))]
         self.ForceTheseHashes(tests)
         f = FeatureAnalysis()
@@ -114,8 +98,7 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
     def __Selection__(self):
         if len(self.Selections) == 0 and len(self.Merge) == 0:
             return
-        if self.EventCacheLen == 0:
-            return
+        if self.EventCacheLen == 0: return
         self.EventCache = True
         self.RestoreEvents()
 
@@ -129,12 +112,9 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
 
     def __RandomSampler__(self):
         pth = self.OutputDirectory + "/Training/DataSets/"
-        if not self.TrainingSize:
-            return
-        if self.TrainingName + ".pkl" in self.ls(pth):
-            return
-        if not self.kFolds:
-            self.kFolds = 1
+        if not self.TrainingSize: return
+        if self.TrainingName + ".pkl" in self.ls(pth): return
+        if not self.kFolds: self.kFolds = 1
 
         output = {}
         r = RandomSamplers()
@@ -147,8 +127,7 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
                     self.todict(), self.kFolds, self.BatchSize, self.Shuffle, True
                 )
             )
-        if len(output) == 0:
-            return
+        if len(output) == 0: return
         self.mkdir(pth)
         PickleObject(output, pth + self.TrainingName)
 
@@ -181,10 +160,8 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         return code
 
     def Launch(self):
-        if self._condor:
-            return self.__CollectCode__()
-        if not self.__LoadSample__():
-            return False
+        if self._condor: return self.__CollectCode__()
+        if not self.__LoadSample__(): return False
         self.__build__()
         self.__Selection__()
         self.__RandomSampler__()
@@ -198,16 +175,11 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         for i in self.SampleMap:
             self.Files = self.SampleMap[i]
             self.SampleName = i
-            if tracer:
-                self.RestoreTracer()
-            if not self.__Event__():
-                return False
-            if not self.__Graph__():
-                return False
-        if self.len == 0:
-            self.RestoreTracer()
-        if len(self) == 0:
-            return False
+            if tracer: self.RestoreTracer()
+            if not self.__Event__(): return False
+            if not self.__Graph__(): return False
+        if self.len == 0: self.RestoreTracer()
+        if len(self) == 0: return False
         return True
 
     def __preiteration__(self):
@@ -216,8 +188,6 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
                 return False
             ok = self.__LoadSample__()
             return not ok
-        if self.EventCache:
-            self.RestoreEvents()
-        if self.DataCache:
-            self.RestoreEvents()
+        if self.EventCache: self.RestoreEvents()
+        if self.DataCache: self.RestoreEvents()
         return self.EmptySampleList()

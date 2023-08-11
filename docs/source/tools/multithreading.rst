@@ -29,7 +29,7 @@ To now execute the function above using multiple threads, instantiate the class 
     threads = 12
     chunks = 1000
     th = Threading(<some list>, function, threads, chunks)
-    th.Start
+    th.Start()
 
     output = sum([i for i in th._list if i is not None])
 
@@ -72,7 +72,7 @@ A possible solution would be to implement something like shown below:
 
     def Start_Threads():
         th = Threading(...., function, ..., ...)
-        th.Start
+        th.Start()
 
     if __name__ == "__main__":
         Start_Threads()
