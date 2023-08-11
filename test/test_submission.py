@@ -41,20 +41,15 @@ def test_dumping_events():
     con.AddJob("example", Ana)
     con.DumpCondorJobs()
     con.TestCondorShell()
-
     Ana2 = _template()
     Ana2.EventCache = True
     x = []
-    for i in Ana2:
-        x.append(i.hash)
+    for i in Ana2: x.append(i.hash)
     assert len(x) != 0
-
     clean_dir()
-
 
 def Feat(a):
     return 1
-
 
 def test_dumping_graphs():
     Ana = _template()
@@ -78,8 +73,7 @@ def test_dumping_graphs():
     Ana = _template()
     Ana.DataCache = True
     x = []
-    for i in Ana:
-        x.append(i.hash)
+    for i in Ana: x.append(i.hash)
     assert len(x) != 0
     clean_dir()
 
@@ -209,9 +203,8 @@ def test_dumping_optimization():
     con.TestCondorShell()
     clean_dir()
 
-
 if __name__ == "__main__":
-    # test_dumping_events()
-    # test_dumping_graphs()
+    test_dumping_events()
+    test_dumping_graphs()
     test_dumping_event_selection()
-    # test_dumping_optimization()
+    test_dumping_optimization()

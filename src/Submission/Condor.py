@@ -33,8 +33,7 @@ class CondorScript(Settings):
 
     def __Hardware(self):
         string = "Request_GPUs = 1" if self.Device == "cuda" else False
-        if string:
-            return self.__AddConfig(string)
+        if string: return self.__AddConfig(string)
         self.__AddConfig("Request_Cpus = " + str(self.Threads))
 
     def Compile(self):
@@ -82,10 +81,8 @@ class AnalysisScript(AnalysisG.Tools.General.Tools, Settings):
 
         script = ["<*Analysis*> = Analysis()"]
         for i in self.Config:
-            if i.startswith("_"):
-                continue
-            if i in self.Code:
-                continue
+            if i.startswith("_"): continue
+            if i in self.Code: continue
             if isinstance(self.Config[i], str):
                 script += [
                     "<*Analysis*>." + i + " = " + "'" + str(self.Config[i]) + "'"
@@ -181,7 +178,7 @@ class AnalysisScript(AnalysisG.Tools.General.Tools, Settings):
             f = open(fname, "w")
             f.write("\n".join(shared["code"][i]))
             f.close()
-        script = shared["imports"] + [""] + script + ["<*Analysis*>.Launch"]
+        script = shared["imports"] + [""] + script + ["<*Analysis*>.Launch()"]
         self.__Build("\n".join(script).replace("<*Analysis*>", "Ana"), self.Name)
 
 
@@ -194,8 +191,7 @@ class JobSpecification(AnalysisG.Tools.General.Tools, Settings):
         f = open(pth + "/" + name, "w")
         f.write("\n".join(txt))
         f.close()
-        if exe:
-            os.chmod(pth + "/" + name, stat.S_IRWXU)
+        if exe: os.chmod(pth + "/" + name, stat.S_IRWXU)
 
     def Launch(self):
         self.Job.Launch()
@@ -292,8 +288,7 @@ class Condor(AnalysisG.Tools.General.Tools, _Condor, Settings):
         self._sequence = {j: [j] + self._sequence[j] for j in self._sequence}
         for t in self._sequence:
             for j in reversed(self._sequence[t]):
-                if self._Complete[j]:
-                    continue
+                if self._Complete[j]: continue
                 self.RunningJob(j)
                 self._Jobs[j].Job._condor = False
                 self._Jobs[j].Launch()
@@ -309,8 +304,7 @@ class Condor(AnalysisG.Tools.General.Tools, _Condor, Settings):
         self.cd(pwd)
 
     def SubmitToCondor(self):
-        if self._dumped == False:
-            self.DumpCondorJobs
+        if self._dumped == False: self.DumpCondorJobs()
         pwd = self.pwd()
         self.cd(self.abs(self.OutputDirectory + "/" + self.ProjectName + "/CondorDump"))
         subprocess.Popen(["condor_submit_dag", "DAGSUBMISSION.submit"])

@@ -139,12 +139,12 @@ class nTupler(_Interface, _nTupler):
                 if res is not None: self.Failure(res)
                 else: skip = self._Container[-1].hdf5()
                 if skip is True: del self._Container[-1]
-                  
+
     def __Dumps__(self):
         self._Container = []
         files = self.DictToList(self.Files)
         for file in files: self.__scrape__(file)
-          
+
     @staticmethod
     def function(inpt, _prgbar):
         lock, bar = _prgbar
@@ -153,7 +153,7 @@ class nTupler(_Interface, _nTupler):
             seed += i
             with lock: bar.update(1)
         return [seed]
-      
+
     def merged(self):
         o = {}
         for i in self:

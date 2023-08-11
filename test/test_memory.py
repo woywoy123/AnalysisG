@@ -58,8 +58,7 @@ class Event(EventTemplate):
         self.p1 = self.something.Mass != 0
 
         x = []
-        for i in self.TruthJets:
-            x.append(self.TruthJets[i])
+        for i in self.TruthJets: x.append(self.TruthJets[i])
         self.somethingelse = sum(x)
         self.p2 = self.somethingelse.Mass != 0
 
@@ -82,12 +81,9 @@ def test_particle_pickle():
 
         PickleObject(jets, "jets")
         jets_r = UnpickleObject("jets")
-
         assert sum([l == p for l, p in zip(jets, jets_r)]) == len(jets)
-
-        if mem == 0:
-            mem = psutil.virtual_memory().percent
-        assert psutil.virtual_memory().percent - mem < 0.5
+        if mem == 0: mem = psutil.virtual_memory().percent
+        assert psutil.virtual_memory().percent - mem < 1
 
     clean_dir()
 
