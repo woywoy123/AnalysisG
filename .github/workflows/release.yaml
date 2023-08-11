@@ -15,7 +15,7 @@ jobs:
           python3 -m 
           pip install 
           build 
-          -- user
+          --user
       - name: Building binary wheel
         run: >- 
           python3 -m 
