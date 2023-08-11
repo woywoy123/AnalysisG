@@ -1,10 +1,8 @@
 # A Graph Neural Network Framework for High Energy Particle Physics
 [![AnalysisG-Building-Action](https://github.com/woywoy123/AnalysisTopGNN/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/woywoy123/AnalysisTopGNN/actions/workflows/test.yml)
 [![AnalysisG-Coverage-Action](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/woywoy123/6fee1eff8f987ac756a20133618659a1/raw/covbadge.json)]()
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Documentation Status](https://readthedocs.org/projects/analysisg/badge/?version=latest)](https://analysisg.readthedocs.io/en/latest/?badge=latest)
 
-## Introduction <a name="introduction"></a>
+## Introduction:
 The aim of this package is to provide Particle Physicists with an intuitive interface to **Graph Neural Networks**, whilst remaining Analysis agnostic. 
 Following a similar spirit to AnalysisTop, the physicist defines a custom event class and matches variables within ROOT files to objects that they are a representation of.
 A simple example of this would be a particle, since these generally have some defining properties such as the four vector, mass, type, etc. 
@@ -21,3 +19,8 @@ To avoid having to deal with additional boiler plate book keeping code, the fram
 The hash is constructed by concatenating the directory, ROOT filename and event number into a single string and computing the associated hash. 
 This ensures each event can be easily traced back to its original ROOT file. 
 
+## Getting Started:
+Either read the docs here:
+[![Documentation Status](https://readthedocs.org/projects/analysisg/badge/?version=latest)](https://analysisg.readthedocs.io/en/latest/?badge=latest)
+
+Or naviate to the tutorial folder, which outlines a few core concepts of this framework.

@@ -5,16 +5,30 @@ on:
         - "master"
         - "dev"
 
-      paths:
-        - "torch-extensions"
+      paths-ignore:
+        - '**.md'
+        - '**.txt'
+        - '.readthedocs.yaml'
+        - 'docs'
+        - 'models'
+        - 'setup-scripts'
+        - 'tutorial'
+        - 'Dockerfile'
 
   push:
       branches:
         - "master"
         - "dev"
 
-      paths:
-        - "torch-extensions"
+      paths-ignore:
+        - '**.md'
+        - '**.txt'
+        - '.readthedocs.yaml'
+        - 'docs'
+        - 'models'
+        - 'setup-scripts'
+        - 'tutorial'
+        - 'Dockerfile'
 
 defaults:
   run:
