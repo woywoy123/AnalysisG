@@ -14,7 +14,7 @@ def test_normal():
     ana = Analysis(smpl)
     ana.Event = Event
     ana.EventCache = True
-    ana.Launch
+    ana.Launch()
     lst = []
     for i in ana:
         assert i.Event
@@ -39,24 +39,24 @@ def test_quant():
     ana = Analysis(smpl)
     ana.EventCache = True
     ana.Event = Event
-    ana.Launch
+    ana.Launch()
 
     ana = Analysis(smpl)
     ana.DataCache = True
     ana.EventGraph = GraphChildren
     ApplyFeatures(ana, "TruthChildren")
-    ana.Launch
+    ana.Launch()
 
     ana = Analysis()
     ana.TrainingSize = 50
     ana.kFolds = 10
-    ana.Launch
+    ana.Launch()
 
     ana = Optimizer(ana)
     ana.DataCache = True
     ana.Device = "cuda"
     ana._outDir = ana.OutputDirectory + "/Training"
-    ana._searchdatasplits
+    ana._searchdatasplits()
     DL = DataListLoader(ana.kFold["k-1"]["train"], batch_size=10)
 
     fl = []

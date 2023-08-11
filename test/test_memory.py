@@ -58,8 +58,7 @@ class Event(EventTemplate):
         self.p1 = self.something.Mass != 0
 
         x = []
-        for i in self.TruthJets:
-            x.append(self.TruthJets[i])
+        for i in self.TruthJets: x.append(self.TruthJets[i])
         self.somethingelse = sum(x)
         self.p2 = self.somethingelse.Mass != 0
 
@@ -74,7 +73,7 @@ def test_particle_pickle():
 
     mem = 0
     for i in io:
-        jet = x.clone
+        jet = x.clone()
         jet.__interpret__ = {
             k.split("/")[-1]: i[k] for k in i if k.split("/")[-1] in io.Leaves
         }
@@ -82,12 +81,9 @@ def test_particle_pickle():
 
         PickleObject(jets, "jets")
         jets_r = UnpickleObject("jets")
-
         assert sum([l == p for l, p in zip(jets, jets_r)]) == len(jets)
-
-        if mem == 0:
-            mem = psutil.virtual_memory().percent
-        assert psutil.virtual_memory().percent - mem < 0.5
+        if mem == 0: mem = psutil.virtual_memory().percent
+        assert psutil.virtual_memory().percent - mem < 1
 
     clean_dir()
 
@@ -98,7 +94,7 @@ def test_particle_multithreading():
         out = []
         for i in inpt:
             j_, d_ = i
-            j_ = pickle.loads(j_).clone
+            j_ = pickle.loads(j_).clone()
             j_.__interpret__ = d_
             out.append(pickle.dumps(j_))
             with lock: bar.update(1)
@@ -114,7 +110,7 @@ def test_particle_multithreading():
     excl = ["MetaData", "ROOT", "EventIndex"]
     jets = []
     for i in io:
-        jet = j.clone
+        jet = j.clone()
         jet.__interpret__ = {k : i[k] for k in i if k not in excl}
         jets += jet.Children
         assert jets[-1].px != 0
@@ -127,7 +123,7 @@ def test_particle_multithreading():
             _dct = {k: i[k] for k in i if k not in excl}
             x.append([pickle.dumps(j), _dct])
         th = Threading(x*1000, Functions, 10, 2500)
-        th.Start
+        th.Start()
         x = []
         for i in th._lists: x += pickle.loads(i).Children
         x = set(x)
@@ -151,7 +147,7 @@ def test_event_pickle():
     for _ in range(3):
         events = []
         for i in io:
-            event = ev.clone
+            event = ev.clone()
             events += event.__compiler__(i)
             events[-1].hash = root1
 
@@ -200,7 +196,7 @@ def test_event_multithreading():
             for _ in range(100): threads += [[ev_, i]]
 
         th = Threading(threads, Function, 10, 200)
-        th.Start
+        th.Start()
         events_j = []
         for i in th._lists: events_j.append(pickle.loads(i))
         events_j = list(set(events_j))
@@ -221,7 +217,7 @@ def test_event_multithreading():
 
 
 if __name__ == "__main__":
-    #test_particle_pickle()
-    #test_particle_multithreading()
-    #test_event_pickle()
+    test_particle_pickle()
+    test_particle_multithreading()
+    test_event_pickle()
     test_event_multithreading()

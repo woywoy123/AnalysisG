@@ -246,7 +246,6 @@ class Settings:
             except AttributeError:
                 continue
 
-    @property
     def DumpSettings(self):
         default = Settings(self.Caller)
         default.__dict__["Device"] = "cpu"

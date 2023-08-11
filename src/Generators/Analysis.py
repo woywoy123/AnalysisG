@@ -27,27 +27,25 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
             return
         self.InputSample(Name, SampleDirectory)
 
-    @property
     def __build__(self):
         if self._cPWD is not None:
             return
         if not self._condor:
-            self.StartingAnalysis
-        self._cPWD = self.pwd
+            self.StartingAnalysis()
+        self._cPWD = self.pwd()
 
         if self.OutputDirectory is None:
-            self.OutputDirectory = self.pwd
+            self.OutputDirectory = self.pwd()
         else:
             self.OutputDirectory = self.abs(self.OutputDirectory)
         self.OutputDirectory = (
             self.AddTrailing(self.OutputDirectory, "/") + self.ProjectName
         )
         if self.PurgeCache:
-            self._WarningPurge
+            self._WarningPurge()
         if not self._condor:
-            self._BuildingCache
+            self._BuildingCache()
 
-    @property
     def __Event__(self):
         process = {}
         for i in list(self.Files):
@@ -65,16 +63,15 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         ev = EventGenerator()
         ev.ImportSettings(self)
         ev.Caller = "ANALYSIS::EVENT"
-        if not ev.MakeEvents:
+        if not ev.MakeEvents():
             return False
 
         ev.EventCache = self.EventCache
         if self.EventCache:
-            ev.DumpEvents
+            ev.DumpEvents()
         self += ev
         return True
 
-    @property
     def __Graph__(self):
         if self.EventGraph == None:
             return True
@@ -84,55 +81,52 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
             process.update(self.Files)
         if len(process) == 0 and len(self.Files) != 0:
             return True
-        self.RestoreEvents
+        self.RestoreEvents()
         failed = False
         if self.TestFeatures:
-            failed = self.__FeatureAnalysis__
+            failed = self.__FeatureAnalysis__()
         if failed:
             return False
 
         gr = GraphGenerator(self)
         gr.ImportSettings(self)
         gr.Caller = "ANALYSIS::GRAPH"
-        if not gr.MakeGraphs:
+        if not gr.MakeGraphs():
             return False
 
         gr.DataCache = self.DataCache
         if self.DataCache:
-            gr.DumpEvents
+            gr.DumpEvents()
         self += gr
         return True
 
-    @property
     def __FeatureAnalysis__(self):
         if self.EventGraph is None:
             return True
         if not self.TestFeatures:
             return
-        tests = [i for i, _ in zip(self.GetEventCacheHashes, range(self.nEvents))]
+        tests = [i for i, _ in zip(self.GetEventCacheHashes(), range(self.nEvents))]
         self.ForceTheseHashes(tests)
         f = FeatureAnalysis()
         f.ImportSettings(self)
         return f.TestEvent([i for i in self], self.EventGraph)
 
-    @property
     def __Selection__(self):
         if len(self.Selections) == 0 and len(self.Merge) == 0:
             return
         if self.EventCacheLen == 0:
             return
         self.EventCache = True
-        self.RestoreEvents
+        self.RestoreEvents()
 
         pth = self.OutputDirectory + "/Selections/"
         sel = SelectionGenerator(self)
         sel.Threads = self.Threads # Fix after merge
         sel.ImportSettings(self)
         sel.Caller = "ANALYSIS::SELECTIONS"
-        sel.MakeSelection
+        sel.MakeSelection()
         del sel
 
-    @property
     def __RandomSampler__(self):
         pth = self.OutputDirectory + "/Training/DataSets/"
         if not self.TrainingSize:
@@ -146,11 +140,11 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         r = RandomSamplers()
         r.Caller = self.Caller
         if self.TrainingSize:
-            output = r.MakeTrainingSample(self.todict, self.TrainingSize)
+            output = r.MakeTrainingSample(self.todict(), self.TrainingSize)
         if self.kFolds:
             output.update(
                 r.MakekFolds(
-                    self.todict, self.kFolds, self.BatchSize, self.Shuffle, True
+                    self.todict(), self.kFolds, self.BatchSize, self.Shuffle, True
                 )
             )
         if len(output) == 0:
@@ -158,64 +152,60 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         self.mkdir(pth)
         PickleObject(output, pth + self.TrainingName)
 
-    @property
     def __Optimizer__(self):
         if self.Model == None and self.Optimizer == None:
             return
         op = Optimizer(self)
-        op.Launch
+        op.Launch()
 
-    @property
     def __CollectCode__(self):
         code = {}
         if self.Event is not None:
             ev = EventGenerator()
             ev.ImportSettings(self)
-            code.update(ev.MakeEvents)
+            code.update(ev.MakeEvents())
 
         if self.EventGraph is not None:
             gr = GraphGenerator()
             gr.ImportSettings(self)
-            code.update(gr.MakeGraphs)
+            code.update(gr.MakeGraphs())
 
         if len(self.Selections) != 0:
             sel = SelectionGenerator(self)
             sel.ImportSettings(self)
             for name in self.Selections:
                 sel.AddSelection(name, self.Selections[name])
-            code.update(sel.MakeSelection)
+            code.update(sel.MakeSelection())
         if self.Model is not None:
-            code["Model"] = Optimizer(self).GetCode
+            code["Model"] = Optimizer(self).GetCode()
         return code
 
-    @property
     def Launch(self):
         if self._condor:
-            return self.__CollectCode__
-        if not self.__LoadSample__:
+            return self.__CollectCode__()
+        if not self.__LoadSample__():
             return False
-        self.__build__
-        self.__Selection__
-        self.__RandomSampler__
-        self.__Optimizer__
+        self.__build__()
+        self.__Selection__()
+        self.__RandomSampler__()
+        self.__Optimizer__()
         self.WhiteSpace()
         return True
 
-    @property
     def __LoadSample__(self):
-        self.__build__
-        tracer = self._CheckForTracer
+        self.__build__()
+        tracer = self._CheckForTracer()
         for i in self.SampleMap:
             self.Files = self.SampleMap[i]
             self.SampleName = i
             if tracer:
-                self.RestoreTracer
-            if not self.__Event__:
+                self.RestoreTracer()
+            if not self.__Event__():
                 return False
-            if not self.__Graph__:
+            if not self.__Graph__():
                 return False
         if self.len == 0:
-            self.RestoreTracer
+            self.RestoreTracer()
         if len(self) == 0:
             return False
         return True
@@ -224,10 +214,10 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         if self.len == 0:
             if self._cPWD is not None and self.len != 0:
                 return False
-            ok = self.__LoadSample__
+            ok = self.__LoadSample__()
             return not ok
         if self.EventCache:
-            self.RestoreEvents
+            self.RestoreEvents()
         if self.DataCache:
-            self.RestoreEvents
-        return self.EmptySampleList
+            self.RestoreEvents()
+        return self.EmptySampleList()

@@ -218,7 +218,6 @@ class SelectionTemplate(Tools):
             setattr(out, i, self.__dict__[i])
         return out
 
-    @property
     def _dump(self):
         out = SelectionTemplate()
         for i in self.__dict__:

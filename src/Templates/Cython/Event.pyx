@@ -91,7 +91,7 @@ cdef class EventTemplate:
         for tr in self._Trees:
             _inpt = {k.split(tr + "/")[-1] : inpt[k] for k in inpt if tr in k}
             if len(_inpt) == 0: continue
-            ev = self.clone
+            ev = self.clone()
             ev.__interpret__
             ev.Tree = tr
             for i in Obj:
@@ -122,7 +122,6 @@ cdef class EventTemplate:
 
     def CompileEvent(self): pass
 
-    @property
     def clone(self):
         v = self.__new__(self.__class__)
         v.__init__()

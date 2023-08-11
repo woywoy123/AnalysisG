@@ -20,7 +20,7 @@ def _template(merge = True):
     Ev.Event = EventEx
     Ev.Threads = 1
     Ev.EventStop = 100
-    Ev.MakeEvents
+    Ev.MakeEvents()
     x = 0
     for i in Ev: x+=1
     assert x == 100
@@ -31,10 +31,10 @@ def _template(merge = True):
     sel.Threads = 2
     sel.AddSelection("Example", Example)
     sel.AddSelection("Example2", Example2)
-    if not merge: return sel.MakeSelection
+    if not merge: return sel.MakeSelection()
     sel.MergeSelection("Example2")
     sel.MergeSelection("Example")
-    sel.MakeSelection
+    sel.MakeSelection()
 
 def test_selection_generator():
     _template()
@@ -55,7 +55,7 @@ def test_selection_merge():
     _template()
     n = nTupler(path)
     n.This("Example2 -> ", "nominal")
-    x = n.merged
+    x = n.merged()
     assert "Example2" in x
     sel = x["Example2"]
     assert sel.Tree == "nominal"
@@ -67,7 +67,7 @@ def test_selection_not_merged():
     _template(False)
     n = nTupler( "/".join(path.split("/")[:-2])+ "/Example2" )
     n.This("Example2 -> ", "nominal")
-    x = n.merged
+    x = n.merged()
 
     assert "Example2" in x
     sel = x["Example2"]

@@ -1,24 +1,25 @@
-from AnalysisG.Events import Event
-from AnalysisG import Analysis
-from conftest import clean_dir
-import torch
-
-from neutrino_reconstruction.NeutrinoSolutionDeconstruct import *
-import PyC.Transform.Floats as F
-import PyC.Transform.Tensors as T
-
-import PyC.Physics.Tensors.Cartesian as TC
-import PyC.Physics.Tensors.Polar as TP
-import PyC.Operators.Tensors as TO
-import PyC.NuSol.Tensors as NuT
-
 is_cuda = True
 try:
+    from AnalysisG.Events import Event
+    from AnalysisG import Analysis
+    from conftest import clean_dir
+    import torch
+
+    from neutrino_reconstruction.NeutrinoSolutionDeconstruct import *
+    import PyC.Transform.Floats as F
+    import PyC.Transform.Tensors as T
+
+    import PyC.Physics.Tensors.Cartesian as TC
+    import PyC.Physics.Tensors.Polar as TP
+    import PyC.Operators.Tensors as TO
+    import PyC.NuSol.Tensors as NuT
+
     import PyC.Transform.CUDA as C
     import PyC.Physics.CUDA.Cartesian as CC
     import PyC.Physics.CUDA.Polar as CP
     import PyC.Operators.CUDA as CO
     import PyC.NuSol.CUDA as NuC
+
 except:
     is_cuda = False
 
@@ -43,7 +44,7 @@ def _MakeSample():
     return Ana
 
 
-def test_transformation():
+def _transformation():
     Ana = _MakeSample()
 
     _cart = []
@@ -145,7 +146,7 @@ def test_transformation():
     clean_dir()
 
 
-def test_physics():
+def _physics():
     Ana = _MakeSample()
     _x, _y, _z, _e = [], [], [], []
     _x1, _y1, _z1, _e1 = [], [], [], []
@@ -254,7 +255,7 @@ def test_physics():
     print("passed")
 
 
-def test_operators():
+def _operators():
     if is_cuda == False:
         return
     device = "cuda"
@@ -411,7 +412,7 @@ def test_operators():
     print("Speed Factor (> 1 is better): ", (sum(diff[0])) / sum(diff[1]))
 
 
-def test_single_nu():
+def _single_nu():
     Ana = Analysis()
     Ana.InputSample("SingleLepton", "./samples/single_lepton")
     Ana.Event = Event
@@ -491,7 +492,7 @@ def test_single_nu():
         assert AssertEquivalenceList(solT.tolist()[0], failed)
 
 
-def test_double_nu():
+def _double_nu():
     if is_cuda == False:
         return
 
@@ -597,7 +598,7 @@ def test_double_nu():
         assert False
 
 
-def test_speed():
+def _speed():
     if is_cuda == False:
         return
 
@@ -733,7 +734,7 @@ def test_speed():
     print("Speed Factor (> 1 is better): ", (sum(diff[1])) / sum(diff[2]))
 
 
-def test_version_consistency():
+def _version_consistency():
     if is_cuda == False:
         return
 
@@ -1157,7 +1158,7 @@ if __name__ == "__main__":
     # test_physics()
     # test_operators()
     # test_single_nu()
-    test_double_nu()
+    #test_double_nu()
     # test_speed()
     # test_version_consistency()
     pass

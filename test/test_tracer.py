@@ -176,14 +176,14 @@ def test_tracer_hdf5():
     tr2.AddEvent(EventMaker(root2))
     l2 = len(tr2)
 
-    tr1.DumpEvents
-    tr2.DumpEvents
+    tr1.DumpEvents()
+    tr2.DumpEvents()
 
     s = SampleTracer()
     s.OutputDirectory = "Project"
     s.EventCache = True
-    s.RestoreTracer
-    s.RestoreEvents
+    s.RestoreTracer()
+    s.RestoreEvents()
 
     for i in tr1: break
     assert len(s[i.ROOT]) == len(tr1)
@@ -218,9 +218,8 @@ def test_tracer_hdf5():
         s = SampleTracer()
         s.OutputDirectory = "Project"
         s.EventCache = True
-        s.RestoreTracer
-        s.RestoreEvents
-
+        s.RestoreTracer()
+        s.RestoreEvents()
         k = sum([s for l in range(1000)])
         if mem == 0:
             mem = psutil.virtual_memory().percent
@@ -235,7 +234,7 @@ def test_tracer_hdf5():
 
 
 if __name__ == "__main__":
-    #test_tracer_addEvent()
-    #test_tracer_operators()
+    test_tracer_addEvent()
+    test_tracer_operators()
     test_tracer_hdf5()
     pass

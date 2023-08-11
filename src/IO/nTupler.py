@@ -29,7 +29,6 @@ class container(SampleTracer):
         self.Path = "/".join(inpt)
         self.Path = self.Path.replace(" ", "")
 
-    @property
     def hdf5(self):
         _h5 = h5py.File(self.FilePath, "r")
         try: self._h5 = _h5[self.SelectionName].attrs
@@ -54,7 +53,6 @@ class container(SampleTracer):
         if name == "code": name = next(self._it)
         return self._h5[name]
 
-    @property
     def get(self): return sum([self._decoder(i) for i in self])
 
 class nTupler(_Interface, _nTupler):
@@ -109,7 +107,7 @@ class nTupler(_Interface, _nTupler):
         x.close()
 
     def Write(self, OutDir: Union[str, None] = None):
-        contains = self.merged
+        contains = self.merged()
         self.output = {}
         for i in self._Container:
             sel = contains[i.SelectionName]
@@ -137,10 +135,9 @@ class nTupler(_Interface, _nTupler):
                 self._Container[-1].Tree = tree
                 self._Container[-1].FilePath = file
                 res = self._Container[-1]._strip(entry)
-
                 skip = True
                 if res is not None: self.Failure(res)
-                else: skip = self._Container[-1].hdf5
+                else: skip = self._Container[-1].hdf5()
                 if skip is True: del self._Container[-1]
 
     def __Dumps__(self):
@@ -157,7 +154,6 @@ class nTupler(_Interface, _nTupler):
             with lock: bar.update(1)
         return [seed]
 
-    @property
     def merged(self):
         o = {}
         for i in self:
@@ -168,7 +164,7 @@ class nTupler(_Interface, _nTupler):
         for name in o:
             if self.Threads > 1:
                 th = Threading(o[name], self.function, self.Threads, self.chnk)
-                th.Start
+                th.Start()
                 o[name] = sum([i for i in th._lists if i is not None])
             else: o[name] = sum(o[name])
         return o

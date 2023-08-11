@@ -27,7 +27,9 @@ def AUTH_PYAMI():
     print("Provide the password to decrypt the PEM files. Leave blank and press enter for no password.")
     code = pwinput("Password: ")
     stdout = p.communicate(code.encode("UTF-8"))
-    print(stdout)
+    res = stdout[0].decode("UTF-8")
+    print(res)
+    if "Cannot" in res: print("Check your pem permissions.")
 
 def POST_INSTALL_PYC():
     def stdout():
@@ -78,6 +80,7 @@ def make_analysis():
             "       #print the particles in this event",
             "       print(self.SomeParticle)",
     ]
+
     f = open(this_dir + "/Analysis/Objects/Event.py", "w")
     f.write("\n".join(event))
     f.close()
@@ -95,6 +98,7 @@ def make_analysis():
             "       self.phi = self.Type + '_' + <ROOT leaf string>",
             "       self.e   = self.Type + '_' + <ROOT leaf string>",
     ]
+
     f = open(this_dir + "/Analysis/Objects/Particles.py", "w")
     f.write("\n".join(particle))
     f.close()
@@ -110,6 +114,7 @@ def make_analysis():
             "       self.Event = Event",
             "       self.Particles += self.Event.SomeParticle",
     ]
+
     f = open(this_dir + "/Analysis/Objects/Graph.py", "w")
     f.write("\n".join(graph))
     f.close()
@@ -145,8 +150,9 @@ def make_analysis():
             "Ana.EventGraph = MyGraph", 
             "Ana.EventCache = True # Creates hdf5 files", 
             "Ana.DataCache = True # Creates hdf5 files for graphs", 
-            "Ana.Launch"
+            "Ana.Launch()"
     ]
+
     f = open(this_dir + "/Analysis/main.py", "w")
     f.write("\n".join(analysis))
     f.close()
