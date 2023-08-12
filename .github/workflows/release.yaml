@@ -10,8 +10,8 @@ jobs:
       - name: Building binary wheel
         uses: pypa/cibuildwheel@v2.15.0
         env:
-          CIBW_SKIP: cp312-*x86_64
-          CIBW_BUILD: cp3*
+          CIBW_SKIP: cp312-*
+          CIBW_BUILD: cp3*x86_64
       
       - uses: actions/upload-artifact@v3
         with:
