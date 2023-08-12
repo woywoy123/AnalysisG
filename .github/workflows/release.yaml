@@ -11,6 +11,7 @@ jobs:
         uses: pypa/cibuildwheel@v2.15.0
         env:
           CIBW_SKIP: cp312-*
+          CIBW_BUILD: cp3*
       
       - uses: actions/upload-artifact@v3
         with:
