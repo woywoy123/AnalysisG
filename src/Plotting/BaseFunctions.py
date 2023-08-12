@@ -31,6 +31,7 @@ class BaseFunctions(Tools, _Plotting):
                 if val is None: continue
                 if i == "lumi": val = round(val, 4)
                 dict_[i] = val
+
             label = "\n$N_{events}$ = "
             if self.NEvents is None: label += str(len(self.xData))
             else: label += str(self.NEvents)
@@ -65,8 +66,7 @@ class BaseFunctions(Tools, _Plotting):
 
     def DefineAxisData(self, Dim, JustData=False):
         self.Set(Dim + "Data", [])
-        if JustData:
-            return
+        if JustData: return
         self.Set(Dim + "Min", None)
         self.Set(Dim + "Max", None)
         self.Set(Dim + "Weights", None)
@@ -110,12 +110,9 @@ class BaseFunctions(Tools, _Plotting):
     def SanitizeData(self, var):
         out = []
         for i in range(len(var)):
-            if var[i] == None:
-                continue
-            if math.isinf(var[i]):
-                continue
-            if math.isnan(var[i]):
-                continue
+            if var[i] == None: continue
+            if math.isinf(var[i]): continue
+            if math.isnan(var[i]): continue
             out.append(var[i])
         return out
 
@@ -123,21 +120,19 @@ class BaseFunctions(Tools, _Plotting):
         x = self.SanitizeData(self.Get(Dims + "Data"))
         if len(x) == 0:
             self.Title = str(self.Title) if self.Title == None else self.Title
-            if self.Get(Dims + "Weights") == None:
-                self.NoDataGiven()
-            elif len(self.Get(Dims + "Weights")) == 0:
-                self.NoDataGiven()
+            if self.Get(Dims + "Weights") == None: self.NoDataGiven()
+            elif len(self.Get(Dims + "Weights")) == 0: self.NoDataGiven()
             return
         self.Set(Dims + "Data", x)
 
-        if self.Get(Dims + "Min") == None:
+        if self.Get(Dims + "Min") is None:
             self.Set(Dims + "Min", min(self.Get(Dims + "Data")))
-        if self.Get(Dims + "Max") == None:
+        if self.Get(Dims + "Max") is None:
             self.Set(Dims + "Max", max(self.Get(Dims + "Data")))
 
     def ApplyRandomColor(self, obj):
         color = next(self.Axis._get_lines.prop_cycler)["color"]
-        if obj.Color == None:
+        if obj.Color is None:
             obj.Color = color
             self.Colors.append(color)
         elif obj.Color in self.Colors:
@@ -150,8 +145,7 @@ class BaseFunctions(Tools, _Plotting):
 
     def SaveFigure(self, Dir=None):
         self.Precompiler()
-        if Dir == None:
-            Dir = self.OutputDirectory
+        if Dir is None: Dir = self.OutputDirectory
         Dir = self.AddTrailing(Dir, "/")
         self.Filename = self.AddTrailing(self.Filename, ".png")
         self.mkdir(Dir)

@@ -12,6 +12,9 @@ class Neutrino(ParticleTemplate):
     def __init__(self):
         self.Type = "nu"
         ParticleTemplate.__init__(self)
+        self.chi2 = None
+
+
 
 
 class SelectionTemplate(Tools):
@@ -46,11 +49,15 @@ class SelectionTemplate(Tools):
 
     @property
     def Luminosity(self):
-        return ((sum(self.SelWeights))) / sum(self.AllWeights)
+        return sum(self.SelWeights) / sum(self.AllWeights)
 
     @property
     def NEvents(self):
         return len(self.SelWeights)
+
+    @property
+    def TotalEvents(self):
+        return len(self.AllWeights)
 
     def Selection(self, event):
         return True
@@ -64,14 +71,19 @@ class SelectionTemplate(Tools):
     def Py(self, val, phi):
         return pyc.Transform.Py(val, phi)
 
-    def MakeNu(self, s_, gev = False):
+    def MakeNu(self, s_, chi2 = None, gev = False):
         if s_ == 0.0: return None
         if len(s_) == 0: return None
+
+        # Convert back to MeV if set to gev, because the input 
+        # leptons and b-quark are in MeV
+        scale = 1000 if gev else 1
         nu = Neutrino()
-        nu.px = s_[0]*(1000 if gev else 1)
-        nu.py = s_[1]*(1000 if gev else 1)
-        nu.pz = s_[2]*(1000 if gev else 1)
+        nu.px = s_[0] * scale
+        nu.py = s_[1] * scale
+        nu.pz = s_[2] * scale
         nu.e = (nu.px**2 + nu.py**2 + nu.pz**2) ** 0.5
+        if chi2 is not None: nu.chi2 = chi2
         return nu
 
     def NuNu(
@@ -91,12 +103,15 @@ class SelectionTemplate(Tools):
         inpt.append(zero)
 
         sol = pyc.NuSol.Polar.NuNu(*inpt)
-        _s1, _s2, diag, n_, h_per1, h_per2, nsols = sol
+        if sol[2] is None: return []
 
-        o = []
-        for k, j in zip(_s1[0].tolist(), _s2[0].tolist()):
-            o.append([self.MakeNu(k, gev), self.MakeNu(j, gev)])
-        return [p for p in o if p[0] != None and p[1] != None]
+        _s1, _s2, diag, n_, h_per1, h_per2, nsols = sol
+        _s1, _s2, diag = _s1.tolist(), _s2.tolist(), diag.tolist()
+
+        o = {}
+        for k, j, c in zip(_s1[0], _s2[0], diag[0]):
+            o[c] = [self.MakeNu(k, c, gev), self.MakeNu(j, c, gev)]
+        return [o[s] for s in sorted(o)]
 
     def Nu(
         self, q1, l1, ev,
@@ -116,8 +131,9 @@ class SelectionTemplate(Tools):
         inpt.append([[S[0], S[1]], [S[2], S[3]]])
         inpt.append(zero)
         sol, chi2 = pyc.NuSol.Polar.Nu(*inpt)
-        nus = [self.MakeNu(s, gev) for s in sol[0].tolist()]
-        return nus
+        sol, chi2 = sol.tolist(), chi2.tolist()
+        nus = {c2 : self.MakeNu(s, c2, gev) for s, c2 in zip(sol[0], chi2[0])}
+        return [nus[s] for s in sorted(nus)]
 
     def Sort(self, inpt, descending=False):
         if isinstance(inpt, list):
@@ -142,7 +158,7 @@ class SelectionTemplate(Tools):
             except: res = False
         else: res = self.Selection(event)
 
-        if res == False:
+        if not res:
             self.CutFlow["Rejected-Selection"] += 1
             return False
         self.CutFlow["Passed-Selection"] += 1
@@ -150,9 +166,9 @@ class SelectionTemplate(Tools):
         self._t1
         if self.AllowFailure:
             try: o = self.Strategy(event)
-            except:
+            except Exception as inst:
                 self._t2
-                string = ""
+                string = str(inst)
                 if string not in self.Errors: self.Errors[string] = 0
                 self.Errors[string] += 1
                 return False
@@ -170,40 +186,33 @@ class SelectionTemplate(Tools):
     def __call__(self, Ana=None):
         if type(Ana).__name__ == "Event":
             return self._EventPreprocessing(Ana)
-        if issubclass(type(Ana), SampleTracer) == False:
-            return
+        if not issubclass(type(Ana), SampleTracer): return
         for i in Ana:
             self.hash = i.hash
             self.ROOTName = i.ROOT
             self._EventPreprocessing(i)
 
     def __eq__(self, other):
-        if other == 0:
-            return False
+        if other == 0: return False
         x = Code(other)._Hash == Code(self)._Hash
         x *= other.Tree == self.Tree
         return x
 
     def __radd__(self, other):
-        if other == 0:
-            return self
+        if other == 0: return self
         return self.__add__(other)
 
     def __add__(self, other):
-        if other == 0:
-            return self
-        if other != self:
-            return self
+        if other == 0: return self
+        if other != self: return self
 
         keys = set(list(self.__dict__) + list(other.__dict__))
         for i in keys:
-            if i.startswith("_SelectionTemplate"):
-                continue
-            if isinstance(self.__dict__[i], str):
-                continue
-            if isinstance(self.__dict__[i], bool):
-                continue
-            if i == "_CutFlow":
+            if i.startswith("_"): continue
+            if isinstance(self.__dict__[i], str): continue
+            if isinstance(self.__dict__[i], bool): continue
+            if self.__dict__[i] is None: continue
+            if i == "CutFlow":
                 k_ = set(list(self.__dict__[i]) + list(other.__dict__[i]))
                 self.__dict__[i] |= {l: 0 for l in k_ if l not in self.__dict__[i]}
                 other.__dict__[i] |= {l: 0 for l in k_ if l not in other.__dict__[i]}
@@ -214,12 +223,10 @@ class SelectionTemplate(Tools):
 
         out = self.__class__()
         out.hash = self.hash
-        for i in self.__dict__:
-            setattr(out, i, self.__dict__[i])
+        for i in self.__dict__: setattr(out, i, self.__dict__[i])
         return out
 
     def _dump(self):
         out = SelectionTemplate()
-        for i in self.__dict__:
-            out.__dict__[i] = self.__dict__[i]
+        for i in self.__dict__: out.__dict__[i] = self.__dict__[i]
         return out

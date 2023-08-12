@@ -11,70 +11,79 @@ Primitive Attributes
 ____________________
 
 - ``ROOTName``:
-    Returns the current ROOT filename of the given event being processed.
+  Returns the current ROOT filename of the given event being processed.
 
 - ``hash``:
-    Returns the current event hash. 
+  Returns the current event hash. 
 
 - ``Tree``:
-    Returns the tree of the current event being processed. 
-    This allows the user to derive complex selection methods which can be used to trigger on different event tree types.
-    See :ref:`complex-events` for an in-depth example.
+  Returns the tree of the current event being processed. 
+  This allows the user to derive complex selection methods which can be used to trigger on different event tree types.
+  See :ref:`complex-events` for an in-depth example.
 
 - ``AverageTime``:
-    Returns the average time required to process a bunch of events.
+  Returns the average time required to process a bunch of events.
 
 - ``StdevTime``:
-    Returns the standard deviation of the time required to process a bunch of events.
+  Returns the standard deviation of the time required to process a bunch of events.
 
 - ``Luminosity``: 
-    The total luminosity of a bunch of events passing the selection function. 
+  The total luminosity of a bunch of events passing the selection function. 
 
 - ``NEvents``:
-    Number of events processed (can be called within the selection run-time or post run-time).
+  Number of events processed (can be called within the selection run-time or post run-time).
 
 - ``CutFlow``:
-    Returns a dictionary containing statistics involving events (not)-passing the **Selection** function.
-    If during the **Strategy** a string is returned containing ``->``, a new key is added to this dictionary and a counter is automatically instantiated.
+  Returns a dictionary containing statistics involving events (not)-passing the **Selection** function.
+  If during the **Strategy** a string is returned containing "``->``", a new key is added to this dictionary and a counter is automatically instantiated.
 
 - ``AllWeights``:
-    All collected event weights of (not)-passing events. 
+  All collected event weights of (not)-passing events. 
 
 - ``SelWeights``:
-    Event weights collected which passing the **Selection** function.
+  Event weights collected which passing the **Selection** function.
 
 - ``Errors``:
-    A dictionary which records event failures. 
-    This could be the result of accessing undefined attributes or code crashing due to missing try and except code blocks. 
+  A dictionary which records event failures. 
+  This could be the result of accessing undefined attributes or code crashing due to missing try and except code blocks. 
 
 - ``AllowFailure``:
-    A boolean attribute which allows events to fail and continue the selection run-time. 
-    Any failures will be recorded in the **Errors** dictionary and can be further investigated after processing has finished.
+  A boolean attribute which allows events to fail and continue the selection run-time. 
+  Any failures will be recorded in the **Errors** dictionary and can be further investigated after processing has finished.
 
 - ``Residual``:
-    If the Strategy function returns anything other than a string, then the returned value will be placed in this list for further inspection.
+  If the Strategy function returns anything other than a string, then the returned value will be placed in this list for further inspection.
 
 - ``index``:
-    Returns the event index being current processed. 
+  Returns the event index being current processed. 
 
+- ``__params__``:
+  A variable which can be called prior to instanting the selection runtime. 
+  This allows for higher degree of modularity, can is a free variable which can be sourced from.
+  The parameter does not require to have any special values, as long as it is defined. 
+  For example the below options are ok; 
+
+  - ``self.__params__ = None``
+  - ``self.__params__ = {.....}``
+  - ``self.__params__ = [.....]``
 
 Primitive Functions
 ___________________
 
 - ``Selection(event)``: 
-    Returns by default **True** but can be overridden to add custom selection criteria.
+  Returns by default **True** but can be overridden to add custom selection criteria.
 
 - ``Strategy(event)``:
-    A function which allows the analyst to extract additional information from events and implement additional complex clustering algorithms.
+  A function which allows the analyst to extract additional information from events and implement additional complex clustering algorithms.
 
 - ``Px(met, phi)``: 
-    A function which converts polar coordinates to Cartesian x-component.
+  A function which converts polar coordinates to Cartesian x-component.
 
 - ``Py(met, phi)``:
-    A function which converts polar coordinates to Cartesian y-component.
+  A function which converts polar coordinates to Cartesian y-component.
 
 - ``MakeNu(list[px, py, pz])``:
-    A function which generates a new neutrino particle object with a given set of Cartesian 3-momentum vector.
+  A function which generates a new neutrino particle object with a given set of Cartesian 3-momentum vector.
 
 - ``NuNu(quark1, quark2, lep1, lep2, event, mT = 172.5, mW = 80.379, mN = 0, zero = 1e-12)``:
     Invokes the **DoubleNeutrino** reconstruction algorithm with the given quark and lepton pairs for this event. 

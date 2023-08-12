@@ -111,6 +111,7 @@ Analysis and Truth Studies Documentation
 .. toctree::
   studies/analysis-strategies
   studies/neutrino-reconstruction.rst
+  studies/truth-matching-studies.rst
 
 Documentation and Codebase Status
 *********************************

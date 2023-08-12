@@ -312,8 +312,7 @@ class CombineTH1F(Functions):
             Labels.append(i.Title)
             i.NPHisto = (i.NPHisto[0] / Sum, i.NPHisto[1])
             Numpies.append(i.NPHisto)
-            if self.Stack:
-                continue
+            if self.Stack: continue
             i.ApplyFormat()
 
         if self.Stack:

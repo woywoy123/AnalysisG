@@ -38,6 +38,7 @@ class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface
             try: code[name]
             except KeyError: code[name] = [sel_]
             if lock is not None: bar.update(1)
+
         for name in output:
             f = h5py.File(pth + name + "/" + fname + ".hdf5", "w")
             ref = f.create_dataset(name, (1), dtype = h5py.ref_dtype)

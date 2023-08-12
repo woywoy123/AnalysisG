@@ -201,8 +201,12 @@ To implement a selection, open the **selection.py** and inherit the **SelectionT
     class MySelection(SelectionTemplate):
 
         def __init__(self):
+            # Public variables, will be saved
             self.ClusterMasses = {}
             self.ParticleMasses = []
+
+            # Private variables will not be saved
+            self._Hidden = {}
 
         def Selection(self, event):
             if len(event.ArbitraryParticleName) == 4:

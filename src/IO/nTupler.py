@@ -20,7 +20,7 @@ class container(SampleTracer):
     def _strip(self, inpt):
         msg = "Syntax Error! Format is '<selection name> -> <variable> -> <key>' "
         msg += "If you want to get the entire object, use append the '->' to the tree "
-        msg += "e.g. 'tree -> '"
+        msg += "e.g. 'SelectionName ->  for the whole object to be returned'"
         if "->" not in inpt: return msg
         inpt = inpt.split("->")
         self.SelectionName = inpt.pop(0).strip(" ")
@@ -53,7 +53,8 @@ class container(SampleTracer):
         if name == "code": name = next(self._it)
         return self._h5[name]
 
-    def get(self): return sum([self._decoder(i) for i in self])
+    def get(self):
+        return sum([self._decoder(i) for i in self])
 
 class nTupler(_Interface, _nTupler):
 
@@ -144,6 +145,12 @@ class nTupler(_Interface, _nTupler):
         self._Container = []
         files = self.DictToList(self.Files)
         for file in files: self.__scrape__(file)
+        if len(self._Container) == 0:
+            self.Failure("No selection was found.")
+            return
+        found = [""]
+        found += [i.SelectionName for i in self._Container]
+        self.Success("Found Selections" + "\n -> ".join(set(found)))
 
     @staticmethod
     def function(inpt, _prgbar):

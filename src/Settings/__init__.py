@@ -19,26 +19,21 @@ def AUTH_PYAMI():
     print("Please specify the directory where your .globus directory is located.")
     globu = input("(default: ~/.globus): ")
     globu = "~/.globus/" if globu == "" else globu
-    p = Popen(
-        ["voms-proxy-init", "-certdir", globu, "-verify"],
-        stdout = PIPE, stdin = PIPE, stderr = STDOUT
-    )
-
     print("Provide the password to decrypt the PEM files. Leave blank and press enter for no password.")
+    execute = " ".join(["voms-proxy-init", "-certdir", globu, "-pwstdin"])
     code = pwinput("Password: ")
-    stdout = p.communicate(code.encode("UTF-8"))
-    res = stdout[0].decode("UTF-8")
-
+    execute = 'echo "' + code + '" | ' + execute
+    try: _getcmd(execute)
+    except subprocess.CalledProcessError: pass
 
     test = ["ami_atlas", "show", "dataset", "info", "data13_2p76TeV.00219364.physics_MinBias.merge.NTUP_HI.f519_m1313"]
-    if "logicalDatasetName" in _getcmd(" ".join(test)): print("SUCCESS!!!")
-    elif "Cannot" in res:
-        print("Incorrect permissions on your .pem files.")
-        print("Try the following:")
-        print("-> chmod -R a+rwX <your .pem directory> #<- this will give everyone access to the .pem!")
-        print("The commands below will fix the global access issue.")
-        print("-> chmod 0600 <directory>/usercert.pem")
-        print("-> chmod 0400 <directory>/userkey.pem")
+    if "logicalDatasetName" in _getcmd(" ".join(test)): return print("SUCCESS!!!")
+    print("Incorrect permissions on your .pem files.")
+    print("Try the following:")
+    print("-> chmod -R a+rwX <your .pem directory> #<- this will give everyone access to the .pem!")
+    print("The commands below will fix the global access issue.")
+    print("-> chmod 0600 <directory>/usercert.pem")
+    print("-> chmod 0400 <directory>/userkey.pem")
 
 
 def POST_INSTALL_PYC():
