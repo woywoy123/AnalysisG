@@ -1,4 +1,4 @@
-name: building-pyc
+name: Building Torch-Extensions (pyc)
 on: 
   pull_request:
       branches:

@@ -115,14 +115,28 @@ Analysis and Truth Studies Documentation
 
 Documentation and Codebase Status
 *********************************
+
 .. image:: https://readthedocs.org/projects/analysisg/badge/?version=latest
     :target: https://analysisg.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
 
-.. image:: https://github.com/woywoy123/AnalysisTopGNN/actions/workflows/test.yml/badge.svg?branch=master
-   :target: https://github.com/woywoy123/AnalysisTopGNN/actions/workflows/test.yml/badge.svg?branch=master
-   :alt: Build Status
+.. image:: https://github.com/woywoy123/AnalysisG/actions/workflows/AnalysisG_build.yml/badge.svg
+   :target: https://github.com/woywoy123/AnalysisG/actions/workflows/AnalysisG_build.yml/badge.svg
+   :alt: Build Status: AnalysisG
+
+.. image:: https://github.com/woywoy123/AnalysisG/actions/workflows/pyc_build.yml/badge.svg
+   :target: https://github.com/woywoy123/AnalysisG/actions/workflows/pyc_build.yml/badge.svg
+   :alt: Build Status: Torch-Extension (pyc)
+
+.. image:: https://github.com/woywoy123/AnalysisG/actions/workflows/release.yaml/badge.svg
+   :target: https://github.com/woywoy123/AnalysisG/actions/workflows/release.yaml/badge.svg
+   :alt: PyPI Release Build Status
+
+.. image:: https://github.com/woywoy123/AnalysisG/actions/workflows/test.yml/badge.svg
+   :target: https://github.com/woywoy123/AnalysisG/actions/workflows/test.yml/badge.svg
+   :alt: Tox Testing Status
 
 .. image:: https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/woywoy123/6fee1eff8f987ac756a20133618659a1/raw/covbadge.json
    :target: https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/woywoy123/6fee1eff8f987ac756a20133618659a1/raw/covbadge.json
    :alt: Coverage Report
+

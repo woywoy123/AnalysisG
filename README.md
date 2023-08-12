@@ -1,6 +1,14 @@
 # A Graph Neural Network Framework for High Energy Particle Physics
-[![AnalysisG-Building-Action](https://github.com/woywoy123/AnalysisTopGNN/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/woywoy123/AnalysisTopGNN/actions/workflows/test.yml)
+
 [![AnalysisG-Coverage-Action](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/woywoy123/6fee1eff8f987ac756a20133618659a1/raw/covbadge.json)]()
+
+[![building-analysisG](https://github.com/woywoy123/AnalysisG/actions/workflows/AnalysisG_build.yml/badge.svg)](https://github.com/woywoy123/AnalysisG/actions/workflows/AnalysisG_build.yml)
+
+[![building-pyc](https://github.com/woywoy123/AnalysisG/actions/workflows/pyc_build.yml/badge.svg)](https://github.com/woywoy123/AnalysisG/actions/workflows/pyc_build.yml)
+
+[![Publish to PyPI](https://github.com/woywoy123/AnalysisG/actions/workflows/release.yaml/badge.svg)](https://github.com/woywoy123/AnalysisG/actions/workflows/release.yaml)
+
+[![tox-testing-analysisG](https://github.com/woywoy123/AnalysisG/actions/workflows/test.yml/badge.svg)](https://github.com/woywoy123/AnalysisG/actions/workflows/test.yml)
 
 ## Introduction:
 The aim of this package is to provide Particle Physicists with an intuitive interface to **Graph Neural Networks**, whilst remaining Analysis agnostic. 

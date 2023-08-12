@@ -1,4 +1,4 @@
-name: building-analysisG
+name: Building AnalysisG
 on:
   pull_request:
       branches:

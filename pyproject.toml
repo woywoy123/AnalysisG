@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "AnalysisG"
-version = "3.2"
+version = "3.3.0"
 authors = [{name = "woywoy123"}]
 readme.content-type = "text/markdown"
 readme.file = "README.md"
@@ -34,6 +34,9 @@ classifiers = [
     "Programming Language :: C++"
 ]
 
+[project.urls]
+Homepage = "https://github.com/woywoy123/AnalysisG"
+
 [tool.setuptools.package-dir]
 "AnalysisG" = "src"
 "AnalysisG.Notification" = "src/Notification"
@@ -58,3 +61,18 @@ CONFIG_PYAMI = "AnalysisG.Settings:CONFIG_PYAMI"
 AUTH_PYAMI = "AnalysisG.Settings:AUTH_PYAMI"
 POST_INSTALL_PYC = "AnalysisG.Settings:POST_INSTALL_PYC"
 make_analysis="AnalysisG.Settings:make_analysis"
+AnalysisG = "AnalysisG.__main__:main"
+
+[tool.bumpver]
+current_version = "3.3.0"
+version_pattern = "MAJOR.MINOR.PATCH"
+commit_message  = "bump version {old_version} -> {new_version}"
+commit          = true
+tag             = true
+push            = true
+
+[tool.bumpver.file_patterns]
+"pyproject.toml" = [
+    'current_version = "{version}"',
+]
+
