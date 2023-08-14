@@ -14,6 +14,7 @@ cdef class EventTemplate:
     cdef list _Branches
     cdef list _Leaves
     cdef dict _Objects
+    cdef str _name
 
     def __cinit__(self):
         self.ptr = new CyEventTemplate()
@@ -23,7 +24,11 @@ cdef class EventTemplate:
         self._Objects = {}
         self._leaves = {"event" : {}}
 
-    def __init__(self): pass
+    def __init__(self):
+        self._name = self.__class__.__name__
+
+    def __name__(self) -> str:
+        return self._name
 
     def __dealloc__(self): del self.ptr
 
@@ -31,6 +36,7 @@ cdef class EventTemplate:
 
     def __eq__(self, other) -> bool:
         if not issubclass(other.__class__, EventTemplate): return False
+        if self.__name__() != other.__name__(): return False
         return self.hash == other.hash
 
     def __getstate__(self) -> dict:
@@ -127,7 +133,7 @@ cdef class EventTemplate:
         v.__init__()
         return v
 
-    @property 
+    @property
     def index(self) -> int: return self.ptr.index
 
     @index.setter
@@ -141,7 +147,7 @@ cdef class EventTemplate:
     @weight.setter
     def weight(self, val: Union[str, float]):
         if isinstance(val, str): self._leaves["event"]["weight"] = val
-        else: self.ptr.weight = <double> val
+        else: self.ptr.weight = <double>val
 
     @property
     def Tree(self) -> str: return self.ptr.tree.decode("UTF-8")

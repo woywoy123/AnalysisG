@@ -38,7 +38,7 @@ cdef class Event:
 
     def _wrap(self, val) -> None:
         self._instance.append(val)
-        if self.index != -1: return 
+        if self.index != -1: return
         self.index = self.ptr.EventIndex
         self.Tree = self.ptr.Tree.decode("UTF-8")
         self.hash = self.ptr.hash.decode("UTF-8")

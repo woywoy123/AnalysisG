@@ -1,11 +1,15 @@
-from AnalysisG import Analysis
 from AnalysisG.Events import Event, GraphChildren
 from AnalysisG.Templates import ApplyFeatures
 from AnalysisG.Generators import Optimizer
+from AnalysisG import Analysis
+
+from examples.EventOther import EventOther
+from examples.Event import EventEx
+
 from torch_geometric.loader import DataListLoader
+from conftest import clean_dir
 import torch
 import time
-from conftest import clean_dir
 
 smpl = "samples/dilepton/"
 
@@ -72,6 +76,57 @@ def test_quant():
     clean_dir()
 
 
+#def test_multicache_event():
+#
+#    ev1 = EventEx()
+#    ev2 = EventOther()
+#    print(ev1 == ev2)
+#    print(ev1.__name__())
+#    exit()
+#
+#
+#    ana_ex = Analysis(smpl)
+#    ana_ex.ProjectName = "Project"
+#    ana_ex.Event = EventEx
+#    ana_ex.EventCache = True
+#    ana_ex.Launch()
+#    events_ex = []
+#    for i in ana_ex: events_ex.append(i)
+#
+#    ana_ot = Analysis(smpl)
+#    ana_ot.ProjectName = "Project"
+#    ana_ot.Event = EventOther
+#    ana_ot.EventCache = True
+#    ana_ot.Launch()
+#    events_ot = []
+#    for i in ana_ot: events_ot.append(i)
+#
+#    ana_ex = Analysis(smpl)
+#    ana_ex.ProjectName = "Project"
+#    ana_ex.Event = EventEx
+#    ana_ex.EventCache = True
+#    ana_ex.Launch()
+#
+#    ana_ot = Analysis(smpl)
+#    ana_ot.ProjectName = "Project"
+#    ana_ot.Event = EventOther
+#    ana_ot.EventCache = True
+#    ana_ot.Launch()
+#
+#    ana_sum = ana_ot + ana_ex
+#    events = []
+#    for i in ana_sum: events.append(i)
+#    print(len(events))
+#    print(len(events_ex))
+#    print(len(events_ot))
+
 if __name__ == "__main__":
     test_normal()
-    test_quant()
+    #test_quant()
+    
+    #test_multicache_event()
+    pass
+
+
+
+

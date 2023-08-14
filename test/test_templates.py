@@ -371,6 +371,7 @@ def test_event_particle_template_populate():
 def test_event_othersample():
     from examples.Belle import EventBelle
 
+    # Still need to implement a proper test
     return
     smple = ""
 

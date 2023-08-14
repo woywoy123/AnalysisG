@@ -28,13 +28,14 @@ class Code:
 
         try: self._Name = Instance.__qualname__
         except AttributeError:
-            try: self._Name = Instance.__name__
+            try: self._Name = Instance.__class__.__name__
             except AttributeError: self._Name = type(Instance).__name__
         try: self._Module = Instance.__module__
         except AttributeError: self._Module = Instance.__package__
 
         try: self._params.update(self._Instance.__params__)
         except AttributeError: pass
+        print(self._Module, self._Name)
         self._Path = self._Module + "." + self._Name
 
         cl = self.clone()
@@ -119,9 +120,6 @@ class Code:
     def clone(self):
         Instance = self._Instance
         para = self._params
-        if callable(Instance):
-            try: Inst = Instance()
-            except: self.__init__(Instance)
         _, inst = StringToObject(self._Module, self._Name)
         inst.__params__ = para
         return inst
