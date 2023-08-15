@@ -5,7 +5,7 @@ from torch.utils.data import SubsetRandomSampler
 from AnalysisG.Notification import _RandomSamplers
 from AnalysisG.Settings import Settings
 from torch_geometric.loader import DataListLoader
-from AnalysisG.Tracer import SampleTracer
+#from AnalysisG.Tracer import SampleTracer
 
 
 class RandomSamplers(_RandomSamplers, Settings):

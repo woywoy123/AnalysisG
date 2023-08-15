@@ -38,7 +38,41 @@ def test_ami_injection():
     clean_dir()
 
 
+def test_ami_tracer():
+    from AnalysisG.SampleTracer.MetaData import MetaData
+    def Recursion(it, out):
+        this = next(it)
+        out.append(this)
+        if "}" in this: return out
+        return Recursion(it, out)
+
+    pth = "samples/dilepton/DAOD_TOPQ1.21955717._000001.root"
+    x = MetaData()
+    x.file_data(pth)
+    x.file_tracker(pth)
+    x.file_truth(pth)
+    print(x.search())
+
+
+    exit()
+    io = UpROOT("samples/dilepton/")
+    io.Trees = ["nominal"]
+    io.Leaves = ["weight_mc", "eventNumber"]
+
+    it = 0
+    for i in io:
+        print(i)
+        it += 1
+        if it == 3: break
+
+
+
+
+
+
+
 if __name__ == "__main__":
-    test_pyami()
-    test_ami_injection()
+    #test_pyami()
+    #test_ami_injection()
+    test_ami_tracer()
     pass

@@ -2,8 +2,8 @@ from AnalysisG.Model.Optimizers import OptimizerWrapper
 from AnalysisG.Notification import _Optimizer
 from AnalysisG.Evaluation.Epoch import Epoch
 from .SampleGenerator import RandomSamplers
-from AnalysisG.Tools import Code, Threading
-from AnalysisG.Tracer import SampleTracer
+#from AnalysisG.Tools import Code, Threading
+#from AnalysisG.Tracer import SampleTracer
 from AnalysisG.Model import ModelWrapper
 from AnalysisG.Settings import Settings
 from torch_geometric.data import Batch
@@ -12,7 +12,7 @@ from multiprocessing import Process
 import torch
 
 
-class Optimizer(_Optimizer, _Interface, SampleTracer, RandomSamplers):
+class Optimizer(_Optimizer, _Interface): #, SampleTracer, RandomSamplers):
     def __init__(self, inpt):
         self.Caller = "OPTIMIZER"
         Settings.__init__(self)

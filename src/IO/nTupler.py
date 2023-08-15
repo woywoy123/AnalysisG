@@ -1,13 +1,13 @@
 from AnalysisG.Generators.Interfaces import _Interface
 from AnalysisG.Notification.nTupler import _nTupler
-from AnalysisG.Tracer import SampleTracer
-from AnalysisG.Tools import Hash, Threading
+#from AnalysisG.Tracer import SampleTracer
+#from AnalysisG.Tools import Hash, Threading
 from typing import Union
 import numpy as np
 import uproot
 import h5py
 
-class container(SampleTracer):
+class container:#(SampleTracer):
 
     def __init__(self):
         self.Tree = None

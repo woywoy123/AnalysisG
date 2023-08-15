@@ -23,7 +23,16 @@ ext_mod = [
         ],
         include_dirs = ["src/Templates/tools/"],
         language = "c++"
-    )
+    ),
+
+    Extension(
+        name = "AnalysisG.SampleTracer.MetaData",
+        sources = [
+            "src/SampleTracer/metadata/cymetadata.pyx",
+            "src/SampleTracer/metadata/metadata.cxx"
+        ],
+        language = "c++"
+    ),
 ]
 
 setup(ext_modules = cythonize(ext_mod, nthreads = 12))

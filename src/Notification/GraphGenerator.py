@@ -1,5 +1,5 @@
 from .Notification import Notification
-from AnalysisG.Tracer import SampleTracer
+#from AnalysisG.Tracer import SampleTracer
 
 
 class _GraphGenerator(Notification):

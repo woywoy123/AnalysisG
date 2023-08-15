@@ -9,6 +9,18 @@ authors = [{name = "woywoy123"}]
 readme.content-type = "text/markdown"
 readme.file = "README.md"
 requires-python = ">=3.7"
+dependencies = [
+    "numpy", 
+    "uproot", 
+    "h5py", 
+    "mplhep", 
+    "networkx", 
+    "scikit-learn", 
+    "torchmetrics", 
+    "torch-geometric", 
+    "pwinput", 
+    "pyAMI-atlas==5.1.0.1"
+]
 
 classifiers = [
     "License :: OSI Approved :: MIT License",

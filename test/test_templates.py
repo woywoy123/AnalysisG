@@ -1,6 +1,6 @@
 from AnalysisG.Templates import ParticleTemplate
 from AnalysisG.Templates import EventTemplate
-#from AnalysisG.IO import UpROOT
+from AnalysisG.IO import UpROOT
 import math
 
 def test_particle_template_assign_var():
@@ -228,7 +228,7 @@ def test_event_template():
             self.Deprecated = False
 
     ev = Event()
-    val = ev.__interpret__
+    val = ev.__getleaves__()
     assert "eventNumber" in val["event"]["index"]
     assert "weight_mc" in val["event"]["weight"]
     assert "met_phi" in val["event"]["met_phi"]
@@ -280,7 +280,7 @@ def test_event_particle_template():
             self.Deprecated = False
 
     ev = Event()
-    vals = ev.__interpret__
+    vals = ev.__getleaves__()
     assert "eventNumber" == vals["event"]["index"]
     assert "weight_mc" == vals["event"]["weight"]
     assert "met_phi" == vals["event"]["met_phi"]
@@ -294,9 +294,10 @@ def test_event_particle_template():
     assert "children_phi" == vals["Children"]["phi"]
     assert "children_eta" == vals["Children"]["eta"]
     assert "children_e" == vals["Children"]["e"]
-
-    assert len(ev.Leaves) == 22
-
+    x = len(vals["event"])
+    x += len(vals["Children"])
+    x += len(vals["top"])
+    assert x == 11
 
 def test_event_particle_template_populate():
     root1 = "./samples/sample1/smpl1.root"
@@ -334,7 +335,7 @@ def test_event_particle_template_populate():
             self.Deprecated = False
 
     ev = Event()
-    ev.__interpret__
+    ev.__getleaves__()
 
     io = UpROOT(root1)
     io.Trees = ev.Trees
@@ -344,6 +345,8 @@ def test_event_particle_template_populate():
     n_children = 0
     n_tops = 0
     for i in io:
+        print(i)
+        exit()
         Trees = ev.__compiler__(i)
         if "nominal/eventNumber" in i:
             assert len(Trees) == 2 
@@ -396,11 +399,11 @@ def test_event_othersample():
 if __name__ == "__main__":
     #test_particle_template_assign_var()
     #test_particle_template()
-    test_particle_template_assign()
+    #test_particle_template_assign()
 
     #test_event_template()
 
     #test_event_particle_template()
-    #test_event_particle_template_populate()
+    test_event_particle_template_populate()
 
     #test_event_othersample()

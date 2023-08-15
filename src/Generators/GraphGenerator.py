@@ -1,7 +1,7 @@
 from AnalysisG.Generators.EventGenerator import EventGenerator
 from AnalysisG.Notification import _GraphGenerator
 from AnalysisG.Tools import Code, Threading
-from AnalysisG.Tracer import SampleTracer
+#from AnalysisG.Tracer import SampleTracer
 from AnalysisG.Settings import Settings
 from .Interfaces import _Interface
 from typing import Union
@@ -9,7 +9,7 @@ from time import sleep
 import pickle
 
 
-class GraphGenerator(_GraphGenerator, Settings, SampleTracer, _Interface):
+class GraphGenerator(_GraphGenerator, Settings): #, SampleTracer, _Interface):
     def __init__(self, inpt: Union[EventGenerator, None] = None):
         self.Caller = "GRAPHGENERATOR"
         Settings.__init__(self)

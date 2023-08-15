@@ -1,16 +1,16 @@
 from AnalysisG.Notification import _SelectionGenerator
-from AnalysisG.Templates import SelectionTemplate
-from AnalysisG.IO import PickleObject, UnpickleObject
-from AnalysisG.Tools import Code, Threading, Hash
+#from AnalysisG.Templates import SelectionTemplate
+#from AnalysisG.IO import PickleObject, UnpickleObject
+#from AnalysisG.Tools import Code, Threading, Hash
 from .EventGenerator import EventGenerator
-from AnalysisG.Tracer import SampleTracer
+#from AnalysisG.Tracer import SampleTracer
 from AnalysisG.Settings import Settings
 from .Interfaces import _Interface
 from typing import Union
 import h5py
 import sys
 
-class SelectionGenerator(_SelectionGenerator, Settings, SampleTracer, _Interface):
+class SelectionGenerator(_SelectionGenerator, Settings): #, SampleTracer, _Interface):
     def __init__(self, inpt: Union[EventGenerator, None] = None):
         self.Caller = "SELECTIONGENERATOR"
         Settings.__init__(self)

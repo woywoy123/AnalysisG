@@ -1,5 +1,5 @@
 from .Notification import Notification
-from AnalysisG.IO import UnpickleObject
+#from AnalysisG.IO import UnpickleObject
 
 
 class _Optimizer(Notification):

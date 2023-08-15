@@ -1,6 +1,6 @@
 from AnalysisG.Notification import _EventGenerator
 from AnalysisG.Tools import Code, Threading
-from AnalysisG.Tracer import SampleTracer
+#from AnalysisG.Tracer import SampleTracer
 from AnalysisG.Settings import Settings
 from AnalysisG.IO import UpROOT
 from .Interfaces import _Interface
@@ -9,7 +9,7 @@ from time import sleep
 import pickle
 
 
-class EventGenerator(_EventGenerator, Settings, SampleTracer, _Interface):
+class EventGenerator(_EventGenerator, Settings): #, SampleTracer, _Interface):
     def __init__(self, val=None):
         self.Caller = "EVENTGENERATOR"
         Settings.__init__(self)

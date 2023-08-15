@@ -192,7 +192,6 @@ class UpROOT(_UpROOT, Settings, _Interface):
         self.CheckValidKeys(self.Leaves, found, "LEAF")
         self.Keys[fname] = {"found": found, "missed": self._missed}
         self.AllKeysFound(fname)
-
         self.ScanKeys()
 
     def GetAmiMeta(self):
@@ -200,10 +199,11 @@ class UpROOT(_UpROOT, Settings, _Interface):
         ami = AMI()
         if not ami.cfg: self.FailedAMI()
         for i in self.File:
+
             command = {
                     "files" : i + ":sumWeights",
-                    "expressions" : ["dsid", "AMITag", "generators"], 
-                    "how" : dict, 
+                    "expressions" : ["dsid", "AMITag", "generators"],
+                    "how" : dict,
                     "library" : "np"
             }
             try: data = [k for k in uproot.iterate(**command)]
@@ -233,7 +233,6 @@ class UpROOT(_UpROOT, Settings, _Interface):
             else: evnt = evnt[0]
             x = "eventNumber"
             if x in evnt: data[x] = evnt[x].tolist()
-
             meta[i] = MetaData()
             if self.DisablePyAMI: continue
             if "dsid" not in data: continue
@@ -248,6 +247,7 @@ class UpROOT(_UpROOT, Settings, _Interface):
             else: tag = False
             if tag: _tags = dsid + "-" + ".".join(set(tag.split("_")))
             else: _tags = dsid
+            print("-> ", _tags)
 
             meta[i].add(data["inputConfig"])
             meta[i].add(data)
