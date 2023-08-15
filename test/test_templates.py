@@ -1,7 +1,12 @@
 from AnalysisG.Templates import ParticleTemplate
 from AnalysisG.Templates import EventTemplate
-from AnalysisG.IO import UpROOT
+#from AnalysisG.IO import UpROOT
 import math
+
+def test_particle_template_assign_var():
+    x = ParticleTemplate()
+    x.px = "str"
+    x.px = 0
 
 
 def test_particle_template():
@@ -20,7 +25,6 @@ def test_particle_template():
 
     x = ParticleTemplate()
     y = ParticleTemplate()
-
     assert x.hash == y.hash
     assert len(x.hash) == 18
 
@@ -139,11 +143,12 @@ def test_particle_template():
     tc3.pz = val[2] * 0.35
     tc3.e = val[3] * 0.35
 
-    tp.Children.append(tc1)
-    tp.Children.append(tc2)
+    tp.Children += [tc1]
+    tp.Children += [tc2]
+    tp.Children.append(tc3)
     tp.Children.append(tc3)
     tc1.Parent.append(tp)
-    tc2.Parent.append(tp)
+    tc1.Parent.append(tp)
     tc3.Parent.append(tp)
 
     assert len(tp.Children) == 3
@@ -175,9 +180,10 @@ def test_particle_template_assign():
         def __init__(self):
             Particle.__init__(self)
             self.somevar2 = "somevar2"
+            self.Another = []
 
     P = Particle()
-    kdic = P.__interpret__
+    kdic = P.__getleaves__()
     assert kdic["index"] == "index"
     assert kdic["px"] == "px"
     assert kdic["py"] == "py"
@@ -192,7 +198,7 @@ def test_particle_template_assign():
     assert kdic["somevar"] == "somevar"
 
     P2 = ParticleDerived()
-    kdic = P2.__interpret__
+    kdic = P2.__getleaves__()
     assert kdic["index"] == "index"
     assert kdic["px"] == "px"
     assert kdic["py"] == "py"
@@ -388,12 +394,13 @@ def test_event_othersample():
 
 
 if __name__ == "__main__":
-    test_particle_template()
+    #test_particle_template_assign_var()
+    #test_particle_template()
     test_particle_template_assign()
 
-    test_event_template()
+    #test_event_template()
 
-    test_event_particle_template()
-    test_event_particle_template_populate()
+    #test_event_particle_template()
+    #test_event_particle_template_populate()
 
-    test_event_othersample()
+    #test_event_othersample()
