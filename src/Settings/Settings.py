@@ -16,7 +16,8 @@ class _General:
 class _UpROOT:
     def __init__(self):
         self.StepSize = 1000
-        self.DisablePyAMI = False
+        self.EnablePyAMI = True
+        self.Threads = 12
         self.Trees = []
         self.Branches = []
         self.Leaves = []
@@ -26,7 +27,7 @@ class _UpROOT:
 class _EventGenerator:
     def __init__(self):
         self.Event = None
-        self.DisablePyAMI = False
+        self.EnablePyAMI = True
         self.Files = {}
 
 
@@ -81,7 +82,7 @@ class _Analysis:
         self.EventCache = False
         self.DataCache = False
         self.PurgeCache = False
-        self.DisablePyAMI = False
+        self.EnablePyAMI = True
 
 
 class _Pickle:

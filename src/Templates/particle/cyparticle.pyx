@@ -63,44 +63,43 @@ cdef class ParticleTemplate:
             leaves[i] = v
         return leaves
 
-    #@__interpret__.setter
-    #def __interpret__(self, dict inpt):
-    #    cdef str k
-    #    cdef dict x
-    #    cdef bool get
 
-    #    try:
-    #        inpt = {k.split("/")[-1] : inpt[k] for k in inpt}
-    #        inpt = {k : inpt[self._leaves[k]] for k in self._leaves}
-    #    except KeyError: pass
+    def __build__(self, dict variables):
+        cdef ParticleTemplate p
+        cdef dict inpt = {}
+        cdef dict x = {}
+        cdef bool get
+        cdef str k
 
-    #    while True:
-    #        x = {}
-    #        get = False
-    #        for k in list(inpt):
-    #            try: inpt[k] = inpt[k].tolist()
-    #            except AttributeError: pass
+        for k in variables:
+            try: inpt[k] = variables[k].tolist()
+            except AttributeError: inpt[k] = variables[k]
 
-    #            try: x[k] = inpt[k].pop()
-    #            except AttributeError: x[k] = inpt[k]
-    #            except IndexError: pass
+        while True: 
+            x = {}
+            get = False
+            for k in list(inpt):
+                try: inpt[k] = inpt[k].tolist()
+                except AttributeError: pass
 
-    #            if k not in x: continue
+                try: x[k] = inpt[k].pop()
+                except AttributeError: x[k] = inpt[k]
+                except IndexError: pass
 
-    #            try: x[k] = x[k].item()
-    #            except AttributeError: pass
+                if k not in x: continue
 
-    #            try: len(x[k])
-    #            except TypeError: get = True
+                try: x[k] = x[k].item()
+                except AttributeError: pass
 
-    #        if len(x) == 0: break
-    #        if not get: self.__interpret__ = x
-    #        else:
-    #            p = self.clone()
-    #            p.__setstate__(x)
-    #            p._init = True
-    #            self.Children.append(p)
+                try: len(x[k])
+                except TypeError: get = True
 
+            if len(x) == 0: break
+            if not get: self.__build__(x)
+            else:
+                p = self.clone()
+                for k in x: setattr(p, k, x[k])
+                self.Children.append(p)
 
     def clone(self) -> ParticleTemplate:
         v = self.__new__(self.__class__)

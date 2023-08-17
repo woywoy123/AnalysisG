@@ -29,8 +29,10 @@ ext_mod = [
         name = "AnalysisG.SampleTracer.MetaData",
         sources = [
             "src/SampleTracer/metadata/cymetadata.pyx",
-            "src/SampleTracer/metadata/metadata.cxx"
+            "src/SampleTracer/metadata/metadata.cxx",
+            "src/Templates/tools/tools.cxx",
         ],
+        inlude_dirs = ["src/Templates/tools/"],
         language = "c++"
     ),
 ]

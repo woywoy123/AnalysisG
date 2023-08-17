@@ -340,13 +340,14 @@ def test_event_particle_template_populate():
     io = UpROOT(root1)
     io.Trees = ev.Trees
     io.Leaves = ev.Leaves
+    meta = io.GetAmiMeta()
 
     lst, lstc, lstt = [], [], []
+    all_ev = []
     n_children = 0
     n_tops = 0
+
     for i in io:
-        print(i)
-        exit()
         Trees = ev.__compiler__(i)
         if "nominal/eventNumber" in i:
             assert len(Trees) == 2 
@@ -368,8 +369,10 @@ def test_event_particle_template_populate():
             assert len(t1.hash) == 18
             assert t1 != t2
         else: pass
+        all_ev.append(i)
 
     n_events = len(lst)
+    assert len(all_ev) == 1000
     assert n_events != 0
     assert n_children != 0
     assert n_tops != 0
