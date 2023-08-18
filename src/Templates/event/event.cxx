@@ -39,4 +39,21 @@ namespace CyTemplate
     {
         this -> trees[key] = tree; 
     }
+
+    ExportEventTemplate CyEventTemplate::MakeMapping()
+    {
+        ExportEventTemplate tmp; 
+        tmp.weight = this -> weight; 
+        tmp.event_index = this -> event_index; 
+        tmp.cached = this -> cached; 
+        tmp.deprecated = this -> deprecated; 
+        tmp.event_tree = this -> event_tree; 
+        tmp.event_tagging = this -> event_tagging; 
+        tmp.event_name = this -> event_name; 
+        tmp.commit_hash = this -> commit_hash; 
+        tmp.pickle_string = this -> pickle_string; 
+        tmp.event_hash = this -> event_hash; 
+        tmp.keymapping = {}; 
+        return tmp;         
+    }
 }

@@ -1,3 +1,12 @@
+def test_cimports():
+    from AnalysisG.Templates import ParticleTemplate
+    from AnalysisG.Templates import EventTemplate
+    from AnalysisG.SampleTracer import MetaData
+    from AnalysisG.SampleTracer import SampleTracer
+
+
+
+
 def test_import_anaG():
     import AnalysisG
 
@@ -53,11 +62,12 @@ def test_import_events():
     from AnalysisG.Events import GraphJet
 
 if __name__ == "__main__":
-    test_import_anaG()
-    test_import_events()
-    test_import_generator()
-    test_import_io()
-    test_import_model()
-    test_import_pyc()
-    test_import_templates()
-    test_import_tools()
+    test_cimports()
+    #test_import_anaG()
+    #test_import_events()
+    #test_import_generator()
+    #test_import_io()
+    #test_import_model()
+    #test_import_pyc()
+    #test_import_templates()
+    #test_import_tools()

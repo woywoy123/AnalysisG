@@ -1,7 +1,6 @@
 from setuptools import setup, Extension
 from Cython.Build import cythonize
 
-
 ext_mod = [
     Extension(
         name = "AnalysisG.Templates.EventTemplate",
@@ -33,6 +32,28 @@ ext_mod = [
             "src/Templates/tools/tools.cxx",
         ],
         inlude_dirs = ["src/Templates/tools/"],
+        language = "c++"
+    ),
+
+    Extension(
+        name = "AnalysisG.SampleTracer.SampleTracer",
+        sources = [
+            "src/SampleTracer/sampletracer/cysampletracer.pyx",
+            "src/SampleTracer/sampletracer/sampletracer.cxx",
+            "src/Templates/tools/tools.cxx"
+        ],
+        include_dirs = ["src/Templates/tools/"],
+        language = "c++"
+    ),
+
+    Extension(
+        name = "AnalysisG.Tools.Code",
+        sources = [
+            "src/Templates/code/cycode.pyx",
+            "src/Templates/code/code.cxx",
+            "src/Templates/tools/tools.cxx",
+        ],
+        include_dirs = ["src/Templates/tools/"],
         language = "c++"
     ),
 ]

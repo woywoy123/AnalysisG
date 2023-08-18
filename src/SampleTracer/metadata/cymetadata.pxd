@@ -3,6 +3,84 @@ from libcpp.vector cimport vector
 from libcpp.map cimport map
 from libcpp cimport bool
 
+cdef extern from "metadata.h":
+
+    struct ExportMetaData:
+
+        string hash
+        string original_input
+        string original_path
+        string original_name
+        unsigned int threads
+        unsigned int chunks
+
+        vector[string] req_trees
+        vector[string] req_branches
+        vector[string] req_leaves
+
+        vector[string] mis_trees
+        vector[string] mis_branches
+        vector[string] mis_leaves
+
+        unsigned int dsid
+        string AMITag
+        string generators
+
+        bool isMC
+        string derivationFormat
+        map[int, int] inputrange
+        map[int, string] inputfiles
+        map[string, string] config
+
+        int eventNumber
+
+        int event_index
+
+        bool found
+        string DatasetName
+
+        double ecmEnergy
+        double genFiltEff
+        double completion
+        double beam_energy
+        double crossSection
+        double crossSection_mean
+        double totalSize
+
+        unsigned int nFiles
+        unsigned int run_number
+        unsigned int totalEvents
+        unsigned int datasetNumber
+
+        string identifier
+        string prodsysStatus
+        string dataType
+        string version
+        string PDF
+        string AtlasRelease
+        string principalPhysicsGroup
+        string physicsShort
+        string generatorName
+        string geometryVersion
+        string conditionsTag
+        string generatorTune
+        string amiStatus
+        string beamType
+        string productionStep
+        string projectName
+        string statsAlgorithm
+        string genFilterNames
+        string file_type
+
+        vector[string] keywords
+        vector[string] weights
+        vector[string] keyword
+
+        map[string, int] LFN
+        vector[string] fileGUID
+        vector[int] events
+        vector[double] fileSize
+
 cdef extern from "metadata.h" namespace "SampleTracer":
     cdef cppclass CyMetaData:
         CyMetaData() except +
@@ -11,6 +89,7 @@ cdef extern from "metadata.h" namespace "SampleTracer":
         void addconfig(string key, string val) except +
         void processkeys(vector[string], unsigned int num) except +
         void FindMissingKeys() except +
+        ExportMetaData MakeMapping() except +
         map[string, int] GetLength() except +
         map[string, vector[string]] MakeGetter() except +
         string IndexToSample(int index) except +
@@ -38,7 +117,9 @@ cdef extern from "metadata.h" namespace "SampleTracer":
         string derivationFormat
         string DatasetName
         unsigned int dsid
-        unsigned int eventNumber
+        int eventNumber
+        int event_index
+
         map[int, string] inputfiles
         map[string, string] config
 

@@ -27,6 +27,34 @@ namespace CyTemplate
 
     CyParticleTemplate::~CyParticleTemplate(){}
 
+    ExportParticleTemplate CyParticleTemplate::MakeMapping()
+    {
+        ExportParticleTemplate tmp; 
+        tmp.e = this -> e(); 
+
+        tmp.px = this -> px();
+        tmp.py = this -> py(); 
+        tmp.pz = this -> pz(); 
+
+        tmp.pt = this -> pt(); 
+        tmp.eta = this -> eta(); 
+        tmp.phi = this -> phi(); 
+
+        tmp.mass = this -> mass(); 
+        tmp.charge = this -> charge(); 
+        
+        tmp.pdgid = this -> pdgid(); 
+        tmp.index = this -> index; 
+        
+        tmp.hash = this -> hash(); 
+        tmp.symbol = this -> symbol();
+        
+        tmp.lepdef = this -> lepdef; 
+        tmp.nudef = this -> nudef; 
+        return tmp; 
+    }
+
+
     double CyParticleTemplate::e()
     {
         if (this -> _e >= 0){return this -> _e;}

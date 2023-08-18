@@ -1,9 +1,8 @@
 from AnalysisG.Generators.Interfaces import _Interface
 from AnalysisG.SampleTracer.MetaData import MetaData
 from AnalysisG.Notification import _UpROOT
-from AnalysisG.Settings import Settings
-
 from uproot.exceptions import KeyInFileError
+from AnalysisG.Settings import Settings
 import uproot
 
 
@@ -30,7 +29,7 @@ class UpROOT(_UpROOT, Settings, _Interface):
                 out[key] += dc[key]
         return max(list(out.values()))
 
-    def GetAmiMeta(self): 
+    def GetAmiMeta(self):
         if len(self.MetaData) == 0: self.ScanKeys()
         return self.MetaData
 
@@ -92,6 +91,7 @@ class UpROOT(_UpROOT, Settings, _Interface):
         for f in meta:
             gets = meta[f]._MakeGetter()
             tr_l = meta[f].GetLengthTrees
+            meta[f].event_index = 0
 
             for tr in gets:
                 if tr not in self.__root:
@@ -149,4 +149,5 @@ class UpROOT(_UpROOT, Settings, _Interface):
             out["ROOT"] = file
             out["EventIndex"] = self._event_index
         self._event_index += 1
+        self.MetaData[file].event_index =+ 1
         return out

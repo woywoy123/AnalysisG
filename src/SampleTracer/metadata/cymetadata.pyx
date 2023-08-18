@@ -1,7 +1,7 @@
 # distuils: language = c++
 # cython: language_level = 3
 
-from cymetadata cimport CyMetaData
+from cymetadata cimport CyMetaData, ExportMetaData
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 from libcpp.map cimport map, pair
@@ -30,12 +30,10 @@ cdef class MetaData:
     cdef public str sampletype
     cdef public str _hash
     cdef public bool scan_ami
-    cdef public int event_index
 
     def __cinit__(self):
         self.ptr = new CyMetaData()
         self.client = None
-        self.event_index = 0
 
     def __init__(self, str file, bool scan_ami = True, str sampletype = "DAOD_TOPQ1"):
         self.ptr.original_input = enc(file)
@@ -57,6 +55,12 @@ cdef class MetaData:
 
     def __dealloc__(self):
         del self.ptr
+
+
+    def __getstate__(self):
+        cdef ExportMetaData tmp = self.ptr.MakeMapping()
+        return tmp
+
 
     def __str__(self) -> str:
         cdef str i = ""
@@ -330,6 +334,15 @@ cdef class MetaData:
     @property
     def eventNumber(self) -> int: return self.ptr.eventNumber
 
+    @eventNumber.setter
+    def eventNumber(self, int val): self.ptr.eventNumber = val
+
+    @property
+    def event_index(self) -> int: return self.ptr.event_index
+
+    @event_index.setter
+    def event_index(self, int val): self.ptr.event_index = val
+
     @property
     def found(self) -> bool: return self.ptr.found
 
@@ -447,13 +460,16 @@ cdef class MetaData:
     @property
     def DAODList(self) -> list:
         cdef pair[string, int] it
-        return [env(it.first) for it in self.ptr.LFN]
+        cdef list l = [env(it.first) for it in self.ptr.LFN]
+        if len(l): return l
+        cdef str key
+        return [key.split("/")[-1] for key in self.Files.values()]
 
     @property
     def DAOD(self) -> str:
-        if not self.scan_ami: return env(self.ptr.original_name)
-        self.event_index += 1
-        return self.IndexToSample(self.event_index-1)
+        cdef str out = env(self.ptr.IndexToSample(self.ptr.event_index))
+        if len(out): return out.split("/")[-1]
+        return env(self.ptr.original_name)
 
     @property
     def FilePath(self) -> str: return env(self.ptr.original_path)
@@ -472,4 +488,3 @@ cdef class MetaData:
     def fileSize(self) -> dict:
         cdef pair[string, int] it
         return {env(it.first) : self.ptr.fileSize.at(it.second) for it in self.ptr.LFN}
-

@@ -380,33 +380,13 @@ def test_event_particle_template_populate():
     assert n_children == len(set(lstc))
     assert n_tops == len(set(lstt))
 
-def test_event_othersample():
-    from examples.Belle import EventBelle
-
-    # Still need to implement a proper test
-    return
-    smple = ""
-
-    ev = EventBelle()
-    ev.__interpret__
-
-    io = UpROOT(smple)
-    io.Trees = ev.Trees
-    io.Leaves = ev.Leaves
-    for i in io:
-        x = ev.__compiler__(i)
-        x[0].CompileEvent()
-        assert x[0].particle[0].px
-
-
 if __name__ == "__main__":
-    #test_particle_template_assign_var()
-    #test_particle_template()
-    #test_particle_template_assign()
+    test_particle_template_assign_var()
+    test_particle_template()
+    test_particle_template_assign()
 
-    #test_event_template()
+    test_event_template()
 
-    #test_event_particle_template()
+    test_event_particle_template()
     test_event_particle_template_populate()
 
-    #test_event_othersample()

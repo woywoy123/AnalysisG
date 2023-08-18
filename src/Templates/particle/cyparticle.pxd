@@ -3,11 +3,36 @@ from libcpp.vector cimport vector
 from libcpp.map cimport map
 from libcpp cimport bool
 
+cdef extern from "particle.h":
+
+    struct ExportParticleTemplate:
+        double e
+
+        double px
+        double py
+        double pz
+
+        double pt
+        double eta
+        double phi
+
+        double mass
+        double charge
+
+        int pdgid
+        int index
+
+        string hash
+        string symbol
+        vector[int] lepdef
+        vector[int] nudef
+
 cdef extern from "particle.h" namespace "CyTemplate":
     cdef cppclass CyParticleTemplate:
         CyParticleTemplate() except +
         CyParticleTemplate(double px, double py, double pz, double e) except +
         CyParticleTemplate(double px, double py, double pz) except +
+        ExportParticleTemplate MakeMapping() except +
 
         double e() except +
         void e(double val) except +

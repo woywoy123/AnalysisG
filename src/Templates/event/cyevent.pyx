@@ -1,6 +1,6 @@
 # distuils: language = c++
 # cython: language_level = 3
-from cyevent cimport CyEventTemplate
+from cyevent cimport CyEventTemplate, ExportEventTemplate
 from libcpp.string cimport string
 from libcpp.map cimport map, pair
 from libcpp cimport bool
@@ -15,6 +15,7 @@ cdef class EventTemplate:
 
     def __cinit__(self):
         self.ptr = new CyEventTemplate()
+        self.Objects = {}
 
     def __init__(self):
         self.ptr.event_name = enc(self.__class__.__name__)
@@ -33,6 +34,14 @@ cdef class EventTemplate:
         cdef EventTemplate o = other
         return self.ptr == o.ptr
 
+    def __getstate__(self) -> dict:
+        cdef ExportEventTemplate x = self.ptr.MakeMapping()
+        cdef str key
+        cdef dict out = {"__Export__" : x}
+        for key in self.__dict__:
+            out[key] = self.__dict__[key]
+        return out
+
     def __getleaves__(self) -> dict:
         cdef str i
         cdef dict leaves = {}
@@ -50,7 +59,6 @@ cdef class EventTemplate:
         self.Leaves = []
         for i in leaves: self.Leaves += list(leaves[i].values())
         return leaves
-
 
     def __compiler__(self, inpt: Union[dict]):
         cdef dict var_map = self.__getleaves__()
@@ -76,7 +84,7 @@ cdef class EventTemplate:
             for typ_ in var_map:
                 var_leaf = var_map[typ_]
                 var_leaf = {
-                        key : inpt_map[tree][leaf] 
+                        key : inpt_map[tree][leaf]
                         for (key, leaf) in var_leaf.items()
                         if leaf in inpt_map[tree]
                 }
@@ -86,7 +94,7 @@ cdef class EventTemplate:
                 else:
                     objects[typ_].__build__(var_leaf)
                     output[tree][typ_] = objects[typ_].Children
-            if "event" not in output[tree]: 
+            if "event" not in output[tree]:
                 del event
                 del output[tree]
                 continue
@@ -99,7 +107,7 @@ cdef class EventTemplate:
             output[tree] = event
 
             if event.index == -1: event.index = inpt["EventIndex"]
-            else: inpt["MetaData"].event_index = event.index
+            else: inpt["MetaData"].eventNumber = event.index
             event.hash = inpt["MetaData"].DatasetName + "/" + inpt["MetaData"].DAOD
         return list(output.values())
 
@@ -119,6 +127,7 @@ cdef class EventTemplate:
 
 
     def is_self(self, inpt) -> bool:
+        if isinstance(inpt, EventTemplate): return True
         return issubclass(inpt.__class__, EventTemplate)
 
     def clone(self) -> EventTemplate:
@@ -134,7 +143,6 @@ cdef class EventTemplate:
     @hash.setter
     def hash(self, str val): self.ptr.Hash(enc(val))
 
-
     @property
     def index(self) -> int: return self.ptr.event_index
 
@@ -142,7 +150,6 @@ cdef class EventTemplate:
     def index(self, val: Union[str, int]):
         try: self.ptr.event_index = val
         except TypeError: self.ptr.addleaf(b'index', enc(val))
-
 
     @property
     def weight(self) -> double: return self.ptr.weight

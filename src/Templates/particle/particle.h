@@ -5,6 +5,31 @@
 #ifndef PARTICLE_H
 #define PARTICLE_H
 
+struct ExportParticleTemplate
+{
+    double e; 
+    
+    double px; 
+    double py; 
+    double pz; 
+
+    double pt; 
+    double eta; 
+    double phi; 
+
+    double mass; 
+    double charge; 
+
+    int pdgid; 
+    int index; 
+
+    std::string hash; 
+    std::string symbol;
+    std::vector<int> lepdef; 
+    std::vector<int> nudef;  
+}; 
+
+
 namespace CyTemplate
 {
     class CyParticleTemplate
@@ -13,6 +38,7 @@ namespace CyTemplate
             CyParticleTemplate(); 
             CyParticleTemplate(double px, double py, double pz, double e); 
             CyParticleTemplate(double px, double py, double pz); 
+            ExportParticleTemplate MakeMapping(); 
 
             ~CyParticleTemplate(); 
 
@@ -70,7 +96,7 @@ namespace CyTemplate
             void operator += (CyParticleTemplate* p); 
             void iadd(CyParticleTemplate* p); 
             
-            std::string type = ""; 
+std::string type = ""; 
             int index = -1; 
             std::map<std::string, std::string> leaves = {}; 
             std::map<std::string, CyParticleTemplate*> children = {}; 

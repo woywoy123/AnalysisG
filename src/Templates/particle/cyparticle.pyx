@@ -1,6 +1,6 @@
 # distuils: language = c++
 # cython: language_level = 3
-from cyparticle cimport CyParticleTemplate
+from cyparticle cimport CyParticleTemplate, ExportParticleTemplate
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 from libcpp.map cimport map, pair
@@ -43,6 +43,14 @@ cdef class ParticleTemplate:
         self.Parent = list(set(other.Parent + self.Parent))
         self.ptr.iadd(other.ptr)
         return self
+
+    def __getstate__(self) -> dict:
+        cdef ExportParticleTemplate x = self.ptr.MakeMapping()
+        cdef str key
+        cdef dict out = {"__Export__" : x}
+        for key in self.__dict__:
+            out[key] = self.__dict__[key]
+        return out
 
     def __hash__(self):
         return int(self.hash[:8], 0)
@@ -108,6 +116,7 @@ cdef class ParticleTemplate:
         return v
 
     def is_self(self, inpt) -> bool:
+        if isinstance(inpt, ParticleTemplate): return True
         return issubclass(inpt.__class__, ParticleTemplate)
 
     @property

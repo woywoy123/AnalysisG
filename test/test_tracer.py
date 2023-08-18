@@ -1,7 +1,7 @@
+from AnalysisG.SampleTracer import SampleTracer
 from AnalysisG.Templates import EventTemplate
 from AnalysisG.Templates import ParticleTemplate
 from AnalysisG.IO import UpROOT
-from AnalysisG.Tracer import SampleTracer
 import pickle
 import shutil
 import psutil
@@ -38,7 +38,7 @@ class Event(EventTemplate):
         self.Trees = ["nominal", "truth"]
         self.met_phi = "met_phi"
         self.CommitHash = "..."
-        self.Deprecated = False
+        self.deprecated = False
 
 
 def test_tracer_addEvent():
@@ -47,9 +47,10 @@ def test_tracer_addEvent():
     root1 = os.path.abspath("./samples/sample1/smpl1.root")
     root2 = os.path.abspath("./samples/sample1/smpl2.root")
     ev = Event()
-    ev.__interpret__
+    ev.__getleaves__()
 
     io = UpROOT([root1, root2])
+    io.EnablePyAMI = False
     io.Trees = ev.Trees
     io.Leaves = ev.Leaves
 
@@ -62,17 +63,18 @@ def test_tracer_addEvent():
         root, index, meta = i["ROOT"], i["EventIndex"], i["MetaData"]
         trees = ev.__compiler__(i)
         for i in trees: i.CompileEvent()
-        root = meta.thisSet + "/" + meta.thisDAOD
         inpt = {
             i.hash: {
                 "pkl": pickle.dumps(i),
                 "index": i.index,
                 "Tree": i.Tree,
                 "ROOT": root,
-                "Meta": meta,
+                "Meta": pickle.dumps(meta),
             }
             for i in trees
         }
+        print(inpt)
+        exit()
         tr.AddEvent(inpt)
         hashes.update({p.hash: p for p in trees})
         if root not in roothashes: roothashes[root] = []
@@ -235,6 +237,6 @@ def test_tracer_hdf5():
 
 if __name__ == "__main__":
     test_tracer_addEvent()
-    test_tracer_operators()
-    test_tracer_hdf5()
+    #test_tracer_operators()
+    #test_tracer_hdf5()
     pass

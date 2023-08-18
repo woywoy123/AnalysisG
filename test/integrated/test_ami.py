@@ -1,6 +1,6 @@
 from AnalysisG.IO import UpROOT
-import uproot
 from conftest import clean_dir
+import uproot
 
 def test_pyami():
 

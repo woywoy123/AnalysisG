@@ -10,13 +10,13 @@ class Pickle(Tools, Settings):
         Settings.__init__(self)
 
     def PickleObject(self, obj, filename, Dir="_Pickle"):
-        filename = self.AddTrailing(filename, self._ext)
-        direc = self.path(filename)
-        direc = self.RemoveTrailing(direc, "/")
-        filename = self.filename(filename)
+        if not filename.endswith(self._ext):
+            filename += self._ext
 
-        if self.RemoveTrailing(self.pwd(), "/") == direc:
-            direc += "/" + Dir
+        direc = self.path(filename)
+        if direc.endswith("/"): direc = direc[:-1]
+        if self.pwd()[:-1] == direc: direc += "/" + Dir
+        filename = self.filename(filename)
 
         self.mkdir(direc)
         f = open(direc + "/" + filename, "wb")
@@ -24,14 +24,13 @@ class Pickle(Tools, Settings):
         f.close()
 
     def UnpickleObject(self, filename, Dir="_Pickle"):
-        filename = self.AddTrailing(filename, self._ext)
+        if not filename.endswith(self._ext):
+            filename += self._ext
         direc = self.path(filename)
         filename = self.filename(filename)
 
-        if self.RemoveTrailing(self.pwd(), "/") == direc:
-            direc += "/" + Dir
-        if self.IsFile(direc + "/" + filename) == False:
-            return
+        if self.pwd()[:-1] == direc: direc += "/" + Dir
+        if not self.IsFile(direc + "/" + filename): return
 
         f = open(direc + "/" + filename, "rb")
         obj = pickle.load(f)
@@ -61,23 +60,15 @@ class Pickle(Tools, Settings):
                     [i.split("/")[-1].replace(self._ext, ""), self.UnpickleObject(i)]
                 )
             return out
-
-        #
-        InputFiles = [
-            InputFiles[i] for i in range(len(InputFiles)) if i not in ClassDef
-        ]
-
         TH = Threading(InputFiles, function, self.Threads, self.chnk)
         TH.Verbose = self.Verbose
         TH.Title = "READING PICKLES "
-        TH.Title += "" if Name == None else "(" + Name + ")"
+        TH.Title += "" if Name is None else "(" + Name + ")"
         TH.Start()
         return {i[0]: i[1] for i in TH._lists}
 
-
 def _UnpickleObject(filename):
     return Pickle().UnpickleObject(filename)
-
 
 def _PickleObject(obj, filename):
     Pickle().PickleObject(obj, filename)
