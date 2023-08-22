@@ -1,5 +1,5 @@
 from AnalysisG.Generators.Interfaces import _Interface
-from AnalysisG.SampleTracer.MetaData import MetaData
+from AnalysisG.SampleTracer import MetaData
 from AnalysisG.Notification import _UpROOT
 from uproot.exceptions import KeyInFileError
 from AnalysisG.Settings import Settings

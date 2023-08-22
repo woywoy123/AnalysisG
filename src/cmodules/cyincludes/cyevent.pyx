@@ -1,10 +1,12 @@
 # distuils: language = c++
 # cython: language_level = 3
+
 from cyevent cimport CyEventTemplate, ExportEventTemplate
 from libcpp.string cimport string
 from libcpp.map cimport map, pair
 from libcpp cimport bool
 from typing import Union
+import pickle
 
 cdef string enc(str val): return val.encode("UTF-8")
 cdef str env(string val): return val.decode("UTF-8")
@@ -34,13 +36,20 @@ cdef class EventTemplate:
         cdef EventTemplate o = other
         return self.ptr == o.ptr
 
-    def __getstate__(self) -> dict:
+    def __getstate__(self) -> ExportEventTemplate:
         cdef ExportEventTemplate x = self.ptr.MakeMapping()
         cdef str key
-        cdef dict out = {"__Export__" : x}
+        cdef dict out = {}
         for key in self.__dict__:
             out[key] = self.__dict__[key]
-        return out
+        x.pickle_string = pickle.dumps(out)
+        return x
+
+    def __setstate__(self, ExportEventTemplate inpt):
+        self.ptr.ImportEventData(inpt)
+        cdef dict pkl = pickle.loads(inpt.pickle_string)
+        cdef str key;
+        for key in pkl: setattr(self, key, pkl[key])
 
     def __getleaves__(self) -> dict:
         cdef str i
@@ -108,7 +117,8 @@ cdef class EventTemplate:
 
             if event.index == -1: event.index = inpt["EventIndex"]
             else: inpt["MetaData"].eventNumber = event.index
-            event.hash = inpt["MetaData"].DatasetName + "/" + inpt["MetaData"].DAOD
+            event.ROOT = inpt["MetaData"].DatasetName + "/" + inpt["MetaData"].DAOD
+            event.hash = event.ROOT
         return list(output.values())
 
     def __build__(self, dict variables):
@@ -218,4 +228,8 @@ cdef class EventTemplate:
     @property
     def cached(self) -> bool: return self.ptr.cached
 
+    @property
+    def ROOT(self) -> str: return env(self.ptr.ROOT)
 
+    @ROOT.setter
+    def ROOT(self, str val): self.ptr.ROOT = enc(val)

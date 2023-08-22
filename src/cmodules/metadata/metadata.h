@@ -52,8 +52,6 @@ struct ExportMetaData
     std::string original_input;
     std::string original_path;
     std::string original_name;
-    unsigned int threads;
-    unsigned int chunks;
 
     // requested content of this root file
     std::vector<std::string> req_trees;
@@ -147,6 +145,7 @@ namespace SampleTracer
             void addsamples(int index, int range, std::string sample);
             void processkeys(std::vector<std::string> keys, unsigned int num_entries);
             ExportMetaData MakeMapping();
+            void ImportMetaData(ExportMetaData meta); 
 
             std::map<std::string, int> GetLength();
             std::map<std::string, std::vector<std::string>> MakeGetter();
@@ -158,7 +157,6 @@ namespace SampleTracer
             std::string original_input = "";
             std::string original_path = "";
             std::string original_name = "";
-            unsigned int threads = 10;
             unsigned int chunks = 10;
 
             // requested content of this root file

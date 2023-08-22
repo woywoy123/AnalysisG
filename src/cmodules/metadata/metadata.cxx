@@ -1,5 +1,5 @@
-#include "../../Templates/tools/tools.h"
-#include "metadata.h"
+#include "../tools/tools.h"
+#include "../metadata/metadata.h"
 
 namespace SampleTracer
 {
@@ -47,7 +47,7 @@ namespace SampleTracer
                 for (unsigned x(0); x < tokens -> size(); ++x)
                 {
                     std::string tok = tokens -> at(x);
-                    if (!count(tok, tmp + "") && tmp != tok){continue;}
+                    if (!count(tok, tmp + ";") && tmp != tok){continue;}
                     res -> push_back(tmp);
                     res -> push_back(tok);
                     return;
@@ -106,12 +106,13 @@ namespace SampleTracer
             std::vector<Collect>* f = new std::vector<Collect>(quant[i].size(), x);
             check.push_back(f);
 
-            search(tr, br, lf, quant[i], f);
             std::thread* p = new std::thread(search, tr, br, lf, quant[i], f);
             jbs.push_back(p);
         }
+
         for (std::thread* t : jbs){ t -> join(); delete t; }
         jbs = {};
+
         for (unsigned int i(0); i < check.size(); ++i)
         {
             std::vector<Collect> vec = *check[i];
@@ -257,8 +258,6 @@ namespace SampleTracer
         tmp.original_input          = this -> original_input;
         tmp.original_path           = this -> original_path;
         tmp.original_name           = this -> original_name;
-        tmp.threads                 = this -> threads;
-        tmp.chunks                  = this -> chunks;
         tmp.req_trees               = this -> req_trees;
         tmp.req_branches            = this -> req_branches;
         tmp.req_leaves              = this -> req_leaves;
@@ -318,4 +317,72 @@ namespace SampleTracer
 
         return tmp;
     }
+ 
+    void CyMetaData::ImportMetaData(ExportMetaData meta)
+    {
+        ExportMetaData tmp;
+
+        this -> hash                    = meta.hash;
+        this -> original_input          = meta.original_input;
+        this -> original_path           = meta.original_path;
+        this -> original_name           = meta.original_name;
+        this -> req_trees               = meta.req_trees;
+        this -> req_branches            = meta.req_branches;
+        this -> req_leaves              = meta.req_leaves;
+        this -> mis_trees               = meta.mis_trees;
+        this -> mis_branches            = meta.mis_branches;
+        this -> mis_leaves              = meta.mis_leaves;
+
+        this -> dsid                    = meta.dsid;
+        this -> AMITag                  = meta.AMITag;
+        this -> generators              = meta.generators;
+        this -> isMC                    = meta.isMC;
+        this -> derivationFormat        = meta.derivationFormat;
+        this -> inputrange              = meta.inputrange;
+        this -> inputfiles              = meta.inputfiles;
+        this -> config                  = meta.config;
+        this -> eventNumber             = meta.eventNumber;
+        this -> event_index             = meta.event_index;
+        this -> found                   = meta.found;
+        this -> DatasetName             = meta.DatasetName;
+
+        this -> ecmEnergy               = meta.ecmEnergy;
+        this -> genFiltEff              = meta.genFiltEff;
+        this -> completion              = meta.completion;
+        this -> beam_energy             = meta.beam_energy;
+        this -> crossSection            = meta.crossSection;
+        this -> crossSection_mean       = meta.crossSection_mean;
+        this -> totalSize               = meta.totalSize;
+        this -> nFiles                  = meta.nFiles;
+        this -> run_number              = meta.run_number;
+        this -> totalEvents             = meta.totalEvents;
+        this -> datasetNumber           = meta.datasetNumber;
+        this -> identifier              = meta.identifier;
+        this -> prodsysStatus           = meta.prodsysStatus;
+        this -> dataType                = meta.dataType;
+        this -> version                 = meta.version;
+        this -> PDF                     = meta.PDF;
+        this -> AtlasRelease            = meta.AtlasRelease;
+        this -> principalPhysicsGroup   = meta.principalPhysicsGroup;
+        this -> physicsShort            = meta.physicsShort;
+        this -> generatorName           = meta.generatorName;
+        this -> geometryVersion         = meta.geometryVersion;
+        this -> conditionsTag           = meta.conditionsTag;
+        this -> generatorTune           = meta.generatorTune;
+        this -> amiStatus               = meta.amiStatus;
+        this -> beamType                = meta.beamType;
+        this -> productionStep          = meta.productionStep;
+        this -> projectName             = meta.projectName;
+        this -> statsAlgorithm          = meta.statsAlgorithm;
+        this -> genFilterNames          = meta.genFilterNames;
+        this -> file_type               = meta.file_type;
+        this -> keywords                = meta.keywords;
+        this -> weights                 = meta.weights;
+        this -> keyword                 = meta.keyword;
+        this -> LFN                     = meta.LFN;
+        this -> fileGUID                = meta.fileGUID;
+        this -> events                  = meta.events;
+        this -> fileSize                = meta.fileSize;
+    }
+
 }

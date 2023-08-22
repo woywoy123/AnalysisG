@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=61.0.0", "cython==3.0.0"] #, "wheel", "torch>=1.13.1"]
+requires = ["setuptools", "cython", "wheel"]#, "torch>=1.13.1"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -10,15 +10,15 @@ readme.content-type = "text/markdown"
 readme.file = "README.md"
 requires-python = ">=3.7"
 dependencies = [
-    "numpy", 
-    "uproot", 
-    "h5py", 
-    "mplhep", 
-    "networkx", 
-    "scikit-learn", 
-    "torchmetrics", 
-    "torch-geometric", 
-    "pwinput", 
+#    "numpy", 
+#    "uproot", 
+#    "h5py", 
+#    "mplhep", 
+#    "networkx", 
+#    "scikit-learn", 
+#    "torchmetrics", 
+#    "torch-geometric", 
+#    "pwinput", 
     "pyAMI-atlas==5.1.0.1"
 ]
 
@@ -38,7 +38,7 @@ classifiers = [
 Homepage = "https://github.com/woywoy123/AnalysisG"
 
 [tool.setuptools.package-dir]
-"AnalysisG" = "src"
+AnalysisG = "src"
 
 [tool.bumpver]
 current_version = "3.3.0"

@@ -61,25 +61,16 @@ def test_tracer_addEvent():
         if "nominal/eventNumber" in i: len_nom += 1
         if "truth/eventNumber" in i: len_tru += 1
         root, index, meta = i["ROOT"], i["EventIndex"], i["MetaData"]
+
         trees = ev.__compiler__(i)
-        for i in trees: i.CompileEvent()
-        inpt = {
-            i.hash: {
-                "pkl": pickle.dumps(i),
-                "index": i.index,
-                "Tree": i.Tree,
-                "ROOT": root,
-                "Meta": pickle.dumps(meta),
-            }
-            for i in trees
-        }
-        print(inpt)
-        exit()
-        tr.AddEvent(inpt)
+        for i in trees:
+            i.CompileEvent()
+            tr.AddEvent(i, meta)
         hashes.update({p.hash: p for p in trees})
         if root not in roothashes: roothashes[root] = []
         roothashes[root] += [p.hash for p in trees]
 
+    exit()
     assert len_tru + len_nom == len(tr)
 
     # Test iterator

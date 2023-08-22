@@ -3,7 +3,7 @@ from libcpp.vector cimport vector
 from libcpp.map cimport map
 from libcpp cimport bool
 
-cdef extern from "particle.h":
+cdef extern from "../particle/particle.h":
 
     struct ExportParticleTemplate:
         double e
@@ -24,6 +24,8 @@ cdef extern from "particle.h":
 
         string hash
         string symbol
+        string pickle_string
+
         vector[int] lepdef
         vector[int] nudef
 
@@ -33,6 +35,7 @@ cdef extern from "particle.h" namespace "CyTemplate":
         CyParticleTemplate(double px, double py, double pz, double e) except +
         CyParticleTemplate(double px, double py, double pz) except +
         ExportParticleTemplate MakeMapping() except +
+        void ImportParticleData(ExportParticleTemplate part) except +
 
         double e() except +
         void e(double val) except +

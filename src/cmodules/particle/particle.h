@@ -24,6 +24,7 @@ struct ExportParticleTemplate
     int index; 
 
     std::string hash; 
+    std::string pickle_string; 
     std::string symbol;
     std::vector<int> lepdef; 
     std::vector<int> nudef;  
@@ -39,6 +40,7 @@ namespace CyTemplate
             CyParticleTemplate(double px, double py, double pz, double e); 
             CyParticleTemplate(double px, double py, double pz); 
             ExportParticleTemplate MakeMapping(); 
+            void ImportParticleData(ExportParticleTemplate part); 
 
             ~CyParticleTemplate(); 
 
@@ -96,7 +98,8 @@ namespace CyTemplate
             void operator += (CyParticleTemplate* p); 
             void iadd(CyParticleTemplate* p); 
             
-std::string type = ""; 
+            std::string type = ""; 
+            std::string pickle_string = ""; 
             int index = -1; 
             std::map<std::string, std::string> leaves = {}; 
             std::map<std::string, CyParticleTemplate*> children = {}; 

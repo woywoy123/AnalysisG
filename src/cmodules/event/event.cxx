@@ -1,5 +1,5 @@
 #include <iostream>
-#include "event.h"
+#include "../event/event.h"
 #include "../tools/tools.h"
 
 namespace CyTemplate
@@ -43,17 +43,32 @@ namespace CyTemplate
     ExportEventTemplate CyEventTemplate::MakeMapping()
     {
         ExportEventTemplate tmp; 
-        tmp.weight = this -> weight; 
-        tmp.event_index = this -> event_index; 
-        tmp.cached = this -> cached; 
-        tmp.deprecated = this -> deprecated; 
-        tmp.event_tree = this -> event_tree; 
+        tmp.weight        = this -> weight; 
+        tmp.event_index   = this -> event_index; 
+        tmp.cached        = this -> cached; 
+        tmp.deprecated    = this -> deprecated; 
+        tmp.event_tree    = this -> event_tree; 
         tmp.event_tagging = this -> event_tagging; 
-        tmp.event_name = this -> event_name; 
-        tmp.commit_hash = this -> commit_hash; 
+        tmp.event_name    = this -> event_name; 
+        tmp.commit_hash   = this -> commit_hash; 
         tmp.pickle_string = this -> pickle_string; 
-        tmp.event_hash = this -> event_hash; 
-        tmp.keymapping = {}; 
+        tmp.event_hash    = this -> event_hash; 
+        tmp.ROOT          = this -> ROOT; 
         return tmp;         
+    }
+
+    void CyEventTemplate::ImportEventData(ExportEventTemplate event)
+    {
+        this -> weight        = event.weight; 
+        this -> event_index   = event.event_index; 
+        this -> cached        = event.cached; 
+        this -> deprecated    = event.deprecated; 
+        this -> event_tree    = event.event_tree; 
+        this -> event_tagging = event.event_tagging; 
+        this -> event_name    = event.event_name; 
+        this -> commit_hash   = event.commit_hash; 
+        this -> pickle_string = event.pickle_string; 
+        this -> event_hash    = event.event_hash; 
+        this -> ROOT          = event.ROOT; 
     }
 }

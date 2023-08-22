@@ -244,12 +244,12 @@ cdef class MetaData:
     def IndexToSample(self, int index) -> str:
         return env(self.ptr.IndexToSample(index))
 
-    def ProcessKeys(self, dict val) -> void:
+    def ProcessKeys(self, dict val):
         cdef vector[string] keys = [enc(i) for i in val["keys"]]
         cdef int num = val["num"][0]
         self.ptr.processkeys(keys, num)
 
-    def _findmissingkeys(self) -> void: 
+    def _findmissingkeys(self): 
         self.ptr.FindMissingKeys()
 
     def _MakeGetter(self) -> dict:

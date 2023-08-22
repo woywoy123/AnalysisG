@@ -1,4 +1,4 @@
-#include "particle.h"
+#include "../particle/particle.h"
 #include "../tools/tools.h"
 #include <cmath>
 
@@ -48,12 +48,38 @@ namespace CyTemplate
         
         tmp.hash = this -> hash(); 
         tmp.symbol = this -> symbol();
+        tmp.pickle_string = this -> pickle_string; 
         
         tmp.lepdef = this -> lepdef; 
         tmp.nudef = this -> nudef; 
         return tmp; 
     }
+    
+    void CyParticleTemplate::ImportParticleData(ExportParticleTemplate part)
+    {
+        this -> _e             = part.e; 
 
+        this -> _px            = part.px;
+        this -> _py            = part.py; 
+        this -> _pz            = part.pz; 
+
+        this -> _pt            = part.pt; 
+        this -> _eta           = part.eta; 
+        this -> _phi           = part.phi; 
+
+        this -> _mass          = part.mass; 
+        this -> _charge        = part.charge; 
+        
+        this -> _pdgid         = part.pdgid; 
+        this -> index         = part.index; 
+        
+        this -> _hash          = part.hash; 
+        this -> _symbol        = part.symbol;
+        this -> pickle_string = part.pickle_string; 
+        
+        this -> lepdef        = part.lepdef; 
+        this -> nudef         = part.nudef; 
+    }
 
     double CyParticleTemplate::e()
     {

@@ -2,10 +2,9 @@ from libcpp.string cimport string
 from libcpp.map cimport map
 from libcpp cimport bool
 
-cdef extern from "event.h":
+cdef extern from "../event/event.h":
 
     struct ExportEventTemplate:
-        map[string, string] keymapping
         map[string, string] leaves
         map[string, string] branches
         map[string, string] trees
@@ -22,11 +21,13 @@ cdef extern from "event.h":
         string commit_hash
         string pickle_string
         string event_hash
+        string ROOT
 
-cdef extern from "event.h" namespace "CyTemplate":
+cdef extern from "../event/event.h" namespace "CyTemplate":
     cdef cppclass CyEventTemplate:
         CyEventTemplate() except +
         ExportEventTemplate MakeMapping() except +
+        void ImportEventData(ExportEventTemplate event) except +
 
         int event_index
         double weight
@@ -38,7 +39,8 @@ cdef extern from "event.h" namespace "CyTemplate":
         string event_tagging
         string event_name
         string commit_hash
-        string pickle_string;
+        string pickle_string
+        string ROOT
 
         string Hash() except +
         void Hash(string inpt) except +
@@ -51,5 +53,4 @@ cdef extern from "event.h" namespace "CyTemplate":
         map[string, string] leaves
         map[string, string] branches
         map[string, string] trees
-
 

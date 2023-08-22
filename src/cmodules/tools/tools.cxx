@@ -41,7 +41,7 @@ std::string join(std::vector<std::string>* inpt, int index_s, int index_e, std::
 {
     std::string out = ""; 
     if (index_e < 0){ index_e = inpt -> size(); }
-    for (unsigned int i(index_s); i < index_e-1; ++i){ out += inpt -> at(i) + delim; }
+    for (int i(index_s); i < index_e-1; ++i){ out += inpt -> at(i) + delim; }
     out += inpt -> at(index_e-1); 
     return out; 
 }
@@ -50,6 +50,8 @@ int count(std::string inpt, std::string search)
 {
     int index = 0; 
     int s_size = search.length(); 
+    if (!s_size){return 0;}
+
     std::string::size_type i = inpt.find(search); 
     while ( i != std::string::npos)
     {
@@ -72,8 +74,4 @@ std::vector<std::vector<std::string>> Quantize(const std::vector<std::string>& v
     }
     return out; 
 }
-
-
-
-
 

@@ -1,2 +1,2 @@
-from AnalysisG.Templates.EventTemplate import EventTemplate
-from AnalysisG.Templates.ParticleTemplate import ParticleTemplate
+from AnalysisG._cmodules.EventTemplate import EventTemplate
+from AnalysisG._cmodules.ParticleTemplate import ParticleTemplate

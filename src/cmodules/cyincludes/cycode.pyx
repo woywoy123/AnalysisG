@@ -1,7 +1,7 @@
 # distuils: language = c++
 # cython: language_level = 3
-from cycode cimport CyCode
 from libcpp.string cimport string
+from cycode cimport CyCode, ExportCode
 from libcpp cimport bool
 from libcpp cimport map
 
@@ -58,7 +58,13 @@ cdef class Code:
     def __eq__(self, other) -> bool:
         if not self.is_self(other): return False
         cdef Code o = other
-        return self.ptr[0]==o.ptr
+        return self.ptr==o.ptr
+
+    def __getstate__(self) -> ExportCode:
+        return self.ptr.MakeMapping()
+
+    def __setstate__(self, inpt):
+        pass
 
     def is_self(self, inpt) -> bool:
         return isinstance(inpt, Code)
@@ -88,8 +94,7 @@ cdef class Code:
                 sys.modules[self._x.__module__].__file__
                 ), "r").read()
 
-        try:
-            self.object_code = inspect.getsource(self._x)
+        try: self.object_code = inspect.getsource(self._x)
         except TypeError: 
             self.object_code = inspect.getsource(self._x.__class__)
 
@@ -132,3 +137,5 @@ cdef class Code:
         self.ptr.Hash()
         return env(self.ptr.hash)
 
+    def add_dependency(self, ExportCode inpt):
+        self.ptr.dependency[inpt.hash] = inpt

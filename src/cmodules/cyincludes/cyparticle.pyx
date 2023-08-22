@@ -6,6 +6,7 @@ from libcpp.vector cimport vector
 from libcpp.map cimport map, pair
 from libcpp cimport bool
 from typing import Union
+import pickle
 
 cdef string enc(str val): return val.encode("UTF-8")
 cdef str env(string val): return val.decode("UTF-8")
@@ -44,13 +45,20 @@ cdef class ParticleTemplate:
         self.ptr.iadd(other.ptr)
         return self
 
-    def __getstate__(self) -> dict:
+    def __getstate__(self) -> ExportParticleTemplate:
         cdef ExportParticleTemplate x = self.ptr.MakeMapping()
         cdef str key
-        cdef dict out = {"__Export__" : x}
+        cdef dict out = {}
         for key in self.__dict__:
             out[key] = self.__dict__[key]
-        return out
+        x.pickle_string = pickle.dumps(out)
+        return x
+
+    def __setstate__(self, ExportParticleTemplate inpt):
+        self.ptr.ImportParticleData(inpt)
+        cdef dict pkl = pickle.loads(inpt.pickle_string)
+        cdef str key;
+        for key in pkl: setattr(self, key, pkl[key])
 
     def __hash__(self):
         return int(self.hash[:8], 0)

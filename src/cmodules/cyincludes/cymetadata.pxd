@@ -3,16 +3,13 @@ from libcpp.vector cimport vector
 from libcpp.map cimport map
 from libcpp cimport bool
 
-cdef extern from "metadata.h":
-
+cdef extern from "../metadata/metadata.h":
     struct ExportMetaData:
 
         string hash
         string original_input
         string original_path
         string original_name
-        unsigned int threads
-        unsigned int chunks
 
         vector[string] req_trees
         vector[string] req_branches
@@ -165,10 +162,4 @@ cdef extern from "metadata.h" namespace "SampleTracer":
         vector[string] fileGUID
         vector[int] events
         vector[double] fileSize
-
-
-
-
-
-
 
