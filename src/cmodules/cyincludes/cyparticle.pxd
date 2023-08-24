@@ -3,39 +3,17 @@ from libcpp.vector cimport vector
 from libcpp.map cimport map
 from libcpp cimport bool
 
-cdef extern from "../particle/particle.h":
-
-    struct ExportParticleTemplate:
-        double e
-
-        double px
-        double py
-        double pz
-
-        double pt
-        double eta
-        double phi
-
-        double mass
-        double charge
-
-        int pdgid
-        int index
-
-        string hash
-        string symbol
-        string pickle_string
-
-        vector[int] lepdef
-        vector[int] nudef
+from cytypes cimport particle_t
 
 cdef extern from "particle.h" namespace "CyTemplate":
     cdef cppclass CyParticleTemplate:
         CyParticleTemplate() except +
         CyParticleTemplate(double px, double py, double pz, double e) except +
         CyParticleTemplate(double px, double py, double pz) except +
-        ExportParticleTemplate MakeMapping() except +
-        void ImportParticleData(ExportParticleTemplate part) except +
+
+        particle_t Export() except +
+        void Import(particle_t part) except +
+        double DeltaR(CyParticleTemplate* p) except +
 
         double e() except +
         void e(double val) except +
@@ -56,7 +34,7 @@ cdef extern from "particle.h" namespace "CyTemplate":
         bool is_nu() except +
         bool is_b() except +
         bool is_add() except +
-        bool lep_decay() except +
+        bool lep_decay(vector[particle_t]) except +
 
         double px() except +
         double py() except +
@@ -78,14 +56,9 @@ cdef extern from "particle.h" namespace "CyTemplate":
         void addleaf(string key, string leaf) except +
 
         CyParticleTemplate* operator+(CyParticleTemplate* p) except +
-        bool operator==(CyParticleTemplate* p) except +
+        bool operator == (CyParticleTemplate* p) except +
         void iadd(CyParticleTemplate* p) except +
 
-        string type
-        int index
-        vector[int] lepdef
-        vector[int] nudef
-        map[string, CyParticleTemplate*] children
-        map[string, CyParticleTemplate*] parent
+        particle_t state
         map[string, string] leaves
 

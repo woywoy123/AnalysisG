@@ -1,7 +1,9 @@
 # distuils: language = c++
 # cython: language_level = 3
 
-from cyevent cimport CyEventTemplate, ExportEventTemplate
+from cyevent cimport CyEventTemplate
+from cytypes cimport meta_t, event_T
+
 from libcpp.string cimport string
 from libcpp.map cimport map, pair
 from libcpp cimport bool
@@ -19,37 +21,38 @@ cdef class EventTemplate:
         self.ptr = new CyEventTemplate()
         self.Objects = {}
 
-    def __init__(self):
-        self.ptr.event_name = enc(self.__class__.__name__)
+    def __init__(self, meta_data = None):
+        cdef str x = self.__class__.__name__
+        self.ptr.add_eventname(enc(x))
+        if meta_data is None: return
+        cdef meta_t meta = meta_data
+        self.ImportMetaData(meta)
 
-    def __dealloc__(self):
-        del self.ptr
-
-    def __name__(self) -> str:
-        return env(self.ptr.event_name)
-
-    def __hash__(self) -> int:
-        return int(self.hash[:8], 0)
+    def __dealloc__(self): del self.ptr
+    def __name__(self) -> str: return env(self.ptr.event.event_name)
+    def __hash__(self) -> int: return int(self.hash[:8], 0)
 
     def __eq__(self, other) -> bool:
         if not self.is_self(other): return False
         cdef EventTemplate o = other
         return self.ptr == o.ptr
 
-    def __getstate__(self) -> ExportEventTemplate:
-        cdef ExportEventTemplate x = self.ptr.MakeMapping()
+    def __getstate__(self) -> event_T:
+        cdef event_T x = self.ptr.Export()
         cdef str key
-        cdef dict out = {}
+        cdef string pkl
         for key in self.__dict__:
-            out[key] = self.__dict__[key]
-        x.pickle_string = pickle.dumps(out)
+            pkl = pickle.dumps(self.__dict__[key])
+            x.pickled_data[enc(key)] = pkl
         return x
 
-    def __setstate__(self, ExportEventTemplate inpt):
-        self.ptr.ImportEventData(inpt)
-        cdef dict pkl = pickle.loads(inpt.pickle_string)
-        cdef str key;
-        for key in pkl: setattr(self, key, pkl[key])
+    def __setstate__(self, event_T inpt):
+        self.ptr.Import(inpt)
+        cdef pair[string, string] pkl
+        cdef str key
+        for pkl in inpt.pickled_data:
+            key = env(pkl.first)
+            setattr(self, key, pickle.loads(pkl.second))
 
     def __getleaves__(self) -> dict:
         cdef str i
@@ -79,7 +82,7 @@ cdef class EventTemplate:
         cdef str key, tree, typ_, leaf
 
         for tree in self.Trees:
-            event = self.clone()
+            event = self.clone(inpt["MetaData"])
             event.__getleaves__()
             objects.update({"event" : event})
             objects.update(objects["event"].Objects)
@@ -118,7 +121,7 @@ cdef class EventTemplate:
             if event.index == -1: event.index = inpt["EventIndex"]
             else: inpt["MetaData"].eventNumber = event.index
             event.ROOT = inpt["MetaData"].DatasetName + "/" + inpt["MetaData"].DAOD
-            event.hash = event.ROOT
+            event.hash
         return list(output.values())
 
     def __build__(self, dict variables):
@@ -140,63 +143,64 @@ cdef class EventTemplate:
         if isinstance(inpt, EventTemplate): return True
         return issubclass(inpt.__class__, EventTemplate)
 
-    def clone(self) -> EventTemplate:
+    def clone(self, meta = None) -> EventTemplate:
         v = self.__new__(self.__class__)
-        v.__init__()
+        v.__init__(meta)
         return v
 
     def CompileEvent(self): pass
 
     @property
-    def hash(self) -> str: return env(self.ptr.Hash())
-
-    @hash.setter
-    def hash(self, str val): self.ptr.Hash(enc(val))
-
-    @property
-    def index(self) -> int: return self.ptr.event_index
+    def index(self) -> int:
+        return self.ptr.event.event_index
 
     @index.setter
     def index(self, val: Union[str, int]):
-        try: self.ptr.event_index = val
+        try: self.ptr.event.event_index = val
         except TypeError: self.ptr.addleaf(b'index', enc(val))
 
     @property
-    def weight(self) -> double: return self.ptr.weight
+    def weight(self) -> double:
+        return self.ptr.event.weight
 
     @weight.setter
     def weight(self, val: Union[str, double]):
-        try: self.ptr.weight = val
+        try: self.ptr.event.weight = val
         except TypeError: self.ptr.addleaf(b'weight', enc(val))
 
-
     @property
-    def deprecated(self) -> bool: return self.ptr.deprecated
+    def deprecated(self) -> bool:
+        return self.ptr.event.deprecated
 
     @deprecated.setter
-    def deprecated(self, bool val): self.ptr.deprecated = val
-
+    def deprecated(self, bool val):
+        self.ptr.event.deprecated = val
 
     @property
-    def CommitHash(self) -> str: return env(self.ptr.commit_hash)
+    def CommitHash(self) -> str:
+        return env(self.ptr.event.commit_hash)
 
     @CommitHash.setter
     def CommitHash(self, str val):
-        self.ptr.commit_hash = enc(val)
+        self.ptr.event.commit_hash = enc(val)
 
 
     @property
-    def Tag(self) -> str: return env(self.ptr.event_tagging)
+    def Tag(self) -> str:
+        return env(self.ptr.event.event_tagging)
 
     @Tag.setter
-    def Tag(self, str val): self.ptr.event_tagging = enc(val)
+    def Tag(self, str val):
+        self.ptr.event.event_tagging = enc(val)
 
 
     @property
-    def Tree(self) -> str: return env(self.ptr.event_tree)
+    def Tree(self) -> str:
+        return env(self.ptr.event.event_tree)
 
     @Tree.setter
-    def Tree(self, str val): self.ptr.event_tree = enc(val)
+    def Tree(self, str val):
+        self.ptr.event.event_tree = enc(val)
 
     @property
     def Trees(self) -> list:
@@ -207,9 +211,9 @@ cdef class EventTemplate:
     def Trees(self, val: Union[str, list]):
         cdef str i
         if isinstance(val, str):
-            self.ptr.trees[enc(val)] = enc("Tree")
+            self.ptr.addtree(enc(val), b'Tree')
         elif isinstance(val, list):
-            for i in val: self.ptr.trees[enc(i)] = enc(i)
+            for i in val: self.Trees = i
         else: pass
 
     @property
@@ -220,16 +224,29 @@ cdef class EventTemplate:
     @Branches.setter
     def Branches(self, val: Union[str, list]):
         if isinstance(val, str):
-            self.ptr.branches[enc(val)] = enc("Branches")
+            self.ptr.addbranch(enc(val), b'Branch')
         elif isinstance(val, list):
-            for i in val: self.ptr.branches[enc(i)] = enc(i)
+            for i in val: self.Branches = i
         else: pass
 
     @property
-    def cached(self) -> bool: return self.ptr.cached
+    def cached(self) -> bool:
+        return self.ptr.event.cached
+
+    @cached.setter
+    def cached(self, bool val) -> bool:
+        self.ptr.event.cached = val
 
     @property
-    def ROOT(self) -> str: return env(self.ptr.ROOT)
+    def ROOT(self) -> str:
+        return env(self.ptr.event.event_root)
 
     @ROOT.setter
-    def ROOT(self, str val): self.ptr.ROOT = enc(val)
+    def ROOT(self, str val):
+        self.ptr.event.event_root = enc(val)
+
+    @property
+    def hash(self) -> str:
+        return env(self.ptr.Hash())
+
+

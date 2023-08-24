@@ -1,128 +1,94 @@
 #include "../particle/particle.h"
-#include "../tools/tools.h"
 #include <cmath>
 
 namespace CyTemplate
 {
     CyParticleTemplate::CyParticleTemplate(){}
+
+    CyParticleTemplate::CyParticleTemplate(particle_t p)
+    {
+        this -> state = p; 
+    }
+
     CyParticleTemplate::CyParticleTemplate(
             double px, double py, double pz, double e) 
     {
-        this -> _px = px; 
-        this -> _py = py; 
-        this -> _pz = pz; 
-        this -> _e = e; 
-        this -> _polar = true; 
+        particle_t* p = &(this -> state); 
+        p -> px = px; 
+        p -> py = py; 
+        p -> pz = pz; 
+        p -> e = e; 
+        p -> polar = true; 
     }
 
     CyParticleTemplate::CyParticleTemplate(
             double px, double py, double pz)
     {
-        this -> _px = px; 
-        this -> _py = py; 
-        this -> _pz = pz; 
+        particle_t* p = &(this -> state); 
+        p -> px = px; 
+        p -> py = py; 
+        p -> pz = pz; 
         this -> e(); 
-        this -> _polar = true; 
+        p -> polar = true; 
     }
 
     CyParticleTemplate::~CyParticleTemplate(){}
 
-    ExportParticleTemplate CyParticleTemplate::MakeMapping()
+    particle_t CyParticleTemplate::Export()
     {
-        ExportParticleTemplate tmp; 
-        tmp.e = this -> e(); 
-
-        tmp.px = this -> px();
-        tmp.py = this -> py(); 
-        tmp.pz = this -> pz(); 
-
-        tmp.pt = this -> pt(); 
-        tmp.eta = this -> eta(); 
-        tmp.phi = this -> phi(); 
-
-        tmp.mass = this -> mass(); 
-        tmp.charge = this -> charge(); 
-        
-        tmp.pdgid = this -> pdgid(); 
-        tmp.index = this -> index; 
-        
-        tmp.hash = this -> hash(); 
-        tmp.symbol = this -> symbol();
-        tmp.pickle_string = this -> pickle_string; 
-        
-        tmp.lepdef = this -> lepdef; 
-        tmp.nudef = this -> nudef; 
-        return tmp; 
+        return this -> state; 
     }
     
-    void CyParticleTemplate::ImportParticleData(ExportParticleTemplate part)
+    void CyParticleTemplate::Import(particle_t part)
     {
-        this -> _e             = part.e; 
-
-        this -> _px            = part.px;
-        this -> _py            = part.py; 
-        this -> _pz            = part.pz; 
-
-        this -> _pt            = part.pt; 
-        this -> _eta           = part.eta; 
-        this -> _phi           = part.phi; 
-
-        this -> _mass          = part.mass; 
-        this -> _charge        = part.charge; 
-        
-        this -> _pdgid         = part.pdgid; 
-        this -> index         = part.index; 
-        
-        this -> _hash          = part.hash; 
-        this -> _symbol        = part.symbol;
-        this -> pickle_string = part.pickle_string; 
-        
-        this -> lepdef        = part.lepdef; 
-        this -> nudef         = part.nudef; 
+        this -> state = part;
     }
 
     double CyParticleTemplate::e()
     {
-        if (this -> _e >= 0){return this -> _e;}
-        this -> _e += std::pow(this -> px(), 2); 
-        this -> _e += std::pow(this -> py(), 2); 
-        this -> _e += std::pow(this -> pz(), 2); 
-        this -> _e  = std::pow(this -> _e, 0.5); 
-        return this -> _e; 
+        particle_t* p = &(this -> state); 
+        if (p -> e >= 0){return p -> e;}
+        p -> e += std::pow(this -> px(), 2); 
+        p -> e += std::pow(this -> py(), 2); 
+        p -> e += std::pow(this -> pz(), 2); 
+        p -> e  = std::pow(p -> e, 0.5); 
+        return p -> e; 
     }
 
     void CyParticleTemplate::e(double val)
     { 
-        this -> _e = val; 
+        this -> state.e = val; 
     }
 
     void CyParticleTemplate::mass(double val)
     { 
-        this -> _mass = val; 
+        this -> state.mass = val; 
     }
 
     double CyParticleTemplate::mass()
     {
-        if (this -> _mass > -1){ return this -> _mass; }
-        this -> _mass = 0; 
-        this -> _mass -= std::pow(this -> px(), 2); 
-        this -> _mass -= std::pow(this -> py(), 2); 
-        this -> _mass -= std::pow(this -> pz(), 2); 
-        this -> _mass += std::pow(this -> e() , 2); 
-        this -> _mass = (this -> _mass >= 0) ? std::pow(this -> _mass, 0.5) : -1; 
-        return this -> _mass; 
+        particle_t* p = &(this -> state); 
+        if (p -> mass > -1){ return p -> mass; }
+        p -> mass = 0; 
+        p -> mass -= std::pow(this -> px(), 2); 
+        p -> mass -= std::pow(this -> py(), 2); 
+        p -> mass -= std::pow(this -> pz(), 2); 
+        p -> mass += std::pow(this -> e() , 2); 
+        p -> mass = (p -> mass >= 0) ? std::pow(p -> mass, 0.5) : -1; 
+        return p -> mass; 
     }
 
     void CyParticleTemplate::symbol(std::string val)
     {
-        this -> _symbol = val;
+        this -> state.symbol = val;
     }
 
     std::string CyParticleTemplate::symbol()
     {
-        if ((this -> _symbol).size() != 0)
+        particle_t* p = &(this -> state); 
+        if ((p -> symbol).size() != 0)
         { 
-            return this -> _symbol; 
+            return p -> symbol; 
         }
         
         std::map<int, std::string> sym = {
@@ -135,20 +101,21 @@ namespace CyTemplate
         }; 
 
         std::stringstream ss; 
-        ss << sym[std::abs(this -> _pdgid)];
+        ss << sym[std::abs(p -> pdgid)];
         return ss.str(); 
     }
 
 
     void CyParticleTemplate::pdgid(int val)
     {
-        this -> _pdgid = val; 
+        this -> state.pdgid = val; 
     }
 
     int CyParticleTemplate::pdgid()
     {
-        if (this -> _pdgid != 0){ return this -> _pdgid; }
-        if ((this -> _symbol).size() == 0){ return this -> _pdgid; }
+        particle_t* p = &(this -> state); 
+        if (p -> pdgid != 0){ return p -> pdgid; }
+        if (p -> symbol.size() == 0){ return p -> pdgid; }
         
         std::map<int, std::string> sym = {
                  {1, "d"}, {2, "u"}, {3, "s"}, 
@@ -161,51 +128,52 @@ namespace CyTemplate
         std::map<int, std::string>::iterator it; 
         for (it = sym.begin(); it != sym.end(); ++it)
         {
-            if (it -> second != this -> _symbol){continue;}
-            this -> _pdgid = it -> first; 
+            if (it -> second != p -> symbol){continue;}
+            p -> pdgid = it -> first; 
             break; 
         }
-        return this -> _pdgid;  
+        return p -> pdgid;  
     }
 
     void CyParticleTemplate::charge(double val)
     {
-        this -> _charge = val;
+        this -> state.charge = val;
     }
 
     double CyParticleTemplate::charge()
     {
-        return this -> _charge;
+        return this -> state.charge;
     }
 
     bool CyParticleTemplate::is(std::vector<int> p)
     {
         for (int i : p)
         { 
-            if (std::abs(i) != std::abs(this -> _pdgid)){} 
+            if (std::abs(i) != std::abs(this -> state.pdgid)){} 
             else {return true;}
         }
         return false; 
     }
     bool CyParticleTemplate::is_b()  { return this -> is({5}); }
-    bool CyParticleTemplate::is_nu() { return this -> is(this -> nudef); }
-    bool CyParticleTemplate::is_lep(){ return this -> is(this -> lepdef); }
+    bool CyParticleTemplate::is_nu() { return this -> is(this -> state.nudef); }
+    bool CyParticleTemplate::is_lep(){ return this -> is(this -> state.lepdef); }
     bool CyParticleTemplate::is_add()
     { 
         bool out = (this -> is_lep() || this -> is_nu() || this -> is_b()); 
         return !out; 
     }
 
-    bool CyParticleTemplate::lep_decay()
+    bool CyParticleTemplate::lep_decay(std::vector<particle_t> inpt)
     {
         bool nu  = false; 
         bool lep = false; 
-        std::map<std::string, CyParticleTemplate*>::iterator it; 
-        for (it = this -> children.begin(); it != this -> children.end(); ++it)
+        for (particle_t x : inpt)
         {
-            if (!nu) { nu  = it -> second -> is_nu() ; continue; }
-            if (!lep){ lep = it -> second -> is_lep(); continue; }
+            CyParticleTemplate* p = new CyParticleTemplate(x); 
+            if (!nu) { nu  = p -> is_nu() ; continue; }
+            if (!lep){ lep = p -> is_lep(); continue; }
             if (lep && nu){ return true; }
+            delete p; 
         }
         return false;
     }
@@ -213,112 +181,112 @@ namespace CyTemplate
     // Cartesian Conversion functions
     void CyParticleTemplate::ToCartesian() 
     {
-        if (!this -> _cartesian){ return; }
-        this -> _px = (this -> _pt)*std::cos(this -> _phi); 
-        this -> _py = (this -> _pt)*std::sin(this -> _phi); 
-        this -> _pz = (this -> _pt)*std::sinh(this -> _eta); 
-        this -> _cartesian = false; 
+        particle_t* p = &(this -> state); 
+        if (!p -> cartesian){ return; }
+        p -> px = (p -> pt)*std::cos(p -> phi); 
+        p -> py = (p -> pt)*std::sin(p -> phi); 
+        p -> pz = (p -> pt)*std::sinh(p -> eta); 
+        p -> cartesian = false; 
     }
     
     double CyParticleTemplate::px()
     {
         this -> ToCartesian(); 
-        return this -> _px;
+        return this -> state.px;
     }
     double CyParticleTemplate::py()
     {
         this -> ToCartesian(); 
-        return this -> _py;
+        return this -> state.py;
     }
     double CyParticleTemplate::pz()
     {
         this -> ToCartesian(); 
-        return this -> _pz;
+        return this -> state.pz;
     }
 
     // Polar Conversion functions
     void CyParticleTemplate::ToPolar()
     {
-        if (!this -> _polar){ return; }
+        particle_t* p = &(this -> state); 
+        if (!p -> polar){ return; }
 
         // Transverse Momenta
-        this -> _pt  = std::pow(this -> _px, 2); 
-        this -> _pt += std::pow(this -> _py, 2);
-        this -> _pt  = std::pow(this -> _pt, 0.5); 
+        p -> pt  = std::pow(p -> px, 2); 
+        p -> pt += std::pow(p -> py, 2);
+        p -> pt  = std::pow(p -> pt, 0.5); 
 
         // Rapidity 
-        this -> _eta = std::asinh(this -> _pz/this -> _pt); 
-        this -> _phi = std::atan2(this -> _py, this -> _px);  
-        this -> _polar = false; 
+        p -> eta = std::asinh(p -> pz / p -> pt); 
+        p -> phi = std::atan2(p -> py, p -> px);  
+        p -> polar = false; 
     }
 
     double CyParticleTemplate::pt()
     {
         this -> ToPolar(); 
-        return this -> _pt;
+        return this -> state.pt;
     }
     double CyParticleTemplate::eta()
     {
         this -> ToPolar(); 
-        return this -> _eta;
+        return this -> state.eta;
     }
     double CyParticleTemplate::phi()
     {
         this -> ToPolar(); 
-        return this -> _phi;
+        return this -> state.phi;
     }
 
     void CyParticleTemplate::px(double val)
     { 
-        this -> _px = val; 
-        this -> _polar = true; 
+        this -> state.px = val; 
+        this -> state.polar = true; 
     }
 
     void CyParticleTemplate::py(double val)
     { 
-        this -> _py = val; 
-        this -> _polar = true; 
+        this -> state.py = val; 
+        this -> state.polar = true; 
     }
     
     void CyParticleTemplate::pz(double val)
     { 
-        this -> _pz = val; 
-        this -> _polar = true; 
+        this -> state.pz = val; 
+        this -> state.polar = true; 
     }
     
     // Polar Conversion functions
     void CyParticleTemplate::pt(double val)
     { 
-        this -> _pt = val; 
-        this -> _cartesian = true;
+        this -> state.pt = val; 
+        this -> state.cartesian = true;
     }
     
     void CyParticleTemplate::eta(double val)
     { 
-        this -> _eta = val; 
-        this -> _cartesian = true; 
+        this -> state.eta = val; 
+        this -> state.cartesian = true; 
     }
     
     void CyParticleTemplate::phi(double val)
     { 
-        this -> _phi = val; 
-        this -> _cartesian = true; 
+        this -> state.phi = val; 
+        this -> state.cartesian = true; 
     }
 
     std::string CyParticleTemplate::hash()
     {
-        if ((this -> _hash).size() != 0)
-        {
-            return this -> _hash;
-        }
+        particle_t* p = &(this -> state); 
+        if ((p -> hash).size()){return p -> hash;}
 
         this -> ToCartesian(); 
-        this -> _hash  = ToString(this -> _px); 
-        this -> _hash += ToString(this -> _py); 
-        this -> _hash += ToString(this -> _pz);
-        this -> _hash += ToString(this -> _e); 
-        this -> _hash  = Hashing(this -> _hash); 
-        return this -> _hash; 
+        p -> hash  = Tools::ToString(p -> px); 
+        p -> hash += Tools::ToString(p -> py); 
+        p -> hash += Tools::ToString(p -> pz);
+        p -> hash += Tools::ToString(p -> e); 
+        p -> hash  = Tools::Hashing(p -> hash); 
+        return p -> hash; 
     }
 
     void CyParticleTemplate::addleaf(std::string key, std::string leaf)
@@ -326,58 +294,31 @@ namespace CyTemplate
         this -> leaves[key] = leaf; 
     }
 
-    CyParticleTemplate* CyParticleTemplate::operator+(CyParticleTemplate* p)
+    CyParticleTemplate* CyParticleTemplate::operator + (CyParticleTemplate* p)
     {
         p -> ToCartesian(); 
         CyParticleTemplate* p2 = new CyParticleTemplate(
-                p -> _px + this -> px(), 
-                p -> _py + this -> py(), 
-                p -> _pz + this -> pz(), 
-                p -> _e  + this -> e()
+                p -> px() + this -> px(), 
+                p -> py() + this -> py(), 
+                p -> pz() + this -> pz(), 
+                p -> e()  + this -> e()
         ); 
+
         p2 -> ToCartesian(); 
         p2 -> ToPolar(); 
-        p2 -> type = this -> type; 
-        p2 -> children = this -> children; 
-        p2 -> parent = this -> parent; 
-
-        std::map<std::string, CyParticleTemplate*>::iterator it; 
-        for (it = p -> children.begin(); it != p -> children.end(); ++it)
-        {
-            if (p2 -> children.count(it -> first) != 0){continue;}
-            p2 -> children[it -> first] = it -> second;
-        }
-
-        for (it = p -> parent.begin(); it != p -> parent.end(); ++it)
-        {
-            if (p2 -> parent.count(it -> first) != 0){continue;}
-            p2 -> parent[it -> first] = it -> second;
-        }
+        p2 -> state.type = this -> state.type; 
         return p2; 
     }
 
-    void CyParticleTemplate::operator+=(CyParticleTemplate* p)
+    void CyParticleTemplate::operator += (CyParticleTemplate* p)
     {
         p -> ToCartesian(); 
         this -> ToCartesian();
 
-        this -> _px += p -> _px; 
-        this -> _py += p -> _py; 
-        this -> _pz += p -> _pz; 
-        this -> _e  += p -> _e; 
-        
-        std::map<std::string, CyParticleTemplate*>::iterator it; 
-        for (it = p -> children.begin(); it != p -> children.end(); ++it)
-        {
-            if (this -> children.count(it -> first) != 0){continue;}
-            this -> children[it -> first] = it -> second;
-        }
-
-        for (it = p -> parent.begin(); it != p -> parent.end(); ++it)
-        {
-            if (this -> parent.count(it -> first) != 0){continue;}
-            this -> parent[it -> first] = it -> second;
-        }
+        this -> state.px += p -> px(); 
+        this -> state.py += p -> py(); 
+        this -> state.pz += p -> pz(); 
+        this -> state.e  += p -> e(); 
     }
 
     void CyParticleTemplate::iadd(CyParticleTemplate* p)
@@ -385,9 +326,19 @@ namespace CyTemplate
         *this += p; 
     }
 
-    bool CyParticleTemplate::operator==(CyParticleTemplate* p)
+    bool CyParticleTemplate::operator == (CyParticleTemplate* p)
     {
         return this -> hash() == p -> hash(); 
     }
 
+    double CyParticleTemplate::DeltaR(CyParticleTemplate* p)
+    {
+        double sum = fabs( this -> phi() - p -> phi());
+        sum = fmod(sum, 2*M_PI); 
+        sum = M_PI - fabs(sum - M_PI); 
+        sum = std::pow(sum, 2);
+        sum += std::pow(this -> eta() - p -> eta(), 2); 
+        sum = std::pow(sum, 0.5); 
+        return sum; 
+    }
 }

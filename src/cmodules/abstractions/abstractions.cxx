@@ -1,7 +1,6 @@
-#include "../tools/tools.h"
-#include <vector>
+#include "../abstractions/abstractions.h"
 
-std::string Hashing(std::string input)
+std::string Tools::Hashing(std::string input)
 {
     std::hash<std::string> hasher; 
     std::stringstream ss; 
@@ -13,14 +12,14 @@ std::string Hashing(std::string input)
     return out; 
 }
 
-std::string ToString(double inpt)
+std::string Tools::ToString(double inpt)
 {
     std::stringstream ss; 
     ss << inpt; 
     return ss.str(); 
 }
 
-std::vector<std::string> split(std::string inpt, std::string search)
+std::vector<std::string> Tools::split(std::string inpt, std::string search)
 {
     size_t pos = 0;
     size_t s_dim = search.length(); 
@@ -37,7 +36,7 @@ std::vector<std::string> split(std::string inpt, std::string search)
     return out; 
 }
 
-std::string join(std::vector<std::string>* inpt, int index_s, int index_e, std::string delim)
+std::string Tools::join(std::vector<std::string>* inpt, int index_s, int index_e, std::string delim)
 {
     std::string out = ""; 
     if (index_e < 0){ index_e = inpt -> size(); }
@@ -46,7 +45,7 @@ std::string join(std::vector<std::string>* inpt, int index_s, int index_e, std::
     return out; 
 }
 
-int count(std::string inpt, std::string search)
+int Tools::count(std::string inpt, std::string search)
 {
     int index = 0; 
     int s_size = search.length(); 
@@ -61,7 +60,7 @@ int count(std::string inpt, std::string search)
     return index; 
 }
 
-std::vector<std::vector<std::string>> Quantize(const std::vector<std::string>& v, int N)
+std::vector<std::vector<std::string>> Tools::Quantize(const std::vector<std::string>& v, int N)
 {
     int n = v.size(); 
     int size_max = n/N + (n % N != 0); 
@@ -75,3 +74,38 @@ std::vector<std::vector<std::string>> Quantize(const std::vector<std::string>& v
     return out; 
 }
 
+namespace Abstraction
+{
+    CyBase::CyBase(){}
+    CyBase::~CyBase(){}
+    void CyBase::Hash(std::string inpt)
+    {
+        if ((this -> hash).size()){ return; }
+        this -> hash = Tools::Hashing( inpt ); 
+    }
+
+    CyEvent::CyEvent(){}
+    CyEvent::~CyEvent(){}
+
+    void CyEvent::ImportMetaData(meta_t meta)
+    {
+        this -> meta = meta;
+    }
+
+    std::string CyEvent::Hash()
+    {
+        std::string event_hash = this -> event.event_hash; 
+        if (event_hash.size()){ return event_hash; }
+        
+        event_t* event = &(this -> event); 
+        event_hash  = event -> event_root + "/"; 
+        event_hash += Tools::ToString(event -> event_index) + "/"; 
+        event -> event_hash = Tools::Hashing(event_hash);  
+        return event -> event_hash; 
+    } 
+
+    void CyEvent::add_eventname(std::string event)
+    {
+        this -> event.event_name = event; 
+    }
+}

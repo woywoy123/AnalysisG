@@ -70,11 +70,13 @@ def test_tracer_addEvent():
         if root not in roothashes: roothashes[root] = []
         roothashes[root] += [p.hash for p in trees]
 
-    exit()
     assert len_tru + len_nom == len(tr)
 
     # Test iterator
     for i in tr: assert i.hash == hashes[i.hash].hash
+
+    exit()
+
 
     # Test Getter Functions
     for i in hashes:

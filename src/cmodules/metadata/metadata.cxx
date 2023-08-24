@@ -1,4 +1,3 @@
-#include "../tools/tools.h"
 #include "../metadata/metadata.h"
 
 namespace SampleTracer
@@ -6,32 +5,24 @@ namespace SampleTracer
     CyMetaData::CyMetaData(){}
     CyMetaData::~CyMetaData(){}
 
+    meta_t CyMetaData::Export(){return this -> container;}
+    void CyMetaData::Import(meta_t meta){this -> container = meta;}
+
     void CyMetaData::addsamples(int index, int range, std::string sample)
     {
-        this -> inputfiles[index] = sample;
-        this -> inputrange[index] = range;
+        this -> container.inputfiles[index] = sample;
+        this -> container.inputrange[index] = range;
     }
 
     void CyMetaData::addconfig(std::string key, std::string val)
     {
-        this -> config[key] = val;
+        this -> container.config[key] = val;
     }
 
-    void CyMetaData::hashing()
+    void CyMetaData::Hash()
     {
-        this -> hash = Hashing(ToString(this -> dsid));
-    }
-
-    std::string CyMetaData::IndexToSample(int index)
-    {
-        std::map<int, std::string>::iterator it;
-        std::map<int, std::string>* x = &(this -> inputfiles);
-        for (it = x -> begin(); it != x -> end(); ++it)
-        {
-            if (index >= this -> inputrange[it -> first]){continue;}
-            return it -> second;
-        }
-        return "";
+        std::string dsid = Tools::ToString(this -> container.dsid); 
+        this -> CyBase::Hash(dsid);
     }
 
     void CyMetaData::processkeys(std::vector<std::string> keys, unsigned int num)
@@ -43,11 +34,11 @@ namespace SampleTracer
             for (unsigned int i(0); i < req -> size(); ++i)
             {
                 std::string tmp = req -> at(i);
-                if (!count(key, tmp)){ continue; }
+                if (!Tools::count(key, tmp)){ continue; }
                 for (unsigned x(0); x < tokens -> size(); ++x)
                 {
                     std::string tok = tokens -> at(x);
-                    if (!count(tok, tmp + ";") && tmp != tok){continue;}
+                    if (!Tools::count(tok, tmp + ";") && tmp != tok){continue;}
                     res -> push_back(tmp);
                     res -> push_back(tok);
                     return;
@@ -59,190 +50,143 @@ namespace SampleTracer
                 std::vector<std::string>* r_tree,
                 std::vector<std::string>* r_branch,
                 std::vector<std::string>* r_leaf,
-                std::vector<std::string> keys, std::vector<Collect>* tree)
+                std::string key, collect_t* tr)
         {
-            for (unsigned int i(0); i < keys.size(); ++i)
-            {
-                std::vector<std::string> _tree = {};
-                std::vector<std::string> _branch = {};
-                std::vector<std::string> _leaf = {};
+            std::vector<std::string> _tree = {};
+            std::vector<std::string> _branch = {};
+            std::vector<std::string> _leaf = {};
 
-                std::vector<std::string> tokens = split(keys.at(i), "/");
-                scanthis(r_tree  , &tokens, &_tree  , keys.at(i));
-                scanthis(r_branch, &tokens, &_branch, keys.at(i));
-                scanthis(r_leaf  , &tokens, &_leaf  , keys.at(i));
+            std::vector<std::string> tokens = Tools::split(key, "/");
+            scanthis(r_tree  , &tokens, &_tree  , key);
+            scanthis(r_branch, &tokens, &_branch, key);
+            scanthis(r_leaf  , &tokens, &_leaf  , key);
 
-                bool lx = _leaf.size() > 0;
-                bool bx = _branch.size() > 0;
-                bool tx = _tree.size() > 0;
+            bool lx = _leaf.size() > 0;
+            bool bx = _branch.size() > 0;
+            bool tx = _tree.size() > 0;
 
-                Collect* tr = &(tree -> at(i));
-                tr -> valid = lx + bx + tx;
-                tr ->  lf_requested = (lx) ? _leaf[0]   : "";
-                tr ->  lf_matched   = (lx) ? _leaf[1]   : "";
-                tr ->  lf_path      = (lx) ? join(&tokens, 1, -1, "/") : "";
+            tr -> valid = lx + bx + tx;
+            tr ->  lf_requested = (lx) ? _leaf[0]   : "";
+            tr ->  lf_matched   = (lx) ? _leaf[1]   : "";
+            tr ->  lf_path      = (lx) ? Tools::join(&tokens, 1, -1, "/") : "";
 
-                tr ->  br_requested = (bx) ? _branch[0] : "";
-                tr ->  br_matched   = (bx) ? _branch[1] : "";
+            tr ->  br_requested = (bx) ? _branch[0] : "";
+            tr ->  br_matched   = (bx) ? _branch[1] : "";
 
-                tr ->  tr_requested = (tx) ? _tree[0] : "";
-                tr ->  tr_matched   = (tx) ? _tree[1] : "";
+            tr ->  tr_requested = (tx) ? _tree[0] : "";
+            tr ->  tr_matched   = (tx) ? _tree[1] : "";
 
-                tokens.clear();
-            }
+            tokens.clear();
         };
 
-        std::vector<std::string>* tr = &(this -> req_trees);
-        std::vector<std::string>* br = &(this -> req_branches);
-        std::vector<std::string>* lf = &(this -> req_leaves);
+        std::vector<std::string>* tr = &(this -> container.req_trees);
+        std::vector<std::string>* br = &(this -> container.req_branches);
+        std::vector<std::string>* lf = &(this -> container.req_leaves);
 
-        std::vector<std::vector<std::string>> quant = Quantize(keys, this -> chunks);
-        std::vector<std::vector<Collect>*> check = {};
+        std::vector<collect_t> check = {};
         std::vector<std::thread*> jbs = {};
 
-        for (unsigned int i(0); i < quant.size(); ++i)
+        for (unsigned int i(0); i < keys.size(); ++i)
         {
-            Collect x;
-            std::vector<Collect>* f = new std::vector<Collect>(quant[i].size(), x);
-            check.push_back(f);
+            collect_t x;
+            check.push_back(x);
 
-            std::thread* p = new std::thread(search, tr, br, lf, quant[i], f);
+            std::thread* p = new std::thread(search, tr, br, lf, keys[i], &check[i]);
             jbs.push_back(p);
         }
 
         for (std::thread* t : jbs){ t -> join(); delete t; }
         jbs = {};
 
-        for (unsigned int i(0); i < check.size(); ++i)
+        std::map<std::string, tree_t>* trees = &(this -> container.trees);
+        std::map<std::string, branch_t>* branches = &(this -> container.branches);
+        std::map<std::string, leaf_t>* leaves = &(this -> container.leaves);
+
+        for (unsigned int x(0); x < check.size(); ++x)
         {
-            std::vector<Collect> vec = *check[i];
-            for (unsigned int x(0); x < vec.size(); ++x)
+            collect_t* col = &check[x];
+            std::string tr_get = col -> tr_requested;
+            std::string br_get = col -> br_requested;
+            std::string lf_get = col -> lf_requested;
+            if (!col -> valid){continue;}
+
+            if (!trees -> count(tr_get) && tr_get.size())
             {
-                Collect* col = &vec[x];
-                std::string tr_get = col -> tr_requested;
-                std::string br_get = col -> br_requested;
-                std::string lf_get = col -> lf_requested;
-                if (!col -> valid){continue;}
-
-                if (!this -> trees.count(tr_get) && tr_get.size())
-                {
-                    Tree tmp;
-                    tmp.size = num;
-                    tmp.requested = col -> tr_requested;
-                    tmp.matched   = col -> tr_matched;
-                    this -> trees[tr_get] = tmp;
-                }
-
-                if (!this -> branches.count(tr_get) && br_get.size())
-                {
-                    Branch tmp;
-                    tmp.requested = col -> br_requested;
-                    tmp.matched   = col -> br_matched;
-                    this -> branches[br_get] = tmp;
-                }
-
-                if (!this -> leaves.count(lf_get) && lf_get.size())
-                {
-                    Leaf tmp;
-                    tmp.requested = col -> lf_requested;
-                    tmp.matched   = col -> lf_matched;
-                    tmp.path      = col -> lf_path;
-                    this -> leaves[lf_get] = tmp;
-                }
-
-
-                // Do the linking here
-                if (lf_get.size())
-                {
-                    Leaf* lfc = &leaves[lf_get];
-                    if (br_get.size()){ this -> branches[br_get].leaves.push_back(lfc); }
-                    if (tr_get.size()){ this ->    trees[tr_get].leaves.push_back(lfc); }
-                    lfc -> branch_name = br_get;
-                    lfc -> tree_name = tr_get;
-                }
-
-                if (br_get.size())
-                {
-                    Branch* brc = &branches[br_get];
-                    if (tr_get.size()){ this -> trees[tr_get].branches.push_back(brc); }
-                    brc -> tree_name = tr_get;
-                }
+                tree_t tmp;
+                tmp.size = num;
+                tmp.requested = col -> tr_requested;
+                tmp.matched   = col -> tr_matched;
+                (*trees)[tr_get] = tmp;
             }
-            delete check[i];
+
+            if (!branches -> count(tr_get) && br_get.size())
+            {
+                branch_t tmp;
+                tmp.requested = col -> br_requested;
+                tmp.matched   = col -> br_matched;
+                (*branches)[br_get] = tmp;
+            }
+
+            if (!leaves -> count(lf_get) && lf_get.size())
+            {
+                leaf_t tmp;
+                tmp.requested = col -> lf_requested;
+                tmp.matched   = col -> lf_matched;
+                tmp.path      = col -> lf_path;
+                (*leaves)[lf_get] = tmp;
+            }
+
+
+            // Do the linking here
+            if (lf_get.size())
+            {
+                leaf_t* lfc = &(leaves -> at(lf_get));
+                lfc -> branch_name = br_get;
+                lfc -> tree_name = tr_get;
+
+                if (br_get.size()){ (*branches)[br_get].leaves.push_back(*lfc); }
+                if (tr_get.size()){ (*trees)[tr_get].leaves.push_back(*lfc); }
+            }
+
+            if (br_get.size())
+            {
+                branch_t* brc = &branches -> at(br_get);
+                brc -> tree_name = tr_get;
+                if (tr_get.size()){ trees -> at(tr_get).branches.push_back(*brc); }
+            }
         }
     }
 
     void CyMetaData::FindMissingKeys()
     {
-        std::vector<std::string> r_trees = this -> req_trees;
-        std::vector<std::string> r_branches = this -> req_branches;
-        std::vector<std::string> r_leaves = this -> req_leaves;
+        std::vector<std::string>* r_trees      = &(this -> container.req_trees);
+        std::vector<std::string>* m_trees      = &(this -> container.mis_trees);
+        std::map<std::string, tree_t>* f_trees = &(this -> container.trees);
+        this -> _check_this(r_trees, m_trees, f_trees); 
 
-        for (unsigned int x(0); x < r_trees.size(); ++x)
-        {
-            std::string tree = r_trees[x];
-            if (this -> trees.count(tree)){continue;}
-            this -> mis_trees.push_back(tree);
-        }
+        std::vector<std::string>* r_branches      = &(this -> container.req_branches);
+        std::vector<std::string>* m_branches      = &(this -> container.mis_branches);
+        std::map<std::string, branch_t>* f_branches = &(this -> container.branches);
+        this -> _check_this(r_branches, m_branches, f_branches); 
 
-        for (unsigned int x(0); x < r_branches.size(); ++x)
-        {
-            std::string branch = r_branches[x];
-            if (this -> branches.count(branch)){continue;}
-            this -> mis_branches.push_back(branch);
-        }
-
-        for (unsigned int x(0); x < r_leaves.size(); ++x)
-        {
-            std::string leaf = r_leaves[x];
-            if (this -> leaves.count(leaf)){continue;}
-            this -> mis_leaves.push_back(leaf);
-        }
-
-        this -> req_trees = {};
-        std::map<std::string, Tree>::iterator it_tr = this -> trees.begin();
-        for ( ;it_tr != this -> trees.end(); ++it_tr)
-        {
-            this -> req_trees.push_back(it_tr -> first);
-        }
-
-        this -> req_branches = {};
-        std::map<std::string, Branch>::iterator it_br = this -> branches.begin();
-        for ( ;it_br != this -> branches.end(); ++it_br)
-        {
-            this -> req_branches.push_back(it_br -> first);
-        }
-
-        this -> req_leaves = {};
-        std::map<std::string, Leaf>::iterator it_lf = this -> leaves.begin();
-        for ( ;it_lf != this -> leaves.end(); ++it_lf)
-        {
-            this -> req_leaves.push_back(it_lf -> first);
-        }
-    }
-
-    std::map<std::string, int> CyMetaData::GetLength()
-    {
-        std::map<std::string, Tree>::iterator it;
-        std::map<std::string, int> index = {};
-        for (it = this -> trees.begin(); it != this -> trees.end(); ++it)
-        {
-            index[it -> first] = it -> second.size;
-        }
-        return index;
+        std::vector<std::string>* r_leaves      = &(this -> container.req_leaves);
+        std::vector<std::string>* m_leaves      = &(this -> container.mis_leaves);
+        std::map<std::string, leaf_t>* f_leaves = &(this -> container.leaves);
+        this -> _check_this(r_leaves, m_leaves, f_leaves); 
     }
 
     std::map<std::string, std::vector<std::string>> CyMetaData::MakeGetter()
     {
-        std::map<std::string, Tree> trees = this -> trees;
-        std::map<std::string, Tree>::iterator it;
         std::map<std::string, std::vector<std::string>> output = {};
-        for (it = trees.begin(); it != trees.end(); ++it)
+
+        std::map<std::string, tree_t>* trees = &(this -> container.trees);
+        std::map<std::string, tree_t>::iterator it = trees -> begin();
+        for (; it != trees -> end(); ++it)
         {
             output[it -> first] = {};
             for (unsigned int x(0); x < it -> second.leaves.size(); ++x)
             {
-                Leaf* _lf = it -> second.leaves[x];
+                leaf_t* _lf = &(it -> second.leaves[x]);
                 std::string get = _lf -> path;
                 output[it -> first].push_back(get);
             }
@@ -250,139 +194,80 @@ namespace SampleTracer
         return output;
     }
 
-    ExportMetaData CyMetaData::MakeMapping()
+    std::map<std::string, int> CyMetaData::GetLength()
     {
-        ExportMetaData tmp;
-
-        tmp.hash                    = this -> hash;
-        tmp.original_input          = this -> original_input;
-        tmp.original_path           = this -> original_path;
-        tmp.original_name           = this -> original_name;
-        tmp.req_trees               = this -> req_trees;
-        tmp.req_branches            = this -> req_branches;
-        tmp.req_leaves              = this -> req_leaves;
-        tmp.mis_trees               = this -> mis_trees;
-        tmp.mis_branches            = this -> mis_branches;
-        tmp.mis_leaves              = this -> mis_leaves;
-
-        tmp.dsid                    = this -> dsid;
-        tmp.AMITag                  = this -> AMITag;
-        tmp.generators              = this -> generators;
-        tmp.isMC                    = this -> isMC;
-        tmp.derivationFormat        = this -> derivationFormat;
-        tmp.inputrange              = this -> inputrange;
-        tmp.inputfiles              = this -> inputfiles;
-        tmp.config                  = this -> config;
-        tmp.eventNumber             = this -> eventNumber;
-        tmp.event_index             = this -> event_index;
-        tmp.found                   = this -> found;
-        tmp.DatasetName             = this -> DatasetName;
-        tmp.ecmEnergy               = this -> ecmEnergy;
-        tmp.genFiltEff              = this -> genFiltEff;
-        tmp.completion              = this -> completion;
-        tmp.beam_energy             = this -> beam_energy;
-        tmp.crossSection            = this -> crossSection;
-        tmp.crossSection_mean       = this -> crossSection_mean;
-        tmp.totalSize               = this -> totalSize;
-        tmp.nFiles                  = this -> nFiles;
-        tmp.run_number              = this -> run_number;
-        tmp.totalEvents             = this -> totalEvents;
-        tmp.datasetNumber           = this -> datasetNumber;
-        tmp.identifier              = this -> identifier;
-        tmp.prodsysStatus           = this -> prodsysStatus;
-        tmp.dataType                = this -> dataType;
-        tmp.version                 = this -> version;
-        tmp.PDF                     = this -> PDF;
-        tmp.AtlasRelease            = this -> AtlasRelease;
-        tmp.principalPhysicsGroup   = this -> principalPhysicsGroup;
-        tmp.physicsShort            = this -> physicsShort;
-        tmp.generatorName           = this -> generatorName;
-        tmp.geometryVersion         = this -> geometryVersion;
-        tmp.conditionsTag           = this -> conditionsTag;
-        tmp.generatorTune           = this -> generatorTune;
-        tmp.amiStatus               = this -> amiStatus;
-        tmp.beamType                = this -> beamType;
-        tmp.productionStep          = this -> productionStep;
-        tmp.projectName             = this -> projectName;
-        tmp.statsAlgorithm          = this -> statsAlgorithm;
-        tmp.genFilterNames          = this -> genFilterNames;
-        tmp.file_type               = this -> file_type;
-        tmp.keywords                = this -> keywords;
-        tmp.weights                 = this -> weights;
-        tmp.keyword                 = this -> keyword;
-        tmp.LFN                     = this -> LFN;
-        tmp.fileGUID                = this -> fileGUID;
-        tmp.events                  = this -> events;
-        tmp.fileSize                = this -> fileSize;
-
-        return tmp;
+        std::map<std::string, int> index = {};
+        std::map<std::string, tree_t>* trees = &(this -> container.trees); 
+        std::map<std::string, tree_t>::iterator it = trees -> begin();
+        for (; it != trees -> end(); ++it)
+        {
+            index[it -> first] = it -> second.size;
+        }
+        return index;
     }
- 
-    void CyMetaData::ImportMetaData(ExportMetaData meta)
+
+    std::string CyMetaData::IndexToSample(int index)
     {
-        ExportMetaData tmp;
-
-        this -> hash                    = meta.hash;
-        this -> original_input          = meta.original_input;
-        this -> original_path           = meta.original_path;
-        this -> original_name           = meta.original_name;
-        this -> req_trees               = meta.req_trees;
-        this -> req_branches            = meta.req_branches;
-        this -> req_leaves              = meta.req_leaves;
-        this -> mis_trees               = meta.mis_trees;
-        this -> mis_branches            = meta.mis_branches;
-        this -> mis_leaves              = meta.mis_leaves;
-
-        this -> dsid                    = meta.dsid;
-        this -> AMITag                  = meta.AMITag;
-        this -> generators              = meta.generators;
-        this -> isMC                    = meta.isMC;
-        this -> derivationFormat        = meta.derivationFormat;
-        this -> inputrange              = meta.inputrange;
-        this -> inputfiles              = meta.inputfiles;
-        this -> config                  = meta.config;
-        this -> eventNumber             = meta.eventNumber;
-        this -> event_index             = meta.event_index;
-        this -> found                   = meta.found;
-        this -> DatasetName             = meta.DatasetName;
-
-        this -> ecmEnergy               = meta.ecmEnergy;
-        this -> genFiltEff              = meta.genFiltEff;
-        this -> completion              = meta.completion;
-        this -> beam_energy             = meta.beam_energy;
-        this -> crossSection            = meta.crossSection;
-        this -> crossSection_mean       = meta.crossSection_mean;
-        this -> totalSize               = meta.totalSize;
-        this -> nFiles                  = meta.nFiles;
-        this -> run_number              = meta.run_number;
-        this -> totalEvents             = meta.totalEvents;
-        this -> datasetNumber           = meta.datasetNumber;
-        this -> identifier              = meta.identifier;
-        this -> prodsysStatus           = meta.prodsysStatus;
-        this -> dataType                = meta.dataType;
-        this -> version                 = meta.version;
-        this -> PDF                     = meta.PDF;
-        this -> AtlasRelease            = meta.AtlasRelease;
-        this -> principalPhysicsGroup   = meta.principalPhysicsGroup;
-        this -> physicsShort            = meta.physicsShort;
-        this -> generatorName           = meta.generatorName;
-        this -> geometryVersion         = meta.geometryVersion;
-        this -> conditionsTag           = meta.conditionsTag;
-        this -> generatorTune           = meta.generatorTune;
-        this -> amiStatus               = meta.amiStatus;
-        this -> beamType                = meta.beamType;
-        this -> productionStep          = meta.productionStep;
-        this -> projectName             = meta.projectName;
-        this -> statsAlgorithm          = meta.statsAlgorithm;
-        this -> genFilterNames          = meta.genFilterNames;
-        this -> file_type               = meta.file_type;
-        this -> keywords                = meta.keywords;
-        this -> weights                 = meta.weights;
-        this -> keyword                 = meta.keyword;
-        this -> LFN                     = meta.LFN;
-        this -> fileGUID                = meta.fileGUID;
-        this -> events                  = meta.events;
-        this -> fileSize                = meta.fileSize;
+        std::map<int, std::string>::iterator it;
+        std::map<int, std::string>* x = &(this -> container.inputfiles);
+        std::map<int, int>* ranges = &(this -> container.inputrange); 
+        for (it = x -> begin(); it != x -> end(); ++it)
+        {
+            int iter = it -> first;
+            if (index >= ranges -> at(iter)){continue;}
+            return it -> second;
+        }
+        return this -> container.original_name;     
     }
+
+    std::string CyMetaData::DatasetName()
+    {
+        meta_t* con = &(this -> container); 
+        if (con -> DatasetName.size()){ return con -> DatasetName; }
+        std::map<int, std::string>::iterator it; 
+        it = con -> inputfiles.begin();  
+
+        std::string dsid = Tools::ToString( con -> dsid ); 
+        std::vector<std::string> col = {}; 
+        for (; it != con -> inputfiles.end(); ++it)
+        {
+            std::string f_name = it -> second; 
+            if (!Tools::count( f_name, dsid )){continue;} 
+            col.push_back(f_name); 
+        }
+        if (!col.size()){ return con -> DatasetName; }
+        for (std::string token : Tools::split(col[0], "/"))
+        {
+            if (!Tools::count( token, dsid )){continue;}
+            con -> DatasetName = token; 
+            return con -> DatasetName; 
+        }
+        return con -> DatasetName; 
+    }; 
+
+    std::vector<std::string> CyMetaData::DAODList()
+    {
+        meta_t* con = &(this -> container); 
+        std::vector<std::string> out; 
+
+        if (con -> LFN.size())
+        { 
+            std::map<std::string, int>::iterator it; 
+            it = con -> LFN.begin(); 
+            for (; it != con -> LFN.end(); ++it)
+            {
+                out.push_back(it -> first); 
+            }
+            return out; 
+        }
+        std::map<int, std::string>::iterator itr; 
+        itr = con -> inputfiles.begin();
+        for (; itr != con -> inputfiles.end(); ++itr)
+        {
+            out.push_back( itr -> second ); 
+        }
+        return out; 
+    }; 
+
 
 }

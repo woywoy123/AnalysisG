@@ -1,11 +1,13 @@
 # distuils: language = c++
 # cython: language_level = 3
 
-from cymetadata cimport CyMetaData, ExportMetaData
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 from libcpp.map cimport map, pair
 from libcpp cimport bool
+
+from cymetadata cimport CyMetaData
+from cytypes cimport meta_t
 
 try:
     import pyAMI
@@ -28,39 +30,34 @@ cdef class MetaData:
     cdef public bool loaded
     cdef public client
     cdef public str sampletype
-    cdef public str _hash
     cdef public bool scan_ami
+    cdef meta_t meta
 
     def __cinit__(self):
         self.ptr = new CyMetaData()
         self.client = None
 
     def __init__(self, str file, bool scan_ami = True, str sampletype = "DAOD_TOPQ1"):
-        self.ptr.original_input = enc(file)
-        self.ptr.original_name = enc(file.split("/")[-1])
-        self.ptr.original_path = enc("/".join(file.split("/")[:-1]))
-
+        self.original_input = file
         self.sampletype = sampletype
         self.loaded = True
         self.scan_ami = scan_ami
 
-        if not scan_ami:
-            self._getMetaData(file)
-            return
+        if not scan_ami: self._getMetaData(file)
+        else:
+            warnings.filterwarnings("ignore")
+            try: self.client = pyAMI.client.Client("atlas")
+            except: pass
+            self.loaded = self._getMetaData(file)
+        self.ptr.Import(self.meta)
 
-        warnings.filterwarnings("ignore")
-        try: self.client = pyAMI.client.Client("atlas")
-        except: pass
-        self.loaded = self._getMetaData(file)
-
-    def __dealloc__(self):
-        del self.ptr
-
-
-    def __getstate__(self):
-        cdef ExportMetaData tmp = self.ptr.MakeMapping()
-        return tmp
-
+    def __dealloc__(self): del self.ptr
+    def __getstate__(self) -> meta_t: return self.ptr.Export()
+    def __setstate__(self, meta_t val): self.ptr.Import(val)
+    def __hash__(self): return int(self.hash[:8], 0)
+    def __eq__(self, other):
+        if not issubclass(other, MetaData): return False
+        else: return self.hash == other.hash
 
     def __str__(self) -> str:
         cdef str i = ""
@@ -69,14 +66,6 @@ cdef class MetaData:
             if k.startswith("_"): continue
             i += k + " : " + str(getattr(self, k)) + "\n"
         return i
-
-    def __hash__(self):
-        self.ptr.hashing()
-        return int(env(self.ptr.hash)[:8], 0)
-
-    def __eq__(self, other):
-        if not issubclass(other.__class__, MetaData): return False
-        return self._hash == other._hash
 
     def _getMetaData(self, str file) -> bool:
         if not file.endswith(".root"): return False
@@ -105,20 +94,19 @@ cdef class MetaData:
                 "how" : dict, "library" : "np"
         }
 
-
         cdef bool k1 = True
         cdef bool k2 = True
         cdef bool k3 = True
 
         cdef dict out = self._get(command)
-        try: self.ptr.dsid = out["dsid"]
+        try: self.dsid = out["dsid"]
         except KeyError: k1 = False
-        self.ptr.hashing()
+        self.hash
 
-        try: self.ptr.AMITag = enc(out["AMITag"])
+        try: self.amitag = out["AMITag"]
         except KeyError: k2 = False
 
-        try: self.ptr.generators = enc(out["generators"].replace("+", " "))
+        try: self.generators = out["generators"]
         except KeyError: k3 = False
         if not k1 and not k2 and not k3: return False
         return True
@@ -141,8 +129,8 @@ cdef class MetaData:
 
         t = json.loads("\n".join([k for k in f if "BtagCDIPath" not in k]))
         this = t["inputConfig"]
-        self.ptr.isMC = this["isMC"]
-        self.ptr.derivationFormat = enc(this["derivationFormat"])
+        self.isMC = this["isMC"]
+        self.derivationFormat = this["derivationFormat"]
 
         this = t["configSettings"]
         for x in this: self.ptr.addconfig(enc(x), enc(this[x]))
@@ -158,47 +146,22 @@ cdef class MetaData:
                 "expressions" : ["eventNumber"],
                 "how" : dict, "library" : "np"
         }
-        try: self.ptr.eventNumber = self._get(command)["eventNumber"]
+        try: self.eventNumber = self._get(command)["eventNumber"]
         except KeyError: return False
         return True
 
     def _populate(self, inpt):
-        self.ptr.ecmEnergy         = float(inpt["ecmEnergy"])
-        self.ptr.genFiltEff        = float(inpt["genFiltEff"])
-        self.ptr.completion        = float(inpt["completion"])
-        self.ptr.beam_energy       = float(inpt["beam_energy"])
-        self.ptr.crossSection      = float(inpt["crossSection"])
-        self.ptr.crossSection_mean = float(inpt["crossSection_mean"])
-        self.ptr.totalSize         = float(inpt["totalSize"])
+        for key in inpt:
+            if key == "run_number": continue
+            if key == "keywords": continue
+            if key == "keyword": continue
+            if key == "weights": continue
+            setattr(self, key, inpt[key])
 
-        self.ptr.nFiles        = int(inpt["nFiles"])
-        self.ptr.run_number    = int(inpt["run_number"][1:-1])
-        self.ptr.totalEvents   = int(inpt["totalEvents"])
-        self.ptr.datasetNumber = int(inpt["datasetNumber"])
-
-        self.ptr.identifier            = enc(inpt["identifier"])
-        self.ptr.prodsysStatus         = enc(inpt["prodsysStatus"])
-        self.ptr.dataType              = enc(inpt["dataType"])
-        self.ptr.version               = enc(inpt["version"])
-        self.ptr.PDF                   = enc(inpt["PDF"])
-        self.ptr.AtlasRelease          = enc(inpt["AtlasRelease"])
-        self.ptr.principalPhysicsGroup = enc(inpt["principalPhysicsGroup"])
-        self.ptr.physicsShort          = enc(inpt["physicsShort"])
-        self.ptr.generatorName         = enc(inpt["generatorName"])
-        self.ptr.geometryVersion       = enc(inpt["geometryVersion"])
-        self.ptr.conditionsTag         = enc(inpt["conditionsTag"])
-        self.ptr.generatorTune         = enc(inpt["generatorTune"])
-        self.ptr.amiStatus             = enc(inpt["amiStatus"])
-        self.ptr.beamType              = enc(inpt["beamType"])
-        self.ptr.productionStep        = enc(inpt["productionStep"])
-        self.ptr.projectName           = enc(inpt["projectName"])
-        self.ptr.statsAlgorithm        = enc(inpt["statsAlgorithm"])
-        self.ptr.genFilterNames        = enc(inpt["genFilterNames"])
-        self.ptr.file_type             = enc(inpt["file_type"])
-
-        self.ptr.keywords = [enc(v) for v in inpt["keywords"].replace(" ", "").split(",")]
-        self.ptr.keyword  = [enc(v) for v in inpt["keyword"].replace(" ", "").split(",")]
-        self.ptr.weights  = [enc(v.lstrip(" ").rstrip(" ")) for v in inpt["weights"].split("|")][:-1]
+        self.run_number = inpt["run_number"][1:-1]
+        self.meta.keywords = [enc(v) for v in inpt["keywords"].replace(" ", "").split(",")]
+        self.meta.keyword  = [enc(v) for v in inpt["keyword"].replace(" ", "").split(",")]
+        self.meta.weights  = [enc(v.lstrip(" ").rstrip(" ")) for v in inpt["weights"].split("|")][:-1]
 
     def _search(self) -> bool:
         def _sig(signum, frame): return ""
@@ -211,35 +174,34 @@ cdef class MetaData:
         cdef list x
         try:
             x = atlas.list_datasets(
-                self.client, dataset_number = [str(self.ptr.dsid)], type = self.sampletype
+                self.client, dataset_number = [str(self.dsid)], type = self.sampletype
             )
         except pyAMI.exception.Error: return False
 
         cdef dict t
         cdef list tags
-        cdef str sample, v, tag
+        cdef str sample, v
         cdef int index
 
-        tag = env(self.ptr.AMITag)
-        tags = list(set(tag.split("_")))
+        tags = list(set(self.amitag.split("_")))
         for i in x:
             try: sample = i["ldn"]
             except KeyError: continue
 
             if len([v for v in tags if v in sample]) != len(tags): continue
 
-            self.ptr.DatasetName = enc(sample)
-            self.ptr.found = True
+            self.DatasetName = sample
+            self.meta.found = True
             self._populate(atlas.get_dataset_info(self.client, sample)[0])
 
             index = 0
             for k in atlas.list_files(self.client, sample):
-                self.ptr.LFN[enc(k["LFN"])] = index
-                self.ptr.fileGUID.push_back(enc(k["fileGUID"]))
-                self.ptr.events.push_back(int(k["events"]))
-                self.ptr.fileSize.push_back(float(k["fileSize"]))
+                self.meta.LFN[enc(k["LFN"])] = index
+                self.meta.fileGUID.push_back(enc(k["fileGUID"]))
+                self.meta.events.push_back(int(k["events"]))
+                self.meta.fileSize.push_back(float(k["fileSize"]))
                 index += 1
-        return self.ptr.found
+        return self.meta.found
 
     def IndexToSample(self, int index) -> str:
         return env(self.ptr.IndexToSample(index))
@@ -261,6 +223,387 @@ cdef class MetaData:
             output[env(it.first)] = [env(i) for i in it.second]
         return output
 
+    # Attributes with getter and setter
+    @property
+    def Trees(self) -> list:
+        return [env(i) for i in self.meta.req_trees]
+
+    @Trees.setter
+    def Trees(self, list val):
+        self.meta.req_trees = [enc(i) for i in val]
+
+    @property
+    def Branches(self) -> list:
+        return [env(i) for i in self.meta.req_branches]
+
+    @Branches.setter
+    def Branches(self, list val):
+        self.meta.req_branches = [enc(i) for i in val]
+
+    @property
+    def Leaves(self) -> list:
+        return [env(i) for i in self.meta.req_leaves]
+
+    @Leaves.setter
+    def Leaves(self, list val):
+        self.meta.req_leaves = [enc(i) for i in val]
+
+    @property
+    def original_input(self) -> str:
+        return env(self.meta.original_input)
+
+    @original_input.setter
+    def original_input(self, str val):
+        cdef list oth = val.split("/")
+        self.meta.original_input = enc(val)
+        self.meta.original_name = enc(oth[-1])
+        self.meta.original_path = enc("/".join(oth[:-1]))
+
+    @property
+    def dsid(self) -> int:
+        return self.meta.dsid
+
+    @dsid.setter
+    def dsid(self, int val):
+        self.meta.dsid = val
+
+    @property
+    def amitag(self) -> str:
+        return env(self.meta.AMITag)
+
+    @amitag.setter
+    def amitag(self, str val):
+        self.meta.AMITag = enc(val)
+
+    @property
+    def generators(self) -> str:
+        return env(self.meta.generators)
+
+    @generators.setter
+    def generators(self, str val):
+        val = val.replace("+", " ")
+        self.meta.generators = enc(val)
+
+    @property
+    def isMC(self) -> bool:
+        return self.meta.isMC
+
+    @isMC.setter
+    def isMC(self, bool val):
+        self.meta.isMC = val
+
+    @property
+    def derivationFormat(self) -> str:
+        return env(self.meta.derivationFormat)
+
+    @derivationFormat.setter
+    def derivationFormat(self, str val):
+        self.meta.derivationFormat = enc(val)
+
+    @property
+    def eventNumber(self) -> int:
+        return self.meta.eventNumber
+
+    @eventNumber.setter
+    def eventNumber(self, int val):
+        self.meta.eventNumber = val
+
+    @property
+    def ecmEnergy(self) -> float:
+        return self.meta.ecmEnergy
+
+    @ecmEnergy.setter
+    def ecmEnergy(self, val: Union[str, float]):
+        self.meta.ecmEnergy = float(val)
+
+    @property
+    def genFiltEff(self) -> float:
+        return self.meta.genFiltEff
+
+    @genFiltEff.setter
+    def genFiltEff(self, val: Union[str, float]):
+        self.meta.genFiltEff = float(val)
+
+    @property
+    def completion(self) -> float:
+        return self.meta.completion
+
+    @completion.setter
+    def completion(self, val: Union[str, float]):
+        self.meta.completion = float(val)
+
+    @property
+    def beam_energy(self) -> float:
+        return self.meta.beam_energy
+
+    @beam_energy.setter
+    def beam_energy(self, val: Union[str, float]):
+        self.meta.beam_energy = float(val)
+
+    @property
+    def crossSection(self) -> float:
+        return self.meta.crossSection
+
+    @crossSection.setter
+    def crossSection(self, val: Union[str, float]):
+        self.meta.crossSection = float(val)
+
+    @property
+    def crossSection_mean(self) -> float:
+        return self.meta.crossSection_mean
+
+    @crossSection_mean.setter
+    def crossSection_mean(self, val: Union[str, float]):
+        self.meta.crossSection_mean = float(val)
+
+    @property
+    def totalSize(self) -> float:
+        return self.meta.totalSize
+
+    @totalSize.setter
+    def totalSize(self, val: Union[str, float]):
+        self.meta.totalSize = float(val)
+
+    @property
+    def nFiles(self) -> int:
+        return self.meta.nFiles
+
+    @nFiles.setter
+    def nFiles(self, val: Union[str, int]):
+        self.meta.nFiles = int(val)
+
+    @property
+    def run_number(self) -> int:
+        return self.meta.run_number
+
+    @run_number.setter
+    def run_number(self, val: Union[str, int]):
+        self.meta.run_numer = int(val)
+
+    @property
+    def totalEvents(self) -> int:
+        return self.meta.totalEvents
+
+    @totalEvents.setter
+    def totalEvents(self, val: Union[str, int]):
+        self.meta.totalEvents = int(val)
+
+    @property
+    def datasetNumber(self) -> int:
+        return self.meta.datasetNumber
+
+    @datasetNumber.setter
+    def datasetNumber(self, val: Union[str, int]):
+        self.meta.datasetNumber = int(val)
+
+    @property
+    def identifier(self) -> str:
+        return env(self.meta.identifier)
+
+    @identifier.setter
+    def identifier(self, str val) -> str:
+        self.meta.identifier = enc(val)
+
+    @property
+    def prodsysStatus(self) -> str:
+        return env(self.meta.prodsysStatus)
+
+    @prodsysStatus.setter
+    def prodsysStatus(self, str val) -> str:
+        self.meta.prodsysStatus = enc(val)
+
+    @property
+    def dataType(self) -> str:
+        return env(self.meta.dataType)
+
+    @dataType.setter
+    def dataType(self, str val) -> str:
+        self.meta.dataType = enc(val)
+
+    @property
+    def version(self) -> str:
+        return env(self.meta.version)
+
+    @version.setter
+    def version(self, str val):
+        self.meta.version = enc(val)
+
+    @property
+    def PDF(self) -> str:
+        return env(self.meta.PDF)
+
+    @PDF.setter
+    def PDF(self, str val):
+        self.meta.PDF = enc(val)
+
+    @property
+    def AtlasRelease(self) -> str:
+        return env(self.meta.AtlasRelease)
+
+    @AtlasRelease.setter
+    def AtlasRelease(self, str val):
+        self.meta.AtlasRelease = enc(val)
+
+    @property
+    def principalPhysicsGroup(self) -> str:
+        return env(self.meta.principalPhysicsGroup)
+
+    @principalPhysicsGroup.setter
+    def principalPhysicsGroup(self, str val):
+        self.meta.principalPhysicsGroup = enc(val)
+
+    @property
+    def physicsShort(self) -> str:
+        return env(self.meta.physicsShort)
+
+    @physicsShort.setter
+    def physicsShort(self, str val):
+        self.meta.physicsShort = enc(val)
+
+    @property
+    def generatorName(self) -> str:
+        return env(self.meta.generatorName)
+
+    @generatorName.setter
+    def generatorName(self, str val):
+        self.meta.generatorName = enc(val)
+
+    @property
+    def geometryVersion(self) -> str:
+        return env(self.meta.geometryVersion)
+
+    @geometryVersion.setter
+    def geometryVersion(self, str val):
+        self.meta.geometryVersion = enc(val)
+
+    @property
+    def conditionsTag(self) -> str:
+        return env(self.meta.conditionsTag)
+
+    @conditionsTag.setter
+    def conditionsTag(self, str val) -> str:
+        self.meta.conditionsTag = enc(val)
+
+    @property
+    def generatorTune(self) -> str:
+        return env(self.meta.generatorTune)
+
+    @generatorTune.setter
+    def generatorTune(self, str val):
+        self.meta.generatorTune = enc(val)
+
+    @property
+    def amiStatus(self) -> str:
+        return env(self.meta.amiStatus)
+
+    @amiStatus.setter
+    def amiStatus(self, str val):
+        self.meta.amiStatus = enc(val)
+
+    @property
+    def beamType(self) -> str:
+        return env(self.meta.beamType)
+
+    @beamType.setter
+    def beamType(self, str val):
+        self.meta.beamType = enc(val)
+
+    @property
+    def productionStep(self) -> str:
+        return env(self.meta.productionStep)
+
+    @productionStep.setter
+    def productionStep(self, str val):
+        self.meta.productionStep = enc(val)
+
+    @property
+    def projectName(self) -> str:
+        return env(self.meta.projectName)
+
+    @projectName.setter
+    def projectName(self, str val):
+        self.meta.projectName = enc(val)
+
+    @property
+    def statsAlgorithm(self) -> str:
+        return env(self.meta.statsAlgorithm)
+
+    @statsAlgorithm.setter
+    def statsAlgorithm(self, str val):
+        self.meta.statsAlgorithm = enc(val)
+
+    @property
+    def genFilterNames(self) -> str:
+        return env(self.meta.genFilterNames)
+
+    @genFilterNames.setter
+    def genFilterNames(self, str val) -> str:
+        self.meta.genFilterNames = enc(val)
+
+    @property
+    def file_type(self) -> str:
+        return env(self.meta.file_type)
+
+    @file_type.setter
+    def file_type(self, str val):
+        self.meta.file_type = enc(val)
+
+    @property
+    def DatasetName(self) -> str:
+        return env(self.ptr.DatasetName())
+
+    @DatasetName.setter
+    def DatasetName(self, str val):
+        self.meta.DatasetName = enc(val)
+
+    @property
+    def event_index(self) -> int:
+        return self.meta.event_index
+
+    @event_index.setter
+    def event_index(self, int val):
+        self.meta.event_index = val
+
+
+
+
+    # constant properties
+    @property
+    def original_name(self) -> str:
+        return env(self.meta.original_name)
+
+    @property
+    def original_path(self) -> str:
+        return env(self.meta.original_path)
+
+    @property
+    def hash(self) -> str:
+        self.ptr.Hash()
+        return env(self.ptr.hash)
+
+    @property
+    def keywords(self) -> list:
+        return [env(i) for i in self.meta.keywords]
+
+    @property
+    def weights(self) -> list:
+        return [env(i) for i in self.meta.weights]
+
+    @property
+    def keyword(self) -> list:
+        return [env(i) for i in self.meta.keyword]
+
+    @property
+    def found(self) -> bool:
+        return self.meta.found
+
+    @property
+    def config(self) -> dict:
+        cdef pair[string, string] it
+        cdef dict out = {}
+        for it in self.meta.config: out[env(it.first)] = env(it.second)
+        return out
+
     @property
     def GetLengthTrees(self) -> dict:
         cdef map[string, int] x = self.ptr.GetLength()
@@ -270,221 +613,56 @@ cdef class MetaData:
 
     @property
     def MissingTrees(self) -> list:
-        return [env(i) for i in self.ptr.mis_trees]
+        return [env(i) for i in self.meta.mis_trees]
 
     @property
     def MissingBranches(self) -> list:
-        return [env(i) for i in self.ptr.mis_branches]
+        return [env(i) for i in self.meta.mis_branches]
 
     @property
     def MissingLeaves(self) -> list:
-        return [env(i) for i in self.ptr.mis_leaves]
+        return [env(i) for i in self.meta.mis_leaves]
 
     @property
-    def Trees(self) -> list: return [env(i) for i in self.ptr.req_trees]
-
-    @Trees.setter
-    def Trees(self, list val): self.ptr.req_trees = [enc(i) for i in val]
-
-    @property
-    def Branches(self) -> list: return [env(i) for i in self.ptr.req_branches]
-
-    @Branches.setter
-    def Branches(self, list val): self.ptr.req_branches = [enc(i) for i in val]
-
-    @property
-    def Leaves(self) -> list: return [env(i) for i in self.ptr.req_leaves]
-
-    @Leaves.setter
-    def Leaves(self, list val): self.ptr.req_leaves = [enc(i) for i in val]
-
-
-    @property
-    def inputName(self) -> str: return env(self.ptr.original_input)
-
-    @property
-    def dsid(self) -> int: return self.ptr.dsid
-
-    @property
-    def amitag(self) -> str: return env(self.ptr.AMITag)
-
-    @property
-    def generators(self) -> str: return env(self.ptr.generators)
-
-    @property
-    def isMC(self) -> bool: return self.ptr.isMC
-
-    @property
-    def derivationFormat(self) -> str: return env(self.ptr.derivationFormat)
+    def DAODList(self) -> list:
+        cdef vector[string] out = self.ptr.DAODList()
+        cdef string i
+        return [env(i) for i in out]
 
     @property
     def Files(self) -> dict:
         cdef pair[int, string] it
         cdef dict out = {}
-        for it in self.ptr.inputfiles: out[it.first] = env(it.second)
+        for it in self.meta.inputfiles:
+            out[it.first] = env(it.second)
         return out
-
-    @property
-    def config(self) -> dict:
-        cdef pair[string, string] it
-        cdef dict out = {}
-        for it in self.ptr.config: out[env(it.first)] = env(it.second)
-        return out
-
-    @property
-    def eventNumber(self) -> int: return self.ptr.eventNumber
-
-    @eventNumber.setter
-    def eventNumber(self, int val): self.ptr.eventNumber = val
-
-    @property
-    def event_index(self) -> int: return self.ptr.event_index
-
-    @event_index.setter
-    def event_index(self, int val): self.ptr.event_index = val
-
-    @property
-    def found(self) -> bool: return self.ptr.found
-
-    @property
-    def DatasetName(self) -> str:
-        cdef str dsid, data, i
-        cdef list out
-        if self.ptr.DatasetName.size() == 0:
-            dsid = str(self.dsid)
-            out = [i for i in self.Files.values() if dsid in i]
-            if len(out) == 0: return env(self.ptr.DatasetName)
-            data = [i for i in out[0].split("/") if dsid in i][0]
-            self.ptr.DatasetName = enc(data)
-        return env(self.ptr.DatasetName)
-
-    @property
-    def ecmEnergy(self) -> float: return self.ptr.ecmEnergy
-
-    @property
-    def genFiltEff(self) -> float: return self.ptr.genFiltEff
-
-    @property
-    def completion(self) -> float: return self.ptr.completion
-
-    @property
-    def beam_energy(self) -> float: return self.ptr.beam_energy
-
-    @property
-    def cross_section(self) -> float: return self.ptr.crossSection
-
-    @property
-    def cross_section_mean(self) -> float: return self.ptr.crossSection_mean
-
-    @property
-    def total_size(self) -> float: return self.ptr.totalSize
-
-    @property
-    def nFiles(self) -> int: return self.ptr.nFiles
-
-    @property
-    def run_number(self) -> int: return self.ptr.run_number
-
-    @property
-    def totalEvents(self) -> int: return self.ptr.totalEvents
-
-    @property
-    def datasetNumber(self) -> int: return self.ptr.datasetNumber
-
-    @property
-    def identifier(self) -> str: return env(self.ptr.identifier)
-
-    @property
-    def prodsysStatus(self) -> str: return env(self.ptr.prodsysStatus)
-
-    @property
-    def dataType(self) -> str: return env(self.ptr.dataType)
-
-    @property
-    def version(self) -> str: return env(self.ptr.version)
-
-    @property
-    def PDF(self) -> str: return env(self.ptr.PDF)
-
-    @property
-    def AtlasRelease(self) -> str: return env(self.ptr.AtlasRelease)
-
-    @property
-    def principalPhysicsGroup(self) -> str: return env(self.ptr.principalPhysicsGroup)
-
-    @property
-    def physicsShort(self) -> str: return env(self.ptr.physicsShort)
-
-    @property
-    def generatorName(self) -> str: return env(self.ptr.generatorName)
-
-    @property
-    def geometryVersion(self) -> str: return env(self.ptr.geometryVersion)
-
-    @property
-    def conditionsTag(self) -> str: return env(self.ptr.conditionsTag)
-
-    @property
-    def generatorTune(self) -> str: return env(self.ptr.generatorTune)
-
-    @property
-    def amiStatus(self) -> str: return env(self.ptr.amiStatus)
-
-    @property
-    def beamType(self) -> str: return env(self.ptr.beamType)
-
-    @property
-    def productionStep(self) -> str: return env(self.ptr.productionStep)
-
-    @property
-    def projectName(self) -> str: return env(self.ptr.projectName)
-
-    @property
-    def statsAlgorithm(self) -> str: return env(self.ptr.statsAlgorithm)
-
-    @property
-    def genFilterNames(self) -> str: return env(self.ptr.genFilterNames)
-
-    @property
-    def file_type(self) -> str: return env(self.ptr.file_type)
-
-    @property
-    def keywords(self) -> list: return [env(i) for i in self.ptr.keywords]
-
-    @property
-    def weights(self) -> list: return [env(i) for i in self.ptr.weights]
-
-    @property
-    def keyword(self) -> list: return [env(i) for i in self.ptr.keyword]
-
-    @property
-    def DAODList(self) -> list:
-        cdef pair[string, int] it
-        cdef list l = [env(it.first) for it in self.ptr.LFN]
-        if len(l): return l
-        cdef str key
-        return [key.split("/")[-1] for key in self.Files.values()]
 
     @property
     def DAOD(self) -> str:
-        cdef str out = env(self.ptr.IndexToSample(self.ptr.event_index))
-        if len(out): return out.split("/")[-1]
-        return env(self.ptr.original_name)
-
-    @property
-    def FilePath(self) -> str: return env(self.ptr.original_path)
+        return self.IndexToSample(self.ptr.event_index)
 
     @property
     def fileGUID(self) -> dict:
         cdef pair[string, int] it
-        return {env(it.first) : self.ptr.fileGUID.at(it.second) for it in self.ptr.LFN}
+        cdef dict output = {}
+        cdef string guid
+        for it in self.meta.LFN:
+            guid = self.meta.fileGUID.at(it.second)
+            output[env(it.first)] = env(guid)
+        return output
 
     @property
     def events(self) -> dict:
         cdef pair[string, int] it
-        return {env(it.first) : self.ptr.events.at(it.second) for it in self.ptr.LFN}
+        cdef dict output = {}
+        for it in self.meta.LFN:
+            output[env(it.first)] = self.meta.events.at(it.second)
+        return output
 
     @property
     def fileSize(self) -> dict:
         cdef pair[string, int] it
-        return {env(it.first) : self.ptr.fileSize.at(it.second) for it in self.ptr.LFN}
+        cdef dict output = {}
+        for it in self.meta.LFN:
+            output[env(it.first)] = self.meta.filesSize.at(it.second)
+        return output

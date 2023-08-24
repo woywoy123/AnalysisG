@@ -1,67 +1,50 @@
+#include "../metadata/metadata.h"
+#include "../abstractions/abstractions.h"
+#include "../abstractions/cytypes.h"
+
 #ifndef EVENT_H
 #define EVENT_H
-#include <iostream>
-#include <map>
-
-struct ExportEventTemplate 
-{
-    std::map<std::string, std::string> leaves; 
-    std::map<std::string, std::string> branches; 
-    std::map<std::string, std::string> trees;
- 
-    std::string event_tree; 
-    std::string event_tagging; 
-    std::string event_name; 
-    std::string commit_hash; 
-    std::string pickle_string; 
-    std::string event_hash; 
-    std::string pickled_data; 
-    std::string ROOT; 
-
-    double weight; 
-    bool cached; 
-    bool deprecated;
-
-    int event_index; 
-};
 
 namespace CyTemplate
 {
-    class CyEventTemplate
+    class CyEventTemplate : public Abstraction::CyEvent
     {
         public: 
             CyEventTemplate(); 
-            ~CyEventTemplate(); 
-            ExportEventTemplate MakeMapping(); 
-            void ImportEventData(ExportEventTemplate event);
+            ~CyEventTemplate();
 
-            double weight = 1; 
-            int event_index = -1; 
+            event_T Export(); 
+            void Import(event_T); 
+            void Import(event_t); 
             
-            bool cached = false; 
-            bool deprecated = false; 
-
-            std::string event_tree = ""; 
-            std::string event_tagging = ""; 
-            std::string event_name = ""; 
-            std::string commit_hash = ""; 
-            std::string pickle_string = ""; 
-            std::string ROOT = ""; 
-            
-            std::string Hash(); 
-            void Hash(std::string input); 
             void addleaf(std::string key, std::string leaf); 
             void addbranch(std::string key, std::string branch); 
             void addtree(std::string key, std::string tree); 
             
             bool operator == (CyEventTemplate* ev);
-        
+       
             std::map<std::string, std::string> leaves = {}; 
             std::map<std::string, std::string> branches = {};  
             std::map<std::string, std::string> trees = {}; 
 
-        private:
-            std::string event_hash = ""; 
+    }; 
+
+
+    class CyGraphTemplate : public Abstraction::CyEvent
+    {
+        public:
+            CyGraphTemplate(); 
+            ~CyGraphTemplate(); 
+
+    }; 
+
+
+
+    class CySelectionTemplate : public Abstraction::CyEvent
+    {
+        public:
+            CySelectionTemplate(); 
+            ~CySelectionTemplate(); 
     }; 
 }
 #endif

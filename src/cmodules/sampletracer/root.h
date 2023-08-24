@@ -1,32 +1,49 @@
-#include "../metadata/metadata.h"
+#include "../abstractions/abstractions.h"
+#include "../abstractions/cytypes.h"
 #include "../event/event.h"
 
 #ifndef ROOT_H
 #define ROOT_H
 
-struct Container
-{
-    std::string hash; 
-    std::vector<std::string> event_name; 
-    std::vector<ExportEventTemplate> events; 
-    ExportMetaData meta; 
-};
+using namespace CyTemplate; 
 
 namespace SampleTracer
 {
-    class CyROOT : public CyMetaData
+    class CyBatch
     {
         public:
-            CyROOT(ExportMetaData); 
-            ~CyROOT(); 
-            void AddEvent(ExportEventTemplate event); 
-            std::vector<Container> Scan(std::string get); 
+            CyBatch(); 
+            ~CyBatch(); 
+            void Import(event_t event);
+            void Import(meta_t* meta);  
+            batch_t Export(); 
 
-            std::vector<Container> Export(std::vector<std::string> exp); 
-            std::vector<Container> Export(std::map<std::string, std::map<std::string, CyTemplate::CyEventTemplate*>> exp); 
- 
-            std::map<std::string, std::map<std::string, CyTemplate::CyEventTemplate*>> events;
-            std::map<std::string, unsigned int> n_events; 
+            std::map<std::string, CyEventTemplate*> events; 
+            std::map<std::string, CyGraphTemplate*> graphs; 
+            std::map<std::string, CySelectionTemplate*> selections; 
+           
+        private: 
+            bool lock_meta = false; 
+            meta_t* meta; 
+    }; 
+
+    class CyROOT
+    {
+        public:
+            CyROOT(meta_t meta);  
+            ~CyROOT(); 
+
+            root_t Export(); 
+            void Import(root_t inpt); 
+            void AddEvent(event_t event); 
+            
+            meta_t meta;
+            std::map<std::string, CyBatch*> batches;
+            std::map<std::string, int> n_events = {};
+            std::map<std::string, int> n_graphs = {}; 
+            std::map<std::string, int> n_selections = {};  
+
+
     };
 }
 #endif

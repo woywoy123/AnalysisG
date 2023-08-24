@@ -1,10 +1,13 @@
 # distuils: language = c++
 # cython: language_level = 3
-from cyparticle cimport CyParticleTemplate, ExportParticleTemplate
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 from libcpp.map cimport map, pair
 from libcpp cimport bool
+
+from cyparticle cimport CyParticleTemplate
+from cytypes cimport particle_t
+
 from typing import Union
 import pickle
 
@@ -14,23 +17,22 @@ cdef str env(string val): return val.decode("UTF-8")
 cdef class ParticleTemplate:
 
     cdef CyParticleTemplate* ptr
-    cdef list Children
-    cdef list Parent
+    cdef public list Children
+    cdef public list Parent
 
-    def __cinit__(self, double px = 0, double py = 0, double pz = 0, double e = -1):
+    def __cinit__(self):
         self.ptr = new CyParticleTemplate()
         self.Children = []
         self.Parent = []
 
-    def __init__(self):
-        pass
-
-    def __dealloc__(self):
-        del self.ptr
+    def __init__(self): pass
+    def __dealloc__(self): del self.ptr
+    def __hash__(self): return int(self.hash[:8], 0)
 
     def __add__(self, ParticleTemplate other) -> ParticleTemplate:
         cdef ParticleTemplate _p = self.clone()
-        _p.ptr.iadd(self.ptr[0] + other.ptr)
+        _p.ptr.iadd(other.ptr)
+        _p.ptr.iadd(self.ptr)
         _p.Children = list(set(other.Children + self.Children))
         _p.Parent = list(set(other.Parent + self.Parent))
         return _p
@@ -41,33 +43,31 @@ cdef class ParticleTemplate:
 
     def __iadd__(self, ParticleTemplate other) -> ParticleTemplate:
         self.Children = list(set(other.Children + self.Children))
-        self.Parent = list(set(other.Parent + self.Parent))
+        self.Parent   = list(set(other.Parent + self.Parent))
         self.ptr.iadd(other.ptr)
         return self
 
-    def __getstate__(self) -> ExportParticleTemplate:
-        cdef ExportParticleTemplate x = self.ptr.MakeMapping()
+    def __getstate__(self) -> particle_t:
+        cdef particle_t x = self.ptr.Export()
+        cdef string pkl
         cdef str key
-        cdef dict out = {}
         for key in self.__dict__:
-            out[key] = self.__dict__[key]
-        x.pickle_string = pickle.dumps(out)
+            pkl = pickle.dumps(self.__dict__[key])
+            x.pickle_string[enc(key)] = pkl
         return x
 
-    def __setstate__(self, ExportParticleTemplate inpt):
-        self.ptr.ImportParticleData(inpt)
-        cdef dict pkl = pickle.loads(inpt.pickle_string)
-        cdef str key;
-        for key in pkl: setattr(self, key, pkl[key])
-
-    def __hash__(self):
-        return int(self.hash[:8], 0)
+    def __setstate__(self, particle_t inpt):
+        cdef pair[string, string] it
+        cdef str key
+        for it in inpt.pickle_string:
+            key = env(it.first)
+            setattr(self, key, pickle.loads(it.second))
+        self.ptr.Import(inpt)
 
     def __eq__(self, other) -> bool:
         if not self.is_self(other): return False
         cdef ParticleTemplate o = other
         return self.ptr == o.ptr
-
 
     def __getleaves__(self):
         cdef str i
@@ -91,7 +91,7 @@ cdef class ParticleTemplate:
             try: inpt[k] = variables[k].tolist()
             except AttributeError: inpt[k] = variables[k]
 
-        while True: 
+        while True:
             x = {}
             get = False
             for k in list(inpt):
@@ -127,11 +127,14 @@ cdef class ParticleTemplate:
         if isinstance(inpt, ParticleTemplate): return True
         return issubclass(inpt.__class__, ParticleTemplate)
 
+    def DeltaR(self, ParticleTemplate other) -> double:
+        return self.ptr.DeltaR(other.ptr)
+
     @property
     def hash(self) -> str: return env(self.ptr.hash())
 
     @property
-    def index(self) -> int: return self.ptr.index
+    def index(self) -> int: return self.ptr.state.index
 
     @property
     def px(self) -> double: return self.ptr.px()
@@ -167,13 +170,13 @@ cdef class ParticleTemplate:
     def symbol(self) -> str : return env(self.ptr.symbol())
 
     @property
-    def Type(self) -> str: return env(self.ptr.type)
+    def Type(self) -> str: return env(self.ptr.state.type)
 
     @property
-    def lepdef(self) -> vector[int]: return self.ptr.lepdef
+    def lepdef(self) -> vector[int]: return self.ptr.state.lepdef
 
     @property
-    def nudef(self) -> vector[int]: return self.ptr.nudef
+    def nudef(self) -> vector[int]: return self.ptr.state.nudef
 
     @property
     def is_lep(self) -> bool: return self.ptr.is_lep()
@@ -188,12 +191,19 @@ cdef class ParticleTemplate:
     def is_add(self) -> bool: return self.ptr.is_add()
 
     @property
-    def LeptonicDecay(self) -> bool: return self.ptr.lep_decay()
+    def LeptonicDecay(self) -> bool:
+        cdef vector[particle_t] ch = []
+        cdef ParticleTemplate x
+        for x in self.Children.values():
+            ch.push_back(x.__getstate__())
+        return self.ptr.lep_decay(ch)
 
     @index.setter
-    def index(self, val: Union[str, int, float]):
-        try: self.ptr.index = val
-        except TypeError: self.ptr.addleaf(b'index', enc(val))
+    def index(self, val: Union[str, int, float, list]):
+        try: self.ptr.state.index = val
+        except TypeError:
+            try: self.ptr.addleaf(b'index', enc(val))
+            except: self.__dict__["index"] = val
 
     @px.setter
     def px(self, val: Union[str, double]):
@@ -251,48 +261,12 @@ cdef class ParticleTemplate:
 
     @Type.setter
     def Type(self, str val):
-        self.ptr.type = enc(val)
+        self.ptr.state.type = enc(val)
 
     @lepdef.setter
     def lepdef(self, vector[int] val):
-        self.ptr.lepdef = val
+        self.ptr.state.lepdef = val
 
     @nudef.setter
     def nudef(self, vector[int] val):
-        self.ptr.nudef = val
-
-    @property
-    def Children(self) -> list:
-        self.Children = list(set(self.Children))
-        return self.Children
-
-    @Children.setter
-    def Children(self, val: Union[list, ParticleTemplate]):
-        if self.is_self(val): self.Children = [val]
-        else: self.Children = val
-        self.Children = list(set(self.Children))
-
-        cdef ParticleTemplate x
-        self.ptr.children.clear()
-        for x in self.Children: self.ptr.children[x.ptr.hash()] = x.ptr
-
-    @property
-    def Parent(self) -> list:
-        self.Parent = list(set(self.Parent))
-        return self.Parent
-
-    @Parent.setter
-    def Parent(self, val: Union[list, ParticleTemplate]):
-        if self.is_self(val): self.Parent = [val]
-        else: self.Parent = val
-        self.Parent = list(set(self.Parent))
-
-        cdef ParticleTemplate x
-        self.ptr.parent.clear()
-        for x in self.Parent: self.ptr.parent[x.ptr.hash()] = x.ptr
-
-
-
-
-
-
+        self.ptr.state.nudef = val

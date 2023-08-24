@@ -1,11 +1,9 @@
-from AnalysisG.Generators import (
-    EventGenerator,
-    GraphGenerator,
-    SelectionGenerator,
-    Analysis,
-)
+from AnalysisG.Generators import EventGenerator
+#from AnalysisG.Generators import GraphGenerator
+#from AnalysisG.Generators import SelectionGenerator
+#from AnalysisG.Generators import Analysis
 from AnalysisG.Events.Events.Event import Event
-from AnalysisG.Events.Graphs.EventGraphs import GraphChildren
+#from AnalysisG.Events.Graphs.EventGraphs import GraphChildren
 from conftest import clean_dir
 
 smpl = "./samples/"
@@ -25,8 +23,7 @@ def test_event_generator():
     EvtGen.Threads = 1
     EvtGen.MakeEvents()
     lst = {}
-    for i in EvtGen:
-        lst[i.hash] = i
+    for i in EvtGen: lst[i.hash] = i
     assert len(lst) == 40
 
     EvtGen_ = EventGenerator({root1: []})
@@ -397,16 +394,16 @@ def test_analysis_data_event_cache_diff_sample():
 
 if __name__ == "__main__":
     test_event_generator()
-    test_event_generator_more()
-    test_event_generator_merge()
-    test_eventgraph()
-    test_Analysis()
-    test_analysis_event_nocache()
-    test_analysis_event_nocache_nolaunch()
-    test_analysis_event_cache()
-    test_analysis_event_cache_diff_sample()
-    test_analysis_data_nocache()
-    test_analysis_data_nocache_nolaunch()
-    test_analysis_data_cache()
-    test_analysis_data_cache_diff_sample()
-    test_analysis_data_event_cache_diff_sample()
+    #test_event_generator_more()
+    #test_event_generator_merge()
+    #test_eventgraph()
+    #test_Analysis()
+    #test_analysis_event_nocache()
+    #test_analysis_event_nocache_nolaunch()
+    #test_analysis_event_cache()
+    #test_analysis_event_cache_diff_sample()
+    #test_analysis_data_nocache()
+    #test_analysis_data_nocache_nolaunch()
+    #test_analysis_data_cache()
+    #test_analysis_data_cache_diff_sample()
+    #test_analysis_data_event_cache_diff_sample()

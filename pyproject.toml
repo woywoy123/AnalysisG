@@ -38,7 +38,9 @@ classifiers = [
 Homepage = "https://github.com/woywoy123/AnalysisG"
 
 [tool.setuptools.package-dir]
-AnalysisG = "src"
+"AnalysisG" = "src"
+"AnalysisG._cmodules" = "src/cmodules"
+"AnalysisG.Particles" = "src/Events/Particles"
 
 [tool.bumpver]
 current_version = "3.3.0"

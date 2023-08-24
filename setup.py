@@ -1,81 +1,89 @@
 from setuptools import setup, Extension
 from Cython.Build import cythonize
 
-
+src = "src/cmodules/"
 modules = [
-    {
-        "name" : "AnalysisG._cmodules.code",
-        "sources" : [
-            "src/cmodules/cyincludes/cycode.pyx",
-            "src/cmodules/code/code.cxx",
-            "src/cmodules/tools/tools.cxx",
-        ],
-        "include_dirs": [
-            "src/cmodules/code/",
-            "src/cmodules/tools/",
-        ],
-        "language" : "c++"
-    },
+    #{
+    #    "name" : "AnalysisG._cmodules.code",
+    #    "sources" : [
+    #        src + "cyincludes/cycode.pyx",
+    #        src + "code/code.cxx",
+
+    #        src + "abstractions/abstractions.cxx",
+    #    ],
+
+    #    "include_dirs": [
+    #        src + "code/",
+    #        src + "abstractions/",
+    #    ],
+    #    "language" : "c++"
+    #},
     {
         "name" : "AnalysisG._cmodules.EventTemplate",
         "sources" : [
-            "src/cmodules/cyincludes/cyevent.pyx",
-            "src/cmodules/event/event.cxx",
-            "src/cmodules/tools/tools.cxx",
+            src + "cyincludes/cyevent.pyx",
+            src + "event/event.cxx",
+
+            src + "abstractions/abstractions.cxx",
+            src + "metadata/metadata.cxx",
+
         ],
         "include_dirs": [
-            "src/cmodules/event/",
-            "src/cmodules/tools/",
+            src + "event/",
+            src + "metadata/",
+            src + "abstractions/",
         ],
         "language" : "c++"
     },
     {
         "name" : "AnalysisG._cmodules.ParticleTemplate",
         "sources" : [
-            "src/cmodules/cyincludes/cyparticle.pyx",
-            "src/cmodules/particle/particle.cxx",
-            "src/cmodules/tools/tools.cxx",
-        ],
-        "include_dirs": [
-            "src/cmodules/particle/",
-            "src/cmodules/tools/",
-        ],
-        "language" : "c++"
-    },
-    {
-        "name" : "AnalysisG._cmodules.MetaData",
-        "sources" : [
-            "src/cmodules/cyincludes/cymetadata.pyx",
-            "src/cmodules/metadata/metadata.cxx",
-            "src/cmodules/tools/tools.cxx",
-        ],
-        "include_dirs": [
-            "src/cmodules/metadata/",
-            "src/cmodules/tools/",
-        ],
-        "language" : "c++"
-    },
-    {
-        "name" : "AnalysisG._cmodules.SampleTracer",
-        "sources" : [
-            "src/cmodules/cyincludes/cysampletracer.pyx",
+            src + "cyincludes/cyparticle.pyx",
+            src + "particle/particle.cxx",
 
-            "src/cmodules/sampletracer/sampletracer.cxx",
-            "src/cmodules/sampletracer/root.cxx",
-            "src/cmodules/metadata/metadata.cxx",
-            "src/cmodules/event/event.cxx",
-            "src/cmodules/code/code.cxx",
-            "src/cmodules/tools/tools.cxx",
+            src + "abstractions/abstractions.cxx",
         ],
         "include_dirs": [
-            "src/cmodules/code/",
-            "src/cmodules/event/",
-            "src/cmodules/metadata/",
-            "src/cmodules/sampletracer/",
-            "src/cmodules/tools/",
+            src + "particle/",
+            src + "abstractions/"
         ],
         "language" : "c++"
     },
+    #{
+    #    "name" : "AnalysisG._cmodules.MetaData",
+    #    "sources" : [
+    #        src + "cyincludes/cymetadata.pyx",
+    #        src + "metadata/metadata.cxx",
+
+    #        src + "abstractions/abstractions.cxx"
+    #    ],
+    #    "include_dirs": [
+    #        src + "metadata/",
+    #        src + "abstractions/"
+    #    ],
+    #    "language" : "c++"
+    #},
+    #{
+    #    "name" : "AnalysisG._cmodules.SampleTracer",
+    #    "sources" : [
+    #        "src/cmodules/cyincludes/cysampletracer.pyx",
+
+    #        "src/cmodules/sampletracer/sampletracer.cxx",
+    #        "src/cmodules/sampletracer/root.cxx",
+    #        "src/cmodules/metadata/metadata.cxx",
+    #        "src/cmodules/event/event.cxx",
+    #        "src/cmodules/code/code.cxx",
+    #        "src/cmodules/tools/tools.cxx",
+    #    ],
+    #    "include_dirs": [
+    #        "src/cmodules/code/",
+    #        "src/cmodules/event/",
+    #        "src/cmodules/metadata/",
+    #        "src/cmodules/sampletracer/",
+    #        "src/cmodules/tools/",
+    #    ],
+    #    "language" : "c++"
+    #},
 
 
 ]

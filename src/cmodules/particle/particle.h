@@ -1,34 +1,8 @@
-#include <iostream>
-#include <vector>
-#include <map>
+#include "../abstractions/abstractions.h"
+#include "../abstractions/cytypes.h"
 
 #ifndef PARTICLE_H
 #define PARTICLE_H
-
-struct ExportParticleTemplate
-{
-    double e; 
-    
-    double px; 
-    double py; 
-    double pz; 
-
-    double pt; 
-    double eta; 
-    double phi; 
-
-    double mass; 
-    double charge; 
-
-    int pdgid; 
-    int index; 
-
-    std::string hash; 
-    std::string pickle_string; 
-    std::string symbol;
-    std::vector<int> lepdef; 
-    std::vector<int> nudef;  
-}; 
 
 
 namespace CyTemplate
@@ -37,12 +11,16 @@ namespace CyTemplate
     {
         public:
             CyParticleTemplate(); 
+            CyParticleTemplate(particle_t p); 
             CyParticleTemplate(double px, double py, double pz, double e); 
             CyParticleTemplate(double px, double py, double pz); 
-            ExportParticleTemplate MakeMapping(); 
-            void ImportParticleData(ExportParticleTemplate part); 
-
             ~CyParticleTemplate(); 
+
+            double DeltaR(CyParticleTemplate* p);
+
+            particle_t Export(); 
+            void Import(particle_t part); 
+
 
             double e(); 
             void e(double val); 
@@ -63,7 +41,7 @@ namespace CyTemplate
             bool is_nu(); 
             bool is_b(); 
             bool is_add(); 
-            bool lep_decay();
+            bool lep_decay(std::vector<particle_t>);
 
             // ===== Cartesian ===== //
             // getter
@@ -93,42 +71,14 @@ namespace CyTemplate
             std::string hash(); 
             void addleaf(std::string key, std::string leaf); 
 
-            bool operator==(CyParticleTemplate* p); 
+            bool operator == (CyParticleTemplate* p); 
             CyParticleTemplate* operator+(CyParticleTemplate* p);
             void operator += (CyParticleTemplate* p); 
             void iadd(CyParticleTemplate* p); 
             
-            std::string type = ""; 
-            std::string pickle_string = ""; 
-            int index = -1; 
             std::map<std::string, std::string> leaves = {}; 
-            std::map<std::string, CyParticleTemplate*> children = {}; 
-            std::map<std::string, CyParticleTemplate*> parent = {}; 
-
-            std::vector<int> lepdef = {11, 13, 15};
-            std::vector<int> nudef  = {12, 14, 16};         
-        
-        private:
-            double _e = -0.000000000000001; 
-            
-            double _px = 0; 
-            double _py = 0; 
-            double _pz = 0; 
-            
-            double _pt = 0; 
-            double _eta = 0; 
-            double _phi = 0; 
-            
-            double _mass = -1;  
-
-            bool _cartesian = false; 
-            bool _polar = false; 
-
-            int _pdgid = 0; 
-            double _charge = 0; 
-            std::string _hash = "";
-            std::string _symbol = ""; 
-            
+       
+            particle_t state; 
             bool is(std::vector<int> p); 
     }; 
 }

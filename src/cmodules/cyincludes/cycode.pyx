@@ -1,9 +1,11 @@
 # distuils: language = c++
 # cython: language_level = 3
 from libcpp.string cimport string
-from cycode cimport CyCode, ExportCode
 from libcpp cimport bool
 from libcpp cimport map
+
+from cycode cimport CyCode
+from cytypes cimport code_t
 
 import inspect
 import os, sys
@@ -61,7 +63,7 @@ cdef class Code:
         return self.ptr==o.ptr
 
     def __getstate__(self) -> ExportCode:
-        return self.ptr.MakeMapping()
+        return self.ptr.ExportCode()
 
     def __setstate__(self, inpt):
         pass
@@ -98,21 +100,23 @@ cdef class Code:
         except TypeError: 
             self.object_code = inspect.getsource(self._x.__class__)
 
-        self.ptr.is_class = self.is_class
-        self.ptr.is_function = self.is_class
-        self.ptr.is_callable = self.is_callable
-        self.ptr.is_initialized = self.is_initialized
-        self.ptr.function_name = enc(self.function_name)
-        self.ptr.class_name = enc(self.class_name)
-        self.ptr.source_code = enc(self.source_code)
-        self.ptr.object_code = enc(self.object_code)
+        self.ptr.container.is_class = self.is_class
+        self.ptr.container.is_function = self.is_class
+        self.ptr.container.is_callable = self.is_callable
+        self.ptr.container.is_initialized = self.is_initialized
+        self.ptr.container.function_name = enc(self.function_name)
+        self.ptr.container.class_name = enc(self.class_name)
+        self.ptr.container.source_code = enc(self.source_code)
+        self.ptr.container.object_code = enc(self.object_code)
 
-        self.ptr.co_vars = [enc(i) for i in self.co_vars]
-        self.ptr.input_params = [enc(i) for i in self.input_params]
+        self.ptr.container.co_vars = [enc(i) for i in self.co_vars]
+        self.ptr.container.input_params = [enc(i) for i in self.input_params]
+        self.ptr.container.Hash()
 
     def __getclass__(self):
-        try: self._tmp = self._x()
-        except TypeError: pass
+        try: self._x = self._x()
+        except TypeError:
+            self.is_initialized = True
         self.__getinputs__(self._x.__init__)
 
     def __getfunction__(self):
@@ -136,6 +140,3 @@ cdef class Code:
     def hash(self) -> str:
         self.ptr.Hash()
         return env(self.ptr.hash)
-
-    def add_dependency(self, ExportCode inpt):
-        self.ptr.dependency[inpt.hash] = inpt
