@@ -17,8 +17,8 @@ cdef str env(string val): return val.decode("UTF-8")
 cdef class ParticleTemplate:
 
     cdef CyParticleTemplate* ptr
-    cdef public list Children
-    cdef public list Parent
+    cdef list Children
+    cdef list Parent
 
     def __cinit__(self):
         self.ptr = new CyParticleTemplate()
@@ -51,8 +51,8 @@ cdef class ParticleTemplate:
         cdef particle_t x = self.ptr.Export()
         cdef string pkl
         cdef str key
-        for key in self.__dict__:
-            pkl = pickle.dumps(self.__dict__[key])
+        for key in list(self.__dict__)+["Children", "Parent"]:
+            pkl = pickle.dumps(getattr(self, key))
             x.pickle_string[enc(key)] = pkl
         return x
 
@@ -67,7 +67,7 @@ cdef class ParticleTemplate:
     def __eq__(self, other) -> bool:
         if not self.is_self(other): return False
         cdef ParticleTemplate o = other
-        return self.ptr == o.ptr
+        return self.ptr[0] == o.ptr[0]
 
     def __getleaves__(self):
         cdef str i
@@ -86,11 +86,14 @@ cdef class ParticleTemplate:
         cdef dict x = {}
         cdef bool get
         cdef str k
+        cdef dict lv, p_
 
+        cdef list keys = list(self.__getleaves__().values())
         for k in variables:
+            if k.split("/")[-1] not in keys: continue
             try: inpt[k] = variables[k].tolist()
             except AttributeError: inpt[k] = variables[k]
-
+        if not len(inpt): return
         while True:
             x = {}
             get = False
@@ -114,12 +117,17 @@ cdef class ParticleTemplate:
             if not get: self.__build__(x)
             else:
                 p = self.clone()
-                for k in x: setattr(p, k, x[k])
+                lv = p.__getleaves__()
+                lv = {lv[k] : k for k in lv}
+                p_ = {k.split("/")[-1] : x[k] for k in x}
+                for k in p_:
+                    try: setattr(p, lv[k], p_[k])
+                    except KeyError: pass
                 self.Children.append(p)
 
     def clone(self) -> ParticleTemplate:
-        v = self.__new__(self.__class__)
-        v.__init__()
+        v = self.__class__
+        v = v()
         v.Type = self.Type
         return v
 
@@ -127,7 +135,7 @@ cdef class ParticleTemplate:
         if isinstance(inpt, ParticleTemplate): return True
         return issubclass(inpt.__class__, ParticleTemplate)
 
-    def DeltaR(self, ParticleTemplate other) -> double:
+    def DeltaR(self, ParticleTemplate other) -> float:
         return self.ptr.DeltaR(other.ptr)
 
     @property
@@ -270,3 +278,27 @@ cdef class ParticleTemplate:
     @nudef.setter
     def nudef(self, vector[int] val):
         self.ptr.state.nudef = val
+
+    @property
+    def Children(self) -> list:
+        self.Children = list(set(self.Children))
+        return self.Children
+
+    @Children.setter
+    def Children(self, inpt):
+        if isinstance(inpt, list): self.Children += inpt
+        else: self.Children += [inpt]
+
+    @property
+    def Parent(self) -> list:
+        self.Parent = list(set(self.Parent))
+        return self.Parent
+
+    @Parent.setter
+    def Parent(self, inpt):
+        if isinstance(inpt, list): self.Parent += inpt
+        else: self.Parent += [inpt]
+
+
+
+

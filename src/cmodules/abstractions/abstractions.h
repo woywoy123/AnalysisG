@@ -1,4 +1,5 @@
 #include "../abstractions/cytypes.h"
+#include "../code/code.h"
 #include <sstream>
 
 #ifndef ABSTRACTION_H
@@ -40,6 +41,10 @@ namespace Abstraction
 
             meta_t  meta; 
             event_t event;
+            graph_t graph; 
+            selection_t selection; 
+
+            std::map<std::string, CyCode*> this_code = {}; 
     };
 }
 #endif

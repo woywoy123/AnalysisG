@@ -240,12 +240,10 @@ def test_event_template():
     assert "Objects" not in val["event"]
 
     ev.index = 0
-    ev.hash = root1
     assert len(ev.hash) == 18
 
     ev2 = Event()
     ev2.index = 1
-    ev2.hash = root1
     assert ev2 != ev
 
 
@@ -294,7 +292,7 @@ def test_event_particle_template():
     assert "children_phi" == vals["Children"]["phi"]
     assert "children_eta" == vals["Children"]["eta"]
     assert "children_e" == vals["Children"]["e"]
-    x = len(vals["event"])
+    x  = len(vals["event"])
     x += len(vals["Children"])
     x += len(vals["top"])
     assert x == 11
@@ -350,10 +348,9 @@ def test_event_particle_template_populate():
     for i in io:
         Trees = ev.__compiler__(i)
         if "nominal/eventNumber" in i:
-            assert len(Trees) == 2 
+            assert len(Trees) == 2
             assert sum([sum([k.index >= 0, k.weight != 0]) for k in Trees]) == 4
             t1, t2 = Trees
-            t1.hash, t2.hash = root1, root1
 
             c = sum([len(k) for k in i["nominal/children_e"]])
             x = [float(k) for j in i["nominal/children_e"] for k in j]

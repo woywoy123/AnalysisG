@@ -14,9 +14,19 @@ namespace SampleTracer
             meta_t container; 
 
             void Hash();
-            void addconfig(std::string key, std::string val);
-            void addsamples(int index, int range, std::string sample);
-            void processkeys(std::vector<std::string> keys, unsigned int num_entries);
+            void addconfig(
+                    std::string key, 
+                    std::string val);
+
+            void addsamples(
+                    int index, 
+                    int range, 
+                    std::string sample);
+
+            void processkeys(
+                    std::vector<std::string> keys, 
+                    unsigned int num_entries);
+
             void Import(meta_t meta); 
             meta_t Export();
 

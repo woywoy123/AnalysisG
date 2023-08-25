@@ -16,5 +16,5 @@ cdef extern from "../code/code.h" namespace "Code":
         string hash
         code_t container
 
-        bool operator==(CyCode* code) except +
+        bool operator==(CyCode& code) except +
 

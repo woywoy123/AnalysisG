@@ -36,12 +36,15 @@ namespace CyTemplate
 
     particle_t CyParticleTemplate::Export()
     {
+        this -> state.hash = ""; 
         return this -> state; 
     }
     
     void CyParticleTemplate::Import(particle_t part)
     {
         this -> state = part;
+        this -> state.hash = ""; 
+        this -> hash(); 
     }
 
     double CyParticleTemplate::e()
@@ -281,10 +284,10 @@ namespace CyTemplate
         if ((p -> hash).size()){return p -> hash;}
 
         this -> ToCartesian(); 
-        p -> hash  = Tools::ToString(p -> px); 
-        p -> hash += Tools::ToString(p -> py); 
-        p -> hash += Tools::ToString(p -> pz);
-        p -> hash += Tools::ToString(p -> e); 
+        p -> hash  = Tools::ToString(this -> px()); 
+        p -> hash += Tools::ToString(this -> py()); 
+        p -> hash += Tools::ToString(this -> pz());
+        p -> hash += Tools::ToString(this -> e()); 
         p -> hash  = Tools::Hashing(p -> hash); 
         return p -> hash; 
     }
@@ -326,9 +329,9 @@ namespace CyTemplate
         *this += p; 
     }
 
-    bool CyParticleTemplate::operator == (CyParticleTemplate* p)
+    bool CyParticleTemplate::operator == (CyParticleTemplate& p)
     {
-        return this -> hash() == p -> hash(); 
+        return this -> hash() == p.hash(); 
     }
 
     double CyParticleTemplate::DeltaR(CyParticleTemplate* p)

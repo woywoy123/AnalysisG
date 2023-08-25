@@ -56,7 +56,7 @@ cdef extern from "particle.h" namespace "CyTemplate":
         void addleaf(string key, string leaf) except +
 
         CyParticleTemplate* operator+(CyParticleTemplate* p) except +
-        bool operator == (CyParticleTemplate* p) except +
+        bool operator == (CyParticleTemplate& p) except +
         void iadd(CyParticleTemplate* p) except +
 
         particle_t state

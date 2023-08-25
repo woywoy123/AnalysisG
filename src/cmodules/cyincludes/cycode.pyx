@@ -60,13 +60,27 @@ cdef class Code:
     def __eq__(self, other) -> bool:
         if not self.is_self(other): return False
         cdef Code o = other
-        return self.ptr==o.ptr
+        return self.ptr[0]==o.ptr[0]
 
-    def __getstate__(self) -> ExportCode:
+    def __getstate__(self) -> code_t:
         return self.ptr.ExportCode()
 
-    def __setstate__(self, inpt):
-        pass
+    def __setstate__(self, code_t inpt):
+        self.ptr.ImportCode(inpt)
+        self.is_class           = self.ptr.container.is_class
+        self.is_function        = self.ptr.container.is_function
+        self.is_callable        = self.ptr.container.is_callable
+        self.is_initialized     = self.ptr.container.is_initialized
+        self.function_name      = env(self.ptr.container.function_name)
+        self.class_name         = env(self.ptr.container.class_name)
+        self.source_code        = env(self.ptr.container.source_code)
+        self.object_code        = env(self.ptr.container.object_code)
+        cdef string key, var
+        cdef list keys = self.ptr.container.co_vars
+        cdef list vals = self.ptr.container.input_params
+        for key, var in zip(keys, vals):
+            self.input_params[env(key)] = env(var)
+            self.co_vars.append(env(key))
 
     def is_self(self, inpt) -> bool:
         return isinstance(inpt, Code)
@@ -111,12 +125,12 @@ cdef class Code:
 
         self.ptr.container.co_vars = [enc(i) for i in self.co_vars]
         self.ptr.container.input_params = [enc(i) for i in self.input_params]
-        self.ptr.container.Hash()
+        self.ptr.Hash()
 
     def __getclass__(self):
-        try: self._x = self._x()
-        except TypeError:
-            self.is_initialized = True
+        ac = type(self._x.__init__).__name__
+        if ac == "function": self.is_initialized = False
+        else: self.is_initialized = True
         self.__getinputs__(self._x.__init__)
 
     def __getfunction__(self):
@@ -135,6 +149,13 @@ cdef class Code:
 
         for key, val in zip(self.co_vars, self.defaults):
             self.input_params[key] = val
+
+    @property
+    def InstantiateObject(self):
+        exec(env(self.ptr.source_code))
+        if self.ptr.is_class: return locals()[env(self.ptr.class_name)]()
+        else: return locals()[env(self.ptr.function_name)]
+
 
     @property
     def hash(self) -> str:

@@ -1,3 +1,6 @@
+
+from AnalysisG._cmodules.SampleTracer import SampleTracer
+
 from AnalysisG.SampleTracer import SampleTracer
 from AnalysisG.Templates import EventTemplate
 from AnalysisG.Templates import ParticleTemplate
@@ -61,7 +64,6 @@ def test_tracer_addEvent():
         if "nominal/eventNumber" in i: len_nom += 1
         if "truth/eventNumber" in i: len_tru += 1
         root, index, meta = i["ROOT"], i["EventIndex"], i["MetaData"]
-
         trees = ev.__compiler__(i)
         for i in trees:
             i.CompileEvent()
@@ -74,9 +76,6 @@ def test_tracer_addEvent():
 
     # Test iterator
     for i in tr: assert i.hash == hashes[i.hash].hash
-
-    exit()
-
 
     # Test Getter Functions
     for i in hashes:

@@ -39,6 +39,7 @@ namespace SampleTracer
                 {
                     std::string tok = tokens -> at(x);
                     if (!Tools::count(tok, tmp + ";") && tmp != tok){continue;}
+
                     res -> push_back(tmp);
                     res -> push_back(tok);
                     return;
@@ -50,65 +51,63 @@ namespace SampleTracer
                 std::vector<std::string>* r_tree,
                 std::vector<std::string>* r_branch,
                 std::vector<std::string>* r_leaf,
-                std::string key, collect_t* tr)
+                std::string* key, collect_t* tr)
         {
-            std::vector<std::string> _tree = {};
+            std::vector<std::string> _tree   = {};
             std::vector<std::string> _branch = {};
-            std::vector<std::string> _leaf = {};
+            std::vector<std::string> _leaf   = {};
 
-            std::vector<std::string> tokens = Tools::split(key, "/");
-            scanthis(r_tree  , &tokens, &_tree  , key);
-            scanthis(r_branch, &tokens, &_branch, key);
-            scanthis(r_leaf  , &tokens, &_leaf  , key);
+            std::vector<std::string> tokens = Tools::split(*key, "/");
+            scanthis(r_tree  , &tokens, &_tree  , *key);
+            scanthis(r_branch, &tokens, &_branch, *key);
+            scanthis(r_leaf  , &tokens, &_leaf  , *key);
 
-            bool lx = _leaf.size() > 0;
+            bool lx =   _leaf.size() > 0;
             bool bx = _branch.size() > 0;
-            bool tx = _tree.size() > 0;
+            bool tx =   _tree.size() > 0;
+            tr -> valid = lx + bx + tx > 0;
 
-            tr -> valid = lx + bx + tx;
-            tr ->  lf_requested = (lx) ? _leaf[0]   : "";
-            tr ->  lf_matched   = (lx) ? _leaf[1]   : "";
-            tr ->  lf_path      = (lx) ? Tools::join(&tokens, 1, -1, "/") : "";
+            tr ->  lf_requested += (lx) ? _leaf[0] : "";
+            tr ->  lf_matched   += (lx) ? _leaf[1] : "";
+            tr ->  lf_path      += (lx) ? Tools::join(&tokens, 1, -1, "/") : "";
 
-            tr ->  br_requested = (bx) ? _branch[0] : "";
-            tr ->  br_matched   = (bx) ? _branch[1] : "";
+            tr ->  br_requested += (bx) ? _branch[0] : "";
+            tr ->  br_matched   += (bx) ? _branch[1] : "";
 
-            tr ->  tr_requested = (tx) ? _tree[0] : "";
-            tr ->  tr_matched   = (tx) ? _tree[1] : "";
+            tr ->  tr_requested += (tx) ? _tree[0] : "";
+            tr ->  tr_matched   += (tx) ? _tree[1] : "";
 
-            tokens.clear();
+            tokens.clear(); 
+            _tree.clear(); 
+            _branch.clear(); 
+            _leaf.clear(); 
+
         };
 
         std::vector<std::string>* tr = &(this -> container.req_trees);
         std::vector<std::string>* br = &(this -> container.req_branches);
         std::vector<std::string>* lf = &(this -> container.req_leaves);
 
-        std::vector<collect_t> check = {};
+        std::vector<collect_t*> check = {};
         std::vector<std::thread*> jbs = {};
-
         for (unsigned int i(0); i < keys.size(); ++i)
         {
-            collect_t x;
-            check.push_back(x);
-
-            std::thread* p = new std::thread(search, tr, br, lf, keys[i], &check[i]);
+            check.push_back(new collect_t());
+            std::thread* p = new std::thread(search, tr, br, lf, &keys[i], check[i]);
             jbs.push_back(p);
         }
-
-        for (std::thread* t : jbs){ t -> join(); delete t; }
-        jbs = {};
-
+        for (unsigned int x(0); x < jbs.size(); ++x){jbs[x] -> join(); delete jbs[x];}
         std::map<std::string, tree_t>* trees = &(this -> container.trees);
         std::map<std::string, branch_t>* branches = &(this -> container.branches);
         std::map<std::string, leaf_t>* leaves = &(this -> container.leaves);
 
         for (unsigned int x(0); x < check.size(); ++x)
         {
-            collect_t* col = &check[x];
+            collect_t* col = check[x];
             std::string tr_get = col -> tr_requested;
             std::string br_get = col -> br_requested;
             std::string lf_get = col -> lf_requested;
-            if (!col -> valid){continue;}
+            if (!col -> valid){delete col; continue;}
 
             if (!trees -> count(tr_get) && tr_get.size())
             {
@@ -154,6 +153,7 @@ namespace SampleTracer
                 brc -> tree_name = tr_get;
                 if (tr_get.size()){ trees -> at(tr_get).branches.push_back(*brc); }
             }
+            delete col; 
         }
     }
 

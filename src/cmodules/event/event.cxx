@@ -49,13 +49,12 @@ namespace CyTemplate
     {
         this -> event = event; 
         this -> event.event = true;
-        this -> meta = event.meta; 
     }
 
-    bool CyEventTemplate::operator == (CyEventTemplate* ev)
+    bool CyEventTemplate::operator == (CyEventTemplate& ev)
     {
         event_t* ev1 = &(this -> event); 
-        event_t* ev2 = &(ev -> event); 
+        event_t* ev2 = &(ev.event); 
         if (ev1 -> event_hash    != ev2 -> event_hash   ){ return false; }
         if (ev1 -> event_name    != ev2 -> event_name   ){ return false; }
         if (ev1 -> event_tree    != ev2 -> event_tree   ){ return false; }
@@ -67,8 +66,23 @@ namespace CyTemplate
 
     CyGraphTemplate::CyGraphTemplate(){}
     CyGraphTemplate::~CyGraphTemplate(){}
+    void CyGraphTemplate::Import(graph_t gr)
+    {
+        this -> graph = gr; 
+        this -> graph.graph = true; 
+    }; 
+
 
     CySelectionTemplate::CySelectionTemplate(){}
     CySelectionTemplate::~CySelectionTemplate(){}
+    void CySelectionTemplate::Import(selection_t sel)
+    {
+        this -> selection = sel; 
+        this -> selection.selection = true; 
+    }; 
+
+
+
+
 
 }

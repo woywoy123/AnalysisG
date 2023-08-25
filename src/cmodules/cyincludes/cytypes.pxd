@@ -116,33 +116,6 @@ cdef extern from "../abstractions/cytypes.h":
         vector[double] fileSize
 
 
-    struct event_t:
-
-        string event_name
-        string commit_hash
-        bool deprecated
-
-        bool cached
-
-        double weight
-        int event_index
-        string event_hash
-        string event_tagging
-        string event_tree
-        string event_root
-        map[string, string] pickled_data
-
-        bool graph
-        bool selection
-        bool event
-
-    struct event_T:
-        map[string, string] leaves
-        map[string, string] branches
-        map[string, string] trees
-        event_t event
-        meta_t  meta
-
     struct particle_t:
 
         double e
@@ -171,4 +144,59 @@ cdef extern from "../abstractions/cytypes.h":
 
         map[string, string] pickle_string
 
-    
+    struct event_t:
+
+        string event_name
+        string commit_hash
+        bool deprecated
+
+        bool cached
+
+        double weight
+        int event_index
+        string event_hash
+        string event_tagging
+        string event_tree
+        string event_root
+        map[string, string] pickled_data
+
+        bool graph
+        bool selection
+        bool event
+
+    struct event_T:
+        map[string, string] leaves
+        map[string, string] branches
+        map[string, string] trees
+        event_t event
+        meta_t  meta
+
+
+    struct graph_t:
+        bool train
+        bool evaluation
+        bool validation
+        bool empty_graph
+
+    struct selection_t:
+        map[string, string] errors
+        map[string, int] cutflow
+        vector[double] timestats
+        vector[double] all_weights
+        vector[double] selection_weights
+
+    struct batch_t:
+        map[string, event_t] events
+        map[string, graph_t] graphs
+        map[string, selection_t] selections
+
+    struct root_t:
+        map[string, batch_t] batches
+        map[string, int] n_events
+        map[string, int] n_graphs
+        map[string, int] n_selections
+
+    struct tracer_t:
+        map[string, root_t] root_names
+        map[string, meta_t] root_meta
+        map[string, code_t] code

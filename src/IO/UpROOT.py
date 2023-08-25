@@ -1,5 +1,5 @@
 from AnalysisG.Generators.Interfaces import _Interface
-from AnalysisG.SampleTracer import MetaData
+from AnalysisG._cmodules.MetaData import MetaData
 from AnalysisG.Notification import _UpROOT
 from uproot.exceptions import KeyInFileError
 from AnalysisG.Settings import Settings
@@ -27,7 +27,7 @@ class UpROOT(_UpROOT, Settings, _Interface):
             for key in dc:
                 if key not in out: out[key] = 0
                 out[key] += dc[key]
-        return max(list(out.values()))
+        return max(list(out.values())) if len(out) else 0
 
     def GetAmiMeta(self):
         if len(self.MetaData) == 0: self.ScanKeys()

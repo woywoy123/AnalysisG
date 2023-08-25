@@ -11,11 +11,11 @@ namespace Code
         this -> CyBase::Hash(obj_c); 
     }
 
-    bool CyCode::operator==(CyCode* inpt)
+    bool CyCode::operator==(CyCode& inpt)
     {
-        inpt -> Hash(); 
+        inpt.Hash(); 
         this -> Hash(); 
-        return this -> hash == inpt -> hash;
+        return this -> hash == inpt.hash;
     }
 
     code_t CyCode::ExportCode()

@@ -66,7 +66,7 @@ class Event(EventTemplate):
 def test_particle_pickle():
     root1 = "./samples/sample1/smpl1.root"
     x = TruthJet()
-    vals = x.__interpret__
+    vals = x.__getleaves__()
     io = UpROOT(root1)
     io.Trees = ["nominal"]
     io.Leaves = list(vals.values())
@@ -74,9 +74,12 @@ def test_particle_pickle():
     mem = 0
     for i in io:
         jet = x.clone()
-        jet.__interpret__ = {
-            k.split("/")[-1]: i[k] for k in i if k.split("/")[-1] in io.Leaves
-        }
+        inpt = {}
+        for k in i:
+            g = k.split("/")
+            if g[-1] not in io.Leaves: continue
+            inpt[g[-1]] = i[k]
+        jet.__build__(inpt)
         jets = jet.Children
 
         PickleObject(jets, "jets")
@@ -95,14 +98,15 @@ def test_particle_multithreading():
         for i in inpt:
             j_, d_ = i
             j_ = pickle.loads(j_).clone()
-            j_.__interpret__ = d_
+            j_.__build__(d_)
             out.append(pickle.dumps(j_))
+            if lock is None: continue
             with lock: bar.update(1)
         return out
 
     root1 = "./samples/sample1/smpl1.root"
     j = TruthJet()
-    vals = j.__interpret__
+    vals = j.__getleaves__()
     io = UpROOT(root1)
     io.Trees = ["nominal"]
     io.Leaves = list(vals.values())
@@ -111,7 +115,7 @@ def test_particle_multithreading():
     jets = []
     for i in io:
         jet = j.clone()
-        jet.__interpret__ = {k : i[k] for k in i if k not in excl}
+        jet.__build__({k : i[k] for k in i if k not in excl})
         jets += jet.Children
         assert jets[-1].px != 0
         assert jets[-1].pt != 0
@@ -122,7 +126,7 @@ def test_particle_multithreading():
         for i in io:
             _dct = {k: i[k] for k in i if k not in excl}
             x.append([pickle.dumps(j), _dct])
-        th = Threading(x*1000, Functions, 10, 2500)
+        th = Threading(x, Functions, 10, 2500)
         th.Start()
         x = []
         for i in th._lists: x += pickle.loads(i).Children
@@ -138,7 +142,7 @@ def test_particle_multithreading():
 def test_event_pickle():
     root1 = "./samples/sample1/smpl1.root"
     ev = Event()
-    ev.__interpret__
+    ev.__getleaves__()
     io = UpROOT(root1)
     io.Trees = ["nominal"]
     io.Leaves = ev.Leaves
@@ -149,7 +153,6 @@ def test_event_pickle():
         for i in io:
             event = ev.clone()
             events += event.__compiler__(i)
-            events[-1].hash = root1
 
         PickleObject(events, "events")
         events_r = UnpickleObject("events")
@@ -178,7 +181,7 @@ def test_event_multithreading():
 
     root1 = "./samples/sample1/smpl1.root"
     ev = Event()
-    ev.__interpret__
+    ev.__getleaves__()
     ev_ = pickle.dumps(ev)
     io = UpROOT(root1)
     io.Trees = ["nominal"]

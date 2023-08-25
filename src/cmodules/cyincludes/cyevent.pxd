@@ -18,12 +18,36 @@ cdef extern from "../event/event.h" namespace "CyTemplate":
 
         void add_eventname(string event) except +
 
-        bool operator == (CyEventTemplate* ev) except +
-
-        event_t event
-        meta_t meta
+        bool operator == (CyEventTemplate& ev) except +
 
         map[string, string] leaves
         map[string, string] branches
         map[string, string] trees
 
+        event_t event
+        meta_t meta
+
+
+
+    cdef cppclass CyGraphTemplate:
+        CyGraphTemplate() except +
+        void ImportMetaData(meta_t meta) except +
+        void Import(graph_t graph) except +
+
+        string Hash() except +
+
+        graph_t graph
+        meta_t meta
+
+
+
+
+    cdef cppclass CySelectionTemplate:
+        CySelectionTemplate() except +
+        void ImportMetaData(meta_t meta) except +
+        void Import(selection_t selection) except +
+
+        string Hash() except +
+
+        selection_t selection
+        meta_t meta

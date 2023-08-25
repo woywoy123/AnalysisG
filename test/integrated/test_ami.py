@@ -17,9 +17,10 @@ def test_pyami():
     assert len(meta[f].Files) == 1
 
     data = "mc16_13TeV.312446.MadGraphPythia8EvtGen_noallhad_ttH_tttt_m1000"
-    assert meta[f].cross_section >= 0
+    assert meta[f].crossSection >= 0
     assert data in meta[f].DatasetName
 
+    assert len([i for i in smpl]) > 0
     for i in smpl:
         assert data in i["MetaData"].DatasetName
     clean_dir()

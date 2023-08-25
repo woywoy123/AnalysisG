@@ -1,6 +1,7 @@
 from AnalysisG.Tools import Code
 from AnalysisG.Tools import Tools, PickleObject, UnpickleObject
 directory = Tools().abs("./samples/test/") + "/"
+import pickle
 
 class simpleclass:
     def __init__(self, hello, world="world", test = None):
@@ -106,6 +107,16 @@ def test_code_extraction():
     x = set([c1, c2, c1, c2])
     assert len(x) == 2
 
+    x1 = pickle.dumps(c1)
+    x2 = pickle.dumps(c2)
+    tm1 = pickle.loads(x1)
+    tm2 = pickle.loads(x2)
+
+    assert tm1 == c1
+    assert tm2 == c2
+    assert tm1 != tm2
+
+
 def test_merge_data():
     x1 = {"All": [2], "a": 1, "b": {"test1": 0}}
     x2 = {"All": [1], "a": 2, "b": {"test2": 0}}
@@ -192,4 +203,3 @@ if __name__ == "__main__":
     test_list_files_in_dir()
     test_is_file()
     test_pickle()
-    # test_source_code_extraction()

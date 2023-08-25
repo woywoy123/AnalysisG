@@ -21,7 +21,7 @@ namespace CyTemplate
             void addbranch(std::string key, std::string branch); 
             void addtree(std::string key, std::string tree); 
             
-            bool operator == (CyEventTemplate* ev);
+            bool operator == (CyEventTemplate& ev);
        
             std::map<std::string, std::string> leaves = {}; 
             std::map<std::string, std::string> branches = {};  
@@ -35,6 +35,7 @@ namespace CyTemplate
         public:
             CyGraphTemplate(); 
             ~CyGraphTemplate(); 
+            void Import(graph_t); 
 
     }; 
 
@@ -45,6 +46,8 @@ namespace CyTemplate
         public:
             CySelectionTemplate(); 
             ~CySelectionTemplate(); 
+            void Import(selection_t); 
+
     }; 
 }
 #endif

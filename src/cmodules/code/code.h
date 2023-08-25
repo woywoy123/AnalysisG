@@ -17,7 +17,7 @@ namespace Code
             code_t ExportCode(); 
             
             code_t container;
-            bool operator==(CyCode* code);
+            bool operator==(CyCode& code);
     };
 }
 

@@ -71,7 +71,7 @@ namespace CyTemplate
             std::string hash(); 
             void addleaf(std::string key, std::string leaf); 
 
-            bool operator == (CyParticleTemplate* p); 
+            bool operator == (CyParticleTemplate& p); 
             CyParticleTemplate* operator+(CyParticleTemplate* p);
             void operator += (CyParticleTemplate* p); 
             void iadd(CyParticleTemplate* p); 

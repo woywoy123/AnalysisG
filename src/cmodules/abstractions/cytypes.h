@@ -9,22 +9,22 @@
 
 struct code_t
 {
-    std::vector<std::string> input_params; 
-    std::vector<std::string> co_vars; 
+    std::vector<std::string> input_params = {}; 
+    std::vector<std::string> co_vars = {}; 
 
-    std::map<std::string, std::string> param_space; 
+    std::map<std::string, std::string> param_space = {}; 
 
-    std::string function_name;
-    std::string class_name;
-    std::string hash; 
-    std::string source_code; 
-    std::string object_code; 
+    std::string function_name = {};
+    std::string class_name = {};
+    std::string hash = {}; 
+    std::string source_code = {}; 
+    std::string object_code = {}; 
     
-    bool is_class;
-    bool is_function; 
-    bool is_callable; 
-    bool is_initialized; 
-    bool has_param_variable; 
+    bool is_class = false;
+    bool is_function = false; 
+    bool is_callable = false; 
+    bool is_initialized = false; 
+    bool has_param_variable = false; 
 }; 
 
 
@@ -56,103 +56,103 @@ struct tree_t
 
 struct collect_t
 {
-    std::string tr_requested;
-    std::string tr_matched;
-    std::string br_requested;
-    std::string br_matched;
-    std::string lf_requested;
-    std::string lf_matched;
-    std::string lf_path;
+    std::string tr_requested = "";
+    std::string tr_matched = "";
+    std::string br_requested = "";
+    std::string br_matched = "";
+    std::string lf_requested = "";
+    std::string lf_matched = "";
+    std::string lf_path = "";
     bool valid;
 };
 
 struct meta_t
 {
     // basic IO content
-    std::string hash;
-    std::string original_input;
-    std::string original_path;
-    std::string original_name;
+    std::string hash = "";
+    std::string original_input = "";
+    std::string original_path = "";
+    std::string original_name = "";
 
     // requested content of this root file
-    std::vector<std::string> req_trees;
-    std::vector<std::string> req_branches;
-    std::vector<std::string> req_leaves;
+    std::vector<std::string> req_trees = {};
+    std::vector<std::string> req_branches = {};
+    std::vector<std::string> req_leaves = {};
 
     // Missing requested keys
-    std::vector<std::string> mis_trees;
-    std::vector<std::string> mis_branches;
-    std::vector<std::string> mis_leaves;
+    std::vector<std::string> mis_trees = {};
+    std::vector<std::string> mis_branches = {};
+    std::vector<std::string> mis_leaves = {};
 
     // Found content
-    std::map<std::string, leaf_t> leaves;
-    std::map<std::string, branch_t> branches; 
-    std::map<std::string, tree_t> trees; 
+    std::map<std::string, leaf_t> leaves = {};
+    std::map<std::string, branch_t> branches = {}; 
+    std::map<std::string, tree_t> trees = {}; 
 
     // AnalysisTracking values
-    unsigned int dsid;
-    std::string AMITag;
-    std::string generators;
+    unsigned int dsid = 0;
+    std::string AMITag = "";
+    std::string generators = "";
 
-    bool isMC;
-    std::string derivationFormat;
-    std::map<int, int> inputrange;
-    std::map<int, std::string> inputfiles;
-    std::map<std::string, std::string> config;
+    bool isMC = true;
+    std::string derivationFormat = "";
+    std::map<int, int> inputrange = {};
+    std::map<int, std::string> inputfiles = {};
+    std::map<std::string, std::string> config = {};
 
     // eventnumber is reserved for a ROOT specific mapping
-    int eventNumber;
+    int eventNumber = -1;
 
     // event_index is used as a free parameter
-    int event_index;
+    int event_index = -1;
 
     // search results
-    bool found;
-    std::string DatasetName;
+    bool found = false;
+    std::string DatasetName = "";
 
     // dataset attributes
-    double ecmEnergy;
-    double genFiltEff;
-    double completion;
-    double beam_energy;
-    double crossSection;
-    double crossSection_mean;
-    double totalSize;
+    double ecmEnergy = 0;
+    double genFiltEff = 0;
+    double completion = 0;
+    double beam_energy = 0;
+    double crossSection = 0;
+    double crossSection_mean = 0;
+    double totalSize = 0;
 
-    unsigned int nFiles;
-    unsigned int run_number;
-    unsigned int totalEvents;
-    unsigned int datasetNumber;
+    unsigned int nFiles = 0;
+    unsigned int run_number = 0;
+    unsigned int totalEvents = 0;
+    unsigned int datasetNumber = 0;
 
-    std::string identifier;
-    std::string prodsysStatus;
-    std::string dataType;
-    std::string version;
-    std::string PDF;
-    std::string AtlasRelease;
-    std::string principalPhysicsGroup;
-    std::string physicsShort;
-    std::string generatorName;
-    std::string geometryVersion;
-    std::string conditionsTag;
-    std::string generatorTune;
-    std::string amiStatus;
-    std::string beamType;
-    std::string productionStep;
-    std::string projectName;
-    std::string statsAlgorithm;
-    std::string genFilterNames;
-    std::string file_type;
+    std::string identifier = "";
+    std::string prodsysStatus = "";
+    std::string dataType = "";
+    std::string version = "";
+    std::string PDF = "";
+    std::string AtlasRelease = "";
+    std::string principalPhysicsGroup = "";
+    std::string physicsShort = "";
+    std::string generatorName = "";
+    std::string geometryVersion = "";
+    std::string conditionsTag = "";
+    std::string generatorTune = "";
+    std::string amiStatus = "";
+    std::string beamType = "";
+    std::string productionStep = "";
+    std::string projectName = "";
+    std::string statsAlgorithm = "";
+    std::string genFilterNames = "";
+    std::string file_type = "";
 
-    std::vector<std::string> keywords;
-    std::vector<std::string> weights;
-    std::vector<std::string> keyword;
+    std::vector<std::string> keywords = {};
+    std::vector<std::string> weights = {};
+    std::vector<std::string> keyword = {};
 
     // Local File Name
-    std::map<std::string, int> LFN;
-    std::vector<std::string> fileGUID;
-    std::vector<int> events;
-    std::vector<double> fileSize;
+    std::map<std::string, int> LFN = {};
+    std::vector<std::string> fileGUID = {};
+    std::vector<int> events = {};
+    std::vector<double> fileSize = {};
 };
 
 struct particle_t
@@ -187,21 +187,22 @@ struct particle_t
 struct event_t 
 {
     // implementation information
-    std::string event_name; 
-    std::string commit_hash; 
+    std::string event_name = ""; 
+    std::string commit_hash = ""; 
+    std::vector<std::string> code_hash = {}; 
     bool deprecated = false; 
 
     // io state
     bool cached = false;
     
     // state variables
-    double weight; 
+    double weight = 1; 
     int event_index = -1;
-    std::string event_hash; 
-    std::string event_tagging;
-    std::string event_tree;  
+    std::string event_hash = ""; 
+    std::string event_tagging = "";
+    std::string event_tree = "";  
     std::string event_root = ""; 
-    std::map<std::string, std::string> pickled_data; 
+    std::map<std::string, std::string> pickled_data = {}; 
     
     // template type indicators
     bool graph = false; 
@@ -211,38 +212,51 @@ struct event_t
 
 struct event_T
 {
-    std::map<std::string, std::string> leaves; 
-    std::map<std::string, std::string> branches; 
-    std::map<std::string, std::string> trees; 
+    std::map<std::string, std::string> leaves = {}; 
+    std::map<std::string, std::string> branches = {}; 
+    std::map<std::string, std::string> trees = {}; 
     event_t event; 
     meta_t meta; 
 }; 
 
+struct graph_t : event_t
+{
+    bool train = false; 
+    bool evaluation = false; 
+    bool validation = false;  
+    bool empty_graph = false; 
+};
+
+struct selection_t : event_t
+{
+    std::map<std::string, std::string> errors = {}; 
+    std::map<std::string, int> cutflow = {}; 
+    std::vector<double> timestats = {}; 
+    std::vector<double> all_weights = {}; 
+    std::vector<double> selection_weights = {}; 
+}; 
+
+
 struct batch_t
 {
-    std::map<std::string, event_t> events; 
+    std::map<std::string, event_t> events = {}; 
+    std::map<std::string, graph_t> graphs = {}; 
+    std::map<std::string, selection_t> selections = {}; 
 };
 
 struct root_t
 {
-    meta_t meta; 
-    std::map<std::string, batch_t> batches;
-    std::map<std::string, int> n_events;
-    std::map<std::string, int> n_graphs; 
-    std::map<std::string, int> n_selections; 
+    std::map<std::string, batch_t> batches = {};
+    std::map<std::string, int> n_events = {};
+    std::map<std::string, int> n_graphs = {}; 
+    std::map<std::string, int> n_selections = {}; 
 };
 
 struct tracer_t
 {
-    std::map<std::string, root_t> root_names; 
-    std::map<std::string, meta_t> root_meta; 
-    std::map<std::string, code_t> code; 
+    std::map<std::string, root_t> root_names = {}; 
+    std::map<std::string, meta_t> root_meta = {}; 
+    std::map<std::string, code_t> code = {}; 
 };
-
-
-
-
-
-
 
 #endif

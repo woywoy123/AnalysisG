@@ -15,19 +15,15 @@ cdef str env(string val): return val.decode("UTF-8")
 
 cdef class EventTemplate:
     cdef CyEventTemplate* ptr
-    cdef public dict Objects
+    cdef dict Objects
 
     def __cinit__(self):
         self.ptr = new CyEventTemplate()
-        self.Objects = {}
-
-    def __init__(self, meta_data = None):
         cdef str x = self.__class__.__name__
         self.ptr.add_eventname(enc(x))
-        if meta_data is None: return
-        cdef meta_t meta = meta_data
-        self.ImportMetaData(meta)
+        self.Objects = {}
 
+    def __init__(self): pass
     def __dealloc__(self): del self.ptr
     def __name__(self) -> str: return env(self.ptr.event.event_name)
     def __hash__(self) -> int: return int(self.hash[:8], 0)
@@ -35,22 +31,22 @@ cdef class EventTemplate:
     def __eq__(self, other) -> bool:
         if not self.is_self(other): return False
         cdef EventTemplate o = other
-        return self.ptr == o.ptr
+        return self.ptr[0] == o.ptr[0]
 
     def __getstate__(self) -> event_T:
         cdef event_T x = self.ptr.Export()
         cdef str key
         cdef string pkl
-        for key in self.__dict__:
-            pkl = pickle.dumps(self.__dict__[key])
-            x.pickled_data[enc(key)] = pkl
+        for key in list(self.__dict__) + ["Objects"]:
+            pkl = pickle.dumps(getattr(self, key))
+            x.event.pickled_data[enc(key)] = pkl
         return x
 
     def __setstate__(self, event_T inpt):
         self.ptr.Import(inpt)
         cdef pair[string, string] pkl
         cdef str key
-        for pkl in inpt.pickled_data:
+        for pkl in self.ptr.event.pickled_data:
             key = env(pkl.first)
             setattr(self, key, pickle.loads(pkl.second))
 
@@ -80,9 +76,9 @@ cdef class EventTemplate:
         cdef dict output = {}
         cdef EventTemplate event
         cdef str key, tree, typ_, leaf
-
-        for tree in self.Trees:
-            event = self.clone(inpt["MetaData"])
+        cdef int i
+        for tree in set(self.Trees):
+            event = self.clone(inpt["MetaData"].__getstate__())
             event.__getleaves__()
             objects.update({"event" : event})
             objects.update(objects["event"].Objects)
@@ -94,34 +90,31 @@ cdef class EventTemplate:
             objects["event"].Tree = tree
             output[tree] = {}
             for typ_ in var_map:
-                var_leaf = var_map[typ_]
-                var_leaf = {
-                        key : inpt_map[tree][leaf]
-                        for (key, leaf) in var_leaf.items()
-                        if leaf in inpt_map[tree]
-                }
-                if len(var_leaf) == 0: continue
+                for key, leaf in var_map[typ_].items():
+                    if leaf not in inpt_map[tree]: continue
+                    var_leaf[key] = inpt_map[tree][leaf]
+                if not len(var_leaf): continue
+
                 if typ_ == "event":
                     output[tree][typ_] = objects[typ_].__build__(var_leaf)
                 else:
                     objects[typ_].__build__(var_leaf)
                     output[tree][typ_] = objects[typ_].Children
-            if "event" not in output[tree]:
-                del event
+
+            try: event = output[tree]["event"]
+            except KeyError:
                 del output[tree]
                 continue
-            event = output[tree]["event"]
             for key in self.Objects:
-                if key not in output[tree]: continue
-                setattr(event, key, {
-                    i : output[tree][key][i] for i in range(len(output[tree][key]))
-                })
-            output[tree] = event
-
+                objects = {}
+                for i in range(len(output[tree][key])):
+                    objects[i] = output[tree][key][i]
+                setattr(event, key, objects)
             if event.index == -1: event.index = inpt["EventIndex"]
             else: inpt["MetaData"].eventNumber = event.index
             event.ROOT = inpt["MetaData"].DatasetName + "/" + inpt["MetaData"].DAOD
             event.hash
+            output[tree] = event
         return list(output.values())
 
     def __build__(self, dict variables):
@@ -144,11 +137,16 @@ cdef class EventTemplate:
         return issubclass(inpt.__class__, EventTemplate)
 
     def clone(self, meta = None) -> EventTemplate:
-        v = self.__new__(self.__class__)
-        v.__init__(meta)
+        v = self.__class__
+        v = v()
+        if meta is None: return v
+        v.ImportMetaData(meta)
         return v
 
     def CompileEvent(self): pass
+
+    def ImportMetaData(self, meta_t meta):
+        self.ptr.ImportMetaData(meta)
 
     @property
     def index(self) -> int:
@@ -183,7 +181,6 @@ cdef class EventTemplate:
     @CommitHash.setter
     def CommitHash(self, str val):
         self.ptr.event.commit_hash = enc(val)
-
 
     @property
     def Tag(self) -> str:
@@ -248,5 +245,15 @@ cdef class EventTemplate:
     @property
     def hash(self) -> str:
         return env(self.ptr.Hash())
+
+    @property
+    def Objects(self) -> dict:
+        return self.Objects
+
+    @Objects.setter
+    def Objects(self, val):
+        if not isinstance(val, dict):
+            val = {"title" : val}
+        self.Objects = val
 
 
