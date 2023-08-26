@@ -9,10 +9,13 @@ cdef extern from "../abstractions/cytypes.h":
         vector[string] co_vars
 
         map[string, string] param_space
+        map[string, vector[string]] trace
+        map[string, vector[string]] extern_imports
         string function_name
         string class_name
         string source_code
         string object_code
+        string defaults
         string hash
 
         bool is_class
@@ -148,6 +151,7 @@ cdef extern from "../abstractions/cytypes.h":
 
         string event_name
         string commit_hash
+        string event_code_hash
         bool deprecated
 
         bool cached
@@ -200,3 +204,19 @@ cdef extern from "../abstractions/cytypes.h":
         map[string, root_t] root_names
         map[string, meta_t] root_meta
         map[string, code_t] code
+
+
+    struct settings_t:
+        string tree
+        string eventname
+        string projectname
+        bool getgraph
+        bool getevent
+        bool getselection
+        unsigned int threads
+
+        vector[string] search
+
+
+
+

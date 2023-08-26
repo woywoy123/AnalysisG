@@ -1,7 +1,9 @@
-from AnalysisG.Tools import Code
-from AnalysisG.Tools import Tools, PickleObject, UnpickleObject
-directory = Tools().abs("./samples/test/") + "/"
+from AnalysisG.Tools import Tools, Code
+from AnalysisG.IO import PickleObject, UnpickleObject
+from examples.Particles import *
 import pickle
+
+directory = Tools().abs("./samples/test/") + "/"
 
 class simpleclass:
     def __init__(self, hello, world="world", test = None):
@@ -116,6 +118,38 @@ def test_code_extraction():
     assert tm2 == c2
     assert tm1 != tm2
 
+def test_code_inheritance_tracing():
+    def recursive_resolve(inpt, src, start = None):
+        if start is None: start = src
+        out = []
+        if src not in inpt: return out
+        for dep in inpt[src]:
+            tmp = start + "->" + dep
+            for k in recursive_resolve(inpt, dep, tmp):
+                if tmp not in k: continue
+                tmp = k
+                break
+            out.append(tmp)
+        return out
+
+    j = Jet()
+    c = Code(j)
+    assert c.is_class
+    assert not c.is_function
+    assert "Jet->ParticleTemplate" in c.trace
+    assert "LazyDefinition->ParticleTemplate" in c.trace
+    assert "TopChildren->LazyDefinition->ParticleTemplate" in c.trace
+
+    assert type(c.InstantiateObject).__name__ == "Jet"
+    assert c.InstantiateObject == j
+    assert c.InstantiateObject.hash == j.hash
+    x = c.InstantiateObject
+    assert x.pt == 0
+    assert x.eta == 0
+    assert x.phi == 0
+    assert x.px == 0
+    assert len(x.Children) == 0
+    assert len(x.Parent) == 0
 
 def test_merge_data():
     x1 = {"All": [2], "a": 1, "b": {"test1": 0}}
@@ -196,10 +230,12 @@ def test_pickle():
 
 
 if __name__ == "__main__":
-    test_code_extraction()
-    test_merge_data()
-    test_data_merging()
-    test_ls_files()
-    test_list_files_in_dir()
-    test_is_file()
-    test_pickle()
+    #test_code_extraction()
+    test_code_inheritance_tracing()
+
+    #test_merge_data()
+    #test_data_merging()
+    #test_ls_files()
+    #test_list_files_in_dir()
+    #test_is_file()
+    #test_pickle()

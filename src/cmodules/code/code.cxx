@@ -7,8 +7,15 @@ namespace Code
 
     void CyCode::Hash()
     {
+        std::hash<std::string> hasher; 
+        std::stringstream ss; 
+
         std::string obj_c = this -> container.object_code; 
-        this -> CyBase::Hash(obj_c); 
+        ss << "0x" << std::hex << hasher(obj_c); 
+        std::string out = ss.str(); 
+        int diff = out.size() - 18; 
+        if (diff) { out += std::string(std::abs(diff), '0'); }
+        this -> hash = out; 
     }
 
     bool CyCode::operator==(CyCode& inpt)

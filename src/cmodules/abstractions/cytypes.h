@@ -13,12 +13,15 @@ struct code_t
     std::vector<std::string> co_vars = {}; 
 
     std::map<std::string, std::string> param_space = {}; 
+    std::map<std::string, std::vector<std::string>> trace = {}; 
+    std::map<std::string, std::vector<std::string>> extern_imports = {}; 
 
-    std::string function_name = {};
-    std::string class_name = {};
-    std::string hash = {}; 
-    std::string source_code = {}; 
-    std::string object_code = {}; 
+    std::string function_name = "";
+    std::string class_name = "";
+    std::string hash = ""; 
+    std::string source_code = ""; 
+    std::string object_code = ""; 
+    std::string defaults = ""; 
     
     bool is_class = false;
     bool is_function = false; 
@@ -188,7 +191,8 @@ struct event_t
 {
     // implementation information
     std::string event_name = ""; 
-    std::string commit_hash = ""; 
+    std::string commit_hash = "";
+    std::string event_code_hash = "";  
     std::vector<std::string> code_hash = {}; 
     bool deprecated = false; 
 
@@ -258,5 +262,23 @@ struct tracer_t
     std::map<std::string, meta_t> root_meta = {}; 
     std::map<std::string, code_t> code = {}; 
 };
+
+struct settings_t
+{
+    std::string tree = ""; 
+    std::string eventname = "";
+    std::string projectname = "UNTITLED"; 
+    bool getgraph = false; 
+    bool getevent = false; 
+    bool getselection = false; 
+    unsigned int threads = 12;
+    
+    // Search fields
+    std::vector<std::string> search = {};
+};
+
+
+
+
 
 #endif

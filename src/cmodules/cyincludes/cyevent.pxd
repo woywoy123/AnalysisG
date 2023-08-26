@@ -1,4 +1,7 @@
-from cytypes cimport meta_t, event_t, event_T
+from cytypes cimport meta_t, event_t, graph_t, selection_t
+from cytypes cimport event_T
+from cycode cimport CyCode
+
 from libcpp.string cimport string
 from libcpp.map cimport map
 from libcpp cimport bool
@@ -24,6 +27,7 @@ cdef extern from "../event/event.h" namespace "CyTemplate":
         map[string, string] branches
         map[string, string] trees
 
+        map[string, CyCode*] this_code
         event_t event
         meta_t meta
 

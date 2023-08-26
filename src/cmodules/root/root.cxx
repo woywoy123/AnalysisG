@@ -81,9 +81,81 @@ namespace SampleTracer
 
     std::string CyBatch::Hash(){return this -> hash;}
 
+    void CyBatch::Contextualize()
+    {
+        if (!this -> get_event){ this -> this_ev = nullptr; }
+        if (!this -> get_graph){ this -> this_gr = nullptr; }
+        if (!this -> get_selection){ this -> this_sel = nullptr; }
 
+        std::string name = ""; 
+        if (this -> this_tree.size()){ name += this -> this_tree; }
+        if (this -> this_event_name.size()){ name += "/" + this -> this_event_name; }
 
+        if (this -> events.count(name)){this -> this_ev = this -> events[name];}
+        else { this -> this_ev = nullptr; }
 
+        if (this -> graphs.count(name)){this -> this_gr = this -> graphs[name];}
+        else { this -> this_gr = nullptr; }
+        
+        if (this -> selections.count(name)){this -> this_sel = this -> selections[name];}
+        else { this -> this_sel = nullptr; } 
+
+        if (this -> this_ev) { this -> valid = true; }
+        if (this -> this_gr) { this -> valid = true; }
+        if (this -> this_sel){ this -> valid = true; }
+    }
+    
+    void CyBatch::ApplySettings(const settings_t* inpt)
+    {
+        this -> this_event_name = inpt -> eventname; 
+        this -> this_tree = inpt -> tree; 
+        this -> get_event = inpt -> getevent; 
+        this -> get_graph = inpt -> getgraph; 
+        this -> get_selection = inpt -> getselection; 
+        this -> valid = false; 
+        this -> Contextualize();
+        if (!this -> valid){ return; }
+
+        const std::vector<std::string>* srch = &(inpt -> search); 
+        unsigned int z = srch -> size(); 
+        if (!z){ return; }
+        
+        for (unsigned int x(0); x < z; ++x)
+        {
+            if (this -> hash != srch -> at(x)){continue;}
+            return; 
+        }
+        
+        for (unsigned int x(0); x < z; ++x)
+        {
+            std::string find = srch -> at(x); 
+            if (this -> meta -> original_input == find){ return; }
+        }
+        this -> valid = false; 
+    }
+
+    void CyBatch::ApplyCodeHash(const std::map<std::string, Code::CyCode*>* code_hash)
+    {
+        std::map<std::string, CyEventTemplate*>::iterator ite; 
+        std::map<std::string, CyGraphTemplate*>::iterator itg; 
+        std::map<std::string, CySelectionTemplate*>::iterator its; 
+
+        ite = this -> events.begin(); 
+        itg = this -> graphs.begin(); 
+        its = this -> selections.begin(); 
+
+        for (; ite != this -> events.end(); ++ite)
+        {
+            CyEventTemplate* ev_ = ite -> second; 
+            event_t* ev = &(ev_ -> event); 
+            for (std::string hash : ev -> code_hash)
+            {
+                if (!code_hash -> count(hash)){ continue; }
+                if (ev_ -> this_code.count(hash)){ continue; }
+                ev_ -> this_code[hash] = code_hash -> at(hash); 
+            }
+        }
+    }
 
 
 
@@ -114,7 +186,9 @@ namespace SampleTracer
         CyBatch* bth = this -> batches[event_h];
         bth -> Import(&(this -> meta)); 
         bth -> Import(event); 
-        this -> n_events[event -> event_name] += 1; 
+        std::string name = event -> event_tree; 
+        name += "/" + event -> event_name; 
+        this -> n_events[name] += 1; 
     }
 
     root_t CyROOT::Export()

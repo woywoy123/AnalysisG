@@ -36,7 +36,8 @@ cdef class MetaData:
         self.ptr = new CyMetaData()
         self.client = None
 
-    def __init__(self, str file, bool scan_ami = True, str sampletype = "DAOD_TOPQ1"):
+    def __init__(self, str file = "", bool scan_ami = True, str sampletype = "DAOD_TOPQ1"):
+        if not len(file): return
         self.original_input = file
         self.sampletype = sampletype
         self.loaded = True

@@ -1,12 +1,12 @@
 #include "../abstractions/cytypes.h"
-#include "../abstractions/abstractions.h"
+#include <sstream> 
 
 #ifndef CODE_H
 #define CODE_H
 
 namespace Code
 {
-    class CyCode : public Abstraction::CyBase
+    class CyCode
     {
         public:
             CyCode();
@@ -17,7 +17,8 @@ namespace Code
             code_t ExportCode(); 
             
             code_t container;
-            bool operator==(CyCode& code);
+            bool operator == (CyCode& code);
+            std::string hash = ""; 
     };
 }
 

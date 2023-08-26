@@ -1,15 +1,18 @@
 from libcpp.vector cimport vector
 from libcpp.string cimport string
 from libcpp.map cimport map
+from libcpp cimport bool
 
 from cyevent cimport CyEventTemplate, CyGraphTemplate, CySelectionTemplate
+from cytypes cimport meta_t, event_t, graph_t, selection_t
+from cytypes cimport settings_t, tracer_t, code_t
 from cycode cimport CyCode
-from cytypes cimport *
 
 cdef extern from "../root/root.h" namespace "SampleTracer":
     cdef cppclass CyBatch:
         CyBatch() except +
         string Hash() except +
+        void Contextualize() except +
 
         map[string, CyEventTemplate*] events
         map[string, CyGraphTemplate*] graphs
@@ -17,21 +20,17 @@ cdef extern from "../root/root.h" namespace "SampleTracer":
 
         const meta_t* meta
 
-
         bool get_event
         bool get_graph
         bool get_selection
+        bool valid
 
-        bool m_ev
         CyEventTemplate* this_ev
-
-        bool m_gr
         CyGraphTemplate* this_gr
-
-        bool m_sel
         CySelectionTemplate* this_sel
 
         string this_tree
+        string this_event_name
 
 
 
@@ -47,3 +46,6 @@ cdef extern from "../sampletracer/sampletracer.h" namespace "SampleTracer":
 
         vector[CyBatch*] MakeIterable() except +
         map[string, int] length() except +
+
+        settings_t settings
+        map[string, CyCode*] code_hashes

@@ -65,16 +65,28 @@ def test_tracer_addEvent():
         if "truth/eventNumber" in i: len_tru += 1
         root, index, meta = i["ROOT"], i["EventIndex"], i["MetaData"]
         trees = ev.__compiler__(i)
-        for i in trees:
-            i.CompileEvent()
-            tr.AddEvent(i, meta)
+        for t in trees:
+            t.CompileEvent()
+            tr.AddEvent(t, meta)
         hashes.update({p.hash: p for p in trees})
         if root not in roothashes: roothashes[root] = []
         roothashes[root] += [p.hash for p in trees]
 
     assert len_tru + len_nom == len(tr)
+    tr.Tree = "nominal"
+    assert len_nom == len(tr)
+    tr.Tree = "truth"
+    assert len_tru == len(tr)
+    tr.Tree = ""
+    tr.EventName = "Event"
+    assert len_tru + len_nom == len(tr)
+
 
     # Test iterator
+    tr.Tree = "truth"
+    tr.EventName = "Event"
+    tr.threads = 12
+    tr.GetEvent = True
     for i in tr: assert i.hash == hashes[i.hash].hash
 
     # Test Getter Functions
@@ -90,17 +102,15 @@ def test_tracer_addEvent():
     assert len(tr[root1]) > 0
 
     for r in roothashes:
-        for hsh in roothashes[r]:
-            assert tr[hsh].ROOTName == tr.HashToROOT(hsh)
-    lst = [i for j in range(1000) for i in hashes]
+        inpt = {i.hash : i for i in tr[r]}
+        for hsh in roothashes[r]: assert inpt[hsh].original_input == r
+        assert len(inpt) > 0
 
-    assert len(hashes) > 0
-    assert sum(tr.FastHashSearch(lst).values()) == len(hashes)
 
 
 def EventMaker(root):
     ev = Event()
-    ev.__interpret__
+    ev.__getleaves__()
     io = UpROOT(root)
     io.Trees = ev.Trees
     io.Leaves = ev.Leaves
@@ -108,23 +118,11 @@ def EventMaker(root):
     for i in io:
         root, index, meta = i["ROOT"], i["EventIndex"], i["MetaData"]
         trees = ev.__compiler__(i)
-        root = meta.thisSet + "/" + meta.thisDAOD
         for i in trees:
             i.CompileEvent()
-        out.update(
-            {
-                i.hash: {
-                    "pkl": pickle.dumps(i),
-                    "index": i.index,
-                    "Tree": i.Tree,
-                    "ROOT": root,
-                    "Meta": meta,
-                }
-                for i in trees
-            }
-        )
+            if i.hash not in out: out[i.hash] = {}
+            else: out[i.hash][i.Tree] = {"Event" : i, "MetaData" : meta}
     return out
-
 
 def test_tracer_operators():
     root1 = os.path.abspath("./samples/sample1/smpl1.root")
@@ -228,7 +226,7 @@ def test_tracer_hdf5():
 
 
 if __name__ == "__main__":
-    test_tracer_addEvent()
-    #test_tracer_operators()
+    #test_tracer_addEvent()
+    test_tracer_operators()
     #test_tracer_hdf5()
     pass

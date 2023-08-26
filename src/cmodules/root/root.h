@@ -1,4 +1,3 @@
-#include "../abstractions/abstractions.h"
 #include "../abstractions/cytypes.h"
 #include "../event/event.h"
 
@@ -22,6 +21,10 @@ namespace SampleTracer
             batch_t Export(); 
             std::string Hash(); 
 
+            void Contextualize(); 
+            void ApplySettings(const settings_t* inpt); 
+            void ApplyCodeHash(const std::map<std::string, Code::CyCode*>* code_hash);
+
             std::map<std::string, CyEventTemplate*> events; 
             std::map<std::string, CyGraphTemplate*> graphs; 
             std::map<std::string, CySelectionTemplate*> selections; 
@@ -35,16 +38,13 @@ namespace SampleTracer
             bool get_event = false; 
             bool get_graph = false; 
             bool get_selection = false;
+            bool valid = false; 
 
-            bool m_ev = false; 
-            CyEventTemplate* this_ev; 
+            CyEventTemplate* this_ev = nullptr; 
+            CyGraphTemplate* this_gr = nullptr; 
+            CySelectionTemplate* this_sel = nullptr; 
 
-            bool m_gr = false; 
-            CyGraphTemplate* this_gr; 
-
-            bool m_sel = false; 
-            CySelectionTemplate* this_sel; 
-
+            std::string this_event_name; 
             std::string this_tree = ""; 
     }; 
 

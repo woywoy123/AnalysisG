@@ -2,7 +2,11 @@
 
 namespace SampleTracer
 {
-    CySampleTracer::CySampleTracer(){}
+    CySampleTracer::CySampleTracer()
+    {
+        this -> settings = settings_t(); 
+    }
+
     CySampleTracer::~CySampleTracer()
     {
         std::map<std::string, CyROOT*>::iterator it; 
@@ -20,19 +24,13 @@ namespace SampleTracer
         }
     }
 
-    void CySampleTracer::AddEvent(
-            event_t event, 
-            meta_t  meta, 
-            std::vector<code_t> code)
+    void CySampleTracer::AddEvent(event_t event, meta_t  meta, std::vector<code_t> code)
     {
         event_t* ev_ptr = &(event); 
         std::string event_r = ev_ptr -> event_root; 
         if (this -> root_map.count(event_r)){}
         else {this -> root_map[event_r] = new CyROOT(meta);}
 
-        CyROOT* root = root_map[event_r];
-        root -> AddEvent(ev_ptr);
-        
         for (unsigned int x(0); x < code.size(); ++x)
         { 
             code_t* co = &(code[x]);
@@ -41,6 +39,9 @@ namespace SampleTracer
             this -> code_hashes[co -> hash] = new Code::CyCode(); 
             this -> code_hashes[co -> hash] -> ImportCode(*co);
         }
+
+        CyROOT* root = root_map[event_r];
+        root -> AddEvent(ev_ptr);
     }
 
     tracer_t CySampleTracer::Export()
@@ -85,23 +86,47 @@ namespace SampleTracer
         }
     }
 
+    std::vector<CyBatch*> CySampleTracer::ReleaseVector(
+            std::vector<std::vector<CyBatch*>*> output, 
+            std::vector<std::thread*> jobs)
+    {
+        std::vector<CyBatch*> release = {}; 
+        settings_t* set = &(this -> settings); 
+
+        for (unsigned int x(0); x < output.size(); ++x)
+        {
+            if (set -> threads != 1){ jobs[x] -> join(); }
+            release.insert(release.end(), output[x] -> begin(), output[x] -> end()); 
+            output[x] -> clear(); 
+            delete output[x]; 
+            if (set -> threads != 1){ delete jobs[x]; }
+        }
+        return release; 
+    }
 
     std::vector<CyBatch*> CySampleTracer::MakeIterable()
     {
-        std::vector<CyBatch*> output = {}; 
-        std::map<std::string, CyROOT*>::iterator itr; 
-        std::map<std::string, CyBatch*>::iterator itb; 
-        itr = this -> root_map.begin(); 
+
+        unsigned int x = 0; 
+        std::vector<std::thread*> jobs = {};  
+        settings_t* set = &(this -> settings);
+        
+        std::vector<std::vector<CyBatch*>*> output = {}; 
+        std::map<std::string, Code::CyCode*>* code = &(this -> code_hashes);   
+
+        std::map<std::string, CyROOT*>::iterator itr = this -> root_map.begin(); 
+
         for (; itr != this -> root_map.end(); ++itr)
         {
-            CyROOT* root = itr -> second; 
-            itb = root -> batches.begin(); 
-            for (; itb != root -> batches.end(); ++itb)
-            {
-                output.push_back(itb -> second); 
-            }  
+            CyROOT* ro = itr -> second; 
+            output.push_back(new std::vector<CyBatch*>()); 
+
+            if (set -> threads == 1){ CySampleTracer::Make(ro, set, output[x], code); ++x; continue;}
+            std::thread* j = new std::thread(CySampleTracer::Make, ro, set, output[x], code);  
+            jobs.push_back(j); 
+            ++x;
         }
-        return output; 
+        return this -> ReleaseVector(output, jobs); 
     }
 
 

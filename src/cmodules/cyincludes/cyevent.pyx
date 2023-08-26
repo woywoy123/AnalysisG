@@ -82,24 +82,30 @@ cdef class EventTemplate:
             event.__getleaves__()
             objects.update({"event" : event})
             objects.update(objects["event"].Objects)
-            if tree not in inpt_map: inpt_map[tree] = {}
-            for key in inpt:
-                if tree not in key: continue
-                inpt_map[tree][key.split("/")[-1]] = inpt[key]
-
             objects["event"].Tree = tree
             output[tree] = {}
+
+            for key in inpt:
+                if tree not in key: continue
+                if tree not in inpt_map: inpt_map[tree] = {}
+                inpt_map[tree][key.split("/")[-1]] = inpt[key]
+
+            if tree not in inpt_map:
+                del output[tree]
+                del event
+                continue
+
             for typ_ in var_map:
                 for key, leaf in var_map[typ_].items():
                     if leaf not in inpt_map[tree]: continue
                     var_leaf[key] = inpt_map[tree][leaf]
                 if not len(var_leaf): continue
 
-                if typ_ == "event":
-                    output[tree][typ_] = objects[typ_].__build__(var_leaf)
-                else:
+                if typ_ != "event":
                     objects[typ_].__build__(var_leaf)
                     output[tree][typ_] = objects[typ_].Children
+                    continue
+                output[tree][typ_] = objects[typ_].__build__(var_leaf)
 
             try: event = output[tree]["event"]
             except KeyError:

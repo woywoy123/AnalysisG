@@ -44,7 +44,7 @@ namespace Abstraction
             graph_t graph; 
             selection_t selection; 
 
-            std::map<std::string, CyCode*> this_code = {}; 
+            std::map<std::string, Code::CyCode*> this_code = {}; 
     };
 }
 #endif
