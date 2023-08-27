@@ -13,23 +13,24 @@ namespace SampleTracer
         public:
             CyBatch(std::string hash); 
             ~CyBatch(); 
-            void Import(const meta_t* meta); 
-            void Import(const event_t* event);
-            void Import(const graph_t* graph); 
-            void Import(const selection_t* selection); 
-
-            batch_t Export(); 
             std::string Hash(); 
+            void Import(const meta_t*); 
+            void Import(const event_t*);
+            void Import(const graph_t*); 
+            void Import(const selection_t*); 
+
+            void Export(batch_t* exp); 
+            batch_t Export(); 
 
             void Contextualize(); 
-            void ApplySettings(const settings_t* inpt); 
-            void ApplyCodeHash(const std::map<std::string, Code::CyCode*>* code_hash);
+            void ApplySettings(const settings_t*); 
+            void ApplyCodeHash(const std::map<std::string, Code::CyCode*>*);
 
             std::map<std::string, CyEventTemplate*> events; 
             std::map<std::string, CyGraphTemplate*> graphs; 
             std::map<std::string, CySelectionTemplate*> selections; 
            
-            std::string hash; 
+            std::string hash = ""; 
 
             const meta_t* meta;
             bool lock_meta = false;
@@ -44,7 +45,7 @@ namespace SampleTracer
             CyGraphTemplate* this_gr = nullptr; 
             CySelectionTemplate* this_sel = nullptr; 
 
-            std::string this_event_name; 
+            std::string this_event_name = ""; 
             std::string this_tree = ""; 
     }; 
 
@@ -53,6 +54,10 @@ namespace SampleTracer
         public:
             CyROOT(meta_t meta);  
             ~CyROOT(); 
+
+            static void Make(CyBatch* smpls, batch_t* exp_container){
+                smpls -> Export(exp_container);     
+            }; 
 
             root_t Export(); 
             void Import(const root_t* inpt); 
@@ -63,8 +68,6 @@ namespace SampleTracer
             std::map<std::string, int> n_events = {};
             std::map<std::string, int> n_graphs = {}; 
             std::map<std::string, int> n_selections = {};  
-
-
     };
 }
 #endif

@@ -19,6 +19,7 @@ namespace SampleTracer
         for(; its != this -> selections.end(); ++its){delete its -> second;} 
     }
     
+    std::string CyBatch::Hash(){ return this -> hash; }
     void CyBatch::Import(const event_t* event)
     { 
         std::string name = ""; 
@@ -50,7 +51,7 @@ namespace SampleTracer
         name += selection -> event_tree + "/"; 
         name += selection -> event_name; 
         
-        if (this -> graphs.count(name)){ return; }
+        if (this -> selections.count(name)){ return; }
         CySelectionTemplate* _selection = new CySelectionTemplate(); 
         _selection -> Import(*selection); 
         this -> selections[name] = _selection; 
@@ -70,16 +71,53 @@ namespace SampleTracer
         batch_t output; 
         
         std::map<std::string, CyEventTemplate*>::iterator ite; 
+        std::map<std::string, CyGraphTemplate*>::iterator itg; 
+        std::map<std::string, CySelectionTemplate*>::iterator its; 
+        
         ite = this -> events.begin(); 
-        for (; ite != this -> events.end(); ++ite)
-        {
-            std::string hash = ite -> first; 
-            output.events[hash] = ite -> second -> event; 
+        itg = this -> graphs.begin();
+        its = this -> selections.begin();
+        output.hash = this -> hash;
+        
+        for (; ite != this -> events.end(); ++ite){
+            output.events[ite -> first] = ite -> second -> event; 
         }
+
+        for (; itg != this -> graphs.end(); ++itg){
+            output.graphs[itg -> first] = itg -> second -> graph; 
+        }
+
+        for (; its != this -> selections.end(); ++its){
+            output.selections[its -> first] = its -> second -> selection; 
+        }
+
         return output; 
     }
 
-    std::string CyBatch::Hash(){return this -> hash;}
+    void CyBatch::Export(batch_t* exp)
+    {
+        std::map<std::string, CyEventTemplate*>::iterator ite; 
+        std::map<std::string, CyGraphTemplate*>::iterator itg; 
+        std::map<std::string, CySelectionTemplate*>::iterator its; 
+        
+        ite = this -> events.begin(); 
+        itg = this -> graphs.begin();
+        its = this -> selections.begin();
+        exp -> hash = this -> hash;
+        
+        for (; ite != this -> events.end(); ++ite){
+            exp -> events[ite -> first] = ite -> second -> event; 
+        }
+
+        for (; itg != this -> graphs.end(); ++itg){
+            exp -> graphs[itg -> first] = itg -> second -> graph; 
+        }
+
+        for (; its != this -> selections.end(); ++its){
+            exp -> selections[its -> first] = its -> second -> selection; 
+        }
+    }
+
 
     void CyBatch::Contextualize()
     {
@@ -120,17 +158,16 @@ namespace SampleTracer
         unsigned int z = srch -> size(); 
         if (!z){ return; }
         
-        for (unsigned int x(0); x < z; ++x)
-        {
+        for (unsigned int x(0); x < z; ++x){
             if (this -> hash != srch -> at(x)){continue;}
             return; 
         }
         
-        for (unsigned int x(0); x < z; ++x)
-        {
+        for (unsigned int x(0); x < z; ++x){
             std::string find = srch -> at(x); 
             if (this -> meta -> original_input == find){ return; }
         }
+
         this -> valid = false; 
     }
 
@@ -144,12 +181,10 @@ namespace SampleTracer
         itg = this -> graphs.begin(); 
         its = this -> selections.begin(); 
 
-        for (; ite != this -> events.end(); ++ite)
-        {
+        for (; ite != this -> events.end(); ++ite){
             CyEventTemplate* ev_ = ite -> second; 
             event_t* ev = &(ev_ -> event); 
-            for (std::string hash : ev -> code_hash)
-            {
+            for (std::string hash : ev -> code_hash){
                 if (!code_hash -> count(hash)){ continue; }
                 if (ev_ -> this_code.count(hash)){ continue; }
                 ev_ -> this_code[hash] = code_hash -> at(hash); 
@@ -169,17 +204,13 @@ namespace SampleTracer
     {
         std::map<std::string, CyBatch*>::iterator it; 
         it = this -> batches.begin(); 
-        for (; it != this -> batches.end(); ++it)
-        {
-            delete it -> second; 
-        }
+        for (; it != this -> batches.end(); ++it){delete it -> second;}
     }
 
     void CyROOT::AddEvent(const event_t* event)
     {
         std::string event_h = event -> event_hash; 
-        if (!this -> batches.count(event_h))
-        {
+        if (!this -> batches.count(event_h)){
             this -> batches[event_h] = new CyBatch(event_h);
         }
 
@@ -193,16 +224,34 @@ namespace SampleTracer
 
     root_t CyROOT::Export()
     {
-        root_t output; 
+        std::vector<batch_t*> container = {}; 
+        std::vector<std::thread*> jobs = {}; 
         std::map<std::string, CyBatch*>::iterator it; 
-        it = this -> batches.begin(); 
-        for (; it != this -> batches.end(); ++it)
-        {
-            output.batches[it -> first] = it -> second -> Export();  
+        for (it = this -> batches.begin(); it != this -> batches.end(); ++it){
+            CyBatch* exp = it -> second; 
+            batch_t* get = new batch_t(); 
+            
+            std::thread* j = new std::thread(CyROOT::Make, exp, get); 
+            container.push_back(get); 
+            jobs.push_back(j); 
         }
+       
+        root_t output; 
         output.n_events = this -> n_events; 
         output.n_graphs = this -> n_graphs; 
         output.n_selections = this -> n_selections;
+        for (unsigned int x(0); x < this -> batches.size(); ++x)
+        {
+            jobs[x] -> join(); 
+            batch_t* exp = container[x]; 
+
+            output.batches[exp -> hash] = *exp; 
+            delete exp; 
+            delete jobs[x]; 
+        }
+
+        jobs.clear(); 
+        container.clear();
         return output; 
     }
 
@@ -215,8 +264,7 @@ namespace SampleTracer
         {
             const batch_t* b = &(itb -> second); 
             itr = b -> events.begin(); 
-            for (; itr != b -> events.end(); ++b)
-            {
+            for (; itr != b -> events.end(); ++itr){
                 this -> AddEvent(&(itr -> second)); 
             } 
         }

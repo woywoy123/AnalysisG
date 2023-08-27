@@ -47,5 +47,10 @@ cdef extern from "../sampletracer/sampletracer.h" namespace "SampleTracer":
         vector[CyBatch*] MakeIterable() except +
         map[string, int] length() except +
 
+        CySampleTracer* operator+(CySampleTracer* other) except +
+        void iadd(CySampleTracer* other) except +
+
+
+
         settings_t settings
         map[string, CyCode*] code_hashes

@@ -25,7 +25,8 @@ namespace SampleTracer
                 for (; itb != root -> batches.end(); ++itb)
                 {
                     CyBatch* this_b = itb -> second; 
-                    this_b -> ApplySettings(apply); 
+                    this_b -> ApplySettings(apply);  
+
                     if (!this_b -> valid){continue;}
 
                     this_b -> ApplyCodeHash(code_hashes); 
@@ -39,13 +40,16 @@ namespace SampleTracer
 
 
             std::vector<CyBatch*> MakeIterable(); 
-
             std::map<std::string, int> length();  
 
-            settings_t settings; 
 
-            std::map<std::string, CyROOT*> root_map; 
+            CySampleTracer* operator + (CySampleTracer*); 
+            void operator += (CySampleTracer*);
+            void iadd(CySampleTracer*); 
+
             std::map<std::string, Code::CyCode*> code_hashes;
+            std::map<std::string, CyROOT*> root_map; 
+            settings_t settings; 
 
     }; 
 }

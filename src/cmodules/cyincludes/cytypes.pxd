@@ -193,6 +193,7 @@ cdef extern from "../abstractions/cytypes.h":
         map[string, event_t] events
         map[string, graph_t] graphs
         map[string, selection_t] selections
+        string hash
 
     struct root_t:
         map[string, batch_t] batches

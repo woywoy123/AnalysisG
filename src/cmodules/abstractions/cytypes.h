@@ -246,6 +246,7 @@ struct batch_t
     std::map<std::string, event_t> events = {}; 
     std::map<std::string, graph_t> graphs = {}; 
     std::map<std::string, selection_t> selections = {}; 
+    std::string hash = ""; 
 };
 
 struct root_t

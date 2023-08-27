@@ -37,7 +37,7 @@ cdef class EventTemplate:
         cdef event_T x = self.ptr.Export()
         cdef str key
         cdef string pkl
-        for key in list(self.__dict__) + ["Objects"]:
+        for key in list(self.__dict__):
             pkl = pickle.dumps(getattr(self, key))
             x.event.pickled_data[enc(key)] = pkl
         return x
@@ -48,7 +48,8 @@ cdef class EventTemplate:
         cdef str key
         for pkl in self.ptr.event.pickled_data:
             key = env(pkl.first)
-            setattr(self, key, pickle.loads(pkl.second))
+            obj = pickle.loads(pkl.second)
+            setattr(self, key, obj)
 
     def __getleaves__(self) -> dict:
         cdef str i
@@ -69,64 +70,64 @@ cdef class EventTemplate:
         return leaves
 
     def __compiler__(self, inpt: Union[dict]):
-        cdef dict var_map = self.__getleaves__()
-        cdef dict var_leaf = {}
+        cdef EventTemplate event = self.clone()
+        meta = inpt["MetaData"]
+
+        cdef int x
+        cdef list sub_keys
         cdef dict inpt_map = {}
-        cdef dict objects = {}
-        cdef dict output = {}
-        cdef EventTemplate event
-        cdef str key, tree, typ_, leaf
-        cdef int i
-        for tree in set(self.Trees):
-            event = self.clone(inpt["MetaData"].__getstate__())
-            event.__getleaves__()
-            objects.update({"event" : event})
-            objects.update(objects["event"].Objects)
-            objects["event"].Tree = tree
-            output[tree] = {}
+        cdef dict var_leaf
+        cdef str tree, key, typ, k, v
 
+        for tree in self.Trees:
             for key in inpt:
-                if tree not in key: continue
+                sub_keys = key.split("/")
+                typ = sub_keys[0]
+                if tree not in typ: continue
+                if len(sub_keys) <= 1: continue
                 if tree not in inpt_map: inpt_map[tree] = {}
-                inpt_map[tree][key.split("/")[-1]] = inpt[key]
 
-            if tree not in inpt_map:
-                del output[tree]
-                del event
-                continue
+                inpt_map[tree][sub_keys[-1]] = inpt[key]
 
-            for typ_ in var_map:
-                for key, leaf in var_map[typ_].items():
-                    if leaf not in inpt_map[tree]: continue
-                    var_leaf[key] = inpt_map[tree][leaf]
-                if not len(var_leaf): continue
+            if tree not in inpt_map: continue
+            var_leaf = self.__getleaves__()
+            sub_keys = list(inpt_map[tree])
+            for typ in var_leaf:
+                if not len(sub_keys): break
 
-                if typ_ != "event":
-                    objects[typ_].__build__(var_leaf)
-                    output[tree][typ_] = objects[typ_].Children
+                for v, k in var_leaf[typ].items():
+                    for x in range(len(sub_keys)):
+                        if k not in sub_keys[x]: continue
+                        if typ not in var_leaf: var_leaf[typ] = {}
+                        key = sub_keys.pop(x)
+                        var_leaf[typ][v] = inpt_map[tree][key]
+                        break
+
+                if typ != "event":
+                    try: obj = event.Objects[typ]()
+                    except: obj = event.Objects[typ]
+                    inpt_map[tree][typ] = obj.__build__(var_leaf[typ])
                     continue
-                output[tree][typ_] = objects[typ_].__build__(var_leaf)
 
-            try: event = output[tree]["event"]
-            except KeyError:
-                del output[tree]
-                continue
-            for key in self.Objects:
-                objects = {}
-                for i in range(len(output[tree][key])):
-                    objects[i] = output[tree][key][i]
-                setattr(event, key, objects)
-            if event.index == -1: event.index = inpt["EventIndex"]
-            else: inpt["MetaData"].eventNumber = event.index
-            event.ROOT = inpt["MetaData"].DatasetName + "/" + inpt["MetaData"].DAOD
-            event.hash
-            output[tree] = event
-        return list(output.values())
+                obj = self.clone(meta.__getstate__())
+                obj.__build__(var_leaf[typ])
+                obj.Tree = tree
+                if obj.index == -1: obj.index = inpt["EventIndex"]
+                else: meta.eventNumber = obj.index
+                obj.ROOT = meta.DatasetName + "/" + meta.DAOD
+                obj.hash
+                inpt_map[tree][typ] = obj
+
+
+            for typ in inpt_map[tree]:
+                if typ == "event": continue
+                setattr(inpt_map[tree]["event"], typ, inpt_map[tree][typ])
+
+            inpt_map[tree] = inpt_map[tree]["event"]
+        return list(inpt_map.values())
 
     def __build__(self, dict variables):
         cdef str keys
-        cdef EventTemplate ev = self.clone()
-        ev.Tree = self.Tree
         for keys in variables:
             try: variables[keys] = variables[keys].tolist()
             except AttributeError: pass
@@ -134,9 +135,7 @@ cdef class EventTemplate:
             try: variables[keys] = variables[keys].pop()
             except AttributeError: pass
 
-            setattr(ev, keys, variables[keys])
-        return ev
-
+            setattr(self, keys, variables[keys])
 
     def is_self(self, inpt) -> bool:
         if isinstance(inpt, EventTemplate): return True

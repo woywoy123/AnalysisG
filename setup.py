@@ -23,10 +23,10 @@ def make(module, name, dependency):
 
 modules = [
         #make("code", "code", ["abstractions"]),
-        #make("EventTemplate", "event", ["abstractions", "metadata", "code"]),
-        #make("ParticleTemplate", "particle", ["abstractions"]),
+        make("EventTemplate", "event", ["abstractions", "metadata", "code"]),
+        make("ParticleTemplate", "particle", ["abstractions"]),
         #make("MetaData", "metadata", ["abstractions"]),
-        make("SampleTracer", "sampletracer", ["root", "abstractions", "metadata", "event", "code"])
+        #make("SampleTracer", "sampletracer", ["root", "abstractions", "metadata", "event", "code"])
 ]
 for i in range(len(modules)):
     modules[i]["language"] = "c++"

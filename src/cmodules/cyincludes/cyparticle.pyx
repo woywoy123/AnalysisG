@@ -57,12 +57,11 @@ cdef class ParticleTemplate:
         return x
 
     def __setstate__(self, particle_t inpt):
-        cdef pair[string, string] it
-        cdef str key
-        for it in inpt.pickle_string:
-            key = env(it.first)
-            setattr(self, key, pickle.loads(it.second))
         self.ptr.Import(inpt)
+        for it in self.ptr.state.pickle_string:
+            key = env(it.first)
+            obj = pickle.loads(it.second)
+            setattr(self, key, obj)
 
     def __eq__(self, other) -> bool:
         if not self.is_self(other): return False
@@ -88,12 +87,15 @@ cdef class ParticleTemplate:
         cdef str k
         cdef dict lv, p_
 
-        cdef list keys = list(self.__getleaves__().values())
+        cdef list keys = list(self.__getleaves__())
         for k in variables:
             if k.split("/")[-1] not in keys: continue
             try: inpt[k] = variables[k].tolist()
-            except AttributeError: inpt[k] = variables[k]
-        if not len(inpt): return
+            except AttributeError:
+                if isinstance(variables[k], str): continue
+                inpt[k] = variables[k]
+
+        if not len(inpt): return {}
         while True:
             x = {}
             get = False
@@ -117,13 +119,12 @@ cdef class ParticleTemplate:
             if not get: self.__build__(x)
             else:
                 p = self.clone()
-                lv = p.__getleaves__()
-                lv = {lv[k] : k for k in lv}
                 p_ = {k.split("/")[-1] : x[k] for k in x}
                 for k in p_:
-                    try: setattr(p, lv[k], p_[k])
+                    try: setattr(p, k, p_[k])
                     except KeyError: pass
                 self.Children.append(p)
+        return {i : obj for i, obj in enumerate(self.Children)}
 
     def clone(self) -> ParticleTemplate:
         v = self.__class__

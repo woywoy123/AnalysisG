@@ -54,6 +54,7 @@ namespace CyTemplate
         p -> e += std::pow(this -> px(), 2); 
         p -> e += std::pow(this -> py(), 2); 
         p -> e += std::pow(this -> pz(), 2); 
+        if (p -> mass >= 0){p -> e += p -> mass;}
         p -> e  = std::pow(p -> e, 0.5); 
         return p -> e; 
     }

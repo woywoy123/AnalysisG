@@ -115,26 +115,86 @@ def EventMaker(root):
     io.Trees = ev.Trees
     io.Leaves = ev.Leaves
     out = {}
+    n_events = {}
     for i in io:
         root, index, meta = i["ROOT"], i["EventIndex"], i["MetaData"]
         trees = ev.__compiler__(i)
         for i in trees:
             i.CompileEvent()
+            if i.Tree not in n_events: n_events[i.Tree] = 0
+            n_events[i.Tree] += 1
             if i.hash not in out: out[i.hash] = {}
-            else: out[i.hash][i.Tree] = {"Event" : i, "MetaData" : meta}
-    return out
+            out[i.hash][i.Tree] = {"Event" : i, "MetaData" : meta}
+    return (out, n_events)
 
 def test_tracer_operators():
     root1 = os.path.abspath("./samples/sample1/smpl1.root")
     root2 = os.path.abspath("./samples/sample1/smpl2.root")
 
+    t1_event, n1_events = EventMaker(root1)
+
     tr1 = SampleTracer()
-    tr1.AddEvent(EventMaker(root1))
+    tr1.AddEvent(t1_event)
     l1 = len(tr1)
 
+    assert l1 == sum([k for k in n1_events.values()])
+
+    # not set the event/tree, should default to nominal
+    nominal_n = {i : t1_event[i.hash]["nominal"]["Event"] for i in tr1}
+    assert len(nominal_n) == n1_events["nominal"]
+
+    # assign tree 
+    tr1.Tree = "truth"
+    truth_n = {i : t1_event[i.hash]["truth"]["Event"] for i in tr1}
+    assert len(truth_n) == n1_events["truth"]
+
+    tr1.Tree = "nominal"
+    nom_n = {i : t1_event[i.hash]["nominal"]["Event"] for i in tr1}
+    assert len(nom_n) == n1_events["nominal"]
+
+    # Check for particle and event properties
+    for i, j in nom_n.items():
+        assert i.hash == j.hash
+        assert i.Tree == j.Tree
+        t1, t2 = i.top, j.top
+        assert len(t1) == len(t2)
+
+        # check if truth tops are actually not nulls
+        assert set([l for l in t2.values()]) != 1
+
+
+        delta = []
+        for t in t2:
+            assert t1[t].Type == t2[t].Type
+            assert t1[t].hash == t2[t].hash
+            assert t1[t].pt == t2[t].pt
+            assert t1[t].Mass == t2[t].Mass
+
+            # check the deltaR
+            delta += [t1[k].DeltaR(t2[t]) for k in range(len(t2))]
+        assert len(set(delta)) != 1
+
+        t1, t2 = i.Children, j.Children
+        assert len(t1) == len(t2)
+
+        # check if truth children are actually not nulls
+        assert set([l for l in t2.values()]) != 1
+
+        for t in t2:
+            assert t1[t].Type == t2[t].Type
+            assert t1[t].hash == t2[t].hash
+            assert t1[t].pt == t2[t].pt
+            assert t1[t].Mass == t2[t].Mass
+
+    t2_event, n2_events = EventMaker(root2)
     tr2 = SampleTracer()
-    tr2.AddEvent(EventMaker(root2))
+    tr2.AddEvent(t2_event)
     l2 = len(tr2)
+
+
+    # reset tracers 
+    tr1.Tree = ""
+    tr2.Tree = ""
 
     trsum = tr1 + tr2
     lsum = len(trsum)
@@ -143,15 +203,50 @@ def test_tracer_operators():
     assert len(tr1) == l1
     assert len(tr2) == l2
 
-    for i in tr1:
-        assert trsum[i.hash]
-    for i in tr2:
-        assert trsum[i.hash]
+    for i in nom_n.values():
+        j = trsum[i.hash]
+        assert i.hash == j.hash
+        assert i.Tree == j.Tree
+        t1, t2 = i.top, j.top
+        assert len(t1) == len(t2)
+
+        # check if truth tops are actually not nulls
+        assert set([l for l in t2.values()]) != 1
+
+
+        delta = []
+        for t in t2:
+            assert t1[t].Type == t2[t].Type
+            assert t1[t].hash == t2[t].hash
+            assert t1[t].pt == t2[t].pt
+            assert t1[t].Mass == t2[t].Mass
+
+            # check the deltaR
+            delta += [t1[k].DeltaR(t2[t]) for k in range(len(t2))]
+        assert len(set(delta)) != 1
+
+        t1, t2 = i.Children, j.Children
+        assert len(t1) == len(t2)
+
+        # check if truth children are actually not nulls
+        assert set([l for l in t2.values()]) != 1
+
+        for t in t2:
+            assert t1[t].Type == t2[t].Type
+            assert t1[t].hash == t2[t].hash
+            assert t1[t].pt == t2[t].pt
+            assert t1[t].Mass == t2[t].Mass
+
+    for i in tr1: assert trsum[i.hash]
+    for i in tr2: assert trsum[i.hash]
 
     del tr1
     del tr2
 
-    assert len([trsum.HashToROOT(i.hash) for i in trsum]) == lsum
+    out = []
+    for i in trsum: out.append(i.hash)
+
+    assert len(out) == n2_events["nominal"] + n1_events["nominal"]
 
 
 def test_tracer_hdf5():
@@ -226,7 +321,7 @@ def test_tracer_hdf5():
 
 
 if __name__ == "__main__":
-    #test_tracer_addEvent()
+    test_tracer_addEvent()
     test_tracer_operators()
     #test_tracer_hdf5()
     pass
