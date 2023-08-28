@@ -145,13 +145,11 @@ cdef extern from "../abstractions/cytypes.h":
         vector[int] lepdef
         vector[int] nudef
 
-        map[string, string] pickle_string
-
     struct event_t:
 
         string event_name
         string commit_hash
-        string event_code_hash
+        string code_hash
         bool deprecated
 
         bool cached
@@ -162,19 +160,11 @@ cdef extern from "../abstractions/cytypes.h":
         string event_tagging
         string event_tree
         string event_root
-        map[string, string] pickled_data
+        string pickled_data
 
         bool graph
         bool selection
         bool event
-
-    struct event_T:
-        map[string, string] leaves
-        map[string, string] branches
-        map[string, string] trees
-        event_t event
-        meta_t  meta
-
 
     struct graph_t:
         bool train
@@ -204,20 +194,50 @@ cdef extern from "../abstractions/cytypes.h":
     struct tracer_t:
         map[string, root_t] root_names
         map[string, meta_t] root_meta
-        map[string, code_t] code
+        map[string, code_t] hashed_code
+
+        map[string, string] link_event_code
+        map[string, int] event_trees
 
 
     struct settings_t:
+        # General IO stuff
+        string caller
+        string projectname
+        string outputdirectory
+        map[string, vector[string]] files
+        int verbose
+
+        # multithreading options
+        int chunks
+        unsigned int threads
+
+        # PyAMI
+        bool enable_pyami
+
+        # Sample/Compiler stuff
         string tree
         string eventname
-        string projectname
+
+        # Graph Specific content
+        map[string, code_t] graph_attribute
+        map[string, code_t] node_attribute
+        map[string, code_t] edge_attribute
+
+        # Generation specific options
+        int event_start
+        int event_stop
+
+        # Getter object option
         bool getgraph
         bool getevent
         bool getselection
-        unsigned int threads
 
+        # Cache options
+        bool eventcache
+        bool graphcache
+
+
+        # Getter variable
         vector[string] search
-
-
-
 

@@ -3,14 +3,18 @@
 
 from cysampletracer cimport CySampleTracer, CyBatch
 
-from cyevent cimport CyEventTemplate, CyGraphTemplate, CySelectionTemplate
-from cytypes cimport meta_t, settings_t, event_t, graph_t, selection_t, code_t
-from cytypes cimport event_T
+from cyevent cimport CyEventTemplate
+from cygraph cimport CyGraphTemplate
+from cyselection cimport CySelectionTemplate
+
+from cytypes cimport event_t, graph_t, selection_t, code_t
+from cytypes cimport tracer_t, meta_t, settings_t
 
 from AnalysisG.Tools import Code
 from cycode cimport CyCode
 
 from AnalysisG._cmodules.MetaData import MetaData
+from AnalysisG._cmodules.EventTemplate import EventTemplate
 
 from libcpp.vector cimport vector
 from libcpp.string cimport string
@@ -18,6 +22,8 @@ from libcpp.map cimport map, pair
 from libcpp cimport bool
 
 from typing import Union
+import pickle
+import os
 
 cdef string enc(str val): return val.encode("UTF-8")
 cdef str env(string val): return val.decode("UTF-8")
@@ -38,6 +44,13 @@ cdef class Event:
         self._meta = None
 
     def __init__(self): pass
+
+    def __eq__(self, other):
+        try: return self.hash == other.hash
+        except: return False
+    def __hash__(self):
+        return int(self.hash[:8], 0)
+
     def __getattr__(self, req):
         self.__getevent__()
         try: return getattr(self._event, req)
@@ -56,40 +69,44 @@ cdef class Event:
         if self._event is not None: return
         cdef CyEventTemplate* ev_ = self.ptr.this_ev
         if ev_ == NULL: self._event = False; return
-        cdef string code_h = ev_.event.event_code_hash
-        cdef CyCode* co_ = ev_.this_code[code_h]
+        cdef CyCode* co_ = ev_.code_link
+        if co_ == NULL:
+            print("MISSING CODE!")
+            return
 
-        cdef event_T ev = ev_.Export()
+        cdef event_t ev = ev_.Export()
         cdef code_t  co = co_.ExportCode()
-
         c = Code()
         c.__setstate__(co)
         event = c.InstantiateObject
 
-        event.__setstate__(ev)
+        cdef dict pkl = pickle.loads(ev.pickled_data)
+        ev.pickled_data = b""
+        event.__setstate__((pkl, ev))
         self._event = event
 
 
 cdef class SampleTracer:
 
     cdef CySampleTracer* ptr
-    cdef map[string, vector[code_t]] hashed_code
-    cdef map[string, string] event_code_hash
-    cdef map[string, int] event_trees
-    cdef vector[CyBatch*] itb
-    cdef unsigned int its
-    cdef unsigned int ite
+    cdef event_iter
+    cdef _Event
 
     def __cinit__(self):
         self.ptr = new CySampleTracer()
-        self.hashed_code = {}
-        self.event_code_hash = {}
+        self._Event = None
 
-    def __dealloc__(self): del self.ptr
-    def __init__(self): pass
+    def __dealloc__(self):
+        del self.ptr
 
-    def __contains__(self, str val) -> bool:
-        return self.__getitem__(val) != False
+    def __init__(self):
+        pass
+
+    def __getstate__(self) -> tracer_t:
+        return self.ptr.Export()
+
+    def __setstate__(self, tracer_t inpt):
+        self.ptr.Import(inpt)
 
     def __getitem__(self, key: Union[list, str]):
         cdef vector[string] inpt;
@@ -97,10 +114,14 @@ cdef class SampleTracer:
         if isinstance(key, str): inpt = [enc(key)]
         else: inpt = [enc(it) for it in key]
         self.ptr.settings.search = inpt
-        cdef list out = [i for i in self]
+        cdef list output = self.makelist()
         self.ptr.settings.search.clear()
-        if not len(out): return False
-        return out[0] if len(out) == 1 else out
+
+        if not len(output): return False
+        return output[0] if len(output) == 1 else output
+
+    def __contains__(self, str val) -> bool:
+        return self.__getitem__(val) != False
 
     def __len__(self) -> int:
         cdef map[string, int] f = self.ptr.length()
@@ -117,71 +138,60 @@ cdef class SampleTracer:
             entries += it.second
         return entries
 
-    def __add__(self, SampleTracer other):
+    def __add__(self, SampleTracer other) -> SampleTracer:
         cdef SampleTracer tr = SampleTracer()
         tr.ptr.iadd(self.ptr)
         tr.ptr.iadd(other.ptr)
-
-        cdef pair[string, vector[code_t]] itc
-        cdef pair[string, string] its
-        cdef pair[string, int] iti
-
-        tr.hashed_code = self.hashed_code
-        for itc in other.hashed_code:
-            tr.hashed_code[itc.first] = itc.second
-
-        tr.event_code_hash = self.event_code_hash
-        for its in other.event_code_hash:
-            tr.event_code_hash[its.first] = its.second
-
-        tr.event_trees = self.event_trees
-        for iti in other.event_trees:
-            tr.event_trees[iti.first] += iti.second
-
         return tr
 
-    def __radd__(self, other):
+    def __radd__(self, other) -> SampleTracer:
         if self.is_self(other): return self.__add__(other)
         return self.__add__(self.clone())
 
-    def __iadd__(self, other):
+    def __iadd__(self, other) -> SampleTracer:
         if not self.is_self(other): return self
         cdef SampleTracer tr = other
         self.ptr.iadd(tr.ptr)
+        return self
 
     def __iter__(self):
-        if self.__preiteration__(): return self
-        self.itb = self.ptr.MakeIterable()
-        self.its = 0
-        self.ite = self.itb.size()
+        if self.preiteration(): return self
+        self.event_iter = iter(self.makelist())
         return self
 
     def __next__(self) -> Event:
-        if self.its == self.ite: raise StopIteration
-        cdef CyBatch* b = self.itb[self.its]
-        cdef Event ev = Event()
-        ev.ptr = b
-        self.its+=1
-        return ev
+        return next(self.event_iter)
 
 
-    # Custom internal functions
-    def clone(self): return self.__class__()
-    def is_self(self, inpt) -> bool:
-        return issubclass(inpt.__class__, SampleTracer)
+    # ------------------ CUSTOM FUNCTIONS ------------------ #
+    def trace_code(self, obj) -> code_t:
+        cdef code_t co = Code(obj).__getstate__()
+        self.ptr.AddCode(co)
+        return co
 
-    def __preiteration__(self) -> bool:
+    def ImportSettings(self, settings_t inpt):
+        self.ptr.ImportSettings(inpt)
+
+    def ExportSettings(self):
+        return self.ptr.ExportSettings()
+
+    def clone(self):
+        return self.__class__()
+
+    def is_self(self, inpt, obj = SampleTracer) -> bool:
+        return issubclass(inpt.__class__, obj)
+
+    def preiteration(self) -> bool:
         cdef string name
         cdef pair[string, int] itr
         cdef pair[string, string] it
-        cdef map[string, int] tree = self.event_trees
-        cdef map[string, string] ev = self.event_code_hash
+        cdef map[string, int] tree = self.ptr.event_trees
+        cdef map[string, string] ev = self.ptr.link_event_code
 
         # Case where no event implementation has been specified 
         if not self.ptr.settings.eventname.size():
             for it in ev: name = it.first; break
             self.ptr.settings.eventname = name
-
 
         # Case where no event tree has been specified
         if not self.ptr.settings.tree.size():
@@ -189,38 +199,36 @@ cdef class SampleTracer:
             self.ptr.settings.tree = name
         return False
 
-    def __scrapecode__(self, event, str event_name):
-        cdef string name = enc(event_name)
-        if self.hashed_code.count(name): return
-        cdef code_t it
-        cdef vector[code_t] code = []
-        for o in event.Objects.values():
-            it = Code(o).__getstate__()
-            code.push_back(it)
-
-        it = Code(event).__getstate__()
-        code.push_back(it)
-
-        self.hashed_code[name] = code
-        self.event_code_hash[name] = it.hash
+    def makelist(self) -> list:
+        cdef vector[CyBatch*] evnt = self.ptr.MakeIterable()
+        cdef CyBatch* batch
+        cdef Event event
+        cdef list output = []
+        for batch in evnt:
+            event = Event()
+            event.ptr = batch
+            output.append(event)
+        return output
 
     def AddEvent(self, event_inpt, meta_inpt = None):
         cdef meta_t meta
-        cdef event_T event_
         cdef event_t event
+        cdef code_t co
         cdef string name
-        cdef vector[code_t] co
+        cdef tuple get
 
         if meta_inpt is not None:
-            event_ = event_inpt.__getstate__()
-            event = event_.event
             meta = meta_inpt.__getstate__()
-            name = event.event_name
-            self.__scrapecode__(event_inpt, env(name))
+            get = event_inpt.__getstate__()
 
-            event.event_code_hash = self.event_code_hash[name]
-            self.ptr.AddEvent(event, meta, self.hashed_code[name])
-            self.event_trees[event.event_tree] += 1
+            event = get[1]
+            event.pickled_data = pickle.dumps(get[0])
+            name = event.event_name
+
+            self.ptr.event_trees[event.event_tree] += 1
+            if not self.ptr.link_event_code.count(name):
+                self.Event = event_inpt
+            self.ptr.AddEvent(event, meta)
             return
 
         cdef str g
@@ -228,59 +236,203 @@ cdef class SampleTracer:
         cdef list evnts = [ef for g in event_inpt for ef in event_inpt[g].values()]
         for ef in evnts: self.AddEvent(ef["Event"], ef["MetaData"])
 
+    def SetAttribute(self, fx, str name, str type_) -> tuple:
+        cdef code_t co = self.trace_code(fx)
+        cdef string name_fx = co.function_name
+        if len(name) > 2: name_fx = env(name[:2] + name)
+
+        if "G" == type_:
+            if self.ptr.settings.graph_attribute.count(name_fx): return (name_fx, False)
+            self.ptr.settings.graph_attribute[name_fx] = co
+        elif "N" == type_:
+            if self.ptr.settings.node_attribute.count(name_fx): return (name_fx, False)
+            self.ptr.settings.node_attribute[name_fx] = co
+        elif "E" == type_:
+            if self.ptr.settings.edge_attribute.count(name_fx): return (name_fx, False)
+            self.ptr.settings.edge_attribute[name_fx] = co
+        return (name_fx, True)
+
+
+
+
+
+
+
     @property
-    def ShowEvents(self) -> list: 
+    def Event(self):
+        return self._Event
+
+    @Event.setter
+    def Event(self, inpt):
+        try: event = inpt()
+        except: event = inpt
+        if not self.is_self(event, EventTemplate): return
+        cdef string name = enc(event.__name__())
+        cdef code_t co
+        for o in event.Objects.values():
+            co = self.trace_code(o)
+        co = self.trace_code(event)
+        self.ptr.link_event_code[name] = co.hash
+        self._Event = event
+
+
+    @property
+    def ShowEvents(self) -> list:
         cdef pair[string, string] it
-        cdef map[string, string] ev = self.event_code_hash
+        cdef map[string, string] ev = self.ptr.link_event_code
         cdef list out = []
         for it in ev: out.append(env(it.first))
         return out
+
     @property
-    def ShowTreeEvents(self) -> list:
+    def ShowTrees(self) -> list:
         cdef pair[string, int] it
-        cdef map[string, int] ev = self.event_tree
+        cdef map[string, int] ev = self.ptr.event_trees
         cdef list out = []
         for it in ev: out.append(env(it.first))
         return out
 
     @property
-    def threads(self) -> int: return self.ptr.settings.threads
-    @threads.setter
-    def threads(self, int val): self.ptr.settings.threads = val
+    def Files(self) -> dict:
+        cdef dict output = {}
+        cdef string k
+        cdef pair[string, vector[string]] it
+        for it in self.ptr.settings.files: output[env(it.first)] = [env(k) for k in  it.second]
+        return output
+
+    @Files.setter
+    def Files(self, val: Union[str, list, dict]):
+        cdef dict Files = {}
+        cdef str key, k
+        if isinstance(val, str): Files["None"] = [val]
+        elif isinstance(val, list): Files["None"] = val
+        else: Files.update(val)
+        if not len(Files): self.ptr.settings.files.clear();
+        for key in Files:
+            for k in Files[key]: self.ptr.settings.files[enc(key)].push_back(enc(k))
 
     @property
-    def GetSelection(self) -> bool: return self.ptr.settings.getselection
+    def Threads(self) -> int:
+        return self.ptr.settings.threads
+
+    @Threads.setter
+    def Threads(self, int val):
+        self.ptr.settings.threads = val
+
+    @property
+    def GetSelection(self) -> bool:
+        return self.ptr.settings.getselection
+
     @GetSelection.setter
-    def GetSelection(self, bool val): self.ptr.settings.getselection = val
+    def GetSelection(self, bool val):
+        self.ptr.settings.getselection = val
 
     @property
-    def GetEvent(self) -> bool: return self.ptr.settings.getevent
+    def GetEvent(self) -> bool:
+        return self.ptr.settings.getevent
+
     @GetEvent.setter
-    def GetEvent(self, bool val): self.ptr.settings.getevent = val
+    def GetEvent(self, bool val):
+        self.ptr.settings.getevent = val
 
     @property
-    def GetGraph(self) -> bool: return self.ptr.settings.getgraph
+    def GetGraph(self) -> bool:
+        return self.ptr.settings.getgraph
+
     @GetGraph.setter
-    def GetGraph(self, bool val): self.ptr.settings.getgraph = val
+    def GetGraph(self, bool val):
+        self.ptr.settings.getgraph = val
 
     @property
-    def ProjectName(self) -> str: return env(self.ptr.settings.projectname)
+    def ProjectName(self) -> str:
+        return env(self.ptr.settings.projectname)
+
     @ProjectName.setter
-    def ProjectName(self, str val): self.ptr.settings.projectname = enc(val)
+    def ProjectName(self, str val):
+        self.ptr.settings.projectname = enc(val)
 
     @property
-    def EventName(self) -> str: return env(self.ptr.settings.eventname)
+    def EventName(self) -> str:
+        return env(self.ptr.settings.eventname)
+
     @EventName.setter
-    def EventName(self, str val): self.ptr.settings.eventname = enc(val)
+    def EventName(self, str val):
+        self.ptr.settings.eventname = enc(val)
 
     @property
-    def Tree(self) -> str: return env(self.ptr.settings.tree)
+    def Tree(self) -> str:
+        return env(self.ptr.settings.tree)
+
     @Tree.setter
-    def Tree(self, str val): self.ptr.settings.tree = enc(val)
+    def Tree(self, str val):
+        self.ptr.settings.tree = enc(val)
 
+    @property
+    def ProjectName(self) -> str:
+        return env(self.ptr.settings.projectname)
 
+    @ProjectName.setter
+    def ProjectName(self, str val):
+        self.ptr.settings.projectname = enc(val)
 
+    @property
+    def OutputDirectory(self) -> str:
+        return env(self.ptr.settings.outputdirectory)
 
+    @OutputDirectory.setter
+    def OutputDirectory(self, str val):
+        if not val.endswith("/"): val += "/"
+        val = os.path.abspath(val)
+        self.ptr.settings.outputdirectory = enc(val)
 
+    @property
+    def Caller(self) -> str:
+        return env(self.ptr.settings.caller)
 
+    @Caller.setter
+    def Caller(self, str val):
+        self.ptr.settings.caller = enc(val.upper())
+
+    @property
+    def EventStart(self):
+        return self.ptr.settings.event_start
+
+    @EventStart.setter
+    def EventStart(self, x: Union[int, None]):
+        if x is None: x = 0
+        self.ptr.settings.event_start = x
+
+    @property
+    def EventStop(self):
+        if self.ptr.settings.event_stop == 0: return None
+        return self.ptr.settings.event_stop
+
+    @EventStop.setter
+    def EventStop(self, x: Union[int, None]):
+        if x is None: x = 0
+        self.ptr.settings.event_stop = x
+
+    @property
+    def Verbose(self):
+        return self.ptr.settings.verbose
+
+    @Verbose.setter
+    def Verbose(self, int val):
+        self.ptr.settings.verbose = val
+
+    @property
+    def Chunks(self):
+        return self.ptr.settings.chunks
+
+    @Chunks.setter
+    def Chunks(self, int val):
+        self.ptr.settings.chunks = val
+
+    @property
+    def EnablePyAMI(self):
+        return self.ptr.settings.enable_pyami
+
+    @EnablePyAMI.setter
+    def EnablePyAMI(self, bool val):
+        self.ptr.settings.enable_pyami = val
 

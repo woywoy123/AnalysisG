@@ -20,29 +20,11 @@ namespace CyTemplate
         this -> trees[key] = tree; 
     }
 
-    event_T CyEventTemplate::Export()
+    event_t CyEventTemplate::Export()
     {
-        event_T tmp; 
-        tmp.leaves = this -> leaves; 
-        tmp.branches = this -> branches; 
-        tmp.trees = this -> trees; 
-
-        tmp.event = this -> event; 
-        tmp.event.event = true; 
-
-        tmp.meta = this -> meta; 
-        return tmp;         
-    }
-
-    void CyEventTemplate::Import(event_T event)
-    {
-        this -> leaves = event.leaves; 
-        this -> branches = event.branches; 
-        this -> trees = event.trees; 
-
-        this -> event = event.event; 
-        this -> event.event = true; 
-        this -> meta = event.meta; 
+        event_t event = this -> event; 
+        event.event = true; 
+        return event;  
     }
 
     void CyEventTemplate::Import(event_t event)
@@ -61,28 +43,4 @@ namespace CyTemplate
         if (ev1 -> event_tagging != ev2 -> event_tagging){ return false; }
         return true;  
     }
-
-
-
-    CyGraphTemplate::CyGraphTemplate(){}
-    CyGraphTemplate::~CyGraphTemplate(){}
-    void CyGraphTemplate::Import(graph_t gr)
-    {
-        this -> graph = gr; 
-        this -> graph.graph = true; 
-    }; 
-
-
-    CySelectionTemplate::CySelectionTemplate(){}
-    CySelectionTemplate::~CySelectionTemplate(){}
-    void CySelectionTemplate::Import(selection_t sel)
-    {
-        this -> selection = sel; 
-        this -> selection.selection = true; 
-    }; 
-
-
-
-
-
 }

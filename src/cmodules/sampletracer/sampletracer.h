@@ -11,10 +11,13 @@ namespace SampleTracer
         public:
             CySampleTracer(); 
             ~CySampleTracer(); 
-            void AddEvent(event_t event, meta_t meta, std::vector<code_t> code);
+            void AddEvent(event_t event, meta_t meta);
+            void AddCode(code_t code); 
 
             tracer_t Export(); 
             void Import(tracer_t inpt);
+            settings_t ExportSettings();
+            void ImportSettings(settings_t inpt); 
 
             static void Make(
                     CyROOT* root, settings_t* apply, std::vector<CyBatch*>* out, 
@@ -28,7 +31,6 @@ namespace SampleTracer
                     this_b -> ApplySettings(apply);  
 
                     if (!this_b -> valid){continue;}
-
                     this_b -> ApplyCodeHash(code_hashes); 
                     out -> push_back(this_b); 
                 }
@@ -48,8 +50,13 @@ namespace SampleTracer
             void iadd(CySampleTracer*); 
 
             std::map<std::string, Code::CyCode*> code_hashes;
+            std::map<std::string, std::string> link_event_code; 
             std::map<std::string, CyROOT*> root_map; 
             settings_t settings; 
+
+            std::map<std::string, int> event_trees = {}; 
+
+
 
     }; 
 }

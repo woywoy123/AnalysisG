@@ -1,4 +1,3 @@
-#include "../metadata/metadata.h"
 #include "../abstractions/abstractions.h"
 #include "../abstractions/cytypes.h"
 
@@ -13,8 +12,7 @@ namespace CyTemplate
             CyEventTemplate(); 
             ~CyEventTemplate();
 
-            event_T Export(); 
-            void Import(event_T); 
+            event_t Export(); 
             void Import(event_t); 
             
             void addleaf(std::string key, std::string leaf); 
@@ -26,28 +24,6 @@ namespace CyTemplate
             std::map<std::string, std::string> leaves = {}; 
             std::map<std::string, std::string> branches = {};  
             std::map<std::string, std::string> trees = {}; 
-
-    }; 
-
-
-    class CyGraphTemplate : public Abstraction::CyEvent
-    {
-        public:
-            CyGraphTemplate(); 
-            ~CyGraphTemplate(); 
-            void Import(graph_t); 
-
-    }; 
-
-
-
-    class CySelectionTemplate : public Abstraction::CyEvent
-    {
-        public:
-            CySelectionTemplate(); 
-            ~CySelectionTemplate(); 
-            void Import(selection_t); 
-
     }; 
 }
 #endif

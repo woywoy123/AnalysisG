@@ -45,8 +45,7 @@ class Event(EventTemplate):
 
         for tj in self.TruthJets.values():
             for ti in tj.TopIndex:
-                if ti == -1:
-                    continue
+                if ti == -1: continue
                 tj.Tops += [self.Tops[ti]]
                 self.Tops[ti].TruthJets.append(tj)
             tj.index = tj.TopIndex
@@ -59,8 +58,7 @@ class Event(EventTemplate):
 
         for j in self.Jets.values():
             for ti in j.TopIndex:
-                if ti == -1:
-                    continue
+                if ti == -1: continue
                 j.Tops.append(self.Tops[ti])
                 self.Tops[ti].Jets.append(j)
             j.index = j.TopIndex
@@ -74,7 +72,7 @@ class Event(EventTemplate):
         maps = {
             i: self.TopChildren[i]
             for i in self.TopChildren
-            if abs(self.TopChildren[i].pdgid) in [11, 13, 15]
+            if self.TopChildren[i].is_lep
         }
         lep = list(self.Electrons.values()) + list(self.Muons.values())
         dist = {maps[i].DeltaR(j): (i, j) for i in maps for j in lep}
@@ -82,8 +80,7 @@ class Event(EventTemplate):
         accept = []
         for dr in dst:
             idx, l = dist[dr]
-            if l in accept:
-                continue
+            if l in accept: continue
             maps[idx].Children.append(l)
             l.index = [maps[idx].index]
             l.Parent += maps[idx].Parent

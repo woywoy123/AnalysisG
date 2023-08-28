@@ -8,7 +8,7 @@ import uproot
 
 class UpROOT(_UpROOT, Settings, _Interface):
     def __init__(self, ROOTFiles=None):
-        self.Caller = "Up-ROOT"
+        self.Caller = "UP-ROOT"
         Settings.__init__(self)
         self.InputSamples(ROOTFiles)
         ROOTFile = [i + "/" + k for i in self.Files for k in self.Files[i]]

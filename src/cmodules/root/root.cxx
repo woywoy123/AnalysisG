@@ -78,7 +78,7 @@ namespace SampleTracer
         itg = this -> graphs.begin();
         its = this -> selections.begin();
         output.hash = this -> hash;
-        
+         
         for (; ite != this -> events.end(); ++ite){
             output.events[ite -> first] = ite -> second -> event; 
         }
@@ -184,19 +184,9 @@ namespace SampleTracer
         for (; ite != this -> events.end(); ++ite){
             CyEventTemplate* ev_ = ite -> second; 
             event_t* ev = &(ev_ -> event); 
-            for (std::string hash : ev -> code_hash){
-                if (!code_hash -> count(hash)){ continue; }
-                if (ev_ -> this_code.count(hash)){ continue; }
-                ev_ -> this_code[hash] = code_hash -> at(hash); 
-            }
+            ev_ -> code_link = code_hash -> at(ev -> code_hash); 
         }
     }
-
-
-
-
-
-
 
     CyROOT::CyROOT(meta_t meta){this -> meta = meta;}
 

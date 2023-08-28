@@ -38,10 +38,8 @@ class Tools(_IO):
         elif isinstance(dirc, list):
             F += [t for k in dirc for t in self.ListFilesInDir(k, extension, _it + 1)]
         elif isinstance(dirc, str):
-            if dirc.endswith("*"):
-                F += self.lsFiles(dirc[:-2], extension)
-            elif dirc.endswith(extension):
-                F += [dirc]
+            if dirc.endswith("*"): F += self.lsFiles(dirc[:-2], extension)
+            elif dirc.endswith(extension): F += [dirc]
             elif len(self.lsFiles(dirc, extension)) != 0:
                 F += self.lsFiles(dirc, extension)
             F = [i for i in F if self.IsFile(i)]
@@ -51,21 +49,16 @@ class Tools(_IO):
         F = {i: [k.split("/")[-1] for k in F if self.path(k) == i] for i in dirs}
         Out = {}
         for i in F:
-            if len(F[i]):
-                Out[i] = F[i]
-                continue
+            if len(F[i]): Out[i] = F[i]; continue
             self.EmptyDirectoryWarning(i)
         self.FoundFiles(Out)
         return Out
 
-    def pwd(self):
-        return os.getcwd()
+    def pwd(self): return os.getcwd()
 
-    def abs(self, directory):
-        return os.path.abspath(directory)
+    def abs(self, directory): return os.path.abspath(directory)
 
-    def path(self, inpt):
-        return os.path.dirname(self.abs(inpt))
+    def path(self, inpt): return os.path.dirname(self.abs(inpt))
 
     def filename(self, inpt): return inpt.split("/")[-1]
 
@@ -101,8 +94,7 @@ class Tools(_IO):
             return out
 
     def Quantize(self, inpt, size):
-        for i in range(0, len(inpt), size):
-            yield inpt[i : i + size]
+        for i in range(0, len(inpt), size): yield inpt[i : i + size]
 
     def MergeNestedList(self, inpt):
         if isinstance(inpt, list) == False: return [inpt]

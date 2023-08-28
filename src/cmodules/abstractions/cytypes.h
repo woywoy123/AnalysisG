@@ -190,10 +190,9 @@ struct particle_t
 struct event_t 
 {
     // implementation information
-    std::string event_name = ""; 
     std::string commit_hash = "";
-    std::string event_code_hash = "";  
-    std::vector<std::string> code_hash = {}; 
+    std::string event_name = ""; 
+    std::string code_hash = "";  
     bool deprecated = false; 
 
     // io state
@@ -206,22 +205,13 @@ struct event_t
     std::string event_tagging = "";
     std::string event_tree = "";  
     std::string event_root = ""; 
-    std::map<std::string, std::string> pickled_data = {}; 
+    std::string pickled_data = "";  
     
     // template type indicators
     bool graph = false; 
     bool selection = false; 
     bool event = false;
 };
-
-struct event_T
-{
-    std::map<std::string, std::string> leaves = {}; 
-    std::map<std::string, std::string> branches = {}; 
-    std::map<std::string, std::string> trees = {}; 
-    event_t event; 
-    meta_t meta; 
-}; 
 
 struct graph_t : event_t
 {
@@ -261,25 +251,60 @@ struct tracer_t
 {
     std::map<std::string, root_t> root_names = {}; 
     std::map<std::string, meta_t> root_meta = {}; 
-    std::map<std::string, code_t> code = {}; 
+    std::map<std::string, code_t> hashed_code = {}; 
+
+    std::map<std::string, std::string> link_event_code = {}; 
+    std::map<std::string, int> event_trees = {}; 
 };
 
 struct settings_t
 {
+    // General settings
+    std::string caller = ""; 
+    std::string projectname = "UNTITLED"; 
+    std::string outputdirectory = "./";
+    std::map<std::string, std::vector<std::string>> files = {}; 
+    int verbose = 3; 
+   
+    // Multithreading options 
+    int chunks = 100; 
+    unsigned int threads = 6;
+
+    // PyAMI
+    bool enable_pyami = true; 
+
+
+    // Compiler settings
     std::string tree = ""; 
     std::string eventname = "";
-    std::string projectname = "UNTITLED"; 
+
+    // Graph Specific attributes
+    std::map<std::string, code_t> graph_attribute = {}; 
+    std::map<std::string, code_t> node_attribute = {}; 
+    std::map<std::string, code_t> edge_attribute = {}; 
+
+    // Generation Options
+    int event_start = -1; 
+    int event_stop = 0; 
+
+
+    // Getter options
     bool getgraph = false; 
     bool getevent = false; 
     bool getselection = false; 
-    unsigned int threads = 12;
-    
+
+    // Cache options    
+    bool eventcache = false; 
+    bool graphcache = false; 
+
     // Search fields
     std::vector<std::string> search = {};
+
+    // code linking
+    std::map<std::string, code_t> hashed_code = {}; 
+    std::map<std::string, std::string> link_event_code = {}; 
+
+
 };
-
-
-
-
 
 #endif

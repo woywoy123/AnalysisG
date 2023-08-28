@@ -42,9 +42,9 @@ namespace Abstraction
             meta_t  meta; 
             event_t event;
             graph_t graph; 
-            selection_t selection; 
+            selection_t selection;
 
-            std::map<std::string, Code::CyCode*> this_code = {}; 
+            Code::CyCode* code_link = nullptr; 
     };
 }
 #endif

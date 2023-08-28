@@ -2,7 +2,7 @@
 # cython: language_level = 3
 
 from cyevent cimport CyEventTemplate
-from cytypes cimport meta_t, event_T
+from cytypes cimport meta_t, event_t
 
 from libcpp.string cimport string
 from libcpp.map cimport map, pair
@@ -33,23 +33,20 @@ cdef class EventTemplate:
         cdef EventTemplate o = other
         return self.ptr[0] == o.ptr[0]
 
-    def __getstate__(self) -> event_T:
-        cdef event_T x = self.ptr.Export()
+    def __getstate__(self) -> tuple:
+        cdef event_t x = self.ptr.Export()
         cdef str key
-        cdef string pkl
+        cdef dict pkl = {}
         for key in list(self.__dict__):
-            pkl = pickle.dumps(getattr(self, key))
-            x.event.pickled_data[enc(key)] = pkl
-        return x
+            pkl[key] = self.__dict__[key]
+        return (pkl, x)
 
-    def __setstate__(self, event_T inpt):
-        self.ptr.Import(inpt)
-        cdef pair[string, string] pkl
+    def __setstate__(self, tuple inpt):
         cdef str key
-        for pkl in self.ptr.event.pickled_data:
-            key = env(pkl.first)
-            obj = pickle.loads(pkl.second)
-            setattr(self, key, obj)
+        self.ptr.Import(inpt[1])
+        for key in inpt[0]:
+            try: self.__dict__[key] = inpt[0][key]
+            except KeyError: setattr(self, key, inpt[0][key])
 
     def __getleaves__(self) -> dict:
         cdef str i
@@ -94,15 +91,13 @@ cdef class EventTemplate:
             sub_keys = list(inpt_map[tree])
             for typ in var_leaf:
                 if not len(sub_keys): break
-
                 for v, k in var_leaf[typ].items():
                     for x in range(len(sub_keys)):
-                        if k not in sub_keys[x]: continue
+                        if k != sub_keys[x]: continue
                         if typ not in var_leaf: var_leaf[typ] = {}
                         key = sub_keys.pop(x)
                         var_leaf[typ][v] = inpt_map[tree][key]
                         break
-
                 if typ != "event":
                     try: obj = event.Objects[typ]()
                     except: obj = event.Objects[typ]
@@ -117,7 +112,6 @@ cdef class EventTemplate:
                 obj.ROOT = meta.DatasetName + "/" + meta.DAOD
                 obj.hash
                 inpt_map[tree][typ] = obj
-
 
             for typ in inpt_map[tree]:
                 if typ == "event": continue

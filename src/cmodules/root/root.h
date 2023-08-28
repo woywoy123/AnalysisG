@@ -1,5 +1,7 @@
 #include "../abstractions/cytypes.h"
+#include "../selection/selection.h"
 #include "../event/event.h"
+#include "../graph/graph.h"
 
 #ifndef ROOT_H
 #define ROOT_H
@@ -46,7 +48,7 @@ namespace SampleTracer
             CySelectionTemplate* this_sel = nullptr; 
 
             std::string this_event_name = ""; 
-            std::string this_tree = ""; 
+            std::string this_tree = "";
     }; 
 
     class CyROOT

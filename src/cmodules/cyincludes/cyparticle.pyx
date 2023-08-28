@@ -19,11 +19,15 @@ cdef class ParticleTemplate:
     cdef CyParticleTemplate* ptr
     cdef list Children
     cdef list Parent
+    cdef bool _pkld
+    cdef particle_t state
 
     def __cinit__(self):
         self.ptr = new CyParticleTemplate()
+        self.state = self.ptr.state
         self.Children = []
         self.Parent = []
+        self._pkld = False
 
     def __init__(self): pass
     def __dealloc__(self): del self.ptr
@@ -47,21 +51,24 @@ cdef class ParticleTemplate:
         self.ptr.iadd(other.ptr)
         return self
 
-    def __getstate__(self) -> particle_t:
-        cdef particle_t x = self.ptr.Export()
-        cdef string pkl
-        cdef str key
-        for key in list(self.__dict__)+["Children", "Parent"]:
-            pkl = pickle.dumps(getattr(self, key))
-            x.pickle_string[enc(key)] = pkl
-        return x
+    def __getstate__(self) -> tuple:
+        if self._pkld: return self.state
+        self._pkld = True
+        self.state = self.ptr.Export()
 
-    def __setstate__(self, particle_t inpt):
-        self.ptr.Import(inpt)
-        for it in self.ptr.state.pickle_string:
-            key = env(it.first)
-            obj = pickle.loads(it.second)
-            setattr(self, key, obj)
+        cdef str key
+        cdef list get = list(self.__dict__)
+        cdef dict pkl = { key : self.__dict__[key] for key in get}
+        pkl["Children"] = self.Children
+        pkl["Parent"] = self.Parent
+        return (pkl, self.state)
+
+    def __setstate__(self, tuple inpt):
+        cdef str key
+        self.ptr.Import(inpt[1])
+        for key in inpt[0]:
+            try: self.__dict__[key] = inpt[0][key]
+            except KeyError: setattr(self, key, inpt[0][key])
 
     def __eq__(self, other) -> bool:
         if not self.is_self(other): return False

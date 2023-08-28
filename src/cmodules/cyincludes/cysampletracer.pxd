@@ -3,7 +3,10 @@ from libcpp.string cimport string
 from libcpp.map cimport map
 from libcpp cimport bool
 
-from cyevent cimport CyEventTemplate, CyGraphTemplate, CySelectionTemplate
+from cyevent cimport CyEventTemplate
+from cygraph cimport CyGraphTemplate
+from cyselection cimport CySelectionTemplate
+
 from cytypes cimport meta_t, event_t, graph_t, selection_t
 from cytypes cimport settings_t, tracer_t, code_t
 from cycode cimport CyCode
@@ -34,23 +37,26 @@ cdef extern from "../root/root.h" namespace "SampleTracer":
 
 
 
-
-
 cdef extern from "../sampletracer/sampletracer.h" namespace "SampleTracer":
     cdef cppclass CySampleTracer:
         CySampleTracer() except +
-        void AddEvent(event_t event, meta_t meta, vector[code_t] code) except +
+        void AddEvent(event_t, meta_t) except +
+        void AddCode(code_t code) except +
 
         tracer_t Export() except +
-        void Import(tracer_t impt) except +
+        void Import(tracer_t) except +
+
+        settings_t ExportSettings() except +
+        void ImportSettings(settings_t) except +
+
 
         vector[CyBatch*] MakeIterable() except +
         map[string, int] length() except +
 
-        CySampleTracer* operator+(CySampleTracer* other) except +
-        void iadd(CySampleTracer* other) except +
-
-
+        CySampleTracer* operator+(CySampleTracer*) except +
+        void iadd(CySampleTracer*) except +
 
         settings_t settings
         map[string, CyCode*] code_hashes
+        map[string, string] link_event_code
+        map[string, int] event_trees

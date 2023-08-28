@@ -1,20 +1,14 @@
 class _General:
     def __init__(self):
-        self.Caller = "" if "Caller" not in self.__dict__ else self.Caller.upper()
-        self.Verbose = 3
-        self.Threads = 6
-        self.chnk = 100
         self._Code = {}
-        self.EventStart = -1
-        self.EventStop = None
         self.SampleName = ""
         self._Device = "cpu"
         self._condor = False
-        self.OutputDirectory = None
 
 
 class _UpROOT:
     def __init__(self):
+        self.Verbose = 3
         self.StepSize = 1000
         self.EnablePyAMI = True
         self.Threads = 12
@@ -26,9 +20,7 @@ class _UpROOT:
 
 class _EventGenerator:
     def __init__(self):
-        self.Event = None
         self.EnablePyAMI = True
-        self.Files = {}
 
 
 class _GraphGenerator:
@@ -239,24 +231,4 @@ class Settings:
             return
         self._Device = val if "cuda" in val and torch.cuda.is_available() else "cpu"
 
-    def ImportSettings(self, inpt):
-        if not issubclass(type(inpt), Settings):
-            return
-        s = Settings(self.Caller)
-        for i in s.__dict__:
-            try: setattr(self, i, getattr(inpt, i))
-            except AttributeError: continue
 
-    def DumpSettings(self):
-        default = Settings(self.Caller)
-        default.__dict__["Device"] = "cpu"
-        out = {}
-        for i in default.__dict__:
-            if i.startswith("_"): continue
-            try:
-                getattr(self, i) == default.__dict__[i]
-            except KeyError: continue
-            if getattr(self, i) == default.__dict__[i]:
-                continue
-            out[i] = getattr(self, i)
-        return out

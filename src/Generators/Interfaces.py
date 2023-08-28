@@ -20,15 +20,12 @@ class _Interface(Tools):
     ):
         self.Files = {}
         self.InputSamples(SampleDirectory)
-        if Name == None:
-            Name = ""
+        if Name is None: Name = ""
         self.SampleMap[Name] = self.Files
 
     def _StartStop(self, it: Union[int]):
-        if self.EventStart > it and self.EventStart != -1:
-            return False
-        if self.EventStop != None and self.EventStop - 1 < it:
-            return None
+        if self.EventStart > it and self.EventStart != -1: return False
+        if self.EventStop != None and self.EventStop - 1 < it: return None
         return True
 
     def _MakeBar(
@@ -42,19 +39,10 @@ class _Interface(Tools):
         _dct["total"] = inpt
         return (None, tqdm(**_dct))
 
-    def SetAttribute(self, c_name, fx, container):
-        if c_name == "P_" or c_name == "T_":
-            c_name += fx.__name__
-        elif c_name == "":
-            c_name += fx.__name__
-        if c_name not in container:
-            container[c_name] = fx
-        else:
-            self.Warning("Found Duplicate " + c_name + " Attribute")
-
     # Define the observable features
     def AddGraphFeature(self, fx, name=""):
-        self.SetAttribute(name, fx, self.GraphAttribute)
+        c_name, dupl = self.SetAttribute(name, fx, "G")
+        if dupl: self.Warning("Found Duplicate Graph " + c_name + " Attribute")
 
     def AddNodeFeature(self, fx, name=""):
         self.SetAttribute(name, fx, self.NodeAttribute)

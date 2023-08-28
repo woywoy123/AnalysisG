@@ -1,28 +1,29 @@
+from AnalysisG.SampleTracer import SampleTracer
+from AnalysisG.Notification import _Analysis
+from .EventGenerator import EventGenerator
 #from AnalysisG.IO import PickleObject, UnpickleObject
 #from .SelectionGenerator import SelectionGenerator
 #from AnalysisG.Templates import FeatureAnalysis
-from AnalysisG.Notification import _Analysis
 #from .SampleGenerator import RandomSamplers
-#from .EventGenerator import EventGenerator
 #from .GraphGenerator import GraphGenerator
-#from AnalysisG.Tracer import SampleTracer
 from AnalysisG.Settings import Settings
 from .Interfaces import _Interface
 #from .Optimizer import Optimizer
 from typing import Union
 
 
-class Analysis(_Analysis, Settings): #, SampleTracer, _Interface):
+class Analysis(_Analysis, Settings, SampleTracer, _Interface):
     def __init__(
         self,
         SampleDirectory: Union[str, dict, list, None] = None,
         Name: Union[str] = None,
     ):
+        SampleTracer.__init__(self)
         self.Caller = "ANALYSIS"
         _Analysis.__init__(self)
+
         _Interface.__init__(self)
         Settings.__init__(self)
-        SampleTracer.__init__(self)
         if Name is None and SampleDirectory is None:
             return
         self.InputSample(Name, SampleDirectory)
@@ -31,14 +32,7 @@ class Analysis(_Analysis, Settings): #, SampleTracer, _Interface):
         if self._cPWD is not None: return
         if not self._condor: self.StartingAnalysis()
         self._cPWD = self.pwd()
-
-        if self.OutputDirectory is None:
-            self.OutputDirectory = self.pwd()
-        else:
-            self.OutputDirectory = self.abs(self.OutputDirectory)
-        self.OutputDirectory = (
-            self.AddTrailing(self.OutputDirectory, "/") + self.ProjectName
-        )
+        self.OutputDirectory += self.ProjectName
         if self.PurgeCache: self._WarningPurge()
         if not self._condor: self._BuildingCache()
 
@@ -49,17 +43,16 @@ class Analysis(_Analysis, Settings): #, SampleTracer, _Interface):
             if len(f) != 0: process[i] = f
         if len(process) == 0: return True
         if self.Event == None: return False
-        if self.EventStop != None and len(self) >= self.EventStop:
+        if self.EventStop is not None and len(self) >= self.EventStop:
             return True
 
         self.Files = process
         ev = EventGenerator()
-        ev.ImportSettings(self)
         ev.Caller = "ANALYSIS::EVENT"
+        ev.Event = self.Event
+        ev.ImportSettings(self.ExportSettings())
         if not ev.MakeEvents(): return False
-
         ev.EventCache = self.EventCache
-        if self.EventCache: ev.DumpEvents()
         self += ev
         return True
 
@@ -178,16 +171,6 @@ class Analysis(_Analysis, Settings): #, SampleTracer, _Interface):
             if tracer: self.RestoreTracer()
             if not self.__Event__(): return False
             if not self.__Graph__(): return False
-        if self.len == 0: self.RestoreTracer()
+        if len(self) == 0: self.RestoreTracer()
         if len(self) == 0: return False
         return True
-
-    def __preiteration__(self):
-        if self.len == 0:
-            if self._cPWD is not None and self.len != 0:
-                return False
-            ok = self.__LoadSample__()
-            return not ok
-        if self.EventCache: self.RestoreEvents()
-        if self.DataCache: self.RestoreEvents()
-        return self.EmptySampleList()

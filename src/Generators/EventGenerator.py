@@ -1,61 +1,44 @@
 from AnalysisG.Notification import _EventGenerator
 from AnalysisG.Tools import Code, Threading
 from AnalysisG.SampleTracer import SampleTracer
-from AnalysisG.Settings import Settings
-from AnalysisG.IO import UpROOT
 from .Interfaces import _Interface
+from AnalysisG.IO import UpROOT
 from typing import Union
 from time import sleep
 import pickle
 
 
-class EventGenerator(_EventGenerator, Settings, _Interface, SampleTracer):
+class EventGenerator(_EventGenerator, _Interface, SampleTracer):
     def __init__(self, val=None):
-        self.Caller = "EVENTGENERATOR"
-        Settings.__init__(self)
         SampleTracer.__init__(self)
+        self.Caller = "EVENTGENERATOR"
         self.InputSamples(val)
 
     @staticmethod
     def _CompileEvent(inpt, _prgbar):
         lock, bar = _prgbar
-        ev = None
+        ev = pickle.loads(inpt[0][0]).clone()
         tracer = SampleTracer()
         for i in range(len(inpt)):
-            if ev is None: ev = pickle.loads(inpt[i][1])
-            vals, _ = inpt[i]
-            meta = vals["MetaData"]
-
+            _, vals = inpt[i]
             res = ev.__compiler__(vals)
             for k in res:
                 k.CompileEvent()
-                tracer.AddEvent(k, meta)
+                tracer.AddEvent(k, vals["MetaData"])
 
             if lock is None:
+                if bar is None: continue
                 bar.update(1)
                 continue
             with lock: bar.update(1)
-        inpt = [tracer]
-        return inpt
+        return [tracer]
 
     def MakeEvents(self):
-        if not self.CheckEventImplementation():
-            return False
+        if not self.CheckEventImplementation(): return False
         self.CheckSettings()
 
-        self._Code["Event"] = Code(self.Event)
-        try:
-            dc = self.Event.Objects
-            if not isinstance(dc, dict): raise AttributeError
-        except AttributeError: self.Event = self.Event()
-        except TypeError: self.Event = self.Event()
-        except: return self.ObjectCollectFailure()
-
-        self._Code["Particles"] = {
-            i: Code(self.Event.Objects[i]) for i in self.Event.Objects
-        }
-
-        if self._condor: return self._Code
+        if len(self.ShowEvents) > 0: pass
+        else: return self.ObjectCollectFailure()
         if not self.CheckROOTFiles(): return False
         if not self.CheckVariableNames(): return False
 
@@ -75,17 +58,15 @@ class EventGenerator(_EventGenerator, Settings, _Interface, SampleTracer):
             i += 1
             if self._StartStop(i) == False: continue
             if self._StartStop(i) == None: break
-            inpt.append([v, ev])
+            inpt.append([ev, v])
 
         if self.Threads > 1:
-            th = Threading(inpt, self._CompileEvent, self.Threads, self.chnk)
+            th = Threading(inpt, self._CompileEvent, self.Threads, self.Chunks)
             th.Start()
             out = th._lists
-        else:
-            out = self._CompileEvent(inpt, self._MakeBar(len(inpt)))
+        else: out = self._CompileEvent(inpt, self._MakeBar(len(inpt)))
 
-        print(out)
-
-
-
+        for i in out:
+            if i is None: pass
+            else: self += i
         return self.CheckSpawnedEvents()

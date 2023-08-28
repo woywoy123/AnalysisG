@@ -1,27 +1,20 @@
+def test_import_anaG():
+    import AnalysisG
+
 def test_cimports():
     from AnalysisG.Templates import ParticleTemplate
+    from AnalysisG.Template import GraphTemplate
+    from AnalysisG.Template import SelectionTemplate
     from AnalysisG.Templates import EventTemplate
     from AnalysisG.SampleTracer import MetaData
     from AnalysisG.SampleTracer import SampleTracer
 
-
-
-
-def test_import_anaG():
-    import AnalysisG
-
-
 def test_import_templates():
     from AnalysisG.Templates import ApplyFeatures
     from AnalysisG.Templates import FeatureAnalysis
-    from AnalysisG.Templates import ParticleTemplate
-    from AnalysisG.Templates import EventTemplate
-    from AnalysisG.Tracer import SampleTracer
-
 
 def test_import_model():
     from AnalysisG.Model import ModelWrapper
-
 
 def test_import_generator():
     from AnalysisG.Generators import Optimizer
@@ -32,19 +25,16 @@ def test_import_generator():
     from AnalysisG import Analysis
     from AnalysisG.Submission import Condor
 
-
 def test_import_io():
     from AnalysisG.IO import UpROOT
     from AnalysisG.IO import PickleObject
     from AnalysisG.IO import UnpickleObject
-
 
 def test_import_tools():
     from AnalysisG.Tools import Threading
     from AnalysisG.Tools import Hash
     from AnalysisG.Tools import Tools
     from AnalysisG.Tools import Code
-
 
 def test_import_pyc():
     import pyc
