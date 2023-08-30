@@ -11,6 +11,8 @@ cdef extern from "../abstractions/cytypes.h":
         map[string, string] param_space
         map[string, vector[string]] trace
         map[string, vector[string]] extern_imports
+        vector[string] dependency_hashes
+
         string function_name
         string class_name
         string source_code
@@ -167,10 +169,41 @@ cdef extern from "../abstractions/cytypes.h":
         bool event
 
     struct graph_t:
+
+        string event_name
+        string code_hash
+        map[string, string] errors
+        map[string, int] presel
+
+        bool cached
+
+        int event_index
+        string event_hash
+        string event_tagging
+        string event_tree
+        string event_root
+        string pickled_data
+
         bool train
         bool evaluation
         bool validation
+
         bool empty_graph
+        bool skip_graph
+
+        map[string, vector[int]] src_dst
+        map[string, int] hash_particle
+        bool self_loops
+
+        map[string, string] graph_feature
+        map[string, string] node_feature
+        map[string, string] edge_feature
+        map[string, string] pre_sel_feature
+        string topo_hash
+
+        bool graph
+        bool selection
+        bool event
 
     struct selection_t:
         map[string, string] errors
@@ -218,11 +251,6 @@ cdef extern from "../abstractions/cytypes.h":
         # Sample/Compiler stuff
         string tree
         string eventname
-
-        # Graph Specific content
-        map[string, code_t] graph_attribute
-        map[string, code_t] node_attribute
-        map[string, code_t] edge_attribute
 
         # Generation specific options
         int event_start

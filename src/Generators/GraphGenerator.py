@@ -1,103 +1,66 @@
 from AnalysisG.Generators.EventGenerator import EventGenerator
 from AnalysisG.Notification import _GraphGenerator
-from AnalysisG.Tools import Code, Threading
-#from AnalysisG.Tracer import SampleTracer
-from AnalysisG.Settings import Settings
+from AnalysisG.SampleTracer import SampleTracer
+from AnalysisG.Tools import Threading
 from .Interfaces import _Interface
 from typing import Union
-from time import sleep
 import pickle
+from time import sleep
 
-
-class GraphGenerator(_GraphGenerator, Settings): #, SampleTracer, _Interface):
+class GraphGenerator(_GraphGenerator, SampleTracer, _Interface):
     def __init__(self, inpt: Union[EventGenerator, None] = None):
-        self.Caller = "GRAPHGENERATOR"
-        Settings.__init__(self)
         SampleTracer.__init__(self)
-        _Interface.__init__(self)
         _GraphGenerator.__init__(self, inpt)
+        self.Caller = "GRAPHGENERATOR"
+        _Interface.__init__(self)
 
     @staticmethod
     def _CompileGraph(inpt, _prgbar):
         lock, bar = _prgbar
+        tr_ = None
+        gr_ = None
         for i in range(len(inpt)):
-            hash_, gr_ = inpt[i]
-            gr_ = pickle.loads(gr_)
-            try:
-                gr_.ConvertToData()
-            except:
-                pass
-            if lock == None:
+            ev, gr, sett = inpt[i]
+            if tr_ is None:
+                tr = SampleTracer()
+                tr.ImportSettings(sett)
+            if gr_ is None: gr_ = gr.clone()
+            print(ev, gr, sett)
+            sleep(1)
+            if lock is None:
+                if bar is None: continue
                 bar.update(1)
-            else:
-                with lock:
-                    bar.update(1)
-
-            try:
-                gr_ = gr_.purge()
-                num_nodes = gr_.num_nodes.item()
-                gr_ = pickle.dumps(gr_)
-            except:
-                gr_ = None
-                num_nodes = 0
-            inpt[i] = [hash_, gr_, num_nodes]
-        if lock == None:
-            del bar
-        return inpt
-
-    def __collect__(self, inpt, key):
-        x = {c_name: Code(inpt[c_name]) for c_name in inpt}
-        if len(x) != 0:
-            self._Code[key] = x
+                continue
+            with lock: bar.update(1)
+        return [tr]
 
     def MakeGraphs(self):
-        if not self.CheckGraphImplementation():
-            return False
-        if not self.CheckSettings():
-            return False
-
-        self._Code["EventGraph"] = Code(self.EventGraph)
-        self.__collect__(self.GraphAttribute, "GraphAttribute")
-        self.__collect__(self.NodeAttribute, "NodeAttribute")
-        self.__collect__(self.EdgeAttribute, "EdgeAttribute")
-        if self._condor:
-            return self._Code
+        #if not self.CheckGraphImplementation(): return False
+        #if not self.CheckSettings(): return False
 
         inpt = []
         s = len(self)
         _, bar = self._MakeBar(s, "PREPARING GRAPH COMPILER")
+        sett = self.ExportSettings()
+        print(sett)
+        print(self.ShowTrees)
+        print(self.ShowEvents)
+        for i in self: print("here")
         for ev, i in zip(self, range(s)):
-            if self._StartStop(i) == False:
-                continue
-            if self._StartStop(i) == None:
-                break
+            print(ev)
+            if self._StartStop(i) == False: continue
+            if self._StartStop(i) == None: break
             bar.update(1)
-            if ev.Graph:
-                continue
+            if ev.Graph: continue
+            inpt.append([ev, self.Graph, sett])
 
-            gr = self._Code["EventGraph"].clone()
-            try:
-                gr = gr(ev)
-            except AttributeError:
-                gr = gr(None)
-            gr.GraphAttr.update(self.GraphAttribute)
-            gr.NodeAttr.update(self.NodeAttribute)
-            gr.EdgeAttr.update(self.EdgeAttribute)
-            gr.index = ev.index
-            gr.SelfLoop = self.SelfLoop
-            gr.FullyConnect = self.FullyConnect
-            inpt.append([ev.hash, pickle.dumps(gr)])
-
-        if len(inpt) == 0:
-            return True
+        if len(inpt) == 0: return True
         if self.Threads > 1:
             th = Threading(inpt, self._CompileGraph, self.Threads, self.chnk)
             th.Title = self.Caller
-            th.Start()
-        out = (
-            th._lists
-            if self.Threads > 1
-            else self._CompileGraph(inpt, self._MakeBar(len(inpt)))
-        )
-        self.AddGraph(out)
+            out = th.Start()
+        else:
+            out = self._CompileGraph(inpt, (None, None)) #self._MakeBar(len(inpt)))
+
+        self += sum([i for i in out if i is not None])
         return True

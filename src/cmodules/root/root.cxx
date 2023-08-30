@@ -80,11 +80,11 @@ namespace SampleTracer
         output.hash = this -> hash;
          
         for (; ite != this -> events.end(); ++ite){
-            output.events[ite -> first] = ite -> second -> event; 
+            output.events[ite -> first] = ite -> second -> Export(); 
         }
 
         for (; itg != this -> graphs.end(); ++itg){
-            output.graphs[itg -> first] = itg -> second -> graph; 
+            output.graphs[itg -> first] = itg -> second -> Export(); 
         }
 
         for (; its != this -> selections.end(); ++its){
@@ -110,7 +110,7 @@ namespace SampleTracer
         }
 
         for (; itg != this -> graphs.end(); ++itg){
-            exp -> graphs[itg -> first] = itg -> second -> graph; 
+            exp -> graphs[itg -> first] = itg -> second -> Export(); 
         }
 
         for (; its != this -> selections.end(); ++its){
@@ -184,7 +184,48 @@ namespace SampleTracer
         for (; ite != this -> events.end(); ++ite){
             CyEventTemplate* ev_ = ite -> second; 
             event_t* ev = &(ev_ -> event); 
+            if (!code_hash -> count(ev -> code_hash)){ continue; }
             ev_ -> code_link = code_hash -> at(ev -> code_hash); 
+        }
+
+        std::map<std::string, std::string>::iterator it_s; 
+        for (; itg != this -> graphs.end(); ++itg){
+            CyGraphTemplate* gr_ = itg -> second;
+            graph_t* gr = &(gr_ -> graph); 
+            if (code_hash -> count(gr -> code_hash)){ 
+                gr_ -> code_owner = false; 
+                gr_ -> code_link = code_hash -> at(gr -> code_hash);
+                continue;
+            }
+            
+            if (code_hash -> count(gr_ -> topo_hash)){
+                gr_ -> topo = code_hash -> at(gr_ -> topo_hash);
+                continue;
+            }
+            
+            it_s = gr -> edge_feature.begin(); 
+            for (; it_s != gr -> edge_feature.end(); ++it_s){
+                if (!code_hash -> count(it_s -> second)){ continue; }
+                gr_ -> edge_fx[it_s -> first] = code_hash -> at(it_s -> second);
+            }
+
+            it_s = gr -> node_feature.begin(); 
+            for (; it_s != gr -> node_feature.end(); ++it_s){
+                if (!code_hash -> count(it_s -> second)){ continue; }
+                gr_ -> node_fx[it_s -> first] = code_hash -> at(it_s -> second);
+            }
+
+            it_s = gr -> graph_feature.begin(); 
+            for (; it_s != gr -> graph_feature.end(); ++it_s){
+                if (!code_hash -> count(it_s -> second)){ continue; }
+                gr_ -> graph_fx[it_s -> first] = code_hash -> at(it_s -> second);
+            }
+
+            it_s = gr -> pre_sel_feature.begin(); 
+            for (; it_s != gr -> pre_sel_feature.end(); ++it_s){
+                if (!code_hash -> count(it_s -> second)){ continue; }
+                gr_ -> pre_sel_fx[it_s -> first] = code_hash -> at(it_s -> second);
+            }
         }
     }
 
@@ -211,6 +252,22 @@ namespace SampleTracer
         name += "/" + event -> event_name; 
         this -> n_events[name] += 1; 
     }
+
+    void CyROOT::AddGraph(const graph_t* graph)
+    {
+        std::string event_h = graph -> event_hash;
+        if (!this -> batches.count(event_h)){
+            this -> batches[event_h] = new CyBatch(event_h); 
+        }
+
+        CyBatch* bth = this -> batches[event_h]; 
+        bth -> Import(&(this -> meta));
+        bth -> Import(graph); 
+        std::string name = graph -> event_tree; 
+        name += "/" + graph -> event_name; 
+        this -> n_graphs[name] += 1; 
+    }
+
 
     root_t CyROOT::Export()
     {

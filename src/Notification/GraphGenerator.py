@@ -1,15 +1,10 @@
 from .Notification import Notification
-#from AnalysisG.Tracer import SampleTracer
-
 
 class _GraphGenerator(Notification):
     def __init__(self, inpt):
-        if inpt == None:
-            return
-        if issubclass(type(inpt), SampleTracer):
-            self += inpt
-        else:
-            self.WrongInput()
+        if inpt is None: return
+        if self.is_self(inpt): self += inpt
+        else: self.WrongInput()
 
     def WrongInput(self):
         self.Warning("Input instance is of wrong type. Skipping...")
@@ -27,8 +22,7 @@ class _GraphGenerator(Notification):
         return False
 
     def CheckSettings(self):
-        if self._condor:
-            return True
+        if self._condor: return True
         attrs = 3
         attrs -= (
             1 * self.Warning("NO EDGE FEATURES PROVIDED")

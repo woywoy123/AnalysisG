@@ -19,9 +19,11 @@ cdef class Code:
 
     cdef CyCode* ptr
     cdef public _x
+    cdef fx
 
     def __cinit__(self):
         self.ptr = new CyCode()
+        self.fx = None
 
     def __init__(self, instance = None):
         if instance is None: return
@@ -50,6 +52,7 @@ cdef class Code:
         try:
             name = self._x.__qualname__
             self.is_initialized = False
+            if name is None: raise AttributeError
         except AttributeError:
             self.is_initialized = True
             name = self._x.__class__.__name__
@@ -81,7 +84,7 @@ cdef class Code:
         if self.is_function: return
         cdef str src, dep, tmp, k
         cdef dict inpt
-        cdef list out 
+        cdef list out
 
         def recursive_resolve(inpt, src, start = None):
             if start is None: start = src
@@ -111,9 +114,13 @@ cdef class Code:
 
         for i in split:
             if "import" not in i: continue
-            out = [k for k in i.split("import")[-1].split(" ") if len(k)]
+            for k in i.split("import")[-1].split(" "):
+                k = k.replace(" ", "").replace(",", "")
+                if not len(k): continue
+                out.append(k)
             this_import[i] = out
             imports_ += out
+            out = []
 
         inpt = {}
         for i in class_name:
@@ -131,29 +138,83 @@ cdef class Code:
         for i in this_import:
             self.ptr.container.extern_imports[enc(i)] = [enc(k) for k in this_import[i]]
 
-
     def __getinputs__(self, val):
         cdef int start = 0
         if self.is_class: start = 1
         co_vars  = list(val.__code__.co_varnames)[start:]
-        if val.__defaults__ is not None:
-            defaults = list(val.__defaults__)
-            self.input_params = list(co_vars)
+        defaults = val.__defaults__
+        defaults = [] if defaults is None else list(defaults)
+        if val.__defaults__ is not None: pass
+        elif len(co_vars): pass
         else: return
-        self.defaults = defaults.reverse()
-        self.co_vars  = co_vars.reverse()
+        self.input_params = co_vars
+        defaults.reverse()
+        co_vars.reverse()
+        self.defaults = defaults
+        self.co_vars  = co_vars
+
+    def AddDependency(self, list inpt):
+        cdef code_t itr
+        cdef map[string, code_t] x = {}
+        for itr in inpt: x[itr.hash] = itr
+        self.ptr.AddDependency(x)
+
+
+    def __mergedependency__(self):
+        cdef str cls_name, find
+        cdef dict req = self.extern_imports
+        cdef dict found
+        cdef pair[string, CyCode*] itr
+        cdef code_t it
+        cdef int i
+
+        for find in req:
+            found = {}
+            for itr in self.ptr.dependency:
+                it = itr.second.container
+                cls_name = env(it.class_name)
+                if cls_name not in req[find]: continue
+                found[req[find].index(cls_name)] = env(it.source_code)
+            if not len(found): continue
+            for i in found: req[find][i] = found[i]
+            req[find] = "\n".join(list(set(req[find])))
+            self.source_code = self.source_code.replace(find, req[find])
+
+    def __call__(self, *args, **kargs):
+        if not self.is_callable: return
+        cdef str i
+        cdef dict params
+        x = self.InstantiateObject
+        if len(kargs):
+            params = self.input_params
+            for i, k in params:
+                if i not in kargs: params[i] = k
+                else: params[i] = kargs[i]
+            return x(**params)
+        if len(args): return x(*[k for k in args])
+        return x
 
     @property
     def InstantiateObject(self):
-        exec(self.source_code, globals())
-        if self.is_class: return globals()[self.class_name]()
-        else: return globals()[self.function_name]
+        if self.fx is None:
+            self.__mergedependency__()
+            exec(self.source_code, globals())
+            if self.is_class: fx = globals()[self.class_name]
+            else: fx = globals()[self.function_name]
+            self.fx = fx
+        if not len(self.co_vars): return self.fx()
+        return self.fx
 
     @property
     def hash(self) -> str:
         self.ptr.Hash()
         return env(self.ptr.hash)
 
+    @property
+    def fx(self): return self.fx
+
+    @fx.setter
+    def fx(self, val): self.fx = val
 
     @property
     def is_class(self) -> bool: return self.ptr.container.is_class
@@ -221,7 +282,9 @@ cdef class Code:
     def input_params(self, list val): self.ptr.container.input_params = [enc(i) for i in val]
 
     @property
-    def defaults(self) -> list: return pickle.loads(self.ptr.container.defaults)
+    def defaults(self) -> list:
+        try: return pickle.loads(self.ptr.container.defaults)
+        except EOFError: return []
 
     @defaults.setter
     def defaults(self, list val): self.ptr.container.defaults = pickle.dumps(val)
@@ -241,3 +304,4 @@ cdef class Code:
         cdef pair[string, vector[string]] it
         for it in self.ptr.container.extern_imports: out[env(it.first)] = [env(i) for i in it.second]
         return out
+

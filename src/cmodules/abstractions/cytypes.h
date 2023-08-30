@@ -15,6 +15,7 @@ struct code_t
     std::map<std::string, std::string> param_space = {}; 
     std::map<std::string, std::vector<std::string>> trace = {}; 
     std::map<std::string, std::vector<std::string>> extern_imports = {}; 
+    std::vector<std::string> dependency_hashes = {}; 
 
     std::string function_name = "";
     std::string class_name = "";
@@ -213,12 +214,53 @@ struct event_t
     bool event = false;
 };
 
-struct graph_t : event_t
+struct graph_t
 {
-    bool train = false; 
+    // implementation information
+    std::string event_name = ""; 
+    std::string code_hash = "";
+    std::map<std::string, std::string> errors = {}; 
+
+    // io state
+    bool cached = false;
+    
+    // state variables
+    int event_index = -1;
+    std::string event_hash = ""; 
+    std::string event_tagging = "";
+    std::string event_tree = "";  
+    std::string event_root = ""; 
+    std::string pickled_data = "";  
+
+    // Usage mode
+    bool train      = false; 
     bool evaluation = false; 
     bool validation = false;  
+
+    // Error / Skip properties
     bool empty_graph = false; 
+    bool skip_graph  = false;
+  
+    // Topology properties 
+    std::map<std::string, int> hash_particle = {}; 
+    std::map<std::string, std::vector<int>> src_dst = {}; 
+    bool self_loops = true; 
+
+    // Pre-Selection metrics
+    std::map<std::string, int> presel = {}; 
+    
+    // Feature properties
+    // The key is the function name and the paired is the code hash
+    std::map<std::string, std::string> graph_feature = {}; 
+    std::map<std::string, std::string> node_feature = {}; 
+    std::map<std::string, std::string> edge_feature = {}; 
+    std::map<std::string, std::string> pre_sel_feature = {}; 
+    std::string topo_hash = ""; 
+
+    // template type indicators
+    bool graph     = false; 
+    bool selection = false; 
+    bool event     = false;
 };
 
 struct selection_t : event_t
@@ -278,15 +320,9 @@ struct settings_t
     std::string tree = ""; 
     std::string eventname = "";
 
-    // Graph Specific attributes
-    std::map<std::string, code_t> graph_attribute = {}; 
-    std::map<std::string, code_t> node_attribute = {}; 
-    std::map<std::string, code_t> edge_attribute = {}; 
-
     // Generation Options
     int event_start = -1; 
     int event_stop = 0; 
-
 
     // Getter options
     bool getgraph = false; 
@@ -303,8 +339,6 @@ struct settings_t
     // code linking
     std::map<std::string, code_t> hashed_code = {}; 
     std::map<std::string, std::string> link_event_code = {}; 
-
-
 };
 
 #endif

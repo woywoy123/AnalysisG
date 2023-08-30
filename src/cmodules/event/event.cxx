@@ -37,10 +37,6 @@ namespace CyTemplate
     {
         event_t* ev1 = &(this -> event); 
         event_t* ev2 = &(ev.event); 
-        if (ev1 -> event_hash    != ev2 -> event_hash   ){ return false; }
-        if (ev1 -> event_name    != ev2 -> event_name   ){ return false; }
-        if (ev1 -> event_tree    != ev2 -> event_tree   ){ return false; }
-        if (ev1 -> event_tagging != ev2 -> event_tagging){ return false; }
-        return true;  
+        return this -> is_same(ev1, ev2); 
     }
 }

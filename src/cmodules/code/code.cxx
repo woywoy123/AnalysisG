@@ -3,7 +3,14 @@
 namespace Code
 {
     CyCode::CyCode(){}
-    CyCode::~CyCode(){}
+    CyCode::~CyCode()
+    {
+        std::map<std::string, CyCode*>::iterator it; 
+        it = this -> dependency.begin(); 
+        for (; it != this -> dependency.end(); ++it){
+            delete it -> second; 
+        } 
+    }
 
     void CyCode::Hash()
     {
@@ -25,15 +32,54 @@ namespace Code
         return this -> hash == inpt.hash;
     }
 
-    code_t CyCode::ExportCode()
-    {
+    code_t CyCode::ExportCode(){
         this -> Hash();
         this -> container.hash = this -> hash;
+        std::map<std::string, CyCode*>::iterator it; 
+        it = this -> dependency.begin(); 
+        for (; it != this -> dependency.end(); ++it){
+            this -> container.dependency_hashes.push_back( it -> first ); 
+        }
         return this -> container; 
     }
 
-    void CyCode::ImportCode(code_t code)
-    {
+    void CyCode::ImportCode(code_t code){
         this -> container = code;
+    }
+
+    void CyCode::ImportCode(code_t code, std::map<std::string, code_t> code_hashes)
+    {
+        this -> container = code;  
+        code_t* co = &(this -> container); 
+        std::map<std::string, code_t> get = {}; 
+        for (unsigned int x(0); x < co -> dependency_hashes.size(); ++x){
+            std::string hash = co -> dependency_hashes[x]; 
+            if (!code_hashes.count(hash)){continue;}
+            get[hash] = code_hashes[hash]; 
+        }
+        this -> AddDependency(get); 
+    }
+
+    void CyCode::AddDependency(std::map<std::string, CyCode*> inpt)
+    {
+        std::map<std::string, CyCode*>::iterator it; 
+        it = inpt.begin(); 
+        for (; it != inpt.end(); ++it){
+            if (this -> dependency.count(it -> first)){continue;}
+            CyCode* co = it -> second; 
+            this -> dependency[it -> first] = new CyCode(); 
+            this -> dependency[it -> first] -> ImportCode(co -> ExportCode()); 
+        }
+    }
+
+    void CyCode::AddDependency(std::map<std::string, code_t> inpt)
+    {
+        std::map<std::string, code_t>::iterator it; 
+        it = inpt.begin(); 
+        for (; it != inpt.end(); ++it){
+            if (this -> dependency.count(it -> first)){continue;}
+            this -> dependency[it -> first] = new CyCode(); 
+            this -> dependency[it -> first] -> ImportCode(it -> second); 
+        }
     }
 }

@@ -63,7 +63,8 @@ namespace SampleTracer
 
             root_t Export(); 
             void Import(const root_t* inpt); 
-            void AddEvent(const event_t* event); 
+            void AddEvent(const event_t* event);
+            void AddGraph(const graph_t* graph);  
             
             meta_t meta;
             std::map<std::string, CyBatch*> batches;

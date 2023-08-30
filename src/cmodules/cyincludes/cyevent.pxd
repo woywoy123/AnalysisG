@@ -30,4 +30,9 @@ cdef extern from "../event/event.h" namespace "CyTemplate":
         event_t event
         meta_t meta
 
+        bool is_event
+        bool is_graph
+        bool is_selection
+
+
         CyCode* code_link

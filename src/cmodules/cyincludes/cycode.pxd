@@ -10,11 +10,17 @@ cdef extern from "../code/code.h" namespace "Code":
         CyCode() except +
 
         void Hash() except +
+
         void ImportCode(code_t) except +
+        void ImportCode(code_t, map[string, code_t]) except +
+
         code_t ExportCode() except +
+
+        void AddDependency(map[string, code_t ]) except +
+        void AddDependency(map[string, CyCode*]) except +
+        bool operator==(CyCode& code) except +
 
         string hash
         code_t container
-
-        bool operator==(CyCode& code) except +
+        map[string, CyCode*] dependency
 

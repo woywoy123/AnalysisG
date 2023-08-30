@@ -109,7 +109,7 @@ cdef class EventTemplate:
                 obj.Tree = tree
                 if obj.index == -1: obj.index = inpt["EventIndex"]
                 else: meta.eventNumber = obj.index
-                obj.ROOT = meta.DatasetName + "/" + meta.DAOD
+                obj.ROOT = meta.DatasetName + "/" + meta.DAOD.split("/")[-1]
                 obj.hash
                 inpt_map[tree][typ] = obj
 
@@ -146,6 +146,10 @@ cdef class EventTemplate:
 
     def ImportMetaData(self, meta_t meta):
         self.ptr.ImportMetaData(meta)
+
+    @property
+    def Export(self) -> event_t:
+        return self.ptr.Export()
 
     @property
     def index(self) -> int:
@@ -251,8 +255,7 @@ cdef class EventTemplate:
 
     @Objects.setter
     def Objects(self, val):
-        if not isinstance(val, dict):
-            val = {"title" : val}
+        if not isinstance(val, dict): val = {"title" : val}
         self.Objects = val
 
 

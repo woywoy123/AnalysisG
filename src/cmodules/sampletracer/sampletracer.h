@@ -12,6 +12,7 @@ namespace SampleTracer
             CySampleTracer(); 
             ~CySampleTracer(); 
             void AddEvent(event_t event, meta_t meta);
+            void AddGraph(graph_t graph, meta_t meta); 
             void AddCode(code_t code); 
 
             tracer_t Export(); 
@@ -55,9 +56,6 @@ namespace SampleTracer
             settings_t settings; 
 
             std::map<std::string, int> event_trees = {}; 
-
-
-
     }; 
 }
 

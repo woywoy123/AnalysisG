@@ -8,13 +8,14 @@ from cygraph cimport CyGraphTemplate
 from cyselection cimport CySelectionTemplate
 
 from cytypes cimport event_t, graph_t, selection_t, code_t
-from cytypes cimport tracer_t, meta_t, settings_t
+from cytypes cimport tracer_t, batch_t, meta_t, settings_t
 
 from AnalysisG.Tools import Code
 from cycode cimport CyCode
 
-from AnalysisG._cmodules.MetaData import MetaData
 from AnalysisG._cmodules.EventTemplate import EventTemplate
+from AnalysisG._cmodules.GraphTemplate import GraphTemplate
+from AnalysisG._cmodules.MetaData import MetaData
 
 from libcpp.vector cimport vector
 from libcpp.string cimport string
@@ -48,6 +49,7 @@ cdef class Event:
     def __eq__(self, other):
         try: return self.hash == other.hash
         except: return False
+
     def __hash__(self):
         return int(self.hash[:8], 0)
 
@@ -55,6 +57,11 @@ cdef class Event:
         self.__getevent__()
         try: return getattr(self._event, req)
         except AttributeError: pass
+
+        self.__getgraph__()
+        try: return getattr(self._graph, req)
+        except AttributeError: pass
+
         self.__getmeta__()
         try: return getattr(self._meta, req)
         except AttributeError: pass
@@ -70,14 +77,17 @@ cdef class Event:
         cdef CyEventTemplate* ev_ = self.ptr.this_ev
         if ev_ == NULL: self._event = False; return
         cdef CyCode* co_ = ev_.code_link
-        if co_ == NULL:
-            print("MISSING CODE!")
-            return
+        if co_ == NULL: print("MISSING CODE!"); return
 
         cdef event_t ev = ev_.Export()
         cdef code_t  co = co_.ExportCode()
+        cdef pair[string, CyCode*] itr
+        cdef list deps = []
+        for itr in co_.dependency:
+            deps.append(itr.second.ExportCode())
         c = Code()
         c.__setstate__(co)
+        c.AddDependency(deps)
         event = c.InstantiateObject
 
         cdef dict pkl = pickle.loads(ev.pickled_data)
@@ -85,16 +95,34 @@ cdef class Event:
         event.__setstate__((pkl, ev))
         self._event = event
 
+    def __getgraph__(self):
+        if self._graph is not None: return
+        cdef CyGraphTemplate* gr_ = self.ptr.this_gr
+        if gr_ == NULL: self._graph = False; return
+        cdef CyCode* co_ = gr_.code_link
+        if co_ == NULL: print("MISSING CODE!"); return
+        c = Code()
+        c.__setstate__(co_.ExportCode())
+        graph = c.InstantiateObject
+        graph.Import(gr_.Export())
+        self._graph = graph
+
+    def __getstate__(self) -> tuple:
+        cdef meta_t meta = self.ptr.meta[0]
+        return (meta, self.ptr.Export())
+
 
 cdef class SampleTracer:
 
     cdef CySampleTracer* ptr
     cdef event_iter
     cdef _Event
+    cdef _Graph
 
     def __cinit__(self):
         self.ptr = new CySampleTracer()
         self._Event = None
+        self._Graph = None
 
     def __dealloc__(self):
         del self.ptr
@@ -172,7 +200,7 @@ cdef class SampleTracer:
     def ImportSettings(self, settings_t inpt):
         self.ptr.ImportSettings(inpt)
 
-    def ExportSettings(self):
+    def ExportSettings(self) -> settings_t:
         return self.ptr.ExportSettings()
 
     def clone(self):
@@ -236,6 +264,11 @@ cdef class SampleTracer:
         cdef list evnts = [ef for g in event_inpt for ef in event_inpt[g].values()]
         for ef in evnts: self.AddEvent(ef["Event"], ef["MetaData"])
 
+
+    def AddGraph(self, graph_inpt, meta_t meta):
+        cdef graph_t graph = graph_inpt.__getstate__()
+        self.ptr.AddGraph(graph, meta)
+
     def SetAttribute(self, fx, str name, str type_) -> tuple:
         cdef code_t co = self.trace_code(fx)
         cdef string name_fx = co.function_name
@@ -253,11 +286,6 @@ cdef class SampleTracer:
         return (name_fx, True)
 
 
-
-
-
-
-
     @property
     def Event(self):
         return self._Event
@@ -269,12 +297,29 @@ cdef class SampleTracer:
         if not self.is_self(event, EventTemplate): return
         cdef string name = enc(event.__name__())
         cdef code_t co
+        cdef map[string, code_t] deps = {}
         for o in event.Objects.values():
             co = self.trace_code(o)
+            deps[co.hash] = co
         co = self.trace_code(event)
         self.ptr.link_event_code[name] = co.hash
+        self.ptr.code_hashes[co.hash].AddDependency(deps)
         self._Event = event
 
+    @property
+    def Graph(self):
+        return self._Graph
+
+    @Graph.setter
+    def Graph(self, inpt):
+        try: graph = inpt()
+        except: graph = inpt
+        if not self.is_self(graph, GraphTemplate): return
+        cdef string name = enc(graph.__name__())
+        for _, o in graph.code.items(): self.ptr.AddCode(o.__getstate__())
+        cdef code_t co = self.trace_code(graph)
+        self.ptr.link_event_code[name] = co.hash
+        self._Graph = graph
 
     @property
     def ShowEvents(self) -> list:

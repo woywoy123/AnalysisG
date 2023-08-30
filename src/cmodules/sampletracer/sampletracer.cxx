@@ -26,13 +26,28 @@ namespace SampleTracer
     {
         event_t* ev_ptr = &(event); 
         std::string event_r = ev_ptr -> event_root; 
-        if (this -> root_map.count(event_r)){}
-        else {this -> root_map[event_r] = new CyROOT(meta);}
+        if (!this -> root_map.count(event_r)){
+            this -> root_map[event_r] = new CyROOT(meta);
+        }
         CyROOT* root = root_map[event_r];
 
         std::string event_name = ev_ptr -> event_name; 
         ev_ptr -> code_hash = this -> link_event_code[event_name]; 
         root -> AddEvent(ev_ptr);
+    }
+
+    void CySampleTracer::AddGraph(graph_t graph, meta_t meta)
+    {
+        graph_t* gr_ptr = &(graph); 
+        std::string event_r = gr_ptr -> event_root; 
+        if (!this -> root_map.count(event_r)){
+            this -> root_map[event_r] = new CyROOT(meta); 
+        }
+        CyROOT* root = root_map[event_r]; 
+
+        std::string event_name = gr_ptr -> event_name; 
+        gr_ptr -> code_hash = this -> link_event_code[event_name]; 
+        root -> AddGraph(gr_ptr); 
     }
 
     tracer_t CySampleTracer::Export()
@@ -142,19 +157,21 @@ namespace SampleTracer
 
     std::vector<CyBatch*> CySampleTracer::MakeIterable()
     {
-
         unsigned int x = 0; 
         std::vector<std::thread*> jobs = {};  
         settings_t* set = &(this -> settings);
 
-        std::vector<std::vector<CyBatch*>*> output = {}; 
+        std::vector<std::vector<CyBatch*>*> output = {};
         std::map<std::string, Code::CyCode*>* code = &(this -> code_hashes);
         std::map<std::string, CyROOT*>::iterator itr = this -> root_map.begin(); 
-        for (; itr != this -> root_map.end(); ++itr)
-        {
+        for (; itr != this -> root_map.end(); ++itr){
             CyROOT* ro = itr -> second; 
             output.push_back(new std::vector<CyBatch*>()); 
-            if (set -> threads == 1){ CySampleTracer::Make(ro, set, output[x], code); ++x; continue;}
+            if (set -> threads == 1){ 
+                CySampleTracer::Make(ro, set, output[x], code); ++x; 
+                continue;
+            }
+
             std::thread* j = new std::thread(CySampleTracer::Make, ro, set, output[x], code);  
             jobs.push_back(j); 
             ++x;
@@ -170,18 +187,15 @@ namespace SampleTracer
         return smpl; 
     }
 
-    void CySampleTracer::operator += (CySampleTracer* other)
-    {
+    void CySampleTracer::operator += (CySampleTracer* other){
         this -> Import(other -> Export());
     }
 
-    void CySampleTracer::iadd(CySampleTracer* other)
-    { 
+    void CySampleTracer::iadd(CySampleTracer* other){ 
         *this += other; 
     }
 
-    std::map<std::string, int> CySampleTracer::length()
-    {
+    std::map<std::string, int> CySampleTracer::length(){
         std::map<std::string, int> output; 
         std::map<std::string, int>::iterator itn; 
         std::map<std::string, CyROOT*>::iterator itr; 
