@@ -1,5 +1,5 @@
 from AnalysisG.Notification import _EventGenerator
-from AnalysisG.Tools import Code, Threading
+from AnalysisG.Tools import Threading
 from AnalysisG.SampleTracer import SampleTracer
 from .Interfaces import _Interface
 from AnalysisG.IO import UpROOT
@@ -22,10 +22,10 @@ class EventGenerator(_EventGenerator, _Interface, SampleTracer):
         for i in range(len(inpt)):
             _, vals = inpt[i]
             res = ev.__compiler__(vals)
+            inpt[i] = []
             for k in res:
                 k.CompileEvent()
                 tracer.AddEvent(k, vals["MetaData"])
-
             if lock is None:
                 if bar is None: continue
                 bar.update(1)
@@ -35,8 +35,6 @@ class EventGenerator(_EventGenerator, _Interface, SampleTracer):
 
     def MakeEvents(self):
         if not self.CheckEventImplementation(): return False
-        self.CheckSettings()
-
         if len(self.ShowEvents) > 0: pass
         else: return self.ObjectCollectFailure()
         if not self.CheckROOTFiles(): return False
@@ -45,28 +43,50 @@ class EventGenerator(_EventGenerator, _Interface, SampleTracer):
         ev = self.Event
         ev.__getleaves__()
 
-        io = UpROOT(self.Files)
+        io = UpROOT(self.Files, True)
         io.Verbose = self.Verbose
         io.Trees = ev.Trees
         io.Leaves = ev.Leaves
         io.EnablePyAMI = self.EnablePyAMI
 
-        inpt = []
-        ev = pickle.dumps(ev)
         i = -1
+        ev = pickle.dumps(ev)
+        inpt = []
+        chnks = self.Threads * self.Chunks*2
+        step = chnks
+        itx = 1
         for v in io:
             i += 1
             if self._StartStop(i) == False: continue
             if self._StartStop(i) == None: break
-            inpt.append([ev, v])
 
-        if self.Threads > 1:
+            inpt.append([ev,v])
+            if not i >= step: continue
+            itx += 1
+            step = itx*chnks
             th = Threading(inpt, self._CompileEvent, self.Threads, self.Chunks)
             th.Start()
-            out = th._lists
-        else: out = self._CompileEvent(inpt, self._MakeBar(len(inpt)))
+            for x in th._lists:
+                if x is None: continue
+                self += x
+            inpt = []
 
-        for i in out:
-            if i is None: pass
-            else: self += i
+        th = Threading(inpt, self._CompileEvent, self.Threads, self.Chunks)
+        th.Start()
+        for i in th._lists:
+            if i is None: continue
+            self += i
         return self.CheckSpawnedEvents()
+
+    def preiteration(self):
+        if not len(self.ShowEvents): return True
+        if not len(self.ShowTrees): return True
+
+        if not len(self.EventName): ev = self.ShowEvents[0]
+        else: ev = self.EventName
+
+        if not len(self.Tree): tr = self.ShowTrees[0]
+        else: tr = self.Tree
+
+        self.Tree, self.EventName = tr, ev
+        return False

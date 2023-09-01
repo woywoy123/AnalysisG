@@ -219,6 +219,7 @@ struct graph_t
     // implementation information
     std::string event_name = ""; 
     std::string code_hash = "";
+    std::string topo_hash = ""; 
     std::map<std::string, std::string> errors = {}; 
 
     // io state
@@ -255,7 +256,6 @@ struct graph_t
     std::map<std::string, std::string> node_feature = {}; 
     std::map<std::string, std::string> edge_feature = {}; 
     std::map<std::string, std::string> pre_sel_feature = {}; 
-    std::string topo_hash = ""; 
 
     // template type indicators
     bool graph     = false; 
@@ -278,6 +278,9 @@ struct batch_t
     std::map<std::string, event_t> events = {}; 
     std::map<std::string, graph_t> graphs = {}; 
     std::map<std::string, selection_t> selections = {}; 
+    std::map<std::string, code_t> code_hashes = {}; 
+
+    meta_t meta; 
     std::string hash = ""; 
 };
 
@@ -295,16 +298,17 @@ struct tracer_t
     std::map<std::string, meta_t> root_meta = {}; 
     std::map<std::string, code_t> hashed_code = {}; 
 
-    std::map<std::string, std::string> link_event_code = {}; 
     std::map<std::string, int> event_trees = {}; 
+    std::map<std::string, std::string> link_event_code = {};
+    std::map<std::string, std::string> link_graph_code = {};  
 };
 
 struct settings_t
 {
     // General settings
-    std::string caller = ""; 
     std::string projectname = "UNTITLED"; 
     std::string outputdirectory = "./";
+    std::string device = "cpu";
     std::map<std::string, std::vector<std::string>> files = {}; 
     int verbose = 3; 
    
@@ -319,6 +323,8 @@ struct settings_t
     // Compiler settings
     std::string tree = ""; 
     std::string eventname = "";
+    std::string graphname = ""; 
+    std::string selectionname = ""; 
 
     // Generation Options
     int event_start = -1; 
@@ -339,6 +345,7 @@ struct settings_t
     // code linking
     std::map<std::string, code_t> hashed_code = {}; 
     std::map<std::string, std::string> link_event_code = {}; 
+    std::map<std::string, std::string> link_graph_code = {}; 
 };
 
 #endif

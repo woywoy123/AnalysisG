@@ -10,33 +10,37 @@ class _GraphGenerator(Notification):
         self.Warning("Input instance is of wrong type. Skipping...")
 
     def CheckGraphImplementation(self):
-        if self.EventGraph != None:
-            return True
-        ex = "Or do: from AnalysisTopGNN.Events import Event"
+        if self.Graph is not None and not self.preiteration(): return True
+        ex = "Or do: from AnalysisG.Events import Event"
         self.Failure("=" * len(ex))
         self.Failure("No Graph Implementation Provided.")
         self.Failure("var = " + self.Caller.capitalize() + "()")
-        self.Failure("var.EventGraph")
+        self.Failure("var.Graph")
         self.Failure("See src/Events/Graphs/EventGraphs.py or 'tutorial'")
         self.Failure("=" * len(ex))
         return False
 
     def CheckSettings(self):
-        if self._condor: return True
+        edge, node, graph = [], [], []
+        for i in self.Graph.code:
+            if   i.startswith("G_"): graph.append(i[3:])
+            elif i.startswith("N_"): node.append(i[3:])
+            elif i.startswith("E_"): edge.append(i[3:])
+
         attrs = 3
         attrs -= (
             1 * self.Warning("NO EDGE FEATURES PROVIDED")
-            if len(list(self.EdgeAttribute)) == 0
+            if not len(edge)
             else 0
         )
         attrs -= (
             1 * self.Warning("NO NODE FEATURES PROVIDED")
-            if len(list(self.NodeAttribute)) == 0
+            if not len(node)
             else 0
         )
         attrs -= (
             1 * self.Warning("NO GRAPH FEATURES PROVIDED")
-            if len(list(self.GraphAttribute)) == 0
+            if not len(graph)
             else 0
         )
         if attrs != 0:

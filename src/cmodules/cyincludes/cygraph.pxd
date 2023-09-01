@@ -8,12 +8,12 @@ from cytypes cimport meta_t, graph_t, event_t
 from cytypes cimport code_t
 
 cdef extern from "../graph/graph.h" namespace "CyTemplate":
-    cdef cppclass CyGraphTemplate:
+    cdef cppclass CyGraphTemplate nogil:
         CyGraphTemplate() except +
         bool operator == (CyGraphTemplate& gr) except +
 
         void ImportMetaData(meta_t meta) except +
-        void add_eventname(string) except +
+        void set_event_name(graph_t*, string) except +
         string Hash() except +
 
         void Import(graph_t graph) except +
@@ -33,6 +33,12 @@ cdef extern from "../graph/graph.h" namespace "CyTemplate":
         map[string, CyCode*] graph_fx
         map[string, CyCode*] pre_sel_fx
 
-        CyCode* topo
+        CyCode* topo_link
         CyCode* code_link
-        string topo_hash
+
+        bool is_event
+        bool is_graph
+        bool is_selection
+
+
+

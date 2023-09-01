@@ -35,12 +35,13 @@ namespace Code
     code_t CyCode::ExportCode(){
         this -> Hash();
         this -> container.hash = this -> hash;
+        code_t code = this -> container; 
         std::map<std::string, CyCode*>::iterator it; 
         it = this -> dependency.begin(); 
         for (; it != this -> dependency.end(); ++it){
-            this -> container.dependency_hashes.push_back( it -> first ); 
+            code.dependency_hashes.push_back( it -> first ); 
         }
-        return this -> container; 
+        return code;  
     }
 
     void CyCode::ImportCode(code_t code){
@@ -52,11 +53,13 @@ namespace Code
         this -> container = code;  
         code_t* co = &(this -> container); 
         std::map<std::string, code_t> get = {}; 
+        std::vector<std::string> update = {}; 
         for (unsigned int x(0); x < co -> dependency_hashes.size(); ++x){
             std::string hash = co -> dependency_hashes[x]; 
-            if (!code_hashes.count(hash)){continue;}
-            get[hash] = code_hashes[hash]; 
+            if (code_hashes.count(hash)){get[hash] = code_hashes[hash];}
+            else {update.push_back(hash);} 
         }
+        co -> dependency_hashes = update; 
         this -> AddDependency(get); 
     }
 
@@ -79,7 +82,7 @@ namespace Code
         for (; it != inpt.end(); ++it){
             if (this -> dependency.count(it -> first)){continue;}
             this -> dependency[it -> first] = new CyCode(); 
-            this -> dependency[it -> first] -> ImportCode(it -> second); 
+            this -> dependency[it -> first] -> ImportCode(it -> second, inpt); 
         }
     }
 }

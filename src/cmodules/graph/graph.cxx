@@ -6,16 +6,12 @@ namespace CyTemplate
     CyGraphTemplate::~CyGraphTemplate()
     {
         if (!this -> code_owner){return;}
-        std::map<std::string, Code::CyCode*>::iterator it; 
-        it = this -> edge_fx.begin();
-        for (; it != this -> edge_fx.end(); ++it){delete it -> second;} 
-
-        it = this -> node_fx.begin();
-        for (; it != this -> node_fx.end(); ++it){delete it -> second;} 
-
-        it = this -> graph_fx.begin();
-        for (; it != this -> graph_fx.end(); ++it){delete it -> second;} 
-        delete topo; 
+        this -> destroy(&(this -> edge_fx)); 
+        this -> destroy(&(this -> node_fx)); 
+        this -> destroy(&(this -> graph_fx)); 
+        this -> destroy(&(this -> pre_sel_fx)); 
+        if (this -> topo_link){ delete this -> topo_link; }
+        if (this -> code_link){ delete this -> code_link; }
     }
 
     bool CyGraphTemplate::operator == (CyGraphTemplate& gr)
@@ -30,30 +26,38 @@ namespace CyTemplate
         this -> graph = gr; 
         this -> graph.graph = true; 
         this -> is_graph = true;
-        this -> topo_hash = graph.topo_hash;  
+    }
+
+    void CyGraphTemplate::DeLinkFeatures(
+            std::map<std::string, std::string>* fx, 
+            std::map<std::string, Code::CyCode*> code_h)
+    {
+        std::map<std::string, Code::CyCode*>::iterator it; 
+        it = code_h.begin(); 
+        for (; it != code_h.end(); ++it){
+            it -> second -> Hash(); 
+            (*fx)[it -> first] = it -> second -> hash; 
+        }
+        if (!this -> code_link){return;}
+        this -> code_link -> AddDependency(code_h); 
     }
 
     graph_t CyGraphTemplate::Export()
     {
         graph_t gr = this -> graph; 
-        std::map<std::string, Code::CyCode*>::iterator it; 
-
-        it = this -> edge_fx.begin(); 
-        for (; it != this -> edge_fx.end(); ++it){
-            gr.edge_feature[it -> first] = it -> second -> hash;    
+        this -> DeLinkFeatures(&gr.edge_feature, this -> edge_fx); 
+        this -> DeLinkFeatures(&gr.node_feature, this -> node_fx); 
+        this -> DeLinkFeatures(&gr.graph_feature, this -> graph_fx); 
+        this -> DeLinkFeatures(&gr.pre_sel_feature, this -> pre_sel_fx);
+        if (this -> topo_link){
+            this -> topo_link -> Hash(); 
+            gr.topo_hash = this -> topo_link -> hash;
         }
-
-        it = this -> node_fx.begin(); 
-        for (; it != this -> node_fx.end(); ++it){
-            gr.node_feature[it -> first] = it -> second -> hash;    
+        if (this -> code_link){
+            this -> code_link -> Hash(); 
+            gr.code_hash = this -> code_link -> hash;
         }
-
-        it = this -> graph_fx.begin(); 
-        for (; it != this -> graph_fx.end(); ++it){
-            gr.graph_feature[it -> first] = it -> second -> hash;    
-        }
-
-        if (this -> topo){gr.topo_hash = this -> topo -> hash;}
+        gr.graph = true; 
         return gr; 
     }
 

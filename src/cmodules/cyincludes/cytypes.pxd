@@ -216,6 +216,9 @@ cdef extern from "../abstractions/cytypes.h":
         map[string, event_t] events
         map[string, graph_t] graphs
         map[string, selection_t] selections
+        map[string, code_t] code_hashes
+
+        meta_t meta
         string hash
 
     struct root_t:
@@ -229,15 +232,16 @@ cdef extern from "../abstractions/cytypes.h":
         map[string, meta_t] root_meta
         map[string, code_t] hashed_code
 
-        map[string, string] link_event_code
         map[string, int] event_trees
+        map[string, string] link_event_code
+        map[string, string] link_graph_code
 
 
     struct settings_t:
         # General IO stuff
-        string caller
         string projectname
         string outputdirectory
+        string device
         map[string, vector[string]] files
         int verbose
 
@@ -251,6 +255,8 @@ cdef extern from "../abstractions/cytypes.h":
         # Sample/Compiler stuff
         string tree
         string eventname
+        string graphname
+        string selectionname
 
         # Generation specific options
         int event_start
@@ -265,7 +271,10 @@ cdef extern from "../abstractions/cytypes.h":
         bool eventcache
         bool graphcache
 
-
         # Getter variable
         vector[string] search
 
+        # Code linking
+        map[string, code_t] hashed_code
+        map[string, string] link_event_code
+        map[string, string] link_graph_code

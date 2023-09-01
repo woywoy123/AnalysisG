@@ -23,6 +23,7 @@ from libcpp.map cimport map, pair
 from libcpp cimport bool
 
 from typing import Union
+import torch
 import pickle
 import os
 
@@ -32,13 +33,15 @@ cdef str env(string val): return val.decode("UTF-8")
 cdef class Event:
 
     cdef CyBatch* ptr
+    cdef meta_t m_meta
+
     cdef _event
     cdef _graph
     cdef _selection
     cdef _meta
 
     def __cinit__(self):
-        self.ptr = NULL
+        self.ptr = NULL #new CyBatch(b"")
         self._event = None
         self._selection = None
         self._graph = None
@@ -53,6 +56,9 @@ cdef class Event:
     def __hash__(self):
         return int(self.hash[:8], 0)
 
+    def __dealloc__(self):
+        pass #del self.ptr
+
     def __getattr__(self, req):
         self.__getevent__()
         try: return getattr(self._event, req)
@@ -66,8 +72,12 @@ cdef class Event:
         try: return getattr(self._meta, req)
         except AttributeError: pass
 
+    def meta(self):
+        return self._meta
+
     def __getmeta__(self):
         if self._meta is not None: return
+        if not self.ptr.lock_meta: return
         cdef meta_t meta = self.ptr.meta[0]
         self._meta = MetaData()
         self._meta.__setstate__(meta)
@@ -77,17 +87,21 @@ cdef class Event:
         cdef CyEventTemplate* ev_ = self.ptr.this_ev
         if ev_ == NULL: self._event = False; return
         cdef CyCode* co_ = ev_.code_link
-        if co_ == NULL: print("MISSING CODE!"); return
+        if co_ == NULL: print("EVENT -> MISSING CODE!"); return
 
         cdef event_t ev = ev_.Export()
         cdef code_t  co = co_.ExportCode()
-        cdef pair[string, CyCode*] itr
-        cdef list deps = []
-        for itr in co_.dependency:
-            deps.append(itr.second.ExportCode())
+        cdef int c_i, d_i
+        c_i = co_.dependency.size()
+        d_i = co_.container.dependency_hashes.size()
+        if c_i < d_i: print("MISSING DEPENDENCY CODE!"); return
+
         c = Code()
         c.__setstate__(co)
-        c.AddDependency(deps)
+        cdef pair[string, CyCode*] itr
+        for itr in co_.dependency:
+            co = itr.second.ExportCode()
+            c.AddDependency([co])
         event = c.InstantiateObject
 
         cdef dict pkl = pickle.loads(ev.pickled_data)
@@ -100,29 +114,64 @@ cdef class Event:
         cdef CyGraphTemplate* gr_ = self.ptr.this_gr
         if gr_ == NULL: self._graph = False; return
         cdef CyCode* co_ = gr_.code_link
-        if co_ == NULL: print("MISSING CODE!"); return
+        if co_ == NULL: print("GRAPH -> MISSING CODE!"); return
+
+        cdef graph_t graph = gr_.Export()
+        cdef code_t     co = co_.ExportCode()
+
         c = Code()
-        c.__setstate__(co_.ExportCode())
-        graph = c.InstantiateObject
-        graph.Import(gr_.Export())
-        self._graph = graph
+        c.__setstate__(co)
+        gr = c.InstantiateObject
+        if self._event is None: self._graph = gr()
+        elif not self._event: self._graph = gr()
+        else: self._graph = gr(self._event)
+        self._graph.Import(graph)
 
     def __getstate__(self) -> tuple:
-        cdef meta_t meta = self.ptr.meta[0]
-        return (meta, self.ptr.Export())
+        return (self.ptr.meta[0], self.ptr.ExportPickled())
+
+    def __setstate__(self, inpt):
+        cdef batch_t b
+        if isinstance(inpt, tuple):
+            b = inpt[1]
+            self.ptr = new CyBatch(b.hash)
+            self.m_meta = inpt[0]
+            self.ptr.Import(&self.m_meta)
+        else: b = inpt
+        self.ptr.ImportPickled(&b)
+        self.__getmeta__()
+        self.__getevent__()
+        self.__getgraph__()
+        del self.ptr
+
+
+
+
+
+
+
+
 
 
 cdef class SampleTracer:
 
     cdef CySampleTracer* ptr
-    cdef event_iter
     cdef _Event
     cdef _Graph
+    cdef settings_t* _set
+    cdef int _nhashes
+    cdef vector[CyBatch*] batches
+    cdef int b_end
+    cdef int b_start
 
     def __cinit__(self):
         self.ptr = new CySampleTracer()
+        self._set = &self.ptr.settings
         self._Event = None
         self._Graph = None
+        self._nhashes = 0
+        self.b_start = 0
+        self.b_end = 0
 
     def __dealloc__(self):
         del self.ptr
@@ -135,15 +184,16 @@ cdef class SampleTracer:
 
     def __setstate__(self, tracer_t inpt):
         self.ptr.Import(inpt)
+        self.b_end = 0
 
     def __getitem__(self, key: Union[list, str]):
         cdef vector[string] inpt;
         cdef str it
         if isinstance(key, str): inpt = [enc(key)]
         else: inpt = [enc(it) for it in key]
-        self.ptr.settings.search = inpt
+        self._set.search = inpt
         cdef list output = self.makelist()
-        self.ptr.settings.search.clear()
+        self._set.search.clear()
 
         if not len(output): return False
         return output[0] if len(output) == 1 else output
@@ -154,13 +204,16 @@ cdef class SampleTracer:
     def __len__(self) -> int:
         cdef map[string, int] f = self.ptr.length()
         cdef pair[string, int] it
-
+        cdef int entries = 0
         cdef str name = ""
         if len(self.Tree): name += self.Tree
         if len(self.EventName): name += "/" + self.EventName
-        if not len(name): return sum([it.second for it in f])
+        if not len(name):
+            dc = {env(it.first) : it.second for it in f}
+            self._nhashes = dc["n_hashes"]
+            del dc["n_hashes"]
+            return sum([entries for entries in dc.values()])
 
-        cdef int entries = 0
         for it in f:
             if name not in env(it.first): continue
             entries += it.second
@@ -170,6 +223,7 @@ cdef class SampleTracer:
         cdef SampleTracer tr = SampleTracer()
         tr.ptr.iadd(self.ptr)
         tr.ptr.iadd(other.ptr)
+        self.b_end = 0
         return tr
 
     def __radd__(self, other) -> SampleTracer:
@@ -180,15 +234,24 @@ cdef class SampleTracer:
         if not self.is_self(other): return self
         cdef SampleTracer tr = other
         self.ptr.iadd(tr.ptr)
+        self.b_end = 0
         return self
 
     def __iter__(self):
         if self.preiteration(): return self
-        self.event_iter = iter(self.makelist())
+        if self.b_end: pass
+        else: self.batches = self.ptr.MakeIterable()
+        self.b_end = self.batches.size()
+        self.b_start = 0
         return self
 
     def __next__(self) -> Event:
-        return next(self.event_iter)
+        if self.b_end == self.b_start: raise StopIteration
+        cdef Event event = Event()
+        event.ptr = self.batches[self.b_start]
+        event.ptr.Import(self.batches[self.b_start].meta)
+        self.b_start += 1
+        return event
 
 
     # ------------------ CUSTOM FUNCTIONS ------------------ #
@@ -210,21 +273,6 @@ cdef class SampleTracer:
         return issubclass(inpt.__class__, obj)
 
     def preiteration(self) -> bool:
-        cdef string name
-        cdef pair[string, int] itr
-        cdef pair[string, string] it
-        cdef map[string, int] tree = self.ptr.event_trees
-        cdef map[string, string] ev = self.ptr.link_event_code
-
-        # Case where no event implementation has been specified 
-        if not self.ptr.settings.eventname.size():
-            for it in ev: name = it.first; break
-            self.ptr.settings.eventname = name
-
-        # Case where no event tree has been specified
-        if not self.ptr.settings.tree.size():
-            for itr in tree: name = itr.first; break
-            self.ptr.settings.tree = name
         return False
 
     def makelist(self) -> list:
@@ -234,7 +282,7 @@ cdef class SampleTracer:
         cdef list output = []
         for batch in evnt:
             event = Event()
-            event.ptr = batch
+            event.__setstate__(batch.ExportPickled())
             output.append(event)
         return output
 
@@ -265,35 +313,27 @@ cdef class SampleTracer:
         for ef in evnts: self.AddEvent(ef["Event"], ef["MetaData"])
 
 
-    def AddGraph(self, graph_inpt, meta_t meta):
+    def AddGraph(self, graph_inpt, meta_inpt = None):
         cdef graph_t graph = graph_inpt.__getstate__()
+        cdef meta_t meta
+        if meta_inpt is None: meta = meta_t()
+        else: meta = meta_inpt.__getstate__()
         self.ptr.AddGraph(graph, meta)
 
-    def SetAttribute(self, fx, str name, str type_) -> tuple:
-        cdef code_t co = self.trace_code(fx)
-        cdef string name_fx = co.function_name
-        if len(name) > 2: name_fx = env(name[:2] + name)
-
-        if "G" == type_:
-            if self.ptr.settings.graph_attribute.count(name_fx): return (name_fx, False)
-            self.ptr.settings.graph_attribute[name_fx] = co
-        elif "N" == type_:
-            if self.ptr.settings.node_attribute.count(name_fx): return (name_fx, False)
-            self.ptr.settings.node_attribute[name_fx] = co
-        elif "E" == type_:
-            if self.ptr.settings.edge_attribute.count(name_fx): return (name_fx, False)
-            self.ptr.settings.edge_attribute[name_fx] = co
-        return (name_fx, True)
-
+    def SetAttribute(self, fx, str name) -> bool:
+        if self._Graph is None: self._Graph = GraphTemplate()
+        if name in self._Graph.code: return False
+        self._Graph.__scrapecode__(fx, name)
+        return True
 
     @property
     def Event(self):
         return self._Event
 
     @Event.setter
-    def Event(self, inpt):
-        try: event = inpt()
-        except: event = inpt
+    def Event(self, event):
+        try: event = event()
+        except: pass
         if not self.is_self(event, EventTemplate): return
         cdef string name = enc(event.__name__())
         cdef code_t co
@@ -311,14 +351,16 @@ cdef class SampleTracer:
         return self._Graph
 
     @Graph.setter
-    def Graph(self, inpt):
-        try: graph = inpt()
-        except: graph = inpt
+    def Graph(self, graph):
+        try: graph = graph()
+        except: pass
         if not self.is_self(graph, GraphTemplate): return
+        if self._Graph is not None: graph.ImportCode(self._Graph.code)
         cdef string name = enc(graph.__name__())
+        cdef code_t co
         for _, o in graph.code.items(): self.ptr.AddCode(o.__getstate__())
-        cdef code_t co = self.trace_code(graph)
-        self.ptr.link_event_code[name] = co.hash
+        co = self.trace_code(graph)
+        self.ptr.link_graph_code[name] = co.hash
         self._Graph = graph
 
     @property
@@ -328,6 +370,24 @@ cdef class SampleTracer:
         cdef list out = []
         for it in ev: out.append(env(it.first))
         return out
+
+    @property
+    def ShowGraphs(self) -> list:
+        cdef pair[string, string] it
+        cdef map[string, string] ev = self.ptr.link_graph_code
+        cdef list out = []
+        for it in ev: out.append(env(it.first))
+        return out
+
+    @property
+    def ShowLength(self) -> dict:
+        cdef pair[string, int] it
+        cdef dict output = {}
+        for it in self.ptr.length():
+            if env(it.first) == "n_hashes":
+                self._nhashes = it.second
+            else: output[env(it.first)] = it.second
+        return output
 
     @property
     def ShowTrees(self) -> list:
@@ -342,7 +402,7 @@ cdef class SampleTracer:
         cdef dict output = {}
         cdef string k
         cdef pair[string, vector[string]] it
-        for it in self.ptr.settings.files: output[env(it.first)] = [env(k) for k in  it.second]
+        for it in self._set.files: output[env(it.first)] = [env(k) for k in  it.second]
         return output
 
     @Files.setter
@@ -352,132 +412,167 @@ cdef class SampleTracer:
         if isinstance(val, str): Files["None"] = [val]
         elif isinstance(val, list): Files["None"] = val
         else: Files.update(val)
-        if not len(Files): self.ptr.settings.files.clear();
+        if not len(Files): self._set.files.clear();
         for key in Files:
-            for k in Files[key]: self.ptr.settings.files[enc(key)].push_back(enc(k))
+            for k in Files[key]: self._set.files[enc(key)].push_back(enc(k))
 
     @property
     def Threads(self) -> int:
-        return self.ptr.settings.threads
+        return self._set.threads
 
     @Threads.setter
     def Threads(self, int val):
-        self.ptr.settings.threads = val
-
-    @property
-    def GetSelection(self) -> bool:
-        return self.ptr.settings.getselection
-
-    @GetSelection.setter
-    def GetSelection(self, bool val):
-        self.ptr.settings.getselection = val
+        self._set.threads = val
 
     @property
     def GetEvent(self) -> bool:
-        return self.ptr.settings.getevent
+        return self._set.getevent
 
     @GetEvent.setter
     def GetEvent(self, bool val):
-        self.ptr.settings.getevent = val
+        self.b_end = 0
+        self._set.getevent = val
 
     @property
     def GetGraph(self) -> bool:
-        return self.ptr.settings.getgraph
+        return self._set.getgraph
 
     @GetGraph.setter
     def GetGraph(self, bool val):
-        self.ptr.settings.getgraph = val
+        self.b_end = 0
+        self._set.getgraph = val
+
+    @property
+    def GetSelection(self) -> bool:
+        return self._set.getselection
+
+    @GetSelection.setter
+    def GetSelection(self, bool val):
+        self.b_end = 0
+        self._set.getselection = val
 
     @property
     def ProjectName(self) -> str:
-        return env(self.ptr.settings.projectname)
+        return env(self._set.projectname)
 
     @ProjectName.setter
     def ProjectName(self, str val):
-        self.ptr.settings.projectname = enc(val)
+        self._set.projectname = enc(val)
 
     @property
     def EventName(self) -> str:
-        return env(self.ptr.settings.eventname)
+        return env(self._set.eventname)
 
     @EventName.setter
     def EventName(self, str val):
-        self.ptr.settings.eventname = enc(val)
+        self.b_end = 0
+        self._set.eventname = enc(val)
+
+
+    @property
+    def GraphName(self) -> str:
+        return env(self._set.graphname)
+
+    @GraphName.setter
+    def GraphName(self, str val):
+        self.b_end = 0
+        self._set.graphname = enc(val)
+
+    @property
+    def SelectionName(self) -> str:
+        return env(self._set.selectionname)
+
+    @SelectionName.setter
+    def SelectionName(self, str val):
+        self.b_end = 0
+        self._set.selectionname = enc(val)
 
     @property
     def Tree(self) -> str:
-        return env(self.ptr.settings.tree)
+        return env(self._set.tree)
 
     @Tree.setter
     def Tree(self, str val):
-        self.ptr.settings.tree = enc(val)
+        self.b_end = 0
+        self._set.tree = enc(val)
 
     @property
     def ProjectName(self) -> str:
-        return env(self.ptr.settings.projectname)
+        return env(self._set.projectname)
 
     @ProjectName.setter
     def ProjectName(self, str val):
-        self.ptr.settings.projectname = enc(val)
+        self._set.projectname = enc(val)
 
     @property
     def OutputDirectory(self) -> str:
-        return env(self.ptr.settings.outputdirectory)
+        return env(self._set.outputdirectory)
 
     @OutputDirectory.setter
     def OutputDirectory(self, str val):
         if not val.endswith("/"): val += "/"
         val = os.path.abspath(val)
-        self.ptr.settings.outputdirectory = enc(val)
+        self._set.outputdirectory = enc(val)
 
     @property
     def Caller(self) -> str:
-        return env(self.ptr.settings.caller)
+        return env(self.ptr.caller)
 
     @Caller.setter
     def Caller(self, str val):
-        self.ptr.settings.caller = enc(val.upper())
+        self.ptr.caller = enc(val.upper())
 
     @property
     def EventStart(self):
-        return self.ptr.settings.event_start
+        return self._set.event_start
 
     @EventStart.setter
     def EventStart(self, x: Union[int, None]):
         if x is None: x = 0
-        self.ptr.settings.event_start = x
+        self._set.event_start = x
 
     @property
     def EventStop(self):
-        if self.ptr.settings.event_stop == 0: return None
-        return self.ptr.settings.event_stop
+        if self._set.event_stop == 0: return None
+        return self._set.event_stop
 
     @EventStop.setter
     def EventStop(self, x: Union[int, None]):
         if x is None: x = 0
-        self.ptr.settings.event_stop = x
+        self._set.event_stop = x
 
     @property
     def Verbose(self):
-        return self.ptr.settings.verbose
+        return self._set.verbose
 
     @Verbose.setter
     def Verbose(self, int val):
-        self.ptr.settings.verbose = val
+        self._set.verbose = val
 
     @property
     def Chunks(self):
-        return self.ptr.settings.chunks
+        return self._set.chunks
 
     @Chunks.setter
     def Chunks(self, int val):
-        self.ptr.settings.chunks = val
+        self._set.chunks = val
 
     @property
     def EnablePyAMI(self):
-        return self.ptr.settings.enable_pyami
+        return self._set.enable_pyami
 
     @EnablePyAMI.setter
     def EnablePyAMI(self, bool val):
-        self.ptr.settings.enable_pyami = val
+        self._set.enable_pyami = val
 
+    @property
+    def Device(self):
+        return env(self._set.device)
+
+    @Device.setter
+    def Device(self, str val):
+        self._set.device = enc(val)
+
+    @property
+    def nHashes(self) -> int:
+        return self._nhashes

@@ -41,36 +41,39 @@ class _Interface(Tools):
 
     # Define the observable features
     def AddGraphFeature(self, fx, name=""):
-        c_name, dupl = self.SetAttribute(name, fx, "G")
-        if dupl: self.Warning("Found Duplicate Graph " + c_name + " Attribute")
+        if self.SetAttribute(fx, "G_F_" + name): return
+        self.Warning("Found Duplicate Graph " + name + " Attribute")
 
     def AddNodeFeature(self, fx, name=""):
-        self.SetAttribute(name, fx, self.NodeAttribute)
+        if self.SetAttribute(fx, "N_F_" + name): return
+        self.Warning("Found Duplicate Node " + name + " Attribute")
 
     def AddEdgeFeature(self, fx, name=""):
-        self.SetAttribute(name, fx, self.EdgeAttribute)
+        if self.SetAttribute(fx, "E_F_" + name): return
+        self.Warning("Found Duplicate Edge " + name + " Attribute")
 
-    # Define the truth features used for supervised learning
+     # Define the truth features used for supervised learning
     def AddGraphTruth(self, fx, name=""):
-        self.SetAttribute("T_" + name, fx, self.GraphAttribute)
+        if self.SetAttribute(fx, "G_T_" + name): return
+        self.Warning("Found Duplicate Graph Truth " + name + " Attribute")
 
     def AddNodeTruth(self, fx, name=""):
-        self.SetAttribute("T_" + name, fx, self.NodeAttribute)
+        if self.SetAttribute(fx, "N_T_" + name): return
+        self.Warning("Found Duplicate Node Truth " + name + " Attribute")
 
     def AddEdgeTruth(self, fx, name=""):
-        self.SetAttribute("T_" + name, fx, self.EdgeAttribute)
+        if self.SetAttribute(fx, "E_T_" + name): return
+        self.Warning("Found Duplicate Edge Truth " + name + " Attribute")
 
-    # Define any last minute changes to attributes before adding to graph
-    def AddGraphPreprocessing(self, name, fx):
-        self.SetAttribute("P_" + name, fx, self.GraphAttribute)
+    def AddPreSelection(self, fx, name=""):
+        if self.SetAttribute(fx, "P_F_" + name): return
+        self.Warning("Found Duplicate Pre-Selection " + name + " Function")
 
-    def AddNodePreprocessing(self, name, fx):
-        self.SetAttribute("P_" + name, fx, self.NodeAttribute)
+    def AddTopology(self, fx, name=""):
+        if self.SetAttribute(fx, "T_F_" + name): return
+        self.Warning("Found Duplicate Topology " + name + " Function")
 
-    def AddEdgePreprocessing(self, name, fx):
-        self.SetAttribute("P_" + name, fx, self.EdgeAttribute)
-
-    # Selection generator
+     # Selection generator
     def AddSelection(self, name: Union[str], function):
         self.Selections[name] = function
 

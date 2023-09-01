@@ -15,12 +15,14 @@ cdef str env(string val): return val.decode("UTF-8")
 
 cdef class EventTemplate:
     cdef CyEventTemplate* ptr
+    cdef event_t* ev
     cdef dict Objects
 
     def __cinit__(self):
         self.ptr = new CyEventTemplate()
         cdef str x = self.__class__.__name__
-        self.ptr.add_eventname(enc(x))
+        self.ev = &(self.ptr.event)
+        self.ptr.set_event_name(self.ev, enc(x))
         self.Objects = {}
 
     def __init__(self): pass
@@ -258,4 +260,6 @@ cdef class EventTemplate:
         if not isinstance(val, dict): val = {"title" : val}
         self.Objects = val
 
-
+    @property
+    def Event(self) -> bool:
+        return self.ptr.is_event

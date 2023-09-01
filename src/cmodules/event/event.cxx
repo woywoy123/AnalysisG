@@ -31,6 +31,7 @@ namespace CyTemplate
     {
         this -> event = event; 
         this -> event.event = true;
+        this -> is_event = true; 
     }
 
     bool CyEventTemplate::operator == (CyEventTemplate& ev)

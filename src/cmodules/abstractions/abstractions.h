@@ -36,13 +36,14 @@ namespace Abstraction
             ~CyEvent();
 
             void ImportMetaData(meta_t meta); 
-            void add_eventname(std::string event); 
             std::string Hash();
 
             meta_t  meta; 
             event_t event;
             graph_t graph; 
             selection_t selection;
+
+            Code::CyCode* code_link = nullptr; 
 
             bool is_event = false; 
             bool is_graph = false; 
@@ -73,6 +74,12 @@ namespace Abstraction
                 type -> event_index = event -> event_index;
             }; 
 
+            template <typename T>
+            void set_event_name(T* type, std::string name){
+                type -> event_name = name; 
+            };
+
+
             template <typename T, typename G>
             bool is_same(T* event1, G* event2)
             {
@@ -99,11 +106,6 @@ namespace Abstraction
                 }
                 return true; 
             }; 
-
-
-            Code::CyCode* code_link = nullptr; 
-
-
     };
 }
 #endif

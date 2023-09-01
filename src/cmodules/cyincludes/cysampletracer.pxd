@@ -11,12 +11,23 @@ from cytypes cimport meta_t, event_t, graph_t, selection_t
 from cytypes cimport settings_t, tracer_t, batch_t, code_t
 from cycode cimport CyCode
 
-cdef extern from "../root/root.h" namespace "SampleTracer":
-    cdef cppclass CyBatch:
-        CyBatch() except +
+cdef extern from "../root/root.h" namespace "SampleTracer" nogil:
+    cdef cppclass CyBatch nogil:
+        CyBatch(string) except +
         string Hash() except +
+
+        batch_t ExportPickled() except +
+        void ImportPickled(const batch_t*) except +
+
         batch_t Export() except +
+        void Import(const meta_t*) except +
+        void Import(const event_t*) except +
+        void Import(const graph_t*) except +
+        void Import(const selection_t*) except +
+        void Import(const batch_t*) except +
+
         void Contextualize() except +
+        void ApplyCodeHash(const map[string, CyCode*]*) except +
 
         map[string, CyEventTemplate*] events
         map[string, CyGraphTemplate*] graphs
@@ -32,9 +43,12 @@ cdef extern from "../root/root.h" namespace "SampleTracer":
         CyEventTemplate* this_ev
         CyGraphTemplate* this_gr
         CySelectionTemplate* this_sel
+        map[string, CyCode*] code_hashes
 
         string this_tree
         string this_event_name
+        string hash
+        bool lock_meta
 
 
 
@@ -60,5 +74,8 @@ cdef extern from "../sampletracer/sampletracer.h" namespace "SampleTracer":
 
         settings_t settings
         map[string, CyCode*] code_hashes
-        map[string, string] link_event_code
         map[string, int] event_trees
+
+        map[string, string] link_event_code
+        map[string, string] link_graph_code
+        string caller

@@ -97,8 +97,4 @@ namespace Abstraction
         event -> event_hash = Tools::Hashing(event_hash);  
         return event -> event_hash; 
     } 
-
-    void CyEvent::add_eventname(std::string event){
-        this -> event.event_name = event; 
-    }
 }

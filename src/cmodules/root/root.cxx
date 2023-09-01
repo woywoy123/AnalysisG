@@ -6,17 +6,15 @@ namespace SampleTracer
     CyBatch::CyBatch(std::string hash){this -> hash = hash;}
     CyBatch::~CyBatch()
     {
-        std::map<std::string, CyEventTemplate*>::iterator ite; 
-        ite = this -> events.begin(); 
-        for(; ite != this -> events.end(); ++ite){delete ite -> second;} 
-
-        std::map<std::string, CyGraphTemplate*>::iterator itg; 
-        itg = this -> graphs.begin(); 
-        for(; itg != this -> graphs.end(); ++itg){delete itg -> second;} 
- 
-        std::map<std::string, CySelectionTemplate*>::iterator its; 
-        its = this -> selections.begin(); 
-        for(; its != this -> selections.end(); ++its){delete its -> second;} 
+        this -> destroy(&(this -> events)); 
+        this -> destroy(&(this -> graphs)); 
+        this -> destroy(&(this -> selections)); 
+        if (!this -> code_hashes.size()){return;}
+        std::map<std::string, Code::CyCode*>::iterator it; 
+        it = this -> code_hashes.begin(); 
+        for (; it != this -> code_hashes.end(); ++it){
+            delete it -> second; 
+        }
     }
     
     std::string CyBatch::Hash(){ return this -> hash; }
@@ -30,6 +28,7 @@ namespace SampleTracer
         CyEventTemplate* _event = new CyEventTemplate(); 
         _event -> Import(*event); 
         this -> events[name] = _event; 
+        this -> this_ev = _event; 
     }
 
     void CyBatch::Import(const graph_t* graph)
@@ -37,11 +36,12 @@ namespace SampleTracer
         std::string name = ""; 
         name += graph -> event_tree + "/"; 
         name += graph -> event_name; 
-        
+      
         if (this -> graphs.count(name)){ return; }
         CyGraphTemplate* _graph = new CyGraphTemplate(); 
         _graph -> Import(*graph); 
         this -> graphs[name] = _graph; 
+        this -> this_gr = _graph; 
     }
 
 
@@ -55,8 +55,8 @@ namespace SampleTracer
         CySelectionTemplate* _selection = new CySelectionTemplate(); 
         _selection -> Import(*selection); 
         this -> selections[name] = _selection; 
+        this -> this_sel = _selection; 
     }
-
 
     void CyBatch::Import(const meta_t* meta)
     {
@@ -64,78 +64,94 @@ namespace SampleTracer
         this -> meta = meta; 
         this -> lock_meta = true;
     }
- 
+
+    void CyBatch::Import(const batch_t* bth)
+    {
+        std::map<std::string, event_t>::const_iterator ite;
+        std::map<std::string, graph_t>::const_iterator itg;
+        std::map<std::string, selection_t>::const_iterator its;
+        ite = bth -> events.begin();
+        itg = bth -> graphs.begin();
+        its = bth -> selections.begin();
+        
+        for (; ite != bth -> events.end(); ++ite){ 
+            this -> Import(&ite -> second); 
+        }
+
+        for (; itg != bth -> graphs.end(); ++itg){ 
+            this -> Import(&itg -> second); 
+        }
+
+        for (; its != bth -> selections.end(); ++its){ 
+            this -> Import(&its -> second); 
+        }
+    }
+
+    batch_t CyBatch::ExportPickled()
+    {
+        batch_t batch = this -> Export(); 
+        this -> export_code(this -> events, &batch.code_hashes); 
+        this -> export_code(this -> graphs, &batch.code_hashes); 
+        this -> export_code(this -> selections, &batch.code_hashes); 
+        return batch; 
+    }
+
+    void CyBatch::ImportPickled(const batch_t* inpt)
+    {
+        this -> Import(inpt);  
+        const std::map<std::string, code_t>* code = &(inpt -> code_hashes);
+        std::map<std::string, code_t>::const_iterator it; 
+        std::map<std::string, Code::CyCode*> code_hashes = {}; 
+        it = code -> begin();
+        for (; it != code -> end(); ++it){
+            code_hashes[it -> first] = new Code::CyCode();
+            code_hashes[it -> first] -> ImportCode(it -> second, *code); 
+        }
+        this -> ApplyCodeHash(&code_hashes); 
+        this -> code_hashes = code_hashes; 
+    }
 
     batch_t CyBatch::Export()
     {
         batch_t output; 
-        
-        std::map<std::string, CyEventTemplate*>::iterator ite; 
-        std::map<std::string, CyGraphTemplate*>::iterator itg; 
-        std::map<std::string, CySelectionTemplate*>::iterator its; 
-        
-        ite = this -> events.begin(); 
-        itg = this -> graphs.begin();
-        its = this -> selections.begin();
         output.hash = this -> hash;
-         
-        for (; ite != this -> events.end(); ++ite){
-            output.events[ite -> first] = ite -> second -> Export(); 
-        }
-
-        for (; itg != this -> graphs.end(); ++itg){
-            output.graphs[itg -> first] = itg -> second -> Export(); 
-        }
-
-        for (; its != this -> selections.end(); ++its){
-            output.selections[its -> first] = its -> second -> selection; 
-        }
-
+        this -> export_this(this -> events, &(output.events));  
+        this -> export_this(this -> graphs, &(output.graphs));  
         return output; 
     }
 
     void CyBatch::Export(batch_t* exp)
     {
-        std::map<std::string, CyEventTemplate*>::iterator ite; 
-        std::map<std::string, CyGraphTemplate*>::iterator itg; 
-        std::map<std::string, CySelectionTemplate*>::iterator its; 
-        
-        ite = this -> events.begin(); 
-        itg = this -> graphs.begin();
-        its = this -> selections.begin();
         exp -> hash = this -> hash;
-        
-        for (; ite != this -> events.end(); ++ite){
-            exp -> events[ite -> first] = ite -> second -> event; 
-        }
-
-        for (; itg != this -> graphs.end(); ++itg){
-            exp -> graphs[itg -> first] = itg -> second -> Export(); 
-        }
-
-        for (; its != this -> selections.end(); ++its){
-            exp -> selections[its -> first] = its -> second -> selection; 
-        }
+        this -> export_this(this -> events, &(exp -> events));  
+        this -> export_this(this -> graphs, &(exp -> graphs));  
     }
-
 
     void CyBatch::Contextualize()
     {
-        if (!this -> get_event){ this -> this_ev = nullptr; }
-        if (!this -> get_graph){ this -> this_gr = nullptr; }
+        if (!this -> get_event){     this -> this_ev  = nullptr; }
+        if (!this -> get_graph){     this -> this_gr  = nullptr; }
         if (!this -> get_selection){ this -> this_sel = nullptr; }
 
-        std::string name = ""; 
-        if (this -> this_tree.size()){ name += this -> this_tree; }
-        if (this -> this_event_name.size()){ name += "/" + this -> this_event_name; }
+        if (this -> this_tree.size()){ 
+            this -> this_event_name     = this -> this_tree + "/" + this -> this_event_name; 
+            this -> this_graph_name     = this -> this_tree + "/" + this -> this_graph_name; 
+            this -> this_selection_name = this -> this_tree + "/" + this -> this_selection_name;
+        }
 
-        if (this -> events.count(name)){this -> this_ev = this -> events[name];}
+        if (this -> events.count(this -> this_event_name)){
+            this -> this_ev = this -> events[this -> this_event_name];
+        }
         else { this -> this_ev = nullptr; }
 
-        if (this -> graphs.count(name)){this -> this_gr = this -> graphs[name];}
-        else { this -> this_gr = nullptr; }
+        if (this -> graphs.count(this -> this_graph_name)){
+            this -> this_gr = this -> graphs[this -> this_graph_name];
+        }
+        else { this ->this_gr = nullptr; }
         
-        if (this -> selections.count(name)){this -> this_sel = this -> selections[name];}
+        if (this -> selections.count(this -> this_selection_name)){
+            this -> this_sel = this -> selections[this -> this_selection_name];
+        }
         else { this -> this_sel = nullptr; } 
 
         if (this -> this_ev) { this -> valid = true; }
@@ -146,6 +162,8 @@ namespace SampleTracer
     void CyBatch::ApplySettings(const settings_t* inpt)
     {
         this -> this_event_name = inpt -> eventname; 
+        this -> this_graph_name = inpt -> graphname; 
+        this -> this_selection_name = inpt -> selectionname; 
         this -> this_tree = inpt -> tree; 
         this -> get_event = inpt -> getevent; 
         this -> get_graph = inpt -> getgraph; 
@@ -171,62 +189,41 @@ namespace SampleTracer
         this -> valid = false; 
     }
 
+    void CyBatch::LinkCode(
+                    std::map<std::string, std::string>* inpt,
+                    std::map<std::string, Code::CyCode*>* link,
+                    const std::map<std::string, Code::CyCode*>* code_h)
+    {
+        std::map<std::string, std::string>::iterator it; 
+        it = inpt -> begin(); 
+        for (; it != inpt -> end(); ++it){
+            if (!code_h -> count(it -> second)){continue;}
+            Code::CyCode* co = code_h -> at(it -> second); 
+            (*link)[it -> first] = co;
+        }
+    }
+
     void CyBatch::ApplyCodeHash(const std::map<std::string, Code::CyCode*>* code_hash)
     {
-        std::map<std::string, CyEventTemplate*>::iterator ite; 
+
+        this -> code_link(this -> events, code_hash); 
+        this -> code_link(this -> graphs, code_hash); 
+        
         std::map<std::string, CyGraphTemplate*>::iterator itg; 
-        std::map<std::string, CySelectionTemplate*>::iterator its; 
-
-        ite = this -> events.begin(); 
         itg = this -> graphs.begin(); 
-        its = this -> selections.begin(); 
-
-        for (; ite != this -> events.end(); ++ite){
-            CyEventTemplate* ev_ = ite -> second; 
-            event_t* ev = &(ev_ -> event); 
-            if (!code_hash -> count(ev -> code_hash)){ continue; }
-            ev_ -> code_link = code_hash -> at(ev -> code_hash); 
-        }
-
-        std::map<std::string, std::string>::iterator it_s; 
         for (; itg != this -> graphs.end(); ++itg){
             CyGraphTemplate* gr_ = itg -> second;
             graph_t* gr = &(gr_ -> graph); 
-            if (code_hash -> count(gr -> code_hash)){ 
-                gr_ -> code_owner = false; 
-                gr_ -> code_link = code_hash -> at(gr -> code_hash);
+            if (code_hash -> count(gr -> topo_hash)){
+                gr_ -> topo_link = code_hash -> at(gr -> topo_hash);
                 continue;
             }
-            
-            if (code_hash -> count(gr_ -> topo_hash)){
-                gr_ -> topo = code_hash -> at(gr_ -> topo_hash);
-                continue;
-            }
-            
-            it_s = gr -> edge_feature.begin(); 
-            for (; it_s != gr -> edge_feature.end(); ++it_s){
-                if (!code_hash -> count(it_s -> second)){ continue; }
-                gr_ -> edge_fx[it_s -> first] = code_hash -> at(it_s -> second);
-            }
-
-            it_s = gr -> node_feature.begin(); 
-            for (; it_s != gr -> node_feature.end(); ++it_s){
-                if (!code_hash -> count(it_s -> second)){ continue; }
-                gr_ -> node_fx[it_s -> first] = code_hash -> at(it_s -> second);
-            }
-
-            it_s = gr -> graph_feature.begin(); 
-            for (; it_s != gr -> graph_feature.end(); ++it_s){
-                if (!code_hash -> count(it_s -> second)){ continue; }
-                gr_ -> graph_fx[it_s -> first] = code_hash -> at(it_s -> second);
-            }
-
-            it_s = gr -> pre_sel_feature.begin(); 
-            for (; it_s != gr -> pre_sel_feature.end(); ++it_s){
-                if (!code_hash -> count(it_s -> second)){ continue; }
-                gr_ -> pre_sel_fx[it_s -> first] = code_hash -> at(it_s -> second);
-            }
+            LinkCode(&(gr -> edge_feature), &(gr_ -> edge_fx), code_hash); 
+            LinkCode(&(gr -> node_feature), &(gr_ -> node_fx), code_hash); 
+            LinkCode(&(gr -> graph_feature), &(gr_ -> graph_fx), code_hash); 
+            LinkCode(&(gr -> pre_sel_feature), &(gr_ -> pre_sel_fx), code_hash); 
         }
+        this -> not_code_owner(&this -> graphs); 
     }
 
     CyROOT::CyROOT(meta_t meta){this -> meta = meta;}
@@ -240,34 +237,47 @@ namespace SampleTracer
 
     void CyROOT::AddEvent(const event_t* event)
     {
-        std::string event_h = event -> event_hash; 
-        if (!this -> batches.count(event_h)){
-            this -> batches[event_h] = new CyBatch(event_h);
-        }
-
-        CyBatch* bth = this -> batches[event_h];
-        bth -> Import(&(this -> meta)); 
-        bth -> Import(event); 
-        std::string name = event -> event_tree; 
-        name += "/" + event -> event_name; 
-        this -> n_events[name] += 1; 
+        std::map<std::string, event_t> inpt = {}; 
+        inpt[event -> event_hash] = *event;  
+        this -> ImportBatch(&inpt, &(this -> batches), &(this -> meta)); 
     }
 
     void CyROOT::AddGraph(const graph_t* graph)
     {
-        std::string event_h = graph -> event_hash;
-        if (!this -> batches.count(event_h)){
-            this -> batches[event_h] = new CyBatch(event_h); 
-        }
-
-        CyBatch* bth = this -> batches[event_h]; 
-        bth -> Import(&(this -> meta));
-        bth -> Import(graph); 
-        std::string name = graph -> event_tree; 
-        name += "/" + graph -> event_name; 
-        this -> n_graphs[name] += 1; 
+        std::map<std::string, graph_t> inpt = {}; 
+        inpt[graph -> event_hash] = *graph;  
+        this -> ImportBatch(&inpt, &(this -> batches), &(this -> meta)); 
     }
 
+    void CyROOT::UpdateSampleStats()
+    {
+        this -> total_hashes = this -> batches.size();
+        this -> n_events.clear(); 
+        this -> n_graphs.clear(); 
+        this -> n_selections.clear(); 
+
+        std::map<std::string, CyEventTemplate*>::iterator ite; 
+        std::map<std::string, CyGraphTemplate*>::iterator itg; 
+        std::map<std::string, CySelectionTemplate*>::iterator its; 
+
+        std::map<std::string, CyBatch*>::iterator bt = this -> batches.begin(); 
+        for (; bt != this -> batches.end(); ++bt){
+            CyBatch* this_b = bt -> second; 
+            ite = this_b -> events.begin();
+            itg = this_b -> graphs.begin();
+            its = this_b -> selections.begin();
+
+            for (; ite != this_b -> events.end(); ++ite){
+                this -> n_events[ite -> first] += 1;
+            }
+            for (; itg != this_b -> graphs.end(); ++itg){
+                this -> n_graphs[itg -> first] += 1;
+            }
+            for (; its != this_b -> selections.end(); ++its){
+                this -> n_selections[its -> first] += 1;
+            }
+        }
+    }
 
     root_t CyROOT::Export()
     {
@@ -310,10 +320,10 @@ namespace SampleTracer
         for (; itb != inpt -> batches.end(); ++itb)
         {
             const batch_t* b = &(itb -> second); 
-            itr = b -> events.begin(); 
-            for (; itr != b -> events.end(); ++itr){
-                this -> AddEvent(&(itr -> second)); 
-            } 
+            std::string hash = b -> hash; 
+            this -> ImportBatch(&(b -> events), &(this -> batches), &(this -> meta)); 
+            this -> ImportBatch(&(b -> graphs), &(this -> batches), &(this -> meta)); 
+            this -> ImportBatch(&(b -> selections), &(this -> batches), &(this -> meta)); 
         }
     }
 }

@@ -18,7 +18,7 @@ cdef extern from "../event/event.h" namespace "CyTemplate":
         void addbranch(string key, string branch) except +
         void addtree(string key, string tree) except +
 
-        void add_eventname(string event) except +
+        void set_event_name(event_t*, string) except +
 
         bool operator == (CyEventTemplate& ev) except +
 
@@ -26,13 +26,15 @@ cdef extern from "../event/event.h" namespace "CyTemplate":
         map[string, string] branches
         map[string, string] trees
 
-        map[string, CyCode*] this_code
+        CyCode* code_link
+
         event_t event
         meta_t meta
+
 
         bool is_event
         bool is_graph
         bool is_selection
 
 
-        CyCode* code_link
+

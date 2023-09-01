@@ -17,20 +17,15 @@ namespace SampleTracer
 
     void CySampleTracer::AddCode(code_t code)
     {
-        if (this -> code_hashes.count(code.hash)){return;}
-        this -> code_hashes[code.hash] = new Code::CyCode(); 
-        this -> code_hashes[code.hash] -> ImportCode(code);  
+        std::map<std::string, code_t> co = {}; 
+        co[code.hash] = code; 
+        CyHelpers::ImportCode(&(this -> code_hashes), &co); 
     }
 
     void CySampleTracer::AddEvent(event_t event, meta_t meta)
     {
         event_t* ev_ptr = &(event); 
-        std::string event_r = ev_ptr -> event_root; 
-        if (!this -> root_map.count(event_r)){
-            this -> root_map[event_r] = new CyROOT(meta);
-        }
-        CyROOT* root = root_map[event_r];
-
+        CyROOT* root = this -> AddContent(ev_ptr, &meta, &(this -> root_map)); 
         std::string event_name = ev_ptr -> event_name; 
         ev_ptr -> code_hash = this -> link_event_code[event_name]; 
         root -> AddEvent(ev_ptr);
@@ -38,15 +33,13 @@ namespace SampleTracer
 
     void CySampleTracer::AddGraph(graph_t graph, meta_t meta)
     {
-        graph_t* gr_ptr = &(graph); 
-        std::string event_r = gr_ptr -> event_root; 
-        if (!this -> root_map.count(event_r)){
-            this -> root_map[event_r] = new CyROOT(meta); 
-        }
-        CyROOT* root = root_map[event_r]; 
-
+        graph_t* gr_ptr = &(graph);
+        CyROOT* root = this -> AddContent(gr_ptr, &meta, &(this -> root_map)); 
         std::string event_name = gr_ptr -> event_name; 
-        gr_ptr -> code_hash = this -> link_event_code[event_name]; 
+        if (!this -> link_graph_code.count(event_name)){
+            this -> link_graph_code[event_name] = gr_ptr -> code_hash;
+        }
+        gr_ptr -> code_hash = this -> link_graph_code[event_name]; 
         root -> AddGraph(gr_ptr); 
     }
 
@@ -54,9 +47,7 @@ namespace SampleTracer
     {
         tracer_t output; 
         std::map<std::string, CyROOT*>::iterator itr;
-        std::map<std::string, Code::CyCode*>::iterator itc; 
         itr = this -> root_map.begin(); 
-        itc = this -> code_hashes.begin(); 
 
         for (; itr != this -> root_map.end(); ++itr){
             std::string root_name = itr -> first; 
@@ -64,24 +55,16 @@ namespace SampleTracer
             output.root_meta[root_name] = r -> meta; 
             output.root_names[root_name] = r -> Export(); 
         }
-
         output.link_event_code = this -> link_event_code; 
-        for (; itc != this -> code_hashes.end(); ++itc){
-            output.hashed_code[itc -> first] = itc -> second -> ExportCode(); 
-        }
-
         output.event_trees = this -> event_trees;
+        CyHelpers::ExportCode(&(output.hashed_code), this -> code_hashes); 
         return output; 
     }
 
     void CySampleTracer::Import(tracer_t inpt)
     {
         std::map<std::string, root_t>::iterator itr;
-        std::map<std::string, code_t>::iterator itc; 
-        std::map<std::string, std::string>::iterator itl; 
         itr = inpt.root_names.begin(); 
-        itc = inpt.hashed_code.begin(); 
-        itl = inpt.link_event_code.begin(); 
 
         for (; itr != inpt.root_names.end(); ++itr){
             std::string root_name = itr -> first; 
@@ -92,14 +75,10 @@ namespace SampleTracer
             CyROOT* root = this -> root_map[root_name]; 
             root -> Import(&(itr -> second)); 
         }
+        CyHelpers::ImportCode(&(this -> code_hashes), &(inpt.hashed_code)); 
 
-        for (; itc != inpt.hashed_code.end(); ++itc){ 
-            code_t* co = &(itc -> second); 
-            if (this -> code_hashes.count(co -> hash)){ continue; }
-            this -> code_hashes[co -> hash] = new Code::CyCode(); 
-            this -> code_hashes[co -> hash] -> ImportCode(*co);
-        }
-
+        std::map<std::string, std::string>::iterator itl; 
+        itl = inpt.link_event_code.begin(); 
         for (; itl != inpt.link_event_code.end(); ++itl){
             this -> link_event_code[itl -> first] = itl -> second; 
         }
@@ -115,12 +94,9 @@ namespace SampleTracer
     settings_t CySampleTracer::ExportSettings()
     {
         settings_t set = this -> settings; 
-        std::map<std::string, Code::CyCode*>::iterator itc; 
-        itc = this -> code_hashes.begin(); 
-        for (; itc != this -> code_hashes.end(); ++itc){
-            set.hashed_code[itc -> first] = itc -> second -> ExportCode(); 
-        }
         set.link_event_code = this -> link_event_code; 
+        set.link_graph_code = this -> link_graph_code; 
+        CyHelpers::ExportCode(&(set.hashed_code), code_hashes); 
         return set; 
     }
 
@@ -128,31 +104,14 @@ namespace SampleTracer
     {
         tracer_t tmp; 
         tmp.link_event_code = inpt.link_event_code; 
+        tmp.link_graph_code = inpt.link_graph_code; 
         tmp.hashed_code = inpt.hashed_code; 
 
         inpt.hashed_code.clear(); 
         inpt.link_event_code.clear();
+        inpt.link_graph_code.clear();
         this -> settings = inpt; 
         this -> Import(tmp); 
-    }
-
-
-    std::vector<CyBatch*> CySampleTracer::ReleaseVector(
-            std::vector<std::vector<CyBatch*>*> output, 
-            std::vector<std::thread*> jobs)
-    {
-        std::vector<CyBatch*> release = {}; 
-        settings_t* set = &(this -> settings); 
-
-        for (unsigned int x(0); x < output.size(); ++x)
-        {
-            if (set -> threads != 1){ jobs[x] -> join(); }
-            release.insert(release.end(), output[x] -> begin(), output[x] -> end()); 
-            output[x] -> clear(); 
-            delete output[x]; 
-            if (set -> threads != 1){ delete jobs[x]; }
-        }
-        return release; 
     }
 
     std::vector<CyBatch*> CySampleTracer::MakeIterable()
@@ -168,15 +127,15 @@ namespace SampleTracer
             CyROOT* ro = itr -> second; 
             output.push_back(new std::vector<CyBatch*>()); 
             if (set -> threads == 1){ 
-                CySampleTracer::Make(ro, set, output[x], code); ++x; 
-                continue;
+                CyHelpers::Make(ro, set, output[x], code); 
             }
-
-            std::thread* j = new std::thread(CySampleTracer::Make, ro, set, output[x], code);  
-            jobs.push_back(j); 
+            else {
+                std::thread* j = new std::thread(CyHelpers::Make, ro, set, output[x], code);  
+                jobs.push_back(j); 
+            }
             ++x;
         }
-        return this -> ReleaseVector(output, jobs); 
+        return CyHelpers::ReleaseVector(output, jobs, set -> threads); 
     }
 
     CySampleTracer* CySampleTracer::operator + (CySampleTracer* other)
@@ -195,18 +154,32 @@ namespace SampleTracer
         *this += other; 
     }
 
-    std::map<std::string, int> CySampleTracer::length(){
+    std::map<std::string, int> CySampleTracer::length()
+    {
         std::map<std::string, int> output; 
         std::map<std::string, int>::iterator itn; 
         std::map<std::string, CyROOT*>::iterator itr; 
 
         itr = this -> root_map.begin();
         for (; itr != this -> root_map.end(); ++itr){
-            CyROOT* r_ = itr -> second; 
+            CyROOT* r_ = itr -> second;
+            r_ -> UpdateSampleStats();  
+            
             itn = r_ -> n_events.begin(); 
             for (; itn != r_ -> n_events.end(); ++itn){
                 output[itn -> first] += itn -> second; 
             }
+
+            itn = r_ -> n_graphs.begin(); 
+            for (; itn != r_ -> n_graphs.end(); ++itn){
+                output[itn -> first] += itn -> second; 
+            }
+            
+            itn = r_ -> n_selections.begin(); 
+            for (; itn != r_ -> n_selections.end(); ++itn){
+                output[itn -> first] += itn -> second; 
+            }
+            output["n_hashes"] += r_ -> total_hashes; 
         }
         return output; 
     }
