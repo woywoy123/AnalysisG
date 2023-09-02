@@ -53,15 +53,15 @@ class _Interface(Tools):
         self.Warning("Found Duplicate Edge " + name + " Attribute")
 
      # Define the truth features used for supervised learning
-    def AddGraphTruth(self, fx, name=""):
+    def AddGraphTruthFeature(self, fx, name=""):
         if self.SetAttribute(fx, "G_T_" + name): return
         self.Warning("Found Duplicate Graph Truth " + name + " Attribute")
 
-    def AddNodeTruth(self, fx, name=""):
+    def AddNodeTruthFeature(self, fx, name=""):
         if self.SetAttribute(fx, "N_T_" + name): return
         self.Warning("Found Duplicate Node Truth " + name + " Attribute")
 
-    def AddEdgeTruth(self, fx, name=""):
+    def AddEdgeTruthFeature(self, fx, name=""):
         if self.SetAttribute(fx, "E_T_" + name): return
         self.Warning("Found Duplicate Edge Truth " + name + " Attribute")
 

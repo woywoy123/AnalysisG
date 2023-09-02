@@ -39,13 +39,15 @@ cdef class Event:
     cdef _graph
     cdef _selection
     cdef _meta
+    cdef _owner
 
     def __cinit__(self):
-        self.ptr = NULL #new CyBatch(b"")
+        self.ptr = NULL
         self._event = None
         self._selection = None
         self._graph = None
         self._meta = None
+        self._owner = False
 
     def __init__(self): pass
 
@@ -57,7 +59,8 @@ cdef class Event:
         return int(self.hash[:8], 0)
 
     def __dealloc__(self):
-        pass #del self.ptr
+        if not self._owner: return
+        else: del self.ptr
 
     def __getattr__(self, req):
         self.__getevent__()
@@ -78,9 +81,8 @@ cdef class Event:
     def __getmeta__(self):
         if self._meta is not None: return
         if not self.ptr.lock_meta: return
-        cdef meta_t meta = self.ptr.meta[0]
         self._meta = MetaData()
-        self._meta.__setstate__(meta)
+        self._meta.__setstate__(self.ptr.meta[0])
 
     def __getevent__(self):
         if self._event is not None: return
@@ -115,42 +117,24 @@ cdef class Event:
         if gr_ == NULL: self._graph = False; return
         cdef CyCode* co_ = gr_.code_link
         if co_ == NULL: print("GRAPH -> MISSING CODE!"); return
-
-        cdef graph_t graph = gr_.Export()
-        cdef code_t     co = co_.ExportCode()
-
         c = Code()
-        c.__setstate__(co)
+        c.__setstate__(co_.ExportCode())
         gr = c.InstantiateObject
         if self._event is None: self._graph = gr()
         elif not self._event: self._graph = gr()
         else: self._graph = gr(self._event)
-        self._graph.Import(graph)
+        self._graph.Import(gr_.Export())
 
     def __getstate__(self) -> tuple:
         return (self.ptr.meta[0], self.ptr.ExportPickled())
 
-    def __setstate__(self, inpt):
-        cdef batch_t b
-        if isinstance(inpt, tuple):
-            b = inpt[1]
-            self.ptr = new CyBatch(b.hash)
-            self.m_meta = inpt[0]
-            self.ptr.Import(&self.m_meta)
-        else: b = inpt
+    def __setstate__(self, tuple inpt):
+        cdef batch_t b = inpt[1]
+        self.m_meta = inpt[0]
+        self.ptr = new CyBatch(b.hash)
+        self.ptr.Import(&self.m_meta)
         self.ptr.ImportPickled(&b)
-        self.__getmeta__()
-        self.__getevent__()
-        self.__getgraph__()
-        del self.ptr
-
-
-
-
-
-
-
-
+        self._owner = True
 
 
 cdef class SampleTracer:
@@ -158,11 +142,11 @@ cdef class SampleTracer:
     cdef CySampleTracer* ptr
     cdef _Event
     cdef _Graph
-    cdef settings_t* _set
-    cdef int _nhashes
-    cdef vector[CyBatch*] batches
     cdef int b_end
     cdef int b_start
+    cdef int _nhashes
+    cdef settings_t* _set
+    cdef vector[CyBatch*] batches
 
     def __cinit__(self):
         self.ptr = new CySampleTracer()
@@ -184,7 +168,6 @@ cdef class SampleTracer:
 
     def __setstate__(self, tracer_t inpt):
         self.ptr.Import(inpt)
-        self.b_end = 0
 
     def __getitem__(self, key: Union[list, str]):
         cdef vector[string] inpt;
@@ -220,10 +203,9 @@ cdef class SampleTracer:
         return entries
 
     def __add__(self, SampleTracer other) -> SampleTracer:
-        cdef SampleTracer tr = SampleTracer()
+        cdef SampleTracer tr = self.clone()
         tr.ptr.iadd(self.ptr)
         tr.ptr.iadd(other.ptr)
-        self.b_end = 0
         return tr
 
     def __radd__(self, other) -> SampleTracer:
@@ -234,13 +216,11 @@ cdef class SampleTracer:
         if not self.is_self(other): return self
         cdef SampleTracer tr = other
         self.ptr.iadd(tr.ptr)
-        self.b_end = 0
         return self
 
     def __iter__(self):
         if self.preiteration(): return self
-        if self.b_end: pass
-        else: self.batches = self.ptr.MakeIterable()
+        self.batches = self.ptr.MakeIterable()
         self.b_end = self.batches.size()
         self.b_start = 0
         return self
@@ -282,29 +262,25 @@ cdef class SampleTracer:
         cdef list output = []
         for batch in evnt:
             event = Event()
-            event.__setstate__(batch.ExportPickled())
+            event.__setstate__((batch.meta[0], batch.ExportPickled()))
             output.append(event)
         return output
 
     def AddEvent(self, event_inpt, meta_inpt = None):
-        cdef meta_t meta
         cdef event_t event
         cdef code_t co
         cdef string name
         cdef tuple get
 
         if meta_inpt is not None:
-            meta = meta_inpt.__getstate__()
             get = event_inpt.__getstate__()
-
             event = get[1]
             event.pickled_data = pickle.dumps(get[0])
             name = event.event_name
 
             self.ptr.event_trees[event.event_tree] += 1
-            if not self.ptr.link_event_code.count(name):
-                self.Event = event_inpt
-            self.ptr.AddEvent(event, meta)
+            if not self.ptr.link_event_code.count(name): self.Event = event_inpt
+            self.ptr.AddEvent(event, meta_inpt.__getstate__())
             return
 
         cdef str g
@@ -314,11 +290,11 @@ cdef class SampleTracer:
 
 
     def AddGraph(self, graph_inpt, meta_inpt = None):
-        cdef graph_t graph = graph_inpt.__getstate__()
         cdef meta_t meta
-        if meta_inpt is None: meta = meta_t()
-        else: meta = meta_inpt.__getstate__()
-        self.ptr.AddGraph(graph, meta)
+        if meta_inpt is None:
+            self.ptr.AddGraph(graph_inpt.__getstate__(), meta_t())
+        else:
+            self.ptr.AddGraph(graph_inpt.__getstate__(), meta_inpt.__getstate__())
 
     def SetAttribute(self, fx, str name) -> bool:
         if self._Graph is None: self._Graph = GraphTemplate()
@@ -355,11 +331,15 @@ cdef class SampleTracer:
         try: graph = graph()
         except: pass
         if not self.is_self(graph, GraphTemplate): return
-        if self._Graph is not None: graph.ImportCode(self._Graph.code)
+        cdef graph_t gr
         cdef string name = enc(graph.__name__())
-        cdef code_t co
+        if self._Graph is not None:
+            gr = self._Graph.Export
+            gr.event_name = name
+            graph.Import(gr)
+            graph.ImportCode(self._Graph.code)
         for _, o in graph.code.items(): self.ptr.AddCode(o.__getstate__())
-        co = self.trace_code(graph)
+        cdef code_t co = self.trace_code(graph)
         self.ptr.link_graph_code[name] = co.hash
         self._Graph = graph
 
@@ -430,7 +410,6 @@ cdef class SampleTracer:
 
     @GetEvent.setter
     def GetEvent(self, bool val):
-        self.b_end = 0
         self._set.getevent = val
 
     @property
@@ -439,7 +418,6 @@ cdef class SampleTracer:
 
     @GetGraph.setter
     def GetGraph(self, bool val):
-        self.b_end = 0
         self._set.getgraph = val
 
     @property
@@ -448,7 +426,6 @@ cdef class SampleTracer:
 
     @GetSelection.setter
     def GetSelection(self, bool val):
-        self.b_end = 0
         self._set.getselection = val
 
     @property
@@ -464,18 +441,17 @@ cdef class SampleTracer:
         return env(self._set.eventname)
 
     @EventName.setter
-    def EventName(self, str val):
-        self.b_end = 0
+    def EventName(self, val: Union[str, None]):
+        if val is None: val = "NULL"
         self._set.eventname = enc(val)
-
 
     @property
     def GraphName(self) -> str:
         return env(self._set.graphname)
 
     @GraphName.setter
-    def GraphName(self, str val):
-        self.b_end = 0
+    def GraphName(self, val: Union[str, None]):
+        if val is None: val = "NULL"
         self._set.graphname = enc(val)
 
     @property
@@ -483,8 +459,8 @@ cdef class SampleTracer:
         return env(self._set.selectionname)
 
     @SelectionName.setter
-    def SelectionName(self, str val):
-        self.b_end = 0
+    def SelectionName(self, val: Union[str, None]):
+        if val is None: val = "NULL"
         self._set.selectionname = enc(val)
 
     @property
@@ -493,7 +469,6 @@ cdef class SampleTracer:
 
     @Tree.setter
     def Tree(self, str val):
-        self.b_end = 0
         self._set.tree = enc(val)
 
     @property

@@ -141,7 +141,8 @@ cdef class Code:
     def __getinputs__(self, val):
         cdef int start = 0
         if self.is_class: start = 1
-        co_vars  = list(val.__code__.co_varnames)[start:]
+        try: co_vars  = list(val.__code__.co_varnames)[start:]
+        except AttributeError: co_vars = []
         defaults = val.__defaults__
         defaults = [] if defaults is None else list(defaults)
         if val.__defaults__ is not None: pass

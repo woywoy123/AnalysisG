@@ -74,6 +74,11 @@ namespace Abstraction
                 type -> event_index = event -> event_index;
             }; 
 
+            template <typename T, typename G>
+            void set_event_weight(T* type, G* event){
+                type -> weight = event -> weight;
+            }; 
+
             template <typename T>
             void set_event_name(T* type, std::string name){
                 type -> event_name = name; 

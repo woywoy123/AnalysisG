@@ -35,7 +35,6 @@ def fx_prefilter(ev):
 
 def test_graph_generator():
     root1 = "./samples/sample1/smpl1.root"
-    root1 = "/home/tnom6927/Downloads/samples/Dilepton/ttZ-1000/"
     EvtGen = EventGenerator(root1)
     EvtGen.Event = EventEx
     EvtGen.Threads = 12
@@ -112,9 +111,49 @@ def test_graph_generator():
     data, event = list(GrGen.ShowLength.values())
     assert data == event
 
+def test_graph_inputs():
+    root1 = "./samples/sample1/smpl1.root"
+    EvtGen = EventGenerator(root1)
+    EvtGen.Event = EventEx
+    EvtGen.Threads = 4
+    EvtGen.Chunks = 1000
+    EvtGen.MakeEvents()
 
+    GrGen = GraphGenerator(EvtGen)
+    GrGen.AddGraphFeature(fx_graph, "Failed")
+    GrGen.AddGraphTruthFeature(fx_mev, "mev")
+    GrGen.AddNodeFeature(fx_pmu, "pmu")
+    GrGen.AddNodeTruthFeature(fx_pmu, "pmu")
+    GrGen.AddEdgeFeature(fx_edge, "Mass")
+    GrGen.AddEdgeTruthFeature(fx_custom_topology, "topo")
+    GrGen.AddTopology(fx_custom_topology)
+    GrGen.AddPreSelection(fx_prefilter)
+    GrGen.Graph = DataGraph
+    GrGen.Threads = 1
+    GrGen.Chunks = 1000
+    GrGen.MakeGraphs()
+    x = []
+    for ev in GrGen:
+        assert ev.edge_index is not None
+        x.append(ev)
+        assert isinstance(ev.Topology, list)
+        assert ev.Tops is not None
+        assert len(ev.Tops) != 0
+        assert "DAOD" in ev.ROOT
+        assert ev.N_T_pmu is not None
+    assert len(x) != 0
 
+    x = []
+    GrGen.GetEvent = False
+    for ev in GrGen:
+        assert ev.edge_index is not None
+        assert ev.Tops is None
+        assert "DAOD" in ev.ROOT
+        assert ev.N_T_pmu is not None
+        x.append(ev)
+    assert len(x) != 0
 
 
 if __name__ == "__main__":
     test_graph_generator()
+    test_graph_inputs()

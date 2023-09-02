@@ -8,7 +8,6 @@ from libcpp.string cimport string
 from libcpp.map cimport map, pair
 from libcpp cimport bool
 from typing import Union
-import pickle
 
 cdef string enc(str val): return val.encode("UTF-8")
 cdef str env(string val): return val.decode("UTF-8")
@@ -27,7 +26,7 @@ cdef class EventTemplate:
 
     def __init__(self): pass
     def __dealloc__(self): del self.ptr
-    def __name__(self) -> str: return env(self.ptr.event.event_name)
+    def __name__(self) -> str: return env(self.ev.event_name)
     def __hash__(self) -> int: return int(self.hash[:8], 0)
 
     def __eq__(self, other) -> bool:
@@ -36,12 +35,11 @@ cdef class EventTemplate:
         return self.ptr[0] == o.ptr[0]
 
     def __getstate__(self) -> tuple:
-        cdef event_t x = self.ptr.Export()
         cdef str key
         cdef dict pkl = {}
         for key in list(self.__dict__):
             pkl[key] = self.__dict__[key]
-        return (pkl, x)
+        return (pkl, self.ptr.Export())
 
     def __setstate__(self, tuple inpt):
         cdef str key
@@ -155,54 +153,54 @@ cdef class EventTemplate:
 
     @property
     def index(self) -> int:
-        return self.ptr.event.event_index
+        return self.ev.event_index
 
     @index.setter
     def index(self, val: Union[str, int]):
-        try: self.ptr.event.event_index = val
+        try: self.ev.event_index = val
         except TypeError: self.ptr.addleaf(b'index', enc(val))
 
     @property
     def weight(self) -> double:
-        return self.ptr.event.weight
+        return self.ev.weight
 
     @weight.setter
     def weight(self, val: Union[str, double]):
-        try: self.ptr.event.weight = val
+        try: self.ev.weight = val
         except TypeError: self.ptr.addleaf(b'weight', enc(val))
 
     @property
     def deprecated(self) -> bool:
-        return self.ptr.event.deprecated
+        return self.ev.deprecated
 
     @deprecated.setter
     def deprecated(self, bool val):
-        self.ptr.event.deprecated = val
+        self.ev.deprecated = val
 
     @property
     def CommitHash(self) -> str:
-        return env(self.ptr.event.commit_hash)
+        return env(self.ev.commit_hash)
 
     @CommitHash.setter
     def CommitHash(self, str val):
-        self.ptr.event.commit_hash = enc(val)
+        self.ev.commit_hash = enc(val)
 
     @property
     def Tag(self) -> str:
-        return env(self.ptr.event.event_tagging)
+        return env(self.ev.event_tagging)
 
     @Tag.setter
     def Tag(self, str val):
-        self.ptr.event.event_tagging = enc(val)
+        self.ev.event_tagging = enc(val)
 
 
     @property
     def Tree(self) -> str:
-        return env(self.ptr.event.event_tree)
+        return env(self.ev.event_tree)
 
     @Tree.setter
     def Tree(self, str val):
-        self.ptr.event.event_tree = enc(val)
+        self.ev.event_tree = enc(val)
 
     @property
     def Trees(self) -> list:
@@ -233,19 +231,19 @@ cdef class EventTemplate:
 
     @property
     def cached(self) -> bool:
-        return self.ptr.event.cached
+        return self.ev.cached
 
     @cached.setter
     def cached(self, bool val) -> bool:
-        self.ptr.event.cached = val
+        self.ev.cached = val
 
     @property
     def ROOT(self) -> str:
-        return env(self.ptr.event.event_root)
+        return env(self.ev.event_root)
 
     @ROOT.setter
     def ROOT(self, str val):
-        self.ptr.event.event_root = enc(val)
+        self.ev.event_root = enc(val)
 
     @property
     def hash(self) -> str:
@@ -263,3 +261,7 @@ cdef class EventTemplate:
     @property
     def Event(self) -> bool:
         return self.ptr.is_event
+
+    @property
+    def EventName(self) -> str:
+        return env(self.ev.event_name)

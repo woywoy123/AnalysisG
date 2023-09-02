@@ -176,8 +176,8 @@ cdef extern from "../abstractions/cytypes.h":
         map[string, int] presel
 
         bool cached
-
         int event_index
+        double weight
         string event_hash
         string event_tagging
         string event_tree
@@ -206,11 +206,32 @@ cdef extern from "../abstractions/cytypes.h":
         bool event
 
     struct selection_t:
-        map[string, string] errors
+        string event_name
+        string code_hash
+        map[string, int] errors
+
+        bool cached
+        int event_index
+        double weight
+        string event_hash
+        string event_tagging
+        string event_tree
+        string event_root
+        string pickled_data
+        string pickled_strategy_data
+
         map[string, int] cutflow
         vector[double] timestats
         vector[double] all_weights
         vector[double] selection_weights
+
+        bool allow_failure
+        string _params_
+
+        bool graph
+        bool selection
+        bool event
+
 
     struct batch_t:
         map[string, event_t] events

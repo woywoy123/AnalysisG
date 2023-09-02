@@ -59,7 +59,8 @@ cdef class GraphTemplate:
 
     def __init__(self):
         if ".code" in type(self).__module__: return
-        self.__scrapecode__(self, self.__class__.__name__)
+        try: self.__scrapecode__(self, self.__class__.__name__)
+        except AttributeError: pass
 
     def __dealloc__(self): del self.ptr
     def __name__(self) -> str: return env(self.gr.event_name)
@@ -273,11 +274,18 @@ cdef class GraphTemplate:
         return self._event
 
     @Event.setter
-    def Event(self, val):
-        if val is None: return
-        cdef event_t evnt = val.Export
-        self._event.event = val
-        self.ptr.RegisterEvent(&evnt)
+    def Event(self, event):
+        if event is None: return
+        self._event.event = event
+
+        cdef event_t ev
+        ev.event_hash    = enc(event.hash)
+        ev.event_tagging = enc(event.Tag)
+        ev.event_tree    = enc(event.Tree)
+        ev.event_root    = enc(event.ROOT)
+        ev.event_index   = event.index
+        ev.weight        = event.weight
+        self.ptr.RegisterEvent(&ev)
 
     @property
     def Particles(self):

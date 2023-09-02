@@ -74,6 +74,7 @@ namespace CyTemplate
         this -> set_event_tree(gr, evnt); 
         this -> set_event_root(gr, evnt); 
         this -> set_event_index(gr, evnt); 
+        this -> set_event_weight(gr, evnt); 
     }
 
     void CyGraphTemplate::FullyConnected()

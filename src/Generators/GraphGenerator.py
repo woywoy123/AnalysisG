@@ -32,10 +32,10 @@ class GraphGenerator(_GraphGenerator, SampleTracer, _Interface):
             gr.Particles = [p.get() for p in grx.Particles]
             gr.Build()
             inpt[i] = gr
-            if lock is None:
-                if bar is None: continue
-                bar.update(1)
-            with lock: bar.update(1)
+            if bar is None: continue
+            elif lock is None: bar.update(1)
+            else:
+                with lock: bar.update(1)
         return inpt
 
     def MakeGraphs(self):
@@ -71,16 +71,21 @@ class GraphGenerator(_GraphGenerator, SampleTracer, _Interface):
         return True
 
     def preiteration(self):
-        if len(self.EventName) and len(self.Tree): return False
         if not len(self.ShowLength): return True
         if not len(self.ShowTrees): return True
-        if not len(self.ShowEvents): return True
 
-        if not len(self.EventName): ev = self.ShowEvents[0]
-        else: ev = self.EventName
+        if not len(self.Tree):
+            try: self.Tree = self.ShowTrees[0]
+            except IndexError: return True
 
-        if not len(self.Tree): tr = self.ShowTrees[0]
-        else: tr = self.Tree
+        if not len(self.EventName):
+            try: self.EventName = self.ShowEvents[0]
+            except IndexError: self.EventName = None
+            self.GetEvent = True
 
-        self.Tree, self.EventName = tr, ev
+        if not len(self.GraphName):
+            try: self.GraphName = self.ShowGraphs[0]
+            except IndexError: self.GraphName = None
+            self.GetGraph = True
+
         return False

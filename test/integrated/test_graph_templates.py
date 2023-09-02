@@ -114,6 +114,6 @@ def test_graph_features():
         assert "DAOD" in x.ROOT
 
 if __name__ == "__main__":
-    #test_graph_topology()
+    test_graph_topology()
     test_graph_features()
     pass

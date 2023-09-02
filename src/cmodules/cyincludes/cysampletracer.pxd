@@ -13,21 +13,21 @@ from cycode cimport CyCode
 
 cdef extern from "../root/root.h" namespace "SampleTracer" nogil:
     cdef cppclass CyBatch nogil:
-        CyBatch(string) except +
-        string Hash() except +
+        CyBatch(string) except + nogil
+        string Hash() except + nogil
 
-        batch_t ExportPickled() except +
-        void ImportPickled(const batch_t*) except +
+        batch_t ExportPickled() except + nogil
+        void ImportPickled(const batch_t*) except + nogil
 
-        batch_t Export() except +
-        void Import(const meta_t*) except +
-        void Import(const event_t*) except +
-        void Import(const graph_t*) except +
-        void Import(const selection_t*) except +
-        void Import(const batch_t*) except +
+        batch_t Export() except + nogil
+        void Import(const meta_t*) except + nogil
+        void Import(const event_t*) except + nogil
+        void Import(const graph_t*) except + nogil
+        void Import(const selection_t*) except + nogil
+        void Import(const batch_t*) except + nogil
 
-        void Contextualize() except +
-        void ApplyCodeHash(const map[string, CyCode*]*) except +
+        void Contextualize() except + nogil
+        void ApplyCodeHash(const map[string, CyCode*]*) except + nogil
 
         map[string, CyEventTemplate*] events
         map[string, CyGraphTemplate*] graphs

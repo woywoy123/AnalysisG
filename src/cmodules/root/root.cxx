@@ -129,30 +129,33 @@ namespace SampleTracer
 
     void CyBatch::Contextualize()
     {
-        if (!this -> get_event){     this -> this_ev  = nullptr; }
-        if (!this -> get_graph){     this -> this_gr  = nullptr; }
-        if (!this -> get_selection){ this -> this_sel = nullptr; }
-
+        std::string ev_name = ""; 
+        std::string gr_name = "";
+        std::string sel_name = ""; 
         if (this -> this_tree.size()){ 
-            this -> this_event_name     = this -> this_tree + "/" + this -> this_event_name; 
-            this -> this_graph_name     = this -> this_tree + "/" + this -> this_graph_name; 
-            this -> this_selection_name = this -> this_tree + "/" + this -> this_selection_name;
+            ev_name  = this -> this_tree + "/" + this -> this_event_name; 
+            gr_name  = this -> this_tree + "/" + this -> this_graph_name; 
+            sel_name = this -> this_tree + "/" + this -> this_selection_name;
         }
-
-        if (this -> events.count(this -> this_event_name)){
-            this -> this_ev = this -> events[this -> this_event_name];
+        
+        if (this -> events.count(ev_name)){
+            this -> this_ev = this -> events[ev_name];
         }
         else { this -> this_ev = nullptr; }
 
-        if (this -> graphs.count(this -> this_graph_name)){
-            this -> this_gr = this -> graphs[this -> this_graph_name];
+        if (this -> graphs.count(gr_name)){
+            this -> this_gr = this -> graphs[gr_name];
         }
         else { this ->this_gr = nullptr; }
         
-        if (this -> selections.count(this -> this_selection_name)){
-            this -> this_sel = this -> selections[this -> this_selection_name];
+        if (this -> selections.count(sel_name)){
+            this -> this_sel = this -> selections[sel_name];
         }
         else { this -> this_sel = nullptr; } 
+
+        if (!this -> get_event){     this -> this_ev  = nullptr; }
+        if (!this -> get_graph){     this -> this_gr  = nullptr; }
+        if (!this -> get_selection){ this -> this_sel = nullptr; }
 
         if (this -> this_ev) { this -> valid = true; }
         if (this -> this_gr) { this -> valid = true; }

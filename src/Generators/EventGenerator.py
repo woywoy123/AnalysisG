@@ -79,14 +79,12 @@ class EventGenerator(_EventGenerator, _Interface, SampleTracer):
         return self.CheckSpawnedEvents()
 
     def preiteration(self):
-        if not len(self.ShowEvents): return True
-        if not len(self.ShowTrees): return True
-
-        if not len(self.EventName): ev = self.ShowEvents[0]
-        else: ev = self.EventName
-
-        if not len(self.Tree): tr = self.ShowTrees[0]
-        else: tr = self.Tree
-
-        self.Tree, self.EventName = tr, ev
+        self.GetEvent = True
+        self.GetGraph = False
+        if not len(self.EventName):
+            try: self.EventName = self.ShowEvents[0]
+            except IndexError: return True
+        if not len(self.Tree):
+            try: self.Tree = self.ShowTrees[0]
+            except IndexError: return True
         return False

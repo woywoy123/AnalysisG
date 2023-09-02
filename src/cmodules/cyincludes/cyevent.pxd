@@ -7,20 +7,20 @@ from libcpp cimport bool
 
 cdef extern from "../event/event.h" namespace "CyTemplate":
     cdef cppclass CyEventTemplate:
-        CyEventTemplate() except +
+        CyEventTemplate() except + nogil
 
-        void ImportMetaData(meta_t meta) except +
-        void Import(event_t event) except +
-        event_t Export() except +
+        void ImportMetaData(meta_t meta) except + nogil
+        void Import(event_t event) except + nogil
+        event_t Export() except + nogil
 
-        string Hash() except +
-        void addleaf(string key, string leaf) except +
-        void addbranch(string key, string branch) except +
-        void addtree(string key, string tree) except +
+        string Hash() except + nogil
+        void addleaf(string key, string leaf) except + nogil
+        void addbranch(string key, string branch) except + nogil
+        void addtree(string key, string tree) except + nogil
 
-        void set_event_name(event_t*, string) except +
+        void set_event_name(event_t*, string) except + nogil
 
-        bool operator == (CyEventTemplate& ev) except +
+        bool operator == (CyEventTemplate& ev) except + nogil
 
         map[string, string] leaves
         map[string, string] branches

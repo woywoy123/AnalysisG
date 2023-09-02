@@ -227,6 +227,7 @@ struct graph_t
     
     // state variables
     int event_index = -1;
+    double weight = 1; 
     std::string event_hash = ""; 
     std::string event_tagging = "";
     std::string event_tree = "";  
@@ -263,13 +264,36 @@ struct graph_t
     bool event     = false;
 };
 
-struct selection_t : event_t
+struct selection_t
 {
-    std::map<std::string, std::string> errors = {}; 
+    // implementation information
+    std::string event_name = ""; 
+    std::string code_hash = "";
+    std::map<std::string, int> errors = {}; 
+
+    bool cached = false; 
+    int event_index = -1; 
+    double weight = 1;
+    std::string event_hash = ""; 
+    std::string event_tagging = ""; 
+    std::string event_tree = ""; 
+    std::string event_root = ""; 
+    std::string pickled_data = ""; 
+    std::string pickled_strategy_data = ""; 
+
+    // Statistics content 
     std::map<std::string, int> cutflow = {}; 
     std::vector<double> timestats = {}; 
     std::vector<double> all_weights = {}; 
     std::vector<double> selection_weights = {}; 
+
+    // user specific options
+    bool allow_failure = false; 
+    std::string _params_ = "";
+
+    bool event = false; 
+    bool graph = false; 
+    bool selection = false; 
 }; 
 
 
