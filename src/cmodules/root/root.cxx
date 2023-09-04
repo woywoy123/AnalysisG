@@ -85,6 +85,7 @@ namespace SampleTracer
         for (; its != bth -> selections.end(); ++its){ 
             this -> Import(&its -> second); 
         }
+        this -> hash = bth -> hash;
     }
 
     batch_t CyBatch::ExportPickled()
@@ -117,6 +118,7 @@ namespace SampleTracer
         output.hash = this -> hash;
         this -> export_this(this -> events, &(output.events));  
         this -> export_this(this -> graphs, &(output.graphs));  
+        this -> export_this(this -> selections, &(output.selections)); 
         return output; 
     }
 
@@ -125,6 +127,7 @@ namespace SampleTracer
         exp -> hash = this -> hash;
         this -> export_this(this -> events, &(exp -> events));  
         this -> export_this(this -> graphs, &(exp -> graphs));  
+        this -> export_this(this -> selections, &(exp -> selections));
     }
 
     void CyBatch::Contextualize()
@@ -211,6 +214,7 @@ namespace SampleTracer
 
         this -> code_link(this -> events, code_hash); 
         this -> code_link(this -> graphs, code_hash); 
+        this -> code_link(this -> selections, code_hash); 
         
         std::map<std::string, CyGraphTemplate*>::iterator itg; 
         itg = this -> graphs.begin(); 
@@ -249,6 +253,13 @@ namespace SampleTracer
     {
         std::map<std::string, graph_t> inpt = {}; 
         inpt[graph -> event_hash] = *graph;  
+        this -> ImportBatch(&inpt, &(this -> batches), &(this -> meta)); 
+    }
+
+    void CyROOT::AddSelection(const selection_t* selection)
+    {
+        std::map<std::string, selection_t> inpt = {}; 
+        inpt[selection -> event_hash] = *selection;
         this -> ImportBatch(&inpt, &(this -> batches), &(this -> meta)); 
     }
 

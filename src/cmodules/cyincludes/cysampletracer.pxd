@@ -57,6 +57,7 @@ cdef extern from "../sampletracer/sampletracer.h" namespace "SampleTracer":
         CySampleTracer() except +
         void AddEvent(event_t, meta_t) except +
         void AddGraph(graph_t, meta_t) except +
+        void AddSelection(selection_t, meta_t) except +
         void AddCode(code_t code) except +
 
         tracer_t Export() except +
@@ -78,4 +79,5 @@ cdef extern from "../sampletracer/sampletracer.h" namespace "SampleTracer":
 
         map[string, string] link_event_code
         map[string, string] link_graph_code
+        map[string, string] link_selection_code
         string caller

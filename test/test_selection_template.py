@@ -21,10 +21,22 @@ def template():
 def test_selection_code():
     Evnt = template()
     x = Example()
-    print(x.__scrapecode__())
+    assert x.__scrapecode__() is not None
+    for i in Evnt: x.__processing__(i)
+    assert "Selection::Passed" in x.CutFlow
+    assert "Strategy::Example::Passed" in x.CutFlow
+
+    # test the arithmetic
+    lst = []
     for i in Evnt:
-        x.__processing__(i)
-        print(x.CutFlow)
+        lst.append(Example())
+        lst[-1].__processing__(i)
+        print(i)
+    out = sum(lst)
+    assert out.CutFlow == x.CutFlow
+
+
+
 
 if __name__ == "__main__":
     test_selection_code()

@@ -156,6 +156,7 @@ namespace SampleTracer
 
             void AddEvent(const event_t* event);
             void AddGraph(const graph_t* graph);
+            void AddSelection(const selection_t* selection);
             void UpdateSampleStats(); 
             
             meta_t meta;
@@ -177,8 +178,12 @@ namespace SampleTracer
                 for (; it != to_import -> end(); ++it){
                     const std::string event_h = it -> second.event_hash; 
                     CyBatch* bt; 
-                    if (batches -> count(event_h)){bt = batches -> at(event_h);}
-                    else {bt = new CyBatch(event_h); (*batches)[event_h] = bt;}
+                    if (!batches -> count(event_h)){
+                        bt = new CyBatch(event_h); 
+                        (*batches)[event_h] = bt;
+                        bt -> hash = event_h; 
+                    }
+                    else {bt = batches -> at(event_h);} 
                     bt -> Import(meta); 
                     bt -> Import(&it -> second); 
                     std::string name = it -> second.event_name; 

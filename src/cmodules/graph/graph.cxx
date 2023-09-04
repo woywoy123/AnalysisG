@@ -61,6 +61,12 @@ namespace CyTemplate
         return gr; 
     }
 
+    std::string CyGraphTemplate::Hash()
+    {
+        return this -> CyEvent::Hash(&(this -> graph)); 
+    }
+
+
     void CyGraphTemplate::AddParticle(std::string hash, int p_index)
     {
         this -> graph.hash_particle[hash] = p_index; 

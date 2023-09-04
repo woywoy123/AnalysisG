@@ -41,26 +41,38 @@ cdef class SelectionTemplate:
         cdef SelectionTemplate o = other
         return self.ptr[0] == o.ptr[0]
 
-    def __getstate__(self) -> tuple:
+    def __radd__(self, other):
+        if other == 0: return self
+        else: self.__add__(other)
+
+    def __add__(self, SelectionTemplate other):
+        cdef SelectionTemplate o = self.clone()
+        o.ptr.iadd(other.ptr)
+        o.ptr.iadd(self.ptr)
+        return o
+
+    def __getstate__(self) -> selection_t:
         cdef str key
         cdef dict pkl = {}
         for key in list(self.__dict__):
             pkl[key] = self.__dict__[key]
-        return (pkl, self.ptr.selection)
+        self.ptr.selection.pickled_data = pickle.dumps(pkl)
+        return self.ptr.Export()
 
-    def __setstate__(self, tuple inpt):
+    def __setstate__(self, selection_t inpt):
+        self.ptr.Import(inpt)
+        if not inpt.pickled_data.size(): return
         cdef str key
-        self.ptr.Import(<selection_t>inpt[1])
-        for key in inpt[0]:
-            try: self.__dict__[key] = inpt[0][key]
-            except KeyError: setattr(self, key, inpt[0][key])
+        cdef dict pkls = pickle.loads(inpt.pickled_data)
+        for key in pkls:
+            try: self.__dict__[key] = pkls[key]
+            except KeyError: setattr(self, key, pkls[key])
 
     def __scrapecode__(self):
         co = Code(self)
         cdef code_t code = co.__getstate__()
         self.sel.code_hash = code.hash
         return code
-
 
     def is_self(self, inpt) -> bool:
         if isinstance(inpt, SelectionTemplate): return True
@@ -69,14 +81,14 @@ cdef class SelectionTemplate:
     def clone(self) -> SelectionTemplate:
         return self.__class__()
 
-    def Selection(self, event):
+    def selection(self, event):
         return True
 
     def Strategy(self, event):
         return True
 
     def __select__(self, event):
-        res = self.Selection(event)
+        res = self.selection(event)
         if res is None: res = ""
         if isinstance(res, str): return self.ptr.CheckSelection(enc(str(res)))
         if type(res).__name__ == "bool": return self.ptr.CheckSelection(<bool>res)
@@ -103,9 +115,8 @@ cdef class SelectionTemplate:
         ev.event_tagging = enc(event.Tag)
         ev.event_tree    = enc(event.Tree)
         ev.event_root    = enc(event.ROOT)
-        ev.weight  = event.weight
+        ev.weight        = event.weight
         self.ptr.RegisterEvent(&ev)
-
 
         if not self.sel.allow_failure:
             if self.__select__(event): pass
@@ -116,13 +127,13 @@ cdef class SelectionTemplate:
         try:
             if not self.__select__(event): return False
         except Exception as inst:
-            self.sel.errors[enc(inst)] += 1
-            return self.ptr.CheckSelection(enc(inst+"::Error"))
+            self.sel.errors[enc(str(inst))] += 1
+            return self.ptr.CheckSelection(enc(str(inst)+"::Error"))
 
         try: return self.__strategy__(event)
         except Exception as inst:
-            self.sel.errors[enc(inst)] += 1
-            return self.ptr.CheckStrategy(enc(inst+"::Error"))
+            self.sel.errors[enc(str(inst))] += 1
+            return self.ptr.CheckStrategy(enc(str(inst)+"::Error"))
 
 
     @property
@@ -135,8 +146,7 @@ cdef class SelectionTemplate:
     def CutFlow(self) -> dict:
         cdef pair[string, int] it
         cdef dict output = {}
-        for it in self.sel.cutflow:
-            output[env(it.first)] = it.second
+        for it in self.sel.cutflow: output[env(it.first)] = it.second
         return output
 
 
@@ -186,7 +196,7 @@ cdef class SelectionTemplate:
     def ROOT(self) -> str: return env(self.sel.event_root)
 
     @property
-    def selection(self) -> bool: return self.ptr.is_selection
+    def Selection(self) -> bool: return self.ptr.is_selection
 
     @property
     def SelectionName(self) -> str: return env(self.sel.event_name)

@@ -74,8 +74,8 @@ class _Interface(Tools):
         self.Warning("Found Duplicate Topology " + name + " Function")
 
      # Selection generator
-    def AddSelection(self, name: Union[str], function):
-        self.Selections[name] = function
+    def AddSelection(self, function):
+        self.Selections = function
 
     def MergeSelection(self, name: Union[str]):
         self.Merge[name] = []

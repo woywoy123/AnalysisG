@@ -279,7 +279,9 @@ struct selection_t
     std::string event_tree = ""; 
     std::string event_root = ""; 
     std::string pickled_data = ""; 
-    std::string pickled_strategy_data = ""; 
+    std::string pickled_strategy_data = "";
+    std::map<std::string, std::string> data_merge = {};
+    std::map<std::string, std::string> strat_merge = {}; 
 
     // Statistics content 
     std::map<std::string, int> cutflow = {}; 

@@ -90,6 +90,7 @@ namespace SampleTracer
 
             void AddEvent(event_t event, meta_t meta);
             void AddGraph(graph_t graph, meta_t meta); 
+            void AddSelection(selection_t selection, meta_t meta); 
             void AddCode(code_t code); 
 
             tracer_t Export(); 
@@ -105,10 +106,11 @@ namespace SampleTracer
             void operator += (CySampleTracer*);
             void iadd(CySampleTracer*); 
 
-            std::map<std::string, Code::CyCode*> code_hashes;
-            std::map<std::string, std::string> link_event_code; 
-            std::map<std::string, std::string> link_graph_code;
-            std::map<std::string, CyROOT*> root_map; 
+            std::map<std::string, Code::CyCode*> code_hashes = {};
+            std::map<std::string, std::string> link_event_code = {}; 
+            std::map<std::string, std::string> link_graph_code = {};
+            std::map<std::string, std::string> link_selection_code = {}; 
+            std::map<std::string, CyROOT*> root_map = {}; 
 
             settings_t settings; 
             std::string caller = ""; 

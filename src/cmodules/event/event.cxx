@@ -27,6 +27,11 @@ namespace CyTemplate
         return event;  
     }
 
+    std::string CyEventTemplate::Hash()
+    {
+        return this -> CyEvent::Hash(&(this -> event)); 
+    }
+
     void CyEventTemplate::Import(event_t event)
     {
         this -> event = event; 

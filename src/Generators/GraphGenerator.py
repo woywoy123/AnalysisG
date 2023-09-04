@@ -59,15 +59,11 @@ class GraphGenerator(_GraphGenerator, SampleTracer, _Interface):
             step = itx*chnks
             th = Threading(inpt, self._CompileGraph, self.Threads, self.Chunks)
             th.Start()
-            for x in th._lists:
-                if x is None: continue
-                self.AddGraph(x)
+            for x in th._lists: self.AddGraph(x)
             inpt = []
         th = Threading(inpt, self._CompileGraph, self.Threads, self.Chunks)
         th.Start()
-        for i in th._lists:
-            if i is None: continue
-            self.AddGraph(i)
+        for i in th._lists: self.AddGraph(i)
         return True
 
     def preiteration(self):

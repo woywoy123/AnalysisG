@@ -86,15 +86,4 @@ namespace Abstraction
     void CyEvent::ImportMetaData(meta_t meta){
         this -> meta = meta;
     }
-
-    std::string CyEvent::Hash(){
-        std::string event_hash = this -> event.event_hash; 
-        if (event_hash.size()){ return event_hash; }
-        
-        event_t* event = &(this -> event); 
-        event_hash  = event -> event_root + "/"; 
-        event_hash += Tools::ToString(event -> event_index) + "/"; 
-        event -> event_hash = Tools::Hashing(event_hash);  
-        return event -> event_hash; 
-    } 
 }

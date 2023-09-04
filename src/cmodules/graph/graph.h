@@ -24,6 +24,7 @@ namespace CyTemplate
             void AddParticle(std::string, int); 
             void FullyConnected(); 
             std::string IndexToHash(int);
+            std::string Hash(); 
 
             bool code_owner = true; 
             std::map<std::string, Code::CyCode*> edge_fx = {}; 

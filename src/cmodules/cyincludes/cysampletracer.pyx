@@ -13,6 +13,7 @@ from cytypes cimport tracer_t, batch_t, meta_t, settings_t
 from AnalysisG.Tools import Code
 from cycode cimport CyCode
 
+from AnalysisG._cmodules.SelectionTemplate import SelectionTemplate
 from AnalysisG._cmodules.EventTemplate import EventTemplate
 from AnalysisG._cmodules.GraphTemplate import GraphTemplate
 from AnalysisG._cmodules.MetaData import MetaData
@@ -71,6 +72,10 @@ cdef class Event:
         try: return getattr(self._graph, req)
         except AttributeError: pass
 
+        self.__getselection__()
+        try: return getattr(self._selection, req)
+        except AttributeError: pass
+
         self.__getmeta__()
         try: return getattr(self._meta, req)
         except AttributeError: pass
@@ -125,6 +130,19 @@ cdef class Event:
         else: self._graph = gr(self._event)
         self._graph.Import(gr_.Export())
 
+
+    def __getselection__(self):
+        if self._selection is not None: return
+        cdef CySelectionTemplate* sel_ = self.ptr.this_sel
+        if sel_ == NULL: self._selection = False; return
+        cdef CyCode* co_ = sel_.code_link
+        if co_ == NULL: print("SELECTION -> MISSING CODE!"); return
+        c = Code()
+        c.__setstate__(co_.ExportCode())
+        sel = c.InstantiateObject
+        sel.__setstate__(sel_.Export())
+        self._selection = sel
+
     def __getstate__(self) -> tuple:
         return (self.ptr.meta[0], self.ptr.ExportPickled())
 
@@ -142,6 +160,7 @@ cdef class SampleTracer:
     cdef CySampleTracer* ptr
     cdef _Event
     cdef _Graph
+    cdef dict _Selections
     cdef int b_end
     cdef int b_start
     cdef int _nhashes
@@ -153,6 +172,7 @@ cdef class SampleTracer:
         self._set = &self.ptr.settings
         self._Event = None
         self._Graph = None
+        self._Selections = {}
         self._nhashes = 0
         self.b_start = 0
         self.b_end = 0
@@ -290,11 +310,14 @@ cdef class SampleTracer:
 
 
     def AddGraph(self, graph_inpt, meta_inpt = None):
-        cdef meta_t meta
-        if meta_inpt is None:
-            self.ptr.AddGraph(graph_inpt.__getstate__(), meta_t())
-        else:
-            self.ptr.AddGraph(graph_inpt.__getstate__(), meta_inpt.__getstate__())
+        if graph_inpt is None: return
+        if meta_inpt is None: self.ptr.AddGraph(graph_inpt.__getstate__(), meta_t())
+        else: self.ptr.AddGraph(graph_inpt.__getstate__(), meta_inpt.__getstate__())
+
+    def AddSelections(self, selection_inpt, meta_inpt = None):
+        if selection_inpt is None: return
+        if meta_inpt is None: self.ptr.AddSelection(selection_inpt.__getstate__(), meta_t())
+        else: self.ptr.AddSelection(selection_inpt.__getstate__(), meta_inpt.__getstate__())
 
     def SetAttribute(self, fx, str name) -> bool:
         if self._Graph is None: self._Graph = GraphTemplate()
@@ -344,18 +367,39 @@ cdef class SampleTracer:
         self._Graph = graph
 
     @property
+    def Selections(self):
+        return self._Selections
+
+    @Selections.setter
+    def Selections(self, selection):
+        try: selection = selection()
+        except: pass
+        if not self.is_self(selection, SelectionTemplate): return
+        cdef code_t co = self.trace_code(selection)
+        self.ptr.link_selection_code[co.class_name] = co.hash
+        self._Selections[env(co.class_name)] = selection
+
+    @property
     def ShowEvents(self) -> list:
+        cdef list out = []
         cdef pair[string, string] it
         cdef map[string, string] ev = self.ptr.link_event_code
-        cdef list out = []
         for it in ev: out.append(env(it.first))
         return out
 
     @property
     def ShowGraphs(self) -> list:
+        cdef list out = []
         cdef pair[string, string] it
         cdef map[string, string] ev = self.ptr.link_graph_code
+        for it in ev: out.append(env(it.first))
+        return out
+
+    @property
+    def ShowSelections(self) -> list:
         cdef list out = []
+        cdef pair[string, string] it
+        cdef map[string, string] ev = self.ptr.link_selection_code
         for it in ev: out.append(env(it.first))
         return out
 
@@ -364,8 +408,7 @@ cdef class SampleTracer:
         cdef pair[string, int] it
         cdef dict output = {}
         for it in self.ptr.length():
-            if env(it.first) == "n_hashes":
-                self._nhashes = it.second
+            if env(it.first) == "n_hashes": self._nhashes = it.second
             else: output[env(it.first)] = it.second
         return output
 

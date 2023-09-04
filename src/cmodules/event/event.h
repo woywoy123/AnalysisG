@@ -13,6 +13,7 @@ namespace CyTemplate
             ~CyEventTemplate();
 
             event_t Export(); 
+            std::string Hash();
             void Import(event_t); 
             
             void addleaf(std::string key, std::string leaf); 

@@ -11,7 +11,9 @@ cdef extern from "../selection/selection.h" namespace "CyTemplate":
     cdef cppclass CySelectionTemplate nogil:
         CySelectionTemplate() except + nogil
         void ImportMetaData(meta_t meta) except + nogil
+        selection_t Export() except + nogil
         void Import(selection_t selection) except + nogil
+
         string Hash() except + nogil
         void set_event_name(selection_t*, string) except + nogil
 
@@ -30,8 +32,9 @@ cdef extern from "../selection/selection.h" namespace "CyTemplate":
         double StandardDeviation() except + nogil
         double Luminosity() except + nogil
 
-        bool operator == (CySelectionTemplate& sel) except + nogil
-
+        bool operator == (CySelectionTemplate&) except + nogil
+        CySelectionTemplate* operator + (CySelectionTemplate&) except + nogil
+        void iadd(CySelectionTemplate* sel) except + nogil
 
         CyCode* code_link
         selection_t selection

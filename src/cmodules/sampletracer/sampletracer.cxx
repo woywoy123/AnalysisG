@@ -43,6 +43,18 @@ namespace SampleTracer
         root -> AddGraph(gr_ptr); 
     }
 
+    void CySampleTracer::AddSelection(selection_t selection, meta_t meta)
+    {
+        selection_t* sel_ptr = &(selection); 
+        CyROOT* root = this -> AddContent(sel_ptr, &meta, &(this -> root_map)); 
+        std::string event_name = sel_ptr -> event_name; 
+        if (!this -> link_selection_code.count(event_name)){
+            this -> link_selection_code[event_name] = sel_ptr -> code_hash;
+        }
+        sel_ptr -> code_hash = this -> link_selection_code[event_name]; 
+        root -> AddSelection(sel_ptr); 
+    }
+
     tracer_t CySampleTracer::Export()
     {
         tracer_t output; 

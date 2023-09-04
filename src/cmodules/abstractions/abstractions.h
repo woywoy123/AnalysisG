@@ -36,7 +36,6 @@ namespace Abstraction
             ~CyEvent();
 
             void ImportMetaData(meta_t meta); 
-            std::string Hash();
 
             meta_t  meta; 
             event_t event;
@@ -111,6 +110,17 @@ namespace Abstraction
                 }
                 return true; 
             }; 
+
+            template <typename T>
+            std::string Hash(T* event){
+                if (event -> event_hash.size()){ 
+                    return event -> event_hash; 
+                }
+                std::string hash = event -> event_root + "/"; 
+                hash += Tools::ToString(event -> event_index) + "/"; 
+                event -> event_hash = Tools::Hashing(hash);
+                return event -> event_hash;
+            };
     };
 }
 #endif

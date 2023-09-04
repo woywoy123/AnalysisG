@@ -15,7 +15,13 @@ namespace CyTemplate
             ~CySelectionTemplate(); 
             
             bool operator == (CySelectionTemplate&); 
-
+            bool operator != (CySelectionTemplate&); 
+            void operator += (CySelectionTemplate&); 
+            CySelectionTemplate* operator + (CySelectionTemplate&); 
+            void iadd(CySelectionTemplate*); 
+            
+            std::string Hash(); 
+            selection_t Export(); 
             void Import(selection_t); 
             void RegisterEvent(const event_t* evnt); 
 
