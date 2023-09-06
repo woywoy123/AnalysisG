@@ -85,7 +85,7 @@ def test_tracer_addEvent():
     # Test iterator
     tr.Tree = "truth"
     tr.EventName = "Event"
-    tr.threads = 12
+    tr.Threads = 12
     tr.GetEvent = True
     for i in tr: assert i.hash == hashes[i.hash].hash
 
@@ -136,8 +136,8 @@ def test_tracer_operators():
     tr1 = SampleTracer()
     tr1.AddEvent(t1_event)
     l1 = len(tr1)
-
     assert l1 == sum([k for k in n1_events.values()])
+    tr1.Tree = "nominal"
 
     # not set the event/tree, should default to nominal
     nominal_n = {i : t1_event[i.hash]["nominal"]["Event"] for i in tr1}
@@ -213,7 +213,6 @@ def test_tracer_operators():
         # check if truth tops are actually not nulls
         assert set([l for l in t2.values()]) != 1
 
-
         delta = []
         for t in t2:
             assert t1[t].Type == t2[t].Type
@@ -255,16 +254,18 @@ def test_tracer_hdf5():
 
     tr1 = SampleTracer()
     tr1.OutputDirectory = "Project"
-    tr1.AddEvent(EventMaker(root1))
+    tr1.AddEvent(EventMaker(root1)[0])
     l1 = len(tr1)
 
     tr2 = SampleTracer()
     tr2.OutputDirectory = "Project"
-    tr2.AddEvent(EventMaker(root2))
+    tr2.AddEvent(EventMaker(root2)[0])
     l2 = len(tr2)
 
     tr1.DumpEvents()
+    tr1.DumpTracer()
     tr2.DumpEvents()
+    tr2.DumpTracer()
 
     s = SampleTracer()
     s.OutputDirectory = "Project"
@@ -321,7 +322,7 @@ def test_tracer_hdf5():
 
 
 if __name__ == "__main__":
-    test_tracer_addEvent()
-    test_tracer_operators()
-    #test_tracer_hdf5()
+    #test_tracer_addEvent()
+    #test_tracer_operators()
+    test_tracer_hdf5()
     pass

@@ -200,3 +200,8 @@ cdef class SelectionTemplate:
 
     @property
     def SelectionName(self) -> str: return env(self.sel.event_name)
+
+    @property
+    def Residual(self):
+        if not self.sel.pickled_strategy_data.size(): return None
+        return pickle.loads(self.sel.pickled_strategy_data)

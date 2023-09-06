@@ -258,6 +258,23 @@ cdef extern from "../abstractions/cytypes.h":
         map[string, string] link_graph_code
 
 
+    struct export_t:
+        map[string, meta_t] root_meta
+        map[string, code_t] hashed_code
+
+        map[string, string] link_event_code
+        map[string, string] link_graph_code
+        map[string, string] link_selection_code
+
+        map[string, vector[string]] event_name_hash
+        map[string, vector[string]] graph_name_hash
+        map[string, vector[string]] selection_name_hash
+
+        map[string, string] event_dir
+        map[string, string] graph_dir
+        map[string, string] selection_dir
+
+
     struct settings_t:
         # General IO stuff
         string projectname

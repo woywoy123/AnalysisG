@@ -7,12 +7,27 @@
 
 namespace Tools
 {
+    std::string base64_encode(unsigned char const*, unsigned int len); 
+    std::string base64_decode(std::string const& s); 
     std::string Hashing(std::string input); 
     std::string ToString(double input);
     std::vector<std::string> split(std::string inpt, std::string search); 
     std::string join(std::vector<std::string>* inpt, int s, int e, std::string delim); 
     int count(std::string inpt, std::string search); 
-    std::vector<std::vector<std::string>> Quantize(const std::vector<std::string>& v, int N); 
+
+    template <typename G>
+    std::vector<std::vector<G>> Quantize(const std::vector<G>& v, int N)
+    {
+        int n = v.size(); 
+        int size_max = n/N + (n % N != 0); 
+        typename std::vector<std::vector<G>> out; 
+        for (int ib = 0; ib < n; ib += size_max){
+            int end = ib + size_max; 
+            if (end > n){ end = n; }
+            out.push_back(std::vector<G>(v.begin() + ib, v.begin() + end)); 
+        }
+        return out; 
+    }
 }
 
 namespace Abstraction

@@ -327,6 +327,26 @@ struct tracer_t
     std::map<std::string, int> event_trees = {}; 
     std::map<std::string, std::string> link_event_code = {};
     std::map<std::string, std::string> link_graph_code = {};  
+    std::map<std::string, std::string> link_selection_code = {}; 
+};
+
+struct export_t
+{
+    std::map<std::string, meta_t> root_meta = {}; 
+    std::map<std::string, code_t> hashed_code = {}; 
+    
+    std::map<std::string, std::string> link_event_code = {};
+    std::map<std::string, std::string> link_graph_code = {};  
+    std::map<std::string, std::string> link_selection_code = {}; 
+
+    std::map<std::string, std::vector<std::string>> event_name_hash = {}; 
+    std::map<std::string, std::vector<std::string>> graph_name_hash = {}; 
+    std::map<std::string, std::vector<std::string>> selection_name_hash = {};
+
+    std::map<std::string, std::string> event_dir = {}; 
+    std::map<std::string, std::string> graph_dir = {}; 
+    std::map<std::string, std::string> selection_dir = {};
+
 };
 
 struct settings_t
@@ -372,6 +392,7 @@ struct settings_t
     std::map<std::string, code_t> hashed_code = {}; 
     std::map<std::string, std::string> link_event_code = {}; 
     std::map<std::string, std::string> link_graph_code = {}; 
+    std::map<std::string, std::string> link_selection_code = {}; 
 };
 
 #endif

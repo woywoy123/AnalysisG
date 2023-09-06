@@ -116,9 +116,14 @@ namespace SampleTracer
     {
         batch_t output; 
         output.hash = this -> hash;
-        this -> export_this(this -> events, &(output.events));  
-        this -> export_this(this -> graphs, &(output.graphs));  
-        this -> export_this(this -> selections, &(output.selections)); 
+        if (this -> this_ev){ this -> export_this(this -> this_ev, &(output.events)); }
+        else {this -> export_this(this -> events, &(output.events));}
+
+        if (this -> this_gr){ this -> export_this(this -> this_gr, &(output.graphs)); }
+        else {this -> export_this(this -> graphs, &(output.graphs));}
+
+        if (this -> this_sel){ this -> export_this(this -> this_sel, &(output.selections)); }
+        else {this -> export_this(this -> selections, &(output.selections));}
         return output; 
     }
 
@@ -140,7 +145,7 @@ namespace SampleTracer
             gr_name  = this -> this_tree + "/" + this -> this_graph_name; 
             sel_name = this -> this_tree + "/" + this -> this_selection_name;
         }
-        
+       
         if (this -> events.count(ev_name)){
             this -> this_ev = this -> events[ev_name];
         }
@@ -293,6 +298,25 @@ namespace SampleTracer
         }
     }
 
+    std::map<std::string, std::vector<event_t*>> CyROOT::ReleaseEvents()
+    {
+        std::map<std::string, std::vector<event_t*>> out = {}; 
+        std::map<std::string, CyBatch*>::iterator itr; 
+        itr = this -> batches.begin(); 
+        for (; itr != this -> batches.end(); ++itr){
+            std::map<std::string, CyEventTemplate*> ev = itr -> second -> events; 
+            std::map<std::string, CyEventTemplate*>::iterator ite; 
+            ite = ev.begin(); 
+            for (; ite != ev.end(); ++ite){
+                event_t* ev_ = &(ite -> second -> event); 
+                if (ev_ -> cached){continue;}
+                std::string path = ev_ -> event_tree + "/" + ev_ -> event_name; 
+                out[path].push_back(ev_); 
+            }
+        } 
+        return out; 
+    }
+
     root_t CyROOT::Export()
     {
         std::vector<batch_t*> container = {}; 
@@ -311,8 +335,7 @@ namespace SampleTracer
         output.n_events = this -> n_events; 
         output.n_graphs = this -> n_graphs; 
         output.n_selections = this -> n_selections;
-        for (unsigned int x(0); x < this -> batches.size(); ++x)
-        {
+        for (unsigned int x(0); x < this -> batches.size(); ++x){
             jobs[x] -> join(); 
             batch_t* exp = container[x]; 
 

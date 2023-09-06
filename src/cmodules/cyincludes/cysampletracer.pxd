@@ -8,7 +8,7 @@ from cygraph cimport CyGraphTemplate
 from cyselection cimport CySelectionTemplate
 
 from cytypes cimport meta_t, event_t, graph_t, selection_t
-from cytypes cimport settings_t, tracer_t, batch_t, code_t
+from cytypes cimport settings_t, tracer_t, batch_t, code_t, export_t
 from cycode cimport CyCode
 
 cdef extern from "../root/root.h" namespace "SampleTracer" nogil:
@@ -55,17 +55,20 @@ cdef extern from "../root/root.h" namespace "SampleTracer" nogil:
 cdef extern from "../sampletracer/sampletracer.h" namespace "SampleTracer":
     cdef cppclass CySampleTracer:
         CySampleTracer() except +
+        void AddMeta(meta_t, string) except +
         void AddEvent(event_t, meta_t) except +
         void AddGraph(graph_t, meta_t) except +
         void AddSelection(selection_t, meta_t) except +
         void AddCode(code_t code) except +
+
+        map[string, vector[event_t*]] DumpEvents() except +
+        void DumpTracer() except +
 
         tracer_t Export() except +
         void Import(tracer_t) except +
 
         settings_t ExportSettings() except +
         void ImportSettings(settings_t) except +
-
 
         vector[CyBatch*] MakeIterable() except +
         map[string, int] length() except +
@@ -74,6 +77,7 @@ cdef extern from "../sampletracer/sampletracer.h" namespace "SampleTracer":
         void iadd(CySampleTracer*) except +
 
         settings_t settings
+        export_t state
         map[string, CyCode*] code_hashes
         map[string, int] event_trees
 

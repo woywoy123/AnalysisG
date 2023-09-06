@@ -1,5 +1,6 @@
 #include "../metadata/metadata.h"
 #include "../root/root.h"
+#include <algorithm>
 
 #ifndef SAMPLETRACER_H
 #define SAMPLETRACER_H
@@ -88,10 +89,15 @@ namespace SampleTracer
                 return root -> at(event_root); 
             }; 
 
+            void AddMeta(meta_t, std::string);
             void AddEvent(event_t event, meta_t meta);
             void AddGraph(graph_t graph, meta_t meta); 
             void AddSelection(selection_t selection, meta_t meta); 
             void AddCode(code_t code); 
+
+            std::map<std::string, std::vector<event_t*>> DumpEvents(); 
+
+            void DumpTracer();
 
             tracer_t Export(); 
             void Import(tracer_t inpt);
@@ -106,15 +112,17 @@ namespace SampleTracer
             void operator += (CySampleTracer*);
             void iadd(CySampleTracer*); 
 
-            std::map<std::string, Code::CyCode*> code_hashes = {};
             std::map<std::string, std::string> link_event_code = {}; 
             std::map<std::string, std::string> link_graph_code = {};
             std::map<std::string, std::string> link_selection_code = {}; 
+            std::map<std::string, Code::CyCode*> code_hashes = {};
             std::map<std::string, CyROOT*> root_map = {}; 
 
             settings_t settings; 
+            export_t state;
             std::string caller = ""; 
             std::map<std::string, int> event_trees = {}; 
+
     }; 
 }
 

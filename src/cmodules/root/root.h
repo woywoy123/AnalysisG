@@ -25,9 +25,8 @@ namespace SampleTracer
             batch_t ExportPickled(); 
             void ImportPickled(const batch_t*); 
 
-            void Export(batch_t* exp); 
             batch_t Export(); 
-
+            void Export(batch_t* exp); 
 
             void Contextualize(); 
             void ApplySettings(const settings_t*); 
@@ -62,7 +61,10 @@ namespace SampleTracer
             std::string this_selection_name = ""; 
             std::string this_tree = "";
 
-            std::map<std::string, Code::CyCode*> code_hashes = {}; 
+            std::map<std::string, Code::CyCode*> code_hashes = {};
+            std::map<std::string, std::string> event_dir = {}; 
+            std::map<std::string, std::string> graph_dir = {}; 
+            std::map<std::string, std::string> selection_dir = {};  
 
         private: 
             template <typename G> 
@@ -73,6 +75,28 @@ namespace SampleTracer
                 for (; it != input -> end(); ++it){delete it -> second;}
                 input -> clear(); 
             };
+
+
+            template <typename G, typename T>
+            void export_this(G* inpt, std::map<std::string, T>* out)
+            {
+                std::string event_name;
+                std::string event_tree;
+                if (inpt -> is_event){ 
+                    event_name = inpt -> event.event_name; 
+                    event_tree = inpt -> event.event_tree; 
+                }
+                else if (inpt -> is_graph){ 
+                    event_name = inpt -> graph.event_name; 
+                    event_tree = inpt -> graph.event_tree;
+                }
+                else if (inpt -> is_selection){ 
+                    event_name = inpt -> selection.event_name; 
+                    event_tree = inpt -> selection.event_tree;
+                }
+
+                (*out)[event_tree + "/" + event_name] = inpt -> Export();
+            }; 
 
             template <typename G, typename T>
             void export_this(
@@ -153,6 +177,7 @@ namespace SampleTracer
 
             root_t Export(); 
             void Import(const root_t* inpt); 
+            std::map<std::string, std::vector<event_t*>> ReleaseEvents(); 
 
             void AddEvent(const event_t* event);
             void AddGraph(const graph_t* graph);
@@ -163,7 +188,8 @@ namespace SampleTracer
             std::map<std::string, CyBatch*> batches;
             std::map<std::string, int> n_events = {};
             std::map<std::string, int> n_graphs = {}; 
-            std::map<std::string, int> n_selections = {}; 
+            std::map<std::string, int> n_selections = {};
+
             int total_hashes = 0; 
         
         private: 

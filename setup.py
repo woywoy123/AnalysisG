@@ -27,8 +27,8 @@ modules = [
         #make("ParticleTemplate", "particle", ["abstractions"]),
         #make("MetaData", "metadata", ["abstractions"]),
         #make("GraphTemplate", "graph", ["abstractions", "code"]),
-        make("SelectionTemplate", "selection", ["abstractions", "code"]),
-        #make("SampleTracer", "sampletracer", ["root", "abstractions", "metadata", "event", "graph", "selection", "code"])
+        #make("SelectionTemplate", "selection", ["abstractions", "code"]),
+        make("SampleTracer", "sampletracer", ["root", "abstractions", "metadata", "event", "graph", "selection", "code"])
 ]
 for i in range(len(modules)):
     modules[i]["language"] = "c++"
