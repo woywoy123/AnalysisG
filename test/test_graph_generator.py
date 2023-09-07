@@ -55,7 +55,6 @@ def test_graph_generator():
     GrGen.Threads = 10
     GrGen.Chunks = 1000
     GrGen.MakeGraphs()
-
     assert len(GrGen.ShowLength) == 2
     assert "nominal/DataGraph" in GrGen.ShowLength
     assert "nominal/EventEx" in GrGen.ShowLength
@@ -63,7 +62,6 @@ def test_graph_generator():
 
     leng = GrGen.ShowLength
     assert leng["nominal/DataGraph"] == leng["nominal/EventEx"]
-
     GrGen = GraphGenerator(EvtGen)
     GrGen.Graph = gr
     GrGen.Threads = 1
@@ -156,4 +154,4 @@ def test_graph_inputs():
 
 if __name__ == "__main__":
     test_graph_generator()
-    test_graph_inputs()
+    #test_graph_inputs()

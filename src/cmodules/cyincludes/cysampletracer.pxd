@@ -44,6 +44,9 @@ cdef extern from "../root/root.h" namespace "SampleTracer" nogil:
         CyGraphTemplate* this_gr
         CySelectionTemplate* this_sel
         map[string, CyCode*] code_hashes
+        map[string, string] event_dir
+        map[string, string] graph_dir
+        map[string, string] selection_dir
 
         string this_tree
         string this_event_name
@@ -60,6 +63,8 @@ cdef extern from "../sampletracer/sampletracer.h" namespace "SampleTracer":
         void AddGraph(graph_t, meta_t) except +
         void AddSelection(selection_t, meta_t) except +
         void AddCode(code_t code) except +
+
+        CyBatch* RegisterHash(string, string) except +
 
         map[string, vector[event_t*]] DumpEvents() except +
         void DumpTracer() except +

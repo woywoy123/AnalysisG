@@ -1,8 +1,9 @@
 from AnalysisG.Notification import _GraphGenerator
 from AnalysisG._cmodules.SampleTracer import Event
-from AnalysisG.SampleTracer import SampleTracer
-from AnalysisG.Tools import Threading
 from AnalysisG.Templates import GraphTemplate
+from AnalysisG.SampleTracer import SampleTracer
+from AnalysisG.Templates import GraphTemplate
+from AnalysisG.Tools import Threading
 from .Interfaces import _Interface
 from typing import Union
 import pickle

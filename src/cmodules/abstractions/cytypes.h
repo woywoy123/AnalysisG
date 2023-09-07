@@ -387,6 +387,7 @@ struct settings_t
 
     // Search fields
     std::vector<std::string> search = {};
+    bool get_all = false; 
 
     // code linking
     std::map<std::string, code_t> hashed_code = {}; 

@@ -112,10 +112,22 @@ cdef class GraphTemplate:
         self._code[key] = co_
         cdef CyCode* co = new CyCode()
         co.ImportCode(co_.__getstate__())
-        if   key.startswith("G"): self.ptr.graph_fx[k] = co
-        elif key.startswith("N"): self.ptr.node_fx[k] = co
-        elif key.startswith("E"): self.ptr.edge_fx[k] = co
-        elif key.startswith("P"): self.ptr.pre_sel_fx[k] = co
+        if   key.startswith("G"):
+            self.ptr.graph_fx[k] = co
+            self.gr.graph_feature[k] = b""
+
+        elif key.startswith("N"):
+            self.ptr.node_fx[k] = co
+            self.gr.node_feature[k] = b""
+
+        elif key.startswith("E"):
+            self.ptr.edge_fx[k] = co
+            self.gr.edge_feature[k] = b""
+
+        elif key.startswith("P"):
+            self.ptr.pre_sel_fx[k] = co
+            self.gr.pre_sel_feature[k] = b""
+
         elif key.startswith("T"): self.ptr.topo_link = co
         else: self.ptr.code_link = co
         return co_
@@ -205,10 +217,12 @@ cdef class GraphTemplate:
         for itr in self.gr.pre_sel_feature:
             key = env(itr.first)
             if self.__buildthis__(key, True, [self._event]): continue
+            print("here")
             return
         n_num = self.gr.hash_particle.size()
         data = Data(edge_index = torch.tensor(topo, dtype = torch.long).t())
         data.num_nodes = torch.tensor(n_num, dtype = torch.int)
+
         for itr in self.gr.graph_feature:
             key = env(itr.first)
             res = self.__buildthis__(key, False, [self._event])

@@ -1,5 +1,5 @@
-from AnalysisG.Events.Events.Event import Event
 from AnalysisG.Generators import EventGenerator
+from AnalysisG.Events.Events.Event import Event
 from conftest import clean_dir
 
 smpl = "./samples/"

@@ -94,6 +94,7 @@ namespace SampleTracer
             void AddGraph(graph_t graph, meta_t meta); 
             void AddSelection(selection_t selection, meta_t meta); 
             void AddCode(code_t code); 
+            CyBatch* RegisterHash(std::string hash, std::string event_root); 
 
             std::map<std::string, std::vector<event_t*>> DumpEvents(); 
 

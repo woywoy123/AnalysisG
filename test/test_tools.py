@@ -230,12 +230,12 @@ def test_pickle():
 
 
 if __name__ == "__main__":
-    #test_code_extraction()
+    test_code_extraction()
     test_code_inheritance_tracing()
 
-    #test_merge_data()
-    #test_data_merging()
-    #test_ls_files()
-    #test_list_files_in_dir()
-    #test_is_file()
-    #test_pickle()
+    test_merge_data()
+    test_data_merging()
+    test_ls_files()
+    test_list_files_in_dir()
+    test_is_file()
+    test_pickle()

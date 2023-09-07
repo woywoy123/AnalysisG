@@ -89,7 +89,6 @@ def test_graph_features():
     ev = template()
     for event in ev:
         x = DataGraph(event)
-        x.SetTopology([[1, 0], [1, 2]])
         x.AddGraphFeature(fx_graph, "Failed")
         x.AddGraphFeature(fx_mev, "mev")
         x.AddNodeFeature(fx_pmu, "pmu")
@@ -98,19 +97,15 @@ def test_graph_features():
         x.AddPreSelection(fx_prefilter)
         x.Build()
         if x.SkipGraph: continue
-        tops_1p = [event.Tops[1], event.Tops[0]]
-        tops_2p = [event.Tops[1], event.Tops[2]]
         topo = x.edge_index
         assert len(x.Errors) == 1
         assert x.G_mev is not None
         assert x.N_pmu is not None
         assert x.E_Mass is not None
         assert x.E_T_fx_custom_topology is not None
-
-        x1 = sum(tops_1p).Mass
-        x2 = sum(tops_2p).Mass
-        t = abs(x.E_Mass - torch.tensor([[x1], [x2]])) < 1
-        assert sum(t) == 2
+        tops = event.Tops
+        t = torch.tensor([(tops[i[0]] + tops[i[1]]).Mass for i in x.Topology]).view(-1, 1)
+        assert (abs(x.E_Mass - t) < 1).sum()
         assert "DAOD" in x.ROOT
 
 if __name__ == "__main__":

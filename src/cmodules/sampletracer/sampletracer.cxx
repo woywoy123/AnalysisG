@@ -22,8 +22,16 @@ namespace SampleTracer
        }
     }
 
-    // add a prefetch function
-
+    CyBatch* CySampleTracer::RegisterHash(std::string hash, std::string event_root)
+    {
+        CyROOT* root = this -> root_map[event_root]; 
+        if (!root -> batches.count(hash)){
+            CyBatch* batch = new CyBatch(hash); 
+            batch -> Import(&(root -> meta));
+            root -> batches[hash] = batch;
+        }
+        return root -> batches[hash]; 
+    }
 
     void CySampleTracer::AddEvent(event_t event, meta_t meta)
     {
@@ -161,6 +169,7 @@ namespace SampleTracer
         for (; itl != inpt.link_event_code.end(); ++itl){
             this -> link_event_code[itl -> first] = itl -> second; 
         }
+
         itl = inpt.link_graph_code.begin(); 
         for (; itl != inpt.link_graph_code.end(); ++itl){
             this -> link_graph_code[itl -> first] = itl -> second; 
@@ -248,6 +257,7 @@ namespace SampleTracer
         std::map<std::string, int> output; 
         std::map<std::string, int>::iterator itn; 
         std::map<std::string, CyROOT*>::iterator itr; 
+        this -> event_trees.clear(); 
 
         itr = this -> root_map.begin();
         for (; itr != this -> root_map.end(); ++itr){
@@ -268,6 +278,12 @@ namespace SampleTracer
             for (; itn != r_ -> n_selections.end(); ++itn){
                 output[itn -> first] += itn -> second; 
             }
+
+            itn = r_ -> event_trees.begin(); 
+            for (; itn != r_ -> event_trees.end(); ++itn){
+                this -> event_trees[itn -> first] += itn -> second; 
+            }
+
             output["n_hashes"] += r_ -> total_hashes; 
         }
         return output; 

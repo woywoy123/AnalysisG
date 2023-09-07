@@ -61,10 +61,10 @@ namespace SampleTracer
             std::string this_selection_name = ""; 
             std::string this_tree = "";
 
-            std::map<std::string, Code::CyCode*> code_hashes = {};
             std::map<std::string, std::string> event_dir = {}; 
             std::map<std::string, std::string> graph_dir = {}; 
             std::map<std::string, std::string> selection_dir = {};  
+            std::map<std::string, Code::CyCode*> code_hashes = {};
 
         private: 
             template <typename G> 
@@ -130,7 +130,7 @@ namespace SampleTracer
                         code_hash = entry -> selection.code_hash; 
                     }
                     if (!code_h -> count(code_hash)){ continue; }
-                    entry -> code_link = code_h -> at(code_hash);  
+                    entry -> code_link = code_h -> at(code_hash);
                 } 
             }; 
 
@@ -189,6 +189,7 @@ namespace SampleTracer
             std::map<std::string, int> n_events = {};
             std::map<std::string, int> n_graphs = {}; 
             std::map<std::string, int> n_selections = {};
+            std::map<std::string, int> event_trees = {}; 
 
             int total_hashes = 0; 
         

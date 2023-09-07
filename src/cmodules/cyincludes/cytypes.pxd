@@ -311,8 +311,10 @@ cdef extern from "../abstractions/cytypes.h":
 
         # Getter variable
         vector[string] search
+        bool get_all
 
         # Code linking
         map[string, code_t] hashed_code
         map[string, string] link_event_code
         map[string, string] link_graph_code
+        map[string, string] link_selection_code

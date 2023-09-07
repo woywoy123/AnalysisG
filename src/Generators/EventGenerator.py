@@ -1,8 +1,8 @@
 from AnalysisG.Notification import _EventGenerator
-from AnalysisG.Tools import Threading
 from AnalysisG.SampleTracer import SampleTracer
+from AnalysisG.IO.UpROOT import UpROOT
+from AnalysisG.Tools import Threading
 from .Interfaces import _Interface
-from AnalysisG.IO import UpROOT
 from typing import Union
 from time import sleep
 import pickle

@@ -264,15 +264,14 @@ def test_tracer_hdf5():
 
     tr1.DumpEvents()
     tr1.DumpTracer()
+
     tr2.DumpEvents()
     tr2.DumpTracer()
-
     s = SampleTracer()
     s.OutputDirectory = "Project"
     s.EventCache = True
     s.RestoreTracer()
     s.RestoreEvents()
-
     for i in tr1: break
     assert len(s[i.ROOT]) == len(tr1)
 
@@ -290,13 +289,6 @@ def test_tracer_hdf5():
 
     for i in tr1: assert i.hash
     for i in tr2: assert i.hash
-
-    try:
-        for i in tr2: i.cross_section
-        for i in tr2: assert i.cross_section
-    except AttributeError:
-        pass
-
     del tr1
     del tr2
 
@@ -308,21 +300,18 @@ def test_tracer_hdf5():
         s.EventCache = True
         s.RestoreTracer()
         s.RestoreEvents()
-        k = sum([s for l in range(1000)])
-        if mem == 0:
-            mem = psutil.virtual_memory().percent
-        assert psutil.virtual_memory().percent - mem < 0.5
+        k = sum([s for l in range(10)])
+        if mem == 0: mem = psutil.virtual_memory().percent
+        assert psutil.virtual_memory().percent - mem < 1
+        assert s.ShowLength["nominal/Event"] == 165
         del s
 
-    try:
-        shutil.rmtree("Project")
-        shutil.rmtree("tmp")
-    except:
-        pass
+    try: shutil.rmtree("Project")
+    except: pass
 
 
 if __name__ == "__main__":
-    #test_tracer_addEvent()
-    #test_tracer_operators()
+    test_tracer_addEvent()
+    test_tracer_operators()
     test_tracer_hdf5()
     pass

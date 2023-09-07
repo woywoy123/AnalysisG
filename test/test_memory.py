@@ -97,9 +97,9 @@ def test_particle_multithreading():
         out = []
         for i in inpt:
             j_, d_ = i
-            j_ = pickle.loads(j_).clone()
-            j_.__build__(d_)
-            out.append(pickle.dumps(j_))
+            j_ = j_.clone()
+            x = j_.__build__(d_)
+            out.append(x)
             if lock is None: continue
             with lock: bar.update(1)
         return out
@@ -112,10 +112,11 @@ def test_particle_multithreading():
     io.Leaves = list(vals.values())
 
     excl = ["MetaData", "ROOT", "EventIndex"]
+    vals = {i : j for j, i in vals.items()}
     jets = []
     for i in io:
         jet = j.clone()
-        jet.__build__({k : i[k] for k in i if k not in excl})
+        jet.__build__({vals[k.split("/")[-1]] : i[k] for k in i if k not in excl})
         jets += jet.Children
         assert jets[-1].px != 0
         assert jets[-1].pt != 0
@@ -124,12 +125,12 @@ def test_particle_multithreading():
     for _ in range(3):
         x = []
         for i in io:
-            _dct = {k: i[k] for k in i if k not in excl}
-            x.append([pickle.dumps(j), _dct])
+            _dct = {vals[k.split("/")[-1]]: i[k] for k in i if k not in excl}
+            x.append([j.clone(), _dct])
         th = Threading(x, Functions, 10, 2500)
         th.Start()
         x = []
-        for i in th._lists: x += pickle.loads(i).Children
+        for i in th._lists: x += list(i.values())
         x = set(x)
         x = {i.hash: i for i in x}
         assert len(x) == len(jets)
@@ -156,7 +157,7 @@ def test_event_pickle():
 
         PickleObject(events, "events")
         events_r = UnpickleObject("events")
-        assert sum([l == p for l, p in zip(events, events_r)]) == len(events)
+        assert sum([l.hash == p.hash for l, p in zip(events, events_r)]) == len(events)
 
         if mem == 0: mem = psutil.virtual_memory().percent
         assert psutil.virtual_memory().percent - mem < 1
@@ -168,25 +169,27 @@ def test_event_multithreading():
     def Function(inpt, _prgbar = (None, None)):
         lock, bar = _prgbar
         out = []
-        for i in inpt:
-            evnt, val = i
-            evnt = pickle.loads(evnt)
+        evnt = pickle.loads(inpt[0][0]).clone()
+        for i in range(len(inpt)):
+            _, val = inpt[i]
             _out = evnt.__compiler__(val)
             _out[-1].CompileEvent()
-            _out[-1] = pickle.dumps(_out[-1])
-            out += _out
+            inpt[i] = pickle.dumps(_out[-1])
+            val = None
+            _out = None
             if lock is None: continue
             with lock: bar.update(1)
-        return out
+        del evnt
+        return inpt
 
     root1 = "./samples/sample1/smpl1.root"
     ev = Event()
     ev.__getleaves__()
-    ev_ = pickle.dumps(ev)
     io = UpROOT(root1)
     io.Trees = ["nominal"]
     io.Leaves = ev.Leaves
-
+    #import tracemalloc
+    #tracemalloc.start()
     mem = 0
     for _ in range(3):
         events = []
@@ -195,11 +198,14 @@ def test_event_multithreading():
             _events = ev.__compiler__(i)
             _events[-1].CompileEvent()
             events += _events
-            assert _events[-1].hash == pickle.loads(Function([ [ ev_, i ] ])[0]).hash
-            for _ in range(100): threads += [[ev_, i]]
+            assert _events[-1].hash == pickle.loads(Function([ [ pickle.dumps(ev), i ] ])[0]).hash
+            for _ in range(100): threads += [[pickle.dumps(ev), i]]
 
         th = Threading(threads, Function, 10, 200)
         th.Start()
+        threads = None
+        #snapshot = tracemalloc.take_snapshot()
+        #print(snapshot.statistics("lineno"))
         events_j = []
         for i in th._lists: events_j.append(pickle.loads(i))
         events_j = list(set(events_j))

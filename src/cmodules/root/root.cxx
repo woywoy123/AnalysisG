@@ -116,14 +116,26 @@ namespace SampleTracer
     {
         batch_t output; 
         output.hash = this -> hash;
-        if (this -> this_ev){ this -> export_this(this -> this_ev, &(output.events)); }
-        else {this -> export_this(this -> events, &(output.events));}
+        if (this -> this_ev){ 
+            this -> export_this(this -> this_ev, &(output.events)); 
+        }
+        else {
+            this -> export_this(this -> events, &(output.events));
+        }
 
-        if (this -> this_gr){ this -> export_this(this -> this_gr, &(output.graphs)); }
-        else {this -> export_this(this -> graphs, &(output.graphs));}
+        if (this -> this_gr){ 
+            this -> export_this(this -> this_gr, &(output.graphs)); 
+        }
+        else {
+            this -> export_this(this -> graphs, &(output.graphs));
+        }
 
-        if (this -> this_sel){ this -> export_this(this -> this_sel, &(output.selections)); }
-        else {this -> export_this(this -> selections, &(output.selections));}
+        if (this -> this_sel){ 
+            this -> export_this(this -> this_sel, &(output.selections)); 
+        }
+        else {
+            this -> export_this(this -> selections, &(output.selections));
+        }
         return output; 
     }
 
@@ -179,7 +191,7 @@ namespace SampleTracer
         this -> get_event = inpt -> getevent; 
         this -> get_graph = inpt -> getgraph; 
         this -> get_selection = inpt -> getselection; 
-        this -> valid = false; 
+        this -> valid = inpt -> get_all; 
         this -> Contextualize();
         if (!this -> valid){ return; }
 
@@ -195,6 +207,18 @@ namespace SampleTracer
         for (unsigned int x(0); x < z; ++x){
             std::string find = srch -> at(x); 
             if (this -> meta -> original_input == find){ return; }
+            if (this -> meta -> DatasetName == find){ return; }
+
+            if (this -> this_ev){
+                if (this -> this_ev -> event.event_root == find){return;}
+            }
+            if (this -> this_gr){
+                if (this -> this_gr -> graph.event_root == find){return;}
+            }
+
+            if (this -> this_sel){
+                if (this -> this_sel -> selection.event_root == find){return;}
+            }     
         }
 
         this -> valid = false; 
@@ -274,6 +298,7 @@ namespace SampleTracer
         this -> n_events.clear(); 
         this -> n_graphs.clear(); 
         this -> n_selections.clear(); 
+        this -> event_trees.clear(); 
 
         std::map<std::string, CyEventTemplate*>::iterator ite; 
         std::map<std::string, CyGraphTemplate*>::iterator itg; 
@@ -288,12 +313,15 @@ namespace SampleTracer
 
             for (; ite != this_b -> events.end(); ++ite){
                 this -> n_events[ite -> first] += 1;
+                this -> event_trees[ite -> second -> event.event_tree] += 1; 
             }
             for (; itg != this_b -> graphs.end(); ++itg){
                 this -> n_graphs[itg -> first] += 1;
+                this -> event_trees[itg -> second -> graph.event_tree] += 1; 
             }
             for (; its != this_b -> selections.end(); ++its){
                 this -> n_selections[its -> first] += 1;
+                this -> event_trees[its -> second -> selection.event_tree] += 1; 
             }
         }
     }

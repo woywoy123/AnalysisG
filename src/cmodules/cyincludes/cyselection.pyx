@@ -43,7 +43,7 @@ cdef class SelectionTemplate:
 
     def __radd__(self, other):
         if other == 0: return self
-        else: self.__add__(other)
+        else: return self.__add__(other)
 
     def __add__(self, SelectionTemplate other):
         cdef SelectionTemplate o = self.clone()

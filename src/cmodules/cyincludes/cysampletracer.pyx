@@ -18,6 +18,7 @@ from AnalysisG._cmodules.EventTemplate import EventTemplate
 from AnalysisG._cmodules.GraphTemplate import GraphTemplate
 from AnalysisG._cmodules.MetaData import MetaData
 
+from cython.operator cimport dereference
 from libcpp.vector cimport vector
 from libcpp.string cimport string
 from libcpp.map cimport map, pair
@@ -26,6 +27,7 @@ from libcpp cimport bool
 from codecs import decode, encode
 from typing import Union
 from tqdm import tqdm
+import numpy as np
 import pickle
 import torch
 import h5py
@@ -35,6 +37,29 @@ cdef string enc(str val): return val.encode("UTF-8")
 cdef str env(string val): return val.decode("UTF-8")
 cdef str _encoder(inpt): return encode(pickle.dumps(inpt), "base64").decode()
 cdef dict _decoder(inpt): return pickle.loads(decode(enc(inpt), "base64"))
+def _check_h5(f, str key):
+    try: return f.create_dataset(key, (1), dtype = h5py.ref_dtype)
+    except ValueError: return f[key]
+
+cdef _event_build(ref, event_t* ev):
+    ev.event_name    = enc(ref.attrs["event_name"])
+    ev.commit_hash   = enc(ref.attrs["commit_hash"])
+    ev.code_hash     = enc(ref.attrs["code_hash"])
+
+    ev.event_hash    = enc(ref.attrs["event_hash"])
+    ev.event_tagging = enc(ref.attrs["event_tagging"])
+    ev.event_tree    = enc(ref.attrs["event_tree"])
+    ev.event_root    = enc(ref.attrs["event_root"])
+    ev.pickled_data  = decode(enc(ref.attrs["pickled_data"]), "base64")
+
+    ev.deprecated    = ref.attrs["deprecated"]
+    ev.cached        = ref.attrs["cached"]
+    ev.event         = ref.attrs["event"]
+
+    ev.event_index   = ref.attrs["event_index"]
+    ev.weight        = ref.attrs["weight"]
+
+
 
 cdef class Event:
 
@@ -86,7 +111,8 @@ cdef class Event:
         except AttributeError: pass
 
     def meta(self):
-        return self._meta
+        if self._meta is not None: return self._meta
+        else: return dereference(self.ptr.meta)
 
     def __getmeta__(self):
         if self._meta is not None: return
@@ -103,13 +129,9 @@ cdef class Event:
 
         cdef event_t ev = ev_.Export()
         cdef code_t  co = co_.ExportCode()
-        cdef int c_i, d_i
-        c_i = co_.dependency.size()
-        d_i = co_.container.dependency_hashes.size()
-        if c_i < d_i: print("MISSING DEPENDENCY CODE!"); return
-
         c = Code()
         c.__setstate__(co)
+
         cdef pair[string, CyCode*] itr
         for itr in co_.dependency:
             co = itr.second.ExportCode()
@@ -236,8 +258,8 @@ cdef class SampleTracer:
         return tr
 
     def __radd__(self, other) -> SampleTracer:
-        if self.is_self(other): return self.__add__(other)
-        return self.__add__(self.clone())
+        if other == 0: return self
+        return self.__add__(other)
 
     def __iadd__(self, other) -> SampleTracer:
         if not self.is_self(other): return self
@@ -289,131 +311,165 @@ cdef class SampleTracer:
     def DumpTracer(self):
         cdef pair[string, meta_t] itr
         cdef pair[string, code_t] itc
-        cdef pair[string, string] its
-        cdef pair[string, vector[string]] ith
         cdef str entry
-        cdef string ens
         self.ptr.DumpTracer()
         for itr in self._state.root_meta:
             entry = self.OutputDirectory + "/" + self.ProjectName + "/Tracer/"
             entry += env(itr.first).replace(".root.1", "")
             try: os.makedirs("/".join(entry.split("/")[:-1]))
             except FileExistsError: pass
+
             f = h5py.File(entry + ".hdf5", "a")
-            try: ref = f.create_dataset("meta", (1), dtype = h5py.ref_dtype)
-            except ValueError: ref = f["meta"]
-            ref.attrs[env(itr.first)] = _encoder(itr.second)
+            ref = _check_h5(f, "meta")
+            ref.attrs.update({itr.first : _encoder(itr.second)})
 
-            try: ref = f.create_dataset("code", (1), dtype = h5py.ref_dtype)
-            except ValueError: ref = f["code"]
-            for itc in self._state.hashed_code:
-                ref.attrs[env(itc.first)] = _encoder(itc.second)
+            ref = _check_h5(f, "code")
+            ref.attrs.update({itc.first : _encoder(itc.second) for itc in self._state.hashed_code})
 
-            try: ref = f.create_dataset("link_event_code", (1), dtype = h5py.ref_dtype)
-            except ValueError: ref = f["link_event_code"]
-            for its in self._state.link_event_code: ref.attrs[env(its.first)] = its.second
-            for its in self._state.link_graph_code: ref.attrs[env(its.first)] = its.second
-            for its in self._state.link_selection_code: ref.attrs[env(its.first)] = its.second
 
-            try: ref = f.create_dataset("event_name_hash", (1), dtype = h5py.ref_dtype)
-            except ValueError: ref = f["event_name_hash"]
-            for ith in self._state.event_name_hash:
-                for ens in ith.second: ref.attrs[env(ens)] = ith.first
+            ref = _check_h5(f, "link_event_code")
+            ref.attrs.update(self._state.link_event_code)
 
-            try: ref = f.create_dataset("graph_name_hash", (1), dtype = h5py.ref_dtype)
-            except ValueError: ref = f["graph_name_hash"]
-            for ith in self._state.graph_name_hash:
-                for ens in ith.second: ref.attrs[env(ens)] = ith.first
+            ref = _check_h5(f, "event_dir")
+            ref.attrs.update(self._state.event_dir)
 
-            try: ref = f.create_dataset("selection_name_hash", (1), dtype = h5py.ref_dtype)
-            except ValueError: ref = f["selection_name_hash"]
-            for ith in self._state.selection_name_hash:
-                for ens in ith.second: ref.attrs[env(ens)] = ith.first
+            ref = _check_h5(f, "event_name_hash")
+            ref.attrs.update(self._state.event_name_hash)
 
-            try: ref = f.create_dataset("event_dir", (1), dtype = h5py.ref_dtype)
-            except ValueError: ref = f["event_dir"]
-            for ith in self._state.event_dir:
-                for ens in ith.second: ref.attrs[env(ens)] = ith.first
 
-            try: ref = f.create_dataset("graph_dir", (1), dtype = h5py.ref_dtype)
-            except ValueError: ref = f["graph_dir"]
-            for ith in self._state.graph_dir:
-                for ens in ith.second: ref.attrs[env(ens)] = ith.first
+            ref = _check_h5(f, "link_graph_code")
+            ref.attrs.update(self._state.link_graph_code)
 
-            try: ref = f.create_dataset("selection_dir", (1), dtype = h5py.ref_dtype)
-            except ValueError: ref = f["selection_dir"]
-            for ith in self._state.selection_dir:
-                for ens in ith.second: ref.attrs[env(ens)] = ith.first
+            ref = _check_h5(f, "graph_dir")
+            ref.attrs.update(self._state.graph_dir)
+
+            ref = _check_h5(f, "graph_name_hash")
+            ref.attrs.update(self._state.graph_name_hash)
+
+
+            ref = _check_h5(f, "link_selection_code")
+            ref.attrs.update(self._state.link_selection_code)
+
+            ref = _check_h5(f, "selection_dir")
+            ref.attrs.update(self._state.selection_dir)
+
+            ref = _check_h5(f, "selection_name_hash")
+            ref.attrs.update(self._state.selection_name_hash)
 
             f.close()
         self.ptr.state = export_t()
         self._state = &self.ptr.state
 
     def RestoreTracer(self):
-        cdef str root_path = self.OutputDirectory + "/" + self.ProjectName + "/Tracer/"
-        cdef list files
         cdef str root, f
+        cdef list files
         cdef list files_ = []
+        cdef str root_path = self.OutputDirectory + "/" + self.ProjectName + "/Tracer/"
         for root, _, files in os.walk(root_path):
             files_ += [root + "/" + f for f in files if f.endswith(".hdf5")]
 
-        cdef str key
-        cdef string root_name
+        cdef meta_t meta
+        cdef str key, val, k
+        cdef CyBatch* batch
+        cdef string event_root
         for f in files_:
             f5 = h5py.File(f, "r")
-            for key in f5["meta"].attrs:
-                root_name = enc(key)
-                self.ptr.AddMeta(_decoder(f5["meta"].attrs[key]), root_name)
+            key = list(f5["meta"].attrs)[0]
+
+            event_root = enc(key)
+            meta = _decoder(f5["meta"].attrs[key])
+            self.ptr.AddMeta(meta, event_root)
+
+            for i in f5["code"].attrs.values():
+                self.ptr.AddCode(_decoder(i))
+                self._set.hashed_code[enc(i)] = _decoder(i)
+
+            for key, x in f5["event_name_hash"].attrs.items():
+                path = f5["event_dir"].attrs[key]
+                for k in x.tolist():
+                    batch = self.ptr.RegisterHash(enc(k), event_root)
+                    batch.event_dir[enc(path)] = enc(key)
+
+            for key, x in f5["graph_name_hash"].attrs.items():
+                path = f5["graph_dir"].attrs[key]
+                for k in x.tolist():
+                    batch = self.ptr.RegisterHash(enc(k), event_root)
+                    batch.graph_dir[enc(path)] = enc(key)
+
+            for key, x in f5["selection_name_hash"].attrs.items():
+                path = f5["selection_dir"].attrs[key]
+                for k in x.tolist():
+                    batch = self.ptr.RegisterHash(enc(k), event_root)
+                    batch.selection_dir[enc(path)] = enc(key)
 
 
-            for key in f5["code"].attrs:
-                self.ptr.AddCode(_decoder(f5["code"].attrs[key]), enc(key))
+            for key, val in f5["link_event_code"].attrs.items():
+                self.ptr.link_event_code[enc(key)] = enc(val)
 
-            for key in f5["link_event_code"].attrs:
-                self.ptr.link_event_code[enc(key)] = enc(f5["link_event_code"].attrs[key])
+            for key, val in f5["link_graph_code"].attrs.items():
+                self.ptr.link_graph_code[enc(key)] = enc(val)
 
-            for key in f5["link_graph_code"].attrs:
-                self.ptr.link_graph_code[enc(key)] = enc(f5["link_graph_code"].attrs[key])
+            for key, val in f5["link_selection_code"].attrs.items():
+                self.ptr.link_selection_code[enc(key)] = enc(val)
 
-            for key in f5["link_selection_code"].attrs:
-                self.ptr.link_selection_code[enc(key)] = enc(f5["link_selection_code"].attrs[key])
+            f5.close()
 
     def DumpEvents(self):
         cdef map[string, vector[event_t*]] events = self.ptr.DumpEvents()
         cdef pair[string, vector[event_t*]] itr
-        cdef string hash_
-        cdef event_t* ev
         cdef str entry, bar_
+        cdef event_t* ev
         for itr in events:
             entry = self.OutputDirectory + "/" + self.ProjectName + "/EventCache/" + env(itr.first)
             try: os.makedirs("/".join(entry.split("/")[:-1]))
             except FileExistsError: pass
             f = h5py.File(entry + ".hdf5", "a")
-            bar_ = "EVENT-DUMPING: ..." + "->".join(entry.split("/")[-2:])
-            _, bar = self._makebar(itr.second.size(), bar_)
+            bar_ = "EVENT-DUMPING: ..." + " -> ".join(entry.split("/")[-3:])
+            print(bar_)
+            _, bar = self._makebar(itr.second.size(), "")
             for ev in itr.second:
-                hash_ = ev.event_hash
-                try: ref = f.create_dataset(hash_, (1), dtype = h5py.ref_dtype)
-                except ValueError: ref = f[hash_]
                 ev.cached = True
-                ref.attrs["commit_hash"] = ev.commit_hash
-                ref.attrs["event_name"] = ev.event_name
-                ref.attrs["code_hash"] = ev.code_hash
-                ref.attrs["deprecated"] = ev.deprecated
-                ref.attrs["cached"] = ev.cached
-                ref.attrs["weight"] = ev.weight
-                ref.attrs["event_hash"] = ev.event_hash
-                ref.attrs["event_tagging"] = ev.event_tagging
-                ref.attrs["event_tree"] = ev.event_tree
-                ref.attrs["event_root"] = ev.event_root
-                ref.attrs["pickled_data"] = ev.pickled_data
-                ref.attrs["event"] = ev.event
-                ev.pickled_data = enc(decode(ev.pickled_data))
-                self._state.event_name_hash[enc(ev.event_name)].push_back(ev.event_hash)
-                self._state.event_dir[env(ev.event_name)] = entry
+                ref = _check_h5(f, env(ev.event_hash))
+                ref.attrs.update(dereference(ev))
+                self._state.event_name_hash[itr.first].push_back(ev.event_hash)
+                self._state.event_dir[itr.first] = enc(entry)
+                ev.pickled_data = decode(ev.pickled_data, "base64")
                 bar.update(1)
             f.close()
             del bar
+
+    def RestoreEvents(self, list these_hashes = []):
+        if len(these_hashes): self._set.get_all = False
+        else: self._set.get_all = True
+
+        cdef str i, file
+        self._set.search = [enc(i) for i in these_hashes]
+
+        cdef CyBatch* batch
+        cdef pair[string, string] its
+        cdef pair[string, vector[CyBatch*]] itc
+        cdef map[string, vector[CyBatch*]] cache_map
+        for batch in self.ptr.MakeIterable():
+            for its in batch.event_dir: cache_map[its.first].push_back(batch)
+
+        cdef event_t event
+        for itc in cache_map:
+            file = env(itc.first)
+            f = h5py.File(file + ".hdf5", "r")
+            bar_ = "EVENT-READING: ..." + "->".join(file.split("/")[-3:])
+            print(bar_)
+            _, bar = self._makebar(itc.second.size(), "")
+            for batch in itc.second:
+                batch.event_dir.erase(itc.first)
+                event = event_t()
+                _event_build(f[batch.hash], &event)
+                batch.Import(&event)
+                batch.ApplyCodeHash(&self.ptr.code_hashes)
+                bar.update(1)
+            del bar
+        self._set.search.clear()
+        self._set.get_all = False
+        self.ptr.length()
 
     def _makebar(self, inpt: Union[int], CustTitle: Union[None, str] = None):
         _dct = {}
