@@ -18,10 +18,15 @@ class _Interface(Tools):
         Name: Union[str] = None,
         SampleDirectory: Union[str, Dict, List, None] = None,
     ):
-        self.Files = {}
+        self.Files = None
         self.InputSamples(SampleDirectory)
         if Name is None: Name = ""
-        self.SampleMap[Name] = self.Files
+
+        add = {}
+        add[Name] = []
+        for i in self.Files:
+            add[Name] += [i + "/" + j for j in self.Files[i]]
+        self.SampleMap = add
 
     def _StartStop(self, it: Union[int]):
         if self.EventStart > it and self.EventStart != -1: return False

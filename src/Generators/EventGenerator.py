@@ -17,7 +17,10 @@ class EventGenerator(_EventGenerator, _Interface, SampleTracer):
     @staticmethod
     def _CompileEvent(inpt, _prgbar):
         lock, bar = _prgbar
+        try: code = pickle.loads(inpt[0][0]).code
+        except AttributeError: code = None
         ev = pickle.loads(inpt[0][0]).clone()
+
         tracer = SampleTracer()
         for i in range(len(inpt)):
             _, vals = inpt[i]
@@ -25,6 +28,7 @@ class EventGenerator(_EventGenerator, _Interface, SampleTracer):
             inpt[i] = []
             for k in res:
                 k.CompileEvent()
+                if code is not None: setattr(k, "code", code)
                 tracer.AddEvent(k, vals["MetaData"])
             if lock is None:
                 if bar is None: continue
@@ -33,7 +37,8 @@ class EventGenerator(_EventGenerator, _Interface, SampleTracer):
             with lock: bar.update(1)
         return [tracer]
 
-    def MakeEvents(self):
+    def MakeEvents(self, SampleName = None):
+        if SampleName is None: SampleName = ""
         if not self.CheckEventImplementation(): return False
         if len(self.ShowEvents) > 0: pass
         else: return self.ObjectCollectFailure()
@@ -50,16 +55,16 @@ class EventGenerator(_EventGenerator, _Interface, SampleTracer):
         io.EnablePyAMI = self.EnablePyAMI
 
         i = -1
-        ev = pickle.dumps(ev)
+        itx = 1
         inpt = []
         chnks = self.Threads * self.Chunks*2
         step = chnks
-        itx = 1
+        ev = pickle.dumps(ev)
         for v in io:
             i += 1
             if self._StartStop(i) == False: continue
             if self._StartStop(i) == None: break
-
+            v["MetaData"].sample_name = SampleName
             inpt.append([ev,v])
             if not i >= step: continue
             itx += 1

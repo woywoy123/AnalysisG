@@ -1,6 +1,5 @@
 from AnalysisG.Generators import Analysis
-from AnalysisG.Events.Events.Event import Event
-from conftest import clean_dir
+from AnalysisG.Events import Event
 
 smpl = "./samples/"
 Files = {
@@ -15,41 +14,70 @@ def test_analysis_event_merge():
         Ana.InputSample(Name, Dir)
         Ana.EventCache = True
         Ana.Event = Event
-        Ana.Threads = 10
+        Ana.Threads = 1
         Ana.EventStart = 0
         Ana.EventStop = 10
         Ana.Launch()
         return Ana
 
-    ev1 = EventGen_(File0, "Top")
-    for i in ev1: assert i.Event
-    ev2 = EventGen_(File1, "Tops")
-    for i in ev2: assert i.Event
+    F0 = {smpl + "sample1" : ["smpl1.root"]}
+    ev1 = EventGen_(F0, "Top")
+    for i in ev1:
+        assert i.sample_name == "Top"
+        assert i.Event
+        assert i.Tops is not None
+        assert isinstance(i.Tops, list)
+
+    F1 = {smpl + "sample2" : ["smpl1.root"]}
+    ev2 = EventGen_(F1, "Tops")
+    for i in ev2:
+        assert i.sample_name == "Tops"
+        assert i.Event
+        assert i.Tops is not None
+        assert isinstance(i.Tops, list)
+        assert i.Event
+
     ev1 += ev2
     it = 0
+    x = {"Tops" : 0, "Top" : 0}
     for i in ev1:
+        x[i.sample_name]+=1
         assert ev1[i.hash].hash == i.hash
         it += 1
-    ev1.EventCache = False
+    assert x["Tops"] == 10
+    assert x["Top"] == 10
     assert it == 20
 
     a_ev = EventGen_(None, None)
+    a_ev.GetAll = True
+    it = 0
+    x = {"Tops" : 0, "Top" : 0}
+    for i in a_ev.makelist():
+        x[i.sample_name] += 1
+        assert a_ev[i.hash].hash == i.hash
+        assert isinstance(i.Tops, list)
+        it += 1
+    assert x["Tops"] == 10
+    assert x["Top"] == 10
     assert len(ev1) == len(a_ev)
-    clean_dir()
+    a_ev.rm("./Project")
 
-def test_Analysis():
+
+def test_analysis_more_samples():
     Sample1 = {smpl + "sample1": ["smpl1.root"]}
     Sample2 = smpl + "sample2"
 
-    Ana = Analysis()
-    Ana.ProjectName = "_Test"
-    Ana.InputSample("Sample1", Sample1)
-    Ana.InputSample("Sample2", Sample2)
-    Ana.PurgeCache = False
-    Ana.OutputDirectory = "../test/"
-    Ana.EventStop = 100
-    assert Ana.Launch() == False
-    clean_dir()
+    ana = Analysis()
+    ana.ProjectName = "Project"
+    ana.InputSample("Sample1", Sample1)
+    ana.InputSample("Sample2", Sample2)
+    ana.EventStop = 100
+    ana.EventCache = True
+    ana.Event = Event
+    ana.Launch()
+    assert 100 == len(ana)
+    ana.rm("Project")
+
 
 def _template(default=True):
     AnaE = Analysis()
@@ -68,11 +96,13 @@ def test_analysis_event_nocache():
     AnaE.Event = Event
     AnaE.Launch()
     assert len([i for i in AnaE]) != 0
+    AnaE.rm("Project")
 
 def test_analysis_event_nocache_nolaunch():
     AnaE = _template()
     AnaE.Event = Event
     assert len([i for i in AnaE]) != 0
+    AnaE.rm("Project")
 
 def test_analysis_event_cache():
     AnaE = _template()
@@ -81,13 +111,13 @@ def test_analysis_event_cache():
     AnaE.Launch()
     assert len([i for i in AnaE if i.Event]) != 0
 
-    AnaE = _template()
-    AnaE.EventCache = True
-    AnaE.Verbose = 3
-    AnaE.Launch()
-
-    assert len([i for i in AnaE if i.Event]) != 0
-    clean_dir()
+    print("____")
+    Ana = _template()
+    Ana.EventCache = True
+    Ana.Verbose = 3
+    Ana.Launch()
+    assert len([i for i in Ana if i.Event and i.Tops is not None]) != 0
+    Ana.rm("Project")
 
 def test_analysis_event_cache_diff_sample():
     Ana1 = _template(
@@ -119,7 +149,17 @@ def test_analysis_event_cache_diff_sample():
     AnaE.EventCache = True
 
     AnaS = Ana2 + Ana1
+    assert len([i for i in AnaS]) > 0
+    assert len([i for i in AnaE]) > 0
     assert len([i for i in AnaE if i.hash not in AnaS]) == 0
-    clean_dir()
+    assert len([i for i in AnaS if i.hash not in AnaE]) == 0
+    AnaS.rm("Project")
 
 
+if __name__ == "__main__":
+    test_analysis_event_merge()
+    test_analysis_more_samples()
+    test_analysis_event_nocache()
+    test_analysis_event_nocache_nolaunch()
+    test_analysis_event_cache()
+    test_analysis_event_cache_diff_sample()

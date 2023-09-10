@@ -1,5 +1,7 @@
 from AnalysisG.Generators import GraphGenerator
 from AnalysisG.Generators import EventGenerator
+from AnalysisG.Events import Event
+from AnalysisG.Events import GraphChildren
 from examples.Graph import DataGraph
 from examples.Event import EventEx
 from conftest import clean_dir
@@ -17,6 +19,9 @@ def fx_edge(a, b):
 
 def fx_node(a):
     return a.Mass
+
+def fx_g(ev):
+    return ev.met
 
 def fx_graph(ev):
     return ev.NotAFeature
@@ -151,7 +156,41 @@ def test_graph_inputs():
         x.append(ev)
     assert len(x) != 0
 
+def test_eventgraph():
+    Ev = EventGenerator(Files)
+    Ev.Event = Event
+    Ev.Threads = 1
+    Ev.EventStop = 100
+    Ev.MakeEvents()
+
+    for i in Ev:
+        assert i.Event
+        assert i.hash
+        assert i.met
+        assert i.met is not None
+
+    Gr = GraphGenerator(Ev)
+    Gr.Graph = GraphChildren
+    Gr.AddGraphFeature(fx_graph)
+    Gr.AddGraphFeature(fx_g)
+    Gr.Threads = 1
+    Gr.Device = "cuda"
+    Gr.MakeGraphs()
+
+    assert len(Gr) == len(Ev)
+    for i in Gr:
+        assert i.weight is not None
+        assert "G_fx_graph" in i.Errors
+        assert "Tensor" == type(i.G_fx_g).__name__
+        assert i.Graph
+        assert i.hash
+        assert i.index >= 0
+
+
+
+
 
 if __name__ == "__main__":
-    test_graph_generator()
+    #test_graph_generator()
     #test_graph_inputs()
+    test_eventgraph()

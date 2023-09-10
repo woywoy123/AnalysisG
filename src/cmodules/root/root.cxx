@@ -204,10 +204,16 @@ namespace SampleTracer
             return; 
         }
         
+        std::vector<std::string> tags; 
+        tags = Tools::split(this -> meta -> sample_name, "|"); 
         for (unsigned int x(0); x < z; ++x){
             std::string find = srch -> at(x); 
             if (this -> meta -> original_input == find){ return; }
             if (this -> meta -> DatasetName == find){ return; }
+            for (std::string key : tags){
+                if (key != find){continue;}
+                return; 
+            }  
 
             if (this -> this_ev){
                 if (this -> this_ev -> event.event_root == find){return;}
@@ -300,6 +306,7 @@ namespace SampleTracer
         this -> n_selections.clear(); 
         this -> event_trees.clear(); 
 
+        std::map<std::string, std::string> tree_map; 
         std::map<std::string, CyEventTemplate*>::iterator ite; 
         std::map<std::string, CyGraphTemplate*>::iterator itg; 
         std::map<std::string, CySelectionTemplate*>::iterator its; 
@@ -313,16 +320,21 @@ namespace SampleTracer
 
             for (; ite != this_b -> events.end(); ++ite){
                 this -> n_events[ite -> first] += 1;
-                this -> event_trees[ite -> second -> event.event_tree] += 1; 
+                tree_map[ite -> first] = ite -> second -> event.event_tree;
             }
             for (; itg != this_b -> graphs.end(); ++itg){
                 this -> n_graphs[itg -> first] += 1;
-                this -> event_trees[itg -> second -> graph.event_tree] += 1; 
+                tree_map[itg -> first] = itg -> second -> graph.event_tree;
             }
             for (; its != this_b -> selections.end(); ++its){
                 this -> n_selections[its -> first] += 1;
-                this -> event_trees[its -> second -> selection.event_tree] += 1; 
+                tree_map[its -> first] = its -> second -> selection.event_tree;
             }
+        }
+        std::map<std::string, std::string>::iterator its_; 
+        its_ = tree_map.begin(); 
+        for (; its_ != tree_map.end(); ++its_){
+            this -> event_trees[its_ -> second] += 1;
         }
     }
 

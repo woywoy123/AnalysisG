@@ -308,100 +308,108 @@ cdef class SampleTracer:
 
         return False
 
-    def DumpTracer(self):
+    def DumpTracer(self, retag = None):
         cdef pair[string, meta_t] itr
         cdef pair[string, code_t] itc
-        cdef str entry
+        cdef pair[string, string] its
+        cdef str entry, s_name
+        cdef string root_n, h_
         self.ptr.DumpTracer()
         for itr in self._state.root_meta:
-            entry = self.OutputDirectory + "/" + self.ProjectName + "/Tracer/"
-            entry += env(itr.first).replace(".root.1", "")
+            root_n = itr.first
+            entry = self.WorkingPath + "Tracer/"
+            entry += env(root_n).replace(".root.1", "")
             try: os.makedirs("/".join(entry.split("/")[:-1]))
             except FileExistsError: pass
 
             f = h5py.File(entry + ".hdf5", "a")
             ref = _check_h5(f, "meta")
-            ref.attrs.update({itr.first : _encoder(itr.second)})
+            s_name = env(itr.second.sample_name)
+            if retag is None: pass
+            elif retag in s_name.split("|"): pass
+            elif not len(s_name): itr.second.sample_name += enc(retag)
+            else: itr.second.sample_name += enc("|" + retag)
+            self.ptr.AddMeta(itr.second, root_n)
+            ref.attrs.update({root_n : _encoder(itr.second)})
 
             ref = _check_h5(f, "code")
-            ref.attrs.update({itc.first : _encoder(itc.second) for itc in self._state.hashed_code})
-
+            for itc in self._state.hashed_code:
+                ref.attrs[itc.first] = _encoder(itc.second)
 
             ref = _check_h5(f, "link_event_code")
-            ref.attrs.update(self._state.link_event_code)
-
-            ref = _check_h5(f, "event_dir")
-            ref.attrs.update(self._state.event_dir)
-
-            ref = _check_h5(f, "event_name_hash")
-            ref.attrs.update(self._state.event_name_hash)
-
+            for its in self._state.link_event_code:
+                ref.attrs[its.first] = its.second
 
             ref = _check_h5(f, "link_graph_code")
-            ref.attrs.update(self._state.link_graph_code)
-
-            ref = _check_h5(f, "graph_dir")
-            ref.attrs.update(self._state.graph_dir)
-
-            ref = _check_h5(f, "graph_name_hash")
-            ref.attrs.update(self._state.graph_name_hash)
-
+            for its in self._state.link_graph_code:
+                ref.attrs[its.first] = its.second
 
             ref = _check_h5(f, "link_selection_code")
-            ref.attrs.update(self._state.link_selection_code)
+            for its in self._state.link_selection_code:
+                ref.attrs[its.first] = its.second
+
+            ref = _check_h5(f, "event_dir")
+            if not self._state.event_dir.count(root_n): pass
+            else: ref.attrs[root_n] = self._state.event_dir[root_n]
+
+            ref = _check_h5(f, "graph_dir")
+            if not self._state.graph_dir.count(root_n): pass
+            else: ref.attrs[root_n] = self._state.graph_dir[root_n]
 
             ref = _check_h5(f, "selection_dir")
-            ref.attrs.update(self._state.selection_dir)
+            if not self._state.selection_dir.count(root_n): pass
+            else: ref.attrs[root_n] = self._state.selection_dir[root_n]
+
+
+            ref = _check_h5(f, "event_name_hash")
+            for h_ in self._state.event_name_hash[root_n]:
+                ref.attrs[h_] = root_n
+
+            ref = _check_h5(f, "graph_name_hash")
+            for h_ in self._state.graph_name_hash[root_n]:
+                ref.attrs[h_] = root_n
 
             ref = _check_h5(f, "selection_name_hash")
-            ref.attrs.update(self._state.selection_name_hash)
+            for h_ in self._state.selection_name_hash[root_n]:
+                ref.attrs[h_] = root_n
 
             f.close()
         self.ptr.state = export_t()
         self._state = &self.ptr.state
 
-    def RestoreTracer(self):
-        cdef str root, f
-        cdef list files
+    def RestoreTracer(self, dict tracers = {}, sample_name = None):
+        cdef str root, f, root_path
         cdef list files_ = []
-        cdef str root_path = self.OutputDirectory + "/" + self.ProjectName + "/Tracer/"
-        for root, _, files in os.walk(root_path):
-            files_ += [root + "/" + f for f in files if f.endswith(".hdf5")]
+        cdef list files
+
+        if len(tracers):
+            for root, files in tracers.items():
+                files_ += [root + "/" + f for f in files if f.endswith(".hdf5")]
+        else:
+            root_path = self.WorkingPath + "Tracer/"
+            for root, _, files in os.walk(root_path):
+                files_ += [root + "/" + f for f in files if f.endswith(".hdf5")]
 
         cdef meta_t meta
-        cdef str key, val, k
+        cdef str key, val, path
         cdef CyBatch* batch
         cdef string event_root
         for f in files_:
             f5 = h5py.File(f, "r")
             key = list(f5["meta"].attrs)[0]
-
             event_root = enc(key)
             meta = _decoder(f5["meta"].attrs[key])
+            if sample_name is None: pass
+            elif sample_name not in env(meta.sample_name).split("|"): continue
             self.ptr.AddMeta(meta, event_root)
-
             for i in f5["code"].attrs.values():
                 self.ptr.AddCode(_decoder(i))
                 self._set.hashed_code[enc(i)] = _decoder(i)
 
-            for key, x in f5["event_name_hash"].attrs.items():
-                path = f5["event_dir"].attrs[key]
-                for k in x.tolist():
-                    batch = self.ptr.RegisterHash(enc(k), event_root)
-                    batch.event_dir[enc(path)] = enc(key)
-
-            for key, x in f5["graph_name_hash"].attrs.items():
-                path = f5["graph_dir"].attrs[key]
-                for k in x.tolist():
-                    batch = self.ptr.RegisterHash(enc(k), event_root)
-                    batch.graph_dir[enc(path)] = enc(key)
-
-            for key, x in f5["selection_name_hash"].attrs.items():
-                path = f5["selection_dir"].attrs[key]
-                for k in x.tolist():
-                    batch = self.ptr.RegisterHash(enc(k), event_root)
-                    batch.selection_dir[enc(path)] = enc(key)
-
+            for key, val in f5["event_name_hash"].attrs.items():
+                path = f5["event_dir"].attrs[val]
+                batch = self.ptr.RegisterHash(enc(key), event_root)
+                batch.event_dir[enc(path)] = enc(val)
 
             for key, val in f5["link_event_code"].attrs.items():
                 self.ptr.link_event_code[enc(key)] = enc(val)
@@ -420,7 +428,7 @@ cdef class SampleTracer:
         cdef str entry, bar_
         cdef event_t* ev
         for itr in events:
-            entry = self.OutputDirectory + "/" + self.ProjectName + "/EventCache/" + env(itr.first)
+            entry = self.WorkingPath + "EventCache/" + env(itr.first)
             try: os.makedirs("/".join(entry.split("/")[:-1]))
             except FileExistsError: pass
             f = h5py.File(entry + ".hdf5", "a")
@@ -467,6 +475,7 @@ cdef class SampleTracer:
                 batch.ApplyCodeHash(&self.ptr.code_hashes)
                 bar.update(1)
             del bar
+            f.close()
         self._set.search.clear()
         self._set.get_all = False
         self.ptr.length()
@@ -549,15 +558,31 @@ cdef class SampleTracer:
 
     @property
     def Event(self):
-        return self._Event
+        if self._Event is not None: return self._Event
+        cdef CyCode* code
+        cdef pair[string, string] its
+        for its in self.ptr.link_event_code:
+            if not self.ptr.code_hashes.count(its.second): pass
+            else:
+                code = self.ptr.code_hashes[its.second]
+                c = Code()
+                c.__setstate__(code.ExportCode())
+                return c.InstantiateObject
+        return None
 
     @Event.setter
     def Event(self, event):
         try: event = event()
         except: pass
-        if not self.is_self(event, EventTemplate): return
-        cdef string name = enc(event.__name__())
         cdef code_t co
+        cdef string name = enc(event.__name__())
+        if type(event).__module__.endswith("cmodules.code"):
+            co = event.code
+            self.ptr.link_event_code[name] = co.hash
+            self.ptr.code_hashes[co.hash] = new CyCode()
+            self.ptr.code_hashes[co.hash].ImportCode(co)
+            return
+        if not self.is_self(event, EventTemplate): return
         cdef map[string, code_t] deps = {}
         for o in event.Objects.values():
             co = self.trace_code(o)
@@ -651,13 +676,13 @@ cdef class SampleTracer:
         return output
 
     @Files.setter
-    def Files(self, val: Union[str, list, dict]):
+    def Files(self, val: Union[str, list, dict, None]):
         cdef dict Files = {}
         cdef str key, k
-        if isinstance(val, str): Files["None"] = [val]
-        elif isinstance(val, list): Files["None"] = val
-        else: Files.update(val)
-        if not len(Files): self._set.files.clear();
+        if val is None: self._set.files.clear()
+        elif isinstance(val, str): Files[""] = [val]
+        elif isinstance(val, list): Files[""] = val
+        elif isinstance(val, dict): Files.update(val)
         for key in Files:
             for k in Files[key]: self._set.files[enc(key)].push_back(enc(k))
 
@@ -670,6 +695,14 @@ cdef class SampleTracer:
         self._set.threads = val
 
     @property
+    def GetAll(self):
+        return self._set.get_all
+
+    @GetAll.setter
+    def GetAll(self, bool val):
+        self._set.get_all = val
+
+    @property
     def GetEvent(self) -> bool:
         return self._set.getevent
 
@@ -679,10 +712,11 @@ cdef class SampleTracer:
 
     @property
     def EventCache(self):
-        return self._set.getevent
+        return self._set.eventcache
 
     @EventCache.setter
     def EventCache(self, bool val):
+        if val: self._set.eventcache = val
         self._set.getevent = val
 
     @property
@@ -691,6 +725,14 @@ cdef class SampleTracer:
 
     @GetGraph.setter
     def GetGraph(self, bool val):
+        self._set.getgraph = val
+
+    @property
+    def DataCache(self):
+        return self._set.getgraph
+
+    @DataCache.setter
+    def DataCache(self, bool val):
         self._set.getgraph = val
 
     @property
@@ -708,6 +750,37 @@ cdef class SampleTracer:
     @ProjectName.setter
     def ProjectName(self, str val):
         self._set.projectname = enc(val)
+
+    @property
+    def WorkingPath(self):
+        return os.path.abspath(self.OutputDirectory + self.ProjectName) + "/"
+
+    @property
+    def SampleMap(self):
+        cdef dict output = {}
+        cdef string i
+        cdef pair[string, vector[string]] itr
+        for itr in self._set.samplemap:
+            output[env(itr.first)] = [env(i) for i in itr.second]
+        return output
+
+    @SampleMap.setter
+    def SampleMap(self, val: Union[str, list, dict]):
+        cdef dict state = self.SampleMap
+        cdef str i, f
+        if isinstance(val, str): state[val] = []
+        elif isinstance(val, list):
+            if "" in state: state[""] += val
+            else: state[""] = val
+        elif isinstance(val, dict):
+            for i in val:
+                if i not in state: state[i] = []
+                state[i] += [k for k in val[i]]
+
+        for i in state:
+            state[i] = list(set(state[i]))
+            self._set.samplemap[enc(i)] = [enc(f) for f in state[i]]
+
 
     @property
     def EventName(self) -> str:

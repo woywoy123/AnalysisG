@@ -665,3 +665,11 @@ cdef class MetaData:
         for it in self.ptr.container.LFN:
             output[env(it.first)] = self.ptr.container.filesSize.at(it.second)
         return output
+
+    @property
+    def sample_name(self):
+        return env(self.ptr.container.sample_name)
+
+    @sample_name.setter
+    def sample_name(self, str val):
+        self.ptr.container.sample_name = enc(val)

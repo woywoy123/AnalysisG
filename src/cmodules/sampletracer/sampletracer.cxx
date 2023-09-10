@@ -17,19 +17,20 @@ namespace SampleTracer
 
     void CySampleTracer::AddMeta(meta_t meta, std::string event_root)
     {
-       if (!this -> root_map.count(event_root)){
-          this -> root_map[event_root] = new CyROOT(meta);
-       }
+        if (!this -> root_map.count(event_root)){
+            this -> root_map[event_root] = new CyROOT(meta);
+        }
+        CyROOT* r = this -> root_map[event_root]; 
+        r -> meta.sample_name = meta.sample_name; 
     }
 
     CyBatch* CySampleTracer::RegisterHash(std::string hash, std::string event_root)
     {
         CyROOT* root = this -> root_map[event_root]; 
-        if (!root -> batches.count(hash)){
-            CyBatch* batch = new CyBatch(hash); 
-            batch -> Import(&(root -> meta));
-            root -> batches[hash] = batch;
-        }
+        if (root -> batches.count(hash)){return root -> batches[hash];}
+        CyBatch* batch = new CyBatch(hash); 
+        batch -> Import(&(root -> meta));
+        root -> batches[hash] = batch;
         return root -> batches[hash]; 
     }
 
@@ -99,9 +100,8 @@ namespace SampleTracer
             event = root -> ReleaseEvents(); 
             ev_i = event.begin(); 
             for (; ev_i != event.end(); ++ev_i){
-                std::string path = r_name + "/" + ev_i -> first; 
                 std::vector<event_t*>* get = &(ev_i -> second); 
-                output[path].insert(output[path].end(), get -> begin(), get -> end()); 
+                output[r_name].insert(output[r_name].end(), get -> begin(), get -> end()); 
             }
         }
 
@@ -117,8 +117,8 @@ namespace SampleTracer
         itr = this -> root_map.begin(); 
 
         for (; itr != this -> root_map.end(); ++itr){
-            std::string root_name = itr -> first; 
             CyROOT* r = itr -> second; 
+            std::string root_name = itr -> first; 
             out -> root_meta[root_name] = r -> meta; 
         }
         out -> link_event_code = this -> link_event_code; 
@@ -241,6 +241,7 @@ namespace SampleTracer
         CySampleTracer* smpl = new CySampleTracer(); 
         smpl -> Import(this -> Export()); 
         smpl -> Import(other -> Export()); 
+        smpl -> ImportSettings(this -> ExportSettings()); 
         return smpl; 
     }
 
@@ -263,7 +264,7 @@ namespace SampleTracer
         for (; itr != this -> root_map.end(); ++itr){
             CyROOT* r_ = itr -> second;
             r_ -> UpdateSampleStats();  
-            
+
             itn = r_ -> n_events.begin(); 
             for (; itn != r_ -> n_events.end(); ++itn){
                 output[itn -> first] += itn -> second; 

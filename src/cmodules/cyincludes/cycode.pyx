@@ -203,8 +203,11 @@ cdef class Code:
             if self.is_class: fx = globals()[self.class_name]
             else: fx = globals()[self.function_name]
             self.fx = fx
-        if not len(self.co_vars): return self.fx()
-        return self.fx
+        if not len(self.co_vars): fx = self.fx()
+        else: fx = self.fx
+        try: setattr(fx, "code", self.ptr.ExportCode())
+        except: pass
+        return fx
 
     @property
     def hash(self) -> str:

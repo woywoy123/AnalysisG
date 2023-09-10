@@ -1,18 +1,18 @@
+from AnalysisG.Generators.EventGenerator import EventGenerator
+from AnalysisG.Generators.Interfaces import _Interface
 from AnalysisG.SampleTracer import SampleTracer
 from AnalysisG.Notification import _Analysis
-from .EventGenerator import EventGenerator
 #from AnalysisG.IO import PickleObject, UnpickleObject
 #from .SelectionGenerator import SelectionGenerator
 #from AnalysisG.Templates import FeatureAnalysis
 #from .SampleGenerator import RandomSamplers
 #from .GraphGenerator import GraphGenerator
-from AnalysisG.Settings import Settings
-from .Interfaces import _Interface
+#from AnalysisG.Settings import Settings
 #from .Optimizer import Optimizer
 from typing import Union
 
 
-class Analysis(_Analysis, Settings, SampleTracer, _Interface):
+class Analysis(_Analysis, SampleTracer, _Interface):
     def __init__(
         self,
         SampleDirectory: Union[str, dict, list, None] = None,
@@ -21,40 +21,17 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         SampleTracer.__init__(self)
         self.Caller = "ANALYSIS"
         _Analysis.__init__(self)
-
         _Interface.__init__(self)
-        Settings.__init__(self)
-        if Name is None and SampleDirectory is None:
-            return
+        self.PurgeCache = False
+        self.triggered = False
+        if Name is None and SampleDirectory is None: return
         self.InputSample(Name, SampleDirectory)
 
     def __build__(self):
-        if self._cPWD is not None: return
-        if not self._condor: self.StartingAnalysis()
-        self._cPWD = self.pwd()
-        self.OutputDirectory += self.ProjectName
+        self.StartingAnalysis()
+        self._BuildingCache()
         if self.PurgeCache: self._WarningPurge()
-        if not self._condor: self._BuildingCache()
-
-    def __Event__(self):
-        process = {}
-        for i in list(self.Files):
-            f = [j for j in self.Files[i] if i + "/" + j not in self]
-            if len(f) != 0: process[i] = f
-        if len(process) == 0: return True
-        if self.Event == None: return False
-        if self.EventStop is not None and len(self) >= self.EventStop:
-            return True
-
-        self.Files = process
-        ev = EventGenerator()
-        ev.Caller = "ANALYSIS::EVENT"
-        ev.Event = self.Event
-        ev.ImportSettings(self.ExportSettings())
-        if not ev.MakeEvents(): return False
-        ev.EventCache = self.EventCache
-        self += ev
-        return True
+        self.triggered = True
 
     def __Graph__(self):
         if self.EventGraph == None: return True
@@ -130,47 +107,88 @@ class Analysis(_Analysis, Settings, SampleTracer, _Interface):
         op = Optimizer(self)
         op.Launch()
 
-    def __CollectCode__(self):
-        code = {}
-        if self.Event is not None:
-            ev = EventGenerator()
-            ev.ImportSettings(self)
-            code.update(ev.MakeEvents())
 
-        if self.EventGraph is not None:
-            gr = GraphGenerator()
-            gr.ImportSettings(self)
-            code.update(gr.MakeGraphs())
 
-        if len(self.Selections) != 0:
-            sel = SelectionGenerator(self)
-            sel.ImportSettings(self)
-            for name in self.Selections:
-                sel.AddSelection(name, self.Selections[name])
-            code.update(sel.MakeSelection())
-        if self.Model is not None:
-            code["Model"] = Optimizer(self).GetCode()
-        return code
+    def __Event__(self):
+        if self.Event is None: return True
+        f = {}
+        self.GetAll = True
+        for i in self.SampleMap[self.SampleName]:
+            i = self.abs(i)
+            if self.SampleName is None and i in self:
+                continue
+            if self.SampleName not in self: pass
+            elif i in self: continue
+            i = i.split("/")
+            file, path = i[-1], "/".join(i[:-1])
+            if path not in f: f[path] = []
+            f[path].append(file)
+        self.GetAll = False
+        if not len(f): return True
+        self.Files = None
+        self.Files = f
 
-    def Launch(self):
-        if self._condor: return self.__CollectCode__()
-        if not self.__LoadSample__(): return False
-        self.__build__()
-        self.__Selection__()
-        self.__RandomSampler__()
-        self.__Optimizer__()
-        self.WhiteSpace()
+        if self.EventStop is None: pass
+        elif len(self) >= self.EventStop: return True
+        ev = EventGenerator()
+        ev.Caller = "ANALYSIS::EVENT"
+        ev.ImportSettings(self.ExportSettings())
+        if self.EventStop is not None: ev.EventStop -= len(self)
+        if not ev.MakeEvents(): return False
+        ev.EventStop = None
+        self += ev
+        if not self.EventCache: return True
+        self.DumpEvents()
+        self.DumpTracer(self.SampleName)
         return True
 
     def __LoadSample__(self):
-        self.__build__()
         tracer = self._CheckForTracer()
-        for i in self.SampleMap:
-            self.Files = self.SampleMap[i]
-            self.SampleName = i
-            if tracer: self.RestoreTracer()
-            if not self.__Event__(): return False
-            if not self.__Graph__(): return False
-        if len(self) == 0: self.RestoreTracer()
-        if len(self) == 0: return False
+        for name in self.SampleMap:
+            if not len(name): name = None
+            if not tracer: break
+            self.RestoreTracer(tracer, name)
+        if self.EventCache: self.RestoreEvents()
+        for name in self.SampleMap:
+            self.SampleName = name
+            self.__Event__()
+            #if not self.__Graph__(): return False
+        #if len(self) == 0: return False
         return True
+
+    def Launch(self):
+        self.__build__()
+        self.__LoadSample__()
+        #self.__Selection__()
+        #self.__RandomSampler__()
+        #self.__Optimizer__()
+        #self.WhiteSpace()
+        return True
+
+    def preiteration(self) -> bool:
+        if not self.triggered: self.Launch()
+        if not len(self.EventName):
+            try:
+                self.EventName = self.ShowEvents[0]
+                self.GetEvent = True
+            except IndexError: self.GetEvent = False
+
+        if not len(self.GraphName):
+            try:
+                self.GraphName = self.ShowGraphs[0]
+                self.GetGraph = True
+            except IndexError: self.GetGraph = False
+
+        if not len(self.SelectionName):
+            try:
+                self.SelectionName = self.ShowSelections[0]
+                self.GetSelection = True
+            except IndexError: self.GetSelection = False
+        if not len(self.Tree):
+            try: self.Tree = self.ShowTrees[0]
+            except IndexError: return True
+
+        return False
+
+
+

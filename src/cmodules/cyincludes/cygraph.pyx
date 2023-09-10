@@ -217,7 +217,6 @@ cdef class GraphTemplate:
         for itr in self.gr.pre_sel_feature:
             key = env(itr.first)
             if self.__buildthis__(key, True, [self._event]): continue
-            print("here")
             return
         n_num = self.gr.hash_particle.size()
         data = Data(edge_index = torch.tensor(topo, dtype = torch.long).t())

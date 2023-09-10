@@ -110,6 +110,7 @@ cdef extern from "../abstractions/cytypes.h":
         string statsAlgorithm
         string genFilterNames
         string file_type
+        string sample_name
 
         vector[string] keywords
         vector[string] weights
@@ -281,6 +282,7 @@ cdef extern from "../abstractions/cytypes.h":
         string outputdirectory
         string device
         map[string, vector[string]] files
+        map[string, vector[string]] samplemap
         int verbose
 
         # multithreading options

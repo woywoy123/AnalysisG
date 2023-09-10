@@ -10,19 +10,22 @@ class Tools(_IO):
         self.Verbose = 3
 
     def lsFiles(self, directory, extension=None):
-        if extension is None: srch = directory + "/*"
-        else: srch = directory + "/*" + extension
-        srch = [i for i in glob(srch)]
-        if len(srch) == 0: self.EmptyDirectoryWarning(directory)
-        return srch
+        files = []
+        for i in self.ls(directory):
+            p = directory + "/" + i
+            if self.IsFile(p, True): files += [p]
+            else: files += self.lsFiles(p, extension)
+        if extension is None: return files
+        else: return [i for i in files if i.endswith(extension)]
+        return files
 
     def ls(self, directory):
         try: return os.listdir(directory)
         except OSError: return []
 
-    def IsFile(self, directory):
+    def IsFile(self, directory, quiet = False):
         if os.path.isfile(directory): return True
-        self.FileNotFoundWarning(self.path(directory), directory.split("/")[-1])
+        if not quiet: self.FileNotFoundWarning(self.path(directory), directory.split("/")[-1])
         return False
 
     def ListFilesInDir(self, dirc, extension, _it=0):

@@ -147,6 +147,7 @@ struct meta_t
     std::string statsAlgorithm = "";
     std::string genFilterNames = "";
     std::string file_type = "";
+    std::string sample_name = ""; 
 
     std::vector<std::string> keywords = {};
     std::vector<std::string> weights = {};
@@ -356,6 +357,7 @@ struct settings_t
     std::string outputdirectory = "./";
     std::string device = "cpu";
     std::map<std::string, std::vector<std::string>> files = {}; 
+    std::map<std::string, std::vector<std::string>> samplemap = {}; 
     int verbose = 3; 
    
     // Multithreading options 
