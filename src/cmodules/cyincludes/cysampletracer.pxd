@@ -67,6 +67,8 @@ cdef extern from "../sampletracer/sampletracer.h" namespace "SampleTracer":
         CyBatch* RegisterHash(string, string) except +
 
         map[string, vector[event_t*]] DumpEvents() except +
+        map[string, vector[graph_t]] DumpGraphs() except +
+        map[string, vector[selection_t]] DumpSelections() except +
         void DumpTracer() except +
 
         tracer_t Export() except +

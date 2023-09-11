@@ -82,9 +82,6 @@ class _Interface(Tools):
     def AddSelection(self, function):
         self.Selections = function
 
-    def MergeSelection(self, name: Union[str]):
-        self.Merge[name] = []
-
     def This(self, path: Union[str], tree: Union[str]):
         if tree not in self._DumpThis: self._DumpThis[tree] = []
         if path in self._DumpThis[tree]: return self.Warning("'" + path + "' is already in list")

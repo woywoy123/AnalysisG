@@ -1,5 +1,5 @@
+from AnalysisG.Events import Event, GraphChildren
 from AnalysisG.Generators import Analysis
-from AnalysisG.Events import Event
 
 smpl = "./samples/"
 Files = {
@@ -156,6 +156,206 @@ def test_analysis_event_cache_diff_sample():
     AnaS.rm("Project")
 
 
+
+def fx_edge(a, b):
+    return (a + b).Mass
+
+def fx_node(a):
+    return a.Mass
+
+def fx_graph(ev):
+    return ev.NotAFeature
+
+def fx_mev(ev):
+    return ev.met
+
+def fx_custom_topology(a, b):
+    return a.FromResonance == b.FromResonance == 1
+
+def fx_pmu(a):
+    return [a.pt, a.eta, a.phi, a.e]
+
+def fx_prefilter(ev):
+    return ev.nJets > 2
+
+def test_analysis_data_nocache():
+    AnaE = _template()
+    AnaE.AddGraphFeature(fx_graph, "Graph")
+    AnaE.AddNodeFeature(fx_pmu, "Pmu")
+    AnaE.AddEdgeFeature(fx_edge, "Mass")
+    AnaE.AddNodeTruthFeature(fx_node, "Mass")
+    AnaE.Event = Event
+    AnaE.Graph = GraphChildren
+    AnaE.Launch()
+    for i in AnaE:
+        assert i.Graph
+        assert type(i.N_T_Mass).__name__ == "Tensor"
+        assert i.G_Graph is None
+        assert "G_Graph" in i.Errors
+        assert type(i.N_Pmu).__name__ == "Tensor"
+        assert type(i.E_Mass).__name__ == "Tensor"
+    assert len([i for i in AnaE if i.Graph])
+    AnaE.rm("Project")
+
+def test_analysis_data_nocache_nolaunch():
+    AnaE = _template()
+    AnaE.AddGraphFeature(fx_graph, "Graph")
+    AnaE.AddNodeFeature(fx_pmu, "Pmu")
+    AnaE.AddEdgeFeature(fx_edge, "Mass")
+    AnaE.AddNodeTruthFeature(fx_node, "Mass")
+    AnaE.Event = Event
+    AnaE.Graph = GraphChildren
+
+    assert len([i for i in AnaE if i.Graph and i.N_Pmu is not None])
+    AnaE.rm("Project")
+
+def test_analysis_data_cache():
+    AnaE = _template()
+    AnaE.DataCache = True
+    AnaE.AddGraphFeature(fx_graph, "Graph")
+    AnaE.AddNodeFeature(fx_pmu, "Pmu")
+    AnaE.AddEdgeFeature(fx_edge, "Mass")
+    AnaE.AddNodeTruthFeature(fx_node, "Mass")
+    AnaE.Graph = GraphChildren
+    AnaE.Event = Event
+    AnaE.Launch()
+
+    assert len([i for i in AnaE]) != 0
+
+    AnaE = _template()
+    AnaE.DataCache = True
+    AnaE.Threads = 10
+    AnaE.Launch()
+
+    for i in AnaE:
+        assert i.Graph
+        assert type(i.N_T_Mass).__name__ == "Tensor"
+        assert i.G_Graph is None
+        assert "G_Graph" in i.Errors
+        assert type(i.N_Pmu).__name__ == "Tensor"
+        assert type(i.E_Mass).__name__ == "Tensor"
+    assert len([i for i in AnaE if i.Graph])
+    AnaE.rm("Project")
+
+
+def test_analysis_data_cache_diff_sample():
+    Ana1 = _template(
+        {
+            "Name": "Sample2",
+            "SampleDirectory": smpl + "sample2/" + Files[smpl + "sample2"][1],
+        }
+    )
+    Ana1.Event = Event
+    Ana1.Graph = GraphChildren
+    Ana1.AddGraphFeature(fx_graph, "Graph")
+    Ana1.AddNodeFeature(fx_pmu, "Pmu")
+    Ana1.AddEdgeFeature(fx_edge, "Mass")
+    Ana1.AddNodeTruthFeature(fx_node, "Mass")
+    Ana1.DataCache = True
+    Ana1.Launch()
+
+    for i in Ana1:
+        assert i.Graph
+        assert type(i.N_T_Mass).__name__ == "Tensor"
+        assert i.G_Graph is None
+        assert "G_Graph" in i.Errors
+        assert type(i.N_Pmu).__name__ == "Tensor"
+        assert type(i.E_Mass).__name__ == "Tensor"
+    assert len([i for i in Ana1 if i.Graph])
+
+    Ana2 = _template(
+        {
+            "Name": "Sample1",
+            "SampleDirectory": smpl + "sample1/" + Files[smpl + "sample1"][0],
+        }
+    )
+    Ana2.Event = Event
+    Ana2.Graph = GraphChildren
+    Ana2.AddGraphFeature(fx_graph, "Graph")
+    Ana2.AddNodeFeature(fx_pmu, "Pmu")
+    Ana2.AddEdgeFeature(fx_edge, "Mass")
+    Ana2.AddNodeTruthFeature(fx_node, "Mass")
+    Ana2.DataCache = True
+    Ana2.Launch()
+
+    for i in Ana2:
+        assert i.Graph
+        assert type(i.N_T_Mass).__name__ == "Tensor"
+        assert i.G_Graph is None
+        assert "G_Graph" in i.Errors
+        assert type(i.N_Pmu).__name__ == "Tensor"
+        assert type(i.E_Mass).__name__ == "Tensor"
+    assert len([i for i in Ana2 if i.Graph])
+
+    AnaE = _template()
+    AnaE.DataCache = True
+    AnaE.Launch()
+
+    AnaS = Ana2 + Ana1
+    assert len(AnaE) != 0
+    assert len(AnaS) != 0
+
+    for i in AnaS:
+        assert i.Graph
+        assert type(i.N_T_Mass).__name__ == "Tensor"
+        assert i.G_Graph is None
+        assert "G_Graph" in i.Errors
+        assert type(i.N_Pmu).__name__ == "Tensor"
+        assert type(i.E_Mass).__name__ == "Tensor"
+
+    assert len([i for i in AnaS if i.hash in AnaE]) == len(AnaE)
+    AnaS.rm("Project")
+
+def test_analysis_data_event_cache_diff_sample():
+    Ana1 = _template(
+        {
+            "Name": "Sample2",
+            "SampleDirectory": smpl + "sample2/" + Files[smpl + "sample2"][1],
+        }
+    )
+    Ana1.Event = Event
+    Ana1.EventCache = True
+    Ana1.Launch()
+
+    assert len([i for i in Ana1 if i.Event])
+    del Ana1
+
+    Ana1 = _template({"Name": "Sample2"})
+    Ana1.Graph = GraphChildren
+    Ana1.AddGraphFeature(fx_graph, "Graph")
+    Ana1.AddNodeFeature(fx_pmu, "Pmu")
+    Ana1.AddEdgeFeature(fx_edge, "Mass")
+    Ana1.AddNodeTruthFeature(fx_node, "Mass")
+    Ana1.DataCache = True
+    Ana1.Launch()
+    assert len([i for i in Ana1 if i.Graph and i.N_Pmu is not None])
+    del Ana1
+
+    Ana2 = _template(
+        {
+            "Name": "Sample1",
+            "SampleDirectory": smpl + "sample1/" + Files[smpl + "sample1"][0],
+        }
+    )
+
+    Ana2.Event = Event
+    Ana2.EventCache = True
+    Ana2.Launch()
+    assert len([i for i in Ana2 if isinstance(i.Tops, list)])
+    del Ana2
+
+    Ana2 = _template({"Name": "Sample1"})
+    Ana2.Graph = GraphChildren
+    Ana2.AddGraphFeature(fx_graph, "Graph")
+    Ana2.AddNodeFeature(fx_pmu, "Pmu")
+    Ana2.AddEdgeFeature(fx_edge, "Mass")
+    Ana2.AddNodeTruthFeature(fx_node, "Mass")
+    Ana2.DataCache = True
+    Ana2.Launch()
+
+    assert len([i for i in Ana2 if i.Graph and i.N_Pmu is not None]) != 0
+    Ana2.rm("Project")
+
 if __name__ == "__main__":
     test_analysis_event_merge()
     test_analysis_more_samples()
@@ -163,3 +363,9 @@ if __name__ == "__main__":
     test_analysis_event_nocache_nolaunch()
     test_analysis_event_cache()
     test_analysis_event_cache_diff_sample()
+    test_analysis_data_nocache()
+    test_analysis_data_nocache_nolaunch()
+    test_analysis_data_cache()
+    test_analysis_data_cache_diff_sample()
+    test_analysis_data_event_cache_diff_sample()
+

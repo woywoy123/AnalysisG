@@ -1,4 +1,5 @@
 from AnalysisG.Generators.EventGenerator import EventGenerator
+from AnalysisG.Generators.GraphGenerator import GraphGenerator
 from AnalysisG.Generators.Interfaces import _Interface
 from AnalysisG.SampleTracer import SampleTracer
 from AnalysisG.Notification import _Analysis
@@ -24,37 +25,13 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         _Interface.__init__(self)
         self.PurgeCache = False
         self.triggered = False
+        self.TestFeatures = False
         if Name is None and SampleDirectory is None: return
         self.InputSample(Name, SampleDirectory)
 
-    def __build__(self):
-        self.StartingAnalysis()
-        self._BuildingCache()
-        if self.PurgeCache: self._WarningPurge()
-        self.triggered = True
 
-    def __Graph__(self):
-        if self.EventGraph == None: return True
 
-        process = {}
-        if self.EventCacheLen != self.DataCacheLen:
-            process.update(self.Files)
-        if len(process) == 0 and len(self.Files) != 0:
-            return True
-        self.RestoreEvents()
-        failed = False
-        if self.TestFeatures: failed = self.__FeatureAnalysis__()
-        if failed: return False
 
-        gr = GraphGenerator(self)
-        gr.ImportSettings(self)
-        gr.Caller = "ANALYSIS::GRAPH"
-        if not gr.MakeGraphs(): return False
-
-        gr.DataCache = self.DataCache
-        if self.DataCache: gr.DumpEvents()
-        self += gr
-        return True
 
     def __FeatureAnalysis__(self):
         if self.EventGraph is None: return True
@@ -109,8 +86,14 @@ class Analysis(_Analysis, SampleTracer, _Interface):
 
 
 
-    def __Event__(self):
-        if self.Event is None: return True
+    def __build__(self):
+        self.StartingAnalysis()
+        self._BuildingCache()
+        if self.PurgeCache: self._WarningPurge()
+        self.triggered = True
+
+
+    def __scan__(self):
         f = {}
         self.GetAll = True
         for i in self.SampleMap[self.SampleName]:
@@ -124,6 +107,34 @@ class Analysis(_Analysis, SampleTracer, _Interface):
             if path not in f: f[path] = []
             f[path].append(file)
         self.GetAll = False
+        return f
+
+    def __Graph__(self):
+        if self.Graph is None: return True
+
+        failed = False
+        if self.TestFeatures: failed = self.__FeatureAnalysis__()
+        if failed: return False
+        if not len(self.ShowLength): self.RestoreEvents()
+
+        gr = GraphGenerator(self)
+        gr.ImportSettings(self.ExportSettings())
+        gr.Caller = "ANALYSIS::GRAPH"
+        if not gr.MakeGraphs(): return False
+        self += gr
+
+        if not self.DataCache: return True
+        gr.DumpGraphs()
+        gr.DumpTracer(self.SampleName)
+        return True
+
+
+    def __Event__(self):
+        if self.Event is None: return True
+
+        self.GetEvent = True
+        self.GetGraphs = False
+        f = self.__scan__()
         if not len(f): return True
         self.Files = None
         self.Files = f
@@ -134,12 +145,12 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         ev.Caller = "ANALYSIS::EVENT"
         ev.ImportSettings(self.ExportSettings())
         if self.EventStop is not None: ev.EventStop -= len(self)
-        if not ev.MakeEvents(): return False
-        ev.EventStop = None
+        if not ev.MakeEvents(self.SampleName): return False
         self += ev
+
         if not self.EventCache: return True
-        self.DumpEvents()
-        self.DumpTracer(self.SampleName)
+        ev.DumpEvents()
+        ev.DumpTracer(self.SampleName)
         return True
 
     def __LoadSample__(self):
@@ -148,12 +159,14 @@ class Analysis(_Analysis, SampleTracer, _Interface):
             if not len(name): name = None
             if not tracer: break
             self.RestoreTracer(tracer, name)
+
         if self.EventCache: self.RestoreEvents()
+        if self.DataCache:  self.RestoreGraphs()
+
         for name in self.SampleMap:
             self.SampleName = name
             self.__Event__()
-            #if not self.__Graph__(): return False
-        #if len(self) == 0: return False
+            self.__Graph__()
         return True
 
     def Launch(self):
@@ -167,17 +180,26 @@ class Analysis(_Analysis, SampleTracer, _Interface):
 
     def preiteration(self) -> bool:
         if not self.triggered: self.Launch()
+        content = self.ShowLength
+        if not len(self.Tree):
+            try: self.Tree = self.ShowTrees[0]
+            except IndexError: pass
+
         if not len(self.EventName):
             try:
                 self.EventName = self.ShowEvents[0]
+                content[self.Tree + "/" + self.EventName]
                 self.GetEvent = True
             except IndexError: self.GetEvent = False
+            except KeyError: self.EventName = ""
 
         if not len(self.GraphName):
             try:
                 self.GraphName = self.ShowGraphs[0]
+                content[self.Tree + "/" + self.GraphName]
                 self.GetGraph = True
             except IndexError: self.GetGraph = False
+            except KeyError: self.GraphName = ""
 
         if not len(self.SelectionName):
             try:
@@ -186,7 +208,7 @@ class Analysis(_Analysis, SampleTracer, _Interface):
             except IndexError: self.GetSelection = False
         if not len(self.Tree):
             try: self.Tree = self.ShowTrees[0]
-            except IndexError: return True
+            except IndexError: pass
 
         return False
 

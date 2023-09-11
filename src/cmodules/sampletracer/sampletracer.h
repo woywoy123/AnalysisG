@@ -71,6 +71,38 @@ namespace SampleTracer
                 (*output)[co -> hash] = co_;
             }
         }; 
+
+
+        template <typename G>
+        void encoder(std::vector<G>* convert)
+        {
+            for (unsigned int i(0); i < convert -> size(); ++i)
+            {
+                G* ev = &(convert -> at(i));
+                unsigned int length = ev -> pickled_data.size(); 
+                const char* ch = ev -> pickled_data.c_str(); 
+                ev -> pickled_data = Tools::base64_encode((const unsigned char*)ch, length);
+            }
+        };
+
+        template <typename G>
+        void encoder(std::vector<G*>* convert)
+        {
+            for (unsigned int i(0); i < convert -> size(); ++i)
+            {
+                G* ev = convert -> at(i);
+                unsigned int length = ev -> pickled_data.size(); 
+                const char* ch = ev -> pickled_data.c_str(); 
+                ev -> pickled_data = Tools::base64_encode((const unsigned char*)ch, length);
+            }
+        };
+
+        static void encoder(std::string* conv)
+        {
+            unsigned int length = conv -> size();
+            const char* ch = conv -> c_str(); 
+            *conv = Tools::base64_encode((const unsigned char*)ch, length); 
+        }; 
     }
 
     class CySampleTracer
@@ -97,6 +129,8 @@ namespace SampleTracer
             CyBatch* RegisterHash(std::string hash, std::string event_root); 
 
             std::map<std::string, std::vector<event_t*>> DumpEvents(); 
+            std::map<std::string, std::vector<graph_t>> DumpGraphs(); 
+            std::map<std::string, std::vector<selection_t>> DumpSelections();
 
             void DumpTracer();
 
@@ -119,8 +153,8 @@ namespace SampleTracer
             std::map<std::string, Code::CyCode*> code_hashes = {};
             std::map<std::string, CyROOT*> root_map = {}; 
 
-            settings_t settings; 
             export_t state;
+            settings_t settings; 
             std::string caller = ""; 
             std::map<std::string, int> event_trees = {}; 
 

@@ -15,7 +15,7 @@ class _Analysis(Notification):
             sleep(1)
             bar.update(1)
         self.rm(self.OutputDirectory + "/EventCache")
-        self.rm(self.OutputDirectory + "/DataCache")
+        self.rm(self.OutputDirectory + "/GraphCache")
         self.rm(self.OutputDirectory + "/Tracer")
         self.rm(self.OutputDirectory + "/Training/DataSets")
 
@@ -24,8 +24,8 @@ class _Analysis(Notification):
             self.mkdir(self.WorkingPath + "EventCache")
             self.Success("Created EventCache under: " + self.WorkingPath)
         if self.DataCache:
-            self.mkdir(self.WorkingPath + "DataCache")
-            self.Success("Created DataCache under: " + self.WorkingPath)
+            self.mkdir(self.WorkingPath + "GraphCache")
+            self.Success("Created GraphCache under: " + self.WorkingPath)
 
     def _CheckForTracer(self):
         tracers = self.ListFilesInDir(self.WorkingPath + "Tracer/*", ".hdf5")
@@ -55,7 +55,7 @@ class _Analysis(Notification):
         elif self.EventCache: string += " > EventCache < ::"
 
         if self.Graph is not None: string += " > GraphGenerator < ::"
-        elif self.DataCache: strng += " > DataCache < ::"
+        elif self.DataCache: string += " > DataCache < ::"
 
 
 

@@ -41,6 +41,11 @@ def _check_h5(f, str key):
     try: return f.create_dataset(key, (1), dtype = h5py.ref_dtype)
     except ValueError: return f[key]
 
+def _check_sub(f, str key):
+    try: return f.create_group(key)
+    except ValueError: return f[key]
+
+
 cdef _event_build(ref, event_t* ev):
     ev.event_name    = enc(ref.attrs["event_name"])
     ev.commit_hash   = enc(ref.attrs["commit_hash"])
@@ -58,6 +63,123 @@ cdef _event_build(ref, event_t* ev):
 
     ev.event_index   = ref.attrs["event_index"]
     ev.weight        = ref.attrs["weight"]
+
+
+cdef _graph_save(ref, graph_t* gr):
+    ref.attrs["event_name"]      = gr.event_name
+    ref.attrs["code_hash"]       = gr.code_hash
+    ref.attrs["cached"]          = gr.cached
+    ref.attrs["event_index"]     = gr.event_index
+    ref.attrs["weight"]          = gr.weight
+    ref.attrs["event_hash"]      = gr.event_hash
+    ref.attrs["event_tagging"]   = gr.event_tagging
+
+    ref.attrs["event_tree"]      = gr.event_tree
+    ref.attrs["event_root"]      = gr.event_root
+    ref.attrs["pickled_data"]    = gr.pickled_data
+
+    ref.attrs["train"]           = gr.train
+    ref.attrs["evaluation"]      = gr.evaluation
+    ref.attrs["validation"]      = gr.validation
+
+    ref.attrs["empty_graph"]     = gr.empty_graph
+    ref.attrs["skip_graph"]      = gr.skip_graph
+    ref.attrs["self_loops"]      = gr.self_loops
+
+    ref.attrs["errors"]          = _encoder(gr.errors)
+    ref.attrs["presel"]          = _encoder(gr.presel)
+    ref.attrs["src_dst"]         = _encoder(gr.src_dst)
+    ref.attrs["hash_particle"]   = _encoder(gr.hash_particle)
+    ref.attrs["graph_feature"]   = _encoder(gr.graph_feature)
+    ref.attrs["node_feature"]    = _encoder(gr.node_feature)
+    ref.attrs["edge_feature"]    = _encoder(gr.edge_feature)
+    ref.attrs["pre_sel_feature"] = _encoder(gr.pre_sel_feature)
+
+    ref.attrs["topo_hash"]       = gr.topo_hash
+    ref.attrs["graph"]           = gr.graph
+
+cdef _graph_build(ref, graph_t* gr):
+    gr.event_name       = enc(ref.attrs["event_name"])
+    gr.code_hash        = enc(ref.attrs["code_hash"])
+    gr.cached           = ref.attrs["cached"]
+    gr.event_index      = ref.attrs["event_index"]
+    gr.weight           = ref.attrs["weight"]
+    gr.event_hash       = enc(ref.attrs["event_hash"])
+    gr.event_tagging    = enc(ref.attrs["event_tagging"])
+
+    gr.event_tree       = enc(ref.attrs["event_tree"])
+    gr.event_root       = enc(ref.attrs["event_root"])
+    gr.pickled_data     = decode(enc(ref.attrs["pickled_data"]), "base64")
+
+    gr.train            = ref.attrs["train"]
+    gr.evaluation       = ref.attrs["evaluation"]
+    gr.validation       = ref.attrs["validation"]
+
+    gr.empty_graph      = ref.attrs["empty_graph"]
+    gr.skip_graph       = ref.attrs["skip_graph"]
+    gr.self_loops       = ref.attrs["self_loops"]
+
+    gr.errors           = _decoder(ref.attrs["errors"])
+    gr.presel           = _decoder(ref.attrs["presel"])
+    gr.src_dst          = _decoder(ref.attrs["src_dst"])
+    gr.hash_particle    = _decoder(ref.attrs["hash_particle"])
+    gr.graph_feature    = _decoder(ref.attrs["graph_feature"])
+    gr.node_feature     = _decoder(ref.attrs["node_feature"])
+    gr.edge_feature     = _decoder(ref.attrs["edge_feature"])
+    gr.pre_sel_feature  = _decoder(ref.attrs["pre_sel_feature"])
+
+    gr.topo_hash        = enc(ref.attrs["topo_hash"])
+    gr.graph            = ref.attrs["graph"]
+
+cdef _sel_save(ref, selection_t* sel):
+    ref.attrs["event_name"]            = sel.event_name
+    ref.attrs["code_hash"]             = sel.code_hash
+    ref.attrs["event_hash"]            = sel.event_hash
+    ref.attrs["event_index"]           = sel.event_index
+    ref.attrs["weight"]                = sel.weight
+
+    ref.attrs["errors"]                = _encoder(sel.errors)
+    ref.attrs["event_tagging"]         = sel.event_tagging
+    ref.attrs["event_tree"]            = sel.event_tree
+    ref.attrs["event_root"]            = sel.event_root
+    ref.attrs["pickled_data"]          = sel.pickled_data
+    ref.attrs["pickled_strategy_data"] = sel.pickled_strategy_data
+
+    ref.attrs["cutflow"]               = _encoder(sel.cutflow)
+    ref.attrs["timestats"]             = sel.timestats
+    ref.attrs["all_weights"]           = sel.all_weights
+    ref.attrs["selection_weights"]     = sel.selection_weights
+
+    ref.attrs["allow_failure"]         = sel.allow_failure
+    ref.attrs["_params_"]              = sel._params_
+    ref.attrs["selection"]             = sel.selection
+
+cdef _sel_build(ref, selection_t* sel):
+    sel.event_name            = enc(ref.attrs["event_name"])
+    sel.code_hash             = enc(ref.attrs["code_hash"])
+    sel.event_hash            = enc(ref.attrs["event_hash"])
+    sel.event_index           = ref.attrs["event_index"]
+    sel.weight                = ref.attrs["weight"]
+
+    sel.errors                = _decoder(ref.attrs["errors"])
+    sel.event_tagging         = enc(ref.attrs["event_tagging"])
+    sel.event_tree            = enc(ref.attrs["event_tree"])
+    sel.event_root            = enc(ref.attrs["event_root"])
+    sel.pickled_data          = decode(enc(ref.attrs["pickled_data"]), "base64")
+    sel.pickled_strategy_data = decode(enc(ref.attrs["pickled_strategy_data"]), "base64")
+
+    sel.cutflow               = _decoder(ref.attrs["cutflow"])
+    sel.timestats             = ref.attrs["timestats"]
+    sel.all_weights           = ref.attrs["all_weights"]
+    sel.selection_weights     = ref.attrs["selection_weights"]
+
+    sel.allow_failure         = ref.attrs["allow_failure"]
+    sel._params_              = enc(ref.attrs["_params_"])
+    sel.selection             = ref.attrs["selection"]
+
+
+
+
 
 
 
@@ -188,6 +310,7 @@ cdef class SampleTracer:
     cdef _Event
     cdef _Graph
     cdef dict _Selections
+    cdef dict _graph_codes
     cdef int b_end
     cdef int b_start
     cdef int _nhashes
@@ -202,6 +325,7 @@ cdef class SampleTracer:
         self._Event = None
         self._Graph = None
         self._Selections = {}
+        self._graph_codes = {}
         self._nhashes = 0
         self.b_start = 0
         self.b_end = 0
@@ -396,6 +520,7 @@ cdef class SampleTracer:
         cdef string event_root
         for f in files_:
             f5 = h5py.File(f, "r")
+            print("TRACER::RESTORE -> " + f.split("/")[-1])
             key = list(f5["meta"].attrs)[0]
             event_root = enc(key)
             meta = _decoder(f5["meta"].attrs[key])
@@ -410,6 +535,16 @@ cdef class SampleTracer:
                 path = f5["event_dir"].attrs[val]
                 batch = self.ptr.RegisterHash(enc(key), event_root)
                 batch.event_dir[enc(path)] = enc(val)
+
+            for key, val in f5["graph_name_hash"].attrs.items():
+                path = f5["graph_dir"].attrs[val]
+                batch = self.ptr.RegisterHash(enc(key), event_root)
+                batch.graph_dir[enc(path)] = enc(val)
+
+            for key, val in f5["selection_name_hash"].attrs.items():
+                path = f5["selection_dir"].attrs[val]
+                batch = self.ptr.RegisterHash(enc(key), event_root)
+                batch.selection_dir[enc(path)] = enc(val)
 
             for key, val in f5["link_event_code"].attrs.items():
                 self.ptr.link_event_code[enc(key)] = enc(val)
@@ -432,16 +567,64 @@ cdef class SampleTracer:
             try: os.makedirs("/".join(entry.split("/")[:-1]))
             except FileExistsError: pass
             f = h5py.File(entry + ".hdf5", "a")
-            bar_ = "EVENT-DUMPING: ..." + " -> ".join(entry.split("/")[-3:])
+            bar_ = "TRACER::EVENT-DUMPING: " + entry.split("/")[-1]
             print(bar_)
             _, bar = self._makebar(itr.second.size(), "")
             for ev in itr.second:
                 ev.cached = True
-                ref = _check_h5(f, env(ev.event_hash))
+                dt  = _check_sub(f, env(ev.event_hash))
+                ref = _check_h5(dt, env(ev.event_tree + b'.' + ev.event_name))
                 ref.attrs.update(dereference(ev))
                 self._state.event_name_hash[itr.first].push_back(ev.event_hash)
                 self._state.event_dir[itr.first] = enc(entry)
                 ev.pickled_data = decode(ev.pickled_data, "base64")
+                bar.update(1)
+            f.close()
+            del bar
+
+    def DumpGraphs(self):
+        cdef map[string, vector[graph_t]] graphs = self.ptr.DumpGraphs()
+        cdef pair[string, vector[graph_t]] itr
+        cdef str entry, bar_
+        cdef graph_t gr
+        for itr in graphs:
+            entry = self.WorkingPath + "GraphCache/" + env(itr.first)
+            try: os.makedirs("/".join(entry.split("/")[:-1]))
+            except FileExistsError: pass
+            f = h5py.File(entry + ".hdf5", "a")
+            bar_ = "TRACER::GRAPH-DUMPING: " + entry.split("/")[-1]
+            print(bar_)
+            _, bar = self._makebar(itr.second.size(), "")
+            for gr in itr.second:
+                gr.cached = True
+                dt  = _check_sub(f, env(gr.event_hash))
+                ref = _check_h5(dt, env(gr.event_tree + b'.' + gr.event_name))
+                _graph_save(ref, &gr)
+                self._state.graph_name_hash[itr.first].push_back(gr.event_hash)
+                self._state.graph_dir[itr.first] = enc(entry)
+                bar.update(1)
+            f.close()
+            del bar
+
+    def DumpSelections(self):
+        cdef map[string, vector[selection_t]] sel = self.ptr.DumpSelections()
+        cdef pair[string, vector[selection_t]] itr
+        cdef str entry, bar_
+        cdef selection_t se
+        for itr in sel:
+            entry = self.WorkingPath + "SelectionCache/" + env(itr.first)
+            try: os.makedirs("/".join(entry.split("/")[:-1]))
+            except FileExistsError: pass
+            f = h5py.File(entry + ".hdf5", "a")
+            bar_ = "TRACER::SELECTION-DUMPING: " + entry.split("/")[-1]
+            print(bar_)
+            _, bar = self._makebar(itr.second.size(), "")
+            for se in itr.second:
+                dt = _check_sub(f, env(se.event_hash))
+                ref = _check_h5(dt, env(se.event_tree + b'.' + se.event_name))
+                _sel_save(ref, &se)
+                self._state.selection_name_hash[itr.first].push_back(se.event_hash)
+                self._state.selection_dir[itr.first] = enc(entry)
                 bar.update(1)
             f.close()
             del bar
@@ -464,14 +647,88 @@ cdef class SampleTracer:
         for itc in cache_map:
             file = env(itc.first)
             f = h5py.File(file + ".hdf5", "r")
-            bar_ = "EVENT-READING: ..." + "->".join(file.split("/")[-3:])
+            bar_ = "EVENT-READING (EventCache): " + file.split("/")[-1]
             print(bar_)
             _, bar = self._makebar(itc.second.size(), "")
             for batch in itc.second:
                 batch.event_dir.erase(itc.first)
-                event = event_t()
-                _event_build(f[batch.hash], &event)
-                batch.Import(&event)
+                dt = f[batch.hash]
+                for i in dt.keys():
+                    event = event_t()
+                    _event_build(dt[i], &event)
+                    batch.Import(&event)
+                batch.ApplyCodeHash(&self.ptr.code_hashes)
+                bar.update(1)
+            del bar
+            f.close()
+        self._set.search.clear()
+        self._set.get_all = False
+        self.ptr.length()
+
+
+    def RestoreGraphs(self, list these_hashes = []):
+        if len(these_hashes): self._set.get_all = False
+        else: self._set.get_all = True
+
+        cdef str i, file
+        self._set.search = [enc(i) for i in these_hashes]
+
+        cdef CyBatch* batch
+        cdef pair[string, string] its
+        cdef pair[string, vector[CyBatch*]] itc
+        cdef map[string, vector[CyBatch*]] cache_map
+        for batch in self.ptr.MakeIterable():
+            for its in batch.graph_dir: cache_map[its.first].push_back(batch)
+
+        cdef graph_t graph
+        for itc in cache_map:
+            file = env(itc.first)
+            f = h5py.File(file + ".hdf5", "r")
+            bar_ = "GRAPH-READING: (GraphCache)" + file.split("/")[-1]
+            print(bar_)
+            _, bar = self._makebar(itc.second.size(), "")
+            for batch in itc.second:
+                batch.graph_dir.erase(itc.first)
+                dt = f[batch.hash]
+                for i in dt.keys():
+                    graph = graph_t()
+                    _graph_build(dt[i], &graph)
+                    batch.Import(&graph)
+                batch.ApplyCodeHash(&self.ptr.code_hashes)
+                bar.update(1)
+            del bar
+            f.close()
+        self._set.search.clear()
+        self._set.get_all = False
+        self.ptr.length()
+
+    def RestoreSelections(self, list these_hashes = []):
+        if len(these_hashes): self._set.get_all = False
+        else: self._set.get_all = True
+
+        cdef str i, file
+        self._set.search = [enc(i) for i in these_hashes]
+
+        cdef CyBatch* batch
+        cdef pair[string, string] its
+        cdef pair[string, vector[CyBatch*]] itc
+        cdef map[string, vector[CyBatch*]] cache_map
+        for batch in self.ptr.MakeIterable():
+            for its in batch.selection_dir: cache_map[its.first].push_back(batch)
+
+        cdef selection_t sel
+        for itc in cache_map:
+            file = env(itc.first)
+            f = h5py.File(file + ".hdf5", "r")
+            bar_ = "SELECTION-READING: (SelectionCache) " + file.split("/")[-1]
+            _, bar = self._makebar(itc.second.size(), "")
+            for batch in itc.second:
+                batch.selection_dir.erase(itc.first)
+                dt = f[batch.hash]
+                for i in dt.keys():
+                    sel = selection_t()
+                    _sel_build(dt[i], &sel)
+                    batch.Import(&sel)
                 batch.ApplyCodeHash(&self.ptr.code_hashes)
                 bar.update(1)
             del bar
@@ -493,6 +750,25 @@ cdef class SampleTracer:
         cdef code_t co = Code(obj).__getstate__()
         self.ptr.AddCode(co)
         return co
+
+    def rebuild_code(self, val: Union[list, str]):
+        cdef CyCode* c
+        cdef string name
+        cdef str name_s
+        cdef output = []
+        if isinstance(val, str):
+            name = enc(val)
+            if not self.ptr.code_hashes.count(name):
+                return output
+            c = self.ptr.code_hashes[name]
+            co = Code()
+            co.__setstate__(c.ExportCode())
+            output.append(co)
+            return output
+        elif isinstance(val, list):
+            for name_s in val:
+                output += self.rebuild_code(name_s)
+            return output
 
     def ImportSettings(self, settings_t inpt):
         self.ptr.ImportSettings(inpt)
@@ -542,7 +818,8 @@ cdef class SampleTracer:
 
     def AddGraph(self, graph_inpt, meta_inpt = None):
         if graph_inpt is None: return
-        if meta_inpt is None: self.ptr.AddGraph(graph_inpt.__getstate__(), meta_t())
+        if isinstance(graph_inpt, dict): self.ptr.AddGraph(graph_inpt, meta_t())
+        elif meta_inpt is None: self.ptr.AddGraph(graph_inpt.__getstate__(), meta_t())
         else: self.ptr.AddGraph(graph_inpt.__getstate__(), meta_inpt.__getstate__())
 
     def AddSelections(self, selection_inpt, meta_inpt = None):
@@ -551,9 +828,11 @@ cdef class SampleTracer:
         else: self.ptr.AddSelection(selection_inpt.__getstate__(), meta_inpt.__getstate__())
 
     def SetAttribute(self, fx, str name) -> bool:
-        if self._Graph is None: self._Graph = GraphTemplate()
-        if name in self._Graph.code: return False
-        self._Graph.__scrapecode__(fx, name)
+        if name in self._graph_codes: return False
+        self._graph_codes[name] = fx
+        if self._Graph is None: return True
+        self.Graph = self._Graph
+        self._graph_codes = {}
         return True
 
     @property
@@ -562,12 +841,9 @@ cdef class SampleTracer:
         cdef CyCode* code
         cdef pair[string, string] its
         for its in self.ptr.link_event_code:
-            if not self.ptr.code_hashes.count(its.second): pass
-            else:
-                code = self.ptr.code_hashes[its.second]
-                c = Code()
-                c.__setstate__(code.ExportCode())
-                return c.InstantiateObject
+            co = self.rebuild_code(env(its.second))
+            if not len(co): return None
+            return co[0].InstantiateObject
         return None
 
     @Event.setter
@@ -578,15 +854,21 @@ cdef class SampleTracer:
         cdef string name = enc(event.__name__())
         if type(event).__module__.endswith("cmodules.code"):
             co = event.code
+
+            if self.ptr.code_hashes.count(co.hash): return
             self.ptr.link_event_code[name] = co.hash
             self.ptr.code_hashes[co.hash] = new CyCode()
             self.ptr.code_hashes[co.hash].ImportCode(co)
             return
-        if not self.is_self(event, EventTemplate): return
+
+        if not self.is_self(event, EventTemplate):
+            return
+
         cdef map[string, code_t] deps = {}
         for o in event.Objects.values():
             co = self.trace_code(o)
             deps[co.hash] = co
+
         co = self.trace_code(event)
         self.ptr.link_event_code[name] = co.hash
         self.ptr.code_hashes[co.hash].AddDependency(deps)
@@ -594,23 +876,57 @@ cdef class SampleTracer:
 
     @property
     def Graph(self):
-        return self._Graph
+        if self._Graph is not None: return self._Graph
+        cdef pair[string, string] its
+        cdef CyCode* code
+        cdef dict features
+        for its in self.ptr.link_graph_code:
+            co = self.rebuild_code(env(its.second))
+            if not len(co): return None
+            code = self.ptr.code_hashes[its.second]
+            features = {}
+            for its in code.container.param_space:
+                if its.first == code.hash: continue
+                if its.first == b'__state__':
+                    features["__state__"] = pickle.loads(its.second)
+                    continue
+                c = self.rebuild_code(env(its.first))
+                if not len(c):continue
+                features[env(its.second)] = c[0]
+            co = co[0].InstantiateObject
+            setattr(co, "code", features)
+            return co
+        return None
 
     @Graph.setter
     def Graph(self, graph):
         try: graph = graph()
         except: pass
         if not self.is_self(graph, GraphTemplate): return
+        cdef code_t co
         cdef graph_t gr
         cdef string name = enc(graph.__name__())
-        if self._Graph is not None:
-            gr = self._Graph.Export
-            gr.event_name = name
-            graph.Import(gr)
-            graph.ImportCode(self._Graph.code)
-        for _, o in graph.code.items(): self.ptr.AddCode(o.__getstate__())
-        cdef code_t co = self.trace_code(graph)
+        cdef str name_
+        if type(graph).__module__.endswith("cmodules.code"):
+            co = graph.code
+
+            if self.ptr.code_hashes.count(co.hash): return
+            self.ptr.link_graph_code[name] = co.hash
+            self.ptr.code_hashes[co.hash] = new CyCode()
+            self.ptr.code_hashes[co.hash].ImportCode(co)
+            return
+
+        for name_, c_ in self._graph_codes.items():
+            graph.__scrapecode__(c_, name_)
+
+        co = self.trace_code(graph)
         self.ptr.link_graph_code[name] = co.hash
+        cdef CyCode* c = self.ptr.code_hashes[co.hash]
+        c.container.param_space[b'__state__'] = pickle.dumps(graph.__getstate__())
+        for name_, o in graph.code.items():
+            co = o.__getstate__()
+            c.container.param_space[co.hash] = enc(name_)
+            self.ptr.AddCode(co)
         self._Graph = graph
 
     @property
@@ -729,10 +1045,11 @@ cdef class SampleTracer:
 
     @property
     def DataCache(self):
-        return self._set.getgraph
+        return self._set.graphcache
 
     @DataCache.setter
     def DataCache(self, bool val):
+        if val: self._set.graphcache = val
         self._set.getgraph = val
 
     @property

@@ -1,8 +1,8 @@
+from examples.ExampleSelection import Example, Example2
 from AnalysisG.Generators import SelectionGenerator
 from AnalysisG.Generators import EventGenerator
-from examples.ExampleSelection import Example, Example2
 from examples.Event import EventEx
-
+from AnalysisG.IO import nTupler
 
 smpl = "./samples/"
 Files = {
@@ -43,5 +43,30 @@ def test_selection_generator():
         x.append(i)
     assert len(x) >= 90
 
+def test_selection_ntupler():
+    #ev = template()
+
+    #sel = SelectionGenerator(ev)
+    #sel.ProjectName = "Project"
+    #sel.Threads = 2
+    #sel.AddSelection(Example)
+    #sel.AddSelection(Example2)
+    #sel.MakeSelections()
+    #sel.DumpSelections()
+    #sel.DumpTracer()
+
+    #sel = SelectionGenerator()
+    #sel.ProjectName = "Project"
+    #sel.RestoreTracer()
+    #sel.RestoreSelections()
+
+    nt = nTupler()
+    nt.ProjectName = "Project"
+    nt.This("Example2 -> ", "nominal")
+    nt.__start__()
+
+
+
 if __name__ == "__main__":
-    test_selection_generator()
+    #test_selection_generator()
+    test_selection_ntupler()

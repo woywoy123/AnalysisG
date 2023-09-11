@@ -1,8 +1,8 @@
 from AnalysisG.Generators import EventGenerator, SelectionGenerator
 from examples.ExampleSelection import Example, Example2
+from AnalysisG.IO import nTupler, UpROOT
 from examples.Event import EventEx
 from AnalysisG import Analysis
-from AnalysisG.IO import nTupler, UpROOT
 from conftest import clean_dir
 from time import sleep
 import uproot

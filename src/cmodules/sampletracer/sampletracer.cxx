@@ -76,17 +76,6 @@ namespace SampleTracer
 
     std::map<std::string, std::vector<event_t*>> CySampleTracer::DumpEvents()
     {
-        auto encoder = [](std::vector<event_t*>* convert)
-        {
-            for (unsigned int i(0); i < convert -> size(); ++i)
-            {
-                event_t* ev = convert -> at(i); 
-                unsigned int length = ev -> pickled_data.size(); 
-                const char* ch = ev -> pickled_data.c_str(); 
-                ev -> pickled_data = Tools::base64_encode((const unsigned char*)ch, length);
-            }
-        };
-
         std::map<std::string, CyROOT*>::iterator itr; 
         std::map<std::string, std::vector<event_t*>> output; 
         std::map<std::string, std::vector<event_t*>> event; 
@@ -106,7 +95,57 @@ namespace SampleTracer
         }
 
         ev_i = output.begin();
-        for (; ev_i != output.end(); ++ev_i){encoder(&ev_i -> second);}
+        for (; ev_i != output.end(); ++ev_i){CyHelpers::encoder(&ev_i -> second);}
+        return output; 
+    }
+
+    std::map<std::string, std::vector<graph_t>> CySampleTracer::DumpGraphs()
+    {
+        std::map<std::string, std::vector<graph_t>> output; 
+        std::map<std::string, std::vector<graph_t>> graphs;
+        std::map<std::string, std::vector<graph_t>>::iterator gr_i; 
+
+        std::map<std::string, CyROOT*>::iterator itr; 
+        std::map<std::string, CyROOT*>* roots = &(this -> root_map); 
+        itr = roots -> begin(); 
+        for (; itr != roots -> end(); ++itr){
+            CyROOT* root = itr -> second;
+            std::string r_name = itr -> first; 
+            graphs = root -> ReleaseGraphs(); 
+            gr_i = graphs.begin(); 
+            for (; gr_i != graphs.end(); ++gr_i){
+                std::vector<graph_t>* get = &(gr_i -> second); 
+                output[r_name].insert(output[r_name].end(), get -> begin(), get -> end());
+            }
+        }
+        gr_i = output.begin();
+        for (; gr_i != output.end(); ++gr_i){CyHelpers::encoder(&gr_i -> second);}
+        return output; 
+    }
+
+    std::map<std::string, std::vector<selection_t>> CySampleTracer::DumpSelections()
+    {
+        std::map<std::string, std::vector<selection_t>> output; 
+        std::map<std::string, std::vector<selection_t*>> selections;
+        std::map<std::string, std::vector<selection_t*>>::iterator sel_i; 
+
+        std::map<std::string, CyROOT*>::iterator itr; 
+        std::map<std::string, CyROOT*>* roots = &(this -> root_map); 
+        itr = roots -> begin(); 
+        for (; itr != roots -> end(); ++itr){
+            CyROOT* root = itr -> second;
+            std::string r_name = itr -> first; 
+            selections = root -> ReleaseSelections(); 
+            sel_i = selections.begin(); 
+            for (; sel_i != selections.end(); ++sel_i){
+                for (selection_t* x : sel_i -> second){
+                    selection_t sel = *x; 
+                    CyHelpers::encoder(&sel.pickled_data);
+                    CyHelpers::encoder(&sel.pickled_strategy_data);
+                    output[r_name].push_back(sel); 
+                } 
+            }
+        }
         return output; 
     }
 
@@ -167,15 +206,18 @@ namespace SampleTracer
         std::map<std::string, std::string>::iterator itl; 
         itl = inpt.link_event_code.begin(); 
         for (; itl != inpt.link_event_code.end(); ++itl){
+            if (this -> link_event_code.count(itl -> first)){continue;}
             this -> link_event_code[itl -> first] = itl -> second; 
         }
 
         itl = inpt.link_graph_code.begin(); 
         for (; itl != inpt.link_graph_code.end(); ++itl){
+            if (this -> link_graph_code.count(itl -> first)){continue;}
             this -> link_graph_code[itl -> first] = itl -> second; 
         }
         itl = inpt.link_selection_code.begin(); 
         for (; itl != inpt.link_selection_code.end(); ++itl){
+            if (this -> link_selection_code.count(itl -> first)){continue;}
             this -> link_selection_code[itl -> first] = itl -> second; 
         }
 
@@ -260,6 +302,7 @@ namespace SampleTracer
         std::map<std::string, CyROOT*>::iterator itr; 
         this -> event_trees.clear(); 
 
+        output["n_hashes"] = 0; 
         itr = this -> root_map.begin();
         for (; itr != this -> root_map.end(); ++itr){
             CyROOT* r_ = itr -> second;

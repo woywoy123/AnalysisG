@@ -11,3 +11,10 @@ class _nTupler(Notification):
         msg += "\n->".join(others)
         self.Warning(msg)
         self.Warning("Skipping for now...")
+
+    def _MissingSelectionName(self):
+        msg = "No SelectionName has been specified. Use the following syntax:"
+        msg += "\n<var> = nTupler \n <var>.This('SelectionName -> variable', 'tree')"
+        self.Warning(msg)
+        self.Warning("OPTIONS ARE LISTED BELOW:")
+        self.Warning("\n-> ".join([""] + self.ShowSelections))

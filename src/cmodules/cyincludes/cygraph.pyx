@@ -75,8 +75,7 @@ cdef class GraphTemplate:
         except: return None
 
     def __getstate__(self) -> graph_t:
-        cdef graph_t gr = self.ptr.Export()
-        return gr;
+        return self.ptr.Export()
 
     def __setstate__(self, graph_t gr):
         self.ptr.Import(gr)
@@ -112,23 +111,23 @@ cdef class GraphTemplate:
         self._code[key] = co_
         cdef CyCode* co = new CyCode()
         co.ImportCode(co_.__getstate__())
-        if   key.startswith("G"):
+        if key.startswith("G_"):
             self.ptr.graph_fx[k] = co
             self.gr.graph_feature[k] = b""
 
-        elif key.startswith("N"):
+        elif key.startswith("N_"):
             self.ptr.node_fx[k] = co
             self.gr.node_feature[k] = b""
 
-        elif key.startswith("E"):
+        elif key.startswith("E_"):
             self.ptr.edge_fx[k] = co
             self.gr.edge_feature[k] = b""
 
-        elif key.startswith("P"):
+        elif key.startswith("P_"):
             self.ptr.pre_sel_fx[k] = co
             self.gr.pre_sel_feature[k] = b""
 
-        elif key.startswith("T"): self.ptr.topo_link = co
+        elif key.startswith("T_"): self.ptr.topo_link = co
         else: self.ptr.code_link = co
         return co_
 

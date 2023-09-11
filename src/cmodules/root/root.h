@@ -178,6 +178,8 @@ namespace SampleTracer
             root_t Export(); 
             void Import(const root_t* inpt); 
             std::map<std::string, std::vector<event_t*>> ReleaseEvents(); 
+            std::map<std::string, std::vector<graph_t>> ReleaseGraphs(); 
+            std::map<std::string, std::vector<selection_t*>> ReleaseSelections(); 
 
             void AddEvent(const event_t* event);
             void AddGraph(const graph_t* graph);

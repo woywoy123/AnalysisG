@@ -357,6 +357,44 @@ namespace SampleTracer
         return out; 
     }
 
+
+    std::map<std::string, std::vector<graph_t>> CyROOT::ReleaseGraphs()
+    {
+        std::map<std::string, std::vector<graph_t>> out = {}; 
+        std::map<std::string, CyBatch*>::iterator itr; 
+        itr = this -> batches.begin(); 
+        for (; itr != this -> batches.end(); ++itr){
+            std::map<std::string, CyGraphTemplate*> ev = itr -> second -> graphs; 
+            std::map<std::string, CyGraphTemplate*>::iterator ite; 
+            ite = ev.begin(); 
+            for (; ite != ev.end(); ++ite){
+                graph_t ev_ = ite -> second -> Export(); 
+                if (ev_.cached){continue;}
+                std::string path = ev_.event_tree + "/" + ev_.event_name; 
+                out[path].push_back(ev_); 
+            }
+        } 
+        return out; 
+    }
+
+    std::map<std::string, std::vector<selection_t*>> CyROOT::ReleaseSelections()
+    {
+        std::map<std::string, std::vector<selection_t*>> out = {}; 
+        std::map<std::string, CyBatch*>::iterator itr;
+        itr = this -> batches.begin(); 
+        for (; itr != this -> batches.end(); ++itr){
+            std::map<std::string, CySelectionTemplate*> sel = itr -> second -> selections; 
+            std::map<std::string, CySelectionTemplate*>::iterator its;
+            its = sel.begin(); 
+            for (; its != sel.end(); ++its){
+                selection_t* sel_ = &(its -> second -> selection); 
+                std::string path = sel_ -> event_tree + "/" + sel_ -> event_name;
+                out[path].push_back(sel_); 
+            }
+        }
+        return out; 
+    }
+
     root_t CyROOT::Export()
     {
         std::vector<batch_t*> container = {}; 
