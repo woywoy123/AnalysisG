@@ -45,7 +45,6 @@ def test_selection_generator():
 
 def test_selection_ntupler():
     #ev = template()
-
     #sel = SelectionGenerator(ev)
     #sel.ProjectName = "Project"
     #sel.Threads = 2
@@ -54,11 +53,6 @@ def test_selection_ntupler():
     #sel.MakeSelections()
     #sel.DumpSelections()
     #sel.DumpTracer()
-
-    #sel = SelectionGenerator()
-    #sel.ProjectName = "Project"
-    #sel.RestoreTracer()
-    #sel.RestoreSelections()
 
     nt = nTupler()
     nt.ProjectName = "Project"

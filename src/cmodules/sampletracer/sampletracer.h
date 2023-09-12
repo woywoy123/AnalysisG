@@ -71,38 +71,6 @@ namespace SampleTracer
                 (*output)[co -> hash] = co_;
             }
         }; 
-
-
-        template <typename G>
-        void encoder(std::vector<G>* convert)
-        {
-            for (unsigned int i(0); i < convert -> size(); ++i)
-            {
-                G* ev = &(convert -> at(i));
-                unsigned int length = ev -> pickled_data.size(); 
-                const char* ch = ev -> pickled_data.c_str(); 
-                ev -> pickled_data = Tools::base64_encode((const unsigned char*)ch, length);
-            }
-        };
-
-        template <typename G>
-        void encoder(std::vector<G*>* convert)
-        {
-            for (unsigned int i(0); i < convert -> size(); ++i)
-            {
-                G* ev = convert -> at(i);
-                unsigned int length = ev -> pickled_data.size(); 
-                const char* ch = ev -> pickled_data.c_str(); 
-                ev -> pickled_data = Tools::base64_encode((const unsigned char*)ch, length);
-            }
-        };
-
-        static void encoder(std::string* conv)
-        {
-            unsigned int length = conv -> size();
-            const char* ch = conv -> c_str(); 
-            *conv = Tools::base64_encode((const unsigned char*)ch, length); 
-        }; 
     }
 
     class CySampleTracer
@@ -120,6 +88,27 @@ namespace SampleTracer
                 }
                 return root -> at(event_root); 
             }; 
+            
+            template <typename G>
+            void ReleaseObjects(std::map<std::string, std::vector<G*>>* out)
+            {
+                std::map<std::string, CyROOT*>* roots = &(this -> root_map);
+                std::map<std::string, CyROOT*>::iterator itr = roots -> begin();
+                typename std::map<std::string, std::vector<G*>>::iterator itG;
+                typename std::map<std::string, std::vector<G*>> tmp;
+                typename std::vector<G*> app; 
+                for (; itr != roots -> end(); ++itr){
+                    std::string r_name = itr -> first; 
+                    tmp = {}; 
+                    itr -> second -> ReleaseObjects(&tmp); 
+                    itG = tmp.begin(); 
+                    for(; itG != tmp.end(); ++itG){
+                        std::string name = r_name + ":" + itG -> first; 
+                        app = itG -> second; 
+                        (*out)[name].insert((*out)[name].end(), app.begin(), app.end());
+                    }
+                }
+            }; 
 
             void AddMeta(meta_t, std::string);
             void AddEvent(event_t event, meta_t meta);
@@ -128,9 +117,9 @@ namespace SampleTracer
             void AddCode(code_t code); 
             CyBatch* RegisterHash(std::string hash, std::string event_root); 
 
-            std::map<std::string, std::vector<event_t*>> DumpEvents(); 
-            std::map<std::string, std::vector<graph_t>> DumpGraphs(); 
-            std::map<std::string, std::vector<selection_t>> DumpSelections();
+            std::map<std::string, std::vector<CyEventTemplate*>> DumpEvents(); 
+            std::map<std::string, std::vector<CyGraphTemplate*>> DumpGraphs(); 
+            std::map<std::string, std::vector<CySelectionTemplate*>> DumpSelections();
 
             void DumpTracer();
 

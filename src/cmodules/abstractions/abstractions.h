@@ -9,6 +9,18 @@ namespace Tools
 {
     std::string base64_encode(unsigned char const*, unsigned int len); 
     std::string base64_decode(std::string const& s); 
+    inline std::string encode64(std::string* inpt)
+    {
+       unsigned int length = inpt -> size(); 
+       const char* ch = inpt -> c_str(); 
+       return base64_encode((const unsigned char*) ch, length); 
+    };
+
+    inline std::string decode64(std::string* inpt)
+    {
+       return base64_decode(*inpt); 
+    };
+
     std::string Hashing(std::string input); 
     std::string ToString(double input);
     std::vector<std::string> split(std::string inpt, std::string search); 
@@ -27,7 +39,7 @@ namespace Tools
             out.push_back(std::vector<G>(v.begin() + ib, v.begin() + end)); 
         }
         return out; 
-    }
+    };
 }
 
 namespace Abstraction

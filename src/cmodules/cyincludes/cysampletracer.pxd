@@ -11,6 +11,7 @@ from cytypes cimport meta_t, event_t, graph_t, selection_t
 from cytypes cimport settings_t, tracer_t, batch_t, code_t, export_t
 from cycode cimport CyCode
 
+
 cdef extern from "../root/root.h" namespace "SampleTracer" nogil:
     cdef cppclass CyBatch nogil:
         CyBatch(string) except + nogil
@@ -66,9 +67,9 @@ cdef extern from "../sampletracer/sampletracer.h" namespace "SampleTracer":
 
         CyBatch* RegisterHash(string, string) except +
 
-        map[string, vector[event_t*]] DumpEvents() except +
-        map[string, vector[graph_t]] DumpGraphs() except +
-        map[string, vector[selection_t]] DumpSelections() except +
+        map[string, vector[CyEventTemplate*]] DumpEvents() except +
+        map[string, vector[CyGraphTemplate*]] DumpGraphs() except +
+        map[string, vector[CySelectionTemplate*]] DumpSelections() except +
         void DumpTracer() except +
 
         tracer_t Export() except +

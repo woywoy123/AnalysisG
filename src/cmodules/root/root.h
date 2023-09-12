@@ -161,8 +161,6 @@ namespace SampleTracer
                     it -> second -> code_owner = false; 
                 }
             };
-
-
     }; 
 
     class CyROOT
@@ -177,9 +175,10 @@ namespace SampleTracer
 
             root_t Export(); 
             void Import(const root_t* inpt); 
-            std::map<std::string, std::vector<event_t*>> ReleaseEvents(); 
-            std::map<std::string, std::vector<graph_t>> ReleaseGraphs(); 
-            std::map<std::string, std::vector<selection_t*>> ReleaseSelections(); 
+
+            void ReleaseObjects(std::map<std::string, std::vector<CyEventTemplate*>>*); 
+            void ReleaseObjects(std::map<std::string, std::vector<CyGraphTemplate*>>*); 
+            void ReleaseObjects(std::map<std::string, std::vector<CySelectionTemplate*>>*); 
 
             void AddEvent(const event_t* event);
             void AddGraph(const graph_t* graph);
@@ -218,11 +217,93 @@ namespace SampleTracer
                     std::string name = it -> second.event_name; 
                     std::string tree = it -> second.event_tree;
                     std::string key = tree + "/" + name;  
-                    if (it -> second.event){ this -> n_events[key] += 1; }
-                    else if (it -> second.graph){ this -> n_graphs[key] += 1; }
-                    else if (it -> second.selection){ this -> n_selections[key] += 1; }
+                    if (it -> second.event){
+                        this -> n_events[key] += 1; 
+                        continue;
+                    }
+                    if (it -> second.graph){ 
+                        this -> n_graphs[key] += 1; 
+                        continue;
+                    }
+                    if (it -> second.selection){ 
+                        this -> n_selections[key] += 1; 
+                    }
                 }
             };
+            template <typename T>
+            static void _make_path(T* evnt, std::string* pth)
+            {
+                *pth += evnt -> event_tree + "." + evnt -> event_name;
+            };
+
+            static void _get(std::map<std::string, CyEventTemplate*>* get, CyBatch* bt)
+            {
+                *get = bt -> events;  
+            };
+
+            static void _get(std::map<std::string, CyGraphTemplate*>* get, CyBatch* bt)
+            {
+                *get = bt -> graphs;  
+            };
+
+            static void _get(std::map<std::string, CySelectionTemplate*>* get, CyBatch* bt)
+            {
+                *get = bt -> selections;  
+            };
+
+            static bool _get_T(CyEventTemplate* inpt, std::string* path)
+            {
+                event_t* ev = &(inpt -> event);
+                if (ev -> cached){return true;}
+                _make_path(ev, path);
+                return false;
+            };
+
+            static bool _get_T(CyGraphTemplate* inpt, std::string* path)
+            {
+                graph_t* gr = &(inpt -> graph);
+                if (gr -> cached){return true;}
+                _make_path(gr, path);
+                return false;
+            };
+
+            static bool _get_T(CySelectionTemplate* inpt, std::string* path)
+            {
+                selection_t* se = &(inpt -> selection);
+                if (se -> cached){return true;}
+                _make_path(se, path);
+                return false;
+            };
+
+            template <typename G>
+            void ReleaseData(std::map<std::string, std::vector<G*>>* out)
+            {
+                typename std::map<std::string, G*> obj; 
+                typename std::map<std::string, G*>::iterator it; 
+
+                std::map<std::string, CyBatch*>::iterator itr; 
+                itr = this -> batches.begin(); 
+                for (; itr != this -> batches.end(); ++itr){
+                    _get(&obj, itr -> second); 
+                    it = obj.begin();
+                    for (; it != obj.end(); ++it){
+                        std::string path = ""; 
+                        if (_get_T(it -> second, &path)){continue;}
+                        (*out)[path].push_back(it -> second);
+                    }
+                }
+            };
+
+
+
+
+
+
+            
+
+
+
+
     };
 }
 #endif

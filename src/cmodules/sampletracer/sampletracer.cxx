@@ -74,79 +74,25 @@ namespace SampleTracer
         CyHelpers::ImportCode(&(this -> code_hashes), &co); 
     }
 
-    std::map<std::string, std::vector<event_t*>> CySampleTracer::DumpEvents()
+    std::map<std::string, std::vector<CyEventTemplate*>> CySampleTracer::DumpEvents()
     {
-        std::map<std::string, CyROOT*>::iterator itr; 
-        std::map<std::string, std::vector<event_t*>> output; 
-        std::map<std::string, std::vector<event_t*>> event; 
-        std::map<std::string, std::vector<event_t*>>::iterator ev_i; 
-
-        std::map<std::string, CyROOT*>* roots = &(this -> root_map); 
-        itr = roots -> begin(); 
-        for (; itr != roots -> end(); ++itr){
-            CyROOT* root = itr -> second; 
-            std::string r_name = itr -> first; 
-            event = root -> ReleaseEvents(); 
-            ev_i = event.begin(); 
-            for (; ev_i != event.end(); ++ev_i){
-                std::vector<event_t*>* get = &(ev_i -> second); 
-                output[r_name].insert(output[r_name].end(), get -> begin(), get -> end()); 
-            }
-        }
-
-        ev_i = output.begin();
-        for (; ev_i != output.end(); ++ev_i){CyHelpers::encoder(&ev_i -> second);}
-        return output; 
+        std::map<std::string, std::vector<CyEventTemplate*>> output; 
+        this -> ReleaseObjects(&output);
+        return output;
     }
 
-    std::map<std::string, std::vector<graph_t>> CySampleTracer::DumpGraphs()
+    std::map<std::string, std::vector<CyGraphTemplate*>> CySampleTracer::DumpGraphs()
     {
-        std::map<std::string, std::vector<graph_t>> output; 
-        std::map<std::string, std::vector<graph_t>> graphs;
-        std::map<std::string, std::vector<graph_t>>::iterator gr_i; 
-
-        std::map<std::string, CyROOT*>::iterator itr; 
-        std::map<std::string, CyROOT*>* roots = &(this -> root_map); 
-        itr = roots -> begin(); 
-        for (; itr != roots -> end(); ++itr){
-            CyROOT* root = itr -> second;
-            std::string r_name = itr -> first; 
-            graphs = root -> ReleaseGraphs(); 
-            gr_i = graphs.begin(); 
-            for (; gr_i != graphs.end(); ++gr_i){
-                std::vector<graph_t>* get = &(gr_i -> second); 
-                output[r_name].insert(output[r_name].end(), get -> begin(), get -> end());
-            }
-        }
-        gr_i = output.begin();
-        for (; gr_i != output.end(); ++gr_i){CyHelpers::encoder(&gr_i -> second);}
-        return output; 
+        std::map<std::string, std::vector<CyGraphTemplate*>> output; 
+        this -> ReleaseObjects(&output);
+        return output;
     }
 
-    std::map<std::string, std::vector<selection_t>> CySampleTracer::DumpSelections()
+    std::map<std::string, std::vector<CySelectionTemplate*>> CySampleTracer::DumpSelections()
     {
-        std::map<std::string, std::vector<selection_t>> output; 
-        std::map<std::string, std::vector<selection_t*>> selections;
-        std::map<std::string, std::vector<selection_t*>>::iterator sel_i; 
-
-        std::map<std::string, CyROOT*>::iterator itr; 
-        std::map<std::string, CyROOT*>* roots = &(this -> root_map); 
-        itr = roots -> begin(); 
-        for (; itr != roots -> end(); ++itr){
-            CyROOT* root = itr -> second;
-            std::string r_name = itr -> first; 
-            selections = root -> ReleaseSelections(); 
-            sel_i = selections.begin(); 
-            for (; sel_i != selections.end(); ++sel_i){
-                for (selection_t* x : sel_i -> second){
-                    selection_t sel = *x; 
-                    CyHelpers::encoder(&sel.pickled_data);
-                    CyHelpers::encoder(&sel.pickled_strategy_data);
-                    output[r_name].push_back(sel); 
-                } 
-            }
-        }
-        return output; 
+        std::map<std::string, std::vector<CySelectionTemplate*>> output = {}; 
+        this -> ReleaseObjects(&output);
+        return output;
     }
 
     void CySampleTracer::DumpTracer()
@@ -297,8 +243,19 @@ namespace SampleTracer
 
     std::map<std::string, int> CySampleTracer::length()
     {
-        std::map<std::string, int> output; 
-        std::map<std::string, int>::iterator itn; 
+        auto populate = [](
+                std::map<std::string, int>* inpt, 
+                std::map<std::string, int>* out)
+        {
+            std::map<std::string, int>::iterator its; 
+            its = inpt -> begin(); 
+            for (; its != inpt -> end(); ++its){
+                (*out)[its -> first] += its -> second; 
+            }
+        };
+
+
+        std::map<std::string, int> output = {}; 
         std::map<std::string, CyROOT*>::iterator itr; 
         this -> event_trees.clear(); 
 
@@ -307,27 +264,10 @@ namespace SampleTracer
         for (; itr != this -> root_map.end(); ++itr){
             CyROOT* r_ = itr -> second;
             r_ -> UpdateSampleStats();  
-
-            itn = r_ -> n_events.begin(); 
-            for (; itn != r_ -> n_events.end(); ++itn){
-                output[itn -> first] += itn -> second; 
-            }
-
-            itn = r_ -> n_graphs.begin(); 
-            for (; itn != r_ -> n_graphs.end(); ++itn){
-                output[itn -> first] += itn -> second; 
-            }
-            
-            itn = r_ -> n_selections.begin(); 
-            for (; itn != r_ -> n_selections.end(); ++itn){
-                output[itn -> first] += itn -> second; 
-            }
-
-            itn = r_ -> event_trees.begin(); 
-            for (; itn != r_ -> event_trees.end(); ++itn){
-                this -> event_trees[itn -> first] += itn -> second; 
-            }
-
+            populate(&(r_ -> n_events), &output);
+            populate(&(r_ -> n_graphs), &output); 
+            populate(&(r_ -> n_selections), &output); 
+            populate(&(r_ -> event_trees), &(this -> event_trees)); 
             output["n_hashes"] += r_ -> total_hashes; 
         }
         return output; 

@@ -15,6 +15,8 @@ class nTupler(_Interface, _nTupler, SampleTracer):
         _Interface.__init__(self)
         _nTupler.__init__(self)
         self._DumpThis = {}
+        self._iterator = {}
+        self._loaded = False
 
     def Write(self, OutDir: Union[str, None] = None):
         pass
@@ -23,20 +25,37 @@ class nTupler(_Interface, _nTupler, SampleTracer):
         pass
 
     def __start__(self):
-        iters = []
+        if not self._loaded: self.RestoreTracer()
+        variables = []
         for i, x in self._DumpThis.items():
             x = [(i + "/" + j).replace(" ","") for j in x]
             x = [i if i.endswith("->") else i+"->" for i in x]
-            iters += x
+            variables += x
 
-        self.RestoreTracer()
+        tree_selection = {}
+        for i in variables:
+            cont = i.split("->")[0]
+            var = i.lstrip(cont)
+            if cont not in tree_selection:
+                tree_selection[cont] = []
+            tree_selection[cont].append(var)
+            if cont.split("/")[-1] in self.ShowSelections:
+                self._FoundSelectionName(cont.split("/")[-1])
+            else: return self._MissingSelectionName()
+        self._iterator = tree_selection
+        self.GetAll = True
+        for i in self:
+            print(i.selection_cache_dir())
+            print(i.EventName)
         self.RestoreSelections()
-        for tr in iters:
-            self.SelectionName = tr.split("/")[1].split("->")[0]
-            self.Tree = tr.split("/")[0]
-            self.GetSelection = True
-            print(self.makelist())
+        exit()
 
+
+        if not self._loaded: self.RestoreSelections()
+        self._loaded = True
+
+    def preiteration(self):
+        return False
 
 
 #class container:#(SampleTracer):

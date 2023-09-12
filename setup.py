@@ -4,14 +4,15 @@ from Cython.Build import cythonize
 src = "src/cmodules/"
 
 def h_format(name): return [src + name + "/"]
-def s_format(name, incl):
+def s_format(name, incl, cxx_ = True):
     if incl: source = [src + "cyincludes/cy" + name + ".pyx"]
     else: source = []
+    if not cxx_: return source
     source += [src + name + "/" + name + ".cxx"]
     return source
 
-def make(module, name, dependency):
-    _src = s_format(name, True)
+def make(module, name, dependency, cxx_ = True):
+    _src = s_format(name, True, cxx_)
     for i in dependency: _src += s_format(i, False)
 
     _incl = h_format(name)
@@ -30,6 +31,7 @@ modules = [
         #make("SelectionTemplate", "selection", ["abstractions", "code"]),
         make("SampleTracer", "sampletracer", ["root", "abstractions", "metadata", "event", "graph", "selection", "code"])
 ]
+
 for i in range(len(modules)):
     modules[i]["language"] = "c++"
     modules[i] = Extension(**modules[i])

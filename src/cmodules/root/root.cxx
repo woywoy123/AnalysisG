@@ -338,63 +338,39 @@ namespace SampleTracer
         }
     }
 
-    std::map<std::string, std::vector<event_t*>> CyROOT::ReleaseEvents()
+    void CyROOT::ReleaseObjects(std::map<std::string, std::vector<CyEventTemplate*>>* out)
     {
-        std::map<std::string, std::vector<event_t*>> out = {}; 
-        std::map<std::string, CyBatch*>::iterator itr; 
-        itr = this -> batches.begin(); 
-        for (; itr != this -> batches.end(); ++itr){
-            std::map<std::string, CyEventTemplate*> ev = itr -> second -> events; 
-            std::map<std::string, CyEventTemplate*>::iterator ite; 
-            ite = ev.begin(); 
-            for (; ite != ev.end(); ++ite){
-                event_t* ev_ = &(ite -> second -> event); 
-                if (ev_ -> cached){continue;}
-                std::string path = ev_ -> event_tree + "/" + ev_ -> event_name; 
-                out[path].push_back(ev_); 
-            }
-        } 
-        return out; 
-    }
-
-
-    std::map<std::string, std::vector<graph_t>> CyROOT::ReleaseGraphs()
-    {
-        std::map<std::string, std::vector<graph_t>> out = {}; 
-        std::map<std::string, CyBatch*>::iterator itr; 
-        itr = this -> batches.begin(); 
-        for (; itr != this -> batches.end(); ++itr){
-            std::map<std::string, CyGraphTemplate*> ev = itr -> second -> graphs; 
-            std::map<std::string, CyGraphTemplate*>::iterator ite; 
-            ite = ev.begin(); 
-            for (; ite != ev.end(); ++ite){
-                graph_t ev_ = ite -> second -> Export(); 
-                if (ev_.cached){continue;}
-                std::string path = ev_.event_tree + "/" + ev_.event_name; 
-                out[path].push_back(ev_); 
-            }
-        } 
-        return out; 
-    }
-
-    std::map<std::string, std::vector<selection_t*>> CyROOT::ReleaseSelections()
-    {
-        std::map<std::string, std::vector<selection_t*>> out = {}; 
-        std::map<std::string, CyBatch*>::iterator itr;
-        itr = this -> batches.begin(); 
-        for (; itr != this -> batches.end(); ++itr){
-            std::map<std::string, CySelectionTemplate*> sel = itr -> second -> selections; 
-            std::map<std::string, CySelectionTemplate*>::iterator its;
-            its = sel.begin(); 
-            for (; its != sel.end(); ++its){
-                selection_t* sel_ = &(its -> second -> selection); 
-                std::string path = sel_ -> event_tree + "/" + sel_ -> event_name;
-                out[path].push_back(sel_); 
-            }
+        std::map<std::string, std::vector<CyEventTemplate*>> get = {}; 
+        this -> ReleaseData(&get); 
+        std::map<std::string, std::vector<CyEventTemplate*>>::iterator ite = get.begin(); 
+        for (; ite != get.end(); ++ite){
+            std::vector<CyEventTemplate*> t = ite -> second;
+            (*out)[ite -> first].insert((*out)[ite -> first].end(), t.begin(), t.end()); 
         }
-        return out; 
     }
 
+    void CyROOT::ReleaseObjects(std::map<std::string, std::vector<CyGraphTemplate*>>* out)
+    {
+        std::map<std::string, std::vector<CyGraphTemplate*>> get = {}; 
+        this -> ReleaseData(&get); 
+        std::map<std::string, std::vector<CyGraphTemplate*>>::iterator ite = get.begin(); 
+        for (; ite != get.end(); ++ite){
+            std::vector<CyGraphTemplate*> t = ite -> second;
+            (*out)[ite -> first].insert((*out)[ite -> first].end(), t.begin(), t.end()); 
+        }
+    }
+ 
+    void CyROOT::ReleaseObjects(std::map<std::string, std::vector<CySelectionTemplate*>>* out)
+    {
+        std::map<std::string, std::vector<CySelectionTemplate*>> get = {}; 
+        this -> ReleaseData(&get); 
+        std::map<std::string, std::vector<CySelectionTemplate*>>::iterator ite = get.begin(); 
+        for (; ite != get.end(); ++ite){
+            std::vector<CySelectionTemplate*> t = ite -> second;
+            (*out)[ite -> first].insert((*out)[ite -> first].end(), t.begin(), t.end()); 
+        }
+    }
+    
     root_t CyROOT::Export()
     {
         std::vector<batch_t*> container = {}; 
