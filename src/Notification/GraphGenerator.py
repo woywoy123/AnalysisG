@@ -21,12 +21,9 @@ class _GraphGenerator(Notification):
         return False
 
     def CheckSettings(self):
-        edge, node, graph = [], [], []
-        for i in self.Graph.code:
-            if   i.startswith("G_"): graph.append(i[3:])
-            elif i.startswith("N_"): node.append(i[3:])
-            elif i.startswith("E_"): edge.append(i[3:])
-
+        graph = list(self.Graph.code["__state__"]["graph_feature"])
+        node  = list(self.Graph.code["__state__"]["node_feature"])
+        edge  = list(self.Graph.code["__state__"]["edge_feature"])
         attrs = 3
         attrs -= (
             1 * self.Warning("NO EDGE FEATURES PROVIDED")

@@ -109,23 +109,25 @@ cdef class GraphTemplate:
 
         co_ = Code(fx)
         self._code[key] = co_
+        self._code[co_.hash] = co_
         cdef CyCode* co = new CyCode()
         co.ImportCode(co_.__getstate__())
+        co.Hash()
         if key.startswith("G_"):
             self.ptr.graph_fx[k] = co
-            self.gr.graph_feature[k] = b""
+            self.gr.graph_feature[k] = co.hash
 
         elif key.startswith("N_"):
             self.ptr.node_fx[k] = co
-            self.gr.node_feature[k] = b""
+            self.gr.node_feature[k] = co.hash
 
         elif key.startswith("E_"):
             self.ptr.edge_fx[k] = co
-            self.gr.edge_feature[k] = b""
+            self.gr.edge_feature[k] = co.hash
 
         elif key.startswith("P_"):
             self.ptr.pre_sel_fx[k] = co
-            self.gr.pre_sel_feature[k] = b""
+            self.gr.pre_sel_feature[k] = co.hash
 
         elif key.startswith("T_"): self.ptr.topo_link = co
         else: self.ptr.code_link = co
@@ -178,9 +180,9 @@ cdef class GraphTemplate:
             p_hash = self.ptr.IndexToHash(src)
             self.gr.src_dst[p_hash].push_back(dst)
 
-    def __buildthis__(self, str key, bool preselection, list this):
+    def __buildthis__(self, str key, str co_hash, bool preselection, list this):
         try:
-            res = self._code[key](*this)
+            res = self._code[co_hash](*this)
             if res is None: raise TypeError("NoneType")
         except Exception as inst:
             if key.startswith("G_F_"): key = "G_" + key[4:]
@@ -213,27 +215,31 @@ cdef class GraphTemplate:
             break
         topo = self.Topology
         if self.gr.empty_graph: return
+
         for itr in self.gr.pre_sel_feature:
             key = env(itr.first)
-            if self.__buildthis__(key, True, [self._event]): continue
+            co_h = env(itr.second)
+            if self.__buildthis__(key, co_h, True, [self._event]): continue
             return
+
         n_num = self.gr.hash_particle.size()
         data = Data(edge_index = torch.tensor(topo, dtype = torch.long).t())
         data.num_nodes = torch.tensor(n_num, dtype = torch.int)
-
         for itr in self.gr.graph_feature:
             key = env(itr.first)
-            res = self.__buildthis__(key, False, [self._event])
+            co_h = env(itr.second)
+            res = self.__buildthis__(key, co_h, False, [self._event])
             if not res: continue
             if key.startswith("G_F_"): key = "G_" + key[4:]
             setattr(data, key, res[0])
 
         for itr in self.gr.node_feature:
             key = env(itr.first)
+            co_h = env(itr.second)
             content = []
             for src in range(n_num):
                 src = self.gr.hash_particle[self.ptr.IndexToHash(src)]
-                res = self.__buildthis__(key, False, [self._particles[src].get()])
+                res = self.__buildthis__(key, co_h, False, [self._particles[src].get()])
                 if not res: content = []; break
                 content += res
             if not len(content): continue
@@ -242,18 +248,20 @@ cdef class GraphTemplate:
 
         for itr in self.gr.edge_feature:
             key = env(itr.first)
+            co_h = env(itr.second)
             content = []
             for src_dst in topo:
                 src, dst = src_dst[0], src_dst[1]
                 src = self.gr.hash_particle[self.ptr.IndexToHash(src)]
                 dst = self.gr.hash_particle[self.ptr.IndexToHash(dst)]
                 src_dst = [self._particles[src].get(), self._particles[dst].get()]
-                res = self.__buildthis__(key, False, src_dst)
+                res = self.__buildthis__(key, co_h, False, src_dst)
                 if not res: content = []; break
                 content+=res
             if not len(content): continue
             if key.startswith("E_F_"): key = "E_" + key[4:]
             setattr(data, key, torch.cat(content, dim = 0))
+
         self._particles = []
         self._event = None
         self._code = {}
@@ -278,7 +286,9 @@ cdef class GraphTemplate:
 
     def ImportCode(self, dict inpt):
         cdef str key
-        self._code.update(inpt)
+        for i in inpt:
+            if i == "__state__": continue
+            self._code[inpt[i].hash] = inpt[i]
         self.code_owner = False
 
     @property

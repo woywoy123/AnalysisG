@@ -50,14 +50,14 @@ def test_graph_generator():
     gr.AddGraphFeature(fx_graph, "Failed")
     gr.AddGraphFeature(fx_mev, "mev")
     gr.AddNodeFeature(fx_pmu, "pmu")
+    gr.AddEdgeTruthFeature(fx_custom_topology, "topo")
     gr.AddEdgeFeature(fx_edge, "Mass")
-    gr.AddEdgeTruthFeature(fx_custom_topology)
     gr.SetTopology(fx_custom_topology)
     gr.AddPreSelection(fx_prefilter)
 
     GrGen = GraphGenerator(EvtGen)
     GrGen.Graph = gr
-    GrGen.Threads = 10
+    GrGen.Threads = 1
     GrGen.Chunks = 1000
     GrGen.MakeGraphs()
     assert len(GrGen.ShowLength) == 2
@@ -191,6 +191,6 @@ def test_eventgraph():
 
 
 if __name__ == "__main__":
-    #test_graph_generator()
-    #test_graph_inputs()
+    test_graph_generator()
+    test_graph_inputs()
     test_eventgraph()

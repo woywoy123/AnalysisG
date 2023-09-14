@@ -221,6 +221,9 @@ cdef extern from "../abstractions/cytypes.h":
         string pickled_data
         string pickled_strategy_data
 
+        map[string, string] strat_merge
+        map[string, string] data_merge
+
         map[string, int] cutflow
         vector[double] timestats
         vector[double] all_weights

@@ -66,9 +66,7 @@ cdef class ParticleTemplate:
     def __setstate__(self, tuple inpt):
         cdef str key
         self.ptr.Import(inpt[1])
-        for key in inpt[0]:
-            try: self.__dict__[key] = inpt[0][key]
-            except KeyError: setattr(self, key, inpt[0][key])
+        for key in inpt[0]: setattr(self, key, inpt[0][key])
 
     def __eq__(self, other) -> bool:
         if not self.is_self(other): return False

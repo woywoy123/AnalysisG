@@ -107,11 +107,12 @@ cdef class Code:
         for i in split:
             if "class" not in i: continue
             if ":" not in i: continue
+            if len(i.split("(")) < 2: continue
             name, dep = i.split("(")
             name = name.lstrip("class)").replace(" ", "")
-            out = dep.rstrip("):").split(",")
-            class_name[name] = out
+            class_name[name] = dep.rstrip("):").split(",")
 
+        out = []
         for i in split:
             if "import" not in i: continue
             for k in i.split("import")[-1].split(" "):

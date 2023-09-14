@@ -6,7 +6,9 @@ from cytypes cimport event_t, selection_t
 from cytypes cimport code_t
 
 from AnalysisG.Tools import Code
+from AnalysisG.Tools.General import Tools
 
+from cython.operator cimport dereference
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 from libcpp.map cimport map, pair
@@ -16,6 +18,18 @@ import pickle
 
 cdef string enc(str val): return val.encode("UTF-8")
 cdef str env(string val): return val.decode("UTF-8")
+
+cdef string consolidate(map[string, string]* inpt, string* src):
+    cdef pair[string, string] itr
+    t = Tools()
+    trg = None
+    if src.size(): trg = pickle.loads(dereference(src))
+    for itr in dereference(inpt):
+        if trg is None: trg = pickle.loads(itr.second)
+        else: trg = t.MergeData(trg, pickle.loads(itr.second))
+    inpt.clear()
+    return pickle.dumps(trg)
+
 
 cdef class SelectionTemplate:
 
@@ -46,10 +60,16 @@ cdef class SelectionTemplate:
         else: return self.__add__(other)
 
     def __add__(self, SelectionTemplate other):
-        cdef SelectionTemplate o = self.clone()
-        o.ptr.iadd(other.ptr)
-        o.ptr.iadd(self.ptr)
-        return o
+        self.ptr.iadd(other.ptr)
+        cdef string* data = &self.sel.pickled_data
+        cdef map[string, string]* data_m = &self.sel.data_merge
+        self.sel.pickled_data = consolidate(data_m, data)
+
+        cdef string* stra = &self.sel.pickled_strategy_data
+        cdef map[string, string]* stra_m = &self.sel.strat_merge
+        self.sel.pickled_strategy_data = consolidate(stra_m, stra)
+        self.__setstate__(dereference(self.sel))
+        return self
 
     def __getstate__(self) -> selection_t:
         cdef str key
@@ -148,7 +168,6 @@ cdef class SelectionTemplate:
         cdef dict output = {}
         for it in self.sel.cutflow: output[env(it.first)] = it.second
         return output
-
 
     @property
     def AverageTime(self): return self.ptr.Mean()

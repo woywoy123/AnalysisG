@@ -1,16 +1,17 @@
+from AnalysisG.Generators.SampleGenerator import RandomSamplers
 from AnalysisG.Generators.EventGenerator import EventGenerator
 from AnalysisG.Generators.GraphGenerator import GraphGenerator
 from AnalysisG.Generators.Interfaces import _Interface
+from AnalysisG.Templates import FeatureAnalysis
 from AnalysisG.SampleTracer import SampleTracer
 from AnalysisG.Notification import _Analysis
+from typing import Union
+
 #from AnalysisG.IO import PickleObject, UnpickleObject
 #from .SelectionGenerator import SelectionGenerator
-#from AnalysisG.Templates import FeatureAnalysis
-#from .SampleGenerator import RandomSamplers
 #from .GraphGenerator import GraphGenerator
 #from AnalysisG.Settings import Settings
 #from .Optimizer import Optimizer
-from typing import Union
 
 
 class Analysis(_Analysis, SampleTracer, _Interface):
@@ -24,23 +25,19 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         _Analysis.__init__(self)
         _Interface.__init__(self)
         self.PurgeCache = False
-        self.triggered = False
         self.TestFeatures = False
+        self.triggered = False
+        self.nEvents = 10
+        self.TrainingSize = False
+        self.kFolds = False
+        self.TrainingName = "untitled"
+
         if Name is None and SampleDirectory is None: return
         self.InputSample(Name, SampleDirectory)
 
 
 
 
-
-    def __FeatureAnalysis__(self):
-        if self.EventGraph is None: return True
-        if not self.TestFeatures: return
-        tests = [i for i, _ in zip(self.GetEventCacheHashes(), range(self.nEvents))]
-        self.ForceTheseHashes(tests)
-        f = FeatureAnalysis()
-        f.ImportSettings(self)
-        return f.TestEvent([i for i in self], self.EventGraph)
 
     def __Selection__(self):
         if len(self.Selections) == 0 and len(self.Merge) == 0:
@@ -58,7 +55,7 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         del sel
 
     def __RandomSampler__(self):
-        pth = self.OutputDirectory + "/Training/DataSets/"
+        pth = self.WorkingDirectory + "Training/DataSets/"
         if not self.TrainingSize: return
         if self.TrainingName + ".pkl" in self.ls(pth): return
         if not self.kFolds: self.kFolds = 1
@@ -86,12 +83,14 @@ class Analysis(_Analysis, SampleTracer, _Interface):
 
 
 
+
+
+
     def __build__(self):
         self.StartingAnalysis()
         self._BuildingCache()
         if self.PurgeCache: self._WarningPurge()
         self.triggered = True
-
 
     def __scan__(self):
         f = {}
@@ -109,13 +108,39 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         self.GetAll = False
         return f
 
+    def __FeatureAnalysis__(self):
+        if self.Graph is None: return True
+        if not self.TestFeatures: return
+
+        self.GetAll = True
+        tests = self.makelist()
+        self.GetAll = False
+        if len(tests) < self.nEvents: tests
+        else: tests = tests[:self.nEvents]
+
+        code_ = self.Graph.code
+        code  = code_["__state__"]
+
+        f = FeatureAnalysis()
+        f.Verbose = self.Verbose
+        for gr, i in code["graph_feature"].items():
+            gr, i = gr.decode("UTF-8")[4:], i.decode("UTF-8")
+            f.GraphAttribute[gr] = code_[i]
+
+        for no, i in code["node_feature"].items():
+            no, i = no.decode("UTF-8")[4:], i.decode("UTF-8")
+            f.NodeAttribute[no] = code_[i]
+
+        for ed, i in code["edge_feature"].items():
+            ed, i = ed.decode("UTF-8")[4:], i.decode("UTF-8")
+            f.EdgeAttribute[ed] = code_[i]
+
+        return f.TestEvent(tests, self.Graph)
+
     def __Graph__(self):
         if self.Graph is None: return True
-
-        failed = False
-        if self.TestFeatures: failed = self.__FeatureAnalysis__()
-        if failed: return False
         if not len(self.ShowLength): self.RestoreEvents()
+        if not len(self.ShowLength): return True
 
         gr = GraphGenerator(self)
         gr.ImportSettings(self.ExportSettings())
@@ -127,7 +152,6 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         gr.DumpGraphs()
         gr.DumpTracer(self.SampleName)
         return True
-
 
     def __Event__(self):
         if self.Event is None: return True
@@ -160,12 +184,14 @@ class Analysis(_Analysis, SampleTracer, _Interface):
             if not tracer: break
             self.RestoreTracer(tracer, name)
 
+        l = len(self.SampleMap)
+        if not l: self.RestoreTracer()
         if self.EventCache: self.RestoreEvents()
-        if self.DataCache:  self.RestoreGraphs()
-
+        if self.DataCache: self.RestoreGraphs()
         for name in self.SampleMap:
             self.SampleName = name
             self.__Event__()
+            self.__FeatureAnalysis__()
             self.__Graph__()
         return True
 
@@ -181,6 +207,7 @@ class Analysis(_Analysis, SampleTracer, _Interface):
     def preiteration(self) -> bool:
         if not self.triggered: self.Launch()
         content = self.ShowLength
+        if not len(content): return self.EmptySampleList()
         if not len(self.Tree):
             try: self.Tree = self.ShowTrees[0]
             except IndexError: pass

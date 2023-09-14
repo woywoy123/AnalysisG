@@ -4,10 +4,8 @@ def res_edge(a, b):
 
 
 def top_edge(a, b):
-    try:
-        return a.Parent[0] == b.Parent[0]
-    except:
-        return False
+    try: return a.Parent[0] == b.Parent[0]
+    except: return False
 
 
 def lep_edge(a, b):

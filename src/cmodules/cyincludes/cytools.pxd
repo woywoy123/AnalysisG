@@ -50,7 +50,9 @@ cdef inline list map_to_list(map[string, gen_t] inpt):
 cdef inline dict map_to_dict(map[string, gen_t] inpt):
     cdef pair[string, gen_t] its
     cdef dict output = {}
-    for its in inpt: output[env(its.first)] = env(its.second)
+    for its in inpt:
+        if isinstance(its.second, int): output[env(its.first)] = its.second
+        else: output[env(its.first)] = its.second.decode("UTF-8")
     return output
 
 
@@ -75,8 +77,18 @@ cdef inline dump_dir(
     dereference(dir_)[enc(daod)] = enc(path)
 
 
+cdef inline merge(map[string, vector[string]]* out, map[string, string]* get, string hash_):
+    if not get.size(): return
+    cdef pair[string, string] itr
+    for itr in dereference(get): dereference(out)[itr.first].push_back(hash_)
 
-
+cdef inline dict map_vector_to_dict(map[string, vector[string]]* inpt):
+    cdef pair[string, vector[string]] itr
+    cdef string h
+    cdef dict output = {}
+    for itr in dereference(inpt):
+        output[env(itr.first)] = [env(h) for h in itr.second]
+    return output
 
 # ----------------------- cache dumpers -------------------------- #
 cdef inline restore_base(ref, common_t* com):

@@ -43,12 +43,13 @@ cdef class MetaData:
         self.loaded = True
         self.scan_ami = scan_ami
 
-        if not scan_ami: self._getMetaData(file)
-        else:
-            warnings.filterwarnings("ignore")
-            try: self.client = pyAMI.client.Client("atlas")
-            except: pass
-            self.loaded = self._getMetaData(file)
+        if not scan_ami:
+            self._getMetaData(file)
+            return
+        warnings.filterwarnings("ignore")
+        try: self.client = pyAMI.client.Client("atlas")
+        except: pass
+        self.loaded = self._getMetaData(file)
 
     def __dealloc__(self): del self.ptr
     def __getstate__(self) -> meta_t: return self.ptr.Export()
@@ -80,7 +81,8 @@ cdef class MetaData:
         cdef str l
 
         out = {}
-        x = [k for k in uproot.iterate(**command)][0]
+        try: x = [k for k in uproot.iterate(**command)][0]
+        except uproot.exceptions.KeyInFileError: return {}
         for l in command["expressions"]:
             try: out[l] = x[l].tolist()[0]
             except KeyError: pass

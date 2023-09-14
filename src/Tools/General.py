@@ -15,8 +15,8 @@ class Tools(_IO):
             p = directory + "/" + i
             if self.IsFile(p, True): files += [p]
             else: files += self.lsFiles(p, extension)
-        if extension is None: return files
-        else: return [i for i in files if i.endswith(extension)]
+        if extension is None: return [self.abs(i) for i in files]
+        else: return [self.abs(i) for i in files if i.endswith(extension)]
         return files
 
     def ls(self, directory):

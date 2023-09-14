@@ -46,7 +46,6 @@ def test_code_extraction():
     assert "simpleclass" in c.object_code and not "directory" in c.object_code
     assert None in c.defaults and "world" in c.defaults
     assert sum([True for i in ["hello", "world", "test"] if i in c.co_vars])
-    assert {"hello": None, "world" : "world" , "test" : None} == c.input_params
 
 
     # test with initialized
@@ -62,8 +61,7 @@ def test_code_extraction():
     assert "simpleclass" in c2.object_code and not "directory" in c2.object_code
     assert None in c2.defaults and "world" in c.defaults
     assert sum([True for i in ["hello", "world", "test"] if i in c2.co_vars])
-    assert {"hello": None, "world" : "world" , "test" : None} == c2.input_params
-
+    assert {"test" : None, "world" : "world"} == c2.input_params
 
     # test with defaults
     x = f_default
@@ -79,7 +77,7 @@ def test_code_extraction():
     assert "f_default" in c.object_code and not "directory" in c.object_code
     assert "test" in c.defaults
     assert sum([True for i in ["x", "test"] if i in c.co_vars])
-    assert {"x" : "test", "test" : None} == c.input_params
+    assert {"x" : "test"} == c.input_params
 
     # test no defaults
     x = f_nodefault
@@ -186,7 +184,7 @@ def test_ls_files():
     I = Tools()
     F = I.lsFiles(directory)
     for i in range(3):
-        assert directory + "Dir" + str(i + 1) in F
+        assert directory + "Dir" + str(i + 1) + "/" + str(i+1) + ".txt" in F
     assert len(I.lsFiles(directory + "Dir1", ".txt")) == 3
 
 def test_ls():

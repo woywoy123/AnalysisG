@@ -9,3 +9,6 @@ except ModuleNotFoundError: print("ERROR: Missing GraphTemplate Compiler...")
 
 try: from AnalysisG._cmodules.SelectionTemplate import SelectionTemplate
 except ModuleNotFoundError: print("ERROR: Missing SelectionTemplate Compiler...")
+
+from .Features.FeatureAnalysis import FeatureAnalysis
+from .Features.FeatureTemplate import ApplyFeatures

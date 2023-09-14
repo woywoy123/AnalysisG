@@ -88,6 +88,31 @@ cdef class Event:
         try: return getattr(self._meta, req)
         except AttributeError: pass
 
+    def __setattr__(self, key, val):
+        self.__getevent__()
+        try: setattr(self._event, key, val)
+        except AttributeError: pass
+
+        self.__getgraph__()
+        try: setattr(self._graph, key, val)
+        except AttributeError: pass
+
+        self.__getselection__()
+        try: setattr(self._selection, key, val)
+        except AttributeError: pass
+
+    def release_selection(self):
+        self.__getselection__()
+        return self._selection
+
+    def release_graph(self):
+        self.__getgraph__()
+        return self._graph
+
+    def release_event(self):
+        self.__getevent__()
+        return self._event
+
     def event_cache_dir(self):
         return map_to_dict(self.ptr.event_dir)
 
@@ -143,7 +168,6 @@ cdef class Event:
         elif not self._event: self._graph = gr()
         else: self._graph = gr(self._event)
         self._graph.Import(gr_.Export())
-
 
     def __getselection__(self):
         if self._selection is not None: return
@@ -246,10 +270,8 @@ cdef class SampleTracer:
         return entries
 
     def __add__(self, SampleTracer other) -> SampleTracer:
-        cdef SampleTracer tr = self.clone()
-        tr.ptr.iadd(self.ptr)
-        tr.ptr.iadd(other.ptr)
-        return tr
+        self.ptr.iadd(other.ptr)
+        return self
 
     def __radd__(self, other) -> SampleTracer:
         if other == 0: return self
@@ -369,8 +391,7 @@ cdef class SampleTracer:
         for hash_, val in ref[key + "_name_hash"].attrs.items():
             path = ref[key + "_dir"].attrs[val]
             batch = self.ptr.RegisterHash(enc(hash_), root_name)
-            path_ = enc(path)
-            val_  = enc(val)
+            path_, val_ = enc(path), enc(val)
             if key == "event": batch.event_dir[path_] = val_
             elif key == "graph": batch.graph_dir[path_] = val_
             elif key == "selection": batch.selection_dir[path_] = val_
@@ -479,7 +500,7 @@ cdef class SampleTracer:
         cdef pair[string, string] its
         cdef map[string, string] dir_map
 
-        self._set.get_all = len(these_hashes) == 0
+        self._set.get_all = True
         self._set.search = [enc(i) for i in these_hashes]
 
         for batch in self.ptr.MakeIterable():
@@ -568,6 +589,21 @@ cdef class SampleTracer:
 
     def is_self(self, inpt, obj = SampleTracer) -> bool:
         return issubclass(inpt.__class__, obj)
+
+    def makehashes(self) -> dict:
+        cdef CyBatch* batch
+        cdef map[string, vector[string]] ev
+        cdef map[string, vector[string]] gr
+        cdef map[string, vector[string]] sel
+        for batch in self.ptr.MakeIterable():
+            merge(&ev, &batch.event_dir, batch.hash)
+            merge(&gr, &batch.graph_dir, batch.hash)
+            merge(&sel, &batch.selection_dir, batch.hash)
+        cdef dict out = {}
+        out["selection"] = map_vector_to_dict(&sel)
+        out["event"] = map_vector_to_dict(&ev)
+        out["graph"] = map_vector_to_dict(&gr)
+        return out
 
     def makelist(self) -> list:
         cdef vector[CyBatch*] evnt = self.ptr.MakeIterable()
@@ -664,7 +700,8 @@ cdef class SampleTracer:
 
     @property
     def Graph(self):
-        if self._Graph is not None: return self._Graph
+        if self.DataCache: pass
+        elif self._Graph is None: return None
         cdef pair[string, string] its
         cdef CyCode* code
         cdef dict features
@@ -715,6 +752,7 @@ cdef class SampleTracer:
             co = o.__getstate__()
             c.container.param_space[co.hash] = enc(name_)
             self.ptr.AddCode(co)
+        self.DataCache = True
         self._Graph = graph
 
     @property

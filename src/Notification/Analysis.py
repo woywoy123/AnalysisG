@@ -9,15 +9,15 @@ class _Analysis(Notification):
 
     def _WarningPurge(self):
         self.Warning("'PurgeCache' enabled! You have 10 seconds to cancel.")
-        self.Warning("Directory (DataCache/EventCache): " + self.OutputDirectory)
+        self.Warning("Directory (DataCache/EventCache): " + self.WorkingPath)
         _, bar = self._MakeBar(10, "PURGE-TIMER")
         for i in range(10):
             sleep(1)
             bar.update(1)
-        self.rm(self.OutputDirectory + "/EventCache")
-        self.rm(self.OutputDirectory + "/GraphCache")
-        self.rm(self.OutputDirectory + "/Tracer")
-        self.rm(self.OutputDirectory + "/Training/DataSets")
+        self.rm(self.WorkingPath + "EventCache")
+        self.rm(self.WorkingPath + "GraphCache")
+        self.rm(self.WorkingPath + "Tracer")
+        self.rm(self.WorkingPath + "Training/DataSets")
 
     def _BuildingCache(self):
         if self.EventCache:
@@ -41,8 +41,8 @@ class _Analysis(Notification):
         return tracers
 
     def EmptySampleList(self):
-        if self.len != 0: return False
-        string = "No samples found in cache. Checking again..."
+        if len(self): return False
+        string = "No samples found in cache."
         self.Failure("=" * len(string))
         self.Failure(string)
         self.Failure("=" * len(string))
