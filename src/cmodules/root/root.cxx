@@ -373,33 +373,19 @@ namespace SampleTracer
     
     root_t CyROOT::Export()
     {
-        std::vector<batch_t*> container = {}; 
-        std::vector<std::thread*> jobs = {}; 
-        std::map<std::string, CyBatch*>::iterator it; 
-        for (it = this -> batches.begin(); it != this -> batches.end(); ++it){
-            CyBatch* exp = it -> second; 
-            batch_t* get = new batch_t(); 
-            
-            std::thread* j = new std::thread(CyROOT::Make, exp, get); 
-            container.push_back(get); 
-            jobs.push_back(j); 
-        }
-       
         root_t output; 
         output.n_events = this -> n_events; 
         output.n_graphs = this -> n_graphs; 
         output.n_selections = this -> n_selections;
-        for (unsigned int x(0); x < this -> batches.size(); ++x){
-            jobs[x] -> join(); 
-            batch_t* exp = container[x]; 
 
-            output.batches[exp -> hash] = *exp; 
-            delete exp; 
-            delete jobs[x]; 
+        std::map<std::string, CyBatch*>::iterator it;
+        it = this -> batches.begin();
+
+        for (; it != this -> batches.end(); ++it){
+            CyBatch* exp = it -> second; 
+            output.batches[exp -> hash] = batch_t();
+            exp -> Export(&output.batches[exp -> hash]);
         }
-
-        jobs.clear(); 
-        container.clear();
         return output; 
     }
 

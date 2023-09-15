@@ -78,26 +78,27 @@ def test_optimizer():
     Ana.InputSample(None, root1)
     Ana.ProjectName = "Project_ML"
     Ana.Event = Event
+    Ana.Chunks = 10000
     Ana.EventCache = True
     Ana.Launch()
 
     AnaG = Analysis()
     AnaG.ProjectName = "Project_ML"
     AnaG.Graph = GraphChildren
-    ApplyFeatures(AnaG)
+    AnaG.Chunks = 1000
+    ApplyFeatures(AnaG, "TruthChildren")
     AnaG.Launch()
     AnaG.GetAll = True
-    print(AnaG.makehashes())
     for i in AnaG:
         assert i.Graph
         assert i.N_eta is not None
-        print(i)
+
+
     AnaG = Analysis()
     AnaG.ProjectName = "Project_ML"
-    print(AnaG.ShowLength)
-    print(AnaG.makehashes())
-
-
+    AnaG.TrainingSize = 90
+    AnaG.kFolds = 10
+    AnaG.Launch()
 
 if __name__ == "__main__":
 #    test_random_sampling()

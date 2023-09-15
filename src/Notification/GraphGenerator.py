@@ -10,7 +10,7 @@ class _GraphGenerator(Notification):
         self.Warning("Input instance is of wrong type. Skipping...")
 
     def CheckGraphImplementation(self):
-        if self.Graph is not None and not self.preiteration(): return True
+        if self.Graph is not None: return True
         ex = "Or do: from AnalysisG.Events import Event"
         self.Failure("=" * len(ex))
         self.Failure("No Graph Implementation Provided.")

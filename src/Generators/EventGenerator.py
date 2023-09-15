@@ -25,19 +25,18 @@ class EventGenerator(_EventGenerator, _Interface, SampleTracer):
         for i in range(len(inpt)):
             _, vals = inpt[i]
             res = ev.__compiler__(vals)
-            inpt[i] = []
+            inpt[i] = None
             for k in res:
                 k.CompileEvent()
                 if code is not None: setattr(k, "code", code)
                 tracer.AddEvent(k, vals["MetaData"])
-            if lock is None:
-                if bar is None: continue
-                bar.update(1)
-                continue
-            with lock: bar.update(1)
-        return [tracer]
+            if bar is None: continue
+            elif lock is None: bar.update(1)
+            else:
+                with lock: bar.update(1)
+        return [tracer.__getstate__()]
 
-    def MakeEvents(self, SampleName = None):
+    def MakeEvents(self, SampleName = None, sample = None):
         if SampleName is None: SampleName = ""
         if not self.CheckEventImplementation(): return False
         if len(self.ShowEvents) > 0: pass
@@ -60,12 +59,17 @@ class EventGenerator(_EventGenerator, _Interface, SampleTracer):
         chnks = self.Threads * self.Chunks*2
         step = chnks
         ev = pickle.dumps(ev)
+
+        if sample is not None: pass
+        else: sample = self
+
         for v in io:
             i += 1
-            if self._StartStop(i) == False: continue
-            if self._StartStop(i) == None: break
+            if sample._StartStop(i) == False: continue
+            if sample._StartStop(i) == None: break
             v["MetaData"].sample_name = SampleName
             inpt.append([ev,v])
+
             if not i >= step: continue
             itx += 1
             step = itx*chnks
@@ -73,19 +77,21 @@ class EventGenerator(_EventGenerator, _Interface, SampleTracer):
             th.Start()
             for x in th._lists:
                 if x is None: continue
-                self += x
+                sample.__setstate__(x)
             inpt = []
+            del th
 
         th = Threading(inpt, self._CompileEvent, self.Threads, self.Chunks)
         th.Start()
         for i in th._lists:
             if i is None: continue
-            self += i
-        return self.CheckSpawnedEvents()
+            sample.__setstate__(i)
+        del th
+
+        if not self.is_self(sample, EventGenerator): return True
+        else: return sample.CheckSpawnedEvents()
 
     def preiteration(self):
-        self.GetEvent = True
-        self.GetGraph = False
         if not len(self.EventName):
             try: self.EventName = self.ShowEvents[0]
             except IndexError: return True

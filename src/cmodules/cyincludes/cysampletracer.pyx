@@ -48,7 +48,8 @@ cdef class Event:
     cdef _graph
     cdef _selection
     cdef _meta
-    cdef _owner
+    cdef bool _owner
+    cdef dict _internal
 
     def __cinit__(self):
         self.ptr = NULL
@@ -57,6 +58,7 @@ cdef class Event:
         self._graph = None
         self._meta = None
         self._owner = False
+        self._internal = {}
 
     def __init__(self): pass
 
@@ -87,6 +89,7 @@ cdef class Event:
         self.__getmeta__()
         try: return getattr(self._meta, req)
         except AttributeError: pass
+        return self._internal[req]
 
     def __setattr__(self, key, val):
         self.__getevent__()
@@ -100,6 +103,7 @@ cdef class Event:
         self.__getselection__()
         try: setattr(self._selection, key, val)
         except AttributeError: pass
+        self._internal[key] = val
 
     def release_selection(self):
         self.__getselection__()
@@ -140,20 +144,20 @@ cdef class Event:
         if co_ == NULL: print("EVENT -> MISSING CODE!"); return
 
         cdef event_t ev = ev_.Export()
-        cdef code_t  co = co_.ExportCode()
-        c = Code()
-        c.__setstate__(co)
+        cdef dict pkl = pickle.loads(ev.pickled_data)
+        ev.pickled_data = b""
 
+        c = Code()
+        c.__setstate__(co_.ExportCode())
+
+        cdef code_t co
         cdef pair[string, CyCode*] itr
         for itr in co_.dependency:
             co = itr.second.ExportCode()
             c.AddDependency([co])
-        event = c.InstantiateObject
 
-        cdef dict pkl = pickle.loads(ev.pickled_data)
-        ev.pickled_data = b""
-        event.__setstate__((pkl, ev))
-        self._event = event
+        self._event = c.InstantiateObject
+        self._event.__setstate__((pkl, ev))
 
     def __getgraph__(self):
         if self._graph is not None: return
@@ -161,6 +165,7 @@ cdef class Event:
         if gr_ == NULL: self._graph = False; return
         cdef CyCode* co_ = gr_.code_link
         if co_ == NULL: print("GRAPH -> MISSING CODE!"); return
+
         c = Code()
         c.__setstate__(co_.ExportCode())
         gr = c.InstantiateObject
@@ -175,11 +180,11 @@ cdef class Event:
         if sel_ == NULL: self._selection = False; return
         cdef CyCode* co_ = sel_.code_link
         if co_ == NULL: print("SELECTION -> MISSING CODE!"); return
+
         c = Code()
         c.__setstate__(co_.ExportCode())
-        sel = c.InstantiateObject
-        sel.__setstate__(sel_.Export())
-        self._selection = sel
+        self._selection = c.InstantiateObject
+        self._selection.__setstate__(sel_.Export())
 
     def __getstate__(self) -> tuple:
         return (self.ptr.meta[0], self.ptr.ExportPickled())
@@ -277,10 +282,8 @@ cdef class SampleTracer:
         if other == 0: return self
         return self.__add__(other)
 
-    def __iadd__(self, other) -> SampleTracer:
-        if not self.is_self(other): return self
-        cdef SampleTracer tr = other
-        self.ptr.iadd(tr.ptr)
+    def __iadd__(self, SampleTracer other) -> SampleTracer:
+        self.ptr.iadd(other.ptr)
         return self
 
     def __iter__(self):
@@ -302,26 +305,20 @@ cdef class SampleTracer:
     # ------------------ CUSTOM FUNCTIONS ------------------ #
     def preiteration(self) -> bool:
         if not len(self.EventName):
-            try:
-                self.EventName = self.ShowEvents[0]
-                self.GetEvent = True
-            except IndexError: self.GetEvent = False
+            try: self.EventName = self.ShowEvents[0]
+            except IndexError: pass
 
         if not len(self.GraphName):
-            try:
-                self.GraphName = self.ShowGraphs[0]
-                self.GetGraph = True
-            except IndexError: self.GetGraph = False
+            try: self.GraphName = self.ShowGraphs[0]
+            except IndexError: pass
 
         if not len(self.SelectionName):
-            try:
-                self.SelectionName = self.ShowSelections[0]
-                self.GetSelection = True
-            except IndexError: self.GetSelection = False
+            try: self.SelectionName = self.ShowSelections[0]
+            except IndexError: pass
+
         if not len(self.Tree):
             try: self.Tree = self.ShowTrees[0]
             except IndexError: return True
-
         return False
 
     def DumpTracer(self, retag = None):
@@ -484,13 +481,6 @@ cdef class SampleTracer:
             del bar
 
 
-    def DumpEvents(self):
-        self._store_objects(self.ptr.DumpEvents(), "Event")
-    def DumpGraphs(self):
-        self._store_objects(self.ptr.DumpGraphs(), "Graph")
-    def DumpSelections(self):
-        self._store_objects(self.ptr.DumpSelections(), "Selection")
-
     cdef _restore_objects(self, str type_, common_t getter, list these_hashes = []):
         cdef str i, file, key
         cdef CyBatch* batch
@@ -503,13 +493,18 @@ cdef class SampleTracer:
         self._set.get_all = True
         self._set.search = [enc(i) for i in these_hashes]
 
+        cdef int max_indx = self._set.event_stop
+        cdef int idx = 0
         for batch in self.ptr.MakeIterable():
             if type_ == "Event": dir_map = batch.event_dir
             elif type_ == "Graph": dir_map = batch.graph_dir
             elif type_ == "Selection": dir_map = batch.selection_dir
             else: continue
-
             for its in dir_map: cache_map[its.first].push_back(batch)
+
+            if not max_indx: pass
+            elif max_indx > idx: idx += 1
+            else: break
 
         i = type_.upper() + "-READING (" + type_.upper() + "): "
         for itc in cache_map:
@@ -535,6 +530,17 @@ cdef class SampleTracer:
         self._set.search.clear()
         self._set.get_all = False
         self.ptr.length()
+
+
+
+    def DumpEvents(self):
+        self._store_objects(self.ptr.DumpEvents(), "Event")
+
+    def DumpGraphs(self):
+        self._store_objects(self.ptr.DumpGraphs(), "Graph")
+
+    def DumpSelections(self):
+        self._store_objects(self.ptr.DumpSelections(), "Selection")
 
     def RestoreEvents(self, list these_hashes = []):
         self._restore_objects("Event", event_t(), these_hashes)
@@ -566,8 +572,8 @@ cdef class SampleTracer:
         cdef output = []
         if isinstance(val, str):
             name = enc(val)
-            if not self.ptr.code_hashes.count(name):
-                return output
+            if self.ptr.code_hashes.count(name): pass
+            else: return output
             c = self.ptr.code_hashes[name]
             co = Code()
             co.__setstate__(c.ExportCode())
@@ -591,28 +597,26 @@ cdef class SampleTracer:
         return issubclass(inpt.__class__, obj)
 
     def makehashes(self) -> dict:
+        cdef dict out = {}
         cdef CyBatch* batch
-        cdef map[string, vector[string]] ev
-        cdef map[string, vector[string]] gr
-        cdef map[string, vector[string]] sel
+        cdef map[string, vector[string]] ev, gr, sel
         for batch in self.ptr.MakeIterable():
             merge(&ev, &batch.event_dir, batch.hash)
             merge(&gr, &batch.graph_dir, batch.hash)
             merge(&sel, &batch.selection_dir, batch.hash)
-        cdef dict out = {}
         out["selection"] = map_vector_to_dict(&sel)
         out["event"] = map_vector_to_dict(&ev)
         out["graph"] = map_vector_to_dict(&gr)
         return out
 
     def makelist(self) -> list:
-        cdef vector[CyBatch*] evnt = self.ptr.MakeIterable()
-        cdef CyBatch* batch
         cdef Event event
+        cdef CyBatch* batch
         cdef list output = []
-        for batch in evnt:
+        for batch in self.ptr.MakeIterable():
             event = Event()
-            event.__setstate__((batch.meta[0], batch.ExportPickled()))
+            event.ptr = batch
+            event.ptr.Import(batch.meta)
             output.append(event)
         return output
 
@@ -620,16 +624,17 @@ cdef class SampleTracer:
         cdef event_t event
         cdef code_t co
         cdef string name
-        cdef tuple get
+        cdef dict pkl
 
         if meta_inpt is not None:
-            get = event_inpt.__getstate__()
-            event = get[1]
-            event.pickled_data = pickle.dumps(get[0])
+            pkl, event = event_inpt.__getstate__()
+            event.pickled_data = pickle.dumps(pkl)
             name = event.event_name
 
             self.ptr.event_trees[event.event_tree] += 1
-            if not self.ptr.link_event_code.count(name): self.Event = event_inpt
+            if self.ptr.link_event_code.count(name): pass
+            else: self.Event = event_inpt
+
             self.ptr.AddEvent(event, meta_inpt.__getstate__())
             return
 
@@ -662,7 +667,6 @@ cdef class SampleTracer:
     @property
     def Event(self):
         if self._Event is not None: return self._Event
-        cdef CyCode* code
         cdef pair[string, string] its
         for its in self.ptr.link_event_code:
             co = self.rebuild_code(env(its.second))
@@ -700,24 +704,27 @@ cdef class SampleTracer:
 
     @property
     def Graph(self):
-        if self.DataCache: pass
-        elif self._Graph is None: return None
-        cdef pair[string, string] its
         cdef CyCode* code
         cdef dict features
+        cdef pair[string, string] its
+        cdef pair[string, string] its_
+
+        if self.DataCache: pass
+        elif self._Graph is None: return None
+
         for its in self.ptr.link_graph_code:
             co = self.rebuild_code(env(its.second))
             if not len(co): return None
             code = self.ptr.code_hashes[its.second]
             features = {}
-            for its in code.container.param_space:
-                if its.first == code.hash: continue
-                if its.first == b'__state__':
-                    features["__state__"] = pickle.loads(its.second)
+            for its_ in code.container.param_space:
+                if its_.first == code.hash: continue
+                if its_.first == b'__state__':
+                    features["__state__"] = pickle.loads(its_.second)
                     continue
-                c = self.rebuild_code(env(its.first))
+                c = self.rebuild_code(env(its_.first))
                 if not len(c):continue
-                features[env(its.second)] = c[0]
+                features[env(its_.second)] = c[0]
             co = co[0].InstantiateObject
             setattr(co, "code", features)
             return co
@@ -829,14 +836,6 @@ cdef class SampleTracer:
         self._set.get_all = val
 
     @property
-    def GetEvent(self) -> bool:
-        return self._set.getevent
-
-    @GetEvent.setter
-    def GetEvent(self, bool val):
-        self._set.getevent = val
-
-    @property
     def EventCache(self):
         return self._set.eventcache
 
@@ -844,14 +843,6 @@ cdef class SampleTracer:
     def EventCache(self, bool val):
         if val: self._set.eventcache = val
         self._set.getevent = val
-
-    @property
-    def GetGraph(self) -> bool:
-        return self._set.getgraph
-
-    @GetGraph.setter
-    def GetGraph(self, bool val):
-        self._set.getgraph = val
 
     @property
     def DataCache(self):
@@ -899,6 +890,7 @@ cdef class SampleTracer:
         elif isinstance(val, list):
             if "" in state: state[""] += val
             else: state[""] = val
+
         elif isinstance(val, dict):
             for i in val:
                 if i not in state: state[i] = []
@@ -915,6 +907,8 @@ cdef class SampleTracer:
 
     @EventName.setter
     def EventName(self, val: Union[str, None]):
+        if val is not None: self.EventCache = True
+        else: self.EventCache = False
         if val is None: val = "NULL"
         self._set.eventname = enc(val)
 

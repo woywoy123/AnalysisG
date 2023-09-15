@@ -53,6 +53,8 @@ def test_analysis_event_merge():
     it = 0
     x = {"Tops" : 0, "Top" : 0}
     for i in a_ev.makelist():
+        print(i.hash)
+        print(i.Event)
         x[i.sample_name] += 1
         assert a_ev[i.hash].hash == i.hash
         assert isinstance(i.Tops, list)

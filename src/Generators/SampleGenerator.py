@@ -1,15 +1,43 @@
 from sklearn.model_selection import ShuffleSplit, KFold
+from AnalysisG._cmodules.SampleTracer import _check_h5
 from AnalysisG.Notification import _RandomSamplers
 from torch_geometric.loader import DataListLoader
 from torch.utils.data import SubsetRandomSampler
 from AnalysisG.SampleTracer import SampleTracer
+from AnalysisG.Tools import Tools
 import numpy as np
 import random
+import h5py
 
-class RandomSamplers(_RandomSamplers, SampleTracer):
+class RandomSamplers(_RandomSamplers, Tools, SampleTracer):
     def __init__(self):
         SampleTracer.__init__(self)
         self.Caller = "RANDOMSAMPLER"
+
+    def __addthis__(self, file, dic, keyout, val = True):
+        for k in dic:
+            ref = _check_h5(file, k)
+            ref.attrs[keyout] = val
+
+    def SaveSets(self, inpt, path):
+
+        if path.endswith(".hdf5"): pass
+        else: path += ".hdf5"
+
+        self.mkdir("/".join(path.split("/")[:-1]))
+        f = h5py.File(path, "a")
+
+        try: self.__addthis__(f, inpt["train_hashes"], "train")
+        except KeyError: pass
+
+        try: self.__addthis__(f, inpt["test_hashes"], "test")
+        except KeyError: pass
+
+        for kf in inpt:
+            if kf[:2] != "k-":continue
+            self.__addthis__(f, inpt[kf]["train"], kf, True)
+            self.__addthis__(f, inpt[kf]["leave-out"], kf, False)
+        f.close()
 
     def RandomizeEvents(self, Events, nEvents = None):
         if isinstance(Events, list): Indx = Events
@@ -34,8 +62,14 @@ class RandomSamplers(_RandomSamplers, SampleTracer):
             n_splits=1, test_size=float((100 - TrainingSize) / 100), random_state=42
         )
         for train_idx, test_idx in rs.split(All): pass
-        for i in All[train_idx]: Sample[i].Train = True
-        for i in All[test_idx]:  Sample[i].Eval  = True
+        for i in All[train_idx]:
+            Sample[i].Train = True
+            Sample[i].Eval = False
+
+        for i in All[test_idx]:  
+            Sample[i].Train = False
+            Sample[i].Eval  = True
+
         self.RandomizingSize(len(train_idx), len(test_idx))
 
         return {
@@ -43,13 +77,14 @@ class RandomSamplers(_RandomSamplers, SampleTracer):
             "test_hashes": All[test_idx].tolist(),
         }
 
-    def MakekFolds(self, sample, folds, batch_size=1, shuffle=True, asHashes=False):
+    def MakekFolds(self, sample, folds, shuffle=True, asHashes=False):
         if isinstance(sample, dict):
             try: smpl = {i.hash : i for i in list(sample.values()) if not i.Eval}
             except AttributeError: return False
         elif isinstance(sample, list):
             try: smpl = {i.hash : i for i in sample if not i.Eval}
             except AttributeError: return False
+        elif self.is_self(sample): smpl = {i.hash : i for i in sample if not i.Eval}
         else: return False
         sample = list(smpl)
         if len(sample) < folds: return False

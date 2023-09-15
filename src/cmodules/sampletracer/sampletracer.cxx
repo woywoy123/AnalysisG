@@ -135,6 +135,18 @@ namespace SampleTracer
 
     void CySampleTracer::Import(tracer_t inpt)
     {
+        auto add = [](
+                std::map<std::string, std::string>* inpt, 
+                std::map<std::string, std::string>* toadd)
+        {
+            std::map<std::string, std::string>::iterator itl;
+            itl = inpt -> begin(); 
+            for (; itl != inpt -> end(); ++itl){
+                if (toadd -> count(itl -> first)){continue;}
+                (*toadd)[itl -> first] = itl -> second;
+            }
+        };
+
         std::map<std::string, root_t>::iterator itr;
         itr = inpt.root_names.begin(); 
 
@@ -148,30 +160,13 @@ namespace SampleTracer
             root -> Import(&(itr -> second)); 
         }
         CyHelpers::ImportCode(&(this -> code_hashes), &(inpt.hashed_code)); 
+        add(&(inpt.link_event_code), &this -> link_event_code);
+        add(&(inpt.link_graph_code), &this -> link_graph_code);
+        add(&(inpt.link_selection_code), &this -> link_selection_code);
 
-        std::map<std::string, std::string>::iterator itl; 
-        itl = inpt.link_event_code.begin(); 
-        for (; itl != inpt.link_event_code.end(); ++itl){
-            if (this -> link_event_code.count(itl -> first)){continue;}
-            this -> link_event_code[itl -> first] = itl -> second; 
-        }
-
-        itl = inpt.link_graph_code.begin(); 
-        for (; itl != inpt.link_graph_code.end(); ++itl){
-            if (this -> link_graph_code.count(itl -> first)){continue;}
-            this -> link_graph_code[itl -> first] = itl -> second; 
-        }
-        itl = inpt.link_selection_code.begin(); 
-        for (; itl != inpt.link_selection_code.end(); ++itl){
-            if (this -> link_selection_code.count(itl -> first)){continue;}
-            this -> link_selection_code[itl -> first] = itl -> second; 
-        }
-
-        std::map<std::string, int>::iterator it_tr;
-        it_tr = inpt.event_trees.begin(); 
+        std::map<std::string, int>::iterator it_tr = inpt.event_trees.begin(); 
         for (; it_tr != inpt.event_trees.end(); ++it_tr){
-            std::string name = it_tr -> first; 
-            this -> event_trees[name] += it_tr -> second;
+            this -> event_trees[it_tr -> first] += it_tr -> second;
         }
     }
 
@@ -238,7 +233,7 @@ namespace SampleTracer
     }
 
     void CySampleTracer::iadd(CySampleTracer* other){ 
-        *this += other; 
+        *this += other;
     }
 
     std::map<std::string, int> CySampleTracer::length()

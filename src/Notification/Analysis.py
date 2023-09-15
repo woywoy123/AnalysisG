@@ -50,22 +50,26 @@ class _Analysis(Notification):
 
     def StartingAnalysis(self):
         string1 = "---" + " Starting Project: " + self.ProjectName + " ---"
-        string = ""
-        if self.Event is not None: string += " > EventGenerator < ::"
-        elif self.EventCache: string += " > EventCache < ::"
+        string = []
+        key = " > EventGenerator < ::"
+        if self.Event is not None: string += [key]
+        elif self.EventCache: string += [" > EventCache < ::"]
 
-        if self.Graph is not None: string += " > GraphGenerator < ::"
-        elif self.DataCache: string += " > DataCache < ::"
+        key = " > GraphGenerator < ::"
+        if self.Graph is not None: string += [key]
+        elif self.DataCache: string += [" > DataCache < ::"]
 
+        key = " > SampleGenerator ("
+        if self.kFolds: string += [key + str(self.kFolds) + "-Fold) < ::"]
+        if self.TrainingSize: string += [key + str(self.TrainingSize) + "%) < ::"]
 
-
-        #string += "> SampleGenerator < :: " if self.kFolds else ""
         #string += "> Optimization < :: " if self.Model != None else ""
         #string += " > Selections < :: " if len(self.Selections) != 0 else ""
         #string += " > Merging Selections < :: " if len(self.Merge) != 0 else ""
 
-        l = len(string) if len(string1) < len(string) else len(string1)
+        l = max([len(i) for i in string] + [len(string1)])
+
         self.Success("=" * l)
         self.Success(string1)
-        self.Success(string)
+        for i in string: self.Success(i)
         self.Success("=" * l)

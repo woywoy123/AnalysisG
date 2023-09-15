@@ -169,10 +169,6 @@ namespace SampleTracer
             CyROOT(meta_t meta);  
             ~CyROOT(); 
 
-            static void Make(CyBatch* smpls, batch_t* exp_container){
-                smpls -> Export(exp_container);     
-            }; 
-
             root_t Export(); 
             void Import(const root_t* inpt); 
 
@@ -293,17 +289,6 @@ namespace SampleTracer
                     }
                 }
             };
-
-
-
-
-
-
-            
-
-
-
-
     };
 }
 #endif
