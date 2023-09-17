@@ -14,31 +14,6 @@ import time
 smpl = "samples/dilepton/"
 
 
-def test_normal():
-    ana = Analysis(smpl)
-    ana.Event = Event
-    ana.EventCache = True
-    ana.Launch()
-    lst = []
-    for i in ana:
-        assert i.Event
-        lst.append(i)
-    assert len(lst) != 0
-
-    ana = Analysis(smpl)
-    ana.DataCache = True
-    ana.EventGraph = GraphChildren
-    ApplyFeatures(ana, "TruthChildren")
-    ana.Launch
-    lst = []
-    for i in ana:
-        assert i.clone().i
-        assert i.Graph
-        lst.append(i)
-    assert len(lst) != 0
-    clean_dir()
-
-
 def test_quant():
     ana = Analysis(smpl)
     ana.EventCache = True

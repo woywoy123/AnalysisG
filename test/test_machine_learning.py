@@ -1,5 +1,5 @@
+from AnalysisG.Generators import RandomSamplers, Optimizer
 from AnalysisG.Events import Event, GraphChildren
-from AnalysisG.Generators import RandomSamplers
 from AnalysisG.Templates import ApplyFeatures
 from AnalysisG import Analysis
 
@@ -95,14 +95,18 @@ def test_optimizer():
         assert i.Graph
         assert i.N_eta is not None
 
-
     AnaG = Analysis()
     AnaG.ProjectName = "Project_ML"
     AnaG.TrainingSize = 90
     AnaG.kFolds = 10
     AnaG.Launch()
 
+    #op = Optimizer()
+
+
+
+
 if __name__ == "__main__":
-    test_random_sampling()
-    test_feature_analysis()
+    #test_random_sampling()
+    #test_feature_analysis()
     test_optimizer()
