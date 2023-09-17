@@ -1,3 +1,4 @@
+from examples.ExampleSelection import Example, Example2
 from AnalysisG.Events import Event, GraphChildren
 from AnalysisG.Generators import Analysis
 
@@ -12,16 +13,15 @@ def test_analysis_event_merge():
         Ana = Analysis()
         Ana.ProjectName = "Project"
         Ana.InputSample(Name, Dir)
-        Ana.EventCache = True
         Ana.Event = Event
         Ana.Threads = 1
         Ana.EventStart = 0
         Ana.EventStop = 10
-        Ana.Launch()
         return Ana
 
     F0 = {smpl + "sample1" : ["smpl1.root"]}
     ev1 = EventGen_(F0, "Top")
+    ev1.EventCache = True
     for i in ev1:
         assert i.sample_name == "Top"
         assert i.Event
@@ -30,6 +30,7 @@ def test_analysis_event_merge():
 
     F1 = {smpl + "sample2" : ["smpl1.root"]}
     ev2 = EventGen_(F1, "Tops")
+    ev2.EventCache = True
     for i in ev2:
         assert i.sample_name == "Tops"
         assert i.Event
@@ -49,12 +50,10 @@ def test_analysis_event_merge():
     assert it == 20
 
     a_ev = EventGen_(None, None)
-    a_ev.GetAll = True
+    a_ev.EventStop = None
     it = 0
     x = {"Tops" : 0, "Top" : 0}
-    for i in a_ev.makelist():
-        print(i.hash)
-        print(i.Event)
+    for i in a_ev:
         x[i.sample_name] += 1
         assert a_ev[i.hash].hash == i.hash
         assert isinstance(i.Tops, list)
@@ -118,7 +117,7 @@ def test_analysis_event_cache():
     Ana.EventCache = True
     Ana.Verbose = 3
     Ana.Launch()
-    assert len([i for i in Ana if i.Event and i.Tops is not None]) != 0
+    assert len([i for i in Ana if i.Event and len(i.Tops)]) != 0
     Ana.rm("Project")
 
 def test_analysis_event_cache_diff_sample():
@@ -186,6 +185,8 @@ def test_analysis_data_nocache():
     AnaE.AddNodeFeature(fx_pmu, "Pmu")
     AnaE.AddEdgeFeature(fx_edge, "Mass")
     AnaE.AddNodeTruthFeature(fx_node, "Mass")
+    AnaE.EventCache = False
+    AnaE.DataCache = False
     AnaE.Event = Event
     AnaE.Graph = GraphChildren
     AnaE.Launch()
@@ -294,8 +295,8 @@ def test_analysis_data_cache_diff_sample():
     AnaE.Launch()
 
     AnaS = Ana2 + Ana1
-    assert len(AnaE) != 0
-    assert len(AnaS) != 0
+    assert len(AnaE)
+    assert len(AnaS)
 
     for i in AnaS:
         assert i.Graph
@@ -304,7 +305,6 @@ def test_analysis_data_cache_diff_sample():
         assert "G_Graph" in i.Errors
         assert type(i.N_Pmu).__name__ == "Tensor"
         assert type(i.E_Mass).__name__ == "Tensor"
-
     assert len([i for i in AnaS if i.hash in AnaE]) == len(AnaE)
     AnaS.rm("Project")
 
@@ -358,6 +358,66 @@ def test_analysis_data_event_cache_diff_sample():
     assert len([i for i in Ana2 if i.Graph and i.N_Pmu is not None]) != 0
     Ana2.rm("Project")
 
+def test_analysis_selection_nocache():
+    Ana1 = _template()
+    Ana1.Event = Event
+    Ana1.EventCache = False
+    Ana1.AddSelection(Example2)
+    Ana1.Launch()
+    x = []
+    for i in Ana1:
+        sel = i.release_selection()
+        assert sel.Selection
+        assert sel.__name__() == "Example2"
+        assert "Truth" in sel.Top
+        assert isinstance(sel.Top["Truth"], list)
+        assert len(sel.Top["Truth"]) == 4
+        assert sel.CutFlow["Selection::Passed"] == 1
+        x.append(sel)
+    assert len(x)
+    Ana1.rm("Project")
+
+def test_analysis_selection_nocache_nolaunch():
+    Ana1 = _template()
+    Ana1.Event = Event
+    Ana1.EventCache = False
+    Ana1.AddSelection(Example2)
+    x = []
+    for i in Ana1:
+        sel = i.release_selection()
+        assert sel.Selection
+        assert sel.__name__() == "Example2"
+        assert "Truth" in sel.Top
+        assert isinstance(sel.Top["Truth"], list)
+        assert len(sel.Top["Truth"]) == 4
+        assert sel.CutFlow["Selection::Passed"] == 1
+        x.append(sel)
+    assert len(x)
+    Ana1.rm("Project")
+
+def test_analysis_selection_cache():
+    Ana1 = _template()
+    Ana1.Event = Event
+    Ana1.EventCache = False
+    Ana1.AddSelection(Example2)
+    Ana1.Launch()
+
+    AnaR = _template({"Name": "Sample1"})
+    AnaR.SelectionName = "Example2"
+    AnaR.Launch()
+    x = []
+    for i in AnaR:
+        sel = i.release_selection()
+        assert sel.Selection
+        assert sel.__name__() == "Example2"
+        assert "Truth" in sel.Top
+        assert isinstance(sel.Top["Truth"], list)
+        assert len(sel.Top["Truth"]) == 4
+        assert sel.CutFlow["Selection::Passed"] == 1
+        x.append(sel)
+    assert len(AnaR["Example2"]) == len(x)
+    assert len(x)
+
 if __name__ == "__main__":
     test_analysis_event_merge()
     test_analysis_more_samples()
@@ -365,9 +425,14 @@ if __name__ == "__main__":
     test_analysis_event_nocache_nolaunch()
     test_analysis_event_cache()
     test_analysis_event_cache_diff_sample()
+
     test_analysis_data_nocache()
     test_analysis_data_nocache_nolaunch()
     test_analysis_data_cache()
     test_analysis_data_cache_diff_sample()
     test_analysis_data_event_cache_diff_sample()
+
+    test_analysis_selection_nocache()
+    test_analysis_selection_nocache_nolaunch()
+    test_analysis_selection_cache()
 

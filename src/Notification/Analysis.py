@@ -63,9 +63,13 @@ class _Analysis(Notification):
         if self.kFolds: string += [key + str(self.kFolds) + "-Fold) < ::"]
         if self.TrainingSize: string += [key + str(self.TrainingSize) + "%) < ::"]
 
+        key = " > SelectionGenerator ("
+        for k in self.Selections: string += [key + k + ") < ::"]
+
+
+
+
         #string += "> Optimization < :: " if self.Model != None else ""
-        #string += " > Selections < :: " if len(self.Selections) != 0 else ""
-        #string += " > Merging Selections < :: " if len(self.Merge) != 0 else ""
 
         l = max([len(i) for i in string] + [len(string1)])
 

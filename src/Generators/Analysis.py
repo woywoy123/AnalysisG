@@ -1,3 +1,4 @@
+from AnalysisG.Generators.SelectionGenerator import SelectionGenerator
 from AnalysisG.Generators.SampleGenerator import RandomSamplers
 from AnalysisG.Generators.EventGenerator import EventGenerator
 from AnalysisG.Generators.GraphGenerator import GraphGenerator
@@ -8,7 +9,6 @@ from AnalysisG.Notification import _Analysis
 from typing import Union
 
 #from AnalysisG.IO import PickleObject, UnpickleObject
-#from .SelectionGenerator import SelectionGenerator
 #from .GraphGenerator import GraphGenerator
 #from AnalysisG.Settings import Settings
 #from .Optimizer import Optimizer
@@ -32,6 +32,13 @@ def check_graph(x):
     if x.Graph is None: return False
     return True
 
+def check_selection(x):
+    if len(x.SelectionName): return True
+    elif not len(x.Selections): return False
+    elif not len(x.ShowSelections): return False
+    else: x.SelectionName = x.ShowSelections[0]
+    return True
+
 def check_number(x, path):
     try: l = x.ShowLength[path]
     except KeyError: l = 0
@@ -39,7 +46,7 @@ def check_number(x, path):
     if x.EventStop is None: return True
     elif l == 0: return True
     elif l >= x.EventStop: return False
-    return False
+    return True
 
 def search(x):
     f = {}
@@ -47,23 +54,22 @@ def search(x):
     f["Files"] = []
     f["get"] = {}
 
-    x.GetAll = True
     f["SampleName"] = x.SampleName in x
     try: f["Files"] = x.SampleMap[x.SampleName]
     except KeyError: pass
 
     for i in f["Files"]:
+        x.GetAll = True
         i = x.abs(i)
         if i in x: continue
         i = i.split("/")
         file, path = i[-1], "/".join(i[:-1])
         if path not in f["get"]: f["get"][path] = []
         f["get"][path].append(file)
+    x.GetAll = True
     f.update(x.makehashes())
     x.GetAll = False
     x._get = f
-
-
 
 class Analysis(_Analysis, SampleTracer, _Interface):
     def __init__(
@@ -88,30 +94,12 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         if Name is None and SampleDirectory is None: return
         self.InputSample(Name, SampleDirectory)
 
-
-
-
-
-    def __Selection__(self):
-        if len(self.Selections) == 0 and len(self.Merge) == 0:
-            return
-        if self.EventCacheLen == 0: return
-        self.EventCache = True
-        self.RestoreEvents()
-
-        pth = self.OutputDirectory + "/Selections/"
-        sel = SelectionGenerator(self)
-        sel.Threads = self.Threads # Fix after merge
-        sel.ImportSettings(self)
-        sel.Caller = "ANALYSIS::SELECTIONS"
-        sel.MakeSelection()
-        del sel
-
     def __Optimizer__(self):
         if self.Model == None and self.Optimizer == None:
             return
         op = Optimizer(self)
         op.Launch()
+
 
 
 
@@ -128,9 +116,7 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         if self.Graph is None: return True
         if not self.TestFeatures: return
 
-        self.GetAll = True
-        tests = self.makelist()
-        self.GetAll = False
+        tests = [i for i in self]
         if len(tests) < self.nEvents: tests
         else: tests = tests[:self.nEvents]
 
@@ -171,28 +157,29 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         if out == False: return
         r.SaveSets(out, pth)
 
+    def __Selection__(self):
+        if not check_selection(self): return
+        if check_event(self): pass
+        else: self.__Event__()
+
+        sel = SelectionGenerator()
+        sel.ImportSettings(self.ExportSettings())
+        sel.Caller = "ANALYSIS::SELECTIONS"
+        if sel.MakeSelections(self): pass
+        else: return
+        self.DumpSelections()
+        self.DumpTracer(self.SampleName)
 
     def __Graph__(self):
         if not check_graph(self): return
-        if self.DataCache: self.RestoreGraphs()
+
+        get = sum(self._get["graph"].values(), [])
+        if len(get) and self.DataCache: self.RestoreGraph(get)
 
         check_tree(self)
         path = self.Tree + "/" + self.GraphName
         if check_number(self, path): pass
         else: self.RestoreEvents()
-
-        dic = {}
-        if self.EventStop is not None: get1, get2 = {},{}
-        else: get1, get2 = self._get["event"], self._get["graph"]
-
-        for k in get1.values():
-            dic.update({j : False for j in k})
-        for k in get2.values():
-            try:
-                for j in k: del dic[j]
-            except KeyError: pass
-        if len(dic): self.RestoreEvents(list(dic))
-        else: return
 
         if len(self.Tree): pass
         else: self.RestoreEvents()
@@ -213,14 +200,11 @@ class Analysis(_Analysis, SampleTracer, _Interface):
 
 
     def __Event__(self):
-        get = []
-        self.GetAll = True
-        for i in self._get["event"]:
-            if not self.EventCache: break
-            get += self._get["event"][i]
-        if len(get): self.RestoreEvents(get)
+        get = sum(self._get["event"].values(), [])
+        if len(get) and self.EventCache: self.RestoreEvents(get)
         if check_event(self): pass
         else: return
+
         if check_tree(self): pass
         else: return
 
@@ -235,10 +219,14 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         ev = EventGenerator()
         ev.Caller = "ANALYSIS::EVENT"
         ev.ImportSettings(self.ExportSettings())
+        x = self.ShowLength
+        if ev.EventStop is None: pass
+        elif not len(x): pass
+        else: ev.EventStop -= self.ShowLength[path]
         if ev.MakeEvents(self.SampleName, self): pass
-        else: return False
+        else: return
 
-        if not self.EventCache: return True
+        if not self.EventCache: return
         self.DumpEvents()
         self.DumpTracer(self.SampleName)
         return True
@@ -248,15 +236,15 @@ class Analysis(_Analysis, SampleTracer, _Interface):
 
         l = len(self.SampleMap)
         if not l: self.SampleMap = ""
+
         for name in self.SampleMap:
             self.SampleName = name
-
             if not len(name): name = None
             if not tracer: pass
             else: self.RestoreTracer(tracer, name)
-
             search(self)
             self.__Event__()
+            self.__Selection__()
             self.__FeatureAnalysis__()
             self.__Graph__()
         return True
@@ -264,28 +252,36 @@ class Analysis(_Analysis, SampleTracer, _Interface):
     def Launch(self):
         self.__build__()
         self.__LoadSample__()
-        #self.__Selection__()
         self.__RandomSampler__()
         #self.__Optimizer__()
         #self.WhiteSpace()
         return True
 
     def preiteration(self) -> bool:
-        if self.triggered: pass
-        else: self.Launch()
+        self.GetAll = True
         x = self.makehashes()
-        if len(x["event"]): pass
-        elif len(x["graph"]): pass
-        elif len(x["selection"]): pass
-        elif not len(self._get): pass
-        else: return self.EmptySampleList()
+        self.GetAll = False
+        check_tree(self)
 
-        if not len(self.SelectionName):
-            try: self.SelectionName = self.ShowSelections[0]
-            except IndexError: pass
-        if not len(self.Tree):
-            try: self.Tree = self.ShowTrees[0]
-            except IndexError: pass
+        check_event(self)
+        if len(self.EventName): self.GetEvent = True
+        if not self.EventName and not self.EventCache: pass
+        else: self.RestoreEvents(sum(x["event"].values(), []))
+
+        check_graph(self)
+        if len(self.GraphName): self.GetGraph = True
+        if not self.GraphName and not self.DataCache: pass
+        else: self.RestoreGraphs(sum(x["graph"].values(), []))
+
+        check_selection(self)
+        if not len(self.SelectionName): pass
+        else:
+            self.RestoreSelections(sum(x["selection"].values(), []))
+            self.GetSelection = True
+
+        if self.triggered: return False
+        else: self.Launch()
+
         return False
 
 

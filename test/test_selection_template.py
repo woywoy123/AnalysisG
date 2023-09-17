@@ -31,12 +31,8 @@ def test_selection_code():
     for i in Evnt:
         lst.append(Example())
         lst[-1].__processing__(i)
-        print(i)
     out = sum(lst)
     assert out.CutFlow == x.CutFlow
-
-
-
 
 if __name__ == "__main__":
     test_selection_code()

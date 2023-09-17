@@ -16,6 +16,7 @@ def test_random_sampling():
 
     Ana.GetAll = True
     smpls = Ana.makelist()
+    Ana.GetAll = False
     r = RandomSamplers()
     r_ = r.RandomizeEvents(smpls, len(smpls))
     assert len(r_) == len(smpls)
@@ -42,6 +43,7 @@ def test_random_sampling():
     assert 14 in nodes
 
     x = r.MakeDataLoader(smpls)
+    Ana.EventName = None
     assert sum(nodes.values()) == len(Ana)
     Ana.rm("Project_ML")
 
@@ -101,6 +103,6 @@ def test_optimizer():
     AnaG.Launch()
 
 if __name__ == "__main__":
-#    test_random_sampling()
-#    test_feature_analysis()
+    test_random_sampling()
+    test_feature_analysis()
     test_optimizer()

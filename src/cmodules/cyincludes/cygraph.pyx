@@ -25,7 +25,11 @@ cdef class wEvent:
     def __init__(self): self.event = None
     def __getattr__(self, inpt):
         try: return getattr(self.event, inpt)
-        except AttributeError: return []
+        except AttributeError: pass
+        if self.event is None: return []
+        return None
+    def get(self): return self.event
+
 
 cdef class wParticle:
     cdef particle
@@ -183,7 +187,7 @@ cdef class GraphTemplate:
     def __buildthis__(self, str key, str co_hash, bool preselection, list this):
         try:
             res = self._code[co_hash](*this)
-            if res is None: raise TypeError("NoneType")
+            if res is None: raise TypeError("AttributeError")
         except Exception as inst:
             if key.startswith("G_F_"): key = "G_" + key[4:]
             if key.startswith("N_F_"): key = "N_" + key[4:]
@@ -219,7 +223,7 @@ cdef class GraphTemplate:
         for itr in self.gr.pre_sel_feature:
             key = env(itr.first)
             co_h = env(itr.second)
-            if self.__buildthis__(key, co_h, True, [self._event]): continue
+            if self.__buildthis__(key, co_h, True, [self._event.get()]): continue
             return
 
         n_num = self.gr.hash_particle.size()
@@ -228,7 +232,7 @@ cdef class GraphTemplate:
         for itr in self.gr.graph_feature:
             key = env(itr.first)
             co_h = env(itr.second)
-            res = self.__buildthis__(key, co_h, False, [self._event])
+            res = self.__buildthis__(key, co_h, False, [self._event.get()])
             if not res: continue
             if key.startswith("G_F_"): key = "G_" + key[4:]
             setattr(data, key, res[0])
@@ -287,7 +291,7 @@ cdef class GraphTemplate:
     def ImportCode(self, dict inpt):
         cdef str key
         for i in inpt:
-            if i == "__state__": continue
+            if i.startswith("__"): continue
             self._code[inpt[i].hash] = inpt[i]
         self.code_owner = False
 

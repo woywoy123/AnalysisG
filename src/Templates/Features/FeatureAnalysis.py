@@ -10,36 +10,29 @@ class FeatureAnalysis(_FeatureAnalysis, SampleTracer):
         self.EdgeAttribute  = {}
 
     def TestGraphFeature(self, Event, EventGraph, Fx):
-        if Fx(EventGraph(Event).Event) is not None: return
-        raise AttributeError
+        Fx(EventGraph(Event).Event)
 
     def TestNodeFeature(self, Event, EventGraph, Fx):
-        for i in EventGraph(Event).Particles:
-            if Fx(i) is not None: continue
-            raise AttributeError
+        [Fx(i) for i in EventGraph(Event).Particles]
 
     def TestEdgeFeature(self, Event, EventGraph, Fx):
-        ev = EventGraph(Event)
-        for i in ev.Particles:
-            for j in ev.Particles:
-                if Fx(i, j) is not None: continue
-                raise AttributeError
+        x = EventGraph(Event).Particles
+        [Fx(i, j) for i in x for j in x]
 
     def TestEvent(self, Event, EventGraph, EventIndex=None):
         if isinstance(Event, list):
             for ev in Event:
-                key = " " + str(ev.index)
-                if self.TestEvent(ev, EventGraph, key):
-                    return True
+                self.TestEvent(ev, EventGraph, ev.index)
             return False
 
+        EventIndex = " " + str(EventIndex)
         self.Success("!!!> Test at EventIndex:" + EventIndex)
         count = 0
         for c_name, code in self.GraphAttribute.items():
             try:
                 self.TestGraphFeature(Event, EventGraph, code)
                 self.PassedTest(c_name, "GRAPH")
-            except AttributeError:
+            except KeyError:
                 self.FeatureFailure(c_name, "GRAPH", EventIndex)
                 count += 1
 
@@ -47,7 +40,7 @@ class FeatureAnalysis(_FeatureAnalysis, SampleTracer):
             try:
                 self.TestNodeFeature(Event, EventGraph, code)
                 self.PassedTest(c_name, "NODE")
-            except AttributeError:
+            except KeyError:
                 self.FeatureFailure(c_name, "NODE", EventIndex)
                 count += 1
 
@@ -55,7 +48,7 @@ class FeatureAnalysis(_FeatureAnalysis, SampleTracer):
             try:
                 self.TestEdgeFeature(Event, EventGraph, code)
                 self.PassedTest(c_name, "EDGE")
-            except AttributeError:
+            except KeyError:
                 self.FeatureFailure(c_name, "EDGE", EventIndex)
                 count += 1
         if count > 0: return self.TotalFailure()

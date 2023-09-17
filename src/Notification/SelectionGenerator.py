@@ -10,8 +10,10 @@ class _SelectionGenerator(Notification):
     def WrongInput(self):
         self.Warning("Input instance is of wrong type. Skipping...")
 
-    def CheckSettings(self):
-        if len(self.Selections) == 0:
-            return self.Warning("No Selection was specified...")
-        if len(self) == 0:
-            return self.Failure("No compiled events were found...")
+    def CheckSettings(self, sample = None):
+        if sample is not None: pass
+        else: sample = self
+        msg = "Selections not specified..."
+        if not len(self.Selections): return self.Warning(msg)
+        msg = "No compiled events were found..."
+        if not len(sample): return self.Failure(msg)

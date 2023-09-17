@@ -1,7 +1,8 @@
 from AnalysisG.Generators.Interfaces import _Interface
 from AnalysisG.Notification.nTupler import _nTupler
+from AnalysisG._cmodules.SampleTracer import Event
 from AnalysisG.SampleTracer import SampleTracer
-from AnalysisG.Tools import Threading
+from AnalysisG.Tools import Threading, Code
 from typing import Union
 import awkward
 import pickle
@@ -19,6 +20,7 @@ class nTupler(_Interface, _nTupler, SampleTracer):
         self._iterator = {}
         self._variables = {}
         self._events = {}
+        self._clones = {}
         self._loaded = False
         self.root = None
 
@@ -28,10 +30,11 @@ class nTupler(_Interface, _nTupler, SampleTracer):
         lock, bar = _prgbar
         out = {}
         for i in range(len(inpt)):
-            key, val = inpt[i]
-            val = pickle.loads(val)
-            if key not in out: out[key] = val
-            else: out[key] += val
+            key, val, code = inpt[i]
+            evnt = code[key.split(".")[1]].InstantiateObject
+            evnt.__setstate__(val)
+            if key not in out: out[key] = evnt
+            else: out[key] += evnt
             inpt[i] = None
 
             if lock is None:
@@ -73,12 +76,14 @@ class nTupler(_Interface, _nTupler, SampleTracer):
 
         output = {}
         for i in range(len(inpt)):
-            evnt_key, path, evnt = inpt[i]
-            evnt = pickle.loads(evnt)
+            evnt_key, path, code, evnt = inpt[i]
             evnt_key = evnt_key.replace(".", "/")
             if evnt_key not in output: output[evnt_key] = {}
+            code = code[evnt_key.split("/")[1]]
+            ev = code.InstantiateObject
+            ev.__setstate__(evnt)
             for k in path:
-                x = evnt
+                x = ev
                 spl = k.split("->")[1:-1]
                 for t in spl:
                     if isinstance(x, dict): x = x[t]
@@ -88,9 +93,12 @@ class nTupler(_Interface, _nTupler, SampleTracer):
                 except KeyError: output[evnt_key][k] = [x]
 
             indx = evnt_key + "/event_index"
-            try: output[indx].append([evnt.index])
-            except KeyError: output[indx] = [evnt.index]
+            try: output[indx].append([ev.index])
+            except KeyError: output[indx] = [ev.index]
             output = _merge_(output, "", {})
+            del evnt
+            ev = None
+
         return [output]
 
 
@@ -126,15 +134,13 @@ class nTupler(_Interface, _nTupler, SampleTracer):
     def MakeROOT(self, OutDir: Union[str, None] = None):
         if OutDir is None: OutDir = self.WorkingPath
         else: OutDir = self.abs(OutDir)
-
         chnks = self.Threads * self.Chunks * 10
         commands = [[], self.__throot__, self.Threads, self.Chunks]
         for i in self:
             for t, x in i.items():
-                evn = pickle.dumps(x.release_selection())
                 var = self._variables[t.replace(".", "/")]
-                commands[0] += [(t, var, evn)]
-
+                evnt = x.release_selection().__getstate__()
+                commands[0].append((t, var, self._clones, evnt))
             if len(commands[0]) < chnks: continue
             th = Threading(*commands)
             th.Start()
@@ -154,10 +160,13 @@ class nTupler(_Interface, _nTupler, SampleTracer):
 
     def merged(self):
         tmp = []
+        clones = {}
         chnks = self.Threads * self.Chunks * 10
         commands = [[], self.__thmerge__, self.Threads, self.Chunks]
         for i in self:
-            commands[0] += [(t, pickle.dumps(x.release_selection())) for t, x in i.items()]
+            for t, v in i.items():
+                evnt = v.release_selection().__getstate__()
+                commands[0] += [(t, evnt, self._clones)]
             if len(commands[0]) < chnks: continue
             th = Threading(*commands)
             th.Start()
@@ -191,15 +200,21 @@ class nTupler(_Interface, _nTupler, SampleTracer):
             name = cont.split("/")[-1]
             tree = cont.split("/")[0]
             var = tree + i.lstrip(cont)
-            if name in self.ShowSelections: self._FoundSelectionName(name)
+            if name in self.ShowSelections:
+                if cont in tree_selection: pass
+                else: self._FoundSelectionName(name)
             else: self._MissingSelectionName(name)
             try: tree_selection[cont].append(var)
             except KeyError: tree_selection[cont] = [var]
         self._variables = tree_selection
         self._loaded = True
 
+    def preiteration(self):
+        return False
+
     def __iter__(self):
         if not self._loaded: self.__start__()
+        self._clones = {i.class_name : i for i in self.rebuild_code(None)}
         self.GetAll = True
         self._events = self.makehashes()["selection"]
         self.GetAll = False
@@ -222,6 +237,7 @@ class nTupler(_Interface, _nTupler, SampleTracer):
                 out[i] = self._restored[i].pop(0)
                 self._tmpl[i] -= 1
             return out
+
         if self._cache_paths is None: raise StopIteration
         if not len(self._events):
             hashes = None
@@ -229,10 +245,8 @@ class nTupler(_Interface, _nTupler, SampleTracer):
         else:
             hashes = self._events[next(self._cache_paths)]
             self.RestoreSelections(hashes)
-
         for i in self._restored:
             self.Tree, self.SelectionName = i.split(".")
-
             if hashes is None: these = self.makelist()
             else: these = self[hashes]
             if these is not False:

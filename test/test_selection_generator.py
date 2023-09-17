@@ -57,6 +57,7 @@ def test_selection_generator():
 
 def test_selection_ntupler():
     selection_template()
+
     nt = nTupler()
     nt.ProjectName = "Project"
     nt.This("Example2 -> ", "nominal")
@@ -111,8 +112,6 @@ def test_selection_root():
     for i in x: test += i["nominal_Example2/Top_Truth"].tolist()
     assert len(test) == 360
     x.rm(path + "Example.root")
-
-
 
     # Mutiple Cases
     test = []

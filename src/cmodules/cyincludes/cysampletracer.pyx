@@ -200,9 +200,6 @@ cdef class Event:
     @property
     def hash(self): return env(self.ptr.hash)
 
-
-
-
 cdef class SampleTracer:
 
     cdef CySampleTracer* ptr
@@ -258,25 +255,35 @@ cdef class SampleTracer:
 
     def __len__(self) -> int:
         cdef map[string, int] f = self.ptr.length()
-        cdef pair[string, int] it
         cdef int entries = 0
-        cdef str name = ""
-        if len(self.Tree): name += self.Tree
-        if len(self.EventName): name += "/" + self.EventName
-        if not len(name):
+        cdef string name = b""
+        cdef string name_e = b""
+        cdef string name_g = b""
+
+        name_e = enc(self.Tree + "/" + self.EventName)
+        if f.count(name_e): entries += f[name_e]
+        else: name_e = b""
+
+        name_g = enc(self.Tree + "/" + self.GraphName)
+        if f.count(name_g): entries += f[name_g]
+        else: name_g = b""
+
+        if name_e.size(): name = name_e
+        elif name_g.size(): name = name_g
+        else: name = b""
+
+        if not name.size():
             dc = {env(it.first) : it.second for it in f}
             self._nhashes = dc["n_hashes"]
             del dc["n_hashes"]
             return sum([entries for entries in dc.values()])
-
-        for it in f:
-            if name not in env(it.first): continue
-            entries += it.second
         return entries
 
     def __add__(self, SampleTracer other) -> SampleTracer:
-        self.ptr.iadd(other.ptr)
-        return self
+        cdef SampleTracer out = self.clone()
+        out.ptr.iadd(self.ptr)
+        out.ptr.iadd(other.ptr)
+        return out
 
     def __radd__(self, other) -> SampleTracer:
         if other == 0: return self
@@ -304,6 +311,10 @@ cdef class SampleTracer:
 
     # ------------------ CUSTOM FUNCTIONS ------------------ #
     def preiteration(self) -> bool:
+        if not len(self.Tree):
+            try: self.Tree = self.ShowTrees[0]
+            except IndexError: return True
+
         if not len(self.EventName):
             try: self.EventName = self.ShowEvents[0]
             except IndexError: pass
@@ -316,9 +327,12 @@ cdef class SampleTracer:
             try: self.SelectionName = self.ShowSelections[0]
             except IndexError: pass
 
-        if not len(self.Tree):
-            try: self.Tree = self.ShowTrees[0]
-            except IndexError: return True
+        if not len(self.EventName): pass
+        else: self.GetEvent = True
+        if not len(self.GraphName): pass
+        else: self.GetGraph = True
+        if not len(self.SelectionName): pass
+        else: self.GetSelection = True
         return False
 
     def DumpTracer(self, retag = None):
@@ -565,11 +579,13 @@ cdef class SampleTracer:
         self.ptr.AddCode(co)
         return co
 
-    def rebuild_code(self, val: Union[list, str]):
+    def rebuild_code(self, val: Union[list, str, None]):
         cdef CyCode* c
         cdef string name
         cdef str name_s
         cdef output = []
+        cdef pair[string, CyCode*] itc
+
         if isinstance(val, str):
             name = enc(val)
             if self.ptr.code_hashes.count(name): pass
@@ -583,6 +599,10 @@ cdef class SampleTracer:
             for name_s in val:
                 output += self.rebuild_code(name_s)
             return output
+        for itc in self.ptr.code_hashes:
+            output += self.rebuild_code(env(itc.first))
+        return output
+
 
     def ImportSettings(self, settings_t inpt):
         self.ptr.ImportSettings(inpt)
@@ -604,9 +624,9 @@ cdef class SampleTracer:
             merge(&ev, &batch.event_dir, batch.hash)
             merge(&gr, &batch.graph_dir, batch.hash)
             merge(&sel, &batch.selection_dir, batch.hash)
-        out["selection"] = map_vector_to_dict(&sel)
         out["event"] = map_vector_to_dict(&ev)
         out["graph"] = map_vector_to_dict(&gr)
+        out["selection"] = map_vector_to_dict(&sel)
         return out
 
     def makelist(self) -> list:
@@ -617,6 +637,9 @@ cdef class SampleTracer:
             event = Event()
             event.ptr = batch
             event.ptr.Import(batch.meta)
+            if self._set.getevent: event.__getevent__()
+            if self._set.getgraph: event.__getgraph__()
+            if self._set.getselection: event.__getselection__()
             output.append(event)
         return output
 
@@ -709,9 +732,6 @@ cdef class SampleTracer:
         cdef pair[string, string] its
         cdef pair[string, string] its_
 
-        if self.DataCache: pass
-        elif self._Graph is None: return None
-
         for its in self.ptr.link_graph_code:
             co = self.rebuild_code(env(its.second))
             if not len(co): return None
@@ -750,7 +770,6 @@ cdef class SampleTracer:
 
         for name_, c_ in self._graph_codes.items():
             graph.__scrapecode__(c_, name_)
-
         co = self.trace_code(graph)
         self.ptr.link_graph_code[name] = co.hash
         cdef CyCode* c = self.ptr.code_hashes[co.hash]
@@ -759,11 +778,20 @@ cdef class SampleTracer:
             co = o.__getstate__()
             c.container.param_space[co.hash] = enc(name_)
             self.ptr.AddCode(co)
-        self.DataCache = True
         self._Graph = graph
 
     @property
     def Selections(self):
+        cdef CyCode* code
+        cdef pair[string, string] its
+
+        for its in self.ptr.link_selection_code:
+            co = self.rebuild_code(env(its.second))
+            if not len(co): continue
+            code = self.ptr.code_hashes[its.second]
+            features = {}
+            co = co[0].InstantiateObject
+            self._Selections[env(code.container.class_name)] = co
         return self._Selections
 
     @Selections.setter
@@ -841,7 +869,14 @@ cdef class SampleTracer:
 
     @EventCache.setter
     def EventCache(self, bool val):
-        if val: self._set.eventcache = val
+        self._set.eventcache = val
+
+    @property
+    def GetEvent(self):
+        return self._set.getevent
+
+    @GetEvent.setter
+    def GetEvent(self, bool val):
         self._set.getevent = val
 
     @property
@@ -850,7 +885,14 @@ cdef class SampleTracer:
 
     @DataCache.setter
     def DataCache(self, bool val):
-        if val: self._set.graphcache = val
+        self._set.graphcache = val
+
+    @property
+    def GetGraph(self):
+        return self._set.getgraph
+
+    @GetGraph.setter
+    def GetGraph(self, bool val):
         self._set.getgraph = val
 
     @property
@@ -907,9 +949,7 @@ cdef class SampleTracer:
 
     @EventName.setter
     def EventName(self, val: Union[str, None]):
-        if val is not None: self.EventCache = True
-        else: self.EventCache = False
-        if val is None: val = "NULL"
+        if val is None: val = ""
         self._set.eventname = enc(val)
 
     @property
@@ -918,7 +958,7 @@ cdef class SampleTracer:
 
     @GraphName.setter
     def GraphName(self, val: Union[str, None]):
-        if val is None: val = "NULL"
+        if val is None: val = ""
         self._set.graphname = enc(val)
 
     @property
@@ -927,7 +967,7 @@ cdef class SampleTracer:
 
     @SelectionName.setter
     def SelectionName(self, val: Union[str, None]):
-        if val is None: val = "NULL"
+        if val is None: val = ""
         self._set.selectionname = enc(val)
 
     @property
@@ -954,7 +994,7 @@ cdef class SampleTracer:
     def OutputDirectory(self, str val):
         if not val.endswith("/"): val += "/"
         val = os.path.abspath(val)
-        self._set.outputdirectory = enc(val)
+        self._set.outputdirectory = enc(val +"/")
 
     @property
     def Caller(self) -> str:

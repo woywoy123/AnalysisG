@@ -41,14 +41,14 @@ class GraphGenerator(_GraphGenerator, SampleTracer, _Interface):
         return inpt
 
     def MakeGraphs(self, sample = None):
+        if sample is not None: pass
+        else: sample = self
+
         if not self.CheckGraphImplementation(): return False
         if not self.CheckSettings(): return False
 
         code = pickle.dumps(self.Graph.code)
         graph = pickle.dumps(self.Graph)
-
-        if sample is not None: pass
-        else: sample = self
         self.preiteration(sample)
 
         itx = 1
@@ -66,9 +66,10 @@ class GraphGenerator(_GraphGenerator, SampleTracer, _Interface):
             if sample._StartStop(i) == None: break
             bar.update(1)
 
-            if ev.Graph: continue
-            command[0].append([pickle.dumps(ev.release_event()), (code, graph)])
+            try: ev.Graph; continue
+            except: pass
 
+            command[0].append([pickle.dumps(ev.release_event()), (code, graph)])
             if not i >= step: continue
             itx += 1
             step = itx*chnks
@@ -101,8 +102,10 @@ class GraphGenerator(_GraphGenerator, SampleTracer, _Interface):
         if not len(inpt.EventName):
             try: inpt.EventName = inpt.ShowEvents[0]
             except IndexError: inpt.EventName = None
+            self.GetEvent = True
 
         if not len(inpt.GraphName):
             try: inpt.GraphName = inpt.ShowGraphs[0]
             except IndexError: inpt.GraphName = None
+            self.GetGraph = True
         return False

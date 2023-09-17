@@ -176,7 +176,7 @@ def test_eventgraph():
     Gr.Threads = 1
     Gr.Device = "cuda"
     Gr.MakeGraphs()
-
+    Gr.EventName = None
     assert len(Gr) == len(Ev)
     for i in Gr:
         assert i.weight is not None

@@ -175,6 +175,7 @@ namespace SampleTracer
         settings_t set = this -> settings; 
         set.link_event_code = this -> link_event_code; 
         set.link_graph_code = this -> link_graph_code; 
+        set.link_selection_code = this -> link_selection_code; 
         CyHelpers::ExportCode(&(set.hashed_code), code_hashes); 
         return set; 
     }

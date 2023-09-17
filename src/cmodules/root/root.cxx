@@ -184,13 +184,17 @@ namespace SampleTracer
     
     void CyBatch::ApplySettings(const settings_t* inpt)
     {
-        this -> this_event_name = inpt -> eventname; 
-        this -> this_graph_name = inpt -> graphname; 
-        this -> this_selection_name = inpt -> selectionname; 
         this -> this_tree = inpt -> tree; 
+
+        this -> this_event_name = inpt -> eventname; 
         this -> get_event = inpt -> getevent; 
+
+        this -> this_graph_name = inpt -> graphname; 
         this -> get_graph = inpt -> getgraph; 
+
+        this -> this_selection_name = inpt -> selectionname; 
         this -> get_selection = inpt -> getselection; 
+
         this -> valid = inpt -> get_all; 
         this -> Contextualize();
         if (!this -> valid){ return; }
@@ -217,13 +221,15 @@ namespace SampleTracer
 
             if (this -> this_ev){
                 if (this -> this_ev -> event.event_root == find){return;}
+                if (this -> this_ev -> event.event_name == find){return;}
             }
             if (this -> this_gr){
                 if (this -> this_gr -> graph.event_root == find){return;}
+                if (this -> this_gr -> graph.event_name == find){return;}
             }
-
             if (this -> this_sel){
                 if (this -> this_sel -> selection.event_root == find){return;}
+                if (this -> this_sel -> selection.event_name == find){return;}
             }     
         }
 

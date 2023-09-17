@@ -74,9 +74,13 @@ def test_tracer_addEvent():
 
     assert len_tru + len_nom == len(tr)
     tr.Tree = "nominal"
+    tr.EventName = "Event"
     assert len_nom == len(tr)
+
     tr.Tree = "truth"
+    tr.EventName = "Event"
     assert len_tru == len(tr)
+
     tr.Tree = ""
     tr.EventName = "Event"
     assert len_tru + len_nom == len(tr)
@@ -138,6 +142,8 @@ def test_tracer_operators():
     l1 = len(tr1)
     assert l1 == sum([k for k in n1_events.values()])
     tr1.Tree = "nominal"
+    tr1.GetEvent = True
+    tr1.EventName = "Event"
 
     # not set the event/tree, should default to nominal
     nominal_n = {i : t1_event[i.hash]["nominal"]["Event"] for i in tr1}
@@ -195,7 +201,6 @@ def test_tracer_operators():
     # reset tracers 
     tr1.Tree = ""
     tr2.Tree = ""
-
     trsum = tr1 + tr2
     lsum = len(trsum)
 
@@ -203,6 +208,9 @@ def test_tracer_operators():
     assert len(tr1) == l1
     assert len(tr2) == l2
 
+    trsum.Tree = "nominal"
+    trsum.EventName = "Event"
+    trsum.GetEvent = True
     for i in nom_n.values():
         j = trsum[i.hash]
         assert i.hash == j.hash
@@ -267,11 +275,13 @@ def test_tracer_hdf5():
 
     tr2.DumpEvents()
     tr2.DumpTracer()
+
     s = SampleTracer()
     s.OutputDirectory = "Project"
     s.EventCache = True
     s.RestoreTracer()
     s.RestoreEvents()
+
     for i in tr1: break
     assert len(s[i.ROOT]) == len(tr1)
 

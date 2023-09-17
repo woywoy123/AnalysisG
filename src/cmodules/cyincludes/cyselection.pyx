@@ -28,7 +28,7 @@ cdef string consolidate(map[string, string]* inpt, string* src):
         if trg is None: trg = pickle.loads(itr.second)
         else: trg = t.MergeData(trg, pickle.loads(itr.second))
     inpt.clear()
-    return pickle.dumps(trg)
+    return b"" if trg is None else pickle.dumps(trg)
 
 
 cdef class SelectionTemplate:
@@ -84,6 +84,7 @@ cdef class SelectionTemplate:
         if not inpt.pickled_data.size(): return
         cdef str key
         cdef dict pkls = pickle.loads(inpt.pickled_data)
+        print(pkls)
         for key in pkls:
             try: self.__dict__[key] = pkls[key]
             except KeyError: setattr(self, key, pkls[key])

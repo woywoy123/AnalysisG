@@ -65,8 +65,8 @@ class EventGenerator(_EventGenerator, _Interface, SampleTracer):
 
         for v in io:
             i += 1
-            if sample._StartStop(i) == False: continue
-            if sample._StartStop(i) == None: break
+            if self._StartStop(i) == False: continue
+            if self._StartStop(i) == None: break
             v["MetaData"].sample_name = SampleName
             inpt.append([ev,v])
 
@@ -92,10 +92,11 @@ class EventGenerator(_EventGenerator, _Interface, SampleTracer):
         else: return sample.CheckSpawnedEvents()
 
     def preiteration(self):
-        if not len(self.EventName):
-            try: self.EventName = self.ShowEvents[0]
-            except IndexError: return True
         if not len(self.Tree):
             try: self.Tree = self.ShowTrees[0]
             except IndexError: return True
+        if not len(self.EventName):
+            try: self.EventName = self.ShowEvents[0]
+            except IndexError: return True
+            self.GetEvent = True
         return False
