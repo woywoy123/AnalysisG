@@ -23,6 +23,10 @@ class Tools(_IO):
         try: return os.listdir(directory)
         except OSError: return []
 
+    def IsPath(self, directory):
+        try: return os.listdir(directory)
+        except OSError: return False
+
     def IsFile(self, directory, quiet = False):
         if os.path.isfile(directory): return True
         if not quiet: self.FileNotFoundWarning(self.path(directory), directory.split("/")[-1])

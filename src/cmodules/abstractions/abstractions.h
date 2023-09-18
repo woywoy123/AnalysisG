@@ -31,10 +31,9 @@ namespace Tools
     std::vector<std::vector<G>> Quantize(const std::vector<G>& v, int N)
     {
         int n = v.size(); 
-        int size_max = n/N + (n % N != 0); 
         typename std::vector<std::vector<G>> out; 
-        for (int ib = 0; ib < n; ib += size_max){
-            int end = ib + size_max; 
+        for (int ib = 0; ib < n; ib += N){
+            int end = ib + N; 
             if (end > n){ end = n; }
             out.push_back(std::vector<G>(v.begin() + ib, v.begin() + end)); 
         }

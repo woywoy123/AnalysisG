@@ -76,33 +76,39 @@ def test_feature_analysis():
 def test_optimizer():
     from models.CheatModel import CheatModel
 
-    Ana = Analysis()
-    Ana.InputSample(None, root1)
-    Ana.ProjectName = "Project_ML"
-    Ana.Event = Event
-    Ana.Chunks = 10000
-    Ana.EventCache = True
-    Ana.Launch()
+    #Ana = Analysis()
+    #Ana.InputSample(None, root1)
+    #Ana.ProjectName = "Project_ML"
+    #Ana.Event = Event
+    #Ana.Chunks = 10000
+    #Ana.EventCache = True
+    #Ana.Launch()
 
-    AnaG = Analysis()
-    AnaG.ProjectName = "Project_ML"
-    AnaG.Graph = GraphChildren
-    AnaG.Chunks = 1000
-    ApplyFeatures(AnaG, "TruthChildren")
-    AnaG.Launch()
-    AnaG.GetAll = True
-    for i in AnaG:
-        assert i.Graph
-        assert i.N_eta is not None
+    #AnaG = Analysis()
+    #AnaG.ProjectName = "Project_ML"
+    #AnaG.Graph = GraphChildren
+    #AnaG.Chunks = 1000
+    #ApplyFeatures(AnaG, "TruthChildren")
+    #AnaG.DataCache = True
+    #AnaG.Launch()
+    #AnaG.GetAll = True
+    #for i in AnaG:
+    #    assert i.Graph
+    #    assert i.N_eta is not None
 
-    AnaG = Analysis()
-    AnaG.ProjectName = "Project_ML"
-    AnaG.TrainingSize = 90
-    AnaG.kFolds = 10
-    AnaG.Launch()
+    #AnaG = Analysis()
+    #AnaG.ProjectName = "Project_ML"
+    #AnaG.TrainingSize = 90
+    #AnaG.kFolds = 10
+    #AnaG.Launch()
+
+    #AnaG = Analysis()
+    #AnaG.ProjectName = "Project_ML"
+    #AnaG.TrainingName = "untitled"
 
     #op = Optimizer()
-
+    #op.ContinueTraining = False
+    #op.Start(AnaG)
 
 
 

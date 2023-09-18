@@ -54,8 +54,6 @@ cdef extern from "../root/root.h" namespace "SampleTracer" nogil:
         string hash
         bool lock_meta
 
-
-
 cdef extern from "../sampletracer/sampletracer.h" namespace "SampleTracer":
     cdef cppclass CySampleTracer:
         CySampleTracer() except +
@@ -70,6 +68,11 @@ cdef extern from "../sampletracer/sampletracer.h" namespace "SampleTracer":
         map[string, vector[CyEventTemplate*]] DumpEvents() except +
         map[string, vector[CyGraphTemplate*]] DumpGraphs() except +
         map[string, vector[CySelectionTemplate*]] DumpSelections() except +
+
+        void FlushEvents(vector[string]) except +
+        void FlushGraphs(vector[string]) except +
+        void FlushSelections(vector[string]) except +
+
         void DumpTracer() except +
 
         tracer_t Export() except +
@@ -93,3 +96,4 @@ cdef extern from "../sampletracer/sampletracer.h" namespace "SampleTracer":
         map[string, string] link_graph_code
         map[string, string] link_selection_code
         string caller
+

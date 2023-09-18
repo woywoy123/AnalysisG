@@ -236,7 +236,6 @@ cdef extern from "../abstractions/cytypes.h":
         bool selection
         bool event
 
-
     struct batch_t:
         map[string, event_t] events
         map[string, graph_t] graphs
@@ -245,6 +244,13 @@ cdef extern from "../abstractions/cytypes.h":
 
         meta_t meta
         string hash
+
+    struct folds_t:
+        bool test
+        bool train
+        bool evaluation
+        int kfold
+        string event_hash
 
     struct root_t:
         map[string, batch_t] batches

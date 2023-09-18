@@ -98,16 +98,28 @@ namespace SampleTracer
                 typename std::map<std::string, std::vector<G*>> tmp;
                 typename std::vector<G*> app; 
                 for (; itr != roots -> end(); ++itr){
-                    std::string r_name = itr -> first; 
                     tmp = {}; 
+                    std::string r_name = itr -> first; 
                     itr -> second -> ReleaseObjects(&tmp); 
                     itG = tmp.begin(); 
                     for(; itG != tmp.end(); ++itG){
-                        std::string name = r_name + ":" + itG -> first; 
                         app = itG -> second; 
+                        std::string name = r_name + ":" + itG -> first; 
                         (*out)[name].insert((*out)[name].end(), app.begin(), app.end());
                     }
                 }
+            }; 
+
+            std::string make_flush_string(std::string root_name, std::string subkey)
+            {
+                std::string get = ""; 
+                get += this -> settings.outputdirectory; 
+                get += this -> settings.projectname + "/" + subkey + "/"; 
+                get += root_name; 
+                if (get.rfind(".root.1") == std::string::npos){}
+                else {get.erase(get.rfind(".root.1"), get.size()-1);}
+                get += ".hdf5";
+                return get;
             }; 
 
             void AddMeta(meta_t, std::string);
@@ -120,6 +132,10 @@ namespace SampleTracer
             std::map<std::string, std::vector<CyEventTemplate*>> DumpEvents(); 
             std::map<std::string, std::vector<CyGraphTemplate*>> DumpGraphs(); 
             std::map<std::string, std::vector<CySelectionTemplate*>> DumpSelections();
+
+            void FlushEvents(std::vector<std::string> hashes); 
+            void FlushGraphs(std::vector<std::string> hashes); 
+            void FlushSelections(std::vector<std::string> hashes); 
 
             void DumpTracer();
 

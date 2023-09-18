@@ -1,6 +1,6 @@
-import torch
 from torch.optim.lr_scheduler import ExponentialLR, CyclicLR
 from AnalysisG.Settings import Settings
+import torch
 
 
 class OptimizerWrapper(Settings):
@@ -41,14 +41,12 @@ class OptimizerWrapper(Settings):
         return self._pth + " @ " + str(self.Epoch)
 
     def step(self):
-        if not self.train:
-            return
-        self._op.step()
+        if not self.train: pass
+        else: self._op.step()
 
     def zero(self):
-        if not self.train:
-            return
-        self._op.zero_grad()
+        if not self.train: pass
+        else: self._op.zero_grad()
 
     def SetScheduler(self):
         self.SchedulerParams["optimizer"] = self._op

@@ -95,6 +95,55 @@ namespace SampleTracer
         return output;
     }
 
+    void CySampleTracer::FlushEvents(std::vector<std::string> hashes)
+    {
+        bool tmp = this -> settings.getevent;
+        this -> settings.search = hashes;  
+        this -> settings.getevent = true; 
+        std::vector<CyBatch*> smpls = this -> MakeIterable(); 
+        for (unsigned int i(0); i < smpls.size(); ++i){
+            std::string root_name = smpls[i] -> this_ev -> event.event_root; 
+            std::string name = this -> make_flush_string(root_name, "EventCache"); 
+            smpls[i] -> event_dir[name] = root_name; 
+            smpls[i] -> destroy(&smpls[i] -> events); 
+        }
+        this -> settings.search.clear(); 
+        this -> settings.getevent = tmp;
+    }
+
+
+    void CySampleTracer::FlushGraphs(std::vector<std::string> hashes)
+    {
+        bool tmp = this -> settings.getgraph;
+        this -> settings.search = hashes;  
+        this -> settings.getgraph = true; 
+        std::vector<CyBatch*> smpls = this -> MakeIterable(); 
+        for (unsigned int i(0); i < smpls.size(); ++i){
+            std::string root_name = smpls[i] -> this_gr -> graph.event_root; 
+            std::string name = this -> make_flush_string(root_name, "GraphCache"); 
+            smpls[i] -> graph_dir[name] = root_name; 
+            smpls[i] -> destroy(&smpls[i] -> graphs); 
+        }
+        this -> settings.search.clear(); 
+        this -> settings.getgraph = tmp;
+    }
+
+    void CySampleTracer::FlushSelections(std::vector<std::string> hashes)
+    {
+        bool tmp = this -> settings.getselection;
+        this -> settings.search = hashes;  
+        this -> settings.getselection = true; 
+        std::vector<CyBatch*> smpls = this -> MakeIterable(); 
+        for (unsigned int i(0); i < smpls.size(); ++i){
+            std::string root_name = smpls[i] -> this_sel -> selection.event_root; 
+            std::string name = this -> make_flush_string(root_name, "SelectionCache"); 
+            smpls[i] -> selection_dir[name] = root_name; 
+            smpls[i] -> destroy(&smpls[i] -> selections); 
+        }
+        this -> settings.search.clear(); 
+        this -> settings.getselection = tmp;
+    }
+
     void CySampleTracer::DumpTracer()
     {
         export_t* out = &(this -> state); 

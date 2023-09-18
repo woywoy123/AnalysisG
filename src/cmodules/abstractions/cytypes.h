@@ -31,7 +31,6 @@ struct code_t
     bool has_param_variable = false; 
 }; 
 
-
 struct leaf_t
 {
     std::string requested = "";
@@ -310,6 +309,16 @@ struct batch_t
     meta_t meta; 
     std::string hash = ""; 
 };
+
+struct folds_t
+{
+    bool test = false; 
+    bool train = false; 
+    bool evaluation = false;     
+    int kfold = -1; 
+    std::string event_hash = "";
+};
+
 
 struct root_t
 {

@@ -40,16 +40,14 @@ def _check_sub(f, str key):
     except ValueError: return f[key]
 
 cdef class Event:
-
-    cdef CyBatch* ptr
-    cdef meta_t m_meta
-
     cdef _event
     cdef _graph
     cdef _selection
     cdef _meta
-    cdef bool _owner
+    cdef CyBatch* ptr
+    cdef meta_t m_meta
     cdef dict _internal
+    cdef bool _owner
 
     def __cinit__(self):
         self.ptr = NULL
@@ -545,8 +543,6 @@ cdef class SampleTracer:
         self._set.get_all = False
         self.ptr.length()
 
-
-
     def DumpEvents(self):
         self._store_objects(self.ptr.DumpEvents(), "Event")
 
@@ -564,6 +560,20 @@ cdef class SampleTracer:
 
     def RestoreSelections(self, list these_hashes = []):
         self._restore_objects("Selection", selection_t(), these_hashes)
+
+
+    def FlushEvents(self, list these_hashes = []):
+        cdef str i
+        self.ptr.FlushEvents(<vector[string]>[enc(i) for i in these_hashes])
+
+    def FlushGraphs(self, list these_hashes = []):
+        cdef str i
+        self.ptr.FlushGraphs(<vector[string]>[enc(i) for i in these_hashes])
+
+    def FlushSelections(self, list these_hashes = []):
+        cdef str i
+        self.ptr.FlushSelections(<vector[string]>[enc(i) for i in these_hashes])
+
 
     def _makebar(self, inpt: Union[int], CustTitle: Union[None, str] = None):
         _dct = {}
@@ -913,7 +923,11 @@ cdef class SampleTracer:
 
     @property
     def WorkingPath(self):
-        return os.path.abspath(self.OutputDirectory + self.ProjectName) + "/"
+        self.OutputDirectory = self.OutputDirectory
+        cdef str path = ""
+        path += self.OutputDirectory
+        path += self.ProjectName
+        return os.path.abspath(path) + "/"
 
     @property
     def SampleMap(self):

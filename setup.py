@@ -29,6 +29,7 @@ modules = [
         make("MetaData", "metadata", ["abstractions"]),
         make("GraphTemplate", "graph", ["abstractions", "code"]),
         make("SelectionTemplate", "selection", ["abstractions", "code"]),
+        make("cOptimizer", "optimizer", ["abstractions"]),
         make("SampleTracer", "sampletracer", ["root", "abstractions", "metadata", "event", "graph", "selection", "code"])
 ]
 

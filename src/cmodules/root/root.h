@@ -66,7 +66,6 @@ namespace SampleTracer
             std::map<std::string, std::string> selection_dir = {};  
             std::map<std::string, Code::CyCode*> code_hashes = {};
 
-        private: 
             template <typename G> 
             void destroy(std::map<std::string, G*>* input)
             {
@@ -76,7 +75,7 @@ namespace SampleTracer
                 input -> clear(); 
             };
 
-
+        private: 
             template <typename G, typename T>
             void export_this(G* inpt, std::map<std::string, T>* out)
             {

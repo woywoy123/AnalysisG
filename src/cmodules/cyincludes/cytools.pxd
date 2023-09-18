@@ -1,6 +1,7 @@
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 from libcpp.map cimport map, pair
+from libcpp cimport bool
 
 from cython.operator cimport dereference
 from cytypes cimport code_t, event_t, graph_t, selection_t
@@ -13,6 +14,7 @@ import pickle
 
 ctypedef fused gen_t:
     int
+    bool
     string
 
 ctypedef fused common_t:
