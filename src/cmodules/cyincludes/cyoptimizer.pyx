@@ -18,10 +18,15 @@ cdef class cOptimizer:
     cdef CyOptimizer* ptr
     cdef dict _kModel
     cdef dict _kOptim
+    cdef dict _cached_train
+    cdef dict _cached_valid
     cdef dict _cached
+    cdef bool _train
 
     def __cinit__(self):
         self.ptr = new CyOptimizer()
+        self._cached_train = {}
+        self._cached_valid = {}
         self._cached = {}
 
     def __init__(self): pass
@@ -48,8 +53,8 @@ cdef class cOptimizer:
                 continue
             except KeyError: fold_hash.test = False
 
-            try: fold_hash.train = f[hash_].attrs["train"]
-            except KeyError: fold_hash.train = False
+            try: f[hash_].attrs["train"]
+            except KeyError: continue
             for key_ in f[hash_].attrs:
                 if not key_.startswith("k-"): continue
                 fold_hash.kfold = int(key_[2:])
@@ -57,6 +62,7 @@ cdef class cOptimizer:
                 if fold_hash.train: pass
                 else: fold_hash.evaluation = True
                 self.ptr.register_fold(&fold_hash)
+        return True
 
     def UseAllHashes(self, dict inpt):
         cdef str key, hash_
@@ -70,9 +76,6 @@ cdef class cOptimizer:
                 fold_hash.event_hash = enc(hash_)
                 self.ptr.register_fold(&fold_hash)
             data[key] = None
-
-    def FetchTraining(self, int kfold, int batch_size):
-        return self.ptr.fetch_train(kfold, batch_size)
 
     def MakeBatch(self, sampletracer, vector[string] batch, int kfold, int index, int max_percent = 80):
         cdef str k, j
@@ -89,17 +92,17 @@ cdef class cOptimizer:
             self.ptr.flush_train([enc(k) for k in lsts], kfold)
 
         if sampletracer.Device != "cpu":
-            cuda = torch.cuda.mem_get_into()
+            cuda = torch.cuda.mem_get_info()
             gpu = (1 - cuda[0]/cuda[1])*100
 
         if gpu > max_percent or ram > max_percent:
-            lsts = [list(self._cached[k].values()) for k in self._cached]
-            for k in sum(lsts, []): del k
-            self._cached = {}
+            self.FlushRunningCache(self._cached)
             if sampletracer.Device == "cpu": pass
-            torch.cuda.empty_cache()
+            else: torch.cuda.empty_cache()
 
-        lsts = [env(k_) for k_ in self.ptr.check_train(batch, kfold)]
+        if self._train: lsts = [env(k_) for k_ in self.ptr.check_train(batch, kfold)]
+        else: lsts = [env(k_) for k_ in self.ptr.check_validation(batch, kfold)]
+
         if len(lsts): sampletracer.RestoreGraphs(lsts)
 
         if kfold not in self._cached: self._cached[kfold] = {}
@@ -109,12 +112,30 @@ cdef class cOptimizer:
         lsts = [env(k_) for k_ in batch]
         if len(lsts) == 1: lsts = [sampletracer[lsts]]
         else: lsts = sampletracer[lsts]
+
         lsts = [i.release_graph().to(sampletracer.Device) for i in lsts]
         self._cached[kfold][index] = Batch().from_data_list(lsts)
+        if self._train: self._cached_train = self._cached
+        else: self._cached_valid = self._cached
         return self._cached[kfold][index]
 
     def UseTheseFolds(self, list inpt):
         self.ptr.use_folds = <vector[int]>inpt
+
+    def FetchTraining(self, int kfold, int batch_size):
+        self._train = True
+        self._cached = self._cached_train
+        return self.ptr.fetch_train(kfold, batch_size)
+
+    def FetchValidation(self, int kfold, int batch_size):
+        self._train = False
+        self._cached = self._cached_valid
+        return self.ptr.fetch_validation(kfold, batch_size)
+
+    cdef void FlushRunningCache(self, dict inpt):
+        cdef list lsts = [list(inpt[k].values()) for k in inpt]
+        for k in sum(lsts, []): del k
+        inpt = {}
 
     @property
     def kFolds(self): return self.ptr.use_folds

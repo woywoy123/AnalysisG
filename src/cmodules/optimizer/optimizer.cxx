@@ -117,5 +117,19 @@ namespace Optimizer
         return this -> check_data(&hashes, &(this -> kfold_train), kfold);
     }
 
+    std::vector<std::vector<std::string>> CyOptimizer::fetch_validation(int kfold, int batch_size)
+    {
+        return this -> fetch_quant(kfold, batch_size, &(this -> kfold_eval)); 
+    }
+
+    void CyOptimizer::flush_validation(std::vector<std::string> hashes, int kfold)
+    {
+        this -> flush_data(&hashes, &(this -> kfold_eval), kfold); 
+    }
+
+    std::vector<std::string> CyOptimizer::check_validation(std::vector<std::string> hashes, int kfold)
+    {
+        return this -> check_data(&hashes, &(this -> kfold_eval), kfold);
+    }
 }
 

@@ -27,6 +27,9 @@ cdef class Code:
 
     def __init__(self, instance = None):
         if instance is None: return
+        if type(instance).__module__.endswith("cmodules.code"):
+            self.__setstate__(instance.__getstate__())
+            return
         self._x = instance
         self.__getbasic__()
 
@@ -285,6 +288,22 @@ cdef class Code:
 
     @input_params.setter
     def input_params(self, list val): self.ptr.container.input_params = [enc(i) for i in val]
+
+    @property
+    def param_space(self):
+        cdef dict output = {}
+        cdef pair[string, string] itr
+        for itr in self.ptr.container.param_space:
+            output[env(itr.first)] = pickle.loads(itr.second)
+        return output
+
+    @param_space.setter
+    def param_space(self, dict val):
+        cdef str i
+        cdef string s
+        for i in val:
+            s = pickle.dumps(val[i])
+            self.ptr.container.param_space[enc(i)] = s
 
     @property
     def defaults(self) -> list:

@@ -31,6 +31,10 @@ namespace Optimizer
             std::vector<std::string> check_train(std::vector<std::string> hashes, int kfold);
             void flush_train(std::vector<std::string> hashes, int kfold);
 
+            std::vector<std::vector<std::string>> fetch_validation(int kfold, int batch_size);
+            std::vector<std::string> check_validation(std::vector<std::string> hashes, int kfold);
+            void flush_validation(std::vector<std::string> hashes, int kfold);
+
             std::map<int, CyFold*> leaveout_test = {}; 
             std::map<int, CyFold*> kfold_eval = {};
             std::map<int, CyFold*> kfold_train = {};

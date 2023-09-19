@@ -74,41 +74,98 @@ def test_feature_analysis():
     Ana.rm("TestFeature")
 
 def test_optimizer():
+    from AnalysisG._cmodules.cWrapping import ModelWrapper
     from models.CheatModel import CheatModel
+    from torch_geometric.data import Batch
+    from AnalysisG.Model import Model
 
-    #Ana = Analysis()
-    #Ana.InputSample(None, root1)
-    #Ana.ProjectName = "Project_ML"
-    #Ana.Event = Event
-    #Ana.Chunks = 10000
-    #Ana.EventCache = True
-    #Ana.Launch()
+    Ana = Analysis()
+    Ana.InputSample(None, root1)
+    Ana.ProjectName = "Project_ML"
+    Ana.Event = Event
+    Ana.Chunks = 10000
+    Ana.EventCache = True
+    Ana.Launch()
 
-    #AnaG = Analysis()
-    #AnaG.ProjectName = "Project_ML"
-    #AnaG.Graph = GraphChildren
-    #AnaG.Chunks = 1000
-    #ApplyFeatures(AnaG, "TruthChildren")
-    #AnaG.DataCache = True
-    #AnaG.Launch()
-    #AnaG.GetAll = True
-    #for i in AnaG:
-    #    assert i.Graph
-    #    assert i.N_eta is not None
+    AnaG = Analysis()
+    AnaG.ProjectName = "Project_ML"
+    AnaG.Graph = GraphChildren
+    AnaG.Chunks = 1000
+    ApplyFeatures(AnaG, "TruthChildren")
+    AnaG.DataCache = True
+    AnaG.Launch()
+    AnaG.GetAll = True
+    for i in AnaG:
+        assert i.Graph
+        assert i.N_eta is not None
 
-    #AnaG = Analysis()
-    #AnaG.ProjectName = "Project_ML"
-    #AnaG.TrainingSize = 90
-    #AnaG.kFolds = 10
-    #AnaG.Launch()
+    AnaG = Analysis()
+    AnaG.ProjectName = "Project_ML"
+    AnaG.TrainingSize = 90
+    AnaG.kFolds = 10
+    AnaG.Launch()
 
-    #AnaG = Analysis()
-    #AnaG.ProjectName = "Project_ML"
-    #AnaG.TrainingName = "untitled"
+    AnaG = Analysis()
+    AnaG.ProjectName = "Project_ML"
+    AnaG.TrainingName = "untitled"
+    mod = ModelWrapper()
+    mod.__params__ = {"test" : "here"}
+    mod.model = CheatModel
+    wrp_broken = Model(CheatModel)
+    wrp_ok = Model(CheatModel)
+    wrp_ok.__params__ = {"test" : "here"}
+    for i in AnaG:
+        x = Batch().from_data_list([i.release_graph().to("cpu")])
+        mod.match_data_model_vars(x)
+        assert "i" in mod.in_map
+        assert "edge_index" in mod.in_map
+        assert "N_pT" in mod.in_map
+        assert "N_eta" in mod.in_map
+        assert "N_energy" in mod.in_map
+        assert "E_T_top_edge" in mod.in_map
+        assert "O_top_edge" == mod.out_map["E_T_top_edge"]
+        assert "top_edge" in mod.loss_map
+        assert mod.model.test == "here"
+        t = mod(x)
+        assert len(t["graphs"]) == 1
+        assert "total" in t
+        assert "L_top_edge" in t
+        assert "A_top_edge" in t
 
-    #op = Optimizer()
-    #op.ContinueTraining = False
-    #op.Start(AnaG)
+        assert not wrp_broken.SampleCompatibility(x)
+        wrp_ok.SampleCompatibility(x)
+        assert "i" in wrp_ok.in_map
+        assert "edge_index" in wrp_ok.in_map
+        assert "N_pT" in wrp_ok.in_map
+        assert "N_eta" in wrp_ok.in_map
+        assert "N_energy" in wrp_ok.in_map
+        assert "E_T_top_edge" in wrp_ok.in_map
+        assert "O_top_edge" == wrp_ok.out_map["E_T_top_edge"]
+        assert "top_edge" in wrp_ok.loss_map
+        assert wrp_ok.model.test == "here"
+        t = wrp_ok(x)
+        assert len(t["graphs"]) == 1
+        assert "total" in t
+        assert "L_top_edge" in t
+        assert "A_top_edge" in t
+        break
+
+    AnaG = Analysis()
+    AnaG.ProjectName = "Project_ML"
+    AnaG.TrainingName = "untitled"
+    AnaG.Device = "cpu"
+
+    op = Optimizer()
+    op.ContinueTraining = False
+    op.Model = CheatModel
+    op.ModelParams = {"test" : "here"}
+    op.Optimizer = "ADAM"
+    op.OptimizerParams = {"lr" : 0.001}
+    op.kFold = [1, 2]
+    op.BatchSize = 3
+    op.Epochs = 20
+    op.Device = "cpu"
+    op.Start(AnaG)
 
 
 

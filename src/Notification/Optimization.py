@@ -62,22 +62,10 @@ class _Optimizer(Notification):
 
 
 
-#class _Optimizer(Notification):
-#    def __init__(self): pass
-#
 #    def _NoModel(self):
 #        if self.Model is not None: return False
 #        self.Warning("No Model was given.")
 #        return True
-#
-#    def _NoSampleGraph(self):
-#        hashes = self.GetDataCacheHashes()
-#        l = len(hashes)
-#        self.RestoreTheseHashes(hashes[: self.BatchSize])
-#        if l == 0:
-#            return self.Warning("No Sample Graphs found")
-#        self.Success("Found " + str(l) + " Sample Graphs")
-#        return hashes
 #
 #    def _notcompatible(self):
 #        return self.Failure("Model not compatible with given input graph sample.")
@@ -131,47 +119,6 @@ class _Optimizer(Notification):
 #            except KeyError:
 #                return not self.Warning("Loading Optimizer Failed. Skipping loading...")
 #        return True
-#
-#    def _searchdatasplits(self):
-#        pth = self._outDir + "/DataSets/"
-#        ls = self.ls(pth)
-#        if len(ls) == 0 and self.kFold is not None:
-#            self.kFold = None
-#            return self.Warning(
-#                "No sample splitting found (k-Fold). Training on entire sample."
-#            )
-#        elif len(ls) == 0:
-#            self.Warning("Provided kFold not found. Training on entire sample.")
-#            self.kFold = None
-#            return
-#        if self.TrainingName + ".pkl" not in ls:
-#            return self.Warning(
-#                "The given training sample name was not found, but found the following: "
-#                + "\n-> ".join(ls)
-#            )
-#
-#        f = UnpickleObject(pth + self.TrainingName)
-#        if isinstance(self.kFold, int):
-#            k = ["k-" + str(self.kFold)]
-#        elif isinstance(self.kFold, str):
-#            k = [self.kFold]
-#        elif isinstance(self.kFold, list):
-#            k = ["k-" + str(t) if isinstance(t, int) else t for t in self.kFold]
-#        elif self.kFold is None:
-#            k = [k for k in f if not k.endswith("_hashes")]
-#        else:
-#            k = [f]
-#
-#        try:
-#            self.kFold = {kF: f[kF] for kF in k}
-#        except KeyError:
-#            msg = "Given k-Fold not found. But found the following folds: "
-#            l = len(msg)
-#            msg += "\n-> ".join([""] + list(f))
-#            self.Failure(msg)
-#            return self.FailureExit("=" * l)
-#        self.Success("Found the training sample: " + self.TrainingName)
-#        self.Success("Training Sets Detected: " + "\n-> ".join([""] + list(self.kFold)))
 #
 #    def _showloss(self):
 #        string = ["Epoch-kFold: " + self._ep.Epoch]

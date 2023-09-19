@@ -229,6 +229,7 @@ cdef class GraphTemplate:
         n_num = self.gr.hash_particle.size()
         data = Data(edge_index = torch.tensor(topo, dtype = torch.long).t())
         data.num_nodes = torch.tensor(n_num, dtype = torch.int)
+        setattr(data, "i", torch.tensor([self.index], dtype = torch.int))
         for itr in self.gr.graph_feature:
             key = env(itr.first)
             co_h = env(itr.second)

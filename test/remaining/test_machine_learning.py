@@ -9,36 +9,6 @@ from conftest import clean_dir
 root1 = "./samples/sample1/smpl1.root"
 
 
-def test_optimizer():
-    from models.CheatModel import CheatModel
-
-    Ana = Analysis()
-    Ana.InputSample(None, root1)
-    Ana.Event = Event
-    Ana.ProjectName = "TestOptimizer"
-    Ana.EventGraph = GraphChildren
-    ApplyFeatures(Ana, "TruthChildren")
-    Ana.EventStop = 100
-    Ana.kFolds = 4
-    Ana.DataCache = True
-    Ana.PurgeCache = True
-    Ana.Launch()
-
-    op = Optimizer(Ana)
-    op.ProjectName = "TestOptimizer"
-    op.Model = CheatModel
-    op.Device = "cpu"
-    op.Optimizer = "ADAM"
-    op.OptimizerParams = {"lr": 0.001}
-    op.ContinueTraining = False
-    op.EnableReconstruction = True
-    op.Batch = 1
-    op.Epochs = 20
-    op.Launch()
-
-    clean_dir()
-
-
 def test_optimizer_analysis():
     from models.CheatModel import CheatModel
 

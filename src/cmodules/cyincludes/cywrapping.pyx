@@ -1,0 +1,408 @@
+# cython: language_level = 3
+from libcpp cimport bool
+
+from AnalysisG._cmodules.code import Code
+from cytypes cimport code_t
+
+from AnalysisG.Model.LossFunctions import LossFunctions
+from torch_geometric.data import Data
+
+from torch.optim.lr_scheduler import ExponentialLR, CyclicLR
+from torch.optim import Adam, SGD
+import torch
+
+cdef class OptimizerWrapper:
+    cdef _optim
+    cdef _sched
+    cdef _model
+
+    cdef str _path
+    cdef str _outdir
+    cdef str _run_name
+    cdef str _optimizer_name
+    cdef str _scheduler_name
+
+    cdef int _epoch
+    cdef int _kfold
+    cdef bool _train
+    cdef dict _state
+    cdef dict _optim_params
+    cdef dict _sched_params
+
+    def __cinit__(self):
+        self._optim = None
+        self._sched = None
+        self._model = None
+
+        self._path = ""
+        self._outdir = ""
+        self._run_name = "untitled"
+        self._optimizer_name = ""
+        self._scheduler_name = ""
+        self._kfold = 0
+        self._epoch = 0
+
+        self._train = False
+        self._optim_params = {}
+        self._sched_params = {}
+        self._state = {}
+
+    def __init__(self, initial = None):
+        cdef str i
+        if initial is None: return
+        for i in initial: setattr(self, i, initial[i])
+
+    def setoptimizer(self):
+        if not len(self._optim_params): return False
+        if self._model is None: return False
+        cdef model_param = self._model.parameters()
+        if self._optimizer_name == "ADAM":
+            self._optim = Adam(model_param, **self._optim_params)
+        elif self._optimizer_name == "SGD":
+            self._optim = SGD(model_param, **self._optim_params)
+        else: return False
+        return True
+
+    def setscheduler(self):
+        self._sched_params["optimizer"] = self._optim
+        if self._scheduler_name == "ExpontentialLR":
+            self._sched = ExponentialLR(**self._sched_params)
+        elif self._scheduler_name == "CyclicLR":
+            self._sched = CyclicLR(**self._sched_params)
+        else: return False
+        return True
+
+    def save(self):
+        cdef str _save_path = ""
+        _save_path += self._path + "/"
+        _save_path += self._run_name + "/"
+        _save_path += "Epoch-" + str(self._epoch) + "/"
+        _save_path += "kFold-" + str(self._kfold) + "/"
+        _save_path += "state.pth"
+
+        self._state["epoch"] = self._epoch
+        self._state["optim"] = self._optim.state_dict()
+        if self._sched is None: pass
+        else: self._state["sched"] = self._optim.state_dict()
+        torch.save(self._state, _save_path)
+
+    def load(self):
+        cdef str _save_path = ""
+        _save_path += self._path + "/"
+        _save_path += self._run_name + "/"
+        _save_path += "Epoch-" + str(self._epoch) + "/"
+        _save_path += "kFold-" + str(self._kfold) + "/"
+        _save_path += "state.pth"
+
+        cdef dict c = torch.load(_save_path)
+        self._epoch = c["epoch"]
+        self._optim.load_state_dict(c["optim"])
+        if self._sched is None: pass
+        elif "sched" not in c: pass
+        else: self._sched.load_state_dict(c["sched"])
+        return _save_path
+
+    def step(self):
+        if not self._train: pass
+        else: self._optim.step()
+
+    def zero(self):
+        if not self._train: pass
+        else: self._optim.zero_grad()
+
+    def stepsc(self):
+        if self._sched is None: pass
+        else: self._sched.step()
+
+    @property
+    def optimizer(self): return self._optim
+
+    @property
+    def scheduler(self): return self._sched
+
+    @property
+    def model(self): return self._model
+
+    @model.setter
+    def model(self, val): self._model = val
+
+    @property
+    def Path(self): return self._path
+
+    @Path.setter
+    def Path(self, str pth): self._path = pth
+
+    @property
+    def RunName(self): return self._run_name
+
+    @RunName.setter
+    def RunName(self, str val): self._run_name = val
+
+    @property
+    def Optimizer(self): return self._optimizer_name
+
+    @Optimizer.setter
+    def Optimizer(self, str val): self._optimizer_name = val
+
+    @property
+    def Scheduler(self): return self._scheduler_name
+
+    @Scheduler.setter
+    def Scheduler(self, str val): self._scheduler_name = val
+
+    @property
+    def SchedulerParams(self): return self._sched_params
+
+    @SchedulerParams.setter
+    def SchedulerParams(self, dict inpt): self._sched_params = inpt
+
+    @property
+    def OptimizerParams(self): return self._optim_params
+
+    @OptimizerParams.setter
+    def OptimizerParams(self, dict inpt): self._optim_params = inpt
+
+    @property
+    def Epoch(self): return self._epoch
+
+    @Epoch.setter
+    def Epoch(self, int val): self._epoch = val
+
+    @property
+    def Train(self): return self._train
+
+    @Train.setter
+    def Train(self, bool val): self._train = val
+
+    @property
+    def KFold(self): return self._kfold
+
+    @KFold.setter
+    def KFold(self, int val): self._kfold = val
+
+
+cdef class ModelWrapper:
+    cdef str  _run_name
+    cdef str  _path
+
+    cdef dict _params
+    cdef dict _in_map
+    cdef dict _out_map
+    cdef dict _loss_map
+    cdef dict _class_map
+    cdef int  _epoch
+    cdef int  _kfold
+    cdef bool _train
+    cdef public bool failure
+    cdef public str error_message
+
+    cdef code_t _code
+    cdef _model
+    cdef _loss_sum
+
+    def __cinit__(self):
+        self._path = ""
+        self._run_name = "untitled"
+        self._model = None
+        self._train = True
+        self.failure = False
+        self.error_message = ""
+        self._params = {}
+        self._kfold = 0
+        self._epoch = 0
+
+    def __init__(self, model = None):
+        if model is None: return
+        self._model = model
+        self.__checkcode__()
+
+    cdef void __checkcode__(self):
+        co = Code(self._model)
+        if not len(self.__params__): pass
+        else: co.param_space = self.__params__
+        self._code = co.__getstate__()
+
+        try: self._model = self._model(**self.__params__)
+        except Exception as e:
+            self.failure = True
+            self.error_message = str(e)
+            return
+        self.failure = False
+        self.error_message = ""
+
+        self._out_map = {}
+        self._loss_map = {}
+        self._class_map = {}
+
+        cdef str i, k
+        cdef dict params
+        params = self._model.__dict__
+        for i, val in params.items():
+            try: k = i[:2]
+            except IndexError: continue
+            if   k == "O_": self._out_map[i[2:]] = val
+            elif k == "L_": self._loss_map[i[2:]] = val
+            elif k == "C_": self._class_map[i[2:]] = val
+            else: pass
+
+        self._in_map = {}
+        co = self._model.forward.__code__
+        co = co.co_varnames[1: co.co_argcount]
+        for i in co: self._in_map[i] = None
+
+        cdef bool cl = False
+        for i in self._loss_map:
+            try: cl = self._class_map[i]
+            except KeyError: cl = False
+            self._loss_map[i] = LossFunctions(self._loss_map[i], cl)
+
+    cdef dict __debatch__(self, dict sample):
+        cdef str i, j, key
+        cdef dict out = {}
+        cdef dict tmp = {}
+        cdef list samples
+        cdef dict loss
+        out["batch"] = sample["batch"]
+        out["edge_index"] = sample["edge_index"]
+        self._loss_sum = 0
+        for i, j in self._out_map.items():
+            pred = self._model.__dict__[j]
+            tru  = sample[i]
+            key = j[2:]
+
+            loss = self._loss_map[key](pred, tru)
+            self._loss_sum += loss["loss"]
+
+            out[i] = tru
+            out[j] = pred
+            tmp["L_" + key] = loss["loss"]
+            tmp["A_" + key] = loss["acc"]
+        tmp["total"] = self._loss_sum
+
+        smpl = Data().from_dict(out)
+        batches = sample["batch"].unique()
+        samples = [smpl.subgraph(smpl.batch == k) for k in batches]
+        out = {}
+        out["graphs"] = samples
+        out.update(tmp)
+        return out
+
+    def __call__(self, data):
+        cdef str i
+        cdef dict inpt = data.to_dict()
+        self._model(**{i : inpt[i] for i in self._in_map})
+        return self.__debatch__(inpt)
+
+    def match_data_model_vars(self, sample):
+        cdef str it, key
+        cdef dict inpt = sample.to_dict()
+        cdef dict mapping = {}
+        for it in inpt:
+            try: key = it[4:]
+            except IndexError: continue
+            if key in self._out_map: pass
+            else: continue
+            mapping[it] = "O_" + key
+        self._out_map = mapping
+
+    def backward(self):
+        if not self._train: pass
+        else: self._loss_sum.backward()
+
+    def dump(self):
+        cdef str _save_path = ""
+        _save_path += self._path + "/"
+        _save_path += self._run_name + "/"
+        _save_path += "Epoch-" + str(self._epoch) + "/"
+        _save_path += "kFold-" + str(self._kfold) + "/"
+        _save_path += "model_state.pth"
+        cdef dict out = {"epoch": self.Epoch, "model": self._model.state_dict()}
+        torch.save(out, _save_path)
+
+    def load(self):
+        cdef str _save_path = ""
+        _save_path += self._path + "/"
+        _save_path += self._run_name + "/"
+        _save_path += "Epoch-" + str(self._epoch) + "/"
+        _save_path += "kFold-" + str(self._kfold) + "/"
+        _save_path += "model_state.pth"
+
+        cdef dict lib = torch.load(_save_path)
+        self._epoch = lib["epoch"]
+        self._model.load_state_dict(lib["model"])
+        self._model.eval()
+
+    @property
+    def train(self): return self._train
+
+    @train.setter
+    def train(self, bool val):
+        self._train = val
+        if val: self._model.train()
+        else: self._model.eval()
+
+    @property
+    def __params__(self):
+        return self._params
+
+    @__params__.setter
+    def __params__(self, dict val):
+        self._params = val
+        self.__checkcode__()
+
+    @property
+    def in_map(self): return self._in_map
+
+    @property
+    def out_map(self): return self._out_map
+
+    @property
+    def loss_map(self): return self._loss_map
+
+    @property
+    def class_map(self): return self._class_map
+
+    @property
+    def code(self): return Code().__setstate__(self._code)
+
+    @property
+    def Epoch(self): return self._epoch
+
+    @Epoch.setter
+    def Epoch(self, int val): self._epoch = val
+
+    @property
+    def KFold(self): return self._kfold
+
+    @KFold.setter
+    def KFold(self, int val): self._kfold = val
+
+    @property
+    def Path(self): return self._path
+
+    @Path.setter
+    def Path(self, str pth): self._path = pth
+
+    @property
+    def RunName(self): return self._run_name
+
+    @RunName.setter
+    def RunName(self, str val): self._run_name = val
+
+    @property
+    def model(self):
+        return self._model
+
+    @model.setter
+    def model(self, mod):
+        self._model = mod
+        self.__checkcode__()
+
+    @property
+    def device(self): return self._model.device
+
+    @device.setter
+    def device(self, val): self._model = self._model.to(device = val)
+
+
+

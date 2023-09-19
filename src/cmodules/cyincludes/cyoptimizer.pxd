@@ -13,6 +13,10 @@ cdef extern from "../optimizer/optimizer.h" namespace "Optimizer":
         vector[string] check_train(vector[string], int) except +
         void flush_train(vector[string], int) except +
 
+        vector[vector[string]] fetch_validation(int kfold, int batch) except +
+        vector[string] check_validation(vector[string], int) except +
+        void flush_validation(vector[string], int) except +
+
         map[string, int] fold_map() except +
 
         vector[int] use_folds
