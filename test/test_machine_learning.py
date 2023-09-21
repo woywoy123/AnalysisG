@@ -79,31 +79,31 @@ def test_optimizer():
     from torch_geometric.data import Batch
     from AnalysisG.Model import Model
 
-    Ana = Analysis()
-    Ana.InputSample(None, root1)
-    Ana.ProjectName = "Project_ML"
-    Ana.Event = Event
-    Ana.Chunks = 10000
-    Ana.EventCache = True
-    Ana.Launch()
+    #Ana = Analysis()
+    #Ana.InputSample(None, root1)
+    #Ana.ProjectName = "Project_ML"
+    #Ana.Event = Event
+    #Ana.Chunks = 10000
+    #Ana.EventCache = True
+    #Ana.Launch()
 
-    AnaG = Analysis()
-    AnaG.ProjectName = "Project_ML"
-    AnaG.Graph = GraphChildren
-    AnaG.Chunks = 1000
-    ApplyFeatures(AnaG, "TruthChildren")
-    AnaG.DataCache = True
-    AnaG.Launch()
-    AnaG.GetAll = True
-    for i in AnaG:
-        assert i.Graph
-        assert i.N_eta is not None
+    #AnaG = Analysis()
+    #AnaG.ProjectName = "Project_ML"
+    #AnaG.Graph = GraphChildren
+    #AnaG.Chunks = 1000
+    #ApplyFeatures(AnaG, "TruthChildren")
+    #AnaG.DataCache = True
+    #AnaG.Launch()
+    #AnaG.GetAll = True
+    #for i in AnaG:
+    #    assert i.Graph
+    #    assert i.N_eta is not None
 
-    AnaG = Analysis()
-    AnaG.ProjectName = "Project_ML"
-    AnaG.TrainingSize = 90
-    AnaG.kFolds = 10
-    AnaG.Launch()
+    #AnaG = Analysis()
+    #AnaG.ProjectName = "Project_ML"
+    #AnaG.TrainingSize = 90
+    #AnaG.kFolds = 10
+    #AnaG.Launch()
 
     AnaG = Analysis()
     AnaG.ProjectName = "Project_ML"
@@ -126,6 +126,7 @@ def test_optimizer():
         assert "O_top_edge" == mod.out_map["E_T_top_edge"]
         assert "top_edge" in mod.loss_map
         assert mod.model.test == "here"
+
         t = mod(x)
         assert len(t["graphs"]) == 1
         assert "total" in t
@@ -166,6 +167,33 @@ def test_optimizer():
     op.Epochs = 20
     op.Device = "cpu"
     op.Start(AnaG)
+
+def test_optimizer_analysis():
+    from models.CheatModel import CheatModel
+
+    Ana = Analysis()
+    Ana.InputSample(None, root1)
+    Ana.ProjectName = "TestOptimizerAnalysis"
+    Ana.Event = Event
+    Ana.EventGraph = GraphChildren
+    ApplyFeatures(Ana, "TruthChildren")
+    Ana.DataCache = True
+    Ana.kFolds = 2
+    Ana.kFold = 1
+    Ana.Epochs = 20
+    Ana.Optimizer = "ADAM"
+    Ana.RunName = "RUN"
+    Ana.DebugMode = True
+    Ana.OptimizerParams = {"lr": 0.001}
+    Ana.Scheduler = "ExponentialLR"
+    Ana.ContinueTraining = False
+    Ana.SchedulerParams = {"gamma": 1}
+    Ana.Device = "cpu"
+    Ana.Model = CheatModel
+    Ana.EnableReconstruction = True
+    Ana.BatchSize = 1
+    Ana.Launch()
+    clean_dir()
 
 
 

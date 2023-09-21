@@ -4,6 +4,8 @@ from AnalysisG._cmodules.cOptimizer import cOptimizer
 from AnalysisG.Notification import _Optimizer
 from .Interfaces import _Interface
 from AnalysisG.Model import Model
+from torchmetrics import ROC, AUROC
+import torch
 import h5py
 
 class Settings:
@@ -29,7 +31,8 @@ class Settings:
         self.SchedulerParams = {}
 
         self.BatchSize = 1
-        self.DebugMode = None
+        self.DebugMode = False
+
         self.ContinueTraining = False
         self.SortByNodes = True
         self.EnableReconstruction = True
@@ -59,6 +62,7 @@ class Optimizer(_Optimizer, _Interface, RandomSamplers):
         self._searchdatasplits(sets)
 
     def __initialize__(self):
+        if self._nomodel(): return False
         for k in self._cmod.kFolds:
             batches = self._cmod.FetchTraining(k, self.BatchSize)
             graphs = self._cmod.MakeBatch(self, next(iter(batches)), k, 0)
@@ -70,7 +74,8 @@ class Optimizer(_Optimizer, _Interface, RandomSamplers):
 
             self._kModels[k].__params__ = self.ModelParams
             self._kModels[k].device = self.Device
-            if not self._kModels[k].SampleCompatibility(graphs): return
+            if self._kModels[k].SampleCompatibility(graphs): pass
+            else: return self._notcompatible()
 
             self._kOps[k] = OptimizerWrapper()
             self._kOps[k].Path = self.WorkingPath + "machine-learning/"
@@ -84,8 +89,12 @@ class Optimizer(_Optimizer, _Interface, RandomSamplers):
             self._kOps[k].SchedulerParams = self.SchedulerParams
             self._kOps[k].model = self._kModels[k].model
 
-            if not self._kOps[k].setoptimizer(): return
-            self._kOps[k].setscheduler()
+            if self._kOps[k].setoptimizer(): pass
+            else: return self._invalidoptimizer()
+
+            if self._kOps[k].setscheduler(): pass
+            else: return self._invalidscheduler()
+        return True
 
     def Start(self, sample = None):
         if sample is None: pass
@@ -93,15 +102,17 @@ class Optimizer(_Optimizer, _Interface, RandomSamplers):
         self.RestoreTracer()
         self.__searchsplits__()
         self._findpriortraining()
-        self.__initialize__()
+        if self.__initialize__(): pass
+        else: return
+
         kfolds = self._cmod.kFolds
         kfolds.sort()
-
         path = self.WorkingPath + "machine-learning/" + self.RunName
         for ep in range(self.Epoch, self.Epochs):
             ep += 1
+            base = path + "/Epoch-" + str(ep) + "/kFold-"
             for k in kfolds:
-                self.mkdir(path + "/Epoch-" + str(ep) + "/kFold-" + str(k))
+                self.mkdir(base + str(k))
 
                 self._kOps[k].Epoch = ep
                 self._kModels[k].Epoch = ep
@@ -113,8 +124,26 @@ class Optimizer(_Optimizer, _Interface, RandomSamplers):
                 self._kOps[k].Train = False
                 self._kModels[k].Train = False
                 self.__validation__(k, ep)
-
                 self._kOps[k].stepsc()
+
+                self.__evaluation__(k, ep)
+
+            x = self._cmod.BuildPlots(ep, path)
+            for i in x:
+                for j in x[i]["truth"]:
+                    pred, truth = x[i]["pred"][j], x[i]["truth"][j]
+                    pred, truth = torch.tensor(pred), torch.tensor(truth, dtype = torch.int).view(-1)
+                    if pred.size()[1] == 1: com = {"task" : "binary"}
+                    else: com = {"task" : "multiclass", "num_classes" : pred.size()[1]}
+                    roc = ROC(**com)
+                    auc = AUROC(**com)
+
+                    fpr, tpr, thres = roc(pred, truth)
+                    auc_ = auc(pred, truth)
+                    print(auc_)
+
+            self._cmod.DumpEpochHDF5(ep, base, kfolds)
+
 
     def __train__(self, kfold, epoch):
         batches = self._cmod.FetchTraining(kfold, self.BatchSize)
@@ -123,9 +152,9 @@ class Optimizer(_Optimizer, _Interface, RandomSamplers):
         for i, batch in zip(range(index_), batches):
             graph = self._cmod.MakeBatch(self, batch, kfold, i)
             self._kOps[kfold].zero()
-
             res = self._kModels[kfold](graph)
             self._kModels[kfold].backward()
+            self._cmod.AddkFold(epoch, kfold, res, self._kModels[kfold].out_map)
 
             self._kOps[kfold].step()
             bar.update(1)
@@ -136,9 +165,19 @@ class Optimizer(_Optimizer, _Interface, RandomSamplers):
         _, bar = self._MakeBar(index_, "Epoch (" + str(epoch) + ") Running k-Fold (validation) -> " + str(kfold))
         for i, batch in zip(range(index_), batches):
             graph = self._cmod.MakeBatch(self, batch, kfold, i)
+            res = self._kModels[kfold](graph)
+            self._cmod.AddkFold(epoch, kfold, res, self._kModels[kfold].out_map)
             bar.update(1)
 
-
+    def __evaluation__(self, kfold, epoch):
+        batches = self._cmod.FetchEvaluation(self.BatchSize)
+        index_ = len(batches)
+        _, bar = self._MakeBar(index_, "Epoch (" + str(epoch) + ") Running leave-out")
+        for i, batch in zip(range(index_), batches):
+            graph = self._cmod.MakeBatch(self, batch, -1, i)
+            res = self._kModels[kfold](graph)
+            self._cmod.AddkFold(epoch, kfold, res, self._kModels[kfold].out_map)
+            bar.update(1)
 
     def preiteration(self, inpt = None):
         if self.triggered: return False

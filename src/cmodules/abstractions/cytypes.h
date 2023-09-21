@@ -312,13 +312,36 @@ struct batch_t
 
 struct folds_t
 {
+    int kfold = -1; 
     bool test = false; 
     bool train = false; 
     bool evaluation = false;     
-    int kfold = -1; 
     std::string event_hash = "";
 };
 
+struct data_t
+{
+    std::string name = ""; 
+    std::vector<std::vector<float>> truth    = {};
+    std::vector<std::vector<float>> pred     = {};
+    std::vector<std::vector<float>> index    = {};
+
+    std::vector<std::vector<float>> nodes    = {};
+    std::vector<std::vector<float>> loss     = {}; 
+    std::vector<std::vector<float>> accuracy = {};
+};
+
+struct metric_t
+{
+    // ROC-curve variables
+    std::map<std::string, std::vector<std::vector<float>>> truth = {}; 
+    std::map<std::string, std::vector<std::vector<float>>> pred  = {}; 
+
+    // General stuff
+    std::map<std::string, float> acc_average = {}; 
+    std::map<std::string, float> loss_average = {};
+    std::map<std::string, int> num_nodes = {}; 
+};
 
 struct root_t
 {
@@ -356,7 +379,6 @@ struct export_t
     std::map<std::string, std::string> event_dir = {}; 
     std::map<std::string, std::string> graph_dir = {}; 
     std::map<std::string, std::string> selection_dir = {};
-
 };
 
 struct settings_t

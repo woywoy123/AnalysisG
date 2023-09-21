@@ -252,6 +252,24 @@ cdef extern from "../abstractions/cytypes.h":
         int kfold
         string event_hash
 
+    struct data_t:
+        string name
+        vector[vector[float]] truth
+        vector[vector[float]] pred
+        vector[vector[float]] index
+
+        vector[vector[float]] nodes
+        vector[vector[float]] loss
+        vector[vector[float]] accuracy
+
+    struct metric_t:
+        map[string, vector[vector[float]]] truth
+        map[string, vector[vector[float]]] pred
+
+        map[string, float] acc_average
+        map[string, float] loss_average
+        map[string, int] num_nodes
+
     struct root_t:
         map[string, batch_t] batches
         map[string, int] n_events

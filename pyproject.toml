@@ -39,8 +39,23 @@ Homepage = "https://github.com/woywoy123/AnalysisG"
 
 [tool.setuptools.package-dir]
 "AnalysisG" = "src"
-"AnalysisG._cmodules" = "src/cmodules"
-"AnalysisG.Particles" = "src/Events/Particles"
+
+"AnalysisG.IO"           = "src/IO"
+"AnalysisG.Tools"        = "src/Tools"
+"AnalysisG.Events"       = "src/Events"
+"AnalysisG.Graphs"       = "src/Events/Graphs"
+"AnalysisG.Model"        = "src/Model"
+"AnalysisG._cmodules"    = "src/cmodules"
+"AnalysisG.Templates"    = "src/Templates"
+"AnalysisG.Generators"   = "src/Generators"
+"AnalysisG.Particles"    = "src/Events/Particles"
+"AnalysisG.Notification" = "src/Notification"
+#"AnalysisG.Submission" = "src/Submission"
+#"AnalysisG.Settings" = "src/Settings"
+#"AnalysisG.Plotting" = "src/Plotting" 
+
+[tool.setuptools.package-data]
+"*" = ["*.pyx", "*.pxd", "*.cxx", "*.h"]
 
 [tool.bumpver]
 current_version = "3.3.0"

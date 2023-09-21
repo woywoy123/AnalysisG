@@ -58,28 +58,26 @@ class _Optimizer(Notification):
 
     def _nographs(self): return self.Warning("No Sample Graphs found")
 
+    def _nomodel(self):
+        if self.Model is None: pass
+        else: return False
+
+        self.Warning("No Model was given.")
+        return True
+
+    def _notcompatible(self):
+        self.Failure("Model not compatible with given input graph sample.")
+        return False
+
+    def _invalidoptimizer(self):
+        self.Failure("Invalid Optimizer:" + self.Optimizer)
+        return False
+
+    def _invalidscheduler(self):
+        self.Failure("Invalid Scheduler: " + self.Scheduler)
+        return False
 
 
-
-
-#    def _NoModel(self):
-#        if self.Model is not None: return False
-#        self.Warning("No Model was given.")
-#        return True
-#
-#    def _notcompatible(self):
-#        return self.Failure("Model not compatible with given input graph sample.")
-#
-#    def _setoptimizer(self):
-#        if not self._op.SetOptimizer():
-#            return self.Failure("Invalid Optimizer.")
-#        return not self.Success("Set the optimizer to: " + self._op.Optimizer)
-#
-#    def _setscheduler(self):
-#        if not self._op.SetScheduler():
-#            return
-#        self.Success("Set the scheduler to: " + self._op.Scheduler)
-#
 #    def _searchtraining(self):
 #        self.Epoch = 0
 #        pth = self._outDir + "/" + self.RunName

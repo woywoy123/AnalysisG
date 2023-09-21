@@ -5,14 +5,30 @@ from libcpp.vector cimport vector
 from libcpp.map cimport map, pair
 from libcpp cimport bool
 
+from cython.operator cimport dereference
 from cytools cimport env, enc, map_to_dict
-from cyoptimizer cimport CyOptimizer
-from cytypes cimport folds_t
+from cyoptimizer cimport CyOptimizer, CyEpoch
+from cytypes cimport folds_t, data_t, metric_t
+cimport numpy as np
+import numpy as np
+np.import_array()
 
 from torch_geometric.data import Batch
 import psutil
 import torch
 import h5py
+
+cdef void _check_h5(f, str key, data_t* inpt):
+    f.create_dataset(key + "-truth"   , data = np.array(inpt.truth),    chunks = True)
+    f.create_dataset(key + "-pred"    , data = np.array(inpt.pred) ,    chunks = True)
+    f.create_dataset(key + "-index"   , data = np.array(inpt.index),    chunks = True)
+    f.create_dataset(key + "-nodes"   , data = np.array(inpt.nodes),    chunks = True)
+    f.create_dataset(key + "-loss"    , data = np.array(inpt.loss) ,    chunks = True)
+    f.create_dataset(key + "-accuracy", data = np.array(inpt.accuracy), chunks = True)
+
+def _check_sub(f, str key):
+    try: return f.create_group(key)
+    except ValueError: return f[key]
 
 cdef class cOptimizer:
     cdef CyOptimizer* ptr
@@ -20,14 +36,19 @@ cdef class cOptimizer:
     cdef dict _kOptim
     cdef dict _cached_train
     cdef dict _cached_valid
+    cdef dict _cached_test
     cdef dict _cached
     cdef bool _train
+    cdef bool _test
 
     def __cinit__(self):
         self.ptr = new CyOptimizer()
         self._cached_train = {}
         self._cached_valid = {}
+        self._cached_test = {}
         self._cached = {}
+        self._train = False
+        self._test = False
 
     def __init__(self): pass
     def __dealloc__(self): del self.ptr
@@ -89,7 +110,9 @@ cdef class cOptimizer:
         if ram > max_percent:
             lsts = [i.hash for i in sampletracer.makelist()]
             sampletracer.FlushGraphs(lsts)
-            self.ptr.flush_train([enc(k) for k in lsts], kfold)
+            if self._train: self.ptr.flush_train([enc(k) for k in lsts], kfold)
+            elif self._test: self.ptr.flush_evaluation([enc(k) for k in lsts])
+            else: self.self.ptr.flush_validation([enc(k) for k in lsts], kfold)
 
         if sampletracer.Device != "cpu":
             cuda = torch.cuda.mem_get_info()
@@ -100,7 +123,8 @@ cdef class cOptimizer:
             if sampletracer.Device == "cpu": pass
             else: torch.cuda.empty_cache()
 
-        if self._train: lsts = [env(k_) for k_ in self.ptr.check_train(batch, kfold)]
+        if  self._train: lsts = [env(k_) for k_ in self.ptr.check_train(batch, kfold)]
+        elif self._test: lsts = [env(k_) for k_ in self.ptr.check_evaluation(batch)]
         else: lsts = [env(k_) for k_ in self.ptr.check_validation(batch, kfold)]
 
         if len(lsts): sampletracer.RestoreGraphs(lsts)
@@ -124,20 +148,124 @@ cdef class cOptimizer:
 
     def FetchTraining(self, int kfold, int batch_size):
         self._train = True
+        self._test = False
         self._cached = self._cached_train
         return self.ptr.fetch_train(kfold, batch_size)
 
     def FetchValidation(self, int kfold, int batch_size):
         self._train = False
+        self._test = False
         self._cached = self._cached_valid
         return self.ptr.fetch_validation(kfold, batch_size)
+
+    def FetchEvaluation(self, int batch_size):
+        self._train = False
+        self._test = True
+        self._cached = self._cached_test
+        return self.ptr.fetch_evaluation(batch_size)
 
     cdef void FlushRunningCache(self, dict inpt):
         cdef list lsts = [list(inpt[k].values()) for k in inpt]
         for k in sum(lsts, []): del k
         inpt = {}
 
+    cdef void convert(self, ten, vector[vector[float]]* app):
+        if len(ten.size()) == 0: ten = ten.view(-1, 1)
+        else: ten = ten.view(ten.size()[0], -1)
+        cdef vector[vector[float]] it = <vector[vector[float]]>ten.tolist()
+        app.insert(app.end(), it.begin(), it.end())
+
+    cdef void makegraph(self, dict graph, map[string, data_t]* app, dict out_map):
+        cdef str key, val
+        cdef pair[string, data_t] itr
+        for key, val in out_map.items():
+
+            try: ten = graph[val]
+            except KeyError: ten = None
+            if ten is None: pass
+            else: self.convert(ten, &(dereference(app)[enc(val[2:])].pred))
+
+            try: ten = graph[key]
+            except KeyError: ten = None
+            if ten is None: pass
+            else:
+                self.convert(ten, &(dereference(app)[enc(val[2:])].truth))
+                ten = torch.full(ten.size(), graph["i"].item())
+                self.convert(ten, &(dereference(app)[enc(val[2:])].index))
+
+            try: ten = graph["num_nodes"]
+            except KeyError: ten = None
+            if ten is None: pass
+            else: self.convert(ten, &(dereference(app)[enc(val[2:])].nodes))
+
+
+
+
+    cpdef AddkFold(self, int epoch, int kfold, dict inpt, dict out_map):
+        cdef str key, val
+        cdef string key_
+        cdef map[string, data_t] map_data
+        cdef vector[vector[float]]* its
+        cdef vector[vector[float]] itt
+        for val, key in out_map.items():
+            key  = key[2:]
+            key_ = enc(key)
+            map_data[key_] = data_t()
+            map_data[key_].name = key_
+            try: ten = inpt["A_" + key]
+            except KeyError: ten = None
+            if ten is None: pass
+            else: self.convert(ten, &(map_data[key_].accuracy))
+
+            try: ten = inpt["L_" + key]
+            except KeyError: ten = None
+            if ten is None: pass
+            else: self.convert(ten, &(map_data[key_].loss))
+
+        cdef int i
+        cdef list graphs = inpt.pop("graphs")
+        for i in range(len(graphs)):
+            self.makegraph(graphs[i].to_dict(), &map_data, out_map)
+
+        if  self._train: self.ptr.train_epoch_kfold(epoch, kfold, &map_data)
+        elif self._test: self.ptr.evaluation_epoch_kfold(epoch, kfold, &map_data)
+        else: self.ptr.validation_epoch_kfold(epoch, kfold, &map_data)
+
+
+    cpdef DumpEpochHDF5(self, int epoch, str path, vector[int] kfolds):
+
+        cdef int i
+        cdef str out
+        cdef CyEpoch* ep
+        cdef pair[string, data_t] dt
+        for i in kfolds:
+            out = path + str(i) + "/epoch_data.hdf5"
+            try: f = h5py.File(out, "w")
+            except FileNotFoundError: return False
+            if self.ptr.epoch_train.count(epoch):
+                grp = _check_sub(f, "training")
+                ep = self.ptr.epoch_train[epoch]
+                for dt in ep.container[i]:
+                    ref = _check_h5(grp, env(dt.first), &dt.second)
+
+            if self.ptr.epoch_valid.count(epoch):
+                grp = _check_sub(f, "validation")
+                ep = self.ptr.epoch_valid[epoch]
+                for dt in ep.container[i]:
+                    ref = _check_h5(grp, env(dt.first), &dt.second)
+
+            if self.ptr.epoch_test.count(epoch):
+                grp = _check_sub(f, "evaluation")
+                ep = self.ptr.epoch_test[epoch]
+                for dt in ep.container[i]:
+                    ref = _check_h5(grp, env(dt.first), &dt.second)
+            f.close()
+
+    cpdef map[string, metric_t] BuildPlots(self, int epoch, str path):
+        cdef CyEpoch* ep = self.ptr.epoch_train[epoch]
+        cdef map[string, metric_t] data = ep.metrics()
+        return data
+
     @property
     def kFolds(self): return self.ptr.use_folds
-
 

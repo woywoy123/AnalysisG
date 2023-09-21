@@ -64,6 +64,8 @@ cdef class OptimizerWrapper:
         return True
 
     def setscheduler(self):
+        if self._optim is None: return False
+        if not len(self._scheduler_name): return True
         self._sched_params["optimizer"] = self._optim
         if self._scheduler_name == "ExpontentialLR":
             self._sched = ExponentialLR(**self._sched_params)
@@ -142,13 +144,17 @@ cdef class OptimizerWrapper:
     def Optimizer(self): return self._optimizer_name
 
     @Optimizer.setter
-    def Optimizer(self, str val): self._optimizer_name = val
+    def Optimizer(self, str val):
+        if val is None: self._optimizer_name = ""
+        else: self._optimizer_name = val
 
     @property
     def Scheduler(self): return self._scheduler_name
 
     @Scheduler.setter
-    def Scheduler(self, str val): self._scheduler_name = val
+    def Scheduler(self, str val):
+        if val is None: self._scheduler_name = ""
+        else: self._scheduler_name = val
 
     @property
     def SchedulerParams(self): return self._sched_params
@@ -256,34 +262,26 @@ cdef class ModelWrapper:
             except KeyError: cl = False
             self._loss_map[i] = LossFunctions(self._loss_map[i], cl)
 
-    cdef dict __debatch__(self, dict sample):
+    cdef dict __debatch__(self, dict sample, data):
         cdef str i, j, key
         cdef dict out = {}
         cdef dict tmp = {}
-        cdef list samples
         cdef dict loss
-        out["batch"] = sample["batch"]
-        out["edge_index"] = sample["edge_index"]
         self._loss_sum = 0
         for i, j in self._out_map.items():
-            pred = self._model.__dict__[j]
-            tru  = sample[i]
             key = j[2:]
-
-            loss = self._loss_map[key](pred, tru)
+            pred = self._model.__dict__[j]
+            loss = self._loss_map[key](pred, sample[i])
             self._loss_sum += loss["loss"]
-
-            out[i] = tru
-            out[j] = pred
             tmp["L_" + key] = loss["loss"]
             tmp["A_" + key] = loss["acc"]
-        tmp["total"] = self._loss_sum
 
-        smpl = Data().from_dict(out)
-        batches = sample["batch"].unique()
-        samples = [smpl.subgraph(smpl.batch == k) for k in batches]
-        out = {}
-        out["graphs"] = samples
+            data._slice_dict.update({j : data._slice_dict.get(i)})
+            data._inc_dict.update({j : data._inc_dict.get(i)})
+            data.__dict__["_store"][j] = pred
+
+        tmp["total"] = self._loss_sum
+        out["graphs"] = data.to_data_list()
         out.update(tmp)
         return out
 
@@ -291,7 +289,8 @@ cdef class ModelWrapper:
         cdef str i
         cdef dict inpt = data.to_dict()
         self._model(**{i : inpt[i] for i in self._in_map})
-        return self.__debatch__(inpt)
+
+        return self.__debatch__(inpt, data)
 
     def match_data_model_vars(self, sample):
         cdef str it, key
