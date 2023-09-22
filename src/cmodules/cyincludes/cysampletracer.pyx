@@ -574,7 +574,6 @@ cdef class SampleTracer:
         cdef str i
         self.ptr.FlushSelections(<vector[string]>[enc(i) for i in these_hashes])
 
-
     def _makebar(self, inpt: Union[int], CustTitle: Union[None, str] = None):
         _dct = {}
         _dct["desc"] = f'Progress {self.Caller}' if CustTitle is None else CustTitle
@@ -814,6 +813,20 @@ cdef class SampleTracer:
         self._Selections[env(co.class_name)] = selection
 
     @property
+    def Model(self):
+        c = Code()
+        try:
+            c.__setstate__(self._set.model)
+            return c.InstantiateObject
+        except: return None
+
+    @Model.setter
+    def Model(self, val):
+        if val is None: return
+        c = Code(val)
+        self._set.model = c.__getstate__()
+
+    @property
     def ShowEvents(self) -> list:
         return map_to_list(self.ptr.link_event_code)
 
@@ -856,6 +869,41 @@ cdef class SampleTracer:
         elif isinstance(val, dict): Files.update(val)
         for key in Files:
             for k in Files[key]: self._set.files[enc(key)].push_back(enc(k))
+
+    @property
+    def WorkingPath(self):
+        self.OutputDirectory = self.OutputDirectory
+        cdef str path = ""
+        path += self.OutputDirectory
+        path += self.ProjectName
+        return os.path.abspath(path) + "/"
+
+    @property
+    def SampleMap(self):
+        cdef dict output = {}
+        cdef string i
+        cdef pair[string, vector[string]] itr
+        for itr in self._set.samplemap:
+            output[env(itr.first)] = [env(i) for i in itr.second]
+        return output
+
+    @SampleMap.setter
+    def SampleMap(self, val: Union[str, list, dict]):
+        cdef dict state = self.SampleMap
+        cdef str i, f
+        if isinstance(val, str): state[val] = []
+        elif isinstance(val, list):
+            if "" in state: state[""] += val
+            else: state[""] = val
+
+        elif isinstance(val, dict):
+            for i in val:
+                if i not in state: state[i] = []
+                state[i] += [k for k in val[i]]
+
+        for i in state:
+            state[i] = list(set(state[i]))
+            self._set.samplemap[enc(i)] = [enc(f) for f in state[i]]
 
     @property
     def Threads(self) -> int:
@@ -920,42 +968,6 @@ cdef class SampleTracer:
     @ProjectName.setter
     def ProjectName(self, str val):
         self._set.projectname = enc(val)
-
-    @property
-    def WorkingPath(self):
-        self.OutputDirectory = self.OutputDirectory
-        cdef str path = ""
-        path += self.OutputDirectory
-        path += self.ProjectName
-        return os.path.abspath(path) + "/"
-
-    @property
-    def SampleMap(self):
-        cdef dict output = {}
-        cdef string i
-        cdef pair[string, vector[string]] itr
-        for itr in self._set.samplemap:
-            output[env(itr.first)] = [env(i) for i in itr.second]
-        return output
-
-    @SampleMap.setter
-    def SampleMap(self, val: Union[str, list, dict]):
-        cdef dict state = self.SampleMap
-        cdef str i, f
-        if isinstance(val, str): state[val] = []
-        elif isinstance(val, list):
-            if "" in state: state[""] += val
-            else: state[""] = val
-
-        elif isinstance(val, dict):
-            for i in val:
-                if i not in state: state[i] = []
-                state[i] += [k for k in val[i]]
-
-        for i in state:
-            state[i] = list(set(state[i]))
-            self._set.samplemap[enc(i)] = [enc(f) for f in state[i]]
-
 
     @property
     def EventName(self) -> str:
@@ -1072,3 +1084,205 @@ cdef class SampleTracer:
     @property
     def nHashes(self) -> int:
         return self._nhashes
+
+    @property
+    def TrainingName(self) -> str:
+        return env(self._set.training_name)
+
+    @TrainingName.setter
+    def TrainingName(self, str val):
+        self._set.training_name = enc(val)
+
+    @property
+    def RunName(self) -> str:
+        return env(self._set.run_name)
+
+    @RunName.setter
+    def RunName(self, str val):
+        self._set.run_name = enc(val)
+
+    @property
+    def Optimizer(self) -> str:
+        return env(self._set.optimizer_name)
+
+    @Optimizer.setter
+    def Optimizer(self, str val):
+        self._set.optimizer_name = enc(val)
+
+    @property
+    def OptimizerParams(self) -> dict:
+        cdef pair[string, string] itr
+        cdef dict output = {}
+        for itr in self._set.optimizer_params:
+            output[env(itr.first)] = pickle.loads(itr.second)
+        return output
+
+    @OptimizerParams.setter
+    def OptimizerParams(self, dict val):
+        cdef str key
+        cdef string pkl
+        self._set.optimizer_params.clear()
+        for key in val:
+            pkl = pickle.dumps(val[key])
+            self._set.optimizer_params[enc(key)] = pkl
+
+    @property
+    def Scheduler(self) -> str:
+        return env(self._set.scheduler_name)
+
+    @Scheduler.setter
+    def Scheduler(self, str val):
+        self._set.scheduler_name = enc(val)
+
+    @property
+    def SchedulerParams(self) -> dict:
+        cdef pair[string, string] itr
+        cdef dict output = {}
+        for itr in self._set.scheduler_params:
+            output[env(itr.first)] = pickle.loads(itr.second)
+        return output
+
+    @SchedulerParams.setter
+    def SchedulerParams(self, dict val):
+        cdef str key
+        cdef string pkl
+        self._set.scheduler_params.clear()
+        for key in val:
+            pkl = pickle.dumps(val[key])
+            self._set.scheduler_params[enc(key)] = pkl
+
+    @property
+    def kFolds(self) -> int:
+        return self._set.kfolds
+
+    @kFolds.setter
+    def kFolds(self, int val):
+        self._set.kfolds = val
+
+    @property
+    def kFold(self):
+        if not self._set.kfold.size(): return None
+        if self._set.kfold.size() != 1: pass
+        else: return self._set.kfold[0]
+        return self._set.kfold
+
+    @kFold.setter
+    def kFold(self, val: Union[int, list, None]):
+        cdef vector[int] val_
+        if val is None: val_ = []
+        elif isinstance(val, int): val_ = [val]
+        else: val_ = val
+        self._set.kfold = val_
+
+    @property
+    def Epoch(self):
+        if not self._set.epoch.size(): return None
+        else: return self._set.epoch
+
+    @Epoch.setter
+    def Epoch(self, val: Union[int, list, dict]):
+        cdef int k, i
+        self._set.epoch.clear()
+        if isinstance(val, int):
+            for k in self._set.kfold:
+                self._set.epoch[k] = val
+        if isinstance(val, list):
+            for i, k in zip(val, self.kFold):
+                self._set.epoch[k] = i
+        if isinstance(val, dict):
+            for k, i in val.items():
+                self._set.epoch[k] = i
+
+    @property
+    def Epochs(self):
+        if self._set.epochs == -1: return None
+        return self._set.epochs
+
+    @Epochs.setter
+    def Epochs(self, int val):
+        self._set.epochs = val
+
+    @property
+    def KinematicMap(self) -> dict:
+        cdef dict output = {}
+        cdef pair[string, string] itr
+        for itr in self._set.kinematic_map:
+            output[env(itr.first)] = env(itr.second)
+        return output
+
+    @KinematicMap.setter
+    def KinematicMap(self, dict val):
+        cdef str key
+        cdef string pkl
+        self._set.kinematic_map.clear()
+        for key in val:
+            self._set.kinematic_map[enc(key)] = env(val[key])
+
+    @property
+    def ModelParams(self) -> dict:
+        cdef pair[string, string] itr
+        cdef dict output = {}
+        for itr in self._set.model_params:
+            output[env(itr.first)] = pickle.loads(itr.second)
+        return output
+
+    @ModelParams.setter
+    def ModelParams(self, dict val):
+        cdef str key
+        cdef string pkl
+        self._set.model_params.clear()
+        for key in val:
+            pkl = pickle.dumps(val[key])
+            self._set.model_params[enc(key)] = pkl
+
+    @property
+    def DebugMode(self) -> bool:
+        return self._set.debug_mode
+
+    @DebugMode.setter
+    def DebugMode(self, bool val):
+        self._set.debug_mode = val
+
+    @property
+    def ContinueTraining(self) -> bool:
+        return self._set.continue_training
+
+    @ContinueTraining.setter
+    def ContinueTraining(self, bool val):
+        self._set.continue_training = val
+
+    @property
+    def SortByNodes(self) -> bool:
+        return self._set.sort_by_nodes
+
+    @SortByNodes.setter
+    def SortByNodes(self, bool val):
+        self._set.sort_by_nodes = val
+
+    @property
+    def EnableReconstruction(self) -> bool:
+        return self._set.enable_reconstruction
+
+    @EnableReconstruction.setter
+    def EnableReconstruction(self, bool val):
+        self._set.enable_reconstruction = val
+
+    @property
+    def BatchSize(self):
+        return self._set.batch_size
+
+    @BatchSize.setter
+    def BatchSize(self, int val):
+        self._set.batch_size = val
+
+
+
+
+
+
+
+
+
+
+
+

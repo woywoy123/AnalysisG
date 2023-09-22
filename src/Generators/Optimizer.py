@@ -8,41 +8,10 @@ from torchmetrics import ROC, AUROC
 import torch
 import h5py
 
-class Settings:
-
-    def __init__(self):
-        self.TrainingName = "untitled"
-
-        self.Model = None
-        self.ModelParams = None
-        self.RunName = "run_name"
-
-        self.kFolds = 10
-        self.kFold = None
-        self.Device = "cpu"
-
-        self.Epochs = 20
-        self.Epoch = None
-
-        self.Optimizer = None
-        self.OptimizerParams = {}
-
-        self.Scheduler = None
-        self.SchedulerParams = {}
-
-        self.BatchSize = 1
-        self.DebugMode = False
-
-        self.ContinueTraining = False
-        self.SortByNodes = True
-        self.EnableReconstruction = True
-
-
 class Optimizer(_Optimizer, _Interface, RandomSamplers):
     def __init__(self, inpt = None):
         RandomSamplers.__init__(self)
         self.Caller = "OPTIMIZER"
-        Settings.__init__(self)
         _Optimizer.__init__(self)
         self._kOps = {}
         self._kModels = {}
@@ -99,19 +68,25 @@ class Optimizer(_Optimizer, _Interface, RandomSamplers):
     def Start(self, sample = None):
         if sample is None: pass
         else: self.ImportSettings(sample.ExportSettings())
+
         self.RestoreTracer()
         self.__searchsplits__()
-        self._findpriortraining()
         if self.__initialize__(): pass
         else: return
-
+        self._findpriortraining()
         kfolds = self._cmod.kFolds
         kfolds.sort()
         path = self.WorkingPath + "machine-learning/" + self.RunName
-        for ep in range(self.Epoch, self.Epochs):
+        for ep in range(self.Epochs):
             ep += 1
-            base = path + "/Epoch-" + str(ep) + "/kFold-"
             for k in kfolds:
+                base = path + "/Epoch-" + str(ep) + "/kFold-"
+                if self.Epoch is None: pass
+                elif k not in self.Epoch: pass
+                elif self.Epoch[k] < ep: pass
+                else:
+                    self._cmod.RebuildEpochHDF5(ep, base, k)
+                    continue
                 self.mkdir(base + str(k))
 
                 self._kOps[k].Epoch = ep
@@ -128,27 +103,18 @@ class Optimizer(_Optimizer, _Interface, RandomSamplers):
 
                 self.__evaluation__(k, ep)
 
-            x = self._cmod.BuildPlots(ep, path)
-            for i in x:
-                for j in x[i]["truth"]:
-                    pred, truth = x[i]["pred"][j], x[i]["truth"][j]
-                    pred, truth = torch.tensor(pred), torch.tensor(truth, dtype = torch.int).view(-1)
-                    if pred.size()[1] == 1: com = {"task" : "binary"}
-                    else: com = {"task" : "multiclass", "num_classes" : pred.size()[1]}
-                    roc = ROC(**com)
-                    auc = AUROC(**com)
-
-                    fpr, tpr, thres = roc(pred, truth)
-                    auc_ = auc(pred, truth)
-                    print(auc_)
+                self._kOps[k].save()
+                self._kModels[k].save()
 
             self._cmod.DumpEpochHDF5(ep, base, kfolds)
+            x = self._cmod.BuildPlots(ep, path)
 
 
     def __train__(self, kfold, epoch):
         batches = self._cmod.FetchTraining(kfold, self.BatchSize)
         index_ = len(batches)
-        _, bar = self._MakeBar(index_, "Epoch (" + str(epoch) + ") Running k-Fold (training) -> " + str(kfold))
+        msg = "Epoch (" + str(epoch) + ") Running k-Fold (training) -> " + str(kfold)
+        _, bar = self._MakeBar(index_, msg)
         for i, batch in zip(range(index_), batches):
             graph = self._cmod.MakeBatch(self, batch, kfold, i)
             self._kOps[kfold].zero()
@@ -162,7 +128,8 @@ class Optimizer(_Optimizer, _Interface, RandomSamplers):
     def __validation__(self, kfold, epoch):
         batches = self._cmod.FetchValidation(kfold, self.BatchSize)
         index_ = len(batches)
-        _, bar = self._MakeBar(index_, "Epoch (" + str(epoch) + ") Running k-Fold (validation) -> " + str(kfold))
+        msg = "Epoch (" + str(epoch) + ") Running k-Fold (validation) -> " + str(kfold)
+        _, bar = self._MakeBar(index_, msg)
         for i, batch in zip(range(index_), batches):
             graph = self._cmod.MakeBatch(self, batch, kfold, i)
             res = self._kModels[kfold](graph)
@@ -193,7 +160,9 @@ class Optimizer(_Optimizer, _Interface, RandomSamplers):
         try: self.Tree = inpt.ShowTrees[0]
         except IndexError: return self._nographs()
 
-        self.Success("Using GraphName: " + self.GraphName + " with Tree: " + self.Tree)
+        msg = "Using GraphName: " + self.GraphName
+        msg += " with Tree: " + self.Tree
+        self.Success(msg)
         self.triggered = True
         inpt.Tree = self.Tree
         inpt.GraphName = self.GraphName

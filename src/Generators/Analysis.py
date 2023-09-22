@@ -3,15 +3,11 @@ from AnalysisG.Generators.SampleGenerator import RandomSamplers
 from AnalysisG.Generators.EventGenerator import EventGenerator
 from AnalysisG.Generators.GraphGenerator import GraphGenerator
 from AnalysisG.Generators.Interfaces import _Interface
+from AnalysisG.Generators.Optimizer import Optimizer
 from AnalysisG.Templates import FeatureAnalysis
 from AnalysisG.SampleTracer import SampleTracer
 from AnalysisG.Notification import _Analysis
 from typing import Union
-
-#from AnalysisG.IO import PickleObject, UnpickleObject
-#from .GraphGenerator import GraphGenerator
-#from AnalysisG.Settings import Settings
-#from .Optimizer import Optimizer
 
 def check_tree(x):
     if len(x.Tree): return True
@@ -93,17 +89,6 @@ class Analysis(_Analysis, SampleTracer, _Interface):
 
         if Name is None and SampleDirectory is None: return
         self.InputSample(Name, SampleDirectory)
-
-    def __Optimizer__(self):
-        if self.Model == None and self.Optimizer == None:
-            return
-        op = Optimizer(self)
-        op.Launch()
-
-
-
-
-
 
     def __build__(self):
         self.StartingAnalysis()
@@ -231,6 +216,11 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         self.DumpTracer(self.SampleName)
         return True
 
+    def __Optimizer__(self):
+        if self.Model is None: return
+        op = Optimizer()
+        op.Launch(self)
+
     def __LoadSample__(self):
         tracer = self._CheckForTracer()
 
@@ -253,8 +243,8 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         self.__build__()
         self.__LoadSample__()
         self.__RandomSampler__()
-        #self.__Optimizer__()
-        #self.WhiteSpace()
+        self.__Optimizer__()
+        self.WhiteSpace()
         return True
 
     def preiteration(self) -> bool:

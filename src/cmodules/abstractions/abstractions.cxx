@@ -39,7 +39,9 @@ std::string Tools::join(std::vector<std::string>* inpt, int index_s, int index_e
 {
     std::string out = ""; 
     if (index_e < 0){ index_e = inpt -> size(); }
-    for (int i(index_s); i < index_e-1; ++i){ out += inpt -> at(i) + delim; }
+    for (int i(index_s); i < index_e-1; ++i){ 
+        out += inpt -> at(i) + delim; 
+    }
     out += inpt -> at(index_e-1); 
     return out; 
 }

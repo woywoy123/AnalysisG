@@ -9,9 +9,10 @@ from cython.operator cimport dereference
 from cytools cimport env, enc, map_to_dict
 from cyoptimizer cimport CyOptimizer, CyEpoch
 from cytypes cimport folds_t, data_t, metric_t
-cimport numpy as np
+
+from AnalysisG._cmodules.cPlots import MetricPlots
+
 import numpy as np
-np.import_array()
 
 from torch_geometric.data import Batch
 import psutil
@@ -25,6 +26,32 @@ cdef void _check_h5(f, str key, data_t* inpt):
     f.create_dataset(key + "-nodes"   , data = np.array(inpt.nodes),    chunks = True)
     f.create_dataset(key + "-loss"    , data = np.array(inpt.loss) ,    chunks = True)
     f.create_dataset(key + "-accuracy", data = np.array(inpt.accuracy), chunks = True)
+
+cdef void _rebuild_h5(f, str key, data_t* inpt):
+    x = np.zeros(f[key + "-truth"].shape)
+    f[key + "-truth"].read_direct(x)
+    inpt.truth    = <vector[vector[float]]>x.tolist()
+
+    x = np.zeros(f[key + "-pred"].shape)
+    f[key + "-pred"].read_direct(x)
+    inpt.pred    = <vector[vector[float]]>x.tolist()
+
+    x = np.zeros(f[key + "-index"].shape)
+    f[key + "-index"].read_direct(x)
+    inpt.index    = <vector[vector[float]]>x.tolist()
+
+    x = np.zeros(f[key + "-nodes"].shape)
+    f[key + "-nodes"].read_direct(x)
+    inpt.nodes    = <vector[vector[float]]>x.tolist()
+
+    x = np.zeros(f[key + "-loss"].shape)
+    f[key + "-loss"].read_direct(x)
+    inpt.loss    = <vector[vector[float]]>x.tolist()
+
+    x = np.zeros(f[key + "-accuracy"].shape)
+    f[key + "-accuracy"].read_direct(x)
+    inpt.accuracy    = <vector[vector[float]]>x.tolist()
+
 
 def _check_sub(f, str key):
     try: return f.create_group(key)
@@ -40,6 +67,7 @@ cdef class cOptimizer:
     cdef dict _cached
     cdef bool _train
     cdef bool _test
+    cdef _metric_plot
 
     def __cinit__(self):
         self.ptr = new CyOptimizer()
@@ -49,11 +77,15 @@ cdef class cOptimizer:
         self._cached = {}
         self._train = False
         self._test = False
+        self._metric_plot = MetricPlots()
 
     def __init__(self): pass
     def __dealloc__(self): del self.ptr
     def length(self):
         return map_to_dict(<map[string, int]>self.ptr.fold_map())
+
+    @property
+    def kFolds(self): return self.ptr.use_folds
 
     def GetHDF5Hashes(self, str path) -> bool:
         if path.endswith(".hdf5"): pass
@@ -261,11 +293,52 @@ cdef class cOptimizer:
                     ref = _check_h5(grp, env(dt.first), &dt.second)
             f.close()
 
-    cpdef map[string, metric_t] BuildPlots(self, int epoch, str path):
-        cdef CyEpoch* ep = self.ptr.epoch_train[epoch]
-        cdef map[string, metric_t] data = ep.metrics()
-        return data
 
-    @property
-    def kFolds(self): return self.ptr.use_folds
+    cpdef RebuildEpochHDF5(self, int epoch, str path, int kfold):
+        cdef str get = path + str(kfold) + "/epoch_data.hdf5"
+        try: f = h5py.File(get, "r")
+        except FileNotFoundError: return
+
+        cdef str key
+        cdef dict unique = {}
+        cdef map[string, data_t] ep_k
+
+        for key in f["training"].keys():
+            key = key.split("-")[0]
+            if key in unique: pass
+            else: unique[key] = None
+
+        for key in unique:
+            ep_k[enc(key)] = data_t()
+            _rebuild_h5(f["training"], key, &ep_k[enc(key)])
+        self.ptr.train_epoch_kfold(epoch, kfold, &ep_k)
+        ep_k.clear()
+
+        for key in unique:
+            ep_k[enc(key)] = data_t()
+            _rebuild_h5(f["validation"], key, &ep_k[enc(key)])
+        self.ptr.validation_epoch_kfold(epoch, kfold, &ep_k)
+        ep_k.clear()
+
+        for key in unique:
+            ep_k[enc(key)] = data_t()
+            _rebuild_h5(f["evaluation"], key, &ep_k[enc(key)])
+        self.ptr.evaluation_epoch_kfold(epoch, kfold, &ep_k)
+        ep_k.clear()
+        f.close()
+
+
+    cpdef BuildPlots(self, int epoch, str path):
+        self._metric_plot.epoch = epoch
+        self._metric_plot.path = path
+        cdef CyEpoch* eptr = self.ptr.epoch_train[epoch]
+        self._metric_plot.AddMetrics(eptr.metrics(), b'training')
+
+        cdef CyEpoch* epva = self.ptr.epoch_valid[epoch]
+        self._metric_plot.AddMetrics(eptr.metrics(), b'validation')
+
+        cdef CyEpoch* epte = self.ptr.epoch_test[epoch]
+        self._metric_plot.AddMetrics(eptr.metrics(), b'evaluation')
+        self._metric_plot.ReleasePlots(path)
+
 

@@ -307,7 +307,6 @@ cdef extern from "../abstractions/cytypes.h":
         # General IO stuff
         string projectname
         string outputdirectory
-        string device
         map[string, vector[string]] files
         map[string, vector[string]] samplemap
         int verbose
@@ -328,6 +327,34 @@ cdef extern from "../abstractions/cytypes.h":
         # Generation specific options
         int event_start
         int event_stop
+
+        # Machine learning 
+        string training_name
+        string run_name
+        string device
+
+        string optimizer_name
+        map[string, string] optimizer_params
+
+        string scheduler_name
+        map[string, string] scheduler_params
+
+        int kfolds
+        int batch_size
+        int epochs
+        map[int, int] epoch
+        vector[int] kfold
+
+        code_t model
+
+        map[string, string] model_params
+        map[string, string] kinematic_map
+
+        bool debug_mode
+        bool continue_training
+        bool sort_by_nodes
+        bool enable_reconstruction
+
 
         # Getter object option
         bool getgraph

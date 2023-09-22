@@ -308,7 +308,7 @@ cdef class ModelWrapper:
         if not self._train: pass
         else: self._loss_sum.backward()
 
-    def dump(self):
+    def save(self):
         cdef str _save_path = ""
         _save_path += self._path + "/"
         _save_path += self._run_name + "/"

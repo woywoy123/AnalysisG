@@ -54,7 +54,26 @@ class _Optimizer(Notification):
         else: self.mkdir(path)
 
         if not self.ContinueTraining: return
-        for i in self._cmod.kFolds: print(i)
+        max_map = {}
+        msg = "No prior training was found under: " + path + ". Generating..."
+        for f in self.lsFiles(path, ".pth"):
+            ep, fold = f.lstrip(path).split("/")[:2]
+            ep, fold = int(ep.split("-")[-1]), int(fold.split("-")[-1])
+            if fold not in max_map: max_map[fold] = ep
+            if max_map[fold] >= ep: continue
+            max_map[fold] = ep
+
+        if not len(max_map): return self.Warning(msg)
+        for fold, ep in max_map.items():
+            self._kOps[fold].KFold = fold
+            self._kModels[fold].KFold = fold
+
+            self._kOps[fold].Epoch = ep
+            self._kModels[fold].Epoch = ep
+
+            self._kOps[fold].load()
+            self._kModels[fold].load()
+        self.Epoch = max_map
 
     def _nographs(self): return self.Warning("No Sample Graphs found")
 
@@ -77,55 +96,18 @@ class _Optimizer(Notification):
         self.Failure("Invalid Scheduler: " + self.Scheduler)
         return False
 
+    def _showloss(self, epoch, kfold):
+        string = ["Epoch-kFold: " + epoch]
+        if self._kOps[kfold]._sched is None: lr = None
+        else: lr = self._kOps[kfold]._sched.get_lr()[0]
 
-#    def _searchtraining(self):
-#        self.Epoch = 0
-#        pth = self._outDir + "/" + self.RunName
-#        epochs = self.ls(pth)
-#        kf = []
-#        if not self.ContinueTraining:
-#            return True
-#        if len(epochs) == 0:
-#            return self.Warning(
-#                "No prior training was found under: " + pth + ". Generating..."
-#            )
-#        epochs = [int(ep) for ep in epochs]
-#        epochs.sort()
-#        for ep in epochs:
-#            path = pth + "/" + str(ep) + "/"
-#            for k in self.ls(path):
-#                kPath = path + k + "/TorchSave.pth"
-#                if not self.IsFile(kPath):
-#                    continue
-#                if k not in self._kModels:
-#                    continue
-#                self._kModels[k]._pth = self._outDir + "/" + self.RunName
-#                self._kOp[k]._pth = self._outDir + "/" + self.RunName
-#                self._kModels[k].Epoch = str(ep) + "/" + k
-#                self._kOp[k].Epoch = str(ep) + "/" + k
-#
-#        for i in self._kModels:
-#            if self._kModels[i].Epoch is None:
-#                self._kModels[i].Epoch = ""
-#                continue
-#            try:
-#                self.Success("Model loaded: " + self._kModels[i].load())
-#            except KeyError:
-#                return not self.Warning("Loading Model Failed. Skipping loading...")
-#            try:
-#                self.Success("Optimizer loaded: " + self._kOp[i].load())
-#            except KeyError:
-#                return not self.Warning("Loading Optimizer Failed. Skipping loading...")
-#        return True
-#
-#    def _showloss(self):
-#        string = ["Epoch-kFold: " + self._ep.Epoch]
-#        if self._op._sc is not None:
-#            string[-1] += " Current LR: {:.10f}".format(self._op._sc.get_lr()[0])
-#        for f in self.Model._l:
-#            string.append(
-#                "Feature: {}, Loss: {:.10f}, Accuracy: {:.10f}".format(
-#                    f, self.Model._l[f]["loss"], self.Model._l[f]["acc"]
-#                )
-#            )
-#        print("\n-> ".join(string))
+        if lr is None: pass
+        else: string[-1] += " Current LR: {:.10f}".format(lr)
+        return 
+        for f in self.Model._l:
+            string.append(
+                "Feature: {}, Loss: {:.10f}, Accuracy: {:.10f}".format(
+                    f, self.Model._l[f]["loss"], self.Model._l[f]["acc"]
+                )
+            )
+        print("\n-> ".join(string))

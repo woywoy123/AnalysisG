@@ -386,7 +386,6 @@ struct settings_t
     // General settings
     std::string projectname = "UNTITLED"; 
     std::string outputdirectory = "./";
-    std::string device = "cpu";
     std::map<std::string, std::vector<std::string>> files = {}; 
     std::map<std::string, std::vector<std::string>> samplemap = {}; 
     int verbose = 3; 
@@ -398,7 +397,6 @@ struct settings_t
     // PyAMI
     bool enable_pyami = true; 
 
-
     // Compiler settings
     std::string tree = ""; 
     std::string eventname = "";
@@ -409,6 +407,32 @@ struct settings_t
     int event_start = -1; 
     int event_stop = 0; 
 
+    // Machine Learning 
+    std::string device = "cpu";
+    std::string training_name = "untitled";
+    std::string run_name = "untitled"; 
+
+    std::string optimizer_name = ""; 
+    std::map<std::string, std::string> optimizer_params = {}; 
+
+    std::string scheduler_name = ""; 
+    std::map<std::string, std::string> scheduler_params = {}; 
+
+    int kfolds = 10; 
+    int batch_size = 1; 
+    int epochs = -1; 
+    std::map<int, int> epoch = {}; 
+    std::vector<int> kfold = {}; 
+
+    code_t model; 
+    std::map<std::string, std::string> model_params = {}; 
+
+    bool debug_mode = false; 
+    bool continue_training = false; 
+    bool sort_by_nodes = false;
+    bool enable_reconstruction = false; 
+    std::map<std::string, std::string> kinematic_map = {};
+    
     // Getter options
     bool getgraph = false; 
     bool getevent = false; 

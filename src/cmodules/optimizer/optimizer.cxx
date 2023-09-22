@@ -62,8 +62,8 @@ namespace Optimizer
                 this -> merge_this(&atom_d -> truth   , &(output[name].truth[var_n])); 
                 this -> merge_this(&atom_d -> pred    , &(output[name].pred[var_n])); 
 
-                this -> make_average(&output[name].acc_average , &atom_d -> accuracy, atom_d -> name); 
-                this -> make_average(&output[name].loss_average, &atom_d -> loss    , atom_d -> name);
+                this -> make_average(&output[name].acc_average , &atom_d -> accuracy, var_n); 
+                this -> make_average(&output[name].loss_average, &atom_d -> loss    , var_n);
 
                 this -> make_nodes(&output[name], &itd -> second); 
                 this -> make_nodes(&output["kfold-summary"], atom_d);

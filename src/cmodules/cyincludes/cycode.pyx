@@ -27,11 +27,21 @@ cdef class Code:
 
     def __init__(self, instance = None):
         if instance is None: return
-        if type(instance).__module__.endswith("cmodules.code"):
-            self.__setstate__(instance.__getstate__())
-            return
         self._x = instance
-        self.__getbasic__()
+
+        if type(instance).__module__.endswith("cmodules.code"):
+            try: self.__setstate__(instance.__getstate__())
+            except TypeError: pass
+            try: self.__setstate__(instance.code)
+            except AttributeError: pass
+
+        elif instance.__module__.endswith("cmodules.code"):
+            try: self.__setstate__(instance.__getstate__())
+            except TypeError: pass
+            try: self.__setstate__(instance.code)
+            except AttributeError: pass
+
+        else: self.__getbasic__()
 
     def __dealloc__(self): del self.ptr
     def __hash__(self) -> int: return int(self.hash[:8], 0)
