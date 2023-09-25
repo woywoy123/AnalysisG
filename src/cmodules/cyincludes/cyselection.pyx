@@ -5,8 +5,9 @@ from cyselection cimport CySelectionTemplate
 from cytypes cimport event_t, selection_t
 from cytypes cimport code_t
 
-from AnalysisG.Tools import Code
+from AnalysisG._cmodules.ParticleTemplate import ParticleTemplate
 from AnalysisG.Tools.General import Tools
+from AnalysisG.Tools import Code
 
 from cython.operator cimport dereference
 from libcpp.string cimport string
@@ -15,6 +16,9 @@ from libcpp.map cimport map, pair
 from libcpp cimport bool
 
 import pickle
+
+try: import pyc
+except ModuleNotFoundError: print("ERROR: pyc not installed..")
 
 cdef string enc(str val): return val.encode("UTF-8")
 cdef str env(string val): return val.decode("UTF-8")
@@ -29,6 +33,13 @@ cdef string consolidate(map[string, string]* inpt, string* src):
         else: trg = t.MergeData(trg, pickle.loads(itr.second))
     inpt.clear()
     return b"" if trg is None else pickle.dumps(trg)
+
+
+class Neutrino(ParticleTemplate):
+    def __init__(self):
+        self.Type = "nu"
+        self.ParticleTemplate.__init__(self)
+        self.chi2 = None
 
 
 cdef class SelectionTemplate:
@@ -84,7 +95,6 @@ cdef class SelectionTemplate:
         if not inpt.pickled_data.size(): return
         cdef str key
         cdef dict pkls = pickle.loads(inpt.pickled_data)
-        print(pkls)
         for key in pkls:
             try: self.__dict__[key] = pkls[key]
             except KeyError: setattr(self, key, pkls[key])
@@ -94,6 +104,76 @@ cdef class SelectionTemplate:
         cdef code_t code = co.__getstate__()
         self.sel.code_hash = code.hash
         return code
+
+    cpdef Px(self, val, phi):
+        return pyc.Transform.Px(val, phi)
+
+    cpdef Py(self, val, phi):
+        return pyc.Transform.Py(val, phi)
+
+    cpdef MakeNu(self, s_, chi2 = None, gev = False):
+        if s_ == 0.0: return None
+        if not len(s_): return None
+
+        # Convert back to MeV if set to gev, because the input 
+        # leptons and b-quark are in MeV
+        scale = 1000 if gev else 1
+        nu = Neutrino()
+        nu.px = s_[0] * scale
+        nu.py = s_[1] * scale
+        nu.pz = s_[2] * scale
+        nu.e = (nu.px**2 + nu.py**2 + nu.pz**2) ** 0.5
+        if chi2 is not None: nu.chi2 = chi2
+        return nu
+
+    cpdef NuNu(
+        self, q1, q2, l1, l2, ev,
+        mT=172.5 * 1000, mW=80.379 * 1000, mN=0, zero=1e-12,
+        gev = False
+    ):
+        scale = 1/1000 if gev else 1
+        inpt = []
+        inpt.append([[q1.pt*scale, q1.eta, q1.phi, q1.e*scale]])
+        inpt.append([[q2.pt*scale, q2.eta, q2.phi, q2.e*scale]])
+        inpt.append([[l1.pt*scale, l1.eta, l1.phi, l1.e*scale]])
+        inpt.append([[l2.pt*scale, l2.eta, l2.phi, l2.e*scale]])
+
+        inpt.append([[ev.met*scale, ev.met_phi]])
+        inpt.append([[mW*scale, mT*scale, mN*scale]])
+        inpt.append(zero)
+
+        sol = pyc.NuSol.Polar.NuNu(*inpt)
+        if sol[2] is None: return []
+
+        _s1, _s2, diag, n_, h_per1, h_per2, nsols = sol
+        _s1, _s2, diag = _s1.tolist(), _s2.tolist(), diag.tolist()
+
+        o = {}
+        for k, j, c in zip(_s1[0], _s2[0], diag[0]):
+            o[c] = [self.MakeNu(k, c, gev), self.MakeNu(j, c, gev)]
+        return [o[s] for s in sorted(o)]
+
+    cpdef Nu(
+        self, q1, l1, ev,
+        S=[100, 0, 0, 100],
+        mT=172.5*1000, mW=80.379*1000, mN=0, zero=1e-12,
+        gev = False
+    ):
+        scale = 1/1000 if gev else 1
+
+        inpt = []
+        inpt.append([[q1.pt*scale, q1.eta, q1.phi, q1.e*scale]])
+        inpt.append([[l1.pt*scale, l1.eta, l1.phi, l1.e*scale]])
+
+        inpt.append([[ev.met*scale, ev.met_phi]])
+        inpt.append([[mW*scale, mT*scale, mN*scale]])
+
+        inpt.append([[S[0], S[1]], [S[2], S[3]]])
+        inpt.append(zero)
+        sol, chi2 = pyc.NuSol.Polar.Nu(*inpt)
+        sol, chi2 = sol.tolist(), chi2.tolist()
+        nus = {c2 : self.MakeNu(s, c2, gev) for s, c2 in zip(sol[0], chi2[0])}
+        return [nus[s] for s in sorted(nus)]
 
     def is_self(self, inpt) -> bool:
         if isinstance(inpt, SelectionTemplate): return True

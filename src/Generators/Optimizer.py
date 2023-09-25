@@ -32,6 +32,9 @@ class Optimizer(_Optimizer, _Interface, RandomSamplers):
 
     def __initialize__(self):
         if self._nomodel(): return False
+        kfolds = self._cmod.kFolds
+        if len(kfolds): pass
+        else: self._cmod.UseTheseFolds([1])
         for k in self._cmod.kFolds:
             batches = self._cmod.FetchTraining(k, self.BatchSize)
             graphs = self._cmod.MakeBatch(self, next(iter(batches)), k, 0)
@@ -40,7 +43,6 @@ class Optimizer(_Optimizer, _Interface, RandomSamplers):
             self._kModels[k].Path = self.WorkingPath + "machine-learning/"
             self._kModels[k].RunName = self.RunName
             self._kModels[k].KFold = k
-
             self._kModels[k].__params__ = self.ModelParams
             self._kModels[k].device = self.Device
             if self._kModels[k].SampleCompatibility(graphs): pass
@@ -76,25 +78,28 @@ class Optimizer(_Optimizer, _Interface, RandomSamplers):
         self._findpriortraining()
         kfolds = self._cmod.kFolds
         kfolds.sort()
+        self._cmod.metric_plot.plot = self.PlotLearningMetrics
         path = self.WorkingPath + "machine-learning/" + self.RunName
         for ep in range(self.Epochs):
             ep += 1
+            kfold_map = {}
             for k in kfolds:
                 base = path + "/Epoch-" + str(ep) + "/kFold-"
                 if self.Epoch is None: pass
                 elif k not in self.Epoch: pass
-                elif self.Epoch[k] < ep: pass
+                elif self.Epoch[k] < ep: kfold_map[k] = False
                 else:
+                    kfold_map[k] = True
                     self._cmod.RebuildEpochHDF5(ep, base, k)
                     continue
                 self.mkdir(base + str(k))
-
                 self._kOps[k].Epoch = ep
                 self._kModels[k].Epoch = ep
 
                 self._kOps[k].Train = True
                 self._kModels[k].Train = True
                 self.__train__(k, ep)
+                self._showloss(ep, k)
 
                 self._kOps[k].Train = False
                 self._kModels[k].Train = False
@@ -105,10 +110,9 @@ class Optimizer(_Optimizer, _Interface, RandomSamplers):
 
                 self._kOps[k].save()
                 self._kModels[k].save()
-
-            self._cmod.DumpEpochHDF5(ep, base, kfolds)
+            if sum(kfold_map.values()) == len(kfold_map): pass
+            else: self._cmod.DumpEpochHDF5(ep, base, kfolds)
             x = self._cmod.BuildPlots(ep, path)
-
 
     def __train__(self, kfold, epoch):
         batches = self._cmod.FetchTraining(kfold, self.BatchSize)

@@ -2,14 +2,24 @@ from AnalysisG.Generators.Interfaces import _Interface
 from AnalysisG._cmodules.MetaData import MetaData
 from AnalysisG.Notification import _UpROOT
 from uproot.exceptions import KeyInFileError
-from AnalysisG.Settings import Settings
 import uproot
 
+class settings:
+    def __init__(self):
+        self.Verbose = 3
+        self.StepSize = 1000
+        self.EnablePyAMI = True
+        self.Threads = 12
+        self.Trees = []
+        self.Branches = []
+        self.Leaves = []
+        self.Files = {}
 
-class UpROOT(_UpROOT, Settings, _Interface):
+
+class UpROOT(_UpROOT, settings, _Interface):
     def __init__(self, ROOTFiles=None, EventGenerator = None):
+        settings.__init__(self)
         self.Caller = "UP-ROOT"
-        Settings.__init__(self)
         if EventGenerator is None: self.InputSamples(ROOTFiles)
         else: self.Files = ROOTFiles
         ROOTFile = [i + "/" + k for i in self.Files for k in self.Files[i]]

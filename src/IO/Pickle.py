@@ -1,5 +1,4 @@
 from AnalysisG.Tools import Tools, Threading
-from AnalysisG.Settings import Settings
 import pickle
 import sys
 

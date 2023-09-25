@@ -1,4 +1,4 @@
-from AnalysisG.SampleTracer import SampleTracer
+from AnalysisG._cmodules.SampleTracer import SampleTracer
 from .Notification import Notification
 
 class _SelectionGenerator(Notification):

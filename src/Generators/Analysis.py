@@ -219,7 +219,7 @@ class Analysis(_Analysis, SampleTracer, _Interface):
     def __Optimizer__(self):
         if self.Model is None: return
         op = Optimizer()
-        op.Launch(self)
+        op.Start(self)
 
     def __LoadSample__(self):
         tracer = self._CheckForTracer()

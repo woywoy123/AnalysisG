@@ -4,7 +4,6 @@ from AnalysisG.Events import Event
 from AnalysisG.Events import GraphChildren
 from examples.Graph import DataGraph
 from examples.Event import EventEx
-from conftest import clean_dir
 from AnalysisG.Tools import Code
 
 smpl = "./samples/"

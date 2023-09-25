@@ -24,5 +24,5 @@ cdef extern from "../plotting/plotting.h":
 
         int current_epoch
         string outpath
-
+        report_t report
 

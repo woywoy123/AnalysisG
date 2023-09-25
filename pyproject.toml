@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools", "cython", "wheel"] #, "torch>=1.13.1"]
+requires = ["setuptools", "cython", "wheel", "torch>=1.13.1"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -10,16 +10,16 @@ readme.content-type = "text/markdown"
 readme.file = "README.md"
 requires-python = ">=3.7"
 dependencies = [
-#    "numpy", 
-#    "uproot", 
-#    "h5py", 
-#    "mplhep", 
-#    "networkx", 
-#    "scikit-learn", 
-#    "torchmetrics", 
-#    "torch-geometric", 
-#    "pwinput", 
-#    "pyAMI-atlas==5.1.0.1"
+    "numpy", 
+    "uproot", 
+    "h5py", 
+    "mplhep", 
+    "pwinput", 
+    "scikit-learn", 
+    "torchmetrics", 
+    "torch-geometric", 
+    "pyAMI-atlas==5.1.0.1", 
+    "boost_histogram"
 ]
 
 classifiers = [
@@ -39,7 +39,6 @@ Homepage = "https://github.com/woywoy123/AnalysisG"
 
 [tool.setuptools.package-dir]
 "AnalysisG" = "src"
-
 "AnalysisG.IO"           = "src/IO"
 "AnalysisG.Tools"        = "src/Tools"
 "AnalysisG.Events"       = "src/Events"
@@ -56,6 +55,13 @@ Homepage = "https://github.com/woywoy123/AnalysisG"
 
 [tool.setuptools.package-data]
 "*" = ["*.pyx", "*.pxd", "*.cxx", "*.h"]
+
+[project.scripts]
+config_pyami = "AnalysisG.Settings:CONFIG_PYAMI"
+auth_pyami = "AnalysisG.Settings:AUTH_PYAMI"
+install_pyc = "AnalysisG.Settings:POST_INSTALL_PYC"
+make_analysis="AnalysisG.Settings:make_analysis"
+AnalysisG = "AnalysisG.__main__:main"
 
 [tool.bumpver]
 current_version = "3.3.0"

@@ -65,6 +65,9 @@ class _Optimizer(Notification):
 
         if not len(max_map): return self.Warning(msg)
         for fold, ep in max_map.items():
+            if fold not in self._kOps: continue
+            if fold not in self._kModels: continue
+
             self._kOps[fold].KFold = fold
             self._kModels[fold].KFold = fold
 
@@ -97,17 +100,23 @@ class _Optimizer(Notification):
         return False
 
     def _showloss(self, epoch, kfold):
-        string = ["Epoch-kFold: " + epoch]
-        if self._kOps[kfold]._sched is None: lr = None
-        else: lr = self._kOps[kfold]._sched.get_lr()[0]
+        if not self.DebugMode: return
+        string = ["Epoch-kFold: " + str(epoch) + " - " + str(kfold)]
 
+        if self._kOps[kfold].scheduler is None: lr = None
+        else: lr = self._kOps[kfold].scheduler.get_last_lr()[0]
         if lr is None: pass
         else: string[-1] += " Current LR: {:.10f}".format(lr)
-        return 
-        for f in self.Model._l:
-            string.append(
-                "Feature: {}, Loss: {:.10f}, Accuracy: {:.10f}".format(
-                    f, self.Model._l[f]["loss"], self.Model._l[f]["acc"]
-                )
-            )
-        print("\n-> ".join(string))
+        self.Success("\n->".join(string))
+        report = self._cmod.metric_plot.reportable()
+        if not len(report["loss_train"]): return
+        for i, j in report.items():
+            try: len(j)
+            except: continue
+            if not len(j): continue
+            print(i, j)
+
+
+
+
+

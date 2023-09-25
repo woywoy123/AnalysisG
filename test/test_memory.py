@@ -2,7 +2,6 @@ from AnalysisG.Templates import ParticleTemplate
 from AnalysisG.Templates import EventTemplate
 from AnalysisG.IO import PickleObject, UnpickleObject, UpROOT
 from AnalysisG.Tools import Threading
-from conftest import clean_dir
 from time import sleep
 import psutil
 import pickle
@@ -88,8 +87,6 @@ def test_particle_pickle():
         if mem == 0: mem = psutil.virtual_memory().percent
         assert psutil.virtual_memory().percent - mem < 1
 
-    clean_dir()
-
 
 def test_particle_multithreading():
     def Functions(inpt, _prgbar):
@@ -162,7 +159,6 @@ def test_event_pickle():
         if mem == 0: mem = psutil.virtual_memory().percent
         assert psutil.virtual_memory().percent - mem < 1
 
-    clean_dir()
 
 
 def test_event_multithreading():

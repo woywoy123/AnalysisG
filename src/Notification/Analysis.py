@@ -66,13 +66,10 @@ class _Analysis(Notification):
         key = " > SelectionGenerator ("
         for k in self.Selections: string += [key + k + ") < ::"]
 
-
-
-
-        #string += "> Optimization < :: " if self.Model != None else ""
+        key = "> Optimization ("
+        if self.Model is not None: string += [key + self.Model.__name__ + ") < ::"]
 
         l = max([len(i) for i in string] + [len(string1)])
-
         self.Success("=" * l)
         self.Success(string1)
         for i in string: self.Success(i)

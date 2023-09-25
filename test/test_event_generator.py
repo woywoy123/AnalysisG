@@ -1,6 +1,5 @@
 from AnalysisG.Generators import EventGenerator
 from AnalysisG.Events.Events.Event import Event
-from conftest import clean_dir
 
 smpl = "./samples/"
 Files = {
@@ -45,7 +44,6 @@ def test_event_generator():
         assert len(ev_.DetectorObjects) == len(ev.DetectorObjects)
         for tj_, tj in zip(ev_.DetectorObjects, ev.DetectorObjects): assert tj_ == tj
 
-    clean_dir()
 
 def test_event_generator_more():
     print("")
@@ -60,7 +58,6 @@ def test_event_generator_more():
         assert event == EvtGen[event.hash]
         tmp.append(event)
     assert len(EvtGen) == len(tmp)
-    clean_dir()
 
 def test_event_generator_merge():
     f = list(Files)

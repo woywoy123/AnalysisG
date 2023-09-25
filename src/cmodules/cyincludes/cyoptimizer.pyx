@@ -67,7 +67,7 @@ cdef class cOptimizer:
     cdef dict _cached
     cdef bool _train
     cdef bool _test
-    cdef _metric_plot
+    cdef public metric_plot
 
     def __cinit__(self):
         self.ptr = new CyOptimizer()
@@ -77,7 +77,7 @@ cdef class cOptimizer:
         self._cached = {}
         self._train = False
         self._test = False
-        self._metric_plot = MetricPlots()
+        self.metric_plot = MetricPlots()
 
     def __init__(self): pass
     def __dealloc__(self): del self.ptr
@@ -323,22 +323,32 @@ cdef class cOptimizer:
         for key in unique:
             ep_k[enc(key)] = data_t()
             _rebuild_h5(f["evaluation"], key, &ep_k[enc(key)])
+
         self.ptr.evaluation_epoch_kfold(epoch, kfold, &ep_k)
         ep_k.clear()
         f.close()
 
 
     cpdef BuildPlots(self, int epoch, str path):
-        self._metric_plot.epoch = epoch
-        self._metric_plot.path = path
-        cdef CyEpoch* eptr = self.ptr.epoch_train[epoch]
-        self._metric_plot.AddMetrics(eptr.metrics(), b'training')
+        self.metric_plot.epoch = epoch
+        self.metric_plot.path = path
+        cdef CyEpoch* eptr
+        if not self.ptr.epoch_train.count(epoch): pass
+        else:
+            eptr = self.ptr.epoch_train[epoch]
+            self.metric_plot.AddMetrics(eptr.metrics(), b'training')
 
-        cdef CyEpoch* epva = self.ptr.epoch_valid[epoch]
-        self._metric_plot.AddMetrics(eptr.metrics(), b'validation')
+        cdef CyEpoch* epva
+        if not self.ptr.epoch_valid.count(epoch): pass
+        else:
+            epva = self.ptr.epoch_valid[epoch]
+            self.metric_plot.AddMetrics(epva.metrics(), b'validation')
 
-        cdef CyEpoch* epte = self.ptr.epoch_test[epoch]
-        self._metric_plot.AddMetrics(eptr.metrics(), b'evaluation')
-        self._metric_plot.ReleasePlots(path)
+        cdef CyEpoch* epte
+        if not self.ptr.epoch_test.count(epoch): pass
+        else:
+            epte = self.ptr.epoch_test[epoch]
+            self.metric_plot.AddMetrics(epte.metrics(), b'evaluation')
+        self.metric_plot.ReleasePlots(path)
 
 

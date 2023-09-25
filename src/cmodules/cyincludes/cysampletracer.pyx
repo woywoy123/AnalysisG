@@ -1275,14 +1275,12 @@ cdef class SampleTracer:
     def BatchSize(self, int val):
         self._set.batch_size = val
 
+    @property
+    def PlotLearningMetrics(self):
+        return self._set.runplotting
 
-
-
-
-
-
-
-
-
+    @PlotLearningMetrics.setter
+    def PlotLearningMetrics(self, bool val):
+        self._set.runplotting = val
 
 

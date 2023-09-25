@@ -352,6 +352,7 @@ cdef extern from "../abstractions/cytypes.h":
 
         bool debug_mode
         bool continue_training
+        bool runplotting
         bool sort_by_nodes
         bool enable_reconstruction
 

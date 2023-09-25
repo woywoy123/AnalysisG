@@ -4,10 +4,12 @@
 #ifndef PLOTTING_H
 #define PLOTTING_H
 
+#include <algorithm>
 #include <iostream>
 #include <cmath>
 #include <vector>
 #include <map>
+
 
 struct paint_t
 {
@@ -17,19 +19,32 @@ struct paint_t
     bool root_style = false; 
     bool mpl_style = true; 
     bool autoscale = true;
-    bool latex = true;  
+    bool latex = true;
 
     std::string color = ""; 
     std::vector<std::string> colors = {}; 
 
+    std::string marker = "."; 
+    std::vector<std::string> markers = {
+        ",", ".", "--", "x", "o", "O"
+    }; 
+
+    std::string texture = "";
+    std::vector<std::string> textures = {
+        "/", "\\", "|", "-", "+", "x", "o", "O", ".", "*"
+    }; 
+
     float xscaling = 1.25*6.4; 
     float yscaling = 1.25*4.8;
+    float alpha = 0.5; 
+    float line_width = 1; 
 
     float font_size = 10; 
     float label_size = 12.5; 
     float title_size = 10; 
     float legend_size = 10;
     std::string legend_loc = "upper left"; 
+    std::string hist_fill = "fill"; 
 
     int atlas_loc = 2; 
     float atlas_lumi = -1; 
@@ -44,13 +59,18 @@ struct axis_t
     std::string dim = ""; 
     std::map<std::string, std::vector<float>> sorted_data = {}; 
     std::map<std::string, float> label_data = {}; 
-    std::vector<float> random_data = {};
-    
+    std::vector<float> random_data     = {};
+    std::vector<float> random_data_up  = {}; 
+    std::vector<float> random_data_down = {}; 
+
     int bins = 0; 
     float start = -1; 
     float end = -1; 
     bool underflow = false; 
-    bool overflow = false; 
+    bool overflow = false;
+    bool bin_centering = false;  
+    bool logarithmic = false; 
+    
 }; 
 
 struct io_t
@@ -63,6 +83,8 @@ struct io_t
 struct figure_t
 {
     std::string title = "no-title";
+    bool label_data = false; 
+    bool overlay = false; 
     bool histogram = false; 
     bool line = false; 
 }; 
@@ -100,6 +122,12 @@ struct node_t
         if (called){return;}
         nodes = met -> num_nodes; 
         called = true; 
+    }
+    void collect(axis_t* ax){
+        std::map<std::string, int>::iterator itr = nodes.begin();  
+        for (; itr != nodes.end(); ++itr){
+            (*ax).label_data[itr -> first] = itr -> second; 
+        }
     }
 }; 
 
@@ -154,38 +182,30 @@ struct epoch_t
         return 3; 
     }
 
-    void draw_nodes(abstract_plot* painter)
+    template <typename G>
+    std::tuple<bool, G> get_this(
+            std::string mode, 
+            std::string kfold, 
+            std::map<int, std::map<std::string, G>>* get)
     {
+        int mo = get_mode(mode);
+        if (get -> count(mo)){}
+        else {return std::make_tuple(false, G());}
 
-        // continue here and plot all the stats
+        std::string fold = get_fold(kfold); 
+        if ((*get)[mo].count(fold)){}
+        else {return std::make_tuple(false, G());}
 
-
-
-
-        std::map<std::string, node_t>::iterator itn; 
-        for (itn = nodes[0].begin(); itn != nodes[0].end(); ++itn)
-        {
-            std::cout << itn -> first << std::endl; 
-
-        }
-
-
-
-        painter -> stacked["training"] = axis_t();
-        painter -> stacked["validation"] = axis_t();
-        painter -> stacked["evaluation"] = axis_t();
-
-        
-
-
-
-
-
-
+        return std::make_tuple(true, (*get)[mo][fold]); 
+    }
+    
+    std::tuple<bool, node_t> get_nodes(std::string mode, std::string kfold){
+        return get_this(mode, kfold, &nodes); 
     }
 
-
-
+    std::tuple<bool, atomic_t> get_atomic(std::string mode, std::string kfold){
+        return get_this(mode, kfold, &data); 
+    }
 
     void build_variables(
             std::map<std::string, stats_t>* stat,
@@ -268,19 +288,69 @@ struct epoch_t
     }
 }; 
 
+
+struct report_t
+{
+    int current_epoch;
+    std::map<std::string, float> auc_train;
+    std::map<std::string, float> auc_valid; 
+    std::map<std::string, float> auc_eval; 
+
+    std::map<std::string, float> loss_train;
+    std::map<std::string, float> loss_valid; 
+    std::map<std::string, float> loss_eval; 
+
+    std::map<std::string, float> loss_train_up;
+    std::map<std::string, float> loss_valid_up; 
+    std::map<std::string, float> loss_eval_up; 
+
+    std::map<std::string, float> loss_train_down;
+    std::map<std::string, float> loss_valid_down; 
+    std::map<std::string, float> loss_eval_down; 
+
+    std::map<std::string, float> acc_train;
+    std::map<std::string, float> acc_valid; 
+    std::map<std::string, float> acc_eval; 
+
+    std::map<std::string, float> acc_train_up;
+    std::map<std::string, float> acc_valid_up; 
+    std::map<std::string, float> acc_eval_up; 
+
+    std::map<std::string, float> acc_train_down;
+    std::map<std::string, float> acc_valid_down; 
+    std::map<std::string, float> acc_eval_down; 
+};
+
+
+
+
 class CyMetric
 {
     public:
         CyMetric(); 
         ~CyMetric();
         std::vector<roc_t*> FetchROC(); 
-        void BuildPlots(std::map<std::string, abstract_plot>* output); 
+
+        void dress_abstraction(
+                abstract_plot* inpt,
+                std::string title, std::string xtitle, std::string ytitle, 
+                std::string fname, bool hist, bool line, int n_events);
+
         void AddMetric(std::map<std::string, metric_t>* values, std::string mode);  
+        void BuildPlots(std::map<std::string, abstract_plot>* output); 
+
+        void BuildAccuracy(std::vector<abstract_plot>* plt, std::vector<int> these);
+        void BuildLoss(std::vector<abstract_plot>* plt, std::vector<int> these);
+        void BuildROC(std::vector<abstract_plot>* plt, std::vector<int> these); 
+        void BuildNodes(abstract_plot* plt, epoch_t* ep); 
+
 
 
         std::string outpath; 
+        report_t report; 
         int current_epoch = -1; 
         std::map<int, epoch_t> epoch_data = {};
+        
 }; 
 
 

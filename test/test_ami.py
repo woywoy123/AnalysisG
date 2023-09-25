@@ -1,5 +1,4 @@
 from AnalysisG.IO import UpROOT
-from conftest import clean_dir
 import uproot
 
 def test_pyami():
@@ -23,7 +22,6 @@ def test_pyami():
     assert len([i for i in smpl]) > 0
     for i in smpl:
         assert data in i["MetaData"].DatasetName
-    clean_dir()
 
 
 def test_ami_injection():
@@ -47,8 +45,6 @@ def test_ami_injection():
         assert "dilepton" not in meta.IndexToSample(i["nominal/eventNumber"])
         lst.append(1)
     assert len(lst) == len(smpl)
-    clean_dir()
-
 
 if __name__ == "__main__":
     test_pyami()

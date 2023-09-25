@@ -67,7 +67,7 @@ cdef class OptimizerWrapper:
         if self._optim is None: return False
         if not len(self._scheduler_name): return True
         self._sched_params["optimizer"] = self._optim
-        if self._scheduler_name == "ExpontentialLR":
+        if self._scheduler_name == "ExponentialLR":
             self._sched = ExponentialLR(**self._sched_params)
         elif self._scheduler_name == "CyclicLR":
             self._sched = CyclicLR(**self._sched_params)
