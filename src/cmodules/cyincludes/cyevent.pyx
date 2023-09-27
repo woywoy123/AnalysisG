@@ -193,7 +193,6 @@ cdef class EventTemplate:
     def Tag(self, str val):
         self.ev.event_tagging = enc(val)
 
-
     @property
     def Tree(self) -> str:
         return env(self.ev.event_tree)

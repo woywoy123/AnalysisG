@@ -57,7 +57,7 @@ def POST_INSTALL_PYC():
 
 def make_analysis():
     tool = Tools()
-    this_dir = tool.pwd
+    this_dir = tool.pwd()
     tool.mkdir("Analysis")
     tool.mkdir("Analysis/Objects")
 
@@ -148,7 +148,7 @@ def make_analysis():
             "",
             "Ana = Analysis()",
             "Ana.Event = MyEvent", 
-            "Ana.EventGraph = MyGraph", 
+            "Ana.Graph = MyGraph", 
             "Ana.EventCache = True # Creates hdf5 files", 
             "Ana.DataCache = True # Creates hdf5 files for graphs", 
             "Ana.Launch()"

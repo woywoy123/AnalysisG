@@ -125,11 +125,18 @@ class Tools(_IO):
                     out[i] = self.MergeData(ob1[i], ob2[i])
 
                 else:
-                    o = ob1[i] + ob2[i] if i in ob1 and i in ob2 else None
-                    if o is None:
-                        o = ob1[i] if o is None and i in ob1 else o
-                        o = ob2[i] if o is None and i in ob2 else o
-                    out[i] = o
+                    try: o1 = ob1[i]
+                    except KeyError: o1 = None
+                    except IndexError: o1 = None
+
+                    try: o2 = ob2[i]
+                    except KeyError: o2 = None
+                    except IndexError: o2 = None
+
+                    if o1 is not None and o2 is not None: out[i] = o1 + o2
+                    elif o1 is not None: out[i] = o1
+                    elif o2 is not None: out[i] = o2
+                    else: out[i] = None
             return out
 
         if isinstance(ob1, list) and isinstance(ob2, list):

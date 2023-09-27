@@ -8,8 +8,8 @@ class Pickle(Tools):
         self.Caller = "PICKLER"
 
     def PickleObject(self, obj, filename, Dir="_Pickle"):
-        if not filename.endswith(self._ext):
-            filename += self._ext
+        if filename.endswith(".pkl"): pass
+        else: filename += ".pkl"
 
         direc = self.path(filename)
         if direc.endswith("/"): direc = direc[:-1]
@@ -22,8 +22,8 @@ class Pickle(Tools):
         f.close()
 
     def UnpickleObject(self, filename, Dir="_Pickle"):
-        if not filename.endswith(self._ext):
-            filename += self._ext
+        if filename.endswith(".pkl"): pass
+        else: filename += ".pkl"
         direc = self.path(filename)
         filename = self.filename(filename)
 

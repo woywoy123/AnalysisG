@@ -112,7 +112,6 @@ def test_analysis_event_cache():
     AnaE.Launch()
     assert len([i for i in AnaE if i.Event]) != 0
 
-    print("____")
     Ana = _template()
     Ana.EventCache = True
     Ana.Verbose = 3

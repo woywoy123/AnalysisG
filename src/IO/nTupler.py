@@ -174,11 +174,14 @@ class nTupler(_Interface, _nTupler, SampleTracer):
             commands[0] = []
             del th
 
-        th = Threading(*commands)
-        th.Start()
-        tmp += [k for k in th._lists if k is not None]
-        commands[0] = []
-        del th
+        if not len(commands[0]): pass
+        else:
+            th = Threading(*commands)
+            th.Start()
+            tmp += [k for k in th._lists if k is not None]
+            commands[0] = []
+            del th
+
         out = {}
         for t in [(key, val) for t in tmp for key, val in t.items()]:
             key, val = t

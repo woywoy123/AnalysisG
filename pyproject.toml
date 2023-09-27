@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools", "cython", "wheel", "torch>=1.13.1"]
+requires = ["setuptools", "cython", "numpy", "wheel", "torch>=1.13.1"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -10,15 +10,15 @@ readme.content-type = "text/markdown"
 readme.file = "README.md"
 requires-python = ">=3.7"
 dependencies = [
-    "numpy", 
-    "uproot", 
-    "h5py", 
-    "mplhep", 
-    "pwinput", 
-    "scikit-learn", 
-    "torchmetrics", 
-    "torch-geometric", 
-    "pyAMI-atlas==5.1.0.1", 
+    "numpy",
+    "uproot",
+    "h5py",
+    "mplhep",
+    "pwinput",
+    "scikit-learn",
+    "torchmetrics",
+    "torch-geometric",
+    "pyAMI-atlas==5.1.0.1",
     "boost_histogram"
 ]
 

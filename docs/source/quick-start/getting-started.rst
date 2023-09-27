@@ -77,7 +77,7 @@ Within the **event.py** file, again the frameworks base class **EventTemplate** 
             self.runNumber = self.Type + ".Number" # <--- Example event leaf variable
 
             # Specify the trees you want to use for each event.
-            self.Tree = ["nominal", "..."] 
+            self.Trees = ["nominal", "..."] 
 
             # Depending where the particles should be read from, either specify the branch 
             # or leave the branch empty and the framework will revert to the tree 
@@ -128,7 +128,7 @@ Similar to the above examples, to create graph data structures simply open the *
     class MyGraph(GraphTemplate):
 
         def __init__(self, Event = None):
-            self.Event = Event 
+            self.Event = Event
             self.Particles += self.Event.ArbitraryParticleName
 
 
@@ -148,11 +148,11 @@ The answer is during the Analysis object phase, which will be illustrated below:
 
     Ana = Analysis()
     Ana.Event = MyEvent
-    Ana.EventGraph = MyGraph
+    Ana.Graph = MyGraph
     Ana.AddEdgeFeature(some_edge, "delta_px")
     Ana.AddNodeFeature(some_node, "px")
     Ana.AddGraphFeature(some_graph, "weight")
-    Ana.AddNodeTruth(some_truth, "attribute")
+    Ana.AddNodeTruthFeature(some_truth, "attribute")
     Ana.Launch()
 
 

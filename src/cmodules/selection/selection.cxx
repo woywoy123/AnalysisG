@@ -145,14 +145,21 @@ namespace CyTemplate
             this -> sel -> selection_weights.push_back(this -> current_weight);
             return true;
         }
-        
+
+        if (Tools::count(passed, "->")){
+            this -> sel -> cutflow[passed] += 1; 
+            this -> sel -> selection_weights.push_back(this -> current_weight); 
+            return true;
+        }
+  
         pass = Tools::count(passed, "::Rejected"); 
         if (pass){ this -> sel -> cutflow[passed] += 1; return false;}
         
         pass = Tools::count(passed, "::Error"); 
         if (pass){ this -> sel -> cutflow[passed] += 1; return false;}
 
-        this -> sel -> cutflow[passed + "::Ambiguous"] +=1; 
+        this -> sel -> cutflow[passed + "::Ambiguous"] +=1;
+        this -> sel -> selection_weights.push_back(this -> current_weight); 
         return true;
     }
 

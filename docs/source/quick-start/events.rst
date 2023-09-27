@@ -1,70 +1,122 @@
 Advanced Usage of EventTemplate
 *******************************
 
-Introduction
-____________
 As was briefly discussed in :ref:`event-start`, the **EventTemplate** class has many abstract features which will be discussed here.
 Something worth noting is that this module has been implemented in C++ but exploits Cython to retain the modularity of Python.
 The C++ back-end is used to speed up certain operations, which would be tedious or slow in nominal Python, this includes hashing, object comparison, sample tracing, etc.
 The underlying source code can be found under the ``src/Templates/CXX/Templates.cxx`` and ``src/Templates/Headers/Templates.h``. 
 
-Primitive Attributes
-____________________
+.. py:class:: EventTemplate 
 
-- ``clone``: 
-    A function which creates a duplicate of the event object. 
-    This **does not** clone the events attributes, but rather only creates an empty clone of the given event. 
+    .. py:method:: __getleaves__() -> dict
 
-- ``index``:
-    A function which has both a setter and getter implementation. 
-    It is used to assign an event some internal index, this can be either a leaf string from within a ROOT tree/branch, or directly set to an integer. 
+        A special function which returns a dictionary of trees/branches/leaves to get from the ROOT file for each object type. 
+        Essentially, this is the output of scanning the event implementation and its constituents. 
+
+    .. py:method:: __compiler__(dict inpt)
+
+        Compiles the event from the input dictionary, including the particles. 
+        When calling the function, the ``__build__`` function, the build process is called recursively to generate and populate underlying event objects, such as particles and the events. 
+        The output will be a list of event(s), depending on the number of entries specified in **Trees**. 
+
+    .. py:method:: __build__(dict variables)
+
+        Expects a dictionary as input with keys indicating the attribute to assign to the event. 
+        For example, ``{"met" : 1000}`` will be translated to ``event.met -> 1000``.
+
+    .. py:method:: is_self(inpt) -> bool
+        
+        Returns a boolean value on whether the input is of **EventTemplate** type.
+
+    .. py:method:: clone(meta = None) -> EventTemplate
+
+        A function which creates a duplicate of the event object. 
+        This **does not** clone the events attributes, but rather only creates an empty clone of the given event. 
+
+    .. py:method:: CompileEvent()
+
+        A function which has no input but allows the user to define any last minute links between particles. 
+        This can be very useful when ROOT files contain truth information, such as particle linkage attributes or multiple Trees are specified. 
+        In cases of multiple Trees, additional functions can be used to "route" the compilation to a specific function. 
+        This will be shown in more detail in the code examples below.
+
+    .. py:method:: ImportMetaData(meta_t meta)
+
+        Import the MetaData object dictionary.
+
+    .. py:attribute:: Export -> event_t
+    
+        Export the event object as a dictionary.
+
+    .. py:attribute:: index -> int
+
+        It is used to assign an event some internal index, this can be either a leaf string from within a ROOT tree/branch, or directly set to an integer. 
  
-- ``weight``:
-    A function which has both a setter and getter implementation:
-    It is used to assign the given event some event weight.
-    This is particularly important when computing the integrated luminosity of samples and for computing the cross section. 
-    It can be either assigned a leaf string from within a ROOT tree/branch, or directly set to a float.
+    .. py:attribute:: weight -> (str, double)
 
-- ``Tree``:
-    The tree from which this event is derived from. This is not to be confused with the **Trees** variable.
-    This attribute is a function which has both a setter and getter, and expects a string. 
-    **Note:** This variable does not need to be set manually if the event is assigned **Trees**. 
+        It is used to assign the given event some event weight.
+        This is particularly important when computing the integrated luminosity of samples and for computing the cross section. 
+        It can be either assigned a leaf string from within a ROOT tree/branch, or directly set to a float.
 
-- ``Trees``:
-    A list of strings from which to source events from.
-    If multiple **Trees** are specified, the given event implementation is cloned twice (one for each tree) and assigned their respective **Tree** value. 
+    .. py:attribute:: deprecated -> bool
 
-- ``Branches``:
-    A list of strings from which to source branch variables from. 
-    This is relevant if the ROOT data structure has nested leaf values.
+        This can be useful when writing multiple event definitions but wanting to keep the old version, but ensuring that the user is made aware that this event is invalid/outdated. 
+        The input is a boolean and if set to ``True``, will issue a warning to the user. 
 
-- ``Leaves``:
-    A list of leaves to retrieve from the ROOT file for this event implementation.
-    This includes leaves from particles being linked to the event.
-    Generally this attribute shouldn't be defined, since it is used internally.
+    .. py:attribute:: CommitHash -> str
 
-- ``Objects``:
-    A dictionary of particle names and their associated objects. 
-    This is used to link particles to events, these particles will be available within the event under the attribute name of the dictionary keys. 
-    For instance if the dictionary contains ``{"name" : Particle()}``, then these particles can be retrieved via ``event.name``. 
-    By default the particles living under the dictionary key-name will also be dictionaries, with keys being integer indices. 
+        If the user decides to modify the implementation, the git-hash can be recorded here for later referencing. 
+        For example, if the event was used with a specific ``AnalysisTop`` ROOT sample, but this implementation has been modified, the git-hash of ``AnalysisTop`` could be used as reference. 
+        This function expects a string of any length/content. 
 
-- ``hash``:
-    A function which has a setter and getter implementation. 
-    Once the setter has been called, an 18 character long string will be internally generated, which cannot be modified.
-    The hash is computed from ``input/<event index>/Tree``, and assigns each event a unique identity such that the tracer can retrieve the specified event.
-    If the getter (``self.hash``) has been called prior to the setter (``self.hash = 'something'``), then an empty string is returned.
+    .. py:attribute:: Tag -> str
 
-- ``Deprecated``:
-    A getter and setter function which indicates whether the given event implementation has been deprecated. 
-    This can be useful when writing multiple event definitions but wanting to keep the old version, but ensuring that the user is made aware that this event is invalid/outdated. 
-    The input is a boolean and if set to ``True``, will issue a warning to the user. 
+        A variable used to tag the event with some string value. 
 
-- ``CommitHash``:
-    A getter and setter function which is used for book-keeping purposes. 
-    If the user decides to modify the implementation, the git-hash can be recorded here for later referencing. 
-    For example, if the event was used with a specific ``AnalysisTop`` ROOT sample, but this implementation has been modified, the git-hash of ``AnalysisTop`` could be used as reference. 
-    This function expects a string of any length/content. 
+    .. py:attribute:: Tree -> str
+
+        The tree from which this event is derived from. This is not to be confused with the **Trees** variable.
+        This attribute is a function which has both a setter and getter, and expects a string. 
+        **Note:** This variable does not need to be set manually if the event is assigned **Trees**. 
+
+    .. py:attribute:: Trees -> list
+
+        A list of strings from which to source events from.
+        If multiple **Trees** are specified, the given event implementation is cloned twice (one for each tree) and assigned their respective **Tree** value. 
+
+    .. py:attribute:: Branches -> list
+
+        A list of strings from which to source branch variables from. 
+        This is relevant if the ROOT data structure has nested leaf values.
+
+    .. py:attribute:: Objects -> dict
+
+        A dictionary of particle names and their associated objects. 
+        This is used to link particles to events, these particles will be available within the event under the attribute name of the dictionary keys. 
+        For instance if the dictionary contains ``{"name" : Particle()}``, then these particles can be retrieved via ``event.name``. 
+        By default the particles living under the dictionary key-name will also be dictionaries, with keys being integer indices. 
+
+    .. py:attribute:: cached -> bool
+
+        Indicates whether this event has been cached and saved within a HDF5 file.
+
+    .. py:attribute:: ROOT -> str
+    
+        Returns the ROOT filename from which the event was compiled from.
+
+    .. py:attribute:: hash -> str
+
+        Once set, an 18 character long string will be internally generated, which cannot be modified.
+        The hash is computed from ``input/<event index>/``, and assigns each event a unique identity such that the tracer can retrieve the specified event.
+        If the getter (``self.hash``) has been called prior to the setter (``self.hash = 'something'``), then an empty string is returned.
+
+    .. py:attribute:: Event -> bool
+
+        Returns a boolean to indicate this event to be of EventTemplate type.
+
+    .. py:attribute:: EventName -> str
+        
+        Returns the name of this event type.
 
 
 Magic Functions
@@ -101,28 +153,6 @@ To keep this section as straightforward as possible, any event implementation wh
     # returns [ev, ev2, ev3] since they are unique 
     # this allows one to remove duplicates
     print(events)
-
-Advanced Attributes/Functions
-_____________________________
-
-- ``__interpret__`` (getter)
-    A special function which returns a dictionary of trees/branches/leaves to get from the ROOT file for each object type. 
-    Essentially, this is the output of scanning the event implementation and its constituents. 
-
-- ``__interpret__`` (setter)
-    Expects a dictionary as input with keys indicating the attribute to assign to the event. 
-    For example, ``{"met" : 1000}`` will be translated to ``event.met -> 1000``.
-
-- ``__compiler___(dict value)``
-    Compiles the event from the input dictionary, including the particles. 
-    When calling the function, the ``__interpret__`` setter is called recursively to generate and populate underlying event objects, such as particles and the events. 
-    The output will be a list of event(s), depending on the number of entries specified in **Trees**. 
-
-- ``CompileEvent()``
-    A function which has no input but allows the user to define any last minute links between particles. 
-    This can be very useful when ROOT files contain truth information, such as particle linkage attributes or multiple Trees are specified. 
-    In cases of multiple Trees, additional functions can be used to "route" the compilation to a specific function. 
-    This will be shown in more detail in the code examples below.
 
 Meaning of **In** and **Post** Compilation
 __________________________________________
@@ -300,7 +330,7 @@ However, there is a simpler approach as shown below:
             self.Objects = {
                 "truth_particle" : TruthParticle(),
                 "systematic_particle" : SysParticle(),
-                "detector_particle" : DetectorParticle(), 
+                "detector_particle" : DetectorParticle(),
             }
 
         def UseNominal(self):

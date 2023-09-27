@@ -38,7 +38,7 @@ cdef string consolidate(map[string, string]* inpt, string* src):
 class Neutrino(ParticleTemplate):
     def __init__(self):
         self.Type = "nu"
-        self.ParticleTemplate.__init__(self)
+        ParticleTemplate.__init__(self)
         self.chi2 = None
 
 
@@ -95,6 +95,7 @@ cdef class SelectionTemplate:
         if not inpt.pickled_data.size(): return
         cdef str key
         cdef dict pkls = pickle.loads(inpt.pickled_data)
+
         for key in pkls:
             try: self.__dict__[key] = pkls[key]
             except KeyError: setattr(self, key, pkls[key])
@@ -105,10 +106,10 @@ cdef class SelectionTemplate:
         self.sel.code_hash = code.hash
         return code
 
-    cpdef Px(self, val, phi):
+    cpdef Px(self, float val, float phi):
         return pyc.Transform.Px(val, phi)
 
-    cpdef Py(self, val, phi):
+    cpdef Py(self, float val, float phi):
         return pyc.Transform.Py(val, phi)
 
     cpdef MakeNu(self, s_, chi2 = None, gev = False):
@@ -128,8 +129,8 @@ cdef class SelectionTemplate:
 
     cpdef NuNu(
         self, q1, q2, l1, l2, ev,
-        mT=172.5 * 1000, mW=80.379 * 1000, mN=0, zero=1e-12,
-        gev = False
+        float mT=172.5 * 1000, float mW=80.379 * 1000, float mN=0, float zero=1e-12,
+        bool gev = False
     ):
         scale = 1/1000 if gev else 1
         inpt = []
@@ -182,16 +183,16 @@ cdef class SelectionTemplate:
     def clone(self) -> SelectionTemplate:
         return self.__class__()
 
-    def selection(self, event):
+    def Selection(self, event):
         return True
 
     def Strategy(self, event):
         return True
 
     def __select__(self, event):
-        res = self.selection(event)
+        res = self.Selection(event)
         if res is None: res = ""
-        if isinstance(res, str): return self.ptr.CheckSelection(enc(str(res)))
+        if isinstance(res, str): return self.ptr.CheckSelection(enc(res))
         if type(res).__name__ == "bool": return self.ptr.CheckSelection(<bool>res)
         return True
 
@@ -199,9 +200,6 @@ cdef class SelectionTemplate:
         self.ptr.StartTime()
         res = self.Strategy(event)
         self.ptr.EndTime()
-
-        if self._params_ is None: pass
-        else: self.sel._params_ = pickle.dumps(self._params_)
 
         if res is None: res = ""
         if isinstance(res, str): return self.ptr.CheckStrategy(enc(str(res)))
@@ -218,15 +216,19 @@ cdef class SelectionTemplate:
         ev.event_root    = enc(event.ROOT)
         ev.weight        = event.weight
         self.ptr.RegisterEvent(&ev)
+        if self.__params__ is None: pass
+        else: self.sel._params_ = pickle.dumps(self.__params__)
 
         if not self.sel.allow_failure:
             if self.__select__(event): pass
             else: return False
+
             if self.__strategy__(event): return True
             else: return False
 
         try:
-            if not self.__select__(event): return False
+            if self.__select__(event): pass
+            else: return False
         except Exception as inst:
             self.sel.errors[enc(str(inst))] += 1
             return self.ptr.CheckSelection(enc(str(inst)+"::Error"))
@@ -238,7 +240,9 @@ cdef class SelectionTemplate:
 
 
     @property
-    def __params__(self): return self._params_
+    def __params__(self):
+        if not self.sel._params_.size(): return self._params_
+        return pickle.loads(self.sel._params_)
 
     @__params__.setter
     def __params__(self, val): self._params_ = val
@@ -264,6 +268,12 @@ cdef class SelectionTemplate:
 
     @property
     def TotalEvents(self): return self.sel.all_weights.size()
+
+    @property
+    def AllWeights(self): return self.sel.all_weights
+
+    @property
+    def SelectionWeights(self): return self.sel.selection_weights
 
     @property
     def AllowFailure(self): return self.sel.allow_failure
@@ -296,7 +306,7 @@ cdef class SelectionTemplate:
     def ROOT(self) -> str: return env(self.sel.event_root)
 
     @property
-    def Selection(self) -> bool: return self.ptr.is_selection
+    def selection(self) -> bool: return self.ptr.is_selection
 
     @property
     def SelectionName(self) -> str: return env(self.sel.event_name)
@@ -305,3 +315,4 @@ cdef class SelectionTemplate:
     def Residual(self):
         if not self.sel.pickled_strategy_data.size(): return None
         return pickle.loads(self.sel.pickled_strategy_data)
+

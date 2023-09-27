@@ -9,7 +9,7 @@
 project = 'AnalysisG'
 copyright = '2023, woywoy123'
 author = 'woywoy123'
-release = '0.1'
+release = '0.2'
 master_doc = 'index'
 
 # -- General configuration ---------------------------------------------------
@@ -20,4 +20,6 @@ exclude_patterns = []
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
-html_theme = 'groundwork'
+#html_theme = 'insegel'
+html_theme = 'sphinx_pdj_theme'
+

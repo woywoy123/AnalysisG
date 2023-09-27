@@ -17,14 +17,14 @@ class DiLeptonic(SelectionTemplate):
 
     def ParticleRouter(self, event):
         particles = []
-        if self._truthmode == "children":
+        if self.__params__["truth"] == "children":
             particles += event.TopChildren
 
-        if self._truthmode == "jets+truthleptons":
+        if self.__params__["truth"] == "jets+truthleptons":
             particles += event.Jets
             particles += [c for c in event.TopChildren if c.is_lep]
 
-        if self._truthmode == "detector":
+        if self.__params__["truth"] == "detector":
             particles += event.DetectorObjects
 
         return particles
@@ -114,11 +114,8 @@ class DiLeptonic(SelectionTemplate):
                     type_dic[can].append(this[-1])
                     break
         # if the number of the number of b's is less than 2, reject the event
-        if len(type_dic) < 2:
-            return "Selection -> Rejected -> NoPairs"
-
-        if sum([len(type_dic[can]) == 0 for can in type_dic]) == 1:
-            return "Selection -> Rejected -> NoPairs"
+        if len(type_dic) < 2: return "NoPairs::Rejected"
+        if sum([len(val) == 0 for can, val in type_dic.items()]) == 1: return "NoPairs::Rejected"
 
         # count the number of leptons in this candidate list
         n_lep = sum([sum([c.is_lep for c in type_dic[can]]) for can in type_dic])
@@ -134,7 +131,7 @@ class DiLeptonic(SelectionTemplate):
                 b = [c for c in top_c if not c.is_lep][0]
 
                 nu = self.Nu(b, lep, event, gev = True)
-                if len(nu) == 0: return "Selection -> Rejected -> NoSingleNuSolution"
+                if len(nu) == 0: return "NoSingleNuSolution::Rejected"
                 type_dic[can] += [nu[0]]
             t, t_ = list(type_dic.values())
             sel_type = "Lep-Had"
@@ -149,13 +146,14 @@ class DiLeptonic(SelectionTemplate):
             bs = dic["b"]
             ls = dic["l"]
             nus = self.NuNu(bs[0], bs[1], ls[0], ls[1], event, gev = True)
-            if len(nus) == 0: return "Selection -> Rejected -> NoDoubleNuSolution"
+            if len(nus) == 0: return "NoDoubleNuSolution::Rejected"
             t, t_ = [[bs[i], ls[i], nus[0][i]] for i in range(2)]
             sel_type = "Lep-Lep"
 
         try: short = event.short
-        except: short = self.ROOTName
-
+        except: short = self.ROOT
+        print(self.Luminosity)
+        print(event.
         tops = [sum(t).Mass/1000, sum(t_).Mass/1000]
         self.TopMasses[sel_type] += tops
         self.TopMasses["All"] += tops
@@ -166,3 +164,4 @@ class DiLeptonic(SelectionTemplate):
         self.ZPrime[short][sel_type].append(zp)
         if "All" not in self.ZPrime: self.ZPrime["All"] = []
         self.ZPrime["All"] += [zp]
+        return "FoundSolutions::Passed"

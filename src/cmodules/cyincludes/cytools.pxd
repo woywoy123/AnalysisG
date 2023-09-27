@@ -195,6 +195,7 @@ cdef inline restore_selection(ref, selection_t* sel):
 
     sel.allow_failure         = ref.attrs["allow_failure"]
     sel._params_              = enc(ref.attrs["_params_"])
+    sel._params_              = decode64(&sel._params_)
     sel.selection             = ref.attrs["selection"]
 
 
@@ -210,7 +211,8 @@ cdef inline save_selection(ref, selection_t* sel):
     ref.attrs["selection_weights"]     = sel.selection_weights
 
     ref.attrs["allow_failure"]         = sel.allow_failure
-    ref.attrs["_params_"]              = sel._params_
+
+    ref.attrs["_params_"]              = encode64(&sel._params_)
     ref.attrs["selection"]             = sel.selection
 
 

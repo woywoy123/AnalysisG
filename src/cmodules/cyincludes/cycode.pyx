@@ -84,6 +84,10 @@ cdef class Code:
         try: self.object_code = t(self._x)
         except TypeError: self.object_code = t(self._x.__class__)
         self.__trace__()
+
+        try: self.param_space = {"key" : self._x.__params__}
+        except AttributeError: pass
+
         self.ptr.Hash()
 
     def __getclass__(self):
@@ -221,6 +225,8 @@ cdef class Code:
         else: fx = self.fx
         try: setattr(fx, "code", self.ptr.ExportCode())
         except: pass
+        if not self.ptr.container.param_space.size(): pass
+        else: setattr(fx, "__params__", self.param_space["key"])
         return fx
 
     @property
