@@ -27,8 +27,8 @@ def test_edge_feature_aggregation():
 
             # aggregate the incoming edges
             pmu_i = torch.zeros_like(pmu)
-            for this, j in zip(range(p), pair_m):
-                pmu_i[this] += pmu[j[j > -1], :].sum(0)
+            for this, j in zip(range(p), pair_m): pmu_i[this] += pmu[j[j > -1], :].sum(0)
+
             # find the unique node aggregation
             clusters, revert = pair_m.unique(dim = 0, return_inverse = True)
             pmu_u = torch.zeros(len(clusters), pmu.size(1))
@@ -72,15 +72,14 @@ def test_edge_feature_aggregation():
     dic = {cls : {n : nodes[n].clone() for n in range(n_nodes)} for cls in range(n_cls)}
     for i, src, dst in zip(edges_t, edge_i, edge_j):
         if src == dst: continue
-        i = i.item()
-        dic[i][src.item()] += nodes[dst]
+        dic[i.item()][src.item()] += nodes[dst]
 
     res = {}
     for cls in dic:
         res[cls] = []
-        for node in dic[cls]:
-            res[cls].append(dic[cls][node].view(1, -1))
+        for node in dic[cls]: res[cls].append(dic[cls][node].view(1, -1))
         res[cls] = torch.cat(res[cls], dim = 0)
+
     out = aggregation(edge_index, edges_t, nodes, True)
     for i in out:
         nodes_ = res[i]
@@ -97,7 +96,6 @@ def test_edge_feature_aggregation():
     nodes = nodes.to(device = dev)
     cu = pyc.Graph.Base.edge_aggregation(edge_index, edges_t, nodes, True)
     compare(out, cu)
-
 
     a, b, c, d = [nodes[:, i] for i in range(4)]
     x = pyc.Graph.Cartesian.edge(edge_index, edges_t, a, b, c, d, True)

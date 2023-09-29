@@ -97,6 +97,11 @@ Tools Multi-Threading and Code Preservation
   tools/multithreading.rst
   tools/code.rst
 
+Data Types and Dictionary Mapping
+*********************************
+.. toctree::
+  cytypes/cytypes.rst
+
 PyC, CUDA and C++ API via PyTorch
 *********************************
 .. toctree::
