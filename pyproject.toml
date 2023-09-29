@@ -11,7 +11,7 @@ readme.file = "README.md"
 requires-python = ">=3.7"
 dependencies = [
     "mplhep==0.3.28",
-    "matplotlib==3.7.2",
+    "matplotlib==3.5.3",
     "pyAMI-atlas==5.1.0.1",
     "numpy",
     "uproot",
