@@ -19,6 +19,7 @@ def test_analysis_event_merge():
         Ana.EventStop = 10
         return Ana
 
+    Analysis().rm("Project")
     F0 = {smpl + "sample1" : ["smpl1.root"]}
     ev1 = EventGen_(F0, "Top")
     ev1.EventCache = True
@@ -39,6 +40,10 @@ def test_analysis_event_merge():
         assert i.Event
 
     ev1 += ev2
+    ev1.Tree = "nominal"
+    ev1.EventName = "Event"
+    ev1.GetEvent = True
+    ev1.EventCache = True
     it = 0
     x = {"Tops" : 0, "Top" : 0}
     for i in ev1:
@@ -51,6 +56,7 @@ def test_analysis_event_merge():
 
     a_ev = EventGen_(None, None)
     a_ev.EventStop = None
+    a_ev.EventCache = True
     it = 0
     x = {"Tops" : 0, "Top" : 0}
     for i in a_ev:
@@ -61,7 +67,7 @@ def test_analysis_event_merge():
     assert x["Tops"] == 10
     assert x["Top"] == 10
     assert len(ev1) == len(a_ev)
-    a_ev.rm("./Project")
+    a_ev.rm("Project")
 
 
 def test_analysis_more_samples():
@@ -189,6 +195,7 @@ def test_analysis_data_nocache():
     AnaE.Event = Event
     AnaE.Graph = GraphChildren
     AnaE.Launch()
+
     for i in AnaE:
         assert i.Graph
         assert type(i.N_T_Mass).__name__ == "Tensor"
@@ -414,8 +421,9 @@ def test_analysis_selection_cache():
         assert len(sel.Top["Truth"]) == 4
         assert sel.CutFlow["Selection::Passed"] == 1
         x.append(sel)
-    assert len(AnaR["Example2"]) == len(x)
     assert len(x)
+    assert len(AnaR["Example2"]) == len(x)
+    AnaR.rm("Project")
 
 if __name__ == "__main__":
     test_analysis_event_merge()

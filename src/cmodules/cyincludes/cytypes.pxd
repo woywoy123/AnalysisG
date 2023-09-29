@@ -356,7 +356,6 @@ cdef extern from "../abstractions/cytypes.h":
         bool sort_by_nodes
         bool enable_reconstruction
 
-
         # Getter object option
         bool getgraph
         bool getevent

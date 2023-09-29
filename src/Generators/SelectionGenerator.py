@@ -54,7 +54,10 @@ class SelectionGenerator(_SelectionGenerator, SampleTracer, _Interface):
             for ev, i in zip(sample, range(itr)):
                 if self._StartStop(i) == False: continue
                 if self._StartStop(i) == None: break
-                command[0] += [pickle.dumps((ev.release_event(), co, sel))]
+
+                ev = ev.release_event()
+                if not ev: continue
+                command[0] += [pickle.dumps((ev, co, sel))]
                 bar.update(1)
 
                 if not i >= step: continue
@@ -67,6 +70,7 @@ class SelectionGenerator(_SelectionGenerator, SampleTracer, _Interface):
                 command[0] = []
                 del th
 
+            if not len(command[0]): continue
             th = Threading(*command)
             th.Start()
             for i in th._lists: sample.AddSelections(i)

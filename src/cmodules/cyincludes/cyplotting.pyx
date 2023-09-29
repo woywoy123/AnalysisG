@@ -14,8 +14,6 @@ from cymetrics cimport *
 from cytypes cimport metric_t
 from cytools cimport env, enc
 
-cimport numpy
-cdef numpy.ndarray arr
 import numpy as np
 
 from torchmetrics import ROC, AUROC, ConfusionMatrix

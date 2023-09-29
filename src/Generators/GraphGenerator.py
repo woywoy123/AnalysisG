@@ -83,7 +83,6 @@ class GraphGenerator(_GraphGenerator, SampleTracer, _Interface):
         if not len(command[0]): return True
         th = Threading(*command)
         th.Start()
-
         for i in th._lists: sample.AddGraph(i)
         del th
         return True

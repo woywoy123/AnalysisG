@@ -49,8 +49,7 @@ Homepage = "https://github.com/woywoy123/AnalysisG"
 "AnalysisG.Generators"   = "src/Generators"
 "AnalysisG.Particles"    = "src/Events/Particles"
 "AnalysisG.Notification" = "src/Notification"
-#"AnalysisG.Submission" = "src/Submission"
-#"AnalysisG.Settings" = "src/Settings"
+"AnalysisG.Submission"   = "src/Submission"
 #"AnalysisG.Plotting" = "src/Plotting" 
 
 [tool.setuptools.package-data]

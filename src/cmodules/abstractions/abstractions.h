@@ -26,6 +26,7 @@ namespace Tools
     std::vector<std::string> split(std::string inpt, std::string search); 
     std::string join(std::vector<std::string>* inpt, int s, int e, std::string delim); 
     int count(std::string inpt, std::string search); 
+    std::map<std::string, int> CheckDifference(std::vector<std::string> inpt1, std::vector<std::string> inpt2, int threads); 
 
     template <typename G>
     std::vector<std::vector<G>> Quantize(const std::vector<G>& v, int N)

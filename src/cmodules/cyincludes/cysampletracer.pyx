@@ -141,20 +141,18 @@ cdef class Event:
         cdef CyCode* co_ = ev_.code_link
         if co_ == NULL: print("EVENT -> MISSING CODE!"); return
 
-        cdef event_t ev = ev_.Export()
-        cdef dict pkl = pickle.loads(ev.pickled_data)
-        ev.pickled_data = b""
-
         c = Code()
         c.__setstate__(co_.ExportCode())
-
         cdef code_t co
         cdef pair[string, CyCode*] itr
         for itr in co_.dependency:
             co = itr.second.ExportCode()
             c.AddDependency([co])
-
         self._event = c.InstantiateObject
+
+        cdef event_t ev = ev_.Export()
+        cdef dict pkl = pickle.loads(ev.pickled_data)
+        ev.pickled_data = b""
         self._event.__setstate__((pkl, ev))
 
     def __getgraph__(self):
@@ -521,7 +519,8 @@ cdef class SampleTracer:
         i = type_.upper() + "-READING (" + type_.upper() + "): "
         for itc in cache_map:
             file = env(itc.first)
-            f = h5py.File(file, "r")
+            try: f = h5py.File(file, "r")
+            except FileNotFoundError: continue
             _, bar = self._makebar(itc.second.size(), i + file.split("/")[-1])
             for batch in itc.second:
                 if type_ == "Event": batch.event_dir.erase(itc.first)
@@ -612,7 +611,6 @@ cdef class SampleTracer:
             output += self.rebuild_code(env(itc.first))
         return output
 
-
     def ImportSettings(self, settings_t inpt):
         self.ptr.ImportSettings(inpt)
 
@@ -698,7 +696,9 @@ cdef class SampleTracer:
 
     @property
     def Event(self):
-        if self._Event is not None: return self._Event
+        if self.ptr.link_event_code.size(): pass
+        elif self._Event is None: return
+        else: return self._Event
         cdef pair[string, string] its
         for its in self.ptr.link_event_code:
             co = self.rebuild_code(env(its.second))
@@ -708,6 +708,8 @@ cdef class SampleTracer:
 
     @Event.setter
     def Event(self, event):
+        if event is not None: pass
+        else: self._Event = None; return
         try: event = event()
         except: pass
         cdef code_t co
@@ -1003,14 +1005,6 @@ cdef class SampleTracer:
     @Tree.setter
     def Tree(self, str val):
         self._set.tree = enc(val)
-
-    @property
-    def ProjectName(self) -> str:
-        return env(self._set.projectname)
-
-    @ProjectName.setter
-    def ProjectName(self, str val):
-        self._set.projectname = enc(val)
 
     @property
     def OutputDirectory(self) -> str:

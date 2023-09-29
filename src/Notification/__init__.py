@@ -10,3 +10,4 @@ from .SelectionGenerator import _SelectionGenerator
 from .Analysis import _Analysis
 from .RandomSamplers import _RandomSamplers
 from .Optimization import _Optimizer
+from .Condor import _Condor

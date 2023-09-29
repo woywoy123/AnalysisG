@@ -76,9 +76,10 @@ cdef class Code:
         if self.is_class: self.__getclass__()
         else: self.__getfunction__()
 
-        self.source_code = open(os.path.abspath(
-                sys.modules[self._x.__module__].__file__
-                ), "r").read()
+
+        cdef str path = sys.modules[self._x.__module__].__file__
+        path = os.path.abspath(path)
+        self.source_code = open(path, "r").read()
 
         t = inspect.getsource
         try: self.object_code = t(self._x)
@@ -115,11 +116,13 @@ cdef class Code:
                 out.append(tmp)
             return out
 
+        cdef str path = "/".join(sys.modules[self._x.__module__].__file__.split("/")[:-1])
         cdef list split = self.source_code.split("\n")
         cdef dict class_name = {}
         cdef dict this_import = {}
         cdef list imports_ = []
         cdef str i, name
+        cdef str check_dep
 
         for i in split:
             if "class" not in i: continue
@@ -132,6 +135,14 @@ cdef class Code:
         out = []
         for i in split:
             if "import" not in i: continue
+            check_dep = i.split("from")[-1]
+            if not check_dep.replace(" ", "").startswith("."): pass
+            else:
+                check_dep = check_dep.split("import")[0].replace(" ", "").replace(".", "/")
+                path = os.path.abspath(path + "/" + check_dep + ".py")
+                self.source_code = self.source_code.replace(i, open(path, "r").read())
+                continue
+
             for k in i.split("import")[-1].split(" "):
                 k = k.replace(" ", "").replace(",", "")
                 if not len(k): continue
@@ -217,7 +228,8 @@ cdef class Code:
     def InstantiateObject(self):
         if self.fx is None:
             self.__mergedependency__()
-            exec(self.source_code, globals())
+            if self.is_class: exec(self.source_code, globals())
+            else: exec(self.object_code, globals())
             if self.is_class: fx = globals()[self.class_name]
             else: fx = globals()[self.function_name]
             self.fx = fx
@@ -310,7 +322,8 @@ cdef class Code:
         cdef dict output = {}
         cdef pair[string, string] itr
         for itr in self.ptr.container.param_space:
-            output[env(itr.first)] = pickle.loads(itr.second)
+            try: output[env(itr.first)] = pickle.loads(itr.second)
+            except: output[env(itr.first)] = env(itr.second)
         return output
 
     @param_space.setter

@@ -2,47 +2,13 @@ from AnalysisG.Generators.SelectionGenerator import SelectionGenerator
 from AnalysisG.Generators.SampleGenerator import RandomSamplers
 from AnalysisG.Generators.EventGenerator import EventGenerator
 from AnalysisG.Generators.GraphGenerator import GraphGenerator
+from AnalysisG._cmodules.ctools import cCheckDifference
 from AnalysisG.Generators.Interfaces import _Interface
 from AnalysisG.Generators.Optimizer import Optimizer
 from AnalysisG.Templates import FeatureAnalysis
 from AnalysisG.SampleTracer import SampleTracer
 from AnalysisG.Notification import _Analysis
 from typing import Union
-
-def check_tree(x):
-    if len(x.Tree): return True
-    elif not len(x.ShowTrees): return True
-    else: x.Tree = x.ShowTrees[0]
-    return True
-
-def check_event(x):
-    if len(x.EventName): return True
-    elif not len(x.ShowEvents): return False
-    else: x.EventName = x.ShowEvents[0]
-    return True
-
-def check_graph(x):
-    if len(x.GraphName): return True
-    elif not len(x.ShowGraphs): return False
-    else: x.GraphName = x.ShowGraphs[0]
-    if x.Graph is None: return False
-    return True
-
-def check_selection(x):
-    if len(x.SelectionName): return True
-    elif not len(x.Selections): return False
-    elif not len(x.ShowSelections): return False
-    else: x.SelectionName = x.ShowSelections[0]
-    return True
-
-def check_number(x, path):
-    try: l = x.ShowLength[path]
-    except KeyError: l = 0
-
-    if x.EventStop is None: return True
-    elif l == 0: return True
-    elif l >= x.EventStop: return False
-    return True
 
 def search(x):
     f = {}
@@ -129,7 +95,18 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         if not self.TrainingSize: return
         pth = self.WorkingPath + "Training/DataSets/"
         pth += self.TrainingName
-        dic = {i.hash : i for i in self}
+
+        get = sum(self._get["graph"].values(), [])
+        self.RestoreGraphs(get)
+        maps = self[self.GraphName]
+        if maps: pass
+        else: return self.EmptySampleList()
+
+        dic = {}
+        for i in maps:
+            if i.SkipEvent: continue
+            if i.EmptyGraph: continue
+            dic[i.hash] = i
 
         r = RandomSamplers()
         r.ImportSettings(self.ExportSettings())
@@ -143,59 +120,97 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         r.SaveSets(out, pth)
 
     def __Selection__(self):
-        if not check_selection(self): return
-        if check_event(self): pass
-        else: self.__Event__()
+        if self.GetSelection: pass
+        elif len(self.Selections): pass
+        else: return
+
+        get = sum(self._get["selection"].values(), [])
+        get_ev = sum(self._get["event"].values(), [])
+        c = cCheckDifference(get_ev, get, self.Threads)
+        if len(get) and self.GetSelection: self.RestoreSelections(get)
+        elif not len(get): pass
+        elif len(c): self.RestoreEvents(c)
+        elif len(get_ev): pass
+        else: return
+        self.GetSelection = True
+
+        if self.Tree: pass
+        elif not len(self.ShowTrees): return
+        elif len(self.ShowTrees) > 1: return
+        else: self.Tree = self.ShowTrees[0]
 
         sel = SelectionGenerator()
         sel.ImportSettings(self.ExportSettings())
         sel.Caller = "ANALYSIS::SELECTIONS"
-        if sel.MakeSelections(self): pass
-        else: return
+
+        if not sel.MakeSelections(self): return
+
         self.DumpSelections()
         self.DumpTracer(self.SampleName)
 
     def __Graph__(self):
-        if not check_graph(self): return
+        if self.Graph is None: return
 
         get = sum(self._get["graph"].values(), [])
-        if len(get) and self.DataCache: self.RestoreGraph(get)
+        get_ev = sum(self._get["event"].values(), [])
+        c = cCheckDifference(get_ev, get, self.Threads)
 
-        check_tree(self)
-        path = self.Tree + "/" + self.GraphName
-        if check_number(self, path): pass
-        else: self.RestoreEvents()
+        if len(c): self.RestoreEvents(c)
+        if len(get) and self.DataCache: self.RestoreGraphs(get)
+        elif not len(get): pass
+        elif len(get_ev): pass
+        else: return
 
-        if len(self.Tree): pass
-        else: self.RestoreEvents()
+        if self.Tree: pass
+        elif not len(self.ShowTrees): return
+        elif len(self.ShowTrees) > 1: return
+        else: self.Tree = self.ShowTrees[0]
+
+        self.GetGraph = True
+        if self.GraphName: pass
+        elif len(self.ShowGraphs) == 0: pass
+        elif len(self.ShowGraphs) > 1: return
+        else: self.GraphName = self.Graph.__name__
+
+        cur = self.ShowLength
+        try: gr_l = cur[self.Tree + "/" + self.GraphName]
+        except KeyError: gr_l = 0
+        try: ev_l = cur[self.Tree + "/" + self.EventName]
+        except KeyError: ev_l = 0
+        if (gr_l == ev_l) and gr_l != 0: return
 
         gr = GraphGenerator()
-        gr.ImportSettings(self.ExportSettings())
         gr.Caller = "ANALYSIS::GRAPH"
-        gr.GetEvent = "Event"
+        gr.ImportSettings(self.ExportSettings())
+
+        try: x = self.ShowLength[self.Tree + "/" + self.GraphName]
+        except KeyError: x = 0
+        if gr.EventStop is None: pass
+        else: gr.EventStop -= x
         if gr.MakeGraphs(self): pass
         else: return
 
-        if self.DataCache: pass
-        else: return
-
+        if not self.DataCache: return
         self.DumpGraphs()
         self.DumpTracer(self.SampleName)
         return True
 
 
     def __Event__(self):
+        if self.Event is None: return
         get = sum(self._get["event"].values(), [])
         if len(get) and self.EventCache: self.RestoreEvents(get)
-        if check_event(self): pass
-        else: return
+        elif not len(get): pass
 
-        if check_tree(self): pass
-        else: return
+        if self.Tree: pass
+        elif len(self.ShowTrees) == 0: pass
+        elif len(self.ShowTrees) > 1: return
+        else: self.Tree = self.ShowTrees[0]
 
-        path = self.Tree + "/" + self.EventName
-        if check_number(self, path): pass
-        else: return
+        if self.EventName: pass
+        elif len(self.ShowEvents) > 1: return
+        else: self.EventName = self.ShowEvents[0]
+        self.GetEvent = True
 
         self.Files = None
         self.Files = self._get["get"]
@@ -204,10 +219,11 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         ev = EventGenerator()
         ev.Caller = "ANALYSIS::EVENT"
         ev.ImportSettings(self.ExportSettings())
-        x = self.ShowLength
+
+        try: x = self.ShowLength[self.Tree + "/" + self.EventName]
+        except KeyError: x = 0
         if ev.EventStop is None: pass
-        elif not len(x): pass
-        else: ev.EventStop -= self.ShowLength[path]
+        else: ev.EventStop -= x
         if ev.MakeEvents(self.SampleName, self): pass
         else: return
 
@@ -223,7 +239,6 @@ class Analysis(_Analysis, SampleTracer, _Interface):
 
     def __LoadSample__(self):
         tracer = self._CheckForTracer()
-
         l = len(self.SampleMap)
         if not l: self.SampleMap = ""
 
@@ -248,31 +263,14 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         return True
 
     def preiteration(self) -> bool:
-        self.GetAll = True
-        x = self.makehashes()
-        self.GetAll = False
-        check_tree(self)
-
-        check_event(self)
-        if len(self.EventName): self.GetEvent = True
-        if not self.EventName and not self.EventCache: pass
-        else: self.RestoreEvents(sum(x["event"].values(), []))
-
-        check_graph(self)
-        if len(self.GraphName): self.GetGraph = True
-        if not self.GraphName and not self.DataCache: pass
-        else: self.RestoreGraphs(sum(x["graph"].values(), []))
-
-        check_selection(self)
-        if not len(self.SelectionName): pass
-        else:
-            self.RestoreSelections(sum(x["selection"].values(), []))
-            self.GetSelection = True
-
-        if self.triggered: return False
+        if self.triggered: pass
         else: self.Launch()
 
+        if len(self.ShowSelections): self.GetSelection = True
+        if len(self.ShowEvents): self.GetEvent = True
+        if len(self.ShowGraphs): self.GetGraph = True
+
+        if self.Tree: pass
+        elif not len(self.ShowTrees): return True
+        else: self.Tree = self.ShowTrees[0]
         return False
-
-
-

@@ -13,10 +13,8 @@ def test_random_sampling():
     Ana.InputSample(None, root1)
     ApplyFeatures(Ana, "TruthChildren")
     Ana.Launch()
-
-    Ana.GetAll = True
     smpls = Ana.makelist()
-    Ana.GetAll = False
+
     r = RandomSamplers()
     r_ = r.RandomizeEvents(smpls, len(smpls))
     assert len(r_) == len(smpls)
@@ -94,25 +92,26 @@ def test_optimizer():
     ApplyFeatures(AnaG, "TruthChildren")
     AnaG.DataCache = True
     AnaG.Launch()
-    AnaG.GetAll = True
+    x = []
     for i in AnaG:
         assert i.Graph
         assert i.N_eta is not None
+        x.append(i)
+    assert len(x)
 
     AnaG = Analysis()
     AnaG.ProjectName = "Project_ML"
     AnaG.EventCache = False
+    AnaG.DataCache = True
     AnaG.TrainingSize = 90
-    AnaG.GetEvent = False
     AnaG.GraphName = "GraphChildren"
-    AnaG.EventName = None
-    AnaG.GetGraph = True
     AnaG.kFolds = 10
     AnaG.Launch()
 
     AnaG = Analysis()
     AnaG.ProjectName = "Project_ML"
     AnaG.TrainingName = "untitled"
+    AnaG.DataCache = True
     mod = ModelWrapper()
     mod.__params__ = {"test" : "here"}
     mod.model = CheatModel

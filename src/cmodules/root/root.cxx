@@ -167,7 +167,7 @@ namespace SampleTracer
             this -> this_gr = this -> graphs[gr_name];
         }
         else { this ->this_gr = nullptr; }
-        
+       
         if (this -> selections.count(sel_name)){
             this -> this_sel = this -> selections[sel_name];
         }
@@ -180,6 +180,7 @@ namespace SampleTracer
         if (this -> this_ev) { this -> valid = true; }
         if (this -> this_gr) { this -> valid = true; }
         if (this -> this_sel){ this -> valid = true; }
+
     }
     
     void CyBatch::ApplySettings(const settings_t* inpt)
@@ -208,25 +209,29 @@ namespace SampleTracer
             return; 
         }
         
+        std::string find; 
         std::vector<std::string> tags; 
         tags = Tools::split(this -> meta -> sample_name, "|"); 
         for (unsigned int x(0); x < z; ++x){
-            std::string find = srch -> at(x); 
-            if (this -> meta -> original_input == find){ return; }
-            if (this -> meta -> DatasetName == find){ return; }
+            find = srch -> at(x); 
             for (std::string key : tags){
                 if (key != find){continue;}
                 return; 
             }  
 
+            if (this -> meta -> original_input == find){ return; }
+            if (this -> meta -> DatasetName == find){ return; }
+
             if (this -> this_ev){
                 if (this -> this_ev -> event.event_root == find){return;}
                 if (this -> this_ev -> event.event_name == find){return;}
             }
+
             if (this -> this_gr){
                 if (this -> this_gr -> graph.event_root == find){return;}
                 if (this -> this_gr -> graph.event_name == find){return;}
             }
+
             if (this -> this_sel){
                 if (this -> this_sel -> selection.event_root == find){return;}
                 if (this -> this_sel -> selection.event_name == find){return;}

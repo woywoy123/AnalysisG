@@ -138,6 +138,55 @@ std::string Tools::base64_decode(std::string const& encoded_string)
     return ret;
 }
 
+std::map<std::string, int> Tools::CheckDifference(std::vector<std::string> inpt1, std::vector<std::string> inpt2, int threads)
+{
+    auto Scan = [](std::map<std::string, int>* inpt, std::vector<std::string>* check){
+        for (unsigned int x = 0; x < check -> size(); ++x){
+            if (!inpt -> count(check -> at(x))){continue;}
+            (*inpt)[check -> at(x)] += 1; 
+        } 
+    };  
+
+    std::vector<std::thread*> thrds; 
+    std::vector<std::map<std::string, int>*> maps = {}; 
+    std::vector<std::vector<std::string>> data = Quantize(inpt1, threads); 
+    for (unsigned int x = 0; x < data.size(); ++x){
+        std::map<std::string, int>* t = new std::map<std::string, int>(); 
+        for (std::string p : data[x]){ (*t)[p] = 0; }
+        std::thread* jb = new std::thread(Scan, t, &inpt2); 
+
+        maps.push_back(t); 
+        thrds.push_back(jb); 
+    }
+
+    std::map<std::string, int> output; 
+    for (unsigned int x = 0; x < thrds.size(); ++x){
+        std::map<std::string, int>* trg = maps[x]; 
+        std::thread* jb = thrds[x]; 
+        jb -> join(); 
+
+        std::map<std::string, int>::iterator itr = trg -> begin(); 
+        for (; itr != trg -> end(); ++itr){
+            if (itr -> second){continue;}
+            output[itr -> first] += itr -> second; 
+        }
+        trg -> clear();
+        delete trg; 
+        delete jb;  
+    }; 
+    return output; 
+}
+
+
+
+
+
+
+
+
+
+
+
 namespace Abstraction
 {
     CyBase::CyBase(){}

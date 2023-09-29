@@ -65,6 +65,7 @@ class _Analysis(Notification):
 
         key = " > SelectionGenerator ("
         for k in self.Selections: string += [key + k + ") < ::"]
+        if self.SelectionName: string += [key + self.SelectionName + ") < ::"]
 
         key = "> Optimization ("
         if self.Model is not None: string += [key + self.Model.__name__ + ") < ::"]
@@ -74,3 +75,8 @@ class _Analysis(Notification):
         self.Success(string1)
         for i in string: self.Success(i)
         self.Success("=" * l)
+        if len(string): return True
+
+        msg = "Nothing Selected..."
+        self.Failure(len(msg)*"=")
+        self.FailureExit(msg)

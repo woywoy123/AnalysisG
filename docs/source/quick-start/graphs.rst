@@ -87,6 +87,7 @@ Most of the content explained in the :ref:`graph-start` is already considered ad
 
     .. py:attribute:: Event
 
+        A variable used to indicate the event to be the target for graph compilation.
         Requires an **EventTemplate** object or any object which has the appropriate attributes.
 
     .. py:attribute:: Particles -> list
