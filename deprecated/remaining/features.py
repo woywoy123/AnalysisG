@@ -6,7 +6,6 @@ from AnalysisG import Analysis
 import torch
 
 torch.set_printoptions(4, profile="full", linewidth=100000)
-from conftest import clean_dir
 
 smpl = "./samples/"
 Files = {

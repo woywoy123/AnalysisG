@@ -38,6 +38,7 @@ cdef class Code:
         elif instance.__module__.endswith("cmodules.code"):
             try: self.__setstate__(instance.__getstate__())
             except TypeError: pass
+            except AttributeError: pass
             try: self.__setstate__(instance.code)
             except AttributeError: pass
 

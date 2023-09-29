@@ -14,6 +14,7 @@ try:
     import pyAMI.client
     import pyAMI.atlas.api as atlas
 except ModuleNotFoundError: pass
+except NameError: pass
 
 from uproot.exceptions import KeyInFileError
 import warnings
@@ -178,6 +179,7 @@ cdef class MetaData:
                 self.client, dataset_number = [str(self.dsid)], type = self.sampletype
             )
         except pyAMI.exception.Error: return False
+        except: return False
 
         cdef dict t
         cdef list tags

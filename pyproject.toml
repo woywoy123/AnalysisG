@@ -4,21 +4,22 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "AnalysisG"
-version = "3.4.0"
+version = "4.0.0"
 authors = [{name = "woywoy123"}]
 readme.content-type = "text/markdown"
 readme.file = "README.md"
 requires-python = ">=3.7"
 dependencies = [
+    "mplhep==0.3.28",
+    "matplotlib==3.7.2",
+    "pyAMI-atlas==5.1.0.1",
     "numpy",
     "uproot",
     "h5py",
-    "mplhep",
     "pwinput",
     "scikit-learn",
     "torchmetrics",
     "torch-geometric",
-    "pyAMI-atlas==5.1.0.1",
     "boost_histogram"
 ]
 
@@ -63,7 +64,7 @@ make_analysis="AnalysisG.Settings:make_analysis"
 AnalysisG = "AnalysisG.__main__:main"
 
 [tool.bumpver]
-current_version = "3.3.0"
+current_version = "4.0.0"
 version_pattern = "MAJOR.MINOR.PATCH"
 commit_message  = "bump version {old_version} -> {new_version}"
 commit          = true
