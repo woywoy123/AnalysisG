@@ -1,10 +1,17 @@
 [build-system]
-requires = ["setuptools", "cython", "numpy", "wheel", "torch>=1.13.1"]
+requires = [
+    "cython", 
+    "numpy", 
+    "wheel", 
+    "torch>=1.13.1", 
+    "setuptools>=68.2.2", 
+    "setuptools-scm>=8.0"
+]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "AnalysisG"
-version = "4.0.0"
+dynamic = ["version"]
 authors = [{name = "woywoy123"}]
 readme.content-type = "text/markdown"
 readme.file = "README.md"
@@ -38,6 +45,9 @@ classifiers = [
 [project.urls]
 Homepage = "https://github.com/woywoy123/AnalysisG"
 
+[tool.setuptools_scm]
+version_scheme = "release-branch-semver"
+
 [tool.setuptools.package-dir]
 "AnalysisG" = "src"
 "AnalysisG.IO"           = "src/IO"
@@ -62,17 +72,4 @@ auth_pyami = "AnalysisG.Settings:AUTH_PYAMI"
 install_pyc = "AnalysisG.Settings:POST_INSTALL_PYC"
 make_analysis="AnalysisG.Settings:make_analysis"
 AnalysisG = "AnalysisG.__main__:main"
-
-[tool.bumpver]
-current_version = "4.0.0"
-version_pattern = "MAJOR.MINOR.PATCH"
-commit_message  = "bump version {old_version} -> {new_version}"
-commit          = true
-tag             = true
-push            = true
-
-[tool.bumpver.file_patterns]
-"pyproject.toml" = [
-    'current_version = "{version}"',
-]
 
