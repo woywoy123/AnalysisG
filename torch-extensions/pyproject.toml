@@ -8,8 +8,6 @@ version = "0.1"
 authors = [
     {name = "woywoy123"}
 ]
-readme.content-type = "text/markdown"
-readme.file = "README.md"
 requires-python = ">=3.7"
 
 classifiers = [
