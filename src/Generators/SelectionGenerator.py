@@ -16,6 +16,8 @@ class SelectionGenerator(_SelectionGenerator, SampleTracer, _Interface):
         lock, bar = _prgbar
         for i in range(len(inpt)):
             ev, co, sel = pickle.loads(inpt[i])
+            ev, meta = ev
+            ev.ImportMetaData(meta)
             se = co.InstantiateObject
             se.__setstate__(sel)
             se.__processing__(ev)
@@ -55,9 +57,10 @@ class SelectionGenerator(_SelectionGenerator, SampleTracer, _Interface):
                 if self._StartStop(i) == False: continue
                 if self._StartStop(i) == None: break
 
+                meta = ev.meta()
                 ev = ev.release_event()
                 if not ev: continue
-                command[0] += [pickle.dumps((ev, co, sel))]
+                command[0] += [pickle.dumps(((ev, meta), co, sel))]
                 bar.update(1)
 
                 if not i >= step: continue
@@ -65,6 +68,7 @@ class SelectionGenerator(_SelectionGenerator, SampleTracer, _Interface):
                 step = itx*chnks
                 th = Threading(*command)
                 th.Title = self.Caller + "::" + name
+                th.Verbose = self.Verbose
                 th.Start()
                 for x in th._lists: sample.AddSelections(x)
                 command[0] = []
@@ -72,6 +76,7 @@ class SelectionGenerator(_SelectionGenerator, SampleTracer, _Interface):
 
             if not len(command[0]): continue
             th = Threading(*command)
+            th.Verbose = self.Verbose
             th.Start()
             for i in th._lists: sample.AddSelections(i)
             command[0] = []

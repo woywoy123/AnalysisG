@@ -64,7 +64,8 @@ cdef class BasePlotting:
     def __dealloc__(self): del self.ptr
     def __init__(self): pass
     cdef __atlas__(self):
-        hep.atlas.text(loc = self.pn.atlas_loc)
+        try: hep.atlas.text(loc = self.pn.atlas_loc)
+        except: return
         cdef dict dic = {}
         if self.pn.atlas_data: dic["data"] = self.pn.atlas_data
         if self.pn.atlas_com > 0: dic["com"] = self.pn.atlas_com

@@ -111,6 +111,7 @@ cdef extern from "../abstractions/cytypes.h":
         string genFilterNames
         string file_type
         string sample_name
+        string logicalDatasetName
 
         vector[string] keywords
         vector[string] weights

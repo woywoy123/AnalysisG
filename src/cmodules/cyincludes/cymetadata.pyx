@@ -158,7 +158,8 @@ cdef class MetaData:
             if key == "keywords": continue
             if key == "keyword": continue
             if key == "weights": continue
-            setattr(self, key, inpt[key])
+            try: setattr(self, key, inpt[key])
+            except AttributeError: pass
 
         self.run_number = inpt["run_number"][1:-1]
         self.ptr.container.keywords = [enc(v) for v in inpt["keywords"].replace(" ", "").split(",")]
@@ -214,7 +215,7 @@ cdef class MetaData:
         cdef int num = val["num"][0]
         self.ptr.processkeys(keys, num)
 
-    def _findmissingkeys(self): 
+    def _findmissingkeys(self):
         self.ptr.FindMissingKeys()
 
     def _MakeGetter(self) -> dict:
@@ -381,7 +382,7 @@ cdef class MetaData:
 
     @run_number.setter
     def run_number(self, val: Union[str, int]):
-        self.ptr.container.run_numer = int(val)
+        self.ptr.container.run_number = int(val)
 
     @property
     def totalEvents(self) -> int:
@@ -560,14 +561,20 @@ cdef class MetaData:
         self.ptr.container.DatasetName = enc(val)
 
     @property
+    def logicalDatasetName(self) -> str:
+        return env(self.ptr.container.logicalDatasetName)
+
+    @logicalDatasetName.setter
+    def logicalDatasetName(self, str val):
+        self.ptr.container.logicalDatasetName = enc(val)
+
+    @property
     def event_index(self) -> int:
         return self.ptr.container.event_index
 
     @event_index.setter
     def event_index(self, int val):
         self.ptr.container.event_index = val
-
-
 
 
     # constant properties

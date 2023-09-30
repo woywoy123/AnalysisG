@@ -4,7 +4,8 @@ requires = [
     "numpy", 
     "wheel", 
     "setuptools", 
-    "torch>=1.13.1", 
+    "setuptools-scm",
+#    "torch>=1.13.1", 
 ]
 build-backend = "setuptools.build_meta"
 
@@ -43,6 +44,10 @@ classifiers = [
 
 [project.urls]
 Homepage = "https://github.com/woywoy123/AnalysisG"
+
+[tool.setuptools_scm]
+write_to = "src/version.py"
+
 
 [tool.setuptools.package-dir]
 "AnalysisG" = "src"

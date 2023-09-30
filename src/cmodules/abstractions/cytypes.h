@@ -147,6 +147,7 @@ struct meta_t
     std::string genFilterNames = "";
     std::string file_type = "";
     std::string sample_name = ""; 
+    std::string logicalDatasetName = ""; 
 
     std::vector<std::string> keywords = {};
     std::vector<std::string> weights = {};

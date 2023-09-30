@@ -796,11 +796,16 @@ cdef class SampleTracer:
     def Selections(self):
         cdef CyCode* code
         cdef pair[string, string] its
-
+        cdef string name
         for its in self.ptr.link_selection_code:
             co = self.rebuild_code(env(its.second))
             if not len(co): continue
             code = self.ptr.code_hashes[its.second]
+            name = code.container.class_name
+            if env(name) not in self._Selections: pass
+            else:
+                self.Selections = self._Selections[env(name)]
+                continue
             features = {}
             co = co[0].InstantiateObject
             self._Selections[env(code.container.class_name)] = co

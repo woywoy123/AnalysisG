@@ -37,6 +37,7 @@ if run:
     Ana.EventStop = 1000
     Ana.EventCache = True
     Ana.Threads = 1
+    Ana.Verbose = 0
     Ana.chnk = 1000
     Ana.AddSelection(ana)
     Ana.Launch()

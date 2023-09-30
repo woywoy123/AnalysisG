@@ -160,6 +160,8 @@ MetaData Wrapper
 
     .. py:attribute:: sample_name -> str
 
+    .. py:attribute:: logicalDatasetName -> str
+
 
 UpROOT wrapper
 **************

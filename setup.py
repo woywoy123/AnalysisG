@@ -1,10 +1,5 @@
 from setuptools import setup, Extension
 from Cython.Build import cythonize
-import sys
-
-sys.path.insert(0, ("./src"))
-from version import __version__
-
 
 src = "src/cmodules/"
 

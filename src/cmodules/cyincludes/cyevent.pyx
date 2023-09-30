@@ -1,13 +1,15 @@
 # distuils: language = c++
 # cython: language_level = 3
 
+from AnalysisG._cmodules.MetaData import MetaData
+from typing import Union
+
 from cyevent cimport CyEventTemplate
 from cytypes cimport meta_t, event_t
 
 from libcpp.string cimport string
 from libcpp.map cimport map, pair
 from libcpp cimport bool
-from typing import Union
 
 cdef string enc(str val): return val.encode("UTF-8")
 cdef str env(string val): return val.decode("UTF-8")
@@ -16,12 +18,14 @@ cdef class EventTemplate:
     cdef CyEventTemplate* ptr
     cdef event_t* ev
     cdef dict Objects
+    cdef meta
 
     def __cinit__(self):
         self.ptr = new CyEventTemplate()
         cdef str x = self.__class__.__name__
         self.ev = &(self.ptr.event)
         self.ptr.set_event_name(self.ev, enc(x))
+        self.meta = MetaData()
         self.Objects = {}
 
     def __init__(self): pass
@@ -146,6 +150,7 @@ cdef class EventTemplate:
 
     def ImportMetaData(self, meta_t meta):
         self.ptr.ImportMetaData(meta)
+        self.meta.__setstate__(meta)
 
     @property
     def Export(self) -> event_t:
@@ -264,3 +269,7 @@ cdef class EventTemplate:
     @property
     def EventName(self) -> str:
         return env(self.ev.event_name)
+
+    @property
+    def meta(self):
+        return self.meta

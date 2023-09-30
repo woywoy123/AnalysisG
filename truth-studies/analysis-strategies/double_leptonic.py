@@ -12,6 +12,8 @@ class DiLeptonic(SelectionTemplate):
                 "All" : [],
         }
         self.ZPrime = {}
+        self.PhaseSpace = {}
+
         self.AllowFailure = False
         self.__params__ = {"btagger" : None, "truth" : None}
 
@@ -150,10 +152,8 @@ class DiLeptonic(SelectionTemplate):
             t, t_ = [[bs[i], ls[i], nus[0][i]] for i in range(2)]
             sel_type = "Lep-Lep"
 
-        try: short = event.short
-        except: short = self.ROOT
-        print(self.Luminosity)
-        print(event.
+        short = event.meta.logicalDatasetName
+
         tops = [sum(t).Mass/1000, sum(t_).Mass/1000]
         self.TopMasses[sel_type] += tops
         self.TopMasses["All"] += tops
@@ -165,3 +165,4 @@ class DiLeptonic(SelectionTemplate):
         if "All" not in self.ZPrime: self.ZPrime["All"] = []
         self.ZPrime["All"] += [zp]
         return "FoundSolutions::Passed"
+

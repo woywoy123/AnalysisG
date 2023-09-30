@@ -10,6 +10,10 @@
 
 [![tox-testing-analysisG](https://github.com/woywoy123/AnalysisG/actions/workflows/test.yml/badge.svg)](https://github.com/woywoy123/AnalysisG/actions/workflows/test.yml)
 
+## Getting Started:
+Either read the docs here:
+[![Documentation Status](https://readthedocs.org/projects/analysisg/badge/?version=latest)](https://analysisg.readthedocs.io/en/latest/?badge=latest)
+
 ## Introduction:
 The aim of this package is to provide Particle Physicists with an intuitive interface to **Graph Neural Networks**, whilst remaining Analysis agnostic. 
 Following a similar spirit to AnalysisTop, the physicist defines a custom event class and matches variables within ROOT files to objects that they are a representation of.
@@ -26,9 +30,5 @@ Post event graph construction, events are delegated to an optimization step, whi
 To avoid having to deal with additional boiler plate book keeping code, the framework tracks the event to the originating ROOT file using a hashing algorithm. 
 The hash is constructed by concatenating the directory, ROOT filename and event number into a single string and computing the associated hash. 
 This ensures each event can be easily traced back to its original ROOT file. 
-
-## Getting Started:
-Either read the docs here:
-[![Documentation Status](https://readthedocs.org/projects/analysisg/badge/?version=latest)](https://analysisg.readthedocs.io/en/latest/?badge=latest)
 
 Or naviate to the tutorial folder, which outlines a few core concepts of this framework.
