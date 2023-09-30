@@ -5,7 +5,6 @@ requires = [
     "wheel", 
     "torch>=1.13.1", 
     "setuptools>=68.2.2", 
-    "setuptools-scm>=8.0"
 ]
 build-backend = "setuptools.build_meta"
 
@@ -44,9 +43,6 @@ classifiers = [
 
 [project.urls]
 Homepage = "https://github.com/woywoy123/AnalysisG"
-
-[tool.setuptools_scm]
-version_scheme = "release-branch-semver"
 
 [tool.setuptools.package-dir]
 "AnalysisG" = "src"
