@@ -27,6 +27,7 @@ from libcpp cimport bool
 
 from typing import Union
 from tqdm import tqdm
+import torch
 import pickle
 import h5py
 import os
@@ -1069,11 +1070,15 @@ cdef class SampleTracer:
 
     @property
     def Device(self):
+        try: torch.cuda.mem_get_info()
+        except AssertionError: self._set.device = b"cpu"
         return env(self._set.device)
 
     @Device.setter
     def Device(self, str val):
         self._set.device = enc(val)
+        try: torch.cuda.mem_get_info()
+        except AssertionError: self._set.device = b"cpu"
 
     @property
     def nHashes(self) -> int:

@@ -3,7 +3,7 @@ from AnalysisG.IO import PickleObject, UnpickleObject
 from examples.Particles import *
 import pickle
 
-directory = Tools().abs("./samples/test/") + "/"
+directory = Tools().abs("test/samples/test/") + "/"
 
 class simpleclass:
     def __init__(self, hello, world="world", test = None):

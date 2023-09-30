@@ -1,5 +1,6 @@
 from AnalysisG._cmodules.Runner import Runner
 from AnalysisG.Notification import _Condor
+from subprocess import Popen, PIPE, STDOUT
 from AnalysisG.IO import PickleObject
 from AnalysisG.Tools import Tools
 from .script_builder import *
@@ -65,12 +66,16 @@ class Condor(Runner, Tools, _Condor):
         self._CheckEnvironment()
         self.__DumpConfiguration__()
         pth = self.abs(self.OutputDirectory + "/" + self.ProjectName + "/Condor/shells/")
-        subprocess.call(["sh", pth + "/main.sh"])
+        cmd = ["sh", pth + "/main.sh"]
+        return subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True).decode("UTF-8")
 
     def SubmitToCondor(self):
         self.__DumpConfiguration__()
         pth = self.abs(self.OutputDirectory + "/" + self.ProjectName + "/Condor/condor/")
-        subprocess.call(["condor_submit_dag", pth + "/DAG_Submission.submit"])
+        cmd = ["condor_submit_dag", pth + "/DAG_Submission.submit"]
+        return subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True).decode("UTF-8")
+
+
 
 
 
