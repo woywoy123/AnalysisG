@@ -392,9 +392,16 @@ cdef class SampleTracer:
         self._state = &self.ptr.state
 
     cdef void _register_hash(self, ref, str key, string root_name):
+        cdef map[string, string]* repl
         cdef str hash_, val, path
         cdef string path_, val_
         cdef CyBatch* batch
+
+        if key == "event": repl = &self.ptr.link_event_code
+        elif key == "graph": repl = &self.ptr.link_graph_code
+        elif key == "selection": repl = &self.ptr.link_selection_code
+        else: return
+
 
         for hash_, val in ref[key + "_name_hash"].attrs.items():
             path = ref[key + "_dir"].attrs[val]
@@ -404,12 +411,11 @@ cdef class SampleTracer:
             elif key == "graph": batch.graph_dir[path_] = val_
             elif key == "selection": batch.selection_dir[path_] = val_
 
+
         for hash_, val in ref["link_" + key + "_code"].attrs.items():
             path_, val_ = enc(hash_), enc(val)
-            if key == "event": self.ptr.link_event_code[path_] = val_
-            elif key == "graph": self.ptr.link_graph_code[path_] = val_
-            elif key == "selection": self.ptr.link_selection_code[path_] = val_
-
+            if repl.count(path_): pass
+            else: dereference(repl)[path_] = val_
 
     def RestoreTracer(self, dict tracers = {}, sample_name = None):
         cdef str root, f, root_path
@@ -584,6 +590,7 @@ cdef class SampleTracer:
         return (None, tqdm(**_dct))
 
     def trace_code(self, obj) -> code_t:
+        if obj is None: raise AttributeError
         cdef code_t co = Code(obj).__getstate__()
         self.ptr.AddCode(co)
         return co
@@ -604,10 +611,12 @@ cdef class SampleTracer:
             co.__setstate__(c.ExportCode())
             output.append(co)
             return output
+
         elif isinstance(val, list):
-            for name_s in val:
-                output += self.rebuild_code(name_s)
+            for name_s in val: output += self.rebuild_code(name_s)
             return output
+
+        elif val is not None: return []
         for itc in self.ptr.code_hashes:
             output += self.rebuild_code(env(itc.first))
         return output
@@ -709,8 +718,7 @@ cdef class SampleTracer:
 
     @Event.setter
     def Event(self, event):
-        if event is not None: pass
-        else: self._Event = None; return
+        if event is None: return
         try: event = event()
         except: pass
         cdef code_t co
@@ -764,6 +772,7 @@ cdef class SampleTracer:
 
     @Graph.setter
     def Graph(self, graph):
+        if graph is None: return
         try: graph = graph()
         except: pass
         if not self.is_self(graph, GraphTemplate): return
@@ -797,22 +806,19 @@ cdef class SampleTracer:
         cdef CyCode* code
         cdef pair[string, string] its
         cdef string name
+        cdef string params
         for its in self.ptr.link_selection_code:
             co = self.rebuild_code(env(its.second))
             if not len(co): continue
             code = self.ptr.code_hashes[its.second]
             name = code.container.class_name
-            if env(name) not in self._Selections: pass
-            else:
-                self.Selections = self._Selections[env(name)]
-                continue
-            features = {}
             co = co[0].InstantiateObject
             self._Selections[env(code.container.class_name)] = co
         return self._Selections
 
     @Selections.setter
     def Selections(self, selection):
+        if selection is None: return
         try: selection = selection()
         except: pass
         if not self.is_self(selection, SelectionTemplate): return

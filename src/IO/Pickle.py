@@ -7,7 +7,7 @@ class Pickle(Tools):
     def __init__(self):
         self.Caller = "PICKLER"
 
-    def PickleObject(self, obj, filename, Dir="_Pickle"):
+    def PickleObject(self, obj, filename = "untitled", Dir="_Pickle"):
         if filename.endswith(".pkl"): pass
         else: filename += ".pkl"
 
@@ -21,7 +21,7 @@ class Pickle(Tools):
         pickle.dump(obj, f)
         f.close()
 
-    def UnpickleObject(self, filename, Dir="_Pickle"):
+    def UnpickleObject(self, filename = "untitled", Dir="_Pickle"):
         if filename.endswith(".pkl"): pass
         else: filename += ".pkl"
         direc = self.path(filename)
@@ -35,8 +35,8 @@ class Pickle(Tools):
         f.close()
         return obj
 
-def _UnpickleObject(filename):
+def _UnpickleObject(filename = "untitled"):
     return Pickle().UnpickleObject(filename)
 
-def _PickleObject(obj, filename):
+def _PickleObject(obj, filename = "untitled"):
     Pickle().PickleObject(obj, filename)

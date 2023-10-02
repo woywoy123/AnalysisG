@@ -15,15 +15,18 @@ class SelectionGenerator(_SelectionGenerator, SampleTracer, _Interface):
     def _CompileSelection(inpt, _prgbar):
         lock, bar = _prgbar
         for i in range(len(inpt)):
-            ev, co, sel = pickle.loads(inpt[i])
-            ev, meta = ev
+            ev, meta, co, se = inpt[i]
+            ev = pickle.loads(ev)
             ev.ImportMetaData(meta)
-            se = co.InstantiateObject
-            se.__setstate__(sel)
-            se.__processing__(ev)
-            inpt[i] = se.__getstate__()
-            del sel
+            sel = pickle.loads(co)
+            sel.__setstate__(se)
+            sel.__processing__(ev)
+            inpt[i] = sel.__getstate__()
+
+            del sel, se
             del co
+            del ev
+            del meta
             if bar is None: continue
             elif lock is None: bar.update(1)
             else:
@@ -45,12 +48,11 @@ class SelectionGenerator(_SelectionGenerator, SampleTracer, _Interface):
         except KeyError: itr = 0
         if not itr: return False
 
-        code = {i.class_name : i for i in self.rebuild_code(None)}
-        for name in sample.Selections:
-            itx = 1
-            step = chnks
-            co = code[name]
-            sel = sample.Selections[name].__getstate__()
+        code = self.Selections
+        for name in code:
+            step, itx = chnks, 1
+            co = pickle.dumps(code[name])
+            sel = self.Selections[name].__getstate__()
             title = self.Caller + "::" + name
             _, bar = self._makebar(itr, self.Caller + "::Preparing...")
             for ev, i in zip(sample, range(itr)):
@@ -60,7 +62,9 @@ class SelectionGenerator(_SelectionGenerator, SampleTracer, _Interface):
                 meta = ev.meta()
                 ev = ev.release_event()
                 if not ev: continue
-                command[0] += [pickle.dumps(((ev, meta), co, sel))]
+
+                ev = pickle.dumps(ev)
+                command[0] += [(ev, meta, co, sel)]
                 bar.update(1)
 
                 if not i >= step: continue

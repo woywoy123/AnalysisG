@@ -64,6 +64,7 @@ cdef extern from "../plotting/plotting.h":
         int bins
         float start
         float end
+        float step
 
         bool underflow
         bool overflow

@@ -24,7 +24,7 @@ namespace SampleTracer
         name += event -> event_tree + "/"; 
         name += event -> event_name; 
 
-        if (this -> events.count(name)){ return; }
+        if (this -> events.count(name)){ delete this -> events[name]; }
         CyEventTemplate* _event = new CyEventTemplate(); 
         _event -> Import(*event); 
         this -> events[name] = _event; 
@@ -36,8 +36,8 @@ namespace SampleTracer
         std::string name = ""; 
         name += graph -> event_tree + "/"; 
         name += graph -> event_name; 
-      
-        if (this -> graphs.count(name)){ return; }
+     
+        if (this -> graphs.count(name)){ delete this -> graphs[name]; }
         CyGraphTemplate* _graph = new CyGraphTemplate(); 
         _graph -> Import(*graph); 
         this -> graphs[name] = _graph; 
@@ -51,7 +51,7 @@ namespace SampleTracer
         name += selection -> event_tree + "/"; 
         name += selection -> event_name; 
         
-        if (this -> selections.count(name)){ return; }
+        if (this -> selections.count(name)){ delete this -> selections[name]; }
         CySelectionTemplate* _selection = new CySelectionTemplate(); 
         _selection -> Import(*selection); 
         this -> selections[name] = _selection; 

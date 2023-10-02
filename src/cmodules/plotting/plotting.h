@@ -66,6 +66,7 @@ struct axis_t
     int bins = 0; 
     float start = -1; 
     float end = -1; 
+    float step = 0; 
     bool underflow = false; 
     bool overflow = false;
     bool bin_centering = false;  

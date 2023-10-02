@@ -2,7 +2,15 @@
 # don't change, don't track in version control
 TYPE_CHECKING = False
 if TYPE_CHECKING:
-    from typing import Tuple
+    from typing import Tuple, Union
+    VERSION_TUPLE = Tuple[Union[int, str], ...]
+else:
+    VERSION_TUPLE = object
 
-__version__ = version = '0.1.dev753+g2a9cf44.d20230930'  # type: str
-__version_tuple__ = version_tuple = (0, 1, 'dev753', 'g2a9cf44.d20230930')  # type: Tuple[int | str, ...]
+version: str
+__version__: str
+__version_tuple__: VERSION_TUPLE
+version_tuple: VERSION_TUPLE
+
+__version__ = version = '0.1.dev755+g79632d9.d20231002'
+__version_tuple__ = version_tuple = (0, 1, 'dev755', 'g79632d9.d20231002')

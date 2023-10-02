@@ -245,7 +245,9 @@ cdef class SelectionTemplate:
         return pickle.loads(self.sel._params_)
 
     @__params__.setter
-    def __params__(self, val): self._params_ = val
+    def __params__(self, val):
+        self._params_ = val
+        self.sel._params_ = pickle.dumps(val)
 
     @property
     def CutFlow(self) -> dict:
@@ -283,6 +285,9 @@ cdef class SelectionTemplate:
 
     @property
     def hash(self) -> str: return env(self.ptr.Hash())
+
+    @property
+    def code_hash(self) -> str: return env(self.sel.code_hash)
 
     @property
     def index(self) -> int: return self.sel.event_index

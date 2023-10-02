@@ -177,7 +177,7 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         except KeyError: gr_l = 0
         try: ev_l = cur[self.Tree + "/" + self.EventName]
         except KeyError: ev_l = 0
-        if (gr_l == ev_l) and gr_l != 0: return
+        if (gr_l == ev_l) and not gr_l: return
 
         gr = GraphGenerator()
         gr.Caller = "ANALYSIS::GRAPH"

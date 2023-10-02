@@ -62,7 +62,6 @@ write_to = "src/version.py"
 "AnalysisG.Particles"    = "src/Events/Particles"
 "AnalysisG.Notification" = "src/Notification"
 "AnalysisG.Submission"   = "src/Submission"
-#"AnalysisG.Plotting" = "src/Plotting" 
 
 [tool.setuptools.package-data]
 "*" = ["*.pyx", "*.pxd", "*.cxx", "*.h"]

@@ -15,6 +15,10 @@ import pickle
 cdef string enc(str val): return val.encode("UTF-8")
 cdef str env(string val): return val.decode("UTF-8")
 
+cdef class InvalidCodeError(Exception):
+    "This error is raised when the code was not properly scanned."
+    pass
+
 cdef class Code:
 
     cdef CyCode* ptr
@@ -41,8 +45,10 @@ cdef class Code:
             except AttributeError: pass
             try: self.__setstate__(instance.code)
             except AttributeError: pass
-
         else: self.__getbasic__()
+        if self.class_name: return
+        if self.function_name: return
+        raise InvalidCodeError
 
     def __dealloc__(self): del self.ptr
     def __hash__(self) -> int: return int(self.hash[:8], 0)
@@ -244,6 +250,8 @@ cdef class Code:
 
     @property
     def hash(self) -> str:
+        cdef string hash_ = self.ptr.hash
+        if hash_.size(): return env(hash_)
         self.ptr.Hash()
         return env(self.ptr.hash)
 

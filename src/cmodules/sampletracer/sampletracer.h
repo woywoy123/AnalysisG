@@ -53,6 +53,7 @@ namespace SampleTracer
             itc = code_hashes.begin();
             for (; itc != code_hashes.end(); ++itc){
                 Code::CyCode* code = itc -> second; 
+                if (!code -> container.object_code.size()){continue;}
                 (*output)[itc -> first] = code -> ExportCode();
             }
         }; 
@@ -65,6 +66,7 @@ namespace SampleTracer
             itc = hashed_code -> begin(); 
             for (; itc != hashed_code -> end(); ++itc){
                 code_t* co = &(itc -> second); 
+                if (!co -> object_code.size()){continue;}
                 if (output -> count(co -> hash)){ continue; }
                 Code::CyCode* co_ = new Code::CyCode();
                 co_ -> ImportCode(*co, *hashed_code); 

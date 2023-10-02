@@ -19,6 +19,7 @@ import numpy as np
 from torchmetrics import ROC, AUROC, ConfusionMatrix
 import matplotlib.pyplot as plt
 import boost_histogram as bh
+from typing import Union
 import mplhep as hep
 import torch
 import os
@@ -34,6 +35,7 @@ cdef class BasePlotting:
     cdef _fig
     cdef dict data_axis
     cdef list underlying_hists
+    cdef list _labels
     cdef cummulative_hist
     cdef boosted_axis
     cdef boosted_data
@@ -49,6 +51,7 @@ cdef class BasePlotting:
         self.boosted_axis = {}
         self.boosted_data = {}
         self.underlying_hists = []
+        self._labels = []
         self.cummulative_hist = None
         self.matpl = plt
 
@@ -71,6 +74,7 @@ cdef class BasePlotting:
         if self.pn.atlas_com > 0: dic["com"] = self.pn.atlas_com
         if self.pn.atlas_lumi > 0: dic["lumi"] = self.pn.atlas_lumi
         if self.pn.atlas_year > 0: dic["year"] = int(self.pn.atlas_year)
+        if self.pn.n_events > 0: dic["label"] = "\n$N_{events}$ = " + str(self.pn.n_events)
         hep.atlas.label(**dic)
         self.matpl.style.use(hep.style.ATLAS)
 
@@ -150,10 +154,16 @@ cdef class BasePlotting:
 
         try: os.makedirs(dirc)
         except FileExistsError: pass
-        self.matpl.tight_layout()
-        self.matpl.savefig(dirc + self.Filename, dpi = self.DPI)
-        self.matpl.close("all")
-
+        try:
+            self.matpl.tight_layout()
+            self.matpl.savefig(dirc + self.Filename, dpi = self.DPI)
+            self.matpl.close("all")
+        except:
+            self.LaTeX = False
+            self.SaveFigure()
+        self.matpl.clf()
+        self.matpl.cla()
+        self.matpl.close()
 
 
     @property
@@ -208,7 +218,8 @@ cdef class BasePlotting:
     @property
     def NEvents(self): return self.pn.n_events
     @NEvents.setter
-    def NEvents(self, int val): self.pn.n_events = val
+    def NEvents(self, val):
+        self.pn.n_events = -1 if val is None else val
 
     @property
     def xScaling(self): return self.pn.xscaling
@@ -344,7 +355,6 @@ cdef class BasePlotting:
         if x == "ROOT": self.pn.root_style = True
         if x == "MPL": self.pn.mpl_style = True
 
-
     @property
     def xMin(self):
         if self.x.start == -1 and self.x.end == -1: return None
@@ -384,6 +394,22 @@ cdef class BasePlotting:
     def yMax(self, val):
         if val is None: return
         self.y.end = val
+
+    @property
+    def xStep(self):
+        if self.x.step: return self.x.step
+        else: return None
+
+    @xStep.setter
+    def xStep(self, val): self.x.step = val
+
+    @property
+    def yStep(self):
+        if self.y.step: return self.y.step
+        else: return None
+
+    @yStep.setter
+    def yStep(self, val): self.y.step = val
 
     @property
     def xData(self):
@@ -447,24 +473,56 @@ cdef class BasePlotting:
             else: self.yLabels = c; continue
             self.add_data("y:" + key, content)
 
+    @property
+    def ATLASLumi(self): return self.pn.atlas_lumi
+
+    @ATLASLumi.setter
+    def ATLASLumi(self, val: Union[None, float, int]):
+        if val is None: val = 0
+        self.pn.atlas_lumi = val
+
+
+
+
 
 
 cdef class TH1F(BasePlotting):
-    def __init__(self):
+    cdef bool _stack
+
+    def __init__(self, **kwargs):
         self.fig.histogram = True
+        cdef str key
+        for key, val in kwargs.items():
+            setattr(self, key, val)
 
     cpdef __histapply__(self):
-        hep.histplot(
-                self.cummulative_hist,
-                label = self.Title,
-                histtype = self.HistFill,
-                linewidth = self.LineWidth,
-                yerr = False,
-                alpha = self.Alpha,
-                binticks = True)
+        cdef dict _comm = {}
+        _comm["H"] = []
+        _comm["histtype"] = self.HistFill
+        _comm["linewidth"] = self.LineWidth
+        _comm["stack"] = self.Stack
+        _comm["yerr"] = False
+        _comm["alpha"] = self.Alpha
+        _comm["binticks"] = True
+
+        l = len(self.underlying_hists)
+        if self.Histogram is not None: l += 1
+        if l > len(self._labels): self._labels.append("sum")
+
+        if self.Histogram is None: pass
+        else:
+            _comm["H"] = [self.Histogram]
+            _comm["label"] = [self._labels.pop()]
+            hep.histplot(**_comm)
+
+        if len(self.underlying_hists):
+            _comm["H"] = self.Histograms
+            _comm["label"] = self._labels
+            hep.histplot(**_comm)
 
     cpdef __makelabelaxis__(self):
         cdef list labels = list(self.xLabels)
+        if self.cummulative_hist is not None: return
         self.cummulative_hist = bh.Histogram(bh.axis.StrCategory(labels))
         self.cummulative_hist.fill(bh.axis.StrCategory(sum(self.xLabels.values(), [])))
 
@@ -479,6 +537,7 @@ cdef class TH1F(BasePlotting):
             self.xMin = arr.min()-1
             self.xBins = len(arr)+1
         elif self.xBins is None: self.xBins = int((self.xMax - self.xMin))
+        if self.cummulative_hist is not None: return
 
         cdef dict com = {}
         com["bins"] = self.xBins
@@ -519,35 +578,84 @@ cdef class TH1F(BasePlotting):
         elif not len(self.underlying_hists): pass
         else: self.__aggregate__()
 
-        if self.xBins is not None: pass
+        if self.xBins is not None: self.__fixrange__()
         elif self.fig.label_data: self.__makelabelaxis__()
         else: self.__fixrange__()
+
+    cdef __inherit_compile__(self, inpt):
+        if inpt is None: return
+        elif not hasattr(inpt, "Histogram"): return False
+        elif inpt.Histogram is None: pass
+        elif issubclass(inpt.Histogram.__class__, TH1F): pass
+        else: return False
+
+        if inpt.Histogram is None: h = inpt
+        else: h = inpt.Histogram
+
+        if self.xBins is None: pass
+        else: h.xBins = self.xBins
+
+        if self.xMin is None: pass
+        else: h.xMin = self.xMin
+
+        if self.xMax is None: pass
+        else: h.xMax = self.xMax
+        h.__precompile__()
+        return True
 
     def __compile__(self):
         cdef int i
         cdef TH1F hist
-        if not len(self.underlying_hists): pass
-        else:
+        self._labels = []
+        if len(self.underlying_hists):
             self.Colors = len(self.underlying_hists)+1
             self.Color = self.Colors[-1]
 
         for i in range(len(self.underlying_hists)):
             h = self.underlying_hists[i]
             h.Color = self.Colors[i]
-            h.__precompile__()
-            h.__compile__()
+            self._labels += [h.Title]
+            self.__inherit_compile__(h)
+
+        self.__inherit_compile__(self.Histogram)
+        if self.Histogram is None: pass
+        elif not hasattr(self.Histogram, "Histogram"): pass
+        else:
+            self._labels += [self.Histogram.Title]
+            self.Histogram = self.Histogram.Histogram
+
         if self.cummulative_hist is None: pass
         else: self.__histapply__()
 
     def __postcompile__(self):
         if self._ax is None: return
+        if self.cummulative_hist is not None: pass
+        else: self.__histapply__()
         self.__style__()
         self.matpl.legend(loc=self.LegendLoc)
-        self.matpl.setp(self._ax.get_xticklabels(), rotation = 30, horizontalalignment = "right")
+        self.matpl.setp(
+                self._ax.get_xticklabels(),
+                rotation = 30,
+                horizontalalignment = "right")
+
         if len(self.xLabels):
             self._ax.set_xticks([0.5 + i for i in range(len(self.xLabels))])
             self._ax.set_xticklabels(list(self.xLabels))
-        elif self.xBins is not None: self._ax.set_xticks([i for i in range(self.xBins)])
+
+        elif self.xBins is not None:
+            hist = self.cummulative_hist
+            if hist is None: hist = self.Histograms[0]
+            width = set(hist.axes.widths[0])
+            if len(width):
+                w = str(int(round(list(width)[0], 0)))
+                self.yTitle += " / " + w + " ($GeV/c^2$)"
+            min_ = min(hist.axes.edges[0])
+            max_ = max(hist.axes.edges[0])
+            if self.xStep is None: h = hist.axes.edges[0]
+            else: h = [min_ + i*self.xStep for i in range(self.xBins)]
+            h = [i for i in h if i <= max_]
+            self._ax.set_xticks(h)
+
         else: self.matpl.xticks([i for i in range(10)], range(10))
         self._ax.tick_params(axis = "x", which = "minor", bottom = False)
         if self.xLogarithmic: self.matpl.xscale("log")
@@ -567,6 +675,26 @@ cdef class TH1F(BasePlotting):
     def OverlayHists(self): return self.fig.overlay
     @OverlayHists.setter
     def OverlayHists(self, bool val): self.fig.overlay = val
+
+    @property
+    def Histograms(self): return [i.Histogram for i in self.underlying_hists]
+    @Histograms.setter
+    def Histograms(self, val):
+        if isinstance(val, list): pass
+        else: val = [val]
+        self.underlying_hists = val
+
+    @property
+    def Histogram(self): return self.cummulative_hist
+    @Histogram.setter
+    def Histogram(self, val): self.cummulative_hist = val
+
+    @property
+    def Stack(self): return self._stack
+    @Stack.setter
+    def Stack(self, bool val): self._stack = val
+
+
 
 
 cdef class TH2F(BasePlotting):
@@ -630,8 +758,7 @@ cdef class TH2F(BasePlotting):
         self.cummulative_hist.fill(self.yData)
 
     def __precompile__(self):
-        if self.fig.label_data:
-            self.__makelabelaxis__()
+        if self.fig.label_data: self.__makelabelaxis__()
         else:
             self.__fix_xrange__()
             self.__fix_yrange__()

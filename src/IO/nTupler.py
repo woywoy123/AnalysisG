@@ -50,13 +50,14 @@ class nTupler(_Interface, _nTupler, SampleTracer):
             if isinstance(inpt, float): pass
             elif isinstance(inpt, int): pass
             elif isinstance(inpt, str): pass
+            elif inpt is None: pass
             else: return False
             return True
 
         def _merge_(inpt, key, start):
             if isinstance(inpt, dict):
                 for x in inpt:
-                    if len(key): k = key + "/" + x
+                    if len(key): k = key + "/" + str(x)
                     else: k = x
                     if not _triggers_(inpt[x]):
                         start = _merge_(inpt[x], k, start)
@@ -88,20 +89,22 @@ class nTupler(_Interface, _nTupler, SampleTracer):
                 for t in spl:
                     if isinstance(x, dict): x = x[t]
                     else: x = getattr(x, t)
-                k = "/".join(spl)
+                k = "/".join(spl).replace("//", "/")
                 try: output[evnt_key][k].append(x)
                 except KeyError: output[evnt_key][k] = [x]
 
             indx = evnt_key + "/event_index"
             try: output[indx].append([ev.index])
             except KeyError: output[indx] = [ev.index]
+
+            l = len(output[indx])
+            for key in output[evnt_key]:
+                if l == len(output[evnt_key][key]): continue
+                else: output[evnt_key][key].append([None])
             output = _merge_(output, "", {})
             del evnt
             ev = None
-
         return [output]
-
-
 
     def __uproot__(self, inpt, OutDir):
         if OutDir.endswith("/"): OutDir += "UNTITLED.root"
@@ -124,7 +127,8 @@ class nTupler(_Interface, _nTupler, SampleTracer):
                 data_c[tree_name] = {}
             if var_name not in data_c[tree_name]:
                 data_c[tree_name][var_name] = {}
-            data_c[tree_name][var_name] = awkward.Array(inpt[tr_n])
+            arr = awkward.Array(inpt[tr_n])
+            data_c[tree_name][var_name] = awkward.fill_none(arr, [])
 
         for tr_n in data_c:
             if tr_n not in self.root: self.root[tr_n] = data_c[tr_n]
