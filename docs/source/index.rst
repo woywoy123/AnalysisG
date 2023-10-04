@@ -34,7 +34,7 @@ Core Packages in Analysis-G:
   A class used to define a simplistic selection strategy, where particles and events (derived from **EventTemplates** and **ParticleTemplates**) will be made available for additional processing. 
   This class can be used to output ROOT n-tuples and then passed into some fitting tool, e.g. `TRexFitter` or `PyHF`
 
-- **SamleTracer**
+- **SampleTracer**
   An abstract module which can be utilized as a completely standalone package and can be integrated with your own framework. 
   This module aims to keep track of events and their original ROOT filename, and further permits fast event/graph retrieval. 
   The output of this module is a small HDF5 file, which only holds meta-data and mappings between ROOT files and their associated event indices. 

@@ -23,17 +23,17 @@ def make(module, name, dependency, cxx_ = True, add_cy = []):
     return x
 
 modules = [
-        make("ctools", "tooling", ["abstractions"], False),
-        make("code", "code", ["abstractions"]),
-        make("EventTemplate", "event", ["abstractions", "code"]),
-        make("ParticleTemplate", "particle", ["abstractions"]),
-        make("MetaData", "metadata", ["abstractions"]),
-        make("GraphTemplate", "graph", ["abstractions", "code"]),
-        make("SelectionTemplate", "selection", ["abstractions", "code"]),
-        make("cWrapping", "wrapping", ["abstractions"], False),
-        make("cPlots", "plotting", ["abstractions"]),
-        make("cOptimizer", "optimizer", ["abstractions"]),
-        make("Runner", "runner", ["abstractions"], False),
+        #make("ctools", "tooling", ["abstractions"], False),
+        #make("code", "code", ["abstractions"]),
+        #make("EventTemplate", "event", ["abstractions", "code"]),
+        #make("ParticleTemplate", "particle", ["abstractions"]),
+        #make("MetaData", "metadata", ["abstractions"]),
+        #make("GraphTemplate", "graph", ["abstractions", "code"]),
+        #make("SelectionTemplate", "selection", ["abstractions", "code"]),
+        #make("cWrapping", "wrapping", ["abstractions"], False),
+        #make("cPlots", "plotting", ["abstractions"]),
+        #make("cOptimizer", "optimizer", ["abstractions"]),
+        #make("Runner", "runner", ["abstractions"], False),
         make("SampleTracer", "sampletracer", ["root", "abstractions", "metadata", "event", "graph", "selection", "code"])
 ]
 

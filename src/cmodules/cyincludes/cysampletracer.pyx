@@ -397,20 +397,34 @@ cdef class SampleTracer:
         cdef string path_, val_
         cdef CyBatch* batch
 
-        if key == "event": repl = &self.ptr.link_event_code
-        elif key == "graph": repl = &self.ptr.link_graph_code
+        if   key == "event":     repl = &self.ptr.link_event_code
+        elif key == "graph":     repl = &self.ptr.link_graph_code
         elif key == "selection": repl = &self.ptr.link_selection_code
         else: return
 
-
+        cdef str key_dir = key + "_dir"
+        cdef bool is_file = False
         for hash_, val in ref[key + "_name_hash"].attrs.items():
-            path = ref[key + "_dir"].attrs[val]
-            batch = self.ptr.RegisterHash(enc(hash_), root_name)
+            path = ref[key_dir].attrs[val]
             path_, val_ = enc(path), enc(val)
-            if key == "event": batch.event_dir[path_] = val_
-            elif key == "graph": batch.graph_dir[path_] = val_
+            if not is_file: is_file = os.path.isfile(path)
+            if not is_file: break
+
+            batch = self.ptr.RegisterHash(enc(hash_), root_name)
+            if   key == "event":     batch.event_dir[path_] = val_
+            elif key == "graph":     batch.graph_dir[path_] = val_
             elif key == "selection": batch.selection_dir[path_] = val_
 
+        if not is_file:
+            del ref[key + "_name_hash"]
+            _check_h5(ref, key + "_name_hash")
+
+            del ref[key + "_dir"]
+            _check_h5(ref, key + "_dir")
+
+            del ref["link_" + key + "_code"]
+            _check_h5(ref, "link_" + key + "_code")
+            return
 
         for hash_, val in ref["link_" + key + "_code"].attrs.items():
             path_, val_ = enc(hash_), enc(val)
@@ -418,50 +432,61 @@ cdef class SampleTracer:
             else: dereference(repl)[path_] = val_
 
     def RestoreTracer(self, dict tracers = {}, sample_name = None):
-        cdef str root, f, root_path
+        cdef root_path = self.WorkingPath + "Tracer/"
+        cdef str root, f
         cdef list files_ = []
         cdef list files
 
-        if len(tracers):
-            for root, files in tracers.items():
-                files_ += [root + "/" + f for f in files if f.endswith(".hdf5")]
-        else:
-            root_path = self.WorkingPath + "Tracer/"
-            for root, _, files in os.walk(root_path):
-                files_ += [root + "/" + f for f in files if f.endswith(".hdf5")]
+        if len(tracers): pass
+        else: tracers = {root : files for root, _, files in os.walk(root_path)}
+        for root, files in tracers.items():
+            files_ += [root + "/" + f for f in files if f.endswith(".hdf5")]
 
         cdef meta_t meta
         cdef str key, val, path
         cdef CyBatch* batch
         cdef string event_root
+
+        cdef str title = "TRACER::RESTORE ("
+        _, bar = self._makebar(len(files_), title)
         for f in files_:
-            f5 = h5py.File(f, "r")
-            print("TRACER::RESTORE -> " + f.split("/")[-1])
+            f5 = h5py.File(f, "a")
+            bar.set_description(title + f.split("/")[-1] + ")")
+            bar.refresh()
             key = list(f5["meta"].attrs)[0]
             event_root = enc(key)
             meta = _decoder(f5["meta"].attrs[key])
+            bar.update(1)
             if sample_name is None: pass
             elif sample_name not in env(meta.sample_name).split("|"): continue
             self.ptr.AddMeta(meta, event_root)
+
+            self._register_hash(f5, "event",     event_root)
+            self._register_hash(f5, "graph",     event_root)
+            self._register_hash(f5, "selection", event_root)
             for key, i in f5["code"].attrs.items():
                 self._set.hashed_code[enc(key)] = _decoder(i)
                 self.ptr.AddCode(self._set.hashed_code[enc(key)])
-            self._register_hash(f5, "event", event_root)
-            self._register_hash(f5, "graph", event_root)
-            self._register_hash(f5, "selection", event_root)
             f5.close()
+        del bar
 
     cdef void _store_objects(self, map[string, vector[obj_t*]] cont, str _type):
-        cdef str _path = self.WorkingPath + _type + "Cache/"
-        cdef str _short, _daod
-        cdef str out_path
-        cdef str title = "TRACER::" + _type.upper() + "-SAVE: "
         cdef string _hash
+        cdef str _short, _daod, out_path
+        cdef str _path = self.WorkingPath + _type + "Cache/"
+        cdef str title = "TRACER::" + _type.upper() + "-SAVE: "
 
         cdef obj_t* ev
         cdef map[string, string]* daod_dir
-        cdef pair[string, vector[obj_t*]] itr
         cdef map[string, vector[string]]* daod_hash
+        cdef pair[string, vector[obj_t*]] itr
+
+        cdef int total_ = 0
+        for itr in cont: total_+=itr.second.size()
+        if total_: pass
+        else: return
+
+        _, bar = self._makebar(total_, title)
         for itr in cont:
             _daod = env(itr.first).split(":")[0]
             _short = env(itr.first).split(":")[1]
@@ -470,7 +495,9 @@ cdef class SampleTracer:
             except FileExistsError: pass
             out_path = out_path.rstrip(".root.1") + ".hdf5"
             f = h5py.File(out_path, "a")
-            _, bar = self._makebar(itr.second.size(), title + _daod.split("/")[-1] + " (" + _short + ")")
+            bar.set_description(title + _daod.split("/")[-1] + " (" + _short + ")")
+            bar.refresh()
+
             for obj_t in itr.second:
                 _hash = obj_t.Hash()
                 dt  = _check_sub(f, env(_hash))
@@ -495,59 +522,77 @@ cdef class SampleTracer:
                 bar.update(1)
                 dump_dir(daod_hash, daod_dir, _daod, _hash, out_path)
             f.close()
-            del bar
+        del bar
 
 
     cdef _restore_objects(self, str type_, common_t getter, list these_hashes = []):
-        cdef str i, file, key
+        cdef str title, file, key
         cdef CyBatch* batch
         cdef pair[string, vector[CyBatch*]] itc
-        cdef map[string, vector[CyBatch*]] cache_map
+        cdef  map[string, vector[CyBatch*]] cache_map
 
         cdef pair[string, string] its
         cdef map[string, string] dir_map
 
         self._set.get_all = True
-        self._set.search = [enc(i) for i in these_hashes]
+        self._set.search = [enc(key) for key in these_hashes]
 
-        cdef int max_indx = self._set.event_stop
+        if type_ == "Event": self._set.getevent = True
+        else: self._set.getevent = False
+
+        if type_ == "Graph": self._set.getgraph = True
+        else: self._set.getgraph = False
+
+        if type_ == "Selection": self._set.getselection = True
+        else: self._set.getselection = False
+
         cdef int idx = 0
+        cdef int total = 0
+        cdef int max_indx = self._set.event_stop
         for batch in self.ptr.MakeIterable():
-            if type_ == "Event": dir_map = batch.event_dir
+            if   type_ == "Event": dir_map = batch.event_dir
             elif type_ == "Graph": dir_map = batch.graph_dir
             elif type_ == "Selection": dir_map = batch.selection_dir
             else: continue
             for its in dir_map: cache_map[its.first].push_back(batch)
+            total += 1
 
             if not max_indx: pass
             elif max_indx > idx: idx += 1
             else: break
+        if total: pass
+        else: return
 
-        i = type_.upper() + "-READING (" + type_.upper() + "): "
+        title = "RESTORING (" + type_.upper() + "): "
+        _, bar = self._makebar(total, title)
         for itc in cache_map:
             file = env(itc.first)
             try: f = h5py.File(file, "r")
             except FileNotFoundError: continue
-            _, bar = self._makebar(itc.second.size(), i + file.split("/")[-1])
+            bar.set_description(title + file.split("/")[-1])
             for batch in itc.second:
-                if type_ == "Event": batch.event_dir.erase(itc.first)
-                elif type_ == "Graph": batch.graph_dir.erase(itc.first)
-                elif type_ == "Selection": batch.selection_dir.erase(itc.first)
-                else: continue
                 dt = f[batch.hash]
                 for key in dt.keys():
-                    if type_ == "Event": restore_event(dt[key], <event_t*>(&getter))
-                    elif type_ == "Graph": restore_graph(dt[key], <graph_t*>(&getter))
-                    elif type_ == "Selection": restore_selection(dt[key], <selection_t*>(&getter))
+                    if type_ == "Event":
+                        restore_event(dt[key], <event_t*>(&getter))
+                        batch.event_dir.erase(itc.first)
+
+                    elif type_ == "Graph":
+                        restore_graph(dt[key], <graph_t*>(&getter))
+                        batch.graph_dir.erase(itc.first)
+
+                    elif type_ == "Selection":
+                        restore_selection(dt[key], <selection_t*>(&getter))
+                        batch.selection_dir.erase(itc.first)
                     else: continue
                     batch.Import(&getter)
                 batch.ApplyCodeHash(&self.ptr.code_hashes)
                 bar.update(1)
-            del bar
             f.close()
         self._set.search.clear()
         self._set.get_all = False
         self.ptr.length()
+        del bar
 
     def DumpEvents(self):
         self._store_objects(self.ptr.DumpEvents(), "Event")

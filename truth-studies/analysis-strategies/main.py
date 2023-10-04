@@ -57,9 +57,8 @@ for pairs in combinations:
         Ana = Analysis()
         Ana.ProjectName = name
         for key in samples: Ana.InputSample(key, samples[key])
-        Ana.AddSelection(ana)
+        #Ana.AddSelection(ana)
         Ana.EventCache = True
-        Ana.PurgeCache = True
         Ana.Event = Event
         Ana.Threads = 10
         Ana.chnk = 1000

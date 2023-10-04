@@ -18,7 +18,7 @@ class SelectionGenerator(_SelectionGenerator, SampleTracer, _Interface):
             ev, meta, co, se = inpt[i]
             ev = pickle.loads(ev)
             ev.ImportMetaData(meta)
-            sel = pickle.loads(co)
+            sel = pickle.loads(co).InstantiateObject
             sel.__setstate__(se)
             sel.__processing__(ev)
             inpt[i] = sel.__getstate__()
@@ -40,7 +40,7 @@ class SelectionGenerator(_SelectionGenerator, SampleTracer, _Interface):
 
         if self.CheckSettings(sample): return False
 
-        chnks = self.Threads * self.Chunks
+        chnks = self.Threads * self.Chunks * self.Threads
         command = [[], self._CompileSelection, self.Threads, self.Chunks]
 
         path = sample.Tree + "/" + sample.EventName
@@ -48,11 +48,14 @@ class SelectionGenerator(_SelectionGenerator, SampleTracer, _Interface):
         except KeyError: itr = 0
         if not itr: return False
 
-        code = self.Selections
-        for name in code:
+
+        selections = self.Selections
+        for i in self.rebuild_code(None):
+            name = i.class_name
+            if name not in selections: continue
             step, itx = chnks, 1
-            co = pickle.dumps(code[name])
-            sel = self.Selections[name].__getstate__()
+            co = pickle.dumps(i)
+            sel = selections[name].__getstate__()
             title = self.Caller + "::" + name
             _, bar = self._makebar(itr, self.Caller + "::Preparing...")
             for ev, i in zip(sample, range(itr)):

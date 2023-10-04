@@ -52,11 +52,12 @@ class EventGenerator(_EventGenerator, _Interface, SampleTracer):
         io.Trees = ev.Trees
         io.Leaves = ev.Leaves
         io.EnablePyAMI = self.EnablePyAMI
+        io.metacache_path = self.OutputDirectory + self.ProjectName + "/metacache/"
 
         i = -1
         itx = 1
         inpt = []
-        chnks = self.Threads * self.Chunks*2
+        chnks = self.Threads * self.Chunks * self.Threads
         step = chnks
         ev = pickle.dumps(ev)
 
