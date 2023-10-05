@@ -12,7 +12,7 @@ _ana = which_analysis.split(":")
 if _ana[0] == "double-leptonic": ana = DiLeptonic()
 
 combinations = [
-        ("is_b", "truth"),
+        ("is_b", "children"),
         ("btag_DL1r_60", "jets+truthleptons"),
         ("btag_DL1r_77", "jets+truthleptons"),
         ("btag_DL1r_85", "jets+truthleptons"),
@@ -55,26 +55,29 @@ for pairs in combinations:
     name = _ana[1] + "_" + tagger + "_" + truth.replace("+","-")
     if run:
         Ana = Analysis()
-        Ana.ProjectName = name
+        Ana.ProjectName = _ana[1]
         for key in samples: Ana.InputSample(key, samples[key])
-        #Ana.AddSelection(ana)
+        Ana.AddSelection(ana)
         Ana.EventCache = True
         Ana.Event = Event
-        Ana.Threads = 10
-        Ana.chnk = 1000
+        Ana.Threads = 12
+        Ana.Chunks = 1000
         Ana.Launch()
 
     if pkl:
         tupler = nTupler()
-        tupler.Threads = 10
+        tupler.Threads = 12
+        tupler.Chunks = 1000
         tupler.ProjectName = _ana[1]
         tupler.This("DiLeptonic -> ", "nominal")
+
         x = tupler.merged()
+        tupler.rm(tupler.WorkingPath + "/SelectionCache")
         PickleObject(x["nominal.DiLeptonic"].__getstate__(), name)
 
-    ana.__setstate__(UnpickleObject())
-    doubleleptonic_Plotting(ana, "jets_truthleps")
-
+    ana.__setstate__(UnpickleObject(name))
+    print("Building Plots: " + name)
+    doubleleptonic_Plotting(ana, name)
 
 
 

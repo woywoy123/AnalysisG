@@ -14,7 +14,7 @@ class settings:
         self.Branches = []
         self.Leaves = []
         self.Files = {}
-        self.metacache_path = None
+        self.metacache_path = "./"
 
 
 class UpROOT(_UpROOT, settings, _Interface):
@@ -110,6 +110,9 @@ class UpROOT(_UpROOT, settings, _Interface):
             meta[f].event_index = 0
 
             for tr in gets:
+                if tr_l[tr]: pass
+                else: continue
+
                 if tr not in self.__root:
                     self.__root[tr] = {"files" : {}, "library" : "np", "step_size" : self.StepSize}
                     self.__root[tr].update({"how" : dict, "expressions" : []})
@@ -126,13 +129,13 @@ class UpROOT(_UpROOT, settings, _Interface):
             self.__root[tr] = uproot.iterate(**self.__root[tr])
             self.__tracing[tr] = iter(self.__tracing[tr])
             self.__index[tr] = iter(self.__index[tr])
-
         self._event_index = 0
         self._trk = {}
         self._c = {}
         return self
 
     def __next__(self):
+        if not len(self.__index): raise StopIteration
 
         trees = [] if len(self._c) else list(self.__root)
         for tr in trees:
@@ -142,19 +145,18 @@ class UpROOT(_UpROOT, settings, _Interface):
             dc = {key : c.tolist() for key, c in dc.items() if c.size > 0}
             keys = {tr + "/" + key : c for key, c in dc.items()}
             self._c.update(keys)
-            if len(self._c): pass
-            else: del self.__root[tr]
 
         self._c  = {keys : c for keys, c in self._c.items() if len(c) > 0}
+        if not len(self._c) and len(trees): raise StopIteration
+
         out = {keys : c.pop(0) for keys, c in self._c.items()}
-        if len(trees) and not len(self._c): raise StopIteration
         if not len(out): return self.__next__()
-        index = [tr for tr, x in self._trk.items() if x[1] > self._event_index]
 
         msg = ""
+        index = [tr for tr, x in self._trk.items() if x[1] > self._event_index]
         for tr in self.__root:
             if len(index) != 0: break
-            self._event_index = -1
+            self._event_index = 0
             try: file, indx = next(self.__tracing[tr]), next(self.__index[tr])
             except StopIteration: continue
             self._trk[tr] = (file, indx)

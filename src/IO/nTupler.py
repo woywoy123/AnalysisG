@@ -8,6 +8,82 @@ import awkward
 import pickle
 import uproot
 import h5py
+import time
+
+
+
+def __thmerge__(inpt, _prgbar):
+    lock, bar = _prgbar
+    out = {}
+    for i in range(len(inpt)):
+        key, val, code = inpt[i]
+        evnt = code[key.split(".")[1]].InstantiateObject
+        evnt.__setstate__(val)
+        if key not in out: out[key] = evnt
+        else: out[key] += evnt
+        inpt[i] = None
+        if lock is None:
+            if bar is None: continue
+            bar.update(1)
+            continue
+        with lock: bar.update(1)
+    return [(key, val.__getstate__()) for key, val in out.items()]
+
+
+def _triggers_(inpt):
+    if isinstance(inpt, float): pass
+    elif isinstance(inpt, int): pass
+    elif isinstance(inpt, str): pass
+    elif inpt is None: pass
+    else: return False
+    return True
+
+def _merge_(inpt, key, start):
+    if isinstance(inpt, dict):
+        for x in inpt:
+            if len(key): k = key + "/" + str(x)
+            else: k = x
+            if not _triggers_(inpt[x]):
+                start = _merge_(inpt[x], k, start)
+                continue
+            if k not in start: start[k] = [[inpt[x]]]
+            else: start[k].append([inpt[x]])
+
+    elif isinstance(inpt, list):
+        for i in inpt:
+            if not _triggers_(i):
+                start = _merge_(i, key, start)
+                continue
+            if key not in start: start[key] = [inpt]
+            else: start[key].append(inpt)
+            return start
+    return start
+
+def __throot__(inpt, _prgbar = None):
+    output = {}
+    for i in range(len(inpt)):
+        evnt_key, path, code, evnt = inpt[i]
+        evnt_key = evnt_key.replace(".", "/")
+        if evnt_key not in output: output[evnt_key] = {}
+        code = code[evnt_key.split("/")[1]]
+        ev = code.InstantiateObject
+        ev.__setstate__(evnt)
+        for k in path:
+            spl, x = k.split("->")[1:-1], ev
+            for t in spl:
+                if isinstance(x, dict): x = x[t]
+                else: x = getattr(x, t)
+            k = "/".join(spl).replace("//", "/")
+            try: output[evnt_key][k].append(x)
+            except KeyError: output[evnt_key][k] = [x]
+
+        indx = evnt_key + "/event_index"
+        try: output[indx].append([ev.index])
+        except KeyError: output[indx] = [ev.index]
+        output = _merge_(output, "", {})
+        del evnt
+        ev = None
+    return [output]
 
 class nTupler(_Interface, _nTupler, SampleTracer):
 
@@ -24,93 +100,10 @@ class nTupler(_Interface, _nTupler, SampleTracer):
         self._loaded = False
         self.root = None
 
-
-    @staticmethod
-    def __thmerge__(inpt, _prgbar):
-        lock, bar = _prgbar
-        out = {}
-        for i in range(len(inpt)):
-            key, val, code = inpt[i]
-            evnt = code[key.split(".")[1]].InstantiateObject
-            evnt.__setstate__(val)
-            if key not in out: out[key] = evnt
-            else: out[key] += evnt
-            inpt[i] = None
-
-            if lock is None:
-                if bar is None: continue
-                bar.update(1)
-                continue
-            with lock: bar.update(1)
-        return [out]
-
-    @staticmethod
-    def __throot__(inpt, _prgbar = None):
-        def _triggers_(inpt):
-            if isinstance(inpt, float): pass
-            elif isinstance(inpt, int): pass
-            elif isinstance(inpt, str): pass
-            elif inpt is None: pass
-            else: return False
-            return True
-
-        def _merge_(inpt, key, start):
-            if isinstance(inpt, dict):
-                for x in inpt:
-                    if len(key): k = key + "/" + str(x)
-                    else: k = x
-                    if not _triggers_(inpt[x]):
-                        start = _merge_(inpt[x], k, start)
-                        continue
-                    if k not in start: start[k] = [[inpt[x]]]
-                    else: start[k].append([inpt[x]])
-
-            elif isinstance(inpt, list):
-                for i in inpt:
-                    if not _triggers_(i):
-                        start = _merge_(i, key, start)
-                        continue
-                    if key not in start: start[key] = [inpt]
-                    else: start[key].append(inpt)
-                    return start
-            return start
-
-        output = {}
-        for i in range(len(inpt)):
-            evnt_key, path, code, evnt = inpt[i]
-            evnt_key = evnt_key.replace(".", "/")
-            if evnt_key not in output: output[evnt_key] = {}
-            code = code[evnt_key.split("/")[1]]
-            ev = code.InstantiateObject
-            ev.__setstate__(evnt)
-            for k in path:
-                x = ev
-                spl = k.split("->")[1:-1]
-                for t in spl:
-                    if isinstance(x, dict): x = x[t]
-                    else: x = getattr(x, t)
-                k = "/".join(spl).replace("//", "/")
-                try: output[evnt_key][k].append(x)
-                except KeyError: output[evnt_key][k] = [x]
-
-            indx = evnt_key + "/event_index"
-            try: output[indx].append([ev.index])
-            except KeyError: output[indx] = [ev.index]
-
-            l = len(output[indx])
-            for key in output[evnt_key]:
-                if l == len(output[evnt_key][key]): continue
-                else: output[evnt_key][key].append([None])
-            output = _merge_(output, "", {})
-            del evnt
-            ev = None
-        return [output]
-
     def __uproot__(self, inpt, OutDir):
         if OutDir.endswith("/"): OutDir += "UNTITLED.root"
         if not OutDir.endswith(".root"): OutDir += ".root"
-        if self.root is not None: pass
-        else:
+        if self.root is None:
             try: self.root = uproot.create(OutDir)
             except OSError: self.root = uproot.recreate(OutDir)
 
@@ -123,10 +116,9 @@ class nTupler(_Interface, _nTupler, SampleTracer):
             if var_name.startswith("CutFlow"):
                 tree_name = tree_name + "_CutFlow"
                 var_name = var_name[len("CutFlow_"):]
-            if tree_name not in data_c:
-                data_c[tree_name] = {}
-            if var_name not in data_c[tree_name]:
-                data_c[tree_name][var_name] = {}
+
+            if tree_name not in data_c: data_c[tree_name] = {}
+            if var_name  not in data_c[tree_name]: data_c[tree_name][var_name] = {}
             arr = awkward.Array(inpt[tr_n])
             data_c[tree_name][var_name] = awkward.fill_none(arr, [])
 
@@ -138,8 +130,8 @@ class nTupler(_Interface, _nTupler, SampleTracer):
     def MakeROOT(self, OutDir: Union[str, None] = None):
         if OutDir is None: OutDir = self.WorkingPath
         else: OutDir = self.abs(OutDir)
-        chnks = self.Threads * self.Chunks * 10
-        commands = [[], self.__throot__, self.Threads, self.Chunks]
+        chnks = self.Threads * self.Chunks * self.Threads
+        commands = [[], __throot__, self.Threads, self.Chunks]
         for i in self:
             for t, x in i.items():
                 var = self._variables[t.replace(".", "/")]
@@ -164,9 +156,8 @@ class nTupler(_Interface, _nTupler, SampleTracer):
 
     def merged(self):
         tmp = []
-        clones = {}
-        chnks = self.Threads * self.Chunks * 10
-        commands = [[], self.__thmerge__, self.Threads, self.Chunks]
+        chnks = self.Threads * self.Chunks * self.Threads
+        commands = [[], __thmerge__, self.Threads, self.Chunks]
         for i in self:
             for t, v in i.items():
                 evnt = v.release_selection().__getstate__()
@@ -177,21 +168,27 @@ class nTupler(_Interface, _nTupler, SampleTracer):
             tmp += [k for k in th._lists if k is not None]
             commands[0] = []
             del th
+            break
 
-        if not len(commands[0]): pass
-        else:
+        tmp += commands[0]
+        while True:
+            commands[0] = [(key, val, self._clones) for key, val, _ in tmp]
             th = Threading(*commands)
             th.Start()
-            tmp += [k for k in th._lists if k is not None]
-            commands[0] = []
+            output, tmp = {}, []
+            for k in th._lists:
+                if k is None: continue
+                key, val = k
+                tmp.append(k)
+                output[key] = self._clones[key.split(".")[-1]]
             del th
-
-        out = {}
-        for t in [(key, val) for t in tmp for key, val in t.items()]:
-            key, val = t
-            if key not in out: out[key] = val
-            else: out[key] += val
-        return out
+            if len(output) != len(tmp): continue
+            for k in tmp:
+                if k is None: continue
+                key, val = k
+                output[key] = output[key].InstantiateObject
+                output[key].__setstate__(val)
+            return output
 
     def __start__(self):
         if not self._loaded: self.RestoreTracer()
@@ -255,7 +252,8 @@ class nTupler(_Interface, _nTupler, SampleTracer):
         for i in self._restored:
             self.Tree, self.SelectionName = i.split(".")
             if hashes is None: these = self.makelist()
-            else: these = self[hashes]
+            elif len(hashes) > 1: these = self[hashes]
+            else: these = [self[hashes]]
             if these is not False:
                 self._restored[i] = these
                 self._tmpl[i] = len(self._restored[i])

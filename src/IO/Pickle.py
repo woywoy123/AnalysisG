@@ -6,6 +6,7 @@ import sys
 class Pickle(Tools):
     def __init__(self):
         self.Caller = "PICKLER"
+        self.Verbose = 1
 
     def PickleObject(self, obj, filename = "untitled", Dir="_Pickle"):
         if filename.endswith(".pkl"): pass

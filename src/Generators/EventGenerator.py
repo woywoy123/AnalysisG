@@ -54,40 +54,48 @@ class EventGenerator(_EventGenerator, _Interface, SampleTracer):
         io.EnablePyAMI = self.EnablePyAMI
         io.metacache_path = self.OutputDirectory + self.ProjectName + "/metacache/"
 
-        i = -1
-        itx = 1
-        inpt = []
         chnks = self.Threads * self.Chunks * self.Threads
-        step = chnks
+        command = [[], self._CompileEvent, self.Threads, self.Chunks]
+
+        i = -1
+        step, itx = chnks, 1
         ev = pickle.dumps(ev)
+
+        chnks = self.Threads * self.Chunks * self.Threads
 
         if sample is not None: pass
         else: sample = self
-
         for v in io:
             i += 1
             if self._StartStop(i) == False: continue
             if self._StartStop(i) == None: break
             v["MetaData"].sample_name = SampleName
-            inpt.append([ev,v])
-
+            command[0].append([ev, v])
             if not i >= step: continue
             itx += 1
             step = itx*chnks
-            th = Threading(inpt, self._CompileEvent, self.Threads, self.Chunks)
+            th = Threading(*command)
             th.Start()
             for x in th._lists:
                 if x is None: continue
-                sample.__setstate__(x)
-            inpt = []
+                smpl = SampleTracer()
+                smpl.__setstate__(x)
+                sample += smpl
+                del smpl
+            command[0] = []
             del th
 
-        th = Threading(inpt, self._CompileEvent, self.Threads, self.Chunks)
-        th.Start()
-        for i in th._lists:
-            if i is None: continue
-            sample.__setstate__(i)
-        del th
+        if len(command[0]):
+            th = Threading(*command)
+            th.Start()
+            for x in th._lists:
+                if x is None: continue
+                smpl = SampleTracer()
+                smpl.__setstate__(x)
+                sample += smpl
+                del smpl
+            command[0] = []
+            del th
 
         if not self.is_self(sample, EventGenerator): return True
         else: return sample.CheckSpawnedEvents()

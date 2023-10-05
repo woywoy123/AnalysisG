@@ -114,6 +114,8 @@ cdef class ami_client:
         cdef list output = []
         for idx in dsids:
             entry = self.getdsid(str(idx))
+            if entry.dsid_result.size(): pass
+            else: return output
             output += [dict(k) for k in pickle.loads(entry.dsid_result)]
         return output
 

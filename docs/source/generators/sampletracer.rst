@@ -11,6 +11,63 @@ Most of the functionalities, such as the magic functions are implemented within 
 Methods and Attributes
 ______________________
 
+.. py:class:: Event
+
+    A simple wrapper class used to batch cached objects into a single object. 
+    Upon calling for a specific attribute, the class will scan available objects for the attribute.
+    Unlike most sub-modules within the package, this class has limited functionalities in terms of magic functions.
+
+    .. py:method:: release_event() -> EventTemplate
+
+        A method which releases the event object from the sample tracer batch.
+
+    .. py:method:: release_graph() -> GraphTemplate
+
+        A method which releases the graph object from the sample tracer batch.
+
+    .. py:method:: release_selection() -> SelectionTemplate
+    
+        A method which releases the selection object from the sample tracer batch.
+
+    .. py:method:: event_cache_dir() -> dict 
+
+        Returns a dictionary of the current caching directory of the given event name.
+
+    .. py:method:: graph_cache_dir() -> dict 
+
+        Returns a dictionary of the current caching directory of the given event name.
+
+
+    .. py:method:: selection_cache_dir() -> dict 
+
+        Returns a dictionary of the current caching directory of the given event name.
+
+    .. py:method:: meta() -> MetaData
+
+        Returns a **MetaData** object for the current event.
+
+    .. py:method:: __eq__() -> bool
+
+        Returns true if the events have the same hash.
+
+    .. py:method:: __hash__() -> bool
+
+        Allows for the use of **set** and **dict**, where the event can be interpreted as a key in a dictionary.
+
+    .. py:attribute:: hash -> str
+
+        Returns a the hash of the current event.
+
+    .. py:attribute:: __getstate__() -> tuple[meta_t, batch_t]
+
+        Allows the event to be pickled.
+
+    .. py:attribute:: __setstate__(tuple[meta_t, batch_t])
+
+        Rebuilds the Event from a **meta_t** and **batch_t** data type.
+
+
+
 .. py:class:: SampleTracer
 
     .. py:method:: __getstate__ -> tracer_t
@@ -42,7 +99,7 @@ ______________________
 
     .. py:method:: __iadd__(SampleTracer other) -> SampleTracer
 
-        Add the incoming tracer to this tracer, i.e. append content.
+        Append the incoming tracer object to this tracer.
 
     .. py:method:: __iter__
 

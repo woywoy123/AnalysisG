@@ -502,6 +502,7 @@ cdef class SampleTracer:
                 _hash = obj_t.Hash()
                 dt  = _check_sub(f, env(_hash))
                 ref = _check_h5(dt, _short)
+                bar.update(1)
                 if obj_t.is_event:
                     save_event(ref, &(<CyEventTemplate*>(obj_t)).event)
                     daod_hash = &self._state.event_name_hash
@@ -519,7 +520,6 @@ cdef class SampleTracer:
                     daod_dir = &self._state.selection_dir
                 else: continue
 
-                bar.update(1)
                 dump_dir(daod_hash, daod_dir, _daod, _hash, out_path)
             f.close()
         del bar
@@ -567,10 +567,11 @@ cdef class SampleTracer:
         _, bar = self._makebar(total, title)
         for itc in cache_map:
             file = env(itc.first)
+            bar.set_description(title + file.split("/")[-1])
             try: f = h5py.File(file, "r")
             except FileNotFoundError: continue
-            bar.set_description(title + file.split("/")[-1])
             for batch in itc.second:
+                bar.update(1)
                 dt = f[batch.hash]
                 for key in dt.keys():
                     if type_ == "Event":
@@ -587,7 +588,6 @@ cdef class SampleTracer:
                     else: continue
                     batch.Import(&getter)
                 batch.ApplyCodeHash(&self.ptr.code_hashes)
-                bar.update(1)
             f.close()
         self._set.search.clear()
         self._set.get_all = False
