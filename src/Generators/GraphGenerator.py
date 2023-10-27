@@ -60,14 +60,15 @@ class GraphGenerator(_GraphGenerator, SampleTracer, _Interface):
         path = sample.Tree + "/" + sample.EventName
         try: itr = sample.ShowLength[path]
         except KeyError: itr = 0
+        if not itr: return True
         _, bar = self._makebar(itr, self.Caller + "::Preparing Graphs")
         for ev, i in zip(sample, range(itr)):
             if sample._StartStop(i) == False: continue
             if sample._StartStop(i) == None: break
             bar.update(1)
 
-            try: ev.Graph; continue
-            except: pass
+            if ev.Graph: continue
+            if not ev.Event: continue
 
             command[0].append([pickle.dumps(ev.release_event()), (code, graph)])
             if not i >= step: continue

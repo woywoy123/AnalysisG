@@ -1,12 +1,12 @@
 from AnalysisG.Notification import _MultiThreading
-import torch.multiprocessing
 from torch.multiprocessing import Process, Pipe
 
+import torch.multiprocessing
 torch.multiprocessing.set_sharing_strategy("file_system")
-import multiprocessing
+
+from typing import Union
 from tqdm import tqdm
 import math
-from typing import Union
 
 
 class TemplateThreading:

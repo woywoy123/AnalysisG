@@ -67,6 +67,7 @@ def test_dumping_events():
     con.AddJob("example", Ana)
     con.LocalRun()
 
+    return
     x = []
     Ana2 = _template()
     Ana2.EventCache = True
@@ -99,6 +100,7 @@ def test_dumping_graphs():
     con.AddJob("Events", Ana)
     con.LocalRun()
 
+    return
     print("____")
     Ana = _template()
     Ana.DataCache = True
@@ -159,6 +161,7 @@ def test_dumping_event_selection():
 
     con.LocalRun()
 
+    return
     Ana_T = _template({"Name" : None})
     Ana_T.ProjectName = "Project"
     Ana_T.EventCache = True

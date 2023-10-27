@@ -52,7 +52,7 @@ cdef class ParticleTemplate:
         return self
 
     def __getstate__(self) -> tuple:
-        if self._pkld: return self.state
+        if self._pkld: return ({}, self.state)
         self._pkld = True
         self.state = self.ptr.Export()
 
@@ -206,10 +206,9 @@ cdef class ParticleTemplate:
 
     @property
     def LeptonicDecay(self) -> bool:
-        cdef vector[particle_t] ch = []
+        cdef vector[particle_t] ch
         cdef ParticleTemplate x
-        for x in self.Children.values():
-            ch.push_back(x.__getstate__())
+        for x in self.Children: ch.push_back(x.__getstate__()[1])
         return self.ptr.lep_decay(ch)
 
     @index.setter

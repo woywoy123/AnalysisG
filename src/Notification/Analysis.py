@@ -68,7 +68,8 @@ class _Analysis(Notification):
         if self.SelectionName: string += [key + self.SelectionName + ") < ::"]
 
         key = "> Optimization ("
-        if self.Model is not None: string += [key + self.Model.__name__ + ") < ::"]
+        if self.Model is None: pass
+        else: string += [key + self.Model.code["class_name"].decode("UTF-8") + ") < ::"]
 
         l = max([len(i) for i in string] + [len(string1)])
         self.Success("=" * l)

@@ -10,6 +10,7 @@ import random
 import h5py
 
 class RandomSamplers(_RandomSamplers, Tools, SampleTracer):
+
     def __init__(self):
         SampleTracer.__init__(self)
         self.Caller = "RANDOMSAMPLER"
@@ -43,11 +44,12 @@ class RandomSamplers(_RandomSamplers, Tools, SampleTracer):
         if isinstance(Events, list): Indx = Events
         else: Indx = list(Events.values())
         if nEvents is None: nEvents = len(Indx)
+        if not len(Events):
+            self.NotEnoughEvents(Events, nEvents)
+            return {}
 
         random.shuffle(Indx)
-        if len(Events) >= nEvents:
-            return {i.hash: i for i in Indx[0:nEvents]}
-        self.NotEnoughEvents(Events, nEvents)
+        if len(Events) >= nEvents: return {i.hash: i for i in Indx[0:nEvents]}
         return {i.hash: i for i in Indx}
 
     def MakeTrainingSample(self, Sample, TrainingSize=50):
@@ -55,6 +57,7 @@ class RandomSamplers(_RandomSamplers, Tools, SampleTracer):
         elif self.is_self(Sample): Sample = {i.hash : i for i in Sample if i.Graph}
         elif isinstance(Sample, dict): pass
         else: return self.ExpectedDictionarySample(type(Sample))
+        if not len(Sample): return {"train_hashes" : [], "test_hashes" : []}
 
         All = np.array(list(Sample))
         self.RandomizingSamples(len(All), TrainingSize)
@@ -66,7 +69,7 @@ class RandomSamplers(_RandomSamplers, Tools, SampleTracer):
             Sample[i].Train = True
             Sample[i].Eval = False
 
-        for i in All[test_idx]:  
+        for i in All[test_idx]:
             Sample[i].Train = False
             Sample[i].Eval  = True
 

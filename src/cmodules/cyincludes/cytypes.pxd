@@ -111,6 +111,7 @@ cdef extern from "../abstractions/cytypes.h":
         string genFilterNames
         string file_type
         string sample_name
+        string logicalDatasetName
 
         vector[string] keywords
         vector[string] weights
@@ -253,7 +254,6 @@ cdef extern from "../abstractions/cytypes.h":
         string event_hash
 
     struct data_t:
-        string name
         vector[vector[float]] truth
         vector[vector[float]] pred
         vector[vector[float]] index
@@ -262,13 +262,8 @@ cdef extern from "../abstractions/cytypes.h":
         vector[vector[float]] loss
         vector[vector[float]] accuracy
 
-    struct metric_t:
-        map[string, vector[vector[float]]] truth
-        map[string, vector[vector[float]]] pred
-
-        map[string, float] acc_average
-        map[string, float] loss_average
-        map[string, int] num_nodes
+        map[int, vector[vector[float]]] mass_truth
+        map[int, vector[vector[float]]] mass_pred
 
     struct root_t:
         map[string, batch_t] batches
@@ -329,9 +324,13 @@ cdef extern from "../abstractions/cytypes.h":
         int event_stop
 
         # Machine learning 
+        string device
         string training_name
         string run_name
-        string device
+        float training_size
+        vector[int] kfold
+        float max_gpu_memory
+        float max_ram_memory
 
         string optimizer_name
         map[string, string] optimizer_params

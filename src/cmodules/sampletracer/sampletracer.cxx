@@ -34,6 +34,42 @@ namespace SampleTracer
         return root -> batches[hash]; 
     }
 
+    std::map<std::string, std::string> CySampleTracer::RestoreTracer(std::map<std::string, HDF5_t>* data, std::string event_root)
+    {
+        std::map<std::string, HDF5_t>::iterator ith = data -> begin();
+        std::map<std::string, std::string>::iterator its; 
+        std::map<std::string, std::string> del_map; 
+        std::map<std::string, std::string> is_ok = {}; 
+        for (; ith != data -> end(); ++ith){
+            std::map<std::string, std::string> cache = ith -> second.cache_path; 
+            its = ith -> second.cache_path.begin(); 
+            for (; its != ith -> second.cache_path.end(); ++its){
+                std::string cache_path = its -> first; 
+                std::string type = its -> second; 
+                if (is_ok.count(cache_path)){continue;}
+                if (del_map.count(cache_path)){
+                    cache.erase(cache_path); 
+                    continue;
+                }
+
+                bool ok = Tools::is_file(&cache_path);
+                if (ok){is_ok[cache_path] = type;}
+                else {del_map[cache_path] = type;} 
+            }
+            if (!is_ok.size()){continue;}
+            CyBatch* batch = this -> RegisterHash(ith -> first, event_root); 
+            for (its = cache.begin(); its != cache.end(); ++its){
+                std::map<std::string, std::string>* this_map; 
+                if      (its -> second == "event"){this_map = &batch -> event_dir;}
+                else if (its -> second == "graph"){this_map = &batch -> graph_dir;}
+                else if (its -> second == "selection"){this_map = &batch -> selection_dir;}
+                else {continue;}
+                (*this_map)[its -> first] = ith -> second.root_name; 
+            }
+        }
+        return del_map; 
+    }
+
     void CySampleTracer::AddEvent(event_t event, meta_t meta)
     {
         event_t* ev_ptr = &(event); 
@@ -95,17 +131,57 @@ namespace SampleTracer
         return output;
     }
 
+    std::map<std::string, std::vector<CyBatch*>> CySampleTracer::RestoreCache(std::string type)
+    {
+        unsigned int end, mode;
+        if      (type == "Event"){mode = 1;}
+        else if (type == "Graph"){mode = 2;}
+        else if (type == "Selection"){mode = 3;}
+        else {return {};}
+
+        settings_t* set = &(this -> settings); 
+
+        std::string fetch_this; 
+        if      (set -> eventname.size() && mode == 1){fetch_this = set -> eventname;}
+        else if (set -> graphname.size() && mode == 2){fetch_this = set -> graphname;}
+        else if (set -> selectionname.size() && mode == 3){fetch_this = set -> selectionname;}
+        else { fetch_this = ""; }
+
+        std::vector<CyBatch*> batches = this -> MakeIterable();  
+        if (!set -> event_stop){end = batches.size();}
+        else {end = set -> event_stop;}
+
+        std::map<std::string, std::vector<CyBatch*>> output; 
+        std::map<std::string, std::string>::iterator itr; 
+        for (unsigned int x(0); x < end; ++x){
+            std::map<std::string, std::string>* dir_map;
+            if      (mode == 1){ dir_map = &batches[x] -> event_dir; }
+            else if (mode == 2){ dir_map = &batches[x] -> graph_dir; }
+            else if (mode == 3){ dir_map = &batches[x] -> selection_dir; }
+            else {continue;}
+            for (itr = dir_map -> begin(); itr != dir_map -> end();){
+                if (!fetch_this.size()){}
+                else if (!Tools::count(itr -> first, fetch_this)){++itr; continue;}
+                output[itr -> first].push_back(batches[x]); 
+                itr = dir_map -> erase(itr);
+            }
+        }
+        return output;
+    }
+
     void CySampleTracer::FlushEvents(std::vector<std::string> hashes)
     {
         bool tmp = this -> settings.getevent;
-        this -> settings.search = hashes;  
+        this -> settings.get_all = true; 
         this -> settings.getevent = true; 
+        this -> settings.search = hashes; 
         std::vector<CyBatch*> smpls = this -> MakeIterable(); 
         for (unsigned int i(0); i < smpls.size(); ++i){
-            std::string root_name = smpls[i] -> this_ev -> event.event_root; 
-            std::string name = this -> make_flush_string(root_name, "EventCache"); 
-            smpls[i] -> event_dir[name] = root_name; 
+            if (!smpls[i] -> this_ev){continue;}
+            event_t* ev = &(smpls[i] -> this_ev -> event); 
+            smpls[i] -> event_dir = this -> make_flush_string(ev, "EventCache", &smpls[i] -> events); 
             smpls[i] -> destroy(&smpls[i] -> events); 
+            smpls[i] -> this_ev = nullptr;
         }
         this -> settings.search.clear(); 
         this -> settings.getevent = tmp;
@@ -115,14 +191,16 @@ namespace SampleTracer
     void CySampleTracer::FlushGraphs(std::vector<std::string> hashes)
     {
         bool tmp = this -> settings.getgraph;
-        this -> settings.search = hashes;  
+        this -> settings.get_all = true; 
         this -> settings.getgraph = true; 
+        this -> settings.search = hashes;  
         std::vector<CyBatch*> smpls = this -> MakeIterable(); 
         for (unsigned int i(0); i < smpls.size(); ++i){
-            std::string root_name = smpls[i] -> this_gr -> graph.event_root; 
-            std::string name = this -> make_flush_string(root_name, "GraphCache"); 
-            smpls[i] -> graph_dir[name] = root_name; 
+            if (!smpls[i] -> this_gr){continue;}
+            graph_t* gr = &(smpls[i] -> this_gr -> graph); 
+            smpls[i] -> graph_dir = this -> make_flush_string(gr, "GraphCache", &smpls[i] -> graphs); 
             smpls[i] -> destroy(&smpls[i] -> graphs); 
+            smpls[i] -> this_gr = nullptr;
         }
         this -> settings.search.clear(); 
         this -> settings.getgraph = tmp;
@@ -131,14 +209,16 @@ namespace SampleTracer
     void CySampleTracer::FlushSelections(std::vector<std::string> hashes)
     {
         bool tmp = this -> settings.getselection;
-        this -> settings.search = hashes;  
+        this -> settings.get_all = true; 
         this -> settings.getselection = true; 
+        this -> settings.search = hashes;  
         std::vector<CyBatch*> smpls = this -> MakeIterable(); 
         for (unsigned int i(0); i < smpls.size(); ++i){
-            std::string root_name = smpls[i] -> this_sel -> selection.event_root; 
-            std::string name = this -> make_flush_string(root_name, "SelectionCache"); 
-            smpls[i] -> selection_dir[name] = root_name; 
+            if (!smpls[i] -> this_sel){continue;}
+            selection_t* sel = &(smpls[i] -> this_sel -> selection); 
+            smpls[i] -> selection_dir = this -> make_flush_string(sel, "SelectionCache", &smpls[i] -> selections); 
             smpls[i] -> destroy(&smpls[i] -> selections); 
+            smpls[i] -> this_sel = nullptr;
         }
         this -> settings.search.clear(); 
         this -> settings.getselection = tmp;
@@ -257,16 +337,22 @@ namespace SampleTracer
         for (; itr != this -> root_map.end(); ++itr){
             CyROOT* ro = itr -> second; 
             output.push_back(new std::vector<CyBatch*>()); 
-            if (set -> threads == 1){ 
-                CyHelpers::Make(ro, set, output[x], code); 
-            }
-            else {
-                std::thread* j = new std::thread(CyHelpers::Make, ro, set, output[x], code);  
-                jobs.push_back(j); 
-            }
+            std::thread* j = new std::thread(Search, ro, set, output[x], code);
+            if (set -> threads == 1){j -> join(); }
+            jobs.push_back(j); 
             ++x;
         }
-        return CyHelpers::ReleaseVector(output, jobs, set -> threads); 
+       
+        std::vector<CyBatch*> release;  
+        for (unsigned int x(0); x < jobs.size(); ++x){
+            if (jobs[x] -> joinable()){ jobs[x] -> join(); }
+            std::vector<CyBatch*>* tmp = output[x]; 
+            release.insert(release.end(), tmp -> begin(), tmp -> end()); 
+            tmp -> clear(); 
+            delete tmp; 
+            delete jobs[x]; 
+        }
+        return release; 
     }
 
     CySampleTracer* CySampleTracer::operator + (CySampleTracer* other)
@@ -292,10 +378,9 @@ namespace SampleTracer
                 std::map<std::string, int>* inpt, 
                 std::map<std::string, int>* out)
         {
-            std::map<std::string, int>::iterator its; 
-            its = inpt -> begin(); 
+            std::map<std::string, int>::iterator its = inpt -> begin(); 
             for (; its != inpt -> end(); ++its){
-                (*out)[its -> first] += its -> second; 
+                (*out)[its -> first] += its -> second;
             }
         };
 
@@ -317,7 +402,4 @@ namespace SampleTracer
         }
         return output; 
     }
-
-
-
 }

@@ -13,10 +13,6 @@ cdef extern from "../abstractions/abstractions.h" namespace "Tools":
     cdef map[string, int] CheckDifference(vector[string], vector[string], int i) except +
 
 
-
-
-
-
 cpdef list csplit(str val, str delim):
     cdef string x
     return [env(x) for x in split(enc(val), enc(val))]

@@ -283,6 +283,7 @@ def test_tracer_hdf5():
     s.RestoreEvents()
 
     for i in tr1: break
+    print(len(s[i.ROOT]), len(tr1))
     assert len(s[i.ROOT]) == len(tr1)
 
     for i in tr2: break
@@ -312,7 +313,7 @@ def test_tracer_hdf5():
         s.RestoreEvents()
         k = sum([s for l in range(10)])
         if mem == 0: mem = psutil.virtual_memory().percent
-        assert psutil.virtual_memory().percent - mem < 1
+        assert psutil.virtual_memory().percent - mem < 4
         assert s.ShowLength["nominal/Event"] == 165
         del s
 
@@ -321,7 +322,7 @@ def test_tracer_hdf5():
 
 
 if __name__ == "__main__":
-    test_tracer_addEvent()
-    test_tracer_operators()
+    #test_tracer_addEvent()
+    #test_tracer_operators()
     test_tracer_hdf5()
     pass

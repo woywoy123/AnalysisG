@@ -6,8 +6,10 @@ from libcpp.vector cimport vector
 from libcpp.map cimport map, pair
 from libcpp cimport bool
 
+from cython.operator cimport dereference
 from cymetadata cimport CyMetaData
 from cytypes cimport meta_t
+from cytools cimport env, enc, _encoder, _decoder
 
 try:
     import pyAMI
@@ -18,39 +20,162 @@ except NameError: pass
 
 from uproot.exceptions import KeyInFileError
 import warnings
+import pickle
+import signal
 import uproot
 import json
-import signal
+import h5py
 
-cdef string enc(str val): return val.encode("UTF-8")
-cdef str env(string val): return val.decode("UTF-8")
+
+def _sig(signum, frame): return ""
+signal.signal(signal.SIGALRM, _sig)
+signal.alarm(30)
+warnings.filterwarnings("ignore")
+
+cdef struct cache:
+    string dsid_request
+    string dsid_result
+
+    map[string, string] dataset_request
+    map[string, string] dataset_result
+    map[string, string] dataset_files
+
+
+cdef class ami_client:
+    cdef file
+    cdef client
+    cdef vector[cache] container
+    cdef map[string, cache*] dsid
+    cdef map[string, cache*] sample
+    cdef public str cache_path
+    cdef public bool is_cached
+
+    def __init__(self): pass
+    def __cinit__(self):
+        warnings.filterwarnings("ignore")
+        try: self.client = pyAMI.client.Client("atlas")
+        except: self.client = None
+        self.file = None
+        self.is_cached = False
+
+    cdef bool loadcache(self, str dsid = ""):
+        if self.file is not None: return True
+        if len(dsid): pass
+        else: return False
+
+        try: self.file = h5py.File(self.cache_path, "a")
+        except FileNotFoundError: return False
+        except BlockingIOError: return False
+
+        try: x = _decoder(self.file[dsid].attrs["data"])
+        except KeyError: return False
+
+        self.container.push_back(<cache>x)
+        cdef unsigned int y = 0
+        for y in range(self.container.size()):
+            self.dsid[self.container[y].dsid_request] = &self.container[y]
+        return True
+
+    cdef dumpcache(self):
+        if self.file is None: return
+        cdef dict out
+        cdef cache entry
+        cdef cache update
+        cdef pair[string, string] itr
+        for entry in self.container:
+            try: ref = self.file.create_dataset(env(entry.dsid_request), (1), dtype = h5py.ref_dtype)
+            except ValueError:
+                ref = self.file[env(entry.dsid_request)]
+                x = _decoder(ref.attrs["data"])
+                update = <cache>x
+                for itr in update.dataset_request: entry.dataset_request[itr.first] = itr.second
+                for itr in update.dataset_result: entry.dataset_result[itr.first] = itr.second
+                for itr in update.dataset_files: entry.dataset_files[itr.first] = itr.second
+            ref.attrs["data"] = _encoder(entry)
+        self.file.close()
+        self.file = None
+
+    cpdef list list_datasets(self, list dsids, str type_):
+        if not self.loadcache() and self.client is None: return []
+        cdef str i
+        cdef int idx
+        cdef dict command = {}
+        command["client"] = self.client
+        command["type"] = type_
+        command["dataset_number"] = None
+        cdef cache* entry
+        for i in [str(idx) for idx in dsids]:
+            entry = self.getdsid(i)
+            if entry.dsid_result.size(): continue
+            command["dataset_number"] = [i]
+            try: entry.dsid_result = pickle.dumps(atlas.list_datasets(**command))
+            except pyAMI.exception.Error: continue
+            except: continue
+
+        cdef list output = []
+        for idx in dsids:
+            entry = self.getdsid(str(idx))
+            if entry.dsid_result.size(): pass
+            else: return output
+            output += [dict(k) for k in pickle.loads(entry.dsid_result)]
+        return output
+
+    cpdef dict get_dataset_info(self, str sample, int dsid):
+        cdef cache* entry = self.getdsid(str(dsid))
+        cdef string name = enc(sample)
+
+        self.is_cached = entry.dataset_request.count(name)
+        if not self.is_cached: pass
+        else: return pickle.loads(entry.dataset_result[name])
+        cdef list res = atlas.get_dataset_info(self.client, sample)
+        cdef list files = atlas.list_files(self.client, sample)
+        entry.dataset_request[name] = name
+        entry.dataset_result[name] = pickle.dumps(dict(res[0]))
+        entry.dataset_files[name] = pickle.dumps(files)
+        self.dumpcache()
+        return dict(res[0])
+
+    cpdef list get_files(self, str sample, int dsid):
+        cdef cache* entry = self.getdsid(str(dsid))
+        cdef string name = enc(sample)
+        if not entry.dataset_files.count(name): return []
+        else: return [dict(i) for i in pickle.loads(entry.dataset_files[name])]
+
+    cdef cache* getdsid(self, str i):
+        cdef string x = enc(i)
+        if self.dsid.count(x): return self.dsid[x]
+        if self.loadcache(i): return self.dsid[x]
+        cdef cache entry = cache()
+        entry.dsid_request = x
+        self.container.push_back(entry)
+        self.dsid[x] = &self.container.back()
+        return self.dsid[x]
+
 
 cdef class MetaData:
 
     cdef CyMetaData* ptr
     cdef public bool loaded
-    cdef public client
+    cdef public ami_client client
     cdef public str sampletype
     cdef public bool scan_ami
+    cdef public bool is_cached
+    cdef str _metacache
 
     def __cinit__(self):
         self.ptr = new CyMetaData()
-        self.client = None
+        self.client = ami_client()
+        self._metacache = ""
 
-    def __init__(self, str file = "", bool scan_ami = True, str sampletype = "DAOD_TOPQ1"):
+    def __init__(self, str file = "", bool scan_ami = True, str sampletype = "DAOD_TOPQ1", metacache_path = ""):
         if not len(file): return
         self.original_input = file
         self.sampletype = sampletype
         self.loaded = True
         self.scan_ami = scan_ami
-
-        if not scan_ami:
-            self._getMetaData(file)
-            return
-        warnings.filterwarnings("ignore")
-        try: self.client = pyAMI.client.Client("atlas")
-        except: pass
+        self.client.cache_path = metacache_path + "meta.hdf5"
         self.loaded = self._getMetaData(file)
+        self.is_cached = self.client.is_cached
 
     def __dealloc__(self): del self.ptr
     def __getstate__(self) -> meta_t: return self.ptr.Export()
@@ -124,6 +249,7 @@ cdef class MetaData:
         cdef list f
         cdef dict this
         cdef int index = 0
+        cdef str k
 
         try: f = self._get(command)["jsonData"].split("\n")
         except KeyError: return False
@@ -152,53 +278,50 @@ cdef class MetaData:
         except KeyError: return False
         return True
 
-    def _populate(self, inpt):
+    def _populate(self, dict inpt):
+        cdef str key
         for key in inpt:
             if key == "run_number": continue
             if key == "keywords": continue
             if key == "keyword": continue
             if key == "weights": continue
-            setattr(self, key, inpt[key])
+            try: setattr(self, key, inpt[key])
+            except AttributeError: pass
 
-        self.run_number = inpt["run_number"][1:-1]
-        self.ptr.container.keywords = [enc(v) for v in inpt["keywords"].replace(" ", "").split(",")]
-        self.ptr.container.keyword  = [enc(v) for v in inpt["keyword"].replace(" ", "").split(",")]
-        self.ptr.container.weights  = [enc(v.lstrip(" ").rstrip(" ")) for v in inpt["weights"].split("|")][:-1]
+        try: key = inpt["keywords"].replace(" ", "")
+        except KeyError: key = ""
+        for key in key.split(","): self.ptr.container.keywords.push_back(enc(key))
+
+        try: key = inpt["keyword"].replace(" ", "")
+        except KeyError: key = ""
+        for key in key.split(","): self.ptr.container.keyword.push_back(enc(key))
+
+        try: self.run_number = inpt["run_number"][1:-1]
+        except KeyError: pass
+
+        try: key = inpt["weights"]
+        except KeyError: key = ""
+        for key in key.split("|")[:-1]: 
+            key = key.lstrip(" ").rstrip(" ")
+            self.ptr.container.weights.push_back(enc(key))
 
     def _search(self) -> bool:
-        def _sig(signum, frame): return ""
-
-        if self.client is None: return False
-        signal.signal(signal.SIGALRM, _sig)
-        signal.alarm(10)
-        warnings.filterwarnings("ignore")
-
-        cdef list x
-        try:
-            x = atlas.list_datasets(
-                self.client, dataset_number = [str(self.dsid)], type = self.sampletype
-            )
-        except pyAMI.exception.Error: return False
-        except: return False
-
-        cdef dict t
+        if self.client.client is None: return False
+        cdef dict t, i, k
         cdef list tags
         cdef str sample, v
         cdef int index
 
         tags = list(set(self.amitag.split("_")))
-        for i in x:
+        for i in self.client.list_datasets([self.dsid], self.sampletype):
             try: sample = i["ldn"]
             except KeyError: continue
-
             if len([v for v in tags if v in sample]) != len(tags): continue
-
             self.DatasetName = sample
             self.ptr.container.found = True
-            self._populate(atlas.get_dataset_info(self.client, sample)[0])
-
+            self._populate(self.client.get_dataset_info(sample, self.dsid))
             index = 0
-            for k in atlas.list_files(self.client, sample):
+            for k in self.client.get_files(sample, self.dsid):
                 self.ptr.container.LFN[enc(k["LFN"])] = index
                 self.ptr.container.fileGUID.push_back(enc(k["fileGUID"]))
                 self.ptr.container.events.push_back(int(k["events"]))
@@ -214,7 +337,7 @@ cdef class MetaData:
         cdef int num = val["num"][0]
         self.ptr.processkeys(keys, num)
 
-    def _findmissingkeys(self): 
+    def _findmissingkeys(self):
         self.ptr.FindMissingKeys()
 
     def _MakeGetter(self) -> dict:
@@ -381,7 +504,7 @@ cdef class MetaData:
 
     @run_number.setter
     def run_number(self, val: Union[str, int]):
-        self.ptr.container.run_numer = int(val)
+        self.ptr.container.run_number = int(val)
 
     @property
     def totalEvents(self) -> int:
@@ -560,14 +683,20 @@ cdef class MetaData:
         self.ptr.container.DatasetName = enc(val)
 
     @property
+    def logicalDatasetName(self) -> str:
+        return env(self.ptr.container.logicalDatasetName)
+
+    @logicalDatasetName.setter
+    def logicalDatasetName(self, str val):
+        self.ptr.container.logicalDatasetName = enc(val)
+
+    @property
     def event_index(self) -> int:
         return self.ptr.container.event_index
 
     @event_index.setter
     def event_index(self, int val):
         self.ptr.container.event_index = val
-
-
 
 
     # constant properties
@@ -677,3 +806,14 @@ cdef class MetaData:
     @sample_name.setter
     def sample_name(self, str val):
         self.ptr.container.sample_name = enc(val)
+
+    @property
+    def metacache_path(self): return self._metacache
+
+    @metacache_path.setter
+    def metacache_path(self, str val): self._metacache = val
+
+
+
+
+

@@ -16,149 +16,75 @@ MetaData Wrapper
 
     .. py:method:: IndexToSample(int index) -> str
 
-    .. py:method:: ProcessKeys(dict val) -> None 
-
-    .. py:attribute:: Trees -> list
-
-        Expects a list of strings pointing to the trees to be read.
-
-    .. py:attribute:: Branches -> list
-
-        Expects a list of strings pointing to the branches to be read.
-
-    .. py:attribute:: Leaves -> list
-        
-        Expects a list of strings pointing to any leaves to be read.
-
-    .. py:attribute:: original_input -> str
-        
-        Returns the original file name, i.e. file.
-
-    .. py:attribute:: dsid -> int
-
-        Returns the dsid of the data set matched to this ROOT file.
-
-    .. py:attribute:: amitag -> str
-
-        Returns the amitag of the same being used, this can be retrieved within the sample's metadata.
-
-    .. py:attribute:: generators -> str
-
-        Returns the generator which produced this sample.
-
-    .. py:attribute:: isMC -> bool
-
-        Returns a boolean to indicate whether the sample is Monte Carlo
-
-    .. py:attribute:: derivationFormat -> str
-
-    .. py:attribute:: eventNumber -> int
-
-    .. py:attribute:: ecmEnergy -> float
-
-    .. py:attribute:: genFiltEff -> float
-
-    .. py:attribute:: completion -> float
-
-    .. py:attribute:: beam_energy -> float
-
-    .. py:attribute:: crossSection -> float
-
-    .. py:attribute:: crossSection_mean -> float
-
-    .. py:attribute:: totalSize -> float
-
-        Returns the total file size (memory)
-
-    .. py:attribute:: nFiles -> int
-
-        Returns the number of files within this sample set
-
-    .. py:attribute:: run_number -> int
-
-    .. py:attribute:: totalEvents -> int
-
-    .. py:attribute:: datasetNumber -> int
-
-    .. py:attribute:: identifier -> str
-
-    .. py:attribute:: prodsysStatus -> str
-
-    .. py:attribute:: dataType -> str
-
-    .. py:attribute:: version -> str
-
-    .. py:attribute:: PDF -> str
-
-    .. py:attribute:: AtlasRelease -> str
-
-    .. py:attribute:: principalPhysicsGroup -> str
-
-    .. py:attribute:: physicsShort -> str
-
-    .. py:attribute:: generatorName -> str
-
-    .. py:attribute:: geometryVersion -> str
-
-    .. py:attribute:: conditionsTag -> str
-
-    .. py:attribute:: generatorTune -> str
-
-    .. py:attribute:: amiStatus -> str
-
-    .. py:attribute:: beamType -> str
-
-    .. py:attribute:: productionStep -> str
-
-    .. py:attribute:: projectName -> str
-
-    .. py:attribute:: statsAlgorithm -> str
-
-    .. py:attribute:: genFilterNames -> str
-
-    .. py:attribute:: file_type -> str
-
-    .. py:attribute:: DatasetName -> str
-
-    .. py:attribute:: event_index -> int
-
-    .. py:attribute:: original_name -> str
-
-    .. py:attribute:: original_path -> str
-
-    .. py:attribute:: hash -> str
-
-    .. py:attribute:: keywords -> list
-
-    .. py:attribute:: weights -> list
-
-    .. py:attribute:: keyword -> list
-
-    .. py:attribute:: found -> bool
-
-    .. py:attribute:: config -> dict
-
-    .. py:attribute:: GetLengthTrees -> dict
-
-    .. py:attribute:: MissingTrees -> list
-
-    .. py:attribute:: MissingBranches -> list
-
-    .. py:attribute:: MissingLeaves -> list
-
-    .. py:attribute:: DAODList -> list
-
-    .. py:attribute:: Files -> dict
-
-    .. py:attribute:: DAOD -> str
-
-    .. py:attribute:: fileGUID -> dict
-
-    .. py:attribute:: events -> dict
-
-    .. py:attribute:: fileSize -> dict
-
-    .. py:attribute:: sample_name -> str
+        :param int index: Returns the xAOD or filename of the specified event index.
+
+    .. py:method:: ProcessKeys(dict val) -> None
+
+        :param dict val: The keys to search within the ROOT sample.
+
+
+    :ivar list Trees: Expects a list of strings pointing to the trees to be read.
+    :ivar list Branches: Expects a list of strings pointing to the branches to be read.
+    :ivar list Leaves: Expects a list of strings pointing to any leaves to be read.
+    :ivar str original_input: Returns the original file name, i.e. file.
+    :ivar int dsid: Returns the dsid of the data set matched to this ROOT file.
+    :ivar str amitag: Returns the amitag of the same being used, this can be retrieved within the sample's metadata.
+    :ivar str generators: Returns the generator which produced this sample.
+    :ivar bool isMC: Returns a boolean to indicate whether the sample is Monte Carlo
+    :ivar str derivationFormat:
+    :ivar int eventNumber:
+    :ivar float ecmEnergy:
+    :ivar float genFiltEff:
+    :ivar float completion:
+    :ivar float beam_energy:
+    :ivar float crossSection:
+    :ivar float crossSection_mean:
+    :ivar float totalSize: Returns the total file size (memory)
+    :ivar int nFiles: Returns the number of files within this sample set
+    :ivar int run_number:
+    :ivar int totalEvents:
+    :ivar int datasetNumber:
+    :ivar str identifier:
+    :ivar str prodsysStatus:
+    :ivar str dataType:
+    :ivar str version:
+    :ivar str PDF:
+    :ivar str AtlasRelease:
+    :ivar str principalPhysicsGroup:
+    :ivar str physicsShort:
+    :ivar str generatorName:
+    :ivar str geometryVersion:
+    :ivar str conditionsTag:
+    :ivar str generatorTune:
+    :ivar str amiStatus:
+    :ivar str beamType:
+    :ivar str productionStep:
+    :ivar str projectName:
+    :ivar str statsAlgorithm:
+    :ivar str genFilterNames:
+    :ivar str file_type:
+    :ivar str DatasetName:
+    :ivar int event_index:
+    :ivar str original_name:
+    :ivar str original_path:
+    :ivar str hash:
+    :ivar list keywords:
+    :ivar list weights:
+    :ivar list keyword:
+    :ivar bool found:
+    :ivar dict config:
+    :ivar dict GetLengthTrees:
+    :ivar list MissingTrees:
+    :ivar list MissingBranches:
+    :ivar list MissingLeaves:
+    :ivar list DAODList:
+    :ivar dict Files:
+    :ivar str DAO:
+    :ivar dict fileGUID:
+    :ivar dict events:
+    :ivar dict fileSize:
+    :ivar str sample_name:
+    :ivar str logicalDatasetName:
 
 
 UpROOT wrapper
@@ -176,36 +102,6 @@ UpROOT wrapper
     :param Union[list, dict, str, None] ROOTFiles: Input samples
     :param Union[None, EventGenerator] EventGenerator: A switch which enables/disables the meta scanning.
 
-    .. py:attribute:: Verbose -> int
-
-        Changes the verbosity of the key scannig and sample detection.
-
-    .. py:attribute:: StepSize -> int 
-
-        Changes the cache step size within **uproot**. 
-
-    .. py:attribute:: Threads -> int
-
-        Sets the number of threads to utilize during the scanning process.
-
-    .. py:attribute:: Trees -> list
-
-        Trees to retrieve from the ROOT sample.
-
-    .. py:attribute:: Branches -> list
-
-        Branches to retrieve and match for the given trees.
-
-    .. py:attribute:: Leaves -> list
-
-        Leaves to retrieve and match for the given trees and branches.
-
-    .. py:attribute:: Files -> dict
-
-    .. py:attribute:: EnablePyAMI -> bool 
-
-        Enable or disable MetaData.
-
     .. py:method:: GetAmiMeta() -> MetaData
 
     .. py:method:: ScanKeys()
@@ -220,4 +116,14 @@ UpROOT wrapper
         If the input is a dictionary, then the keys can be interpreted as being directories, with values being either lists of ROOT files to read, or single ROOT file strings.
 
         :param Union[str, Dict, List] input: The input samples to use.
-        
+
+    :ivar int Verbose: Changes the verbosity of the key scannig and sample detection.
+    :ivar int StepSize: Changes the cache step size within **uproot**. 
+    :ivar int Threads: Sets the number of threads to utilize during the scanning process.
+    :ivar list Trees: Trees to retrieve from the ROOT sample.
+    :ivar list Branches: Branches to retrieve and match for the given trees.
+    :ivar list Leaves: Leaves to retrieve and match for the given trees and branches.
+    :ivar dict Files:
+    :ivar bool EnablePyAMI: Enable or disable MetaData.
+
+       

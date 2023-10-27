@@ -4,11 +4,9 @@ from AnalysisG._cmodules.cOptimizer import cOptimizer
 from AnalysisG.Notification import _Optimizer
 from .Interfaces import _Interface
 from AnalysisG.Model import Model
-from torchmetrics import ROC, AUROC
-import torch
-import h5py
 
 class Optimizer(_Optimizer, _Interface, RandomSamplers):
+
     def __init__(self, inpt = None):
         RandomSamplers.__init__(self)
         self.Caller = "OPTIMIZER"
@@ -21,29 +19,34 @@ class Optimizer(_Optimizer, _Interface, RandomSamplers):
         if not self.is_self(inpt): return
         else: self += inpt
 
-    def __searchsplits__(self):
+    def __searchsplits__(self, sampletracer):
         sets = self.WorkingPath + "Training/DataSets/"
         sets += self.TrainingName
         if not self._cmod.GetHDF5Hashes(sets):
-            self.GetAll = True
-            self._cmod.UseAllHashes(self.makehashes())
-            self.GetAll = False
+            sampletracer.GetAll = True
+            self._cmod.UseAllHashes([i.hash for i in sampletracer.makelist()])
         self._searchdatasplits(sets)
 
     def __initialize__(self):
         if self._nomodel(): return False
-        kfolds = self._cmod.kFolds
-        if len(kfolds): pass
+        if len(self._cmod.kFolds): pass
         else: self._cmod.UseTheseFolds([1])
+
+        k = next(iter(self._cmod.kFolds))
+        graphs = next(iter(self._cmod.FetchTraining(k, self.BatchSize)))
         for k in self._cmod.kFolds:
-            batches = self._cmod.FetchTraining(k, self.BatchSize)
-            graphs = self._cmod.MakeBatch(self, next(iter(batches)), k, 0)
+            if len(graphs): pass
+            else: return not self._nographs()
 
             self._kModels[k] = Model(self.Model)
             self._kModels[k].Path = self.WorkingPath + "machine-learning/"
             self._kModels[k].RunName = self.RunName
             self._kModels[k].KFold = k
-            self._kModels[k].__params__ = self.ModelParams
+            self._kModels[k].KinematicMap = self.KinematicMap
+
+            if not len(self.ModelParams): pass
+            else: self._kModels[k].__params__ = self.ModelParams
+
             self._kModels[k].device = self.Device
             if self._kModels[k].SampleCompatibility(graphs): pass
             else: return self._notcompatible()
@@ -68,17 +71,23 @@ class Optimizer(_Optimizer, _Interface, RandomSamplers):
         return True
 
     def Start(self, sample = None):
-        if sample is None: pass
+        if sample is None:
+            self.RestoreTracer()
+            sample = self
         else: self.ImportSettings(sample.ExportSettings())
 
-        self.RestoreTracer()
-        self.__searchsplits__()
-        if self.__initialize__(): pass
-        else: return
-        self._findpriortraining()
+        self._cmod.sampletracer = sample
+        self.__searchsplits__(sample)
         kfolds = self._cmod.kFolds
         kfolds.sort()
-        self._cmod.metric_plot.plot = self.PlotLearningMetrics
+        if not len(kfolds): kfolds += [1]
+        gr = next(iter(self._cmod.FetchTraining(kfolds[0], self.BatchSize)))
+        self.preiteration(sample)
+        if self.__initialize__(): pass
+        else: return
+
+        self._findpriortraining()
+        self._cmod.metric_plots = self.PlotLearningMetrics
         path = self.WorkingPath + "machine-learning/" + self.RunName
         for ep in range(self.Epochs):
             ep += 1
@@ -99,7 +108,6 @@ class Optimizer(_Optimizer, _Interface, RandomSamplers):
                 self._kOps[k].Train = True
                 self._kModels[k].Train = True
                 self.__train__(k, ep)
-                self._showloss(ep, k)
 
                 self._kOps[k].Train = False
                 self._kModels[k].Train = False
@@ -107,69 +115,109 @@ class Optimizer(_Optimizer, _Interface, RandomSamplers):
                 self._kOps[k].stepsc()
 
                 self.__evaluation__(k, ep)
+                self._showloss(ep, k)
 
                 self._kOps[k].save()
                 self._kModels[k].save()
-            if sum(kfold_map.values()) == len(kfold_map): pass
-            else: self._cmod.DumpEpochHDF5(ep, base, kfolds)
-            x = self._cmod.BuildPlots(ep, path)
+
+                self._cmod.DumpEpochHDF5(ep, base, k)
+            if self.PlotLearningMetrics:
+                self.Success("Plotting: Epoch " + str(ep))
+                self._cmod.BuildPlots(ep, path + "/Plots")
+            self._showloss(ep, -1, True)
 
     def __train__(self, kfold, epoch):
+        container = []
         batches = self._cmod.FetchTraining(kfold, self.BatchSize)
-        index_ = len(batches)
         msg = "Epoch (" + str(epoch) + ") Running k-Fold (training) -> " + str(kfold)
-        _, bar = self._MakeBar(index_, msg)
-        for i, batch in zip(range(index_), batches):
-            graph = self._cmod.MakeBatch(self, batch, kfold, i)
+        if not self.DebugMode: _, bar = self._MakeBar(len(batches), msg)
+        for graph in batches:
             self._kOps[kfold].zero()
             res = self._kModels[kfold](graph)
             self._kModels[kfold].backward()
-            self._cmod.AddkFold(epoch, kfold, res, self._kModels[kfold].out_map)
-
             self._kOps[kfold].step()
-            bar.update(1)
+            if not self.DebugMode:
+                container.append(res)
+                bar.update(1)
+            else:
+                self._cmod.AddkFold(epoch, kfold, res, self._kModels[kfold].out_map)
+                del res
+
+            if not batches.purge: continue
+            self._cmod.FastGraphRecast(epoch, kfold, container, self._kModels[kfold].out_map)
+            for i in container: del i
+            container = []
+
+        if self.DebugMode: return
+        self._cmod.FastGraphRecast(epoch, kfold, container, self._kModels[kfold].out_map)
+        for i in container: del i
 
     def __validation__(self, kfold, epoch):
+        container = []
         batches = self._cmod.FetchValidation(kfold, self.BatchSize)
-        index_ = len(batches)
         msg = "Epoch (" + str(epoch) + ") Running k-Fold (validation) -> " + str(kfold)
-        _, bar = self._MakeBar(index_, msg)
-        for i, batch in zip(range(index_), batches):
-            graph = self._cmod.MakeBatch(self, batch, kfold, i)
+        if not self.DebugMode: _, bar = self._MakeBar(len(batches), msg)
+        for graph in batches:
             res = self._kModels[kfold](graph)
-            self._cmod.AddkFold(epoch, kfold, res, self._kModels[kfold].out_map)
-            bar.update(1)
+            if not self.DebugMode:
+                container.append(res)
+                bar.update(1)
+            else:
+                self._cmod.AddkFold(epoch, kfold, res, self._kModels[kfold].out_map)
+                del res
+
+            if not batches.purge: continue
+            self._cmod.FastGraphRecast(epoch, kfold, container, self._kModels[kfold].out_map)
+            for i in container: del i
+            container = []
+
+        if self.DebugMode: return
+        self._cmod.FastGraphRecast(epoch, kfold, container, self._kModels[kfold].out_map)
+        for i in container: del i
 
     def __evaluation__(self, kfold, epoch):
+        container = []
         batches = self._cmod.FetchEvaluation(self.BatchSize)
-        index_ = len(batches)
-        _, bar = self._MakeBar(index_, "Epoch (" + str(epoch) + ") Running leave-out")
-        for i, batch in zip(range(index_), batches):
-            graph = self._cmod.MakeBatch(self, batch, -1, i)
+        if not self.DebugMode: _, bar = self._MakeBar(len(batches), "Epoch (" + str(epoch) + ") Running leave-out")
+        for graph in batches:
             res = self._kModels[kfold](graph)
-            self._cmod.AddkFold(epoch, kfold, res, self._kModels[kfold].out_map)
-            bar.update(1)
+            if not self.DebugMode:
+                container.append(res)
+                bar.update(1)
+            else:
+                self._cmod.AddkFold(epoch, kfold, res, self._kModels[kfold].out_map)
+                del res
+
+            if not batches.purge: continue
+            self._cmod.FastGraphRecast(epoch, kfold, container, self._kModels[kfold].out_map)
+            for i in container: del i
+            container = []
+
+        if self.DebugMode: return
+        self._cmod.FastGraphRecast(epoch, kfold, container, self._kModels[kfold].out_map)
+        for i in container: del i
 
     def preiteration(self, inpt = None):
-        if self.triggered: return False
-
         if inpt is not None: pass
         else: inpt = self
-        if len(self.GraphName): pass
-        elif not len(self.GraphName):
-            try: self.GraphName = inpt.ShowGraphs[0]
-            except IndexError: return self._nographs()
 
-        if len(self.Tree): return False
-        try: self.Tree = inpt.ShowTrees[0]
-        except IndexError: return self._nographs()
+        if not len(inpt.ShowTrees) and not len(inpt.Tree):
+            self._notree()
+            self.RestoreTracer()
+        if not len(inpt.Tree) and len(inpt.ShowTrees):
+            inpt.Tree = inpt.ShowTrees[0]
+        elif inpt.Tree in inpt.ShowTrees: pass
+        else: self._nofailtree()
 
-        msg = "Using GraphName: " + self.GraphName
-        msg += " with Tree: " + self.Tree
+        if not len(inpt.ShowGraphs) and not len(inpt.GraphName):
+            self._nographs()
+            self.RestoreTracer()
+        if not len(inpt.GraphName) and len(inpt.ShowGraphs):
+            inpt.GraphName = inpt.ShowGraphs[0]
+        elif inpt.GraphName in inpt.ShowGraphs: pass
+        else: self._nofailgraphs()
+        msg = "Using GraphName: " + inpt.GraphName
+        msg += " with Tree: " + inpt.Tree
         self.Success(msg)
-        self.triggered = True
-        inpt.Tree = self.Tree
-        inpt.GraphName = self.GraphName
-        inpt.GetGraph = True
         return False
 

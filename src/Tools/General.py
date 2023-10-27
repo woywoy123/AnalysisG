@@ -75,8 +75,11 @@ class Tools(_IO):
 
     def rm(self, directory):
         try: os.remove(self.abs(directory))
-        except IsADirectoryError: shutil.rmtree(self.abs(directory))
+        except IsADirectoryError:
+            try: shutil.rmtree(self.abs(directory))
+            except: pass
         except FileNotFoundError: pass
+        except: pass
 
     def cd(self, directory):
         os.chdir(directory)

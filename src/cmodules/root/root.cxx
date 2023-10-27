@@ -12,9 +12,7 @@ namespace SampleTracer
         if (!this -> code_hashes.size()){return;}
         std::map<std::string, Code::CyCode*>::iterator it; 
         it = this -> code_hashes.begin(); 
-        for (; it != this -> code_hashes.end(); ++it){
-            delete it -> second; 
-        }
+        for (; it != this -> code_hashes.end(); ++it){delete it -> second;}
     }
     
     std::string CyBatch::Hash(){ return this -> hash; }
@@ -24,7 +22,7 @@ namespace SampleTracer
         name += event -> event_tree + "/"; 
         name += event -> event_name; 
 
-        if (this -> events.count(name)){ return; }
+        if (this -> events.count(name)){ delete this -> events[name]; }
         CyEventTemplate* _event = new CyEventTemplate(); 
         _event -> Import(*event); 
         this -> events[name] = _event; 
@@ -36,8 +34,8 @@ namespace SampleTracer
         std::string name = ""; 
         name += graph -> event_tree + "/"; 
         name += graph -> event_name; 
-      
-        if (this -> graphs.count(name)){ return; }
+     
+        if (this -> graphs.count(name)){ delete this -> graphs[name]; }
         CyGraphTemplate* _graph = new CyGraphTemplate(); 
         _graph -> Import(*graph); 
         this -> graphs[name] = _graph; 
@@ -51,7 +49,7 @@ namespace SampleTracer
         name += selection -> event_tree + "/"; 
         name += selection -> event_name; 
         
-        if (this -> selections.count(name)){ return; }
+        if (this -> selections.count(name)){ delete this -> selections[name]; }
         CySelectionTemplate* _selection = new CySelectionTemplate(); 
         _selection -> Import(*selection); 
         this -> selections[name] = _selection; 
@@ -74,17 +72,9 @@ namespace SampleTracer
         itg = bth -> graphs.begin();
         its = bth -> selections.begin();
         
-        for (; ite != bth -> events.end(); ++ite){ 
-            this -> Import(&ite -> second); 
-        }
-
-        for (; itg != bth -> graphs.end(); ++itg){ 
-            this -> Import(&itg -> second); 
-        }
-
-        for (; its != bth -> selections.end(); ++its){ 
-            this -> Import(&its -> second); 
-        }
+        for (; ite != bth -> events.end(); ++ite){this -> Import(&ite -> second);}
+        for (; itg != bth -> graphs.end(); ++itg){this -> Import(&itg -> second);}
+        for (; its != bth -> selections.end(); ++its){this -> Import(&its -> second);}
         this -> hash = bth -> hash;
     }
 
@@ -116,26 +106,14 @@ namespace SampleTracer
     {
         batch_t output; 
         output.hash = this -> hash;
-        if (this -> this_ev){ 
-            this -> export_this(this -> this_ev, &(output.events)); 
-        }
-        else {
-            this -> export_this(this -> events, &(output.events));
-        }
+        if (this -> this_ev){ this -> export_this(this -> this_ev, &(output.events));}
+        else {this -> export_this(this -> events, &(output.events));}
 
-        if (this -> this_gr){ 
-            this -> export_this(this -> this_gr, &(output.graphs)); 
-        }
-        else {
-            this -> export_this(this -> graphs, &(output.graphs));
-        }
+        if (this -> this_gr){this -> export_this(this -> this_gr, &(output.graphs));}
+        else {this -> export_this(this -> graphs, &(output.graphs));}
 
-        if (this -> this_sel){ 
-            this -> export_this(this -> this_sel, &(output.selections)); 
-        }
-        else {
-            this -> export_this(this -> selections, &(output.selections));
-        }
+        if (this -> this_sel){this -> export_this(this -> this_sel, &(output.selections));}
+        else {this -> export_this(this -> selections, &(output.selections));}
         return output; 
     }
 
@@ -158,29 +136,22 @@ namespace SampleTracer
             sel_name = this -> this_tree + "/" + this -> this_selection_name;
         }
        
-        if (this -> events.count(ev_name)){
-            this -> this_ev = this -> events[ev_name];
-        }
-        else { this -> this_ev = nullptr; }
+        if (!this -> events.count(ev_name)){ this -> this_ev = nullptr; }
+        else {this -> this_ev = this -> events[ev_name];}
 
-        if (this -> graphs.count(gr_name)){
-            this -> this_gr = this -> graphs[gr_name];
-        }
-        else { this ->this_gr = nullptr; }
+        if (!this -> graphs.count(gr_name)){ this ->this_gr = nullptr; }
+        else {this -> this_gr = this -> graphs[gr_name];}
        
-        if (this -> selections.count(sel_name)){
-            this -> this_sel = this -> selections[sel_name];
-        }
-        else { this -> this_sel = nullptr; } 
+        if (!this -> selections.count(sel_name)){this -> this_sel = nullptr;} 
+        else {this -> this_sel = this -> selections[sel_name];}
 
-        if (!this -> get_event){     this -> this_ev  = nullptr; }
-        if (!this -> get_graph){     this -> this_gr  = nullptr; }
-        if (!this -> get_selection){ this -> this_sel = nullptr; }
+        if (!this -> get_event){this -> this_ev  = nullptr;}
+        if (!this -> get_graph){this -> this_gr  = nullptr;}
+        if (!this -> get_selection){this -> this_sel = nullptr;}
 
         if (this -> this_ev) { this -> valid = true; }
         if (this -> this_gr) { this -> valid = true; }
         if (this -> this_sel){ this -> valid = true; }
-
     }
     
     void CyBatch::ApplySettings(const settings_t* inpt)
@@ -204,21 +175,13 @@ namespace SampleTracer
         unsigned int z = srch -> size(); 
         if (!z){ return; }
         
-        for (unsigned int x(0); x < z; ++x){
-            if (this -> hash != srch -> at(x)){continue;}
-            return; 
-        }
-        
         std::string find; 
         std::vector<std::string> tags; 
         tags = Tools::split(this -> meta -> sample_name, "|"); 
         for (unsigned int x(0); x < z; ++x){
             find = srch -> at(x); 
-            for (std::string key : tags){
-                if (key != find){continue;}
-                return; 
-            }  
-
+            if (find == this -> hash){return;}
+            for (std::string key : tags){if (key == find){return;}}  
             if (this -> meta -> original_input == find){ return; }
             if (this -> meta -> DatasetName == find){ return; }
 
@@ -344,9 +307,7 @@ namespace SampleTracer
         }
         std::map<std::string, std::string>::iterator its_; 
         its_ = tree_map.begin(); 
-        for (; its_ != tree_map.end(); ++its_){
-            this -> event_trees[its_ -> second] += 1;
-        }
+        for (; its_ != tree_map.end(); ++its_){this -> event_trees[its_ -> second] += 1;}
     }
 
     void CyROOT::ReleaseObjects(std::map<std::string, std::vector<CyEventTemplate*>>* out)

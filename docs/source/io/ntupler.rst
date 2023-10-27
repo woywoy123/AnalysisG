@@ -59,9 +59,6 @@ In principle the HDF5 content can be merged into a single object, thus restoring
 
 
 
-
-
-
 Example Code Usage
 __________________
 

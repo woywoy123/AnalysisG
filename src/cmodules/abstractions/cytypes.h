@@ -147,6 +147,7 @@ struct meta_t
     std::string genFilterNames = "";
     std::string file_type = "";
     std::string sample_name = ""; 
+    std::string logicalDatasetName = ""; 
 
     std::vector<std::string> keywords = {};
     std::vector<std::string> weights = {};
@@ -321,7 +322,6 @@ struct folds_t
 
 struct data_t
 {
-    std::string name = ""; 
     std::vector<std::vector<float>> truth    = {};
     std::vector<std::vector<float>> pred     = {};
     std::vector<std::vector<float>> index    = {};
@@ -329,18 +329,9 @@ struct data_t
     std::vector<std::vector<float>> nodes    = {};
     std::vector<std::vector<float>> loss     = {}; 
     std::vector<std::vector<float>> accuracy = {};
-};
 
-struct metric_t
-{
-    // ROC-curve variables
-    std::map<std::string, std::vector<std::vector<float>>> truth = {}; 
-    std::map<std::string, std::vector<std::vector<float>>> pred  = {}; 
-
-    // General stuff
-    std::map<std::string, float> acc_average = {}; 
-    std::map<std::string, float> loss_average = {};
-    std::map<std::string, int> num_nodes = {}; 
+    std::map<int, std::vector<std::vector<float>>> mass_truth = {};
+    std::map<int, std::vector<std::vector<float>>> mass_pred  = {};
 };
 
 struct root_t
@@ -411,6 +402,9 @@ struct settings_t
     std::string device = "cpu";
     std::string training_name = "untitled";
     std::string run_name = "untitled"; 
+    float training_size = -1;
+    float max_gpu_memory = -1; 
+    float max_ram_memory = -1; 
 
     std::string optimizer_name = ""; 
     std::map<std::string, std::string> optimizer_params = {}; 
@@ -418,9 +412,9 @@ struct settings_t
     std::string scheduler_name = ""; 
     std::map<std::string, std::string> scheduler_params = {}; 
 
-    int kfolds = 10; 
-    int batch_size = 1; 
+    int kfolds = -1; 
     int epochs = -1; 
+    int batch_size = 1; 
     std::map<int, int> epoch = {}; 
     std::vector<int> kfold = {}; 
 

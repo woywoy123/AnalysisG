@@ -12,5 +12,5 @@ class Model(_ModelWrapper, ModelWrapper):
     def SampleCompatibility(self, smpl):
         if self._check_broken_model(): return False
         self.match_data_model_vars(smpl)
-        if not self._iscompatible(smpl.to_dict()): return False
+        if not self._iscompatible(smpl): return False
         return True

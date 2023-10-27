@@ -32,7 +32,7 @@ modules = [
         make("SelectionTemplate", "selection", ["abstractions", "code"]),
         make("cWrapping", "wrapping", ["abstractions"], False),
         make("cPlots", "plotting", ["abstractions"]),
-        make("cOptimizer", "optimizer", ["abstractions"]),
+        make("cOptimizer", "optimizer", ["abstractions", "epoch"]),
         make("Runner", "runner", ["abstractions"], False),
         make("SampleTracer", "sampletracer", ["root", "abstractions", "metadata", "event", "graph", "selection", "code"])
 ]

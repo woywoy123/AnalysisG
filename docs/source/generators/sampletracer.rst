@@ -11,6 +11,63 @@ Most of the functionalities, such as the magic functions are implemented within 
 Methods and Attributes
 ______________________
 
+.. py:class:: Event
+
+    A simple wrapper class used to batch cached objects into a single object. 
+    Upon calling for a specific attribute, the class will scan available objects for the attribute.
+    Unlike most sub-modules within the package, this class has limited functionalities in terms of magic functions.
+
+    .. py:method:: release_event() -> EventTemplate
+
+        A method which releases the event object from the sample tracer batch.
+
+    .. py:method:: release_graph() -> GraphTemplate
+
+        A method which releases the graph object from the sample tracer batch.
+
+    .. py:method:: release_selection() -> SelectionTemplate
+    
+        A method which releases the selection object from the sample tracer batch.
+
+    .. py:method:: event_cache_dir() -> dict 
+
+        Returns a dictionary of the current caching directory of the given event name.
+
+    .. py:method:: graph_cache_dir() -> dict 
+
+        Returns a dictionary of the current caching directory of the given event name.
+
+
+    .. py:method:: selection_cache_dir() -> dict 
+
+        Returns a dictionary of the current caching directory of the given event name.
+
+    .. py:method:: meta() -> MetaData
+
+        Returns a **MetaData** object for the current event.
+
+    .. py:method:: __eq__() -> bool
+
+        Returns true if the events have the same hash.
+
+    .. py:method:: __hash__() -> bool
+
+        Allows for the use of **set** and **dict**, where the event can be interpreted as a key in a dictionary.
+
+    .. py:attribute:: hash -> str
+
+        Returns a the hash of the current event.
+
+    .. py:attribute:: __getstate__() -> tuple[meta_t, batch_t]
+
+        Allows the event to be pickled.
+
+    .. py:attribute:: __setstate__(tuple[meta_t, batch_t])
+
+        Rebuilds the Event from a **meta_t** and **batch_t** data type.
+
+
+
 .. py:class:: SampleTracer
 
     .. py:method:: __getstate__ -> tracer_t
@@ -42,7 +99,7 @@ ______________________
 
     .. py:method:: __iadd__(SampleTracer other) -> SampleTracer
 
-        Add the incoming tracer to this tracer, i.e. append content.
+        Append the incoming tracer object to this tracer.
 
     .. py:method:: __iter__
 
@@ -89,52 +146,62 @@ ______________________
     .. py:method:: RestoreEvents(list these_hashes = []) -> None
 
         Restore **EventTemplates** matching a particular set of hashes.
+
         :params list these_hashes: A list of hashes consistent with events indexed by the tracer.
 
     .. py:method:: RestoreGraphs(list these_hashes = []) -> None
 
         Restore **GraphTemplates** matching a particular set of hashes.
+
         :params list these_hashes: A list of hashes consistent with events indexed by the tracer.
 
     .. py:method:: RestoreSelections(list these_hashes = []) -> None
 
         Restore **SelectionTemplates** matching a particular set of hashes.
+
         :params list these_hashes: A list of hashes consistent with events indexed by the tracer.
 
     .. py:method:: FlushEvents(list these_hashes = []) -> None
 
         Delete **EventTemplates** matching a particular set of hashes from RAM
+
         :params list these_hashes: A list of hashes consistent with events indexed by the tracer.
 
     .. py:method:: FlushGraphs(list these_hashes = []) -> None
 
         Delete **GraphsTemplates** matching a particular set of hashes from RAM.
+
         :params list these_hashes: A list of hashes consistent with events indexed by the tracer.
 
     .. py:method:: FlushSelections(list these_hashes = []) -> None
 
         Delete **SelectionTemplates** matching a particular set of hashes from RAM.
+
         :params list these_hashes: A list of hashes consistent with events indexed by the tracer.
 
     .. py:method:: _makebar(inpt: Union[int], CustTitle: Union[None, str] = None) -> (None, tqdm)
 
         Creates a *tqdm* progress bar.
+
         :params int inpt: Length of the sample, i.e. the range of the bar.
         :params None, str CustTitle: Override the default progress prefix title (see **Caller**).
 
     .. py:method:: trace_code(obj) -> code_t
 
         Preserve an object which is independent of the current file implementation (see **Code**).
+
         :params obj: Any Python object
 
     .. py:method:: rebuild_code(val: Union[list, str, None]) -> list[Code]
 
         Rebuild a set of **Code** objects which mimic the originally traced code.
+
         :params list, str, None val: Rebuild these strings from the traced code of the SampleTracer.
 
     .. py:method:: ImportSettings(settings_t inpt) -> None
 
         Apply settings from the input to the current SampleTracer.
+
         :params settings_t inpt: A dictionary like object with specific keys. See the **Data Type and Dictionary Section**.
 
     .. py:method:: ExportSettings -> settings_t
@@ -149,6 +216,7 @@ ______________________
     .. py:method:: is_self(inpt, obj = SampleTracer) -> bool
 
         Checks whether the input has a type consistent with the object type (also inherited objects are permitted).
+
         :params inpt: Any Python object
         :params obj: The target object type to check against, e.g. SampleTracer type.
 
@@ -160,15 +228,32 @@ ______________________
 
         Returns a list of **Event** objects regardless if Templates are not loaded in memory.
 
-
     .. py:method:: AddEvent(event_inpt, meta_inpt = None) -> None
+
+        An internal function used to add **EventTemplate** to the sample tracer.
+
+        :params EventTemplate event_inpt: The **EventTemplate** object to add.
+        :params MetaData meta_inpt: An optional parameter that decorates the template with meta-data.
 
     .. py:method:: AddGraph(graph_inpt, meta_inpt = None) -> None
 
+        An internal function used to add **GraphTemplate** to the sample tracer.
+
+        :params GraphTemplate event_inpt: The **GraphTemplate** object to add.
+        :params MetaData meta_inpt: An optional parameter that decorates the template with meta-data.
+
+
     .. py:method:: AddSelections(selection_inpt, meta_inpt = None) -> None
+
+        An internal function used to add **SelectionTemplate** to the sample tracer.
+
+        :params SelectionTemplate event_inpt: The **SelectionTemplate** object to add.
+        :params MetaData meta_inpt: An optional parameter that decorates the template with meta-data.
 
     .. py:method:: SetAttribute(fx, str name) -> bool
 
+        :params callable fx: A function used to apply to the **GraphTemplate** (this is an internal function).
+        :params str name: The name of the feature to add.
 
     .. py:attribute:: Tree -> str
 
@@ -196,17 +281,22 @@ ______________________
         Specifies whether to generate a cache after constructing **Event** objects. 
         If this is enabled without specifying a **ProjectName**, a folder called **UNTITLED** is generated.
 
-
     .. py:attribute:: EventName -> str
+
+        The event name to fetch from cache.
 
     .. py:attribute:: Graph -> GraphTemplate or Code
 
         Specifies the event graph implementation to use for constructing graphs.
-
     
     .. py:attribute:: ShowGraphs -> list[str]
 
+         Returns a list of **GraphTemplate** implementations found within the index.
+
     .. py:attribute:: GetGraph -> bool
+
+        Forcefully get or ignore **GraphTemplate** types from the **Graph** object.
+        This is useful to avoid redundant sample fetching from RAM.
 
     .. py:attribute:: DataCache -> bool
 
@@ -215,13 +305,20 @@ ______________________
 
     .. py:attribute:: GraphName -> str
 
+        The graph name to fetch from cache.
+
     .. py:attribute:: Selections -> dict[str, SelectionTemplate or Code]
 
     .. py:attribute:: ShowSelections -> list[str]
 
     .. py:attribute:: GetSelection -> bool
 
+        Forcefully get or ignore **SelectionTemplate** types from the **Selection** object.
+        This is useful to avoid redundant sample fetching from RAM.
+
     .. py:attribute:: SelectionName -> str
+
+        The selection name to fetch from cache.
 
     .. py:attribute:: Optimizer -> str
 
@@ -258,12 +355,15 @@ ______________________
 
     .. py:attribute:: Epoch -> int
 
+        The epoch to start from.
+
     .. py:attribute:: kFolds -> int
 
         Number of folds to use for training
 
-
     .. py:attribute:: Epochs -> int
+
+        Number of epochs to train the model with.
 
     .. py:attribute:: BatchSize -> int
     
@@ -273,14 +373,16 @@ ______________________
 
     .. py:attribute:: nHashes -> int
 
+        Shows the number of hashes that have been indexed.
+
     .. py:attribute:: ShowLength -> dict
+
+        Shows information about the number of hashes associated with a particular tree/event/graph/selection implementation.
 
     .. py:attribute:: EventStart -> int or None
 
         The event to start from given a set of ROOT samples. 
         Useful for debugging specific events.
-
-
 
     .. py:attribute:: EventStop -> int or None
 
@@ -288,10 +390,15 @@ ______________________
 
     .. py:attribute:: EnablePyAMI -> bool
 
+        Try to scan the input samples meta data on PyAmi.
+
     .. py:attribute:: Files -> dict
+
+        Files found under some specified directory.
 
     .. py:attribute:: SampleMap -> dict
 
+        A map of the sample names and associated ROOT samples.
 
     .. py:attribute:: ProjectName -> str
 
@@ -302,7 +409,6 @@ ______________________
 
         Specifies the output directory of the analysis. 
         This is useful if the output needs to be placed outside of the working directory.
-
 
     .. py:attribute:: WorkingPath -> str
 
@@ -356,13 +462,28 @@ ______________________
 
     .. py:attribute:: KinematicMap -> dict
 
-        place holder
+        An attribute enabling the mass reconstruction during and post GNN training.
+        The following syntax is used to select a given feature from the GNN;
+        
+        .. code-block:: python 
 
-    .. py:attribute:: EnableReconstruction -> bool
-
-        place holder
+            <ana>.KinematicMap = {"<the feature to reconstruct>" : "<coordinate system (polar/cartesian)> -> pT, eta, phi, e"}
 
     .. py:attribute:: PlotLearningMetrics -> bool
 
         Whether to output various metric plots whilst training.
         This can be enabled before training or re-run after training from the training cache.
+
+    .. py:attribute:: MaxGPU -> float
+        
+        This sets the upper limit of the GPU memory allowed during training/validation/testing.
+
+    .. py:attribute:: MaxRAM -> float
+
+        Sets the upper limit of the RAM used by the framework.
+        This is independent from the GPU memory and is predominantly used to monitor general memory usage.
+        If the data index becomes greater than the specified limit, parts of the cache is purged from memory.
+
+    
+
+

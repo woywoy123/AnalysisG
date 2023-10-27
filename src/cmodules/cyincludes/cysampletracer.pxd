@@ -44,17 +44,23 @@ cdef extern from "../root/root.h" namespace "SampleTracer" nogil:
         CyEventTemplate* this_ev
         CyGraphTemplate* this_gr
         CySelectionTemplate* this_sel
+
         map[string, CyCode*] code_hashes
         map[string, string] event_dir
         map[string, string] graph_dir
         map[string, string] selection_dir
 
-        string this_tree
-        string this_event_name
         string hash
         bool lock_meta
 
+
+cdef extern from "../sampletracer/sampletracer.h":
+    struct HDF5_t:
+        string root_name
+        map[string, string] cache_path
+
 cdef extern from "../sampletracer/sampletracer.h" namespace "SampleTracer":
+
     cdef cppclass CySampleTracer:
         CySampleTracer() except +
         void AddMeta(meta_t, string) except +
@@ -63,7 +69,8 @@ cdef extern from "../sampletracer/sampletracer.h" namespace "SampleTracer":
         void AddSelection(selection_t, meta_t) except +
         void AddCode(code_t code) except +
 
-        CyBatch* RegisterHash(string, string) except +
+        map[string, string] RestoreTracer(map[string, HDF5_t]* hdf5, string event_root) except +
+        map[string, vector[CyBatch*]] RestoreCache(string type) except +
 
         map[string, vector[CyEventTemplate*]] DumpEvents() except +
         map[string, vector[CyGraphTemplate*]] DumpGraphs() except +

@@ -14,6 +14,8 @@ class settings:
         self.Branches = []
         self.Leaves = []
         self.Files = {}
+        self.OnlyMeta = False
+        self.metacache_path = "./"
 
 
 class UpROOT(_UpROOT, settings, _Interface):
@@ -57,9 +59,12 @@ class UpROOT(_UpROOT, settings, _Interface):
                 key = thiskey + "/" + i
                 self._getthis["keys"].append(recursion(inpt[key], key))
 
-        for i in self.File:
+        if self.metacache_path is None: pass
+        else: self.mkdir(self.metacache_path)
+
+        for i in list(self.File):
             if i in self.MetaData: continue
-            meta = MetaData(i, scan_ami = self.EnablePyAMI)
+            meta = MetaData(i, scan_ami = self.EnablePyAMI, metacache_path = self.metacache_path)
             self.MetaData[i] = meta
             self.MetaData[i].Trees = self.Trees
             self.MetaData[i].Branches = self.Branches
@@ -69,13 +74,16 @@ class UpROOT(_UpROOT, settings, _Interface):
                 self.FailedAMI()
                 self.EnablePyAMI = False
             elif meta.loaded and self.EnablePyAMI:
-                self.FoundMetaData(i, meta.dsid, meta.generators)
-
+                if meta.is_cached: key = i + " (cached)"
+                else: key = i + " (fetched)"
+                self.FoundMetaData(key, meta.dsid, meta.generators)
+                if self.OnlyMeta: continue
             self.File[i] = uproot.open(i)
+
             for tr in self.File[i].keys():
                 self._getthis = {"num" : [], "keys" : []}
                 recursion(self.File[i], tr)
-                if len(self._getthis["num"]) == 0: continue
+                if not len(self._getthis["num"]): continue
                 meta.ProcessKeys(self._getthis)
 
             meta._findmissingkeys()
@@ -104,6 +112,9 @@ class UpROOT(_UpROOT, settings, _Interface):
             meta[f].event_index = 0
 
             for tr in gets:
+                if tr_l[tr]: pass
+                else: continue
+
                 if tr not in self.__root:
                     self.__root[tr] = {"files" : {}, "library" : "np", "step_size" : self.StepSize}
                     self.__root[tr].update({"how" : dict, "expressions" : []})
@@ -120,13 +131,13 @@ class UpROOT(_UpROOT, settings, _Interface):
             self.__root[tr] = uproot.iterate(**self.__root[tr])
             self.__tracing[tr] = iter(self.__tracing[tr])
             self.__index[tr] = iter(self.__index[tr])
-
         self._event_index = 0
         self._trk = {}
         self._c = {}
         return self
 
     def __next__(self):
+        if not len(self.__index): raise StopIteration
 
         trees = [] if len(self._c) else list(self.__root)
         for tr in trees:
@@ -138,12 +149,13 @@ class UpROOT(_UpROOT, settings, _Interface):
             self._c.update(keys)
 
         self._c  = {keys : c for keys, c in self._c.items() if len(c) > 0}
+        if not len(self._c) and len(trees): raise StopIteration
+
         out = {keys : c.pop(0) for keys, c in self._c.items()}
-        if len(trees) and not len(self._c): raise StopIteration
         if not len(out): return self.__next__()
-        index = [tr for tr, x in self._trk.items() if x[1] > self._event_index]
 
         msg = ""
+        index = [tr for tr, x in self._trk.items() if x[1] > self._event_index]
         for tr in self.__root:
             if len(index) != 0: break
             self._event_index = 0
@@ -152,7 +164,6 @@ class UpROOT(_UpROOT, settings, _Interface):
             self._trk[tr] = (file, indx)
             msg += tr + " -> " + str(self._trk[tr][1]) + ", "
         if not len(index): self.Success("READING -> " + self._trk[tr][0] + " (Trees: " + msg[:-2] + ")")
-
         for tr in self._trk:
             file = self._trk[tr][0]
             out["MetaData"] = self.MetaData[file]

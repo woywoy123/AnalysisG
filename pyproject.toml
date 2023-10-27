@@ -1,17 +1,15 @@
 [build-system]
 requires = [
-    "cython", 
-    "numpy", 
-    "wheel", 
-    "torch>=1.13.1", 
-    "setuptools>=68.2.2", 
-    "setuptools-scm>=8.0"
+    "cython",
+    "wheel",
+    "setuptools",
+    "torch<=2.0.1",
 ]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "AnalysisG"
-dynamic = ["version"]
+version = "4.2.8"
 authors = [{name = "woywoy123"}]
 readme.content-type = "text/markdown"
 readme.file = "README.md"
@@ -20,8 +18,9 @@ dependencies = [
     "mplhep==0.3.28",
     "matplotlib==3.5.3",
     "pyAMI-atlas==5.1.0.1",
-    "numpy",
+    "awkward<=2.4.4",
     "uproot",
+    "numpy",
     "h5py",
     "pwinput",
     "scikit-learn",
@@ -45,9 +44,6 @@ classifiers = [
 [project.urls]
 Homepage = "https://github.com/woywoy123/AnalysisG"
 
-[tool.setuptools_scm]
-version_scheme = "release-branch-semver"
-
 [tool.setuptools.package-dir]
 "AnalysisG" = "src"
 "AnalysisG.IO"           = "src/IO"
@@ -61,7 +57,6 @@ version_scheme = "release-branch-semver"
 "AnalysisG.Particles"    = "src/Events/Particles"
 "AnalysisG.Notification" = "src/Notification"
 "AnalysisG.Submission"   = "src/Submission"
-#"AnalysisG.Plotting" = "src/Plotting" 
 
 [tool.setuptools.package-data]
 "*" = ["*.pyx", "*.pxd", "*.cxx", "*.h"]

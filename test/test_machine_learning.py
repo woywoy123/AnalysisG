@@ -7,18 +7,19 @@ root1 = "./samples/sample1/smpl1.root"
 
 def test_random_sampling():
     Ana = Analysis()
+    Ana.rm("Project_ML")
     Ana.ProjectName = "Project_ML"
     Ana.Event = Event
     Ana.Graph = GraphChildren
     Ana.InputSample(None, root1)
     ApplyFeatures(Ana, "TruthChildren")
     Ana.Launch()
+    Ana.GetGraph = True
     smpls = Ana.makelist()
-
     r = RandomSamplers()
     r_ = r.RandomizeEvents(smpls, len(smpls))
-    assert len(r_) == len(smpls)
 
+    assert len(r_) == len(smpls)
     x = r.MakeTrainingSample(smpls)
     for i in x["train_hashes"]: assert r_[i].Train
     for i in x["test_hashes"]:  assert r_[i].Eval
@@ -29,7 +30,6 @@ def test_random_sampling():
         for smpl in x[f]["train"]: train[f] += [smpl.hash]
         for smpl in x[f]["leave-out"]:
             assert smpl.hash not in train[f]
-
     x = r.MakeDataLoader(smpls, SortByNodes=True)
     nodes = {}
     for smpl in [t[0] for t in x]:
@@ -42,7 +42,7 @@ def test_random_sampling():
 
     x = r.MakeDataLoader(smpls)
     Ana.EventName = None
-    assert sum(nodes.values()) == len(Ana)
+    assert sum(nodes.values()) == Ana.ShowLength["nominal/GraphChildren"]
     Ana.rm("Project_ML")
 
 def fx(a): return a.NotAFeature
@@ -87,6 +87,7 @@ def test_optimizer():
 
     AnaG = Analysis()
     AnaG.ProjectName = "Project_ML"
+    AnaG.EventName = "Event"
     AnaG.Graph = GraphChildren
     AnaG.Chunks = 1000
     ApplyFeatures(AnaG, "TruthChildren")
@@ -111,10 +112,12 @@ def test_optimizer():
     AnaG = Analysis()
     AnaG.ProjectName = "Project_ML"
     AnaG.TrainingName = "untitled"
+    AnaG.GraphName = "GraphChildren"
     AnaG.DataCache = True
     mod = ModelWrapper()
     mod.__params__ = {"test" : "here"}
     mod.model = CheatModel
+
     wrp_broken = Model(CheatModel)
     wrp_ok = Model(CheatModel)
     wrp_ok.__params__ = {"test" : "here"}
@@ -160,6 +163,7 @@ def test_optimizer():
     AnaG.TrainingName = "untitled"
     AnaG.Device = "cpu"
     AnaG.ContinueTraining = False
+    AnaG.DataCache = True
     AnaG.DebugMode = True
     AnaG.Model = CheatModel
     AnaG.PlotLearningMetrics = False
@@ -170,6 +174,9 @@ def test_optimizer():
     AnaG.BatchSize = 3
     AnaG.Epochs = 20
     AnaG.Device = "cpu"
+    AnaG.GraphName = "GraphChildren"
+    AnaG.Tree = "nominal"
+    AnaG.RestoreTracer()
 
     op = Optimizer()
     op.Start(AnaG)
@@ -207,6 +214,7 @@ def test_parallel_analysis():
     from models.CheatModel import CheatModel
 
     Ana = Analysis()
+    Ana.rm("Project")
     Ana.ProjectName = "Project"
     Ana.InputSample(None, root1)
     Ana.Event = Event
@@ -218,6 +226,7 @@ def test_parallel_analysis():
     Ana = Analysis()
     Ana.ProjectName = "Project"
     Ana.DataCache = True
+    Ana.GraphName = "GraphChildren"
     Ana.TrainingSize = 50
     Ana.kFolds = 10
     Ana.Launch()
@@ -229,6 +238,7 @@ def test_parallel_analysis():
     Ana.Optimizer = "ADAM"
     Ana.OptimizerParams = {"lr": 0.001}
     Ana.Device = "cpu"
+    Ana.GraphName = "GraphChildren"
     Ana.Model = CheatModel
     Ana.ModelParams = {"test" : "here"}
     Ana.ContinueTraining = True
@@ -239,6 +249,7 @@ def test_parallel_analysis():
     Ana.ProjectName = "Project"
     Ana.Epochs = 5
     Ana.kFold = [1]
+    Ana.GraphName = "GraphChildren"
     Ana.ContinueTraining = True
     Ana.Optimizer = "ADAM"
     Ana.ModelParams = {"test" : "here"}
@@ -252,8 +263,8 @@ def test_parallel_analysis():
 
 
 if __name__ == "__main__":
-    test_random_sampling()
-    test_feature_analysis()
+#    test_random_sampling()
+#    test_feature_analysis()
     test_optimizer()
     test_optimizer_analysis()
     test_parallel_analysis()

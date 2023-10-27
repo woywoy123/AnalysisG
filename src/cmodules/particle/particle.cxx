@@ -10,8 +10,7 @@ namespace CyTemplate
         this -> state = p; 
     }
 
-    CyParticleTemplate::CyParticleTemplate(
-            double px, double py, double pz, double e) 
+    CyParticleTemplate::CyParticleTemplate(double px, double py, double pz, double e) 
     {
         particle_t* p = &(this -> state); 
         p -> px = px; 
@@ -21,8 +20,7 @@ namespace CyTemplate
         p -> polar = true; 
     }
 
-    CyParticleTemplate::CyParticleTemplate(
-            double px, double py, double pz)
+    CyParticleTemplate::CyParticleTemplate(double px, double py, double pz)
     {
         particle_t* p = &(this -> state); 
         p -> px = px; 
@@ -90,10 +88,7 @@ namespace CyTemplate
     std::string CyParticleTemplate::symbol()
     {
         particle_t* p = &(this -> state); 
-        if ((p -> symbol).size() != 0)
-        { 
-            return p -> symbol; 
-        }
+        if ((p -> symbol).size() != 0){return p -> symbol;}
         
         std::map<int, std::string> sym = {
                  {1, "d"}, {2, "u"}, {3, "s"}, 
@@ -151,8 +146,7 @@ namespace CyTemplate
 
     bool CyParticleTemplate::is(std::vector<int> p)
     {
-        for (int i : p)
-        { 
+        for (int i : p){ 
             if (std::abs(i) != std::abs(this -> state.pdgid)){} 
             else {return true;}
         }
@@ -171,14 +165,14 @@ namespace CyTemplate
     {
         bool nu  = false; 
         bool lep = false; 
-        for (particle_t x : inpt)
+        for (unsigned int x(0); x < inpt.size(); ++x)
         {
-            CyParticleTemplate* p = new CyParticleTemplate(x); 
-            if (!nu) { nu  = p -> is_nu() ; continue; }
-            if (!lep){ lep = p -> is_lep(); continue; }
-            if (lep && nu){ return true; }
+            CyParticleTemplate* p = new CyParticleTemplate(inpt[x]); 
+            if (!nu) { nu  = p -> is_nu();}
+            if (!lep){ lep = p -> is_lep();}
             delete p; 
         }
+        if (lep && nu){ return true; }
         return false;
     }
 
@@ -323,6 +317,7 @@ namespace CyTemplate
         this -> state.py += p -> py(); 
         this -> state.pz += p -> pz(); 
         this -> state.e  += p -> e(); 
+        this -> state.polar = true;
     }
 
     void CyParticleTemplate::iadd(CyParticleTemplate* p)

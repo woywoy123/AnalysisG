@@ -24,8 +24,7 @@ class _Interface(Tools):
 
         add = {}
         add[Name] = []
-        for i in self.Files:
-            add[Name] += [i + "/" + j for j in self.Files[i]]
+        for i in self.Files: add[Name] += [i + "/" + j for j in self.Files[i]]
         self.SampleMap = add
 
     def _StartStop(self, it: Union[int]):

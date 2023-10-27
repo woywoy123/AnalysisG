@@ -175,8 +175,7 @@ def test_eventgraph():
     Gr.Threads = 1
     Gr.Device = "cuda"
     Gr.MakeGraphs()
-    Gr.EventName = None
-    assert len(Gr) == len(Ev)
+    assert Gr["nominal/GraphChildren"] == Ev["nominal/Event"]
     for i in Gr:
         assert i.weight is not None
         assert "G_fx_graph" in i.Errors

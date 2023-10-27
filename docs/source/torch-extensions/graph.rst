@@ -1,6 +1,3 @@
-Torch Extension Modules (pyc) Python Interfaces
-***********************************************
-
 Graph
 _____
 
@@ -22,6 +19,17 @@ These are outlined below:
 - node_sum: 
     A tensor holding the aggregated node's 4-vector.
 
+
+
+.. py:module:: pyc.Graph.Base
+
+        .. py:function:: unique_aggregation(clusters, node_features) -> torch.tensor
+
+            An aggregation function used to sum node features without double summing any particular node pairs. 
+            Given the complexity of the operation in nominal PyTorch, this function is exclusive to CUDA tensors.
+
+            :params torch.tensor clusters: Cluster indices used to perform the summation over.
+            :params torch.tensor node_features: The feature vector of the node to sum.
 
 
 .. py:module:: pyc.Graph.Cartesian

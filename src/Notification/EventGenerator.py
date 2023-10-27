@@ -41,14 +41,13 @@ class _EventGenerator(Notification):
         return False
 
     def CheckSpawnedEvents(self):
-        if len(self) == 0:
-            self.Warning("No Events were generated...")
-            self.Warning("If this is unexpected, double to check")
-            return not self.Warning("Your event implementation.")
-        return True
+        if len(self): return True
+        self.Warning("No Events were generated...")
+        self.Warning("If this is unexpected, double to check")
+        return not self.Warning("Your event implementation.")
 
     def CheckSettings(self):
-        if self.EventStop == None: return
+        if self.EventStop is None: return
         if self.EventStop > self.EventStart: return
         self.Warning("EventStart is larger than EventStop. Switching.")
         self.EventStop, self.EventStart = self.EventStart, self.EventStop

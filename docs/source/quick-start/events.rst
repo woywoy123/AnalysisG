@@ -118,6 +118,10 @@ The underlying source code can be found under the ``src/Templates/CXX/Templates.
         
         Returns the name of this event type.
 
+    .. py:attribute:: meta -> MetaData
+        
+        Returns the **MetaData** object associated with the sample.
+
 
 Magic Functions
 _______________

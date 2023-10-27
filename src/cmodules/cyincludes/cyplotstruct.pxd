@@ -64,6 +64,9 @@ cdef extern from "../plotting/plotting.h":
         int bins
         float start
         float end
+        bool set_end
+        bool set_start
+        float step
 
         bool underflow
         bool overflow
@@ -77,36 +80,3 @@ cdef extern from "../plotting/plotting.h":
         axis_t   x
         axis_t   y
         map[string, axis_t] stacked
-
-
-    struct report_t:
-        int current_epoch
-        map[string, float] auc_train
-        map[string, float] auc_valid
-        map[string, float] auc_eval
-
-        map[string, float] loss_train
-        map[string, float] loss_valid
-        map[string, float] loss_eval
-
-        map[string, float] loss_train_up
-        map[string, float] loss_valid_up
-        map[string, float] loss_eval_up
-
-        map[string, float] loss_train_down
-        map[string, float] loss_valid_down
-        map[string, float] loss_eval_down
-
-
-        map[string, float] acc_train
-        map[string, float] acc_valid
-        map[string, float] acc_eval
-
-        map[string, float] acc_train_up
-        map[string, float] acc_valid_up
-        map[string, float] acc_eval_up
-
-        map[string, float] acc_train_down
-        map[string, float] acc_valid_down
-        map[string, float] acc_eval_down
-

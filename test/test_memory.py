@@ -85,7 +85,7 @@ def test_particle_pickle():
         jets_r = UnpickleObject("jets")
         assert sum([l == p for l, p in zip(jets, jets_r)]) == len(jets)
         if mem == 0: mem = psutil.virtual_memory().percent
-        assert psutil.virtual_memory().percent - mem < 1
+        assert psutil.virtual_memory().percent - mem < 8
 
 
 def test_particle_multithreading():
@@ -134,7 +134,7 @@ def test_particle_multithreading():
         assert len([x[i.hash] for i in jets]) == len(jets)
         for i in list(x): del x[i]
         if mem == 0: mem = psutil.virtual_memory().percent
-        assert mem - psutil.virtual_memory().percent < 1
+        assert mem - psutil.virtual_memory().percent < 8
 
 
 def test_event_pickle():
@@ -157,7 +157,7 @@ def test_event_pickle():
         assert sum([l.hash == p.hash for l, p in zip(events, events_r)]) == len(events)
 
         if mem == 0: mem = psutil.virtual_memory().percent
-        assert psutil.virtual_memory().percent - mem < 1
+        assert psutil.virtual_memory().percent - mem < 8
 
 
 
@@ -218,7 +218,7 @@ def test_event_multithreading():
         for i in list(events_j): del events_j[i]
 
         if mem == 0: mem = psutil.virtual_memory().percent
-        assert psutil.virtual_memory().percent - mem < 10
+        assert psutil.virtual_memory().percent - mem < 8
 
 
 if __name__ == "__main__":

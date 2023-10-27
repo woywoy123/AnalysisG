@@ -120,8 +120,10 @@ def test_analysis_event_cache():
 
     Ana = _template()
     Ana.EventCache = True
+    Ana.EventName = "Event"
     Ana.Verbose = 3
-    Ana.Launch()
+    for i in Ana:
+        print(i.Event, i.Tops)
     assert len([i for i in Ana if i.Event and len(i.Tops)]) != 0
     Ana.rm("Project")
 
@@ -155,6 +157,8 @@ def test_analysis_event_cache_diff_sample():
     AnaE.EventCache = True
 
     AnaS = Ana2 + Ana1
+    AnaS.ProjectName = "Project"
+    AnaS.EventName = "Event"
     assert len([i for i in AnaS]) > 0
     assert len([i for i in AnaE]) > 0
     assert len([i for i in AnaE if i.hash not in AnaS]) == 0
@@ -208,6 +212,7 @@ def test_analysis_data_nocache():
 
 def test_analysis_data_nocache_nolaunch():
     AnaE = _template()
+    AnaE.rm("Project")
     AnaE.AddGraphFeature(fx_graph, "Graph")
     AnaE.AddNodeFeature(fx_pmu, "Pmu")
     AnaE.AddEdgeFeature(fx_edge, "Mass")
@@ -233,6 +238,7 @@ def test_analysis_data_cache():
 
     AnaE = _template()
     AnaE.DataCache = True
+    AnaE.GraphName = "GraphChildren"
     AnaE.Threads = 10
     AnaE.Launch()
 
@@ -298,9 +304,12 @@ def test_analysis_data_cache_diff_sample():
 
     AnaE = _template()
     AnaE.DataCache = True
+    AnaE.GraphName = "GraphChildren"
     AnaE.Launch()
 
     AnaS = Ana2 + Ana1
+    AnaS.GraphName = "GraphChildren"
+    AnaS.ProjectName = "Project"
     assert len(AnaE)
     assert len(AnaS)
 
@@ -311,7 +320,7 @@ def test_analysis_data_cache_diff_sample():
         assert "G_Graph" in i.Errors
         assert type(i.N_Pmu).__name__ == "Tensor"
         assert type(i.E_Mass).__name__ == "Tensor"
-    assert len([i for i in AnaS if i.hash in AnaE]) == len(AnaE)
+    assert len([i for i in AnaS if i.hash in AnaE and i.Graph]) == AnaE.ShowLength["nominal/GraphChildren"]
     AnaS.rm("Project")
 
 def test_analysis_data_event_cache_diff_sample():
@@ -335,7 +344,9 @@ def test_analysis_data_event_cache_diff_sample():
     Ana1.AddEdgeFeature(fx_edge, "Mass")
     Ana1.AddNodeTruthFeature(fx_node, "Mass")
     Ana1.DataCache = True
+    Ana1.EventName = "Event"
     Ana1.Launch()
+
     assert len([i for i in Ana1 if i.Graph and i.N_Pmu is not None])
     del Ana1
 
@@ -359,6 +370,7 @@ def test_analysis_data_event_cache_diff_sample():
     Ana2.AddEdgeFeature(fx_edge, "Mass")
     Ana2.AddNodeTruthFeature(fx_node, "Mass")
     Ana2.DataCache = True
+    Ana2.EventName = "Event"
     Ana2.Launch()
 
     assert len([i for i in Ana2 if i.Graph and i.N_Pmu is not None]) != 0

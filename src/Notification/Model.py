@@ -31,7 +31,7 @@ class _ModelWrapper(Notification):
             if "Truth):" in dress: self.Warning("Detected Truth Input -> " + dress)
             else: self.Success("-> " + dress)
 
-        self.Success(self.RunName + ":: <- Inputs Ok! ->")
+        self.Success("-> " + self.RunName + " <- Inputs Ok!")
         for i, j in self.out_map.items():
             try: smpl[i]
             except KeyError:
@@ -39,6 +39,17 @@ class _ModelWrapper(Notification):
                 continue
             self.Success("-> " + self._dress(i) + " => " + j)
 
-        self.Success(self.RunName + ":: <- Outputs Ok! ->")
+        self.Success(self.RunName + ":: <- Outputs Ok!")
         self.Success("Inference Ok!")
+
+        if not len(self.KinematicMap): return True
+        self.match_reconstruction(smpl.to_dict())
+        if "graphs" not in self(smpl): return False
+        if len(self.error_message): self.Failure(self.error_message)
+        msg = "Detected Mass Reconstruction Mapping: "
+        msg += "\n -> ".join([""] + [key + ": " + " ".join(self.KinematicMap[key]) for key in self.KinematicMap])
+        self.Success(msg)
         return True
+
+    def _failed_model_load(self):
+        self.FailureExit("-> Failed to Load Model")

@@ -12,19 +12,23 @@ class DiLeptonic(SelectionTemplate):
                 "All" : [],
         }
         self.ZPrime = {}
+        self.PhaseSpaceZ = {}
+        self.PhaseSpaceT = {}
+        self.Kinematics = {}
+
         self.AllowFailure = False
         self.__params__ = {"btagger" : None, "truth" : None}
 
     def ParticleRouter(self, event):
         particles = []
-        if self.__params__["truth"] == "children":
+        if self._truthmode == "children":
             particles += event.TopChildren
 
-        if self.__params__["truth"] == "jets+truthleptons":
+        elif self._truthmode == "jets+truthleptons":
             particles += event.Jets
             particles += [c for c in event.TopChildren if c.is_lep]
 
-        if self.__params__["truth"] == "detector":
+        elif self._truthmode == "detector":
             particles += event.DetectorObjects
 
         return particles
@@ -32,7 +36,6 @@ class DiLeptonic(SelectionTemplate):
     def Selection(self, event):
         self._this_b = self.__params__["btagger"]
         self._truthmode = self.__params__["truth"]
-
         particles = self.ParticleRouter(event)
         leptons = []
         bquark = []
@@ -150,18 +153,52 @@ class DiLeptonic(SelectionTemplate):
             t, t_ = [[bs[i], ls[i], nus[0][i]] for i in range(2)]
             sel_type = "Lep-Lep"
 
-        try: short = event.short
-        except: short = self.ROOT
-        print(self.Luminosity)
-        print(event.
+        mode = []
+        for can in type_dic:
+            x = [int(c.charge) for c in type_dic[can] if int(c.charge)]
+            if not len(x): continue
+            if x[0] < 0: mode.append("-")
+            else: mode.append("+")
+        if not len(mode): mode = "NA"
+        else: mode = "".join(mode)
+
         tops = [sum(t).Mass/1000, sum(t_).Mass/1000]
         self.TopMasses[sel_type] += tops
         self.TopMasses["All"] += tops
 
+        njets = len(event.Jets)
+        zp = sum(t+t_).Mass/1000
+        short = event.meta.logicalDatasetName
+        if "All" not in self.ZPrime: self.ZPrime["All"] = []
         if short not in self.ZPrime: self.ZPrime[short] = {}
         if sel_type not in self.ZPrime[short]: self.ZPrime[short][sel_type] = []
-        zp = sum(t+t_).Mass/1000
-        self.ZPrime[short][sel_type].append(zp)
-        if "All" not in self.ZPrime: self.ZPrime["All"] = []
+
+        if short not in self.PhaseSpaceZ:
+            self.PhaseSpaceZ[short] = {}
+            self.PhaseSpaceT[short] = {}
+            self.Kinematics[short] = {}
+
+        if njets not in self.PhaseSpaceZ:
+            self.PhaseSpaceZ[short][njets] = {}
+            self.PhaseSpaceT[short][njets] = {}
+            self.Kinematics[short][njets] = {}
+
+        if mode not in self.PhaseSpaceZ[short][njets]:
+            self.PhaseSpaceZ[short][njets][mode] = []
+            self.PhaseSpaceT[short][njets][mode] = []
+            self.Kinematics[short][njets][mode] = {"pt" : [], "eta" : [], "phi": [], "e": []}
+
+        self.PhaseSpaceT[short][njets][mode] += tops
+        self.PhaseSpaceZ[short][njets][mode] += [zp]
+
+        particles = sum([type_dic[k]for k in type_dic], [])
+        self.Kinematics[short][njets][mode]["pt"]  += [i.pt for i in particles]
+        self.Kinematics[short][njets][mode]["eta"] += [i.eta for i in particles]
+        self.Kinematics[short][njets][mode]["phi"] += [i.phi for i in particles]
+        self.Kinematics[short][njets][mode]["e"]   += [i.e for i in particles]
+
+
+        self.ZPrime[short][sel_type] += [zp]
         self.ZPrime["All"] += [zp]
         return "FoundSolutions::Passed"
+

@@ -32,6 +32,7 @@ cdef string consolidate(map[string, string]* inpt, string* src):
         if trg is None: trg = pickle.loads(itr.second)
         else: trg = t.MergeData(trg, pickle.loads(itr.second))
     inpt.clear()
+    src.clear()
     return b"" if trg is None else pickle.dumps(trg)
 
 
@@ -47,6 +48,7 @@ cdef class SelectionTemplate:
     cdef CySelectionTemplate* ptr
     cdef selection_t* sel
     cdef _params_
+    cdef code_t _code
 
     def __cinit__(self):
         self.ptr = new CySelectionTemplate()
@@ -79,6 +81,7 @@ cdef class SelectionTemplate:
         cdef string* stra = &self.sel.pickled_strategy_data
         cdef map[string, string]* stra_m = &self.sel.strat_merge
         self.sel.pickled_strategy_data = consolidate(stra_m, stra)
+
         self.__setstate__(dereference(self.sel))
         return self
 
@@ -86,6 +89,7 @@ cdef class SelectionTemplate:
         cdef str key
         cdef dict pkl = {}
         for key in list(self.__dict__):
+            if key.startswith("_"): continue
             pkl[key] = self.__dict__[key]
         self.ptr.selection.pickled_data = pickle.dumps(pkl)
         return self.ptr.Export()
@@ -95,15 +99,13 @@ cdef class SelectionTemplate:
         if not inpt.pickled_data.size(): return
         cdef str key
         cdef dict pkls = pickle.loads(inpt.pickled_data)
-
-        for key in pkls:
-            try: self.__dict__[key] = pkls[key]
-            except KeyError: setattr(self, key, pkls[key])
+        for key in pkls: setattr(self, key, pkls[key])
 
     def __scrapecode__(self):
         co = Code(self)
         cdef code_t code = co.__getstate__()
         self.sel.code_hash = code.hash
+        self._code = code
         return code
 
     cpdef Px(self, float val, float phi):
@@ -245,7 +247,9 @@ cdef class SelectionTemplate:
         return pickle.loads(self.sel._params_)
 
     @__params__.setter
-    def __params__(self, val): self._params_ = val
+    def __params__(self, val):
+        self._params_ = val
+        self.sel._params_ = pickle.dumps(val)
 
     @property
     def CutFlow(self) -> dict:
@@ -285,6 +289,9 @@ cdef class SelectionTemplate:
     def hash(self) -> str: return env(self.ptr.Hash())
 
     @property
+    def code_hash(self) -> str: return env(self.sel.code_hash)
+
+    @property
     def index(self) -> int: return self.sel.event_index
 
     @property
@@ -315,4 +322,11 @@ cdef class SelectionTemplate:
     def Residual(self):
         if not self.sel.pickled_strategy_data.size(): return None
         return pickle.loads(self.sel.pickled_strategy_data)
+
+    @property
+    def code(self): return self._code
+
+    @code.setter
+    def code(self, code_t val): self._code = val
+
 

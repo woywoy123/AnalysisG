@@ -11,8 +11,8 @@ class _Optimizer(Notification):
         if self.IsFile(path): pass
         else: return self.Warning(msg)
 
-        train_fold = {}
         eval_fold = {}
+        train_fold = {}
         leaveout_fold = {}
         maps = self._cmod.length()
         for k in maps:
@@ -29,13 +29,13 @@ class _Optimizer(Notification):
         key = "Found the following training k-Folds in > " + self.TrainingName + " < :" + "\n"
         for i in sorted(train_fold):
             key += ":: kFold - " + str(i) + " (" + str(train_fold[i]) + ")"
-            if not i%5: key += "\n" 
+            if not i%5: key += "\n"
         self.Success(key)
 
         key = "Found the following validation k-Folds in > " + self.TrainingName + " < :" + "\n"
         for i in sorted(eval_fold):
             key += ":: kFold - " + str(i) + " (" + str(eval_fold[i]) + ")"
-            if not i%5: key += "\n" 
+            if not i%5: key += "\n"
         self.Success(key)
 
         key = "Found leave-out sub-sample > " + self.TrainingName + " < -> "
@@ -47,11 +47,15 @@ class _Optimizer(Notification):
         else: self._cmod.UseTheseFolds([i for i in self.kFold if isinstance(i, int)])
 
     def _findpriortraining(self):
-        if self.Epoch is None: self.Epoch = 0
-
         path = self.WorkingPath + "/machine-learning/" + self.RunName
         if self.IsPath(path): pass
         else: self.mkdir(path)
+
+        kfolds = self._cmod.kFolds
+        kfolds.sort()
+        epoch = {}
+        for k in kfolds: epoch[k] = 0
+        self.Epoch = epoch
 
         if not self.ContinueTraining: return
         max_map = {}
@@ -74,11 +78,20 @@ class _Optimizer(Notification):
             self._kOps[fold].Epoch = ep
             self._kModels[fold].Epoch = ep
 
-            self._kOps[fold].load()
+            msg = "Failed to load Optimizer state... "
+            msg += "(fold: " + str(fold) + " epoch:" + str(ep) + ")"
+            try: self._kOps[fold].load()
+            except ValueError:
+                self.Failure("="*len(msg))
+                self.FailureExit(msg)
             self._kModels[fold].load()
         self.Epoch = max_map
 
-    def _nographs(self): return self.Warning("No Sample Graphs found")
+    def _nographs(self): return self.Warning("Missing Graph Name. Will check cache...")
+    def _notree(self): return self.Warning("Missing Tree Name. Will check cache...")
+
+    def _nofailgraphs(self): return self.Failure("Missing Graph Name...")
+    def _nofailtree(self):   return self.Failure("Missing Tree Name...")
 
     def _nomodel(self):
         if self.Model is None: pass
@@ -99,24 +112,47 @@ class _Optimizer(Notification):
         self.Failure("Invalid Scheduler: " + self.Scheduler)
         return False
 
-    def _showloss(self, epoch, kfold):
-        if not self.DebugMode: return
-        string = ["Epoch-kFold: " + str(epoch) + " - " + str(kfold)]
+    def _showloss(self, epoch, kfold, override = False):
+        if not self.DebugMode and not override: return
 
-        if self._kOps[kfold].scheduler is None: lr = None
+        string = ["Epoch-kFold: " + str(epoch)]
+        if kfold != -1: string[-1] += " - " + str(kfold)
+        if kfold == -1: lr = None
+        elif self._kOps[kfold].scheduler is None: lr = None
         else: lr = self._kOps[kfold].scheduler.get_last_lr()[0]
+
         if lr is None: pass
         else: string[-1] += " Current LR: {:.10f}".format(lr)
         self.Success("\n->".join(string))
-        report = self._cmod.metric_plot.reportable()
+        report = self._cmod.reportable()
         if not len(report["loss_train"]): return
+        outputs = {}
         for i, j in report.items():
             try: len(j)
             except: continue
-            if not len(j): continue
-            print(i, j)
+            try: i = i.encode("UTF-8").split("_")
+            except TypeError: i = i.split("_")
+            met, mode = i[:2]
+            mode = met + "-" + mode
+            for k, l in j.items():
+                if k not in outputs: outputs[k] = {}
+                if mode not in outputs[k]: outputs[k][mode] = ""
+                l  = str(round(l, 5))
+                if i[-1] == "up": l = " (+" + l
+                elif i[-1] == "down": l = " | -" + l + ")"
+                outputs[k][mode] += l
 
+        out = []
+        for i in outputs:
+            try: x = "(" + i + ") "
+            except TypeError: x = "(" + i.decode("UTF-8") + ") "
+            strings = {}
+            for j, k in outputs[i].items():
+                met, mode = j.split("-")
+                if met not in strings: strings[met] = ""
+                strings[met] += mode + ": " + k + " :: "
+            out += [" -> " + x + j + " " + k for j, k in strings.items()]
 
-
-
-
+        x = int(max([len(i) for i in out]) / 2) - 6
+        self.Success("\n" + "="*(x-1) + " MODEL REPORT " + "="*(x-1))
+        self.Success("\n".join([""] + out) + "\n")

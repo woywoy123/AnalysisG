@@ -1,6 +1,7 @@
 #include "../abstractions/cytypes.h"
 #include "../code/code.h"
 #include <sstream>
+#include <fstream>
 
 #ifndef ABSTRACTION_H
 #define ABSTRACTION_H
@@ -9,17 +10,17 @@ namespace Tools
 {
     std::string base64_encode(unsigned char const*, unsigned int len); 
     std::string base64_decode(std::string const& s); 
-    inline std::string encode64(std::string* inpt)
-    {
+    inline std::string encode64(std::string* inpt){
        unsigned int length = inpt -> size(); 
        const char* ch = inpt -> c_str(); 
        return base64_encode((const unsigned char*) ch, length); 
     };
 
-    inline std::string decode64(std::string* inpt)
-    {
+    inline std::string decode64(std::string* inpt){
        return base64_decode(*inpt); 
     };
+
+    bool is_file(const std::string* file); 
 
     std::string Hashing(std::string input); 
     std::string ToString(double input);

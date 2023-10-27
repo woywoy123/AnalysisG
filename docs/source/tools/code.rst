@@ -25,7 +25,9 @@ Naturally, this module can be used in tandem with `pickle`, where the module is 
 
     .. py:attribute:: InstantiateObject
 
-        Returns a code type object, which is a wrapped version of the input.
+        Returns a wrapped code type object of the original instance.
+        During the instantiation process, if the instance is a class, then an additional attribute is added to the object called **code**.
+        This attribute is a struct of type **code_t**, and allows for calling the source code in different contexts (e.g. within a thread).
 
     .. py:attribute:: hash
 

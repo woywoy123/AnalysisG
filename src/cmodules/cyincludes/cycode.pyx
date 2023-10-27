@@ -15,6 +15,10 @@ import pickle
 cdef string enc(str val): return val.encode("UTF-8")
 cdef str env(string val): return val.decode("UTF-8")
 
+cdef class InvalidCodeError(Exception):
+    "This error is raised when the code was not properly scanned."
+    pass
+
 cdef class Code:
 
     cdef CyCode* ptr
@@ -29,20 +33,15 @@ cdef class Code:
         if instance is None: return
         self._x = instance
 
-        if type(instance).__module__.endswith("cmodules.code"):
-            try: self.__setstate__(instance.__getstate__())
-            except TypeError: pass
-            try: self.__setstate__(instance.code)
-            except AttributeError: pass
-
-        elif instance.__module__.endswith("cmodules.code"):
-            try: self.__setstate__(instance.__getstate__())
-            except TypeError: pass
-            except AttributeError: pass
-            try: self.__setstate__(instance.code)
-            except AttributeError: pass
-
-        else: self.__getbasic__()
+        try:
+            self.__setstate__(instance.code)
+            if self.object_code: pass
+            else: raise AttributeError
+        except ValueError: self.__getbasic__()
+        except AttributeError: self.__getbasic__()
+        if self.class_name: return
+        if self.function_name: return
+        raise InvalidCodeError
 
     def __dealloc__(self): del self.ptr
     def __hash__(self) -> int: return int(self.hash[:8], 0)
@@ -170,8 +169,9 @@ cdef class Code:
 
     def __getinputs__(self, val):
         cdef int start = 0
+        cdef int coargs = val.__code__.co_argcount
         if self.is_class: start = 1
-        try: co_vars  = list(val.__code__.co_varnames)[start:]
+        try: co_vars  = list(val.__code__.co_varnames)[start:coargs]
         except AttributeError: co_vars = []
         defaults = val.__defaults__
         defaults = [] if defaults is None else list(defaults)
@@ -231,19 +231,26 @@ cdef class Code:
             self.__mergedependency__()
             if self.is_class: exec(self.source_code, globals())
             else: exec(self.object_code, globals())
+
             if self.is_class: fx = globals()[self.class_name]
             else: fx = globals()[self.function_name]
             self.fx = fx
-        if not len(self.co_vars): fx = self.fx()
-        else: fx = self.fx
+
+        if len(self.co_vars): fx = self.fx
+        else: fx = self.fx()
+
         try: setattr(fx, "code", self.ptr.ExportCode())
         except: pass
+
         if not self.ptr.container.param_space.size(): pass
-        else: setattr(fx, "__params__", self.param_space["key"])
+        elif "key" in self.param_space: setattr(fx, "__params__", self.param_space["key"])
+        else: setattr(fx, "__params__", self.param_space)
         return fx
 
     @property
     def hash(self) -> str:
+        cdef string hash_ = self.ptr.hash
+        if hash_.size(): return env(hash_)
         self.ptr.Hash()
         return env(self.ptr.hash)
 

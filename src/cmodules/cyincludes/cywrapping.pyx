@@ -11,6 +11,39 @@ from torch.optim.lr_scheduler import ExponentialLR, CyclicLR
 from torch.optim import Adam, SGD
 import torch
 
+try: import pyc
+except: pyc = None
+
+
+cdef dict polar_edge_mass(edge_index, prediction, pmu):
+    if pyc is None: return {}
+    cdef int key
+    cdef dict res = pyc.Graph.Polar.edge(edge_index, prediction, pmu, True)
+    res = {key : pyc.Physics.M(res[key]["unique_sum"]) for key in res if key != 0}
+    return res
+
+cdef dict polar_node_mass(edge_index, prediction, pmu):
+    if pyc is None: return {}
+    cdef int key
+    cdef dict res = pyc.Graph.Polar.node(edge_index, prediction, pmu, True)
+    res = {key : pyc.Physics.M(res[key]["unique_sum"]) for key in res if key != 0}
+    return res
+
+cdef dict cartesian_edge_mass(edge_index, prediction, pmu):
+    if pyc is None: return {}
+    cdef int key
+    cdef dict res = pyc.Graph.Cartesian.edge(edge_index, prediction, pmu, True)
+    res = {key : pyc.Physics.M(res[key]["unique_sum"]) for key in res if key != 0}
+    return res
+
+cdef dict cartesian_node_mass(edge_index, prediction, pmu):
+    if pyc is None: return {}
+    cdef int key
+    cdef dict res = pyc.Graph.Cartesian.node(edge_index, prediction, pmu, True)
+    res = {key : pyc.Physics.M(res[key]["unique_sum"]) for key in res if key != 0}
+    return res
+
+
 cdef class OptimizerWrapper:
     cdef _optim
     cdef _sched
@@ -45,6 +78,7 @@ cdef class OptimizerWrapper:
         self._train = False
         self._optim_params = {}
         self._sched_params = {}
+
         self._state = {}
 
     def __init__(self, initial = None):
@@ -199,6 +233,12 @@ cdef class ModelWrapper:
     cdef int  _epoch
     cdef int  _kfold
     cdef bool _train
+
+    # reconstruction of mass
+    cdef dict _cartesian
+    cdef dict _polar
+    cdef dict _fxMap
+
     cdef public bool failure
     cdef public str error_message
 
@@ -214,6 +254,11 @@ cdef class ModelWrapper:
         self.failure = False
         self.error_message = ""
         self._params = {}
+
+        self._cartesian = {}
+        self._polar = {}
+        self._fxMap = {}
+
         self._kfold = 0
         self._epoch = 0
 
@@ -223,12 +268,17 @@ cdef class ModelWrapper:
         self.__checkcode__()
 
     cdef void __checkcode__(self):
+        if self._model is None: return
+        setattr(self._model, "__params__", self.__params__)
         co = Code(self._model)
         if not len(self.__params__): pass
         else: co.param_space = self.__params__
         self._code = co.__getstate__()
+        self._model = co.InstantiateObject
 
-        try: self._model = self._model(**self.__params__)
+        try:
+            if not len(co.co_vars): pass
+            else: self._model = self._model(**self.__params__)
         except Exception as e:
             self.failure = True
             self.error_message = str(e)
@@ -241,8 +291,7 @@ cdef class ModelWrapper:
         self._class_map = {}
 
         cdef str i, k
-        cdef dict params
-        params = self._model.__dict__
+        cdef dict params = self._model.__dict__
         for i, val in params.items():
             try: k = i[:2]
             except IndexError: continue
@@ -267,11 +316,14 @@ cdef class ModelWrapper:
         cdef dict out = {}
         cdef dict tmp = {}
         cdef dict loss
+        cdef dict mass
+        cdef bool skip_m = len(self._fxMap) < 1
         self._loss_sum = 0
         for i, j in self._out_map.items():
             key = j[2:]
             pred = self._model.__dict__[j]
             loss = self._loss_map[key](pred, sample[i])
+
             self._loss_sum += loss["loss"]
             tmp["L_" + key] = loss["loss"]
             tmp["A_" + key] = loss["acc"]
@@ -280,6 +332,15 @@ cdef class ModelWrapper:
             data._inc_dict.update({j : data._inc_dict.get(i)})
             data.__dict__["_store"][j] = pred
 
+            if skip_m: continue
+            if j not in self._fxMap: continue
+            mass = {"edge_index" : sample["edge_index"], "prediction" : pred.max(-1)[1]}
+            mass.update({"pmu" : torch.cat([sample[key] for key in self._fxMap[j][1]], -1)})
+            tmp["M_P_" + j[2:]] = self._fxMap[j][0](**mass)
+
+            mass["prediction"] = sample[i].to(dtype = torch.long)
+            tmp["M_T_" + j[2:]] = self._fxMap[j][0](**mass)
+
         tmp["total"] = self._loss_sum
         out["graphs"] = data.to_data_list()
         out.update(tmp)
@@ -287,12 +348,61 @@ cdef class ModelWrapper:
 
     def __call__(self, data):
         cdef str i
-        cdef dict inpt = data.to_dict()
-        self._model(**{i : inpt[i] for i in self._in_map})
+        cdef dict inpt
+        try: inpt= data.to_dict()
+        except AttributeError: inpt = data
 
+        self._model(**{i : inpt[i] for i in self._in_map})
         return self.__debatch__(inpt, data)
 
-    def match_data_model_vars(self, sample):
+    cpdef match_reconstruction(self, dict sample):
+        if pyc is None: return
+        cdef str kin_err = ""
+        cdef str key, val
+        cdef list splits
+        cdef dict inpt = self._polar
+        self._polar = {}
+        self._cartesian = {}
+        for key, val in inpt.items():
+            if key.startswith("O_"): pass
+            else: key = "O_" + key
+
+            if key in self._out_map.values(): pass
+            else: kin_err += " :: " + key; continue
+            splits = val.replace(" ", "").split("->")
+            if len(splits) != 2:
+                kin_err += " format error: <coordinate> -> <v1, v2, ...>"
+                continue
+
+            val = splits[1]
+            if splits[0].lower() == "polar": self._polar[key] = val.split(",")
+            else: self._cartesian[key] = val.split(",")
+
+        if len(kin_err): self.error_message += "ERROR: Kinematics -> " + kin_err
+
+        for key, splits in self._cartesian.items():
+            val = list(self._out_map)[list(self._out_map.values()).index(key)]
+            if val.startswith("N_"): self._fxMap[key] = cartesian_node_mass
+            elif val.startswith("E_"): self._fxMap[key] = cartesian_edge_mass
+            self._cartesian[key] = [val for val in splits if val in sample]
+            self._fxMap[key] = [self._fxMap[key], self._cartesian[key]]
+
+            if len(self._cartesian[key]) == len(splits): continue
+            del self._fxMap[key]
+            self._cartesian[key] = []
+
+        for key, splits in self._polar.items():
+            val = list(self._out_map)[list(self._out_map.values()).index(key)]
+            if val.startswith("N_"): self._fxMap[key] = polar_node_mass
+            elif val.startswith("E_"): self._fxMap[key] = polar_edge_mass
+            self._polar[key] = [val for val in splits if val in sample]
+            self._fxMap[key] = [self._fxMap[key], self._polar[key]]
+
+            if len(self._polar[key]) == len(splits): continue
+            del self._fxMap[key]
+            self._polar[key] = []
+
+    cpdef match_data_model_vars(self, sample):
         cdef str it, key
         cdef dict inpt = sample.to_dict()
         cdef dict mapping = {}
@@ -328,7 +438,8 @@ cdef class ModelWrapper:
 
         cdef dict lib = torch.load(_save_path)
         self._epoch = lib["epoch"]
-        self._model.load_state_dict(lib["model"])
+        try: self._model.load_state_dict(lib["model"])
+        except ValueError: self._failed_model_load()
         self._model.eval()
 
     @property
@@ -403,5 +514,14 @@ cdef class ModelWrapper:
     @device.setter
     def device(self, val): self._model = self._model.to(device = val)
 
+    @property
+    def KinematicMap(self) -> dict:
+        cdef dict output = {}
+        output.update(self._polar)
+        output.update(self._cartesian)
+        return output
 
-
+    @KinematicMap.setter
+    def KinematicMap(self, dict inpt):
+        self._cartesian = inpt
+        self._polar = inpt

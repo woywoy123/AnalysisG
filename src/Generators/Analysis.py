@@ -22,9 +22,7 @@ def search(x):
 
     for i in f["Files"]:
         x.GetAll = True
-        i = x.abs(i)
-        if i in x: continue
-        i = i.split("/")
+        i = x.abs(i).split("/")
         file, path = i[-1], "/".join(i[:-1])
         if path not in f["get"]: f["get"][path] = []
         f["get"][path].append(file)
@@ -46,11 +44,8 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         self.PurgeCache = False
         self.TestFeatures = False
         self.triggered = False
-        self.nEvents = 10
-        self.TrainingSize = False
-        self.kFolds = False
-        self.TrainingName = "untitled"
         self.SampleName = ""
+        self.nEvents = 10
         self._get = {}
 
         if Name is None and SampleDirectory is None: return
@@ -101,13 +96,11 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         maps = self[self.GraphName]
         if maps: pass
         else: return self.EmptySampleList()
-
         dic = {}
         for i in maps:
             if i.SkipEvent: continue
             if i.EmptyGraph: continue
             dic[i.hash] = i
-
         r = RandomSamplers()
         r.ImportSettings(self.ExportSettings())
         if not self.TrainingSize: out = {}
@@ -120,8 +113,8 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         r.SaveSets(out, pth)
 
     def __Selection__(self):
-        if self.GetSelection: pass
-        elif len(self.Selections): pass
+        if len(self.Selections): pass
+        elif len(self.SelectionName): pass
         else: return
 
         get = sum(self._get["selection"].values(), [])
@@ -130,27 +123,28 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         if len(get) and self.GetSelection: self.RestoreSelections(get)
         elif not len(get): pass
         elif len(c): self.RestoreEvents(c)
-        elif len(get_ev): pass
+
+        if len(self.Selections): pass
         else: return
-        self.GetSelection = True
 
         if self.Tree: pass
         elif not len(self.ShowTrees): return
         elif len(self.ShowTrees) > 1: return
         else: self.Tree = self.ShowTrees[0]
 
+
         sel = SelectionGenerator()
         sel.ImportSettings(self.ExportSettings())
+        sel.Selections = self.Selections
         sel.Caller = "ANALYSIS::SELECTIONS"
-
         if not sel.MakeSelections(self): return
 
         self.DumpSelections()
         self.DumpTracer(self.SampleName)
+        self.FlushEvents(get_ev)
 
     def __Graph__(self):
         if self.Graph is None: return
-
         get = sum(self._get["graph"].values(), [])
         get_ev = sum(self._get["event"].values(), [])
         c = cCheckDifference(get_ev, get, self.Threads)
@@ -177,19 +171,24 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         except KeyError: gr_l = 0
         try: ev_l = cur[self.Tree + "/" + self.EventName]
         except KeyError: ev_l = 0
-        if (gr_l == ev_l) and gr_l != 0: return
+
+        content = self[self.GraphName]
+        if not content: pass
+        elif (gr_l == ev_l) and gr_l: return
 
         gr = GraphGenerator()
         gr.Caller = "ANALYSIS::GRAPH"
         gr.ImportSettings(self.ExportSettings())
-
         try: x = self.ShowLength[self.Tree + "/" + self.GraphName]
         except KeyError: x = 0
-        if gr.EventStop is None: pass
-        else: gr.EventStop -= x
-        if gr.MakeGraphs(self): pass
-        else: return
 
+        if gr.EventStop is None: pass
+        elif self.EventStop > x: gr.EventStop = self.EventStop - x
+        elif self.EventStop <= x: return
+        else: pass
+
+        if not len(c) and len(get_ev) and content: return
+        if not gr.MakeGraphs(self): return
         if not self.DataCache: return
         self.DumpGraphs()
         self.DumpTracer(self.SampleName)
@@ -219,11 +218,15 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         ev = EventGenerator()
         ev.Caller = "ANALYSIS::EVENT"
         ev.ImportSettings(self.ExportSettings())
-
+        ev.EventStop = self.EventStop
         try: x = self.ShowLength[self.Tree + "/" + self.EventName]
         except KeyError: x = 0
+
         if ev.EventStop is None: pass
-        else: ev.EventStop -= x
+        elif self.EventStop > x: ev.EventStop = self.EventStop - x
+        elif self.EventStop <= x: return
+        else: pass
+
         if ev.MakeEvents(self.SampleName, self): pass
         else: return
 
@@ -241,7 +244,6 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         tracer = self._CheckForTracer()
         l = len(self.SampleMap)
         if not l: self.SampleMap = ""
-
         for name in self.SampleMap:
             self.SampleName = name
             if not len(name): name = None

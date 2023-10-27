@@ -5,46 +5,35 @@
 #ifndef SAMPLETRACER_H
 #define SAMPLETRACER_H
 
+
+struct HDF5_t
+{
+    std::string root_name = ""; 
+    std::map<std::string, std::string> cache_path = {}; 
+};
+
+static void Search(
+        SampleTracer::CyROOT* root, settings_t* apply, 
+        std::vector<SampleTracer::CyBatch*>* out, 
+        std::map<std::string, Code::CyCode*>* code_hashes)
+{
+    std::map<std::string, SampleTracer::CyBatch*>::iterator itb; 
+    itb = root -> batches.begin(); 
+    for (; itb != root -> batches.end(); ++itb){
+        SampleTracer::CyBatch* this_b = itb -> second; 
+        this_b -> ApplySettings(apply);  
+    
+        if (!this_b -> valid){continue;}
+        this_b -> ApplyCodeHash(code_hashes); 
+        out -> push_back(this_b); 
+    }
+}; 
+
+
 namespace SampleTracer
 {
     namespace CyHelpers
     {
-        static void Make(
-                CyROOT* root, 
-                settings_t* apply, 
-                std::vector<CyBatch*>* out, 
-                std::map<std::string, Code::CyCode*>* code_hashes)
-        {
-            std::map<std::string, CyBatch*>::iterator itb; 
-            itb = root -> batches.begin(); 
-            for (; itb != root -> batches.end(); ++itb)
-            {
-                CyBatch* this_b = itb -> second; 
-                this_b -> ApplySettings(apply);  
-
-                if (!this_b -> valid){continue;}
-                this_b -> ApplyCodeHash(code_hashes); 
-                out -> push_back(this_b); 
-            }
-        }; 
-
-        static std::vector<CyBatch*> ReleaseVector(
-                std::vector<std::vector<CyBatch*>*> output, 
-                std::vector<std::thread*> jobs, 
-                const unsigned int threads)
-        {
-            std::vector<CyBatch*> release = {}; 
-            for (unsigned int x(0); x < output.size(); ++x)
-            {
-                if (threads != 1){ jobs[x] -> join(); }
-                release.insert(release.end(), output[x] -> begin(), output[x] -> end()); 
-                output[x] -> clear(); 
-                delete output[x]; 
-                if (threads != 1){ delete jobs[x]; }
-            }
-            return release; 
-        };  
-
         static void ExportCode(
                 std::map<std::string, code_t>* output, 
                 std::map<std::string, Code::CyCode*> code_hashes)
@@ -53,6 +42,7 @@ namespace SampleTracer
             itc = code_hashes.begin();
             for (; itc != code_hashes.end(); ++itc){
                 Code::CyCode* code = itc -> second; 
+                if (!code -> container.object_code.size()){continue;}
                 (*output)[itc -> first] = code -> ExportCode();
             }
         }; 
@@ -65,6 +55,7 @@ namespace SampleTracer
             itc = hashed_code -> begin(); 
             for (; itc != hashed_code -> end(); ++itc){
                 code_t* co = &(itc -> second); 
+                if (!co -> object_code.size()){continue;}
                 if (output -> count(co -> hash)){ continue; }
                 Code::CyCode* co_ = new Code::CyCode();
                 co_ -> ImportCode(*co, *hashed_code); 
@@ -83,9 +74,7 @@ namespace SampleTracer
             CyROOT* AddContent(G* type, meta_t* meta, std::map<std::string, CyROOT*>* root)
             {
                 std::string event_root = type -> event_root; 
-                if (!root -> count(event_root)){
-                    (*root)[event_root] = new CyROOT(*meta); 
-                }
+                if (!root -> count(event_root)){(*root)[event_root] = new CyROOT(*meta);}
                 return root -> at(event_root); 
             }; 
             
@@ -109,17 +98,27 @@ namespace SampleTracer
                     }
                 }
             }; 
-
-            std::string make_flush_string(std::string root_name, std::string subkey)
+            
+            template <typename G, typename T>
+            std::map<std::string, std::string> make_flush_string(G* ev, std::string subkey, std::map<std::string, T*>* mp)
             {
-                std::string get = ""; 
-                get += this -> settings.outputdirectory; 
-                get += this -> settings.projectname + "/" + subkey + "/"; 
-                get += root_name; 
-                if (get.rfind(".root.1") == std::string::npos){}
-                else {get.erase(get.rfind(".root.1"), get.size()-1);}
-                get += ".hdf5";
-                return get;
+                std::string cache_path = ""; 
+                cache_path += this -> settings.outputdirectory; 
+                cache_path += this -> settings.projectname + "/" + subkey + "/"; 
+
+                std::string h5_name = ev -> event_root;
+                if (h5_name.rfind(".root.1") == std::string::npos){}
+                else {h5_name.erase(h5_name.rfind(".root.1"), h5_name.size()-1);}
+                h5_name += ".hdf5";
+
+                typename std::map<std::string, T*>::iterator itr = mp -> begin(); 
+                std::map<std::string, std::string> output; 
+                for (; itr != mp -> end(); ++itr){
+                    std::vector<std::string> x = Tools::split(itr -> first, "/");
+                    std::string name_ = cache_path + x[0] + "." + x[1] + "/" + h5_name;
+                    output[name_] = ev -> event_root; 
+                } 
+                return output;
             }; 
 
             void AddMeta(meta_t, std::string);
@@ -127,6 +126,10 @@ namespace SampleTracer
             void AddGraph(graph_t graph, meta_t meta); 
             void AddSelection(selection_t selection, meta_t meta); 
             void AddCode(code_t code); 
+
+            std::map<std::string, std::string> RestoreTracer(std::map<std::string, HDF5_t>* data, std::string event_root); 
+            std::map<std::string, std::vector<CyBatch*>> RestoreCache(std::string type); 
+
             CyBatch* RegisterHash(std::string hash, std::string event_root); 
 
             std::map<std::string, std::vector<CyEventTemplate*>> DumpEvents(); 
@@ -162,7 +165,6 @@ namespace SampleTracer
             settings_t settings; 
             std::string caller = ""; 
             std::map<std::string, int> event_trees = {}; 
-
     }; 
 }
 

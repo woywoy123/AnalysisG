@@ -199,8 +199,7 @@ def AddFeature(Prefix, dic):
 
 
 def ApplyFeatures(A, Level=None):
-    if Level is not None: pass
-    else:
+    if Level is None:
         name = A.Graph.__name__
         if "Tops" in name: Level = "TruthTops"
         elif "Children" in name: Level = "TruthChildren"
@@ -213,13 +212,11 @@ def ApplyFeatures(A, Level=None):
     elif Level == "TruthJets": Features = TruthJets()
     elif Level == "Jets": Features = Jets()
     else:
-        print("INVALID CHOICE!")
+        print("ApplyFeatures::INVALID CHOICE!")
         exit()
-
     for i in Features:
         base = "_".join(i.split("_")[1:])
         fx = Features[i]
-
         if "EF" in i: A.AddEdgeFeature(fx, base)
         elif "NF" in i: A.AddNodeFeature(fx, base)
         elif "GF" in i: A.AddGraphFeature(fx, base)

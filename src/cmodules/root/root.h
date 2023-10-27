@@ -56,10 +56,10 @@ namespace SampleTracer
             CyGraphTemplate* this_gr = nullptr; 
             CySelectionTemplate* this_sel = nullptr; 
 
+            std::string this_tree = "";
             std::string this_event_name = ""; 
             std::string this_graph_name = "";
             std::string this_selection_name = ""; 
-            std::string this_tree = "";
 
             std::map<std::string, std::string> event_dir = {}; 
             std::map<std::string, std::string> graph_dir = {}; 
@@ -98,45 +98,32 @@ namespace SampleTracer
             }; 
 
             template <typename G, typename T>
-            void export_this(
-                    std::map<std::string, G*> inpt, 
-                    std::map<std::string, T>* out)
+            void export_this(std::map<std::string, G*> inpt, std::map<std::string, T>* out)
             {
-                typename std::map<std::string, G*>::iterator it; 
-                it = inpt.begin();
+                typename std::map<std::string, G*>::iterator it = inpt.begin();
                 for (; it != inpt.end(); ++it){
-                    (*out)[it -> first] = it -> second -> Export(); 
+                    (*out)[it -> first] = it -> second -> Export();
                 }
             }; 
 
             template <typename G>
-            void code_link(
-                    std::map<std::string, G*> event, 
-                    const std::map<std::string, Code::CyCode*>* code_h)
+            void code_link(std::map<std::string, G*> event, const std::map<std::string, Code::CyCode*>* code_h)
             {
                 typename std::map<std::string, G*>::iterator it; 
                 it = event.begin();
                 for (; it != event.end(); ++it){
                     std::string code_hash; 
                     G* entry = it -> second; 
-                    if (entry -> is_event){
-                        code_hash = entry -> event.code_hash;
-                    }
-                    else if (entry -> is_graph){
-                        code_hash = entry -> graph.code_hash; 
-                    }
-                    else if (entry -> is_selection){
-                        code_hash = entry -> selection.code_hash; 
-                    }
+                    if (entry -> is_event){code_hash = entry -> event.code_hash;}
+                    else if (entry -> is_graph){code_hash = entry -> graph.code_hash;}
+                    else if (entry -> is_selection){code_hash = entry -> selection.code_hash;}
                     if (!code_h -> count(code_hash)){ continue; }
                     entry -> code_link = code_h -> at(code_hash);
                 } 
             }; 
 
             template <typename G>
-            void export_code(
-                    std::map<std::string, G*> entry, 
-                    std::map<std::string, code_t>* out)
+            void export_code(std::map<std::string, G*> entry, std::map<std::string, code_t>* out)
             {
                 std::map<std::string, Code::CyCode*>::iterator itc; 
                 typename std::map<std::string, G*>::iterator it; 
@@ -156,9 +143,7 @@ namespace SampleTracer
             {
                 typename std::map<std::string, G*>::iterator it;
                 it = type -> begin(); 
-                for (; it != type -> end(); ++it){ 
-                    it -> second -> code_owner = false; 
-                }
+                for (; it != type -> end(); ++it){it -> second -> code_owner = false;}
             };
     }; 
 
@@ -212,58 +197,43 @@ namespace SampleTracer
                     std::string name = it -> second.event_name; 
                     std::string tree = it -> second.event_tree;
                     std::string key = tree + "/" + name;  
-                    if (it -> second.event){
-                        this -> n_events[key] += 1; 
-                        continue;
-                    }
-                    if (it -> second.graph){ 
-                        this -> n_graphs[key] += 1; 
-                        continue;
-                    }
-                    if (it -> second.selection){ 
-                        this -> n_selections[key] += 1; 
-                    }
+                    if (it -> second.event){this -> n_events[key] += 1;}
+                    else if (it -> second.graph){this -> n_graphs[key] += 1;}
+                    else if (it -> second.selection){this -> n_selections[key] += 1;}
                 }
             };
             template <typename T>
-            static void _make_path(T* evnt, std::string* pth)
-            {
+            static void _make_path(T* evnt, std::string* pth){
                 *pth += evnt -> event_tree + "." + evnt -> event_name;
             };
 
-            static void _get(std::map<std::string, CyEventTemplate*>* get, CyBatch* bt)
-            {
+            static void _get(std::map<std::string, CyEventTemplate*>* get, CyBatch* bt){
                 *get = bt -> events;  
             };
 
-            static void _get(std::map<std::string, CyGraphTemplate*>* get, CyBatch* bt)
-            {
+            static void _get(std::map<std::string, CyGraphTemplate*>* get, CyBatch* bt){
                 *get = bt -> graphs;  
             };
 
-            static void _get(std::map<std::string, CySelectionTemplate*>* get, CyBatch* bt)
-            {
+            static void _get(std::map<std::string, CySelectionTemplate*>* get, CyBatch* bt){
                 *get = bt -> selections;  
             };
 
-            static bool _get_T(CyEventTemplate* inpt, std::string* path)
-            {
+            static bool _get_T(CyEventTemplate* inpt, std::string* path){
                 event_t* ev = &(inpt -> event);
                 if (ev -> cached){return true;}
                 _make_path(ev, path);
                 return false;
             };
 
-            static bool _get_T(CyGraphTemplate* inpt, std::string* path)
-            {
+            static bool _get_T(CyGraphTemplate* inpt, std::string* path){
                 graph_t* gr = &(inpt -> graph);
                 if (gr -> cached){return true;}
                 _make_path(gr, path);
                 return false;
             };
 
-            static bool _get_T(CySelectionTemplate* inpt, std::string* path)
-            {
+            static bool _get_T(CySelectionTemplate* inpt, std::string* path){
                 selection_t* se = &(inpt -> selection);
                 if (se -> cached){return true;}
                 _make_path(se, path);

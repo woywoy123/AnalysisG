@@ -1,5 +1,11 @@
 #include "../abstractions/abstractions.h"
 
+bool Tools::is_file(const std::string* file)
+{
+    std::ifstream f(file -> c_str());
+    return f.good();     
+}
+
 std::string Tools::Hashing(std::string input)
 {
     std::hash<std::string> hasher; 
@@ -157,13 +163,19 @@ std::map<std::string, int> Tools::CheckDifference(std::vector<std::string> inpt1
 
         maps.push_back(t); 
         thrds.push_back(jb); 
+        
+        int run_i = 0; 
+        for (unsigned int t(0); t < thrds.size(); ++t){
+            run_i += thrds[t] -> joinable(); 
+        }
+        if (run_i >= threads){jb -> join();}
     }
 
     std::map<std::string, int> output; 
     for (unsigned int x = 0; x < thrds.size(); ++x){
         std::map<std::string, int>* trg = maps[x]; 
         std::thread* jb = thrds[x]; 
-        jb -> join(); 
+        if (jb -> joinable()){jb -> join();}
 
         std::map<std::string, int>::iterator itr = trg -> begin(); 
         for (; itr != trg -> end(); ++itr){
@@ -176,15 +188,6 @@ std::map<std::string, int> Tools::CheckDifference(std::vector<std::string> inpt1
     }; 
     return output; 
 }
-
-
-
-
-
-
-
-
-
 
 
 namespace Abstraction

@@ -15,13 +15,18 @@ class SelectionGenerator(_SelectionGenerator, SampleTracer, _Interface):
     def _CompileSelection(inpt, _prgbar):
         lock, bar = _prgbar
         for i in range(len(inpt)):
-            ev, co, sel = pickle.loads(inpt[i])
-            se = co.InstantiateObject
-            se.__setstate__(sel)
-            se.__processing__(ev)
-            inpt[i] = se.__getstate__()
-            del sel
+            ev, meta, co, se = inpt[i]
+            ev = pickle.loads(ev)
+            ev.ImportMetaData(meta)
+            sel = pickle.loads(co).InstantiateObject
+            sel.__setstate__(se)
+            sel.__processing__(ev)
+            inpt[i] = sel.__getstate__()
+
+            del sel, se
             del co
+            del ev
+            del meta
             if bar is None: continue
             elif lock is None: bar.update(1)
             else:
@@ -32,10 +37,9 @@ class SelectionGenerator(_SelectionGenerator, SampleTracer, _Interface):
         if sample is not None: pass
         else: sample = self
         self.preiteration(sample)
-
         if self.CheckSettings(sample): return False
 
-        chnks = self.Threads * self.Chunks
+        chnks = self.Threads * self.Chunks * self.Threads
         command = [[], self._CompileSelection, self.Threads, self.Chunks]
 
         path = sample.Tree + "/" + sample.EventName
@@ -43,21 +47,25 @@ class SelectionGenerator(_SelectionGenerator, SampleTracer, _Interface):
         except KeyError: itr = 0
         if not itr: return False
 
-        code = {i.class_name : i for i in self.rebuild_code(None)}
-        for name in sample.Selections:
-            itx = 1
-            step = chnks
-            co = code[name]
-            sel = sample.Selections[name].__getstate__()
+        selections = self.Selections
+        for i in self.rebuild_code(None):
+            name = i.class_name
+            if name not in selections: continue
+            step, itx = chnks, 1
+            co = pickle.dumps(i)
+            sel = selections[name].__getstate__()
             title = self.Caller + "::" + name
             _, bar = self._makebar(itr, self.Caller + "::Preparing...")
             for ev, i in zip(sample, range(itr)):
                 if self._StartStop(i) == False: continue
                 if self._StartStop(i) == None: break
 
+                meta = ev.meta()
                 ev = ev.release_event()
                 if not ev: continue
-                command[0] += [pickle.dumps((ev, co, sel))]
+
+                ev = pickle.dumps(ev)
+                command[0] += [(ev, meta, co, sel)]
                 bar.update(1)
 
                 if not i >= step: continue
@@ -65,6 +73,7 @@ class SelectionGenerator(_SelectionGenerator, SampleTracer, _Interface):
                 step = itx*chnks
                 th = Threading(*command)
                 th.Title = self.Caller + "::" + name
+                th.Verbose = self.Verbose
                 th.Start()
                 for x in th._lists: sample.AddSelections(x)
                 command[0] = []
@@ -72,6 +81,7 @@ class SelectionGenerator(_SelectionGenerator, SampleTracer, _Interface):
 
             if not len(command[0]): continue
             th = Threading(*command)
+            th.Verbose = self.Verbose
             th.Start()
             for i in th._lists: sample.AddSelections(i)
             command[0] = []
