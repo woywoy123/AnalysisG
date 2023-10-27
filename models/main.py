@@ -25,35 +25,37 @@ model = "RPN"
 #"MKGN" : MarkovGraphNet <--- need to fix
 
 auto = AnalysisBuild("Project_ML")
-if False:
+if True:
     auto.SamplePath = os.environ["Samples"]
     #auto.FetchMeta()
     auto.AddDatasetName("ttH-m1000")
-    #auto.AddDatasetName("ttbar")
-    #auto.AddDatasetName("tttt (SM)")
-    #auto.AddDatasetName("ttH")
+    auto.AddDatasetName("ttbar")
+    auto.AddDatasetName("tttt (SM)")
+    auto.AddDatasetName("ttH")
     auto.Event = Event
     auto.EventCache = True
     auto.MakeEventCache()
     auto.MakeGraphCache(mode)
-    #auto.QuantizeSamples(100)
+    auto.QuantizeSamples(20)
     auto.TrainingSample("basic-sample-det", 90)
-    auto.EventStop = 1000
+    #auto.EventStop = 1000
     for i, job in auto.Make().items():
+        job.Threads = 16
+        job.Chunks = 10000
         print("-> " + i)
         job.Launch()
         del job
-
+    exit()
 Ana = Analysis()
 Ana.ProjectName = "Project_ML"
 Ana.Device = "cuda"
 Ana.TrainingName = "basic-sample-det"
 Ana.Model = auto.ModelTrainer(model)
-Ana.kFold = 1
+Ana.kFold = 4
 Ana.Epochs = 100
 Ana.BatchSize = 1
-Ana.MaxGPU = 7.6
-Ana.MaxRAM = 30
+Ana.MaxGPU = 20
+Ana.MaxRAM = 200
 Ana.RunName = model + "-" + mode
 Ana.Optimizer = "ADAM"
 Ana.GraphName = "GraphDetector"

@@ -962,6 +962,7 @@ cdef class SampleTracer:
     def Model(self):
         c = Code()
         try:
+            if not self._set.model.source_code.size(): return
             c.__setstate__(self._set.model)
             return c.InstantiateObject
         except Exception as err:
