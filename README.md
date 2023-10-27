@@ -7,7 +7,7 @@
 [![tox-testing-analysisG](https://github.com/woywoy123/AnalysisG/actions/workflows/test.yml/badge.svg)](https://github.com/woywoy123/AnalysisG/actions/workflows/test.yml)
 
 ## Getting Started:
-The framework and tutorials are outlined within read the docs. [![Documentation Status](https://readthedocs.org/projects/analysisg/badge/?version=latest)](https://analysisg.readthedocs.io/en/latest/?badge=latest)
+The framework and tutorials are outlined within read the docs. [![Documentation Status](https://readthedocs.org/projects/analysisg/badge/?version=master)](https://analysisg.readthedocs.io/?badge=master)
 
 ## Introduction:
 The aim of this package is to provide Particle Physicists with an intuitive interface to **Graph Neural Networks**, whilst remaining Analysis agnostic. 
