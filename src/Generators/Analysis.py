@@ -61,8 +61,7 @@ class Analysis(_Analysis, SampleTracer, _Interface):
     def __FeatureAnalysis__(self):
         if self.Graph is None: return True
         if not self.TestFeatures: return
-
-        tests = [i for i in self]
+        tests = [i for i in self[self.EventName]]
         if len(tests) < self.nEvents: tests
         else: tests = tests[:self.nEvents]
 
@@ -190,6 +189,7 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         if not len(c) and len(get_ev) and content: return
         if not gr.MakeGraphs(self): return
         if not self.DataCache: return
+
         self.DumpGraphs()
         self.DumpTracer(self.SampleName)
         return True
@@ -265,12 +265,12 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         return True
 
     def preiteration(self) -> bool:
-        if self.triggered: pass
+        if self.triggered: return False
         else: self.Launch()
 
-        if len(self.ShowSelections): self.GetSelection = True
-        if len(self.ShowEvents): self.GetEvent = True
-        if len(self.ShowGraphs): self.GetGraph = True
+        if self.GraphName: self[self.GraphName]
+        if self.EventName: self[self.EventName]
+        if self.SelectionName: self[self.SelectioName]
 
         if self.Tree: pass
         elif not len(self.ShowTrees): return True

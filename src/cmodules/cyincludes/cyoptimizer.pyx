@@ -64,9 +64,6 @@ cdef dict template_tline(str path, str xtitle, str ytitle, str title):
     output["xData"] = []
     return output
 
-
-
-
 cdef tuple collapse_masses(map[int, CyEpoch*] data, str mode, str path):
     cdef pair[int, CyEpoch*] its
     cdef string name
@@ -138,6 +135,7 @@ cdef void make_mass_plots(map[int, CyEpoch*] train, map[int, CyEpoch*] valid, ma
             try: xData += tr_t[file_n][x]["xData"]
             except KeyError: pass
             tmpl["Histogram"] = TH1F(**{"Title" : "Truth", "xData" : xData, "Color": "b"})
+            tmpl["yLogarithmic"] = True
             th = TH1F(**tmpl)
             th.SaveFigure()
             del th
@@ -379,7 +377,7 @@ cdef void make_roc_plots(map[int, CyEpoch*] train, map[int, CyEpoch*] valid, map
                 make_auc_curve(&test[epoch].auc[kf], &auc_ev)
 
             for name in lines:
-                fname = name.split(" ")[0].replace(" ", "")
+                fname = name.split(" ")[2].replace(" ", "")
                 cls = name.split("-")[1].replace(" ", "")
 
                 pth = path + "/ROC/Epoch-" + str(epoch) + "/classification-" + cls + "/kfold-" + str(kf)
@@ -547,7 +545,10 @@ cdef class DataLoader:
             out.append(data)
 
         cdef int idx = self.sampletracer.MaxGPU
-        cdef tuple cuda = (None, None) if idx == -1 else torch.cuda.mem_get_info()
+        cdef tuple cuda = (None, None)
+        if idx != -1:
+            try: cuda = torch.cuda.mem_get_info()
+            except RuntimeError: pass
 
         if cuda[0] is not None and (cuda[1] - cuda[0])/(1024**3) > idx:
             self.purge = True
@@ -680,7 +681,6 @@ cdef class cOptimizer:
                 if not isinstance(inpt[i][k], dict): inpt[i][k] = inpt[i][k].numpy(force = True)
                 else: inpt[i][k] = {l : inpt[i][k][l].numpy(force = True) for l in inpt[i][k]}
             inpt[i]["graphs"] = graphs
-
             map_data = recast(inpt[i], out_map)
             if  self._train: self.ptr.train_epoch_kfold(epoch, kfold, &map_data)
             elif  self._val: self.ptr.validation_epoch_kfold(epoch, kfold, &map_data)
@@ -697,7 +697,6 @@ cdef class cOptimizer:
             ep = self.ptr.epoch_train[epoch]
             for dt in ep.container[kfold]: _check_h5(grp, env(dt.first), &dt.second)
             ep.process_data()
-
         if self.ptr.epoch_valid.count(epoch):
             grp = _check_sub(f, "validation")
             ep = self.ptr.epoch_valid[epoch]

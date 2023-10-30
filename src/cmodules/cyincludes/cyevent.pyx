@@ -161,7 +161,7 @@ cdef class EventTemplate:
         return self.ev.event_index
 
     @index.setter
-    def index(self, val: Union[str, int]):
+    def index(self, val: Union[str, double]):
         try: self.ev.event_index = val
         except TypeError: self.ptr.addleaf(b'index', enc(val))
 

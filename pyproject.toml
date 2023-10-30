@@ -9,7 +9,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "AnalysisG"
-version = "4.2.9"
+version = "4.3.0"
 authors = [{name = "woywoy123"}]
 readme.content-type = "text/markdown"
 readme.file = "README.md"
@@ -54,7 +54,6 @@ Homepage = "https://github.com/woywoy123/AnalysisG"
 "AnalysisG._cmodules"    = "src/cmodules"
 "AnalysisG.Templates"    = "src/Templates"
 "AnalysisG.Generators"   = "src/Generators"
-"AnalysisG.Particles"    = "src/Events/Particles"
 "AnalysisG.Notification" = "src/Notification"
 "AnalysisG.Submission"   = "src/Submission"
 

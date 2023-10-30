@@ -144,6 +144,12 @@ Analysis and Truth Studies Documentation
   studies/neutrino-reconstruction.rst
   studies/truth-matching-studies.rst
 
+Event Template Classes
+**********************
+.. toctree::
+  events/ssml_event.rst
+  events/bsm_4tops.rst
+
 Documentation and Codebase Status
 *********************************
 
@@ -171,3 +177,5 @@ Documentation and Codebase Status
    :target: https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/woywoy123/6fee1eff8f987ac756a20133618659a1/raw/covbadge.json
    :alt: Coverage Report
 
+.. image:: https://static.pepy.tech/badge/analysisg/month
+   :target: https://pepy.tech/project/analysisg

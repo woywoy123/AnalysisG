@@ -44,83 +44,60 @@ The underlying source code can be found under the ``src/Templates/CXX/Templates.
 
         Import the MetaData object dictionary.
 
-    .. py:attribute:: Export -> event_t
-    
-        Export the event object as a dictionary.
-
-    .. py:attribute:: index -> int
-
-        It is used to assign an event some internal index, this can be either a leaf string from within a ROOT tree/branch, or directly set to an integer. 
- 
-    .. py:attribute:: weight -> (str, double)
+    :ivar event_t Export: Export the event object as a dictionary.
+    :ivar int index: It is used to assign an event some internal index, this can be either a leaf string from within a ROOT tree/branch, or directly set to an integer. 
+    :ivar Union[str, double] weight:  
 
         It is used to assign the given event some event weight.
         This is particularly important when computing the integrated luminosity of samples and for computing the cross section. 
         It can be either assigned a leaf string from within a ROOT tree/branch, or directly set to a float.
 
-    .. py:attribute:: deprecated -> bool
+    :ivar bool deprecated: 
 
         This can be useful when writing multiple event definitions but wanting to keep the old version, but ensuring that the user is made aware that this event is invalid/outdated. 
         The input is a boolean and if set to ``True``, will issue a warning to the user. 
 
-    .. py:attribute:: CommitHash -> str
+    :ivar str CommitHash: 
 
         If the user decides to modify the implementation, the git-hash can be recorded here for later referencing. 
         For example, if the event was used with a specific ``AnalysisTop`` ROOT sample, but this implementation has been modified, the git-hash of ``AnalysisTop`` could be used as reference. 
         This function expects a string of any length/content. 
 
-    .. py:attribute:: Tag -> str
-
-        A variable used to tag the event with some string value. 
-
-    .. py:attribute:: Tree -> str
+    :ivar str Tag: A variable used to tag the event with some string value. 
+    :ivar str Tree: 
 
         The tree from which this event is derived from. This is not to be confused with the **Trees** variable.
         This attribute is a function which has both a setter and getter, and expects a string. 
         **Note:** This variable does not need to be set manually if the event is assigned **Trees**. 
 
-    .. py:attribute:: Trees -> list
+    :ivar list[str] Trees: 
 
         A list of strings from which to source events from.
         If multiple **Trees** are specified, the given event implementation is cloned twice (one for each tree) and assigned their respective **Tree** value. 
 
-    .. py:attribute:: Branches -> list
+    :ivar list[str] Branches: 
 
         A list of strings from which to source branch variables from. 
         This is relevant if the ROOT data structure has nested leaf values.
 
-    .. py:attribute:: Objects -> dict
+    :ivar dict Object: 
 
         A dictionary of particle names and their associated objects. 
         This is used to link particles to events, these particles will be available within the event under the attribute name of the dictionary keys. 
         For instance if the dictionary contains ``{"name" : Particle()}``, then these particles can be retrieved via ``event.name``. 
         By default the particles living under the dictionary key-name will also be dictionaries, with keys being integer indices. 
 
-    .. py:attribute:: cached -> bool
-
-        Indicates whether this event has been cached and saved within a HDF5 file.
-
-    .. py:attribute:: ROOT -> str
-    
-        Returns the ROOT filename from which the event was compiled from.
-
-    .. py:attribute:: hash -> str
+    :ivar bool cached: Indicates whether this event has been cached and saved within a HDF5 file.
+    :ivar str ROOT: Returns the ROOT filename from which the event was compiled from.
+    :ivar str hash: 
 
         Once set, an 18 character long string will be internally generated, which cannot be modified.
         The hash is computed from ``input/<event index>/``, and assigns each event a unique identity such that the tracer can retrieve the specified event.
         If the getter (``self.hash``) has been called prior to the setter (``self.hash = 'something'``), then an empty string is returned.
 
-    .. py:attribute:: Event -> bool
-
-        Returns a boolean to indicate this event to be of EventTemplate type.
-
-    .. py:attribute:: EventName -> str
-        
-        Returns the name of this event type.
-
-    .. py:attribute:: meta -> MetaData
-        
-        Returns the **MetaData** object associated with the sample.
+    :ivar bool Event: Returns a boolean to indicate this event to be of EventTemplate type.
+    :ivar str EventName: Returns the name of this event type.
+    :ivar MetaData meta: Returns the **MetaData** object associated with the sample.
 
 
 Magic Functions

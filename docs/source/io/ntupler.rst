@@ -43,19 +43,12 @@ In principle the HDF5 content can be merged into a single object, thus restoring
 
         :param str output: The output path and filename to store the selections.
 
-    .. py:attribute:: Threads -> int
-
-        Number of CPU cores to use when merging ``.hdf5`` samples.
-
-    .. py:attribute:: ProjectName -> str
-
+    :ivar int Threads: Number of CPU cores to use when merging ``.hdf5`` samples.
+    :ivar int Chunks: Number of events to assign to a given thread after each job. 
+    :ivar str ProjectName:
         **Important Parameter**: This parameter points the class to the workspace.
         If the **SelectionTemplate** was generated with some **ProjectName** from the Analysis object, 
         then apply the same name to this parameter.
-
-    .. py:attribute:: Chunks -> int 
-
-        Number of events to assign to a given thread after each job. 
 
 
 

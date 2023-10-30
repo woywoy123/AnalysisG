@@ -64,7 +64,7 @@ class EventGenerator(_EventGenerator, _Interface, SampleTracer):
         chnks = self.Threads * self.Chunks * self.Threads
         if sample is not None: pass
         else: sample = self
-        files = sum(list(self.Files.values()), [])
+
         for v in io:
             i += 1
             if self._StartStop(i) == False: continue

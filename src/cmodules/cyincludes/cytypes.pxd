@@ -71,9 +71,8 @@ cdef extern from "../abstractions/cytypes.h":
         map[int, string] inputfiles
         map[string, string] config
 
-        int eventNumber
-
-        int event_index
+        double eventNumber
+        double event_index
 
         bool found
         string DatasetName
@@ -159,7 +158,7 @@ cdef extern from "../abstractions/cytypes.h":
         bool cached
 
         double weight
-        int event_index
+        double event_index
         string event_hash
         string event_tagging
         string event_tree
@@ -178,7 +177,7 @@ cdef extern from "../abstractions/cytypes.h":
         map[string, int] presel
 
         bool cached
-        int event_index
+        double event_index
         double weight
         string event_hash
         string event_tagging
@@ -213,7 +212,7 @@ cdef extern from "../abstractions/cytypes.h":
         map[string, int] errors
 
         bool cached
-        int event_index
+        double event_index
         double weight
         string event_hash
         string event_tagging

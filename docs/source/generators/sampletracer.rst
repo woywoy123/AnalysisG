@@ -54,23 +54,21 @@ ______________________
 
         Allows for the use of **set** and **dict**, where the event can be interpreted as a key in a dictionary.
 
-    .. py:attribute:: hash -> str
-
-        Returns a the hash of the current event.
-
-    .. py:attribute:: __getstate__() -> tuple[meta_t, batch_t]
+    .. py:method:: __getstate__() -> tuple[meta_t, batch_t]
 
         Allows the event to be pickled.
 
-    .. py:attribute:: __setstate__(tuple[meta_t, batch_t])
+    .. py:method:: __setstate__(tuple[meta_t, batch_t])
 
         Rebuilds the Event from a **meta_t** and **batch_t** data type.
+
+    :ivar str hash: Returns a the hash of the current event.
 
 
 
 .. py:class:: SampleTracer
 
-    .. py:method:: __getstate__ -> tracer_t
+    .. py:method:: __getstate__() -> tracer_t
 
         Export this tracer including all samples (selections, graphs, events) and state (settings).
 
@@ -78,24 +76,37 @@ ______________________
 
         Import tracer parameters including all samples (selections, graphs, events) and state (settings).
 
-    .. py:method:: __getitem__(key: Union[list, str]) -> bool or list
+        :param tracer_t inpt: An exported tracer data type.
+
+    .. py:method:: __getitem__(key Union[list, str]) -> bool or list
 
         Scan indexed content and return a list of matches or a boolean if nothing has been found.
+        
+        :params Union[list, str] key: Scan the given requested term (ROOT name, Event Hash, ...).
 
     .. py:method:: __contains__(str val) -> bool
 
         Check if query is in sample tracer.
 
-    .. py:method:: __len__ -> int
+        :params str val: The string to check against.
+
+    .. py:method:: __len__() -> int
 
         Return length of the entire sample.
 
-    .. py:method:: __add__(SampleTracer other) -> SampleTracer
+    .. py:method:: __add__(other) -> SampleTracer
 
         Add two SampleTracers to create an independent SampleTracer. 
         Content of both samples is compared and summed as a set. 
 
+        :params SampleTracer other: The other SampleTracer inherited object to sum.
+
     .. py:method:: __radd__(other) -> SampleTracer
+
+        Add two SampleTracers to create an independent SampleTracer. 
+        Content of both samples is compared and summed as a set. 
+
+        :params SampleTracer other: The other SampleTracer inherited object to sum.
 
     .. py:method:: __iadd__(SampleTracer other) -> SampleTracer
 
@@ -111,10 +122,12 @@ ______________________
         This **Event** is a batched version of **SelectionTemplate**/**GraphTemplate**/**EventTemplate** and **MetaData**
 
 
-    .. py:method:: preiteration -> bool
+    .. py:method:: preiteration() -> bool
         
         A place holder for adding last minute behaviour changes to the iteration process.
         This can include loading specific caches or changing general behaviour, i.e. pre-fetching etc.
+        By default this function returns **False** to indicate no errors occurred.
+        If **True** is returned, the iterator will be nulled.
 
     .. py:method:: DumpTracer(retag: Union[str, None]) -> None
 
@@ -123,7 +136,6 @@ ______________________
 
         :param str, None retag: Allows for tagging specific samples of the tracer to be tagged.
 
-
     .. py:method:: RestoreTracer(dict tracers = {}, sample_name: Union[None, str]) -> None
 
          Restore the index map of the samples within the tracer.
@@ -131,15 +143,15 @@ ______________________
          :param dict tracers: Restore these HDF5 file directories
          :param None, str sample_name: Restore only tracer samples with a particular sample name tag.
 
-    .. py:method:: DumpEvents -> None
+    .. py:method:: DumpEvents() -> None
         
         Preserve the **EventTemplates** in HDF5 files.
 
-    .. py:method:: DumpGraphs -> None
+    .. py:method:: DumpGraphs() -> None
 
         Preserve the **GraphTemplates** in HDF5 files.
 
-    .. py:method:: DumpSelections -> None
+    .. py:method:: DumpSelections() -> None
 
         Preserve the **SelectionTemplates** in HDF5 files.
 
@@ -255,234 +267,63 @@ ______________________
         :params callable fx: A function used to apply to the **GraphTemplate** (this is an internal function).
         :params str name: The name of the feature to add.
 
-    .. py:attribute:: Tree -> str
+    :ivar str Tree: Returns current ROOT Tree being used.
+    :ivar list[str] ShowTrees: Returns a list of ROOT Trees found within the index.
+    :ivar Union[EventTemplate, Code] Event: Specifies the an **EventTemplate** inherited event implementation to use for building Event objects from ROOT Files.
+    :ivar list[str] ShowEvents: Returns a list of **EventTemplate** implementations found within the index.
+    :ivar bool GetEvent: Forcefully get or ignore **EventTemplate** types from the **Event** object. This is useful to avoid redundant sample fetching from RAM.
+    :ivar bool EventCache: Specifies whether to generate a cache after constructing **Event** objects. If this is enabled without specifying a **ProjectName**, a folder called **UNTITLED** is generated.
+    :ivar str EventName: The event name to fetch from cache.
+    :ivar Union[GraphTemplate, Code] Graph: Specifies the event graph implementation to use for constructing graphs.
+    :ivar list[str] ShowGraphs: Returns a list of **GraphTemplate** implementations found within the index.
+    :ivar bool GetGraph: Forcefully get or ignore **GraphTemplate** types from the **Graph** object. This is useful to avoid redundant sample fetching from RAM.
+    :ivar bool DataCache: Specifies whether to generate a cache after constructing graph objects. If this is enabled without having an event cache, the **Event** attribute needs to be set. 
+    :ivar str GraphName: The graph name to fetch from cache.
+    :ivar dict[str, SelectionTemplate or Code] Selections: 
+    :ivar list[str] ShowSelections:
+    :ivar bool GetSelection: Forcefully get or ignore **SelectionTemplate** types from the **Selection** object. This is useful to avoid redundant sample fetching from RAM.
+    :ivar str SelectionName: The selection name to fetch from cache.
+    :ivar str Optimizer: Expects a string of the specific optimizer to use. Current choices are; **SGD** - Stochastic Gradient Descent and **ADAM**.
+    :ivar str Scheduler: Expects a string of the specific scheduler to use. Current choices are; **ExponentialLR**, **CyclicLR**. More can be added under the loss function class.
+    :ivar Union[ModelWrapper, Code] Model: The target model to be trained. 
+    :ivar dict OptimizerParams: A dictionary containing the specific input parameters for the chosen **Optimizer**.
+    :ivar dict SchedulerParams: A dictionary containing the specific input parameters for the chosen **Scheduler**.
+    :ivar dict ModelParams: A dictionary used for initializing the model. This is only relevant if the model has input requirements to be initialized.
+    :ivar list[int] kFold: Explicitly use these kFolds during training. This can be quite useful when doing parallel traning, since each kFold is trained completely independently. The variable can be set to a single integer or list of integers
+    :ivar int Epoch: The epoch to start from.
+    :ivar Union[list[int], int] kFolds: Number of folds to use for training
+    :ivar int Epochs: Number of epochs to train the model with.
+    :ivar int BatchSize: How many Graphs to group into a single big graph (also known as batch training).
+    :ivar bool GetAll: Used to forcefully get all event hashes in the tracer index.
+    :ivar int nHashes: Shows the number of hashes that have been indexed.
+    :ivar dict ShowLength: Shows information about the number of hashes associated with a particular tree/event/graph/selection implementation.
+    :ivar Union[int, None] EventStart: The event to start from given a set of ROOT samples. Useful for debugging specific events.
+    :ivar Union[int, None] EventStop: The number of events to generate. 
+    :ivar bool EnablePyAMI: Try to scan the input samples meta data on PyAmi.
+    :ivar dict Files: Files found under some specified directory.
+    :ivar dict SampleMap: A map of the sample names and associated ROOT samples.
+    :ivar str ProjectName: Specifies the output folder of the analysis. If the folder is non-existent, a folder will be created.
+    :ivar str OutputDirectory: Specifies the output directory of the analysis. This is useful if the output needs to be placed outside of the working directory.
+    :ivar str WorkingPath: Returns the current working path of the Analysis. Constructed as; **OutputDirectory/ProjectName**
+    :ivar str RunName: The name given to the particular training session of the Graph Neural Network.
+    :ivar str Caller: A string controlling the verbose information prefix.
+    :ivar int Verbose: An integer which increases the verbosity of the framework, with 3 being the highest and 0 the lowest.
+    :ivar bool DebugMode: Expects a boolean, if this is set to **True**, a complete print out of the training is displayed. 
+    :ivar int Chunks: An integer which regulates the number of entries to process for each given core. This is particularly relevant when constructing events, as to avoid memory issues. As an example, if Threads is set to 2 and **Chunks** is set to 10, then 10 events will be processed per core. 
+    :ivar int Threads: The number of CPU threads to use for running the framework. If the number of threads is set to 1, then the framework will not print a progress bar.
+    :ivar str Device: The device used to run ``PyTorch`` training on. Options are ``cuda`` or ``cpu``.
+    :ivar str TrainingName: Name of the training sample to be used. 
+    :ivar bool SortByNodes: Sort the input graph sample by nodes. This is useful when the model is node agnostic, but requires recomputation of internal variables based on variable graph node sizes. For instance, when computing the combinatorial of a graph, it is faster to compute the combinations for n-nodes and batch n-sized graphs into a single sample set.
+    :ivar bool ContinueTraining: Whether to continue the training from the last known checkpoint (after each epoch).
+    :ivar dict KinematicMap: An attribute enabling the mass reconstruction during and post GNN training. The following syntax is used to select a given feature from the GNN; 
 
-        Returns current ROOT Tree being used.
-
-    .. py:attribute:: ShowTrees -> list[str]
-
-        Returns a list of ROOT Trees found within the index.
-
-    .. py:attribute:: Event -> EventTemplate or Code
-
-        Specifies the an **EventTemplate** inherited event implementation to use for building Event objects from ROOT Files.
- 
-    .. py:attribute:: ShowEvents -> list[str]
-
-         Returns a list of **EventTemplate** implementations found within the index.
-
-    .. py:attribute:: GetEvent -> bool
-
-        Forcefully get or ignore **EventTemplate** types from the **Event** object.
-        This is useful to avoid redundant sample fetching from RAM.
-
-    .. py:attribute:: EventCache -> bool
-
-        Specifies whether to generate a cache after constructing **Event** objects. 
-        If this is enabled without specifying a **ProjectName**, a folder called **UNTITLED** is generated.
-
-    .. py:attribute:: EventName -> str
-
-        The event name to fetch from cache.
-
-    .. py:attribute:: Graph -> GraphTemplate or Code
-
-        Specifies the event graph implementation to use for constructing graphs.
-    
-    .. py:attribute:: ShowGraphs -> list[str]
-
-         Returns a list of **GraphTemplate** implementations found within the index.
-
-    .. py:attribute:: GetGraph -> bool
-
-        Forcefully get or ignore **GraphTemplate** types from the **Graph** object.
-        This is useful to avoid redundant sample fetching from RAM.
-
-    .. py:attribute:: DataCache -> bool
-
-        Specifies whether to generate a cache after constructing graph objects. 
-        If this is enabled without having an event cache, the **Event** attribute needs to be set. 
-
-    .. py:attribute:: GraphName -> str
-
-        The graph name to fetch from cache.
-
-    .. py:attribute:: Selections -> dict[str, SelectionTemplate or Code]
-
-    .. py:attribute:: ShowSelections -> list[str]
-
-    .. py:attribute:: GetSelection -> bool
-
-        Forcefully get or ignore **SelectionTemplate** types from the **Selection** object.
-        This is useful to avoid redundant sample fetching from RAM.
-
-    .. py:attribute:: SelectionName -> str
-
-        The selection name to fetch from cache.
-
-    .. py:attribute:: Optimizer -> str
-
-        Expects a string of the specific optimizer to use.
-        Current choices are; **SGD** - Stochastic Gradient Descent and **ADAM**.
-
-    .. py:attribute:: Scheduler -> str
-
-        Expects a string of the specific scheduler to use. 
-        Current choices are
-        - **ExponentialLR** 
-        - **CyclicLR**
-
-    .. py:attribute:: Model -> ModelWrapper or Code
-
-        The target model to be trained. 
-
-    .. py:attribute:: OptimizerParams -> dict
-
-        A dictionary containing the specific input parameters for the chosen **Optimizer**.
-
-    .. py:attribute:: SchedulerParams -> dict
-
-        A dictionary containing the specific input parameters for the chosen **Scheduler**.
-
-    .. py:attribute:: ModelParams -> dict
-
-    .. py:attribute:: kFold -> list[int]
-
-        Explicitly use these kFolds during training. 
-        This can be quite useful when doing parallel traning, since each kFold is trained completely independently. 
-        The variable can be set to a single integer or list of integers
-
-
-    .. py:attribute:: Epoch -> int
-
-        The epoch to start from.
-
-    .. py:attribute:: kFolds -> int
-
-        Number of folds to use for training
-
-    .. py:attribute:: Epochs -> int
-
-        Number of epochs to train the model with.
-
-    .. py:attribute:: BatchSize -> int
-    
-        How many Graphs to group into a single big graph (also known as batch training).
-
-    .. py:attribute:: GetAll -> bool
-
-    .. py:attribute:: nHashes -> int
-
-        Shows the number of hashes that have been indexed.
-
-    .. py:attribute:: ShowLength -> dict
-
-        Shows information about the number of hashes associated with a particular tree/event/graph/selection implementation.
-
-    .. py:attribute:: EventStart -> int or None
-
-        The event to start from given a set of ROOT samples. 
-        Useful for debugging specific events.
-
-    .. py:attribute:: EventStop -> int or None
-
-        The number of events to generate. 
-
-    .. py:attribute:: EnablePyAMI -> bool
-
-        Try to scan the input samples meta data on PyAmi.
-
-    .. py:attribute:: Files -> dict
-
-        Files found under some specified directory.
-
-    .. py:attribute:: SampleMap -> dict
-
-        A map of the sample names and associated ROOT samples.
-
-    .. py:attribute:: ProjectName -> str
-
-        Specifies the output folder of the analysis. 
-        If the folder is non-existent, a folder will be created.
-
-    .. py:attribute:: OutputDirectory -> str
-
-        Specifies the output directory of the analysis. 
-        This is useful if the output needs to be placed outside of the working directory.
-
-    .. py:attribute:: WorkingPath -> str
-
-        Returns the current working path of the Analysis.
-        Constructed as; **OutputDirectory/ProjectName**
-
-    .. py:attribute:: RunName -> str
-
-        The name given to the particular training session of the Graph Neural Network.
-
-    .. py:attribute:: Caller -> str
-
-        A string controlling the verbose information prefix.
-
-    .. py:attribute:: Verbose -> int
-
-        An integer which increases the verbosity of the framework, with 3 being the highest and 0 the lowest.
-
-    .. py:attribute:: DebugMode -> bool
-
-        Expects a boolean, if this is set to **True**, a complete print out of the training is displayed. 
-
-    .. py:attribute:: Chunks -> int
-
-        An integer which regulates the number of entries to process for each given core. 
-        This is particularly relevant when constructing events, as to avoid memory issues. 
-        As an example, if Threads is set to 2 and **chnk** is set to 10, then 10 events will be processed per core. 
-    .. py:attribute:: Threads -> int
-
-        The number of CPU threads to use for running the framework.
-        If the number of threads is set to 1, then the framework will not print a progress bar.
-
-    .. py:attribute:: Device -> str
-
-        The device used to run ``PyTorch`` training on.
-        Options are ``cuda`` or ``cpu``.
-
-    .. py:attribute:: TrainingName -> str
-
-        Name of the training sample to be used. 
-
-    .. py:attribute:: SortByNodes -> bool
-
-        Sort the input graph sample by nodes.
-        This is useful when the model is node agnostic, but requires recomputation of internal variables based on variable graph node sizes.
-        For instance, when computing the combinatorial of a graph, it is faster to compute the combinations for n-nodes and batch n-sized graphs into a single sample set.
-
-    .. py:attribute:: ContinueTraining -> bool
-
-        Whether to continue the training from the last known checkpoint (after each epoch).
-
-    .. py:attribute:: KinematicMap -> dict
-
-        An attribute enabling the mass reconstruction during and post GNN training.
-        The following syntax is used to select a given feature from the GNN;
-        
         .. code-block:: python 
 
             <ana>.KinematicMap = {"<the feature to reconstruct>" : "<coordinate system (polar/cartesian)> -> pT, eta, phi, e"}
 
-    .. py:attribute:: PlotLearningMetrics -> bool
-
-        Whether to output various metric plots whilst training.
-        This can be enabled before training or re-run after training from the training cache.
-
-    .. py:attribute:: MaxGPU -> float
-        
-        This sets the upper limit of the GPU memory allowed during training/validation/testing.
-
-    .. py:attribute:: MaxRAM -> float
-
-        Sets the upper limit of the RAM used by the framework.
-        This is independent from the GPU memory and is predominantly used to monitor general memory usage.
-        If the data index becomes greater than the specified limit, parts of the cache is purged from memory.
+    :ivar bool PlotLearningMetrics: Whether to output various metric plots whilst training. This can be enabled before training or re-run after training from the training cache.
+    :ivar float MaxGPU: This sets the upper limit of the GPU memory allowed during training/validation/testing.
+    :ivar float MaxRAM: Sets the upper limit of the RAM used by the framework. This is independent from the GPU memory and is predominantly used to monitor general memory usage. If the data index becomes greater than the specified limit, parts of the cache is purged from memory.
 
     
 

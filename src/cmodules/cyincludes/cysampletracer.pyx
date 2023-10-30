@@ -1068,7 +1068,8 @@ cdef class SampleTracer:
         if self._set.max_gpu_memory == -1: pass
         else: return self._set.max_gpu_memory
         if "cuda" not in self.Device: return -1
-        self._set.max_gpu_memory = torch.cuda.mem_get_info(self.Device)[0]/(1024**3)
+        try: self._set.max_gpu_memory = torch.cuda.mem_get_info(self.Device)[0]/(1024**3)
+        except RuntimeError: self._set.max_gpu_memory = -1
         return self.MaxGPU
 
     @MaxGPU.setter
@@ -1462,13 +1463,4 @@ cdef class SampleTracer:
     @TrainingSize.setter
     def TrainingSize(self, val):
         self._set.training_size = val
-
-
-
-
-
-
-
-
-
 

@@ -19,28 +19,32 @@ cdef dict polar_edge_mass(edge_index, prediction, pmu):
     if pyc is None: return {}
     cdef int key
     cdef dict res = pyc.Graph.Polar.edge(edge_index, prediction, pmu, True)
-    res = {key : pyc.Physics.M(res[key]["unique_sum"]) for key in res if key != 0}
+    cdef dict msk = {key : (res[key]["clusters"] > -1).sum(-1) > 1 for key in res}
+    res = {key : pyc.Physics.M(res[key]["unique_sum"][msk[key]]) for key in res if key != 0}
     return res
 
 cdef dict polar_node_mass(edge_index, prediction, pmu):
     if pyc is None: return {}
     cdef int key
     cdef dict res = pyc.Graph.Polar.node(edge_index, prediction, pmu, True)
-    res = {key : pyc.Physics.M(res[key]["unique_sum"]) for key in res if key != 0}
+    cdef dict msk = {key : (res[key]["clusters"] > -1).sum(-1) > 1 for key in res}
+    res = {key : pyc.Physics.M(res[key]["unique_sum"][msk[key]]) for key in res if key != 0}
     return res
 
 cdef dict cartesian_edge_mass(edge_index, prediction, pmu):
     if pyc is None: return {}
     cdef int key
     cdef dict res = pyc.Graph.Cartesian.edge(edge_index, prediction, pmu, True)
-    res = {key : pyc.Physics.M(res[key]["unique_sum"]) for key in res if key != 0}
+    cdef dict msk = {key : (res[key]["clusters"] > -1).sum(-1) > 1 for key in res}
+    res = {key : pyc.Physics.M(res[key]["unique_sum"][msk[key]]) for key in res if key != 0}
     return res
 
 cdef dict cartesian_node_mass(edge_index, prediction, pmu):
     if pyc is None: return {}
     cdef int key
     cdef dict res = pyc.Graph.Cartesian.node(edge_index, prediction, pmu, True)
-    res = {key : pyc.Physics.M(res[key]["unique_sum"]) for key in res if key != 0}
+    cdef dict msk = {key : (res[key]["clusters"] > -1).sum(-1) > 1 for key in res}
+    res = {key : pyc.Physics.M(res[key]["unique_sum"][msk[key]]) for key in res if key != 0}
     return res
 
 

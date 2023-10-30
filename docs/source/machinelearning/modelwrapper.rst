@@ -35,10 +35,7 @@ Following the mapping procedure, the model is given additional attributes and fu
           Unpacks a batched data element with the output of the model's output. 
           The unpacking is a hacked method of the **to_data_list()** method of **PyGeometric**.
 
-    :ivar dict __param__: 
-        A free parameter dictionary used to initialize the model with. 
-        This parameter relevant if the model has input parameters during the __init__ call.
-    
+    :ivar dict __param__: A free parameter dictionary used to initialize the model with. This parameter relevant if the model has input parameters during the __init__ call.
     :ivar bool train: Sets the model to training mode.
     :ivar dict in_map: A mapping of the model's input parameters and the training sample.
     :ivar dict out_map: A mapping of the model's output parameters to the truth training sample attributes.
@@ -53,11 +50,31 @@ Following the mapping procedure, the model is given additional attributes and fu
     :ivar str device: The device that the model should be transferred to.
     :ivar bool failure: Indicates whether the model's code was not properly traced or initialized.
     :ivar str error_message: Returns the error associated with the model.
+    :ivar dict KinematicMap: The kinematics to use for reconstructing the predicted mass from the nodes and topology.
+
 
 Model Declarations (Example)
 ============================
 
-The Model wrapper class was introduced to do a preliminary scan of the model's inputs and prevent the model from crashing during training, due to features missing. 
-To further improve performance of the inference and training of a given model, the internal mapping only provides the model with the inputs it requires rather than injecting all features. 
+The Model wrapper class was introduced to do a preliminary scan of the model's inputs and prevent the model from crashing due to missing features during training. 
+To further improve performance during inference and training of a given model, the internal mapping only provides the model with the inputs it requires rather than injecting all features. 
 To declare a specific input parameter, the pre-fixes **G**, **N** and **E** are used to indicate whether a Graph, Node or Edge feature is requested.
 A similar syntax is used to request truth features as inputs, by appending to the pre-fixes, **_T**. 
+
+.. code:: python
+
+    class YourModel(...):
+
+        def __init__(self):
+
+            self.O_output = None
+            self.L_output = "CEL"
+
+            #... < some neural network initialization >...#
+
+        def forward(self, edge_index, batch, G_<some graph feature>, N_<some node features>, E_<some edge feature>):
+
+            # some logic... 
+            pass
+
+

@@ -1,4 +1,4 @@
-from AnalysisG.Particles.Particles import *
+from AnalysisG.Events.Events.bsm_4tops.Particles import *
 from AnalysisG.Templates import EventTemplate
 
 

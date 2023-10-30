@@ -239,8 +239,8 @@ class RecursivePathNetz(MessagePassing):
 
     def forward(self, edge_index, batch, G_met, G_phi, G_n_jets, G_n_lep, N_pT, N_eta, N_phi, N_energy, N_is_lep, N_is_b):
 
-        pmu = torch.cat([N_pT, N_eta, N_phi, N_energy], -1)
-        pmc = transform.PxPyPzE(pmu)/1000
+        pmu = torch.cat([N_pT / 1000, N_eta, N_phi, N_energy / 1000], -1)
+        pmc = transform.PxPyPzE(pmu)
         pid = torch.cat([N_is_lep, N_is_b], -1)
         src, dst = edge_index
 
@@ -262,16 +262,16 @@ class RecursivePathNetz(MessagePassing):
 
         # weird segmentation fault with single neutrino reconstruction
         # Intel MKL ERROR: Parameter 3 was incorrect on entry to DGEBAL.
-        #chi2_n , pmu_i_n, pmu_j_n = self.Nu(  edge_index, batch, pmu, pid, G_met, G_phi, masses, msk_nu)
+        chi2_n , pmu_i_n, pmu_j_n = self.Nu(  edge_index, batch, pmu, pid, G_met, G_phi, masses, msk_nu)
         chi2_nn, pmu_inn, pmu_jnn = self.NuNu(edge_index, batch, pmu, pid, G_met, G_phi, masses, msk_nunu)
 
-        #pmu_i[msk_e_nu]    = pmu_i_n[msk_e_nu]
+        pmu_i[msk_e_nu]   += pmu_i_n[msk_e_nu]
         pmu_i[msk_e_nunu] += pmu_inn[msk_e_nunu]
 
-        #pmu_j[msk_e_nu]    = pmu_j_n[msk_e_nu]
+        pmu_j[msk_e_nu]   += pmu_j_n[msk_e_nu]
         pmu_j[msk_e_nunu] += pmu_jnn[msk_e_nunu]
 
-        #chi2[msk_e_nu]    = chi2_n[msk_e_nu]
+        chi2[msk_e_nu]   += chi2_n[msk_e_nu]
         chi2[msk_e_nunu] += chi2_nn[msk_e_nunu]
 
         self.O_top_edge = self._top(edge_index, batch, pmc, pmu_i, pmu_j, chi2)

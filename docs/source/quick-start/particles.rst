@@ -38,52 +38,19 @@ Similar to the **EventTemplate** class, the **ParticleTemplate** leverages C++ i
         Once the setter has been called, an 18 character long string will be internally generated, which cannot be modified.
         The hash is computed from the particle's four vector, and is used for magic functions.
 
-    .. py:attribute:: index -> int
+    :ivar int index: Index of the particle as it was created
+    :ivar float px: A setter and getter function which can be manually set by a string, float, or automatically by supply the particle with ``pt`` and ``phi``. 
+    :ivar float py: A setter and getter function which can be manually set by a string, float, or automatically by supply the particle with ``pt`` and ``phi``. 
+    :ivar float pz: A setter and getter function which can be manually set by a string, float, or automatically by supply the particle with ``pt`` and ``eta``. 
+    :ivar float pt: A setter and getter function which can be manually set by a string, float, or automatically by supply the particle with ``px`` and ``py``. 
+    :ivar float eta: A setter and getter function which can be manually set by a string, float, or automatically by supply the particle with ``px``, ``py`` and ``pz`` or ``pz``, ``pt``. 
+    :ivar float phi: A setter and getter function which can be manually set by a string, float, or automatically by supply the particle with ``px`` and ``py``. 
+    :ivar float e: A setter and getter function which can be manually set by a string, float, or automatically by supply the particle with ``pt``, ``eta``, ``phi`` or ``px``, ``py``, ``pz``. 
+    :ivar float Mass: A setter and getter function which can be manually set by a string, float, or automatically by supply the particle with ``pt``, ``eta``, ``phi``, ``e`` or ``px``, ``py``, ``pz``, ``e``. 
+    :ivar float charge: A setter and getter function used to assign a particle some charge. 
+    :ivar int pdgid: A setter and getter function which returns the ``pdgid`` of the particle. This can be manually set for each particle definition, see `pdgids`_.
+    :ivar str symbol:
 
-        Index of the particle as it was created
-
-    .. py:attribute:: px -> float
-
-        A setter and getter function which can be manually set by a string, float, or automatically by supply the particle with ``pt`` and ``phi``. 
-
-    .. py:attribute:: py -> float
-
-        A setter and getter function which can be manually set by a string, float, or automatically by supply the particle with ``pt`` and ``phi``. 
-
-    .. py:attribute:: pz -> float
-
-        A setter and getter function which can be manually set by a string, float, or automatically by supply the particle with ``pt`` and ``eta``. 
-
-    .. py:attribute:: pt -> float
-
-        A setter and getter function which can be manually set by a string, float, or automatically by supply the particle with ``px`` and ``py``. 
-
-    .. py:attribute:: eta -> float
-
-        A setter and getter function which can be manually set by a string, float, or automatically by supply the particle with ``px``, ``py`` and ``pz`` or ``pz``, ``pt``. 
-
-    .. py:attribute:: phi -> float
-
-        A setter and getter function which can be manually set by a string, float, or automatically by supply the particle with ``px`` and ``py``. 
-
-    .. py:attribute:: e -> float
-
-        A setter and getter function which can be manually set by a string, float, or automatically by supply the particle with ``pt``, ``eta``, ``phi`` or ``px``, ``py``, ``pz``. 
-
-    .. py:attribute:: Mass -> float
-
-        A setter and getter function which can be manually set by a string, float, or automatically by supply the particle with ``pt``, ``eta``, ``phi``, ``e`` or ``px``, ``py``, ``pz``, ``e``. 
-
-    .. py:attribute:: charge -> float
-
-        A setter and getter function used to assign a particle some charge. 
-
-    .. py:attribute:: pdgid -> int
-
-        A setter and getter function which returns the ``pdgid`` of the particle. This can be manually set for each particle definition, see `pdgids`_.
-
-    .. py:attribute:: symbol -> str
-    
         A setter and getter function used to assign a particle a symbolic string representation. 
         Some symbols are already implemented for associated ``pdgid``. 
         The complete mapping is as follows; 
@@ -91,52 +58,28 @@ Similar to the **EventTemplate** class, the **ParticleTemplate** leverages C++ i
         - quarks: 1 : d, 2 : u, 3 : s, 4 : c, 5 : b, 6 : b
         - leptons: 11 : e, 12 : nu_e, 13 : mu, 14 : nu_mu, 15 : tau, 16 : nu_tau
 
-    .. py:attribute:: Type -> str
+    :ivar str Type: 
 
         A setter and getter function which expects a string and returns a string of the particle Type specified. 
         This parameter is optional but can be useful when wanting to create a generic particle object. 
         This will be shown in a later example.
-
-    .. py:attribute:: lepdef -> list[int]
-
-        A setter and getter function which expects a list of integers representing the **pdgid** considered leptons, by default this list is [11, 13, 15].
-    .. py:attribute:: nudef -> list[int]
-
-        A setter and getter function which expects a list of integers representing the **pdgid** considered neutrinos, by default this list is [12, 14, 16].
-    .. py:attribute:: is_lep -> bool
-
-        Returns a boolean whether the given particle has a **pdgid** considered to be leptonic.
-
-    .. py:attribute:: is_nu -> bool
-
-        Returns a boolean whether the given particle has a **pdgid** considered to be a neutrino.
-
-    .. py:attribute:: is_b -> bool
     
-        Returns a boolean whether the given particle has a **pdgid** is a b-quark.
-
-    .. py:attribute:: is_add -> bool
-
-        Returns a boolean whether the given particle has a **pdgid** anything other than being a b-quark or leptonic.
-
-    .. py:attribute:: LeptonicDecay -> bool
-
-        Returns a boolean whether the given particle has children which have a leptonic **pdgid**.
-
-    .. py:attribute:: index -> int 
+    :ivar list[int] lepdef: A setter and getter function which expects a list of integers representing the **pdgid** considered leptons, by default this list is [11, 13, 15].
+    :ivar list[int] nudef: A setter and getter function which expects a list of integers representing the **pdgid** considered neutrinos, by default this list is [12, 14, 16].
+    :ivar bool is_lep: Returns a boolean whether the given particle has a **pdgid** considered to be leptonic.
+    :ivar bool is_nu: Returns a boolean whether the given particle has a **pdgid** considered to be a neutrino.
+    :ivar bool is_b: Returns a boolean whether the given particle has a **pdgid** is a b-quark.
+    :ivar bool is_add: Returns a boolean whether the given particle has a **pdgid** anything other than being a b-quark or leptonic.
+    :ivar bool LeptonicDecay: Returns a boolean whether the given particle has children which have a leptonic **pdgid**.
+    :ivar int index: 
 
         A setter and getter function which expects a string, float, or integer. 
         If a string is assigned to the particle, then during compilation time, the associated ROOT leaf string will be used to assign the respective index.
         If a float/integer is provided, then default internal integer (``-1``) is overwritten with the assigned value. 
         If the parameter is not assigned at all, then the index will be assigned based on generation index. 
 
-    .. py:attribute:: Parent -> list
-
-        A list used to manually add a parent particle to this particle. Returns an empty list by default.
-
-    .. py:attribute:: Children -> list
-        
-        A list used to manually add a children particles to this particle (decay products). Returns an empty list by default.
+    :ivar list[ParticleTemplate] Parent: A list used to manually add a parent particle to this particle. Returns an empty list by default.
+    :ivar list[ParticleTemplate] Children: A list used to manually add a children particles to this particle (decay products). Returns an empty list by default.
 
 
 Magic Functions

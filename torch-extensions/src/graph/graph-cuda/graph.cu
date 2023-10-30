@@ -115,8 +115,10 @@ std::map<std::string, std::vector<torch::Tensor>> _edge_aggregation(
                     dim_, dim_j, max);
         })); 
 
-        pmu_u = pmu_u.to(torch::kFloat); 
-        output[name] = {clusters.index({0}), pmu_u.index({0}), revert, pmu_i.index({i})};  
+        output[name] = {
+            clusters.index({0}), pmu_u.index({0}).to(torch::kFloat), 
+            revert, pmu_i.index({i}).to(torch::kFloat)
+        };  
     }
 
     return output; 

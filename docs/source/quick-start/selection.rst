@@ -67,15 +67,14 @@ Additionally, the class does not require the recompilation of events, and is the
     .. py:function:: clone() -> SelectionTemplate
         
         A function which clones the current object, but without its attributes.
-    
-    
+     
     .. py:function:: __scrapecode__()
     
         A function which returns a dictionary which actually is a data type called **code_t**.
         This dictionary contains information about the code object and how it is preserved. 
         For more details, see the :ref:`code-types` documentation.
      
-    .. py:attribute:: __params__
+    :ivar Union[None, dict, list] __params__: 
     
         A variable which can be called prior to instanting the selection runtime. 
         The purpose of this variable is to assign parameters to the selection object, which increases object modularity.
@@ -86,81 +85,37 @@ Additionally, the class does not require the recompilation of events, and is the
         - :python:`self.__params__ = {...}`
         - :python:`self.__params__ = [...]`
  
-    .. py:attribute:: CutFlow -> dict
+    :ivar dict CutFlow:
     
         Returns a dictionary containing statistics involving events (not)-passing the **Selection** function.
         If during the **Strategy** a string is returned containing **"->"**, a new key is added to the dictionary and a counter is automatically instantiated and the event is counted as having passed.
-     
-    .. py:attribute:: ROOT -> str
     
-        Returns the current ROOT filename of the given event being processed.
-    
-    .. py:attribute:: AverageTime -> float
-    
-        Returns the average time required to process a bunch of events.
-    
-    .. py:attribute:: StdevTime -> float
-    
-        Returns the standard deviation of the time required to process a bunch of events.
-    
-    .. py:attribute:: Luminosity -> float
-    
-        The total luminosity of a bunch of events passing the selection function. 
-    
-    .. py:attribute:: nPassedEvents -> int 
-    
-        The total number of events passing the selection and strategy
-    
-    .. py:attribute:: TotalEvents -> int 
-    
-        Number of events processed (can be called within the selection run-time or post run-time).
-    
-    .. py:attribute:: AllowFailure -> bool
+    :ivar str ROOT: Returns the current ROOT filename of the given event being processed.
+    :ivar float AverageTime: Returns the average time required to process a bunch of events.
+    :ivar float StdevTime: Returns the standard deviation of the time required to process a bunch of events.
+    :ivar float Luminosity: The total luminosity of a bunch of events passing the selection function. 
+    :ivar int nPassedEvents: The total number of events passing the selection and strategy
+    :ivar int TotalEvents: Number of events processed (can be called within the selection run-time or post run-time).
+    :ivar bool AllowFailure:
     
         A boolean attribute which allows events to fail and continue the selection run-time. 
         Any failures will be recorded in the **CutFlow** dictionary and can be further investigated after processing has finished.
-    
-    .. py:attribute:: hash -> str
-    
-        Returns the current event hash. 
-    
-    .. py:attribute:: index -> int
-    
-        Returns the event index being current processed. 
-    
-    .. py:attribute:: Tag -> str
-    
-        A attribute which allows for event tagging
-    
-    .. py:attribute:: Tree -> str
-    
+   
+    :ivar str hash: Returns the current event hash. 
+    :ivar int index: Returns the event index being current processed. 
+    :ivar str Tag: A attribute which allows for event tagging.
+    :ivar str Tree: 
+
         Returns the tree of the current event being processed. 
         This allows the user to derive complex selection methods which can be used to trigger on different event tree types.
         See :ref:`complex-events` for an in-depth example.
-    
-    .. py:attribute:: cached -> bool
-    
-        Returns a boolean value indicating whether this selection has been cached and stored in the HDF5 file.
-    
-    .. py:attribute:: selection -> bool
-    
-        A boolean return value indicating if the current object is of SelectionTemplate type
-    
-    .. py:attribute:: SelectionName -> str
-    
-        Returns a string indicating the name of the object
-    
-    .. py:attribute:: Residual -> list
-    
-        If the Strategy function returns anything other than a string, then the returned value will be placed in this list for further inspection.
-    
-    .. py:attribute:: AllWeights -> list
-    
-        All collected event weights of (not)-passing events. 
-    
-    .. py:attribute:: SelectionWeights -> list
-    
-        Weights of all events passing both the **Selection** and **Strategy** function calls.
+   
+    :ivar bool cached: Returns a boolean value indicating whether this selection has been cached and stored in the HDF5 file.
+    :ivar bool selection: A boolean return value indicating if the current object is of SelectionTemplate type.
+    :ivar str SelectionName: Returns a string indicating the name of the object.
+    :ivar list Residual: If the Strategy function returns anything other than a string, then the returned value will be placed in this list for further inspection.
+    :ivar list AllWeights: All collected event weights of (not)-passing events. 
+    :ivar list SelectionWeights: Weights of all events passing both the **Selection** and **Strategy** function calls.
 
 
 

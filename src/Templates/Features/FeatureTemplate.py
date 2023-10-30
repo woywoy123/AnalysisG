@@ -154,7 +154,6 @@ def Jets():
     # Node: Truth
     NT = {
         "res_node": J.Node.res_node,
-        "one_top": J.Node.one_top,  # <-- non merged top truth jets
         "top_node": J.Node.top_node,  # <-- including merged top truth jets
     }
 

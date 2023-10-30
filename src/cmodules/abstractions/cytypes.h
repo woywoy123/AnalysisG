@@ -104,10 +104,10 @@ struct meta_t
     std::map<std::string, std::string> config = {};
 
     // eventnumber is reserved for a ROOT specific mapping
-    int eventNumber = -1;
+    double eventNumber = -1;
 
     // event_index is used as a free parameter
-    int event_index = -1;
+    double event_index = -1;
 
     // search results
     bool found = false;
@@ -202,7 +202,7 @@ struct event_t
     
     // state variables
     double weight = 1; 
-    int event_index = -1;
+    double event_index = -1;
     std::string event_hash = ""; 
     std::string event_tagging = "";
     std::string event_tree = "";  
@@ -227,7 +227,7 @@ struct graph_t
     bool cached = false;
     
     // state variables
-    int event_index = -1;
+    double event_index = -1;
     double weight = 1; 
     std::string event_hash = ""; 
     std::string event_tagging = "";
@@ -273,7 +273,7 @@ struct selection_t
     std::map<std::string, int> errors = {}; 
 
     bool cached = false; 
-    int event_index = -1; 
+    double event_index = -1; 
     double weight = 1;
     std::string event_hash = ""; 
     std::string event_tagging = ""; 

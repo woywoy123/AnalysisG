@@ -77,11 +77,10 @@ cdef inline void _check_h5(f, str key, data_t* inpt):
     f.create_dataset(key + "-accuracy"    , data = np.array(inpt.accuracy),  chunks = True)
 
     cdef pair[int, vector[vector[float]]] itr
-    for itr in inpt.mass_pred:
-        f.create_dataset(key + "-masses-pred ->" + str(itr.first), data = np.array(itr.second),  chunks = True)
-
-    for itr in inpt.mass_truth:
-        f.create_dataset(key + "-masses-truth ->" + str(itr.first), data = np.array(itr.second),  chunks = True)
+    if len(inpt.mass_pred): pass
+    else: return
+    for itr in inpt.mass_pred: f.create_dataset(key + "-masses-pred ->" + str(itr.first), data = np.array(itr.second),  chunks = True)
+    for itr in inpt.mass_truth: f.create_dataset(key + "-masses-truth ->" + str(itr.first), data = np.array(itr.second),  chunks = True)
 
 cdef inline void _rebuild_h5(f, list var, CyOptimizer* ptr, string mode, int epoch, int kfold):
     cdef map[string, data_t] mp_data
@@ -106,9 +105,8 @@ cdef inline void _rebuild_h5(f, list var, CyOptimizer* ptr, string mode, int epo
             data.nodes = <vector[vector[float]]>file[key + "-nodes"][idx : idy].tolist()
             data.loss = <vector[vector[float]]>file[key + "-loss"][idx : idy].tolist()
             data.accuracy = <vector[vector[float]]>file[key + "-accuracy"][idx : idy].tolist()
-
             for i in file:
-                if not "masses" in i: continue
+                if not "masses" in i or key not in i: continue
                 if "pred"  in i: data.mass_pred[int(i.split("->")[1])]  = <vector[vector[float]]>file[i][idx : idy].tolist()
                 if "truth" in i: data.mass_truth[int(i.split("->")[1])] = <vector[vector[float]]>file[i][idx : idy].tolist()
         if   mode == b"training": ptr.train_epoch_kfold(epoch, kfold, &mp_data)

@@ -23,75 +23,33 @@ Naturally, this module can be used in tandem with `pickle`, where the module is 
 
         Expects a list of **code_t** dictionary like content (see :ref:`data-types`.)
 
-    .. py:attribute:: InstantiateObject
+    :ivar Object InstantiateObject: 
 
         Returns a wrapped code type object of the original instance.
         During the instantiation process, if the instance is a class, then an additional attribute is added to the object called **code**.
         This attribute is a struct of type **code_t**, and allows for calling the source code in different contexts (e.g. within a thread).
 
-    .. py:attribute:: hash
-
-        Returns a string which is derived from hashing the source code.
-
-    .. py:attribute:: fx
-
-        Returns the input function.
-
-    .. py:attribute:: is_class
-
-        Returns a boolean indicating whether the input was a class
-
-    .. py:attribute:: is_funtion
-
-        Returns a boolean indicating whether the input was a function 
-
-    .. py:attribute:: is_callable
-
-        Returns a boolean indicating whether the input function can be called, e.g. ``name()``
-
-    .. py:attribute:: is_initialized
+    :ivar str hash: Returns a string which is derived from hashing the source code.
+    :ivar callable fx: Returns the input function.
+    :ivar bool is_class: Returns a boolean indicating whether the input was a class
+    :ivar bool is_function: Returns a boolean indicating whether the input was a function 
+    :ivar bool is_callable: Returns a boolean indicating whether the input function can be called, e.g. ``name()``
+    :ivar bool is_initialized: 
 
         Returns a boolean indicating whether the input function was already initialized.
         This can be particularly useful when the input has input requirements before being called, e.g. ``__init__(self, var1)``.
 
-    .. py:attribute:: function_name
-
-        Returns a string of the function name if the input was a function, else an empty string is returned.
-
-    .. py:attribute:: class_name
-
-        Returns a string of the class name if the input was a class, else an empty string is returned.
-
-    .. py:attribute:: source_code
-
-        Returns the original source code of the file from which the object originated from.
-
-    .. py:attribute:: object_code
-
-        Returns the object definition source code.
-
-    .. py:attribute:: co_vars
-
-        Returns a list of the input variables.
-
-    .. py:attribute:: input_params
-  
-        Returns a dictionary of the co-variables with their default values.
-
-    .. py:attribute:: param_space
+    :ivar str function_name: Returns a string of the function name if the input was a function, else an empty string is returned.
+    :ivar str class_name: Returns a string of the class name if the input was a class, else an empty string is returned.
+    :ivar str source_code: Returns the original source code of the file from which the object originated from.
+    :ivar str object_code: Returns the object definition source code.
+    :ivar list[str] co_vars: Returns a list of the input variables.
+    :ivar dict[str, str] input_params: Returns a dictionary of the co-variables with their default values.
+    :ivar dict param_space: 
 
         An empty placeholder used to add additional parameters to the object. 
         This can be useful when the instantiated object requires some input, which is not always available during instantiation.
 
-    .. py:attribute:: defaults
-
-        Returns a list of default input variable values.
-
-    .. py:attribute:: trace
-
-        Returns a dictionary outlining the dependency tree of the object and any external imports.
-
-    .. py:attribute:: extern_imports
-        
-        A dictionary of external libraries that the code relies on.
-
+    :ivar list defaults: Returns a list of default input variable values.
+    :ivar None trace: Returns a dictionary outlining the dependency tree of the object and any external imports.
+    :ivar dict extern_imports: A dictionary of external libraries that the code relies on.

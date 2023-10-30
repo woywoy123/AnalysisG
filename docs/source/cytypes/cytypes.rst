@@ -11,322 +11,324 @@ This section of the documentation outlines these types with their respective key
 
 .. py:data:: code_t
 
-    :var input_params: list[str]
-    :var co_vars: list[str]
-    :var param_space: dict[str, str]
-    :var trace: dict[str, list[str]]
-    :var extern_imports: dict[str, list[str]]
-    :var dependency_hashes: list[str]
-    :var function_name: str
-    :var class_name: str
-    :var hash: str
-    :var source_code: str
-    :var object_code: str
-    :var defaults: str
-    :var is_class: bool
-    :var is_function: bool
-    :var is_callable: bool
-    :var is_initialized: bool
-    :var has_param_variable: bool
+    :ivar list[str] input_params: 
+    :ivar list[str] co_vars: 
+    :ivar dict[str, str] param_space: 
+    :ivar dict[str, list[str]] trace: 
+    :ivar dict[str, list[str]] extern_imports: 
+    :ivar list[str] dependency_hashes: 
+    :ivar str function_name:
+    :ivar str class_name:
+    :ivar str hash:
+    :ivar str source_code:
+    :ivar str object_code:
+    :ivar str defaults:
+    :ivar bool is_class:
+    :ivar bool is_function:
+    :ivar bool is_callable:
+    :ivar bool is_initialized:
+    :ivar bool has_param_variable:
 
 .. py:data:: leaf_t
 
-    :var requested: str
-    :var matched: str
-    :var branch_name: str
-    :var tree_name: str
-    :var path: str
+    :ivar str requested:
+    :ivar str matched:
+    :ivar str branch_name:
+    :ivar str tree_name:
+    :ivar str path:
 
 .. py:data:: branch_t
 
-    :var requested: str
-    :var matched: str
-    :var tree_name: str
-    :var leaves: list[leaf_t]
+    :ivar str requested:
+    :ivar str matched:
+    :ivar str tree_name:
+    :ivar list[leaf_t] leaves:
 
 .. py:data:: tree_t
 
-    :var size: int
-    :var requested: str
-    :var matched: str
-    :var branches: list[branch_t]
-    :var leaves: list[leaf_t]
+    :ivar int size:
+    :ivar str requested:
+    :ivar str matched:
+    :ivar list[branch_t] branches:
+    :ivar list[leaf_t] leaves:
 
 .. py:data:: meta_t
 
-    :var hash: str
-    :var original_input: str
-    :var original_path: str
-    :var original_name: str
+    :ivar str hash:
+    :ivar str original_input:
+    :ivar str original_path:
+    :ivar str original_name:
 
-    :var req_trees: list[str]
-    :var req_branches: list[str]
-    :var req_leaves: list[str]
-    :var mis_trees: list[str]
-    :var mis_branches: list[str]
-    :var mis_leaves: list[str]
+    :ivar list[str] req_trees: 
+    :ivar list[str] req_branches:
+    :ivar list[str] req_leaves:
+    :ivar list[str] mis_trees: 
+    :ivar list[str] mis_branches: 
+    :ivar list[str] mis_leaves:
 
-    :var dsid: int
-    :var AMITag: str
-    :var generators: str
-    :var isMC: bool
-    :var derivationFormat: str
+    :ivar int dsid:
+    :ivar str AMITag:
+    :ivar str generators:
+    :ivar bool isMC:
+    :ivar str derivationFormat:
 
-    :var inputrange: dict[int, int]
-    :var inputfiles: dict[int, str]
-    :var config: dict[str, str]
+    :ivar dict[int, int] inputrange:
+    :ivar dict[int, str] inputfiles:
+    :ivar dict[str, str] config:
 
-    :var eventNumber: int
-    :var event_index: int
-    :var found: bool
-    :var DatasetName: str
-    :var ecmEnergy: float
-    :var genFiltEff: float
-    :var completion: float
-    :var beam_energy: float
-    :var crossSection: float
-    :var crossSection_mean: float
-    :var totalSize: float
-    :var nFiles: int
-    :var run_number: int
-    :var totalEvents: int
-    :var datasetNumber: int
-    :var identifier: str
-    :var prodsysStatus: str
-    :var dataType: str
-    :var version: str
-    :var PDF: str
-    :var AtlasRelease: str
-    :var principalPhysicsGroup: str
-    :var physicsShort: str
-    :var generatorName: str
-    :var geometryVersion: str
-    :var conditionsTag: str
-    :var generatorTune: str
-    :var amiStatus: str
-    :var beamType: str
-    :var productionStep: str
-    :var projectName: str
-    :var statsAlgorithm: str
-    :var genFilterNames: str
-    :var file_type: str
-    :var sample_name: str
-    :var keywords: list[str]
-    :var weights: list[str]
-    :var keyword: list[str]
-    :var LFN: dict[str, int]
-    :var fileGUID: list[str]
-    :var events: list[int]
-    :var fileSize: list[float]
+    :ivar int eventNumber:
+    :ivar int event_index:
+    :ivar bool found:
+    :ivar str DatasetName:
+    :ivar float ecmEnergy:
+    :ivar float genFiltEff:
+    :ivar float completion:
+    :ivar float beam_energy:
+    :ivar float crossSection:
+    :ivar float crossSection_mean:
+    :ivar float totalSize:
+    :ivar int nFiles:
+    :ivar int run_number:
+    :ivar int totalEvents:
+    :ivar int datasetNumber:
+    :ivar str identifier:
+    :ivar str prodsysStatus:
+    :ivar str dataType:
+    :ivar str version:
+    :ivar str PDF:
+    :ivar str AtlasRelease:
+    :ivar str principalPhysicsGroup:
+    :ivar str physicsShort:
+    :ivar str generatorName:
+    :ivar str geometryVersion:
+    :ivar str conditionsTag:
+    :ivar str generatorTune:
+    :ivar str amiStatus:
+    :ivar str beamType:
+    :ivar str productionStep:
+    :ivar str projectName:
+    :ivar str statsAlgorithm:
+    :ivar str genFilterNames:
+    :ivar str file_type:
+    :ivar str sample_name:
+    :ivar list[str] keywords:
+    :ivar list[str] weights:
+    :ivar list[str] keyword:
+    :ivar dict[str, int] LFN:
+    :ivar list[st] fileGUID:
+    :ivar list[int] events:
+    :ivar list[float] fileSize:
 
 
 .. py:data:: particle_t
 
-    :var e: float
-    :var mass: float
-    :var px: float
-    :var py: float
-    :var pz: float
-    :var pt: float
-    :var eta: float
-    :var phi: float
-    :var cartesian: bool
-    :var polar: bool
-    :var charge: float
-    :var pdgid: int
-    :var index: int
-    :var type: str
-    :var hash: str
-    :var symbol: str
-    :var lepdef: list[int]
-    :var nudef: list[int]
+    :ivar float e:
+    :ivar float mass:
+    :ivar float px:
+    :ivar float py:
+    :ivar float pz:
+    :ivar float pt:
+    :ivar float eta:
+    :ivar float phi:
+    :ivar bool cartesian:
+    :ivar bool polar:
+    :ivar float charge:
+    :ivar int pdgid: 
+    :ivar int index:
+    :ivar str type:
+    :ivar str hash:
+    :ivar str symbol:
+    :ivar list[int] lepdef:
+    :ivar list[int] nudef: 
 
 .. py:data:: event_t
 
-    :var event_name: str
-    :var commit_hash: str
-    :var code_hash: str
-    :var deprecated: bool
-    :var cached: bool
-    :var weight: float
-    :var event_index: int
-    :var event_hash: str
-    :var event_tagging: str
-    :var event_tree: str
-    :var event_root: str
-    :var pickled_data: str
-    :var graph: bool
-    :var selection: bool
-    :var event: bool
+    :ivar str event_name:
+    :ivar str commit_hash:
+    :ivar str code_hash:
+    :ivar bool deprecated: 
+    :ivar bool cached:
+    :ivar float weight: 
+    :ivar int event_index:
+    :ivar str event_hash:
+    :ivar str event_tagging:
+    :ivar str event_tree:
+    :ivar str event_root:
+    :ivar str pickled_data:
+    :ivar bool graph: 
+    :ivar bool selection: 
+    :ivar bool event: 
 
 .. py:data:: graph_t
 
-    :var event_name: str
-    :var code_hash: str
-    :var errors: dict[str, str]
-    :var presel: dict[str, int]
-    :var cached: bool
-    :var event_index: int
-    :var weight: float
-    :var event_hash: str
-    :var event_tagging: str
-    :var event_tree: str
-    :var event_root: str
-    :var pickled_data: str
-    :var train: bool
-    :var evaluation: bool
-    :var validation: bool
-    :var empty_graph: bool
-    :var skip_graph: bool
-    :var src_dst: dict[str, list[int]]
-    :var hash_particle: dict[str, int]
-    :var self_loops: bool
-    :var graph_feature: dict[str, str]
-    :var node_feature: dict[str, str]
-    :var edge_feature: dict[str, str]
-    :var pre_sel_feature: dict[str, str]
-    :var topo_hash: str
-    :var graph: bool
-    :var selection: bool
-    :var event: bool
+    :ivar str event_name:
+    :ivar str code_hash:
+    :ivar dict[str, str] errors: 
+    :ivar dict[str, int] presel:
+    :ivar bool cached:
+    :ivar int event_index:
+    :ivar float weight:
+    :ivar str event_hash:
+    :ivar str event_tagging:
+    :ivar str event_tree:
+    :ivar str event_root:
+    :ivar str pickled_data:
+    :ivar bool train:
+    :ivar bool evaluation:
+    :ivar bool validation:
+    :ivar bool empty_graph: bool
+    :ivar bool skip_graph: bool
+    :ivar dict[str, list[int]] src_dst:
+    :ivar dict[str, int] hash_particle:
+    :ivar bool self_loops:
+    :ivar dict[str, str] graph_feature: 
+    :ivar dict[str, str] node_feature: 
+    :ivar dict[str, str] edge_feature:
+    :ivar dict[str, str] pre_sel_feature:
+    :ivar str topo_hash:
+    :ivar bool graph:
+    :ivar bool selection: 
+    :ivar bool event: 
 
 .. py:data:: selection_t
 
-    :var event_name: str
-    :var code_hash: str
-    :var errors: dict[str, int]
-    :var cached: bool
-    :var event_index: int
-    :var weight: float
-    :var event_hash: str
-    :var event_tagging: str
-    :var event_tree: str
-    :var event_root: str
-    :var pickled_data: str
-    :var pickled_strategy_data: str
-    :var strat_merge: dict[str, str]
-    :var data_merge: dict[str, str]
-    :var cutflow: dict[str, int]
-    :var timestats: list[float]
-    :var all_weights: list[float]
-    :var selection_weights: list[float]
-    :var allow_failure: bool
-    :var _params_: str
-    :var graph: bool
-    :var selection: bool
-    :var event: bool
+    :ivar str event_name:
+    :ivar str code_hash:
+    :ivar dict[str, int] errors:
+    :ivar bool cached:
+    :ivar int event_index:
+    :ivar float weight:
+    :ivar str event_hash:
+    :ivar str event_tagging:
+    :ivar str event_tree:
+    :ivar str event_root:
+    :ivar str pickled_data:
+    :ivar str pickled_strategy_data:
+    :ivar dict[str, str] strat_merge:
+    :ivar dict[str, str] data_merge:
+    :ivar dict[str, int] cutflow:
+    :ivar list[float] timestats:
+    :ivar list[float] all_weights:
+    :ivar list[float] selection_weights:
+    :ivar bool allow_failure:
+    :ivar str _params_:
+    :ivar bool graph:
+    :ivar bool selection: 
+    :ivar bool event: 
 
 .. py:data:: batch_t
 
-    :var events: dict[str, event_t]
-    :var graphs: dict[str, graphs_t]
-    :var selections: dict[str, selection_t]
-    :var code_hashes: dict[str, code_t]
-    :var meta: meta_t
-    :var hash: str
+    :ivar dict[str, event_t] events:
+    :ivar dict[str, graph_t] graphs:
+    :ivar dict[str, selection_t] selections:
+    :ivar dict[str, code_t] code_hashes:
+    :ivar meta_t meta:
+    :ivar str hash:
 
 .. py:data:: folds_t
 
-    :var test: bool
-    :var train: bool
-    :var evaluation: bool
-    :var kfold: int
-    :var event_hash: str
+    :ivar bool test: 
+    :ivar bool train:
+    :ivar bool evaluation:
+    :ivar int kfold:
+    :ivar str event_hash:
 
 .. py:data:: data_t
 
-    :var name: str
-    :var truth: list[list[float]]
-    :var pred: list[list[float]]
-    :var index: list[list[float]]
-    :var nodes: list[list[float]]
-    :var loss: list[list[float]]
-    :var accuracy: list[list[float]]
+    :ivar str name: str
+    :ivar list[list[float]] truth:
+    :ivar list[list[float]] pred:
+    :ivar list[list[float]] index:
+    :ivar list[list[float]] nodes:
+    :ivar list[list[float]] loss:
+    :ivar list[list[float]] accuracy:
+    :ivar map[int, list[list[float]]] mass_truth:
+    :ivar map[int, list[list[float]]] mass_pred:
 
 .. py:data:: metric_t
    
-    :var truth: dict[str, list[list[float]]
-    :var pred: dict[str, list[list[float]]
-    :var acc_average: dict[str, float]
-    :var loss_average: dict[str, float]
-    :var num_nodes: dict[str, int]
+    :ivar dict[str, list[list[float]] truth:
+    :ivar dict[str, list[list[float]] pred:
+    :ivar dict[str, float] acc_average:
+    :ivar dict[str, float] loss_average:
+    :ivar dict[str, int] num_nodes:
 
 
 .. py:data:: root_t
 
-    :var batches: dict[str, batch_t]
-    :var n_events: dict[str, int]
-    :var n_graphs: dict[str, int]
-    :var n_selections: dict[str, int]
+    :ivar dict[str, batch_t] batches:
+    :ivar dict[str, int] n_events:
+    :ivar dict[str, int] n_graphs:
+    :ivar dict[str, int] n_selections:
 
 .. py:data:: tracer_t
 
-    :var root_names: dict[str, root_t]
-    :var root_meta: dict[str, meta_t]
-    :var hashed_code: dict[str, code_t]
-    :var event_trees: dict[str, int]
-    :var link_event_code: dict[str, str]
-    :var link_graph_code: dict[str, str]
+    :ivar dict[str, root_t] root_names:
+    :ivar dict[str, meta_t] root_meta:
+    :ivar dict[str, code_t] hashed_code:
+    :ivar dict[str, int ] event_trees:
+    :ivar dict[str, str] link_event_code:
+    :ivar dict[str, str] link_graph_code:
 
 .. py:data:: export_t
 
-    :var root_meta: dict[str, meta_t]
-    :var hashed_code: dict[str, code_t]
-    :var link_event_code: dict[str, str]
-    :var link_graph_code: dict[str, str]
-    :var link_selection_code: dict[str, str]
-    :var event_name_hash: dict[str, dict[str]]
-    :var graph_name_hash: dict[str, dict[str]]
-    :var selection_name_hash: dict[str, dict[str]]
-    :var event_dir: dict[str, str]
-    :var graph_dir: dict[str, str]
-    :var selection_dir: dict[str, str]
+    :ivar dict[str, meta_t] root_meta: dict[str, meta_t]
+    :ivar dict[str, code_t] hashed_code: dict[str, code_t]
+    :ivar dict[str, str] link_event_code: dict[str, str]
+    :ivar dict[str, str] link_graph_code: dict[str, str]
+    :ivar dict[str, str] link_selection_code: dict[str, str]
+    :ivar dict[str, list[str]] event_name_hash: 
+    :ivar dict[str, list[str]] graph_name_hash:
+    :ivar dict[str, list[str]] selection_name_hash:
+    :ivar dict[str, str] event_dir: 
+    :ivar dict[str, str] graph_dir: 
+    :ivar dict[str, str] selection_dir: 
 
 .. py:data:: settings_t
 
-    :var projectname: str
-    :var outputdirectory: str
-    :var files: dict[str, list[str]]
-    :var samplemap: dict[str, list[str]]
-    :var verbose: int
-    :var chunks: int
-    :var threads: int
-    :var enable_pyami: bool
-    :var tree: str
-    :var eventname: str
-    :var graphname: str
-    :var selectionname: str
-    :var event_start: int
-    :var event_stop: int
-    :var training_name: str
-    :var run_name: str
-    :var device: str
-    :var optimizer_name: str
-    :var optimizer_params: dict[str, str]
-    :var scheduler_name: str
-    :var scheduler_params: dict[str, str]
-    :var kfolds: int
-    :var batch_size: int
-    :var epochs: int
-    :var epoch: dict[int, int]
-    :var kfold: list[int]
-    :var model: code_t
-    :var model_params: dict[str, str]
-    :var kinematic_map: dict[str, str]
-    :var debug_mode: bool
-    :var continue_training: bool
-    :var runplotting: bool
-    :var sort_by_nodes: bool
-    :var enable_reconstruction: bool
-    :var getgraph: bool
-    :var getevent: bool
-    :var getselection: bool
-    :var eventcache: bool
-    :var graphcache: bool
-    :var search: list[str]
-    :var get_all: bool
-    :var hashed_code: dict[str, code_t]
-    :var link_event_code: dict[str, str]
-    :var link_graph_code: dict[str, str]
-    :var link_selection_code: dict[str, str]
-
+    :ivar str projectname:
+    :ivar str outputdirectory:
+    :ivar dict[str, list[str]] files:
+    :ivar dict[str, list[str]] samplemap:
+    :ivar int verbose:
+    :ivar int chunks:
+    :ivar int threads:
+    :ivar bool enable_pyami:
+    :ivar str tree:
+    :ivar str eventname:
+    :ivar str graphname:
+    :ivar str selectionname:
+    :ivar int event_start:
+    :ivar int event_stop:
+    :ivar str training_name:
+    :ivar str run_name:
+    :ivar str device:
+    :ivar str optimizer_name:
+    :ivar dict[str, str] optimizer_params:
+    :ivar str scheduler_name:
+    :ivar dict[str, str] scheduler_params:
+    :ivar int kfolds:
+    :ivar int batch_size: 
+    :ivar int epochs: 
+    :ivar dict[int, int] epoch:
+    :ivar list[int] kfold:
+    :ivar code_t model:
+    :ivar dict[str, str] model_params:
+    :ivar dict[str, str] kinematic_map: 
+    :ivar bool debug_mode:
+    :ivar bool continue_training:
+    :ivar bool runplotting:
+    :ivar bool sort_by_nodes:
+    :ivar bool enable_reconstruction:
+    :ivar dict[str, str] kinematic_map:
+    :ivar bool getgraph:
+    :ivar bool getevent:
+    :ivar bool getselection:
+    :ivar bool eventcache: 
+    :ivar bool graphcache: 
+    :ivar list[str] search: 
+    :ivar bool get_all: 
+    :ivar dict[str, code_t] hashed_code:
+    :ivar dict[str, str] link_event_code:
+    :ivar dict[str, str] link_graph_code:
+    :ivar dict[str, str] link_selection_code:

@@ -77,97 +77,37 @@ Most of the content explained in the :ref:`graph-start` is already considered ad
         A function which creates a duplicate of the graph object. 
         This **does not** clone the graph attributes, but rather only creates an empty clone of the given graph. 
 
-    .. py:attribute:: Topology -> list
-
-        Returns the current graph topology.
-
-    .. py:attribute:: Export -> graph_t
-
-        Export the graph object as a dictionary.
-
-    .. py:attribute:: Event
+    :ivar list Topology: Returns the current graph topology.
+    :ivar graph_t Export: Export the graph object as a dictionary.
+    :ivar EventTemplate Event: 
 
         A variable used to indicate the event to be the target for graph compilation.
         Requires an **EventTemplate** object or any object which has the appropriate attributes.
-
-    .. py:attribute:: Particles -> list
-
-        A list of particles to compute the topology/graph/node from.
-
-    .. py:attribute:: self_loops -> bool
-
-        Connect nodes to themselves, i.e. the edge-index tensor will have values with `i = j`.
-
-    .. py:attribute:: code_owner -> bool
-
-        A special attribute used to indicate whether the C++ backend should be owner of the code objects.
-
-    .. py:attribute:: code -> dict[str, Code]
-
-        Returns a dictionary with the Code objects used to construct the graph.
-
-    .. py:attribute:: index -> int
-
-        An index used to track which event the graph is being computed from. 
-
-    .. py:attribute:: Errors -> dict
-
-        Outputs a dictionary with errors encountered during graph construction.
-
-    .. py:attribute:: PreSelectionMetric -> dict
-
-        Outputs information about the **PreSelection** function's impact on graphs.
-
-    .. py:attribute:: Train -> bool
-
-        Assign the graph for training sample.
-
-    .. py:attribute:: Eval -> bool
-
-        Assign the graph to evaluation sample.
-
-    .. py:attribute:: Validation -> bool
-
-        Assign the graph to validation sample.
-
-    .. py:attribute:: EmptyGraph -> bool
-
-        Returns a **True** if the event has no particles/event passing the **PreSelection** or **Topology** functions.
-
-    .. py:attribute:: SkipGraph -> bool
-
-        Exclude the graph from training/validation/evaluation.
-
-    .. py:attribute:: Tag -> str
-
-        A variable used to tag the event with some string value. 
-
-    .. py:attribute:: cached -> bool
-
-        Indicates whether this graph has been cached and saved within a HDF5 file.
-       
-
-    .. py:attribute:: ROOT -> str
     
-        Returns the ROOT filename from which the event was compiled from.
-
-    .. py:attribute:: hash -> str
+    :ivar list[ParticleTemplate] Particle: A list of particles to compute the topology/graph/node from.
+    :ivar bool self_loops: Connect nodes to themselves, i.e. the edge-index tensor will have values with `i = j`.
+    :ivar bool code_owner: A special attribute used to indicate whether the C++ backend should be owner of the code objects.
+    :ivar dict[str, Code] code: Returns a dictionary with the Code objects used to construct the graph.
+    :ivar int index: An index used to track which event the graph is being computed from. 
+    :ivar dict Errors: Outputs a dictionary with errors encountered during graph construction.
+    :ivar dict PreSelectionMetric: Outputs information about the **PreSelection** function's impact on graphs.
+    :ivar bool Train: Assign the graph for training sample.
+    :ivar bool Eval: Assign the graph to evaluation sample.
+    :ivar bool Validation: Assign the graph to validation sample.
+    :ivar bool EmptyGraph: Returns a **True** if the event has no particles/event passing the **PreSelection** or **Topology** functions.
+    :ivar bool SkipGraph: Exclude the graph from training/validation/evaluation.
+    :ivar str Tag: A variable used to tag the event with some string value. 
+    :ivar bool cached: Indicates whether this graph has been cached and saved within a HDF5 file.
+    :ivar str ROOT: Returns the ROOT filename from which the event was compiled from.
+    :ivar str hash: 
 
         Once set, an 18 character long string will be internally generated, which cannot be modified.
         The hash is computed from ``input/<event index>/``, and assigns each event a unique identity such that the tracer can retrieve the specified event.
         If the getter (``self.hash``) has been called prior to the setter (``self.hash = 'something'``), then an empty string is returned.
 
-    .. py:attribute:: Graph -> bool
-
-        Returns a boolean to indicate this graph to be of GraphTemplate type.
-
-    .. py:attribute:: GraphName -> str
-        
-        Returns the name of this graph type.
-
-    .. py:attribute:: Tree -> str
-
-        Returns the ROOT Tree from which the graph was generated from.
+    :ivar bool Graph: Returns a boolean to indicate this graph to be of GraphTemplate type.
+    :ivar str GraphName: Returns the name of this graph type.
+    :ivar str Tree: Returns the ROOT Tree from which the graph was generated from.
 
 
 Missing EventTemplate Attribute Behavior

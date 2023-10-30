@@ -38,36 +38,33 @@ if True:
     auto.MakeGraphCache(mode)
     auto.QuantizeSamples(20)
     auto.TrainingSample("basic-sample-det", 90)
-    #auto.EventStop = 1000
     for i, job in auto.Make().items():
         job.Threads = 16
         job.Chunks = 10000
         print("-> " + i)
         job.Launch()
         del job
-    exit()
+
 Ana = Analysis()
 Ana.ProjectName = "Project_ML"
 Ana.Device = "cuda"
 Ana.TrainingName = "basic-sample-det"
 Ana.Model = auto.ModelTrainer(model)
-Ana.kFold = 4
+Ana.kFold = 1
 Ana.Epochs = 100
 Ana.BatchSize = 1
 Ana.MaxGPU = 20
 Ana.MaxRAM = 200
 Ana.RunName = model + "-" + mode
 Ana.Optimizer = "ADAM"
-Ana.GraphName = "GraphDetector"
+Ana.GraphName = Graphs(mode)._this.__name__
 Ana.Tree = "nominal"
-Ana.OptimizerParams = {"lr": 1e-3, "weight_decay": 1e-6}
+Ana.OptimizerParams = {"lr": 1e-6, "weight_decay": 1e-6}
 Ana.PlotLearningMetrics = True
-Ana.ContinueTraining = False
+Ana.ContinueTraining = True
 Ana.DebugMode = False
 Ana.KinematicMap = {
-                "top_edge" : "polar -> N_pT, N_eta, N_phi, N_energy", 
+                "top_edge" : "polar -> N_pT, N_eta, N_phi, N_energy",
                 "res_edge" : "polar -> N_pT, N_eta, N_phi, N_energy"
 }
 Ana.Launch()
-
-

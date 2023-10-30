@@ -70,7 +70,7 @@ cdef inline dict map_to_dict(map[string, gen_t] inpt):
 
 
 
-cdef inline void merge(map[string, vector[string]]* out, map[string, string]* get, string hash_) nogil:
+cdef inline void merge(map[string, vector[string]]* out, map[string, string]* get, string hash_) noexcept nogil:
     if not get.size(): return
     cdef pair[string, string] itr
     for itr in dereference(get): dereference(out)[itr.first].push_back(hash_)

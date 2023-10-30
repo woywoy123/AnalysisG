@@ -427,11 +427,11 @@ cdef class MetaData:
         self.ptr.container.derivationFormat = enc(val)
 
     @property
-    def eventNumber(self) -> int:
+    def eventNumber(self) -> double:
         return self.ptr.container.eventNumber
 
     @eventNumber.setter
-    def eventNumber(self, int val):
+    def eventNumber(self, double val):
         self.ptr.container.eventNumber = val
 
     @property

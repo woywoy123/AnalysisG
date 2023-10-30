@@ -1,6 +1,6 @@
 def res_edge(a, b):
     tops = a.Parent + b.Parent
-    return sum([i.FromRes for i in tops]) == 2
+    return int(sum([i.FromRes for i in tops]) == 2)
 
 def top_edge(a, b):
     try: return a.Parent[0] == b.Parent[0]

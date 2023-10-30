@@ -36,27 +36,16 @@ This module aims to streamline this process and introduce the most minimalistic 
 
        Build and submit scripts automatically to the cluster.
 
-    .. py:attribute:: OutputDirectory -> str
-
-       Globally apply the given output directory to all **Analysis** objects.
-
-    .. py:attribute:: ProjectName -> str
-
-       Globally apply the given project name to all **Analysis** objects.
-
-    .. py:attribute:: Verbose -> int
-
-       Globally apply the verbosity to all **Analysis** objects.
-
-    .. py:attribute:: PythonVenv -> str
+    :ivar str OutputDirectory: Globally apply the given output directory to all **Analysis** objects.
+    :ivar str ProjectName: Globally apply the given project name to all **Analysis** objects.
+    :ivar int Verbose: Globally apply the verbosity to all **Analysis** objects.
+    :ivar str PythonVenv: 
 
        A parameter which selects the python environment to use. 
        In the case of py-venv, simply create an alias or bash environment variable pointing to the particular py-venv directory.
        E.g. PythonGNN=/some-path/py-venv/../activate
 
-    .. py:attribute:: CondaVenv -> str
-
-       A parameter which selects the conda environment to use by name.
+    :ivar str CondaVenv: A parameter which selects the conda environment to use by name.
 
 
 A Simple Illustration of Chained Submissions
