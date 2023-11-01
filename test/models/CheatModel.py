@@ -10,16 +10,25 @@ class CheatModel(MessagePassing):
         self.L_top_edge = "CEL"
         self.test = test
 
+        self.O_signal = None
+        self.L_signal = "CEL"
+
         end = 16
         self._isEdge = Seq(Linear(8, end), ReLU(), Linear(end, 2))
         self._isMass = Seq(Linear(1, end), Linear(end, 2))
 
-    def forward(self, i, edge_index, N_pT, N_eta, N_phi, N_energy, E_T_top_edge):
+        self._isSig = Seq(Linear(1, end), Linear(end, 2))
+
+    def forward(self, i, edge_index, N_pT, N_eta, N_phi, N_energy, E_T_top_edge, G_T_signal):
         Pmu = torch.cat([N_pT, N_eta, N_phi, N_energy], dim=1)
         Pmc = pyc.Transform.PtEtaPhiE(Pmu)
         self.O_top_edge = self.propagate(
             edge_index, Pmc=Pmc, Pmu=Pmu, E_T_edge=E_T_top_edge
         )
+
+        self.O_signal = self._isSig(G_T_signal.to(dtype = torch.float))
+
+
 
     def message(self, edge_index, Pmc_i, Pmc_j, Pmu_i, Pmu_j, E_T_edge):
         e_dr = pyc.Physics.Polar.DeltaR(Pmu_i, Pmu_j).to(dtype = torch.float)

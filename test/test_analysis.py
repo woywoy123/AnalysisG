@@ -439,19 +439,19 @@ def test_analysis_selection_cache():
 
 if __name__ == "__main__":
     test_analysis_event_merge()
-    test_analysis_more_samples()
-    test_analysis_event_nocache()
-    test_analysis_event_nocache_nolaunch()
-    test_analysis_event_cache()
-    test_analysis_event_cache_diff_sample()
-
-    test_analysis_data_nocache()
-    test_analysis_data_nocache_nolaunch()
-    test_analysis_data_cache()
-    test_analysis_data_cache_diff_sample()
-    test_analysis_data_event_cache_diff_sample()
-
-    test_analysis_selection_nocache()
-    test_analysis_selection_nocache_nolaunch()
-    test_analysis_selection_cache()
+#    test_analysis_more_samples()
+#    test_analysis_event_nocache()
+#    test_analysis_event_nocache_nolaunch()
+#    test_analysis_event_cache()
+#    test_analysis_event_cache_diff_sample()
+#
+#    test_analysis_data_nocache()
+#    test_analysis_data_nocache_nolaunch()
+#    test_analysis_data_cache()
+#    test_analysis_data_cache_diff_sample()
+#    test_analysis_data_event_cache_diff_sample()
+#
+#    test_analysis_selection_nocache()
+#    test_analysis_selection_nocache_nolaunch()
+#    test_analysis_selection_cache()
 

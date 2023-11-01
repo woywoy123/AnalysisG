@@ -1,6 +1,4 @@
-
 from AnalysisG._cmodules.SampleTracer import SampleTracer
-
 from AnalysisG.SampleTracer import SampleTracer
 from AnalysisG.Templates import EventTemplate
 from AnalysisG.Templates import ParticleTemplate
@@ -142,8 +140,8 @@ def test_tracer_operators():
     l1 = len(tr1)
     assert l1 == sum([k for k in n1_events.values()])
     tr1.Tree = "nominal"
-    tr1.GetEvent = True
     tr1.EventName = "Event"
+    tr1.GetAll = False
 
     # not set the event/tree, should default to nominal
     nominal_n = {i : t1_event[i.hash]["nominal"]["Event"] for i in tr1}
@@ -282,11 +280,11 @@ def test_tracer_hdf5():
     s.RestoreTracer()
     s.RestoreEvents()
 
-    for i in tr1: break
+    for i in tr1["Event"]: break
     print(len(s[i.ROOT]), len(tr1))
     assert len(s[i.ROOT]) == len(tr1)
 
-    for i in tr2: break
+    for i in tr2["Event"]: break
     assert len(s[i.ROOT]) == len(tr2)
 
     for i in tr1: assert s[i.hash]
@@ -323,6 +321,6 @@ def test_tracer_hdf5():
 
 if __name__ == "__main__":
     #test_tracer_addEvent()
-    #test_tracer_operators()
-    test_tracer_hdf5()
+    test_tracer_operators()
+    #test_tracer_hdf5()
     pass

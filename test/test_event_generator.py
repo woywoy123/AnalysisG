@@ -1,5 +1,5 @@
 from AnalysisG.Generators import EventGenerator
-from AnalysisG.Events.Events.Event import Event
+from AnalysisG.Events import Event
 
 smpl = "./samples/"
 Files = {

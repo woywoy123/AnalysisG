@@ -15,7 +15,7 @@ from cytypes cimport folds_t, data_t, graph_t
 from cyoptimizer cimport *
 from cyepoch cimport *
 
-from torchmetrics import ROC, AUROC
+from torchmetrics.classification import MulticlassROC, MulticlassAUROC
 from AnalysisG.Plotting import TH1F, TLine
 from torch_geometric.data import Batch
 from tqdm import trange
@@ -298,10 +298,10 @@ cdef dict make_roc_curve(map[string, roc_t]* roc_, dict lines, str mode):
         pred = torch.tensor(its.second.pred)
         dereference(roc_)[its.first].pred.clear()
 
-        tru = torch.tensor(its.second.truth, dtype = torch.int).view(-1)
+        tru = torch.tensor(its.second.truth, dtype = torch.long).view(-1)
         dereference(roc_)[its.first].truth.clear()
-        roc = ROC(**{"task" : "multiclass", "num_classes": pred.size()[1]})
-        auc = AUROC(**{"task" : "multiclass", "num_classes": pred.size()[1]})
+        roc = MulticlassROC(**{"num_classes": pred.size()[1]})
+        auc = MulticlassAUROC(**{"num_classes": pred.size()[1]})
         fpr, tpr, thres = roc(pred, tru)
         auc_ = auc(pred, tru).view(-1)
         del tru

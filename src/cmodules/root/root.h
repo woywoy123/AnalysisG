@@ -75,6 +75,27 @@ namespace SampleTracer
                 input -> clear(); 
             };
 
+            template <typename G>
+            G* find(std::map<std::string, G*>* input, std::string name)
+            {
+                typename std::map<std::string, G*>::iterator itr; 
+                for (itr = input -> begin(); itr != input -> end(); ++itr){
+                    if (!Tools::count(itr -> first, name)){continue;}
+                    return itr -> second;      
+                }
+                return nullptr; 
+            }; 
+
+            bool find(std::map<std::string, std::string>* input, std::string name)
+            {
+                std::map<std::string, std::string>::iterator itr; 
+                for (itr = input -> begin(); itr != input -> end(); ++itr){
+                    if (!Tools::count(itr -> first, name)){continue;}
+                    return true;
+                }
+                return false; 
+            }; 
+
         private: 
             template <typename G, typename T>
             void export_this(G* inpt, std::map<std::string, T>* out)

@@ -262,9 +262,50 @@ def test_parallel_analysis():
     Ana.rm("Project")
 
 
+
+def test_plotting_analysis():
+    from models.CheatModel import CheatModel
+
+    Ana = Analysis()
+    Ana.ProjectName = "Project"
+    Ana.InputSample(None, root1)
+    Ana.Event = Event
+    Ana.Graph = GraphChildren
+    ApplyFeatures(Ana)
+    Ana.DataCache = True
+    Ana.Launch()
+
+    Ana = Analysis()
+    Ana.ProjectName = "Project"
+    Ana.DataCache = True
+    Ana.Event = None
+    Ana.GraphName = "GraphChildren"
+    Ana.TrainingSize = 50
+    Ana.kFolds = 10
+    Ana.Launch()
+
+    Ana = Analysis()
+    Ana.ProjectName = "Project"
+    Ana.Epochs = 2
+    Ana.kFold = 1
+    Ana.GraphName = "GraphChildren"
+    Ana.ContinueTraining = False
+    Ana.PlotLearningMetrics = True
+    Ana.Optimizer = "ADAM"
+    Ana.ModelParams = {"test" : "here"}
+    Ana.OptimizerParams = {"lr": 0.001}
+    Ana.Device = "cpu"
+    Ana.Model = CheatModel
+    Ana.BatchSize = 1
+    Ana.KinematicMap = {"top_edge" : "polar -> N_pT, N_eta, N_phi, N_energy"}
+    Ana.Launch()
+    Ana.rm("Project")
+
+
 if __name__ == "__main__":
-#    test_random_sampling()
-#    test_feature_analysis()
+    test_random_sampling()
+    test_feature_analysis()
     test_optimizer()
-#    test_optimizer_analysis()
-#    test_parallel_analysis()
+    test_optimizer_analysis()
+    test_parallel_analysis()
+    test_plotting_analysis()

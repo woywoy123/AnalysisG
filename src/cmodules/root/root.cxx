@@ -127,31 +127,46 @@ namespace SampleTracer
 
     void CyBatch::Contextualize()
     {
+        // Find the event implementations if specified
         std::string ev_name = ""; 
-        std::string gr_name = "";
-        std::string sel_name = ""; 
-        if (this -> this_tree.size()){ 
-            ev_name  = this -> this_tree + "/" + this -> this_event_name; 
-            gr_name  = this -> this_tree + "/" + this -> this_graph_name; 
-            sel_name = this -> this_tree + "/" + this -> this_selection_name;
+        if (this -> this_tree.size() && this -> this_event_name.size()){
+            ev_name  = this -> this_tree + "/" + this -> this_event_name;
         }
-       
-        if (!this -> events.count(ev_name)){ this -> this_ev = nullptr; }
-        else {this -> this_ev = this -> events[ev_name];}
+        else if (this -> this_event_name.size()){ev_name = this -> this_event_name;}
 
-        if (!this -> graphs.count(gr_name)){ this ->this_gr = nullptr; }
-        else {this -> this_gr = this -> graphs[gr_name];}
-       
-        if (!this -> selections.count(sel_name)){this -> this_sel = nullptr;} 
-        else {this -> this_sel = this -> selections[sel_name];}
+        if (this -> events.count(ev_name)){this -> this_ev = this -> events[ev_name];}
+        else { this -> this_ev = this -> find(&this -> events, ev_name); }
+
+        // Find the graph implementations if specified
+        std::string gr_name = ""; 
+        if (this -> this_tree.size() && this -> this_graph_name.size()){
+            gr_name  = this -> this_tree + "/" + this -> this_graph_name;
+        }
+        else if (this -> this_graph_name.size()){gr_name = this -> this_graph_name;}
+
+        if (this -> graphs.count(gr_name)){this -> this_gr = this -> graphs[gr_name];}
+        else { this -> this_gr = this -> find(&this -> graphs, gr_name); }
+
+        // Find the selection implementations if specified
+        std::string sel_name = ""; 
+        if (this -> this_tree.size() && this -> this_selection_name.size()){
+            sel_name  = this -> this_tree + "/" + this -> this_selection_name;
+        }
+        else if (this -> this_selection_name.size()){sel_name = this -> this_selection_name;}
+
+        if (this -> selections.count(sel_name)){this -> this_sel = this -> selections[sel_name];}
+        else { this -> this_sel = this -> find(&this -> selections, sel_name); }
 
         if (!this -> get_event){this -> this_ev  = nullptr;}
         if (!this -> get_graph){this -> this_gr  = nullptr;}
         if (!this -> get_selection){this -> this_sel = nullptr;}
 
         if (this -> this_ev) { this -> valid = true; }
-        if (this -> this_gr) { this -> valid = true; }
-        if (this -> this_sel){ this -> valid = true; }
+        else if (this -> this_gr) { this -> valid = true; }
+        else if (this -> this_sel){ this -> valid = true; }
+        else if (this -> find(&this -> event_dir, this -> this_tree + "." + this -> this_event_name)){ this -> valid = true; }
+        else if (this -> find(&this -> graph_dir, this -> this_tree + "." + this -> this_graph_name)){ this -> valid = true; }
+        else if (this -> find(&this -> selection_dir, this -> this_tree + "." + this -> this_selection_name)){ this -> valid = true; }
     }
     
     void CyBatch::ApplySettings(const settings_t* inpt)
@@ -167,9 +182,9 @@ namespace SampleTracer
         this -> this_selection_name = inpt -> selectionname; 
         this -> get_selection = inpt -> getselection; 
 
-        this -> valid = inpt -> get_all; 
+        this -> valid = false;  
         this -> Contextualize();
-        if (!this -> valid){ return; }
+        if (!this -> valid && !inpt -> get_all){ return; }
 
         const std::vector<std::string>* srch = &(inpt -> search); 
         unsigned int z = srch -> size(); 
@@ -198,7 +213,7 @@ namespace SampleTracer
             if (this -> this_sel){
                 if (this -> this_sel -> selection.event_root == find){return;}
                 if (this -> this_sel -> selection.event_name == find){return;}
-            }     
+            }
         }
 
         this -> valid = false; 

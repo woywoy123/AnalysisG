@@ -26,7 +26,7 @@ class UpROOT(_UpROOT, settings, _Interface):
         else: self.Files = ROOTFiles
         ROOTFile = [i + "/" + k for i in self.Files for k in self.Files[i]]
         self.File = {i: None for i in ROOTFile}
-        if len(self.File) == 0: self.InvalidROOTFileInput()
+        if not len(self.File): self.InvalidROOTFileInput()
         self.Keys = {}
 
         try: self.MetaData

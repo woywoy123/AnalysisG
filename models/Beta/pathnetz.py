@@ -145,7 +145,11 @@ class ParticleRecursion(MessagePassing):
 
     def __init__(self):
         super().__init__(aggr = None)
-        self._edge = Seq(Linear(7*2, 18), Tanh(), ReLU(), Linear(18, 7))
+        self._edge = Seq(Linear(5, 18), Tanh(), ReLU(), Linear(18, 7))
+
+        self._encoder = Seq(Linear(4, 256), Tanh(), ReLU(), Linear(256, 4))
+        self._decoder = Seq(Linear(5, 256), Tanh(), ReLU(), Linear(256, 1))
+
         self._red = Seq(Linear(7, 2))
         self._edge.apply(init_norm)
         self._red.apply(init_norm)
@@ -155,15 +159,18 @@ class ParticleRecursion(MessagePassing):
         src, dst = src.view(-1, 1), dst.view(-1, 1)
         idx = self._idx_mlp[dst, src].view(-1)
 
-        pmc_i  = graph_base.unique_aggregation(trk_i, pmc) + self._nu_i[idx]
-        pmc_j  = graph_base.unique_aggregation(trk_j, pmc) + self._nu_j[idx]
-
+        pmc_i  = (graph_base.unique_aggregation(trk_i, pmc) + self._nu_i[idx]).to(dtype = torch.float)
+        pmc_j  = (graph_base.unique_aggregation(trk_j, pmc) + self._nu_j[idx]).to(dtype = torch.float)
         pmc_ij = graph_base.unique_aggregation(torch.cat([src, trk_i], -1), pmc)
-        pmc_ij = pmc_ij + self._nu_i[idx] + self._nu_j[idx]
+        pmc_ij = (pmc_ij + self._nu_i[idx] + self._nu_j[idx]).to(dtype = torch.float)
 
         m_ij, m_i, m_j = physics.M(pmc_ij), physics.M(pmc_i), physics.M(pmc_j)
+        enc_ij, enc_i, enc_j = self._encoder(pmc_ij), self._encoder(pmc_i), self._encoder(pmc_j)
+        dec_ij = self._decoder(torch.cat([enc_ij - pmc_ij, m_ij], -1)) - m_ij
+        dec_i  = self._decoder(torch.cat([enc_i - pmc_i  , m_i ], -1)) - m_i
+        dec_j  = self._decoder(torch.cat([enc_j - pmc_j  , m_j ], -1)) - m_j
 
-        feat = torch.cat([m_ij, m_j, pmc_j, self._sol_ij[idx], self._hid[idx]], -1)
+        feat = torch.cat([m_ij, m_j, self._sol_ij[idx], dec_ij, dec_i - dec_j], -1)
         feat = feat.to(dtype = torch.float)
         self._hid = self._edge(feat)
         return edge_index, self._hid, self._red(self._hid).max(-1)[1]
@@ -199,9 +206,9 @@ class ParticleRecursion(MessagePassing):
         track = (torch.ones_like(batch).cumsum(-1)-1).view(-1, 1)
         mass = physics.M(pmc)
 
-        self._hid = torch.cat([track]*8, -1)
+        self._hid = torch.cat([track]*3, -1)
         self._hid = torch.zeros_like(self._hid)
-        self._hid = torch.cat([mass, mass, pmc, self._hid], -1)[edge_index[0]].clone()
+        self._hid = torch.cat([mass, mass, self._hid], -1)[edge_index[0]].clone()
 
         self._hid = self._edge(self._hid.to(dtype = torch.float))
         self._sol_ij = sol.view(-1, 1)
@@ -228,8 +235,11 @@ class RecursivePathNetz(MessagePassing):
         self.O_signal = None
         self.L_signal = "CEL"
 
-        self._edge = Seq(Linear(4, 1024), Tanh(), ReLU(), Linear(1024, 2))
-        self._signal = Seq(Linear(7, 1024), Tanh(), ReLU(), Linear(1024, 2))
+        self._signal = Seq(
+                Linear(8, 256)  , Tanh(),
+                Linear(256, 256), ReLU(),
+                Linear(256, 2)
+        )
 
 
     def NuNu(self, edge_index, batch, pmu, pid, G_met, G_phi, masses, msk, idx):
@@ -279,14 +289,16 @@ class RecursivePathNetz(MessagePassing):
 
         self.O_top_edge = self._top(edge_index, batch, pmc, pmu_i, pmu_j, chi2)
         self.O_res_edge = self._res(edge_index, batch, pmc, pmu_i, pmu_j, chi2)
-        self.O_res_edge = self._edge(torch.cat([self.O_res_edge, self.O_top_edge], -1))
 
-        mlp_top = torch.zeros_like(torch.cat([G_n_lep, G_n_lep], -1)).to(dtype = torch.float)
-        mlp_top[batch[src]] += self.O_top_edge
+        compress = torch.zeros_like(torch.cat([G_n_lep, G_n_lep], -1)).to(dtype = torch.float)
+        compress[batch[dst]] += (self.O_top_edge - self.O_res_edge)
 
         is_res = self.O_res_edge.max(-1)[1] == 1
-        mlp_res = torch.zeros_like(torch.cat([G_n_lep, G_n_lep], -1)).to(dtype = torch.float)
-        mlp_res[batch[src]] += self.O_res_edge
+        is_top = self.O_top_edge.max(-1)[1] == 1
+        common = (is_res * is_top)
+
+        is_sig = torch.zeros_like(torch.cat([G_n_lep]*3, -1)).to(dtype = torch.float)
+        is_sig[batch[dst]] += torch.cat([is_res.view(-1, 1), is_top.view(-1, 1), common.view(-1, 1)], -1)
 
         graph_feat = torch.cat([G_n_lep, G_n_jets, n_bjets.view(-1, 1)], -1)
-        self.O_signal = self._signal(torch.cat([graph_feat, mlp_res, mlp_top], -1))
+        self.O_signal = self._signal(torch.cat([graph_feat, is_sig, compress], -1))

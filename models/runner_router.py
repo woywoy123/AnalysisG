@@ -71,7 +71,7 @@ class AnalysisBuild:
 
     def AddDatasetName(self, name, n_roots = -1):
         if len(self._meta): pass
-        else: self.FetchMeta()
+        else: self.FetchMeta(n_roots)
 
         for x, j in self._meta.items():
             name_ = self._data.CheckThis(j.DatasetName)
@@ -92,10 +92,14 @@ class AnalysisBuild:
         print("Sample not indexed")
         exit()
 
-    def FetchMeta(self):
+    def FetchMeta(self, n_roots = -1):
         if self.SamplePath is not None: pass
         else: print("Set the 'SamplePath'"); exit()
         x = UpROOT(self.SamplePath)
+        if n_roots != -1:
+            x.Files = {k : x[: n_roots] for k, x in x.Files.items()}
+            ROOTFile = [i + "/" + k for i in x.Files for k in x.Files[i]]
+            x.File = {i: None for i in ROOTFile}
         x.metacache_path = "./" + self.ProjectName + "/metacache/"
         x.Trees = ["nominal"]
         x.OnlyMeta = True
@@ -106,19 +110,11 @@ class AnalysisBuild:
         if self.Graph is not None: pass
         else: print("No Graph Implementation"); exit()
 
-        if self.Event is not None: pass
-        else: print("No Event Implementation"); exit()
-
-        x = self.Graph
-
-        this = "G-" + name
-        if this in self.Analysis: return
-        ana = Analysis()
-        ana.Graph = self.Graph
-        ana.EventName = self.Event.__name__
-        ApplyFeatures(ana, name.split("_")[0])
-        ana.DataCache = True
-        self.Analysis[this] = ana
+        for ana in self.Analysis.values():
+            ana.Graph = self.Graph
+            ana.EventName = self.Event.__name__
+            ApplyFeatures(ana, name.split("_")[0])
+            ana.DataCache = True
 
     def MakeEventCache(self):
         if self.Event is not None: pass
@@ -139,7 +135,6 @@ class AnalysisBuild:
             smpls = {}
             for index, j in zip(range(len(lst)), lst): smpls[i + "_" + str(index)] = j
             self._quantmap.update(smpls)
-            print(smpls)
 
     def TrainingSample(self, train_name, training_size = 90):
         x = "T-" + train_name
@@ -151,7 +146,6 @@ class AnalysisBuild:
         self.Analysis[x].DataCache = True
         self.Analysis[x].kFolds = 10
         self.Analysis[x].GraphName = self.Graph.__name__
-
 
     def ModelTrainer(self, model_name):
         x = Models(model_name)
