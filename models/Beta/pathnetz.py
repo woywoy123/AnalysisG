@@ -20,7 +20,7 @@ def init_norm(m):
     if not type(m) == nn.Linear: return
     nn.init.uniform(m.weight)
 
-def NuNuCombinatorial(edge_index, batch, pmu, pid, G_met, G_phi, masses, msk):
+def NuNuCombinatorial(edge_index, batch, pmu, pid, G_met, G_phi, masses, msk, idx):
     i, j = edge_index
     pmu = pmu.to(dtype = torch.double)
     masses = masses.to(dtype = torch.double)
@@ -85,19 +85,20 @@ def NuNuCombinatorial(edge_index, batch, pmu, pid, G_met, G_phi, masses, msk):
     nu1, nu2, dist, _, _, _, nosol = _sols
     is_sol = nosol == False
 
-    # Create a correct edge mapping
-    msk[msk.clone()] *= p_msk_i
-    msk[msk.clone()] *= msk_
-    if dist.size(1): sol_feat[msk] = dist[:, 0]*is_sol
 
     # Populate the null tensors with synthetic neutrinos 
-    idx = (torch.ones_like(dist).cumsum(-1) -1) == 0
     nu1 = torch.cat([nu1, (nu1.pow(2).sum(-1, keepdim = True)).pow(0.5)], -1)
     nu2 = torch.cat([nu2, (nu2.pow(2).sum(-1, keepdim = True)).pow(0.5)], -1)
-    if dist.size(1): pmu_i[msk], pmu_j[msk] = nu1[idx], nu2[idx]
 
+    # Create a correct edge mapping
+    if not dist.size(1): return sol_feat, pmu_i, pmu_j
+    e_i, e_j = NuNu_i[:, is_sol], NuNu_j[:, is_sol]
+    idx_i, idx_j = idx[e_i[0], e_i[1]], idx[e_j[0], e_j[1]]
+    sol_feat[idx_i] = dist[:, 0][is_sol]
+    sol_feat[idx_j] = dist[:, 0][is_sol]
+    pmu_i[idx_i] = nu1[:, 0, :][is_sol]
+    pmu_j[idx_j] = nu2[:, 0, :][is_sol]
     return sol_feat, pmu_i, pmu_j
-
 
 def NuCombinatorial(edge_index, batch, pmu, pid, G_met, G_phi, masses, msk):
     SXX = torch.tensor([[100, 0, 0, 100]], device = msk.device, dtype = pmu.dtype)
@@ -231,8 +232,8 @@ class RecursivePathNetz(MessagePassing):
         self._signal = Seq(Linear(7, 1024), Tanh(), ReLU(), Linear(1024, 2))
 
 
-    def NuNu(self, edge_index, batch, pmu, pid, G_met, G_phi, masses, msk):
-        return NuNuCombinatorial(edge_index, batch, pmu, pid, G_met, G_phi, masses, msk)
+    def NuNu(self, edge_index, batch, pmu, pid, G_met, G_phi, masses, msk, idx):
+        return NuNuCombinatorial(edge_index, batch, pmu, pid, G_met, G_phi, masses, msk, idx)
 
     def Nu(self, edge_index, batch, pmu, pid, G_met, G_phi, masses, msk):
         return NuCombinatorial(edge_index, batch, pmu, pid, G_met, G_phi, masses, msk)
@@ -249,8 +250,10 @@ class RecursivePathNetz(MessagePassing):
         mN = torch.zeros_like(mW)
         masses = torch.cat([mW, mT, mN], -1)
 
-        _, n_bjets = (batch[N_is_b.view(-1)]*1).unique(return_counts = True, dim = -1)
+        idx = torch.cumsum(torch.ones_like(edge_index[0]), dim = -1)-1
+        idx = to_dense_adj(edge_index, edge_attr = idx)[0]
 
+        _, n_bjets = (batch[N_is_b.view(-1) == 1]*1).unique(return_counts = True, dim = -1)
         msk_nu = (n_bjets[batch] > 1)*(G_n_lep.view(-1)[batch] == 1)
         msk_e_nu = msk_nu[src]
 
@@ -262,16 +265,16 @@ class RecursivePathNetz(MessagePassing):
 
         # weird segmentation fault with single neutrino reconstruction
         # Intel MKL ERROR: Parameter 3 was incorrect on entry to DGEBAL.
-        chi2_n , pmu_i_n, pmu_j_n = self.Nu(  edge_index, batch, pmu, pid, G_met, G_phi, masses, msk_nu)
-        chi2_nn, pmu_inn, pmu_jnn = self.NuNu(edge_index, batch, pmu, pid, G_met, G_phi, masses, msk_nunu)
+        #chi2_n , pmu_i_n, pmu_j_n = self.Nu(  edge_index, batch, pmu, pid, G_met, G_phi, masses, msk_nu)
+        chi2_nn, pmu_inn, pmu_jnn = self.NuNu(edge_index, batch, pmu, pid, G_met, G_phi, masses, msk_nunu, idx)
 
-        pmu_i[msk_e_nu]   += pmu_i_n[msk_e_nu]
+        #pmu_i[msk_e_nu]   += pmu_i_n[msk_e_nu]
         pmu_i[msk_e_nunu] += pmu_inn[msk_e_nunu]
 
-        pmu_j[msk_e_nu]   += pmu_j_n[msk_e_nu]
+        #pmu_j[msk_e_nu]   += pmu_j_n[msk_e_nu]
         pmu_j[msk_e_nunu] += pmu_jnn[msk_e_nunu]
 
-        chi2[msk_e_nu]   += chi2_n[msk_e_nu]
+        #chi2[msk_e_nu]   += chi2_n[msk_e_nu]
         chi2[msk_e_nunu] += chi2_nn[msk_e_nunu]
 
         self.O_top_edge = self._top(edge_index, batch, pmc, pmu_i, pmu_j, chi2)

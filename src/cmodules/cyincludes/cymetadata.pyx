@@ -66,6 +66,7 @@ cdef class ami_client:
         try: self.file = h5py.File(self.cache_path, "a")
         except FileNotFoundError: return False
         except BlockingIOError: return False
+        except OSError: self.file = h5py.File(self.cache_path, "w")
 
         try: x = _decoder(self.file[dsid].attrs["data"])
         except KeyError: return False

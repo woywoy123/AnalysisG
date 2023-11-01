@@ -248,8 +248,9 @@ class Analysis(_Analysis, SampleTracer, _Interface):
             self.SampleName = name
             if not len(name): name = None
             if not tracer: pass
-            else: self.RestoreTracer(tracer, name)
+            else: self.RestoreTracer(tracer)
             search(self)
+            print(self[self.EventName])
             self.__Event__()
             self.__Selection__()
             self.__FeatureAnalysis__()

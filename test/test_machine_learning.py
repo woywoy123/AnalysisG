@@ -161,7 +161,7 @@ def test_optimizer():
     AnaG = Analysis()
     AnaG.ProjectName = "Project_ML"
     AnaG.TrainingName = "untitled"
-    AnaG.Device = "cpu"
+    AnaG.Device = "cuda"
     AnaG.ContinueTraining = False
     AnaG.DataCache = True
     AnaG.DebugMode = True
@@ -266,5 +266,5 @@ if __name__ == "__main__":
 #    test_random_sampling()
 #    test_feature_analysis()
     test_optimizer()
-    test_optimizer_analysis()
-    test_parallel_analysis()
+#    test_optimizer_analysis()
+#    test_parallel_analysis()

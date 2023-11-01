@@ -342,7 +342,9 @@ cdef class ModelWrapper:
             mass.update({"pmu" : torch.cat([sample[key] for key in self._fxMap[j][1]], -1)})
             tmp["M_P_" + j[2:]] = self._fxMap[j][0](**mass)
 
-            mass["prediction"] = sample[i].to(dtype = torch.long)
+            try: msk = sample[i].view(-1).to(dtype = torch.long)
+            except RuntimeError: continue
+            mass["prediction"] = msk
             tmp["M_T_" + j[2:]] = self._fxMap[j][0](**mass)
 
         tmp["total"] = self._loss_sum

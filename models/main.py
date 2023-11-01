@@ -5,6 +5,7 @@ from AnalysisG.Tools import Code
 import os
 
 mode = "Jets_Detector"
+name = "Example" #"Project_ML"
 model = "RPN"
 
 #"TruthChildren_All" : GraphChildren,
@@ -24,47 +25,50 @@ model = "RPN"
 #"BGGN" : BasicGraphNeuralNetwork,
 #"MKGN" : MarkovGraphNet <--- need to fix
 
-auto = AnalysisBuild("Project_ML")
+auto = AnalysisBuild(name)
 if True:
     auto.SamplePath = os.environ["Samples"]
-    #auto.FetchMeta()
-    auto.AddDatasetName("ttH-m1000")
-    auto.AddDatasetName("ttbar")
-    auto.AddDatasetName("tttt (SM)")
-    auto.AddDatasetName("ttH")
+    auto.AddDatasetName("ttH-m1000", 20)
+    auto.AddDatasetName("ttbar", 20)
+    auto.AddDatasetName("tttt (SM)", 20)
+    auto.AddDatasetName("ttH", 20)
     auto.Event = Event
     auto.EventCache = True
     auto.MakeEventCache()
     auto.MakeGraphCache(mode)
-    auto.QuantizeSamples(20)
-    auto.TrainingSample("basic-sample-det", 90)
+    auto.QuantizeSamples(10)
+    auto.TrainingSample("sample-detector", 90)
+    #auto.EventStop = 10000
     for i, job in auto.Make().items():
-        job.Threads = 16
-        job.Chunks = 10000
+        job.Threads = 22
+        job.Chunks = 1000
         print("-> " + i)
         job.Launch()
         del job
 
 Ana = Analysis()
-Ana.ProjectName = "Project_ML"
+Ana.ProjectName = name
 Ana.Device = "cuda"
-Ana.TrainingName = "basic-sample-det"
+Ana.TrainingName = "sample-detector"
 Ana.Model = auto.ModelTrainer(model)
 Ana.kFold = 1
 Ana.Epochs = 100
-Ana.BatchSize = 1
+Ana.BatchSize = 2
 Ana.MaxGPU = 20
 Ana.MaxRAM = 200
 Ana.RunName = model + "-" + mode
 Ana.Optimizer = "ADAM"
-Ana.GraphName = Graphs(mode)._this.__name__
+Ana.EventName = None
+Ana.GraphName = "GraphDetector"
 Ana.Tree = "nominal"
-Ana.OptimizerParams = {"lr": 1e-6, "weight_decay": 1e-6}
+Ana.OptimizerParams = {"lr": 1e-4, "weight_decay": 1e-6}
 Ana.PlotLearningMetrics = True
-Ana.ContinueTraining = True
+Ana.ContinueTraining = False
 Ana.DebugMode = False
 Ana.KinematicMap = {
                 "top_edge" : "polar -> N_pT, N_eta, N_phi, N_energy",
                 "res_edge" : "polar -> N_pT, N_eta, N_phi, N_energy"
 }
 Ana.Launch()
+
+
