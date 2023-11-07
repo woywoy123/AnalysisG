@@ -4,7 +4,7 @@ from AnalysisG import Analysis
 from AnalysisG.Tools import Code
 import os
 
-mode = "Jets_Detector"
+mode = "TruthChildren_NoNu" #Jets_Detector"
 name = "Example" #"Project_ML"
 model = "RPN"
 
@@ -28,10 +28,10 @@ model = "RPN"
 auto = AnalysisBuild(name)
 if False:
     auto.SamplePath = os.environ["Samples"]
-    auto.AddDatasetName("ttH-m1000")
-    auto.AddDatasetName("ttbar")
-    auto.AddDatasetName("tttt (SM)")
-    auto.AddDatasetName("ttH")
+    auto.AddDatasetName("ttH-m1000", 1)
+    #auto.AddDatasetName("ttbar")
+    #auto.AddDatasetName("tttt (SM)")
+    #auto.AddDatasetName("ttH")
     auto.Event = Event
     auto.EventCache = True
     auto.MakeEventCache()
@@ -53,22 +53,17 @@ Ana.TrainingName = "sample-detector"
 Ana.Model = auto.ModelTrainer(model)
 Ana.kFold = 10
 Ana.Epochs = 100
-Ana.BatchSize = 1
+Ana.BatchSize = 3
 Ana.MaxGPU = 20
 Ana.MaxRAM = 200
 Ana.RunName = model + "-" + mode
 Ana.Optimizer = "ADAM"
 Ana.EventName = None
-Ana.GraphName = "GraphDetector"
+Ana.GraphName = Graphs(mode)._this.__name__
 Ana.Tree = "nominal"
 Ana.OptimizerParams = {"lr": 1e-4, "weight_decay": 1e-6}
 Ana.PlotLearningMetrics = True
 Ana.ContinueTraining = False
 Ana.DebugMode = False
-Ana.KinematicMap = {
-                "top_edge" : "polar -> N_pT, N_eta, N_phi, N_energy",
-                "res_edge" : "polar -> N_pT, N_eta, N_phi, N_energy"
-}
+Ana.KinematicMap = {"top_edge" : "polar -> N_pT, N_eta, N_phi, N_energy"}
 Ana.Launch()
-
-
