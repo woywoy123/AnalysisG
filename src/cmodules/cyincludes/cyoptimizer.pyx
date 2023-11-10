@@ -540,7 +540,7 @@ cdef class DataLoader:
                 gr = self.this_batch[t_hash]
                 if gr.pkl.size(): pass
                 else: return None
-                data = pickle.loads(gr.pkl).to(device = self.device)
+                data = pickle.loads(gr.pkl)
                 self.online[env(t_hash)] = data
             out.append(data)
 
@@ -555,11 +555,9 @@ cdef class DataLoader:
             data = Batch().from_data_list(out)
             for k in self.online.values(): del k
             torch.cuda.empty_cache()
-            return data
+            return data.to(device = self.device)
         self.purge = False
-        return Batch().from_data_list(out)
-
-
+        return Batch().from_data_list(out).to(device = self.device)
 
 
 cdef class cOptimizer:

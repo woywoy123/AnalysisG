@@ -19,7 +19,7 @@ def init_norm(m):
     if not type(m) == nn.Linear: return
     nn.init.uniform(m.weight)
 
-def NuNuCombinatorial(edge_index, batch, pmu, pid, G_met, G_phi, masses, msk, idx, truth):
+def NuNuCombinatorial(edge_index, batch, pmu, pid, G_met, G_phi, masses, msk, idx):
     i, j = edge_index
     pmu = pmu.to(dtype = torch.double)
     masses = masses.to(dtype = torch.double)
@@ -135,7 +135,7 @@ class ParticleRecursion(MessagePassing):
         self._in = 2
         self._out = 2
 
-        self._edge = Seq(Linear(self._in*2, 128), Tanh(), Linear(128, self._in))
+        self._edge = Seq(Linear(self._in*2, 1024), Tanh(), Linear(1024, self._in))
         self._red = Seq(Linear(self._in, self._out))
 
         self._edge.apply(init_norm)
@@ -199,8 +199,8 @@ class RecursivePathNetz(MessagePassing):
         self.O_top_edge = None
         self.L_top_edge = "CEL"
 
-    def NuNu(self, edge_index, batch, pmu, pid, G_met, G_phi, masses, msk, idx, truth):
-        return NuNuCombinatorial(edge_index, batch, pmu, pid, G_met, G_phi, masses, msk, idx, truth)
+    def NuNu(self, edge_index, batch, pmu, pid, G_met, G_phi, masses, msk, idx):
+        return NuNuCombinatorial(edge_index, batch, pmu, pid, G_met, G_phi, masses, msk, idx)
 
     def Nu(self, edge_index, batch, pmu, pid, G_met, G_phi, masses, msk):
         return NuCombinatorial(edge_index, batch, pmu, pid, G_met, G_phi, masses, msk)

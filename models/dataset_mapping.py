@@ -29,6 +29,7 @@ class DataSets:
                 "aMcAtNloPythia8EvtGen_MEN30NLO_A14N23LO_ttbarHT6c_1k_nonAH",
                 "aMcAtNloPythia8EvtGen_MEN30NLO_A14N23LO_ttbarHT1k_1k5_nonAH",
                 "aMcAtNloPythia8EvtGen_MEN30NLO_A14N23LO_ttbarHT1k5_nonAH",
+                "aMcAtNloPy8EvtGen_MEN30NLO_A14N23LO_ttbar_noShWe_SingleLep",
                 "aMcAtNloPy8EvtGen_MEN30NLO_A14N23LO_ttbar_noShWe_dil",
                 "PhPy8EG_A14_ttbar_hdamp517p5_dil",
                 "PhPy8EG_A14_ttbarHT",
