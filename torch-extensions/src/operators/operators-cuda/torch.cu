@@ -1,5 +1,6 @@
 #ifndef OPERATORS_CUDA_KERNEL_H
 #define OPERATORS_CUDA_KERNEL_H
+#include <c10/cuda/CUDAStream.h>
 #include <torch/torch.h>
 #include "kernel.cu"
 
@@ -197,6 +198,7 @@ torch::Tensor _CoFactors(torch::Tensor matrix)
         0, 1, 0, 1
     }; 
 
+    cudaSetDevice(c10::cuda::getCurrentCUDAStream(-1).device_index()); 
     cudaMalloc(&dy, size); 
     cudaMalloc(&dz, size); 
     cudaMemcpy(dy, &_dy, size, cudaMemcpyHostToDevice); 
@@ -239,6 +241,7 @@ torch::Tensor _Det(torch::Tensor matrix)
         0, 1, 0, 1
     }; 
 
+    cudaSetDevice(c10::cuda::getCurrentCUDAStream(-1).device_index()); 
     cudaMalloc(&dy, size); 
     cudaMalloc(&dz, size); 
     cudaMemcpy(dy, &_dy, size, cudaMemcpyHostToDevice); 
@@ -294,6 +297,7 @@ std::tuple<torch::Tensor, torch::Tensor> _Inv(torch::Tensor matrix)
         0, 1, 0, 1
     }; 
 
+    cudaSetDevice(c10::cuda::getCurrentCUDAStream(-1).device_index()); 
     cudaMalloc(&dy, size); 
     cudaMalloc(&dz, size); 
     cudaMemcpy(dy, &_dy, size, cudaMemcpyHostToDevice); 
@@ -352,6 +356,7 @@ torch::Tensor _Cross(torch::Tensor mat1, torch::Tensor mat2)
         0, 1, 0, 1
     }; 
 
+    cudaSetDevice(c10::cuda::getCurrentCUDAStream(-1).device_index()); 
     cudaMalloc(&dy, size); 
     cudaMalloc(&dz, size); 
     cudaMemcpy(dy, &_dy, size, cudaMemcpyHostToDevice); 

@@ -31,6 +31,7 @@ cdef class BasePlotting:
     cdef _ax
     cdef _fig
     cdef dict data_axis
+    cdef dict weight_axis
     cdef list underlying_hists
     cdef list _labels
     cdef cummulative_hist
@@ -45,6 +46,7 @@ cdef class BasePlotting:
         self.io = &self.ptr.file_params
         self.fig = &self.ptr.figure_params
         self.data_axis = {}
+        self.weight_axis = {}
         self.boosted_axis = {}
         self.boosted_data = {}
         self.underlying_hists = []
@@ -76,7 +78,7 @@ cdef class BasePlotting:
         self.matpl.style.use(hep.style.ATLAS)
 
     cdef __root__(self):
-        self.matplt.style.use(hep.style.ROOT)
+        self.matpl.style.use(hep.style.ROOT)
 
     cdef __style__(self):
         if self.pn.atlas_style: self.__atlas__()
@@ -106,6 +108,11 @@ cdef class BasePlotting:
         try: data += self.data_axis[name]
         except KeyError: pass
         self.data_axis[name] = data
+
+    cdef add_weight(self, str name, list weight):
+        try: weight += self.weight_axis[name]
+        except KeyError: pass
+        self.weight_axis[name] = weight
 
     def __precompile__(self): pass
     def __compile__(self): pass
@@ -201,8 +208,7 @@ cdef class BasePlotting:
     @property
     def NEvents(self): return self.pn.n_events
     @NEvents.setter
-    def NEvents(self, val):
-        self.pn.n_events = -1 if val is None else val
+    def NEvents(self, val): self.pn.n_events = -1 if val is None else val
 
     @property
     def xScaling(self): return self.pn.xscaling
@@ -412,6 +418,15 @@ cdef class BasePlotting:
     @yData.setter
     def yData(self, inpt):
         self.add_data("y-data", inpt)
+
+    @property
+    def Weight(self):
+        try: return self.weight_axis["x-data"]
+        except KeyError: return None
+
+    @Weight.setter
+    def Weight(self, inpt):
+        self.add_weight("x-data", inpt)
 
     @property
     def xLabels(self):
@@ -813,7 +828,7 @@ cdef class TH2F(BasePlotting):
             x = self.__fix_xrange__()
             y = self.__fix_yrange__()
             self.cummulative_hist = bh.Histogram(x, y)
-            self.cummulative_hist.fill(self.xData, self.yData)
+            self.cummulative_hist.fill(self.xData, self.yData, weight = self.Weight)
 
     def __compile__(self):
         self.__histapply__()
@@ -901,6 +916,8 @@ cdef class TLine(BasePlotting):
         for i in range(len(self.underlying_hists)):
             dist = self.underlying_hists[i]
             dist.Color = self.Colors[i]
+            try: dist.Marker = self.Markers[i]
+            except: pass
             dist.__compile__()
         if self.xData is None: pass
         else: self.__lineapply__()

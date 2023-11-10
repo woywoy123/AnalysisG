@@ -9,35 +9,67 @@ Physics for Combined Tensors (Cartesian)
 ========================================
 
 .. py:function::  pyc.Physics.Cartesian.P2(torch.tensor pmc) -> torch.tensor 
-    :no-index:
+    
+    Computes the scalar square of the 3-momentum vector of a cartesian tensor.
+
+    :param torch.tensor pmc: A tensor with the four vector being in cartesian form.
  
 .. py:function::  pyc.Physics.Cartesian.P(torch.tensor pmc) -> torch.tensor 
-    :no-index:
+
+    Computes the scalar of the 3-momentum vector of a cartesian tensor.
+
+    :param torch.tensor pmc: A tensor with the four vector being in cartesian form.
  
 .. py:function::  pyc.Physics.Cartesian.Beta2(torch.tensor pmc) -> torch.tensor 
-    :no-index:
+
+    Computes the :math:`\beta^2` for the Lorentz Factor from the 3-momentum vector of a cartesian tensor.
+
+    :param torch.tensor pmc: A tensor with the four vector being in cartesian form.
  
 .. py:function::  pyc.Physics.Cartesian.Beta(torch.tensor pmc) -> torch.tensor 
-    :no-index:
- 
+
+    Computes the :math:`\beta` for the Lorentz Factor from the 3-momentum vector of a cartesian tensor.
+
+    :param torch.tensor pmc: A tensor with the four vector being in cartesian form.
+  
 .. py:function::  pyc.Physics.Cartesian.M2(torch.tensor pmc) -> torch.tensor 
-    :no-index:
+
+    Computes the square of the invariant mass from a cartesian 4-vector.
+
+    :param torch.tensor pmc: A tensor with the four vector being in cartesian form.
 
 .. py:function::  pyc.Physics.Cartesian.M(torch.tensor pmc) -> torch.tensor 
-    :no-index:
+
+    Computes the invariant mass from a cartesian 4-vector.
+
+    :param torch.tensor pmc: A tensor with the four vector being in cartesian form.
 
 .. py:function::  pyc.Physics.Cartesian.Mt2(torch.tensor pmc) -> torch.tensor 
-    :no-index:
+
+    Computes the square of the transverse invariant mass from a cartesian 4-vector.
+
+    :param torch.tensor pmc: A tensor with the four vector being in cartesian form.
 
 .. py:function::  pyc.Physics.Cartesian.Mt(torch.tensor pmc) -> torch.tensor 
-    :no-index:
+
+    Computes the transverse invariant mass from a cartesian 4-vector.
+
+    :param torch.tensor pmc: A tensor with the four vector being in cartesian form.
 
 .. py:function::  pyc.Physics.Cartesian.Theta(torch.tensor pmc) -> torch.tensor 
-    :no-index:
- 
+
+    Computes the particle's :math:`\theta` from a cartesian 4-vector.
+
+    :param torch.tensor pmc: A tensor with the four vector being in cartesian form.
+
 .. py:function::  pyc.Physics.Cartesian.DeltaR(torch.tensor pmc1, torch.tensor pmc2) -> torch.tensor 
-    :no-index:
  
+    Computes the :math:`\Delta R` between two particle 4-vectors.
+
+    :param torch.tensor pmc1: The cartesian 4-vector of particle-1.
+    :param torch.tensor pmc2: The cartesian 4-vector of particle-2.
+
+
 
 Physics for Separated Tensors (Cartesian)
 =========================================

@@ -28,8 +28,8 @@ These are outlined below:
             An aggregation function used to sum node features without double summing any particular node pairs. 
             Given the complexity of the operation in nominal PyTorch, this function is exclusive to CUDA tensors.
 
-            :params torch.tensor clusters: Cluster indices used to perform the summation over.
-            :params torch.tensor node_features: The feature vector of the node to sum.
+            :param torch.tensor clusters: Cluster indices used to perform the summation over.
+            :param torch.tensor node_features: The feature vector of the node to sum.
 
 
 .. py:module:: pyc.Graph.Cartesian
@@ -38,13 +38,13 @@ These are outlined below:
         .. py:function:: edge(edge_index, prediction, px, py, pz, e, include_zero) -> dict
             :no-index:
 
-            :params torch.tensor edge_index: The graph topology (this is usually known as the edge_index)
-            :params torch.tensor prediction: The edge classification prediction of the neural network.
-            :params torch.tensor px: The node's cartesian momentum component in the x-direction.
-            :params torch.tensor py: The node's cartesian momentum component in the y-direction.
-            :params torch.tensor pz: The node's cartesian momentum component in the z-direction.
-            :params torch.tensor e: The node's energy.
-            :params bool include_zero: Whether to include predictions where the MLP predicts 0. 
+            :param torch.tensor edge_index: The graph topology (this is usually known as the edge_index)
+            :param torch.tensor prediction: The edge classification prediction of the neural network.
+            :param torch.tensor px: The node's cartesian momentum component in the x-direction.
+            :param torch.tensor py: The node's cartesian momentum component in the y-direction.
+            :param torch.tensor pz: The node's cartesian momentum component in the z-direction.
+            :param torch.tensor e: The node's energy.
+            :param bool include_zero: Whether to include predictions where the MLP predicts 0. 
 
             :return dict[torch.tensor]: {
                                             clusters : torch.tensor, unique_sum : torch.tensor, 
@@ -53,10 +53,10 @@ These are outlined below:
 
         .. py:function:: edge(edge_index, prediction, pmc, include_zero) -> dict
 
-            :params torch.tensor edge_index: The graph topology (this is usually known as the edge_index)
-            :params torch.tensor prediction: The edge classification prediction of the neural network.
-            :params torch.tensor pmc: A compact version of the particle's 4-vector.
-            :params bool include_zero: Whether to include predictions where the MLP predicts 0. 
+            :param torch.tensor edge_index: The graph topology (this is usually known as the edge_index)
+            :param torch.tensor prediction: The edge classification prediction of the neural network.
+            :param torch.tensor pmc: A compact version of the particle's 4-vector.
+            :param bool include_zero: Whether to include predictions where the MLP predicts 0. 
 
             :return dict[torch.tensor]: {
                                             clusters : torch.tensor, unique_sum : torch.tensor, 
@@ -66,13 +66,13 @@ These are outlined below:
         .. py:function:: node(edge_index, prediction, px, py, pz, e, include_zero) -> dict
             :no-index:
 
-            :params torch.tensor edge_index: The graph topology (this is usually known as the edge_index)
-            :params torch.tensor prediction: The node classification prediction of the neural network.
-            :params torch.tensor px: The node's cartesian momentum component in the x-direction.
-            :params torch.tensor py: The node's cartesian momentum component in the y-direction.
-            :params torch.tensor pz: The node's cartesian momentum component in the z-direction.
-            :params torch.tensor e: The node's energy.
-            :params bool include_zero: Whether to include predictions where the MLP predicts 0. 
+            :param torch.tensor edge_index: The graph topology (this is usually known as the edge_index)
+            :param torch.tensor prediction: The node classification prediction of the neural network.
+            :param torch.tensor px: The node's cartesian momentum component in the x-direction.
+            :param torch.tensor py: The node's cartesian momentum component in the y-direction.
+            :param torch.tensor pz: The node's cartesian momentum component in the z-direction.
+            :param torch.tensor e: The node's energy.
+            :param bool include_zero: Whether to include predictions where the MLP predicts 0. 
 
             :return dict[torch.tensor]: {
                                             clusters : torch.tensor, unique_sum : torch.tensor, 
@@ -81,10 +81,10 @@ These are outlined below:
 
         .. py:function:: node(edge_index, prediction, pmc, include_zero) -> dict
 
-            :params torch.tensor edge_index: The graph topology (this is usually known as the edge_index)
-            :params torch.tensor prediction: The node classification prediction of the neural network.
-            :params torch.tensor pmc: A compact version of the particle's 4-vector.
-            :params bool include_zero: Whether to include predictions where the MLP predicts 0. 
+            :param torch.tensor edge_index: The graph topology (this is usually known as the edge_index)
+            :param torch.tensor prediction: The node classification prediction of the neural network.
+            :param torch.tensor pmc: A compact version of the particle's 4-vector.
+            :param bool include_zero: Whether to include predictions where the MLP predicts 0. 
 
             :return dict[torch.tensor]: {
                                             clusters : torch.tensor, unique_sum : torch.tensor, 
@@ -99,13 +99,13 @@ These are outlined below:
         .. py:function:: edge(edge_index, prediction, pt, eta, phi, e, include_zero) -> dict
             :no-index:
 
-            :params torch.tensor edge_index: The graph topology (this is usually known as the edge_index)
-            :params torch.tensor prediction: The edge classification prediction of the neural network.
-            :params torch.tensor pt: The particle's transverse momentum
-            :params torch.tensor eta: The rapidity of the particle
-            :params torch.tensor phi: The azimuthal compnent of the particle node
-            :params torch.tensor e: The node's energy.
-            :params bool include_zero: Whether to include predictions where the MLP predicts 0. 
+            :param torch.tensor edge_index: The graph topology (this is usually known as the edge_index)
+            :param torch.tensor prediction: The edge classification prediction of the neural network.
+            :param torch.tensor pt: The particle's transverse momentum
+            :param torch.tensor eta: The rapidity of the particle
+            :param torch.tensor phi: The azimuthal compnent of the particle node
+            :param torch.tensor e: The node's energy.
+            :param bool include_zero: Whether to include predictions where the MLP predicts 0. 
 
             :return dict[torch.tensor]: {
                                             clusters : torch.tensor, unique_sum : torch.tensor, 
@@ -114,10 +114,10 @@ These are outlined below:
 
         .. py:function:: edge(edge_index, prediction, pmu, include_zero) -> dict
 
-            :params torch.tensor edge_index: The graph topology (this is usually known as the edge_index)
-            :params torch.tensor prediction: The edge classification prediction of the neural network.
-            :params torch.tensor pmu: A compact version of the particle's 4-vector.
-            :params bool include_zero: Whether to include predictions where the MLP predicts 0. 
+            :param torch.tensor edge_index: The graph topology (this is usually known as the edge_index)
+            :param torch.tensor prediction: The edge classification prediction of the neural network.
+            :param torch.tensor pmu: A compact version of the particle's 4-vector.
+            :param bool include_zero: Whether to include predictions where the MLP predicts 0. 
 
             :return dict[torch.tensor]: {
                                             clusters : torch.tensor, unique_sum : torch.tensor, 
@@ -127,13 +127,13 @@ These are outlined below:
         .. py:function:: node(edge_index, prediction, pt, eta, phi, e, include_zero) -> dict
             :no-index:
 
-            :params torch.tensor edge_index: The graph topology (this is usually known as the edge_index)
-            :params torch.tensor prediction: The node classification prediction of the neural network.
-            :params torch.tensor pt: The particle's transverse momentum
-            :params torch.tensor eta: The rapidity of the particle
-            :params torch.tensor phi: The azimuthal compnent of the particle node
-            :params torch.tensor e: The node's energy.
-            :params bool include_zero: Whether to include predictions where the MLP predicts 0. 
+            :param torch.tensor edge_index: The graph topology (this is usually known as the edge_index)
+            :param torch.tensor prediction: The node classification prediction of the neural network.
+            :param torch.tensor pt: The particle's transverse momentum
+            :param torch.tensor eta: The rapidity of the particle
+            :param torch.tensor phi: The azimuthal compnent of the particle node
+            :param torch.tensor e: The node's energy.
+            :param bool include_zero: Whether to include predictions where the MLP predicts 0. 
 
             :return dict[torch.tensor]: {
                                             clusters : torch.tensor, unique_sum : torch.tensor, 
@@ -142,10 +142,10 @@ These are outlined below:
 
         .. py:function:: node(edge_index, prediction, pmu, include_zero) -> dict
 
-            :params torch.tensor edge_index: The graph topology (this is usually known as the edge_index)
-            :params torch.tensor prediction: The node classification prediction of the neural network.
-            :params torch.tensor pmu: A compact version of the particle's 4-vector.
-            :params bool include_zero: Whether to include predictions where the MLP predicts 0. 
+            :param torch.tensor edge_index: The graph topology (this is usually known as the edge_index)
+            :param torch.tensor prediction: The node classification prediction of the neural network.
+            :param torch.tensor pmu: A compact version of the particle's 4-vector.
+            :param bool include_zero: Whether to include predictions where the MLP predicts 0. 
 
             :return dict[torch.tensor]: {
                                             clusters : torch.tensor, unique_sum : torch.tensor, 

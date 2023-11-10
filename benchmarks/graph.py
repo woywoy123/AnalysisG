@@ -1,4 +1,4 @@
-from AnalysisG.Plotting import TLine
+from AnalysisG.Plotting import TLine, TH2F
 from AnalysisG.IO import PickleObject, UnpickleObject
 import pyc.Graph.Cartesian as graph
 from random import random
@@ -83,56 +83,64 @@ def edge_aggregation():
 
 def plot_edge_aggregation():
     out = UnpickleObject()
-    num_nodes_d = {}
-    num_feats_d = {}
+    lines = {}
+    for num_nodes in out:
+        xdata = []
+        ydata = []
+        weight = []
+        for num_feat in out[num_nodes]:
+            for cls in out[num_nodes][num_feat]:
+                data = out[num_nodes][num_feat][cls]
+                cu = data["cu"][0]
+                py = data["py"][0]
+                weight.append(py/cu)
+                xdata.append(num_feat)
+                ydata.append(cls)
 
-    perf_py = []
-    perf_cu = []
-    for k in range(1, 10):
-        for num_nodes in out:
-            num_nodes_d[num_nodes] = {}
-            num_nodes_d[num_nodes]["pyc"] = []
-            num_nodes_d[num_nodes]["py"] = []
-            for num_feat in out[num_nodes]:
-                if num_feat not in num_feats_d:
-                    num_feats_d[num_feat] = {}
-                    num_feats_d[num_feat]["pyc"] = []
-                    num_feats_d[num_feat]["py"] = []
+                if cls not in lines:
+                    lines[cls] = {}
+                    lines[cls]["weight"] = []
+                    lines[cls]["xData"] = []
+                    lines[cls]["lines"] = []
+                lines[cls]["weight"].append(py/cu)
+                lines[cls]["xData"].append(num_feat)
 
-                for cls in out[num_nodes][num_feat]:
-                    if cls != k: continue
-                    if num_feat != 19: continue
-                    num_nodes_d[num_nodes]["pyc"] += [out[num_nodes][num_feat][cls]["cu"][0]]
-                    num_nodes_d[num_nodes]["py"] += [out[num_nodes][num_feat][cls]["py"][0]]
-                    num_feats_d[num_feat]["pyc"] += [out[num_nodes][num_feat][cls]["cu"][0]]
-                    num_feats_d[num_feat]["py"] += [out[num_nodes][num_feat][cls]["py"][0]]
 
-        tl1 = TLine()
-        tl1.Title = "PyC (node-features-" + str(k) + ")"
-        tl1.xData = sum([[i]*len(num_nodes_d[i]["pyc"]) for i in num_nodes_d], [])
-        tl1.yData = sum([num_nodes_d[i]["pyc"] for i in num_nodes_d], [])
+        for cls in lines:
+            tl1 = TLine()
+            tl1.Title = "N-" + str(num_nodes)
+            tl1.xData = lines[cls]["xData"]
+            tl1.yData = lines[cls]["weight"]
+            lines[cls]["lines"].append(tl1)
+            lines[cls]["xData"] = []
+            lines[cls]["weight"] = []
 
-        tl2 = TLine()
-        tl2.Title = "PyTorch (node-features-" + str(k) + ")"
-        tl2.xData = sum([[i]*len(num_nodes_d[i]["py"]) for i in num_nodes_d], [])
-        tl2.yData = sum([num_nodes_d[i]["py"] for i in num_nodes_d], [])
 
+        x = TH2F()
+        x.xData = xdata
+        x.yData = ydata
+        x.Weight = weight
+        title = "Time Ratio between PyTorch Reference Implementation \n and Native CUDA for "
+        title += str(num_nodes) + " Nodes"
+        x.Title = title
+        x.yTitle = "Number of Output Classifications"
+        x.xTitle = "Number of Input Features"
+        x.Filename = "Nodes-" + str(num_nodes)
+        x.Style = "ROOT"
+        x.xMin = 0
+        x.yMin = 0
+        x.SaveFigure()
+
+    for cls in lines:
         tls = TLine()
-        tls.Title = "PyTorch vs CUDA (PyC)"
-        tls.xTitle = "Number of Nodes"
-        tls.yTitle = "Time (s)"
-        tls.Filename = "cls-" + str(k) + "_num_feats-19"
-        tls.Lines = [tl1, tl2]
-        tls.Markers = ["x", "-"]
+        tls.Title = "Ratio plot of Computational Time between PyTorch and CUDA (pyc) \n for Different Number of Input Nodes"
+        tls.yTitle = "PyTorch Time (s) /CUDA Time (s)"
+        tls.Filename = "Performance-Per-Nodes-output_"+str(cls)
+        tls.Lines = lines[cls]["lines"]
         tls.SaveFigure()
 
 
 
-
-
-
-
-
 if __name__ == "__main__":
-#    edge_aggregation()
+    edge_aggregation()
     plot_edge_aggregation()

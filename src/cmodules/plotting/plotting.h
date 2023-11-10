@@ -25,14 +25,10 @@ struct paint_t
     std::vector<std::string> colors = {}; 
 
     std::string marker = "."; 
-    std::vector<std::string> markers = {
-        ",", ".", "--", "x", "o", "O"
-    }; 
+    std::vector<std::string> markers = {}; 
 
     std::string texture = "";
-    std::vector<std::string> textures = {
-        "/", "\\", "|", "-", "+", "x", "o", "O", ".", "*"
-    }; 
+    std::vector<std::string> textures = {}; 
 
     float xscaling = 1.25*6.4; 
     float yscaling = 1.25*4.8;

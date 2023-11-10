@@ -281,8 +281,7 @@ cdef void make_loss_plots(map[int, CyEpoch*] train, map[int, CyEpoch*] valid, ma
         lines = collapse_points(&tmp_te, epoch, lines, "evaluation", state, "lss")
 
     for var_name in lines:
-        for mode in lines[var_name]:
-            lines[var_name][mode] = TLine(**lines[var_name][mode])
+        for mode in lines[var_name]: lines[var_name][mode] = TLine(**lines[var_name][mode])
         tmpl = template_tline(path, "Epoch", "Loss (arb.)", "Loss Curve for " + var_name)
         tmpl["Filename"] = var_name + "_loss"
         tmpl["Lines"] = list(lines[var_name].values())
