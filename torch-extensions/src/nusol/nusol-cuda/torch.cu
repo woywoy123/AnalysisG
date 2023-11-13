@@ -15,19 +15,6 @@
 #define CHECK_CONTIGUOUS(x) TORCH_CHECK(x.is_contiguous(), "#x must be contiguous")
 #define CHECK_INPUT(x) CHECK_CUDA(x); CHECK_CONTIGUOUS(x)
 
-static const dim3 BLOCKS(const unsigned int threads, const unsigned int len)
-{
-    const dim3 blocks( (len + threads -1) / threads ); 
-    return blocks; 
-}
-
-static const dim3 BLOCKS(
-    const unsigned int threads, const unsigned int len, const unsigned int dy)
-{
-    const dim3 blocks( (len + threads -1) / threads, dy); 
-    return blocks; 
-}
-
 static const dim3 BLOCKS(
     const unsigned int threads, const unsigned int len, 
     const unsigned int dy, const unsigned int dz)
@@ -68,10 +55,7 @@ static const std::map<std::string, torch::Tensor> _convert(torch::Tensor pmu1, t
 static const torch::Tensor _format(std::vector<torch::Tensor> v)
 {  
     std::vector<torch::Tensor> out; 
-    for (torch::Tensor i : v)
-    {
-        out.push_back(i.view({-1, 1})); 
-    }
+    for (torch::Tensor i : v){out.push_back(i.view({-1, 1}));}
     return torch::cat(out, -1); 
 }
 
@@ -85,7 +69,7 @@ static const torch::Tensor _Shape_Matrix(torch::Tensor inpt, std::vector<long> v
     torch::Tensor out = torch::zeros_like(inpt); 
     torch::Tensor vecT = torch::zeros({1, 1, len_j}, op).to(torch::kCPU); 
     for (unsigned int i(0); i < len_j; ++i){ vecT[0][0][i] += vec[i]; }
-    vecT = vecT.to(inpt.device()); 
+    vecT = vecT.to(op); 
 
     const dim3 blk = BLOCKS(threads, len_i, len_j, len_j);
     AT_DISPATCH_FLOATING_TYPES(out.scalar_type(), "ShapeMatrix", ([&]
@@ -104,11 +88,12 @@ static const torch::Tensor _Expand_Matrix(torch::Tensor inpt, torch::Tensor sour
     const unsigned int threads = 1024; 
     const unsigned int len_i = inpt.size(0);
     const unsigned int len_k = source.size(1); 
+    const torch::TensorOptions op = _MakeOp(inpt); 
     source = source.view({source.size(0), len_k, -1}); 
   
     const unsigned int len_j = source.size(2); 
     const dim3 blk = BLOCKS(threads, len_i, len_k, len_j);
-    torch::Tensor out = torch::zeros_like(inpt); 
+    torch::Tensor out = torch::zeros_like(inpt, op); 
 
     AT_DISPATCH_FLOATING_TYPES(out.scalar_type(), "ShapeMatrix", ([&]
     {
@@ -317,6 +302,8 @@ std::tuple<torch::Tensor, torch::Tensor> _Intersection(torch::Tensor A, torch::T
         0, 1, 0, 1
     }; 
 
+    uint8_t dev = G.get_device(); 
+    cudaSetDevice(dev); 
     cudaMalloc(&sy, size_swap); 
     cudaMalloc(&sz, size_swap); 
     cudaMalloc(&dy, size_det); 
@@ -491,7 +478,7 @@ std::map<std::string, torch::Tensor> _Nu(
     torch::Tensor id = std::get<1>(sol_chi2.sort(-1, false)); 
     
     torch::Tensor _nu_v = torch::zeros(dims, op); 
-    torch::Tensor _chi2 = torch::zeros_like(sol_chi2); 
+    torch::Tensor _chi2 = torch::zeros_like(sol_chi2, op); 
 
     AT_DISPATCH_FLOATING_TYPES(H.scalar_type(), "Nu", ([&]
     {

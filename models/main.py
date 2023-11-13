@@ -8,11 +8,12 @@ mode = "TruthChildren_NoNu" #Jets_Detector"
 name = "Example" #"Project_ML"
 model = "RPN"
 mode_ = 0
+gen_data = False
 
 modes = [
     "TruthChildren_NoNu",
-    "TruthJets_NoNu",
-    "Jets_NoNu"
+#    "TruthJets_NoNu",
+#    "Jets_NoNu"
 ]
 
 params = [
@@ -61,15 +62,16 @@ params = [
 auto = AnalysisBuild(name)
 
 for mm in modes:
-    break
+    if not gen_data: break
+
     mode = mm
     train_name = "sample-" + mode
 
     auto.SamplePath = os.environ["Samples"]
-    auto.AddDatasetName("ttH-m1000", 20)
-    auto.AddDatasetName("ttbar", 20)
-    auto.AddDatasetName("tttt (SM)", 20)
-    auto.AddDatasetName("ttH", 20)
+    auto.AddDatasetName("ttH-m1000", 1)
+    auto.AddDatasetName("ttbar", 1)
+    auto.AddDatasetName("tttt (SM)", 1)
+    auto.AddDatasetName("ttH", 1)
 
     auto.Event = Event
     auto.EventCache = True
@@ -92,7 +94,7 @@ for this in params:
 
     Ana = Analysis()
     Ana.ProjectName = name
-    Ana.Device = "cuda:1"
+    Ana.Device = "cuda:0"
     Ana.TrainingName = "sample-" + mode
     Ana.Model = auto.ModelTrainer(model)
     Ana.BatchSize = batch

@@ -29,7 +29,7 @@ static const dim3 BLOCKS(
     return blocks; 
 }
 
-torch::TensorOptions _MakeOp(torch::Tensor v1)
+static const torch::TensorOptions _MakeOp(torch::Tensor v1)
 {
 	return torch::TensorOptions().dtype(v1.scalar_type()).device(v1.device()); 
 }
@@ -43,6 +43,7 @@ torch::Tensor _Dot(torch::Tensor v1, torch::Tensor v2)
     const unsigned int threads = 1024; 
     const dim3 blk  = BLOCKS(threads, len_i, len_j); 
     const dim3 blk_ = BLOCKS(threads, len_i); 
+
     AT_DISPATCH_FLOATING_TYPES(v1.scalar_type(), "DOT", ([&]
     {
         _DotK<scalar_t><<< blk, threads >>>( 
@@ -96,12 +97,13 @@ torch::Tensor _CosTheta(torch::Tensor v1, torch::Tensor v2, signed int limit)
     const unsigned int x = v1.size(0); 
     const unsigned int y = (limit < 0) ? v1.size(1) : limit; 
     const unsigned int threads = 1024; 
+    const torch::TensorOptions op = _MakeOp(v1); 
 
     v2 = v2.contiguous(); 
     v1 = v1.contiguous(); 
-    torch::Tensor tmp = torch::zeros({x, y, 3}, _MakeOp(v1));
-    torch::Tensor out = torch::zeros({x, 3}, _MakeOp(v1));  
     CHECK_INPUT(v1); CHECK_INPUT(v2); 
+    torch::Tensor tmp = torch::zeros({x, y, 3}, op);
+    torch::Tensor out = torch::zeros({x, 3}, op);  
     const dim3 blk   = BLOCKS(threads, x, y, 3); 
     const dim3 blk_  = BLOCKS(threads, x, 3); 
     const dim3 blk__ = BLOCKS(threads, x); 
@@ -128,12 +130,13 @@ torch::Tensor _SinTheta(torch::Tensor v1, torch::Tensor v2, signed int limit)
     const unsigned int x = v1.size(0); 
     const unsigned int y = (limit < 0) ? v1.size(1) : limit; 
     const unsigned int threads = 1024; 
+    const torch::TensorOptions op = _MakeOp(v1); 
 
     v2 = v2.contiguous(); 
     v1 = v1.contiguous(); 
-    torch::Tensor tmp = torch::zeros({x, y, 3}, _MakeOp(v1));
-    torch::Tensor out = torch::zeros({x, 3}, _MakeOp(v1));  
     CHECK_INPUT(v1); CHECK_INPUT(v2); 
+    torch::Tensor tmp = torch::zeros({x, y, 3}, op);
+    torch::Tensor out = torch::zeros({x, 3}, op);  
     const dim3 blk = BLOCKS(threads, x, y, 3); 
     const dim3 blk_ = BLOCKS(threads, x, 3); 
     const dim3 blk__ = BLOCKS(threads, x); 
@@ -179,7 +182,8 @@ torch::Tensor _CoFactors(torch::Tensor matrix)
     const unsigned int x = matrix.size(0); 
     const unsigned int threads = 1024; 
     const dim3 blk = BLOCKS(threads, x, 3, 3);  
-    torch::Tensor out = torch::zeros_like(matrix);
+    const torch::TensorOptions op = _MakeOp(matrix); 
+    torch::Tensor out = torch::zeros_like(matrix, op);
     CHECK_INPUT(matrix);  
 
 
@@ -197,8 +201,8 @@ torch::Tensor _CoFactors(torch::Tensor matrix)
         0, 2, 0, 2, 
         0, 1, 0, 1
     }; 
-
-    cudaSetDevice(c10::cuda::getCurrentCUDAStream(-1).device_index()); 
+    uint8_t dev = out.get_device(); 
+    cudaSetDevice(dev); 
     cudaMalloc(&dy, size); 
     cudaMalloc(&dz, size); 
     cudaMemcpy(dy, &_dy, size, cudaMemcpyHostToDevice); 
@@ -241,7 +245,8 @@ torch::Tensor _Det(torch::Tensor matrix)
         0, 1, 0, 1
     }; 
 
-    cudaSetDevice(c10::cuda::getCurrentCUDAStream(-1).device_index()); 
+    uint8_t dev = out.get_device(); 
+    cudaSetDevice(dev); 
     cudaMalloc(&dy, size); 
     cudaMalloc(&dz, size); 
     cudaMemcpy(dy, &_dy, size, cudaMemcpyHostToDevice); 
@@ -278,9 +283,10 @@ std::tuple<torch::Tensor, torch::Tensor> _Inv(torch::Tensor matrix)
     const dim3 blk_ = BLOCKS(threads, x);
     const dim3 blk__ = BLOCKS(threads, x, 1, 3);
     const dim3 blk = BLOCKS(threads, x, 3, 3);
-    torch::Tensor coef = torch::zeros({x, 3, 3}, _MakeOp(matrix));
-    torch::Tensor det = torch::zeros({x, 1}, _MakeOp(matrix));
-    torch::Tensor out = torch::zeros({x, 3, 3}, _MakeOp(matrix));
+    const torch::TensorOptions op = _MakeOp(matrix); 
+    torch::Tensor coef = torch::zeros({x, 3, 3}, op);
+    torch::Tensor det = torch::zeros({x, 1}, op);
+    torch::Tensor out = torch::zeros({x, 3, 3}, op);
 
     unsigned int size = sizeof(unsigned int)*12; 
     unsigned int *dy, *dz; 
@@ -297,7 +303,8 @@ std::tuple<torch::Tensor, torch::Tensor> _Inv(torch::Tensor matrix)
         0, 1, 0, 1
     }; 
 
-    cudaSetDevice(c10::cuda::getCurrentCUDAStream(-1).device_index()); 
+    uint8_t dev = matrix.get_device(); 
+    cudaSetDevice(dev); 
     cudaMalloc(&dy, size); 
     cudaMalloc(&dz, size); 
     cudaMemcpy(dy, &_dy, size, cudaMemcpyHostToDevice); 
@@ -338,8 +345,9 @@ torch::Tensor _Cross(torch::Tensor mat1, torch::Tensor mat2)
     const unsigned int x = mat1.size(0)*3; 
     const unsigned int threads = 1024; 
     const dim3 blk = BLOCKS(threads, x, 1, 3); 
-    torch::Tensor form = torch::zeros({x, 3, 3}, _MakeOp(mat1));
-    torch::Tensor out  = torch::zeros({x, 1, 3}, _MakeOp(mat1));
+    const torch::TensorOptions op = _MakeOp(mat1); 
+    torch::Tensor form = torch::zeros({x, 3, 3}, op);
+    torch::Tensor out  = torch::zeros({x, 1, 3}, op);
 
     unsigned int size = sizeof(unsigned int)*12; 
     unsigned int *dy, *dz; 
@@ -356,7 +364,8 @@ torch::Tensor _Cross(torch::Tensor mat1, torch::Tensor mat2)
         0, 1, 0, 1
     }; 
 
-    cudaSetDevice(c10::cuda::getCurrentCUDAStream(-1).device_index()); 
+    uint8_t dev = mat1.get_device(); 
+    cudaSetDevice(dev); 
     cudaMalloc(&dy, size); 
     cudaMalloc(&dz, size); 
     cudaMemcpy(dy, &_dy, size, cudaMemcpyHostToDevice); 

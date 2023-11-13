@@ -20,13 +20,19 @@ static const dim3 BLOCKS(
     return blocks; 
 }
 
+torch::TensorOptions _MakeOp(torch::Tensor v1)
+{
+	return torch::TensorOptions().dtype(v1.scalar_type()).device(v1.device()); 
+}
+
 torch::Tensor _Px(torch::Tensor pt, torch::Tensor phi)
 {
     pt = pt.view({-1, 1}).contiguous(); 
     phi = phi.view({-1, 1}).contiguous();
     CHECK_INPUT(pt); CHECK_INPUT(phi);  
-    
-    torch::Tensor px = torch::zeros_like(pt);
+    const torch::TensorOptions op = _MakeOp(pt); 
+
+    torch::Tensor px = torch::zeros_like(pt, op);
     const unsigned int threads = 1024;   
     const unsigned int len = pt.size(0); 
     const dim3 blk = BLOCKS(threads, len); 
@@ -48,8 +54,9 @@ torch::Tensor _Py(torch::Tensor pt, torch::Tensor phi)
     pt = pt.view({-1, 1}).contiguous(); 
     phi = phi.view({-1, 1}).contiguous(); 
     CHECK_INPUT(pt); CHECK_INPUT(phi);  
+    const torch::TensorOptions op = _MakeOp(pt); 
 
-    torch::Tensor py = torch::zeros_like(pt);
+    torch::Tensor py = torch::zeros_like(pt, op);
     const unsigned int threads = 1024;   
     const unsigned int len = pt.size(0); 
     const dim3 blk = BLOCKS(threads, len); 
@@ -71,8 +78,9 @@ torch::Tensor _Pz(torch::Tensor pt, torch::Tensor eta)
     pt = pt.view({-1, 1}).contiguous(); 
     eta = eta.view({-1, 1}).contiguous(); 
     CHECK_INPUT(pt); CHECK_INPUT(eta);  
+    const torch::TensorOptions op = _MakeOp(pt); 
 
-    torch::Tensor pz = torch::zeros_like(pt);
+    torch::Tensor pz = torch::zeros_like(pt, op);
     const unsigned int threads = 1024;   
     const unsigned int len = pt.size(0); 
     const dim3 blk = BLOCKS(threads, len); 
@@ -94,8 +102,9 @@ torch::Tensor _PxPyPz(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi)
     pt  = pt.view({-1, 1}).contiguous(); 
     eta = eta.view({-1, 1}).contiguous(); 
     phi = phi.view({-1, 1}).contiguous();     
+    const torch::TensorOptions op = _MakeOp(pt); 
 
-    torch::Tensor out = torch::zeros_like(pt);
+    torch::Tensor out = torch::zeros_like(pt, op);
     out = torch::cat({out, out, out}, -1).contiguous(); 
     CHECK_INPUT(pt); CHECK_INPUT(eta); CHECK_INPUT(phi); CHECK_INPUT(out); 
 
@@ -118,7 +127,8 @@ torch::Tensor _PxPyPz(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi)
 
 torch::Tensor _PxPyPzE(torch::Tensor Pmu)
 {
-    torch::Tensor out = torch::zeros_like(Pmu);
+    const torch::TensorOptions op = _MakeOp(Pmu); 
+    torch::Tensor out = torch::zeros_like(Pmu, op);
     CHECK_INPUT(out); CHECK_INPUT(Pmu); 
 
     const unsigned int len = out.size(0); 

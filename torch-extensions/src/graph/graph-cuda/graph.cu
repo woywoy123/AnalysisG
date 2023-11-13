@@ -84,7 +84,7 @@ std::map<std::string, std::vector<torch::Tensor>> _edge_aggregation(
         _EdgeSummation<scalar_t><<< blk_, threads >>>(
                  pmu_i.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
                 pair_m.packed_accessor32<scalar_t, 3, torch::RestrictPtrTraits>(),
-            node_feature.packed_accessor64<double, 2, torch::RestrictPtrTraits>(),  
+          node_feature.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),  
                 dim_i, dim_j, max);
     })); 
 
@@ -111,7 +111,7 @@ std::map<std::string, std::vector<torch::Tensor>> _edge_aggregation(
             _EdgeSummation<scalar_t><<< blk__, threads >>>(
                      pmu_u.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
                   clusters.packed_accessor32<scalar_t, 3, torch::RestrictPtrTraits>(),
-              node_feature.packed_accessor64<double, 2, torch::RestrictPtrTraits>(),  
+              node_feature.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),  
                     dim_, dim_j, max);
         })); 
 

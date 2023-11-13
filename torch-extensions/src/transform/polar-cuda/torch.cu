@@ -22,9 +22,9 @@ static const dim3 BLOCKS(
     return blocks; 
 }
 
-static const torch::Tensor clip(torch::Tensor inpt, int dim)
+static const torch::TensorOptions _MakeOp(torch::Tensor v1)
 {
-    return inpt.index({torch::indexing::Slice(), dim}); 
+    return torch::TensorOptions().dtype(v1.scalar_type()).device(v1.device()); 
 }
 
 torch::Tensor _Pt(torch::Tensor px, torch::Tensor py)
@@ -32,8 +32,9 @@ torch::Tensor _Pt(torch::Tensor px, torch::Tensor py)
     px = px.view({-1, 1}).contiguous(); 
     py = py.view({-1, 1}).contiguous(); 
     CHECK_INPUT(px); CHECK_INPUT(py); 
-    
-    torch::Tensor pt = torch::zeros_like(px);
+
+    const torch::TensorOptions op = _MakeOp(py); 
+    torch::Tensor pt = torch::zeros_like(px, op);
     const unsigned int len = pt.size(0); 
     const unsigned int threads = 1024; 
     const dim3 blk = BLOCKS(threads, len); 
@@ -56,11 +57,12 @@ torch::Tensor _Eta(torch::Tensor px, torch::Tensor py, torch::Tensor pz)
     py = py.view({-1, 1}).contiguous(); 
     pz = pz.view({-1, 1}).contiguous();
     CHECK_INPUT(px); CHECK_INPUT(py); CHECK_INPUT(pz);
-    
-    torch::Tensor eta = torch::zeros_like(px);
-    const unsigned int len = eta.size(0); 
+
+    const unsigned int len = px.size(0); 
     const unsigned int threads = 1024; 
     const dim3 blk = BLOCKS(threads, len); 
+    const torch::TensorOptions op = _MakeOp(px); 
+    torch::Tensor eta = torch::zeros_like(px, op);
 
     AT_DISPATCH_FLOATING_TYPES(eta.scalar_type(), "EtaK", ([&]
     {
@@ -80,11 +82,12 @@ torch::Tensor _Phi(torch::Tensor px, torch::Tensor py)
     px = px.view({-1, 1}).contiguous(); 
     py = py.view({-1, 1}).contiguous(); 
     CHECK_INPUT(px); CHECK_INPUT(py);
-    
-    torch::Tensor phi = torch::zeros_like(px);
-    const unsigned int len = phi.size(0); 
+
+    const unsigned int len = px.size(0); 
     const unsigned int threads = 1024; 
     const dim3 blk = BLOCKS(threads, len); 
+    const torch::TensorOptions op = _MakeOp(px); 
+    torch::Tensor phi = torch::zeros_like(px, op);
 
     AT_DISPATCH_FLOATING_TYPES(phi.scalar_type(), "PhiK", ([&]
     {
@@ -103,9 +106,10 @@ torch::Tensor _PtEtaPhi(torch::Tensor px, torch::Tensor py, torch::Tensor pz)
     px = px.view({-1, 1}).contiguous(); 
     py = py.view({-1, 1}).contiguous();    
     pz = pz.view({-1, 1}).contiguous(); 
-
-    torch::Tensor out = torch::zeros_like(px);
+    const torch::TensorOptions op = _MakeOp(px); 
+    torch::Tensor out = torch::zeros_like(px, op);
     out = torch::cat({out, out, out}, -1).contiguous(); 
+
     CHECK_INPUT(px); CHECK_INPUT(py); CHECK_INPUT(pz); CHECK_INPUT(out); 
 
     const unsigned int len = px.size(0); 
@@ -127,7 +131,8 @@ torch::Tensor _PtEtaPhi(torch::Tensor px, torch::Tensor py, torch::Tensor pz)
 
 torch::Tensor _PtEtaPhiE(torch::Tensor Pmc)
 {
-    torch::Tensor out = torch::zeros_like(Pmc); 
+    const torch::TensorOptions op = _MakeOp(Pmc); 
+    torch::Tensor out = torch::zeros_like(Pmc, op); 
     CHECK_INPUT(out); CHECK_INPUT(Pmc); 
 
     const unsigned int len = Pmc.size(0); 

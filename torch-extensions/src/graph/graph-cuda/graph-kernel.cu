@@ -27,7 +27,7 @@ template <typename scalar_t>
 __global__ void _EdgeSummation(
         torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> pmu_i, 
         const torch::PackedTensorAccessor32<scalar_t, 3, torch::RestrictPtrTraits> triggers, 
-        const torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> pmu, 
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmu, 
         const unsigned int dim_i, const unsigned int dim_j, const unsigned int dim_max)
 {
     const unsigned int idx = blockIdx.x*blockDim.x + threadIdx.x; 
@@ -38,7 +38,7 @@ __global__ void _EdgeSummation(
     scalar_t* val = &pmu_i[idz][idx][idy];
     for (unsigned int i(0); i < dim_i; ++i){
         scalar_t id = triggers[idz][idx][i]; 
-        if (id == -1){ continue; }
+        if (id < 0){ continue; }
         *val += pmu[id][idy];
     }
 }
@@ -53,8 +53,8 @@ __global__ void _fast_unique(
     const unsigned int idy = blockIdx.y; 
     const unsigned int idz = blockIdx.z; 
     if (idx >= dim_i || idy >= dim_j || idz >= dim_k){return;}   
-    if (cluster_map[idx][idy] == -1){return;}
-    if (cluster_map[idx][idz] == -1){return;}
+    if (cluster_map[idx][idy] < 0){return;}
+    if (cluster_map[idx][idz] < 0){return;}
 
     const long* val = &cluster_map[idx][idy]; 
     if (*val == cluster_map[idx][idz]){ out_map[idx][idy] = *val; }
