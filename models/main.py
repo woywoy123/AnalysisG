@@ -94,7 +94,7 @@ for this in params:
 
     Ana = Analysis()
     Ana.ProjectName = name
-    Ana.Device = "cuda:0"
+    Ana.Device = "cuda"
     Ana.TrainingName = "sample-" + mode
     Ana.Model = auto.ModelTrainer(model)
     Ana.BatchSize = batch
@@ -114,7 +114,7 @@ for this in params:
         Ana.SchedulerParams = sch_param
 
     Ana.PlotLearningMetrics = True
-    Ana.ContinueTraining = False
+    Ana.ContinueTraining = True
     Ana.DebugMode = False
-#    Ana.KinematicMap = {"top_edge" : "polar -> N_pT, N_eta, N_phi, N_energy"}
+    Ana.KinematicMap = {"top_edge" : "polar -> N_pT, N_eta, N_phi, N_energy"}
     Ana.Launch()

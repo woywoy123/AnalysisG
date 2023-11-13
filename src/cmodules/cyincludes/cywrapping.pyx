@@ -326,8 +326,8 @@ cdef class ModelWrapper:
         for i, j in self._out_map.items():
             key = j[2:]
             pred = self._model.__dict__[j]
+            if pred is None: continue
             loss = self._loss_map[key](pred, sample[i])
-
             self._loss_sum += loss["loss"]
             tmp["L_" + key] = loss["loss"]
             tmp["A_" + key] = loss["acc"]

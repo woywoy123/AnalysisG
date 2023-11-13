@@ -92,9 +92,9 @@ def transform_cartesian():
 
         print("-> ", i)
         if i % 100 != 0: continue
-        PickleObject(data)
+        PickleObject(data, "cartesian-transform")
 
-    PickleObject(data)
+    PickleObject(data, "cartesian-transform")
 
 
 
@@ -167,13 +167,13 @@ def transform_polar():
 
         print("-> ", i)
         if i % 100 != 0: continue
-        PickleObject(data)
+        PickleObject(data, "polar-transform")
 
-    PickleObject(data)
+    PickleObject(data, "polar-transform")
 
 def plot_transform_cartesian():
 
-    x = UnpickleObject()
+    x = UnpickleObject("cartesian-transform")
     tline = TLine()
     title = "Computational Time Ratio Between Torch (CPU) and CUDA Native for Various\n"
     title += "for various Physics Operations as a Function of number of Particles"
@@ -209,7 +209,7 @@ def plot_transform_cartesian():
 
 def plot_transform_polar():
 
-    x = UnpickleObject()
+    x = UnpickleObject("polar-transform")
     tline = TLine()
     title = "Computational Time Ratio Between Torch (CPU) and CUDA Native for Various\n"
     title += "for various Physics Operations as a Function of number of Particles"

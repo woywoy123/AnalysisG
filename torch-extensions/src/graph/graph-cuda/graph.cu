@@ -45,6 +45,8 @@ std::map<std::string, std::vector<torch::Tensor>> _edge_aggregation(
                 torch::Tensor node_feature, const bool include_zero)
 {
 
+    torch::Tensor nf = node_feature.clone();
+    nf = nf.to(torch::kDouble); 
     std::map<std::string, std::vector<torch::Tensor>> output; 
     const torch::TensorOptions op = _MakeOp(edge_index); 
     const unsigned int max = torch::max(prediction).item<int>()+1; 
@@ -64,9 +66,6 @@ std::map<std::string, std::vector<torch::Tensor>> _edge_aggregation(
     CHECK_INPUT(pred); 
     CHECK_INPUT(node_feature); 
     torch::Tensor pair_m = torch::ones(dims, op)*-1;  
-    torch::Tensor pmu_i = torch::zeros({max, dim_i, dim_j}, op);
-    node_feature = node_feature.clone().to(torch::kDouble); 
-
     const dim3 blk = BLOCKS(threads, pred_l, max); 
     AT_DISPATCH_ALL_TYPES(pair_m.scalar_type(), "PredictionTopology", ([&]
     {
@@ -77,18 +76,18 @@ std::map<std::string, std::vector<torch::Tensor>> _edge_aggregation(
                 pred_l, max, include_zero);
     })); 
     pair_m = std::get<0>(pair_m.sort(-1, true)); 
+    torch::Tensor pmu_i = torch::zeros({max, dim_i, dim_j}, _MakeOp(nf));
 
     const dim3 blk_ = BLOCKS(threads, dim_i, dim_j, max); 
-    AT_DISPATCH_ALL_TYPES(pmu_i.scalar_type(), "EdgeSummation", ([&]
+    AT_DISPATCH_ALL_TYPES(pair_m.scalar_type(), "EdgeSummation", ([&]
     {
         _EdgeSummation<scalar_t><<< blk_, threads >>>(
-                 pmu_i.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                 pmu_i.packed_accessor64<double, 3, torch::RestrictPtrTraits>(),
                 pair_m.packed_accessor32<scalar_t, 3, torch::RestrictPtrTraits>(),
-          node_feature.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),  
+                    nf.packed_accessor64<double, 2, torch::RestrictPtrTraits>(),  
                 dim_i, dim_j, max);
     })); 
 
-    pmu_i = pmu_i.to(torch::kFloat); 
     for (signed int i = (include_zero) ? 0 : 1; i < max; ++i)
     {
         std::stringstream x; 
@@ -102,16 +101,16 @@ std::map<std::string, std::vector<torch::Tensor>> _edge_aggregation(
         torch::Tensor revert   = std::get<1>(id2);
 
         unsigned int dim_ = clusters.size(0); 
-        torch::Tensor pmu_u = torch::zeros({1, dim_, dim_j}, op);
+        torch::Tensor pmu_u = torch::zeros({1, dim_, dim_j}, _MakeOp(nf));
         clusters = clusters.view({1, dim_, dim_i}); 
         
         const dim3 blk__ = BLOCKS(threads, dim_, dim_j, 1); 
-        AT_DISPATCH_ALL_TYPES(pmu_u.scalar_type(), "EdgeSummation", ([&]
+        AT_DISPATCH_ALL_TYPES(clusters.scalar_type(), "EdgeSummation", ([&]
         {
             _EdgeSummation<scalar_t><<< blk__, threads >>>(
-                     pmu_u.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                     pmu_u.packed_accessor64<double, 3, torch::RestrictPtrTraits>(),
                   clusters.packed_accessor32<scalar_t, 3, torch::RestrictPtrTraits>(),
-              node_feature.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),  
+                        nf.packed_accessor64<double, 2, torch::RestrictPtrTraits>(),  
                     dim_, dim_j, max);
         })); 
 
@@ -145,32 +144,32 @@ torch::Tensor _unique_aggregation(torch::Tensor cluster_map, torch::Tensor featu
 {
     CHECK_INPUT(cluster_map); 
     CHECK_INPUT(features); 
-    cluster_map = cluster_map.to(torch::kLong);
     const unsigned int n_nodes = cluster_map.size(0);
     const unsigned int ij_node = cluster_map.size(1); 
     const unsigned int n_feat  = features.size(1); 
     const unsigned int threads = 1024; 
 
+    torch::Tensor clus = cluster_map.to(torch::kLong);
+    const torch::TensorOptions op_ = _MakeOp(clus); 
     const torch::TensorOptions op = _MakeOp(features); 
-    const torch::TensorOptions op_ = _MakeOp(cluster_map); 
 
     torch::Tensor output = torch::zeros({n_nodes, n_feat}, op); 
-    const dim3 blk = BLOCKS(threads, n_nodes, n_feat); 
-
     torch::Tensor uniq = -1*torch::ones({n_nodes, ij_node}, op).to(torch::kLong); 
+
+    const dim3 blk = BLOCKS(threads, n_nodes, n_feat); 
     const dim3 blk_ = BLOCKS(threads, n_nodes, ij_node, ij_node); 
     AT_DISPATCH_ALL_TYPES(features.scalar_type(), "unique_sum", ([&]
     {
    
         _fast_unique<scalar_t><<< blk_, threads >>>(
-                   uniq.packed_accessor32<long, 2, torch::RestrictPtrTraits>(),
-            cluster_map.packed_accessor32<long, 2, torch::RestrictPtrTraits>(), 
+                   uniq.packed_accessor64<long, 2, torch::RestrictPtrTraits>(),
+                   clus.packed_accessor64<long, 2, torch::RestrictPtrTraits>(), 
                 n_nodes, ij_node, ij_node);
 
         _unique_sum<scalar_t><<< blk, threads >>>(
-                 output.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
-                   uniq.packed_accessor32<long, 2, torch::RestrictPtrTraits>(), 
-               features.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
+                 output.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+                   uniq.packed_accessor64<long, 2, torch::RestrictPtrTraits>(), 
+               features.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
                 n_nodes, ij_node, n_feat);
     })); 
     return output; 

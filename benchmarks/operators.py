@@ -56,16 +56,16 @@ def matrix_multiplication():
                 if cols not in data[n_matrix]: data[n_matrix][cols] = {}
                 data[n_matrix][cols][rows] = r
 
-            PickleObject(data)
+            PickleObject(data, "matrix")
             print(n_s, r_s, c_s)
 
 
 def plot_multiplication():
 
-    x = UnpickleObject()
+    x = UnpickleObject("matrix")
     for n_s in x:
         tf = TH2F()
-        tf.Title = "Matrix Multiplication (MatMul) Compared to pyc CUDA Implementation With " + str(n_s) + "-Matrices"
+        tf.Title = "Matrix Multiplication (MatMul) Compared to pyc CUDA Implementation With \n" + str(n_s) + "-Matrices (higher is better)"
         tf.xTitle = "Number of Rows for each Matrix"
         tf.yTitle = "Number of Columns for each Matrix"
         tf.xData = [r for t in x[n_s] for r in x[n_s][t]]
@@ -138,16 +138,16 @@ def matrix():
 
         print(n_s)
         if n_s%100: continue
-        PickleObject(data)
+        PickleObject(data, "oper")
         print(n_s)
-    PickleObject(data)
+    PickleObject(data, "oper")
 
 def plot_matrix():
 
-    x = UnpickleObject()
+    x = UnpickleObject("oper")
     tline = TLine()
     title = "Computational Time Ratio Between Torch (CUDA) and CUDA Native for Various\n"
-    title += "for various Matrix Operations as a Function of Matrix Length"
+    title += "for various Matrix Operations as a Function of Matrix Length (higher is Better)"
     tline.Title = title
 
     t1 = TLine()

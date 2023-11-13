@@ -53,14 +53,13 @@ def edge_aggregation():
         output[num_nodes] = {}
         for num_feat in range(1, 20):
             output[num_nodes][num_feat] = {}
-            for cls in range(1, 10):
+            for cls in range(2, 10):
                 p_ = 0.4 # probability that nodes are always connected with the same class, i.e. more equal clusters
                 nodes = torch.tensor([[int(1 + 10*random()*(t+1)) for _ in range(num_feat)] for t in range(num_nodes)], device = "cuda")
                 edges_t = torch.tensor([[(random() > p_)*int(random()*cls)] for _ in range(num_nodes**2)], device = "cuda")
                 edge_i = torch.tensor([t for t in range(num_nodes) for _ in range(num_nodes)])
                 edge_j = torch.tensor([t for _ in range(num_nodes) for t in range(num_nodes)])
                 edge_index = torch.cat([edge_i.view(1, -1), edge_j.view(1, -1)], dim = 0).to(device = "cuda")
-
                 x, y = [], []
                 for _ in range(100):
                     t1 = time()
@@ -78,11 +77,11 @@ def edge_aggregation():
                 output[num_nodes][num_feat][cls] = {}
                 output[num_nodes][num_feat][cls]["py"] = [t_py, st_py]
                 output[num_nodes][num_feat][cls]["cu"] = [t_cu, st_cu]
-            PickleObject(output)
+            PickleObject(output, "edge")
 
 
 def plot_edge_aggregation():
-    out = UnpickleObject()
+    out = UnpickleObject("edge")
     lines = {}
     for num_nodes in out:
         xdata = []

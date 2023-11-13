@@ -61,7 +61,7 @@ class _Optimizer(Notification):
         max_map = {}
         msg = "No prior training was found under: " + path + ". Generating..."
         for f in self.lsFiles(path, ".pth"):
-            ep, fold = f.lstrip(path).split("/")[:2]
+            ep, fold, _  = f.split("/")[-3:]
             ep, fold = int(ep.split("-")[-1]), int(fold.split("-")[-1])
             if fold not in max_map: max_map[fold] = ep
             if max_map[fold] >= ep: continue

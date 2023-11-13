@@ -146,11 +146,9 @@ class ParticleRecursion(MessagePassing):
         idx = self._idx_mlp[src, dst]
         target = torch.cat([src.view(-1, 1), trk_i], -1)
         pmc_ij = graph_base.unique_aggregation(target, pmc) + nu[idx] + nu_[idx]
-
         feats = []
         feats += [physics.M(pmc_ij), physics.M(pmc_i + nu[idx] + nu_[idx])]
         feats += [self._hidden[idx]]
-
         feats = torch.cat(feats, -1)
         mlp = self._edge(feats.to(dtype = torch.float))
         return edge_index, mlp, self._red(mlp).max(-1)[1]
@@ -162,15 +160,15 @@ class ParticleRecursion(MessagePassing):
 
         try: gr = graph.edge(edge_index, sel, pmc, True)[1]
         except KeyError: return self._hidden
-        except RuntimeError: return self._hidden
+        edge_index_ = edge_index[:, sel != 1]
 
+        if not edge_index_.size(1): return self._hidden
         trk = gr["clusters"][gr["reverse_clusters"]]
         feats = [physics.M(gr["node_sum"])]
         feats += [physics.M(pmc)]
-
         mlp = torch.cat([torch.cat(feats, -1)[src],  mlp], -1)
         self._hidden[idx] = self._edge(mlp.to(dtype = torch.float))
-        edge_index_ = edge_index[:, sel != 1]
+
         return self.propagate(edge_index_, pmc = pmc, trk = trk, nu = nu, nu_ = nu_, sols = sols)
 
     def forward(self, edge_index, batch, pmc, nu_i, nu_j, sol):

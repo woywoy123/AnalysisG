@@ -216,13 +216,13 @@ def physics_polar():
 
         print("-> ", i)
         if i % 100 != 0: continue
-        PickleObject(data)
+        PickleObject(data, "polar-physics")
 
-    PickleObject(data)
+    PickleObject(data, "polar-physics")
 
 def plot_polar():
 
-    x = UnpickleObject()
+    x = UnpickleObject("polar-physics")
     tline = TLine()
     title = "Computational Time Ratio Between Torch (CPU) and CUDA Native for Various\n"
     title += "for various Physics Quantities as a Function of number of Particles"
@@ -273,7 +273,7 @@ def plot_polar():
     tline.Colors = ["r", "r", "b", "b", "y", "y", "m", "k"]
     tline.Markers = ["x", "*", "x", "*", "x", "*", "x", "x"]
     tline.xTitle = "Number of Particles"
-    tline.yTitle = "Ratio Time of Computation (Torch-CPU / Torch-CUDA)"
+    tline.yTitle = "Ratio Time of Computation (Torch-CUDA / Torch-CPU)"
     tline.yMin = 0
     tline.xStep = 100
     tline.Filename = "Polar-To-Physics"
@@ -327,13 +327,13 @@ def physics_cartesian():
 
         print("-> ", i)
         if i % 100 != 0: continue
-        PickleObject(data)
+        PickleObject(data, "cartesian-physics")
 
-    PickleObject(data)
+    PickleObject(data, "cartesian-physics")
 
 def plot_cartesian():
 
-    x = UnpickleObject()
+    x = UnpickleObject("cartesian-physics")
     tline = TLine()
     title = "Computational Time Ratio Between Torch (CPU) and CUDA Native for Various\n"
     title += "for various Physics Quantities as a Function of number of Particles"
@@ -384,7 +384,7 @@ def plot_cartesian():
     tline.Colors = ["r", "r", "b", "b", "y", "y", "m", "k"]
     tline.Markers = ["x", "*", "x", "*", "x", "*", "x", "x"]
     tline.xTitle = "Number of Particles"
-    tline.yTitle = "Ratio Time of Computation (Torch-CPU / Torch-CUDA)"
+    tline.yTitle = "Ratio Time of Computation (Torch-CUDA / Torch-CPU)"
     tline.yMin = 0
     tline.xStep = 100
     tline.Filename = "Cartesian-To-Physics"
