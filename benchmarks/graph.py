@@ -132,7 +132,7 @@ def plot_edge_aggregation():
 
     for cls in lines:
         tls = TLine()
-        tls.Title = "Ratio plot of Computational Time between PyTorch and CUDA (pyc) \n for Different Number of Input Nodes"
+        tls.Title = "Ratio plot of Computational Time between PyTorch and CUDA (pyc) \n for Different Number of Input Nodes (higher is better)"
         tls.yTitle = "PyTorch Time (s) /CUDA Time (s)"
         tls.Filename = "Performance-Per-Nodes-output_"+str(cls)
         tls.Lines = lines[cls]["lines"]

@@ -11,7 +11,7 @@ import torch
 import pyc
 
 device = "cuda"
-nums = 1000
+nums = 100
 
 def create_vector_polar(number):
     lx = []
@@ -190,28 +190,28 @@ def physics_polar():
         data[lex] = {}
 
         cpu, cu = p2_loop_p(t_cpu), p2_loop_p(t_cu)
-        data[lex]["p2"] = statistics.mean(cu) / statistics.mean(cpu)
+        data[lex]["p2"] = statistics.mean(cpu) / statistics.mean(cu)
 
         cpu, cu = p_loop_p(t_cpu), p2_loop_p(t_cu)
-        data[lex]["p"] = statistics.mean(cu) / statistics.mean(cpu)
+        data[lex]["p"] = statistics.mean(cpu) / statistics.mean(cu)
 
         cpu, cu = beta2_loop_p(t_cpu), p2_loop_p(t_cu)
-        data[lex]["beta2"] = statistics.mean(cu) / statistics.mean(cpu)
+        data[lex]["beta2"] = statistics.mean(cpu) / statistics.mean(cu)
 
         cpu, cu = beta_loop_p(t_cpu), p2_loop_p(t_cu)
-        data[lex]["beta"] = statistics.mean(cu) / statistics.mean(cpu)
+        data[lex]["beta"] = statistics.mean(cpu) / statistics.mean(cu)
 
         cpu, cu = M2_loop_p(t_cpu), p2_loop_p(t_cu)
-        data[lex]["m2"] = statistics.mean(cu) / statistics.mean(cpu)
+        data[lex]["m2"] = statistics.mean(cpu) / statistics.mean(cu)
 
         cpu, cu = M_loop_p(t_cpu), p2_loop_p(t_cu)
-        data[lex]["m"] = statistics.mean(cu) / statistics.mean(cpu)
+        data[lex]["m"] = statistics.mean(cpu) / statistics.mean(cu)
 
         cpu, cu = theta_loop_p(t_cpu), p2_loop_p(t_cu)
-        data[lex]["theta"] = statistics.mean(cu) / statistics.mean(cpu)
+        data[lex]["theta"] = statistics.mean(cpu) / statistics.mean(cu)
 
         cpu, cu = deltaR_loop_p(t_cpu, t_cu)
-        data[lex]["delR"] = statistics.mean(cu) / statistics.mean(cpu)
+        data[lex]["delR"] = statistics.mean(cpu) / statistics.mean(cu)
 
 
         print("-> ", i)
@@ -225,7 +225,7 @@ def plot_polar():
     x = UnpickleObject("polar-physics")
     tline = TLine()
     title = "Computational Time Ratio Between Torch (CPU) and CUDA Native for Various\n"
-    title += "for various Physics Quantities as a Function of number of Particles"
+    title += "for various Physics Quantities as a Function of number of Particles (higher is better)"
     tline.Title = title
 
     t1 = TLine()
@@ -273,7 +273,7 @@ def plot_polar():
     tline.Colors = ["r", "r", "b", "b", "y", "y", "m", "k"]
     tline.Markers = ["x", "*", "x", "*", "x", "*", "x", "x"]
     tline.xTitle = "Number of Particles"
-    tline.yTitle = "Ratio Time of Computation (Torch-CUDA / Torch-CPU)"
+    tline.yTitle = "Ratio Time of Computation (Torch-CPU / Torch-CUDA)"
     tline.yMin = 0
     tline.xStep = 100
     tline.Filename = "Polar-To-Physics"
@@ -302,28 +302,28 @@ def physics_cartesian():
         data[lex] = {}
 
         cpu, cu = p2_loop_c(t_cpu), p2_loop_c(t_cu)
-        data[lex]["p2"] = statistics.mean(cu) / statistics.mean(cpu)
+        data[lex]["p2"] = statistics.mean(cpu) / statistics.mean(cu)
 
         cpu, cu = p_loop_c(t_cpu), p2_loop_c(t_cu)
-        data[lex]["p"] = statistics.mean(cu) / statistics.mean(cpu)
+        data[lex]["p"] = statistics.mean(cpu) / statistics.mean(cu)
 
         cpu, cu = beta2_loop_c(t_cpu), p2_loop_c(t_cu)
-        data[lex]["beta2"] = statistics.mean(cu) / statistics.mean(cpu)
+        data[lex]["beta2"] = statistics.mean(cpu) / statistics.mean(cu)
 
         cpu, cu = beta_loop_c(t_cpu), p2_loop_c(t_cu)
-        data[lex]["beta"] = statistics.mean(cu) / statistics.mean(cpu)
+        data[lex]["beta"] = statistics.mean(cpu) / statistics.mean(cu)
 
         cpu, cu = M2_loop_c(t_cpu), p2_loop_c(t_cu)
-        data[lex]["m2"] = statistics.mean(cu) / statistics.mean(cpu)
+        data[lex]["m2"] = statistics.mean(cpu) / statistics.mean(cu)
 
         cpu, cu = M_loop_c(t_cpu), p2_loop_c(t_cu)
-        data[lex]["m"] = statistics.mean(cu) / statistics.mean(cpu)
+        data[lex]["m"] = statistics.mean(cpu) / statistics.mean(cu)
 
         cpu, cu = theta_loop_c(t_cpu), p2_loop_c(t_cu)
-        data[lex]["theta"] = statistics.mean(cu) / statistics.mean(cpu)
+        data[lex]["theta"] = statistics.mean(cpu) / statistics.mean(cu)
 
         cpu, cu = deltaR_loop_c(t_cpu, t_cu)
-        data[lex]["delR"] = statistics.mean(cu) / statistics.mean(cpu)
+        data[lex]["delR"] = statistics.mean(cpu) / statistics.mean(cu)
 
         print("-> ", i)
         if i % 100 != 0: continue
@@ -336,7 +336,7 @@ def plot_cartesian():
     x = UnpickleObject("cartesian-physics")
     tline = TLine()
     title = "Computational Time Ratio Between Torch (CPU) and CUDA Native for Various\n"
-    title += "for various Physics Quantities as a Function of number of Particles"
+    title += "for various Physics Quantities as a Function of number of Particles (higher is better)"
     tline.Title = title
 
     t1 = TLine()
@@ -384,17 +384,17 @@ def plot_cartesian():
     tline.Colors = ["r", "r", "b", "b", "y", "y", "m", "k"]
     tline.Markers = ["x", "*", "x", "*", "x", "*", "x", "x"]
     tline.xTitle = "Number of Particles"
-    tline.yTitle = "Ratio Time of Computation (Torch-CUDA / Torch-CPU)"
+    tline.yTitle = "Ratio Time of Computation (Torch-CPU / Torch-CUDA)"
     tline.yMin = 0
     tline.xStep = 100
     tline.Filename = "Cartesian-To-Physics"
     tline.SaveFigure()
 
 if __name__ == "__main__":
-    physics_polar()
+#    physics_polar()
     plot_polar()
 
-    physics_cartesian()
+#    physics_cartesian()
     plot_cartesian()
 
 

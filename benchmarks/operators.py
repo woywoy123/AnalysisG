@@ -50,7 +50,7 @@ def matrix_multiplication():
                     tch_, pc_ = loop_mul(cu_x, cu_y)
                     tch += tch_
                     pc += pc_
-                r = statistics.mean(tch) / statistics.mean(pc)
+                r = statistics.mean(pc) / statistics.mean(tch)
 
                 if n_matrix not in data: data[n_matrix] = {}
                 if cols not in data[n_matrix]: data[n_matrix][cols] = {}
@@ -65,7 +65,7 @@ def plot_multiplication():
     x = UnpickleObject("matrix")
     for n_s in x:
         tf = TH2F()
-        tf.Title = "Matrix Multiplication (MatMul) Compared to pyc CUDA Implementation With \n" + str(n_s) + "-Matrices (higher is better)"
+        tf.Title = "Matrix Multiplication (MatMul) Compared to pyc CUDA Implementation With \n" + str(n_s) + "-Matrices (Lower is better)"
         tf.xTitle = "Number of Rows for each Matrix"
         tf.yTitle = "Number of Columns for each Matrix"
         tf.xData = [r for t in x[n_s] for r in x[n_s][t]]
@@ -128,13 +128,13 @@ def matrix():
         cu = torch.rand(n_matrix, 3, 3, device = device)
 
         tch, pc = loop_det(cu)
-        data[n_matrix]["det"] = statistics.mean(tch) / statistics.mean(pc)
+        data[n_matrix]["det"] = statistics.mean(pc) / statistics.mean(tch)
 
         tch, pc = loop_inv(cu)
-        data[n_matrix]["inv"] = statistics.mean(tch) / statistics.mean(pc)
+        data[n_matrix]["inv"] = statistics.mean(pc) / statistics.mean(tch)
 
         tch, pc = loop_cross(cu)
-        data[n_matrix]["cross"] = statistics.mean(tch) / statistics.mean(pc)
+        data[n_matrix]["cross"] = statistics.mean(pc) / statistics.mean(tch)
 
         print(n_s)
         if n_s%100: continue
@@ -147,7 +147,7 @@ def plot_matrix():
     x = UnpickleObject("oper")
     tline = TLine()
     title = "Computational Time Ratio Between Torch (CUDA) and CUDA Native for Various\n"
-    title += "for various Matrix Operations as a Function of Matrix Length (higher is Better)"
+    title += "for various Matrix Operations as a Function of Matrix Length (lower is Better)"
     tline.Title = title
 
     t1 = TLine()
@@ -169,14 +169,14 @@ def plot_matrix():
     tline.LineWidth = 0.2
     tline.Colors = ["r", "b", "y"]
     tline.xTitle = "Number of Matrices"
-    tline.yTitle = "Ratio Time of Computation (Torch-CUDA / pyc-CUDA)"
+    tline.yTitle = "Ratio Time of Computation (PyC-CUDA / Torch-CUDA)"
     tline.yMin = 0
     tline.xStep = 100
     tline.Filename = "Matrix"
     tline.SaveFigure()
 
 if __name__ == "__main__":
-#    matrix_multiplication()
-#    plot_multiplication()
+    matrix_multiplication()
+    plot_multiplication()
     matrix()
     plot_matrix()

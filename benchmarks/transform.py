@@ -52,7 +52,7 @@ def transform_cartesian():
             cu.append(time() - t1)
 
         data[lex] = {}
-        data[lex]["px"] = statistics.mean(cu) / statistics.mean(cpu)
+        data[lex]["px"] = statistics.mean(cpu) / statistics.mean(cu)
 
         cpu, cu = [], []
         for _ in range(1000):
@@ -64,7 +64,7 @@ def transform_cartesian():
             _ = pyc.Transform.Py(t_cu)
             cu.append(time() - t1)
 
-        data[lex]["py"] = statistics.mean(cu) / statistics.mean(cpu)
+        data[lex]["py"] = statistics.mean(cpu) / statistics.mean(cu)
 
         cpu, cu = [], []
         for _ in range(1000):
@@ -76,7 +76,7 @@ def transform_cartesian():
             _ = pyc.Transform.Pz(t_cu)
             cu.append(time() - t1)
 
-        data[lex]["pz"] = statistics.mean(cu) / statistics.mean(cpu)
+        data[lex]["pz"] = statistics.mean(cpu) / statistics.mean(cu)
 
         cpu, cu = [], []
         for _ in range(1000):
@@ -88,7 +88,7 @@ def transform_cartesian():
             _ = pyc.Transform.PxPyPz(t_cu)
             cu.append(time() - t1)
 
-        data[lex]["pxpypz"] = statistics.mean(cu) / statistics.mean(cpu)
+        data[lex]["pxpypz"] = statistics.mean(cpu) / statistics.mean(cu)
 
         print("-> ", i)
         if i % 100 != 0: continue
@@ -127,7 +127,7 @@ def transform_polar():
             cu.append(time() - t1)
 
         data[lex] = {}
-        data[lex]["pt"] = statistics.mean(cu) / statistics.mean(cpu)
+        data[lex]["pt"] = statistics.mean(cpu) / statistics.mean(cu)
 
         cpu, cu = [], []
         for _ in range(1000):
@@ -139,7 +139,7 @@ def transform_polar():
             _ = pyc.Transform.Eta(t_cu)
             cu.append(time() - t1)
 
-        data[lex]["eta"] = statistics.mean(cu) / statistics.mean(cpu)
+        data[lex]["eta"] = statistics.mean(cpu) / statistics.mean(cu)
 
         cpu, cu = [], []
         for _ in range(1000):
@@ -151,7 +151,7 @@ def transform_polar():
             _ = pyc.Transform.Phi(t_cu)
             cu.append(time() - t1)
 
-        data[lex]["phi"] = statistics.mean(cu) / statistics.mean(cpu)
+        data[lex]["phi"] = statistics.mean(cpu) / statistics.mean(cu)
 
         cpu, cu = [], []
         for _ in range(1000):
@@ -163,7 +163,7 @@ def transform_polar():
             _ = pyc.Transform.PtEtaPhi(t_cu)
             cu.append(time() - t1)
 
-        data[lex]["ptetaphi"] = statistics.mean(cu) / statistics.mean(cpu)
+        data[lex]["ptetaphi"] = statistics.mean(cpu) / statistics.mean(cu)
 
         print("-> ", i)
         if i % 100 != 0: continue
@@ -176,7 +176,7 @@ def plot_transform_cartesian():
     x = UnpickleObject("cartesian-transform")
     tline = TLine()
     title = "Computational Time Ratio Between Torch (CPU) and CUDA Native for Various\n"
-    title += "for various Physics Operations as a Function of number of Particles"
+    title += "for various Physics Operations as a Function of number of Particles (higher is better)"
     tline.Title = title
 
     tx = TLine()
@@ -212,7 +212,7 @@ def plot_transform_polar():
     x = UnpickleObject("polar-transform")
     tline = TLine()
     title = "Computational Time Ratio Between Torch (CPU) and CUDA Native for Various\n"
-    title += "for various Physics Operations as a Function of number of Particles"
+    title += "for various Physics Operations as a Function of number of Particles (higher is better)"
     tline.Title = title
 
     tx = TLine()
@@ -244,8 +244,8 @@ def plot_transform_polar():
     tline.SaveFigure()
 
 if __name__ == "__main__":
-    transform_cartesian()
-    plot_transform_cartesian()
+#    transform_cartesian()
+#    plot_transform_cartesian()
     transform_polar()
     plot_transform_polar()
 
