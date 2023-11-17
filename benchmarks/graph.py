@@ -52,6 +52,7 @@ def edge_aggregation():
     for num_nodes in range(4, 20):
         output[num_nodes] = {}
         for num_feat in range(1, 20):
+            print(num_nodes, num_feat, 20, 20)
             output[num_nodes][num_feat] = {}
             for cls in range(2, 10):
                 p_ = 0.4 # probability that nodes are always connected with the same class, i.e. more equal clusters
@@ -78,7 +79,6 @@ def edge_aggregation():
                 output[num_nodes][num_feat][cls]["py"] = [t_py, st_py]
                 output[num_nodes][num_feat][cls]["cu"] = [t_cu, st_cu]
             PickleObject(output, "edge")
-
 
 def plot_edge_aggregation():
     out = UnpickleObject("edge")
@@ -138,8 +138,3 @@ def plot_edge_aggregation():
         tls.Lines = lines[cls]["lines"]
         tls.SaveFigure()
 
-
-
-if __name__ == "__main__":
-    edge_aggregation()
-    plot_edge_aggregation()
