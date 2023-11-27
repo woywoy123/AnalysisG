@@ -79,6 +79,10 @@ std::map<std::string, torch::Tensor> _NuNuCart(
 
         torch::Tensor metx, torch::Tensor mety, torch::Tensor masses, const double null); 
 
+std::map<std::string, torch::Tensor> _NuNuCombinatorialPolar(
+        torch::Tensor edge_index, torch::Tensor batch, torch::Tensor pmu, torch::Tensor pid, 
+        torch::Tensor met, torch::Tensor met_updown, torch::Tensor masses, torch::Tensor masses_updown, 
+        const double step_size, const double null); 
 
 namespace NuSol
 {
@@ -170,6 +174,19 @@ namespace NuSol
                         pt_b1,  eta_b1,  phi_b1,  e_b1 , pt_b2,  eta_b2,  phi_b2,  e_b2, 
                         pt_mu1, eta_mu1, phi_mu1, e_mu1, pt_mu2, eta_mu2, phi_mu2, e_mu2, 
                         met, phi, masses, null);
+            }
+
+            inline std::map<std::string, torch::Tensor> NuNuCombinatorial(
+                    torch::Tensor edge_index, torch::Tensor batch, 
+                    torch::Tensor pmu, torch::Tensor pid, 
+                    torch::Tensor met, torch::Tensor met_updown,
+                    torch::Tensor masses, torch::Tensor masses_updown, 
+                    const double step_size, const double null)
+            {
+                return _NuNuCombinatorialPolar(
+                        edge_index, batch, pmu, pid, 
+                        met, met_updown, masses, masses_updown,
+                        step_size, null); 
             }
         }
 
