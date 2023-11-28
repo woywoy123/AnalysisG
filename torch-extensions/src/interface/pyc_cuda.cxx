@@ -390,6 +390,21 @@ std::vector<torch::Tensor> pyc::nusol::polar::combined::NuNu(
     }; 
 }
 
+std::vector<torch::Tensor> pyc::nusol::polar::combined::NuNuCombinatorial(
+        torch::Tensor edge_index, torch::Tensor batch, 
+        torch::Tensor pmu, torch::Tensor pid, 
+        torch::Tensor met, torch::Tensor met_updown,
+        torch::Tensor masses, torch::Tensor masses_updown, 
+        const double step_size, const double null)
+{
+    std::map<std::string, torch::Tensor> data; 
+    data = NuSol::CUDA::Polar::NuNuCombinatorial(
+            edge_index.clone(), batch.clone(), pmu.clone(), pid.clone(), 
+            met, met_updown.clone(), masses.clone(), masses_updown.clone(), 
+            step_size, null); 
+    return {data["nu1"], data["nu2"], data["mass_met"]};
+}
+
 std::vector<torch::Tensor> pyc::nusol::polar::separate::NuNu(
         torch::Tensor pt_b1, torch::Tensor eta_b1, torch::Tensor phi_b1, torch::Tensor e_b1, 
         torch::Tensor pt_b2, torch::Tensor eta_b2, torch::Tensor phi_b2, torch::Tensor e_b2, 
@@ -478,8 +493,6 @@ torch::Tensor pyc::graph::unique_aggregation(torch::Tensor cluster_map, torch::T
     return Graph::CUDA::unique_aggregation(cluster_map, features); 
 }
 
-
-
 std::vector<std::vector<torch::Tensor>> pyc::graph::polar::combined::edge_pmu(
         torch::Tensor edge_index, torch::Tensor prediction, 
         torch::Tensor pmu, const bool include_zero)
@@ -554,6 +567,12 @@ std::vector<std::vector<torch::Tensor>> pyc::graph::cartesian::separate::node_pm
     map = Graph::CUDA::Cartesian::node_pmc(edge_index, prediction, px, py, pz, e, include_zero);
     return pyc::graph::dress(map); 
 }
+
+
+
+
+
+
 
 
 
@@ -649,8 +668,8 @@ TORCH_LIBRARY(pyc_cuda, m)
 
     m.def("nusol_BaseMatrix", &pyc::nusol::BaseMatrix);
     m.def("nusol_Intersection", &pyc::nusol::Intersection); 
-
     m.def("nusol_Nu", &pyc::nusol::Nu);
+
     m.def("nusol_combined_polar_Nu", &pyc::nusol::polar::combined::Nu); 
     m.def("nusol_separate_polar_Nu", &pyc::nusol::polar::separate::Nu); 
     m.def("nusol_combined_cartesian_Nu", &pyc::nusol::cartesian::combined::Nu); 
@@ -658,6 +677,8 @@ TORCH_LIBRARY(pyc_cuda, m)
 
     m.def("nusol_NuNu", &pyc::nusol::NuNu); 
     m.def("nusol_combined_polar_NuNu", &pyc::nusol::polar::combined::NuNu); 
+    m.def("nusol_combined_polar_NuNuCombinatorial", &pyc::nusol::polar::combined::NuNuCombinatorial); 
+
     m.def("nusol_separate_polar_NuNu", &pyc::nusol::polar::separate::NuNu); 
     m.def("nusol_combined_cartesian_NuNu", &pyc::nusol::cartesian::combined::NuNu); 
     m.def("nusol_separate_cartesian_NuNu", &pyc::nusol::cartesian::separate::NuNu); 
