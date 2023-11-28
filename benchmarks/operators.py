@@ -174,9 +174,3 @@ def plot_matrix():
     tline.xStep = 100
     tline.Filename = "Matrix"
     tline.SaveFigure()
-
-if __name__ == "__main__":
-    matrix_multiplication()
-    plot_multiplication()
-    matrix()
-    plot_matrix()

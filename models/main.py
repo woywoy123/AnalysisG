@@ -17,30 +17,29 @@ modes = [
 ]
 
 params = [
-    ("MRK-1" , "ADAM", 1  , {"lr": 1e-6, "weight_decay" : 1e-6},            None,              None),
+#    ("MRK-1" , "ADAM", 1  , {"lr": 1e-6, "weight_decay" : 1e-6},            None,              None),
 #    ("MRK-2" , "ADAM", 100, {"lr": 1e-6, "weight_decay" : 1e-6},            None,              None),
-#    ("MRK-3" , "ADAM", 500, {"lr": 1e-6, "weight_decay" : 1e-6},            None,              None),
-
+    ("MRK-3" , "ADAM", 500, {"lr": 1e-6, "weight_decay" : 1e-6},            None,              None),
+  
 #    ("MRK-4" , "ADAM", 1  , {"lr": 1e-6, "weight_decay" : 1e-6}, "ExponentialLR", {"gamma"  : 0.5}),
 #    ("MRK-5" , "ADAM", 100, {"lr": 1e-6, "weight_decay" : 1e-6}, "ExponentialLR", {"gamma"  : 1.0}),
-#    ("MRK-6" , "ADAM", 500, {"lr": 1e-6, "weight_decay" : 1e-6}, "ExponentialLR", {"gamma"  : 2.0}),
-
-#    ("MRK-7" , "ADAM", 10 , {"lr": 1e-6, "weight_decay" : 1e-6},      "CyclicLR", {"base_lr" : 1e-9, "max_lr" : 1e-4}),
-#    ("MRK-8" , "ADAM", 100, {"lr": 1e-6, "weight_decay" : 1e-6},      "CyclicLR", {"base_lr" : 1e-9, "max_lr" : 1e-4}),
-#    ("MRK-9" , "ADAM", 500, {"lr": 1e-6, "weight_decay" : 1e-6},      "CyclicLR", {"base_lr" : 1e-9, "max_lr" : 1e-4}),
-
-
+    ("MRK-6" , "ADAM", 500, {"lr": 1e-6, "weight_decay" : 1e-6}, "ExponentialLR", {"gamma"  : 2.0}),
+#
+#    ("MRK-7" , "SGD", 10 , {"lr": 1e-6, "weight_decay" : 1e-6},      "CyclicLR", {"base_lr" : 1e-9, "max_lr" : 1e-4}),
+#    ("MRK-8" , "SGD", 100, {"lr": 1e-6, "weight_decay" : 1e-6},      "CyclicLR", {"base_lr" : 1e-9, "max_lr" : 1e-4}),
+    ("MRK-9" , "SGD", 500, {"lr": 1e-6, "weight_decay" : 1e-6},      "CyclicLR", {"base_lr" : 1e-9, "max_lr" : 1e-4}),
+#
 #    ("MRK-10", "SGD",  1  , {"lr": 1e-6, "weight_decay" : 1e-6, "momentum" : 0.0001},            None,              None),
 #    ("MRK-11", "SGD",  100, {"lr": 1e-6, "weight_decay" : 1e-6, "momentum" : 0.0001},            None,              None),
-#    ("MRK-12", "SGD",  500, {"lr": 1e-6, "weight_decay" : 1e-6, "momentum" : 0.0001},            None,              None),
-
+    ("MRK-12", "SGD",  500, {"lr": 1e-6, "weight_decay" : 1e-6, "momentum" : 0.0001},            None,              None),
+#
 #    ("MRK-13", "SGD",  1  , {"lr": 1e-6, "weight_decay" : 1e-6, "momentum" : 0.0001}, "ExponentialLR", {"gamma"  : 0.5}),
 #    ("MRK-14", "SGD",  100, {"lr": 1e-6, "weight_decay" : 1e-6, "momentum" : 0.0005}, "ExponentialLR", {"gamma"  : 1.0}),
-#    ("MRK-15", "SGD",  500, {"lr": 1e-6, "weight_decay" : 1e-6, "momentum" : 0.0015}, "ExponentialLR", {"gamma"  : 2.0}),
-
+    ("MRK-15", "SGD",  500, {"lr": 1e-6, "weight_decay" : 1e-6, "momentum" : 0.0015}, "ExponentialLR", {"gamma"  : 2.0}),
+#
 #    ("MRK-16", "SGD",  1  , {"lr": 1e-6, "weight_decay" : 1e-6, "momentum" : 0.0001}, "CyclicLR", {"base_lr" : 1e-9, "max_lr" : 1e-4}),
 #    ("MRK-17", "SGD",  100, {"lr": 1e-6, "weight_decay" : 1e-6, "momentum" : 0.0005}, "CyclicLR", {"base_lr" : 1e-9, "max_lr" : 1e-4}),
-#    ("MRK-18", "SGD",  500, {"lr": 1e-6, "weight_decay" : 1e-6, "momentum" : 0.0015}, "CyclicLR", {"base_lr" : 1e-9, "max_lr" : 1e-4}),
+    ("MRK-18", "SGD",  500, {"lr": 1e-6, "weight_decay" : 1e-6, "momentum" : 0.0015}, "CyclicLR", {"base_lr" : 1e-9, "max_lr" : 1e-4}),
 ]
 
 
@@ -98,8 +97,8 @@ for this in params:
     Ana.TrainingName = "sample-" + mode
     Ana.Model = auto.ModelTrainer(model)
     Ana.BatchSize = batch
-#    Ana.kFold = 1
-    Ana.Epochs = 100
+    Ana.kFold = 1
+    Ana.Epochs = 1000
     Ana.MaxGPU = 20
     Ana.MaxRAM = 200
     Ana.Tree = "nominal"
@@ -114,7 +113,7 @@ for this in params:
         Ana.SchedulerParams = sch_param
 
     Ana.PlotLearningMetrics = True
-    Ana.ContinueTraining = True
+    Ana.ContinueTraining = False
     Ana.DebugMode = False
     Ana.KinematicMap = {"top_edge" : "polar -> N_pT, N_eta, N_phi, N_energy"}
     Ana.Launch()

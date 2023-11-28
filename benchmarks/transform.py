@@ -9,7 +9,7 @@ import torch
 import pyc
 
 device = "cuda"
-nums = 1000
+nums = 100
 
 def create_vector_polar(number):
     lx = []
@@ -176,7 +176,7 @@ def plot_transform_cartesian():
     x = UnpickleObject("cartesian-transform")
     tline = TLine()
     title = "Computational Time Ratio Between Torch (CPU) and CUDA Native for Various\n"
-    title += "for various Physics Operations as a Function of number of Particles (higher is better)"
+    title += "Physics Operations as a Function of number of Particles (higher is better)"
     tline.Title = title
 
     tx = TLine()
@@ -212,7 +212,7 @@ def plot_transform_polar():
     x = UnpickleObject("polar-transform")
     tline = TLine()
     title = "Computational Time Ratio Between Torch (CPU) and CUDA Native for Various\n"
-    title += "for various Physics Operations as a Function of number of Particles (higher is better)"
+    title += "Physics Operations as a Function of number of Particles (higher is better)"
     tline.Title = title
 
     tx = TLine()
@@ -242,10 +242,4 @@ def plot_transform_polar():
     tline.xStep = 100
     tline.Filename = "CartesianToPolar"
     tline.SaveFigure()
-
-if __name__ == "__main__":
-#    transform_cartesian()
-#    plot_transform_cartesian()
-    transform_polar()
-    plot_transform_polar()
 

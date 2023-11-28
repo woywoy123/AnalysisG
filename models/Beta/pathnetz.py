@@ -26,6 +26,7 @@ def NuNuCombinatorial(edge_index, batch, pmu, pid, G_met, G_phi, masses, msk, id
     sol_feat = torch.zeros_like(i).to(dtype = torch.double)-1
     pmu_i, pmu_j = torch.zeros_like(pmu[i]), torch.zeros_like(pmu[j])
     if not msk.sum(-1): return sol_feat, pmu_i, pmu_j
+    #return sol_feat, pmu_i, pmu_j
 
     # Remove edges where the src/dst are neither bs or leps
     msk_ = (pid[i] + pid[j]).sum(-1) == 2
@@ -103,6 +104,7 @@ def NuCombinatorial(edge_index, batch, pmu, pid, G_met, G_phi, masses, msk):
     # find which one of the nodes is the lepton and the b-jet
     l_, b_ = i[pid[i, 0]*pairs], j[pid[j, 1]*pairs]
     if not msk.sum(-1): return chi2_f, pmu_i, pmu_j
+    #return chi2_f, pmu_i, pmu_j
 
     # Run the algorithm
     met_phi = torch.cat([G_met, G_phi], -1)[batch[l_]]
@@ -164,11 +166,14 @@ class ParticleRecursion(MessagePassing):
 
         if not edge_index_.size(1): return self._hidden
         trk = gr["clusters"][gr["reverse_clusters"]]
+        norm = (trk > -1).sum(-1)
+        norm[norm == 0] = 1
+        norm = norm[src].view(-1, 1)
+
         feats = [physics.M(gr["node_sum"])]
         feats += [physics.M(pmc)]
         mlp = torch.cat([torch.cat(feats, -1)[src],  mlp], -1)
-        self._hidden[idx] = self._edge(mlp.to(dtype = torch.float))
-
+        self._hidden[idx] = self._edge(mlp.to(dtype = torch.float))*(1/norm)
         return self.propagate(edge_index_, pmc = pmc, trk = trk, nu = nu, nu_ = nu_, sols = sols)
 
     def forward(self, edge_index, batch, pmc, nu_i, nu_j, sol):
