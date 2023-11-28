@@ -31,8 +31,6 @@ def NuNuCombinatorial(edge_index, batch, pmu, pid, G_met, G_phi, masses, msk, id
     # Find the original particle index in the event
     src, dst = edge_index[:, msk_ij]
 
-    print(torch.cat([src.view(-1, 1), dst.view(-1, 1)], -1))
-
     # create proxy particle indices (these are used to assign NON-TOPOLOGICALLY CONNECTED PARTICLE PAIRS)
     # e.g. 1 -> 2, 3 -> 4 is ok, but 1 -> 2, 1 -> 4 is not ok (they share the same lepton/b-quark).
     # This means NuNu(p1, p1, p2, p4) would be incorrect, we want NuNu(p1, p3, p2, p4)
@@ -48,13 +46,13 @@ def NuNuCombinatorial(edge_index, batch, pmu, pid, G_met, G_phi, masses, msk, id
     l1, l2 = pmu[l1_], pmu[l2_]
     b1, b2 = pmu[b1_], pmu[b2_]
 
-    print(torch.cat([k.view(-1, 1) for k in [l1_, l2_, b1_, b2_]], -1))
-    return
+    print(l1.size())
     # Run the algorithm
     masses = masses.to(dtype = torch.double)
     met_phi = torch.cat([G_met[bt], G_phi[bt]], -1).to(dtype = torch.double)
     _sols = nusol.NuNu(b1, b2, l1, l2, met_phi, masses, 10e-8)
     nu1, nu2, dist, _, _, _, nosol = _sols
+    print(dist[nosol == False].tolist()[0][0])
 
     # Create a correct edge mapping
     if not dist.size(1): return sol_feat, pmu_i, pmu_j

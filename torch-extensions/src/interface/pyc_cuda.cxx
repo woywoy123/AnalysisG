@@ -399,10 +399,10 @@ std::vector<torch::Tensor> pyc::nusol::polar::combined::NuNuCombinatorial(
 {
     std::map<std::string, torch::Tensor> data; 
     data = NuSol::CUDA::Polar::NuNuCombinatorial(
-            edge_index, batch, pmu, pid, 
-            met, met_updown, masses, masses_updown, 
+            edge_index.clone(), batch.clone(), pmu.clone(), pid.clone(), 
+            met, met_updown.clone(), masses.clone(), masses_updown.clone(), 
             step_size, null); 
-    return {data["nu1"], data["nu2"], data["mass"], data["met_xy"]};
+    return {data["nu1"], data["nu2"], data["mass_met"]};
 }
 
 std::vector<torch::Tensor> pyc::nusol::polar::separate::NuNu(
