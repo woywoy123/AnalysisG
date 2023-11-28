@@ -46,7 +46,6 @@ class Polar:
     @staticmethod
     def Nu(*args, null = 10e-10):
         null, ten = (args[-1], args[:-1]) if isinstance(args[-1], float) else (null, args)
-        tens = [i for i in args if torch.is_tensor(i)]
         name = inspect.currentframe().f_code.co_name
         fn, inpt = __router__(list(ten), name, 5)
         inpt += [null]
@@ -55,9 +54,14 @@ class Polar:
     @staticmethod
     def NuNu(*args, null = 10e-10):
         null, ten = (args[-1], args[:-1]) if isinstance(args[-1], float) else (null, args)
-        tens = [i for i in args if torch.is_tensor(i)]
         name = inspect.currentframe().f_code.co_name
         fn, inpt = __router__(list(ten), name, 6)
         inpt += [null]
         return fn(*inpt)
 
+    @staticmethod
+    def NuNuCombinatorial(edge_index, batch, pmu, pid, met, met_updown, masses, mass_updown, step_size = 0.1, null = 10e-10):
+        name = inspect.currentframe().f_code.co_name
+        fn, inpt = __router__([edge_index, batch, pmu, pid, met, met_updown, masses, mass_updown], name, 8)
+        inpt += [step_size, null]
+        return fn(*inpt)

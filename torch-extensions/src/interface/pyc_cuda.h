@@ -143,9 +143,10 @@ namespace pyc
                 torch::Tensor pmc_l1, torch::Tensor pmc_l2, 
                 torch::Tensor met_xy, 
                 torch::Tensor masses, const double null); 
-        
+
         namespace polar
         {
+            
             namespace combined 
             {
                 std::vector<torch::Tensor> Nu(
@@ -158,7 +159,15 @@ namespace pyc
                         torch::Tensor pmu_mu1, torch::Tensor pmu_mu2, 
                         torch::Tensor met_phi, torch::Tensor masses, 
                         const double null); 
+
+                std::vector<torch::Tensor> NuNuCombinatorial(
+                    torch::Tensor edge_index, torch::Tensor batch, 
+                    torch::Tensor pmu, torch::Tensor pid, 
+                    torch::Tensor met, torch::Tensor met_updown,
+                    torch::Tensor mases, torch::Tensor masses_updown, 
+                    const double step_size, const double null); 
             }
+
             namespace separate
             {
                 std::vector<torch::Tensor> Nu(
@@ -227,8 +236,6 @@ namespace pyc
                 torch::Tensor node_feature, const bool include_zero); 
 
         torch::Tensor unique_aggregation(torch::Tensor cluster_map, torch::Tensor features); 
-
-
 
         namespace polar
         {

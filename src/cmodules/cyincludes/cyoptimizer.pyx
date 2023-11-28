@@ -554,9 +554,9 @@ cdef class DataLoader:
             data = Batch().from_data_list(out)
             for k in self.online.values(): del k
             torch.cuda.empty_cache()
-            return data.to(device = self.device)
+            return data.to(device = self.device).clone()
         self.purge = False
-        return Batch().from_data_list(out).to(device = self.device)
+        return Batch().from_data_list(out).to(device = self.device).clone()
 
 
 cdef class cOptimizer:

@@ -8,7 +8,7 @@ mode = "TruthChildren_NoNu" #Jets_Detector"
 name = "Example" #"Project_ML"
 model = "RPN"
 mode_ = 0
-gen_data = False
+gen_data = True
 
 modes = [
     "TruthChildren_NoNu",
@@ -20,7 +20,7 @@ params = [
 #    ("MRK-1" , "ADAM", 1  , {"lr": 1e-6, "weight_decay" : 1e-6},            None,              None),
 #    ("MRK-2" , "ADAM", 100, {"lr": 1e-6, "weight_decay" : 1e-6},            None,              None),
     ("MRK-3" , "ADAM", 500, {"lr": 1e-6, "weight_decay" : 1e-6},            None,              None),
-#
+  
 #    ("MRK-4" , "ADAM", 1  , {"lr": 1e-6, "weight_decay" : 1e-6}, "ExponentialLR", {"gamma"  : 0.5}),
 #    ("MRK-5" , "ADAM", 100, {"lr": 1e-6, "weight_decay" : 1e-6}, "ExponentialLR", {"gamma"  : 1.0}),
     ("MRK-6" , "ADAM", 500, {"lr": 1e-6, "weight_decay" : 1e-6}, "ExponentialLR", {"gamma"  : 2.0}),
