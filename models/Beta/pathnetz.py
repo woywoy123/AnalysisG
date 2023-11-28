@@ -137,7 +137,7 @@ class ParticleRecursion(MessagePassing):
         self._in = 2
         self._out = 2
 
-        self._edge = Seq(Linear(self._in*2, 1024), Tanh(), Linear(1024, self._in))
+        self._edge = Seq(Linear(self._in*2, 256), Tanh(), Linear(256, self._in))
         self._red = Seq(Linear(self._in, self._out))
 
         self._edge.apply(init_norm)
@@ -149,7 +149,7 @@ class ParticleRecursion(MessagePassing):
         target = torch.cat([src.view(-1, 1), trk_i], -1)
         pmc_ij = graph_base.unique_aggregation(target, pmc) + nu[idx] + nu_[idx]
         feats = []
-        feats += [physics.M(pmc_ij), physics.M(pmc_i + nu[idx] + nu_[idx])]
+        feats += [physics.M(pmc_ij), physics.M(pmc_i + pmc_j + nu[idx] + nu_[idx])]
         feats += [self._hidden[idx]]
         feats = torch.cat(feats, -1)
         mlp = self._edge(feats.to(dtype = torch.float))
@@ -173,7 +173,7 @@ class ParticleRecursion(MessagePassing):
         feats = [physics.M(gr["node_sum"])]
         feats += [physics.M(pmc)]
         mlp = torch.cat([torch.cat(feats, -1)[src],  mlp], -1)
-        self._hidden[idx] = self._edge(mlp.to(dtype = torch.float))*(1/norm)
+        self._hidden[idx] = self._edge(mlp.to(dtype = torch.float))
         return self.propagate(edge_index_, pmc = pmc, trk = trk, nu = nu, nu_ = nu_, sols = sols)
 
     def forward(self, edge_index, batch, pmc, nu_i, nu_j, sol):
