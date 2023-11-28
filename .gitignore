@@ -9,6 +9,7 @@ setup-scripts/source_this.sh
 # Cache types 
 *.hdf5
 *.pkl
+*.png
 
 # Cython and C++ compiler code 
 *.pyc

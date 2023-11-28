@@ -2,7 +2,7 @@
 
 export ATLAS_LOCAL_ROOT_BASE=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase
 source ${ATLAS_LOCAL_ROOT_BASE}/user/atlasLocalSetup.sh
-Version="3.11"
+Version="3.9"
 python$Version -m venv PythonGNN
 source ./PythonGNN/bin/activate
 
