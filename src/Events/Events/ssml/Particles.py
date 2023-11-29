@@ -10,6 +10,13 @@ class Particle(ParticleTemplate):
         self.phi = self.Type + "_phi"
         self.e = self.Type + "_e"
 
+    @property
+    def is_lep(self):
+        if self.Type == "el": return True
+        if self.Type == "mu": return True
+        return False
+
+
 class Electron(Particle):
 
     def __init__(self):

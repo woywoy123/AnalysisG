@@ -1,9 +1,29 @@
 A Graph Neural Network Analysis Framework for High Energy Physics!
 ==================================================================
 
+Abstract
+********
+As the field of High Energy Particle Physics (HEPP) has begun exploring more exotic machine learning algorithms, such as Graph Neural Networks (GNNs).
+Analyses commonly rely on pre-existing data science frameworks, including PyTorch, TensorFlow and Keras, to recast ROOT samples into the respective data structure.
+This often results in tedious and computationally expensive co-routines to be written.
+Community projects, such as UpROOT, Awkward, and Scikit-HEP are developing tools to address some of these problems.
+For instance, in the context of Graph Neural Networks, converting non-monolithic data into graphs with edge, node and graph level feature becomes increasingly complex.
+
+AnalysisG aims to address these remaining issues, by abstracting particles and events as Pythonic objects.
+The framework initially populates particle and event objects, with user defined attributes that match strings contained in ROOT samples (trees/branches/leaves).
+Particles living within the event can be retospectively matched with other particles to build complex decay chains, as is commonly done in truth matching.
+Finalized event objects can be stored as HDF5 files, to prevent redundant reading and rebuilding of these objects.
+
+To instantiate graphs, an additional template module interprets nominal Python functions as features derived from Particle and Event objects.
+Implying that several graph types can be reinterpreted from the same Event/Particle object, with minimal code adjustments. 
+Similar to the post event construction process, finalized graph types are stored as HDF5 files.
+
+In the context of GNNs, the framework contains HEPP centric PyTorch based functions, written in C++ and native CUDA kernels.
+Some of the functions included are; $\DeltaR$, Polar to Cartesian coordinate system transformations, Invariant Mass computations, edge/node single counting aggregation, analytical single/double neutrino reconstruction, and many more.
+
+
 What is Analysis-G:
 *******************
-
 Analysis-G is a Python package which aims to abstract and automate novel High Energy Particle Physics Analyses.
 Since most of HEPP software relies on complicated ROOT files, the framework attempts to minimize the need for writing complicated and inefficient nested for loops to retrieve the content. 
 This is achieved by defining particles and events as Python classes and assigning these attributes which allow the framework to infer and assign particles to events.
@@ -44,13 +64,6 @@ Core Packages in Analysis-G:
 - **PyC (Python Custom)** 
   A completely detached package which implements high performance native C++ and CUDA code/kernels, which utilize the **PyTorch** API. 
   Several interfaces are implemented, namely switching from Cartesian to Polar coordinates, computing scalar invariant masses from particles, single/double neutrino reconstruction and many more. 
-
-Work in Progress for DOCS
-*************************
-
-- **Model Docs**: Need to complete the declaration examples.
-- **SampleTracer and Generators**: Need to move from attribute to ivars.
-- **Clean up the docs structure**: pyc and pyc++ 
 
 
 Index and Directories

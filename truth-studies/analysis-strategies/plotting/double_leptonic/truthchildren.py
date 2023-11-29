@@ -64,7 +64,6 @@ def doubleleptonic_Plotting(inpt, truth):
             param_ = {}
             param_.update({"Title" : i, "xData" : samples[i]})
             params["Histograms"].append(TH1F(**param_))
-
         th = TH1F(**params)
         th.SaveFigure()
 

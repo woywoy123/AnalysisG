@@ -53,13 +53,13 @@ class DiLeptonic(SelectionTemplate):
         highpt = sorted(highb, reverse = True)
         if len(highb) >= 2: highpt = highpt[:2]
         high_ptb = [highb[c] for c in highpt]
-        return high_ptb
+        return high_ptb, len(self.__bquarks)
 
     def Strategy(self, event):
         part = self.ParticleRouter(event)
 
         # find the highest pT b-quarks or bjets
-        highb = self.Highest_b()
+        highb, nbjets = self.Highest_b()
         self.__bquarks = None
         self.__leptons = None
 
@@ -186,7 +186,7 @@ class DiLeptonic(SelectionTemplate):
         if mode not in self.PhaseSpaceZ[short][njets]:
             self.PhaseSpaceZ[short][njets][mode] = []
             self.PhaseSpaceT[short][njets][mode] = []
-            self.Kinematics[short][njets][mode] = {"pt" : [], "eta" : [], "phi": [], "e": []}
+            self.Kinematics[short][njets][mode] = {"pt" : [], "eta" : [], "phi": [], "e": [], "bjets": []}
 
         self.PhaseSpaceT[short][njets][mode] += tops
         self.PhaseSpaceZ[short][njets][mode] += [zp]
@@ -196,7 +196,7 @@ class DiLeptonic(SelectionTemplate):
         self.Kinematics[short][njets][mode]["eta"] += [i.eta for i in particles]
         self.Kinematics[short][njets][mode]["phi"] += [i.phi for i in particles]
         self.Kinematics[short][njets][mode]["e"]   += [i.e for i in particles]
-
+        self.Kinematics[short][njets][mode]["bjets"] += [nbjets]
 
         self.ZPrime[short][sel_type] += [zp]
         self.ZPrime["All"] += [zp]

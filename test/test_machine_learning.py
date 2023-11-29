@@ -1,6 +1,7 @@
+from AnalysisG.Events import Event, GraphChildren, GraphDetector
 from AnalysisG.Generators import RandomSamplers, Optimizer
-from AnalysisG.Events import Event, GraphChildren
 from AnalysisG.Templates import ApplyFeatures
+from models.CheatModel import CheatModel
 from AnalysisG import Analysis
 
 root1 = "./samples/sample1/smpl1.root"
@@ -261,8 +262,6 @@ def test_parallel_analysis():
 
     Ana.rm("Project")
 
-
-
 def test_plotting_analysis():
     from models.CheatModel import CheatModel
 
@@ -300,7 +299,6 @@ def test_plotting_analysis():
     Ana.KinematicMap = {"top_edge" : "polar -> N_pT, N_eta, N_phi, N_energy"}
     Ana.Launch()
     Ana.rm("Project")
-
 
 if __name__ == "__main__":
     test_random_sampling()

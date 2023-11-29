@@ -125,6 +125,7 @@ class Optimizer(_Optimizer, _Interface, RandomSamplers):
                 self.Success("Plotting: Epoch " + str(ep))
                 self._cmod.BuildPlots(ep, path + "/Plots")
             self._showloss(ep, -1, True)
+            self._cmod.Purge()
 
     def __train__(self, kfold, epoch):
         container = []

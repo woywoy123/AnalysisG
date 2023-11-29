@@ -1,7 +1,7 @@
 from plotting.double_leptonic.truthchildren import doubleleptonic_Plotting
 from AnalysisG.IO import nTupler, PickleObject, UnpickleObject
 from double_leptonic import DiLeptonic
-from AnalysisG.Events import Event
+from AnalysisG.Events import Event, SSML
 from AnalysisG.Tools import Tools
 from AnalysisG import Analysis
 import os
@@ -13,38 +13,50 @@ _ana = which_analysis.split(":")
 if _ana[0] == "double-leptonic": ana = DiLeptonic()
 
 combinations = [
-        ("is_b"        , "children"),
-        ("btag_DL1r_60", "jets+truthleptons"),
-        ("btag_DL1r_77", "jets+truthleptons"),
-        ("btag_DL1r_85", "jets+truthleptons"),
+#        ("is_b"        , "children"),
+#        ("btag_DL1r_60", "jets+truthleptons"),
+#        ("btag_DL1r_77", "jets+truthleptons"),
+#        ("btag_DL1r_85", "jets+truthleptons"),
+#
+#        ("btag_DL1_60", "jets+truthleptons"),
+#        ("btag_DL1_77", "jets+truthleptons"),
+#        ("btag_DL1_85", "jets+truthleptons"),
+#
+#        ("btag_DL1r_60", "detector"),
+#        ("btag_DL1r_77", "detector"),
+#        ("btag_DL1r_85", "detector"),
+#
+#        ("btag_DL1_60",  "detector"),
+#        ("btag_DL1_77",  "detector"),
+#        ("btag_DL1_85",  "detector")
 
-        ("btag_DL1_60", "jets+truthleptons"),
-        ("btag_DL1_77", "jets+truthleptons"),
-        ("btag_DL1_85", "jets+truthleptons"),
-
-        ("btag_DL1r_60", "detector"),
-        ("btag_DL1r_77", "detector"),
-        ("btag_DL1r_85", "detector"),
-
-        ("btag_DL1_60",  "detector"),
-        ("btag_DL1_77",  "detector"),
-        ("btag_DL1_85",  "detector")
+    # SSML taggers
+#        ("dl1_btag_60", "detector"),
+#        ("dl1_btag_70", "detector"),
+#        ("dl1_btag_77", "detector"),
+#        ("dl1_btag_85", "detector"),
+#
+#        ("gn2_btag_60", "detector"),
+#        ("gn2_btag_70", "detector"),
+#        ("gn2_btag_77", "detector"),
+        ("gn2_btag_85", "detector"),
 ]
 
 samples = {
-        "ttZ"   : smpls + "ttZ-1000",
-        "other" : smpls + "other",
-        "t"     : smpls + "t"    ,
-        "tt"    : smpls + "tt"   ,
-        "ttbar" : smpls + "ttbar",
-        "ttH"   : smpls + "ttH"  ,
-        "tttt"  : smpls + "tttt" ,
-        "ttX"   : smpls + "ttX"  ,
-        "ttXll" : smpls + "ttXll",
-        "ttXqq" : smpls + "ttXqq",
-        "V"     : smpls + "V"    ,
-        "Vll"   : smpls + "Vll"  ,
-        "Vqq"   : smpls + "Vqq"
+#        "ttZ"   : smpls + "ttZ-1000",
+#        "other" : smpls + "other",
+#        "t"     : smpls + "t"    ,
+#        "tt"    : smpls + "tt"   ,
+#        "ttbar" : smpls + "ttbar",
+#        "ttH"   : smpls + "ttH"  ,
+#        "tttt"  : smpls + "tttt" ,
+#        "ttX"   : smpls + "ttX"  ,
+#        "ttXll" : smpls + "ttXll",
+#        "ttXqq" : smpls + "ttXqq",
+#        "V"     : smpls + "V"    ,
+#        "Vll"   : smpls + "Vll"  ,
+#        "Vqq"   : smpls + "Vqq"  ,
+        "SSML" : smpls + "../SSML/"
 }
 
 
@@ -55,6 +67,7 @@ quant = list(t.Quantize(all_smpls, 10))
 run_cache = False
 run_selection = False
 run_ntpl = False
+tree = "nominal_Loose"
 
 x = 0
 for smpl in quant:
@@ -64,13 +77,12 @@ for smpl in quant:
     Ana.ProjectName = _ana[1]
     Ana.InputSample("smpl-" + str(x), smpl)
     Ana.EventCache = True
-    Ana.Event = Event
+    Ana.Event = SSML()
     Ana.Threads = 12
     Ana.Chunks = 1000
+    Ana.EventStop = 1000
     Ana.Launch()
     x+=1
-
-
 
 for pairs in combinations:
     tagger, truth = pairs
@@ -83,7 +95,6 @@ for pairs in combinations:
         Ana = Analysis()
         Ana.ProjectName = _ana[1]
         Ana.InputSample("smpl-" + str(x), smpl)
-        Ana.EventCache = True
         Ana.AddSelection(ana)
         Ana.Threads = 2
         Ana.Chunks = 1000
@@ -95,11 +106,10 @@ for pairs in combinations:
         tupler.Threads = 12
         tupler.Chunks = 1000
         tupler.ProjectName = _ana[1]
-        tupler.This("DiLeptonic -> ", "nominal")
+        tupler.This("DiLeptonic -> ", tree)
 
         x = tupler.merged()
-        tupler.rm(tupler.WorkingPath + "/SelectionCache")
-        PickleObject(x["nominal.DiLeptonic"].__getstate__(), name)
+        PickleObject(x[tree + ".DiLeptonic"].__getstate__(), name)
 
     pkl = UnpickleObject(name)
     if pkl is None: continue

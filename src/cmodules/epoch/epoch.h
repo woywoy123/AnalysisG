@@ -56,6 +56,7 @@ class CyEpoch
         ~CyEpoch(); 
         void add_kfold(int, std::map<std::string, data_t>*); 
         void process_data(); 
+        void purge(); 
 
         std::map<int, std::map<std::string, data_t>> container;
         std::map<int, std::map<std::string, roc_t>> auc; 

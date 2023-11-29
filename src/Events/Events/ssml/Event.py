@@ -25,6 +25,5 @@ class SSML(EventTemplate):
         self.Jets = list(self.Jets.values())
         self.Electrons = list(self.Electrons.values())
         self.Muons = list(self.Muons.values())
-        self.Detector = self.Jets + self.Electrons + self.Muons
-
+        self.DetectorObjects = self.Jets + self.Electrons + self.Muons
 

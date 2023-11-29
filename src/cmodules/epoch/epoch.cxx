@@ -138,3 +138,21 @@ void CyEpoch::process_data()
     }
     this -> container.clear(); 
 }
+
+void CyEpoch::purge()
+{
+    this -> masses.clear(); 
+    this -> nodes.clear();
+    std::map<std::string, roc_t>::iterator itr_; 
+    std::map<int, std::map<std::string, roc_t>>::iterator itr; 
+    for (itr = this -> auc.begin(); itr != this -> auc.end(); ++itr){
+        std::map<std::string, roc_t>* it = &itr -> second; 
+        for (itr_ = it -> begin(); itr_ != it -> end(); ++itr_){
+            itr_ -> second.truth.clear();
+            itr_ -> second.pred.clear(); 
+            itr_ -> second.fpr.clear(); 
+            itr_ -> second.tpr.clear();
+            itr_ -> second.thre.clear();
+        }
+    }
+}

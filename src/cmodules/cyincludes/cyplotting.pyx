@@ -510,8 +510,7 @@ cdef class TH1F(BasePlotting):
     def __init__(self, **kwargs):
         self.fig.histogram = True
         cdef str key
-        for key, val in kwargs.items():
-            setattr(self, key, val)
+        for key, val in kwargs.items(): setattr(self, key, val)
 
     cpdef __histapply__(self):
         cdef dict _comm = {}

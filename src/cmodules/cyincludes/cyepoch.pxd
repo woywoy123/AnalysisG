@@ -44,8 +44,8 @@ cdef extern from "../epoch/epoch.h":
         map[int, map[string, point_t]] loss
         map[int, map[string, roc_t]] auc
         map[int, node_t] nodes
-
         int epoch
+        void purge()
 
 cdef inline stats(vector[point_t] inp, point_t* ptr):
     cdef float s = inp.size()

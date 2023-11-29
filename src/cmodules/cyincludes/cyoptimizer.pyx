@@ -239,6 +239,12 @@ cdef void make_accuracy_plots(map[int, CyEpoch*] train, map[int, CyEpoch*] valid
         tl = TLine(**tmpl)
         tl.SaveFigure()
         del tl
+        del tmpl
+    del lines
+    del folds
+    tmp_tr.clear()
+    tmp_va.clear()
+    tmp_te.clear()
 
 cdef void make_loss_plots(map[int, CyEpoch*] train, map[int, CyEpoch*] valid, map[int, CyEpoch*] test, str path, report_t* state):
     cdef pair[int, CyEpoch*] itr
@@ -288,6 +294,12 @@ cdef void make_loss_plots(map[int, CyEpoch*] train, map[int, CyEpoch*] valid, ma
         tl = TLine(**tmpl)
         tl.SaveFigure()
         del tl
+        del tmpl
+    del folds
+    del epochs
+    tmp_tr.clear()
+    tmp_va.clear()
+    tmp_te.clear()
 
 cdef dict make_roc_curve(map[string, roc_t]* roc_, dict lines, str mode):
     cdef pair[string, roc_t] its
@@ -443,7 +455,7 @@ cdef void make_nodes(map[int, CyEpoch*] train, map[int, CyEpoch*] valid, map[int
     for node in hist: tmpl["Histograms"] += [TH1F(**hist[node])]
     th = TH1F(**tmpl)
     th.SaveFigure()
-
+    del th
 
 
 cdef class DataLoader:
@@ -563,10 +575,6 @@ cdef class cOptimizer:
     cdef CyOptimizer* ptr
     cdef DataLoader data
 
-    cdef dict online_
-    cdef map[string, k_graphed] graphs_
-    cdef vector[string] cached_
-
     cdef bool _train
     cdef bool _test
     cdef bool _val
@@ -585,11 +593,8 @@ cdef class cOptimizer:
         self._val = False
         self.state = report_t()
 
-    def __init__(self):
-        pass
-
-    def __dealloc__(self):
-        del self.ptr
+    def __init__(self): pass
+    def __dealloc__(self): del self.ptr
 
     def length(self):
         return map_to_dict(<map[string, int]>self.ptr.fold_map())
@@ -730,5 +735,8 @@ cdef class cOptimizer:
         make_roc_plots(self.ptr.epoch_train, self.ptr.epoch_valid, self.ptr.epoch_test, path, &self.state)
         make_nodes(self.ptr.epoch_train, self.ptr.epoch_valid, self.ptr.epoch_test, path)
 
-
-
+    cpdef Purge(self):
+        cdef pair[int, CyEpoch*] itr
+        for itr in self.ptr.epoch_train: itr.second.purge()
+        for itr in self.ptr.epoch_valid: itr.second.purge()
+        for itr in self.ptr.epoch_test:  itr.second.purge()

@@ -121,8 +121,7 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         get_ev = sum(self._get["event"].values(), [])
         c = cCheckDifference(get_ev, get, self.Threads)
         if len(get) and self.GetSelection: self.RestoreSelections(get)
-        elif not len(get): pass
-        elif len(c): self.RestoreEvents(c)
+        if len(c): self.RestoreEvents(c)
 
         if len(self.Selections): pass
         else: return
