@@ -172,23 +172,8 @@ cdef inline save_selection(ref, selection_t* sel):
     ref.attrs["_params_"]              = encode64(&sel._params_)
     ref.attrs["selection"]             = sel.selection
 
-cdef inline tracer_link(f, map[string, vector[string]]* hashes, map[string, string]* dirs, str keys, string root_name):
-    cdef string hash_, name_, path_
-    cdef pair[string, string] itr
 
-    try: ref_e = f.create_dataset(keys + "_dir", (1), dtype = h5py.ref_dtype)
-    except ValueError: ref_e = f[keys + "_dir"]
-    for itr in dereference(dirs):
-        name_, path_ = itr.first, itr.second
-        if name_.rfind(root_name, 0) != 0: continue
-        name_ = name_.substr(name_.rfind(b":")+1, name_.size())
-        try: ref_h = f.create_dataset(keys + ":" + env(name_), (1), dtype = h5py.ref_dtype)
-        except ValueError: ref_h = f[keys + ":" + env(name_)]
-        for hash_ in dereference(hashes)[itr.first]: ref_h.attrs[hash_] = root_name
-        ref_e.attrs[name_] = path_
-
-
-cdef inline restore_base(ref, common_t* com):
+cdef inline void restore_base(ref, common_t* com):
     com.event_name    = enc(ref.attrs["event_name"])
     com.code_hash     = enc(ref.attrs["code_hash"])
     com.event_hash    = enc(ref.attrs["event_hash"])
@@ -207,8 +192,6 @@ cdef inline restore_event(ref, event_t* ev):
     ev.commit_hash   = enc(ref.attrs["commit_hash"])
     ev.deprecated    = ref.attrs["deprecated"]
     ev.event         = ref.attrs["event"]
-
-
 
 cdef inline restore_graph(ref, graph_t* gr):
     restore_base(ref, gr)
@@ -232,8 +215,6 @@ cdef inline restore_graph(ref, graph_t* gr):
 
     gr.topo_hash        = enc(ref.attrs["topo_hash"])
     gr.graph            = ref.attrs["graph"]
-
-
 
 cdef inline restore_selection(ref, selection_t* sel):
     restore_base(ref, sel)

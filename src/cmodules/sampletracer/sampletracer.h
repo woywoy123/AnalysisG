@@ -107,8 +107,13 @@ namespace SampleTracer
                 cache_path += this -> settings.projectname + "/" + subkey + "/"; 
 
                 std::string h5_name = ev -> event_root;
-                if (h5_name.rfind(".root.1") == std::string::npos){}
-                else {h5_name.erase(h5_name.rfind(".root.1"), h5_name.size()-1);}
+                if (h5_name.rfind(".root.1") != std::string::npos){
+                    h5_name.erase(h5_name.rfind(".root.1"), h5_name.size()-1);
+                }
+                else if (h5_name.rfind(".root") != std::string::npos){
+                    h5_name.erase(h5_name.rfind(".root"), h5_name.size()-1);
+                }
+                else {}
                 h5_name += ".hdf5";
 
                 typename std::map<std::string, T*>::iterator itr = mp -> begin(); 

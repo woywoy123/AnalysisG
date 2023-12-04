@@ -12,7 +12,7 @@ class SSML(EventTemplate):
 
         self.Trees = ["nominal_Loose"]
 
-        self.index = "eventNumber"
+        self.event_number = "eventNumber"
         self.is_mc = "mcChannelNumber"
         self.met = "met_met"
         self.phi = "met_phi"

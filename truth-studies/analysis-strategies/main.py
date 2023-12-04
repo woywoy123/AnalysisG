@@ -64,9 +64,9 @@ t = Tools()
 all_smpls = []
 for key in samples: all_smpls += t.lsFiles(samples[key])
 quant = list(t.Quantize(all_smpls, 10))
-run_cache = False
-run_selection = False
-run_ntpl = False
+run_cache = True
+run_selection = True
+run_ntpl = True
 tree = "nominal_Loose"
 
 x = 0
@@ -80,7 +80,7 @@ for smpl in quant:
     Ana.Event = SSML()
     Ana.Threads = 12
     Ana.Chunks = 1000
-    Ana.EventStop = 1000
+#    Ana.EventStop = 20000
     Ana.Launch()
     x+=1
 
@@ -114,6 +114,7 @@ for pairs in combinations:
     pkl = UnpickleObject(name)
     if pkl is None: continue
     ana.__setstate__(pkl)
+    print(ana.CutFlow)
     print("Building Plots: " + name)
     doubleleptonic_Plotting(ana, name)
 

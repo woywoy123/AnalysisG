@@ -751,31 +751,6 @@ __global__ void _NuNuPopulate(
     if (idz == 3){pmc_b2[target][idy] = pmc[src_][idy]; return;}
 } 
 
-template <typename scalar_t>
-__global__ void _NuNuMatrix(
-        torch::PackedTensorAccessor64<double, 3, torch::RestrictPtrTraits> out, 
-        const torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> nominal, 
-        const torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> updown,
-        const unsigned int dim_i, const unsigned int dim_j, const unsigned int dim_k, 
-        const unsigned int dx, const unsigned int dy, const double step_size)
-{
-    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
-    const unsigned int idy = blockIdx.y; 
-    const unsigned int idz = blockIdx.z; 
-    if (idx >= dim_i || idy >= dim_j || idz >= dim_k){return;}
-    scalar_t val = nominal[idz][idy]*updown[idz][0];
-    if (idy == 0){ val *= (1 + step_size*(idx/dx));}
-    if (idy == 1){ val *= (1 + step_size*(idx%dy));}
-    out[idz][idx][idy] = val; 
-} 
-
-//template <typename scalar_t>
-//__global__ void _NuNuFill(
-//        torch::PackedTensorAccessor64<double, 3, torch::RestrictPtrTraits> nu1_, 
-//        torch::PackedTensorAccessor64<double, 3, torch::RestrictPtrTraits> nu2_, 
-//        torch::PackedTensorAccessor64<double, 3, torch::RestrictPtrTraits> _nu1, 
-//        torch::PackedTensorAccessor64<double, 3, torch::RestrictPtrTraits> _nu2, 
-// 
 
 
 

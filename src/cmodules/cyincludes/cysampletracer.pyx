@@ -28,8 +28,9 @@ from libcpp.string cimport string
 from libcpp.map cimport map, pair
 from libcpp cimport bool
 
+from tqdm import tqdm, trange
 from typing import Union
-from tqdm import tqdm
+import numpy as np
 import psutil
 import torch
 import pickle
@@ -43,6 +44,42 @@ def _check_h5(f, str key):
 def _check_sub(f, str key):
     try: return f.create_group(key)
     except ValueError: return f[key]
+
+
+cdef inline void tracer_link(f, map[string, vector[string]]* hashes, map[string, string]* dirs, str keys, string root_name):
+    cdef vector[string]* dx
+    cdef string name_, path_
+    cdef pair[string, string] itr
+    cdef map[string, int] root_map
+
+    try: ref_e = f.create_dataset(keys + "_dir", (1), dtype = h5py.ref_dtype)
+    except ValueError: ref_e = f[keys + "_dir"]
+
+    cdef int idx, idr
+    cdef list attrs
+    for itr in dereference(dirs):
+        name_, path_ = itr.first, itr.second
+        if name_.rfind(root_name, 0) != 0: continue
+        name_ = name_.substr(name_.rfind(b":")+1, name_.size())
+        ref_e.attrs[name_] = path_
+
+        dx = &dereference(hashes)[itr.first]
+        try: ref_h = f.create_dataset(keys + ":" + env(name_), dx.size(), dtype = h5py.ref_dtype, chunks = True)
+        except ValueError: ref_h = f[keys + ":" + env(name_)]
+        try: ref_r = f.create_dataset("ROOT", (1), dtype = h5py.ref_dtype, chunks = True)
+        except ValueError: ref_r = f["ROOT"]
+        idr = 0
+
+        attrs = list(ref_r.attrs.values())
+        try: idr = attrs.index(env(root_name))
+        except ValueError:
+            idr = len(attrs)
+            ref_r.attrs[root_name] = root_name
+
+        root_map.clear()
+        print("TRACER::DUMPING (" + env(name_) + "): " + env(root_name))
+        for idx in prange(dx.size(), nogil = True): root_map[dx.at(idx)] = idr
+        ref_h.attrs.update(root_map)
 
 cdef void tracer_dump(f, export_t* state, string root_name):
     cdef pair[string, code_t] itc
@@ -64,17 +101,23 @@ cdef void tracer_dump(f, export_t* state, string root_name):
     tracer_link(f, &state.selection_name_hash, &state.selection_dir, "selection", root_name)
 
 cdef void tracer_HDF5(ref, map[string, HDF5_t]* data, string type_key):
-    cdef str hash_, root_, type_, path_
+    cdef int idx
+    cdef str type_
+    cdef string path_
+    cdef vector[string] hash_
+    cdef vector[string] root_ = penc(list(ref["ROOT"].attrs.keys()))
+    cdef vector[int] idx_
 
     cdef HDF5_t* data_tmp
     for type_ in ref:
         if not type_.startswith(env(type_key) + ":"): continue
-        path_ = ref[env(type_key) + "_dir"].attrs[type_.split(":")[-1]]
-        for hash_, root_ in ref[type_].attrs.items():
-            data_tmp = &dereference(data)[enc(hash_)]
-            data_tmp.root_name = enc(root_)
-            data_tmp.cache_path[enc(path_)] = type_key
-
+        path_ = enc(ref[env(type_key) + "_dir"].attrs[type_.split(":")[-1]])
+        hash_ = penc(list(ref[type_].attrs.keys()))
+        idx_ = <vector[int]>list(ref[type_].attrs.values())
+        for idx in prange(hash_.size(), nogil = True):
+            data_tmp = &dereference(data)[hash_[idx]]
+            data_tmp.root_name = root_[idx_[idx]]
+            data_tmp.cache_path[path_] = type_key
 
 cpdef dump_objects(inpt, _prgbar):
     lock, bar = _prgbar
@@ -88,7 +131,7 @@ cpdef dump_objects(inpt, _prgbar):
     cdef graph_t gr
     cdef selection_t sel
 
-    f = h5py.File(out_path, "a")
+    f = h5py.File(out_path, "a", libver = "latest")
     bar.total = len(prc)
     bar.refresh()
     for i in range(bar.total):
@@ -106,7 +149,6 @@ cpdef dump_objects(inpt, _prgbar):
 cpdef fetch_objects(list inpt, _prgbar):
     lock, bar = _prgbar
     cdef int i
-    cdef str key
     cdef str hash_
     cdef str read_path = env(inpt[0][0])
     cdef str type_ = inpt[0][1]
@@ -115,7 +157,7 @@ cpdef fetch_objects(list inpt, _prgbar):
 
     bar.total = len(hashes)
     bar.refresh()
-    f = h5py.File(read_path, "r")
+    f = h5py.File(read_path, "r", libver = "latest")
     cdef event_t ev
     cdef graph_t gr
     cdef selection_t sel
@@ -123,19 +165,18 @@ cpdef fetch_objects(list inpt, _prgbar):
     for i in range(bar.total):
         hash_ = env(hashes[i])
         dt = f[hash_]
-        for key in dt.keys():
+        for refs in list(dt.values()):
             if type_ == "Event":
-                restore_event(dt[key], &ev)
+                restore_event(refs, &ev)
                 output[hash_] = ev
 
             elif type_ == "Graph":
-                restore_graph(dt[key], &gr)
+                restore_graph(refs, &gr)
                 output[hash_] = gr
 
             elif type_ == "Selection":
-                restore_selection(dt[key], &sel)
+                restore_selection(refs, &sel)
                 output[hash_] = sel
-
             else: continue
             with lock: bar.update(1)
     f.close()
@@ -461,12 +502,14 @@ cdef class SampleTracer:
         for itr in self._state.root_meta:
             root_n, meta = itr.first, itr.second
             entry = self.WorkingPath + "Tracer/"
-            entry += env(root_n).rstrip(".root.1")
+            if env(root_n).endswith(".root.1"): entry = os.path.abspath(entry + env(root_n))[:-6] + ".hdf5"
+            elif env(root_n).endswith(".root"): entry = os.path.abspath(entry + env(root_n))[:-5] + ".hdf5"
+            else: pass
+
             try: os.makedirs("/".join(entry.split("/")[:-1]))
             except FileExistsError: pass
-            entry += ".hdf5"
 
-            f = h5py.File(entry, "a")
+            f = h5py.File(entry, "a", libver = "latest")
             ref = _check_h5(f, "meta")
             s_name = env(meta.sample_name)
             if retag is None: pass
@@ -519,8 +562,7 @@ cdef class SampleTracer:
 
         if len(tracers): pass
         else: tracers = {root : files for root, _, files in os.walk(root_path)}
-        for root, files in tracers.items():
-            files_ += [root + "/" + f for f in files if f.endswith(".hdf5")]
+        for root, files in tracers.items(): files_ += [root + "/" + f for f in files if f.endswith(".hdf5")]
 
         cdef meta_t meta
         cdef str key
@@ -531,7 +573,7 @@ cdef class SampleTracer:
         cdef str title = "TRACER::RESTORE ("
         _, bar = self._makebar(len(files_), title)
         for f in files_:
-            f5 = h5py.File(f, "a")
+            f5 = h5py.File(f, "a", libver = "latest")
             bar.set_description(title + f.split("/")[-1] + ")")
             bar.refresh()
 
@@ -568,11 +610,14 @@ cdef class SampleTracer:
         for itr in cont:
             spl = env(itr.first).split(":")
             _daod, _short = spl[0], spl[1]
-            out_path = _path + _short + "/" + _daod
+            out_path = os.path.abspath(_path + _short + "/" + _daod)
+
             try: os.makedirs("/".join(out_path.split("/")[:-1]))
             except FileExistsError: pass
 
-            out_path = out_path.rstrip(".root.1") + ".hdf5"
+            if out_path.endswith(".root.1"): out_path = os.path.abspath(out_path)[:-6] + ".hdf5"
+            elif out_path.endswith(".root"): out_path = os.path.abspath(out_path)[:-5] + ".hdf5"
+            else: pass
             prc.append([out_path, _short, recast_obj(itr.second, self._state, enc(out_path), itr.first)])
         if not len(prc): return
         th = Threading(prc, dump_objects, self.Threads, 1)
@@ -608,7 +653,7 @@ cdef class SampleTracer:
 
         for itc in cache_map:
             hashes.clear()
-            for idy in prange(itc.second.size(), nogil = True, num_threads = 12):
+            for idy in prange(itc.second.size(), nogil = True, num_threads = self._set.threads):
                 hashes.push_back(itc.second[idy].hash)
             fetch_these[itc.first] = [itc.first, type_, hashes]
             idx += itc.second.size()
@@ -711,8 +756,7 @@ cdef class SampleTracer:
             return output
 
         elif val is not None: return []
-        for itc in self.ptr.code_hashes:
-            output += self.rebuild_code(env(itc.first))
+        for itc in self.ptr.code_hashes: output += self.rebuild_code(env(itc.first))
         return output
 
     def ImportSettings(self, settings_t inpt):
@@ -754,7 +798,7 @@ cdef class SampleTracer:
 
         cdef vector[CyBatch*] batches = self.ptr.MakeIterable()
         if as_export:
-            for i in prange(batches.size(), num_threads = 12, nogil = True):
+            for i in prange(batches.size(), num_threads = self._set.threads, nogil = True):
                 bt = batches[i]
                 if bt.this_ev == NULL: pass
                 else: exp_ev[bt.hash] = bt.this_ev.Export()

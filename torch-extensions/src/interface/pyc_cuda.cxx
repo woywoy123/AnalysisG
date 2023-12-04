@@ -402,7 +402,7 @@ std::vector<torch::Tensor> pyc::nusol::polar::combined::NuNuCombinatorial(
             edge_index.clone(), batch.clone(), pmu.clone(), pid.clone(), 
             met, met_updown.clone(), masses.clone(), masses_updown.clone(), 
             step_size, null); 
-    return {data["nu1"], data["nu2"], data["mass_met"]};
+    return {data["nu1"], data["nu2"], data["masses"]};
 }
 
 std::vector<torch::Tensor> pyc::nusol::polar::separate::NuNu(

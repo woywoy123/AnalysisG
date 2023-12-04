@@ -9,7 +9,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "AnalysisG"
-version = "4.3.6"
+version = "4.3.7"
 authors = [{name = "woywoy123"}]
 readme.content-type = "text/markdown"
 readme.file = "README.md"
@@ -45,7 +45,7 @@ classifiers = [
 Homepage = "https://github.com/woywoy123/AnalysisG"
 
 [tool.setuptools.package-dir]
-"AnalysisG" = "src"
+"AnalysisG"              = "src"
 "AnalysisG.IO"           = "src/IO"
 "AnalysisG.Tools"        = "src/Tools"
 "AnalysisG.Events"       = "src/Events"

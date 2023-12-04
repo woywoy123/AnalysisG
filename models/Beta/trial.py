@@ -8,7 +8,7 @@ import torch
 torch.set_printoptions(precision=3, sci_mode = False)
 
 x = UnpickleObject("data/GraphChildrenNoNu")
-data = Batch().from_data_list(x[198:200]).to(device = "cuda")
+#data = Batch().from_data_list(x[198:200]).to(device = "cuda")
 
 for i in range(0, 200):
     data = Batch().from_data_list(x[i:i+1]).to(device = "cuda").clone()
@@ -31,12 +31,10 @@ for i in range(0, 200):
             data.edge_index, data.batch, pmu, pid,
             met, met_updown, mass_nom, mass_updown,
             step_size = 0.1, null = 1e-1)
-    if y[1] is None: continue
-    print(y[1][y[2] == False], y[2].size())
-    print(y[0])
-    print(y[1])
-    if y[1][y[2] == False].size(0) != 0: exit()
 
+    print(y[0][:, :2])
+    print(y[1])
+    exit()
     #print(y[0][y[0].sum(-1) != 0], y[0].size())
 exit()
 

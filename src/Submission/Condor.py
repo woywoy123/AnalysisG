@@ -57,6 +57,7 @@ class Condor(Runner, Tools, _Condor):
             f = open(bashes + "/" + i + ".sh", "w")
             f.write(self.Jobs[i].bash_script)
             f.close()
+            subprocess.check_call(["chmod", "+x", bashes + "/" + i + ".sh"])
 
             f = open(dag + "/" + i + ".submit", "w")
             f.write(self.Jobs[i].condor_script)
@@ -67,13 +68,13 @@ class Condor(Runner, Tools, _Condor):
         self.__DumpConfiguration__()
         pth = self.abs(self.OutputDirectory + "/" + self.ProjectName + "/Condor/shells/")
         cmd = ["sh", pth + "/main.sh"]
-        return subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True).decode("UTF-8")
+        return subprocess.check_call(cmd, stderr=subprocess.STDOUT, shell=True).decode("UTF-8")
 
     def SubmitToCondor(self):
         self.__DumpConfiguration__()
         pth = self.abs(self.OutputDirectory + "/" + self.ProjectName + "/Condor/condor/")
         cmd = ["condor_submit_dag", pth + "/DAG_Submission.submit"]
-        return subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True).decode("UTF-8")
+        return subprocess.check_call(cmd, stderr=subprocess.STDOUT, shell=True).decode("UTF-8")
 
 
 

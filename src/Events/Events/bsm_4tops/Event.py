@@ -19,7 +19,7 @@ class Event(EventTemplate):
         self.Trees = ["nominal"]
 
         self.weight = "weight_mc"
-        self.index = "eventNumber"
+        self.event_number = "eventNumber"
         self.mu = "mu"
         self.met = "met_met"
         self.met_phi = "met_phi"
