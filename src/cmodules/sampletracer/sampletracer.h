@@ -13,14 +13,12 @@ struct HDF5_t
 };
 
 static void Search(
-        SampleTracer::CyROOT* root, settings_t* apply, 
+        std::vector<SampleTracer::CyBatch*>* in, settings_t* apply, 
         std::vector<SampleTracer::CyBatch*>* out, 
         std::map<std::string, Code::CyCode*>* code_hashes)
 {
-    std::map<std::string, SampleTracer::CyBatch*>::iterator itb; 
-    itb = root -> batches.begin(); 
-    for (; itb != root -> batches.end(); ++itb){
-        SampleTracer::CyBatch* this_b = itb -> second; 
+    for (unsigned int i(0); i < in -> size(); ++i){
+        SampleTracer::CyBatch* this_b = in -> at(i); 
         this_b -> ApplySettings(apply);  
     
         if (!this_b -> valid){continue;}
@@ -28,7 +26,6 @@ static void Search(
         out -> push_back(this_b); 
     }
 }; 
-
 
 namespace SampleTracer
 {

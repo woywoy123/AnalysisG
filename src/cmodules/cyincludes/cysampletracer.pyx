@@ -615,8 +615,8 @@ cdef class SampleTracer:
             try: os.makedirs("/".join(out_path.split("/")[:-1]))
             except FileExistsError: pass
 
-            if out_path.endswith(".root.1"): out_path = os.path.abspath(out_path)[:-6] + ".hdf5"
-            elif out_path.endswith(".root"): out_path = os.path.abspath(out_path)[:-5] + ".hdf5"
+            if out_path.endswith(".root.1"): out_path = os.path.abspath(out_path)[:-6] + "hdf5"
+            elif out_path.endswith(".root"): out_path = os.path.abspath(out_path)[:-5] + "hdf5"
             else: pass
             prc.append([out_path, _short, recast_obj(itr.second, self._state, enc(out_path), itr.first)])
         if not len(prc): return
@@ -649,14 +649,15 @@ cdef class SampleTracer:
         cdef int idy
         cdef int idx = 0
         cdef dict fetch_these = {}
-        cdef vector[string] hashes
+        cdef map[string, int] hashes
 
         for itc in cache_map:
             hashes.clear()
             for idy in prange(itc.second.size(), nogil = True, num_threads = self._set.threads):
-                hashes.push_back(itc.second[idy].hash)
-            fetch_these[itc.first] = [itc.first, type_, hashes]
+                hashes[itc.second[idy].hash] = 0
+            fetch_these[itc.first] = [itc.first, type_, list(hashes)]
             idx += itc.second.size()
+
         if not idx: return
         th = Threading(list(fetch_these.values()), fetch_objects, self.Threads, 1)
         th.Title = "RESTORING (" + type_.upper() + "): "
@@ -958,8 +959,7 @@ cdef class SampleTracer:
             self.ptr.code_hashes[co.hash].ImportCode(co)
             return
 
-        for name_, c_ in self._graph_codes.items():
-            graph.__scrapecode__(c_, name_)
+        for name_, c_ in self._graph_codes.items(): graph.__scrapecode__(c_, name_)
         co = self.trace_code(graph)
         self.ptr.link_graph_code[name] = co.hash
         cdef CyCode* c = self.ptr.code_hashes[co.hash]
@@ -974,13 +974,11 @@ cdef class SampleTracer:
 
     @property
     def Selections(self):
-        if not len(self._Selections): return {}
         cdef CyCode* code
         cdef pair[string, string] its
         cdef string name
         cdef string params
         for its in self.ptr.link_selection_code:
-            if env(its.first) not in self._Selections: continue
             co = self.rebuild_code(env(its.second))
             if not len(co): continue
             code = self.ptr.code_hashes[its.second]

@@ -147,7 +147,7 @@ namespace SampleTracer
         else if (set -> selectionname.size() && mode == 3){fetch_this = set -> selectionname;}
         else { fetch_this = ""; }
 
-        std::vector<CyBatch*> batches = this -> MakeIterable();  
+        std::vector<CyBatch*> batches = this -> MakeIterable(); 
         if (!set -> event_stop){end = batches.size();}
         else {end = set -> event_stop;}
 
@@ -331,16 +331,23 @@ namespace SampleTracer
         std::vector<std::thread*> jobs = {};  
         settings_t* set = &(this -> settings);
 
-        std::vector<std::vector<CyBatch*>*> output = {};
-        std::map<std::string, Code::CyCode*>* code = &(this -> code_hashes);
+        std::vector<CyBatch*> all; 
         std::map<std::string, CyROOT*>::iterator itr = this -> root_map.begin(); 
         for (; itr != this -> root_map.end(); ++itr){
             CyROOT* ro = itr -> second; 
+            std::map<std::string, CyBatch*>::iterator itb; 
+            for (itb = ro -> batches.begin(); itb != ro -> batches.end(); ++itb){
+                all.push_back(itb -> second);
+            }
+        }
+
+        std::vector<std::vector<CyBatch*>*> output = {};
+        std::map<std::string, Code::CyCode*>* code = &(this -> code_hashes);
+        std::vector<std::vector<CyBatch*>> quant = Tools::Quantize(all, int(all.size() / set -> threads)); 
+        for (unsigned int x(0); x < quant.size(); ++x){
             output.push_back(new std::vector<CyBatch*>()); 
-            std::thread* j = new std::thread(Search, ro, set, output[x], code);
-            if (set -> threads == 1){j -> join(); }
+            std::thread* j = new std::thread(Search, &quant[x], set, output[x], code);
             jobs.push_back(j); 
-            ++x;
         }
        
         std::vector<CyBatch*> release;  

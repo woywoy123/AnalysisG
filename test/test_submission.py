@@ -36,20 +36,25 @@ def test_condor():
     con.Verbose = 1
 
     ana = _template()
+    ana.Event = EventEx
     con.AddJob("smpl1", ana, waitfor = ["smpl3", "smpl2"])
     con.AddJob("smpl2", ana, waitfor = ["smpl3"])
     con.AddJob("smpl3", ana)
 
     Ana_s1 = _template({"Name": "smpl1"})
+    Ana_s1.Event = EventEx
     con.AddJob("example1_1", Ana_s1, waitfor=["smpl1", "smpl2", "smpl3", "example1_2"])
 
     Ana_s2 = _template({"Name": "smpl2"})
+    Ana_s2.Event = EventEx
     con.AddJob("example1_2", Ana_s2, waitfor=["smpl3"])
 
     Ana_s3 = _template({"Name": "smpl3"})
+    Ana_s3.Event = EventEx
     con.AddJob("example1_3", Ana_s3, waitfor=["smpl1", "smpl2", "smpl3", "example1_1", "example1_2"])
 
     Ana_sum = _template()
+    Ana_sum.Event = EventEx
     con.AddJob("sum", Ana_sum, waitfor=["example1_1", "example1_2", "example1_3"])
 
     con.LocalRun()
@@ -67,10 +72,10 @@ def test_dumping_events():
     con.AddJob("example", Ana)
     con.LocalRun()
 
-    return
     x = []
     Ana2 = _template()
     Ana2.EventCache = True
+    Ana2.EventName = "EventEx"
     Ana2.Launch()
     for i in Ana2: x.append(i.hash)
     assert len(x) != 0
@@ -100,11 +105,10 @@ def test_dumping_graphs():
     con.AddJob("Events", Ana)
     con.LocalRun()
 
-    return
     print("____")
     Ana = _template()
     Ana.DataCache = True
-    Ana.EventCache = False
+    Ana.GraphName = "DataGraph"
     Ana.Launch()
     x = []
     for i in Ana:
@@ -145,27 +149,21 @@ def test_dumping_event_selection():
     con.AddJob("smpl3", Ana_3)
 
     Ana_s1 = _template({"Name": "smpl1"})
-    Ana_s1.EventCache = True
     Ana_s1.AddSelection(Example)
     con.AddJob("example1_1", Ana_s1, waitfor=["smpl1", "smpl2", "smpl3"])
 
     Ana_s2 = _template({"Name": "smpl2"})
-    Ana_s2.EventCache = True
     Ana_s2.AddSelection(Example)
     con.AddJob("example1_2", Ana_s2, waitfor=["smpl1", "smpl2", "smpl3"])
 
     Ana_s3 = _template({"Name": "smpl3"})
-    Ana_s3.EventCache = True
     Ana_s3.AddSelection(Example)
     con.AddJob("example1_3", Ana_s3, waitfor=["smpl1", "smpl2", "smpl3"])
 
     con.LocalRun()
 
-    return
     Ana_T = _template({"Name" : None})
     Ana_T.ProjectName = "Project"
-    Ana_T.EventCache = True
-    Ana_T.GetSelection = True
     Ana_T.SelectionName = "Example"
     Ana_T.Threads = 1
 
@@ -173,7 +171,6 @@ def test_dumping_event_selection():
     for i in Ana_T:
         assert i.selection
         assert i.sample_name
-        assert i.Event
         x.append(i)
     assert len(x) != 0
     Ana_T.rm("Project")
@@ -251,8 +248,8 @@ def test_dumping_optimization():
 
 
 if __name__ == "__main__":
-    test_condor()
-    test_dumping_events()
-    test_dumping_graphs()
+    #test_condor()
+    #test_dumping_events()
+    #test_dumping_graphs()
     test_dumping_event_selection()
-    test_dumping_optimization()
+    #test_dumping_optimization()

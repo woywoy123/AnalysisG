@@ -100,7 +100,7 @@ def build_dag(inpt):
         if not len(parnt[jn]): out += [jn] if jn not in out else []
         else: parnt[jn] = [i for i in list(parnt[jn]) if i not in out]
         try: jn = parnt[jn][0]
-        except IndexError: 
+        except IndexError:
             try: jn = next(iter([i for i in parnt if len(parnt[i])]))
             except StopIteration: out += [jn]; break
     inpt._bash_path += ["#!/bin/bash\n\n"]

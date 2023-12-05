@@ -57,7 +57,6 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         if self.PurgeCache: self._WarningPurge()
         self.triggered = True
 
-
     def __FeatureAnalysis__(self):
         if self.Graph is None: return True
         if not self.TestFeatures: return
@@ -131,10 +130,8 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         elif len(self.ShowTrees) > 1: return
         else: self.Tree = self.ShowTrees[0]
 
-
         sel = SelectionGenerator()
         sel.ImportSettings(self.ExportSettings())
-        sel.Selections = self.Selections
         sel.Caller = "ANALYSIS::SELECTIONS"
         if not sel.MakeSelections(self): return
 
@@ -193,7 +190,6 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         self.DumpTracer(self.SampleName)
         return True
 
-
     def __Event__(self):
         if self.Event is None: return
         get = sum(self._get["event"].values(), [])
@@ -248,11 +244,21 @@ class Analysis(_Analysis, SampleTracer, _Interface):
             if not len(name): name = None
             if not tracer: pass
             else: self.RestoreTracer(tracer, name)
+            self.Success("!!!Scanning Content")
             search(self)
+            self.Success("!!!Scanning Content... (done)")
+            self.Success("!!!Checking Events...")
             self.__Event__()
+            self.Success("!!!Checking Events... (done)")
+            self.Success("!!!Checking Selections...")
             self.__Selection__()
+            self.Success("!!!Checking Selections... (done)")
             self.__FeatureAnalysis__()
+
+            self.Success("!!!Checking Graphs... ")
             self.__Graph__()
+            self.Success("!!!Checking Graphs... (done)")
+
         return True
 
     def Launch(self):
