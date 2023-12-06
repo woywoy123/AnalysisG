@@ -33,7 +33,7 @@ struct paint_t
     float xscaling = 1.25*6.4; 
     float yscaling = 1.25*4.8;
     float alpha = 0.5; 
-    float line_width = 1; 
+    float line_width = 0.1; 
 
     float font_size = 10; 
     float label_size = 12.5; 

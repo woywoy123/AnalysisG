@@ -4,26 +4,26 @@ from AnalysisG import Analysis
 from AnalysisG.Tools import Code
 import os
 
-name = "Example" #"Project_ML"
+name = "Example"
 model = "RPN"
 mode_ = 0
-gen_data = True
+gen_data = False
 
 modes = [
-#    "TruthChildren_All",
-    "TruthChildren_NoNu",
+    "TruthChildren_All",
+#    "TruthChildren_NoNu",
 #    "TruthJets_NoNu",
 #    "Jets_NoNu"
 ]
 
 params = [
-#    ("MRK-1" , "ADAM", 1  , {"lr": 1e-3, "weight_decay" : 1e-6},            None,              None),
+#    ("MRK-1" , "ADAM", 1  , {"lr": 1e-3, "weight_decay" : 1e-3},            None,              None),
     ("MRK-2" , "ADAM", 100, {"lr": 1e-3, "weight_decay" : 1e-6},            None,              None),
-#    ("MRK-3" , "ADAM", 500, {"lr": 1e-6, "weight_decay" : 1e-1},            None,              None),
+#    ("MRK-3" , "ADAM", 500, {"lr": 1e-3, "weight_decay" : 1e-1},            None,              None),
 #
-#    ("MRK-4" , "ADAM", 1  , {"lr": 1e-6, "weight_decay" : 1e-6}, "ExponentialLR", {"gamma"  : 0.5}),
-    ("MRK-5" , "ADAM", 100, {"lr": 1e-3, "weight_decay" : 1e-6}, "ExponentialLR", {"gamma"  : 1.0}),
-#    ("MRK-6" , "ADAM", 500, {"lr": 1e-6, "weight_decay" : 1e-6}, "ExponentialLR", {"gamma"  : 2.0}),
+#    ("MRK-4" , "ADAM", 1  , {"lr": 1e-3, "weight_decay" : 1e-6}, "ExponentialLR", {"gamma"  : 0.5}),
+    ("MRK-5" , "ADAM", 100, {"lr": 1e-3, "weight_decay" : 1e-6}, "ExponentialLR", {"gamma"  : 0.7}),
+#    ("MRK-6" , "ADAM", 500, {"lr": 1e-3, "weight_decay" : 1e-6}, "ExponentialLR", {"gamma"  : 0.9}),
 #
 #    ("MRK-7" , "SGD", 10 , {"lr": 1e-6, "weight_decay" : 1e-6},      "CyclicLR", {"base_lr" : 1e-9, "max_lr" : 1e-4}),
     ("MRK-8" , "SGD", 100, {"lr": 1e-3, "weight_decay" : 1e-6},      "CyclicLR", {"base_lr" : 1e-9, "max_lr" : 1e-4}),
@@ -53,6 +53,7 @@ params = [
 
 # ----- candidates ----- #
 #"RPN"  : RecursivePathNetz,
+#"RNN"  : RecuriveNuNetz
 
 #"RGNN" : RecursiveGraphNeuralNetwork, 
 #"BBLR" : BasicBaseLineRecursion,
@@ -67,10 +68,10 @@ for mm in modes:
     train_name = "sample-" + mode
 
     auto.SamplePath = os.environ["Samples"]
-    auto.AddDatasetName("ttH-m1000", 20)
-    auto.AddDatasetName("ttbar", 20)
-    auto.AddDatasetName("tttt (SM)", 20)
-    auto.AddDatasetName("ttH", 20)
+    auto.AddDatasetName("ttH-m1000", 1)
+    #auto.AddDatasetName("ttbar", 1)
+    #auto.AddDatasetName("tttt (SM)", 1)
+    #auto.AddDatasetName("ttH", 1)
 
     auto.Event = Event
     auto.EventCache = True

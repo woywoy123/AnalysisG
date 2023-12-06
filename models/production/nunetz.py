@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 from torch_geometric.nn import MessagePassing
-from torch_geometric.utils import to_dense_adj, degree
+from torch_geometric.utils import to_dense_adj
 from torch.nn import Sequential as Seq, Linear, ReLU, Tanh
 
 # custom pyc extension functions
@@ -26,10 +26,9 @@ class ParticleRecursion(MessagePassing):
         self._in = 5
         self._out = 2
 
-        _l = self._rnn+self._in
+        _l = 128
         self._edge = Seq(Linear(self._in + self._rnn, _l), ReLU(), Tanh(), Linear(_l, self._rnn))
         self._red = Seq(Linear(self._rnn, self._out, bias = False))
-
         self._edge.apply(init_norm)
 
     def nu(self, pmc, targets, msk_lep, msk_b, nu1, nu2):
@@ -138,7 +137,7 @@ class ParticleRecursion(MessagePassing):
 
         return self._red(self.propagate(edge_index, pmc = pmc, trk = track, pid = pid))
 
-class RecursivePathNetz(MessagePassing):
+class RecursiveNuNetz(MessagePassing):
 
     def __init__(self):
         super().__init__()

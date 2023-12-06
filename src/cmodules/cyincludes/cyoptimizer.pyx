@@ -444,6 +444,8 @@ cdef void make_nodes(map[int, CyEpoch*] train, map[int, CyEpoch*] valid, map[int
             m = max(hist["evaluation"]["xData"])
             if m > mx_: mx_ = m
         break
+    if sum(hist["training"]["xData"] + hist["validation"]["xData"] + hist["evaluation"]["xData"]): pass
+    else: return
 
     tmpl = template_th1f(path, "Number of Nodes", "Entries (arb.)", "Node Distribution for Sample Type", 1)
     tmpl["Filename"] = "NodeStatistics"
