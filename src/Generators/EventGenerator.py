@@ -82,8 +82,12 @@ class EventGenerator(_EventGenerator, _Interface, SampleTracer):
                 smpl.__setstate__(x)
                 sample += smpl
                 del smpl
-            command[0] = []
+
             del th
+            command[0] = []
+            if not len(sample.MonitorMemory("Event")): continue
+            sample.DumpEvents()
+            sample.DumpTracer(SampleName)
 
         if len(command[0]):
             th = Threading(*command)
@@ -94,8 +98,13 @@ class EventGenerator(_EventGenerator, _Interface, SampleTracer):
                 smpl.__setstate__(x)
                 sample += smpl
                 del smpl
-            command[0] = []
+
             del th
+            command[0] = []
+            if len(sample.MonitorMemory("Event")):
+                sample.DumpEvents()
+                sample.DumpTracer(SampleName)
+
         if not self.is_self(sample, EventGenerator): return True
         else: return sample.CheckSpawnedEvents()
 
@@ -103,8 +112,10 @@ class EventGenerator(_EventGenerator, _Interface, SampleTracer):
         if not len(self.Tree):
             try: self.Tree = self.ShowTrees[0]
             except IndexError: return True
+
         if not len(self.EventName):
             try: self.EventName = self.ShowEvents[0]
             except IndexError: return True
             self.GetEvent = True
+
         return False

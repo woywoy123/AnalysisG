@@ -100,7 +100,7 @@ cdef void tracer_dump(f, export_t* state, string root_name):
     tracer_link(f, &state.graph_name_hash, &state.graph_dir, "graph", root_name)
     tracer_link(f, &state.selection_name_hash, &state.selection_dir, "selection", root_name)
 
-cdef void tracer_HDF5(ref, map[string, HDF5_t]* data, string type_key):
+cdef void tracer_HDF5(ref, map[string, HDF5_t]* data, string type_key, settings_t* set_):
     cdef int idx
     cdef str type_
     cdef string path_
@@ -108,10 +108,19 @@ cdef void tracer_HDF5(ref, map[string, HDF5_t]* data, string type_key):
     cdef vector[string] root_ = penc(list(ref["ROOT"].attrs.keys()))
     cdef vector[int] idx_
 
+    cdef string outdir = enc(os.path.abspath(env(set_.outputdirectory)) + "/")
+    outdir += set_.projectname + enc('/')
+
     cdef HDF5_t* data_tmp
     for type_ in ref:
         if not type_.startswith(env(type_key) + ":"): continue
         path_ = enc(ref[env(type_key) + "_dir"].attrs[type_.split(":")[-1]])
+        if os.path.isfile(env(path_)): pass
+        elif os.path.isfile(env(outdir + path_)): path_ = outdir + path_
+        else:
+            idx = env(path_).index(env(set_.projectname)) + set_.projectname.size()
+            path_ = outdir + path_.substr(idx+1, path_.size() -1)
+
         hash_ = penc(list(ref[type_].attrs.keys()))
         idx_ = <vector[int]>list(ref[type_].attrs.values())
         for idx in prange(hash_.size(), nogil = True):
@@ -502,8 +511,8 @@ cdef class SampleTracer:
         for itr in self._state.root_meta:
             root_n, meta = itr.first, itr.second
             entry = self.WorkingPath + "Tracer/"
-            if env(root_n).endswith(".root.1"): entry = os.path.abspath(entry + env(root_n))[:-6] + ".hdf5"
-            elif env(root_n).endswith(".root"): entry = os.path.abspath(entry + env(root_n))[:-5] + ".hdf5"
+            if env(root_n).endswith(".root.1"): entry = os.path.abspath(entry + env(root_n))[:-6] + "hdf5"
+            elif env(root_n).endswith(".root"): entry = os.path.abspath(entry + env(root_n))[:-5] + "hdf5"
             else: pass
 
             try: os.makedirs("/".join(entry.split("/")[:-1]))
@@ -587,9 +596,9 @@ cdef class SampleTracer:
             else: f5.close(); continue
 
             self.ptr.AddMeta(meta, event_root)
-            tracer_HDF5(f5, &data, b"event")
-            tracer_HDF5(f5, &data, b"graph")
-            tracer_HDF5(f5, &data, b"selection")
+            tracer_HDF5(f5, &data, b"event", self._set)
+            tracer_HDF5(f5, &data, b"graph", self._set)
+            tracer_HDF5(f5, &data, b"selection", self._set)
             del_map = self.ptr.RestoreTracer(&data, event_root)
             self._deregister(f5, del_map)
             if del_map.size(): f5.close(); continue
@@ -603,6 +612,7 @@ cdef class SampleTracer:
     cdef void _store_objects(self, map[string, vector[obj_t*]] cont, str _type):
         cdef str _short, _daod, out_path
         cdef str _path = self.WorkingPath + _type + "Cache/"
+        cdef int idx = len(self.WorkingPath)
 
         cdef list spl
         cdef list prc = []
@@ -610,15 +620,19 @@ cdef class SampleTracer:
         for itr in cont:
             spl = env(itr.first).split(":")
             _daod, _short = spl[0], spl[1]
-            out_path = os.path.abspath(_path + _short + "/" + _daod)
+            if len(_short): out_path = _path + _short
+            else: out_path = _path
+            if len(_daod): out_path += "/" + _daod
+            out_path = os.path.abspath(out_path)
 
             try: os.makedirs("/".join(out_path.split("/")[:-1]))
             except FileExistsError: pass
 
-            if out_path.endswith(".root.1"): out_path = os.path.abspath(out_path)[:-6] + "hdf5"
-            elif out_path.endswith(".root"): out_path = os.path.abspath(out_path)[:-5] + "hdf5"
+            if   out_path.endswith(".root.1"): out_path = out_path[:-6] + "hdf5"
+            elif out_path.endswith(".root"):   out_path = out_path[:-5] + "hdf5"
             else: pass
             prc.append([out_path, _short, recast_obj(itr.second, self._state, enc(out_path), itr.first)])
+
         if not len(prc): return
         th = Threading(prc, dump_objects, self.Threads, 1)
         th.Title = "TRACER::" + _type.upper() + "-SAVE: "
@@ -947,6 +961,7 @@ cdef class SampleTracer:
             self.Failure(str(err))
             self.Failure("Given Graph Implementation Failed to Initialize...")
             self.FailureExit("To debug this, try to initialize the object: <graph>()")
+
         cdef code_t co
         cdef graph_t gr
         cdef string name = enc(graph.__name__())

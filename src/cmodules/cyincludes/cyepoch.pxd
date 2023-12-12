@@ -19,11 +19,7 @@ cdef extern from "../epoch/epoch.h":
     cdef struct roc_t:
         vector[vector[float]] truth
         vector[vector[float]] pred
-
         map[int, float] auc
-        map[int, vector[float]] fpr
-        map[int, vector[float]] tpr
-        map[int, vector[float]] thre
 
     cdef struct node_t:
         int max_nodes
@@ -47,14 +43,15 @@ cdef extern from "../epoch/epoch.h":
         int epoch
         void purge()
 
-cdef inline stats(vector[point_t] inp, point_t* ptr):
+cdef inline stats(vector[point_t]* inp, point_t* ptr):
     cdef float s = inp.size()
 
     cdef point_t i
     cdef float av = 0
     cdef float stdev = 0
-    for i in inp: av += i.average/s
-    for i in inp: stdev += ((av - i.average)**2)/s
+    for i in dereference(inp): av += i.average/s
+    for i in dereference(inp): stdev += ((av - i.average)**2)/s
+    inp.clear()
     stdev = stdev**0.5
     ptr.average = av
     ptr.stdev = stdev

@@ -100,6 +100,7 @@ class Analysis(_Analysis, SampleTracer, _Interface):
             if i.SkipEvent: continue
             if i.EmptyGraph: continue
             dic[i.hash] = i
+
         r = RandomSamplers()
         r.ImportSettings(self.ExportSettings())
         if not self.TrainingSize: out = {}
@@ -226,6 +227,7 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         else: return
 
         if not self.EventCache: return
+
         self.DumpEvents()
         self.DumpTracer(self.SampleName)
         return True

@@ -5,7 +5,7 @@ from AnalysisG.Tools import Code
 import os
 
 name = "Example"
-model = "RPN"
+model = "RNN"
 mode_ = 0
 gen_data = False
 
@@ -17,8 +17,8 @@ modes = [
 ]
 
 params = [
-#    ("MRK-1" , "ADAM", 1  , {"lr": 1e-3, "weight_decay" : 1e-3},            None,              None),
-    ("MRK-2" , "ADAM", 100, {"lr": 1e-3, "weight_decay" : 1e-6},            None,              None),
+    ("MRK-1" , "ADAM", 1  , {"lr": 1e-3, "weight_decay" : 1e-3},            None,              None),
+#    ("MRK-2" , "ADAM", 100, {"lr": 1e-3, "weight_decay" : 1e-6},            None,              None),
 #    ("MRK-3" , "ADAM", 500, {"lr": 1e-3, "weight_decay" : 1e-1},            None,              None),
 #
 #    ("MRK-4" , "ADAM", 1  , {"lr": 1e-3, "weight_decay" : 1e-6}, "ExponentialLR", {"gamma"  : 0.5}),
@@ -69,9 +69,9 @@ for mm in modes:
 
     auto.SamplePath = os.environ["Samples"]
     auto.AddDatasetName("ttH-m1000", 1)
-    #auto.AddDatasetName("ttbar", 1)
-    #auto.AddDatasetName("tttt (SM)", 1)
-    #auto.AddDatasetName("ttH", 1)
+    auto.AddDatasetName("ttbar", 1)
+    auto.AddDatasetName("tttt (SM)", 1)
+    auto.AddDatasetName("ttH", 1)
 
     auto.Event = Event
     auto.EventCache = True
@@ -83,7 +83,7 @@ for mm in modes:
     for i, job in auto.Make().items():
         job.Threads = 22
         job.Chunks = 1000
-        #job.EventStop = 1000
+        job.EventStop = 1000
         print("-> " + i)
         job.Launch()
         del job
@@ -114,7 +114,7 @@ for this in params:
         Ana.SchedulerParams = sch_param
 
     Ana.PlotLearningMetrics = True
-    Ana.ContinueTraining = False
+    Ana.ContinueTraining = True
     Ana.DebugMode = False
     Ana.KinematicMap = {"top_edge" : "polar -> N_pT, N_eta, N_phi, N_energy"}
     Ana.Launch()

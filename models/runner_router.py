@@ -5,7 +5,7 @@ from AnalysisG.IO import UpROOT
 from AnalysisG import Analysis
 
 from production.pathnetz import RecursivePathNetz
-from production.pathnetz import RecursiveNuNetz
+from production.nunetz import RecursiveNuNetz
 from dataset_mapping import DataSets
 
 models = {

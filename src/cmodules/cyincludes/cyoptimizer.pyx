@@ -147,7 +147,7 @@ cdef dict collapse_points(map[string, vector[point_t]]* tmp, int epoch, dict lin
 
     for itv in dereference(tmp):
         pnt = point_t()
-        stats(itv.second, &pnt)
+        stats(&itv.second, &pnt)
         var_name = env(itv.first)
         if var_name not in lines: lines[var_name] = {}
         if mode not in lines[var_name]:
@@ -175,7 +175,7 @@ cdef dict collapse_points(map[string, vector[point_t]]* tmp, int epoch, dict lin
             state.acc_eval_up[itv.first]   = pnt.maximum
             state.acc_eval_down[itv.first] = pnt.minimum
 
-        elif metric == "lss" and mode == "training"  :
+        elif metric == "lss" and mode == "training":
             state.loss_train[itv.first]      = pnt.average
             state.loss_train_up[itv.first]   = pnt.maximum
             state.loss_train_down[itv.first] = pnt.minimum
@@ -311,24 +311,21 @@ cdef dict make_roc_curve(map[string, roc_t]* roc_, dict lines, str mode):
 
         tru = torch.tensor(its.second.truth, dtype = torch.long).view(-1)
         dereference(roc_)[its.first].truth.clear()
-        roc = MulticlassROC(**{"num_classes": pred.size()[1]})
-        auc = MulticlassAUROC(**{"num_classes": pred.size()[1]})
+
+        roc = MulticlassROC(**{"num_classes": pred.size()[1], "thresholds" : None})
         fpr, tpr, thres = roc(pred, tru)
+
+        auc = MulticlassAUROC(**{"num_classes": pred.size()[1], "thresholds" : None})
         auc_ = auc(pred, tru).view(-1)
+
         del tru
         del pred
         for cls in range(len(fpr)):
-            its.second.fpr[cls] = fpr[cls].tolist()
-            its.second.tpr[cls] = tpr[cls].tolist()
-            its.second.thre[cls] = thres[cls].tolist()
             try: dereference(roc_)[its.first].auc[cls+1] = auc_[cls].item()
             except IndexError: pass
             name = "ROC Curve: "+ env(its.first) + " classification - " + str(cls)
             if name not in lines: lines[name] = []
-            lines[name] += [TLine(**{"xData" : its.second.fpr[cls], "yData" : its.second.tpr[cls], "Title" : mode})]
-        its.second.fpr.clear()
-        its.second.tpr.clear()
-        its.second.thre.clear()
+            lines[name] += [TLine(**{"xData" : fpr[cls].tolist(), "yData" : tpr[cls].tolist(), "Title" : mode})]
     return lines
 
 cdef void make_auc_curve(map[string, roc_t]* roc_, map[string, vector[point_t]]* auc_):

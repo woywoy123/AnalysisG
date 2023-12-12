@@ -87,33 +87,34 @@ cdef inline list recast_obj(vector[obj_t*] cont, export_t* exp, string cache_pat
     cdef string hash_
     cdef map[string, string]* path_
     cdef map[string, vector[string]]* hashes_
-    cdef vector[event_t] ev_o
-    cdef vector[graph_t] gr_o
-    cdef vector[selection_t] sel_o
+
+    cdef map[string, event_t] ev_o
+    cdef map[string, graph_t] gr_o
+    cdef map[string, selection_t] sel_o
     cdef obj_t* data
 
     cdef int idx
-    for idx in prange(cont.size(), nogil = True, num_threads = 12):
+    for idx in prange(cont.size(), nogil = True):
         data = cont[idx]
         hash_ = data.Hash()
         if data.is_event:
             (<CyEventTemplate*>(data)).event.cached = True
-            ev_o.push_back((<CyEventTemplate*>(data)).event)
             hashes_, path_ = &exp.event_name_hash, &exp.event_dir
+            ev_o[hash_] = (<CyEventTemplate*>(data)).event
 
         elif data.is_graph:
             (<CyGraphTemplate*>(data)).graph.cached = True
-            gr_o.push_back((<CyGraphTemplate*>(data)).Export())
             hashes_, path_ = &exp.graph_name_hash, &exp.graph_dir
+            gr_o[hash_] = (<CyGraphTemplate*>(data)).Export()
 
         elif data.is_selection:
             (<CySelectionTemplate*>(data)).selection.cached = True
-            sel_o.push_back((<CySelectionTemplate*>(data)).selection)
             hashes_, path_ = &exp.selection_name_hash, &exp.selection_dir
+            sel_o[hash_] = (<CySelectionTemplate*>(data)).selection
 
         dereference(hashes_)[daod].push_back(hash_)
         dereference(path_)[daod] = cache_path
-    return list(ev_o) + list(gr_o) + list(sel_o)
+    return list(dict(ev_o).values()) + list(dict(gr_o).values()) + list(dict(sel_o).values())
 
 cdef inline save_base(ref, common_t* com):
     ref.attrs["event_name"]    = com.event_name

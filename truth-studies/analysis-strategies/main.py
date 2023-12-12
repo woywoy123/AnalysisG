@@ -56,7 +56,7 @@ samples = {
 #        "V"     : smpls + "V"    ,
 #        "Vll"   : smpls + "Vll"  ,
 #        "Vqq"   : smpls + "Vqq"  ,
-        "SSML" : smpls + "../SSML/"
+        "SSML" : smpls + "../SSML_MC/"
 }
 
 
@@ -97,6 +97,7 @@ for pairs in combinations:
         Ana.InputSample("smpl-" + str(x), smpl)
         Ana.AddSelection(ana)
         Ana.Threads = 2
+        Ana.MaxRam = 100
         Ana.Chunks = 1000
         Ana.Launch()
         x += 1

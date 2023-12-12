@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 from torch_geometric.nn import MessagePassing
-from torch_geometric.utils import to_dense_adj
+from torch_geometric.utils import to_dense_adj, scatter
 from torch.nn import Sequential as Seq, Linear, ReLU, Tanh
 
 # custom pyc extension functions
@@ -22,12 +22,12 @@ class ParticleRecursion(MessagePassing):
 
     def __init__(self):
         super().__init__(aggr = None)
-        self._rnn = 32
         self._in = 5
         self._out = 2
+        self._rnn = 32
 
         _l = 128
-        self._edge = Seq(Linear(self._in + self._rnn, _l), ReLU(), Tanh(), Linear(_l, self._rnn))
+        self._edge = Seq(Linear(self._in, _l), ReLU(), Tanh(), Linear(_l, self._rnn))
         self._red = Seq(Linear(self._rnn, self._out, bias = False))
         self._edge.apply(init_norm)
 
@@ -88,7 +88,6 @@ class ParticleRecursion(MessagePassing):
         feats += [physics.M(nu2), physics.M(pmc_ij + nu1 + nu2)]
         feats += [norm]
 
-        feats += [self._hidden[self._idx_mlp[src, dst]]]
         feats = torch.cat(feats, -1)
         mlp = self._edge(feats.to(dtype = torch.float))
         return edge_index, nu1, nu2, mlp, self._red(mlp).max(-1)[1]
@@ -124,10 +123,7 @@ class ParticleRecursion(MessagePassing):
         self.batch = batch
 
         track = (torch.ones_like(batch).cumsum(-1)-1).view(-1, 1)
-        self._hidden = [track]*self._rnn
-        self._hidden = torch.cat(self._hidden, -1)
-        self._hidden = torch.cat([self._hidden] + feats, dim = -1)
-
+        self._hidden = torch.cat(feats, dim = -1)
         self._hidden = self._hidden[edge_index[0]].clone()
         self._hidden = self._hidden.to(dtype = torch.float)
         self._hidden = self._edge(self._hidden)
@@ -145,6 +141,19 @@ class RecursiveNuNetz(MessagePassing):
         self.O_top_edge = None
         self.L_top_edge = "CEL"
 
+        self.O_ntops = None
+        self.L_ntops = "CEL"
+
+        _l = 32
+        self._in = 14
+        self._ntops = Seq(Linear(self._in*2, _l), Tanh(), ReLU(), Linear(_l, 5))
+
+    def message(self, feats_i, feats_j, istop):
+        feat_i = torch.cat([feats_i, istop.view(-1, 1)], -1)
+        feat_j = torch.cat([feats_i, istop.view(-1, 1)], -1)
+        mlp = self._ntops(torch.cat([feat_i - feat_j, feat_i], -1).to(dtype = torch.float))
+        return mlp
+
     def forward(self, edge_index, batch, G_met, G_phi, G_n_jets, G_n_lep, N_pT, N_eta, N_phi, N_energy, N_is_lep, N_is_b):
 
         pmu = torch.cat([N_pT / 1000, N_eta, N_phi, N_energy / 1000], -1)
@@ -154,3 +163,17 @@ class RecursiveNuNetz(MessagePassing):
         met_y = transform.Py(G_met, G_phi)
         met_xy = torch.cat([met_x, met_y], -1)
         self.O_top_edge = self._top(edge_index, batch, pmc, pid, met_xy)
+
+        _, tops = self.O_top_edge.max(-1)
+        _graph = graph.edge(edge_index, tops, pmu, True)
+        try: gr = _graph[1]
+        except KeyError: gr = _graph[0]
+
+        trk = gr["clusters"][gr["reverse_clusters"]]
+        pmc_ = graph_base.unique_aggregation(trk, pmc)
+        feats = [G_met[batch], G_phi[batch], pid[batch]]
+        feats += [pmc_, pmc, (trk > -1).sum(-1, keepdim = True)]
+        feats = torch.cat(feats, -1).clone()
+
+        ntops = self.propagate(edge_index, feats = feats, istop = tops)
+        self.O_ntops = scatter(ntops, batch, 0)
