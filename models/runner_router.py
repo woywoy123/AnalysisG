@@ -4,17 +4,15 @@ from AnalysisG.Tools import Tools
 from AnalysisG.IO import UpROOT
 from AnalysisG import Analysis
 
+from production.RBGNN import RecursiveMarkovianGraphNet
 from production.pathnetz import RecursivePathNetz
 from production.nunetz import RecursiveNuNetz
 from dataset_mapping import DataSets
 
 models = {
-#            "RGNN" : RecursiveGraphNeuralNetwork,
-#            "BBLR" : BasicBaseLineRecursion,
-#            "BGNN" : BasicGraphNeuralNetwork,
             "RPN" : RecursivePathNetz,
-            "RNN" : RecursiveNuNetz
-#            "MKGN" : MarkovGraphNet
+            "RNN" : RecursiveNuNetz,
+            "RMGN" : RecursiveMarkovianGraphNet
 }
 
 graphs = {

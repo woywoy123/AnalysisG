@@ -97,7 +97,7 @@ for pairs in combinations:
         Ana.InputSample("smpl-" + str(x), smpl)
         Ana.AddSelection(ana)
         Ana.Threads = 2
-        Ana.MaxRam = 100
+        Ana.MaxRam = 8
         Ana.Chunks = 1000
         Ana.Launch()
         x += 1

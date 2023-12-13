@@ -186,6 +186,7 @@ cpdef fetch_objects(list inpt, _prgbar):
             elif type_ == "Selection":
                 restore_selection(refs, &sel)
                 output[hash_] = sel
+
             else: continue
             with lock: bar.update(1)
     f.close()
@@ -599,6 +600,7 @@ cdef class SampleTracer:
             tracer_HDF5(f5, &data, b"event", self._set)
             tracer_HDF5(f5, &data, b"graph", self._set)
             tracer_HDF5(f5, &data, b"selection", self._set)
+
             del_map = self.ptr.RestoreTracer(&data, event_root)
             self._deregister(f5, del_map)
             if del_map.size(): f5.close(); continue

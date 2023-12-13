@@ -177,3 +177,6 @@ class RecursiveNuNetz(MessagePassing):
 
         ntops = self.propagate(edge_index, feats = feats, istop = tops)
         self.O_ntops = scatter(ntops, batch, 0)
+
+
+        exit()

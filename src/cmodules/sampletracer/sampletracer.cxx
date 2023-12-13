@@ -28,6 +28,7 @@ namespace SampleTracer
     {
         CyROOT* root = this -> root_map[event_root]; 
         if (root -> batches.count(hash)){return root -> batches[hash];}
+
         CyBatch* batch = new CyBatch(hash); 
         batch -> Import(&(root -> meta));
         root -> batches[hash] = batch;
@@ -36,16 +37,16 @@ namespace SampleTracer
 
     std::map<std::string, std::string> CySampleTracer::RestoreTracer(std::map<std::string, HDF5_t>* data, std::string event_root)
     {
-        std::map<std::string, HDF5_t>::iterator ith = data -> begin();
-        std::map<std::string, std::string>::iterator its; 
         std::map<std::string, std::string> del_map; 
         std::map<std::string, std::string> is_ok = {}; 
-        for (; ith != data -> end(); ++ith){
+        std::map<std::string, HDF5_t>::iterator ith;
+        std::map<std::string, std::string>::iterator its;
+        for (ith = data -> begin(); ith != data -> end(); ++ith){
             std::map<std::string, std::string> cache = ith -> second.cache_path; 
-            its = ith -> second.cache_path.begin(); 
-            for (; its != ith -> second.cache_path.end(); ++its){
+
+            for (its = ith -> second.cache_path.begin(); its != ith -> second.cache_path.end(); ++its){
+
                 std::string cache_path = its -> first; 
-                std::string type = its -> second; 
                 if (is_ok.count(cache_path)){continue;}
                 if (del_map.count(cache_path)){
                     cache.erase(cache_path); 
@@ -53,10 +54,11 @@ namespace SampleTracer
                 }
 
                 bool ok = Tools::is_file(&cache_path);
-                if (ok){is_ok[cache_path] = type;}
-                else {del_map[cache_path] = type;} 
+                if (ok){is_ok[cache_path] = its -> second;}
+                else {del_map[cache_path] = its -> second;} 
             }
             if (!is_ok.size()){continue;}
+
             CyBatch* batch = this -> RegisterHash(ith -> first, event_root); 
             for (its = cache.begin(); its != cache.end(); ++its){
                 std::map<std::string, std::string>* this_map; 
@@ -145,23 +147,23 @@ namespace SampleTracer
         if      (set -> eventname.size() && mode == 1){fetch_this = set -> eventname;}
         else if (set -> graphname.size() && mode == 2){fetch_this = set -> graphname;}
         else if (set -> selectionname.size() && mode == 3){fetch_this = set -> selectionname;}
-        else { fetch_this = ""; }
+        else { return {}; }
 
         std::vector<CyBatch*> batches = this -> MakeIterable(); 
         if (!set -> event_stop){end = batches.size();}
-        else {end = set -> event_stop;}
+        else if (batches.size() <= set -> event_stop){ end = batches.size(); }
+        else {end = set -> event_stop-1;}
 
         std::map<std::string, std::vector<CyBatch*>> output; 
         std::map<std::string, std::string>::iterator itr; 
         for (unsigned int x(0); x < end; ++x){
-            std::map<std::string, std::string>* dir_map;
-            if      (mode == 1){ dir_map = &batches[x] -> event_dir; }
+            std::map<std::string, std::string>* dir_map = nullptr;
+            if (mode == 1){ dir_map = &batches[x] -> event_dir; }
             else if (mode == 2){ dir_map = &batches[x] -> graph_dir; }
             else if (mode == 3){ dir_map = &batches[x] -> selection_dir; }
             else {continue;}
             for (itr = dir_map -> begin(); itr != dir_map -> end();){
-                if (!fetch_this.size()){}
-                else if (!Tools::count(itr -> first, fetch_this)){++itr; continue;}
+                if (!Tools::count(itr -> first, fetch_this)){++itr; continue;}
                 output[itr -> first].push_back(batches[x]); 
                 itr = dir_map -> erase(itr);
             }

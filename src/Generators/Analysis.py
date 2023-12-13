@@ -227,7 +227,6 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         else: return
 
         if not self.EventCache: return
-
         self.DumpEvents()
         self.DumpTracer(self.SampleName)
         return True
@@ -249,14 +248,16 @@ class Analysis(_Analysis, SampleTracer, _Interface):
             self.Success("!!!Scanning Content")
             search(self)
             self.Success("!!!Scanning Content... (done)")
+
             self.Success("!!!Checking Events...")
             self.__Event__()
             self.Success("!!!Checking Events... (done)")
+
             self.Success("!!!Checking Selections...")
             self.__Selection__()
             self.Success("!!!Checking Selections... (done)")
-            self.__FeatureAnalysis__()
 
+            self.__FeatureAnalysis__()
             self.Success("!!!Checking Graphs... ")
             self.__Graph__()
             self.Success("!!!Checking Graphs... (done)")

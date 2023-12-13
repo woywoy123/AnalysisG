@@ -187,7 +187,6 @@ cdef inline void restore_base(ref, common_t* com):
     com.pickled_data  = decode64(&com.pickled_data)
     com.event_index   = ref.attrs["event_index"]
 
-
 cdef inline restore_event(ref, event_t* ev):
     restore_base(ref, ev)
     ev.commit_hash   = enc(ref.attrs["commit_hash"])

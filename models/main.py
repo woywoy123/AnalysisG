@@ -5,7 +5,7 @@ from AnalysisG.Tools import Code
 import os
 
 name = "Example"
-model = "RNN"
+model = "RMGN"
 mode_ = 0
 gen_data = False
 
@@ -54,11 +54,8 @@ params = [
 # ----- candidates ----- #
 #"RPN"  : RecursivePathNetz,
 #"RNN"  : RecuriveNuNetz
+#"RMGN" : RecursiveMarkovianGraphNet
 
-#"RGNN" : RecursiveGraphNeuralNetwork, 
-#"BBLR" : BasicBaseLineRecursion,
-#"BGGN" : BasicGraphNeuralNetwork,
-#"MKGN" : MarkovGraphNet <--- need to fix
 auto = AnalysisBuild(name)
 
 for mm in modes:
@@ -68,10 +65,10 @@ for mm in modes:
     train_name = "sample-" + mode
 
     auto.SamplePath = os.environ["Samples"]
-    auto.AddDatasetName("ttH-m1000", 1)
+#    auto.AddDatasetName("ttH-m1000", 1)
     auto.AddDatasetName("ttbar", 1)
-    auto.AddDatasetName("tttt (SM)", 1)
-    auto.AddDatasetName("ttH", 1)
+#    auto.AddDatasetName("tttt (SM)", 1)
+#    auto.AddDatasetName("ttH", 1)
 
     auto.Event = Event
     auto.EventCache = True
@@ -83,7 +80,7 @@ for mm in modes:
     for i, job in auto.Make().items():
         job.Threads = 22
         job.Chunks = 1000
-        job.EventStop = 1000
+        job.EventStop = 100
         print("-> " + i)
         job.Launch()
         del job

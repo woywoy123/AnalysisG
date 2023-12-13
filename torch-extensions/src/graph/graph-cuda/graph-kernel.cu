@@ -73,6 +73,6 @@ __global__ void _unique_sum(
 
     for (unsigned int i(0); i < dim_j; ++i){
         if (cluster_map[idx][i] < 0){continue;}
-        out[idx][idy] = features[cluster_map[idx][i]][idy];   
+        out[idx][idy] += features[cluster_map[idx][i]][idy];   
     }
 }

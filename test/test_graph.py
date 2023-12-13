@@ -159,10 +159,9 @@ def test_edge_aggregation_nodupl():
     for i in clust_l:
         non_dupl.append([sum([node_l[k][f] for k in set(i) if k != -1]) for f in range(dim)])
 
-    try: x = pyc.Graph.Base.unique_aggregation(clust, nodes.to(dtype = torch.float))
-    except AttributeError: return
+    x = pyc.Graph.Base.unique_aggregation(clust, nodes.to(dtype = torch.float))
     x = x.to(device = "cpu")
-    assert not (x - torch.tensor(non_dupl) > 10e-4).sum(-1).sum(-1)
+    assert not (torch.abs(x - torch.tensor(non_dupl)) > 10e-4).sum(-1).sum(-1)
 
 
 
