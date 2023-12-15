@@ -1,15 +1,13 @@
 [build-system]
 requires = [
-    "cython",
-    "wheel",
-    "setuptools",
-    "torch<=2.0.1",
+    "cython", "setuptools",
+    "wheel", "torch<=2.0.1"
 ]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "AnalysisG"
-version = "4.4.1"
+version = "4.4.2"
 authors = [{name = "woywoy123"}]
 readme.content-type = "text/markdown"
 readme.file = "README.md"

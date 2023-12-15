@@ -36,6 +36,7 @@ def build_shell_script(inpt):
         con += "conda activate " + inpt.CondaVenv
     elif inpt.PythonVenv:
         if inpt.PythonVenv.startswith("$"): con += "source " + inpt.PythonVenv
+        elif inpt.PythonVenv.endswith(".sh"): con += "source " + inpt.PythonVenv
         else:
             con += "alias " + inpt.PythonVenv + "\n"
             con += inpt.PythonVenv
@@ -56,11 +57,15 @@ def build_condor_script(inpt):
         std = ""
         if not jb.OpSysVer: pass
         else: std = "Requirements = OpSysAndVer == " + jb.OpSysVer + "\n"
+
         jb.condor_script += std
         jb.condor_script += unit_memory(jb)
         jb.condor_script += unit_time(jb)
         jb.condor_script += hardware(jb)
+#        jb.condor_script += "should_transfer_files = YES\n"
+#        jb.condor_script += "when_to_transfer_output = ON_EXIT\n"
         jb.condor_script += "queue 1"
+
 
 def build_analysis_script(inpt):
     exec_ = inpt.OutputDirectory + "/"

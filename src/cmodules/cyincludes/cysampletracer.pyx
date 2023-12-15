@@ -30,6 +30,7 @@ from libcpp cimport bool
 
 from tqdm import tqdm, trange
 from typing import Union
+from time import sleep
 import numpy as np
 import psutil
 import torch
@@ -140,7 +141,13 @@ cpdef dump_objects(inpt, _prgbar):
     cdef graph_t gr
     cdef selection_t sel
 
-    f = h5py.File(out_path, "a", libver = "latest")
+    f = None
+    for i in range(1000):
+        try: f = h5py.File(out_path, "a", libver = "latest")
+        except BlockingIOError: sleep(1)
+        if f is not None: break
+
+    if f is None: return [None]
     bar.total = len(prc)
     bar.refresh()
     for i in range(bar.total):
@@ -166,7 +173,15 @@ cpdef fetch_objects(list inpt, _prgbar):
 
     bar.total = len(hashes)
     bar.refresh()
-    f = h5py.File(read_path, "r", libver = "latest")
+
+
+    f = None
+    for i in range(1000):
+        try: f = h5py.File(read_path, "r", libver = "latest")
+        except BlockingIOError: sleep(1)
+        if f is not None: break
+    if f is None: return [None]
+
     cdef event_t ev
     cdef graph_t gr
     cdef selection_t sel
@@ -511,15 +526,19 @@ cdef class SampleTracer:
 
         for itr in self._state.root_meta:
             root_n, meta = itr.first, itr.second
-            entry = self.WorkingPath + "Tracer/"
-            if env(root_n).endswith(".root.1"): entry = os.path.abspath(entry + env(root_n))[:-6] + "hdf5"
-            elif env(root_n).endswith(".root"): entry = os.path.abspath(entry + env(root_n))[:-5] + "hdf5"
-            else: pass
 
+            entry = self.WorkingPath + "Tracer/" + env(root_n)
+            entry = os.path.abspath(".root".join(entry.split(".root")[:-1]) + ".hdf5")
             try: os.makedirs("/".join(entry.split("/")[:-1]))
             except FileExistsError: pass
 
-            f = h5py.File(entry, "a", libver = "latest")
+            f = None
+            for i in range(1000):
+                try: f = h5py.File(entry, "a", libver = "latest")
+                except BlockingIOError: sleep(1)
+                if f is not None: break
+            if f is None: continue
+
             ref = _check_h5(f, "meta")
             s_name = env(meta.sample_name)
             if retag is None: pass
@@ -583,7 +602,14 @@ cdef class SampleTracer:
         cdef str title = "TRACER::RESTORE ("
         _, bar = self._makebar(len(files_), title)
         for f in files_:
-            f5 = h5py.File(f, "a", libver = "latest")
+
+            f5 = None
+            for i in range(1000):
+                try: f5 = h5py.File(f, "a", libver = "latest")
+                except BlockingIOError: sleep(1)
+                if f5 is not None: break
+            if f5 is None: continue
+
             bar.set_description(title + f.split("/")[-1] + ")")
             bar.refresh()
 
@@ -630,9 +656,7 @@ cdef class SampleTracer:
             try: os.makedirs("/".join(out_path.split("/")[:-1]))
             except FileExistsError: pass
 
-            if   out_path.endswith(".root.1"): out_path = out_path[:-6] + "hdf5"
-            elif out_path.endswith(".root"):   out_path = out_path[:-5] + "hdf5"
-            else: pass
+            out_path = os.path.abspath(".root".join(out_path.split(".root")[:-1]) + ".hdf5")
             prc.append([out_path, _short, recast_obj(itr.second, self._state, enc(out_path), itr.first)])
 
         if not len(prc): return

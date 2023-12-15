@@ -73,6 +73,6 @@ class Condor(Runner, Tools, _Condor):
     def SubmitToCondor(self):
         self.__DumpConfiguration__()
         pth = self.abs(self.OutputDirectory + "/" + self.ProjectName + "/Condor/condor/")
-        cmd = ["condor_submit_dag", pth + "/DAG_Submission.submit"]
-        return subprocess.check_call(cmd, stderr=subprocess.STDOUT, shell=True).decode("UTF-8")
+        cmd = ["condor_submit_dag " + pth + "/DAG_Submission.submit"]
+        return subprocess.check_call(cmd, stderr=subprocess.STDOUT, shell=True)
 
