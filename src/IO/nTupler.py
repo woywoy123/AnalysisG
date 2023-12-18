@@ -157,6 +157,7 @@ class nTupler(_Interface, _nTupler, SampleTracer):
         commands = [[], __thmerge__, self.Threads, self.Chunks]
         for i in self:
             for t, v in i.items():
+                if not v: continue
                 evnt = v.__getstate__()
                 commands[0] += [(t, evnt, self._clones)]
             if len(commands[0]) < chnks: continue
@@ -219,7 +220,7 @@ class nTupler(_Interface, _nTupler, SampleTracer):
         self.GetAll = True
         self.GetSelection = True
         self._events = sum(self.makehashes()["selection"].values(), [])
-        self._events = self.Quantize(list(set(self._events)), self.Chunks)
+        self._events = self.Quantize(list(set(self._events)), self.Chunks*self.Threads*self.Threads)
         self._events = {k : l for k, l in enumerate(self._events)}
         self._cache_paths = iter(self._events)
         self._restored = {}

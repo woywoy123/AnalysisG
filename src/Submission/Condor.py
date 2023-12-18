@@ -13,16 +13,17 @@ class Condor(Runner, Tools, _Condor):
         _Condor.__init__(self)
         self.Caller = "Condor"
 
-    def AddJob(self, job_name, instance, memory = "", time = "", waitfor = []):
+    def AddJob(self, job_name, instance, memory = None, time = None, waitfor = []):
         self.ProjectInheritance(instance)
         self._CheckWaitFor(job_name, waitfor)
-        if self.RegisterAnalysis(job_name, instance): pass
-        else: return False
-        if memory is not None: pass
-        else: memory = ""
+        if memory is None: memory = ""
+        else: instance.MaxRAM = float(memory[:-2])
 
         if time is not None: pass
         else: time = ""
+
+        if self.RegisterAnalysis(job_name, instance): pass
+        else: return False
 
         self.RegisterJob(job_name, memory, time, waitfor)
 

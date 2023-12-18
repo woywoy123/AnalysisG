@@ -11,8 +11,6 @@ class SSML(EventTemplate):
         }
 
         self.Trees = ["nominal_Loose"]
-
-        self.event_number = "eventNumber"
         self.is_mc = "mcChannelNumber"
         self.met = "met_met"
         self.phi = "met_phi"

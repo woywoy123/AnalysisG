@@ -115,7 +115,8 @@ cdef void tracer_HDF5(ref, map[string, HDF5_t]* data, string type_key, settings_
     cdef HDF5_t* data_tmp
     for type_ in ref:
         if not type_.startswith(env(type_key) + ":"): continue
-        path_ = enc(ref[env(type_key) + "_dir"].attrs[type_.split(":")[-1]])
+        try: path_ = enc(ref[env(type_key) + "_dir"].attrs[type_.split(":")[-1]])
+        except KeyError: continue
         if os.path.isfile(env(path_)): pass
         elif os.path.isfile(env(outdir + path_)): path_ = outdir + path_
         else:
@@ -145,6 +146,7 @@ cpdef dump_objects(inpt, _prgbar):
     for i in range(1000):
         try: f = h5py.File(out_path, "a", libver = "latest")
         except BlockingIOError: sleep(1)
+        except OSError: sleep(1)
         if f is not None: break
 
     if f is None: return [None]
@@ -179,6 +181,8 @@ cpdef fetch_objects(list inpt, _prgbar):
     for i in range(1000):
         try: f = h5py.File(read_path, "r", libver = "latest")
         except BlockingIOError: sleep(1)
+        except OSError: sleep(1)
+
         if f is not None: break
     if f is None: return [None]
 
@@ -536,6 +540,8 @@ cdef class SampleTracer:
             for i in range(1000):
                 try: f = h5py.File(entry, "a", libver = "latest")
                 except BlockingIOError: sleep(1)
+                except OSError: sleep(1)
+
                 if f is not None: break
             if f is None: continue
 
@@ -563,13 +569,16 @@ cdef class SampleTracer:
         for itr in del_map:
             key = env(itr.second)
 
-            del ref[key + "_name_hash"]
+            try: del ref[key + "_name_hash"]
+            except KeyError: pass
             _check_h5(ref, key + "_name_hash")
 
-            del ref[key + "_dir"]
+            try: del ref[key + "_dir"]
+            except KeyError: pass
             _check_h5(ref, key + "_dir")
 
-            del ref["link_" + key + "_code"]
+            try: del ref["link_" + key + "_code"]
+            except KeyError: pass
             _check_h5(ref, "link_" + key + "_code")
 
         cdef string path_, val_
@@ -607,6 +616,8 @@ cdef class SampleTracer:
             for i in range(1000):
                 try: f5 = h5py.File(f, "a", libver = "latest")
                 except BlockingIOError: sleep(1)
+                except OSError: sleep(1)
+
                 if f5 is not None: break
             if f5 is None: continue
 

@@ -64,6 +64,7 @@ def build_condor_script(inpt):
         jb.condor_script += hardware(jb)
 #        jb.condor_script += "should_transfer_files = YES\n"
 #        jb.condor_script += "when_to_transfer_output = ON_EXIT\n"
+#        jb.condor_script += "transfer_output_files = " + inpt.ProjectName + "\n"
         jb.condor_script += "queue 1"
 
 
