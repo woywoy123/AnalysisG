@@ -101,16 +101,25 @@ def build_dag(inpt):
 
     out = []
     parnt = {i : list(inpt.Jobs[i].parents) for i in list(inpt.Jobs)}
-    jn = list(parnt)[0]
+    jn = [i for i in parnt if not len(parnt[i])][0]
     while True:
-        if not len(parnt[jn]): out += [jn] if jn not in out else []
-        else: parnt[jn] = [i for i in list(parnt[jn]) if i not in out]
-        try: jn = parnt[jn][0]
-        except IndexError:
-            try: jn = next(iter([i for i in parnt if len(parnt[i])]))
-            except StopIteration: out += [jn]; break
-    inpt._bash_path += ["#!/bin/bash\n\n"]
+        if jn not in parnt: out += [jn]
+        elif not len(parnt[jn]): out, _ = out + [jn], parnt.pop(jn)
+
+        try: jn = next(iter([i for i in parnt[jn] if i not in out]))
+        except StopIteration:
+            jn = list(parnt).pop()
+            _ = parnt.pop(jn)
+        except KeyError:
+            jn = list(parnt).pop()
+            _ = parnt.pop(jn)
+
+        if len(parnt): continue
+        if jn not in out: out += [jn]
+        break
+
     x = []
+    inpt._bash_path += ["#!/bin/bash\n\n"]
     for name in out:
         inpt._bash_path[1] += "bash " + pth + "shells/" + name + ".sh\n"
         x += ["PARENT " + i + " CHILD " + name for i in inpt.Jobs[name].parents]

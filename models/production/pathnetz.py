@@ -136,9 +136,10 @@ class ParticleRecursion(MessagePassing):
         super().__init__(aggr = None)
         self._in = 2
         self._out = 2
+        self._rnn = 30
 
-        self._edge = Seq(Linear(self._in*2, 256), Tanh(), Linear(256, self._in))
-        self._red = Seq(Linear(self._in, self._out))
+        self._edge = Seq(Linear(self._in + self._rnn, 64), Linear(64, self._rnn))
+        self._red = Seq(Linear(self._rnn, self._out))
 
         self._edge.apply(init_norm)
         self._red.apply(init_norm)
@@ -181,7 +182,7 @@ class ParticleRecursion(MessagePassing):
         feats = [physics.M(pmc)]
 
         track = (torch.ones_like(batch).cumsum(-1)-1).view(-1, 1)
-        self._hidden = torch.cat([track]*(self._in*2 - len(feats)), -1)
+        self._hidden = torch.cat([track]*(self._rnn+1), -1)
         self._hidden = feats + [torch.zeros_like(self._hidden)]
 
         self._hidden = torch.cat(self._hidden, -1)

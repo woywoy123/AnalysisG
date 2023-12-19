@@ -144,7 +144,7 @@ cpdef dump_objects(inpt, _prgbar):
 
     f = None
     for i in range(1000):
-        try: f = h5py.File(out_path, "a", libver = "latest")
+        try: f = h5py.File(out_path, "a")
         except BlockingIOError: sleep(1)
         except OSError: sleep(1)
         if f is not None: break
@@ -179,7 +179,7 @@ cpdef fetch_objects(list inpt, _prgbar):
 
     f = None
     for i in range(1000):
-        try: f = h5py.File(read_path, "r", libver = "latest")
+        try: f = h5py.File(read_path, "r", swmr = True)
         except BlockingIOError: sleep(1)
         except OSError: sleep(1)
 
@@ -538,7 +538,7 @@ cdef class SampleTracer:
 
             f = None
             for i in range(1000):
-                try: f = h5py.File(entry, "a", libver = "latest")
+                try: f = h5py.File(entry, "a")
                 except BlockingIOError: sleep(1)
                 except OSError: sleep(1)
 
@@ -614,7 +614,7 @@ cdef class SampleTracer:
 
             f5 = None
             for i in range(1000):
-                try: f5 = h5py.File(f, "a", libver = "latest")
+                try: f5 = h5py.File(f, "a")
                 except BlockingIOError: sleep(1)
                 except OSError: sleep(1)
 

@@ -24,10 +24,10 @@ class ParticleRecursion(MessagePassing):
         super().__init__(aggr = None)
         self._in = 5
         self._out = 2
-        self._rnn = 32
+        self._rnn = 64
 
-        _l = 128
-        self._edge = Seq(Linear(self._in, _l), ReLU(), Tanh(), Linear(_l, self._rnn))
+        _l = 64
+        self._edge = Seq(Linear(self._in, _l), Linear(_l, self._rnn))
         self._red = Seq(Linear(self._rnn, self._out, bias = False))
         self._edge.apply(init_norm)
 
@@ -146,7 +146,7 @@ class RecursiveNuNetz(MessagePassing):
 
         _l = 32
         self._in = 14
-        self._ntops = Seq(Linear(self._in*2, _l), Tanh(), ReLU(), Linear(_l, 5))
+        self._ntops = Seq(Linear(self._in*2, _l), ReLU(), Linear(_l, 5))
 
     def message(self, feats_i, feats_j, istop):
         feat_i = torch.cat([feats_i, istop.view(-1, 1)], -1)
@@ -178,5 +178,3 @@ class RecursiveNuNetz(MessagePassing):
         ntops = self.propagate(edge_index, feats = feats, istop = tops)
         self.O_ntops = scatter(ntops, batch, 0)
 
-
-        exit()

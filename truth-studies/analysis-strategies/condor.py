@@ -1,10 +1,11 @@
-from ObjectDefinitions.selection import ExampleSelection
+from AnalysisG.IO import nTupler, PickleObject
 from AnalysisG.Submission import Condor
 from AnalysisG.Events import SSML
 from AnalysisG import Analysis
-from AnalysisG.IO import nTupler, PickleObject
+from double_leptonic import DiLeptonic
+import os
 
-samples = ""
+smpls = os.environ["Samples"] + "../SSML_MC/"
 
 def EventGen(path, name):
     ana = Analysis()
@@ -18,34 +19,23 @@ def EventGen(path, name):
 
 def SelectionGen(name):
     ana = Analysis()
-    ana.AddSelection(ExampleSelection)
+    ana.AddSelection(DiLeptonic)
     ana.InputSample(name)
     ana.EventName = "SSML"
-    ana.Threads = 12
-    ana.Chunks = 1000
+    ana.Event = SSML
+    ana.Threads = 48
+    ana.Chunks = 10000
     return ana
 
 con = Condor()
-con.PythonVenv = ""
-con.ProjectName = "ExampleProject"
+con.PythonVenv = "GNN"
+con.ProjectName = "Dilepton"
 
-sample_list = []
-dic = con.ListFilesInDir(samples, ".root")
-for i in dic: sample_list += [i + "/" + j for j in dic[i]]
-
-for x in sample_list:
+smpl = con.ListFilesInDir(smpls, ".root")
+smpl = [i + "/" + j for i in smpl for j in smpl[i]]
+for x in smpl:
     name = x.split("/")[-1].split(".root")[0]
     con.AddJob(name, EventGen(x, name), memory = "12GB", time = "6h")
     con.AddJob("sel-" + name, SelectionGen(name), memory = "12GB", time = "6h", waitfor = [name])
 con.LocalRun()
-#con.SubmitToCondor()
-exit()
-
-nt = nTupler()
-nt.ProjectName = "ExampleProject"
-nt.This("ExampleSelection", "nominal_Loose")
-nt.Threads = 12
-x = nt.merged()
-PickleObject(x, "example_selection")
-
 
