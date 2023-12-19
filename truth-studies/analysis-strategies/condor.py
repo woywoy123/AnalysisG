@@ -18,8 +18,10 @@ def EventGen(path, name):
     return ana
 
 def SelectionGen(name):
+    sel = DiLeptonic()
+    sel.__params__ = {"btagger" : "gn2_btag_85", "truth" : "detector"}
     ana = Analysis()
-    ana.AddSelection(DiLeptonic)
+    ana.AddSelection(sel)
     ana.InputSample(name)
     ana.EventName = "SSML"
     ana.Event = SSML

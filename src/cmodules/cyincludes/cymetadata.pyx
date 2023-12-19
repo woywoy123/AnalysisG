@@ -196,9 +196,9 @@ cdef class MetaData:
 
     def _getMetaData(self, str file) -> bool:
         if not file.endswith(".root"): return False
-        if not self._file_data(file): return False
-        if not self._file_tracker(file): return False
-        if not self._file_truth(file): return False
+        self._file_data(file)
+        self._file_tracker(file)
+        self._file_truth(file)
         if not self.scan_ami: return True
         if not self._search(): return False
         return True
@@ -255,7 +255,6 @@ cdef class MetaData:
         try: f = self._get(command)["jsonData"].split("\n")
         except KeyError: return False
         if len(f) == 0: return False
-
         t = json.loads("\n".join([k for k in f if "BtagCDIPath" not in k]))
         this = t["inputConfig"]
         self.isMC = this["isMC"]

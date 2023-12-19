@@ -53,6 +53,9 @@ cdef inline void tracer_link(f, map[string, vector[string]]* hashes, map[string,
     cdef pair[string, string] itr
     cdef map[string, int] root_map
 
+    cdef bool found
+    cdef vector[string] in_file
+
     try: ref_e = f.create_dataset(keys + "_dir", (1), dtype = h5py.ref_dtype)
     except ValueError: ref_e = f[keys + "_dir"]
 
@@ -78,8 +81,14 @@ cdef inline void tracer_link(f, map[string, vector[string]]* hashes, map[string,
             ref_r.attrs[root_name] = root_name
 
         root_map.clear()
-        print("TRACER::DUMPING (" + env(name_) + "): " + env(root_name))
-        for idx in prange(dx.size(), nogil = True): root_map[dx.at(idx)] = idr
+        in_file = penc(list(ref_h.attrs.keys()))
+        print("TRACER::DUMPING (" + env(name_) + "): " + env(root_name).split("/")[-1])
+        for idx in prange(dx.size(), num_threads = dx.size(), nogil = True):
+            found = False
+            for name_ in in_file:
+                if not name_.compare(dx.at(idx)): found = True
+                if found: break
+            if not found: root_map[dx.at(idx)] = idr
         ref_h.attrs.update(root_map)
 
 cdef void tracer_dump(f, export_t* state, string root_name):
@@ -125,7 +134,7 @@ cdef void tracer_HDF5(ref, map[string, HDF5_t]* data, string type_key, settings_
 
         hash_ = penc(list(ref[type_].attrs.keys()))
         idx_ = <vector[int]>list(ref[type_].attrs.values())
-        for idx in prange(hash_.size(), nogil = True):
+        for idx in prange(hash_.size(), num_threads = set_.threads, nogil = True):
             data_tmp = &dereference(data)[hash_[idx]]
             data_tmp.root_name = root_[idx_[idx]]
             data_tmp.cache_path[path_] = type_key

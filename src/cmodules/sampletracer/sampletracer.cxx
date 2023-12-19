@@ -343,7 +343,7 @@ namespace SampleTracer
         int y = -1;  
         std::vector<std::vector<CyBatch*>*> output = {};
         std::map<std::string, Code::CyCode*>* code = &(this -> code_hashes);
-        std::vector<std::vector<CyBatch*>> quant = Tools::Quantize(all, (set -> chunks)*(set -> threads)); 
+        std::vector<std::vector<CyBatch*>> quant = Tools::Quantize(all, set -> threads); 
         for (unsigned int x(0); x < quant.size(); ++x){
             output.push_back(new std::vector<CyBatch*>()); 
             std::thread* j = new std::thread(Search, &quant[x], set, output[x], code);
