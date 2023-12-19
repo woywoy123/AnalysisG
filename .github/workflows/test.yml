@@ -77,6 +77,12 @@ jobs:
               with:
                 name: covdata
                 path: .coverage.*
+
+            - name: Upload coverage reports to Codecov
+              uses: codecov/codecov-action@v3
+              env:
+                   CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+    
         
     coverage:
         name: Coverage
@@ -122,5 +128,6 @@ jobs:
               minColorRange: 0
               maxColorRange: 100
               valColorRange: ${{ env.total }}
+        
 
 
