@@ -196,9 +196,9 @@ cdef class MetaData:
 
     def _getMetaData(self, str file) -> bool:
         if not file.endswith(".root"): return False
-        self._file_data(file)
-        self._file_tracker(file)
-        self._file_truth(file)
+        if not self._file_data(file): return False
+        if not self._file_tracker(file): return False
+        if not self._file_truth(file): return False
         if not self.scan_ami: return True
         if not self._search(): return False
         return True

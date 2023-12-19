@@ -51,6 +51,7 @@ cdef inline void tracer_link(f, map[string, vector[string]]* hashes, map[string,
     cdef vector[string]* dx
     cdef string name_, path_
     cdef pair[string, string] itr
+    cdef pair[string, int] iti
     cdef map[string, int] root_map
 
     cdef bool found
@@ -89,7 +90,7 @@ cdef inline void tracer_link(f, map[string, vector[string]]* hashes, map[string,
                 if not name_.compare(dx.at(idx)): found = True
                 if found: break
             if not found: root_map[dx.at(idx)] = idr
-        ref_h.attrs.update(root_map)
+        for iti in root_map: ref_h.attrs[iti.first] = iti.second
 
 cdef void tracer_dump(f, export_t* state, string root_name):
     cdef pair[string, code_t] itc
