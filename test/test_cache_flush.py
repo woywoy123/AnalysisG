@@ -137,6 +137,6 @@ def test_change_graph_cache():
     ana.rm("Project")
 
 if __name__ == "__main__":
-    test_event_flush()
-    test_change_event_cache()
+#    test_event_flush()
+#    test_change_event_cache()
     test_change_graph_cache()

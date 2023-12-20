@@ -62,9 +62,6 @@ def build_condor_script(inpt):
         jb.condor_script += unit_memory(jb)
         jb.condor_script += unit_time(jb)
         jb.condor_script += hardware(jb)
-#        jb.condor_script += "should_transfer_files = YES\n"
-#        jb.condor_script += "when_to_transfer_output = ON_EXIT\n"
-#        jb.condor_script += "transfer_output_files = " + inpt.ProjectName + "\n"
         jb.condor_script += "queue 1"
 
 
@@ -106,17 +103,11 @@ def build_dag(inpt):
         if jn not in parnt: out += [jn]
         elif not len(parnt[jn]): out, _ = out + [jn], parnt.pop(jn)
 
+        if not len(parnt): break
         try: jn = next(iter([i for i in parnt[jn] if i not in out]))
-        except StopIteration:
-            jn = list(parnt).pop()
-            _ = parnt.pop(jn)
-        except KeyError:
-            jn = list(parnt).pop()
-            _ = parnt.pop(jn)
+        except StopIteration: parnt[jn] = []
+        except KeyError: jn = list(parnt).pop()
 
-        if len(parnt): continue
-        if jn not in out: out += [jn]
-        break
 
     x = []
     inpt._bash_path += ["#!/bin/bash\n\n"]

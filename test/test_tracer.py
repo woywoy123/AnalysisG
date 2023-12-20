@@ -276,12 +276,12 @@ def test_tracer_hdf5():
 
     s = SampleTracer()
     s.OutputDirectory = "Project"
+    s.EventName = "Event"
     s.EventCache = True
     s.RestoreTracer()
     s.RestoreEvents()
 
     for i in tr1["Event"]: break
-    print(len(s[i.ROOT]), len(tr1))
     assert len(s[i.ROOT]) == len(tr1)
 
     for i in tr2["Event"]: break
@@ -306,6 +306,7 @@ def test_tracer_hdf5():
     for i in range(10):
         s = SampleTracer()
         s.OutputDirectory = "Project"
+        s.EventName = "Event"
         s.EventCache = True
         s.RestoreTracer()
         s.RestoreEvents()

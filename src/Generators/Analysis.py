@@ -141,8 +141,14 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         self.FlushEvents(get_ev)
 
     def __Graph__(self):
-        if self.Graph is None: return
-        get = sum(self._get["graph"].values(), [])
+        if len(self.GraphName): pass
+        else: return
+
+        in_cache = self._get["graph"]
+        get = []
+        for i, g in in_cache.items():
+            if len(i.split(self.GraphName)) == 1: continue
+            get += g
         get_ev = sum(self._get["event"].values(), [])
         c = cCheckDifference(get_ev, get, self.Threads)
 
@@ -173,6 +179,7 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         if not content: pass
         elif (gr_l == ev_l) and gr_l: return
 
+        if self.Graph is None: return
         gr = GraphGenerator()
         gr.Caller = "ANALYSIS::GRAPH"
         gr.ImportSettings(self.ExportSettings())
@@ -192,7 +199,9 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         return True
 
     def __Event__(self):
-        if self.Event is None: return
+        if len(self.EventName): pass
+        else: return
+
         get = sum(self._get["event"].values(), [])
         if len(get) and self.EventCache: self.RestoreEvents(get)
         elif not len(get): pass
@@ -223,6 +232,7 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         elif self.EventStop <= x: return
         else: pass
 
+        if self.Event is None: return
         if ev.MakeEvents(self.SampleName, self): pass
         else: return
 
@@ -283,4 +293,5 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         if self.Tree: pass
         elif not len(self.ShowTrees): return True
         else: self.Tree = self.ShowTrees[0]
+
         return False

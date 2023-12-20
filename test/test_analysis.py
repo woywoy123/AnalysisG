@@ -119,11 +119,13 @@ def test_analysis_event_cache():
     assert len([i for i in AnaE if i.Event]) != 0
 
     Ana = _template()
-    Ana.EventCache = True
     Ana.EventName = "Event"
+    Ana.EventCache = True
     Ana.Verbose = 3
+
     for i in Ana:
-        print(i.Event, i.Tops)
+        assert i.Event
+        assert len(i.Tops)
     assert len([i for i in Ana if i.Event and len(i.Tops)]) != 0
     Ana.rm("Project")
 
@@ -239,7 +241,7 @@ def test_analysis_data_cache():
     AnaE = _template()
     AnaE.DataCache = True
     AnaE.GraphName = "GraphChildren"
-    AnaE.Threads = 10
+    AnaE.Threads = 12
     AnaE.Launch()
 
     for i in AnaE:
@@ -343,8 +345,8 @@ def test_analysis_data_event_cache_diff_sample():
     Ana1.AddNodeFeature(fx_pmu, "Pmu")
     Ana1.AddEdgeFeature(fx_edge, "Mass")
     Ana1.AddNodeTruthFeature(fx_node, "Mass")
-    Ana1.DataCache = True
     Ana1.EventName = "Event"
+    Ana1.DataCache = True
     Ana1.Launch()
 
     assert len([i for i in Ana1 if i.Graph and i.N_Pmu is not None])
@@ -438,7 +440,7 @@ def test_analysis_selection_cache():
     AnaR.rm("Project")
 
 if __name__ == "__main__":
-    test_analysis_event_merge()
+#    test_analysis_event_merge()
 #    test_analysis_more_samples()
 #    test_analysis_event_nocache()
 #    test_analysis_event_nocache_nolaunch()
@@ -449,7 +451,7 @@ if __name__ == "__main__":
 #    test_analysis_data_nocache_nolaunch()
 #    test_analysis_data_cache()
 #    test_analysis_data_cache_diff_sample()
-#    test_analysis_data_event_cache_diff_sample()
+    test_analysis_data_event_cache_diff_sample()
 #
 #    test_analysis_selection_nocache()
 #    test_analysis_selection_nocache_nolaunch()

@@ -217,7 +217,8 @@ class nTupler(_Interface, _nTupler, SampleTracer):
     def __iter__(self):
         if not self._loaded: self.__start__()
         self._clones = {i.class_name : i for i in self.rebuild_code(None)}
-        self.GetAll = True
+        lst = self.makelist()
+        if len(lst): self.FlushSelections([i.hash for i in lst])
         self.GetSelection = True
         self._events = sum(self.makehashes()["selection"].values(), [])
         self._events = self.Quantize(list(set(self._events)), self.Chunks*self.Threads*self.Threads)
@@ -244,11 +245,10 @@ class nTupler(_Interface, _nTupler, SampleTracer):
         if not len(self._events):
             hashes = None
             self._cache_paths = None
-        else:
-            hashes = self._events[next(self._cache_paths)]
-            self.RestoreSelections(hashes)
+        else: hashes = self._events[next(self._cache_paths)]
         for i in self._restored:
             self.Tree, self.SelectionName = i.split(".")
+            self.RestoreSelections(hashes)
             if hashes is None: these = self.makelist()
             elif len(hashes) > 1: these = self[hashes]
             else: these = [self[hashes]]

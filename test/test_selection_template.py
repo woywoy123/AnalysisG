@@ -5,7 +5,7 @@ from examples.Event import EventEx
 smpl = "./samples/"
 Files = {
     smpl + "sample1": ["smpl1.root"],
-#    smpl + "sample2": ["smpl1.root", "smpl2.root", "smpl3.root"],
+    smpl + "sample2": ["smpl1.root", "smpl2.root", "smpl3.root"],
 }
 
 def template():
@@ -32,6 +32,7 @@ def test_selection_code():
         lst.append(Example())
         lst[-1].__processing__(i)
     out = sum(lst)
+    print(out.CutFlow, x.CutFlow)
     assert out.CutFlow == x.CutFlow
 
 if __name__ == "__main__":

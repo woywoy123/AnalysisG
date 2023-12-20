@@ -93,8 +93,9 @@ def test_dumping_graphs():
     con.ProjectName = "Project"
 
     Ana = _template()
-    Ana.Graph = DataGraph
     Ana.AddGraphFeature(Feat)
+    Ana.Graph = DataGraph
+    Ana.EventName = "EventEx"
     Ana.EventCache = True
     Ana.DataCache = True
     con.AddJob("Data", Ana, waitfor=["Events"])
@@ -150,14 +151,20 @@ def test_dumping_event_selection():
 
     Ana_s1 = _template({"Name": "smpl1"})
     Ana_s1.AddSelection(Example)
+    Ana_s1.EventName = "EventEx"
+    Ana_s1.EventCache = True
     con.AddJob("example1_1", Ana_s1, waitfor=["smpl1", "smpl2", "smpl3"])
 
     Ana_s2 = _template({"Name": "smpl2"})
     Ana_s2.AddSelection(Example)
+    Ana_s2.EventName = "EventEx"
+    Ana_s2.EventCache = True
     con.AddJob("example1_2", Ana_s2, waitfor=["smpl1", "smpl2", "smpl3"])
 
     Ana_s3 = _template({"Name": "smpl3"})
     Ana_s3.AddSelection(Example)
+    Ana_s3.EventName = "EventEx"
+    Ana_s3.EventCache = True
     con.AddJob("example1_3", Ana_s3, waitfor=["smpl1", "smpl2", "smpl3"])
 
     con.LocalRun()
@@ -169,10 +176,11 @@ def test_dumping_event_selection():
 
     x = []
     for i in Ana_T:
+        if not i.release_selection(): continue
         assert i.selection
         assert i.sample_name
         x.append(i)
-    assert len(x) != 0
+    assert len(x)
     Ana_T.rm("Project")
 
 def test_dumping_optimization():
@@ -206,18 +214,24 @@ def test_dumping_optimization():
     ApplyFeatures(AnaD_1, "TruthChildren")
     AnaD_1.DataCache = True
     AnaD_1.EventCache = True
+    AnaD_1.Tree = "nominal"
+    AnaD_1.EventName = "Event"
     AnaD_1.Graph = GraphChildren
 
     AnaD_2 = _template({"Name": "smpl2"})
     ApplyFeatures(AnaD_2, "TruthChildren")
     AnaD_2.DataCache = True
     AnaD_2.EventCache = True
+    AnaD_2.Tree = "nominal"
+    AnaD_2.EventName = "Event"
     AnaD_2.Graph = GraphChildren
 
     AnaD_3 = _template({"Name": "smpl3"})
     ApplyFeatures(AnaD_3, "TruthChildren")
     AnaD_3.DataCache = True
     AnaD_3.EventCache = True
+    AnaD_3.Tree = "nominal"
+    AnaD_3.EventName = "Event"
     AnaD_3.Graph = GraphChildren
 
     con.AddJob("Dsmpl1", AnaD_1, waitfor=["smpl1"])
@@ -228,8 +242,9 @@ def test_dumping_optimization():
     AnaOp.InputSample(**{"Name": "smpl2"})
     AnaOp.InputSample(**{"Name": "smpl3"})
     AnaOp.RunName = "run-1"
+    AnaOp.GraphName = "GraphChildren"
+    AnaOp.Tree = "nominal"
     AnaOp.DataCache = True
-    AnaOp.EventCache = False
     AnaOp.kFolds = 4
     AnaOp.Epochs = 10
     AnaOp.Optimizer = "ADAM"
@@ -251,5 +266,5 @@ if __name__ == "__main__":
     #test_condor()
     #test_dumping_events()
     #test_dumping_graphs()
-    test_dumping_event_selection()
-    #test_dumping_optimization()
+    #test_dumping_event_selection()
+    test_dumping_optimization()

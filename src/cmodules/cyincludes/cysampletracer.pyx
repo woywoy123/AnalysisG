@@ -154,7 +154,7 @@ cpdef dump_objects(inpt, _prgbar):
 
     f = None
     for i in range(1000):
-        try: f = h5py.File(out_path, "a")
+        try: f = h5py.File(out_path, "a", libver = "latest")
         except BlockingIOError: sleep(0.1)
         except OSError: sleep(0.1)
         if f is not None: break
@@ -441,8 +441,11 @@ cdef class SampleTracer:
         cdef vector[string] inpt;
         if isinstance(key, str): inpt = [enc(key)]
         else: inpt = penc(key)
+        cdef list output
         self._set.search = inpt
-        cdef list output = self.makelist()
+        while True:
+            try: output = self.makelist(); break
+            except RuntimeError: pass
         self._set.search.clear()
         if not len(output): return False
         return output[0] if len(output) == 1 else output
@@ -653,7 +656,7 @@ cdef class SampleTracer:
             if del_map.size():
                 f5 = None
                 for i in range(1000):
-                    try: f5 = h5py.File(f, "a")
+                    try: f5 = h5py.File(f, "a", libver = "latest")
                     except BlockingIOError: sleep(0.1)
                     except OSError: sleep(0.1)
                     if f5 is not None: break
@@ -848,7 +851,7 @@ cdef class SampleTracer:
         cdef dict out = {}
         cdef map[string, vector[string]] ev, gr, sel
         cdef vector[CyBatch*] br = self.ptr.MakeIterable()
-        for idx in prange(br.size(), nogil = True, num_threads = br.size()):
+        for idx in prange(br.size(), nogil = True, num_threads = self._set.threads):
             if self._set.getevent: merge(&ev, &br[idx].event_dir, br[idx].hash)
             if self._set.getgraph: merge(&gr, &br[idx].graph_dir, br[idx].hash)
             if self._set.getselection: merge(&sel, &br[idx].selection_dir, br[idx].hash)
