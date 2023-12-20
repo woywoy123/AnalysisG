@@ -69,9 +69,9 @@ cdef inline void tracer_link(f, map[string, vector[string]]* hashes, map[string,
         ref_e.attrs[name_] = path_
 
         dx = &dereference(hashes)[itr.first]
-        try: ref_h = f.create_dataset(keys + ":" + env(name_), dx.size(), dtype = h5py.ref_dtype, chunks = True)
+        try: ref_h = f.create_dataset(keys + ":" + env(name_), dx.size(), dtype = h5py.ref_dtype)
         except ValueError: ref_h = f[keys + ":" + env(name_)]
-        try: ref_r = f.create_dataset("ROOT", (1), dtype = h5py.ref_dtype, chunks = True)
+        try: ref_r = f.create_dataset("ROOT", (1), dtype = h5py.ref_dtype)
         except ValueError: ref_r = f["ROOT"]
         idr = 0
 
@@ -155,8 +155,8 @@ cpdef dump_objects(inpt, _prgbar):
     f = None
     for i in range(1000):
         try: f = h5py.File(out_path, "a")
-        except BlockingIOError: sleep(1)
-        except OSError: sleep(1)
+        except BlockingIOError: sleep(0.1)
+        except OSError: sleep(0.1)
         if f is not None: break
 
     if f is None: return [None]
@@ -190,8 +190,8 @@ cpdef fetch_objects(list inpt, _prgbar):
     f = None
     for i in range(1000):
         try: f = h5py.File(read_path, "r", swmr = True)
-        except BlockingIOError: sleep(1)
-        except OSError: sleep(1)
+        except BlockingIOError: sleep(0.1)
+        except OSError: sleep(0.1)
 
         if f is not None: break
     if f is None: return [None]
@@ -548,9 +548,9 @@ cdef class SampleTracer:
 
             f = None
             for i in range(1000):
-                try: f = h5py.File(entry, "a")
-                except BlockingIOError: sleep(1)
-                except OSError: sleep(1)
+                try: f = h5py.File(entry, "a", libver = "latest")
+                except BlockingIOError: sleep(0.1)
+                except OSError: sleep(0.1)
 
                 if f is not None: break
             if f is None: continue
@@ -625,9 +625,8 @@ cdef class SampleTracer:
             f5 = None
             for i in range(1000):
                 try: f5 = h5py.File(f, "a")
-                except BlockingIOError: sleep(1)
-                except OSError: sleep(1)
-
+                except BlockingIOError: sleep(0.1)
+                except OSError: sleep(0.1)
                 if f5 is not None: break
             if f5 is None: continue
 
@@ -637,7 +636,9 @@ cdef class SampleTracer:
             bar.update(1)
             data.clear()
 
-            key = list(f5["meta"].attrs)[0]
+            try: key = list(f5["meta"].attrs)[0]
+            except KeyError: f5.close(); continue
+
             meta, event_root = _decoder(f5["meta"].attrs[key]), enc(key)
             if sample_name is None: pass
             elif sample_name in env(meta.sample_name).split("|"): pass
