@@ -624,7 +624,7 @@ cdef class SampleTracer:
 
             f5 = None
             for i in range(1000):
-                try: f5 = h5py.File(f, "a")
+                try: f5 = h5py.File(f, "r")
                 except BlockingIOError: sleep(0.1)
                 except OSError: sleep(0.1)
                 if f5 is not None: break
@@ -650,8 +650,17 @@ cdef class SampleTracer:
             tracer_HDF5(f5, &data, b"selection", self._set)
 
             del_map = self.ptr.RestoreTracer(&data, event_root)
-            self._deregister(f5, del_map)
-            if del_map.size(): f5.close(); continue
+            if del_map.size():
+                f5 = None
+                for i in range(1000):
+                    try: f5 = h5py.File(f, "a")
+                    except BlockingIOError: sleep(0.1)
+                    except OSError: sleep(0.1)
+                    if f5 is not None: break
+                if f5 is None: continue
+                self._deregister(f5, del_map)
+                f5.close()
+                continue
 
             for key, i in f5["code"].attrs.items():
                 self._set.hashed_code[enc(key)] = _decoder(i)
