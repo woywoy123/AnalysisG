@@ -8,4 +8,5 @@ target_sources(operators-cuda
 )
 
 target_link_libraries(operators-cuda PUBLIC ${TORCH_LIBRARIES})
+target_compile_options(operators-cuda PRIVATE $<$<COMPILE_LANGUAGE:CUDA>: --expt-relaxed-constexpr>)
 target_include_directories(operators-cuda PUBLIC ${CMAKE_CURRENT_LIST_DIR})

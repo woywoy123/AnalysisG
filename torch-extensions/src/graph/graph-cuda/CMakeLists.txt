@@ -7,5 +7,6 @@ PUBLIC
 )
 
 target_link_libraries(graph-cuda PUBLIC ${TORCH_LIBRARIES} physics-cuda transform_cu)
+target_compile_options(graph-cuda PRIVATE $<$<COMPILE_LANGUAGE:CUDA>: --expt-relaxed-constexpr>)
 target_include_directories(graph-cuda PUBLIC ${CMAKE_CURRENT_LIST_DIR})
 

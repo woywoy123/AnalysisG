@@ -9,6 +9,9 @@ target_sources(physics-cuda
         ${CMAKE_CURRENT_LIST_DIR}/torch.cu
 )
 
+
+
 target_link_libraries(physics-cuda PUBLIC ${TORCH_LIBRARIES} cartesian-cuda)
+target_compile_options(physics-cuda PRIVATE $<$<COMPILE_LANGUAGE:CUDA>: --expt-relaxed-constexpr>)
 target_include_directories(physics-cuda PUBLIC ${CMAKE_CURRENT_LIST_DIR})
 

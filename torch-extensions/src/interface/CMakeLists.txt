@@ -3,7 +3,9 @@ if(CMAKE_CUDA_COMPILER)
         ${CMAKE_CURRENT_LIST_DIR}/pyc_cuda.h
         ${CMAKE_CURRENT_LIST_DIR}/pyc_cuda.cxx
     )
-    
+   
+    target_compile_options(pyc_cuda PRIVATE $<$<COMPILE_LANGUAGE:CUDA>: --expt-relaxed-constexpr>)
+
     target_link_libraries(pyc_cuda 
         PUBLIC 
             ${TORCH_LIBRARIES} 
