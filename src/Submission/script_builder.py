@@ -10,18 +10,26 @@ def unit_memory(inpt):
     return "Request_Memory = " + str(tmp) + "\n"
 
 def unit_time(inpt):
-    if len(inpt.Time) < 3: return ""
-    unit = inpt.Time[-2:].lower()
-    std  = inpt.Time[:-2]
+    if len(inpt.Time) < 2: return ""
+    unit = inpt.Time.lower()
+    if unit.endswith("h"): std = inpt.Time[:-1]
+    elif unit.endswith("hrs"): std = inpt.Time[:-3]
+    elif unit.endswith("m"): std = inpt.Time[:-1]
+    elif unit.endswith("min"): std = inpt.Time[:-3]
+    elif unit.endswith("mins"): std = inpt.Time[:-4]
+    else: return ""
+
+    unit = inpt.Time[len(std):]
     try: tmp = float(std)
     except: return ""
-    if unit == "h": tmp *= 60*60
-    elif unit == "m": tmp *= 60
+
+    if unit.startswith("h"): tmp *= 60*60
+    elif unit.startswith("m"): tmp *= 60
     return "+RequestRuntime = " + str(tmp) + "\n"
 
 def hardware(inpt):
     std = ""
-    if inpt.Device != "cuda": pass
+    if "cuda" not in inpt.Device: pass
     else: std += "Request_GPUs = 1 \n"
     if not inpt.Threads: pass
     else: std += "Request_Cpus = " + inpt.Threads + "\n"

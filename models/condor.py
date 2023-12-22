@@ -1,22 +1,18 @@
-from runner_router import AnalysisBuild, Graphs
-from AnalysisG.Events import Event
-from AnalysisG import Analysis
-from AnalysisG.Tools import Code
+from AnalysisG.Templates import ApplyFeatures
 from AnalysisG.Submission import Condor
+from AnalysisG.Events import Event
+from runner_router import AnalysisBuild, Graphs
+from AnalysisG import Analysis
 import os
 
-name = "ModelTraining"
-model = "GNNEXP" #"RNN" #"RMGN"
-mode_ = 0
-gen_data = False
 
-modes = [
-    "TruthChildren_All",
-#    "TruthChildren_NoNu",
-#    "TruthJets_NoNu",
-#    "TruthJets_All",
-#    "Jets_NoNu"
-]
+this_ev = Event
+mode = "Jets_All"
+model = "GNNEXP"
+smple = os.environ["Samples"]
+folds = 10
+venv = "GNN"
+
 
 params = [
 #    ("MRK-1" , "ADAM", 1  , {"lr": 1e-3, "weight_decay" : 1e-3},            None,              None),
@@ -45,60 +41,55 @@ params = [
 ]
 
 
-#"TruthChildren_All" : GraphChildren,
-#"TruthChildren_NoNu" : GraphChildrenNoNu,
-#"TruthJets_All" : GraphTruthJet,
-#"TruthJets_NoNu": GraphTruthJetNoNu,
-#"Jets_All" : GraphJet,
-#"Jets_NoNu" : GraphJetNoNu,
-#"Jets_Detector" : GraphDetector
 
-# ----- candidates ----- #
-#"RPN"  : RecursivePathNetz,
-#"RNN"  : RecuriveNuNetz
-#"RMGN" : RecursiveMarkovianGraphNet
 
-auto = AnalysisBuild(name)
-for mm in modes:
-    if not gen_data: break
+def EventGen(name, path):
+    ana = Analysis()
+    ana.InputSample(name, path)
+    ana.EventCache = True
+    ana.Event = this_ev
+    ana.Chunks = 1000
+    ana.Threads = 12
+    return ana
 
-    mode = mm
-    train_name = "sample-" + mode
+def GraphGen(name):
+    tmp = this_ev()
+    ana = Analysis()
+    ana.DataCache = True
+    ana.EventName = tmp.__name__()
+    ana.Graph = Graphs(mode)._this
+    ana.InputSample(name)
+    ApplyFeatures(ana, mode.split("_")[0])
+    ana.Chunks = 1000
+    ana.Threads = 12
+    return ana
 
-    auto.SamplePath = os.environ["Samples"]
-    auto.AddDatasetName("ttH-m1000", 1)
-    auto.AddDatasetName("ttbar", 1)
-    auto.AddDatasetName("tttt (SM)", 1)
-    auto.AddDatasetName("ttH", 1)
+def TrainGen(names, train_name):
+    ana = Analysis()
+    ana.TrainingName = train_name
+    for n in names: ana.InputSample(n)
+    ana.TrainingSize = 40
+    ana.DataCache = True
+    ana.kFolds = folds
+    ana.Threads = 48
+    ana.GraphName = Graphs(mode)._this.__name__
+    return ana
 
-    auto.Event = Event
-    auto.EventCache = True
-    auto.MakeEventCache()
-    auto.MakeGraphCache(mode)
-    auto.QuantizeSamples(10)
-    auto.TrainingSample(train_name, 90)
-
-    for i, job in auto.Make().items():
-        job.Threads = 22
-        job.Chunks = 1000
-        print("-> " + i)
-        job.Launch()
-        del job
-
-mode = modes[mode_]
-for this in params:
+def OptimGen(this, fold, train_name):
     run_, min_, batch, min_param, sch_, sch_param = this
 
+    auto = AnalysisBuild("tmp")
     Ana = Analysis()
     Ana.ProjectName = name
     Ana.Device = "cuda"
-    Ana.TrainingName = "sample-" + mode
+    Ana.TrainingName = train_name
     Ana.Model = auto.ModelTrainer(model)
     Ana.BatchSize = batch
-    Ana.kFold = 1
-    Ana.Epochs = 1000
-    Ana.MaxGPU = 20
-    Ana.MaxRAM = 200
+    Ana.kFold = fold
+    Ana.Epochs = 100
+    Ana.Threads = 24
+    Ana.MaxGPU = 8
+    Ana.MaxRAM = 32
     Ana.Tree = "nominal"
     Ana.EventName = None
     Ana.RunName = run_
@@ -114,4 +105,30 @@ for this in params:
     Ana.ContinueTraining = False
     Ana.DebugMode = False
     Ana.KinematicMap = {"top_edge" : "polar -> N_pT, N_eta, N_phi, N_energy"}
-    Ana.Launch()
+    return Ana
+
+
+con = Condor()
+con.PythonVenv = venv
+con.ProjectName = "ModelTrainer"
+samples_map = con.lsFiles(smple, ".root")
+samples_map = [i for i in samples_map if "ttH" in i][:4]
+samples_map = {i.split("/")[-1].replace(".root", "") : i for i in samples_map}
+event_ = []
+for name in samples_map:
+    con.AddJob(name + "-ev", EventGen(name, samples_map[name]), memory = "32GB", time = "12hrs")
+    event_.append(name + "-ev")
+
+graphs_ = []
+for name in samples_map:
+    con.AddJob(name + "-gr", GraphGen(name), memory = "32GB", time = "12h", waitfor = event_)
+    graphs_.append(name + "-gr")
+
+con.AddJob(mode + "train", TrainGen(samples_map, mode), memory = "128GB", time = "48h", waitfor = graphs_)
+
+
+for i in params:
+    for k in range(folds):
+        con.AddJob("k-"+ str(k) + "-" + i[0], OptimGen(i, k, mode), waitfor = [mode + "train"], memory = "32GB", time = "48h")
+#con.LocalRun()
+con.SubmitToCondor()

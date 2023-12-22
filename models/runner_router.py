@@ -7,12 +7,14 @@ from AnalysisG import Analysis
 from production.RBGNN import RecursiveMarkovianGraphNet
 from production.pathnetz import RecursivePathNetz
 from production.nunetz import RecursiveNuNetz
+from Beta.experimental import ExperimentalGNN
 from dataset_mapping import DataSets
 
 models = {
             "RPN" : RecursivePathNetz,
             "RNN" : RecursiveNuNetz,
-            "RMGN" : RecursiveMarkovianGraphNet
+            "RMGN" : RecursiveMarkovianGraphNet,
+            "GNNEXP" : ExperimentalGNN,
 }
 
 graphs = {
