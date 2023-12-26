@@ -16,6 +16,7 @@ namespace SampleTracer
     }
     
     std::string CyBatch::Hash(){ return this -> hash; }
+
     void CyBatch::Import(const event_t* event)
     { 
         std::string name = ""; 
@@ -184,6 +185,7 @@ namespace SampleTracer
 
         this -> valid = false;  
         this -> Contextualize();
+        if (inpt -> get_all){this -> valid = true;}
         if (!this -> valid && !inpt -> get_all){ return; }
 
         const std::vector<std::string>* srch = &(inpt -> search); 

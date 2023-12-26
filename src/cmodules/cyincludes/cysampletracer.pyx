@@ -174,18 +174,17 @@ cpdef dump_objects(inpt, _prgbar):
     del f
     return [None]
 
-cpdef fetch_objects(list inpt, _prgbar):
+cpdef list fetch_objects(list inpt, _prgbar):
     lock, bar = _prgbar
     cdef int i
     cdef str hash_
     cdef str read_path = env(inpt[0][0])
     cdef str type_ = inpt[0][1]
     cdef list hashes = inpt[0][2]
-    cdef dict output = {}
+    cdef list missing = []
 
     bar.total = len(hashes)
     bar.refresh()
-
 
     f = None
     for i in range(1000):
@@ -196,32 +195,29 @@ cpdef fetch_objects(list inpt, _prgbar):
         if f is not None: break
     if f is None: return [None]
 
-    cdef event_t ev
-    cdef graph_t gr
-    cdef selection_t sel
+    cdef map[string, event_t] output_ev
+    cdef map[string, graph_t] output_gr
+    cdef map[string, selection_t] output_sel
 
     for i in range(bar.total):
         hash_ = env(hashes[i])
-        dt = f[hash_]
+        try: dt = f[hash_]
+        except KeyError:
+            missing.append(hash_)
+            continue
+
         for refs in list(dt.values()):
-            if type_ == "Event":
-                restore_event(refs, &ev)
-                output[hash_] = ev
-
-            elif type_ == "Graph":
-                restore_graph(refs, &gr)
-                output[hash_] = gr
-
-            elif type_ == "Selection":
-                restore_selection(refs, &sel)
-                output[hash_] = sel
-
-            else: continue
+            if type_ == "Event": restore_event(refs, &output_ev[enc(hash_)])
+            elif type_ == "Graph": restore_graph(refs, &output_gr[enc(hash_)])
+            elif type_ == "Selection": restore_selection(refs, &output_sel[enc(hash_)])
             with lock: bar.update(1)
+
     f.close()
     del f
-    return [[enc(read_path), output]]
-
+    if output_ev.size(): return [[enc(read_path), output_ev, penc(missing)]]
+    if output_gr.size(): return [[enc(read_path), output_gr, penc(missing)]]
+    if output_sel.size(): return [[enc(read_path), output_sel, penc(missing)]]
+    return [None]
 
 
 
@@ -479,6 +475,14 @@ cdef class SampleTracer:
             return sum([entries for entries in dc.values()])
         return entries
 
+    def __str__(self):
+        cdef dict settings = dict(dereference(self._set))
+        cdef str out = ""
+        for i, j in settings.items():
+            if i == "hashed_code": continue
+            out += i + " -> " + str(j) + "\n"
+        return out
+
     def __add__(self, SampleTracer other) -> SampleTracer:
         cdef SampleTracer out = self.clone()
         out.ptr.iadd(self.ptr)
@@ -577,33 +581,24 @@ cdef class SampleTracer:
 
         cdef map[string, string]* repl
         cdef pair[string, string] itr
-        cdef str key
+        cdef str key, k, name, hash_
+        cdef string path_, val_
 
         for itr in del_map:
             key = env(itr.second)
-
-            try: del ref[key + "_name_hash"]
-            except KeyError: pass
-            _check_h5(ref, key + "_name_hash")
-
-            try: del ref[key + "_dir"]
-            except KeyError: pass
-            _check_h5(ref, key + "_dir")
-
-            try: del ref["link_" + key + "_code"]
-            except KeyError: pass
-            _check_h5(ref, "link_" + key + "_code")
-
-        cdef string path_, val_
-        for key in ["event", "graph", "selection"]:
             if   key == "event":     repl = &self.ptr.link_event_code
             elif key == "graph":     repl = &self.ptr.link_graph_code
             elif key == "selection": repl = &self.ptr.link_selection_code
+            for k in list(ref[key + "_dir"].attrs.keys()):
+                name = env(itr.first).split("Cache/")[-1].split("/")[0]
+                if k != name: continue
 
-            for hash_, key in ref["link_" + key + "_code"].attrs.items():
-                path_, val_ = enc(hash_), enc(key)
-                if repl.count(path_): pass
-                else: dereference(repl)[path_] = val_
+                name = k.split(".")[-1]
+                hash_ = ref["link_" + key + "_code"].attrs[name]
+                del ref[key + "_dir"].attrs[k]
+                del ref["link_" + key + "_code"].attrs[name]
+                del ref[key + ":" + k]
+                del ref["code"].attrs[hash_]
 
     def RestoreTracer(self, dict tracers = {}, sample_name = None):
         cdef root_path = self.WorkingPath + "Tracer/"
@@ -651,7 +646,6 @@ cdef class SampleTracer:
             tracer_HDF5(f5, &data, b"event", self._set)
             tracer_HDF5(f5, &data, b"graph", self._set)
             tracer_HDF5(f5, &data, b"selection", self._set)
-
             del_map = self.ptr.RestoreTracer(&data, event_root)
             if del_map.size():
                 f5 = None
@@ -662,12 +656,22 @@ cdef class SampleTracer:
                     if f5 is not None: break
                 if f5 is None: continue
                 self._deregister(f5, del_map)
-                f5.close()
-                continue
 
             for key, i in f5["code"].attrs.items():
                 self._set.hashed_code[enc(key)] = _decoder(i)
                 self.ptr.AddCode(self._set.hashed_code[enc(key)])
+
+            for key, i in f5["link_selection_code"].attrs.items():
+                if self.ptr.link_selection_code.count(enc(key)): continue
+                self.ptr.link_selection_code[enc(key)] = enc(i)
+
+            for key, i in f5["link_graph_code"].attrs.items():
+                if self.ptr.link_graph_code.count(enc(key)): continue
+                self.ptr.link_graph_code[enc(key)] = enc(i)
+
+            for key, i in f5["link_event_code"].attrs.items():
+                if self.ptr.link_event_code.count(enc(key)): continue
+                self.ptr.link_event_code[enc(key)] = enc(i)
             f5.close()
         del bar
 
@@ -715,7 +719,6 @@ cdef class SampleTracer:
         self._set.search = penc(these_hashes)
         self.MonitorMemory(type_)
 
-        cdef list rest
         cdef CyBatch* bt
         cdef pair[string, vector[CyBatch*]] itc
         cdef map[string, vector[CyBatch*]] cache_map = self.ptr.RestoreCache(enc(type_))
@@ -738,11 +741,19 @@ cdef class SampleTracer:
         th.Caller = self.Caller
         if quiet: th.Verbose = 0
         th.Start()
+
+        cdef list rest
+        cdef string cache_name
+        cdef map[string, common_t] output
         for idx in range(len(th._lists)):
+            if th._lists[idx][0] is None: continue
             rest = th._lists[idx]
-            for bt in cache_map[rest[0]]:
-                getter = rest[1][env(bt.hash)]
-                bt.Import(&getter)
+            cache_name = rest[0]
+            output = th._lists[idx][1]
+            for idy in prange(cache_map[cache_name].size(), nogil = True, num_threads = self._set.threads):
+                bt = cache_map[cache_name][idy]
+                if not output.count(bt.hash): continue
+                bt.Import(&output[bt.hash])
             th._lists[idx] = None
         del th
         self._set.search.clear()
@@ -1149,8 +1160,7 @@ cdef class SampleTracer:
         cdef dict output = {}
         cdef string i
         cdef pair[string, vector[string]] itr
-        for itr in self._set.samplemap:
-            output[env(itr.first)] = pdec(&itr.second)
+        for itr in self._set.samplemap: output[env(itr.first)] = pdec(&itr.second)
         return output
 
     @SampleMap.setter
@@ -1496,8 +1506,7 @@ cdef class SampleTracer:
     def KinematicMap(self) -> dict:
         cdef dict output = {}
         cdef pair[string, string] itr
-        for itr in self._set.kinematic_map:
-            output[env(itr.first)] = env(itr.second)
+        for itr in self._set.kinematic_map: output[env(itr.first)] = env(itr.second)
         return output
 
     @KinematicMap.setter
@@ -1511,8 +1520,7 @@ cdef class SampleTracer:
     def ModelParams(self) -> dict:
         cdef pair[string, string] itr
         cdef dict output = {}
-        for itr in self._set.model_params:
-            output[env(itr.first)] = pickle.loads(itr.second)
+        for itr in self._set.model_params: output[env(itr.first)] = pickle.loads(itr.second)
         return output
 
     @ModelParams.setter

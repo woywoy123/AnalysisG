@@ -81,6 +81,7 @@ namespace CyTemplate
     selection_t CySelectionTemplate::Export()
     {
         this -> selection.selection = true; 
+        this -> is_selection = true; 
         return this -> selection;     
     }
 

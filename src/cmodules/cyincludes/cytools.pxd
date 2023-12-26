@@ -68,8 +68,6 @@ cdef inline dict map_to_dict(map[string, gen_t] inpt):
         else: output[env(its.first)] = its.second.decode("UTF-8")
     return output
 
-
-
 cdef inline void merge(map[string, vector[string]]* out, map[string, string]* get, string hash_) noexcept nogil:
     if not get.size(): return
     cdef pair[string, string] itr

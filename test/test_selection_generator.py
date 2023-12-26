@@ -1,6 +1,7 @@
 from examples.ExampleSelection import Example, Example2
 from AnalysisG.Generators import SelectionGenerator
 from AnalysisG.Generators import EventGenerator
+from AnalysisG.Generators import Analysis
 from AnalysisG.IO import nTupler, UpROOT
 from examples.Event import EventEx
 
@@ -156,9 +157,61 @@ def test_selection_root():
     assert len(test2) == 90
     x.rm("Project")
 
+def test_selection_root_samplename():
+    ana = Analysis()
+    ana.ProjectName = "Project"
+    ana.InputSample("sample1", smpl + "sample1/" + Files[smpl + "sample1"][0])
+    ana.InputSample("sample2", smpl + "sample2/" + Files[smpl + "sample2"][1])
+    ana.Event = EventEx
+    ana.EventCache = True
+    ana.Launch()
+
+    ana = Analysis()
+    ana.ProjectName = "Project"
+    ana.InputSample("sample1")
+    ana.AddSelection(Example)
+    ana.EventCache = True
+    ana.EventName = "EventEx"
+    ana.Launch()
+
+    ana = Analysis()
+    ana.ProjectName = "Project"
+    ana.InputSample("sample2")
+    ana.AddSelection(Example)
+    ana.EventCache = True
+    ana.EventName = "EventEx"
+    ana.Launch()
+
+
+    ana = Analysis()
+    ana.ProjectName = "Project"
+    ana.InputSample("sample1")
+    ana.AddSelection(Example2)
+    ana.EventCache = True
+    ana.EventName = "EventEx"
+    ana.Launch()
+
+    ana = Analysis()
+    ana.ProjectName = "Project"
+    ana.InputSample("sample2")
+    ana.AddSelection(Example2)
+    ana.EventCache = True
+    ana.EventName = "EventEx"
+    ana.Launch()
+
+
+    test = []
+    n = nTupler()
+    n.ProjectName = "Project"
+    n.This("Example2", "nominal")
+    out = n.merged()
+    assert list(out.values())[0].CutFlow["Selection::Passed"]
+
 
 if __name__ == "__main__":
-    test_selection_generator()
-    test_selection_ntupler()
-    test_selection_merge()
-    test_selection_root()
+    #test_selection_generator()
+    #test_selection_ntupler()
+    #test_selection_merge()
+    #test_selection_root()
+
+    test_selection_root_samplename()

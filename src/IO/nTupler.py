@@ -158,7 +158,7 @@ class nTupler(_Interface, _nTupler, SampleTracer):
         for i in self:
             for t, v in i.items():
                 if not v: continue
-                evnt = v.__getstate__()
+                evnt = v.release_selection().__getstate__()
                 commands[0] += [(t, evnt, self._clones)]
             if len(commands[0]) < chnks: continue
             th = Threading(*commands)
@@ -189,8 +189,8 @@ class nTupler(_Interface, _nTupler, SampleTracer):
             return output
 
     def __start__(self):
-        if not self._loaded: self.RestoreTracer()
         variables = []
+        if not self._loaded: self.RestoreTracer()
         for i, x in self._DumpThis.items():
             x = [(i + "/" + j).replace(" ","") for j in x]
             x = [i if i.endswith("->") else i+"->" for i in x]
@@ -220,6 +220,7 @@ class nTupler(_Interface, _nTupler, SampleTracer):
         lst = self.makelist()
         if len(lst): self.FlushSelections([i.hash for i in lst])
         self.GetSelection = True
+        self.GetAll = True
         self._events = sum(self.makehashes()["selection"].values(), [])
         self._events = self.Quantize(list(set(self._events)), self.Chunks*self.Threads*self.Threads)
         self._events = {k : l for k, l in enumerate(self._events)}
@@ -246,15 +247,16 @@ class nTupler(_Interface, _nTupler, SampleTracer):
             hashes = None
             self._cache_paths = None
         else: hashes = self._events[next(self._cache_paths)]
+
         for i in self._restored:
             self.Tree, self.SelectionName = i.split(".")
             self.RestoreSelections(hashes)
-            if hashes is None: these = self.makelist()
-            elif len(hashes) > 1: these = self[hashes]
-            else: these = [self[hashes]]
+            if hashes is None: these = self.makelist(hashes)
+            elif len(hashes) > 1: these = self.makelist(hashes)
+            else: these = self.makelist(hashes, True)
             if these is not False:
-                self._restored[i] = [k.release_selection() for k in these]
-                self._tmpl[i] = len(self._restored[i])
+                self._restored[i] = these
+                self._tmpl[i] = len(these)
             else:
                 self._MissingSelectionTreeSample(i)
                 self._restored[i] = []

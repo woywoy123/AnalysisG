@@ -80,7 +80,7 @@ namespace SampleTracer
             {
                 typename std::map<std::string, G*>::iterator itr; 
                 for (itr = input -> begin(); itr != input -> end(); ++itr){
-                    if (!Tools::count(itr -> first, name)){continue;}
+                    if (!Tools::count(itr -> first + "/", name + "/")){continue;}
                     return itr -> second;      
                 }
                 return nullptr; 
@@ -90,7 +90,7 @@ namespace SampleTracer
             {
                 std::map<std::string, std::string>::iterator itr; 
                 for (itr = input -> begin(); itr != input -> end(); ++itr){
-                    if (!Tools::count(itr -> first, name)){continue;}
+                    if (!Tools::count(itr -> first, name + "/")){continue;}
                     return true;
                 }
                 return false; 
