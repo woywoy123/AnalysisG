@@ -54,28 +54,34 @@ cdef list merge_list(list l1, list l2):
         else: out += [l1[idx], l2[idx]]
     return out
 
+
+ctypedef fused itr:
+    int
+    float
+    str
+
+
 cdef dict merge_dict(dict d1, dict d2):
-    cdef str i
     cdef int op1, op2
     cdef list l1 = list(d1)
     cdef list l2 = list(d2)
-    cdef dict out = {i : None for i in set(l1+l2)}
-    for i in out:
-        try: op1 = merge_data(d1[i])
+    cdef dict out = {itr : None for itr in set(l1+l2)}
+    for itr in out:
+        try: op1 = merge_data(d1[itr])
         except KeyError: op1 = -1
 
-        try: op2 = merge_data(d2[i])
+        try: op2 = merge_data(d2[itr])
         except KeyError: op2 = -1
 
-        if op1 == -1: out[i] = d2[i]
-        else: out[i] = d1[i]
+        if op1 == -1: out[itr] = d2[itr]
+        else: out[itr] = d1[itr]
 
         if op1 < 0 or op2 < 0: continue
-        if op1 == 0 and op2 == 0: out[i] = merge_dict(d1[i], d2[i])
-        elif op1 == 1 and op2 == 1: out[i] = merge_list(d1[i], d2[i])
-        elif op1 == 2 and op2 == 2: out[i] = [d1[i], d2[i]]
-        elif op1 == 3 and op2 == 3: out[i] = d1[i] + d2[i]
-        else: out[i] = [d1[i], d2[i]]
+        if op1 == 0 and op2 == 0: out[itr] = merge_dict(d1[itr], d2[itr])
+        elif op1 == 1 and op2 == 1: out[itr] = merge_list(d1[itr], d2[itr])
+        elif op1 == 2 and op2 == 2: out[itr] = [d1[itr], d2[itr]]
+        elif op1 == 3 and op2 == 3: out[itr] = d1[itr] + d2[itr]
+        else: out[itr] = [d1[itr], d2[itr]]
     return out
 
 
