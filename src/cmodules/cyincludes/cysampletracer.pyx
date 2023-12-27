@@ -1589,3 +1589,14 @@ cdef class SampleTracer:
     def TrainingSize(self, val):
         self._set.training_size = val
 
+    @property
+    def DumpThis(self):
+        return map_vector_to_dict(&self._set.dump_this)
+
+    @DumpThis.setter
+    def DumpThis(self, dict inpt):
+        cdef str i
+        cdef list k
+        self._set.dump_this.clear()
+        for i, k in inpt.items(): self._set.dump_this[enc(i)] = penc(k)
+

@@ -85,3 +85,4 @@ class _Interface(Tools):
         if tree not in self._DumpThis: self._DumpThis[tree] = []
         if path in self._DumpThis[tree]: return self.Warning("'" + path + "' is already in list")
         self._DumpThis[tree].append(path)
+        self.DumpThis = self._DumpThis

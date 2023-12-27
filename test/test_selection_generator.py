@@ -28,6 +28,8 @@ def selection_template():
     sel.AddSelection(Example2)
     sel.MakeSelections()
     sel.DumpSelections()
+    sel.EventCache = True
+    sel.EventName = "EventEx"
     sel.DumpTracer()
 
 def test_selection_generator():
@@ -151,9 +153,9 @@ def test_selection_root():
 
     test2 = []
     x = UpROOT(path + "Example2.root")
-    x.Trees = ["nominal_Example"]
+    x.Trees = ["nominal_Example2"]
     x.Leaves = ["event_index"]
-    for i in x: test2.append(i["nominal_Example/event_index"])
+    for i in x: test2.append(i["nominal_Example2/event_index"])
     assert len(test2) == 90
     x.rm("Project")
 
@@ -199,19 +201,19 @@ def test_selection_root_samplename():
     ana.EventName = "EventEx"
     ana.Launch()
 
-
-    test = []
-    n = nTupler()
-    n.ProjectName = "Project"
-    n.This("Example2", "nominal")
-    out = n.merged()
-    assert list(out.values())[0].CutFlow["Selection::Passed"]
+    ana = Analysis()
+    ana.ProjectName = "Project"
+    ana.InputSample("sample2")
+    ana.This("Example2", "nominal")
+    ana.This("Example", "nominal")
+    ana.Launch()
+    assert ana.merged["nominal.Example.sample2"].CutFlow["Selection::Passed"]
+    ana.rm("Project")
 
 
 if __name__ == "__main__":
-    #test_selection_generator()
-    #test_selection_ntupler()
-    #test_selection_merge()
-    #test_selection_root()
-
+    test_selection_generator()
+    test_selection_ntupler()
+    test_selection_merge()
+    test_selection_root()
     test_selection_root_samplename()

@@ -23,14 +23,80 @@ except ModuleNotFoundError: print("ERROR: pyc not installed..")
 cdef string enc(str val): return val.encode("UTF-8")
 cdef str env(string val): return val.decode("UTF-8")
 
+cdef int merge_data(inx):
+    if isinstance(inx, dict): return 0
+    if isinstance(inx, list): return 1
+    if isinstance(inx, str): return 2
+    if isinstance(inx, int): return 3
+    if isinstance(inx, float): return 3
+    return 4
+
+cdef list merge_list(list l1, list l2):
+    cdef int id1 = len(l1)
+    cdef int id2 = len(l2)
+    cdef list out = []
+    cdef int idx, op1, op2
+    for idx in range(id1 if id1 > id2 else id2):
+        try: op1 = merge_data(l1[idx])
+        except IndexError: op1 = -1
+
+        try: op2 = merge_data(l2[idx])
+        except IndexError: op2 = -1
+
+        if op1 == -1: out.append(l2[idx])
+        else: out.append(l1[idx])
+        if op1 < 0 or op2 < 0: continue
+
+        if op1 == 0 and op2 == 0: out.append(merge_dict(l1[idx], l2[idx]))
+        elif op1 == 1 and op2 == 1: out.append(merge_list(l1[idx], l2[idx]))
+        elif op1 == 2 and op2 == 2: out += [l1[idx], l2[idx]]
+        elif op1 == 3 and op2 == 3: out.append(l1[idx] + l2[idx])
+        else: out += [l1[idx], l2[idx]]
+    return out
+
+cdef dict merge_dict(dict d1, dict d2):
+    cdef str i
+    cdef int op1, op2
+    cdef list l1 = list(d1)
+    cdef list l2 = list(d2)
+    cdef dict out = {i : None for i in set(l1+l2)}
+    for i in out:
+        try: op1 = merge_data(d1[i])
+        except KeyError: op1 = -1
+
+        try: op2 = merge_data(d2[i])
+        except KeyError: op2 = -1
+
+        if op1 == -1: out[i] = d2[i]
+        else: out[i] = d1[i]
+
+        if op1 < 0 or op2 < 0: continue
+        if op1 == 0 and op2 == 0: out[i] = merge_dict(d1[i], d2[i])
+        elif op1 == 1 and op2 == 1: out[i] = merge_list(d1[i], d2[i])
+        elif op1 == 2 and op2 == 2: out[i] = [d1[i], d2[i]]
+        elif op1 == 3 and op2 == 3: out[i] = d1[i] + d2[i]
+        else: out[i] = [d1[i], d2[i]]
+    return out
+
+
+cdef mergethis(in1, in2):
+    cdef int op1 = merge_data(in1)
+    cdef int op2 = merge_data(in2)
+    if op1 != op2: return [in1, in2]
+    if op1 == 0: return merge_dict(in1, in2)
+    if op1 == 1: return merge_list(in1, in2)
+    if op1 == 2: return in1 if in1 == in2 else [in1, in2]
+    if op1 == 3: return in1+in2
+    return [in1, in2]
+
+
 cdef string consolidate(map[string, string]* inpt, string* src):
     cdef pair[string, string] itr
-    t = Tools()
     trg = None
     if src.size(): trg = pickle.loads(dereference(src))
     for itr in dereference(inpt):
         if trg is None: trg = pickle.loads(itr.second)
-        else: trg = t.MergeData(trg, pickle.loads(itr.second))
+        else: trg = mergethis(trg, pickle.loads(itr.second))
     inpt.clear()
     src.clear()
     return b"" if trg is None else pickle.dumps(trg)

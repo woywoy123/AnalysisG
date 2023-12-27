@@ -96,6 +96,7 @@ class nTupler(_Interface, _nTupler, SampleTracer):
         self._clones = {}
         self._loaded = False
         self.root = None
+        self._tracer = None
 
     def __uproot__(self, inpt, OutDir):
         if OutDir.endswith("/"): OutDir += "UNTITLED.root"
@@ -158,8 +159,7 @@ class nTupler(_Interface, _nTupler, SampleTracer):
         for i in self:
             for t, v in i.items():
                 if not v: continue
-                evnt = v.release_selection().__getstate__()
-                commands[0] += [(t, evnt, self._clones)]
+                commands[0] += [(t, v.__getstate__(), self._clones)]
             if len(commands[0]) < chnks: continue
             th = Threading(*commands)
             th.Start()
@@ -190,19 +190,22 @@ class nTupler(_Interface, _nTupler, SampleTracer):
 
     def __start__(self):
         variables = []
-        if not self._loaded: self.RestoreTracer()
-        for i, x in self._DumpThis.items():
+        for i, x in self.DumpThis.items():
             x = [(i + "/" + j).replace(" ","") for j in x]
             x = [i if i.endswith("->") else i+"->" for i in x]
             variables += x
 
         tree_selection = {}
+        if not self._loaded and self._tracer is None:
+            self.RestoreTracer()
+            self._tracer = self
+
         for i in variables:
             cont = i.split("->")[0]
             name = cont.split("/")[-1]
             tree = cont.split("/")[0]
             var = tree + i.lstrip(cont)
-            if name in self.ShowSelections:
+            if name in self._tracer.ShowSelections:
                 if cont in tree_selection: pass
                 else: self._FoundSelectionName(name)
             else: self._MissingSelectionName(name)
@@ -216,21 +219,30 @@ class nTupler(_Interface, _nTupler, SampleTracer):
 
     def __iter__(self):
         if not self._loaded: self.__start__()
-        self._clones = {i.class_name : i for i in self.rebuild_code(None)}
-        lst = self.makelist()
-        if len(lst): self.FlushSelections([i.hash for i in lst])
-        self.GetSelection = True
-        self.GetAll = True
-        self._events = sum(self.makehashes()["selection"].values(), [])
-        self._events = self.Quantize(list(set(self._events)), self.Chunks*self.Threads*self.Threads)
+        self._tracer.GetSelection = True
+        self._tracer.GetAll = True
+        self._tmpl = {}
+        self._restored = {}
+        tmp = {i.class_name : i for i in self.rebuild_code(None)}
+        lst = [i.hash for i in self._tracer.makelist()]
+        self._events = self.Quantize(list(set(lst)), self.Chunks*self.Threads*self.Threads)
         self._events = {k : l for k, l in enumerate(self._events)}
         self._cache_paths = iter(self._events)
-        self._restored = {}
-        self._tmpl = {}
+        self._clones = {}
         for i in self._variables:
             i = i.replace("/", ".")
+            name = i.split(".")[-1]
+            if name not in tmp: continue
+            self._clones |= {name : tmp[name]}
             self._restored[i] = []
             self._tmpl[i] = 0
+
+        for i in self._variables:
+            name = i.split("/")[-1]
+            if name in self._clones: continue
+            self._MissingSelectionTreeSample(i.replace("/", "."))
+        self._itr = len(self._events)
+        self._bar = self._makebar(self._itr, "Running n-Tupler")[1]
         return self
 
     def __next__(self):
@@ -249,16 +261,15 @@ class nTupler(_Interface, _nTupler, SampleTracer):
         else: hashes = self._events[next(self._cache_paths)]
 
         for i in self._restored:
-            self.Tree, self.SelectionName = i.split(".")
-            self.RestoreSelections(hashes)
-            if hashes is None: these = self.makelist(hashes)
-            elif len(hashes) > 1: these = self.makelist(hashes)
-            else: these = self.makelist(hashes, True)
-            if these is not False:
-                self._restored[i] = these
-                self._tmpl[i] = len(these)
-            else:
-                self._MissingSelectionTreeSample(i)
-                self._restored[i] = []
-                self._tmpl[i] = 0
+            self._tracer.Tree, self._tracer.SelectionName = i.split(".")
+            if hashes is None: continue
+
+            self._tracer.RestoreSelections(hashes)
+            if hashes is None: these = self._tracer.makelist(hashes)
+            elif len(hashes) > 1: these = self._tracer.makelist(hashes)
+            else: these = self._tracer.makelist(hashes)
+            self._restored[i] = [k.release_selection() for k in these]
+            self._tmpl[i] = len(these)
+        self._tracer.FlushSelections(hashes)
+        self._bar.update(1)
         return self.__next__()

@@ -2,6 +2,7 @@ from AnalysisG.Generators.SelectionGenerator import SelectionGenerator
 from AnalysisG.Generators.SampleGenerator import RandomSamplers
 from AnalysisG.Generators.EventGenerator import EventGenerator
 from AnalysisG.Generators.GraphGenerator import GraphGenerator
+from AnalysisG.IO import nTupler, PickleObject, UnpickleObject
 from AnalysisG._cmodules.ctools import cCheckDifference
 from AnalysisG.Generators.Interfaces import _Interface
 from AnalysisG.Generators.Optimizer import Optimizer
@@ -45,7 +46,9 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         self.TestFeatures = False
         self.triggered = False
         self.SampleName = ""
+        self.merged = {}
         self.nEvents = 10
+        self._DumpThis = {}
         self._get = {}
 
         if Name is None and SampleDirectory is None: return
@@ -246,6 +249,30 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         op = Optimizer()
         op.Start(self)
 
+
+    def __ntupler__(self, name):
+        if not len(self.DumpThis): return
+        pth = self.WorkingPath + "nTupler/"
+
+        n = nTupler()
+        n.ImportSettings(self.ExportSettings())
+        n._tracer = self
+        out = n.merged()
+        for x in out:
+            obj = out[x]
+            if name is None: pass
+            else: x = x + "." + name
+            PickleObject(obj.__getstate__(), pth + x)
+
+        files = self.ListFilesInDir(pth, ".pkl")
+        files = [x + "/" + i for x, k in files.items() for i in k]
+        code = {i.class_name : i for i in self.rebuild_code(None)}
+        for x in files:
+            d = UnpickleObject(x)
+            p = code[d["event_name"].decode("UTF-8")].InstantiateObject
+            p.__setstate__(d)
+            self.merged[x.split(pth)[-1].replace(".pkl", "")] = p
+
     def __LoadSample__(self):
         tracer = self._CheckForTracer()
         l = len(self.SampleMap)
@@ -268,9 +295,14 @@ class Analysis(_Analysis, SampleTracer, _Interface):
             self.Success("!!!Checking Selections... (done)")
 
             self.__FeatureAnalysis__()
+
             self.Success("!!!Checking Graphs... ")
             self.__Graph__()
             self.Success("!!!Checking Graphs... (done)")
+
+            self.Success("!!!Checking n-Tupler...")
+            self.__ntupler__(name)
+            self.Success("!!!Checking n-Tupler... (done)")
 
         return True
 

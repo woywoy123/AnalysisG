@@ -447,6 +447,10 @@ struct settings_t
     std::map<std::string, std::string> link_event_code = {}; 
     std::map<std::string, std::string> link_graph_code = {}; 
     std::map<std::string, std::string> link_selection_code = {}; 
+
+    // n-tupler
+    std::map<std::string, std::vector<std::string>> dump_this = {}; 
+
 };
 
 #endif

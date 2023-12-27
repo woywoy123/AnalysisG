@@ -298,6 +298,7 @@ cdef extern from "../abstractions/cytypes.h":
 
 
     struct settings_t:
+
         # General IO stuff
         string projectname
         string outputdirectory
@@ -372,3 +373,10 @@ cdef extern from "../abstractions/cytypes.h":
         map[string, string] link_event_code
         map[string, string] link_graph_code
         map[string, string] link_selection_code
+
+        # n-tupler
+        map[string, vector[string]] dump_this
+
+
+
+

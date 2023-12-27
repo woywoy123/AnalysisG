@@ -71,6 +71,10 @@ class _Analysis(Notification):
         if self.Model is None: pass
         else: string += [key + self.Model.code["class_name"].decode("UTF-8") + ") < ::"]
 
+        key = "> n-Tupler ("
+        if not len(self.DumpThis): pass
+        else: string += [(key + k + " | " + i + ") < ::") for k, lst in self.DumpThis.items() for i in lst]
+
         l = max([len(i) for i in string] + [len(string1)])
         self.Success("=" * l)
         self.Success(string1)
