@@ -73,7 +73,7 @@ class ParticleRecursion(MessagePassing):
     def message(self, edge_index, pmc, pmc_i, pmc_j, trk_i, trk_j, pid):
         src, dst = edge_index
         target = torch.cat([src.view(-1, 1), trk_i], -1)
-        pmc_ij = graph_base.unique_aggregation(target, pmc)
+        pmc_ij, _ = graph_base.unique_aggregation(target, pmc)
 
         is_lep, is_b = pid[:, 0], pid[:, 1]
         msk_lep = is_lep[target]*(target > -1)
@@ -113,8 +113,8 @@ class ParticleRecursion(MessagePassing):
         one = torch.ones_like(mass)
         feats = [mass, one, one, one, one]
 
-        mT = torch.ones_like(mass) * 172.62
-        mW = torch.ones_like(mass) * 80.385
+        mT = torch.ones_like(mass) * 172.62 * 1000
+        mW = torch.ones_like(mass) * 80.385 * 1000
         mN = torch.zeros_like(mW)
 
         self.met_xy = met_xy
@@ -156,7 +156,7 @@ class RecursiveNuNetz(MessagePassing):
 
     def forward(self, edge_index, batch, G_met, G_phi, G_n_jets, G_n_lep, N_pT, N_eta, N_phi, N_energy, N_is_lep, N_is_b):
 
-        pmu = torch.cat([N_pT / 1000, N_eta, N_phi, N_energy / 1000], -1)
+        pmu = torch.cat([N_pT, N_eta, N_phi, N_energy], -1)
         pmc = transform.PxPyPzE(pmu)
         pid = torch.cat([N_is_lep, N_is_b], -1)
         met_x = transform.Px(G_met, G_phi)
@@ -170,7 +170,7 @@ class RecursiveNuNetz(MessagePassing):
         except KeyError: gr = _graph[0]
 
         trk = gr["clusters"][gr["reverse_clusters"]]
-        pmc_ = graph_base.unique_aggregation(trk, pmc)
+        pmc_, _ = graph_base.unique_aggregation(trk, pmc)
         feats = [G_met[batch], G_phi[batch], pid[batch]]
         feats += [pmc_, pmc, (trk > -1).sum(-1, keepdim = True)]
         feats = torch.cat(feats, -1).clone()

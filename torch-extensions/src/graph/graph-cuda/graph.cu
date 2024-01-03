@@ -6,6 +6,10 @@
 #include <vector>
 #include <map>
 
+#include <c10/cuda/CUDAFunctions.h>
+#include <cuda_runtime.h>
+#include <cuda.h>
+
 #ifndef GRAPH_CUDA_KERNEL_H
 #define GRAPH_CUDA_KERNEL_H
 #include "graph-kernel.cu"
@@ -44,6 +48,9 @@ std::map<std::string, std::vector<torch::Tensor>> _edge_aggregation(
                 torch::Tensor edge_index, torch::Tensor prediction, 
                 torch::Tensor node_feature, const bool include_zero)
 {
+
+    const auto current_device = c10::cuda::current_device();
+    c10::cuda::set_device(node_feature.get_device()); 
 
     torch::Tensor nf = node_feature.clone();
     nf = nf.to(torch::kDouble); 
@@ -119,7 +126,8 @@ std::map<std::string, std::vector<torch::Tensor>> _edge_aggregation(
             revert, pmu_i.index({i}).to(torch::kFloat)
         };  
     }
-
+    
+    c10::cuda::set_device(current_device);
     return output; 
 }
 
@@ -140,8 +148,12 @@ std::map<std::string, std::vector<torch::Tensor>> _node_aggregation(
 }
 
 
-torch::Tensor _unique_aggregation(torch::Tensor cluster_map, torch::Tensor features)
+std::tuple<torch::Tensor, torch::Tensor> _unique_aggregation(
+                torch::Tensor cluster_map, torch::Tensor features)
 {
+    const auto current_device = c10::cuda::current_device();
+    c10::cuda::set_device(cluster_map.get_device()); 
+
     CHECK_INPUT(cluster_map); 
     CHECK_INPUT(features); 
     const unsigned int n_nodes = cluster_map.size(0);
@@ -149,21 +161,20 @@ torch::Tensor _unique_aggregation(torch::Tensor cluster_map, torch::Tensor featu
     const unsigned int n_feat  = features.size(1); 
     const unsigned int threads = 1024; 
 
-    torch::Tensor clus = cluster_map.to(torch::kLong);
-    const torch::TensorOptions op_ = _MakeOp(clus); 
-    const torch::TensorOptions op = _MakeOp(features); 
+    const torch::TensorOptions op  = _MakeOp(features);
+    const torch::TensorOptions op_ = _MakeOp(cluster_map.to(torch::kLong)); 
 
+    torch::Tensor clust  = cluster_map.to(op_).clone(); 
+    torch::Tensor uniq   = cluster_map.to(op_).clone(); 
     torch::Tensor output = torch::zeros({n_nodes, n_feat}, op); 
-    torch::Tensor uniq = -1*torch::ones({n_nodes, ij_node}, op).to(torch::kLong); 
 
     const dim3 blk = BLOCKS(threads, n_nodes, n_feat); 
     const dim3 blk_ = BLOCKS(threads, n_nodes, ij_node, ij_node); 
     AT_DISPATCH_ALL_TYPES(features.scalar_type(), "unique_sum", ([&]
-    {
-   
+    { 
         _fast_unique<scalar_t><<< blk_, threads >>>(
                    uniq.packed_accessor64<long, 2, torch::RestrictPtrTraits>(),
-                   clus.packed_accessor64<long, 2, torch::RestrictPtrTraits>(), 
+                  clust.packed_accessor64<long, 2, torch::RestrictPtrTraits>(), 
                 n_nodes, ij_node, ij_node);
 
         _unique_sum<scalar_t><<< blk, threads >>>(
@@ -172,7 +183,9 @@ torch::Tensor _unique_aggregation(torch::Tensor cluster_map, torch::Tensor featu
                features.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
                 n_nodes, ij_node, n_feat);
     })); 
-    return output; 
+
+    c10::cuda::set_device(current_device);
+    return {output, uniq}; 
 }
 
 

@@ -13,7 +13,7 @@ if(CMAKE_CUDA_COMPILER)
 else()
     message(STATUS "NO CUDA INSTALLATION FOUND, INSTALLING CPU VERSION ONLY!")
     execute_process(COMMAND ${Python_EXECUTABLE} -m pip uninstall -y torch)
-    execute_process(COMMAND ${Python_EXECUTABLE} -m pip install -v torch<=2.0.1+cpu --extra-index-url https://download.pytorch.org/whl/cpu)
+    execute_process(COMMAND ${Python_EXECUTABLE} -m pip install -v torch --extra-index-url https://download.pytorch.org/whl/cpu)
 endif()
 
 #find_package(Python REQUIRED COMPONENTS Development)
@@ -37,6 +37,7 @@ install(TARGETS pyc_float  DESTINATION ${SKBUILD_PROJECT_NAME})
 # Configure the Python package directory 
 install(DIRECTORY DESTINATION ${SKBUILD_PROJECT_NAME}/Transform)
 install(FILES ${CMAKE_SOURCE_DIR}/py_interface/__init__.py            DESTINATION ${SKBUILD_PROJECT_NAME})
+install(FILES ${CMAKE_SOURCE_DIR}/py_interface/interface.py           DESTINATION ${SKBUILD_PROJECT_NAME})
 install(FILES ${CMAKE_SOURCE_DIR}/py_interface/Transform/__init__.py  DESTINATION ${SKBUILD_PROJECT_NAME}/Transform)
 install(FILES ${CMAKE_SOURCE_DIR}/py_interface/Transform/transform.py DESTINATION ${SKBUILD_PROJECT_NAME}/Transform)
 

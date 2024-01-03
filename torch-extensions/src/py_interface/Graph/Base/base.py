@@ -67,8 +67,7 @@ def node_aggregation(ten1, ten2, ten3, include_zero = False):
     ]
 
     out = {}
-    for i in range(len(res)):
-        out[i] = { n : res[i][k] for k, n in keys }
+    for i in range(len(res)): out[i] = { n : res[i][k] for k, n in keys }
     return out
 
 def unique_aggregation(cluster_map, features):
