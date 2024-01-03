@@ -488,7 +488,8 @@ std::vector<std::vector<torch::Tensor>> pyc::graph::node_aggregation(
 }
 
 
-torch::Tensor pyc::graph::unique_aggregation(torch::Tensor cluster_map, torch::Tensor features)
+std::tuple<torch::Tensor, torch::Tensor> pyc::graph::unique_aggregation(
+        torch::Tensor cluster_map, torch::Tensor features)
 {
     return Graph::CUDA::unique_aggregation(cluster_map, features); 
 }
@@ -567,11 +568,6 @@ std::vector<std::vector<torch::Tensor>> pyc::graph::cartesian::separate::node_pm
     map = Graph::CUDA::Cartesian::node_pmc(edge_index, prediction, px, py, pz, e, include_zero);
     return pyc::graph::dress(map); 
 }
-
-
-
-
-
 
 
 

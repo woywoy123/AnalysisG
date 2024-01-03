@@ -235,7 +235,8 @@ namespace pyc
                 torch::Tensor edge_index, torch::Tensor prediction, 
                 torch::Tensor node_feature, const bool include_zero); 
 
-        torch::Tensor unique_aggregation(torch::Tensor cluster_map, torch::Tensor features); 
+        std::tuple<torch::Tensor, torch::Tensor> unique_aggregation(
+                torch::Tensor cluster_map, torch::Tensor features); 
 
         namespace polar
         {

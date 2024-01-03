@@ -27,7 +27,7 @@ class RecursiveMarkovianGraphNet(MessagePassing):
 
     def message(self, pmc, pmc_i, pmc_j, trk_i, trk_j):
         trk_ = torch.cat([trk_j, trk_i], -1)
-        pmc_ij = base.unique_aggregation(trk_, pmc)
+        pmc_ij, _ = base.unique_aggregation(trk_, pmc)
         mass_ij = physics.M(pmc_ij).to(dtype = torch.float)
         mlp_ij = nn.Softmax(-1)(self._path(mass_ij))
         o_ij = torch.cat([trk_j.view(1, -1), trk_i.view(1, -1)], dim = 0)

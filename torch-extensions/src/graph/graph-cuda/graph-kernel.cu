@@ -35,7 +35,7 @@ __global__ void _EdgeSummation(
     const unsigned int idz = blockIdx.z; 
     if (idx >= dim_i || idy >= dim_j || idz >= dim_max){ return; }
    
-    for (unsigned int i(0); i < dim_i; ++i){
+    for (int i(0); i < dim_i; ++i){
         if (triggers[idz][idx][i] < 0){ continue; }
         pmu_i[idz][idx][idy] += pmu[ triggers[idz][idx][i] ][idy];
     }
@@ -50,12 +50,13 @@ __global__ void _fast_unique(
     const unsigned int idx = blockIdx.x*blockDim.x + threadIdx.x; 
     const unsigned int idy = blockIdx.y; 
     const unsigned int idz = blockIdx.z; 
-    if (idx >= dim_i || idy >= dim_j || idz >= dim_k){return;}   
+    if (idx >= dim_i || idy >= dim_j || idz >= dim_k || idz >= idy){return;}   
     if (cluster_map[idx][idy] < 0){return;}
     if (cluster_map[idx][idz] < 0){return;}
 
-    const long* val = &cluster_map[idx][idy]; 
-    if (*val == cluster_map[idx][idz]){ out_map[idx][idy] = *val; }
+    bool msk = cluster_map[idx][idy] == cluster_map[idx][idz];
+    if (!msk){return;}
+    out_map[idx][idy] = -1; 
 }
 
 
