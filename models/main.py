@@ -11,10 +11,10 @@ mode_ = 0
 gen_data = False
 
 modes = [
-    "TruthChildren_All",
+#    "TruthChildren_All",
 #    "TruthChildren_NoNu",
 #    "TruthJets_NoNu",
-#    "TruthJets_All",
+    "TruthJets_All",
 #    "Jets_NoNu"
 ]
 
@@ -91,7 +91,7 @@ for this in params:
 
     Ana = Analysis()
     Ana.ProjectName = name
-    Ana.Device = "cuda"
+    Ana.Device = "cuda:1"
     Ana.TrainingName = "sample-" + mode
     Ana.Model = auto.ModelTrainer(model)
     Ana.BatchSize = batch

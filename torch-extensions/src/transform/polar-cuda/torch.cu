@@ -1,6 +1,10 @@
+#include <c10/cuda/CUDAFunctions.h>
+#include <cuda_runtime.h>
+#include <torch/torch.h>
+#include <cuda.h>
+
 #ifndef TRANSFORM_CUDA_POLAR_KERNEL_H
 #define TRANSFORM_CUDA_POLAR_KERNEL_H
-#include <torch/torch.h>
 #include "kernel.cu"
 
 #define CHECK_CUDA(x) TORCH_CHECK(x.device().is_cuda(), "#x must be on CUDA")
@@ -29,6 +33,9 @@ static const torch::TensorOptions _MakeOp(torch::Tensor v1)
 
 torch::Tensor _Pt(torch::Tensor px, torch::Tensor py)
 {
+    const auto current_device = c10::cuda::current_device();
+    c10::cuda::set_device(py.get_device()); 
+
     px = px.view({-1, 1}).contiguous(); 
     py = py.view({-1, 1}).contiguous(); 
     CHECK_INPUT(px); CHECK_INPUT(py); 
@@ -48,11 +55,15 @@ torch::Tensor _Pt(torch::Tensor px, torch::Tensor py)
             len
         ); 
     })); 
+    c10::cuda::set_device(current_device);
     return pt; 
 }
 
 torch::Tensor _Eta(torch::Tensor px, torch::Tensor py, torch::Tensor pz)
 {
+    const auto current_device = c10::cuda::current_device();
+    c10::cuda::set_device(py.get_device()); 
+
     px = px.view({-1, 1}).contiguous(); 
     py = py.view({-1, 1}).contiguous(); 
     pz = pz.view({-1, 1}).contiguous();
@@ -74,11 +85,16 @@ torch::Tensor _Eta(torch::Tensor px, torch::Tensor py, torch::Tensor pz)
             len
         ); 
     })); 
+
+    c10::cuda::set_device(current_device);
     return eta; 
 }
 
 torch::Tensor _Phi(torch::Tensor px, torch::Tensor py)
 {
+    const auto current_device = c10::cuda::current_device();
+    c10::cuda::set_device(py.get_device()); 
+
     px = px.view({-1, 1}).contiguous(); 
     py = py.view({-1, 1}).contiguous(); 
     CHECK_INPUT(px); CHECK_INPUT(py);
@@ -98,11 +114,16 @@ torch::Tensor _Phi(torch::Tensor px, torch::Tensor py)
             len
         ); 
     })); 
+
+    c10::cuda::set_device(current_device);
     return phi; 
 }
 
 torch::Tensor _PtEtaPhi(torch::Tensor px, torch::Tensor py, torch::Tensor pz)
 {
+    const auto current_device = c10::cuda::current_device();
+    c10::cuda::set_device(py.get_device()); 
+
     px = px.view({-1, 1}).contiguous(); 
     py = py.view({-1, 1}).contiguous();    
     pz = pz.view({-1, 1}).contiguous(); 
@@ -126,27 +147,34 @@ torch::Tensor _PtEtaPhi(torch::Tensor px, torch::Tensor py, torch::Tensor pz)
             len
         );
     })); 
+
+    c10::cuda::set_device(current_device);
     return out; 
 }
 
-torch::Tensor _PtEtaPhiE(torch::Tensor Pmc)
+torch::Tensor _PtEtaPhiE(torch::Tensor pmc)
 {
-    const torch::TensorOptions op = _MakeOp(Pmc); 
-    torch::Tensor out = torch::zeros_like(Pmc, op); 
-    CHECK_INPUT(out); CHECK_INPUT(Pmc); 
+    const auto current_device = c10::cuda::current_device();
+    c10::cuda::set_device(pmc.get_device()); 
 
-    const unsigned int len = Pmc.size(0); 
+    const torch::TensorOptions op = _MakeOp(pmc); 
+    torch::Tensor out = torch::zeros_like(pmc, op); 
+    CHECK_INPUT(out); CHECK_INPUT(pmc); 
+
+    const unsigned int len = pmc.size(0); 
     const unsigned int threads = 1024; 
     const dim3 blk = BLOCKS(threads, len, 3, 1);  
 
     AT_DISPATCH_FLOATING_TYPES(out.scalar_type(), "PtEtaPhiEK", ([&]
     {
         PtEtaPhiEK<scalar_t><<<blk, threads>>>(
-            Pmc.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+            pmc.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
             out.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
             len
         );
     })); 
+
+    c10::cuda::set_device(current_device);
     return out; 
 }
 

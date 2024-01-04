@@ -120,8 +120,8 @@ class RecursiveParticles(MessagePassing):
         self._pmc   = pmc
         self._mlp   = None
 
-        mT = torch.ones_like(batch.view(-1, 1)) * 172.62 * 1000
-        mW = torch.ones_like(batch.view(-1, 1)) * 80.385 * 1000
+        mT = torch.ones_like(batch.view(-1, 1)) * 172.62
+        mW = torch.ones_like(batch.view(-1, 1)) * 80.385
         mN = torch.ones_like(batch.view(-1, 1)) * 0
 
         self.met_xy = met_xy
@@ -141,13 +141,16 @@ class ExperimentalGNN(MessagePassing):
     def __init__(self):
         super().__init__()
         self.rnn_edge = RecursiveParticles(True)
-        self.rnn_edge.to(device = "cuda")
+        self.rnn_edge.to(device = "cuda:1")
         self.O_top_edge = None
         self.L_top_edge = "CEL"
+        self._drop = Dropout(p = 0.05)
 
-        self._drop = Dropout(p = 0.5)
-
-    def forward(self, edge_index, batch, G_met, G_phi, G_n_jets, G_n_lep, N_pT, N_eta, N_phi, N_energy, N_is_lep, N_is_b):
+    def forward(self,
+            edge_index, batch,
+            G_met, G_phi, G_n_jets, G_n_lep,
+            N_pT, N_eta, N_phi, N_energy, N_is_lep, N_is_b
+        ):
 
         pid = torch.cat([N_is_lep, N_is_b], -1)
         met_x = transform.Px(G_met, G_phi)

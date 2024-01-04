@@ -27,6 +27,7 @@ def SelectionGen(name):
     ana.Event = SSML
     ana.Threads = 48
     ana.Chunks = 10000
+    ana.This("DiLeptonic", "nominal_Loose")
     return ana
 
 con = Condor()

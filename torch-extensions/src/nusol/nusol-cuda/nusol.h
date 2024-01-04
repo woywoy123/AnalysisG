@@ -1,7 +1,11 @@
-#ifndef H_NUSOL_CUDA
-#define H_NUSOL_CUDA
+#include <c10/cuda/CUDAFunctions.h>
+#include <cuda_runtime.h>
 #include <torch/torch.h>
 #include <stdio.h>
+#include <cuda.h>
+
+#ifndef H_NUSOL_CUDA
+#define H_NUSOL_CUDA
 
 torch::Tensor _Base_Matrix(
         torch::Tensor pmc_b, torch::Tensor pmc_mu, 
@@ -93,13 +97,22 @@ namespace NuSol
                 torch::Tensor pmc_b, torch::Tensor pmc_mu, 
                 torch::Tensor masses)
         {
-            return _Base_Matrix(pmc_b, pmc_mu, masses);             
+            const auto current_device = c10::cuda::current_device();
+            c10::cuda::set_device(pmc_b.get_device()); 
+            torch::Tensor out = _Base_Matrix(pmc_b, pmc_mu, masses);             
+            c10::cuda::set_device(current_device);
+            return out; 
+
         }
       
         inline std::tuple<torch::Tensor, torch::Tensor> Intersection(
                 torch::Tensor A, torch::Tensor B, const double null)
         {
-            return _Intersection(A, B, null);  
+            const auto current_device = c10::cuda::current_device();
+            c10::cuda::set_device(A.get_device()); 
+            std::tuple<torch::Tensor, torch::Tensor> out = _Intersection(A, B, null);  
+            c10::cuda::set_device(current_device);
+            return out;
         } 
 
         inline std::map<std::string, torch::Tensor> Nu(
@@ -107,7 +120,11 @@ namespace NuSol
                 torch::Tensor met_xy, torch::Tensor masses, 
                 torch::Tensor sigma)
         {
-            return _Nu(pmc_b, pmc_mu, met_xy, masses, sigma); 
+            const auto current_device = c10::cuda::current_device();
+            c10::cuda::set_device(pmc_b.get_device()); 
+            std::map<std::string, torch::Tensor> output = _Nu(pmc_b, pmc_mu, met_xy, masses, sigma); 
+            c10::cuda::set_device(current_device);
+            return output;
         }
 
         inline std::map<std::string, torch::Tensor> Nu(
@@ -116,7 +133,14 @@ namespace NuSol
                 torch::Tensor masses, 
                 torch::Tensor sigma, const double null)
         {
-            return _Nu(pmc_b, pmc_mu, met_xy, masses, sigma, null); 
+            const auto current_device = c10::cuda::current_device();
+            c10::cuda::set_device(pmc_b.get_device()); 
+            std::map<std::string, torch::Tensor> output = _Nu(
+                    pmc_b, pmc_mu, met_xy, 
+                    masses, sigma, null
+            ); 
+            c10::cuda::set_device(current_device);
+            return output;
         }
 
         inline std::map<std::string, torch::Tensor> NuNu(
@@ -125,7 +149,15 @@ namespace NuSol
                 torch::Tensor met_xy, 
                 torch::Tensor masses, const double null)
         {
-            return _NuNu(pmc_b1, pmc_b2, pmc_l1, pmc_l2, met_xy, masses, null); 
+            const auto current_device = c10::cuda::current_device();
+            c10::cuda::set_device(pmc_b1.get_device()); 
+            std::map<std::string, torch::Tensor> output = _NuNu(
+                    pmc_b1, pmc_b2, 
+                    pmc_l1, pmc_l2, 
+                    met_xy, masses, null
+            ); 
+            c10::cuda::set_device(current_device);
+            return output;
         }
 
         namespace Polar
@@ -135,7 +167,15 @@ namespace NuSol
                     torch::Tensor met_phi, torch::Tensor masses, 
                     torch::Tensor sigma, const double null)
             {
-                return _NuPolar(pmu_b, pmu_mu, met_phi, masses, sigma, null); 
+                const auto current_device = c10::cuda::current_device();
+                c10::cuda::set_device(pmu_b.get_device()); 
+                std::map<std::string, torch::Tensor> output = _NuPolar(
+                        pmu_b, pmu_mu, 
+                        met_phi, masses, 
+                        sigma, null
+                ); 
+                c10::cuda::set_device(current_device);
+                return output;
             }
 
             inline std::map<std::string, torch::Tensor> Nu(
@@ -144,10 +184,15 @@ namespace NuSol
                 torch::Tensor met, torch::Tensor phi, torch::Tensor masses, 
                 torch::Tensor sigma, const double null)
             {
-                return _NuPolar(
+                const auto current_device = c10::cuda::current_device();
+                c10::cuda::set_device(met.get_device()); 
+
+                std::map<std::string, torch::Tensor> output = _NuPolar(
                         pt_b , eta_b , phi_b , e_b, 
                         pt_mu, eta_mu, phi_mu, e_mu, 
                         met, phi, masses, sigma, null); 
+                c10::cuda::set_device(current_device);
+                return output;
             }
 
 
@@ -157,7 +202,11 @@ namespace NuSol
                 torch::Tensor met_phi, torch::Tensor masses, 
                 const double null)
             {
-                return _NuNuPolar(pmu_b1, pmu_b2, pmu_mu1, pmu_mu2, met_phi, masses, null);
+                const auto current_device = c10::cuda::current_device();
+                c10::cuda::set_device(pmu_b1.get_device()); 
+                std::map<std::string, torch::Tensor> output = _NuNuPolar(pmu_b1, pmu_b2, pmu_mu1, pmu_mu2, met_phi, masses, null);
+                c10::cuda::set_device(current_device);
+                return output;
             }
 
             inline std::map<std::string, torch::Tensor> NuNu(
@@ -170,10 +219,14 @@ namespace NuSol
                 torch::Tensor met, torch::Tensor phi, 
                 torch::Tensor masses, const double null)
             {
-                return _NuNuPolar(
+                const auto current_device = c10::cuda::current_device();
+                c10::cuda::set_device(pt_b1.get_device()); 
+                std::map<std::string, torch::Tensor> output = _NuNuPolar(
                         pt_b1,  eta_b1,  phi_b1,  e_b1 , pt_b2,  eta_b2,  phi_b2,  e_b2, 
                         pt_mu1, eta_mu1, phi_mu1, e_mu1, pt_mu2, eta_mu2, phi_mu2, e_mu2, 
                         met, phi, masses, null);
+                c10::cuda::set_device(current_device);
+                return output;
             }
 
             inline std::map<std::string, torch::Tensor> NuNuCombinatorial(
@@ -183,10 +236,14 @@ namespace NuSol
                     torch::Tensor masses, torch::Tensor masses_updown, 
                     const double step_size, const double null)
             {
-                return _NuNuCombinatorialPolar(
+                const auto current_device = c10::cuda::current_device();
+                c10::cuda::set_device(pmu.get_device()); 
+                std::map<std::string, torch::Tensor> output = _NuNuCombinatorialPolar(
                         edge_index, batch, pmu, pid, 
                         met, met_updown, masses, masses_updown,
                         step_size, null); 
+                c10::cuda::set_device(current_device);
+                return output;
             }
         }
 
@@ -197,7 +254,11 @@ namespace NuSol
                     torch::Tensor met_xy, torch::Tensor masses, 
                     torch::Tensor sigma, const double null)
             {
-                return _NuCart(pmc_b, pmc_mu, met_xy, masses, sigma, null); 
+                const auto current_device = c10::cuda::current_device();
+                c10::cuda::set_device(pmc_b.get_device()); 
+                std::map<std::string, torch::Tensor> output = _NuCart(pmc_b, pmc_mu, met_xy, masses, sigma, null); 
+                c10::cuda::set_device(current_device);
+                return output;
             }
 
             inline std::map<std::string, torch::Tensor> Nu(
@@ -206,9 +267,13 @@ namespace NuSol
                     torch::Tensor metx, torch::Tensor mety, torch::Tensor masses, 
                     torch::Tensor sigma, const double null)
             {
-                return _NuCart(
+                const auto current_device = c10::cuda::current_device();
+                c10::cuda::set_device(px_b.get_device()); 
+                std::map<std::string, torch::Tensor> output = _NuCart(
                         px_b, py_b, pz_b, e_b, px_mu, py_mu, pz_mu, e_mu, 
                         metx, mety, masses, sigma, null); 
+                c10::cuda::set_device(current_device);
+                return output;
             }
 
             inline std::map<std::string, torch::Tensor> NuNu(
@@ -216,7 +281,15 @@ namespace NuSol
                 torch::Tensor pmc_mu1, torch::Tensor pmc_mu2,
                 torch::Tensor met_xy, torch::Tensor masses, const double null)
             {
-                return _NuNuCart(pmc_b1, pmc_b2, pmc_mu1, pmc_mu2, met_xy, masses, null);
+                const auto current_device = c10::cuda::current_device();
+                c10::cuda::set_device(pmc_b1.get_device()); 
+                std::map<std::string, torch::Tensor> output = _NuNuCart(
+                        pmc_b1, pmc_b2, 
+                        pmc_mu1, pmc_mu2, 
+                        met_xy, masses, null
+                );
+                c10::cuda::set_device(current_device);
+                return output;
             }
 
             inline std::map<std::string, torch::Tensor> NuNu(
@@ -228,14 +301,16 @@ namespace NuSol
 
                 torch::Tensor metx, torch::Tensor mety, torch::Tensor masses, const double null)
             {
-
-                return _NuNuCart(
+                const auto current_device = c10::cuda::current_device();
+                c10::cuda::set_device(px_b1.get_device()); 
+                std::map<std::string, torch::Tensor> output = _NuNuCart(
                         px_b1,  py_b1,  pz_b1,  e_b1, px_b2,  py_b2,  pz_b2,  e_b2, 
                         px_mu1, py_mu1, pz_mu1, e_mu1, px_mu2, py_mu2, pz_mu2, e_mu2, 
-                        metx, mety, masses, null); 
-
+                        metx, mety, masses, null
+                ); 
+                c10::cuda::set_device(current_device);
+                return output;
             }
-
         }
     }
 }
