@@ -377,6 +377,5 @@ cdef extern from "../abstractions/cytypes.h":
         # n-tupler
         map[string, vector[string]] dump_this
 
-
-
-
+        # runner 
+        string op_sys_ver

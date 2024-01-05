@@ -140,6 +140,7 @@ cdef class Runner:
         self.run.jobs_params[name].output_directory = enc(ana.OutputDirectory)
         self.run.jobs_params[name].device = enc(ana.Device)
         self.run.jobs_params[name].threads = enc(str(ana.Threads))
+        self.run.jobs_params[name].op_sys_ver = enc(ana.OpSysVer)
         return True
 
     def RegisterJob(self, str job_name, str mem, str time, list wait):

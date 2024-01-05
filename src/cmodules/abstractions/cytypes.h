@@ -451,6 +451,8 @@ struct settings_t
     // n-tupler
     std::map<std::string, std::vector<std::string>> dump_this = {}; 
 
+    // runners 
+    std::string op_sys_ver = ""; 
 };
 
 #endif

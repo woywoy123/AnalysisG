@@ -11,13 +11,13 @@ mode = "Jets_All"
 model = "GNNEXP"
 smple = os.environ["Samples"]
 folds = 10
-venv = "GNN"
+venv = "/nfs/dust/atlas/user/woywoy12/AnalysisG/setup-scripts/source_this.sh"
 
 
 params = [
-#    ("MRK-1" , "ADAM", 1  , {"lr": 1e-3, "weight_decay" : 1e-3},            None,              None),
+    ("MRK-1" , "ADAM", 1  , {"lr": 1e-3, "weight_decay" : 1e-3},            None,              None),
     ("MRK-2" , "ADAM", 1  , {"lr": 1e-3, "weight_decay" : 1e-3},            None,              None),
-#    ("MRK-3" , "ADAM", 500, {"lr": 1e-3, "weight_decay" : 1e-1},            None,              None),
+    ("MRK-3" , "ADAM", 500, {"lr": 1e-3, "weight_decay" : 1e-1},            None,              None),
 #
 #    ("MRK-4" , "ADAM", 1  , {"lr": 1e-3, "weight_decay" : 1e-3}, "ExponentialLR", {"gamma"  : 0.5}),
 #    ("MRK-5" , "ADAM", 100, {"lr": 1e-3, "weight_decay" : 1e-6}, "ExponentialLR", {"gamma"  : 0.7}),
@@ -71,7 +71,7 @@ def TrainGen(names, train_name):
     ana.TrainingSize = 40
     ana.DataCache = True
     ana.kFolds = folds
-    ana.Threads = 48
+    ana.Threads = 12
     ana.GraphName = Graphs(mode)._this.__name__
     return ana
 
@@ -80,18 +80,19 @@ def OptimGen(this, fold, train_name):
 
     auto = AnalysisBuild("tmp")
     Ana = Analysis()
-    Ana.ProjectName = name
     Ana.Device = "cuda"
     Ana.TrainingName = train_name
     Ana.Model = auto.ModelTrainer(model)
     Ana.BatchSize = batch
     Ana.kFold = fold
     Ana.Epochs = 100
-    Ana.Threads = 24
-    Ana.MaxGPU = 8
+    Ana.Threads = 12
+    Ana.MaxGPU = 4
     Ana.MaxRAM = 32
     Ana.Tree = "nominal"
+    Ana.OpSysVer = '"CentOS7"'
     Ana.EventName = None
+    Ana.DataCache = True
     Ana.RunName = run_
     Ana.GraphName = Graphs(mode)._this.__name__
 
@@ -101,7 +102,7 @@ def OptimGen(this, fold, train_name):
         Ana.Scheduler = sch_
         Ana.SchedulerParams = sch_param
 
-    Ana.PlotLearningMetrics = True
+    Ana.PlotLearningMetrics = False
     Ana.ContinueTraining = False
     Ana.DebugMode = False
     Ana.KinematicMap = {"top_edge" : "polar -> N_pT, N_eta, N_phi, N_energy"}
@@ -124,11 +125,10 @@ for name in samples_map:
     con.AddJob(name + "-gr", GraphGen(name), memory = "32GB", time = "12h", waitfor = event_)
     graphs_.append(name + "-gr")
 
-con.AddJob(mode + "train", TrainGen(samples_map, mode), memory = "128GB", time = "48h", waitfor = graphs_)
-
+con.AddJob(mode + "train", TrainGen(samples_map, mode), memory = "32GB", time = "48h", waitfor = graphs_)
 
 for i in params:
     for k in range(folds):
-        con.AddJob("k-"+ str(k) + "-" + i[0], OptimGen(i, k, mode), waitfor = [mode + "train"], memory = "32GB", time = "48h")
+        con.AddJob("k-"+ str(k) + "-" + i[0], OptimGen(i, k+1, mode), waitfor = [mode + "train"], memory = "32GB", time = "48h")
 #con.LocalRun()
 con.SubmitToCondor()

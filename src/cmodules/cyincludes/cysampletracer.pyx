@@ -1600,3 +1600,10 @@ cdef class SampleTracer:
         self._set.dump_this.clear()
         for i, k in inpt.items(): self._set.dump_this[enc(i)] = penc(k)
 
+    @property
+    def OpSysVer(self):
+        return env(self._set.op_sys_ver)
+
+    @OpSysVer.setter
+    def OpSysVer(self, str op):
+        self._set.op_sys_ver = enc(op)
