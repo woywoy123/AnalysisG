@@ -8,9 +8,8 @@ torch.set_printoptions(precision=3, sci_mode = False)
 from experimental import ExperimentalGNN
 
 model = ExperimentalGNN()
-#model = torch.compile(model, fullgraph = True)
-x = UnpickleObject("data/GraphChildrenNoNu")
-data = Batch().from_data_list(x[199:200])
+x = UnpickleObject("data/GraphTruthChildren")
+data = Batch().from_data_list(x[0:1])
 inpt = {
             "edge_index" : None,
             "batch" : None,
@@ -31,7 +30,7 @@ inpt = {i : getattr(data, i).to(device = "cuda") for i in inpt}
 model.to(device = "cuda")
 model.train()
 
-optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
+optimizer = torch.optim.Adam(model.parameters(), lr=0.0001)
 loss_fn = torch.nn.CrossEntropyLoss()
 for i in range(100000):
     optimizer.zero_grad()
@@ -45,7 +44,7 @@ for i in range(100000):
 
     if i%100 != 0:continue
     train_acc = ((pred == edge_t).view(-1).sum(-1))/pred.size(0)
-    print("Accuracy = {}, Loss = {}, itr = {}".format(train_acc, loss, model._l))
+    print("Accuracy = {}, Loss = {}, iter = {}".format(train_acc, loss, model.iter))
 
     print(to_dense_adj(inpt["edge_index"], edge_attr = edge_t)[0])
     print(to_dense_adj(inpt["edge_index"], edge_attr = pred)[0])
