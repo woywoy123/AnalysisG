@@ -1,30 +1,30 @@
-import torch
 from torch_geometric.nn import MessagePassing
 from torch_geometric.utils import to_dense_adj
 from torch.nn import Sequential as Seq, Linear, Tanh, ReLU
 from torch.nn import Dropout
+import torch
 
 import pyc.Transform as transform
 import pyc.NuSol.Cartesian as nusol
 import pyc.Graph.Base as graph_base
 import pyc.Physics.Cartesian as physics
-
-
 torch.set_printoptions(precision=3, sci_mode = True, linewidth = 1000)
 
 def init_norm(m):
-    if not type(m) == nn.Linear: return
-    nn.init.uniform(m.weight)
+    if not type(m) == torch.nn.Linear: return
+    torch.nn.init.uniform(m.weight)
 
 
 class RecursiveParticles(MessagePassing):
 
-    def __init__(self, disable_nu = True):
+    def __init__(self, disable_nu = True, gev = False):
         super().__init__(aggr = None)
-        end = 32
+        end = 128
+        self._gev = gev
         self.output = None
         self._no_nu = disable_nu
-        self.rnn_edge = Seq(Linear(2, end), Linear(end, 2))
+        self.rnn_edge = Seq(Linear(2, end), Tanh(), ReLU(), Linear(end, 2))
+        self.rnn_edge.apply(init_norm)
 
     def nu(self, pmc, targets, msk_lep, msk_b, nu1, nu2):
         if self._no_nu: return
@@ -67,61 +67,50 @@ class RecursiveParticles(MessagePassing):
         nu1[msk] = nu1_ + l1[is_sol] + b1[is_sol]
         nu2[msk] = nu2_ + l2[is_sol] + b2[is_sol]
 
-    def message(self, pmc_i, pmc_j, path_p_j, trk_j, trk_i, pid):
+    def message(self, edge_index, pmc_i, pmc_j, trk_i, pid):
 
-        prop_path = torch.cat([path_p_j, trk_i], -1)
+        self._path = torch.cat([self._path, trk_i], -1)
+        pmc_ij, self._path = graph_base.unique_aggregation(self._path, self._pmc)
+
         is_lep, is_b = pid[:, 0], pid[:, 1]
-        msk_lep = is_lep[prop_path]*(prop_path > -1)
-        msk_b   = is_b[prop_path]*(prop_path > -1)
+        msk_lep = is_lep[self._path]*(self._path > -1)
+        msk_b   = is_b[self._path]*(self._path > -1)
 
         nu1, nu2 = torch.zeros_like(pmc_i), torch.zeros_like(pmc_j)
-        self.nu(self._pmc, prop_path, msk_lep, msk_b, nu1, nu2)
-        self.nunu(self._pmc, prop_path, msk_lep, msk_b, nu1, nu2)
+        self.nu(self._pmc, self._path, msk_lep, msk_b, nu1, nu2)
+        self.nunu(self._pmc, self._path, msk_lep, msk_b, nu1, nu2)
 
         # features
-        pmc_ij, uniq = graph_base.unique_aggregation(prop_path, self._pmc)
         mass_ij = physics.M(pmc_ij + nu1 + nu2).to(dtype = torch.float)
-        iters_ij = (uniq > -1).sum(-1, keepdim = True).to(dtype = torch.float)
+        iters_ij = (self._path > -1).sum(-1, keepdim = True).to(dtype = torch.float)
 
         feats = [mass_ij, iters_ij]
         feats = torch.cat(feats, -1)
+        return edge_index, self.rnn_edge(feats)
 
-        edge_ = torch.cat([trk_j.view(1, -1), trk_i.view(1, -1)], 0)
-        mlp = self.rnn_edge(feats)
-        return mlp, mlp.softmax(-1), edge_
-
-    def aggregate(self, message, path_p, pid):
-        mlp, mlp_, edge_ = message
-        n_nodes = self._pmc.size(0)
-
-        if self._mlp is None: self._mlp = mlp
-        adj_n = to_dense_adj(edge_, edge_attr = mlp_[:, 1], max_num_nodes = n_nodes)[0]
-        val, idx = adj_n.max(-1)
-        idx[val == 0] = -1
-        if not val.sum(-1): return self._mlp
-        pmc_, self._path = graph_base.unique_aggregation(torch.cat([self._path, idx.view(-1, 1)], -1), self._pmc)
-
-        mass_  = physics.M(pmc_).to(torch.float)[edge_[0]]
-        iters_ = (self._path[edge_[0]] > -1).sum(-1, keepdim = True).to(dtype = torch.float)
-        feats_ = torch.cat([mass_, iters_], -1)
-        mlp__  = self.rnn_edge(feats_)
-
-        msk   = mlp_[:, 1] < mlp__.softmax(-1)[:, 1]
-        msk__ = self._msk.clone()
-        msk__[self._msk] = msk == False
-        self._mlp[msk__] = mlp__[msk == False]
-        self._idx[msk__] = -1
-        self._msk = self._idx > -1
-
-        if not edge_[:, msk].size(1): return self._mlp
-        return self.propagate(edge_[:, msk], pmc = self._pmc, path_p = self._path, trk = self._track, pid = pid)
+    def aggregate(self, message, pid):
+        edge_index, mlp = message
+        msk = mlp.max(-1)[1] > 0
+        self._mlp = mlp
+        self._msk *= msk
+        self._msk *= (self._path > -1).sum(-1) < self._num_nodes[edge_index[0]]
+        self._iter += 1
+        msk_it = self._num_nodes > self._iter
+        if not msk_it.sum(-1): return self._mlp
+        if not self._msk.sum(-1): return self._mlp
+        return self.propagate(edge_index, pmc = self._pmc, trk = self._track, pid = pid)
 
     def forward(self, edge_index, batch, pmc, pid, met_xy):
+        self._mlp   = torch.zeros_like(edge_index.view(-1, 2)).to(dtype = torch.float)
         self._pmc   = pmc
-        self._mlp   = None
+        src, _      = edge_index
+        self._iter = 0
 
-        mT = torch.ones_like(batch.view(-1, 1)) * 172.62
-        mW = torch.ones_like(batch.view(-1, 1)) * 80.385
+        if self._gev: f = 1
+        else: f = 1000
+
+        mT = torch.ones_like(batch.view(-1, 1)) * 172.62*f
+        mW = torch.ones_like(batch.view(-1, 1)) * 80.385*f
         mN = torch.ones_like(batch.view(-1, 1)) * 0
 
         self.met_xy = met_xy
@@ -129,22 +118,24 @@ class RecursiveParticles(MessagePassing):
         self.SXX = torch.tensor([[100, 0, 0, 100]], device = pmc.device, dtype = pmc.dtype)
         self.batch = batch
 
-        self._idx   = torch.ones_like(edge_index[0]).cumsum(-1)-1
-        self._path  = (torch.ones_like(batch).cumsum(-1)-1).view(-1, 1)
-        self._track = self._path.clone()
-        self._msk   =  self._idx > -1
+        self._num_nodes = to_dense_adj(edge_index)[0].sum(-1)
+        self._track = (torch.ones_like(batch).cumsum(-1)-1)
+        self._path = self._track[src].clone().view(-1, 1)
+        self._track = self._track.view(-1, 1)
+        self._msk = src > -1
 
-        self.output = self.propagate(edge_index, pmc = pmc, path_p = self._path, trk = self._track, pid = pid)
+        self.output = self.propagate(edge_index, pmc = pmc, trk = self._track, pid = pid)
 
 class ExperimentalGNN(MessagePassing):
 
     def __init__(self):
         super().__init__()
-        self.rnn_edge = RecursiveParticles(True)
+        self._gev = False
+        self.rnn_edge = RecursiveParticles(True, False)
         self.rnn_edge.to(device = "cuda:1")
         self.O_top_edge = None
         self.L_top_edge = "CEL"
-        self._drop = Dropout(p = 0.05)
+        self._drop = Dropout(p = 0.01)
 
     def forward(self,
             edge_index, batch,
@@ -155,11 +146,15 @@ class ExperimentalGNN(MessagePassing):
         pid = torch.cat([N_is_lep, N_is_b], -1)
         met_x = transform.Px(G_met, G_phi)
         met_y = transform.Py(G_met, G_phi)
-        met_xy = torch.cat([met_x, met_y], -1)
-
         pmu = torch.cat([N_pT, N_eta, N_phi, N_energy], -1)
-        pmc = transform.PxPyPzE(pmu)
 
+        pmc = transform.PxPyPzE(pmu)
+        met_xy = torch.cat([met_x, met_y], -1)
+        if self._gev: f = 1/1000
+        else: f = 1
+
+        pmc = pmc*f
+        met_xy = met_xy*f
         self.rnn_edge(edge_index, batch, pmc, pid, met_xy)
         self.O_top_edge = self.rnn_edge.output
         self._l = self.rnn_edge._path
