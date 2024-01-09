@@ -13,6 +13,7 @@ def res_edge(a, b):
     return 1
 
 def top_edge(a, b):
+    if a == b: return 1
     p1, p2 = [], []
     try: p1 += a.Tops
     except AttributeError: p1 += a.Parent
@@ -31,4 +32,4 @@ def lep_edge(a, b):
     b_ = (a.is_b + b.is_b) > 0
     l_ = (a.is_lep + b.is_lep) > 0
 
-    return b_ and l_
+    return int(b_ and l_)

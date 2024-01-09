@@ -13,7 +13,7 @@ if(CMAKE_CUDA_COMPILER)
 else()
     message(STATUS "NO CUDA INSTALLATION FOUND, INSTALLING CPU VERSION ONLY!")
     execute_process(COMMAND ${Python_EXECUTABLE} -m pip uninstall -y torch)
-    execute_process(COMMAND ${Python_EXECUTABLE} -m pip install -v torch --extra-index-url https://download.pytorch.org/whl/cpu)
+    execute_process(COMMAND ${Python_EXECUTABLE} -m pip install -v torch<=2.0.1 --extra-index-url https://download.pytorch.org/whl/cpu)
 endif()
 
 #find_package(Python REQUIRED COMPONENTS Development)

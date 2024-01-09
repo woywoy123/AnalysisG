@@ -13,13 +13,13 @@ x = [k for k in x.lsFiles(smpls) if "ttZ-" in k][:3]
 ana = Analysis()
 ana.ProjectName = "smpl"
 #ana.InputSample(None, x)
-#ana.Event = Event
+ana.Event = Event
 ana.EventName = "Event"
-#ana.EventCache = True
+ana.EventCache = True
 ana.DataCache = True
-#ana.Graph = GraphChildren
-ana.GraphName = "GraphChildren" #"GraphTruthJet"
-#ApplyFeatures(ana, "TruthChildren")
+ana.Graph = GraphTruthJet
+ana.GraphName = "GraphTruthJet"
+ApplyFeatures(ana, "TruthJets")
 lists = []
 for i in ana:
     x = i.release_graph()
@@ -27,4 +27,4 @@ for i in ana:
     lists.append(i)
     if len(lists) < 100: continue
     break
-PickleObject(lists, "GraphTruthChildren") #"GraphTruthJet")
+PickleObject(lists, "data/GraphTruthJet") #"GraphTruthJet")

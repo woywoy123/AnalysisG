@@ -9,7 +9,7 @@ from experimental import ExperimentalGNN
 
 model = ExperimentalGNN()
 x = UnpickleObject("data/GraphTruthChildren")
-data = Batch().from_data_list(x[0:1])
+data = Batch().from_data_list(x[0:2])
 inpt = {
             "edge_index" : None,
             "batch" : None,
@@ -25,12 +25,12 @@ inpt = {
             "N_is_b" : None
 }
 
-
+print(data)
 inpt = {i : getattr(data, i).to(device = "cuda") for i in inpt}
 model.to(device = "cuda")
 model.train()
 
-optimizer = torch.optim.Adam(model.parameters(), lr=0.0001)
+optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
 loss_fn = torch.nn.CrossEntropyLoss()
 for i in range(100000):
     optimizer.zero_grad()
@@ -45,7 +45,6 @@ for i in range(100000):
     if i%100 != 0:continue
     train_acc = ((pred == edge_t).view(-1).sum(-1))/pred.size(0)
     print("Accuracy = {}, Loss = {}, iter = {}".format(train_acc, loss, model.iter))
-
     print(to_dense_adj(inpt["edge_index"], edge_attr = edge_t)[0])
     print(to_dense_adj(inpt["edge_index"], edge_attr = pred)[0])
 

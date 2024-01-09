@@ -13,6 +13,7 @@ def res_edge(a, b):
     return 0
 
 def top_edge(a, b):
+    if a == b: return 1
     p1, p2 = [], []
     try: p1 += a.Parent
     except AttributeError: pass
