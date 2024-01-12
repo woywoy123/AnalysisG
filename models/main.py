@@ -9,7 +9,7 @@ import os
 mode_ = 0
 device = "cuda:1"
 name = "ModelTraining"
-model = "GNNEXP" #"RNN" #"RMGN"
+model = "GNNEXPv2" #"RNN" #"RMGN"
 gen_data = False
 
 modes = [

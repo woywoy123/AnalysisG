@@ -8,6 +8,7 @@ from production.RBGNN import RecursiveMarkovianGraphNet
 from production.pathnetz import RecursivePathNetz
 from production.nunetz import RecursiveNuNetz
 from Beta.experimental import ExperimentalGNN
+from Beta.experimentalv2 import ExperimentalGNNv2
 from dataset_mapping import DataSets
 
 models = {
@@ -15,6 +16,7 @@ models = {
             "RNN" : RecursiveNuNetz,
             "RMGN" : RecursiveMarkovianGraphNet,
             "GNNEXP" : ExperimentalGNN,
+            "GNNEXPv2" : ExperimentalGNNv2
 }
 
 graphs = {

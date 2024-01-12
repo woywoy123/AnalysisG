@@ -5,11 +5,11 @@ from torch_geometric.data import Batch, Data
 import torch
 torch.set_printoptions(precision=3, sci_mode = False)
 
-from experimental import ExperimentalGNN
+from experimentalv2 import ExperimentalGNN
 
 model = ExperimentalGNN()
-x = UnpickleObject("data/GraphTruthChildren")
-data = Batch().from_data_list(x[0:2])
+x = UnpickleObject("data/GraphTruthJet")
+data = Batch().from_data_list(x[0:100]).to(device = "cuda:1")
 inpt = {
             "edge_index" : None,
             "batch" : None,
@@ -26,8 +26,8 @@ inpt = {
 }
 
 print(data)
-inpt = {i : getattr(data, i).to(device = "cuda") for i in inpt}
-model.to(device = "cuda")
+inpt = {i : getattr(data, i) for i in inpt}
+model.to(device = "cuda:1")
 model.train()
 
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
@@ -36,7 +36,7 @@ for i in range(100000):
     optimizer.zero_grad()
     model(**inpt)
     edge = model.O_top_edge
-    edge_t = data.E_T_top_edge.to(device = "cuda", dtype = torch.long).view(-1)
+    edge_t = data.E_T_top_edge.to(dtype = torch.long).view(-1)
     loss = loss_fn(edge, edge_t)
     pred = edge.max(-1)[1]
     loss.backward()
@@ -45,8 +45,8 @@ for i in range(100000):
     if i%100 != 0:continue
     train_acc = ((pred == edge_t).view(-1).sum(-1))/pred.size(0)
     print("Accuracy = {}, Loss = {}, iter = {}".format(train_acc, loss, model.iter))
-    print(to_dense_adj(inpt["edge_index"], edge_attr = edge_t)[0])
-    print(to_dense_adj(inpt["edge_index"], edge_attr = pred)[0])
+    #print(to_dense_adj(inpt["edge_index"], edge_attr = edge_t)[0])
+    #print(to_dense_adj(inpt["edge_index"], edge_attr = pred)[0])
 
 
 

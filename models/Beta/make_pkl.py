@@ -12,7 +12,7 @@ x = [k for k in x.lsFiles(smpls) if "ttZ-" in k][:3]
 
 ana = Analysis()
 ana.ProjectName = "smpl"
-#ana.InputSample(None, x)
+ana.InputSample(None, x)
 ana.Event = Event
 ana.EventName = "Event"
 ana.EventCache = True
