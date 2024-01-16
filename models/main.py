@@ -7,7 +7,7 @@ import os
 
 
 mode_ = 0
-device = "cuda:1"
+device = "cuda:0"
 name = "ModelTraining"
 model = "GNNEXPv2" #"RNN" #"RMGN"
 gen_data = False
@@ -25,18 +25,18 @@ params = [
 #    ("MRK-2" , "ADAM", 10, {"lr": 1e-3},            None,              None),
 #    ("MRK-3" , "ADAM", 50, {"lr": 1e-3},            None,              None),
 
-#    ("MRK-4" , "ADAM", 1 , {"lr": 1e-3, "weight_decay" : 1e-3}, "ExponentialLR", {"gamma"  : 0.5}),
-#    ("MRK-5" , "ADAM", 10, {"lr": 1e-3, "weight_decay" : 1e-1}, "ExponentialLR", {"gamma"  : 0.7}),
-#    ("MRK-6" , "ADAM", 50, {"lr": 1e-3, "weight_decay" : 1e1 }, "ExponentialLR", {"gamma"  : 0.9}),
+#    ("MRK-4" , "ADAM", 1 , {"lr": 1e-6, "weight_decay" : 1e-3}, "ExponentialLR", {"gamma"  : 0.5}),
+#    ("MRK-5" , "ADAM", 10, {"lr": 1e-6, "weight_decay" : 1e-1}, "ExponentialLR", {"gamma"  : 0.7}),
+#    ("MRK-6" , "ADAM", 50, {"lr": 1e-6, "weight_decay" : 1e1 }, "ExponentialLR", {"gamma"  : 0.9}),
 
-#    ("MRK-7" , "SGD", 1 , {"lr": 1e-3, "weight_decay" : 1e-3},      "CyclicLR", {"base_lr" : 1e-3, "max_lr" : 1e0}),
-#    ("MRK-8" , "SGD", 10, {"lr": 1e-3, "weight_decay" : 1e-3},      "CyclicLR", {"base_lr" : 1e-3, "max_lr" : 1e1}),
-#    ("MRK-9" , "SGD", 50, {"lr": 1e-3, "weight_decay" : 1e-3},      "CyclicLR", {"base_lr" : 1e-3, "max_lr" : 1e1}),
+#    ("MRK-7" , "SGD", 1 , {"lr": 1e-3, "weight_decay" : 1e-3},      "CyclicLR", {"base_lr" : 1e-6, "max_lr" : 1e0}),
+#    ("MRK-8" , "SGD", 10, {"lr": 1e-3, "weight_decay" : 1e-3},      "CyclicLR", {"base_lr" : 1e-6, "max_lr" : 1e1}),
+#    ("MRK-9" , "SGD", 50, {"lr": 1e-3, "weight_decay" : 1e-3},      "CyclicLR", {"base_lr" : 1e-6, "max_lr" : 1e1}),
 
 
-#    ("MRK-10", "SGD", 1 , {"lr": 1e-3, "weight_decay" : 1e-3, "momentum" : 0.0001},            None,              None),
-#    ("MRK-11", "SGD", 10, {"lr": 1e-3, "weight_decay" : 1e-3, "momentum" : 0.0001},            None,              None),
-#    ("MRK-12", "SGD", 50, {"lr": 1e-3, "weight_decay" : 1e-3, "momentum" : 0.0001},            None,              None),
+#    ("MRK-10", "SGD", 1 , {"lr": 1e-6, "weight_decay" : 1e-3, "momentum" : 0.0001},            None,              None),
+#    ("MRK-11", "SGD", 10, {"lr": 1e-6, "weight_decay" : 1e-3, "momentum" : 0.0001},            None,              None),
+#    ("MRK-12", "SGD", 50, {"lr": 1e-6, "weight_decay" : 1e-3, "momentum" : 0.0001},            None,              None),
 
 #    ("MRK-13", "SGD", 1 , {"lr": 1e-3, "weight_decay" : 1e-1, "momentum" : 0.0001}, "ExponentialLR", {"gamma"  : 0.5}),
 #    ("MRK-14", "SGD", 10, {"lr": 1e-3, "weight_decay" : 1e-1, "momentum" : 0.0005}, "ExponentialLR", {"gamma"  : 1.0}),

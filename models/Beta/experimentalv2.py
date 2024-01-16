@@ -150,8 +150,8 @@ class ExperimentalGNNv2(MessagePassing):
         self.O_top_edge = None
         self.L_top_edge = "CEL"
 
-        self.O_ntops = None
-        self.L_ntops = "CEL"
+        #self.O_ntops = None
+        #self.L_ntops = "CEL"
 
         self._drop = Dropout(p = 0.01)
         self._pool = aggr.SoftmaxAggregation(learn = True)
@@ -179,6 +179,7 @@ class ExperimentalGNNv2(MessagePassing):
         else: pmc, met_xy = pmc/1000, met_xy/1000
 
         out = self.rnn_edge(edge_index, batch, pmc, met_xy)
+        self.O_top_edge = self._drop(out)
         try: gr = graph.edge(edge_index, out.max(-1)[1], pmc, True)[1]["node_sum"]
         except KeyError: gr = torch.zeros_like(pmc)
 
@@ -186,7 +187,6 @@ class ExperimentalGNNv2(MessagePassing):
         aggre = self.propagate(edge_index, tope = out, data = data)
         aggre = self._pool(aggre, batch)
         aggre = self.ntops(aggre)
-        self.O_top_edge = out #self._drop(out)
-        self.O_ntops = self._drop(aggre)
+        #self.O_ntops = self._drop(aggre)
         self.iter = self.rnn_edge._iter
 
