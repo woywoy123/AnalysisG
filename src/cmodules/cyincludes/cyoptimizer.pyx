@@ -23,6 +23,7 @@ import numpy as np
 import pickle
 import torch
 import h5py
+import os
 
 
 
@@ -41,7 +42,7 @@ cdef dict template_th1f(str path, str xtitle, str ytitle, str title, float xstep
     output["Filename"] = ""
     output["xTitle"] = xtitle
     output["yTitle"] = ytitle
-    output["xBins"] = 1500
+    output["xBins"] = 1000
     output["xMin"] = 0
     output["xMax"] = 1500
     output["Title"] = title
@@ -473,6 +474,7 @@ cdef class DataLoader:
     cdef dict online
     cdef public bool purge
     cdef public sampletracer
+    cdef public int threads
 
     def __cinit__(self):
         self.sampletracer = None
@@ -491,6 +493,7 @@ cdef class DataLoader:
         else: return self
 
         self.device = self.sampletracer.Device
+        self.threads = self.sampletracer.Threads
         self.this_batch.clear()
         self.batch_hash.clear()
         self.kfold = kfold
@@ -500,7 +503,7 @@ cdef class DataLoader:
         cdef string hash_
         cdef int size = batches.size()
         cdef map[string, k_graphed*] to_fetch
-        for idx in prange(size, nogil = True, num_threads = size):
+        for idx in prange(size, nogil = True, num_threads = self.threads):
             if   mode == b"train": self.batch_hash[idx] = self.ptr.check_train(&batches[idx], kfold)
             elif mode == b"valid": self.batch_hash[idx] = self.ptr.check_validation(&batches[idx], kfold)
             elif mode == b"eval":  self.batch_hash[idx] = self.ptr.check_evaluation(&batches[idx])
@@ -542,6 +545,7 @@ cdef class DataLoader:
         self.indx_s += 1
 
         cdef list out = []
+        cdef list hashes = []
         cdef string t_hash
         cdef k_graphed* gr
         for t_hash in dereference(hash_):
@@ -553,6 +557,7 @@ cdef class DataLoader:
                 data = pickle.loads(gr.pkl)
                 self.online[env(t_hash)] = data
             out.append(data)
+            hashes.append(t_hash)
 
         cdef int idx = self.sampletracer.MaxGPU
         cdef tuple cuda = (None, None)
@@ -565,9 +570,9 @@ cdef class DataLoader:
             data = Batch().from_data_list(out)
             for k in self.online.values(): del k
             torch.cuda.empty_cache()
-            return data.to(device = self.device).clone()
+            return data.to(device = self.device).clone(), hashes
         self.purge = False
-        return Batch().from_data_list(out).to(device = self.device).clone()
+        return Batch().from_data_list(out).to(device = self.device).clone(), hashes
 
 
 cdef class cOptimizer:
@@ -580,6 +585,7 @@ cdef class cOptimizer:
 
     cdef report_t state
     cdef public bool metric_plots
+    cdef public int threads
     cdef public sampletracer
 
     def __cinit__(self):
@@ -618,7 +624,7 @@ cdef class cOptimizer:
 
         cdef int i, j
         cdef map[string, vector[folds_t]] output
-        for i in prange(idx.size(), nogil = True, num_threads = idx.size()):
+        for i in prange(idx.size(), nogil = True, num_threads = self.threads):
             output[idx[i]] = kfold_build(&idx[i], &res[idx[i]])
             for j in range(output[idx[i]].size()): self.ptr.register_fold(&output[idx[i]][j])
         output.clear()
@@ -628,7 +634,7 @@ cdef class cOptimizer:
         cdef int idx
         cdef folds_t fold_hash
         cdef vector[string] data = penc(inpt)
-        for idx in prange(data.size(), nogil = True, num_threads = 12):
+        for idx in prange(data.size(), nogil = True, num_threads = self.threads):
             fold_hash = folds_t()
             fold_hash.kfold = 1
             fold_hash.train = True
@@ -636,7 +642,7 @@ cdef class cOptimizer:
             self.ptr.register_fold(&fold_hash)
         data.clear()
 
-    def FetchTraining(self, int kfold, int batch_size):
+    cpdef FetchTraining(self, int kfold, int batch_size):
         if self.data.sampletracer is not None: pass
         else: self.data.sampletracer = self.sampletracer
         self._train = True
@@ -644,7 +650,7 @@ cdef class cOptimizer:
         self._test = False
         return self.data.set_batch(kfold, batch_size, b"train")
 
-    def FetchValidation(self, int kfold, int batch_size):
+    cpdef FetchValidation(self, int kfold, int batch_size):
         if self.data.sampletracer is not None: pass
         else: self.data.sampletracer = self.sampletracer
         self._train = False
@@ -652,7 +658,7 @@ cdef class cOptimizer:
         self._test = False
         return self.data.set_batch(kfold, batch_size, b"valid")
 
-    def FetchEvaluation(self, int batch_size):
+    cpdef FetchEvaluation(self, int batch_size):
         if self.data.sampletracer is not None: pass
         else: self.data.sampletracer = self.sampletracer
         self._train = False
@@ -660,7 +666,7 @@ cdef class cOptimizer:
         self._test = True
         return self.data.set_batch(-1, batch_size, b"eval")
 
-    def UseTheseFolds(self, list inpt): self.ptr.use_folds = <vector[int]>inpt
+    cpdef UseTheseFolds(self, list inpt): self.ptr.use_folds = <vector[int]>inpt
 
     cpdef AddkFold(self, int epoch, int kfold, dict inpt, dict out_map):
         cdef map[string, data_t] map_data = recast(inpt, out_map)
@@ -698,6 +704,7 @@ cdef class cOptimizer:
             ep = self.ptr.epoch_train[epoch]
             for dt in ep.container[kfold]: _check_h5(grp, env(dt.first), &dt.second)
             ep.process_data()
+
         if self.ptr.epoch_valid.count(epoch):
             grp = _check_sub(f, "validation")
             ep = self.ptr.epoch_valid[epoch]
@@ -739,3 +746,45 @@ cdef class cOptimizer:
         for itr in self.ptr.epoch_train: itr.second.purge()
         for itr in self.ptr.epoch_valid: itr.second.purge()
         for itr in self.ptr.epoch_test:  itr.second.purge()
+
+    cpdef SinkInjector(self, model, bar):
+        cdef str v
+        cdef list g
+        cdef int idx = 0
+        cdef int idy = 0
+        cdef dict gh2
+
+        h5_file = None
+        cdef str rp = self.sampletracer.WorkingPath
+        cdef str tp = rp + "Training/" + model.RunName + "/"
+        cdef dict gh = self.sampletracer.makehashes()["graph"]
+        cdef list roots = [tp + v.replace(rp + "GraphCache/", "") for v in gh]
+        cdef vector[int] indx = [0] + [len(g) for g in gh.values()]
+        self.UseAllHashes(sum(gh.values(), []))
+
+        self._train = True
+        self._val   = False
+        self._test  = False
+
+        cdef vector[string] hashes
+        cdef DataLoader loader = self.data.set_batch(1, 1, b"train")
+        bar.total = len(loader)
+        bar.refresh()
+
+        for data, hashes in loader:
+            gh = model(data)
+            gh2 = gh.pop("graphs")[0].to_dict()
+            gh.update(gh2)
+            if indx[idx] == idy:
+                v = os.path.abspath(roots[idx])
+                try: os.makedirs("/".join(v.split("/")[:-1]))
+                except FileExistsError: pass
+                if h5_file is not None: h5_file.close()
+                h5_file = h5py.File(v, "w")
+                idx += 1
+                idy = 0
+            f = _check_sub(h5_file, env(hashes[0]))
+            f.attrs.update({v : tn.detach() for v, tn in gh.items()})
+            bar.update(1)
+            idy+=1
+        h5_file.close()

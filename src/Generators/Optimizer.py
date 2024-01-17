@@ -22,10 +22,9 @@ class Optimizer(_Optimizer, _Interface, RandomSamplers):
     def __searchsplits__(self, sampletracer):
         sets = self.WorkingPath + "Training/DataSets/"
         sets += self.TrainingName
-        if not self._cmod.GetHDF5Hashes(sets):
-            sampletracer.GetAll = True
-            self._cmod.UseAllHashes([i.hash for i in sampletracer.makelist()])
-        self._searchdatasplits(sets)
+        if not self._cmod.GetHDF5Hashes(sets) or self.ModelInjection:
+            self._cmod.UseAllHashes([i.hash for i in sampletracer])
+        else: self._searchdatasplits(sets)
 
     def __initialize__(self):
         if self._nomodel(): return False
@@ -33,7 +32,7 @@ class Optimizer(_Optimizer, _Interface, RandomSamplers):
         else: self._cmod.UseTheseFolds([1])
 
         k = next(iter(self._cmod.kFolds))
-        graphs = next(iter(self._cmod.FetchTraining(k, self.BatchSize)))
+        graphs, _ = next(iter(self._cmod.FetchTraining(k, self.BatchSize)))
         for k in self._cmod.kFolds:
             if len(graphs): pass
             else: return not self._nographs()
@@ -62,7 +61,7 @@ class Optimizer(_Optimizer, _Interface, RandomSamplers):
             self._kOps[k].Scheduler = self.Scheduler
             self._kOps[k].SchedulerParams = self.SchedulerParams
             self._kOps[k].model = self._kModels[k].model
-
+            if self.ModelInjection: continue
             if self._kOps[k].setoptimizer(): pass
             else: return self._invalidoptimizer()
 
@@ -81,14 +80,17 @@ class Optimizer(_Optimizer, _Interface, RandomSamplers):
         kfolds = self._cmod.kFolds
         kfolds.sort()
         if not len(kfolds): kfolds += [1]
-        gr = next(iter(self._cmod.FetchTraining(kfolds[0], self.BatchSize)))
+        next(iter(self._cmod.FetchTraining(kfolds[0], self.BatchSize)))
         self.preiteration(sample)
+
         if self.__initialize__(): pass
         else: return
 
         self._findpriortraining()
         self._cmod.metric_plots = self.PlotLearningMetrics
         path = self.WorkingPath + "machine-learning/" + self.RunName
+        if self.ModelInjection: return self.__run_injection__()
+
         for ep in range(self.Epochs):
             ep += 1
             kfold_map = {}
@@ -121,6 +123,7 @@ class Optimizer(_Optimizer, _Interface, RandomSamplers):
                 self._kModels[k].save()
 
                 self._cmod.DumpEpochHDF5(ep, base, k)
+
             if self.PlotLearningMetrics:
                 self.Success("Plotting: Epoch " + str(ep))
                 self._cmod.BuildPlots(ep, path + "/Plots")
@@ -132,11 +135,13 @@ class Optimizer(_Optimizer, _Interface, RandomSamplers):
         batches = self._cmod.FetchTraining(kfold, self.BatchSize)
         msg = "Epoch (" + str(epoch) + ") Running k-Fold (training) -> " + str(kfold)
         if not self.DebugMode: _, bar = self._MakeBar(len(batches), msg)
-        for graph in batches:
-            self._kOps[kfold].zero()
-            res = self._kModels[kfold](graph)
-            self._kModels[kfold].backward()
-            self._kOps[kfold].step()
+        model = self._kModels[kfold]
+        op = self._kOps[kfold]
+        for graph, _ in batches:
+            op.zero()
+            res = model(graph)
+            model.backward()
+            op.step()
             if not self.DebugMode:
                 container.append(res)
                 bar.update(1)
@@ -158,8 +163,9 @@ class Optimizer(_Optimizer, _Interface, RandomSamplers):
         batches = self._cmod.FetchValidation(kfold, self.BatchSize)
         msg = "Epoch (" + str(epoch) + ") Running k-Fold (validation) -> " + str(kfold)
         if not self.DebugMode: _, bar = self._MakeBar(len(batches), msg)
-        for graph in batches:
-            res = self._kModels[kfold](graph)
+        model = self._kModels[kfold]
+        for graph, _ in batches:
+            res = model(graph)
             if not self.DebugMode:
                 container.append(res)
                 bar.update(1)
@@ -180,8 +186,9 @@ class Optimizer(_Optimizer, _Interface, RandomSamplers):
         container = []
         batches = self._cmod.FetchEvaluation(self.BatchSize)
         if not self.DebugMode: _, bar = self._MakeBar(len(batches), "Epoch (" + str(epoch) + ") Running leave-out")
-        for graph in batches:
-            res = self._kModels[kfold](graph)
+        model = self._kModels[kfold]
+        for graph, _ in batches:
+            res = model(graph)
             if not self.DebugMode:
                 container.append(res)
                 bar.update(1)
@@ -197,6 +204,13 @@ class Optimizer(_Optimizer, _Interface, RandomSamplers):
         if self.DebugMode: return
         self._cmod.FastGraphRecast(epoch, kfold, container, self._kModels[kfold].out_map)
         for i in container: del i
+
+    def __run_injection__(self):
+        msg = "Running Model Injector: "
+        _, bar = self._MakeBar(1, msg)
+        model = self._kModels[self._cmod.kFolds[0]]
+        self._cmod.SinkInjector(model, bar)
+
 
     def preiteration(self, inpt = None):
         if inpt is not None: pass

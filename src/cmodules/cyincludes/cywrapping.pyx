@@ -303,7 +303,6 @@ cdef class ModelWrapper:
             elif k == "L_": self._loss_map[i[2:]] = val
             elif k == "C_": self._class_map[i[2:]] = val
             else: pass
-
         self._in_map = {}
         co = self._model.forward.__code__
         co = co.co_varnames[1: co.co_argcount]
@@ -327,14 +326,23 @@ cdef class ModelWrapper:
             key = j[2:]
             pred = self._model.__dict__[j]
             if pred is None: continue
-            loss = self._loss_map[key](pred, sample[i])
+            ten = data._slice_dict.get(i)
+            if ten is None:
+                s = pred.size(0)
+                for i in ["i", "batch", "edge_index"]:
+                    if sample[i].size(-1) != s: continue
+                    ten = data._slice_dict.get(i)
+                    break
+            data._slice_dict.update({j : ten})
+            data._inc_dict.update({j : data._inc_dict.get(i)})
+            data.__dict__["_store"][j] = pred
+
+            try: loss = self._loss_map[key](pred, sample[i])
+            except KeyError: continue
+            except ValueError: continue
             self._loss_sum += loss["loss"]
             tmp["L_" + key] = loss["loss"]
             tmp["A_" + key] = loss["acc"]
-
-            data._slice_dict.update({j : data._slice_dict.get(i)})
-            data._inc_dict.update({j : data._inc_dict.get(i)})
-            data.__dict__["_store"][j] = pred
 
             if skip_m: continue
             if j not in self._fxMap: continue
@@ -357,7 +365,6 @@ cdef class ModelWrapper:
         cdef dict inpt
         try: inpt= data.to_dict()
         except AttributeError: inpt = data
-
         self._model(**{i : inpt[i] for i in self._in_map})
         return self.__debatch__(inpt, data)
 
@@ -418,6 +425,9 @@ cdef class ModelWrapper:
             if key in self._out_map: pass
             else: continue
             mapping[it] = "O_" + key
+            del self._out_map[key]
+
+        mapping.update({"M_T_" + key : "O_" + key for key in self._out_map})
         self._out_map = mapping
 
     def backward(self):
@@ -444,7 +454,7 @@ cdef class ModelWrapper:
 
         cdef dict lib = torch.load(_save_path)
         self._epoch = lib["epoch"]
-        try: self._model.load_state_dict(lib["model"])
+        try: self._model.load_state_dict(state_dict = lib["model"])
         except ValueError: self._failed_model_load()
         self._model.eval()
 

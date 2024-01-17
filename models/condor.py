@@ -57,6 +57,7 @@ def GraphGen(name):
     ana = Analysis()
     ana.DataCache = True
     ana.EventName = tmp.__name__()
+    ana.EventCache = True
     ana.Graph = Graphs(mode)._this
     ana.InputSample(name)
     ApplyFeatures(ana, mode.split("_")[0])

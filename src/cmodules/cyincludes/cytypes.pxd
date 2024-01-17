@@ -354,6 +354,7 @@ cdef extern from "../abstractions/cytypes.h":
         bool runplotting
         bool sort_by_nodes
         bool enable_reconstruction
+        bool model_injection
 
         # Getter object option
         bool getgraph

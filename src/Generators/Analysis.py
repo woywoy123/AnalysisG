@@ -246,9 +246,14 @@ class Analysis(_Analysis, SampleTracer, _Interface):
 
     def __Optimizer__(self):
         if self.Model is None: return
+        if self.ModelInjection: return
         op = Optimizer()
         op.Start(self)
 
+    def __model_injection__(self):
+        if self.ModelInjection is False: return
+        op = Optimizer()
+        op.Start(self)
 
     def __ntupler__(self, name):
         if not len(self.DumpThis): return
@@ -290,15 +295,17 @@ class Analysis(_Analysis, SampleTracer, _Interface):
             self.__Event__()
             self.Success("!!!Checking Events... (done)")
 
+            self.Success("!!!Checking Graphs... ")
+            self.__Graph__()
+            self.Success("!!!Checking Graphs... (done)")
+
+            self.__model_injection__()
+
             self.Success("!!!Checking Selections...")
             self.__Selection__()
             self.Success("!!!Checking Selections... (done)")
 
             self.__FeatureAnalysis__()
-
-            self.Success("!!!Checking Graphs... ")
-            self.__Graph__()
-            self.Success("!!!Checking Graphs... (done)")
 
             self.Success("!!!Checking n-Tupler...")
             self.__ntupler__(name)

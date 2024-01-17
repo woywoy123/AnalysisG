@@ -81,7 +81,7 @@ cdef inline dict map_vector_to_dict(map[string, vector[string]]* inpt):
     return output
 
 # ----------------------- cache dumpers -------------------------- #
-cdef inline list recast_obj(vector[obj_t*] cont, export_t* exp, string cache_path, string daod):
+cdef inline list recast_obj(vector[obj_t*] cont, export_t* exp, string cache_path, string daod, int threads):
     cdef string hash_
     cdef map[string, string]* path_
     cdef map[string, vector[string]]* hashes_
@@ -92,7 +92,7 @@ cdef inline list recast_obj(vector[obj_t*] cont, export_t* exp, string cache_pat
     cdef obj_t* data
 
     cdef int idx
-    for idx in prange(cont.size(), nogil = True):
+    for idx in prange(cont.size(), num_threads = threads, nogil = True):
         data = cont[idx]
         hash_ = data.Hash()
         if data.is_event:

@@ -424,6 +424,7 @@ struct settings_t
     bool debug_mode = false; 
     bool continue_training = false; 
     bool runplotting = false; 
+    bool model_injection = false; 
 
     bool sort_by_nodes = false;
     bool enable_reconstruction = false; 

@@ -300,10 +300,91 @@ def test_plotting_analysis():
     Ana.Launch()
     Ana.rm("Project")
 
+def test_model_injection():
+
+    from models.BasicBaseLine import BasicBaseLineRecursion
+    from AnalysisG.Model import Model
+
+    ana = Analysis()
+    ana.ProjectName = "Project"
+    ana.InputSample(None, root1)
+    ana.Event = Event
+    ana.EventCache = True
+    ana.Graph = GraphChildren
+    ApplyFeatures(ana)
+    ana.DataCache = True
+    ana.Launch()
+
+    ana = Analysis()
+    ana.ProjectName = "Project"
+    ana.DataCache = True
+    ana.Event = None
+    ana.GraphName = "GraphChildren"
+    ana.TrainingSize = 50
+    ana.kFolds = 10
+    ana.Launch()
+
+    ana = Analysis()
+    ana.ProjectName = "Project"
+    ana.Epochs = 2
+    ana.kFold = 1
+    ana.GraphName = "GraphChildren"
+    ana.ContinueTraining = False
+    ana.PlotLearningMetrics = True
+    ana.Optimizer = "ADAM"
+    ana.ModelParams = {"test" : "here"}
+    ana.OptimizerParams = {"lr": 0.001}
+    ana.Device = "cpu"
+    ana.Model = BasicBaseLineRecursion
+    ana.BatchSize = 1
+    ana.KinematicMap = {"top_edge" : "polar -> N_pT, N_eta, N_phi, N_energy"}
+    ana.Launch()
+
+
+    root2 = "./samples/sample1/smpl2.root"
+    ana = Analysis()
+    ana.ProjectName = "Project"
+    ana.InputSample(None, root2)
+    ana.Event = Event
+    ana.EventCache = True
+    ana.Graph = GraphChildren
+    ApplyFeatures(ana)
+    ana.DataCache = True
+    ana.Launch()
+
+
+    root3 = "./samples/sample1/smpl3.root"
+    ana = Analysis()
+    ana.ProjectName = "Project"
+    ana.InputSample(None, root3)
+    ana.Event = Event
+    ana.EventCache = True
+    ana.Graph = GraphChildren
+    ApplyFeatures(ana)
+    ana.DataCache = True
+    ana.Launch()
+
+
+    ana = Analysis()
+    ana.ProjectName = "Project"
+    ana.InputSample(None)
+    ana.DataCache = True
+    ana.GraphName = "GraphChildren"
+    ana.Epoch = 2
+    ana.kFold = 2
+    ana.Model = BasicBaseLineRecursion
+    ana.Device = "cpu"
+    ana.ModelInjection = True
+    ana.Launch()
+    ana.rm("Project")
+
+
+
 if __name__ == "__main__":
-    test_random_sampling()
-    test_feature_analysis()
-    test_optimizer()
-    test_optimizer_analysis()
-    test_parallel_analysis()
-    test_plotting_analysis()
+#    test_random_sampling()
+#    test_feature_analysis()
+#    test_optimizer()
+#    test_optimizer_analysis()
+#    test_parallel_analysis()
+#    test_plotting_analysis()
+    test_model_injection()

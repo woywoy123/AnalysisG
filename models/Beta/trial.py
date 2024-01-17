@@ -5,30 +5,27 @@ from torch_geometric.data import Batch, Data
 import torch
 torch.set_printoptions(precision=3, sci_mode = False)
 
-from experimentalv2 import ExperimentalGNN
+from experimentalv2 import ExperimentalGNNv2, RecursiveParticles
 
-model = ExperimentalGNN()
+model = ExperimentalGNNv2()
 x = UnpickleObject("data/GraphTruthJet")
-data = Batch().from_data_list(x[0:100]).to(device = "cuda:1")
-inpt = {
-            "edge_index" : None,
-            "batch" : None,
-            "G_met" : None,
-            "G_phi" : None,
-            "G_n_jets" : None,
-            "G_n_lep" : None,
-            "N_pT" : None,
-            "N_eta" : None,
-            "N_phi" : None,
-            "N_energy" : None,
-            "N_is_lep" : None,
-            "N_is_b" : None
-}
+data = Batch().from_data_list(x[0:1]).to(device = "cuda:0")
+inpt = [
+    "edge_index", "batch",
+    "G_met", "G_phi", "G_n_jets", "G_n_lep",
+    "N_pT", "N_eta", "N_phi", "N_energy", "N_is_lep", "N_is_b"
+]
 
-print(data)
+
+
+test = (getattr(data, i) for i in inpt)
 inpt = {i : getattr(data, i) for i in inpt}
-model.to(device = "cuda:1")
+model.to(device = "cuda:0")
 model.train()
+
+#model = torch.jit.trace(model, test)
+
+
 
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
 loss_fn = torch.nn.CrossEntropyLoss()
@@ -41,7 +38,6 @@ for i in range(100000):
     pred = edge.max(-1)[1]
     loss.backward()
     optimizer.step()
-
     if i%100 != 0:continue
     train_acc = ((pred == edge_t).view(-1).sum(-1))/pred.size(0)
     print("Accuracy = {}, Loss = {}, iter = {}".format(train_acc, loss, model.iter))

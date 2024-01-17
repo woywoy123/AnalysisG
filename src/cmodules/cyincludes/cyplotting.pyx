@@ -896,7 +896,7 @@ cdef class TLine(BasePlotting):
         if self.xData is not None and not len(self.xData): pass
         elif self.yDataUp is not None and self.yDataDown is not None:
             coms["yerr"] = [self.yDataDown, self.yDataUp]
-            coms["capsize"] = 3
+            coms["capsize"] = 0.4
             self.matpl.errorbar(self.xData, self.yData, **coms)
         else: self.matpl.plot(self.xData, self.yData, **coms)
 

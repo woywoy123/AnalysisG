@@ -24,7 +24,7 @@ struct paint_t
     std::string color = ""; 
     std::vector<std::string> colors = {}; 
 
-    std::string marker = "."; 
+    std::string marker = ""; 
     std::vector<std::string> markers = {}; 
 
     std::string texture = "";

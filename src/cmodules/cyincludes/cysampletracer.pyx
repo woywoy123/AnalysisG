@@ -106,7 +106,6 @@ cdef void tracer_dump(f, export_t* state, string root_name):
 
     ref_ = _check_h5(f, "link_selection_code")
     for itr in state.link_selection_code: ref_.attrs[itr.first] = itr.second
-
     tracer_link(f, &state.event_name_hash, &state.event_dir, "event", root_name)
     tracer_link(f, &state.graph_name_hash, &state.graph_dir, "graph", root_name)
     tracer_link(f, &state.selection_name_hash, &state.selection_dir, "selection", root_name)
@@ -116,8 +115,11 @@ cdef void tracer_HDF5(ref, map[string, HDF5_t]* data, string type_key, settings_
     cdef str type_
     cdef string path_
     cdef vector[string] hash_
-    cdef vector[string] root_ = penc(list(ref["ROOT"].attrs.keys()))
+    cdef vector[string] root_
     cdef vector[int] idx_
+
+    try: root_ = penc(list(ref["ROOT"].attrs.keys()))
+    except KeyError: return
 
     cdef string outdir = enc(os.path.abspath(env(set_.outputdirectory)) + "/")
     outdir += set_.projectname + enc('/')
@@ -558,10 +560,8 @@ cdef class SampleTracer:
                 try: f = h5py.File(entry, "a", libver = "latest")
                 except BlockingIOError: sleep(0.1)
                 except OSError: sleep(0.1)
-
                 if f is not None: break
             if f is None: continue
-
             ref = _check_h5(f, "meta")
             s_name = env(meta.sample_name)
             if retag is None: pass
@@ -689,13 +689,14 @@ cdef class SampleTracer:
             if len(_short): out_path = _path + _short
             else: out_path = _path
             if len(_daod): out_path += "/" + _daod
-            out_path = os.path.abspath(out_path)
 
+            out_path = os.path.abspath(out_path)
             try: os.makedirs("/".join(out_path.split("/")[:-1]))
             except FileExistsError: pass
 
             out_path = os.path.abspath(".root".join(out_path.split(".root")[:-1]) + ".hdf5")
-            prc.append([out_path, _short, recast_obj(itr.second, self._state, enc(out_path), itr.first)])
+            spl = recast_obj(itr.second, self._state, enc(out_path), itr.first, self._set.threads)
+            prc.append([out_path, _short, spl])
 
         if not len(prc): return
         th = Threading(prc, dump_objects, self.Threads, 1)
@@ -1607,3 +1608,11 @@ cdef class SampleTracer:
     @OpSysVer.setter
     def OpSysVer(self, str op):
         self._set.op_sys_ver = enc(op)
+
+    @property
+    def ModelInjection(self):
+        return self._set.model_injection
+
+    @ModelInjection.setter
+    def ModelInjection(self, bool val):
+        self._set.model_injection = val
