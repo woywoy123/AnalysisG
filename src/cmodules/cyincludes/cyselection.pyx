@@ -50,7 +50,6 @@ cdef list merge_list(list l1, list l2):
         if op1 == 0 and op2 == 0: out.append(merge_dict(l1[idx], l2[idx]))
         elif op1 == 1 and op2 == 1: out.append(merge_list(l1[idx], l2[idx]))
         elif op1 == 2 and op2 == 2: out += [l1[idx], l2[idx]]
-        elif op1 == 3 and op2 == 3: out.append(l1[idx] + l2[idx])
         else: out += [l1[idx], l2[idx]]
     return out
 

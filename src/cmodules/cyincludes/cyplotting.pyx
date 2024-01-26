@@ -247,6 +247,7 @@ cdef class BasePlotting:
 
     @property
     def Colors(self): return [env(i) for i in self.pn.colors]
+
     @Colors.setter
     def Colors(self, vals: Union[list, str, int]):
         cdef str i
@@ -254,6 +255,7 @@ cdef class BasePlotting:
             for i in vals: self.pn.colors.push_back(enc(i))
         elif isinstance(vals, str): self.pn.colors.push_back(enc(vals))
         elif isinstance(vals, int):
+            if self._ax is None: self.__makefigure__()
             for _ in range(vals):
                 self.Colors = next(self._ax._get_lines.prop_cycler)["color"]
 
@@ -518,25 +520,28 @@ cdef class TH1F(BasePlotting):
         _comm["histtype"] = self.HistFill
         _comm["linewidth"] = self.LineWidth
         _comm["stack"] = self.Stack
-        _comm["yerr"] = False
+        _comm["yerr"] = True
         _comm["edgecolor"] = "black"
         _comm["alpha"] = self.Alpha
         _comm["binticks"] = True
         _comm["density"] = self._norm
+        _comm["flow"] = "sum" if self.OverFlow or self.UnderFlow else None
 
         l = len(self.underlying_hists)
         if self.Histogram is not None: l += 1
         if l > len(self._labels): self._labels.append("sum")
 
-        if self.Histogram is None: pass
-        else:
+        if self.Histogram is not None:
             _comm["H"] = [self.Histogram]
             _comm["label"] = [self._labels.pop()]
+            try: _comm["color"] = self.Histogram.Color
+            except AttributeError: pass
             hep.histplot(**_comm)
 
         if len(self.underlying_hists):
             _comm["H"] = [i.Histogram for i in self.underlying_hists]
             _comm["label"] = self._labels
+            _comm["color"] = self.Colors
             hep.histplot(**_comm)
 
     cpdef __makelabelaxis__(self):
@@ -638,13 +643,11 @@ cdef class TH1F(BasePlotting):
         cdef int i
         cdef TH1F hist
         self._labels = []
-        if len(self.underlying_hists):
-            self.Colors = len(self.underlying_hists)+1
-            self.Color = self.Colors[-1]
-
         for i in range(len(self.underlying_hists)):
             h = self.underlying_hists[i]
-            h.Color = self.Colors[i]
+            try: h.Color = self.Color[i]
+            except IndexError: h.Color = i+1
+            if self.OverFlow: h.OverFlow = True
             self._labels += [h.Title]
             self.__inherit_compile__(h)
 
@@ -667,7 +670,8 @@ cdef class TH1F(BasePlotting):
         self.matpl.setp(
                 self._ax.get_xticklabels(),
                 rotation = 30,
-                horizontalalignment = "right")
+                horizontalalignment = "right"
+        )
 
         if len(self.xLabels):
             self._ax.set_xticks([0.5 + i for i in range(len(self.xLabels))])
@@ -723,11 +727,13 @@ cdef class TH1F(BasePlotting):
 
     @property
     def OverFlow(self): return self.x.overflow
+
     @OverFlow.setter
     def OverFlow(self, val): self.x.overflow = val
 
     @property
     def OverlayHists(self): return self.fig.overlay
+
     @OverlayHists.setter
     def OverlayHists(self, bool val): self.fig.overlay = val
 
@@ -742,11 +748,13 @@ cdef class TH1F(BasePlotting):
 
     @property
     def Histogram(self): return self.cummulative_hist
+
     @Histogram.setter
     def Histogram(self, val): self.cummulative_hist = val
 
     @property
     def Stack(self): return self._stack
+
     @Stack.setter
     def Stack(self, bool val): self._stack = val
 

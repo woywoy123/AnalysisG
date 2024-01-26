@@ -153,40 +153,48 @@ class nTupler(_Interface, _nTupler, SampleTracer):
         self.root.close()
 
     def merged(self):
-        tmp = []
-        chnks = self.Threads * self.Chunks * self.Threads
-        commands = [[], __thmerge__, self.Threads, self.Chunks]
+        #tmp = []
+        #chnks = self.Threads * self.Chunks * self.Threads
+        #commands = [[], __thmerge__, self.Threads, self.Chunks]
+        out = {}
         for i in self:
-            for t, v in i.items():
-                if not v: continue
-                commands[0] += [(t, v.__getstate__(), self._clones)]
-            if len(commands[0]) < chnks: continue
-            th = Threading(*commands)
-            th.Start()
-            tmp += [k for k in th._lists if k is not None]
-            commands[0] = []
-            del th
+            for k in i:
+                if k not in out: out[k] = i[k]
+                else: out[k] += i[k]
+        return out
 
-        tmp += commands[0]
-        while True:
-            commands[0] = []
-            for i in tmp: commands[0] += [(i[0], i[1], self._clones)]
-            th = Threading(*commands)
-            th.Start()
-            output, tmp = {}, []
-            for k in th._lists:
-                if k is None: continue
-                key, val = k
-                tmp.append(k)
-                output[key] = self._clones[key.split(".")[-1]]
-            del th
-            if len(output) != len(tmp): continue
-            for k in tmp:
-                if k is None: continue
-                key, val = k
-                output[key] = output[key].InstantiateObject
-                output[key].__setstate__(val)
-            return output
+#            for t, v in i.items():
+#                if not v: continue
+#                commands[0] += [(t, v.__getstate__(), self._clones)]
+#            if len(commands[0]) < chnks: continue
+#            th = Threading(*commands)
+#            th.Start()
+#            tmp += [k for k in th._lists if k is not None]
+#            commands[0] = []
+#            del th
+#        tmp += commands[0]
+#
+#        if not len(tmp): return {}
+#        while True:
+#            commands[0] = []
+#            for i in tmp: commands[0] += [(i[0], i[1], self._clones)]
+#            th = Threading(*commands)
+#            th.Start()
+#            output, tmp = {}, []
+#            for k in th._lists:
+#                if k is None: continue
+#                key, val = k
+#                tmp.append(k)
+#                output[key] = self._clones[key.split(".")[-1]]
+#
+#            del th
+#            if len(output) != len(tmp): continue
+#            for k in tmp:
+#                if k is None: continue
+#                key, val = k
+#                output[key] = output[key].InstantiateObject
+#                output[key].__setstate__(val)
+#            return output
 
     def __start__(self):
         variables = []
@@ -241,7 +249,7 @@ class nTupler(_Interface, _nTupler, SampleTracer):
             name = i.split("/")[-1]
             if name in self._clones: continue
             self._MissingSelectionTreeSample(i.replace("/", "."))
-        self._itr = len(self._events)
+        self._itr = len(lst)
         self._bar = self._makebar(self._itr, "Running n-Tupler")[1]
         return self
 
@@ -252,6 +260,7 @@ class nTupler(_Interface, _nTupler, SampleTracer):
                 if not j: continue
                 out[i] = self._restored[i].pop(0)
                 self._tmpl[i] -= 1
+            self._bar.update(1)
             return out
 
         if self._cache_paths is None: raise StopIteration
@@ -271,5 +280,4 @@ class nTupler(_Interface, _nTupler, SampleTracer):
             self._restored[i] = [k.release_selection() for k in these]
             self._tmpl[i] = len(these)
         self._tracer.FlushSelections(hashes)
-        self._bar.update(1)
         return self.__next__()

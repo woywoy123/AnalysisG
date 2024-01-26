@@ -330,6 +330,7 @@ namespace SampleTracer
     std::vector<CyBatch*> CySampleTracer::MakeIterable()
     {
         std::vector<std::thread*> jobs = {};  
+        std::vector<std::thread*> run = {};
         settings_t* set = &(this -> settings);
 
         std::vector<CyBatch*> all; 
@@ -340,19 +341,23 @@ namespace SampleTracer
             for (; itb != ro -> batches.end(); ++itb){all.push_back(itb -> second);}
         }
 
-        int y = -1;  
         std::vector<std::vector<CyBatch*>*> output = {};
         std::map<std::string, Code::CyCode*>* code = &(this -> code_hashes);
-        std::vector<std::vector<CyBatch*>> quant = Tools::Quantize(all, set -> threads); 
+        std::vector<std::vector<CyBatch*>> quant = Tools::Quantize(all, set -> threads*set -> threads); 
         for (unsigned int x(0); x < quant.size(); ++x){
             output.push_back(new std::vector<CyBatch*>()); 
             std::thread* j = new std::thread(Search, &quant[x], set, output[x], code);
             jobs.push_back(j); 
+            run.push_back(j); 
 
-            y += 1; 
-            if (y < set -> threads){continue;}
-            y -= set -> threads; 
+            if (run.size() < set -> threads){continue;}
+            std::vector<std::thread*> tmp; 
+            for (unsigned int i(0); i < run.size(); ++i){
+                if (run[i] -> joinable()){continue;}
+                tmp.push_back(run[i]); 
+            }
             j -> join();
+            run = tmp; 
         }
        
         std::vector<CyBatch*> release;  

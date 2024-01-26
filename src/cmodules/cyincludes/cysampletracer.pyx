@@ -171,6 +171,7 @@ cpdef dump_objects(inpt, _prgbar):
         elif prc[i]["graph"]: gr = prc[i]; save_graph(ref, &gr)
         elif prc[i]["selection"]: sel = prc[i]; save_selection(ref, &sel)
         else: continue
+        prc[i] = None
         with lock: bar.update(1)
     f.close()
     del f
@@ -441,9 +442,7 @@ cdef class SampleTracer:
         else: inpt = penc(key)
         cdef list output
         self._set.search = inpt
-        while True:
-            try: output = self.makelist(); break
-            except RuntimeError: pass
+        output = self.makelist()
         self._set.search.clear()
         if not len(output): return False
         return output[0] if len(output) == 1 else output
@@ -793,16 +792,19 @@ cdef class SampleTracer:
 
     def FlushEvents(self, list these_hashes = []):
         cdef str i
+        if these_hashes is None: return
         if not len(these_hashes): return
         self.ptr.FlushEvents(<vector[string]>[enc(i) for i in these_hashes])
 
     def FlushGraphs(self, list these_hashes = []):
         cdef str i
+        if these_hashes is None: return
         if not len(these_hashes): return
         self.ptr.FlushGraphs(<vector[string]>[enc(i) for i in these_hashes])
 
     def FlushSelections(self, list these_hashes = []):
         cdef str i
+        if these_hashes is None: return
         if not len(these_hashes): return
         self.ptr.FlushSelections(<vector[string]>[enc(i) for i in these_hashes])
 

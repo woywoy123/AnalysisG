@@ -116,6 +116,7 @@ class DiLeptonic(SelectionTemplate):
                     if this[-1].is_lep: continue
                     type_dic[can].append(this[-1])
                     break
+
         # if the number of the number of b's is less than 2, reject the event
         if len(type_dic) < 2: return "NoPairs::Rejected"
         if sum([len(val) == 0 for can, val in type_dic.items()]) == 1: return "NoPairs::Rejected"

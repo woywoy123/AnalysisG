@@ -1,233 +1,131 @@
+from AnalysisG.Tools import Tools
+
 class DataSets:
-    def __init__(self):
+    def __init__(self, path = None):
+        self.path = path
         self.Mapping = {
-            "ttH-mX" : {
-                "MadGraphPythia8EvtGen_noallhad_ttH_tttt_m"
-            },
-            "3-top" : {
-                "MadGraphPythia8EvtGen_A14NNPDF23_3top_SM",
-            },
-
-            "ttWW" : {
-                "MadGraphPythia8EvtGen_A14NNPDF23_ttbarWW",
-            },
-
-            "tttt (SM)" : {
-                "aMcAtNloPythia8EvtGen_A14NNPDF31_SM4topsNLO",
-                "aMcAtNloHerwig7EvtGen_H7UE_SM4topsNLO",
-            },
-
-            "ttbar" : {
-                "PhPy8EG_A14_ttbar_hdamp258p75_nonallhad",
-                "PhPy8EG_A14_ttbar_hdamp258p75_dil",
-                "aMcAtNloPythia8EvtGen_MEN30NLO_A14N23LO_ttbarHT6c_1k_nonAH",
-                "aMcAtNloPythia8EvtGen_MEN30NLO_A14N23LO_ttbarHT1k_1k5_nonAH",
-                "aMcAtNloPythia8EvtGen_MEN30NLO_A14N23LO_ttbarHT1k5_nonAH",
-                "aMcAtNloPy8EvtGen_MEN30NLO_A14N23LO_ttbar_noShWe_dil",
-                "PhPy8EG_A14_ttbar_hdamp517p5_dil",
-                "PhPy8EG_A14_ttbarHT",
-                "PhH7EG_H7UE_ttbarHT",
-            },
-
-            "tt" : {
-                "PowhegHerwig7EvtGen_H7UE_tt_hdamp258p75_704_dil"
-            },
-
-            "ttH" : {
-                "PhPy8EG_A14NNPDF23_NNPDF30ME_ttH125_semilep",
-                "PhPy8EG_A14NNPDF23_NNPDF30ME_ttH125_dilep",
-
-            },
-            "SingleTop" : {
-                "PhPy8EG_A14_tchan_BW50_lept_top",
-                "PhPy8EG_A14_tchan_BW50_lept_antitop",
-                "PowhegPythia8EvtGen_A14_singletop_schan_lept_top",
-                "PowhegPythia8EvtGen_A14_singletop_schan_lept_antitop",
-                "PowhegPythia8EvtGen_A14_Wt_DR_inclusive_top",
-                "PowhegPythia8EvtGen_A14_Wt_DR_inclusive_antitop",
-                "MadGraphPythia8EvtGen_A14_tZ_4fl_tchan_noAllHad",
-                "aMcAtNloPythia8EvtGen_tWZ_Ztoll_minDR1",
-            },
-            "ttll" : {
-                "aMcAtNloPythia8EvtGen_MEN30NLO_A14N23LO_ttZnunu",
-                "aMcAtNloPythia8EvtGen_MEN30NLO_A14N23LO_ttZqq",
-                "aMcAtNloPythia8EvtGen_MEN30NLO_A14N23LO_ttee",
-                "aMcAtNloPythia8EvtGen_MEN30NLO_A14N23LO_ttmumu",
-                "aMcAtNloPythia8EvtGen_MEN30NLO_A14N23LO_tttautau",
-                "aMcAtNloPythia8EvtGen_MEN30NLO_A14N23LO_ttee_mll_1_5",
-                "aMcAtNloPythia8EvtGen_MEN30NLO_A14N23LO_ttmumu_mll_1_5",
-                "aMcAtNloPythia8EvtGen_MEN30NLO_A14N23LO_tttautau_mll_1_5",
-            },
-            "ttW":{
-                "aMcAtNloPythia8EvtGen_MEN30NLO_A14N23LO_ttW",
-                "Sh_228_ttW",
-            },
-            "Vjets" : {
-                "Sherpa_221_NNPDF30NNLO_Zmumu_MAXHTPTV0_70_CVetoBVeto",
-                "Sherpa_221_NNPDF30NNLO_Zmumu_MAXHTPTV0_70_CFilterBVeto",
-                "Sherpa_221_NNPDF30NNLO_Zmumu_MAXHTPTV0_70_BFilter",
-                "Sherpa_221_NNPDF30NNLO_Zmumu_MAXHTPTV70_140_CVetoBVeto",
-                "Sherpa_221_NNPDF30NNLO_Zmumu_MAXHTPTV70_140_CFilterBVeto",
-                "Sherpa_221_NNPDF30NNLO_Zmumu_MAXHTPTV70_140_BFilter",
-                "Sherpa_221_NNPDF30NNLO_Zmumu_MAXHTPTV140_280_CVetoBVeto",
-                "Sherpa_221_NNPDF30NNLO_Zmumu_MAXHTPTV140_280_CFilterBVeto",
-                "Sherpa_221_NNPDF30NNLO_Zmumu_MAXHTPTV140_280_BFilter",
-                "Sherpa_221_NNPDF30NNLO_Zmumu_MAXHTPTV280_500_CVetoBVeto",
-                "Sherpa_221_NNPDF30NNLO_Zmumu_MAXHTPTV280_500_CFilterBVeto",
-                "Sherpa_221_NNPDF30NNLO_Zmumu_MAXHTPTV280_500_BFilter",
-                "Sherpa_221_NNPDF30NNLO_Zmumu_MAXHTPTV500_1000",
-                "Sherpa_221_NNPDF30NNLO_Zmumu_MAXHTPTV1000_E_CMS",
-                "Sherpa_221_NNPDF30NNLO_Zee_MAXHTPTV0_70_CVetoBVeto",
-                "Sherpa_221_NNPDF30NNLO_Zee_MAXHTPTV0_70_CFilterBVeto",
-                "Sherpa_221_NNPDF30NNLO_Zee_MAXHTPTV0_70_BFilter",
-                "Sherpa_221_NNPDF30NNLO_Zee_MAXHTPTV70_140_CVetoBVeto",
-                "Sherpa_221_NNPDF30NNLO_Zee_MAXHTPTV70_140_CFilterBVeto",
-                "Sherpa_221_NNPDF30NNLO_Zee_MAXHTPTV70_140_BFilter",
-                "Sherpa_221_NNPDF30NNLO_Zee_MAXHTPTV140_280_CVetoBVeto",
-                "Sherpa_221_NNPDF30NNLO_Zee_MAXHTPTV140_280_CFilterBVeto",
-                "Sherpa_221_NNPDF30NNLO_Zee_MAXHTPTV140_280_BFilter",
-                "Sherpa_221_NNPDF30NNLO_Zee_MAXHTPTV280_500_CVetoBVeto",
-                "Sherpa_221_NNPDF30NNLO_Zee_MAXHTPTV280_500_CFilterBVeto",
-                "Sherpa_221_NNPDF30NNLO_Zee_MAXHTPTV280_500_BFilter",
-                "Sherpa_221_NNPDF30NNLO_Zee_MAXHTPTV500_1000",
-                "Sherpa_221_NNPDF30NNLO_Zee_MAXHTPTV1000_E_CMS",
-                "Sherpa_221_NNPDF30NNLO_Ztautau_MAXHTPTV0_70_CVetoBVeto",
-                "Sherpa_221_NNPDF30NNLO_Ztautau_MAXHTPTV0_70_CFilterBVeto",
-                "Sherpa_221_NNPDF30NNLO_Ztautau_MAXHTPTV0_70_BFilter",
-                "Sherpa_221_NNPDF30NNLO_Ztautau_MAXHTPTV70_140_CVetoBVeto",
-                "Sherpa_221_NNPDF30NNLO_Ztautau_MAXHTPTV70_140_CFilterBVeto",
-                "Sherpa_221_NNPDF30NNLO_Ztautau_MAXHTPTV70_140_BFilter",
-                "Sherpa_221_NNPDF30NNLO_Ztautau_MAXHTPTV140_280_CVetoBVeto",
-                "Sherpa_221_NNPDF30NNLO_Ztautau_MAXHTPTV140_280_CFilterBVeto",
-                "Sherpa_221_NNPDF30NNLO_Ztautau_MAXHTPTV140_280_BFilter",
-                "Sherpa_221_NNPDF30NNLO_Ztautau_MAXHTPTV280_500_CVetoBVeto",
-                "Sherpa_221_NNPDF30NNLO_Ztautau_MAXHTPTV280_500_CFilterBVeto",
-                "Sherpa_221_NNPDF30NNLO_Ztautau_MAXHTPTV280_500_BFilter",
-                "Sherpa_221_NNPDF30NNLO_Ztautau_MAXHTPTV500_1000",
-                "Sherpa_221_NNPDF30NNLO_Ztautau_MAXHTPTV1000_E_CMS",
-                "Sherpa_221_NNPDF30NNLO_Wmunu_MAXHTPTV0_70_CVetoBVeto",
-                "Sherpa_221_NNPDF30NNLO_Wmunu_MAXHTPTV0_70_CFilterBVeto",
-                "Sherpa_221_NNPDF30NNLO_Wmunu_MAXHTPTV0_70_BFilter",
-                "Sherpa_221_NNPDF30NNLO_Wmunu_MAXHTPTV70_140_CVetoBVeto",
-                "Sherpa_221_NNPDF30NNLO_Wmunu_MAXHTPTV70_140_CFilterBVeto",
-                "Sherpa_221_NNPDF30NNLO_Wmunu_MAXHTPTV70_140_BFilter",
-                "Sherpa_221_NNPDF30NNLO_Wmunu_MAXHTPTV140_280_CVetoBVeto",
-                "Sherpa_221_NNPDF30NNLO_Wmunu_MAXHTPTV140_280_CFilterBVeto",
-                "Sherpa_221_NNPDF30NNLO_Wmunu_MAXHTPTV140_280_BFilter",
-                "Sherpa_221_NNPDF30NNLO_Wmunu_MAXHTPTV280_500_CVetoBVeto",
-                "Sherpa_221_NNPDF30NNLO_Wmunu_MAXHTPTV280_500_CFilterBVeto",
-                "Sherpa_221_NNPDF30NNLO_Wmunu_MAXHTPTV280_500_BFilter",
-                "Sherpa_221_NNPDF30NNLO_Wmunu_MAXHTPTV500_1000",
-                "Sherpa_221_NNPDF30NNLO_Wmunu_MAXHTPTV1000_E_CMS",
-                "Sherpa_221_NNPDF30NNLO_Wenu_MAXHTPTV0_70_CVetoBVeto",
-                "Sherpa_221_NNPDF30NNLO_Wenu_MAXHTPTV0_70_CFilterBVeto",
-                "Sherpa_221_NNPDF30NNLO_Wenu_MAXHTPTV0_70_BFilter",
-                "Sherpa_221_NNPDF30NNLO_Wenu_MAXHTPTV70_140_CVetoBVeto",
-                "Sherpa_221_NNPDF30NNLO_Wenu_MAXHTPTV70_140_CFilterBVeto",
-                "Sherpa_221_NNPDF30NNLO_Wenu_MAXHTPTV70_140_BFilter",
-                "Sherpa_221_NNPDF30NNLO_Wenu_MAXHTPTV140_280_CVetoBVeto",
-                "Sherpa_221_NNPDF30NNLO_Wenu_MAXHTPTV140_280_CFilterBVeto",
-                "Sherpa_221_NNPDF30NNLO_Wenu_MAXHTPTV140_280_BFilter",
-                "Sherpa_221_NNPDF30NNLO_Wenu_MAXHTPTV280_500_CVetoBVeto",
-                "Sherpa_221_NNPDF30NNLO_Wenu_MAXHTPTV280_500_CFilterBVeto",
-                "Sherpa_221_NNPDF30NNLO_Wenu_MAXHTPTV280_500_BFilter",
-                "Sherpa_221_NNPDF30NNLO_Wenu_MAXHTPTV1000_E_CMS",
-                "Sherpa_221_NNPDF30NNLO_Wtaunu_MAXHTPTV0_70_CVetoBVeto",
-                "Sherpa_221_NNPDF30NNLO_Wtaunu_MAXHTPTV0_70_CFilterBVeto",
-                "Sherpa_221_NNPDF30NNLO_Wtaunu_MAXHTPTV0_70_BFilter",
-                "Sherpa_221_NNPDF30NNLO_Wtaunu_MAXHTPTV70_140_CVetoBVeto",
-                "Sherpa_221_NNPDF30NNLO_Wtaunu_MAXHTPTV70_140_CFilterBVeto",
-                "Sherpa_221_NNPDF30NNLO_Wtaunu_MAXHTPTV70_140_BFilter",
-                "Sherpa_221_NNPDF30NNLO_Wtaunu_MAXHTPTV140_280_CVetoBVeto",
-                "Sherpa_221_NNPDF30NNLO_Wtaunu_MAXHTPTV140_280_CFilterBVeto",
-                "Sherpa_221_NNPDF30NNLO_Wtaunu_MAXHTPTV140_280_BFilter",
-                "Sherpa_221_NNPDF30NNLO_Wtaunu_MAXHTPTV280_500_CVetoBVeto",
-                "Sherpa_221_NNPDF30NNLO_Wtaunu_MAXHTPTV280_500_CFilterBVeto",
-                "Sherpa_221_NNPDF30NNLO_Wtaunu_MAXHTPTV500_1000",
-                "Sherpa_221_NNPDF30NNLO_Wtaunu_MAXHTPTV1000_E_CMS",
-                "Sherpa_221_NN30NNLO_Zmm_Mll10_40_MAXHTPTV0_70_BVeto",
-                "Sherpa_221_NN30NNLO_Zmm_Mll10_40_MAXHTPTV0_70_BFilter",
-                "Sherpa_221_NN30NNLO_Zmm_Mll10_40_MAXHTPTV70_280_BVeto",
-                "Sherpa_221_NN30NNLO_Zmm_Mll10_40_MAXHTPTV70_280_BFilter",
-                "Sherpa_221_NN30NNLO_Zmm_Mll10_40_MAXHTPTV280_E_CMS_BVeto",
-                "Sherpa_221_NN30NNLO_Zmm_Mll10_40_MAXHTPTV280_E_CMS_BFilter",
-                "Sherpa_221_NN30NNLO_Zee_Mll10_40_MAXHTPTV0_70_BVeto",
-                "Sherpa_221_NN30NNLO_Zee_Mll10_40_MAXHTPTV0_70_BFilter",
-                "Sherpa_221_NN30NNLO_Zee_Mll10_40_MAXHTPTV70_280_BVeto",
-                "Sherpa_221_NN30NNLO_Zee_Mll10_40_MAXHTPTV70_280_BFilter",
-                "Sherpa_221_NN30NNLO_Zee_Mll10_40_MAXHTPTV280_E_CMS_BVeto",
-                "Sherpa_221_NN30NNLO_Zee_Mll10_40_MAXHTPTV280_E_CMS_BFilter",
-                "Sherpa_221_NN30NNLO_Ztt_Mll10_40_MAXHTPTV0_70_BVeto",
-                "Sherpa_221_NN30NNLO_Ztt_Mll10_40_MAXHTPTV0_70_BFilter",
-                "Sherpa_221_NN30NNLO_Ztt_Mll10_40_MAXHTPTV70_280_BVeto",
-                "Sherpa_221_NN30NNLO_Ztt_Mll10_40_MAXHTPTV70_280_BFilter",
-                "Sherpa_221_NN30NNLO_Ztt_Mll10_40_MAXHTPTV280_E_CMS_BVeto",
-                "Sherpa_221_NN30NNLO_Ztt_Mll10_40_MAXHTPTV280_E_CMS_BFilter",
-                "Sh_2211_Zee_maxHTpTV2_BFilter",
-                "Sh_2211_Zee_maxHTpTV2_CFilterBVeto",
-                "Sh_2211_Zee_maxHTpTV2_CVetoBVeto",
-                "Sh_2211_Zmumu_maxHTpTV2_BFilter",
-                "Sh_2211_Zmumu_maxHTpTV2_CFilterBVeto",
-                "Sh_2211_Zmumu_maxHTpTV2_CVetoBVeto",
-                "Sh_2211_Ztautau_LL_maxHTpTV2_BFilter",
-                "Sh_2211_Ztautau_LL_maxHTpTV2_CFilterBVeto",
-                "Sh_2211_Ztautau_LL_maxHTpTV2_CVetoBVeto",
-                "Sh_2211_Ztautau_LH_maxHTpTV2_BFilter",
-                "Sh_2211_Ztautau_LH_maxHTpTV2_CFilterBVeto",
-                "Sh_2211_Ztautau_LH_maxHTpTV2_CVetoBVeto",
-                "Sh_2211_Ztautau_HH_maxHTpTV2_BFilter",
-                "Sh_2211_Ztautau_HH_maxHTpTV2_CFilterBVeto",
-                "Sh_2211_Ztautau_HH_maxHTpTV2_CVetoBVeto",
-                "Sh_2211_Znunu_pTV2_BFilter",
-                "Sh_2211_Znunu_pTV2_CFilterBVeto",
-                "Sh_2211_Znunu_pTV2_CVetoBVeto",
-                "Sh_2211_Wenu_maxHTpTV2_BFilter",
-                "Sh_2211_Wenu_maxHTpTV2_CFilterBVeto",
-                "Sh_2211_Wenu_maxHTpTV2_CVetoBVeto",
-                "Sh_2211_Wmunu_maxHTpTV2_BFilter",
-                "Sh_2211_Wmunu_maxHTpTV2_CFilterBVeto",
-                "Sh_2211_Wmunu_maxHTpTV2_CVetoBVeto",
-                "Sh_2211_Wtaunu_L_maxHTpTV2_BFilter",
-                "Sh_2211_Wtaunu_L_maxHTpTV2_CFilterBVeto",
-                "Sh_2211_Wtaunu_L_maxHTpTV2_CVetoBVeto",
-                "Sh_2211_Wtaunu_H_maxHTpTV2_BFilter",
-                "Sh_2211_Wtaunu_H_maxHTpTV2_CFilterBVeto",
-                "Sh_2211_Wtaunu_H_maxHTpTV2_CVetoBVeto",
-            },
-
-            "VV" : {
-                "Sherpa_222_NNPDF30NNLO_llll",
-                "Sherpa_222_NNPDF30NNLO_lllv",
-                "Sherpa_222_NNPDF30NNLO_llvv",
-                "Sherpa_222_NNPDF30NNLO_lvvv",
-                "Sherpa_222_NNPDF30NNLO_lllljj_EW6",
-                "Sherpa_222_NNPDF30NNLO_lllvjj_EW6",
-                "Sherpa_222_NNPDF30NNLO_llvvjj_EW6",
-                "Sherpa_222_NNPDF30NNLO_llvvjj_ss_EW4",
-                "Sherpa_222_NNPDF30NNLO_llvvjj_ss_EW6",
-                "Sherpa_222_NNPDF30NNLO_llll_lowMllPtComplement",
-                "Sherpa_222_NNPDF30NNLO_lllv_lowMllPtComplement",
-                "Sherpa_222_NNPDF30NNLO_llvv_lowMllPtComplement",
-                "Sherpa_222_NNPDF30NNLO_ggllll_0M4l130",
-                "Sherpa_222_NNPDF30NNLO_ggllll_130M4l",
-                "Sherpa_222_NNPDF30NNLO_ggllvvZZ",
-                "Sherpa_221_NNPDF30NNLO_ZqqZvv",
-                "Sherpa_221_NNPDF30NNLO_ZqqZll",
-                "Sherpa_221_NNPDF30NNLO_WqqZvv",
-                "Sherpa_221_NNPDF30NNLO_WqqZll",
-                "Sherpa_221_NNPDF30NNLO_WplvWmqq",
-                "Sherpa_221_NNPDF30NNLO_WlvZqq",
-            },
-            "VVV" : {
-                "Sherpa_222_NNPDF30NNLO_WWW_3l3v_EW6",
-                "Sherpa_222_NNPDF30NNLO_WWZ_4l2v_EW6",
-                "Sherpa_222_NNPDF30NNLO_WWZ_2l4v_EW6",
-                "Sherpa_222_NNPDF30NNLO_WZZ_5l1v_EW6",
-                "Sherpa_222_NNPDF30NNLO_WZZ_3l3v_EW6",
-                "Sherpa_222_NNPDF30NNLO_ZZZ_6l0v_EW6",
-                "Sherpa_222_NNPDF30NNLO_ZZZ_4l2v_EW6",
-                "Sherpa_222_NNPDF30NNLO_ZZZ_2l4v_EW6",
-            }
+                "SM_tttt" : {
+                    "412043"
+                },
+                "tttt_aMcAtNloHerwig7_AFII" : {
+                    "412044"
+                },
+                "tttt_LOInclusive_AFII" : {
+                    "500326"
+                },
+                "tttt_Sh2211" : {
+                    "700355"
+                },
+                "3top" : {
+                    "304014"
+                },
+                "3top_5F" : {
+                    "516978"
+                },
+                "ttW" : {
+                    "700706"
+                },
+                "ttW_Sh2210" : {
+                    "700168"
+                },
+                "ttW_EWK_Sh2210" : {
+                    "700205"
+                },
+                "ttW_aMcAtNloPy8EG" : {
+                    "410155"
+                },
+                "ttW_MGPy8EG_EWttWsm" : {
+                    "525137"
+                },
+                "ttW_aMCPy8EG_FxFx01jNLO" : {
+                    "501720"
+                },
+                "ttll" : {
+                    "410156", "410157", "410218", "410219", "410220", "410276",
+                    "410277", "410278"
+                },
+                "ttll_NLO" : {
+                    "504330", "504334", "504342", "504346", "504338"
+                },
+                "ttll_Sh2211" : {
+                    "700309"
+                },
+                "ttll_Var3cDown" : {
+                    "504335", "504343", "504331"
+                },
+                "ttll_Var3cUp" : {
+                    "504332", "504336", "504344"
+                },
+                "ttll_H7" : {
+                    "504329", "504333", "504341", "504337", "504345"
+                },
+                "ttH" : {
+                    "346344","346345"
+                },
+                "ttH_PhH7EG" : {
+                    "602485","602486"
+                },
+                "ttbar_PhPy8_FS" : {
+                    "410470","410472"
+                },
+                "ttbar_PhPy8_FS_HT_sliced" : {
+                    "407342","407343","407344"
+                },
+                "SingleTop" : {
+                    "410658","410659","410644","410645","410646","410647","410560",
+                    "410408","512059"
+                },
+                "ttWW" : {
+                    "410081"
+                },
+                "ttWZ" : {
+                    "500463"
+                },
+                "ttHH" : {
+                    "500460"
+                },
+                "ttWH" : {
+                    "500461"
+                },
+                "ttZZ" : {
+                    "500462"
+                },
+                "Vjets_Sherpa221" : {
+                    "364100","364101","364102","364103","364104","364105","364138",
+                    "364106","364107","364108","364109","364110","364111","364160",
+                    "364112","364113","364114","364115","364116","364117","364168",
+                    "364118","364119","364120","364121","364122","364123","364176",
+                    "364124","364125","364126","364127","364128","364129","364130",
+                    "364131","364132","364133","364134","364135","364136","364137",
+                    "364139","364140","364141","364156","364157","364158","364159",
+                    "364161","364162","364163","364164","364165","364166","364167",
+                    "364169","364170","364171","364172","364173","364174","364175",
+                    "364177","364178","364179","364180","364181","364183","364184",
+                    "364186","364187","364188","364189","364190","364191","364192",
+                    "364194","364196","364197","364198","364199","364200","364201",
+                    "364185","364203","364204","364205","364206","364207","364208",
+                    "364209","364193","364210","364211","364212","364213","364214",
+                    "364215","364202"
+                },
+                "Vjets_Sherpa_2211" : {
+                    "700320","700321","700322","700323","700324","700325","700326",
+                    "700327","700328","700329","700330","700331","700332","700333",
+                    "700334","700335","700336","700337","700338","700339","700340",
+                    "700341","700342","700343","700344","700345","700346","700347",
+                    "700348","700349"
+                },
+                "VH" : {
+                    "346646","346647","346645"
+                },
+                "VV" : {
+                    "364250","364253","364254","364255","364283","364284","364285",
+                    "364286","364287","364288","364289","364290","345705","345706",
+                    "345723","363355","363356","363357","363358","363360","363489"
+                },
+                "VVV" : {
+                    "364242","364243","364244","364245","364246","364247","364248",
+                    "364249"
+                }
         }
 
     def CheckThis(self, inpt):
@@ -235,8 +133,12 @@ class DataSets:
         if inpt == "All": return inpt
         for i in self.Mapping:
             for j in self.Mapping[i]:
+                if self.path is not None: all_ = Tools().lsFiles(self.path)
+                else: all_ = []
+                for pth in all_:
+                    if j not in pth: continue
+                    if inpt not in pth: continue
+                    return i
                 if j not in inpt: continue
-                found = i
-                break
-            if found: break
+                else: return j
         return found

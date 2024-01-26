@@ -16,11 +16,10 @@ def search(x):
     f["SampleName"] = False
     f["Files"] = []
     f["get"] = {}
-
-    f["SampleName"] = x.SampleName in x
-    try: f["Files"] = x.SampleMap[x.SampleName]
-    except KeyError: pass
-
+    if len(x.SampleName):
+        f["SampleName"] = x.SampleName in x
+        try: f["Files"] = x.SampleMap[x.SampleName]
+        except KeyError: pass
     for i in f["Files"]:
         x.GetAll = True
         i = x.abs(i).split("/")
@@ -43,10 +42,10 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         _Analysis.__init__(self)
         _Interface.__init__(self)
         self.PurgeCache = False
+        self.FetchMerged = False
         self.TestFeatures = False
         self.triggered = False
         self.SampleName = ""
-        self.merged = {}
         self.nEvents = 10
         self._DumpThis = {}
         self._get = {}
@@ -255,6 +254,27 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         op = Optimizer()
         op.Start(self)
 
+    @property
+    def merged(self):
+        merged = {}
+        pth = self.WorkingPath + "nTupler/"
+        files = self.ListFilesInDir(pth, ".pkl")
+        files = [x + "/" + i for x, k in files.items() for i in k]
+        code = {i.class_name : i for i in self.rebuild_code(None)}
+        if not len(code):
+            self.__LoadSample__()
+            code = {i.class_name : i for i in self.rebuild_code(None)}
+
+        for x in files:
+            d = UnpickleObject(x)
+            if d is None: continue
+            name = d["event_name"].decode("UTF-8")
+            tree = d["event_tree"].decode("UTF-8")
+            p = code[name].InstantiateObject
+            p.__setstate__(d)
+            merged[x.replace(".pkl", "").replace(pth, "")] = p
+        return merged
+
     def __ntupler__(self, name):
         if not len(self.DumpThis): return
         pth = self.WorkingPath + "nTupler/"
@@ -268,15 +288,6 @@ class Analysis(_Analysis, SampleTracer, _Interface):
             if name is None: pass
             else: x = x + "." + name
             PickleObject(obj.__getstate__(), pth + x)
-
-        files = self.ListFilesInDir(pth, ".pkl")
-        files = [x + "/" + i for x, k in files.items() for i in k]
-        code = {i.class_name : i for i in self.rebuild_code(None)}
-        for x in files:
-            d = UnpickleObject(x)
-            p = code[d["event_name"].decode("UTF-8")].InstantiateObject
-            p.__setstate__(d)
-            self.merged[x.split(pth)[-1].replace(".pkl", "")] = p
 
     def __LoadSample__(self):
         tracer = self._CheckForTracer()

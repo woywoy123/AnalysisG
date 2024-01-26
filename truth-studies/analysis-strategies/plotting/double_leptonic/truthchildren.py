@@ -1,5 +1,6 @@
 from AnalysisG.Plotting import TH1F, TH2F
 from dataset_mapping import DataSets
+import os
 
 def settings(output):
     setting = {
@@ -13,109 +14,111 @@ def settings(output):
     }
     return {i : x for i, x in setting.items()}
 
-def doubleleptonic_Plotting(inpt, truth):
-    d = DataSets()
-    params = settings(truth)
-    params["NEvents"] = inpt.nPassedEvents
-    for i in inpt.TopMasses:
-        if len(inpt.TopMasses[i]) == 0: continue
-        param_ = {}
-        param_.update({"Title" : i, "xData" : inpt.TopMasses[i]})
-        if i == "All": params["Histogram"] = TH1F(**param_)
-        else: params["Histograms"].append(TH1F(**param_))
+def topleptonic(inpt, data):
+    smpls = {}
+    for dx in inpt.values():
+        smpl = data.CheckThis(dx.ROOT)
+        if smpl not in smpls: smpls[smpl] = dx
+        else: smpls[smpl] += dx
 
-    params["ATLASLumi"] = inpt.Luminosity
-    params["xBins"] = 100
-    params["xStep"] = 40
-    params["xMin"] = 100
-    params["xMax"] = 300
-    params["Alpha"] = 0.75
-    params["Stack"] = True
-    params["xTitle"] = "Mass of Tops (GeV)"
-    params["yLogarithmic"] = True
-    params["yTitle"] = "Entries"
-    params["Title"] = "Reconstructed Resonant Top Masses Segmented into \n Top Decay Mode (Had - Hadronic, Lep - Leptonic)"
-    params["Filename"] = "figure_1.a"
-    th = TH1F(**params)
-    th.SaveFigure()
+    modes = {
+            "Lep-Had" : "Leptonic and Hadronic",
+            "Had-Had" : "Hadronic and Hadronic",
+            "Lep-Lep" : "Leptonic and Leptonic"
+    }
 
-    for x, f in zip(["Lep-Had", "Had-Had", "Lep-Lep"], ["a", "b", "c"]):
-        params = settings(truth)
-        params["ATLASLumi"] = inpt.Luminosity
-        params["Title"] = "Reconstructed Resonance Mass from Matching Strategy \n (Decay Mode: " + x + " )"
-        params["xTitle"] = "Mass of Resonance (GeV)"
-        params["yTitle"] = "Entries"
-        params["xMin"] = 0
-        params["xMax"] = 2000
-        params["xBins"] = 50
-        params["xStep"] = 100
-        params["Alpha"] = 0.75
-        params["Stack"] = True
-        params["Filename"] = "figure_2." + f
+    for mode, title in modes.items():
+        hists = []
+        for key in smpls:
+            hists.append(TH1F())
+            hists[-1].Title = key
+            hists[-1].xData = smpls[key].TopMasses[mode]
 
-        samples = {}
-        for i in inpt.ZPrime:
-            fname = d.CheckThis(i)
-            if x not in inpt.ZPrime[i]: continue
-            if fname not in samples: samples[fname] = []
-            else:samples[fname] += inpt.ZPrime[i][x]
+        masses = TH1F()
+        masses.Alpha = 0.75
+        masses.Style = "ATLAS"
+        masses.LegendSize = 1
+        masses.LineWidth = 1
+        masses.xMin = 0
+        masses.xMax = 500
+        masses.xBins = 100
+        masses.xStep = 100
+        masses.Stack = True
+        masses.Normalize = True
+        masses.OverFlow = True
+        masses.Histograms = hists
+        masses.Title = "Reconstructed Top Quark Pairs from " + title
+        masses.xTitle = "Invariant Top Quark Mass (GeV)"
+        masses.yTitle = "Entries"
+        masses.Filename = "top-mass-" + mode
+        masses.OutputDirectory = "./Output/Dilepton/"
+        masses.SaveFigure()
 
-        for i in samples:
-            param_ = {}
-            param_.update({"Title" : i, "xData" : samples[i]})
-            params["Histograms"].append(TH1F(**param_))
-        th = TH1F(**params)
-        th.SaveFigure()
+def zprimeleptonic(inpt, data):
+    smpls = {}
+    for dx in inpt.values():
+        smpl = data.CheckThis(dx.ROOT)
+        if smpl not in smpls: smpls[smpl] = dx
+        else: smpls[smpl] += dx
 
-    jet_vs_mode = {}
-    mode_smpl = {}
-    for file in inpt.PhaseSpaceZ:
-        fname = d.CheckThis(file)
+    modes = {
+            "Lep-Had" : "Leptonic and Hadronic",
+            "Had-Had" : "Hadronic and Hadronic",
+            "Lep-Lep" : "Leptonic and Leptonic"
+    }
 
-        for jets in inpt.PhaseSpaceZ[file]:
-            for lep_s, data in inpt.PhaseSpaceZ[file][jets].items():
-                mode = ""
-                if lep_s.count("+") and lep_s.count("-"): mode = "2l-OS"
-                elif lep_s.count("+") == 2: mode = "2l-SS"
-                elif lep_s.count("-") == 2: mode = "2l-SS"
-                elif len(lep_s): mode = "1l"
-                else: mode = "0l"
+    for mode, title in modes.items():
+        hists = []
+        for key in smpls:
+            hists.append(TH1F())
+            hists[-1].Title = key
+            try: hists[-1].xData = smpls[key].ZPrime[""][mode]
+            except: hists[-1].xData = []
 
-                if jets not in jet_vs_mode: jet_vs_mode[jets] = {}
-                if mode not in jet_vs_mode[jets]: jet_vs_mode[jets][mode] = {}
-                if fname not in jet_vs_mode[jets][mode]: jet_vs_mode[jets][mode][fname] = []
+        masses = TH1F()
+        masses.Alpha = 0.75
+        masses.Style = "ATLAS"
+        masses.LegendSize = 1
+        masses.LineWidth = 1
+        masses.xMin = 0
+        masses.xMax = 2000
+        masses.xStep = 200
+        masses.xBins = 100
+        masses.Stack = True
+        masses.Normalize = True
+        masses.OverFlow = True
+        masses.Histograms = hists
+        masses.Title = "Reconstructed Z-Prime Invariant mass derived from \n Top Pairs decaying via " + title
+        masses.xTitle = "Invariant Z-Prime Mass (GeV)"
+        masses.yTitle = "Entries <unit>"
+        masses.Filename = "zprime-mass-" + mode
+        masses.OutputDirectory = "./Output/Dilepton/"
+        masses.SaveFigure()
 
-                if mode not in mode_smpl: mode_smpl[mode] = {}
-                if fname not in mode_smpl[mode]: mode_smpl[mode][fname] = []
+def doubleleptonic_Plotting(inpt, path):
+    data = DataSets(path)
+    sm = None
+    for i in inpt:
+        if sm is None: sm = inpt[i]
+        else: sm += inpt[i]
 
-                jet_vs_mode[jets][mode][fname] += data
-                mode_smpl[mode][fname] += data
+    passed = sm.CutFlow["Selection::Passed"]
+    rejected = sm.CutFlow["Selection::Rejected"]
+    solsFound = sm.CutFlow["Strategy::FoundSolutions::Passed"]
+    nosols = sm.CutFlow["Strategy::NoDoubleNuSolution::Rejected"]
+    all_ = passed + rejected
+    print("Strategy Passed:", 100*passed/all_, "%")
+    print("Strategy Rejected:", 100*rejected/all_, "%")
+    print("Strategy Passed (Solutions found):", 100*solsFound/all_, "%")
+    print("Strategy Passed (No Solutions found):", 100*nosols/all_, "%")
 
-    for mode, f in zip(mode_smpl, ["a", "b", "c", "d", "e", "f"]):
-        params = settings(truth)
-        params["ATLASLumi"] = round(inpt.Luminosity, 3)
-        params["Title"] = "Reconstructed Resonance Mass from Matching Strategy \n (Decay Mode: " + mode + " )"
-        params["xTitle"] = "Mass of Resonance (GeV)"
-        params["yTitle"] = "Entries"
-        params["xMin"] = 0
-        params["xMax"] = 2000
-        params["xBins"] = 50
-        params["xStep"] = 100
-        params["Alpha"] = 0.75
-        params["Stack"] = True
-        params["Filename"] = "figure_3." + f
+    #topleptonic(inpt, data)
+    zprimeleptonic(inpt, data)
+    #print(inpt.PhaseSpaceZ)
 
-        for smpl, data in mode_smpl[mode].items():
-            param_ = {}
-            param_.update({"Title" : smpl, "xData" : data})
-            params["Histograms"].append(TH1F(**param_))
-        th = TH1F(**params)
-        th.SaveFigure()
 
-    nevents = inpt.TotalEvents
-    print("____ CUTFLOW REPORT _____")
-    print("N-Events: ", nevents)
-    for i in inpt.CutFlow:
-        print("-> "+ i.replace(" -> ", "::"), (inpt.CutFlow[i]/nevents)*100, "%")
+
+
+
 
 
