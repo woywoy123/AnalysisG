@@ -20,6 +20,10 @@ def search(x):
         f["SampleName"] = x.SampleName in x
         try: f["Files"] = x.SampleMap[x.SampleName]
         except KeyError: pass
+    else:
+        f["Files"] = x.SampleMap[""]
+        f["SampleName"] = ""
+
     for i in f["Files"]:
         x.GetAll = True
         i = x.abs(i).split("/")
@@ -98,10 +102,12 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         if maps: pass
         else: return self.EmptySampleList()
         dic = {}
-        for i in maps:
-            if i.SkipEvent: continue
-            if i.EmptyGraph: continue
-            dic[i.hash] = i
+        try:
+            for i in maps:
+                if i.SkipEvent: continue
+                if i.EmptyGraph: continue
+                dic[i.hash] = i
+        except TypeError: dic[maps.hash] = maps
 
         r = RandomSamplers()
         r.ImportSettings(self.ExportSettings())
@@ -206,7 +212,6 @@ class Analysis(_Analysis, SampleTracer, _Interface):
 
         get = sum(self._get["event"].values(), [])
         if len(get) and self.EventCache: self.RestoreEvents(get)
-        elif not len(get): pass
 
         if self.Tree: pass
         elif len(self.ShowTrees) == 0: pass

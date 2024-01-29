@@ -6,10 +6,10 @@ from examples.Graph import DataGraph, DataEx
 def test_event_flush():
 
     ana = Analysis()
-    ana.Event = EventEx
-    ana.InputSample(None, "samples/dilepton/")
-    ana.EventCache = True
     ana.ProjectName = "Project"
+    ana.InputSample(None, "samples/dilepton/")
+    ana.Event = EventEx
+    ana.EventCache = True
     ana.Launch()
 
     for i in ana: break
@@ -137,6 +137,6 @@ def test_change_graph_cache():
     ana.rm("Project")
 
 if __name__ == "__main__":
-#    test_event_flush()
+    test_event_flush()
 #    test_change_event_cache()
-    test_change_graph_cache()
+#    test_change_graph_cache()

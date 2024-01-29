@@ -646,7 +646,7 @@ cdef class TH1F(BasePlotting):
         for i in range(len(self.underlying_hists)):
             h = self.underlying_hists[i]
             try: h.Color = self.Color[i]
-            except IndexError: h.Color = i+1
+            except IndexError: pass
             if self.OverFlow: h.OverFlow = True
             self._labels += [h.Title]
             self.__inherit_compile__(h)

@@ -187,17 +187,17 @@ class DiLeptonic(SelectionTemplate):
         if mode not in self.PhaseSpaceZ[short][njets]:
             self.PhaseSpaceZ[short][njets][mode] = []
             self.PhaseSpaceT[short][njets][mode] = []
-            self.Kinematics[short][njets][mode] = {"pt" : [], "eta" : [], "phi": [], "e": [], "bjets": []}
+            self.Kinematics[short][njets][mode] = {"pT" : [], "Eta" : [], "Phi": [], "Energy": [], "b-Jets": []}
 
         self.PhaseSpaceT[short][njets][mode] += tops
         self.PhaseSpaceZ[short][njets][mode] += [zp]
 
         particles = sum([type_dic[k]for k in type_dic], [])
-        self.Kinematics[short][njets][mode]["pt"]  += [i.pt for i in particles]
-        self.Kinematics[short][njets][mode]["eta"] += [i.eta for i in particles]
-        self.Kinematics[short][njets][mode]["phi"] += [i.phi for i in particles]
-        self.Kinematics[short][njets][mode]["e"]   += [i.e for i in particles]
-        self.Kinematics[short][njets][mode]["bjets"] += [nbjets]
+        self.Kinematics[short][njets][mode]["pT"]  += [i.pt/1000 for i in particles]
+        self.Kinematics[short][njets][mode]["Eta"] += [i.eta for i in particles]
+        self.Kinematics[short][njets][mode]["Phi"] += [i.phi for i in particles]
+        self.Kinematics[short][njets][mode]["Energy"]   += [i.e/1000 for i in particles]
+        self.Kinematics[short][njets][mode]["b-Jets"] += [nbjets]
 
         self.ZPrime[short][sel_type] += [zp]
         self.ZPrime["All"] += [zp]

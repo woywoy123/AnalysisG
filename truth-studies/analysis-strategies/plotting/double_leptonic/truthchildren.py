@@ -14,13 +14,7 @@ def settings(output):
     }
     return {i : x for i, x in setting.items()}
 
-def topleptonic(inpt, data):
-    smpls = {}
-    for dx in inpt.values():
-        smpl = data.CheckThis(dx.ROOT)
-        if smpl not in smpls: smpls[smpl] = dx
-        else: smpls[smpl] += dx
-
+def topleptonic(smpls):
     modes = {
             "Lep-Had" : "Leptonic and Hadronic",
             "Had-Had" : "Hadronic and Hadronic",
@@ -54,13 +48,7 @@ def topleptonic(inpt, data):
         masses.OutputDirectory = "./Output/Dilepton/"
         masses.SaveFigure()
 
-def zprimeleptonic(inpt, data):
-    smpls = {}
-    for dx in inpt.values():
-        smpl = data.CheckThis(dx.ROOT)
-        if smpl not in smpls: smpls[smpl] = dx
-        else: smpls[smpl] += dx
-
+def zprimeleptonic(smpls):
     modes = {
             "Lep-Had" : "Leptonic and Hadronic",
             "Had-Had" : "Hadronic and Hadronic",
@@ -95,13 +83,82 @@ def zprimeleptonic(inpt, data):
         masses.OutputDirectory = "./Output/Dilepton/"
         masses.SaveFigure()
 
-def doubleleptonic_Plotting(inpt, path):
-    data = DataSets(path)
-    sm = None
-    for i in inpt:
-        if sm is None: sm = inpt[i]
-        else: sm += inpt[i]
+def topleptonic_phasespace(smpls, kinematic):
+    njets_sign = {}
+    for key in smpls:
+        if kinematic == "mass": container = smpls[key].PhaseSpaceT[""]
+        else: container = smpls[key].Kinematics[""]
+        for nj in container:
+            for sign in container[nj]:
+                mode = ""
+                if sign == "++" or sign == "--": mode = "Same Sign"
+                elif sign == "-" or sign == "+": mode = "Single Lepton"
+                elif sign == "+-" or sign == "-+": mode = "Opposite Sign"
+                elif sign == "NA": mode = "Hadronic Pair"
+                else: sign = "WARNING!"
 
+                if mode not in njets_sign: njets_sign[mode] = {}
+                if nj not in njets_sign[mode]: njets_sign[mode][nj] = {}
+                if key not in njets_sign[mode][nj]: njets_sign[mode][nj][key] = []
+                if kinematic == "mass": njets_sign[mode][nj][key] += container[nj][sign]
+                else: njets_sign[mode][nj][key] += container[nj][sign][kinematic]
+
+    hists = {}
+    for sign in njets_sign:
+        for nj in njets_sign[sign]:
+            if sign not in hists: hists[sign] = {}
+            if nj not in hists[sign]: hists[sign][nj] = []
+            for prc in njets_sign[sign][nj]:
+                h = TH1F()
+                h.xData = njets_sign[sign][nj][prc]
+                h.Title = prc
+                hists[sign][nj] += [h]
+
+    for sign in hists:
+        for nj in hists[sign]:
+            plt = TH1F()
+            plt.Alpha = 0.75
+            plt.LegendSize = 1
+            plt.Style = "ATLAS"
+            plt.xBins = 100
+            plt.Stack = True
+            plt.OverFlow = True
+            plt.Histograms = hists[sign][nj]
+            if kinematic == "mass":
+                plt.Title = "Reconstructed Invariant Top (pairs) Masses in \n " + sign + " with n-Jets: " + str(nj)
+                plt.xTitle = "Invariant Top-Mass (GeV)"
+                plt.Filename = "top-masses-njets-" + str(nj)
+                plt.xMin = 0
+                plt.xMax = 1000
+                plt.xStep = 100
+            else:
+                plt.Title = "Particle Kinematics (" + kinematic.upper() + ") in \n " + sign + " with n-Jets: " + str(nj)
+                plt.xTitle = kinematic
+                plt.Filename = "particle-" + kinematic + "-njets-" + str(nj)
+
+            if kinematic == "pT" or kinematic == "Energy":
+                plt.xMin = 0
+                plt.xMax = 1000
+                plt.xStep = 100
+                plt.xTitle += " (GeV)"
+
+            if kinematic == "Eta":
+                plt.xMin = -3
+                plt.xMax = 3
+                plt.xStep = 1
+
+            if kinematic == "b-Jets":
+                plt.xMin = 0
+                plt.xMax = 10
+                plt.xStep = 10
+                plt.xTitle = "b-Jets"
+
+            plt.yTitle = "Entries"
+            plt.OutputDirectory = "./Output/Dilepton/" + kinematic + "/regions/" + sign.replace(" ", "-").lower()
+            plt.SaveFigure()
+
+
+def doubleleptonic_Plotting(sm, smpls):
     passed = sm.CutFlow["Selection::Passed"]
     rejected = sm.CutFlow["Selection::Rejected"]
     solsFound = sm.CutFlow["Strategy::FoundSolutions::Passed"]
@@ -112,13 +169,10 @@ def doubleleptonic_Plotting(inpt, path):
     print("Strategy Passed (Solutions found):", 100*solsFound/all_, "%")
     print("Strategy Passed (No Solutions found):", 100*nosols/all_, "%")
 
-    #topleptonic(inpt, data)
-    zprimeleptonic(inpt, data)
-    #print(inpt.PhaseSpaceZ)
-
-
-
-
-
-
-
+    #topleptonic(smpls)
+    #zprimeleptonic(smpls)
+    #topleptonic_phasespace(smpls, "mass")
+    #topleptonic_phasespace(smpls, "pT")
+    #topleptonic_phasespace(smpls, "Eta")
+    #topleptonic_phasespace(smpls, "Energy")
+    #topleptonic_phasespace(smpls, "b-Jets")

@@ -212,8 +212,8 @@ def test_selection_root_samplename():
 
 
 if __name__ == "__main__":
-    test_selection_generator()
-    test_selection_ntupler()
+    #test_selection_generator()
+    #test_selection_ntupler()
     test_selection_merge()
-    test_selection_root()
-    test_selection_root_samplename()
+    #test_selection_root()
+    #test_selection_root_samplename()

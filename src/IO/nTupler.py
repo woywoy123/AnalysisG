@@ -9,24 +9,6 @@ import pickle
 import uproot
 import h5py
 
-def __thmerge__(inpt, _prgbar):
-    lock, bar = _prgbar
-    out = {}
-    for i in range(len(inpt)):
-        key, val, code = inpt[i]
-        evnt = code[key.split(".")[1]].InstantiateObject
-        evnt.__setstate__(val)
-        if key not in out: out[key] = evnt
-        else: out[key] += evnt
-        inpt[i] = None
-        if lock is None:
-            if bar is None: continue
-            bar.update(1)
-            continue
-        with lock: bar.update(1)
-    return [(key, val.__getstate__()) for key, val in out.items()]
-
-
 def _triggers_(inpt):
     if isinstance(inpt, float): pass
     elif isinstance(inpt, int): pass
@@ -153,48 +135,12 @@ class nTupler(_Interface, _nTupler, SampleTracer):
         self.root.close()
 
     def merged(self):
-        #tmp = []
-        #chnks = self.Threads * self.Chunks * self.Threads
-        #commands = [[], __thmerge__, self.Threads, self.Chunks]
         out = {}
         for i in self:
             for k in i:
                 if k not in out: out[k] = i[k]
                 else: out[k] += i[k]
         return out
-
-#            for t, v in i.items():
-#                if not v: continue
-#                commands[0] += [(t, v.__getstate__(), self._clones)]
-#            if len(commands[0]) < chnks: continue
-#            th = Threading(*commands)
-#            th.Start()
-#            tmp += [k for k in th._lists if k is not None]
-#            commands[0] = []
-#            del th
-#        tmp += commands[0]
-#
-#        if not len(tmp): return {}
-#        while True:
-#            commands[0] = []
-#            for i in tmp: commands[0] += [(i[0], i[1], self._clones)]
-#            th = Threading(*commands)
-#            th.Start()
-#            output, tmp = {}, []
-#            for k in th._lists:
-#                if k is None: continue
-#                key, val = k
-#                tmp.append(k)
-#                output[key] = self._clones[key.split(".")[-1]]
-#
-#            del th
-#            if len(output) != len(tmp): continue
-#            for k in tmp:
-#                if k is None: continue
-#                key, val = k
-#                output[key] = output[key].InstantiateObject
-#                output[key].__setstate__(val)
-#            return output
 
     def __start__(self):
         variables = []

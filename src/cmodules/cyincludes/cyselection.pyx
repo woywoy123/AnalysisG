@@ -43,11 +43,11 @@ cdef list merge_list(list l1, list l2):
         try: op2 = merge_data(l2[idx])
         except IndexError: op2 = -1
 
-        if op1 == -1: out.append(l2[idx])
-        else: out.append(l1[idx])
+        if   op1 == -1: out.append(l2[idx])
+        elif op2 == -1: out.append(l1[idx])
         if op1 < 0 or op2 < 0: continue
 
-        if op1 == 0 and op2 == 0: out.append(merge_dict(l1[idx], l2[idx]))
+        if   op1 == 0 and op2 == 0: out.append(merge_dict(l1[idx], l2[idx]))
         elif op1 == 1 and op2 == 1: out.append(merge_list(l1[idx], l2[idx]))
         elif op1 == 2 and op2 == 2: out += [l1[idx], l2[idx]]
         else: out += [l1[idx], l2[idx]]

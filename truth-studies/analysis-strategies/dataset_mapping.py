@@ -3,6 +3,7 @@ from AnalysisG.Tools import Tools
 class DataSets:
     def __init__(self, path = None):
         self.path = path
+        self.paths = {}
         self.Mapping = {
                 "SM_tttt" : {
                     "412043"
@@ -23,6 +24,7 @@ class DataSets:
                     "516978"
                 },
                 "ttW" : {
+                    "700000",
                     "700706"
                 },
                 "ttW_Sh2210" : {
@@ -131,14 +133,12 @@ class DataSets:
     def CheckThis(self, inpt):
         found = False
         if inpt == "All": return inpt
-        for i in self.Mapping:
-            for j in self.Mapping[i]:
-                if self.path is not None: all_ = Tools().lsFiles(self.path)
-                else: all_ = []
-                for pth in all_:
-                    if j not in pth: continue
-                    if inpt not in pth: continue
+        if self.path not in self.paths: self.paths[self.path] = Tools().lsFiles(self.path)
+        all_ = self.paths[self.path]
+        for i, j in self.Mapping.items():
+            for pth in all_:
+                if inpt not in pth: continue
+                for x in j:
+                    if x not in pth: continue
                     return i
-                if j not in inpt: continue
-                else: return j
         return found

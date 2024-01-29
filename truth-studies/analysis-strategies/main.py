@@ -1,7 +1,8 @@
 from plotting.double_leptonic.truthchildren import doubleleptonic_Plotting
 from AnalysisG.IO import nTupler, PickleObject, UnpickleObject
-from double_leptonic import DiLeptonic
 from AnalysisG.Events import Event, SSML
+from double_leptonic import DiLeptonic
+from dataset_mapping import DataSets
 from AnalysisG.Tools import Tools
 from AnalysisG import Analysis
 import os
@@ -16,7 +17,7 @@ combinations = [
 ]
 
 samples = {
-    "SSML" : smpls + "../SSML_MC/"
+    "SSML" : smpls
 }
 
 
@@ -79,10 +80,43 @@ for pairs in combinations:
         Ana.Launch()
         x += 1
 
-    print("Reading pickle")
-    print("Building Plots: " + name)
-    Ana = Analysis()
-    Ana.ProjectName = _ana[1]
-    Ana.AddSelection(ana)
-    doubleleptonic_Plotting(Ana.merged, samples["SSML"])
+    #print("Reading pickle")
+    #print("Building Plots: " + name)
+    #Ana = Analysis()
+    #Ana.ProjectName = _ana[1]
+    #Ana.AddSelection(ana)
+    #output = Ana.merged
 
+    #sm = None
+    #lex, ix = len(output), 0
+    #data = DataSets(samples["SSML"])
+    #for i in output:
+    #    if sm is None: sm = output[i]
+    #    else: sm += output[i]
+    #    print(i, float(ix/lex)*100)
+    #    ix += 1
+    #PickleObject(sm.__getstate__(), "sm")
+
+    #print("------")
+    #ix = 0
+    #smpls = {}
+    #for dx in output:
+    #    smpl = data.CheckThis(output[dx].ROOT)
+    #    if smpl not in smpls: smpls[smpl] = output[dx]
+    #    else: smpls[smpl] += output[dx]
+    #    print(smpl, float(ix/lex)*100)
+    #    ix += 1
+
+    #smpls = {k : smpls[k].__getstate__() for k in smpls}
+    #PickleObject(smpls, "data")
+
+    sm = UnpickleObject("sm")
+    o = DiLeptonic()
+    o.__setstate__(sm)
+
+    smplsx = {}
+    smpls = UnpickleObject("data")
+    for k in smpls:
+        smplsx[k] = DiLeptonic()
+        smplsx[k].__setstate__(smpls[k])
+    doubleleptonic_Plotting(o, smplsx)
