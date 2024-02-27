@@ -1,0 +1,25 @@
+from AnalysisG.Templates import SelectionTemplate
+
+class TruthJetMatching(SelectionTemplate):
+
+    def __init__(self):
+        SelectionTemplate.__init__(self)
+        self.abstract_top = {}
+        self.decaymode = {"hadronic" : [], "leptonic" : []}
+        self.flavor = {"hadronic" : [], "leptonic" : []}
+
+    def Strategy(self, event):
+        tops = event.Tops
+        for t in tops:
+            if t.index not in self.abstract_top: self.abstract_top[t.index] = []
+            if not len(t.Children):
+                self.abstract_top[t.index] += [-1]
+                continue
+            self.abstract_top[t.index] += [sum(t.Children).Mass/1000]
+            lep = [i for i in t.Children if i.is_lepton]
+            if len(lep): self.decaymode["leptonic"] += [sum(t.Children).Mass/1000]
+            else: self.decaymode["hadronic"] += [sum(t.Children).Mass/1000]
+
+            typx = [i.true_flavor for i in t.Children]
+            if len(lep): self.decaymode["leptonic"] += typx
+            else: self.decaymode["hadronic"] += typx
