@@ -4,15 +4,6 @@ Truth Matching Studies for AnalysisTop n-tuples
 Commit hash: 
 - `master@7d70c412a65160d897d0253cbb42e5accf2c5bcf`
 
-Glossary
-________
-- **Truth Tops**: Tops-Quarks within the sample which have already emitted gluons (Final State Radiation).
-- **Truth Top Children (Truth Children)**: Particles originating from the Truth Tops, if any of the particles are a W-Boson, then its children are used.
-- **Truth Jets**: Partons after they undergo hadronization without any detector convolutions. 
-- **Jets**: Partons after they undergo hadronization with detector convolutions.
-- **Signal/Resonance Tops**: Top-Quarks produced from the Z/H Beyond Standard Model Particle.
-- **Spectator Tops**: Tops-Quarks which are the by-product of producing a Z/H boson.
-
 Figure Naming Convention
 ________________________
 

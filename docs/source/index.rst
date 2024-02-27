@@ -153,6 +153,9 @@ PyC, CUDA and C++ API via PyTorch
 Analysis and Truth Studies Documentation
 ****************************************
 .. toctree::
+  :maxdepth: 2
+ 
+  studies/truth-matching/main.rst 
   studies/analysis-strategies
   studies/neutrino-reconstruction.rst
   studies/truth-matching-studies.rst
