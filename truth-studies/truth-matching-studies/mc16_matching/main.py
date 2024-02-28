@@ -25,7 +25,7 @@ run_analysis = {
 #    "ZPrimeMatrix": studies.resonance.zprime.ZPrime,
 #    "ResonanceDecayModes" : studies.resonance.decaymodes.DecayModes,
 #    "TopKinematics" : studies.top.topkinematics.TopKinematics,
-    "TopMatching" : studies.top.topmatching.TopMatching
+#    "TopMatching" : studies.top.topmatching.TopMatching
 }
 
 run_plotting = {

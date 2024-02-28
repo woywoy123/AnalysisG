@@ -768,15 +768,17 @@ cdef class TH1F(BasePlotting):
 
 
 cdef class TH2F(BasePlotting):
+    cdef str color_map
 
     def __init__(self, **kwargs):
         self.fig.histogram = True
         cdef str key
-        for key, val in kwargs.items():
-            setattr(self, key, val)
+        self.color_map = ""
+        for key, val in kwargs.items(): setattr(self, key, val)
 
     cpdef __histapply__(self):
-        hep.hist2dplot(self.cummulative_hist)
+        cmap = self.color_map if len(self.color_map) else None
+        hep.hist2dplot(self.cummulative_hist, cmap = cmap)
 
     cpdef __makelabelaxis__(self):
         cdef list axes = [
@@ -851,28 +853,40 @@ cdef class TH2F(BasePlotting):
     def yBins(self):
         if not self.y.bins: return None
         else: return self.y.bins
+
     @yBins.setter
     def yBins(self, val): self.y.bins = val
 
     @property
     def xUnderFlow(self): return self.x.underflow
+
     @xUnderFlow.setter
     def xUnderFlow(self, val): self.x.underflow = val
 
     @property
     def yUnderFlow(self): return self.y.underflow
+
     @yUnderFlow.setter
     def yUnderFlow(self, val): self.y.underflow = val
 
     @property
     def xOverFlow(self): return self.x.overflow
+
     @xOverFlow.setter
     def xOverFlow(self, val): self.x.overflow = val
 
     @property
     def yOverFlow(self): return self.y.overflow
+
     @yOverFlow.setter
     def yOverFlow(self, val): self.y.overflow = val
+
+    @property
+    def Color(self): return self.color_map
+
+    @Color.setter
+    def Color(self, str col): self.color_map = col
+
 
 
 
@@ -964,5 +978,10 @@ cdef class TLine(BasePlotting):
 
     @property
     def Lines(self): return self.underlying_hists
+
     @Lines.setter
     def Lines(self, list val): self.underlying_hists = val
+
+
+
+

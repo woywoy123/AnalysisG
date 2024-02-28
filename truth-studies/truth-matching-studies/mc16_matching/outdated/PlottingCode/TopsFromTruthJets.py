@@ -14,42 +14,7 @@ def PlotTemplate(x):
             }
     return Plots
 
-def PlotTemplateTH2F(x):
-    th2 = TH2F()
-    th2.ATLASLumi = x.Luminosity
-    th2.Style = "ATLAS"
-    th2.NEvents = x.NEvents
-    th2.xMin = 0
-    th2.yMin = 0
-    th2.OutputDirectory = "./Figures/" + x.__class__.__name__
-    return th2
-
 def TopMassTruthJets(inpt):
-    hist = PlotTemplate(inpt)
-    hist["Title"] = "Reconstructed Invariant Mass of Top-Matched Truth Jets \n Compared to Original Truth Top"
-    hist["xTitle"] = "Invariant Mass (GeV)"
-    hist["IncludeOverflow"] = True
-    hist["Logarithmic"] = True
-    hist["xStep"] = 50
-    hist["xMax"] = 400
-    hist["xBins"] = 400
-    hist["yMin"] = 1
-    hist["Filename"] = "Figure_3.1a" 
-    hist["Histograms"] = []
- 
-    for mode in inpt.TopMass:
-        m_hist = {}
-        m_hist["Title"] = "TruthJet-" + mode  
-        m_hist["xData"] = inpt.TopMass[mode]
-        hist["Histograms"].append(TH1F(**m_hist))
-
-        m_hist = {}
-        m_hist["Title"] = "TruthTops-" + mode  
-        m_hist["xData"] = inpt.TruthTopMass[mode]
-        hist["Histograms"].append(TH1F(**m_hist))
-
-    com = CombineTH1F(**hist)
-    com.SaveFigure() 
 
 
     hist = PlotTemplate(inpt)
