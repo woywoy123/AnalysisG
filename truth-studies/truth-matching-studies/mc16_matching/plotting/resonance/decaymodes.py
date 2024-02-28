@@ -178,8 +178,5 @@ def DecayModes(ana):
     spectator_decay_modes(ana.spec_top_modes)
     spectator_decay_charge(ana.spec_top_charges)
 
-    pdgid_modes(ana)
     regions(ana.signal_region)
-
-
-
+    pdgid_modes(ana)

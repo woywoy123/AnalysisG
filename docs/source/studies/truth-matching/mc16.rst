@@ -1,4 +1,4 @@
-MC 16 Simulation Truth Matching
+MC-16 Simulation Truth Matching
 ===============================
 
 This section of the studies is dedicated to understanding whether the truth matching to tops is consistent.
@@ -20,6 +20,9 @@ Studies
   A set of studies which investigates the decay modes of the resonant and spectator tops originating from a resonance. 
   The aim is to understand the decay modes of the tops and if there are any discriminating variables, which could be useful for identifying signal events.
   For this study, the event requires to have exactly two tops marked as originating from resonance and an additional two from spectator.
+
+* TopKinematics:
+  Studies relating to the kinematics of the tops produced from the resonance and their corresponding spectator counterparts.
 
 ZPrime
 ______
@@ -66,3 +69,37 @@ __________
 * Figure.2.f:
   A figure depicting the invariant mass of the resonance, when constraining the decay mode of one spectator and resonant top to be leptonically.
   The resulting decaying leptons can be categorized as being opposite and same signed, to further resolve the resonance.
+
+TopKinematics
+_____________
+
+* Figure.3.a: 
+  A figure depicting the transverse momenta of spectator and resonant tops.
+
+* Figure.3.b:
+  A figure depicting the energy of spectator and resonant tops.
+
+* Figure.3.c: 
+  A figure depicting the azimuthal angle of spectator and resonant tops.
+
+* Figure.3.d: 
+  A figure depicting the pseudorapidity of spectator and resonant tops.
+
+* Figure.3.e: 
+  A two dimensional heat-map of energy against transverse momenta for resonant tops.
+
+* Figure.3.f: 
+  A two dimensional heat-map of energy against transverse momenta for spectator tops.
+
+* Figure.3.g: 
+  A distribution plot of the :math:`\Delta R` between truth-top pairs.
+  For plots with Resonance and Spectator titles, top-pairs are correctly assigned, otherwise they are labelled as a Mixture.
+
+* Figure.3.h: 
+  A distribution plot of the invariant mass produced when combining truth-top pairs.
+  For plots with Resonance and Spectator titles, top-pairs are correctly assigned, otherwise they are labelled as a Mixture.
+
+* Figure.3.j: 
+  A two dimensional head-map of the invariant mass as a function of :math:`\Delta R`.
+  For this plot, all possible truth-top pair permutations are used to compute the invariant mass and the :math:`\Delta R`.
+

@@ -23,12 +23,16 @@ smpls = {i : x.lsFiles(smpls[i])[:4] for i in smpls}
 run_cache = False
 run_analysis = {
 #    "ZPrimeMatrix": studies.resonance.zprime.ZPrime,
-#    "ResonanceDecayModes" : studies.resonance.decaymodes.DecayModes
+#    "ResonanceDecayModes" : studies.resonance.decaymodes.DecayModes,
+#    "TopKinematics" : studies.top.topkinematics.TopKinematics,
+    "TopMatching" : studies.top.topmatching.TopMatching
 }
 
 run_plotting = {
 #    "ZPrimeMatrix" : plotting.resonance.zprime.ZPrime,
-    "ResonanceDecayModes" : plotting.resonance.decaymodes.DecayModes
+#    "ResonanceDecayModes" : plotting.resonance.decaymodes.DecayModes,
+#    "TopKinematics" : plotting.top.topkinematics.TopKinematics
+    "TopMatching" : plotting.top.topmatching.TopMatching
 }
 
 
