@@ -6,27 +6,29 @@ import os
 from AnalysisG.Tools import Tools
 
 
-smpls = os.environ["Samples"] #+ "mc16_13_ttZ_m800"
+smpls = os.environ["Samples"]
 smpls = {
-        "m400" : smpls + "mc16_13_ttZ_m400",
-        "m500" : smpls + "mc16_13_ttZ_m500",
-        "m600" : smpls + "mc16_13_ttZ_m600",
-        "m700" : smpls + "mc16_13_ttZ_m700",
-        "m800" : smpls + "mc16_13_ttZ_m800",
-        "m900" : smpls + "mc16_13_ttZ_m900",
+#        "m400" : smpls + "mc16_13_ttZ_m400",
+#        "m500" : smpls + "mc16_13_ttZ_m500",
+#        "m600" : smpls + "mc16_13_ttZ_m600",
+#        "m700" : smpls + "mc16_13_ttZ_m700",
+#        "m800" : smpls + "mc16_13_ttZ_m800",
+#        "m900" : smpls + "mc16_13_ttZ_m900",
         "m1000" : smpls + "mc16_13_ttZ_m1000"
 }
 
 x = Tools()
-smpls = {i : x.lsFiles(smpls[i])[:2] for i in smpls}
+smpls = {i : x.lsFiles(smpls[i])[:4] for i in smpls}
 
 run_cache = False
 run_analysis = {
-    "ZPrimeMatrix": studies.resonance.zprime.ZPrime
+#    "ZPrimeMatrix": studies.resonance.zprime.ZPrime,
+#    "ResonanceDecayModes" : studies.resonance.decaymodes.DecayModes
 }
 
 run_plotting = {
-    "ZPrimeMatrix" : plotting.resonance.zprime.ZPrime
+#    "ZPrimeMatrix" : plotting.resonance.zprime.ZPrime,
+    "ResonanceDecayModes" : plotting.resonance.decaymodes.DecayModes
 }
 
 

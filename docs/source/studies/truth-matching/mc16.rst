@@ -3,7 +3,7 @@ MC 16 Simulation Truth Matching
 
 This section of the studies is dedicated to understanding whether the truth matching to tops is consistent.
 Studies are detailed below and with their respective figures being listed for each study.
-To reproduce these studies, samples need to be generated using an AnalysisTop based codebase, which is linked below:
+To reproduce these studies, samples need to be generated using an AnalysisTop derived codebase, which is linked below:
 
 - https://github.com/woywoy123/BSM4tops-GNN-ntuples/tree/main
 
@@ -12,8 +12,57 @@ Studies
 
 * ZPrime:
   A study which investigates the resolution of the injected resonance for different mass points using decreasing truth information.
-  The injected resonance mass is varied from 400 GeV to 1000 GeV (1 TeV), and the truth information is changed from truth-tops (perfect resolution) to detector jets (worst resoluton).
+  The injected resonance mass is varied from 400 GeV to 1000 GeV (1 TeV), and the truth information is changed from truth-tops (perfect resolution) to detector jets (worst resolution).
   For the truth-jets, the truth neutrinos and leptons are used, if the tops decay leptonically.
   As for the jets case, the truth neutrinos and detector leptons are used. 
 
+* DecayModes:
+  A set of studies which investigates the decay modes of the resonant and spectator tops originating from a resonance. 
+  The aim is to understand the decay modes of the tops and if there are any discriminating variables, which could be useful for identifying signal events.
+  For this study, the event requires to have exactly two tops marked as originating from resonance and an additional two from spectator.
 
+ZPrime
+______
+
+* Figure.1.a: 
+  A matrix plot of the resonance using the truth-tops as input particles.
+  The resonance mass points should be visible as distinct vertical lines since the truth tops have not undergone any detector smearing.
+
+* Figure.1.b:
+  A matrix plot of the resonance using the top-children as input particles.
+  The resonance mass points should still be visible as distinct vertical lines, however some smearing is expected, since top-children undergo gluon radiation and the W-boson might emit a photon. 
+
+* Figure.1.c:
+  A matrix plot of the resonance using the truth-jets and truth-children (leptons and neutrinos only) as input particles.
+  The resonance mass points should still be visible but each mass point might be overlapping due to initial detector smearing effects and track clustering when building truth-jets.
+
+* Figure.1.d: 
+  A matrix plot of the resonance using the jets, detector leptons and truth-children (neutrinos only) as input particles.
+  The resonance mass points might be visible but each mass point might be overlapping due to detector smearing effects and track clustering when building jets.
+
+DecayModes
+__________
+
+* Figure.2.a:
+  An invariant mass distribution plot of the resonance's decay modes. 
+  For sub-plots with hadronic and leptonic titles, the resonant tops both decay the same way.
+
+* Figure.2.b:
+  An invariant mass distribution plot of the resonance partitioned into same and opposite sign decay modes, where both tops-quarks decay leptonically.
+  There should be no cases where the tops decay both leptonically with the same electric charge (Same-Sign should have no entries).
+
+* Figure.2.c:
+  An invariant mass distribution plot of the spectator tops being combined to create an mtt distribution.
+  This is predominantly used to verify whether the distributions are different between resonant top pairs and spectator pairs.
+
+* Figure.2.d: 
+  An invariant mass distribution of combining spectator tops to form an mtt distribution. 
+  The plot is partitioned into cases where the leptonic decay products produce same or opposite signed lepton charges.
+
+* Figure.2.e: 
+  A normalized fractional plot of the PDGID codes from tops decaying into their respective children. 
+  The plot is divided by resonance and spectator top decay.
+
+* Figure.2.f:
+  A figure depicting the invariant mass of the resonance, when constraining the decay mode of one spectator and resonant top to be leptonically.
+  The resulting decaying leptons can be categorized as being opposite and same signed, to further resolve the resonance.

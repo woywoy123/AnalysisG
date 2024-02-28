@@ -30,12 +30,21 @@ class ZPrime(SelectionTemplate):
         tjZp = t1.TruthJets + t2.TruthJets
         if not len(tjZp): return False
         tjZp += [i for i in t1.Children if i.is_lep or i.is_nu]
+        tjZp += [i for i in t2.Children if i.is_lep or i.is_nu]
         tjZp = sum(list(set(tjZp)))
         self.zprime_mass_truthjets["mass"] += [tjZp.Mass/1000]
         self.zprime_mass_truthjets["pt"] += [tjZp.pt/1000]
 
+
         jZp = t1.Jets + t2.Jets
         if not len(jZp): return False
+        jZp += [i for i in t1.Children if i.is_nu]
+        jZp += [i for i in t2.Children if i.is_nu]
+        leps = event.Electrons + event.Muons
+        for j in leps:
+            if t1 not in j.Parent and t2 not in j.Parent: continue
+            jZp += [j]
+
         jZp = sum(list(set(jZp)))
         self.zprime_mass_jets["mass"] += [jZp.Mass/1000]
         self.zprime_mass_jets["pt"] += [jZp.pt/1000]

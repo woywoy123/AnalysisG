@@ -12,6 +12,7 @@ class TruthTops(SelectionTemplate):
 
         self.tops_kinematics = {"pt" : [], "eta" : [], "phi" : [], "energy" : []}
         self.tops_attributes = {"charge" : [], "barcode" : [], "status" : []}
+        self.event_ntops = []
 
     def populate_dict(self, maps, particle):
         for p in particle:
@@ -37,4 +38,5 @@ class TruthTops(SelectionTemplate):
                 self.mtt_dr["dr"].append(ti.DeltaR(tj))
                 self.mtt_dr["mass"].append(sum([ti + tj]).Mass/1000)
             drs = [t for t in drs if ti != t]
+        self.event_ntops += [len(tops)]
 

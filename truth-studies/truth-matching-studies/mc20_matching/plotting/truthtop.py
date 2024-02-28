@@ -179,6 +179,26 @@ def plot_top_attributes(ana):
     th.Filename = "Figure.1.j"
     th.SaveFigure()
 
+def plot_ntops(ana):
+    data = ana.tops_attributes
+    sett = settings()
+    th = TH1F(**sett)
+    th1 = TH1F()
+    th1.xData = data["charge"]
+    th1.Title = "top-charge"
+    th.Title = "Electric charge of individual Tops"
+    th.Histogram = th1
+    th.xMin = -1
+    th.xMax = 1
+    th.xBins = 9
+    th.xStep = 1
+    th.yTitle = "Entries"
+    th.xTitle = "Top charge"
+    th.Filename = "Figure.1.h"
+    th.SaveFigure()
+
+
+
 
 def TruthTops(ana):
     plot_top_masses(ana)
@@ -186,3 +206,4 @@ def TruthTops(ana):
     plot_mtt(ana)
     plot_top_kinematics(ana)
     plot_top_attributes(ana)
+    plot_ntops(ana)

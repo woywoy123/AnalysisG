@@ -21,7 +21,7 @@ def TemplateTH2F(Title, Data, f_title):
     th2.yOverFlow = True
     th2.xOverFlow = True
 
-    th2.OutputDirectory = "Figures/zprime"
+    th2.OutputDirectory = "./plt_plots/resonance/"
     th2.SaveFigure()
 
 def ZPrime(ana):

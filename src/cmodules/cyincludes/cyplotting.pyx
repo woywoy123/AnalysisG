@@ -559,7 +559,8 @@ cdef class TH1F(BasePlotting):
             for i in self.underlying_hists:
                 if i.xData is None: continue
                 data.append(np.array(i.xData))
-            arr = np.concatenate(data)
+            if len(data): arr = np.concatenate(data)
+            else: return
 
         min_, max_ = self.xMin, self.xMax
         if max_ is None: self.xMax = arr.max()

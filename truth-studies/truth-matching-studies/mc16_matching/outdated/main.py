@@ -61,7 +61,7 @@ toRun = [
 ]
 
 studies = {
-            "ZPrimeMatrix" : ZPrimeMatrix,
+#            "ZPrimeMatrix" : ZPrimeMatrix, (ported)
             "ResonanceDecayModes" : RTT_Sel.ResonanceDecayModes,
             "ResonanceMassFromTops" : RTT_Sel.ResonanceMassFromTops,
             "ResonanceDeltaRTops" : RTT_Sel.ResonanceDeltaRTops,
@@ -69,18 +69,18 @@ studies = {
             "EventNTruthJetAndJets" : ETE_Sel.EventNTruthJetAndJets,
             "EventMETImbalance" : ETE_Sel.EventMETImbalance,
             "TopDecayModes" : TTT_Sel.TopDecayModes,
-            #"ResonanceMassFromChildren" : RTC_Sel.ResonanceMassFromChildren,
-            #"DeltaRChildren" : TCK_Sel.DeltaRChildren,
-            #"TruthChildrenKinematics" : TCK_Sel.TruthChildrenKinematics, 
-            #"EventNuNuSolutions" : EN_Sel.EventNuNuSolutions, 
-            #"ResonanceMassTruthJets" : RTJ_Sel.ResonanceMassTruthJets, 
-            #"ResonanceMassTruthJetsNoSelection" : RTJ_Sel.ResonanceMassTruthJetsNoSelection, 
-            #"TopMassTruthJets" : TTJ_Sel.TopMassTruthJets, 
-            #"TopTruthJetsKinematics" : TTJ_Sel.TopTruthJetsKinematics, 
-            #"MergedTopsTruthJets" : TTJ_Sel.MergedTopsTruthJets, 
-            #"ResonanceMassJets" : RJJ_Sel.ResonanceMassJets, 
-            #"TopMassJets" : TJ_Sel.TopMassJets, 
-            #"MergedTopsJets" : TJ_Sel.MergedTopsJets, 
+            "ResonanceMassFromChildren" : RTC_Sel.ResonanceMassFromChildren,
+            "DeltaRChildren" : TCK_Sel.DeltaRChildren,
+            "TruthChildrenKinematics" : TCK_Sel.TruthChildrenKinematics, 
+            "EventNuNuSolutions" : EN_Sel.EventNuNuSolutions, 
+            "ResonanceMassTruthJets" : RTJ_Sel.ResonanceMassTruthJets, 
+            "ResonanceMassTruthJetsNoSelection" : RTJ_Sel.ResonanceMassTruthJetsNoSelection, 
+            "TopMassTruthJets" : TTJ_Sel.TopMassTruthJets, 
+            "TopTruthJetsKinematics" : TTJ_Sel.TopTruthJetsKinematics, 
+            "MergedTopsTruthJets" : TTJ_Sel.MergedTopsTruthJets, 
+            "ResonanceMassJets" : RJJ_Sel.ResonanceMassJets, 
+            "TopMassJets" : TJ_Sel.TopMassJets, 
+            "MergedTopsJets" : TJ_Sel.MergedTopsJets, 
 }
 
 studiesPlots = {
