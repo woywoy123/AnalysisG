@@ -29,6 +29,10 @@ Studies
   The aim is to investigate the best possible top reconstructibility available at different truth levels.
   Investigated levels involve the truth-top, truth-children, truth-jets with truth leptons/neutrinos, jets with truth leptons/neutrinos and jets with detector matched leptons and truth truth neutrinos.
 
+* ChildrenKinematics:
+  A set of studies relating to the decay children of truth-tops.
+  These studies aim to investigate the kinematics of the decay products from resonance tops and compare these to background spectator tops.
+
 ZPrime
 ______
 
@@ -155,13 +159,54 @@ ___________
   A heat-map representation of the number of jets contributing to the reconstructed invariant top-quark mass, for all decay modes.
 
 
+ChildrenKinematics
+__________________
 
+* Figure.5.a:
+  Transverse momenta distribution of the truth children.
 
+* Figure.5.b:
+  Transverse momenta distribution of the truth children originating from resonant top-quarks, partitioned into the PDGID's of the children.
 
+* Figure.5.c:
+  Transverse momenta distribution of the truth children originating from spectator top-quarks, partitioned into the PDGID's of the children.
 
+* Figure.5.d:
+  Pseudorapidity distribution of the truth children.
 
+* Figure.5.e:
+  Pseudorapidity distribution of the truth children originating from resonant top-quarks, partitioned into the PDGID's of the children.
 
+* Figure.5.f:
+  Pseudorapidity distribution of the truth children originating from spectator top-quarks, partitioned into the PDGID's of the children.
 
+* Figure.5.g:
+  Azimuthal angular distribution of the truth children.
 
+* Figure.5.h:
+  Azimuthal angular distribution of the truth children originating from resonant top-quarks, partitioned into the PDGID's of the children.
 
+* Figure.5.i:
+  Azimuthal angular distribution of the truth children originating from spectator top-quarks, partitioned into the PDGID's of the children.
+
+* Figure.5.j:
+  Energy distribution of the truth children.
+
+* Figure.5.k:
+  Energy distribution of the truth children originating from resonant top-quarks, partitioned into the PDGID's of the children.
+
+* Figure.5.l:
+  Energy distribution of the truth children originating from spectator top-quarks, partitioned into the PDGID's of the children.
+
+* Figure.5.m:
+  Transverse momenta of the top-quark truth children, segmented into their respective decay mode (leptonic and hadronic)
+
+* Figure.5.n:
+  Pseudorapidity of the top-quark truth children, segmented into their respective decay mode (leptonic and hadronic)
+
+* Figure.5.o:
+  Azimuthal angle of the top-quark truth children, segmented into their respective decay mode (leptonic and hadronic)
+
+* Figure.5.p:
+  Energy of the top-quark truth children, segmented into their respective decay mode (leptonic and hadronic)
 

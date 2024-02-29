@@ -17,11 +17,6 @@ class DeltaRChildren(SelectionTemplate):
         }
 
 
-    def Selection(self, event):
-        if len(event.Tops) != 4:
-            return False
-        return len([t for t in event.Tops if t.FromRes == 1]) == 2
-    
     def Strategy(self, event):
         _leptons = [11, 12, 13, 14, 15, 16]
         for t in event.Tops:

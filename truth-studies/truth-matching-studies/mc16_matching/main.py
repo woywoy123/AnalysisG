@@ -25,14 +25,16 @@ run_analysis = {
 #    "ZPrimeMatrix": studies.resonance.zprime.ZPrime,
 #    "ResonanceDecayModes" : studies.resonance.decaymodes.DecayModes,
 #    "TopKinematics" : studies.top.topkinematics.TopKinematics,
-#    "TopMatching" : studies.top.topmatching.TopMatching
+#    "TopMatching" : studies.top.topmatching.TopMatching,
+#    "ChildrenKinematics" : studies.children.childrenkinematics.ChildrenKinematics
 }
 
 run_plotting = {
 #    "ZPrimeMatrix" : plotting.resonance.zprime.ZPrime,
 #    "ResonanceDecayModes" : plotting.resonance.decaymodes.DecayModes,
-#    "TopKinematics" : plotting.top.topkinematics.TopKinematics
-    "TopMatching" : plotting.top.topmatching.TopMatching
+#    "TopKinematics" : plotting.top.topkinematics.TopKinematics,
+#    "TopMatching" : plotting.top.topmatching.TopMatching,
+    "ChildrenKinematics" : plotting.children.childrenkinematics.ChildrenKinematics
 }
 
 
