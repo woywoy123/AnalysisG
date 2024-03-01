@@ -138,9 +138,27 @@ class nTupler(_Interface, _nTupler, SampleTracer):
         out = {}
         for i in self:
             for k in i:
-                if k not in out: out[k] = i[k]
-                else: out[k] += i[k]
-        return out
+                if k not in out: out[k] = []
+                out[k] += [i[k]]
+
+        output = {k : None for k in out}
+        for k in out:
+            tmp = {k : []}
+            while True:
+
+                try: i  = out[k].pop(0)
+                except IndexError: pass
+
+                try: i += out[k].pop(0)
+                except IndexError: pass
+
+                tmp[k] += [i]
+                if len(out[k]): continue
+                if not len(out[k]) and len(tmp[k]) == 1: break
+                out[k] += tmp[k]
+                tmp[k] = []
+            output[k] = tmp[k].pop(0)
+        return output
 
     def __start__(self):
         variables = []

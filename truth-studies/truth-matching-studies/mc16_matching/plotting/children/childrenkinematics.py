@@ -466,32 +466,320 @@ def kinematics_decay_mode(ana):
     th.SaveFigure()
 
 def dr_clustering(ana):
-    dr = ana.dr_clustering
-    top_pt = ana.top_pt_clustering
-    top_energy = ana.top_energy_clustering
-
     modes = [
                 ["CTRR", "Correct-Top-RR"],
                 ["FTRR", "False-Top-RR"],
-                ["CTRR", "Correct-Top-RR"],
+                ["CTSS", "Correct-Top-SS"],
                 ["FTSS", "False-Top-SS"],
                 ["FTRS", "False-Top-RS"]
     ]
+
+    hist = []
     for mode in modes:
         mod, title = mode
 
         th = TH1F()
-        th.Title = "resonance " + title
-        th.xData = ana.res_decay_mode[mod]["pt"]
-        hist_pt.append(th)
+        th.Title = title
+        th.xData = ana.dr_clustering[mod]
+        hist.append(th)
+
+    sett = settings()
+    th = TH1F(**sett)
+    th.Histograms = hist
+    th.Title = "$\\Delta$R between Truth Children From (Non)-Mutual Top-Quarks"
+    th.xTitle = "$\\Delta$R (arb.)"
+    th.yTitle = "Entries"
+    th.xBins = 200
+    th.xStep = 0.5
+    th.xMin = 0
+    th.xMax = 6
+    th.yScaling = 10
+    th.xScaling = 20
+    th.FontSize = 20
+    th.LabelSize = 20
+    th.Stack = True
+    th.yLogarithmic = True
+    th.Filename = "Figure.5.q"
+    th.SaveFigure()
+
+    hist = []
+    for mode in modes:
+        mod, title = mode
+
+        th = TH1F()
+        th.Title = title
+        th.xData = ana.mass_clustering[mod]
+        hist.append(th)
+
+    sett = settings()
+    th = TH1F(**sett)
+    th.Histograms = hist
+    th.Title = "Invariant Mass of Summed Truth Children From (Non)-Mutual Top-Quarks (pairs)"
+    th.xTitle = "Invariant Mass of Resonance (GeV)"
+    th.yTitle = "Entries"
+    th.xBins = 500
+    th.xStep = 200
+    th.xMin = 0
+    th.xMax = 1500
+    th.yScaling = 10
+    th.xScaling = 20
+    th.FontSize = 20
+    th.LabelSize = 20
+    th.Stack = True
+    th.yLogarithmic = True
+    th.Filename = "Figure.5.r"
+    th.SaveFigure()
+
+    th2 = TH2F()
+    th2.Title = "Invariant Mass of Summed Truth Children with Respect to $\\Delta$R between Adjacent Truth Children"
+    th2.xData = sum(ana.dr_clustering.values(), [])
+    th2.yData = sum(ana.mass_clustering.values(), [])
+
+    th2.xTitle = "$\\Delta$R (arb.)"
+    th2.yTitle = "Invariant Mass (GeV)"
+    th2.Filename = "Figure.5.s"
+
+    th2.xBins = 500
+    th2.yBins = 1000
+
+    th2.xMin = 0
+    th2.yMin = 0
+
+    th2.xMax = 6
+    th2.yMax = 1500
+    th2.yOverFlow = True
+    th2.xOverFlow = True
+
+    th2.OutputDirectory = "./plt_plots/children/"
+    th2.SaveFigure()
 
 
+    th2 = TH2F()
+    th2.Title = "$\\Delta$R between Truth Children and Top-Quark Transverse Momenta"
+    th2.xData = sum(ana.dr_clustering.values(), [])
+    th2.yData = sum(ana.top_pt_clustering.values(), [])
 
+    th2.xTitle = "$\\Delta$R (arb.)"
+    th2.yTitle = "Top-Quark Tranverse Momenta (GeV)"
+    th2.Filename = "Figure.5.t"
+
+    th2.xBins = 500
+    th2.yBins = 1000
+
+    th2.xMin = 0
+    th2.yMin = 0
+
+    th2.xMax = 6
+    th2.yMax = 1000
+    th2.yOverFlow = True
+    th2.xOverFlow = True
+
+    th2.OutputDirectory = "./plt_plots/children/"
+    th2.SaveFigure()
+
+
+    th2 = TH2F()
+    th2.Title = "$\\Delta$R between Adjacent Truth Children and Top-Quark Energy"
+    th2.xData = sum(ana.dr_clustering.values(), [])
+    th2.yData = sum(ana.top_energy_clustering.values(), [])
+
+    th2.xTitle = "$\\Delta$R (arb.)"
+    th2.yTitle = "Top-Quark Energy (GeV)"
+    th2.Filename = "Figure.5.u"
+
+    th2.xBins = 500
+    th2.yBins = 1000
+
+    th2.xMin = 0
+    th2.yMin = 0
+
+    th2.xMax = 6
+    th2.yMax = 1000
+    th2.yOverFlow = True
+    th2.xOverFlow = True
+
+    th2.OutputDirectory = "./plt_plots/children/"
+    th2.SaveFigure()
+
+    modes = [
+                ["rlep", "Resonant Leptonic"],
+                ["rhad", "Resonant Hadronic"],
+                ["slep", "Spectator Leptonic"],
+                ["shad", "Spectator Hadronic"],
+    ]
+
+    hist = []
+    for mode in modes:
+        mod, title = mode
+
+        th = TH1F()
+        th.Title = title
+        th.xData = ana.top_children_dr[mod]
+        hist.append(th)
+
+    sett = settings()
+    th = TH1F(**sett)
+    th.Histograms = hist
+    th.Title = "$\\Delta$R between Truth-Top and Associated Mutal Children"
+    th.xTitle = "$\\Delta$R (arb.)"
+    th.yTitle = "Entries"
+    th.xBins = 200
+    th.xStep = 0.5
+    th.xMin = 0
+    th.xMax = 6
+    th.yScaling = 10
+    th.xScaling = 20
+    th.FontSize = 20
+    th.LabelSize = 20
+    th.Stack = True
+    th.yLogarithmic = True
+    th.Filename = "Figure.5.v"
+    th.SaveFigure()
+
+def fractional(ana):
+    rhad = ana.fractional["rhad-pt"]
+    rlep = ana.fractional["rlep-pt"]
+    shad = ana.fractional["shad-pt"]
+    slep = ana.fractional["slep-pt"]
+
+    hist = []
+    for mode in rhad:
+        th = TH1F()
+        th.Title = mode + " (Hadronic)"
+        th.xData = rhad[mode]
+        hist.append(th)
+
+    for mode in rlep:
+        th = TH1F()
+        th.Title = mode + " (Leptonic)"
+        th.xData = rlep[mode]
+        hist.append(th)
+
+    sett = settings()
+    th = TH1F(**sett)
+    th.Histograms = hist
+    th.Title = "Fractional Tranverse Momenta Distribution of Truth Children from Mutual Top-Quark (Resonant)"
+    th.xTitle = "Fraction (arb.)"
+    th.yTitle = "Entries"
+    th.xBins = 100
+    th.xStep = 0.1
+    th.xMin = 0
+    th.xMax = 5
+    th.yScaling = 10
+    th.xScaling = 20
+    th.FontSize = 20
+    th.LabelSize = 20
+    th.Stack = True
+    th.yLogarithmic = True
+    th.Filename = "Figure.5.w"
+    th.SaveFigure()
+
+    hist = []
+    for mode in shad:
+        th = TH1F()
+        th.Title = mode + " (Hadronic)"
+        th.xData = shad[mode]
+        hist.append(th)
+
+    for mode in slep:
+        th = TH1F()
+        th.Title = mode + " (Leptonic)"
+        th.xData = slep[mode]
+        hist.append(th)
+
+    sett = settings()
+    th = TH1F(**sett)
+    th.Histograms = hist
+    th.Title = "Fractional Tranverse Momenta Distribution of Truth Children from Mutual Top-Quark (Spectator)"
+    th.xTitle = "Fraction (arb.)"
+    th.yTitle = "Entries"
+    th.xBins = 100
+    th.xStep = 0.2
+    th.xMin = 0
+    th.xMax = 5
+    th.yScaling = 10
+    th.xScaling = 20
+    th.FontSize = 20
+    th.LabelSize = 20
+    th.Stack = True
+    th.yLogarithmic = True
+    th.Filename = "Figure.5.x"
+    th.SaveFigure()
+
+    rhad = ana.fractional["rhad-energy"]
+    rlep = ana.fractional["rlep-energy"]
+    shad = ana.fractional["shad-energy"]
+    slep = ana.fractional["slep-energy"]
+
+    hist = []
+    for mode in rhad:
+        th = TH1F()
+        th.Title = mode + " (Hadronic)"
+        th.xData = rhad[mode]
+        hist.append(th)
+
+    for mode in rlep:
+        th = TH1F()
+        th.Title = mode + " (Leptonic)"
+        th.xData = rlep[mode]
+        hist.append(th)
+
+    sett = settings()
+    th = TH1F(**sett)
+    th.Histograms = hist
+    th.Title = "Fractional Energy Distribution of Truth Children from Mutual Top-Quark (Resonant)"
+    th.xTitle = "Fraction (arb.)"
+    th.yTitle = "Entries"
+    th.xBins = 100
+    th.xStep = 0.2
+    th.xMin = 0
+    th.xMax = 1
+    th.yScaling = 10
+    th.xScaling = 20
+    th.FontSize = 20
+    th.LabelSize = 20
+    th.Stack = True
+    th.yLogarithmic = True
+    th.Filename = "Figure.5.y"
+    th.SaveFigure()
+
+    hist = []
+    for mode in shad:
+        th = TH1F()
+        th.Title = mode + " (Hadronic)"
+        th.xData = shad[mode]
+        hist.append(th)
+
+    for mode in slep:
+        th = TH1F()
+        th.Title = mode + " (Leptonic)"
+        th.xData = slep[mode]
+        hist.append(th)
+
+    sett = settings()
+    th = TH1F(**sett)
+    th.Histograms = hist
+    th.Title = "Fractional Energy Distribution of Truth Children from Mutual Top-Quark (Spectator)"
+    th.xTitle = "Fraction (arb.)"
+    th.yTitle = "Entries"
+    th.xBins = 100
+    th.xStep = 0.1
+    th.xMin = 0
+    th.xMax = 1
+    th.yScaling = 10
+    th.xScaling = 20
+    th.FontSize = 20
+    th.LabelSize = 20
+    th.Stack = True
+    th.yLogarithmic = True
+    th.Filename = "Figure.5.z"
+    th.SaveFigure()
 
 def ChildrenKinematics(ana):
-#    kinematics_pt(ana)
-#    kinematics_eta(ana)
-#    kinematics_phi(ana)
-#    kinematics_energy(ana)
-#    kinematics_decay_mode(ana)
+    kinematics_pt(ana)
+    kinematics_eta(ana)
+    kinematics_phi(ana)
+    kinematics_energy(ana)
+    kinematics_decay_mode(ana)
     dr_clustering(ana)
+    fractional(ana)

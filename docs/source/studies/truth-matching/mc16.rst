@@ -33,8 +33,12 @@ Studies
   A set of studies relating to the decay children of truth-tops.
   These studies aim to investigate the kinematics of the decay products from resonance tops and compare these to background spectator tops.
 
+* AddOnStudies:
+  A set of specific studies relating to Elise's resonance reconstruction algorithm in the Same Sign Dilepton Channel.
+  The reconstruction algorithm leverages the double neutrino reconstruction algorithm and uses a static top mass to select the neutrino solution which minimizes the difference between measured top-quark mass and predicted.
+
 ZPrime
-______
+------
 
 * Figure.1.a: 
   A matrix plot of the resonance using the truth-tops as input particles.
@@ -53,7 +57,7 @@ ______
   The resonance mass points might be visible but each mass point might be overlapping due to detector smearing effects and track clustering when building jets.
 
 DecayModes
-__________
+----------
 
 * Figure.2.a:
   An invariant mass distribution plot of the resonance's decay modes. 
@@ -80,7 +84,7 @@ __________
   The resulting decaying leptons can be categorized as being opposite and same signed, to further resolve the resonance.
 
 TopKinematics
-_____________
+-------------
 
 * Figure.3.a: 
   A figure depicting the transverse momenta of spectator and resonant tops.
@@ -113,7 +117,7 @@ _____________
   For this plot, all possible truth-top pair permutations are used to compute the invariant mass and the :math:`\Delta R`.
 
 TopMatching
-___________
+-----------
 
 * Figure.4.a:
   A figure depicting the top-quark invariant mass reconstruction, from the proposed truth matching scheme at different truth levels.
@@ -160,7 +164,7 @@ ___________
 
 
 ChildrenKinematics
-__________________
+------------------
 
 * Figure.5.a:
   Transverse momenta distribution of the truth children.
@@ -209,4 +213,50 @@ __________________
 
 * Figure.5.p:
   Energy of the top-quark truth children, segmented into their respective decay mode (leptonic and hadronic)
+
+* Figure.5.q:
+  :math:`\Delta` R between truth children which originate from the same or different top-quarks. 
+  Furthermore, the figure is segmented into whether the paired objects originate from spectator (SS), resonant top-pairs (RR) or a mixture (RS).
+
+* Figure.5.r:
+  The invariant mass of summed truth-children, which originate from mutual top-quarks, where the parent top-quarks can be spectators or resonance based.
+
+* Figure.5.s:
+  A two dimensional heat-map of Figures.5.q and Figures.5.r.
+
+* Figure.5.t:
+  A heat-map of the top-quark momenta and :math:`\Delta R` between truth-children.
+
+* Figure.5.u:
+  A heat-map of the top-quark energy and :math:`\Delta R` between truth-children.
+
+* Figure.5.v:
+  A distribution plot of the :math:`\Delta R` between originating top-quark and children, with plots being segmented by resonant/spectator and decay mode.
+
+* Figure.5.w:
+  A plot of the fractional Top-Quark Transverse Momenta dispersion distribution of decay children (Resonance).
+
+* Figure.5.x:
+  A plot of the fractional Top-Quark Transverse Momenta dispersion distribution of decay children (Spectator).
+
+* Figure.5.y:
+  A plot of the fractional Top-Quark Energy dispersion distribution of decay children (Resonance).
+
+* Figure.5.z:
+  A plot of the fractional Top-Quark Energy dispersion distribution of decay children (Spectator).
+
+
+
+
+
+
+
+AddOnStudies
+------------
+
+* Figure.X.a: :math:`\Delta R` between leptonically decaying tops and respective b-quarks for possible b-quark/lepton pairs.
+* Figure.X.b: Reconstructed Hadronic Top Mass. 
+* Figure.X.c: Reconstructed Leptonic Top Mass.
+* Figure.X.d: Reconstructed Resonance mass, derived from reconstructed top-quark candidates.
+* Figure.x.e: Number of neutrino solutions.
 

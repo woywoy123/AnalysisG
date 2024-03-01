@@ -13,6 +13,10 @@ class ChildrenKinematics(SelectionTemplate):
         self.res_decay_mode  = {"lep" : {}, "had" : {}}
         self.spec_decay_mode = {"lep" : {}, "had" : {}}
 
+        self.mass_clustering = {
+                "CTRR" : [], "FTRR" : [],"CTSS" : [], "FTSS" : [],"FTRS" : []
+        }
+
         self.dr_clustering = {
                 "CTRR" : [], "FTRR" : [],"CTSS" : [], "FTSS" : [],"FTRS" : []
         }
@@ -24,6 +28,16 @@ class ChildrenKinematics(SelectionTemplate):
         self.top_energy_clustering = {
                 "CTRR" : [], "FTRR" : [],"CTSS" : [], "FTSS" : [],"FTRS" : []
         }
+
+        self.top_children_dr = {
+                "rlep" : [], "rhad" : [], "slep" : [], "shad" : []
+        }
+
+        self.fractional = {
+                "rhad-pt" : {}, "rhad-energy" : {}, "shad-pt" : {}, "shad-energy" : {},
+                "rlep-pt" : {}, "rlep-energy" : {}, "slep-pt" : {}, "slep-energy" : {},
+        }
+
 
     def Selection(self, event):
         tops = event.Tops
@@ -46,24 +60,45 @@ class ChildrenKinematics(SelectionTemplate):
         res_t = [t for t in event.Tops if t.FromRes == 1]
         for x in sum([t.Children for t in res_t], []):
             self.DumpKinematics(self.res_kinematics, x)
-            if x.symbol not in self.res_pdgid_kinematics: self.res_pdgid_kinematics[x.symbol] = {}
+            if x.symbol not in self.res_pdgid_kinematics:
+                self.res_pdgid_kinematics[x.symbol] = {}
             self.DumpKinematics(self.res_pdgid_kinematics[x.symbol], x)
 
         for t in res_t:
             flag = "had"
             if len([k for k in t.Children if k.is_lep]): flag = "lep"
-            for c in t.Children: self.DumpKinematics(self.res_decay_mode[flag], c)
+            for c in t.Children:
+                self.DumpKinematics(self.res_decay_mode[flag], c)
+                fg = "r" + flag
+                self.top_children_dr[fg] += [t.DeltaR(c)]
+                if c.symbol not in self.fractional[fg + "-pt"]:
+                    self.fractional[fg + "-pt"][c.symbol] = []
+                    self.fractional[fg + "-energy"][c.symbol] = []
+
+                self.fractional[fg + "-pt"][c.symbol].append(c.pt/t.pt)
+                self.fractional[fg + "-energy"][c.symbol].append(c.e/t.e)
 
         res_s = [t for t in event.Tops if t.FromRes == 0]
         for x in sum([t.Children for t in res_s], []):
             self.DumpKinematics(self.spec_kinematics, x)
-            if x.symbol not in self.spec_pdgid_kinematics: self.spec_pdgid_kinematics[x.symbol] = {}
+            if x.symbol not in self.spec_pdgid_kinematics:
+                self.spec_pdgid_kinematics[x.symbol] = {}
             self.DumpKinematics(self.spec_pdgid_kinematics[x.symbol], x)
 
         for t in res_s:
             flag = "had"
             if len([k for k in t.Children if k.is_lep]): flag = "lep"
-            for c in t.Children: self.DumpKinematics(self.spec_decay_mode[flag], c)
+            for c in t.Children:
+                self.DumpKinematics(self.spec_decay_mode[flag], c)
+
+                fg = "s" + flag
+                self.top_children_dr[fg] += [t.DeltaR(c)]
+                if c.symbol not in self.fractional[fg + "-pt"]:
+                    self.fractional[fg + "-pt"][c.symbol] = []
+                    self.fractional[fg + "-energy"][c.symbol] = []
+
+                self.fractional[fg + "-pt"][c.symbol].append(c.pt/t.pt)
+                self.fractional[fg + "-energy"][c.symbol].append(c.e/t.e)
 
         checked = []
         for p1 in [[t, c] for t in event.Tops for c in t.Children]:
@@ -83,11 +118,8 @@ class ChildrenKinematics(SelectionTemplate):
 
                 self.dr_clustering[flag] += [c1.DeltaR(c2)]
                 self.top_pt_clustering[flag] += [t2.pt/1000]
-                self.top_energy_clustering[flag] += [t2.pt/1000]
+                self.top_energy_clustering[flag] += [t2.e/1000]
+                self.mass_clustering[flag] += [sum(t1.Children + t2.Children).Mass/1000]
 
             checked.append(c1)
-
-
-
-
 
