@@ -11,7 +11,7 @@ run_cache = True
 run_analysis = {
 #    "ZPrimeMatrix": studies.resonance.zprime.ZPrime,
 #    "ResonanceDecayModes" : studies.resonance.decaymodes.DecayModes,
-    "TopKinematics" : studies.top.topkinematics.TopKinematics,
+#    "TopKinematics" : studies.top.topkinematics.TopKinematics,
 #    "TopMatching" : studies.top.topmatching.TopMatching,
 #    "ChildrenKinematics" : studies.children.childrenkinematics.ChildrenKinematics,
     "AddOnStudies" : studies.other.AddOnStudies,
@@ -21,7 +21,7 @@ run_analysis = {
 run_plotting = {
 #    "ZPrimeMatrix" : plotting.resonance.zprime.ZPrime,
 #    "ResonanceDecayModes" : plotting.resonance.decaymodes.DecayModes,
-    "TopKinematics" : plotting.top.topkinematics.TopKinematics,
+#    "TopKinematics" : plotting.top.topkinematics.TopKinematics,
 #    "TopMatching" : plotting.top.topmatching.TopMatching,
 #    "ChildrenKinematics" : plotting.children.childrenkinematics.ChildrenKinematics,
     "AddOnStudies" : plotting.other.AddOnStudies
@@ -32,11 +32,11 @@ run_plotting = {
 
 smpls = {
 #        "m400" : smpls + "mc16_13_ttZ_m400",
-        "m500" : smpls + "mc16_13_ttZ_m500",
-        "m600" : smpls + "mc16_13_ttZ_m600",
-        "m700" : smpls + "mc16_13_ttZ_m700",
-        "m800" : smpls + "mc16_13_ttZ_m800",
-        "m900" : smpls + "mc16_13_ttZ_m900",
+#        "m500" : smpls + "mc16_13_ttZ_m500",
+#        "m600" : smpls + "mc16_13_ttZ_m600",
+#        "m700" : smpls + "mc16_13_ttZ_m700",
+#        "m800" : smpls + "mc16_13_ttZ_m800",
+#        "m900" : smpls + "mc16_13_ttZ_m900",
         "m1000" : smpls + "mc16_13_ttZ_m1000"
 }
 

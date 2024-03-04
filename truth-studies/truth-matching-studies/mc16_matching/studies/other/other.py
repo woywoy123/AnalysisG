@@ -99,13 +99,13 @@ class AddOnStudies(SelectionTemplate):
         if not grp: return "Group_Formation_Failed"
         grp["tops"] = {t.index : t for t in event.Tops}
 
-        b_had1 = grp["hadronic"][0][0]
-        b_had2 = grp["hadronic"][1][0]
+        lep1   = grp["leptonic"][0][1]
+        b_lep1 = grp["leptonic"][0][0]
 
-        lep1 = grp["leptonic"][0][1]
-        lep2 = grp["leptonic"][1][1]
+        lep2   = grp["leptonic"][1][1]
+        b_lep2 = grp["leptonic"][1][0]
 
-        nus = self.NuNu(b_had1, b_had2, lep1, lep2, event)
+        nus = self.NuNu(b_lep1, b_lep2, lep1, lep2, event)
         if not len(nus): return "No_NuNu_Solutions"
 
         self.nunu_data["num_sols"] += [len(nus)]

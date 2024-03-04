@@ -31,5 +31,30 @@ def plot_mass(ana):
     th.Stack = True
     th.SaveFigure()
 
-def TruthJets(ana):
+    hist = []
+    data = ana.decaymode
+    th = TH1F(**sett)
+    for i in data:
+        th1 = TH1F()
+        th1.xData = data[i]
+        th1.Title = i
+        hist.append(th1)
+
+    th.Title = "Invariant Mass of Truth-Tops Segmented into Decay Mode"
+    th.Histograms = hist
+    th.xMin = 0
+    th.xMax = 500
+    th.xBins = 500
+    th.xStep = 100
+    th.yTitle = "Entries"
+    th.xTitle = "Invariant Mass (GeV)"
+    th.Filename = "Figure.2.b"
+    th.Stack = True
+    th.SaveFigure()
+
+
+
+
+
+def TruthJetMatching(ana):
     plot_mass(ana)
