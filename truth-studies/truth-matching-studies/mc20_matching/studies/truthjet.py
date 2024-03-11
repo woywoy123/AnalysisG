@@ -18,10 +18,6 @@ class TruthJetMatching(SelectionTemplate):
 
             self.abstract_top[t.index] += [sum(set(t.Children)).Mass/1000]
 
-            print("")
-            print([i.is_lepton for i in t.Children])
-
-
 
             lep = len([i for i in t.Children if i.is_lepton])
             if lep: self.decaymode["leptonic"] += [sum(set(t.Children)).Mass/1000]

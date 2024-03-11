@@ -43,3 +43,6 @@ __________
 * Figure.1.j: 
   A plot of the top status codes.
   From initial runs, a single status code was found (62).
+* Figure.1.k: 
+  A consistency test plot, which counts the number of tops in each event.
+  For 4-top samples, a single bin should be filled.

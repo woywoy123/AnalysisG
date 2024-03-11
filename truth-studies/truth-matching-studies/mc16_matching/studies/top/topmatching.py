@@ -12,7 +12,6 @@ class TopMatching(SelectionTemplate):
         self.jets_truth_leps = {"all" : [], "lep" : [], "had" : []}
         self.jets_leps = {"all" : [], "lep" : [], "had" : []}
 
-
         self.n_truth_jets_lep = {}
         self.n_truth_jets_had = {}
 

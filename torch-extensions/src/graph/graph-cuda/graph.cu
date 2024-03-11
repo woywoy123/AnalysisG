@@ -52,18 +52,18 @@ std::map<std::string, std::vector<torch::Tensor>> _edge_aggregation(
     const auto current_device = c10::cuda::current_device();
     c10::cuda::set_device(node_feature.get_device()); 
 
-    torch::Tensor nf = node_feature.clone();
-    nf = nf.to(torch::kDouble); 
     std::map<std::string, std::vector<torch::Tensor>> output; 
+
+    torch::Tensor nf = node_feature.to(torch::kDouble); 
     const torch::TensorOptions op = _MakeOp(edge_index); 
-    const unsigned int max = torch::max(prediction).item<int>()+1; 
+    const unsigned int max = prediction.size(1); 
     const unsigned int dim_i = node_feature.size(0); 
     const unsigned int dim_j = node_feature.size(1); 
     const unsigned int threads = 1024; 
     std::vector<long> dims = {max, dim_i, dim_i}; 
 
-    torch::Tensor pred, _edge_index; 
-    pred = prediction.view({-1}).clone(); 
+    torch::Tensor _edge_index; 
+    torch::Tensor pred = std::get<1>(torch::max(prediction, -1)).view({-1}).clone(); 
     const unsigned int pred_l = pred.size(0); 
     const unsigned int x = edge_index.size(0); 
     const unsigned int j = edge_index.size(1); 
@@ -95,8 +95,7 @@ std::map<std::string, std::vector<torch::Tensor>> _edge_aggregation(
                 dim_i, dim_j, max);
     })); 
 
-    for (signed int i = (include_zero) ? 0 : 1; i < max; ++i)
-    {
+    for (int i(0); i < max; ++i){
         std::stringstream x; 
         std::string name; 
         x << i; 

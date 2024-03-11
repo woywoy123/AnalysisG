@@ -8,13 +8,13 @@ import os
 smpls = os.environ["Samples"] + "mc20_13_tttt_m1250"
 run_cache = True
 run_analysis = {
-#        "TruthTops" : studies.truthtop.TruthTops,
-        "TruthJetMatching" : studies.truthjet.TruthJetMatching
+        "TruthTops" : studies.truthtop.TruthTops,
+        #"TruthJetMatching" : studies.truthjet.TruthJetMatching
 }
 
 run_plotting = {
-#        "TruthTops" : plotting.truthtop.TruthTops,
-        "TruthJetMatching" : plotting.truthjet.TruthJetMatching
+        "TruthTops" : plotting.truthtop.TruthTops,
+        #"TruthJetMatching" : plotting.truthjet.TruthJetMatching
 }
 
 x = Tools()

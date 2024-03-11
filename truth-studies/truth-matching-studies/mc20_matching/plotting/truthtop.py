@@ -12,29 +12,53 @@ def settings():
 
 
 def plot_top_masses(ana):
-    data_top = ana.tops_mass["all"]
+
+    tru_top = TH1F()
+    tru_top.Title = "Truth-Top"
+    tru_top.xData = ana.truth_top
+
+    tru_ch = TH1F()
+    tru_ch.Title = "Truth-Children"
+    tru_ch.xData = ana.truth_children["all"]
+
+    tru_tj = TH1F()
+    tru_tj.Title = "Truth-Jets (Truth Leptons and Neutrinos)"
+    tru_tj.xData = ana.truth_physics["all"]
+
+    tru_j = TH1F()
+    tru_j.Title = "Jets (Truth Leptons and Neutrinos)"
+    tru_j.xData = ana.jets_truth_leps["all"]
+
+    tru_jl = TH1F()
+    tru_jl.Title = "Jets Leptons (Truth Neutrinos)"
+    tru_jl.xData = ana.detector["all"]
+
     sett = settings()
-    th = TH1F(**sett)
-    th1 = TH1F()
-    th1.xData = data_top
-    th1.Title = "truth-top"
-    th.Title = "Invariant Mass Distribution of Post-FSR Truth Tops"
-    th.Histogram = th1
-    th.xMin = 171
-    th.xMax = 173
-    th.xStep = 1
-    th.xBins = 1000
-    th.yTitle = "Entries"
-    th.xTitle = "Invariant (Truth Top) Mass (GeV)"
-    th.Filename = "Figure.1.a"
-    th.SaveFigure()
+    all_t = TH1F(**sett)
+    all_t.Histograms = [tru_jl, tru_j, tru_tj, tru_ch, tru_top]
+    all_t.Title = "Top Truth Matching Scheme for Varying Level of Monte Carlo Truth"
+    all_t.xTitle = "Invariant Mass (GeV)"
+    all_t.yTitle = "Entries <unit>"
+    all_t.xMin = 0
+    all_t.xMax = 400
+    all_t.xBins = 400
+    all_t.xStep = 20
+    all_t.yScaling = 10
+    all_t.xScaling = 20
+    all_t.FontSize = 20
+    all_t.LabelSize = 20
+    all_t.OverFlow = True
+    all_t.yLogarithmic = True
+    all_t.Filename = "Figure.1.a"
+    all_t.SaveFigure()
+    exit()
+
 
 def plot_dr(ana):
-    data = ana.mtt_dr["dr"]
     sett = settings()
     th = TH1F(**sett)
     th1 = TH1F()
-    th1.xData = data
+    th1.xData = ana.mtt_dr["dr"]
     th1.Title = "$\\Delta R$"
     th.Title = "$\\Delta R$ of Post-FSR Truth Top pairs"
     th.Histogram = th1
@@ -49,11 +73,10 @@ def plot_dr(ana):
 
 
 def plot_mtt(ana):
-    data = ana.mtt_dr["mass"]
     sett = settings()
     th = TH1F(**sett)
     th1 = TH1F()
-    th1.xData = data
+    th1.xData = ana.mtt_dr["mass"]
     th1.Title = "Pairs"
     th.Title = "Invariant Mass Distribution of Post-FSR Truth Top Pairs (bruteforced)"
     th.Histogram = th1
@@ -180,24 +203,19 @@ def plot_top_attributes(ana):
     th.SaveFigure()
 
 def plot_ntops(ana):
-    data = ana.tops_attributes
     sett = settings()
     th = TH1F(**sett)
-    th1 = TH1F()
-    th1.xData = data["charge"]
-    th1.Title = "top-charge"
-    th.Title = "Electric charge of individual Tops"
-    th.Histogram = th1
-    th.xMin = -1
-    th.xMax = 1
-    th.xBins = 9
+    th.xData = ana.event_ntops
+    th.Title = "Number of Truth Tops found in Events"
+    th.xTitle = "n-tops"
+    th.xMin = 0
+    th.xMax = 8
+    th.xBins = 8
     th.xStep = 1
+    th.xBinCentering = True
     th.yTitle = "Entries"
-    th.xTitle = "Top charge"
-    th.Filename = "Figure.1.h"
+    th.Filename = "Figure.1.k"
     th.SaveFigure()
-
-
 
 
 def TruthTops(ana):
