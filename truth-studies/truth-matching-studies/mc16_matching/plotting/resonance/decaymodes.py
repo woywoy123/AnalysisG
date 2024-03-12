@@ -1,9 +1,10 @@
 from AnalysisG.Plotting import TH1F
+global figure_path
 
 def settings():
     settings = {
             "Style" : "ROOT",
-            "OutputDirectory" : "./plt_plots/resonance/",
+            "OutputDirectory" : figure_path + "decay-modes/figures/",
             "Histograms" : [],
             "Histogram" : None,
             "LegendLoc" : "upper right"

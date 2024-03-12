@@ -66,105 +66,109 @@ Core Packages in Analysis-G:
   Several interfaces are implemented, namely switching from Cartesian to Polar coordinates, computing scalar invariant masses from particles, single/double neutrino reconstruction and many more. 
 
 
-Index and Directories
-*********************
+Getting Started with AnalysisG
+******************************
 .. toctree::
-  quick-start/installation
-  quick-start/getting-started.rst
+   :titlesonly:
+
+   quick-start/installation
+   quick-start/getting-started.rst
 
 Advanced Object Definitions
 ***************************
 .. toctree::
-  :maxdepth: 2
+   :titlesonly:
 
-  quick-start/events.rst
-  quick-start/particles.rst
-  quick-start/selection.rst
-  quick-start/graphs.rst
+   quick-start/events.rst
+   quick-start/particles.rst
+   quick-start/selection.rst
+   quick-start/graphs.rst
 
 Analysis and Other Generators
 *****************************
 .. toctree::
-  :maxdepth: 2
+   :titlesonly:
 
-  generators/analysis.rst
-  generators/sampletracer.rst
-  generators/eventgenerator.rst
-  generators/graphgenerator.rst
-  generators/selectiongenerator.rst
-  generators/samplegenerator.rst
+   generators/analysis.rst
+   generators/sampletracer.rst
+   generators/eventgenerator.rst
+   generators/graphgenerator.rst
+   generators/selectiongenerator.rst
+   generators/samplegenerator.rst
 
 Read and Writing (IO)
 *********************
 .. toctree::
-  :maxdepth: 2
+   :titlesonly:
 
-  io/uproot.rst
-  io/ntupler.rst
+   io/uproot.rst
+   io/ntupler.rst
 
 Machine Learning (Graph Neural Network)
 ***************************************
 .. toctree::
-  :maxdepth: 2
+   :titlesonly:
 
-  templates/features.rst
-  machinelearning/optimizer.rst
-  machinelearning/modelwrapper.rst
-  gnn_training/schedule.rst
+   templates/features.rst
+   machinelearning/optimizer.rst
+   machinelearning/modelwrapper.rst
+   gnn_training/schedule.rst
 
 Condor and DAGMAN Submission Compilers
 **************************************
 .. toctree::
-  :maxdepth: 2
-
-  submission/condor.rst
+   :titlesonly:
+ 
+   submission/condor.rst
 
 Plotting Functions
 ******************
 .. toctree::
-  :maxdepth: 2
-
-  plotting/plotting.rst
+   :titlesonly:
+ 
+   plotting/plotting.rst
 
 Tools Multi-Threading and Code Preservation
 *******************************************
 .. toctree::
-  :maxdepth: 2
+   :titlesonly:
 
-  tools/tools.rst
-  tools/multithreading.rst
-  tools/code.rst
+   tools/tools.rst
+   tools/multithreading.rst
+   tools/code.rst
 
 Data Types and Dictionary Mapping
 *********************************
 .. toctree::
-  :maxdepth: 2
+   :titlesonly:
 
-  cytypes/cytypes.rst
+   cytypes/cytypes.rst
 
 PyC, CUDA and C++ API via PyTorch
 *********************************
 .. toctree::
-  :maxdepth: 2
+   :titlesonly:
 
-  torch-extensions/main.rst
-  torch-extensions/interface.rst
+   torch-extensions/main.rst
+   torch-extensions/interface.rst
 
 Analysis and Truth Studies Documentation
 ****************************************
 .. toctree::
-  :maxdepth: 2
+   :titlesonly:
+   :maxdepth: 0
  
-  studies/truth-matching/main.rst 
-  studies/analysis-strategies
-  studies/neutrino-reconstruction.rst
-  studies/truth-matching-studies.rst
+   studies/truth-matching/main.rst 
+   studies/strategies/analysis-strategies.rst
+   studies/neutrino-studies/neutrino-reconstruction.rst
 
 Event Template Classes
 **********************
 .. toctree::
-  events/ssml_event.rst
-  events/bsm_4tops.rst
+   :titlesonly:
+
+   events/ssml_event.rst
+   events/bsm_4tops.rst
 
 Documentation and Codebase Status
 *********************************

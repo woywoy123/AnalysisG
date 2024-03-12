@@ -1,9 +1,10 @@
 from AnalysisG.Plotting import TH1F, TH2F
+global figure_path
 
 def settings():
     settings = {
             "Style" : "ROOT",
-            "OutputDirectory" : "./plt_plots/children/",
+            "OutputDirectory" : figure_path + "children-kinematics/figures",
             "Histograms" : [],
             "Histogram" : None,
             "LegendLoc" : "upper right"
@@ -550,7 +551,7 @@ def dr_clustering(ana):
     th2.yOverFlow = True
     th2.xOverFlow = True
 
-    th2.OutputDirectory = "./plt_plots/children/"
+    th2.OutputDirectory = figure_path + "children-kinematics/figures"
     th2.SaveFigure()
 
 
@@ -574,7 +575,7 @@ def dr_clustering(ana):
     th2.yOverFlow = True
     th2.xOverFlow = True
 
-    th2.OutputDirectory = "./plt_plots/children/"
+    th2.OutputDirectory = figure_path + "children-kinematics/figures"
     th2.SaveFigure()
 
 
@@ -598,7 +599,7 @@ def dr_clustering(ana):
     th2.yOverFlow = True
     th2.xOverFlow = True
 
-    th2.OutputDirectory = "./plt_plots/children/"
+    th2.OutputDirectory = figure_path + "children-kinematics/figures"
     th2.SaveFigure()
 
     modes = [

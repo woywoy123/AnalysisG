@@ -1,12 +1,3 @@
-MC 20 Simulation Truth Matching
-===============================
-
-This section of the studies involves the study of how generator tops are matched to detector level physics objects.
-Studies are described below with their respective figure names.
-To reproduce these studies, special samples need to be produced with another framework which, can be found under:
-
-- https://gitlab.cern.ch/atlas-phys/exot/hqt/ana-exot-2022-44/common-framework/-/tree/add-top-matching?ref_type=heads
-
 Studies
 _______
 

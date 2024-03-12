@@ -13,7 +13,7 @@
         _Plots["Title"] = i
         _Plots["xData"] = MissingET[i]
         Plots["Histograms"].append(TH1F(**_Plots))
-    
+
     X = CombineTH1F(**Plots)
     X.SaveFigure()
 
@@ -31,7 +31,7 @@
         _Plots["Title"] = i
         _Plots["xData"] = MissingETDiff[i]
         Plots["Histograms"].append(TH1F(**_Plots))
-    
+
     X = CombineTH1F(**Plots)
     X.SaveFigure()
 

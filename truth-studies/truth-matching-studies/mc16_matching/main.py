@@ -1,31 +1,35 @@
 from AnalysisG.Events import Event
+from AnalysisG.Tools import Tools
 from AnalysisG import Analysis
 import plotting
 import studies
 import os
-from AnalysisG.Tools import Tools
 
+figure_path = "../../../docs/source/studies/truth-matching/mc16/"
+plotting.event.figure_path = figure_path
+plotting.children.childrenkinematics.figure_path = figure_path
+plotting.resonance.decaymodes.figure_path = figure_path
 
 smpls = os.environ["Samples"]
-run_cache = True
+run_cache = False
 run_analysis = {
-#    "ZPrimeMatrix": studies.resonance.zprime.ZPrime,
-#    "ResonanceDecayModes" : studies.resonance.decaymodes.DecayModes,
-#    "TopKinematics" : studies.top.topkinematics.TopKinematics,
-#    "TopMatching" : studies.top.topmatching.TopMatching,
-#    "ChildrenKinematics" : studies.children.childrenkinematics.ChildrenKinematics,
-    "AddOnStudies" : studies.other.AddOnStudies,
-#    "TruthEvent" : studes.event.event.TruthEvent
+        #            "ZPrimeMatrix"        : studies.resonance.zprime.ZPrime,
+        #            "ResonanceDecayModes" : studies.resonance.decaymodes.DecayModes,
+        #            "TopKinematics"       : studies.top.topkinematics.TopKinematics,
+        #            "TopMatching"         : studies.top.topmatching.TopMatching,
+        #            "ChildrenKinematics"  : studies.children.childrenkinematics.ChildrenKinematics,
+        #            "AddOnStudies"        : studies.other.AddOnStudies,
+        #            "TruthEvent"          : studies.event.TruthEvent
 }
 
 run_plotting = {
-#    "ZPrimeMatrix" : plotting.resonance.zprime.ZPrime,
-#    "ResonanceDecayModes" : plotting.resonance.decaymodes.DecayModes,
-#    "TopKinematics" : plotting.top.topkinematics.TopKinematics,
-#    "TopMatching" : plotting.top.topmatching.TopMatching,
-#    "ChildrenKinematics" : plotting.children.childrenkinematics.ChildrenKinematics,
-    "AddOnStudies" : plotting.other.AddOnStudies
-#    "TruthEvent" : plotting.event.event.TruthEvent
+        #            "ZPrimeMatrix"        : plotting.resonance.zprime.ZPrime,
+                    "ResonanceDecayModes" : plotting.resonance.decaymodes.DecayModes,
+        #            "TopKinematics"       : plotting.top.topkinematics.TopKinematics,
+        #            "TopMatching"         : plotting.top.topmatching.TopMatching,
+        #            "ChildrenKinematics"  : plotting.children.childrenkinematics.ChildrenKinematics,
+        #            "AddOnStudies"        : plotting.other.AddOnStudies,
+        #            "TruthEvent"          : plotting.event.TruthEvent
 }
 
 
@@ -42,8 +46,7 @@ smpls = {
 
 x = Tools()
 for bsm in smpls:
-    bs = {bsm : x.lsFiles(smpls[bsm])}
-#    bsm = "UNTITLED"
+    bs = {bsm : x.lsFiles(smpls[bsm])[:3]}
     if run_cache:
         ana = Analysis()
         ana.ProjectName = bsm
@@ -52,16 +55,18 @@ for bsm in smpls:
         ana.Event = Event
         ana.Launch()
 
-    for i, j in run_analysis.items():
+    if len(run_analysis):
         ana = Analysis()
         ana.ProjectName = bsm
-        ana.AddSelection(j)
         ana.EventCache = True
         ana.EventName = "Event"
-        ana.This(j.__name__, "nominal")
+        for i, j in run_analysis.items():
+            ana.AddSelection(j)
+            ana.This(j.__name__, "nominal")
         ana.Launch()
 
     for i, j in run_plotting.items():
         ana = Analysis()
         ana.ProjectName = bsm
         j(ana.merged["nominal." + j.__name__])
+
