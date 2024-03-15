@@ -1,9 +1,10 @@
 from AnalysisG.Plotting import TH1F, TH2F
+global figure_path
 
 def settings():
     settings = {
             "Style" : "ROOT",
-            "OutputDirectory" : "./plt_plots/top/",
+            "OutputDirectory" : figure_path + "top-kinematics/figures/",
             "Histograms" : [],
             "Histogram" : None,
             "LegendLoc" : "upper right"
@@ -107,8 +108,9 @@ def top_eta(ana):
 def top_pt_energy(ana):
 
     th = TH2F()
-    th.OutputDirectory = "./plt_plots/top/"
+    th.OutputDirectory = figure_path + "/top-kinematics/figures/"
     th.Filename = "Figure.3.e"
+    th.Color = "tab20c"
     th.Title = "Energy as a Function of Transverse Momenta for Resonant Truth-Tops"
     th.Style = "ROOT"
 
@@ -130,10 +132,11 @@ def top_pt_energy(ana):
     th.SaveFigure()
 
     th = TH2F()
-    th.OutputDirectory = "./plt_plots/top/"
+    th.OutputDirectory = figure_path + "/top-kinematics/figures/"
     th.Filename = "Figure.3.f"
     th.Title = "Energy as a Function of Transverse Momenta for Spectator Truth-Tops"
     th.Style = "ROOT"
+    th.Color = "tab20c"
 
     th.xData = ana.spec_top_kinematics["pt"]
     th.xMin = 0
@@ -207,10 +210,11 @@ def top_pair_mass(ana):
 
 
     th = TH2F()
-    th.OutputDirectory = "./plt_plots/top/"
-    th.Filename = "Figure.3.j"
+    th.OutputDirectory = figure_path + "top-kinematics/figures/"
     th.Title = "Invariant Mass as a Function of $\\Delta$R for Truth-Top Pairs"
+    th.Filename = "Figure.3.j"
     th.Style = "ROOT"
+    th.Color = "tab20c"
 
     th.xData = sum(ana.deltaR.values(), [])
     th.xMin = 0

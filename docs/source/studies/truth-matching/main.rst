@@ -10,12 +10,12 @@ https://github.com/woywoy123/BSM4tops-GNN-ntuples/tree/main
 .. toctree::
    :titlesonly:
 
-   mc16/truth-event/main.rst
    mc16/z-prime/main.rst
    mc16/top-kinematics/main.rst
    mc16/top-matching/main.rst
    mc16/children-kinematics/main.rst
    mc16/decay-modes/main.rst
+   mc16/truth-event/main.rst
    mc16/other/main.rst
 
 MC-20 Simulation Truth Matching

@@ -55,28 +55,24 @@ class TruthTops(SelectionTemplate):
             except AttributeError: pass
 
             tru_p  = [i for i in t.Children if i.is_nu]
-            tru_p += [tr for tr in event.PhysicsTruth if t in tr.Parent and len(tr.Parent)]
+            tru_p += [tr for tr in event.PhysicsTruth if t.index in tr.top_index]
             tru_p = sum(set(tru_p))
             try:
                 self.truth_physics["all"] += [tru_p.Mass/1000]
                 self.truth_physics[mode]  += [tru_p.Mass/1000]
             except AttributeError: pass
-            continue
 
             tru_l  = [i for i in t.Children if i.is_lep or i.is_nu]
             tru_l += [i for i in event.Jets if t in i.Parent]
             tru_l = sum(set(tru_l))
-
             try:
                 self.jets_truth_leps["all"] += [tru_l.Mass/1000]
                 self.jets_truth_leps[mode]  += [tru_l.Mass/1000]
             except AttributeError: pass
 
-            det_l  = event.Jets + event.Leptons
-            det_l  = [i for i in det_l if t in i.Parent]
+            det_l = [i for i in event.Detector if t in i.Parent]
             det_l += [i for i in t.Children if i.is_nu]
-            det_l  = sum(set(det_l))
-
+            det_l = sum(det_l)
             try:
                 self.detector["all"] += [det_l.Mass/1000]
                 self.detector[mode]  += [det_l.Mass/1000]

@@ -1,9 +1,10 @@
 from AnalysisG.Plotting import TH1F, TH2F
 
+global figure_path
 def settings():
     settings = {
             "Style" : "ROOT",
-            "OutputDirectory" : "./plt_plots/top/",
+            "OutputDirectory" : figure_path + "top-matching/figures/",
             "Histograms" : [],
             "Histogram" : None,
             "LegendLoc" : "upper right"
@@ -235,10 +236,7 @@ def top_truth_jets_contributions(ana):
     xdata = sum(xdata.values(), [])
 
     th = TH2F()
-    th.OutputDirectory = "./plt_plots/top/"
-    th.Filename = "Figure.4.h"
     th.Title = "Reconstructed Invariant Top-Quark Mass as a Function of Number of Truth Jet Constributions \n (Combined hadronic and leptonic modes)"
-
     th.xData = ydata
     th.xMin = 0
     th.xMax = 9
@@ -257,9 +255,11 @@ def top_truth_jets_contributions(ana):
     th.xScaling = 20
     th.FontSize = 20
     th.LabelSize = 20
-    th.Color = "YlOrBr"
     th.yOverFlow = True
     th.yTitle = "Invariant Top-Quark Mass (GeV)"
+    th.OutputDirectory = figure_path + "top-matching/figures/"
+    th.Filename = "Figure.4.h"
+    th.Color = "magma"
     th.SaveFigure()
 
 
@@ -331,8 +331,6 @@ def top_jets_contributions(ana):
     xdata = sum(xdata.values(), [])
 
     th = TH2F()
-    th.OutputDirectory = "./plt_plots/top/"
-    th.Filename = "Figure.4.k"
     th.Title = "Reconstructed Invariant Top-Quark Mass as a Function of Number of Jet Constributions \n (Combined hadronic and leptonic modes)"
 
     th.xData = ydata
@@ -353,9 +351,11 @@ def top_jets_contributions(ana):
     th.xScaling = 20
     th.FontSize = 20
     th.LabelSize = 20
-    th.Color = "YlOrBr"
+    th.Color = "magma"
     th.yOverFlow = True
     th.yTitle = "Invariant Top-Quark Mass (GeV)"
+    th.OutputDirectory = figure_path + "top-matching/figures/"
+    th.Filename = "Figure.4.k"
     th.SaveFigure()
 
 def TopMatching(ana):

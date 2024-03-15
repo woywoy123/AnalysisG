@@ -29,7 +29,7 @@ def kinematics_pt(ana):
     th.Title = "Transverse Momenta of Truth-Children from Spectator and Resonant Tops"
     th.xTitle = "Transverse Momenta (GeV)"
     th.yTitle = "Entries <unit>"
-    th.xBins = 400
+    th.xBins = 100
     th.xStep = 100
     th.xMin = 0
     th.xMax = 800
@@ -50,7 +50,7 @@ def kinematics_pt(ana):
     th.Title = "Transverse Momenta of Truth-Children from Resonant Tops"
     th.xTitle = "Transverse Momenta (GeV)"
     th.yTitle = "Entries <unit>"
-    th.xBins = 400
+    th.xBins = 100
     th.xStep = 100
     th.xMin = 0
     th.xMax = 800
@@ -78,7 +78,7 @@ def kinematics_pt(ana):
     th.Title = "Transverse Momenta of Truth-Children from Spectator Tops"
     th.xTitle = "Transverse Momenta (GeV)"
     th.yTitle = "Entries <unit>"
-    th.xBins = 400
+    th.xBins = 100
     th.xStep = 100
     th.xMin = 0
     th.xMax = 800
@@ -195,7 +195,6 @@ def kinematics_phi(ana):
     th.xStep = 1
     th.xMin = -3.5
     th.xMax =  3.5
-    th.yLogarithmic = True
     th.Filename = "Figure.5.g"
     th.SaveFigure()
 
@@ -222,7 +221,6 @@ def kinematics_phi(ana):
     th.LabelSize = 20
     th.Stack = True
     th.OverFlow = True
-    th.yLogarithmic = True
     th.Filename = "Figure.5.h"
     th.SaveFigure()
 
@@ -250,7 +248,6 @@ def kinematics_phi(ana):
     th.LabelSize = 20
     th.Stack = True
     th.OverFlow = True
-    th.yLogarithmic = True
     th.Filename = "Figure.5.i"
     th.SaveFigure()
 
@@ -272,7 +269,7 @@ def kinematics_energy(ana):
     th.Title = "Energy of Truth-Children from Spectator and Resonant Tops"
     th.xTitle = "Energy (GeV)"
     th.yTitle = "Entries <unit>"
-    th.xBins = 400
+    th.xBins = 100
     th.xStep = 100
     th.xMin = 0
     th.xMax = 800
@@ -293,7 +290,7 @@ def kinematics_energy(ana):
     th.Title = "Energy of Truth-Children from Resonant Tops"
     th.xTitle = "Energy (GeV)"
     th.yTitle = "Entries <unit>"
-    th.xBins = 400
+    th.xBins = 100
     th.xStep = 100
     th.xMin = 0
     th.xMax = 800
@@ -321,7 +318,7 @@ def kinematics_energy(ana):
     th.Title = "Energy of Truth-Children from Spectator Tops"
     th.xTitle = "Energy (GeV)"
     th.yTitle = "Entries <unit>"
-    th.xBins = 400
+    th.xBins = 100
     th.xStep = 100
     th.xMin = 0
     th.xMax = 800
@@ -392,7 +389,7 @@ def kinematics_decay_mode(ana):
     th.Title = "Transverse Momenta of Resonant and Spectator Top-Quark Children Segmented into Decay Channels"
     th.xTitle = "Transverse Momenta (GeV)"
     th.yTitle = "Entries <unit>"
-    th.xBins = 200
+    th.xBins = 100
     th.xStep = 100
     th.xMin = 0
     th.xMax = 800
@@ -412,7 +409,7 @@ def kinematics_decay_mode(ana):
     th.Title = "Pseudorapidity ($\\eta$) of Resonant and Spectator Top-Quark Children Segmented into Decay Channels"
     th.xTitle = "Pseudorapidity ($\\eta$) (arb.)"
     th.yTitle = "Entries"
-    th.xBins = 200
+    th.xBins = 100
     th.xStep = 1
     th.xMin = -6
     th.xMax =  6
@@ -432,7 +429,7 @@ def kinematics_decay_mode(ana):
     th.Title = "Azimuthal Angle ($\\phi$) of Resonant and Spectator Top-Quark Children Segmented into Decay Channels"
     th.xTitle = "Azimuthal Angle ($\\phi$) (rad)"
     th.yTitle = "Entries"
-    th.xBins = 200
+    th.xBins = 100
     th.xStep = 1
     th.xMin = -3.5
     th.xMax =  3.5
@@ -442,7 +439,6 @@ def kinematics_decay_mode(ana):
     th.LabelSize = 20
     th.Stack = True
     th.OverFlow = True
-    th.yLogarithmic = True
     th.Filename = "Figure.5.o"
     th.SaveFigure()
 
@@ -452,7 +448,7 @@ def kinematics_decay_mode(ana):
     th.Title = "Energy of Resonant and Spectator Top-Quark Children Segmented into Decay Channels"
     th.xTitle = "Energy (GeV)"
     th.yTitle = "Entries <unit>"
-    th.xBins = 200
+    th.xBins = 100
     th.xStep = 100
     th.xMin = 0
     th.xMax = 800
@@ -777,10 +773,10 @@ def fractional(ana):
     th.SaveFigure()
 
 def ChildrenKinematics(ana):
-    kinematics_pt(ana)
-    kinematics_eta(ana)
-    kinematics_phi(ana)
-    kinematics_energy(ana)
-    kinematics_decay_mode(ana)
+#    kinematics_pt(ana)
+#    kinematics_eta(ana)
+#    kinematics_phi(ana)
+#    kinematics_energy(ana)
+#    kinematics_decay_mode(ana)
     dr_clustering(ana)
-    fractional(ana)
+#    fractional(ana)

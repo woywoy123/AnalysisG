@@ -6,9 +6,9 @@ import studies
 import os
 
 smpls = os.environ["Samples"] + "mc20_13_tttt_m1250"
-run_cache = True
+run_cache = False
 run_analysis = {
-        "TruthTops" : studies.truthtop.TruthTops,
+#        "TruthTops" : studies.truthtop.TruthTops,
         #"TruthJetMatching" : studies.truthjet.TruthJetMatching
 }
 
@@ -22,6 +22,8 @@ bs = {"test" : x.lsFiles(smpls)}
 bsm = "UNTITLED"
 if run_cache:
     ana = Analysis()
+    ana.Chunks = 1000
+    ana.EventStop = 12000
     ana.ProjectName = bsm
     for j, k in bs.items(): ana.InputSample(j, k)
     ana.EventCache = True
@@ -30,6 +32,7 @@ if run_cache:
 
 for i, j in run_analysis.items():
     ana = Analysis()
+    ana.Chunks = 1000
     ana.ProjectName = bsm
     ana.AddSelection(j)
     ana.EventCache = True

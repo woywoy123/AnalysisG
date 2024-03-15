@@ -21,10 +21,10 @@ def plot_mass(ana):
         th.Histograms += [th1]
 
     th.Title = "Invariant Mass of Truth-Top Matched to Truth-Particles (Truth-Jets/Neutrinos/Leptons)"
-    th.xMin = 0
-    th.xMax = 1500
-    th.xBins = 1500
-    th.xStep = 200
+    th.xMin = 150
+    th.xMax = 230
+    th.xBins = 250
+    th.xStep = 10
     th.yTitle = "Entries"
     th.xTitle = "Invariant Mass (GeV)"
     th.Filename = "Figure.2.a"

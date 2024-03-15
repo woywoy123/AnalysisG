@@ -1,4 +1,5 @@
 from AnalysisG.Plotting import TH2F, TH1F
+global figure_path
 
 def TemplateTH2F(Title, Data, f_title):
     th2 = TH2F()
@@ -10,7 +11,7 @@ def TemplateTH2F(Title, Data, f_title):
     th2.yTitle = "Transverse Momentum of Z/H-Prime (GeV)"
     th2.Filename = "Figure.1." + f_title
 
-    th2.xBins = 750
+    th2.xBins = 500
     th2.yBins = 500
 
     th2.xMin = 0
@@ -20,8 +21,9 @@ def TemplateTH2F(Title, Data, f_title):
     th2.yMax = 1000
     th2.yOverFlow = True
     th2.xOverFlow = True
+    th2.Color = "tab20c"
 
-    th2.OutputDirectory = "./plt_plots/resonance/"
+    th2.OutputDirectory = figure_path + "z-prime/figures/"
     th2.SaveFigure()
 
 def ZPrime(ana):

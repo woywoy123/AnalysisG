@@ -34,29 +34,24 @@ class SSML_MC20(EventTemplate):
             tops[c.index].Children += [c]
 
         for c in self.PhysicsTruth.values():
-            for x in c.top_index:
-                if x < 0: continue
-                c.Parent += [self.Tops[x]]
-            c.Parent = list(set(c.Parent))
+            if c.is_photon: continue
+            c.Parent = [tops[x] for x in c.top_index]
 
         for c in self.PhysicsDetectors.values():
-            for x in c.top_index:
-                if x < 0: continue
-                c.Parent += [self.Tops[x]]
+            if c.is_photon: continue
+            c.Parent = [tops[x] for x in c.top_index]
 
-        for d1 in list(self.PhysicsTruth.values()):
-            dr_map = {d1.DeltaR(d2) : [d1, d2] for d2 in self.PhysicsDetectors.values()}
-            try: c1, c2 = dr_map[0]
-            except KeyError: continue
-            c1.Children += [c2]
-
-        detectors = list(self.Jets.values())
+        matched = {}
+        detectors  = list(self.Jets.values())
         detectors += list(self.Muons.values())
         detectors += list(self.Electrons.values())
         for d in detectors:
+            if d not in matched: matched[d] = {}
             for pd in self.PhysicsDetectors.values():
                 if d != pd: continue
-                d.Parent += [k for k in pd.Parent]
+                if not len(pd.Parent): continue
+                for j in pd.Parent: matched[d][j] = None
+            d.Parent = [j for j in matched[d]]
 
         # make the attributes a list
         self.Tops          = list(self.Tops.values())

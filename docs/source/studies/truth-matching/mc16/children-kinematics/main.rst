@@ -1,5 +1,5 @@
-ChildrenKinematics
-==================
+Children-Kinematics
+===================
 
 A set of studies relating to the decay children of truth-tops.
 These studies aim to investigate the kinematics of the decay products from resonance tops and compare these to background spectator tops.
@@ -10,7 +10,7 @@ Figure 5.a
    :align: center
    :name: Figure.5.a
 
-   Transverse momenta distribution of the truth children.
+   A plot of the transverse momenta of truth children originating from resonance and spectator tops.
 
 Figure 5.b
 ----------
@@ -18,7 +18,8 @@ Figure 5.b
    :align: center
    :name: Figure.5.b
 
-   Transverse momenta distribution of the truth children originating from resonant top-quarks, partitioned into the PDGID's of the children.
+   Transverse momenta distribution of the truth children originating from **resonant** top-quarks.
+   A stack plot showing the underlying distribution associated with the PDGID's of the truth children.
 
 Figure 5.c
 ----------
@@ -26,7 +27,8 @@ Figure 5.c
    :align: center
    :name: Figure.5.c
 
-   Transverse momenta distribution of the truth children originating from spectator top-quarks, partitioned into the PDGID's of the children.
+   Transverse momenta distribution of the truth children originating from **spectator** top-quarks.
+   A stack plot showing the underlying distribution associated with the PDGID's of the truth children.
 
 Figure 5.d
 ----------
@@ -34,7 +36,7 @@ Figure 5.d
    :align: center
    :name: Figure.5.d
 
-   Pseudorapidity distribution of the truth children.
+   A plot of the pseudorapidity of truth children originating from resonance and spectator tops.
 
 Figure 5.e
 ----------
@@ -42,7 +44,8 @@ Figure 5.e
    :align: center
    :name: Figure.5.e
 
-   Pseudorapidity distribution of the truth children originating from resonant top-quarks, partitioned into the PDGID's of the children.
+   Pseudorapidity distribution of the truth children originating from **resonant** top-quarks.
+   A stack plot showing the underlying distribution associated with the PDGID's of the truth children.
 
 Figure 5.f
 ----------
@@ -50,7 +53,8 @@ Figure 5.f
    :align: center
    :name: Figure.5.f
 
-   Pseudorapidity distribution of the truth children originating from spectator top-quarks, partitioned into the PDGID's of the children.
+   Pseudorapidity distribution of the truth children originating from **resonant** top-quarks.
+   A stack plot showing the underlying distribution associated with the PDGID's of the truth children.
 
 Figure 5.g
 ----------
@@ -58,7 +62,7 @@ Figure 5.g
    :align: center
    :name: Figure.5.g
 
-   Azimuthal angular distribution of the truth children.
+   A plot of the azimuthal angular distribution of truth children originating from resonance and spectator tops.
 
 Figure 5.h
 ----------
@@ -66,7 +70,8 @@ Figure 5.h
    :align: center
    :name: Figure.5.h
 
-   Azimuthal angular distribution of the truth children originating from resonant top-quarks, partitioned into the PDGID's of the children.
+   Azimuthual angular distribution of the truth children originating from **resonant** top-quarks.
+   A stack plot showing the underlying distribution associated with the PDGID's of the truth children.
 
 Figure 5.i
 ----------
@@ -74,7 +79,8 @@ Figure 5.i
    :align: center
    :name: Figure.5.i
 
-   Azimuthal angular distribution of the truth children originating from spectator top-quarks, partitioned into the PDGID's of the children.
+   Azimuthual angular distribution of the truth children originating from **spectator** top-quarks.
+   A stack plot showing the underlying distribution associated with the PDGID's of the truth children.
 
 Figure 5.j
 ----------
@@ -82,7 +88,7 @@ Figure 5.j
    :align: center
    :name: Figure.5.j
 
-   Energy distribution of the truth children.
+   A plot of the truth children's energy originating from resonance and spectator tops.
 
 Figure 5.k
 ----------
@@ -90,7 +96,8 @@ Figure 5.k
    :align: center
    :name: Figure.5.k
 
-   Energy distribution of the truth children originating from resonant top-quarks, partitioned into the PDGID's of the children.
+   The energy distribution of the truth children originating from **resonant** top-quarks.
+   A stack plot showing the underlying distribution associated with the PDGID's of the truth children.
 
 Figure 5.l
 ----------
@@ -98,7 +105,8 @@ Figure 5.l
    :align: center
    :name: Figure.5.l
    
-   Energy distribution of the truth children originating from spectator top-quarks, partitioned into the PDGID's of the children.
+   The energy distribution of the truth children originating from **spectator** top-quarks.
+   A stack plot showing the underlying distribution associated with the PDGID's of the truth children.
 
 Figure 5.m
 ----------

@@ -23,6 +23,6 @@ class TruthJetMatching(SelectionTemplate):
             if lep: self.decaymode["leptonic"] += [sum(set(t.Children)).Mass/1000]
             else: self.decaymode["hadronic"] += [sum(set(t.Children)).Mass/1000]
 
-            typx = [i.true_flavor for i in t.Children]
-            if lep: self.flavor["leptonic"] += typx
-            else: self.flavor["hadronic"] += typx
+            #typx = [i.true_flavor for i in t.Children]
+            #if lep: self.flavor["leptonic"] += typx
+            #else: self.flavor["hadronic"] += typx
