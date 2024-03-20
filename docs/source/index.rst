@@ -2,7 +2,7 @@ A Graph Neural Network Analysis Framework for High Energy Physics!
 ==================================================================
 
 Abstract
-********
+--------
 As the field of High Energy Particle Physics (HEPP) has begun exploring more exotic machine learning algorithms, such as Graph Neural Networks (GNNs).
 Analyses commonly rely on pre-existing data science frameworks, including PyTorch, TensorFlow and Keras, to recast ROOT samples into the respective data structure.
 This often results in tedious and computationally expensive co-routines to be written.
@@ -22,8 +22,8 @@ In the context of GNNs, the framework contains HEPP centric PyTorch based functi
 Some of the functions included are; $\DeltaR$, Polar to Cartesian coordinate system transformations, Invariant Mass computations, edge/node single counting aggregation, analytical single/double neutrino reconstruction, and many more.
 
 
-What is Analysis-G:
-*******************
+What is Analysis-G
+------------------
 Analysis-G is a Python package which aims to abstract and automate novel High Energy Particle Physics Analyses.
 Since most of HEPP software relies on complicated ROOT files, the framework attempts to minimize the need for writing complicated and inefficient nested for loops to retrieve the content. 
 This is achieved by defining particles and events as Python classes and assigning these attributes which allow the framework to infer and assign particles to events.
@@ -37,10 +37,10 @@ This will be illustrated in dedicated tutorials of the docs.
 
 Given the growing trend in machine learning, for instance Graph Neural Networks (GNNs), the framework aims to remain Analysis agnostic, such that several mutually exclusive ATLAS/Belle-II analyses can benefit from a single optimized framework. 
 
-Core Packages in Analysis-G:
-****************************
+Core Packages in Analysis-G
+---------------------------
 
-- **EventTemplate:** 
+- **EventTemplate:**
   A class which is to be inherited by custom event implementations. 
   This class interprets and retrieves data content found within ROOT files, and translates the ROOT structure in terms of particle content and per event attributes. 
 
@@ -67,15 +67,15 @@ Core Packages in Analysis-G:
 
 
 Getting Started with AnalysisG
-******************************
+------------------------------
 .. toctree::
    :titlesonly:
 
-   quick-start/installation
+   quick-start/installation.rst
    quick-start/getting-started.rst
 
 Advanced Object Definitions
-***************************
+---------------------------
 .. toctree::
    :titlesonly:
 
@@ -85,7 +85,7 @@ Advanced Object Definitions
    quick-start/graphs.rst
 
 Analysis and Other Generators
-*****************************
+-----------------------------
 .. toctree::
    :titlesonly:
 
@@ -97,7 +97,7 @@ Analysis and Other Generators
    generators/samplegenerator.rst
 
 Read and Writing (IO)
-*********************
+---------------------
 .. toctree::
    :titlesonly:
 
@@ -105,7 +105,7 @@ Read and Writing (IO)
    io/ntupler.rst
 
 Machine Learning (Graph Neural Network)
-***************************************
+---------------------------------------
 .. toctree::
    :titlesonly:
 
@@ -115,21 +115,21 @@ Machine Learning (Graph Neural Network)
    gnn_training/schedule.rst
 
 Condor and DAGMAN Submission Compilers
-**************************************
+--------------------------------------
 .. toctree::
    :titlesonly:
  
    submission/condor.rst
 
 Plotting Functions
-******************
+------------------
 .. toctree::
    :titlesonly:
  
    plotting/plotting.rst
 
 Tools Multi-Threading and Code Preservation
-*******************************************
+-------------------------------------------
 .. toctree::
    :titlesonly:
 
@@ -138,14 +138,14 @@ Tools Multi-Threading and Code Preservation
    tools/code.rst
 
 Data Types and Dictionary Mapping
-*********************************
+---------------------------------
 .. toctree::
    :titlesonly:
 
    cytypes/cytypes.rst
 
 PyC, CUDA and C++ API via PyTorch
-*********************************
+---------------------------------
 .. toctree::
    :titlesonly:
 
@@ -153,25 +153,25 @@ PyC, CUDA and C++ API via PyTorch
    torch-extensions/interface.rst
 
 Analysis and Truth Studies Documentation
-****************************************
+----------------------------------------
 .. toctree::
    :titlesonly:
    :maxdepth: 0
  
    studies/truth-matching/main.rst 
-   studies/strategies/analysis-strategies.rst
+   studies/strategies/main.rst
    studies/neutrino-studies/neutrino-reconstruction.rst
 
-Event Template Classes
-**********************
+ROOT n-Tuple Event Implementations
+----------------------------------
 .. toctree::
+   :maxdepth: 0
    :titlesonly:
 
-   events/ssml_event.rst
-   events/bsm_4tops.rst
+   events/main.rst
 
 Documentation and Codebase Status
-*********************************
+---------------------------------
 
 .. image:: https://readthedocs.org/projects/analysisg/badge/?version=latest
     :target: https://analysisg.readthedocs.io/en/latest/?badge=latest

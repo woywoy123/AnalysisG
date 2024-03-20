@@ -54,7 +54,8 @@ class TruthJet(Particle):
 
     @property
     def FromRes(self):
-        return 0 if len(self.Tops) == 0 else self.Tops[0].FromRes
+        if not len(self.Tops): return False
+        return sum([t.FromRes for t in self.Tops])
 
 
 class TruthJetParton(Particle):

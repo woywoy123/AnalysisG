@@ -23,6 +23,9 @@ class TruthEvent(SelectionTemplate):
             "delta_met_y" : {"0L" : [], "1L" : [], "2L" : [], "3L" : [], "4L" : [], "2LOS" : [], "2LSS" : []}
         }
 
+        self.njet_data = {"jets" : [], "truth-jets" : [], "b-jets" : [], "b-truth-jets" : []}
+        self.nleptons = {"truth" : [], "detector" : []}
+
     def Selection(self, event): return True
 
     def Strategy(self, event):
@@ -60,10 +63,10 @@ class TruthEvent(SelectionTemplate):
         met_x, met_y = self.Px(met, phi), self.Py(met, phi)
         all_x, all_y = all_children.px, all_children.py
 
-        self.met_cartesian["met_x"][header] += [met_x]
-        self.met_cartesian["met_y"][header] += [met_y]
-        self.met_cartesian["delta_met_x"][header] += [abs(all_x - met_x)/1000]
-        self.met_cartesian["delta_met_y"][header] += [abs(all_y - met_y)/1000]
+        self.met_cartesian["met_x"][header] += [met_x/1000]
+        self.met_cartesian["met_y"][header] += [met_y/1000]
+        self.met_cartesian["delta_met_x"][header] += [(all_x - met_x)/1000]
+        self.met_cartesian["delta_met_y"][header] += [(all_y - met_y)/1000]
 
         if len(leps) == 2:
             mode = ""
@@ -71,7 +74,14 @@ class TruthEvent(SelectionTemplate):
             else: mode = "OS"
             self.num_leptons[header + mode] += 1
 
-            self.met_cartesian["met_x"][header + mode] += [met_x]
-            self.met_cartesian["met_y"][header + mode] += [met_y]
-            self.met_cartesian["delta_met_x"][header + mode] += [abs(all_x - met_x)/1000]
-            self.met_cartesian["delta_met_y"][header + mode] += [abs(all_y - met_y)/1000]
+            self.met_cartesian["met_x"][header + mode] += [met_x/1000]
+            self.met_cartesian["met_y"][header + mode] += [met_y/1000]
+            self.met_cartesian["delta_met_x"][header + mode] += [(all_x - met_x)/1000]
+            self.met_cartesian["delta_met_y"][header + mode] += [(all_y - met_y)/1000]
+
+        self.njet_data["truth-jets"] += [len(event.TruthJets)]
+        self.njet_data["jets"] += [len(event.Jets)]
+        self.njet_data["b-truth-jets"] += [len([j for j in event.TruthJets if j.pdgid])]
+        self.njet_data["b-jets"] += [len([j for j in event.Jets if j.is_b])]
+        self.nleptons["truth"] += [len(leps)]
+        self.nleptons["detector"] += [len(event.Electrons) + len(event.Muons)]

@@ -16,6 +16,7 @@ https://github.com/woywoy123/BSM4tops-GNN-ntuples/tree/main
    mc16/children-kinematics/main.rst
    mc16/decay-modes/main.rst
    mc16/truth-event/main.rst
+   mc16/truth-jets/main.rst
    mc16/other/main.rst
 
 MC-20 Simulation Truth Matching

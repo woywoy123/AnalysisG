@@ -1,8 +1,7 @@
 .. _beyond-standard-model: https://github.com/woywoy123/BSM4tops-GNN-ntuples
 
-
 Beyond Standard Model 4 Top Event
-*********************************
+---------------------------------
 
 This event implementation used more granular truth matching samples in which, the individual physics objects can be matched to their truth parent constituent. 
 The source code producing relevant samples can be found under this link `beyond-standard-model`_.

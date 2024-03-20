@@ -1,31 +1,31 @@
 Double Leptonic Resonance Decay Analysis
-****************************************
+========================================
 
 This small analysis script aims to reconstruct the mass of the heavy vector/scalar H/Z boson, using a primitive grouping algorithm. 
 
 Selection Criteria
-__________________
+------------------
 
 Events are required to have at least two leptons and four b-jets. 
 
 Grouping Strategy
-_________________
+-----------------
 
-To seed the grouping, the two leading order b-tagged partons are used to indicate the presence of at least 2-tops. 
-These are considered as the `Resonance` top pairs, which are emitted from the heavy resonance. 
-If any of these seeded b-tagged partons are closest to an adjacent quark parton (or jet), then the associated object will be marked as a hadronically decaying top quark. 
+To seed the grouping, the two leading order, b-tagged partons are used to indicate the presence of at least 2-tops. 
+The seeded b-tagged partons are considered as the `Resonance` top pairs, which are emitted from the heavy resonance. 
+For candidate seeds closest to an adjacent quark parton (or jet), then the associated object will be marked as a hadronically decaying top quark. 
 Whereas, if the :math:`\Delta R` is lowest between a leptonic object, then the b-tagged object will be tagged as originating from a leptonically decaying top quark. 
 This procedure is repeated for all b-tagged objects, until no further clustering is possible. 
 If there are two leptonically decaying tops, then the double neutrino reconstruction algorithm will be invoked to restore the neutrino momenta. 
 
 Multiple Neutrino Reconstruction Solutions
-__________________________________________
+------------------------------------------
 
-In the event multiple solutions are found for the single and double neutrino reconstruction, then the neutrino with the lowest chi2 is chosen, with the others being neglected.
-For the case no solutions were found, the event is completely rejected.
+If the event yields multiple solutions for the single or double neutrino reconstruction, then the neutrino with the lowest chi2 is chosen and others are neglected.
+For no solution events, the entire event is rejected.
 
 Parameters
-__________
+----------
 
 - **btagger**: 
   This selects the btagging algorithm which should be used on the particles.
@@ -47,19 +47,16 @@ __________
   - ``jets+truthleptons``
   - ``detector``
 
-Figures
-_______
-
-Top Quark Reconstruction:
-*************************
+Top Quark Reconstruction
+------------------------
 
 - **Figure 1.a:** 
   This figure illustrates the reconstructed top masses which were chosen as part of the selection criteria. 
   The resulting tops were constructed from the two most hardest b-tagged jets/children.
 
 
-Resonance Reconstruction:
-*************************
+Resonance Reconstruction
+------------------------
 
 - **Figure 2.a:**
   This figure illustrates the resulting mass distribution of the reconstructed resonance, given that one of the resonance tops decayed leptonically and the other hardonically (Lep-Had).

@@ -1,38 +1,5 @@
 from AnalysisG.Templates import SelectionTemplate
 
-class TopMassTruthJets(SelectionTemplate):
-
-    def __init__(self):
-        SelectionTemplate.__init__(self)
-
-        self.TopMass = {"Had" : [], "Lep" : []}
-        self.TruthTopMass = {"Had" : [], "Lep" : []}
-
-        self.TopMassNjets = {}
-        self.TopMassMerged = {}
-
-    def Selection(self, event):
-        return True 
-
-    def Strategy(self, event):
-        tops = event.Tops    
-        for t in tops:
-            frag = []
-            frag += t.TruthJets
-            if len(t.TruthJets) == 0: continue
-            mode = "Lep" if t.LeptonicDecay else "Had"
-            if t.LeptonicDecay:
-                frag += [c for c in t.Children if c.is_lep or c.is_nu]
-            self.TopMass[mode] += [sum(frag).Mass / 1000]
-            self.TruthTopMass[mode] += [t.Mass / 1000]
-            
-            ntj = mode + "-" + str(len(t.TruthJets))
-            if ntj not in self.TopMassNjets: self.TopMassNjets[ntj] = []
-            self.TopMassNjets[ntj] += [sum(frag).Mass / 1000] 
-          
-            merged = len(set([_t for tj in t.TruthJets for _t in tj.Tops]))
-            if merged not in self.TopMassMerged: self.TopMassMerged[merged] = []
-            self.TopMassMerged[merged] += [sum(frag).Mass / 1000]
 
 class TopTruthJetsKinematics(SelectionTemplate):
     

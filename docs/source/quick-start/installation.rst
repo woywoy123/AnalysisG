@@ -2,12 +2,11 @@ Installing Analysis-G
 =====================
 
 Installing via Github
-_____________________
+---------------------
 
 First clone the project into a target directory. 
 
 .. code-block:: console
-    :caption: Cloning the Project via Git
 
     git clone https://github.com/woywoy123/AnalysisG.git
 
@@ -15,7 +14,6 @@ To automate most of the setup, navigate to the **setup-scripts** directory and r
 This will generate a new Python environment called **GNN**, which can be sourced from the shell script **source_this.sh**. 
 
 .. code-block:: console
-    :caption: Running the Installation script 
 
     cd AnalysisG/setup-scripts && bash setup-venv.sh
 
@@ -37,7 +35,7 @@ If making changes to the .bashrc is not desired, simply add an alias to it and p
 This will create a command called **GNN** and when executed will setup the Analysis environment. 
 
 Installing via PyPI (pip)
-_________________________
+-------------------------
 
 The framework has also been published to PyPI to simplify the installation process.
 
@@ -47,7 +45,7 @@ The framework has also been published to PyPI to simplify the installation proce
 
 
 Additional Software Setup
-_________________________
+-------------------------
 
 Analysis-G is partly dependent on **PyC** and can be installed via the command **install_pyc**.
 Unlike most **PyTorch** packages, the installation process is rather seemless. 
@@ -66,7 +64,7 @@ Once installed, the module can be used via:
    import pyc
 
 Install via Command-Line
-________________________
+------------------------
 
 .. code-block:: console
 
@@ -74,7 +72,7 @@ ________________________
    pip install -v .
 
 Install via Framework
-_____________________
+---------------------
 
 .. code-block:: console
 

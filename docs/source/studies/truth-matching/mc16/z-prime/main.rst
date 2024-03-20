@@ -1,5 +1,5 @@
 Z-Prime
-======
+=======
 
 A study which investigates the resolution of the injected resonance for different mass points using decreasing truth information.
 The injected resonance mass is varied from 400 GeV to 1000 GeV (1 TeV), and the truth information is changed from truth-tops (perfect resolution) to detector jets (worst resolution).

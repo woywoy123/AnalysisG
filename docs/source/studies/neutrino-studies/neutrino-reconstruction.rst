@@ -1,16 +1,16 @@
 Neutrino Reconstruction
-***********************
+=======================
 The aim of this study is to benchmark the performance of the neutrino reconstruction algorithm found under [1].
 
-Selection Criteria:
-___________________
+Selection Criteria
+------------------
 
 Events are required to have no more than two leptonically decaying tops. 
 These are filtered at truth level (TruthChildren). 
 The neutrino algorithm ``zero`` value is being set to 1e-10, since anything below this value creates large differences between C++ and Python floating point definitions.
 
-Particle Definitions:
-_____________________
+Particle Definitions
+--------------------
 
 Leptons and neutrinos are defined as:
 
@@ -18,8 +18,8 @@ Leptons and neutrinos are defined as:
 - muons 
 - taus
 
-Created Plots:
-______________
+Figures
+-------
 
 - ``neutrino-solutions``:
     This will be a TH1F plot which aims to identify differences in using MeV and GeV when executing the reconstruction algorithm on dilepton top decay modes.  reconstructing dilepton top decay modes. 

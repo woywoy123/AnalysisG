@@ -79,33 +79,6 @@ Plots relating to the resonance being reconstructed from the top truth children,
 - **Figure_2.1c**: A plot of the reconstructed resonance from truth children.
 
 
-TruthChildrenKinematics
-_______________________
-
-This selection implementation aims to investigate the delta-R dependency of the parent top PT and how closely clustered the children are together. 
-
-- **Figure_2.1d**: A plot illustrating the :math:`\Delta R` between truth children originating from a common top, but partitioned into resonance/spectator tops.
-
-- **Figure_2.1e**: A plot illustrating the :math:`\Delta R` between originating truth top and decay children partitioned into leptonic and hadronic top decay channels.
-
-- **Figure_2.1f**:
-  A plot illustrating the overlap in :math:`\Delta R` between truth children originating and not originating from mutual top. 
-  This aims to identify whether only using the delta-R to cluster children causes falsely matched children.
-  From the legend, ``False`` implies the parent tops are not equal.
-
-- **Figure_2.1g**: 
-  A TH2F plot of the originating top's PT and only hadronically decaying top children delta-R. 
-  This aims to verify whether a correlation between the top's PT and the clustering of children is present. 
-
-- **Figure_2.1h**: 
-  A TH2F plot of the originating top's PT and only Leptonically decaying top children delta-R. 
-  This aims to verify whether a correlation between the top's PT and the clustering of children is present. 
-
-- **Figure_2.1i**: A plot illustrating the fractional PT being transferred to truth children from associated top.
-
-- **Figure_2.1j**: A plot illustrating the fraction of energy being transmitted to the truth children from parent top.
-
-
 ResonanceMassTruthJets
 ______________________
 

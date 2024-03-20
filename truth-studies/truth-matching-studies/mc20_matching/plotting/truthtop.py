@@ -23,15 +23,15 @@ def plot_top_masses(ana):
 
     tru_tj = TH1F()
     tru_tj.Title = "Truth-Jets (Truth Leptons and Neutrinos)"
-    tru_tj.xData = [] #ana.truth_physics["hadronic"]
+    tru_tj.xData = ana.truth_physics["all"]
 
     tru_j = TH1F()
     tru_j.Title = "Jets (Truth Leptons and Neutrinos)"
-    tru_j.xData = [] # ana.jets_truth_leps["hadronic"]
+    tru_j.xData = ana.jets_truth_leps["all"]
 
     tru_jl = TH1F()
     tru_jl.Title = "Jets Leptons (Truth Neutrinos)"
-    tru_jl.xData = ana.detector["leptonic"]
+    tru_jl.xData = ana.detector["all"]
 
     sett = settings()
     all_t = TH1F(**sett)
@@ -51,7 +51,6 @@ def plot_top_masses(ana):
     all_t.yLogarithmic = False
     all_t.Filename = "Figure.1.a"
     all_t.SaveFigure()
-    exit()
 
 def plot_dr(ana):
     sett = settings()

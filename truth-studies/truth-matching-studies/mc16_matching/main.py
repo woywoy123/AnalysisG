@@ -6,13 +6,13 @@ import studies
 import os
 
 figure_path = "../../../docs/source/studies/truth-matching/mc16/"
-plotting.resonance.zprime.figure_path     = figure_path
-plotting.resonance.decaymodes.figure_path = figure_path
-plotting.top.topkinematics.figure_path    = figure_path
-plotting.top.topmatching.figure_path      = figure_path
-
-plotting.event.figure_path = figure_path
+plotting.resonance.zprime.figure_path            = figure_path
+plotting.resonance.decaymodes.figure_path        = figure_path
+plotting.top.topkinematics.figure_path           = figure_path
+plotting.top.topmatching.figure_path             = figure_path
 plotting.children.childrenkinematics.figure_path = figure_path
+plotting.truthjets.toptruthjets.figure_path      = figure_path
+plotting.event.figure_path                       = figure_path
 
 smpls = os.environ["Samples"]
 run_cache = False
@@ -22,8 +22,9 @@ run_analysis = {
         #            "TopKinematics"       : studies.top.topkinematics.TopKinematics,
         #            "TopMatching"         : studies.top.topmatching.TopMatching,
         #            "ChildrenKinematics"  : studies.children.childrenkinematics.ChildrenKinematics,
+        #            "TruthEvent"          : studies.event.TruthEvent,
+        #            "TopTruthJets"           : studies.truthjets.toptruthjets.TopTruthJets,
         #            "AddOnStudies"        : studies.other.AddOnStudies,
-        #            "TruthEvent"          : studies.event.TruthEvent
 }
 
 run_plotting = {
@@ -31,9 +32,10 @@ run_plotting = {
         #            "ResonanceDecayModes" : plotting.resonance.decaymodes.DecayModes,
         #            "TopKinematics"       : plotting.top.topkinematics.TopKinematics,
         #            "TopMatching"         : plotting.top.topmatching.TopMatching,
-                    "ChildrenKinematics"  : plotting.children.childrenkinematics.ChildrenKinematics,
-        #            "AddOnStudies"        : plotting.other.AddOnStudies,
-        #            "TruthEvent"          : plotting.event.TruthEvent
+        #            "ChildrenKinematics"  : plotting.children.childrenkinematics.ChildrenKinematics,
+        #            "TruthEvent"          : plotting.event.TruthEvent,
+                    "TopTruthJets"           : plotting.truthjets.toptruthjets.TopTruthJets,
+        #            "AddOnStudies"        : plotting.other.AddOnStudies
 }
 
 
@@ -51,6 +53,7 @@ smpls = {
 x = Tools()
 for bsm in smpls:
     bs = {bsm : x.lsFiles(smpls[bsm])[:3]}
+    bsm = "UNTITLED"
     if run_cache:
         ana = Analysis()
         ana.ProjectName = bsm

@@ -1,7 +1,7 @@
 .. _common-framework: https://gitlab.cern.ch/atlas-phys/exot/hqt/ana-exot-2022-44/common-framework
 
 Same Sign Multi-Lepton Event
-****************************
+----------------------------
 
 Event implementation is made to be compatible with samples produced using the AnalysisTop based **common-framework**.
 The project can be found under this link `common-framework`_.
