@@ -18,56 +18,6 @@ def PlotTemplate(x):
 
 def TopTruthJetsKinematics(inpt):
     
-    hist = PlotTemplate(inpt)
-    hist["Title"] = "$\Delta R$ Between Truth Jets Matched to a Mutual \n Top Compared to Background"
-    hist["xTitle"] = "$\Delta R$"
-    hist["Histograms"] = []
-    hist["Filename"] = "Figure_3.1f"
-    hist["xMax"] = 4
-    hist["xStep"] = 0.25
-    hist["xBins"] = 250
-    hist["Logarithmic"] = True 
-    hist["yMin"] = 1
-    for dr in inpt.DeltaRTJ_:
-        if "dR" not in dr: continue
-        plt = {}
-        plt["Title"] = dr.replace("-dR", "")
-        plt["xData"] = inpt.DeltaRTJ_[dr]
-        hist["Histograms"].append(TH1F(**plt))
-    
-    com = CombineTH1F(**hist) 
-    com.SaveFigure() 
-
-    hist2D = PlotTemplateTH2F(inpt)
-    hist2D.Title = "$\Delta R$ as a Function of the Truth Top Transverse Momenta" 
-    hist2D.xTitle = "Transverse Momenta (GeV)"
-    hist2D.yTitle = "$\Delta R$"
-    hist2D.yMax = 4
-    hist2D.xMax = 1500
-    hist2D.yBins = 250
-    hist2D.xBins = 250
-    hist2D.xStep = 100
-    hist2D.yStep = 0.4
-    hist2D.yData = [i for m in inpt.DeltaRTJ_ for i in inpt.DeltaRTJ_[m] if "dR" in m]
-    hist2D.xData = [i for m in inpt.DeltaRTJ_ for i in inpt.DeltaRTJ_[m] if "PT" in m]
-    hist2D.Filename = "Figure_3.1g"
-    hist2D.SaveFigure()
-
-    hist2D = PlotTemplateTH2F(inpt)
-    hist2D.Title = "$\Delta R$ as a Function of the Truth Top Energy" 
-    hist2D.xTitle = "Energy (GeV)"
-    hist2D.yTitle = "$\Delta R$"
-    hist2D.yMax = 4
-    hist2D.xMax = 1500
-    hist2D.yBins = 250
-    hist2D.xBins = 250
-    hist2D.xStep = 100
-    hist2D.yStep = 0.4
-    hist2D.yData = [i for m in inpt.DeltaRTJ_ for i in inpt.DeltaRTJ_[m] if "dR" in m]
-    hist2D.xData = [i for m in inpt.DeltaRTJ_ for i in inpt.DeltaRTJ_[m] if "Energy" in m]
-    hist2D.Filename = "Figure_3.1h"
-    hist2D.SaveFigure()
-
 
     xdata = {}
     for dr, sym in zip(inpt.TopTruthJet_parton["Parton-dR"], inpt.TopTruthJet_parton["Parton-symbol"]):
@@ -412,42 +362,6 @@ def MergedTopsTruthJets(inpt):
         plt = {}
         plt["Title"] = str(sym)
         plt["xData"] = inpt.NumberOfConstituentsInJet[sym]
-        hist["Histograms"].append(TH1F(**plt))
-    com = CombineTH1F(**hist)
-    com.SaveFigure()
-
-    hist = PlotTemplate(inpt)
-    hist["Title"] = "Reconstructed Invariant Top Mass using the Hadronic \n Decay Topology from Truth Jets"
-    hist["xTitle"] = "Invariant Mass (GeV)"
-    hist["IncludeOverflow"] = True 
-    hist["xStep"] = 20
-    hist["xMax"] = 400
-    hist["xBins"] = 400
-    hist["Filename"] = "Figure_3.2c"
-    hist["Histograms"] = []
- 
-    for sym in inpt.TopsTruthJets:
-        plt = {}
-        plt["Title"] = str(sym) + "-Tops"
-        plt["xData"] = inpt.TopsTruthJets[sym]
-        hist["Histograms"].append(TH1F(**plt))
-    com = CombineTH1F(**hist)
-    com.SaveFigure()
-
-    hist = PlotTemplate(inpt)
-    hist["Title"] = "Reconstructed Invariant Top Mass using the Hadronic \n Decay Topology from Truth Jets \n (A possible bug where No Partons are matched to Truth Jets)"
-    hist["xTitle"] = "Invariant Mass (GeV)"
-    hist["IncludeOverflow"] = True 
-    hist["xStep"] = 20
-    hist["xMax"] = 400
-    hist["xBins"] = 400
-    hist["Filename"] = "Figure_3.3c"
-    hist["Histograms"] = []
- 
-    for sym in inpt.TopsTruthJetsNoPartons:
-        plt = {}
-        plt["Title"] = str(sym) + "-Tops"
-        plt["xData"] = inpt.TopsTruthJetsNoPartons[sym]
         hist["Histograms"].append(TH1F(**plt))
     com = CombineTH1F(**hist)
     com.SaveFigure()

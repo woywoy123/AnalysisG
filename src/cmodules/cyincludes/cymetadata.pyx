@@ -472,7 +472,8 @@ cdef class MetaData:
 
     @crossSection.setter
     def crossSection(self, val: Union[str, float]):
-        self.ptr.container.crossSection = float(val)
+        try: self.ptr.container.crossSection = float(val)
+        except ValueError: self.ptr.container.crossSection = -1
 
     @property
     def crossSection_mean(self) -> float:
@@ -480,7 +481,8 @@ cdef class MetaData:
 
     @crossSection_mean.setter
     def crossSection_mean(self, val: Union[str, float]):
-        self.ptr.container.crossSection_mean = float(val)
+        try: self.ptr.container.crossSection_mean = float(val)
+        except ValueError: self.ptr.container.crossSection_mean = -1
 
     @property
     def totalSize(self) -> float:
