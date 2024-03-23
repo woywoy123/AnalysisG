@@ -169,8 +169,6 @@ def top_truthjet_cluster(ana):
 def truthjet_partons(ana):
     data = ana.truthjet_partons
     maps = ["resonant-leptonic", "resonant-hadronic", "spectator-leptonic", "spectator-hadronic", "background"]
-    names = ["Resonance (Leptonic)", "Resonance (Hadronic)", "Spectator (Leptonic)", "Spectator (Hadronic)"]
-    fig_ = ["g", "h", "i", "j"]
 
     symbolic = {}
     energy = {}
@@ -200,8 +198,8 @@ def truthjet_partons(ana):
     th_p.Filename = "Figure.7.o"
     th_p.xBins = 500
     th_p.xMin  = 0
-    th_p.xMax  = 2.0
-    th_p.xStep = 0.5
+    th_p.xMax  = 0.6
+    th_p.xStep = 0.1
     th_p.yLogarithmic = True
     th_p.SaveFigure()
 
@@ -252,6 +250,121 @@ def truthjet_partons(ana):
     th2.SaveFigure()
 
 
+    names = ["Resonance (Leptonic)", "Resonance (Hadronic)", "Spectator (Leptonic)", "Spectator (Hadronic)"]
+    fig_ = ["r", "s", "t", "u"]
+    for x in range(len(names)):
+        key = maps[x]
+        name = names[x]
+        sett = settings()
+        for sym in data[key]:
+            th_ = TH1F()
+            th_.xData = data[key][sym]["dr"]
+            th_.Title = sym
+            sett["Histograms"].append(th_)
+
+        th_p = TH1F(**sett)
+        th_p.Title = "$\\Delta$R Between the Truth-Jet Axis and Ghost Matched Partons \n for " + name + " Matched Truth Jets"
+        th_p.xTitle = "$\\Delta$R (arb.)"
+        th_p.yTitle = "Entries"
+        th_p.Filename = "Figure.7." + fig_[x]
+        th_p.xBins = 500
+        th_p.xMin  = 0
+        th_p.xMax  = 0.6
+        th_p.xStep = 0.1
+        th_p.yLogarithmic = True
+        th_p.SaveFigure()
+
+def truthjet_contribution(ana):
+    data = ana.truthjets_contribute
+
+    sett = settings_th2f()
+    th2 = TH2F(**sett)
+    th2.Title = "Ghost Parton Energy Ratio as a function of Number of Partons \n For all Truth Jets"
+    th2.xData = data["all"]["n-partons"]
+    th2.yData = data["all"]["energy"]
+    th2.xTitle = "Number of Ghost Matched Partons"
+    th2.yTitle = "Energy Ratio (Truth Jet / Sum Ghost Partons) (arb.)"
+
+    th2.xBins = 20
+    th2.yBins = 500
+
+    th2.xMin = 0
+    th2.xMax = 20
+    th2.xStep = 4
+
+    th2.yMin = 0
+    th2.yMax = 2
+    th2.yStep = 0.2
+
+    th2.Filename = "Figure.7.v"
+    th2.SaveFigure()
+
+
+    sett = settings_th2f()
+    th2 = TH2F(**sett)
+    th2.Title = "Ghost Parton Transverse Momenta Ratio as a function of Number of Partons \n For all Truth Jets"
+    th2.xData = data["all"]["n-partons"]
+    th2.yData = data["all"]["pt"]
+    th2.xTitle = "Number of Ghost Matched Partons"
+    th2.yTitle = "Transverse Momenta Ratio (Truth Jet / Sum Ghost Partons) (arb.)"
+
+    th2.xBins = 20
+    th2.yBins = 500
+
+    th2.xMin = 0
+    th2.xMax = 20
+    th2.xStep = 4
+
+    th2.yMin = 0
+    th2.yMax = 2
+    th2.yStep = 0.2
+
+    th2.Filename = "Figure.7.w"
+    th2.SaveFigure()
+
+
+    sett = settings()
+    for nt in data["n-tops"]:
+        th_ = TH1F()
+        th_.xData = data["n-tops"][nt]["energy_r"]
+        th_.Title = str(nt) + "-Tops"
+        sett["Histograms"].append(th_)
+
+    th_p = TH1F(**sett)
+    th_p.Title = "Energy Ratio of n-Top Contributions to a given Truth-Jet"
+    th_p.xTitle = "Top-Parton Energy Sum / All Top-Parton Energy Sum"
+    th_p.yTitle = "Entries"
+    th_p.Filename = "Figure.7.x"
+    th_p.xBins = 500
+    th_p.xMin  = 0
+    th_p.xMax  = 1
+    th_p.xStep = 0.1
+    th_p.yLogarithmic = True
+    th_p.SaveFigure()
+
+    sett = settings_th2f()
+    th2 = TH2F(**sett)
+    th2.Title = "Truth-Jet Mass as a function of n-Top Contributions"
+    th2.xData = ana.truthjet_mass["n-tops"]
+    th2.yData = ana.truthjet_mass["all"]
+    th2.xTitle = "Number of Tops"
+    th2.yTitle = "Truth-Jet Mass (GeV)"
+
+    th2.xBins = 4
+    th2.yBins = 500
+
+    th2.xMin = 0
+    th2.xStep = 1
+    th2.xMax = 4
+
+    th2.yMin = 0
+    th2.yMax = 100
+    th2.yStep = 10
+
+    th2.Color = "tab20c"
+    th2.Filename = "Figure.7.y"
+    th2.SaveFigure()
+
 
 
 
@@ -259,4 +372,5 @@ def truthjet_partons(ana):
 def TopTruthJets(ana):
 #    top_mass_truthjets(ana)
 #    top_truthjet_cluster(ana)
-    truthjet_partons(ana)
+#    truthjet_partons(ana)
+    truthjet_contribution(ana)

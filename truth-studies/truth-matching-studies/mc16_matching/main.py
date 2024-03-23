@@ -23,7 +23,7 @@ run_analysis = {
         #            "TopMatching"         : studies.top.topmatching.TopMatching,
         #            "ChildrenKinematics"  : studies.children.childrenkinematics.ChildrenKinematics,
         #            "TruthEvent"          : studies.event.TruthEvent,
-        #            "TopTruthJets"           : studies.truthjets.toptruthjets.TopTruthJets,
+        #            "TopTruthJets"         : studies.truthjets.toptruthjets.TopTruthJets,
         #            "AddOnStudies"        : studies.other.AddOnStudies,
 }
 

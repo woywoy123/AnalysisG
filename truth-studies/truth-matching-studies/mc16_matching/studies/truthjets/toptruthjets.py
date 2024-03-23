@@ -29,6 +29,13 @@ class TopTruthJets(SelectionTemplate):
                 "background" : {}
         }
 
+        self.truthjets_contribute = {
+                "all" : {"energy" : [], "pt" : [], "n-partons" : []},
+                "n-tops" : {}
+        }
+
+        self.truthjet_mass = {"all" : [], "n-tops" : []}
+
     def Selection(self, event): return True
 
     def Strategy(self, event):
@@ -100,8 +107,6 @@ class TopTruthJets(SelectionTemplate):
                     self.truthjet_partons[mode][symbol]["truthjet-pt"].append(tj1.pt/1000)
                     self.truthjet_partons[mode][symbol]["truthjet-energy"].append(tj1.e/1000)
 
-
-
         mode = "background"
         for tj in event.TruthJets:
             if len(tj.Tops): continue
@@ -124,4 +129,39 @@ class TopTruthJets(SelectionTemplate):
                 self.truthjet_partons[mode][symbol]["truthjet-pt"].append(tj.pt/1000)
                 self.truthjet_partons[mode][symbol]["truthjet-energy"].append(tj.e/1000)
 
+
+        ####### Ghost Parton Energy constributions ############
+        for tj in event.TruthJets:
+            pt_sum = sum([prt.pt for prt in tj.Parton])
+            if not pt_sum: continue
+            self.truthjets_contribute["all"]["pt"] += [tj.pt/pt_sum]
+            e_sum = sum([prt.e for prt in tj.Parton])
+            self.truthjets_contribute["all"]["energy"] += [tj.e/e_sum]
+            self.truthjets_contribute["all"]["n-partons"] += [len(tj.Parton)]
+            self.truthjet_mass["all"] += [tj.Mass/1000]
+            self.truthjet_mass["n-tops"] += [len(tj.Tops)]
+
+            # This part checks the energy contribution of ghost partons matched to top children
+            # and what happens to the reconstructed top-mass when some low energy contributions are 
+            # removed.
+            alls = []
+            top_maps = {}
+            for prt in tj.Parton:
+                for tc in prt.Parent:
+                    top_ = tc.Parent[0]
+                    if top_ not in top_maps: top_maps[top_] = []
+                    top_maps[top_] += [prt]
+                    alls += [prt]
+                    break
+
+            n_top = len(top_maps)
+            if not n_top: continue
+            if n_top not in self.truthjets_contribute["n-tops"]:
+                self.truthjets_contribute["n-tops"][n_top] = {"energy_r" : []}
+
+            if not len(alls): continue
+            total = sum(set(alls)).e
+            for tx in top_maps:
+                r = sum(set(top_maps[tx])).e/total
+                self.truthjets_contribute["n-tops"][n_top]["energy_r"] += [r]
 

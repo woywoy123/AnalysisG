@@ -158,3 +158,76 @@ Figure 7.q
    A heat-map of the :math:`\Delta R` dependency between the Truth-Jet axis and Ghost Matched Partons as a function of the Ghost Matched Parton's transverse momenta.
    This figure is a decomposition of Figure 7.o, where the underlying distributions are a function of the Ghost Matched Parton transverse momenta.
 
+Figure 7.r
+----------
+.. figure:: ./figures/Figure.7.r.png
+   :align: center
+   :name: Figure.7.r
+
+   A figure depicting the :math:`\Delta R` between the Truth-Jet axis and Ghost matched Partons. 
+   In this figure, only truth-jets matched to a **leptonically decaying resonant top-quark** are being considered.
+
+Figure 7.s
+----------
+.. figure:: ./figures/Figure.7.s.png
+   :align: center
+   :name: Figure.7.s
+
+   A figure depicting the :math:`\Delta R` between the Truth-Jet axis and Ghost matched Partons. 
+   In this figure, only truth-jets matched to a **hadronically decaying resonant top-quark** are being considered.
+
+Figure 7.t
+----------
+.. figure:: ./figures/Figure.7.t.png
+   :align: center
+   :name: Figure.7.t
+
+   A figure depicting the :math:`\Delta R` between the Truth-Jet axis and Ghost matched Partons. 
+   In this figure, only truth-jets matched to a **leptonically decaying spectator top-quark** are being considered.
+
+Figure 7.u
+----------
+.. figure:: ./figures/Figure.7.u.png
+   :align: center
+   :name: Figure.7.u
+
+   A figure depicting the :math:`\Delta R` between the Truth-Jet axis and Ghost matched Partons. 
+   In this figure, only truth-jets matched to a **hadronically decaying spectator top-quark** are being considered.
+
+
+Figure 7.v
+----------
+.. figure:: ./figures/Figure.7.v.png
+   :align: center
+   :name: Figure.7.v
+
+   A figure depicting a heat-map of the energy contribution ratio for ghost partons matched to a given truth-jet as a function of number of ghost partons matched.
+   The ratio is computed by considering the energy of the truth-jet and dividing it by the sum of ghost parton energies.
+
+
+Figure 7.w
+----------
+.. figure:: ./figures/Figure.7.w.png
+   :align: center
+   :name: Figure.7.w
+
+   A figure depicting a heat-map of the transverse momenta contribution ratio for ghost partons matched to a given truth-jet as a function of number of ghost partons matched.
+   The ratio is computed by considering the transverse momenta of the truth-jet and dividing it by the sum of ghost parton transverse momenta.
+
+Figure 7.x
+----------
+.. figure:: ./figures/Figure.7.x.png
+   :align: center
+   :name: Figure.7.x
+
+   A plot depicting the ratio of multi-top energy contributions to a given truth-jet's Ghost Parton collection.
+   To compute this ratio, ghost partons matched to the truth-children of tops are summed per top-quark and divided by the sum of all top-children
+   matched to a given truth-jet.
+
+Figure 7.y
+----------
+.. figure:: ./figures/Figure.7.y.png
+   :align: center
+   :name: Figure.7.y
+
+   A heat-map depicting the observed truth-jet mass as a function of n-Top contributions.
