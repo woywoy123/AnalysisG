@@ -120,7 +120,7 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
         pairs *= nlep[i] == 2
         w1 = torch.zeros_like(self.pmc)[i]
         w2 = torch.zeros_like(self.pmc)[i]
-        if not pairs.sum(-1): return
+        if not pairs.sum(-1): torch.cat([w1, w2], -1)
 
         l1l2 = torch.cat([i[pairs].view(-1, 1), j[pairs].view(-1, 1)], -1)
         b1b2 = torch.cat([i[pairs].view(-1, 1), j[pairs].view(-1, 1)], -1)
@@ -143,13 +143,24 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
         if not dist.size(1): return
         is_sol = nosol == False
 
+        print(dist[is_sol]/dist[is_sol, 0].min(0)[0].view(-1, 1))
+
+
         nu1_, nu2_ = nu1_[:, 0, :][is_sol], nu2_[:, 0, :][is_sol]
-        tmp1 = torch.cat([nu1_, (nu1_.pow(2).sum(-1, keepdim = True)).pow(0.5)], -1) + l1[is_sol]
-        tmp2 = torch.cat([nu2_, (nu2_.pow(2).sum(-1, keepdim = True)).pow(0.5)], -1) + l2[is_sol]
+        tmp1 = torch.cat([nu1_, (nu1_.pow(2).sum(-1, keepdim = True)).pow(0.5)], -1)# + l1[is_sol]
+        tmp2 = torch.cat([nu2_, (nu2_.pow(2).sum(-1, keepdim = True)).pow(0.5)], -1)# + l2[is_sol]
+        edge_prime = self.edge_idx[:, self._index[bx_i[msk][is_sol], lx_i[msk][is_sol]]]
+        matrix = to_dense_adj(edge_prime, edge_attr = (dist[is_sol][:, 0] > 0))[0].to(dtype = torch.float64)
+        matrix[edge_prime[0], edge_prime[1]] *= dist[is_sol][:, 0]
+        print(matrix.softmax(-1) - matrix.softmax(-1))
 
+
+        delta_nu = ((tmp1 + tmp2)[:, :2] - met_xy[is_sol]).pow(2)
         w1[self._index[bx_i[msk][is_sol], lx_i[msk][is_sol]]] = tmp1
-
         w2[self._index[bx_j[msk][is_sol], lx_j[msk][is_sol]]] = tmp2
+        print(w1)
+        exit()
+
         return torch.cat([w1, w2], -1)
 
     def forward(self,
