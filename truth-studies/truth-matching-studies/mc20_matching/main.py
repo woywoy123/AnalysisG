@@ -5,10 +5,10 @@ import plotting
 import studies
 import os
 
-smpls = os.environ["Samples"] + "mc20_13_tttt_m1250"
-run_cache = False
+smpls = "/import/wu1/tnom6927/AnalysisTop/common-framework/run/data" #os.environ["Samples"] + "mc20_13_tttt_m1250"
+run_cache = True
 run_analysis = {
-        #"TruthTops" : studies.truthtop.TruthTops,
+        "TruthTops" : studies.truthtop.TruthTops,
         #"TruthJetMatching" : studies.truthjet.TruthJetMatching
 }
 
@@ -23,7 +23,6 @@ bsm = "UNTITLED"
 if run_cache:
     ana = Analysis()
     ana.Chunks = 1000
-    ana.EventStop = 12000
     ana.ProjectName = bsm
     for j, k in bs.items(): ana.InputSample(j, k)
     ana.EventCache = True

@@ -35,11 +35,11 @@ class SSML_MC20(EventTemplate):
 
         for c in self.PhysicsTruth.values():
             if c.is_photon: continue
-            c.Parent = [tops[x] for x in c.top_index]
+            c.Parent = [tops[x] for x in c.top_index if x > -1]
 
         for c in self.PhysicsDetectors.values():
             if c.is_photon: continue
-            c.Parent = [tops[x] for x in c.top_index]
+            c.Parent = [tops[x] for x in c.top_index if x > -1]
 
         matched = {}
         detectors  = list(self.Jets.values())
