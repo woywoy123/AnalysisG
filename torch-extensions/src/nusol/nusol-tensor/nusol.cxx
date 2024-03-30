@@ -80,7 +80,7 @@ std::tuple<torch::Tensor, torch::Tensor> NuSol::Tensor::Intersection(torch::Tens
     torch::Tensor G11 = G.index({torch::indexing::Slice(), 1, 1}); 
     
     // ----- Numerical Stability part ----- // 
-swp = torch::abs(G00) > torch::abs(G11); 
+    swp = torch::abs(G00) > torch::abs(G11); 
     G.index_put_({swp}, torch::cat({
     			G.index({swp, 1, torch::indexing::Slice()}).view(dim13), 
     			G.index({swp, 0, torch::indexing::Slice()}).view(dim13), 
@@ -103,7 +103,7 @@ swp = torch::abs(G00) > torch::abs(G11);
     torch::Tensor g22_    = (-g22 >  0.) * (G00_G11 == false); 
 
     // 1. ----- Case where the solutions are Horizontal and Vertical ----- //
-torch::Tensor SolG_HV = Tooling::HorizontalVertical(G.index({G00_G11}));
+    torch::Tensor SolG_HV = Tooling::HorizontalVertical(G.index({G00_G11}));
     
     // 2. ------ Case where the solutions are parallel 
     torch::Tensor SolG_Para = Tooling::Parallel(G.index({g22__}), CoF.index({g22__})); 

@@ -144,6 +144,13 @@ namespace pyc
                 torch::Tensor met_xy, 
                 torch::Tensor masses, const double null); 
 
+        std::vector<torch::Tensor> combinatorial(
+                torch::Tensor edge_index, torch::Tensor batch, 
+                torch::Tensor pmc, torch::Tensor pid, 
+                torch::Tensor met_xy, 
+                const double mass_top, const double mass_W, const double mass_nu,
+                const double top_up_down, const double w_up_down, const bool gev, const double null); 
+
         namespace polar
         {
             
@@ -159,13 +166,6 @@ namespace pyc
                         torch::Tensor pmu_mu1, torch::Tensor pmu_mu2, 
                         torch::Tensor met_phi, torch::Tensor masses, 
                         const double null); 
-
-                std::vector<torch::Tensor> NuNuCombinatorial(
-                    torch::Tensor edge_index, torch::Tensor batch, 
-                    torch::Tensor pmu, torch::Tensor pid, 
-                    torch::Tensor met, torch::Tensor met_updown,
-                    torch::Tensor mases, torch::Tensor masses_updown, 
-                    const double step_size, const double null); 
             }
 
             namespace separate

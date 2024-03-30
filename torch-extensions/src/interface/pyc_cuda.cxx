@@ -390,19 +390,24 @@ std::vector<torch::Tensor> pyc::nusol::polar::combined::NuNu(
     }; 
 }
 
-std::vector<torch::Tensor> pyc::nusol::polar::combined::NuNuCombinatorial(
-        torch::Tensor edge_index, torch::Tensor batch, 
-        torch::Tensor pmu, torch::Tensor pid, 
-        torch::Tensor met, torch::Tensor met_updown,
-        torch::Tensor masses, torch::Tensor masses_updown, 
-        const double step_size, const double null)
+std::vector<torch::Tensor> pyc::nusol::combinatorial(
+    torch::Tensor edge_index, torch::Tensor batch, 
+    torch::Tensor pmc, torch::Tensor pid, torch::Tensor met_xy, 
+    const double mass_top, const double mass_W, const double mass_nu,
+    const double top_up_down, const double w_up_down, const bool gev, const double null)
 {
-    std::map<std::string, torch::Tensor> data; 
-    data = NuSol::CUDA::Polar::NuNuCombinatorial(
-            edge_index.clone(), batch.clone(), pmu.clone(), pid.clone(), 
-            met, met_updown.clone(), masses.clone(), masses_updown.clone(), 
-            step_size, null); 
-    return {data["nu1"], data["nu2"], data["masses"]};
+    std::map<std::string, torch::Tensor> out;
+    float scale = (gev) ? 1.0/1000.0 : 1.0; 
+    out = NuSol::CUDA::combinatorial(
+            edge_index, batch, pmc*scale, pid, met_xy*scale, 
+            mass_top*scale, mass_W*scale, mass_nu*scale, 
+            top_up_down, w_up_down, null
+    ); 
+
+    std::vector<torch::Tensor> output; 
+    std::map<std::string, torch::Tensor>::iterator itr; 
+    for (itr = out.begin(); itr != out.end(); ++itr){output.push_back(itr -> second); }
+    return output; 
 }
 
 std::vector<torch::Tensor> pyc::nusol::polar::separate::NuNu(
@@ -673,7 +678,7 @@ TORCH_LIBRARY(pyc_cuda, m)
 
     m.def("nusol_NuNu", &pyc::nusol::NuNu); 
     m.def("nusol_combined_polar_NuNu", &pyc::nusol::polar::combined::NuNu); 
-    m.def("nusol_combined_polar_NuNuCombinatorial", &pyc::nusol::polar::combined::NuNuCombinatorial); 
+    m.def("combinatorial", &pyc::nusol::combinatorial); 
 
     m.def("nusol_separate_polar_NuNu", &pyc::nusol::polar::separate::NuNu); 
     m.def("nusol_combined_cartesian_NuNu", &pyc::nusol::cartesian::combined::NuNu); 

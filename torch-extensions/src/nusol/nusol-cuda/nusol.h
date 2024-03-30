@@ -83,10 +83,12 @@ std::map<std::string, torch::Tensor> _NuNuCart(
 
         torch::Tensor metx, torch::Tensor mety, torch::Tensor masses, const double null); 
 
-std::map<std::string, torch::Tensor> _NuNuCombinatorialPolar(
-        torch::Tensor edge_index, torch::Tensor batch, torch::Tensor pmu, torch::Tensor pid, 
-        torch::Tensor met, torch::Tensor met_updown, torch::Tensor masses, torch::Tensor masses_updown, 
-        const double step_size, const double null); 
+std::map<std::string, torch::Tensor> _CombinatorialCartesian(
+        torch::Tensor edge_index, torch::Tensor batch, 
+        torch::Tensor pmc, torch::Tensor pid, torch::Tensor met_xy, 
+        const double mass_top_l, const double mass_top_u, const double mass_w_l, const double mass_w_u, 
+        const double mass_nu, const double null
+); 
 
 namespace NuSol
 {
@@ -160,6 +162,29 @@ namespace NuSol
             return output;
         }
 
+        inline std::map<std::string, torch::Tensor> combinatorial(
+                torch::Tensor edge_index, torch::Tensor batch, 
+                torch::Tensor pmc, torch::Tensor pid, torch::Tensor met_xy, 
+                const double mass_top, const double mass_W, const double mass_nu,
+                const double top_up_down, const double w_up_down, const double null)
+        {
+            const auto current_device = c10::cuda::current_device();
+            c10::cuda::set_device(pmc.get_device()); 
+            const double mass_top_l = mass_top*top_up_down; 
+            const double mass_top_u = mass_top*(1 + (1-top_up_down)); 
+
+            const double mass_w_l = mass_W*w_up_down; 
+            const double mass_w_u = mass_W*(1 + (1-w_up_down)); 
+
+            std::map<std::string, torch::Tensor> output = _CombinatorialCartesian(
+                edge_index, batch, pmc, pid, met_xy, 
+                mass_top_l, mass_top_u, mass_w_l, mass_w_u, mass_nu, null
+            );
+
+            c10::cuda::set_device(current_device);
+            return output;
+        }
+
         namespace Polar
         {
             inline std::map<std::string, torch::Tensor> Nu(
@@ -225,23 +250,6 @@ namespace NuSol
                         pt_b1,  eta_b1,  phi_b1,  e_b1 , pt_b2,  eta_b2,  phi_b2,  e_b2, 
                         pt_mu1, eta_mu1, phi_mu1, e_mu1, pt_mu2, eta_mu2, phi_mu2, e_mu2, 
                         met, phi, masses, null);
-                c10::cuda::set_device(current_device);
-                return output;
-            }
-
-            inline std::map<std::string, torch::Tensor> NuNuCombinatorial(
-                    torch::Tensor edge_index, torch::Tensor batch, 
-                    torch::Tensor pmu, torch::Tensor pid, 
-                    torch::Tensor met, torch::Tensor met_updown,
-                    torch::Tensor masses, torch::Tensor masses_updown, 
-                    const double step_size, const double null)
-            {
-                const auto current_device = c10::cuda::current_device();
-                c10::cuda::set_device(pmu.get_device()); 
-                std::map<std::string, torch::Tensor> output = _NuNuCombinatorialPolar(
-                        edge_index, batch, pmu, pid, 
-                        met, met_updown, masses, masses_updown,
-                        step_size, null); 
                 c10::cuda::set_device(current_device);
                 return output;
             }

@@ -398,8 +398,7 @@ std::tuple<torch::Tensor, torch::Tensor> _Intersection(torch::Tensor A, torch::T
     })); 
 
     torch::Tensor diag = torch::pow(O.sum({-1}), 2) + torch::pow(L.sum({-1}), 2); 
-    torch::Tensor id   = std::get<1>(diag.sort(-1, false)); 
-    
+    torch::Tensor id   = std::get<1>(torch::log(diag).sort(-1, false)); 
     torch::Tensor diag_sol = torch::zeros({dim_i, dim_eig*2, 3   }, op); 
     torch::Tensor sols_vec = torch::zeros({dim_i, dim_eig*2, 3, 3}, op); 
 
@@ -540,152 +539,13 @@ std::map<std::string, torch::Tensor> _Nu(
 std::map<std::string, torch::Tensor> _NuNu(
                 torch::Tensor pmc_b1, torch::Tensor pmc_b2, 
                 torch::Tensor pmc_l1, torch::Tensor pmc_l2,
-                torch::Tensor met_xy, torch::Tensor masses, 
-                const double null)
-{
-    std::tuple<torch::Tensor, torch::Tensor> X;
-    std::map<std::string, torch::Tensor> output; 
-    const torch::TensorOptions op = _MakeOp(masses); 
-    const unsigned int threads = 1024;
-    const unsigned int dim_j = 3;  
-    const unsigned int dim_i = pmc_b1.size(0); 
-    const dim3 blk   = BLOCKS(threads, dim_i, dim_j, 2); 
-    const dim3 blk_  = BLOCKS(threads, dim_i,    27, 2);   
-    const dim3 blk_d = BLOCKS(threads, dim_i,     9, 2); 
-
-    torch::Tensor H1 = _Base_Matrix_H(pmc_b1, pmc_l1, masses); 
-    torch::Tensor H2 = _Base_Matrix_H(pmc_b2, pmc_l2, masses); 
-
-    torch::Tensor circl = _Shape_Matrix(H1, {1, 1, -1}); 
-    torch::Tensor H_perp_1 = H1.clone(); 
-    torch::Tensor H_perp_2 = H2.clone(); 
-
-    torch::Tensor N1 = torch::zeros({dim_i, dim_j, dim_j, dim_j}, op); 
-    torch::Tensor N2 = torch::zeros({dim_i, dim_j, dim_j, dim_j}, op); 
-
-    AT_DISPATCH_FLOATING_TYPES(H1.scalar_type(), "H_perp", ([&]
-    {
-        _H_perp_K<scalar_t><<< blk, threads >>>(
-            H_perp_1.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-            H_perp_2.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-            dim_i, dim_j, 2); 
-    })); 
-
-    torch::Tensor H_inv_1 = Operators::CUDA::Inverse(H_perp_1); 
-    torch::Tensor H_inv_2 = Operators::CUDA::Inverse(H_perp_2);
-
-    AT_DISPATCH_FLOATING_TYPES(H1.scalar_type(), "YT_DOT_X_DOTY", ([&]
-    {
-        _YT_dot_X_dot_Y<scalar_t><<< blk_, threads >>>(
-            N1.packed_accessor64<scalar_t, 4, torch::RestrictPtrTraits>(), 
-            N2.packed_accessor64<scalar_t, 4, torch::RestrictPtrTraits>(), 
-
-       H_inv_1.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-         circl.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-
-       H_inv_2.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-         circl.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-            dim_i, dim_j, 2); 
-    })); 
-    
-    N1 = N1.sum(-1); 
-    N2 = N2.sum(-1); 
-     
-    X = _DotMatrix(met_xy, circl, N2); 
-    torch::Tensor n_ = std::get<0>(X); 
-    torch::Tensor S  = std::get<1>(X); 
-    
-    X = _Intersection(N1, n_, null);
-    const unsigned int dim_eig = std::get<0>(X).size(1);
-    std::vector<signed long> dims = {dim_i, dim_eig*3, dim_j}; 
-
-    torch::Tensor sol  = std::get<0>(X); 
-    torch::Tensor diag = std::get<1>(X).view({dim_i, -1});
-    torch::Tensor id   = std::get<1>(diag.sort(-1, false)); 
-    
-    torch::Tensor v    = torch::zeros(dims, op);
-    torch::Tensor v_   = torch::zeros(dims, op);
-
-    torch::Tensor nu   = torch::zeros(dims, op); 
-    torch::Tensor nu_  = torch::zeros(dims, op); 
-    torch::Tensor dnu  = torch::zeros({dim_i, dim_eig*3}, op); 
-
-    torch::Tensor K1   = torch::zeros({dim_i, dim_j, dim_j}, op);
-    torch::Tensor K2   = torch::zeros({dim_i, dim_j, dim_j}, op);
-   
-    const dim3 blk__ = BLOCKS(threads, dim_i, dims[1], 6);   
-    AT_DISPATCH_FLOATING_TYPES(N1.scalar_type(), "DOTS", ([&]
-    {
-        _DotK<scalar_t><<< blk__, threads >>>(
-             v.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-            v_.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-
-             S.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),  
-           sol.packed_accessor64<scalar_t, 4, torch::RestrictPtrTraits>(), 
-            dim_i, dims[1], 6); 
-
-        _K_Kern<scalar_t><<< blk_d, threads >>>(
-            K1.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-            K2.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-
-            H1.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-       H_inv_1.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-
-            H2.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-       H_inv_2.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-            dim_i, 9, 2); 
-
-        _NuNuK<scalar_t><<< blk__, threads >>>(
-            nu.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-           nu_.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-           dnu.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
-
-            K1.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-            K2.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-
-             v.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-            v_.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-
-            id.packed_accessor32<long    , 2, torch::RestrictPtrTraits>(), 
-          diag.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
-            dim_i, dims[1], 6); 
-    })); 
-   
-    torch::Tensor none = (nu.sum(-1) != 0).sum(-1);  
-    int max_len = torch::max(none).item<int>(); 
-    output["NuVec_1"] = nu.index({
-            torch::indexing::Slice(), 
-            torch::indexing::Slice(0, max_len), 
-            torch::indexing::Slice()
-    }); 
-
-    output["NuVec_2"] = nu_.index({
-            torch::indexing::Slice(), 
-            torch::indexing::Slice(0, max_len), 
-            torch::indexing::Slice()
-    }); 
-
-    output["diagonal"] = dnu.index({
-            torch::indexing::Slice(), 
-            torch::indexing::Slice(0, max_len)
-    });   
-    
-    output["n_"] = n_; 
-    output["H_perp_1"] = H_perp_1; 
-    output["H_perp_2"] = H_perp_2;
-    output["NoSols"] = none == 0;   
-    return output; 
-}
-
-std::map<std::string, torch::Tensor> _NuNu(
-                torch::Tensor pmc_b1, torch::Tensor pmc_b2, torch::Tensor pmc_l1, torch::Tensor pmc_l2,
-                torch::Tensor mass_t1, torch::Tensor mass_t2, torch::Tensor mass_w1, torch::Tensor mass_w2,
+                torch::Tensor masses1, torch::Tensor masses2,
                 torch::Tensor met_xy, 
                 const double null)
 {
     std::tuple<torch::Tensor, torch::Tensor> X;
     std::map<std::string, torch::Tensor> output; 
-    const torch::TensorOptions op = _MakeOp(mass_w1); 
+    const torch::TensorOptions op = _MakeOp(masses1); 
     const unsigned int threads = 1024;
     const unsigned int dim_j = 3;  
     const unsigned int dim_i = pmc_b1.size(0); 
@@ -693,11 +553,8 @@ std::map<std::string, torch::Tensor> _NuNu(
     const dim3 blk_  = BLOCKS(threads, dim_i,    27, 2);   
     const dim3 blk_d = BLOCKS(threads, dim_i,     9, 2); 
 
-    torch::Tensor mass_1 = torch::cat({mass_w1, mass_t1, torch::zeros_like(mass_w1)}, -1).to(op.requires_grad(false));
-    torch::Tensor mass_2 = torch::cat({mass_w2, mass_t2, torch::zeros_like(mass_w2)}, -1).to(op.requires_grad(false));
-
-    torch::Tensor H1 = _Base_Matrix_H(pmc_b1, pmc_l1, mass_1); 
-    torch::Tensor H2 = _Base_Matrix_H(pmc_b2, pmc_l2, mass_2); 
+    torch::Tensor H1 = _Base_Matrix_H(pmc_b1, pmc_l1, masses1); 
+    torch::Tensor H2 = _Base_Matrix_H(pmc_b2, pmc_l2, masses2); 
 
     torch::Tensor circl = _Shape_Matrix(H1, {1, 1, -1}); 
     torch::Tensor H_perp_1 = H1.clone(); 
@@ -744,7 +601,7 @@ std::map<std::string, torch::Tensor> _NuNu(
 
     torch::Tensor sol  = std::get<0>(X); 
     torch::Tensor diag = std::get<1>(X).view({dim_i, -1});
-    torch::Tensor id   = std::get<1>(diag.sort(-1, false)); 
+    torch::Tensor id   = std::get<1>(torch::log(diag).sort(-1, false)); 
     
     torch::Tensor v    = torch::zeros(dims, op);
     torch::Tensor v_   = torch::zeros(dims, op);
@@ -796,6 +653,7 @@ std::map<std::string, torch::Tensor> _NuNu(
    
     torch::Tensor none = (nu.sum(-1) != 0).sum(-1);  
     int max_len = torch::max(none).item<int>(); 
+    if (!max_len){max_len = 1;}
     output["NuVec_1"] = nu.index({
             torch::indexing::Slice(), 
             torch::indexing::Slice(0, max_len), 
@@ -820,109 +678,186 @@ std::map<std::string, torch::Tensor> _NuNu(
     return output; 
 }
 
-std::map<std::string, torch::Tensor> _NuNuCombinatorial(
-        torch::Tensor edge_index, torch::Tensor batch, torch::Tensor pmc, torch::Tensor pid, 
-        torch::Tensor met_xy, torch::Tensor met_updown, torch::Tensor mass_nom, torch::Tensor mass_updown, 
-        const double step_size, const double null)       
+
+
+void _MassMatrix(
+        const double mtop_l, const double mtop_u, 
+        const double mw_l, const double mw_u, 
+        torch::Tensor masses, const float steps)
 {
-    const torch::TensorOptions op = _MakeOp(edge_index).dtype(torch::kDouble); 
+    const float step_t = (mtop_u - mtop_l)/steps; 
+    const float step_w = (mw_u - mw_l)/steps; 
     const unsigned int threads = 1024; 
-    const unsigned int dim_i = edge_index.size(1);
-    const dim3 blk = BLOCKS(threads, dim_i, dim_i); 
-    const dim3 blk_ = BLOCKS(threads, dim_i, 4, 4); 
+    const dim3 blk = BLOCKS(threads, (int)steps, 2); 
 
-    torch::Tensor pid_ = pid.to(torch::kDouble).contiguous(); 
-    torch::Tensor batch_ = batch.to(torch::kDouble).contiguous();
+    AT_DISPATCH_ALL_TYPES(masses.scalar_type(), "masses", ([&]{
+        _MassKernel<scalar_t><<< blk, threads >>>(
+                masses.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+                mtop_l, step_t, mw_l, step_w, (int)steps
+        ); 
+    })); 
+}
 
-    torch::Tensor pmc_b1 = torch::zeros({dim_i, 4}, op); 
-    torch::Tensor pmc_l1 = torch::zeros({dim_i, 4}, op); 
+torch::Tensor _create_event_nlep(torch::Tensor edge_idx, torch::Tensor pid)
+{
+    const unsigned int threads = 1024; 
+    const unsigned int nodes = pid.size(0); 
+    torch::Tensor maps = torch::zeros({nodes, nodes}, _MakeOp(pid)); 
+    const dim3 blk = BLOCKS(threads, nodes, nodes);  
+    AT_DISPATCH_ALL_TYPES(edge_idx.scalar_type(), "n-leps", ([&]{
+        _lep_map<scalar_t><<< blk, threads >>>(
+                maps.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+                 pid.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+            edge_idx.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+                nodes
+        ); 
+    })); 
+    maps = maps.sum({-1}, true); 
+    return torch::cat({pid, maps}, -1); 
+}
 
-    torch::Tensor pmc_b2 = torch::zeros({dim_i, 4}, op); 
-    torch::Tensor pmc_l2 = torch::zeros({dim_i, 4}, op); 
+std::vector<torch::Tensor> _create_mapping(torch::Tensor edge_idx, torch::Tensor pid, torch::Tensor batch)
+{
+    const unsigned int threads = 1024; 
+    const unsigned int idx_s = edge_idx.size(1);
+    const dim3 blk = BLOCKS(threads, idx_s, idx_s);
+    torch::Tensor llbb_nu = torch::zeros({idx_s*idx_s, 6}, _MakeOp(pid)); 
+    batch = batch.to(_MakeOp(pid)); 
 
-    torch::Tensor edge_idx = (-1)*torch::ones({dim_i}, op); 
-    torch::Tensor batch_idx = (-1)*torch::ones({dim_i}, op);    
-    torch::Tensor l1l2_b1b2 = (-1)*torch::ones({dim_i, 4}, op);
-    torch::Tensor edge_ = torch::transpose(edge_index, 0, 1).to(torch::kDouble).contiguous();
-    
-    AT_DISPATCH_FLOATING_TYPES(edge_.scalar_type(), "msknunu", ([&]
-    {
-        _NuNuMask<scalar_t><<< blk, threads >>>(
-            l1l2_b1b2.packed_accessor64<double, 2, torch::RestrictPtrTraits>(),                 
-             edge_idx.packed_accessor64<double, 1, torch::RestrictPtrTraits>(), 
-                edge_.packed_accessor64<double, 2, torch::RestrictPtrTraits>(),
-                 pid_.packed_accessor64<double, 2, torch::RestrictPtrTraits>(), 
-            dim_i); 
-
-        _NuNuPopulate<scalar_t><<< blk_, threads >>>(
-                pmc_b1.packed_accessor64<double, 2, torch::RestrictPtrTraits>(),
-                pmc_b2.packed_accessor64<double, 2, torch::RestrictPtrTraits>(),
-                pmc_l1.packed_accessor64<double, 2, torch::RestrictPtrTraits>(),
-                pmc_l2.packed_accessor64<double, 2, torch::RestrictPtrTraits>(),
-             batch_idx.packed_accessor64<double, 1, torch::RestrictPtrTraits>(),
-
-                   pmc.packed_accessor64<double, 2, torch::RestrictPtrTraits>(),
-                batch_.packed_accessor64<double, 1, torch::RestrictPtrTraits>(),
-             l1l2_b1b2.packed_accessor64<double, 2, torch::RestrictPtrTraits>(),                 
-              edge_idx.packed_accessor64<double, 1, torch::RestrictPtrTraits>(), 
-                dim_i, 4, 4);       
+    AT_DISPATCH_ALL_TYPES(pid.scalar_type(), "mapping", ([&]{
+        _MappingKernel<scalar_t><<<blk, threads>>>(
+                 llbb_nu.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+                   batch.packed_accessor64<scalar_t, 1, torch::RestrictPtrTraits>(), 
+                edge_idx.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+                     pid.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+                    idx_s
+        ); 
     })); 
 
+    torch::Tensor msk_nu    = llbb_nu.index({torch::indexing::Slice(), 4}) >= 1; 
+    torch::Tensor msk_nunu  = llbb_nu.index({torch::indexing::Slice(), 5}) >= 1; 
+    torch::Tensor pair_nu   = llbb_nu.index({msk_nu}); 
+    torch::Tensor pair_nunu = llbb_nu.index({msk_nunu}); 
+    return {pair_nu, pair_nunu}; 
+}
 
-    torch::Tensor msk = edge_idx > -1;
-    torch::Tensor edge_idx_ = edge_idx.index({msk}).contiguous(); 
-    torch::Tensor batch_idx_ = batch_idx.index({msk}).contiguous().to(torch::kLong);
+std::vector<torch::Tensor> _viable_solutions(
+        torch::Tensor pairs, torch::Tensor mass_matrix, 
+        torch::Tensor pmc, torch::Tensor t_met_xy, torch::Tensor batch,
+        const double null)
+{
+    const unsigned int threads = 1024;
+    const unsigned int lx = pairs.size(0); 
+    const unsigned int ly = mass_matrix.size(0); 
+    const unsigned int lz = 4*4 + 3;  
+    const unsigned int len_i = ly*ly; 
+    torch::Tensor met_xy = t_met_xy.index({batch});  
 
-    pmc_b1 = pmc_b1.index({msk}).clone(); 
-    pmc_l1 = pmc_l1.index({msk}).clone(); 
+    torch::Tensor pmc_b1 = torch::zeros({lx, len_i, 4}, _MakeOp(pmc));
+    torch::Tensor pmc_b2 = torch::zeros({lx, len_i, 4}, _MakeOp(pmc));
 
-    pmc_b2 = pmc_b2.index({msk}).clone(); 
-    pmc_l2 = pmc_l2.index({msk}).clone(); 
+    torch::Tensor pmc_l1 = torch::zeros({lx, len_i, 4}, _MakeOp(pmc));
+    torch::Tensor pmc_l2 = torch::zeros({lx, len_i, 4}, _MakeOp(pmc));
+    torch::Tensor pair_i = torch::zeros({lx, len_i, 4}, _MakeOp(pairs)); 
 
-    torch::Tensor _nu1 = torch::zeros_like(pmc_l1).index({torch::indexing::Slice(), torch::indexing::Slice(torch::indexing::None, 3)}); 
-    torch::Tensor _nu2 = torch::zeros_like(pmc_l1).index({torch::indexing::Slice(), torch::indexing::Slice(torch::indexing::None, 3)}); 
+    torch::Tensor mass_m1 = torch::zeros({lx, len_i, 3}, _MakeOp(pmc));
+    torch::Tensor mass_m2 = torch::zeros({lx, len_i, 3}, _MakeOp(pmc));
+    torch::Tensor met_xy_ = torch::zeros({lx, len_i, 2}, _MakeOp(pmc)); 
 
-    std::map<std::string, torch::Tensor> output;
-    torch::Tensor mass_t1 = torch::ones({edge_idx_.size(0), 1}, torch::TensorOptions().dtype(pmc_l1.dtype()).device(pmc_l1.device()).requires_grad(true)); 
-    torch::Tensor mass_w1 = torch::ones({edge_idx_.size(0), 1}, torch::TensorOptions().dtype(pmc_l1.dtype()).device(pmc_l1.device()).requires_grad(true)); 
+    const dim3 blk = BLOCKS(threads, lx, len_i, lz); 
+    AT_DISPATCH_ALL_TYPES(pmc.scalar_type(), "assigns", ([&]{
+        _assignment_kernel<scalar_t><<<blk, threads>>>(
+                 pmc_b1.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+                 pmc_b2.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
 
-    torch::Tensor mass_t2 = torch::ones({edge_idx_.size(0), 1}, torch::TensorOptions().dtype(pmc_l1.dtype()).device(pmc_l1.device()).requires_grad(true)); 
-    torch::Tensor mass_w2 = torch::ones({edge_idx_.size(0), 1}, torch::TensorOptions().dtype(pmc_l1.dtype()).device(pmc_l1.device()).requires_grad(true)); 
+                 pmc_l1.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+                 pmc_l2.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
 
-    torch::Tensor met_xy_m = met_xy.index({batch_idx_}).view({-1, 1, 2}); 
-    torch::Tensor met_null = torch::zeros_like(met_xy_m); 
-    torch::Tensor mass_ = torch::zeros_like(pmc_l1); 
+                 pair_i.packed_accessor64<long    , 3, torch::RestrictPtrTraits>(),
+                mass_m1.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+                mass_m2.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+                met_xy_.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
 
-    torch::optim::AdamOptions set(0.5); 
-    torch::optim::Adam opti({mass_t1, mass_t2, mass_w1, mass_w2}, set); 
+                 met_xy.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+            mass_matrix.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+                    pmc.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+                  pairs.packed_accessor64<long    , 2, torch::RestrictPtrTraits>(),
+                    lx, ly, lz
+        );
+    })); 
 
-    for (int i(0); i < 10; ++i){
-        std::map<std::string, torch::Tensor> res = _NuNu(pmc_b1, pmc_b2, pmc_l1, pmc_l2, mass_t1*172.62, mass_t2*172.62, mass_w1*80.385, mass_w2*80.385, met_xy_m, null); 
-        torch::Tensor is_sol = res["NoSols"] != false; 
-        torch::Tensor nu1_v = res["NuVec_1"].index({torch::indexing::Slice(), 0});
-        torch::Tensor nu2_v = res["NuVec_2"].index({torch::indexing::Slice(), 0});
+    torch::Tensor dia_sol_o = torch::ones({lx, len_i}, _MakeOp(mass_m1))*-1; 
+    torch::Tensor nu_1 = torch::zeros({lx, len_i, 4}, _MakeOp(mass_m1)); 
+    torch::Tensor nu_2 = torch::zeros({lx, len_i, 4}, _MakeOp(mass_m2)); 
 
-        torch::Tensor met_;
-        met_  = nu1_v.index({torch::indexing::Slice(), torch::indexing::Slice(torch::indexing::None, 2)}).view({-1, 1, 2});
-        met_ += nu2_v.index({torch::indexing::Slice(), torch::indexing::Slice(torch::indexing::None, 2)}).view({-1, 1, 2});
-        met_ -= met_xy_m; 
-       
-        std::cout << met_ << std::endl;
-//        opti.zero_grad(); 
-        torch::Tensor loss = torch::nn::functional::mse_loss(met_, met_null);
-        std::cout << loss << std::endl; 
-//        loss.backward();
-//        opti.step(); 
+    const dim3 blk_ = BLOCKS(threads, ly, ly, 5); 
+    for (unsigned int x(0); x < lx; ++x){ 
+        std::map<std::string, torch::Tensor> nus;
+        nus = _NuNu(pmc_b1[x], pmc_b2[x], pmc_l1[x], pmc_l2[x], mass_m1[x], mass_m2[x], met_xy_[x], null); 
+        torch::Tensor nu1 = nus["NuVec_1"]; 
+        torch::Tensor nu2 = nus["NuVec_2"]; 
+        torch::Tensor dia = nus["diagonal"]; 
+        torch::Tensor noS = nus["NoSols"]; 
+        AT_DISPATCH_ALL_TYPES(pmc.scalar_type(), "builder", ([&]{
+            _builder_nunu<scalar_t><<<blk_, threads>>>(
+               dia_sol_o.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+                    nu_1.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+                    nu_2.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
 
-        _nu1.index_put_({is_sol}, nu1_v.index({is_sol})); 
-        _nu2.index_put_({is_sol}, nu2_v.index({is_sol})); 
+                    noS.packed_accessor64<bool    , 1, torch::RestrictPtrTraits>(),
+                    dia.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+                    nu1.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                    nu2.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                    x, ly, 5); 
+        })); 
+    }
+    
+    torch::Tensor dia_min_comb = -1*torch::ones({t_met_xy.size(0), len_i}, _MakeOp(dia_sol_o));  
+    torch::Tensor dia_min_mass = -1*torch::ones({t_met_xy.size(0), lx   }, _MakeOp(dia_sol_o)); 
+    const dim3 blk_x = BLOCKS(threads, lx*len_i); 
+    AT_DISPATCH_ALL_TYPES(pmc.scalar_type(), "finder", ([&]{
+        _min_finder<scalar_t><<<blk_x, threads>>>(
+                dia_min_mass.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+                dia_min_comb.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+                      pair_i.packed_accessor64<long    , 3, torch::RestrictPtrTraits>(),
+                       batch.packed_accessor64<long    , 1, torch::RestrictPtrTraits>(),
+                   dia_sol_o.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+                    lx, len_i);  
+    })); 
 
-        mass_.index_put_({is_sol}, torch::cat({mass_t1*172.62, mass_t2*172.62, mass_w1*80.385, mass_w2*80.385}, -1).index({is_sol})); 
-    } 
-    output["nu1"] = _nu1; 
-    output["nu2"] = _nu2;  
-    output["masses"] = mass_; 
-    return output; 
+    torch::Tensor optimal = torch::cat({dia_min_comb, dia_min_mass}, -1); 
+    optimal.index_put_({optimal < 0}, 1); 
+
+    torch::Tensor min_ = std::get<0>(optimal.min({-1})); 
+    torch::Tensor nu_1f = torch::zeros({t_met_xy.size(0), 4}, _MakeOp(pmc)); 
+    torch::Tensor ms_1f = torch::zeros({t_met_xy.size(0), 3}, _MakeOp(pmc)); 
+
+    torch::Tensor nu_2f = torch::zeros({t_met_xy.size(0), 4}, _MakeOp(pmc)); 
+    torch::Tensor ms_2f = torch::zeros({t_met_xy.size(0), 3}, _MakeOp(pmc)); 
+  
+    torch::Tensor combi = torch::zeros({t_met_xy.size(0), 4}, _MakeOp(pair_i)); 
+
+    const dim3 blk_o = BLOCKS(threads, lx, len_i, 4); 
+    AT_DISPATCH_ALL_TYPES(pmc.scalar_type(), "populate", ([&]{
+        _populate<scalar_t><<<blk_o, threads>>>(
+            nu_1f.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+            ms_1f.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+            nu_2f.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+            ms_2f.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+            combi.packed_accessor64<long    , 2, torch::RestrictPtrTraits>(),
+
+            nu_1.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+         mass_m1.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+            nu_2.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+         mass_m2.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+          pair_i.packed_accessor64<long    , 3, torch::RestrictPtrTraits>(),
+
+       dia_sol_o.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+            min_.packed_accessor64<scalar_t, 1, torch::RestrictPtrTraits>(),
+           batch.packed_accessor64<long    , 1, torch::RestrictPtrTraits>(),
+           lx, ly, 4); 
+    })); 
+    return {nu_1f, nu_2f, ms_1f, ms_2f, combi, min_.view({-1, 1})}; 
 }
 
 
@@ -976,6 +911,18 @@ std::map<std::string, torch::Tensor> _NuCart(
     
     return _Nu(pmc_b, pmc_mu, met_, masses, sigma, null);
 }
+
+
+std::map<std::string, torch::Tensor> _NuNu(
+                torch::Tensor pmc_b1, torch::Tensor pmc_b2, 
+                torch::Tensor pmc_l1, torch::Tensor pmc_l2,
+                torch::Tensor met_xy, torch::Tensor masses, 
+                const double null)
+{
+    return _NuNu(pmc_b1, pmc_b2, pmc_l1, pmc_l2, masses, masses, met_xy, null); 
+}
+
+
 
 std::map<std::string, torch::Tensor> _NuNuPolar(
         torch::Tensor pmu_b1 , torch::Tensor pmu_b2, 
@@ -1040,14 +987,29 @@ std::map<std::string, torch::Tensor> _NuNuCart(
 }
 
 
-std::map<std::string, torch::Tensor> _NuNuCombinatorialPolar(
-        torch::Tensor edge_index, torch::Tensor batch, torch::Tensor pmu, torch::Tensor pid, 
-        torch::Tensor met, torch::Tensor met_updown, torch::Tensor masses, torch::Tensor masses_updown, 
-        const double step_size, const double null)
+std::map<std::string, torch::Tensor> _CombinatorialCartesian(
+        torch::Tensor edge_index, torch::Tensor batch, 
+        torch::Tensor pmc, torch::Tensor pid, torch::Tensor met_xy, 
+        const double mass_top_l, const double mass_top_u, const double mass_w_l, const double mass_w_u, 
+        const double mass_nu, const double null)
 {
-    torch::Tensor pmc = Transform::CUDA::PxPyPzE(pmu); 
-    torch::Tensor met_xy = std::map<std::string, torch::Tensor>(_convert(met))["met_xy"]; 
-    return _NuNuCombinatorial(edge_index, batch, pmc, pid, met_xy, met_updown, masses, masses_updown, step_size, null); 
+    int steps = 50;
+    torch::Tensor mass_matrix = torch::zeros({steps, 3}, _MakeOp(met_xy)); 
+    _MassMatrix(mass_top_l, mass_top_u, mass_w_l, mass_w_u, mass_matrix, steps); 
+
+    pid = pid.to(_MakeOp(edge_index)); 
+    pid = _create_event_nlep(edge_index, pid); 
+    std::vector<torch::Tensor> nus = _create_mapping(edge_index, pid, batch); 
+    torch::Tensor pair_nu   = nus[0]; 
+    torch::Tensor pair_nunu = nus[1]; 
+  
+    std::vector<torch::Tensor> res = _viable_solutions(pair_nunu, mass_matrix, pmc, met_xy, batch, null);  
+
+    return {
+        {"nu_1f", res[0]}, {"nu_2f", res[1]}, 
+        {"ms_1f", res[2]}, {"ms_2f", res[3]}, 
+        {"combi", res[4]}, {"min"  , res[5]}
+    }; 
 }
 
 #endif

@@ -430,15 +430,13 @@ __global__ void _intersectionK(
    
     const c10::complex<double> v_ = V[idx][idy_][idy3m][idz];
     const c10::complex<double> vy = V[idx][idy_][idy3m][2]; 
-    if (vy.real() * v_.real() == 0)
-    {
+    if (vy.real() * v_.real() == 0){
         eig_ellipse[idx][idy3][idy3m][idz] = 100; 
         eig_line[idx][idy3][idy3m][idz] = 100; 
         return; 
     }
 
-    for (unsigned int x(0); x < 3; ++x)
-    {
+    for (unsigned int x(0); x < 3; ++x){
         const c10::complex<double> v = V[idx][idy_][idy3m][x];
         eig_ellipse[idx][idy3][idy3m][idz] += _mul_ij(A[idx][idz][x], v.real()); 
     }
@@ -467,11 +465,8 @@ __global__ void _SolsK(
     const unsigned int idz3m = idz%3;   
 
     const unsigned int trgt = id[idx][idy][idz3]; 
-    if (idz3m == 0)
-    {
-        diag_i[idx][idy][idz3] = diag[idx][idy][trgt]; 
-    }
-    if (diag[idx][idy][trgt] >= null){ return; }
+    if (idz3m == 0){diag_i[idx][idy][idz3] = diag[idx][idy][trgt];}
+    if (log10f(diag[idx][idy][trgt]) >= log10f(null)){ return; }
     sols_vec[idx][idy][idz3][idz3m] = vecs[idx][idy][trgt][idz3m]; 
 }
 
@@ -492,15 +487,13 @@ __global__ void _Y_dot_X_dot_Y(
     const unsigned int idz3m = idz%3;
     const unsigned int idy_ = 3*idy + idz3; 
 
-    if (sols_vec[idx][idy][idz3][idz3m] == 0)
-    {
+    if (sols_vec[idx][idy][idz3][idz3m] == 0){
         s_out[idx][idy_][idz3m] = -1; 
         return; 
     }
 
     double coef = 0; 
-    for (unsigned int x(0); x < 3; ++x)
-    {
+    for (unsigned int x(0); x < 3; ++x){
         coef += _mul_ij(sols_vec[idx][idy][idz3][x], X[idx][x][idz3m]);
     }
     s_out[idx][idy_][idz3m] = _mul_ij(coef, sols_vec[idx][idy][idz3][idz3m]);
@@ -566,15 +559,13 @@ __global__ void _NuK(
     const unsigned int trgt = id[idx][idy];
 
     double chi2 = sol_chi2[idx][trgt]; 
-    if (chi2 == -3)
-    { 
+    if (chi2 == -3){ 
         O_sol_chi2[idx][idy] = -1; 
         return; 
     }
 
     if (idz3m == 0){O_sol_chi2[idx][idy] = chi2;}
-    for (unsigned int x(0); x < 3; ++x)
-    {
+    for (unsigned int x(0); x < 3; ++x){
         O_sol_vec[idx][idy][idz3m] += _mul_ij(H[idx][idz3m][x], sol_vec[idx][trgt][x]); 
     }
 }
@@ -612,8 +603,7 @@ __global__ void _DotK(
     if (idz < 3){ v[idx][idy][idz] = sol[idx][idy3][idy3m][idz]; return; }
 
     scalar_t* val = &v_[idx][idy][idz-3]; 
-    for (unsigned int x(0); x < 3; ++x)
-    {
+    for (unsigned int x(0); x < 3; ++x){
          *val += _mul_ij(S[idx][idz-3][x], sol[idx][idy3][idy3m][x]); 
     }
 }
@@ -679,77 +669,234 @@ __global__ void _NuNuK(
 }
 
 template <typename scalar_t>
-__global__ void _NuNuMask(
-        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> combi, 
-        torch::PackedTensorAccessor64<double, 1, torch::RestrictPtrTraits> edge_idx, 
-        const torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> edge_, 
-        const torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> pid, 
-        const unsigned int dim_i)
+__global__ void _MassKernel(
+        torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> masses,
+        const float mtl, const float mts, const float mwl, const float mws, const int i)
+{ 
+    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    const unsigned int idy = blockIdx.y; 
+
+    if (i <= idx){return;}
+    scalar_t data = 0; 
+    if (!idy){data += mwl + mws * idx;}
+    else {data += mtl + mts * idx;}
+    masses[idx][idy] = data; 
+}
+
+template <typename scalar_t>
+__global__ void _lep_map(
+        torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> maps, 
+        torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pid, 
+        torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> edge_idx, 
+        const unsigned int idx_m)
 {
-    const unsigned int idx = (blockIdx.x * blockDim.x + threadIdx.x);
-    const unsigned int idy = (blockIdx.y * blockDim.y + threadIdx.y);
+    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    const unsigned int idy = blockIdx.y * blockDim.y + threadIdx.y; 
+    const unsigned int id_ = idx + idx_m*idy; 
+    if (id_ >= edge_idx.size(1)){return;} 
+    scalar_t i = edge_idx[0][id_]; 
+    scalar_t j = edge_idx[1][id_]; 
 
-    if ( idx >= dim_i || idy >= dim_i){ return; }
-    const scalar_t i = edge_[idx][0]; 
-    const scalar_t j = edge_[idx][1]; 
+    maps[i][j] = (pid[j][0]);  // lepton
+}
 
-    const scalar_t i_ = edge_[idy][0]; 
-    const scalar_t j_ = edge_[idy][1]; 
+template <typename scalar_t>
+__global__ void _MappingKernel(
+        torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> llbb, 
+        torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> batch, 
+        torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> edge_idx, 
+        torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pid, 
+        const unsigned int idx_m)
+{
+    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    const unsigned int idy = blockIdx.y * blockDim.y + threadIdx.y; 
+    const unsigned int idx_n = idx + idx_m*idy; 
+    if (idx_m <= idx || idx_m <= idy || idx_n >= idx_m*idx_m){return;}
 
-    bool libj_ = pid[i][0]*pid[j_][1];
-    bool li_bj = pid[i_][0]*pid[j][1];
+    scalar_t i1 = edge_idx[0][idx]; 
+    scalar_t j1 = edge_idx[1][idx];  
 
-    bool lj_bi = pid[i][1]*pid[j_][0]; 
-    bool ljbi_ = pid[i_][1]*pid[j][0]; 
-   
-    if (i == i_ || j_ == j){return;} 
+    scalar_t i2 = edge_idx[0][idy]; 
+    scalar_t j2 = edge_idx[1][idy];  
 
-    if (libj_ && li_bj){
-        combi[idx][0] = i; 
-        combi[idx][1] = i_; 
-        combi[idx][2] = j; 
-        combi[idx][3] = j_;
-        edge_idx[idx] = idx; 
+    if (batch[i1] != batch[i2] || batch[j1] != batch[j2]){return;}
+    if (pid[i1][2] > 2){return;}
+
+    scalar_t ll  = (i1 != i2)*(pid[i1][0] * pid[i2][0]); // both source and dest are leptons 
+    scalar_t bb  = (j1 != j2)*(pid[j1][1] * pid[j2][1]); // both source and dest are b-quarks
+
+    scalar_t lb  = (i1 != j1)*(pid[i1][0] * pid[j1][1])*(j1 != j2); // source is lep and dest is b-quark
+    scalar_t lb_ = (i2 != j2)*(pid[i2][0] * pid[j2][1])*(i1 != i2); // source is lep and dest is b-quark
+
+    llbb[idx_n][0] = j1; // b1
+    llbb[idx_n][1] = j2; // b2
+    llbb[idx_n][2] = i1; // l1
+    llbb[idx_n][3] = i2; // l2
+    llbb[idx_n][4] = (pid[i1][2] == 1)*lb;
+    llbb[idx_n][5] = (((ll + bb) > 1) + (lb + lb_) > 1);
+}
+
+template <typename scalar_t>
+__global__ void _assignment_kernel(
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> pmc_b1, 
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> pmc_b2,
+
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> pmc_l1, 
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> pmc_l2,
+
+        torch::PackedTensorAccessor64<long    , 3, torch::RestrictPtrTraits> pairs_o,
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> mass_m1,
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> mass_m2,
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> met_xy_o, 
+
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> met_xy, 
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> masses, 
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmc,
+        const torch::PackedTensorAccessor64<long    , 2, torch::RestrictPtrTraits> pairs,
+
+        const unsigned int dim_i, const unsigned int dim_j, const unsigned int dim_k)
+{
+    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    const unsigned int idy = blockIdx.y * blockDim.y + threadIdx.y; 
+    const unsigned int idz = blockIdx.z * blockDim.z + threadIdx.z; 
+    if (idx >= dim_i){return;}
+    if (idy >= dim_j*dim_j){return;}
+    if (idz >= dim_k){return;}
+
+    const unsigned int dz = idz/4; 
+    const unsigned int dp = idz%4; 
+    const unsigned int dy = idy%(dim_j); 
+    if (dz < 4){
+        const long id_ = pairs[idx][dz]; 
+        scalar_t e = pmc[id_][dp]; 
+        if (dz == 0){pmc_b1[idx][idy][dp] = e;}
+        else if (dz == 1){pmc_b2[idx][idy][dp] = e;}
+        else if (dz == 2){pmc_l1[idx][idy][dp] = e;}
+        else if (dz == 3){pmc_l2[idx][idy][dp] = e;}
+        if (dz < 2){met_xy_o[idx][idy][dz] = met_xy[id_][dz];}
+        pairs_o[idx][idy][dz] = id_;  
+        return; 
     }
+    const unsigned int z = (idz - 16)%3; 
+    mass_m1[idx][idy][z] = masses[dy][z];  
+    mass_m2[idx][idy][z] = masses[idy/dim_j][z]; 
+}
 
-    if (lj_bi && ljbi_){
-        combi[idx][0] = j; 
-        combi[idx][1] = j_ ; 
-        combi[idx][2] = i; 
-        combi[idx][3] = i_;
-        edge_idx[idx] = idx; 
+template <typename scalar_t>
+__global__ void _builder_nunu(
+        torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> dia_sol_o,
+
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> nu1_o, 
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> nu2_o,
+
+        const torch::PackedTensorAccessor64<bool    , 1, torch::RestrictPtrTraits> noS,
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> dia,
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> nu1,
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> nu2, 
+        const unsigned int dim_i, const unsigned int dim_j, const unsigned int dim_k)
+{
+    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    const unsigned int idy = blockIdx.y * blockDim.y + threadIdx.y; 
+    const unsigned int idz = blockIdx.z * blockDim.z + threadIdx.z; 
+    const unsigned int len_i = idx + idy*dim_j;
+    if (idx >= dim_j){return;}
+    if (idy >= dim_j){return;}
+    if (idz >= dim_k){return;}
+    if (noS[len_i]){return;} // no solution found.
+
+    if (idz == 4){
+        dia_sol_o[dim_i][len_i] = dia[len_i][0];  
+        return; 
+    }
+    if (idz < 3){
+        nu1_o[dim_i][len_i][idz] = nu1[len_i][0][idz]; 
+        nu2_o[dim_i][len_i][idz] = nu2[len_i][0][idz]; 
+    }
+    else {
+        nu1_o[dim_i][len_i][idz] = pow(nu1[len_i][0][0], 2) + pow(nu1[len_i][0][1], 2) + pow(nu1[len_i][0][2], 2); 
+        nu1_o[dim_i][len_i][idz] = pow(nu1_o[dim_i][len_i][idz], 0.5); 
+
+        nu2_o[dim_i][len_i][idz] = pow(nu2[len_i][0][0], 2) + pow(nu2[len_i][0][1], 2) + pow(nu2[len_i][0][2], 2);
+        nu2_o[dim_i][len_i][idz] = pow(nu2_o[dim_i][len_i][idz], 0.5); 
     }
 }
 
 template <typename scalar_t>
-__global__ void _NuNuPopulate(
-        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> pmc_b1, 
-        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> pmc_b2, 
-        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> pmc_l1, 
-        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> pmc_l2, 
-        torch::PackedTensorAccessor64<double, 1, torch::RestrictPtrTraits> batch_idx, 
+__global__ void _min_finder(
+        torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> dia_min_mass,
+        torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> dia_min_comb, 
 
-        const torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> pmc, 
-        const torch::PackedTensorAccessor64<double, 1, torch::RestrictPtrTraits> batch, 
-        const torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> lXbX, 
-        const torch::PackedTensorAccessor64<double, 1, torch::RestrictPtrTraits> edge_idx, 
-        const unsigned int dim_i, const unsigned dim_j, const unsigned dim_k)
+        const torch::PackedTensorAccessor64<long    , 3, torch::RestrictPtrTraits> pairs, 
+        const torch::PackedTensorAccessor64<long    , 1, torch::RestrictPtrTraits> batch, 
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> diag_sol,
+        const unsigned int dim_i, const unsigned int dim_j)
+{
+    const unsigned int id = blockIdx.x * blockDim.x + threadIdx.x; 
+    if (id >= dim_i*dim_j){return;}
+    const unsigned int idx = id%dim_i;
+    const unsigned int idy = id%dim_j; 
+
+    if (!idx){
+        for (unsigned int x(0); x < dim_i; ++x){
+            const long bt = batch[pairs[x][0][0]]; 
+            scalar_t* val_c = &dia_min_comb[bt][idy]; 
+            if (diag_sol[x][idy] == -1){continue;}
+            if ((*val_c) == -1){(*val_c) = diag_sol[x][idy];}
+            if ((*val_c) > diag_sol[x][idy]){(*val_c) = diag_sol[x][idy];}
+        }
+        return;
+    }
+    if (!idy){ 
+        const long b = batch[pairs[idx][0][0]]; 
+        scalar_t* val_m = &dia_min_mass[b][idx]; 
+        for (unsigned int x(0); x < dim_j; ++x){
+            if (diag_sol[idx][x] == -1){continue;}
+            if ((*val_m) == -1){(*val_m) = diag_sol[idx][x];}
+            if ((*val_m) > diag_sol[idx][x]){(*val_m) = diag_sol[idx][x];}
+        }
+    }
+}
+
+template <typename scalar_t>
+__global__ void _populate(
+        torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> nu1,
+        torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> ms1,
+        torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> nu2, 
+        torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> ms2,
+        torch::PackedTensorAccessor64<long    , 2, torch::RestrictPtrTraits> combi, 
+
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> nu1_i,
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> ms1_i,
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> nu2_i, 
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> ms2_i,
+        torch::PackedTensorAccessor64<long    , 3, torch::RestrictPtrTraits> pair_i, 
+
+        torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> dia_sols, 
+        torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> dia_min,
+        torch::PackedTensorAccessor64<long    , 1, torch::RestrictPtrTraits> batch, 
+        const unsigned int dim_i, const unsigned int dim_j, const unsigned int dim_k)
 {
     const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
-    const unsigned int idy = blockIdx.y; 
-    const unsigned int idz = blockIdx.z; 
-    if (idx >= dim_i || idy >= dim_j || idz >= dim_k){return;}
+    const unsigned int idy = blockIdx.y * blockDim.y + threadIdx.y; 
+    const unsigned int idz = blockIdx.z * blockDim.z + threadIdx.z; 
 
-    const double target = edge_idx[idx]; 
-    if (target < 0){ return; }
+    if (idx >= dim_i || idy >= dim_j*dim_j || idz >= dim_k){return;}
+    const long bn = batch[pair_i[idx][idy][0]]; 
+    if (dia_sols[idx][idy] != dia_min[bn]){return;}
 
-    const double src_ = lXbX[idx][idz]; 
-    if (idy == 0 && idz == 0){batch_idx[target] = batch[src_];}
-    if (idz == 0){pmc_l1[target][idy] = pmc[src_][idy]; return; }
-    if (idz == 1){pmc_l2[target][idy] = pmc[src_][idy]; return;}
-    if (idz == 2){pmc_b1[target][idy] = pmc[src_][idy]; return;}
-    if (idz == 3){pmc_b2[target][idy] = pmc[src_][idy]; return;}
-} 
+    nu1[bn][idz] = nu1_i[idx][idy][idz]; 
+    if (idz < 3){ms1[bn][idz] = ms1_i[idx][idy][idz];}
+
+    nu2[bn][idz] = nu2_i[idx][idy][idz]; 
+    if (idz < 3){ms2[bn][idz] = ms2_i[idx][idy][idz];}
+
+    combi[bn][idz] = pair_i[idx][idy][idz]; 
+}
+
+
+
+
+
 
 
 

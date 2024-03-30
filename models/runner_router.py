@@ -7,6 +7,7 @@ from AnalysisG import Analysis
 from dataset_mapping import DataSets
 
 models = {
+    "GRNN" : production.GRNN.RecursiveGraphNeuralNetwork,
 }
 
 graphs = {

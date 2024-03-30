@@ -104,7 +104,4 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
 
         self.O_top_edge = self.propagate(edge_index, pmc = self.pmc, trk = self._t)
 
-        
-
-
 
