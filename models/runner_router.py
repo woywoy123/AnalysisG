@@ -60,27 +60,36 @@ class AnalysisBuild:
         self._jobs = {}
 
     def AddDatasetName(self, name, n_roots = -1):
-        if len(self._meta): pass
-        else: self.FetchMeta(n_roots)
+        if self.SamplePath is not None: pass
+        else: print("Set the 'SamplePath'"); exit()
+        x = UpROOT(self.SamplePath)
+        if l, smpl in x.Files.items():
+            if name not in l: continue
+            if n_roots != -1: ls = [l + "/" + i for i in smpl][:n_roots]
+            else: ls = [l + "/" + i for i in smpl]
+            self.SampleDict[name] = ls
 
-        for x, j in self._meta.items():
-            name_ = self._data.CheckThis(j.DatasetName)
-            msg = "Sample (" + j.DatasetName + ") not indexed in 'dataset_mapping'"
-            if name_: pass
-            else: print(msg); continue
-
-            if name_ != name: continue
-
-            if name_ in self.SampleDict: pass
-            else: self.SampleDict[name_] = []
-
-            if n_roots == -1: pass
-            elif len(self.SampleDict[name_]) > n_roots: break
-            self.SampleDict[name_].append(x)
-
-        if name in self.SampleDict: return
-        print("Sample not indexed")
-        exit()
+#        if len(self._meta): pass
+#        else: self.FetchMeta(n_roots)
+#
+#        for x, j in self._meta.items():
+#            name_ = self._data.CheckThis(j.DatasetName)
+#            msg = "Sample (" + j.DatasetName + ") not indexed in 'dataset_mapping'"
+#            if name_: pass
+#            else: print(msg); continue
+#
+#            if name_ != name: continue
+#
+#            if name_ in self.SampleDict: pass
+#            else: self.SampleDict[name_] = []
+#
+#            if n_roots == -1: pass
+#            elif len(self.SampleDict[name_]) > n_roots: break
+#            self.SampleDict[name_].append(x)
+#
+#        if name in self.SampleDict: return
+#        print("Sample not indexed")
+#        exit()
 
     def FetchMeta(self, n_roots = -1):
         if self.SamplePath is not None: pass

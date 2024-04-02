@@ -28,10 +28,12 @@ from libcpp.string cimport string
 from libcpp.map cimport map, pair
 from libcpp cimport bool
 
+from sklearn.model_selection import ShuffleSplit, KFold
 from tqdm import tqdm, trange
 from typing import Union
 from time import sleep
 import numpy as np
+import random
 import psutil
 import torch
 import pickle
@@ -759,6 +761,59 @@ cdef class SampleTracer:
         self._set.search.clear()
         self._set.get_all = False
         self.ptr.length()
+
+    cpdef RandomSampling(self, int TrainingSize = 50, int folds = 10):
+        cdef int idx
+        cdef CyBatch* bt
+        cdef map[string, CyBatch*] cand
+        cdef vector[CyBatch*] batches = self.ptr.MakeIterable()
+        cdef string gr_name = enc(self.GraphName)
+        for idx in prange(batches.size(), num_threads = self._set.threads, nogil = True):
+            bt = batches[idx]
+            if bt.this_gr == NULL: continue
+            if bt.this_gr.graph.event_name != gr_name: continue
+            if bt.this_gr.graph.empty_graph: continue
+            if bt.this_gr.graph.skip_graph: continue
+            cand[bt.Hash()] = bt
+
+        cdef pair[string, CyBatch*] itr; 
+        cdef vector[string] hashes = [itr.first for itr in cand]
+
+        random.shuffle(hashes)
+        rs = ShuffleSplit(n_splits=1, test_size=float((100 - TrainingSize) / 100), random_state=42)
+
+        cdef vector[int] train_idx, test_idx
+        for train_idx, test_idx in rs.split(hashes): pass
+        split = KFold(n_splits = folds, shuffle = True)
+
+        cdef int i
+        cdef map[int, string] train_sdx, test_sdx
+        for i in prange(train_idx.size(), num_threads = self._set.threads, nogil = True): train_sdx[i] = hashes[train_idx[i]]
+        for i in prange(test_idx.size(), num_threads = self._set.threads, nogil = True): test_sdx[i] = hashes[test_idx[i]]
+
+        cdef map[string, vector[string]] train_kfolds
+        cdef map[string, vector[string]] valid_kfolds
+
+        cdef dict output = {}
+        hashes = list(dict(train_sdx).values())
+        output["train_hashes"] = pdec(&hashes)
+
+        hashes = list(dict(test_sdx).values())
+        output["test_hashes"] = pdec(&hashes)
+
+        cdef vector[int] k_train, k_valid
+        for idx, (k_train, k_valid) in enumerate(split.split(np.arange(train_idx.size()))):
+            gr_name = enc("k-" + str(idx+1))
+            for i in prange(k_train.size(), num_threads = self._set.threads, nogil = True):
+                train_kfolds[gr_name].push_back(train_sdx[k_train[i]])
+
+            for i in prange(k_valid.size(), num_threads = self._set.threads, nogil = True):
+                valid_kfolds[gr_name].push_back(train_sdx[k_valid[i]])
+
+            output[env(gr_name)] = {}
+            output[env(gr_name)]["train"] = pdec(&train_kfolds[gr_name])
+            output[env(gr_name)]["leave-out"] = pdec(&valid_kfolds[gr_name])
+        return output
 
     def DumpEvents(self):
         self._store_objects(self.ptr.DumpEvents(), "Event")

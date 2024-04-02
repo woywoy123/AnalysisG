@@ -136,6 +136,7 @@ cdef class OptimizerWrapper:
 
         cdef dict c = torch.load(_save_path)
         self._epoch = c["epoch"]
+        if self._optim is None: self.setoptimizer()
         self._optim.load_state_dict(c["optim"])
         if self._sched is None: pass
         elif "sched" not in c: pass

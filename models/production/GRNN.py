@@ -43,22 +43,22 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
 
         self._dx  = 5
         self.rnn_dx = Seq(
-                Linear(self._dx*2, self._rep),
-                LayerNorm(self._rep), ReLU(),
-                Linear(self._rep, self._rep)
+                Linear(self._dx*2, self._rep*2),
+                LayerNorm(self._rep*2), ReLU(),
+                Linear(self._rep*2, self._rep)
         )
 
         self._x   = 7
         self.rnn_x = Seq(
-                Linear(self._x, self._rep),
-                LayerNorm(self._rep),
-                Linear(self._rep, self._rep)
+                Linear(self._x, self._rep*2),
+                LayerNorm(self._rep*2),
+                Linear(self._rep*2, self._rep)
         )
 
         self.rnn_mrg = Seq(
-                Linear(self._rep*2, self._rep),
-                LayerNorm(self._rep), ReLU(),
-                Linear(self._rep, self._o)
+                Linear(self._rep*2, self._rep*2),
+                LayerNorm(self._rep*2), ReLU(),
+                Linear(self._rep*2, self._o)
         )
 
         self.node_feat = Seq(Linear(18, self._rep), Linear(self._rep, self._rep))
@@ -66,6 +66,7 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
         self.graph_feat = Seq(
                 Linear(self._rep*6, self._rep),
                 Linear(self._rep, self._rep),
+                LayerNorm(self._rep), ReLU(),
                 Linear(self._rep, 5)
         )
 
@@ -126,7 +127,6 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
         self._t   = torch.ones_like(N_pT).cumsum(0)-1
 
         self.O_top_edge = self.propagate(edge_index, pmc = self.pmc, trk = self._t)
-        self.O_top_edge = self.O_top_edge.softmax(-1)
 
         gr_  = graph.edge_aggregation(edge_index, self.O_top_edge, self.pmc)[1]
 
@@ -157,4 +157,3 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
         mx_dx  = self.max_aggr(node_dx, batch)
         var_dx = self.var_aggr(node_dx, batch)
         self.O_ntops = self.graph_feat(torch.cat([sft, sft_dx, mx, mx_dx, var, var_dx], -1))
-        self.O_ntops = self.O_ntops.softmax(-1)

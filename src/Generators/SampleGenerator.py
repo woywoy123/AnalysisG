@@ -35,7 +35,7 @@ class RandomSamplers(_RandomSamplers, Tools, SampleTracer):
         except KeyError: pass
 
         for kf in inpt:
-            if kf[:2] != "k-":continue
+            if kf[:2] != "k-": continue
             self.__addthis__(f, inpt[kf]["train"], kf, True)
             self.__addthis__(f, inpt[kf]["leave-out"], kf, False)
         f.close()

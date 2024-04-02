@@ -101,22 +101,18 @@ class Analysis(_Analysis, SampleTracer, _Interface):
         maps = self[self.GraphName]
         if maps: pass
         else: return self.EmptySampleList()
-        dic = {}
-        try:
-            for i in maps:
-                if i.SkipEvent: continue
-                if i.EmptyGraph: continue
-                dic[i.hash] = i
-        except TypeError: dic[maps.hash] = maps
+        outpt = self.RandomSampling(self.TrainingSize, self.kFolds)
 
         r = RandomSamplers()
         r.ImportSettings(self.ExportSettings())
         if not self.TrainingSize: out = {}
-        else: out = r.MakeTrainingSample(dic, self.TrainingSize)
+        else: 
+            out = {"train_hashes" : outpt["train_hashes"],
+                   "test_hashes" : outpt["test_hashes"]}
         r.SaveSets(out, pth)
 
         if not self.kFolds: out = {}
-        else: out = r.MakekFolds(dic, self.kFolds, True, True)
+        else: out = {k : outpt[k] for k in outpt if "k-" in k}
         if out == False: return
         r.SaveSets(out, pth)
 

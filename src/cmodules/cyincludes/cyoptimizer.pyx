@@ -813,6 +813,7 @@ cdef class cOptimizer:
             index_map[ix] = 0
             for v, tn in gh.items():
                 if not v.startswith("O_"): continue
+                tn = tn.softmax(-1)
                 ten = tn.view(-1, tn.size()[-1])
                 f.attrs.update({v : ten.tolist()})
                 for k in range(tn.size()[-1]):
