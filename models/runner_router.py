@@ -3,8 +3,8 @@ from AnalysisG.Events import *
 from AnalysisG.Tools import Tools
 from AnalysisG.IO import UpROOT
 from AnalysisG import Analysis
-
 from dataset_mapping import DataSets
+import production
 
 models = {
     "GRNN" : production.GRNN.RecursiveGraphNeuralNetwork,

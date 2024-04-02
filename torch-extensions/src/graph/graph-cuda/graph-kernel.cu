@@ -5,7 +5,7 @@ __global__ void _PredTopo(
         torch::PackedTensorAccessor32<scalar_t, 3, torch::RestrictPtrTraits> out, 
         const torch::PackedTensorAccessor32<scalar_t, 2, torch::RestrictPtrTraits> edge_index, 
         const torch::PackedTensorAccessor32<scalar_t, 1, torch::RestrictPtrTraits> pred, 
-        const unsigned int dim_i, const unsigned int dim_max, const bool incl_z)
+        const unsigned int dim_i, const unsigned int dim_max)
 {
     const unsigned int idx = blockIdx.x*blockDim.x + threadIdx.x; 
     const unsigned int idy = blockIdx.y; 
@@ -15,7 +15,6 @@ __global__ void _PredTopo(
     const unsigned int dst = edge_index[1][idx]; 
     scalar_t* val = &out[idy][src][dst]; 
 
-    if (!incl_z && idy == 0){return; }
     if (src == dst){*val = src; return; }
     
     scalar_t msk = (pred[idx] == idy); 

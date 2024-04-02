@@ -6,9 +6,12 @@
 **/PythonGNN
 setup-scripts/source_this.sh
 
+models/**/*.png
+
 # Cache types 
 *.hdf5
 *.pkl
+*.root
 
 # Cython and C++ compiler code 
 *.pyc

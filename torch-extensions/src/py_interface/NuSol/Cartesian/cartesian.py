@@ -61,4 +61,6 @@ class Cartesian:
 
     @staticmethod
     def Combinatorial(edge_index, batch, pmc, pid, met_xy, gev = False, null = 10e-10, top_up_down = 0.90, w_up_down = 0.90, mT = 172.62*1000, mW = 80.385*1000, mNu = 0):
-        return torch.ops.pyc_cuda.combinatorial(edge_index, batch, pmc, pid, met_xy, mT, mW, mNu, top_up_down, w_up_down, gev, null)
+        output = torch.ops.pyc_cuda.combinatorial(edge_index, batch, pmc, pid, met_xy, mT, mW, mNu, top_up_down, w_up_down, gev, null)
+        return {"nu_1f" : output[0], "nu_2f" : output[1], "ms_1f" : output[2], "ms_2f" : output[3], "combi" : output[4], "min" : output[5]}
+

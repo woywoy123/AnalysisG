@@ -80,7 +80,8 @@ class Optimizer(_Optimizer, _Interface, RandomSamplers):
         kfolds = self._cmod.kFolds
         kfolds.sort()
         if not len(kfolds): kfolds += [1]
-        next(iter(self._cmod.FetchTraining(kfolds[0], self.BatchSize)))
+        try: next(iter(self._cmod.FetchTraining(kfolds[0], self.BatchSize)))
+        except StopIteration: return self._no_test_sample()
         self.preiteration(sample)
 
         if self.__initialize__(): pass

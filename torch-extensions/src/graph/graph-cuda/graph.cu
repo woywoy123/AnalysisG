@@ -45,8 +45,7 @@ static const torch::TensorOptions _MakeOp(torch::Tensor v1)
 }
 
 std::map<std::string, std::vector<torch::Tensor>> _edge_aggregation(
-                torch::Tensor edge_index, torch::Tensor prediction, 
-                torch::Tensor node_feature, const bool include_zero)
+                torch::Tensor edge_index, torch::Tensor prediction, torch::Tensor node_feature)
 {
 
     const auto current_device = c10::cuda::current_device();
@@ -80,7 +79,7 @@ std::map<std::string, std::vector<torch::Tensor>> _edge_aggregation(
                 pair_m.packed_accessor32<scalar_t, 3, torch::RestrictPtrTraits>(), 
            _edge_index.packed_accessor32<scalar_t, 2, torch::RestrictPtrTraits>(),
                   pred.packed_accessor32<scalar_t, 1, torch::RestrictPtrTraits>(),  
-                pred_l, max, include_zero);
+                pred_l, max);
     })); 
     pair_m = std::get<0>(pair_m.sort(-1, true)); 
     torch::Tensor pmu_i = torch::zeros({max, dim_i, dim_j}, _MakeOp(nf));
@@ -133,7 +132,7 @@ std::map<std::string, std::vector<torch::Tensor>> _edge_aggregation(
 
 std::map<std::string, std::vector<torch::Tensor>> _node_aggregation(
                 torch::Tensor edge_index, torch::Tensor prediction, 
-                torch::Tensor node_feature, const bool include_zero)
+                torch::Tensor node_feature)
 {
     torch::Tensor pred, e_i; 
     const unsigned int x = edge_index.size(0); 
@@ -143,7 +142,7 @@ std::map<std::string, std::vector<torch::Tensor>> _node_aggregation(
 
     e_i = e_i.index({0, torch::indexing::Slice()});
     pred = prediction.index({e_i}).clone(); 
-    return _edge_aggregation(edge_index, pred, node_feature, include_zero); 
+    return _edge_aggregation(edge_index, pred, node_feature); 
 }
 
 
@@ -193,78 +192,70 @@ std::tuple<torch::Tensor, torch::Tensor> _unique_aggregation(
 
 // --------------------- Interfaces ------------------------ //
 std::map<std::string, std::vector<torch::Tensor>> _polar_edge_aggregation(
-                torch::Tensor edge_index, torch::Tensor prediction, 
-                torch::Tensor pmu, const bool include_zero)
+                torch::Tensor edge_index, torch::Tensor prediction, torch::Tensor pmu)
 {
     torch::Tensor pmc = Transform::CUDA::PxPyPzE(pmu.to(torch::kFloat64)); 
-    return _edge_aggregation(edge_index, prediction, pmc, include_zero); 
+    return _edge_aggregation(edge_index, prediction, pmc); 
 }
 
 
 std::map<std::string, std::vector<torch::Tensor>> _polar_edge_aggregation(
                 torch::Tensor edge_index, torch::Tensor prediction,
-                torch::Tensor pt, torch::Tensor eta, torch::Tensor phi, torch::Tensor e,  
-                const bool include_zero)
+                torch::Tensor pt, torch::Tensor eta, torch::Tensor phi, torch::Tensor e)
 {
     std::vector<signed long> d = {-1, 1};
     std::vector<torch::Tensor> pmu = {pt.view(d), eta.view(d), phi.view(d), e.view(d)}; 
     torch::Tensor pmc = Transform::CUDA::PxPyPzE(torch::cat(pmu, -1).to(torch::kFloat64)); 
-    return _edge_aggregation(edge_index, prediction, pmc, include_zero); 
+    return _edge_aggregation(edge_index, prediction, pmc); 
 }
 
 std::map<std::string, std::vector<torch::Tensor>> _polar_node_aggregation(
-                torch::Tensor edge_index, torch::Tensor prediction, 
-                torch::Tensor pmu, const bool include_zero)
+                torch::Tensor edge_index, torch::Tensor prediction, torch::Tensor pmu)
 {
     torch::Tensor pmc = Transform::CUDA::PxPyPzE(pmu.to(torch::kFloat64)); 
-    return _node_aggregation(edge_index, prediction, pmc, include_zero); 
+    return _node_aggregation(edge_index, prediction, pmc); 
 }
 
 
 std::map<std::string, std::vector<torch::Tensor>> _polar_node_aggregation(
                 torch::Tensor edge_index, torch::Tensor prediction,
-                torch::Tensor pt, torch::Tensor eta, torch::Tensor phi, torch::Tensor e,  
-                const bool include_zero)
+                torch::Tensor pt, torch::Tensor eta, torch::Tensor phi, torch::Tensor e)
 {
     std::vector<signed long> d = {-1, 1};
     std::vector<torch::Tensor> pmu = {pt.view(d), eta.view(d), phi.view(d), e.view(d)}; 
     torch::Tensor pmc = Transform::CUDA::PxPyPzE(torch::cat(pmu, -1).to(torch::kFloat64)); 
-    return _node_aggregation(edge_index, prediction, pmc, include_zero); 
+    return _node_aggregation(edge_index, prediction, pmc); 
 }
 
 std::map<std::string, std::vector<torch::Tensor>> _cartesian_edge_aggregation(
-                torch::Tensor edge_index, torch::Tensor prediction, 
-                torch::Tensor pmc, const bool include_zero)
+                torch::Tensor edge_index, torch::Tensor prediction, torch::Tensor pmc)
 {
-    return _edge_aggregation(edge_index, prediction, pmc, include_zero); 
+    return _edge_aggregation(edge_index, prediction, pmc); 
 }
 
 
 std::map<std::string, std::vector<torch::Tensor>> _cartesian_edge_aggregation(
                 torch::Tensor edge_index, torch::Tensor prediction,
-                torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e,  
-                const bool include_zero)
+                torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e)
 {
     std::vector<signed long> d = {-1, 1};
     std::vector<torch::Tensor> pmc = {px.view(d), py.view(d), pz.view(d), e.view(d)}; 
-    return _edge_aggregation(edge_index, prediction, torch::cat(pmc, -1), include_zero); 
+    return _edge_aggregation(edge_index, prediction, torch::cat(pmc, -1)); 
 }
 
 std::map<std::string, std::vector<torch::Tensor>> _cartesian_node_aggregation(
-                torch::Tensor edge_index, torch::Tensor prediction, 
-                torch::Tensor pmc, const bool include_zero)
+                torch::Tensor edge_index, torch::Tensor prediction, torch::Tensor pmc)
 {
-    return _node_aggregation(edge_index, prediction, pmc, include_zero); 
+    return _node_aggregation(edge_index, prediction, pmc); 
 }
 
 std::map<std::string, std::vector<torch::Tensor>> _cartesian_node_aggregation(
                 torch::Tensor edge_index, torch::Tensor prediction,
-                torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e,  
-                const bool include_zero)
+                torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e)
 {
     std::vector<signed long> d = {-1, 1};
     std::vector<torch::Tensor> pmc = {px.view(d), py.view(d), pz.view(d), e.view(d)}; 
-    return _node_aggregation(edge_index, prediction, torch::cat(pmc, -1), include_zero); 
+    return _node_aggregation(edge_index, prediction, torch::cat(pmc, -1)); 
 }
 
 #endif

@@ -1,1 +1,1 @@
-from GRNN import *
+from .GRNN import *

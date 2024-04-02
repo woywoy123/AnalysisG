@@ -811,7 +811,7 @@ std::vector<torch::Tensor> _viable_solutions(
                     x, ly, 5); 
         })); 
     }
-    
+
     torch::Tensor dia_min_comb = -1*torch::ones({t_met_xy.size(0), len_i}, _MakeOp(dia_sol_o));  
     torch::Tensor dia_min_mass = -1*torch::ones({t_met_xy.size(0), lx   }, _MakeOp(dia_sol_o)); 
     const dim3 blk_x = BLOCKS(threads, lx*len_i); 
@@ -1002,8 +1002,13 @@ std::map<std::string, torch::Tensor> _CombinatorialCartesian(
     std::vector<torch::Tensor> nus = _create_mapping(edge_index, pid, batch); 
     torch::Tensor pair_nu   = nus[0]; 
     torch::Tensor pair_nunu = nus[1]; 
-  
-    std::vector<torch::Tensor> res = _viable_solutions(pair_nunu, mass_matrix, pmc, met_xy, batch, null);  
+
+    std::vector<torch::Tensor> res; 
+    if (!pair_nunu.size(0)){
+        torch::Tensor nu_null = torch::cat({torch::zeros_like(met_xy), torch::zeros_like(met_xy)}, -1); 
+        res = {nu_null, nu_null, nu_null, nu_null, nu_null, nu_null}; 
+    }
+    else {res = _viable_solutions(pair_nunu, mass_matrix, pmc, met_xy, batch, null);}
 
     return {
         {"nu_1f", res[0]}, {"nu_2f", res[1]}, 

@@ -191,7 +191,9 @@ torch::Tensor pyc::physics::cartesian::combined::Theta(torch::Tensor pmc){
     return Physics::CUDA::Cartesian::Theta(pmc);
 }
 
-torch::Tensor pyc::physics::cartesian::separate::DeltaR(torch::Tensor px1, torch::Tensor px2, torch::Tensor py1, torch::Tensor py2, torch::Tensor pz1, torch::Tensor pz2){ 
+torch::Tensor pyc::physics::cartesian::separate::DeltaR(
+        torch::Tensor px1, torch::Tensor px2, torch::Tensor py1, torch::Tensor py2, torch::Tensor pz1, torch::Tensor pz2)
+{ 
     return Physics::CUDA::Cartesian::DeltaR(px1, px2, py1, py2, pz1, pz2); 
 }
 
@@ -365,8 +367,7 @@ std::vector<torch::Tensor> pyc::nusol::cartesian::separate::Nu(
 std::vector<torch::Tensor> pyc::nusol::NuNu(
         torch::Tensor pmc_b1, torch::Tensor pmc_b2, 
         torch::Tensor pmc_l1, torch::Tensor pmc_l2, 
-        torch::Tensor met_xy, 
-        torch::Tensor masses, const double null)
+        torch::Tensor met_xy, torch::Tensor masses, const double null)
 { 
     std::map<std::string, torch::Tensor> out; 
     out = NuSol::CUDA::NuNu(pmc_b1, pmc_b2, pmc_l1, pmc_l2, met_xy, masses, null);
@@ -404,10 +405,7 @@ std::vector<torch::Tensor> pyc::nusol::combinatorial(
             top_up_down, w_up_down, null
     ); 
 
-    std::vector<torch::Tensor> output; 
-    std::map<std::string, torch::Tensor>::iterator itr; 
-    for (itr = out.begin(); itr != out.end(); ++itr){output.push_back(itr -> second); }
-    return output; 
+    return {out["nu_1f"], out["nu_2f"], out["ms_1f"], out["ms_2f"], out["combi"], out["min"]}; 
 }
 
 std::vector<torch::Tensor> pyc::nusol::polar::separate::NuNu(
@@ -465,112 +463,85 @@ std::vector<torch::Tensor> pyc::nusol::cartesian::separate::NuNu(
     }; 
 }
 
-std::vector<std::vector<torch::Tensor>> pyc::graph::dress(
-        std::map<std::string, std::vector<torch::Tensor>> inpt)
-{
+std::vector<std::vector<torch::Tensor>> pyc::graph::dress(std::map<std::string, std::vector<torch::Tensor>> inpt){
     std::vector<std::vector<torch::Tensor>> output = {};
     std::map<std::string, std::vector<torch::Tensor>>::iterator it; 
     for (it = inpt.begin(); it != inpt.end(); ++it){output.push_back(it -> second);}
     return output; 
 }
 
-std::vector<std::vector<torch::Tensor>> pyc::graph::edge_aggregation(
-        torch::Tensor edge_index, torch::Tensor prediction, 
-        torch::Tensor node_feature, const bool include_zero)
-{
+std::vector<std::vector<torch::Tensor>> pyc::graph::edge_aggregation(torch::Tensor edge_index, torch::Tensor prediction, torch::Tensor node_feature){
     std::map<std::string, std::vector<torch::Tensor>> map; 
-    map = Graph::CUDA::edge_aggregation(edge_index, prediction, node_feature, include_zero); 
+    map = Graph::CUDA::edge_aggregation(edge_index, prediction, node_feature); 
     return pyc::graph::dress(map); 
 }
 
-std::vector<std::vector<torch::Tensor>> pyc::graph::node_aggregation(
-        torch::Tensor edge_index, torch::Tensor prediction, 
-        torch::Tensor node_feature, const bool include_zero)
-{
+std::vector<std::vector<torch::Tensor>> pyc::graph::node_aggregation(torch::Tensor edge_index, torch::Tensor prediction, torch::Tensor node_feature){
     std::map<std::string, std::vector<torch::Tensor>> map; 
-    map = Graph::CUDA::node_aggregation(edge_index, prediction, node_feature, include_zero); 
+    map = Graph::CUDA::node_aggregation(edge_index, prediction, node_feature); 
     return pyc::graph::dress(map); 
 }
 
-
-std::tuple<torch::Tensor, torch::Tensor> pyc::graph::unique_aggregation(
-        torch::Tensor cluster_map, torch::Tensor features)
-{
+std::tuple<torch::Tensor, torch::Tensor> pyc::graph::unique_aggregation(torch::Tensor cluster_map, torch::Tensor features){
     return Graph::CUDA::unique_aggregation(cluster_map, features); 
 }
 
-std::vector<std::vector<torch::Tensor>> pyc::graph::polar::combined::edge_pmu(
-        torch::Tensor edge_index, torch::Tensor prediction, 
-        torch::Tensor pmu, const bool include_zero)
-{
+std::vector<std::vector<torch::Tensor>> pyc::graph::polar::combined::edge_pmu(torch::Tensor edge_index, torch::Tensor prediction, torch::Tensor pmu){
     std::map<std::string, std::vector<torch::Tensor>> map; 
-    map = Graph::CUDA::Polar::edge_pmu(edge_index, prediction, pmu, include_zero);
+    map = Graph::CUDA::Polar::edge_pmu(edge_index, prediction, pmu);
     return pyc::graph::dress(map); 
 }
-std::vector<std::vector<torch::Tensor>> pyc::graph::polar::combined::node_pmu(
-        torch::Tensor edge_index, torch::Tensor prediction, 
-        torch::Tensor pmu, const bool include_zero)
-{
+std::vector<std::vector<torch::Tensor>> pyc::graph::polar::combined::node_pmu(torch::Tensor edge_index, torch::Tensor prediction, torch::Tensor pmu){
     std::map<std::string, std::vector<torch::Tensor>> map; 
-    map = Graph::CUDA::Polar::node_pmu(edge_index, prediction, pmu, include_zero);
+    map = Graph::CUDA::Polar::node_pmu(edge_index, prediction, pmu);
     return pyc::graph::dress(map); 
 }
 
 std::vector<std::vector<torch::Tensor>> pyc::graph::polar::separate::edge_pmu(
        torch::Tensor edge_index, torch::Tensor prediction, 
-       torch::Tensor pt, torch::Tensor eta, torch::Tensor phi, torch::Tensor e,  
-       const bool include_zero)
+       torch::Tensor pt, torch::Tensor eta, torch::Tensor phi, torch::Tensor e)
 {
     std::map<std::string, std::vector<torch::Tensor>> map; 
-    map = Graph::CUDA::Polar::edge_pmu(edge_index, prediction, pt, eta, phi, e, include_zero);
+    map = Graph::CUDA::Polar::edge_pmu(edge_index, prediction, pt, eta, phi, e);
     return pyc::graph::dress(map); 
 }
 
 std::vector<std::vector<torch::Tensor>> pyc::graph::polar::separate::node_pmu(
        torch::Tensor edge_index, torch::Tensor prediction, 
-       torch::Tensor pt, torch::Tensor eta, torch::Tensor phi, torch::Tensor e,  
-       const bool include_zero)
+       torch::Tensor pt, torch::Tensor eta, torch::Tensor phi, torch::Tensor e)
 {
     std::map<std::string, std::vector<torch::Tensor>> map; 
-    map = Graph::CUDA::Polar::node_pmu(edge_index, prediction, pt, eta, phi, e, include_zero);
+    map = Graph::CUDA::Polar::node_pmu(edge_index, prediction, pt, eta, phi, e);
     return pyc::graph::dress(map); 
 }
 
-std::vector<std::vector<torch::Tensor>> pyc::graph::cartesian::combined::edge_pmc(
-        torch::Tensor edge_index, torch::Tensor prediction, 
-        torch::Tensor pmc, const bool include_zero)
-{
+std::vector<std::vector<torch::Tensor>> pyc::graph::cartesian::combined::edge_pmc(torch::Tensor edge_index, torch::Tensor prediction, torch::Tensor pmc){
     std::map<std::string, std::vector<torch::Tensor>> map; 
-    map = Graph::CUDA::Cartesian::edge_pmc(edge_index, prediction, pmc, include_zero);
+    map = Graph::CUDA::Cartesian::edge_pmc(edge_index, prediction, pmc);
     return pyc::graph::dress(map); 
 }
 
-std::vector<std::vector<torch::Tensor>> pyc::graph::cartesian::combined::node_pmc(
-        torch::Tensor edge_index, torch::Tensor prediction, 
-        torch::Tensor pmc, const bool include_zero)
-{
+std::vector<std::vector<torch::Tensor>> pyc::graph::cartesian::combined::node_pmc(torch::Tensor edge_index, torch::Tensor prediction, torch::Tensor pmc){
     std::map<std::string, std::vector<torch::Tensor>> map; 
-    map = Graph::CUDA::Cartesian::node_pmc(edge_index, prediction, pmc, include_zero);
+    map = Graph::CUDA::Cartesian::node_pmc(edge_index, prediction, pmc);
     return pyc::graph::dress(map); 
 }
 
 std::vector<std::vector<torch::Tensor>> pyc::graph::cartesian::separate::edge_pmc(
       torch::Tensor edge_index, torch::Tensor prediction, 
-      torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e,  
-      const bool include_zero)
+      torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e)
 {
     std::map<std::string, std::vector<torch::Tensor>> map; 
-    map = Graph::CUDA::Cartesian::edge_pmc(edge_index, prediction, px, py, pz, e, include_zero);
+    map = Graph::CUDA::Cartesian::edge_pmc(edge_index, prediction, px, py, pz, e);
     return pyc::graph::dress(map); 
 }
 
 std::vector<std::vector<torch::Tensor>> pyc::graph::cartesian::separate::node_pmc(
       torch::Tensor edge_index, torch::Tensor prediction, 
-      torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e,  
-      const bool include_zero)
+      torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e)
 {
     std::map<std::string, std::vector<torch::Tensor>> map; 
-    map = Graph::CUDA::Cartesian::node_pmc(edge_index, prediction, px, py, pz, e, include_zero);
+    map = Graph::CUDA::Cartesian::node_pmc(edge_index, prediction, px, py, pz, e);
     return pyc::graph::dress(map); 
 }
 

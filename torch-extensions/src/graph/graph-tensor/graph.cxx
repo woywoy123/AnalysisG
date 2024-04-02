@@ -1,17 +1,12 @@
 #include "graph.h"
 
-torch::TensorOptions Graph::Tensors::MakeOp(torch::Tensor x)
-{
-    torch::TensorOptions op = torch::TensorOptions().device(x.device()).dtype(x.dtype()); 
-    return op; 
+torch::TensorOptions Graph::Tensors::MakeOp(torch::Tensor x){
+    return torch::TensorOptions().device(x.device()).dtype(x.dtype());
 }
 
-std::map<std::string, std::vector<torch::Tensor>> Graph::Tensors::edge_aggregation(
-        torch::Tensor edge_index, torch::Tensor prediction, 
-        torch::Tensor node_feature, const bool include_zero)
-{
+std::map<std::string, std::vector<torch::Tensor>> Graph::Tensors::edge_aggregation(torch::Tensor edge_index, torch::Tensor prediction, torch::Tensor node_feature){
     std::map<std::string, std::vector<torch::Tensor>> output; 
-    const unsigned int max = torch::max(prediction).item<int>()+1; 
+    const unsigned int max = prediction.size(1); 
     const unsigned int dim_i = node_feature.size(0);   
     const unsigned int dim_j = node_feature.size(1); 
 
@@ -21,6 +16,7 @@ std::map<std::string, std::vector<torch::Tensor>> Graph::Tensors::edge_aggregati
     torch::Tensor _edge_index = edge_index.clone(); 
     if (src_dst != 2 && len == 2){ _edge_index = torch::transpose(_edge_index, 0, 1); }
 
+    prediction = std::get<1>(prediction.max({-1})); 
     const torch::TensorOptions op = Graph::Tensors::MakeOp(prediction); 
     torch::Tensor e_i = _edge_index.index({0, torch::indexing::Slice()}); 
     torch::Tensor e_j = _edge_index.index({1, torch::indexing::Slice()}); 
@@ -33,7 +29,6 @@ std::map<std::string, std::vector<torch::Tensor>> Graph::Tensors::edge_aggregati
     pair_m.index_put_({e_i, e_i}, e_i);
     for (signed int i(0); i < max; ++i)
     {
-        if (i == 0 && !include_zero){continue;}
         std::stringstream x; 
         std::string name; 
         x << i; 
@@ -71,8 +66,7 @@ std::map<std::string, std::vector<torch::Tensor>> Graph::Tensors::edge_aggregati
         revert = std::get<1>(id2); 
         pmu_u = torch::zeros({clusters.size(0), dim_j}, op); 
         
-        for (signed int k(0); k < clusters.size(0); ++k)
-        {
+        for (signed int k(0); k < clusters.size(0); ++k){
             torch::Tensor this_pair, node; 
             this_pair = clusters.index({k}); 
             this_pair = this_pair.index({this_pair > -1}); 
@@ -85,10 +79,7 @@ std::map<std::string, std::vector<torch::Tensor>> Graph::Tensors::edge_aggregati
     return output; 
 }
 
-std::map<std::string, std::vector<torch::Tensor>> Graph::Tensors::node_aggregation(
-        torch::Tensor edge_index, torch::Tensor prediction, 
-        torch::Tensor node_feature, const bool include_zero)
-{
+std::map<std::string, std::vector<torch::Tensor>> Graph::Tensors::node_aggregation(torch::Tensor edge_index, torch::Tensor prediction, torch::Tensor node_feature){
     const unsigned int src_dst = edge_index.size(0); 
     const unsigned int len = edge_index.size(1); 
     
@@ -98,75 +89,54 @@ std::map<std::string, std::vector<torch::Tensor>> Graph::Tensors::node_aggregati
     torch::Tensor e_i = _edge_index.index({0, torch::indexing::Slice()}); 
     torch::Tensor pred = prediction.index({e_i}).clone(); 
 
-    return Graph::Tensors::edge_aggregation(edge_index, pred, node_feature, include_zero);  
+    return Graph::Tensors::edge_aggregation(edge_index, pred, node_feature);  
 }
 
 // --------------------- Interfaces ------------------------ //
-std::map<std::string, std::vector<torch::Tensor>> Graph::Tensors::Polar::edge_pmu(
-        torch::Tensor edge_index, torch::Tensor prediction, 
-        torch::Tensor pmu, const bool include_zero)
-{
+std::map<std::string, std::vector<torch::Tensor>> Graph::Tensors::Polar::edge_pmu(torch::Tensor edge_index, torch::Tensor prediction, torch::Tensor pmu){
     torch::Tensor pmc = Transform::Tensors::PxPyPzE(pmu); 
-    return Graph::Tensors::edge_aggregation(edge_index, prediction, pmc, include_zero); 
+    return Graph::Tensors::edge_aggregation(edge_index, prediction, pmc); 
 }
 
 std::map<std::string, std::vector<torch::Tensor>> Graph::Tensors::Polar::edge_pmu(
-        torch::Tensor edge_index, torch::Tensor prediction, 
-        torch::Tensor pt, torch::Tensor eta, torch::Tensor phi, torch::Tensor e,  
-        const bool include_zero)
+        torch::Tensor edge_index, torch::Tensor prediction, torch::Tensor pt, torch::Tensor eta, torch::Tensor phi, torch::Tensor e)
 { 
     torch::Tensor pmc = Transform::Tensors::PxPyPzE(pt, eta, phi, e); 
-    return Graph::Tensors::edge_aggregation(edge_index, prediction, pmc, include_zero); 
+    return Graph::Tensors::edge_aggregation(edge_index, prediction, pmc); 
 }
 
-std::map<std::string, std::vector<torch::Tensor>> Graph::Tensors::Polar::node_pmu(
-        torch::Tensor edge_index, torch::Tensor prediction, 
-        torch::Tensor pmu, const bool include_zero)
-{ 
+std::map<std::string, std::vector<torch::Tensor>> Graph::Tensors::Polar::node_pmu(torch::Tensor edge_index, torch::Tensor prediction, torch::Tensor pmu){ 
     torch::Tensor pmc = Transform::Tensors::PxPyPzE(pmu); 
-    return Graph::Tensors::node_aggregation(edge_index, prediction, pmc, include_zero); 
+    return Graph::Tensors::node_aggregation(edge_index, prediction, pmc); 
 }
 
 std::map<std::string, std::vector<torch::Tensor>> Graph::Tensors::Polar::node_pmu(
-        torch::Tensor edge_index, torch::Tensor prediction, 
-        torch::Tensor pt, torch::Tensor eta, torch::Tensor phi, torch::Tensor e,  
-        const bool include_zero)
+        torch::Tensor edge_index, torch::Tensor prediction, torch::Tensor pt, torch::Tensor eta, torch::Tensor phi, torch::Tensor e)
 { 
     torch::Tensor pmc = Transform::Tensors::PxPyPzE(pt, eta, phi, e); 
-    return Graph::Tensors::node_aggregation(edge_index, prediction, pmc, include_zero); 
+    return Graph::Tensors::node_aggregation(edge_index, prediction, pmc); 
+}
+
+std::map<std::string, std::vector<torch::Tensor>> Graph::Tensors::Cartesian::edge_pmc(torch::Tensor edge_index, torch::Tensor prediction, torch::Tensor pmc){
+    return Graph::Tensors::edge_aggregation(edge_index, prediction, pmc); 
 }
 
 std::map<std::string, std::vector<torch::Tensor>> Graph::Tensors::Cartesian::edge_pmc(
-        torch::Tensor edge_index, torch::Tensor prediction, 
-        torch::Tensor pmc, const bool include_zero)
-{
-    return Graph::Tensors::edge_aggregation(edge_index, prediction, pmc, include_zero); 
-}
-
-std::map<std::string, std::vector<torch::Tensor>> Graph::Tensors::Cartesian::edge_pmc(
-        torch::Tensor edge_index, torch::Tensor prediction, 
-        torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e,  
-        const bool include_zero)
-{
-
-    std::vector<signed long> d = {-1, 1};
-    std::vector<torch::Tensor> pmc = {px.view(d), py.view(d), pz.view(d), e.view(d)}; 
-    return Graph::Tensors::edge_aggregation(edge_index, prediction, torch::cat(pmc, -1), include_zero); 
-}
-
-std::map<std::string, std::vector<torch::Tensor>> Graph::Tensors::Cartesian::node_pmc(
-        torch::Tensor edge_index, torch::Tensor prediction, 
-        torch::Tensor pmc, const bool include_zero)
-{
-    return Graph::Tensors::node_aggregation(edge_index, prediction, pmc, include_zero); 
-}
-
-std::map<std::string, std::vector<torch::Tensor>> Graph::Tensors::Cartesian::node_pmc(
-        torch::Tensor edge_index, torch::Tensor prediction, 
-        torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e,  
-        const bool include_zero)
+        torch::Tensor edge_index, torch::Tensor prediction, torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e)
 {
     std::vector<signed long> d = {-1, 1};
     std::vector<torch::Tensor> pmc = {px.view(d), py.view(d), pz.view(d), e.view(d)}; 
-    return Graph::Tensors::node_aggregation(edge_index, prediction, torch::cat(pmc, -1), include_zero); 
+    return Graph::Tensors::edge_aggregation(edge_index, prediction, torch::cat(pmc, -1)); 
+}
+
+std::map<std::string, std::vector<torch::Tensor>> Graph::Tensors::Cartesian::node_pmc(torch::Tensor edge_index, torch::Tensor prediction, torch::Tensor pmc){
+    return Graph::Tensors::node_aggregation(edge_index, prediction, pmc); 
+}
+
+std::map<std::string, std::vector<torch::Tensor>> Graph::Tensors::Cartesian::node_pmc(
+        torch::Tensor edge_index, torch::Tensor prediction, torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e)
+{
+    std::vector<signed long> d = {-1, 1};
+    std::vector<torch::Tensor> pmc = {px.view(d), py.view(d), pz.view(d), e.view(d)}; 
+    return Graph::Tensors::node_aggregation(edge_index, prediction, torch::cat(pmc, -1)); 
 }

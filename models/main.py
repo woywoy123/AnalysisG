@@ -9,7 +9,7 @@ import os
 mode_ = 0
 device = "cuda:0"
 name = "ModelTraining"
-model = "GNNEXPv2" #"RNN" #"RMGN"
+model = "GRNN" #"RNN" #"RMGN"
 gen_data = False
 
 modes = [
@@ -21,8 +21,8 @@ modes = [
 ]
 
 params = [
-#    ("MRK-1" , "ADAM", 1 , {"lr": 1e-3},            None,              None),
-#    ("MRK-2" , "ADAM", 10, {"lr": 1e-3},            None,              None),
+    ("MRK-1" , "ADAM", 1 , {"lr": 1e-3},            None,              None),
+    ("MRK-2" , "ADAM", 10, {"lr": 1e-3},            None,              None),
 #    ("MRK-3" , "ADAM", 50, {"lr": 1e-3},            None,              None),
 
 #    ("MRK-4" , "ADAM", 1 , {"lr": 1e-6, "weight_decay" : 1e-3}, "ExponentialLR", {"gamma"  : 0.5}),
@@ -42,9 +42,9 @@ params = [
 #    ("MRK-14", "SGD", 10, {"lr": 1e-3, "weight_decay" : 1e-1, "momentum" : 0.0005}, "ExponentialLR", {"gamma"  : 1.0}),
 #    ("MRK-15", "SGD", 50, {"lr": 1e-3, "weight_decay" : 1e-1, "momentum" : 0.0015}, "ExponentialLR", {"gamma"  : 2.0}),
 
-    ("MRK-16", "SGD", 1 , {"lr": 1e-3, "weight_decay" : 1e-3, "momentum" : 0.0001}, "CyclicLR", {"base_lr" : 1e-3, "max_lr" : 1e-1}),
-    ("MRK-17", "SGD", 10, {"lr": 1e-3, "weight_decay" : 1e-3, "momentum" : 0.0005}, "CyclicLR", {"base_lr" : 1e-3, "max_lr" : 1e0 }),
-    ("MRK-18", "SGD", 50, {"lr": 1e-3, "weight_decay" : 1e-3, "momentum" : 0.0015}, "CyclicLR", {"base_lr" : 1e-3, "max_lr" : 1e1 }),
+#    ("MRK-16", "SGD", 1 , {"lr": 1e-3, "weight_decay" : 1e-3, "momentum" : 0.0001}, "CyclicLR", {"base_lr" : 1e-3, "max_lr" : 1e-1}),
+#    ("MRK-17", "SGD", 10, {"lr": 1e-3, "weight_decay" : 1e-3, "momentum" : 0.0005}, "CyclicLR", {"base_lr" : 1e-3, "max_lr" : 1e0 }),
+#    ("MRK-18", "SGD", 50, {"lr": 1e-3, "weight_decay" : 1e-3, "momentum" : 0.0015}, "CyclicLR", {"base_lr" : 1e-3, "max_lr" : 1e1 }),
 ]
 
 
@@ -69,11 +69,11 @@ for mm in modes:
     train_name = "sample-" + mode
 
     if trig:
-        auto.SamplePath = os.environ["Samples"]
-        auto.AddDatasetName("ttH-m1000", 2)
-        auto.AddDatasetName("ttbar", 2)
-        auto.AddDatasetName("tttt (SM)", 2)
-        auto.AddDatasetName("ttH", 2)
+        auto.SamplePath = os.environ["Samples"]+"DileptonCollection"
+        auto.AddDatasetName("ttH-m1000", 1)
+        auto.AddDatasetName("ttbar", 1)
+        #auto.AddDatasetName("tttt (SM)", 2)
+        #auto.AddDatasetName("ttH", 2)
         #auto.AddDatasetName("3-top", 2)
         #auto.AddDatasetName("VH", 2)
         #auto.AddDatasetName("ttll", 2)
@@ -125,4 +125,6 @@ for this in params:
     Ana.ContinueTraining = False
     Ana.DebugMode = False
     Ana.KinematicMap = {"top_edge" : "polar -> N_pT, N_eta, N_phi, N_energy"}
+    Ana.ModelInjection = False
     Ana.Launch()
+    exit()

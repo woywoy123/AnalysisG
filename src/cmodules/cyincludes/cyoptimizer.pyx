@@ -10,7 +10,7 @@ from libcpp cimport bool
 from cython.operator cimport dereference
 from cython.parallel cimport prange
 
-from cytools cimport env, enc, penc, pdec, map_to_dict, recast
+from cytools cimport env, enc, penc, pdec, map_to_dict, recast, convert
 from cytypes cimport folds_t, data_t, graph_t
 from cyoptimizer cimport *
 from cyepoch cimport *
@@ -20,6 +20,8 @@ from AnalysisG.Plotting import TH1F, TLine
 from torch_geometric.data import Batch
 from tqdm import trange
 import numpy as np
+import awkward
+import uproot
 import pickle
 import torch
 import h5py
@@ -238,6 +240,7 @@ cdef void make_accuracy_plots(map[int, CyEpoch*] train, map[int, CyEpoch*] valid
         tmpl["Filename"] = var_name + "_accuracy"
         tmpl["Lines"] = list(lines[var_name].values())
         tl = TLine(**tmpl)
+        tl.yMax = 100
         tl.SaveFigure()
         del tl
         del tmpl
@@ -753,10 +756,13 @@ cdef class cOptimizer:
         cdef int idx = 0
         cdef int idy = 0
         cdef dict gh2
+        cdef dict data_e
 
         h5_file = None
+        up_root = None
         cdef str rp = self.sampletracer.WorkingPath
         cdef str tp = rp + "Training/" + model.RunName + "/"
+        cdef str tree = self.sampletracer.Tree
         cdef dict gh = self.sampletracer.makehashes()["graph"]
         cdef list roots = [tp + v.replace(rp + "GraphCache/", "") for v in gh]
         cdef vector[int] indx = [0] + [len(g) for g in gh.values()]
@@ -771,6 +777,13 @@ cdef class cOptimizer:
         bar.total = len(loader)
         bar.refresh()
 
+        cdef int ix = 0
+        cdef map[int, int] index_map
+        cdef pair[int, int] index_itr
+
+        cdef map[string, map[int, vector[float]]] data_map
+        cdef pair[string, map[int, vector[float]]] data_i
+
         for data, hashes in loader:
             gh = model(data)
             gh2 = gh.pop("graphs")[0].to_dict()
@@ -781,10 +794,35 @@ cdef class cOptimizer:
                 except FileExistsError: pass
                 if h5_file is not None: h5_file.close()
                 h5_file = h5py.File(v, "w")
+                if up_root is not None: 
+                    put  = {env(data_i.first) : awkward.Array([data_i.second[index_itr.first] for index_itr in index_map]) for data_i in data_map}
+                    put |= {"event_index" : awkward.Array([index_itr.first for index_itr in index_map])}
+                    up_root[tree] = put
+                    up_root.close()
+                up_root = uproot.recreate(v.replace(".hdf5", ".root"))
+
+                data_map.clear()
+                index_map.clear()
+
                 idx += 1
                 idy = 0
+
+            ix = gh["i"].tolist()[0]
             f = _check_sub(h5_file, env(hashes[0]))
-            f.attrs.update({v : tn.detach() for v, tn in gh.items()})
+            f.attrs.update({"event_index" : ix})
+            index_map[ix] = 0
+            for v, tn in gh.items():
+                if not v.startswith("O_"): continue
+                ten = tn.view(-1, tn.size()[-1])
+                f.attrs.update({v : ten.tolist()})
+                for k in range(tn.size()[-1]):
+                    data_map[enc(v[2:] + "_cls_" + str(k))][ix] = tn[:, k].tolist()
             bar.update(1)
             idy+=1
         h5_file.close()
+        put  = {env(data_i.first) : awkward.Array([data_i.second[index_itr.first] for index_itr in index_map]) for data_i in data_map}
+        put |= {"event_index" : awkward.Array([index_itr.first for index_itr in index_map])}
+        up_root[tree] = put
+        up_root.close()
+
+

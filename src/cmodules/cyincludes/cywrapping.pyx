@@ -18,7 +18,7 @@ except: pyc = None
 cdef dict polar_edge_mass(edge_index, prediction, pmu):
     if pyc is None: return {}
     cdef int key
-    cdef dict res = pyc.Graph.Polar.edge(edge_index, prediction, pmu, True)
+    cdef dict res = pyc.Graph.Polar.edge(edge_index, prediction, pmu)
     cdef dict msk = {key : (res[key]["clusters"] > -1).sum(-1) > 1 for key in res}
     res = {key : pyc.Physics.M(res[key]["unique_sum"][msk[key]]) for key in res if key != 0}
     return res
@@ -26,7 +26,7 @@ cdef dict polar_edge_mass(edge_index, prediction, pmu):
 cdef dict polar_node_mass(edge_index, prediction, pmu):
     if pyc is None: return {}
     cdef int key
-    cdef dict res = pyc.Graph.Polar.node(edge_index, prediction, pmu, True)
+    cdef dict res = pyc.Graph.Polar.node(edge_index, prediction, pmu)
     cdef dict msk = {key : (res[key]["clusters"] > -1).sum(-1) > 1 for key in res}
     res = {key : pyc.Physics.M(res[key]["unique_sum"][msk[key]]) for key in res if key != 0}
     return res
@@ -34,7 +34,7 @@ cdef dict polar_node_mass(edge_index, prediction, pmu):
 cdef dict cartesian_edge_mass(edge_index, prediction, pmu):
     if pyc is None: return {}
     cdef int key
-    cdef dict res = pyc.Graph.Cartesian.edge(edge_index, prediction, pmu, True)
+    cdef dict res = pyc.Graph.Cartesian.edge(edge_index, prediction, pmu)
     cdef dict msk = {key : (res[key]["clusters"] > -1).sum(-1) > 1 for key in res}
     res = {key : pyc.Physics.M(res[key]["unique_sum"][msk[key]]) for key in res if key != 0}
     return res
@@ -42,7 +42,7 @@ cdef dict cartesian_edge_mass(edge_index, prediction, pmu):
 cdef dict cartesian_node_mass(edge_index, prediction, pmu):
     if pyc is None: return {}
     cdef int key
-    cdef dict res = pyc.Graph.Cartesian.node(edge_index, prediction, pmu, True)
+    cdef dict res = pyc.Graph.Cartesian.node(edge_index, prediction, pmu)
     cdef dict msk = {key : (res[key]["clusters"] > -1).sum(-1) > 1 for key in res}
     res = {key : pyc.Physics.M(res[key]["unique_sum"][msk[key]]) for key in res if key != 0}
     return res
@@ -321,6 +321,8 @@ cdef class ModelWrapper:
         cdef dict loss
         cdef dict mass
         cdef bool skip_m = len(self._fxMap) < 1
+        cdef int dim_i
+
         self._loss_sum = 0
         for i, j in self._out_map.items():
             key = j[2:]
@@ -346,11 +348,15 @@ cdef class ModelWrapper:
 
             if skip_m: continue
             if j not in self._fxMap: continue
-            mass = {"edge_index" : sample["edge_index"], "prediction" : pred.max(-1)[1]}
+            mass = {"edge_index" : sample["edge_index"], "prediction" : pred}
             mass.update({"pmu" : torch.cat([sample[key] for key in self._fxMap[j][1]], -1)})
             tmp["M_P_" + j[2:]] = self._fxMap[j][0](**mass)
 
-            try: msk = sample[i].view(-1).to(dtype = torch.long)
+            try:
+                msk = torch.zeros_like(pred);
+                for dim_i in range(pred.size(1)):
+                    msk[sample[i].view(-1) == dim_i, dim_i] = 1
+                msk = msk.to(dtype = torch.long)
             except RuntimeError: continue
             mass["prediction"] = msk
             tmp["M_T_" + j[2:]] = self._fxMap[j][0](**mass)

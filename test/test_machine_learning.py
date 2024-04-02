@@ -378,11 +378,6 @@ def test_model_injection():
     ana.Launch()
     ana.rm("Project")
 
-def test_model_injection_root():
-
-    # need to think about a proper implementation strategy....
-    pass
-
 if __name__ == "__main__":
 #    test_random_sampling()
 #    test_feature_analysis()

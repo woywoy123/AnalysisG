@@ -37,10 +37,9 @@ def __router__(
     except KeyError: pass
     return getattr(fx, comb), inpt
 
-def edge_aggregation(ten1, ten2, ten3, include_zero = False):
+def edge_aggregation(ten1, ten2, ten3):
     name = inspect.currentframe().f_code.co_name
     fn, inpt = __router__([ten1, ten2, ten3], name, 3)
-    inpt += [include_zero]
     res = fn(*inpt)
     keys = [
             (0, "clusters"),
@@ -53,10 +52,9 @@ def edge_aggregation(ten1, ten2, ten3, include_zero = False):
     for i in range(len(res)): out[i] = { n : res[i][k] for k, n in keys }
     return out
 
-def node_aggregation(ten1, ten2, ten3, include_zero = False):
+def node_aggregation(ten1, ten2, ten3):
     name = inspect.currentframe().f_code.co_name
     fn, inpt = __router__([ten1, ten2, ten3], name, 3)
-    inpt += [include_zero]
     res = fn(*inpt)
     keys = [
             (0, "clusters"),

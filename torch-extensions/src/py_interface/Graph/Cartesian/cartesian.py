@@ -33,9 +33,8 @@ def __router__(
     return getattr(fx, comb), inpt
 
 def edge(*args):
-    null, ten = (args[-1], args[:-1]) if isinstance(args[-1], bool) else (False, args)
     name = inspect.currentframe().f_code.co_name
-    fn, inpt = __router__(list(ten), name, 3)
+    fn, inpt = __router__(list(args), name, 3)
     inpt += [null]
     res = fn(*inpt)
     keys = [
@@ -50,10 +49,8 @@ def edge(*args):
     return out
 
 def node(*args):
-    null, ten = (args[-1], args[:-1]) if isinstance(args[-1], bool) else (False, args)
     name = inspect.currentframe().f_code.co_name
-    fn, inpt = __router__(list(ten), name, 3)
-    inpt += [null]
+    fn, inpt = __router__(list(args), name, 3)
     res = fn(*inpt)
     keys = [
             (0, "clusters"),

@@ -93,6 +93,8 @@ class _Optimizer(Notification):
     def _nofailgraphs(self): return self.Failure("Missing Graph Name...")
     def _nofailtree(self):   return self.Failure("Missing Tree Name...")
 
+    def _no_test_sample(self): return self.Failure("No samples to test compatibility with model...")
+
     def _nomodel(self):
         if self.Model is None: pass
         else: return False
