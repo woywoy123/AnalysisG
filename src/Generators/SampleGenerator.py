@@ -26,7 +26,7 @@ class RandomSamplers(_RandomSamplers, Tools, SampleTracer):
         else: path += ".hdf5"
 
         self.mkdir("/".join(path.split("/")[:-1]))
-        f = h5py.File(path, "a")
+        f = h5py.File(path, "a", libver = "latest")
 
         try: self.__addthis__(f, inpt["train_hashes"], "train")
         except KeyError: pass

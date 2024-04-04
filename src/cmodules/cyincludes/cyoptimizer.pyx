@@ -137,7 +137,7 @@ cdef void make_mass_plots(map[int, CyEpoch*] train, map[int, CyEpoch*] valid, ma
             except KeyError: pass
             try: xData += tr_t[file_n][x]["xData"]
             except KeyError: pass
-            tmpl["Histogram"] = TH1F(**{"Title" : "Truth", "xData" : xData, "Color": "b"})
+            tmpl["Histograms"] += [TH1F(**{"Title" : "Truth", "xData" : xData, "Color": "b"})]
             tmpl["yLogarithmic"] = True
             th = TH1F(**tmpl)
             th.SaveFigure()
@@ -451,6 +451,7 @@ cdef void make_nodes(map[int, CyEpoch*] train, map[int, CyEpoch*] valid, map[int
     tmpl = template_th1f(path, "Number of Nodes", "Entries (arb.)", "Node Distribution for Sample Type", 1)
     tmpl["Filename"] = "NodeStatistics"
     tmpl["xBins"] = mx_ + 1
+    tmpl["xStep"] = 5
     tmpl["xMax"] = mx_ + 1
     tmpl["Stack"] = True
     tmpl["OverlayHists"] = False
@@ -558,9 +559,12 @@ cdef class DataLoader:
                 if gr.pkl.size(): pass
                 else: return None
                 data = pickle.loads(gr.pkl)
+                data = data.contiguous()
                 self.online[env(t_hash)] = data
             out.append(data)
             hashes.append(t_hash)
+        data = Batch().from_data_list(out)
+        out = []
 
         cdef int idx = self.sampletracer.MaxGPU
         cdef tuple cuda = (None, None)
@@ -568,14 +572,17 @@ cdef class DataLoader:
             try: cuda = torch.cuda.mem_get_info()
             except RuntimeError: pass
 
-        if cuda[0] is not None and (cuda[1] - cuda[0])/(1024**3) > idx:
-            self.purge = True
-            data = Batch().from_data_list(out)
-            for k in self.online.values(): del k
-            torch.cuda.empty_cache()
-            return data.to(device = self.device).clone(), hashes
         self.purge = False
-        return Batch().from_data_list(out).to(device = self.device).clone(), hashes
+        if cuda[0] is None: data = data.cpu()
+        else: data = data.cuda(device = self.device)
+        if (cuda[1] - cuda[0])/(1024**3) < idx: return data, hashes
+
+        self.purge = True
+        for k in self.online.values(): del k
+        torch.cuda.empty_cache()
+        self.online.clear()
+        return data, hashes
+
 
 
 cdef class cOptimizer:

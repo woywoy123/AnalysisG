@@ -1,16 +1,19 @@
 from torch_geometric.nn import MessagePassing, LayerNorm, aggr
 from torch_geometric.utils import to_dense_adj
-from torch_geometric.nn import GCNConv
 
 import torch
 from torch.nn import Sequential as Seq, Linear
-from torch.nn import ReLU
+from torch.nn import ReLU, Tanh, SELU, Dropout
 
 import pyc
 import pyc.Transform as transform
 import pyc.Graph.Base as graph
 import pyc.Physics.Cartesian as physics
 import pyc.NuSol.Cartesian as nusol
+
+def init_norm(m):
+    if not type(m) == torch.nn.Linear: return
+    torch.nn.init.uniform(m.weight, -1, 1)
 
 
 class RecursiveGraphNeuralNetwork(MessagePassing):
@@ -19,15 +22,12 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
 
         super().__init__(aggr = None)
 
-        try: dev = self.__param__["device"]
-        except AttributeError: dev = "cuda:0"
-
         try: self._gev = self.__param__["gev"]
         except AttributeError: self._gev = False
 
         try: self._nuR = self.__params__["nu_reco"]
         except AttributeError: self._nuR = False
-
+        self._nuR = True
         self.O_top_edge = None
         self.L_top_edge = "CEL"
 
@@ -44,31 +44,46 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
         self._dx  = 5
         self.rnn_dx = Seq(
                 Linear(self._dx*2, self._rep*2),
-                LayerNorm(self._rep*2), ReLU(),
+                LayerNorm(self._rep*2), SELU(),
                 Linear(self._rep*2, self._rep)
         )
+        self.rnn_dx.apply(init_norm)
 
         self._x   = 7
         self.rnn_x = Seq(
                 Linear(self._x, self._rep*2),
-                LayerNorm(self._rep*2),
+                LayerNorm(self._rep*2), SELU(),
                 Linear(self._rep*2, self._rep)
         )
+        self.rnn_x.apply(init_norm)
 
         self.rnn_mrg = Seq(
                 Linear(self._rep*2, self._rep*2),
-                LayerNorm(self._rep*2), ReLU(),
+                LayerNorm(self._rep*2), SELU(),
                 Linear(self._rep*2, self._o)
         )
+        self.rnn_mrg.apply(init_norm)
 
-        self.node_feat = Seq(Linear(18, self._rep), Linear(self._rep, self._rep))
-        self.node_delta = Seq(Linear(6, self._rep), ReLU(), Linear(self._rep, self._rep))
-        self.graph_feat = Seq(
-                Linear(self._rep*6, self._rep),
-                Linear(self._rep, self._rep),
-                LayerNorm(self._rep), ReLU(),
-                Linear(self._rep, 5)
+        self.node_feat  = Seq(
+                Linear(18, self._rep),
+                LayerNorm(self._rep), SELU(),
+                Linear(self._rep, self._rep)
         )
+        self.node_feat.apply(init_norm)
+
+        self.node_delta = Seq(
+                Linear(6, self._rep),
+                LayerNorm(self._rep), SELU(),
+                Linear(self._rep, self._rep)
+        )
+        self.node_delta.apply(init_norm)
+
+        self.graph_feat = Seq(
+                Linear(self._rep*6, self._rep*6),
+                SELU(), LayerNorm(self._rep*6), Tanh(),
+                Linear(self._rep*6, 5)
+        )
+        self.graph_feat.apply(init_norm)
 
     def message(self, trk_i, trk_j, pmc_i, pmc_j):
         pmci ,    _ = graph.unique_aggregation(trk_i, self.pmc)
@@ -118,8 +133,11 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
                     edge_index, batch, self.pmc, self.pid, self.met_xy,
                     null = 10e-10, gev = self._gev, top_up_down = 0.95, w_up_down = 0.95
             )
-            nu1, nu2, m1, m2 = data["nu_1f"], data["nu_2f"], data["ms_1f"], data["ms_2f"]
-            combi = data["combi"]
+            nu1, nu2, m1, m2, combi = [data[x] for x in ["nu_1f", "nu_2f", "ms_1f", "ms_2f", "combi"]]
+            comb = combi.sum(-1) > 0
+            l1, l2 = combi[comb, 2].to(dtype = torch.int64), combi[comb, 3].to(dtype = torch.int64)
+            self.pmc[l1] += nu1[comb]
+            self.pmc[l2] += nu2[comb]
 
         self.iter = 0
         self._hid = None

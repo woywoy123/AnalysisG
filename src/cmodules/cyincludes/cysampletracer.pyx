@@ -768,6 +768,7 @@ cdef class SampleTracer:
         cdef map[string, CyBatch*] cand
         cdef vector[CyBatch*] batches = self.ptr.MakeIterable()
         cdef string gr_name = enc(self.GraphName)
+        print("Randomly Sampling From Cache")
         for idx in prange(batches.size(), num_threads = self._set.threads, nogil = True):
             bt = batches[idx]
             if bt.this_gr == NULL: continue
@@ -776,7 +777,8 @@ cdef class SampleTracer:
             if bt.this_gr.graph.skip_graph: continue
             cand[bt.Hash()] = bt
 
-        cdef pair[string, CyBatch*] itr; 
+        print("Randomly Sampling From Cache (done)" + str(cand.size()))
+        cdef pair[string, CyBatch*] itr;
         cdef vector[string] hashes = [itr.first for itr in cand]
 
         random.shuffle(hashes)
@@ -801,6 +803,7 @@ cdef class SampleTracer:
         hashes = list(dict(test_sdx).values())
         output["test_hashes"] = pdec(&hashes)
 
+        print("Random Sampling with k-Fold")
         cdef vector[int] k_train, k_valid
         for idx, (k_train, k_valid) in enumerate(split.split(np.arange(train_idx.size()))):
             gr_name = enc("k-" + str(idx+1))
@@ -813,6 +816,7 @@ cdef class SampleTracer:
             output[env(gr_name)] = {}
             output[env(gr_name)]["train"] = pdec(&train_kfolds[gr_name])
             output[env(gr_name)]["leave-out"] = pdec(&valid_kfolds[gr_name])
+        print("Random Sampling with k-Fold (done)")
         return output
 
     def DumpEvents(self):

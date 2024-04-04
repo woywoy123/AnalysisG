@@ -45,7 +45,6 @@ class Graphs:
 class AnalysisBuild:
 
     def __init__(self, ProjectName = "Project"):
-        self.Analysis = {}
         self.ProjectName = ProjectName
         self.Event = None
         self.Graph = None
@@ -53,127 +52,58 @@ class AnalysisBuild:
         self.EventCache = False
         self.SamplePath = None
         self.EventStop = None
-        self.SampleDict = {}
-        self._quantmap = {}
-        self._meta = {}
-        self._data = DataSets()
-        self._jobs = {}
+        self.OutputDir = "./"
+        self.Threads = 40
 
-    def AddDatasetName(self, name, n_roots = -1):
-        if self.SamplePath is not None: pass
-        else: print("Set the 'SamplePath'"); exit()
+    def AddSampleNameEvent(self, name, n_roots = -1):
         x = UpROOT(self.SamplePath)
-        if l, smpl in x.Files.items():
-            if name not in l: continue
+        for l, smpl in x.Files.items():
+            if name != l.split("/")[-1]: continue
             if n_roots != -1: ls = [l + "/" + i for i in smpl][:n_roots]
             else: ls = [l + "/" + i for i in smpl]
-            self.SampleDict[name] = ls
 
-#        if len(self._meta): pass
-#        else: self.FetchMeta(n_roots)
-#
-#        for x, j in self._meta.items():
-#            name_ = self._data.CheckThis(j.DatasetName)
-#            msg = "Sample (" + j.DatasetName + ") not indexed in 'dataset_mapping'"
-#            if name_: pass
-#            else: print(msg); continue
-#
-#            if name_ != name: continue
-#
-#            if name_ in self.SampleDict: pass
-#            else: self.SampleDict[name_] = []
-#
-#            if n_roots == -1: pass
-#            elif len(self.SampleDict[name_]) > n_roots: break
-#            self.SampleDict[name_].append(x)
-#
-#        if name in self.SampleDict: return
-#        print("Sample not indexed")
-#        exit()
+            ana = Analysis()
+            ana.ProjectName = self.ProjectName
+            ana.OutputDirectory = self.OutputDir
+            ana.InputSample(name, ls)
+            ana.EventCache = True
+            ana.Event = self.Event
+            ana.Chunks = 1000
+            ana.Threads = self.Threads
+            ana.Launch()
 
-    def FetchMeta(self, n_roots = -1):
-        if self.SamplePath is not None: pass
-        else: print("Set the 'SamplePath'"); exit()
-        x = UpROOT(self.SamplePath)
-        if n_roots != -1:
-            x.Files = {k : x[: n_roots] for k, x in x.Files.items()}
-            ROOTFile = [i + "/" + k for i in x.Files for k in x.Files[i]]
-            x.File = {i: None for i in ROOTFile}
-        x.metacache_path = "./" + self.ProjectName + "/metacache/"
-        x.Trees = ["nominal"]
-        x.OnlyMeta = True
-        self._meta = x.GetAmiMeta()
-
-    def MakeGraphCache(self, name):
-        self.Graph = Graphs(name)._this
+    def AddSampleNameGraph(self, algo, name):
+        self.Graph = Graphs(algo)._this
         if self.Graph is not None: pass
         else: print("No Graph Implementation"); exit()
 
-        for ana in self.Analysis.values():
-            ana.Graph = self.Graph
-            ana.EventName = self.Event.__name__
-            ApplyFeatures(ana, name.split("_")[0])
-            ana.DataCache = True
+        ana = Analysis()
+        ana.ProjectName = self.ProjectName
+        ana.OutputDirectory = self.OutputDir
+        ana.InputSample(name)
+        ana.Graph = self.Graph
+        ApplyFeatures(ana, algo.split("_")[0])
+        ana.EventName = self.Event.__name__
+        ana.DataCache = True
+        ana.Threads = self.Threads
+        ana.Chunks = 10000
+        ana.Launch()
 
-    def MakeEventCache(self):
-        if self.Event is not None: pass
-        else: print("Set the 'Event'"); exit()
-
-        this = "E-" + self.Event.__name__
-        if this in self.Analysis: pass
-        else: self.Analysis[this] = Analysis()
-        self.Analysis[this].Event = self.Event
-        self.Analysis[this].EventName = self.Event.__name__
-
-    def QuantizeSamples(self, size = 100):
-        if self.SamplePath is not None: pass
-        else: print("Set the 'SamplePath'"); exit()
-        t = Tools()
-        for i, rt in self.SampleDict.items():
-            lst = list(t.Quantize(rt, size))
-            smpls = {}
-            for index, j in zip(range(len(lst)), lst): smpls[i + "_" + str(index)] = j
-            self._quantmap.update(smpls)
-
-    def TrainingSample(self, train_name, training_size = 90):
-        x = "T-" + train_name
-        if x in self.Analysis: return
-        self.Analysis[x] = Analysis()
-        self.Analysis[x].TrainingName = train_name
-        self.Analysis[x].TrainingSize = training_size
-        self.Analysis[x].EventStop = self.EventStop
-        self.Analysis[x].DataCache = True
-        self.Analysis[x].kFolds = 10
-        self.Analysis[x].GraphName = self.Graph.__name__
+    def TrainingSample(self, algo, train_name, training_size = 90):
+        self.Graph = Graphs(algo)._this
+        ana = Analysis()
+        ana.OutputDirectory = self.OutputDir
+        ana.ProjectName = self.ProjectName
+        ana.TrainingName = train_name
+        ana.TrainingSize = training_size
+        ana.GraphName = self.Graph.__name__
+        ana.DataCache = True
+        ana.kFolds = 10
+        ana.Threads = 48
+        ana.Chunks = 10000
+        ana.Launch()
 
     def ModelTrainer(self, model_name):
         x = Models(model_name)
         if x._this is None: exit()
         return x._this
-
-    def Make(self):
-        for ana in self.Analysis:
-            if ana.startswith("T-"):
-                self._jobs[ana] = Analysis()
-                self._jobs[ana].ImportSettings(self.Analysis[ana].ExportSettings())
-                self._jobs[ana].ProjectName = self.ProjectName
-                self._jobs[ana].InputSample(None)
-                continue
-
-            if self.EventCache: self.Analysis[ana].EventCache = True
-            if self.DataCache: self.Analysis[ana].DataCache = True
-            for i, j in self._quantmap.items():
-                self._jobs[ana + "-" + i] = Analysis()
-                self._jobs[ana + "-" + i].ImportSettings(self.Analysis[ana].ExportSettings())
-                self._jobs[ana + "-" + i].ProjectName = self.ProjectName
-                self._jobs[ana + "-" + i].InputSample(i, j)
-
-                if self.EventStop is None: continue
-                self._jobs[ana + "-" + i].EventStop = self.EventStop
-            if len(self._quantmap): continue
-            self._jobs[ana] = Analysis()
-            self._jobs[ana].ImportSettings(self.Analysis[ana].ExportSettings())
-            self._jobs[ana].EventStop = self.EventStop
-            self._jobs[ana].ProjectName = self.ProjectName
-            for i, j in self.SampleDict.items(): self._jobs[ana].InputSample(i, j)
-        return self._jobs

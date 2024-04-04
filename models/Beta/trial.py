@@ -5,21 +5,24 @@ from torch_geometric.data import Batch, Data
 
 import torch
 from GRNN import RecursiveGraphNeuralNetwork
-#torch.set_printoptions(precision=3, sci_mode = False)
+torch.set_printoptions(precision=3, sci_mode = False)
 torch.set_printoptions(profile = "full", linewidth = 20000)
 
 x = UnpickleObject("data/GraphTruthJet")
-data = Batch().from_data_list(x[0:2]).to(device = "cuda:1")
+data = Batch().from_data_list(x[:10]).to(device = "cuda:0")
 inpt = [
     "edge_index", "batch",
     "G_met", "G_phi", "G_n_jets", "G_n_lep",
     "N_pT", "N_eta", "N_phi", "N_energy", "N_is_lep", "N_is_b"
 ]
 
-model = RecursiveGraphNeuralNetwork()
+
+
+
 test = (getattr(data, i) for i in inpt)
 inpt = {i : getattr(data, i) for i in inpt}
-model.to(device = "cuda:1")
+model = RecursiveGraphNeuralNetwork()
+model = model.to(device = "cuda:0")
 model.train()
 
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
@@ -33,8 +36,9 @@ for i in range(100000):
     pred = edge.max(-1)[1]
     loss.backward()
     optimizer.step()
+    print(i)
     if i%100 != 0:continue
     train_acc = ((pred == edge_t).view(-1).sum(-1))/pred.size(0)
     print("Accuracy = {}, Loss = {}, iter = {}".format(train_acc, loss, model.iter))
-    print(to_dense_adj(inpt["edge_index"], edge_attr = edge_t)[0])
-    print(to_dense_adj(inpt["edge_index"], edge_attr = pred)[0])
+    #print(to_dense_adj(inpt["edge_index"], edge_attr = edge_t)[0])
+    #print(to_dense_adj(inpt["edge_index"], edge_attr = pred)[0])

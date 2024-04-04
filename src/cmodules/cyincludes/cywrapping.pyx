@@ -20,32 +20,48 @@ cdef dict polar_edge_mass(edge_index, prediction, pmu):
     cdef int key
     cdef dict res = pyc.Graph.Polar.edge(edge_index, prediction, pmu)
     cdef dict msk = {key : (res[key]["clusters"] > -1).sum(-1) > 1 for key in res}
-    res = {key : pyc.Physics.M(res[key]["unique_sum"][msk[key]]) for key in res if key != 0}
-    return res
+    cdef dict out = {}
+    for key in res:
+        if not key: continue
+        if not msk[key].sum(-1): continue
+        out[key] = pyc.Physics.M(res[key]["unique_sum"][msk[key]])
+    return out
 
 cdef dict polar_node_mass(edge_index, prediction, pmu):
     if pyc is None: return {}
     cdef int key
     cdef dict res = pyc.Graph.Polar.node(edge_index, prediction, pmu)
     cdef dict msk = {key : (res[key]["clusters"] > -1).sum(-1) > 1 for key in res}
-    res = {key : pyc.Physics.M(res[key]["unique_sum"][msk[key]]) for key in res if key != 0}
-    return res
+    cdef dict out = {}
+    for key in res:
+        if not key: continue
+        if not msk[key].sum(-1): continue
+        out[key] = pyc.Physics.M(res[key]["unique_sum"][msk[key]])
+    return out
 
 cdef dict cartesian_edge_mass(edge_index, prediction, pmu):
     if pyc is None: return {}
     cdef int key
     cdef dict res = pyc.Graph.Cartesian.edge(edge_index, prediction, pmu)
     cdef dict msk = {key : (res[key]["clusters"] > -1).sum(-1) > 1 for key in res}
-    res = {key : pyc.Physics.M(res[key]["unique_sum"][msk[key]]) for key in res if key != 0}
-    return res
+    cdef dict out = {}
+    for key in res:
+        if not key: continue
+        if not msk[key].sum(-1): continue
+        out[key] = pyc.Physics.M(res[key]["unique_sum"][msk[key]])
+    return out
 
 cdef dict cartesian_node_mass(edge_index, prediction, pmu):
     if pyc is None: return {}
     cdef int key
     cdef dict res = pyc.Graph.Cartesian.node(edge_index, prediction, pmu)
     cdef dict msk = {key : (res[key]["clusters"] > -1).sum(-1) > 1 for key in res}
-    res = {key : pyc.Physics.M(res[key]["unique_sum"][msk[key]]) for key in res if key != 0}
-    return res
+    cdef dict out = {}
+    for key in res:
+        if not key: continue
+        if not msk[key].sum(-1): continue
+        out[key] = pyc.Physics.M(res[key]["unique_sum"][msk[key]])
+    return out
 
 
 cdef class OptimizerWrapper:
@@ -340,23 +356,21 @@ cdef class ModelWrapper:
             data._inc_dict.update({j : data._inc_dict.get(i)})
             data.__dict__["_store"][j] = pred
 
-            try: loss = self._loss_map[key](pred, sample[i])
+            loss = self._loss_map[key](pred, sample[i])
+            try: pass
             except KeyError: continue
             except ValueError: continue
             self._loss_sum += loss["loss"]
             tmp["L_" + key] = loss["loss"]
             tmp["A_" + key] = loss["acc"]
-
             if skip_m: continue
             if j not in self._fxMap: continue
             mass = {"edge_index" : sample["edge_index"], "prediction" : pred}
             mass.update({"pmu" : torch.cat([sample[key] for key in self._fxMap[j][1]], -1)})
             tmp["M_P_" + j[2:]] = self._fxMap[j][0](**mass)
-
             try:
                 msk = torch.zeros_like(pred);
-                for dim_i in range(pred.size(1)):
-                    msk[sample[i].view(-1) == dim_i, dim_i] = 1
+                for dim_i in range(pred.size(1)): msk[sample[i].view(-1) == dim_i, dim_i] = 1
                 msk = msk.to(dtype = torch.long)
             except RuntimeError: continue
             mass["prediction"] = msk
@@ -370,10 +384,11 @@ cdef class ModelWrapper:
     def __call__(self, data):
         cdef str i
         cdef dict inpt
-        try: inpt= data.to_dict()
+        try: inpt = data.to_dict()
         except AttributeError: inpt = data
         self._model(**{i : inpt[i] for i in self._in_map})
-        return self.__debatch__(inpt, data)
+        self._result = self.__debatch__(inpt, data)
+        return self._result
 
     cpdef match_reconstruction(self, dict sample):
         if pyc is None: return
@@ -438,8 +453,13 @@ cdef class ModelWrapper:
         self._out_map = mapping
 
     def backward(self):
-        if not self._train: pass
-        else: self._loss_sum.backward()
+        if not self._train: return False
+        try: self._loss_sum.backward()
+        except RuntimeError:
+            self._loss_sum = sum([k for i, k in self._result.items() if i.startswith("L_")])
+            self._loss_sum.backward()
+            return True
+        return True
 
     def save(self):
         cdef str _save_path = ""

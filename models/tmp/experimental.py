@@ -13,10 +13,6 @@ import pyc.Physics.Cartesian as physics
 
 torch.set_printoptions(precision=3, sci_mode = True, linewidth = 1000, threshold = 10000)
 
-def init_norm(m):
-    if not type(m) == torch.nn.Linear: return
-    torch.nn.init.uniform(m.weight)
-
 
 class RecursiveParticles(MessagePassing):
 

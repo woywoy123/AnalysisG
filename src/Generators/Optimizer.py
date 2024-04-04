@@ -132,7 +132,6 @@ class Optimizer(_Optimizer, _Interface, RandomSamplers):
             self._cmod.Purge()
 
     def __train__(self, kfold, epoch):
-        container = []
         batches = self._cmod.FetchTraining(kfold, self.BatchSize)
         msg = "Epoch (" + str(epoch) + ") Running k-Fold (training) -> " + str(kfold)
         if not self.DebugMode: _, bar = self._MakeBar(len(batches), msg)
@@ -141,70 +140,36 @@ class Optimizer(_Optimizer, _Interface, RandomSamplers):
         for graph, _ in batches:
             op.zero()
             res = model(graph)
-            model.backward()
+            if not model.backward(): continue
             op.step()
-            if not self.DebugMode:
-                container.append(res)
-                bar.update(1)
-            else:
-                self._cmod.AddkFold(epoch, kfold, res, self._kModels[kfold].out_map)
-                del res
 
-            if not batches.purge: continue
-            self._cmod.FastGraphRecast(epoch, kfold, container, self._kModels[kfold].out_map)
-            for i in container: del i
-            container = []
-
-        if self.DebugMode: return
-        self._cmod.FastGraphRecast(epoch, kfold, container, self._kModels[kfold].out_map)
-        for i in container: del i
+            if not self.DebugMode: bar.update(1)
+            self._cmod.AddkFold(epoch, kfold, res, self._kModels[kfold].out_map)
+            #self._cmod.FastGraphRecast(epoch, kfold, [res], self._kModels[kfold].out_map)
+            del res
 
     def __validation__(self, kfold, epoch):
-        container = []
         batches = self._cmod.FetchValidation(kfold, self.BatchSize)
         msg = "Epoch (" + str(epoch) + ") Running k-Fold (validation) -> " + str(kfold)
         if not self.DebugMode: _, bar = self._MakeBar(len(batches), msg)
         model = self._kModels[kfold]
         for graph, _ in batches:
             res = model(graph)
-            if not self.DebugMode:
-                container.append(res)
-                bar.update(1)
-            else:
-                self._cmod.AddkFold(epoch, kfold, res, self._kModels[kfold].out_map)
-                del res
-
-            if not batches.purge: continue
-            self._cmod.FastGraphRecast(epoch, kfold, container, self._kModels[kfold].out_map)
-            for i in container: del i
-            container = []
-
-        if self.DebugMode: return
-        self._cmod.FastGraphRecast(epoch, kfold, container, self._kModels[kfold].out_map)
-        for i in container: del i
+            if not self.DebugMode: bar.update(1)
+            self._cmod.AddkFold(epoch, kfold, res, self._kModels[kfold].out_map)
+            #self._cmod.FastGraphRecast(epoch, kfold, [res], self._kModels[kfold].out_map)
+            del res
 
     def __evaluation__(self, kfold, epoch):
-        container = []
         batches = self._cmod.FetchEvaluation(self.BatchSize)
         if not self.DebugMode: _, bar = self._MakeBar(len(batches), "Epoch (" + str(epoch) + ") Running leave-out")
         model = self._kModels[kfold]
         for graph, _ in batches:
             res = model(graph)
-            if not self.DebugMode:
-                container.append(res)
-                bar.update(1)
-            else:
-                self._cmod.AddkFold(epoch, kfold, res, self._kModels[kfold].out_map)
-                del res
-
-            if not batches.purge: continue
-            self._cmod.FastGraphRecast(epoch, kfold, container, self._kModels[kfold].out_map)
-            for i in container: del i
-            container = []
-
-        if self.DebugMode: return
-        self._cmod.FastGraphRecast(epoch, kfold, container, self._kModels[kfold].out_map)
-        for i in container: del i
+            if not self.DebugMode: bar.update(1)
+            self._cmod.AddkFold(epoch, kfold, res, self._kModels[kfold].out_map)
+            #self._cmod.FastGraphRecast(epoch, kfold, [res], self._kModels[kfold].out_map)
+            del res
 
     def __run_injection__(self):
         msg = "Running Model Injector: "
