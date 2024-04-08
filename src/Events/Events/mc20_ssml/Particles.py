@@ -97,6 +97,17 @@ class Electron(Particle):
         self.true_type   = "el_true_type"
         self.true_origin = "el_true_origin"
 
+    @property
+    def is_jet(self): return False
+
+    @property
+    def is_lepton(self): return True
+
+    @property
+    def is_photon(self): return False
+
+
+
 
 class Muon(Particle):
 
@@ -109,6 +120,19 @@ class Muon(Particle):
         self.delta_z0    = "mu_delta_z0_sintheta"
         self.true_type   = "mu_true_type"
         self.true_origin = "mu_true_origin"
+
+    @property
+    def is_jet(self): return False
+
+    @property
+    def is_lepton(self): return True
+
+    @property
+    def is_photon(self): return False
+
+
+
+
 
 class Jet(Particle):
 
@@ -124,6 +148,15 @@ class Jet(Particle):
         self.btag70 = _tag + "GN2v00NewAliasWP_70"
         self.btag77 = _tag + "GN2v00NewAliasWP_77"
         self.btag85 = _tag + "GN2v00NewAliasWP_85"
+
+    @property
+    def is_jet(self): return True
+
+    @property
+    def is_lepton(self): return False
+
+    @property
+    def is_photon(self): return False
 
 
 

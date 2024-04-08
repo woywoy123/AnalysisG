@@ -773,10 +773,10 @@ def fractional(ana):
     th.SaveFigure()
 
 def ChildrenKinematics(ana):
-#    kinematics_pt(ana)
-#    kinematics_eta(ana)
-#    kinematics_phi(ana)
-#    kinematics_energy(ana)
-#    kinematics_decay_mode(ana)
+    kinematics_pt(ana)
+    kinematics_eta(ana)
+    kinematics_phi(ana)
+    kinematics_energy(ana)
+    kinematics_decay_mode(ana)
     dr_clustering(ana)
-#    fractional(ana)
+    fractional(ana)

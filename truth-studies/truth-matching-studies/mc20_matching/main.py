@@ -5,24 +5,26 @@ import plotting
 import studies
 import os
 
-smpls = "/import/wu1/tnom6927/AnalysisTop/common-framework/run/data" #os.environ["Samples"] + "mc20_13_tttt_m1250"
+figure_path = "../../../docs/source/studies/truth-matching/mc20/"
+plotting.top.figure_path = figure_path
+
+smpls = os.environ["Samples"] + "mc20"
 run_cache = True
 run_analysis = {
-        "TruthTops" : studies.truthtop.TruthTops,
-        #"TruthJetMatching" : studies.truthjet.TruthJetMatching
+        "TopMatching" : studies.top.TopMatching,
 }
 
 run_plotting = {
-        "TruthTops" : plotting.truthtop.TruthTops,
-        #"TruthJetMatching" : plotting.truthjet.TruthJetMatching
+        "TopMatching" : plotting.top.TopMatching,
 }
 
 x = Tools()
-bs = {"test" : x.lsFiles(smpls)}
+bs = {"test" : x.lsFiles(smpls)[:10]}
 bsm = "UNTITLED"
 if run_cache:
     ana = Analysis()
     ana.Chunks = 1000
+    ana.EventStop = 10000
     ana.ProjectName = bsm
     for j, k in bs.items(): ana.InputSample(j, k)
     ana.EventCache = True

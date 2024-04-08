@@ -4,7 +4,7 @@ global figure_path
 def settings():
     settings = {
             "Style" : "ROOT",
-            "OutputDirectory" : figure_path + "truth-jets/figures/",
+            "OutputDirectory" : figure_path + "jets/figures/",
             "Histograms" : [],
             "Histogram" : None,
             "FontSize" : 15,
@@ -18,11 +18,11 @@ def settings():
 def settings_th2f():
     settings = {
             "Style" : "ROOT",
-            "OutputDirectory" : figure_path + "truth-jets/figures/",
+            "OutputDirectory" : figure_path + "jets/figures/",
     }
     return settings
 
-def top_mass_truthjets(ana):
+def top_mass_jets(ana):
 
     sett = settings()
     for x in ["leptonic", "hadronic"]:
@@ -32,10 +32,10 @@ def top_mass_truthjets(ana):
         sett["Histograms"] += [th]
 
     th_ = TH1F(**sett)
-    th_.Title = "Invariant Top-Quark Mass from Matched Truth Jets (and Truth Leptons/Neutrinos)"
+    th_.Title = "Invariant Top-Quark Mass from Matched Jets (and Leptons/Neutrinos)"
     th_.xTitle = "Invariant Mass (GeV)"
     th_.yTitle = "Entries <unit>"
-    th_.Filename = "Figure.7.a"
+    th_.Filename = "Figure.8.a"
     th_.xBins = 500
     th_.xMin  = 0
     th_.xMax  = 500
@@ -45,17 +45,17 @@ def top_mass_truthjets(ana):
 
     for x, name in zip(["leptonic", "hadronic"], ["b", "c"]):
         sett = settings()
-        for nj in ana.top_mass["ntruthjets"][x]:
+        for nj in ana.top_mass["njets"][x]:
             th = TH1F()
-            th.Title = str(nj) + "-TruthJets"
-            th.xData = ana.top_mass["ntruthjets"][x][nj]
+            th.Title = str(nj) + "-Jets"
+            th.xData = ana.top_mass["njets"][x][nj]
             sett["Histograms"] += [th]
 
         th_ = TH1F(**sett)
-        th_.Title = "Invariant Top-Quark Mass for " + x + " Decays for n-TruthJet Contributions"
+        th_.Title = "Invariant Top-Quark Mass for " + x + " Decays for n-Jet Contributions"
         th_.xTitle = "Invariant Mass (GeV)"
         th_.yTitle = "Entries <unit>"
-        th_.Filename = "Figure.7." + name
+        th_.Filename = "Figure.8." + name
         th_.xBins = 500
         th_.xMin  = 0
         th_.xMax  = 500
@@ -73,10 +73,10 @@ def top_mass_truthjets(ana):
             sett["Histograms"] += [th]
 
         th_ = TH1F(**sett)
-        th_.Title = "Invariant Top-Quark Mass for " + x + " Decays with \n n-Top Contributions in Truth Jets"
+        th_.Title = "Invariant Top-Quark Mass for " + x + " Decays with \n n-Top Contributions in Jets"
         th_.xTitle = "Invariant Mass (GeV)"
         th_.yTitle = "Entries <unit>"
-        th_.Filename = "Figure.7." + name
+        th_.Filename = "Figure.8." + name
         th_.xBins = 500
         th_.xMin  = 0
         th_.xMax  = 500
@@ -84,21 +84,21 @@ def top_mass_truthjets(ana):
         th_.Stack = True
         th_.SaveFigure()
 
-def top_truthjet_cluster(ana):
+def top_jet_cluster(ana):
 
     sett = settings()
     maps = ["background", "resonant-leptonic", "resonant-hadronic", "spectator-leptonic", "spectator-hadronic"]
     for x in maps:
         th = TH1F()
         th.Title = x
-        th.xData = ana.truthjet_top[x]["dr"]
+        th.xData = ana.jet_top[x]["dr"]
         sett["Histograms"] += [th]
 
     th_ = TH1F(**sett)
-    th_.Title = "$\\Delta$R Between Truth-Jets matched to Mutal Top \n compared to Background (Other Truth-Jets)"
+    th_.Title = "$\\Delta$R Between Jets matched to Mutal Top \n compared to Background (Other Jets)"
     th_.xTitle = "$\\Delta$R (arb.)"
     th_.yTitle = "Entries"
-    th_.Filename = "Figure.7.f"
+    th_.Filename = "Figure.8.f"
     th_.xBins = 500
     th_.xMin  = 0
     th_.xMax  = 6
@@ -114,9 +114,9 @@ def top_truthjet_cluster(ana):
     for n, j, f in zip(names, map_m, fig_):
         sett = settings_th2f()
         th2 = TH2F(**sett)
-        th2.Title = "$\\Delta$R Between Truth-Jets from " + n + " Top \n as a Function of the Top's Energy"
-        th2.xData = ana.truthjet_top[j]["energy"]
-        th2.yData = ana.truthjet_top[j]["dr"]
+        th2.Title = "$\\Delta$R Between Jets from " + n + " Top \n as a Function of the Top's Energy"
+        th2.xData = ana.jet_top[j]["energy"]
+        th2.yData = ana.jet_top[j]["dr"]
 
         th2.xTitle = "Originating Top Energy (GeV)"
         th2.yTitle = "$\\Delta R$ (arb.)"
@@ -135,16 +135,16 @@ def top_truthjet_cluster(ana):
 
         th2.Color = "tab20c"
 
-        th2.Filename = "Figure.7." + f
+        th2.Filename = "Figure.8." + f
         th2.SaveFigure()
 
     fig_ = ["k", "l", "m", "n"]
     for n, j, f in zip(names, map_m, fig_):
         sett = settings_th2f()
         th2 = TH2F(**sett)
-        th2.Title = "$\\Delta$R Between Truth-Jets from " + n + " Top \n as a Function of the Top's Transverse Momenta"
-        th2.xData = ana.truthjet_top[j]["energy"]
-        th2.yData = ana.truthjet_top[j]["dr"]
+        th2.Title = "$\\Delta$R Between Jets from " + n + " Top \n as a Function of the Top's Transverse Momenta"
+        th2.xData = ana.jet_top[j]["energy"]
+        th2.yData = ana.jet_top[j]["dr"]
 
         th2.xTitle = "Originating Top Transverse Momenta (GeV)"
         th2.yTitle = "$\\Delta R$ (arb.)"
@@ -163,11 +163,11 @@ def top_truthjet_cluster(ana):
 
         th2.Color = "tab20c"
 
-        th2.Filename = "Figure.7." + f
+        th2.Filename = "Figure.8." + f
         th2.SaveFigure()
 
-def truthjet_partons(ana):
-    data = ana.truthjet_partons
+def jet_partons(ana):
+    data = ana.jet_partons
     maps = ["resonant-leptonic", "resonant-hadronic", "spectator-leptonic", "spectator-hadronic", "background"]
 
     symbolic = {}
@@ -192,10 +192,10 @@ def truthjet_partons(ana):
         sett["Histograms"].append(th_)
 
     th_p = TH1F(**sett)
-    th_p.Title = "$\\Delta$R Between the Truth-Jet Axis and Ghost Matched Partons"
+    th_p.Title = "$\\Delta$R Between the Jet Axis and Ghost Matched Partons"
     th_p.xTitle = "$\\Delta$R (arb.)"
     th_p.yTitle = "Entries"
-    th_p.Filename = "Figure.7.o"
+    th_p.Filename = "Figure.8.o"
     th_p.xBins = 500
     th_p.xMin  = 0
     th_p.xMax  = 0.6
@@ -205,11 +205,11 @@ def truthjet_partons(ana):
 
     sett = settings_th2f()
     th2 = TH2F(**sett)
-    th2.Title = "$\\Delta$R Between Truth-Jet Axis and Ghost Matched Partons \n as a function of Ghost Parton Energy"
+    th2.Title = "$\\Delta$R Between Jet Axis and Ghost Matched Partons \n as a function of Ghost Parton Energy"
     th2.xData = sum([x for x in energy.values()], [])
     th2.yData = sum([x for x in symbolic.values()], [])
     th2.xTitle = "Ghost Matched Parton Energy (GeV)"
-    th2.yTitle = "$\\Delta R$ between Truth-Jet Axis and Ghost Matched Partons (arb.)"
+    th2.yTitle = "$\\Delta R$ between Jet Axis and Ghost Matched Partons (arb.)"
 
     th2.xBins = 500
     th2.yBins = 500
@@ -223,16 +223,16 @@ def truthjet_partons(ana):
     th2.yOverFlow = True
     th2.xOverFlow = True
 
-    th2.Filename = "Figure.7.p"
+    th2.Filename = "Figure.8.p"
     th2.SaveFigure()
 
     sett = settings_th2f()
     th2 = TH2F(**sett)
-    th2.Title = "$\\Delta$R Between Truth-Jet Axis and Ghost Matched Partons \n as a function of Ghost Parton Transverse Momenta"
+    th2.Title = "$\\Delta$R Between Jet Axis and Ghost Matched Partons \n as a function of Ghost Parton Transverse Momenta"
     th2.xData = sum([x for x in transverse.values()], [])
     th2.yData = sum([x for x in symbolic.values()], [])
     th2.xTitle = "Ghost Matched Transverse Momenta (GeV)"
-    th2.yTitle = "$\\Delta R$ between Truth-Jet Axis and Ghost Matched Partons (arb.)"
+    th2.yTitle = "$\\Delta R$ between Jet Axis and Ghost Matched Partons (arb.)"
 
     th2.xBins = 500
     th2.yBins = 500
@@ -246,7 +246,7 @@ def truthjet_partons(ana):
     th2.yOverFlow = True
     th2.xOverFlow = True
 
-    th2.Filename = "Figure.7.q"
+    th2.Filename = "Figure.8.q"
     th2.SaveFigure()
 
 
@@ -263,10 +263,10 @@ def truthjet_partons(ana):
             sett["Histograms"].append(th_)
 
         th_p = TH1F(**sett)
-        th_p.Title = "$\\Delta$R Between the Truth-Jet Axis and Ghost Matched Partons \n for " + name + " Matched Truth Jets"
+        th_p.Title = "$\\Delta$R Between the Jet Axis and Ghost Matched Partons \n for " + name + " Matched Jets"
         th_p.xTitle = "$\\Delta$R (arb.)"
         th_p.yTitle = "Entries"
-        th_p.Filename = "Figure.7." + fig_[x]
+        th_p.Filename = "Figure.8." + fig_[x]
         th_p.xBins = 500
         th_p.xMin  = 0
         th_p.xMax  = 0.6
@@ -274,16 +274,16 @@ def truthjet_partons(ana):
         th_p.yLogarithmic = True
         th_p.SaveFigure()
 
-def truthjet_contribution(ana):
-    data = ana.truthjets_contribute
+def jet_contribution(ana):
+    data = ana.jets_contribute
 
     sett = settings_th2f()
     th2 = TH2F(**sett)
-    th2.Title = "Ghost Parton Energy Ratio as a function of Number of Partons \n For all Truth Jets"
+    th2.Title = "Ghost Parton Energy Ratio as a function of Number of Partons \n For all Jets"
     th2.xData = data["all"]["n-partons"]
     th2.yData = data["all"]["energy"]
     th2.xTitle = "Number of Ghost Matched Partons"
-    th2.yTitle = "Energy Ratio (Truth Jet / Sum Ghost Partons) (arb.)"
+    th2.yTitle = "Energy Ratio (Jet / Sum Ghost Partons) (arb.)"
 
     th2.xBins = 20
     th2.yBins = 500
@@ -296,17 +296,17 @@ def truthjet_contribution(ana):
     th2.yMax = 2
     th2.yStep = 0.2
 
-    th2.Filename = "Figure.7.v"
+    th2.Filename = "Figure.8.v"
     th2.SaveFigure()
 
 
     sett = settings_th2f()
     th2 = TH2F(**sett)
-    th2.Title = "Ghost Parton Transverse Momenta Ratio as a function of Number of Partons \n For all Truth Jets"
+    th2.Title = "Ghost Parton Transverse Momenta Ratio as a function of Number of Partons \n For all Jets"
     th2.xData = data["all"]["n-partons"]
     th2.yData = data["all"]["pt"]
     th2.xTitle = "Number of Ghost Matched Partons"
-    th2.yTitle = "Transverse Momenta Ratio (Truth Jet / Sum Ghost Partons) (arb.)"
+    th2.yTitle = "Transverse Momenta Ratio (Jet / Sum Ghost Partons) (arb.)"
 
     th2.xBins = 20
     th2.yBins = 500
@@ -319,7 +319,7 @@ def truthjet_contribution(ana):
     th2.yMax = 2
     th2.yStep = 0.2
 
-    th2.Filename = "Figure.7.w"
+    th2.Filename = "Figure.8.w"
     th2.SaveFigure()
 
 
@@ -331,10 +331,10 @@ def truthjet_contribution(ana):
         sett["Histograms"].append(th_)
 
     th_p = TH1F(**sett)
-    th_p.Title = "Energy Ratio of n-Top Contributions to a given Truth-Jet"
+    th_p.Title = "Energy Ratio of n-Top Contributions to a given Jet"
     th_p.xTitle = "Top-Parton Energy Sum / All Top-Parton Energy Sum"
     th_p.yTitle = "Entries"
-    th_p.Filename = "Figure.7.x"
+    th_p.Filename = "Figure.8.x"
     th_p.xBins = 500
     th_p.xMin  = 0
     th_p.xMax  = 1
@@ -344,11 +344,11 @@ def truthjet_contribution(ana):
 
     sett = settings_th2f()
     th2 = TH2F(**sett)
-    th2.Title = "Truth-Jet Mass as a function of n-Top Contributions"
-    th2.xData = ana.truthjet_mass["n-tops"]
-    th2.yData = ana.truthjet_mass["all"]
+    th2.Title = "Jet Mass as a function of n-Top Contributions"
+    th2.xData = ana.jet_mass["n-tops"]
+    th2.yData = ana.jet_mass["all"]
     th2.xTitle = "Number of Tops"
-    th2.yTitle = "Truth-Jet Mass (GeV)"
+    th2.yTitle = "Jet Mass (GeV)"
 
     th2.xBins = 4
     th2.yBins = 500
@@ -362,11 +362,12 @@ def truthjet_contribution(ana):
     th2.yStep = 10
 
     th2.Color = "tab20c"
-    th2.Filename = "Figure.7.y"
+    th2.Filename = "Figure.8.y"
     th2.SaveFigure()
 
-def TopTruthJets(ana):
-    top_mass_truthjets(ana)
-    top_truthjet_cluster(ana)
-    truthjet_partons(ana)
-    truthjet_contribution(ana)
+
+def TopJets(ana):
+    top_mass_jets(ana)
+    top_jet_cluster(ana)
+    jet_partons(ana)
+    jet_contribution(ana)

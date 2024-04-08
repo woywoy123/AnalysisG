@@ -17,6 +17,7 @@ https://github.com/woywoy123/BSM4tops-GNN-ntuples/tree/main
    mc16/decay-modes/main.rst
    mc16/truth-event/main.rst
    mc16/truth-jets/main.rst
+   mc16/jets/main.rst
    mc16/other/main.rst
 
 MC-20 Simulation Truth Matching
@@ -29,8 +30,9 @@ To reproduce these studies, special samples need to be produced with another fra
 https://gitlab.cern.ch/atlas-phys/exot/hqt/ana-exot-2022-44/common-framework/-/tree/add-top-matching?ref_type=heads
 
 .. toctree::
+   :titleonly:
 
-   mc20/index.rst
+   mc20/top/main.rst
 
 Glossary
 --------

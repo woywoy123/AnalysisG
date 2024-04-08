@@ -12,19 +12,21 @@ plotting.top.topkinematics.figure_path           = figure_path
 plotting.top.topmatching.figure_path             = figure_path
 plotting.children.childrenkinematics.figure_path = figure_path
 plotting.truthjets.toptruthjets.figure_path      = figure_path
+plotting.jets.topmatching.figure_path            = figure_path
 plotting.event.figure_path                       = figure_path
 
-smpls = os.environ["Samples"]
-run_cache = True
+smpls = os.environ["Samples"] + "mc16_13_"
+run_cache = False
 run_analysis = {
                     "ZPrimeMatrix"        : studies.resonance.zprime.ZPrime,
                     "ResonanceDecayModes" : studies.resonance.decaymodes.DecayModes,
                     "TopKinematics"       : studies.top.topkinematics.TopKinematics,
                     "TopMatching"         : studies.top.topmatching.TopMatching,
                     "ChildrenKinematics"  : studies.children.childrenkinematics.ChildrenKinematics,
+                    "TopTruthJets"        : studies.truthjets.toptruthjets.TopTruthJets,
+                    "TopJets"             : studies.jets.topmatching.TopJets,
                     "TruthEvent"          : studies.event.TruthEvent,
-                    "TopTruthJets"         : studies.truthjets.toptruthjets.TopTruthJets,
-                    "AddOnStudies"        : studies.other.AddOnStudies,
+                    "AddOnStudies"        : studies.other.AddOnStudies
 }
 
 run_plotting = {
@@ -33,21 +35,22 @@ run_plotting = {
                     "TopKinematics"       : plotting.top.topkinematics.TopKinematics,
                     "TopMatching"         : plotting.top.topmatching.TopMatching,
                     "ChildrenKinematics"  : plotting.children.childrenkinematics.ChildrenKinematics,
+                    "TopTruthJets"        : plotting.truthjets.toptruthjets.TopTruthJets,
+                    "TopJets"             : plotting.jets.topmatching.TopJets,
                     "TruthEvent"          : plotting.event.TruthEvent,
-                    "TopTruthJets"           : plotting.truthjets.toptruthjets.TopTruthJets,
                     "AddOnStudies"        : plotting.other.AddOnStudies
 }
 
 
 
 smpls = {
-        "m400"  : smpls + "ttZ-400",
-        "m500"  : smpls + "ttZ-500",
-        "m600"  : smpls + "ttZ-600",
-        "m700"  : smpls + "ttZ-700",
-        "m800"  : smpls + "ttZ-800",
-        "m900"  : smpls + "ttZ-900",
-        "m1000" : smpls + "ttZ-1000"
+        "m400"  : smpls + "ttZ_m400",
+        "m500"  : smpls + "ttZ_m500",
+        "m600"  : smpls + "ttZ_m600",
+        "m700"  : smpls + "ttZ_m700",
+        "m800"  : smpls + "ttZ_m800",
+        "m900"  : smpls + "ttZ_m900",
+        "m1000" : smpls + "ttZ_m1000"
 }
 
 x = Tools()
@@ -61,6 +64,7 @@ for bsm in smpls:
         ana.Event = Event
         ana.Threads = 24
         ana.Chunks = 1000
+        ana.EventStop = 20000
         ana.Launch()
 
     if len(run_analysis):

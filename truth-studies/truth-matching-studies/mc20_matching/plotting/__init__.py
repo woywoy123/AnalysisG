@@ -1,3 +1,4 @@
-from .truthtop import *
-from .truthchildren import *
-from .truthjet import *
+from .top import *
+from .children import *
+from .truthjets import *
+from .jets import *

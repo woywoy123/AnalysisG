@@ -34,30 +34,25 @@ class SSML_MC20(EventTemplate):
             tops[c.index].Children += [c]
 
         for c in self.PhysicsTruth.values():
-            if c.is_photon: continue
             c.Parent = [tops[x] for x in c.top_index if x > -1]
 
         for c in self.PhysicsDetectors.values():
-            if c.is_photon: continue
             c.Parent = [tops[x] for x in c.top_index if x > -1]
 
-        matched = {}
         detectors  = list(self.Jets.values())
         detectors += list(self.Muons.values())
         detectors += list(self.Electrons.values())
         for d in detectors:
-            if d not in matched: matched[d] = {}
-            for pd in self.PhysicsDetectors.values():
-                if d != pd: continue
-                if not len(pd.Parent): continue
-                for j in pd.Parent: matched[d][j] = None
-            d.Parent = [j for j in matched[d]]
+            maps = {d.DeltaR(pd) : pd for pd in self.PhysicsDetectors.values()}
+            if list(maps)[0] > 0.001: continue
+            d.Parent += list(maps.values())[0].Parent
 
         # make the attributes a list
         self.Tops          = list(self.Tops.values())
         self.TruthChildren = list(self.TopChildren.values())
         self.PhysicsTruth  = list(self.PhysicsTruth.values())
 
-        self.Jets          = list(self.Jets.values())
-        self.Leptons       = list(self.Muons.values()) + list(self.Electrons.values())
-        self.Detector      = list(self.PhysicsDetectors.values())
+        self.Jets            = list(self.Jets.values())
+        self.Leptons         = list(self.Muons.values()) + list(self.Electrons.values())
+        self.PhysicsDetector = list(self.PhysicsDetectors.values())
+        self.Detector        = detectors

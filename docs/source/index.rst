@@ -149,6 +149,7 @@ PyC, CUDA and C++ API via PyTorch
 .. toctree::
    :titlesonly:
 
+   benchmarks/main.rst
    torch-extensions/main.rst
    torch-extensions/interface.rst
 

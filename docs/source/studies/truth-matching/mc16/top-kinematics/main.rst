@@ -1,5 +1,5 @@
-Top-Kinematics
-=============
+Top Kinematics
+==============
 
 Studies relating to the kinematics of the tops produced from the resonance and their corresponding spectator counterparts.
 
