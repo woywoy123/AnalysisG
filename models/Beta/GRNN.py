@@ -27,7 +27,7 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
 
         try: self._nuR = self.__params__["nu_reco"]
         except AttributeError: self._nuR = False
-
+        self._nuR = True
         self.O_top_edge = None
         self.L_top_edge = "CEL"
 
@@ -40,50 +40,56 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
 
         self._o = 2
         self._rep = 32
+        self._hid = 256
 
         self._dx  = 5
         self.rnn_dx = Seq(
-                Linear(self._dx*2, self._rep*2),
-                LayerNorm(self._rep*2), SELU(),
-                Linear(self._rep*2, self._rep)
+                Linear(self._dx*2, self._hid),
+                LayerNorm(self._hid), ReLU(),
+                Linear(self._hid, self._hid),
+                LayerNorm(self._hid), ReLU(),
+                Linear(self._hid, self._rep)
         )
         self.rnn_dx.apply(init_norm)
 
         self._x   = 7
         self.rnn_x = Seq(
-                Linear(self._x, self._rep*2),
-                LayerNorm(self._rep*2), SELU(),
-                Linear(self._rep*2, self._rep)
+                Linear(self._x, self._hid),
+                LayerNorm(self._hid), Tanh(),
+                Linear(self._hid, self._hid),
+                LayerNorm(self._hid), Tanh(),
+                Linear(self._hid, self._rep)
         )
         self.rnn_x.apply(init_norm)
 
         self.rnn_mrg = Seq(
-                Linear(self._rep*2, self._rep*2),
-                LayerNorm(self._rep*2), SELU(),
-                Linear(self._rep*2, self._o)
+                Linear(self._rep*2, self._hid),
+                LayerNorm(self._hid), Tanh(),
+                Linear(self._hid, self._o)
         )
         self.rnn_mrg.apply(init_norm)
 
         self.node_feat  = Seq(
                 Linear(18, self._rep),
-                LayerNorm(self._rep), SELU(),
+                LayerNorm(self._rep), Tanh(),
                 Linear(self._rep, self._rep)
         )
         self.node_feat.apply(init_norm)
 
         self.node_delta = Seq(
-                Linear(6, self._rep),
-                LayerNorm(self._rep), SELU(),
-                Linear(self._rep, self._rep)
+                Linear(6, self._hid),
+                LayerNorm(self._hid), ReLU(),
+                Linear(self._hid, self._rep)
         )
         self.node_delta.apply(init_norm)
 
         self.graph_feat = Seq(
-                Linear(self._rep*6, self._rep*6),
-                SELU(), LayerNorm(self._rep*6), Tanh(),
-                Linear(self._rep*6, 5)
+                Linear(self._rep*6, self._hid),
+                LayerNorm(self._hid), Tanh(), ReLU(),
+                Linear(self._hid, 5)
         )
         self.graph_feat.apply(init_norm)
+        self._cache = {}
 
     def message(self, trk_i, trk_j, pmc_i, pmc_j):
         pmci ,    _ = graph.unique_aggregation(trk_i, self.pmc)
@@ -108,13 +114,22 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
         trk_ = gr_["clusters"][gr_["reverse_clusters"]]
         cls  = gr_["clusters"].size(0)
 
+        msk = (trk_ > -1).sum(-1).max(-1)[1]
+        trk_ = trk_[:, :msk]
+
+        # enable this for max net
+        #msg = to_dense_adj(edge_index, edge_attr = message.softmax(-1)[:, 1])[0].softmax(-1)
+        #next_ = msg.max(-1)[1].view(-1, 1)
+        #trk_ = torch.cat([trk, next_], -1)
+
+        if not trk_.size(1): return self._hid
         if cls >= self._cls: return self._hid
         self._cls = cls
         self.iter += 1
 
-        return self.propagate(edge_index, pmc = gr_["node_sum"], trk = trk)
+        return self.propagate(edge_index, pmc = gr_["node_sum"], trk = trk_)
 
-    def forward(self,
+    def forward(self, i,
                 edge_index, batch, G_met, G_phi, G_n_jets, G_n_lep,
                 N_pT, N_eta, N_phi, N_energy, N_is_lep, N_is_b
         ):
@@ -128,17 +143,29 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
         self.pid      = torch.cat([N_is_lep, N_is_b], -1)
         self.met_xy   = torch.cat([transform.Px(G_met, G_phi), transform.Py(G_met, G_phi)], -1)
 
-        self._nuR = True
-        if self._nuR:
+        t = self.pmu.sum(-1).sum(-1)/1000
+        t = str(t.tolist())
+        print(t)
+        if self._nuR and t not in self._cache:
             data = nusol.Combinatorial(
                     edge_index, batch, self.pmc, self.pid, self.met_xy,
                     null = 10e-10, gev = self._gev, top_up_down = 0.95, w_up_down = 0.95
             )
             nu1, nu2, m1, m2, combi = [data[x] for x in ["nu_1f", "nu_2f", "ms_1f", "ms_2f", "combi"]]
             comb = combi.sum(-1) > 0
-            l1, l2 = combi[comb, 2], combi[comb, 3]
+            l1, l2 = combi[comb, 2].to(dtype = torch.int64), combi[comb, 3].to(dtype = torch.int64)
             self.pmc[l1] += nu1[comb]
             self.pmc[l2] += nu2[comb]
+            self.pmu = transform.PtEtaPhiE(self.pmc)
+            self._cache[t] = self.pmu
+
+        if t in self._cache:
+            self.pmu = self._cache[t]
+            N_pT[:] = self.pmu[:, 0].view(-1, 1)
+            N_eta[:] = self.pmu[:, 1].view(-1, 1)
+            N_phi[:] = self.pmu[:, 2].view(-1, 1)
+            N_energy[:] = self.pmu[:, 3].view(-1, 1)
+            self.pmc = transform.PxPyPzE(self.pmu)
 
         self.iter = 0
         self._hid = None

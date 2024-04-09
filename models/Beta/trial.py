@@ -9,9 +9,9 @@ torch.set_printoptions(precision=3, sci_mode = False)
 torch.set_printoptions(profile = "full", linewidth = 20000)
 
 x = UnpickleObject("data/GraphTruthJet")
-data = Batch().from_data_list(x[:10]).to(device = "cuda:0")
+data = Batch().from_data_list(x[:1]).to(device = "cuda:0")
 inpt = [
-    "edge_index", "batch",
+    "edge_index", "batch", "i",
     "G_met", "G_phi", "G_n_jets", "G_n_lep",
     "N_pT", "N_eta", "N_phi", "N_energy", "N_is_lep", "N_is_b"
 ]
@@ -36,7 +36,6 @@ for i in range(100000):
     pred = edge.max(-1)[1]
     loss.backward()
     optimizer.step()
-    print(i)
     if i%100 != 0:continue
     train_acc = ((pred == edge_t).view(-1).sum(-1))/pred.size(0)
     print("Accuracy = {}, Loss = {}, iter = {}".format(train_acc, loss, model.iter))

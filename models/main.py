@@ -8,7 +8,7 @@ import os
 
 mode_ = 0
 path = "/dev/shm/"
-device = "cuda:1"
+device = "cuda:0"
 name = "ModelTraining"
 model = "GRNN" #"RNN" #"RMGN"
 gen_data  = False
@@ -36,29 +36,28 @@ modes = [
 
 params = [
     ("MRK-1" , "ADAM", 1 , {"lr": 1e-3}, None, None),
-    ("MRK-2" , "ADAM", 5 , {"lr": 1e-3}, None, None),
-    ("MRK-3" , "ADAM", 10, {"lr": 1e-3}, None, None),
+#    ("MRK-2" , "ADAM", 5 , {"lr": 1e-3}, None, None),
+#    ("MRK-3" , "ADAM", 10, {"lr": 1e-3}, None, None),
 
-    ("MRK-4" , "ADAM", 1 , {"lr": 1e-3, "weight_decay" : 1e-3}, "ExponentialLR", {"gamma" : 0.5}),
-    ("MRK-5" , "ADAM", 5 , {"lr": 1e-3, "weight_decay" : 1e-1}, "ExponentialLR", {"gamma" : 0.7}),
-    ("MRK-6" , "ADAM", 10, {"lr": 1e-3, "weight_decay" : 1e1 }, "ExponentialLR", {"gamma" : 0.9}),
-
-    ("MRK-7" , "SGD", 1 , {"lr": 1e-3, "weight_decay" : 1e-3}, "CyclicLR", {"base_lr" : 1e-6, "max_lr" : 1e0}),
-    ("MRK-8" , "SGD", 5 , {"lr": 1e-3, "weight_decay" : 1e-3}, "CyclicLR", {"base_lr" : 1e-6, "max_lr" : 1e1}),
-    ("MRK-9" , "SGD", 10, {"lr": 1e-3, "weight_decay" : 1e-3}, "CyclicLR", {"base_lr" : 1e-6, "max_lr" : 1e1}),
-
-
-    ("MRK-10", "SGD", 1 , {"lr": 1e-3, "weight_decay" : 1e-3, "momentum" : 0.0001}, None, None),
-    ("MRK-11", "SGD", 5 , {"lr": 1e-3, "weight_decay" : 1e-3, "momentum" : 0.0001}, None, None),
-    ("MRK-12", "SGD", 10, {"lr": 1e-3, "weight_decay" : 1e-3, "momentum" : 0.0001}, None, None),
-
-    ("MRK-13", "SGD", 1 , {"lr": 1e-3, "weight_decay" : 1e-1, "momentum" : 0.0001}, "ExponentialLR", {"gamma" : 0.5}),
-    ("MRK-14", "SGD", 5 , {"lr": 1e-3, "weight_decay" : 1e-1, "momentum" : 0.0005}, "ExponentialLR", {"gamma" : 1.0}),
-    ("MRK-15", "SGD", 10, {"lr": 1e-3, "weight_decay" : 1e-1, "momentum" : 0.0015}, "ExponentialLR", {"gamma" : 2.0}),
-
-    ("MRK-16", "SGD", 1 , {"lr": 1e-3, "weight_decay" : 1e-3, "momentum" : 0.0001}, "CyclicLR", {"base_lr" : 1e-3, "max_lr" : 1e-1}),
-    ("MRK-17", "SGD", 5 , {"lr": 1e-3, "weight_decay" : 1e-3, "momentum" : 0.0005}, "CyclicLR", {"base_lr" : 1e-3, "max_lr" : 1e0 }),
-    ("MRK-18", "SGD", 10, {"lr": 1e-3, "weight_decay" : 1e-3, "momentum" : 0.0015}, "CyclicLR", {"base_lr" : 1e-3, "max_lr" : 1e1 }),
+#    ("MRK-4" , "ADAM", 1 , {"lr": 1e-3, "weight_decay" : 1e-3}, "ExponentialLR", {"gamma" : 0.5}),
+#    ("MRK-5" , "ADAM", 5 , {"lr": 1e-3, "weight_decay" : 1e-1}, "ExponentialLR", {"gamma" : 0.7}),
+#    ("MRK-6" , "ADAM", 10, {"lr": 1e-3, "weight_decay" : 1e1 }, "ExponentialLR", {"gamma" : 0.9}),
+#
+#    ("MRK-7" , "SGD", 1 , {"lr": 1e-3, "weight_decay" : 1e-3}, "CyclicLR", {"base_lr" : 1e-6, "max_lr" : 1e0}),
+#    ("MRK-8" , "SGD", 5 , {"lr": 1e-3, "weight_decay" : 1e-3}, "CyclicLR", {"base_lr" : 1e-6, "max_lr" : 1e1}),
+#    ("MRK-9" , "SGD", 10, {"lr": 1e-3, "weight_decay" : 1e-3}, "CyclicLR", {"base_lr" : 1e-6, "max_lr" : 1e1}),
+#
+#    ("MRK-10", "SGD", 1 , {"lr": 1e-3, "weight_decay" : 1e-3, "momentum" : 0.0001}, None, None),
+#    ("MRK-11", "SGD", 5 , {"lr": 1e-3, "weight_decay" : 1e-3, "momentum" : 0.0001}, None, None),
+#    ("MRK-12", "SGD", 10, {"lr": 1e-3, "weight_decay" : 1e-3, "momentum" : 0.0001}, None, None),
+#
+#    ("MRK-13", "SGD", 1 , {"lr": 1e-3, "weight_decay" : 1e-1, "momentum" : 0.0001}, "ExponentialLR", {"gamma" : 0.5}),
+#    ("MRK-14", "SGD", 5 , {"lr": 1e-3, "weight_decay" : 1e-1, "momentum" : 0.0005}, "ExponentialLR", {"gamma" : 1.0}),
+#    ("MRK-15", "SGD", 10, {"lr": 1e-3, "weight_decay" : 1e-1, "momentum" : 0.0015}, "ExponentialLR", {"gamma" : 2.0}),
+#
+#    ("MRK-16", "SGD", 1 , {"lr": 1e-3, "weight_decay" : 1e-3, "momentum" : 0.0001}, "CyclicLR", {"base_lr" : 1e-3, "max_lr" : 1e-1}),
+#    ("MRK-17", "SGD", 5 , {"lr": 1e-3, "weight_decay" : 1e-3, "momentum" : 0.0005}, "CyclicLR", {"base_lr" : 1e-3, "max_lr" : 1e0 }),
+#    ("MRK-18", "SGD", 10, {"lr": 1e-3, "weight_decay" : 1e-3, "momentum" : 0.0015}, "CyclicLR", {"base_lr" : 1e-3, "max_lr" : 1e1 }),
 ]
 
 
@@ -124,7 +123,7 @@ for this in params:
     ana.Threads = 48
     ana.Tree = "nominal"
     ana.EventName = None
-    ana.RunName = run_ + "-" + mode + "-nunu_reco"
+    ana.RunName = run_ + "-" + mode# + "-nunu_reco"
     ana.GraphName = Graphs(mode)._this.__name__
 
     ana.Optimizer = min_
