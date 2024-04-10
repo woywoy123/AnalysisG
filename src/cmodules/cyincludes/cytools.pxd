@@ -11,9 +11,10 @@ from cyevent cimport CyEventTemplate
 from cygraph cimport CyGraphTemplate
 from cyselection cimport CySelectionTemplate
 
-import pickle
+import _pickle as pickle
 import h5py
 import torch
+import gc
 
 ctypedef fused gen_t:
     int
@@ -48,7 +49,10 @@ cdef inline list pdec(vector[string]* strings):
 
 cdef inline dict _decoder(str inpt):
     cdef string x = enc(inpt)
-    return pickle.loads(decode64(&x))
+    gc.disable()
+    obj = pickle.loads(decode64(&x))
+    gc.enable()
+    return obj
 
 cdef inline string _encoder(inpt):
     cdef string x = pickle.dumps(inpt)

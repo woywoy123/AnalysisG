@@ -129,7 +129,7 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
 
         return self.propagate(edge_index, pmc = gr_["node_sum"], trk = trk_)
 
-    def forward(self, i,
+    def forward(self,
                 edge_index, batch, G_met, G_phi, G_n_jets, G_n_lep,
                 N_pT, N_eta, N_phi, N_energy, N_is_lep, N_is_b
         ):
@@ -145,26 +145,27 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
 
         t = self.pmu.sum(-1).sum(-1)/1000
         t = str(t.tolist())
-        print(t)
         if self._nuR and t not in self._cache:
             data = nusol.Combinatorial(
                     edge_index, batch, self.pmc, self.pid, self.met_xy,
                     null = 10e-10, gev = self._gev, top_up_down = 0.95, w_up_down = 0.95
             )
             nu1, nu2, m1, m2, combi = [data[x] for x in ["nu_1f", "nu_2f", "ms_1f", "ms_2f", "combi"]]
+            self._cache[t] = (nu1, nu2, combi)
+
+        if t in self._cache:
+            nu1, nu2, combi = self._cache[t]
             comb = combi.sum(-1) > 0
             l1, l2 = combi[comb, 2].to(dtype = torch.int64), combi[comb, 3].to(dtype = torch.int64)
             self.pmc[l1] += nu1[comb]
             self.pmc[l2] += nu2[comb]
             self.pmu = transform.PtEtaPhiE(self.pmc)
-            self._cache[t] = self.pmu
 
-        if t in self._cache:
-            self.pmu = self._cache[t]
             N_pT[:] = self.pmu[:, 0].view(-1, 1)
             N_eta[:] = self.pmu[:, 1].view(-1, 1)
             N_phi[:] = self.pmu[:, 2].view(-1, 1)
             N_energy[:] = self.pmu[:, 3].view(-1, 1)
+
             self.pmc = transform.PxPyPzE(self.pmu)
 
         self.iter = 0
@@ -193,7 +194,6 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
         sft = self.soft_aggr(node, batch)
         mx  = self.max_aggr(node, batch)
         var = self.var_aggr(node, batch)
-
 
         feat  = [self.met_xy[batch] - gr_["node_sum"][:, :2]]
         feat += [self.met_xy[batch] - self.pmc[:, :2], mass_delta]

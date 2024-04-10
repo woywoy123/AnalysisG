@@ -480,7 +480,7 @@ cdef class MetaData:
         return self.ptr.container.crossSection_mean
 
     @crossSection_mean.setter
-    def crossSection_mean(self, val: Union[str, float]):
+    def crossSection_mean(self, val):
         try: self.ptr.container.crossSection_mean = float(val)
         except ValueError: self.ptr.container.crossSection_mean = -1
 

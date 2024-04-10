@@ -32,13 +32,14 @@ from sklearn.model_selection import ShuffleSplit, KFold
 from tqdm import tqdm, trange
 from typing import Union
 from time import sleep
+import _pickle as pickle
 import numpy as np
 import random
 import psutil
 import torch
-import pickle
 import h5py
 import os
+import gc
 
 def _check_h5(f, str key):
     try: return f.create_dataset(key, (1), dtype = h5py.ref_dtype)

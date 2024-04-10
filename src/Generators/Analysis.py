@@ -93,6 +93,7 @@ class Analysis(_Analysis, SampleTracer, _Interface):
 
     def __RandomSampler__(self):
         if not self.TrainingSize: return
+        if self.Model is not None: return
         pth = self.WorkingPath + "Training/DataSets/"
         pth += self.TrainingName
 
@@ -105,10 +106,7 @@ class Analysis(_Analysis, SampleTracer, _Interface):
 
         r = RandomSamplers()
         r.ImportSettings(self.ExportSettings())
-        if not self.TrainingSize: out = {}
-        else: 
-            out = {"train_hashes" : outpt["train_hashes"],
-                   "test_hashes" : outpt["test_hashes"]}
+        out = {"train_hashes" : outpt["train_hashes"], "test_hashes" : outpt["test_hashes"]}
         r.SaveSets(out, pth)
 
         if not self.kFolds: out = {}

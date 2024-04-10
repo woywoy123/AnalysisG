@@ -22,10 +22,11 @@ from tqdm import trange
 import numpy as np
 import awkward
 import uproot
-import pickle
+import _pickle as pickle
 import torch
 import h5py
 import os
+import gc
 
 
 
@@ -137,7 +138,8 @@ cdef void make_mass_plots(map[int, CyEpoch*] train, map[int, CyEpoch*] valid, ma
             except KeyError: pass
             try: xData += tr_t[file_n][x]["xData"]
             except KeyError: pass
-            tmpl["Histograms"] += [TH1F(**{"Title" : "Truth", "xData" : xData, "Color": "b"})]
+            tmpl["Histograms"] += [TH1F(**{"Title" : "truth", "xData" : xData, "Color": "b"})]
+            tmpl["Histogram"] = None
             tmpl["yLogarithmic"] = True
             th = TH1F(**tmpl)
             th.SaveFigure()
@@ -542,11 +544,21 @@ cdef class DataLoader:
     def __next__(self):
         if self.indx_s == self.indx_e: raise StopIteration
         cdef vector[string]* hash_ = &self.batch_hash[self.indx_s]
-        if not len(self.sampletracer.MonitorMemory("Graph")): pass
-        elif self.mode.compare(b"train"): self.ptr.flush_train(hash_, self.kfold)
-        elif self.mode.compare(b"valid"): self.ptr.flush_validation(hash_, self.kfold)
-        elif self.mode.compare(b"eval"):  self.ptr.flush_evaluation(hash_)
+        cdef bool trig = len(self.sampletracer.MonitorMemory("Graph"))
+        if trig:
+            for k in self.online.values(): del k
+            self.online.clear()
+            if self.mode.compare(b"train"): self.ptr.flush_train(hash_, self.kfold)
+            elif self.mode.compare(b"valid"): self.ptr.flush_validation(hash_, self.kfold)
+            elif self.mode.compare(b"eval"):  self.ptr.flush_evaluation(hash_)
+
         self.indx_s += 1
+
+        cdef int idx = self.sampletracer.MaxGPU
+        cdef tuple cuda = (None, None)
+        if idx != -1:
+            try: cuda = torch.cuda.mem_get_info()
+            except RuntimeError: pass
 
         cdef list out = []
         cdef list hashes = []
@@ -558,29 +570,26 @@ cdef class DataLoader:
                 gr = self.this_batch[t_hash]
                 if gr.pkl.size(): pass
                 else: return None
+                gc.disable()
                 data = pickle.loads(gr.pkl)
+                gc.enable()
                 data = data.contiguous()
+                if cuda[0] is None: data = data.cpu()
+                else: data = data.cuda(device = self.device)
                 self.online[env(t_hash)] = data
+
             out.append(data)
             hashes.append(t_hash)
         data = Batch().from_data_list(out)
         out = []
 
-        cdef int idx = self.sampletracer.MaxGPU
-        cdef tuple cuda = (None, None)
-        if idx != -1:
-            try: cuda = torch.cuda.mem_get_info()
-            except RuntimeError: pass
-
         self.purge = False
-        if cuda[0] is None: data = data.cpu()
-        else: data = data.cuda(device = self.device)
         if (cuda[1] - cuda[0])/(1024**3) < idx: return data, hashes
 
         self.purge = True
         for k in self.online.values(): del k
-        torch.cuda.empty_cache()
         self.online.clear()
+        torch.cuda.empty_cache()
         return data, hashes
 
 

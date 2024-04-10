@@ -11,7 +11,7 @@ torch.set_printoptions(profile = "full", linewidth = 20000)
 x = UnpickleObject("data/GraphTruthJet")
 data = Batch().from_data_list(x[:1]).to(device = "cuda:0")
 inpt = [
-    "edge_index", "batch", "i",
+    "edge_index", "batch",
     "G_met", "G_phi", "G_n_jets", "G_n_lep",
     "N_pT", "N_eta", "N_phi", "N_energy", "N_is_lep", "N_is_b"
 ]
