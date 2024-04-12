@@ -48,6 +48,7 @@ cdef inline list pdec(vector[string]* strings):
     return [s.decode("UTF-8") for s in dereference(strings)]
 
 cdef inline dict _decoder(str inpt):
+    import gc
     cdef string x = enc(inpt)
     gc.disable()
     obj = pickle.loads(decode64(&x))
