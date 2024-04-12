@@ -79,6 +79,7 @@ class Event(EventTemplate):
         for dr in dst:
             idx, l = dist[dr]
             if l in accept: continue
+            if len(maps[idx].Children): continue
             maps[idx].Children.append(l)
             l.index = [maps[idx].index]
             l.Parent += maps[idx].Parent

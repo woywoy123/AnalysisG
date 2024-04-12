@@ -160,8 +160,8 @@ Analysis and Truth Studies Documentation
    :maxdepth: 0
  
    studies/truth-matching/main.rst 
+   studies/neutrino-studies/main.rst
    studies/strategies/main.rst
-   studies/neutrino-studies/neutrino-reconstruction.rst
 
 ROOT n-Tuple Event Implementations
 ----------------------------------
