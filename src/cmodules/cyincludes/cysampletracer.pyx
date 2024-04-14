@@ -430,7 +430,7 @@ cdef class SampleTracer:
         del self.ptr
 
     def __init__(self):
-        pass
+        self._model = None
 
     def __getstate__(self) -> tracer_t:
         return self.ptr.Export()
@@ -1155,15 +1155,19 @@ cdef class SampleTracer:
         try:
             if not self._set.model.source_code.size(): return
             c.__setstate__(self._set.model)
-            return c.InstantiateObject
-        except Exception as err:
-            self.Failure(str(err))
-            self.Failure("Given Model Implementation Failed to Initialize...")
-            self.FailureExit("To debug this, try to initialize the object: <model>()")
+            setattr(self._model, "code", {"class_name": c.class_name})
+            return self._model #c.InstantiateObject
+        except: # Exception as err:
+            pass
+            #self.Failure(str(err))
+            #self.Failure("Given Model Implementation Failed to Initialize...")
+            #self.FailureExit("To debug this, try to initialize the object: <model>()")
+        return self._model
 
     @Model.setter
     def Model(self, val):
         if val is None: return
+        self._model = val
         self._set.model = Code(val).__getstate__()
 
     @property

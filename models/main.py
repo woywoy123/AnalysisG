@@ -7,9 +7,9 @@ import os
 
 
 mode_ = 0
-path = "/scratch/tnom6927/"
-device = "cuda:1"
-name = "ModelTrainingSmall"
+path = "./"
+device = "cuda:0"
+name = "ModelTraining"
 model = "GRNN" #"RNN" #"RMGN"
 gen_data  = False
 trigEvent = False

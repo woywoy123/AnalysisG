@@ -34,17 +34,18 @@ class SSML_MC20(EventTemplate):
             tops[c.index].Children += [c]
 
         for c in self.PhysicsTruth.values():
-            c.Parent = [tops[x] for x in c.top_index if x > -1]
+            c.Parent += [tops[x] for x in c.top_index if x > -1]
 
         for c in self.PhysicsDetectors.values():
-            c.Parent = [tops[x] for x in c.top_index if x > -1]
+            c.Parent += [tops[x] for x in c.top_index if x > -1]
 
         detectors  = list(self.Jets.values())
         detectors += list(self.Muons.values())
         detectors += list(self.Electrons.values())
         for d in detectors:
             maps = {d.DeltaR(pd) : pd for pd in self.PhysicsDetectors.values()}
-            if list(maps)[0] > 0.001: continue
+            maps = dict(sorted(maps.items()))
+            if list(maps)[0] > 0.0001: continue
             d.Parent += list(maps.values())[0].Parent
 
         # make the attributes a list

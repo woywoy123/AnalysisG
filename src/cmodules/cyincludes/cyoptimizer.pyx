@@ -138,8 +138,7 @@ cdef void make_mass_plots(map[int, CyEpoch*] train, map[int, CyEpoch*] valid, ma
             except KeyError: pass
             try: xData += tr_t[file_n][x]["xData"]
             except KeyError: pass
-            tmpl["Histograms"] += [TH1F(**{"Title" : "truth", "xData" : xData, "Color": "b"})]
-            tmpl["Histogram"] = None
+            tmpl["Histogram"] = TH1F(**{"Title" : "truth", "xData" : xData, "Color": "b"})
             tmpl["yLogarithmic"] = True
             th = TH1F(**tmpl)
             th.SaveFigure()

@@ -69,7 +69,7 @@ class _Analysis(Notification):
 
         key = "> Optimization ("
         if self.Model is None: pass
-        else: string += [key + self.Model.code["class_name"].decode("UTF-8") + ") < ::"]
+        else: string += [key + self.Model.code["class_name"] + ") < ::"]
 
         key = "> n-Tupler ("
         if not len(self.DumpThis): pass

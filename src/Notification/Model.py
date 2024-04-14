@@ -47,7 +47,7 @@ class _ModelWrapper(Notification):
         if "graphs" not in self(smpl): return False
         if len(self.error_message): self.Failure(self.error_message)
         msg = "Detected Mass Reconstruction Mapping: "
-        msg += "\n -> ".join([""] + [key + ": " + " ".join(self.KinematicMap[key]) for key in self.KinematicMap])
+        msg += "\n -> ".join([""] + [key + ": " + "".join(self.KinematicMap[key]) for key in self.KinematicMap])
         self.Success(msg)
         return True
 

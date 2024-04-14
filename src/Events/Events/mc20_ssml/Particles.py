@@ -143,11 +143,11 @@ class Jet(Particle):
         self.truth_flavor = "jet_truthflav"
         self.truth_parton = "jet_truthPartonLabel"
 
-        _tag = "jet_isbtagged_"
-        self.btag60 = _tag + "GN2v00NewAliasWP_60"
-        self.btag70 = _tag + "GN2v00NewAliasWP_70"
-        self.btag77 = _tag + "GN2v00NewAliasWP_77"
-        self.btag85 = _tag + "GN2v00NewAliasWP_85"
+#        _tag = "jet_isbtagged_"
+#        self.btag60 = _tag + "GN2v00NewAliasWP_60"
+#        self.btag70 = _tag + "GN2v00NewAliasWP_70"
+#        self.btag77 = _tag + "GN2v00NewAliasWP_77"
+#        self.btag85 = _tag + "GN2v00NewAliasWP_85"
 
     @property
     def is_jet(self): return True

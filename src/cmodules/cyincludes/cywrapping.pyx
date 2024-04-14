@@ -11,56 +11,60 @@ from torch.optim.lr_scheduler import ExponentialLR, CyclicLR
 from torch.optim import Adam, SGD
 import torch
 
-try: import pyc
-except: pyc = None
 
+try: from pyc.interface import pyc_cuda as pyx
+except:
+    try: from pyc.interface import pyc_tensor as pyx
+    except: pyx = None
 
 cdef dict polar_edge_mass(edge_index, prediction, pmu):
-    if pyc is None: return {}
+    if pyx is None: return {}
+    pmc = pyx.combined.transform.PxPyPzE(pmu)
     cdef int key
-    cdef dict res = pyc.Graph.Polar.edge(edge_index, prediction, pmu)
+    cdef dict res = pyx.graph.edge_aggregation(edge_index, prediction, pmc)
     cdef dict msk = {key : (res[key]["clusters"] > -1).sum(-1) > 1 for key in res}
     cdef dict out = {}
     for key in res:
         if not key: continue
         if not msk[key].sum(-1): continue
-        out[key] = pyc.Physics.M(res[key]["unique_sum"][msk[key]])
+        out[key] = pyx.combined.physics.cartesian.M(res[key]["unique_sum"][msk[key]])
     return out
 
 cdef dict polar_node_mass(edge_index, prediction, pmu):
-    if pyc is None: return {}
+    if pyx is None: return {}
     cdef int key
-    cdef dict res = pyc.Graph.Polar.node(edge_index, prediction, pmu)
+    pmc = pyx.combined.transform.PxPyPzE(pmu)
+    cdef dict res = pyx.graph.node_aggregation(edge_index, prediction, pmc)
     cdef dict msk = {key : (res[key]["clusters"] > -1).sum(-1) > 1 for key in res}
     cdef dict out = {}
     for key in res:
         if not key: continue
         if not msk[key].sum(-1): continue
-        out[key] = pyc.Physics.M(res[key]["unique_sum"][msk[key]])
+        out[key] = pyx.combined.physics.cartesian.M(res[key]["unique_sum"][msk[key]])
     return out
 
-cdef dict cartesian_edge_mass(edge_index, prediction, pmu):
-    if pyc is None: return {}
+cdef dict cartesian_edge_mass(edge_index, prediction, pmc):
+    if pyx is None: return {}
     cdef int key
-    cdef dict res = pyc.Graph.Cartesian.edge(edge_index, prediction, pmu)
+    cdef dict res = pyx.graph.edge_aggregation(edge_index, prediction, pmc)
     cdef dict msk = {key : (res[key]["clusters"] > -1).sum(-1) > 1 for key in res}
     cdef dict out = {}
     for key in res:
         if not key: continue
         if not msk[key].sum(-1): continue
-        out[key] = pyc.Physics.M(res[key]["unique_sum"][msk[key]])
+        out[key] = pyx.combined.physics.cartesian.M(res[key]["unique_sum"][msk[key]])
     return out
 
-cdef dict cartesian_node_mass(edge_index, prediction, pmu):
-    if pyc is None: return {}
+cdef dict cartesian_node_mass(edge_index, prediction, pmc):
+    if pyx is None: return {}
     cdef int key
-    cdef dict res = pyc.Graph.Cartesian.node(edge_index, prediction, pmu)
+    cdef dict res = pyx.graph.node_aggregation(edge_index, prediction, pmc)
     cdef dict msk = {key : (res[key]["clusters"] > -1).sum(-1) > 1 for key in res}
     cdef dict out = {}
     for key in res:
         if not key: continue
         if not msk[key].sum(-1): continue
-        out[key] = pyc.Physics.M(res[key]["unique_sum"][msk[key]])
+        out[key] = pyx.combined.physics.cartesian.M(res[key]["unique_sum"][msk[key]])
     return out
 
 
@@ -68,6 +72,7 @@ cdef class OptimizerWrapper:
     cdef _optim
     cdef _sched
     cdef _model
+    cdef _script
 
     cdef str _path
     cdef str _outdir
@@ -86,6 +91,7 @@ cdef class OptimizerWrapper:
         self._optim = None
         self._sched = None
         self._model = None
+        self._script = None
 
         self._path = ""
         self._outdir = ""
@@ -109,7 +115,10 @@ cdef class OptimizerWrapper:
     def setoptimizer(self):
         if not len(self._optim_params): return False
         if self._model is None: return False
-        cdef model_param = self._model.parameters()
+        cdef model_param
+        if self._script is None: model_param = self._model.parameters()
+        else: model_param = self._script.parameters()
+
         if self._optimizer_name == "ADAM":
             self._optim = Adam(model_param, **self._optim_params)
         elif self._optimizer_name == "SGD":
@@ -286,11 +295,14 @@ cdef class ModelWrapper:
     def __init__(self, model = None):
         if model is None: return
         self._model = model
+        try: self._script = torch.jit.script(model())
+        except: self._script = None
         self.__checkcode__()
 
     cdef void __checkcode__(self):
         if self._model is None: return
         setattr(self._model, "__params__", self.__params__)
+        scriptable = self._model
         co = Code(self._model)
         if not len(self.__params__): pass
         else: co.param_space = self.__params__
@@ -304,6 +316,7 @@ cdef class ModelWrapper:
             self.failure = True
             self.error_message = str(e)
             return
+
         self.failure = False
         self.error_message = ""
 
@@ -343,7 +356,8 @@ cdef class ModelWrapper:
         self._loss_sum = 0
         for i, j in self._out_map.items():
             key = j[2:]
-            pred = self._model.__dict__[j]
+            if self._script is None: pred = self._model.__dict__[j]
+            else: pred = getattr(self._script, j)
             if pred is None: continue
             ten = data._slice_dict.get(i)
             if ten is None:
@@ -386,12 +400,13 @@ cdef class ModelWrapper:
         cdef dict inpt
         try: inpt = data.to_dict()
         except AttributeError: inpt = data
-        self._model(**{i : inpt[i] for i in self._in_map})
+        if self._script is None: self._model(**{i : inpt[i] for i in self._in_map})
+        else: self._script(**{i : inpt[i] for i in self._in_map})
         self._result = self.__debatch__(inpt, data)
         return self._result
 
     cpdef match_reconstruction(self, dict sample):
-        if pyc is None: return
+        if pyx is None: return
         cdef str kin_err = ""
         cdef str key, val
         cdef list splits
@@ -468,7 +483,10 @@ cdef class ModelWrapper:
         _save_path += "Epoch-" + str(self._epoch) + "/"
         _save_path += "kFold-" + str(self._kfold) + "/"
         _save_path += "model_state.pth"
-        cdef dict out = {"epoch": self.Epoch, "model": self._model.state_dict()}
+
+        cdef dict out = {}
+        if self._script is None: out = {"epoch": self.Epoch, "model": self._model.state_dict()}
+        else:  out = {"epoch": self.Epoch, "model": self._script.state_dict()}
         torch.save(out, _save_path)
 
     def load(self):
@@ -485,6 +503,11 @@ cdef class ModelWrapper:
         except ValueError: self._failed_model_load()
         self._model.eval()
 
+        if self._script is None: return
+        try: self._script.load_state_dict(state_dict = lib["model"])
+        except ValueError: self._failed_model_load()
+        self._script.eval()
+
     @property
     def train(self): return self._train
 
@@ -493,6 +516,11 @@ cdef class ModelWrapper:
         self._train = val
         if val: self._model.train()
         else: self._model.eval()
+
+        if self._script is None: return
+        if val: self._script.train()
+        else: self._script.eval()
+
 
     @property
     def __params__(self):
@@ -544,18 +572,25 @@ cdef class ModelWrapper:
 
     @property
     def model(self):
-        return self._model
+        if self._script is None: return self._model
+        return self._script
 
     @model.setter
     def model(self, mod):
         self._model = mod
+        try: self._script = torch.jit.script(mod())
+        except: self._script = None
         self.__checkcode__()
+
 
     @property
     def device(self): return self._model.device
 
     @device.setter
-    def device(self, val): self._model = self._model.to(device = val)
+    def device(self, val):
+        self._model = self._model.to(device = val)
+        if self._script is None: return
+        self._script = self._script.to(device = val)
 
     @property
     def KinematicMap(self) -> dict:

@@ -1,13 +1,14 @@
+
 import torch_geometric
 from AnalysisG.IO import UnpickleObject
 from torch_geometric.utils import to_dense_adj
 from torch_geometric.data import Batch, Data
 
 import torch
-from GRNN import RecursiveGraphNeuralNetwork
 torch.set_printoptions(precision=3, sci_mode = False)
 torch.set_printoptions(profile = "full", linewidth = 20000)
 
+from GRNN import RecursiveGraphNeuralNetwork
 x = UnpickleObject("data/GraphTruthJet")
 data = Batch().from_data_list(x[:1]).to(device = "cuda:0")
 inpt = [
@@ -19,13 +20,12 @@ inpt = [
 test = (getattr(data, i) for i in inpt)
 inpt = {i : getattr(data, i) for i in inpt}
 model = RecursiveGraphNeuralNetwork()
-model = torch.jit.script(model).to(device = "cuda:0")
+model = torch.jit.script(model)
+model = model.to(device = "cuda:0")
 model.train()
-
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
 loss_fn = torch.nn.CrossEntropyLoss()
 for i in range(100000):
-    print("....")
     optimizer.zero_grad()
     model(**inpt)
     edge = model.O_top_edge
@@ -36,6 +36,6 @@ for i in range(100000):
     optimizer.step()
     #if i%100 != 0:continue
     train_acc = ((pred == edge_t).view(-1).sum(-1))/pred.size(0)
-    print("Accuracy = {}, Loss = {}, iter = {}".format(train_acc, loss, model.iter))
+    print("Accuracy = {}, Loss = {}, iter = {}".format(train_acc, loss, model._cls))
     #print(to_dense_adj(inpt["edge_index"], edge_attr = edge_t)[0])
     #print(to_dense_adj(inpt["edge_index"], edge_attr = pred)[0])

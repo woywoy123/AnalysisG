@@ -73,7 +73,9 @@ class Optimizer(_Optimizer, _Interface, RandomSamplers):
         if sample is None:
             self.RestoreTracer()
             sample = self
-        else: self.ImportSettings(sample.ExportSettings())
+        else:
+            self.ImportSettings(sample.ExportSettings())
+            self.Model = sample.Model
 
         self._cmod.sampletracer = sample
         self.__searchsplits__(sample)

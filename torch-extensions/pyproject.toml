@@ -1,10 +1,10 @@
 [build-system]
-requires = ["pip", "scikit-build-core", "pybind11[global]"] #, "torch<=2.0.1"]
+requires = ["pip", "scikit-build-core", "pybind11[global]", "torch<=2.0.1"]
 build-backend = "scikit_build_core.build"
 
 [project]
 name = "pyc"
-version = "0.8"
+version = "1.0"
 authors = [
     {name = "woywoy123"}
 ]
