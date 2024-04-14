@@ -16,18 +16,16 @@ inpt = [
     "N_pT", "N_eta", "N_phi", "N_energy", "N_is_lep", "N_is_b"
 ]
 
-
-
-
 test = (getattr(data, i) for i in inpt)
 inpt = {i : getattr(data, i) for i in inpt}
 model = RecursiveGraphNeuralNetwork()
-model = model.to(device = "cuda:0")
+model = torch.jit.script(model).to(device = "cuda:0")
 model.train()
 
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
 loss_fn = torch.nn.CrossEntropyLoss()
 for i in range(100000):
+    print("....")
     optimizer.zero_grad()
     model(**inpt)
     edge = model.O_top_edge
@@ -36,7 +34,7 @@ for i in range(100000):
     pred = edge.max(-1)[1]
     loss.backward()
     optimizer.step()
-    if i%100 != 0:continue
+    #if i%100 != 0:continue
     train_acc = ((pred == edge_t).view(-1).sum(-1))/pred.size(0)
     print("Accuracy = {}, Loss = {}, iter = {}".format(train_acc, loss, model.iter))
     #print(to_dense_adj(inpt["edge_index"], edge_attr = edge_t)[0])

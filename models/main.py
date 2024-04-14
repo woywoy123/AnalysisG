@@ -8,8 +8,8 @@ import os
 
 mode_ = 0
 path = "/scratch/tnom6927/"
-device = "cuda:0"
-name = "ModelTraining"
+device = "cuda:1"
+name = "ModelTrainingSmall"
 model = "GRNN" #"RNN" #"RMGN"
 gen_data  = False
 trigEvent = False
@@ -29,15 +29,15 @@ trigGraph = False
 modes = [
 #    "TruthChildren_All",
 #    "TruthChildren_NoNu",
-#    "TruthJets_All",
-    "TruthJets_NoNu",
+    "TruthJets_All",
+#    "TruthJets_NoNu",
 #    "Jets_Detector"
 ]
 
 params = [
-    ("MRK-1_reco" , "ADAM", 1 , {"lr": 1e-3}, None, None),
-    ("MRK-2_reco" , "ADAM", 5 , {"lr": 1e-3}, None, None),
-    ("MRK-3_reco" , "ADAM", 10, {"lr": 1e-3}, None, None),
+    ("MRK-1" , "ADAM", 1 , {"lr": 1e-3}, None, None),
+#    ("MRK-2" , "ADAM", 5 , {"lr": 1e-3}, None, None),
+#    ("MRK-3" , "ADAM", 10, {"lr": 1e-3}, None, None),
 
 #    ("MRK-4" , "ADAM", 1 , {"lr": 1e-3, "weight_decay" : 1e-3}, "ExponentialLR", {"gamma" : 0.5}),
 #    ("MRK-5" , "ADAM", 5 , {"lr": 1e-3, "weight_decay" : 1e-1}, "ExponentialLR", {"gamma" : 0.7}),
@@ -70,41 +70,41 @@ for mm in modes:
     if not gen_data: break
     train_name = "model-train" #"sample-" + mm
     if trigEvent:
-#        auto.AddSampleNameEvent("other")
-#        auto.AddSampleNameEvent("t")
-#        auto.AddSampleNameEvent("tt")
-#        auto.AddSampleNameEvent("ttbar")
-#        auto.AddSampleNameEvent("V")
-#        auto.AddSampleNameEvent("Vll")
-#        auto.AddSampleNameEvent("Vqq")
-#
-#        auto.AddSampleNameEvent("ttH")
-#        auto.AddSampleNameEvent("tttt")
-#        auto.AddSampleNameEvent("ttX")
-#        auto.AddSampleNameEvent("ttXll")
-#        auto.AddSampleNameEvent("ttXqq")
-#        auto.AddSampleNameEvent("ttZ-m1000")
+        #auto.AddSampleNameEvent("other")
+        #auto.AddSampleNameEvent("t")
+        #auto.AddSampleNameEvent("tt")
+        #auto.AddSampleNameEvent("ttbar")
+        #auto.AddSampleNameEvent("V")
+        #auto.AddSampleNameEvent("Vll")
+        #auto.AddSampleNameEvent("Vqq")
+
+        #auto.AddSampleNameEvent("ttH")
+        #auto.AddSampleNameEvent("tttt", 4)
+        #auto.AddSampleNameEvent("ttX")
+        #auto.AddSampleNameEvent("ttXll")
+        #auto.AddSampleNameEvent("ttXqq")
+        #auto.AddSampleNameEvent("ttZ-1000")
         trigEvent = True
 
     if trigGraph:
-        auto.AddSampleNameGraph(mm, "other")
-        auto.AddSampleNameGraph(mm, "t")
-        auto.AddSampleNameGraph(mm, "tt")
-        auto.AddSampleNameGraph(mm, "ttbar")
-        auto.AddSampleNameGraph(mm, "V")
-        auto.AddSampleNameGraph(mm, "Vll")
-        auto.AddSampleNameGraph(mm, "Vqq")
+        auto.AddSampleNameGraph(mm, None) #"other")
+#        auto.AddSampleNameGraph(mm, "t")
+#        auto.AddSampleNameGraph(mm, "tt")
+#        auto.AddSampleNameGraph(mm, "ttbar")
+#        auto.AddSampleNameGraph(mm, "V")
+#        auto.AddSampleNameGraph(mm, "Vll")
+#        auto.AddSampleNameGraph(mm, "Vqq")
+#
+#        auto.AddSampleNameGraph(mm, "ttH")
+#        auto.AddSampleNameGraph(mm, "tttt")
+#        auto.AddSampleNameGraph(mm, "ttX")
+#        auto.AddSampleNameGraph(mm, "ttXll")
+#        auto.AddSampleNameGraph(mm, "ttXqq")
+#        auto.AddSampleNameGraph(mm, "ttZ-1000")
 
-        auto.AddSampleNameGraph(mm, "ttH")
-        auto.AddSampleNameGraph(mm, "tttt", 10)
-        auto.AddSampleNameGraph(mm, "ttX")
-        auto.AddSampleNameGraph(mm, "ttXll")
-        auto.AddSampleNameGraph(mm, "ttXqq")
-        auto.AddSampleNameGraph(mm, "ttZ-m1000")
-
-#    if trigEvent:
-#        auto.TrainingSample(mm, train_name, 50)
-#        trigEvent = False
+    if trigEvent:
+        auto.TrainingSample(mm, train_name, 50)
+        trigEvent = False
 
 mode = modes[mode_]
 for this in params:
@@ -125,7 +125,7 @@ for this in params:
     ana.Threads = 40
     ana.Tree = "nominal"
     ana.EventName = None
-    ana.RunName = run_ + "-" + mode# + "-nunu_reco"
+    ana.RunName = run_ + "-" + mode
     ana.GraphName = Graphs(mode)._this.__name__
 
     ana.Optimizer = min_
@@ -135,7 +135,7 @@ for this in params:
         ana.SchedulerParams = sch_param
 
     ana.PlotLearningMetrics = True
-    ana.ContinueTraining = False
+    ana.ContinueTraining = True
     ana.DebugMode = False
     ana.KinematicMap = {"top_edge" : "polar -> N_pT, N_eta, N_phi, N_energy"}
     ana.ModelInjection = False

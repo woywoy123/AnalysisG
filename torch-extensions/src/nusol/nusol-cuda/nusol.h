@@ -131,8 +131,7 @@ namespace NuSol
 
         inline std::map<std::string, torch::Tensor> Nu(
                 torch::Tensor pmc_b, torch::Tensor pmc_mu, 
-                torch::Tensor met_xy, 
-                torch::Tensor masses, 
+                torch::Tensor met_xy, torch::Tensor masses, 
                 torch::Tensor sigma, const double null)
         {
             const auto current_device = c10::cuda::current_device();

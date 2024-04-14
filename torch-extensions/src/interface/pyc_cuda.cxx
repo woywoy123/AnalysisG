@@ -391,14 +391,17 @@ std::vector<torch::Tensor> pyc::nusol::polar::combined::NuNu(
     }; 
 }
 
-std::vector<torch::Tensor> pyc::nusol::combinatorial(
-    torch::Tensor edge_index, torch::Tensor batch, 
-    torch::Tensor pmc, torch::Tensor pid, torch::Tensor met_xy, 
-    const double mass_top, const double mass_W, const double mass_nu,
-    const double top_up_down, const double w_up_down, const bool gev, const double null)
+std::vector<torch::Tensor> pyc::nusol::combinatorial(torch::Tensor edge_index, torch::Tensor batch, torch::Tensor pmc, torch::Tensor pid, torch::Tensor met_xy, bool gev)
 {
     std::map<std::string, torch::Tensor> out;
     float scale = (gev) ? 1.0/1000.0 : 1.0; 
+    double mass_top = 172.62*1000; 
+    double mass_W = 80.385*1000; 
+    double mass_nu = 0;
+    double null = 10e-10; 
+    double top_up_down = 0.95; 
+    double w_up_down = 0.95; 
+
     out = NuSol::CUDA::combinatorial(
             edge_index, batch, pmc*scale, pid, met_xy*scale, 
             mass_top*scale, mass_W*scale, mass_nu*scale, 

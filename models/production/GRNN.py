@@ -7,14 +7,13 @@ from torch.nn import ReLU, Tanh, SELU, Dropout
 
 import pyc
 import pyc.Transform as transform
-import pyc.Graph.Base as graph
-import pyc.Physics.Cartesian as physics
-import pyc.NuSol.Cartesian as nusol
+from pyc.interface import pyc_path
+from pyc.interface import *
+op = torch.ops.load_library(pyc_path())
 
 def init_norm(m):
     if not type(m) == torch.nn.Linear: return
     torch.nn.init.uniform(m.weight, -1, 1)
-
 
 class RecursiveGraphNeuralNetwork(MessagePassing):
 
@@ -27,7 +26,7 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
 
         try: self._nuR = self.__params__["nu_reco"]
         except AttributeError: self._nuR = False
-        self._nuR = True
+        self._nuR = False
         self.O_top_edge = None
         self.L_top_edge = "CEL"
 
@@ -92,30 +91,27 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
         self._cache = {}
 
     def message(self, trk_i, trk_j, pmc_i, pmc_j):
-        pmci ,    _ = graph.unique_aggregation(trk_i, self.pmc)
-        pmcj ,    _ = graph.unique_aggregation(trk_j, self.pmc)
-        pmc_ij, pth = graph.unique_aggregation(torch.cat([trk_i, trk_j], -1), self.pmc)
+        pmci ,    _ = cuUniqueAggregation(trk_i, self.pmc)
+        pmcj ,    _ = cuUniqueAggregation(trk_j, self.pmc)
+        pmc_ij, pth = cuUniqueAggregation(torch.cat([trk_i, trk_j], -1), self.pmc)
 
-        m_i, m_j, m_ij = physics.M(pmci), physics.M(pmcj), physics.M(pmc_ij)
+        m_i, m_j, m_ij = cuMass(pmci), cuMass(pmcj), cuMass(pmc_ij)
         jmp = (pth > -1).sum(-1, keepdims = True)
-        dR  = physics.DeltaR(pmci, pmcj)
+        dR  = cuCdeltaR(pmci, pmcj)
 
         dx = [m_j, m_j - m_i, pmc_j, pmc_j - pmc_i]
-        self._hdx = self.rnn_dx(torch.cat(dx, -1).to(dtype = torch.float))
+        hdx = self.rnn_dx(torch.cat(dx, -1).to(dtype = torch.float))
 
         _x = [m_ij, dR, jmp, pmc_ij]
-        self._hx  = self.rnn_x(torch.cat(_x, -1).to(dtype = torch.float))
-
-        self._hid = self.rnn_mrg(torch.cat([self._hx, self._hx - self._hdx], -1))
+        hx  = self.rnn_x(torch.cat(_x, -1).to(dtype = torch.float))
+        self._hid = self.rnn_mrg(torch.cat([hx, hx - hdx], -1))
         return self._hid
 
     def aggregate(self, message, edge_index, pmc, trk):
-        gr_  = graph.edge_aggregation(edge_index, message, self.pmc)[1]
+        gr_  = cuEdgeAggregation(edge_index, message, self.pmc, 1)
         trk_ = gr_["clusters"][gr_["reverse_clusters"]]
         cls  = gr_["clusters"].size(0)
-
-        msk = (trk_ > -1).sum(-1).max(-1)[1]
-        trk_ = trk_[:, :msk]
+        trk_ = trk_[:, :(trk_ > -1).sum(-1).max(-1)[1]]
 
         # enable this for max net
         #msg = to_dense_adj(edge_index, edge_attr = message.softmax(-1)[:, 1])[0].softmax(-1)
@@ -125,8 +121,6 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
         if not trk_.size(1): return self._hid
         if cls >= self._cls: return self._hid
         self._cls = cls
-        self.iter += 1
-
         return self.propagate(edge_index, pmc = gr_["node_sum"], trk = trk_)
 
     def forward(self,
@@ -135,21 +129,17 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
         ):
 
         self.pmu      = torch.cat([N_pT, N_eta, N_phi, N_energy], -1)
-        self.pmc      = transform.PxPyPzE(self.pmu)
-        self._index   = to_dense_adj(edge_index, edge_attr = (edge_index[0] > -1).cumsum(-1)-1)[0]
+        self.pmc      = cuPxPyPzE(self.pmu)
 
         self.batch    = batch
         self.edge_idx = edge_index
         self.pid      = torch.cat([N_is_lep, N_is_b], -1)
-        self.met_xy   = torch.cat([transform.Px(G_met, G_phi), transform.Py(G_met, G_phi)], -1)
+        self.met_xy   = torch.cat([cuPx(G_met, G_phi), cuPy(G_met, G_phi)], -1)
 
         t = self.pmu.sum(-1).sum(-1)/1000
         t = str(t.tolist())
         if self._nuR and t not in self._cache:
-            data = nusol.Combinatorial(
-                    edge_index, batch, self.pmc, self.pid, self.met_xy,
-                    null = 10e-10, gev = self._gev, top_up_down = 0.95, w_up_down = 0.95
-            )
+            data = cuNuNuCombinatorial(self.edge_idx, self.batch, self.pmc, self.pid, self.met_xy, self._gev)
             nu1, nu2, m1, m2, combi = [data[x] for x in ["nu_1f", "nu_2f", "ms_1f", "ms_2f", "combi"]]
             self._cache[t] = (nu1, nu2, combi)
 
@@ -166,18 +156,16 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
             N_phi[:] = self.pmu[:, 2].view(-1, 1)
             N_energy[:] = self.pmu[:, 3].view(-1, 1)
 
-            self.pmc = transform.PxPyPzE(self.pmu)
+            self.pmc = cuPxPyPzE(self.pmu)
 
-        self.iter = 0
         self._hid = None
         self._cls = N_pT.size(0)
-        self._t   = torch.ones_like(N_pT).cumsum(0)-1
+        nodes = torch.ones_like(N_pT).cumsum(0)-1
+        self.O_top_edge = self.propagate(edge_index, pmc = self.pmc, trk = nodes)
 
-        self.O_top_edge = self.propagate(edge_index, pmc = self.pmc, trk = self._t)
+        gr_  = cuEdgeAggregation(edge_index, self.O_top_edge, self.pmc, 1)
 
-        gr_  = graph.edge_aggregation(edge_index, self.O_top_edge, self.pmc)[1]
-
-        masses = physics.M(gr_["node_sum"])
+        masses = cuMass(gr_["node_sum"])
         mT = torch.ones_like(masses) * 172.62 * (1000 if not self._gev else 1)
         mW = torch.ones_like(masses) * 80.385 * (1000 if not self._gev else 1)
         mass_delta = torch.cat([mT - masses, mW - masses], -1)
@@ -186,8 +174,8 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
         mx  = self.max_aggr(self.O_top_edge, edge_index[0])
         var = self.var_aggr(self.O_top_edge, edge_index[0])
 
-        feat  = [gr_["node_sum"], physics.M(gr_["node_sum"])]
-        feat += [self.pmc, physics.M(self.pmc)]
+        feat  = [gr_["node_sum"], cuMass(gr_["node_sum"])]
+        feat += [self.pmc, cuMass(self.pmc)]
         feat += [self.pid, sft, mx, var]
         node = self.node_feat(torch.cat(feat, -1).to(dtype = torch.float))
 
