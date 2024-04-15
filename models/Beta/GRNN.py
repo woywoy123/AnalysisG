@@ -58,23 +58,23 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
         self._x   = 7
         self.rnn_x = Seq(
                 Linear(self._x, self._hid),
-                LayerNorm(self._hid), Tanh(),
+                LayerNorm(self._hid),
                 Linear(self._hid, self._hid),
-                LayerNorm(self._hid), Tanh(),
+                LayerNorm(self._hid),
                 Linear(self._hid, self._rep)
         )
         self.rnn_x.apply(init_norm)
 
         self.rnn_mrg = Seq(
                 Linear(self._rep*2, self._hid),
-                LayerNorm(self._hid), Tanh(),
+                LayerNorm(self._hid), ReLU(),
                 Linear(self._hid, self._o)
         )
         self.rnn_mrg.apply(init_norm)
 
         self.node_feat  = Seq(
                 Linear(18, self._rep),
-                LayerNorm(self._rep), Tanh(),
+                LayerNorm(self._rep),
                 Linear(self._rep, self._rep)
         )
         self.node_feat.apply(init_norm)
@@ -88,7 +88,7 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
 
         self.graph_feat = Seq(
                 Linear(self._rep*6, self._hid),
-                LayerNorm(self._hid), Tanh(), ReLU(),
+                LayerNorm(self._hid),
                 Linear(self._hid, 5)
         )
         self.graph_feat.apply(init_norm)
@@ -109,12 +109,10 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
 
         _x: List[Tensor] = [m_ij, dR, jmp, pmc_ij]
         hx: Tensor = self.rnn_x(torch.cat(_x, -1).to(dtype = torch.float))
-        self._h = self.rnn_mrg(torch.cat([hx, hx - hdx], -1))
-        return self._h
+        return self.rnn_mrg(torch.cat([hx, hx - hdx], -1))
 
     def aggregate(self, message, edge_index, pmc, trk):
         return message
-        return trk_ #self.propagate(edge_index, pmc = gr_["node_sum"], trk = trk_)
 
     def forward(self,
                 edge_index: Tensor, batch: Tensor,
@@ -130,7 +128,6 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
         met_xy: Tensor = torch.cat([pyc_cuda.separate.transform.Px(G_met, G_phi), pyc_cuda.separate.transform.Py(G_met, G_phi)], -1)
         pid:    Tensor = torch.cat([N_is_lep, N_is_b], -1)
 
-        self._cls = N_pT.size(0)
         if self._nuR:
             self.pmc = pyc_cuda.nusol.combinatorial(edge_index, batch, self.pmc, pid, met_xy, self._gev)["pmc"]
             self.pmu = pyc_cuda.combined.transform.PtEtaPhiE(self.pmc)
@@ -139,19 +136,26 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
             N_phi[:] = self.pmu[:, 2].view(-1, 1)
             N_energy[:] = self.pmu[:, 3].view(-1, 1)
 
+        self._cls = 0
         pmc: Tensor = self.pmc
         trk_: Tensor = torch.ones_like(N_pT).cumsum(0)-1
-        while True:
-            H: Tensor = self.propagate(edge_index, pmc = pmc, trk = trk_)
-            gr_: Dict[str, Tensor]  = pyc_cuda.graph.edge_aggregation(edge_index, H, self.pmc)[1]
-            trk_ = gr_["clusters"][gr_["reverse_clusters"]]
-            trk_ = trk_[:, :(trk_ > -1).sum(-1).max(-1)[1]]
-            cls: int  = gr_["clusters"].size(0)
+        self._h  = self.propagate(edge_index, pmc = pmc, trk = trk_)
 
-            if not trk_.size(1): break
-            if cls >= self._cls: break
-            self._cls = cls
-            pmc = gr_["node_sum"]
+        idx_mlp: Tensor = torch.cumsum(torch.ones_like(edge_index[0]), dim = -1)-1
+        idx_mlp = to_dense_adj(edge_index, edge_attr = idx_mlp)[0]
+        edge_index_: Tensor = edge_index
+        while True:
+            if not edge_index_.size(1): break
+            H: Tensor = self.propagate(edge_index_, pmc = pmc, trk = trk_)
+            sel: Tensor = H.max(-1)[1]
+
+            H_: Tensor = self._h[idx_mlp[edge_index_[0], edge_index_[1]]]
+            H = H_ - H
+            if not sel.sum(-1): break
+            gr_: Dict[str, Tensor]  = pyc_cuda.graph.edge_aggregation(edge_index_, H, self.pmc)[1]
+            edge_index_ = edge_index_[:, sel != 1]
+            trk_ = gr_["clusters"][gr_["reverse_clusters"]]
+            self._cls += 1
 
         self.O_top_edge = self._h
         gr_: Dict[str, Tensor] = pyc_cuda.graph.edge_aggregation(edge_index, self.O_top_edge, self.pmc)[1]

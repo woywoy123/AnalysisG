@@ -20,7 +20,8 @@ inpt = [
 test = (getattr(data, i) for i in inpt)
 inpt = {i : getattr(data, i) for i in inpt}
 model = RecursiveGraphNeuralNetwork()
-model = torch.jit.script(model)
+#torch.compile(model)
+model = torch.jit.script(model, example_inputs = inpt)
 model = model.to(device = "cuda:0")
 model.train()
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
