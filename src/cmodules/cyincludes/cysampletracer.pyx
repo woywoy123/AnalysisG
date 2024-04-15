@@ -403,6 +403,7 @@ cdef class SampleTracer:
     cdef CySampleTracer* ptr
     cdef _Event
     cdef _Graph
+    cdef _model
     cdef dict _Selections
     cdef dict _graph_codes
     cdef int b_end
@@ -419,6 +420,7 @@ cdef class SampleTracer:
         self._state = &self.ptr.state
         self._Event = None
         self._Graph = None
+        self._model = None
         self._Selections = {}
         self._graph_codes = {}
         self._nhashes = 0

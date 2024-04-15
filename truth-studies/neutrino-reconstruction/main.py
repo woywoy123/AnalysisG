@@ -6,18 +6,21 @@ import os
 
 figure_path = "../../docs/source/studies/"
 plots.nu_valid.figure_path = figure_path
+plots.nunu_valid.figure_path = figure_path
 
 run_analysis = {
     "single-nu" : studies.nu_valid.NeutrinoReconstruction,
+    "double-nu" : studies.nunu_valid.DoubleNeutrinoReconstruction,
 }
 
 run_plotting = {
     "single-nu" : plots.nu_valid.NeutrinoReconstruction,
+    "double-nu" : plots.nunu_valid.DoubleNeutrinoReconstruction,
 }
 
 build_cache = False
 if build_cache:
-    smpls = os.environ["Samples"] + "single_lep/"
+    smpls = os.environ["Samples"] + "mc16_13_ttZ_m1000/"
     ana = Analysis()
     ana.ProjectName = "neutrino"
     ana.InputSample(None, smpls)

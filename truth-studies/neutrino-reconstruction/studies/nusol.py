@@ -4,8 +4,11 @@ import math
 try: from scipy.optimize import leastsq
 except: leastsq = None
 
-def UnitCircle(): return np.diag([1, 1, -1])
-def Derivative(): return R(2, math.pi / 2).dot(np.diag([1, 1, 0]))
+
+def UnitCircle():
+    '''Unit circle in extended representation'''
+    return np.diag([1, 1, -1])
+
 
 def cofactor(A, idx):
     '''Cofactor[i,j] of 3x3 matrix A'''
@@ -19,26 +22,41 @@ def R(axis, angle):
     '''Rotation matrix about x(0),y(1), or z(2) axis'''
     c, s = math.cos(angle), math.sin(angle)
     R = c * np.eye(3)
-    for i in [-1, 0, 1]: R[(axis-i) % 3, (axis+i) % 3] = i*s + (1 - i*i)
+    for i in [-1, 0, 1]:
+        R[(axis-i) % 3, (axis+i) % 3] = i*s + (1 - i*i)
     return R
 
-def multisqrt(y): return ([] if y < 0 else [0] if y == 0 else (lambda r: [-r, r])(math.sqrt(y)))
+def Derivative():
+    """Matrix to differentiate [cos(t),sin(t),1]"""
+    return R(2, math.pi / 2).dot(np.diag([1, 1, 0]))
+
+
+def multisqrt(y):
+    '''Valid real solutions to y=x*x'''
+    return ([] if y < 0 else
+            [0] if y == 0 else
+            (lambda r: [-r, r])(math.sqrt(y)))
 
 
 def factor_degenerate(G, zero=0):
     '''Linear factors of degenerate quadratic polynomial'''
-    if G[0,0] == 0 == G[1,1]: return [[G[0,1], 0, G[1,2]], [0, G[0,1], G[0,2] - G[1,2]]]
+    if G[0,0] == 0 == G[1,1]:
+        return [[G[0,1], 0, G[1,2]],
+                [0, G[0,1], G[0,2] - G[1,2]]]
+
     swapXY = abs(G[0,0]) > abs(G[1,1])
     Q = G[(1,0,2),][:,(1,0,2)] if swapXY else G
     Q /= Q[1,1]
     q22 = cofactor(Q, (2,2))
 
-    if -q22 <= zero: lines = [[Q[0,1], Q[1,1], Q[1,2]+s] for s in multisqrt(-cofactor(Q, (0,0)))]
+    if -q22 <= zero:
+        lines = [[Q[0,1], Q[1,1], Q[1,2]+s]
+                 for s in multisqrt(-cofactor(Q, (0,0)))]
     else:
         x0, y0 = [cofactor(Q,(i,2)) / q22 for i in [0, 1]]
-        lines = [
-            [m, Q[1,1], -Q[1,1]*y0 - m*x0] for m in [Q[0,1] + s for s in multisqrt(-q22)]
-        ]
+        lines = [[m, Q[1,1], -Q[1,1]*y0 - m*x0]
+                 for m in [Q[0,1] + s
+                           for s in multisqrt(-q22)]]
 
     return [[L[swapXY],L[not swapXY],L[2]] for L in lines]
 
@@ -67,24 +85,28 @@ def CosTheta(v1, v2):
     '''Function to replace ROOT.Math.VectorUtils.CosTheta()'''
     v1_sq = v1.x**2 + v1.y**2 + v1.z**2
     v2_sq = v2.x**2 + v2.y**2 + v2.z**2
-    if v1_sq == 0 or v2_sq == 0: return 0
+    if v1_sq == 0 or v2_sq == 0:
+        return 0
     v1v2 = v1.x*v2.x + v1.y*v2.y + v1.z*v2.z
     return v1v2/(v1_sq*v2_sq)**0.5
+
+
 
 class nuSolutionSet(object):
     '''Definitions for nu analytic solution, t->b,mu,nu'''
 
-    def __init__(self, b, mu, mw, mt, mN2 = 0):
-        c = CosTheta(b, mu)
-        s = math.sqrt(1-c**2)
-
+    def __init__(self, b, mu, mw, mt, mN2=0):
         mT2 = mt**2
         mW2 = mw**2
+
+        c = CosTheta(b, mu)
+        s = math.sqrt(1-c**2)
 
         x0p = - (mT2 - mW2 - b.tau2) / (2*b.e)
         x0 = - (mW2 - mu.tau2 - mN2) / (2*mu.e)
 
         Bb, Bm = b.beta, mu.beta
+
         Sx = (x0 * Bm - mu.mag*(1-Bm**2)) / Bm**2
         Sy = (x0p / Bb - c * Sx) / s
 
@@ -139,7 +161,8 @@ class nuSolutionSet(object):
         b_xyz = self.b.x, self.b.y, self.b.z
         R_z = R(2, -self.mu.phi)
         R_y = R(1, 0.5*math.pi - self.mu.theta)
-        R_x = next(R(0,-math.atan2(z,y)) for x,y,z in (R_y.dot(R_z.dot(b_xyz)),))
+        R_x = next(R(0,-math.atan2(z,y))
+                   for x,y,z in (R_y.dot(R_z.dot(b_xyz)),))
         return R_z.T.dot(R_y.T.dot(R_x.T))
 
     @property
@@ -152,13 +175,18 @@ class nuSolutionSet(object):
                          [     0, Z,    0]])
 
     @property
-    def H(self): return self.R_T.dot(self.H_tilde)
+    def H(self):
+        '''Transformation of t=[c,s,1] to p_nu: lab coord.'''
+        return self.R_T.dot(self.H_tilde)
 
     @property
-    def H_perp(self): return np.vstack([self.H[:2], [0, 0, 1]])
+    def H_perp(self):
+        '''Transformation of t=[c,s,1] to pT_nu: lab coord.'''
+        return np.vstack([self.H[:2], [0, 0, 1]])
 
     @property
     def N(self):
+        '''Solution ellipse of pT_nu: lab coord.'''
         HpInv = np.linalg.inv(self.H_perp)
         return HpInv.T.dot(UnitCircle()).dot(HpInv)
 
@@ -167,12 +195,8 @@ class singleNeutrinoSolution(object):
     '''Most likely neutrino momentum for tt-->lepton+jets'''
     def __init__(self, b, mu, metX, metY, mw, mt, S = [[1000, 100], [100, 1000]]):
         sigma2 = S
-        mW2 = mw**2
-        mT2 = mt**2
-        self.solutionSet = nuSolutionSet(b, mu, mW2, mT2)
-        S2 = np.vstack([
-            np.vstack([np.linalg.inv(sigma2), [0, 0]]).T, [0, 0, 0]
-        ])
+        self.solutionSet = nuSolutionSet(b, mu, mw, mt)
+        S2 = np.vstack([np.vstack([np.linalg.inv(sigma2), [0, 0]]).T, [0, 0, 0]])
         V0 = np.outer([metX, metY, 0], [0, 0, 1])
         deltaNu = V0 - self.solutionSet.H
         self.X = np.dot(deltaNu.T, S2).dot(deltaNu)
@@ -192,10 +216,9 @@ class singleNeutrinoSolution(object):
 class doubleNeutrinoSolutions(object):
     '''Solution pairs of neutrino momenta, tt -> leptons'''
     def __init__(self, bs, mus, metX, metY, mw, mt):
-        mW2, mT2 = mw**2, mt**2
         b, b_ = bs
         mu, mu_ = mus
-        self.solutionSets = [nuSolutionSet(B, M, mW2, mT2) for B,M in zip((b,b_),(mu,mu_))]
+        self.solutionSets = [nuSolutionSet(B, M, mw, mt) for B,M in zip((b,b_),(mu,mu_))]
 
         V0 = np.outer([metX, metY, 0], [0, 0, 1])
         self.S = V0 - UnitCircle()

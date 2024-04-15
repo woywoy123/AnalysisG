@@ -186,8 +186,9 @@ cdef class SelectionTemplate:
         return pyc.Transform.Py(val, phi)
 
     cpdef MakeNu(self, s_, chi2 = None, gev = False):
-        if s_ == 0.0: return None
-        if not len(s_): return None
+        try: len(s_)
+        except: return None
+        if len(s_) < 3: return None
 
         # Convert back to MeV if set to gev, because the input 
         # leptons and b-quark are in MeV

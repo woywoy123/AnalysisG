@@ -33,14 +33,14 @@ class NeutrinoReconstruction(SelectionTemplate):
         return False
 
     def as_vec(self, inpt):
-        dct = {"pt" : inpt.pt/1000, "eta" : inpt.eta, "phi" : inpt.phi, "energy" : inpt.e/1000}
+        dct = {"pt" : inpt.pt, "eta" : inpt.eta, "phi" : inpt.phi, "energy" : inpt.e}
         return vector.obj(**dct)
 
     def make_original(self, b, l, nu, met_x, met_y, diff_map, top_map):
         mW = (l + nu).Mass
         mT = (l + b + nu).Mass
         try:
-            nu_ref = singleNeutrinoSolution(self.as_vec(b), self.as_vec(l), met_x/1000, met_y/1000, mW/1000, mT/1000)
+            nu_ref = singleNeutrinoSolution(self.as_vec(b), self.as_vec(l), met_x, met_y, mW, mT)
             nu_ref = self.MakeNu(list(nu_ref.nu))
         except: return
         diff_map["px"] += [(nu_ref.px - nu.px)/1000]
