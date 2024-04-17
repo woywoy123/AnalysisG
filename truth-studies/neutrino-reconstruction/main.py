@@ -9,14 +9,15 @@ plots.nu_valid.figure_path = figure_path
 plots.nunu_valid.figure_path = figure_path
 
 run_analysis = {
-    "single-nu" : studies.nu_valid.NeutrinoReconstruction,
-    "double-nu" : studies.nunu_valid.DoubleNeutrinoReconstruction,
+#    "single-nu" : studies.nu_valid.NeutrinoReconstruction,
+#    "double-nu" : studies.nunu_valid.DoubleNeutrinoReconstruction,
 }
 
 run_plotting = {
-    "single-nu" : plots.nu_valid.NeutrinoReconstruction,
-    "double-nu" : plots.nunu_valid.DoubleNeutrinoReconstruction,
+#    "single-nu" : plots.nu_valid.NeutrinoReconstruction,
+#    "double-nu" : plots.nunu_valid.DoubleNeutrinoReconstruction,
 }
+
 
 build_cache = False
 if build_cache:
@@ -29,6 +30,14 @@ if build_cache:
     ana.Chunks = 1000
     ana.EventStop = 10000
     ana.Launch()
+
+ana = Analysis()
+ana.ProjectName = "neutrino"
+ana.EventName = "Event"
+ana.EventCache = True
+ana.Chunks = 1000
+ana.EventStop = 10000
+studies.cuda.get_samples(ana)
 
 if len(run_analysis):
     ana = Analysis()

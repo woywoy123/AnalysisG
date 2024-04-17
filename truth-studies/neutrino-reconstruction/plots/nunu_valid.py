@@ -7,7 +7,7 @@ def settings():
             "OutputDirectory" : figure_path + "neutrino-studies/double-neutrino/figures/",
             "Histograms" : [],
             "Histogram" : None,
-            "FontSize"  : 22,
+            "FontSize"  : 20,
             "LabelSize" : 20,
             "xScaling"  : 10,
             "yScaling"  : 12,
@@ -19,7 +19,7 @@ def settings_th2f():
     settings = {
             "Style" : "ROOT",
             "OutputDirectory" : figure_path + "neutrino-studies/double-neutrino/figures/",
-            "FontSize"  : 22,
+            "FontSize"  : 20,
             "LabelSize" : 20,
             "xScaling"  : 10,
             "yScaling"  : 12
@@ -155,6 +155,85 @@ def top_mass(data, fign):
     th_.SaveFigure()
 
 
+def optimization_mass_plot(ana):
+    children = ana.children_top_mass_diff
+    truthjet = ana.truthjet_top_mass_diff
+    jet = ana.jet_top_mass_diff
+    recolep_jet = ana.reco_lep_jet_top_mass_diff
+
+    for i, j, con in zip(
+            ["a", "b", "c", "d"],
+            ["Truth Children", "Truth Jets", "Detector Jets", "Detector Jets and Leptons"],
+            [children, truthjet, jet, recolep_jet]):
+
+        th1 = TH1F()
+        th1.Title = "optimizated-solution"
+        th1.xData = con["nu1"]["reference-optim"] + con["nu2"]["reference-optim"]
+
+        th2 = TH1F()
+        th2.Title = "direct-solution"
+        th2.xData = con["nu1"]["reference-no-optim"] + con["nu2"]["reference-no-optim"]
+
+        th3 = TH1F()
+        th3.Title = "truth"
+        th3.xData = con["nu1"]["truth"] + con["nu2"]["truth"]
+        th3.Alpha = 0.1
+
+        sett = settings()
+        sett["Histograms"] = [th1, th2]
+        sett["Histogram"] = th3
+
+        th_ = TH1F(**sett)
+        th_.Title = "Reconstructed Invariant Top-Mass with and without \n Secondary Optimization Solutions \n (" + j + ")"
+        th_.xTitle = "Invariant Top-Mass (GeV)"
+        th_.yTitle = "Entries <unit>"
+        th_.Filename = "Figure.5." + i
+        th_.xBins = 400
+        th_.xMin  = 0
+        th_.xMax  = 400
+        th_.xStep = 40
+        th_.Stack = True
+        th_.SaveFigure()
+
+        del th1
+        del th2
+        del th3
+        del sett
+        del th_
+
+    for i, j, con in zip(
+            ["e", "f", "g", "h"],
+            ["Truth Children", "Truth Jets", "Detector Jets", "Detector Jets and Leptons"],
+            [children, truthjet, jet, recolep_jet]):
+
+        th1 = TH1F()
+        th1.Title = "pyc"
+        th1.xData = con["nu1"]["pyc"] + con["nu2"]["pyc"]
+
+        th2 = TH1F()
+        th2.Title = "reference"
+        th2.xData = con["nu1"]["reference-no-optim"] + con["nu2"]["reference-no-optim"]
+
+        sett = settings()
+        sett["Histograms"] = [th1, th2]
+
+        th_ = TH1F(**sett)
+        th_.Title = "Reconstructed Invariant Top-Mass using \n PYC and Reference algorithms (" + j + ")"
+        th_.xTitle = "Invariant Top-Mass (GeV)"
+        th_.yTitle = "Entries <unit>"
+        th_.Filename = "Figure.5." + i
+        th_.xBins = 400
+        th_.xMin  = 0
+        th_.xMax  = 400
+        th_.xStep = 40
+        th_.SaveFigure()
+
+        del th1
+        del th2
+        del sett
+        del th_
+
+
 
 
 def DoubleNeutrinoReconstruction(ana):
@@ -177,3 +256,6 @@ def DoubleNeutrinoReconstruction(ana):
     neutrino_kinematic_ref(ana.reco_lep_jet_kinematic_delta_ref, "4")
     projection_plots(ana.reco_lep_jet_kinematic_delta_pyc, ana.reco_lep_jet_kinematic_delta_ref, "4")
     top_mass(ana.reco_lep_jet_top_mass_diff, "4")
+
+    optimization_mass_plot(ana)
+

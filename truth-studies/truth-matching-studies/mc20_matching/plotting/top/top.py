@@ -58,7 +58,7 @@ def top_matching(ana):
     all_t.xScaling = 20
     all_t.FontSize = 20
     all_t.LabelSize = 20
-#    all_t.OverFlow = True
+    all_t.OverFlow = True
     all_t.yLogarithmic = True
     all_t.Filename = "Figure.1.a"
     all_t.SaveFigure()
@@ -88,8 +88,8 @@ def top_decay_channel_children(ana):
     all_t.xMax = 400
     all_t.xBins = 400
     all_t.xStep = 40
-#    all_t.OverFlow = True
-#    all_t.yLogarithmic = True
+    all_t.OverFlow = True
+    all_t.yLogarithmic = True
     all_t.Filename = "Figure.1.b"
     all_t.SaveFigure()
 
@@ -117,8 +117,8 @@ def top_decay_channel_truth_jets(ana):
     all_t.xMax = 400
     all_t.xBins = 400
     all_t.xStep = 40
-#    all_t.OverFlow = True
-#    all_t.yLogarithmic = True
+    all_t.OverFlow = True
+    all_t.yLogarithmic = True
     all_t.Filename = "Figure.1.c"
     all_t.SaveFigure()
 

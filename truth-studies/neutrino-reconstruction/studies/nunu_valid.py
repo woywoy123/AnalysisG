@@ -12,16 +12,15 @@ class DoubleNeutrinoReconstruction(SelectionTemplate):
                 "nu2" : {"px" : [], "py" : [], "pz" : [], "e" : []},
         }
 
-        self.children_top_mass_diff = {
-                "nu1" : {"truth" : [], "pyc" : [], "reference" : []},
-                "nu2" : {"truth" : [], "pyc" : [], "reference" : []},
-        }
-
         self.children_kinematic_delta_pyc = {
                 "nu1" : {"px" : [], "py" : [], "pz" : [], "e" : []},
                 "nu2" : {"px" : [], "py" : [], "pz" : [], "e" : []}
         }
 
+        self.children_top_mass_diff = {
+                "nu1" : {"truth" : [], "pyc" : [], "reference" : [], "reference-no-optim" : [], "reference-optim" : []},
+                "nu2" : {"truth" : [], "pyc" : [], "reference" : [], "reference-no-optim" : [], "reference-optim" : []},
+        }
 
         self.truthjet_kinematic_delta_ref = {
                 "nu1" : {"px" : [], "py" : [], "pz" : [], "e" : []},
@@ -34,8 +33,8 @@ class DoubleNeutrinoReconstruction(SelectionTemplate):
         }
 
         self.truthjet_top_mass_diff = {
-                "nu1" : {"truth" : [], "pyc" : [], "reference" : []},
-                "nu2" : {"truth" : [], "pyc" : [], "reference" : []}
+                "nu1" : {"truth" : [], "pyc" : [], "reference" : [], "reference-no-optim" : [], "reference-optim" : []},
+                "nu2" : {"truth" : [], "pyc" : [], "reference" : [], "reference-no-optim" : [], "reference-optim" : []}
         }
 
         self.jet_kinematic_delta_pyc = {
@@ -49,8 +48,8 @@ class DoubleNeutrinoReconstruction(SelectionTemplate):
         }
 
         self.jet_top_mass_diff = {
-                "nu1" : {"truth" : [], "pyc" : [], "reference" : []},
-                "nu2" : {"truth" : [], "pyc" : [], "reference" : []}
+                "nu1" : {"truth" : [], "pyc" : [], "reference" : [], "reference-no-optim" : [], "reference-optim" : []},
+                "nu2" : {"truth" : [], "pyc" : [], "reference" : [], "reference-no-optim" : [], "reference-optim" : []}
         }
 
         self.reco_lep_jet_kinematic_delta_pyc = {
@@ -64,8 +63,8 @@ class DoubleNeutrinoReconstruction(SelectionTemplate):
         }
 
         self.reco_lep_jet_top_mass_diff = {
-                "nu1" : {"truth" : [], "pyc" : [], "reference" : []},
-                "nu2" : {"truth" : [], "pyc" : [], "reference" : []}
+                "nu1" : {"truth" : [], "pyc" : [], "reference" : [], "reference-no-optim" : [], "reference-optim" : []},
+                "nu2" : {"truth" : [], "pyc" : [], "reference" : [], "reference-no-optim" : [], "reference-optim" : []}
         }
 
     def Selection(self, event):
@@ -86,7 +85,10 @@ class DoubleNeutrinoReconstruction(SelectionTemplate):
         mT = ((l1 + b1 + nu1).Mass + (l2 + b2 + nu2).Mass)/2
         bs = (self.as_vec(b1), self.as_vec(b2))
         ls = (self.as_vec(l1), self.as_vec(l2))
-        try: nu_ref = doubleNeutrinoSolutions(bs, ls, met_x, met_y, mW, mT)
+        optims = False
+        try:
+            nu_ref = doubleNeutrinoSolutions(bs, ls, met_x, met_y, mW, mT)
+            optims = nu_ref.opt
         except: return
         nu_ref = nu_ref.nunu_s
         if not len(nu_ref): return
@@ -103,8 +105,16 @@ class DoubleNeutrinoReconstruction(SelectionTemplate):
         diff_map["nu2"]["pz"] += [(nu_ref[1].pz - nu2.pz)/1000]
         diff_map["nu2"]["e"]  += [(nu_ref[1].e  - nu2.e )/1000]
 
-        top_map["nu1"]["reference"] += [(nu_ref[0] + b1 + l1).Mass/1000]
-        top_map["nu2"]["reference"] += [(nu_ref[1] + b2 + l2).Mass/1000]
+        mt1 = (nu_ref[0] + b1 + l1).Mass/1000
+        mt2 = (nu_ref[1] + b2 + l2).Mass/1000
+        top_map["nu1"]["reference"] += [mt1]
+        top_map["nu2"]["reference"] += [mt2]
+
+        key = "reference"
+        if optims: key += "-optim"
+        else: key += "-no-optim"
+        top_map["nu1"][key] += [mt1]
+        top_map["nu2"][key] += [mt2]
 
     def make_pyc(self, b1, b2, l1, l2, nu1, nu2, event, diff_map, top_map):
         mW = ((l1 + nu1).Mass + (l2 + nu2).Mass)/2

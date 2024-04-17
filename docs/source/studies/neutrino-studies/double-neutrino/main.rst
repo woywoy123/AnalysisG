@@ -6,6 +6,11 @@ Starting with the simplest case, the truth children b-parton and lepton pairs ar
 This is followed by the replacement of the b-parton with matched truth jets and detector jets.
 Finally, only detector objects will be used to perform the reconstruction, this includes matched detector jets and leptons.
 
+As an additional ad-hoc study, the original reference algorithm triggers a secondary optimization step, if no ellipse intersection solutions were found.
+This involves rotating the solutions in a way which minimizes the missing energy difference given by the neutrino three vectors and detector observations.
+In the standard pyc reimplementation, such secondary optimization is not performed and could result in less solution statistics compared to the reference.
+To validate pyc, events with no secondary optimization are compared using the reconstructed top-quark mass, as shown in figure collections 5.
+
 Selection Criteria
 ------------------
 Events are required to have exactly two leptonically decaying top-quarks on truth children level.
@@ -757,7 +762,7 @@ Figure 3.k
 **Jets with Detector Leptons**
 ------------------------------
 
-Figure.4.1.a (PYC)
+Figure 4.1.a (PYC)
 ^^^^^^^^^^^^^^^^^^
 .. figure:: ./figures/Figure.4.1.a.png
    :align: center
@@ -769,7 +774,7 @@ Figure.4.1.a (PYC)
    The purpose of looking at only one of the neutrinos is to determine whether the neutrino solutions are consistent, and if there is an error asymmetry.
    Ideally, the neutrino pairs cluster around the (0, 0) coordinate, indicating a consistent implementation.
 
-Figure.4.2.a (PYC)
+Figure 4.2.a (PYC)
 ^^^^^^^^^^^^^^^^^^
 .. figure:: ./figures/Figure.4.2.a.png
    :align: center
@@ -781,7 +786,7 @@ Figure.4.2.a (PYC)
    The purpose of looking at only one of the neutrinos is to determine whether the neutrino solutions are consistent, and if there is an error asymmetry.
    Ideally, the neutrino pairs cluster around the (0, 0) coordinate, indicating a consistent implementation.
 
-Figure.4.3.a (PYC)
+Figure 4.3.a (PYC)
 ^^^^^^^^^^^^^^^^^^
 .. figure:: ./figures/Figure.4.3.a.png
    :align: center
@@ -791,7 +796,7 @@ Figure.4.3.a (PYC)
    This figure is the cummulation of Figure 4.1.a and 4.2.a. 
 
 
-Figure.4.1.b (PYC)
+Figure 4.1.b (PYC)
 ^^^^^^^^^^^^^^^^^^
 .. figure:: ./figures/Figure.4.1.b.png
    :align: center
@@ -803,7 +808,7 @@ Figure.4.1.b (PYC)
    The purpose of looking at only one of the neutrinos is to determine whether the neutrino solutions are consistent, and if there is an error asymmetry.
    Ideally, the neutrino pairs cluster around the (0, 0) coordinate, indicating a consistent implementation.
 
-Figure.4.2.b (PYC)
+Figure 4.2.b (PYC)
 ^^^^^^^^^^^^^^^^^^
 .. figure:: ./figures/Figure.4.2.b.png
    :align: center
@@ -815,7 +820,7 @@ Figure.4.2.b (PYC)
    The purpose of looking at only one of the neutrinos is to determine whether the neutrino solutions are consistent, and if there is an error asymmetry.
    Ideally, the neutrino pairs cluster around the (0, 0) coordinate, indicating a consistent implementation.
 
-Figure.4.3.b (PYC)
+Figure 4.3.b (PYC)
 ^^^^^^^^^^^^^^^^^^
 .. figure:: ./figures/Figure.4.3.b.png
    :align: center
@@ -824,7 +829,7 @@ Figure.4.3.b (PYC)
    A heat-map of the momenta differential in the x and z direction between the truth and reconstructed neutrino solution pairs.
    This figure is the cummulation of Figure 4.1.b and 4.2.b. 
 
-Figure.4.1.c (PYC)
+Figure 4.1.c (PYC)
 ^^^^^^^^^^^^^^^^^^
 .. figure:: ./figures/Figure.4.1.c.png
    :align: center
@@ -836,7 +841,7 @@ Figure.4.1.c (PYC)
    The purpose of looking at only one of the neutrinos is to determine whether the neutrino solutions are consistent, and if there is an error asymmetry.
    Ideally, the neutrino pairs cluster around the (0, 0) coordinate, indicating a consistent implementation.
 
-Figure.4.2.c (PYC)
+Figure 4.2.c (PYC)
 ^^^^^^^^^^^^^^^^^^
 .. figure:: ./figures/Figure.4.2.c.png
    :align: center
@@ -848,7 +853,7 @@ Figure.4.2.c (PYC)
    The purpose of looking at only one of the neutrinos is to determine whether the neutrino solutions are consistent, and if there is an error asymmetry.
    Ideally, the neutrino pairs cluster around the (0, 0) coordinate, indicating a consistent implementation.
 
-Figure.4.3.c (PYC)
+Figure 4.3.c (PYC)
 ^^^^^^^^^^^^^^^^^^
 .. figure:: ./figures/Figure.4.3.c.png
    :align: center
@@ -857,7 +862,7 @@ Figure.4.3.c (PYC)
    A heat-map of the momenta differential in the y and z direction between the truth and reconstructed neutrino solution pairs.
    This figure is the cummulation of Figure 4.1.c and 4.2.c. 
 
-Figure.4.1.d (REFERENCE)
+Figure 4.1.d (REFERENCE)
 ^^^^^^^^^^^^^^^^^^^^^^^^
 .. figure:: ./figures/Figure.4.1.d.png
    :align: center
@@ -869,7 +874,7 @@ Figure.4.1.d (REFERENCE)
    The purpose of looking at only one of the neutrinos is to determine whether the neutrino solutions are consistent, and if there is an error asymmetry.
    Ideally, the neutrino pairs cluster around the (0, 0) coordinate, indicating a consistent implementation.
 
-Figure.4.2.d (REFERENCE)
+Figure 4.2.d (REFERENCE)
 ^^^^^^^^^^^^^^^^^^^^^^^^
 .. figure:: ./figures/Figure.4.2.d.png
    :align: center
@@ -881,7 +886,7 @@ Figure.4.2.d (REFERENCE)
    The purpose of looking at only one of the neutrinos is to determine whether the neutrino solutions are consistent, and if there is an error asymmetry.
    Ideally, the neutrino pairs cluster around the (0, 0) coordinate, indicating a consistent implementation.
 
-Figure.4.3.d (REFERENCE)
+Figure 4.3.d (REFERENCE)
 ^^^^^^^^^^^^^^^^^^^^^^^^
 .. figure:: ./figures/Figure.4.3.d.png
    :align: center
@@ -891,7 +896,7 @@ Figure.4.3.d (REFERENCE)
    This figure is the cummulation of Figure 4.1.d and 4.2.d. 
 
 
-Figure.4.1.e (REFERENCE)
+Figure 4.1.e (REFERENCE)
 ^^^^^^^^^^^^^^^^^^^^^^^^
 .. figure:: ./figures/Figure.4.1.e.png
    :align: center
@@ -903,7 +908,7 @@ Figure.4.1.e (REFERENCE)
    The purpose of looking at only one of the neutrinos is to determine whether the neutrino solutions are consistent, and if there is an error asymmetry.
    Ideally, the neutrino pairs cluster around the (0, 0) coordinate, indicating a consistent implementation.
 
-Figure.4.2.e (REFERENCE)
+Figure 4.2.e (REFERENCE)
 ^^^^^^^^^^^^^^^^^^^^^^^^
 .. figure:: ./figures/Figure.4.2.e.png
    :align: center
@@ -915,7 +920,7 @@ Figure.4.2.e (REFERENCE)
    The purpose of looking at only one of the neutrinos is to determine whether the neutrino solutions are consistent, and if there is an error asymmetry.
    Ideally, the neutrino pairs cluster around the (0, 0) coordinate, indicating a consistent implementation.
 
-Figure.4.3.e (REFERENCE)
+Figure 4.3.e (REFERENCE)
 ^^^^^^^^^^^^^^^^^^^^^^^^
 .. figure:: ./figures/Figure.4.3.e.png
    :align: center
@@ -924,7 +929,7 @@ Figure.4.3.e (REFERENCE)
    A heat-map of the momenta differential in the x and z direction between the truth and reconstructed neutrino solution pairs.
    This figure is the cummulation of Figure 4.1.e and 4.2.e. 
 
-Figure.4.1.f (REFERENCE)
+Figure 4.1.f (REFERENCE)
 ^^^^^^^^^^^^^^^^^^^^^^^^
 .. figure:: ./figures/Figure.4.1.f.png
    :align: center
@@ -936,7 +941,7 @@ Figure.4.1.f (REFERENCE)
    The purpose of looking at only one of the neutrinos is to determine whether the neutrino solutions are consistent, and if there is an error asymmetry.
    Ideally, the neutrino pairs cluster around the (0, 0) coordinate, indicating a consistent implementation.
 
-Figure.4.2.f (REFERENCE)
+Figure 4.2.f (REFERENCE)
 ^^^^^^^^^^^^^^^^^^^^^^^^
 .. figure:: ./figures/Figure.4.2.f.png
    :align: center
@@ -948,7 +953,7 @@ Figure.4.2.f (REFERENCE)
    The purpose of looking at only one of the neutrinos is to determine whether the neutrino solutions are consistent, and if there is an error asymmetry.
    Ideally, the neutrino pairs cluster around the (0, 0) coordinate, indicating a consistent implementation.
 
-Figure.4.3.f (REFERENCE)
+Figure 4.3.f (REFERENCE)
 ^^^^^^^^^^^^^^^^^^^^^^^^
 .. figure:: ./figures/Figure.4.3.f.png
    :align: center
@@ -957,7 +962,7 @@ Figure.4.3.f (REFERENCE)
    A heat-map of the momenta differential in the y and z direction between the truth and reconstructed neutrino solution pairs.
    This figure is the cummulation of Figure 4 1.f and 4.2.f. 
 
-Figure.4.g
+Figure 4.g
 ^^^^^^^^^^
 .. figure:: ./figures/Figure.4.g.png
    :align: center
@@ -965,7 +970,7 @@ Figure.4.g
 
    A projection plot in the :math:`P_x` direction illustrating differences between the reference and pyc implementions.
 
-Figure.4.h
+Figure 4.h
 ^^^^^^^^^^
 .. figure:: ./figures/Figure.4.h.png
    :align: center
@@ -973,7 +978,7 @@ Figure.4.h
 
    A projection plot in the :math:`P_y` direction illustrating differences between the reference and pyc implementions.
 
-Figure.4.i
+Figure 4.i
 ^^^^^^^^^^
 .. figure:: ./figures/Figure.4.i.png
    :align: center
@@ -981,7 +986,7 @@ Figure.4.i
 
    A projection plot in the :math:`P_z` direction illustrating differences between the reference and pyc implementions.
 
-Figure.4.j
+Figure 4.j
 ^^^^^^^^^^
 .. figure:: ./figures/Figure.4.j.png
    :align: center
@@ -989,11 +994,88 @@ Figure.4.j
 
    A plot illustrating the energy difference between the truth and reconstructed neutrino for the reference and pyc implementation.
 
-Figure.4.k
+Figure 4.k
 ^^^^^^^^^^
 .. figure:: ./figures/Figure.4.k.png
    :align: center
    :name: Figure.4.nunu.k
 
    Reconstructed invariant top-mass using the reference and pyc implementations, compared to the true top-mass parton mass.
+
+Solution Optimization Study
+---------------------------
+
+Figure 5.a (Truth Children)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. figure:: ./figures/Figure.5.a.png
+   :align: center
+   :name: Figure.5.nunu.a
+
+   Invariant reconstructed top-mass using the truth children as inputs to the reference algorithm.
+   The figure is partitioned into whether a secondary optimization step was required to yield a solution set.
+
+
+Figure 5.b (Truth Jets)
+^^^^^^^^^^^^^^^^^^^^^^^
+.. figure:: ./figures/Figure.5.b.png
+   :align: center
+   :name: Figure.5.nunu.b
+
+   Invariant reconstructed top-mass using the truth jets as inputs to the reference algorithm.
+   The figure is partitioned into whether a secondary optimization step was required to yield a solution set.
+
+
+Figure 5.c (Detector Jets)
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. figure:: ./figures/Figure.5.c.png
+   :align: center
+   :name: Figure.5.nunu.c
+
+   Invariant reconstructed top-mass using the detector jets as inputs to the reference algorithm.
+   The figure is partitioned into whether a secondary optimization step was required to yield a solution set.
+
+
+Figure 5.d (Detector Jets and Leptons)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. figure:: ./figures/Figure.5.d.png
+   :align: center
+   :name: Figure.5.nunu.d
+
+   Invariant reconstructed top-mass using only detector objects as inputs to the reference algorithm.
+   The figure is partitioned into whether a secondary optimization step was required to yield a solution set.
+
+Figure 5.e (Truth Children)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. figure:: ./figures/Figure.5.e.png
+   :align: center
+   :name: Figure.5.nunu.e
+
+   Invariant reconstructed top-mass using the truth children as inputs to the reference and pyc algorithm.
+
+Figure 5.f (Truth Jets)
+^^^^^^^^^^^^^^^^^^^^^^^
+.. figure:: ./figures/Figure.5.f.png
+   :align: center
+   :name: Figure.5.nunu.f
+
+   Invariant reconstructed top-mass using the truth jets as inputs to the reference and pyc algorithm.
+
+Figure 5.g (Detector Jets)
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. figure:: ./figures/Figure.5.g.png
+   :align: center
+   :name: Figure.5.nunu.g
+
+   Invariant reconstructed top-mass using the detector jets as inputs to the reference and pyc algorithm.
+
+Figure 5.h (Detector Jets and Leptons)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. figure:: ./figures/Figure.5.h.png
+   :align: center
+   :name: Figure.5.nunu.h
+
+   Invariant reconstructed top-mass using the detector jets and leptons as inputs to the reference and pyc algorithm.
+
+
+
 
