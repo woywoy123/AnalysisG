@@ -45,13 +45,12 @@ cdef dict template_th1f(str path, str xtitle, str ytitle, str title, float xstep
     output["Filename"] = ""
     output["xTitle"] = xtitle
     output["yTitle"] = ytitle
-    output["xBins"] = 1000
+    output["xBins"] = 300
     output["xMin"] = 0
     output["xMax"] = 1500
     output["Title"] = title
     output["xStep"] = xstep
     output["OverFlow"] = True
-    output["OverlayHists"] = True
     return output
 
 cdef dict template_tline(str path, str xtitle, str ytitle, str title):
@@ -138,7 +137,7 @@ cdef void make_mass_plots(map[int, CyEpoch*] train, map[int, CyEpoch*] valid, ma
             except KeyError: pass
             try: xData += tr_t[file_n][x]["xData"]
             except KeyError: pass
-            tmpl["Histogram"] = TH1F(**{"Title" : "truth", "xData" : xData, "Color": "b"})
+            tmpl["Histograms"] += [TH1F(**{"Title" : "truth", "xData" : xData})]
             tmpl["yLogarithmic"] = True
             th = TH1F(**tmpl)
             th.SaveFigure()

@@ -16,6 +16,7 @@ Finally, a proposed improvement of the original algorithm is being illustrated.
 
    single-neutrino/main.rst
    double-neutrino/main.rst 
+   cuda/main.rst
 
 
 [1]. **Analytic solutions for neutrino momenta in decay of top quarks** (arXiv: 1305.1878v2)

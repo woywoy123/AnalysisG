@@ -146,8 +146,10 @@ namespace pyc
 
         std::vector<torch::Tensor> combinatorial(
                 torch::Tensor edge_index, torch::Tensor batch, 
-                torch::Tensor pmc, torch::Tensor pid, 
-                torch::Tensor met_xy, bool gev); 
+                torch::Tensor pmc, torch::Tensor pid, torch::Tensor met_xy, 
+                double mass_top = 172.62*1000, double mass_W = 80.385*1000, 
+                double top_up_down = 0.95, double w_up_down = 0.95, 
+                double null = 1e-10, bool gev = false); 
 
         namespace polar
         {

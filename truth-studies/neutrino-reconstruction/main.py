@@ -7,6 +7,7 @@ import os
 figure_path = "../../docs/source/studies/"
 plots.nu_valid.figure_path = figure_path
 plots.nunu_valid.figure_path = figure_path
+plots.cuda.figure_path = figure_path
 
 run_analysis = {
 #    "single-nu" : studies.nu_valid.NeutrinoReconstruction,
@@ -31,13 +32,14 @@ if build_cache:
     ana.EventStop = 10000
     ana.Launch()
 
-ana = Analysis()
-ana.ProjectName = "neutrino"
-ana.EventName = "Event"
-ana.EventCache = True
-ana.Chunks = 1000
-ana.EventStop = 10000
-studies.cuda.get_samples(ana)
+#ana = Analysis()
+#ana.ProjectName = "neutrino"
+#ana.EventName = "Event"
+#ana.EventCache = True
+#ana.Chunks = 1000
+#ana.EventStop = 10000
+#studies.cuda.get_samples(ana)
+plots.cuda.combinatorial()
 
 if len(run_analysis):
     ana = Analysis()

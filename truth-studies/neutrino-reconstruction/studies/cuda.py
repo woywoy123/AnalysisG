@@ -232,12 +232,17 @@ def measure_pyc(packet, key, perfx_, res, use_cuda):
     pmc_l1, pmc_l2 = aten["pmc"][2], aten["pmc"][3]
     met_xy = torch.cat(perfx_.combinatorial["event"], 0)[bools]
 
-    if use_cuda: nusol_pyc = pyc_tensor.nusol.NuNu
-    else:
+    if use_cuda:
         nusol_pyc = pyc_cuda.nusol.NuNu
         pmc_b1, pmc_b2 = pmc_b1.to(device = "cuda:0"), pmc_b2.to(device = "cuda:0")
         pmc_l1, pmc_l2 = pmc_l1.to(device = "cuda:0"), pmc_l2.to(device = "cuda:0")
         met_xy, masses = met_xy.to(device = "cuda:0"), masses.to(device = "cuda:0")
+        nu1_ = truth["aten_nu1"].to(device = "cuda:0")
+        nu2_ = truth["aten_nu2"].to(device = "cuda:0")
+        bools = bools.to(device = "cuda:0")
+    else:
+        nusol_pyc = pyc_tensor.nusol.NuNu
+        nu1_, nu2_ = truth["aten_nu1"], truth["aten_nu2"]
 
     t1 = time.time()
     nu1_sol, nu2_sol, diag, _, _, _, sol = nusol_pyc(pmc_b1, pmc_b2, pmc_l1, pmc_l2, met_xy, masses, 1e-10)
@@ -254,25 +259,63 @@ def measure_pyc(packet, key, perfx_, res, use_cuda):
     nu1_sol = torch.cat([nu1_sol, torch.sum(nu1_sol.pow(2), -1, keepdim = True).pow(0.5)], -1)
     nu2_sol = torch.cat([nu2_sol, torch.sum(nu2_sol.pow(2), -1, keepdim = True).pow(0.5)], -1)
 
-    nu1_delta = (nu1_sol - truth["aten_nu1"][bools][msk_])/1000
-    nu2_delta = (nu2_sol - truth["aten_nu2"][bools][msk_])/1000
+    nu1_delta = (nu1_sol - nu1_[bools][msk_])/1000
+    nu2_delta = (nu2_sol - nu2_[bools][msk_])/1000
 
-    nusol_mt1 = pyc_tensor.combined.physics.cartesian.M(nu1_sol + aten["pmc"][2][msk_] + aten["pmc"][0][msk_])/1000
-    nusol_mt2 = pyc_tensor.combined.physics.cartesian.M(nu2_sol + aten["pmc"][3][msk_] + aten["pmc"][1][msk_])/1000
+    nusol_mt1 = pyc_tensor.combined.physics.cartesian.M(nu1_sol + pmc_b1[msk_] + pmc_l1[msk_])/1000
+    nusol_mt2 = pyc_tensor.combined.physics.cartesian.M(nu2_sol + pmc_b2[msk_] + pmc_l2[msk_])/1000
 
     res[key]["mt"] = torch.cat([nusol_mt1, nusol_mt2], 0).view(-1).tolist()
     res[key]["px"] = torch.cat([nu1_delta[:, 0], nu2_delta[:, 0]], -1).view(-1).tolist()
     res[key]["py"] = torch.cat([nu1_delta[:, 1], nu2_delta[:, 1]], -1).view(-1).tolist()
-    res[key]["py"] = torch.cat([nu1_delta[:, 2], nu2_delta[:, 2]], -1).view(-1).tolist()
+    res[key]["pz"] = torch.cat([nu1_delta[:, 2], nu2_delta[:, 2]], -1).view(-1).tolist()
     res[key]["e"]  = torch.cat([nu1_delta[:, 3], nu2_delta[:, 3]], -1).view(-1).tolist()
-    res[key]["time"] = float(t2/msk_.size(0))
+    res[key]["time"] = float(t2/met_xy.size(0))
     return res
+
+def measure_cuda_combinatorial(key, perfx_, result, algo):
+    truth = perfx_.truth_container
+    lex = len(perfx_.combinatorial["event"])
+    for i in range(lex):
+        if not (i%100): print(round(float(i/lex), 3)*100, key)
+        nu_t1, nu_t2 = truth["event"]["nu1"][i], truth["event"]["nu2"][i]
+        if truth[key]["mt1"][i] is None: continue
+        b1, b2 = truth[key]["b1"][i], truth[key]["b2"][i]
+        l1, l2 = truth[key]["l1"][i], truth[key]["l2"][i]
+
+        met_xy = perfx_.combinatorial["event"][i].to(device = "cuda:0")
+        pmc = perfx_.combinatorial[key]["pmc"][i].to(device = "cuda:0")
+        pid = perfx_.combinatorial[key]["pid"][i].to(device = "cuda:0")
+        batch = perfx_.combinatorial[key]["batch"][i].to(device = "cuda:0")
+        edge_index = perfx_.combinatorial[key]["edge_index"][i].to(device = "cuda:0")
+
+        res = algo(edge_index, batch, pmc, pid, met_xy)
+        if res["combination"].sum(-1) == 0: continue
+
+        nu1_f, nu2_f = res["nu_1f"], res["nu_2f"]
+        mass1, mass2 = res["masses_nu1"], res["masses_nu2"]
+        mass1, mass2 = mass1[0].tolist(), mass2[0].tolist()
+        m_w1, m_t1, m_w2, m_t2 = mass1[0], mass1[1], mass2[0], mass2[1]
+        result[key]["mt"] += [m_t1/1000, m_t2/1000]
+        result[key]["mw"] += [m_w1/1000, m_w2/1000]
+        result[key]["tru_mt"] += [(nu_t1 + b1 + l1).Mass/1000, (nu_t2 + b2 + l2).Mass/1000]
+        result[key]["tru_wt"] += [(nu_t1 + l1).Mass/1000, (nu_t2 + l2).Mass/1000]
+
+        nu1_, nu2_ = perfx_.MakeNu(nu1_f[0]), perfx_.MakeNu(nu2_f[0])
+        result[key]["mt_sol"] += [(nu1_ + b1 + l1).Mass/1000,(nu2_ + b2 + l2).Mass/1000]
+        result[key]["px"] += [(nu1_.px - nu_t1.px)/1000, (nu2_.px - nu_t2.px)/1000]
+        result[key]["py"] += [(nu1_.py - nu_t1.py)/1000, (nu2_.py - nu_t2.py)/1000]
+        result[key]["pz"] += [(nu1_.pz - nu_t1.pz)/1000, (nu2_.pz - nu_t2.pz)/1000]
+        result[key]["e"]  += [(nu1_.e  - nu_t1.e )/1000, (nu2_.e  - nu_t2.e )/1000]
+    return result
+
+
 
 
 
 def get_samples(ana):
-    lex = 0
-    ley = 0
+    lex = 1
+    ley = 1
     prf = Performance()
     t = 0
     x = -1
@@ -335,7 +378,7 @@ def get_samples(ana):
         t2 = time.time() - t1
         reference["children"]["time"] += [t2]
         if nus is not False:
-            reference["children"]["mt"] += [(nus[0] + b1 + l1).Mass/1000, (nus[1] + b2 + l1).Mass/1000]
+            reference["children"]["mt"] += [(nus[0] + b1 + l1).Mass/1000, (nus[1] + b2 + l2).Mass/1000]
             reference["children"]["px"] += [(nus[0].px - nu_t1.px)/1000, (nus[1].px - nu_t2.px)/1000]
             reference["children"]["py"] += [(nus[0].py - nu_t1.py)/1000, (nus[1].py - nu_t2.py)/1000]
             reference["children"]["pz"] += [(nus[0].pz - nu_t1.pz)/1000, (nus[1].pz - nu_t2.pz)/1000]
@@ -372,7 +415,7 @@ def get_samples(ana):
             t2 = time.time() - t1
             reference["truthjet"]["time"] += [t2]
             if nus is not False:
-                reference["truthjet"]["mt"] += [(nus[0] + b1 + l1).Mass/1000, (nus[1] + b2 + l1).Mass/1000]
+                reference["truthjet"]["mt"] += [(nus[0] + b1 + l1).Mass/1000, (nus[1] + b2 + l2).Mass/1000]
                 reference["truthjet"]["px"] += [(nus[0].px - nu_t1.px)/1000, (nus[1].px - nu_t2.px)/1000]
                 reference["truthjet"]["py"] += [(nus[0].py - nu_t1.py)/1000, (nus[1].py - nu_t2.py)/1000]
                 reference["truthjet"]["pz"] += [(nus[0].pz - nu_t1.pz)/1000, (nus[1].pz - nu_t2.pz)/1000]
@@ -407,11 +450,11 @@ def get_samples(ana):
             t2 = time.time() - t1
             reference["jets"]["time"] += [t2]
             if nus is not False:
-                reference["jets"]["mt"] += [(nus[0] + b1 + l1).Mass/1000, (nus[1] + b2 + l1).Mass/1000]
-                reference["jets"]["px"] += [(nus[0].px - nu_t1.px)/1000, (nus[1].px - nu_t2.px)/1000]
-                reference["jets"]["py"] += [(nus[0].py - nu_t1.py)/1000, (nus[1].py - nu_t2.py)/1000]
-                reference["jets"]["pz"] += [(nus[0].pz - nu_t1.pz)/1000, (nus[1].pz - nu_t2.pz)/1000]
-                reference["jets"]["e"]  += [(nus[0].e  - nu_t1.e )/1000, (nus[1].e  - nu_t2.e )/1000]
+                reference["jets"]["mt"] += [(nus[0] + b1 + l1).Mass/1000, (nus[1] + b2 + l2).Mass/1000]
+                reference["jets"]["px"] += [(nus[0].px -  nu_t1.px)/1000, (nus[1].px -  nu_t2.px)/1000]
+                reference["jets"]["py"] += [(nus[0].py -  nu_t1.py)/1000, (nus[1].py -  nu_t2.py)/1000]
+                reference["jets"]["pz"] += [(nus[0].pz -  nu_t1.pz)/1000, (nus[1].pz -  nu_t2.pz)/1000]
+                reference["jets"]["e"]  += [(nus[0].e  -  nu_t1.e )/1000, (nus[1].e  -  nu_t2.e )/1000]
 
 
             b1t = torch.tensor([[b1.px, b1.py, b1.pz, b1.e]], dtype = torch.float64)
@@ -443,7 +486,7 @@ def get_samples(ana):
             t2 = time.time() - t1
             reference["detector"]["time"] += [t2]
             if nus is not False:
-                reference["detector"]["mt"] += [(nus[0] + b1 + l1).Mass/1000, (nus[1] + b2 + l1).Mass/1000]
+                reference["detector"]["mt"] += [(nus[0] + b1 + l1).Mass/1000, (nus[1] + b2 + l2).Mass/1000]
                 reference["detector"]["px"] += [(nus[0].px - nu_t1.px)/1000, (nus[1].px - nu_t2.px)/1000]
                 reference["detector"]["py"] += [(nus[0].py - nu_t1.py)/1000, (nus[1].py - nu_t2.py)/1000]
                 reference["detector"]["pz"] += [(nus[0].pz - nu_t1.pz)/1000, (nus[1].pz - nu_t2.pz)/1000]
@@ -487,7 +530,6 @@ def get_samples(ana):
     pyc_nusol_ten = measure_pyc(packet, "jets"    , perfx_, pyc_nusol_ten, False)
     pyc_nusol_ten = measure_pyc(packet, "detector", perfx_, pyc_nusol_ten, False)
 
-
     pyc_nusol_cu = {}
     pyc_nusol_cu |= {"children" : {"time" : [], "mt" : [], "px" : [], "py" : [], "pz" : [], "e" : []}}
     pyc_nusol_cu |= {"truthjet" : {"time" : [], "mt" : [], "px" : [], "py" : [], "pz" : [], "e" : []}}
@@ -499,5 +541,22 @@ def get_samples(ana):
     pyc_nusol_cu = measure_pyc(packet, "jets"    , perfx_, pyc_nusol_cu, True)
     pyc_nusol_cu = measure_pyc(packet, "detector", perfx_, pyc_nusol_cu, True)
 
-    data = {"reference" : reference, "pyc_tensor" : pyc_nusol_ten, "pyc_cuda" : pyc_nusol_cu}
+
+    pyc_nusol_comb = {}
+    pyc_nusol_comb |= {"children" : {"mt_sol" : [], "mt" : [], "mw" : [], "px" : [], "py" : [], "pz" : [], "e" : [], "tru_mt" : [], "tru_wt": []}}
+    pyc_nusol_comb |= {"truthjet" : {"mt_sol" : [], "mt" : [], "mw" : [], "px" : [], "py" : [], "pz" : [], "e" : [], "tru_mt" : [], "tru_wt": []}}
+    pyc_nusol_comb |= {"jets"     : {"mt_sol" : [], "mt" : [], "mw" : [], "px" : [], "py" : [], "pz" : [], "e" : [], "tru_mt" : [], "tru_wt": []}}
+    pyc_nusol_comb |= {"detector" : {"mt_sol" : [], "mt" : [], "mw" : [], "px" : [], "py" : [], "pz" : [], "e" : [], "tru_mt" : [], "tru_wt": []}}
+
+    truth_container = perfx_.truth_container
+    algo = torch.jit.script(pyc_cuda.nusol.combinatorial)
+    pyc_nusol_comb = measure_cuda_combinatorial("children", perfx_, pyc_nusol_comb, algo)
+    pyc_nusol_comb = measure_cuda_combinatorial("truthjet", perfx_, pyc_nusol_comb, algo)
+    pyc_nusol_comb = measure_cuda_combinatorial("jets"    , perfx_, pyc_nusol_comb, algo)
+    pyc_nusol_comb = measure_cuda_combinatorial("detector", perfx_, pyc_nusol_comb, algo)
+
+    data = {
+            "reference" : reference, "pyc_tensor" : pyc_nusol_ten,
+            "pyc_cuda" : pyc_nusol_cu, "pyc_combinatorial" : pyc_nusol_comb
+    }
     PickleObject(data, "results.pkl")

@@ -407,16 +407,17 @@ class pyc_cuda:
             return torch.ops.pyc_cuda.nusol_Nu(pmc_b, pmc_mu, met_xy, masses, sigma, null)
 
         @torch.jit.script
-        def NuNu(pmc_b: Tensor, pmc_mu: Tensor, met_xy: Tensor, masses: Tensor, sigma: Tensor, null: float = 1e-10) -> List[Tensor]:
-            return torch.ops.pyc_cuda.nusol_Nu(pmc_b, pmc_mu, met_xy, masses, sigma, null)
-
-        @torch.jit.script
         def NuNu(pmc_b1: Tensor, pmc_b2: Tensor, pmc_l1: Tensor, pmc_l2: Tensor, met_xy: Tensor, masses: Tensor, null: float = 1e-10) -> List[Tensor]:
             return torch.ops.pyc_cuda.nusol_NuNu(pmc_b1, pmc_b2, pmc_l1, pmc_l2, met_xy, masses, null)
 
         @torch.jit.script
-        def combinatorial(edge_index: Tensor, batch: Tensor, pmc: Tensor, pid: Tensor, met_xy: Tensor, gev: bool = False) -> Dict[str, Tensor]:
-            result: List[Tensor] = torch.ops.pyc_cuda.combinatorial(edge_index, batch, pmc, pid, met_xy, gev)
+        def combinatorial(
+                edge_index: Tensor, batch: Tensor,
+                pmc: Tensor, pid: Tensor, met_xy: Tensor,
+                mass_top: float = 172.62*1000, mass_w: float = 80.385*1000, 
+                top_up_down: float = 0.95, w_up_down: float = 0.95, null: float = 1e-10,  gev: bool = False) -> Dict[str, Tensor]:
+
+            result: List[Tensor] = torch.ops.pyc_cuda.combinatorial(edge_index, batch, pmc, pid, met_xy, mass_top, mass_w, top_up_down, w_up_down, null, gev)
             comb: Tensor = result[4].sum(-1) > 0
             l1: Tensor = result[4][comb, 2].to(dtype = torch.int64)
             l2: Tensor = result[4][comb, 3].to(dtype = torch.int64)
@@ -892,10 +893,6 @@ class pyc_tensor:
 
         @torch.jit.script
         def Nu(pmc_b: Tensor, pmc_mu: Tensor, met_xy: Tensor, masses: Tensor, sigma: Tensor, null: float = 1e-10) -> List[Tensor]:
-            return torch.ops.pyc_tensor.nusol_Nu(pmc_b, pmc_mu, met_xy, masses, sigma, null)
-
-        @torch.jit.script
-        def NuNu(pmc_b: Tensor, pmc_mu: Tensor, met_xy: Tensor, masses: Tensor, sigma: Tensor, null: float = 1e-10) -> List[Tensor]:
             return torch.ops.pyc_tensor.nusol_Nu(pmc_b, pmc_mu, met_xy, masses, sigma, null)
 
         @torch.jit.script
