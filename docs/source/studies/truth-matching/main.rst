@@ -30,9 +30,13 @@ To reproduce these studies, special samples need to be produced with another fra
 https://gitlab.cern.ch/atlas-phys/exot/hqt/ana-exot-2022-44/common-framework/-/tree/add-top-matching?ref_type=heads
 
 .. toctree::
-   :titleonly:
+   :titlesonly:
 
-   mc20/top/main.rst
+   mc20/top-matching/main.rst
+   mc20/children-kinematics/main.rst
+
+
+
 
 Glossary
 --------

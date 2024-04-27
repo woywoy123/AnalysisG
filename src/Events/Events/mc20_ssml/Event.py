@@ -1,8 +1,6 @@
 from AnalysisG.Events.Events.mc20_ssml.Particles import *
 from AnalysisG.Templates import EventTemplate
 
-from time import sleep
-
 class SSML_MC20(EventTemplate):
     def __init__(self):
         EventTemplate.__init__(self)

@@ -6,25 +6,34 @@ import studies
 import os
 
 figure_path = "../../../docs/source/studies/truth-matching/mc20/"
-
+plotting.top.figure_path = figure_path
+plotting.children.figure_path = figure_path
 smpls = os.environ["Samples"] + "Binbin"
-run_cache = True
+run_cache = False
 run_analysis = {
-        "TopMatching" : studies.top.TopMatching,
+#        "TopMatching" : studies.top.TopMatching,
+#        "Children-Kinematics" : studies.children.ChildrenKinematics,
 }
 
 run_plotting = {
-        "TopMatching" : plotting.top.TopMatching,
+#        "TopMatching" : plotting.top.TopMatching,
+        "Children-Kinematics" : plotting.children.ChildrenKinematics,
 }
 
-
-smple_dr = {"dr-0.05" : [], "dr-0.10" : [], "dr-0.15" : [], "dr-0.20" : []}
+smple_dr = {
+        "dr-0.05" : [], "dr-0.10" : [], "dr-0.15" : [],
+        "dr-0.20" : [], "dr-0.30" : [], "dr-0.40" : [],
+        "broken-jets" : []
+}
 x = Tools()
 for i in x.lsFiles(smpls):
     if "_dR0p05_" in i: smple_dr["dr-0.05"] += [i]
     elif "_dR0p1_" in i: smple_dr["dr-0.10"] += [i]
     elif "_dR0p15_" in i: smple_dr["dr-0.15"] += [i]
-    else: smple_dr["dr-0.20"] += [i]
+    elif "_dR0p2_" in i: smple_dr["dr-0.20"] += [i]
+    elif "_dR0p3_" in i: smple_dr["dr-0.30"] += [i]
+    elif "_dR0p4_" in i: smple_dr["dr-0.40"] += [i]
+    else: smple_dr["broken-jets"] += [i]
 
 for bsm in smple_dr:
     if run_cache:
@@ -50,5 +59,6 @@ for bsm in smple_dr:
     for i, j in run_plotting.items():
         ana = Analysis()
         ana.ProjectName = bsm
-        plotting.top.figure_path = figure_path + bsm
+#        plotting.top.figure_path = figure_path + bsm
         j(ana.merged["nominal_Loose." + j.__name__])
+    exit()

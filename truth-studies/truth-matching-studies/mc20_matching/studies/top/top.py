@@ -12,6 +12,12 @@ class TopMatching(SelectionTemplate):
         self.jets_truth_leps = {"all" : [], "lep" : [], "had" : []}
         self.jets_leps = {"all" : [], "lep" : [], "had" : []}
 
+        self.n_truth_jets_lep = {}
+        self.n_truth_jets_had = {}
+
+        self.n_jets_lep = {}
+        self.n_jets_had = {}
+
 
     def Strategy(self, event):
         tops = event.Tops
@@ -36,12 +42,19 @@ class TopMatching(SelectionTemplate):
                     try: tru_dic[ti][tj] = None
                     except KeyError: continue
 
-            phys_tru = list(set(list(tru_dic[t]) + [c for c in ch if c.is_nu]))
+            phys_tru = list(set(list(tru_dic[t])))
+            ntj = str(len(phys_tru)) + " - Truth Jets"
+            phys_tru = phys_tru + [c for c in ch if c.is_nu]
             if len(phys_tru):
-                top_phys_tru_M = sum(phys_tru).Mass/1000
-                self.truth_jets["all"] += [top_phys_tru_M]
-                self.truth_jets[mode] += [top_phys_tru_M]
-
+                top_M = sum(phys_tru).Mass/1000
+                self.truth_jets["all"] += [top_M]
+                self.truth_jets[mode] += [top_M]
+                if len(ch_):
+                    if ntj not in self.n_truth_jets_lep: self.n_truth_jets_lep[ntj] = []
+                    self.n_truth_jets_lep[ntj] += [top_M]
+                else:
+                    if ntj not in self.n_truth_jets_had: self.n_truth_jets_had[ntj] = []
+                    self.n_truth_jets_had[ntj] += [top_M]
 
             # Jets with Truth Children (leptonic decay)
             jet_dic = {t : []}
@@ -49,12 +62,20 @@ class TopMatching(SelectionTemplate):
                 if t not in jet.Parent: continue
                 jet_dic[t] += [jet]
 
-            phys_det = jet_dic[t] + [c for c in ch if c.is_lep or c.is_nu]
-            phys_det = list(set(phys_det))
+            phys_det = list(set(list(jet_dic[t])))
+            nj = str(len(phys_det)) + " - Jets"
+            phys_det = phys_det + [c for c in ch if c.is_lep or c.is_nu]
             if len(phys_det):
                 top_M = sum(phys_det).Mass/1000
                 self.jets_truth_leps["all"] += [top_M]
                 self.jets_truth_leps[mode] += [top_M]
+                if len(ch_):
+                    if nj not in self.n_jets_lep: self.n_jets_lep[nj] = []
+                    self.n_jets_lep[nj] += [top_M]
+                else:
+                    if nj not in self.n_jets_had: self.n_jets_had[nj] = []
+                    self.n_jets_had[nj] += [top_M]
+
 
 
             # Detector only objects (except neutrinos)
@@ -65,6 +86,7 @@ class TopMatching(SelectionTemplate):
                     except KeyError: continue
 
             phys_det = list(jet_dic[t]) + [c for c in ch if c.is_nu]
+            phys_det = list(set(phys_det))
             if len(phys_det):
                 top_M = sum(phys_det).Mass/1000
                 self.jets_leps["all"] += [top_M]
