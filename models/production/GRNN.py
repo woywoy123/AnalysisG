@@ -18,14 +18,7 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
     def __init__(self):
         super().__init__(aggr = None)
 
-        try: self._gev = self.__param__["gev"]
-        except AttributeError: self._gev = False
-        except: pass
-
-        try: self._nuR = self.__params__["nu_reco"]
-        except AttributeError: self._nuR = False
-        except: pass
-
+        self._gev = False
         self._nuR = False
         self._cache = {}
 
@@ -47,14 +40,12 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
 
         self._o = 2
         self._rep = 32
-        self._hid = 256
+        self._hid = 128
 
         self._dx  = 5
         self.rnn_dx = Seq(
                 Linear(self._dx*2, self._hid),
-                LayerNorm(self._hid), ReLU(),
-                Linear(self._hid, self._hid),
-                LayerNorm(self._hid),
+                LayerNorm(self._hid), Tanh(),
                 Linear(self._hid, self._rep)
         )
         self.rnn_dx.apply(init_norm)
@@ -63,36 +54,34 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
         self.rnn_x = Seq(
                 Linear(self._x, self._hid),
                 LayerNorm(self._hid),
-                Linear(self._hid, self._hid),
-                LayerNorm(self._hid),
                 Linear(self._hid, self._rep)
         )
         self.rnn_x.apply(init_norm)
 
         self.rnn_mrg = Seq(
                 Linear(self._rep*2, self._hid),
-                LayerNorm(self._hid), ReLU(),
+                LayerNorm(self._hid), Tanh(),
                 Linear(self._hid, self._o)
         )
         self.rnn_mrg.apply(init_norm)
 
         self.node_feat  = Seq(
-                Linear(18, self._rep),
-                LayerNorm(self._rep),
-                Linear(self._rep, self._rep)
+                Linear(18, self._hid),
+                LayerNorm(self._hid), Tanh(),
+                Linear(self._hid, self._rep)
         )
         self.node_feat.apply(init_norm)
 
         self.node_delta = Seq(
                 Linear(6, self._hid),
-                LayerNorm(self._hid), ReLU(),
+                LayerNorm(self._hid), Tanh(),
                 Linear(self._hid, self._rep)
         )
         self.node_delta.apply(init_norm)
 
         self.graph_feat = Seq(
                 Linear(self._rep*6, self._hid),
-                LayerNorm(self._hid),
+                LayerNorm(self._hid), Tanh(),
                 Linear(self._hid, 5)
         )
         self.graph_feat.apply(init_norm)
@@ -113,7 +102,7 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
 
         _x: List[Tensor] = [m_ij, dR, jmp, pmc_ij]
         hx: Tensor = self.rnn_x(torch.cat(_x, -1).to(dtype = torch.float))
-        return self.rnn_mrg(torch.cat([hx, hx - hdx], -1))
+        return self.rnn_mrg(torch.cat([hx, hdx], -1))
 
     def aggregate(self, message, edge_index, pmc, trk): return message
 
@@ -163,6 +152,7 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
             H_: Tensor = self._h[idx_mlp[edge_index_[0], edge_index_[1]]]
             H = H_ - H
             if not sel.sum(-1): break
+            self._h[idx_mlp[edge_index_[0], edge_index_[1]]] = H
 
             gr_: Dict[str, Tensor]  = pyc_cuda.graph.edge_aggregation(edge_index_, H, self.pmc)[1]
             edge_index_ = edge_index_[:, sel != 1]

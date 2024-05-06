@@ -289,7 +289,7 @@ def measure_cuda_combinatorial(key, perfx_, result, algo):
         batch = perfx_.combinatorial[key]["batch"][i].to(device = "cuda:0")
         edge_index = perfx_.combinatorial[key]["edge_index"][i].to(device = "cuda:0")
 
-        res = algo(edge_index, batch, pmc, pid, met_xy)
+        res = algo(edge_index, batch, pmc, pid, met_xy, top_up_down = 0.8, w_up_down = 0.8)
         if res["combination"].sum(-1) == 0: continue
 
         nu1_f, nu2_f = res["nu_1f"], res["nu_2f"]

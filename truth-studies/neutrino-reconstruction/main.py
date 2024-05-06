@@ -20,9 +20,9 @@ run_plotting = {
 }
 
 
-build_cache = False
+build_cache = True
 if build_cache:
-    smpls = os.environ["Samples"] + "mc16_13_ttZ_m1000/"
+    smpls = os.environ["Samples"] + "ttZ-1000/"
     ana = Analysis()
     ana.ProjectName = "neutrino"
     ana.InputSample(None, smpls)
@@ -32,15 +32,15 @@ if build_cache:
     ana.EventStop = 10000
     ana.Launch()
 
-#ana = Analysis()
-#ana.ProjectName = "neutrino"
-#ana.EventName = "Event"
-#ana.EventCache = True
-#ana.Chunks = 1000
-#ana.EventStop = 10000
-#studies.cuda.get_samples(ana)
+ana = Analysis()
+ana.ProjectName = "neutrino"
+ana.EventName = "Event"
+ana.EventCache = True
+ana.Chunks = 1000
+ana.EventStop = 10000
+studies.cuda.get_samples(ana)
 plots.cuda.combinatorial()
-
+exit()
 if len(run_analysis):
     ana = Analysis()
     ana.ProjectName = "neutrino"
