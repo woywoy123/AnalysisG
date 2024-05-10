@@ -8,7 +8,7 @@ import os
 
 mode_ = 0
 path = "/scratch/tnom6927/"
-device = "cuda:0"
+device = "cuda:1"
 name = "ModelTrainingSmall"
 model = "GRNN" #"RNN" #"RMGN"
 gen_data  = False
@@ -36,7 +36,7 @@ modes = [
 ]
 
 params = [
-#    ("MRK-1" , "ADAM", 1 , {"lr": 1e-3}, None, None),
+    ("MRK-1" , "ADAM", 1 , {"lr": 1e-3}, None, None),
 #    ("MRK-2" , "ADAM", 1 , {"lr": 1e-4}, None, None),
 #    ("MRK-3" , "ADAM", 1 , {"lr": 1e-5}, None, None),
 
@@ -52,13 +52,13 @@ params = [
 #    ("MRK-11", "SGD", 1 , {"lr": 1e-4, "momentum" : 0.0001}, None, None),
 #    ("MRK-12", "SGD", 1 , {"lr": 1e-5, "momentum" : 0.0001}, None, None),
 
-    ("MRK-13", "SGD", 1 , {"lr": 1e-3, "momentum" : 0.0001}, "ExponentialLR", {"gamma" : 0.5}),
-    ("MRK-14", "SGD", 1 , {"lr": 1e-3, "momentum" : 0.0005}, "ExponentialLR", {"gamma" : 1.0}),
-    ("MRK-15", "SGD", 1 , {"lr": 1e-3, "momentum" : 0.0015}, "ExponentialLR", {"gamma" : 2.0}),
+#    ("MRK-13", "SGD", 1 , {"lr": 1e-3, "momentum" : 0.0001}, "ExponentialLR", {"gamma" : 0.5}),
+#    ("MRK-14", "SGD", 1 , {"lr": 1e-3, "momentum" : 0.0005}, "ExponentialLR", {"gamma" : 1.0}),
+#    ("MRK-15", "SGD", 1 , {"lr": 1e-3, "momentum" : 0.0015}, "ExponentialLR", {"gamma" : 2.0}),
 
-#    ("MRK-16", "SGD", 1 , {"lr": 1e-3, "weight_decay" : 1e-3, "momentum" : 0.0001}, "CyclicLR", {"base_lr" : 1e-3, "max_lr" : 1e-1}),
-#    ("MRK-17", "SGD", 5 , {"lr": 1e-3, "weight_decay" : 1e-3, "momentum" : 0.0005}, "CyclicLR", {"base_lr" : 1e-3, "max_lr" : 1e0 }),
-#    ("MRK-18", "SGD", 10, {"lr": 1e-6, "weight_decay" : 1e-3, "momentum" : 0.0015}, "CyclicLR", {"base_lr" : 1e-3, "max_lr" : 1e1 }),
+#    ("MRK-16", "SGD", 1 , {"lr": 1e-3, "momentum" : 0.0001}, "CyclicLR", {"base_lr" : 1e-3, "max_lr" : 1e-1}),
+#    ("MRK-17", "SGD", 1 , {"lr": 1e-3, "momentum" : 0.0005}, "CyclicLR", {"base_lr" : 1e-3, "max_lr" : 1e0 }),
+#    ("MRK-18", "SGD", 1 , {"lr": 1e-3, "momentum" : 0.0015}, "CyclicLR", {"base_lr" : 1e-3, "max_lr" : 1e1 }),
 ]
 
 

@@ -149,8 +149,6 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
             H: Tensor = self.propagate(edge_index_, pmc = pmc, trk = trk_)
             sel: Tensor = H.max(-1)[1]
 
-            H_: Tensor = self._h[idx_mlp[edge_index_[0], edge_index_[1]]]
-            H = H_ - H
             if not sel.sum(-1): break
             self._h[idx_mlp[edge_index_[0], edge_index_[1]]] = H
 
