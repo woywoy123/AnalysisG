@@ -25,12 +25,12 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
         self.O_top_edge: Tensor = torch.zeros((1))
         self.L_top_edge = "CEL"
 
-        self.O_ntops: Tensor = torch.zeros((1))
-        self.L_ntops = "CEL"
+        #self.O_ntops: Tensor = torch.zeros((1))
+        #self.L_ntops = "CEL"
 
-        self.soft_aggr = aggr.SoftmaxAggregation(learn = True)
-        self.max_aggr  = aggr.MaxAggregation()
-        self.var_aggr  = aggr.VarAggregation()
+        #self.soft_aggr = aggr.SoftmaxAggregation(learn = True)
+        #self.max_aggr  = aggr.MaxAggregation()
+        #self.var_aggr  = aggr.VarAggregation()
 
         # forward declaration
         self._h: Tensor = torch.zeros((1))
@@ -65,26 +65,26 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
         )
         self.rnn_mrg.apply(init_norm)
 
-        self.node_feat  = Seq(
-                Linear(18, self._hid),
-                LayerNorm(self._hid), Tanh(),
-                Linear(self._hid, self._rep)
-        )
-        self.node_feat.apply(init_norm)
+        #self.node_feat  = Seq(
+        #        Linear(18, self._hid),
+        #        LayerNorm(self._hid), Tanh(),
+        #        Linear(self._hid, self._rep)
+        #)
+        #self.node_feat.apply(init_norm)
 
-        self.node_delta = Seq(
-                Linear(6, self._hid),
-                LayerNorm(self._hid), Tanh(),
-                Linear(self._hid, self._rep)
-        )
-        self.node_delta.apply(init_norm)
+        #self.node_delta = Seq(
+        #        Linear(6, self._hid),
+        #        LayerNorm(self._hid), Tanh(),
+        #        Linear(self._hid, self._rep)
+        #)
+        #self.node_delta.apply(init_norm)
 
-        self.graph_feat = Seq(
-                Linear(self._rep*6, self._hid),
-                LayerNorm(self._hid), Tanh(),
-                Linear(self._hid, 5)
-        )
-        self.graph_feat.apply(init_norm)
+        #self.graph_feat = Seq(
+        #        Linear(self._rep*6, self._hid),
+        #        LayerNorm(self._hid), Tanh(),
+        #        Linear(self._hid, 5)
+        #)
+        #self.graph_feat.apply(init_norm)
 
     def message(self, trk_i, trk_j, pmc_i, pmc_j):
         pmci: Tensor = pyc_cuda.graph.unique_aggregation(trk_i, self.pmc)[0]
@@ -111,13 +111,16 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
                 G_met: Tensor, G_phi: Tensor, G_n_jets: Tensor, G_n_lep: Tensor,
                 N_pT: Tensor, N_eta: Tensor, N_phi: Tensor, N_energy: Tensor,
                 N_is_lep: Tensor, N_is_b: Tensor
-        ) -> Tuple[Tensor, Tensor]:
+        ) -> Tensor:
 
         self.pmu = torch.cat([N_pT, N_eta, N_phi, N_energy], -1)
         self.pmc = pyc_cuda.combined.transform.PxPyPzE(self.pmu)
 
         batch:  Tensor = batch
-        met_xy: Tensor = torch.cat([pyc_cuda.separate.transform.Px(G_met, G_phi), pyc_cuda.separate.transform.Py(G_met, G_phi)], -1)
+        met_xy: Tensor = torch.cat([
+                pyc_cuda.separate.transform.Px(G_met, G_phi),
+                pyc_cuda.separate.transform.Py(G_met, G_phi)
+        ], -1)
         pid:    Tensor = torch.cat([N_is_lep, N_is_b], -1)
 
         self._cls = N_pT.size(0)
@@ -153,38 +156,38 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
             self._h[idx_mlp[edge_index_[0], edge_index_[1]]] = H
 
             gr_: Dict[str, Tensor]  = pyc_cuda.graph.edge_aggregation(edge_index_, H, self.pmc)[1]
-            edge_index_ = edge_index_[:, sel != 1]
             trk_ = gr_["clusters"][gr_["reverse_clusters"]]
+            edge_index_ = edge_index_[:, sel != 1]
             self._cls += 1
 
         self.O_top_edge = self._h
-        gr_: Dict[str, Tensor] = pyc_cuda.graph.edge_aggregation(edge_index, self.O_top_edge, self.pmc)[1]
+        #gr_: Dict[str, Tensor] = pyc_cuda.graph.edge_aggregation(edge_index, self.O_top_edge, self.pmc)[1]
 
-        masses = pyc_cuda.combined.physics.cartesian.M(gr_["node_sum"])
-        mT = torch.ones_like(masses) * 172.62 * (1000 if not self._gev else 1)
-        mW = torch.ones_like(masses) * 80.385 * (1000 if not self._gev else 1)
-        mass_delta = torch.cat([mT - masses, mW - masses], -1)
+        #masses = pyc_cuda.combined.physics.cartesian.M(gr_["node_sum"])
+        #mT = torch.ones_like(masses) * 172.62 * (1000 if not self._gev else 1)
+        #mW = torch.ones_like(masses) * 80.385 * (1000 if not self._gev else 1)
+        #mass_delta = torch.cat([mT - masses, mW - masses], -1)
 
-        sft = self.soft_aggr(self.O_top_edge, edge_index[0])
-        mx  = self.max_aggr(self.O_top_edge, edge_index[0])
-        var = self.var_aggr(self.O_top_edge, edge_index[0])
+        #sft = self.soft_aggr(self.O_top_edge, edge_index[0])
+        #mx  = self.max_aggr(self.O_top_edge, edge_index[0])
+        #var = self.var_aggr(self.O_top_edge, edge_index[0])
 
-        feat  = [gr_["node_sum"], pyc_cuda.combined.physics.cartesian.M(gr_["node_sum"])]
-        feat += [self.pmc, pyc_cuda.combined.physics.cartesian.M(self.pmc)]
-        feat += [pid, sft, mx, var]
-        node = self.node_feat(torch.cat(feat, -1).to(dtype = torch.float))
+        #feat  = [gr_["node_sum"], pyc_cuda.combined.physics.cartesian.M(gr_["node_sum"])]
+        #feat += [self.pmc, pyc_cuda.combined.physics.cartesian.M(self.pmc)]
+        #feat += [pid, sft, mx, var]
+        #node = self.node_feat(torch.cat(feat, -1).to(dtype = torch.float))
 
-        sft = self.soft_aggr(node, batch)
-        mx  = self.max_aggr(node, batch)
-        var = self.var_aggr(node, batch)
+        #sft = self.soft_aggr(node, batch)
+        #mx  = self.max_aggr(node, batch)
+        #var = self.var_aggr(node, batch)
 
-        feat  = [met_xy[batch] - gr_["node_sum"][:, :2]]
-        feat += [met_xy[batch] - self.pmc[:, :2], mass_delta]
-        node_dx = self.node_delta(torch.cat(feat, -1).to(dtype = torch.float))
+        #feat  = [met_xy[batch] - gr_["node_sum"][:, :2]]
+        #feat += [met_xy[batch] - self.pmc[:, :2], mass_delta]
+        #node_dx = self.node_delta(torch.cat(feat, -1).to(dtype = torch.float))
 
-        sft_dx = self.soft_aggr(node_dx, batch)
-        mx_dx  = self.max_aggr(node_dx, batch)
-        var_dx = self.var_aggr(node_dx, batch)
-        self.O_ntops = self.graph_feat(torch.cat([sft, sft_dx, mx, mx_dx, var, var_dx], -1))
+        #sft_dx = self.soft_aggr(node_dx, batch)
+        #mx_dx  = self.max_aggr(node_dx, batch)
+        #var_dx = self.var_aggr(node_dx, batch)
+        #self.O_ntops = self.graph_feat(torch.cat([sft, sft_dx, mx, mx_dx, var, var_dx], -1))
 
-        return self.O_top_edge, self.O_ntops
+        return self.O_top_edge #, self.O_ntops
