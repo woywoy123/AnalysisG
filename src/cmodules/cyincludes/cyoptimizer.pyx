@@ -140,8 +140,10 @@ cdef void make_mass_plots(map[int, CyEpoch*] train, map[int, CyEpoch*] valid, ma
             except KeyError: pass
             try: xData += tr_t[file_n][x]["xData"]
             except KeyError: pass
-            tmpl["Histograms"] += [TH1F(**{"Title" : "truth", "xData" : xData})]
+
+            tmpl["Histogram"] = TH1F(**{"Title" : "truth", "xData" : xData})
             tmpl["yLogarithmic"] = True
+            tmpl["Stack"] = True
             th = TH1F(**tmpl)
             th.SaveFigure()
             del th
@@ -242,8 +244,8 @@ cdef void make_accuracy_plots(map[int, CyEpoch*] train, map[int, CyEpoch*] valid
         tmpl = template_tline(path, "Epoch", "Accuracy", "Achieved Accuracy of " + var_name)
         tmpl["Filename"] = var_name + "_accuracy"
         tmpl["Lines"] = list(lines[var_name].values())
+        tmpl["yMax"] = 100
         tl = TLine(**tmpl)
-        tl.yMax = 100
         tl.SaveFigure()
         del tl
         del tmpl
@@ -314,6 +316,7 @@ cdef dict make_roc_curve(map[string, roc_t]* roc_, dict lines, str mode):
     cdef pair[string, roc_t] its
 
     for its in dereference(roc_):
+        if not its.second.pred.size(): continue
         pred = torch.tensor(its.second.pred)
         dereference(roc_)[its.first].pred.clear()
 
@@ -330,8 +333,8 @@ cdef dict make_roc_curve(map[string, roc_t]* roc_, dict lines, str mode):
         del pred
         del thres
         for cls in range(len(fpr)):
-            try: dereference(roc_)[its.first].auc[cls+1] = auc_[cls].item()
-            except IndexError: pass
+            try: dereference(roc_)[its.first].auc[cls] = auc_[cls].item()
+            except IndexError: continue
             name = "ROC Curve: "+ env(its.first) + " classification - " + str(cls)
             if name not in lines: lines[name] = []
             lines[name] += [TLine(**{"xData" : fpr[cls].tolist(), "yData" : tpr[cls].tolist(), "Title" : mode})]
