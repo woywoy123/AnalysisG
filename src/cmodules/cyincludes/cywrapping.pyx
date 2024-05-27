@@ -295,7 +295,8 @@ cdef class ModelWrapper:
     def __init__(self, model = None):
         if model is None: return
         self._model = model
-        try: self._script = torch.jit.script(model())
+        try:self._script = torch.compile(model())
+        except RuntimeError: self._script = torch.jit.script(model())
         except: self._script = None
         self.__checkcode__()
 

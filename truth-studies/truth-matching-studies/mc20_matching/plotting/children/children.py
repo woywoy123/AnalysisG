@@ -114,5 +114,15 @@ def top_children_dr(ana):
     all_t.Filename = "Figure.2.d"
     all_t.SaveFigure()
 
+
+def top_children_fractions(ana):
+    data = ana.fractional
+
+
+
+
+
+
 def ChildrenKinematics(ana):
     top_children_dr(ana)
+    top_children_fractions(ana)

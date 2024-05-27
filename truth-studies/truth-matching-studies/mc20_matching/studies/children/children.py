@@ -8,6 +8,11 @@ class ChildrenKinematics(SelectionTemplate):
         self.dr_children_top = {}
         self.dr_children_cluster = {"Mutual" : [], "non-Mutual" : []}
 
+        self.fractional = {
+            "had-pt" : [], "had-energy" : [], "lep-pt" : [], "lep-energy" : []
+        }
+
+
     def Selection(self, event): return True
 
     def Strategy(self, event):
@@ -36,3 +41,11 @@ class ChildrenKinematics(SelectionTemplate):
                 if c1.Parent[0] != c2.Parent[0]: mut = "non-Mutual"
                 self.dr_children_cluster[mut] += [c1.DeltaR(c2)]
                 scanned += [c1]
+
+        for t in top:
+            mode = [c for c in t.Children if c.is_nu]
+            if len(mode): mode = "lep"
+            else: mode = "had"
+
+            self.fractional[mode + "-pt"] += [c.pt/t.pt for c in t.Children]
+            self.fractional[mode + "-energy"] += [c.e/t.e for c in t.Children]

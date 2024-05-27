@@ -8,8 +8,7 @@ namespace Optimizer
     int CyFold::length(){return this -> cached_hashes.size();}
     void CyFold::Import(const folds_t* in){this -> cached_hashes[in -> event_hash] = false;}
 
-    std::vector<std::vector<std::string>> CyFold::fetchthis(int batch_size)
-    {
+    std::vector<std::vector<std::string>> CyFold::fetchthis(int batch_size){
         std::vector<std::string> output = {}; 
         std::map<std::string, bool>* cached = &(this -> cached_hashes);
         std::map<std::string, bool>::iterator itr = cached -> begin();
@@ -17,14 +16,12 @@ namespace Optimizer
         return Tools::Quantize(output, batch_size); 
     }
 
-    void CyFold::flushthis(std::vector<std::string> inpt)
-    {
+    void CyFold::flushthis(std::vector<std::string> inpt){
         std::map<std::string, bool>* cached = &(this -> cached_hashes); 
         for (std::string hash : inpt){(*cached)[hash] = false;}
     }
 
-    std::vector<std::string> CyFold::check_this(std::vector<std::string> hashes)
-    {
+    std::vector<std::string> CyFold::check_this(std::vector<std::string> hashes){
         std::vector<std::string> output; 
         std::map<std::string, bool>* cached = &(this -> cached_hashes); 
         for (std::string hash : hashes){
@@ -37,8 +34,7 @@ namespace Optimizer
 
 
     CyOptimizer::CyOptimizer(){}
-    CyOptimizer::~CyOptimizer()
-    {
+    CyOptimizer::~CyOptimizer(){
         this -> delete_folds(&(this -> leaveout_test)); 
         this -> delete_folds(&(this -> kfold_eval)); 
         this -> delete_folds(&(this -> kfold_train)); 
@@ -48,8 +44,7 @@ namespace Optimizer
         this -> delete_folds(&(this -> epoch_test)); 
     }
 
-    void CyOptimizer::register_fold(const folds_t* inpt)
-    {
+    void CyOptimizer::register_fold(const folds_t* inpt) {
         std::map<int, CyFold*>* fold; 
         if (inpt -> test){ fold = &(this -> leaveout_test); }
         else if (inpt -> train){ fold = &(this -> kfold_train); }
@@ -86,65 +81,53 @@ namespace Optimizer
         return output;  
     }  
 
-    std::vector<std::vector<std::string>> CyOptimizer::fetch_train(int kfold, int batch_size)
-    {
+    std::vector<std::vector<std::string>> CyOptimizer::fetch_train(int kfold, int batch_size){
         return this -> fetch_quant(kfold, batch_size, &(this -> kfold_train)); 
     }
 
-    void CyOptimizer::flush_train(std::vector<std::string>* hashes, int kfold)
-    {
+    void CyOptimizer::flush_train(std::vector<std::string>* hashes, int kfold){
         this -> flush_data(hashes, &(this -> kfold_train), kfold); 
     }
 
-    std::vector<std::string> CyOptimizer::check_train(std::vector<std::string>* hashes, int kfold)
-    {
+    std::vector<std::string> CyOptimizer::check_train(std::vector<std::string>* hashes, int kfold){
         return this -> check_data(hashes, &(this -> kfold_train), kfold);
     }
 
-    std::vector<std::vector<std::string>> CyOptimizer::fetch_validation(int kfold, int batch_size)
-    {
+    std::vector<std::vector<std::string>> CyOptimizer::fetch_validation(int kfold, int batch_size){
         return this -> fetch_quant(kfold, batch_size, &(this -> kfold_eval)); 
     }
 
-    void CyOptimizer::flush_validation(std::vector<std::string>* hashes, int kfold)
-    {
+    void CyOptimizer::flush_validation(std::vector<std::string>* hashes, int kfold){
         this -> flush_data(hashes, &(this -> kfold_eval), kfold); 
     }
 
-    std::vector<std::string> CyOptimizer::check_validation(std::vector<std::string>* hashes, int kfold)
-    {
+    std::vector<std::string> CyOptimizer::check_validation(std::vector<std::string>* hashes, int kfold){
         return this -> check_data(hashes, &(this -> kfold_eval), kfold);
     }
 
-    std::vector<std::vector<std::string>> CyOptimizer::fetch_evaluation(int batch_size)
-    {
+    std::vector<std::vector<std::string>> CyOptimizer::fetch_evaluation(int batch_size){
         return this -> fetch_quant(-1, batch_size, &(this -> leaveout_test)); 
     }
 
-    void CyOptimizer::flush_evaluation(std::vector<std::string>* hashes)
-    {
+    void CyOptimizer::flush_evaluation(std::vector<std::string>* hashes){
         this -> flush_data(hashes, &(this -> leaveout_test), -1); 
     }
 
-    std::vector<std::string> CyOptimizer::check_evaluation(std::vector<std::string>* hashes)
-    {
+    std::vector<std::string> CyOptimizer::check_evaluation(std::vector<std::string>* hashes){
         return this -> check_data(hashes, &(this -> leaveout_test), -1);
     }
 
-    void CyOptimizer::train_epoch_kfold(int epoch, int kfold, std::map<std::string, data_t>* data)
-    {
+    void CyOptimizer::train_epoch_kfold(int epoch, int kfold, std::map<std::string, data_t>* data){
         CyEpoch* ep = this -> add_epoch(epoch, &(this -> epoch_train)); 
         ep -> add_kfold(kfold, data); 
     }
 
-    void CyOptimizer::validation_epoch_kfold(int epoch, int kfold, std::map<std::string, data_t>* data)
-    {
+    void CyOptimizer::validation_epoch_kfold(int epoch, int kfold, std::map<std::string, data_t>* data){
         CyEpoch* ep = this -> add_epoch(epoch, &(this -> epoch_valid)); 
         ep -> add_kfold(kfold, data); 
     }
 
-    void CyOptimizer::evaluation_epoch_kfold(int epoch, int kfold, std::map<std::string, data_t>* data)
-    {
+    void CyOptimizer::evaluation_epoch_kfold(int epoch, int kfold, std::map<std::string, data_t>* data){
         CyEpoch* ep = this -> add_epoch(epoch, &(this -> epoch_test)); 
         ep -> add_kfold(kfold, data); 
     }

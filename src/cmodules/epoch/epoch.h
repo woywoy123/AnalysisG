@@ -4,8 +4,7 @@
 #ifndef EPOCH_H
 #define EPOCH_H
 
-struct point_t
-{
+struct point_t {
     float minimum = 0; 
     float maximum = 0; 
 
@@ -22,8 +21,7 @@ struct point_t
     }
 };
 
-struct roc_t
-{
+struct roc_t {
     std::map<int, float> auc; 
     std::vector<std::vector<float>> truth; 
     std::vector<std::vector<float>> pred; 
@@ -33,8 +31,7 @@ struct roc_t
     std::map<int, std::vector<float>> thre; 
 }; 
 
-struct node_t
-{
+struct node_t {
     int max_nodes = -1; 
     std::map<int, int> num_nodes = {}; 
 
@@ -43,14 +40,12 @@ struct node_t
     }
 };
 
-struct mass_t
-{
+struct mass_t {
     std::map<float, int> mass_truth = {}; 
     std::map<float, int> mass_pred = {}; 
 }; 
 
-class CyEpoch
-{
+class CyEpoch {
     public:
         CyEpoch(); 
         ~CyEpoch(); 

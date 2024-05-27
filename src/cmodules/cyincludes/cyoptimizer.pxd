@@ -109,6 +109,7 @@ cdef inline void _rebuild_h5(f, list var, CyOptimizer* ptr, string mode, int epo
                 if not "masses" in i or key not in i: continue
                 if "pred"  in i: data.mass_pred[int(i.split("->")[1])]  = <vector[vector[float]]>file[i][idx : idy].tolist()
                 if "truth" in i: data.mass_truth[int(i.split("->")[1])] = <vector[vector[float]]>file[i][idx : idy].tolist()
+
         if   mode == b"training": ptr.train_epoch_kfold(epoch, kfold, &mp_data)
         elif mode == b"validation": ptr.validation_epoch_kfold(epoch, kfold, &mp_data)
         elif mode == b"evaluation": ptr.evaluation_epoch_kfold(epoch, kfold, &mp_data)

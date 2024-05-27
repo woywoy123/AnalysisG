@@ -3,8 +3,7 @@
 CyEpoch::CyEpoch(){}
 CyEpoch::~CyEpoch(){}
 
-void merge_this(std::vector<std::vector<float>>* in, std::vector<std::vector<float>>* out)
-{
+void merge_this(std::vector<std::vector<float>>* in, std::vector<std::vector<float>>* out){
     out -> insert(out -> end(), in -> begin(), in -> end()); 
 } 
 
@@ -18,8 +17,7 @@ void merge_this(
     }
 }
 
-void update_point(std::vector<std::vector<float>>* in, point_t* out)
-{
+void update_point(std::vector<std::vector<float>>* in, point_t* out){
     for (unsigned int i(0); i < in -> size(); ++i){
         for (unsigned int j(0); j < (*in)[i].size(); ++j){
             float val = (*in)[i][j]; 
@@ -34,8 +32,7 @@ void update_point(std::vector<std::vector<float>>* in, point_t* out)
     }
 }
 
-void update_mass(data_t* in, std::map<int, mass_t>* out)
-{
+void update_mass(data_t* in, std::map<int, mass_t>* out){
     std::map<int, std::vector<std::vector<float>>>::iterator itr; 
     for (itr = in -> mass_pred.begin(); itr != in -> mass_pred.end(); ++itr){
         mass_t* mss = &(*out)[itr -> first]; 
@@ -54,8 +51,7 @@ void update_mass(data_t* in, std::map<int, mass_t>* out)
     }
 }
 
-void update_nodes(std::vector<std::vector<float>>* in, node_t* out)
-{
+void update_nodes(std::vector<std::vector<float>>* in, node_t* out) {
     if (out -> max_nodes != -1){return;}
     for (unsigned int x(0); x < in -> size(); ++x){
         for (unsigned int j(0); j < (*in)[x].size(); ++j){
@@ -68,8 +64,7 @@ void update_nodes(std::vector<std::vector<float>>* in, node_t* out)
 }
 
 
-void CyEpoch::add_kfold(int kfold, std::map<std::string, data_t>* data)
-{
+void CyEpoch::add_kfold(int kfold, std::map<std::string, data_t>* data) {
     std::map<std::string, data_t>::iterator itr = data -> begin(); 
     for (; itr != data -> end(); ++itr){
         std::string name = itr -> first; 
@@ -101,37 +96,37 @@ void CyEpoch::add_kfold(int kfold, std::map<std::string, data_t>* data)
     } 
 }
 
-void CyEpoch::process_data()
-{
+void CyEpoch::process_data() {
     std::map<int, std::map<std::string, data_t>>::iterator itx; 
     for (itx = this -> container.begin(); itx != this -> container.end(); ++itx){
-        std::map<std::string, data_t>::iterator itr = itx -> second.begin(); 
-        for (; itr != itx -> second.end(); ++itr){
+        std::map<std::string, data_t>::iterator itr; 
+
+        for (itr = itx -> second.begin(); itr != itx -> second.end(); ++itr){
             std::string name = itr -> first; 
             int kfold = itx -> first; 
 
-            roc_t* rc = &(this -> auc[kfold][name]); 
-            merge_this(&(itr -> second.truth), &(rc -> truth)); 
+            roc_t* rc = &this -> auc[kfold][name]; 
+            merge_this(&itr -> second.truth, &rc -> truth); 
             itr -> second.truth.clear();
 
-            merge_this(&(itr -> second.pred), &(rc -> pred)); 
+            merge_this(&itr -> second.pred, &rc -> pred); 
             itr -> second.pred.clear(); 
 
-            point_t* acc = &(this -> accuracy[kfold][name]); 
-            update_point(&(itr -> second.accuracy), acc); 
+            point_t* acc = &this -> accuracy[kfold][name]; 
+            update_point(&itr -> second.accuracy, acc); 
             itr -> second.accuracy.clear();
             acc -> make(); 
             
-            point_t* lss = &(this -> loss[kfold][name]); 
-            update_point(&(itr -> second.loss), lss); 
+            point_t* lss = &this -> loss[kfold][name]; 
+            update_point(&itr -> second.loss, lss); 
             itr -> second.loss.clear();
             lss -> make();
 
-            update_mass(&(itr -> second), &(this -> masses[kfold][name]));  
+            update_mass(&itr -> second, &this -> masses[kfold][name]);  
             itr -> second.mass_truth.clear(); 
             itr -> second.mass_pred.clear(); 
 
-            update_nodes(&(itr -> second.nodes), &(this -> nodes[kfold])); 
+            update_nodes(&itr -> second.nodes, &this -> nodes[kfold]); 
             itr -> second.nodes.clear(); 
             this -> nodes[kfold].make(); 
         }
@@ -139,8 +134,7 @@ void CyEpoch::process_data()
     this -> container.clear(); 
 }
 
-void CyEpoch::purge()
-{
+void CyEpoch::purge() {
     this -> masses.clear(); 
     this -> nodes.clear();
     std::map<std::string, roc_t>::iterator itr_; 

@@ -58,7 +58,7 @@ class AnalysisBuild:
     def AddSampleNameEvent(self, name, n_roots = -1):
         x = UpROOT(self.SamplePath)
         for l, smpl in x.Files.items():
-            if name != l.split("/")[-1]: continue
+            #if name != l.split("/")[-1]: continue
             if n_roots != -1: ls = [l + "/" + i for i in smpl][:n_roots]
             else: ls = [l + "/" + i for i in smpl]
 

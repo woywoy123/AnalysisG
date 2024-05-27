@@ -8,8 +8,7 @@
 
 namespace Optimizer
 {
-    class CyFold
-    {
+    class CyFold {
         public:
             CyFold(); 
             ~CyFold();
@@ -21,8 +20,7 @@ namespace Optimizer
             std::map<std::string, bool> cached_hashes = {}; 
     };
 
-    class CyOptimizer
-    {
+    class CyOptimizer {
         public:
             CyOptimizer(); 
             ~CyOptimizer(); 
@@ -82,18 +80,16 @@ namespace Optimizer
                 return f -> check_this(*hashes); 
             }; 
 
-            CyEpoch* add_epoch(int epoch, std::map<int, CyEpoch*>* inpt)
-            {
+            CyEpoch* add_epoch(int epoch, std::map<int, CyEpoch*>* inpt){
                 if (!inpt -> count(epoch)){
                     (*inpt)[epoch] = new CyEpoch(); 
                     (*inpt)[epoch] -> epoch = epoch; 
                 }
-                return inpt -> at(epoch); 
+                return (*inpt)[epoch]; 
             }; 
 
             template <typename G>
-            void delete_folds(std::map<int, G*>* fold)
-            {
+            void delete_folds(std::map<int, G*>* fold){
                 typename std::map<int, G*>::iterator itr; 
                 itr = fold -> begin(); 
                 for (; itr != fold -> end(); ++itr){

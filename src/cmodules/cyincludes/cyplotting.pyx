@@ -54,26 +54,44 @@ cdef class BasePlotting:
         self.cummulative_hist = None
         self.matpl = plt
 
-        self.x = axis_t()
-        self.y = axis_t()
-
         self.x.dim = b"x-axis"
         self.y.dim = b"y-axis"
 
         self.x.title = b"x-axis"
         self.y.title = b"y-axis"
 
-    def __dealloc__(self): del self.ptr
+    def __dealloc__(self):
+        self.x.sorted_data.clear();
+        self.x.label_data.clear();
+        self.x.random_data.clear();
+        self.x.random_data_up.clear();
+        self.x.random_data_down.clear();
+
+        self.y.sorted_data.clear();
+        self.y.label_data.clear();
+        self.y.random_data.clear();
+        self.y.random_data_up.clear();
+        self.y.random_data_down.clear();
+
+        self.data_axis.clear()
+        self.weight_axis.clear()
+        self.boosted_axis.clear()
+        self.boosted_data.clear()
+        for i in self.underlying_hists: del i
+        self._labels.clear()
+        del self.ptr
+
     def __init__(self): pass
+
     cdef __atlas__(self):
         try: hep.atlas.text(loc = self.pn.atlas_loc)
         except: return
         cdef dict dic = {}
-        if self.pn.atlas_data: dic["data"] = self.pn.atlas_data
-        if self.pn.atlas_com > 0: dic["com"] = self.pn.atlas_com
+        if self.pn.atlas_data:     dic["data"] = self.pn.atlas_data
+        if self.pn.atlas_com > 0:  dic["com"] = self.pn.atlas_com
         if self.pn.atlas_lumi > 0: dic["lumi"] = self.pn.atlas_lumi
         if self.pn.atlas_year > 0: dic["year"] = int(self.pn.atlas_year)
-        if self.pn.n_events > 0: dic["label"] = "\n$N_{events}$ = " + str(self.pn.n_events)
+        if self.pn.n_events > 0:   dic["label"] = "\n$N_{events}$ = " + str(self.pn.n_events)
         hep.atlas.label(**dic)
         self.matpl.style.use(hep.style.ATLAS)
 
@@ -150,6 +168,8 @@ cdef class BasePlotting:
         except:
             self.LaTeX = False
             self.SaveFigure()
+            return
+
         print("Saving Figure to: "+ dirc + self.Filename)
         self.matpl.clf()
         self.matpl.cla()

@@ -150,7 +150,7 @@ class RecursiveGraphNeuralNetwork(MessagePassing):
             sel: Tensor = H.max(-1)[1]
 
             H_: Tensor = self._h[idx_mlp[edge_index_[0], edge_index_[1]]]
-            H = H_ - H
+
             if not sel.sum(-1): break
             gr_: Dict[str, Tensor]  = pyc_cuda.graph.edge_aggregation(edge_index_, H, self.pmc)[1]
             edge_index_ = edge_index_[:, sel != 1]

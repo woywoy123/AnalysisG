@@ -11,8 +11,7 @@
 #include <map>
 
 
-struct paint_t
-{
+struct paint_t {
     float n_events = 0; 
 
     bool atlas_style = false; 
@@ -49,8 +48,7 @@ struct paint_t
     bool atlas_data = false; 
 };
 
-struct axis_t
-{
+struct axis_t {
     std::string title = ""; 
     std::string dim = ""; 
     std::map<std::string, std::vector<float>> sorted_data = {}; 
@@ -70,18 +68,15 @@ struct axis_t
     bool overflow = false;
     bool bin_centering = false;  
     bool logarithmic = false; 
-    
 }; 
 
-struct io_t
-{
+struct io_t {
     std::string filename = "untitled"; 
     std::string outputdir = "./Plots";
     int dpi = 250; 
 }; 
 
-struct figure_t
-{
+struct figure_t {
     std::string title = "no-title";
     bool label_data = false; 
     bool overlay = false; 
@@ -89,8 +84,7 @@ struct figure_t
     bool line = false; 
 }; 
 
-struct abstract_plot
-{
+struct abstract_plot {
     paint_t  cosmetic; 
     figure_t figure; 
     io_t     file; 

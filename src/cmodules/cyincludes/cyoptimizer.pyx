@@ -99,25 +99,28 @@ cdef tuple collapse_masses(map[int, CyEpoch*] data, str mode, str path):
     return truth, output
 
 cdef void make_mass_plots(map[int, CyEpoch*] train, map[int, CyEpoch*] valid, map[int, CyEpoch*] test, str path):
-    cdef tuple tr = collapse_masses(train, "training", path)
-    cdef tuple va = collapse_masses(valid, "validation", path)
-    cdef tuple te = collapse_masses(test, "evaluation", path)
+    cdef dict tr_t, tr_p, va_t, va_p, ev_t, ev_p
+    tr_t, tr_p = collapse_masses(train, "training", path)
+    va_t, va_p = collapse_masses(valid, "validation", path)
+    ev_t, ev_p = collapse_masses(test, "evaluation", path)
 
-    tr_t, tr_p = tr
-    va_t, va_p = va
-    ev_t, ev_p = te
-    cdef str mva, kf, x, file_n
     cdef dict tmpl
     cdef list files, xData
-
+    cdef str mva, kf, x, file_n
     for file_n in set(sum([list(tr_t), list(va_t), list(ev_t)], [])):
         mva = file_n.split("/")[-1]
         kf = file_n.split("/")[-2]
         mva = "Reconstructed Mass Using MVA: " + mva + " " + kf
         files = []
-        if file_n in tr_t: files += list(tr_t[file_n])
-        if file_n in va_t: files += list(va_t[file_n])
-        if file_n in ev_t: files += list(ev_t[file_n])
+        try: files += list(tr_t[file_n])
+        except KeyError: pass
+
+        try: files += list(va_t[file_n])
+        except KeyError: pass
+
+        try: files += list(ev_t[file_n])
+        except KeyError: pass
+
         for x in set(files):
             xData = []
             tmpl = template_th1f(file_n, "Mass (GeV)", "Entries <unit>", mva, 100)
@@ -299,6 +302,8 @@ cdef void make_loss_plots(map[int, CyEpoch*] train, map[int, CyEpoch*] valid, ma
         tl.SaveFigure()
         del tl
         del tmpl
+
+    del lines
     del folds
     del epochs
     tmp_tr.clear()
@@ -309,7 +314,6 @@ cdef dict make_roc_curve(map[string, roc_t]* roc_, dict lines, str mode):
     cdef pair[string, roc_t] its
 
     for its in dereference(roc_):
-        if not its.second.pred.size(): continue
         pred = torch.tensor(its.second.pred)
         dereference(roc_)[its.first].pred.clear()
 
@@ -319,11 +323,12 @@ cdef dict make_roc_curve(map[string, roc_t]* roc_, dict lines, str mode):
         roc = MulticlassROC(**{"num_classes": pred.size()[1], "thresholds" : None})
         fpr, tpr, thres = roc(pred, tru)
 
-        auc = MulticlassAUROC(**{"num_classes": pred.size()[1], "thresholds" : None})
+        auc = MulticlassAUROC(**{"num_classes": pred.size()[1], "thresholds" : None, "average" : None})
         auc_ = auc(pred, tru).view(-1)
 
         del tru
         del pred
+        del thres
         for cls in range(len(fpr)):
             try: dereference(roc_)[its.first].auc[cls+1] = auc_[cls].item()
             except IndexError: pass
@@ -414,6 +419,7 @@ cdef void make_roc_plots(map[int, CyEpoch*] train, map[int, CyEpoch*] valid, map
         tl = TLine(**tmpl)
         tl.SaveFigure()
         del tl
+    del line_auc
 
 cdef void make_nodes(map[int, CyEpoch*] train, map[int, CyEpoch*] valid, map[int, CyEpoch*] test, str path):
     cdef pair[int, CyEpoch*] its
@@ -734,6 +740,7 @@ cdef class cOptimizer:
             for dt in ep.container[kfold]: _check_h5(grp, env(dt.first), &dt.second)
             ep.process_data()
         f.close()
+        gc.collect()
 
 
     cpdef RebuildEpochHDF5(self, int epoch, str path, int kfold):
@@ -808,7 +815,7 @@ cdef class cOptimizer:
                 except FileExistsError: pass
                 if h5_file is not None: h5_file.close()
                 h5_file = h5py.File(v, "w")
-                if up_root is not None: 
+                if up_root is not None:
                     put  = {env(data_i.first) : awkward.Array([data_i.second[index_itr.first] for index_itr in index_map]) for data_i in data_map}
                     put |= {"event_index" : awkward.Array([index_itr.first for index_itr in index_map])}
                     up_root[tree] = put
