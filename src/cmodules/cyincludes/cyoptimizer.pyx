@@ -578,12 +578,11 @@ cdef class DataLoader:
                 if gr.pkl.size(): pass
                 else: return None
                 gc.disable()
-                data = pickle.loads(gr.pkl)
-                gc.enable()
-                data = data.contiguous()
+                data = pickle.loads(gr.pkl).contiguous()
                 if cuda[0] is None: data = data.cpu()
                 else: data = data.cuda(device = self.device)
                 self.online[env(t_hash)] = data
+                gc.enable()
 
             out.append(data)
             hashes.append(t_hash)

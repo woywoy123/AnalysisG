@@ -7,8 +7,8 @@ import os
 
 
 mode_ = 0
-path = "./"
-device = "cuda:0"
+path = "/scratch/tnom6927"
+device = "cuda:1"
 name = "ModelTrainingSmall"
 model = "GRNN" #"RNN" #"RMGN"
 gen_data  = False
@@ -36,7 +36,7 @@ modes = [
 ]
 
 params = [
-    ("MRK-1" , "ADAM", 1 , {"lr": 1e-3}, None, None),
+#    ("MRK-1" , "ADAM", 1 , {"lr": 1e-3}, None, None),
 #    ("MRK-2" , "ADAM", 1 , {"lr": 1e-4}, None, None),
 #    ("MRK-3" , "ADAM", 1 , {"lr": 1e-5}, None, None),
 
@@ -52,7 +52,7 @@ params = [
 #    ("MRK-11", "SGD", 1 , {"lr": 1e-4, "momentum" : 0.0001}, None, None),
 #    ("MRK-12", "SGD", 1 , {"lr": 1e-5, "momentum" : 0.0001}, None, None),
 
-#    ("MRK-13", "SGD", 1 , {"lr": 1e-3, "momentum" : 0.0001}, "ExponentialLR", {"gamma" : 0.5}),
+    ("MRK-13", "SGD", 1 , {"lr": 1e-3, "momentum" : 0.0001}, "ExponentialLR", {"gamma" : 0.5}),
 #    ("MRK-14", "SGD", 1 , {"lr": 1e-3, "momentum" : 0.0005}, "ExponentialLR", {"gamma" : 1.0}),
 #    ("MRK-15", "SGD", 1 , {"lr": 1e-3, "momentum" : 0.0015}, "ExponentialLR", {"gamma" : 2.0}),
 
@@ -123,7 +123,7 @@ for this in params:
     ana.Epochs  = 200
     ana.MaxGPU  = 20
     ana.MaxRAM  = 200
-    ana.Threads = 6
+    ana.Threads = 48
     ana.Tree = "nominal"
     ana.EventName = None
     ana.RunName = run_ + "-" + mode

@@ -17,12 +17,41 @@ inpt = [
     "N_pT", "N_eta", "N_phi", "N_energy", "N_is_lep", "N_is_b"
 ]
 
-test = (getattr(data, i) for i in inpt)
 inpt = {i : getattr(data, i) for i in inpt}
-model = RecursiveGraphNeuralNetwork()
-#torch.compile(model)
-model = torch.jit.script(model, example_inputs = inpt)
-model = model.to(device = "cuda:0")
+from pyc.interface import pyc_cuda
+from torch.onnx import register_custom_op_symbolic
+#from torch.onnx import symbolic_helper
+#@symbolic_helper.parse_args("t")
+#def symbolic(t):
+#    return (t)
+#t = torch.cat([data.N_pT, data.N_eta, data.N_phi, data.N_energy], -1)
+#register_custom_op_symbolic("pyc_cuda::transform_combined_PxPyPzE", pyc_cuda.combined.transform.PxPyPzE, 14)
+
+model = RecursiveGraphNeuralNetwork().to(device = "cuda:0")
+cmodel = torch.jit.script(model) #, example_inputs = tuple(inpt.values()))
+model = torch.compile(cmodel)
+x = model(**inpt)
+#torch.onnx.export(
+#        cmodel, tuple(inpt.values()),
+#        "test.onnx",
+#        input_names = [
+#            "edge_index", "batch",
+#            "G_met", "G_phi", "G_n_jets", "G_n_lep",
+#            "N_pT", "N_eta", "N_phi", "N_energy", "N_is_lep", "N_is_b"
+#        ],
+#        operator_export_type = torch.onnx.OperatorExportTypes.ONNX_FALLTHROUGH
+#)
+#import onnx
+#model = onnx.load("test.onnx")
+#onnx.checker.check_model(model)
+#import onnxruntime as ort
+#ses = ort.InferenceSession("test.onnx")
+#o = ses.run(None, inpt)
+#print(o)
+#exit()
+#
+#model = torch.jit.script(model, example_inputs = inpt)
+#model = model.to(device = "cuda:0")
 model.train()
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
 loss_fn = torch.nn.CrossEntropyLoss()

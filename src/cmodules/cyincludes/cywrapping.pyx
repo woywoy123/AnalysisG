@@ -295,8 +295,9 @@ cdef class ModelWrapper:
     def __init__(self, model = None):
         if model is None: return
         self._model = model
-        try:self._script = torch.compile(model())
-        except RuntimeError: self._script = torch.jit.script(model())
+        try:
+            self._script = torch.jit.script(model())
+            self._script = torch.compile(self._script)
         except: self._script = None
         self.__checkcode__()
 
@@ -502,11 +503,13 @@ cdef class ModelWrapper:
         self._epoch = lib["epoch"]
         try: self._model.load_state_dict(state_dict = lib["model"])
         except ValueError: self._failed_model_load()
+        except: pass
         self._model.eval()
 
         if self._script is None: return
         try: self._script.load_state_dict(state_dict = lib["model"])
         except ValueError: self._failed_model_load()
+        except: pass
         self._script.eval()
 
     @property
