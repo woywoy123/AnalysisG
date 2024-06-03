@@ -1,9 +1,9 @@
 #!/bin/bash 
 
 # Hardcoded parameters
-export CUDA=11.8
+export CUDA=12.0
 export CPU_ARCH="x86_64"
-export KEYRING="cuda-keyring_1.0-1_all.deb"
+export KEYRING="cuda-keyring_1.1-1_all.deb"
 
 # Dynamic Parameters
 export UBUNTU_V="$(echo $(lsb_release -sr) | tr -d .)"

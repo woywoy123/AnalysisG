@@ -12,7 +12,10 @@ RUN chmod -R 0750 ./setup-scripts/docker-script.sh
 RUN setup-scripts/docker-script.sh
 RUN apt-get clean all
 
-RUN pip install --upgrade pip setuptools wheel torch
+WORKDIR /home/AnalysisG/setup-scripts
+RUN chmod -R 0750 setup-venv.sh
+RUN setup-venv.sh
+WORKDIR /home/AnalysisG
 RUN pip install -v .
 RUN config_pyami
 RUN install_pyc
