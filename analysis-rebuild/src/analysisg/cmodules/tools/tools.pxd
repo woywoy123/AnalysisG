@@ -26,12 +26,11 @@ cdef inline string enc(str val): return val.encode("utf-8")
 cdef inline str env(string val): return val.decode("utf-8")
 cdef inline list env_vec(vector[string]* inpt):
     cdef int i
-    cdef list out = []
-    for i in inpt.size(): out.append(env(inpt.at(i)))
+    cdef list out = [env(inpt.at(i)) for i in range(inpt.size())]
     return out
 
 cdef inline vector[string] enc_list(list inpt):
-    cdef int i
+    cdef str i
     cdef vector[string] out = []
-    for i in inpt.size(): out.push_back(enc(inpt[i]))
+    for i in inpt: out.push_back(enc(i))
     return out

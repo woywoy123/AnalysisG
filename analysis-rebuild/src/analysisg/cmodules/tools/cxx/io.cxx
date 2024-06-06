@@ -33,7 +33,6 @@ std::vector<std::string> tools::ls(std::string path, std::string ext){
     std::filesystem::recursive_directory_iterator itr; 
     try {itr = std::filesystem::recursive_directory_iterator(path);}
     catch (...) {return {};}
-    std::cout << path << std::endl;
     for (const std::filesystem::directory_entry val : itr){
         std::string s = std::filesystem::canonical(val.path()).string(); 
         if (ext.size() && !this -> ends_with(&s, ext)){continue;}
@@ -42,5 +41,6 @@ std::vector<std::string> tools::ls(std::string path, std::string ext){
     return out; 
 }
 
-
-
+std::string tools::absolute_path(std::string path){
+    return std::filesystem::canonical(path).string(); 
+}

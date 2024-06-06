@@ -17,17 +17,19 @@ class tools
         void create_path(std::string path); 
         void delete_path(std::string path); 
         bool is_file(std::string path); 
+        std::string absolute_path(std::string path); 
         std::vector<std::string> ls(std::string path, std::string ext = ""); 
 
         // strings.cxx
         std::string to_string(double val); 
         void replace(std::string* in, std::string repl_str, std::string repl_with); 
+        bool has_string(std::string* inpt, std::string trg); 
+        bool ends_with(std::string* inpt, std::string val); 
+        bool has_value(std::vector<std::string>* data, std::string trg); 
+
         std::vector<std::string> split(std::string in, std::string delim);
         std::vector<std::string> split(std::string in, int n);
         std::string hash(std::string input, int len = 18);
-        bool has_string(std::string* inpt, std::string trg); 
-        bool ends_with(std::string* inpt, std::string val); 
-
     
         // Template functions
         template <typename G>

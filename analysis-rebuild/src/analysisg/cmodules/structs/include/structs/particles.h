@@ -1,5 +1,5 @@
-#ifndef META_H
-#define META_H
+#ifndef PARTICLES_STRUCTS_H
+#define PARTICLES_STRUCTS_H
 #include <iostream>
 #include <string>
 #include <vector>

@@ -78,3 +78,11 @@ bool tools::ends_with(std::string* inpt, std::string val){
     return val == l; 
 }
 
+bool tools::has_value(std::vector<std::string>* data, std::string trg){
+    for (int x(0); x < data -> size(); ++x){
+        if (trg != data -> at(x)){continue;}
+        return true; 
+    }
+    return false; 
+}
+

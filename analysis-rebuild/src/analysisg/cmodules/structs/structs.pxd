@@ -8,7 +8,7 @@ from libcpp.vector cimport vector
 
 cdef extern from "<structs/particles.h>":
 
-    cdef struct particle_t:
+    struct particle_t:
         double e
         double mass
 
@@ -35,3 +35,79 @@ cdef extern from "<structs/particles.h>":
 
         map[string, bool] children
         map[string, bool] parents
+
+cdef extern from "<structs/meta.h>":
+
+    struct meta_t:
+        string hash
+        string original_input
+        string original_path
+        string original_name
+
+        vector[string] req_trees
+        vector[string] req_branches
+        vector[string] req_leaves
+
+        vector[string] mis_trees
+        vector[string] mis_branches
+        vector[string] mis_leaves
+
+        unsigned int dsid
+        string AMITag
+        string generators
+
+        bool isMC
+        string derivationFormat
+        map[int, int] inputrange
+        map[int, string] inputfiles
+        map[string, string] config
+
+        double eventNumber
+        double event_index
+
+        bool found
+        string DatasetName
+
+        double ecmEnergy
+        double genFiltEff
+        double completion
+        double beam_energy
+        double crossSection
+        double crossSection_mean
+        double totalSize
+
+        unsigned int nFiles
+        unsigned int run_number
+        unsigned int totalEvents
+        unsigned int datasetNumber
+
+        string identifier
+        string prodsysStatus
+        string dataType
+        string version
+        string PDF
+        string AtlasRelease
+        string principalPhysicsGroup
+        string physicsShort
+        string generatorName
+        string geometryVersion
+        string conditionsTag
+        string generatorTune
+        string amiStatus
+        string beamType
+        string productionStep
+        string projectName
+        string statsAlgorithm
+        string genFilterNames
+        string file_type
+        string sample_name
+        string logicalDatasetName
+
+        vector[string] keywords
+        vector[string] weights
+        vector[string] keyword
+
+        map[string, int] LFN
+        vector[string] fileGUID
+        vector[int] events
+        vector[double] fileSize
