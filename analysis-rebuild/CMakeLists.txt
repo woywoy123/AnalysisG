@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.23 FATAL_ERROR)
 project(${SKBUILD_PROJECT_NAME} VERSION ${SKBUILD_PROJECT_VERSION} LANGUAGES CXX C)
+include(FetchContent)
+
 #include(CheckLanguage)
 #check_language(CUDA)
 #
@@ -36,12 +38,18 @@ include_directories(${ROOT_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR})
 link_directories(${ROOT_LIBRARY_DIR})
 message(STATUS "ROOT: ${ROOT_INCLUDE_DIRS}")
 
+
+find_package(RapidJSON)
+if (NOT RapidJSON_FOUND)
+FetchContent_Declare(RapidJSON GIT_REPOSITORY https://github.com/Tencent/rapidjson.git)
+FetchContent_MakeAvailable(RapidJSON)
+find_package(RapidJSON REQUIRED)
+endif()
+
 add_subdirectory(src/analysisg/cmodules)
-
 add_custom_command(
-    OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/src/analysisg/cyanalysisg.cxx
+    OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/src/analysisg/cyanalysisg.cpp
     DEPENDS 
-
         src/analysisg/__init__.pxd
         src/analysisg/cyanalysisg.pyx
         src/analysisg/cyanalysisg.pxd
@@ -50,10 +58,10 @@ add_custom_command(
     COMMAND
         Python::Interpreter -m cython --cplus
         "${CMAKE_CURRENT_SOURCE_DIR}/src/analysisg/cyanalysisg.pyx" --output-file 
-        "${CMAKE_CURRENT_SOURCE_DIR}/src/analysisg/cyanalysisg.cxx"
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/analysisg/cyanalysisg.cpp"
 )
 
-python_add_library(cyanalysisg MODULE "${CMAKE_CURRENT_SOURCE_DIR}/src/analysisg/cyanalysisg.cxx" WITH_SOABI)
+python_add_library(cyanalysisg MODULE "${CMAKE_CURRENT_SOURCE_DIR}/src/analysisg/cyanalysisg.cpp" WITH_SOABI)
 target_link_libraries(cyanalysisg LINK_PUBLIC ctools)
 install(TARGETS cyanalysisg DESTINATION AnalysisG/${SKBUILD_PROJECT_NAME})
 

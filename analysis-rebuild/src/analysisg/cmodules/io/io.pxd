@@ -28,10 +28,13 @@ cdef extern from "<io/io.h>":
         int file_index
         long index
 
+        void flush() except+
+
         bool next(float* data) except +
         bool next(vector[vector[float]]* data) except +
         bool next(vector[vector[long ]]* data) except +
         bool next(vector[vector[int  ]]* data) except +
+
 
 
     cdef cppclass io:

@@ -9,7 +9,7 @@ target_link_libraries(cmeta LINK_PUBLIC cstructs)
 target_compile_options(cmeta PRIVATE -fPIC)
 
 add_custom_command(
-    OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/cmeta.cxx
+    OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/cmeta.cpp
     DEPENDS 
         ${CMAKE_CURRENT_SOURCE_DIR}/__init__.pxd
         ${CMAKE_CURRENT_SOURCE_DIR}/meta.pxd
@@ -18,10 +18,10 @@ add_custom_command(
     VERBATIM
     COMMAND
         Python::Interpreter -m cython --cplus
-        "${CMAKE_CURRENT_SOURCE_DIR}/meta.pyx" --output-file "${CMAKE_CURRENT_SOURCE_DIR}/cmeta.cxx"
+        ${CMAKE_CURRENT_SOURCE_DIR}/meta.pyx --output-file ${CMAKE_CURRENT_SOURCE_DIR}/cmeta.cpp
 )
 
-python_add_library(meta MODULE "${CMAKE_CURRENT_SOURCE_DIR}/cmeta.cxx" WITH_SOABI)
+python_add_library(meta MODULE ${CMAKE_CURRENT_SOURCE_DIR}/cmeta.cpp WITH_SOABI)
 target_link_libraries(meta LINK_PUBLIC cmeta)
 install(TARGETS meta DESTINATION AnalysisG/${SKBUILD_PROJECT_NAME}/cmodules)
 

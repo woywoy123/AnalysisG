@@ -9,11 +9,11 @@ add_library(cio STATIC ${SOURCE_FILES})
 target_include_directories(cio PRIVATE include/io)
 target_include_directories(cio PUBLIC include)
 target_include_directories(cio PUBLIC ${HDF5_CXX_INCLUDE_DIRS} ${ROOT_INCLUDE_DIRS}) 
-target_link_libraries(cio LINK_PUBLIC ${HDF5_CXX_LIBRARIES} ${ROOT_LIBRARIES} hdf5::hdf5_cpp ctools cstructs)
+target_link_libraries(cio LINK_PUBLIC ${HDF5_CXX_LIBRARIES} ${ROOT_LIBRARIES} hdf5::hdf5_cpp ctools cstructs RapidJSON)
 target_compile_options(cio PRIVATE -fPIC)
 
 add_custom_command(
-    OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/cio.cxx
+    OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/cio.cpp
     DEPENDS 
         ${CMAKE_CURRENT_SOURCE_DIR}/__init__.pxd
         ${CMAKE_CURRENT_SOURCE_DIR}/io.pxd
@@ -22,10 +22,10 @@ add_custom_command(
     VERBATIM
     COMMAND
         Python::Interpreter -m cython --cplus
-        "${CMAKE_CURRENT_SOURCE_DIR}/io.pyx" --output-file "${CMAKE_CURRENT_SOURCE_DIR}/cio.cxx"
+        "${CMAKE_CURRENT_SOURCE_DIR}/io.pyx" --output-file "${CMAKE_CURRENT_SOURCE_DIR}/cio.cpp"
 )
 
-python_add_library(io MODULE "${CMAKE_CURRENT_SOURCE_DIR}/cio.cxx" WITH_SOABI)
-target_link_libraries(io LINK_PUBLIC cio)
+python_add_library(io MODULE "${CMAKE_CURRENT_SOURCE_DIR}/cio.cpp" WITH_SOABI)
+target_link_libraries(io LINK_PUBLIC cio RapidJSON)
 install(TARGETS io DESTINATION AnalysisG/${SKBUILD_PROJECT_NAME}/cmodules)
 

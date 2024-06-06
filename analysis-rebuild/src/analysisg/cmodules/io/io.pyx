@@ -10,12 +10,18 @@ from libcpp.vector cimport vector
 from cython.operator cimport dereference as deref
 
 cdef class IO:
-    def __cinit__(self): self.ptr = new io();
+    def __cinit__(self):
+        self.ptr = new io();
+        self.data_ops = NULL
+
     def __init__(self, list root = []):
         if len(root): self.Files = root
         else: return
 
-    def __dealloc__(self): del self.ptr
+    def __dealloc__(self):
+        self.ptr.root_end()
+        del self.ptr
+
     def __len__(self):
         cdef pair[string, long] itx
         return max([itx.second for itx in self.ptr.root_size()])
@@ -29,7 +35,9 @@ cdef class IO:
         cdef dict output = {}
         cdef pair[string, data_t*] itr
         for itr in deref(self.data_ops): output |= switch_board(itr.second)
-        if not len(output): raise StopIteration
+        if not len(output):
+            self.ptr.root_end()
+            raise StopIteration
         return output
 
     @property

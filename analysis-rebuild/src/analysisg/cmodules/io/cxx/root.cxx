@@ -29,19 +29,30 @@ void data_t::fetch_buffer(){
 }
 
 void data_t::flush(){
+    this -> flush_buffer();
     if (this -> files_s){delete this -> files_s;}
     if (this -> files_i){delete this -> files_i;}
     if (this -> files_t){delete this -> files_t;}
-    this -> flush_buffer();
 }
 
 void data_t::initialize(){
+    TFile* c = this -> files_t -> at(this -> file_index); 
+    c = c -> Open(c -> GetTitle()); 
+
+    this -> tree        = (TTree*)c -> Get(this -> tree_name.c_str()); 
+    this -> leaf        = this -> tree -> FindLeaf(this -> leaf_name.c_str());
     this -> branch      = this -> leaf -> GetBranch();  
-    this -> tree        = this -> branch -> GetTree(); 
-    this -> leaf_name   = this -> leaf   -> GetName();  
-    this -> branch_name = this -> branch -> GetName();
-    this -> tree_name   = this -> tree   -> GetName();  
+    
+    this -> tree_name   = this -> tree -> GetName();
+    this -> leaf_name   = this -> leaf -> GetName();
+    this -> branch_name = this -> branch -> GetName(); 
+
     this -> string_type(); 
+    this -> flush_buffer(); 
+    this -> fetch_buffer(); 
+    this -> index = 0; 
+    c -> Close(); 
+    delete c; 
 }; 
 
 void data_t::string_type(){
@@ -63,6 +74,23 @@ void data_t::string_type(){
     std::cout << this -> leaf_type << std::endl; 
     abort(); 
 }
+
+void data_t::element(std::vector<std::vector<float>>* el){
+    (*el) = this -> r_vvf -> at(this -> index);
+}
+
+void data_t::element(std::vector<std::vector<long>>* el){
+    (*el) = this -> r_vvl -> at(this -> index);
+}
+
+void data_t::element(std::vector<std::vector<int>>* el){
+    (*el) = this -> r_vvi -> at(this -> index);
+}
+
+void data_t::element(float* el){
+    (*el) = this -> r_f -> at(this -> index);
+}
+
 
 void io::check_root_file_paths(){
     std::map<std::string, bool> tmp = {}; 
@@ -86,15 +114,17 @@ void io::root_key_paths(std::string path, TTree* t){
     if (!this -> file_root){return;}
     TTree* tr = this -> file_root -> Get<TTree>(path.c_str()); 
     if (!tr){return;}
-
+    bool found = false; 
     std::string file_name = this -> file_root -> GetTitle(); 
     for (unsigned int x(0); x < this -> trees.size(); ++x){
         std::string name = this -> trees[x];
         if (std::string(tr -> GetName()) != name){continue;}
         this -> tree_data[file_name][name] = tr; 
         this -> tree_entries[file_name][std::string(tr -> GetName())] = tr -> GetEntries(); 
+        found = true; 
         break; 
     }
+    if (!found){return;}
 
     for (unsigned int x(0); x < this -> branches.size(); ++x){
         std::string name = this -> branches[x]; 
@@ -134,30 +164,6 @@ void io::root_key_paths(std::string path, TTree* t){
     }
 }
 
-void data_t::element(std::vector<std::vector<float>>* el){
-    (*el) = this -> r_vvf -> at(this -> index);
-}
-
-void data_t::element(std::vector<std::vector<long>>* el){
-    (*el) = this -> r_vvl -> at(this -> index);
-}
-
-void data_t::element(std::vector<std::vector<int>>* el){
-    (*el) = this -> r_vvi -> at(this -> index);
-}
-
-void data_t::element(float* el){
-    (*el) = this -> r_f -> at(this -> index);
-}
-
-
-
-
-
-
-
-
-
 void io::root_key_paths(std::string path){
     TDirectory* dir = gDirectory; 
     std::vector<std::string> tmp = {}; 
@@ -167,10 +173,24 @@ void io::root_key_paths(std::string path){
         TObject* obj = gDirectory -> Get(updated.c_str()); 
         if (!obj){continue;}
 
+        if (std::string(obj -> GetName()) == "AnalysisTracking"){
+            TTreeReader r = TTreeReader("AnalysisTracking"); 
+            //TTreeReaderValue<std::string> dr(r, "jsonData"); 
+            //rapidjson::Document* doc = new rapidjson::Document(); 
+            //while (r.Next()){doc -> Parse(dr -> c_str());}
+            //rapidjson::Value* t = &(*doc)["image"][0][0]; 
+            //std::cout << t -> GetString() << std::endl;
+            //abort(); 
+            continue; 
+        }
+
+
         if (obj -> InheritsFrom("TTree")){
             this -> root_key_paths(updated, (TTree*)obj);
             continue;
-        } 
+        }
+
+
 
         dir -> cd(updated.c_str()); 
         this -> root_key_paths(updated + "/"); 
@@ -187,7 +207,9 @@ void io::scan_keys(){
             this -> files_open[itr -> first] = this -> file_root; 
         }
         else {this -> file_root = this -> files_open[itr -> first];}
+        if (!this -> file_root -> IsOpen()){this -> file_root -> ReOpen("READ");}
         this -> root_key_paths(""); 
+        this -> file_root -> Close(); 
         this -> file_root = nullptr; 
     }
 
@@ -195,9 +217,9 @@ void io::scan_keys(){
     for (; tf != this -> files_open.end(); ++tf){
         std::string fname = tf -> first; 
         if (!this -> tree_data.count(fname)){
-            this -> keys[fname]["missed"]["Trees"] = this -> trees; 
+            this -> keys[fname]["missed"]["Trees"]    = this -> trees; 
             this -> keys[fname]["missed"]["Branches"] = this -> branches; 
-            this -> keys[fname]["missed"]["Leaves"] = this -> leaves; 
+            this -> keys[fname]["missed"]["Leaves"]   = this -> leaves; 
             continue;
         }
 
@@ -271,10 +293,12 @@ void io::root_begin(){
         for (lfii = lf_map -> begin(); lfii != lf_map -> end(); ++lfii){
             std::string lf_name = lfii -> first; 
             TLeaf* leaf_pnt = lfii -> second; 
-
             if (!this -> iters -> count(lf_name)){
-                data_t* dt      = new data_t; 
+                std::vector<std::string> pth_ = this -> split(lf_name, "."); 
+                data_t* dt      = new data_t(); 
                 dt -> path      = lf_name; 
+                dt -> tree_name = pth_[0];
+                dt -> leaf_name = pth_[pth_.size()-1]; 
                 dt -> leaf_type = this -> leaf_typed[fname][lf_name]; 
                 dt -> files_s   = new std::vector<std::string>();
                 dt -> files_i   = new std::vector<long>(); 
@@ -283,11 +307,10 @@ void io::root_begin(){
             }
 
             data_t* v = (*this -> iters)[lf_name]; 
-            v -> leaf = leaf_pnt; 
-            v -> initialize(); 
             v -> files_s -> push_back(fname); 
             v -> files_t -> push_back(this -> files_open[fname]); 
             v -> files_i -> push_back(this -> tree_entries[fname][v -> tree_name]); 
+            if (!v -> leaf){v -> initialize();}
         }
     }
 }

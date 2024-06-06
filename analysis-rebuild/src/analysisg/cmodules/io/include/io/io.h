@@ -13,6 +13,12 @@
 
 #include <tools/tools.h>
 #include <structs/particles.h>
+#include <rapidjson/document.h>
+
+
+
+
+
 
 enum class data_enum {vvf, vvl, vvi, vf, vl, vi, f, l, i}; 
 
@@ -53,24 +59,21 @@ struct data_t {
 
         template <typename T>
         bool next(T* el){
-            std::cout << "-> " << this -> index << std::endl;
-            std::cout << "-> " << this -> file_index << std::endl;
-            if (this -> file_index >= this -> files_i -> size()){return false;}
+            bool sk = this -> file_index >= (int)this -> files_i -> size(); 
+            if (sk){return false;}
 
             long idx = this -> files_i -> at(this -> file_index); 
-            if (this -> index >= idx){
-                this -> file_index++; 
-                TFile* tf = this -> files_t -> at(this -> file_index); 
-                this -> tree = tf -> Get<TTree>(this -> tree_name.c_str()); 
-                this -> branch = this -> tree -> FindBranch(this -> branch_name.c_str()); 
-                this -> leaf   = this -> tree -> FindLeaf(this -> path.c_str()); 
-                this -> flush_buffer(); 
-                this -> fetch_buffer(); 
-                this -> index = 0;
-            } 
-            this -> element(el); 
-            this -> index++; 
-            return true; 
+            if (this -> index < idx){
+                this -> element(el); 
+                this -> index++; 
+                return true; 
+            }
+
+            this -> file_index++; 
+            sk = this -> file_index >= (int)this -> files_i -> size(); 
+            if (sk){return false;}
+            this -> initialize();
+            return this -> next(el); 
         }
 
     private:
@@ -88,7 +91,7 @@ struct data_t {
         // ROOT IO functions
         template <typename T>
         bool flush_buffer(T** data){
-            if (!*data){return false;}
+            if (!(*data)){return false;}
             (*data) -> clear();
             delete *data; 
             *data = nullptr; 
