@@ -46,27 +46,21 @@ FetchContent_MakeAvailable(RapidJSON)
 find_package(RapidJSON REQUIRED)
 endif()
 
-add_subdirectory(src/analysisg/cmodules)
-add_custom_command(
-    OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/src/analysisg/cyanalysisg.cpp
-    DEPENDS 
-        src/analysisg/__init__.pxd
-        src/analysisg/cyanalysisg.pyx
-        src/analysisg/cyanalysisg.pxd
+add_subdirectory(src/analysisg/modules)
 
-    VERBATIM
-    COMMAND
-        Python::Interpreter -m cython --cplus
-        "${CMAKE_CURRENT_SOURCE_DIR}/src/analysisg/cyanalysisg.pyx" --output-file 
-        "${CMAKE_CURRENT_SOURCE_DIR}/src/analysisg/cyanalysisg.cpp"
-)
+add_subdirectory(src/analysisg/core)
+add_subdirectory(src/analysisg/events)
+add_subdirectory(src/analysisg/generators)
 
-python_add_library(cyanalysisg MODULE "${CMAKE_CURRENT_SOURCE_DIR}/src/analysisg/cyanalysisg.cpp" WITH_SOABI)
-target_link_libraries(cyanalysisg LINK_PUBLIC ctools)
-install(TARGETS cyanalysisg DESTINATION AnalysisG/${SKBUILD_PROJECT_NAME})
-
-install(DIRECTORY DESTINATION AnalysisG/Templates)
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/AnalysisG/__init__.py DESTINATION AnalysisG)
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/AnalysisG/Templates/__init__.py DESTINATION AnalysisG/Templates)
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/AnalysisG/IO/__init__.py DESTINATION AnalysisG/IO)
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/AnalysisG/Templates/__init__.py DESTINATION AnalysisG/Templates)
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/AnalysisG/Events/__init__.py DESTINATION AnalysisG/Events)
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/AnalysisG/Generators/__init__.py DESTINATION AnalysisG/Generators)
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/AnalysisG/Notification/__init__.py DESTINATION AnalysisG/Notification)
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/analysisg/__init__.pxd DESTINATION AnalysisG/analysisg)
+
+
+
+
 

@@ -1,5 +1,5 @@
 [build-system]
-requires = ["pip", "scikit-build-core", "cython"] #, "pybind11[global]", "torch"]
+requires = ["pip", "scikit-build-core", "cython"]
 build-backend = "scikit_build_core.build"
 
 [project]
@@ -7,10 +7,12 @@ name = "AnalysisG"
 version = "5.0"
 authors = []
 requires-python = ">=3.7"
-dependencies = []
+dependencies = [
+    "pyAMI-atlas==5.1.0.1"
+]
 
 [tool.scikit-build]
-#build-dir = "build"
+build-dir = "build"
 wheel.license-files = []
 minimum-version = "0.2"
 logging.level = "INFO"
