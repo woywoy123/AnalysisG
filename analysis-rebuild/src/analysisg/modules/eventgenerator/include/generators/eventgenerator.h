@@ -1,18 +1,15 @@
 #ifndef EVENT_GENERATOR_H
 #define EVENT_GENERATOR_H
 
-#include <io/io.h>
-#include <tools/tools.h>
-#include <notification/notification.h>
+#include <generators/sampletracer.h>
 
-class eventgenerator: 
-    public tools,
-    public notification
+class eventgenerator: public sampletracer 
 {
     public:
         eventgenerator();
         ~eventgenerator();
 
+        void add_event_template(std::map<std::string, event_template*>* inpt); 
 }; 
 
 #endif

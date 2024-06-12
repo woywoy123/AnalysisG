@@ -49,7 +49,7 @@ void event_template::set_weight(double* inpt, event_template* ev){
      ev -> data.weight = *inpt; 
 }
 
-void event_template::set_index(double* inpt, event_template* ev){
+void event_template::set_index(long* inpt, event_template* ev){
     ev -> data.index = *inpt; 
 }
 

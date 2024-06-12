@@ -16,7 +16,7 @@
 #include <structs/particles.h>
 #include <notification/notification.h>
 
-enum class data_enum {vvf, vvl, vvi, vf, vl, vi, f, l, i, ull}; 
+enum class data_enum {vvf, vvl, vvi, vf, vl, vi, vc, f, l, i, ull}; 
 
 struct data_t {
     public:
@@ -41,6 +41,7 @@ struct data_t {
         std::vector<std::vector<float>>* r_vf = nullptr; 
         std::vector<std::vector<long>>*  r_vl = nullptr; 
         std::vector<std::vector<int>>*   r_vi = nullptr; 
+        std::vector<std::vector<char>>*  r_vc = nullptr; 
 
         std::vector<float>* r_f = nullptr; 
         std::vector<long>*  r_l = nullptr; 
@@ -81,6 +82,7 @@ struct data_t {
         void element(std::vector<float>* el); 
         void element(std::vector<long>* el); 
         void element(std::vector<int>* el); 
+        void element(std::vector<char>* el); 
 
         void element(float* el);
         void element(long* el);
@@ -121,6 +123,7 @@ struct element_t {
     std::map<std::string, std::vector<float>> r_vf = {}; 
     std::map<std::string, std::vector<long>>  r_vl = {}; 
     std::map<std::string, std::vector<int>>   r_vi = {}; 
+    std::map<std::string, std::vector<char>>  r_vc = {}; 
     
     std::map<std::string, float> r_f = {}; 
     std::map<std::string, long>  r_l = {}; 
@@ -128,11 +131,17 @@ struct element_t {
     std::map<std::string, unsigned long long> r_ull = {}; 
 
     bool next(); 
+    void set_meta(); 
+    long event_index = -1; 
+    std::string filename = ""; 
+
     template <typename g>
-    void get(std::string key, g* var){
-        if (!this -> handle.count(key)){}
+    bool get(std::string key, g* var){
+        if (!this -> handle.count(key)){return false;}
         this -> handle[key] -> element(var); 
+        return true; 
     }
+
     std::map<std::string, data_t*> handle = {}; 
 }; 
 
@@ -275,6 +284,9 @@ class io:
         void root_key_paths(std::string path, TBranch* t); 
         
         std::map<std::string, data_t*>*   iters = nullptr; 
+        
+        std::map<std::string, bool> missing_trigger = {}; 
+        std::map<std::string, bool> success_trigger = {}; 
 
 }; 
 

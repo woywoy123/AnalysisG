@@ -8,5 +8,6 @@ set(SOURCE_FILES
 add_library(ctools STATIC ${SOURCE_FILES})
 target_include_directories(ctools PRIVATE include/tools)
 target_include_directories(ctools PUBLIC include)
+target_link_libraries(ctools LINK_PUBLIC ROOT::RIO ROOT::Core ${ROOT_LIBRARIES})
 target_compile_options(ctools PRIVATE -fPIC)
 

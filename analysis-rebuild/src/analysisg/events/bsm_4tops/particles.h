@@ -3,8 +3,8 @@
 
 #include <templates/particle_template.h>
 
-//class truthjet_parton; 
-class parton; 
+class truthjetparton; 
+class jetparton; 
 class truthjet; 
 class jet; 
 
@@ -40,7 +40,7 @@ class top: public particle_template
     public:
        
         top(); 
-        ~top(); 
+        ~top() override; 
 
         bool from_res = false; 
         int status = -1; 
@@ -52,15 +52,16 @@ class top: public particle_template
         void build(std::map<std::string, particle_template*>* prt, element_t* el) override;
 }; 
 
-class children: public particle_template
+class top_children: public particle_template
 {
     public: 
-        children();
-        ~children();   
+        top_children();
+        ~top_children() override;   
 
         int top_index = -1;  
-        cproperty<bool, children> from_res; 
-        void static get_from_res(bool*, children*);
+
+        cproperty<bool, top_children> from_res; 
+        void static get_from_res(bool*, top_children*);
 
         particle_template* clone() override; 
         void build(std::map<std::string, particle_template*>* prt, element_t* el) override;
@@ -72,14 +73,14 @@ class truthjet: public particle_template
 {
     public: 
         truthjet();
-        ~truthjet();   
+        ~truthjet() override;   
 
         int top_quark_count = -1;
         int w_boson_count = -1; 
         std::vector<int> top_index = {}; 
 
         std::vector<top*> Tops = {};
-        //std::vector<truthjet_parton*> = {}; 
+        std::vector<truthjetparton*> Parton = {}; 
 
         cproperty<bool, truthjet> from_res; 
         void static get_from_res(bool*, truthjet*);
@@ -89,7 +90,18 @@ class truthjet: public particle_template
 
 }; 
 
+class truthjetparton: public particle_template
+{
+    public: 
+        truthjetparton();
+        ~truthjetparton() override;
 
+        int truthjet_index;
+        std::vector<int> topchild_index = {};
+
+        particle_template* clone() override; 
+        void build(std::map<std::string, particle_template*>* prt, element_t* el) override;
+}; 
 
 
 
@@ -98,17 +110,66 @@ class jet: public particle_template
 {
     public: 
         jet();
-        ~jet();   
+        ~jet() override;   
+
+        std::vector<top*> Tops = {}; 
+        std::vector<jetparton*> Parton = {}; 
+
+        std::vector<int> top_index = {}; 
+        bool btag_DL1r_60; 
+        bool btag_DL1_60;  
+        bool btag_DL1r_70; 
+        bool btag_DL1_70;  
+        bool btag_DL1r_77; 
+        bool btag_DL1_77;  
+        bool btag_DL1r_85; 
+        bool btag_DL1_85;  
+
+        float DL1_b; 
+        float DL1_c;  
+        float DL1_u; 
+        float DL1r_b; 
+        float DL1r_c; 
+        float DL1r_u;
+
+        particle_template* clone() override; 
+        void build(std::map<std::string, particle_template*>* prt, element_t* el) override;
 }; 
 
 
-class parton: public particle_template
+class jetparton: public particle_template
 {
     public: 
-        parton();
-        ~parton();
+        jetparton();
+        ~jetparton() override;
+
+        int jet_index;
+        std::vector<int> topchild_index = {}; 
+
+        particle_template* clone() override; 
+        void build(std::map<std::string, particle_template*>* prt, element_t* el) override;
 }; 
 
 
+class electron: public particle_template
+{
+    public: 
+        electron();
+        ~electron() override;
+
+        particle_template* clone() override; 
+        void build(std::map<std::string, particle_template*>* prt, element_t* el) override;
+}; 
+
+
+class muon: public particle_template
+{
+    public: 
+        muon();
+        ~muon() override;
+
+        particle_template* clone() override; 
+        void build(std::map<std::string, particle_template*>* prt, element_t* el) override;
+}; 
 
 #endif

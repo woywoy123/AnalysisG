@@ -13,35 +13,34 @@ from analysisg.core.event_template cimport EventTemplate
 cdef extern from "bsm_4tops/particles.h":
 
     cdef cppclass top(particle_template):
-        pass
+        top() except+
 
-    cdef cppclass children(particle_template):
-        pass
+    cdef cppclass top_children(particle_template):
+        top_children() except+
 
     cdef cppclass truthjet(particle_template):
-        pass
+        truthjet() except+
 
-    cdef cppclass parton(particle_template):
-        pass
+    cdef cppclass truthjetparton(particle_template):
+        truthjetparton() except+
 
     cdef cppclass jet(particle_template):
-        pass
+        jet() except+
+
+    cdef cppclass jetparton(particle_template):
+        jetparton() except+
+
+    cdef cppclass electron(particle_template):
+        electron() except+
+
+    cdef cppclass muon(particle_template):
+        muon() except+
 
 cdef extern from "bsm_4tops/event.h":
 
     cdef cppclass bsm_4tops(event_template):
-
         bsm_4tops() except+
-
         vector[string] leaves
 
-        map[string, top*]      Tops
-        map[string, children*] Children
-        map[string, truthjet*] TruthJets
-        map[string, jet*]      Jets
-        map[string, parton*]   Partons
-
-
 cdef class BSM4Tops(EventTemplate):
-
     pass

@@ -9,10 +9,10 @@ struct event_t {
 
     // state variables
     double weight = 1;
-    double index = -1;
+    long   index = -1;
 
     std::string hash = "";
-    std::string tree = ""; 
+    std::string tree = "";
 };
 
 #endif

@@ -1,7 +1,7 @@
 # distutils: language = c++
 # cython: language_level = 3
 
-from analysisg.events.bsm_4tops cimport bsm_4tops
+from analysisg.events.event_bsm_4tops cimport bsm_4tops
 from analysisg.core.event_template cimport EventTemplate
 
 cdef class BSM4Tops(EventTemplate):

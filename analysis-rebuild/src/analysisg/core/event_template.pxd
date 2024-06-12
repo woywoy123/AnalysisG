@@ -26,6 +26,7 @@ cdef extern from "<templates/event_template.h>":
         double index
 
         map[string, event_template*] build_event(map[string, data_t*] evnt) except +
+        void CompileEvent() except+
 
         bool operator == (event_template& p)
 

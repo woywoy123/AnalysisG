@@ -22,7 +22,6 @@ class event_template: public tools
         cproperty<std::vector<std::string>, event_template> trees;  
         void static set_trees(std::vector<std::string>*, event_template*); 
 
-
         cproperty<std::vector<std::string>, event_template> branches;  
         void static set_branches(std::vector<std::string>*, event_template*); 
 
@@ -44,8 +43,8 @@ class event_template: public tools
         cproperty<double, event_template> weight;
         void static set_weight(double*, event_template*); 
 
-        cproperty<double, event_template> index; 
-        void static set_index(double*, event_template*); 
+        cproperty<long, event_template> index; 
+        void static set_index(long*, event_template*); 
 
         std::map<std::string, std::string> m_trees; 
         std::map<std::string, std::string> m_branches;
@@ -53,6 +52,7 @@ class event_template: public tools
       
         virtual event_template* clone(); 
         virtual void build(element_t* el); 
+        virtual void CompileEvent(); 
 
         std::map<std::string, event_template*> build_event(std::map<std::string, data_t*> evnt); 
 
@@ -67,14 +67,25 @@ class event_template: public tools
             }
             this -> particle_link[tp] = (std::map<std::string, particle_template*>*)object; 
             this -> particle_generators[tp] = x; 
-        }; 
+        }
+
+        template <typename G>
+        void deregister_particle(std::map<std::string, G*>* object){
+            typename std::map<std::string, G*>::iterator itr = object -> begin(); 
+            for (; itr != object -> end(); ++itr){delete itr -> second;}
+            object -> clear(); 
+        }
 
         bool operator == (event_template& p); 
 
         event_t data; 
+        std::string filename = ""; 
+        void flush_particles();
 
     private:
         void build_mapping(std::map<std::string, data_t*> evnt); 
+        void flush_leaf_string(); 
+        std::map<std::string, bool> next_ = {}; 
 
         std::map<std::string, event_template*> event_link = {}; 
         std::map<std::string, std::map<std::string, particle_template*>*> particle_link = {}; 

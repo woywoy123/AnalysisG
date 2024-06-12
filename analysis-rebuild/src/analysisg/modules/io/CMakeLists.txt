@@ -11,8 +11,6 @@ target_include_directories(cio PUBLIC include)
 target_include_directories(cio PUBLIC ${HDF5_CXX_INCLUDE_DIRS} ${ROOT_INCLUDE_DIRS}) 
 target_link_libraries(cio LINK_PUBLIC 
     ${HDF5_CXX_LIBRARIES} hdf5::hdf5_cpp 
-    ${ROOT_LIBRARIES} 
     ctools cstructs cmeta cnotification
 )
-
 target_compile_options(cio PRIVATE -fPIC)

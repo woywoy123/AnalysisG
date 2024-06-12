@@ -1,5 +1,11 @@
 [build-system]
-requires = ["pip", "scikit-build-core", "cython"]
+requires = [
+    "pip", 
+    "scikit-build-core", 
+    "cython", 
+    "pyyaml", 
+    "typing-extensions"
+]
 build-backend = "scikit_build_core.build"
 
 [project]

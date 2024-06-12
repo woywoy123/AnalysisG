@@ -30,7 +30,7 @@ event_template::event_template(){
 
 event_template::~event_template(){
     std::map<std::string, particle_template*>::iterator itrp = this -> particle_generators.begin();
-    for (; itrp != this -> particle_generators.end(); ++itrp){delete itrp -> second;}
+    for (; itrp != this -> particle_generators.end(); ++itrp){delete itrp -> second;} 
 }
 
 bool event_template::operator == (event_template& p){
@@ -42,6 +42,7 @@ void event_template::build_mapping(std::map<std::string, data_t*> evnt){
 
     std::vector<std::string> tr = this -> trees; 
     for (int x(0); x < tr.size(); ++x){
+        this -> next_[tr[x]] = true; 
         std::map<std::string, data_t*>::iterator ite = evnt.begin(); 
         for (; ite != evnt.end(); ++ite){
             bool s = tr[x] == ite -> second -> tree_name;
@@ -63,26 +64,59 @@ void event_template::build_mapping(std::map<std::string, data_t*> evnt){
 
 std::map<std::string, event_template*> event_template::build_event(std::map<std::string, data_t*> evnt){
     this -> build_mapping(evnt); 
-    bool next_ = true; 
     std::map<std::string, event_template*> output = {}; 
     std::map<std::string, std::map<std::string, element_t>>::iterator itr = this -> tree_variable_link.begin();
     for (; itr != this -> tree_variable_link.end(); ++itr){
+        if (!this -> next_[itr -> first]){continue;}
         event_template* ev = this -> clone(); 
         ev -> tree = itr -> first; 
 
         std::map<std::string, element_t>::iterator itrx = this -> tree_variable_link[itr -> first].begin(); 
         for (; itrx != this -> tree_variable_link[itr -> first].end(); ++itrx){
-            if (itrx -> first == std::string(this -> name)){ev -> build(&itrx -> second);}
+            itrx -> second.set_meta(); 
+
+            if (itrx -> first == std::string(ev -> name)){ev -> build(&itrx -> second);}
             else {ev -> particle_generators[itrx -> first] -> build(ev -> particle_link[itrx -> first], &itrx -> second);}
-            next_ *= this -> tree_variable_link[itr -> first][itrx -> first].next(); 
+
+            this -> next_[itr -> first] *= this -> tree_variable_link[itr -> first][itrx -> first].next(); 
+            ev -> index = itrx -> second.event_index; 
+            ev -> hash = itrx -> second.filename; 
+            ev -> filename = itrx -> second.filename;
         } 
-        if (next_){output[itr -> first] = ev;}
-        else {delete ev;}
+        ev -> flush_leaf_string(); 
+        output[itr -> first] = ev; 
     }
     return output; 
 }
 
 void event_template::build(element_t* el){
+    return; 
+}
+
+void event_template::flush_leaf_string(){
+    this -> m_trees.clear();
+    this -> m_branches.clear();
+    this -> m_leaves.clear(); 
+
+    std::map<std::string, std::map<std::string, particle_template*>*>::iterator itr; 
+    for (itr = this -> particle_link.begin(); itr != this -> particle_link.end(); ++itr){
+        std::map<std::string, particle_template*>* pmap = itr -> second; 
+        std::map<std::string, particle_template*>::iterator itx = pmap -> begin();
+        for (; itx != pmap -> end(); ++itx){itx -> second -> leaves.clear();}
+    }
+}
+
+void event_template::flush_particles(){
+    std::map<std::string, std::map<std::string, particle_template*>*>::iterator itr; 
+    for (itr = this -> particle_link.begin(); itr != this -> particle_link.end(); ++itr){
+        std::map<std::string, particle_template*>* pmap = itr -> second; 
+        std::map<std::string, particle_template*>::iterator itx = pmap -> begin();
+        for (; itx != pmap -> end(); ++itx){delete itx -> second;}
+    }
+    this -> particle_link = {}; 
+}
+
+void event_template::CompileEvent(){
     return; 
 }
 

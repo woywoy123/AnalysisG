@@ -13,6 +13,18 @@ COMMAND
 )
 
 add_custom_command(
+OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/cgraph_template.cpp
+DEPENDS 
+    ${CMAKE_CURRENT_SOURCE_DIR}/__init__.pxd
+    ${CMAKE_CURRENT_SOURCE_DIR}/graph_template.pxd
+    ${CMAKE_CURRENT_SOURCE_DIR}/graph_template.pyx
+VERBATIM
+COMMAND
+    Python::Interpreter -m cython --cplus
+    ${CMAKE_CURRENT_SOURCE_DIR}/graph_template.pyx --output-file ${CMAKE_CURRENT_SOURCE_DIR}/cgraph_template.cpp
+)
+
+add_custom_command(
 OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/cio.cpp
 DEPENDS 
     ${CMAKE_CURRENT_SOURCE_DIR}/__init__.pxd
@@ -107,10 +119,14 @@ target_link_libraries(io LINK_PUBLIC cio)
 python_add_library(event_template MODULE ${CMAKE_CURRENT_SOURCE_DIR}/cevent_template.cpp WITH_SOABI)
 target_link_libraries(event_template LINK_PUBLIC cevent)
 
-install(TARGETS tools DESTINATION AnalysisG/${SKBUILD_PROJECT_NAME}/core)
-install(TARGETS io DESTINATION AnalysisG/${SKBUILD_PROJECT_NAME}/core)
-install(TARGETS meta DESTINATION AnalysisG/${SKBUILD_PROJECT_NAME}/core)
-install(TARGETS structs DESTINATION AnalysisG/${SKBUILD_PROJECT_NAME}/core)
+python_add_library(graph_template MODULE ${CMAKE_CURRENT_SOURCE_DIR}/cgraph_template.cpp WITH_SOABI)
+target_link_libraries(graph_template LINK_PUBLIC cgraph cevent)
+
+install(TARGETS tools             DESTINATION AnalysisG/${SKBUILD_PROJECT_NAME}/core)
+install(TARGETS io                DESTINATION AnalysisG/${SKBUILD_PROJECT_NAME}/core)
+install(TARGETS meta              DESTINATION AnalysisG/${SKBUILD_PROJECT_NAME}/core)
+install(TARGETS structs           DESTINATION AnalysisG/${SKBUILD_PROJECT_NAME}/core)
 install(TARGETS particle_template DESTINATION AnalysisG/${SKBUILD_PROJECT_NAME}/core)
-install(TARGETS notification DESTINATION AnalysisG/${SKBUILD_PROJECT_NAME}/core)
-install(TARGETS event_template DESTINATION AnalysisG/${SKBUILD_PROJECT_NAME}/core)
+install(TARGETS notification      DESTINATION AnalysisG/${SKBUILD_PROJECT_NAME}/core)
+install(TARGETS event_template    DESTINATION AnalysisG/${SKBUILD_PROJECT_NAME}/core)
+install(TARGETS graph_template    DESTINATION AnalysisG/${SKBUILD_PROJECT_NAME}/core)

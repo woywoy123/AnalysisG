@@ -18,24 +18,25 @@ cdef class EventGenerator(IO):
     def __dealloc__(self): del self.ev_ptr
 
     cdef void event_compiler(self, event_template* p):
+
+        self.ptr.leaves   = p.leaves
+        self.ptr.branches = p.branches
+        self.ptr.trees    = p.trees
+        if not self.ptr.scan_keys(): exit()
         self.__iter__()
+
+        cdef int i
         cdef map[string, event_template*] ev
-        cdef bool run = True
-        cdef int x = 0
-        while run:
+        for i in range(len(self)):
             ev = p.build_event(deref(self.data_ops))
-            run = ev.size()
-
-            x += 1
-            if x%1000 == 1: print(x)
-
+            self.ev_ptr.add_event_template(&ev)
+            break
 
     def ImportEvent(self, evn):
         cdef EventTemplate ev = evn
         cdef event_template* data = ev.ptr
+        self.event_types[data.name] = data
 
-        self.ptr.leaves = data.leaves
-        self.ptr.branches = data.branches
-        self.ptr.trees = data.trees
-        if not self.ptr.scan_keys(): exit()
-        self.event_compiler(data)
+    def CompileEvents(self):
+        cdef pair[string, event_template*] itr
+        for itr in self.event_types: self.event_compiler(itr.second)

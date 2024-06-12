@@ -9,9 +9,12 @@ bool element_t::next(){
             case data_enum::vvf: stop = itr -> second -> next(&this -> r_vvf[itr -> first]); break; 
             case data_enum::vvl: stop = itr -> second -> next(&this -> r_vvl[itr -> first]); break; 
             case data_enum::vvi: stop = itr -> second -> next(&this -> r_vvi[itr -> first]); break; 
+
             case data_enum::vf:  stop = itr -> second -> next(&this -> r_vf[itr -> first]);  break; 
             case data_enum::vl:  stop = itr -> second -> next(&this -> r_vl[itr -> first]);  break; 
             case data_enum::vi:  stop = itr -> second -> next(&this -> r_vi[itr -> first]);  break; 
+            case data_enum::vc:  stop = itr -> second -> next(&this -> r_vc[itr -> first]);  break; 
+
             case data_enum::f:   stop = itr -> second -> next(&this -> r_f[itr -> first]);   break; 
             case data_enum::l:   stop = itr -> second -> next(&this -> r_l[itr -> first]);   break; 
             case data_enum::i:   stop = itr -> second -> next(&this -> r_i[itr -> first]);   break; 
@@ -22,14 +25,25 @@ bool element_t::next(){
     return stop; 
 }
 
+void element_t::set_meta(){
+    std::map<std::string, data_t*>::iterator itr = this -> handle.begin();
+    bool sk = itr -> second -> file_index >= (int)itr -> second -> files_i -> size(); 
+    if (sk){return;}
+    this -> event_index = itr -> second -> index; 
+    this -> filename = itr -> second -> files_s -> at(itr -> second -> file_index);
+}
+
 void data_t::flush_buffer(){
     switch (this -> type){
         case data_enum::vvf: this -> flush_buffer(&this -> r_vvf); break; 
         case data_enum::vvl: this -> flush_buffer(&this -> r_vvl); break; 
         case data_enum::vvi: this -> flush_buffer(&this -> r_vvi); break; 
+
         case data_enum::vf:  this -> flush_buffer(&this -> r_vf ); break; 
         case data_enum::vl:  this -> flush_buffer(&this -> r_vl ); break; 
         case data_enum::vi:  this -> flush_buffer(&this -> r_vi ); break; 
+        case data_enum::vc:  this -> flush_buffer(&this -> r_vc ); break; 
+
         case data_enum::f:   this -> flush_buffer(&this -> r_f  ); break; 
         case data_enum::l:   this -> flush_buffer(&this -> r_l  ); break; 
         case data_enum::i:   this -> flush_buffer(&this -> r_i  ); break; 
@@ -43,9 +57,12 @@ void data_t::fetch_buffer(){
         case data_enum::vvf: return this -> fetch_buffer(&this -> r_vvf);
         case data_enum::vvl: return this -> fetch_buffer(&this -> r_vvl);
         case data_enum::vvi: return this -> fetch_buffer(&this -> r_vvi);
+
         case data_enum::vf:  return this -> fetch_buffer(&this -> r_vf );
         case data_enum::vl:  return this -> fetch_buffer(&this -> r_vl );
         case data_enum::vi:  return this -> fetch_buffer(&this -> r_vi );
+        case data_enum::vc:  return this -> fetch_buffer(&this -> r_vc );
+
         case data_enum::f:   return this -> fetch_buffer(&this -> r_f  );
         case data_enum::l:   return this -> fetch_buffer(&this -> r_l  );
         case data_enum::i:   return this -> fetch_buffer(&this -> r_i  );
@@ -106,6 +123,9 @@ void data_t::string_type(){
         this -> type = data_enum::vi; return; 
     }
 
+    if (this -> leaf_type == "vector<char>"){
+        this -> type = data_enum::vc; return; 
+    }
 
     std::cout << this -> leaf_type << " " << path << std::endl; 
     abort(); 
@@ -135,6 +155,10 @@ void data_t::element(std::vector<long>* el){
     (*el) = this -> r_vl -> at(this -> index); 
 }
 
+void data_t::element(std::vector<char>* el){
+    (*el) = this -> r_vc -> at(this -> index); 
+}
+
 void data_t::element(float* el){
     (*el) = this -> r_f -> at(this -> index);
 }
@@ -155,6 +179,7 @@ void data_t::element(unsigned long long* el){
 void io::check_root_file_paths(){
     std::map<std::string, bool> tmp = {}; 
     std::map<std::string, bool>::iterator itr = this -> root_files.begin(); 
+
     this -> success("Checking File Path:"); 
     for (; itr != this -> root_files.end(); ++itr){
         int l = itr -> first.size(); 
@@ -282,7 +307,6 @@ bool io::scan_keys(){
         this -> file_root = nullptr; 
     }
 
-    std::map<std::string, bool> missing_trigger = {}; 
     std::map<std::string, TFile*>::iterator tf = this -> files_open.begin(); 
     for (; tf != this -> files_open.end(); ++tf){
         std::string fname = tf -> first; 
@@ -339,22 +363,27 @@ bool io::scan_keys(){
        std::vector<std::string> branches_m = this -> keys[fname]["missed"]["Branches"];
        std::vector<std::string> trees_m    = this -> keys[fname]["missed"]["Trees"];
        if (leaves_m.size() || branches_m.size() || trees_m.size()){this -> failure("-> " + fname);}
-       else {this -> success("-> " + fname + " OK!"); continue;}
+       else if (this -> success_trigger[fname]){continue;}
+       else {
+           this -> success("-> " + fname + " OK!"); 
+           this -> success_trigger[fname] = true; 
+           continue;
+       }
        for (int x(0); x < trees_m.size(); ++x){
-           if (missing_trigger[trees_m[x]]){continue;}
-           missing_trigger[trees_m[x]] = true; 
+           if (this -> missing_trigger[trees_m[x]]){continue;}
+           this -> missing_trigger[trees_m[x]] = true; 
            this -> warning("Missing Tree: " + trees_m[x]); 
        }
 
        for (int x(0); x < branches_m.size(); ++x){
-           if (missing_trigger[branches_m[x]]){continue;}
-           missing_trigger[branches_m[x]] = true; 
+           if (this -> missing_trigger[branches_m[x]]){continue;}
+           this -> missing_trigger[branches_m[x]] = true; 
            this -> warning("Missing Branch: " + branches_m[x]); 
        }
 
        for (int x(0); x < leaves_m.size(); ++x){
-           if (missing_trigger[leaves_m[x]]){continue;}
-           missing_trigger[leaves_m[x]] = true; 
+           if (this -> missing_trigger[leaves_m[x]]){continue;}
+           this -> missing_trigger[leaves_m[x]] = true; 
            this -> warning("Missing Leaves: " + leaves_m[x]); 
        }
        this -> failure("aborting due to missing data!"); 

@@ -15,7 +15,7 @@ class particle_template : public tools
 {
     public:
         particle_template();
-        ~particle_template(); 
+        virtual ~particle_template(); 
 
         particle_template(particle_t* p);
         particle_template(double px, double py, double pz, double e); 
