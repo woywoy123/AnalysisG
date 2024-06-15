@@ -1,11 +1,5 @@
 [build-system]
-requires = [
-    "pip", 
-    "scikit-build-core", 
-    "cython", 
-    "pyyaml", 
-    "typing-extensions"
-]
+requires = ["pip", "scikit-build-core", "cython"]
 build-backend = "scikit_build_core.build"
 
 [project]
@@ -13,20 +7,14 @@ name = "AnalysisG"
 version = "5.0"
 authors = []
 requires-python = ">=3.7"
-dependencies = [
-    "pyAMI-atlas==5.1.0.1"
-]
+dependencies = ["pyAMI-atlas==5.1.0.1", "tqdm"]
 
 [tool.scikit-build]
-build-dir = "build"
+#build-dir = "build"
 wheel.license-files = []
-minimum-version = "0.2"
 logging.level = "INFO"
+cmake.version = ">=3.23"
+cmake.verbose = true
+
 ninja.make-fallback = false
-
-[tool.scikit-build.cmake]
-minimum-version = "3.15"
-verbose = true
-
-
-
+sdist.cmake = true

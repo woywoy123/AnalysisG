@@ -1,4 +1,6 @@
 cmake_minimum_required(VERSION 3.23 FATAL_ERROR)
+set(SKBUILD_PROJECT_NAME AnalysisG)
+
 project(${SKBUILD_PROJECT_NAME} VERSION ${SKBUILD_PROJECT_VERSION} LANGUAGES CXX C)
 include(FetchContent)
 
@@ -27,7 +29,8 @@ endif()
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Python COMPONENTS Interpreter Development.Module REQUIRED)
+find_package(PythonInterp)
+find_package(Python COMPONENTS Interpreter Development REQUIRED)
 find_package(HDF5 COMPONENTS C CXX REQUIRED)
 find_package(ROOT REQUIRED COMPONENTS RIO Tree Core)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
@@ -54,18 +57,16 @@ find_package(Torch REQUIRED)
 endif()
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
 
-add_subdirectory(src/analysisg/modules)
-add_subdirectory(src/analysisg/events)
-add_subdirectory(src/analysisg/graphs)
-add_subdirectory(src/analysisg/generators)
-add_subdirectory(src/analysisg/core)
+add_subdirectory(src/AnalysisG/modules)
+add_subdirectory(src/AnalysisG/generators)
+add_subdirectory(src/AnalysisG/events)
+add_subdirectory(src/AnalysisG/graphs)
+add_subdirectory(src/AnalysisG/models)
+add_subdirectory(src/AnalysisG/core)
 
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/AnalysisG/__init__.py DESTINATION AnalysisG)
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/AnalysisG/IO/__init__.py DESTINATION AnalysisG/IO)
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/AnalysisG/Templates/__init__.py DESTINATION AnalysisG/Templates)
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/AnalysisG/Events/__init__.py DESTINATION AnalysisG/Events)
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/AnalysisG/Graphs/__init__.py DESTINATION AnalysisG/Graphs)
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/AnalysisG/Generators/__init__.py DESTINATION AnalysisG/Generators)
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/AnalysisG/Notification/__init__.py DESTINATION AnalysisG/Notification)
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/analysisg/__init__.pxd DESTINATION AnalysisG/analysisg)
+execute_process(
+    COMMAND python -c "import sysconfig; print(sysconfig.get_paths()['platlib'])" 
+    OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE
+)
 
+file(COPY ${CMAKE_BINARY_DIR}/src/AnalysisG DESTINATION ${PYTHON_SITE_PACKAGES})
