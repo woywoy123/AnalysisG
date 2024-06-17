@@ -1,6 +1,7 @@
 #include <templates/graph_template.h>
 
 graph_template::graph_template(){
+    this -> op = new torch::TensorOptions(torch::kCPU);
     this -> name.set_getter(this -> set_name); 
     this -> name.set_object(this); 
 
@@ -12,10 +13,6 @@ graph_template::graph_template(){
 
     this -> index.set_getter(this -> get_index); 
     this -> index.set_object(this);
-
-    this -> device.set_setter(this -> set_device); 
-    this -> device.set_getter(this -> get_device); 
-    this -> device.set_object(this); 
 }
 
 graph_template::~graph_template(){

@@ -7,97 +7,28 @@
 #include <structs/event.h>
 #include <tools/tools.h>
 
-#include <ATen/ATen.h>
+#include <c10/core/DeviceType.h>
 #include <torch/torch.h>
+#include <ATen/ATen.h>
 
 struct graph_t {
+
     public: 
+        torch::Tensor* get_truth_graph(std::string name); 
+        torch::Tensor* get_truth_node(std::string name); 
+        torch::Tensor* get_truth_edge(std::string name); 
+        torch::Tensor* get_data_graph(std::string name); 
+        torch::Tensor* get_data_node(std::string name); 
+        torch::Tensor* get_data_edge(std::string name); 
 
-
-        torch::Tensor* get_truth_graph(std::string name){
-            if (!this -> truth_map_graph -> count(name)){return nullptr;}
-            int x = (*this -> truth_map_graph)[name]; 
-            return this -> truth_graph -> at(x); 
-        }
-
-        torch::Tensor* get_truth_node(std::string name){
-            if (!this -> truth_map_node -> count(name)){return nullptr;}
-            std::cout << this -> truth_map_node << std::endl;
-            int x = (*this -> truth_map_node)[name]; 
-            return this -> truth_node -> at(x); 
-        }
-
-        torch::Tensor* get_truth_edge(std::string name){
-            if (!this -> truth_map_edge -> count(name)){return nullptr;}
-            int x = (*this -> truth_map_edge)[name]; 
-            return this -> truth_edge -> at(x); 
-        }
-
-        torch::Tensor* get_data_graph(std::string name){
-            if (!this -> data_map_graph -> count(name)){return nullptr;}
-            int x = (*this -> data_map_graph)[name]; 
-            return this -> data_graph -> at(x); 
-        }
-
-        torch::Tensor* get_data_node(std::string name){
-            if (!this -> data_map_node -> count(name)){return nullptr;}
-            int x = (*this -> data_map_node)[name]; 
-            return this -> data_node -> at(x); 
-        }
-
-        torch::Tensor* get_data_edge(std::string name){
-            if (!this -> data_map_edge -> count(name)){return nullptr;}
-            int x = (*this -> data_map_edge)[name]; 
-            return this -> data_edge -> at(x); 
-        }
-
-        void add_truth_graph(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps){
-            if (this -> truth_graph){return;}
-            this -> truth_graph = this -> add_content(data); 
-            this -> truth_map_graph = maps; 
-        }
-
-        void add_truth_node(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps){
-            if (this -> truth_node){return;}
-            this -> truth_node = this -> add_content(data);
-            this -> truth_map_node = maps; 
-        }
-
-        void add_truth_edge(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps){
-            if (this -> truth_edge){return;}
-            this -> truth_edge = this -> add_content(data);
-            this -> truth_map_edge = maps; 
-        }
-
-        void add_data_graph(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps){
-            if (this -> data_graph){return;}
-            this -> data_graph = this -> add_content(data); 
-            this -> data_map_graph = maps; 
-        }
-
-        void add_data_node(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps){
-            if (this -> data_node){return;}
-            this -> data_node = this -> add_content(data);
-            this -> data_map_node = maps; 
-        }
-
-        void add_data_edge(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps){
-            if (this -> data_edge){return;}
-            this -> data_edge = this -> add_content(data);
-            this -> data_map_edge = maps; 
-        }
-
-        void _purge_all(){
-            this -> _purge_data(this -> data_graph); 
-            this -> _purge_data(this -> data_node); 
-            this -> _purge_data(this -> data_edge); 
-            delete this -> edge_index;
-
-            this -> _purge_data(this -> truth_graph); 
-            this -> _purge_data(this -> truth_node); 
-            this -> _purge_data(this -> truth_edge); 
-        }
-
+        void add_truth_graph(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
+        void add_truth_node(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
+        void add_truth_edge(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
+        void add_data_graph(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
+        void add_data_node(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
+        void add_data_edge(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
+        void transfer_to_device(torch::TensorOptions* dev); 
+        void _purge_all(); 
 
         torch::Tensor* edge_index = nullptr; 
         long event_index = 0; 
@@ -119,18 +50,13 @@ struct graph_t {
         std::vector<torch::Tensor*>* truth_node  = nullptr; 
         std::vector<torch::Tensor*>* truth_edge  = nullptr; 
 
-    private:
-        void _purge_data(std::vector<torch::Tensor*>* data){
-            if (!data){return;}
-            for (size_t x(0); x < data -> size(); ++x){delete data -> at(x);}
-        }
+        c10::DeviceType device = c10::kCPU;  
+        int device_index = -1; 
 
-        std::vector<torch::Tensor*>* add_content(std::map<std::string, torch::Tensor*>* inpt){
-            std::vector<torch::Tensor*>* out = new std::vector<torch::Tensor*>(inpt -> size(), nullptr); 
-            std::map<std::string, torch::Tensor*>::iterator itr = inpt -> begin();
-            for (int t(0); t < inpt -> size(); ++t, ++itr){(*out)[t] = itr -> second;}
-            return out; 
-        }
+    private:
+        void _purge_data(std::vector<torch::Tensor*>* data); 
+        void _transfer_to_device(std::vector<torch::Tensor*>* data, torch::TensorOptions* dev); 
+        std::vector<torch::Tensor*>* add_content(std::map<std::string, torch::Tensor*>* inpt); 
 }; 
 
 
@@ -198,14 +124,11 @@ class graph_template: public tools
             G d[s] = {0}; 
             for (int x(0); x < s; ++x){d[x] = _data.at(x);}
             torch::TensorOptions* f = this -> op; 
-            return torch::from_blob(d, {s}, (*this -> op).dtype(_op)).clone(); 
+            return torch::from_blob(d, {s}, (*this -> op).dtype(_op)).view({-1, 1}).clone(); 
         }; 
 
         void static set_name(std::string*, graph_template*); 
         void static get_hash(std::string*, graph_template*); 
-
-        void static set_device(std::string*, graph_template*); 
-        void static get_device(std::string*, graph_template*); 
 
         void static get_index(long*, graph_template*); 
         void static get_tree(std::string*, graph_template*); 
@@ -228,7 +151,6 @@ class graph_template: public tools
         std::vector<int> _topological_index;
         torch::Tensor m_topology; 
 
-        std::string m_device = "";  
         torch::TensorOptions* op = nullptr; 
         event_template* m_event = nullptr; 
 
@@ -255,8 +177,6 @@ class graph_template: public tools
         cproperty<std::string, graph_template> hash; 
         cproperty<std::string, graph_template> tree;  
         cproperty<std::string, graph_template> name; 
-        cproperty<std::string, graph_template> device; 
-
 
         template <typename G>
         G* get_event(){return (G*)this -> m_event;}

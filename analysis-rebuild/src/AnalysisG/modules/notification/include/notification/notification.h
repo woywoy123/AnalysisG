@@ -14,6 +14,7 @@ class notification
         void warning(std::string message);
         void failure(std::string message);
         void info(std::string message);
+        void progressbar(float prog, std::string title); 
 
         std::string prefix; 
         int _warning = 33;

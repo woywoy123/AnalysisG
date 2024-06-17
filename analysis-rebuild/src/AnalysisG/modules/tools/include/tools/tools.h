@@ -44,6 +44,20 @@ class tools
             }
             return out; 
         };
+
+        template <typename g>
+        g max(std::vector<g>* inpt){
+            g ix = inpt -> at(0); 
+            for (int t(1); t < inpt -> size(); ++t){
+                if (inpt -> at(t) <= ix){continue;}
+                ix = inpt -> at(t); 
+            }
+            return ix; 
+        }
+
+
+
+
 }; 
 
 

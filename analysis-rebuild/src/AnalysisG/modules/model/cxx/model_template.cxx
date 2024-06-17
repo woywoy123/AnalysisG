@@ -1,5 +1,4 @@
 #include <templates/model_template.h>
-#include <torch/torch.h>
 
 model_template::model_template(){
     // input features
@@ -21,192 +20,147 @@ model_template::model_template(){
 
     this -> o_edge.set_setter(this -> set_output_features); 
     this -> o_edge.set_object(&this -> m_o_edge); 
-}
 
-model_template::~model_template(){
-    if (this -> op){delete this -> op;}
-    std::map<std::string, std::tuple<torch::Tensor*, torch::nn::Module*>>::iterator itr; 
-    for (itr = this -> m_o_graph.begin(); itr != this -> m_o_graph.end(); ++itr){
-        torch::nn::Module* lss = std::get<1>(itr -> second); 
-        if (!lss){continue;}
-        delete lss; 
-    }
-
-    for (itr = this -> m_o_node.begin(); itr != this -> m_o_node.end(); ++itr){
-        torch::nn::Module* lss = std::get<1>(itr -> second); 
-        if (!lss){continue;}
-        delete lss; 
-    }
-
-    for (itr = this -> m_o_edge.begin(); itr != this -> m_o_edge.end(); ++itr){
-        torch::nn::Module* lss = std::get<1>(itr -> second); 
-        if (!lss){continue;}
-        delete lss; 
-    }
-
-    if (this -> m_optim){delete this -> m_optim;}
-    for (size_t x(0); x < this -> m_data.size(); ++x){delete this -> m_data[x];}
-    this -> m_data.clear(); 
-}
-
-void model_template::clone_settings(model_settings_t* setd){
-    setd -> e_optim = this -> e_optim; 
-    setd -> s_optim = this -> s_optim; 
-
-    setd -> model_name   = this -> name; 
-    setd -> model_device = this -> device;
-
-    setd -> o_graph = this -> o_graph;
-    setd -> o_node  = this -> o_node; 
-    setd -> o_edge  = this -> o_edge; 
-
-    setd -> i_graph = this -> i_graph; 
-    setd -> i_node  = this -> i_node; 
-    setd -> i_edge  = this -> i_edge; 
-}
-
-
-void model_template::import_settings(model_settings_t* setd){
-    this -> e_optim = setd -> e_optim; 
-    this -> s_optim = setd -> s_optim;        
-                                             
-    this -> name    = setd -> model_name;     
-    this -> device  = setd -> model_device;   
-                                             
-    this -> o_graph = setd -> o_graph;        
-    this -> o_node  = setd -> o_node;         
-    this -> o_edge  = setd -> o_edge;         
-                                            
-    this -> i_graph = setd -> i_graph;        
-    this -> i_node  = setd -> i_node;         
-    this -> i_edge  = setd -> i_edge;         
+    this -> device.set_setter(this -> set_device); 
+    this -> device.set_object(this); 
 }
 
 model_template* model_template::clone(){return new model_template();}
-
-void model_template::set_device(std::string* dev, model_template* md){
-    if (md -> op){return;}
-}
-
 void model_template::register_module(torch::nn::Sequential* data){
+    if (this -> op){(*data) -> to(this -> op -> device());}
     this -> m_data.push_back(data);
-}
-
-void model_template::set_optimizer(std::string name){
-    if (opt_from_string(this -> lower(&name)) != opt_enum::invalid_optimizer){}
-    else {return this -> failure("Invalid Optimizer");}
-    this -> success("Using " + name + " as Optimizer"); 
-    this -> s_optim = name;
-}
-
-void model_template::initialize(torch::optim::Optimizer** inpt){
-    this -> info("------------- Checking Model Parameters ---------------"); 
-    if (!this -> m_data.size()){return this -> failure("No parameters defined!");}
-
-    bool in_feats = this -> m_i_graph.size(); 
-    in_feats += this -> m_i_node.size(); 
-    in_feats += this -> m_i_edge.size(); 
-    if (!in_feats){return this -> failure("No input features defined!");}
-
-    bool o_feats = this -> m_o_graph.size();  
-    o_feats += this -> m_o_node.size();  
-    o_feats += this -> m_o_edge.size();  
-    if (!o_feats){return this -> failure("No ouput features defined!");}
-    if (!this -> s_optim.size()){return this -> failure("Failed to register Optimizer!");}
-
-    for (size_t x(0); x < this -> m_data.size(); ++x){
-        torch::nn::Sequential* sq = this -> m_data[x]; 
-        if (this -> m_optim){this -> m_optim -> add_parameters((*sq) -> parameters());}
-        if (this -> m_optim){continue;}
-
-        switch (this -> e_optim){
-            case opt_enum::adam   : this -> m_optim = new torch::optim::Adam((*sq) -> parameters());
-            case opt_enum::adagrad: this -> m_optim = new torch::optim::Adagrad((*sq) -> parameters());
-            case opt_enum::adamw  : this -> m_optim = new torch::optim::AdamW((*sq) -> parameters());
-            case opt_enum::lbfgs  : this -> m_optim = new torch::optim::LBFGS((*sq) -> parameters());
-            case opt_enum::rmsprop: this -> m_optim = new torch::optim::RMSprop((*sq) -> parameters());
-            //case opt_enum::sgd    : this -> m_optim = new torch::optim::SGD((*sq) -> parameters());
-            break;
-        }
-    }
-    *inpt = this -> m_optim; 
-}
-
-bool model_template::check_features(graph_t* data){
-    std::vector<std::string> gr_i;
-
-    gr_i = this -> i_graph;
-    for (std::string n : gr_i){std::cout << data -> get_data_graph(n) << std::endl;}
-
-    gr_i = this -> i_node; 
-    for (std::string n : gr_i){
-        std::cout << n << std::endl;
-        std::cout << data << std::endl; 
-        std::cout << data -> get_data_node(n) << std::endl; 
-    }
-
-
-
-
-
-    abort(); 
 }
 
 void model_template::forward(graph_t* data){}
 
+void destroy(std::map<std::string, std::tuple<torch::Tensor*, torch::nn::Module*, loss_enum>>* in){
+    std::map<std::string, std::tuple<torch::Tensor*, torch::nn::Module*, loss_enum>>::iterator itr; 
+    for (itr = in -> begin(); itr != in -> end(); ++itr){
+        torch::nn::Module* lss = std::get<1>(itr -> second); 
+        if (!lss){continue;}
+        delete lss; 
+    }
+}
+
+
+model_template::~model_template(){
+    if (this -> op){delete this -> op;}
+    destroy(&this -> m_o_graph); 
+    destroy(&this -> m_o_node);
+    destroy(&this -> m_o_edge); 
+    for (size_t x(0); x < this -> m_data.size(); ++x){delete this -> m_data[x];}
+    this -> m_data.clear(); 
+}
+
+torch::Tensor* model_template::assign_features(std::string inpt, graph_enum type, graph_t* data){
+    torch::Tensor* tn = nullptr; 
+    switch (type){
+        case graph_enum::data_graph:  tn = data -> get_data_graph(inpt);  this -> m_i_graph[inpt] = tn; break;  
+        case graph_enum::data_node:   tn = data -> get_data_node(inpt);   this -> m_i_node[inpt]  = tn; break;  
+        case graph_enum::data_edge:   tn = data -> get_data_edge(inpt);   this -> m_i_edge[inpt]  = tn; break;  
+        case graph_enum::truth_graph: tn = data -> get_truth_graph(inpt); std::get<0>(this -> m_o_graph[inpt]) = tn; break;  
+        case graph_enum::truth_node:  tn = data -> get_truth_node(inpt);  std::get<0>(this -> m_o_node[inpt])  = tn; break;  
+        case graph_enum::truth_edge:  tn = data -> get_truth_edge(inpt);  std::get<0>(this -> m_o_edge[inpt])  = tn; break;  
+        default: return nullptr; 
+    }
+    return tn; 
+}
+
+void model_template::forward(graph_t* data, bool train){
+    data -> transfer_to_device(this -> op); 
+    this -> flush_outputs(); 
+
+    std::map<std::string, torch::Tensor*>::iterator itr;
+    itr = this -> m_i_graph.begin(); 
+    for (; itr != this -> m_i_graph.end(); ++itr){this -> assign_features(itr -> first, graph_enum::data_graph, data);}
+
+    itr = this -> m_i_node.begin(); 
+    for (; itr != this -> m_i_node.end(); ++itr){this -> assign_features(itr -> first, graph_enum::data_node, data);}
+
+    itr = this -> m_i_edge.begin(); 
+    for (; itr != this -> m_i_edge.end(); ++itr){this -> assign_features(itr -> first, graph_enum::data_edge, data);}
+
+    std::map<std::string, std::tuple<torch::Tensor*, torch::nn::Module*, loss_enum>>::iterator itx; 
+    itx = this -> m_o_graph.begin();
+    for (; itx != this -> m_o_graph.end(); ++itx){this -> assign_features(itx -> first, graph_enum::truth_graph, data);}
+
+    itx = this -> m_o_node.begin();
+    for (; itx != this -> m_o_node.end(); ++itx){this -> assign_features(itx -> first, graph_enum::truth_node, data);}
+
+    itx = this -> m_o_edge.begin();
+    for (; itx != this -> m_o_edge.end(); ++itx){this -> assign_features(itx -> first, graph_enum::truth_edge, data);}
+
+    this -> forward(data); 
+    if (train){this -> train_sequence();}
+}
+
+
+void model_template::train_sequence(){
+    this -> m_optim -> zero_grad(); 
+
+    std::map<std::string, std::string> gr = this -> o_graph; 
+    std::map<std::string, std::string> nd = this -> o_node; 
+    std::map<std::string, std::string> ed = this -> o_edge; 
+    std::vector<torch::Tensor> losses = {};
+
+    std::map<std::string, std::string>::iterator itr; 
+    for (itr = gr.begin(); itr != gr.end(); ++itr){losses.push_back(this -> compute_loss(itr -> first, graph_enum::truth_graph));}
+    for (itr = nd.begin(); itr != nd.end(); ++itr){losses.push_back(this -> compute_loss(itr -> first, graph_enum::truth_node));}
+    for (itr = ed.begin(); itr != ed.end(); ++itr){losses.push_back(this -> compute_loss(itr -> first, graph_enum::truth_edge));}
+
+    torch::Tensor lss = losses.at(0); 
+    for (size_t x(1); x < losses.size(); ++x){lss += losses.at(x);}
+    lss.backward(); 
+    this -> m_optim -> step();
+}
+
 void model_template::set_input_features(std::vector<std::string>* inpt, std::map<std::string, torch::Tensor*>* in_fx){
-    for (size_t x(0); x < inpt -> size(); ++x){
-        (*in_fx)["D-" + inpt -> at(x)] = nullptr;
+    for (size_t x(0); x < inpt -> size(); ++x){(*in_fx)[inpt -> at(x)] = nullptr;}
+}
+
+void model_template::prediction_graph_feature(std::string key, torch::Tensor pred){
+    if (!this -> m_o_graph.count(key)){this -> warning("Graph Output Feature: " + key + " not found.");}
+    else {this -> m_p_graph[key] = new torch::Tensor(pred);}
+}
+
+void model_template::prediction_node_feature(std::string key, torch::Tensor pred){
+    if (!this -> m_o_node.count(key)){this -> warning("Node Output Feature: " + key + " not found.");}
+    else {this -> m_p_node[key] = new torch::Tensor(pred);}
+}
+
+void model_template::prediction_edge_feature(std::string key, torch::Tensor pred){
+    if (!this -> m_o_edge.count(key)){this -> warning("Edge Output Feature: " + key + " not found.");}
+    else {this -> m_p_edge[key] = new torch::Tensor(pred);}
+}
+
+void model_template::flush_outputs(){
+    std::map<std::string, torch::Tensor*>::iterator itr; 
+    for (itr = this -> m_p_graph.begin(); itr != this -> m_p_graph.end(); ++itr){
+        if (!itr -> second){continue;}
+        delete itr -> second; 
+        this -> m_p_graph[itr -> first] = nullptr; 
+    }
+
+    for (itr = this -> m_p_node.begin(); itr != this -> m_p_node.end(); ++itr){
+        if (!itr -> second){continue;}
+        delete itr -> second; 
+        this -> m_p_node[itr -> first] = nullptr; 
+    }
+
+    for (itr = this -> m_p_edge.begin(); itr != this -> m_p_edge.end(); ++itr){
+        if (!itr -> second){continue;}
+        delete itr -> second; 
+        this -> m_p_edge[itr -> first] = nullptr; 
     }
 }
 
-
-void model_template::set_output_features(
-        std::map<std::string, std::string>* inpt, 
-        std::map<std::string, std::tuple<torch::Tensor*, torch::nn::Module*>>* out_fx
-){
-    notification nx = notification(); 
-    std::map<std::string, std::string>::iterator itx = inpt -> begin();
-    for (; itx != inpt -> end(); ++itx){
-        std::string o_fx = itx -> first; 
-        std::string l_fx = itx -> second;
-
-        torch::nn::Module* lss = nullptr; 
-        switch (loss_from_string(tools().lower(&l_fx))){
-            case loss_enum::bce                         : lss = new torch::nn::BCELossImpl(); break;
-            case loss_enum::bce_with_logits             : lss = new torch::nn::BCEWithLogitsLossImpl(); break;
-            case loss_enum::cosine_embedding            : lss = new torch::nn::CosineEmbeddingLossImpl(); break;
-            case loss_enum::cross_entropy               : lss = new torch::nn::CrossEntropyLossImpl(); break;
-            case loss_enum::ctc                         : lss = new torch::nn::CTCLossImpl(); break;
-            case loss_enum::hinge_embedding             : lss = new torch::nn::HingeEmbeddingLossImpl(); break;
-            case loss_enum::huber                       : lss = new torch::nn::HuberLossImpl(); break;
-            case loss_enum::kl_div                      : lss = new torch::nn::KLDivLossImpl(); break;
-            case loss_enum::l1                          : lss = new torch::nn::L1LossImpl(); break;
-            case loss_enum::margin_ranking              : lss = new torch::nn::MarginRankingLossImpl(); break;
-            case loss_enum::mse                         : lss = new torch::nn::MSELossImpl(); break;
-            case loss_enum::multi_label_margin          : lss = new torch::nn::MultiLabelMarginLossImpl(); break;
-            case loss_enum::multi_label_soft_margin     : lss = new torch::nn::MultiLabelSoftMarginLossImpl(); break;
-            case loss_enum::multi_margin                : lss = new torch::nn::MultiMarginLossImpl(); break;
-            case loss_enum::nll                         : lss = new torch::nn::NLLLossImpl(); break;
-            case loss_enum::poisson_nll                 : lss = new torch::nn::PoissonNLLLossImpl(); break;
-            case loss_enum::smooth_l1                   : lss = new torch::nn::SmoothL1LossImpl(); break;
-            case loss_enum::soft_margin                 : lss = new torch::nn::SoftMarginLossImpl(); break;
-            case loss_enum::triplet_margin              : lss = new torch::nn::TripletMarginLossImpl(); break;
-            case loss_enum::triplet_margin_with_distance: lss = new torch::nn::TripletMarginWithDistanceLossImpl(); break;
-            default: nx.warning("Invalid Loss Function for: " + o_fx + " feature!"); break; 
-        }
-        (*out_fx)["T-" + o_fx] = {nullptr, lss}; 
-        nx.success("Added loss function: " + l_fx + " for " + o_fx);
+torch::Tensor model_template::compute_loss(std::string pred, graph_enum feat){
+    switch(feat){
+        case graph_enum::truth_graph: return this -> compute_loss(this -> m_p_graph[pred], &this -> m_o_graph[pred]); 
+        case graph_enum::truth_node:  return this -> compute_loss(this -> m_p_node[pred],  &this -> m_o_node[pred]); 
+        case graph_enum::truth_edge:  return this -> compute_loss(this -> m_p_edge[pred],  &this -> m_o_edge[pred]); 
+        default: break;
     }
+    return torch::Tensor(); 
 }
-
-
-
-
-
-
-
-
-
-
 

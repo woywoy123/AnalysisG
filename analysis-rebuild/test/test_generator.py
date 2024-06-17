@@ -2,7 +2,7 @@ from AnalysisG.generators.eventgenerator import EventGenerator
 from AnalysisG.generators.graphgenerator import GraphGenerator
 from AnalysisG.generators.optimizer import Optimizer
 from AnalysisG.events.event_bsm_4tops import BSM4Tops
-from AnalysisG.graphs.graph_bsm_4tops import TruthTops
+from AnalysisG.graphs.graph_bsm_4tops import GraphTops, GraphChildren
 from AnalysisG.models.RecursiveGraphNeuralNetwork import *
 
 root1 = "./samples/dilepton/*"
@@ -12,17 +12,16 @@ x = BSM4Tops()
 evg = EventGenerator()
 evg.Files = root1
 evg.ImportEvent(x)
-#evg.CompileEvents()
 
-tt = TruthTops()
+tt = GraphChildren()
 egr = GraphGenerator()
 egr.ImportGraph(tt)
-#egr.AddEvents(evg)
-#egr.CompileEvents()
 
 m = RecursiveGraphNeuralNetwork()
-m.o_graph = {"signal" : "CrossEntropyLoss"}
+m.o_edge = {"top_edge" : "CrossEntropyLoss"}
 m.i_node = ["pt", "eta", "phi", "energy"]
+m.i_graph = ["met", "phi"]
+m.device = "cuda:0"
 
 op = Optimizer()
 op.AddGeneratorPairs(evg, egr)

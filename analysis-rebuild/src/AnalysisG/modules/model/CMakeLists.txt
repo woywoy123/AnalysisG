@@ -2,7 +2,12 @@ set(HEADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/include/templates/model_template.h
     ${CMAKE_CURRENT_SOURCE_DIR}/include/templates/enum_functions.h
 )
-set(SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/cxx/model_template.cxx)
+set(SOURCE_FILES 
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/model_template.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/model_configuration.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/model_lossfx.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/model_checks.cxx
+)
 
 add_library(cmodel STATIC ${SOURCE_FILES})
 target_include_directories(cmodel PRIVATE include/templates)

@@ -36,13 +36,20 @@ void find_object(std::vector<G*>* trg, std::vector<std::map<std::string, G*>>* s
 
 template <typename G>
 void static process_data(std::vector<G*>* ev, bool* execute){
-    while (*execute){
+    bool comple = false; 
+    while (*execute || !comple){
         for (int x(0); x < ev -> size(); ++x){
             if (!(*ev)[x]){continue;}
             (*ev)[x] -> CompileEvent();
             (*ev)[x] -> is_compiled = true;
         }
-        for (int x(0); x < ev -> size(); ++x){(*ev)[x] = nullptr; }
+        comple = true;
+        for (int x(0); x < ev -> size(); ++x){
+            if (!(*ev)[x]){continue;}
+            comple *= (*ev)[x] -> is_compiled; 
+            if (!(*ev)[x] -> is_compiled){continue;}
+            (*ev)[x] = nullptr; 
+        }
     }
 }; 
 
@@ -66,19 +73,22 @@ void threaded_compiler(std::map<std::string, int>* hash_map, std::vector<std::ma
     for (itr = hash_map -> begin(); itr != hash_map -> end(); ++itr){
         mps = &type_tree -> at(itr -> second); 
         for (ite = mps -> begin(); ite != mps -> end(); ++ite){
+            ite -> second -> CompileEvent(); 
+            ite -> second -> is_compiled = true; 
             if (ite -> second -> is_compiled){continue;}
+
             std::vector<G*>* vec = event_compile[th_dx]; 
             G* ev_ = vec -> at(index); 
             if (!ev_){(*vec)[index] = ite -> second;}
-            else {ite--;}
+            else {--ite;}
             index++; 
 
-            if (index >= threshold && !threads_running[th_dx]){
+            if (!threads_running[th_dx]){
                 threads_running[th_dx] = new std::thread(process_data<G>, vec, &execute);
-                index = 0; th_dx++; 
+                th_dx++; 
             }
-            else if (index >= threshold){index = 0; th_dx++;}
-            if (th_dx >= threads){th_dx = 0; index = 0; ite--;}
+            if (index >= threshold){index = 0; th_dx++;}
+            if (th_dx >= threads){th_dx = 0; index = 0;}
         }
     }
     std::map<int, std::thread*>::iterator itx = threads_running.begin(); 

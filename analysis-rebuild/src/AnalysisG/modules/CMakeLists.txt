@@ -5,6 +5,7 @@ add_subdirectory(particle)
 add_subdirectory(event)
 add_subdirectory(graph)
 add_subdirectory(model)
+add_subdirectory(metrics)
 add_subdirectory(meta)
 add_subdirectory(io)
 

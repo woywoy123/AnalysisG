@@ -3,7 +3,12 @@ set(SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/RecursiveGraphNeuralNetwork/Recursi
 
 add_library(recursivegraphneuralnetwork STATIC ${SOURCE_FILES})
 target_include_directories(recursivegraphneuralnetwork PUBLIC RecursiveGraphNeuralNetwork)
-target_link_libraries(recursivegraphneuralnetwork LINK_PUBLIC cmodel)
+target_link_libraries(recursivegraphneuralnetwork 
+    LINK_PUBLIC cmodel polar-cuda cartesian-cuda physics-cuda nusol-cuda graph-cuda
+)
+
+
+
 target_compile_options(recursivegraphneuralnetwork PRIVATE -fPIC)
 
 add_custom_command(

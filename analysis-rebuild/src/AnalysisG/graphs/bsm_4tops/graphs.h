@@ -5,14 +5,22 @@
 #include <templates/graph_template.h>
 #include "features.h"
 
-class truth_tops: public graph_template
+class graph_tops: public graph_template
 {
     public:
-        truth_tops(); 
-        ~truth_tops() override; 
+        graph_tops(); 
+        ~graph_tops() override; 
         graph_template* clone() override; 
         void CompileEvent() override; 
+}; 
 
+class graph_children: public graph_template
+{
+    public:
+        graph_children(); 
+        ~graph_children() override; 
+        graph_template* clone() override; 
+        void CompileEvent() override; 
 }; 
 
 

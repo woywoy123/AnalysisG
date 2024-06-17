@@ -66,3 +66,8 @@ cdef class ModelTemplate:
     @i_edge.setter
     def i_edge(self, list inpt): self.nn_ptr.i_edge = enc_list(inpt)
 
+    @property
+    def device(self): return self.nn_ptr.device
+
+    @device.setter
+    def device(self, str dev): self.nn_ptr.device = enc(dev)

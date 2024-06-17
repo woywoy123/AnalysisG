@@ -1,4 +1,6 @@
 #include <notification.h>
+#include <stddef.h>
+#include <stdio.h>
 
 notification::notification(){}
 notification::~notification(){}
@@ -39,3 +41,19 @@ void notification::info(std::string message){
     this -> caller = this -> _info;
     this -> _format(&message);
 }
+
+void notification::progressbar(float lProgress, std::string title){
+    const char cFilled[] = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
+    const char cEmpty[]  = "-------------------------------------";
+    size_t lFilledStart = (sizeof cFilled - 1) * (1 - lProgress);
+    size_t lEmptyStart  = (sizeof cFilled - 1) * lProgress;
+    printf("\r %s | [%s%s] %.1f%%", title.c_str(), cFilled + lFilledStart, cEmpty  + lEmptyStart, lProgress * 100);
+    fflush(stdout);
+}
+
+
+
+
+
+
+

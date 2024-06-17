@@ -16,18 +16,6 @@ void graph_template::get_index(long* inpt, graph_template* ev){
     *inpt = ev -> data.index; 
 }
 
-void graph_template::set_device(std::string* dev, graph_template* gr){
-    if (!gr -> op){gr -> op = new torch::TensorOptions(torch::kCPU);}
-//    if (*dev == "cuda"){gr -> op -> device(torch::kCUDA, 0);} 
-//    else {gr -> op -> device(torch::kCPU);}
-    gr -> m_device = *dev;  
-}
-
-void graph_template::get_device(std::string* dev, graph_template* gr){
-    *dev = gr -> m_device;  
-    if (!gr -> op){gr -> set_device(dev, gr);}
-}
-
 void graph_template::add_graph_feature(bool data, std::string name){
     this -> graph_fx[name] = this -> to_tensor(std::vector<bool>{data}, torch::kBool); 
 }
