@@ -115,7 +115,7 @@ graph_t* graph_template::data_export(){
     return gr; 
 }
 
-graph_template* graph_template::build_event(event_template* ev){
+graph_template* graph_template::build(event_template* ev){
     event_t* data_ = &ev -> data; 
     data_ -> name = this -> name; 
 

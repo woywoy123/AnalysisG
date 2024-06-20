@@ -3,7 +3,6 @@
 dataloader::dataloader(){
     this -> prefix = "dataloader";
     this -> data_set = new std::vector<graph_t*>();
-    this -> data_hashes = new std::vector<std::string>(); 
     this -> data_index = new std::vector<int>(); 
     this -> test_set   = new std::vector<int>(); 
     this -> train_set  = new std::vector<int>(); 
@@ -28,7 +27,6 @@ dataloader::~dataloader(){
     delete this -> test_set; 
     delete this -> train_set; 
 
-    delete this -> data_hashes; 
     delete this -> data_index; 
     for (size_t x(0); x < this -> data_set -> size(); ++x){
         this -> data_set -> at(x) -> _purge_all(); 
@@ -69,7 +67,6 @@ void dataloader::generate_kfold_set(int k){
 
 void dataloader::generate_test_set(float percentage){
     this -> data_set    -> shrink_to_fit(); 
-    this -> data_hashes -> shrink_to_fit();
     this -> data_index  -> shrink_to_fit();   
 
     int fx = (this -> data_set -> size()) * float(percentage/100); 
@@ -116,19 +113,6 @@ void dataloader::clean_data_elements(
     *data_map = loader_map -> at(hit); 
 }
 
-void dataloader::extract_data(graph_template* data){
-    graph_t* gr = data -> data_export(); 
-    this -> clean_data_elements(&gr -> truth_map_graph, &this -> truth_map_graph); 
-    this -> clean_data_elements(&gr -> truth_map_node , &this -> truth_map_node);
-    this -> clean_data_elements(&gr -> truth_map_edge , &this -> truth_map_edge);
-    this -> clean_data_elements(&gr -> data_map_graph , &this -> data_map_graph);
-    this -> clean_data_elements(&gr -> data_map_node  , &this -> data_map_node);
-    this -> clean_data_elements(&gr -> data_map_edge  , &this -> data_map_edge);
-    this -> data_set -> push_back(gr); 
-    this -> data_hashes -> push_back(data -> hash); 
-    this -> data_index -> push_back(this -> data_index -> size()); 
-}
-
 std::vector<graph_t*> dataloader::get_random(int num){
     this -> shuffle(this -> data_index); 
     std::vector<graph_t*> out = {}; 
@@ -140,9 +124,9 @@ std::vector<graph_t*> dataloader::get_random(int num){
 }
 
 std::vector<graph_t*>* dataloader::get_k_train_set(int k){
-    if (this -> gr_k_fold_training.count(k-1)){return this -> gr_k_fold_training[k-1];}
+    if (this -> gr_k_fold_training.count(k)){return this -> gr_k_fold_training[k];}
 
-    std::vector<int>* kdata = this -> k_fold_training[k-1]; 
+    std::vector<int>* kdata = this -> k_fold_training[k]; 
     this -> shuffle(kdata); 
     std::vector<graph_t*>* output = new std::vector<graph_t*>();
     for (int x(0); x < kdata -> size(); ++x){
@@ -157,7 +141,7 @@ std::vector<graph_t*>* dataloader::get_k_train_set(int k){
 std::vector<graph_t*>* dataloader::get_k_validation_set(int k){
     if (this -> gr_k_fold_validation.count(k-1)){return this -> gr_k_fold_validation[k-1];}
 
-    std::vector<int>* kdata = this -> k_fold_validation[k-1]; 
+    std::vector<int>* kdata = this -> k_fold_validation[k]; 
     this -> shuffle(kdata); 
     std::vector<graph_t*>* output = new std::vector<graph_t*>();
     for (int x(0); x < kdata -> size(); ++x){
@@ -180,14 +164,14 @@ std::vector<graph_t*>* dataloader::get_test_set(){
     return output; 
 }
 
-void dataloader::add_to_collection(std::vector<graph_template*>* inpt){
-    for (size_t x(0); x < inpt -> size(); ++x){this -> extract_data(inpt -> at(x));}
-    for (size_t x(0); x < inpt -> size(); ++x){delete inpt -> at(x);}
-    delete inpt; 
+
+void dataloader::extract_data(graph_t* gr){
+    this -> clean_data_elements(&gr -> truth_map_graph, &this -> truth_map_graph); 
+    this -> clean_data_elements(&gr -> truth_map_node , &this -> truth_map_node);
+    this -> clean_data_elements(&gr -> truth_map_edge , &this -> truth_map_edge);
+    this -> clean_data_elements(&gr -> data_map_graph , &this -> data_map_graph);
+    this -> clean_data_elements(&gr -> data_map_node  , &this -> data_map_node);
+    this -> clean_data_elements(&gr -> data_map_edge  , &this -> data_map_edge);
+    this -> data_set -> push_back(gr); 
+    this -> data_index -> push_back(this -> data_index -> size()); 
 }
-
-
-
-
-
-

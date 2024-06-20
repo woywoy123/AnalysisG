@@ -5,47 +5,40 @@
 #include <generators/dataloader.h>
 #include <metrics/metrics.h>
 
-
-struct container_model_t {
-    torch::optim::Optimizer* op = nullptr; 
-    model_template* model = nullptr; 
-    int kfold = -1;
-
-    void flush(){
-        if (this -> op){delete this -> op;}
-        if (this -> model){delete this -> model;}
-    }
-    
-    bool is_defined(std::string name = ""){
-        if (this -> op){return true;}
-        this -> model -> set_optimizer(name); 
-        this -> model -> initialize(&this -> op);  
-        return this -> op != nullptr; 
-    }
-}; 
-
 class optimizer: 
-    public notification, 
-    public tools
+    public tools,
+    public notification
 {
     public:
         optimizer();
         ~optimizer();
 
-        void pretest_model(); 
-        void define_model(model_template* _model); 
-        void define_optimizer(std::string name);     
-        void model_loop(std::vector<graph_t*>* data, container_model_t* model_t, int mode, int epoch); 
-        void create_data_loader(std::vector<graph_template*>* input); 
-        void start(); 
+        int epochs;
+        int kfolds; 
 
-        int epochs = 100; 
-        std::vector<int> k_folds = {}; 
-        std::map<std::string, std::map<int, container_model_t>> k_model = {}; 
+        bool training   = true; 
+        bool validation = true;
+        bool evaluation = true; 
+        
+        int refresh = 10; 
+
+        void import_dataloader(dataloader* dl); 
+        void import_model_sessions(std::tuple<model_template*, optimizer_params_t*>* models); 
+        void check_model_sessions(int example_size); 
+        
+        void training_loop(int k, int epoch); 
+        void validation_loop(int k, int epoch);
+        void evaluation_loop(int k, int epoch); 
+        void launch_model(); 
 
     private:
-        dataloader* loader = nullptr;
+        std::map<int, model_template*> kfold_sessions = {}; 
         metrics*    metric = nullptr;  
+        dataloader* loader = nullptr; 
+
+
+
+
 
 }; 
 

@@ -14,7 +14,6 @@ struct meta_t {
     std::map<int, std::string> inputfiles = {};
     std::map<std::string, std::string> config = {};
 
-
     std::string AMITag = "";
     std::string generators = "";
 

@@ -11,11 +11,6 @@ cdef extern from "<generators/optimizer.h>":
     cdef cppclass optimizer:
         optimizer() except+
 
-        void define_optimizer(string name) except +
-        void define_model(model_template* model) except +
-        void create_data_loader(vector[graph_template*]* data) except +
-        void start() except +
-
 cdef class Optimizer:
     cdef optimizer* ev_ptr
 

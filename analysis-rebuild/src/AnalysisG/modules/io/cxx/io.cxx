@@ -11,7 +11,10 @@ io::~io(){
     }
 
     std::map<std::string, meta*>::iterator itm = this -> meta_data.begin(); 
-    for (; itm != this -> meta_data.end(); ++itm){delete itm -> second;}
+    for (; itm != this -> meta_data.end(); ++itm){
+        if (!itm -> second){continue;}
+        delete itm -> second;
+    }
     this -> meta_data.clear(); 
 }
 

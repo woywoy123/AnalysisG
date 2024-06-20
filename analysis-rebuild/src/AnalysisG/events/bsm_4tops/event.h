@@ -41,8 +41,11 @@ class bsm_4tops: public event_template
         template <typename G>
         std::map<int, G*> sort_by_index(std::map<std::string, G*>* ipt){
             std::map<int, G*> data = {}; 
-            typename std::map<std::string, G*>::iterator ix = ipt -> begin();
-            for (; ix != ipt -> end(); ++ix){data[(int)ix -> second -> index] = ix -> second;}
+            typename std::map<std::string, G*>::iterator ix; 
+            ix = ipt -> begin();
+            for (; ix != ipt -> end(); ++ix){
+                data[(int)ix -> second -> index] = ix -> second;
+            }
             return data; 
         }
 

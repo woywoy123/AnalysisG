@@ -1,111 +1,121 @@
 #include <generators/optimizer.h>
 
 optimizer::optimizer(){
-    this -> prefix = "optimizer";
+    this -> prefix = "optimizer"; 
     this -> metric = new metrics(); 
 }
 
 optimizer::~optimizer(){
-    std::map<std::string, std::map<int, container_model_t>>::iterator itr; 
-    for (itr = this -> k_model.begin(); itr != this -> k_model.end(); ++itr){
-        std::map<int, container_model_t>::iterator itk = itr -> second.begin(); 
-        for (; itk != itr -> second.end(); ++itk){itk -> second.flush();}
-    }
     delete this -> metric; 
-
+    std::map<int, model_template*>::iterator itx = this -> kfold_sessions.begin(); 
+    for (; itx != this -> kfold_sessions.end(); ++itx){delete itx -> second;}
 }
 
-void optimizer::define_model(model_template* _model){
-    model_settings_t setts; 
-    _model -> clone_settings(&setts); 
+void optimizer::import_dataloader(dataloader* dl){this -> loader = dl;}
 
-    std::string name = _model -> name; 
-    if (!name.size()){return this -> warning("No model features set.");}
-    for (int x(0); x < this -> k_folds.size(); ++x){
-        int k = this -> k_folds[x]; 
-        if (this -> k_model.count(name)){
-            this -> warning("Model already in collection. Skipping");
-            continue;
-        }
-        if (this -> k_model[name].count(k)){continue;}
-        this -> k_model[name][k].model = _model -> clone(); 
-        this -> k_model[name][k].model -> import_settings(&setts); 
-        this -> k_model[name][k].kfold = k; 
-    }
-
-    if (this -> k_folds.size()){return this -> success("Added Model: " + name);}
-    this -> warning("No k-Folds specified. Assuming k = 1"); 
-    this -> k_folds.push_back(1); 
-    this -> define_model(_model); 
-    return;
-}
-
-void optimizer::define_optimizer(std::string name_op){
-    std::map<std::string, std::map<int, container_model_t>>::iterator itr; 
-    for (itr = this -> k_model.begin(); itr != this -> k_model.end(); ++itr){
-        std::map<int, container_model_t>::iterator itk = itr -> second.begin(); 
-        for (; itk != itr -> second.end(); ++itk){itk -> second.is_defined(name_op);}
+void optimizer::import_model_sessions(std::tuple<model_template*, optimizer_params_t*>* models){
+    model_template*       base = std::get<0>(*models); 
+    optimizer_params_t* config = std::get<1>(*models); 
+    base -> shush = true; 
+    base -> set_optimizer(config -> optimizer); 
+    
+    model_settings_t settings;
+    base -> clone_settings(&settings); 
+    
+    this -> info("_____ IMPORTING MODELS _____"); 
+    for (int x(0); x < this -> kfolds; ++x){
+        model_template* model_k = base -> clone(); 
+        if (x){model_k -> shush = true;}
+        model_k -> set_optimizer(config -> optimizer);
+        model_k -> import_settings(&settings);
+        model_k -> initialize(config); 
+        this -> kfold_sessions[x] = model_k; 
     }
 }
 
-void optimizer::create_data_loader(std::vector<graph_template*>* inpt){
-    if (this -> loader){this -> loader -> add_to_collection(inpt);}
-    else {this -> loader = new dataloader(); this -> create_data_loader(inpt);}
-}
-
-void optimizer::pretest_model(){
-    std::vector<graph_t*> example = this -> loader -> get_random(); 
-    std::map<std::string, std::map<int, container_model_t>>::iterator md; 
-    for (md = this -> k_model.begin(); md != this -> k_model.end(); ++md){
-        for (int k : this -> k_folds){
-            this -> info("____ Testing Random Entry for k(" + this -> to_string(k) + ")____"); 
-            for (int x(0); x < example.size(); ++x){
-                this -> info("_____ Test: (" + this -> to_string((x+1)) + "/" + this -> to_string(example.size()) +") _____"); 
-                md -> second[k].model  -> check_features(example[x]);
-            }
-            this -> metric -> register_model(md -> second[k].model, k); 
-        }
+void optimizer::check_model_sessions(int example_size){
+    this -> metric -> epochs = this -> epochs; 
+    std::vector<graph_t*> rnd = this -> loader -> get_random(example_size); 
+    std::map<int, model_template*>::iterator itx = this -> kfold_sessions.begin(); 
+    this -> info("Testing each k-fold model " + std::to_string(rnd.size()) + "-times"); 
+    for (; itx != this -> kfold_sessions.end(); ++itx){
+        this -> info("____ Checking Model ____: " + std::to_string(itx -> first +1)); 
+        for (size_t x(0); x < rnd.size(); ++x){
+            if (!x){itx -> second -> shush = false;}
+            else {itx -> second -> shush = true;}
+            itx -> second -> check_features(rnd[x]);
+        } 
+        this -> metric -> register_model(itx -> second, itx -> first); 
     }
-    this -> success("--------- Completed Model Pre-test ---------- "); 
 }
 
-void optimizer::model_loop(std::vector<graph_t*>* data, container_model_t* model_t, int mode, int epoch){
-    int l = data -> size();
-    model_template* model = model_t -> model; 
-    bool flg = false; 
-    if (mode == 0){flg = true;}
-    else {flg = false;}
+void optimizer::training_loop(int k, int epoch){
+    std::vector<graph_t*>* smpl = this -> loader -> get_k_train_set(k); 
+    model_template* model = this -> kfold_sessions[k]; 
+    model -> epoch = epoch+1; 
+    model -> kfold = k+1;
+    model -> restore_state(); 
 
-    std::string title = ""; 
-    if (mode == 0){title = "Training";}
-    else if (mode == 1){title = "Validation";}
-    else {title = "Evaluation";}
-
-    for (int x(0); x < data -> size(); ++x){
-        model -> forward(data -> at(x), flg); 
-        this -> progressbar(float(x)/float(l), title); 
+    std::string msg = "training   k-" + std::to_string(k+1) + " progress "; 
+    int idx = 0; 
+    int l = smpl -> size(); 
+    for (int x(0); x < l; ++x, ++idx){
+        model -> forward(smpl -> at(x), true);
+        this -> metric -> capture(mode_enum::training, k, epoch, l); 
+        if (this -> refresh != idx){continue;}
+        this -> progressbar(float(x+1)/float(l), msg); 
+        idx = 0; 
     }
-    std::cout << std::endl; 
+    this -> progressbar(1.0, msg); 
+    model -> save_state(); 
+    std::cout << std::endl;
 }
 
-void optimizer::start(){
-    this -> pretest_model(); 
-    int k = this -> max(&this -> k_folds); 
-    this -> loader -> generate_test_set(40); 
-    this -> loader -> generate_kfold_set(1); 
+void optimizer::validation_loop(int k, int epoch){
+    std::vector<graph_t*>* smpl = this -> loader -> get_k_validation_set(k); 
+    model_template* model = this -> kfold_sessions[k]; 
+    std::string msg = "validation k-" + std::to_string(k+1) + " progress "; 
+    int idx = 0; 
+    int l = smpl -> size(); 
+    for (int x(0); x < l; ++x, ++idx){
+        model -> forward(smpl -> at(x), false);
+        this -> metric -> capture(mode_enum::validation, k, epoch, l); 
+        if (this -> refresh != idx){continue;}
+        this -> progressbar(float(x+1)/float(l), msg); 
+        idx = 0; 
+    }
+    this -> progressbar(1.0, msg); 
+    std::cout << std::endl;
+}
 
+void optimizer::evaluation_loop(int k, int epoch){
+    std::vector<graph_t*>* smpl = this -> loader -> get_test_set(); 
+    model_template* model = this -> kfold_sessions[k]; 
+    std::string msg = "evaluation k-" + std::to_string(k+1) + " progress "; 
+    int idx = 0; 
+    int l = smpl -> size(); 
+    for (int x(0); x < l; ++x, ++idx){
+        model -> forward(smpl -> at(x), false);
+        this -> metric -> capture(mode_enum::evaluation, k, epoch, l); 
+        if (this -> refresh != idx){continue;}
+        this -> progressbar(float(x+1)/float(l), msg); 
+        idx = 0; 
+    }
+    this -> progressbar(1.0, msg); 
+    std::cout << std::endl;
+}
+
+void optimizer::launch_model(){
     for (int ep(0); ep < this -> epochs; ++ep){
-        this -> info("----------- Epoch: " + this -> to_string(ep) + " --------------"); 
-        for (int k_ : this -> k_folds){
-            std::vector<graph_t*>* train = this -> loader -> get_k_train_set(k_);
-            std::vector<graph_t*>* valid = this -> loader -> get_k_validation_set(k_);
-            std::vector<graph_t*>* test  = this -> loader -> get_test_set();
-            std::map<std::string, std::map<int, container_model_t>>::iterator itr; 
-            for (itr = this -> k_model.begin(); itr != this -> k_model.end(); ++itr){
-                this -> model_loop(train, &this -> k_model[itr -> first][k_], 0, ep); 
-                this -> model_loop(valid, &this -> k_model[itr -> first][k_], 1, ep); 
-                this -> model_loop(test , &this -> k_model[itr -> first][k_], 2, ep); 
-            }
+        std::string msg = std::to_string(ep+1) + "/" + std::to_string(this -> epochs); 
+        this -> info("___ STARTING EPOCH ___: " + msg); 
+        for (int k(0); k < this -> kfolds; ++k){
+            if (this -> training){this -> training_loop(k, ep);}
+            if (this -> validation){this -> validation_loop(k, ep);}
+            if (this -> evaluation){this -> evaluation_loop(k, ep);}
         }
+        this -> metric -> dump_plots(); 
     }
 }
+
+

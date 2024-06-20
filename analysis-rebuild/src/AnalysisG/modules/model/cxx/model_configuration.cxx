@@ -2,7 +2,8 @@
 
 void model_template::clone_settings(model_settings_t* setd){
     setd -> e_optim = this -> e_optim; 
-    setd -> s_optim = this -> s_optim; 
+    setd -> s_optim = this -> s_optim;
+    setd -> model_checkpoint_path = this -> model_checkpoint_path; 
 
     setd -> model_name   = this -> name; 
     setd -> model_device = this -> device;
@@ -18,7 +19,8 @@ void model_template::clone_settings(model_settings_t* setd){
 
 void model_template::import_settings(model_settings_t* setd){
     this -> e_optim = setd -> e_optim; 
-    this -> s_optim = setd -> s_optim;        
+    this -> s_optim = setd -> s_optim; 
+    this -> model_checkpoint_path = setd -> model_checkpoint_path; 
                                              
     this -> name    = setd -> model_name;     
     this -> device  = setd -> model_device;   
@@ -33,7 +35,7 @@ void model_template::import_settings(model_settings_t* setd){
 }
 
 void model_template::set_device(std::string* dev, model_template* md){
-    if (md -> op){delete md -> op; md -> op = nullptr;}    
+    if (md -> m_option){delete md -> m_option; md -> m_option = nullptr;}    
     
     int device_n = -1; 
     c10::DeviceType device_enum; 
@@ -47,22 +49,23 @@ void model_template::set_device(std::string* dev, model_template* md){
     else {device_enum = c10::kCPU;} 
 
     switch(device_enum){
-        case c10::kCPU:  md -> op = new torch::TensorOptions(device_enum); break; 
-        case c10::kCUDA: md -> op = new torch::TensorOptions(device_enum, device_n); break; 
-        default: md -> op = new torch::TensorOptions(device_enum); break; 
+        case c10::kCPU:  md -> m_option = new torch::TensorOptions(device_enum); break; 
+        case c10::kCUDA: md -> m_option = new torch::TensorOptions(device_enum, device_n); break; 
+        default: md -> m_option = new torch::TensorOptions(device_enum); break; 
     }
-    for (size_t x(0); x < md -> m_data.size(); ++x){(*md -> m_data[x]) -> to(md -> op -> device());}
+    for (size_t x(0); x < md -> m_data.size(); ++x){(*md -> m_data[x]) -> to(md -> m_option -> device());}
 }
 
 void model_template::set_optimizer(std::string name){
-    this -> e_optim = opt_from_string(this -> lower(&name)); 
+    this -> e_optim = this -> m_loss -> optim_string(this -> lower(&name)); 
     if (this -> e_optim != opt_enum::invalid_optimizer){}
     else {return this -> failure("Invalid Optimizer");}
     this -> success("Using " + name + " as Optimizer"); 
     this -> s_optim = name;
 }
 
-void model_template::initialize(torch::optim::Optimizer** inpt){
+void model_template::initialize(optimizer_params_t* op_params){
+    this -> prefix = this -> name; 
     this -> info("------------- Checking Model Parameters ---------------"); 
     if (!this -> m_data.size()){return this -> failure("No parameters defined!");}
     this -> success("OK > Parameters defined."); 
@@ -88,18 +91,34 @@ void model_template::initialize(torch::optim::Optimizer** inpt){
         std::vector<torch::Tensor> p_ = sq.ptr() -> parameters(); 
         params.insert(params.end(), p_.begin(), p_.end()); 
     }
-    switch (this -> e_optim){
-        case opt_enum::adam   : this -> m_optim = new torch::optim::Adam(params, torch::optim::AdamOptions(1e-6)); break; 
-        case opt_enum::adagrad: this -> m_optim = new torch::optim::Adagrad(params); break; 
-        case opt_enum::adamw  : this -> m_optim = new torch::optim::AdamW(params); break; 
-        case opt_enum::lbfgs  : this -> m_optim = new torch::optim::LBFGS(params); break; 
-        case opt_enum::rmsprop: this -> m_optim = new torch::optim::RMSprop(params); break; 
-        //case opt_enum::sgd    : this -> m_optim = new torch::optim::SGD((*sq) -> parameters());
-        default: this -> failure("Could not initialize the optimizer");
-    }
 
+    this -> m_optim = this -> m_loss -> build_optimizer(op_params, &params); 
     this -> success("OK > Using device: " + std::string(this -> device)); 
-    *inpt = this -> m_optim; 
 }
 
+void model_template::save_state(){
+    torch::serialize::OutputArchive state_session; 
+    for (size_t x(0); x < this -> m_data.size(); ++x){(*this -> m_data.at(x)) -> save(state_session);}
+    std::string pth = this -> model_checkpoint_path + "epoch-" + std::to_string(this -> epoch) + "/"; 
+    this -> create_path(pth); 
+    pth += "kfold-" + std::to_string(this -> kfold); 
+    state_session.save_to(pth + "_model.pt"); 
 
+    torch::serialize::OutputArchive state_optim; 
+    this -> m_optim -> save(state_optim); 
+    state_optim.save_to(pth + "_optimizer.pt"); 
+}
+
+void model_template::restore_state(){
+    torch::serialize::InputArchive state_session; 
+    std::string pth = this -> model_checkpoint_path + "epoch-" + std::to_string(this -> epoch) + "/"; 
+    pth += "kfold-" + std::to_string(this -> kfold); 
+    if (!this -> is_file(pth + "_model.pt")){return;}
+
+    state_session.load_from(pth + "_model.pt");
+    for (size_t x(0); x < this -> m_data.size(); ++x){(*this -> m_data.at(x)) -> load(state_session);}
+    torch::serialize::InputArchive state_optim; 
+    state_optim.load_from(pth + "_optimizer.pt"); 
+    this -> m_optim -> load(state_optim); 
+    this -> m_optim -> step();  
+}

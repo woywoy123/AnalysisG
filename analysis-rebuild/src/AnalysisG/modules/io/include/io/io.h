@@ -237,7 +237,6 @@ class io:
         void root_end(); 
 
         std::map<std::string, data_t*>* get_data(); 
-        bool next(); 
 
         bool enable_pyami = true; 
         std::string metacache_path = "./"; 
@@ -263,7 +262,6 @@ class io:
         std::map<std::string, bool> root_files = {};
 
         std::map<std::string, std::map<std::string, std::map<std::string, std::vector<std::string>>>> keys;
-
 
     private:
         H5::CompType member(particle_t t); 

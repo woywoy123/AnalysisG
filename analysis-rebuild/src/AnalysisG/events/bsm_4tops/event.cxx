@@ -19,7 +19,8 @@ bsm_4tops::bsm_4tops(){
     this -> register_particle(&this -> m_TruthJetParton); 
 }
 
-bsm_4tops::~bsm_4tops(){this -> flush_particles();}
+bsm_4tops::~bsm_4tops(){}
+
 event_template* bsm_4tops::clone(){return (event_template*)new bsm_4tops();}
 
 void bsm_4tops::build(element_t* el){

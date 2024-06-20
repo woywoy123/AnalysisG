@@ -14,7 +14,7 @@ cdef extern from "<templates/graph_template.h>":
         string hash
         double index
 
-        graph_template* build_event(event_template*)
+        graph_template* build(event_template*)
 
         bool operator == (graph_template& p)
 

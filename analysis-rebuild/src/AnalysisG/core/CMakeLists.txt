@@ -97,6 +97,17 @@ COMMAND
     ${CMAKE_CURRENT_SOURCE_DIR}/tools.pyx --output-file ${CMAKE_CURRENT_SOURCE_DIR}/ctools.cpp
 )
 
+add_custom_command(
+OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/clossfx.cpp
+DEPENDS 
+    ${CMAKE_CURRENT_SOURCE_DIR}/lossfx.pxd
+    ${CMAKE_CURRENT_SOURCE_DIR}/lossfx.pyx
+VERBATIM
+COMMAND
+    Python::Interpreter -m cython --cplus
+    ${CMAKE_CURRENT_SOURCE_DIR}/lossfx.pyx --output-file ${CMAKE_CURRENT_SOURCE_DIR}/clossfx.cpp
+)
+
 python_add_library(tools MODULE ${CMAKE_CURRENT_SOURCE_DIR}/ctools.cpp WITH_SOABI)
 target_link_libraries(tools LINK_PUBLIC ctools)
 
@@ -124,6 +135,8 @@ target_link_libraries(graph_template LINK_PUBLIC cgraph cevent)
 python_add_library(model_template MODULE ${CMAKE_CURRENT_SOURCE_DIR}/cmodel_template.cpp WITH_SOABI)
 target_link_libraries(model_template LINK_PUBLIC cmodel)
 
+python_add_library(lossfx MODULE ${CMAKE_CURRENT_SOURCE_DIR}/clossfx.cpp WITH_SOABI)
+target_link_libraries(lossfx LINK_PUBLIC clossfx)
 
 set_property(TARGET tools             APPEND PROPERTY ADDITIONAL_CLEAN_FILES ctools.cpp)
 set_property(TARGET io                APPEND PROPERTY ADDITIONAL_CLEAN_FILES cio.cpp)

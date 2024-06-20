@@ -22,7 +22,7 @@ void assign_vector(std::vector<g*>* inpt, element_t* el){
     el -> get("e"  , &_e); 
 
     for (int x(0); x < _pt.size(); ++x){
-        g* p = new g();
+        g* p          = new g();
         p -> pt       = _pt[x]; 
         p -> eta      = _eta[x]; 
         p -> phi      = _phi[x]; 

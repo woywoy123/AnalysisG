@@ -30,6 +30,7 @@ struct graph_t {
         void transfer_to_device(torch::TensorOptions* dev); 
         void _purge_all(); 
 
+        std::string* hash = nullptr; 
         torch::Tensor* edge_index = nullptr; 
         long event_index = 0; 
         int num_nodes = 0; 
@@ -163,7 +164,7 @@ class graph_template: public tools
         bool is_compiled = false; 
 
         void flush_particles(); 
-        graph_template* build_event(event_template* el); 
+        graph_template* build(event_template* el); 
         void define_particle_nodes(std::vector<particle_template*>* prt); 
         void define_topology(std::function<bool(particle_template*, particle_template*)> fx);
 

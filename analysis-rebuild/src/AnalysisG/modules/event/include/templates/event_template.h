@@ -65,6 +65,7 @@ class event_template: public tools
             for (; itr != x -> leaves.end(); ++itr){
                 this -> m_leaves[tp + "/" + itr -> first] = itr -> second;
             }
+            x -> leaves.clear(); 
             this -> particle_link[tp] = (std::map<std::string, particle_template*>*)object; 
             this -> particle_generators[tp] = x; 
         }
@@ -80,7 +81,6 @@ class event_template: public tools
 
         event_t data; 
         std::string filename = ""; 
-        bool is_compiled = false; 
         void flush_particles();
 
     private:

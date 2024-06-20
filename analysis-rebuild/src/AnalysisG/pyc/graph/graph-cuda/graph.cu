@@ -79,8 +79,7 @@ std::map<std::string, std::vector<torch::Tensor>> _edge_aggregation(
     torch::Tensor pmu_i = torch::zeros({max, dim_i, dim_j}, _MakeOp(nf));
 
     const dim3 blk_ = BLOCKS(threads, dim_i, dim_j, max); 
-    AT_DISPATCH_ALL_TYPES(pair_m.scalar_type(), "EdgeSummation", ([&]
-    {
+    AT_DISPATCH_ALL_TYPES(pair_m.scalar_type(), "EdgeSummation", ([&]{
         _EdgeSummation<scalar_t><<< blk_, threads >>>(
                  pmu_i.packed_accessor64<double, 3, torch::RestrictPtrTraits>(),
                 pair_m.packed_accessor32<scalar_t, 3, torch::RestrictPtrTraits>(),

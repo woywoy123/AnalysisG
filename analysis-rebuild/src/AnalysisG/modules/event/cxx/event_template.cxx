@@ -29,6 +29,7 @@ event_template::event_template(){
 }
 
 event_template::~event_template(){
+    this -> flush_particles(); 
     std::map<std::string, particle_template*>::iterator itrp = this -> particle_generators.begin();
     for (; itrp != this -> particle_generators.end(); ++itrp){delete itrp -> second;} 
 }
@@ -60,6 +61,7 @@ void event_template::build_mapping(std::map<std::string, data_t*>* evnt){
             } 
         }
     }
+    this -> particle_link.clear(); 
 }
 
 std::map<std::string, event_template*> event_template::build_event(std::map<std::string, data_t*>* evnt){
@@ -76,15 +78,20 @@ std::map<std::string, event_template*> event_template::build_event(std::map<std:
             itrx -> second.set_meta(); 
 
             if (itrx -> first == std::string(ev -> name)){ev -> build(&itrx -> second);}
-            else {ev -> particle_generators[itrx -> first] -> build(ev -> particle_link[itrx -> first], &itrx -> second);}
-
+            else {
+                std::map<std::string, particle_template*>* builder = new std::map<std::string, particle_template*>(); 
+                ev -> particle_generators[itrx -> first] -> build(builder, &itrx -> second);
+                std::map<std::string, particle_template*>* m_link = ev -> particle_link[itrx -> first]; 
+                m_link -> insert(builder -> begin(), builder -> end()); 
+                ev -> particle_link[itrx -> first] = builder; 
+            }
             this -> next_[itr -> first] *= this -> tree_variable_link[itr -> first][itrx -> first].next(); 
             ev -> index = itrx -> second.event_index; 
             ev -> hash = itrx -> second.filename; 
             ev -> filename = itrx -> second.filename;
         } 
         ev -> flush_leaf_string(); 
-        output[itr -> first] = ev; 
+        output[itr -> first] = ev;
     }
     return output; 
 }
@@ -105,8 +112,11 @@ void event_template::flush_leaf_string(){
         for (; itx != pmap -> end(); ++itx){itx -> second -> leaves = {};}
     }
     std::map<std::string, particle_template*>::iterator itrp = this -> particle_generators.begin();
-    for (; itrp != this -> particle_generators.end(); ++itrp){delete itrp -> second;} 
-    this -> particle_generators = {}; 
+    for (; itrp != this -> particle_generators.end(); ++itrp){
+        delete this -> particle_generators[itrp -> first]; 
+        this -> particle_generators[itrp -> first] = nullptr; 
+    } 
+    this -> particle_generators.clear(); 
 }
 
 void event_template::flush_particles(){
@@ -114,7 +124,12 @@ void event_template::flush_particles(){
     for (itr = this -> particle_link.begin(); itr != this -> particle_link.end(); ++itr){
         std::map<std::string, particle_template*>* pmap = itr -> second; 
         std::map<std::string, particle_template*>::iterator itx = pmap -> begin();
-        for (; itx != pmap -> end(); ++itx){delete itx -> second;}
+        for (; itx != pmap -> end(); ++itx){
+            delete (*pmap)[itx -> first];
+            (*pmap)[itx -> first] = nullptr; 
+        }
+        pmap -> clear(); 
+        delete pmap; 
     }
     this -> particle_link = {}; 
 }

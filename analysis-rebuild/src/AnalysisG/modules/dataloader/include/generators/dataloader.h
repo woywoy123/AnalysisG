@@ -17,9 +17,6 @@ class dataloader:
         dataloader();
         ~dataloader();
 
-        int size(); 
-        cproperty<int, dataloader> index; 
-
         std::vector<graph_t*>* get_k_train_set(int k); 
         std::vector<graph_t*>* get_k_validation_set(int k); 
         std::vector<graph_t*>* get_test_set(); 
@@ -27,8 +24,8 @@ class dataloader:
         void generate_test_set(float percentage = 50); 
         void generate_kfold_set(int k); 
 
-        void add_to_collection(std::vector<graph_template*>* inpt); 
         std::vector<graph_t*> get_random(int num = 5); 
+        void extract_data(graph_t* gr); 
 
     private:
         void clean_data_elements(
@@ -36,7 +33,6 @@ class dataloader:
                 std::vector<std::map<std::string, int>*>* loader_map
         ); 
 
-        void extract_data(graph_template*); 
         void shuffle(std::vector<int>* idx); 
 
 
@@ -60,7 +56,6 @@ class dataloader:
 
         std::vector<int>*         data_index  = nullptr; 
         std::vector<graph_t*>*    data_set    = nullptr; 
-        std::vector<std::string>* data_hashes = nullptr; 
         std::default_random_engine rnd{}; 
 }; 
 

@@ -8,17 +8,20 @@ from libcpp.vector cimport vector
 from AnalysisG.core.structs cimport particle_t
 from AnalysisG.core.meta cimport meta, Meta
 
+
 cdef extern from "<io/io.h>":
-    cdef enum class data_enum:
-        vvf
-        vvl
-        vvi
-        vf
-        vl
-        vi
-        f
-        l
-        i
+    enum data_enum:
+        vvf "data_enum::vvf"
+        vvl "data_enum::vvl"
+        vvi "data_enum::vvi"
+        vf  "data_enum::vf"
+        vl  "data_enum::vl"
+        vi  "data_enum::vi"
+        vc  "data_enum::vc"
+        f   "data_enum::f"
+        l   "data_enum::l"
+        i   "data_enum::i"
+        ull "data_enum::ull"
 
     cdef cppclass data_t:
         string leaf_name
@@ -32,10 +35,19 @@ cdef extern from "<io/io.h>":
 
         void flush() except+
 
-        bool next(float* data) except +
         bool next(vector[vector[float]]* data) except +
         bool next(vector[vector[long ]]* data) except +
         bool next(vector[vector[int  ]]* data) except +
+
+        bool next(vector[float]* data) except +
+        bool next(vector[long]* data) except +
+        bool next(vector[int]* data) except +
+        bool next(vector[char ]* data) except +
+
+        bool next(float* data) except +
+        bool next(long* data) except +
+        bool next(int* data) except +
+        bool next(unsigned long long* data) except +
 
     cdef cppclass io:
         io() except +
@@ -83,11 +95,29 @@ cdef inline dict switch_board(data_t* data):
     cdef vector[vector[int]] vvi
     if data.type == data_enum.vvi and data.next(&vvi): return {data.path : vvi}
 
+    cdef vector[float] vf
+    if data.type == data_enum.vf and data.next(&vf): return {data.path : vf}
+
+    cdef vector[long] vl
+    if data.type == data_enum.vl and data.next(&vl): return {data.path : vl}
+
+    cdef vector[int] vi
+    if data.type == data_enum.vi and data.next(&vi): return {data.path : vi}
+
+    cdef vector[char] vc
+    if data.type == data_enum.vc and data.next(&vc): return {data.path : vc}
+
     cdef float f
     if data.type == data_enum.f and data.next(&f): return {data.path : f}
 
-    #if data.type == data_enum.vvf and data.next(&vvf): return {data.path : vvf}
-    #if data.type == data_enum.vvf and data.next(&vvf): return {data.path : vvf}
+    cdef long l
+    if data.type == data_enum.l and data.next(&l): return {data.path : l}
+
+    cdef int i
+    if data.type == data_enum.i and data.next(&i): return {data.path : i}
+
+    cdef unsigned long long ull
+    if data.type == data_enum.ull and data.next(&ull): return {data.path : ull}
 
     return {}
 
