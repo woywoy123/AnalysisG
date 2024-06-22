@@ -105,16 +105,15 @@ void particle_template::set_parents(std::map<std::string, particle_template*>* v
     for (; itr != val -> end(); ++itr){prt -> register_parent(itr -> second);}
     if (val -> size()){return;}
     prt -> data.parents = {}; 
+    prt -> m_parents = {};
 }
 
 void particle_template::get_parents(std::map<std::string, particle_template*>* val, particle_template* prt){
-    std::map<std::string, particle_template*> tmp = {}; 
-    std::map<std::string, particle_template*>::iterator itr = val -> begin();
-    for (; itr != val -> end(); ++itr){
-        if (tmp.count(itr -> second -> hash)){continue;}
-        tmp[itr -> second -> hash] = itr -> second; 
+    std::map<std::string, particle_template*>::iterator itr = prt -> m_parents.begin();
+    for (; itr != prt -> m_parents.end(); ++itr){
+        if (val -> count(itr -> second -> hash)){continue;}
+        (*val)[itr -> second -> hash] = itr -> second; 
     }
-    *val = tmp; 
 }
 
 void particle_template::set_children(std::map<std::string, particle_template*>* val, particle_template* prt){
@@ -122,16 +121,15 @@ void particle_template::set_children(std::map<std::string, particle_template*>* 
     for (; itr != val -> end(); ++itr){prt -> register_child(itr -> second);}
     if (val -> size()){return;}
     prt -> data.children = {}; 
+    prt -> m_children = {}; 
 }
 
 void particle_template::get_children(std::map<std::string, particle_template*>* val, particle_template* prt){
-    std::map<std::string, particle_template*> tmp = {}; 
-    std::map<std::string, particle_template*>::iterator itr = val -> begin();
-    for (; itr != val -> end(); ++itr){
-        if (tmp.count(itr -> second -> hash)){continue;}
-        tmp[itr -> second -> hash] = itr -> second; 
+    std::map<std::string, particle_template*>::iterator itr = prt -> m_children.begin();
+    for (; itr != prt -> m_children.end(); ++itr){
+        if (val -> count(itr -> second -> hash)){continue;}
+        (*val)[itr -> second -> hash] = itr -> second; 
     }
-    *val = tmp; 
 }
 
 bool particle_template::register_child(particle_template* p){

@@ -1,15 +1,14 @@
 # distutils: language=c++
 # cython: language_level=3
+
+from libcpp cimport bool
+from libcpp.map cimport map, pair
 from libcpp.string cimport string
 from libcpp.vector cimport vector
-from libcpp.map cimport map, pair
-from libcpp cimport bool
 
-import pickle
-from typing import Union
-from AnalysisG.core.particle_template cimport particle_template
+from AnalysisG.core.tools cimport *
 from AnalysisG.core.structs cimport particle_t
-from AnalysisG.core.tools cimport env, enc
+from AnalysisG.core.particle_template cimport particle_template
 
 cdef class ParticleTemplate:
 
@@ -55,82 +54,6 @@ cdef class ParticleTemplate:
             leaves[i] = v
         return leaves
 
-
-#     cdef bool _pkld
-#     cdef particle_t data
-# 
-#     def __cinit__(self):
-#         self.ptr = new CyParticleTemplate()
-#         self.data = self.ptr.data
-#         self.Children = []
-#         self.Parent = []
-#         self._pkld = False
-# 
-#     def __getdata__(self) -> tuple:
-#         if self._pkld: return ({}, self.data)
-#         self._pkld = True
-#         self.data = self.ptr.Export()
-# 
-#         cdef str key
-#         cdef list get = list(self.__dict__)
-#         cdef dict pkl = { key : self.__dict__[key] for key in get}
-#         pkl["Children"] = self.Children
-#         pkl["Parent"] = self.Parent
-#         return (pkl, self.data)
-# 
-#     def __setdata__(self, tuple inpt):
-#         cdef str key
-#         self.ptr.Import(inpt[1])
-#         for key in inpt[0]: setattr(self, key, inpt[0][key])
-# 
- 
-#     def __build__(self, dict variables):
-#         cdef ParticleTemplate p
-#         cdef dict inpt = {}
-#         cdef dict x = {}
-#         cdef bool get
-#         cdef str k
-#         cdef dict lv, p_
-# 
-#         cdef list keys = list(self.__getleaves__())
-#         for k in variables:
-#             if k.split("/")[-1] not in keys: continue
-#             try: inpt[k] = variables[k].tolist()
-#             except AttributeError:
-#                 if isinstance(variables[k], str): continue
-#                 inpt[k] = variables[k]
-# 
-#         if not len(inpt): return {}
-#         while True:
-#             x = {}
-#             get = False
-#             for k in list(inpt):
-#                 try: inpt[k] = inpt[k].tolist()
-#                 except AttributeError: pass
-# 
-#                 try: x[k] = inpt[k].pop()
-#                 except AttributeError: x[k] = inpt[k]
-#                 except IndexError: pass
-# 
-#                 if k not in x: continue
-# 
-#                 try: x[k] = x[k].item()
-#                 except AttributeError: pass
-# 
-#                 try: len(x[k])
-#                 except TypeError: get = True
-# 
-#             if len(x) == 0: break
-#             if not get: self.__build__(x)
-#             else:
-#                 p = self.clone()
-#                 p_ = {k.split("/")[-1] : x[k] for k in x}
-#                 for k in p_:
-#                     try: setattr(p, k, p_[k])
-#                     except KeyError: pass
-#                 self.Children.append(p)
-#         return {i : obj for i, obj in enumerate(self.Children)}
-# 
     cpdef ParticleTemplate clone(self):
         v = self.__class__
         v = v()
@@ -208,59 +131,59 @@ cdef class ParticleTemplate:
     def LeptonicDecay(self) -> bool: return self.ptr.lep_decay
 
     @index.setter
-    def index(self, val: Union[str, int, float, list]):
+    def index(self, val):
         try: self.ptr.data.index = val
         except TypeError:
             try: self.ptr.add_leaf(b'index', enc(val))
             except: self.__dict__["index"] = val
 
     @px.setter
-    def px(self, val: Union[str, double]):
+    def px(self, val):
         try: self.ptr.px = val
         except TypeError: self.ptr.add_leaf(b'px', enc(val))
 
     @py.setter
-    def py(self, val: Union[str, double]):
+    def py(self, val):
         try: self.ptr.py = val
         except TypeError: self.ptr.add_leaf(b'py', enc(val))
 
     @pz.setter
-    def pz(self, val: Union[str, double]):
+    def pz(self, val):
         try: self.ptr.pz = val
         except TypeError: self.ptr.add_leaf(b'pz', enc(val))
 
     @pt.setter
-    def pt(self, val: Union[str, double]):
+    def pt(self, val):
         try: self.ptr.pt = val
         except TypeError: self.ptr.add_leaf(b'pt', enc(val))
 
     @eta.setter
-    def eta(self, val: Union[str, double]):
+    def eta(self, val):
         try: self.ptr.eta = val
         except TypeError: self.ptr.add_leaf(b'eta', enc(val))
 
     @phi.setter
-    def phi(self, val: Union[str, double]):
+    def phi(self, val):
         try: self.ptr.phi = val
         except TypeError: self.ptr.add_leaf(b'phi', enc(val))
 
     @e.setter
-    def e(self, val: Union[str, double]):
+    def e(self, val):
         try: self.ptr.e = val
         except TypeError: self.ptr.add_leaf(b'e', enc(val))
 
     @Mass.setter
-    def Mass(self, val: Union[str, double]):
+    def Mass(self, val):
         try: self.ptr.mass = val
         except TypeError: self.ptr.add_leaf(b'Mass', enc(val))
 
     @charge.setter
-    def charge(self, val: Union[str, double]):
+    def charge(self, val):
         try: self.ptr.charge = val
         except TypeError: self.ptr.add_leaf(b'charge', enc(val))
 
     @pdgid.setter
-    def pdgid(self, val: Union[str, double, int]):
+    def pdgid(self, val):
         try: self.ptr.pdgid = val
         except TypeError: self.ptr.add_leaf(b'pdgid', enc(val))
 

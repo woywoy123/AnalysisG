@@ -59,7 +59,9 @@ void sampletracer::compile_objects(){
 
 void sampletracer::populate_dataloader(dataloader* dl){
     std::map<std::string, container*>::iterator itr = this -> root_container -> begin(); 
-    for (; itr != this -> root_container -> end(); ++itr){itr -> second -> populate_dataloader(dl);}
+    for (; itr != this -> root_container -> end(); ++itr){
+        itr -> second -> populate_dataloader(dl);
+    }
 }
 
 

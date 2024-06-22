@@ -30,7 +30,7 @@ void metrics::generic_painter(
     gPad -> Modified();
     
     can -> Modified(); 
-    can -> BuildLegend(); 
+    //can -> BuildLegend(); 
     can -> Update(); 
     
     this -> create_path(path); 
@@ -144,4 +144,99 @@ void metrics::build_th1f_loss(std::map<std::string, std::tuple<torch::Tensor*, l
         (*type_)[mode_enum::evaluation][var_name] = new TH1F(ev.c_str(), "evaluation", this -> epochs, 0, this -> epochs); 
     }
 }
- 
+
+
+void metrics::build_th1f_accuracy(std::map<std::string, std::tuple<torch::Tensor*, loss_enum>>* type, graph_enum g_num, int kfold){
+
+    analytics_t* an = &this -> registry[kfold]; 
+    std::map<std::string, std::tuple<torch::Tensor*, loss_enum>>::iterator itx; 
+    for (itx = type -> begin(); itx != type -> end(); ++itx){
+        std::string var_name = itx -> first; 
+
+        std::string title = "";
+        std::map<mode_enum, std::map<std::string, TH1F*>>* type_ = nullptr; 
+        switch (g_num){
+            case graph_enum::truth_graph: title = "Graph"; type_ = &an -> accuracy_graph; break; 
+            case graph_enum::truth_node:  title = "Node";  type_ = &an -> accuracy_node; break; 
+            case graph_enum::truth_edge:  title = "Edge";  type_ = &an -> accuracy_edge; break; 
+            default: return; 
+        }
+
+        std::string tr = var_name + " - " + title + " Parameter (training) Accuracy " + std::to_string(kfold+1) + "-fold"; 
+        TH1F* tr_ = new TH1F(tr.c_str(), "training", this -> epochs, 0, this -> epochs); 
+        tr_ -> GetYaxis() -> SetRangeUser(0, 100); 
+        (*type_)[mode_enum::training][var_name] = tr_; 
+
+        std::string va = var_name + " - " + title + " Parameter (validation) Accuracy" + std::to_string(kfold+1) + "-fold"; 
+        TH1F* va_ = new TH1F(va.c_str(), "validation", this -> epochs, 0, this -> epochs); 
+        va_ -> GetYaxis() -> SetRangeUser(0, 100); 
+        (*type_)[mode_enum::validation][var_name] = va_; 
+
+        std::string ev = var_name + " - " + title + " Parameter (evaluation) Accuracy" + std::to_string(kfold+1) + "-fold"; 
+        TH1F* ev_ = new TH1F(ev.c_str(), "evaluation", this -> epochs, 0, this -> epochs); 
+        ev_ -> GetYaxis() -> SetRangeUser(0, 100); 
+        (*type_)[mode_enum::evaluation][var_name] = ev_; 
+    }
+}
+
+
+
+void metrics::add_th1f_accuracy(torch::Tensor* pred, torch::Tensor* truth, TH1F* hist, int kfold, int len){
+    analytics_t* an = &this -> registry[kfold]; 
+    torch::Tensor pred_  = std::get<1>(pred -> max({-1})).view({-1}); 
+    torch::Tensor truth_ = truth -> view({-1});
+    torch::Tensor acc = (truth_ == pred_).sum({-1}).to(torch::kFloat)/float(pred_.size({-1})); 
+    hist -> Fill(an -> this_epoch, 100*acc.item<float>()/float(len));
+}
+
+
+void metrics::dump_accuracy_plots(){
+    std::map<int, analytics_t>::iterator itr = this -> registry.begin(); 
+    for (; itr != this -> registry.end(); ++itr){
+        std::map<std::string, std::vector<TGraph*>>::iterator gri; 
+
+        int k_ = itr -> first+1; 
+        // graphs - features
+        std::map<std::string, std::vector<TGraph*>> k_graph = this -> build_graphs(
+            &itr -> second.accuracy_graph[mode_enum::training], 
+            &itr -> second.accuracy_graph[mode_enum::validation], 
+            &itr -> second.accuracy_graph[mode_enum::evaluation]
+        ); 
+
+        for (gri = k_graph.begin(); gri != k_graph.end(); ++gri){
+            std::string var_name = gri -> first; 
+            std::string title = "MVA Accuracy of: " + var_name + " for k-fold: " + std::to_string(k_); 
+            std::string ptx = this -> output_path + "accuracy-graph/" + var_name + "-kfold_" + std::to_string(k_) + ".png"; 
+            this -> generic_painter(gri -> second, ptx, title, "Epochs", "MVA Accuracy (%)"); 
+        }
+
+        // nodes - features
+        std::map<std::string, std::vector<TGraph*>> k_nodes = this -> build_graphs(
+            &itr -> second.accuracy_node[mode_enum::training], 
+            &itr -> second.accuracy_node[mode_enum::validation], 
+            &itr -> second.accuracy_node[mode_enum::evaluation]
+        ); 
+
+        for (gri = k_nodes.begin(); gri != k_nodes.end(); ++gri){
+            std::string var_name = gri -> first; 
+            std::string title = "MVA Accuracy of: " + var_name + " for k-fold: " + std::to_string(k_); 
+            std::string ptx = this -> output_path + "accuracy-node/" + var_name + "-kfold_" + std::to_string(k_) + ".png"; 
+            this -> generic_painter(gri -> second, ptx, title, "Epochs", "MVA Accuracy (%)"); 
+        }
+
+        // edges - features
+        std::map<std::string, std::vector<TGraph*>> k_edge = this -> build_graphs(
+            &itr -> second.accuracy_edge[mode_enum::training], 
+            &itr -> second.accuracy_edge[mode_enum::validation], 
+            &itr -> second.accuracy_edge[mode_enum::evaluation]
+        ); 
+
+        for (gri = k_edge.begin(); gri != k_edge.end(); ++gri){
+            std::string var_name = gri -> first; 
+            std::string title = "MVA Accuracy of: " + var_name + " for k-fold: " + std::to_string(k_); 
+            std::string ptx = this -> output_path + "accuracy-edge/" + var_name + "-kfold_" + std::to_string(k_) + ".png"; 
+            this -> generic_painter(gri -> second, ptx, title, "Epochs", "MVA Accuracy (%)"); 
+        }
+    }
+}
+

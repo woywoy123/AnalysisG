@@ -19,8 +19,18 @@ class optimizer:
         bool training   = true; 
         bool validation = true;
         bool evaluation = true; 
-        
+       
+        bool continue_training = false; 
+
+        std::string var_pt = "pt"; 
+        std::string var_eta = "eta";
+        std::string var_phi = "phi";
+        std::string var_energy = "energy"; 
+        std::vector<std::string> targets = {"top_edge"}; 
+
+        int nbins = 400; 
         int refresh = 10; 
+        int max_range = 400; 
 
         void import_dataloader(dataloader* dl); 
         void import_model_sessions(std::tuple<model_template*, optimizer_params_t*>* models); 
@@ -35,10 +45,6 @@ class optimizer:
         std::map<int, model_template*> kfold_sessions = {}; 
         metrics*    metric = nullptr;  
         dataloader* loader = nullptr; 
-
-
-
-
 
 }; 
 

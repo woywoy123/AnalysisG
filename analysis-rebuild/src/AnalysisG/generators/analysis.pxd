@@ -1,6 +1,8 @@
 # distutils: language=c++
 # cython: language_level=3
 
+from libcpp cimport bool
+from libcpp.vector cimport vector
 from libcpp.string cimport string
 from AnalysisG.core.event_template cimport event_template
 from AnalysisG.core.graph_template cimport graph_template
@@ -25,6 +27,22 @@ cdef extern from "<generators/analysis.h>":
         int kfolds
         int num_examples
         float train_size
+
+        bool training
+        bool validation
+        bool evaluation
+        bool continue_training
+
+        string var_pt
+        string var_eta
+        string var_phi
+        string var_energy
+        vector[string] targets
+
+        int nbins
+        int refresh
+        int max_range
+
 
 cdef class Analysis:
     cdef analysis* ana

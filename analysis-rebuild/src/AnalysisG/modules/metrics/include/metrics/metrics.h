@@ -20,8 +20,13 @@ struct analytics_t {
     std::map<mode_enum, std::map<std::string, TH1F*>> loss_node = {}; 
     std::map<mode_enum, std::map<std::string, TH1F*>> loss_edge = {}; 
 
+    std::map<mode_enum, std::map<std::string, TH1F*>> accuracy_graph = {}; 
+    std::map<mode_enum, std::map<std::string, TH1F*>> accuracy_node = {}; 
+    std::map<mode_enum, std::map<std::string, TH1F*>> accuracy_edge = {}; 
+
     std::map<mode_enum, std::map<std::string, TH1F*>> pred_mass_edge = {}; 
     std::map<mode_enum, std::map<std::string, TH1F*>> truth_mass_edge = {}; 
+
 }; 
 
 class metrics: public tools
@@ -35,12 +40,22 @@ class metrics: public tools
         std::string output_path; 
         
         const std::vector<Color_t> colors_h = {
-            kRed, kGreen, kBlue, kCyan, kViolet, kOrange, kCoffee, kAurora
+            kRed, kGreen, kBlue, kCyan, 
+            kViolet, kOrange, kCoffee, kAurora
         }; 
 
+        std::string var_pt = "pt"; 
+        std::string var_eta = "eta";
+        std::string var_phi = "phi";
+        std::string var_energy = "energy"; 
+        std::vector<std::string> targets = {"top_edge"}; 
+
+        int nbins = 400; 
+        int max_range = 400; 
 
         void dump_plots(); 
         void dump_loss_plots(); 
+        void dump_accuracy_plots(); 
         void dump_mass_plots(); 
 
         void register_model(model_template* model, int kfold); 
@@ -52,20 +67,29 @@ class metrics: public tools
                 graph_enum g_num, int kfold
         ); 
 
-        void build_th1f_mass(std::string var_name, graph_enum typ, int kfold); 
-
         void add_th1f_loss(
                 std::map<std::string, torch::Tensor>* type, 
                 std::map<std::string, TH1F*>* lss_type,
                 int kfold, int smpl_len
         ); 
 
+        void build_th1f_accuracy(
+                std::map<std::string, std::tuple<torch::Tensor*, loss_enum>>* type, 
+                graph_enum g_num, int kfold
+        ); 
+        
+        
+        void add_th1f_accuracy(
+                torch::Tensor* pred, torch::Tensor* truth, 
+                TH1F* hist, int kfold, int smpl_len
+        ); 
+
+
+        void build_th1f_mass(std::string var_name, graph_enum typ, int kfold); 
         void add_th1f_mass(
-                std::map<std::string, torch::Tensor*>* node_feats, 
-                torch::Tensor* edge_index, 
-                torch::Tensor* truth, 
-                torch::Tensor* pred, 
-                int kfold, mode_enum mode
+                torch::Tensor* pmc, torch::Tensor* edge_index, 
+                torch::Tensor* truth, torch::Tensor* pred, 
+                int kfold, mode_enum mode, std::string var_name
         ); 
 
 

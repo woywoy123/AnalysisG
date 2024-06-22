@@ -82,14 +82,14 @@ void top_children::build(std::map<std::string, particle_template*>* prt, element
 
     for (int x(0); x < _pt.size(); ++x){
         for (int y(0); y < _pt[x].size(); ++y){
-            top_children* p    = new top_children();
-            p -> pt        = _pt[x][y]; 
-            p -> eta       = _eta[x][y]; 
-            p -> phi       = _phi[x][y]; 
-            p -> e         = _e[x][y]; 
-            p -> index     = _index[x][y]; 
-            p -> pdgid     = _pdgid[x][y]; 
-            p -> top_index = _top_index[x][y]; 
+            top_children* p = new top_children();
+            p -> pt         = _pt[x][y]; 
+            p -> eta        = _eta[x][y]; 
+            p -> phi        = _phi[x][y]; 
+            p -> e          = _e[x][y]; 
+            p -> index      = _index[x][y]; 
+            p -> pdgid      = _pdgid[x][y]; 
+            p -> top_index  = _top_index[x][y]; 
             (*prt)[std::string(p -> hash)] = p; 
         }
     }
@@ -395,12 +395,12 @@ void electron::build(std::map<std::string, particle_template*>* prt, element_t* 
     el -> get("charge", &_charge); 
 
     for (int x(0); x < _pt.size(); ++x){
-        electron* p         = new electron();
-        p -> pt              = _pt[x]; 
-        p -> eta             = _eta[x]; 
-        p -> phi             = _phi[x]; 
-        p -> e               = _e[x]; 
-        p -> charge          = _charge[x]; 
+        electron* p = new electron();
+        p -> pt     = _pt[x]; 
+        p -> eta    = _eta[x]; 
+        p -> phi    = _phi[x]; 
+        p -> e      = _e[x]; 
+        p -> charge = _charge[x]; 
         (*prt)[std::string(p -> hash)] = p;
     }
 }

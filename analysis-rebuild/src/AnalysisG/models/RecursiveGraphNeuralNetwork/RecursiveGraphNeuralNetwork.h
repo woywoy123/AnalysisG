@@ -12,27 +12,37 @@ class recursivegraphneuralnetwork: public model_template
 
         torch::Tensor message(
             torch::Tensor trk_i, torch::Tensor trk_j,
-            torch::Tensor pmc_i, torch::Tensor pmc_j, 
             torch::Tensor pmc
         ); 
 
-
+        torch::Tensor aggregation(
+            torch::Tensor edge_index, 
+            torch::Tensor pmc, 
+            torch::Tensor mlp_h 
+        ); 
 
         // Neural Network Parameters
-        int _dx  = 10; 
-        int _x   = 7;
+        int _dx  = 1; 
+        int _x   = 6;
         int _o   = 2;
 
-        int _hidden = 64; 
-        int _repeat = 32; 
+        int _hidden = 32; 
+        int _repeat = 2; 
 
         // Misc
         bool GeV = false;
         bool NuR = false; 
 
-        torch::nn::Sequential* rnn_x   = nullptr; 
-        torch::nn::Sequential* rnn_dx  = nullptr; 
-        torch::nn::Sequential* rnn_mrg = nullptr; 
+        torch::nn::Sequential* rnn_mass     = nullptr; 
+        torch::nn::Sequential* rnn_mass_dx  = nullptr; 
+        torch::nn::Sequential* rnn_mass_mrg = nullptr; 
+        torch::nn::Sequential* rnn_H = nullptr; 
+
+        torch::Tensor* matrix = nullptr; 
+        torch::Tensor* trk_i  = nullptr; 
+        torch::Tensor* idx    = nullptr; 
+        
+
 }; 
 
 #endif

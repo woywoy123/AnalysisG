@@ -126,7 +126,7 @@ void static top_edge(int* o, std::tuple<top_children*, top_children*>* p_ij){
 
     std::map<std::string, particle_template*> prt1 = p1 -> parents;
     std::map<std::string, particle_template*> prt2 = p2 -> parents; 
-
+    
     if (!prt1.size() || !prt2.size()){*o = 0; return;}
     std::map<std::string, particle_template*>::iterator itr_1 = prt1.begin(); 
     *o = prt2.count(itr_1 -> first); 

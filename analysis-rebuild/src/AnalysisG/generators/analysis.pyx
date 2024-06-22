@@ -65,4 +65,75 @@ cdef class Analysis:
     @TrainSize.setter
     def TrainSize(self, float k): self.ana.train_size = k
 
+    @property
+    def Training(self): return self.ana.training
+
+    @Training.setter
+    def Training(self, bool val): self.ana.training = val
+
+    @property
+    def Validation(self): return self.ana.validation
+
+    @Validation.setter
+    def Validation(self, bool val): self.ana.validation = val
+
+    @property
+    def Evaluation(self): return self.ana.evaluation
+
+    @Evaluation.setter
+    def Evaluation(self, bool val): self.ana.evaluation = val
+
+    @property
+    def ContinueTraining(self): return self.ana.continue_training
+
+    @ContinueTraining.setter
+    def ContinueTraining(self, bool val): self.ana.continue_training = val
+
+    @property
+    def nBins(self): return self.ana.nbins
+
+    @nBins.setter
+    def nBins(self, int val): self.ana.nbins = val
+
+    @property
+    def Refresh(self): return self.ana.refresh
+
+    @Refresh.setter
+    def Refresh(self, int val): self.ana.refresh = val
+
+    @property
+    def MaxRange(self): return self.ana.max_range
+
+    @MaxRange.setter
+    def MaxRange(self, int val): self.ana.max_range = val
+
+    @property
+    def VarPt(self): return self.ana.var_pt
+
+    @VarPt.setter
+    def VarPt(self, str val): self.ana.var_pt = enc(val)
+
+    @property
+    def VarEta(self): return self.ana.var_eta
+
+    @VarEta.setter
+    def VarEta(self, str val): self.ana.var_eta = enc(val)
+
+    @property
+    def VarPhi(self): return self.ana.var_phi
+
+    @VarPhi.setter
+    def VarPhi(self, str val): self.ana.var_phi = enc(val)
+
+    @property
+    def VarEnergy(self): return self.ana.var_energy
+
+    @VarEnergy.setter
+    def VarEnergy(self, str val): self.ana.var_energy = enc(val)
+
+    @property
+    def Targets(self): return env_vec(&self.ana.targets)
+
+    @Targets.setter
+    def Targets(self, list val): self.ana.targets = enc_list(val)
 

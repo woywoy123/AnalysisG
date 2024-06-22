@@ -1,5 +1,5 @@
 #include <generators/optimizer.h>
-
+#include <thread>
 optimizer::optimizer(){
     this -> prefix = "optimizer"; 
     this -> metric = new metrics(); 
@@ -11,7 +11,16 @@ optimizer::~optimizer(){
     for (; itx != this -> kfold_sessions.end(); ++itx){delete itx -> second;}
 }
 
-void optimizer::import_dataloader(dataloader* dl){this -> loader = dl;}
+void optimizer::import_dataloader(dataloader* dl){
+    this -> metric -> var_pt = this -> var_pt; 
+    this -> metric -> var_eta = this -> var_eta;
+    this -> metric -> var_phi = this -> var_phi;
+    this -> metric -> var_energy = this -> var_energy; 
+    this -> metric -> targets = this -> targets; 
+    this -> metric -> nbins = this -> nbins; 
+    this -> metric -> max_range = this -> max_range; 
+    this -> loader = dl;
+}
 
 void optimizer::import_model_sessions(std::tuple<model_template*, optimizer_params_t*>* models){
     model_template*       base = std::get<0>(*models); 
@@ -54,7 +63,7 @@ void optimizer::training_loop(int k, int epoch){
     model_template* model = this -> kfold_sessions[k]; 
     model -> epoch = epoch+1; 
     model -> kfold = k+1;
-    model -> restore_state(); 
+    if (this -> continue_training){model -> restore_state();}
 
     std::string msg = "training   k-" + std::to_string(k+1) + " progress "; 
     int idx = 0; 
@@ -62,12 +71,13 @@ void optimizer::training_loop(int k, int epoch){
     for (int x(0); x < l; ++x, ++idx){
         model -> forward(smpl -> at(x), true);
         this -> metric -> capture(mode_enum::training, k, epoch, l); 
-        if (this -> refresh != idx){continue;}
+        if (this -> refresh != idx || (k && epoch > 0)){continue;}
         this -> progressbar(float(x+1)/float(l), msg); 
         idx = 0; 
     }
-    this -> progressbar(1.0, msg); 
     model -> save_state(); 
+    if (k && epoch > 0){return;}
+    this -> progressbar(1.0, msg);
     std::cout << std::endl;
 }
 
@@ -80,11 +90,12 @@ void optimizer::validation_loop(int k, int epoch){
     for (int x(0); x < l; ++x, ++idx){
         model -> forward(smpl -> at(x), false);
         this -> metric -> capture(mode_enum::validation, k, epoch, l); 
-        if (this -> refresh != idx){continue;}
+        if (this -> refresh != idx || (k && epoch > 0)){continue;}
         this -> progressbar(float(x+1)/float(l), msg); 
         idx = 0; 
     }
-    this -> progressbar(1.0, msg); 
+    if (k && epoch > 0){return;}
+    this -> progressbar(1.0, msg);
     std::cout << std::endl;
 }
 
@@ -97,24 +108,38 @@ void optimizer::evaluation_loop(int k, int epoch){
     for (int x(0); x < l; ++x, ++idx){
         model -> forward(smpl -> at(x), false);
         this -> metric -> capture(mode_enum::evaluation, k, epoch, l); 
-        if (this -> refresh != idx){continue;}
+        if (this -> refresh != idx || (k && epoch > 0)){continue;}
         this -> progressbar(float(x+1)/float(l), msg); 
         idx = 0; 
     }
-    this -> progressbar(1.0, msg); 
+    if (k && epoch > 0){return;}
+    this -> progressbar(1.0, msg);
     std::cout << std::endl;
 }
 
 void optimizer::launch_model(){
+    auto lamb = [this](int k, int ep){
+        if (this -> training){this -> training_loop(k, ep);}
+        if (this -> validation){this -> validation_loop(k, ep);}
+        if (this -> evaluation){this -> evaluation_loop(k, ep);}
+    }; 
+
     for (int ep(0); ep < this -> epochs; ++ep){
         std::string msg = std::to_string(ep+1) + "/" + std::to_string(this -> epochs); 
         this -> info("___ STARTING EPOCH ___: " + msg); 
+        std::vector<std::thread*> th_(this -> kfolds, nullptr); 
         for (int k(0); k < this -> kfolds; ++k){
-            if (this -> training){this -> training_loop(k, ep);}
-            if (this -> validation){this -> validation_loop(k, ep);}
-            if (this -> evaluation){this -> evaluation_loop(k, ep);}
+            if (!ep){lamb(k, ep);}
+            else { th_.push_back(new std::thread(lamb, k, ep));}
+        }
+        for (size_t x(0); x < th_.size(); ++x){
+            if (!th_[x]){continue;}
+            th_[x] -> join();
+            delete th_[x];
+            th_[x] = nullptr; 
         }
         this -> metric -> dump_plots(); 
+       
     }
 }
 

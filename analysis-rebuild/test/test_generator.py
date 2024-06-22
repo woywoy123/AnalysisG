@@ -14,12 +14,11 @@ m = RecursiveGraphNeuralNetwork()
 m.o_edge = {"top_edge" : "CrossEntropyLoss"}
 m.i_node = ["pt", "eta", "phi", "energy"]
 m.i_graph = ["met", "phi"]
-#m.kinematic_map = {"top_edge" : "polar -> pt, eta, phi, energy"}
 m.device = "cuda:0"
 
 op = OptimizerConfig()
 op.Optimizer = "adam"
-op.lr = 1e-4
+op.lr = 1e-2
 
 ana = Analysis()
 ana.AddSamples(root1, "tmp")
@@ -27,4 +26,5 @@ ana.AddEvent(x, "tmp")
 ana.AddGraph(tt, "tmp")
 ana.AddModel(m, op, "test")
 ana.kFolds = 2
+ana.Epochs = 100
 ana.Start()
