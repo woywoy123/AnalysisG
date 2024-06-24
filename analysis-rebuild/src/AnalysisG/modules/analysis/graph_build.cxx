@@ -32,8 +32,8 @@ void analysis::build_graphs(){
 
 void analysis::build_dataloader(){
     this -> tracer -> populate_dataloader(this -> loader); 
-    this -> loader -> generate_test_set(this -> train_size);
-    this -> loader -> generate_kfold_set(this -> kfolds); 
+    this -> loader -> generate_test_set(this -> m_settings.train_size);
+    this -> loader -> generate_kfold_set(this -> m_settings.kfolds); 
 }
 
 

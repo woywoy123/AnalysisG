@@ -78,15 +78,16 @@ class truthjet: public particle_template
         int top_quark_count = -1;
         int w_boson_count = -1; 
         std::vector<int> top_index = {}; 
+        cproperty<bool, truthjet> from_res; 
 
         std::vector<top*> Tops = {};
         std::vector<truthjetparton*> Parton = {}; 
 
-        cproperty<bool, truthjet> from_res; 
-        void static get_from_res(bool*, truthjet*);
-
         particle_template* clone() override; 
         void build(std::map<std::string, particle_template*>* prt, element_t* el) override;
+
+    private:
+        void static get_from_res(bool*, truthjet*);
 
 }; 
 

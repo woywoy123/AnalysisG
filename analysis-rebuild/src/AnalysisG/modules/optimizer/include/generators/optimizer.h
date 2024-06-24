@@ -4,6 +4,7 @@
 #include <templates/model_template.h>
 #include <generators/dataloader.h>
 #include <metrics/metrics.h>
+#include <structs/settings.h>
 
 class optimizer: 
     public tools,
@@ -13,36 +14,19 @@ class optimizer:
         optimizer();
         ~optimizer();
 
-        int epochs;
-        int kfolds; 
-
-        bool training   = true; 
-        bool validation = true;
-        bool evaluation = true; 
-       
-        bool continue_training = false; 
-
-        std::string var_pt = "pt"; 
-        std::string var_eta = "eta";
-        std::string var_phi = "phi";
-        std::string var_energy = "energy"; 
-        std::vector<std::string> targets = {"top_edge"}; 
-
-        int nbins = 400; 
-        int refresh = 10; 
-        int max_range = 400; 
-
+        settings_t m_settings; 
         void import_dataloader(dataloader* dl); 
         void import_model_sessions(std::tuple<model_template*, optimizer_params_t*>* models); 
-        void check_model_sessions(int example_size); 
+        void check_model_sessions(int example_size, std::map<std::string, model_report*>* rep); 
         
         void training_loop(int k, int epoch); 
         void validation_loop(int k, int epoch);
         void evaluation_loop(int k, int epoch); 
-        void launch_model(); 
+        void launch_model(int k); 
 
     private:
         std::map<int, model_template*> kfold_sessions = {}; 
+        std::map<std::string, model_report*> reports = {}; 
         metrics*    metric = nullptr;  
         dataloader* loader = nullptr; 
 

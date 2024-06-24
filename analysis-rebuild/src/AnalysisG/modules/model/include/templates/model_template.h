@@ -6,6 +6,7 @@
 #include <templates/lossfx.h>
 
 class metrics; 
+class analysis; 
 
 class model_template: 
     public notification, 
@@ -77,6 +78,7 @@ class model_template:
         void save_state(); 
         void restore_state(); 
         friend class metrics; 
+        friend class analysis;
 
     private:
         static void set_input_features(

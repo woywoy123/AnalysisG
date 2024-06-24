@@ -1,4 +1,5 @@
 #include <generators/dataloader.h>
+#include <thread>
 
 dataloader::dataloader(){
     this -> prefix = "dataloader";
@@ -164,7 +165,6 @@ std::vector<graph_t*>* dataloader::get_test_set(){
     return output; 
 }
 
-
 void dataloader::extract_data(graph_t* gr){
     this -> clean_data_elements(&gr -> truth_map_graph, &this -> truth_map_graph); 
     this -> clean_data_elements(&gr -> truth_map_node , &this -> truth_map_node);
@@ -174,4 +174,20 @@ void dataloader::extract_data(graph_t* gr){
     this -> clean_data_elements(&gr -> data_map_edge  , &this -> data_map_edge);
     this -> data_set -> push_back(gr); 
     this -> data_index -> push_back(this -> data_index -> size()); 
+}
+
+
+void dataloader::datatransfer(torch::TensorOptions* op){
+    auto lamb = [](std::vector<graph_t*>* data, torch::TensorOptions* op){
+        for (size_t f(0); f < data -> size(); ++f){
+            data -> at(f) -> transfer_to_device(op);
+        }
+    }; 
+
+    if (!this -> data_set){return;}
+    int x = this -> data_set -> size()/10; 
+    std::vector<std::vector<graph_t*>> quant = this -> discretize(this -> data_set, x); 
+    std::vector<std::thread*> th(quant.size(), nullptr);
+    for (size_t g(0); g < th.size(); ++g){th[g] = new std::thread(lamb, &quant[g], op);}
+    for (size_t g(0); g < th.size(); ++g){th[g] -> join(); delete th[g];}
 }

@@ -15,4 +15,9 @@ cdef class GraphChildren(GraphTemplate):
     def __init__(self): pass
     def __dealloc__(self): del self.ptr
 
+cdef class GraphTruthJets(GraphTemplate):
+
+    def __cinit__(self): self.ptr = new graph_truthjets()
+    def __init__(self): pass
+    def __dealloc__(self): del self.ptr
 

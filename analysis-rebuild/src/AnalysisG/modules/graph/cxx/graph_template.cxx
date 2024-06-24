@@ -72,8 +72,8 @@ void graph_template::define_topology(std::function<bool(particle_template*, part
             ++idx; 
         }
     }
-    torch::Tensor t1 = this -> to_tensor(src_, torch::kInt).view({1, -1}); 
-    torch::Tensor t2 = this -> to_tensor(dst_, torch::kInt).view({1, -1}); 
+    torch::Tensor t1 = this -> to_tensor(src_, torch::kInt, int()).view({1, -1}); 
+    torch::Tensor t2 = this -> to_tensor(dst_, torch::kInt, int()).view({1, -1}); 
     this -> m_topology = torch::cat({t1, t2}, 0); 
 }
 

@@ -5,107 +5,107 @@
 #include <THStack.h>
 #include <TRatioPlot.h>
 
-void metrics::dump_mass_plots(){
-    std::string out_pth = this -> output_path + "masses/"; 
-    std::map<int, analytics_t>::iterator itr = this -> registry.begin();
-    for (; itr != this -> registry.end(); ++itr){ 
-        analytics_t* an = &itr -> second; 
+void metrics::dump_mass_plots(int k){
+    std::string out_pth = this -> m_settings.output_path + "masses/"; 
+    analytics_t* an = &this -> registry[k]; 
 
-        std::map<std::string, std::vector<TH1F*>> hists_pred = {}; 
-        std::map<std::string, TH1F*>* pred_tr = &an -> pred_mass_edge[mode_enum::training]; 
-        std::map<std::string, TH1F*>* pred_va = &an -> pred_mass_edge[mode_enum::validation]; 
-        std::map<std::string, TH1F*>* pred_ev = &an -> pred_mass_edge[mode_enum::evaluation]; 
+    std::map<std::string, std::vector<TH1F*>> hists_pred = {}; 
+    std::map<std::string, TH1F*>* pred_tr = &an -> pred_mass_edge[mode_enum::training]; 
+    std::map<std::string, TH1F*>* pred_va = &an -> pred_mass_edge[mode_enum::validation]; 
+    std::map<std::string, TH1F*>* pred_ev = &an -> pred_mass_edge[mode_enum::evaluation]; 
 
-        std::map<std::string, TH1F*>::iterator ith; 
-        for (ith = pred_tr -> begin(); ith != pred_tr -> end(); ++ith){
-            ith -> second -> SetTitle("training"); 
-            hists_pred[ith -> first].push_back(ith -> second); 
-        } 
+    std::map<std::string, TH1F*>::iterator ith; 
+    for (ith = pred_tr -> begin(); ith != pred_tr -> end(); ++ith){
+        ith -> second -> SetTitle("training"); 
+        hists_pred[ith -> first].push_back(ith -> second); 
+    } 
 
-        for (ith = pred_va -> begin(); ith != pred_va -> end(); ++ith){
-            ith -> second -> SetTitle("validation"); 
-            hists_pred[ith -> first].push_back(ith -> second); 
-        } 
+    for (ith = pred_va -> begin(); ith != pred_va -> end(); ++ith){
+        ith -> second -> SetTitle("validation"); 
+        hists_pred[ith -> first].push_back(ith -> second); 
+    } 
 
-        for (ith = pred_ev -> begin(); ith != pred_ev -> end(); ++ith){
-            ith -> second -> SetTitle("evaluation"); 
-            hists_pred[ith -> first].push_back(ith -> second); 
-        } 
+    for (ith = pred_ev -> begin(); ith != pred_ev -> end(); ++ith){
+        ith -> second -> SetTitle("evaluation"); 
+        hists_pred[ith -> first].push_back(ith -> second); 
+    } 
 
-        std::map<std::string, TH1F*>* tru_tr = &an -> truth_mass_edge[mode_enum::training]; 
-        std::map<std::string, TH1F*>* tru_va = &an -> truth_mass_edge[mode_enum::validation]; 
-        std::map<std::string, TH1F*>* tru_ev = &an -> truth_mass_edge[mode_enum::evaluation]; 
+    std::map<std::string, TH1F*>* tru_tr = &an -> truth_mass_edge[mode_enum::training]; 
+    std::map<std::string, TH1F*>* tru_va = &an -> truth_mass_edge[mode_enum::validation]; 
+    std::map<std::string, TH1F*>* tru_ev = &an -> truth_mass_edge[mode_enum::evaluation]; 
 
-        std::map<std::string, TH1F*> merged = {}; 
-        for (ith = tru_tr -> begin(); ith != tru_tr -> end(); ++ith){
-            merged[ith -> first] = new TH1F(("truth-" + ith -> first).c_str(), "truth", this -> nbins, 0, this -> max_range); 
-            merged[ith -> first] -> Add(ith -> second);
-            ith -> second -> Reset();  
-        } 
-        for (ith = tru_va -> begin(); ith != tru_va -> end(); ++ith){
-            merged[ith -> first] -> Add(ith -> second);
-            ith -> second -> Reset(); 
-        } 
-        for (ith = tru_ev -> begin(); ith != tru_ev -> end(); ++ith){
-            merged[ith -> first] -> Add(ith -> second);
-            ith -> second -> Reset(); 
-        } 
+    int nb = this -> m_settings.nbins;
+    int mxr = this -> m_settings.max_range; 
+
+    std::map<std::string, TH1F*> merged = {}; 
+    for (ith = tru_tr -> begin(); ith != tru_tr -> end(); ++ith){
+        merged[ith -> first] = new TH1F(("truth-" + ith -> first).c_str(), "truth", nb, 0, mxr); 
+        merged[ith -> first] -> Add(ith -> second);
+        ith -> second -> Reset();  
+    } 
+    for (ith = tru_va -> begin(); ith != tru_va -> end(); ++ith){
+        merged[ith -> first] -> Add(ith -> second);
+        ith -> second -> Reset(); 
+    } 
+    for (ith = tru_ev -> begin(); ith != tru_ev -> end(); ++ith){
+        merged[ith -> first] -> Add(ith -> second);
+        ith -> second -> Reset(); 
+    } 
 
 
-        for (ith = merged.begin(); ith != merged.end(); ++ith){
-            THStack* h_sum = new THStack(("THStack" +  ith -> first).c_str(), ("Mass Reconstruction - " + ith -> first).c_str()); 
-            TLegend* legend = new TLegend(0.6,0.6,0.9,0.9);
-            legend -> SetHeader("MVA Mass Reconstruction", "C"); 
-            for (size_t x(0); x < hists_pred[ith -> first].size(); ++x){
-                hists_pred[ith -> first][x] -> SetLineColor(this -> colors_h[x]); 
-                hists_pred[ith -> first][x] -> SetFillColor(this -> colors_h[x]); 
-                h_sum -> Add(hists_pred[ith -> first][x]);
-                legend -> AddEntry(hists_pred[ith -> first][x]);
-            }
+    for (ith = merged.begin(); ith != merged.end(); ++ith){
+        THStack* h_sum = new THStack(("THStack" +  ith -> first).c_str(), ("Mass Reconstruction - " + ith -> first).c_str()); 
+        TLegend* legend = new TLegend(0.6,0.6,0.9,0.9);
+        legend -> SetHeader("MVA Mass Reconstruction", "C"); 
+        for (size_t x(0); x < hists_pred[ith -> first].size(); ++x){
+            hists_pred[ith -> first][x] -> SetLineColor(this -> colors_h[x]); 
+            hists_pred[ith -> first][x] -> SetFillColor(this -> colors_h[x]); 
+            h_sum -> Add(hists_pred[ith -> first][x]);
+            legend -> AddEntry(hists_pred[ith -> first][x]);
+        }
 
-            // truth histogram 
-            TH1F* truth_ = ith -> second; 
-            truth_ -> SetLineColor(kBlack); 
-            legend -> AddEntry(truth_); 
+        // truth histogram 
+        TH1F* truth_ = ith -> second; 
+        truth_ -> SetLineColor(kBlack); 
+        legend -> AddEntry(truth_); 
 
-            TCanvas* can = new TCanvas();
-            gStyle -> SetOptStat(0); 
-            gStyle -> SetImageScaling(3); 
-            can -> SetTopMargin(0.1);
-            gStyle -> SetTitleOffset(1.25);
-            gStyle -> SetTitleSize(0.025); 
-            gStyle -> SetLabelSize(0.025, "XY"); 
-      
-            TRatioPlot* rp = new TRatioPlot(h_sum, truth_, "diffsig");   
-            rp -> Draw();
-            h_sum -> GetXaxis() -> SetTitle("Invariant Mass (GeV)"); 
-            h_sum -> GetXaxis() -> CenterTitle("Invariant Mass (GeV)"); 
+        TCanvas* can = new TCanvas();
+        gStyle -> SetOptStat(0); 
+        gStyle -> SetImageScaling(3); 
+        can -> SetTopMargin(0.1);
+        gStyle -> SetTitleOffset(1.25);
+        gStyle -> SetTitleSize(0.025); 
+        gStyle -> SetLabelSize(0.025, "XY"); 
+    
+        TRatioPlot* rp = new TRatioPlot(h_sum, truth_, "diffsig");   
+        rp -> Draw();
+        h_sum -> GetXaxis() -> SetTitle("Invariant Mass (GeV)"); 
+        h_sum -> GetXaxis() -> CenterTitle("Invariant Mass (GeV)"); 
 
-            rp -> GetLowerRefYaxis() -> SetTitle("Ratio"); 
-            rp -> GetUpperRefYaxis() -> SetTitle("Entries (Arb.)"); 
-            rp -> GetUpperPad() -> cd(); 
-            legend -> Draw();
+        rp -> GetLowerRefYaxis() -> SetTitle("Ratio"); 
+        rp -> GetUpperRefYaxis() -> SetTitle("Entries (Arb.)"); 
+        rp -> GetUpperPad() -> cd(); 
+        legend -> Draw();
 
-            gPad -> Modified(); 
-            can -> Modified();
-            can -> Update();
-                
-            std::string path_ = out_pth + ith -> first;
-            path_ += "/fold_" + std::to_string(itr -> first+1) + "/";
-            path_ += "epoch_" + std::to_string(an -> this_epoch+1) + ".png"; 
-            this -> create_path(path_); 
-            can -> SaveAs(path_.c_str()); 
-            can -> Close();
+        gPad -> Modified(); 
+        can -> Modified();
+        can -> Update();
+            
+        std::string path_ = out_pth + ith -> first;
+        path_ += "/fold_" + std::to_string(k+1) + "/";
+        path_ += "epoch_" + std::to_string(an -> this_epoch+1) + ".png"; 
+        this -> create_path(path_); 
+        can -> SaveAs(path_.c_str()); 
+        can -> Close();
 
-            delete rp; 
-            delete h_sum; 
-            delete truth_; 
-            delete legend; 
-            delete can; 
+        delete rp; 
+        delete h_sum; 
+        delete truth_; 
+        delete legend; 
+        delete can; 
 
-            for (size_t x(0); x < hists_pred[ith -> first].size(); ++x){
-                hists_pred[ith -> first][x] -> Reset();
-            }
+        for (size_t x(0); x < hists_pred[ith -> first].size(); ++x){
+            hists_pred[ith -> first][x] -> Reset();
         }
     }
 }
@@ -122,14 +122,18 @@ void metrics::build_th1f_mass(std::string var_name, graph_enum typ, int kfold){
         default: return; 
     }
 
-    std::string tr = var_name + " - " + title + " (training) Mass " + std::to_string(kfold+1) + "-fold"; 
-    (*type_)[mode_enum::training][var_name] = new TH1F(tr.c_str(), "training", this -> nbins, 0, this -> max_range); 
+    int nb = this -> m_settings.nbins; 
+    int mxr = this -> m_settings.max_range;
+    std::string base_name = this -> m_settings.run_name + var_name + " - " + title; 
 
-    std::string va = var_name + " - " + title + " (validation) Mass" + std::to_string(kfold+1) + "-fold"; 
-    (*type_)[mode_enum::validation][var_name] = new TH1F(va.c_str(), "validation", this -> nbins, 0, this -> max_range); 
+    std::string tr = base_name + " (training) Mass " + std::to_string(kfold+1) + "-fold"; 
+    (*type_)[mode_enum::training][var_name] = new TH1F(tr.c_str(), "training", nb, 0, mxr); 
 
-    std::string ev = var_name + " - " + title + " (evaluation) Mass" + std::to_string(kfold+1) + "-fold"; 
-    (*type_)[mode_enum::evaluation][var_name] = new TH1F(ev.c_str(), "evaluation", this -> nbins, 0, this -> max_range); 
+    std::string va = base_name + " (validation) Mass" + std::to_string(kfold+1) + "-fold"; 
+    (*type_)[mode_enum::validation][var_name] = new TH1F(va.c_str(), "validation", nb, 0, mxr); 
+
+    std::string ev = base_name + " (evaluation) Mass" + std::to_string(kfold+1) + "-fold"; 
+    (*type_)[mode_enum::evaluation][var_name] = new TH1F(ev.c_str(), "evaluation", nb, 0, mxr); 
 }
 
 void metrics::add_th1f_mass(

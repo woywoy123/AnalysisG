@@ -25,7 +25,6 @@ recursivegraphneuralnetwork::recursivegraphneuralnetwork(){
 
     this -> rnn_mass_mrg = new torch::nn::Sequential({
             {"rnn_mass_mrg_l1", torch::nn::Linear(this -> _hidden*2, this -> _hidden*2)},
-            {"rnn_mass_mrg_relu", torch::nn::ReLU()},
             {"rnn_mass_mrg_l2", torch::nn::Linear(this -> _hidden*2, this -> _repeat)}
     }); 
     this -> register_module(this -> rnn_mass_mrg); 
@@ -33,7 +32,6 @@ recursivegraphneuralnetwork::recursivegraphneuralnetwork(){
 
     this -> rnn_H = new torch::nn::Sequential({
             {"rnn_H_l1", torch::nn::Linear(this -> _repeat*2, this -> _repeat*2)},
-            {"rnn_H_relu", torch::nn::ReLU()},
             {"rnn_H_l2", torch::nn::Linear(this -> _repeat*2, this -> _repeat)}
     }); 
     this -> register_module(this -> rnn_H); 

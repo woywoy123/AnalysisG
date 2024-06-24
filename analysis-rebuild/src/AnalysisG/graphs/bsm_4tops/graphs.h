@@ -1,9 +1,8 @@
 #ifndef GRAPHS_BSM4TOPS_H
 #define GRAPHS_BSM4TOPS_H
 
-#include <bsm_4tops/event.h>
 #include <templates/graph_template.h>
-#include "features.h"
+#include <bsm_4tops/event.h>
 
 class graph_tops: public graph_template
 {
@@ -23,5 +22,13 @@ class graph_children: public graph_template
         void CompileEvent() override; 
 }; 
 
+class graph_truthjets: public graph_template
+{
+    public:
+        graph_truthjets(); 
+        ~graph_truthjets() override; 
+        graph_template* clone() override; 
+        void CompileEvent() override; 
+}; 
 
 #endif

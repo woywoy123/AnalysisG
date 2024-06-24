@@ -26,6 +26,7 @@ class dataloader:
 
         std::vector<graph_t*> get_random(int num = 5); 
         void extract_data(graph_t* gr); 
+        void datatransfer(torch::TensorOptions* op); 
 
     private:
         void clean_data_elements(

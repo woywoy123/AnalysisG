@@ -99,7 +99,7 @@ void model_template::initialize(optimizer_params_t* op_params){
 void model_template::save_state(){
     torch::serialize::OutputArchive state_session; 
     for (size_t x(0); x < this -> m_data.size(); ++x){(*this -> m_data.at(x)) -> save(state_session);}
-    std::string pth = this -> model_checkpoint_path + "epoch-" + std::to_string(this -> epoch) + "/"; 
+    std::string pth = this -> model_checkpoint_path + "state/epoch-" + std::to_string(this -> epoch) + "/"; 
     this -> create_path(pth); 
     pth += "kfold-" + std::to_string(this -> kfold); 
     state_session.save_to(pth + "_model.pt"); 
@@ -111,7 +111,7 @@ void model_template::save_state(){
 
 void model_template::restore_state(){
     torch::serialize::InputArchive state_session; 
-    std::string pth = this -> model_checkpoint_path + "epoch-" + std::to_string(this -> epoch) + "/"; 
+    std::string pth = this -> model_checkpoint_path + "state/epoch-" + std::to_string(this -> epoch) + "/"; 
     pth += "kfold-" + std::to_string(this -> kfold); 
     if (!this -> is_file(pth + "_model.pt")){return;}
 

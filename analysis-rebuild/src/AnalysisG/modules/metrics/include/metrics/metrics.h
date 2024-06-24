@@ -8,12 +8,13 @@
 #include <TLegend.h>
 #include <TMultiGraph.h>
 
+#include <structs/report.h>
+#include <structs/settings.h>
 #include <templates/model_template.h>
-
-enum mode_enum {training, validation, evaluation}; 
 
 struct analytics_t {
     model_template* model = nullptr; 
+    model_report* report = nullptr; 
 
     int this_epoch = 0; 
     std::map<mode_enum, std::map<std::string, TH1F*>> loss_graph = {}; 
@@ -27,6 +28,28 @@ struct analytics_t {
     std::map<mode_enum, std::map<std::string, TH1F*>> pred_mass_edge = {}; 
     std::map<mode_enum, std::map<std::string, TH1F*>> truth_mass_edge = {}; 
 
+    void purge(){
+        this -> destroy(&this -> loss_graph);
+        this -> destroy(&this -> loss_node);
+        this -> destroy(&this -> loss_edge); 
+
+        this -> destroy(&this -> accuracy_graph); 
+        this -> destroy(&this -> accuracy_node);
+        this -> destroy(&this -> accuracy_edge); 
+
+        this -> destroy(&this -> pred_mass_edge); 
+        this -> destroy(&this -> truth_mass_edge);
+        delete this -> report; 
+    }
+
+    void destroy(std::map<mode_enum, std::map<std::string, TH1F*>>* data){
+        std::map<mode_enum, std::map<std::string, TH1F*>>::iterator itr; 
+        for (itr = data -> begin(); itr != data -> end(); ++itr){
+            std::map<std::string, TH1F*>* mps = &itr -> second; 
+            std::map<std::string, TH1F*>::iterator ith = mps -> begin();         
+            for (; ith != mps -> end(); ++ith){delete ith -> second;}
+        }
+    }
 }; 
 
 class metrics: public tools
@@ -35,8 +58,6 @@ class metrics: public tools
         metrics(); 
         ~metrics(); 
       
-        Int_t epochs; 
-
         std::string output_path; 
         
         const std::vector<Color_t> colors_h = {
@@ -44,21 +65,14 @@ class metrics: public tools
             kViolet, kOrange, kCoffee, kAurora
         }; 
 
-        std::string var_pt = "pt"; 
-        std::string var_eta = "eta";
-        std::string var_phi = "phi";
-        std::string var_energy = "energy"; 
-        std::vector<std::string> targets = {"top_edge"}; 
+        settings_t m_settings; 
 
-        int nbins = 400; 
-        int max_range = 400; 
+        void dump_plots(int k); 
+        void dump_loss_plots(int k); 
+        void dump_accuracy_plots(int k); 
+        void dump_mass_plots(int k); 
 
-        void dump_plots(); 
-        void dump_loss_plots(); 
-        void dump_accuracy_plots(); 
-        void dump_mass_plots(); 
-
-        void register_model(model_template* model, int kfold); 
+        model_report* register_model(model_template* model, int kfold); 
         void capture(mode_enum, int kfold, int epoch, int smpl_len); 
 
     private: 
@@ -100,9 +114,10 @@ class metrics: public tools
         ); 
 
         std::map<std::string, std::vector<TGraph*>> build_graphs(
-                std::map<std::string, TH1F*>* train, 
-                std::map<std::string, TH1F*>* valid, 
-                std::map<std::string, TH1F*>* eval
+                std::map<std::string, TH1F*>* train,  std::map<std::string, float>* tr_, 
+                std::map<std::string, TH1F*>* valid,  std::map<std::string, float>* va_, 
+                std::map<std::string, TH1F*>* eval,   std::map<std::string, float>* ev_, 
+                int ep
         ); 
 
         std::map<int, analytics_t> registry = {}; 

@@ -10,9 +10,18 @@ cdef extern from "bsm_4tops/graphs.h":
     cdef cppclass graph_children(graph_template):
         graph_children() except+
 
+    cdef cppclass graph_truthjets(graph_template):
+        graph_truthjets() except+
 
 cdef class GraphTops(GraphTemplate):
     pass
 
 cdef class GraphChildren(GraphTemplate):
     pass
+
+cdef class GraphTruthJets(GraphTemplate):
+    pass
+
+
+
+

@@ -36,7 +36,6 @@ void bsm_4tops::CompileEvent(){
     std::map<int, top_children*> _TopChildren = this -> sort_by_index(&this -> m_Children); 
     std::map<int, truthjet*>       _TruthJets = this -> sort_by_index(&this -> m_TruthJets); 
     std::map<int, jet*>                 _Jets = this -> sort_by_index(&this -> m_Jets); 
-
     std::map<int, truthjetparton*> _TruthJetPartons = this -> sort_by_index(&this -> m_TruthJetParton); 
     std::map<int, jetparton*>           _JetPartons = this -> sort_by_index(&this -> m_JetParton); 
 

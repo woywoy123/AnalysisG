@@ -52,8 +52,3 @@ void notification::progressbar(float lProgress, std::string title){
 }
 
 
-
-
-
-
-

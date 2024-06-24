@@ -1,13 +1,15 @@
 #ifndef ANALYSIS_H
 #define ANALYSIS_H
 
-#include <io/io.h>
 #include <generators/sampletracer.h>
 #include <generators/dataloader.h>
 #include <generators/optimizer.h>
 
 #include <templates/model_template.h>
 #include <templates/fx_enums.h>
+
+#include <structs/settings.h>
+#include <io/io.h>
 
 class analysis: 
     public notification, 
@@ -23,29 +25,14 @@ class analysis:
         void add_model(model_template* model, optimizer_params_t* op, std::string run_name); 
         void start(); 
 
-        // settings
-        std::string output_path = "./ProjectName"; 
+        std::map<std::string, float> progress(); 
+        std::map<std::string, std::string> progress_mode(); 
+        std::map<std::string, std::string> progress_report(); 
+        std::map<std::string, bool> is_complete();
 
-        // optimizer 
-        int epochs = 10; 
-        int kfolds = 10; 
-        int num_examples = 3; 
-        float train_size = 50; 
-        
-        bool training = true;
-        bool validation = true; 
-        bool evaluation = true;
-        bool continue_training = false; 
+        void attach_threads(); 
 
-        std::string var_pt = "pt"; 
-        std::string var_eta = "eta";
-        std::string var_phi = "phi";
-        std::string var_energy = "energy"; 
-        std::vector<std::string> targets = {"top_edge"}; 
-
-        int nbins = 400; 
-        int refresh = 10; 
-        int max_range = 400; 
+        settings_t m_settings; 
 
     private:
         void build_project(); 
@@ -60,7 +47,12 @@ class analysis:
         std::vector<std::tuple<model_template*, optimizer_params_t*>> model_sessions = {}; 
         std::vector<std::string> model_session_names = {}; 
 
-        optimizer*   trainer = nullptr; 
+        std::map<std::string, optimizer*> trainer = {};
+        std::map<std::string, model_report*> reports = {}; 
+        std::vector<std::thread*> threads = {}; 
+
+
+
         dataloader*   loader = nullptr; 
         sampletracer* tracer = nullptr; 
         io*           reader = nullptr; 

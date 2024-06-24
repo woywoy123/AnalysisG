@@ -4,11 +4,16 @@ analysis::analysis(){
     this -> prefix = "Analysis"; 
     this -> tracer  = new sampletracer(); 
     this -> loader  = new dataloader(); 
-    this -> trainer = new optimizer(); 
     this -> reader  = new io(); 
 }
 
-analysis::~analysis(){}
+analysis::~analysis(){
+    std::map<std::string, optimizer*>::iterator itt; 
+    itt = this -> trainer.begin();
+    for (; itt != this -> trainer.end(); ++itt){
+        delete itt -> second; 
+    }
+}
 
 void analysis::add_samples(std::string path, std::string label){
     this -> file_labels[path] = label;   
@@ -29,8 +34,8 @@ void analysis::add_model(model_template* model, optimizer_params_t* op, std::str
 }
 
 void analysis::build_project(){
-    this -> create_path(this -> output_path); 
-    std::string model_path = this -> output_path + "/"; 
+    this -> create_path(this -> m_settings.output_path); 
+    std::string model_path = this -> m_settings.output_path; 
 
     for (size_t x(0); x < this -> model_session_names.size(); ++x){
         model_template* mdl = std::get<0>(this -> model_sessions.at(x)); 

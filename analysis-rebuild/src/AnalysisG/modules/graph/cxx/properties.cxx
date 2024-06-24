@@ -17,124 +17,140 @@ void graph_template::get_index(long* inpt, graph_template* ev){
 }
 
 void graph_template::add_graph_feature(bool data, std::string name){
-    this -> graph_fx[name] = this -> to_tensor(std::vector<bool>{data}, torch::kBool); 
+    this -> graph_fx[name] = this -> to_tensor(std::vector<bool>{data}, torch::kBool, bool()); 
 }
 
 void graph_template::add_graph_feature(std::vector<bool> _data, std::string name){
-    this -> graph_fx[name] = this -> to_tensor(_data, torch::kBool); 
+    this -> graph_fx[name] = this -> to_tensor(_data, torch::kBool, bool()); 
 }
 
 void graph_template::add_graph_feature(float data, std::string name){
-    this -> graph_fx[name] = this -> to_tensor(std::vector<float>{data}, torch::kFloat); 
+    this -> graph_fx[name] = this -> to_tensor(std::vector<float>{data}, torch::kFloat, float()); 
 }
 
 void graph_template::add_graph_feature(std::vector<float> _data, std::string name){
-    this -> graph_fx[name] = this -> to_tensor(_data, torch::kFloat); 
+    this -> graph_fx[name] = this -> to_tensor(_data, torch::kFloat, float()); 
 }
 
 void graph_template::add_graph_feature(double data, std::string name){
-    this -> graph_fx[name] = this -> to_tensor(std::vector<double>{data}, torch::kDouble); 
+    this -> graph_fx[name] = this -> to_tensor(std::vector<double>{data}, torch::kDouble, double()); 
 }
 
 void graph_template::add_graph_feature(std::vector<double> _data, std::string name){
-    this -> graph_fx[name] = this -> to_tensor(_data, torch::kDouble); 
+    this -> graph_fx[name] = this -> to_tensor(_data, torch::kDouble, double()); 
 }
 
 void graph_template::add_graph_feature(long data, std::string name){
-    this -> graph_fx[name] = this -> to_tensor(std::vector<long>{data}, torch::kLong); 
+    this -> graph_fx[name] = this -> to_tensor(std::vector<long>{data}, torch::kLong, long()); 
 }
 
 void graph_template::add_graph_feature(std::vector<long> _data, std::string name){
-    this -> graph_fx[name] = this -> to_tensor(_data, torch::kLong); 
+    this -> graph_fx[name] = this -> to_tensor(_data, torch::kLong, long()); 
 }
 
 void graph_template::add_graph_feature(int data, std::string name){
-    this -> graph_fx[name] = this -> to_tensor(std::vector<int>{data}, torch::kInt); 
+    this -> graph_fx[name] = this -> to_tensor(std::vector<int>{data}, torch::kInt, int()); 
 }
 
 void graph_template::add_graph_feature(std::vector<int> _data, std::string name){
-    this -> graph_fx[name] = this -> to_tensor(_data, torch::kInt); 
+    this -> graph_fx[name] = this -> to_tensor(_data, torch::kInt, int()); 
 }
 
+void graph_template::add_graph_feature(std::vector<std::vector<int>> _data, std::string name){
+    this -> graph_fx[name] = this -> to_tensor(_data, torch::kInt, int()); 
+}
+
+
+
 void graph_template::add_node_feature(bool data, std::string name){
-    this -> node_fx[name] = this -> to_tensor(std::vector<bool>{data}, torch::kBool); 
+    this -> node_fx[name] = this -> to_tensor(std::vector<bool>{data}, torch::kBool, bool()); 
 }
 
 void graph_template::add_node_feature(std::vector<bool> _data, std::string name){
-    this -> node_fx[name] = this -> to_tensor(_data, torch::kBool); 
+    this -> node_fx[name] = this -> to_tensor(_data, torch::kBool, bool()); 
 }
 
 void graph_template::add_node_feature(float data, std::string name){
-    this -> node_fx[name] = this -> to_tensor(std::vector<float>{data}, torch::kFloat); 
+    this -> node_fx[name] = this -> to_tensor(std::vector<float>{data}, torch::kFloat, float()); 
 }
 
 void graph_template::add_node_feature(std::vector<float> _data, std::string name){
-    this -> node_fx[name] = this -> to_tensor(_data, torch::kFloat); 
+    this -> node_fx[name] = this -> to_tensor(_data, torch::kFloat, float()); 
 }
 
 void graph_template::add_node_feature(double data, std::string name){
-    this -> node_fx[name] = this -> to_tensor(std::vector<double>{data}, torch::kDouble); 
+    this -> node_fx[name] = this -> to_tensor(std::vector<double>{data}, torch::kDouble, double()); 
 }
 
 void graph_template::add_node_feature(std::vector<double> _data, std::string name){
-    this -> node_fx[name] = this -> to_tensor(_data, torch::kDouble); 
+    this -> node_fx[name] = this -> to_tensor(_data, torch::kDouble, double()); 
 }
 
 void graph_template::add_node_feature(long data, std::string name){
-    this -> node_fx[name] = this -> to_tensor(std::vector<long>{data}, torch::kLong); 
+    this -> node_fx[name] = this -> to_tensor(std::vector<long>{data}, torch::kLong, long()); 
 }
 
 void graph_template::add_node_feature(std::vector<long> _data, std::string name){
-    this -> node_fx[name] = this -> to_tensor(_data, torch::kLong); 
+    this -> node_fx[name] = this -> to_tensor(_data, torch::kLong, long()); 
 }
 
 void graph_template::add_node_feature(int data, std::string name){
-    this -> node_fx[name] = this -> to_tensor(std::vector<int>{data}, torch::kInt); 
+    this -> node_fx[name] = this -> to_tensor(std::vector<int>{data}, torch::kInt, int()); 
 }
 
 void graph_template::add_node_feature(std::vector<int> _data, std::string name){
-    this -> node_fx[name] = this -> to_tensor(_data, torch::kInt); 
+    this -> node_fx[name] = this -> to_tensor(_data, torch::kInt, int()); 
 }
 
+void graph_template::add_node_feature(std::vector<std::vector<int>> _data, std::string name){
+    this -> node_fx[name] = this -> to_tensor(_data, torch::kInt, int()); 
+}
+
+
 void graph_template::add_edge_feature(bool data, std::string name){
-    this -> edge_fx[name] = this -> to_tensor(std::vector<bool>{data}, torch::kBool); 
+    this -> edge_fx[name] = this -> to_tensor(std::vector<bool>{data}, torch::kBool, bool()); 
 }
 
 void graph_template::add_edge_feature(std::vector<bool> _data, std::string name){
-    this -> edge_fx[name] = this -> to_tensor(_data, torch::kBool); 
+    this -> edge_fx[name] = this -> to_tensor(_data, torch::kBool, bool()); 
 }
 
 void graph_template::add_edge_feature(float data, std::string name){
-    this -> edge_fx[name] = this -> to_tensor(std::vector<float>{data}, torch::kFloat); 
+    this -> edge_fx[name] = this -> to_tensor(std::vector<float>{data}, torch::kFloat, float()); 
 }
 
 void graph_template::add_edge_feature(std::vector<float> _data, std::string name){
-    this -> edge_fx[name] = this -> to_tensor(_data, torch::kFloat); 
+    this -> edge_fx[name] = this -> to_tensor(_data, torch::kFloat, float()); 
 }
 
 void graph_template::add_edge_feature(double data, std::string name){
-    this -> edge_fx[name] = this -> to_tensor(std::vector<double>{data}, torch::kDouble); 
+    this -> edge_fx[name] = this -> to_tensor(std::vector<double>{data}, torch::kDouble, double()); 
 }
 
 void graph_template::add_edge_feature(std::vector<double> _data, std::string name){
-    this -> edge_fx[name] = this -> to_tensor(_data, torch::kDouble); 
+    this -> edge_fx[name] = this -> to_tensor(_data, torch::kDouble, double()); 
 }
 
 void graph_template::add_edge_feature(long data, std::string name){
-    this -> edge_fx[name] = this -> to_tensor(std::vector<long>{data}, torch::kLong); 
+    this -> edge_fx[name] = this -> to_tensor(std::vector<long>{data}, torch::kLong, long()); 
 }
 
 void graph_template::add_edge_feature(std::vector<long> _data, std::string name){
-    this -> edge_fx[name] = this -> to_tensor(_data, torch::kLong); 
+    this -> edge_fx[name] = this -> to_tensor(_data, torch::kLong, long()); 
 }
 
 void graph_template::add_edge_feature(int data, std::string name){
-    this -> edge_fx[name] = this -> to_tensor(std::vector<int>{data}, torch::kInt); 
+    this -> edge_fx[name] = this -> to_tensor(std::vector<int>{data}, torch::kInt, int()); 
 }
 
 void graph_template::add_edge_feature(std::vector<int> _data, std::string name){
-    this -> edge_fx[name] = this -> to_tensor(_data, torch::kInt); 
+    this -> edge_fx[name] = this -> to_tensor(_data, torch::kInt, int()); 
 }
+
+void graph_template::add_edge_feature(std::vector<std::vector<int>> _data, std::string name){
+    this -> edge_fx[name] = this -> to_tensor(_data, torch::kInt, int()); 
+}
+
 
 void graph_template::build_export(
         std::map<std::string, torch::Tensor*>* _truth_t, std::map<std::string, int>* _truth_i,

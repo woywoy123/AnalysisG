@@ -98,3 +98,33 @@ cdef extern from "<structs/meta.h>":
         vector[string] fileGUID
         vector[int] events
         vector[double] fileSize
+
+cdef extern from "<structs/settings.h>":
+
+    struct settings_t:
+        string output_path
+        string run_name
+
+        int epochs
+        int kfolds
+        int num_examples
+        float train_size
+
+        bool training
+        bool validation
+        bool evaluation
+        bool continue_training
+
+        string var_pt
+        string var_eta
+        string var_phi
+        string var_energy
+        vector[string] targets
+
+        int nbins
+        int refresh
+        int max_range
+
+        bool debug_mode
+        int threads
+

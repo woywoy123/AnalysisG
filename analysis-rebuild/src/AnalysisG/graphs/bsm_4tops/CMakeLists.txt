@@ -1,6 +1,8 @@
 set(SOURCE_FILES 
+    ${CMAKE_CURRENT_SOURCE_DIR}/graph_features.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/node_features.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/edge_features.h
     ${CMAKE_CURRENT_SOURCE_DIR}/graphs.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/features.h
     ${CMAKE_CURRENT_SOURCE_DIR}/graphs.cxx
 )
 

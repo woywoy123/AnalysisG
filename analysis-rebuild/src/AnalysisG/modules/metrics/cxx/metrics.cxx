@@ -1,12 +1,23 @@
 #include <transform/cartesian-cuda.h>
 #include <metrics/metrics.h>
+#include <TError.h>
 
-metrics::metrics(){}
-metrics::~metrics(){}
+metrics::metrics(){
+    gErrorIgnoreLevel = 3000; 
+}
+metrics::~metrics(){
+    std::map<int, analytics_t>::iterator itr = this -> registry.begin(); 
+    for (; itr != this -> registry.end(); ++itr){itr -> second.purge();}
+    this -> registry.clear(); 
+}
 
-void metrics::register_model(model_template* mod, int kfold){
+model_report* metrics::register_model(model_template* mod, int kfold){
     this -> registry[kfold].model = mod; 
-    this -> output_path = mod -> model_checkpoint_path + "metrics/"; 
+    this -> registry[kfold].report = new model_report(); 
+    this -> registry[kfold].report -> k = kfold; 
+    this -> registry[kfold].report -> run_name = this -> m_settings.run_name;
+
+    this -> m_settings.output_path = mod -> model_checkpoint_path + "metrics/"; 
     this -> build_th1f_loss(&mod -> m_o_graph, graph_enum::truth_graph, kfold); 
     this -> build_th1f_loss(&mod -> m_o_node,  graph_enum::truth_node,  kfold); 
     this -> build_th1f_loss(&mod -> m_o_edge,  graph_enum::truth_edge,  kfold); 
@@ -15,11 +26,13 @@ void metrics::register_model(model_template* mod, int kfold){
     this -> build_th1f_accuracy(&mod -> m_o_node,  graph_enum::truth_node,  kfold); 
     this -> build_th1f_accuracy(&mod -> m_o_edge,  graph_enum::truth_edge,  kfold); 
 
-    if (!this -> targets.size()){return;}
-    for (std::string var : this -> targets){
+    model_report* mr = this -> registry[kfold].report;
+    if (!this -> m_settings.targets.size()){return mr;}
+    for (std::string var : this -> m_settings.targets){
         this -> build_th1f_mass(var, graph_enum::truth_edge, kfold); 
         this -> build_th1f_mass(var, graph_enum::data_edge , kfold); 
     }
+    return mr;
 }
 
 void metrics::capture(mode_enum mode, int kfold, int epoch, int smpl_len){
@@ -54,27 +67,25 @@ void metrics::capture(mode_enum mode, int kfold, int epoch, int smpl_len){
     } 
 
 
-    if (!this -> targets.size()){return;}
+    if (!this -> m_settings.targets.size()){return;}
     std::map<std::string, torch::Tensor*> node_feat = an -> model -> m_i_node; 
     torch::Tensor pmc = torch::cat({
-            *(node_feat)[this -> var_pt] , *(node_feat)[this -> var_eta], 
-            *(node_feat)[this -> var_phi], *(node_feat)[this -> var_energy]
+            *(node_feat)[this -> m_settings.var_pt] , *(node_feat)[this -> m_settings.var_eta], 
+            *(node_feat)[this -> m_settings.var_phi], *(node_feat)[this -> m_settings.var_energy]
     }, {-1}); 
     pmc = transform::cuda::PxPyPzE(pmc)/1000;
-    for (std::string var : this -> targets){
+    for (std::string var : this -> m_settings.targets){
         torch::Tensor* pred  = an -> model -> m_p_edge[var]; 
         torch::Tensor* truth = std::get<0>(an -> model -> m_o_edge[var]); 
         this -> add_th1f_mass(&pmc, an -> model -> edge_index, truth, pred, kfold, mode, var); 
     }
 }
 
-void metrics::dump_plots(){
-    this -> dump_loss_plots();
-    this -> dump_accuracy_plots(); 
+void metrics::dump_plots(int k){
+    this -> dump_loss_plots(k);
+    this -> dump_accuracy_plots(k); 
 
-    if (!this -> targets.size()){return;}
-    this -> dump_mass_plots(); 
+    if (!this -> m_settings.targets.size()){return;}
+    this -> dump_mass_plots(k); 
 }
-
-
 
