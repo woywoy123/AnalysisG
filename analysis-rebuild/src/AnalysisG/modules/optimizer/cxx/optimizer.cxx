@@ -62,7 +62,12 @@ void optimizer::training_loop(int k, int epoch){
     model_template* model = this -> kfold_sessions[k]; 
     model -> epoch = epoch+1; 
     model -> kfold = k+1;
-    if (this -> m_settings.continue_training){model -> restore_state();}
+
+    bool retrain = false; 
+    if (!this -> m_settings.continue_training){retrain = true;}
+    else if (model -> restore_state()){retrain = false;}
+    else {retrain = true;}
+    model -> evaluation_mode(!retrain); 
 
     int l = smpl -> size(); 
     model_report* mr = this -> reports[this -> m_settings.run_name + std::to_string(k)]; 
@@ -70,7 +75,7 @@ void optimizer::training_loop(int k, int epoch){
     mr -> epoch = epoch+1;  
 
     for (int x(0); x < l; ++x){
-        model -> forward(smpl -> at(x), true);
+        model -> forward(smpl -> at(x), retrain);
         this -> metric -> capture(mode_enum::training, k, epoch, l); 
         mr -> progress = float(x+1)/float(l); 
     }
@@ -80,6 +85,7 @@ void optimizer::training_loop(int k, int epoch){
 void optimizer::validation_loop(int k, int epoch){
     std::vector<graph_t*>* smpl = this -> loader -> get_k_validation_set(k); 
     model_template* model = this -> kfold_sessions[k]; 
+    model -> evaluation_mode(true); 
 
     model_report* mr = this -> reports[this -> m_settings.run_name + std::to_string(k)]; 
     mr -> mode = "validation"; 
@@ -95,6 +101,7 @@ void optimizer::validation_loop(int k, int epoch){
 void optimizer::evaluation_loop(int k, int epoch){
     std::vector<graph_t*>* smpl = this -> loader -> get_test_set(); 
     model_template* model = this -> kfold_sessions[k]; 
+    model -> evaluation_mode(true); 
 
     model_report* mr = this -> reports[this -> m_settings.run_name + std::to_string(k)]; 
     mr -> mode = "evaluation"; 

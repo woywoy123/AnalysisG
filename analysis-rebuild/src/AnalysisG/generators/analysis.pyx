@@ -199,3 +199,8 @@ cdef class Analysis:
     @Targets.setter
     def Targets(self, list val): self.ana.m_settings.targets = enc_list(val)
 
+    @property
+    def DebugMode(self): return self.ana.m_settings.debug_mode
+
+    @DebugMode.setter
+    def DebugMode(self, bool val): self.ana.m_settings.debug_mode = val

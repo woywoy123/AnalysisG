@@ -30,8 +30,8 @@ void analysis::build_model_session(){
     std::map<std::string, optimizer*>::iterator itr = this -> trainer.begin(); 
     for (; itr != this -> trainer.end(); ++itr){
         for (int k(0); k < this -> m_settings.kfolds; ++k, ++c){
-            if (this -> m_settings.debug_mode){itr -> second -> launch_model(k); continue;}
-            this -> threads.push_back(new std::thread(lamb, itr -> second, k));
+            if (this -> m_settings.debug_mode){itr -> second -> launch_model(k);}
+            else {this -> threads.push_back(new std::thread(lamb, itr -> second, k));}
         }
     }
 }

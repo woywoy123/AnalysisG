@@ -75,8 +75,12 @@ class model_template:
 
         torch::Tensor compute_loss(std::string, graph_enum); 
 
+        void evaluation_mode(bool mode = true); 
+
+
         void save_state(); 
-        void restore_state(); 
+        bool restore_state(); 
+
         friend class metrics; 
         friend class analysis;
 

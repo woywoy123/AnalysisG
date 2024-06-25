@@ -98,6 +98,15 @@ void model_template::set_input_features(std::vector<std::string>* inpt, std::map
     }
 }
 
+void model_template::evaluation_mode(bool mode){
+    for (size_t x(0); x < this -> m_data.size(); ++x){
+        if (mode){(*this -> m_data[x]) -> eval();}
+        else {(*this -> m_data[x]) -> train(true);}
+    }
+}
+
+
+
 void model_template::prediction_graph_feature(std::string key, torch::Tensor pred){
     if (!this -> m_o_graph.count(key)){this -> warning("Graph Output Feature: " + key + " not found.");}
     else {this -> m_p_graph[key] = new torch::Tensor(pred);}
