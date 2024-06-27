@@ -1,0 +1,67 @@
+[build-system]
+requires = [
+    "cython", "setuptools",
+    "wheel", "torch"
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "AnalysisG"
+version = "4.5.8"
+authors = [{name = "woywoy123"}]
+readme.content-type = "text/markdown"
+readme.file = "README.md"
+requires-python = ">=3.7"
+dependencies = [
+    "mplhep==0.3.28",
+    "matplotlib==3.5.3",
+    "pyAMI-atlas==5.1.0.1",
+    "awkward<=2.4.4",
+    "uproot",
+    "numpy",
+    "h5py",
+    "pwinput",
+    "scikit-learn",
+    "torchmetrics",
+    "torch-geometric",
+    "boost_histogram"
+]
+
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Cython", 
+    "Programming Language :: C++"
+]
+
+[project.urls]
+Homepage = "https://github.com/woywoy123/AnalysisG"
+
+[tool.setuptools.package-dir]
+"AnalysisG"              = "src"
+"AnalysisG.IO"           = "src/IO"
+"AnalysisG.Tools"        = "src/Tools"
+"AnalysisG.Events"       = "src/Events"
+"AnalysisG.Graphs"       = "src/Events/Graphs"
+"AnalysisG.Model"        = "src/Model"
+"AnalysisG._cmodules"    = "src/cmodules"
+"AnalysisG.Templates"    = "src/Templates"
+"AnalysisG.Generators"   = "src/Generators"
+"AnalysisG.Notification" = "src/Notification"
+"AnalysisG.Submission"   = "src/Submission"
+
+[tool.setuptools.package-data]
+"*" = ["*.pyx", "*.pxd", "*.cxx", "*.h"]
+
+[project.scripts]
+config_pyami = "AnalysisG.Settings:CONFIG_PYAMI"
+auth_pyami = "AnalysisG.Settings:AUTH_PYAMI"
+install_pyc = "AnalysisG.Settings:POST_INSTALL_PYC"
+make_analysis="AnalysisG.Settings:make_analysis"
+AnalysisG = "AnalysisG.__main__:main"
+
