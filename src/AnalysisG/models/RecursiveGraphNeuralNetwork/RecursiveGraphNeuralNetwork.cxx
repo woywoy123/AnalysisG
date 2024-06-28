@@ -9,87 +9,65 @@
 recursivegraphneuralnetwork::recursivegraphneuralnetwork(){
 
     this -> rnn_dx = new torch::nn::Sequential({
-            {"rnn_dx_l1", torch::nn::Linear(this -> _dx*3 + this -> _hidden, this -> _hidden)},
-            {"rnn_dx_l2", torch::nn::Linear(this -> _hidden, this -> _hidden)}
+            {"rnn_dx_l1", torch::nn::Linear(this -> _dx + 2*this -> _rep, this -> _hidden)},
+            {"rnn_dx_relu1", torch::nn::ReLU()},
+            {"rnn_dx_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
+            {"rnn_dx_l2", torch::nn::Linear(this -> _hidden, this -> _rep)}
     }); 
 
-
-    this -> rnn_node = new torch::nn::Sequential({
-            {"rnn_node_l1", torch::nn::Linear(this -> _node, this -> _hidden)},
-            {"rnn_node_l2", torch::nn::Linear(this -> _hidden, this -> _hidden)}
+    this -> rnn_x = new torch::nn::Sequential({
+            {"rnn_x_l1", torch::nn::Linear(this -> _x + this -> _rep, this -> _hidden)},
+            {"rnn_x_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
+            {"rnn_x_l2", torch::nn::Linear(this -> _hidden, this -> _rep)}
     }); 
-
-
-    this -> rnn_repeat = new torch::nn::Sequential({
-            {"rnn_repeat_l1", torch::nn::Linear(this -> _hidden*2, this -> _hidden*2)},
-            {"rnn_repeat_l2", torch::nn::Linear(this -> _hidden*2, this -> _output)}
-    }); 
-
 
     this -> rnn_merge = new torch::nn::Sequential({
-            {"rnn_merge_l1", torch::nn::Linear(this -> _output*2, this -> _output*2)},
-            {"rnn_merge_l2", torch::nn::Linear(this -> _output*2, this -> _output)}
+            {"rnn_merge_l1", torch::nn::Linear(this -> _rep*2, this -> _rep)},
+            {"rnn_merge_relu1", torch::nn::ReLU()},
+            {"rnn_merge_l2", torch::nn::Linear(this -> _rep, this -> _output)}
     }); 
 
+    this -> rnn_update = new torch::nn::Sequential({
+            {"rnn_update_l1", torch::nn::Linear(this -> _output*2, this -> _output)},
+            {"rnn_update_relu1", torch::nn::ReLU()},
+            {"rnn_update_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _output}))}, 
+            {"rnn_update_l2", torch::nn::Linear(this -> _output, this -> _output)}
+    }); 
+
+
+    this -> register_module(this -> rnn_x); 
     this -> register_module(this -> rnn_dx); 
-    this -> register_module(this -> rnn_node); 
-    this -> register_module(this -> rnn_repeat); 
     this -> register_module(this -> rnn_merge); 
+    this -> register_module(this -> rnn_update); 
 }
 
 torch::Tensor recursivegraphneuralnetwork::message(
-    torch::Tensor _trk_i, torch::Tensor _trk_j, torch::Tensor pmc, 
-    torch::Tensor H_i, torch::Tensor H_j
-){
+        torch::Tensor _trk_i, torch::Tensor _trk_j, 
+        torch::Tensor pmc, torch::Tensor pmc_i, torch::Tensor pmc_j,
+        torch::Tensor hx_i, torch::Tensor hx_j
 
+){
     torch::Tensor trk_ij = torch::cat({_trk_i, _trk_j}, {-1}); 
 
-    torch::Tensor pmc_i  = std::get<0>(graph::cuda::unique_aggregation(_trk_i, pmc)); 
-    torch::Tensor pmc_j  = std::get<0>(graph::cuda::unique_aggregation(_trk_j, pmc)); 
+    torch::Tensor pmc_i_ = std::get<0>(graph::cuda::unique_aggregation(_trk_i, pmc)); 
+    torch::Tensor pmc_j_ = std::get<0>(graph::cuda::unique_aggregation(_trk_j, pmc)); 
     torch::Tensor pmc_ij = std::get<0>(graph::cuda::unique_aggregation(trk_ij, pmc)); 
    
-    torch::Tensor m_ij = physics::cuda::cartesian::M(pmc_ij);
     torch::Tensor m_i  = physics::cuda::cartesian::M(pmc_i);
     torch::Tensor m_j  = physics::cuda::cartesian::M(pmc_j); 
-    
-    std::vector<torch::Tensor> features = {m_ij, m_i, m_j, H_j + H_i}; 
-    torch::Tensor m_dx = torch::cat(features, {-1}).to(torch::kFloat32); 
-    return (*this -> rnn_dx) -> forward(m_dx); 
-}
+    torch::Tensor m_ij = physics::cuda::cartesian::M(pmc_ij);
+   
+    torch::Tensor m_i_  = physics::cuda::cartesian::M(pmc_i_);
+    torch::Tensor m_j_  = physics::cuda::cartesian::M(pmc_j_); 
 
-torch::Tensor recursivegraphneuralnetwork::aggregation(
-        torch::Tensor src, torch::Tensor dst, torch::Tensor pmc, torch::Tensor H
-){ 
-    torch::Tensor path = this -> _path -> clone(); 
-    torch::Tensor src_ = src.view({-1});
-    torch::Tensor dst_ = dst.view({-1}); 
+    std::vector<torch::Tensor> dx_ = {m_j, m_i - m_j, m_j_, m_i_ - m_j_, hx_j, hx_i - hx_j}; 
+    torch::Tensor hdx = (*this -> rnn_dx) -> forward(torch::cat(dx_, {-1}).to(torch::kFloat32)) + hx_j; 
 
-    torch::Tensor node     = std::get<0>(graph::cuda::unique_aggregation(path, pmc)); 
-    torch::Tensor mass     = physics::cuda::cartesian::M(node).to(torch::kFloat32); 
-    torch::Tensor n_score  = (*this -> rnn_node) -> forward(torch::cat({mass}, {-1})); 
-    torch::Tensor e_score  = this -> message(src, dst, pmc, n_score.index({src_}), n_score.index({dst_})); 
-    torch::Tensor edge     = (*this -> rnn_repeat) -> forward(torch::cat({e_score, n_score.index({src_}) - H.index({dst_})}, {-1})); 
+    std::vector<torch::Tensor> x_ = {m_ij, hx_i}; 
+    torch::Tensor hx = (*this -> rnn_x) -> forward(torch::cat(x_, {-1}).to(torch::kFloat32)) + hx_i;
 
-    torch::Tensor e_sfmx_ = edge.index({torch::indexing::Slice(), 1});
-    torch::Tensor e_selx  = std::get<1>(edge.max({-1})); 
-
-    torch::Tensor matrix  = this -> _matrix -> clone(); 
-    matrix.index_put_({src_, dst_}, e_sfmx_); 
-    matrix = matrix.softmax(-1); 
-    matrix.index_put_({src_, dst_}, e_selx.to(torch::kFloat)); 
-    matrix = matrix*(*this -> _matrix);
-
-
-    torch::Tensor valid = matrix.sum({-1}) > 0; 
-    if (!valid.index({valid}).size({0})){return edge;}
-    torch::Tensor next_node = std::get<1>(matrix.max({-1})); 
-    next_node.index_put_({matrix.sum({-1}) == 0}, -1); 
-
-    this -> _matrix -> index_put_({valid, next_node.index({valid})}, 0);
-    (*this -> _path) = torch::cat({path, next_node.view({-1, 1})}, {-1}); 
-
-    torch::Tensor _out = this -> aggregation(src, dst, pmc, n_score);
-    return (*this -> rnn_merge) -> forward(torch::cat({_out, edge - _out}, {-1})) * edge.softmax(-1); 
+    torch::Tensor id = torch::cat({hx, hdx - hx}, {-1}); 
+    return (*this -> rnn_merge) -> forward(id); 
 }
 
 void recursivegraphneuralnetwork::forward(graph_t* data){
@@ -107,25 +85,61 @@ void recursivegraphneuralnetwork::forward(graph_t* data){
             transform::cuda::Py(met, met_phi)
     }, {-1});
 
-    torch::Tensor truth = data -> get_truth_edge("top_edge") -> clone(); 
-    torch::Tensor src = data -> edge_index -> index({0}).view({-1, 1}); 
-    torch::Tensor dst = data -> edge_index -> index({1}).view({-1, 1}); 
+    torch::Tensor edge_index = data -> edge_index -> to(torch::kInt); 
+    torch::Tensor src = edge_index.index({0}).view({-1}); 
+    torch::Tensor dst = edge_index.index({1}).view({-1}); 
 
 
-    torch::Tensor matrix = torch::ones({pmc.size({0}), pmc.size({0})}, src.device()); 
-    this -> _matrix = &matrix; 
+    std::vector<torch::Tensor> x_ = {}; 
+    torch::Tensor nulls = torch::zeros_like(pt); 
+    for (size_t t(0); t < this -> _rep; ++t){x_.push_back(nulls);}
+    nulls = torch::cat(x_, {-1}).to(torch::kFloat32); 
 
-    torch::Tensor trk_i = torch::ones_like(pt).to(torch::kLong).cumsum({0})-1; 
-    this -> _path = &trk_i; 
+    x_ = {physics::cuda::cartesian::M(pmc), nulls}; 
+    torch::Tensor hx = (*this -> rnn_x) -> forward(torch::cat(x_, {-1}).to(torch::kFloat32));
 
-    std::vector<torch::Tensor> H0 = {}; 
-    for (size_t x(0); x < this -> _hidden; ++x){H0.push_back(torch::zeros_like(pt));}
-    torch::Tensor H = torch::cat(H0, {-1}).to(torch::kFloat32);  
-    H = this -> aggregation(src, dst, pmc, H);
+    torch::Tensor trk = (torch::ones_like(pt).cumsum({0}) - 1).to(torch::kInt); 
+    torch::Tensor idx_mlp = (torch::ones_like(src).cumsum({-1})-1).to(torch::kInt); 
+    torch::Tensor idx_mat = torch::zeros({trk.size({0}), trk.size({0})}, src.device()).to(torch::kInt); 
+    idx_mat.index_put_({src, dst}, idx_mlp); 
 
-    this -> _matrix = nullptr; 
-    this -> _path   = nullptr; 
-    this -> prediction_edge_feature("top_edge", H); 
+    int iter = 0; 
+    torch::Tensor H_; 
+    torch::Tensor edge_index_ = edge_index.clone(); 
+    while(true){
+        if (!edge_index_.size({1})){break;}
+        torch::Tensor src_ = edge_index_.index({0}); 
+        torch::Tensor dst_ = edge_index_.index({1}); 
+
+        torch::Tensor idx = idx_mat.index({idx_mlp.index({src_}), idx_mlp.index({dst_})}); 
+
+        torch::Tensor H = this -> message(
+                trk.index({src_}), trk.index({dst_}), 
+                pmc, pmc.index({src_}), pmc.index({dst_}), 
+                hx.index({src_}), hx.index({dst_})
+        ); 
+
+        if (!iter){H_ = torch::zeros_like(H); ++iter;}
+
+        torch::Tensor T_ = H_.index({idx});  
+        torch::Tensor G  = (*this -> rnn_update) -> forward(torch::cat({H, T_ - H}, {-1})) + T_ - H; 
+        torch::Tensor G_ = H_.clone(); 
+        G_.index_put_({idx}, G); 
+        H_ = (H_ + G_).softmax(-1)*G_ + (H_ + G_).softmax(-1)*H_;
+
+        torch::Tensor sel = std::get<1>(G.max({-1})); 
+        if (!sel.index({sel == 1}).size({0})){break;}
+        edge_index_ = edge_index_.index({torch::indexing::Slice(), sel != 1}); 
+        std::vector<torch::Tensor> gr_ = graph::cuda::edge_aggregation(edge_index.to(torch::kLong), H_, pmc)["1"]; 
+
+        trk  = gr_[0].index({gr_[2]});
+        torch::Tensor pmc_ = gr_[3]; 
+        x_ = {physics::cuda::cartesian::M(pmc_), hx}; 
+        torch::Tensor hx_ = (*this -> rnn_x) -> forward(torch::cat(x_, {-1}).to(torch::kFloat32)) + hx;
+        hx = hx_; 
+
+    }
+    this -> prediction_edge_feature("top_edge", H_); 
 }
 
 recursivegraphneuralnetwork::~recursivegraphneuralnetwork(){}
