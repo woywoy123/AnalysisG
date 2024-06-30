@@ -15,3 +15,8 @@ target_include_directories(nusol-cuda PUBLIC include)
 target_link_libraries(nusol-cuda LINK_PUBLIC 
     operators-cuda physics-cuda cartesian-cuda polar-cuda
 )
+target_compile_options(nusol-cuda PRIVATE -fPIC)
+
+
+
+

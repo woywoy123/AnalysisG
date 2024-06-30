@@ -17,17 +17,17 @@
 #define CHECK_CONTIGUOUS(x) TORCH_CHECK(x.is_contiguous(), "#x must be contiguous")
 #define CHECK_INPUT(x) CHECK_CUDA(x); CHECK_CONTIGUOUS(x)
 
-const dim3 BLOCKS(const unsigned int threads, const unsigned int len){
+const dim3 GRBLOCKS(const unsigned int threads, const unsigned int len){
     const dim3 blocks( (len + threads -1) / threads ); 
     return blocks; 
 }
 
-const dim3 BLOCKS(const unsigned int threads, const unsigned int len, const unsigned int dy){
+const dim3 GRBLOCKS(const unsigned int threads, const unsigned int len, const unsigned int dy){
     const dim3 blocks( (len + threads -1) / threads, dy); 
     return blocks;
 }
 
-const dim3 BLOCKS(
+const dim3 GRBLOCKS(
     const unsigned int threads, const unsigned int len, 
     const unsigned int dy, const unsigned int dz)
 {
@@ -35,7 +35,7 @@ const dim3 BLOCKS(
     return blocks; 
 }
 
-static const torch::TensorOptions _MakeOp(torch::Tensor v1){
+static const torch::TensorOptions _MakeOpTen(torch::Tensor v1){
     return torch::TensorOptions().dtype(v1.scalar_type()).device(v1.device()); 
 }
 
@@ -48,7 +48,7 @@ std::map<std::string, std::vector<torch::Tensor>> _edge_aggregation(
     std::map<std::string, std::vector<torch::Tensor>> output; 
 
     torch::Tensor nf = node_feature.to(torch::kDouble); 
-    const torch::TensorOptions op = _MakeOp(edge_index); 
+    const torch::TensorOptions op = _MakeOpTen(edge_index); 
     const unsigned int max = prediction.size(1); 
     const unsigned int dim_i = node_feature.size(0); 
     const unsigned int dim_j = node_feature.size(1); 
@@ -66,7 +66,7 @@ std::map<std::string, std::vector<torch::Tensor>> _edge_aggregation(
     CHECK_INPUT(pred); 
     CHECK_INPUT(node_feature); 
     torch::Tensor pair_m = torch::ones(dims, op)*-1;  
-    const dim3 blk = BLOCKS(threads, pred_l, max); 
+    const dim3 blk = GRBLOCKS(threads, pred_l, max); 
     AT_DISPATCH_ALL_TYPES(pair_m.scalar_type(), "PredictionTopology", ([&]
     {
         _PredTopo<scalar_t><<< blk, threads >>>(
@@ -76,9 +76,9 @@ std::map<std::string, std::vector<torch::Tensor>> _edge_aggregation(
                 pred_l, max);
     })); 
     pair_m = std::get<0>(pair_m.sort(-1, true)); 
-    torch::Tensor pmu_i = torch::zeros({max, dim_i, dim_j}, _MakeOp(nf));
+    torch::Tensor pmu_i = torch::zeros({max, dim_i, dim_j}, _MakeOpTen(nf));
 
-    const dim3 blk_ = BLOCKS(threads, dim_i, dim_j, max); 
+    const dim3 blk_ = GRBLOCKS(threads, dim_i, dim_j, max); 
     AT_DISPATCH_ALL_TYPES(pair_m.scalar_type(), "EdgeSummation", ([&]{
         _EdgeSummation<scalar_t><<< blk_, threads >>>(
                  pmu_i.packed_accessor64<double, 3, torch::RestrictPtrTraits>(),
@@ -99,10 +99,10 @@ std::map<std::string, std::vector<torch::Tensor>> _edge_aggregation(
         torch::Tensor revert   = std::get<1>(id2);
 
         unsigned int dim_ = clusters.size(0); 
-        torch::Tensor pmu_u = torch::zeros({1, dim_, dim_j}, _MakeOp(nf));
+        torch::Tensor pmu_u = torch::zeros({1, dim_, dim_j}, _MakeOpTen(nf));
         clusters = clusters.view({1, dim_, dim_i}); 
         
-        const dim3 blk__ = BLOCKS(threads, dim_, dim_j, 1); 
+        const dim3 blk__ = GRBLOCKS(threads, dim_, dim_j, 1); 
         AT_DISPATCH_ALL_TYPES(clusters.scalar_type(), "EdgeSummation", ([&]
         {
             _EdgeSummation<scalar_t><<< blk__, threads >>>(
@@ -152,15 +152,15 @@ std::tuple<torch::Tensor, torch::Tensor> _unique_aggregation(
     const unsigned int n_feat  = features.size(1); 
     const unsigned int threads = 1024; 
 
-    const torch::TensorOptions op  = _MakeOp(features);
-    const torch::TensorOptions op_ = _MakeOp(cluster_map.to(torch::kLong)); 
+    const torch::TensorOptions op  = _MakeOpTen(features);
+    const torch::TensorOptions op_ = _MakeOpTen(cluster_map.to(torch::kLong)); 
 
     torch::Tensor clust  = cluster_map.to(op_).clone(); 
     torch::Tensor uniq   = cluster_map.to(op_).clone(); 
     torch::Tensor output = torch::zeros({n_nodes, n_feat}, op); 
 
-    const dim3 blk = BLOCKS(threads, n_nodes, n_feat); 
-    const dim3 blk_ = BLOCKS(threads, n_nodes, ij_node, ij_node); 
+    const dim3 blk  = GRBLOCKS(threads, n_nodes, n_feat); 
+    const dim3 blk_ = GRBLOCKS(threads, n_nodes, ij_node, ij_node); 
     AT_DISPATCH_ALL_TYPES(features.scalar_type(), "unique_sum", ([&]
     { 
         _fast_unique<scalar_t><<< blk_, threads >>>(

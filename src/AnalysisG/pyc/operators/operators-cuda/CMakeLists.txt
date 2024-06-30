@@ -12,3 +12,5 @@ add_library(operators-cuda STATIC ${SOURCE_FILES})
 target_include_directories(operators-cuda PRIVATE include/operators)
 target_include_directories(operators-cuda PUBLIC include)
 target_link_libraries(operators-cuda LINK_PUBLIC ${TORCH_LIBRARIES})
+target_compile_options(operators-cuda PRIVATE -fPIC)
+

@@ -11,6 +11,7 @@
 #include <structs/report.h>
 #include <structs/settings.h>
 #include <templates/model_template.h>
+#include <notification/notification.h>
 
 struct analytics_t {
     model_template* model = nullptr; 
@@ -52,7 +53,9 @@ struct analytics_t {
     }
 }; 
 
-class metrics: public tools
+class metrics: 
+    public tools, 
+    public notification
 {
     public: 
         metrics(); 

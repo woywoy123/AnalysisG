@@ -77,6 +77,11 @@ void metrics::capture(mode_enum mode, int kfold, int epoch, int smpl_len){
     for (std::string var : this -> m_settings.targets){
         torch::Tensor* pred  = an -> model -> m_p_edge[var]; 
         torch::Tensor* truth = std::get<0>(an -> model -> m_o_edge[var]); 
+        if (!truth){
+            this -> warning("Invalid Target Mass Plot: " + var + ". Skipping all targets."); 
+            this -> m_settings.targets = {};
+            continue;
+        }
         this -> add_th1f_mass(&pmc, an -> model -> edge_index, truth, pred, kfold, mode, var); 
     }
 }

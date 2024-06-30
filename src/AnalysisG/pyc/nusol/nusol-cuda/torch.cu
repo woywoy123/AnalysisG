@@ -33,7 +33,7 @@ const dim3 BLOCKS(const unsigned int threads, const unsigned int dx, const unsig
     return blocks; 
 }
 
-const torch::TensorOptions _MakeOp(torch::Tensor v1){
+const torch::TensorOptions _NuMakeOp(torch::Tensor v1){
     return torch::TensorOptions().dtype(v1.scalar_type()).device(v1.device()); 
 }
 
@@ -69,7 +69,7 @@ torch::Tensor _Shape_Matrix(torch::Tensor inpt, std::vector<long> vec){
     const unsigned int len_i = inpt.size(0); 
     const unsigned int len_j = vec.size(); 
     const unsigned int threads = 1024; 
-    const torch::TensorOptions op = _MakeOp(inpt); 
+    const torch::TensorOptions op = _NuMakeOp(inpt); 
 
     torch::Tensor out = torch::zeros_like(inpt); 
     torch::Tensor vecT = torch::zeros({1, 1, len_j}, op).to(torch::kCPU); 
@@ -99,7 +99,7 @@ const torch::Tensor _Expand_Matrix(torch::Tensor inpt, torch::Tensor source){
     const unsigned int threads = 1024; 
     const unsigned int len_i = inpt.size(0);
     const unsigned int len_k = source.size(1); 
-    const torch::TensorOptions op = _MakeOp(inpt); 
+    const torch::TensorOptions op = _NuMakeOp(inpt); 
     source = source.view({source.size(0), len_k, -1}); 
   
     const unsigned int len_j = source.size(2); 
@@ -121,7 +121,7 @@ std::tuple<torch::Tensor, torch::Tensor> _DotMatrix(torch::Tensor MET_xy, torch:
     const unsigned int threads = 1024; 
     const unsigned int dim_i = MET_xy.size(0); 
     const dim3 blk = BLOCKS(threads, dim_i, 3, 3);
-    const torch::TensorOptions op = _MakeOp(H); 
+    const torch::TensorOptions op = _NuMakeOp(H); 
 
     MET_xy = _Expand_Matrix(H, MET_xy); 
     torch::Tensor   X = torch::zeros({dim_i, 3, 3}, op);
@@ -154,7 +154,7 @@ torch::Tensor _Base_Matrix(torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Ten
     torch::Tensor costheta  = operators::cuda::CosTheta(pmc_b, pmc_mu, 3);
 
     // [Z/Om, 0, x1 - p_mu], [ w * Z/Om, 0, y1 ], [0, Z, 0]
-    torch::Tensor out = torch::zeros({len_i, 3, 3}, _MakeOp(costheta)); 
+    torch::Tensor out = torch::zeros({len_i, 3, 3}, _NuMakeOp(costheta)); 
     const dim3 blk = BLOCKS(threads, len_i, 3, 3); 
     AT_DISPATCH_FLOATING_TYPES(costheta.scalar_type(), "BaseMatrix", ([&]
     {
@@ -182,7 +182,7 @@ torch::Tensor _Base_Matrix(torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Ten
 
 torch::Tensor _Base_Matrix_H(torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Tensor masses){
     torch::Tensor base  = _Base_Matrix(pmc_b, pmc_mu, masses);
-    const torch::TensorOptions op = _MakeOp(base); 
+    const torch::TensorOptions op = _NuMakeOp(base); 
     const unsigned int threads = 1024; 
     const unsigned int dim_i = pmc_b.size(0); 
     const dim3 blk      = BLOCKS(threads, dim_i, 6, 3); 
@@ -268,7 +268,7 @@ std::tuple<torch::Tensor, torch::Tensor> _Intersection(torch::Tensor A, torch::T
     imag = operators::cuda::Mul(imag, B);
     imag = torch::linalg::eigvals(imag); 
     
-    const torch::TensorOptions op = _MakeOp(A); 
+    const torch::TensorOptions op = _NuMakeOp(A); 
     const unsigned int dim_eig = imag.size(-1); 
     const dim3 blk_ = BLOCKS(threads, dim_i, 9, dim_eig); 
     std::vector<signed long> dims = {dim_i, dim_eig, 3, 3}; 
@@ -455,7 +455,7 @@ std::map<std::string, torch::Tensor> _Nu(
     sols = _Intersection(M, _Shape_Matrix(M, {1, 1, -1}), null); 
 
     torch::Tensor sec = std::get<0>(sols);  
-    const torch::TensorOptions op = _MakeOp(sec); 
+    const torch::TensorOptions op = _NuMakeOp(sec); 
     const unsigned int threads = 1024; 
     const unsigned int dim_i = sec.size(0);
     const unsigned int dim_eig = sec.size(1);  
@@ -519,7 +519,7 @@ std::map<std::string, torch::Tensor> _NuNu(
 ){
     std::tuple<torch::Tensor, torch::Tensor> X;
     std::map<std::string, torch::Tensor> output; 
-    const torch::TensorOptions op = _MakeOp(masses1); 
+    const torch::TensorOptions op = _NuMakeOp(masses1); 
     const unsigned int threads = 1024;
     const unsigned int dim_j = 3;  
     const unsigned int dim_i = pmc_b1.size(0); 
@@ -674,7 +674,7 @@ torch::Tensor _create_event_nlep(torch::Tensor edge_idx, torch::Tensor pid)
 {
     const unsigned int threads = 1024; 
     const unsigned int nodes = pid.size(0); 
-    torch::Tensor maps = torch::zeros({nodes, nodes}, _MakeOp(pid)); 
+    torch::Tensor maps = torch::zeros({nodes, nodes}, _NuMakeOp(pid)); 
     const dim3 blk = BLOCKS(threads, nodes, nodes);  
     AT_DISPATCH_ALL_TYPES(edge_idx.scalar_type(), "n-leps", ([&]{
         _lep_map<scalar_t><<< blk, threads >>>(
@@ -693,8 +693,8 @@ std::vector<torch::Tensor> _create_mapping(torch::Tensor edge_idx, torch::Tensor
     const unsigned int threads = 1024; 
     const unsigned int idx_s = edge_idx.size(1);
     const dim3 blk = BLOCKS(threads, idx_s, idx_s);
-    torch::Tensor llbb_nu = torch::zeros({idx_s*idx_s, 6}, _MakeOp(pid)); 
-    batch = batch.to(_MakeOp(pid)); 
+    torch::Tensor llbb_nu = torch::zeros({idx_s*idx_s, 6}, _NuMakeOp(pid)); 
+    batch = batch.to(_NuMakeOp(pid)); 
 
     AT_DISPATCH_ALL_TYPES(pid.scalar_type(), "mapping", ([&]{
         _MappingKernel<scalar_t><<<blk, threads>>>(
@@ -725,16 +725,16 @@ std::vector<torch::Tensor> _viable_solutions(
     const unsigned int len_i = ly*ly; 
     torch::Tensor met_xy = t_met_xy.index({batch});  
 
-    torch::Tensor pmc_b1 = torch::zeros({lx, len_i, 4}, _MakeOp(pmc));
-    torch::Tensor pmc_b2 = torch::zeros({lx, len_i, 4}, _MakeOp(pmc));
+    torch::Tensor pmc_b1 = torch::zeros({lx, len_i, 4}, _NuMakeOp(pmc));
+    torch::Tensor pmc_b2 = torch::zeros({lx, len_i, 4}, _NuMakeOp(pmc));
 
-    torch::Tensor pmc_l1 = torch::zeros({lx, len_i, 4}, _MakeOp(pmc));
-    torch::Tensor pmc_l2 = torch::zeros({lx, len_i, 4}, _MakeOp(pmc));
-    torch::Tensor pair_i = torch::zeros({lx, len_i, 4}, _MakeOp(pairs)); 
+    torch::Tensor pmc_l1 = torch::zeros({lx, len_i, 4}, _NuMakeOp(pmc));
+    torch::Tensor pmc_l2 = torch::zeros({lx, len_i, 4}, _NuMakeOp(pmc));
+    torch::Tensor pair_i = torch::zeros({lx, len_i, 4}, _NuMakeOp(pairs)); 
 
-    torch::Tensor mass_m1 = torch::zeros({lx, len_i, 3}, _MakeOp(pmc));
-    torch::Tensor mass_m2 = torch::zeros({lx, len_i, 3}, _MakeOp(pmc));
-    torch::Tensor met_xy_ = torch::zeros({lx, len_i, 2}, _MakeOp(pmc)); 
+    torch::Tensor mass_m1 = torch::zeros({lx, len_i, 3}, _NuMakeOp(pmc));
+    torch::Tensor mass_m2 = torch::zeros({lx, len_i, 3}, _NuMakeOp(pmc));
+    torch::Tensor met_xy_ = torch::zeros({lx, len_i, 2}, _NuMakeOp(pmc)); 
 
     const dim3 blk = BLOCKS(threads, lx, len_i, lz); 
     AT_DISPATCH_ALL_TYPES(pmc.scalar_type(), "assigns", ([&]{
@@ -758,9 +758,9 @@ std::vector<torch::Tensor> _viable_solutions(
         );
     })); 
 
-    torch::Tensor dia_sol_o = torch::ones({lx, len_i}, _MakeOp(mass_m1))*-1; 
-    torch::Tensor nu_1 = torch::zeros({lx, len_i, 4}, _MakeOp(mass_m1)); 
-    torch::Tensor nu_2 = torch::zeros({lx, len_i, 4}, _MakeOp(mass_m2)); 
+    torch::Tensor dia_sol_o = torch::ones({lx, len_i}, _NuMakeOp(mass_m1))*-1; 
+    torch::Tensor nu_1 = torch::zeros({lx, len_i, 4}, _NuMakeOp(mass_m1)); 
+    torch::Tensor nu_2 = torch::zeros({lx, len_i, 4}, _NuMakeOp(mass_m2)); 
 
     const dim3 blk_ = BLOCKS(threads, ly, ly, 5); 
     for (unsigned int x(0); x < lx; ++x){ 
@@ -784,8 +784,8 @@ std::vector<torch::Tensor> _viable_solutions(
         })); 
     }
 
-    torch::Tensor dia_min_comb = -1*torch::ones({t_met_xy.size(0), len_i}, _MakeOp(dia_sol_o));  
-    torch::Tensor dia_min_mass = -1*torch::ones({t_met_xy.size(0), lx   }, _MakeOp(dia_sol_o)); 
+    torch::Tensor dia_min_comb = -1*torch::ones({t_met_xy.size(0), len_i}, _NuMakeOp(dia_sol_o));  
+    torch::Tensor dia_min_mass = -1*torch::ones({t_met_xy.size(0), lx   }, _NuMakeOp(dia_sol_o)); 
     const dim3 blk_x = BLOCKS(threads, lx*len_i); 
     AT_DISPATCH_ALL_TYPES(pmc.scalar_type(), "finder", ([&]{
         _min_finder<scalar_t><<<blk_x, threads>>>(
@@ -801,13 +801,13 @@ std::vector<torch::Tensor> _viable_solutions(
     optimal.index_put_({optimal < 0}, 1); 
 
     torch::Tensor min_ = std::get<0>(optimal.min({-1})); 
-    torch::Tensor nu_1f = torch::zeros({t_met_xy.size(0), 4}, _MakeOp(pmc)); 
-    torch::Tensor ms_1f = torch::zeros({t_met_xy.size(0), 3}, _MakeOp(pmc)); 
+    torch::Tensor nu_1f = torch::zeros({t_met_xy.size(0), 4}, _NuMakeOp(pmc)); 
+    torch::Tensor ms_1f = torch::zeros({t_met_xy.size(0), 3}, _NuMakeOp(pmc)); 
 
-    torch::Tensor nu_2f = torch::zeros({t_met_xy.size(0), 4}, _MakeOp(pmc)); 
-    torch::Tensor ms_2f = torch::zeros({t_met_xy.size(0), 3}, _MakeOp(pmc)); 
+    torch::Tensor nu_2f = torch::zeros({t_met_xy.size(0), 4}, _NuMakeOp(pmc)); 
+    torch::Tensor ms_2f = torch::zeros({t_met_xy.size(0), 3}, _NuMakeOp(pmc)); 
   
-    torch::Tensor combi = torch::zeros({t_met_xy.size(0), 4}, _MakeOp(pair_i)); 
+    torch::Tensor combi = torch::zeros({t_met_xy.size(0), 4}, _NuMakeOp(pair_i)); 
 
     const dim3 blk_o = BLOCKS(threads, lx, len_i, 4); 
     AT_DISPATCH_ALL_TYPES(pmc.scalar_type(), "populate", ([&]{
@@ -966,10 +966,10 @@ std::map<std::string, torch::Tensor> _CombinatorialCartesian(
         const double mass_nu, const double null)
 {
     int steps = 50;
-    torch::Tensor mass_matrix = torch::zeros({steps, 3}, _MakeOp(met_xy)); 
+    torch::Tensor mass_matrix = torch::zeros({steps, 3}, _NuMakeOp(met_xy)); 
     _MassMatrix(mass_top_l, mass_top_u, mass_w_l, mass_w_u, mass_matrix, steps); 
 
-    pid = pid.to(_MakeOp(edge_index)); 
+    pid = pid.to(_NuMakeOp(edge_index)); 
     pid = _create_event_nlep(edge_index, pid); 
     std::vector<torch::Tensor> nus = _create_mapping(edge_index, pid, batch); 
     torch::Tensor pair_nu   = nus[0]; 

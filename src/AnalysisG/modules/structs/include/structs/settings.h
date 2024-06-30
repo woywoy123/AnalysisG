@@ -24,7 +24,7 @@ struct settings_t {
     std::string var_eta = "eta"; 
     std::string var_phi = "phi";
     std::string var_energy = "energy"; 
-    std::vector<std::string> targets = {"top_edge"}; 
+    std::vector<std::string> targets = {}; 
     
     int nbins = 400;
     int refresh = 10;
