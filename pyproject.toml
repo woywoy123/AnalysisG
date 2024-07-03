@@ -7,7 +7,12 @@ name = "AnalysisG"
 version = "5.0"
 authors = []
 requires-python = ">=3.7"
-dependencies = ["pyAMI-atlas==5.1.0.1", "tqdm"]
+dependencies = [
+    "pyAMI-atlas==5.1.0.1", 
+    "tqdm", 
+    "boost_histogram", 
+    "mplhep"
+]
 
 [tool.scikit-build]
 build-dir = "build"

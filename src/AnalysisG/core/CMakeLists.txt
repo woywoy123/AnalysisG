@@ -54,6 +54,17 @@ COMMAND
 )
 
 add_custom_command(
+OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/cplotting.cpp
+DEPENDS 
+    ${CMAKE_CURRENT_SOURCE_DIR}/plotting.pxd
+    ${CMAKE_CURRENT_SOURCE_DIR}/plotting.pyx
+VERBATIM
+COMMAND
+    Python::Interpreter -m cython --cplus
+    ${CMAKE_CURRENT_SOURCE_DIR}/plotting.pyx --output-file ${CMAKE_CURRENT_SOURCE_DIR}/cplotting.cpp
+)
+
+add_custom_command(
 OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/cmeta.cpp
 DEPENDS 
     ${CMAKE_CURRENT_SOURCE_DIR}/meta.pxd
@@ -119,34 +130,38 @@ COMMAND
     ${CMAKE_CURRENT_SOURCE_DIR}/lossfx.pyx --output-file ${CMAKE_CURRENT_SOURCE_DIR}/clossfx.cpp
 )
 
-python_add_library(tools MODULE ${CMAKE_CURRENT_SOURCE_DIR}/ctools.cpp WITH_SOABI)
-python_add_library(structs MODULE ${CMAKE_CURRENT_SOURCE_DIR}/cstructs.cpp WITH_SOABI)
-python_add_library(particle_template MODULE ${CMAKE_CURRENT_SOURCE_DIR}/cparticles.cpp WITH_SOABI)
-python_add_library(notification MODULE ${CMAKE_CURRENT_SOURCE_DIR}/cnotification.cpp WITH_SOABI)
-python_add_library(meta MODULE ${CMAKE_CURRENT_SOURCE_DIR}/cmeta.cpp WITH_SOABI)
-python_add_library(io MODULE ${CMAKE_CURRENT_SOURCE_DIR}/cio.cpp WITH_SOABI)
-python_add_library(event_template MODULE ${CMAKE_CURRENT_SOURCE_DIR}/cevent_template.cpp WITH_SOABI)
-python_add_library(graph_template MODULE ${CMAKE_CURRENT_SOURCE_DIR}/cgraph_template.cpp WITH_SOABI)
+python_add_library(tools              MODULE ${CMAKE_CURRENT_SOURCE_DIR}/ctools.cpp WITH_SOABI)
+python_add_library(structs            MODULE ${CMAKE_CURRENT_SOURCE_DIR}/cstructs.cpp WITH_SOABI)
+python_add_library(particle_template  MODULE ${CMAKE_CURRENT_SOURCE_DIR}/cparticles.cpp WITH_SOABI)
+python_add_library(notification       MODULE ${CMAKE_CURRENT_SOURCE_DIR}/cnotification.cpp WITH_SOABI)
+python_add_library(meta               MODULE ${CMAKE_CURRENT_SOURCE_DIR}/cmeta.cpp WITH_SOABI)
+python_add_library(io                 MODULE ${CMAKE_CURRENT_SOURCE_DIR}/cio.cpp WITH_SOABI)
+python_add_library(plotting           MODULE ${CMAKE_CURRENT_SOURCE_DIR}/cplotting.cpp WITH_SOABI)
+python_add_library(event_template     MODULE ${CMAKE_CURRENT_SOURCE_DIR}/cevent_template.cpp WITH_SOABI)
+python_add_library(graph_template     MODULE ${CMAKE_CURRENT_SOURCE_DIR}/cgraph_template.cpp WITH_SOABI)
 python_add_library(selection_template MODULE ${CMAKE_CURRENT_SOURCE_DIR}/cselection_template.cpp WITH_SOABI)
-python_add_library(model_template MODULE ${CMAKE_CURRENT_SOURCE_DIR}/cmodel_template.cpp WITH_SOABI)
-python_add_library(lossfx MODULE ${CMAKE_CURRENT_SOURCE_DIR}/clossfx.cpp WITH_SOABI)
+python_add_library(model_template     MODULE ${CMAKE_CURRENT_SOURCE_DIR}/cmodel_template.cpp WITH_SOABI)
+python_add_library(lossfx             MODULE ${CMAKE_CURRENT_SOURCE_DIR}/clossfx.cpp WITH_SOABI)
 
-target_link_libraries(tools LINK_PUBLIC ctools)
-target_link_libraries(structs LINK_PUBLIC cstructs)
-target_link_libraries(particle_template LINK_PUBLIC cparticles cstructs)
-target_link_libraries(notification LINK_PUBLIC cnotification)
-target_link_libraries(meta LINK_PUBLIC cmeta)
-target_link_libraries(io LINK_PUBLIC cio)
-target_link_libraries(event_template LINK_PUBLIC cevent)
+target_link_libraries(tools              LINK_PUBLIC ctools)
+target_link_libraries(structs            LINK_PUBLIC cstructs)
+target_link_libraries(particle_template  LINK_PUBLIC cparticles cstructs)
+target_link_libraries(notification       LINK_PUBLIC cnotification)
+target_link_libraries(meta               LINK_PUBLIC cmeta)
+target_link_libraries(io                 LINK_PUBLIC cio)
+target_link_libraries(plotting           LINK_PUBLIC cplotting)
+target_link_libraries(event_template     LINK_PUBLIC cevent)
 target_link_libraries(selection_template LINK_PUBLIC cselection)
-target_link_libraries(graph_template LINK_PUBLIC cgraph cevent)
-target_link_libraries(model_template LINK_PUBLIC cmodel)
-target_link_libraries(lossfx LINK_PUBLIC clossfx)
+target_link_libraries(graph_template     LINK_PUBLIC cgraph cevent)
+target_link_libraries(model_template     LINK_PUBLIC cmodel)
+target_link_libraries(lossfx             LINK_PUBLIC clossfx)
 
 file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/ctools.cpp)
 file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/cio.cpp)
 file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/cmeta.cpp)
 file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/cstructs.cpp)
+file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/cplotting.cpp)
+file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/clossfx.cpp)
 file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/cparticle_template.cpp)
 file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/cnotification.cpp)
 file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/cevent_template.cpp)

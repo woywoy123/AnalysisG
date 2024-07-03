@@ -9,6 +9,7 @@ add_subdirectory(model)
 add_subdirectory(metrics)
 add_subdirectory(meta)
 add_subdirectory(io)
+add_subdirectory(plotting)
 
 add_subdirectory(container)
 add_subdirectory(sampletracer)
