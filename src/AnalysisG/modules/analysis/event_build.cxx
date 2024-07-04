@@ -46,7 +46,6 @@ void analysis::build_events(){
     this -> info("Building Events from ROOT files"); 
     std::map<std::string, data_t*>* io_handle = this -> reader -> get_data(); 
     while (index < ls){
-        //if (this -> m_settings.num_events > index){index++; contnue;}
         std::map<std::string, event_template*> evnts = event_f -> build_event(io_handle);
         ++index;  
 

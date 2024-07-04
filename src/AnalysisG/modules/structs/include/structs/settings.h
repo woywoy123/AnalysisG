@@ -8,9 +8,6 @@ struct settings_t {
     std::string output_path = "./ProjectName"; 
     std::string run_name = ""; 
     
-    // event generation
-    int num_events = -1;  // num events per file
-
     // machine learning
     int epochs = 10; 
     int kfolds = 10; 
