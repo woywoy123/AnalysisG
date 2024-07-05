@@ -1,9 +1,11 @@
 # distutils: language=c++
 # cython: language_level=3
 
-from libcpp cimport bool
+from libcpp cimport bool, int
+from libcpp.map cimport map, pair
 from libcpp.string cimport string
 from libcpp.vector cimport vector
+from cython.operator cimport dereference as dref
 
 cdef extern from "<tools/tools.h>":
 
@@ -34,3 +36,19 @@ cdef inline vector[string] enc_list(list inpt):
     cdef vector[string] out = []
     for i in inpt: out.push_back(enc(i))
     return out
+
+ctypedef fused base_types:
+    int
+    float
+    double
+    bool
+
+cdef inline list as_list(vector[base_types]* inp): return list(dref(inp))
+
+cdef inline dict as_dict(map[string, vector[base_types]]* inpt):
+    cdef dict output = {}
+    cdef pair[string, vector[base_types]] itr
+    for pair in dref(inpt): output[env(pair.first)] = as_list(&pair.second)
+    return output
+
+

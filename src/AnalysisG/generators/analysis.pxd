@@ -34,4 +34,6 @@ cdef extern from "<generators/analysis.h>":
         settings_t m_settings
 
 cdef class Analysis:
+    cdef list selections_
     cdef analysis* ana
+

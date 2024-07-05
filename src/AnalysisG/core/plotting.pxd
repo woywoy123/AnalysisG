@@ -22,6 +22,14 @@ cdef extern from "<plotting/plotting.h>":
         string xtitle
         string style
         string histfill
+        bool stack
+        bool density
+        bool x_logarithmic
+        bool y_logarithmic
+        float line_width
+        float alpha
+        float x_step
+        float y_step
 
         float x_min
         float y_min
@@ -63,18 +71,27 @@ cdef class BasePlotting:
     cdef bool set_ymin
     cdef bool set_ymax
 
+    cdef list __ticks__(self, float s, float e, float st)
     cdef void __compile__(self)
     cdef void __resetplt__(self)
     cdef void __figure__(self)
 
 cdef class TH1F(BasePlotting):
     cdef public bool ApplyScaling
+    cdef public list Histograms
+
+    cdef float scale_f(self)
+    cdef dict factory(self)
     cdef void __error__(self, vector[float] xarr, vector[float] up, vector[float] low)
+
+    cdef __build__(self)
     cdef void __compile__(self)
     cdef void __get_error_seg__(self, plot)
 
 cdef class TH2F(BasePlotting):
-    pass
+    cdef public bool ApplyScaling
+    cdef __build__(self)
+    cdef void __compile__(self)
 
 cdef class TLine(BasePlotting):
     pass

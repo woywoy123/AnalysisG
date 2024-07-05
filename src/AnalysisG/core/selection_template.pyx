@@ -17,4 +17,4 @@ cdef class SelectionTemplate:
     def __hash__(self):
         return int(string(self.ptr.hash).substr(0, 8), 0)
 
-
+    cdef void transform_dict_keys(self): pass

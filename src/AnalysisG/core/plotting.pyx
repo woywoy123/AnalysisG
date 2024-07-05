@@ -125,6 +125,27 @@ cdef class BasePlotting:
     def yTitle(self, str val): self.ptr.ytitle = enc(val)
 
     @property
+    def xLogarithmic(self): return self.ptr.x_logarithmic
+    @xLogarithmic.setter
+    def xLogarithmic(self, bool val): self.ptr.x_logarithmic = val
+
+    @property
+    def yLogarithmic(self): return self.ptr.y_logarithmic
+    @yLogarithmic.setter
+    def yLogarithmic(self, bool val): self.ptr.y_logarithmic = val
+
+    @property
+    def xStep(self): return self.ptr.x_step
+    @xStep.setter
+    def xStep(self, float val): self.ptr.x_step = val
+
+    @property
+    def yStep(self): return self.ptr.y_step
+    @yStep.setter
+    def yStep(self, float val): self.ptr.y_step = val
+
+
+    @property
     def xMin(self): return self.ptr.x_min
     @xMin.setter
     def xMin(self, float val):
@@ -153,6 +174,13 @@ cdef class BasePlotting:
         self.ptr.y_max = val
 
 
+    cdef list __ticks__(self, float s, float e, float st):
+        cdef list tick = []
+        cdef float step = s
+        while step <= e:
+            tick.append(step)
+            step += st
+        return tick
 
     def SaveFigure(self):
         cdef string out = self.ptr.build_path()
@@ -162,35 +190,20 @@ cdef class BasePlotting:
         self.matpl.xlabel(self.xTitle, size = self.AxisSize)
         self.matpl.ylabel(self.yTitle, size = self.AxisSize)
 
-        self._ax.tick_params(axis = "x", which = "minor", bottom = False)
+        if self.xLogarithmic: self.matpl.xscale("log")
+        if self.yLogarithmic: self.matpl.yscale("log")
+
+        if self.xStep > 0: self.matpl.xticks(self.__ticks__(self.xMin, self.xMax, self.xStep))
+        if self.yStep > 0: self.matpl.yticks(self.__ticks__(self.yMin, self.yMax, self.yStep))
 
         self.matpl.tight_layout()
         self.matpl.savefig(env(out), dpi = self.ptr.dpi)
         self.matpl.close("all")
 
 
-
 cdef class TH1F(BasePlotting):
 
     def __init__(self): pass
-
-    cdef void __error__(self, vector[float] xarr, vector[float] up, vector[float] low):
-        self.matpl.fill_between(xarr, low, up, facecolor = "k", alpha = 0.1, hatch = "/////", step = "mid")
-
-    cdef void __get_error_seg__(self, plot):
-        error = plot.errorbar.lines[2][0]
-
-        cdef list k
-        cdef vector[float] x_arr = []
-        cdef vector[float] y_err_up = []
-        cdef vector[float] y_err_lo = []
-
-        for i in error.get_segments():
-            k = i.tolist()
-            x_arr.push_back(k[0][0])
-            y_err_lo.push_back(k[0][1])
-            y_err_up.push_back(k[1][1])
-        self.__error__(x_arr, y_err_lo, y_err_up)
 
     @property
     def xData(self): return self.ptr.x_data;
@@ -217,36 +230,113 @@ cdef class TH1F(BasePlotting):
     @HistFill.setter
     def HistFill(self, str val): self.ptr.histfill = enc(val)
 
+    @property
+    def Stacked(self): return self.ptr.stack
+    @Stacked.setter
+    def Stacked(self, bool val): self.ptr.stack = val
+
+    @property
+    def LineWidth(self): return self.ptr.line_width
+    @LineWidth.setter
+    def LineWidth(self, float val): self.ptr.line_width = val
+
+    @property
+    def Alpha(self): return self.ptr.alpha
+    @Alpha.setter
+    def Alpha(self, float v): self.ptr.alpha
+
+    @property
+    def Density(self): return self.ptr.density
+    @Density.setter
+    def Density(self, bool val): self.ptr.density = val
+
+    cdef void __error__(self, vector[float] xarr, vector[float] up, vector[float] low):
+        self.matpl.fill_between(
+                xarr, low, up,
+                facecolor = "k",
+                hatch = "/////",
+                step  = "mid",
+                alpha = 0.1
+        )
+
+    cdef void __get_error_seg__(self, plot):
+        error = plot.errorbar.lines[2][0]
+
+        cdef list k
+        cdef vector[float] x_arr = []
+        cdef vector[float] y_err_up = []
+        cdef vector[float] y_err_lo = []
+
+        for i in error.get_segments():
+            k = i.tolist()
+            x_arr.push_back(k[0][0])
+            y_err_lo.push_back(k[0][1])
+            y_err_up.push_back(k[1][1])
+        self.__error__(x_arr, y_err_lo, y_err_up)
+
+    cdef float scale_f(self):
+        cdef float s = self.CrossSection * self.IntegratedLuminosity
+        return s/self.ptr.sum_of_weights()
+
+    cdef dict factory(self):
+        cdef dict histpl = {}
+        histpl["histtype"] = self.HistFill
+        histpl["yerr"] = self.ErrorBars
+        histpl["stack"] = self.Stacked
+        histpl["linewidth"] = self.LineWidth
+        histpl["edgecolor"] = "black"
+        histpl["alpha"] = self.Alpha
+        histpl["binticks"] = True
+        histpl["density"] = self.Density
+        histpl["flow"] = "sum"
+        histpl["label"] = []
+        histpl["H"] = []
+        return histpl
+
+    cdef __build__(self):
+        cdef float _max, _min
+        if self.set_xmin: _min = self.ptr.x_min
+        else: _min = self.ptr.get_min(b"x")
+
+        if self.set_xmax: _max = self.ptr.x_max
+        else: _max = self.ptr.get_max(b"x")
+
+        h = bh.Histogram(
+            bh.axis.Regular(self.ptr.x_bins, _min, _max), storage = bh.storage.Weight()
+        )
+        if not self.ptr.weights.size(): h.fill(self.ptr.x_data)
+        else: h.fill(self.ptr.x_data, weight = self.ptr.weights)
+        if self.ApplyScaling: h *= self.scale_f()
+        return h
+
     cdef void __compile__(self):
         cdef float _max, _min
-        if not self.set_xmin: _min = self.ptr.get_min(b"x")
-        else: _min = self.ptr.x_min
+        if self.set_xmin: _min = self.ptr.x_min
+        else: _min = self.ptr.get_min(b"x")
 
-        if not self.set_xmax: _max = self.ptr.get_max(b"x")
-        else: _max = self.ptr.x_max
+        if self.set_xmax: _max = self.ptr.x_max
+        else: _max = self.ptr.get_max(b"x")
 
-        h = bh.Histogram(bh.axis.Regular(self.ptr.x_bins, _min, _max), storage = bh.storage.Weight())
-        if self.ptr.weights.size(): h.fill(self.ptr.x_data, weight = self.ptr.weights)
-        else: h.fill(self.ptr.x_data)
-        if self.ApplyScaling: h *= self.CrossSection*self.IntegratedLuminosity / self.ptr.sum_of_weights()
+        cdef TH1F h
+        cdef dict histpl = self.factory()
+        if len(self.xData):
+            h = self.__build__()
+            histpl["H"] += [h]
+            histpl["label"] += [h.Title]
 
-        cdef dict histpl = {}
-        histpl["H"] = [h]
-        histpl["histtype"] = self.HistFill
-        #histpl["yerr"] = self.ErrorBars
-        #histpl["linewidth"] = self.LineWidth
-        #histpl["stack"] = self.Stack
-        #histpl["edgecolor"] = "black"
-        #histpl["alpha"] = self.Alpha
-        histpl["binticks"] = True
-        #histpl["density"] = self._norm
-        #histpl["flow"] = "sum" if self.OverFlow or self.UnderFlow else None
+        for h in self.Histograms:
+            h.xMin  = self.xMin
+            h.xMax  = self.xMax
+            h.xBins = self.xBins
+            histpl["H"] += [h.__build__()]
+            histpl["label"] += [h.Title]
 
         error = hep.histplot(**histpl)
         try: self.__get_error_seg__(error[0])
         except: pass
 
         self.matpl.xlim(_min, _max)
+        self.matpl.legend(loc = "upper right")
 
 cdef class TH2F(BasePlotting):
     def __cinit__(self): pass
@@ -275,8 +365,49 @@ cdef class TH2F(BasePlotting):
     @yData.setter
     def yData(self, list val): self.ptr.y_data = <vector[float]>(val)
 
+    cdef __build__(self):
+        cdef float x_max, x_min
+        if self.set_xmin: x_min = self.ptr.x_min
+        else: x_min = self.ptr.get_min(b"x")
 
+        if self.set_xmax: x_max = self.ptr.x_max
+        else: x_max = self.ptr.get_max(b"x")
 
+        cdef float y_max, y_min
+        if self.set_ymin: y_min = self.ptr.y_min
+        else: y_min = self.ptr.get_min(b"y")
+
+        if self.set_ymax: y_max = self.ptr.y_max
+        else: y_max = self.ptr.get_max(b"y")
+
+        h = bh.Histogram(
+            bh.axis.Regular(self.ptr.x_bins, x_min, x_max),
+            bh.axis.Regular(self.ptr.y_bins, y_min, y_max)
+        )
+
+        h.fill(self.ptr.x_data, self.ptr.y_data)
+        return h
+
+    cdef void __compile__(self):
+        cdef dict histpl = {}
+        histpl["H"] = self.__build__()
+        error = hep.hist2dplot(**histpl)
+
+        cdef float x_max, x_min
+        if self.set_xmin: x_min = self.ptr.x_min
+        else: x_min = self.ptr.get_min(b"x")
+
+        if self.set_xmax: x_max = self.ptr.x_max
+        else: x_max = self.ptr.get_max(b"x")
+
+        cdef float y_max, y_min
+        if self.set_ymin: y_min = self.ptr.y_min
+        else: y_min = self.ptr.get_min(b"y")
+
+        if self.set_ymax: y_max = self.ptr.y_max
+        else: y_max = self.ptr.get_max(b"y")
+        self.matpl.xlim(x_min, x_max)
+        self.matpl.ylim(y_min, y_max)
 
 cdef class TLine(BasePlotting):
     def __cinit__(self): pass

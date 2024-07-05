@@ -17,3 +17,7 @@ cdef extern from "topkinematics.h":
 
 cdef class TopKinematics(SelectionTemplate):
     cdef topkinematics* tt
+    cdef public dict res_top_kinematics
+    cdef public dict spec_top_kinematics
+    cdef public dict mass_combi
+    cdef public dict deltaR

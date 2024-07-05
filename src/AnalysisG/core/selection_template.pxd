@@ -19,4 +19,5 @@ cdef extern from "<templates/selection_template.h>":
 
 cdef class SelectionTemplate:
     cdef selection_template* ptr
+    cdef void transform_dict_keys(self)
 

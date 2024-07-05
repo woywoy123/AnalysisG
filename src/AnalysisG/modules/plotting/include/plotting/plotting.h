@@ -32,7 +32,7 @@ class plotting: public tools
 
         int x_bins = 100; 
         int y_bins = 100; 
-        bool errors = true; 
+        bool errors = false; 
 
         // cosmetics
         std::string style = "ROOT"; 
@@ -40,6 +40,14 @@ class plotting: public tools
         std::string ytitle = "y-axis"; 
         std::string xtitle = "x-axis"; 
         std::string histfill = "fill"; 
+        bool stack   = false; 
+        bool density = false;
+        bool x_logarithmic = false; 
+        bool y_logarithmic = false; 
+        float line_width = 1; 
+        float alpha      = 0.4; 
+        float x_step     = -1; 
+        float y_step     = -1; 
 
         // fonts
         float font_size = 10; 

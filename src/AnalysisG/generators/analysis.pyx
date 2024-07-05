@@ -20,6 +20,7 @@ cdef class Analysis:
 
     def __cinit__(self):
         self.ana = new analysis()
+        self.selections_ = []
 
     def __init__(self):
         pass
@@ -38,6 +39,7 @@ cdef class Analysis:
 
     def AddSelection(self, SelectionTemplate selc):
         self.ana.add_selection_template(selc.ptr)
+        self.selections_.append(selc)
 
     def AddModel(self, ModelTemplate model, OptimizerConfig op, str run_name):
         self.ana.add_model(model.nn_ptr, op.params, enc(run_name))
@@ -100,6 +102,9 @@ cdef class Analysis:
                 bars[itr.first] = factory(env(desc[itr.first]))
                 same[itr.first] = updr[itr.first] == repo[itr.first]
         self.ana.attach_threads()
+
+        cdef SelectionTemplate i
+        for i in self.selections_: i.transform_dict_keys()
 
     @property
     def OutputPath(self): return env(self.ana.m_settings.output_path)
