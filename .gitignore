@@ -3,15 +3,16 @@
 **/build
 **/*.egg*
 **/_Pickle
-**/PythonGNN
-setup-scripts/source_this.sh
-
-models/**/*.png
+**/gnn-analysis
+scripts/source_this.sh
 
 # Cache types 
 *.hdf5
 *.pkl
 *.root
+**.png
+**.pt
+**.pth
 
 # Cython and C++ compiler code 
 *.pyc
@@ -20,7 +21,6 @@ models/**/*.png
 *.cpp
 
 # Models
-*.pth
 
 # Installer stuff
 # setup-scripts/source_this.sh
