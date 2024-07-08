@@ -31,6 +31,7 @@ ana.AddGraph(tt, "tmp")
 ana.AddModel(m, op, "test")
 ana.kFolds = 1
 ana.Targets = ["top_edge"]
+ana.ContinueTraining = False
 ana.Evaluation = False
 ana.Validation = False
 ana.DebugMode = False
