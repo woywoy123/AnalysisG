@@ -1,4 +1,5 @@
 #include <templates/model_template.h>
+#include <fstream>
 
 void model_template::clone_settings(model_settings_t* setd){
     setd -> e_optim = this -> e_optim; 
@@ -97,12 +98,22 @@ void model_template::initialize(optimizer_params_t* op_params){
 }
 
 void model_template::save_state(){
-    torch::serialize::OutputArchive state_session; 
-    for (size_t x(0); x < this -> m_data.size(); ++x){(*this -> m_data.at(x)) -> save(state_session);}
+    torch::serialize::OutputArchive state_session;
+    //std::vector<std::vector<torch::Tensor>> data; 
+    for (size_t x(0); x < this -> m_data.size(); ++x){
+        (*this -> m_data.at(x)) -> save(state_session);
+        //data.push_back((*this -> m_data.at(x)) -> parameters()); 
+    }
+
     std::string pth = this -> model_checkpoint_path + "state/epoch-" + std::to_string(this -> epoch) + "/"; 
     this -> create_path(pth); 
     pth += "kfold-" + std::to_string(this -> kfold); 
     state_session.save_to(pth + "_model.pt"); 
+
+    //std::vector<char> chars = torch::pickle_save(data); 
+    //std::ofstream ofs((pth + "_model.zip").c_str(), std::ios::out | std::ios::binary); 
+    //ofs.write(chars.data(), chars.size()); 
+    //ofs.close(); 
 
     torch::serialize::OutputArchive state_optim; 
     this -> m_optim -> save(state_optim); 
