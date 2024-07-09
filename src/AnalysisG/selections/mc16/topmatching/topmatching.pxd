@@ -41,6 +41,3 @@ cdef class TopMatching(SelectionTemplate):
 
 
 
-
-
-

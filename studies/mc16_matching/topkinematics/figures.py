@@ -26,7 +26,7 @@ def top_pt(ana):
     tha.xMax = 1500
     tha.xBins = 100
     tha.xStep = 150
-    tha.Filename = "Figure.3.a"
+    tha.Filename = "Figure.1.a"
     tha.SaveFigure()
 
 def top_energy(ana):
@@ -48,7 +48,7 @@ def top_energy(ana):
     tha.xMax = 1500
     tha.xBins = 100
     tha.xStep = 150
-    tha.Filename = "Figure.3.b"
+    tha.Filename = "Figure.1.b"
     tha.SaveFigure()
 
 def top_phi(ana):
@@ -66,11 +66,11 @@ def top_phi(ana):
     tha.Title = "Azimuthal Angle of Truth Tops (" + mass_point + ")"
     tha.xTitle = "Azimuthal Angle ($\\phi$)"
     tha.yTitle = "Entries (arb.)"
-    tha.xMin = -3
-    tha.xMax = 3
-    tha.xBins = 30
+    tha.xMin = -3.5
+    tha.xMax = 3.5
+    tha.xBins = 400
     tha.xStep = 0.5
-    tha.Filename = "Figure.3.c"
+    tha.Filename = "Figure.1.c"
     tha.SaveFigure()
 
 def top_eta(ana):
@@ -92,13 +92,13 @@ def top_eta(ana):
     tha.xMax = 6
     tha.xBins = 60
     tha.xStep = 1
-    tha.Filename = "Figure.3.d"
+    tha.Filename = "Figure.1.d"
     tha.SaveFigure()
 
 def top_pt_energy(ana):
 
     th = path(TH2F())
-    th.Filename = "Figure.3.e"
+    th.Filename = "Figure.1.e"
     th.Title = "Energy as a Function of Transverse Momenta for Resonant Truth-Tops (" + mass_point + ")"
 
     th.xData = ana.res_top_kinematics["pt"]
@@ -117,7 +117,7 @@ def top_pt_energy(ana):
     th.SaveFigure()
 
     th = path(TH2F())
-    th.Filename = "Figure.3.f"
+    th.Filename = "Figure.1.f"
     th.Title = "Energy as a Function of Transverse Momenta for Spectator Truth-Tops (" + mass_point + ")"
     th.xData = ana.spec_top_kinematics["pt"]
     th.xMin = 0
@@ -157,7 +157,7 @@ def top_delta_r(ana):
     tha.xMax = 5
     tha.xBins = 100
     tha.xStep = 0.5
-    tha.Filename = "Figure.3.g"
+    tha.Filename = "Figure.1.g"
     tha.SaveFigure()
 
 def top_pair_mass(ana):
@@ -179,15 +179,15 @@ def top_pair_mass(ana):
     tha.xTitle = "Invariant Mass (GeV)"
     tha.yTitle = "Entries (arb.)"
     tha.xMin = 0
-    tha.xMax = 3000
-    tha.xBins = 1000
-    tha.xStep = 300
-    tha.Filename = "Figure.3.h"
+    tha.xMax = 2000
+    tha.xBins = 2000
+    tha.xStep = 150
+    tha.Filename = "Figure.1.h"
     tha.SaveFigure()
 
     th = path(TH2F())
     th.Title = "Invariant Mass as a Function of $\\Delta$R for Truth-Top Pairs (" + mass_point + ")"
-    th.Filename = "Figure.3.j"
+    th.Filename = "Figure.1.i"
 
     th.xData = sum(ana.deltaR.values(), [])
     th.xMin = 0

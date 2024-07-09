@@ -10,23 +10,35 @@ from AnalysisG.selections.mc16.topmatching.topmatching import TopMatching
 
 # figures
 import topkinematics
+import topmatching
 
 import pickle
 
-gen_data = True
+study = "topmatching"
+
+plotting_method = {
+    "topkinematics" : topkinematics,
+    "topmatching"   : topmatching,
+}
+
+smpls = "../../test/samples/dilepton/*"
+
+gen_data = False
 figure_path = "./Output/"
 for mass in ["1000", "900", "800", "700", "600", "500", "400"]:
     mass_point = "Mass." + mass + ".GeV"
-    topkinematics.figures.figure_path = figure_path
-    topkinematics.figures.mass_point = mass_point
-    #smpls = "/home/tnom6927/Downloads/DileptonCollection/m" + mass + "/*"
+    smpls = "/home/tnom6927/Downloads/DileptonCollection/m" + mass + "/*"
 
-    smpls = "../../test/samples/dilepton/*"
+    method = plotting_method[study]
+    method.figures.figure_path = figure_path
+    method.figures.mass_point  = mass_point
 
     if gen_data:
         ev = BSM4Tops()
-        #sel = TopKinematics()
-        sel = TopMatching()
+
+        sel = None
+        if study == "topkinematics": sel = TopKinematics()
+        if study == "topmatching"  : sel = TopMatching()
 
         ana = Analysis()
         ana.AddSamples(smpls, "tmp")
@@ -42,10 +54,8 @@ for mass in ["1000", "900", "800", "700", "600", "500", "400"]:
     pres = pickle.load(f)
     f.close()
 
-    #topkinematics.figures.TopKinematics(pres)
-    print(pres.truth_top)
-
-    break
+    if study == "topkinematics": method.figures.TopKinematics(pres)
+    if study == "topmatching"  : method.figures.TopMatching(pres)
 
 #th = TH1F()
 #th.Title = "Energy"

@@ -9,7 +9,7 @@ cdef class TopMatching(SelectionTemplate):
         self.ptr = new topmatching()
         self.tt = <topmatching*>self.ptr
 
-    def __init__(self, 
+    def __init__(self,
             v1 = None, v2 = None, v3 = None, v4 = None,  v5 = None,
             v6 = None, v7 = None, v8 = None, v9 = None, v10 = None
         ):

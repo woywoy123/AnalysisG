@@ -61,11 +61,12 @@ class top_children: public particle_template
         int top_index = -1;  
 
         cproperty<bool, top_children> from_res; 
-        void static get_from_res(bool*, top_children*);
 
         particle_template* clone() override; 
         void build(std::map<std::string, particle_template*>* prt, element_t* el) override;
 
+    private:
+        void static get_from_res(bool*, top_children*);
 }; 
 
 
@@ -103,8 +104,6 @@ class truthjetparton: public particle_template
         particle_template* clone() override; 
         void build(std::map<std::string, particle_template*>* prt, element_t* el) override;
 }; 
-
-
 
 
 class jet: public particle_template

@@ -99,26 +99,26 @@ void bsm_4tops::CompileEvent(){
     std::map<double, std::vector<particle_template*>> dist = {}; 
     for (itc = _TopChildren.begin(); itc != _TopChildren.end(); ++itc){
         for (int x(0); x < lep.size(); ++x){
-            dist[itc -> second -> DeltaR(lep[x])] = {itc -> second, lep[x]};
+            double dr = itc -> second -> DeltaR(lep[x]); 
+            if (dr > 0.1){continue;}
+            dist[dr] = {itc -> second, lep[x]};
         }
     }
 
     std::map<std::string, bool> accept = {}; 
     std::map<double, std::vector<particle_template*>>::iterator id;
     for (id = dist.begin(); id != dist.end(); ++id){
-        top_children* c = (top_children*)id -> second[0]; 
-        std::string hash_ = c -> hash; 
-        double dr = id -> first; 
-
+        particle_template* l = id -> second[1]; 
+        std::string    hash_ = l -> hash; 
         if (accept[hash_]){continue;}
 
+        top_children*      c = (top_children*)id -> second[0]; 
         std::map<std::string, particle_template*> ch = c -> children; 
         if (ch.size()){continue;}
 
-        c -> register_child(id -> second[1]); 
-        id -> second[1] -> register_parent(c); 
-
-        id -> second[1] -> index = c -> index; 
+        c -> register_child(l); 
+        l -> register_parent(c); 
+        l -> index = c -> index; 
         accept[hash_] = true;
     }
 

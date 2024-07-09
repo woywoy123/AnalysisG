@@ -8,9 +8,9 @@ scripts/source_this.sh
 
 # Cache types 
 *.hdf5
-*.pkl
+#*.pkl
 *.root
-**.png
+#**.png
 **.pt
 **.pth
 
@@ -20,16 +20,10 @@ scripts/source_this.sh
 *.c
 *.cpp
 
-# Models
-
-# Installer stuff
-# setup-scripts/source_this.sh
-
 # Vim related swaps 
 *.swp
 
 # Testing stuff 
 **/.tox
 **/.coverage*
-**/*EventCache*
 

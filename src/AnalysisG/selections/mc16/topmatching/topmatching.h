@@ -48,10 +48,6 @@ class topmatching: public selection_template
             }
             return out; 
         }
-
-
-
-
 }; 
 
 #endif

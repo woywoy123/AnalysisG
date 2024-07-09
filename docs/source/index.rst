@@ -4,66 +4,52 @@ A Graph Neural Network Analysis Framework for High Energy Physics!
 Abstract
 --------
 As the field of High Energy Particle Physics (HEPP) has begun exploring more exotic machine learning algorithms, such as Graph Neural Networks (GNNs).
-Analyses commonly rely on pre-existing data science frameworks, including PyTorch, TensorFlow and Keras, to recast ROOT samples into the respective data structure.
+Analyses commonly rely on pre-existing data science frameworks, including PyTorch, TensorFlow and Keras, to recast ROOT samples into some respective data structure.
 This often results in tedious and computationally expensive co-routines to be written.
 Community projects, such as UpROOT, Awkward, and Scikit-HEP are developing tools to address some of these problems.
 For instance, in the context of Graph Neural Networks, converting non-monolithic data into graphs with edge, node and graph level feature becomes increasingly complex.
 
-AnalysisG aims to address these remaining issues, by abstracting particles and events as Pythonic objects.
-The framework initially populates particle and event objects, with user defined attributes that match strings contained in ROOT samples (trees/branches/leaves).
-Particles living within the event can be retospectively matched with other particles to build complex decay chains, as is commonly done in truth matching.
-Finalized event objects can be stored as HDF5 files, to prevent redundant reading and rebuilding of these objects.
+AnalysisG aims to address these residual issues, by following a similar philosophy as *AnalysisTop*, whereby events and particles are treated as polymorphic objects.
+The framework initially translate ROOT based n-tuples into user defined particle and event objects, where strings from ROOT samples (trees/branches/leaves) are mapped to their respective attributes.
+Particles living within the event definition can be retrospectively matched with other particles to build complex decay chains, and subsequently used for truth matching studies and machine learning algorithms.
 
-To instantiate graphs, an additional template module interprets nominal Python functions as features derived from Particle and Event objects.
-Implying that several graph types can be reinterpreted from the same Event/Particle object, with minimal code adjustments. 
-Similar to the post event construction process, finalized graph types are stored as HDF5 files.
+For Graph Neural Networks in particular, graph structures can be constructed via a template graph class, which will populate (graph, node and edge) feature tensors using the event and particle definitions using simple callable functions.
+The resulting graphs can then be used for inference or supervised training sessions.
 
-In the context of GNNs, the framework contains HEPP centric PyTorch based functions, written in C++ and native CUDA kernels.
-Some of the functions included are; $\DeltaR$, Polar to Cartesian coordinate system transformations, Invariant Mass computations, edge/node single counting aggregation, analytical single/double neutrino reconstruction, and many more.
+For preliminary cut based analyses, the framework offers selection templates, which take the prior event definitions as input and allows for detailed studies, which can then be exported into ROOT n-tuples.
+Alternatively, the resulting selection templates can be assigned relevant attributes, which can be subsequently serialized and plotted as would be the case in dedicated truth studies.
 
+To facilitate faster machine learning related training/inference in high energy particle physics, the framework exploits algorithms written entirely in C++ and native CUDA kernels.
+These algorithms can be found within a self contained sub-package referred to as *pyc* and can be used outside of this framework. 
+Some of the algorithms include; :math:`\Delta R`, Polar to Cartesian coordinate system transformations, Invariant Mass computations, edge/node single counting aggregation, analytical single/double neutrino reconstruction and many more.
 
-What is Analysis-G
-------------------
-Analysis-G is a Python package which aims to abstract and automate novel High Energy Particle Physics Analyses.
-Since most of HEPP software relies on complicated ROOT files, the framework attempts to minimize the need for writing complicated and inefficient nested for loops to retrieve the content. 
-This is achieved by defining particles and events as Python classes and assigning these attributes which allow the framework to infer and assign particles to events.
-To bypass the speed limitations of Python, the underlying code has been written in C++ to assure scalability and minimize RAM usage when reading large number of ROOT files, without compromising the generality Python offers.
+Given the growing trend in machine learning, across multiple collaborations, the framework aims to remain Analysis agnostic, such that mutually exclusive ATLAS/Belle-II analyses can benefit from this framework. 
 
-The framework places heavy emphasis on optimizing the interfacing between HEPP software and the machine learning community, which utilize vastly different data structure input. 
-As such, once events are interpreted, they are stored in the HDF5 file format, thus removing the need for interacting with ROOT as early as possible.
-A particular advantage of using the framework is made apparent in the context of constructing Graph like structures, which are required for training Graph Neural Networks. 
-Since events and particles alike are abstracted into objects, their attributes can be utilized to populate Graphs with edge, node and global features in a fast and simplistic way, without resorting to repetitive code being written. 
-This will be illustrated in dedicated tutorials of the docs.
+Core Modules and Languages used by AnalysisG
+--------------------------------------------
 
-Given the growing trend in machine learning, for instance Graph Neural Networks (GNNs), the framework aims to remain Analysis agnostic, such that several mutually exclusive ATLAS/Belle-II analyses can benefit from a single optimized framework. 
+To ensure optimal performance, the package uses C++ as the underlying language, but interfaces with Python using Cython.
+Cython naturally interfaces with Python and provides minimal overhead in terms of multithreading limitations as would be the case of purely written Python code. 
+Furthermore, Cython permits the sharing of C++ classes and pointers, meaning that memory is not unintentionally copied and introducing inefficiencies.
 
-Core Packages in Analysis-G
----------------------------
+AnalysisG provides the following core modules that can be used in native C++, Cython and Python:
 
-- **EventTemplate:**
-  A class which is to be inherited by custom event implementations. 
-  This class interprets and retrieves data content found within ROOT files, and translates the ROOT structure in terms of particle content and per event attributes. 
+- **EventTemplate**: A template class used to specify to the framework which type of event and particle definitions to be used for the event.
+- **ParticleTemplate**: A template class used in conjunction with **EventTemplate** to define the underlying particle type.
+- **GraphTemplate**: A template class used to define the inclusive graph features, such as edge, node and global graph attributes. 
+- **SelectionTemplate**: A template class for defining a customized event selection algorithm. 
+- **Plotting**: A wrapper around **boost_histograms** and **mpl-hepp** that uses an object like syntax to define plotting routines.
+- **io**: A Cython interface for the CERN ROOT C++ package, which centers around being simple to use and requiring as minimal syntax as possible to read ROOT n-tuples.
+- **ModelTemplate**: A template class used to define machine learning algorithms.
+- **Analysis**: The main analysis compiler used to define chains of actions to be performed given a user defined template class.
+- **Tools**: A collection of tools that are used by the package.
+- **pyc (Python CUDA)**: A completely detached package which implements high performance native C++ and CUDA code/kernels, utilizing the **PyTorch** API. 
 
-- **ParticleTemplate:**
-  A class used to define the most minimalistic representation of a particle expected to be found within the ROOT files. 
-  Particles derived from this class will be generated on a per event basis such that the exact number of particles in each event will be made available.
+DOCUMENTATION IS STILL UNDER CONSTRUCTION
+-----------------------------------------
 
-- **GraphTemplate:**
-  A template class which is used to specify which particles are to be used for Graph construction. 
-  Graph features are assigned at a later stage of the Analysis pipeline, and will be discussed and illustrated in a dedicated tutorial. 
+**The current documentation is being updated, since a lot of changes have been made from the prior version.**
 
-- **SelectionTemplate:**
-  A class used to define a simplistic selection strategy, where particles and events (derived from **EventTemplates** and **ParticleTemplates**) will be made available for additional processing. 
-  This class can be used to output ROOT n-tuples and then passed into some fitting tool, e.g. `TRexFitter` or `PyHF`
-
-- **SampleTracer**
-  An abstract module which can be utilized as a completely standalone package and can be integrated with your own framework. 
-  This module aims to keep track of events and their original ROOT filename, and further permits fast event/graph retrieval. 
-  The output of this module is a small HDF5 file, which only holds meta-data and mappings between ROOT files and their associated event indices. 
-
-- **PyC (Python Custom)** 
-  A completely detached package which implements high performance native C++ and CUDA code/kernels, which utilize the **PyTorch** API. 
-  Several interfaces are implemented, namely switching from Cartesian to Polar coordinates, computing scalar invariant masses from particles, single/double neutrino reconstruction and many more. 
 
 
 Getting Started with AnalysisG
@@ -71,105 +57,43 @@ Getting Started with AnalysisG
 .. toctree::
    :titlesonly:
 
-   quick-start/installation.rst
-   quick-start/getting-started.rst
+   getting-started/main.rst
 
-Advanced Object Definitions
----------------------------
+
+Core Class Documentation
+------------------------
+
 .. toctree::
    :titlesonly:
 
-   quick-start/events.rst
-   quick-start/particles.rst
-   quick-start/selection.rst
-   quick-start/graphs.rst
+   core-classes/main.rst
 
-Analysis and Other Generators
------------------------------
+
+CUDA, C++ and pyc via LibTorch
+------------------------------
 .. toctree::
    :titlesonly:
 
-   generators/analysis.rst
-   generators/sampletracer.rst
-   generators/eventgenerator.rst
-   generators/graphgenerator.rst
-   generators/selectiongenerator.rst
-   generators/samplegenerator.rst
-
-Read and Writing (IO)
----------------------
-.. toctree::
-   :titlesonly:
-
-   io/uproot.rst
-   io/ntupler.rst
-
-Machine Learning (Graph Neural Network)
----------------------------------------
-.. toctree::
-   :titlesonly:
-
-   templates/features.rst
-   machinelearning/optimizer.rst
-   machinelearning/modelwrapper.rst
-   gnn_training/schedule.rst
-
-Condor and DAGMAN Submission Compilers
---------------------------------------
-.. toctree::
-   :titlesonly:
- 
-   submission/condor.rst
-
-Plotting Functions
-------------------
-.. toctree::
-   :titlesonly:
- 
-   plotting/plotting.rst
-
-Tools Multi-Threading and Code Preservation
--------------------------------------------
-.. toctree::
-   :titlesonly:
-
-   tools/tools.rst
-   tools/multithreading.rst
-   tools/code.rst
-
-Data Types and Dictionary Mapping
----------------------------------
-.. toctree::
-   :titlesonly:
-
-   cytypes/cytypes.rst
-
-PyC, CUDA and C++ API via PyTorch
----------------------------------
-.. toctree::
-   :titlesonly:
-
-   benchmarks/main.rst
    torch-extensions/main.rst
    torch-extensions/interface.rst
+
+Event and Particle Implementations
+----------------------------------
+
+.. toctree::
+   :titlesonly:
+
+   mc16-events/main.rst
+
+
 
 Analysis and Truth Studies Documentation
 ----------------------------------------
 .. toctree::
    :titlesonly:
-   :maxdepth: 0
+   :maxdepth: 1
  
-   studies/truth-matching/main.rst 
-   studies/neutrino-studies/main.rst
-   studies/strategies/main.rst
-
-ROOT n-Tuple Event Implementations
-----------------------------------
-.. toctree::
-   :maxdepth: 0
-   :titlesonly:
-
-   events/main.rst
+   studies/main.rst 
 
 Documentation and Codebase Status
 ---------------------------------
