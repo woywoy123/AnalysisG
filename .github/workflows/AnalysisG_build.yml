@@ -6,8 +6,6 @@ on:
 
       paths-ignore:
         - '**.md'
-        - '**.txt'
-        - '.readthedocs.yaml'
         - 'docs'
         - 'scripts'
 
@@ -17,8 +15,6 @@ on:
 
       paths-ignore:
         - '**.md'
-        - '**.txt'
-        - '.readthedocs.yaml'
         - 'docs'
         - 'scripts'
 
@@ -68,6 +64,7 @@ jobs:
                 cmake -DCMAKE_INSTALL_PREFIX=../install ../root_src
                 cmake --build . --config Release --target install -j12
                 source ../install/bin/thisroot.sh
+                cd ..
 
             - name: "building AnalysisG"
               run: |
