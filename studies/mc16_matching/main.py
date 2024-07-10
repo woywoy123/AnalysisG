@@ -26,7 +26,7 @@ plotting_method = {
 
 smpls = "../../test/samples/dilepton/*"
 
-gen_data = True
+gen_data = False
 figure_path = "./Output/"
 for mass in ["1000", "900", "800", "700", "600", "500", "400"]:
     mass_point = "Mass." + mass + ".GeV"

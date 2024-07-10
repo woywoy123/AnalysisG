@@ -4,14 +4,6 @@ Children-Kinematics
 A set of studies relating to the decay children of truth-tops.
 These studies aim to investigate the kinematics of the decay products from resonance tops and compare these to background spectator tops.
 
-Figure 5.a
-----------
-.. figure:: ./figures/Figure.5.a.png
-   :align: center
-   :name: Figure.5.a
-
-   A plot of the transverse momenta of truth children originating from resonance and spectator tops.
-
 Figure 5.b
 ----------
 .. figure:: ./figures/Figure.5.b.png

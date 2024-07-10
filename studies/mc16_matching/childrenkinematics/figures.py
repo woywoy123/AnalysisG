@@ -437,7 +437,7 @@ def dr_clustering(ana):
     th.Filename = "Figure.3.r"
     th.SaveFigure()
 
-    th2 = TH2F()
+    th2 = path(TH2F())
     th2.Title = "Invariant Mass of Summed Truth Children with Respect to $\\Delta$R between Adjacent Truth Children"
     th2.xData = sum(ana.dr_clustering.values(), [])
     th2.yData = sum(ana.mass_clustering.values(), [])
@@ -455,11 +455,10 @@ def dr_clustering(ana):
     th2.xMax = 6
     th2.yMax = 1500
 
-    th2.OutputDirectory = figure_path + "children-kinematics/figures"
     th2.SaveFigure()
 
 
-    th2 = TH2F()
+    th2 = path(TH2F())
     th2.Title = "$\\Delta$R between Truth Children and Top-Quark Transverse Momenta"
     th2.xData = sum(ana.dr_clustering.values(), [])
     th2.yData = sum(ana.top_pt_clustering.values(), [])
@@ -477,11 +476,10 @@ def dr_clustering(ana):
     th2.xMax = 6
     th2.yMax = 1000
 
-    th2.OutputDirectory = figure_path + "children-kinematics/figures"
     th2.SaveFigure()
 
 
-    th2 = TH2F()
+    th2 = path(TH2F())
     th2.Title = "$\\Delta$R between Adjacent Truth Children and Top-Quark Energy"
     th2.xData = sum(ana.dr_clustering.values(), [])
     th2.yData = sum(ana.top_energy_clustering.values(), [])
@@ -499,7 +497,6 @@ def dr_clustering(ana):
     th2.xMax = 6
     th2.yMax = 1000
 
-    th2.OutputDirectory = figure_path + "children-kinematics/figures"
     th2.SaveFigure()
 
     modes = [
