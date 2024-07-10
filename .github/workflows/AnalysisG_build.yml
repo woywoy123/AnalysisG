@@ -67,7 +67,7 @@ jobs:
                 cd build 
 
                 cmake -DCMAKE_INSTALL_PREFIX=../install ../root_src
-                cmake --build . --config Release --target install -j12
+                cmake --build . --target install -j12
                 source ../install/bin/thisroot.sh
                 cd ..
 
