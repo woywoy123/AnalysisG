@@ -3,6 +3,7 @@ set(SKBUILD_PROJECT_NAME AnalysisG)
 
 project(${SKBUILD_PROJECT_NAME} VERSION ${SKBUILD_PROJECT_VERSION} LANGUAGES CXX C)
 include(FetchContent)
+include(ExternalProject)
 
 include(CheckLanguage)
 check_language(CUDA)
@@ -26,10 +27,6 @@ find_package(Torch)
 find_package(RapidJSON)
 find_package(PythonInterp)
 find_package(ROOT)
-
-if (NOT ROOT_FOUND)
-FetchContent_Declare(ROOT URL https://root.cern/download/root_v6.30.04.source.tar.gz FIND_PACKAGE_ARGS)
-endif()
 
 if (NOT RapidJSON_FOUND)
 FetchContent_Declare(RapidJSON GIT_REPOSITORY https://github.com/Tencent/rapidjson.git)
@@ -59,15 +56,24 @@ FIND_PACKAGE_ARGS)
 FetchContent_MakeAvailable(HDF5)
 endif()
 
+if (NOT ROOT_FOUND)
+ExternalProject_add(ROOT
+    URL https://root.cern/download/root_v6.30.04.source.tar.gz 
+    CMAKE_ARGS
+    -Dpyroot:BOOL=OFF
+    -Dpyroot_experimental:BOOL=OFF
+)
+endif()
+
+include(${ROOT_USE_FILE})
+message(STATUS "ROOT: ${ROOT_INCLUDE_DIRS}")
+include_directories(${ROOT_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR})
+link_directories(${ROOT_LIBRARY_DIR})
+
 find_package(Python COMPONENTS Interpreter Development REQUIRED)
 find_package(ROOT REQUIRED COMPONENTS RIO Tree Core)
 find_package(HDF5 COMPONENTS C CXX REQUIRED)
 find_package(Torch REQUIRED)
-
-message(STATUS "ROOT: ${ROOT_INCLUDE_DIRS}")
-include(${ROOT_USE_FILE})
-include_directories(${ROOT_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR})
-link_directories(${ROOT_LIBRARY_DIR})
 
 set(HDF5_USE_CXX TRUE)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")

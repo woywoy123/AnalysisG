@@ -15,11 +15,11 @@ dependencies = [
 ]
 
 [tool.scikit-build]
-#build-dir = "build"
+build-dir = "build_scikit"
 wheel.license-files = []
 logging.level = "INFO"
 cmake.version = ">=3.23"
 cmake.verbose = true
 
-ninja.make-fallback = false
+ninja.make-fallback = true
 sdist.cmake = true
