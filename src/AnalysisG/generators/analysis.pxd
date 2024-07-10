@@ -22,6 +22,8 @@ cdef extern from "<generators/analysis.h>":
         void add_event_template(event_template* ev, string label) except +
         void add_graph_template(graph_template* ev, string label) except +
         void add_model(model_template* model, optimizer_params_t* op, string run_name) except +
+        void add_model(model_template* model, string run_name) except +
+
         void start() except +
         void attach_threads() except +
 

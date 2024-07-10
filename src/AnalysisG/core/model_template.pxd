@@ -20,6 +20,7 @@ cdef extern from "<templates/model_template.h>":
 
         string device
         string name
+        string model_checkpoint_path
 
 cdef class ModelTemplate:
 

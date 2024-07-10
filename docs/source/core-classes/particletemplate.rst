@@ -1,5 +1,10 @@
+.. _particle-template:
+
 ParticleTemplate Methods
 ------------------------
+
+This part of the documentation highlights some useful features that are part of the template class. 
+The particle_template class inherits from the tools class and uses the particle_t struct defined under the structs module.
 
 .. cpp:class:: particle_template: public tools
 

@@ -20,13 +20,14 @@ class dataloader:
         std::vector<graph_t*>* get_k_train_set(int k); 
         std::vector<graph_t*>* get_k_validation_set(int k); 
         std::vector<graph_t*>* get_test_set(); 
+        std::map<std::string, std::vector<graph_t*>>* get_inference(); 
 
         void generate_test_set(float percentage = 50); 
         void generate_kfold_set(int k); 
 
         std::vector<graph_t*> get_random(int num = 5); 
         void extract_data(graph_t* gr); 
-        void datatransfer(torch::TensorOptions* op); 
+        void datatransfer(torch::TensorOptions* op);
 
     private:
         void clean_data_elements(

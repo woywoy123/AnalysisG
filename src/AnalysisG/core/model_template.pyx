@@ -71,3 +71,9 @@ cdef class ModelTemplate:
 
     @device.setter
     def device(self, str dev): self.nn_ptr.device = enc(dev)
+
+    @property
+    def checkpoint_path(self): return env(self.nn_ptr.model_checkpoint_path)
+
+    @checkpoint_path.setter
+    def checkpoint_path(self, str pth): self.nn_ptr.model_checkpoint_path = enc(pth)

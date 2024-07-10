@@ -34,6 +34,11 @@ void analysis::add_model(model_template* model, optimizer_params_t* op, std::str
     this -> model_sessions.push_back(para);  
 }
 
+void analysis::add_model(model_template* model, std::string run_name){
+    this -> model_session_names.push_back(run_name); 
+    this -> model_inference[run_name] = model; 
+}
+
 void analysis::build_project(){
     this -> create_path(this -> m_settings.output_path); 
     std::string model_path = this -> m_settings.output_path; 
@@ -49,22 +54,21 @@ void analysis::build_project(){
 
 void analysis::start(){
     this -> build_events(); 
-    if (this -> selection_names.size()){
-        this -> build_selections();
-    }
-
-    if (this -> graph_labels.size()){
-        this -> build_graphs();
-    }
-
+    if (this -> selection_names.size()){this -> build_selections();}
+    if (this -> graph_labels.size()){this -> build_graphs();}
     this -> tracer -> compile_objects(); 
-
     if (this -> selection_names.size()){
         this -> tracer -> fill_selections(&this -> selection_names); 
     } 
 
-    if (!this -> model_sessions.size()){return;}
-    this -> build_dataloader();
-    this -> build_project(); 
-    this -> build_model_session();  
+    if (this -> model_sessions.size()){
+        this -> build_dataloader(true);
+        this -> build_project(); 
+        this -> build_model_session();  
+    }
+
+    if (this -> model_inference.size()){
+        this -> build_dataloader(false); 
+        this -> build_inference(); 
+    }
 }

@@ -42,8 +42,7 @@ ana.AddSamples(root1, "tmp")
 ana.AddEvent(x, "tmp")
 ana.AddGraph(tt, "tmp")
 
-for i in range(len(optims)):
-    ana.AddModel(trains[i], optims[i], params[i][0])
+for i in range(len(optims)): ana.AddModel(trains[i], optims[i], params[i][0])
 
 ana.kFolds = 2
 ana.Epochs = 2

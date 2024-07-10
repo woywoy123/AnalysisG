@@ -30,14 +30,9 @@ void analysis::build_graphs(){
     this -> success("Built Graphs from Events"); 
 }
 
-void analysis::build_dataloader(){
+void analysis::build_dataloader(bool training){
     this -> tracer -> populate_dataloader(this -> loader); 
+    if (!training){return;}
     this -> loader -> generate_test_set(this -> m_settings.train_size);
     this -> loader -> generate_kfold_set(this -> m_settings.kfolds); 
 }
-
-
-
-
-
-

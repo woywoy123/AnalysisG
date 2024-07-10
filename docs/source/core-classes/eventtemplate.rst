@@ -4,7 +4,7 @@ EventTemplate Methods
 ---------------------
 
 This part of the documentation highlights some useful features that are part of the template class. 
-Some event_template class inherits from the tools class and uses the event_t struct defined under the structs module.
+The event_template class inherits from the tools class and uses the event_t struct defined under the structs module.
 
 .. cpp:class:: event_template: public tools
 

@@ -1,5 +1,5 @@
-Truth Study: ChildrenKinematics for Various Mass Points of the Heavy Boson Resonance
-------------------------------------------------------------------------------------
+Truth Study: ChildrenKinematics
+-------------------------------
 
 A set of studies relating to the decay children of truth-tops.
 These studies aim to investigate the kinematics of the decay products from resonance tops and compare these to background spectator tops.
@@ -27,5 +27,11 @@ These studies aim to investigate the kinematics of the decay products from reson
    figure3r.rst
    figure3s.rst
    figure3t.rst
+   figure3u.rst
+   figure3v.rst
+   figure3w.rst
+   figure3x.rst
+   figure3y.rst
+   figure3z.rst
 
 

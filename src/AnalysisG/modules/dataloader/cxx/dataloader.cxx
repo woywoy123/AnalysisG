@@ -165,6 +165,19 @@ std::vector<graph_t*>* dataloader::get_test_set(){
     return output; 
 }
 
+std::map<std::string, std::vector<graph_t*>>* dataloader::get_inference(){
+    for (size_t x(0); x < this -> data_set -> size(); ++x){
+        graph_t* gr = this -> data_set -> at(x); 
+
+
+    }
+
+
+
+
+    return nullptr; 
+}
+
 void dataloader::extract_data(graph_t* gr){
     this -> clean_data_elements(&gr -> truth_map_graph, &this -> truth_map_graph); 
     this -> clean_data_elements(&gr -> truth_map_node , &this -> truth_map_node);
@@ -179,9 +192,7 @@ void dataloader::extract_data(graph_t* gr){
 
 void dataloader::datatransfer(torch::TensorOptions* op){
     auto lamb = [](std::vector<graph_t*>* data, torch::TensorOptions* op){
-        for (size_t f(0); f < data -> size(); ++f){
-            data -> at(f) -> transfer_to_device(op);
-        }
+        for (size_t f(0); f < data -> size(); ++f){data -> at(f) -> transfer_to_device(op);}
     }; 
 
     if (!this -> data_set){return;}

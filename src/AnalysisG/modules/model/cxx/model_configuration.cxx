@@ -98,22 +98,26 @@ void model_template::initialize(optimizer_params_t* op_params){
 }
 
 void model_template::save_state(){
-    torch::serialize::OutputArchive state_session;
-    //std::vector<std::vector<torch::Tensor>> data; 
-    for (size_t x(0); x < this -> m_data.size(); ++x){
-        (*this -> m_data.at(x)) -> save(state_session);
-        //data.push_back((*this -> m_data.at(x)) -> parameters()); 
-    }
-
-    std::string pth = this -> model_checkpoint_path + "state/epoch-" + std::to_string(this -> epoch) + "/"; 
+    std::string pth = this -> model_checkpoint_path; 
+    pth += "state/epoch-" + std::to_string(this -> epoch) + "/"; 
     this -> create_path(pth); 
     pth += "kfold-" + std::to_string(this -> kfold); 
-    state_session.save_to(pth + "_model.pt"); 
 
-    //std::vector<char> chars = torch::pickle_save(data); 
-    //std::ofstream ofs((pth + "_model.zip").c_str(), std::ios::out | std::ios::binary); 
-    //ofs.write(chars.data(), chars.size()); 
-    //ofs.close(); 
+    if (this -> use_pkl){
+        std::vector<std::vector<torch::Tensor>> data; 
+        for (size_t x(0); x < this -> m_data.size(); ++x){
+            data.push_back((*this -> m_data.at(x)) -> parameters()); 
+        }
+        std::vector<char> chars = torch::pickle_save(data); 
+        std::ofstream ofs((pth + "_model.zip").c_str(), std::ios::out | std::ios::binary); 
+        ofs.write(chars.data(), chars.size()); 
+        ofs.close(); 
+        return; 
+    }
+
+    torch::serialize::OutputArchive state_session;
+    for (size_t x(0); x < this -> m_data.size(); ++x){(*this -> m_data.at(x)) -> save(state_session);}
+    state_session.save_to(pth + "_model.pt"); 
 
     torch::serialize::OutputArchive state_optim; 
     this -> m_optim -> save(state_optim); 
@@ -121,15 +125,29 @@ void model_template::save_state(){
 }
 
 bool model_template::restore_state(){
-    torch::serialize::InputArchive state_session; 
-    std::string pth = this -> model_checkpoint_path + "state/epoch-" + std::to_string(this -> epoch) + "/"; 
-    pth += "kfold-" + std::to_string(this -> kfold); 
-    if (!this -> is_file(pth + "_model.pt")){return false;}
+    std::string model_pth = "";
+    std::string optim_pth = ""; 
+    if (this -> ends_with(&this -> model_checkpoint_path, ".pt")){
+        model_pth = this -> model_checkpoint_path;
+        this -> inference_mode = true; 
+    }
+    else {
+        std::string pth = this -> model_checkpoint_path; 
+        pth += "state/epoch-" + std::to_string(this -> epoch) + "/"; 
+        pth += "kfold-" + std::to_string(this -> kfold); 
+        model_pth = pth + "_model.pt"; 
+        optim_pth = pth + "_optimizer.pt"; 
+    }
 
-    state_session.load_from(pth + "_model.pt");
+    if (!this -> is_file(model_pth)){return false;}
+
+    torch::serialize::InputArchive state_session; 
+    state_session.load_from(model_pth);
     for (size_t x(0); x < this -> m_data.size(); ++x){(*this -> m_data.at(x)) -> load(state_session);}
+
+    if (this -> inference_mode){return true;}
     torch::serialize::InputArchive state_optim; 
-    state_optim.load_from(pth + "_optimizer.pt"); 
+    state_optim.load_from(optim_pth); 
     this -> m_optim -> load(state_optim); 
     this -> m_optim -> step();  
     return true; 

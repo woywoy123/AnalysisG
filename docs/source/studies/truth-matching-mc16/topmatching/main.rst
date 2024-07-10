@@ -1,5 +1,5 @@
-Truth Study: TopMatching for Various Mass Points of the Heavy Boson Resonance
------------------------------------------------------------------------------
+Truth Study: TopMatching
+------------------------
 
 Studies relating to the truth matching scheme being used to assign reconstructed detector physics objects to individual top quarks (from truth).
 The aim is to investigate the best possible top reconstructibility available at different truth levels.

@@ -10,7 +10,7 @@ scripts/source_this.sh
 **.hdf5
 **.pkl
 **.root
-**.png
+#**.png
 **.pt
 **.pth
 

@@ -77,4 +77,3 @@ void sampletracer::fill_selections(std::map<std::string, selection_template*>* i
     }
 }
 
-

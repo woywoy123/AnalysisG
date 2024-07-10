@@ -19,9 +19,13 @@ class model_template:
         // set device of model
         cproperty<std::string, model_template> name; 
         cproperty<std::string, model_template> device;
-        std::string model_checkpoint_path; 
+
+        // model state
         int kfold; 
         int epoch; 
+        bool use_pkl = false; 
+        bool inference_mode = false; 
+        std::string model_checkpoint_path = ""; 
 
         // target properties for each graph object: name - loss
         cproperty<
@@ -76,7 +80,6 @@ class model_template:
         torch::Tensor compute_loss(std::string, graph_enum); 
 
         void evaluation_mode(bool mode = true); 
-
 
         void save_state(); 
         bool restore_state(); 

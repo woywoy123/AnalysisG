@@ -44,6 +44,9 @@ cdef class Analysis:
     def AddModel(self, ModelTemplate model, OptimizerConfig op, str run_name):
         self.ana.add_model(model.nn_ptr, op.params, enc(run_name))
 
+    def AddModelInference(self, ModelTemplate model, str run_name = "run_name"):
+        self.ana.add_model(model.nn_ptr, enc(run_name))
+
     def Start(self):
         def factory(title):
             pdar = tqdm(
