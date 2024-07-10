@@ -5,9 +5,10 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: checkout repo
+        uses: actions/checkout@v3
       - name: installing env
-         run:|
+        run: |
            sudo apt install libxpm-dev
            
       - name: Building binary wheel
@@ -24,11 +25,12 @@ jobs:
     name: Build source distribution
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: checkout
+        uses: actions/checkout@v3
       - name: installing env
-         run:|
+        run: |
            sudo apt install libxpm-dev
-
+           
       - name: Build sdist
         run: pipx run build --sdist
 
