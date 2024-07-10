@@ -44,7 +44,7 @@ class plotting: public tools
         bool density = false;
         bool x_logarithmic = false; 
         bool y_logarithmic = false; 
-        float line_width = 1; 
+        float line_width = 0.1; 
         float alpha      = 0.4; 
         float x_step     = -1; 
         float y_step     = -1; 
@@ -68,8 +68,6 @@ class plotting: public tools
         std::vector<float> weights = {}; 
         float cross_section = -1; 
         float integrated_luminosity = 140.1; //fb-1
-
-
 }; 
 
 #endif 

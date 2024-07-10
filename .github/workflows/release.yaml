@@ -5,11 +5,24 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
+        - name: "Building ROOT from source"
+          run: |
+            sudo apt update
+            sudo apt install -y libhdf5-dev
+            sudo apt install -y rapidjson-dev
+            sudo apt-get install -y binutils cmake dpkg-dev g++ gcc libssl-dev git libx11-dev
+            sudo apt-get install -y libxext-dev libxft-dev libxpm-dev libtbb-dev
+
+            git clone --branch latest-stable --depth=1 https://github.com/root-project/root.git root_src
+            mkdir build install
+            cd build 
+
+            cmake -DCMAKE_INSTALL_PREFIX=../install ../root_src
+            cmake --build . --config Release --target install -j12
+            source ../install/bin/thisroot.sh
+
       - name: checkout repo
         uses: actions/checkout@v3
-      - name: installing env
-        run: |
-           sudo apt install libxpm-dev
            
       - name: Building binary wheel
         uses: pypa/cibuildwheel@v2.15.0
@@ -27,9 +40,6 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
-      - name: installing env
-        run: |
-           sudo apt install libxpm-dev
            
       - name: Build sdist
         run: pipx run build --sdist

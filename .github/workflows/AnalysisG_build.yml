@@ -3,32 +3,24 @@ on:
   pull_request:
       branches:
         - "master"
-        - "dev"
 
       paths-ignore:
         - '**.md'
         - '**.txt'
         - '.readthedocs.yaml'
         - 'docs'
-        - 'models'
-        - 'setup-scripts'
-        - 'tutorial'
-        - 'Dockerfile'
+        - 'scripts'
 
   push:
       branches:
         - "master"
-        - "dev"
 
       paths-ignore:
         - '**.md'
         - '**.txt'
         - '.readthedocs.yaml'
         - 'docs'
-        - 'models'
-        - 'setup-scripts'
-        - 'tutorial'
-        - 'Dockerfile'
+        - 'scripts'
 
 defaults:
   run:
@@ -42,16 +34,15 @@ jobs:
                 fail-fast: false
                 matrix:
                     os:
-                        - ubuntu-20.04
-                        - ubuntu-22.04
+                      #- ubuntu-20.04
+                      #- ubuntu-22.04
                         - ubuntu-latest
 
                     python-version:
-                        - "3.7"
-                        - "3.8"
-                        - "3.9"
-                        - "3.10"
-                        - "3.11"
+                      #  - "3.9"
+                      #  - "3.10"
+                      #  - "3.11"
+                        - "3.12"
 
         steps:      
             - name: "Checkout the repo"
@@ -61,6 +52,24 @@ jobs:
               uses: "actions/setup-python@v4"
               with: 
                 python-version: "${{ matrix.python-version }}"
-           
+            
+            - name: "Building ROOT from source"
+              run: |
+                sudo apt update
+                sudo apt install -y libhdf5-dev
+                sudo apt install -y rapidjson-dev
+                sudo apt-get install -y binutils cmake dpkg-dev g++ gcc libssl-dev git libx11-dev
+                sudo apt-get install -y libxext-dev libxft-dev libxpm-dev libtbb-dev
+
+                git clone --branch latest-stable --depth=1 https://github.com/root-project/root.git root_src
+                mkdir build install
+                cd build 
+
+                cmake -DCMAKE_INSTALL_PREFIX=../install ../root_src
+                cmake --build . --config Release --target install -j12
+                source ../install/bin/thisroot.sh
+
             - name: "building AnalysisG"
-              run: python -m pipx run build
+              run: |
+                python -m pip install pipx
+                python -m pipx run build --sdist

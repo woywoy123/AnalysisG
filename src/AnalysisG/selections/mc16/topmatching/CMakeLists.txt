@@ -16,7 +16,8 @@ VERBATIM
 COMMAND 
     Python::Interpreter -m cython --cplus 
     ${CMAKE_CURRENT_SOURCE_DIR}/topmatching.pyx 
-    --output-file topmatching.cpp)
+    --output-file topmatching.cpp
+)
 
 python_add_library(topmatching MODULE topmatching.cpp WITH_SOABI)
 target_link_libraries(topmatching LINK_PUBLIC cmc16_topmatching)

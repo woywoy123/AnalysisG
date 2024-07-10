@@ -51,4 +51,10 @@ cdef inline dict as_dict(map[string, vector[base_types]]* inpt):
     for pair in dref(inpt): output[env(pair.first)] = as_list(&pair.second)
     return output
 
+cdef inline dict as_dict_dict(map[string, map[string, vector[base_types]]]* inpt):
+    cdef dict output = {}
+    cdef pair[string, map[string, vector[base_types]]] itr
+    for pair in dref(inpt): output[env(pair.first)] = as_dict(&pair.second)
+    return output
+
 
