@@ -1,15 +1,13 @@
 [build-system]
-requires = ["pip", "scikit-build-core"]
-build-backend = "scikit_build_core.build"
+requires = ["pip", "setuptools"]
+build-backend = "setuptools.build_meta"
 
 [project]
-name = "AnalysisG-docs"
+name = "docs"
 version = "5.0"
 authors = []
 requires-python = ">=3.7"
 dependencies = ["sphinx-rtd-theme"]
 
-[tool.scikit-build]
-build-dir = "build"
-wheel.license-files = []
-logging.level = "INFO"
+[tool.setuptools.packages.find]
+where = ["source"]
