@@ -63,4 +63,8 @@ jobs:
                 python-version: "${{ matrix.python-version }}"
            
             - name: "building AnalysisG"
-              run: python -m pipx run build
+              run: |
+                sudo apt install libxpm-dev
+                sudo apt install libhdf5-dev
+                python -m pip install pipx
+                python -m pipx run build
