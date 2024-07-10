@@ -10,6 +10,7 @@ jobs:
       - name: installing env
         run: |
            sudo apt install libxpm-dev
+           sudo snap install root-framework
            
       - name: Building binary wheel
         uses: pypa/cibuildwheel@v2.15.0
