@@ -7,21 +7,21 @@
 scripts/source_this.sh
 
 # Cache types 
-*.hdf5
-#*.pkl
-*.root
-#**.png
+**.hdf5
+**.pkl
+**.root
+**.png
 **.pt
 **.pth
 
 # Cython and C++ compiler code 
-*.pyc
-*.so
-*.c
-*.cpp
+**.pyc
+**.so
+**.c
+**.cpp
 
 # Vim related swaps 
-*.swp
+**.swp
 
 # Testing stuff 
 **/.tox

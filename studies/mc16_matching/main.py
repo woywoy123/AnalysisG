@@ -7,23 +7,26 @@ from AnalysisG.events.event_bsm_4tops import BSM4Tops
 # truth study
 from AnalysisG.selections.mc16.topkinematics.topkinematics import TopKinematics
 from AnalysisG.selections.mc16.topmatching.topmatching import TopMatching
+from AnalysisG.selections.mc16.childrenkinematics.childrenkinematics import ChildrenKinematics
 
 # figures
 import topkinematics
 import topmatching
+import childrenkinematics
 
 import pickle
 
-study = "topmatching"
+study = "childrenkinematics"
 
 plotting_method = {
-    "topkinematics" : topkinematics,
-    "topmatching"   : topmatching,
+    "topkinematics"      : topkinematics,
+    "topmatching"        : topmatching,
+    "childrenkinematics" : childrenkinematics
 }
 
 smpls = "../../test/samples/dilepton/*"
 
-gen_data = False
+gen_data = True
 figure_path = "./Output/"
 for mass in ["1000", "900", "800", "700", "600", "500", "400"]:
     mass_point = "Mass." + mass + ".GeV"
@@ -37,8 +40,9 @@ for mass in ["1000", "900", "800", "700", "600", "500", "400"]:
         ev = BSM4Tops()
 
         sel = None
-        if study == "topkinematics": sel = TopKinematics()
-        if study == "topmatching"  : sel = TopMatching()
+        if study == "topkinematics"      : sel = TopKinematics()
+        if study == "topmatching"        : sel = TopMatching()
+        if study == "childrenkinematics" : sel = ChildrenKinematics()
 
         ana = Analysis()
         ana.AddSamples(smpls, "tmp")
@@ -54,21 +58,7 @@ for mass in ["1000", "900", "800", "700", "600", "500", "400"]:
     pres = pickle.load(f)
     f.close()
 
-    if study == "topkinematics": method.figures.TopKinematics(pres)
-    if study == "topmatching"  : method.figures.TopMatching(pres)
-
-#th = TH1F()
-#th.Title = "Energy"
-#th.xData = res_top_kinematics[b"energy"]
-#th.Filename = "figure.x"
-#th.HistFill = "step"
-#th.ErrorBars = True
-#th.ApplyScaling = True
-#th.xMin = 0
-#th.CrossSection = (1.0665e-5)*10e-6
-#
-#th.xMax = 1000
-#th.xBins = 100
-#th.SaveFigure()
-#
+    if study == "topkinematics"      : method.figures.TopKinematics(pres)
+    if study == "topmatching"        : method.figures.TopMatching(pres)
+    if study == "childrenkinematics" : method.figures.ChildrenKinematics(pres)
 
