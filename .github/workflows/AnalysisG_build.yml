@@ -66,7 +66,7 @@ jobs:
                 mkdir build install
                 cd build 
 
-                cmake -DCMAKE_INSTALL_PREFIX=../install ../root_src
+                cmake -Dxrootd=OFF -Dbuiltin_xrootd=OFF -DCMAKE_INSTALL_PREFIX=../install ../root_src
                 cmake --build . --target install -j12
                 source ../install/bin/thisroot.sh
                 cd ..
