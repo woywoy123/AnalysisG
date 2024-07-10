@@ -11,6 +11,10 @@ jobs:
         run: |
            sudo apt install libxpm-dev
            sudo snap install root-framework
+      - name: "Python "
+        uses: "actions/setup-python@v4"
+        with:
+          python-version: "3.12"
            
       - name: Building binary wheel
         uses: pypa/cibuildwheel@v2.15.0
