@@ -4,9 +4,13 @@
 #include <notification/notification.h>
 #include <templates/graph_template.h>
 #include <templates/lossfx.h>
+#include <structs/settings.h>
 
 class metrics; 
 class analysis; 
+class model_template; 
+
+void execution(model_template*, std::vector<graph_t*>*, std::string, settings_t*); 
 
 class model_template: 
     public notification, 
@@ -86,6 +90,7 @@ class model_template:
 
         friend class metrics; 
         friend class analysis;
+        friend void execution(model_template*, std::vector<graph_t*>*, std::string, settings_t*); 
 
     private:
         static void set_input_features(

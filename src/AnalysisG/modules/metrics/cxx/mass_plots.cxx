@@ -156,7 +156,6 @@ void metrics::add_th1f_mass(
     std::map<std::string, std::vector<torch::Tensor>> truth_mass = graph::cuda::edge_aggregation(edge_index_, truth_, *pmc); 
     torch::Tensor truth_mass_cu = physics::cuda::M(truth_mass["1"][1]); 
 
-
     pred_mass_cu  = pred_mass_cu.index({(pred_mass_cu > 0).view({-1})}); 
     truth_mass_cu = truth_mass_cu.index({(truth_mass_cu > 0).view({-1})}); 
 

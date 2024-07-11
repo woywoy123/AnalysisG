@@ -1,3 +1,4 @@
+add_subdirectory(typecasting)
 add_subdirectory(notification)
 add_subdirectory(structs)
 add_subdirectory(tools)

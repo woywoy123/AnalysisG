@@ -43,7 +43,7 @@ class tools
                 out.push_back(std::vector<G>(v -> begin() + ib, v -> begin() + end)); 
             }
             return out; 
-        };
+        }
 
         template <typename g>
         g max(std::vector<g>* inpt){

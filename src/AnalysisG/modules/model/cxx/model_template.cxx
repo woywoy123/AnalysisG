@@ -51,7 +51,7 @@ torch::Tensor* model_template::assign_features(std::string inpt, graph_enum type
         case graph_enum::truth_graph: tn = data -> get_truth_graph(inpt); std::get<0>(this -> m_o_graph[inpt]) = tn; break;  
         case graph_enum::truth_node:  tn = data -> get_truth_node(inpt);  std::get<0>(this -> m_o_node[inpt])  = tn; break;  
         case graph_enum::truth_edge:  tn = data -> get_truth_edge(inpt);  std::get<0>(this -> m_o_edge[inpt])  = tn; break;  
-        default: return nullptr; 
+        default: return tn; 
     }
     return tn; 
 }
@@ -60,32 +60,35 @@ void model_template::forward(graph_t* data, bool train){
     data -> transfer_to_device(this -> m_option); 
     this -> flush_outputs(); 
 
+    graph_enum mode; 
     std::map<std::string, torch::Tensor*>::iterator itr;
-    for (itr = this -> m_i_graph.begin(); itr != this -> m_i_graph.end(); ++itr){
-        this -> assign_features(itr -> first, graph_enum::data_graph, data);
-    }
-
-    for (itr = this -> m_i_node.begin(); itr != this -> m_i_node.end(); ++itr){
-        this -> assign_features(itr -> first, graph_enum::data_node, data);
-    }
-
-    for (itr = this -> m_i_edge.begin(); itr != this -> m_i_edge.end(); ++itr){
-        this -> assign_features(itr -> first, graph_enum::data_edge, data);
-    }
-
     std::map<std::string, std::tuple<torch::Tensor*, loss_enum>>::iterator itx; 
-    for (itx = this -> m_o_graph.begin(); itx != this -> m_o_graph.end(); ++itx){
-        this -> assign_features(itx -> first, graph_enum::truth_graph, data);
-    }
-    
-    for (itx = this -> m_o_node.begin(); itx != this -> m_o_node.end(); ++itx){
-        this -> assign_features(itx -> first, graph_enum::truth_node, data);
-    }
- 
-    for (itx = this -> m_o_edge.begin(); itx != this -> m_o_edge.end(); ++itx){
-        this -> assign_features(itx -> first, graph_enum::truth_edge, data);
-    }
+
     this -> edge_index = data -> edge_index; 
+
+    mode = graph_enum::data_graph; 
+    itr = this -> m_i_graph.begin(); 
+    for (; itr != this -> m_i_graph.end(); ++itr){this -> assign_features(itr -> first, mode, data);}
+
+    mode = graph_enum::data_node; 
+    itr = this -> m_i_node.begin(); 
+    for (; itr != this -> m_i_node.end(); ++itr){this -> assign_features(itr -> first, mode, data);}
+
+    mode = graph_enum::data_edge; 
+    itr = this -> m_i_edge.begin(); 
+    for (; itr != this -> m_i_edge.end(); ++itr){this -> assign_features(itr -> first, mode, data);}
+
+    mode = graph_enum::truth_graph; 
+    itx = this -> m_o_graph.begin(); 
+    for (; itx != this -> m_o_graph.end(); ++itx){this -> assign_features(itx -> first, mode, data);}
+   
+    mode = graph_enum::truth_node; 
+    itx = this -> m_o_node.begin(); 
+    for (; itx != this -> m_o_node.end(); ++itx){this -> assign_features(itx -> first, mode, data);}
+
+    mode = graph_enum::truth_edge; 
+    itx = this -> m_o_edge.begin(); 
+    for (; itx != this -> m_o_edge.end(); ++itx){this -> assign_features(itx -> first, mode, data);}
 
     this -> forward(data); 
     this -> train_sequence(train);
@@ -93,9 +96,7 @@ void model_template::forward(graph_t* data, bool train){
 
 
 void model_template::set_input_features(std::vector<std::string>* inpt, std::map<std::string, torch::Tensor*>* in_fx){
-    for (size_t x(0); x < inpt -> size(); ++x){
-        (*in_fx)[inpt -> at(x)] = nullptr;
-    }
+    for (size_t x(0); x < inpt -> size(); ++x){(*in_fx)[inpt -> at(x)] = nullptr;}
 }
 
 void model_template::evaluation_mode(bool mode){
@@ -104,8 +105,6 @@ void model_template::evaluation_mode(bool mode){
         else {(*this -> m_data[x]) -> train(true);}
     }
 }
-
-
 
 void model_template::prediction_graph_feature(std::string key, torch::Tensor pred){
     if (!this -> m_o_graph.count(key)){this -> warning("Graph Output Feature: " + key + " not found.");}

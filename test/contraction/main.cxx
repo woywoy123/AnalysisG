@@ -58,43 +58,53 @@ void as_primitive(std::vector<G>* data, std::vector<g>* linear, std::vector<int>
     }
 }; 
 
+
+
+
+
 int main(){
-    std::vector<std::vector<std::vector<int>>> truth_res = {
-        {{-1, -1, -1, -1, -1, -1}, {10, 11, 12, -1, -1, -1}, {1, 2, 3, 4, 5, 6}}, 
-        {{1, 2, 3,  4,  5,  6   }, {10, 11, 12, -1, -1, -1}, {1, 2, 3, 4, 5, 6}}, 
-        {{1, 2, 3, -1, -1, -1   }, {10, 11, 12, -1, -1, -1}, {1, 2, 3, 4, 5, 6}}, 
-        {{1, 2, 3,  4,  5,  6   }, {10, 11, 12, -1, -1, -1}, {1, 2, 3, 4, 5, 6}}
-    }; 
+    std::vector<float> tmp = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}; 
 
-    std::vector<int> data = {1, 2, 3, 4, 5, 6}; 
-    std::vector<int> jagg = {10, 11, 12}; 
-    std::vector<int> djad = {1, 2, 3}; 
-    
-    std::vector<std::vector<std::vector<int>>> exmpl = {
-        {{}  , jagg, data},
-        {data, jagg, data}, 
-        {djad, jagg, data}, 
-        {data, jagg, data}
-    }; 
 
-    int mx_dim = 0; 
-    scout_dim(&exmpl, &mx_dim); 
-    standard(&exmpl, &mx_dim); 
 
-    std::vector<int> dims = {}; 
-    std::vector<int> linear = {}; 
-    as_primitive(&exmpl, &linear, &dims); 
-    for (size_t x(0); x < dims.size(); ++x){std::cout << dims[x] << std::endl;}
 
-    for (size_t x(0); x < truth_res.size(); ++x){
-        for (size_t y(0); y < truth_res[x].size(); ++y){
-            for (size_t z(0); z < truth_res[x][y].size(); ++z){
-                if (exmpl[x][y][z] == linear[x+y+z]){continue;}
-                if (exmpl[x][y][z] == truth_res[x][y][z]){continue;}
-                std::cout << "(false)-> " << exmpl[x][y][z] << " " << truth_res[x][y][z] << std::endl;
-            } 
-        }
-    }
 
+//    std::vector<std::vector<std::vector<int>>> truth_res = {
+//        {{-1, -1, -1, -1, -1, -1}, {10, 11, 12, -1, -1, -1}, {1, 2, 3, 4, 5, 6}}, 
+//        {{1, 2, 3,  4,  5,  6   }, {10, 11, 12, -1, -1, -1}, {1, 2, 3, 4, 5, 6}}, 
+//        {{1, 2, 3, -1, -1, -1   }, {10, 11, 12, -1, -1, -1}, {1, 2, 3, 4, 5, 6}}, 
+//        {{1, 2, 3,  4,  5,  6   }, {10, 11, 12, -1, -1, -1}, {1, 2, 3, 4, 5, 6}}
+//    }; 
+//
+//    std::vector<int> data = {1, 2, 3, 4, 5, 6}; 
+//    std::vector<int> jagg = {10, 11, 12}; 
+//    std::vector<int> djad = {1, 2, 3}; 
+//    
+//    std::vector<std::vector<std::vector<int>>> exmpl = {
+//        {{}  , jagg, data},
+//        {data, jagg, data}, 
+//        {djad, jagg, data}, 
+//        {data, jagg, data}
+//    }; 
+//
+//    int mx_dim = 0; 
+//    scout_dim(&exmpl, &mx_dim); 
+//    standard(&exmpl, &mx_dim); 
+//
+//    std::vector<int> dims = {}; 
+//    std::vector<int> linear = {}; 
+//    as_primitive(&exmpl, &linear, &dims); 
+//    for (size_t x(0); x < dims.size(); ++x){std::cout << dims[x] << std::endl;}
+//
+//    for (size_t x(0); x < truth_res.size(); ++x){
+//        for (size_t y(0); y < truth_res[x].size(); ++y){
+//            for (size_t z(0); z < truth_res[x][y].size(); ++z){
+//                if (exmpl[x][y][z] == linear[x+y+z]){continue;}
+//                if (exmpl[x][y][z] == truth_res[x][y][z]){continue;}
+//                std::cout << "(false)-> " << exmpl[x][y][z] << " " << truth_res[x][y][z] << std::endl;
+//            } 
+//        }
+//    }
+//
     return 0; 
 }; 

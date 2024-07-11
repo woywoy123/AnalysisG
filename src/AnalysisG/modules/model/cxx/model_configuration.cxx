@@ -15,13 +15,18 @@ void model_template::clone_settings(model_settings_t* setd){
 
     setd -> i_graph = this -> i_graph; 
     setd -> i_node  = this -> i_node; 
-    setd -> i_edge  = this -> i_edge; 
+    setd -> i_edge  = this -> i_edge;
+
+    setd -> model_checkpoint_path  = this -> model_checkpoint_path; 
+    setd -> inference_mode = this -> inference_mode; 
 }
 
 void model_template::import_settings(model_settings_t* setd){
     this -> e_optim = setd -> e_optim; 
     this -> s_optim = setd -> s_optim; 
+
     this -> model_checkpoint_path = setd -> model_checkpoint_path; 
+    this -> inference_mode        = setd -> inference_mode; 
                                              
     this -> name    = setd -> model_name;     
     this -> device  = setd -> model_device;   
@@ -32,12 +37,11 @@ void model_template::import_settings(model_settings_t* setd){
                                             
     this -> i_graph = setd -> i_graph;        
     this -> i_node  = setd -> i_node;         
-    this -> i_edge  = setd -> i_edge;         
+    this -> i_edge  = setd -> i_edge;
 }
 
 void model_template::set_device(std::string* dev, model_template* md){
     if (md -> m_option){delete md -> m_option; md -> m_option = nullptr;}    
-    
     int device_n = -1; 
     c10::DeviceType device_enum; 
     std::string device = md -> lower(dev); 
@@ -140,14 +144,17 @@ bool model_template::restore_state(){
     }
 
     if (!this -> is_file(model_pth)){return false;}
-
     torch::serialize::InputArchive state_session; 
-    state_session.load_from(model_pth);
-    for (size_t x(0); x < this -> m_data.size(); ++x){(*this -> m_data.at(x)) -> load(state_session);}
+    state_session.load_from(model_pth, this -> m_option -> device());
+    for (size_t x(0); x < this -> m_data.size(); ++x){
+        (*this -> m_data[x]) -> load(state_session);
+        if (!this -> inference_mode){continue;}
+        (*this -> m_data[x]) -> eval();
+    }
 
     if (this -> inference_mode){return true;}
     torch::serialize::InputArchive state_optim; 
-    state_optim.load_from(optim_pth); 
+    state_optim.load_from(optim_pth, this -> m_option -> device()); 
     this -> m_optim -> load(state_optim); 
     this -> m_optim -> step();  
     return true; 

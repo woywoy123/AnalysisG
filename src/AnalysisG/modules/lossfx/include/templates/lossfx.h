@@ -19,6 +19,7 @@ struct model_settings_t {
     std::string model_name; 
     std::string model_device; 
     std::string model_checkpoint_path; 
+    bool inference_mode; 
 
     std::map<std::string, std::string> o_graph; 
     std::map<std::string, std::string> o_node; 

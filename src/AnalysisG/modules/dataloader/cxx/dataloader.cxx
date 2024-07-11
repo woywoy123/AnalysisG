@@ -166,16 +166,28 @@ std::vector<graph_t*>* dataloader::get_test_set(){
 }
 
 std::map<std::string, std::vector<graph_t*>>* dataloader::get_inference(){
+    auto lamb = [](std::vector<graph_t*>* sort){
+        std::map<long, graph_t*> tmp = {}; 
+        for (size_t x(0); x < sort -> size(); ++x){tmp[(*sort)[x] -> event_index] = (*sort)[x];}
+
+        int t = 0; 
+        std::map<long, graph_t*>::iterator itr = tmp.begin(); 
+        for (; itr != tmp.end(); ++itr, ++t){(*sort)[t] = itr -> second;}
+    }; 
+
+
+    std::map<std::string, std::vector<graph_t*>>* out = new std::map<std::string, std::vector<graph_t*>>();
     for (size_t x(0); x < this -> data_set -> size(); ++x){
         graph_t* gr = this -> data_set -> at(x); 
-
-
+        (*out)[*(gr -> filename)].push_back(gr); 
     }
 
-
-
-
-    return nullptr; 
+    int t = 0; 
+    std::vector<std::thread*> th(out -> size(), nullptr); 
+    std::map<std::string, std::vector<graph_t*>>::iterator itr = out -> begin(); 
+    for (; itr != out -> end(); ++itr, ++t){th[t] = new std::thread(lamb, &itr -> second);}
+    for (t = 0; t < th.size(); ++t){th[t] -> join(); delete th[t]; th[t] = nullptr;}
+    return out; 
 }
 
 void dataloader::extract_data(graph_t* gr){

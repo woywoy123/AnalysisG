@@ -117,6 +117,7 @@ void container::compile(){
             gr -> flush_particles();
             graph_t* gr_ = gr -> data_export();  
             gr_ -> hash = ev -> hash;
+            gr_ -> filename = this -> filename; 
             ev -> m_data -> push_back(gr_); 
         }
         

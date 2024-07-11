@@ -8,5 +8,5 @@ set(SOURCE_FILES
 add_library(cgraph STATIC ${SOURCE_FILES})
 target_include_directories(cgraph PRIVATE include/templates)
 target_include_directories(cgraph PUBLIC include)
-target_link_libraries(cgraph LINK_PUBLIC cevent ${TORCH_LIBRARIES})
+target_link_libraries(cgraph LINK_PUBLIC cevent ctypecasting ${TORCH_LIBRARIES})
 target_compile_options(cgraph PRIVATE -fPIC)

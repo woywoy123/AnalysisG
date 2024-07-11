@@ -58,6 +58,7 @@ class dataloader:
 
         std::vector<int>*         data_index  = nullptr; 
         std::vector<graph_t*>*    data_set    = nullptr; 
+
         std::default_random_engine rnd{}; 
 }; 
 

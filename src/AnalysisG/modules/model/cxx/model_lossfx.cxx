@@ -31,21 +31,23 @@ torch::Tensor model_template::compute_loss(std::string pred, graph_enum feat){
 }
 
 void model_template::train_sequence(bool train){
+    if (this -> inference_mode){return;}
+
+    graph_enum mode; 
+    std::vector<torch::Tensor> losses = {};
     std::map<std::string, std::string> gr = this -> o_graph; 
     std::map<std::string, std::string> nd = this -> o_node; 
     std::map<std::string, std::string> ed = this -> o_edge; 
-    std::vector<torch::Tensor> losses = {};
 
+    mode = graph_enum::truth_graph; 
     std::map<std::string, std::string>::iterator itr; 
-    for (itr = gr.begin(); itr != gr.end(); ++itr){
-        losses.push_back(this -> compute_loss(itr -> first, graph_enum::truth_graph));
-    }
-    for (itr = nd.begin(); itr != nd.end(); ++itr){
-        losses.push_back(this -> compute_loss(itr -> first, graph_enum::truth_node));
-    }
-    for (itr = ed.begin(); itr != ed.end(); ++itr){
-        losses.push_back(this -> compute_loss(itr -> first, graph_enum::truth_edge));
-    }
+    for (itr = gr.begin(); itr != gr.end(); ++itr){losses.push_back(this -> compute_loss(itr -> first, mode));}
+
+    mode = graph_enum::truth_node; 
+    for (itr = nd.begin(); itr != nd.end(); ++itr){losses.push_back(this -> compute_loss(itr -> first, mode));}
+
+    mode = graph_enum::truth_edge; 
+    for (itr = ed.begin(); itr != ed.end(); ++itr){losses.push_back(this -> compute_loss(itr -> first, mode));}
 
     if (!train){return;}
     this -> m_optim -> zero_grad();
