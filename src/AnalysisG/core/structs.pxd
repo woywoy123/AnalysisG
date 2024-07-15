@@ -114,6 +114,7 @@ cdef extern from "<structs/settings.h>":
         bool validation
         bool evaluation
         bool continue_training
+        string training_dataset
 
         string var_pt
         string var_eta

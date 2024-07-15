@@ -44,6 +44,7 @@ class container: public tools
         container();
         ~container();
         void add_meta_data(meta*, std::string); 
+        meta* get_meta_data(); 
 
         bool add_selection_template(selection_template*); 
         bool add_event_template(event_template*, std::string label); 

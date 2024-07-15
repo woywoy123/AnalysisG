@@ -6,5 +6,7 @@ The Core Documentation
 
    eventtemplate.rst
    particletemplate.rst
+   graphtemplate.rst
+   modeltemplate.rst
+   selectiontemplate.rst
    plotting.rst
-

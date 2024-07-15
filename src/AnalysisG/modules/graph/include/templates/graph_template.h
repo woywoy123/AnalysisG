@@ -65,9 +65,6 @@ struct graph_t {
 }; 
 
 
-
-
-
 bool static fulltopo(particle_template*, particle_template*){return true;}; 
 
 class graph_template: public tools

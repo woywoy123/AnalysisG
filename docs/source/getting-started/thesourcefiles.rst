@@ -23,4 +23,13 @@ But first there are some files that need to be created for the event and particl
   - `event_<some name>.pyx`
 - Modify the `CMakeLists.txt` within the events folder and add the event to the list.
 
+TLDR (Too Long Do Read)
+-----------------------
 
+For a quick introduction by example, checkout the template code under `src/AnalysisG/templates`.
+A brief explanation:
+
+- **events**: Templates used to define an event implementation.
+- **graphs**: Templates used to define graphs for GNN training and inference.
+- **selections**: Templates used for indepth studies using the associated event implementation.
+- **model**: Templates for implementing a custom GNN model.

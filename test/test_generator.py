@@ -5,7 +5,6 @@ from AnalysisG.graphs.graph_bsm_4tops import GraphTops, GraphChildren, GraphTrut
 from AnalysisG.models.RecursiveGraphNeuralNetwork import *
 
 root1 = "./samples/dilepton/*"
-#root1 = "/home/tnom6927/Downloads/tmp/*"
 
 x = BSM4Tops()
 #tt = GraphChildren()
@@ -25,6 +24,7 @@ op.Optimizer = "adam"
 op.lr = 1e-4
 
 ana = Analysis()
+ana.TrainingDataset = "./ProjectName/dataset"
 ana.AddSamples(root1, "tmp")
 ana.AddEvent(x, "tmp")
 ana.AddGraph(tt, "tmp")

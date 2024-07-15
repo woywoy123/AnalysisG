@@ -183,6 +183,18 @@ void recursivegraphneuralnetwork::forward(graph_t* data){
         hx = (*this -> rnn_x) -> forward(torch::cat(x_, {-1}).to(torch::kFloat32));
     }
     this -> prediction_edge_feature("top_edge", G_); 
+    if (!this -> inference_mode){return;}
+
+    torch::Tensor top_pred = graph::cuda::edge_aggregation(edge_index, G_, pmc)["1"][1]; 
+    this -> prediction_extra("top_edge_score", G_.softmax(-1)); 
+    this -> prediction_extra("top_pmc", top_pred); 
+
+    if (!this -> is_mc){return;}
+    torch::Tensor truth_t = data -> get_truth_edge("top_edge") -> view({-1}); 
+    torch::Tensor truth_ = torch::zeros_like(G_); 
+    for (int x(0); x < G_.size({-1}); ++x){truth_.index_put_({truth_t == x, x}, 1);}
+    torch::Tensor truth_top = graph::cuda::edge_aggregation(edge_index, truth_, pmc)["1"][1]; 
+    this -> prediction_extra("truth_top_pmc", truth_top); 
 }
 
 recursivegraphneuralnetwork::~recursivegraphneuralnetwork(){}

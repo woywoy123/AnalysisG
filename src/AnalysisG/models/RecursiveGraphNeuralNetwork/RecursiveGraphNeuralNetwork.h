@@ -25,10 +25,6 @@ class recursivegraphneuralnetwork: public model_template
                 std::string* hash
         ); 
 
-
-
-
-
         // Neural Network Parameters
         int _dx     = 26; 
         int _x      = 5; 
@@ -37,6 +33,7 @@ class recursivegraphneuralnetwork: public model_template
 
         // Misc
         bool NuR = false; 
+        bool is_mc = true; 
 
         torch::nn::Sequential* rnn_x      = nullptr; 
         torch::nn::Sequential* rnn_dx     = nullptr; 

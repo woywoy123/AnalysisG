@@ -30,7 +30,7 @@ void metrics::generic_painter(
     gPad -> Modified();
     
     can -> Modified(); 
-    //can -> BuildLegend(); 
+    can -> BuildLegend(); 
     can -> Update(); 
     
     this -> create_path(path); 

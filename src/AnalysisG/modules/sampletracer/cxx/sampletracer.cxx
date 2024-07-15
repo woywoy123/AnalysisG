@@ -19,6 +19,11 @@ bool sampletracer::add_meta_data(meta* meta_, std::string filename){
     return true; 
 }
 
+meta* sampletracer::get_meta_data(std::string filename){
+    if (!this -> root_container -> count(filename)){return nullptr;}
+    return (*this -> root_container)[filename] -> get_meta_data(); 
+}
+
 std::vector<event_template*>* sampletracer::get_events(std::string label){
     std::vector<event_template*>* out = new std::vector<event_template*>();
     std::map<std::string, container*>::iterator itr;

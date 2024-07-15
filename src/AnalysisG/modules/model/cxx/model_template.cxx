@@ -121,25 +121,24 @@ void model_template::prediction_edge_feature(std::string key, torch::Tensor pred
     else {this -> m_p_edge[key] = new torch::Tensor(pred);}
 }
 
+void model_template::prediction_extra(std::string key, torch::Tensor pred){
+    this -> m_p_undef[key] = new torch::Tensor(pred); 
+}
+
 void model_template::flush_outputs(){
-    std::map<std::string, torch::Tensor*>::iterator itr; 
-    for (itr = this -> m_p_graph.begin(); itr != this -> m_p_graph.end(); ++itr){
-        if (!itr -> second){continue;}
-        delete itr -> second; 
-        this -> m_p_graph[itr -> first] = nullptr; 
-    }
+    auto lambda = [](std::map<std::string, torch::Tensor*>* data){
+        std::map<std::string, torch::Tensor*>::iterator itr = data -> begin(); 
+        for (; itr != data -> end(); ++itr){
+            if (!(*data)[itr -> first]){continue;}
+            delete itr -> second; 
+            (*data)[itr -> first] = nullptr; 
+        }
+    }; 
 
-    for (itr = this -> m_p_node.begin(); itr != this -> m_p_node.end(); ++itr){
-        if (!itr -> second){continue;}
-        delete itr -> second; 
-        this -> m_p_node[itr -> first] = nullptr; 
-    }
-
-    for (itr = this -> m_p_edge.begin(); itr != this -> m_p_edge.end(); ++itr){
-        if (!itr -> second){continue;}
-        delete itr -> second; 
-        this -> m_p_edge[itr -> first] = nullptr; 
-    }
+    lambda(&this -> m_p_graph); 
+    lambda(&this -> m_p_node); 
+    lambda(&this -> m_p_edge); 
+    lambda(&this -> m_p_undef); 
 }
 
 

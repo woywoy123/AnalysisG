@@ -13,6 +13,7 @@
 
 #include <meta/meta.h>
 #include <tools/tools.h>
+#include <structs/folds.h>
 #include <structs/particles.h>
 #include <notification/notification.h>
 
@@ -210,6 +211,21 @@ class io:
         }; 
 
         template <typename g>
+        void read(std::vector<g>* outpt, std::string set_name){
+            H5::CompType pairs = this -> member(g()); 
+            H5::DataSet* dataset = this -> dataset(set_name);  
+            if (!dataset){return;}
+            H5::DataSpace space_r = dataset -> getSpace();
+            hsize_t dim_r[1];
+            space_r.getSimpleExtentDims(dim_r); 
+            int length = dim_r[0];
+            g* ptr = (g*)malloc(length * sizeof(g));
+            dataset -> read(ptr, pairs); 
+            for (int i(0); i < length; ++i){outpt -> push_back(ptr[i]);}
+            free(ptr);
+        }; 
+
+        template <typename g>
         void read(g* out, std::string set_name){
             H5::CompType pairs = this -> member(g());
             H5::DataSet* dataset = this -> dataset(set_name);
@@ -265,6 +281,7 @@ class io:
 
     private:
         H5::CompType member(particle_t t); 
+        H5::CompType member(folds_t t); 
 
         static herr_t file_info(hid_t loc_id, const char* name, const H5L_info_t* linfo, void *opdata); 
 

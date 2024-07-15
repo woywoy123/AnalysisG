@@ -8,6 +8,22 @@ The particle_template class inherits from the tools class and uses the particle_
 
 .. cpp:class:: particle_template: public tools
 
+   .. cpp:function:: particle_template()
+
+   An empty constructor.
+
+   .. cpp:function:: particle_template(particle_t* p)
+
+   Create a new particle from an existing one.
+
+   .. cpp:function:: particle_template(double px, double py, double pz, double e)
+
+   Assign the four-momenta of the particle.
+
+   .. cpp:function:: particle_template(double px, double py, double pz)
+
+   Assing the three-momenta of the particle.
+
    .. cpp:var:: cproperty<double, particle_template> e
 
    The energy of the particle.
@@ -18,55 +34,92 @@ The particle_template class inherits from the tools class and uses the particle_
 
    .. cpp:var:: cproperty<double, particle_template> pt
 
+   Returns or sets the transverse momenta of the particle.
+
    .. cpp:var:: cproperty<double, particle_template> eta
+
+   Returns or sets the pseudo-rapidity of the particle.
 
    .. cpp:var:: cproperty<double, particle_template> phi
 
+   Returns or sets the azimuthal angle of the particle.
+
    .. cpp:var:: cproperty<double, particle_template> px
+
+   Returns or sets the x-direction of the momenta.
 
    .. cpp:var:: cproperty<double, particle_template> py
 
+   Returns or sets the y-direction of the momenta.
+
    .. cpp:var:: cproperty<double, particle_template> pz
+
+   Returns or sets the z-direction of the momenta.
 
    .. cpp:var:: cproperty<int, particle_template> pdgid
 
+   Returns or sets the particle PDGID.
+
    .. cpp:var:: cproperty<std::string, particle_template> symbol
+
+   Returns the PDGID symbolic string representation or sets its value.
 
    .. cpp:var:: cproperty<double, particle_template> charge
 
+   Assigns the particle a charge or returns its value.
+
    .. cpp:var:: cproperty<std::string, particle_template> hash
+
+   Returns the hash of the particle (a unique identifier) by concatinating the cartesian 
+   four-momenta and computes the associated hash.
 
    .. cpp:var:: cproperty<bool, particle_template> is_lep
 
+   Returns whether the particle is a lepton.
+
    .. cpp:var:: cproperty<bool, particle_template> is_nu
+
+   Returns whether the particle is a neutrino.
 
    .. cpp:var:: cproperty<bool, particle_template> is_add
 
-   .. cpp:var:: cproperty<bool, particle_template> lep_decay
+   Returns whether the particle is anything but a b-quark/jet.
 
    .. cpp:var:: cproperty<bool, particle_template> is_b
 
+   Returns whether the particle is a b-quark/jet.
+
+   .. cpp:var:: cproperty<bool, particle_template> lep_decay
+
+   Returns a boolean value indicating whether the decay was leptonic from its children.
+
    .. cpp:var:: cproperty<std::map<std::string, particle_template*>, particle_template> parents
+
+   Returns the parents of the particle.
 
    .. cpp:var:: cproperty<std::map<std::string, particle_template*>, particle_template> children
 
+   Returns the particle's children.
+
    .. cpp:var:: cproperty<std::string, particle_template> type
+
+   Specifies the particle type.
 
    .. cpp:var:: cproperty<int, particle_template> index
 
+   Assigns the particle an index.
+
    .. cpp:var:: std::map<std::string, particle_template*> m_parents
 
+   A map of the particle's parent hashes.
+
    .. cpp:var:: std::map<std::string, particle_template*> m_children
+
+   A map of the particle's children hashes.
 
    .. cpp:var:: std::map<std::string, std::string> leaves
 
    .. cpp:var:: particle_t data
-
-   .. cpp:function:: particle_template(particle_t* p)
-
-   .. cpp:function:: particle_template(double px, double py, double pz, double e)
-
-   .. cpp:function:: particle_template(double px, double py, double pz)
 
    .. cpp:function:: void to_cartesian()
 

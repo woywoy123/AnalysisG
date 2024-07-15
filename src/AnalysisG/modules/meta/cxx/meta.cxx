@@ -25,13 +25,13 @@ void meta::compiler(){
     this -> meta_data.dsid = (*cfg)["dsid"].GetDouble(); 
     this -> meta_data.isMC = (*cfg)["isMC"].GetBool(); 
     this -> meta_data.derivationFormat = (*cfg)["derivationFormat"].GetString(); 
-
     rapidjson::Value* cfg_s = &(*this -> rpd)["configSettings"]; 
-    if (!cfg_s -> IsArray()){return;}
-    for (rapidjson::SizeType i(0); i < cfg_s -> Size(); ++i){
-        std::string key = (*cfg_s)[i].GetString(); 
-        std::string prm = (*cfg_s)[i].GetString(); 
-        this -> meta_data.config[key] = prm; 
+    if (cfg_s -> IsArray()){
+        for (rapidjson::SizeType i(0); i < cfg_s -> Size(); ++i){
+            std::string key = (*cfg_s)[i].GetString(); 
+            std::string prm = (*cfg_s)[i].GetString(); 
+            this -> meta_data.config[key] = prm; 
+        }
     }
 
     rapidjson::Value* files = &(*this -> rpd)["inputFiles"]; 
@@ -40,6 +40,7 @@ void meta::compiler(){
         std::string fname = (*files)[i][0].GetString(); 
         std::vector<std::string> fname_v = this -> split(fname, "/"); 
         this -> meta_data.inputfiles[n_ev] = fname_v[fname_v.size()-1]; 
+        this -> meta_data.DatasetName = fname_v[fname_v.size()-2]; 
     }
 }
 

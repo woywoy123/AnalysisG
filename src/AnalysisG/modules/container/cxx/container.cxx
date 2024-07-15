@@ -38,6 +38,8 @@ void container::add_meta_data(meta* data, std::string fname){
     this -> meta_data = data; 
 }
 
+meta* container::get_meta_data(){return this -> meta_data;}
+
 bool container::add_event_template(event_template* ev, std::string _label){
     if (!this -> label){this -> label = new std::string(_label);}
     std::string hash = ev -> hash; 

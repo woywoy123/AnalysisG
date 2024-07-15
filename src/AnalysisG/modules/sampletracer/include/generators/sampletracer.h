@@ -12,6 +12,8 @@ class sampletracer: public tools
         ~sampletracer();
 
         bool add_meta_data(meta* meta_, std::string filename); 
+        meta* get_meta_data(std::string filename); 
+
         std::vector<event_template*>* get_events(std::string label); 
 
         void fill_selections(std::map<std::string, selection_template*>* inpt); 

@@ -5,6 +5,7 @@ set(HEADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/include/structs/event.h
     ${CMAKE_CURRENT_SOURCE_DIR}/include/structs/meta.h
     ${CMAKE_CURRENT_SOURCE_DIR}/include/structs/report.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/structs/folds.h
 )
 
 set(SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/cxx/structs.cxx)

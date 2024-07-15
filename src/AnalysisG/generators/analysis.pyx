@@ -45,6 +45,8 @@ cdef class Analysis:
         self.ana.add_model(model.nn_ptr, op.params, enc(run_name))
 
     def AddModelInference(self, ModelTemplate model, str run_name = "run_name"):
+        import ROOT
+        ROOT.EnableImplicitMT()
         self.ana.add_model(model.nn_ptr, enc(run_name))
 
     def Start(self):
@@ -132,6 +134,14 @@ cdef class Analysis:
 
     @NumExamples.setter
     def NumExamples(self, int k): self.ana.m_settings.num_examples = k
+
+    @property
+    def TrainingDataset(self): return env(self.ana.m_settings.training_dataset)
+
+    @TrainingDataset.setter
+    def TrainingDataset(self, str path):
+        if not path.endswith(".h5"): path += ".h5"
+        self.ana.m_settings.training_dataset = enc(path)
 
     @property
     def TrainSize(self): return self.ana.m_settings.train_size

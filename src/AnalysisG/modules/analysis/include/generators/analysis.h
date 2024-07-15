@@ -12,7 +12,6 @@
 #include <templates/fx_enums.h>
 
 #include <structs/settings.h>
-#include <io/io.h>
 
 class analysis: 
     public notification, 

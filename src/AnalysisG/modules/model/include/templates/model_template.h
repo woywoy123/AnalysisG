@@ -9,8 +9,15 @@
 class metrics; 
 class analysis; 
 class model_template; 
+struct variable_t; 
 
-void execution(model_template*, std::vector<graph_t*>*, std::string, settings_t*); 
+void execution(
+        model_template*, 
+        std::vector<graph_t*>*, 
+        std::string, 
+        std::vector<variable_t>*, 
+        float*
+); 
 
 class model_template: 
     public notification, 
@@ -18,7 +25,7 @@ class model_template:
 {
     public:
         model_template();
-        ~model_template();
+        virtual ~model_template();
 
         // set device of model
         cproperty<std::string, model_template> name; 
@@ -80,6 +87,7 @@ class model_template:
         void prediction_graph_feature(std::string, torch::Tensor); 
         void prediction_node_feature(std::string, torch::Tensor); 
         void prediction_edge_feature(std::string, torch::Tensor); 
+        void prediction_extra(std::string, torch::Tensor); 
 
         torch::Tensor compute_loss(std::string, graph_enum); 
 
@@ -90,7 +98,13 @@ class model_template:
 
         friend class metrics; 
         friend class analysis;
-        friend void execution(model_template*, std::vector<graph_t*>*, std::string, settings_t*); 
+        friend void execution(
+                model_template*, 
+                std::vector<graph_t*>*, 
+                std::string, 
+                std::vector<variable_t>*,
+                float*
+        ); 
 
     private:
         static void set_input_features(
@@ -126,14 +140,13 @@ class model_template:
         std::map<std::string, torch::Tensor*> m_p_graph = {}; 
         std::map<std::string, torch::Tensor*> m_p_node = {}; 
         std::map<std::string, torch::Tensor*> m_p_edge = {}; 
+        std::map<std::string, torch::Tensor*> m_p_undef = {}; 
 
         std::map<std::string, std::tuple<torch::Tensor*, loss_enum>> m_o_graph = {}; 
         std::map<std::string, std::tuple<torch::Tensor*, loss_enum>> m_o_node = {}; 
         std::map<std::string, std::tuple<torch::Tensor*, loss_enum>> m_o_edge = {}; 
 
         std::map<graph_enum, std::map<std::string, torch::Tensor>> m_p_loss = {}; 
-
-        
 }; 
 
 

@@ -1,7 +1,7 @@
 set(HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/include/templates/event_template.h)
 set(SOURCE_FILES 
-       ${CMAKE_CURRENT_SOURCE_DIR}/cxx/event_template.cxx
-       ${CMAKE_CURRENT_SOURCE_DIR}/cxx/properties.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/event_template.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/properties.cxx
 )
 
 add_library(cevent STATIC ${SOURCE_FILES})

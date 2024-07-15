@@ -1,9 +1,11 @@
 #include <generators/dataloader.h>
+#include <structs/folds.h>
+#include <io/io.h>
 #include <thread>
 
 dataloader::dataloader(){
     this -> prefix = "dataloader";
-    this -> data_set = new std::vector<graph_t*>();
+    this -> data_set   = new std::vector<graph_t*>();
     this -> data_index = new std::vector<int>(); 
     this -> test_set   = new std::vector<int>(); 
     this -> train_set  = new std::vector<int>(); 
@@ -24,7 +26,6 @@ dataloader::~dataloader(){
     std::map<int, std::vector<int>*>::iterator itx = this -> k_fold_validation.begin(); 
     for (; itx != this -> k_fold_validation.end(); ++itx){delete itx -> second;}
 
-
     delete this -> test_set; 
     delete this -> train_set; 
 
@@ -40,7 +41,7 @@ void dataloader::generate_kfold_set(int k){
     if (!this -> test_set -> size()){this -> shuffle(this -> data_index);}
 
     bool all = false;
-    for (int x(0); x < k+1; ++x){
+    for (int x(0); x < k; ++x){
         if (this -> k_fold_training.count(x)){continue;}
         this -> k_fold_training[x] = new std::vector<int>(); 
         this -> k_fold_validation[x] = new std::vector<int>();
@@ -49,7 +50,7 @@ void dataloader::generate_kfold_set(int k){
     if (!all){return;}
     std::map<int, std::vector<int>> folds = {}; 
     for (int x(0); x < this -> train_set -> size(); ++x){
-        folds[x%(k+1)].push_back(this -> train_set -> at(x));
+        folds[x%(k+1)].push_back((*this -> train_set)[x]);
     }
     this -> success("Splitting training dataset (" + this -> to_string(this -> train_set -> size()) + ")"); 
     for (int x(0); x < k; ++x){
@@ -66,7 +67,87 @@ void dataloader::generate_kfold_set(int k){
     }
 }
 
+void dataloader::dump_dataset(std::string path){
+    io* io_g = new io(); 
+    std::vector<folds_t> data = {};  
+    std::map<int, std::vector<int>*> data_e; 
+    std::map<int, std::vector<int>*>::iterator itr; 
+
+    data_e = this -> k_fold_training; 
+    for (itr = data_e.begin(); itr != data_e.end(); ++itr){
+        size_t len = itr -> second -> size(); 
+        for (size_t x(0); x < len; ++x){
+            folds_t kf = folds_t(); 
+            kf.k = itr -> first;
+            kf.is_train = true; 
+            kf.index = (*itr -> second)[x]; 
+            data.push_back(kf); 
+        }
+    } 
+
+    data_e = this -> k_fold_validation; 
+    for (itr = data_e.begin(); itr != data_e.end(); ++itr){
+        size_t len = itr -> second -> size(); 
+        for (size_t x(0); x < len; ++x){
+            folds_t kf = folds_t(); 
+            kf.k = itr -> first;
+            kf.is_valid = true; 
+            kf.index = (*itr -> second)[x]; 
+            data.push_back(kf); 
+        }
+    } 
+
+    for (size_t x(0); x < this -> test_set -> size(); ++x){
+        folds_t kf = folds_t(); 
+        kf.is_eval = true; 
+        kf.index = (*this -> test_set)[x]; 
+        data.push_back(kf); 
+    }
+    io_g -> start(path, "write"); 
+    io_g -> write(&data, "kfolds"); 
+    io_g -> end(); 
+
+    delete io_g; 
+}
+
+void dataloader::restore_dataset(std::string path){
+    io* io_g = new io(); 
+    io_g -> start(path, "read"); 
+    std::vector<folds_t> data = {}; 
+    io_g -> read(&data, "kfolds"); 
+    io_g -> end(); 
+    delete io_g; 
+
+    for (size_t x(0); x < data.size(); ++x){
+        folds_t* kf = &data[x]; 
+
+        if (kf -> is_eval){this -> test_set -> push_back(kf -> index);continue;}
+        if (kf -> k == 0){this -> train_set -> push_back(kf -> index);}
+        if (!this -> k_fold_training.count(kf -> k)){
+            this -> k_fold_training[kf -> k]   = new std::vector<int>();
+            this -> k_fold_validation[kf -> k] = new std::vector<int>(); 
+        }
+
+        std::vector<int>* bin = nullptr; 
+        if (kf -> is_train){bin = this -> k_fold_training[kf -> k];}
+        else {bin = this -> k_fold_validation[kf -> k];}
+        bin -> push_back(kf -> index); 
+    }
+    if (!data.size()){return;}
+
+    this -> success("Restored training dataset (" + this -> to_string(this -> train_set -> size()) + ")"); 
+    std::map<int, std::vector<int>*>::iterator itr = this -> k_fold_training.begin(); 
+    for (; itr != this -> k_fold_training.end(); ++itr){
+        int k = itr -> first; 
+        std::vector<int>* val = itr -> second; 
+        this -> success("---------------- k-Fold: " + this -> to_string(k+1) + " ----------------"); 
+        this -> success("-> train: " + this -> to_string(this -> k_fold_training[k] -> size()) + ")"); 
+        this -> success("-> validation: " + this -> to_string(this -> k_fold_validation[k] -> size()) + ")"); 
+    }
+}
+
 void dataloader::generate_test_set(float percentage){
+    if (this -> test_set -> size()){return;}
     this -> data_set    -> shrink_to_fit(); 
     this -> data_index  -> shrink_to_fit();   
 
@@ -74,7 +155,7 @@ void dataloader::generate_test_set(float percentage){
     this -> shuffle(this -> data_index); 
     for (size_t x(0); x < this -> data_index -> size(); ++x){
         std::vector<int>* dx = nullptr; 
-        if (x < fx){dx = this -> test_set;}
+        if (x >= fx){dx = this -> test_set;}
         else {dx = this -> train_set;}
         dx -> push_back(this -> data_index -> at(x));
     }
@@ -202,15 +283,22 @@ void dataloader::extract_data(graph_t* gr){
 }
 
 
-void dataloader::datatransfer(torch::TensorOptions* op){
+void dataloader::datatransfer(torch::TensorOptions* op, int threads){
     auto lamb = [](std::vector<graph_t*>* data, torch::TensorOptions* op){
         for (size_t f(0); f < data -> size(); ++f){data -> at(f) -> transfer_to_device(op);}
     }; 
 
     if (!this -> data_set){return;}
-    int x = this -> data_set -> size()/10; 
+    int x = this -> data_set -> size()/threads; 
     std::vector<std::vector<graph_t*>> quant = this -> discretize(this -> data_set, x); 
     std::vector<std::thread*> th(quant.size(), nullptr);
     for (size_t g(0); g < th.size(); ++g){th[g] = new std::thread(lamb, &quant[g], op);}
-    for (size_t g(0); g < th.size(); ++g){th[g] -> join(); delete th[g];}
+
+    std::string msg = "Transferring data to device."; 
+    this -> progressbar(0, msg); 
+    for (size_t g(0); g < th.size(); ++g){
+        th[g] -> join(); delete th[g];
+        this -> progressbar(float(g+1)/float(th.size()), msg); 
+    }
+    std::cout << "" << std::endl;
 }

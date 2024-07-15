@@ -6,6 +6,7 @@
 #include <notification/notification.h>
 #include <templates/graph_template.h>
 
+#include <map>
 #include <random>
 #include <algorithm>
 
@@ -24,10 +25,12 @@ class dataloader:
 
         void generate_test_set(float percentage = 50); 
         void generate_kfold_set(int k); 
+        void dump_dataset(std::string path); 
+        void restore_dataset(std::string path); 
 
         std::vector<graph_t*> get_random(int num = 5); 
         void extract_data(graph_t* gr); 
-        void datatransfer(torch::TensorOptions* op);
+        void datatransfer(torch::TensorOptions* op, int threads = 10);
 
     private:
         void clean_data_elements(
@@ -36,7 +39,6 @@ class dataloader:
         ); 
 
         void shuffle(std::vector<int>* idx); 
-
 
         std::map<int, std::vector<int>*> k_fold_training = {}; 
         std::map<int, std::vector<int>*> k_fold_validation = {}; 

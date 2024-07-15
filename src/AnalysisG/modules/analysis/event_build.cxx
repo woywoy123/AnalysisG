@@ -16,17 +16,14 @@ void analysis::build_events(){
         label = itf -> second; 
 
         std::vector<std::string> _trees    = event_f -> trees; 
-        trees.insert(_trees.begin(), _trees.end()); 
-
         std::vector<std::string> _branches = event_f -> branches; 
         std::vector<std::string> _leaves   = event_f -> leaves; 
 
+        trees.insert(_trees.begin(), _trees.end()); 
         branches.insert(_branches.begin(), _branches.end()); 
         leaves.insert(_leaves.begin(), _leaves.end()); 
     } 
-    if (!event_f){
-        return this -> warning("Missing Event Implementation for specified samples!");
-    }
+    if (!event_f){return this -> warning("Missing Event Implementation for specified samples!");}
 
     std::vector<std::string>* trees_    = &this -> reader -> trees; 
     std::vector<std::string>* branches_ = &this -> reader -> branches; 
@@ -60,10 +57,6 @@ void analysis::build_events(){
             if (!this -> tracer -> add_event(tx -> second, label)){continue;} 
             delete tx -> second; 
         }
-
-
-
-
         this -> progressbar(float(index+1)/float(ls), tmp[tmp.size()-1]);
     }
 

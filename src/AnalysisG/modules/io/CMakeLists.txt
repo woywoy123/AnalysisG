@@ -1,8 +1,8 @@
 set(HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/include/io/io.h)
 set(SOURCE_FILES
-       ${CMAKE_CURRENT_SOURCE_DIR}/cxx/io.cxx
        ${CMAKE_CURRENT_SOURCE_DIR}/cxx/hdf5.cxx
        ${CMAKE_CURRENT_SOURCE_DIR}/cxx/types.cxx
+       ${CMAKE_CURRENT_SOURCE_DIR}/cxx/io.cxx
        ${CMAKE_CURRENT_SOURCE_DIR}/cxx/root.cxx
 )
 add_library(cio STATIC ${SOURCE_FILES})

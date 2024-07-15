@@ -18,6 +18,7 @@ struct settings_t {
     bool validation = true;
     bool evaluation = true;
     bool continue_training = false;
+    std::string training_dataset = ""; 
 
     // plotting
     std::string var_pt = "pt";
@@ -32,6 +33,9 @@ struct settings_t {
 
     bool debug_mode = false;
     int threads = 10; 
+
+
+
 
 }; 
 

@@ -4,7 +4,6 @@ from AnalysisG.generators.analysis import Analysis
 from AnalysisG.models.RecursiveGraphNeuralNetwork import *
 
 root1 = "./samples/dilepton/*"
-#root1 = "/home/tnom6927/Downloads/DileptonCollection/m1000/*"
 
 ev = BSM4Tops()
 gr = GraphTruthJets()
@@ -23,14 +22,11 @@ gn2.i_graph = ["met", "phi"]
 gn2.device = "cuda:0"
 gn2.checkpoint_path = "./gnn-example-weights/kfold-1_model.pt"
 
-
 ana = Analysis()
-ana.Targets = ["top_edge"]
-
 ana.AddSamples(root1, "tmp")
 ana.AddEvent(ev, "tmp")
 ana.AddGraph(gr, "tmp")
 ana.AddModelInference(gn, "test-run")
-ana.AddModelInference(gn2, "test-run-2")
+#ana.AddModelInference(gn2, "test-run-2")
 ana.Start()
 
