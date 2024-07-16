@@ -36,33 +36,12 @@ class childrenkinematics: public selection_template
     private:
 
         template <typename g>
-        std::vector<g*> vectorize(std::map<std::string, g*>* in){
-            typename std::vector<g*> out = {}; 
-            typename std::map<std::string, g*>::iterator itr = in -> begin(); 
-            for (; itr != in -> end(); ++itr){out.push_back(itr -> second);}
-            return out; 
-        }
-
-
-
-        template <typename g>
         void dump_kinematics(std::map<std::string, std::vector<float>>* data, g* p){
             (*data)["pt"].push_back((p -> pt)/1000); 
             (*data)["energy"].push_back((p -> e)/1000); 
             (*data)["eta"].push_back(p -> eta); 
             (*data)["phi"].push_back(p -> phi); 
         }
-
-        template <typename g>
-        float sum(std::vector<g*>* ch){
-            particle_template* prt = new particle_template(); 
-            for (size_t x(0); x < ch -> size(); ++x){prt -> iadd(ch -> at(x));}
-            float mass = prt -> mass / 1000; 
-            delete prt; 
-            return mass; 
-        }
-
-
 
 
 

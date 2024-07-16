@@ -1,4 +1,5 @@
 add_subdirectory(topkinematics)
 add_subdirectory(topmatching)
 add_subdirectory(childrenkinematics)
+add_subdirectory(decaymodes)
 install(FILES __init__.pxd DESTINATION ${SKBUILD_PROJECT_NAME}/selections/mc16)

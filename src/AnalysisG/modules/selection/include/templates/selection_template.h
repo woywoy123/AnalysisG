@@ -47,6 +47,24 @@ class selection_template: public tools
         std::string filename = ""; 
         event_t data; 
 
+
+        template <typename g>
+        float sum(std::vector<g*>* ch){
+            particle_template* prt = new particle_template(); 
+            for (size_t x(0); x < ch -> size(); ++x){prt -> iadd(ch -> at(x));}
+            float mass = prt -> mass / 1000; 
+            delete prt; 
+            return mass; 
+        }
+
+        template <typename g>
+        std::vector<g*> vectorize(std::map<std::string, g*>* in){
+            typename std::vector<g*> out = {}; 
+            typename std::map<std::string, g*>::iterator itr = in -> begin(); 
+            for (; itr != in -> end(); ++itr){out.push_back(itr -> second);}
+            return out; 
+        }
+
         friend container;
 
     private:

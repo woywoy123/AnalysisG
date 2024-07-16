@@ -124,6 +124,17 @@ cdef class Analysis:
     def kFolds(self, int k): self.ana.m_settings.kfolds = k
 
     @property
+    def kFold(self): return self.ana.m_settings.kfold
+
+    @kFold.setter
+    def kFold(self, val):
+        cdef list folds = []
+        if isinstance(val, int): folds += [val]
+        elif isinstance(val, list): folds += val
+        else: return
+        self.ana.m_settings.kfold = <vector[int]>(val)
+
+    @property
     def Epochs(self): return self.ana.m_settings.epochs
 
     @Epochs.setter

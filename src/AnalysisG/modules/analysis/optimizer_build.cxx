@@ -24,14 +24,17 @@ void analysis::build_model_session(){
 
     auto lamb = [](optimizer* op, int k){op -> launch_model(k);}; 
 
-    int c = 0; 
-    int nums = this -> trainer.size()*this -> m_settings.kfolds; 
     this -> threads = {}; 
+    if (!this -> m_settings.kfold.size()){
+       for (int k(0); k < this -> m_settings.kfolds; ++k){this -> m_settings.kfold.push_back(k);}
+    }
+
     std::map<std::string, optimizer*>::iterator itr = this -> trainer.begin(); 
     for (; itr != this -> trainer.end(); ++itr){
-        for (int k(0); k < this -> m_settings.kfolds; ++k, ++c){
-            if (this -> m_settings.debug_mode){itr -> second -> launch_model(k);}
-            else {this -> threads.push_back(new std::thread(lamb, itr -> second, k));}
+        for (int k(0); k < this -> m_settings.kfold.size(); ++k){
+            int k_ = this -> m_settings.kfold[k]; 
+            if (this -> m_settings.debug_mode){itr -> second -> launch_model(k_);}
+            else {this -> threads.push_back(new std::thread(lamb, itr -> second, k_));}
         }
     }
 }
