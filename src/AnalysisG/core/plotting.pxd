@@ -3,6 +3,7 @@
 
 from libcpp.string cimport string
 from libcpp.vector cimport vector
+from libcpp.map cimport map
 from libcpp cimport bool
 
 cdef extern from "<plotting/plotting.h>":
@@ -42,6 +43,10 @@ cdef extern from "<plotting/plotting.h>":
 
         vector[float] x_data
         vector[float] y_data
+
+        map[string, float] x_labels
+        map[string, float] y_labels
+
         vector[float] weights
         float cross_section
         float integrated_luminosity
@@ -79,6 +84,7 @@ cdef class BasePlotting:
 cdef class TH1F(BasePlotting):
     cdef public bool ApplyScaling
     cdef public list Histograms
+    cdef public TH1F Histogram
 
     cdef float scale_f(self)
     cdef dict factory(self)

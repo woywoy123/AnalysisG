@@ -43,7 +43,7 @@ top_children::top_children(){
     this -> add_leaf("e"  , "_e"); 
     this -> add_leaf("index", "_index");
     this -> add_leaf("pdgid", "_pdgid");
-
+    this -> add_leaf("charge", "_charge"); 
     this -> add_leaf("top_index", "_TopIndex");
     this -> apply_type_prefix(); 
 
@@ -69,7 +69,7 @@ particle_template* top_children::clone(){return (particle_template*)new top_chil
 
 void top_children::build(std::map<std::string, particle_template*>* prt, element_t* el){
     std::vector<std::vector<int>> _index, _pdgid, _top_index; 
-    std::vector<std::vector<float>> _pt, _eta, _phi, _e; 
+    std::vector<std::vector<float>> _pt, _eta, _phi, _e, _charge; 
 
     el -> get("top_index", &_top_index); 
     el -> get("index"    , &_index); 
@@ -79,6 +79,7 @@ void top_children::build(std::map<std::string, particle_template*>* prt, element
     el -> get("eta", &_eta);
     el -> get("phi", &_phi); 
     el -> get("e"  , &_e); 
+    el -> get("charge", &_charge); 
 
     for (int x(0); x < _pt.size(); ++x){
         for (int y(0); y < _pt[x].size(); ++y){
@@ -87,6 +88,7 @@ void top_children::build(std::map<std::string, particle_template*>* prt, element
             p -> eta        = _eta[x][y]; 
             p -> phi        = _phi[x][y]; 
             p -> e          = _e[x][y]; 
+            p -> charge     = _charge[x][y]; 
             p -> index      = _index[x][y]; 
             p -> pdgid      = _pdgid[x][y]; 
             p -> top_index  = _top_index[x][y]; 

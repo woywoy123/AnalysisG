@@ -4,8 +4,9 @@
 #include <structs/property.h>
 #include <tools/tools.h>
 #include <iostream>
-#include <string.h>
+#include <string>
 #include <vector>
+#include <map>
 
 class plotting: public tools
 {
@@ -65,6 +66,10 @@ class plotting: public tools
         // data containers
         std::vector<float> x_data = {};
         std::vector<float> y_data = {}; 
+
+        std::map<std::string, float> x_labels = {}; 
+        std::map<std::string, float> y_labels = {}; 
+
         std::vector<float> weights = {}; 
         float cross_section = -1; 
         float integrated_luminosity = 140.1; //fb-1

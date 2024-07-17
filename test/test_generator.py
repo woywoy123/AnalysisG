@@ -29,7 +29,8 @@ ana.AddSamples(root1, "tmp")
 ana.AddEvent(x, "tmp")
 ana.AddGraph(tt, "tmp")
 ana.AddModel(m, op, "test")
-ana.kFolds = 1
+ana.kFolds = 10
+ana.kFold = [1, 2]
 ana.Targets = ["top_edge"]
 ana.ContinueTraining = False
 ana.Evaluation = False

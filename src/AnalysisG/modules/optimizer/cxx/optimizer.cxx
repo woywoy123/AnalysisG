@@ -25,15 +25,16 @@ void optimizer::import_model_sessions(std::tuple<model_template*, optimizer_para
     
     model_settings_t settings;
     base -> clone_settings(&settings); 
-    
+
     this -> info("_____ IMPORTING MODELS _____"); 
-    for (int x(0); x < this -> m_settings.kfolds; ++x){
+    for (int x(0); x < this -> m_settings.kfold.size(); ++x){
+        int k_ = this -> m_settings.kfold[x]; 
         model_template* model_k = base -> clone(); 
         if (x){model_k -> shush = true;}
         model_k -> set_optimizer(config -> optimizer);
         model_k -> import_settings(&settings);
         model_k -> initialize(config); 
-        this -> kfold_sessions[x] = model_k; 
+        this -> kfold_sessions[k_] = model_k; 
     }
 }
 

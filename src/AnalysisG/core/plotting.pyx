@@ -203,7 +203,7 @@ cdef class BasePlotting:
 
 cdef class TH1F(BasePlotting):
 
-    def __init__(self): pass
+    def __init__(self): self.Histograms = []
 
     @property
     def xData(self): return self.ptr.x_data;
@@ -250,6 +250,12 @@ cdef class TH1F(BasePlotting):
     @Density.setter
     def Density(self, bool val): self.ptr.density = val
 
+    @property
+    def xLabels(self): return as_basic_dict(&self.ptr.x_labels)
+
+    @xLabels.setter
+    def xLabels(self, dict val): as_map(val, &self.ptr.x_labels)
+
     cdef void __error__(self, vector[float] xarr, vector[float] up, vector[float] low):
         self.matpl.fill_between(
                 xarr, low, up,
@@ -294,48 +300,74 @@ cdef class TH1F(BasePlotting):
         return histpl
 
     cdef __build__(self):
+        cdef dict labels = self.xLabels
         cdef float _max, _min
-        if self.set_xmin: _min = self.ptr.x_min
+
+        if len(labels): pass
+        elif self.set_xmin: _min = self.ptr.x_min
+        elif not len(labels) and not len(self.xData): pass
         else: _min = self.ptr.get_min(b"x")
 
-        if self.set_xmax: _max = self.ptr.x_max
+        if len(labels): pass
+        elif self.set_xmax: _max = self.ptr.x_max
+        elif not len(labels) and not len(self.xData): pass
         else: _max = self.ptr.get_max(b"x")
 
-        h = bh.Histogram(
-            bh.axis.Regular(self.ptr.x_bins, _min, _max), storage = bh.storage.Weight()
-        )
+        h = None
+        if not len(labels):
+            h = bh.Histogram(bh.axis.Regular(self.ptr.x_bins, _min, _max), storage = bh.storage.Weight())
+        else:
+            h = bh.Histogram(bh.axis.StrCategory(list(labels)), storage = bh.storage.Weight())
+            self.ptr.weights = <vector[float]>(list(labels.values()))
+
         if not self.ptr.weights.size(): h.fill(self.ptr.x_data)
+        elif len(labels): h.fill(list(labels), weight = self.ptr.weights)
         else: h.fill(self.ptr.x_data, weight = self.ptr.weights)
         if self.ApplyScaling: h *= self.scale_f()
         return h
 
     cdef void __compile__(self):
+        cdef dict labels = self.xLabels
         cdef float _max, _min
-        if self.set_xmin: _min = self.ptr.x_min
+        if len(labels): pass
+        elif self.set_xmin: _min = self.ptr.x_min
+        elif not len(labels) and not len(self.xData): pass
         else: _min = self.ptr.get_min(b"x")
 
-        if self.set_xmax: _max = self.ptr.x_max
+        if len(labels): pass
+        elif self.set_xmax: _max = self.ptr.x_max
+        elif not len(labels) and not len(self.xData): pass
         else: _max = self.ptr.get_max(b"x")
 
         cdef TH1F h
         cdef dict histpl = self.factory()
-        if len(self.xData):
-            h = self.__build__()
-            histpl["H"] += [h]
-            histpl["label"] += [h.Title]
+        if self.Histogram is not None:
+            histpl["H"] += [self.Histogram.__build__()]
+            histpl["label"] += [self.Histogram.Title]
+
+        if len(self.xData) or len(labels):
+            if not sum(list(self.ptr.weights)):
+                tmp = self.factory()
+                tmp["H"] = self.__build__()
+                del tmp["label"]
+                hep.histplot(**tmp)
+            else:
+                histpl["label"] += [self.Title]
+                histpl["H"] += [self.__build__()]
 
         for h in self.Histograms:
-            h.xMin  = self.xMin
-            h.xMax  = self.xMax
-            h.xBins = self.xBins
+            if not len(labels): h.xMin  = self.xMin
+            if not len(labels): h.xMax  = self.xMax
+            if not len(labels): h.xBins = self.xBins
             histpl["H"] += [h.__build__()]
             histpl["label"] += [h.Title]
 
+        if not len(histpl["H"]): return
         error = hep.histplot(**histpl)
         try: self.__get_error_seg__(error[0])
         except: pass
 
-        self.matpl.xlim(_min, _max)
+        if not len(labels): self.matpl.xlim(_min, _max)
         self.matpl.legend(loc = "upper right")
 
 cdef class TH2F(BasePlotting):

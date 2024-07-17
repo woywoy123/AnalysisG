@@ -1,19 +1,12 @@
-from AnalysisG.Plotting import TH1F
+from AnalysisG.core.plotting import TH1F
 global figure_path
+global mass_point
 
-def settings():
-    settings = {
-            "Style" : "ROOT",
-            "OutputDirectory" : figure_path + "decay-modes/figures/",
-            "Histograms" : [],
-            "Histogram" : None,
-            "LegendLoc" : "upper right"
-    }
-    return settings
+def path(hist):
+    hist.OutputDirectory = figure_path + "/decaymodes/" + mass_point
+    return hist
 
 def resonance_decay_modes(data):
-    sett = settings()
-
     th_hh = TH1F()
     th_hh.Title = "hadronic"
     th_hh.xData = data["HH"]
@@ -26,22 +19,20 @@ def resonance_decay_modes(data):
     th_ll.Title = "leptonic"
     th_ll.xData = data["LL"]
 
-    th = TH1F(**sett)
+    th = path(TH1F())
     th.Title = "Decay mode of Resonant Tops"
     th.Histograms = [th_hh, th_hl, th_ll]
     th.xMin = 0
     th.xMax = 1500
-    th.xBins = 1500
+    th.xBins = 500
     th.xStep = 250
-    th.Stack = True
-    th.yTitle = "Entries (arb.)"
+    th.Stacked = True
+    th.yTitle = "Entries (Arb.)"
     th.xTitle = "Invariant Mass (GeV)"
-    th.Filename = "Figure.2.a"
+    th.Filename = "Figure.4.a"
     th.SaveFigure()
 
 def resonance_decay_charge(data):
-    sett = settings()
-
     th_so = TH1F()
     th_so.Title = "Opposite-Sign"
     th_so.xData = data["SO"]
@@ -50,21 +41,19 @@ def resonance_decay_charge(data):
     th_ss.Title = "Same-Sign"
     th_ss.xData = data["SS"]
 
-    th = TH1F(**sett)
+    th = path(TH1F())
     th.Title = "Leptonically Decaying Resonance Tops in the Opposite and Same Sign Decay Channels"
     th.Histograms = [th_so, th_ss]
     th.xMin = 0
     th.xMax = 1500
-    th.xBins = 1500
+    th.xBins = 500
     th.xStep = 250
     th.xTitle = "Invariant Mass (GeV)"
-    th.yTitle = "Entries (arb.)"
-    th.Filename = "Figure.2.b"
+    th.yTitle = "Entries (Arb.)"
+    th.Filename = "Figure.4.b"
     th.SaveFigure()
 
 def spectator_decay_modes(data):
-    sett = settings()
-
     th_hh = TH1F()
     th_hh.Title = "hadronic"
     th_hh.xData = data["HH"]
@@ -77,21 +66,19 @@ def spectator_decay_modes(data):
     th_ll.Title = "leptonic"
     th_ll.xData = data["LL"]
 
-    th = TH1F(**sett)
+    th = path(TH1F())
     th.Title = "Decay mode of Spectator Tops"
     th.Histograms = [th_hh, th_hl, th_ll]
     th.xMin = 0
     th.xMax = 1500
-    th.xBins = 1500
+    th.xBins = 500
     th.xStep = 250
     th.xTitle = "Invariant Mass (GeV)"
-    th.yTitle = "Entries (arb.)"
-    th.Filename = "Figure.2.c"
+    th.yTitle = "Entries (Arb.)"
+    th.Filename = "Figure.4.c"
     th.SaveFigure()
 
 def spectator_decay_charge(data):
-    sett = settings()
-
     th_so = TH1F()
     th_so.Title = "Opposite-Sign"
     th_so.xData = data["SO"]
@@ -100,15 +87,15 @@ def spectator_decay_charge(data):
     th_ss.Title = "Same-Sign"
     th_ss.xData = data["SS"]
 
-    th = TH1F(**sett)
+    th = path(TH1F())
     th.Title = "Leptonically Decaying Spectator Tops in the Opposite and Same Sign Decay Channels"
     th.Histograms = [th_so, th_ss]
     th.xMin = 0
     th.xMax = 1500
-    th.xBins = 1500
+    th.xBins = 500
     th.xStep = 250
     th.xTitle = "Invariant Mass (GeV)"
-    th.Filename = "Figure.2.d"
+    th.Filename = "Figure.4.d"
     th.SaveFigure()
 
 def pdgid_modes(ana):
@@ -131,20 +118,15 @@ def pdgid_modes(ana):
     sth.Title = "Spectator-Tops"
     sth.xLabels = sdata
 
-    ath = TH1F()
-    ath.Title = "All-Tops"
-    ath.xLabels = alldata
-
-    sett = settings()
-    th = TH1F(**sett)
-    th.Histogram = ath
+    th = path(TH1F())
     th.Histograms = [rth, sth]
     th.xLabels = {i : 0 for a, i in enumerate(alldata)}
     th.Title = "PDGID Codes of Tops Decaying Truth Partons (Children)"
     th.xTitle = "Symbol"
     th.yTitle = "Fraction"
-    th.Filename = "Figure.2.e"
-    th.Normalize = True
+    th.Filename = "Figure.4.e"
+    th.Stacked = True
+    th.Density = True
     th.SaveFigure()
 
 def regions(ana):
@@ -159,17 +141,16 @@ def regions(ana):
     sth.Title = "Opposite Sign"
     sth.xData = so
 
-    sett = settings()
-    th = TH1F(**sett)
+    th = path(TH1F())
     th.Histograms = [rth, sth]
-    th.xBins = 1500
+    th.xBins = 500
     th.xMin = 0
     th.xMax = 1500
     th.xStep = 150
     th.Title = "Invariant Mass Distribution of the Resonance when \n one Spectator and Resonant Top Decay Leptonically"
     th.xTitle = "Invariant Mass (GeV)"
-    th.yTitle = "Entries"
-    th.Filename = "Figure.2.f"
+    th.yTitle = "Entries (Arb.)"
+    th.Filename = "Figure.4.f"
     th.SaveFigure()
 
 def DecayModes(ana):

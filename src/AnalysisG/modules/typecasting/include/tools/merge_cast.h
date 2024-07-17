@@ -16,4 +16,20 @@ void merge_data(std::map<std::string, G>* out, std::map<std::string, G>* p2){
     for (; itr != p2 -> end(); ++itr){merge_data(&(*out)[itr -> first], &itr -> second);} 
 }
 
+template <typename g, typename G>
+void merge_data(std::map<g, G>* out, std::map<g, G>* p2){
+    typename std::map<g, G>::iterator itr = p2 -> begin(); 
+    for (; itr != p2 -> end(); ++itr){merge_data(&(*out)[itr -> first], &itr -> second);} 
+}
+
+
+template <typename G>
+void sum_data(G* out, G* p2){(*out) += (*p2);}
+
+template <typename g, typename G>
+void sum_data(std::map<g, G>* out, std::map<g, G>* p2){
+    typename std::map<g, G>::iterator itr = p2 -> begin(); 
+    for (; itr != p2 -> end(); ++itr){sum_data(&(*out)[itr -> first], &itr -> second);} 
+}
+
 #endif

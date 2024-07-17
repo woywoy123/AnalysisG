@@ -2,26 +2,29 @@ from AnalysisG.generators.analysis import Analysis
 from AnalysisG.core.plotting import TH1F, TH2F, TLine
 
 # event implementation
-from AnalysisG.events.event_bsm_4tops import BSM4Tops
+from AnalysisG.events.bsm_4tops.event_bsm_4tops import BSM4Tops
 
 # truth study
 from AnalysisG.selections.mc16.topkinematics.topkinematics import TopKinematics
 from AnalysisG.selections.mc16.topmatching.topmatching import TopMatching
 from AnalysisG.selections.mc16.childrenkinematics.childrenkinematics import ChildrenKinematics
+from AnalysisG.selections.mc16.decaymodes.decaymodes import DecayModes
 
 # figures
 import topkinematics
 import topmatching
 import childrenkinematics
+import decaymodes
 
 import pickle
 
-study = "childrenkinematics"
+study = "decaymodes"
 
 plotting_method = {
     "topkinematics"      : topkinematics,
     "topmatching"        : topmatching,
-    "childrenkinematics" : childrenkinematics
+    "childrenkinematics" : childrenkinematics,
+    "decaymodes"         : decaymodes
 }
 
 smpls = "../../test/samples/dilepton/*"
@@ -43,6 +46,7 @@ for mass in ["1000", "900", "800", "700", "600", "500", "400"]:
         if study == "topkinematics"      : sel = TopKinematics()
         if study == "topmatching"        : sel = TopMatching()
         if study == "childrenkinematics" : sel = ChildrenKinematics()
+        if study == "decaymodes"         : sel = DecayModes()
 
         ana = Analysis()
         ana.AddSamples(smpls, "tmp")
@@ -61,4 +65,4 @@ for mass in ["1000", "900", "800", "700", "600", "500", "400"]:
     if study == "topkinematics"      : method.figures.TopKinematics(pres)
     if study == "topmatching"        : method.figures.TopMatching(pres)
     if study == "childrenkinematics" : method.figures.ChildrenKinematics(pres)
-
+    if study == "decaymodes"         : method.figures.DecayModes(pres)

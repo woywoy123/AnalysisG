@@ -2,6 +2,10 @@
 
 void analysis::build_model_session(){
     if (!this -> model_sessions.size()){return this -> info("No Models Specified. Skipping.");}
+    std::vector<int> kfold = this -> m_settings.kfold; 
+    if (!kfold.size()){for (int k(0); k < this -> m_settings.kfolds; ++k){kfold.push_back(k);}}
+    else {for (int k(0); k < kfold.size(); ++k){kfold[k] = kfold[k]-1;}}
+    this -> m_settings.kfold = kfold; 
     for (size_t x(0); x < this -> model_sessions.size(); ++x){
         std::string name = this -> model_session_names[x]; 
 
@@ -25,10 +29,6 @@ void analysis::build_model_session(){
     auto lamb = [](optimizer* op, int k){op -> launch_model(k);}; 
 
     this -> threads = {}; 
-    if (!this -> m_settings.kfold.size()){
-       for (int k(0); k < this -> m_settings.kfolds; ++k){this -> m_settings.kfold.push_back(k);}
-    }
-
     std::map<std::string, optimizer*>::iterator itr = this -> trainer.begin(); 
     for (; itr != this -> trainer.end(); ++itr){
         for (int k(0); k < this -> m_settings.kfold.size(); ++k){

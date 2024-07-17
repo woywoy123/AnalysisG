@@ -45,6 +45,12 @@ ctypedef fused base_types:
 
 cdef inline list as_list(vector[base_types]* inp): return list(dref(inp))
 
+cdef inline dict as_basic_dict(map[string, base_types]* inpt):
+    cdef dict output = {}
+    cdef pair[string, base_types] itr
+    for pair in dref(inpt): output[env(pair.first)] = pair.second
+    return output
+
 cdef inline dict as_dict(map[string, vector[base_types]]* inpt):
     cdef dict output = {}
     cdef pair[string, vector[base_types]] itr
@@ -57,4 +63,6 @@ cdef inline dict as_dict_dict(map[string, map[string, vector[base_types]]]* inpt
     for pair in dref(inpt): output[env(pair.first)] = as_dict(&pair.second)
     return output
 
-
+cdef inline void as_map(dict inpt, map[string, base_types]* out):
+    cdef str key
+    for key in inpt: dref(out)[enc(key)] = inpt[key]

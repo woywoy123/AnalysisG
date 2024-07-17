@@ -132,7 +132,7 @@ cdef class Analysis:
         if isinstance(val, int): folds += [val]
         elif isinstance(val, list): folds += val
         else: return
-        self.ana.m_settings.kfold = <vector[int]>(val)
+        self.ana.m_settings.kfold = <vector[int]>(folds)
 
     @property
     def Epochs(self): return self.ana.m_settings.epochs

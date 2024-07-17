@@ -43,8 +43,6 @@ class childrenkinematics: public selection_template
             (*data)["phi"].push_back(p -> phi); 
         }
 
-
-
 };
 
 #endif
