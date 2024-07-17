@@ -46,16 +46,4 @@ void static num_lepton(int* o, bsm_4tops* event){
 // --------------------- Graph Observables --------------------- //
 void static missing_et(double* o, bsm_4tops* event){*o = event -> met;}; 
 void static missing_phi(double* o, bsm_4tops* event){*o = event -> phi;}; 
-
-
-
-
-
-
-
-
-
-
-
-
 #endif

@@ -112,7 +112,5 @@ In the framework, particles are given a unique identifier in the form of a hash 
 So when the particle registration occurs in the constructor of the event class, the framework knows to delete these particles once they are not needed.
 This is discussed more in detail in the next section.
 
-For more information about the methods and attributes of the event_template class, see the core-class documentation :ref:`event-template`.
-
-
+For more information about the methods and attributes of the `event_template` class, see the core-class documentation :ref:`event-template`.
 

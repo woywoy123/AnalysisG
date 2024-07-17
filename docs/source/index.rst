@@ -85,7 +85,13 @@ Event and Particle Implementations
 
    mc16-events/main.rst
 
+Graph Neural Network Training
+-----------------------------
 
+.. toctree::
+   :titlesonly:
+
+   gnn-training/main.rst
 
 Analysis and Truth Studies Documentation
 ----------------------------------------
