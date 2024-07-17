@@ -71,7 +71,5 @@ jobs:
                 source ../install/bin/thisroot.sh
                 cd ..
 
-            - name: "building AnalysisG"
-              run: |
                 python -m pip install pipx
                 python -m pipx run build --sdist
