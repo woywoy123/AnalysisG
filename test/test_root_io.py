@@ -1,4 +1,4 @@
-from AnalysisG.IO import IO
+from AnalysisG.core.io import IO
 
 root1 = "./samples/sample1/smpl1.root"
 root2 = "./samples/sample1/smpl2.root"

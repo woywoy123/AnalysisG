@@ -2,13 +2,19 @@ Bootstrap: docker
 From: nvidia/cuda:12.4.0-devel-ubuntu22.04
 
 %files
-    ./CMakeLists.txt .
-    ./pyproject.toml .
-    ./LICENSE .
-    ./src .
-    ./test .
+    ./CMakeLists.txt AnalysisG/
+    ./pyproject.toml AnalysisG/
+    ./LICENSE AnalysisG/
+    ./src AnalysisG/
+    ./test AnalysisG/
+    ./studies AnalsisG/
+    ./local AnalysisG/
 
 %post
+    mkdir /input
+    mkdir /output
+    mkdir /analysisg
+    export HOME=$PWD
 
     TZ=Etc/UTC && \
         ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && \
@@ -23,10 +29,8 @@ From: nvidia/cuda:12.4.0-devel-ubuntu22.04
     apt-get install -y libsqlite3-dev 
     apt-get install -y curl 
     apt-get install -y llvm 
-    apt-get install -y xz-utils 
     apt-get install -y tk-dev 
     apt-get install -y libxmlsec1-dev 
-    apt-get install -y libffi-dev 
     apt-get install -y liblzma-dev 
     apt-get install -y liblapack-dev 
     apt-get install -y libopenblas-dev 
@@ -45,7 +49,6 @@ From: nvidia/cuda:12.4.0-devel-ubuntu22.04
     apt-get install -y libgraphviz-dev  
     apt-get install -y libavahi-compat-libdnssd-dev 
     apt-get install -y libldap2-dev 
-    apt-get install -y libxml2-dev 
     apt-get install -y libkrb5-dev 
     apt-get install -y libgsl-dev 
     apt-get install -y qtwebengine5-dev 
@@ -59,23 +62,44 @@ From: nvidia/cuda:12.4.0-devel-ubuntu22.04
     echo 'export PATH=/opt/pyenv/versions/3.12.4/bin/:$PATH' >> $SINGULARITY_ENVIRONMENT
     export PATH=/opt/pyenv/versions/3.12.4/bin/:$PATH
 
-    git clone --branch latest-stable --depth=1 https://github.com/root-project/root.git root_src
-    mkdir build install
-    cd build 
+    git clone --branch latest-stable --depth=1 https://github.com/root-project/root.git /opt/root_src
+    mkdir /opt/build /opt/ROOT
+    cd /opt/build 
 
-    cmake -Dxrootd=OFF -Dbuiltin_xrootd=OFF -Dclad=OFF -DCMAKE_INSTALL_PREFIX=../install ../root_src
-    cmake --build . --target install -j12
-    source ../install/bin/thisroot.sh
-    cd ..
-    rm -rf build root_src
+    cmake -DCMAKE_INSTALL_PREFIX=/opt/ROOT /opt/root_src -Dminimal=ON
+    cmake --build . --target install -j48
+    cd -
 
-    mkdir build && cd build
-    cd build
-    cmake ..
-    make -j12
-    cmake .. 
-    rm -rf build
-               
+    export ROOTSYS=/opt/ROOT
+    export PATH=$ROOTSYS/bin:$PATH
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ROOTSYS/lib
+    export CMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH:$ROOTSYS/cmake
+    rm -rf /opt/build /opt/root_src
+
+    export TORCH_CUDA_ARCH_LIST="8.0 8.6 8.9 9.0+PTX"
+    cd $HOME/AnalysisG
+    pip install -v .
     apt-get clean && apt-get autoclean
-    rm ~/.cache
+    cd $HOME
+
+%environment
+    export ROOTSYS=/opt/ROOT
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ROOTSYS/lib
+    export CMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH:$ROOTSYS/cmake
+    export TORCH_CUDA_ARCH_LIST="8.0 8.6 8.9 9.0+PTX"
+    export PATH=$ROOTSYS/bin:$PATH
+    export OUTPUT=/output
+    export INPUT=/input
+    export ANALYSISG=$HOME/AnalysisG
+
+%appinstall compile
+    cp -r /analysisg/* $HOME/AnalysisG/
+    pip install -v .
+
+%runscript studies
+    echo "Argument: $*"
+    cd $HOME/AnalysisG/studies/
+
+%runscript model
+    echo "Argument: $*"
 

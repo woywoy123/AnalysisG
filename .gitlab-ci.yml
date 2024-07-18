@@ -5,15 +5,14 @@ workflow:
     rules:
         - if: $CI_COMMIT_BRANCH == "master"
 
-build:
+build-singularity:
     stage: build-image
-    image: gitlab-registry.cern.ch/ci-tools/docker-image-builder:no_kaniko
-    variables:
-        TO: $CI_REGISTRY_IMAGE:latest
+    image:
+        name: quay.io/singularity/singularity:v3.7.0
+        entrypoint: [""]
     tags:
         - docker-image-build    
-    script: 
-        - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-        - docker build -t $CI_REGISTRY_IMAGE:latest .
-        - docker push $CI_REGISTRY_IMAGE:latest
+    script:
+        - singularity build singularity.sif singularity.def
+
 

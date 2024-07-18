@@ -54,6 +54,7 @@ jobs:
                 sudo apt update
                 sudo apt install -y libhdf5-dev
                 sudo apt install -y rapidjson-dev
+                sudo apt-get install -y cuda-toolkit
                 sudo apt-get install -y binutils cmake dpkg-dev g++ gcc libssl-dev git libx11-dev
                 sudo apt-get install -y libxext-dev libxft-dev libxpm-dev libtbb-dev
                 sudo apt-get install -y gfortran libpcre3-dev libglu1-mesa-dev libglew-dev 
@@ -66,10 +67,11 @@ jobs:
                 mkdir build install
                 cd build 
 
-                cmake -Dxrootd=OFF -Dbuiltin_xrootd=OFF -Dclad=OFF -DCMAKE_INSTALL_PREFIX=../install ../root_src
+                cmake -Dxrootd=OFF -Dminimal=ON -DCMAKE_INSTALL_PREFIX=../install ../root_src
                 cmake --build . --target install -j12
                 source ../install/bin/thisroot.sh
                 cd ..
 
+                export TORCH_CUDA_ARCH_LIST="8.0 8.6 8.9 9.0+PTX"
                 python -m pip install pipx
                 python -m pipx run build --sdist

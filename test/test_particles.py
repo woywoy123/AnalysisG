@@ -1,4 +1,4 @@
-from AnalysisG.Templates import ParticleTemplate
+from AnalysisG.core.particle_template import ParticleTemplate
 import math
 
 def test_particle_template_assign_var():
@@ -19,7 +19,7 @@ def test_particle_template():
     x = ParticleTemplate()
     y = ParticleTemplate()
     assert x.hash == y.hash
-    assert len(x.hash) == 18
+    assert len(x.hash) == 28
 
     # Testing setter function
     vals = [207050.75, 0.5622375011444092, 2.262759208679199, 296197.3125]

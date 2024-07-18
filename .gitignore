@@ -4,13 +4,16 @@
 **/*.egg*
 **/_Pickle
 **/gnn-analysis
+**/.apptainer
+**/.local
 scripts/source_this.sh
 
 # Cache types 
 **.hdf5
 **.pkl
 **.root
-#**.png
+local/**/*.png
+**.h5
 **.pt
 **.pth
 
