@@ -92,10 +92,6 @@ From: nvidia/cuda:12.4.0-devel-ubuntu22.04
     export INPUT=/input
     export ANALYSISG=$HOME/AnalysisG
 
-%appinstall compile
-    cp -r /analysisg/* $HOME/AnalysisG/
-    pip install -v .
-
 %runscript studies
     echo "Argument: $*"
     cd $HOME/AnalysisG/studies/
