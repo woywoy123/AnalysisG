@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.23 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
 set(SKBUILD_PROJECT_NAME AnalysisG)
 
 project(${SKBUILD_PROJECT_NAME} VERSION ${SKBUILD_PROJECT_VERSION} LANGUAGES CXX C)
@@ -26,12 +26,7 @@ find_package(Torch)
 find_package(RapidJSON)
 find_package(PythonInterp)
 find_package(ROOT REQUIRED COMPONENTS RIO Tree Core)
-
-if (NOT RapidJSON_FOUND)
-FetchContent_Declare(RapidJSON GIT_REPOSITORY https://github.com/Tencent/rapidjson.git)
-FetchContent_MakeAvailable(RapidJSON)
 find_package(RapidJSON REQUIRED)
-endif()
 
 if (NOT Torch_FOUND)
 FetchContent_Declare(Torch URL https://download.pytorch.org/libtorch/cu121/libtorch-cxx11-abi-shared-with-deps-2.3.1%2Bcu121.zip)

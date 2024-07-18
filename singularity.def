@@ -1,0 +1,81 @@
+Bootstrap: docker
+From: nvidia/cuda:12.4.0-devel-ubuntu22.04
+
+%files
+    ./CMakeLists.txt .
+    ./pyproject.toml .
+    ./LICENSE .
+    ./src .
+    ./test .
+
+%post
+
+    TZ=Etc/UTC && \
+        ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && \
+        echo $TZ > /etc/timezone
+
+    apt-get update -y
+    apt-get install -y git wget
+    apt-get install -y build-essential
+    apt-get install -y zlib1g-dev
+    apt-get install -y libbz2-dev 
+    apt-get install -y libreadline-dev 
+    apt-get install -y libsqlite3-dev 
+    apt-get install -y curl 
+    apt-get install -y llvm 
+    apt-get install -y xz-utils 
+    apt-get install -y tk-dev 
+    apt-get install -y libxmlsec1-dev 
+    apt-get install -y libffi-dev 
+    apt-get install -y liblzma-dev 
+    apt-get install -y liblapack-dev 
+    apt-get install -y libopenblas-dev 
+    apt-get install -y libhdf5-dev 
+    apt-get install -y rapidjson-dev 
+    apt-get install -y cmake  
+    apt-get install -y libxpm-dev 
+    apt-get install -y libtbb-dev
+    apt-get install -y gfortran  
+    apt-get install -y libpcre3-dev  
+    apt-get install -y libglu1-mesa-dev   
+    apt-get install -y libglew-dev  
+    apt-get install -y libftgl-dev  
+    apt-get install -y libfftw3-dev  
+    apt-get install -y libcfitsio-dev  
+    apt-get install -y libgraphviz-dev  
+    apt-get install -y libavahi-compat-libdnssd-dev 
+    apt-get install -y libldap2-dev 
+    apt-get install -y libxml2-dev 
+    apt-get install -y libkrb5-dev 
+    apt-get install -y libgsl-dev 
+    apt-get install -y qtwebengine5-dev 
+    apt-get install -y nlohmann-json3-dev 
+    apt-get install -y libmysqlclient-dev
+
+    export PYENV_ROOT=/opt/pyenv
+    export PATH="/opt/pyenv/bin:$PATH"
+    curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
+    pyenv install 3.12.4
+    echo 'export PATH=/opt/pyenv/versions/3.12.4/bin/:$PATH' >> $SINGULARITY_ENVIRONMENT
+    export PATH=/opt/pyenv/versions/3.12.4/bin/:$PATH
+
+    git clone --branch latest-stable --depth=1 https://github.com/root-project/root.git root_src
+    mkdir build install
+    cd build 
+
+    cmake -Dxrootd=OFF -Dbuiltin_xrootd=OFF -Dclad=OFF -DCMAKE_INSTALL_PREFIX=../install ../root_src
+    cmake --build . --target install -j12
+    source ../install/bin/thisroot.sh
+    cd ..
+    rm -rf build root_src
+
+    mkdir build && cd build
+    cd build
+    cmake ..
+    make -j12
+    cmake .. 
+    rm -rf build
+               
+    apt-get clean && apt-get autoclean
+    rm ~/.cache
+
