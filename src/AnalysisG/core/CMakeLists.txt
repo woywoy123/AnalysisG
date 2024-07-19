@@ -87,14 +87,14 @@ COMMAND
 )
 
 add_custom_command(
-OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/cparticles.cpp
+OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/cparticle_template.cpp
 DEPENDS 
     ${CMAKE_CURRENT_SOURCE_DIR}/particle_template.pxd
     ${CMAKE_CURRENT_SOURCE_DIR}/particle_template.pyx
 VERBATIM
 COMMAND
     Python::Interpreter -m cython --cplus
-    ${CMAKE_CURRENT_SOURCE_DIR}/particle_template.pyx --output-file ${CMAKE_CURRENT_SOURCE_DIR}/cparticles.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/particle_template.pyx --output-file ${CMAKE_CURRENT_SOURCE_DIR}/cparticle_template.cpp
 )
 
 add_custom_command(
@@ -132,7 +132,7 @@ COMMAND
 
 python_add_library(tools              MODULE ${CMAKE_CURRENT_SOURCE_DIR}/ctools.cpp WITH_SOABI)
 python_add_library(structs            MODULE ${CMAKE_CURRENT_SOURCE_DIR}/cstructs.cpp WITH_SOABI)
-python_add_library(particle_template  MODULE ${CMAKE_CURRENT_SOURCE_DIR}/cparticles.cpp WITH_SOABI)
+python_add_library(particle_template  MODULE ${CMAKE_CURRENT_SOURCE_DIR}/cparticle_template.cpp WITH_SOABI)
 python_add_library(notification       MODULE ${CMAKE_CURRENT_SOURCE_DIR}/cnotification.cpp WITH_SOABI)
 python_add_library(meta               MODULE ${CMAKE_CURRENT_SOURCE_DIR}/cmeta.cpp WITH_SOABI)
 python_add_library(io                 MODULE ${CMAKE_CURRENT_SOURCE_DIR}/cio.cpp WITH_SOABI)
@@ -145,7 +145,7 @@ python_add_library(lossfx             MODULE ${CMAKE_CURRENT_SOURCE_DIR}/clossfx
 
 target_link_libraries(tools              LINK_PUBLIC ctools)
 target_link_libraries(structs            LINK_PUBLIC cstructs)
-target_link_libraries(particle_template  LINK_PUBLIC cparticles cstructs)
+target_link_libraries(particle_template  LINK_PUBLIC cparticle_template cstructs)
 target_link_libraries(notification       LINK_PUBLIC cnotification)
 target_link_libraries(meta               LINK_PUBLIC cmeta)
 target_link_libraries(io                 LINK_PUBLIC cio)
@@ -161,13 +161,13 @@ file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/cio.cpp)
 file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/cmeta.cpp)
 file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/cstructs.cpp)
 file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/cplotting.cpp)
-file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/clossfx.cpp)
 file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/cparticle_template.cpp)
 file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/cnotification.cpp)
 file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/cevent_template.cpp)
 file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/cselection_template.cpp)
 file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/cgraph_template.cpp)
 file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/cmodel_template.cpp)
+file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/clossfx.cpp)
 
 install(FILES   __init__.pxd       DESTINATION ${SKBUILD_PROJECT_NAME}/core)
 install(TARGETS tools              DESTINATION ${SKBUILD_PROJECT_NAME}/core)
@@ -180,3 +180,4 @@ install(TARGETS event_template     DESTINATION ${SKBUILD_PROJECT_NAME}/core)
 install(TARGETS selection_template DESTINATION ${SKBUILD_PROJECT_NAME}/core)
 install(TARGETS graph_template     DESTINATION ${SKBUILD_PROJECT_NAME}/core)
 install(TARGETS model_template     DESTINATION ${SKBUILD_PROJECT_NAME}/core)
+install(TARGETS lossfx             DESTINATION ${SKBUILD_PROJECT_NAME}/core)

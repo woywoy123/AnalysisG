@@ -24,44 +24,22 @@ defaults:
   
 jobs:
     build:
-        name: "Python ${{ matrix.python-version }} on ${{ matrix.os }}"
-        runs-on: "${{ matrix.os }}"
-        strategy: 
-                fail-fast: false
-                matrix:
-                    os:
-                      #- ubuntu-20.04
-                      #- ubuntu-22.04
-                        - ubuntu-latest
-
-                    python-version:
-                      #  - "3.9"
-                      #  - "3.10"
-                      #  - "3.11"
-                        - "3.12"
-
         steps:      
             - name: "Checkout the repo"
               uses: "actions/checkout@v3"
+    
+            - name: Build source distribution
+              runs-on: ubuntu-latest
 
-            - name: "Configuring Python - ${{ matrix.python-version }}"
-              uses: "actions/setup-python@v4"
-              with: 
-                python-version: "${{ matrix.python-version }}"
-            
-            - name: "Building ROOT from source"
+            - name: "Building singularity"
               run: |
-                sudo apt update
-                sudo apt-get install -y nvidia-cuda-toolkit
-                sudo apt-get install -y rapidjson-dev libhdf5-dev
-                sudo apt-get install -y cmake dpkg-dev libssl-dev
-                sudo apt install gcc-10 g++-10
-                export CC=/usr/bin/gcc-10
-                export CXX=/usr/bin/g++-10
-                
-                wget https://root.cern/download/root_v6.32.02.Linux-almalinux9.4-x86_64-gcc11.4.tar.gz
-                tar -xzvf root_v6.32.02.Linux-almalinux9.4-x86_64-gcc11.4.tar.gz
-                source root/bin/thisroot.sh
-
-                export TORCH_CUDA_ARCH_LIST="8.0 8.6"
-                pip install -v .
+                sudo apt-get update
+                sudo apt-get install -y build-essential 
+                sudo apt-get install -y libssl-dev
+                sudo apt-get install -y uuid-dev
+                sudo apt-get install -y libgpgme11-dev
+                sudo apt-get install -y squashfs-tools
+                sudo apt-get install -y libseccomp-dev
+                sudo apt-get install -y pkg-config
+                sudo apt-get install -y singularity-container
+                singularity build singularity.sif singularity.def
