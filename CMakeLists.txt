@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
 set(SKBUILD_PROJECT_NAME AnalysisG)
 
 project(${SKBUILD_PROJECT_NAME} VERSION ${SKBUILD_PROJECT_VERSION} LANGUAGES CXX C)
+include(ExternalProject)
 include(FetchContent)
-
 include(CheckLanguage)
 check_language(CUDA)
 
@@ -23,13 +23,34 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(HDF5)
 find_package(Torch)
-find_package(RapidJSON)
 find_package(PythonInterp)
+find_package(RapidJSON)
 find_package(ROOT REQUIRED COMPONENTS RIO Tree Core)
-find_package(RapidJSON REQUIRED)
+
+if (NOT RapidJSON_FOUND)
+ExternalProject_Add(
+rapidjson
+PREFIX "vendor/rapidjson"
+GIT_REPOSITORY "https://github.com/Tencent/rapidjson.git"
+GIT_TAG f54b0e47a08782a6131cc3d60f94d038fa6e0a51
+TIMEOUT 10
+CMAKE_ARGS
+    -DRAPIDJSON_BUILD_TESTS=OFF
+    -DRAPIDJSON_BUILD_DOC=OFF
+    -DRAPIDJSON_BUILD_EXAMPLES=OFF
+CONFIGURE_COMMAND ""
+BUILD_COMMAND ""
+INSTALL_COMMAND ""
+UPDATE_COMMAND "")
+ExternalProject_Get_Property(rapidjson source_dir)
+set(RAPIDJSON_INCLUDE_DIR ${source_dir}/include)
+endif()
+
 
 if (NOT Torch_FOUND)
-FetchContent_Declare(Torch URL https://download.pytorch.org/libtorch/cu121/libtorch-cxx11-abi-shared-with-deps-2.3.1%2Bcu121.zip)
+FetchContent_Declare(Torch 
+URL https://download.pytorch.org/libtorch/cu121/libtorch-cxx11-abi-shared-with-deps-2.3.1%2Bcu121.zip
+)
 FetchContent_MakeAvailable(Torch)
 list(APPEND CMAKE_PREFIX_PATH "${torch_SOURCE_DIR}")
 endif()
@@ -56,12 +77,13 @@ message(STATUS "ROOT: ${ROOT_INCLUDE_DIRS}")
 include_directories(${ROOT_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR})
 list(APPEND CMAKE_PREFIX_PATH "${ROOT_SOURCE_DIR}")
 
+set(HDF5_USE_CXX TRUE)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
+
 find_package(Python COMPONENTS Interpreter Development REQUIRED)
 find_package(HDF5 COMPONENTS C CXX REQUIRED)
 find_package(Torch REQUIRED)
-
-set(HDF5_USE_CXX TRUE)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
+find_package(RapidJSON REQUIRED)
 
 add_subdirectory(src/AnalysisG/pyc)
 add_subdirectory(src/AnalysisG/modules)
@@ -74,7 +96,5 @@ add_subdirectory(src/AnalysisG/core)
 
 execute_process(
 COMMAND python -c "import sysconfig; print(sysconfig.get_paths()['platlib'])" 
-OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE
-)
-
+OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE)
 file(INSTALL ${CMAKE_BINARY_DIR}/src/AnalysisG DESTINATION ${PYTHON_SITE_PACKAGES})
