@@ -23,23 +23,22 @@ defaults:
     shell: bash
   
 jobs:
-    build:
-        steps:      
-            - name: "Checkout the repo"
-              uses: "actions/checkout@v3"
-    
-            - name: Build source distribution
-              runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-latest
+    name: building
+    steps:      
+      - name: "Checkout the repo"
+        uses: "actions/checkout@v3"
 
-            - name: "Building singularity"
-              run: |
-                sudo apt-get update
-                sudo apt-get install -y build-essential 
-                sudo apt-get install -y libssl-dev
-                sudo apt-get install -y uuid-dev
-                sudo apt-get install -y libgpgme11-dev
-                sudo apt-get install -y squashfs-tools
-                sudo apt-get install -y libseccomp-dev
-                sudo apt-get install -y pkg-config
-                sudo apt-get install -y singularity-container
-                singularity build singularity.sif singularity.def
+      - name: "Building singularity"
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential 
+          sudo apt-get install -y libssl-dev
+          sudo apt-get install -y uuid-dev
+          sudo apt-get install -y libgpgme11-dev
+          sudo apt-get install -y squashfs-tools
+          sudo apt-get install -y libseccomp-dev
+          sudo apt-get install -y pkg-config
+          sudo apt-get install -y singularity-container
+          singularity build singularity.sif singularity.def

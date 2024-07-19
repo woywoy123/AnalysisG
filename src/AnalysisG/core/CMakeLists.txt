@@ -145,7 +145,7 @@ python_add_library(lossfx             MODULE ${CMAKE_CURRENT_SOURCE_DIR}/clossfx
 
 target_link_libraries(tools              LINK_PUBLIC ctools)
 target_link_libraries(structs            LINK_PUBLIC cstructs)
-target_link_libraries(particle_template  LINK_PUBLIC cparticle_template cstructs)
+target_link_libraries(particle_template  LINK_PUBLIC cparticles cstructs)
 target_link_libraries(notification       LINK_PUBLIC cnotification)
 target_link_libraries(meta               LINK_PUBLIC cmeta)
 target_link_libraries(io                 LINK_PUBLIC cio)
