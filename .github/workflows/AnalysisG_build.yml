@@ -52,7 +52,8 @@ jobs:
             - name: "Building ROOT from source"
               run: |
                 sudo apt update
-                sudo apt-get install -y nvidia-cuda-toolkit  
+                sudo apt-get install -y nvidia-cuda-toolkit
+                sudo apt-get install -y rapidjson-dev
                 sudo apt-get install -y cmake dpkg-dev g++ gcc libssl-dev
 
                 wget https://root.cern/download/root_v6.32.02.Linux-almalinux9.4-x86_64-gcc11.4.tar.gz
