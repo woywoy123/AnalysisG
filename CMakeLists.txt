@@ -83,7 +83,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
 find_package(Python COMPONENTS Interpreter Development REQUIRED)
 find_package(HDF5 COMPONENTS C CXX REQUIRED)
 find_package(Torch REQUIRED)
-find_package(RapidJSON REQUIRED)
 
 add_subdirectory(src/AnalysisG/pyc)
 add_subdirectory(src/AnalysisG/modules)
