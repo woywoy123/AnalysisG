@@ -60,5 +60,5 @@ jobs:
                 tar -xzvf root_v6.32.02.Linux-almalinux9.4-x86_64-gcc11.4.tar.gz
                 source root/bin/thisroot.sh
 
-                export TORCH_CUDA_ARCH_LIST="8.0 8.6 9.0"
+                export TORCH_CUDA_ARCH_LIST="8.0 8.6"
                 pip install -v .
