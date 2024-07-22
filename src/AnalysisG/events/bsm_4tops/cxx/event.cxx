@@ -11,12 +11,15 @@ bsm_4tops::bsm_4tops(){
 
     this -> register_particle(&this -> m_Tops);
     this -> register_particle(&this -> m_Children); 
+
     this -> register_particle(&this -> m_TruthJets);
+    this -> register_particle(&this -> m_TruthJetParton); 
+
     this -> register_particle(&this -> m_Jets); 
+    this -> register_particle(&this -> m_JetParton); 
+
     this -> register_particle(&this -> m_Electrons); 
     this -> register_particle(&this -> m_Muons); 
-    this -> register_particle(&this -> m_JetParton); 
-    this -> register_particle(&this -> m_TruthJetParton); 
 }
 
 bsm_4tops::~bsm_4tops(){}
@@ -122,9 +125,9 @@ void bsm_4tops::CompileEvent(){
         accept[hash_] = true;
     }
 
-    this -> vectorize(&_Tops, &this -> Tops); 
-    this -> vectorize(&_TopChildren, &this -> Children); 
-    this -> vectorize(&_TruthJets, &this -> TruthJets); 
+    this -> vectorize(&_Tops              , &this -> Tops); 
+    this -> vectorize(&_TopChildren       , &this -> Children); 
+    this -> vectorize(&_TruthJets         , &this -> TruthJets); 
     this -> vectorize(&this -> m_Jets     , &this -> Jets); 
     this -> vectorize(&this -> m_Electrons, &this -> Electrons); 
     this -> vectorize(&this -> m_Muons    , &this -> Muons); 

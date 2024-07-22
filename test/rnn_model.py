@@ -1,6 +1,6 @@
 from AnalysisG.core.lossfx import OptimizerConfig
 from AnalysisG.generators.analysis import Analysis
-from AnalysisG.events.event_bsm_4tops import BSM4Tops
+from AnalysisG.events.bsm_4tops.event_bsm_4tops import BSM4Tops
 from AnalysisG.graphs.graph_bsm_4tops import GraphTops, GraphChildren, GraphTruthJets
 from AnalysisG.models.RecursiveGraphNeuralNetwork import *
 
@@ -14,11 +14,11 @@ tt = GraphTruthJets()
 params = [
     ("MRK-1", "adam", {"lr" : 1e-3}),
     ("MRK-2", "adam", {"lr" : 1e-6}),
-    ("MRK-3", "adam", {"lr" : 1e-6, "amsgrad" : True}),
-    ("MRK-4", "sgd", {"lr" : 1e-3}),
-    ("MRK-5", "sgd", {"lr" : 1e-6}),
-    ("MRK-6", "sgd", {"lr" : 1e-6, "momentum" : 0.01}),
-    ("MRK-7", "sgd", {"lr" : 1e-6, "momentum" : 0.01, "dampening" : 0.01})
+#    ("MRK-3", "adam", {"lr" : 1e-6, "amsgrad" : True}),
+#    ("MRK-4", "sgd", {"lr" : 1e-3}),
+#    ("MRK-5", "sgd", {"lr" : 1e-6}),
+#    ("MRK-6", "sgd", {"lr" : 1e-6, "momentum" : 0.01}),
+#    ("MRK-7", "sgd", {"lr" : 1e-6, "momentum" : 0.01, "dampening" : 0.01})
 ]
 
 trains = []

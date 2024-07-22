@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
 set(SKBUILD_PROJECT_NAME AnalysisG)
 
 project(${SKBUILD_PROJECT_NAME} VERSION ${SKBUILD_PROJECT_VERSION} LANGUAGES CXX C)
-include(ExternalProject)
+#include(ExternalProject)
 include(FetchContent)
 include(CheckLanguage)
 check_language(CUDA)
@@ -27,24 +27,24 @@ find_package(PythonInterp)
 find_package(RapidJSON)
 find_package(ROOT REQUIRED COMPONENTS RIO Tree Core)
 
-if (NOT RapidJSON_FOUND)
-ExternalProject_Add(
-rapidjson
-PREFIX "vendor/rapidjson"
-GIT_REPOSITORY "https://github.com/Tencent/rapidjson.git"
-GIT_TAG f54b0e47a08782a6131cc3d60f94d038fa6e0a51
-TIMEOUT 10
-CMAKE_ARGS
-    -DRAPIDJSON_BUILD_TESTS=OFF
-    -DRAPIDJSON_BUILD_DOC=OFF
-    -DRAPIDJSON_BUILD_EXAMPLES=OFF
-CONFIGURE_COMMAND ""
-BUILD_COMMAND ""
-INSTALL_COMMAND ""
-UPDATE_COMMAND "")
-ExternalProject_Get_Property(rapidjson source_dir)
-set(RAPIDJSON_INCLUDE_DIR ${source_dir}/include)
-endif()
+#if (NOT RapidJSON_FOUND)
+#ExternalProject_Add(
+#rapidjson
+#PREFIX "vendor/rapidjson"
+#GIT_REPOSITORY "https://github.com/Tencent/rapidjson.git"
+#GIT_TAG f54b0e47a08782a6131cc3d60f94d038fa6e0a51
+#TIMEOUT 10
+#CMAKE_ARGS
+#    -DRAPIDJSON_BUILD_TESTS=OFF
+#    -DRAPIDJSON_BUILD_DOC=OFF
+#    -DRAPIDJSON_BUILD_EXAMPLES=OFF
+#CONFIGURE_COMMAND ""
+#BUILD_COMMAND ""
+#INSTALL_COMMAND ""
+#UPDATE_COMMAND "")
+#ExternalProject_Get_Property(rapidjson source_dir)
+#set(RAPIDJSON_INCLUDE_DIR ${source_dir}/include)
+#endif()
 
 
 if (NOT Torch_FOUND)
@@ -97,3 +97,4 @@ execute_process(
 COMMAND python -c "import sysconfig; print(sysconfig.get_paths()['platlib'])" 
 OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE)
 file(INSTALL ${CMAKE_BINARY_DIR}/src/AnalysisG DESTINATION ${PYTHON_SITE_PACKAGES})
+

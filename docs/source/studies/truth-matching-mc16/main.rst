@@ -8,4 +8,5 @@ Truth Matching Documentation for MC16 TOPQ1 Samples
    topmatching/main.rst
    childrenkinematics/main.rst
    decaymodes/main.rst
+   toptruthjets/main.rst
 

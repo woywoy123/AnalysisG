@@ -20,7 +20,11 @@ selection_template::selection_template(){
     this -> name = "selection-template"; 
 }
 
-selection_template::~selection_template(){}
+selection_template::~selection_template(){
+    std::map<std::string, particle_template*>::iterator itr = this -> garbage.begin();
+    for (; itr != this -> garbage.end(); ++itr){delete itr -> second;}
+    this -> garbage.clear();
+}
 
 bool selection_template::operator == (selection_template& p){
     return this -> hash == p.hash; 

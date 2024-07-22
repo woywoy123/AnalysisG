@@ -21,7 +21,9 @@ COMMAND
 
 python_add_library(toptruthjets MODULE toptruthjets.cpp WITH_SOABI)
 target_link_libraries(toptruthjets LINK_PUBLIC ctoptruthjets)
-install(FILES   __init__.pxd  DESTINATION ${SKBUILD_PROJECT_NAME}/selections/mc16)
+file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/toptruthjets.cpp)
+install(FILES   __init__.py  DESTINATION ${SKBUILD_PROJECT_NAME}/selections/mc16)
+install(FILES   __init__.pxd DESTINATION ${SKBUILD_PROJECT_NAME}/selections/mc16)
 install(TARGETS toptruthjets DESTINATION ${SKBUILD_PROJECT_NAME}/selections/mc16)
 
 

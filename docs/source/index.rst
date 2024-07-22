@@ -67,6 +67,7 @@ Core Class Documentation
    :titlesonly:
 
    core-classes/main.rst
+   core-structs/main.rst
 
 
 CUDA, C++ and pyc via LibTorch

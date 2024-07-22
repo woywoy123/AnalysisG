@@ -30,7 +30,7 @@ void metrics::generic_painter(
     gPad -> Modified();
     
     can -> Modified(); 
-    can -> BuildLegend(); 
+    //can -> BuildLegend(); 
     can -> Update(); 
     
     this -> create_path(path); 
@@ -214,8 +214,6 @@ void metrics::build_th1f_accuracy(
         (*type_)[mode_enum::evaluation][var_name] = ev_; 
     }
 }
-
-
 
 void metrics::add_th1f_accuracy(torch::Tensor* pred, torch::Tensor* truth, TH1F* hist, int kfold, int len){
     analytics_t* an = &this -> registry[kfold]; 

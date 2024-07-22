@@ -1,12 +1,14 @@
 .. _model-template:
 
-ModelTemplate Methods
----------------------
+The ModelTemplate
+-----------------
 
 This part of the documentation highlights some useful features that are part of the template class.
 The model template class is useful for training and inference studies of a give machine learning model.
 A main focus of this class is the application of GraphNeuralNetworks (GNNs).
 
+The C++ Interface
+^^^^^^^^^^^^^^^^^
 
 .. cpp:class:: model_template: public notification, public tools
 
@@ -75,4 +77,52 @@ A main focus of this class is the application of GraphNeuralNetworks (GNNs).
     .. cpp:var:: cproperty<std::vector<std::string>, std::map<std::string, torch::Tensor*>> i_node
 
     .. cpp:var:: cproperty<std::vector<std::string>, std::map<std::string, torch::Tensor*>> i_edge
+
+
+The Python Interface
+^^^^^^^^^^^^^^^^^^^^
+
+.. py:class:: ModelTemplate
+
+   .. py:attribute:: o_graph
+      :type: dict
+
+      Sets the output feature of the model and pairs the output with the associated loss function.
+
+   .. py:attribute:: o_node
+      :type: dict
+
+      Sets the output feature of the model and pairs the output with the associated loss function.
+
+   .. py:attribute:: o_edge
+      :type: dict
+
+      Sets the output feature of the model and pairs the output with the associated loss function.
+
+   .. py:attribute:: i_graph
+      :type: list
+
+      Sets the input features.
+
+   .. py:attribute:: i_node
+      :type: list
+
+      Sets the input features.
+
+   .. py:attribute:: i_edge
+      :type: list
+
+      Sets the input features.
+
+   .. py:attribute:: device
+      :type: str
+
+      Sets the device that the model should be using.
+      Follows the standard syntax used by `PyTorch`, e.g. "cuda:0", "cuda:1"
+
+   .. py:attribute:: checkpoint_path
+      :type: str
+
+      Path of the training checkpoint to use for model inference.
+
 

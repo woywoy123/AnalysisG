@@ -21,7 +21,9 @@ COMMAND
 
 python_add_library(decaymodes MODULE decaymodes.cpp WITH_SOABI)
 target_link_libraries(decaymodes LINK_PUBLIC cdecaymodes)
-install(FILES  __init__.pxd  DESTINATION ${SKBUILD_PROJECT_NAME}/selections/mc16)
-install(TARGETS   decaymodes DESTINATION ${SKBUILD_PROJECT_NAME}/selections/mc16)
+file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/decaymodes.cpp)
+install(FILES  __init__.py  DESTINATION ${SKBUILD_PROJECT_NAME}/selections/mc16)
+install(FILES  __init__.pxd DESTINATION ${SKBUILD_PROJECT_NAME}/selections/mc16)
+install(TARGETS  decaymodes DESTINATION ${SKBUILD_PROJECT_NAME}/selections/mc16)
 
 

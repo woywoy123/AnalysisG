@@ -21,6 +21,8 @@ COMMAND
 
 python_add_library(childrenkinematics MODULE childrenkinematics.cpp WITH_SOABI)
 target_link_libraries(childrenkinematics LINK_PUBLIC cchildrenkinematics)
+file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/childrenkinematics.cpp)
+install(FILES        __init__.py   DESTINATION ${SKBUILD_PROJECT_NAME}/selections/mc16)
 install(FILES        __init__.pxd  DESTINATION ${SKBUILD_PROJECT_NAME}/selections/mc16)
 install(TARGETS childrenkinematics DESTINATION ${SKBUILD_PROJECT_NAME}/selections/mc16)
 

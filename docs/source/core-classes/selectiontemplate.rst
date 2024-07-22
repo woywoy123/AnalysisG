@@ -10,29 +10,25 @@ The selection_template is useful for performing some adhoc studies, such as trut
 
    .. cpp:function:: selection_template()
 
+      Selection constructor, which can be overriden by children classes.
+
    .. cpp:function:: virtual ~selection_template()
 
-   .. cpp:function:: cproperty<std::string, selection_template> name
+      Selection destructor, which can be overriden by children classes.
 
    .. cpp:function:: void static set_name(std::string*, selection_template*)
 
-   .. cpp:function:: void static get_name(std::string*, selection_template*)
+      Internal function used to assign the `selection_template` name to the `event_t` struct.
 
-   .. cpp:function:: cproperty<std::string, selection_template> hash
+   .. cpp:function:: void static get_name(std::string*, selection_template*)
 
    .. cpp:function:: void static set_hash(std::string*, selection_template*)
 
    .. cpp:function:: void static get_hash(std::string*, selection_template*)
 
-   .. cpp:function:: cproperty<std::string, selection_template> tree
-
    .. cpp:function:: void static get_tree(std::string*, selection_template*)
 
-   .. cpp:function:: cproperty<double, selection_template> weight
-
    .. cpp:function:: void static set_weight(double*, selection_template*)
-
-   .. cpp:function:: cproperty<long, selection_template> index
 
    .. cpp:function:: void static set_index(long*, selection_template*)
 
@@ -49,6 +45,22 @@ The selection_template is useful for performing some adhoc studies, such as trut
    .. cpp:function:: selection_template* build(event_template* ev)
 
    .. cpp:function:: bool operator == (selection_template& p)
+
+   .. cpp:var:: cproperty<std::string, selection_template> name
+
+      A property used to assing the `selection_template` a name. 
+      Assignment triggers the `set_name` function.
+
+   .. cpp:var:: cproperty<std::string, selection_template> hash
+
+      A property used to fetch the `selection_template` event hash.
+      Fetching triggers the `get_hash` function.
+
+   .. cpp:var:: cproperty<std::string, selection_template> tree
+
+   .. cpp:var:: cproperty<long, selection_template> index
+
+   .. cpp:var:: cproperty<double, selection_template> weight
 
    .. cpp:var:: std::string filename
 

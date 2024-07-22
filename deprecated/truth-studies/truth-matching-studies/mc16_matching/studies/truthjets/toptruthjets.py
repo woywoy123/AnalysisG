@@ -107,6 +107,10 @@ class TopTruthJets(SelectionTemplate):
                     self.truthjet_partons[mode][symbol]["truthjet-pt"].append(tj1.pt/1000)
                     self.truthjet_partons[mode][symbol]["truthjet-energy"].append(tj1.e/1000)
 
+
+
+
+
         mode = "background"
         for tj in event.TruthJets:
             if len(tj.Tops): continue

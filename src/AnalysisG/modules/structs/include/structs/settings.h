@@ -35,10 +35,6 @@ struct settings_t {
 
     bool debug_mode = false;
     int threads = 10; 
-
-
-
-
 }; 
 
 #endif

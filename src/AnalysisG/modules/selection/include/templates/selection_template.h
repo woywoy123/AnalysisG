@@ -49,12 +49,21 @@ class selection_template: public tools
 
 
         template <typename g>
-        float sum(std::vector<g*>* ch){
+        void sum(std::vector<g*>* ch, particle_template** out){
             particle_template* prt = new particle_template(); 
             for (size_t x(0); x < ch -> size(); ++x){prt -> iadd(ch -> at(x));}
-            float mass = prt -> mass / 1000; 
+            std::string hash_ = prt -> hash; 
+            bool h = this -> garbage.count(hash_); 
+            if (!h){(*out) = prt; this -> garbage[hash_] = prt; return;}
             delete prt; 
-            return mass; 
+            (*out) = this -> garbage[hash_]; 
+        }
+
+        template <typename g>
+        float sum(std::vector<g*>* ch){
+            particle_template* prt = nullptr;
+            this -> sum(ch, &prt); 
+            return prt -> mass / 1000; 
         }
 
         template <typename g>
@@ -65,11 +74,52 @@ class selection_template: public tools
             return out; 
         }
 
+        template <typename g>
+        std::vector<g*> make_unique(std::vector<g*>* inpt){
+            std::map<std::string, g*> tmp; 
+            for (size_t x(0); x < inpt -> size(); ++x){
+                std::string hash = (*inpt)[x] -> hash; 
+                tmp[hash] = (*inpt)[x]; 
+            } 
+   
+            typename std::vector<g*> out = {}; 
+            typename std::map<std::string, g*>::iterator itr; 
+            for (itr = tmp.begin(); itr != tmp.end(); ++itr){out.push_back(itr -> second);}
+            return out; 
+        }
+
+
+        template <typename g>
+        void downcast(std::vector<g*>* inpt, std::vector<particle_template*>* out){
+            for (size_t x(0); x < inpt -> size(); ++x){
+                out -> push_back((particle_template*)(*inpt)[x]);
+            }
+        }
+
+        template <typename g>
+        void get_leptonics(std::map<std::string, g*> inpt, std::vector<particle_template*>* out){
+            typename std::map<std::string, g*>::iterator itr = inpt.begin(); 
+            for (; itr != inpt.end(); ++itr){
+                if (!itr -> second -> is_lep && !itr -> second -> is_nu){continue;}
+                out -> push_back((particle_template*)itr -> second);
+            }
+        }
+
+        template <typename g, typename j>
+        bool contains(std::vector<g*>* inpt, j* pcheck){
+            for (size_t x(0); x < inpt -> size(); ++x){
+                if ((*inpt)[x] -> hash != pcheck -> hash){continue;}
+                return true;    
+            }
+            return false; 
+        }
+
         friend container;
 
     private:
         event_template* m_event = nullptr; 
         void merger(selection_template* sl2); 
+        std::map<std::string, particle_template*> garbage = {}; 
 
 }; 
 

@@ -237,3 +237,9 @@ cdef class Analysis:
 
     @DebugMode.setter
     def DebugMode(self, bool val): self.ana.m_settings.debug_mode = val
+
+    @property
+    def Threads(self): return self.ana.m_settings.threads
+
+    @Threads.setter
+    def Threads(self, int val): self.ana.m_settings.threads = val

@@ -15,8 +15,6 @@ class topmatching: public selection_template
         bool strategy(event_template* ev) override; 
         void merge(selection_template* sl) override; 
 
-        float sum(std::vector<particle_template*>* ch); 
-        
         std::vector<float> truth_top = {}; 
         std::vector<int> no_children = {}; 
         std::map<std::string, std::vector<float>> truth_children = {}; 

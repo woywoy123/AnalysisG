@@ -23,15 +23,6 @@ void topmatching::merge(selection_template* sl){
 
 bool topmatching::selection(event_template* ev){return true;}
 
-float topmatching::sum(std::vector<particle_template*>* ch){
-    particle_template* prt = new particle_template(); 
-    for (size_t x(0); x < ch -> size(); ++x){prt -> iadd(ch -> at(x));}
-    float mass = prt -> mass / 1000; 
-    delete prt; 
-    return mass; 
-}
-
-
 bool topmatching::strategy(event_template* ev){
 
 

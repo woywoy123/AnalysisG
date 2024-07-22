@@ -102,10 +102,4 @@ The event_template class inherits from the tools class and uses the event_t stru
    .. cpp:function:: void flush_particles()
 
 
-The `cproperty` Type
-^^^^^^^^^^^^^^^^^^^^
-
-This type is declared within the struct module, and is used to trigger functions whenever an attribute has been assigned.
-It is similar to using the `@property` and `@<function>.setter` methods in python.
-For example, when the `name` of variable is assigned some variable, the `set_name` function is automatically called and modifies the `event_t` struct attributes.
 

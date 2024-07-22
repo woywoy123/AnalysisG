@@ -120,9 +120,12 @@ void optimizer::launch_model(int k){
         if (this -> m_settings.training){this -> training_loop(k, ep);}
         if (this -> m_settings.validation){this -> validation_loop(k, ep);}
         if (this -> m_settings.evaluation){this -> evaluation_loop(k, ep);}
-        this -> metric -> dump_plots(k); 
     }; 
-    for (int ep(0); ep < this -> m_settings.epochs; ++ep){lamb(k, ep);}
+    for (int ep(0); ep < this -> m_settings.epochs; ++ep){
+        lamb(k, ep);
+        this -> metric -> dump_plots(k); 
+    }
+
     model_report* mr = this -> reports[this -> m_settings.run_name + std::to_string(k)]; 
     mr -> is_complete = true; 
 }

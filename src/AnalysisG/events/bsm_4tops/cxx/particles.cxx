@@ -128,9 +128,9 @@ void truthjet::build(std::map<std::string, particle_template*>* prt, element_t* 
 
     el -> get("top_quark_count", &_top_count); 
     el -> get("w_boson_count"  , &_w_boson); 
-    el -> get("top_index", &_top_index);  
+    el -> get("top_index"      , &_top_index);  
 
-    for (int x(0); x < _top_count.size(); ++x){
+    for (int x(0); x < out.size(); ++x){
         truthjet* t          = out[x]; 
         t -> top_quark_count = _top_count[x]; 
         t -> w_boson_count   = _w_boson[x]; 
@@ -171,7 +171,6 @@ truthjetparton::truthjetparton(){
 particle_template* truthjetparton::clone(){return (particle_template*)new truthjetparton();}
 
 void truthjetparton::build(std::map<std::string, particle_template*>* prt, element_t* el){
-    std::vector<truthjetparton*> out; 
     std::vector<float> _pt, _eta, _phi, _e, _pdgid, _charge; 
     el -> get("pt"    , &_pt); 
     el -> get("eta"   , &_eta);

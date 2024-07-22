@@ -170,6 +170,7 @@ file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/cmodel_template.cpp)
 file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/clossfx.cpp)
 
 install(FILES   __init__.pxd       DESTINATION ${SKBUILD_PROJECT_NAME}/core)
+install(FILES   __init__.py        DESTINATION ${SKBUILD_PROJECT_NAME}/core)
 install(TARGETS tools              DESTINATION ${SKBUILD_PROJECT_NAME}/core)
 install(TARGETS io                 DESTINATION ${SKBUILD_PROJECT_NAME}/core)
 install(TARGETS meta               DESTINATION ${SKBUILD_PROJECT_NAME}/core)

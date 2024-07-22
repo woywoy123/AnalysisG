@@ -26,5 +26,6 @@ python_add_library(RecursiveGraphNeuralNetwork MODULE RecursiveGraphNeuralNetwor
 target_link_libraries(RecursiveGraphNeuralNetwork LINK_PUBLIC recursivegraphneuralnetwork)
 
 install(FILES   __init__.pxd                DESTINATION ${SKBUILD_PROJECT_NAME}/model)
+install(FILES   __init__.py                 DESTINATION ${SKBUILD_PROJECT_NAME}/model)
 install(TARGETS RecursiveGraphNeuralNetwork DESTINATION ${SKBUILD_PROJECT_NAME}/model)
 
