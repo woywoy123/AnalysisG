@@ -1,14 +1,16 @@
 from AnalysisG.core.lossfx import OptimizerConfig
 from AnalysisG.generators.analysis import Analysis
-from AnalysisG.events.event_bsm_4tops import BSM4Tops
-from AnalysisG.graphs.graph_bsm_4tops import GraphTops, GraphChildren, GraphTruthJets
+from AnalysisG.events.bsm_4tops.event_bsm_4tops import BSM4Tops
+from AnalysisG.graphs.graph_bsm_4tops import GraphTops, GraphChildren, GraphTruthJets, GraphTruthJetsNoNu, GraphJets, GraphJetsNoNu, GraphDetectorLep, GraphDetector
 from AnalysisG.models.RecursiveGraphNeuralNetwork import *
 
 root1 = "./samples/dilepton/*"
 
 x = BSM4Tops()
 #tt = GraphChildren()
-tt = GraphTruthJets()
+#tt = GraphTruthJets()
+#tt = GraphJets()
+tt = GraphDetectorLep()
 
 m = RecursiveGraphNeuralNetwork()
 m.o_edge  = {
@@ -21,7 +23,7 @@ m.device  = "cuda:0"
 
 op = OptimizerConfig()
 op.Optimizer = "adam"
-op.lr = 1e-4
+op.lr = 1e-6
 
 ana = Analysis()
 ana.TrainingDataset = "./ProjectName/dataset"
@@ -30,7 +32,7 @@ ana.AddEvent(x, "tmp")
 ana.AddGraph(tt, "tmp")
 ana.AddModel(m, op, "test")
 ana.kFolds = 10
-ana.kFold = [1, 2]
+ana.kFold = [1]
 ana.Targets = ["top_edge"]
 ana.ContinueTraining = False
 ana.Evaluation = False

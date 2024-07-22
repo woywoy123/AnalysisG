@@ -22,6 +22,7 @@ class tools
 
         // strings.cxx
         std::string to_string(double val); 
+        std::string to_string(double val, int prec); 
         void replace(std::string* in, std::string repl_str, std::string repl_with); 
         bool has_string(std::string* inpt, std::string trg); 
         bool ends_with(std::string* inpt, std::string val); 

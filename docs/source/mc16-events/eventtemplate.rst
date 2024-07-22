@@ -5,7 +5,7 @@ The event implementation for TOPQ1 MC16 n-tuples produced via **AnalysisTop**.
 To use this event implementation via Python, use the following import `from AnalysisG.events.event_bsm_4tops import BSM4Tops`.
 
 Event Attributes
-****************
+^^^^^^^^^^^^^^^^
 
 .. cpp:class:: bsm_4tops: public event_template
 

@@ -116,6 +116,8 @@ class jet: public particle_template
         std::vector<jetparton*> Parton = {}; 
 
         std::vector<int> top_index = {}; 
+        cproperty<bool, jet> from_res; 
+
         bool btag_DL1r_60; 
         bool btag_DL1_60;  
         bool btag_DL1r_70; 
@@ -134,6 +136,11 @@ class jet: public particle_template
 
         particle_template* clone() override; 
         void build(std::map<std::string, particle_template*>* prt, element_t* el) override;
+
+    private:
+        void static get_from_res(bool*, jet*);
+
+
 }; 
 
 
@@ -156,6 +163,7 @@ class electron: public particle_template
     public: 
         electron();
         ~electron() override;
+        bool from_res = false; 
 
         particle_template* clone() override; 
         void build(std::map<std::string, particle_template*>* prt, element_t* el) override;
@@ -167,6 +175,7 @@ class muon: public particle_template
     public: 
         muon();
         ~muon() override;
+        bool from_res = false; 
 
         particle_template* clone() override; 
         void build(std::map<std::string, particle_template*>* prt, element_t* el) override;

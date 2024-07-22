@@ -21,8 +21,8 @@ cdef class TopEfficiency(SelectionTemplate):
     def __reduce__(self):
         cdef dict out = {
             "truthchildren_pt_eta_topmass" : self.truthchildren_pt_eta_topmass,
-            "truthjets_pt_eta_topmass    " : self.truthjets_pt_eta_topmass,
-            "jets_pt_eta_topmass         " : self.jets_pt_eta_topmass
+            "truthjets_pt_eta_topmass" : self.truthjets_pt_eta_topmass,
+            "jets_pt_eta_topmass" : self.jets_pt_eta_topmass
         }
         return TopEfficiency, (out,)
 

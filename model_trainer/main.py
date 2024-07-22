@@ -27,9 +27,12 @@ sampl = samples(data["sample-path"], mc)
 
 graph = data["graph"]
 graph_impl = None
-if mc == "mc16" and graph == "GraphTops":      graph_impl = GraphTops()
-if mc == "mc16" and graph == "GraphChildren":  graph_impl = GraphChildren()
-if mc == "mc16" and graph == "GraphTruthJets": graph_impl = GraphTruthJets()
+if mc == "mc16" and graph == "GraphTops":          graph_impl = GraphTops()
+if mc == "mc16" and graph == "GraphChildren":      graph_impl = GraphChildren()
+if mc == "mc16" and graph == "GraphTruthJets":     graph_impl = GraphTruthJets()
+if mc == "mc16" and graph == "GraphTruthJetsNoNu": graph_impl = GraphTruthJetsNoNu()
+if mc == "mc16" and graph == "GraphJets":          graph_impl = GraphJets()
+if mc == "mc16" and graph == "GraphJetsNoNu":      graph_impl = GraphJetsNoNu()
 if graph_impl is None: print("invalid graph implementation"); exit()
 
 event = data["event"]
@@ -83,6 +86,14 @@ if train is not None:
     ana.Evaluation = data["train"]["evaluation"]
     ana.Validation = data["train"]["validation"]
     ana.Training = data["train"]["training"]
+    ana.ContinueTraining = data["train"]["continue-training"]
+
+    try: ana.TrainSize = data["train"]["training-size"]
+    except: pass
+
+    try: ana.TrainingDataset = data["train"]["training-set"]
+    except: pass
+
     ana.AddModel(model_impl, optim, data["run-name"])
 else:
     model_impl.checkpoint_path = data["inference"]["checkpoint_path"]

@@ -5,7 +5,7 @@ Documentation used for the particles defined in the MC16-BSM-4Tops event impleme
 
 
 Generator Top Parton
-********************
+^^^^^^^^^^^^^^^^^^^^
 
 .. cpp:class:: top: public particle_template
 
@@ -17,17 +17,17 @@ Generator Top Parton
    
       The status of the top-parton, indicates whether the particle is in its final form (post gluon radiation)
 
-   .. cpp:var:: std::vector<truthjet*> TruthJets
+   .. cpp:var:: std::vector<truthjet^> TruthJets
 
       A vector holding matched truth jets.
 
-   .. cpp:var:: std::vector<jet*> Jets
+   .. cpp:var:: std::vector<jet^> Jets
 
       A vector holding matched detector reconstructed jets.
 
 
 Generator Top Parton Decay Children
-***********************************
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. cpp:class:: top_children: public particle_template
 
@@ -42,7 +42,7 @@ Generator Top Parton Decay Children
 
 
 Truth Jet
-*********
+^^^^^^^^^
 
 .. cpp:class:: truthjet: public particle_template
 
@@ -60,11 +60,11 @@ Truth Jet
 
       A vector indicating the top parton index matching to this truth jet.
 
-   .. cpp:var:: std::vector<top*> Tops
+   .. cpp:var:: std::vector<top^> Tops
 
       A vector holding the matched top quark parton objects.
 
-   .. cpp:var:: std::vector<truthjetparton*> Parton
+   .. cpp:var:: std::vector<truthjetparton^> Parton
 
       A vector containing the partons matched to the truth jet.
 
@@ -74,7 +74,7 @@ Truth Jet
 
 
 Truth Jet Partons
-*****************
+^^^^^^^^^^^^^^^^^
 
 .. cpp:class:: truthjetparton: public particle_template
 
@@ -88,15 +88,15 @@ Truth Jet Partons
 
 
 Detector Reconstructed Jet
-**************************
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. cpp:class:: jet: public particle_template
 
-   .. cpp:var:: std::vector<top*> Tops
+   .. cpp:var:: std::vector<top^> Tops
 
       A vector containing the top-partons matched to the particular jet.
 
-   .. cpp:var:: std::vector<jetparton*> Parton
+   .. cpp:var:: std::vector<jetparton^> Parton
 
       A vector containing the partons matched to the jet.
 

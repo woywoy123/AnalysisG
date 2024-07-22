@@ -17,10 +17,8 @@ void topefficiency::merge(selection_template* sl){
 
 bool topefficiency::selection(event_template* ev){return true;}
 
-bool topefficiency::strategy(event_template* ev){
-    bsm_4tops* evn = (bsm_4tops*)ev; 
+void topefficiency::build_phasespace(bsm_4tops* evn){
     std::vector<particle_template*> tops = evn -> Tops; 
-
     double pt_s = 0; 
     double pt_e = 1500; 
     double step_pt = 100; 
@@ -58,8 +56,8 @@ bool topefficiency::strategy(event_template* ev){
         }
  
         std::string key = ""; 
-        key += std::to_string(pt_s) + "< pt_{top} < " + std::to_string(pt_e) + "|"; 
-        key += std::to_string(eta_s) + "< eta_{top} < " + std::to_string(eta_e); 
+        key += this -> to_string(pt_s_, 0) + " < $pt_{top}$ < " + this -> to_string(pt_e_, 0) + "|"; 
+        key += this -> to_string(eta_s_, 1) + " < $eta_{top}$ < " + this -> to_string(eta_e_, 1); 
         float top_mass_ch = this -> sum(&children); 
       
         std::vector<particle_template*> tj_ = {}; 
@@ -78,6 +76,11 @@ bool topefficiency::strategy(event_template* ev){
         this -> truthjets_pt_eta_topmass[key].push_back(top_mass_tj); 
         this -> jets_pt_eta_topmass[key].push_back(top_mass_jet); 
     }
+
+}
+
+bool topefficiency::strategy(event_template* ev){
+    if (ev -> name == "bsm_4tops"){this -> build_phasespace((bsm_4tops*)ev);}
     return true; 
 }
 

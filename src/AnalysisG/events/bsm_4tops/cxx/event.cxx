@@ -122,6 +122,16 @@ void bsm_4tops::CompileEvent(){
         c -> register_child(l); 
         l -> register_parent(c); 
         l -> index = c -> index; 
+
+        if (l -> type == "mu"){
+            muon* lt = (muon*)l; 
+            lt -> from_res = c -> from_res; 
+        }
+
+        if (l -> type == "el"){
+            electron* lt = (electron*)l; 
+            lt -> from_res = c -> from_res; 
+        }
         accept[hash_] = true;
     }
 

@@ -1,4 +1,4 @@
-# --------------- DEFINE THE EVENT ------------------ #
+# --------------- DEFINE THE PARTICLES ------------------ #
 set(HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/include/<particle-module>/<particle-name>.h)
 set(SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/cxx/<particle-name>.cxx)
 add_library(c<particle-name> STATIC ${SOURCE_FILES})

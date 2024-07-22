@@ -64,7 +64,7 @@ cdef class BasePlotting:
     def Filename(self, str val): self.ptr.filename = enc(val)
 
     @property
-    def OutputDirectory(self): return self.ptr.output_path
+    def OutputDirectory(self): return env(self.ptr.output_path)
     @OutputDirectory.setter
     def OutputDirectory(self, str val): self.ptr.output_path = enc(val)
 

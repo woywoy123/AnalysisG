@@ -92,3 +92,10 @@ std::string tools::lower(std::string* in){
     for (int t(0); t < in -> size(); ++t){out[t] = std::tolower(out[t]);}
     return out;
 }
+
+std::string tools::to_string(double val, int prec){
+    std::ostringstream ss; 
+    if (prec > -1){ss.precision(prec);}
+    ss << std::fixed << val; 
+    return std::move(ss).str(); 
+}

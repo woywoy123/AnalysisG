@@ -236,6 +236,8 @@ jet::jet(){
     this -> add_leaf("DL1r_u", "_DL1r_pu"); 
 
     this -> apply_type_prefix(); 
+    this -> from_res.set_object(this); 
+    this -> from_res.set_getter(this -> get_from_res); 
 }
 
 particle_template* jet::clone(){return (particle_template*)new jet();}
@@ -301,6 +303,7 @@ void jet::build(std::map<std::string, particle_template*>* prt, element_t* el){
         p -> btag_DL1_77  = (bool)_btag_DL1_77[x];
         p -> btag_DL1r_85 = (bool)_btag_DL1r_85[x];
         p -> btag_DL1_85  = (bool)_btag_DL1_85[x];
+        p -> is_b         = (bool)_btag_DL1_85[x];
 
         p -> DL1_b  = _DL1_b[x]; 
         p -> DL1_c  = _DL1_c[x]; 
@@ -310,6 +313,17 @@ void jet::build(std::map<std::string, particle_template*>* prt, element_t* el){
         p -> DL1r_u = _DL1r_u[x]; 
 
         (*prt)[std::string(p -> hash)] = p; 
+    }
+}
+
+void jet::get_from_res(bool* val, jet* prt){
+    if (!prt -> Tops.size()){*val = false; return;}
+
+    *val = false; 
+    for (int x(0); x < prt -> Tops.size(); ++x){
+        if (!prt -> Tops[x] -> from_res){continue;} 
+        *val = true;
+        return; 
     }
 }
 
@@ -402,6 +416,8 @@ void electron::build(std::map<std::string, particle_template*>* prt, element_t* 
         p -> phi    = _phi[x]; 
         p -> e      = _e[x]; 
         p -> charge = _charge[x]; 
+        p -> index  = -1; 
+        p -> is_lep = true; 
         (*prt)[std::string(p -> hash)] = p;
     }
 }
@@ -432,12 +448,14 @@ void muon::build(std::map<std::string, particle_template*>* prt, element_t* el){
     el -> get("charge", &_charge); 
 
     for (int x(0); x < _pt.size(); ++x){
-        muon* p              = new muon();
-        p -> pt              = _pt[x]; 
-        p -> eta             = _eta[x]; 
-        p -> phi             = _phi[x]; 
-        p -> e               = _e[x]; 
-        p -> charge          = _charge[x]; 
+        muon* p      = new muon();
+        p -> pt      = _pt[x]; 
+        p -> eta     = _eta[x]; 
+        p -> phi     = _phi[x]; 
+        p -> e       = _e[x]; 
+        p -> charge  = _charge[x]; 
+        p -> index   = -1; 
+        p -> is_lep  = true; 
         (*prt)[std::string(p -> hash)] = p;
     }
 }
