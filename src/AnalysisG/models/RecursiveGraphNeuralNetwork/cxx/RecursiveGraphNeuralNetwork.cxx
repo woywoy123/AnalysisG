@@ -318,5 +318,14 @@ void recursivegraphneuralnetwork::forward(graph_t* data){
 
 recursivegraphneuralnetwork::~recursivegraphneuralnetwork(){}
 model_template* recursivegraphneuralnetwork::clone(){
-    return new recursivegraphneuralnetwork(); 
+    recursivegraphneuralnetwork* rnn = new recursivegraphneuralnetwork(); 
+    rnn -> _dx      = this -> _dx;      
+    rnn -> _x       = this -> _x;       
+    rnn -> _output  = this -> _output;  
+    rnn -> _rep     = this -> _rep;     
+    rnn -> res_mass = this -> res_mass; 
+    rnn -> drop_out = this -> drop_out; 
+    rnn -> NuR      = this -> NuR;      
+    rnn -> is_mc    = this -> is_mc;
+    return rnn;  
 }

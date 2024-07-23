@@ -10,11 +10,16 @@ cdef extern from "<models/RecursiveGraphNeuralNetwork.h>":
         recursivegraphneuralnetwork() except+
 
         int _dx
+        int _x
+        int _output
         int _rep
+        double res_mass
+        double drop_out
 
-        bool GeV
         bool NuR
+        bool is_mc
+
 
 
 cdef class RecursiveGraphNeuralNetwork(ModelTemplate):
-    pass
+    cdef recursivegraphneuralnetwork* rnn

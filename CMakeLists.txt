@@ -24,6 +24,7 @@ find_package(Torch)
 find_package(PythonInterp)
 find_package(RapidJSON)
 find_package(HDF5)
+find_package(ROOT)
 
 if (NOT rapidjson_FOUND)
 set(RAPIDJSON_BUILD_EXAMPLES OFF)
@@ -32,21 +33,20 @@ set(RAPIDJSON_BUILD_DOC OFF)
 set(RAPIDJSON_BUILD_CXX11 OFF)
 set(RAPIDJSON_BUILD_CXX17 ON)
 FetchContent_Declare(rapidjson
-GIT_REPOSITORY https://github.com/Tencent/rapidjson.git
+GIT_REPOSITORY "https://github.com/Tencent/rapidjson.git"
 GIT_TAG v1.1.0)
 FetchContent_MakeAvailable(rapidjson)
 endif()
 
-FetchContent_Declare(ROOT
-URL https://root.cern/download/root_v6.32.02.Linux-almalinux9.4-x86_64-gcc11.4.tar.gz
-FIND_PACKAGE_ARGS)
-FetchContent_MakeAvailable(ROOT)
-list(APPEND CMAKE_PREFIX_PATH "${ROOT_SOURCE_DIR}")
+#FetchContent_Declare(ROOT
+#URL "https://root.cern/download/root_v6.32.02.Linux-almalinux9.4-x86_64-gcc11.4.tar.gz"
+#FIND_PACKAGE_ARGS)
+#FetchContent_MakeAvailable(ROOT)
+#list(APPEND CMAKE_PREFIX_PATH "${ROOT_SOURCE_DIR}")
 
 if (NOT Torch_FOUND)
 FetchContent_Declare(Torch 
-URL https://download.pytorch.org/libtorch/cu121/libtorch-cxx11-abi-shared-with-deps-2.3.1%2Bcu121.zip
-DOWNLOAD_EXTRACT_TIMESTAMP FALSE)
+URL "https://download.pytorch.org/libtorch/cu121/libtorch-cxx11-abi-shared-with-deps-2.3.1%2Bcu121.zip")
 FetchContent_MakeAvailable(Torch)
 list(APPEND CMAKE_PREFIX_PATH "${torch_SOURCE_DIR}")
 endif()
@@ -58,9 +58,8 @@ set(HDF5_BUILD_EXAMPLES OFF)
 set(HDF5_BUILD_CPP_LIB ON)
 set(HDF5_EXTERNALLY_CONFIGURED ON)
 FetchContent_Declare(hdf5
-GIT_REPOSITORY https://github.com/HDFGroup/hdf5.git
-GIT_TAG hdf5_1.14.4.3
-DOWNLOAD_EXTRACT_TIMESTAMP FALSE)
+GIT_REPOSITORY "https://github.com/HDFGroup/hdf5.git"
+GIT_TAG hdf5_1.14.4.3)
 FetchContent_MakeAvailable(hdf5)
 endif()
 
