@@ -1,3 +1,4 @@
+import AnalysisG
 from AnalysisG.core.lossfx import OptimizerConfig
 from AnalysisG.generators.analysis import Analysis
 from AnalysisG.events.bsm_4tops.event_bsm_4tops import BSM4Tops
@@ -12,8 +13,8 @@ tt = GraphTruthJets()
 
 
 params = [
-    ("MRK-1", "adam", {"lr" : 1e-3}),
-    ("MRK-2", "adam", {"lr" : 1e-6}),
+    ("MRK-1", "adam", {"lr" : 1e-4}),
+#   ("MRK-2", "adam", {"lr" : 1e-6}),
 #    ("MRK-3", "adam", {"lr" : 1e-6, "amsgrad" : True}),
 #    ("MRK-4", "sgd", {"lr" : 1e-3}),
 #    ("MRK-5", "sgd", {"lr" : 1e-6}),
@@ -26,7 +27,14 @@ optims = []
 ana = Analysis()
 for k in params:
     m1 = RecursiveGraphNeuralNetwork()
-    m1.o_edge  = {"top_edge" : "CrossEntropyLoss"}
+    m1.o_edge  = {
+            "top_edge" : "CrossEntropyLoss",
+            "res_edge" : "CrossEntropyLoss"
+    }
+    m1.o_graph = {
+            "ntops"  : "CrossEntropyLoss",
+            "signal" : "CrossEntropyLoss"
+    }
     m1.i_node  = ["pt", "eta", "phi", "energy"]
     m1.i_graph = ["met", "phi"]
     m1.device  = "cuda:0"
@@ -44,7 +52,12 @@ ana.AddGraph(tt, "tmp")
 
 for i in range(len(optims)): ana.AddModel(trains[i], optims[i], params[i][0])
 
-ana.kFolds = 2
-ana.Epochs = 2
-#ana.DebugMode = True
+ana.kFolds = 1
+ana.Epochs = 100
+ana.Targets = ["res_edge", "top_edge"]
+ana.MaxRange = 1500
+ana.TrainSize = 95
+ana.DebugMode = False
+ana.Validation = False
+ana.Evaluation = False
 ana.Start()

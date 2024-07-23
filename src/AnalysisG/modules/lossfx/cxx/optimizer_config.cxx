@@ -64,3 +64,69 @@ void lossfx::build_sgd(optimizer_params_t* op, std::vector<torch::Tensor>* param
     this -> m_sgd = new torch::optim::SGD(*params, optim_); 
 }
 
+
+
+// ------------------------ weight init ------------------------ //
+static void m_xavier_normal(torch::nn::Module& m){
+     torch::NoGradGuard nograd; 
+     if (auto* linear = m.as<torch::nn::Linear>()){
+         torch::nn::init::xavier_normal_(linear -> weight);
+     }
+}
+
+static void m_xavier_uniform(torch::nn::Module& m){
+     torch::NoGradGuard nograd; 
+     if (auto* linear = m.as<torch::nn::Linear>()){
+         torch::nn::init::xavier_uniform_(linear -> weight);
+     }
+}
+
+static void m_normal(torch::nn::Module& m){
+     torch::NoGradGuard nograd; 
+     if (auto* linear = m.as<torch::nn::Linear>()){
+         torch::nn::init::normal_(linear -> weight);
+     }
+}
+
+static void m_uniform(torch::nn::Module& m){
+     torch::NoGradGuard nograd; 
+     if (auto* linear = m.as<torch::nn::Linear>()){
+         torch::nn::init::uniform_(linear -> weight);
+     }
+}
+
+
+static void m_kaiming_normal(torch::nn::Module& m){
+     torch::NoGradGuard nograd; 
+     if (auto* linear = m.as<torch::nn::Linear>()){
+         torch::nn::init::kaiming_normal_(linear -> weight);
+     }
+}
+
+static void m_kaiming_uniform(torch::nn::Module& m){
+     torch::NoGradGuard nograd; 
+     if (auto* linear = m.as<torch::nn::Linear>()){
+         torch::nn::init::kaiming_uniform_(linear -> weight);
+     }
+}
+
+void lossfx::weight_init(torch::nn::Sequential* data, mlp_init method){
+    switch (method){
+        case mlp_init::normal:          (*data) -> apply(m_normal); break;  
+        case mlp_init::uniform:         (*data) -> apply(m_uniform); break; 
+        case mlp_init::xavier_normal:   (*data) -> apply(m_xavier_normal); break;  
+        case mlp_init::xavier_uniform:  (*data) -> apply(m_xavier_uniform); break; 
+        case mlp_init::kaiming_normal:  (*data) -> apply(m_kaiming_normal); break;  
+        case mlp_init::kaiming_uniform: (*data) -> apply(m_kaiming_uniform); break; 
+        default: break; 
+    }
+}
+
+
+
+
+
+
+
+
+

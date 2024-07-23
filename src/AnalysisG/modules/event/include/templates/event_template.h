@@ -7,11 +7,6 @@
 #include <tools/tools.h>
 #include <io/io.h>
 
-#include <iostream>
-#include <cstdint>
-#include <string>
-#include <vector>
-
 
 class event_template: public tools
 {

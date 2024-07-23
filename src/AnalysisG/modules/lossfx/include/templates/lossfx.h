@@ -5,30 +5,9 @@
 #include <string>
 #include <tools/tools.h>
 #include <torch/torch.h>
+#include <structs/model.h>
 #include <templates/fx_enums.h>
 
-enum graph_enum {
-    data_graph , data_node , data_edge, 
-    truth_graph, truth_node, truth_edge
-}; 
-
-struct model_settings_t {
-    opt_enum    e_optim; 
-    std::string s_optim; 
-
-    std::string model_name; 
-    std::string model_device; 
-    std::string model_checkpoint_path; 
-    bool inference_mode; 
-
-    std::map<std::string, std::string> o_graph; 
-    std::map<std::string, std::string> o_node; 
-    std::map<std::string, std::string> o_edge; 
-
-    std::vector<std::string> i_graph; 
-    std::vector<std::string> i_node; 
-    std::vector<std::string> i_edge; 
-}; 
 
 class lossfx : public tools
 {
@@ -39,6 +18,7 @@ class lossfx : public tools
         loss_enum loss_string(std::string name); 
         opt_enum optim_string(std::string name); 
         torch::Tensor loss(torch::Tensor* pred, torch::Tensor* truth, loss_enum lss); 
+        void weight_init(torch::nn::Sequential* data, mlp_init method); 
 
         torch::optim::Optimizer* build_optimizer(optimizer_params_t* op, std::vector<torch::Tensor>* params); 
         bool build_loss_function(loss_enum lss); 

@@ -57,6 +57,8 @@ void graph_children::CompileEvent(){
     // ---------------- data -------------------- //
     this -> add_graph_data_feature<double, bsm_4tops>(event, missing_et, "met"); 
     this -> add_graph_data_feature<double, bsm_4tops>(event, missing_phi, "phi"); 
+    this -> add_graph_data_feature<double, bsm_4tops>(event, num_quark, "num_jets"); 
+    this -> add_graph_data_feature<double, bsm_4tops>(event, num_children_leps, "num_leps"); 
 
     this -> add_node_data_feature<double, particle_template>(pt    , "pt"); 
     this -> add_node_data_feature<double, particle_template>(eta   , "eta"); 
@@ -101,6 +103,7 @@ void graph_truthjets::CompileEvent(){
     this -> add_graph_data_feature<double, bsm_4tops>(event, missing_et, "met"); 
     this -> add_graph_data_feature<double, bsm_4tops>(event, missing_phi, "phi"); 
     this -> add_graph_data_feature<double, bsm_4tops>(event, num_truthjets, "num_jets"); 
+    this -> add_graph_data_feature<double, bsm_4tops>(event, num_children_leps, "num_leps"); 
 
     this -> add_node_data_feature<double, particle_template>(pt, "pt"); 
     this -> add_node_data_feature<double, particle_template>(eta, "eta"); 
@@ -144,6 +147,7 @@ void graph_truthjets_nonu::CompileEvent(){
     this -> add_graph_data_feature<double, bsm_4tops>(event, missing_et, "met"); 
     this -> add_graph_data_feature<double, bsm_4tops>(event, missing_phi, "phi"); 
     this -> add_graph_data_feature<double, bsm_4tops>(event, num_truthjets, "num_jets"); 
+    this -> add_graph_data_feature<double, bsm_4tops>(event, num_children_leps, "num_leps"); 
 
     this -> add_node_data_feature<double, particle_template>(pt, "pt"); 
     this -> add_node_data_feature<double, particle_template>(eta, "eta"); 
@@ -187,6 +191,7 @@ void graph_jets::CompileEvent(){
     this -> add_graph_data_feature<double, bsm_4tops>(event, missing_et, "met"); 
     this -> add_graph_data_feature<double, bsm_4tops>(event, missing_phi, "phi"); 
     this -> add_graph_data_feature<double, bsm_4tops>(event, num_jets, "num_jets"); 
+    this -> add_graph_data_feature<double, bsm_4tops>(event, num_children_leps, "num_leps"); 
 
     this -> add_node_data_feature<double, particle_template>(pt, "pt"); 
     this -> add_node_data_feature<double, particle_template>(eta, "eta"); 
@@ -229,6 +234,7 @@ void graph_jets_nonu::CompileEvent(){
     this -> add_graph_data_feature<double, bsm_4tops>(event, missing_et, "met"); 
     this -> add_graph_data_feature<double, bsm_4tops>(event, missing_phi, "phi"); 
     this -> add_graph_data_feature<double, bsm_4tops>(event, num_jets, "num_jets"); 
+    this -> add_graph_data_feature<double, bsm_4tops>(event, num_children_leps, "num_leps"); 
 
     this -> add_node_data_feature<double, particle_template>(pt, "pt"); 
     this -> add_node_data_feature<double, particle_template>(eta, "eta"); 
@@ -274,6 +280,7 @@ void graph_jets_detector_lep::CompileEvent(){
     this -> add_graph_data_feature<double, bsm_4tops>(event, missing_et, "met"); 
     this -> add_graph_data_feature<double, bsm_4tops>(event, missing_phi, "phi"); 
     this -> add_graph_data_feature<double, bsm_4tops>(event, num_jets, "num_jets"); 
+    this -> add_graph_data_feature<double, bsm_4tops>(event, num_leps, "num_leps"); 
 
     this -> add_node_data_feature<double, particle_template>(pt, "pt"); 
     this -> add_node_data_feature<double, particle_template>(eta, "eta"); 
@@ -313,6 +320,7 @@ void graph_detector::CompileEvent(){
     this -> add_graph_data_feature<double, bsm_4tops>(event, missing_et, "met"); 
     this -> add_graph_data_feature<double, bsm_4tops>(event, missing_phi, "phi"); 
     this -> add_graph_data_feature<double, bsm_4tops>(event, num_jets, "num_jets"); 
+    this -> add_graph_data_feature<double, bsm_4tops>(event, num_leps, "num_leps"); 
 
     this -> add_node_data_feature<double, particle_template>(pt, "pt"); 
     this -> add_node_data_feature<double, particle_template>(eta, "eta"); 
@@ -322,5 +330,3 @@ void graph_detector::CompileEvent(){
     this -> add_node_data_feature<int, particle_template>(is_lepton, "is_lep");
     this -> add_node_data_feature<int, particle_template>(is_bquark, "is_b");
 }
-
-

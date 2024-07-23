@@ -22,6 +22,4 @@ COMMAND
 python_add_library(topmatching MODULE topmatching.cpp WITH_SOABI)
 target_link_libraries(topmatching LINK_PUBLIC cmc16_topmatching)
 file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/topmatching.cpp)
-install(FILES   __init__.py   DESTINATION ${SKBUILD_PROJECT_NAME}/selections/mc16)
-install(FILES   __init__.pxd  DESTINATION ${SKBUILD_PROJECT_NAME}/selections/mc16)
 install(TARGETS   topmatching DESTINATION ${SKBUILD_PROJECT_NAME}/selections/mc16)

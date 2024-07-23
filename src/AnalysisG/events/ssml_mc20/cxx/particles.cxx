@@ -1,4 +1,4 @@
-#include "<particle-name>.h"
+#include "particles.h"
 
 <particle-name>::<particle-name>(){
     this -> type = "<some-particle>"; 

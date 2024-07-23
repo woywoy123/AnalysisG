@@ -46,6 +46,28 @@ void static num_lepton(int* o, bsm_4tops* event){
 void static missing_et(double* o, bsm_4tops* event){*o = event -> met;}; 
 void static missing_phi(double* o, bsm_4tops* event){*o = event -> phi;}; 
 
+void static num_children_leps(double* o, bsm_4tops* event){
+    *o = 0;
+    std::vector<particle_template*> ch = event -> Children; 
+    for (size_t x(0); x < ch.size(); ++x){
+        if (ch[x] -> is_nu || !ch[x] -> is_lep){continue;}
+        (*o)+=1; 
+    }
+}
+
+void static num_leps(double* o, bsm_4tops* event){
+    *o = int(event -> Muons.size()) + int(event -> Electrons.size());
+}
+
+void static num_quark(double* o, bsm_4tops* event){
+    *o = 0; 
+    std::vector<particle_template*> ch = event -> Children; 
+    for (size_t x(0); x < ch.size(); ++x){
+        if (ch[x] -> is_nu || ch[x] -> is_lep){continue;}
+        *o += 1; 
+    }
+}
+
 void static num_jets(double* o, bsm_4tops* event){*o = event -> Jets.size();}
 void static num_truthjets(double* o, bsm_4tops* event){*o = event -> TruthJets.size();}
 

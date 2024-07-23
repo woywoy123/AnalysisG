@@ -21,5 +21,4 @@ COMMAND
 
 python_add_library(topefficiency MODULE topefficiency.cpp WITH_SOABI)
 target_link_libraries(topefficiency LINK_PUBLIC ctopefficiency)
-install(FILES   __init__.pxd  DESTINATION ${SKBUILD_PROJECT_NAME}/selections/performance)
 install(TARGETS topefficiency DESTINATION ${SKBUILD_PROJECT_NAME}/selections/performance)

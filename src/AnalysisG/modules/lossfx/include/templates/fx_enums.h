@@ -3,42 +3,6 @@
 #include <string>
 #include <structs/property.h>
 
-// optimizers
-enum opt_enum {
-    adam, 
-    adagrad, 
-    adamw, 
-    lbfgs, 
-    rmsprop, 
-    sgd, 
-    invalid_optimizer
-}; 
-
-// loss functions
-enum loss_enum {
-    bce, 
-    bce_with_logits, 
-    cosine_embedding, 
-    cross_entropy, 
-    ctc, 
-    hinge_embedding, 
-    huber, 
-    kl_div, 
-    l1, 
-    margin_ranking, 
-    mse, 
-    multi_label_margin, 
-    multi_label_soft_margin, 
-    multi_margin, 
-    nll, 
-    poisson_nll, 
-    smooth_l1, 
-    soft_margin, 
-    triplet_margin, 
-    triplet_margin_with_distance,
-    invalid_loss
-};
-
 struct optimizer_params_t {
     std::string optimizer = ""; 
 
@@ -81,8 +45,6 @@ struct optimizer_params_t {
     bool m_centered                  = false; 
     bool m_dampening                 = false; 
     bool m_nesterov                  = false;
-
-
 
     void operator()(){
         this -> lr.set_setter(this -> set_lr);
@@ -145,8 +107,6 @@ struct optimizer_params_t {
         std::tuple<float, float> x = {(*val)[0], (*val)[1]}; 
         obj -> betas = x; 
     }
-
-
 
 }; 
 

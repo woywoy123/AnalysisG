@@ -34,6 +34,7 @@ class model_template:
         // model state
         int kfold; 
         int epoch; 
+        bool is_mc = false; 
         bool use_pkl = false; 
         bool inference_mode = false; 
         std::string model_checkpoint_path = ""; 
@@ -83,6 +84,7 @@ class model_template:
 
         void forward(graph_t* data, bool train); 
         void register_module(torch::nn::Sequential* data); 
+        void register_module(torch::nn::Sequential* data, mlp_init weight_init); 
 
         void prediction_graph_feature(std::string, torch::Tensor); 
         void prediction_node_feature(std::string, torch::Tensor); 

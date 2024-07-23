@@ -11,6 +11,9 @@ set(SOURCE_FILES
 add_library(canalysis STATIC ${SOURCE_FILES})
 target_include_directories(canalysis PRIVATE include/generators)
 target_include_directories(canalysis PUBLIC include)
-target_link_libraries(canalysis LINK_PUBLIC csampletracer cstructs cdataloader coptimizer cselection ROOT::RIO)
+target_link_libraries(canalysis LINK_PUBLIC 
+    csampletracer cstructs cdataloader coptimizer cselection 
+    ROOT::RIO ${TORCH_LIBRARIES}
+)
 target_compile_options(canalysis PRIVATE -fPIC)
 

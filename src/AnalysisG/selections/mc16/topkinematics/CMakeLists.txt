@@ -20,8 +20,5 @@ COMMAND
 
 python_add_library(topkinematics MODULE topkinematics.cpp WITH_SOABI)
 target_link_libraries(topkinematics LINK_PUBLIC cmc16_topkinematics)
-
 file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/topkinematics.cpp)
-install(FILES   __init__.py   DESTINATION ${SKBUILD_PROJECT_NAME}/selections/mc16)
-install(FILES   __init__.pxd  DESTINATION ${SKBUILD_PROJECT_NAME}/selections/mc16)
 install(TARGETS topkinematics DESTINATION ${SKBUILD_PROJECT_NAME}/selections/mc16)

@@ -11,9 +11,11 @@ add_custom_command(
         ${CMAKE_CURRENT_SOURCE_DIR}/analysis.pyx --output-file ${CMAKE_CURRENT_SOURCE_DIR}/canalysis.cpp
 )
 
-python_add_library(analysis    MODULE ${CMAKE_CURRENT_SOURCE_DIR}/canalysis.cpp WITH_SOABI)
+python_add_library(analysis MODULE ${CMAKE_CURRENT_SOURCE_DIR}/canalysis.cpp WITH_SOABI)
 target_link_libraries(analysis LINK_PUBLIC canalysis)
-install(FILES __init__.pxd DESTINATION ${SKBUILD_PROJECT_NAME}/generators)
-install(FILES __init__.py  DESTINATION ${SKBUILD_PROJECT_NAME}/generators)
-install(TARGETS analysis   DESTINATION ${SKBUILD_PROJECT_NAME}/generators)
+file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/canalysis.cpp)
+
+install(TARGETS analysis DESTINATION ${SKBUILD_PROJECT_NAME}/generators)
+file(INSTALL __init__.pxd DESTINATION . )
+file(INSTALL __init__.py  DESTINATION . )
 

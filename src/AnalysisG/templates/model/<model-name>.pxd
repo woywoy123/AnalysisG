@@ -4,10 +4,10 @@
 from libcpp cimport int, bool
 from AnalysisG.core.model_template cimport model_template, ModelTemplate
 
-cdef extern from "<models/RecursiveGraphNeuralNetwork.h>":
-    cdef cppclass recursivegraphneuralnetwork(model_template):
+cdef extern from "<models/<model-name>.h>":
+    cdef cppclass <model-name>(model_template):
 
-        recursivegraphneuralnetwork() except+
+        <model-name>() except+
 
         int _dx
         int _rep
@@ -16,5 +16,5 @@ cdef extern from "<models/RecursiveGraphNeuralNetwork.h>":
         bool NuR
 
 
-cdef class RecursiveGraphNeuralNetwork(ModelTemplate):
+cdef class <py-model-name>(ModelTemplate):
     pass

@@ -21,6 +21,5 @@ wheel.license-files = []
 logging.level = "INFO"
 cmake.version = ">=3.23"
 cmake.verbose = true
-
-ninja.make-fallback = true
+ninja.make-fallback = false
 sdist.cmake = true

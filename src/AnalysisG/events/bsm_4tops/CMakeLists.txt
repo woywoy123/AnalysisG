@@ -50,8 +50,8 @@ COMMAND
 
 python_add_library(event_bsm_4tops MODULE ${CMAKE_CURRENT_SOURCE_DIR}/event_bsm_4tops.cpp WITH_SOABI)
 target_link_libraries(event_bsm_4tops LINK_PUBLIC cevent_bsm_4tops)
-install(FILES __init__.pxd          DESTINATION ${SKBUILD_PROJECT_NAME}/events/bsm_4tops)
-install(FILES __init__.py           DESTINATION ${SKBUILD_PROJECT_NAME}/events/bsm_4tops)
-install(TARGETS event_bsm_4tops     DESTINATION ${SKBUILD_PROJECT_NAME}/events/bsm_4tops)
+install(TARGETS event_bsm_4tops DESTINATION ${SKBUILD_PROJECT_NAME}/events/bsm_4tops)
 file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/event_bsm_4tops.cpp)
 
+file(INSTALL __init__.pxd DESTINATION . )
+file(INSTALL __init__.py  DESTINATION . )

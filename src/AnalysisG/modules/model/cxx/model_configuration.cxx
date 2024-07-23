@@ -16,6 +16,7 @@ void model_template::clone_settings(model_settings_t* setd){
     setd -> i_graph = this -> i_graph; 
     setd -> i_node  = this -> i_node; 
     setd -> i_edge  = this -> i_edge;
+    setd -> is_mc   = this -> is_mc; 
 
     setd -> model_checkpoint_path  = this -> model_checkpoint_path; 
     setd -> inference_mode = this -> inference_mode; 
@@ -38,6 +39,8 @@ void model_template::import_settings(model_settings_t* setd){
     this -> i_graph = setd -> i_graph;        
     this -> i_node  = setd -> i_node;         
     this -> i_edge  = setd -> i_edge;
+   
+    this -> is_mc   = setd -> is_mc; 
 }
 
 void model_template::set_device(std::string* dev, model_template* md){

@@ -29,21 +29,24 @@ class recursivegraphneuralnetwork: public model_template
         int _dx     = 26; 
         int _x      = 5; 
         int _output = 2; 
-        int _rep    = 1024; 
+        int _rep    = 26; 
+        double res_mass = 0; 
+        double drop_out = 0.1; 
 
         // Misc
         bool NuR = false; 
         bool is_mc = true; 
 
-        torch::nn::Sequential* rnn_x      = nullptr; 
-        torch::nn::Sequential* rnn_dx     = nullptr; 
-        torch::nn::Sequential* rnn_merge  = nullptr; 
-        torch::nn::Sequential* rnn_update = nullptr; 
+        torch::nn::Sequential* rnn_x         = nullptr; 
+        torch::nn::Sequential* rnn_dx        = nullptr; 
+        torch::nn::Sequential* rnn_merge     = nullptr; 
+        torch::nn::Sequential* rnn_update    = nullptr; 
+        torch::nn::Sequential* exotic_mlp    = nullptr; 
+        torch::nn::Sequential* node_aggr_mlp = nullptr; 
+        torch::nn::Sequential* ntops_mlp     = nullptr; 
+        torch::nn::Sequential* exo_mlp       = nullptr; 
 
         std::map<std::string, torch::Tensor> _cache = {}; 
-
-
-
 }; 
 
 #endif

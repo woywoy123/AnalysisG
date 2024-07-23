@@ -28,8 +28,14 @@ model_template::model_template(){
 }
 
 model_template* model_template::clone(){return new model_template();}
+
 void model_template::register_module(torch::nn::Sequential* data){
     if (this -> m_option){(*data) -> to(this -> m_option -> device());}
+    this -> m_data.push_back(data);
+}
+
+void model_template::register_module(torch::nn::Sequential* data, mlp_init method){
+    this -> m_loss -> weight_init(data, method); 
     this -> m_data.push_back(data);
 }
 
