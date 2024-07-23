@@ -36,7 +36,7 @@ training:
   tree: nominal
   samples:
     sm_tttt:         10
-    sm_ttt:          10
+      #    sm_ttt:          10
     bsm_ttttH_400:   10
     bsm_ttttH_500:   10
     bsm_ttttH_600:   10
