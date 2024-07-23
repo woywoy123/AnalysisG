@@ -33,6 +33,8 @@ if mc == "mc16" and graph == "GraphTruthJets":     graph_impl = GraphTruthJets()
 if mc == "mc16" and graph == "GraphTruthJetsNoNu": graph_impl = GraphTruthJetsNoNu()
 if mc == "mc16" and graph == "GraphJets":          graph_impl = GraphJets()
 if mc == "mc16" and graph == "GraphJetsNoNu":      graph_impl = GraphJetsNoNu()
+if mc == "mc16" and graph == "GraphDetectorLep":   graph_impl = GraphDetectorLep()
+if mc == "mc16" and graph == "GraphDetector":      graph_impl = GraphDetector()
 if graph_impl is None: print("invalid graph implementation"); exit()
 
 event = data["event"]
@@ -63,6 +65,10 @@ except: pass
 
 try: model_impl.i_graph = data["model"]["i_graph"]
 except: pass
+
+if "extra-flags" in data["model"]:
+    flg = data["model"]
+    for k in flg["extra-flags"]: setattr(model_impl, k, flg["extra-flags"][k])
 
 out_path  = data["io"]["output-path"]
 try: out_path += data["io"]["project-name"]
