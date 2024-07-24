@@ -28,7 +28,7 @@ cdef class IO:
 
     def __len__(self):
         cdef pair[string, long] itx
-        return max([itx.second for itx in self.ptr.root_size()])
+        return max([itx.second for itx in self.ptr.root_size()] + [0])
 
     def __iter__(self):
         self.ptr.root_begin()

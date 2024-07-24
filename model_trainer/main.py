@@ -113,7 +113,7 @@ for i in data["samples"]:
     if data["samples"] == -1: files[i] = iox.Files
     else: files[i] = iox.Files[:data["samples"][i]]
     if len(iox) == 0: del files[i]
-
+if not len(files): print("No Files found..."); exit()
 for i in files:
     for x in files[i]:
         ana.AddSamples(x, i)

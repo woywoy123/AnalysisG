@@ -7,7 +7,7 @@ from AnalysisG.core.model_template cimport model_template, ModelTemplate
 cdef extern from "<models/RecursiveGraphNeuralNetwork.h>":
     cdef cppclass recursivegraphneuralnetwork(model_template):
 
-        recursivegraphneuralnetwork() except+
+        recursivegraphneuralnetwork(int rep, double drp) except+
 
         int _dx
         int _x

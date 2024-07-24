@@ -6,7 +6,7 @@ from AnalysisG.models.RecursiveGraphNeuralNetwork.RecursiveGraphNeuralNetwork ci
 
 cdef class RecursiveGraphNeuralNetwork(ModelTemplate):
     def __cinit__(self):
-        self.rnn = new recursivegraphneuralnetwork()
+        self.rnn = new recursivegraphneuralnetwork(26, 0.1)
         self.nn_ptr = self.rnn
 
     def __init__(self): pass

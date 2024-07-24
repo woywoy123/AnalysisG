@@ -2,14 +2,15 @@ import AnalysisG
 from AnalysisG.core.lossfx import OptimizerConfig
 from AnalysisG.generators.analysis import Analysis
 from AnalysisG.events.bsm_4tops.event_bsm_4tops import BSM4Tops
-from AnalysisG.graphs.graph_bsm_4tops import GraphTops, GraphChildren, GraphTruthJets
+from AnalysisG.graphs.graph_bsm_4tops import GraphTops, GraphChildren, GraphTruthJets, GraphTruthJetsNoNu
 from AnalysisG.models.RecursiveGraphNeuralNetwork import *
 
 root1 = "./samples/dilepton/*"
 
 x = BSM4Tops()
 #tt = GraphChildren()
-tt = GraphTruthJets()
+#tt = GraphTruthJets()
+tt = GraphTruthJetsNoNu()
 
 
 params = [
@@ -38,6 +39,8 @@ for k in params:
     m1.i_node  = ["pt", "eta", "phi", "energy"]
     m1.i_graph = ["met", "phi"]
     m1.device  = "cuda:0"
+    m1.rep = 1024
+    m1.NuR = True
 
     opti = OptimizerConfig()
     opti.Optimizer = k[1]

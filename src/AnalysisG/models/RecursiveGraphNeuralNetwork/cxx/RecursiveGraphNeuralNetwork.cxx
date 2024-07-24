@@ -6,7 +6,9 @@
 #include <graph/graph-cuda.h>
 
 
-recursivegraphneuralnetwork::recursivegraphneuralnetwork(){
+recursivegraphneuralnetwork::recursivegraphneuralnetwork(int rep, double drop_out){
+    this -> drop_out = drop_out; 
+    this -> _rep = rep; 
 
     this -> rnn_dx = new torch::nn::Sequential({
             {"rnn_dx_l1", torch::nn::Linear(this -> _dx + 2*this -> _rep, this -> _rep*2)},
@@ -82,7 +84,7 @@ recursivegraphneuralnetwork::recursivegraphneuralnetwork(){
             {"ntops_l1", torch::nn::Linear(this -> _x + 2, this -> _x+2)}, 
             {"ntops_s1", torch::nn::Sigmoid()},
             {"ntops_r1", torch::nn::ReLU()},
-            {"ntops_l2", torch::nn::Linear(this -> _x+2, this -> _x)}
+            {"ntops_l2", torch::nn::Linear(this -> _x + 2, this -> _x)}
     }); 
 
     this -> exo_mlp = new torch::nn::Sequential({
@@ -109,17 +111,21 @@ torch::Tensor recursivegraphneuralnetwork::neutrino(
 ){
     if (!this -> NuR){return pmc;}
     if (this -> _cache.count(*hash)){return this -> _cache[*hash];}
+    std::cout << *hash << std::endl;
 
     std::map<std::string, torch::Tensor> nus = nusol::cuda::combinatorial(
-        edge_index, batch, pmc, pid, met_xy, 172.62*1000, 80.385*1000, 0.0, 0.9, 0.9, 1e-10
+        edge_index, batch, pmc*0.001, pid, met_xy*0.001, 172.62, 80.385, 0.0, 0.95, 0.95, 1e-8
     ); 
     torch::Tensor combi = nus["combi"].sum({-1}) > 0;
-    if (combi.index({combi}).size({0})){return pmc;}
+    if (combi.index({combi}).size({0})){
+        this -> _cache[*hash] = pmc; 
+        return pmc;
+    }
 
-    torch::Tensor nu1 = nus["combi"].index({combi, 2}); 
-    torch::Tensor nu2 = nus["combi"].index({combi, 3}); 
-    pmc.index_put_({nu1}, nus["nu_1f"] + pmc.index({nu1})); 
-    pmc.index_put_({nu2}, nus["nu_2f"] + pmc.index({nu2}));
+    torch::Tensor nu1 = nus["combi"].index({combi, 2}).to(torch::kInt); 
+    torch::Tensor nu2 = nus["combi"].index({combi, 3}).to(torch::kInt); 
+    pmc.index_put_({nu1}, nus["nu_1f"]*1000 + pmc.index({nu1})); 
+    pmc.index_put_({nu2}, nus["nu_2f"]*1000 + pmc.index({nu2}));
     this -> _cache[*hash] = pmc; 
     return pmc; 
 }
@@ -318,13 +324,11 @@ void recursivegraphneuralnetwork::forward(graph_t* data){
 
 recursivegraphneuralnetwork::~recursivegraphneuralnetwork(){}
 model_template* recursivegraphneuralnetwork::clone(){
-    recursivegraphneuralnetwork* rnn = new recursivegraphneuralnetwork(); 
+    recursivegraphneuralnetwork* rnn = new recursivegraphneuralnetwork(this -> _rep, this -> drop_out); 
     rnn -> _dx      = this -> _dx;      
     rnn -> _x       = this -> _x;       
     rnn -> _output  = this -> _output;  
-    rnn -> _rep     = this -> _rep;     
     rnn -> res_mass = this -> res_mass; 
-    rnn -> drop_out = this -> drop_out; 
     rnn -> NuR      = this -> NuR;      
     rnn -> is_mc    = this -> is_mc;
     return rnn;  

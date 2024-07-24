@@ -5,7 +5,7 @@
 class recursivegraphneuralnetwork: public model_template
 {
     public:
-        recursivegraphneuralnetwork();
+        recursivegraphneuralnetwork(int rep = 26, double dpt = 0.1); 
         ~recursivegraphneuralnetwork();
         model_template* clone() override;
         void forward(graph_t*) override; 

@@ -12,6 +12,11 @@ training:
     device: cuda:0
     o_edge:
       top_edge: CrossEntropyLoss
+      res_edge: CrossEntropyLoss
+
+    o_graph:
+      signal: CrossEntropyLoss
+      ntops: CrossEntropyLoss
 
     i_node:
       - pt
@@ -58,17 +63,16 @@ training:
   optimizer:
     Optimizer: adam
     lr: 0.000001
-    amsgrad: true
 
   train:
     kfolds: 10
     kfold: [1, 2]
-    epochs: 100
+    epochs: 10
     continue-training: true
     evaluation: true
     validation: true
     training: true
-    training-set: ./example/dataset.h5
+    training-set: ./dataset.h5
     training-size:
 
 #  inference:
