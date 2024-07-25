@@ -13,6 +13,8 @@
 #include <c10/core/DeviceType.h>
 #include <torch/torch.h>
 
+class graph_template; 
+class dataloader; 
 
 struct graph_t {
 
@@ -39,6 +41,14 @@ struct graph_t {
         std::string* filename = nullptr; 
         torch::Tensor* edge_index = nullptr; 
 
+        c10::DeviceType device = c10::kCPU;  
+        int device_index = -1; 
+        int in_use = -1; 
+
+    private:
+        friend graph_template; 
+        friend dataloader; 
+
         std::map<std::string, int>* data_map_graph = nullptr; 
         std::map<std::string, int>* data_map_node  = nullptr;         
         std::map<std::string, int>* data_map_edge  = nullptr;         
@@ -55,10 +65,6 @@ struct graph_t {
         std::vector<torch::Tensor*>* truth_node  = nullptr; 
         std::vector<torch::Tensor*>* truth_edge  = nullptr; 
 
-        c10::DeviceType device = c10::kCPU;  
-        int device_index = -1; 
-
-    private:
         void _purge_data(std::vector<torch::Tensor*>* data); 
         void _transfer_to_device(std::vector<torch::Tensor*>* data, torch::TensorOptions* dev); 
         std::vector<torch::Tensor*>* add_content(std::map<std::string, torch::Tensor*>* inpt); 

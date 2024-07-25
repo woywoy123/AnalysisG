@@ -5,10 +5,13 @@
 
 enum mode_enum {training, validation, evaluation}; 
 
+class metrics; 
+
 struct model_report {
     int k;
     int epoch; 
     bool is_complete = false; 
+    metrics* waiting_plot = nullptr; 
 
     std::map<mode_enum, std::map<std::string, float>> loss_graph = {}; 
     std::map<mode_enum, std::map<std::string, float>> loss_node = {}; 

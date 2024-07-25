@@ -111,13 +111,12 @@ torch::Tensor recursivegraphneuralnetwork::neutrino(
 ){
     if (!this -> NuR){return pmc;}
     if (this -> _cache.count(*hash)){return this -> _cache[*hash];}
-    std::cout << *hash << std::endl;
 
     std::map<std::string, torch::Tensor> nus = nusol::cuda::combinatorial(
         edge_index, batch, pmc*0.001, pid, met_xy*0.001, 172.62, 80.385, 0.0, 0.95, 0.95, 1e-8
     ); 
     torch::Tensor combi = nus["combi"].sum({-1}) > 0;
-    if (combi.index({combi}).size({0})){
+    if (!combi.index({combi}).size({0})){
         this -> _cache[*hash] = pmc; 
         return pmc;
     }

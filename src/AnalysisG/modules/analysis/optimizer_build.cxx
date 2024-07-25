@@ -6,6 +6,7 @@ void analysis::build_model_session(){
     if (!kfold.size()){for (int k(0); k < this -> m_settings.kfolds; ++k){kfold.push_back(k);}}
     else {for (int k(0); k < kfold.size(); ++k){kfold[k] = kfold[k]-1;}}
     this -> m_settings.kfold = kfold; 
+
     for (size_t x(0); x < this -> model_sessions.size(); ++x){
         std::string name = this -> model_session_names[x]; 
 
@@ -33,6 +34,9 @@ void analysis::build_model_session(){
     for (; itr != this -> trainer.end(); ++itr){
         for (int k(0); k < this -> m_settings.kfold.size(); ++k){
             int k_ = this -> m_settings.kfold[k]; 
+            std::vector<graph_t*>* check = this -> loader -> get_k_train_set(k_); 
+            if (!check){continue;}
+ 
             if (this -> m_settings.debug_mode){itr -> second -> launch_model(k_);}
             else {this -> threads.push_back(new std::thread(lamb, itr -> second, k_));}
         }
@@ -66,7 +70,12 @@ std::map<std::string, std::string> analysis::progress_report(){
     std::map<std::string, model_report*>::iterator itx;
     for (itx = this -> reports.begin(); itx != this -> reports.end(); ++itx){
         output[itx -> first] = itx -> second -> print(); 
+        metrics* plt = itx -> second -> waiting_plot; 
+        if (!plt){continue;}
+        plt -> dump_plots(itx -> second -> k); 
+        itx -> second -> waiting_plot = nullptr;  
     }
+    this -> loader -> start_cuda_server(); 
     return output; 
 }
 

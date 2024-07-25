@@ -113,7 +113,7 @@ void model_template::save_state(){
     if (this -> use_pkl){
         std::vector<std::vector<torch::Tensor>> data; 
         for (size_t x(0); x < this -> m_data.size(); ++x){
-            data.push_back((*this -> m_data.at(x)) -> parameters()); 
+            data.push_back((*this -> m_data[x]) -> parameters()); 
         }
         std::vector<char> chars = torch::pickle_save(data); 
         std::ofstream ofs((pth + "_model.zip").c_str(), std::ios::out | std::ios::binary); 
@@ -123,7 +123,7 @@ void model_template::save_state(){
     }
 
     torch::serialize::OutputArchive state_session;
-    for (size_t x(0); x < this -> m_data.size(); ++x){(*this -> m_data.at(x)) -> save(state_session);}
+    for (size_t x(0); x < this -> m_data.size(); ++x){(*this -> m_data[x]) -> save(state_session);}
     state_session.save_to(pth + "_model.pt"); 
 
     torch::serialize::OutputArchive state_optim; 

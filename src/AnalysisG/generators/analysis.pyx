@@ -43,6 +43,7 @@ cdef class Analysis:
 
     def AddModel(self, ModelTemplate model, OptimizerConfig op, str run_name):
         self.ana.add_model(model.nn_ptr, op.params, enc(run_name))
+        del model
 
     def AddModelInference(self, ModelTemplate model, str run_name = "run_name"):
         import ROOT

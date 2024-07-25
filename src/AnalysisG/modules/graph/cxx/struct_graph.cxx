@@ -120,7 +120,7 @@ void graph_t::transfer_to_device(torch::TensorOptions* dev){
     delete this -> edge_index; 
     this -> edge_index = edge_indx_; 
 
-    this -> device_index = dev -> device().index(); 
+    this -> device_index = (int)dev -> device().index(); 
     this -> device = dev_in; 
 }
 

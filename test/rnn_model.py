@@ -10,7 +10,7 @@ root1 = "./samples/dilepton/*"
 x = BSM4Tops()
 #tt = GraphChildren()
 #tt = GraphTruthJets()
-tt = GraphTruthJetsNoNu()
+tt = GraphTruthJets()
 
 
 params = [
@@ -40,7 +40,7 @@ for k in params:
     m1.i_graph = ["met", "phi"]
     m1.device  = "cuda:0"
     m1.rep = 1024
-    m1.NuR = True
+    m1.NuR = False
 
     opti = OptimizerConfig()
     opti.Optimizer = k[1]
@@ -55,12 +55,13 @@ ana.AddGraph(tt, "tmp")
 
 for i in range(len(optims)): ana.AddModel(trains[i], optims[i], params[i][0])
 
-ana.kFolds = 1
+ana.kFolds = 4
 ana.Epochs = 100
 ana.Targets = ["res_edge", "top_edge"]
+ana.kFold = [1, 2]
 ana.MaxRange = 1500
 ana.TrainSize = 95
 ana.DebugMode = False
-ana.Validation = False
+ana.Validation = True
 ana.Evaluation = False
 ana.Start()

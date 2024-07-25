@@ -32,7 +32,7 @@ void metrics::generic_painter(
     can -> Modified(); 
     //can -> BuildLegend(); 
     can -> Update(); 
-    
+  
     this -> create_path(path); 
     can -> SaveAs(path.c_str()); 
     can -> Close(); 

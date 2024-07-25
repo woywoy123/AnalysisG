@@ -6,6 +6,9 @@
 #include <metrics/metrics.h>
 #include <structs/settings.h>
 
+
+class analysis; 
+
 class optimizer: 
     public tools,
     public notification
@@ -23,6 +26,8 @@ class optimizer:
         void validation_loop(int k, int epoch);
         void evaluation_loop(int k, int epoch); 
         void launch_model(int k); 
+
+        friend analysis; 
 
     private:
         std::map<int, model_template*> kfold_sessions = {}; 

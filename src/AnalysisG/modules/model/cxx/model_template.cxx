@@ -1,4 +1,6 @@
+#include <chrono>
 #include <templates/model_template.h>
+#include <thread>
 
 model_template::model_template(){
     // input features
@@ -63,6 +65,9 @@ torch::Tensor* model_template::assign_features(std::string inpt, graph_enum type
 }
 
 void model_template::forward(graph_t* data, bool train){
+    if (data -> in_use == 0){
+        while (data -> in_use == 0){std::this_thread::sleep_for(std::chrono::milliseconds(1));}
+    }
     data -> transfer_to_device(this -> m_option); 
     this -> flush_outputs(); 
 

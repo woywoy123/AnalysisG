@@ -1,3 +1,4 @@
+#include <chrono>
 #include <generators/dataloader.h>
 #include <structs/folds.h>
 #include <io/io.h>
@@ -9,6 +10,9 @@ dataloader::dataloader(){
     this -> data_index = new std::vector<int>(); 
     this -> test_set   = new std::vector<int>(); 
     this -> train_set  = new std::vector<int>(); 
+    if (!this -> cuda_mem){return;}
+    this -> cuda_mem -> join(); 
+    delete this -> cuda_mem; 
 }
 
 dataloader::~dataloader(){
@@ -207,15 +211,21 @@ std::vector<graph_t*> dataloader::get_random(int num){
 
 std::vector<graph_t*>* dataloader::get_k_train_set(int k){
     if (this -> gr_k_fold_training.count(k)){return this -> gr_k_fold_training[k];}
+    if (!this -> k_fold_training.count(k)){
+        this -> warning("Specified an invalid k-fold index."); 
+        return nullptr;
+    }
 
     std::vector<int>* kdata = this -> k_fold_training[k]; 
     this -> shuffle(kdata); 
     std::vector<graph_t*>* output = new std::vector<graph_t*>();
     for (int x(0); x < kdata -> size(); ++x){
-        output -> push_back(this -> data_set -> at(kdata -> at(x)));
+        graph_t* gr = (*this -> data_set)[(*kdata)[x]]; 
+        output -> push_back(gr);
+        gr -> in_use = 1; 
     }
     output -> shrink_to_fit(); 
-    this -> gr_k_fold_training[k-1] = output; 
+    this -> gr_k_fold_training[k] = output; 
     return output; 
 }
 
@@ -227,7 +237,9 @@ std::vector<graph_t*>* dataloader::get_k_validation_set(int k){
     this -> shuffle(kdata); 
     std::vector<graph_t*>* output = new std::vector<graph_t*>();
     for (int x(0); x < kdata -> size(); ++x){
-        output -> push_back(this -> data_set -> at(kdata -> at(x)));
+        graph_t* gr = (*this -> data_set)[(*kdata)[x]]; 
+        output -> push_back(gr);
+        gr -> in_use = 1; 
     }
     output -> shrink_to_fit(); 
     this -> gr_k_fold_validation[k-1] = output; 
@@ -239,7 +251,9 @@ std::vector<graph_t*>* dataloader::get_test_set(){
     this -> shuffle(this -> test_set); 
     std::vector<graph_t*>* output = new std::vector<graph_t*>();
     for (int x(0); x < this -> test_set -> size(); ++x){
-        output -> push_back(this -> data_set -> at(this -> test_set -> at(x)));
+        graph_t* gr = (*this -> data_set)[(*this -> test_set)[x]]; 
+        output -> push_back(gr);
+        gr -> in_use = 1; 
     }
     output -> shrink_to_fit(); 
     this -> gr_test = output; 
@@ -285,8 +299,8 @@ void dataloader::extract_data(graph_t* gr){
 
 void dataloader::datatransfer(torch::TensorOptions* op, int threads){
     auto lamb = [](std::vector<graph_t*>* data, torch::TensorOptions* op){
-        for (size_t f(0); f < data -> size(); ++f){data -> at(f) -> transfer_to_device(op);}
-    }; 
+        for (size_t f(0); f < data -> size(); ++f){(*data)[f] -> transfer_to_device(op);}
+    };
 
     if (!this -> data_set){return;}
     int x = this -> data_set -> size()/threads; 
@@ -301,4 +315,42 @@ void dataloader::datatransfer(torch::TensorOptions* op, int threads){
         this -> progressbar(float(g+1)/float(th.size()), msg); 
     }
     std::cout << "" << std::endl;
+    if (this -> tensor_op){return;}
+    this -> tensor_op = op; 
+}
+
+void dataloader::cuda_memory_server(){
+    if (!this -> tensor_op){return;}
+    torch::TensorOptions* op = new torch::TensorOptions(c10::kCPU);
+    int id = this-> tensor_op -> device().index(); 
+
+    CUdevice dev; 
+    cuDeviceGet(&dev, id); 
+
+    size_t free, total; 
+    cuMemGetInfo(&free, &total); 
+
+    double perc = 100.0*(total - free)/(double)total; 
+    bool full_purge = perc > 95; 
+    for (size_t x(0); x < this -> data_set -> size(); ++x){
+        std::this_thread::sleep_for(std::chrono::microseconds(10));
+        graph_t* gr = (*this -> data_set)[x]; 
+        if (gr -> in_use == 2){continue;}
+        if (gr -> in_use == 1 && !full_purge){continue;}
+        if (gr -> in_use == -1){continue;}
+        gr -> in_use = 0; 
+        gr -> transfer_to_device(op);  
+        gr -> in_use = -1; 
+    }
+    delete op; 
+}
+
+void dataloader::start_cuda_server(){
+    if (this -> cuda_mem){return;}
+    auto monitor = [this](){
+        while (this -> data_set){
+            this -> cuda_memory_server(); 
+        }
+    }; 
+    this -> cuda_mem = new std::thread(monitor);
 }

@@ -29,6 +29,9 @@ void optimizer::import_model_sessions(std::tuple<model_template*, optimizer_para
     this -> info("_____ IMPORTING MODELS _____"); 
     for (int x(0); x < this -> m_settings.kfold.size(); ++x){
         int k_ = this -> m_settings.kfold[x]; 
+        std::vector<graph_t*>* check = this -> loader -> get_k_train_set(k_); 
+        if (!check){continue;}
+ 
         model_template* model_k = base -> clone(); 
         if (x){model_k -> shush = true;}
         model_k -> set_optimizer(config -> optimizer);
@@ -40,6 +43,7 @@ void optimizer::import_model_sessions(std::tuple<model_template*, optimizer_para
 
 void optimizer::check_model_sessions(int example_size, std::map<std::string, model_report*>* rep){
     std::vector<graph_t*> rnd = this -> loader -> get_random(example_size); 
+  
     std::map<int, model_template*>::iterator itx = this -> kfold_sessions.begin(); 
     this -> info("Testing each k-fold model " + std::to_string(rnd.size()) + "-times"); 
     for (; itx != this -> kfold_sessions.end(); ++itx){
@@ -76,9 +80,12 @@ void optimizer::training_loop(int k, int epoch){
     mr -> epoch = epoch+1;  
 
     for (int x(0); x < l; ++x){
-        model -> forward(smpl -> at(x), retrain);
+        graph_t* gr = (*smpl)[x]; 
+        gr -> in_use = 2; 
+        model -> forward(gr, retrain);
         this -> metric -> capture(mode_enum::training, k, epoch, l); 
         mr -> progress = float(x+1)/float(l); 
+        gr -> in_use = 1; 
     }
     model -> save_state(); 
 }
@@ -93,9 +100,12 @@ void optimizer::validation_loop(int k, int epoch){
 
     int l = smpl -> size(); 
     for (int x(0); x < l; ++x){
-        model -> forward(smpl -> at(x), false);
+        graph_t* gr = (*smpl)[x]; 
+        gr -> in_use = 2; 
+        model -> forward(gr, false);
         this -> metric -> capture(mode_enum::validation, k, epoch, l); 
         mr -> progress = float(x+1)/float(l);
+        gr -> in_use = 1; 
     }
 }
 
@@ -109,9 +119,12 @@ void optimizer::evaluation_loop(int k, int epoch){
 
     int l = smpl -> size(); 
     for (int x(0); x < l; ++x){
-        model -> forward(smpl -> at(x), false);
+        graph_t* gr = (*smpl)[x]; 
+        gr -> in_use = 2; 
+        model -> forward(gr, false);
         this -> metric -> capture(mode_enum::evaluation, k, epoch, l); 
         mr -> progress = float(x+1)/float(l); 
+        gr -> in_use = 1; 
     }
 }
 
@@ -120,12 +133,13 @@ void optimizer::launch_model(int k){
         if (this -> m_settings.training){this -> training_loop(k, ep);}
         if (this -> m_settings.validation){this -> validation_loop(k, ep);}
         if (this -> m_settings.evaluation){this -> evaluation_loop(k, ep);}
+        model_report* mr = this -> reports[this -> m_settings.run_name + std::to_string(k)]; 
+        mr -> waiting_plot = this -> metric; 
+        while (mr -> waiting_plot){std::this_thread::sleep_for(std::chrono::milliseconds(1000));}
+        c10::cuda::CUDACachingAllocator::emptyCache();  
     }; 
-    for (int ep(0); ep < this -> m_settings.epochs; ++ep){
-        lamb(k, ep);
-        this -> metric -> dump_plots(k); 
-    }
 
+    for (int ep(0); ep < this -> m_settings.epochs; ++ep){lamb(k, ep);}
     model_report* mr = this -> reports[this -> m_settings.run_name + std::to_string(k)]; 
     mr -> is_complete = true; 
 }
