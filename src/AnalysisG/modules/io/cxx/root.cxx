@@ -103,6 +103,10 @@ void data_t::string_type(){
         this -> type = data_enum::f; return; 
     }
 
+    if (this -> leaf_type == "Int_t"){
+        this -> type = data_enum::i; return; 
+    }
+
     if (this -> leaf_type == "ULong64_t"){
         this -> type = data_enum::ull; return; 
     }
@@ -127,7 +131,8 @@ void data_t::string_type(){
         this -> type = data_enum::vc; return; 
     }
 
-    std::cout << this -> leaf_type << " " << path << std::endl; 
+    std::cout << "UNKNOWN TYPE: " << this -> leaf_type << " " << path << std::endl; 
+    std::cout << "Add the type under modules/io/cxx/root.cxx" << std::endl;
     abort(); 
 }
 
@@ -283,6 +288,7 @@ void io::root_key_paths(std::string path){
             this -> root_key_paths(updated, (TTree*)obj);
             continue;
         }
+        if (obj -> InheritsFrom("TH1")){continue;}
 
         dir -> cd(updated.c_str()); 
         this -> root_key_paths(updated + "/"); 

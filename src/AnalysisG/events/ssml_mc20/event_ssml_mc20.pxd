@@ -6,14 +6,13 @@ from libcpp.map cimport map
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 
-from AnalysisG.events.ssml_mc20.event_ssml_mc20 cimport *
 from AnalysisG.core.particle_template cimport particle_template
 from AnalysisG.core.event_template cimport *
 
-cdef extern from "<ssm_mc20/event_ssml_mc20.h>":
+cdef extern from "<ssml_mc20/event.h>":
 
-    cdef cppclass event_ssml_mc20(event_template):
-        event_ssml_mc20() except+
+    cdef cppclass ssml_mc20(event_template):
+        ssml_mc20() except+
 
 cdef class SSML_MC20(EventTemplate):
-    pass
+    cdef ssml_mc20* ev
