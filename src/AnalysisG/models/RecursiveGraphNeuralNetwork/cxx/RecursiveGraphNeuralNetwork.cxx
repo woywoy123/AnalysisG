@@ -170,22 +170,22 @@ torch::Tensor recursivegraphneuralnetwork::message(
 void recursivegraphneuralnetwork::forward(graph_t* data){
 
     // get the particle 4-vector and convert it to cartesian
-    torch::Tensor pt         = data -> get_data_node("pt") -> clone();
-    torch::Tensor eta        = data -> get_data_node("eta") -> clone(); 
-    torch::Tensor phi        = data -> get_data_node("phi") -> clone(); 
-    torch::Tensor energy     = data -> get_data_node("energy") -> clone(); 
+    torch::Tensor pt         = data -> get_data_node("pt", this) -> clone();
+    torch::Tensor eta        = data -> get_data_node("eta", this) -> clone(); 
+    torch::Tensor phi        = data -> get_data_node("phi", this) -> clone(); 
+    torch::Tensor energy     = data -> get_data_node("energy", this) -> clone(); 
     torch::Tensor pmc        = transform::cuda::PxPyPzE(pt, eta, phi, energy); 
 
     // the event topology
-    torch::Tensor edge_index = data -> edge_index -> to(torch::kLong); 
-    torch::Tensor num_jets   = data -> get_data_graph("num_jets") -> clone(); 
-    torch::Tensor num_leps   = data -> get_data_graph("num_leps") -> clone(); 
-    torch::Tensor met        = data -> get_data_graph("met") -> clone(); 
-    torch::Tensor met_phi    = data -> get_data_graph("phi") -> clone();
+    torch::Tensor edge_index = data -> get_edge_index(this) -> to(torch::kLong); 
+    torch::Tensor num_jets   = data -> get_data_graph("num_jets", this) -> clone(); 
+    torch::Tensor num_leps   = data -> get_data_graph("num_leps", this) -> clone(); 
+    torch::Tensor met        = data -> get_data_graph("met", this) -> clone(); 
+    torch::Tensor met_phi    = data -> get_data_graph("phi", this) -> clone();
 
     // get the event level details for the double neutrino algorithm.
-    torch::Tensor is_lep     = data -> get_data_node("is_lep") -> clone(); 
-    torch::Tensor is_b       = data -> get_data_node("is_b") -> clone(); 
+    torch::Tensor is_lep     = data -> get_data_node("is_lep", this) -> clone(); 
+    torch::Tensor is_b       = data -> get_data_node("is_b", this) -> clone(); 
     torch::Tensor pid        = torch::cat({is_lep, is_b}, {-1}); 
     torch::Tensor batch      = torch::zeros_like(pt.view({-1})).to(torch::kLong); 
 
@@ -314,7 +314,7 @@ void recursivegraphneuralnetwork::forward(graph_t* data){
     this -> prediction_extra("top_pmc", top_pred); 
 
     if (!this -> is_mc){return;}
-    torch::Tensor truth_t = data -> get_truth_edge("top_edge") -> view({-1}); 
+    torch::Tensor truth_t = data -> get_truth_edge("top_edge", this) -> view({-1}); 
     torch::Tensor truth_ = torch::zeros_like(G_); 
     for (int x(0); x < G_.size({-1}); ++x){truth_.index_put_({truth_t == x, x}, 1);}
     torch::Tensor truth_top = graph::cuda::edge_aggregation(edge_index, truth_, pmc)["1"][1]; 

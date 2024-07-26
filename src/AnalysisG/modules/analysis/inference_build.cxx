@@ -34,7 +34,7 @@ void execution(model_template* md, std::vector<graph_t*>* data, std::string outp
         index = add_content(&md -> m_p_edge, content, index, t); 
 
         std::map<std::string, torch::Tensor*> addhoc;
-        addhoc["edge_index"] = (*data)[x] -> edge_index;
+        addhoc["edge_index"] = (*data)[x] -> get_edge_index(md);
         index = add_content(&addhoc, content, index, t);
         index = add_content(&md -> m_p_undef, content, index, t); 
 
@@ -117,7 +117,7 @@ void analysis::build_inference(){
 
         // --- add additional content
         std::map<std::string, torch::Tensor*> addhoc; 
-        addhoc["edge_index"] = its -> second[0] -> edge_index;
+        addhoc["edge_index"] = its -> second[0] -> get_edge_index(md);
         index = add_content(&addhoc, content, index); 
         index = add_content(&md -> m_p_undef, content, index); 
 

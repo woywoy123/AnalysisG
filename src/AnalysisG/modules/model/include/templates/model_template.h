@@ -9,6 +9,7 @@
 class metrics; 
 class analysis; 
 class model_template; 
+struct graph_t; 
 struct variable_t; 
 
 void execution(
@@ -98,6 +99,7 @@ class model_template:
         void save_state(); 
         bool restore_state(); 
 
+        friend struct graph_t; 
         friend class metrics; 
         friend class analysis;
         friend void execution(

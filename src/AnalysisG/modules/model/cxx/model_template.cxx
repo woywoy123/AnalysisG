@@ -53,12 +53,12 @@ model_template::~model_template(){
 torch::Tensor* model_template::assign_features(std::string inpt, graph_enum type, graph_t* data){
     torch::Tensor* tn = nullptr; 
     switch (type){
-        case graph_enum::data_graph:  tn = data -> get_data_graph(inpt);  this -> m_i_graph[inpt] = tn; break;  
-        case graph_enum::data_node:   tn = data -> get_data_node(inpt);   this -> m_i_node[inpt]  = tn; break;  
-        case graph_enum::data_edge:   tn = data -> get_data_edge(inpt);   this -> m_i_edge[inpt]  = tn; break;  
-        case graph_enum::truth_graph: tn = data -> get_truth_graph(inpt); std::get<0>(this -> m_o_graph[inpt]) = tn; break;  
-        case graph_enum::truth_node:  tn = data -> get_truth_node(inpt);  std::get<0>(this -> m_o_node[inpt])  = tn; break;  
-        case graph_enum::truth_edge:  tn = data -> get_truth_edge(inpt);  std::get<0>(this -> m_o_edge[inpt])  = tn; break;  
+        case graph_enum::data_graph:  tn = data -> get_data_graph(inpt, this);  this -> m_i_graph[inpt] = tn; break;  
+        case graph_enum::data_node:   tn = data -> get_data_node(inpt, this);   this -> m_i_node[inpt]  = tn; break;  
+        case graph_enum::data_edge:   tn = data -> get_data_edge(inpt, this);   this -> m_i_edge[inpt]  = tn; break;  
+        case graph_enum::truth_graph: tn = data -> get_truth_graph(inpt, this); std::get<0>(this -> m_o_graph[inpt]) = tn; break;  
+        case graph_enum::truth_node:  tn = data -> get_truth_node(inpt, this);  std::get<0>(this -> m_o_node[inpt])  = tn; break;  
+        case graph_enum::truth_edge:  tn = data -> get_truth_edge(inpt, this);  std::get<0>(this -> m_o_edge[inpt])  = tn; break;  
         default: return tn; 
     }
     return tn; 
@@ -75,7 +75,7 @@ void model_template::forward(graph_t* data, bool train){
     std::map<std::string, torch::Tensor*>::iterator itr;
     std::map<std::string, std::tuple<torch::Tensor*, loss_enum>>::iterator itx; 
 
-    this -> edge_index = data -> edge_index; 
+    this -> edge_index = data -> get_edge_index(this); 
 
     mode = graph_enum::data_graph; 
     itr = this -> m_i_graph.begin(); 
