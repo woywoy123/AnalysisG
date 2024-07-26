@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
 set(SKBUILD_PROJECT_NAME AnalysisG)
-project(${SKBUILD_PROJECT_NAME} VERSION ${SKBUILD_PROJECT_VERSION} LANGUAGES CXX C)
+project(${SKBUILD_PROJECT_NAME} VERSION 5.0 LANGUAGES CXX C)
+set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
+set(CMAKE_POLICY_DEFAULT_CMP0135 NEW)
 
 include(FetchContent)
 include(CheckLanguage)
@@ -19,60 +21,71 @@ endif()
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_VERSION 3.20)
 
 find_package(Torch)
 find_package(PythonInterp)
-find_package(RapidJSON)
 find_package(HDF5)
-find_package(ROOT)
 
-if (NOT RapidJSON_FOUND)
+if (NOT rapidjson_FOUND)
 set(RAPIDJSON_BUILD_EXAMPLES OFF)
 set(RAPIDJSON_BUILD_TESTS OFF)
 set(RAPIDJSON_BUILD_DOC OFF)
-set(RAPIDJSON_BUILD_CXX11 OFF)
+set(RAPIDJSON_BUILD_CXX11 ON)
 set(RAPIDJSON_BUILD_CXX17 ON)
+set(RAPIDJSON_BUILD_THIRDPARTY_GTEST ON)
 FetchContent_Declare(rapidjson
 GIT_REPOSITORY "https://github.com/Tencent/rapidjson.git"
-GIT_TAG v1.1.0)
+GIT_TAG origin/master
+FIND_PACKAGE_ARGS)
 FetchContent_MakeAvailable(rapidjson)
+set(RAPIDJSON_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR}/_deps/rapidjson-src/include)
+message(STATUS "RAPIDJSON: ${RAPIDJSON_INCLUDE_DIR}")
 endif()
 
-#FetchContent_Declare(ROOT
-#URL "https://root.cern/download/root_v6.32.02.Linux-almalinux9.4-x86_64-gcc11.4.tar.gz"
-#FIND_PACKAGE_ARGS)
-#FetchContent_MakeAvailable(ROOT)
+#find_package(ROOT)
+#FetchContent_Declare(root
+#GIT_REPOSITORY "https://github.com/root-project/root.git"
+#GIT_TAG "v6-32-02")
+#FetchContent_MakeAvailable(root)
+#
 #list(APPEND CMAKE_PREFIX_PATH "${ROOT_SOURCE_DIR}")
+#include(${ROOT_USE_FILE})
+#link_directories(${ROOT_LIBRARY_DIR})
+#message(STATUS "ROOT: ${ROOT_INCLUDE_DIRS}")
+#include_directories(${ROOT_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR})
+
 
 if (NOT Torch_FOUND)
 FetchContent_Declare(Torch 
 URL "https://download.pytorch.org/libtorch/cu121/libtorch-cxx11-abi-shared-with-deps-2.3.1%2Bcu121.zip")
 FetchContent_MakeAvailable(Torch)
-list(APPEND CMAKE_PREFIX_PATH "${torch_SOURCE_DIR}")
+list(APPEND CMAKE_PREFIX_PATH ${torch_SOURCE_DIR})
 endif()
 
-if (NOT HDF5_FOUND)
-set(HDF5_USE_CXX ON)
-set(BUILD_TESTING OFF)
-set(HDF5_BUILD_EXAMPLES OFF)
-set(HDF5_BUILD_CPP_LIB ON)
-set(HDF5_EXTERNALLY_CONFIGURED ON)
-FetchContent_Declare(hdf5
-GIT_REPOSITORY "https://github.com/HDFGroup/hdf5.git"
-GIT_TAG hdf5_1.14.4.3)
-FetchContent_MakeAvailable(hdf5)
-endif()
+#if (NOT HDF5_FOUND)
+#FetchContent_Declare(HDF5
+#GIT_REPOSITORY "https://github.com/HDFGroup/hdf5.git"
+#GIT_TAG origin/hdf5_1_14_4
+#OVERRIDE_FIND_PACKAGE)
+#option(BUILD_TESTING "" OFF)
+#option(HDF5_BUILD_SHARED_LIBS "" ON)
+#option(HDF5_BUILD_CPP_LIB "" ON)
+#option(HDF5_ENABLE_SZIP_SUPPORT "" OFF)
+#option(HDF5_ENABLE_SZIP_ENCODING "" OFF)
+#option(HDF5_BUILD_EXAMPLES "" OFF)
+#option(HDF5_BUILD_CPP_LIB "" ON)
+#option(HDF5_ENABLE_Z_LIB_SUPPORT "" ON)
+#FetchContent_MakeAvailable(HDF5)
+#message(STATUS "HDF5: ${HDF5_LIBRARIES}")
+#endif()
 
-include(${ROOT_USE_FILE})
-link_directories(${ROOT_LIBRARY_DIR})
-message(STATUS "ROOT: ${ROOT_INCLUDE_DIRS}")
-include_directories(${ROOT_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR})
 list(APPEND CMAKE_PREFIX_PATH "${ROOT_SOURCE_DIR}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
 
 find_package(ROOT REQUIRED COMPONENTS RIO Tree Core)
 find_package(Python COMPONENTS Interpreter Development REQUIRED)
-find_package(HDF5 COMPONENTS CXX REQUIRED)
+find_package(HDF5 REQUIRED COMPONENTS CXX)
 find_package(Torch REQUIRED)
 
 add_subdirectory(src/AnalysisG/pyc)

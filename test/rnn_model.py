@@ -49,16 +49,37 @@ for k in params:
     trains.append(m1)
     optims.append(opti)
 
+    m2 = RecursiveGraphNeuralNetwork()
+    m2.o_edge  = {
+           "top_edge" : "CrossEntropyLoss",
+           "res_edge" : "CrossEntropyLoss"
+    }
+    m2.o_graph = {
+           "ntops"  : "CrossEntropyLoss",
+           "signal" : "CrossEntropyLoss"
+    }
+    m2.i_node  = ["pt", "eta", "phi", "energy"]
+    m2.i_graph = ["met", "phi"]
+    m2.device  = "cuda:1"
+    m2.rep = 1024
+    m2.NuR = False
+
+    optix = OptimizerConfig()
+    optix.Optimizer = k[1]
+    for t in k[2]: setattr(optix, t, k[2][t])
+    trains.append(m2)
+    optims.append(optix)
+
 ana.AddSamples(root1, "tmp")
 ana.AddEvent(x, "tmp")
 ana.AddGraph(tt, "tmp")
 
-for i in range(len(optims)): ana.AddModel(trains[i], optims[i], params[i][0])
+for i in range(len(optims)): ana.AddModel(trains[i], optims[i], params[0][0] + "-"+str(i))
 
-ana.kFolds = 4
+ana.kFolds = 1
 ana.Epochs = 100
 ana.Targets = ["res_edge", "top_edge"]
-ana.kFold = [1, 2]
+ana.kFold = [1]
 ana.MaxRange = 1500
 ana.TrainSize = 95
 ana.DebugMode = False
