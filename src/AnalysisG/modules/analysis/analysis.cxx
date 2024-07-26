@@ -60,9 +60,13 @@ void analysis::start(){
     if (this -> selection_names.size()){
         this -> tracer -> fill_selections(&this -> selection_names); 
     } 
+    
+    std::string path_data = this -> m_settings.training_dataset; 
+    if (!this -> loader -> restore_dataset(path_data) && path_data.size()){
+        this -> build_dataloader(true); 
+    }
 
     if (this -> model_sessions.size()){
-        this -> build_dataloader(true);
         this -> build_project(); 
         this -> build_model_session();  
     }

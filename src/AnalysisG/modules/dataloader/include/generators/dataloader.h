@@ -29,7 +29,7 @@ class dataloader:
         void generate_test_set(float percentage = 50); 
         void generate_kfold_set(int k); 
         void dump_dataset(std::string path); 
-        void restore_dataset(std::string path); 
+        bool restore_dataset(std::string path); 
 
         std::vector<graph_t*> get_random(int num = 5); 
         void extract_data(graph_t* gr); 

@@ -1,7 +1,7 @@
 base:
-  graph: GraphChildren 
+  graph: GraphTruthJetsNoNu
   event: BSM4Tops
-  project-name: GraphChildren
+  project-name: GraphTruthJetsNoNu
   output-path: ./
   sample-path: /pscratch/sd/<usr>/mc16-dilepton/
   campaign: mc16
@@ -17,25 +17,25 @@ base:
   validation: true
   training: true
   samples:
-    sm_tttt:         10
-    sm_ttt:          10
-    bsm_ttttH_400:   10
-    bsm_ttttH_500:   10
-    bsm_ttttH_600:   10
-    bsm_ttttH_700:   10
-    bsm_ttttH_800:   10
-    bsm_ttttH_900:   10
-    bsm_ttttH_1000:  10
-    sm_ttbar:        10
-    sm_ttV:          10
-    sm_tt_Vll:       10
-    sm_Vll:          10
-    sm_llgammagamma: 10
-    sm_ttH:          10
-    sm_t:            10
-    sm_wh:           10
-    sm_VVll:         10
-    sm_llll:         10
+    sm_tttt:         -1 
+    sm_ttt:          -1 
+    bsm_ttttH_400:   -1 
+    bsm_ttttH_500:   -1 
+    bsm_ttttH_600:   -1 
+    bsm_ttttH_700:   -1 
+    bsm_ttttH_800:   -1 
+    bsm_ttttH_900:   -1 
+    bsm_ttttH_1000:  -1 
+    sm_ttbar:        -1 
+    sm_ttV:          -1 
+    sm_tt_Vll:       -1 
+    sm_Vll:          -1 
+    sm_llgammagamma: -1 
+    sm_ttH:          -1 
+    sm_t:            -1 
+    sm_wh:           -1 
+    sm_VVll:         -1 
+    sm_llll:         -1 
 
 MRK-1:
   model: RecursiveGraphNeuralNetwork
@@ -62,7 +62,7 @@ MRK-1:
   
   extra-flags:
     is_mc: true
-    NuR: false
+    NuR: true
     rep: 1024
     drop_out: 0.01
 
@@ -95,7 +95,7 @@ MRK-2:
   
   extra-flags:
     is_mc: true
-    NuR: false
+    NuR: true
     rep: 1024
     drop_out: 0.01
 
@@ -128,7 +128,7 @@ MRK-3:
   
   extra-flags:
     is_mc: true
-    NuR: false
+    NuR: true
     rep: 1024
     drop_out: 0.01
 
@@ -162,7 +162,7 @@ MRK-4:
   
   extra-flags:
     is_mc: true
-    NuR: false
+    NuR: true
     rep: 1024
     drop_out: 0.01
 
@@ -196,7 +196,7 @@ MRK-5:
   
   extra-flags:
     is_mc: true
-    NuR: false
+    NuR: true
     rep: 1024
     drop_out: 0.01
 
@@ -229,7 +229,7 @@ MRK-6:
   
   extra-flags:
     is_mc: true
-    NuR: false
+    NuR: true
     rep: 1024
     drop_out: 0.01
 
@@ -264,7 +264,7 @@ MRK-7:
   
   extra-flags:
     is_mc: true
-    NuR: false
+    NuR: true
     rep: 1024
     drop_out: 0.01
 

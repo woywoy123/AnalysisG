@@ -114,7 +114,7 @@ void dataloader::dump_dataset(std::string path){
     delete io_g; 
 }
 
-void dataloader::restore_dataset(std::string path){
+bool dataloader::restore_dataset(std::string path){
     io* io_g = new io(); 
     io_g -> start(path, "read"); 
     std::vector<folds_t> data = {}; 
@@ -137,7 +137,7 @@ void dataloader::restore_dataset(std::string path){
         else {bin = this -> k_fold_validation[kf -> k];}
         bin -> push_back(kf -> index); 
     }
-    if (!data.size()){return;}
+    if (!data.size()){return false;}
 
     this -> success("Restored training dataset (" + this -> to_string(this -> train_set -> size()) + ")"); 
     std::map<int, std::vector<int>*>::iterator itr = this -> k_fold_training.begin(); 
@@ -148,6 +148,7 @@ void dataloader::restore_dataset(std::string path){
         this -> success("-> train: " + this -> to_string(this -> k_fold_training[k] -> size()) + ")"); 
         this -> success("-> validation: " + this -> to_string(this -> k_fold_validation[k] -> size()) + ")"); 
     }
+    return true;
 }
 
 void dataloader::generate_test_set(float percentage){
