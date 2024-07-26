@@ -101,7 +101,6 @@ try: ana.Targets = base["plot_targets"]
 except: pass
 
 models = [i for i in data if i != "base"]
-
 for m in models:
     model_impl = None
     model = data[m]["model"]
@@ -133,7 +132,7 @@ for m in models:
     for k in flgs: setattr(model_impl, k, flgs[k])
 
     params = {}
-    try: params = base["optimizer"]
+    try: params = data[m]["optimizer"]
     except: pass
 
     optim = None

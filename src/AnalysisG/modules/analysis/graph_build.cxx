@@ -31,12 +31,19 @@ void analysis::build_graphs(){
 }
 
 void analysis::build_dataloader(bool training){
-    this -> tracer -> populate_dataloader(this -> loader); 
+    if (!this -> loader -> data_set -> size()){
+        this -> tracer -> populate_dataloader(this -> loader); 
+    }
     if (!training){return;}
 
     std::string path_data = this -> m_settings.training_dataset; 
-    if (path_data.size()){this -> loader -> restore_dataset(path_data);}
-    this -> loader -> generate_test_set(this -> m_settings.train_size);
-    this -> loader -> generate_kfold_set(this -> m_settings.kfolds); 
-    if (path_data.size()){this -> loader -> dump_dataset(path_data);} 
+    if (path_data.size() && !this -> loader -> restore_dataset(path_data)){
+        this -> loader -> generate_test_set(this -> m_settings.train_size);
+        this -> loader -> generate_kfold_set(this -> m_settings.kfolds); 
+        this -> loader -> dump_dataset(path_data);
+    }
+    if (!path_data.size()){
+        this -> loader -> generate_test_set(this -> m_settings.train_size);
+        this -> loader -> generate_kfold_set(this -> m_settings.kfolds); 
+    }
 }

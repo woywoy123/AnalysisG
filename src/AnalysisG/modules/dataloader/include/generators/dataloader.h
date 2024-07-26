@@ -13,6 +13,8 @@
 #include <random>
 #include <algorithm>
 
+class analysis; 
+
 class dataloader: 
     public notification, 
     public tools
@@ -37,6 +39,8 @@ class dataloader:
         void start_cuda_server(); 
 
     private:
+        friend class analysis;
+
         void cuda_memory_server(); 
         void clean_data_elements(
                 std::map<std::string, int>** data_map, 

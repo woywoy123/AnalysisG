@@ -115,6 +115,7 @@ void dataloader::dump_dataset(std::string path){
 }
 
 bool dataloader::restore_dataset(std::string path){
+    if (this -> k_fold_training.size()){return true;}
     io* io_g = new io(); 
     io_g -> start(path, "read"); 
     std::vector<folds_t> data = {}; 
@@ -124,7 +125,6 @@ bool dataloader::restore_dataset(std::string path){
 
     for (size_t x(0); x < data.size(); ++x){
         folds_t* kf = &data[x]; 
-
         if (kf -> is_eval){this -> test_set -> push_back(kf -> index);continue;}
         if (kf -> k == 0){this -> train_set -> push_back(kf -> index);}
         if (!this -> k_fold_training.count(kf -> k)){
@@ -216,7 +216,7 @@ std::vector<graph_t*>* dataloader::get_k_train_set(int k){
         this -> warning("Specified an invalid k-fold index."); 
         return nullptr;
     }
-
+    
     std::vector<int>* kdata = this -> k_fold_training[k]; 
     this -> shuffle(kdata); 
     std::vector<graph_t*>* output = new std::vector<graph_t*>();
@@ -232,7 +232,7 @@ std::vector<graph_t*>* dataloader::get_k_train_set(int k){
 
 
 std::vector<graph_t*>* dataloader::get_k_validation_set(int k){
-    if (this -> gr_k_fold_validation.count(k-1)){return this -> gr_k_fold_validation[k-1];}
+    if (this -> gr_k_fold_validation.count(k)){return this -> gr_k_fold_validation[k];}
 
     std::vector<int>* kdata = this -> k_fold_validation[k]; 
     this -> shuffle(kdata); 
@@ -243,7 +243,7 @@ std::vector<graph_t*>* dataloader::get_k_validation_set(int k){
         gr -> in_use = 1; 
     }
     output -> shrink_to_fit(); 
-    this -> gr_k_fold_validation[k-1] = output; 
+    this -> gr_k_fold_validation[k] = output; 
     return output; 
 }
 

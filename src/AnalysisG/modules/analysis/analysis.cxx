@@ -67,6 +67,7 @@ void analysis::start(){
     }
 
     if (this -> model_sessions.size()){
+        this -> build_dataloader(true); 
         this -> build_project(); 
         this -> build_model_session();  
     }

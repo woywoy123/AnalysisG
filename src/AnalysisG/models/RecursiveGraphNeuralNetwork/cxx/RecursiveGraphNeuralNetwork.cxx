@@ -16,25 +16,25 @@ recursivegraphneuralnetwork::recursivegraphneuralnetwork(int rep, double drop_ou
             {"rnn_dx_dr1", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
 
             {"rnn_dx_r1", torch::nn::SiLU()},
-            {"rnn_dx_l2", torch::nn::Linear(this -> _rep*2, this -> _rep)},
-            {"rnn_dx_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _rep}))}, 
+            {"rnn_dx_l2", torch::nn::Linear(this -> _rep*2, this -> _rep*2)},
+            {"rnn_dx_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _rep*2}))}, 
             {"rnn_dx_dr2", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
 
             {"rnn_dx_s2", torch::nn::Sigmoid()},
             {"rnn_dx_r2", torch::nn::SiLU()},
-            {"rnn_dx_l3", torch::nn::Linear(this -> _rep, this -> _rep)}, 
+            {"rnn_dx_l3", torch::nn::Linear(this -> _rep*2, this -> _rep)}, 
     }); 
 
     this -> rnn_x = new torch::nn::Sequential({
-            {"rnn_x_l1", torch::nn::Linear(this -> _x + this -> _rep, this -> _rep)},
-            {"rnn_x_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _rep}))}, 
+            {"rnn_x_l1", torch::nn::Linear(this -> _x + this -> _rep, this -> _rep*2)},
+            {"rnn_x_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _rep*2}))}, 
             {"rnn_x_dr1", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
 
-            {"rnn_x_l2", torch::nn::Linear(this -> _rep, this -> _rep)},
-            {"rnn_x_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _rep}))}, 
+            {"rnn_x_l2", torch::nn::Linear(this -> _rep*2, this -> _rep*2)},
+            {"rnn_x_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _rep*2}))}, 
             {"rnn_x_dr2", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
 
-            {"rnn_x_l3", torch::nn::Linear(this -> _rep, this -> _rep)}
+            {"rnn_x_l3", torch::nn::Linear(this -> _rep*2, this -> _rep)}
     }); 
 
     this -> rnn_merge = new torch::nn::Sequential({
@@ -43,55 +43,62 @@ recursivegraphneuralnetwork::recursivegraphneuralnetwork(int rep, double drop_ou
             {"rnn_mrg_dr1", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
 
             {"rnn_mrg_r1", torch::nn::SiLU()},
-            {"rnn_mrg_l2", torch::nn::Linear(this -> _rep*3, this -> _rep*2)},
-            {"rnn_mrg_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _rep*2}))}, 
+            {"rnn_mrg_l2", torch::nn::Linear(this -> _rep*3, this -> _rep)},
+            {"rnn_mrg_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _rep}))}, 
             {"rnn_mrg_dr2", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
-
-            {"rnn_mrg_r2", torch::nn::SiLU()},
-            {"rnn_mrg_l3", torch::nn::Linear(this -> _rep*2, this -> _rep)}
+            {"rnn_mrg_l3", torch::nn::Linear(this -> _rep, this -> _rep)}
     }); 
 
     this -> rnn_update = new torch::nn::Sequential({
-            {"rnn_up_l1", torch::nn::Linear(this -> _output*2 + this -> _rep*2, this -> _rep*2)},
-            {"rnn_up_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _rep*2}))}, 
+            {"rnn_up_l1" , torch::nn::Linear(this -> _output*2 + this -> _rep*2, this -> _rep*2)},
+            {"rnn_up_n1" , torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _rep*2}))}, 
             {"rnn_up_dr1", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
 
-            {"rnn_up_r1", torch::nn::SiLU()},
-            {"rnn_up_l2", torch::nn::Linear(this -> _rep*2, this -> _rep)},
-            {"rnn_up_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _rep}))}, 
+            {"rnn_up_r1" , torch::nn::SiLU()},
+            {"rnn_up_l2" , torch::nn::Linear(this -> _rep*2, this -> _rep*2)},
+            {"rnn_up_n2" , torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _rep*2}))}, 
             {"rnn_up_dr2", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
 
-            {"rnn_up_r2", torch::nn::SiLU()},
-            {"rnn_up_l3", torch::nn::Linear(this -> _rep, this -> _output)}
+            {"rnn_up_l3" , torch::nn::Linear(this -> _rep*2, this -> _output)}
     }); 
 
     this -> exotic_mlp = new torch::nn::Sequential({
-            {"exotic_l1", torch::nn::Linear(this -> _x + this -> _output, this -> _rep)}, 
-            {"exotic_sl1", torch::nn::SiLU()},
-            {"exotic_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _rep}))},
+            {"exotic_l1" , torch::nn::Linear(this -> _x + this -> _output, this -> _rep*2)}, 
+            {"exotic_n1" , torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _rep*2}))},
             {"exotic_dr1", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
-            {"exotic_l2", torch::nn::Linear(this -> _rep, this -> _output)}
+            {"exotic_sl1", torch::nn::SiLU()},
+            {"exotic_l2" , torch::nn::Linear(this -> _rep*2, this -> _output)}
     });
 
     this -> node_aggr_mlp = new torch::nn::Sequential({
-            {"node_aggr_l1", torch::nn::Linear(this -> _x, this -> _x)}, 
-            {"node_aggr_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _x}))},
+            {"node_aggr_l1" , torch::nn::Linear(this -> _x, this -> _rep)}, 
+            {"node_aggr_n1" , torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _rep}))},
             {"node_aggr_dr1", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
-            {"node_aggr_l2", torch::nn::Linear(this -> _x, this -> _x)}
+            {"node_aggr_l2" , torch::nn::Linear(this -> _rep, this -> _x)}
     }); 
 
     this -> ntops_mlp = new torch::nn::Sequential({
-            {"ntops_l1", torch::nn::Linear(this -> _x + 2, this -> _x+2)}, 
-            {"ntops_s1", torch::nn::Sigmoid()},
-            {"ntops_r1", torch::nn::ReLU()},
-            {"ntops_l2", torch::nn::Linear(this -> _x + 2, this -> _x)}
+            {"ntops_l1" , torch::nn::Linear(this -> _x + 2, this -> _rep)}, 
+            {"ntops_n1" , torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _rep}))},
+            {"ntops_sl1", torch::nn::SiLU()},
+
+            {"ntops_dr2", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
+            {"ntops_l2" , torch::nn::Linear(this -> _rep, this -> _rep)}, 
+            {"ntops_r2", torch::nn::ReLU()},
+
+            {"ntops_l3" , torch::nn::Linear(this -> _rep, this -> _x)}
     }); 
 
     this -> exo_mlp = new torch::nn::Sequential({
-            {"exo_l1", torch::nn::Linear(this -> _x + this -> _output , this -> _x)}, 
-            {"exo_s1", torch::nn::Sigmoid()},
-            {"exo_r1", torch::nn::ReLU()},
-            {"exo_l2", torch::nn::Linear(this -> _x, this -> _output)}
+            {"exo_l1", torch::nn::Linear(this -> _x + this -> _output, this -> _x + this -> _output)}, 
+            {"exo_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _output + this -> _x}))},
+            {"exo_sl1", torch::nn::SiLU()},
+
+            {"exo_dr2", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
+            {"exo_l2" , torch::nn::Linear(this -> _output + this -> _x, this -> _output + this -> _x)}, 
+            {"exo_r2", torch::nn::ReLU()},
+
+            {"exo_l3", torch::nn::Linear(this -> _x + this -> _output, this -> _output)}
     }); 
 
     this -> register_module(this -> rnn_x,         mlp_init::xavier_uniform); 

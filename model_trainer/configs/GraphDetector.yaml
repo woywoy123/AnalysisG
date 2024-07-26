@@ -3,7 +3,7 @@ base:
   event: BSM4Tops
   project-name: GraphDetector
   output-path: ./
-  sample-path: /pscratch/sd/<usr>/mc16-dilepton/
+  sample-path: /scratch/<...>/mc16-dilepton/
   campaign: mc16
   tree: nominal
   training-set: ./dataset.h5
