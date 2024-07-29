@@ -157,9 +157,8 @@ void particle_template::get_hash(std::string* val, particle_template* prt){
     p -> hash += prt -> to_string(prt -> py); 
     p -> hash += prt -> to_string(prt -> pz);
     p -> hash += prt -> to_string(prt -> e); 
-    p -> hash  = prt -> tools::hash(p -> hash, 8); 
+    p -> hash  = prt -> tools::hash(p -> hash); 
     *val = p -> hash; 
-    p -> hash = ""; 
 }
 
 void particle_template::set_type(std::string* val, particle_template* prt){

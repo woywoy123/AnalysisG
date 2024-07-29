@@ -2,7 +2,7 @@
 # cython: language_level=3
 
 from AnalysisG.core.graph_template cimport GraphTemplate
-from AnalysisG.graphs.graph_bsm_4tops cimport *
+from AnalysisG.graphs.bsm_4tops.graph_bsm_4tops cimport *
 
 cdef class GraphTops(GraphTemplate):
 

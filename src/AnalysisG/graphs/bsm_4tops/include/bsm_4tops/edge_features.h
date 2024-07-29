@@ -69,6 +69,9 @@ void static top_edge(int* o, std::tuple<particle_template*, particle_template*>*
     *o = 0;  
     for (size_t x(0); x < o1_.size(); ++x){
         for (size_t y(0); y < o2_.size(); ++y){
+            if (o1_[x] < 0){continue;}
+            if (o2_[x] < 0){continue;}
+
             if (o1_[x] != o2_[y]){continue;}
             *o = 1; return; 
         }

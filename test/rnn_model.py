@@ -60,7 +60,7 @@ for k in params:
     }
     m2.i_node  = ["pt", "eta", "phi", "energy"]
     m2.i_graph = ["met", "phi"]
-    m2.device  = "cuda:1"
+    m2.device  = "cuda:0"
     m2.rep = 1024
     m2.NuR = False
 
@@ -78,6 +78,7 @@ for i in range(len(optims)): ana.AddModel(trains[i], optims[i], params[0][0] + "
 
 ana.kFolds = 1
 ana.Epochs = 100
+ana.TrainingDataset = "./sample.h5"
 ana.Targets = ["res_edge", "top_edge"]
 ana.kFold = [1]
 ana.MaxRange = 1500

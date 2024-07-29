@@ -344,7 +344,6 @@ jetparton::jetparton(){
     this -> add_leaf("JetIndex"     , "_JetIndex"); 
     this -> add_leaf("TopChildIndex", "_ChildIndex"); 
 
-
     this -> apply_type_prefix(); 
 }
 

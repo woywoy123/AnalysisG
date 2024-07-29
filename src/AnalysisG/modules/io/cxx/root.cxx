@@ -136,48 +136,70 @@ void data_t::string_type(){
     abort(); 
 }
 
-void data_t::element(std::vector<std::vector<float>>* el){
-    (*el) = this -> r_vvf -> at(this -> index);
+bool data_t::element(std::vector<std::vector<float>>* el){
+    if (!this -> r_vvf){return false;}
+    (*el) = (*this -> r_vvf)[this -> index]; 
+    return true; 
 }
 
-void data_t::element(std::vector<std::vector<long>>* el){
-    (*el) = this -> r_vvl -> at(this -> index);
+bool data_t::element(std::vector<std::vector<long>>* el){
+    if (!this -> r_vvl){return false;}
+    (*el) = (*this -> r_vvl)[this -> index];
+    return true; 
 }
 
-void data_t::element(std::vector<std::vector<int>>* el){
-    (*el) = this -> r_vvi -> at(this -> index);
+bool data_t::element(std::vector<std::vector<int>>* el){
+    if (!this -> r_vvi){return false;} 
+    (*el) = (*this -> r_vvi)[this -> index];
+    return true; 
 }
 
-void data_t::element(std::vector<float>* el){
-    (*el) = this -> r_vf -> at(this -> index); 
+bool data_t::element(std::vector<float>* el){
+    if (!this -> r_vf){return false;}
+    (*el) = (*this -> r_vf)[this -> index]; 
+    return true; 
 }
 
-void data_t::element(std::vector<int>* el){
-    (*el) = this -> r_vi -> at(this -> index); 
+bool data_t::element(std::vector<int>* el){
+    if (!this -> r_vi){return false;}
+    (*el) = (*this -> r_vi)[this -> index]; 
+    return true; 
 }
 
-void data_t::element(std::vector<long>* el){
-    (*el) = this -> r_vl -> at(this -> index); 
+bool data_t::element(std::vector<long>* el){
+    if (!this -> r_vl){return false;}
+    (*el) = (*this -> r_vl)[this -> index]; 
+    return true; 
 }
 
-void data_t::element(std::vector<char>* el){
-    (*el) = this -> r_vc -> at(this -> index); 
+bool data_t::element(std::vector<char>* el){
+    if (!this -> r_vc){return false;}
+    (*el) = (*this -> r_vc)[this -> index]; 
+    return true; 
 }
 
-void data_t::element(float* el){
-    (*el) = this -> r_f -> at(this -> index);
+bool data_t::element(float* el){
+    if (!this -> r_f){return false;}
+    (*el) = (*this -> r_f)[this -> index];
+    return true; 
 }
 
-void data_t::element(int* el){
-    (*el) = this -> r_i -> at(this -> index);
+bool data_t::element(int* el){
+    if (!this -> r_i){return false;}
+    (*el) = (*this -> r_i)[this -> index];
+    return true; 
 }
 
-void data_t::element(long* el){
-    (*el) = this -> r_l -> at(this -> index);
+bool data_t::element(long* el){
+    if (!this -> r_l){return false;}
+    (*el) = (*this -> r_l)[this -> index];
+    return true; 
 }
 
-void data_t::element(unsigned long long* el){
-    (*el) = this -> r_ull -> at(this -> index);
+bool data_t::element(unsigned long long* el){
+    if (!this -> r_ull){return false;}
+    (*el) = (*this -> r_ull)[this -> index];
+    return true; 
 }
 
 

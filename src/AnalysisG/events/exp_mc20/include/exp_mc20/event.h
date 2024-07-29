@@ -1,55 +1,42 @@
-#ifndef EVENTS_SSML_MC20_H
-#define EVENTS_SSML_MC20_H
+#ifndef EVENTS_EXP_MC20_H
+#define EVENTS_EXP_MC20_H
 
-#include <ssml_mc20/particles.h>
+#include <exp_mc20/particles.h>
 #include <templates/event_template.h>
 
-class ssml_mc20: public event_template
+class exp_mc20: public event_template
 {
     public:
-        ssml_mc20(); 
-        ~ssml_mc20() override; 
-
-        unsigned long long eventNumber; 
-
-        float met;
-        float phi; 
-        float met_sum; 
-
-        int n_bj_65;
-        int n_bj_70; 
-        int n_bj_77; 
-        int n_bj_85; 
-        int n_bj_90; 
-
-        int n_els; 
-        int n_leps; 
-        int n_mus; 
-        int n_jets; 
+        exp_mc20(); 
+        ~exp_mc20() override; 
 
         std::vector<particle_template*> Tops; 
         std::vector<particle_template*> TruthChildren; 
-
+        std::vector<particle_template*> PhysicsTruth;
         std::vector<particle_template*> Jets; 
         std::vector<particle_template*> Leptons; 
+        std::vector<particle_template*> PhysicsDetector; 
         std::vector<particle_template*> Detector; 
+
+        unsigned long long event_number = 0; 
+        float met_sum = 0; 
+        float met = 0; 
+        float phi = 0; 
+        float mu = 0; 
 
         event_template* clone() override; 
         void build(element_t* el) override; 
-        void CompileEvent() override; 
-
+        void CompileEvent() override;  
+    
     private:
-        std::map<std::string, zprime*>   m_zprime; 
-        std::map<std::string, top*>      m_tops; 
+        std::map<std::string, top*> m_tops; 
+        std::map<std::string, child*> m_children; 
+        std::map<std::string, physics_detector*> m_physdet; 
+        std::map<std::string, physics_truth*> m_phystru; 
 
-        std::map<std::string, parton_w1*> m_parton1; 
-        std::map<std::string, parton_w2*> m_parton2; 
-        std::map<std::string, parton_b*>  m_bpartons; 
-        std::map<std::string, truthjet*>  m_truthjets; 
-
-        std::map<std::string, jet*>      m_jets; 
-        std::map<std::string, muon*>     m_muons; 
         std::map<std::string, electron*> m_electrons; 
+        std::map<std::string, muon*> m_muons; 
+        std::map<std::string, jet*> m_jets; 
 
         template <typename G>
         std::map<int, G*> sort_by_index(std::map<std::string, G*>* ipt){
@@ -64,8 +51,6 @@ class ssml_mc20: public event_template
             typename std::map<m, G*>::iterator ix = ipt -> begin();
             for (; ix != ipt -> end(); ++ix){vec -> push_back(ix -> second);}
         }
-
-
 
 }; 
 

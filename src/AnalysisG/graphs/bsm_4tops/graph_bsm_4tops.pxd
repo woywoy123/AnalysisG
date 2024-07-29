@@ -3,7 +3,7 @@
 
 from AnalysisG.core.graph_template cimport graph_template, GraphTemplate
 
-cdef extern from "bsm_4tops/graphs.h":
+cdef extern from "<bsm_4tops/graphs.h>":
     cdef cppclass graph_tops(graph_template):
         graph_tops() except+
 

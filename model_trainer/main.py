@@ -1,13 +1,13 @@
 from AnalysisG.generators.analysis import Analysis
+
 from AnalysisG.events.bsm_4tops.event_bsm_4tops import *
-from AnalysisG.graphs.graph_bsm_4tops import *
+from AnalysisG.events.ssml_mc20.event_ssml_mc20 import *
 
 from AnalysisG.models.RecursiveGraphNeuralNetwork import *
 from AnalysisG.core.lossfx import OptimizerConfig
 
 from AnalysisG.core.io import IO
 
-from runner.samples_mc16 import samples
 import argparse
 import yaml
 
@@ -27,19 +27,24 @@ mc = base["campaign"]
 
 graph_impl = None
 graph = base["graph"]
-if mc == "mc16" and graph == "GraphTops":          graph_impl = GraphTops()
-if mc == "mc16" and graph == "GraphChildren":      graph_impl = GraphChildren()
-if mc == "mc16" and graph == "GraphTruthJets":     graph_impl = GraphTruthJets()
-if mc == "mc16" and graph == "GraphTruthJetsNoNu": graph_impl = GraphTruthJetsNoNu()
-if mc == "mc16" and graph == "GraphJets":          graph_impl = GraphJets()
-if mc == "mc16" and graph == "GraphJetsNoNu":      graph_impl = GraphJetsNoNu()
-if mc == "mc16" and graph == "GraphDetectorLep":   graph_impl = GraphDetectorLep()
-if mc == "mc16" and graph == "GraphDetector":      graph_impl = GraphDetector()
+if mc == "mc16" and graph == "GraphTops":          graph_impl = AnalysisG.graphs.graph_bsm_4tops.GraphTops()
+if mc == "mc16" and graph == "GraphChildren":      graph_impl = AnalysisG.graphs.graph_bsm_4tops.GraphChildren()
+if mc == "mc16" and graph == "GraphTruthJets":     graph_impl = AnalysisG.graphs.graph_bsm_4tops.GraphTruthJets()
+if mc == "mc16" and graph == "GraphTruthJetsNoNu": graph_impl = AnalysisG.graphs.graph_bsm_4tops.GraphTruthJetsNoNu()
+if mc == "mc16" and graph == "GraphJets":          graph_impl = AnalysisG.graphs.graph_bsm_4tops.GraphJets()
+if mc == "mc16" and graph == "GraphJetsNoNu":      graph_impl = AnalysisG.graphs.graph_bsm_4tops.GraphJetsNoNu()
+if mc == "mc16" and graph == "GraphDetectorLep":   graph_impl = AnalysisG.graphs.graph_bsm_4tops.GraphDetectorLep()
+if mc == "mc16" and graph == "GraphDetector":      graph_impl = AnalysisG.graphs.graph_bsm_4tops.GraphDetector()
+if mc == "mc20" and graph == "GraphJets":          graph_impl = AnalysisG.graphs.graph_ssml_mc20.GraphJets()
+if mc == "mc20" and graph == "GraphJetsNoNu":      graph_impl = AnalysisG.graphs.graph_ssml_mc20.GraphJetsNoNu()
+if mc == "mc20" and graph == "GraphDetectorLep":   graph_impl = AnalysisG.graphs.graph_ssml_mc20.GraphDetectorLep()
+if mc == "mc20" and graph == "GraphDetector":      graph_impl = AnalysisG.graphs.graph_ssml_mc20.GraphDetector()
 if graph_impl is None: print("invalid graph implementation"); exit()
 
 event = base["event"]
 event_impl = None
 if mc == "mc16" and event == "BSM4Tops": event_impl = BSM4Tops()
+if mc == "mc20" and event == "SSMLMC":   event_impl = SSML_MC20()
 if event_impl is None: print("invalid event implementation"); exit()
 
 out_path  = base["output-path"]
@@ -52,7 +57,10 @@ ana.OutputPath = out_path
 
 files = {}
 kill = True
-sampl = samples(base["sample-path"], mc)
+sampl = None
+if mc == "mc16": sampl = runner.samples_mc16.samples(base["sample-path"], mc)
+if mc == "mc20": sampl = runner.samples_mc20.samples(base["sample-path"], mc)
+
 for i in base["samples"]:
     iox = IO()
     iox.Files = sampl.sample(i)

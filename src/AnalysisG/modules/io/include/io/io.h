@@ -76,19 +76,19 @@ struct data_t {
             return this -> next(el); 
         }
 
-        void element(std::vector<std::vector<float>>* el);
-        void element(std::vector<std::vector<long>>* el);
-        void element(std::vector<std::vector<int>>* el);
+        bool element(std::vector<std::vector<float>>* el);
+        bool element(std::vector<std::vector<long>>* el);
+        bool element(std::vector<std::vector<int>>* el);
 
-        void element(std::vector<float>* el); 
-        void element(std::vector<long>* el); 
-        void element(std::vector<int>* el); 
-        void element(std::vector<char>* el); 
+        bool element(std::vector<float>* el); 
+        bool element(std::vector<long>* el); 
+        bool element(std::vector<int>* el); 
+        bool element(std::vector<char>* el); 
 
-        void element(float* el);
-        void element(long* el);
-        void element(int* el); 
-        void element(unsigned long long* el); 
+        bool element(float* el);
+        bool element(long* el);
+        bool element(int* el); 
+        bool element(unsigned long long* el); 
 
     private:
         void flush_buffer(); 
@@ -139,8 +139,15 @@ struct element_t {
     template <typename g>
     bool get(std::string key, g* var){
         if (!this -> handle.count(key)){return false;}
-        this -> handle[key] -> element(var); 
-        return true; 
+        if (this -> handle[key] -> element(var)){return true;}
+        std::cout << "INVALID DATA TYPE GIVEN FOR: " + key << std::endl; 
+        std::map<std::string, data_t*>::iterator itr = this -> handle.begin(); 
+        for (; itr != this -> handle.end(); ++itr){
+            data_t* d = itr -> second; 
+            std::cout << "Leaf name: " << d -> leaf_name; 
+            std::cout << "|" << d -> leaf_type << std::endl;
+        }
+        abort(); 
     }
 
     std::map<std::string, data_t*> handle = {}; 

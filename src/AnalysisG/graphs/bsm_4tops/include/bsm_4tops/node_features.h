@@ -48,4 +48,6 @@ void static energy(double* o, particle_template* p){*o = p -> e;}
 void static is_lepton(int* o, particle_template* p){*o = (p -> is_lep && !p -> is_nu);}
 void static is_bquark(int* o, particle_template* p){*o = p -> is_b;}
 void static is_neutrino(int* o, particle_template* p){*o = p -> is_nu;}
+
+
 #endif

@@ -71,6 +71,7 @@ void bsm_4tops::CompileEvent(){
     std::map<int, jet*>::iterator ij; 
     for (ij = _Jets.begin(); ij != _Jets.end(); ++ij){
         jet* jt = ij -> second; 
+        jt -> pdgid = (jt -> btag_DL1r_85) ? 5 : 0; 
         for (int x : jt -> top_index){
             if (x == -1){continue;}
             jt -> Tops.push_back(_Tops[x]); 

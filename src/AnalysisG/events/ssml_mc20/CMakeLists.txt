@@ -7,6 +7,17 @@ target_compile_options(cparticle_ssml_mc20 PRIVATE -fPIC)
 target_include_directories(cparticle_ssml_mc20 PUBLIC include)
 target_include_directories(cparticle_ssml_mc20 PRIVATE include/ssml_mc20)
 
+# --------------- DEFINE THE EVENT ------------------ #
+set(HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/include/ssml_mc20/event.h)
+set(SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/cxx/event.cxx)
+add_library(cevent_ssml_mc20 STATIC ${SOURCE_FILES})
+target_link_libraries(cevent_ssml_mc20 LINK_PUBLIC cparticle_ssml_mc20 cevent)
+target_compile_options(cevent_ssml_mc20 PRIVATE -fPIC)
+target_include_directories(cevent_ssml_mc20 PUBLIC include)
+target_include_directories(cevent_ssml_mc20 PRIVATE include/ssml_mc20)
+
+
+# ---------- building ------- #
 add_custom_command(
 OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/particle_ssml_mc20.cpp
 DEPENDS 
@@ -20,21 +31,6 @@ COMMAND
     --output-file ${CMAKE_CURRENT_SOURCE_DIR}/particle_ssml_mc20.cpp
 )
 
-python_add_library(particle_ssml_mc20 MODULE ${CMAKE_CURRENT_SOURCE_DIR}/particle_ssml_mc20.cpp WITH_SOABI)
-target_link_libraries(particle_ssml_mc20 LINK_PUBLIC cparticle_ssml_mc20)
-install(FILES __init__.pxd          DESTINATION ${SKBUILD_PROJECT_NAME}/events)
-install(TARGETS particle_ssml_mc20  DESTINATION ${SKBUILD_PROJECT_NAME}/events)
-file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/particle_ssml_mc20.cpp)
-
-
-# --------------- DEFINE THE EVENT ------------------ #
-set(HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/include/ssml_mc20/event.h)
-set(SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/cxx/event.cxx)
-add_library(cevent_ssml_mc20 STATIC ${SOURCE_FILES})
-target_link_libraries(cevent_ssml_mc20 LINK_PUBLIC cparticle_ssml_mc20 cevent)
-target_compile_options(cevent_ssml_mc20 PRIVATE -fPIC)
-target_include_directories(cevent_ssml_mc20 PUBLIC include)
-target_include_directories(cevent_ssml_mc20 PRIVATE include/ssml_mc20)
 
 add_custom_command(
 OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/event_ssml_mc20.cpp
@@ -49,10 +45,19 @@ COMMAND
     --output-file ${CMAKE_CURRENT_SOURCE_DIR}/event_ssml_mc20.cpp
 )
 
+
+# -------------- linking ----------- #
+python_add_library(particle_ssml_mc20 MODULE ${CMAKE_CURRENT_SOURCE_DIR}/particle_ssml_mc20.cpp WITH_SOABI)
 python_add_library(event_ssml_mc20    MODULE ${CMAKE_CURRENT_SOURCE_DIR}/event_ssml_mc20.cpp WITH_SOABI)
-target_link_libraries(event_ssml_mc20 LINK_PUBLIC cevent_ssml_mc20)
-install(TARGETS event_ssml_mc20 DESTINATION ${SKBUILD_PROJECT_NAME}/events/ssml_mc20)
+
+target_link_libraries(particle_ssml_mc20 LINK_PUBLIC cparticle_ssml_mc20)
+target_link_libraries(event_ssml_mc20    LINK_PUBLIC cevent_ssml_mc20)
+
+install(TARGETS event_ssml_mc20     DESTINATION ${SKBUILD_PROJECT_NAME}/events/ssml_mc20)
+install(TARGETS particle_ssml_mc20  DESTINATION ${SKBUILD_PROJECT_NAME}/events/ssml_mc20)
+
 file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/event_ssml_mc20.cpp)
+file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/particle_ssml_mc20.cpp)
 
 file(INSTALL __init__.pxd DESTINATION . )
 file(INSTALL __init__.py  DESTINATION . )
