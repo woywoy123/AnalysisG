@@ -1,76 +1,82 @@
 import yaml
 import pathlib
 
+samples = [
+#    ("sm_tttt"        , -1),
+#    ("sm_ttt"         , -1),
+#    ("bsm_ttttH_400"  , -1),
+#    ("bsm_ttttH_500"  , -1),
+#    ("bsm_ttttH_600"  , -1),
+#    ("bsm_ttttH_700"  , -1),
+#    ("bsm_ttttH_800"  , -1),
+#    ("bsm_ttttH_900"  , -1),
+#    ("bsm_ttttH_1000" , -1),
+#    ("sm_ttbar"       , -1),
+#    ("sm_ttV"         , -1),
+#    ("sm_tt_Vll"      , -1),
+#    ("sm_Vll"         , -1),
+#    ("sm_llgammagamma", -1),
+#    ("sm_ttH"         , -1),
+#    ("sm_t"           , -1),
+#    ("sm_wh"          , -1),
+#    ("sm_VVll"        , -1),
+#    ("sm_llll"        , -1),
+    ("/home/tnom6927/Downloads/test/*", -1)
+]
+
 params = [
-    ("MRK-1", "adam", {"lr" : 1e-6}),
-    ("MRK-2", "adam", {"lr" : 1e-8}),
-    ("MRK-3", "adam", {"lr" : 1e-8, "amsgrad" : True}),
-    ("MRK-4", "sgd", {"lr" : 1e-6}),
-    ("MRK-5", "sgd", {"lr" : 1e-8}),
-    ("MRK-6", "sgd", {"lr" : 1e-6, "momentum" : 0.1}),
-    ("MRK-7", "sgd", {"lr" : 1e-6, "momentum" : 0.1, "dampening" : 0.01})
+    ("MRK-1", "adam", {"lr" : 1e-6}                                       , "cuda:0"),
+#    ("MRK-2", "adam", {"lr" : 1e-8}                                       , "cuda:0"),
+#    ("MRK-3", "adam", {"lr" : 1e-8, "amsgrad" : True}                     , "cuda:0"),
+#    ("MRK-4", "sgd",  {"lr" : 1e-6}                                       , "cuda:0"),
+#    ("MRK-5", "sgd",  {"lr" : 1e-8}                                       , "cuda:0"),
+#    ("MRK-6", "sgd",  {"lr" : 1e-8, "momentum" : 0.1}                     , "cuda:0"),
+#    ("MRK-7", "sgd",  {"lr" : 1e-8, "momentum" : 0.1, "dampening" : 0.1 } , "cuda:0"),
+#    ("MRK-8", "sgd",  {"lr" : 1e-8, "momentum" : 0.1, "dampening" : 0.01} , "cuda:0")
 ]
 
 graphs = [
-    ("GraphTruthJets", False),
-    ("GraphTruthJetNoNu", True),
-    ("GraphJets", False),
-    ("GraphDetector", True)
+    ("GraphTruthJets"    , "BSM4Tops", False),
+    ("GraphTruthJetsNoNu", "BSM4Tops", True),
+    ("GraphJets"         , "BSM4Tops", False),
+    ("GraphDetector"     , "BSM4Tops", True)
 ]
 
 kfolds = 10
-src = "./"
-sample_pth = ""
-result_path = "./gnn-results/"
-user_path = "$PWD"
-scripts = []
+sample_path = "/home/tnom6927/Downloads/test/*"
+
 for gr in graphs:
-    gr_name, reco = gr
-    for pr in params:
-        name, optim, parm = pr
-        pth = gr_name + "-" + name
-        pathlib.Path(result_path + pth).mkdir(parents = True, exist_ok = True)
-        for k in range(1, kfolds+1):
+    gr_name, ev_name, nur = gr
+    path = "gnn-results/" + gr_name
+    pathlib.Path(path).mkdir(parents = True, exist_ok = True)
+    for k in range(1, kfolds+1):
+        f = open("./configs/mc16/template-config.yaml", "rb")
+        data = yaml.load(f, Loader = yaml.CLoader)
+        f.close()
 
-            f = open(src + "config.yaml", "rb")
-            data = yaml.load(f, Loader = yaml.CLoader)
-            data["training"]["io"]["project-name"] = "rnn-" + gr_name
-            data["training"]["io"]["output-path"] = result_path
-            data["training"]["run-name"] = name
-            data["training"]["graph"] = gr_name
-            data["training"]["model"]["extra-flags"]["NuR"] = reco
-            data["training"]["sample-path"] = data["training"]["sample-path"].replace("<user>", sample_pth)
+        data["base"]["graph"] = gr_name
+        data["base"]["event"] = ev_name
+        data["base"]["project-name"] = gr_name
+        data["base"]["sample-path"] = sample_path
+        data["base"]["campaign"] = "mc16"
+        data["base"]["kfold"] = [k]
+        data["base"]["samples"] = {f : l for f, l in samples}
 
-            data["training"]["optimizer"]["Optimizer"] = optim
-            for p in parm: data["training"]["optimizer"][p] = parm[p]
-            data["training"]["train"]["kfold"] = [k]
-            f_ = open(result_path + pth + "/kfold-" + str(k) + ".yaml", "wb")
-            f_.write(yaml.dump(data).encode("utf-8"))
-            f_.close()
+        dumps = []
+        for pr in params:
+            name, optim, para, dev = pr
+            params_header = dict(data["<name>"])
+            params_dump = {name : params_header}
+            params_dump[name]["device"] = dev
+            params_dump[name]["optimizer"] = {"Optimizer" : optim}
+            params_dump[name]["optimizer"] |= para
+            params_dump[name]["extra-flags"]["NuR"] = nur
+            dumps.append(params_dump)
 
-            fx = open(src + "runner.sh", "rb")
-            scrpt = fx.read().decode("utf-8")
-            fx.close()
+        del data["<name>"]
+        for i in dumps: data |= i
+        s = yaml.dump(data).encode("utf-8")
+        f = open(path + "/config_k-" + str(k) + ".yaml", "wb")
+        f.write(s)
+        f.close()
 
-            scrpt = scrpt.replace("<path>", user_path)
-            scrpt = scrpt.replace("<res-path>", src)
-            scrpt = scrpt.replace("<config-file>", result_path + pth + "/kfold-" + str(k) + ".yaml")
-            scrpt = scrpt.replace("<src>", src)
-            f_ = open(result_path + pth + "/kfold-" + str(k) + "-runner.sh", "wb")
-            f_.write(scrpt.encode("utf-8"))
-            f_.close()
-
-            fx = open(src + "job_submit.sh", "rb")
-            jb = fx.read().decode("utf-8")
-            fx.close()
-
-            jb = jb.replace("<name-this>", gr_name + "-" + name + "-kf-" + str(k))
-            jb = jb.replace("<script-path>", result_path + pth + "/kfold-" + str(k) + "-runner.sh")
-            f_ = open(result_path + pth + "/kfold-" + str(k) + "-job_submit.sh", "wb")
-            f_.write(jb.encode("utf-8"))
-            f_.close()
-            scripts.append(result_path + pth + "/kfold-" + str(k) + "-job_submit.sh")
-
-sk = open("batch.sh", "wb")
-sk.write(("\n".join(["sbatch " + i for i in scripts]+[""])).encode("utf-8"))
-sk.close()

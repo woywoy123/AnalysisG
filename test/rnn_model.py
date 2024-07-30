@@ -2,7 +2,7 @@ import AnalysisG
 from AnalysisG.core.lossfx import OptimizerConfig
 from AnalysisG.generators.analysis import Analysis
 from AnalysisG.events.bsm_4tops.event_bsm_4tops import BSM4Tops
-from AnalysisG.graphs.graph_bsm_4tops import GraphTops, GraphChildren, GraphTruthJets, GraphTruthJetsNoNu
+from AnalysisG.graphs.graph_bsm_4tops import *
 from AnalysisG.models.RecursiveGraphNeuralNetwork import *
 
 root1 = "./samples/dilepton/*"
@@ -10,7 +10,7 @@ root1 = "./samples/dilepton/*"
 x = BSM4Tops()
 #tt = GraphChildren()
 #tt = GraphTruthJets()
-tt = GraphTruthJets()
+tt = GraphDetector()
 
 
 params = [

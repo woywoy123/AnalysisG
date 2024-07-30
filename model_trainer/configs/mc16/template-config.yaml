@@ -1,0 +1,51 @@
+base:
+  graph: 
+  event: 
+  project-name: 
+  output-path: ./
+  sample-path: 
+  campaign: 
+  tree: nominal
+  training-set: ./dataset.h5
+  training-size: 80
+  kfolds: 10
+  epochs: 200
+  kfold: 
+  continue-training: true
+  plot_targets: ["top_edge"]
+  evaluation: false
+  validation: true
+  training: true
+  samples: 
+
+<name>:
+  model: RecursiveGraphNeuralNetwork
+  device: 
+  o_edge:
+    top_edge: CrossEntropyLoss
+    res_edge: CrossEntropyLoss
+
+  o_graph:
+    signal: CrossEntropyLoss
+    ntops: CrossEntropyLoss
+
+  i_node:
+    - pt
+    - eta
+    - phi
+    - energy
+    - is_lep
+    - is_b 
+
+  i_graph: 
+    - met
+    - phi
+  
+  extra-flags:
+    is_mc: true
+    NuR: 
+    rep: 1024
+    drop_out: 0.01
+
+  optimizer:
+

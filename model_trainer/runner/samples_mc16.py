@@ -26,5 +26,5 @@ class samples:
         if name == "sm_wh":           data+=sm_wh()._data
         if name == "sm_VVll":         data+=sm_VVll()._data
         if name == "sm_llll":         data+=sm_llll()._data
-        if not len(data): data += [name]
+        if not len(data): return [name]
         return [self._path + "/" + data[i] for i in range(len(data))]

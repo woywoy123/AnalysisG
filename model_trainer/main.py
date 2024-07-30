@@ -12,6 +12,7 @@ from AnalysisG.core.io import IO
 from runner import samples_mc16, samples_mc20
 import argparse
 import yaml
+import time
 
 parse = argparse.ArgumentParser(description = "Configuration YAML file")
 parse.add_argument("--config", action = "store", dest = "config")
@@ -69,12 +70,17 @@ for i in base["samples"]:
     iox.Trees = base["tree"]
     if base["samples"][i] == -1: files[i] = iox.Files
     else: files[i] = iox.Files[:base["samples"][i]]
-    if len(iox) == 0: print("No Files found ... skipping"); continue
-    for x in files[i]:
-        ana.AddSamples(x, i)
-        ana.AddEvent(event_impl, i)
-        ana.AddGraph(graph_impl, i)
+    if len(iox) != 0: continue
+    print("No Files found ... skipping")
+    try: del files[i]
+    except: pass
+
+for x in files:
+    for f in files[x]: ana.AddSamples(f, x)
+    ana.AddEvent(event_impl, x)
+    ana.AddGraph(graph_impl, x)
     kill = False
+
 if kill: exit()
 
 try: ana.Threads = base["threads"]
@@ -119,36 +125,41 @@ for m in models:
     model_impl.device = data[m]["device"]
 
     try: model_impl.o_edge = data[m]["o_edge"]
-    except: pass
+    except KeyError: pass
 
     try: model_impl.o_node = data[m]["o_node"]
-    except: pass
+    except KeyError: pass
 
     try: model_impl.o_graph = data[m]["o_graph"]
-    except: pass
+    except KeyError: pass
 
     try: model_impl.i_edge = data[m]["i_edge"]
-    except: pass
+    except KeyError: pass
 
     try: model_impl.i_node = data[m]["i_node"]
     except: pass
 
     try: model_impl.i_graph = data[m]["i_graph"]
-    except: pass
+    except KeyError: pass
 
     flgs = {}
     try: flgs = data[m]["extra-flags"]
-    except: pass
+    except KeyError: pass
     for k in flgs: setattr(model_impl, k, flgs[k])
 
     params = {}
     try: params = data[m]["optimizer"]
-    except: pass
+    except KeyError: pass
+
+    print("------- Params --------")
+    print(yaml.dump(data[m]))
+    time.sleep(2)
 
     optim = None
     if len(params): optim = OptimizerConfig()
     for i in params: setattr(optim, i, params[i])
     if optim is not None: ana.AddModel(model_impl, optim, m)
+    data[m]["model"] = [optim, model_impl]
 
     try: chk_pth = data[m]["inference"]["checkpoint_path"]
     except: continue
