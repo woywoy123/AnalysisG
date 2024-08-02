@@ -1,6 +1,6 @@
-#include <notification.h>
 #include <stddef.h>
-#include <stdio.h>
+#include <thread>
+#include <notification.h>
 
 notification::notification(){}
 notification::~notification(){}
@@ -50,5 +50,29 @@ void notification::progressbar(float lProgress, std::string title){
     printf("\r %s | [%s%s] %.1f%%", title.c_str(), cFilled + lFilledStart, cEmpty  + lEmptyStart, lProgress * 100);
     fflush(stdout);
 }
+
+void notification::progressbar1(std::vector<size_t>* threads, size_t l, std::string title){
+    while (true){
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        float prgs = float(notification().sum(threads))/float(l); 
+        notification().progressbar(prgs, title); 
+        if (prgs > 0.995){break;}
+    } 
+    std::cout << "" << std::endl;
+} 
+
+void notification::progressbar2(std::vector<size_t>* threads, size_t* l, std::string* title){
+    while (true){
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        float prgs = float(notification().sum(threads))/float(*l); 
+        notification().progressbar(prgs, *title); 
+        if (prgs > 0.995){break;}
+    } 
+    std::cout << "" << std::endl;
+} 
+
+
+
+
 
 

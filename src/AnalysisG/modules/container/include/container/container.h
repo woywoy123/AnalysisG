@@ -31,8 +31,7 @@ struct entry_t {
             delete (*c)[x]; 
             (*c)[x] = nullptr; 
         }
-        c -> clear(); 
-        c -> shrink_to_fit(); 
+        std::vector<g*>().swap(*c); 
     }
 }; 
 
@@ -47,15 +46,17 @@ class container: public tools
         meta* get_meta_data(); 
 
         bool add_selection_template(selection_template*); 
-        bool add_event_template(event_template*, std::string label); 
+        bool add_event_template(event_template*, std::string label, long* alloc); 
         bool add_graph_template(graph_template*, std::string label); 
 
         void fill_selections(std::map<std::string, selection_template*>* inpt); 
         void get_events(std::vector<event_template*>*, std::string label); 
         void populate_dataloader(dataloader* dl);
         void compile(); 
+        long alloc = 0; 
         
     private:
+
         meta*       meta_data = nullptr; 
         std::string* filename = nullptr; 
         std::string* label    = nullptr; 

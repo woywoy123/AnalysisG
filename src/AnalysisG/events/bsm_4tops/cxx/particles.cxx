@@ -416,7 +416,7 @@ void electron::build(std::map<std::string, particle_template*>* prt, element_t* 
         p -> e      = _e[x]; 
         p -> charge = _charge[x]; 
         p -> index  = -1; 
-        p -> is_lep = true; 
+        p -> pdgid  = 11*_charge[x]; 
         (*prt)[std::string(p -> hash)] = p;
     }
 }
@@ -454,7 +454,7 @@ void muon::build(std::map<std::string, particle_template*>* prt, element_t* el){
         p -> e       = _e[x]; 
         p -> charge  = _charge[x]; 
         p -> index   = -1; 
-        p -> is_lep  = true; 
+        p -> pdgid   = 13*_charge[x]; 
         (*prt)[std::string(p -> hash)] = p;
     }
 }

@@ -5,13 +5,6 @@
 #include <vector>
 #include <map>
 
-struct particle_meta_t {
-    std::string children;
-    std::string parents; 
-    std::string lepdef; 
-    std::string nudef;
-}; 
-
 struct particle_t {
     double e = -0.000000000000001; 
     double mass = -1;  

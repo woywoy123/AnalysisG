@@ -37,5 +37,9 @@ cdef extern from "<generators/analysis.h>":
 
 cdef class Analysis:
     cdef list selections_
+    cdef list graphs_
+    cdef list events_
+    cdef list models_
+    cdef list optim_
     cdef analysis* ana
 

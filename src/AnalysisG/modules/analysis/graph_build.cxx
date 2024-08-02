@@ -7,8 +7,7 @@ void analysis::build_graphs(){
     itx = this -> graph_labels.begin(); 
     for (; itx != this -> graph_labels.end(); ++itx){
         std::string label = itx -> first; 
-        std::vector<event_template*>* events_ = nullptr; 
-        events_ = this -> tracer -> get_events(label); 
+        std::vector<event_template*>* events_ = this -> tracer -> get_events(label); 
         if (!events_ -> size()){
             this -> warning("No Events found for Graph (" + label + "). Skipping...");
             continue;
@@ -17,9 +16,8 @@ void analysis::build_graphs(){
         itx_ = itx -> second.begin(); 
         for (; itx_ != itx -> second.end(); ++itx_){
             graph_template* gr_t = itx_ -> second; 
-            long ls = events_ -> size(); 
-            for (size_t x(0); x < ls; ++x){
-                graph_template* gr_o = gr_t -> build(events_ -> at(x)); 
+            for (event_template* ev : *events_){
+                graph_template* gr_o = gr_t -> build(ev); 
                 bool rm = this -> tracer -> add_graph(gr_o, label);
                 if (!rm){continue;}
                 delete gr_o;

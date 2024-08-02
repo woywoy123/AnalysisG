@@ -25,20 +25,22 @@ meta* sampletracer::get_meta_data(std::string filename){
 }
 
 std::vector<event_template*>* sampletracer::get_events(std::string label){
+    long len = 0; 
     std::vector<event_template*>* out = new std::vector<event_template*>();
-    std::map<std::string, container*>::iterator itr;
+    std::map<std::string, container*>::iterator itr; 
     itr = this -> root_container -> begin(); 
-    for (; itr != this -> root_container -> end(); ++itr){
-        itr -> second -> get_events(out, label);
-    }
-    out -> shrink_to_fit();
+    for (; itr != this -> root_container -> end(); ++itr){len += itr -> second -> alloc;}
+    out -> reserve(len); 
+
+    itr = this -> root_container -> begin(); 
+    for (; itr != this -> root_container -> end(); ++itr){itr -> second -> get_events(out, label);}
     return out; 
 }
 
-bool sampletracer::add_event(event_template* ev, std::string label){
+bool sampletracer::add_event(event_template* ev, std::string label, long* len){
     std::string fname = ev -> filename; 
     container* con = (*this -> root_container)[fname]; 
-    return con -> add_event_template(ev, label); 
+    return con -> add_event_template(ev, label, len); 
 }
 
 bool sampletracer::add_graph(graph_template* gr, std::string label){
@@ -70,15 +72,11 @@ void sampletracer::compile_objects(){
 
 void sampletracer::populate_dataloader(dataloader* dl){
     std::map<std::string, container*>::iterator itr = this -> root_container -> begin(); 
-    for (; itr != this -> root_container -> end(); ++itr){
-        itr -> second -> populate_dataloader(dl);
-    }
+    for (; itr != this -> root_container -> end(); ++itr){itr -> second -> populate_dataloader(dl);}
 }
 
 void sampletracer::fill_selections(std::map<std::string, selection_template*>* inpt){
     std::map<std::string, container*>::iterator itr = this -> root_container -> begin(); 
-    for (; itr != this -> root_container -> end(); ++itr){
-        itr -> second -> fill_selections(inpt);
-    }
+    for (; itr != this -> root_container -> end(); ++itr){itr -> second -> fill_selections(inpt);}
 }
 

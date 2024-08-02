@@ -21,6 +21,10 @@ cdef class Analysis:
     def __cinit__(self):
         self.ana = new analysis()
         self.selections_ = []
+        self.graphs_     = []
+        self.events_     = []
+        self.models_     = []
+        self.optim_      = []
 
     def __init__(self):
         pass
@@ -33,9 +37,11 @@ cdef class Analysis:
 
     def AddEvent(self, EventTemplate ev, str label):
         self.ana.add_event_template(ev.ptr, enc(label))
+        self.events_.append(ev)
 
     def AddGraph(self, GraphTemplate ev, str label):
         self.ana.add_graph_template(ev.ptr, enc(label))
+        self.graphs_.append(ev)
 
     def AddSelection(self, SelectionTemplate selc):
         self.ana.add_selection_template(selc.ptr)
@@ -43,12 +49,14 @@ cdef class Analysis:
 
     def AddModel(self, ModelTemplate model, OptimizerConfig op, str run_name):
         self.ana.add_model(model.nn_ptr, op.params, enc(run_name))
-        del model
+        self.models_.append(model)
+        self.optim_.append(op)
 
     def AddModelInference(self, ModelTemplate model, str run_name = "run_name"):
         import ROOT
         ROOT.EnableImplicitMT()
         self.ana.add_model(model.nn_ptr, enc(run_name))
+        self.models_.append(model)
 
     def Start(self):
         def factory(title):
@@ -244,3 +252,10 @@ cdef class Analysis:
 
     @Threads.setter
     def Threads(self, int val): self.ana.m_settings.threads = val
+
+    @property
+    def GraphCache(self): return env(self.ana.m_settings.graph_cache)
+
+    @GraphCache.setter
+    def GraphCache(self, str val): self.ana.m_settings.graph_cache = enc(val)
+

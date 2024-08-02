@@ -6,18 +6,20 @@ void entry_t::init(){
     this -> m_graph     = new std::vector<graph_template*>(); 
     this -> m_selection = new std::vector<selection_template*>(); 
     this -> m_data      = new std::vector<graph_t*>(); 
+    
+    this -> m_event -> reserve(10); 
+    this -> m_graph -> reserve(10); 
+    this -> m_selection -> reserve(10); 
+    this -> m_data -> reserve(10); 
 }
 
 void entry_t::destroy(){
     this -> destroy(this -> m_event); 
     this -> destroy(this -> m_graph); 
     this -> destroy(this -> m_selection); 
-    this -> destroy(this -> m_data); 
-
     delete this -> m_event; 
-    delete this -> m_graph; 
     delete this -> m_selection; 
-    delete this -> hash; 
+    delete this -> m_graph;
 }
 
 bool entry_t::has_event(event_template* ev){
@@ -25,8 +27,8 @@ bool entry_t::has_event(event_template* ev){
     std::string name = ev -> name; 
      
     for (size_t x(0); x < this -> m_event -> size(); ++x){
-        std::string tr_ = this -> m_event -> at(x) -> tree; 
-        std::string name_ = this -> m_event -> at(x) -> name; 
+        std::string tr_   = (*this -> m_event)[x] -> tree; 
+        std::string name_ = (*this -> m_event)[x] -> name; 
         if (tr_ == tr && name_  == name){return true;}
     }
     this -> m_event -> push_back(ev); 
@@ -38,8 +40,8 @@ bool entry_t::has_graph(graph_template* gr){
     std::string name = gr -> name; 
      
     for (size_t x(0); x < this -> m_graph -> size(); ++x){
-        std::string tr_ = this -> m_graph -> at(x) -> tree; 
-        std::string name_ = this -> m_graph -> at(x) -> name; 
+        std::string tr_   = (*this -> m_graph)[x] -> tree; 
+        std::string name_ = (*this -> m_graph)[x] -> name; 
         if (tr_ == tr && name_  == name){return true;}
     }
     this -> m_graph -> push_back(gr); 

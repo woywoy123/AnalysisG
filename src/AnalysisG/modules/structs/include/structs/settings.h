@@ -21,6 +21,7 @@ struct settings_t {
     bool evaluation = true;
     bool continue_training = false;
     std::string training_dataset = ""; 
+    std::string graph_cache = ""; 
 
     // plotting
     std::string var_pt = "pt";

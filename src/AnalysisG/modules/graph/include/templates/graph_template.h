@@ -6,6 +6,7 @@
 
 #include <structs/property.h>
 #include <structs/event.h>
+#include <structs/folds.h>
 
 #include <tools/tensor_cast.h>
 #include <tools/tools.h>
@@ -74,6 +75,7 @@ struct graph_t {
     private:
         friend graph_template; 
         friend dataloader; 
+        bool is_owner = false; 
 
         torch::Tensor* edge_index = nullptr; 
         std::map<std::string, int>* data_map_graph = nullptr; 
@@ -102,6 +104,16 @@ struct graph_t {
 
         std::map<int, torch::Tensor*> dev_edge_index = {}; 
         std::map<int, bool> device_index = {}; 
+
+        void meta_serialize(std::map<std::string, int>* data, std::string* out); 
+        void meta_serialize(std::vector<torch::Tensor*>* data, std::string* out); 
+        void meta_serialize(torch::Tensor* data, std::string* out); 
+        void serialize(graph_hdf5* m_hdf5);
+
+        void meta_deserialize(std::map<std::string, int>* data, std::string* inpt); 
+        void meta_deserialize(std::vector<torch::Tensor*>* data, std::string* inpt); 
+        torch::Tensor* meta_deserialize(std::string* inpt); 
+        void deserialize(graph_hdf5* m_hdf5);
 
         void _purge_data(std::vector<torch::Tensor*>* data); 
         void _purge_data(std::map<int, std::vector<torch::Tensor*>*>* data); 

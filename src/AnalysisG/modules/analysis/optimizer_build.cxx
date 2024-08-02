@@ -6,7 +6,8 @@ void analysis::build_model_session(){
     if (!kfold.size()){for (int k(0); k < this -> m_settings.kfolds; ++k){kfold.push_back(k);}}
     else {for (int k(0); k < kfold.size(); ++k){kfold[k] = kfold[k]-1;}}
     this -> m_settings.kfold = kfold; 
-
+    int th_ = this -> m_settings.threads; 
+    
     for (size_t x(0); x < this -> model_sessions.size(); ++x){
         std::string name = this -> model_session_names[x]; 
 
@@ -19,7 +20,7 @@ void analysis::build_model_session(){
         para = &this -> model_sessions[x]; 
         
         this -> info("Transferring Graphs to device."); 
-        this -> loader -> datatransfer(std::get<0>(*para) -> m_option); 
+        this -> loader -> datatransfer(std::get<0>(*para) -> m_option, th_); 
         this -> success("Transfer Complete!"); 
 
         optim -> import_model_sessions(para); 

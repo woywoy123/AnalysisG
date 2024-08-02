@@ -65,14 +65,6 @@ void optimizer::check_model_sessions(int example_size, std::map<std::string, mod
 void optimizer::training_loop(int k, int epoch){
     std::vector<graph_t*>* smpl = this -> loader -> get_k_train_set(k); 
     model_template* model = this -> kfold_sessions[k]; 
-    model -> epoch = epoch+1; 
-    model -> kfold = k+1;
-
-    bool retrain = false; 
-    if (!this -> m_settings.continue_training){retrain = true;}
-    else if (model -> restore_state()){retrain = false;}
-    else {retrain = true;}
-    model -> evaluation_mode(!retrain); 
 
     int l = smpl -> size(); 
     model_report* mr = this -> reports[this -> m_settings.run_name + std::to_string(k)]; 
@@ -82,7 +74,7 @@ void optimizer::training_loop(int k, int epoch){
     for (int x(0); x < l; ++x){
         graph_t* gr = (*smpl)[x]; 
         gr -> in_use = 2; 
-        model -> forward(gr, retrain);
+        model -> forward(gr, true);
         this -> metric -> capture(mode_enum::training, k, epoch, l); 
         mr -> progress = float(x+1)/float(l); 
         gr -> in_use = 1; 
@@ -130,6 +122,13 @@ void optimizer::evaluation_loop(int k, int epoch){
 
 void optimizer::launch_model(int k){
     auto lamb = [this](int k, int ep){
+        model_template* model = this -> kfold_sessions[k]; 
+        model -> epoch = ep+1; 
+        model -> kfold = k+1;
+
+        if (!this -> m_settings.continue_training){}
+        else if (model -> restore_state()){return;}
+
         if (this -> m_settings.training){this -> training_loop(k, ep);}
         if (this -> m_settings.validation){this -> validation_loop(k, ep);}
         if (this -> m_settings.evaluation){this -> evaluation_loop(k, ep);}

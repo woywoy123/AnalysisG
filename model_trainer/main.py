@@ -89,6 +89,7 @@ except: pass
 try: ana.TrainSize = base["training-size"]
 except: pass
 
+ana.GraphCache = out_path + "/GraphCache/" + graph
 try: ana.TrainingDataset = base["training-set"]
 except: pass
 

@@ -39,6 +39,7 @@ void analysis::build_events(){
     std::map<std::string, long> len = this -> reader -> root_size(); 
     std::map<std::string, long>::iterator ity = len.begin(); 
     for (; ity != len.end(); ++ity){ls = (ls < ity -> second) ? ity -> second : ls;}
+    std::map<std::string, std::map<std::string, long>> root_entries = this -> reader -> tree_entries; 
 
     this -> info("Building Events from ROOT files"); 
     std::map<std::string, data_t*>* io_handle = this -> reader -> get_data(); 
@@ -54,7 +55,8 @@ void analysis::build_events(){
         if (detach){this -> reader -> meta_data[ev_ -> filename] = nullptr;}
         std::vector<std::string> tmp = this -> split(ev_ -> filename, "/"); 
         for (; tx != evnts.end(); ++tx){
-            if (!this -> tracer -> add_event(tx -> second, label)){continue;} 
+            long lx = root_entries[ev_ -> filename][tx -> first]; 
+            if (!this -> tracer -> add_event(tx -> second, label, &lx)){continue;} 
             delete tx -> second; 
         }
         this -> progressbar(float(index+1)/float(ls), tmp[tmp.size()-1]);

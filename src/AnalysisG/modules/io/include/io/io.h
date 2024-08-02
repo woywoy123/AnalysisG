@@ -14,7 +14,6 @@
 #include <meta/meta.h>
 #include <tools/tools.h>
 #include <structs/folds.h>
-#include <structs/particles.h>
 #include <notification/notification.h>
 
 enum class data_enum {vvf, vvl, vvi, vf, vl, vi, vc, f, l, i, ull}; 
@@ -162,22 +161,6 @@ class io:
         ~io(); 
        
         template <typename g>
-        void write(std::map<std::string, g>* inpt, std::string set_name){
-            int length = inpt -> size(); 
-           
-            H5::CompType pairs = this -> member(g()); 
-            H5::DataSet* dataset = this -> dataset(set_name, pairs, length); 
-            if (!dataset){return;}
-
-            typename std::vector<g> writer; 
-            typename std::map<std::string, g>::iterator itr = inpt -> begin();
-            for (; itr != inpt -> end(); ++itr){writer.push_back(itr -> second);} 
-            dataset -> write(writer.data(), pairs); 
-            hid_t id = this -> file -> getId(); 
-            H5Fflush(id, H5F_SCOPE_LOCAL); 
-        }; 
-
-        template <typename g>
         void write(std::vector<g>* inpt, std::string set_name){
             int length = inpt -> size(); 
 
@@ -193,7 +176,7 @@ class io:
         template <typename g>
         void write(g* inpt, std::string set_name){
             int length = 1; 
-            H5::CompType pairs = this -> member(g()); 
+            H5::CompType pairs = this -> member(*inpt); 
             H5::DataSet* dataset = this -> dataset(set_name, pairs, length); 
             if (!dataset){return;}
 
@@ -202,20 +185,6 @@ class io:
             H5Fflush(id, H5F_SCOPE_LOCAL); 
         }
 
-        template <typename g>
-        void read(std::map<std::string, g>* outpt, std::string set_name){
-            H5::CompType pairs = this -> member(g()); 
-            H5::DataSet* dataset = this -> dataset(set_name);  
-            if (!dataset){return;}
-            H5::DataSpace space_r = dataset -> getSpace();
-            hsize_t dim_r[1];
-            space_r.getSimpleExtentDims(dim_r); 
-            int length = dim_r[0];
-            g* ptr = (g*)malloc(length * sizeof(g));
-            dataset -> read(ptr, pairs); 
-            for (int i(0); i < length; ++i){(*outpt)[ptr[i].key()] = ptr[i];}
-            free(ptr);
-        }; 
 
         template <typename g>
         void read(std::vector<g>* outpt, std::string set_name){
@@ -240,13 +209,12 @@ class io:
             H5::DataSpace space_r = dataset -> getSpace();
             hsize_t dim_r[1];
             space_r.getSimpleExtentDims(dim_r); 
-            g* ptr = (g*)malloc(sizeof(g));
+            g* ptr = (g*)malloc(dim_r[0]*sizeof(g));
             dataset -> read(ptr, pairs); 
             *out = *ptr;
             free(ptr);
        };
 
-        void write(std::map<std::string, particle_t>* inpt, std::string set_name); 
         bool start(std::string filename, std::string read_write); 
         void end();
        
@@ -287,8 +255,8 @@ class io:
         std::map<std::string, std::map<std::string, std::map<std::string, std::vector<std::string>>>> keys;
 
     private:
-        H5::CompType member(particle_t t); 
         H5::CompType member(folds_t t); 
+        H5::CompType member(graph_hdf5_w t); 
 
         static herr_t file_info(hid_t loc_id, const char* name, const H5L_info_t* linfo, void *opdata); 
 

@@ -123,11 +123,7 @@ torch::Tensor recursivegraphneuralnetwork::neutrino(
         edge_index, batch, pmc*0.001, pid, met_xy*0.001, 172.62, 80.385, 0.0, 0.95, 0.95, 1e-8
     ); 
     torch::Tensor combi = nus["combi"].sum({-1}) > 0;
-    if (!combi.index({combi}).size({0})){
-        this -> _cache[*hash] = pmc; 
-        return pmc;
-    }
-
+    if (!combi.index({combi}).size({0})){this -> _cache[*hash]; return pmc;}
     torch::Tensor nu1 = nus["combi"].index({combi, 2}).to(torch::kInt); 
     torch::Tensor nu2 = nus["combi"].index({combi, 3}).to(torch::kInt); 
     pmc.index_put_({nu1}, nus["nu_1f"]*1000 + pmc.index({nu1})); 

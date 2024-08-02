@@ -3,7 +3,7 @@
 void metrics::generic_painter(
         std::vector<TGraph*> k_graphs,
         std::string path, std::string title, 
-        std::string xtitle, std::string ytitle
+        std::string xtitle, std::string ytitle, int epoch
 ){
     TCanvas* can = new TCanvas();
     gStyle -> SetOptStat(0); 
@@ -26,11 +26,13 @@ void metrics::generic_painter(
     mtg -> GetXaxis() -> CenterTitle(xtitle.c_str()); 
     mtg -> GetYaxis() -> SetTitle(ytitle.c_str()); 
     mtg -> GetYaxis() -> CenterTitle(ytitle.c_str()); 
+    mtg -> GetXaxis() -> SetRangeUser(0, epoch+1); 
     mtg -> SetMinimum(0.); 
+    if (this -> has_string(&ytitle, "%")){mtg -> SetMaximum(100.);}
     gPad -> Modified();
     
     can -> Modified(); 
-    //can -> BuildLegend(); 
+    can -> BuildLegend(0.85, 0.85, 0.995, 0.995); 
     can -> Update(); 
   
     this -> create_path(path); 
@@ -92,7 +94,7 @@ void metrics::dump_loss_plots(int k){
             std::string title = "MVA Loss of: " + var_name + " for k-fold: " + std::to_string(k_); 
             std::string ptx = this -> m_settings.output_path + "loss-graph/";
             ptx += var_name + "-kfold_" + std::to_string(k_) + ".png"; 
-            this -> generic_painter(gri -> second, ptx, title, "Epochs", "MVA Loss (Arb.)"); 
+            this -> generic_painter(gri -> second, ptx, title, "Epochs", "MVA Loss (Arb.)", ep); 
         }
 
         // nodes - features
@@ -108,7 +110,7 @@ void metrics::dump_loss_plots(int k){
             std::string title = "MVA Loss of: " + var_name + " for k-fold: " + std::to_string(k_); 
             std::string ptx = this -> m_settings.output_path + "loss-node/"; 
             ptx += var_name + "-kfold_" + std::to_string(k_) + ".png"; 
-            this -> generic_painter(gri -> second, ptx, title, "Epochs", "MVA Loss (Arb.)"); 
+            this -> generic_painter(gri -> second, ptx, title, "Epochs", "MVA Loss (Arb.)", ep); 
         }
 
         // edges - features
@@ -124,7 +126,7 @@ void metrics::dump_loss_plots(int k){
             std::string title = "MVA Loss of: " + var_name + " for k-fold: " + std::to_string(k_); 
             std::string ptx = this -> m_settings.output_path + "loss-edge/";
             ptx += var_name + "-kfold_" + std::to_string(k_) + ".png"; 
-            this -> generic_painter(gri -> second, ptx, title, "Epochs", "MVA Loss (Arb.)"); 
+            this -> generic_painter(gri -> second, ptx, title, "Epochs", "MVA Loss (Arb.)", ep); 
         }
     }
 }
@@ -247,7 +249,7 @@ void metrics::dump_accuracy_plots(int k){
             std::string var_name = gri -> first; 
             std::string title = "MVA Accuracy of: " + var_name + " for k-fold: " + std::to_string(k_); 
             std::string ptx = base_name + var_name + "-kfold_" + std::to_string(k_) + ".png"; 
-            this -> generic_painter(gri -> second, ptx, title, "Epochs", "MVA Accuracy (%)"); 
+            this -> generic_painter(gri -> second, ptx, title, "Epochs", "MVA Accuracy (%)", ep); 
         }
 
         // nodes - features
@@ -263,7 +265,7 @@ void metrics::dump_accuracy_plots(int k){
             std::string var_name = gri -> first; 
             std::string title = "MVA Accuracy of: " + var_name + " for k-fold: " + std::to_string(k_); 
             std::string ptx = base_name + var_name + "-kfold_" + std::to_string(k_) + ".png"; 
-            this -> generic_painter(gri -> second, ptx, title, "Epochs", "MVA Accuracy (%)"); 
+            this -> generic_painter(gri -> second, ptx, title, "Epochs", "MVA Accuracy (%)", ep); 
         }
 
         // edges - features
@@ -279,7 +281,7 @@ void metrics::dump_accuracy_plots(int k){
             std::string var_name = gri -> first; 
             std::string title = "MVA Accuracy of: " + var_name + " for k-fold: " + std::to_string(k_); 
             std::string ptx = base_name + var_name + "-kfold_" + std::to_string(k_) + ".png"; 
-            this -> generic_painter(gri -> second, ptx, title, "Epochs", "MVA Accuracy (%)"); 
+            this -> generic_painter(gri -> second, ptx, title, "Epochs", "MVA Accuracy (%)", ep); 
         }
     }
 }

@@ -113,7 +113,7 @@ class metrics:
         void generic_painter(
                 std::vector<TGraph*> k_graphs,
                 std::string path, std::string title, 
-                std::string xtitle, std::string ytitle
+                std::string xtitle, std::string ytitle, int epoch
         ); 
 
         std::map<std::string, std::vector<TGraph*>> build_graphs(

@@ -32,18 +32,26 @@ class tools
         std::vector<std::string> split(std::string in, int n);
         std::string hash(std::string input, int len = 18);
         std::string lower(std::string*); 
- 
-        // Template functions
+
+        bool is_base64(unsigned char c);  
+        std::string encode64(std::string* inpt); 
+        std::string encode64(unsigned char const*, unsigned int len); 
+
+        std::string decode64(std::string* inpt);
+        std::string decode64(std::string const& s); 
+
+        // template functions
         template <typename G>
         std::vector<std::vector<G>> discretize(std::vector<G>* v, int N){
             int n = v -> size(); 
             typename std::vector<std::vector<G>> out; 
+            out.reserve(int(v -> size()/N)); 
             for (int ib = 0; ib < n; ib += N){
                 int end = ib + N; 
                 if (end > n){ end = n; }
                 out.push_back(std::vector<G>(v -> begin() + ib, v -> begin() + end)); 
             }
-            return out; 
+            return std::move(out); 
         }
 
         template <typename g>
@@ -64,6 +72,30 @@ class tools
                 ix = inpt -> at(t); 
             }
             return ix; 
+        }
+
+        template <typename g>
+        g sum(std::vector<g>* inpt){
+            g ix = 0; 
+            for (int t(0); t < inpt -> size(); ++t){ix += (*inpt)[t];}
+            return ix; 
+        }
+
+        template <typename g>
+        std::vector<g*> put(std::vector<g*>* src, std::vector<int>* trg){
+            typename std::vector<g*> out(src -> size(), nullptr); 
+            for (size_t x(0); x < trg -> size(); ++x){out[x] = (*src)[(*trg)[x]];}
+            return std::move(out); 
+        }
+
+        template <typename g>
+        void put(std::vector<g*>* out, std::vector<g*>* src, std::vector<int>* trg){
+            typename std::vector<g*> tmp(trg -> size(), nullptr); 
+            for (size_t x(0); x < trg -> size(); ++x){
+                tmp[x] = (*src)[(*trg)[x]];
+                tmp[x] -> in_use = 1; 
+            }
+            out -> swap(tmp); 
         }
 }; 
 
