@@ -5,8 +5,8 @@ from AnalysisG.events.ssml_mc20.event_ssml_mc20 import SSML_MC20
 from AnalysisG.graphs.bsm_4tops import GraphTops, GraphChildren, GraphTruthJets, GraphTruthJetsNoNu, GraphJets, GraphJetsNoNu, GraphDetectorLep, GraphDetector
 from AnalysisG.models.RecursiveGraphNeuralNetwork import *
 
-#root1 = "./samples/dilepton/*"
-root1 = "/home/tnom6927/Downloads/sample"
+root1 = "./samples/dilepton/*"
+#root1 = "/home/tnom6927/Downloads/sample"
 
 x = BSM4Tops()
 #tt = GraphChildren()

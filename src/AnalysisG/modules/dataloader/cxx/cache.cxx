@@ -130,7 +130,6 @@ bool dataloader::restore_graphs(std::string path, int threads){
     size_t len_cache = 0; 
     std::vector<size_t> handles = {};
 
-    std::map<std::string, io*> handle_io;
     std::map<std::string, std::vector<std::string>> data_set; 
 
     std::vector<std::string> cache_io = {}; 
@@ -149,8 +148,8 @@ bool dataloader::restore_graphs(std::string path, int threads){
         data_set[fname] = ior -> dataset_names(); 
         len_cache += data_set[fname].size();
         handles.push_back(0); 
-
-        handle_io[fname] = ior; 
+        ior -> end(); 
+        delete ior; 
     }
     
     if (!len_cache){return false;}
@@ -166,7 +165,8 @@ bool dataloader::restore_graphs(std::string path, int threads){
         std::vector<std::string> lsx = this -> split(cache_io[x], "/"); 
         title = "Reading HDF5 -> " + lsx[lsx.size()-1]; 
         std::vector<std::string>* gr_ev = &data_set[cache_io[x]]; 
-        io* ior = handle_io[cache_io[x]]; 
+        io* ior = new io();
+        ior -> start(cache_io[x], "read");  
 
         std::vector<graph_hdf5>* gr_c = new std::vector<graph_hdf5>(gr_ev -> size(), graph_hdf5()); 
         std::vector<graph_t*>*   c_gr = new std::vector<graph_t*>(gr_ev -> size(), nullptr); 
@@ -202,6 +202,7 @@ bool dataloader::restore_graphs(std::string path, int threads){
         th_[x] = new std::thread(deserialize, c_gr, gr_c); 
         cache_rebuild[x] = c_gr; 
         data[x] = gr_c; 
+        ior -> end();
         delete ior; 
     }
 
