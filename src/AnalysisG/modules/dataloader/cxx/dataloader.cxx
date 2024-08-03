@@ -42,6 +42,10 @@ void dataloader::shuffle(std::vector<int>* idx){
     std::shuffle(idx -> begin(), idx -> end(), this -> rnd); 
 }
 
+void dataloader::shuffle(std::vector<graph_t*>* idx){
+    std::shuffle(idx -> begin(), idx -> end(), this -> rnd); 
+}
+
 void dataloader::clean_data_elements(
         std::map<std::string, int>** data_map, 
         std::vector<std::map<std::string, int>*>* loader_map

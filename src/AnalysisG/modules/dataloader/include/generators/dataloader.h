@@ -50,6 +50,7 @@ class dataloader:
         ); 
 
         void shuffle(std::vector<int>* idx); 
+        void shuffle(std::vector<graph_t*>* idx); 
 
         std::map<int, std::vector<int>*> k_fold_training = {}; 
         std::map<int, std::vector<int>*> k_fold_validation = {}; 

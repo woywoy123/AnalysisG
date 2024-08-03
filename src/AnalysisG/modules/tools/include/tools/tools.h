@@ -90,12 +90,12 @@ class tools
 
         template <typename g>
         void put(std::vector<g*>* out, std::vector<g*>* src, std::vector<int>* trg){
-            typename std::vector<g*> tmp(trg -> size(), nullptr); 
+            out -> clear(); 
             for (size_t x(0); x < trg -> size(); ++x){
-                tmp[x] = (*src)[(*trg)[x]];
-                tmp[x] -> in_use = 1; 
+                g* v = (*src)[(*trg)[x]];  
+                out -> push_back(v);
+                v -> in_use = 1; 
             }
-            out -> swap(tmp); 
         }
 }; 
 

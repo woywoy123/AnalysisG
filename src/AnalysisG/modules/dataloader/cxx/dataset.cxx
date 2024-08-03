@@ -42,7 +42,6 @@ void dataloader::generate_kfold_set(int k){
     }
 }
 
-
 void dataloader::generate_test_set(float percentage){
     if (this -> test_set -> size()){return;}
     this -> data_set    -> shrink_to_fit(); 
@@ -64,29 +63,31 @@ void dataloader::generate_test_set(float percentage){
 }
 
 std::vector<graph_t*>* dataloader::get_k_train_set(int k){
+    if (this -> gr_k_fold_training.count(k)){
+        this -> shuffle(this -> gr_k_fold_training[k]); 
+        return this -> gr_k_fold_training[k];
+    }
+
     if (!this -> k_fold_training.count(k)){
         this -> warning("Specified an invalid k-fold index."); 
         return nullptr;
     }
+
     std::vector<int>* kdata = this -> k_fold_training[k]; 
     this -> shuffle(kdata); 
-
-    if (this -> gr_k_fold_training.count(k)){}
-    else {this -> gr_k_fold_training[k] = new std::vector<graph_t*>();}
-
+    this -> gr_k_fold_training[k] = new std::vector<graph_t*>();
     this -> put(this -> gr_k_fold_training[k], this -> data_set, kdata); 
+    this -> gr_k_fold_training[k] -> shrink_to_fit(); 
     return this -> gr_k_fold_training[k]; 
 }
 
-
 std::vector<graph_t*>* dataloader::get_k_validation_set(int k){
+    if (this -> gr_k_fold_validation.count(k)){return this -> gr_k_fold_validation[k];}
     std::vector<int>* kdata = this -> k_fold_validation[k]; 
     this -> shuffle(kdata); 
-
-    if (this -> gr_k_fold_validation.count(k)){}
-    else {this -> gr_k_fold_validation[k] = new std::vector<graph_t*>();}
-
+    this -> gr_k_fold_validation[k] = new std::vector<graph_t*>();
     this -> put(this -> gr_k_fold_validation[k], this -> data_set, kdata); 
+    this -> gr_k_fold_validation[k] -> shrink_to_fit(); 
     return this -> gr_k_fold_validation[k]; 
 }
 
