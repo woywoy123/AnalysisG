@@ -1,7 +1,5 @@
 #include <templates/graph_template.h>
-#include <thread>
 #include <transform/cartesian-cuda.h>
-#include <physics/cartesian-cuda.h>
 #include <nusol/nusol-cuda.h>
 
 graph_template::graph_template(){

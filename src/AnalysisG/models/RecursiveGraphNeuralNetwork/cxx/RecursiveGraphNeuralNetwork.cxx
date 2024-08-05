@@ -149,8 +149,11 @@ torch::Tensor recursivegraphneuralnetwork::message(
 void recursivegraphneuralnetwork::forward(graph_t* data){
 
     // get the particle 4-vector and convert it to cartesian
-    torch::Tensor pt  = data -> get_data_node("pt", this) -> clone();
-    torch::Tensor pmc = data -> get_data_node("pmc", this) -> clone(); 
+    torch::Tensor pt     = data -> get_data_node("pt", this) -> clone();
+    torch::Tensor eta    = data -> get_data_node("eta", this) -> clone();
+    torch::Tensor phi    = data -> get_data_node("phi", this) -> clone();
+    torch::Tensor energy = data -> get_data_node("energy", this) -> clone();
+    torch::Tensor pmc    = transform::cuda::PxPyPzE(pt, eta, phi, energy); 
 
     // the event topology
     torch::Tensor edge_index = data -> get_edge_index(this) -> to(torch::kLong); 

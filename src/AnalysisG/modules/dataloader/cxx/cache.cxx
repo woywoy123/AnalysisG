@@ -99,6 +99,7 @@ void dataloader::dump_graphs(std::string path, int threads){
     int dx = 0; 
     std::map<std::string, std::vector< std::tuple<graph_hdf5_w, graph_hdf5>* >>::iterator itf; 
     for (itf = collect.begin(); itf != collect.end(); ++itf, ++dx){
+        
         io* wrt = new io(); 
         wrt -> start(itf -> first, "write"); 
 
