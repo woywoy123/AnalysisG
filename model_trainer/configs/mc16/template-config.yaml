@@ -43,7 +43,6 @@ base:
   
   extra-flags:
     is_mc: true
-    NuR: 
     rep: 1024
     drop_out: 0.01
 

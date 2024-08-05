@@ -40,7 +40,6 @@ for k in params:
     m1.i_graph = ["met", "phi"]
     m1.device  = "cuda:0"
     m1.rep = 1024
-    m1.NuR = False
 
     opti = OptimizerConfig()
     opti.Optimizer = k[1]
@@ -62,7 +61,6 @@ for k in params:
     m2.i_graph = ["met", "phi"]
     m2.device  = "cuda:0"
     m2.rep = 1024
-    m2.NuR = False
 
     optix = OptimizerConfig()
     optix.Optimizer = k[1]

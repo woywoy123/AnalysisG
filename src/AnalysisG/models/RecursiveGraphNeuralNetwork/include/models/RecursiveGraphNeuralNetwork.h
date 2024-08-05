@@ -16,15 +16,6 @@ class recursivegraphneuralnetwork: public model_template
             torch::Tensor hx_i, torch::Tensor hx_j
         ); 
 
-        torch::Tensor neutrino(
-                torch::Tensor edge_index, 
-                torch::Tensor pmc, 
-                torch::Tensor pid, 
-                torch::Tensor met_xy, 
-                torch::Tensor batch, 
-                std::string* hash
-        ); 
-
         // Neural Network Parameters
         int _dx     = 26; 
         int _x      = 5; 
@@ -34,7 +25,6 @@ class recursivegraphneuralnetwork: public model_template
         double drop_out = 0.1; 
 
         // Misc
-        bool NuR = false; 
         bool is_mc = true; 
 
         torch::nn::Sequential* rnn_x         = nullptr; 
@@ -46,7 +36,6 @@ class recursivegraphneuralnetwork: public model_template
         torch::nn::Sequential* ntops_mlp     = nullptr; 
         torch::nn::Sequential* exo_mlp       = nullptr; 
 
-        std::map<std::string, torch::Tensor> _cache = {}; 
 }; 
 
 #endif

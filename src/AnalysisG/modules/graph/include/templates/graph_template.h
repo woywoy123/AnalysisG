@@ -346,7 +346,15 @@ class graph_template: public tools
             }
             this -> add_edge_feature(edge_data, "D-" + name); 
         };
+
+
+        bool double_neutrino(
+                std::string target, 
+                double mass_top = 172.62, double mass_wboson = 80.385, 
+                double top_perc = 0.95, double w_perc = 0.95, double distance = 1e-8
+        ); 
 }; 
+ 
 
 
 #endif

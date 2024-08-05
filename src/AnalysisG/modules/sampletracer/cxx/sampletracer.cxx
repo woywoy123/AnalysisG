@@ -56,18 +56,23 @@ bool sampletracer::add_selection(selection_template* sel){
 }
 
 void sampletracer::compile_objects(){
-    auto lamb = [](container* data){data -> compile();}; 
+    auto lamb = [](size_t* l, container* data){data -> compile(l);}; 
 
     int index = 0; 
+    size_t len = 0; 
+    std::map<std::string, container*>::iterator itr; 
+    std::vector<size_t> handles(this -> root_container -> size(), 0); 
     std::vector<std::thread*> threads_(this -> root_container -> size(), nullptr); 
-    std::map<std::string, container*>::iterator itr = this -> root_container -> begin(); 
+
+    itr = this -> root_container -> begin(); 
+    for (; itr != this -> root_container -> end(); ++itr){len += itr -> second -> len();}
+    itr = this -> root_container -> begin(); 
     for (; itr != this -> root_container -> end(); ++itr, ++index){
-        threads_[index] = new std::thread(lamb, itr -> second); 
+        threads_[index] = new std::thread(lamb, &handles[index], itr -> second); 
     }
-    for (int x(0); x < index; ++x){
-        threads_[x] -> join();
-        delete threads_[x]; 
-    }  
+    std::thread* thr = new std::thread(this -> progressbar1, &handles, len, "Compiling Containers");
+    for (int x(0); x < index; ++x){threads_[x] -> join(); delete threads_[x];}
+    thr -> join(); delete thr;   
 }
 
 void sampletracer::populate_dataloader(dataloader* dl){

@@ -1,4 +1,6 @@
 #include <templates/graph_template.h>
+#include <transform/cartesian-cuda.h>
+#include <nusol/nusol-cuda.h>
 
 graph_template::graph_template(){
     this -> op = new torch::TensorOptions(torch::kCPU);
@@ -75,6 +77,56 @@ void graph_template::define_topology(std::function<bool(particle_template*, part
     torch::Tensor t1 = this -> to_tensor(src_, torch::kInt, int()).view({1, -1}); 
     torch::Tensor t2 = this -> to_tensor(dst_, torch::kInt, int()).view({1, -1}); 
     this -> m_topology = torch::cat({t1, t2}, 0); 
+}
+
+bool graph_template::double_neutrino(
+        std::string target, 
+        double mass_top, double mass_wboson, 
+        double top_perc, double w_perc, double distance 
+){
+    if (!this -> node_fx.count("D-pt")){return false;}
+    if (!this -> node_fx.count("D-eta")){return false;}
+    if (!this -> node_fx.count("D-phi")){return false;}
+    if (!this -> node_fx.count("D-energy")){return false;}
+    if (!this -> node_fx.count("D-is_lep")){return false;}
+    if (!this -> node_fx.count("D-is_b")){return false;}
+    if (!this -> graph_fx.count("D-met")){return false;}
+    if (!this -> graph_fx.count("D-phi")){return false;}
+
+    torch::Tensor edge_index = this -> m_topology.to(torch::kLong).to(c10::kCUDA); 
+    torch::Tensor pt         = this -> node_fx["D-pt"].to(c10::kCUDA);
+    torch::Tensor eta        = this -> node_fx["D-eta"].to(c10::kCUDA);
+    torch::Tensor phi        = this -> node_fx["D-phi"].to(c10::kCUDA); 
+    torch::Tensor energy     = this -> node_fx["D-energy"].to(c10::kCUDA);
+    torch::Tensor pmc        = transform::cuda::PxPyPzE(pt, eta, phi, energy); 
+
+    torch::Tensor is_lep     = this -> node_fx["D-is_lep"].to(c10::kCUDA);
+    torch::Tensor is_b       = this -> node_fx["D-is_b"].to(c10::kCUDA);
+    torch::Tensor met        = this -> graph_fx["D-met"].to(c10::kCUDA); 
+    torch::Tensor met_phi    = this -> graph_fx["D-phi"].to(c10::kCUDA);
+
+    torch::Tensor pid        = torch::cat({is_lep, is_b}, {-1}); 
+    torch::Tensor batch      = torch::zeros_like(pt.view({-1})).to(torch::kLong); 
+
+    torch::Tensor met_xy     = torch::cat({transform::cuda::Px(met, met_phi), transform::cuda::Py(met, met_phi)}, {-1});
+
+    std::map<std::string, torch::Tensor> nus = nusol::cuda::combinatorial(
+        edge_index, batch, pmc*0.001, pid, met_xy*0.001, 
+        mass_top, mass_wboson, 0.0, top_perc, w_perc, distance
+    ); 
+    
+    torch::Tensor combi = nus["combi"].sum({-1}) > 0;
+    if (!combi.index({combi}).size({0})){
+        this -> node_fx["D-" + target] = pmc.to(c10::kCPU); 
+        return false;
+    }
+
+    torch::Tensor nu1 = nus["combi"].index({combi, 2}).to(torch::kInt); 
+    torch::Tensor nu2 = nus["combi"].index({combi, 3}).to(torch::kInt); 
+    pmc.index_put_({nu1}, nus["nu_1f"]*1000 + pmc.index({nu1})); 
+    pmc.index_put_({nu2}, nus["nu_2f"]*1000 + pmc.index({nu2}));
+    this -> node_fx["D-" + target] = pmc.to(c10::kCPU); 
+    return true;
 }
 
 graph_t* graph_template::data_export(){

@@ -5,7 +5,9 @@
 #include <container/container.h>
 #include <notification/notification.h>
 
-class sampletracer: public tools
+class sampletracer: 
+    public tools, 
+    public notification
 {
     public:
         sampletracer();

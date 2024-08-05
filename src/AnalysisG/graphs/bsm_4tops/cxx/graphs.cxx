@@ -41,6 +41,7 @@ graph_template* graph_children::clone(){return (graph_template*)new graph_childr
 void graph_children::CompileEvent(){
     bsm_4tops* event = this -> get_event<bsm_4tops>(); 
     this -> define_particle_nodes(&event -> Children); 
+    this -> define_topology(fulltopo); 
 
     // ---------------- truth ------------------- //
     this -> add_graph_truth_feature<bool, bsm_4tops>(event, signal_event, "signal"); 
@@ -86,6 +87,7 @@ void graph_truthjets::CompileEvent(){
     }
     nodes.insert(nodes.end(), event -> TruthJets.begin(), event -> TruthJets.end()); 
     this -> define_particle_nodes(&nodes); 
+    this -> define_topology(fulltopo); 
 
     // ---------------- truth ------------------- //
     this -> add_graph_truth_feature<bool, bsm_4tops>(event, signal_event, "signal"); 
@@ -131,6 +133,7 @@ void graph_truthjets_nonu::CompileEvent(){
     }
     nodes.insert(nodes.end(), event -> TruthJets.begin(), event -> TruthJets.end()); 
     this -> define_particle_nodes(&nodes); 
+    this -> define_topology(fulltopo); 
 
     // ---------------- truth ------------------- //
     this -> add_graph_truth_feature<bool, bsm_4tops>(event, signal_event, "signal"); 
@@ -156,6 +159,7 @@ void graph_truthjets_nonu::CompileEvent(){
 
     this -> add_node_data_feature<int, particle_template>(is_lepton, "is_lep");
     this -> add_node_data_feature<int, particle_template>(is_bquark, "is_b");
+    this -> double_neutrino("pmc"); 
 }
 
 
@@ -175,6 +179,7 @@ void graph_jets::CompileEvent(){
     }
     nodes.insert(nodes.end(), event -> Jets.begin(), event -> Jets.end()); 
     this -> define_particle_nodes(&nodes); 
+    this -> define_topology(fulltopo); 
 
     // ---------------- truth ------------------- //
     this -> add_graph_truth_feature<bool, bsm_4tops>(event, signal_event, "signal"); 
@@ -218,6 +223,7 @@ void graph_jets_nonu::CompileEvent(){
     }
     nodes.insert(nodes.end(), event -> Jets.begin(), event -> Jets.end()); 
     this -> define_particle_nodes(&nodes); 
+    this -> define_topology(fulltopo); 
 
     // ---------------- truth ------------------- //
     this -> add_graph_truth_feature<bool, bsm_4tops>(event, signal_event, "signal"); 
@@ -243,6 +249,7 @@ void graph_jets_nonu::CompileEvent(){
 
     this -> add_node_data_feature<int, particle_template>(is_lepton, "is_lep");
     this -> add_node_data_feature<int, particle_template>(is_bquark, "is_b");
+    this -> double_neutrino("pmc"); 
 }
 
 
@@ -264,6 +271,7 @@ void graph_jets_detector_lep::CompileEvent(){
     }
     nodes.insert(nodes.end(), event -> Jets.begin(), event -> Jets.end()); 
     this -> define_particle_nodes(&nodes); 
+    this -> define_topology(fulltopo); 
 
     // ---------------- truth ------------------- //
     this -> add_graph_truth_feature<bool, bsm_4tops>(event, signal_event, "signal"); 
@@ -291,7 +299,7 @@ void graph_jets_detector_lep::CompileEvent(){
     this -> add_node_data_feature<int, particle_template>(is_bquark, "is_b");
 }
 
-// ---------------- GRAPH-JETS-Detector leptons (with Neutrino) ------------------- //
+// ---------------- GRAPH-JETS-Detector leptons (without Neutrino) ------------------- //
 graph_detector::graph_detector(){this -> name = "graph_detector";}
 graph_detector::~graph_detector(){}
 graph_template* graph_detector::clone(){return (graph_template*)new graph_detector();}
@@ -304,6 +312,7 @@ void graph_detector::CompileEvent(){
     nodes.insert(nodes.end(), event -> Electrons.begin(), event -> Electrons.end()); 
     nodes.insert(nodes.end(), event -> Jets.begin(), event -> Jets.end()); 
     this -> define_particle_nodes(&nodes); 
+    this -> define_topology(fulltopo); 
 
     // ---------------- truth ------------------- //
     this -> add_graph_truth_feature<bool, bsm_4tops>(event, signal_event, "signal"); 
@@ -329,4 +338,5 @@ void graph_detector::CompileEvent(){
 
     this -> add_node_data_feature<int, particle_template>(is_lepton, "is_lep");
     this -> add_node_data_feature<int, particle_template>(is_bquark, "is_b");
+    this -> double_neutrino("pmc"); 
 }

@@ -37,7 +37,6 @@ class notification
             for (int t(0); t < inpt -> size(); ++t){ix += (*inpt)[t];}
             return ix; 
         }
-
 }; 
 
 

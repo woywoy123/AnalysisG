@@ -35,8 +35,6 @@ struct entry_t {
     }
 }; 
 
-
-
 class container: public tools
 {
     public:
@@ -52,11 +50,11 @@ class container: public tools
         void fill_selections(std::map<std::string, selection_template*>* inpt); 
         void get_events(std::vector<event_template*>*, std::string label); 
         void populate_dataloader(dataloader* dl);
-        void compile(); 
+        void compile(size_t* len); 
+        size_t len(); 
         long alloc = 0; 
         
     private:
-
         meta*       meta_data = nullptr; 
         std::string* filename = nullptr; 
         std::string* label    = nullptr; 

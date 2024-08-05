@@ -16,7 +16,6 @@ cdef extern from "<models/RecursiveGraphNeuralNetwork.h>":
         double res_mass
         double drop_out
 
-        bool NuR
         bool is_mc
 
 

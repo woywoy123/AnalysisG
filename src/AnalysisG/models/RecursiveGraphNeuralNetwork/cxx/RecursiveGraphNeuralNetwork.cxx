@@ -2,7 +2,6 @@
 #include <transform/cartesian-cuda.h>
 #include <physics/cartesian-cuda.h>
 #include <transform/polar-cuda.h>
-#include <nusol/nusol-cuda.h>
 #include <graph/graph-cuda.h>
 
 
@@ -78,7 +77,7 @@ recursivegraphneuralnetwork::recursivegraphneuralnetwork(int rep, double drop_ou
     }); 
 
     this -> ntops_mlp = new torch::nn::Sequential({
-            {"ntops_l1" , torch::nn::Linear(this -> _x + 2, this -> _rep)}, 
+            {"ntops_l1" , torch::nn::Linear(this -> _x + 4, this -> _rep)}, 
             {"ntops_n1" , torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _rep}))},
             {"ntops_sl1", torch::nn::SiLU()},
 
@@ -110,29 +109,6 @@ recursivegraphneuralnetwork::recursivegraphneuralnetwork(int rep, double drop_ou
     this -> register_module(this -> exotic_mlp,    mlp_init::xavier_uniform); 
     this -> register_module(this -> exo_mlp,       mlp_init::xavier_uniform); 
 }
-
-torch::Tensor recursivegraphneuralnetwork::neutrino(
-        torch::Tensor edge_index, torch::Tensor pmc, 
-        torch::Tensor pid, torch::Tensor met_xy, 
-        torch::Tensor batch, std::string* hash
-){
-    if (!this -> NuR){return pmc;}
-    if (this -> _cache.count(*hash)){return this -> _cache[*hash];}
-
-    std::map<std::string, torch::Tensor> nus = nusol::cuda::combinatorial(
-        edge_index, batch, pmc*0.001, pid, met_xy*0.001, 172.62, 80.385, 0.0, 0.95, 0.95, 1e-8
-    ); 
-    torch::Tensor combi = nus["combi"].sum({-1}) > 0;
-    if (!combi.index({combi}).size({0})){this -> _cache[*hash] = pmc; return pmc;}
-    torch::Tensor nu1 = nus["combi"].index({combi, 2}).to(torch::kInt); 
-    torch::Tensor nu2 = nus["combi"].index({combi, 3}).to(torch::kInt); 
-    pmc.index_put_({nu1}, nus["nu_1f"]*1000 + pmc.index({nu1})); 
-    pmc.index_put_({nu2}, nus["nu_2f"]*1000 + pmc.index({nu2}));
-    this -> _cache[*hash] = pmc; 
-    return pmc; 
-}
-
-
 
 torch::Tensor recursivegraphneuralnetwork::message(
         torch::Tensor _trk_i, torch::Tensor _trk_j, 
@@ -173,11 +149,8 @@ torch::Tensor recursivegraphneuralnetwork::message(
 void recursivegraphneuralnetwork::forward(graph_t* data){
 
     // get the particle 4-vector and convert it to cartesian
-    torch::Tensor pt         = data -> get_data_node("pt", this) -> clone();
-    torch::Tensor eta        = data -> get_data_node("eta", this) -> clone(); 
-    torch::Tensor phi        = data -> get_data_node("phi", this) -> clone(); 
-    torch::Tensor energy     = data -> get_data_node("energy", this) -> clone(); 
-    torch::Tensor pmc        = transform::cuda::PxPyPzE(pt, eta, phi, energy); 
+    torch::Tensor pt  = data -> get_data_node("pt", this) -> clone();
+    torch::Tensor pmc = data -> get_data_node("pmc", this) -> clone(); 
 
     // the event topology
     torch::Tensor edge_index = data -> get_edge_index(this) -> to(torch::kLong); 
@@ -186,17 +159,9 @@ void recursivegraphneuralnetwork::forward(graph_t* data){
     torch::Tensor met        = data -> get_data_graph("met", this) -> clone(); 
     torch::Tensor met_phi    = data -> get_data_graph("phi", this) -> clone();
 
-    // get the event level details for the double neutrino algorithm.
-    torch::Tensor is_lep     = data -> get_data_node("is_lep", this) -> clone(); 
-    torch::Tensor is_b       = data -> get_data_node("is_b", this) -> clone(); 
-    torch::Tensor pid        = torch::cat({is_lep, is_b}, {-1}); 
-    torch::Tensor batch      = torch::zeros_like(pt.view({-1})).to(torch::kLong); 
-
-    torch::Tensor met_xy     = torch::cat({transform::cuda::Px(met, met_phi), transform::cuda::Py(met, met_phi)}, {-1});
-    pmc = this -> neutrino(edge_index, pmc, pid, met_xy, batch, data -> hash);
-
-    torch::Tensor src = edge_index.index({0}).view({-1}); 
-    torch::Tensor dst = edge_index.index({1}).view({-1}); 
+    torch::Tensor met_xy  = torch::cat({transform::cuda::Px(met, met_phi), transform::cuda::Py(met, met_phi)}, {-1});
+    torch::Tensor src     = edge_index.index({0}).view({-1}); 
+    torch::Tensor dst     = edge_index.index({1}).view({-1}); 
 
     // ------ create an empty buffer for the recursion ------- //
     std::vector<torch::Tensor> x_ = {}; 
@@ -215,7 +180,6 @@ void recursivegraphneuralnetwork::forward(graph_t* data){
     torch::Tensor idx_mlp = (torch::ones_like(src).cumsum({-1})-1).to(torch::kInt); 
     torch::Tensor idx_mat = torch::zeros({trk.size({0}), trk.size({0})}, src.device()).to(torch::kInt); 
     idx_mat.index_put_({src, dst}, idx_mlp); 
-
 
     // ------ declare the intermediate states ------- //
     int iter = 0; 
@@ -297,7 +261,7 @@ void recursivegraphneuralnetwork::forward(graph_t* data){
 
     // ---------- compress node details to graph -------- //
     top_matrix = top_matrix.sum({0}, true); 
-    top_matrix = torch::cat({top_matrix, num_jets, num_leps}, {-1}); 
+    top_matrix = torch::cat({top_matrix, num_jets, num_leps, met_xy}, {-1}); 
     torch::Tensor ntops = (*this -> ntops_mlp) -> forward(top_matrix.to(torch::kFloat32));  
     torch::Tensor is_res = (*this -> exo_mlp) -> forward(torch::cat({ntops, (res_edge.softmax(-1)*res_edge).sum({0}, true)}, {-1})); 
 
@@ -331,7 +295,6 @@ model_template* recursivegraphneuralnetwork::clone(){
     rnn -> _x       = this -> _x;       
     rnn -> _output  = this -> _output;  
     rnn -> res_mass = this -> res_mass; 
-    rnn -> NuR      = this -> NuR;      
     rnn -> is_mc    = this -> is_mc;
     return rnn;  
 }

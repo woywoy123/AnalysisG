@@ -33,11 +33,6 @@ cdef class RecursiveGraphNeuralNetwork(ModelTemplate):
     def rep(self, int val): self.rnn._rep = val
 
     @property
-    def NuR(self): return self.rnn.NuR
-    @NuR.setter
-    def NuR(self, bool val): self.rnn.NuR = val
-
-    @property
     def is_mc(self): return self.rnn.is_mc
     @is_mc.setter
     def is_mc(self, bool val): self.rnn.is_mc = val

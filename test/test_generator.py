@@ -6,7 +6,7 @@ from AnalysisG.graphs.bsm_4tops import GraphTops, GraphChildren, GraphTruthJets,
 from AnalysisG.models.RecursiveGraphNeuralNetwork import *
 
 root1 = "./samples/dilepton/*"
-#root1 = "/home/tnom6927/Downloads/sample"
+#root1 = "/home/tnom6927/Downloads/sample/*"
 
 x = BSM4Tops()
 #tt = GraphChildren()
@@ -26,7 +26,6 @@ m.o_graph = {
 m.i_node  = ["pt", "eta", "phi", "energy", "is_lep", "is_b"]
 m.i_graph = ["met", "phi"]
 m.device  = "cuda:0"
-m.NuR = True
 
 op = OptimizerConfig()
 op.Optimizer = "adam"

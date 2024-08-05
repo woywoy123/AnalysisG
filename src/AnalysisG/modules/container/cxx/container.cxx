@@ -92,7 +92,7 @@ bool container::add_selection_template(selection_template* sel){
 }
 
 
-void container::compile(){
+void container::compile(size_t* l){
     for (int x(0); x < this -> random_access -> size(); ++x){
         entry_t* ev = this -> random_access -> at(x); 
         for (event_template* evx : *ev -> m_event){evx -> CompileEvent();}
@@ -118,6 +118,7 @@ void container::compile(){
             ev -> m_data -> push_back(gr_); 
         }
         ev -> destroy(); 
+        *l = x+1; 
     }
 }
 
@@ -141,3 +142,4 @@ void container::populate_dataloader(dataloader* dl){
     }
 }
 
+size_t container::len(){return this -> random_access -> size();}

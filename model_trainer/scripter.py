@@ -36,17 +36,17 @@ params = [
 ]
 
 graphs = [
-    ("GraphTruthJets"    , "BSM4Tops", False),
-    ("GraphTruthJetsNoNu", "BSM4Tops", True),
-    ("GraphJets"         , "BSM4Tops", False),
-    ("GraphDetector"     , "BSM4Tops", True)
+    ("GraphTruthJets"    , "BSM4Tops"),
+    ("GraphTruthJetsNoNu", "BSM4Tops"),
+    ("GraphJets"         , "BSM4Tops"),
+    ("GraphDetector"     , "BSM4Tops")
 ]
 
 kfolds = 10
 sample_path = "/home/tnom6927/Downloads/test/*"
 
 for gr in graphs:
-    gr_name, ev_name, nur = gr
+    gr_name, ev_name = gr
     path = "gnn-results/" + gr_name
     pathlib.Path(path).mkdir(parents = True, exist_ok = True)
     for k in range(1, kfolds+1):
@@ -70,7 +70,6 @@ for gr in graphs:
             params_dump[name]["device"] = dev
             params_dump[name]["optimizer"] = {"Optimizer" : optim}
             params_dump[name]["optimizer"] |= para
-            params_dump[name]["extra-flags"]["NuR"] = nur
             dumps.append(params_dump)
 
         del data["<name>"]
