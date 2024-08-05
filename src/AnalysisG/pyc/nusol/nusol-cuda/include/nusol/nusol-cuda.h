@@ -8,21 +8,21 @@
 #define H_NUSOL_CUDA
 
 torch::Tensor _Base_Matrix(
-        torch::Tensor pmc_b, torch::Tensor pmc_mu, 
-        torch::Tensor masses_W_top_nu); 
+        torch::Tensor& pmc_b, torch::Tensor& pmc_mu, 
+        torch::Tensor& masses_W_top_nu); 
 
 std::tuple<torch::Tensor, torch::Tensor> _Intersection(
         torch::Tensor A, torch::Tensor B, const double null); 
 
 std::map<std::string, torch::Tensor> _Nu(
-        torch::Tensor pmc_b, torch::Tensor pmc_mu, 
-        torch::Tensor met_xy, torch::Tensor masses, 
-        torch::Tensor sigma); 
+        torch::Tensor& pmc_b , torch::Tensor& pmc_mu, 
+        torch::Tensor& met_xy, torch::Tensor& masses, 
+        torch::Tensor& sigma); 
 
 std::map<std::string, torch::Tensor> _Nu(
-        torch::Tensor pmc_b, torch::Tensor pmc_mu, 
-        torch::Tensor met_xy, torch::Tensor masses, 
-        torch::Tensor sigma, const double null); 
+        torch::Tensor& pmc_b , torch::Tensor& pmc_mu, 
+        torch::Tensor& met_xy, torch::Tensor& masses, 
+        torch::Tensor& sigma, const double null); 
 
 std::map<std::string, torch::Tensor> _NuPolar(
         torch::Tensor pmu_b, torch::Tensor pmu_mu, 

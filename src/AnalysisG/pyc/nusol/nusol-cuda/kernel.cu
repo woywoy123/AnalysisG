@@ -457,7 +457,7 @@ __global__ void _SolsK(
 
     const unsigned int trgt = id[idx][idy][idz3]; 
     if (idz3m == 0){diag_i[idx][idy][idz3] = diag[idx][idy][trgt];}
-    if (log10f(diag[idx][idy][trgt]) >= log10f(null)){ return; }
+    if (log10(diag[idx][idy][trgt]) >= log10(null)){ return; }
     sols_vec[idx][idy][idz3][idz3m] = vecs[idx][idy][trgt][idz3m]; 
 }
 
@@ -831,8 +831,8 @@ __global__ void _min_finder(
             const long bt = batch[pairs[x][0][0]]; 
             scalar_t* val_c = &dia_min_comb[bt][idy]; 
             if (diag_sol[x][idy] == -1){continue;}
-            if ((*val_c) == -1){(*val_c) = diag_sol[x][idy];}
-            if ((*val_c) > diag_sol[x][idy]){(*val_c) = diag_sol[x][idy];}
+            if ((*val_c) == -1){(*val_c) = diag_sol[x][idy]; continue;}
+            if (log10((*val_c)) > log10(diag_sol[x][idy])){(*val_c) = diag_sol[x][idy];}
         }
         return;
     }
@@ -841,8 +841,8 @@ __global__ void _min_finder(
         scalar_t* val_m = &dia_min_mass[b][idx]; 
         for (unsigned int x(0); x < dim_j; ++x){
             if (diag_sol[idx][x] == -1){continue;}
-            if ((*val_m) == -1){(*val_m) = diag_sol[idx][x];}
-            if ((*val_m) > diag_sol[idx][x]){(*val_m) = diag_sol[idx][x];}
+            if ((*val_m) == -1){(*val_m) = diag_sol[idx][x]; continue;}
+            if (log10((*val_m)) > log10(diag_sol[idx][x])){(*val_m) = diag_sol[idx][x];}
         }
     }
 }

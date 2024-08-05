@@ -1,5 +1,7 @@
 #include <templates/graph_template.h>
+#include <thread>
 #include <transform/cartesian-cuda.h>
+#include <physics/cartesian-cuda.h>
 #include <nusol/nusol-cuda.h>
 
 graph_template::graph_template(){
@@ -93,38 +95,54 @@ bool graph_template::double_neutrino(
     if (!this -> graph_fx.count("D-met")){return false;}
     if (!this -> graph_fx.count("D-phi")){return false;}
 
-    torch::Tensor edge_index = this -> m_topology.to(torch::kLong).to(c10::kCUDA); 
+
     torch::Tensor pt         = this -> node_fx["D-pt"].to(c10::kCUDA);
     torch::Tensor eta        = this -> node_fx["D-eta"].to(c10::kCUDA);
     torch::Tensor phi        = this -> node_fx["D-phi"].to(c10::kCUDA); 
     torch::Tensor energy     = this -> node_fx["D-energy"].to(c10::kCUDA);
     torch::Tensor pmc        = transform::cuda::PxPyPzE(pt, eta, phi, energy); 
 
-    torch::Tensor is_lep     = this -> node_fx["D-is_lep"].to(c10::kCUDA);
-    torch::Tensor is_b       = this -> node_fx["D-is_b"].to(c10::kCUDA);
+    torch::Tensor is_b   = this -> node_fx["D-is_b"]; 
+    torch::Tensor is_lep = this -> node_fx["D-is_lep"]; 
+    torch::Tensor chk = (is_b.view({-1}).sum({-1}) > 1) * (is_lep.view({-1}).sum({-1}) > 1); 
+    if (!chk.index({chk}).size({0})){
+        this -> node_fx["D-" + target] = pmc.to(c10::kCPU); 
+        return true; 
+    }
+
+    torch::Tensor pid        = torch::cat({is_lep, is_b}, {-1}).to(c10::kCUDA); 
+    torch::Tensor edge_index = this -> m_topology.to(torch::kLong).to(c10::kCUDA); 
     torch::Tensor met        = this -> graph_fx["D-met"].to(c10::kCUDA); 
     torch::Tensor met_phi    = this -> graph_fx["D-phi"].to(c10::kCUDA);
-
-    torch::Tensor pid        = torch::cat({is_lep, is_b}, {-1}); 
     torch::Tensor batch      = torch::zeros_like(pt.view({-1})).to(torch::kLong); 
+    torch::Tensor met_xy     = torch::cat({
+            transform::cuda::Px(met, met_phi), 
+            transform::cuda::Py(met, met_phi)
+    }, {-1});
 
-    torch::Tensor met_xy     = torch::cat({transform::cuda::Px(met, met_phi), transform::cuda::Py(met, met_phi)}, {-1});
-
+    // protection against overloading the cuda cores.
+    std::this_thread::sleep_for(std::chrono::microseconds(10)); 
     std::map<std::string, torch::Tensor> nus = nusol::cuda::combinatorial(
-        edge_index, batch, pmc*0.001, pid, met_xy*0.001, 
-        mass_top, mass_wboson, 0.0, top_perc, w_perc, distance
+        edge_index, batch, pmc, pid, met_xy, mass_top, mass_wboson, 0.0, 
+        top_perc, w_perc, distance
     ); 
     
     torch::Tensor combi = nus["combi"].sum({-1}) > 0;
     if (!combi.index({combi}).size({0})){
         this -> node_fx["D-" + target] = pmc.to(c10::kCPU); 
-        return false;
+        return true; 
     }
 
-    torch::Tensor nu1 = nus["combi"].index({combi, 2}).to(torch::kInt); 
-    torch::Tensor nu2 = nus["combi"].index({combi, 3}).to(torch::kInt); 
-    pmc.index_put_({nu1}, nus["nu_1f"]*1000 + pmc.index({nu1})); 
-    pmc.index_put_({nu2}, nus["nu_2f"]*1000 + pmc.index({nu2}));
+    torch::Tensor lep1 = nus["combi"].index({combi, 2}).to(torch::kInt); 
+    torch::Tensor lep2 = nus["combi"].index({combi, 3}).to(torch::kInt); 
+    pmc.index_put_({lep1}, nus["nu_1f"] + pmc.index({lep1})); 
+    pmc.index_put_({lep2}, nus["nu_2f"] + pmc.index({lep2}));
+    pmc = pmc.to(c10::kCPU);
+
+    this -> node_fx["D-pt"] = pmc.index({torch::indexing::Slice(), 0}).view({-1, 1}); 
+    this -> node_fx["D-eta"] = pmc.index({torch::indexing::Slice(), 1}).view({-1, 1}); 
+    this -> node_fx["D-phi"] = pmc.index({torch::indexing::Slice(), 2}).view({-1, 1}); 
+    this -> node_fx["D-energy"] = pmc.index({torch::indexing::Slice(), 3}).view({-1, 1}); 
     this -> node_fx["D-" + target] = pmc.to(c10::kCPU); 
     return true;
 }
