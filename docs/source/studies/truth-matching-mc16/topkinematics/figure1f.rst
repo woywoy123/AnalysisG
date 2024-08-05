@@ -1,7 +1,8 @@
+.. _figure_1f:
+
 Figure.1.f
 ----------
 
-Figures showing two dimensional heat-maps of energy against transverse momenta for **spectator** tops.
 
 Mass Point: 400 GeV
 ^^^^^^^^^^^^^^^^^^^

@@ -1,7 +1,10 @@
+.. _figure_1c:
+
 Figure 1.c
 ----------
 
-Figures depicting the azimuthal angular distribution of spectator and resonant tops.
+A collection of figures depicting the **azimuthal** distributions for spectator and resonance tops with various injected resonance mass points.
+
 
 Mass Point: 400 GeV
 ^^^^^^^^^^^^^^^^^^^

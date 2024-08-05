@@ -1,7 +1,8 @@
+.. _figure_1d:
+
 Figure 1.d
 ----------
 
-Figures depicting the azimuthal angular distribution of spectator and resonant tops.
 
 Mass Point: 400 GeV
 ^^^^^^^^^^^^^^^^^^^

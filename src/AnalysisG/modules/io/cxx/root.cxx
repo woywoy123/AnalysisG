@@ -7,6 +7,7 @@ bool element_t::next(){
     for (; itr != this -> handle.end(); ++itr){
         switch (itr -> second -> type){
             case data_enum::vvf: stop = itr -> second -> next(&this -> r_vvf[itr -> first]); break; 
+            case data_enum::vvd: stop = itr -> second -> next(&this -> r_vvd[itr -> first]); break; 
             case data_enum::vvl: stop = itr -> second -> next(&this -> r_vvl[itr -> first]); break; 
             case data_enum::vvi: stop = itr -> second -> next(&this -> r_vvi[itr -> first]); break; 
 
@@ -36,6 +37,7 @@ void element_t::set_meta(){
 void data_t::flush_buffer(){
     switch (this -> type){
         case data_enum::vvf: this -> flush_buffer(&this -> r_vvf); break; 
+        case data_enum::vvd: this -> flush_buffer(&this -> r_vvd); break; 
         case data_enum::vvl: this -> flush_buffer(&this -> r_vvl); break; 
         case data_enum::vvi: this -> flush_buffer(&this -> r_vvi); break; 
 
@@ -55,6 +57,7 @@ void data_t::flush_buffer(){
 void data_t::fetch_buffer(){
     switch (this -> type){
         case data_enum::vvf: return this -> fetch_buffer(&this -> r_vvf);
+        case data_enum::vvd: return this -> fetch_buffer(&this -> r_vvd);
         case data_enum::vvl: return this -> fetch_buffer(&this -> r_vvl);
         case data_enum::vvi: return this -> fetch_buffer(&this -> r_vvi);
 
@@ -119,6 +122,10 @@ void data_t::string_type(){
         this -> type = data_enum::vvf; return; 
     }
 
+    if (this -> leaf_type == "vector<vector<double> >"){
+        this -> type = data_enum::vvd; return; 
+    }
+
     if (this -> leaf_type == "vector<float>"){
         this -> type = data_enum::vf; return; 
     }
@@ -139,6 +146,12 @@ void data_t::string_type(){
 bool data_t::element(std::vector<std::vector<float>>* el){
     if (!this -> r_vvf){return false;}
     (*el) = (*this -> r_vvf)[this -> index]; 
+    return true; 
+}
+
+bool data_t::element(std::vector<std::vector<double>>* el){
+    if (!this -> r_vvd){return false;}
+    (*el) = (*this -> r_vvd)[this -> index]; 
     return true; 
 }
 

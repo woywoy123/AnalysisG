@@ -12,6 +12,7 @@ from AnalysisG.core.meta cimport meta, Meta
 cdef extern from "<io/io.h>":
     enum data_enum:
         vvf "data_enum::vvf"
+        vvd "data_enum::vvd"
         vvl "data_enum::vvl"
         vvi "data_enum::vvi"
         vf  "data_enum::vf"
@@ -35,6 +36,7 @@ cdef extern from "<io/io.h>":
 
         void flush() except+
 
+        bool next(vector[vector[double]]* data) except +
         bool next(vector[vector[float]]* data) except +
         bool next(vector[vector[long ]]* data) except +
         bool next(vector[vector[int  ]]* data) except +
@@ -94,6 +96,9 @@ cdef inline dict switch_board(data_t* data):
 
     cdef vector[vector[int]] vvi
     if data.type == data_enum.vvi and data.next(&vvi): return {data.path : vvi}
+
+    cdef vector[vector[double]] vvd
+    if data.type == data_enum.vvd and data.next(&vvd): return {data.path : vvd}
 
     cdef vector[float] vf
     if data.type == data_enum.vf and data.next(&vf): return {data.path : vf}

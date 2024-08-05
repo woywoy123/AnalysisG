@@ -1,7 +1,9 @@
+.. _figure_1b:
+
 Figure 1.b
 ----------
 
-Figures depicting the energy distribution of the spectator and resonant tops.
+A collection of figures depicting the **energy** distributions for spectator and resonance tops with various injected resonance mass points.
 
 Mass Point: 400 GeV
 ^^^^^^^^^^^^^^^^^^^

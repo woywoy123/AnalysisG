@@ -16,7 +16,7 @@
 #include <structs/folds.h>
 #include <notification/notification.h>
 
-enum class data_enum {vvf, vvl, vvi, vf, vl, vi, vc, f, l, i, ull}; 
+enum class data_enum {vvf, vvd, vvl, vvi, vf, vl, vi, vc, f, l, i, ull}; 
 
 struct data_t {
     public:
@@ -34,9 +34,11 @@ struct data_t {
         long index = 0; 
         data_enum type; 
 
-        std::vector<std::vector<std::vector<float>>>* r_vvf = nullptr; 
-        std::vector<std::vector<std::vector<long>>>*  r_vvl = nullptr; 
-        std::vector<std::vector<std::vector<int>>>*   r_vvi = nullptr; 
+        std::vector<std::vector<std::vector<float>>>*  r_vvf = nullptr; 
+        std::vector<std::vector<std::vector<double>>>* r_vvd = nullptr; 
+        std::vector<std::vector<std::vector<long>>>*   r_vvl = nullptr; 
+        std::vector<std::vector<std::vector<int>>>*    r_vvi = nullptr; 
+
 
         std::vector<std::vector<float>>* r_vf = nullptr; 
         std::vector<std::vector<long>>*  r_vl = nullptr; 
@@ -76,6 +78,7 @@ struct data_t {
         }
 
         bool element(std::vector<std::vector<float>>* el);
+        bool element(std::vector<std::vector<double>>* el);
         bool element(std::vector<std::vector<long>>* el);
         bool element(std::vector<std::vector<int>>* el);
 
@@ -116,9 +119,10 @@ struct data_t {
 
 struct element_t {
     std::string tree = "";
-    std::map<std::string, std::vector<std::vector<float>>> r_vvf = {}; 
-    std::map<std::string, std::vector<std::vector<long>>>  r_vvl = {}; 
-    std::map<std::string, std::vector<std::vector<int>>>   r_vvi = {}; 
+    std::map<std::string, std::vector<std::vector<float>>>  r_vvf = {}; 
+    std::map<std::string, std::vector<std::vector<double>>> r_vvd = {}; 
+    std::map<std::string, std::vector<std::vector<long>>>   r_vvl = {}; 
+    std::map<std::string, std::vector<std::vector<int>>>    r_vvi = {}; 
     
     std::map<std::string, std::vector<float>> r_vf = {}; 
     std::map<std::string, std::vector<long>>  r_vl = {}; 

@@ -1,7 +1,7 @@
+.. _figure_1e:
+
 Figure.1.e
 ----------
-
-Figures showing two dimensional heat-maps of energy against transverse momenta for **resonant** tops.
 
 Mass Point: 400 GeV
 ^^^^^^^^^^^^^^^^^^^

@@ -1,8 +1,7 @@
+.. _figure_1i:
+
 Figure.1.i
 ----------
-
-A two dimensional head-map of the invariant mass as a function of :math:`\Delta R`.
-For this plot, all possible truth-top pair permutations are used to compute the invariant mass and the :math:`\Delta R`.
 
 Mass Point: 400 GeV
 ^^^^^^^^^^^^^^^^^^^

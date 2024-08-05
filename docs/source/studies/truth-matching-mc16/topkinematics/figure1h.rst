@@ -1,8 +1,7 @@
+.. _figure_1h:
+
 Figure.1.h
 ----------
-
-Distribution plots of the invariant mass produced when combining truth-top pairs.
-For plots with Resonance and Spectator titles, top-pairs are correctly assigned, otherwise they are labelled as a Mixture.
 
 Mass Point: 400 GeV
 ^^^^^^^^^^^^^^^^^^^

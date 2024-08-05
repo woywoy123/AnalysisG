@@ -1,7 +1,9 @@
+.. _figure_1a:
+
 Figure 1.a
 ----------
 
-Figures depicting the transverse momenta distribution of spectator and resonance tops.
+A collection of figures depicting the **transverse momenta** distributions for spectator and resonance tops with various injected resonance mass points.
 
 Mass Point: 400 GeV
 ^^^^^^^^^^^^^^^^^^^

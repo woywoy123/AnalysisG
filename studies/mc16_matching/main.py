@@ -32,11 +32,11 @@ plotting_method = {
 
 smpls = "../../test/samples/dilepton/*"
 
-gen_data = True
+gen_data = False
 figure_path = "./Output/"
 for mass in ["1000", "900", "800", "700", "600", "500", "400"]:
     mass_point = "Mass." + mass + ".GeV"
-    smpls = "/home/tnom6927/Downloads/DileptonCollection/MadGraphPythia8EvtGen_noallhad_ttH_tttt_m" + mass + "/*"
+    smpls = "/home/tnom6927/Downloads/mc16/MadGraphPythia8EvtGen_noallhad_ttH_tttt_m" + mass + "/*"
 
     method = plotting_method[study]
     method.figures.figure_path = figure_path
