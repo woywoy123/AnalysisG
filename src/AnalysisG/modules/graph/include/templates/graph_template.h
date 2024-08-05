@@ -351,7 +351,7 @@ class graph_template: public tools
         bool double_neutrino(
                 std::string target, 
                 double mass_top = 172.62, double mass_wboson = 80.385, 
-                double top_perc = 0.95, double w_perc = 0.95, double distance = 1e-8
+                double top_perc = 0.90, double w_perc = 0.90, double distance = 1e-10
         ); 
 }; 
  
