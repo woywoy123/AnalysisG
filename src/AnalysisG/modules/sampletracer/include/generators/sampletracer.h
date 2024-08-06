@@ -24,7 +24,7 @@ class sampletracer:
         bool add_selection(selection_template* sel); 
 
         void populate_dataloader(dataloader* dl);  
-        void compile_objects(); 
+        void compile_objects(int threads); 
 
     private:
         std::map<std::string, container*>* root_container = nullptr; 

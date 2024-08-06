@@ -55,7 +55,7 @@ bool sampletracer::add_selection(selection_template* sel){
     return con -> add_selection_template(sel); 
 }
 
-void sampletracer::compile_objects(){
+void sampletracer::compile_objects(int threads){
     auto lamb = [](size_t* l, container* data){data -> compile(l);}; 
 
     int index = 0; 
@@ -66,12 +66,22 @@ void sampletracer::compile_objects(){
 
     itr = this -> root_container -> begin(); 
     for (; itr != this -> root_container -> end(); ++itr){len += itr -> second -> len();}
+    std::thread* thr = new std::thread(this -> progressbar1, &handles, len, "Compiling Containers");
+
     itr = this -> root_container -> begin(); 
     for (; itr != this -> root_container -> end(); ++itr, ++index){
         threads_[index] = new std::thread(lamb, &handles[index], itr -> second); 
+        if (index % threads != threads -1){continue;}
+        threads_[index] -> join(); 
+        delete threads_[index]; 
+        threads_[index] = nullptr; 
     }
-    std::thread* thr = new std::thread(this -> progressbar1, &handles, len, "Compiling Containers");
-    for (int x(0); x < index; ++x){threads_[x] -> join(); delete threads_[x];}
+
+    for (int x(0); x < index; ++x){
+        if (!threads_[x]){continue;}
+        threads_[x] -> join(); 
+        delete threads_[x];
+    }
     thr -> join(); delete thr;   
 }
 

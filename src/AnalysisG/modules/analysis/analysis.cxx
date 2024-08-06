@@ -71,7 +71,7 @@ void analysis::start(){
         this -> build_events(); 
         if (this -> selection_names.size()){this -> build_selections();}
         if (this -> graph_labels.size()){this -> build_graphs();}
-        this -> tracer -> compile_objects(); 
+        this -> tracer -> compile_objects(threads_); 
     } 
     if (this -> selection_names.size()){this -> tracer -> fill_selections(&this -> selection_names);} 
 
