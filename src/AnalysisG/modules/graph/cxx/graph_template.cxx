@@ -81,9 +81,8 @@ void graph_template::define_topology(std::function<bool(particle_template*, part
 }
 
 bool graph_template::double_neutrino(
-        std::string target, 
-        double mass_top, double mass_wboson, 
-        double top_perc, double w_perc, double distance 
+        std::string target, double mass_top, double mass_wboson, 
+        double top_perc, double w_perc, double distance, int steps 
 ){
     if (!this -> node_fx.count("D-pt")){return false;}
     if (!this -> node_fx.count("D-eta")){return false;}
@@ -122,7 +121,7 @@ bool graph_template::double_neutrino(
     //std::this_thread::sleep_for(std::chrono::microseconds(10)); 
     std::map<std::string, torch::Tensor> nus = nusol::cuda::combinatorial(
         edge_index, batch, pmc, pid, met_xy, mass_top, mass_wboson, 0.0, 
-        top_perc, w_perc, distance, 100
+        top_perc, w_perc, distance, steps
     ); 
     
     torch::Tensor combi = nus["combi"].sum({-1}) > 0;
