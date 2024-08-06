@@ -132,10 +132,14 @@ void optimizer::launch_model(int k){
         if (this -> m_settings.training){this -> training_loop(k, ep);}
         if (this -> m_settings.validation){this -> validation_loop(k, ep);}
         if (this -> m_settings.evaluation){this -> evaluation_loop(k, ep);}
+
+        if (this -> m_settings.debug_mode){return this -> metric -> dump_plots(k);}
+
         model_report* mr = this -> reports[this -> m_settings.run_name + std::to_string(k)]; 
         mr -> waiting_plot = this -> metric; 
         while (mr -> waiting_plot){std::this_thread::sleep_for(std::chrono::milliseconds(1000));}
         c10::cuda::CUDACachingAllocator::emptyCache();  
+
     }; 
 
     for (int ep(0); ep < this -> m_settings.epochs; ++ep){lamb(k, ep);}

@@ -65,7 +65,6 @@ recursivegraphneuralnetwork::recursivegraphneuralnetwork(int rep, double drop_ou
             {"exotic_l1" , torch::nn::Linear(this -> _x + this -> _output, this -> _rep*2)}, 
             {"exotic_n1" , torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _rep*2}))},
             {"exotic_dr1", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
-            {"exotic_sl1", torch::nn::SiLU()},
             {"exotic_l2" , torch::nn::Linear(this -> _rep*2, this -> _output)}
     });
 

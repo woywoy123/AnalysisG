@@ -51,7 +51,6 @@ void static top_edge(int* o, std::tuple<particle_template*, particle_template*>*
     std::string type2 = p2 -> type; 
 
     std::vector<int> o1_ = {}; 
-    std::vector<int> o2_ = {};
     if (type1 == "top"){o1_.push_back(m_top_edge((top*)p1));}
     else if (type1 == "children"){o1_.push_back(m_top_edge((top_children*)p1));}
     else if (type1 == "truthjets"){o1_ = m_top_edge((truthjet*)p1);}
@@ -59,19 +58,19 @@ void static top_edge(int* o, std::tuple<particle_template*, particle_template*>*
     else if (type1 == "mu"){o1_ = m_top_edge((muon*)p1);}
     else if (type1 == "el"){o1_ = m_top_edge((electron*)p1);}
 
+    std::vector<int> o2_ = {};
     if (type2 == "top"){o2_.push_back(m_top_edge((top*)p2));}
     else if (type2 == "children"){o2_.push_back(m_top_edge((top_children*)p2));}
     else if (type2 == "truthjets"){o2_ = m_top_edge((truthjet*)p2);}
     else if (type2 == "jet"){o2_ = m_top_edge((jet*)p2);}
     else if (type2 == "mu"){o2_ = m_top_edge((muon*)p2);}
     else if (type2 == "el"){o2_ = m_top_edge((electron*)p2);}
- 
+
     *o = 0;  
     for (size_t x(0); x < o1_.size(); ++x){
+        if (o1_[x] == -1){continue;}
         for (size_t y(0); y < o2_.size(); ++y){
-            if (o1_[x] < 0){continue;}
-            if (o2_[x] < 0){continue;}
-
+            if (o2_[y] == -1){continue;}
             if (o1_[x] != o2_[y]){continue;}
             *o = 1; return; 
         }

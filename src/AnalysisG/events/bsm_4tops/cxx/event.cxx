@@ -116,7 +116,7 @@ void bsm_4tops::CompileEvent(){
         std::string    hash_ = l -> hash; 
         if (accept[hash_]){continue;}
 
-        top_children*      c = (top_children*)id -> second[0]; 
+        top_children* c = (top_children*)id -> second[0]; 
         std::map<std::string, particle_template*> ch = c -> children; 
         if (ch.size()){continue;}
 

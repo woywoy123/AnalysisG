@@ -966,7 +966,7 @@ std::map<std::string, torch::Tensor> _CombinatorialCartesian(
         torch::Tensor edge_index, torch::Tensor batch, 
         torch::Tensor pmc, torch::Tensor pid, torch::Tensor met_xy, 
         const double mass_top_l, const double mass_top_u, const double mass_w_l, const double mass_w_u, 
-        const double mass_nu, const double null)
+        const double mass_nu, const double null, const int steps)
 {
     pid = pid.to(_NuMakeOp(edge_index)); 
     pid = _create_event_nlep(edge_index, pid); 
@@ -980,7 +980,6 @@ std::map<std::string, torch::Tensor> _CombinatorialCartesian(
         res = {nu_null, nu_null, nu_null, nu_null, nu_null, nu_null}; 
     }
     else {
-        int steps = 20;
         torch::Tensor mass_matrix = torch::zeros({steps, 3}, _NuMakeOp(met_xy)); 
         _MassMatrix(mass_top_l, mass_top_u, mass_w_l, mass_w_u, mass_matrix, steps); 
         res = _viable_solutions(&pair_nunu, &mass_matrix, &pmc, &met_xy, &batch, null);

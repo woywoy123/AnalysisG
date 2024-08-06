@@ -87,8 +87,7 @@ std::map<std::string, torch::Tensor> _CombinatorialCartesian(
         torch::Tensor edge_index, torch::Tensor batch, 
         torch::Tensor pmc, torch::Tensor pid, torch::Tensor met_xy, 
         const double mass_top_l, const double mass_top_u, const double mass_w_l, const double mass_w_u, 
-        const double mass_nu, const double null
-); 
+        const double mass_nu, const double null, const int steps); 
 
 namespace nusol {
     namespace cuda {
@@ -120,7 +119,8 @@ namespace nusol {
                 torch::Tensor edge_index, torch::Tensor batch, 
                 torch::Tensor pmc, torch::Tensor pid, torch::Tensor met_xy, 
                 const double mass_top, const double mass_W, const double mass_nu,
-                const double top_up_down, const double w_up_down, const double null); 
+                const double top_up_down, const double w_up_down, 
+                const double null, const int steps); 
     
         namespace polar {
             std::map<std::string, torch::Tensor> Nu(

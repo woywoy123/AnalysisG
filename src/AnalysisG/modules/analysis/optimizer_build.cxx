@@ -82,10 +82,8 @@ std::map<std::string, std::string> analysis::progress_report(){
 
 std::map<std::string, bool> analysis::is_complete(){
     std::map<std::string, bool> output; 
-    std::map<std::string, model_report*>::iterator itx;
-    for (itx = this -> reports.begin(); itx != this -> reports.end(); ++itx){
-        output[itx -> first] = itx -> second -> is_complete; 
-    }
+    std::map<std::string, model_report*>::iterator itx = this -> reports.begin();
+    for (; itx != this -> reports.end(); ++itx){output[itx -> first] = itx -> second -> is_complete;}
     return output; 
 }
 

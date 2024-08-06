@@ -1,5 +1,6 @@
 #include <templates/graph_template.h>
 #include <transform/cartesian-cuda.h>
+#include <transform/polar-cuda.h>
 #include <nusol/nusol-cuda.h>
 
 graph_template::graph_template(){
@@ -93,7 +94,6 @@ bool graph_template::double_neutrino(
     if (!this -> graph_fx.count("D-met")){return false;}
     if (!this -> graph_fx.count("D-phi")){return false;}
 
-
     torch::Tensor pt         = this -> node_fx["D-pt"].to(c10::kCUDA);
     torch::Tensor eta        = this -> node_fx["D-eta"].to(c10::kCUDA);
     torch::Tensor phi        = this -> node_fx["D-phi"].to(c10::kCUDA); 
@@ -119,10 +119,10 @@ bool graph_template::double_neutrino(
     }, {-1});
 
     // protection against overloading the cuda cores.
-    std::this_thread::sleep_for(std::chrono::microseconds(10)); 
+    //std::this_thread::sleep_for(std::chrono::microseconds(10)); 
     std::map<std::string, torch::Tensor> nus = nusol::cuda::combinatorial(
         edge_index, batch, pmc, pid, met_xy, mass_top, mass_wboson, 0.0, 
-        top_perc, w_perc, distance
+        top_perc, w_perc, distance, 100
     ); 
     
     torch::Tensor combi = nus["combi"].sum({-1}) > 0;
@@ -135,13 +135,13 @@ bool graph_template::double_neutrino(
     torch::Tensor lep2 = nus["combi"].index({combi, 3}).to(torch::kInt); 
     pmc.index_put_({lep1}, nus["nu_1f"] + pmc.index({lep1})); 
     pmc.index_put_({lep2}, nus["nu_2f"] + pmc.index({lep2}));
-    pmc = pmc.to(c10::kCPU);
+    this -> node_fx["D-" + target] = pmc.to(c10::kCPU); 
+    pmc = transform::cuda::PtEtaPhiE(pmc).to(c10::kCPU);
 
     this -> node_fx["D-pt"] = pmc.index({torch::indexing::Slice(), 0}).view({-1, 1}); 
     this -> node_fx["D-eta"] = pmc.index({torch::indexing::Slice(), 1}).view({-1, 1}); 
     this -> node_fx["D-phi"] = pmc.index({torch::indexing::Slice(), 2}).view({-1, 1}); 
     this -> node_fx["D-energy"] = pmc.index({torch::indexing::Slice(), 3}).view({-1, 1}); 
-    this -> node_fx["D-" + target] = pmc.to(c10::kCPU); 
     return true;
 }
 

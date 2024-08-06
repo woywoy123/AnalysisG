@@ -57,7 +57,8 @@ std::map<std::string, torch::Tensor> nusol::cuda::combinatorial(
         torch::Tensor edge_index, torch::Tensor batch, 
         torch::Tensor pmc, torch::Tensor pid, torch::Tensor met_xy, 
         const double mass_top, const double mass_W, const double mass_nu,
-        const double top_up_down, const double w_up_down, const double null
+        const double top_up_down, const double w_up_down, 
+        const double null, const int steps
 ){
     const auto current_device = c10::cuda::current_device();
     c10::cuda::set_device(pmc.get_device()); 
@@ -69,7 +70,7 @@ std::map<std::string, torch::Tensor> nusol::cuda::combinatorial(
 
     std::map<std::string, torch::Tensor> output = _CombinatorialCartesian(
         edge_index, batch, pmc, pid, met_xy, 
-        mass_top_l, mass_top_u, mass_w_l, mass_w_u, mass_nu, null
+        mass_top_l, mass_top_u, mass_w_l, mass_w_u, mass_nu, null, steps
     );
 
     c10::cuda::set_device(current_device);
