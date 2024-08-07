@@ -1,6 +1,4 @@
-#include <chrono>
 #include <templates/model_template.h>
-#include <thread>
 
 model_template::model_template(){
     // input features

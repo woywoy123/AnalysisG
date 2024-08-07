@@ -27,14 +27,18 @@ void notification::success(std::string message){
 
 void notification::warning(std::string message){
     this -> caller = this -> _warning;
+    bool s = this -> shush; 
     this -> shush = false; 
     this -> _format(&message);
+    this -> shush = s; 
 }
 
 void notification::failure(std::string message){
     this -> caller = this -> _failure;
+    bool s = this -> shush; 
     this -> shush = false; 
     this -> _format(&message);
+    this -> shush = s; 
 }
 
 void notification::info(std::string message){
@@ -55,8 +59,8 @@ void notification::progressbar1(std::vector<size_t>* threads, size_t l, std::str
     while (true){
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
         float prgs = float(notification().sum(threads))/float(l); 
-        notification().progressbar(prgs, title); 
         if (prgs > 0.995){break;}
+        notification().progressbar(prgs, title); 
     } 
     std::cout << "" << std::endl;
 } 
@@ -65,8 +69,8 @@ void notification::progressbar2(std::vector<size_t>* threads, size_t* l, std::st
     while (true){
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
         float prgs = float(notification().sum(threads))/float(*l); 
-        notification().progressbar(prgs, *title); 
         if (prgs > 0.995){break;}
+        notification().progressbar(prgs, *title); 
     } 
     std::cout << "" << std::endl;
 } 

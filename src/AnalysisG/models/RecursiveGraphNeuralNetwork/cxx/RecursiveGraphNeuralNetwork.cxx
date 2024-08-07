@@ -264,30 +264,49 @@ void recursivegraphneuralnetwork::forward(graph_t* data){
     // ---------- compress node details to graph -------- //
     top_matrix = top_matrix.sum({0}, true); 
     top_matrix = torch::cat({top_matrix, num_jets, num_leps, met_xy}, {-1}); 
-    torch::Tensor ntops = (*this -> ntops_mlp) -> forward(top_matrix.to(torch::kFloat32));  
+    torch::Tensor ntops  = (*this -> ntops_mlp) -> forward(top_matrix.to(torch::kFloat32));  
     torch::Tensor is_res = (*this -> exo_mlp) -> forward(torch::cat({ntops, (res_edge.softmax(-1)*res_edge).sum({0}, true)}, {-1})); 
 
     this -> prediction_graph_feature("signal" , is_res); 
     this -> prediction_graph_feature("ntops"  , ntops); 
     this -> prediction_edge_feature("top_edge", G_); 
     this -> prediction_edge_feature("res_edge", res_edge); 
-
     if (!this -> inference_mode){return;}
-    this -> prediction_extra("top_edge_score", G_.softmax(-1));
-    this -> prediction_extra("ntops_score"   , ntops.softmax(-1)); 
 
+    this -> prediction_extra("top_edge_score", G_.softmax(-1));
     this -> prediction_extra("res_edge_score", res_edge.softmax(-1));
-    this -> prediction_extra("is_res_score"  , is_res.softmax(-1)); 
+    this -> prediction_extra("ntops_score"   , ntops.softmax(-1).view({-1})); 
+    this -> prediction_extra("is_res_score"  , is_res.softmax(-1).view({-1})); 
 
     torch::Tensor top_pred = graph::cuda::edge_aggregation(edge_index, G_, pmc)["1"][1]; 
+    torch::Tensor top_pmu  = transform::cuda::PtEtaPhiE(top_pred); 
+
+    torch::Tensor zprime_pred = z_pmc.index({std::get<1>(res_edge.max({-1})) == 1}); 
+    if (zprime_pred.size({0})){zprime_pred = physics::cuda::cartesian::M(z_pmc);}
+    else {zprime_pred = zprime_pred.index({torch::indexing::Slice(), 0});}
+
+    this -> prediction_extra("top_pt" , top_pmu.index({torch::indexing::Slice(), 0}));
+    this -> prediction_extra("top_eta", top_pmu.index({torch::indexing::Slice(), 1}));
+    this -> prediction_extra("top_phi", top_pmu.index({torch::indexing::Slice(), 2}));
+    this -> prediction_extra("top_e"  , top_pmu.index({torch::indexing::Slice(), 3}));
     this -> prediction_extra("top_pmc", top_pred); 
+    this -> prediction_extra("zprime_mass", zprime_pred);
 
     if (!this -> is_mc){return;}
-    torch::Tensor truth_t = data -> get_truth_edge("top_edge", this) -> view({-1}); 
+
+    torch::Tensor ntops_t  = data -> get_truth_graph("ntops", this) -> view({-1}); 
+    torch::Tensor signa_t  = data -> get_truth_graph("signal", this) -> view({-1});
+    torch::Tensor r_edge_t = data -> get_truth_edge("res_edge", this) -> view({-1}); 
+    torch::Tensor t_edge_t = data -> get_truth_edge("top_edge", this) -> view({-1}); 
+
     torch::Tensor truth_ = torch::zeros_like(G_); 
-    for (int x(0); x < G_.size({-1}); ++x){truth_.index_put_({truth_t == x, x}, 1);}
+    for (int x(0); x < G_.size({-1}); ++x){truth_.index_put_({t_edge_t == x, x}, 1);}
     torch::Tensor truth_top = graph::cuda::edge_aggregation(edge_index, truth_, pmc)["1"][1]; 
     this -> prediction_extra("truth_top_pmc", truth_top); 
+    this -> prediction_extra("truth_ntops", ntops_t); 
+    this -> prediction_extra("truth_signal", signa_t); 
+    this -> prediction_extra("truth_res_edge", r_edge_t); 
+    this -> prediction_extra("truth_top_edge", t_edge_t); 
 }
 
 recursivegraphneuralnetwork::~recursivegraphneuralnetwork(){}

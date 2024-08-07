@@ -219,24 +219,22 @@ void graph_t::deserialize(graph_hdf5* m_hdf5){
     this -> meta_deserialize(this -> truth_map_node , &m_hdf5 -> truth_map_node );   
     this -> meta_deserialize(this -> truth_map_edge , &m_hdf5 -> truth_map_edge );   
 
+    this -> edge_index = this -> meta_deserialize(&m_hdf5 -> edge_index); 
+    this -> data_graph = new std::vector<torch::Tensor*>();  
+    this -> data_node  = new std::vector<torch::Tensor*>();  
+    this -> data_edge  = new std::vector<torch::Tensor*>();  
 
-    this -> edge_index  = this -> meta_deserialize(&m_hdf5 -> edge_index); 
+    this -> meta_deserialize(this -> data_graph, &m_hdf5 -> data_graph );       
+    this -> meta_deserialize(this -> data_node , &m_hdf5 -> data_node  );       
+    this -> meta_deserialize(this -> data_edge , &m_hdf5 -> data_edge  );       
 
-    this -> data_graph      = new std::vector<torch::Tensor*>();  
-    this -> data_node       = new std::vector<torch::Tensor*>();  
-    this -> data_edge       = new std::vector<torch::Tensor*>();  
+    this -> truth_graph = new std::vector<torch::Tensor*>();  
+    this -> truth_node  = new std::vector<torch::Tensor*>();  
+    this -> truth_edge  = new std::vector<torch::Tensor*>();  
 
-    this -> meta_deserialize(this -> data_graph     , &m_hdf5 -> data_graph );       
-    this -> meta_deserialize(this -> data_node      , &m_hdf5 -> data_node  );       
-    this -> meta_deserialize(this -> data_edge      , &m_hdf5 -> data_edge  );       
-
-    this -> truth_graph     = new std::vector<torch::Tensor*>();  
-    this -> truth_node      = new std::vector<torch::Tensor*>();  
-    this -> truth_edge      = new std::vector<torch::Tensor*>();  
-
-    this -> meta_deserialize(this -> truth_graph    , &m_hdf5 -> truth_graph);       
-    this -> meta_deserialize(this -> truth_node     , &m_hdf5 -> truth_node );       
-    this -> meta_deserialize(this -> truth_edge     , &m_hdf5 -> truth_edge );       
+    this -> meta_deserialize(this -> truth_graph, &m_hdf5 -> truth_graph);       
+    this -> meta_deserialize(this -> truth_node , &m_hdf5 -> truth_node );       
+    this -> meta_deserialize(this -> truth_edge , &m_hdf5 -> truth_edge );       
     this -> is_owner = true; 
 }
 

@@ -53,6 +53,9 @@ void analysis::build_project(){
 }
 
 void analysis::start(){
+    this -> success("+============================+"); 
+    this -> success("| Starting Analysis Session! |");
+    this -> success("+============================+"); 
 
     bool trig = false; 
     int threads_ = this -> m_settings.threads; 
@@ -86,7 +89,10 @@ void analysis::start(){
     }
     else if (trig){this -> loader -> restore_graphs(pth_cache, threads_);}
 
-    if (!this -> loader -> restore_dataset(path_data) && path_data.size()){this -> build_dataloader(true);}
+    if (!this -> loader -> restore_dataset(path_data) && path_data.size()){
+        this -> build_dataloader(true);
+    }
+
     if (this -> model_sessions.size()){
         this -> build_dataloader(true); 
         this -> build_project(); 
@@ -94,7 +100,7 @@ void analysis::start(){
     }
 
     if (this -> model_inference.size()){
-        this -> build_dataloader(false); 
+        this -> build_dataloader(false);
         this -> build_inference(); 
     }
 }

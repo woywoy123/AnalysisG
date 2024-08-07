@@ -12,7 +12,7 @@ int add_content(std::map<std::string, torch::Tensor*>* data, std::vector<variabl
     return index; 
 }
 
-void execution(model_template* md, std::vector<graph_t*>* data, std::string output, std::vector<variable_t>* content, float* prg){
+void execution(model_template* md, std::vector<graph_t*>* data, std::string output, std::vector<variable_t>* content, size_t* prg){
     TFile* f = TFile::Open(output.c_str(), "RECREATE");
     TTree* t = new TTree("nominal", "data"); 
     std::string msg = "Running model " + std::string(md -> name) + " with sample -> " + output; 
@@ -40,38 +40,44 @@ void execution(model_template* md, std::vector<graph_t*>* data, std::string outp
 
         t -> Fill();
 
-        *prg = float(x)/float(data -> size()); 
+        *prg = x+1;  
     }
     t -> ResetBranchAddresses(); 
     t -> Write();
     delete f; 
 
-    *prg = 1; 
     for (size_t i(0); i < content -> size(); ++i){(*content)[i].purge();}
     delete content; 
 }
 
 void analysis::build_inference(){
-    this -> success("Starting the model inference.");
+    int threads = this -> m_settings.threads; 
+    this -> success("+=============================+"); 
+    this -> success("|Starting the model inference.|");
+    this -> success("+=============================+"); 
     std::map<std::string, std::vector<graph_t*>>* dl = this -> loader -> get_inference(); 
     
     this -> success("Sorted events by event index. Preparing for multithreading.");
     int smpls = dl -> size(); 
     int modls = this -> model_inference.size(); 
 
-    std::map<std::string, std::vector<graph_t*>>::iterator its; 
+    size_t len = 0; 
+    std::map<std::string, std::vector<graph_t*>>::iterator its = dl -> begin(); 
+    for (; its != dl -> end(); ++its){len += its -> second.size();}
     std::map<std::string, model_template*>::iterator itm = this -> model_inference.begin(); 
 
     this -> info("Transferring graphs to device: " + std::string(itm -> second -> device)); 
     torch::TensorOptions* dev = itm -> second -> m_option; 
-    this -> loader -> datatransfer(dev, 10); 
+    this -> loader -> datatransfer(dev, threads); 
     this -> success("Completed transfer");
 
     std::vector<model_template*> th_models = std::vector<model_template*>(smpls*modls, nullptr); 
     std::vector<std::thread*> th_prc = std::vector<std::thread*>(smpls*modls, nullptr); 
-    std::vector<float> th_prg = std::vector<float>(smpls*modls, 0); 
+    std::vector<size_t> th_prg(smpls*modls, 0); 
+    std::thread* thr_ = new std::thread(this -> progressbar1, &th_prg, len, "Model Inference Progress"); 
 
     this -> info("------------- Cloning Models -------------"); 
+    std::map<std::string, bool> mute; 
     for (size_t x(0); x < th_models.size(); ++x){
         int mdx = x%smpls; 
         if (!mdx){its = dl -> begin();}
@@ -80,7 +86,11 @@ void analysis::build_inference(){
         model_settings_t mds; 
         itm -> second -> clone_settings(&mds); 
 
-        this -> success("Cloned model: " + std::string(itm -> second -> name)); 
+        if (!mute[itm -> second-> name]){
+            this -> success("Cloned model: " + std::string(itm -> second -> name)); 
+            mute[itm -> second -> name] = true; 
+        }
+
         model_template* md = itm -> second -> clone(); 
         md -> import_settings(&mds); 
 
@@ -124,28 +134,27 @@ void analysis::build_inference(){
         th_prc[x] = new std::thread(execution, md, &its -> second, fname, content, &th_prg[x]);
         th_models[x] = md; 
         ++its;
+
+        if (x%threads != threads-1){continue;}
+        for (size_t i(0); i < x; ++i){
+            if (!th_prc[i]){continue;}
+            th_prc[i] -> join(); 
+            delete th_prc[i];
+            delete th_models[i]; 
+            th_prc[i] = nullptr; 
+            th_models[i] = nullptr; 
+        }
     } 
 
     std::string msg = "Model Inference Progress"; 
     for (size_t x(0); x < th_prc.size(); ++x){
-        while (true){
-            bool status = true; 
-            float total = 0; 
-            for (size_t i(0); i < th_prc.size(); ++i){
-                total += th_prg[i]; 
-                status *= (th_prg[i] > 0.99); 
-            }
-            total = total / float(th_prc.size()); 
-            this -> progressbar(total, msg); 
-            std::this_thread::sleep_for(std::chrono::milliseconds(10)); 
-            if (!status){continue;}
-            break; 
-        }
-
-        if (th_prc[x] -> joinable()){th_prc[x] -> join();}
+        if (!th_prc[x]){continue;}
+        th_prc[x] -> join(); 
         delete th_prc[x]; 
         delete th_models[x]; 
     }
+    thr_ -> join(); 
+    delete thr_; 
     std::cout << "" << std::endl;
     this -> success("Model inference completed!"); 
 }

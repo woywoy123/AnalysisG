@@ -56,6 +56,7 @@ void add_to_dict(std::vector<float>* dummy){gInterpreter -> GenerateDictionary("
 void add_to_dict(std::vector<double>* dummy){gInterpreter -> GenerateDictionary("vector<double>", "vector");}
 void add_to_dict(std::vector<long>* dummy){gInterpreter -> GenerateDictionary("vector<long>", "vector");}
 void add_to_dict(std::vector<int>* dummy){gInterpreter -> GenerateDictionary("vector<int>", "vector");}
+void add_to_dict(std::vector<bool>* dummy){gInterpreter -> GenerateDictionary("vector<bool>", "vector");}
 
 struct variable_t {
     public:
@@ -96,7 +97,12 @@ struct variable_t {
                 return this -> add_data(&this -> vi, data, &s, &varname, int(0)); 
             }
 
-            std::cout << data -> dtype() << std::endl; 
+            if (s.size() == 1 && data -> dtype() == torch::kBool){
+                return this -> add_data(&this -> vb, data, &s, &varname, bool(0)); 
+            }
+
+            std::cout << "DIM: " << s.size() << std::endl;
+            std::cout << "Tensor Type: " << data -> dtype() << std::endl; 
             std::cout << *data << std::endl; 
             std::cout << "UNDEFINED DATA TYPE! SEE vector_cast.h" << std::endl;
             abort(); 
@@ -112,6 +118,7 @@ struct variable_t {
             if (this -> vd){delete this -> vd; return; }
             if (this -> vl){delete this -> vl; return; }
             if (this -> vi){delete this -> vi; return; }
+            if (this -> vb){delete this -> vb; return; }
         }
 
         void flush(){
@@ -124,6 +131,7 @@ struct variable_t {
             if (this -> vd){this -> vd -> clear(); return; }
             if (this -> vl){this -> vl -> clear(); return; }
             if (this -> vi){this -> vi -> clear(); return; }
+            if (this -> vb){this -> vb -> clear(); return; }
         }
 
     private: 
@@ -136,6 +144,7 @@ struct variable_t {
         std::vector<double>*               vd = nullptr; 
         std::vector<long>*                 vl = nullptr; 
         std::vector<int>*                  vi = nullptr; 
+        std::vector<bool>*                 vb = nullptr; 
 
         TBranch*                           tb = nullptr; 
         TTree*                             tt = nullptr; 

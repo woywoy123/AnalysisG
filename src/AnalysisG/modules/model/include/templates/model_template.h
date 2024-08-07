@@ -17,7 +17,7 @@ void execution(
         std::vector<graph_t*>*, 
         std::string, 
         std::vector<variable_t>*, 
-        float*
+        size_t*
 ); 
 
 class model_template: 
@@ -107,7 +107,7 @@ class model_template:
                 std::vector<graph_t*>*, 
                 std::string, 
                 std::vector<variable_t>*,
-                float*
+                size_t*
         ); 
 
     private:

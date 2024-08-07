@@ -4,14 +4,12 @@ void model_template::set_output_features(
         std::map<std::string, std::string>* inpt, 
         std::map<std::string, std::tuple<torch::Tensor*, loss_enum>>* out_fx
 ){
-    notification nx = notification(); 
     std::map<std::string, std::string>::iterator itx = inpt -> begin();
     for (; itx != inpt -> end(); ++itx){
         std::string o_fx = itx -> first; 
         std::string l_fx = itx -> second;
         loss_enum loss_type = lossfx().loss_string(l_fx);
         (*out_fx)[o_fx] = {nullptr, loss_type}; 
-        nx.success("Added loss function: " + l_fx + " for " + o_fx);
     }
 }
 

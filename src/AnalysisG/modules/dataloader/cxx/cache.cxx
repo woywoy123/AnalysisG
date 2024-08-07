@@ -207,11 +207,24 @@ bool dataloader::restore_graphs(std::string path, int threads){
         delete ior; 
     }
 
+    std::vector<int> max_index = {};
+    max_index.reserve(len_cache);  
     std::vector<graph_t*> restored(len_cache, nullptr); 
     for (size_t x(0); x < cache_rebuild.size(); ++x){
-        th_[x] -> join(); delete th_[x];  th_[x] = nullptr; 
+        if (th_[x]){th_[x] -> join(); delete th_[x];  th_[x] = nullptr;}
         delete data[x]; data[x] = nullptr; 
+        std::vector<graph_t*>* datax = cache_rebuild[x]; 
+        for (size_t p(0); p < datax -> size(); ++p){
+            graph_t* gr = (*datax)[p]; 
+            max_index.push_back(gr -> event_index);  
+        }
+    }
+    prg -> join(); delete prg; prg = nullptr; 
 
+    int mx = this -> max(&max_index); 
+    if (mx > len_cache){restored = std::vector<graph_t*>(mx+1, nullptr);}
+
+    for (size_t x(0); x < cache_rebuild.size(); ++x){
         std::vector<graph_t*>* datax = cache_rebuild[x]; 
         for (size_t p(0); p < datax -> size(); ++p){
             graph_t* gr = (*datax)[p]; 
@@ -220,7 +233,6 @@ bool dataloader::restore_graphs(std::string path, int threads){
         delete datax; 
         cache_rebuild[x] = nullptr; 
     }
-    prg -> join(); delete prg; prg = nullptr; 
 
     // validate the restored graphs 
     bool valid = true;
@@ -242,8 +254,15 @@ bool dataloader::restore_graphs(std::string path, int threads){
         this -> delete_path(path); 
         return false;
     }
-    for (size_t x(0); x < restored.size(); ++x){this -> extract_data(restored[x]);}
-    this -> success("Restored " + std::to_string(restored.size()) + " Graphs from cache!"); 
+
+    int s = 0; 
+    for (size_t x(0); x < restored.size(); ++x){
+        if (!restored[x]){continue;}
+        this -> extract_data(restored[x]);
+        s++; 
+    }
+
+    this -> success("Restored " + std::to_string(s) + " Graphs from cache!"); 
     return valid; 
 }
 
