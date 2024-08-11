@@ -1,9 +1,10 @@
 # distutils: language=c++
 # cython: language_level=3
 
-from AnalysisG.core.io cimport io, data_t, data_enum, switch_board
+from AnalysisG.core.io cimport io
 from AnalysisG.core.tools cimport *
 from AnalysisG.core.meta cimport Meta, meta
+from AnalysisG.core.structs cimport data_t, data_enum, switch_board
 
 from libcpp cimport bool
 from libcpp.map cimport map, pair

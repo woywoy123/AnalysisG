@@ -7,6 +7,6 @@ set(SOURCE_FILES
 
 add_library(cmetrics STATIC ${SOURCE_FILES})
 target_include_directories(cmetrics PRIVATE include/metrics)
-target_include_directories(cmetrics PUBLIC include)
-target_link_libraries(cmetrics LINK_PUBLIC cmodel graph-cuda ${ROOT_LIBRARIES})
+target_include_directories(cmetrics PUBLIC include ${ROOT_INCLUDES_DIR})
+target_link_libraries(cmetrics LINK_PUBLIC cmodel_template graph-cuda ${ROOT_LIBRARIES})
 target_compile_options(cmetrics PRIVATE -fPIC)

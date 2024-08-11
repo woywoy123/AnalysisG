@@ -4,8 +4,8 @@ set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/cxx/properties.cxx
 )
 
-add_library(cselection STATIC ${SOURCE_FILES})
-target_include_directories(cselection PRIVATE include/templates)
-target_include_directories(cselection PUBLIC include)
-target_link_libraries(cselection LINK_PUBLIC cevent ctypecasting)
-target_compile_options(cselection PRIVATE -fPIC)
+add_library(cselection_template STATIC ${SOURCE_FILES})
+target_include_directories(cselection_template PRIVATE include/templates)
+target_include_directories(cselection_template PUBLIC include)
+target_link_libraries(cselection_template LINK_PUBLIC cevent_template ctypecasting)
+target_compile_options(cselection_template PRIVATE -fPIC)

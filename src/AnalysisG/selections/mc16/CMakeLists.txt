@@ -3,5 +3,6 @@ add_subdirectory(topmatching)
 add_subdirectory(childrenkinematics)
 add_subdirectory(decaymodes)
 add_subdirectory(toptruthjets)
+
 file(INSTALL __init__.py  DESTINATION . )
 file(INSTALL __init__.pxd DESTINATION . )

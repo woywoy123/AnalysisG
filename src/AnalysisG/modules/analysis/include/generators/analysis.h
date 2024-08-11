@@ -1,6 +1,7 @@
 #ifndef ANALYSIS_H
 #define ANALYSIS_H
 
+#include <string>
 #include <generators/sampletracer.h>
 #include <generators/dataloader.h>
 #include <generators/optimizer.h>
@@ -12,6 +13,7 @@
 #include <templates/fx_enums.h>
 
 #include <structs/settings.h>
+#include <io/io.h>
 
 class analysis: 
     public notification, 

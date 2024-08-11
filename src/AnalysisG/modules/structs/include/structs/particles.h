@@ -1,6 +1,6 @@
 #ifndef PARTICLES_STRUCTS_H
 #define PARTICLES_STRUCTS_H
-#include <iostream>
+
 #include <string>
 #include <vector>
 #include <map>

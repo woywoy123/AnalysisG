@@ -63,7 +63,6 @@ void analysis::start(){
     std::string pth_cache = this -> m_settings.graph_cache; 
     std::vector<std::string> cache = {}; 
     if (pth_cache.size()){cache = this -> ls(pth_cache, ".h5");}
-
     for (size_t x(0); x < cache.size(); ++x){
         if (!this -> has_string(&cache[x], "0x")){continue;}
         trig = true; 

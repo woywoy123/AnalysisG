@@ -1,4 +1,6 @@
+set(SOURCE_FILES STATIC ${CMAKE_CURRENT_SOURCE_DIR}/cxx/structs.cxx)
 set(HEADER_FILES 
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/structs/element.h
     ${CMAKE_CURRENT_SOURCE_DIR}/include/structs/settings.h
     ${CMAKE_CURRENT_SOURCE_DIR}/include/structs/particles.h
     ${CMAKE_CURRENT_SOURCE_DIR}/include/structs/property.h
@@ -9,8 +11,8 @@ set(HEADER_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/include/structs/model.h
 )
 
-set(SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/cxx/structs.cxx)
-add_library(cstructs STATIC ${SOURCE_FILES})
+add_library(cstructs ${SOURCE_FILES})
 target_include_directories(cstructs PRIVATE include/structs)
-target_include_directories(cstructs PUBLIC include)
+target_include_directories(cstructs PUBLIC include ${ROOT_INCLUDE_DIRS})
+target_link_libraries(cstructs PUBLIC ${ROOT_LIBRARIES})
 target_compile_options(cstructs PRIVATE -fPIC)

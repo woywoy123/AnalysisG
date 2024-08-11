@@ -3,61 +3,26 @@ set(HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/include/bsm_4tops/particles.h)
 set(SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/cxx/particles.cxx)
 
 add_library(cparticle_bsm_4tops                STATIC ${SOURCE_FILES})
-target_include_directories(cparticle_bsm_4tops PUBLIC include)
 target_include_directories(cparticle_bsm_4tops PRIVATE include/bsm_4tops)
-target_link_libraries(cparticle_bsm_4tops      LINK_PUBLIC cparticles)
-target_compile_options(cparticle_bsm_4tops     PRIVATE -fPIC)
+target_include_directories(cparticle_bsm_4tops PUBLIC include)
 
 # --------------- DEFINE THE EVENT ------------------ #
 set(HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/include/bsm_4tops/event.h)
 set(SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/cxx/event.cxx)
 
 add_library(cevent_bsm_4tops                STATIC ${SOURCE_FILES})
-target_include_directories(cevent_bsm_4tops PUBLIC include)
 target_include_directories(cevent_bsm_4tops PRIVATE include/bsm_4tops)
-target_link_libraries(cevent_bsm_4tops      LINK_PUBLIC cparticle_bsm_4tops cevent)
+target_include_directories(cevent_bsm_4tops PUBLIC include)
+
+target_link_libraries(cparticle_bsm_4tops   PUBLIC cparticle_template)
+target_link_libraries(cevent_bsm_4tops      PUBLIC cparticle_bsm_4tops cevent_template)
+
+target_compile_options(cparticle_bsm_4tops  PRIVATE -fPIC)
 target_compile_options(cevent_bsm_4tops     PRIVATE -fPIC)
 
 # -------- building ------- #
-add_custom_command(
-OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/particle_bsm_4tops.cpp
-DEPENDS 
-    ${CMAKE_CURRENT_SOURCE_DIR}/__init__.pxd
-    ${CMAKE_CURRENT_SOURCE_DIR}/particle_bsm_4tops.pxd
-    ${CMAKE_CURRENT_SOURCE_DIR}/particle_bsm_4tops.pyx
-VERBATIM
-COMMAND
-    Python::Interpreter -m cython --cplus
-    ${CMAKE_CURRENT_SOURCE_DIR}/particle_bsm_4tops.pyx 
-    --output-file ${CMAKE_CURRENT_SOURCE_DIR}/particle_bsm_4tops.cpp
-)
-
-add_custom_command(
-OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/event_bsm_4tops.cpp
-DEPENDS 
-    ${CMAKE_CURRENT_SOURCE_DIR}/__init__.pxd
-    ${CMAKE_CURRENT_SOURCE_DIR}/event_bsm_4tops.pxd
-    ${CMAKE_CURRENT_SOURCE_DIR}/event_bsm_4tops.pyx
-VERBATIM
-COMMAND
-    Python::Interpreter -m cython --cplus
-    ${CMAKE_CURRENT_SOURCE_DIR}/event_bsm_4tops.pyx 
-    --output-file ${CMAKE_CURRENT_SOURCE_DIR}/event_bsm_4tops.cpp
-)
-
-
-# -------- linking --------#
-python_add_library(event_bsm_4tops    MODULE ${CMAKE_CURRENT_SOURCE_DIR}/event_bsm_4tops.cpp WITH_SOABI)
-python_add_library(particle_bsm_4tops MODULE ${CMAKE_CURRENT_SOURCE_DIR}/particle_bsm_4tops.cpp WITH_SOABI)
-
-target_link_libraries(event_bsm_4tops    LINK_PUBLIC cevent_bsm_4tops)
-target_link_libraries(particle_bsm_4tops LINK_PUBLIC cparticle_bsm_4tops)
-
-install(TARGETS particle_bsm_4tops DESTINATION ${SKBUILD_PROJECT_NAME}/events/bsm_4tops)
-install(TARGETS event_bsm_4tops    DESTINATION ${SKBUILD_PROJECT_NAME}/events/bsm_4tops)
-
-file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/event_bsm_4tops.cpp)
-file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/particle_bsm_4tops.cpp)
+cmake_language(CALL cybuild "events/bsm_4tops" "events/bsm_4tops" particle_bsm_4tops "")
+cmake_language(CALL cybuild "events/bsm_4tops" "events/bsm_4tops" event_bsm_4tops    "")
 
 file(INSTALL __init__.pxd DESTINATION . )
 file(INSTALL __init__.py  DESTINATION . )

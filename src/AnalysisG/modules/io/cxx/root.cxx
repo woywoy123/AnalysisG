@@ -1,220 +1,4 @@
-#include <io.h>
-#include <iostream>
-
-bool element_t::next(){
-    bool stop = false; 
-    std::map<std::string, data_t*>::iterator itr = this -> handle.begin();
-    for (; itr != this -> handle.end(); ++itr){
-        switch (itr -> second -> type){
-            case data_enum::vvf: stop = itr -> second -> next(&this -> r_vvf[itr -> first]); break; 
-            case data_enum::vvd: stop = itr -> second -> next(&this -> r_vvd[itr -> first]); break; 
-            case data_enum::vvl: stop = itr -> second -> next(&this -> r_vvl[itr -> first]); break; 
-            case data_enum::vvi: stop = itr -> second -> next(&this -> r_vvi[itr -> first]); break; 
-
-            case data_enum::vf:  stop = itr -> second -> next(&this -> r_vf[itr -> first]);  break; 
-            case data_enum::vl:  stop = itr -> second -> next(&this -> r_vl[itr -> first]);  break; 
-            case data_enum::vi:  stop = itr -> second -> next(&this -> r_vi[itr -> first]);  break; 
-            case data_enum::vc:  stop = itr -> second -> next(&this -> r_vc[itr -> first]);  break; 
-
-            case data_enum::f:   stop = itr -> second -> next(&this -> r_f[itr -> first]);   break; 
-            case data_enum::l:   stop = itr -> second -> next(&this -> r_l[itr -> first]);   break; 
-            case data_enum::i:   stop = itr -> second -> next(&this -> r_i[itr -> first]);   break; 
-            case data_enum::ull: stop = itr -> second -> next(&this -> r_ull[itr -> first]); break; 
-            default: break; 
-        }
-    }
-    return stop; 
-}
-
-void element_t::set_meta(){
-    std::map<std::string, data_t*>::iterator itr = this -> handle.begin();
-    bool sk = itr -> second -> file_index >= (int)itr -> second -> files_i -> size(); 
-    if (sk){return;}
-    this -> event_index = itr -> second -> index; 
-    this -> filename = itr -> second -> files_s -> at(itr -> second -> file_index);
-}
-
-void data_t::flush_buffer(){
-    switch (this -> type){
-        case data_enum::vvf: this -> flush_buffer(&this -> r_vvf); break; 
-        case data_enum::vvd: this -> flush_buffer(&this -> r_vvd); break; 
-        case data_enum::vvl: this -> flush_buffer(&this -> r_vvl); break; 
-        case data_enum::vvi: this -> flush_buffer(&this -> r_vvi); break; 
-
-        case data_enum::vf:  this -> flush_buffer(&this -> r_vf ); break; 
-        case data_enum::vl:  this -> flush_buffer(&this -> r_vl ); break; 
-        case data_enum::vi:  this -> flush_buffer(&this -> r_vi ); break; 
-        case data_enum::vc:  this -> flush_buffer(&this -> r_vc ); break; 
-
-        case data_enum::f:   this -> flush_buffer(&this -> r_f  ); break; 
-        case data_enum::l:   this -> flush_buffer(&this -> r_l  ); break; 
-        case data_enum::i:   this -> flush_buffer(&this -> r_i  ); break; 
-        case data_enum::ull: this -> flush_buffer(&this -> r_ull); break; 
-        default: return; 
-    }
-}
-
-void data_t::fetch_buffer(){
-    switch (this -> type){
-        case data_enum::vvf: return this -> fetch_buffer(&this -> r_vvf);
-        case data_enum::vvd: return this -> fetch_buffer(&this -> r_vvd);
-        case data_enum::vvl: return this -> fetch_buffer(&this -> r_vvl);
-        case data_enum::vvi: return this -> fetch_buffer(&this -> r_vvi);
-
-        case data_enum::vf:  return this -> fetch_buffer(&this -> r_vf );
-        case data_enum::vl:  return this -> fetch_buffer(&this -> r_vl );
-        case data_enum::vi:  return this -> fetch_buffer(&this -> r_vi );
-        case data_enum::vc:  return this -> fetch_buffer(&this -> r_vc );
-
-        case data_enum::f:   return this -> fetch_buffer(&this -> r_f  );
-        case data_enum::l:   return this -> fetch_buffer(&this -> r_l  );
-        case data_enum::i:   return this -> fetch_buffer(&this -> r_i  );
-        case data_enum::ull: return this -> fetch_buffer(&this -> r_ull);
-        default: return; 
-    }
-}
-
-void data_t::flush(){
-    this -> flush_buffer();
-    if (this -> files_s){delete this -> files_s;}
-    if (this -> files_i){delete this -> files_i;}
-    if (this -> files_t){delete this -> files_t;}
-}
-
-void data_t::initialize(){
-    TFile* c = this -> files_t -> at(this -> file_index); 
-    c = c -> Open(c -> GetTitle()); 
-
-    this -> tree        = (TTree*)c -> Get(this -> tree_name.c_str()); 
-    this -> leaf        = this -> tree -> FindLeaf(this -> leaf_name.c_str());
-    this -> branch      = this -> leaf -> GetBranch();  
-    
-    this -> tree_name   = this -> tree -> GetName();
-    this -> leaf_name   = this -> leaf -> GetName();
-    this -> branch_name = this -> branch -> GetName(); 
-
-    this -> string_type(); 
-    this -> flush_buffer(); 
-    this -> fetch_buffer(); 
-    this -> index = 0; 
-    c -> Close(); 
-    delete c; 
-}; 
-
-void data_t::string_type(){
-    if (this -> leaf_type == "Float_t"){
-        this -> type = data_enum::f; return; 
-    }
-
-    if (this -> leaf_type == "Int_t"){
-        this -> type = data_enum::i; return; 
-    }
-
-    if (this -> leaf_type == "ULong64_t"){
-        this -> type = data_enum::ull; return; 
-    }
-
-    if (this -> leaf_type == "vector<vector<int> >"){
-        this -> type = data_enum::vvi; return; 
-    }
-
-    if (this -> leaf_type == "vector<vector<float> >"){
-        this -> type = data_enum::vvf; return; 
-    }
-
-    if (this -> leaf_type == "vector<vector<double> >"){
-        this -> type = data_enum::vvd; return; 
-    }
-
-    if (this -> leaf_type == "vector<float>"){
-        this -> type = data_enum::vf; return; 
-    }
-
-    if (this -> leaf_type == "vector<int>"){
-        this -> type = data_enum::vi; return; 
-    }
-
-    if (this -> leaf_type == "vector<char>"){
-        this -> type = data_enum::vc; return; 
-    }
-
-    std::cout << "UNKNOWN TYPE: " << this -> leaf_type << " " << path << std::endl; 
-    std::cout << "Add the type under modules/io/cxx/root.cxx" << std::endl;
-    abort(); 
-}
-
-bool data_t::element(std::vector<std::vector<float>>* el){
-    if (!this -> r_vvf){return false;}
-    (*el) = (*this -> r_vvf)[this -> index]; 
-    return true; 
-}
-
-bool data_t::element(std::vector<std::vector<double>>* el){
-    if (!this -> r_vvd){return false;}
-    (*el) = (*this -> r_vvd)[this -> index]; 
-    return true; 
-}
-
-bool data_t::element(std::vector<std::vector<long>>* el){
-    if (!this -> r_vvl){return false;}
-    (*el) = (*this -> r_vvl)[this -> index];
-    return true; 
-}
-
-bool data_t::element(std::vector<std::vector<int>>* el){
-    if (!this -> r_vvi){return false;} 
-    (*el) = (*this -> r_vvi)[this -> index];
-    return true; 
-}
-
-bool data_t::element(std::vector<float>* el){
-    if (!this -> r_vf){return false;}
-    (*el) = (*this -> r_vf)[this -> index]; 
-    return true; 
-}
-
-bool data_t::element(std::vector<int>* el){
-    if (!this -> r_vi){return false;}
-    (*el) = (*this -> r_vi)[this -> index]; 
-    return true; 
-}
-
-bool data_t::element(std::vector<long>* el){
-    if (!this -> r_vl){return false;}
-    (*el) = (*this -> r_vl)[this -> index]; 
-    return true; 
-}
-
-bool data_t::element(std::vector<char>* el){
-    if (!this -> r_vc){return false;}
-    (*el) = (*this -> r_vc)[this -> index]; 
-    return true; 
-}
-
-bool data_t::element(float* el){
-    if (!this -> r_f){return false;}
-    (*el) = (*this -> r_f)[this -> index];
-    return true; 
-}
-
-bool data_t::element(int* el){
-    if (!this -> r_i){return false;}
-    (*el) = (*this -> r_i)[this -> index];
-    return true; 
-}
-
-bool data_t::element(long* el){
-    if (!this -> r_l){return false;}
-    (*el) = (*this -> r_l)[this -> index];
-    return true; 
-}
-
-bool data_t::element(unsigned long long* el){
-    if (!this -> r_ull){return false;}
-    (*el) = (*this -> r_ull)[this -> index];
-    return true; 
-}
-
+#include "io.h"
 
 void io::check_root_file_paths(){
     std::map<std::string, bool> tmp = {}; 
@@ -272,8 +56,8 @@ void io::root_key_paths(std::string path, TTree* t){
         std::string name = this -> leaves[x]; 
         TLeaf* lf = tr -> FindLeaf(name.c_str());
         if (!lf){continue;}
-        TBranch* br = lf -> GetBranch();
 
+        TBranch* br = lf -> GetBranch();
         std::string name_s = std::string(tr -> GetName()) + "."; 
         if (!br){
             this -> leaf_data[file_name][name_s] = lf; 
@@ -282,6 +66,7 @@ void io::root_key_paths(std::string path, TTree* t){
         }
 
         name_s += std::string(br -> GetName()) + "." + std::string(lf -> GetName());
+
         if (!br -> IsFolder()){
             this -> leaf_data[file_name][name_s]  = lf; 
             this -> leaf_typed[file_name][name_s] = lf -> GetTypeName(); 
@@ -310,10 +95,15 @@ void io::root_key_paths(std::string path){
         std::string fname = this -> file_root -> GetTitle(); 
         if (std::string(obj -> GetName()) == "AnalysisTracking"){
             if (this -> meta_data.count(fname)){continue;}
-            TTreeReader r = TTreeReader("AnalysisTracking"); 
-            TTreeReaderValue<std::string> dr(r, "jsonData"); 
+            TTree* r = (TTree*)obj;
+            TBranch* lf = r -> GetBranch("jsonData"); 
+            r -> GetEntry(0); 
             std::string data = ""; 
-            while (r.Next()){data += (*dr);}
+            for (TObject* obj : *lf -> GetListOfLeaves()){
+                TLeaf* lx = (TLeaf*)obj; 
+                char** datar = reinterpret_cast<char**>(lx -> GetValuePointer()); 
+                data += std::string(*datar); 
+            }
             this -> meta_data[fname] = new meta(); 
             this -> meta_data[fname] -> parse_json(data); 
             continue; 
@@ -425,8 +215,6 @@ bool io::scan_keys(){
            this -> missing_trigger[leaves_m[x]] = true; 
            this -> warning("Missing Leaves: " + leaves_m[x]); 
        }
-       this -> failure("aborting due to missing data!"); 
-       return false; 
     }
     return true; 
 }

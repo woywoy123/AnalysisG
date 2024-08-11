@@ -17,17 +17,17 @@ gn = RecursiveGraphNeuralNetwork()
 gn.o_edge = {"top_edge" : "CrossEntropyLoss", "res_edge" : "CrossEntropyLoss"}
 gn.o_graph = {"ntops" : "CrossEntropyLoss", "signal" : "CrossEntropyLoss"}
 gn.i_node = ["pt", "eta", "phi", "energy"]
-gn.i_graph = ["met", "phi"]
 gn.device = "cuda:0"
 gn.rep = 1024
 gn.checkpoint_path = "GraphDetector/RecursiveGraphNeuralNetwork/MRK-1/state/epoch-1/kfold-1_model.pt"
 
 ana = Analysis()
+ana.OutputPath = "GraphDetector"
 #ana.AddSamples(root1, "tmp")
 ana.GraphCache = "GraphDetector/GraphCache/GraphDetector"
 #ana.AddEvent(ev, "tmp")
 #ana.AddGraph(gr, "tmp")
 ana.Threads = 1
-ana.AddModelInference(gn, "results")
+ana.AddModelInference(gn, "ROOT/MRK-1/epoch-1/kfold-1")
 ana.Start()
 

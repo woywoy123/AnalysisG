@@ -1,4 +1,5 @@
 from AnalysisG.core.plotting import TH1F, TH2F
+import torch
 
 global figure_path
 global mass_point

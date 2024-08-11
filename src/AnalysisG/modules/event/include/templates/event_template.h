@@ -3,10 +3,9 @@
 
 #include <templates/particle_template.h>
 #include <structs/property.h>
+#include <structs/element.h>
 #include <structs/event.h>
 #include <tools/tools.h>
-#include <io/io.h>
-
 
 class event_template: public tools
 {

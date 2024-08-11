@@ -3,25 +3,7 @@ set(SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/childrenkinematics.cxx)
 
 add_library(cchildrenkinematics STATIC ${SOURCE_FILES})
 target_include_directories(cchildrenkinematics PUBLIC ../childrenkinematics)
-target_link_libraries(cchildrenkinematics LINK_PUBLIC cselection cevent_bsm_4tops)
-target_compile_options(cchildrenkinematics PRIVATE -fPIC)
+target_link_libraries(cchildrenkinematics      PUBLIC cselection_template cevent_bsm_4tops)
+target_compile_options(cchildrenkinematics     PRIVATE -fPIC)
 
-add_custom_command(
-OUTPUT childrenkinematics.cpp
-DEPENDS 
-    ${CMAKE_CURRENT_SOURCE_DIR}/__init__.pxd
-    ${CMAKE_CURRENT_SOURCE_DIR}/childrenkinematics.pxd
-    ${CMAKE_CURRENT_SOURCE_DIR}/childrenkinematics.pyx
-VERBATIM
-COMMAND 
-    Python::Interpreter -m cython --cplus 
-    ${CMAKE_CURRENT_SOURCE_DIR}/childrenkinematics.pyx 
-    --output-file childrenkinematics.cpp
-)
-
-python_add_library(childrenkinematics MODULE childrenkinematics.cpp WITH_SOABI)
-target_link_libraries(childrenkinematics LINK_PUBLIC cchildrenkinematics)
-file(REMOVE ${CMAKE_CURRENT_SOURCE_DIR}/childrenkinematics.cpp)
-install(TARGETS childrenkinematics DESTINATION ${SKBUILD_PROJECT_NAME}/selections/mc16)
-
-
+cmake_language(CALL cybuild "selections/mc16/childrenkinematics" "selections/mc16" childrenkinematics "")

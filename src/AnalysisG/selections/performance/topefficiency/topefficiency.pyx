@@ -15,14 +15,41 @@ cdef class TopEfficiency(SelectionTemplate):
         self.truthchildren_pt_eta_topmass = inpt["truthchildren_pt_eta_topmass"]
         self.truthjets_pt_eta_topmass     = inpt["truthjets_pt_eta_topmass"]
         self.jets_pt_eta_topmass          = inpt["jets_pt_eta_topmass"]
+        self.truthchildren_pt_eta_topmass = inpt["truthchildren_pt_eta_topmass"]
+        self.truthjets_pt_eta_topmass     = inpt["truthjets_pt_eta_topmass"]
+        self.jets_pt_eta_topmass          = inpt["jets_pt_eta_topmass"]
+        self.predicted_topmass            = inpt["predicted_topmass"]
+        self.truth_topmass                = inpt["truth_topmass"]
+        self.n_tops_predictions           = inpt["n_tops_predictions"]
+        self.n_tops_real                  = inpt["n_tops_real"]
+        self.truth_res_edge               = inpt["truth_res_edge"]
+        self.truth_top_edge               = inpt["truth_top_edge"]
+        self.truth_ntops                  = inpt["truth_ntops"]
+        self.truth_signal                 = inpt["truth_signal"]
+        self.pred_res_edge_score          = inpt["pred_res_edge_score"]
+        self.pred_top_edge_score          = inpt["pred_top_edge_score"]
+        self.pred_ntops_score             = inpt["pred_ntops_score"]
+        self.pred_signal_score            = inpt["pred_signal_score"]
 
     def __dealloc__(self): del self.tt
 
     def __reduce__(self):
         cdef dict out = {
             "truthchildren_pt_eta_topmass" : self.truthchildren_pt_eta_topmass,
-            "truthjets_pt_eta_topmass" : self.truthjets_pt_eta_topmass,
-            "jets_pt_eta_topmass" : self.jets_pt_eta_topmass
+            "truthjets_pt_eta_topmass"     : self.truthjets_pt_eta_topmass,
+            "jets_pt_eta_topmass"          : self.jets_pt_eta_topmass,
+            "predicted_topmass"            : self.predicted_topmass,
+            "truth_topmass"                : self.truth_topmass,
+            "n_tops_predictions"           : self.n_tops_predictions,
+            "n_tops_real"                  : self.n_tops_real,
+            "truth_res_edge"               : self.truth_res_edge,
+            "truth_top_edge"               : self.truth_top_edge,
+            "truth_ntops"                  : self.truth_ntops,
+            "truth_signal"                 : self.truth_signal,
+            "pred_res_edge_score"          : self.pred_res_edge_score,
+            "pred_top_edge_score"          : self.pred_top_edge_score,
+            "pred_ntops_score"             : self.pred_ntops_score,
+            "pred_signal_score"            : self.pred_signal_score
         }
         return TopEfficiency, (out,)
 
@@ -31,4 +58,16 @@ cdef class TopEfficiency(SelectionTemplate):
         self.truthjets_pt_eta_topmass     = as_dict(&self.tt.truthjets_pt_eta_topmass)
         self.jets_pt_eta_topmass          = as_dict(&self.tt.jets_pt_eta_topmass)
 
+        self.predicted_topmass   = as_dict(&self.tt.predicted_topmass)
+        self.truth_topmass       = as_dict(&self.tt.truth_topmass)
+        self.n_tops_predictions  = as_dict(&self.tt.n_tops_predictions)
+        self.n_tops_real         = as_dict(&self.tt.n_tops_real)
 
+        self.truth_res_edge      = self.tt.truth_res_edge
+        self.truth_top_edge      = self.tt.truth_top_edge
+        self.truth_ntops         = self.tt.truth_ntops
+        self.truth_signal        = self.tt.truth_signal
+        self.pred_res_edge_score = self.tt.pred_res_edge_score
+        self.pred_top_edge_score = self.tt.pred_top_edge_score
+        self.pred_ntops_score    = self.tt.pred_ntops_score
+        self.pred_signal_score   = self.tt.pred_signal_score

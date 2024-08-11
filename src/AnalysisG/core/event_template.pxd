@@ -8,7 +8,7 @@ from libcpp.vector cimport vector
 from libcpp.functional cimport function
 from cython.operator cimport dereference as deref
 
-from AnalysisG.core.io cimport data_t
+from AnalysisG.core.structs cimport data_t
 
 cdef extern from "<templates/event_template.h>":
     cdef cppclass event_template:

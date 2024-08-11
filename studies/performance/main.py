@@ -1,7 +1,9 @@
-from AnalysisG.generators.analysis import Analysis
+from AnalysisG.generators import Analysis
+import torch
 
 # event implementation
-from AnalysisG.events.bsm_4tops.event_bsm_4tops import BSM4Tops
+from AnalysisG.events.bsm_4tops import BSM4Tops
+from AnalysisG.events.gnn import EventGNN
 
 # study
 from AnalysisG.selections.performance.topefficiency.topefficiency import TopEfficiency
@@ -11,24 +13,26 @@ import topefficiency
 import pickle
 
 study = "topefficiency"
-smpls = "../../test/samples/dilepton/*"
+smpls = "model-data/MRK-1/epoch-1/kfold-1/*"
 
 plotting_method = {
     "topefficiency" : topefficiency
 }
 
-gen_data = True
+gen_data = False
+model_ev = True
+
 figure_path = "./Output/"
 for mass in ["1000", "900", "800", "700", "600", "500", "400"]:
     mass_point = "Mass." + mass + ".GeV"
-    smpls = "/home/tnom6927/Downloads/DileptonCollection/MadGraphPythia8EvtGen_noallhad_ttH_tttt_m" + mass + "/*"
+    #smpls = "/home/tnom6927/Downloads/DileptonCollection/MadGraphPythia8EvtGen_noallhad_ttH_tttt_m" + mass + "/*"
 
     method = plotting_method[study]
     method.figures.figure_path = figure_path
     method.figures.mass_point  = mass_point
 
     if gen_data:
-        ev = BSM4Tops()
+        ev = EventGNN() if model_ev else BSM4Tops()
 
         sel = None
         if study == "topefficiency": sel = TopEfficiency()
@@ -37,6 +41,7 @@ for mass in ["1000", "900", "800", "700", "600", "500", "400"]:
         ana.AddSamples(smpls, "tmp")
         ana.AddEvent(ev, "tmp")
         ana.AddSelection(sel)
+        ana.Threads = 1
         ana.Start()
 
         f = open(study + "-" + mass_point + ".pkl", "wb")
@@ -49,3 +54,4 @@ for mass in ["1000", "900", "800", "700", "600", "500", "400"]:
 
     print("plotting: " + study)
     if study == "topefficiency": method.figures.TopEfficiency(pres)
+    break

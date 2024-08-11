@@ -1,5 +1,5 @@
-#ifndef RECURSIVEGRAPHNEURALNETWORK_H
-#define RECURSIVEGRAPHNEURALNETWORK_H
+#ifndef GNN_EXPERIMENTAL_H
+#define GNN_EXPERIMENTAL_H
 #include <templates/model_template.h>
 
 class experimental: public model_template

@@ -94,7 +94,7 @@ bool container::add_selection_template(selection_template* sel){
 
 void container::compile(size_t* l){
     for (int x(0); x < this -> random_access -> size(); ++x){
-        entry_t* ev = this -> random_access -> at(x); 
+        entry_t* ev = (*this -> random_access)[x]; 
         for (event_template* evx : *ev -> m_event){evx -> CompileEvent();}
         if (ev -> m_selection -> size() && !this -> merged){
             this -> merged = new std::map<std::string, selection_template*>();
@@ -120,6 +120,7 @@ void container::compile(size_t* l){
         ev -> destroy(); 
         *l = x+1; 
     }
+    *l = this -> random_access -> size(); 
 }
 
 void container::fill_selections(std::map<std::string, selection_template*>* inpt){

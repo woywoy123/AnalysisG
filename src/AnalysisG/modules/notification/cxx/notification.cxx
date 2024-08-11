@@ -1,6 +1,6 @@
+#include "notification.h"
 #include <stddef.h>
 #include <thread>
-#include <notification.h>
 
 notification::notification(){}
 notification::~notification(){}
@@ -62,6 +62,7 @@ void notification::progressbar1(std::vector<size_t>* threads, size_t l, std::str
         if (prgs > 0.995){break;}
         notification().progressbar(prgs, title); 
     } 
+    notification().progressbar(1, title); 
     std::cout << "" << std::endl;
 } 
 
@@ -72,6 +73,7 @@ void notification::progressbar2(std::vector<size_t>* threads, size_t* l, std::st
         if (prgs > 0.995){break;}
         notification().progressbar(prgs, *title); 
     } 
+    notification().progressbar(1, *title); 
     std::cout << "" << std::endl;
 } 
 

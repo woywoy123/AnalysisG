@@ -24,9 +24,7 @@ void dataloader::generate_kfold_set(int k){
     }
     if (!all){return;}
     std::map<int, std::vector<int>> folds = {}; 
-    for (int x(0); x < this -> train_set -> size(); ++x){
-        folds[x%(k+1)].push_back((*this -> train_set)[x]);
-    }
+    for (int x(0); x < this -> train_set -> size(); ++x){folds[x%(k+1)].push_back((*this -> train_set)[x]);}
     this -> success("Splitting training dataset (" + this -> to_string(this -> train_set -> size()) + ")"); 
     for (int x(0); x < k; ++x){
         std::vector<int>* val = this -> k_fold_validation[x]; 

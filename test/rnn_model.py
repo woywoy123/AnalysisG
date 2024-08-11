@@ -3,14 +3,14 @@ from AnalysisG.core.lossfx import OptimizerConfig
 from AnalysisG.generators.analysis import Analysis
 from AnalysisG.events.bsm_4tops.event_bsm_4tops import BSM4Tops
 from AnalysisG.graphs.bsm_4tops import *
-from AnalysisG.models.RecursiveGraphNeuralNetwork import *
+from AnalysisG.models import RecursiveGraphNeuralNetwork
 
 root1 = "./samples/dilepton/*"
 
 x = BSM4Tops()
 #tt = GraphChildren()
-#tt = GraphTruthJets()
-tt = GraphDetector()
+tt = GraphTruthJets()
+#tt = GraphDetector()
 
 
 params = [
@@ -74,10 +74,11 @@ ana.AddGraph(tt, "tmp")
 
 for i in range(len(optims)): ana.AddModel(trains[i], optims[i], params[0][0] + "-"+str(i))
 
-ana.kFolds = 1
+ana.kFolds = 2
 ana.Epochs = 100
-ana.TrainingDataset = "./sample.h5"
+ana.TrainingDataset = "./ProjectName/sample.h5"
 ana.Targets = ["res_edge", "top_edge"]
+ana.GraphCache = "./ProjectName/Cache/"
 ana.kFold = [1]
 ana.MaxRange = 1500
 ana.TrainSize = 95

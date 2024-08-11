@@ -16,15 +16,25 @@ class gnn_event: public event_template
         int ntops = 0; 
         float ntops_score = 0; 
 
-        std::vector<bool> res_edge = {}; 
-        std::vector<bool> top_edge = {}; 
-        std::vector<float> res_score = {}; 
-        std::vector<float> top_score = {}; 
+        std::vector<float> pred_ntops_score  = {}; 
+        std::vector<float> pred_signal_score = {}; 
 
-        std::vector<zprime*> resonance = {};
-        std::vector<top_gnn*> reco_tops = {}; 
-        std::vector<top_truth*> truth_tops = {}; 
-        std::vector<particle_gnn*> event_particles = {}; 
+        std::vector<std::vector<float>> pred_res_edge_score = {}; 
+        std::vector<std::vector<float>> pred_top_edge_score = {}; 
+
+        // -------- reconstructed particles -------------- //
+        std::vector<particle_template*> reco_tops   = {}; 
+        std::vector<particle_template*> reco_zprime = {};
+        std::vector<particle_template*> event_particles = {}; 
+
+        // -------- truth particles ------- //
+        std::vector<particle_template*> truth_tops   = {}; 
+        std::vector<particle_template*> truth_zprime = {}; 
+
+        std::vector<int> truth_res_edge = {}; 
+        std::vector<int> truth_top_edge = {}; 
+        std::vector<int> truth_ntops    = {};
+        std::vector<bool> truth_signal  = {}; 
 
         event_template* clone() override; 
         void build(element_t* el) override; 
@@ -32,15 +42,10 @@ class gnn_event: public event_template
 
     private: 
         std::map<std::string, particle_gnn*> m_event_particles = {}; 
-        std::map<std::string, top_gnn*>    m_reco_tops = {}; 
-        std::map<std::string, top_truth*> m_truth_tops = {};
+        std::map<std::string, top_gnn*>      m_reco_tops = {}; 
+        std::map<std::string, top_truth*>    m_truth_tops = {};
 
-        std::vector<std::vector<float>> m_res_edge_score = {}; 
-        std::vector<std::vector<float>> m_top_edge_score = {}; 
         std::vector<std::vector<int>>   m_edge_index = {}; 
-
-        std::vector<std::vector<float>> m_ntops_score = {}; 
-        std::vector<std::vector<float>> m_res_score   = {}; 
 
         template <typename G>
         std::map<int, G*> sort_by_index(std::map<std::string, G*>* ipt){
@@ -50,8 +55,8 @@ class gnn_event: public event_template
             return data; 
         }
 
-        template <typename m, typename G>
-        void vectorize(std::map<m, G*>* ipt, std::vector<G*>* vec){
+        template <typename m, typename G, typename Gx>
+        void vectorize(std::map<m, G*>* ipt, std::vector<Gx*>* vec){
             typename std::map<m, G*>::iterator ix = ipt -> begin();
             for (; ix != ipt -> end(); ++ix){vec -> push_back(ix -> second);}
         }

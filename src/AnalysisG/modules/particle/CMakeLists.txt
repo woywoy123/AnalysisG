@@ -8,8 +8,8 @@ set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/cxx/cartesian.cxx
 )
 
-add_library(cparticles STATIC ${SOURCE_FILES})
-target_include_directories(cparticles PRIVATE include/templates)
-target_include_directories(cparticles PUBLIC include)
-target_link_libraries(cparticles LINK_PUBLIC cstructs ctools cio)
-target_compile_options(cparticles PRIVATE -fPIC)
+add_library(cparticle_template STATIC ${SOURCE_FILES})
+target_include_directories(cparticle_template PRIVATE include/templates)
+target_include_directories(cparticle_template PUBLIC include)
+target_link_libraries(cparticle_template  PUBLIC cstructs ctools)
+target_compile_options(cparticle_template PRIVATE -fPIC)

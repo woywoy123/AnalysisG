@@ -8,5 +8,10 @@ set(SOURCE_FILES
 add_library(cio STATIC ${SOURCE_FILES})
 target_include_directories(cio PRIVATE include/io)
 target_include_directories(cio PUBLIC include ${HDF5_CXX_INCLUDE_DIRS})
-target_link_libraries(cio LINK_PUBLIC ${ROOT_LIBRARIES} ctools cstructs cmeta cnotification ${HDF5_CXX_LIBRARIES})
+
+# use if HDF5 isnt installed...
+#target_link_libraries(cio PUBLIC ctools cstructs cmeta cnotification hdf5_cpp-shared ROOT::Core)
+#target_include_directories(cio PUBLIC include)
+
+target_link_libraries(cio PUBLIC ctools cstructs cmeta cnotification ROOT::Core ${HDF5_LIBRARIES})
 target_compile_options(cio PRIVATE -fPIC)

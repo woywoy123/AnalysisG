@@ -18,7 +18,6 @@ void particle_gnn::build(std::map<std::string, particle_template*>* prt, element
     el -> get("eta"   , &_eta); 
     el -> get("phi"   , &_phi); 
     el -> get("energy", &_energy); 
-
     for (int x(0); x < _energy.size(); ++x){
         particle_gnn* p = new particle_gnn(); 
         p -> index      = x; 

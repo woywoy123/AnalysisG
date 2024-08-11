@@ -137,6 +137,7 @@ bool dataloader::restore_graphs(std::string path, int threads){
     std::vector<std::string> cache_ = this -> ls(path, ".h5");
 
     for (size_t x(0); x < cache_.size(); ++x){
+
         std::string fname = cache_[x]; 
         std::vector<std::string> spl = this -> split(fname, "/"); 
 
@@ -168,7 +169,6 @@ bool dataloader::restore_graphs(std::string path, int threads){
         std::vector<std::string>* gr_ev = &data_set[cache_io[x]]; 
         io* ior = new io();
         ior -> start(cache_io[x], "read");  
-
         std::vector<graph_hdf5>* gr_c = new std::vector<graph_hdf5>(gr_ev -> size(), graph_hdf5()); 
         std::vector<graph_t*>*   c_gr = new std::vector<graph_t*>(gr_ev -> size(), nullptr); 
         for (size_t p(0); p < gr_ev -> size(); ++p){
@@ -199,7 +199,6 @@ bool dataloader::restore_graphs(std::string path, int threads){
             w -> truth_edge      = std::string(datar.truth_edge); 
             handles[x] = p+1; 
         }
-
         th_[x] = new std::thread(deserialize, c_gr, gr_c); 
         cache_rebuild[x] = c_gr; 
         data[x] = gr_c; 

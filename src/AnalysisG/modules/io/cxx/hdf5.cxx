@@ -1,4 +1,4 @@
-#include <io.h>
+#include "io.h"
 
 bool io::start(std::string filename, std::string read_write){
     hid_t mode; 
@@ -9,8 +9,7 @@ bool io::start(std::string filename, std::string read_write){
     else if (read_write == "write" && f){mode = H5F_ACC_RDWR;}
     else if (read_write == "read" && f){mode = H5F_ACC_RDONLY;}
     else {return false;}
-
-    this -> file = new H5::H5File(filename, mode);
+    this -> file = new H5::H5File(filename.c_str(), mode);
     return true; 
 }
 
@@ -27,23 +26,16 @@ void io::end(){
     this -> data_r.clear();
 }
 
-H5::DataSet* io::dataset(std::string set_name, H5::CompType type, int length){
+H5::DataSet* io::dataset(std::string set_name, hid_t type, int length){
     if (!this -> file){return nullptr;}
     if (this -> data_w.count(set_name)){return this -> data_w[set_name];}
 
-    hsize_t dim(length); 
-    H5::DataSpace space(1, &dim);
-    H5::DataSet* f_ = nullptr; 
+    hsize_t dim[1] = {length}; 
+    H5::DataSpace space(1, dim);
     H5::Exception::dontPrint(); 
-    try {f_ = new H5::DataSet(this -> file -> openDataSet(set_name));}
-    catch (H5::FileIException not_found_error){ 
-        f_ = new H5::DataSet(this -> file -> createDataSet(set_name, type, space)); 
-    }
-
-    this -> data_w[set_name] = f_; 
+    this -> data_w[set_name] = new H5::DataSet(this -> file -> createDataSet(set_name.c_str(), type, space)); 
     return this -> data_w[set_name]; 
 }
-
 
 herr_t io::file_info(hid_t loc_id, const char* name, const H5L_info_t* linfo, void *opdata){
     hid_t data;
@@ -54,46 +46,16 @@ herr_t io::file_info(hid_t loc_id, const char* name, const H5L_info_t* linfo, vo
     return 0;
 }
 
-
 std::vector<std::string> io::dataset_names(){
     if (!this -> file){return {};}
     std::vector<std::string> output; 
     herr_t idx = H5Literate(this -> file -> getId(), H5_INDEX_NAME, H5_ITER_INC, NULL, this -> file_info, &output);
-    return output; 
-}
-
-bool io::has_dataset_name(std::string name){
-    std::vector<std::string> sets = this -> dataset_names(); 
-    for (size_t x(0); x < sets.size(); ++x){
-        if (name != sets[x]){continue;}
-        return true; 
-    }
-    return false; 
-}
-
-
-H5::DataSet* io::dataset_in_group(H5::Group& group, std::string set_name, H5::CompType type, int length){
-    if (!this -> file){return nullptr;}
-    if (this -> data_w.count(set_name)){return this -> data_w[set_name];}
-
-    hsize_t dim(length); 
-    H5::DataSpace space(1, &dim);
-    H5::DataSet* f_ = nullptr; 
-    H5::Exception::dontPrint(); 
-    try {f_ = new H5::DataSet(group.openDataSet(set_name));}
-    catch (H5::FileIException not_found_error){ 
-        f_ = new H5::DataSet(group.createDataSet(set_name, type, space)); 
-    }
-
-    this -> data_w[set_name] = f_; 
-    return this -> data_w[set_name]; 
+    return std::move(output); 
 }
 
 H5::DataSet* io::dataset(std::string set_name){
     if (!this -> file){return nullptr;}
     if (this -> data_r.count(set_name)){return this -> data_r[set_name];}
-    H5::Exception::dontPrint(); 
-    try {this -> data_r[set_name] = new H5::DataSet(this -> file -> openDataSet(set_name));}
-    catch (H5::FileIException not_found_error){return nullptr;}
+    this -> data_r[set_name] = new H5::DataSet(this -> file -> openDataSet(set_name.c_str()));
     return this -> data_r[set_name]; 
 }

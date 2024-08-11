@@ -1,9 +1,10 @@
 #ifndef PARTICLETEMPLATE_H
 #define PARTICLETEMPLATE_H
+
 #include <structs/particles.h>
 #include <structs/property.h>
+#include <structs/element.h>
 #include <tools/tools.h>
-#include <io/io.h>
 
 #include <iostream>
 #include <sstream>

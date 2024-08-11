@@ -7,6 +7,6 @@ set(SOURCE_FILES
 add_library(ccontainer STATIC ${SOURCE_FILES})
 target_include_directories(ccontainer PRIVATE include/container)
 target_include_directories(ccontainer PUBLIC include)
-target_link_libraries(ccontainer LINK_PUBLIC cgraph cevent cdataloader cselection)
+target_link_libraries(ccontainer LINK_PUBLIC cgraph_template cevent_template cdataloader cselection_template)
 target_compile_options(ccontainer PRIVATE -fPIC)
 

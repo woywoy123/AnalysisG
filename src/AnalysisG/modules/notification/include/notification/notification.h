@@ -1,8 +1,9 @@
 #ifndef NOTIFICATION_NOTIFICATION_H
 #define NOTIFICATION_NOTIFICATION_H
-#include <string>
+
 #include <iostream>
 #include <sstream>
+#include <string>
 #include <vector>
 
 class notification

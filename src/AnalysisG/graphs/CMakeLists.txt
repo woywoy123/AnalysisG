@@ -4,4 +4,3 @@ add_subdirectory(ssml_mc20)
 file(INSTALL __init__.pxd DESTINATION . )
 file(INSTALL __init__.py  DESTINATION . )
 
-
