@@ -72,13 +72,15 @@ void analysis::build_inference(){
     std::thread* thr_ = new std::thread(this -> progressbar1, &th_prg, len, "Model Inference Progress"); 
 
     this -> info("------------- Cloning Models -------------"); 
-    std::map<std::string, model_template*>::iterator itm = this -> model_inference.begin(); 
+    its = dl -> begin(); 
+    std::map<std::string, model_template*>::iterator itm; 
+
     std::map<std::string, bool> mute; 
     std::map<std::string, bool> device_tr; 
     for (size_t x(0); x < th_models.size(); ++x){
-        int mdx = x%smpls; 
-        if (!mdx){its = dl -> begin();}
-        if (x && !mdx){++itm;}
+        int mdx = x%modls; 
+        if (!mdx){itm = this -> model_inference.begin();}
+        if (x && !mdx){++its;}
 
         if (!device_tr[itm -> second -> device]){
             this -> info("Transferring graphs to device: " + std::string(itm -> second -> device)); 
@@ -138,7 +140,7 @@ void analysis::build_inference(){
 
         th_prc[x] = new std::thread(execution, md, &its -> second, fname, content, &th_prg[x]);
         th_models[x] = md; 
-        ++its;
+        ++itm;
 
         if (x%threads_ != threads_-1){continue;}
         for (size_t i(0); i < x; ++i){
