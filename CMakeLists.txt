@@ -77,7 +77,7 @@ message(STATUS      "HDF5: ${HDF5_CPP_SOURCE_DIR}")
 message(STATUS "RAPIDJSON: ${RAPIDJSON_INCLUDE_DIR}")
 add_subdirectory(src/AnalysisG)
 
-#execute_process(
-#COMMAND python -c "import sysconfig; print(sysconfig.get_paths()['platlib'])" 
-#OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE)
-#file(INSTALL ${CMAKE_BINARY_DIR}/src/AnalysisG DESTINATION ${PYTHON_SITE_PACKAGES})
+execute_process(
+COMMAND python -c "import sysconfig; print(sysconfig.get_paths()['platlib'])" 
+OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE)
+file(INSTALL ${CMAKE_BINARY_DIR}/src/AnalysisG DESTINATION ${PYTHON_SITE_PACKAGES})

@@ -55,13 +55,13 @@ class container: public tools
         long alloc = 0; 
         
     private:
+        entry_t* add_entry(std::string hash); 
+
         meta*       meta_data = nullptr; 
         std::string* filename = nullptr; 
         std::string* label    = nullptr; 
 
-        std::vector<entry_t*>*     random_access = nullptr; 
-        std::map<std::string, int>*     hash_map = nullptr; 
-
+        std::map<std::string, entry_t*>* random_access = nullptr; 
         std::map<std::string, selection_template*>* merged = nullptr; 
 }; 
 

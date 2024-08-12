@@ -10,6 +10,9 @@ analysis::analysis(){
 analysis::~analysis(){
     std::map<std::string, optimizer*>::iterator itt = this -> trainer.begin();
     for (; itt != this -> trainer.end(); ++itt){delete itt -> second;}
+    delete this -> loader; 
+    delete this -> tracer; 
+    delete this -> reader; 
 }
 
 void analysis::add_samples(std::string path, std::string label){
@@ -74,8 +77,11 @@ void analysis::start(){
         if (this -> selection_names.size()){this -> build_selections();}
         if (this -> graph_labels.size()){this -> build_graphs();}
         this -> tracer -> compile_objects(threads_); 
+    }
+
+    if (this -> selection_names.size()){
+        this -> tracer -> fill_selections(&this -> selection_names);
     } 
-    if (this -> selection_names.size()){this -> tracer -> fill_selections(&this -> selection_names);} 
 
     if (pth_cache.size() && !trig){
         this -> build_dataloader(false); 

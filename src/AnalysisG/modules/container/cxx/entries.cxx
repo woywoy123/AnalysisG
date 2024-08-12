@@ -14,12 +14,21 @@ void entry_t::init(){
 }
 
 void entry_t::destroy(){
-    this -> destroy(this -> m_event); 
-    this -> destroy(this -> m_graph); 
-    this -> destroy(this -> m_selection); 
-    delete this -> m_event; 
-    delete this -> m_selection; 
-    delete this -> m_graph;
+    if (this -> m_event){
+        this -> destroy(this -> m_event);
+        delete this -> m_event; 
+        this -> m_event = nullptr; 
+    }
+    if (this -> m_graph){
+        this -> destroy(this -> m_graph);
+        delete this -> m_graph; 
+        this -> m_graph = nullptr; 
+    }
+    if (this -> m_selection){
+        this -> destroy(this -> m_selection);
+        delete this -> m_selection; 
+        this -> m_selection = nullptr; 
+    }
 }
 
 bool entry_t::has_event(event_template* ev){

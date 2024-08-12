@@ -30,7 +30,6 @@ void analysis::build_model_session(){
 
     auto lamb = [](optimizer* op, int k){op -> launch_model(k);}; 
 
-    this -> threads = {}; 
     std::map<std::string, optimizer*>::iterator itr = this -> trainer.begin(); 
     for (; itr != this -> trainer.end(); ++itr){
         for (int k(0); k < this -> m_settings.kfold.size(); ++k){

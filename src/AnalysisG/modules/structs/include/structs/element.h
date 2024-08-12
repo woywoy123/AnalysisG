@@ -84,7 +84,7 @@ struct data_t {
             if (sk){return false;}
 
             long idx = this -> files_i -> at(this -> file_index);
-            if (this -> index < idx){
+            if (this -> index < idx-1){
                 this -> element(el); 
                 this -> index++; 
                 return true; 

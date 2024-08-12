@@ -1,33 +1,37 @@
 #include <container/container.h>
 
 container::container(){
-    this -> random_access = new std::vector<entry_t*>(); 
-    this -> hash_map      = new std::map<std::string, int>(); 
+    this -> random_access = new std::map<std::string, entry_t*>(); 
 }
 
 container::~container(){
-    delete this -> hash_map; 
     delete this -> meta_data; 
     delete this -> filename;  
     delete this -> label; 
 
-    for (entry_t* ev : *this -> random_access){
+    std::map<std::string, entry_t*>::iterator itr; 
+    itr = this -> random_access -> begin();
+    for (; itr != this -> random_access -> end(); ++itr){
+        entry_t* ev = itr -> second; 
         ev -> destroy(); 
         delete ev -> hash; 
         delete ev; 
     }
+    this -> random_access -> clear(); 
     delete this -> random_access; 
 
     if (!this -> merged){return;}
-    std::map<std::string, selection_template*>::iterator itr;
-    itr = this -> merged -> begin(); 
-    for (; itr != this -> merged -> end(); ++itr){delete itr -> second;}
+    std::map<std::string, selection_template*>::iterator itrs;
+    itrs = this -> merged -> begin(); 
+    for (; itrs != this -> merged -> end(); ++itrs){delete itrs -> second;}
     delete this -> merged; 
 }
 
 void container::get_events(std::vector<event_template*>* out, std::string label){
     if (label != *this -> label && label.size()){return;}
-    for (entry_t* ev : *this -> random_access){
+    std::map<std::string, entry_t*>::iterator itr = this -> random_access -> begin(); 
+    for (; itr != this -> random_access -> end(); ++itr){
+        entry_t* ev = itr -> second; 
         std::vector<event_template*>* rn = ev -> m_event; 
         out -> insert(out -> end(), rn -> begin(), rn -> end()); 
     } 
@@ -40,61 +44,46 @@ void container::add_meta_data(meta* data, std::string fname){
 
 meta* container::get_meta_data(){return this -> meta_data;}
 
-bool container::add_event_template(event_template* ev, std::string _label, long* alloc){
-    if (!this -> label){this -> label = new std::string(_label);}
-    if (!this -> alloc){
-        this -> random_access -> reserve(*alloc);
-        this -> alloc = *alloc; 
-    }
-
-    std::string hash = ev -> hash; 
-    if (!this -> hash_map -> count(hash)){
-        entry_t* t = new entry_t();
+entry_t* container::add_entry(std::string hash){
+    entry_t* t = nullptr; 
+    if (!this -> random_access -> count(hash)){
+        t = new entry_t();
         t -> init(); 
         t -> hash = new std::string(hash); 
         t -> meta_data = this -> meta_data; 
-
-        (*this -> hash_map)[hash] = this -> hash_map -> size();
-        this -> random_access -> push_back(t); 
+        (*this -> random_access)[hash] = t; 
     }
+    else {t = (*this -> random_access)[hash];}
+    return t; 
+}
 
-    return (*this -> random_access)[(*this -> hash_map)[hash]] -> has_event(ev); 
+bool container::add_event_template(event_template* ev, std::string _label, long* alloc){
+    if (!this -> label){this -> label = new std::string(_label);}
+    if (!this -> alloc){this -> alloc = *alloc;}
+
+    std::string hash = ev -> hash; 
+    entry_t* evt = this -> add_entry(hash); 
+    return evt -> has_event(ev); 
 }
 
 bool container::add_graph_template(graph_template* gr, std::string _label){
     if (!this -> label){this -> label = new std::string(_label);}
 
     std::string hash = gr -> hash; 
-    if (!this -> hash_map -> count(hash)){
-        entry_t* t = new entry_t();
-        t -> init(); 
-        t -> hash = new std::string(hash); 
-        t -> meta_data = this -> meta_data; 
-
-        (*this -> hash_map)[hash] = this -> hash_map -> size();
-        this -> random_access -> push_back(t); 
-    }
-    return (*this -> random_access)[(*this -> hash_map)[hash]] -> has_graph(gr); 
+    entry_t* evt = this -> add_entry(hash); 
+    return evt -> has_graph(gr); 
 }
 
 bool container::add_selection_template(selection_template* sel){
     std::string hash = sel -> hash; 
-    if (!this -> hash_map -> count(hash)){
-        entry_t* t = new entry_t();
-        t -> init(); 
-        t -> hash = new std::string(hash); 
-        t -> meta_data = this -> meta_data; 
-
-        (*this -> hash_map)[hash] = this -> hash_map -> size();
-        this -> random_access -> push_back(t); 
-    }
-    return (*this -> random_access)[(*this -> hash_map)[hash]] -> has_selection(sel);
+    entry_t* evt = this -> add_entry(hash); 
+    return evt -> has_selection(sel);
 }
 
-
 void container::compile(size_t* l){
-    for (int x(0); x < this -> random_access -> size(); ++x){
-        entry_t* ev = (*this -> random_access)[x]; 
+    std::map<std::string, entry_t*>::iterator itr = this -> random_access -> begin();  
+    for (; itr != this -> random_access -> end(); ++itr){
+        entry_t* ev = itr -> second;  
         for (event_template* evx : *ev -> m_event){evx -> CompileEvent();}
         if (ev -> m_selection -> size() && !this -> merged){
             this -> merged = new std::map<std::string, selection_template*>();
@@ -118,7 +107,7 @@ void container::compile(size_t* l){
             ev -> m_data -> push_back(gr_); 
         }
         ev -> destroy(); 
-        *l = x+1; 
+        *l += 1; 
     }
     *l = this -> random_access -> size(); 
 }
@@ -132,14 +121,18 @@ void container::fill_selections(std::map<std::string, selection_template*>* inpt
         sl -> merger(itr -> second); 
         delete itr -> second; 
     }
+    this -> merged -> clear(); 
     delete this -> merged;
     this -> merged = nullptr; 
 }
 
 void container::populate_dataloader(dataloader* dl){
-    for (int x(0); x < this -> random_access -> size(); ++x){
-        entry_t* ev = (*this -> random_access)[x]; 
+    std::map<std::string, entry_t*>::iterator itr = this -> random_access -> begin();  
+    for (; itr != this -> random_access -> end(); ++itr){
+        entry_t* ev = itr -> second; 
         for (graph_t* gr_ : *ev -> m_data){dl -> extract_data(gr_);}
+        ev -> m_data -> clear(); 
+        delete ev -> m_data; 
     }
 }
 

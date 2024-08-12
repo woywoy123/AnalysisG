@@ -4,7 +4,7 @@ from AnalysisG.events.gnn import *
 from AnalysisG.events.bsm_4tops.event_bsm_4tops import BSM4Tops
 
 from AnalysisG.graphs.bsm_4tops import *
-from AnalysisG.models.RecursiveGraphNeuralNetwork import *
+from AnalysisG.models import *
 
 #root1 = "./samples/dilepton/*"
 #root1 = "../test/ProjectName/results/*"

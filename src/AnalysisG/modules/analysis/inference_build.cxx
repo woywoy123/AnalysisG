@@ -51,7 +51,7 @@ void execution(model_template* md, std::vector<graph_t*>* data, std::string outp
 }
 
 void analysis::build_inference(){
-    int threads = this -> m_settings.threads; 
+    int threads_ = this -> m_settings.threads; 
     this -> success("+=============================+"); 
     this -> success("|Starting the model inference.|");
     this -> success("+=============================+"); 
@@ -68,7 +68,7 @@ void analysis::build_inference(){
 
     this -> info("Transferring graphs to device: " + std::string(itm -> second -> device)); 
     torch::TensorOptions* dev = itm -> second -> m_option; 
-    this -> loader -> datatransfer(dev, threads); 
+    this -> loader -> datatransfer(dev, threads_); 
     this -> success("Completed transfer");
 
     std::vector<model_template*> th_models = std::vector<model_template*>(smpls*modls, nullptr); 
@@ -135,7 +135,7 @@ void analysis::build_inference(){
         th_models[x] = md; 
         ++its;
 
-        if (x%threads != threads-1){continue;}
+        if (x%threads_ != threads_-1){continue;}
         for (size_t i(0); i < x; ++i){
             if (!th_prc[i]){continue;}
             th_prc[i] -> join(); 

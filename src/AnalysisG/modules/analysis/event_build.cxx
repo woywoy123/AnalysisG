@@ -41,12 +41,17 @@ void analysis::build_events(){
     for (; ity != len.end(); ++ity){ls = (ls < ity -> second) ? ity -> second : ls;}
     std::map<std::string, std::map<std::string, long>> root_entries = this -> reader -> tree_entries; 
 
+    std::string title = ""; 
+    std::vector<size_t> th_prg(1, 0); 
+    size_t nevents = ls; 
     this -> info("Building Events from ROOT files"); 
+    std::thread* th_ = new std::thread(this -> progressbar2, &th_prg, &nevents, &title); 
     std::map<std::string, data_t*>* io_handle = this -> reader -> get_data(); 
+
     while (index < ls){
         std::map<std::string, event_template*> evnts = event_f -> build_event(io_handle);
         ++index;  
-
+        th_prg[0]+=1; 
         if (!evnts.size()){continue;}
         std::map<std::string, event_template*>::iterator tx = evnts.begin(); 
         event_template* ev_ = tx -> second; 
@@ -54,13 +59,15 @@ void analysis::build_events(){
         bool detach = this -> tracer -> add_meta_data(meta_, ev_ -> filename); 
         if (detach){this -> reader -> meta_data[ev_ -> filename] = nullptr;}
         std::vector<std::string> tmp = this -> split(ev_ -> filename, "/"); 
+        title = tmp[tmp.size()-1]; 
         for (; tx != evnts.end(); ++tx){
             long lx = root_entries[ev_ -> filename][tx -> first]; 
             if (!this -> tracer -> add_event(tx -> second, label, &lx)){continue;} 
             delete tx -> second; 
         }
-        this -> progressbar(float(index+1)/float(ls), tmp[tmp.size()-1]);
     }
+    th_ -> join(); 
+    delete th_; 
 
     this -> reader -> root_end(); 
     delete this -> reader; 

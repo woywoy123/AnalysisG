@@ -27,12 +27,14 @@ dataloader::~dataloader(){
     delete this -> test_set; 
     delete this -> train_set; 
 
+    std::vector<graph_t*>* data_ = this -> data_set; 
+    this -> data_set = nullptr;
     delete this -> data_index; 
-    for (size_t x(0); x < this -> data_set -> size(); ++x){
-        this -> data_set -> at(x) -> _purge_all(); 
-        delete this -> data_set -> at(x); 
+    for (size_t x(0); x < data_ -> size(); ++x){
+        data_ -> at(x) -> _purge_all(); 
+        delete data_ -> at(x); 
     }
-    delete this -> data_set; 
+    delete data_; 
     if (!this -> cuda_mem){return;}
     this -> cuda_mem -> join(); 
     delete this -> cuda_mem; 

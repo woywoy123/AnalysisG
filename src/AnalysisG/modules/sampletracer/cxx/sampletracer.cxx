@@ -77,7 +77,7 @@ void sampletracer::compile_objects(int threads){
         threads_[index] = nullptr; 
     }
 
-    for (int x(0); x < index; ++x){
+    for (int x(0); x < threads_.size(); ++x){
         if (!threads_[x]){continue;}
         threads_[x] -> join(); 
         delete threads_[x];
