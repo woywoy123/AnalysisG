@@ -13,21 +13,25 @@ from AnalysisG.models import *
 ev = BSM4Tops()
 gr = GraphDetector()
 
-gn = RecursiveGraphNeuralNetwork()
-gn.o_edge = {"top_edge" : "CrossEntropyLoss", "res_edge" : "CrossEntropyLoss"}
-gn.o_graph = {"ntops" : "CrossEntropyLoss", "signal" : "CrossEntropyLoss"}
-gn.i_node = ["pt", "eta", "phi", "energy"]
-gn.device = "cuda:0"
-gn.rep = 1024
-gn.checkpoint_path = "GraphDetector/RecursiveGraphNeuralNetwork/MRK-1/state/epoch-1/kfold-1_model.pt"
 
+pth = "GraphDetector/RecursiveGraphNeuralNetwork/MRK-1/state/epoch-"
 ana = Analysis()
 ana.OutputPath = "GraphDetector"
-#ana.AddSamples(root1, "tmp")
 ana.GraphCache = "GraphDetector/GraphCache/GraphDetector"
+#ana.AddSamples(root1, "tmp")
 #ana.AddEvent(ev, "tmp")
 #ana.AddGraph(gr, "tmp")
-ana.Threads = 1
-ana.AddModelInference(gn, "ROOT/MRK-1/epoch-1/kfold-1")
+ana.Threads = 12
+mdls = []
+for i in range(1, 101):
+    gn = RecursiveGraphNeuralNetwork()
+    gn.o_edge = {"top_edge" : "CrossEntropyLoss", "res_edge" : "CrossEntropyLoss"}
+    gn.o_graph = {"ntops" : "CrossEntropyLoss", "signal" : "CrossEntropyLoss"}
+    gn.i_node = ["pt", "eta", "phi", "energy"]
+    gn.device = "cuda:"+str(i%2)
+    gn.rep = 1024
+    gn.checkpoint_path = pth + str(i) + "/kfold-1_model.pt"
+    ana.AddModelInference(gn, "ROOT/MRK-1/epoch-" + str(i) + "/kfold-1")
+    mdls += [gn]
 ana.Start()
 

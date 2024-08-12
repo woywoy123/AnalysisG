@@ -39,7 +39,10 @@ cdef class IO:
     def __next__(self):
         cdef dict output = {}
         cdef pair[string, data_t*] itr
-        for itr in deref(self.data_ops): output |= switch_board(itr.second)
+        for itr in deref(self.data_ops):
+            if self.skip[itr.first]: continue
+            output |= switch_board(itr.second)
+            self.skip[itr.first] = itr.second.next()
         if not len(output):
             self.ptr.root_end()
             raise StopIteration

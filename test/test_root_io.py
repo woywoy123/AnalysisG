@@ -44,7 +44,6 @@ def test_reading_root():
                 assert b"nominal.weight_pileup.weight_pileup" in i
                 assert b"nominal.met_phi.met_phi" in i
                 len_nom += 1
-            print(i)
         assert len_truth == 2000
         assert len_nom == 165
         del io

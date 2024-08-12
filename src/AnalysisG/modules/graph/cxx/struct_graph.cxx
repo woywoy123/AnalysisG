@@ -128,7 +128,7 @@ void graph_t::meta_serialize(std::vector<torch::Tensor*>* data, std::string* out
 
     tools tl = tools(); 
     *out = std::string(chars.begin(), chars.end()); 
-    //*out = tl.encode64((const unsigned char*)out -> c_str(), out -> size()); 
+    *out = tl.encode64((const unsigned char*)out -> c_str(), out -> size()); 
 }
 
 void graph_t::meta_serialize(torch::Tensor* data, std::string* out){
@@ -137,7 +137,7 @@ void graph_t::meta_serialize(torch::Tensor* data, std::string* out){
 
     tools tl = tools();
     *out = std::string(chars.begin(), chars.end()); 
-    //*out = tl.encode64((const unsigned char*)out -> c_str(), out -> size()); 
+    *out = tl.encode64((const unsigned char*)out -> c_str(), out -> size()); 
 }
 
 void graph_t::serialize(graph_hdf5* m_hdf5){

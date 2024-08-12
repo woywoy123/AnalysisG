@@ -43,7 +43,7 @@ void event_template::build_mapping(std::map<std::string, data_t*>* evnt){
 
     std::vector<std::string> tr = this -> trees; 
     for (int x(0); x < tr.size(); ++x){
-        this -> next_[tr[x]] = true; 
+        this -> next_[tr[x]] = false; 
         std::map<std::string, data_t*>::iterator ite = evnt -> begin(); 
         for (; ite != evnt -> end(); ++ite){
             bool s = tr[x] == ite -> second -> tree_name;
@@ -69,7 +69,7 @@ std::map<std::string, event_template*> event_template::build_event(std::map<std:
     std::map<std::string, event_template*> output = {}; 
     std::map<std::string, std::map<std::string, element_t>>::iterator itr = this -> tree_variable_link.begin();
     for (; itr != this -> tree_variable_link.end(); ++itr){
-        if (!this -> next_[itr -> first]){continue;}
+        if (this -> next_[itr -> first]){continue;}
         event_template* ev = this -> clone(); 
         ev -> tree = itr -> first; 
 

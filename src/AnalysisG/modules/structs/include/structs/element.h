@@ -77,26 +77,7 @@ struct data_t {
 
         void initialize();
         void flush(); 
-
-        template <typename T>
-        bool next(T* el){
-            bool sk = this -> file_index >= (int)this -> files_i -> size(); 
-            if (sk){return false;}
-
-            long idx = this -> files_i -> at(this -> file_index);
-            if (this -> index < idx){
-                this -> element(el); 
-                this -> index++; 
-                return true; 
-            }
-
-            this -> file_index++; 
-            sk = this -> file_index >= (int)this -> files_i -> size(); 
-            if (sk){return false;}
-            this -> initialize();
-            return this -> next(el); 
-        }
-
+        bool next();
 
     private:
         void flush_buffer(); 
@@ -108,7 +89,6 @@ struct data_t {
         template <typename T>
         bool flush_buffer(T** data){
             if (!(*data)){return false;}
-            (*data) -> clear();
             delete *data; 
             *data = nullptr; 
             return true; 
@@ -125,22 +105,6 @@ struct data_t {
 
 struct element_t {
     std::string tree = "";
-    std::map<std::string, std::vector<std::vector<float>>>  r_vvf = {}; 
-    std::map<std::string, std::vector<std::vector<double>>> r_vvd = {}; 
-    std::map<std::string, std::vector<std::vector<long>>>   r_vvl = {}; 
-    std::map<std::string, std::vector<std::vector<int>>>    r_vvi = {}; 
-    
-    std::map<std::string, std::vector<float>> r_vf = {}; 
-    std::map<std::string, std::vector<long>>  r_vl = {}; 
-    std::map<std::string, std::vector<int>>   r_vi = {}; 
-    std::map<std::string, std::vector<char>>  r_vc = {}; 
-    std::map<std::string, std::vector<bool>>  r_vb = {}; 
-    
-    std::map<std::string, float> r_f = {}; 
-    std::map<std::string, long>  r_l = {}; 
-    std::map<std::string, int>   r_i = {}; 
-    std::map<std::string, bool>  r_b = {};  
-    std::map<std::string, unsigned long long> r_ull = {};
 
     bool next(); 
     void set_meta(); 

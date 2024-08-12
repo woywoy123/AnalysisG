@@ -157,60 +157,60 @@ cdef extern from "<structs/element.h>":
         long index
 
         void flush() except+
+        bool next() except+
 
-        bool next(vector[vector[double]]* data) except +
-        bool next(vector[vector[float]]* data) except +
-        bool next(vector[vector[long ]]* data) except +
-        bool next(vector[vector[int  ]]* data) except +
+        bool element(vector[vector[double]]* data) except +
+        bool element(vector[vector[float]]* data) except +
+        bool element(vector[vector[long ]]* data) except +
+        bool element(vector[vector[int  ]]* data) except +
 
-        bool next(vector[float]* data) except +
-        bool next(vector[long]* data) except +
-        bool next(vector[int]* data) except +
-        bool next(vector[char ]* data) except +
+        bool element(vector[float]* data) except +
+        bool element(vector[long]* data) except +
+        bool element(vector[int]* data) except +
+        bool element(vector[char ]* data) except +
 
-        bool next(float* data) except +
-        bool next(long* data) except +
-        bool next(int* data) except +
-        bool next(unsigned long long* data) except +
+        bool element(float* data) except +
+        bool element(long* data) except +
+        bool element(int* data) except +
+        bool element(unsigned long long* data) except +
 
 
 cdef inline dict switch_board(data_t* data):
-
     cdef vector[vector[float]] vvf
-    if data.type == data_enum.vvf and data.next(&vvf): return {data.path : vvf}
+    if data.type == data_enum.vvf and data.element(&vvf): return {data.path : vvf}
 
     cdef vector[vector[long]] vvl
-    if data.type == data_enum.vvl and data.next(&vvl): return {data.path : vvl}
+    if data.type == data_enum.vvl and data.element(&vvl): return {data.path : vvl}
 
     cdef vector[vector[int]] vvi
-    if data.type == data_enum.vvi and data.next(&vvi): return {data.path : vvi}
+    if data.type == data_enum.vvi and data.element(&vvi): return {data.path : vvi}
 
     cdef vector[vector[double]] vvd
-    if data.type == data_enum.vvd and data.next(&vvd): return {data.path : vvd}
+    if data.type == data_enum.vvd and data.element(&vvd): return {data.path : vvd}
 
     cdef vector[float] vf
-    if data.type == data_enum.vf and data.next(&vf): return {data.path : vf}
+    if data.type == data_enum.vf and data.element(&vf): return {data.path : vf}
 
     cdef vector[long] vl
-    if data.type == data_enum.vl and data.next(&vl): return {data.path : vl}
+    if data.type == data_enum.vl and data.element(&vl): return {data.path : vl}
 
     cdef vector[int] vi
-    if data.type == data_enum.vi and data.next(&vi): return {data.path : vi}
+    if data.type == data_enum.vi and data.element(&vi): return {data.path : vi}
 
     cdef vector[char] vc
-    if data.type == data_enum.vc and data.next(&vc): return {data.path : vc}
+    if data.type == data_enum.vc and data.element(&vc): return {data.path : vc}
 
     cdef float f
-    if data.type == data_enum.f and data.next(&f): return {data.path : f}
+    if data.type == data_enum.f and data.element(&f): return {data.path : f}
 
     cdef long l
-    if data.type == data_enum.l and data.next(&l): return {data.path : l}
+    if data.type == data_enum.l and data.element(&l): return {data.path : l}
 
     cdef int i
-    if data.type == data_enum.i and data.next(&i): return {data.path : i}
+    if data.type == data_enum.i and data.element(&i): return {data.path : i}
 
     cdef unsigned long long ull
-    if data.type == data_enum.ull and data.next(&ull): return {data.path : ull}
+    if data.type == data_enum.ull and data.element(&ull): return {data.path : ull}
 
     return {}
 

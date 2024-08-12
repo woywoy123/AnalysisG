@@ -8,34 +8,14 @@ void element_t::set_meta(){
     this -> filename = itr -> second -> files_s -> at(itr -> second -> file_index);
 }
 
-// -------------------------- If you were directed here, simply add the data type within this section ----------------- //
 bool element_t::next(){
-    bool stop = false; 
-    std::map<std::string, data_t*>::iterator itr; 
-    for (itr = this -> handle.begin(); itr != this -> handle.end(); ++itr){
-        data_t* dx = itr -> second; 
-        switch (itr -> second -> type){
-            case data_enum::vvf: stop += dx -> next(&this -> r_vvf[itr -> first]); break; 
-            case data_enum::vvd: stop += dx -> next(&this -> r_vvd[itr -> first]); break; 
-            case data_enum::vvl: stop += dx -> next(&this -> r_vvl[itr -> first]); break; 
-            case data_enum::vvi: stop += dx -> next(&this -> r_vvi[itr -> first]); break; 
-
-            case data_enum::vf:  stop += dx -> next(&this -> r_vf[itr -> first]);  break; 
-            case data_enum::vl:  stop += dx -> next(&this -> r_vl[itr -> first]);  break; 
-            case data_enum::vi:  stop += dx -> next(&this -> r_vi[itr -> first]);  break; 
-            case data_enum::vc:  stop += dx -> next(&this -> r_vc[itr -> first]);  break; 
-            case data_enum::vb:  stop += dx -> next(&this -> r_vb[itr -> first]);  break; 
-
-            case data_enum::f:   stop += dx -> next(&this -> r_f[itr -> first]);   break; 
-            case data_enum::l:   stop += dx -> next(&this -> r_l[itr -> first]);   break; 
-            case data_enum::i:   stop += dx -> next(&this -> r_i[itr -> first]);   break; 
-            case data_enum::b:   stop += dx -> next(&this -> r_b[itr -> first]);   break; 
-            case data_enum::ull: stop += dx -> next(&this -> r_ull[itr -> first]); break; 
-            default: break; 
-        }
-    }
+    bool stop = true; 
+    std::map<std::string, data_t*>::iterator itr = this -> handle.begin(); 
+    for (; itr != this -> handle.end(); ++itr){stop *= itr -> second -> next();}
     return stop; 
 }
+
+// -------------------------- If you were directed here, simply add the data type within this section ----------------- //
 
 void data_t::flush_buffer(){
     switch (this -> type){
@@ -99,7 +79,7 @@ void data_t::string_type(){
     if (this -> leaf_type == "ULong64_t"){this -> type = data_enum::ull; return;}
 
     std::cout << "UNKNOWN TYPE: " << this -> leaf_type << " " << path << std::endl; 
-    std::cout << "Add the type under modules/io/cxx/root.cxx" << std::endl;
+    std::cout << "Add the type under modules/structs/cxx/structs.cxx" << std::endl;
     abort(); 
 }
 
@@ -215,5 +195,19 @@ void data_t::initialize(){
     c -> Close(); 
     delete c; 
 } 
+
+bool data_t::next(){
+    bool sk = this -> file_index >= (int)this -> files_i -> size(); 
+    if (sk){return true;}
+
+    long idx = this -> files_i -> at(this -> file_index);
+    if (this -> index+1 < idx){this -> index++; return false;}
+
+    this -> file_index++; 
+    sk = this -> file_index >= (int)this -> files_i -> size(); 
+    if (sk){return true;}
+    this -> initialize();
+    return false; 
+}
 
 

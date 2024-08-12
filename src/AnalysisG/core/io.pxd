@@ -48,6 +48,7 @@ cdef class IO:
     cdef io* ptr
     cdef dict meta_data
     cdef map[string, data_t*]* data_ops
+    cdef map[string, bool] skip
 
     cpdef dict MetaData(self)
     cpdef void ScanKeys(self)
