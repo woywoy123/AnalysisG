@@ -1,5 +1,5 @@
 #include <templates/graph_template.h>
-
+#include <tools/tools.h>
 
 void graph_t::add_truth_graph(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps){
     if (this -> truth_graph){return;}
@@ -128,7 +128,7 @@ void graph_t::meta_serialize(std::vector<torch::Tensor*>* data, std::string* out
 
     tools tl = tools(); 
     *out = std::string(chars.begin(), chars.end()); 
-    *out = tl.encode64(out); 
+    //*out = tl.encode64((const unsigned char*)out -> c_str(), out -> size()); 
 }
 
 void graph_t::meta_serialize(torch::Tensor* data, std::string* out){
@@ -137,7 +137,7 @@ void graph_t::meta_serialize(torch::Tensor* data, std::string* out){
 
     tools tl = tools();
     *out = std::string(chars.begin(), chars.end()); 
-    *out = tl.encode64(out); 
+    //*out = tl.encode64((const unsigned char*)out -> c_str(), out -> size()); 
 }
 
 void graph_t::serialize(graph_hdf5* m_hdf5){

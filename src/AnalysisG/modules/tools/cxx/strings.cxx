@@ -1,7 +1,6 @@
 #include <tools/tools.h>
-#include <vector>
 #include <sstream>
-#include <iomanip>
+#include <string>
 
 void tools::replace(std::string* in, std::string to_repl, std::string repl_w) {
     std::size_t pos = 0; 
@@ -107,15 +106,7 @@ static const std::string base64_chars =
             "abcdefghijklmnopqrstuvwxyz"
             "0123456789+/";
 
-bool tools::is_base64(unsigned char c){
-    return (isalnum(c) || (c == '+') || (c == '/'));
-}
-
-std::string tools::encode64(std::string* inpt){
-    unsigned int len = inpt -> size(); 
-    const char* ch = inpt -> c_str();
-    return tools::encode64((const unsigned char*)ch, len); 
-}
+bool is_base64(unsigned char c){return (isalnum(c) || (c == '+') || (c == '/'));}
 
 std::string tools::encode64(unsigned char const* bytes_to_encode, unsigned int in_len)
 {

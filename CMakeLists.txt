@@ -4,7 +4,7 @@ set(SKBUILD_PROJECT_NAME AnalysisG)
 project(${SKBUILD_PROJECT_NAME} VERSION 5.0 LANGUAGES CXX C)
 
 # ABI is the pre-cxx11 version that pytorch distributes via wheels...
-add_compile_definitions(_GLIBCXX_USE_CXX11_ABI=0)
+#add_compile_definitions(_GLIBCXX_USE_CXX11_ABI=0)
 set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
 set(CMAKE_POLICY_DEFAULT_CMP0135 NEW)
 
@@ -45,7 +45,7 @@ execute_process(COMMAND ${Python_EXECUTABLE} -m pip install -v pyyaml)
 execute_process(COMMAND ${Python_EXECUTABLE} -m pip install -v tqdm)
 execute_process(COMMAND ${Python_EXECUTABLE} -m pip install -v torchmetrics)
 
-FetchContent_Declare(torch URL "https://download.pytorch.org/libtorch/cu121/libtorch-shared-with-deps-2.4.0%2Bcu121.zip")
+FetchContent_Declare(torch URL "https://download.pytorch.org/libtorch/cu121/libtorch-cxx11-abi-shared-with-deps-2.4.0%2Bcu121.zip")
 FetchContent_MakeAvailable(torch)
 list(APPEND CMAKE_PREFIX_PATH ${torch_SOURCE_DIR})
 

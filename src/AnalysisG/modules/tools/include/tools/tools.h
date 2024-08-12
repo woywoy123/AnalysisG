@@ -33,8 +33,6 @@ class tools
         std::string hash(std::string input, int len = 18);
         std::string lower(std::string*); 
 
-        bool is_base64(unsigned char c);  
-        std::string encode64(std::string* inpt); 
         std::string encode64(unsigned char const*, unsigned int len); 
 
         std::string decode64(std::string* inpt);

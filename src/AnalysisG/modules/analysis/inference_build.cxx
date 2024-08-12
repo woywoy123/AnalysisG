@@ -64,12 +64,7 @@ void analysis::build_inference(){
     size_t len = 0; 
     std::map<std::string, std::vector<graph_t*>>::iterator its = dl -> begin(); 
     for (; its != dl -> end(); ++its){len += its -> second.size();}
-    std::map<std::string, model_template*>::iterator itm = this -> model_inference.begin(); 
-
-    this -> info("Transferring graphs to device: " + std::string(itm -> second -> device)); 
-    torch::TensorOptions* dev = itm -> second -> m_option; 
-    this -> loader -> datatransfer(dev, threads_); 
-    this -> success("Completed transfer");
+    len *= modls; 
 
     std::vector<model_template*> th_models = std::vector<model_template*>(smpls*modls, nullptr); 
     std::vector<std::thread*> th_prc = std::vector<std::thread*>(smpls*modls, nullptr); 
@@ -77,11 +72,21 @@ void analysis::build_inference(){
     std::thread* thr_ = new std::thread(this -> progressbar1, &th_prg, len, "Model Inference Progress"); 
 
     this -> info("------------- Cloning Models -------------"); 
+    std::map<std::string, model_template*>::iterator itm = this -> model_inference.begin(); 
     std::map<std::string, bool> mute; 
+    std::map<std::string, bool> device_tr; 
     for (size_t x(0); x < th_models.size(); ++x){
         int mdx = x%smpls; 
         if (!mdx){its = dl -> begin();}
         if (x && !mdx){++itm;}
+
+        if (!device_tr[itm -> second -> device]){
+            this -> info("Transferring graphs to device: " + std::string(itm -> second -> device)); 
+            torch::TensorOptions* dev = itm -> second -> m_option; 
+            this -> loader -> datatransfer(dev, threads_); 
+            this -> success("Completed transfer");
+            device_tr[itm -> second -> device] = true;
+        }
 
         model_settings_t mds; 
         itm -> second -> clone_settings(&mds); 

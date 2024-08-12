@@ -84,7 +84,7 @@ struct data_t {
             if (sk){return false;}
 
             long idx = this -> files_i -> at(this -> file_index);
-            if (this -> index < idx-1){
+            if (this -> index < idx){
                 this -> element(el); 
                 this -> index++; 
                 return true; 
@@ -112,18 +112,15 @@ struct data_t {
             delete *data; 
             *data = nullptr; 
             return true; 
-        }; 
+        } 
 
         template <typename T>
         void fetch_buffer(std::vector<T>** data){
-            Long64_t l = this -> tree -> GetEntries(); 
+            TTreeReader r = TTreeReader(this -> tree); 
+            TTreeReaderValue<T> dr(r, this -> branch_name.c_str()); 
             if (!*data){(*data) = new std::vector<T>();}
-            (*data) -> reserve(l); 
-            for (unsigned long x(0); x < l; ++x){
-                this -> tree -> GetEntry(x); 
-                (*data) -> push_back(*reinterpret_cast<T*>(this -> leaf -> GetValuePointer())); 
-            }
-        }; 
+            while (r.Next()){(*data) -> push_back(*dr);}
+        } 
 }; 
 
 struct element_t {

@@ -1,5 +1,13 @@
 #include <element.h>
 
+void element_t::set_meta(){
+    std::map<std::string, data_t*>::iterator itr = this -> handle.begin();
+    bool sk = itr -> second -> file_index >= (int)itr -> second -> files_i -> size(); 
+    if (sk){return;}
+    this -> event_index = itr -> second -> index; 
+    this -> filename = itr -> second -> files_s -> at(itr -> second -> file_index);
+}
+
 // -------------------------- If you were directed here, simply add the data type within this section ----------------- //
 bool element_t::next(){
     bool stop = false; 
@@ -180,16 +188,6 @@ bool data_t::element(unsigned long long* el){
 }
 
 // ******************************************************************************************* //
-
-
-void element_t::set_meta(){
-    std::map<std::string, data_t*>::iterator itr = this -> handle.begin();
-    bool sk = itr -> second -> file_index >= (int)itr -> second -> files_i -> size(); 
-    if (sk){return;}
-    this -> event_index = itr -> second -> index; 
-    this -> filename = itr -> second -> files_s -> at(itr -> second -> file_index);
-}
-
 
 void data_t::flush(){
     this -> flush_buffer();
