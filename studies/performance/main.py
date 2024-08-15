@@ -15,7 +15,7 @@ import time
 from pathlib import Path
 
 study = "topefficiency"
-smpls = "model-data/MRK-1/epoch-1/kfold-1/"
+smpls = "model-data/MRK-1/epoch-100/kfold-1/"
 p = Path(smpls)
 files = [str(x).replace(str(x).split("/")[-1], "") + "*" for x in p.glob("**/*.root") if str(x).endswith("root")]
 files = list(set(files))
@@ -24,7 +24,7 @@ plotting_method = {
     "topefficiency" : topefficiency
 }
 
-gen_data = False
+gen_data = True
 model_ev = True
 
 figure_path = "./Output/"
@@ -46,9 +46,8 @@ for f in files:
     ana.AddSamples(f, "tmp")
     ana.AddEvent(ev, "tmp")
     ana.AddSelection(sel)
-    ana.Threads = 2
+    ana.Threads = 10
     ana.Start()
-    time.sleep(1)
 
     f = open("./serialized-data/" + pth + ".pkl", "wb")
     pickle.dump(sel, f)

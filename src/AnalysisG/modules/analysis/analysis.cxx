@@ -55,48 +55,80 @@ void analysis::build_project(){
     }
 }
 
+void analysis::check_cache(){
+    std::string pth_cache = this -> m_settings.graph_cache; 
+    std::vector<std::string> cache = this -> ls(pth_cache, ".h5");
+
+    std::map<std::string, std::string> relabel = {}; 
+    std::map<std::string, std::string>::iterator tx = this -> file_labels.begin(); 
+    for (; tx != this -> file_labels.end(); ++tx){
+        std::vector<std::string> graph_cache = {}; 
+        if (this -> graph_labels.count(tx -> second)){
+            std::map<std::string, graph_template*>::iterator itg; 
+            itg = this -> graph_labels[tx -> second].begin();
+            for (; itg != this -> graph_labels[tx -> second].end(); ++itg){
+                graph_cache.push_back(itg -> first);
+                this -> graph_types[itg -> first]; 
+            }
+        }
+        std::vector<std::string> files = this -> ls(tx -> first, ".root"); 
+        if (!files.size()){files = {tx -> first};}
+        for (size_t x(0); x < files.size(); ++x){
+            std::string file_n = files[x]; 
+            std::vector<std::string> spl = this -> split(file_n, "/"); 
+            std::string fname = this -> hash(file_n) + "-" + spl[spl.size()-1]; 
+            this -> replace(&fname, ".root", ".h5"); 
+            int s = 0; 
+            for (size_t y(0); y < graph_cache.size(); ++y){
+                this -> in_cache[file_n][graph_cache[y] + "/" + fname] = false;
+                ++s; 
+            }
+
+            int sg = 0; 
+            for (size_t y(0); y < cache.size(); ++y){
+                std::vector<std::string> spl_ = this -> split(cache[y], "/"); 
+                std::string fname_ = spl_[spl_.size()-2] + "/" + spl_[spl_.size()-1]; 
+                if (!this -> in_cache[file_n].count(fname_)){continue;}
+                this -> in_cache[file_n][fname_] = true;
+                ++sg; 
+            }
+
+            if (s == sg && s){this -> skip_event_build[file_n] = true;}
+            else {this -> skip_event_build[file_n] = false;}
+            relabel[file_n] = tx -> second; 
+        }
+    }
+    this -> file_labels = relabel; 
+}
+
 void analysis::start(){
     this -> success("+============================+"); 
     this -> success("| Starting Analysis Session! |");
     this -> success("+============================+"); 
+    this -> check_cache(); 
 
-    bool trig = false; 
     int threads_ = this -> m_settings.threads; 
     std::string path_data = this -> m_settings.training_dataset; 
     std::string pth_cache = this -> m_settings.graph_cache; 
-    std::vector<std::string> cache = {}; 
-    if (pth_cache.size()){cache = this -> ls(pth_cache, ".h5");}
-    for (size_t x(0); x < cache.size(); ++x){
-        if (!this -> has_string(&cache[x], "0x")){continue;}
-        trig = true; 
-        break; 
+    if (!this -> ends_with(&pth_cache, "/")){pth_cache += "/";}
+
+    this -> build_events(); 
+    if (this -> selection_names.size()){this -> build_selections();}
+    if (this -> graph_labels.size()){this -> build_graphs();}
+
+    this -> tracer -> compile_objects(threads_); 
+    if (this -> selection_names.size()){return this -> tracer -> fill_selections(&this -> selection_names);} 
+
+    this -> build_dataloader(false); 
+    if (pth_cache.size() && this -> loader -> data_set -> size()){this -> loader -> dump_graphs(pth_cache, threads_);}
+    else if (pth_cache.size()){
+        std::map<std::string, std::string>::iterator itg; 
+        for (itg = this -> graph_types.begin(); itg != this -> graph_types.end(); ++itg){
+            this -> loader -> restore_graphs(pth_cache + itg -> first, threads_);
+        }
     }
 
-    if (!trig){
-        this -> build_events(); 
-        if (this -> selection_names.size()){this -> build_selections();}
-        if (this -> graph_labels.size()){this -> build_graphs();}
-        this -> tracer -> compile_objects(threads_); 
-    }
-
-    if (this -> selection_names.size()){
-        this -> tracer -> fill_selections(&this -> selection_names);
-    } 
-
-    if (pth_cache.size() && !trig){
-        this -> build_dataloader(false); 
-        this -> loader -> dump_graphs(pth_cache, threads_);
-        this -> info("Validating the graph cache..."); 
-        std::string msg1 = "Graph cache has been validated!"; 
-        std::string msg2 = "Failed to validate the graph cache! Skipping..."; 
-        if (this -> loader -> restore_graphs(pth_cache, threads_)){this -> success(msg1);}
-        else {this -> failure(msg2);}
-    }
-    else if (trig){this -> loader -> restore_graphs(pth_cache, threads_);}
-
-    if (!this -> loader -> restore_dataset(path_data) && path_data.size()){
-        this -> build_dataloader(true);
-    }
+    if (!this -> loader -> restore_dataset(path_data) && path_data.size()){this -> build_dataloader(true);}
 
     if (this -> model_sessions.size()){
         this -> build_dataloader(true); 

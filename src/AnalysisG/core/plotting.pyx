@@ -53,6 +53,23 @@ cdef class BasePlotting:
     def __dealloc__(self): del self.ptr
     def __init__(self): pass
 
+
+    @property
+    def DPI(self): return self.ptr.dpi
+    @DPI.setter
+    def DPI(self, int val): self.ptr.dpi = val
+
+    @property
+    def Style(self): return env(self.ptr.style)
+    @Style.setter
+    def Style(self, str val):
+        if val == "ATLAS":
+            self.matpl.style.use(hep.style.ATLAS)
+            self.xScaling = 20*6.4
+            self.yScaling = 20*4.8
+            self.DPI = 800
+        self.ptr.style = enc(val)
+
     @property
     def ErrorBars(self): return self.ptr.errors
     @ErrorBars.setter
@@ -144,7 +161,6 @@ cdef class BasePlotting:
     @yStep.setter
     def yStep(self, float val): self.ptr.y_step = val
 
-
     @property
     def xMin(self): return self.ptr.x_min
     @xMin.setter
@@ -173,6 +189,21 @@ cdef class BasePlotting:
         self.set_ymax = True
         self.ptr.y_max = val
 
+    @property
+    def Color(self):
+        if len(self.ptr.color): return env(self.ptr.color)
+        #self.Color = next(self._ax._get_lines.prop_cycler)["color"]
+        return ""
+
+    @Color.setter
+    def Color(self, str val): self.ptr.color = enc(val)
+
+    @property
+    def Colors(self): return [env(i) for i in self.ptr.colors]
+    @Colors.setter
+    def Colors(self, vals):
+        if not isinstance(vals, list): return
+        self.ptr.colors = enc_list(vals)
 
     cdef list __ticks__(self, float s, float e, float st):
         cdef list tick = []
@@ -186,6 +217,16 @@ cdef class BasePlotting:
         cdef string out = self.ptr.build_path()
 
         self.__compile__()
+
+        cdef dict com = {}
+        com["font.size"] = self.ptr.font_size
+        com["axes.labelsize"] = self.ptr.axis_size
+        com["legend.fontsize"] = self.ptr.legend_size
+        com["figure.titlesize"] = self.ptr.title_size
+        com["text.usetex"] = self.ptr.use_latex
+        com["hatch.linewidth"] = 0.1
+        self.matpl.rcParams.update(com)
+
         self._ax.set_title(self.Title)
         self.matpl.xlabel(self.xTitle, size = self.AxisSize)
         self.matpl.ylabel(self.yTitle, size = self.AxisSize)
@@ -252,7 +293,6 @@ cdef class TH1F(BasePlotting):
 
     @property
     def xLabels(self): return as_basic_dict(&self.ptr.x_labels)
-
     @xLabels.setter
     def xLabels(self, dict val): as_map(val, &self.ptr.x_labels)
 
@@ -297,6 +337,7 @@ cdef class TH1F(BasePlotting):
         histpl["flow"] = "sum"
         histpl["label"] = []
         histpl["H"] = []
+        if len(self.Color): histpl["color"] = self.Color
         return histpl
 
     cdef __build__(self):
@@ -342,6 +383,9 @@ cdef class TH1F(BasePlotting):
         cdef TH1F h
         cdef dict histpl = self.factory()
         if self.Histogram is not None:
+            if not len(labels): self.Histogram.xMin  = self.xMin
+            if not len(labels): self.Histogram.xMax  = self.xMax
+            if not len(labels): self.Histogram.xBins = self.xBins
             histpl["H"] += [self.Histogram.__build__()]
             histpl["label"] += [self.Histogram.Title]
 
@@ -363,9 +407,21 @@ cdef class TH1F(BasePlotting):
             histpl["label"] += [h.Title]
 
         if not len(histpl["H"]): return
-        error = hep.histplot(**histpl)
-        try: self.__get_error_seg__(error[0])
-        except: pass
+        if self.ErrorBars and self.Histogram is not None:
+            l = list(histpl["label"])
+            lg = list(histpl["H"])
+            del histpl["edgecolor"]
+            histpl["histtype"] = "step"
+            histpl["H"] = [self.Histogram.__build__()]
+            histpl["label"] = [self.Histogram.Title + " (Uncertainty)"]
+            error = hep.histplot(**histpl)
+
+            histpl["histtype"] = "fill"
+            histpl["edgecolor"] = "black"
+            histpl["label"] = l
+            histpl["H"] = lg
+            hep.histplot(**histpl)
+            self.__get_error_seg__(error[0])
 
         if not len(labels): self.matpl.xlim(_min, _max)
         self.matpl.legend(loc = "upper right")
@@ -423,6 +479,7 @@ cdef class TH2F(BasePlotting):
     cdef void __compile__(self):
         cdef dict histpl = {}
         histpl["H"] = self.__build__()
+        if len(self.Color): histpl["cmap"] = self.Color
         error = hep.hist2dplot(**histpl)
 
         cdef float x_max, x_min

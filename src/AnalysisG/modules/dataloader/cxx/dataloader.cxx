@@ -81,6 +81,7 @@ void dataloader::extract_data(graph_t* gr){
     this -> clean_data_elements(&gr -> data_map_node  , &this -> data_map_node);
     this -> clean_data_elements(&gr -> data_map_edge  , &this -> data_map_edge);
     this -> data_set -> push_back(gr); 
+    this -> hash_map[*gr -> hash] = this -> data_index -> size(); 
     this -> data_index -> push_back(this -> data_index -> size()); 
 }
 

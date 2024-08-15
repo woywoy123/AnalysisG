@@ -1,23 +1,25 @@
 #include <generators/analysis.h>
 
 void analysis::build_graphs(){
-    std::map<std::string, graph_template*>::iterator itx_; 
-    std::map<std::string, std::map<std::string, graph_template*>>::iterator itx; 
+    this -> success("+============================+"); 
+    this -> success("|   Starting Graph Builder   |");
+    this -> success("+============================+"); 
 
-    itx = this -> graph_labels.begin(); 
-    for (; itx != this -> graph_labels.end(); ++itx){
+    std::map<std::string, std::map<std::string, graph_template*>>::iterator itx; 
+    for (itx = this -> graph_labels.begin(); itx != this -> graph_labels.end(); ++itx){
         std::string label = itx -> first; 
         std::vector<event_template*>* events_ = this -> tracer -> get_events(label); 
-        if (!events_ -> size()){
-            this -> warning("No Events found for Graph (" + label + "). Skipping...");
-            continue;
-        }
+        std::map<std::string, graph_template*>::iterator itx_; 
 
-        itx_ = itx -> second.begin(); 
-        for (; itx_ != itx -> second.end(); ++itx_){
-            graph_template* gr_t = itx_ -> second; 
+        for (itx_ = itx -> second.begin(); itx_ != itx -> second.end(); ++itx_){
             for (event_template* ev : *events_){
-                graph_template* gr_o = gr_t -> build(ev); 
+                std::vector<std::string> spl = this -> split(ev -> filename, "/"); 
+                std::string fname = this -> hash(ev -> filename) + "-" + spl[spl.size()-1]; 
+                this -> replace(&fname, ".root", ".h5"); 
+                fname = itx_ -> first + "/" + fname; 
+                if (this -> in_cache[ev -> filename][fname]){continue;}
+
+                graph_template* gr_o = itx_ -> second -> build(ev); 
                 bool rm = this -> tracer -> add_graph(gr_o, label);
                 if (!rm){continue;}
                 delete gr_o;
@@ -25,7 +27,7 @@ void analysis::build_graphs(){
         }
         delete events_; 
     }
-    this -> success("Built Graphs from Events"); 
+    this -> success("Finished Building Graphs from events"); 
 }
 
 void analysis::build_dataloader(bool training){

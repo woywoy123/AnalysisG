@@ -17,6 +17,12 @@ cdef extern from "topefficiency.h":
         map[string, vector[float]] predicted_topmass
         map[string, vector[float]] truth_topmass
 
+        map[string, vector[float]] predicted_topmass_reject
+        map[string, vector[float]] truth_topmass_reject
+
+        map[string, vector[float]] predicted_zprime_mass
+        map[string, vector[float]] truth_zprime_mass
+
         map[string, vector[int]] n_tops_predictions
         map[string, vector[int]] n_tops_real
 
@@ -42,6 +48,12 @@ cdef class TopEfficiency(SelectionTemplate):
 
     cdef public dict predicted_topmass
     cdef public dict truth_topmass
+
+    cdef public dict  predicted_topmass_reject
+    cdef public dict  truth_topmass_reject
+
+    cdef public dict  predicted_zprime_mass
+    cdef public dict  truth_zprime_mass
 
     cdef public dict n_tops_predictions
     cdef public dict n_tops_real

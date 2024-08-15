@@ -23,10 +23,14 @@ cdef extern from "<plotting/plotting.h>":
         string xtitle
         string style
         string histfill
+        string color
+        vector[string] colors
+
         bool stack
         bool density
         bool x_logarithmic
         bool y_logarithmic
+
         float line_width
         float alpha
         float x_step

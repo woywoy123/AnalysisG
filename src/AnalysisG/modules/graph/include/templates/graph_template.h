@@ -68,6 +68,7 @@ struct graph_t {
         long event_index = 0; 
         std::string* hash = nullptr; 
         std::string* filename = nullptr; 
+        std::string* graph_name = nullptr; 
 
         c10::DeviceType device = c10::kCPU;  
         int in_use = -1; 

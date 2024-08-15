@@ -41,10 +41,16 @@ class plotting: public tools
         std::string ytitle = "y-axis"; 
         std::string xtitle = "x-axis"; 
         std::string histfill = "fill"; 
+
+        std::string color = ""; 
+        std::vector<std::string> colors = {}; 
+
         bool stack   = false; 
         bool density = false;
+
         bool x_logarithmic = false; 
         bool y_logarithmic = false; 
+
         float line_width = 0.1; 
         float alpha      = 0.4; 
         float x_step     = -1; 

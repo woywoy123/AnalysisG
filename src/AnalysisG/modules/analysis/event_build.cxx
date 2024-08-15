@@ -1,19 +1,17 @@
 #include <generators/analysis.h>
 
 void analysis::build_events(){
-    std::map<std::string, std::string>::iterator itf;
     std::set<std::string> trees, branches, leaves; 
     event_template* event_f = nullptr; 
-    std::string label = ""; 
 
-    itf = this -> file_labels.begin(); 
+    std::map<std::string, std::string>::iterator itf = this -> file_labels.begin(); 
     for (; itf != this -> file_labels.end(); ++itf){
         if (!this -> event_labels.count(itf -> second)){continue;}
+        if (this -> skip_event_build[itf -> first]){continue;}
         this -> reader -> root_files[itf -> first] = true;
 
         if (event_f){continue;}
         event_f = this -> event_labels[itf -> second]; 
-        label = itf -> second; 
 
         std::vector<std::string> _trees    = event_f -> trees; 
         std::vector<std::string> _branches = event_f -> branches; 
@@ -23,7 +21,11 @@ void analysis::build_events(){
         branches.insert(_branches.begin(), _branches.end()); 
         leaves.insert(_leaves.begin(), _leaves.end()); 
     } 
+    if (!this -> reader -> root_files.size()){return this -> info("Skipping event building due to being in cache.");}
     if (!event_f){return this -> warning("Missing Event Implementation for specified samples!");}
+    this -> success("+============================+"); 
+    this -> success("|   Starting Event Builder   |");
+    this -> success("+============================+"); 
 
     std::vector<std::string>* trees_    = &this -> reader -> trees; 
     std::vector<std::string>* branches_ = &this -> reader -> branches; 
@@ -34,30 +36,30 @@ void analysis::build_events(){
     leaves_ -> insert(leaves_ -> end(), leaves.begin(), leaves.end()); 
     this -> reader -> check_root_file_paths(); 
 
-    long ls = 0;
     long index = 0; 
+    size_t nevents = 0;
     std::map<std::string, long> len = this -> reader -> root_size(); 
     std::map<std::string, long>::iterator ity = len.begin(); 
-    for (; ity != len.end(); ++ity){ls = (ls < ity -> second) ? ity -> second : ls;}
+    for (; ity != len.end(); ++ity){nevents = (nevents < ity -> second) ? ity -> second : nevents;}
     std::map<std::string, std::map<std::string, long>> root_entries = this -> reader -> tree_entries; 
 
     std::string title = ""; 
     std::vector<size_t> th_prg(1, 0); 
-    size_t nevents = ls; 
-    this -> info("Building Events from ROOT files"); 
     std::thread* th_ = new std::thread(this -> progressbar2, &th_prg, &nevents, &title); 
     std::map<std::string, data_t*>* io_handle = this -> reader -> get_data(); 
 
-    while (index < ls){
+    while (index < nevents){
         std::map<std::string, event_template*> evnts = event_f -> build_event(io_handle);
         ++index;  
         th_prg[0]+=1; 
         if (!evnts.size()){continue;}
         std::map<std::string, event_template*>::iterator tx = evnts.begin(); 
         event_template* ev_ = tx -> second; 
+        std::string label = this -> file_labels[ev_ -> filename]; 
         meta* meta_ = this -> reader -> meta_data[ev_ -> filename]; 
         bool detach = this -> tracer -> add_meta_data(meta_, ev_ -> filename); 
         if (detach){this -> reader -> meta_data[ev_ -> filename] = nullptr;}
+
         std::vector<std::string> tmp = this -> split(ev_ -> filename, "/"); 
         title = tmp[tmp.size()-1]; 
         for (; tx != evnts.end(); ++tx){

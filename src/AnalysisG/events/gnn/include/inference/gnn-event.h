@@ -63,13 +63,14 @@ class gnn_event: public event_template
 
         template <typename g, typename G>
         void sum(std::vector<g*>* ch, G** out){
-            G* prt = new G(); 
-            for (size_t x(0); x < ch -> size(); ++x){prt -> iadd(ch -> at(x));}
-            *out = prt; 
+            (*out) = new G(); 
+            std::map<std::string, bool> maps; 
+            for (size_t x(0); x < ch -> size(); ++x){
+                if (maps[ch -> at(x) -> hash]){continue;}
+                maps[ch -> at(x) -> hash] = true;
+                (*out) -> iadd(ch -> at(x));
+            }
         }
-
-
-
 }; 
 
 

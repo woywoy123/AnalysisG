@@ -51,7 +51,13 @@ class selection_template: public tools
         template <typename g>
         void sum(std::vector<g*>* ch, particle_template** out){
             particle_template* prt = new particle_template(); 
-            for (size_t x(0); x < ch -> size(); ++x){prt -> iadd(ch -> at(x));}
+            std::map<std::string, bool> maps; 
+            for (size_t x(0); x < ch -> size(); ++x){
+                if (maps[ch -> at(x) -> hash]){continue;}
+                maps[ch -> at(x) -> hash] = true;
+                prt -> iadd(ch -> at(x));
+            }
+
             std::string hash_ = prt -> hash; 
             bool h = this -> garbage.count(hash_); 
             if (!h){(*out) = prt; this -> garbage[hash_] = prt; return;}

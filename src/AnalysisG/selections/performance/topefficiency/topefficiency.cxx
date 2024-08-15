@@ -16,6 +16,13 @@ void topefficiency::merge(selection_template* sl){
 
     merge_data(&this -> predicted_topmass,            &slt -> predicted_topmass); 
     merge_data(&this -> truth_topmass,                &slt -> truth_topmass); 
+
+    merge_data(&this -> predicted_topmass_reject,     &slt -> predicted_topmass_reject); 
+    merge_data(&this -> truth_topmass_reject,         &slt -> truth_topmass_reject); 
+
+    merge_data(&this -> predicted_zprime_mass,        &slt -> predicted_zprime_mass); 
+    merge_data(&this -> truth_zprime_mass,            &slt -> truth_zprime_mass); 
+
     merge_data(&this -> n_tops_predictions,           &slt -> n_tops_predictions); 
     merge_data(&this -> n_tops_real,                  &slt -> n_tops_real); 
 
@@ -39,17 +46,17 @@ int topefficiency::iters(double start, double end, double step){
 } 
 
 std::string topefficiency::region(double pt_p, double eta_p){
-    int n_pt  = this -> iters(this -> pt_start, this -> pt_end, this -> pt_step); 
+    int n_pt  = this -> iters(this -> pt_start , this -> pt_end , this -> pt_step); 
     int n_eta = this -> iters(this -> eta_start, this -> eta_end, this -> eta_step); 
 
-    double pt_s_, pt_e_; 
+    double pt_s_ = 0, pt_e_ = 0; 
     for (int i(0); i < n_pt; ++i){
         pt_s_ = this -> pt_start +    i  * this -> pt_step; 
         pt_e_ = this -> pt_start + (i+1) * this -> pt_step;  
         if (pt_s_ < pt_p && pt_p < pt_e_){break;}
     }
 
-    double eta_s_, eta_e_; 
+    double eta_s_ = 0, eta_e_ = 0; 
     for (int i(0); i < n_eta; ++i){
         eta_s_ = this -> eta_start +    i  * this -> eta_step; 
         eta_e_ = this -> eta_start + (i+1) * this -> eta_step;  
@@ -98,35 +105,61 @@ void topefficiency::build_phasespace(bsm_4tops* evn){
 void topefficiency::build_phasespace(gnn_event* evn){
     std::vector<particle_template*> reco_tops = evn -> reco_tops;  
 
+    std::vector<std::string> keys = {}; 
     for (size_t x(0); x < reco_tops.size(); ++x){
         particle_template* top_ = reco_tops[x]; 
         std::string key = this -> region(top_ -> pt / 1000, top_ -> eta);
-        this -> predicted_topmass[key].push_back(top_ -> mass / 1000); 
+        float mass = top_ -> mass / 1000; 
+        if (mass < 30){
+            this -> predicted_topmass_reject[key].push_back(mass); 
+            continue;
+        }  
+        this -> predicted_topmass[key].push_back(mass);
         if (!this -> n_tops_predictions[key].size()){this -> n_tops_predictions[key].push_back(0);}
         this -> n_tops_predictions[key][0]+=1;
+        keys.push_back(key); 
     }
 
     std::vector<particle_template*> truth_tops = evn -> truth_tops;  
     for (size_t x(0); x < truth_tops.size(); ++x){
         particle_template* top_ = truth_tops[x]; 
         std::string key = this -> region(top_ -> pt / 1000, top_ -> eta);
-        this -> truth_topmass[key].push_back(top_ -> mass / 1000); 
+        float mass = top_ -> mass / 1000; 
+        if (mass < 30){
+            this -> truth_topmass_reject[key].push_back(mass); 
+            continue;
+        }
+
+        this -> truth_topmass[key].push_back(mass);
         if (!this -> n_tops_real[key].size()){this -> n_tops_real[key].push_back(0);}
         this -> n_tops_real[key][0]+=1;
+        keys.push_back(key); 
     }
-    
+
+    for (size_t x(0); x < keys.size(); ++x){
+        std::string key = keys[x]; 
+        if (!this -> n_tops_real.count(key)){
+            this -> n_tops_real[key].push_back(0);
+        }
+        if (!this -> n_tops_predictions.count(key)){
+            this -> n_tops_predictions[key].push_back(0);
+        }
+    }
+
     std::vector<particle_template*> reco_zprime = evn -> reco_zprime;  
     for (size_t x(0); x < reco_zprime.size(); ++x){
         particle_template* zp_ = reco_zprime[x]; 
+        if (zp_ -> mass / 1000 < 200){continue;}
         std::string key = this -> region(zp_ -> pt / 1000, zp_ -> eta);
-        this -> predicted_topmass[key].push_back(zp_ -> mass / 1000); 
+        this -> predicted_zprime_mass[key].push_back(zp_ -> mass / 1000); 
     }
 
     std::vector<particle_template*> truth_zprime = evn -> truth_zprime;  
     for (size_t x(0); x < truth_zprime.size(); ++x){
-        particle_template* zp_ = truth_zprime[x]; 
+        particle_template* zp_ = truth_zprime[x];
+        if (zp_ -> mass / 1000 < 200){continue;} 
         std::string key = this -> region(zp_ -> pt / 1000, zp_ -> eta);
-        this -> truth_topmass[key].push_back(zp_ -> mass / 1000); 
+        this -> truth_zprime_mass[key].push_back(zp_ -> mass / 1000); 
     }
 
     this -> truth_res_edge = evn -> truth_res_edge; 

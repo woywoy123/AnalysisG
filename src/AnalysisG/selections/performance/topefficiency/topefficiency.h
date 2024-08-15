@@ -38,7 +38,13 @@ class topefficiency: public selection_template
         std::map<std::string, std::vector<float>> jets_pt_eta_topmass = {};  
 
         std::map<std::string, std::vector<float>> predicted_topmass = {}; 
+        std::map<std::string, std::vector<float>> predicted_topmass_reject = {}; 
+
         std::map<std::string, std::vector<float>> truth_topmass = {}; 
+        std::map<std::string, std::vector<float>> truth_topmass_reject = {}; 
+
+        std::map<std::string, std::vector<float>> predicted_zprime_mass = {}; 
+        std::map<std::string, std::vector<float>> truth_zprime_mass = {}; 
 
         std::map<std::string, std::vector<int>> n_tops_predictions = {}; 
         std::map<std::string, std::vector<int>> n_tops_real = {}; 

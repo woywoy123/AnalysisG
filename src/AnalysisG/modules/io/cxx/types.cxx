@@ -2,11 +2,15 @@
 
 hid_t io::member(folds_t){
     hid_t px = H5Tcreate(H5T_COMPOUND, sizeof(folds_t)); 
+
     H5Tinsert(px, "k"       , HOFFSET(folds_t, k)       , H5T_NATIVE_INT); 
-    H5Tinsert(px, "index"   , HOFFSET(folds_t, index)   , H5T_NATIVE_INT); 
     H5Tinsert(px, "is_train", HOFFSET(folds_t, is_train), H5T_NATIVE_HBOOL); 
     H5Tinsert(px, "is_valid", HOFFSET(folds_t, is_valid), H5T_NATIVE_HBOOL); 
     H5Tinsert(px, "is_eval" , HOFFSET(folds_t, is_eval) , H5T_NATIVE_HBOOL); 
+
+    hid_t ss = H5Tcopy(H5T_C_S1); 
+    H5Tset_size(ss, H5T_VARIABLE); 
+    H5Tinsert(px, "hash", HOFFSET(folds_t, hash), ss); 
     return px;
 }
 

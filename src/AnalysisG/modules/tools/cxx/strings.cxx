@@ -93,10 +93,10 @@ std::string tools::lower(std::string* in){
 }
 
 std::string tools::to_string(double val, int prec){
-    std::ostringstream ss; 
+    std::stringstream ss; 
     if (prec > -1){ss.precision(prec);}
     ss << std::fixed << val; 
-    return std::move(ss).str(); 
+    return ss.str(); 
 }
 
 

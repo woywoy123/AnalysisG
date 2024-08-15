@@ -58,6 +58,7 @@ void graph_t::_purge_all(){
     std::map<int, torch::Tensor*>::iterator itr = this -> dev_edge_index.begin();
     for (; itr != this -> dev_edge_index.end(); ++itr){delete itr -> second;}
     this -> dev_edge_index.clear(); 
+    if (this -> graph_name){delete this -> graph_name;}
 
     if (!this -> is_owner){return;}
     delete this -> hash; 

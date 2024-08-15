@@ -37,8 +37,10 @@ class dataloader:
         void extract_data(graph_t* gr); 
         void datatransfer(torch::TensorOptions* op, int threads = 10);
         void start_cuda_server(); 
-        void dump_graphs(std::string path = "./", int threads = 10); 
-        bool restore_graphs(std::string path = "./", int threads = 10); 
+        bool dump_graphs(std::string path = "./", int threads = 10); 
+
+        void restore_graphs(std::vector<std::string> paths, int threads); 
+        void restore_graphs(std::string paths, int threads); 
 
     private:
         friend class analysis;
@@ -51,6 +53,7 @@ class dataloader:
 
         void shuffle(std::vector<int>* idx); 
         void shuffle(std::vector<graph_t*>* idx); 
+        std::map<std::string, graph_t*>* restore_graphs_(std::vector<std::string>, int threads); 
 
         std::map<int, std::vector<int>*> k_fold_training = {}; 
         std::map<int, std::vector<int>*> k_fold_validation = {}; 
@@ -69,6 +72,7 @@ class dataloader:
         std::vector<std::map<std::string, int>*> data_map_node  = {}; 
         std::vector<std::map<std::string, int>*> data_map_edge  = {}; 
 
+        std::map<std::string, int> hash_map = {}; 
         std::vector<int>*         data_index = nullptr; 
         std::vector<graph_t*>*       gr_test = nullptr; 
         std::vector<graph_t*>*      data_set = nullptr; 

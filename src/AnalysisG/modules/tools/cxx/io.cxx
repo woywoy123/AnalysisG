@@ -29,6 +29,7 @@ bool tools::is_file(std::string path){
 }
 
 std::vector<std::string> tools::ls(std::string path, std::string ext){
+    if (this -> ends_with(&path, "*")){path = this -> split(path, "*")[0];}
     std::vector<std::string> out = {}; 
     std::filesystem::recursive_directory_iterator itr; 
     try {itr = std::filesystem::recursive_directory_iterator(path);}

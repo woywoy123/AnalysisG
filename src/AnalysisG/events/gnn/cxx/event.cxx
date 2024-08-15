@@ -64,11 +64,14 @@ void gnn_event::CompileEvent(){
     std::vector<int> src = this -> m_edge_index[0]; 
     std::vector<int> dst = this -> m_edge_index[1]; 
 
-    std::vector<particle_template*> res_tops, real_res_tops; 
+    std::vector<particle_template*> res_tops = {}; 
+    std::vector<particle_template*> real_res_tops = {}; 
     for (int i(0); i < src.size(); ++i){
         if (!res_edge[i]){continue;}
         res_tops.push_back(top_candidates[src[i]]); 
         res_tops.push_back(top_candidates[dst[i]]); 
+
+        if (!truth_res_edge_[i]){continue;}
         real_res_tops.push_back(top_truth[src[i]]); 
         real_res_tops.push_back(top_truth[dst[i]]); 
     }
@@ -81,7 +84,7 @@ void gnn_event::CompileEvent(){
 
     if (real_res_tops.size()){
         zprime* res = nullptr; 
-        this -> sum(&res_tops, &res); 
+        this -> sum(&real_res_tops, &res); 
         this -> truth_zprime.push_back(res); 
     }
  

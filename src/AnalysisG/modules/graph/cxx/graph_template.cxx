@@ -170,6 +170,7 @@ graph_t* graph_template::data_export(){
     
     gr -> num_nodes   = this -> num_nodes; 
     gr -> event_index = this -> index; 
+    gr -> graph_name  = new std::string(this -> name); 
     return gr; 
 }
 

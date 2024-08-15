@@ -7,7 +7,7 @@ struct folds_t {
     bool is_train = false; 
     bool is_valid = false; 
     bool is_eval = false; 
-    int index; 
+    char* hash; 
 }; 
 
 

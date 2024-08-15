@@ -68,7 +68,7 @@ void notification::progressbar1(std::vector<size_t>* threads, size_t l, std::str
 
 void notification::progressbar2(std::vector<size_t>* threads, size_t* l, std::string* title){
     while (true){
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
         float prgs = float(notification().sum(threads))/float(*l); 
         if (prgs > 0.995){break;}
         notification().progressbar(prgs, *title); 

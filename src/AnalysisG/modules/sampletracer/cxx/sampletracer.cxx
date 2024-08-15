@@ -66,6 +66,7 @@ void sampletracer::compile_objects(int threads){
 
     itr = this -> root_container -> begin(); 
     for (; itr != this -> root_container -> end(); ++itr){len += itr -> second -> len();}
+    if (!len){return;}
     std::thread* thr = new std::thread(this -> progressbar1, &handles, len, "Compiling Containers");
 
     itr = this -> root_container -> begin(); 

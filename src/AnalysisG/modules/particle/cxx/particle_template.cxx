@@ -81,6 +81,7 @@ particle_template::particle_template(){
 }
 
 particle_template::particle_template(particle_t* p){this -> data = *p;}
+
 particle_template::particle_template(double px, double py, double pz, double e){
     particle_t* p = &this -> data; 
     p -> px = px; p -> py = py; p -> pz = pz; p -> e = e; 

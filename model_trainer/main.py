@@ -4,7 +4,7 @@ from AnalysisG.graphs import bsm_4tops, ssml_mc20
 from AnalysisG.events.bsm_4tops.event_bsm_4tops import *
 from AnalysisG.events.ssml_mc20.event_ssml_mc20 import *
 
-from AnalysisG.models.RecursiveGraphNeuralNetwork import *
+from AnalysisG.models import *
 from AnalysisG.core.lossfx import OptimizerConfig
 
 from AnalysisG.core.io import IO
