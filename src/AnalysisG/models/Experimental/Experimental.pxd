@@ -7,15 +7,11 @@ from AnalysisG.core.model_template cimport model_template, ModelTemplate
 cdef extern from "<models/Experimental.h>":
     cdef cppclass experimental(model_template):
 
-        experimental(int rep, double drp) except+
+        experimental() except+
 
-        int _dx
-        int _x
-        int _output
-        int _rep
-        double res_mass
+        int _dxin
+        int _xin
         double drop_out
-
         bool is_mc
 
 cdef class Experimental(ModelTemplate):

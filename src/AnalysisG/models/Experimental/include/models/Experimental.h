@@ -5,7 +5,7 @@
 class experimental: public model_template
 {
     public:
-        experimental(int rep = 26, double dpt = 0.1); 
+        experimental(); 
         ~experimental();
         model_template* clone() override;
         void forward(graph_t*) override; 
@@ -16,27 +16,23 @@ class experimental: public model_template
         ); 
 
         // Neural Network Parameters
-        int _dx     = 26; 
-        int _x      = 5; 
-        int _output = 2; 
-        int _rep    = 26; 
-        int _hidden = 64; 
-        double res_mass = 0; 
+        int _xin  = 6; 
+        int _dxin = 5; 
+        int _xout = 2; 
+        int _hidden = 1024; 
+
         double drop_out = 0.1; 
 
         // Misc
         bool is_mc = true; 
 
-
-        torch::nn::Sequential* rnn_x      = nullptr; 
-        torch::nn::Sequential* rnn_dx     = nullptr; 
-        torch::nn::Sequential* rnn_merge  = nullptr; 
-        torch::nn::Sequential* rnn_update = nullptr; 
-        torch::nn::Sequential* rnn_exotic = nullptr; 
-
-        torch::nn::Sequential* node_aggr_mlp = nullptr; 
-        torch::nn::Sequential* ntops_mlp     = nullptr; 
-        torch::nn::Sequential* exo_mlp       = nullptr; 
+        torch::nn::Sequential* rnn_x        = nullptr; 
+        torch::nn::Sequential* rnn_dx       = nullptr; 
+        torch::nn::Sequential* rnn_merge    = nullptr; 
+        torch::nn::Sequential* rnn_top_edge = nullptr;
+        torch::nn::Sequential* rnn_res_edge = nullptr; 
+        torch::nn::Sequential* mlp_ntop     = nullptr; 
+        torch::nn::Sequential* mlp_sig      = nullptr; 
 
 }; 
 

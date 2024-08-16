@@ -209,7 +209,7 @@ void recursivegraphneuralnetwork::forward(graph_t* data){
         if (!iter){H_ = torch::zeros_like(H); ++iter;}
 
         // ----- use the index matrix to map the source and destination edges to the edge index ----- //
-        torch::Tensor idx = idx_mat.index({idx_mlp.index({src_}), idx_mlp.index({dst_})}); 
+        torch::Tensor idx = idx_mat.index({src_, dst_}); 
 
         // ----- make new prediction of G based on H, H_, prior G, and the current G_ state ---- //
         G  = (*this -> rnn_update) -> forward(torch::cat({H, H_ - H, G, G_.index({idx}) - G}, {-1})); 

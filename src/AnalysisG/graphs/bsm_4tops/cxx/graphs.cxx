@@ -16,14 +16,14 @@ void graph_tops::CompileEvent(){
 
     // ---------------- truth ------------------- //
     this -> add_graph_truth_feature<bool, bsm_4tops>(event, signal_event, "signal"); 
-    this -> add_graph_truth_feature<int, bsm_4tops>(event, num_tops , "ntops"); 
+    this -> add_graph_truth_feature<int, bsm_4tops>(event , num_tops    , "ntops"); 
 
     this -> add_node_truth_feature<int, particle_template>(top_node, "top_node"); 
     this -> add_node_truth_feature<int, particle_template>(res_node, "res_node");
     this -> add_edge_truth_feature<int, particle_template>(res_edge, "res_edge"); 
 
     // ---------------- data -------------------- //
-    this -> add_graph_data_feature<double, bsm_4tops>(event, missing_et, "met"); 
+    this -> add_graph_data_feature<double, bsm_4tops>(event, missing_et , "met"); 
     this -> add_graph_data_feature<double, bsm_4tops>(event, missing_phi, "phi"); 
 
     this -> add_node_data_feature<double, particle_template>(pt    , "pt"); 
