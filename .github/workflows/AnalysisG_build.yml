@@ -46,7 +46,7 @@ jobs:
 
             - name: "Config-CUDA"
               if: ${{ matrix.cuda != 'cpu' }}
-              uses: Jimver/cuda-toolkit@v0.2.10
+              uses: Jimver/cuda-toolkit@v0.2.16
               id: cuda-toolkit
               with:
                 cuda: ${{ matrix.cuda }}
