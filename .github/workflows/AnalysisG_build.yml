@@ -84,6 +84,10 @@ jobs:
                 rm root_v6.32.02.Linux-almalinux9.4-x86_64-gcc11.4.tar.gz
                 export HOME=$PWD
                 export ROOTSYS=$HOME/root
+                export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ROOTSYS/lib
+                export CMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH:$ROOTSYS/cmake
+                export TORCH_CUDA_ARCH_LIST="8.0 8.6 8.9 9.0+PTX"
+                export PATH=$ROOTSYS/bin:$PATH
 
                 pip install cython 
                 pip install pyyaml 
