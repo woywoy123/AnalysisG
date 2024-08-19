@@ -85,6 +85,9 @@ jobs:
                 export HOME=$PWD
                 export ROOTSYS=$HOME/root
 
+                pip install cython 
+                pip install pyyaml 
+
                 mkdir build && cd build 
                 cmake .. 
                 make -j12
