@@ -26,7 +26,12 @@ jobs:
   steps:      
     - name: "Checkout the repo"
       uses: "actions/checkout@v3"
-  
+    
+    - uses: Jimver/cuda-toolkit@v0.2.16
+      id: cuda-toolkit
+      with:
+          cuda: '12.5.0'
+
     - uses: eWaterCycle/setup-singularity@v7
       with:
         singularity-version: 3.8.3
