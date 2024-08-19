@@ -76,7 +76,7 @@ void analysis::check_cache(){
         for (size_t x(0); x < files.size(); ++x){
             std::string file_n = files[x]; 
             std::vector<std::string> spl = this -> split(file_n, "/"); 
-            std::string fname = this -> hash(file_n) + "-" + spl[spl.size()-1]; 
+            std::string fname = this -> hash(spl[spl.size()-1]) + "-" + spl[spl.size()-1]; 
             this -> replace(&fname, ".root", ".h5"); 
             int s = 0; 
             for (size_t y(0); y < graph_cache.size(); ++y){

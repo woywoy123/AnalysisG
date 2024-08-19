@@ -10,15 +10,29 @@ The class is highly flexible and can be modified as needed by other frameworks.
 
    .. py:function:: AddSamples(str path, str label)
 
+      A function used to assign a sample label (arbitrary name) to a particular dataset.
+
    .. py:function:: AddEvent(EventTemplate ev, str label)
+
+      A function used to pass the event implementation to be used for subsequent compilations.
 
    .. py:function:: AddGraph(GraphTemplate ev, str label)
 
+      A function used to tell the framework which graph implementation should be used.
+
    .. py:function:: AddSelection(SelectionTemplate selc)
+
+      A function which adds any selection templates to the current analysis workflow.
 
    .. py:function:: AddModel(ModelTemplate model, OptimizerConfig op, str run_name)
 
+      A function used to add a model to be trained, along with any optimizer hyperparameters that should be applied to the model.
+      The additional `run_name` variable is used to create folders that contain the training output. 
+
    .. py:function:: AddModelInference(ModelTemplate model, str run_name = "run_name")
+
+      A function used to add a trained model that should be used for inference studies.
+      The `run_name` variable is used to generate folder structures for output ROOT files that hold model predictions.
 
    .. py:function:: Start()
 
@@ -63,3 +77,5 @@ The class is highly flexible and can be modified as needed by other frameworks.
    :ivar bool DebugMode: Disables all threading.
 
    :ivar int Threads: Number of threads to run the framework over.
+
+   :ivar str GraphCache: Specifies a directory in which graph_template outputs should be cached. This will generate .h5 files that can be reused.

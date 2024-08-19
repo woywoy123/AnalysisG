@@ -71,4 +71,8 @@ void static num_quark(double* o, bsm_4tops* event){
 void static num_jets(double* o, bsm_4tops* event){*o = event -> Jets.size();}
 void static num_truthjets(double* o, bsm_4tops* event){*o = event -> TruthJets.size();}
 
+void static event_number(long* o, bsm_4tops* event){*o = event -> event_number;}
+void static event_weight(double* o, bsm_4tops* event){*o = event -> weight;}
+
+
 #endif

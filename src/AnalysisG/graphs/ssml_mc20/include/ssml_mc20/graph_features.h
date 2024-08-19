@@ -68,4 +68,8 @@ void static num_quark(double* o, ssml_mc20* event){
 
 void static num_jets(double* o, ssml_mc20* event){*o = event -> Jets.size();}
 
+void static event_number(long* o, ssml_mc20* event){*o = event -> eventNumber;}
+void static event_weight(double* o, ssml_mc20* event){*o = event -> weight;}
+
+
 #endif

@@ -75,24 +75,52 @@ The event_template class inherits from the tools class and uses the event_t stru
 
    .. cpp:function:: void static set_name(std::string*, event_template*)
 
+      Sets the name of the event_template implementation. 
+      This can be useful when implementing selection_templates.
+
    .. cpp:function:: void static set_index(long*, event_template*)
+
+      A setter function used to assign the event some index.
+      By default the index is the index of the event of a ROOT file.
+      This function modifies the `event_t` struct of the `data` attribute.
 
    .. cpp:function:: void static set_hash(std::string*, event_template*)
 
+      Sets the hash of the event. 
+      This value cannot be modified once set and should not be used by default.
+
    .. cpp:function:: void static get_hash(std::string*, event_template*)
+
+      A getter function used to fetch the current event hash.
+      If the hash has not been set, it will generate the hash during the call of `event -> hash`.
 
    .. cpp:function:: void static set_weight(double*, event_template*)
 
+      A setter function used to assign an event weight to the given event.
+      This function is called by assigning a value to `event -> weight` and modifies the `event_t` struct of the `data` attribute.
+
    .. cpp:function:: virtual event_template* clone()
+
+      A function used to clone the current event implementation. 
+      It is important to override this function, so that the current event implementation can be cloned multiple times during event building.
+      To use it, simply declare the function as override in the header and create a function with the content `return new <event implementation>`.
 
    .. cpp:function:: virtual void build(element_t* el)
 
+      A function used to override the current logic of how an event and its particles are built during compilation.
+      By default this function should not be overriden or modified unless more customization is required during compilation.
+
    .. cpp:function:: virtual void CompileEvent()
+
+      A function which can be freely overriden to define how particles should be linked within the event.
 
    .. cpp:function:: std::map<std::string, event_template*> build_event(std::map<std::string, data_t>* evnt) 
 
    .. cpp:function:: template <typename G> \
                      void register_particle(std::map<std::string, G*>* particles)
+
+       A template function used to register particles that should be built during compilation.
+       **It is important to register any private member variables holding particles as it also cleans up particle pointers following compilation.**
 
    .. cpp:function:: template <typename G> \
                      void deregister_particle(std::map<std::string, G*>* particles)

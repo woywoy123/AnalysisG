@@ -41,9 +41,9 @@ bool dataloader::dump_graphs(std::string path, int threads){
             grw -> truth_edge      = const_cast<char*>(data -> truth_edge.data());   
 
             std::string fname = data -> filename; 
-            std::string hash  = tl.hash(fname);  
             std::vector<std::string> spl = tl.split(fname, "/"); 
             fname = spl[spl.size()-1]; 
+            std::string hash  = tl.hash(fname);  
             tl.replace(&fname, ".root", ".h5"); 
             fname = (*gr -> graph_name) + "/" + hash + "-" + fname; 
             delete gr -> graph_name; gr -> graph_name = nullptr; 

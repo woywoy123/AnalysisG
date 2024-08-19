@@ -51,9 +51,6 @@ class bsm_4tops: public event_template
             typename std::map<m, G*>::iterator ix = ipt -> begin();
             for (; ix != ipt -> end(); ++ix){vec -> push_back(ix -> second);}
         }
-
-
-
 }; 
 
 

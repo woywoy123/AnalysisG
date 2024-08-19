@@ -1,4 +1,5 @@
 add_subdirectory(mc16)
+add_subdirectory(mc20)
 add_subdirectory(performance)
 
 file(INSTALL __init__.pxd DESTINATION . )

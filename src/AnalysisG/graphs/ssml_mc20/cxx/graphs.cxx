@@ -36,6 +36,8 @@ void graph_jets::CompileEvent(){
     this -> add_graph_data_feature<double, ssml_mc20>(event, missing_phi, "phi"); 
     this -> add_graph_data_feature<double, ssml_mc20>(event, num_jets, "num_jets"); 
     this -> add_graph_data_feature<double, ssml_mc20>(event, num_children_leps, "num_leps"); 
+    this -> add_graph_data_feature<double, ssml_mc20>(event, event_weight, "weight"); 
+    this -> add_graph_data_feature<long  , ssml_mc20>(event, event_number, "event_number"); 
 
     this -> add_node_data_feature<double, particle_template>(pt, "pt"); 
     this -> add_node_data_feature<double, particle_template>(eta, "eta"); 
@@ -79,6 +81,8 @@ void graph_jets_nonu::CompileEvent(){
     this -> add_graph_data_feature<double, ssml_mc20>(event, missing_phi, "phi"); 
     this -> add_graph_data_feature<double, ssml_mc20>(event, num_jets, "num_jets"); 
     this -> add_graph_data_feature<double, ssml_mc20>(event, num_children_leps, "num_leps"); 
+    this -> add_graph_data_feature<double, ssml_mc20>(event, event_weight, "weight"); 
+    this -> add_graph_data_feature<long  , ssml_mc20>(event, event_number, "event_number"); 
 
     this -> add_node_data_feature<double, particle_template>(pt, "pt"); 
     this -> add_node_data_feature<double, particle_template>(eta, "eta"); 
@@ -87,6 +91,7 @@ void graph_jets_nonu::CompileEvent(){
 
     this -> add_node_data_feature<int, particle_template>(is_lepton, "is_lep");
     this -> add_node_data_feature<int, particle_template>(is_bquark, "is_b");
+    this -> double_neutrino(); 
 }
 
 
@@ -123,6 +128,8 @@ void graph_jets_detector_lep::CompileEvent(){
     this -> add_graph_data_feature<double, ssml_mc20>(event, missing_phi, "phi"); 
     this -> add_graph_data_feature<double, ssml_mc20>(event, num_jets, "num_jets"); 
     this -> add_graph_data_feature<double, ssml_mc20>(event, num_leps, "num_leps"); 
+    this -> add_graph_data_feature<double, ssml_mc20>(event, event_weight, "weight"); 
+    this -> add_graph_data_feature<long  , ssml_mc20>(event, event_number, "event_number"); 
 
     this -> add_node_data_feature<double, particle_template>(pt, "pt"); 
     this -> add_node_data_feature<double, particle_template>(eta, "eta"); 
@@ -160,6 +167,8 @@ void graph_detector::CompileEvent(){
     this -> add_graph_data_feature<double, ssml_mc20>(event, missing_phi, "phi"); 
     this -> add_graph_data_feature<double, ssml_mc20>(event, num_jets, "num_jets"); 
     this -> add_graph_data_feature<double, ssml_mc20>(event, num_leps, "num_leps"); 
+    this -> add_graph_data_feature<double, ssml_mc20>(event, event_weight, "weight"); 
+    this -> add_graph_data_feature<long  , ssml_mc20>(event, event_number, "event_number"); 
 
     this -> add_node_data_feature<double, particle_template>(pt, "pt"); 
     this -> add_node_data_feature<double, particle_template>(eta, "eta"); 
@@ -168,4 +177,6 @@ void graph_detector::CompileEvent(){
 
     this -> add_node_data_feature<int, particle_template>(is_lepton, "is_lep");
     this -> add_node_data_feature<int, particle_template>(is_bquark, "is_b");
+    this -> double_neutrino(); 
+
 }

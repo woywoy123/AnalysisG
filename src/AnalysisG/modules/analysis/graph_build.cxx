@@ -14,7 +14,7 @@ void analysis::build_graphs(){
         for (itx_ = itx -> second.begin(); itx_ != itx -> second.end(); ++itx_){
             for (event_template* ev : *events_){
                 std::vector<std::string> spl = this -> split(ev -> filename, "/"); 
-                std::string fname = this -> hash(ev -> filename) + "-" + spl[spl.size()-1]; 
+                std::string fname = this -> hash(spl[spl.size()-1]) + "-" + spl[spl.size()-1]; 
                 this -> replace(&fname, ".root", ".h5"); 
                 fname = itx_ -> first + "/" + fname; 
                 if (this -> in_cache[ev -> filename][fname]){continue;}

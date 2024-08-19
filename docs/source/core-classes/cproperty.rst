@@ -5,9 +5,17 @@ This type is declared within the struct module, and is used to trigger functions
 It is similar to using the `@property` and `@<function>.setter` methods in python.
 For example, when the `name` of variable is assigned some variable, the `set_name` function is automatically called and modifies the `event_t` struct attributes.
 
+The `cproperty` class can be imported via the following header
+
+.. code:: C++
+
+   #include <structs/property.h>
+
 .. cpp:class:: cproperty
 
    .. cpp:function:: cproperty()
+
+      The constructor of the cproperty.
 
    .. cpp:function:: void set_setter(std::function<void(T*, G*)> c) 
 
@@ -23,15 +31,27 @@ For example, when the `name` of variable is assigned some variable, the `set_nam
 
    .. cpp:function:: cproperty& operator=(const T& val)
 
+      Overloaded operator method for dereferencing the pointer value.
+
    .. cpp:function:: bool operator==(const T& val)
+
+      Overloaded operator method for asserting if two values are the same.
 
    .. cpp:function:: bool operator!=(const T& val)
 
+      Overloaded operator method for asserting that two values are not the same.
+
    .. cpp:function:: operator T()
+
+      Constructor of the templated data type contained within the cproperty.
 
    .. cpp:function:: void clear()
 
+      Purges the current values of the setter and getter 
+
    .. cpp:function:: T* operator&()
+
+      Overloaded operator method for getting the pointer address of the variable.
 
 Example Usage
 ^^^^^^^^^^^^^

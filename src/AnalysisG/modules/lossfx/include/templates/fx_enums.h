@@ -1,5 +1,6 @@
 #ifndef MODEL_ENUM_FUNCTIONS_H
 #define MODEL_ENUM_FUNCTIONS_H
+
 #include <string>
 #include <structs/property.h>
 

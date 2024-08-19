@@ -272,7 +272,7 @@ void muon::build(std::map<std::string, particle_template*>* prt, element_t* el){
     for (size_t x(0); x < elc.size(); ++x){
         muon* elx = elc[x]; 
         elx -> charge = ch[x]; 
-        elx -> is_lep = true; 
+        elx -> pdgid = ch[x]*(13); 
         if (tp_index.size() && tp_index.size() > x){elx -> top_index = tp_index[x];}
         (*prt)[elx -> hash] = elx; 
     }
@@ -324,7 +324,7 @@ void electron::build(std::map<std::string, particle_template*>* prt, element_t* 
     for (size_t x(0); x < elc.size(); ++x){
         electron* elx = elc[x]; 
         elx -> charge = ch[x];
-        elx -> is_lep = true;  
+        elx -> is_lep = ch[x]*11;  
         if (tp_index.size() && tp_index.size() > x){elx -> top_index = tp_index[x];}
         (*prt)[elx -> hash] = elx; 
     }
