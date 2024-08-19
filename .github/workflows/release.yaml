@@ -8,16 +8,16 @@ jobs:
       - name: checkout repo
         uses: actions/checkout@v3
            
+      - uses: Jimver/cuda-toolkit@v0.2.16
+        id: cuda-toolkit
+        with:
+          cuda: '12.5.0'
+
       - name: Building binary wheel
         uses: pypa/cibuildwheel@v2.15.0
         env:
           CIBW_SKIP: cp312-*
           CIBW_BUILD: cp3*manylinux_x86_64
-
-      - uses: Jimver/cuda-toolkit@v0.2.16
-        id: cuda-toolkit
-        with:
-          cuda: '12.5.0'
 
       - name: "Building ROOT from source"
         run: |
