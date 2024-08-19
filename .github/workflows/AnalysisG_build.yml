@@ -20,21 +20,74 @@ on:
 
 defaults:
   run:
-    shell: bash
-  
-jobs:
-  steps:      
-    - name: "Checkout the repo"
-      uses: "actions/checkout@v3"
-    
-    - uses: Jimver/cuda-toolkit@v0.2.16
-      id: cuda-toolkit
-      with:
-          cuda: '12.5.0'
+    shell: bash 
 
-    - uses: eWaterCycle/setup-singularity@v7
-      with:
-        singularity-version: 3.8.3
-    
-    - name: Run a singularity container
-      run: singularity build singularity.sif singularity.def
+jobs:
+    build:
+        name: "Python ${{ matrix.python-version }} on ${{ matrix.os }} with ${{ matrix.cuda }}"
+        runs-on: "${{ matrix.os }}"
+        strategy: 
+                fail-fast: false
+                matrix:
+                    os:
+                        - ubuntu-22.04
+                        - ubuntu-latest
+
+                    python-version:
+                        - "3.12"
+
+                    cuda:
+                        - '12.5.0'
+                        #- '11.7.1'
+                        #- '11.7.0'
+        steps:      
+            - name: "Checkout the repo"
+              uses: "actions/checkout@v3"
+
+            - name: "Config-CUDA"
+              if: ${{ matrix.cuda != 'cpu' }}
+              uses: Jimver/cuda-toolkit@v0.2.10
+              id: cuda-toolkit
+              with:
+                cuda: ${{ matrix.cuda }}
+                method: 'network'
+
+            - name: "Configuring Python - ${{ matrix.python-version }}"
+              uses: "actions/setup-python@v4"
+              with: 
+                python-version: "${{ matrix.python-version }}"
+           
+            - name: "Purge ubuntu image"
+              run: |
+                sudo apt autoremove -y 
+                sudo apt clean
+                sudo rm -rf "/usr/local/share/boost"
+                sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+
+            - name: "Building ROOT from source"
+              run: |
+                apt-get update -y
+                apt-get install -y git wget
+                apt-get install -y build-essential
+                apt-get install -y curl 
+                apt-get install -y llvm 
+                apt-get install -y libhdf5-dev 
+                apt-get install -y cmake  
+                apt-get install -y libsqlite3-dev
+                apt-get install -y build-essential
+                apt-get install -y zlib1g-dev
+                apt-get install -y libbz2-dev
+                apt-get install -y libreadline-dev 
+                apt-get install -y liblzma-dev
+
+                wget https://root.cern/download/root_v6.32.02.Linux-almalinux9.4-x86_64-gcc11.4.tar.gz
+                tar -xzvf root_v6.32.02.Linux-almalinux9.4-x86_64-gcc11.4.tar.gz
+                rm root_v6.32.02.Linux-almalinux9.4-x86_64-gcc11.4.tar.gz
+                export HOME=$PWD
+                export ROOTSYS=$HOME/root
+
+                mkdir build && cd build 
+                cmake .. 
+                make -j12
+                
+
