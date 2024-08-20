@@ -43,8 +43,7 @@ base:
   
   extra-flags:
     is_mc: true
-    rep: 1024
-    drop_out: 0.01
+    drop_out: 0.0001
 
   optimizer:
 

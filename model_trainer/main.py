@@ -4,8 +4,8 @@ from AnalysisG.graphs import bsm_4tops, ssml_mc20
 from AnalysisG.events.bsm_4tops.event_bsm_4tops import *
 from AnalysisG.events.ssml_mc20.event_ssml_mc20 import *
 
-from AnalysisG.models import *
 from AnalysisG.core.lossfx import OptimizerConfig
+from AnalysisG.models import *
 
 from AnalysisG.core.io import IO
 
@@ -89,7 +89,7 @@ except: pass
 try: ana.TrainSize = base["training-size"]
 except: pass
 
-ana.GraphCache = out_path + "/GraphCache/" + graph
+ana.GraphCache = out_path + "/GraphCache/"
 try: ana.TrainingDataset = base["training-set"]
 except: pass
 
@@ -122,6 +122,7 @@ for m in models:
     model_impl = None
     model = data[m]["model"]
     if model == "RecursiveGraphNeuralNetwork": model_impl = RecursiveGraphNeuralNetwork()
+    if model == "Experimental": model_impl = Experimental()
     if model_impl is None: print("invalid model implementation"); exit()
     model_impl.device = data[m]["device"]
 
@@ -146,7 +147,9 @@ for m in models:
     flgs = {}
     try: flgs = data[m]["extra-flags"]
     except KeyError: pass
-    for k in flgs: setattr(model_impl, k, flgs[k])
+    for k in flgs:
+        try: setattr(model_impl, k, flgs[k])
+        except: pass
 
     params = {}
     try: params = data[m]["optimizer"]

@@ -10,6 +10,7 @@ experimental::experimental(){
             {"rnn_x_l1", torch::nn::Linear(this -> _xin*2, this -> _hidden)},
             {"rnn_x_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
             {"rnn_x_l2", torch::nn::Linear(this -> _hidden, this -> _hidden)}, 
+            {"rnn_x", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
             {"rnn_x_s2", torch::nn::Sigmoid()},
             {"rnn_x_l3", torch::nn::Linear(this -> _hidden, this -> _xin)}
     }); 
@@ -19,6 +20,7 @@ experimental::experimental(){
             {"rnn_dx_l1", torch::nn::Linear(dxx, this -> _hidden)}, 
             {"rnn_dx_s1", torch::nn::Sigmoid()},
             {"rnn_dx_l2", torch::nn::Linear(this -> _hidden, this -> _hidden)}, 
+            {"rnn_dx", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
             {"rnn_dx_r2", torch::nn::ReLU()},
             {"rnn_dx_l3", torch::nn::Linear(this -> _hidden, this -> _xin)} 
     }); 
@@ -27,6 +29,7 @@ experimental::experimental(){
             {"rnn_mrg_l1", torch::nn::Linear(this -> _xin*2, this -> _hidden)}, 
             {"rnn_mrg_s1", torch::nn::Sigmoid()},
             {"rnn_mrg_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
+            {"rnn_mrg", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
             {"rnn_mrg_r1", torch::nn::ReLU()},
             {"rnn_mrg_l2", torch::nn::Linear(this -> _hidden, this -> _xin)}
     }); 
@@ -37,6 +40,7 @@ experimental::experimental(){
             {"rnn_top_r1", torch::nn::ReLU()},
             {"rnn_top_l2", torch::nn::Linear(this -> _hidden, this -> _hidden)}, 
             {"rnn_top_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
+            {"rnn_top", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
             {"rnn_top_r2", torch::nn::ReLU()},
             {"rnn_top_s2", torch::nn::Sigmoid()},
             {"rnn_top_l3", torch::nn::Linear(this -> _hidden, this -> _xout)}
@@ -47,6 +51,7 @@ experimental::experimental(){
             {"rnn_res_r1", torch::nn::ReLU()},
             {"rnn_res_l2", torch::nn::Linear(this -> _hidden, this -> _hidden)}, 
             {"rnn_res_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
+            {"rnn_res", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
             {"rnn_res_r2", torch::nn::ReLU()},
             {"rnn_res_s2", torch::nn::Sigmoid()},
             {"rnn_res_l3", torch::nn::Linear(this -> _hidden, this -> _xout)}
@@ -57,6 +62,7 @@ experimental::experimental(){
             {"ntop_r1", torch::nn::ReLU()},
             {"ntop_l2", torch::nn::Linear(this -> _xin, this -> _xin)}, 
             {"ntop_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _xin}))}, 
+            {"ntop_drp", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
             {"ntop_r2", torch::nn::ReLU()},
             {"ntop_s2", torch::nn::Sigmoid()},
             {"ntop_l3", torch::nn::Linear(this -> _xin, 5)}
@@ -67,6 +73,7 @@ experimental::experimental(){
             {"res_r1", torch::nn::ReLU()},
             {"res_l2", torch::nn::Linear(this -> _xin*3, this -> _xin*3)}, 
             {"res_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _xin*3}))}, 
+            {"res_drp", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
             {"res_r2", torch::nn::ReLU()},
             {"res_s2", torch::nn::Sigmoid()},
             {"res_l3", torch::nn::Linear(this -> _xin*3, 2)}
@@ -194,14 +201,48 @@ void experimental::forward(graph_t* data){
     trk = torch::cat({trk, hx, physics::cuda::cartesian::M(gr_[3])/172.68, pid.index({trk_}), ntops_}, {-1}); 
     torch::Tensor isres_ = (*this -> mlp_sig) -> forward(trk.to(torch::kFloat32));
 
-    ntops_ = (ntops_.sum({0}, true) - ntops_.mean({0}, true)).softmax(-1); 
-    isres_ = (isres_.sum({0}, true) - isres_.mean({0}, true)).softmax(-1); 
+    ntops_ = ntops_.sum({0}, true) - ntops_.mean({0}, true); 
+    isres_ = isres_.sum({0}, true) - isres_.mean({0}, true); 
  
     this -> prediction_edge_feature("top_edge", top_edge); 
     this -> prediction_edge_feature("res_edge", res_edge); 
     this -> prediction_graph_feature("ntops", ntops_);
     this -> prediction_graph_feature("signal", isres_); 
 
+    if (!this -> inference_mode){return;}
+
+    this -> prediction_extra("top_edge_score", top_edge.softmax(-1));
+    this -> prediction_extra("res_edge_score", res_edge.softmax(-1));
+    this -> prediction_extra("ntops_score"   , ntops_.softmax(-1).view({-1})); 
+    this -> prediction_extra("is_res_score"  , isres_.softmax(-1).view({-1})); 
+
+    torch::Tensor top_pred = graph::cuda::edge_aggregation(edge_index, top_edge, pmc)["1"][1]; 
+    torch::Tensor top_pmu  = transform::cuda::PtEtaPhiE(top_pred); 
+
+    torch::Tensor zprime_pred = graph::cuda::edge_aggregation(edge_index, res_edge, pmc)["1"][1]; 
+    zprime_pred = physics::cuda::cartesian::M(zprime_pred);
+
+    this -> prediction_extra("top_pt" , top_pmu.index({torch::indexing::Slice(), 0}));
+    this -> prediction_extra("top_eta", top_pmu.index({torch::indexing::Slice(), 1}));
+    this -> prediction_extra("top_phi", top_pmu.index({torch::indexing::Slice(), 2}));
+    this -> prediction_extra("top_e"  , top_pmu.index({torch::indexing::Slice(), 3}));
+    this -> prediction_extra("top_pmc", top_pred); 
+    this -> prediction_extra("zprime_mass", zprime_pred);
+
+    if (!this -> is_mc){return;}
+    torch::Tensor ntops_t  = data -> get_truth_graph("ntops"  , this) -> view({-1}); 
+    torch::Tensor signa_t  = data -> get_truth_graph("signal" , this) -> view({-1});
+    torch::Tensor r_edge_t = data -> get_truth_edge("res_edge", this) -> view({-1}); 
+    torch::Tensor t_edge_t = data -> get_truth_edge("top_edge", this) -> view({-1}); 
+
+    torch::Tensor truth_ = torch::zeros_like(top_edge); 
+    for (int x(0); x < top_edge.size({-1}); ++x){truth_.index_put_({t_edge_t == x, x}, 1);}
+    torch::Tensor truth_top = graph::cuda::edge_aggregation(edge_index, truth_, pmc)["1"][1]; 
+    this -> prediction_extra("truth_top_pmc" , truth_top); 
+    this -> prediction_extra("truth_ntops"   , ntops_t); 
+    this -> prediction_extra("truth_signal"  , signa_t); 
+    this -> prediction_extra("truth_res_edge", r_edge_t); 
+    this -> prediction_extra("truth_top_edge", t_edge_t); 
 }
 
 experimental::~experimental(){}
