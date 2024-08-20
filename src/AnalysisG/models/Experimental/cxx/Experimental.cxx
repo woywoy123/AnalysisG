@@ -9,65 +9,53 @@ experimental::experimental(){
     this -> rnn_x = new torch::nn::Sequential({
             {"rnn_x_l1", torch::nn::Linear(this -> _xin*2, this -> _hidden)},
             {"rnn_x_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
-            {"rnn_x_t1", torch::nn::Tanh()},
             {"rnn_x_l2", torch::nn::Linear(this -> _hidden, this -> _hidden)},
             {"rnn_x_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
-            {"rnn_x_r2", torch::nn::ReLU()},
             {"rnn_x_l3", torch::nn::Linear(this -> _hidden, this -> _xin)}
     }); 
 
     int dxx = this -> _dxin*2 + this -> _xin*2; 
     this -> rnn_dx = new torch::nn::Sequential({
             {"rnn_dx_l1", torch::nn::Linear(dxx, this -> _hidden)}, 
-            {"rnn_dx_t1", torch::nn::Tanh()},
             {"rnn_dx_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
-            {"rnn_dx_r1", torch::nn::ReLU()},
             {"rnn_dx_l2", torch::nn::Linear(this -> _hidden, this -> _hidden)}, 
-            {"rnn_dx_t2", torch::nn::Tanh()},
             {"rnn_dx_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
-            {"rnn_dx_r2", torch::nn::ReLU()},
             {"rnn_dx_l3", torch::nn::Linear(this -> _hidden, this -> _xin)} 
     }); 
 
     this -> rnn_merge = new torch::nn::Sequential({
             {"rnn_mrg_l1", torch::nn::Linear(this -> _xin*2, this -> _hidden)}, 
-            {"rnn_mrg_t1", torch::nn::Tanh()},
             {"rnn_mrg_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
-            {"rnn_mrg_r1", torch::nn::ReLU()},
             {"rnn_mrg_l2", torch::nn::Linear(this -> _hidden, this -> _xin)}
     }); 
 
     dxx = this -> _xin*2 + this -> _xout*2; 
     this -> rnn_top_edge = new torch::nn::Sequential({
             {"rnn_top_l1", torch::nn::Linear(dxx, this -> _xout*2)}, 
-            {"rnn_top_t1", torch::nn::Tanh()},
             {"rnn_top_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _xout*2}))}, 
-            {"rnn_top_r1", torch::nn::ReLU()},
+            {"rnn_top_t1", torch::nn::Tanh()},
             {"rnn_top_l2", torch::nn::Linear(this -> _xout*2, this -> _xout)}
     }); 
 
     dxx += this -> _xout*2; 
     this -> rnn_res_edge = new torch::nn::Sequential({
             {"rnn_res_l1", torch::nn::Linear(dxx, this -> _xout*2)}, 
-            {"rnn_res_t1", torch::nn::Tanh()},
             {"rnn_res_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _xout*2}))}, 
-            {"rnn_res_r1", torch::nn::ReLU()},
+            {"rnn_res_t1", torch::nn::Tanh()},
             {"rnn_res_l2", torch::nn::Linear(this -> _xout*2, this -> _xout)}
     }); 
 
     this -> mlp_ntop = new torch::nn::Sequential({
             {"rnn_ntop_l1", torch::nn::Linear(this -> _xin, this -> _hidden)}, 
-            {"rnn_ntop_t1", torch::nn::Tanh()},
             {"rnn_ntop_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
-            {"rnn_ntop_r1", torch::nn::ReLU()},
+            {"rnn_ntop_t1", torch::nn::Tanh()},
             {"rnn_ntop_l2", torch::nn::Linear(this -> _hidden, this -> _hidden)}
     }); 
 
     this -> mlp_sig = new torch::nn::Sequential({
             {"rnn_sig_l1", torch::nn::Linear(this -> _xin, this -> _hidden)}, 
-            {"rnn_sig_t1", torch::nn::Tanh()},
             {"rnn_sig_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
-            {"rnn_sig_r1", torch::nn::ReLU()},
+            {"rnn_sig_t1", torch::nn::Tanh()},
             {"rnn_sig_l2", torch::nn::Linear(this -> _hidden, this -> _hidden)}
     }); 
 
@@ -100,7 +88,7 @@ torch::Tensor experimental::message(
     fx_j = torch::cat({fx_j, physics::cuda::cartesian::M(fx_j)}, {-1}).to(torch::kFloat32); 
 
     torch::Tensor dx = (*this -> rnn_dx) -> forward(torch::cat({fx_i, fx_j - fx_i, hx_i, hx_j - hx_i}, {-1})); 
-    return (fx_ij - (*this -> rnn_merge) -> forward(torch::cat({fx_ij, dx}, {-1})))*dx; 
+    return (fx_ij - (*this -> rnn_merge) -> forward(torch::cat({fx_ij, dx}, {-1}))); 
 }
 
 void experimental::forward(graph_t* data){

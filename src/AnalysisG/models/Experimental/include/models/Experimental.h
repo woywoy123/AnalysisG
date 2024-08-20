@@ -19,7 +19,7 @@ class experimental: public model_template
         int _xin  = 6; 
         int _dxin = 5; 
         int _xout = 2; 
-        int _hidden = 1024; 
+        int _hidden = 256; 
 
         double drop_out = 0.1; 
 
