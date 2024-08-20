@@ -75,6 +75,7 @@ std::map<std::string, event_template*> event_template::build_event(std::map<std:
 
         std::map<std::string, element_t>::iterator itrx = this -> tree_variable_link[itr -> first].begin(); 
         for (; itrx != this -> tree_variable_link[itr -> first].end(); ++itrx){
+            if (!itrx -> second.boundary()){delete ev; ev = nullptr; break;}
             itrx -> second.set_meta(); 
 
             if (itrx -> first == std::string(ev -> name)){ev -> build(&itrx -> second);}
@@ -89,7 +90,8 @@ std::map<std::string, event_template*> event_template::build_event(std::map<std:
             ev -> index = itrx -> second.event_index; 
             ev -> hash = itrx -> second.filename; 
             ev -> filename = itrx -> second.filename;
-        } 
+        }
+        if (!ev){continue;} 
         ev -> flush_leaf_string(); 
         output[itr -> first] = ev;
     }

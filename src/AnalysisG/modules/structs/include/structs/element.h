@@ -110,6 +110,7 @@ struct element_t {
     void set_meta(); 
     long event_index = -1; 
     std::string filename = ""; 
+    bool boundary(); 
 
     template <typename g>
     bool get(std::string key, g* var){

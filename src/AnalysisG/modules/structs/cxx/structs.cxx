@@ -15,6 +15,15 @@ bool element_t::next(){
     return stop; 
 }
 
+bool element_t::boundary(){
+    long idx = -1; 
+    std::map<std::string, data_t*>::iterator itr = this -> handle.begin(); 
+    for (; itr != this -> handle.end(); ++itr){
+        idx = (*itr -> second -> files_i)[itr -> second -> file_index];
+    }
+    return idx > 0; 
+}
+
 // -------------------------- If you were directed here, simply add the data type within this section ----------------- //
 
 void data_t::flush_buffer(){
@@ -200,7 +209,7 @@ bool data_t::next(){
     bool sk = this -> file_index >= (int)this -> files_i -> size(); 
     if (sk){return true;}
 
-    long idx = this -> files_i -> at(this -> file_index);
+    long idx = (*this -> files_i)[this -> file_index];
     if (this -> index+1 < idx){this -> index++; return false;}
 
     this -> file_index++; 
