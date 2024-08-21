@@ -3,7 +3,7 @@ from AnalysisG.core.lossfx import OptimizerConfig
 from AnalysisG.generators.analysis import Analysis
 from AnalysisG.events.bsm_4tops.event_bsm_4tops import BSM4Tops
 from AnalysisG.graphs.bsm_4tops import *
-from AnalysisG.models import RecursiveGraphNeuralNetwork
+from AnalysisG.models import *
 
 root1 = "./samples/dilepton/*"
 
@@ -27,7 +27,8 @@ trains = []
 optims = []
 ana = Analysis()
 for k in params:
-    m1 = RecursiveGraphNeuralNetwork()
+#    m1 = RecursiveGraphNeuralNetwork()
+    m1 = Experimental()
     m1.o_edge  = {
             "top_edge" : "CrossEntropyLoss",
             "res_edge" : "CrossEntropyLoss"
@@ -39,7 +40,6 @@ for k in params:
     m1.i_node  = ["pt", "eta", "phi", "energy"]
     m1.i_graph = ["met", "phi"]
     m1.device  = "cuda:0"
-    m1.rep = 1024
 
     opti = OptimizerConfig()
     opti.Optimizer = k[1]
@@ -47,26 +47,6 @@ for k in params:
 
     trains.append(m1)
     optims.append(opti)
-
-    m2 = RecursiveGraphNeuralNetwork()
-    m2.o_edge  = {
-           "top_edge" : "CrossEntropyLoss",
-           "res_edge" : "CrossEntropyLoss"
-    }
-    m2.o_graph = {
-           "ntops"  : "CrossEntropyLoss",
-           "signal" : "CrossEntropyLoss"
-    }
-    m2.i_node  = ["pt", "eta", "phi", "energy"]
-    m2.i_graph = ["met", "phi"]
-    m2.device  = "cuda:0"
-    m2.rep = 1024
-
-    optix = OptimizerConfig()
-    optix.Optimizer = k[1]
-    for t in k[2]: setattr(optix, t, k[2][t])
-    trains.append(m2)
-    optims.append(optix)
 
 ana.AddSamples(root1, "tmp")
 ana.AddEvent(x, "tmp")
@@ -77,7 +57,7 @@ for i in range(len(optims)): ana.AddModel(trains[i], optims[i], params[0][0] + "
 ana.kFolds = 2
 ana.Epochs = 100
 ana.TrainingDataset = "./ProjectName/sample.h5"
-ana.Targets = ["res_edge", "top_edge"]
+ana.Targets = ["top_edge", "res_edge"]
 ana.GraphCache = "./ProjectName/"
 ana.kFold = [1]
 ana.MaxRange = 1500

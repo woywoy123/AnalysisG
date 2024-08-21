@@ -422,6 +422,7 @@ cdef class TH1F(BasePlotting):
             histpl["H"] = lg
             hep.histplot(**histpl)
             self.__get_error_seg__(error[0])
+        else: hep.histplot(**histpl)
 
         if not len(labels): self.matpl.xlim(_min, _max)
         self.matpl.legend(loc = "upper right")

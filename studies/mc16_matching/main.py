@@ -10,6 +10,8 @@ from AnalysisG.selections.mc16.topmatching.topmatching import TopMatching
 from AnalysisG.selections.mc16.childrenkinematics.childrenkinematics import ChildrenKinematics
 from AnalysisG.selections.mc16.decaymodes.decaymodes import DecayModes
 from AnalysisG.selections.mc16.toptruthjets.toptruthjets import TopTruthJets
+from AnalysisG.selections.mc16.topjets.topjets import TopJets
+from AnalysisG.selections.mc16.zprime.zprime import ZPrime
 
 # figures
 import topkinematics
@@ -17,20 +19,24 @@ import topmatching
 import childrenkinematics
 import decaymodes
 import toptruthjets
+import topjets
+import zprime
 
 import pickle
 
-study = "topkinematics"
+study = "zprime"
 
 plotting_method = {
     "topkinematics"      : topkinematics,
     "topmatching"        : topmatching,
     "childrenkinematics" : childrenkinematics,
     "decaymodes"         : decaymodes,
-    "toptruthjets"       : toptruthjets
+    "toptruthjets"       : toptruthjets,
+    "topjets"            : topjets,
+    "zprime"             : zprime
 }
 
-smpls = "../../test/samples/dilepton/*"
+#smpls = "../../test/samples/dilepton/*"
 
 gen_data = False
 figure_path = "./Output/"
@@ -51,6 +57,8 @@ for mass in ["1000", "900", "800", "700", "600", "500", "400"]:
         if study == "childrenkinematics" : sel = ChildrenKinematics()
         if study == "decaymodes"         : sel = DecayModes()
         if study == "toptruthjets"       : sel = TopTruthJets()
+        if study == "topjets"            : sel = TopJets()
+        if study == "zprime"             : sel = ZPrime()
 
         ana = Analysis()
         ana.AddSamples(smpls, "tmp")
@@ -72,3 +80,5 @@ for mass in ["1000", "900", "800", "700", "600", "500", "400"]:
     if study == "childrenkinematics" : method.figures.ChildrenKinematics(pres)
     if study == "decaymodes"         : method.figures.DecayModes(pres)
     if study == "toptruthjets"       : method.figures.TopTruthJets(pres)
+    if study == "topjets"            : method.figures.TopJets(pres)
+    if study == "zprime"             : method.figures.ZPrime(pres)

@@ -3,6 +3,8 @@ add_subdirectory(topmatching)
 add_subdirectory(childrenkinematics)
 add_subdirectory(decaymodes)
 add_subdirectory(toptruthjets)
+add_subdirectory(topjets)
+add_subdirectory(zprime)
 
 file(INSTALL __init__.py  DESTINATION . )
 file(INSTALL __init__.pxd DESTINATION . )

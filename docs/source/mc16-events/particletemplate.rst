@@ -132,3 +132,17 @@ Detector Reconstructed Jet
 
    .. cpp:var:: float DL1r_u
 
+
+Detector Jet Partons
+^^^^^^^^^^^^^^^^^^^^
+
+.. cpp:class:: jetparton: public particle_template
+
+   .. cpp:var:: int jet_index
+
+      A variable used to match the parton to the contributing truthjet.
+
+   .. cpp:var:: std::vector<int> topchild_index
+
+      A variable containing the index of the top_children that produced the parton.
+

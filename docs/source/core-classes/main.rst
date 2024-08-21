@@ -4,6 +4,7 @@ The Core Documentation
 .. toctree::
    :titlesonly:
 
+   typecasting.rst
    eventtemplate.rst
    particletemplate.rst
    graphtemplate.rst
@@ -14,3 +15,4 @@ The Core Documentation
    cproperty.rst
    tools.rst
    plotting.rst
+
