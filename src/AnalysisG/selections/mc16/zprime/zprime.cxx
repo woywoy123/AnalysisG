@@ -9,7 +9,6 @@ selection_template* zprime::clone(){
 
 void zprime::merge(selection_template* sl){
     zprime* slt = (zprime*)sl; 
-    merge_data(&this -> zprime_pt,         &slt -> zprime_pt); 
     merge_data(&this -> zprime_truth_tops, &slt -> zprime_truth_tops); 
     merge_data(&this -> zprime_children,   &slt -> zprime_children);      
     merge_data(&this -> zprime_truthjets,  &slt -> zprime_truthjets);     
@@ -76,7 +75,6 @@ bool zprime::strategy(event_template* ev){
     this -> sum(&res_tops, &res_tt);
     if (!res_tt){return false;}
     this -> zprime_truth_tops.push_back(res_tt -> mass / 1000); 
-    this -> zprime_pt.push_back(res_tt -> pt / 1000); 
 
     this -> zprime_children.push_back(this -> sum(&res_children)); 
     this -> zprime_truthjets.push_back(this -> sum(&res_truthjets)); 

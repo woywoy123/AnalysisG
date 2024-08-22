@@ -1,8 +1,10 @@
+.. _figure_2b:
+
 Figure.2.b
 ----------
 
-Figures depicting the top-quark invariant mass reconstruction from **truth children**.
-The overall distributions are partitioned into the hadronic and leptonic decay modes of the underlying top-partons.
+Figures depicting the top parton invariant mass based on matched **truth children**.
+The both the hadronic and leptonic decay modes are normalized to unity to identify any shape differences.
 
 Mass Point: 400 GeV
 ^^^^^^^^^^^^^^^^^^^

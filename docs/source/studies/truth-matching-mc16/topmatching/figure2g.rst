@@ -1,8 +1,10 @@
+.. _figure_2g:
+
 Figure.2.g
 ----------
 
-Figures depicting the top-quark invariant mass reconstructed from **truth jets**. 
-**In this figure, only tops decaying hadronically are shown and illustrate the number of truth jets contributing.**
+Figures depicting the invariant mass of matched **truth jets** from mutual tops. 
+**The figure aims to illustrate the number of truth jets contributing matched tops in the hadronic decay channel**.
 
 Mass Point: 400 GeV
 ^^^^^^^^^^^^^^^^^^^

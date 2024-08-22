@@ -1,9 +1,11 @@
+.. _figure_2c:
+
 Figure.2.c
 ----------
 
-Figures depicting the top-quark invariant mass reconstruction from **truth jets**.
+Figures depicting the invariant mass of truth matched tops using **truth jets**.
 For leptonically decaying tops, the **truth children (lepton and neutrino)** were used.
-The overall distributions are partitioned into the hadronic and leptonic decay modes of the top-partons.
+All shown distributions are normalized to unity to illustrate any shape differences.
 
 Mass Point: 400 GeV
 ^^^^^^^^^^^^^^^^^^^

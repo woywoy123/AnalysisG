@@ -1,5 +1,5 @@
-Truth Study: TopKinematics
---------------------------
+TopKinematics
+-------------
 
 Studies relating to the kinematics of the tops produced from the resonance and their corresponding spectator counterparts.
 The given figures below have been produced for various mass points of the heavy resonance and are therefore bunched together per-figure link.

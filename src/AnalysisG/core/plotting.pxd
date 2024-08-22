@@ -23,6 +23,8 @@ cdef extern from "<plotting/plotting.h>":
         string xtitle
         string style
         string histfill
+        string overflow
+
         string color
         vector[string] colors
 

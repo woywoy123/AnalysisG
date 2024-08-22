@@ -41,6 +41,7 @@ class plotting: public tools
         std::string ytitle = "y-axis"; 
         std::string xtitle = "x-axis"; 
         std::string histfill = "fill"; 
+        std::string overflow = "sum"; 
 
         std::string color = ""; 
         std::vector<std::string> colors = {}; 

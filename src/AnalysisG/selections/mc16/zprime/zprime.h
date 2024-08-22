@@ -15,7 +15,6 @@ class zprime: public selection_template
         bool strategy(event_template* ev) override;
         void merge(selection_template* sl) override;
 
-        std::vector<float> zprime_pt = {}; 
         std::vector<float> zprime_truth_tops = {}; 
         std::vector<float> zprime_children = {}; 
         std::vector<float> zprime_truthjets = {}; 

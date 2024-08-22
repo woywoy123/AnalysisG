@@ -9,7 +9,11 @@ These names are taken from the `CERN ROOT` framework and are used as wrappers fo
 Plotting Base Function used to Share Attributes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: BasePlotting
+.. py:class:: AnalysisG.core.plotting.BasePlotting
+
+   :ivar: int DPI: Changes the output resolution of the figure.
+
+   :ivar: str Style: The template style to use (ATLAS, ROOT, etc.)
 
    :ivar bool ErrorBars: Indicates whether to show error bars on the histogram bins.
 
@@ -64,7 +68,7 @@ Plotting Base Function used to Share Attributes
 Histogramming using TH1F
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. py:class:: TH1F(BasePlotting)
+.. py:class:: AnalysisG.core.plotting.TH1F(BasePlotting)
 
    :ivar list[float] xData: Assigns the values that should be used to fill the histogram.
 
@@ -83,4 +87,105 @@ Histogramming using TH1F
    :ivar float Alpha: Controls the transparency of the histograms.
 
    :ivar bool Density: Whether to plot the histogram as a density.
+
+   :ivar dict xLabels: Labels to apply on the x-axis with specified weight values.
+
+
+Histogramming using TH2F
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. py:class:: AnalysisG.core.plotting.TH2F(BasePlotting)
+
+   :ivar list[float] xData: Assigns the values that should be used to fill along the x-axis.
+
+   :ivar list[float] yData: Assigns the values that should be used to fill along the y-axis.
+
+   :ivar int xBins: Number of bins to use along the x-axis.
+
+   :ivar int yBins: Number of bins to use along the x-axis.
+
+
+
+
+
+Example: A simple TH1F plot
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: python 
+
+    from AnalysisG.core.plotting import TH1F
+
+    th = TH1F()
+    th.xBins = 100
+    th.xMax = 100
+    th.xMin = 0
+    th.xData = [i for i in range(100)]
+    th.Title = "some title"
+    th.xTitle = "x-Axis"
+    th.yTitle = "y-Axis"
+    th.Filename = "some-name"
+    th.OutputDirectory = "./Some/Path/"
+    th.SaveFigure()
+
+
+Example: Combining two or more TH1F plots 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: python 
+
+    from AnalysisG.core.plotting import TH1F
+
+    # Define the settings to apply to all histograms
+    th = TH1F()
+    th.xMin = 0
+    th.xStep = 20
+    th.xMax = 100
+    th.Title = "some title"
+    th.xTitle = "x-Axis"
+    th.yTitle = "y-Axis"
+    th.Filename = "some-name"
+    th.OutputDirectory = "./Some/Path/"
+
+    # Iterate over your data
+    for i in MyDataDictionary:
+
+        # Create a new TH1F instance
+        th_ = TH1F()
+        th_.Title = i
+
+        # Populate this instance with some data
+        th_.xData = MyDataDictionary[i]
+
+        # Append the instance to the Histograms attribute
+        th.Histograms.append(th_)
+
+    th.SaveFigure()
+
+
+Example: A Simple TH2F Plot
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: python 
+
+    from AnalysisG.core.plotting import TH2F
+
+    th2 = TH2F()
+    th2.Title = "Some distribution plot"
+    th2.xTitle = "x-Title"
+    th2.yTitle = "y-Title"
+
+    th2.xMin = 0
+    th2.yMin = 0
+
+    th2.xMax = 100
+    th2.yMax = 100
+
+    th2.xBins = 100
+    th2.yBins = 100
+
+    th2.xData = [i for i in range(100)]
+    th2.yData = [i for i in range(100)]
+    th2.Filename = "Some_File"
+    th2.OutputDirectory = "./some/path"
+    th2.SaveFigure()
 

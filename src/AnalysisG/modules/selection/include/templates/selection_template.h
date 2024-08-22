@@ -61,8 +61,8 @@ class selection_template: public tools
             std::string hash_ = prt -> hash; 
             bool h = this -> garbage.count(hash_); 
             if (!h){(*out) = prt; this -> garbage[hash_] = prt; return;}
-            delete prt; 
             (*out) = this -> garbage[hash_]; 
+            delete prt; 
         }
 
         template <typename g>

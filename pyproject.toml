@@ -13,7 +13,7 @@ dependencies = [
     "mplhep",
     "pyyaml",
     "tqdm", 
-    "torchmetrics"
+#    "torchmetrics"
 ]
 
 [tool.scikit-build]

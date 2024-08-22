@@ -24,20 +24,41 @@ import zprime
 
 import pickle
 
-study = "zprime"
+study = "topmatching"
 
 plotting_method = {
-    "topkinematics"      : topkinematics,
+    "zprime"             : zprime,
     "topmatching"        : topmatching,
+    "topkinematics"      : topkinematics,
     "childrenkinematics" : childrenkinematics,
     "decaymodes"         : decaymodes,
     "toptruthjets"       : toptruthjets,
-    "topjets"            : topjets,
-    "zprime"             : zprime
+    "topjets"            : topjets
 }
+
+
+def ExecuteStudy(study, smpls):
+    ev = BSM4Tops()
+
+    sel = None
+    if study == "topkinematics"      : sel = TopKinematics()
+    if study == "topmatching"        : sel = TopMatching()
+    if study == "childrenkinematics" : sel = ChildrenKinematics()
+    if study == "decaymodes"         : sel = DecayModes()
+    if study == "toptruthjets"       : sel = TopTruthJets()
+    if study == "topjets"            : sel = TopJets()
+    if study == "zprime"             : sel = ZPrime()
+
+    ana = Analysis()
+    ana.AddSamples(smpls, "tmp")
+    ana.AddEvent(ev, "tmp")
+    ana.AddSelection(sel)
+    ana.Start()
+    return sel
 
 #smpls = "../../test/samples/dilepton/*"
 
+plt_data = True
 gen_data = False
 figure_path = "./Output/"
 for mass in ["1000", "900", "800", "700", "600", "500", "400"]:
@@ -49,32 +70,18 @@ for mass in ["1000", "900", "800", "700", "600", "500", "400"]:
     method.figures.mass_point  = mass_point
 
     if gen_data:
-        ev = BSM4Tops()
-
-        sel = None
-        if study == "topkinematics"      : sel = TopKinematics()
-        if study == "topmatching"        : sel = TopMatching()
-        if study == "childrenkinematics" : sel = ChildrenKinematics()
-        if study == "decaymodes"         : sel = DecayModes()
-        if study == "toptruthjets"       : sel = TopTruthJets()
-        if study == "topjets"            : sel = TopJets()
-        if study == "zprime"             : sel = ZPrime()
-
-        ana = Analysis()
-        ana.AddSamples(smpls, "tmp")
-        ana.AddEvent(ev, "tmp")
-        ana.AddSelection(sel)
-        ana.Start()
-
+        sel = ExecuteStudy(study, smpls)
         f = open(study + "-" + mass_point + ".pkl", "wb")
         pickle.dump(sel, f)
         f.close()
 
+
+    if not plt_data: continue
+    print("plotting: " + study)
     f = open(study + "-" + mass_point + ".pkl", "rb")
     pres = pickle.load(f)
     f.close()
 
-    print("plotting: " + study)
     if study == "topkinematics"      : method.figures.TopKinematics(pres)
     if study == "topmatching"        : method.figures.TopMatching(pres)
     if study == "childrenkinematics" : method.figures.ChildrenKinematics(pres)
@@ -82,3 +89,10 @@ for mass in ["1000", "900", "800", "700", "600", "500", "400"]:
     if study == "toptruthjets"       : method.figures.TopTruthJets(pres)
     if study == "topjets"            : method.figures.TopJets(pres)
     if study == "zprime"             : method.figures.ZPrime(pres)
+
+
+
+
+
+
+

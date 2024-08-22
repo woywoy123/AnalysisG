@@ -190,6 +190,14 @@ cdef class BasePlotting:
         self.ptr.y_max = val
 
     @property
+    def Overflow(self): return env(self.ptr.overflow)
+
+    @Overflow.setter
+    def Overflow(self, val):
+        if isinstance(val, int): self.ptr.overflow = enc("sum" if val else "none")
+        else: self.ptr.overflow = env(val)
+
+    @property
     def Color(self):
         if len(self.ptr.color): return env(self.ptr.color)
         #self.Color = next(self._ax._get_lines.prop_cycler)["color"]
@@ -334,7 +342,7 @@ cdef class TH1F(BasePlotting):
         histpl["alpha"] = self.Alpha
         histpl["binticks"] = True
         histpl["density"] = self.Density
-        histpl["flow"] = "sum"
+        histpl["flow"] = self.Overflow
         histpl["label"] = []
         histpl["H"] = []
         if len(self.Color): histpl["color"] = self.Color

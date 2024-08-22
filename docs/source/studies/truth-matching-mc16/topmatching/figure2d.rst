@@ -1,9 +1,11 @@
+.. _figure_2d:
+
 Figure.2.d
 ----------
 
-Figures depicting the top-quark invariant mass reconstruction from **detector jets**. 
-For leptonically decaying tops, the **truth lepton and neutrino** were used.
-The overall distributions are partitioned into the hadronic and leptonic decay modes of the tops.
+Density distributions of the invariant mass for **detector jets** being matched to mutual tops.
+For leptonically decaying tops, the respective **lepton and neutrino were sourced from the children**.
+All distributions are normalized to unity.
 
 Mass Point: 400 GeV
 ^^^^^^^^^^^^^^^^^^^

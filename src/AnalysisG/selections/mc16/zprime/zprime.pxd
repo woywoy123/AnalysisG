@@ -20,7 +20,6 @@ cdef extern from "zprime.h":
 cdef class ZPrime(SelectionTemplate):
     cdef zprime* tt
 
-    cdef public list zprime_pt
     cdef public list zprime_truth_tops
     cdef public list zprime_children
     cdef public list zprime_truthjets

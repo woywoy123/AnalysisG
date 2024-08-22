@@ -1,9 +1,10 @@
+.. _figure_2i:
+
 Figure.2.i
 ----------
 
-Figures depicting the top-quark invariant mass reconstructed from truth **jets**. 
-For leptonically decaying tops, matched **truth neutrinos** were used.
-**The figure aims to illustrate the number of jets contributing to leptonically decaying top-quarks.**
+Figures depicting the invariant top mass of matched detector **jets** from mutual tops. 
+**The figure aims to illustrate the number of jets contributing to matched tops in the hadronic decay channel**.
 
 Mass Point: 400 GeV
 ^^^^^^^^^^^^^^^^^^^

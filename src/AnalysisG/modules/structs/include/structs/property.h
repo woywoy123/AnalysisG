@@ -10,7 +10,8 @@ template <typename T, typename G>
 void x_getter(T*, G*){}
 
 template <typename T, typename G>
-class cproperty {
+class cproperty 
+{
     public: 
         cproperty() : data() {}; 
         void set_setter(std::function<void(T*, G*)> c = x_setter<T, G>){
@@ -32,13 +33,8 @@ class cproperty {
             return *this; 
         }
 
-        bool operator==(const T& val){
-            return this -> data == val; 
-        }
-
-        bool operator!=(const T& val){
-            return this -> data != val; 
-        }
+        bool operator==(const T& val){return this -> data == val;}
+        bool operator!=(const T& val){return this -> data != val;}
 
         operator T(){
             if (!this -> has_getter){return this -> data;}
@@ -46,12 +42,17 @@ class cproperty {
             return this -> data;
         }
        
+        T* operator&(){
+            if (!this -> has_getter){return &this -> data;}
+            this -> getter(&this -> data, this -> obj); 
+            return &this -> data;
+        }
+
         void clear(){
             if (!this -> has_getter){return;}
             this -> data = T();
         }
 
-        T* operator&(){return &this -> data;}
 
     private: 
         T data; 
