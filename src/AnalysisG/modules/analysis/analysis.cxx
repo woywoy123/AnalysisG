@@ -102,17 +102,23 @@ void analysis::check_cache(){
 }
 
 void analysis::start(){
-    this -> success("+============================+"); 
-    this -> success("| Starting Analysis Session! |");
-    this -> success("+============================+"); 
-    this -> check_cache(); 
+    if (!this -> started){
+        this -> success("+============================+"); 
+        this -> success("| Starting Analysis Session! |");
+        this -> success("+============================+"); 
+        this -> check_cache();
+        this -> build_events(); 
+    }
+
+    if (this -> fetch_meta && !this -> started){
+        this -> started = true; 
+        return; 
+    }
 
     int threads_ = this -> m_settings.threads; 
     std::string path_data = this -> m_settings.training_dataset; 
     std::string pth_cache = this -> m_settings.graph_cache; 
-    if (!this -> ends_with(&pth_cache, "/")){pth_cache += "/";}
-
-    this -> build_events(); 
+    if (pth_cache.size() && !this -> ends_with(&pth_cache, "/")){pth_cache += "/";}
     if (this -> selection_names.size()){this -> build_selections();}
     if (this -> graph_labels.size()){this -> build_graphs();}
 

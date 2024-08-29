@@ -40,7 +40,8 @@ void analysis::build_events(){
     size_t nevents = 0;
     std::map<std::string, long> len = this -> reader -> root_size(); 
     std::map<std::string, long>::iterator ity = len.begin(); 
-    for (; ity != len.end(); ++ity){nevents = (nevents < ity -> second) ? ity -> second : nevents;}
+    for (; ity != len.end(); ++ity){nevents += ity -> second;}
+    if (nevents == 0){return;}
     std::map<std::string, std::map<std::string, long>> root_entries = this -> reader -> tree_entries; 
 
     std::string title = ""; 
@@ -50,15 +51,19 @@ void analysis::build_events(){
 
     while (index < nevents){
         std::map<std::string, event_template*> evnts = event_f -> build_event(io_handle);
-        ++index;  
-        th_prg[0]+=1; 
         if (!evnts.size()){continue;}
+        th_prg[0]+=1; 
+        ++index;  
         std::map<std::string, event_template*>::iterator tx = evnts.begin(); 
         event_template* ev_ = tx -> second; 
+
         std::string label = this -> file_labels[ev_ -> filename]; 
         meta* meta_ = this -> reader -> meta_data[ev_ -> filename]; 
         bool detach = this -> tracer -> add_meta_data(meta_, ev_ -> filename); 
-        if (detach){this -> reader -> meta_data[ev_ -> filename] = nullptr;}
+        if (detach){
+            this -> meta_data[ev_ -> filename] = meta_; 
+            this -> reader -> meta_data[ev_ -> filename] = nullptr;
+        }
 
         std::vector<std::string> tmp = this -> split(ev_ -> filename, "/"); 
         title = tmp[tmp.size()-1]; 

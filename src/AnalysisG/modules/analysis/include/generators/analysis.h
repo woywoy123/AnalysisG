@@ -37,8 +37,10 @@ class analysis:
         std::map<std::string, std::string> progress_mode(); 
         std::map<std::string, std::string> progress_report(); 
         std::map<std::string, bool> is_complete();
+        std::map<std::string, meta*> meta_data = {}; 
 
         void attach_threads(); 
+        bool fetch_meta = false; 
         settings_t m_settings; 
 
     private:
@@ -50,7 +52,8 @@ class analysis:
         void build_model_session(); 
         void build_inference();
         void build_dataloader(bool training); 
-       
+        bool started = false;  
+
         std::map<std::string, std::string> file_labels = {}; 
         std::map<std::string, event_template*> event_labels = {}; 
         std::map<std::string, selection_template*> selection_names = {}; 

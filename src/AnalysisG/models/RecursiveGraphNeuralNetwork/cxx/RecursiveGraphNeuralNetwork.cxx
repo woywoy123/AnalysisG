@@ -149,16 +149,18 @@ void recursivegraphneuralnetwork::forward(graph_t* data){
     torch::Tensor eta    = data -> get_data_node("eta", this) -> clone();
     torch::Tensor phi    = data -> get_data_node("phi", this) -> clone();
     torch::Tensor energy = data -> get_data_node("energy", this) -> clone();
+    torch::Tensor is_lep = data -> get_data_node("is_lep", this) -> clone(); 
     torch::Tensor pmc    = transform::cuda::PxPyPzE(pt, eta, phi, energy); 
 
-    // the event topology
-    torch::Tensor edge_index = data -> get_edge_index(this) -> to(torch::kLong); 
-    torch::Tensor num_jets   = data -> get_data_graph("num_jets", this) -> clone(); 
-    torch::Tensor num_leps   = data -> get_data_graph("num_leps", this) -> clone(); 
-    torch::Tensor met        = data -> get_data_graph("met", this) -> clone(); 
-    torch::Tensor met_phi    = data -> get_data_graph("phi", this) -> clone();
+    // the event graph attributes
+    torch::Tensor num_jets = data -> get_data_graph("num_jets", this) -> clone(); 
+    torch::Tensor num_leps = data -> get_data_graph("num_leps", this) -> clone(); 
+    torch::Tensor met      = data -> get_data_graph("met", this) -> clone(); 
+    torch::Tensor met_phi  = data -> get_data_graph("phi", this) -> clone();
+    torch::Tensor num_bjet = data -> get_data_node("is_b", this) -> sum({0}).view({-1, 1});  
+    torch::Tensor met_xy   = torch::cat({transform::cuda::Px(met, met_phi), transform::cuda::Py(met, met_phi)}, {-1});
 
-    torch::Tensor met_xy  = torch::cat({transform::cuda::Px(met, met_phi), transform::cuda::Py(met, met_phi)}, {-1});
+    torch::Tensor edge_index = data -> get_edge_index(this) -> to(torch::kLong); 
     torch::Tensor src     = edge_index.index({0}).view({-1}); 
     torch::Tensor dst     = edge_index.index({1}).view({-1}); 
 
@@ -274,6 +276,11 @@ void recursivegraphneuralnetwork::forward(graph_t* data){
     this -> prediction_extra("res_edge_score", res_edge.softmax(-1));
     this -> prediction_extra("ntops_score"   , ntops.softmax(-1).view({-1})); 
     this -> prediction_extra("is_res_score"  , is_res.softmax(-1).view({-1})); 
+
+    this -> prediction_extra("is_lep"        , is_lep.view({-1})); 
+    this -> prediction_extra("num_leps"      , num_leps.view({-1})); 
+    this -> prediction_extra("num_jets"      , num_jets.view({-1})); 
+    this -> prediction_extra("num_bjets"     , num_bjet.view({-1})); 
 
     torch::Tensor top_pred = graph::cuda::edge_aggregation(edge_index, G_, pmc)["1"][1]; 
     torch::Tensor top_pmu  = transform::cuda::PtEtaPhiE(top_pred); 

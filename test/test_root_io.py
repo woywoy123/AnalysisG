@@ -48,47 +48,68 @@ def test_reading_root():
         assert len_nom == 165
         del io
 
-# breaks with python3.12 due to ansible removing key_file input field
-#def test_pyami():
-#
-#    smpl = IO("samples/dilepton/*")
-#    smpl.Trees = ["nominal"]
-#    smpl.Leaves = ["weight_mc"]
-#    smpl.EnablePyAMI = False
-#    assert len(smpl) == 1098
-#    meta = smpl.MetaData()
-#    print(meta)
-#    print(list(meta.values())[0].dsid)
-#
+def test_pyami():
 
-    #assert len(meta) == 1
-    #f = next(iter(meta))
-    #assert meta[f].isMC
-    #assert len(meta[f].Files) == 1
+    smpl = IO(root1)
+    smpl.MetaCachePath = "./meta_cache"
+    smpl.Trees = ["nominal"]
+    smpl.Leaves = ["weight_mc"]
+    smpl.EnablePyAMI = True
+    smpl.Keys
 
-    #data = "mc16_13TeV.312446.MadGraphPythia8EvtGen_noallhad_ttH_tttt_m1000"
-    #assert meta[f].crossSection >= 0
-    #assert data in meta[f].DatasetName
-
-    #assert len([i for i in smpl]) > 0
-    #for i in smpl:
-    #    assert data in i["MetaData"].DatasetName
-
-#def test_ami_injection():
-#    smpl = IO(["samples/dilepton/"])
-#    smpl.Trees = ["nominal"]
-#    smpl.Leaves = ["weight_mc", "eventNumber"]
-#    for i in smpl:
-#        meta = i["MetaData"]
-#        evnt = i["EventIndex"]
-#        evnt_nr = i["nominal/eventNumber"]
-#        assert evnt_nr == x["eventNumber"][evnt]
-#        assert "dilepton" not in meta.IndexToSample(i["nominal/eventNumber"])
-#        lst.append(1)
-#    assert len(lst) == len(smpl)
+    meta = smpl.MetaData()
+    meta = list(meta.values())[0]
+    print(meta.dsid)
+    print(meta.amitag)
+    print(meta.logicalDatasetName)
+    print(meta.nFiles)
+    print(meta.totalEvents)
+    print(meta.totalSize)
+    print(meta.dataType)
+    print(meta.prodsysStatus)
+    print(meta.completion)
+    print(meta.ecmEnergy)
+    print(meta.generators)
+    print(meta.isMC)
+    print(meta.derivationFormat)
+    print(meta.eventNumber)
+    print(meta.genFiltEff)
+    print(meta.beam_energy)
+    print(meta.crossSection)
+    print(meta.crossSection_mean)
+    print(meta.run_number)
+    print(meta.datasetNumber)
+    print(meta.identifier)
+    print(meta.version)
+    print(meta.PDF)
+    print(meta.AtlasRelease)
+    print(meta.principalPhysicsGroup)
+    print(meta.physicsShort)
+    print(meta.generatorName)
+    print(meta.geometryVersion)
+    print(meta.conditionsTag)
+    print(meta.generatorTune)
+    print(meta.amiStatus)
+    print(meta.beamType)
+    print(meta.productionStep)
+    print(meta.projectName)
+    print(meta.statsAlgorithm)
+    print(meta.genFilterNames)
+    print(meta.file_type)
+    print(meta.DatasetName)
+    print(meta.event_index)
+    print(meta.keywords)
+    print(meta.weights)
+    print(meta.keyword)
+    print(meta.found)
+    print(meta.Files)
+    print(meta.fileGUID)
+    print(meta.events)
+    print(meta)
+    print(meta.fileSize)
+    print(meta.sample_name)
 
 if __name__ == "__main__":
     test_reading_root()
-#    test_pyami()
-#    test_ami_injection()
+    test_pyami()
 

@@ -107,8 +107,8 @@ void analysis::build_inference(){
         }
 
         std::string fname = this -> m_settings.output_path + "/" + itm -> first + "/"; 
-        meta* mt = this -> tracer -> get_meta_data(its -> first); 
-        if (mt){fname += mt -> meta_data.DatasetName + "/";}
+        //meta* mt = this -> tracer -> get_meta_data(its -> first); 
+        //if (mt){fname += mt -> meta_data.DatasetName + "/";}
         std::vector<std::string> fnames = tools().split(its -> first, "/");
         fname += fnames[fnames.size()-2] + "/";
         this -> create_path(fname);

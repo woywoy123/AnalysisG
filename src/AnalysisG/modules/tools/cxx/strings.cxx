@@ -108,8 +108,12 @@ static const std::string base64_chars =
 
 bool is_base64(unsigned char c){return (isalnum(c) || (c == '+') || (c == '/'));}
 
-std::string tools::encode64(unsigned char const* bytes_to_encode, unsigned int in_len)
-{
+
+std::string tools::encode64(std::string* data){
+    return this -> encode64(reinterpret_cast<unsigned char const*>(data -> c_str()), data -> size()); 
+}
+
+std::string tools::encode64(unsigned char const* bytes_to_encode, unsigned int in_len){
     std::string ret;
     int i = 0;
     int j = 0;

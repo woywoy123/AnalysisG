@@ -16,6 +16,8 @@ cdef extern from "<tools/tools.h>":
         void create_path(string inpt) except +
         void delete_path(string inpt) except +
         bool is_file(string inpt) except +
+        string absolute_path(string path) except +
+        vector[string] ls(string path, string ext) except +
 
         # strings.cxx
         string hash(string inpt, int l) except +
@@ -23,6 +25,11 @@ cdef extern from "<tools/tools.h>":
         void replace(string* inpt, string rpl, string rpwl) except +
         vector[string] split(string ipt, string delm) except +
         vector[string] split(string ipt, int n) except +
+
+        string encode64(string* data) except +
+        string decode64(string* data) except +
+
+
 
 cdef inline string enc(str val): return val.encode("utf-8")
 cdef inline str env(string val): return val.decode("utf-8")

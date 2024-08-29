@@ -14,8 +14,7 @@ void meta::parse_json(std::string inpt){
         this -> replace(&inpt, f, f + ","); 
         this -> rpd -> Parse(inpt.c_str()); 
     }
-
-    if (!this -> rpd -> HasParseError()){return this -> compiler();}
+    if (!this -> rpd -> HasParseError()){this -> compiler();}
     delete this -> rpd; 
     this -> rpd = nullptr; 
 }
@@ -24,6 +23,7 @@ void meta::compiler(){
     rapidjson::Value* cfg = &(*this -> rpd)["inputConfig"]; 
     this -> meta_data.dsid = (*cfg)["dsid"].GetDouble(); 
     this -> meta_data.isMC = (*cfg)["isMC"].GetBool(); 
+    this -> meta_data.AMITag = (*cfg)["amiTag"].GetString(); 
     this -> meta_data.derivationFormat = (*cfg)["derivationFormat"].GetString(); 
     rapidjson::Value* cfg_s = &(*this -> rpd)["configSettings"]; 
     if (cfg_s -> IsArray()){
@@ -34,13 +34,14 @@ void meta::compiler(){
         }
     }
 
+    int num_total = 0; 
     rapidjson::Value* files = &(*this -> rpd)["inputFiles"]; 
     for (rapidjson::SizeType i(0); i < files -> Size(); ++i){
         int n_ev = (*files)[i][1].GetInt();
         std::string fname = (*files)[i][0].GetString(); 
         std::vector<std::string> fname_v = this -> split(fname, "/"); 
-        this -> meta_data.inputfiles[n_ev] = fname_v[fname_v.size()-1]; 
-        this -> meta_data.DatasetName = fname_v[fname_v.size()-2]; 
+        this -> meta_data.inputfiles[num_total] = fname_v[fname_v.size()-1]; 
+        num_total += n_ev; 
     }
 }
 

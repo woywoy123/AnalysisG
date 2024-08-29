@@ -106,6 +106,20 @@ void io::root_key_paths(std::string path){
             }
             this -> meta_data[fname] = new meta(); 
             this -> meta_data[fname] -> parse_json(data); 
+
+            if (this -> ends_with(&this -> metacache_path, ".h5")){}
+            else if (!this -> ends_with(&this -> metacache_path, "/")){this -> metacache_path += "/meta.h5";}
+            else {this -> metacache_path += "meta.h5";}
+           
+            if (!this -> is_file(this -> metacache_path)){
+                std::vector<std::string> tmpo = this -> split(this -> metacache_path, "/"); 
+                std::string meta_s = tmpo[tmpo.size()-1]; 
+                this -> replace(&this -> metacache_path, meta_s, ""); 
+                this -> create_path(this -> metacache_path); 
+                this -> metacache_path += meta_s; 
+            }
+
+            this -> meta_data[fname] -> metacache_path = this -> metacache_path; 
             continue; 
         }
 
@@ -194,7 +208,13 @@ bool io::scan_keys(){
        if (leaves_m.size() || branches_m.size() || trees_m.size()){this -> failure("-> " + fname);}
        else if (this -> success_trigger[fname]){continue;}
        else {
-           this -> success("-> " + fname + " OK!"); 
+           long nev_ = 0; 
+           std::string msg = ""; 
+           std::map<std::string, long> tree_ent = this -> tree_entries[fname]; 
+           std::map<std::string, long>::iterator itl = tree_ent.begin();
+           for (; itl != tree_ent.end(); ++itl){msg += itl -> first + " - " + itl -> second + " | "; nev_ +=itl -> second;}
+           if (!nev_){this -> warning("(-)> " + fname + " (" + msg.substr(0, msg.size()-3) + ") Skipping..."); }
+           else {this -> success("(+)> " + fname + " (" + msg.substr(0, msg.size()-3) + ") OK! ");}
            this -> success_trigger[fname] = true; 
            continue;
        }
@@ -244,9 +264,9 @@ void io::root_begin(){
 
         for (lfii = lf_map -> begin(); lfii != lf_map -> end(); ++lfii){
             std::string lf_name = lfii -> first; 
-            TLeaf* leaf_pnt = lfii -> second; 
+            std::vector<std::string> pth_ = this -> split(lf_name, "."); 
+            if (!this -> tree_entries[fname][pth_[0]]){continue;}
             if (!this -> iters -> count(lf_name)){
-                std::vector<std::string> pth_ = this -> split(lf_name, "."); 
                 data_t* dt      = new data_t(); 
                 dt -> path      = lf_name; 
                 dt -> tree_name = pth_[0];

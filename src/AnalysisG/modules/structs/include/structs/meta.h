@@ -39,7 +39,6 @@ struct meta_t {
     double totalSize = 0;
 
     unsigned int nFiles = 0;
-    unsigned int run_number = 0;
     unsigned int totalEvents = 0;
     unsigned int datasetNumber = 0;
 
@@ -70,10 +69,11 @@ struct meta_t {
     std::vector<std::string> keyword = {};
 
     // Local File Name
-    std::map<std::string, int> LFN = {};
-    std::vector<std::string> fileGUID = {};
     std::vector<int> events = {};
+    std::vector<int> run_number = {};
     std::vector<double> fileSize = {};
+    std::vector<std::string> fileGUID = {};
+    std::map<std::string, int> LFN = {};
 };
 
 #endif

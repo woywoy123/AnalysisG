@@ -29,6 +29,7 @@ op.Optimizer = "adam"
 op.lr = 1e-3
 
 ana = Analysis()
+ana.FetchMeta = True
 ana.TrainingDataset = "./ProjectName/dataset"
 ana.AddSamples(root1, "tmp")
 ana.AddEvent(x, "tmp")

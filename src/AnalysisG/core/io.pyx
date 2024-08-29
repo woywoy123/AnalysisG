@@ -49,12 +49,15 @@ cdef class IO:
         return output
 
     cpdef dict MetaData(self):
-        cdef pair[string, meta*] itr
+        self.meta_data = {}
+
         cdef Meta data
+        cdef pair[string, meta*] itr
         for itr in self.ptr.meta_data:
             data = Meta()
-            data.__meta__(itr.second)
-            self.meta_data[itr.first] = data
+            data.ptr.metacache_path = itr.second.metacache_path
+            if self.EnablePyAMI: data.__meta__(itr.second)
+            self.meta_data[env(itr.first)] = data
         return self.meta_data
 
     @property

@@ -118,6 +118,7 @@ void experimental::forward(graph_t* data){
     torch::Tensor eta    = data -> get_data_node("eta", this) -> clone();
     torch::Tensor phi    = data -> get_data_node("phi", this) -> clone();
     torch::Tensor energy = data -> get_data_node("energy", this) -> clone();
+    torch::Tensor is_lep = data -> get_data_node("is_lep", this) -> clone(); 
     torch::Tensor pmc    = transform::cuda::PxPyPzE(pt, eta, phi, energy) / 1000.0; 
 
     torch::Tensor edge_index = data -> get_edge_index(this) -> to(torch::kLong); 
@@ -215,6 +216,11 @@ void experimental::forward(graph_t* data){
     this -> prediction_extra("res_edge_score", res_edge.softmax(-1));
     this -> prediction_extra("ntops_score"   , ntops_.softmax(-1).view({-1})); 
     this -> prediction_extra("is_res_score"  , isres_.softmax(-1).view({-1})); 
+
+    this -> prediction_extra("is_lep"        , is_lep.view({-1})); 
+    this -> prediction_extra("num_leps"      , num_leps.view({-1})); 
+    this -> prediction_extra("num_jets"      , num_jets.view({-1})); 
+    this -> prediction_extra("num_bjets"     , num_bjet.view({-1})); 
 
     torch::Tensor top_pred = graph::cuda::edge_aggregation(edge_index, top_edge, pmc)["1"][1]; 
     torch::Tensor top_pmu  = transform::cuda::PtEtaPhiE(top_pred); 

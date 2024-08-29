@@ -11,6 +11,7 @@ from AnalysisG.core.selection_template cimport selection_template
 from AnalysisG.core.model_template cimport model_template
 from AnalysisG.core.lossfx cimport optimizer_params_t
 from AnalysisG.core.structs cimport settings_t
+from AnalysisG.core.meta cimport *
 
 cdef extern from "<generators/analysis.h>":
 
@@ -33,6 +34,8 @@ cdef extern from "<generators/analysis.h>":
         map[string, bool] is_complete() except+
 
         # settings
+        bool fetch_meta
+        map[string, meta*] meta_data
         settings_t m_settings
 
 cdef class Analysis:
@@ -41,5 +44,6 @@ cdef class Analysis:
     cdef list events_
     cdef list models_
     cdef list optim_
+    cdef public bool FetchMeta
     cdef analysis* ana
 

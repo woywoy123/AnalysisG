@@ -8,8 +8,9 @@ version = "5.0"
 authors = []
 requires-python = ">=3.7"
 dependencies = [
-    "pyAMI-atlas==5.1.0.1", 
     "boost_histogram", 
+    "pyAMI-atlas", 
+    "pyAMI-core",
     "mplhep",
     "pyyaml",
     "tqdm", 

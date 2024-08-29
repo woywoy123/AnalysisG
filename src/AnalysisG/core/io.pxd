@@ -32,7 +32,6 @@ cdef extern from "<io/io.h>":
         string current_working_path
 
         bool enable_pyami
-        string metacache_path
         vector[string] trees
         vector[string] branches
         vector[string] leaves
@@ -42,6 +41,7 @@ cdef extern from "<io/io.h>":
         map[string, map[string, long]] tree_entries
         map[string, map[string, string]] leaf_typed
         map[string, map[string, map[string, vector[string]]]] keys
+        string metacache_path
 
 
 cdef class IO:

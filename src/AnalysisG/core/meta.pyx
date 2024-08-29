@@ -1,61 +1,179 @@
 # distutils: language=c++
 # cython: language_level=3
 
-from libcpp.map cimport pair, map
 from cython.operator cimport dereference as deref
+from libcpp.string cimport string
+from libcpp.map cimport pair, map
+from libcpp.vector cimport vector
 
 from AnalysisG.core.structs cimport meta_t
-from AnalysisG.core.meta cimport meta
 from AnalysisG.core.tools cimport *
+from AnalysisG.core.meta cimport *
+from AnalysisG.core.notification cimport *
 
-try:
-    import pyAMI
-    from pyAMI.client import Client
-    from pyAMI.api import list_datasets as atlas
+import pyAMI.client
+import pyAMI.httpclient
+import pyAMI_atlas.api
+import http.client
+import pickle
+import h5py
 
-except ModuleNotFoundError: pass
-except NameError: pass
-import warnings
-import signal
+class httpx(pyAMI.httpclient.HttpClient):
 
-def _sig(signum, frame): return ""
-signal.signal(signal.SIGALRM, _sig)
-signal.alarm(30)
-warnings.filterwarnings("ignore")
+    def __init__(self, config):
+        super(httpx, self).__init__(config)
+
+    def connect(self, endpoint):
+        self.endpoint = endpoint
+        cdef dict chn = {"certfile" : self.config.cert_file, "keyfile" : self.config.key_file}
+        cdef dict confx = {"host" : str(self.endpoint["host"]), "port" : int(self.endpoint["port"])}
+        confx["context"] = self.create_unverified_context()
+        confx["context"].load_cert_chain(**chn)
+        self.connection = http.client.HTTPSConnection(**confx)
+
+class atlas(pyAMI.client.Client):
+
+    def __init__(self):
+        super(atlas, self).__init__("atlas-replica")
+        self.httpClient = httpx(self.config)
+
 
 cdef class ami_client:
-    cdef file
-    cdef client
-    cdef public bool is_cached
 
-    def __init__(self): pass
     def __cinit__(self):
-        warnings.filterwarnings("ignore")
-        try: self.client = Client("atlas")
-        except: self.client = None
-        self.file = None
+        self.client = atlas()
+        self.nf = new notification()
+        self.nf.prefix = b"PyAMI-MetaScan"
 
-    cdef list list_datasets(self, int dsids, str type_ = "DAOD_TOPQ1"):
+    def __init__(self): self.type_ = "DAOD_TOPQ1"
+    def __dealloc__(self): del self.nf
+
+    cdef bool loadcache(self, Meta obj):
+        self.dsids = []
+        self.datas = {}
+        self.infos = {}
+        self.file_cache = None
+        cdef str dsidr = str(obj.dsid)
+        try: self.file_cache = h5py.File(obj.MetaCachePath, "a")
+        except FileNotFoundError: self.file_cache = h5py.File(obj.MetaCachePath, "w")
+        except OSError: self.file_cache = h5py.File(obj.MetaCachePath, "w")
+        except: return False
+
+        cdef string cached_dsid
+        try: cached_dsid = enc(self.file_cache[dsidr].attrs["dsids"])
+        except KeyError: pass
+
+        cdef string cached_maps
+        try: cached_maps = enc(self.file_cache[dsidr].attrs["datasets"])
+        except KeyError: pass
+
+        cdef string cached_info
+        try: cached_info = enc(self.file_cache[dsidr].attrs["infos"])
+        except KeyError: pass
+
+        if cached_dsid.size(): self.dsids = pickle.loads(tools().decode64(&cached_dsid))
+        if cached_maps.size(): self.datas = pickle.loads(tools().decode64(&cached_maps))
+        if cached_info.size(): self.infos = pickle.loads(tools().decode64(&cached_info))
+        return len(self.dsids)*len(self.datas)*len(self.infos)
+
+    cdef void savecache(self, Meta obj):
+        cdef str dsidr = str(obj.dsid)
+
+        cdef string cached_dsid = pickle.dumps(self.dsids)
+        cdef string cached_maps = pickle.dumps(self.datas)
+        cdef string cached_info = pickle.dumps(self.infos)
+
+        try: ref = self.file_cache.create_dataset(dsidr, (1), dtype = h5py.ref_dtype)
+        except: ref = self.file_cache[dsidr]
+        ref.attrs["dsids"] = tools().encode64(&cached_dsid)
+        ref.attrs["datasets"] = tools().encode64(&cached_maps)
+        ref.attrs["infos"] = tools().encode64(&cached_info)
+        self.file_cache.close()
+
+    cdef void dressmeta(self, Meta obj, str dset_name):
+        cdef dict info = dict(self.infos[dset_name][0])
+        cdef dict files = {}
+        for l in [dict(k) for k in self.datas[dset_name]]: files[l["LFN"]] = l
+
+
+        cdef list keys = [
+                "logicalDatasetName", "identifier", "nFiles", "totalEvents", "totalSize", "dataType", "prodsysStatus", "completion", "ecmEnergy",
+                "PDF", "version", "AtlasRelease", "crossSection", "genFiltEff", "datasetNumber", "physicsShort", "generatorName", "geometryVersion",
+                "conditionsTag", "generatorTune", "amiStatus", "beamType", "productionStep", "projectName", "statsAlgorithm", "beam_energy",
+                "crossSection_mean", "file_type", "genFilterNames", "run_number", "principalPhysicsGroup"
+        ]
+
+        for i in keys:
+            try: setattr(obj, i, info[i])
+            except KeyError: continue
+
+        obj.DatasetName        = info["logicalDatasetName"]
+        obj.keywords           = info["keywords"].split(", ")
+        obj.keyword            = info["keyword"].split(", ")
+        try: obj.weights = info["weights"].split(" | ")[:-1]
+        except KeyError: pass
+        obj.events   = [int(files[i]["events"]) for i in obj.Files.values()]
+        obj.fileSize = [int(files[i]["fileSize"]) for i in obj.Files.values()]
+        obj.fileGUID = [enc(files[i]["fileGUID"]) for i in obj.Files.values()]
+        obj.found = True
+
+    cdef void list_datasets(self, Meta obj):
+        cdef str dsidr = str(obj.dsid)
+        cdef list ami_tags = list(set(obj.amitag.split("_")))
+        cdef dict command = {"client" : self.client, "type" : self.type_, "dataset_number" : dsidr}
+        cdef bool hit = self.loadcache(obj)
+        if not hit:
+            self.dsids = pyAMI_atlas.api.list_datasets(**command)
+            self.nf.success(enc("DSID not in cache, fetched from PyAMI: " + dsidr))
+        else: self.nf.success(enc("DSID cache hit for: " + dsidr))
+
         cdef str i
-        cdef int idx
-        cdef dict command = {}
-        command["client"] = self.client
-        command["type"] = type_
-        command["dataset_number"] = None
-        command["dataset_number"] = [str(dsids)]
-        try: print(atlas(**command))
-        except TypeError: pass
+        cdef bool fset
+        cdef list files
+        for k in self.dsids:
+            fset = False
+            dset_name = k["ldn"]
+            tag = dset_name.split(".")[-1]
+            for i in ami_tags:
+                if i not in tag: continue
+                fset = True
+                break
+
+            if dset_name not in self.datas:
+                self.datas[dset_name] = pyAMI_atlas.api.list_files(self.client, dset_name)
+                self.nf.success(enc("Fetched Dataset MetaData for " + dset_name))
+                hit = False
+
+            if dset_name not in self.infos:
+                self.infos[dset_name] = pyAMI_atlas.api.get_dataset_info(self.client, dset_name)
+                hit = False
+
+            if not fset: continue
+            is_dataset = True
+            files = self.datas[dset_name]
+            for i in list(obj.Files.values()): is_dataset *= len([1 for t in files if t["LFN"] == i])
+            if not is_dataset: continue
+            if obj.found: continue
+            self.dressmeta(obj, dset_name)
+        if hit: return
+        self.savecache(obj)
 
 cdef class Meta:
-    def __cinit__(self):
-        self.ptr = new meta()
+
+    def __cinit__(self): self.ptr = new meta()
 
     def __init__(self): pass
+
     def __dealloc__(self): del self.ptr
+
     cdef __meta__(self, meta* _meta):
         cdef ami_client ami = ami_client()
         self.ptr.meta_data = _meta.meta_data
-        ami.list_datasets(_meta.meta_data.dsid)
+        ami.list_datasets(self)
+        _meta.meta_data = self.ptr.meta_data
+
+    @property
+    def MetaCachePath(self): return env(self.ptr.metacache_path)
 
     # Attributes with getter and setter
     @property
@@ -112,7 +230,7 @@ cdef class Meta:
         return self.ptr.meta_data.ecmEnergy
 
     @ecmEnergy.setter
-    def ecmEnergy(self, val: Union[str, float]):
+    def ecmEnergy(self, val):
         self.ptr.meta_data.ecmEnergy = float(val)
 
     @property
@@ -120,7 +238,7 @@ cdef class Meta:
         return self.ptr.meta_data.genFiltEff
 
     @genFiltEff.setter
-    def genFiltEff(self, val: Union[str, float]):
+    def genFiltEff(self, val):
         self.ptr.meta_data.genFiltEff = float(val)
 
     @property
@@ -128,7 +246,7 @@ cdef class Meta:
         return self.ptr.meta_data.completion
 
     @completion.setter
-    def completion(self, val: Union[str, float]):
+    def completion(self, val):
         self.ptr.meta_data.completion = float(val)
 
     @property
@@ -136,7 +254,7 @@ cdef class Meta:
         return self.ptr.meta_data.beam_energy
 
     @beam_energy.setter
-    def beam_energy(self, val: Union[str, float]):
+    def beam_energy(self, val):
         self.ptr.meta_data.beam_energy = float(val)
 
     @property
@@ -144,7 +262,7 @@ cdef class Meta:
         return self.ptr.meta_data.crossSection
 
     @crossSection.setter
-    def crossSection(self, val: Union[str, float]):
+    def crossSection(self, val):
         try: self.ptr.meta_data.crossSection = float(val)
         except ValueError: self.ptr.meta_data.crossSection = -1
 
@@ -162,7 +280,7 @@ cdef class Meta:
         return self.ptr.meta_data.totalSize
 
     @totalSize.setter
-    def totalSize(self, val: Union[str, float]):
+    def totalSize(self, val):
         self.ptr.meta_data.totalSize = float(val)
 
     @property
@@ -170,16 +288,18 @@ cdef class Meta:
         return self.ptr.meta_data.nFiles
 
     @nFiles.setter
-    def nFiles(self, val: Union[str, int]):
+    def nFiles(self, val):
         self.ptr.meta_data.nFiles = int(val)
 
     @property
-    def run_number(self) -> int:
+    def run_number(self):
         return self.ptr.meta_data.run_number
 
     @run_number.setter
-    def run_number(self, val: Union[str, int]):
-        self.ptr.meta_data.run_number = int(val)
+    def run_number(self, val):
+        if isinstance(val, str): val = eval(val)
+        if not isinstance(val, list): val = [val]
+        self.ptr.meta_data.run_number = val
 
     @property
     def totalEvents(self) -> int:
@@ -349,13 +469,13 @@ cdef class Meta:
     def file_type(self, str val):
         self.ptr.meta_data.file_type = enc(val)
 
-    #@property
-    #def DatasetName(self) -> str:
-    #    return env(self.ptr.DatasetName())
+    @property
+    def DatasetName(self) -> str:
+        return env(self.ptr.meta_data.DatasetName)
 
-    #@DatasetName.setter
-    #def DatasetName(self, str val):
-    #    self.ptr.meta_data.DatasetName = enc(val)
+    @DatasetName.setter
+    def DatasetName(self, str val):
+        self.ptr.meta_data.DatasetName = enc(val)
 
     @property
     def logicalDatasetName(self) -> str:
@@ -374,79 +494,52 @@ cdef class Meta:
         self.ptr.meta_data.event_index = val
 
 
-    # constant properties
-    @property
-    def original_name(self) -> str:
-        return env(self.ptr.meta_data.original_name)
-
-    @property
-    def original_path(self) -> str:
-        return env(self.ptr.meta_data.original_path)
-
-    #@property
-    #def hash(self) -> str:
-    #    self.ptr.Hash()
-    #    return env(self.ptr.hash)
-
     @property
     def keywords(self) -> list:
         return [env(i) for i in self.ptr.meta_data.keywords]
+
+    @keywords.setter
+    def keywords(self, val):
+        self.ptr.meta_data.keywords = [enc(i) for i in val]
 
     @property
     def weights(self) -> list:
         return [env(i) for i in self.ptr.meta_data.weights]
 
+    @weights.setter
+    def weights(self, val):
+        self.ptr.meta_data.weights = [enc(i) for i in val]
+
     @property
     def keyword(self) -> list:
         return [env(i) for i in self.ptr.meta_data.keyword]
+
+    @keyword.setter
+    def keyword(self, val):
+        self.ptr.meta_data.keyword = [enc(i) for i in val]
 
     @property
     def found(self) -> bool:
         return self.ptr.meta_data.found
 
+    @found.setter
+    def found(self, val):
+        self.ptr.meta_data.found = val
+
+
     @property
     def config(self) -> dict:
-        cdef pair[string, string] it
         cdef dict out = {}
+        cdef pair[string, string] it
         for it in self.ptr.meta_data.config: out[env(it.first)] = env(it.second)
         return out
 
-    #@property
-    #def GetLengthTrees(self) -> dict:
-    #    cdef map[string, int] x = self.ptr.GetLength()
-    #    cdef pair[string, int] it
-    #    cdef dict out = {env(it.first) : it.second for it in x}
-    #    return out
-
-    #@property
-    #def MissingTrees(self) -> list:
-    #    return [env(i) for i in self.ptr.meta_data.mis_trees]
-
-    #@property
-    #def MissingBranches(self) -> list:
-    #    return [env(i) for i in self.ptr.meta_data.mis_branches]
-
-    #@property
-    #def MissingLeaves(self) -> list:
-    #    return [env(i) for i in self.ptr.meta_data.mis_leaves]
-
-    #@property
-    #def DAODList(self) -> list:
-    #    cdef vector[string] out = self.ptr.DAODList()
-    #    cdef string i
-    #    return [env(i) for i in out]
-
     @property
     def Files(self) -> dict:
-        cdef pair[int, string] it
         cdef dict out = {}
-        for it in self.ptr.meta_data.inputfiles:
-            out[it.first] = env(it.second)
+        cdef pair[int, string] it
+        for it in self.ptr.meta_data.inputfiles: out[it.first] = env(it.second)
         return out
-
-    #@property
-    #def DAOD(self) -> str:
-    #    return self.IndexToSample(self.ptr.event_index)
 
     @property
     def fileGUID(self) -> dict:
@@ -458,6 +551,11 @@ cdef class Meta:
             output[env(it.first)] = env(guid)
         return output
 
+
+    @fileGUID.setter
+    def fileGUID(self, list val):
+        self.ptr.meta_data.fileGUID = val
+
     @property
     def events(self) -> dict:
         cdef pair[string, int] it
@@ -466,13 +564,24 @@ cdef class Meta:
             output[env(it.first)] = self.ptr.meta_data.events.at(it.second)
         return output
 
+    @events.setter
+    def events(self, list val):
+        if not self.ptr.meta_data.LFN.size():
+            fi = list(self.Files.values())
+            for i in range(len(fi)): self.ptr.meta_data.LFN[enc(fi[i])] = i
+        self.ptr.meta_data.events = val
+
     @property
     def fileSize(self) -> dict:
-        cdef pair[string, int] it
         cdef dict output = {}
+        cdef pair[string, int] it
         for it in self.ptr.meta_data.LFN:
-            output[env(it.first)] = self.ptr.meta_data.filesSize.at(it.second)
+            output[env(it.first)] = self.ptr.meta_data.fileSize.at(it.second)
         return output
+
+    @fileSize.setter
+    def fileSize(self, list val):
+        self.ptr.meta_data.fileSize = val
 
     @property
     def sample_name(self):
@@ -481,13 +590,4 @@ cdef class Meta:
     @sample_name.setter
     def sample_name(self, str val):
         self.ptr.meta_data.sample_name = enc(val)
-
-
-
-
-
-
-
-
-
 

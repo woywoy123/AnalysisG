@@ -64,7 +64,6 @@ cdef extern from "<structs/meta.h>":
         double totalSize
 
         unsigned int nFiles
-        unsigned int run_number
         unsigned int totalEvents
         unsigned int datasetNumber
 
@@ -93,11 +92,12 @@ cdef extern from "<structs/meta.h>":
         vector[string] keywords
         vector[string] weights
         vector[string] keyword
-
-        map[string, int] LFN
         vector[string] fileGUID
+
         vector[int] events
+        vector[int] run_number
         vector[double] fileSize
+        map[string, int] LFN
 
 cdef extern from "<structs/settings.h>":
 

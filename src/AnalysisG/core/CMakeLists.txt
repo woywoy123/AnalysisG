@@ -1,7 +1,7 @@
 cmake_language(CALL cybuild core core tools "")
 cmake_language(CALL cybuild core core structs "")
 cmake_language(CALL cybuild core core notification "")
-cmake_language(CALL cybuild core core meta "")
+cmake_language(CALL cybuild core core meta cnotification)
 cmake_language(CALL cybuild core core io "")
 cmake_language(CALL cybuild core core plotting "")
 

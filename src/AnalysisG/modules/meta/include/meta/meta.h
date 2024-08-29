@@ -13,6 +13,7 @@ class meta: public tools
 
         void parse_json(std::string inpt); 
         rapidjson::Document* rpd = nullptr;
+        std::string metacache_path; 
         meta_t meta_data; 
 
     private:

@@ -5,6 +5,7 @@ from libcpp cimport bool
 from libcpp.string cimport string
 from libcpp.map cimport pair, map
 
+from AnalysisG.core.meta cimport Meta, meta
 from AnalysisG.core.tools cimport *
 from AnalysisG.core.event_template cimport *
 from AnalysisG.core.graph_template cimport *
@@ -16,6 +17,8 @@ from AnalysisG.generators.analysis cimport analysis
 from time import sleep
 from tqdm import tqdm
 
+def factory(title): return tqdm(total = 100, desc = title, leave = False, dynamic_ncols = True)
+
 cdef class Analysis:
 
     def __cinit__(self):
@@ -25,6 +28,7 @@ cdef class Analysis:
         self.events_     = []
         self.models_     = []
         self.optim_      = []
+        self.FetchMeta   = False
 
     def __init__(self):
         pass
@@ -59,16 +63,18 @@ cdef class Analysis:
         self.models_.append(model)
 
     def Start(self):
-        def factory(title):
-            pdar = tqdm(
-                    total = 100, desc = title,
-                    leave = False,
-                    dynamic_ncols = True
-            )
-            return pdar
-
-
+        self.ana.fetch_meta = self.FetchMeta
         self.ana.start()
+
+        cdef Meta data
+        cdef pair[string, meta*] itrm
+        if self.FetchMeta:
+            for itrm in self.ana.meta_data:
+                data = Meta()
+                data.ptr.metacache_path = itrm.second.metacache_path
+                data.__meta__(itrm.second)
+                del data
+            self.ana.start()
 
         cdef dict bars = {}
         cdef pair[string, float] itr
