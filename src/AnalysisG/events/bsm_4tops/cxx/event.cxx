@@ -28,10 +28,13 @@ event_template* bsm_4tops::clone(){return (event_template*)new bsm_4tops();}
 
 void bsm_4tops::build(element_t* el){
     el -> get("event_number", &this -> event_number); 
-    el -> get("weight", (float*)&this -> weight); 
-    el -> get("mu", &this -> mu);
+    el -> get("mu" , &this -> mu);
     el -> get("met", &this -> met); 
     el -> get("phi", &this -> phi); 
+
+    float w = 0; 
+    el -> get("weight", &w); 
+    this -> weight = w; 
 }
 
 void bsm_4tops::CompileEvent(){
@@ -45,6 +48,7 @@ void bsm_4tops::CompileEvent(){
     std::map<int, top_children*>::iterator itc; 
     for (itc = _TopChildren.begin(); itc != _TopChildren.end(); ++itc){
         int index = itc -> second -> top_index; 
+        if (!_Tops.count(index)){continue;}
         _Tops[index] -> register_child(itc -> second); 
         itc -> second -> register_parent(_Tops[index]); 
         itc -> second -> index = index; 
@@ -54,7 +58,7 @@ void bsm_4tops::CompileEvent(){
     for (itj = _TruthJets.begin(); itj != _TruthJets.end(); ++itj){
         truthjet* tj = itj -> second; 
         for (int x : tj -> top_index){
-            if (x == -1){continue;}
+            if (x == -1 || !_Tops.count(x)){continue;}
             tj -> Tops.push_back(_Tops[x]); 
             _Tops[x] -> TruthJets.push_back(tj); 
         }
@@ -73,7 +77,7 @@ void bsm_4tops::CompileEvent(){
         jet* jt = ij -> second; 
         jt -> pdgid = (jt -> btag_DL1r_85) ? 5 : 0; 
         for (int x : jt -> top_index){
-            if (x == -1){continue;}
+            if (x == -1 || !_Tops.count(x)){continue;}
             jt -> Tops.push_back(_Tops[x]); 
             _Tops[x] -> Jets.push_back(jt); 
         }

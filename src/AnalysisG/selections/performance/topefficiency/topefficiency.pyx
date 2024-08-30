@@ -12,44 +12,28 @@ cdef class TopEfficiency(SelectionTemplate):
 
     def __init__(self, inpt = None):
         if inpt is None: return
-        self.truthchildren_pt_eta_topmass = inpt["truthchildren_pt_eta_topmass"]
-        self.truthjets_pt_eta_topmass     = inpt["truthjets_pt_eta_topmass"]
-        self.jets_pt_eta_topmass          = inpt["jets_pt_eta_topmass"]
-        self.truthchildren_pt_eta_topmass = inpt["truthchildren_pt_eta_topmass"]
-        self.truthjets_pt_eta_topmass     = inpt["truthjets_pt_eta_topmass"]
-        self.jets_pt_eta_topmass          = inpt["jets_pt_eta_topmass"]
-
-        self.predicted_topmass            = inpt["predicted_topmass"]
-        self.predicted_topmass_reject     = inpt["predicted_topmass_reject"]
-
-        self.truth_topmass                = inpt["truth_topmass"]
-        self.truth_topmass_reject         = inpt["truth_topmass_reject"]
-
-        self.truth_zprime_mass            = inpt["truth_zprime_mass"]
-        self.predicted_zprime_mass        = inpt["predicted_zprime_mass"]
-
         self.n_tops_predictions           = inpt["n_tops_predictions"]
-        self.n_tops_real                  = inpt["n_tops_real"]
-        self.truth_res_edge               = inpt["truth_res_edge"]
-        self.truth_top_edge               = inpt["truth_top_edge"]
-        self.truth_ntops                  = inpt["truth_ntops"]
-        self.truth_signal                 = inpt["truth_signal"]
+        self.predicted_topmass            = inpt["predicted_topmass"]
+        self.predicted_zprime_mass        = inpt["predicted_zprime_mass"]
         self.pred_res_edge_score          = inpt["pred_res_edge_score"]
         self.pred_top_edge_score          = inpt["pred_top_edge_score"]
         self.pred_ntops_score             = inpt["pred_ntops_score"]
         self.pred_signal_score            = inpt["pred_signal_score"]
 
+        self.truth_topmass                = inpt["truth_topmass"]
+        self.truth_zprime_mass            = inpt["truth_zprime_mass"]
+        self.truth_res_edge               = inpt["truth_res_edge"]
+        self.truth_top_edge               = inpt["truth_top_edge"]
+        self.truth_ntops                  = inpt["truth_ntops"]
+        self.truth_signal                 = inpt["truth_signal"]
+        self.n_tops_real                  = inpt["n_tops_real"]
+
     def __dealloc__(self): del self.tt
 
     def __reduce__(self):
         cdef dict out = {
-            "truthchildren_pt_eta_topmass" : self.truthchildren_pt_eta_topmass,
-            "truthjets_pt_eta_topmass"     : self.truthjets_pt_eta_topmass,
-            "jets_pt_eta_topmass"          : self.jets_pt_eta_topmass,
             "predicted_topmass"            : self.predicted_topmass,
             "truth_topmass"                : self.truth_topmass,
-            "predicted_topmass_reject"     : self.predicted_topmass_reject,
-            "truth_topmass_reject"         : self.truth_topmass_reject,
             "predicted_zprime_mass"        : self.predicted_zprime_mass,
             "truth_zprime_mass"            : self.truth_zprime_mass,
             "n_tops_predictions"           : self.n_tops_predictions,
@@ -66,17 +50,10 @@ cdef class TopEfficiency(SelectionTemplate):
         return TopEfficiency, (out,)
 
     cdef void transform_dict_keys(self):
-        self.truthchildren_pt_eta_topmass = as_dict(&self.tt.truthchildren_pt_eta_topmass)
-        self.truthjets_pt_eta_topmass     = as_dict(&self.tt.truthjets_pt_eta_topmass)
-        self.jets_pt_eta_topmass          = as_dict(&self.tt.jets_pt_eta_topmass)
+        self.truth_topmass            = as_dict(&self.tt.truth_topmass)
+        self.truth_zprime_mass        = as_dict(&self.tt.truth_zprime_mass)
 
         self.predicted_topmass        = as_dict(&self.tt.predicted_topmass)
-        self.predicted_topmass_reject = as_dict(&self.tt.predicted_topmass_reject)
-
-        self.truth_topmass            = as_dict(&self.tt.truth_topmass)
-        self.truth_topmass_reject     = as_dict(&self.tt.truth_topmass_reject)
-
-        self.truth_zprime_mass        = as_dict(&self.tt.truth_zprime_mass)
         self.predicted_zprime_mass    = as_dict(&self.tt.predicted_zprime_mass)
 
         self.n_tops_predictions  = as_dict(&self.tt.n_tops_predictions)

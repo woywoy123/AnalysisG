@@ -16,6 +16,9 @@ graph_template::graph_template(){
 
     this -> index.set_getter(this -> get_index); 
     this -> index.set_object(this);
+
+    this -> weight.set_getter(this -> get_weight); 
+    this -> weight.set_object(this);
 }
 
 graph_template::~graph_template(){
@@ -168,9 +171,10 @@ graph_t* graph_template::data_export(){
     gr -> add_data_node(&n_dat_t, n_dat_i); 
     gr -> add_data_edge(&e_dat_t, e_dat_i); 
     
-    gr -> num_nodes   = this -> num_nodes; 
-    gr -> event_index = this -> index; 
-    gr -> graph_name  = new std::string(this -> name); 
+    gr -> num_nodes    = this -> num_nodes; 
+    gr -> event_index  = this -> index;
+    gr -> event_weight = this -> weight; 
+    gr -> graph_name   = new std::string(this -> name); 
     return gr; 
 }
 

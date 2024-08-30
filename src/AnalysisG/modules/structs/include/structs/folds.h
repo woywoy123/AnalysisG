@@ -12,8 +12,10 @@ struct folds_t {
 
 
 struct graph_hdf5 {
-    int num_nodes = -1; 
-    long event_index = -1;
+    int    num_nodes = -1; 
+    double event_weight = 1; 
+    long   event_index = -1;
+
     std::string hash; 
     std::string filename; 
     std::string edge_index; 
@@ -36,8 +38,10 @@ struct graph_hdf5 {
 }; 
 
 struct graph_hdf5_w {
-    int num_nodes = -1; 
-    long event_index = -1;
+    int    num_nodes = -1; 
+    double event_weight = 1; 
+    long   event_index = -1;
+
     char* hash; 
     char* filename; 
     char* edge_index; 

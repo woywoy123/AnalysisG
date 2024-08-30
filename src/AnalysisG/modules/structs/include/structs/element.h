@@ -15,7 +15,7 @@
 #include <vector>
 
 // -------------------------- If you were directed here, simply add the data type within this section ----------------- //
-enum class data_enum {vvf, vvd, vvl, vvi, vf, vl, vi, vc, vb, f, l, i, ull, b}; 
+enum class data_enum {vvf, vvd, vvl, vvi, vd, vf, vl, vi, vc, vb, d, f, l, i, ull, b}; 
 
 struct data_t {
     public:
@@ -26,18 +26,19 @@ struct data_t {
         std::vector<std::vector<std::vector<long>>>*   r_vvl = nullptr; 
         std::vector<std::vector<std::vector<int>>>*    r_vvi = nullptr; 
 
-        std::vector<std::vector<float>>* r_vf = nullptr; 
-        std::vector<std::vector<long>>*  r_vl = nullptr; 
-        std::vector<std::vector<int>>*   r_vi = nullptr; 
-        std::vector<std::vector<char>>*  r_vc = nullptr; 
-        std::vector<std::vector<bool>>*  r_vb = nullptr; 
-
-        std::vector<float>* r_f = nullptr; 
-        std::vector<long>*  r_l = nullptr; 
-        std::vector<int>*   r_i = nullptr; 
-        std::vector<bool>*  r_b = nullptr; 
+        std::vector<std::vector<long>>*   r_vl = nullptr; 
+        std::vector<std::vector<double>>* r_vd = nullptr; 
+        std::vector<std::vector<float>>*  r_vf = nullptr; 
+        std::vector<std::vector<int>>*    r_vi = nullptr; 
+        std::vector<std::vector<char>>*   r_vc = nullptr; 
+        std::vector<std::vector<bool>>*   r_vb = nullptr; 
 
         std::vector<unsigned long long>* r_ull = nullptr; 
+        std::vector<double>* r_d = nullptr; 
+        std::vector<long>*   r_l = nullptr; 
+        std::vector<float>*  r_f = nullptr; 
+        std::vector<int>*    r_i = nullptr; 
+        std::vector<bool>*   r_b = nullptr; 
 
         bool element(std::vector<std::vector<float>>* el);
         bool element(std::vector<std::vector<double>>* el);
@@ -45,11 +46,13 @@ struct data_t {
         bool element(std::vector<std::vector<int>>* el);
 
         bool element(std::vector<float>* el); 
+        bool element(std::vector<double>* el); 
         bool element(std::vector<long>* el); 
         bool element(std::vector<int>* el); 
         bool element(std::vector<char>* el); 
         bool element(std::vector<bool>* el); 
 
+        bool element(double* el); 
         bool element(float* el);
         bool element(long* el);
         bool element(int* el); 

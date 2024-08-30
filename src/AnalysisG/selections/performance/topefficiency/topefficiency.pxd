@@ -10,10 +10,6 @@ cdef extern from "topefficiency.h":
     cdef cppclass topefficiency(selection_template):
         topefficiency() except +
 
-        map[string, vector[float]] truthchildren_pt_eta_topmass
-        map[string, vector[float]] truthjets_pt_eta_topmass
-        map[string, vector[float]] jets_pt_eta_topmass
-
         map[string, vector[float]] predicted_topmass
         map[string, vector[float]] truth_topmass
 
@@ -42,15 +38,8 @@ cdef extern from "topefficiency.h":
 cdef class TopEfficiency(SelectionTemplate):
     cdef topefficiency* tt
 
-    cdef public dict truthchildren_pt_eta_topmass
-    cdef public dict truthjets_pt_eta_topmass
-    cdef public dict jets_pt_eta_topmass
-
     cdef public dict predicted_topmass
     cdef public dict truth_topmass
-
-    cdef public dict  predicted_topmass_reject
-    cdef public dict  truth_topmass_reject
 
     cdef public dict  predicted_zprime_mass
     cdef public dict  truth_zprime_mass

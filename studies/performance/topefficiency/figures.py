@@ -4,60 +4,10 @@ import torch
 import pickle
 
 global figure_path
-global mass_point
 
 def path(hist):
-    hist.OutputDirectory = figure_path + "/topefficiency/" + mass_point
+    hist.OutputDirectory = figure_path + "/topefficiency"
     return hist
-
-def ChildrenRegions(ana):
-    data = ana.truthchildren_pt_eta_topmass
-    for i in data:
-        th = path(TH1F())
-        th.OutputDirectory = th.OutputDirectory + "/1.a/"
-        th.Filename = i.replace(" < $pt_{top}$ < ", "->").replace(" < $eta_{top}$ < ", "->").replace("|", ",")
-        th.Title = "Invariant Top Mass for Kinematic Regions: " + i.replace("eta", "\eta").replace("|", "\n")
-        th.xTitle = "Invariant Top Mass (GeV)"
-        th.yTitle = "Entries (Arb.)"
-        th.xBins = 500
-        th.xMin = 0
-        th.xMax = 300
-        th.xStep = 20
-        th.xData = data[i]
-        th.SaveFigure()
-
-
-def TruthJetsRegions(ana):
-    data = ana.truthjets_pt_eta_topmass
-    for i in data:
-        th = path(TH1F())
-        th.OutputDirectory = th.OutputDirectory + "/1.b/"
-        th.Filename = i.replace(" < $pt_{top}$ < ", "->").replace(" < $eta_{top}$ < ", "->").replace("|", ",")
-        th.Title = "Invariant Top Mass for Kinematic Regions: " + i.replace("eta", "\eta").replace("|", "\n")
-        th.xTitle = "Invariant Top Mass (GeV)"
-        th.yTitle = "Entries (Arb.)"
-        th.xBins = 500
-        th.xMin = 0
-        th.xMax = 300
-        th.xStep = 20
-        th.xData = data[i]
-        th.SaveFigure()
-
-def JetsRegions(ana):
-    data = ana.jets_pt_eta_topmass
-    for i in data:
-        th = path(TH1F())
-        th.OutputDirectory = th.OutputDirectory + "/1.c/"
-        th.Filename = i.replace(" < $pt_{top}$ < ", "-").replace(" < $eta_{top}$ < ", "-").replace("|", ",")
-        th.Title = "Invariant Top Mass for Kinematic Regions: " + i.replace("eta", "\eta").replace("|", "\n")
-        th.xTitle = "Invariant Top Mass (GeV)"
-        th.yTitle = "Entries (Arb.)"
-        th.xBins = 500
-        th.xMin = 0
-        th.xMax = 300
-        th.xStep = 20
-        th.xData = data[i]
-        th.SaveFigure()
 
 def TopMassComparison(stacks, ana = None):
     if ana is not None:
@@ -84,7 +34,7 @@ def TopMassComparison(stacks, ana = None):
         hist = TH1F()
         hist.Histogram = hist_t
         hist.Histograms = [hist_p]
-        hist.Title = "Kinematic Region " + r.replace("pt", "pt").replace("eta", "\eta").replace("|", ", ")
+        hist.Title = "Kinematic Region " + r.replace("pt", "pt").replace("eta", "eta").replace("|", ", ")
         hist.xTitle = "Invariant Top Mass (GeV)"
         hist.yTitle = "Entries / 10 GeV"
         hist.ErrorBars = True
@@ -93,10 +43,11 @@ def TopMassComparison(stacks, ana = None):
         hist.xMax = 1000
         hist.xBins = 100
         hist.xStep = 100
-        hist.OutputDirectory = figure_path + "/topefficiency/top-reconstruction"
+
         kins = r.replace("|", "<").split("<")
         kins = [f.replace(" ", "") for f in kins]
-        hist.Filename = "pt_" + kins[0] + "_" + kins[2] + "_eta_" + kins[3] + "_" + kins[5]
+        hist.OutputDirectory = figure_path + "/topefficiency/top-reconstruction/pt_" + kins[0] + "_" + kins[2]
+        hist.Filename = "eta_" + kins[3] + "_" + kins[5]
         hist.SaveFigure()
 
 def TopMatrix(stacks, ana = None):
@@ -129,21 +80,13 @@ def TopMatrix(stacks, ana = None):
         hist.xData = stacks[r]["truth"]
         hist.yData = stacks[r]["pred"]
 
-        hist.OutputDirectory = figure_path + "/topefficiency/top-matrix"
         kins = r.replace("|", "<").split("<")
         kins = [f.replace(" ", "") for f in kins]
-        hist.Filename = "pt_" + kins[0] + "_" + kins[2] + "_eta_" + kins[3] + "_" + kins[5]
+        hist.OutputDirectory = figure_path + "/topefficiency/top-matrix/pt_" + kins[0] + "_" + kins[2]
+        hist.Filename = "eta_" + kins[3] + "_" + kins[5]
         hist.SaveFigure()
 
-
 def TopEfficiency(ana):
-    if not isinstance(ana, str):
-        ChildrenRegions(ana)
-        TruthJetsRegions(ana)
-        JetsRegions(ana)
-        return
-
-
     p = Path(ana)
     files = [str(x) for x in p.glob("**/*.pkl") if str(x).endswith(".pkl")]
     files = list(set(files))
@@ -152,7 +95,7 @@ def TopEfficiency(ana):
     for i in range(len(files)):
         pr = pickle.load(open(files[i], "rb"))
         print(files[i], (i+1) / len(files))
-        stacks = TopMassComparison(stacks, pr)
-        stacks_t = TopMatrix(stacks_t, pr)
-    TopMassComparison(stacks)
-    TopMatrix(stacks_t)
+        #stacks = TopMassComparison(stacks, pr)
+        #stacks_t = TopMatrix(stacks_t, pr)
+    #TopMassComparison(stacks)
+    #TopMatrix(stacks_t)

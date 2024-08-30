@@ -35,6 +35,8 @@ void execution(model_template* md, std::vector<graph_t*>* data, std::string outp
 
         std::map<std::string, torch::Tensor*> addhoc;
         addhoc["edge_index"] = (*data)[x] -> get_edge_index(md);
+        addhoc["event_weight"] = (*data)[x] -> get_event_weight(md); 
+
         index = add_content(&addhoc, content, index, t);
         index = add_content(&md -> m_p_undef, content, index, t); 
 
@@ -72,11 +74,11 @@ void analysis::build_inference(){
     std::thread* thr_ = new std::thread(this -> progressbar1, &th_prg, len, "Model Inference Progress"); 
 
     this -> info("------------- Cloning Models -------------"); 
-    its = dl -> begin(); 
     std::map<std::string, model_template*>::iterator itm; 
-
     std::map<std::string, bool> mute; 
     std::map<std::string, bool> device_tr; 
+
+    its = dl -> begin(); 
     for (size_t x(0); x < th_models.size(); ++x){
         int mdx = x%modls; 
         if (!mdx){itm = this -> model_inference.begin();}
@@ -107,8 +109,6 @@ void analysis::build_inference(){
         }
 
         std::string fname = this -> m_settings.output_path + "/" + itm -> first + "/"; 
-        //meta* mt = this -> tracer -> get_meta_data(its -> first); 
-        //if (mt){fname += mt -> meta_data.DatasetName + "/";}
         std::vector<std::string> fnames = tools().split(its -> first, "/");
         fname += fnames[fnames.size()-2] + "/";
         this -> create_path(fname);
@@ -134,7 +134,8 @@ void analysis::build_inference(){
 
         // --- add additional content
         std::map<std::string, torch::Tensor*> addhoc; 
-        addhoc["edge_index"] = its -> second[0] -> get_edge_index(md);
+        addhoc["edge_index"]   = its -> second[0] -> get_edge_index(md);
+        addhoc["event_weight"] = its -> second[0] -> get_event_weight(md); 
         index = add_content(&addhoc, content, index); 
         index = add_content(&md -> m_p_undef, content, index); 
 

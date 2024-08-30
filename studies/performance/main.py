@@ -1,13 +1,21 @@
 from AnalysisG.generators import Analysis
+import pickle
 
+# model implementations
 from AnalysisG.models import *
 model_method = {"RecursiveGraphNeuralNetwork" : RecursiveGraphNeuralNetwork, "Experimental" : Experimental}
 
-# event implementation
+# selection studies
+from AnalysisG.selections.performance.topefficiency.topefficiency import TopEfficiency
+selection_method = {"TopEfficiency" : TopEfficiency}
+selection_container = {}
+
+# event implementations
 from AnalysisG.events.gnn import EventGNN
 from AnalysisG.events.bsm_4tops import BSM4Tops
 event_method = {"BSM4Tops" : BSM4Tops, "EventGNN" : EventGNN}
 
+# graph implementations
 from AnalysisG.graphs.bsm_4tops import *
 graph_method = {
         "GraphTruthJets"     : GraphTruthJets,
@@ -22,42 +30,54 @@ graph_method = {
 import topefficiency
 plotting_method = {"topefficiency" : topefficiency}
 
-# study
-from AnalysisG.selections.performance.topefficiency.topefficiency import TopEfficiency
-import pickle
-
-
-mass = "None"
 study = "topefficiency"
 figure_path = "./Output/"
-
-graph_name = "GraphTruthJets"
-event_name = "BSM4Tops"
-model_name = "Experimental"
+graph_name = "GraphJets"
+inference_mode = True
 
 root_model = "/CERN/trainings/results/models/"
+data_path  = "/CERN/trainings/mc16-full/"
 
-model_states = {
-        "MRK-1" : {
-            "epoch-1" : (["kfold-10"], ["cuda:0"])
-        }
-}
+model_states = {}
+if inference_mode:
+    model_states |= {
+            "MRK-1" : {"epoch-74" : (["kfold-5"], ["cuda:0"])}
+    }
 
 sample_path = {
-        "single-top" : "/CERN/trainings/mc16-full/sorted-data/singletop/*"
+        #"single-top" : data_path + "sorted-data/singletop/*",
+        #"ttbar"      : data_path + "sorted-data/ttbar/mc16_13TeV.412070.aMcAtNloPy8EG_A14_ttbar_hdamp258p75_dil_BFiltBBVeto.deriv.DAOD_TOPQ1.e7129_a875_r9364_p4514/DAOD_TOPQ1.40945514._000006.root"
+        #"single-top" : "ProjectName/ROOT/GraphTruthJets_Experimental/MRK-1/epoch-1/*"
+        "ttbar" : "ProjectName/ROOT/GraphJets_Experimental/MRK-1/epoch-74/*"
 }
 
-ana = Analysis()
-#ana.GraphCache = "ProjectName"
-ana.FetchMeta = True
+event_name     = "BSM4Tops"      if inference_mode     else "EventGNN"
+graph_name     = graph_name      if inference_mode     else ""
+model_name     = "Experimental"  if inference_mode     else ""
+selection_name = "TopEfficiency" if not inference_mode else ""
 
+ana = Analysis()
+ana.Threads = 1
+ana.GraphCache = "ProjectName"
+
+if len(model_states): ana.FetchMeta = True
 for j in sample_path:
     try: ana.AddSamples(sample_path[j], j)
-    except KeyError: continue
-    ana.AddEvent(event_method[event_name](), j)
-    #except KeyError: continue
-    ana.AddGraph(graph_method[graph_name](), j)
-    #except KeyError: continue
+    except KeyError: pass
+
+    try: ana.AddEvent(event_method[event_name](), j)
+    except KeyError: pass
+    except NameError: pass
+
+    try: ana.AddGraph(graph_method[graph_name](), j)
+    except KeyError: pass
+    except NameError: pass
+
+try:
+    selection_container[selection_name] = selection_method[selection_name]()
+    ana.AddSelection(selection_container[selection_name])
+except KeyError: pass
+except NameError: pass
 
 for j in model_states:
     for ep in model_states[j]:
@@ -70,43 +90,15 @@ for j in model_states:
             gnn.i_node = ["pt", "eta", "phi", "energy"]
             gnn.device = dev[i]
             gnn.checkpoint_path = mdl + kf[i] + "_model.pt"
-            ana.AddModelInference(gnn, "ROOT/" + graph_name + "_" + model_name + "/" + j + "/" + ep)
+            ana.AddModelInference(gnn, "ROOT/" + graph_name + "_" + model_name + "/" + j + "/" + ep + "/" + kf[i])
 ana.Start()
 
+for j in selection_container:
+    f = open("./serialized-data/" + j +".pkl", "wb")
+    pickle.dump(selection_container[j], f)
+    f.close()
 
 
-
-
-
-#method = plotting_method[study]
-#method.figures.figure_path = figure_path
-#method.figures.mass_point  = "Mass." + mass + ".GeV"
-
-
-#for f in files:
-#    pth = f.split("/")[-2]
-#    Path("./serialized-data/").mkdir(parents = True, exist_ok = True)
-#    if not gen_data: continue
-#    ev = EventGNN() if model_ev else BSM4Tops()
-#
-#    sel = None
-#    if study == "topefficiency": sel = TopEfficiency()
-#
-#    ana = Analysis()
-#    ana.AddSamples(f, "tmp")
-#    ana.AddEvent(ev, "tmp")
-#    ana.AddSelection(sel)
-#    ana.Threads = 10
-#    ana.Start()
-#
-#    f = open("./serialized-data/" + pth + ".pkl", "wb")
-#    pickle.dump(sel, f)
-#    f.close()
-#
-##f = open(study + "-" + mass_point + ".pkl", "rb")
-##pres = pickle.load(f)
-##f.close()
-#
-#pres = "./serialized-data/"
-#print("plotting: " + study)
-#if study == "topefficiency": method.figures.TopEfficiency(pres)
+method = plotting_method[study]
+method.figures.figure_path = figure_path
+if study == "topefficiency": method.figures.TopEfficiency("./serialized-data/")

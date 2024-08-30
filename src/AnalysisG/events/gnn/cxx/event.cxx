@@ -2,12 +2,18 @@
 
 gnn_event::gnn_event(){
     this -> name = "gnn_event"; 
-    this -> add_leaf("signal"  , "is_res_score"); 
-    this -> add_leaf("ntops"   , "ntops_score"); 
-    this -> add_leaf("res_edge", "res_edge_score"); 
-    this -> add_leaf("top_edge", "top_edge_score"); 
-    this -> add_leaf("edge_index", "edge_index"); 
+    // ------ observables ------- //
+    this -> add_leaf("signal"    , "is_res_score"); 
+    this -> add_leaf("ntops"     , "ntops_score"); 
+    this -> add_leaf("res_edge"  , "res_edge_score"); 
+    this -> add_leaf("top_edge"  , "top_edge_score"); 
+    this -> add_leaf("edge_index", "edge_index");
+    this -> add_leaf("num_jets"  , "num_jets");  
+    this -> add_leaf("num_bjets" , "num_bjets");  
+    this -> add_leaf("num_leps"  , "num_leps");  
+    this -> add_leaf("weight"    , "event_weight");
 
+    // ------ truth features ------ //
     this -> add_leaf("truth_ntops"   , "truth_ntops"   ); 
     this -> add_leaf("truth_signal"  , "truth_signal"  ); 
     this -> add_leaf("truth_res_edge", "truth_res_edge"); 
@@ -15,81 +21,151 @@ gnn_event::gnn_event(){
 
     this -> trees = {"nominal"}; 
     this -> register_particle(&this -> m_event_particles);
-    this -> register_particle(&this -> m_reco_tops);
-    this -> register_particle(&this -> m_truth_tops);
 }
 
 gnn_event::~gnn_event(){
-    for (size_t x(0); x < this -> reco_zprime.size(); ++x){delete this -> reco_zprime[x];}
-    for (size_t x(0); x < this -> truth_zprime.size(); ++x){delete this -> truth_zprime[x];}
+    this -> deregister_particle(&this -> m_r_zprime); 
+    this -> deregister_particle(&this -> m_t_zprime); 
+    this -> deregister_particle(&this -> m_r_tops);
+    this -> deregister_particle(&this -> m_t_tops); 
 }
 
 event_template* gnn_event::clone(){return (event_template*)new gnn_event();}
 
 void gnn_event::build(element_t* el){
-    el -> get("ntops"     , &this -> pred_ntops_score); 
-    el -> get("signal"    , &this -> pred_signal_score); 
-    el -> get("res_edge"  , &this -> pred_res_edge_score); 
-    el -> get("top_edge"  , &this -> pred_top_edge_score); 
-    el -> get("edge_index", &this -> m_edge_index); 
+    el -> get("ntops"     , &this -> ntops_scores); 
+    el -> get("signal"    , &this -> signal_scores); 
+    el -> get("res_edge"  , &this -> edge_res_scores); 
+    el -> get("top_edge"  , &this -> edge_top_scores); 
+    el -> get("edge_index", &this -> m_edge_index);
+
+    std::vector<double> t_; 
+    el -> get("num_jets", &t_); 
+    this -> num_jets = t_[0]; 
+
+    el -> get("num_leps", &t_); 
+    this -> num_leps = t_[0]; 
+
+    el -> get("weight", &t_);  
+    this -> weight = t_[0]; 
+
+    std::vector<long> x_; 
+    el -> get("num_bjets", &x_);
+    this -> num_bjets = x_[0]; 
 
     // truth features used to create ROC curves
-    el -> get("truth_ntops"   , &this -> truth_ntops); 
-    el -> get("truth_signal"  , &this -> truth_signal); 
-    el -> get("truth_res_edge", &this -> truth_res_edge); 
-    el -> get("truth_top_edge", &this -> truth_top_edge); 
+    std::vector<int> i_;
+    el -> get("truth_ntops", &i_); 
+    this -> t_ntops = i_[0]; 
+
+    std::vector<bool> b_; 
+    el -> get("truth_signal", &b_); 
+    this -> t_signal = b_[0]; 
+
+    el -> get("truth_res_edge", &this -> t_edge_res); 
+    el -> get("truth_top_edge", &this -> t_edge_top); 
 }
 
 void gnn_event::CompileEvent(){
-    std::map<int, particle_gnn*>    particle = this -> sort_by_index(&this -> m_event_particles);
-    std::map<int, top_gnn*>   top_candidates = this -> sort_by_index(&this -> m_reco_tops);
-    std::map<int, top_truth*>      top_truth = this -> sort_by_index(&this -> m_truth_tops);
 
-    this -> is_signal    = this -> pred_signal_score[0] < this -> pred_signal_score[1];  
-    this -> signal_score = this -> pred_signal_score[1]; 
+    auto cluster = [this](std::map<int, std::map<std::string, particle_gnn*>>* clust, std::map<std::string, std::vector<particle_gnn*>>* out){
+        std::map<int, std::map<std::string, particle_gnn*>>::iterator itr = clust -> begin(); 
+        for (; itr != clust -> end(); ++itr){
+            if (itr -> second.size() <= 1){continue;}
+            std::string hsh = ""; 
+            std::map<std::string, particle_gnn*>::iterator ix = itr -> second.begin();
+            for (; ix != itr -> second.end(); ++ix){ hsh = tools().hash(hsh + std::string(ix -> second -> hash)); }
+            if (out -> count(hsh)){continue;}
+            this -> vectorize(&itr -> second, &(*out)[hsh]); 
+        }
+    }; 
 
-    std::vector<bool> res_edge, truth_res_edge_; 
-    for (size_t x(0); x < this -> pred_res_edge_score.size(); ++x){
-        res_edge.push_back(this -> pred_res_edge_score[x][1] > 0.5); 
-        truth_res_edge_.push_back(this -> truth_res_edge[x] > 0); 
-    }
- 
-    this -> ntops_score = this -> max(&this -> pred_ntops_score); 
+
+    std::map<int, particle_gnn*> particle = this -> sort_by_index(&this -> m_event_particles);
+
+    this -> p_signal = this -> signal_scores[0] < this -> signal_scores[1];  
+    this -> s_signal = this -> signal_scores[1]; 
+    this -> s_ntops  = this -> max(&this -> ntops_scores); 
+
     for (size_t x(0); x < 5; ++x){
-        if (this -> pred_ntops_score[x] != this -> ntops_score){continue;}
-        this -> ntops = int(x);
+        if (this -> s_ntops != this -> ntops_scores[x]){continue;}
+        this -> p_ntops = int(x);
         break; 
     }
+  
+    std::map<int, std::map<std::string, particle_gnn*>> real_tops; 
+    std::map<int, std::map<std::string, particle_gnn*>> real_zprime; 
+
+    std::map<int, std::map<std::string, particle_gnn*>> reco_tops; 
+    std::map<int, std::map<std::string, particle_gnn*>> reco_zprime; 
 
     std::vector<int> src = this -> m_edge_index[0]; 
     std::vector<int> dst = this -> m_edge_index[1]; 
+    for (size_t x(0); x < src.size(); ++x){
+        int top_ij = (this -> edge_top_scores[x][0] < this -> edge_top_scores[x][1]); 
+        int res_ij = (this -> edge_res_scores[x][0] < this -> edge_res_scores[x][1]); 
 
-    std::vector<particle_template*> res_tops = {}; 
-    std::vector<particle_template*> real_res_tops = {}; 
-    for (int i(0); i < src.size(); ++i){
-        if (!res_edge[i]){continue;}
-        res_tops.push_back(top_candidates[src[i]]); 
-        res_tops.push_back(top_candidates[dst[i]]); 
-
-        if (!truth_res_edge_[i]){continue;}
-        real_res_tops.push_back(top_truth[src[i]]); 
-        real_res_tops.push_back(top_truth[dst[i]]); 
+        std::string hx = particle[dst[x]] -> hash; 
+        if (top_ij){reco_tops[src[x]][hx]   = particle[dst[x]];}
+        if (res_ij){reco_zprime[src[x]][hx] = particle[dst[x]];}
+        
+        if (this -> t_edge_top[x]){real_tops[src[x]][hx]   = particle[dst[x]];}
+        if (this -> t_edge_res[x]){real_zprime[src[x]][hx] = particle[dst[x]];}
     }
 
-    if (res_tops.size()){
-        zprime* res = nullptr; 
-        this -> sum(&res_tops, &res); 
-        this -> reco_zprime.push_back(res); 
+    std::map<std::string, std::vector<particle_gnn*>>::iterator it;
+
+    // ---- truth --- //
+    std::map<std::string, std::vector<particle_gnn*>> c_real_zprime;
+    cluster(&real_zprime, &c_real_zprime); 
+    for (it = c_real_zprime.begin(); it != c_real_zprime.end(); ++it){
+        zprime* t = nullptr;
+        this -> sum(&it -> second, &t);  
+        t -> is_truth = true; 
+        this -> m_t_zprime[t -> hash] = t; 
     }
 
-    if (real_res_tops.size()){
-        zprime* res = nullptr; 
-        this -> sum(&real_res_tops, &res); 
-        this -> truth_zprime.push_back(res); 
+    std::map<std::string, std::vector<particle_gnn*>> c_real_tops;
+    cluster(&real_tops  , &c_real_tops); 
+    for (it = c_real_tops.begin(); it != c_real_tops.end(); ++it){
+        top* t = nullptr;
+        this -> sum(&it -> second, &t);  
+        t -> is_truth = true; 
+        this -> m_t_tops[t -> hash] = t; 
+
+        std::map<std::string, particle_template*> ch = t -> children; 
+        std::map<std::string, particle_template*>::iterator itc = ch.begin(); 
+        for (; itc != ch.end(); ++itc){t -> is_lep += ((particle_gnn*)itc -> second) -> is_lep;}
+    }
+    
+    // ---- reco ---- //
+    std::map<std::string, std::vector<particle_gnn*>> c_reco_tops;
+    cluster(&reco_tops  , &c_reco_tops); 
+    for (it = c_reco_tops.begin(); it != c_reco_tops.end(); ++it){
+        top* t = nullptr;
+        this -> sum(&it -> second, &t);  
+        this -> m_r_tops[t -> hash] = t; 
+
+        std::map<std::string, particle_template*> ch = t -> children; 
+        std::map<std::string, particle_template*>::iterator itc = ch.begin(); 
+        for (; itc != ch.end(); ++itc){t -> is_lep += ((particle_gnn*)itc -> second) -> is_lep;}
     }
  
-    this -> vectorize(&particle      , &this -> event_particles); 
-    this -> vectorize(&top_truth     , &this -> truth_tops); 
-    this -> vectorize(&top_candidates, &this -> reco_tops); 
+    std::map<std::string, std::vector<particle_gnn*>> c_reco_zprime;
+    cluster(&reco_zprime, &c_reco_zprime); 
+    for (it = c_reco_zprime.begin(); it != c_reco_zprime.end(); ++it){
+        zprime* t = nullptr;
+        this -> sum(&it -> second, &t);  
+        this -> m_r_zprime[t -> hash] = t; 
+    }
+
+    // ----- vectorize the output particles ------ //
+    this -> vectorize(&this -> m_r_zprime, &this -> r_zprime); 
+    this -> vectorize(&this -> m_t_zprime, &this -> t_zprime); 
+
+    this -> vectorize(&this -> m_r_tops, &this -> r_tops); 
+    this -> vectorize(&this -> m_t_tops, &this -> t_tops); 
+    this -> vectorize(&this -> m_event_particles, &this -> event_particles); 
+
     this -> m_edge_index = {}; 
 }

@@ -55,14 +55,20 @@ void graph_t::_purge_all(){
     this -> _purge_data(&this -> dev_truth_node); 
     this -> _purge_data(&this -> dev_truth_edge); 
 
-    std::map<int, torch::Tensor*>::iterator itr = this -> dev_edge_index.begin();
-    for (; itr != this -> dev_edge_index.end(); ++itr){delete itr -> second;}
-    this -> dev_edge_index.clear(); 
+    this -> _purge_data(&this -> dev_edge_index); 
+    this -> _purge_data(&this -> dev_event_weight); 
+
     if (this -> graph_name){delete this -> graph_name;}
 
     if (!this -> is_owner){return;}
     delete this -> hash; 
     delete this -> filename; 
+}
+
+void graph_t::_purge_data(std::map<int, torch::Tensor*>* data){
+    std::map<int, torch::Tensor*>::iterator itr = data -> begin();
+    for (; itr != data -> end(); ++itr){delete itr -> second;}
+    data -> clear(); 
 }
 
 void graph_t::_purge_data(std::vector<torch::Tensor*>* data){
@@ -97,6 +103,9 @@ void graph_t::transfer_to_device(torch::TensorOptions* dev){
     this -> _transfer_to_device(&this -> dev_truth_graph[dev_], this -> truth_graph, dev); 
     this -> _transfer_to_device(&this -> dev_truth_node[dev_] , this -> truth_node , dev); 
     this -> _transfer_to_device(&this -> dev_truth_edge[dev_] , this -> truth_edge , dev); 
+
+    torch::Tensor dt = torch::from_blob(&this -> event_weight, {1}, torch::TensorOptions(torch::kCPU).dtype(torch::kDouble));
+    this -> dev_event_weight[dev_] = new torch::Tensor(dt.clone().to(dev -> device())); 
     this -> dev_edge_index[dev_] = new torch::Tensor(this -> edge_index -> to(dev -> device())); 
 
     this -> device_index[dev_] = true; 
@@ -104,14 +113,10 @@ void graph_t::transfer_to_device(torch::TensorOptions* dev){
 }
 
 void graph_t::_transfer_to_device(std::vector<torch::Tensor*>** trgt, std::vector<torch::Tensor*>* src, torch::TensorOptions* dev){
-    if (!src){return;}
-    if (!(*trgt)){*trgt = new std::vector<torch::Tensor*>(src -> size(), nullptr);}
-    else {return;}
-    for (size_t x(0); x < src -> size(); ++x){
-        torch::Tensor* ten = (*src)[x]; 
-        torch::Tensor* ten_cu = new torch::Tensor(ten -> to(dev -> device())); 
-        (**trgt)[x] = ten_cu; 
-    }
+    if (!src || (*trgt)){return;}
+
+    *trgt = new std::vector<torch::Tensor*>(src -> size(), nullptr);
+    for (size_t x(0); x < src -> size(); ++x){(**trgt)[x] = new torch::Tensor((*src)[x] -> to(dev -> device()));}
 }
 
 void graph_t::meta_serialize(std::map<std::string, int>* data, std::string* out){
@@ -142,10 +147,12 @@ void graph_t::meta_serialize(torch::Tensor* data, std::string* out){
 }
 
 void graph_t::serialize(graph_hdf5* m_hdf5){
-    m_hdf5 -> hash        = this -> hash -> c_str();
-    m_hdf5 -> filename    = this -> filename -> c_str();
-    m_hdf5 -> num_nodes   = this -> num_nodes;
-    m_hdf5 -> event_index = this -> event_index;
+    m_hdf5 -> hash         = this -> hash -> c_str();
+    m_hdf5 -> filename     = this -> filename -> c_str();
+    m_hdf5 -> num_nodes    = this -> num_nodes;
+    m_hdf5 -> event_index  = this -> event_index;
+    m_hdf5 -> event_weight = this -> event_weight; 
+
     this -> meta_serialize(this -> edge_index, &m_hdf5 -> edge_index); 
 
     this -> meta_serialize(this -> data_map_graph , &m_hdf5 -> data_map_graph );
@@ -198,10 +205,11 @@ torch::Tensor* graph_t::meta_deserialize(std::string* out){
 }
 
 void graph_t::deserialize(graph_hdf5* m_hdf5){
-    this -> hash        = new std::string(m_hdf5 -> hash);
-    this -> filename    = new std::string(m_hdf5 -> filename);
-    this -> num_nodes   = m_hdf5 -> num_nodes;
-    this -> event_index = m_hdf5 -> event_index;
+    this -> hash         = new std::string(m_hdf5 -> hash);
+    this -> filename     = new std::string(m_hdf5 -> filename);
+    this -> num_nodes    = m_hdf5 -> num_nodes;
+    this -> event_index  = m_hdf5 -> event_index;
+    this -> event_weight = m_hdf5 -> event_weight;
 
     this -> data_map_graph  = new std::map<std::string, int>();  
     this -> data_map_node   = new std::map<std::string, int>();       
@@ -210,7 +218,6 @@ void graph_t::deserialize(graph_hdf5* m_hdf5){
     this -> meta_deserialize(this -> data_map_graph , &m_hdf5 -> data_map_graph );   
     this -> meta_deserialize(this -> data_map_node  , &m_hdf5 -> data_map_node  );   
     this -> meta_deserialize(this -> data_map_edge  , &m_hdf5 -> data_map_edge  );   
-
 
     this -> truth_map_graph = new std::map<std::string, int>();  
     this -> truth_map_node  = new std::map<std::string, int>();       

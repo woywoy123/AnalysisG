@@ -20,6 +20,8 @@ bool dataloader::dump_graphs(std::string path, int threads){
             graph_hdf5_w* grw      = &std::get<0>((*data_c)[t]); 
             grw -> num_nodes       = data -> num_nodes; 
             grw -> event_index     = data -> event_index;
+            grw -> event_weight    = data -> event_weight; 
+
             grw -> hash            = const_cast<char*>(data -> hash.data());          
             grw -> filename        = const_cast<char*>(data -> filename.data());      
             grw -> edge_index      = const_cast<char*>(data -> edge_index.data());    
@@ -162,9 +164,11 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
             graph_hdf5_w datar; 
             ior -> read(&datar, (*gr_ev)[p]); 
 
-            graph_hdf5 w         = graph_hdf5(); 
+            graph_hdf5 w      = graph_hdf5(); 
             w.num_nodes       = datar.num_nodes; 
             w.event_index     = datar.event_index;
+            w.event_weight    = datar.event_weight; 
+
             w.hash            = std::string(datar.hash);          
             w.filename        = std::string(datar.filename);      
             w.edge_index      = std::string(datar.edge_index);    

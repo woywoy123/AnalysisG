@@ -1,8 +1,8 @@
 #ifndef EVENTS_GNN_EVENT_H
 #define EVENTS_GNN_EVENT_H
 
-#include <inference/gnn-particles.h>
 #include <templates/event_template.h>
+#include <inference/gnn-particles.h>
 
 class gnn_event: public event_template
 {
@@ -10,42 +10,50 @@ class gnn_event: public event_template
         gnn_event(); 
         ~gnn_event() override; 
 
-        bool is_signal = false; 
-        float signal_score = 0; 
+        // ------- observables ------- //
+        long  num_bjets = 0; 
+        double num_jets = 0; 
+        double num_leps = 0;  
 
-        int ntops = 0; 
-        float ntops_score = 0; 
+        // ------- MVA predictions ------ //
+        int   p_ntops  = 0; 
+        int   p_signal = 0; 
+        float s_ntops  = 0; 
+        float s_signal = 0; 
 
-        std::vector<float> pred_ntops_score  = {}; 
-        std::vector<float> pred_signal_score = {}; 
+        std::vector<float> ntops_scores  = {}; 
+        std::vector<float> signal_scores = {}; 
 
-        std::vector<std::vector<float>> pred_res_edge_score = {}; 
-        std::vector<std::vector<float>> pred_top_edge_score = {}; 
+        std::vector<std::vector<float>> edge_res_scores = {}; 
+        std::vector<std::vector<float>> edge_top_scores = {}; 
 
         // -------- reconstructed particles -------------- //
-        std::vector<particle_template*> reco_tops   = {}; 
-        std::vector<particle_template*> reco_zprime = {};
-        std::vector<particle_template*> event_particles = {}; 
+        std::vector<top*>    r_tops   = {}; 
+        std::vector<zprime*> r_zprime = {};
+        std::vector<particle_gnn*> event_particles = {}; 
 
         // -------- truth particles ------- //
-        std::vector<particle_template*> truth_tops   = {}; 
-        std::vector<particle_template*> truth_zprime = {}; 
+        std::vector<top*> t_tops   = {}; 
+        std::vector<zprime*> t_zprime = {}; 
 
-        std::vector<int> truth_res_edge = {}; 
-        std::vector<int> truth_top_edge = {}; 
-        std::vector<int> truth_ntops    = {};
-        std::vector<bool> truth_signal  = {}; 
+        std::vector<int> t_edge_res = {}; 
+        std::vector<int> t_edge_top = {}; 
+
+        int t_ntops  = 0; 
+        int t_signal = 0; 
 
         event_template* clone() override; 
         void build(element_t* el) override; 
         void CompileEvent() override; 
 
     private: 
+        std::vector<std::vector<int>>        m_edge_index = {}; 
         std::map<std::string, particle_gnn*> m_event_particles = {}; 
-        std::map<std::string, top_gnn*>      m_reco_tops = {}; 
-        std::map<std::string, top_truth*>    m_truth_tops = {};
 
-        std::vector<std::vector<int>>   m_edge_index = {}; 
+        std::map<std::string, zprime*>  m_r_zprime = {}; 
+        std::map<std::string, zprime*>  m_t_zprime = {}; 
+        std::map<std::string, top*>     m_r_tops = {}; 
+        std::map<std::string, top*>     m_t_tops = {}; 
 
         template <typename G>
         std::map<int, G*> sort_by_index(std::map<std::string, G*>* ipt){
@@ -69,6 +77,7 @@ class gnn_event: public event_template
                 if (maps[ch -> at(x) -> hash]){continue;}
                 maps[ch -> at(x) -> hash] = true;
                 (*out) -> iadd(ch -> at(x));
+                (*out) -> register_child(ch -> at(x)); 
             }
         }
 }; 

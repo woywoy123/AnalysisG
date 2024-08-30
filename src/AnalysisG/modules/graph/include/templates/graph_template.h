@@ -55,6 +55,11 @@ struct graph_t {
             return this -> dev_edge_index[(int)mdl -> m_option -> device().index()]; 
         }
 
+        template <typename g>
+        torch::Tensor* get_event_weight(g* mdl){
+            return this -> dev_event_weight[(int)mdl -> m_option -> device().index()]; 
+        }
+
         void add_truth_graph(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
         void add_truth_node(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
         void add_truth_edge(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
@@ -64,10 +69,12 @@ struct graph_t {
         void transfer_to_device(torch::TensorOptions* dev); 
         void _purge_all(); 
 
-        int num_nodes = 0; 
-        long event_index = 0; 
-        std::string* hash = nullptr; 
-        std::string* filename = nullptr; 
+        int       num_nodes = 0; 
+        long    event_index = 0; 
+        double event_weight = 1; 
+
+        std::string* hash       = nullptr; 
+        std::string* filename   = nullptr; 
         std::string* graph_name = nullptr; 
 
         c10::DeviceType device = c10::kCPU;  
@@ -103,7 +110,8 @@ struct graph_t {
         std::map<int, std::vector<torch::Tensor*>*> dev_truth_node  = {}; 
         std::map<int, std::vector<torch::Tensor*>*> dev_truth_edge  = {};
 
-        std::map<int, torch::Tensor*> dev_edge_index = {}; 
+        std::map<int, torch::Tensor*> dev_edge_index   = {}; 
+        std::map<int, torch::Tensor*> dev_event_weight = {}; 
         std::map<int, bool> device_index = {}; 
 
         void meta_serialize(std::map<std::string, int>* data, std::string* out); 
@@ -117,6 +125,7 @@ struct graph_t {
         void deserialize(graph_hdf5* m_hdf5);
 
         void _purge_data(std::vector<torch::Tensor*>* data); 
+        void _purge_data(std::map<int, torch::Tensor*>* data); 
         void _purge_data(std::map<int, std::vector<torch::Tensor*>*>* data); 
         std::vector<torch::Tensor*>* add_content(std::map<std::string, torch::Tensor*>* inpt); 
 
@@ -207,6 +216,7 @@ class graph_template: public tools
         void static get_hash(std::string*, graph_template*); 
 
         void static get_index(long*, graph_template*); 
+        void static get_weight(double*, graph_template*); 
         void static get_tree(std::string*, graph_template*); 
 
         void static build_export(
@@ -231,7 +241,6 @@ class graph_template: public tools
         event_template* m_event = nullptr; 
 
     public:
-
         graph_t* data_export(); 
 
         event_t data; 
@@ -248,7 +257,9 @@ class graph_template: public tools
         virtual void CompileEvent(); 
 
         bool operator == (graph_template& p); 
+
         cproperty<long, graph_template> index; 
+        cproperty<double, graph_template> weight; 
         cproperty<std::string, graph_template> hash; 
         cproperty<std::string, graph_template> tree;  
         cproperty<std::string, graph_template> name; 

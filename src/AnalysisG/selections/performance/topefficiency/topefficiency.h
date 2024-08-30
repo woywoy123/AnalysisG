@@ -1,9 +1,8 @@
 #ifndef TOPEFFICIENCY_H
 #define TOPEFFICIENCY_H
 
-#include <bsm_4tops/event.h>
-#include <inference/gnn-event.h>
 #include <templates/selection_template.h>
+#include <inference/gnn-event.h>
 
 class topefficiency: public selection_template
 {
@@ -15,10 +14,6 @@ class topefficiency: public selection_template
         bool selection(event_template* ev) override; 
         bool strategy(event_template* ev) override;
         void merge(selection_template* sl) override;
-
-        void build_phasespace(bsm_4tops* ev);
-        void build_phasespace(gnn_event* ev);
-
 
         double pt_start  = 0; 
         double eta_start = -6; 
@@ -33,21 +28,13 @@ class topefficiency: public selection_template
 
         std::string region(double pt, double eta); 
 
-        std::map<std::string, std::vector<float>> truthchildren_pt_eta_topmass = {};  
-        std::map<std::string, std::vector<float>> truthjets_pt_eta_topmass = {};  
-        std::map<std::string, std::vector<float>> jets_pt_eta_topmass = {};  
-
         std::map<std::string, std::vector<float>> predicted_topmass = {}; 
-        std::map<std::string, std::vector<float>> predicted_topmass_reject = {}; 
+        std::map<std::string, std::vector<float>> predicted_zprime_mass = {}; 
+        std::map<std::string, std::vector<int>>   n_tops_predictions = {}; 
 
         std::map<std::string, std::vector<float>> truth_topmass = {}; 
-        std::map<std::string, std::vector<float>> truth_topmass_reject = {}; 
-
-        std::map<std::string, std::vector<float>> predicted_zprime_mass = {}; 
         std::map<std::string, std::vector<float>> truth_zprime_mass = {}; 
-
-        std::map<std::string, std::vector<int>> n_tops_predictions = {}; 
-        std::map<std::string, std::vector<int>> n_tops_real = {}; 
+        std::map<std::string, std::vector<int>>   n_tops_real = {}; 
 
         // ROC curve variables
         std::vector<int> truth_res_edge = {}; 

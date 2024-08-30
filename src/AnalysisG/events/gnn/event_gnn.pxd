@@ -7,7 +7,6 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 
 from AnalysisG.events.gnn.particle_gnn cimport *
-from AnalysisG.core.particle_template cimport particle_template
 from AnalysisG.core.event_template cimport *
 
 cdef extern from "<inference/gnn-event.h>":

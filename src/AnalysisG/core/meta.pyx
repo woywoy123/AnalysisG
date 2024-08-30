@@ -35,8 +35,10 @@ class atlas(pyAMI.client.Client):
 
     def __init__(self):
         super(atlas, self).__init__("atlas-replica")
-        self.httpClient = httpx(self.config)
-
+        self.httpClient = None
+        try: self.httpClient = httpx(self.config)
+        except: print("Failed to Authenticate to PyAMI.")
+        self.authenticated = self.httpClient is not None
 
 cdef class ami_client:
 
@@ -118,6 +120,7 @@ cdef class ami_client:
         obj.found = True
 
     cdef void list_datasets(self, Meta obj):
+        if not self.client.authenticated: return
         cdef str dsidr = str(obj.dsid)
         cdef list ami_tags = list(set(obj.amitag.split("_")))
         cdef dict command = {"client" : self.client, "type" : self.type_, "dataset_number" : dsidr}

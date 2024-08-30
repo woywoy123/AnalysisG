@@ -9,8 +9,14 @@ from AnalysisG.core.particle_template cimport *
 
 cdef extern from "<inference/gnn-particles.h>":
 
-    cdef cppclass top_gnn(particle_template):
-        top_gnn() except+
+    cdef cppclass top(particle_template):
+        top() except+
 
-cdef class TopGNN(ParticleTemplate):
-    cdef top_gnn* prt
+    cdef cppclass zprime(particle_template):
+        zprime() except+
+
+cdef class Top(ParticleTemplate):
+    cdef top* prt
+
+cdef class ZPrime(ParticleTemplate):
+    cdef zprime* prt

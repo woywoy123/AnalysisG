@@ -281,21 +281,6 @@ void recursivegraphneuralnetwork::forward(graph_t* data){
     this -> prediction_extra("num_leps"      , num_leps.view({-1})); 
     this -> prediction_extra("num_jets"      , num_jets.view({-1})); 
     this -> prediction_extra("num_bjets"     , num_bjet.view({-1})); 
-
-    torch::Tensor top_pred = graph::cuda::edge_aggregation(edge_index, G_, pmc)["1"][1]; 
-    torch::Tensor top_pmu  = transform::cuda::PtEtaPhiE(top_pred); 
-
-    torch::Tensor zprime_pred = z_pmc.index({std::get<1>(res_edge.max({-1})) == 1}); 
-    if (zprime_pred.size({0})){zprime_pred = physics::cuda::cartesian::M(z_pmc);}
-    else {zprime_pred = zprime_pred.index({torch::indexing::Slice(), 0});}
-
-    this -> prediction_extra("top_pt" , top_pmu.index({torch::indexing::Slice(), 0}));
-    this -> prediction_extra("top_eta", top_pmu.index({torch::indexing::Slice(), 1}));
-    this -> prediction_extra("top_phi", top_pmu.index({torch::indexing::Slice(), 2}));
-    this -> prediction_extra("top_e"  , top_pmu.index({torch::indexing::Slice(), 3}));
-    this -> prediction_extra("top_pmc", top_pred); 
-    this -> prediction_extra("zprime_mass", zprime_pred);
-
     if (!this -> is_mc){return;}
 
     torch::Tensor ntops_t  = data -> get_truth_graph("ntops", this) -> view({-1}); 
@@ -303,10 +288,6 @@ void recursivegraphneuralnetwork::forward(graph_t* data){
     torch::Tensor r_edge_t = data -> get_truth_edge("res_edge", this) -> view({-1}); 
     torch::Tensor t_edge_t = data -> get_truth_edge("top_edge", this) -> view({-1}); 
 
-    torch::Tensor truth_ = torch::zeros_like(G_); 
-    for (int x(0); x < G_.size({-1}); ++x){truth_.index_put_({t_edge_t == x, x}, 1);}
-    torch::Tensor truth_top = graph::cuda::edge_aggregation(edge_index, truth_, pmc)["1"][1]; 
-    this -> prediction_extra("truth_top_pmc", truth_top); 
     this -> prediction_extra("truth_ntops", ntops_t); 
     this -> prediction_extra("truth_signal", signa_t); 
     this -> prediction_extra("truth_res_edge", r_edge_t); 

@@ -10,15 +10,8 @@ selection_template* topefficiency::clone(){
 void topefficiency::merge(selection_template* sl){
     topefficiency* slt = (topefficiency*)sl; 
 
-    merge_data(&this -> truthchildren_pt_eta_topmass, &slt -> truthchildren_pt_eta_topmass); 
-    merge_data(&this -> truthjets_pt_eta_topmass,     &slt -> truthjets_pt_eta_topmass); 
-    merge_data(&this -> jets_pt_eta_topmass,          &slt -> jets_pt_eta_topmass);
-
     merge_data(&this -> predicted_topmass,            &slt -> predicted_topmass); 
     merge_data(&this -> truth_topmass,                &slt -> truth_topmass); 
-
-    merge_data(&this -> predicted_topmass_reject,     &slt -> predicted_topmass_reject); 
-    merge_data(&this -> truth_topmass_reject,         &slt -> truth_topmass_reject); 
 
     merge_data(&this -> predicted_zprime_mass,        &slt -> predicted_zprime_mass); 
     merge_data(&this -> truth_zprime_mass,            &slt -> truth_zprime_mass); 
@@ -69,67 +62,26 @@ std::string topefficiency::region(double pt_p, double eta_p){
     return key; 
 }
 
-void topefficiency::build_phasespace(bsm_4tops* evn){
-    std::vector<particle_template*> tops = evn -> Tops; 
-    for (size_t x(0); x < tops.size(); ++x){
-        top* top_ = (top*)tops[x]; 
-        std::map<std::string, particle_template*> children_ = top_ -> children;
-        std::vector<particle_template*> children = this -> vectorize(&children_); 
-        std::vector<particle_template*> leps = {}; 
-        this -> get_leptonics(children_, &leps); 
-        
-        double top_pt  = tops[x] -> pt / 1000; 
-        double top_eta = tops[x] -> eta; 
-        
-        std::string key = this -> region(top_pt, top_eta); 
-        float top_mass_ch = this -> sum(&children); 
-      
-        std::vector<particle_template*> tj_ = {}; 
-        this -> downcast(&top_ -> TruthJets, &tj_); 
-        merge_data(&tj_, &leps); 
-        tj_ = make_unique(&tj_); 
-        float top_mass_tj = this -> sum(&tj_);
-
-        std::vector<particle_template*> jets_ = {}; 
-        this -> downcast(&top_ -> Jets, &jets_); 
-        merge_data(&jets_, &leps); 
-        jets_ = make_unique(&jets_); 
-        float top_mass_jet = this -> sum(&jets_);
-
-        this -> truthchildren_pt_eta_topmass[key].push_back(top_mass_ch); 
-        this -> truthjets_pt_eta_topmass[key].push_back(top_mass_tj); 
-        this -> jets_pt_eta_topmass[key].push_back(top_mass_jet); 
-    }
-}
-
-void topefficiency::build_phasespace(gnn_event* evn){
-    std::vector<particle_template*> reco_tops = evn -> reco_tops;  
+bool topefficiency::strategy(event_template* ev){
+    gnn_event* evn = (gnn_event*)ev; 
+    std::vector<top*> r_tops = evn -> r_tops;  
 
     std::vector<std::string> keys = {}; 
-    for (size_t x(0); x < reco_tops.size(); ++x){
-        particle_template* top_ = reco_tops[x]; 
-        std::string key = this -> region(top_ -> pt / 1000, top_ -> eta);
+    for (size_t x(0); x < r_tops.size(); ++x){
+        top* top_ = r_tops[x]; 
+        std::string key = this -> region(top_ -> pt / 1000, std::abs(top_ -> eta));
         float mass = top_ -> mass / 1000; 
-        if (mass < 30){
-            this -> predicted_topmass_reject[key].push_back(mass); 
-            continue;
-        }  
         this -> predicted_topmass[key].push_back(mass);
         if (!this -> n_tops_predictions[key].size()){this -> n_tops_predictions[key].push_back(0);}
         this -> n_tops_predictions[key][0]+=1;
         keys.push_back(key); 
     }
 
-    std::vector<particle_template*> truth_tops = evn -> truth_tops;  
+    std::vector<top*> truth_tops = evn -> t_tops;  
     for (size_t x(0); x < truth_tops.size(); ++x){
-        particle_template* top_ = truth_tops[x]; 
-        std::string key = this -> region(top_ -> pt / 1000, top_ -> eta);
+        top* top_ = truth_tops[x]; 
+        std::string key = this -> region(top_ -> pt / 1000, std::abs(top_ -> eta));
         float mass = top_ -> mass / 1000; 
-        if (mass < 30){
-            this -> truth_topmass_reject[key].push_back(mass); 
-            continue;
-        }
-
         this -> truth_topmass[key].push_back(mass);
         if (!this -> n_tops_real[key].size()){this -> n_tops_real[key].push_back(0);}
         this -> n_tops_real[key][0]+=1;
@@ -138,44 +90,34 @@ void topefficiency::build_phasespace(gnn_event* evn){
 
     for (size_t x(0); x < keys.size(); ++x){
         std::string key = keys[x]; 
-        if (!this -> n_tops_real.count(key)){
-            this -> n_tops_real[key].push_back(0);
-        }
-        if (!this -> n_tops_predictions.count(key)){
-            this -> n_tops_predictions[key].push_back(0);
-        }
+        if (!this -> n_tops_real.count(key)){this -> n_tops_real[key].push_back(0);}
+        if (!this -> n_tops_predictions.count(key)){this -> n_tops_predictions[key].push_back(0);}
     }
 
-    std::vector<particle_template*> reco_zprime = evn -> reco_zprime;  
+    std::vector<zprime*> reco_zprime = evn -> r_zprime;  
     for (size_t x(0); x < reco_zprime.size(); ++x){
-        particle_template* zp_ = reco_zprime[x]; 
-        if (zp_ -> mass / 1000 < 200){continue;}
-        std::string key = this -> region(zp_ -> pt / 1000, zp_ -> eta);
+        zprime* zp_ = reco_zprime[x]; 
+        std::string key = this -> region(zp_ -> pt / 1000, std::abs(zp_ -> eta));
         this -> predicted_zprime_mass[key].push_back(zp_ -> mass / 1000); 
     }
 
-    std::vector<particle_template*> truth_zprime = evn -> truth_zprime;  
+    std::vector<zprime*> truth_zprime = evn -> t_zprime;  
     for (size_t x(0); x < truth_zprime.size(); ++x){
-        particle_template* zp_ = truth_zprime[x];
-        if (zp_ -> mass / 1000 < 200){continue;} 
-        std::string key = this -> region(zp_ -> pt / 1000, zp_ -> eta);
+        zprime* zp_ = truth_zprime[x];
+        std::string key = this -> region(zp_ -> pt / 1000, std::abs(zp_ -> eta));
         this -> truth_zprime_mass[key].push_back(zp_ -> mass / 1000); 
     }
 
-    this -> truth_res_edge = evn -> truth_res_edge; 
-    this -> truth_top_edge = evn -> truth_top_edge; 
-    this -> truth_ntops    = evn -> truth_ntops;    
-    this -> truth_signal.insert(this -> truth_signal.end(), evn -> truth_signal.begin(), evn -> truth_signal.end());   
+    this -> truth_top_edge = evn -> t_edge_top; 
+    this -> truth_res_edge = evn -> t_edge_res; 
+    this -> truth_ntops    = {evn -> t_ntops};    
+    this -> truth_signal   = {evn -> t_signal};   
 
-    this -> pred_res_edge_score = {evn -> pred_res_edge_score}; 
-    this -> pred_top_edge_score = {evn -> pred_top_edge_score}; 
-    this -> pred_ntops_score    = {evn -> pred_ntops_score   }; 
-    this -> pred_signal_score   = {evn -> pred_signal_score  }; 
-}
-
-bool topefficiency::strategy(event_template* ev){
-    if (ev -> name == "bsm_4tops"){this -> build_phasespace((bsm_4tops*)ev);}
-    if (ev -> name == "gnn_event"){this -> build_phasespace((gnn_event*)ev);}
+    this -> pred_res_edge_score = {evn -> edge_res_scores}; 
+    this -> pred_top_edge_score = {evn -> edge_top_scores}; 
+    this -> pred_ntops_score    = {evn -> ntops_scores}; 
+    this -> pred_signal_score   = {evn -> signal_scores}; 
     return true; 
 }
+
 

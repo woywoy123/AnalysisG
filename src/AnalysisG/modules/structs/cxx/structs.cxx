@@ -18,9 +18,7 @@ bool element_t::next(){
 bool element_t::boundary(){
     long idx = -1; 
     std::map<std::string, data_t*>::iterator itr = this -> handle.begin(); 
-    for (; itr != this -> handle.end(); ++itr){
-        idx = (*itr -> second -> files_i)[itr -> second -> file_index];
-    }
+    for (; itr != this -> handle.end(); ++itr){idx = (*itr -> second -> files_i)[itr -> second -> file_index];}
     return idx > 0; 
 }
 
@@ -33,17 +31,19 @@ void data_t::flush_buffer(){
         case data_enum::vvl: this -> flush_buffer(&this -> r_vvl); return; 
         case data_enum::vvi: this -> flush_buffer(&this -> r_vvi); return; 
 
-        case data_enum::vf:  this -> flush_buffer(&this -> r_vf ); return; 
         case data_enum::vl:  this -> flush_buffer(&this -> r_vl ); return; 
+        case data_enum::vd:  this -> flush_buffer(&this -> r_vd ); return; 
+        case data_enum::vf:  this -> flush_buffer(&this -> r_vf ); return; 
         case data_enum::vi:  this -> flush_buffer(&this -> r_vi ); return; 
         case data_enum::vc:  this -> flush_buffer(&this -> r_vc ); return; 
         case data_enum::vb:  this -> flush_buffer(&this -> r_vb ); return; 
-
-        case data_enum::f:   this -> flush_buffer(&this -> r_f  ); return; 
+       
+        case data_enum::ull: this -> flush_buffer(&this -> r_ull); return; 
+        case data_enum::d:   this -> flush_buffer(&this -> r_d  ); return; 
         case data_enum::l:   this -> flush_buffer(&this -> r_l  ); return; 
+        case data_enum::f:   this -> flush_buffer(&this -> r_f  ); return; 
         case data_enum::i:   this -> flush_buffer(&this -> r_i  ); return; 
         case data_enum::b:   this -> flush_buffer(&this -> r_b  ); return; 
-        case data_enum::ull: this -> flush_buffer(&this -> r_ull); return; 
         default: return; 
     }
 }
@@ -55,17 +55,19 @@ void data_t::fetch_buffer(){
         case data_enum::vvl: return this -> fetch_buffer(&this -> r_vvl);
         case data_enum::vvi: return this -> fetch_buffer(&this -> r_vvi);
 
-        case data_enum::vf:  return this -> fetch_buffer(&this -> r_vf );
         case data_enum::vl:  return this -> fetch_buffer(&this -> r_vl );
+        case data_enum::vd:  return this -> fetch_buffer(&this -> r_vd );
+        case data_enum::vf:  return this -> fetch_buffer(&this -> r_vf );
         case data_enum::vi:  return this -> fetch_buffer(&this -> r_vi );
         case data_enum::vc:  return this -> fetch_buffer(&this -> r_vc );
         case data_enum::vb:  return this -> fetch_buffer(&this -> r_vb );
 
-        case data_enum::f:   return this -> fetch_buffer(&this -> r_f  );
+        case data_enum::ull: return this -> fetch_buffer(&this -> r_ull);
         case data_enum::l:   return this -> fetch_buffer(&this -> r_l  );
+        case data_enum::d:   return this -> fetch_buffer(&this -> r_d  );
+        case data_enum::f:   return this -> fetch_buffer(&this -> r_f  );
         case data_enum::i:   return this -> fetch_buffer(&this -> r_i  );
         case data_enum::b:   return this -> fetch_buffer(&this -> r_b  );
-        case data_enum::ull: return this -> fetch_buffer(&this -> r_ull);
         default: return; 
     }
 }
@@ -77,12 +79,14 @@ void data_t::string_type(){
     if (this -> leaf_type == "vector<vector<long> >"){  this -> type = data_enum::vvl; return;}
     if (this -> leaf_type == "vector<vector<int> >"){   this -> type = data_enum::vvi; return;}
 
-    if (this -> leaf_type == "vector<float>"){this -> type = data_enum::vf; return;}
-    if (this -> leaf_type == "vector<long>"){ this -> type = data_enum::vl; return;}
-    if (this -> leaf_type == "vector<int>"){  this -> type = data_enum::vi; return;}
-    if (this -> leaf_type == "vector<char>"){ this -> type = data_enum::vc; return;}
-    if (this -> leaf_type == "vector<bool>"){ this -> type = data_enum::vb; return;}
+    if (this -> leaf_type == "vector<float>"){ this -> type = data_enum::vf; return;}
+    if (this -> leaf_type == "vector<long>"){  this -> type = data_enum::vl; return;}
+    if (this -> leaf_type == "vector<int>"){   this -> type = data_enum::vi; return;}
+    if (this -> leaf_type == "vector<char>"){  this -> type = data_enum::vc; return;}
+    if (this -> leaf_type == "vector<bool>"){  this -> type = data_enum::vb; return;}
+    if (this -> leaf_type == "vector<double>"){this -> type = data_enum::vd; return;}
 
+    if (this -> leaf_type == "double"){   this -> type = data_enum::d; return;}
     if (this -> leaf_type == "Float_t"){  this -> type = data_enum::f; return;}
     if (this -> leaf_type == "Int_t"){    this -> type = data_enum::i; return;}
     if (this -> leaf_type == "ULong64_t"){this -> type = data_enum::ull; return;}
@@ -116,6 +120,18 @@ bool data_t::element(std::vector<std::vector<int>>* el){
     return true; 
 }
 
+bool data_t::element(std::vector<long>* el){
+    if (!this -> r_vl){return false;}
+    (*el) = (*this -> r_vl)[this -> index]; 
+    return true; 
+}
+
+bool data_t::element(std::vector<double>* el){
+    if (!this -> r_vd){return false;}
+    (*el) = (*this -> r_vd)[this -> index]; 
+    return true; 
+}
+
 bool data_t::element(std::vector<float>* el){
     if (!this -> r_vf){return false;}
     (*el) = (*this -> r_vf)[this -> index]; 
@@ -125,12 +141,6 @@ bool data_t::element(std::vector<float>* el){
 bool data_t::element(std::vector<int>* el){
     if (!this -> r_vi){return false;}
     (*el) = (*this -> r_vi)[this -> index]; 
-    return true; 
-}
-
-bool data_t::element(std::vector<long>* el){
-    if (!this -> r_vl){return false;}
-    (*el) = (*this -> r_vl)[this -> index]; 
     return true; 
 }
 
@@ -149,6 +159,12 @@ bool data_t::element(std::vector<char>* el){
 bool data_t::element(bool* el){
     if (!this -> r_b){return false;}
     (*el) = (*this -> r_b)[this -> index];
+    return true; 
+}
+
+bool data_t::element(double* el){
+    if (!this -> r_d){return false;}
+    (*el) = (*this -> r_d)[this -> index];
     return true; 
 }
 
