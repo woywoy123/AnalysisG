@@ -10,6 +10,12 @@ dataloader::dataloader(){
 }
 
 dataloader::~dataloader(){
+    if (this -> cuda_mem){
+        this -> tensor_op = nullptr; 
+        this -> cuda_mem -> join(); 
+        delete this -> cuda_mem; 
+    }
+
     for (size_t x(0); x < this -> truth_map_graph.size(); ++x){delete this -> truth_map_graph[x];}
     for (size_t x(0); x < this -> truth_map_node.size(); ++x){delete this -> truth_map_node[x];}
     for (size_t x(0); x < this -> truth_map_edge.size(); ++x){delete this -> truth_map_edge[x];}
@@ -35,9 +41,6 @@ dataloader::~dataloader(){
         delete data_ -> at(x); 
     }
     delete data_; 
-    if (!this -> cuda_mem){return;}
-    this -> cuda_mem -> join(); 
-    delete this -> cuda_mem; 
 }
 
 void dataloader::shuffle(std::vector<int>* idx){
@@ -122,6 +125,7 @@ void dataloader::cuda_memory_server(){
     bool full_purge = perc > 95; 
     for (size_t x(0); x < this -> data_set -> size(); ++x){
         std::this_thread::sleep_for(std::chrono::microseconds(10));
+        if (!this -> tensor_op){break;}
         graph_t* gr = (*this -> data_set)[x]; 
         if (gr -> in_use == 2){continue;}
         if (gr -> in_use == 1 && !full_purge){continue;}
@@ -135,6 +139,6 @@ void dataloader::cuda_memory_server(){
 
 void dataloader::start_cuda_server(){
     if (this -> cuda_mem){return;}
-    auto monitor = [this](){while (this -> data_set){this -> cuda_memory_server();}}; 
+    auto monitor = [this](){while (this -> tensor_op){this -> cuda_memory_server();}}; 
     this -> cuda_mem = new std::thread(monitor);
 }

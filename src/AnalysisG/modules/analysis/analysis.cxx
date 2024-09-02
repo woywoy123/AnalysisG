@@ -126,9 +126,23 @@ void analysis::start(){
     if (this -> selection_names.size()){return this -> tracer -> fill_selections(&this -> selection_names);} 
 
     this -> build_dataloader(false); 
+
+    std::map<std::string, std::string>::iterator itg; 
+    std::map<std::string, std::string>::iterator itc; 
     if (pth_cache.size() && this -> loader -> data_set -> size()){this -> loader -> dump_graphs(pth_cache, threads_);}
+    else if (pth_cache.size() && this -> file_labels.size()){
+        std::vector<std::string> cached = {}; 
+        for (itg = this -> graph_types.begin(); itg != this -> graph_types.end(); ++itg){
+            for (itc = this -> file_labels.begin(); itc != this -> file_labels.end(); ++itc){
+                std::vector<std::string> spl = this -> split(itc -> first, "/");
+                std::string fname = this -> hash(spl[spl.size()-1]) + "-" + spl[spl.size()-1]; 
+                this -> replace(&fname, ".root", ".h5"); 
+                cached.push_back(pth_cache + itg -> first + "/" + fname);  
+            }
+        }
+        this -> loader -> restore_graphs(cached, threads_); 
+    }
     else if (pth_cache.size()){
-        std::map<std::string, std::string>::iterator itg; 
         for (itg = this -> graph_types.begin(); itg != this -> graph_types.end(); ++itg){
             this -> loader -> restore_graphs(pth_cache + itg -> first, threads_);
         }

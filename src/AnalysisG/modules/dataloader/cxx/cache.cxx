@@ -202,6 +202,7 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
     std::vector<size_t> handles = {};
     std::vector<std::string> cache_io = {}; 
     std::map<std::string, std::vector<std::string>> data_set; 
+      
     for (size_t x(0); x < cache_.size(); ++x){
 
         std::string fname = cache_[x]; 
@@ -218,6 +219,7 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
         handles.push_back(0); 
         ior -> end(); 
         delete ior; 
+        this -> progressbar(float((x+1)) / float(cache_.size()), "Checking HDF5 size: " + fname_); 
     }
 
     std::map<std::string, graph_t*>* restored = new std::map<std::string, graph_t*>(); 
