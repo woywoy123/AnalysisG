@@ -25,16 +25,23 @@ class topefficiency: public selection_template
         double pt_step  = 100; 
 
         int iters(double start, double end, double step); 
-
         std::string region(double pt, double eta); 
+        std::string decaymode(std::vector<top*> ev_tops); 
 
-        std::map<std::string, std::vector<float>> predicted_topmass = {}; 
-        std::map<std::string, std::vector<float>> predicted_zprime_mass = {}; 
-        std::map<std::string, std::vector<int>>   n_tops_predictions = {}; 
+        std::map<std::string, std::map<std::string, std::vector<float>>> p_topmass = {}; 
+        std::map<std::string, std::map<std::string, std::vector<float>>> t_topmass = {}; 
 
-        std::map<std::string, std::vector<float>> truth_topmass = {}; 
-        std::map<std::string, std::vector<float>> truth_zprime_mass = {}; 
-        std::map<std::string, std::vector<int>>   n_tops_real = {}; 
+        std::map<std::string, std::map<std::string, std::vector<float>>> p_zmass = {}; 
+        std::map<std::string, std::map<std::string, std::vector<float>>> t_zmass = {}; 
+
+        std::map<std::string, std::map<std::string, std::vector<int>>>   p_ntops = {}; 
+        std::map<std::string, std::map<std::string, std::vector<int>>>   t_ntops = {}; 
+
+        std::map<std::string, std::map<std::string, std::map<std::string, std::vector<float>>>> p_decaymode_topmass = {}; 
+        std::map<std::string, std::map<std::string, std::map<std::string, std::vector<float>>>> t_decaymode_topmass = {}; 
+
+        std::map<std::string, std::map<std::string, std::map<std::string, std::vector<float>>>> p_decaymode_zmass = {}; 
+        std::map<std::string, std::map<std::string, std::map<std::string, std::vector<float>>>> t_decaymode_zmass = {}; 
 
         // ROC curve variables
         std::vector<int> truth_res_edge = {}; 

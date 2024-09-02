@@ -20,7 +20,7 @@ void particle_gnn::build(std::map<std::string, particle_template*>* prt, element
     el -> get("phi"   , &_phi); 
     el -> get("energy", &_energy); 
 
-    std::vector<int> _is_lep; 
+    std::vector<int> _is_lep, _is_b; 
     el -> get("lep", &_is_lep); 
     for (int x(0); x < _energy.size(); ++x){
         particle_gnn* p = new particle_gnn(); 

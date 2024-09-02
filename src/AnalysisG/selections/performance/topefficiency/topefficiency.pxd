@@ -10,17 +10,20 @@ cdef extern from "topefficiency.h":
     cdef cppclass topefficiency(selection_template):
         topefficiency() except +
 
-        map[string, vector[float]] predicted_topmass
-        map[string, vector[float]] truth_topmass
+        map[string, map[string, vector[float]]] p_topmass
+        map[string, map[string, vector[float]]] t_topmass
 
-        map[string, vector[float]] predicted_topmass_reject
-        map[string, vector[float]] truth_topmass_reject
+        map[string, map[string, vector[float]]] p_zmass
+        map[string, map[string, vector[float]]] t_zmass
 
-        map[string, vector[float]] predicted_zprime_mass
-        map[string, vector[float]] truth_zprime_mass
+        map[string, map[string, vector[int]]]   p_ntops
+        map[string, map[string, vector[int]]]   t_ntops
 
-        map[string, vector[int]] n_tops_predictions
-        map[string, vector[int]] n_tops_real
+        map[string, map[string, map[string, vector[float]]]] p_decaymode_topmass
+        map[string, map[string, map[string, vector[float]]]] t_decaymode_topmass
+
+        map[string, map[string, map[string, vector[float]]]] p_decaymode_zmass
+        map[string, map[string, map[string, vector[float]]]] t_decaymode_zmass
 
         vector[int] truth_res_edge
         vector[int] truth_top_edge
@@ -38,14 +41,20 @@ cdef extern from "topefficiency.h":
 cdef class TopEfficiency(SelectionTemplate):
     cdef topefficiency* tt
 
-    cdef public dict predicted_topmass
-    cdef public dict truth_topmass
+    cdef public dict p_topmass
+    cdef public dict t_topmass
 
-    cdef public dict  predicted_zprime_mass
-    cdef public dict  truth_zprime_mass
+    cdef public dict p_zmass
+    cdef public dict t_zmass
 
-    cdef public dict n_tops_predictions
-    cdef public dict n_tops_real
+    cdef public dict p_ntops
+    cdef public dict t_ntops
+
+    cdef public dict p_decaymode_topmass
+    cdef public dict t_decaymode_topmass
+
+    cdef public dict p_decaymode_zmass
+    cdef public dict t_decaymode_zmass
 
     cdef public list truth_res_edge
     cdef public list truth_top_edge

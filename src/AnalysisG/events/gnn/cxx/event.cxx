@@ -102,7 +102,7 @@ void gnn_event::CompileEvent(){
     std::vector<int> src = this -> m_edge_index[0]; 
     std::vector<int> dst = this -> m_edge_index[1]; 
     for (size_t x(0); x < src.size(); ++x){
-        int top_ij = (this -> edge_top_scores[x][0] < this -> edge_top_scores[x][1]); 
+        int top_ij = (0.85 < this -> edge_top_scores[x][1]); 
         int res_ij = (this -> edge_res_scores[x][0] < this -> edge_res_scores[x][1]); 
 
         std::string hx = particle[dst[x]] -> hash; 

@@ -1,6 +1,14 @@
 from AnalysisG.generators import Analysis
 from AnalysisG.core import IO
 import pickle
+import pathlib
+
+def chunks(lst, n):
+    for i in range(0, len(lst), n):
+        yield lst[i:i + n]
+
+def build_samples(pth, pattern, chnks):
+    return chunks([str(i) for i in pathlib.Path(pth).glob(pattern) if str(i).endswith(".root")], chnks)
 
 # model implementations
 from AnalysisG.models import *
@@ -35,10 +43,11 @@ figure_path = "./Output/"
 study       = "topefficiency"
 
 graph_name  = "GraphJets"
-inference_mode = True
+inference_mode = False
 
 root_model = "/import/wu1/tnom6927/TrainingOutput/training-sessions/"
-data_path  = "/scratch/tnom6927/mc16-full/"
+#data_path  = "/scratch/tnom6927/mc16-full/"
+data_path = "./ROOT/GraphJets_Experimental/MRK-1/epoch-74/kfold-5/"
 
 model_states = {}
 if inference_mode:
@@ -48,9 +57,6 @@ if inference_mode:
                 "epoch-74" : (["kfold-5"], ["cuda:0"]),
             }
     }
-
-import pathlib
-px = [str(i) for i in pathlib.Path(data_path + "sorted-data").glob("./*/*/*.root") if str(i).endswith(".root")]
 
 sample_path_ = {
         "singletop"  : data_path + "sorted-data/singletop"  + "/*",
@@ -90,21 +96,18 @@ sample_path_ = {
         "Zmumu"      : data_path + "sorted-data/Zmumu"      + "/*",
         "ZqqZll"     : data_path + "sorted-data/ZqqZll"     + "/*",
         "ZqqZvv"     : data_path + "sorted-data/ZqqZvv"     + "/*",
-#       "single-top" : "ProjectName/ROOT/GraphTruthJets_Experimental/MRK-1/epoch-1/*"
-#       "ttbar" : "ProjectName/ROOT/GraphJets_Experimental/MRK-1/epoch-74/*"
 }
+
+if not inference_mode:
+    ls = sum(list(build_samples(data_path, "./*/*.root", 10)), [])
+    sample_path = {k.split("/")[-1] : k for k in ls if "ttbar" in k}
 
 event_name     = "BSM4Tops"      if inference_mode     else "EventGNN"
 graph_name     = graph_name      if inference_mode     else ""
 model_name     = "Experimental"  if inference_mode     else ""
 selection_name = "TopEfficiency" if not inference_mode else ""
 
-def chunks(lst, n):
-    for i in range(0, len(lst), n):
-        yield lst[i:i + n]
-
-
-for k in list(chunks(px, 10)):
+for k in build_samples(data_path + "sorted-data", "./*/*/*.root", 10):
     sample_path = {}
     for l in k:
         for t in sample_path_:
@@ -126,7 +129,6 @@ for k in list(chunks(px, 10)):
     ana = Analysis()
     ana.Threads = th
     ana.GraphCache = "ProjectName"
-
     if len(model_states): ana.FetchMeta = False
     for j in sample_path:
         for p in sample_path[j]: ana.AddSamples(p, j)
@@ -138,12 +140,6 @@ for k in list(chunks(px, 10)):
         try: ana.AddGraph(graph_method[graph_name](), j)
         except KeyError: pass
         except NameError: pass
-
-    try:
-        selection_container[selection_name] = selection_method[selection_name]()
-        ana.AddSelection(selection_container[selection_name])
-    except KeyError: pass
-    except NameError: pass
 
     for j in model_states:
         for ep in model_states[j]:
@@ -159,13 +155,28 @@ for k in list(chunks(px, 10)):
                 ana.AddModelInference(gnn, "ROOT/" + graph_name + "_" + model_name + "/" + j + "/" + ep + "/" + kf[i])
     ana.Start()
     del ana
+    sample_path = {}
 
+i = 0
+for j, k in sample_path.items():
+    ana = Analysis()
+    ana.Threads = 12
+    ana.AddSamples(k, j)
+    try: ana.AddEvent(event_method[event_name](), j)
+    except KeyError: pass
+    except NameError: pass
 
-for j in selection_container:
+    try: selection_container[selection_name] = selection_method[selection_name]()
+    except KeyError: continue
+    except NameError: continue
+    ana.AddSelection(selection_container[selection_name])
+    ana.Start()
+
     f = open("./serialized-data/" + j +".pkl", "wb")
-    pickle.dump(selection_container[j], f)
+    pickle.dump(selection_container[selection_name], f)
     f.close()
-
+    print(i, len(sample_path))
+    i+=1
 
 method = plotting_method[study]
 method.figures.figure_path = figure_path

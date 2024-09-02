@@ -55,7 +55,7 @@ bool dataloader::dump_graphs(std::string path, int threads){
         }
     };
 
-
+    if (!this -> data_set -> size()){this -> warning("Nothing to do. Skipping..."); return true;}
     int x = (this -> data_set -> size()/threads); 
     std::vector<std::vector<graph_t*>> quant = this -> discretize(this -> data_set, x); 
     std::vector<std::vector<int>>  quant_idx = this -> discretize(this -> data_index, x);
