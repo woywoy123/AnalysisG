@@ -1,4 +1,5 @@
 from AnalysisG.generators import Analysis
+from AnalysisG.core import IO
 import pickle
 
 # model implementations
@@ -30,25 +31,67 @@ graph_method = {
 import topefficiency
 plotting_method = {"topefficiency" : topefficiency}
 
-study = "topefficiency"
 figure_path = "./Output/"
-graph_name = "GraphJets"
+study       = "topefficiency"
+
+graph_name  = "GraphJets"
 inference_mode = True
 
-root_model = "/CERN/trainings/results/models/"
-data_path  = "/CERN/trainings/mc16-full/"
+root_model = "/import/wu1/tnom6927/TrainingOutput/training-sessions/"
+data_path  = "/scratch/tnom6927/mc16-full/"
 
 model_states = {}
 if inference_mode:
     model_states |= {
-            "MRK-1" : {"epoch-74" : (["kfold-5"], ["cuda:0"])}
+            "MRK-1" : {
+                "epoch-1"  : (["kfold-1"], ["cuda:1"]),
+                "epoch-74" : (["kfold-5"], ["cuda:0"]),
+            }
     }
 
-sample_path = {
-        #"single-top" : data_path + "sorted-data/singletop/*",
-        #"ttbar"      : data_path + "sorted-data/ttbar/mc16_13TeV.412070.aMcAtNloPy8EG_A14_ttbar_hdamp258p75_dil_BFiltBBVeto.deriv.DAOD_TOPQ1.e7129_a875_r9364_p4514/DAOD_TOPQ1.40945514._000006.root"
-        #"single-top" : "ProjectName/ROOT/GraphTruthJets_Experimental/MRK-1/epoch-1/*"
-        "ttbar" : "ProjectName/ROOT/GraphJets_Experimental/MRK-1/epoch-74/*"
+import pathlib
+px = [str(i) for i in pathlib.Path(data_path + "sorted-data").glob("./*/*/*.root") if str(i).endswith(".root")]
+
+sample_path_ = {
+        "singletop"  : data_path + "sorted-data/singletop"  + "/*",
+        "ttH125"     : data_path + "sorted-data/ttH125"     + "/*",
+        "ttbarHT1k"  : data_path + "sorted-data/ttbarHT1k"  + "/*",
+        "SM4topsNLO" : data_path + "sorted-data/SM4topsNLO" + "/*",
+        "ttbar"      : data_path + "sorted-data/ttbar"      + "/*",
+        "ttbarHT1k5" : data_path + "sorted-data/ttbarHT1k5" + "/*",
+        "ttbarHT6c"  : data_path + "sorted-data/ttbarHT6c"  + "/*",
+        "Ztautau"    : data_path + "sorted-data/Ztautau"    + "/*",
+        "llll"       : data_path + "sorted-data/llll"       + "/*",
+        "lllv"       : data_path + "sorted-data/lllv"       + "/*",
+        "llvv"       : data_path + "sorted-data/llvv"       + "/*",
+        "lvvv"       : data_path + "sorted-data/lvvv"       + "/*",
+        "tchan"      : data_path + "sorted-data/tchan"      + "/*",
+        "tt"         : data_path + "sorted-data/tt"         + "/*",
+        "ttee"       : data_path + "sorted-data/ttee"       + "/*",
+        "ttmumu"     : data_path + "sorted-data/ttmumu"     + "/*",
+        "tttautau"   : data_path + "sorted-data/tttautau"   + "/*",
+        "ttW"        : data_path + "sorted-data/ttW"        + "/*",
+        "ttZnunu"    : data_path + "sorted-data/ttZnunu"    + "/*",
+        "ttZqq"      : data_path + "sorted-data/ttZqq"      + "/*",
+        "tW"         : data_path + "sorted-data/tW"         + "/*",
+        "tZ"         : data_path + "sorted-data/tZ"         + "/*",
+        "Wenu"       : data_path + "sorted-data/Wenu"       + "/*",
+        "WH125"      : data_path + "sorted-data/WH125"      + "/*",
+        "WlvZqq"     : data_path + "sorted-data/WlvZqq"     + "/*",
+        "Wmunu"      : data_path + "sorted-data/Wmunu"      + "/*",
+        "WplvWmqq"   : data_path + "sorted-data/WplvWmqq"   + "/*",
+        "WpqqWmlv"   : data_path + "sorted-data/WpqqWmlv"   + "/*",
+        "WqqZll"     : data_path + "sorted-data/WqqZll"     + "/*",
+        "WqqZvv"     : data_path + "sorted-data/WqqZvv"     + "/*",
+        "Wt"         : data_path + "sorted-data/Wt"         + "/*",
+        "Wtaunu"     : data_path + "sorted-data/Wtaunu"     + "/*",
+        "Zee"        : data_path + "sorted-data/Zee"        + "/*",
+        "ZH125"      : data_path + "sorted-data/ZH125"      + "/*",
+        "Zmumu"      : data_path + "sorted-data/Zmumu"      + "/*",
+        "ZqqZll"     : data_path + "sorted-data/ZqqZll"     + "/*",
+        "ZqqZvv"     : data_path + "sorted-data/ZqqZvv"     + "/*",
+#       "single-top" : "ProjectName/ROOT/GraphTruthJets_Experimental/MRK-1/epoch-1/*"
+#       "ttbar" : "ProjectName/ROOT/GraphJets_Experimental/MRK-1/epoch-74/*"
 }
 
 event_name     = "BSM4Tops"      if inference_mode     else "EventGNN"
@@ -56,42 +99,67 @@ graph_name     = graph_name      if inference_mode     else ""
 model_name     = "Experimental"  if inference_mode     else ""
 selection_name = "TopEfficiency" if not inference_mode else ""
 
-ana = Analysis()
-ana.Threads = 1
-ana.GraphCache = "ProjectName"
+def chunks(lst, n):
+    for i in range(0, len(lst), n):
+        yield lst[i:i + n]
 
-if len(model_states): ana.FetchMeta = True
-for j in sample_path:
-    try: ana.AddSamples(sample_path[j], j)
-    except KeyError: pass
 
-    try: ana.AddEvent(event_method[event_name](), j)
+for k in list(chunks(px, 10)):
+    sample_path = {}
+    for l in k:
+        for t in sample_path_:
+            if "/" + t + "/" not in l: continue
+            if t not in sample_path: sample_path[t] = []
+            sample_path[t] += [l]
+            break
+
+    skip = 0
+    for l in sample_path:
+        iox = IO(sample_path[l])
+        iox.Trees = ["nominal"]
+        iox.Leaves = ["weight_mc"]
+        skip = len(iox)
+    if skip == 0: continue
+    if skip < 1000: th = 1
+    else: th = 2
+
+    ana = Analysis()
+    ana.Threads = th
+    ana.GraphCache = "ProjectName"
+
+    if len(model_states): ana.FetchMeta = False
+    for j in sample_path:
+        for p in sample_path[j]: ana.AddSamples(p, j)
+
+        try: ana.AddEvent(event_method[event_name](), j)
+        except KeyError: pass
+        except NameError: pass
+
+        try: ana.AddGraph(graph_method[graph_name](), j)
+        except KeyError: pass
+        except NameError: pass
+
+    try:
+        selection_container[selection_name] = selection_method[selection_name]()
+        ana.AddSelection(selection_container[selection_name])
     except KeyError: pass
     except NameError: pass
 
-    try: ana.AddGraph(graph_method[graph_name](), j)
-    except KeyError: pass
-    except NameError: pass
+    for j in model_states:
+        for ep in model_states[j]:
+            mdl = root_model + graph_name + "/" + model_name + "/" + j + "/state/" + ep + "/"
+            kf, dev = model_states[j][ep]
+            for i in range(len(kf)):
+                gnn = model_method[model_name]()
+                gnn.o_edge = {"top_edge" : "CrossEntropyLoss", "res_edge" : "CrossEntropyLoss"}
+                gnn.o_graph = {"ntops"   : "CrossEntropyLoss", "signal"   : "CrossEntropyLoss"}
+                gnn.i_node = ["pt", "eta", "phi", "energy"]
+                gnn.device = dev[i]
+                gnn.checkpoint_path = mdl + kf[i] + "_model.pt"
+                ana.AddModelInference(gnn, "ROOT/" + graph_name + "_" + model_name + "/" + j + "/" + ep + "/" + kf[i])
+    ana.Start()
+    del ana
 
-try:
-    selection_container[selection_name] = selection_method[selection_name]()
-    ana.AddSelection(selection_container[selection_name])
-except KeyError: pass
-except NameError: pass
-
-for j in model_states:
-    for ep in model_states[j]:
-        mdl = root_model + graph_name + "/" + model_name + "/" + j + "/state/" + ep + "/"
-        kf, dev = model_states[j][ep]
-        for i in range(len(kf)):
-            gnn = model_method[model_name]()
-            gnn.o_edge = {"top_edge" : "CrossEntropyLoss", "res_edge" : "CrossEntropyLoss"}
-            gnn.o_graph = {"ntops"   : "CrossEntropyLoss", "signal"   : "CrossEntropyLoss"}
-            gnn.i_node = ["pt", "eta", "phi", "energy"]
-            gnn.device = dev[i]
-            gnn.checkpoint_path = mdl + kf[i] + "_model.pt"
-            ana.AddModelInference(gnn, "ROOT/" + graph_name + "_" + model_name + "/" + j + "/" + ep + "/" + kf[i])
-ana.Start()
 
 for j in selection_container:
     f = open("./serialized-data/" + j +".pkl", "wb")

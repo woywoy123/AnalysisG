@@ -1,6 +1,6 @@
 from AnalysisG.core.plotting import TH1F, TH2F
 from pathlib import Path
-import torch
+#import torch
 import pickle
 
 global figure_path
