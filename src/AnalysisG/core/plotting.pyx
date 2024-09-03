@@ -35,7 +35,7 @@ cdef class BasePlotting:
         com["axes.labelsize"] = self.ptr.axis_size
         com["legend.fontsize"] = self.ptr.legend_size
         com["figure.titlesize"] = self.ptr.title_size
-        com["text.usetex"] = self.ptr.use_latex
+        com["text.usetex"] = False #self.ptr.use_latex
         com["hatch.linewidth"] = 0.1
         self.matpl.rcParams.update(com)
 
