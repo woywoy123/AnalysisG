@@ -45,7 +45,7 @@ void optimizer::check_model_sessions(int example_size, std::map<std::string, mod
     std::vector<graph_t*> rnd = this -> loader -> get_random(example_size); 
   
     std::map<int, model_template*>::iterator itx = this -> kfold_sessions.begin(); 
-    this -> info("Testing each k-fold model " + std::to_string(rnd.size()) + "-times"); 
+    this -> info("Testing each k-fold model " + std::to_string(rnd.size()) + "-times");
     for (; itx != this -> kfold_sessions.end(); ++itx){
         std::string msg = "____ Checking Model ____:"; 
         msg += " kfold -> " + std::to_string(itx -> first +1); 
@@ -70,14 +70,24 @@ void optimizer::training_loop(int k, int epoch){
     model_report* mr = this -> reports[this -> m_settings.run_name + std::to_string(k)]; 
     mr -> mode = "training";
     mr -> epoch = epoch+1;  
-
-    for (int x(0); x < l; ++x){
-        graph_t* gr = (*smpl)[x]; 
-        gr -> in_use = 2; 
-        model -> forward(gr, true);
-        this -> metric -> capture(mode_enum::training, k, epoch, l); 
-        mr -> progress = float(x+1)/float(l); 
-        gr -> in_use = 1; 
+    if (this -> m_settings.batch_size > 1){
+        std::vector<std::vector<graph_t*>> batched = this -> discretize(smpl, this -> m_settings.batch_size); 
+        l = batched.size();  
+        for (int x(0); x < l; ++x){
+            model -> forward(batched[x], true);
+            this -> metric -> capture(mode_enum::training, k, epoch, l); 
+            mr -> progress = float(x+1)/float(l); 
+        }
+    }
+    else {
+        for (int x(0); x < l; ++x){
+            graph_t* gr = (*smpl)[x]; 
+            gr -> in_use = 2; 
+            model -> forward(gr, true);
+            gr -> in_use = 1; 
+            mr -> progress = float(x+1)/float(l); 
+            this -> metric -> capture(mode_enum::training, k, epoch, l); 
+        }
     }
     model -> save_state(); 
 }
@@ -137,9 +147,8 @@ void optimizer::launch_model(int k){
 
         model_report* mr = this -> reports[this -> m_settings.run_name + std::to_string(k)]; 
         mr -> waiting_plot = this -> metric; 
-        while (mr -> waiting_plot){std::this_thread::sleep_for(std::chrono::milliseconds(1000));}
-        c10::cuda::CUDACachingAllocator::emptyCache();  
-
+        while (mr -> waiting_plot){std::this_thread::sleep_for(std::chrono::milliseconds(10));}
+        //c10::cuda::CUDACachingAllocator::emptyCache();  
     }; 
 
     for (int ep(0); ep < this -> m_settings.epochs; ++ep){lamb(k, ep);}

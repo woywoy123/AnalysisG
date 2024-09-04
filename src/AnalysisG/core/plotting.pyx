@@ -510,3 +510,79 @@ cdef class TH2F(BasePlotting):
 cdef class TLine(BasePlotting):
     def __cinit__(self): pass
 
+    @property
+    def xData(self): return self.ptr.x_data;
+
+    @xData.setter
+    def xData(self, list val): self.ptr.x_data = <vector[float]>(val)
+
+    @property
+    def yData(self): return self.ptr.y_data;
+
+    @yData.setter
+    def yData(self, list val): self.ptr.y_data = <vector[float]>(val)
+
+    @property
+    def Marker(self): return env(self.ptr.marker)
+
+    @Marker.setter
+    def Marker(self, str v): self.ptr.marker = enc(v)
+
+    @property
+    def yDataUp(self): return self.ptr.y_error_up
+
+    @yDataUp.setter
+    def yDataUp(self, val): self.ptr.y_error_up = <vector[float]>(val)
+
+    @property
+    def yDataDown(self): return self.ptr.y_error_down
+
+    @yDataDown.setter
+    def yDataDown(self, val): self.ptr.y_error_down = <vector[float]>(val)
+
+    @property
+    def LineWidth(self): return self.ptr.line_width
+
+    @LineWidth.setter
+    def LineWidth(self, float val): self.ptr.line_width = val
+
+
+    cdef void factory(self):
+        cdef dict coms = {}
+        coms["linestyle"] = "-"
+        if len(self.Color): coms["color"]
+        coms["marker"] = self.Marker
+        coms["linewidth"] = self.LineWidth
+        coms["label"] = self.Title
+        if not len(self.xData): return
+        elif self.ErrorBars:
+            self.ptr.build_error()
+            coms["yerr"] = [self.yDataDown, self.yDataUp]
+            coms["capsize"] = 3
+            self.matpl.errorbar(self.xData, self.yData, **coms)
+        else: self.matpl.plot(self.xData, self.yData, **coms)
+
+    cdef void __compile__(self):
+        cdef float x_max, x_min
+        if self.set_xmin: x_min = self.ptr.x_min
+        else: x_min = self.ptr.get_min(b"x")
+
+        if self.set_xmax: x_max = self.ptr.x_max
+        else: x_max = self.ptr.get_max(b"x")
+
+        cdef float y_max, y_min
+        if self.set_ymin: y_min = self.ptr.y_min
+        else: y_min = self.ptr.get_min(b"y")
+
+        if self.set_ymax: y_max = self.ptr.y_max
+        else: y_max = self.ptr.get_max(b"y")
+        self.matpl.xlim(x_min, x_max)
+        self.matpl.ylim(y_min, y_max)
+
+        self.factory()
+        if self.Lines is None: return
+        cdef TLine i
+        for i in self.Lines: i.factory()
+        self._ax.tick_params(axis = "x", which = "minor", bottom = False)
+        self.matpl.legend(loc = "upper right")
+

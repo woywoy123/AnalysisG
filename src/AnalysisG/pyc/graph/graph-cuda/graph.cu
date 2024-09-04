@@ -111,10 +111,11 @@ std::map<std::string, std::vector<torch::Tensor>> _edge_aggregation(
                         nf.packed_accessor64<double, 2, torch::RestrictPtrTraits>(),  
                     dim_, dim_j, max);
         })); 
+        torch::Tensor clip = std::get<0>((clusters.index({0}) > -1).sum({-1}).max({-1})); 
 
         output[name] = {
-            clusters.index({0}), pmu_u.index({0}).to(torch::kFloat), 
-            revert, pmu_i.index({i}).to(torch::kFloat)
+            clusters.index({0, torch::indexing::Slice(), torch::indexing::Slice(torch::indexing::None, clip.item<int>())}), 
+            pmu_u.index({0}).to(torch::kFloat), revert, pmu_i.index({i}).to(torch::kFloat)
         };  
     }
     

@@ -86,6 +86,9 @@ if kill: exit()
 try: ana.Threads = base["threads"]
 except: pass
 
+try: ana.BatchSize = base["batch_size"]
+except: pass
+
 try: ana.TrainSize = base["training-size"]
 except: pass
 

@@ -37,11 +37,17 @@ class topefficiency: public selection_template
         std::map<std::string, std::map<std::string, std::vector<int>>>   p_ntops = {}; 
         std::map<std::string, std::map<std::string, std::vector<int>>>   t_ntops = {}; 
 
+        std::map<std::string, std::map<std::string, std::vector<float>>> prob_tops = {}; 
+        std::map<std::string, std::map<std::string, std::vector<float>>> prob_zprime = {}; 
+
         std::map<std::string, std::map<std::string, std::map<std::string, std::vector<float>>>> p_decaymode_topmass = {}; 
         std::map<std::string, std::map<std::string, std::map<std::string, std::vector<float>>>> t_decaymode_topmass = {}; 
 
         std::map<std::string, std::map<std::string, std::map<std::string, std::vector<float>>>> p_decaymode_zmass = {}; 
         std::map<std::string, std::map<std::string, std::map<std::string, std::vector<float>>>> t_decaymode_zmass = {}; 
+
+        std::map<std::string, std::vector<float>> purity_tops = {}; 
+        std::map<std::string, std::vector<float>> efficiency_tops = {}; 
 
         // ROC curve variables
         std::vector<int> truth_res_edge = {}; 

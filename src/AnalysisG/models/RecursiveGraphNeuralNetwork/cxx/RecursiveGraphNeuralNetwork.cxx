@@ -205,7 +205,8 @@ void recursivegraphneuralnetwork::forward(graph_t* data){
         ); 
 
         // ----- if this is the first iteration, initialize H_ ----- //
-        if (!iter){H_ = torch::zeros_like(H); ++iter;}
+        if (!iter){H_ = torch::zeros_like(H);}
+        ++iter; 
 
         // ----- use the index matrix to map the source and destination edges to the edge index ----- //
         torch::Tensor idx = idx_mat.index({src_, dst_}); 
@@ -220,7 +221,7 @@ void recursivegraphneuralnetwork::forward(graph_t* data){
         torch::Tensor sel = std::get<1>(G.max({-1})); 
 
         // ---- check if the new prediction is simply null ---- /
-        if (!sel.index({sel == 1}).size({0})){break;}
+        if (!sel.index({sel == 1}).size({0}) || iter > data -> num_nodes){break;}
         G  = G.index({sel != 1}); 
         H_ = H.index({sel != 1}); 
 

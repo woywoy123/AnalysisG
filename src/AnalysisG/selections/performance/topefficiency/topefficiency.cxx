@@ -19,11 +19,18 @@ void topefficiency::merge(selection_template* sl){
     merge_data(&this -> p_ntops,   &slt -> p_ntops); 
     merge_data(&this -> t_ntops,   &slt -> t_ntops); 
 
+    merge_data(&this -> prob_tops,   &slt -> prob_tops); 
+    merge_data(&this -> prob_zprime, &slt -> prob_zprime); 
+
     merge_data(&this -> p_decaymode_topmass, &slt -> p_decaymode_topmass); 
     merge_data(&this -> t_decaymode_topmass, &slt -> t_decaymode_topmass); 
 
     merge_data(&this -> p_decaymode_zmass, &slt -> p_decaymode_zmass); 
     merge_data(&this -> t_decaymode_zmass, &slt -> t_decaymode_zmass); 
+
+    merge_data(&this -> purity_tops    , &slt -> purity_tops); 
+    merge_data(&this -> efficiency_tops, &slt -> efficiency_tops);
+
 
     sum_data(&this -> truth_res_edge,       &slt -> truth_res_edge); 
     sum_data(&this -> truth_top_edge,       &slt -> truth_top_edge);      
@@ -95,6 +102,7 @@ bool topefficiency::strategy(event_template* ev){
         float mass = top_ -> mass / 1000; 
         std::string key = this -> region(top_ -> pt / 1000, std::abs(top_ -> eta));
         this -> p_topmass[key][fname].push_back(mass);
+        this -> prob_tops[key][fname].push_back(top_ -> av_score); 
         this -> p_decaymode_topmass[r_decay][key][fname].push_back(mass); 
 
         if (!this -> p_ntops[key][fname].size()){this -> p_ntops[key][fname].push_back(0);}
@@ -125,6 +133,7 @@ bool topefficiency::strategy(event_template* ev){
         zprime* zp_ = reco_zprime[x]; 
         std::string key = this -> region(zp_ -> pt / 1000, std::abs(zp_ -> eta));
         this -> p_zmass[key][fname].push_back(zp_ -> mass / 1000); 
+        this -> prob_zprime[key][fname].push_back(zp_ -> av_score); 
         this -> p_decaymode_zmass[r_decay][key][fname].push_back(zp_ -> mass / 1000); 
     }
 
@@ -134,6 +143,30 @@ bool topefficiency::strategy(event_template* ev){
         std::string key = this -> region(zp_ -> pt / 1000, std::abs(zp_ -> eta));
         this -> t_zmass[key][fname].push_back(zp_ -> mass / 1000); 
         this -> t_decaymode_zmass[t_decay][key][fname].push_back(zp_ -> mass / 1000);
+    }
+
+    float n_perfect_tops = 0; 
+    float n_can_tops = evn -> r_tops.size(); 
+    float n_tru_tops = evn -> t_tops.size();
+    std::map<int, bool> no_double; 
+    for (size_t x(0); x < evn -> r_tops.size(); ++x){
+        std::map<std::string, particle_template*> ch_t = evn -> r_tops[x] -> children; 
+        for (size_t y(0); y < evn -> t_tops.size(); ++y){
+            if (no_double[y]){continue;}
+            std::map<std::string, particle_template*> ch = evn -> t_tops[y] -> children; 
+            if (!(ch.size() == ch_t.size())){continue;}
+
+            int trg = 0; 
+            std::map<std::string, particle_template*>::iterator itc = ch_t.begin(); 
+            for (; itc != ch_t.end(); ++itc){trg += (ch.count(itc -> first)) ? 1 : -10000;}
+            if (!(trg == ch.size())){continue;}
+            no_double[y] = true;
+            n_perfect_tops++; 
+        } 
+    }
+    if (n_can_tops && n_tru_tops && n_perfect_tops){
+        this -> purity_tops[fname].push_back(n_perfect_tops/n_can_tops);
+        this -> efficiency_tops[fname].push_back(n_perfect_tops/n_tru_tops); 
     }
 
     this -> truth_top_edge = evn -> t_edge_top; 

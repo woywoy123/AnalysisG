@@ -265,3 +265,10 @@ cdef class Analysis:
     @GraphCache.setter
     def GraphCache(self, str val): self.ana.m_settings.graph_cache = enc(val)
 
+    @property
+    def BatchSize(self): return self.ana.m_settings.batch_size
+
+    @BatchSize.setter
+    def BatchSize(self, int val): self.ana.m_settings.batch_size = val
+
+

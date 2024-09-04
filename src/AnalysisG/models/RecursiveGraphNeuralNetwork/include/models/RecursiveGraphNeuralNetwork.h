@@ -20,7 +20,7 @@ class recursivegraphneuralnetwork: public model_template
         int _dx     = 26; 
         int _x      = 5; 
         int _output = 2; 
-        int _rep    = 1024; 
+        int _rep    = 256; 
         double res_mass = 0; 
         double drop_out = 0.1; 
 

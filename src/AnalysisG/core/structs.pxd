@@ -107,8 +107,9 @@ cdef extern from "<structs/settings.h>":
 
         int epochs
         int kfolds
-        vector[int] kfold
         int num_examples
+        int batch_size
+        vector[int] kfold
         float train_size
 
         bool training

@@ -9,8 +9,8 @@ experimental::experimental(){
     this -> rnn_x = new torch::nn::Sequential({
             {"rnn_x_l1", torch::nn::Linear(this -> _xin*2, this -> _hidden)},
             {"rnn_x_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
+            {"rnn_x_r1", torch::nn::ReLU()},
             {"rnn_x_l2", torch::nn::Linear(this -> _hidden, this -> _hidden)}, 
-            {"rnn_x", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
             {"rnn_x_s2", torch::nn::Sigmoid()},
             {"rnn_x_l3", torch::nn::Linear(this -> _hidden, this -> _xin)}
     }); 
@@ -18,75 +18,70 @@ experimental::experimental(){
     int dxx = this -> _dxin*2 + this -> _xin*2; 
     this -> rnn_dx = new torch::nn::Sequential({
             {"rnn_dx_l1", torch::nn::Linear(dxx, this -> _hidden)}, 
-            {"rnn_dx_s1", torch::nn::Sigmoid()},
+            {"rnn_dx_r1", torch::nn::ReLU()},
             {"rnn_dx_l2", torch::nn::Linear(this -> _hidden, this -> _hidden)}, 
-            {"rnn_dx", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
-            {"rnn_dx_r2", torch::nn::ReLU()},
+            {"rnn_dx_s1", torch::nn::Sigmoid()},
             {"rnn_dx_l3", torch::nn::Linear(this -> _hidden, this -> _xin)} 
     }); 
 
     this -> rnn_merge = new torch::nn::Sequential({
             {"rnn_mrg_l1", torch::nn::Linear(this -> _xin*2, this -> _hidden)}, 
-            {"rnn_mrg_s1", torch::nn::Sigmoid()},
-            {"rnn_mrg_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
-            {"rnn_mrg", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
             {"rnn_mrg_r1", torch::nn::ReLU()},
-            {"rnn_mrg_l2", torch::nn::Linear(this -> _hidden, this -> _xin)}
+            {"rnn_mrg_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
+            {"rnn_mrg_s2", torch::nn::Sigmoid()},
+            {"rnn_mrg_l2", torch::nn::Linear(this -> _hidden, this -> _hidden)}
     }); 
 
-    dxx = this -> _xin*2 + this -> _xout*2; 
+    dxx = this -> _xin + this -> _xout*2 + this -> _hidden; 
     this -> rnn_top_edge = new torch::nn::Sequential({
             {"rnn_top_l1", torch::nn::Linear(dxx, this -> _hidden)}, 
+            {"rnn_top_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
             {"rnn_top_r1", torch::nn::ReLU()},
             {"rnn_top_l2", torch::nn::Linear(this -> _hidden, this -> _hidden)}, 
-            {"rnn_top_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
+            {"rnn_top_s2", torch::nn::Sigmoid()},
             {"rnn_top", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
             {"rnn_top_r2", torch::nn::ReLU()},
-            {"rnn_top_s2", torch::nn::Sigmoid()},
             {"rnn_top_l3", torch::nn::Linear(this -> _hidden, this -> _xout)}
     }); 
 
     this -> rnn_res_edge = new torch::nn::Sequential({
             {"rnn_res_l1", torch::nn::Linear(dxx, this -> _hidden)}, 
+            {"rnn_res_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
             {"rnn_res_r1", torch::nn::ReLU()},
             {"rnn_res_l2", torch::nn::Linear(this -> _hidden, this -> _hidden)}, 
-            {"rnn_res_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
+            {"rnn_res_s2", torch::nn::Sigmoid()},
             {"rnn_res", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
             {"rnn_res_r2", torch::nn::ReLU()},
-            {"rnn_res_s2", torch::nn::Sigmoid()},
             {"rnn_res_l3", torch::nn::Linear(this -> _hidden, this -> _xout)}
     }); 
 
     this -> mlp_ntop = new torch::nn::Sequential({
-            {"ntop_l1", torch::nn::Linear(2*this -> _xin+1, this -> _xin)}, 
-            {"ntop_r1", torch::nn::ReLU()},
-            {"ntop_l2", torch::nn::Linear(this -> _xin, this -> _xin)}, 
-            {"ntop_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _xin}))}, 
-            {"ntop_drp", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
+            {"ntop_l1", torch::nn::Linear(2*this -> _xin+1, this -> _hidden)}, 
+            {"ntop_s1", torch::nn::Sigmoid()},
+            {"ntop_l2", torch::nn::Linear(this -> _hidden, this -> _xin*2)}, 
+            {"ntop_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _xin*2}))}, 
             {"ntop_r2", torch::nn::ReLU()},
-            {"ntop_s2", torch::nn::Sigmoid()},
-            {"ntop_l3", torch::nn::Linear(this -> _xin, 5)}
+            {"ntop_drp", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
+            {"ntop_l3", torch::nn::Linear(this -> _xin*2, 5)}
     }); 
 
     this -> mlp_sig = new torch::nn::Sequential({
-            {"res_l1", torch::nn::Linear(this -> _xin*3, this -> _xin*3)}, 
+            {"res_l1", torch::nn::Linear(this -> _xin*3, this -> _hidden)}, 
+            {"res_s1", torch::nn::Sigmoid()},
+            {"res_l2", torch::nn::Linear(this -> _hidden, this -> _xin*3)}, 
+            {"res_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _xin*3}))}, 
             {"res_r1", torch::nn::ReLU()},
-            {"res_l2", torch::nn::Linear(this -> _xin*3, this -> _xin*3)}, 
-            {"res_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _xin*3}))}, 
             {"res_drp", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))},
-            {"res_r2", torch::nn::ReLU()},
-            {"res_s2", torch::nn::Sigmoid()},
             {"res_l3", torch::nn::Linear(this -> _xin*3, 2)}
     }); 
 
-    this -> register_module(this -> rnn_x); 
-    this -> register_module(this -> rnn_dx); 
-    this -> register_module(this -> rnn_merge); 
-    this -> register_module(this -> rnn_top_edge); 
-    this -> register_module(this -> rnn_res_edge); 
-    this -> register_module(this -> mlp_ntop); 
-    this -> register_module(this -> mlp_sig); 
-
+    this -> register_module(this -> rnn_x       , mlp_init::xavier_uniform);
+    this -> register_module(this -> rnn_dx      , mlp_init::xavier_uniform);
+    this -> register_module(this -> rnn_merge   , mlp_init::xavier_uniform);
+    this -> register_module(this -> rnn_top_edge, mlp_init::xavier_uniform);
+    this -> register_module(this -> rnn_res_edge, mlp_init::xavier_uniform);
+    this -> register_module(this -> mlp_ntop    , mlp_init::xavier_uniform);
+    this -> register_module(this -> mlp_sig     , mlp_init::xavier_uniform);
 }
 
 torch::Tensor experimental::message(
@@ -146,15 +141,17 @@ void experimental::forward(graph_t* data){
     torch::Tensor hx = torch::zeros_like(torch::cat({trk, trk, trk, trk, trk, trk}, {-1}).view({-1, 6})); 
 
     std::vector<torch::Tensor> gr_ = {}; 
-    for (size_t x(0); x < this -> _xin*2 + this -> _xout*2; ++x){gr_.push_back(torch::zeros_like(src.view({-1, 1})));}
+    int dxx = this -> _xin + this -> _xout*2 + this -> _hidden; 
+    for (size_t x(0); x < dxx; ++x){gr_.push_back(torch::zeros_like(src.view({-1, 1})));}
     torch::Tensor top_edge  = (*this -> rnn_top_edge) -> forward(torch::cat(gr_, {-1}).to(torch::kFloat32));
     torch::Tensor top_edge_ = torch::zeros_like(top_edge); 
 
     torch::Tensor res_edge  = (*this -> rnn_res_edge) -> forward(torch::cat(gr_, {-1}).to(torch::kFloat32));
     torch::Tensor res_edge_ = torch::zeros_like(res_edge); 
 
+    int iter = 0; 
     torch::Tensor edge_index_ = edge_index.clone();  
-    while (edge_index_.size({1})){
+    while (edge_index_.size({1}) && iter < data -> num_nodes){
 
         torch::Tensor src_ = edge_index_.index({0}); 
         torch::Tensor dst_ = edge_index_.index({1});
@@ -177,33 +174,35 @@ void experimental::forward(graph_t* data){
         top_edge_ = (*this -> rnn_top_edge) -> forward(hx_px_);
 
         torch::Tensor hx_rx_ = torch::cat({hx.index({src_}), hx_ij_, res_edge_, res_edge.index({idx}) - res_edge_}, {-1}); 
-        res_edge_ = (*this -> rnn_res_edge) -> forward(hx_rx_);
+        res_edge_ = (*this -> rnn_res_edge) -> forward(hx_rx_) + top_edge_ * top_edge_.softmax(-1);
 
         // ----- update the top_edge prediction weights by index ------- //
         top_edge.index_put_({idx}, top_edge_); 
-        torch::Tensor sel = std::get<1>(top_edge_.max({-1})); 
+        res_edge.index_put_({idx}, res_edge_); 
+        torch::Tensor sel = std::get<1>((top_edge_ + res_edge_).max({-1})); 
 
+        ++iter; 
         // ---- check if the new prediction is simply null ---- /
-        if (!sel.index({sel == 1}).size({0})){break;}
-        edge_index_ = edge_index_.index({torch::indexing::Slice(), sel != 1}); 
-        top_edge_   = top_edge_.index({sel != 1}); 
-        res_edge_   = res_edge_.index({sel != 1}); 
+        if (!sel.index({sel > 0}).size({0})){break;}
+        edge_index_ = edge_index_.index({torch::indexing::Slice(), sel < 1}); 
+        top_edge_   = top_edge_.index({sel < 1}); 
+        res_edge_   = res_edge_.index({sel < 1}); 
     }
 
     // ----------- compress the top data ----------- //
     torch::Tensor trk_ = torch::zeros_like(pt).to(torch::kInt).view({-1}); 
     gr_ = graph::cuda::edge_aggregation(edge_index, top_edge, pmc)["1"]; 
     trk = (gr_[0].index({gr_[2]}) > -1).sum({-1}, true);
-    trk = torch::cat({trk, hx, physics::cuda::cartesian::M(gr_[3])/172.68, pid.index({trk_})}, {-1}); 
+    trk = torch::cat({trk, hx, physics::cuda::cartesian::M(gr_[3]), pid.index({trk_})}, {-1}); 
     torch::Tensor ntops_ = (*this -> mlp_ntop) -> forward(trk.to(torch::kFloat32)); 
 
     gr_ = graph::cuda::edge_aggregation(edge_index, res_edge, pmc)["1"]; 
     trk = (gr_[0].index({gr_[2]}) > -1).sum({-1}, true);
-    trk = torch::cat({trk, hx, physics::cuda::cartesian::M(gr_[3])/172.68, pid.index({trk_}), ntops_}, {-1}); 
+    trk = torch::cat({trk, hx, physics::cuda::cartesian::M(gr_[3]), pid.index({trk_}), ntops_}, {-1}); 
     torch::Tensor isres_ = (*this -> mlp_sig) -> forward(trk.to(torch::kFloat32));
 
-    ntops_ = ntops_.sum({0}, true) - ntops_.mean({0}, true); 
-    isres_ = isres_.sum({0}, true) - isres_.mean({0}, true); 
+    ntops_ = ntops_.sum({0}, true); 
+    isres_ = isres_.sum({0}, true); 
  
     this -> prediction_edge_feature("top_edge", top_edge); 
     this -> prediction_edge_feature("res_edge", res_edge); 

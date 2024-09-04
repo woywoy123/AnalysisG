@@ -20,7 +20,7 @@ class top: public particle_template
         top(); 
         ~top() override; 
         bool is_lep = false; 
-        bool is_truth = false;
+        float av_score = 1; 
 }; 
 
 
@@ -29,7 +29,7 @@ class zprime: public particle_template
     public:
         zprime(); 
         ~zprime() override; 
-        bool is_truth = false; 
+        float av_score = 1; 
 }; 
 
 

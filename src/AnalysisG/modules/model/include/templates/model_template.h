@@ -84,6 +84,8 @@ class model_template:
         void import_settings(model_settings_t* setd); 
 
         void forward(graph_t* data, bool train); 
+        void forward(std::vector<graph_t*> data, bool train); 
+
         void register_module(torch::nn::Sequential* data); 
         void register_module(torch::nn::Sequential* data, mlp_init weight_init); 
 
@@ -124,6 +126,7 @@ class model_template:
 
         static void set_device(std::string*, model_template*); 
         torch::Tensor* assign_features(std::string inpt, graph_enum type, graph_t* data); 
+        torch::Tensor* assign_features(std::string inpt, graph_enum type, std::vector<graph_t*> data); 
 
         void flush_outputs(); 
 
@@ -131,6 +134,7 @@ class model_template:
         torch::TensorOptions*    m_option = nullptr; 
         torch::optim::Optimizer* m_optim  = nullptr; 
         torch::Tensor*         edge_index = nullptr; 
+        bool                    m_batched = false; 
 
         opt_enum         e_optim = opt_enum::invalid_optimizer;  
         std::string      s_optim = ""; 

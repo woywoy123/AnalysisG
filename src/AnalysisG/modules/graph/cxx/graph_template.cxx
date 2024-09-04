@@ -51,7 +51,8 @@ void graph_template::define_particle_nodes(std::vector<particle_template*>* prt)
         int n_nodes = (int)this -> nodes.size();
         this -> node_particles[n_nodes] = prt -> at(x);  
         this -> nodes[hash_] = n_nodes; 
-    } 
+    }
+    this -> num_nodes = this -> nodes.size(); 
 }
 
 void graph_template::define_topology(std::function<bool(particle_template*, particle_template*)> fx){

@@ -17,7 +17,8 @@ class plotting: public tools
         float get_max(std::string dim); 
         float get_min(std::string dim); 
         float sum_of_weights(); 
-
+        void build_error(); 
+        std::tuple<float, float> mean_stdev(std::vector<float>* data);
 
         // io
         std::string extension = ".png"; 
@@ -42,8 +43,9 @@ class plotting: public tools
         std::string xtitle = "x-axis"; 
         std::string histfill = "fill"; 
         std::string overflow = "sum"; 
+        std::string marker = "."; 
 
-        std::string color = ""; 
+        std::string color = "";
         std::vector<std::string> colors = {}; 
 
         bool stack   = false; 
@@ -73,6 +75,9 @@ class plotting: public tools
         // data containers
         std::vector<float> x_data = {};
         std::vector<float> y_data = {}; 
+
+        std::vector<float> y_error_up   = {}; 
+        std::vector<float> y_error_down = {}; 
 
         std::map<std::string, float> x_labels = {}; 
         std::map<std::string, float> y_labels = {}; 

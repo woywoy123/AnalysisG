@@ -24,7 +24,7 @@ torch::Tensor model_template::compute_loss(std::string pred, graph_enum feat){
     }
     if (!prediction){return torch::Tensor();}
     torch::Tensor lss = this -> m_loss -> loss(prediction,  std::get<0>(*truth), std::get<1>(*truth)); 
-    this -> m_p_loss[feat][pred] =  lss; 
+    this -> m_p_loss[feat][pred] = lss; 
     return lss; 
 }
 

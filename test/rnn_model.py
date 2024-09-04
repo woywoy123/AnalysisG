@@ -15,11 +15,11 @@ tt = GraphTruthJets()
 
 params = [
     ("MRK-1", "adam", {"lr" : 1e-4}),
-#   ("MRK-2", "adam", {"lr" : 1e-6}),
+#    ("MRK-2", "adam", {"lr" : 1e-6}),
 #    ("MRK-3", "adam", {"lr" : 1e-6, "amsgrad" : True}),
 #    ("MRK-4", "sgd", {"lr" : 1e-3}),
 #    ("MRK-5", "sgd", {"lr" : 1e-6}),
-#    ("MRK-6", "sgd", {"lr" : 1e-6, "momentum" : 0.01}),
+#    ("MRK-6", "sgd", {"lr" : 1e-4, "momentum" : 0.1}),
 #    ("MRK-7", "sgd", {"lr" : 1e-6, "momentum" : 0.01, "dampening" : 0.01})
 ]
 
@@ -62,7 +62,8 @@ ana.GraphCache = "./ProjectName/"
 ana.kFold = [1]
 ana.MaxRange = 1500
 ana.TrainSize = 95
+ana.BatchSize = 20
 ana.DebugMode = False
-ana.Validation = True
+ana.Validation = False
 ana.Evaluation = False
 ana.Start()

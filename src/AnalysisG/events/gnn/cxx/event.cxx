@@ -68,15 +68,31 @@ void gnn_event::build(element_t* el){
 
 void gnn_event::CompileEvent(){
 
-    auto cluster = [this](std::map<int, std::map<std::string, particle_gnn*>>* clust, std::map<std::string, std::vector<particle_gnn*>>* out){
+    auto cluster = [this](
+            std::map<int, std::map<std::string, particle_gnn*>>* clust, 
+            std::map<std::string, std::vector<particle_gnn*>>* out,
+            std::map<std::string, float>* bin_out,
+            std::map<int, std::vector<float>>* bin_data
+    ){
+
+        std::map<std::string, std::vector<float>> score_av; 
         std::map<int, std::map<std::string, particle_gnn*>>::iterator itr = clust -> begin(); 
         for (; itr != clust -> end(); ++itr){
             if (itr -> second.size() <= 1){continue;}
             std::string hsh = ""; 
             std::map<std::string, particle_gnn*>::iterator ix = itr -> second.begin();
             for (; ix != itr -> second.end(); ++ix){ hsh = tools().hash(hsh + std::string(ix -> second -> hash)); }
+            if (bin_out){
+                for (float k : (*bin_data)[itr -> first]){ score_av[hsh].push_back(k); }
+            }
             if (out -> count(hsh)){continue;}
             this -> vectorize(&itr -> second, &(*out)[hsh]); 
+        }
+        std::map<std::string, std::vector<float>>::iterator itx;
+        for (itx = score_av.begin(); itx != score_av.end(); ++itx){
+            float p = 0; 
+            for (float k : itx -> second){p += k;}
+            (*bin_out)[itx -> first] = p / float(itx -> second.size()); 
         }
     }; 
 
@@ -92,7 +108,9 @@ void gnn_event::CompileEvent(){
         this -> p_ntops = int(x);
         break; 
     }
-  
+
+
+    std::map<int, std::vector<float>> bin_top, bin_zprime; 
     std::map<int, std::map<std::string, particle_gnn*>> real_tops; 
     std::map<int, std::map<std::string, particle_gnn*>> real_zprime; 
 
@@ -105,6 +123,9 @@ void gnn_event::CompileEvent(){
         int top_ij = (this -> edge_top_scores[x][0] < this -> edge_top_scores[x][1]); 
         int res_ij = (this -> edge_res_scores[x][0] < this -> edge_res_scores[x][1]); 
 
+        if (top_ij){bin_top[src[x]].push_back(this -> edge_top_scores[x][1]);}
+        if (res_ij){bin_zprime[src[x]].push_back(this -> edge_res_scores[x][1]);}
+
         std::string hx = particle[dst[x]] -> hash; 
         if (top_ij){reco_tops[src[x]][hx]   = particle[dst[x]];}
         if (res_ij){reco_zprime[src[x]][hx] = particle[dst[x]];}
@@ -116,46 +137,49 @@ void gnn_event::CompileEvent(){
     std::map<std::string, std::vector<particle_gnn*>>::iterator it;
 
     // ---- truth --- //
-    std::map<std::string, std::vector<particle_gnn*>> c_real_zprime;
-    cluster(&real_zprime, &c_real_zprime); 
-    for (it = c_real_zprime.begin(); it != c_real_zprime.end(); ++it){
-        zprime* t = nullptr;
-        this -> sum(&it -> second, &t);  
-        t -> is_truth = true; 
-        this -> m_t_zprime[t -> hash] = t; 
-    }
-
     std::map<std::string, std::vector<particle_gnn*>> c_real_tops;
-    cluster(&real_tops  , &c_real_tops); 
+    cluster(&real_tops  , &c_real_tops, nullptr, nullptr); 
     for (it = c_real_tops.begin(); it != c_real_tops.end(); ++it){
         top* t = nullptr;
         this -> sum(&it -> second, &t);  
-        t -> is_truth = true; 
         this -> m_t_tops[t -> hash] = t; 
 
         std::map<std::string, particle_template*> ch = t -> children; 
         std::map<std::string, particle_template*>::iterator itc = ch.begin(); 
         for (; itc != ch.end(); ++itc){t -> is_lep += ((particle_gnn*)itc -> second) -> is_lep;}
     }
-    
+
+    std::map<std::string, std::vector<particle_gnn*>> c_real_zprime;
+    cluster(&real_zprime, &c_real_zprime, nullptr, nullptr); 
+    for (it = c_real_zprime.begin(); it != c_real_zprime.end(); ++it){
+        zprime* t = nullptr;
+        this -> sum(&it -> second, &t);  
+        this -> m_t_zprime[t -> hash] = t; 
+    }
+
+ 
     // ---- reco ---- //
+    std::map<std::string, float> c_reco_tops_bin; 
     std::map<std::string, std::vector<particle_gnn*>> c_reco_tops;
-    cluster(&reco_tops  , &c_reco_tops); 
+    cluster(&reco_tops  , &c_reco_tops, &c_reco_tops_bin, &bin_top); 
     for (it = c_reco_tops.begin(); it != c_reco_tops.end(); ++it){
         top* t = nullptr;
         this -> sum(&it -> second, &t);  
-        this -> m_r_tops[t -> hash] = t; 
+        t -> av_score = c_reco_tops_bin[it -> first]; 
+        this -> m_r_tops[t -> hash] = t;
 
         std::map<std::string, particle_template*> ch = t -> children; 
         std::map<std::string, particle_template*>::iterator itc = ch.begin(); 
         for (; itc != ch.end(); ++itc){t -> is_lep += ((particle_gnn*)itc -> second) -> is_lep;}
     }
- 
+
+    std::map<std::string, float> c_reco_zprime_bin; 
     std::map<std::string, std::vector<particle_gnn*>> c_reco_zprime;
-    cluster(&reco_zprime, &c_reco_zprime); 
+    cluster(&reco_zprime, &c_reco_zprime, &c_reco_zprime_bin, &bin_zprime);
     for (it = c_reco_zprime.begin(); it != c_reco_zprime.end(); ++it){
         zprime* t = nullptr;
         this -> sum(&it -> second, &t);  
+        t -> av_score = c_reco_zprime_bin[it -> first]; 
         this -> m_r_zprime[t -> hash] = t; 
     }
 

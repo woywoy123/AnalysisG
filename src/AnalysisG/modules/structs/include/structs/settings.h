@@ -11,6 +11,7 @@ struct settings_t {
     // machine learning
     int epochs = 10; 
     int kfolds = 10; 
+    int batch_size = 1; 
     std::vector<int> kfold = {}; 
 
     int num_examples = 3; 

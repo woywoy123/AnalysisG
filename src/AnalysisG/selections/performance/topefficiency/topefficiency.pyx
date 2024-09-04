@@ -41,6 +41,12 @@ cdef class TopEfficiency(SelectionTemplate):
         self.p_decaymode_zmass = as_dict_dict_dict(&self.tt.p_decaymode_zmass)
         self.t_decaymode_zmass = as_dict_dict_dict(&self.tt.t_decaymode_zmass)
 
+        self.prob_tops       = as_dict_dict(&self.tt.prob_tops)
+        self.prob_zprime     = as_dict_dict(&self.tt.prob_zprime)
+
+        self.purity_tops     = as_dict(&self.tt.purity_tops)
+        self.efficiency_tops = as_dict(&self.tt.efficiency_tops)
+
         self.truth_res_edge      = self.tt.truth_res_edge
         self.truth_top_edge      = self.tt.truth_top_edge
 

@@ -45,7 +45,7 @@ study       = "topefficiency"
 graph_name  = "GraphJets"
 inference_mode = False
 
-root_model = "/import/wu1/tnom6927/TrainingOutput/training-sessions/"
+#root_model = "/import/wu1/tnom6927/TrainingOutput/training-sessions/"
 #data_path  = "/scratch/tnom6927/mc16-full/"
 data_path = "./ROOT/GraphJets_Experimental/MRK-1/epoch-74/kfold-5/"
 
@@ -152,31 +152,32 @@ for k in build_samples(data_path + "sorted-data", "./*/*/*.root", 10):
                 gnn.i_node = ["pt", "eta", "phi", "energy"]
                 gnn.device = dev[i]
                 gnn.checkpoint_path = mdl + kf[i] + "_model.pt"
-                ana.AddModelInference(gnn, "ROOT/" + graph_name + "_" + model_name + "/" + j + "/" + ep + "/" + kf[i])
+                name = "ROOT/" + graph_name + "_" + model_name + "/" + j + "/" + ep + "/" + kf[i]
+                ana.AddModelInference(gnn, name)
     ana.Start()
     del ana
     sample_path = {}
 
-i = 0
-for j, k in sample_path.items():
-    ana = Analysis()
-    ana.Threads = 12
-    ana.AddSamples(k, j)
-    try: ana.AddEvent(event_method[event_name](), j)
-    except KeyError: pass
-    except NameError: pass
-
-    try: selection_container[selection_name] = selection_method[selection_name]()
-    except KeyError: continue
-    except NameError: continue
-    ana.AddSelection(selection_container[selection_name])
-    ana.Start()
-
-    f = open("./serialized-data/" + j +".pkl", "wb")
-    pickle.dump(selection_container[selection_name], f)
-    f.close()
-    print(i, len(sample_path))
-    i+=1
+#i = 0
+#for j, k in sample_path.items():
+#    ana = Analysis()
+#    ana.Threads = 12
+#    ana.AddSamples(k, j)
+#    try: ana.AddEvent(event_method[event_name](), j)
+#    except KeyError: pass
+#    except NameError: pass
+#
+#    try: selection_container[selection_name] = selection_method[selection_name]()
+#    except KeyError: continue
+#    except NameError: continue
+#    ana.AddSelection(selection_container[selection_name])
+#    ana.Start()
+#
+#    f = open("./serialized-data/" + j +".pkl", "wb")
+#    pickle.dump(selection_container[selection_name], f)
+#    f.close()
+#    print(i, len(sample_path))
+#    i+=1
 
 method = plotting_method[study]
 method.figures.figure_path = figure_path

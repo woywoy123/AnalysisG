@@ -19,11 +19,17 @@ cdef extern from "topefficiency.h":
         map[string, map[string, vector[int]]]   p_ntops
         map[string, map[string, vector[int]]]   t_ntops
 
+        map[string, map[string, vector[float]]] prob_tops
+        map[string, map[string, vector[float]]] prob_zprime
+
         map[string, map[string, map[string, vector[float]]]] p_decaymode_topmass
         map[string, map[string, map[string, vector[float]]]] t_decaymode_topmass
 
         map[string, map[string, map[string, vector[float]]]] p_decaymode_zmass
         map[string, map[string, map[string, vector[float]]]] t_decaymode_zmass
+
+        map[string, vector[float]] purity_tops
+        map[string, vector[float]] efficiency_tops
 
         vector[int] truth_res_edge
         vector[int] truth_top_edge
@@ -56,6 +62,12 @@ cdef class TopEfficiency(SelectionTemplate):
     cdef public dict p_decaymode_zmass
     cdef public dict t_decaymode_zmass
 
+    cdef public dict prob_tops
+    cdef public dict prob_zprime
+
+    cdef public dict purity_tops
+    cdef public dict efficiency_tops
+
     cdef public list truth_res_edge
     cdef public list truth_top_edge
 
@@ -67,3 +79,4 @@ cdef class TopEfficiency(SelectionTemplate):
 
     cdef public list pred_ntops_score
     cdef public list pred_signal_score
+

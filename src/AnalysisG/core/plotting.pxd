@@ -13,6 +13,7 @@ cdef extern from "<plotting/plotting.h>":
         float get_max(string) except +
         float get_min(string) except +
         float sum_of_weights() except +
+        void build_error() except +
 
         string filename
         string extension
@@ -24,6 +25,7 @@ cdef extern from "<plotting/plotting.h>":
         string style
         string histfill
         string overflow
+        string marker
 
         string color
         vector[string] colors
@@ -49,6 +51,9 @@ cdef extern from "<plotting/plotting.h>":
 
         vector[float] x_data
         vector[float] y_data
+
+        vector[float] y_error_up
+        vector[float] y_error_down
 
         map[string, float] x_labels
         map[string, float] y_labels
@@ -106,4 +111,7 @@ cdef class TH2F(BasePlotting):
     cdef void __compile__(self)
 
 cdef class TLine(BasePlotting):
-    pass
+    cdef public list Lines
+    cdef public bool ApplyScaling
+
+    cdef void factory(self)

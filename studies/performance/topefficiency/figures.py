@@ -1,4 +1,4 @@
-from AnalysisG.core.plotting import TH1F, TH2F
+from AnalysisG.core.plotting import TH1F, TH2F, TLine
 from pathlib import Path
 #import torch
 import pickle
@@ -13,11 +13,11 @@ def mapping(name):
     if "_ttbar_"      in name: return "$t\\bar{t}$"
     if "_ttbarHT1k5_" in name: return "$t\\bar{t}$"
     if "_ttbarHT6c_"  in name: return "$t\\bar{t}$"
-    if "_Ztautau_"    in name: return "$Z\ell\ell$"
-    if "_llll_"       in name: return "$\ell\ell\ell\ell$"
-    if "_lllv_"       in name: return "$\ell\ell\ell\\nu$"
-    if "_llvv_"       in name: return "$\ell\ell\\nu\\nu$"
-    if "_lvvv_"       in name: return "$\ell\\nu\\nu\\nu$"
+    if "_Ztautau_"    in name: return "$Z\\ell\\ell$"
+    if "_llll_"       in name: return "$\\ell\\ell\\ell\\ell$"
+    if "_lllv_"       in name: return "$\\ell\\ell\\ell\\nu$"
+    if "_llvv_"       in name: return "$\\ell\\ell\\nu\\nu$"
+    if "_lvvv_"       in name: return "$\\ell\\nu\\nu\\nu$"
     if "_tchan_"      in name: return "tchan"
     if "_tt_"         in name: return "tt"
     if "_ttee_"       in name: return "ttll"
@@ -167,16 +167,91 @@ def DecayMode(stacks, ana = None):
             hist.Filename = kins[1]
             hist.SaveFigure()
 
+def TopScores(stacks, ana = None):
+    if ana is not None:
+        data_s = ana.prob_tops
+        data_m = ana.p_topmass
+        for dm in data_s:
+            kins = dm.split(",")
+            kins = [f.replace(" ", "").replace("$", "").replace("_{top}", "").replace("|", "").replace("<", "_") for f in kins]
+            kins = kins[0]
+            if kins not in stacks: stacks[kins] = {}
+            for r in data_s[dm]:
+                prc = mapping(r)
+                if prc not in stacks[kins]: stacks[kins][prc] = {"score" : [], "mass" : []}
+                stacks[kins][prc]["score"] += data_s[dm][r]
+                stacks[kins][prc]["mass"]  += data_m[dm][r]
+        return stacks
+
+    for kin in stacks:
+        for prc in stacks[kin]:
+            th2 = TH2F()
+            th2.xData = stacks[kin][prc]["mass"]
+            th2.yData = stacks[kin][prc]["score"]
+            th2.xBins = 100
+            th2.yBins = 100
+            th2.xMin = 0
+            th2.yMin = 0
+            th2.yMax = 1
+            th2.xMax = 400
+            th2.Title = "Invariant Mass vs Score of Reconstructed Top-Quark"
+            th2.xTitle = "Invariant Mass of Top / 4 GeV"
+            th2.yTitle = "Reconstruction Top Score"
+            th2.OutputDirectory = figure_path + "/topscore/"
+            th2.Filename = kin + "_" + prc
+            th2.xStep = 20
+            th2.yStep = 0.1
+            th2.SaveFigure()
+
+
+def EfficiencyEvent(stacks, ana = None):
+    if ana is not None:
+        data_p = ana.purity_tops
+        data_e = ana.efficiency_tops
+        for i in data_p:
+            k = mapping(i)
+            if k not in stacks: stacks[k] = {"x-data" : [], "y-data" : []}
+            stacks[k]["y-data"] += data_p[i]
+            stacks[k]["x-data"] += data_e[i]
+        return stacks
+
+    for i in stacks:
+        tl = TLine()
+        tl.Title = i
+        tl.xData = stacks[i]["x-data"]
+        tl.yData = stacks[i]["y-data"]
+        tl.ErrorBars = True
+        stacks[i] = tl
+
+    tl = TLine()
+    tl.Lines = list(stacks.values())
+    tl.Title = "Purity of Top Reconstruction as a function of Efficiency"
+    tl.xTitle = "$\\varepsilon_{tops}$"
+    tl.yTitle = "purity"
+    tl.xMax = 1
+    tl.yMax = 1
+    tl.xMin = 0
+    tl.yMin = 0
+    tl.OutputDirectory = figure_path + "/Efficiency"
+    tl.Filename = "purity_epsilon"
+    tl.SaveFigure()
+
 def TopEfficiency(ana):
     p = Path(ana)
     files = [str(x) for x in p.glob("**/*.pkl") if str(x).endswith(".pkl")]
     files = list(set(files))
-    stacks = {}
+    stacks_c = {}
     stacks_t = {}
+    stacks_s = {}
+    stacks_x = {}
     for i in range(len(files)):
         pr = pickle.load(open(files[i], "rb"))
         print(files[i], (i+1) / len(files))
-        stacks = TopMassComparison(stacks, pr)
-        stacks_t = DecayMode(stacks_t, pr)
-    TopMassComparison(stacks)
-    DecayMode(stacks_t)
+        stacks_x = EfficiencyEvent(stacks_x, pr)
+        stacks_s = TopScores(stacks_s, pr)
+        stacks_c = TopMassComparison(stacks_c, pr)
+        #stacks_t = DecayMode(stacks_t, pr)
+    EfficiencyEvent(stacks_x)
+    TopScores(stacks_s)
+    TopMassComparison(stacks_c)
+    #DecayMode(stacks_c)
