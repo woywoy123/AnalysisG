@@ -94,7 +94,10 @@ void dataloader::datatransfer(torch::TensorOptions* op, int threads){
         for (size_t f(0); f < data -> size(); ++f){(*data)[f] -> transfer_to_device(op); *handle = f+1;}
     };
 
-    int x = this -> data_set -> size()/threads; 
+    int x = this -> data_set -> size();
+    if (!x){return;}
+    if (x < threads){threads = 1;}
+    x = this -> data_set -> size()/threads; 
     std::vector<std::vector<graph_t*>> quant = this -> discretize(this -> data_set, x); 
 
     std::vector<size_t> handles(quant.size(), 0); 

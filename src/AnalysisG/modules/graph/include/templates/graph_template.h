@@ -362,7 +362,7 @@ class graph_template: public tools
 
         bool double_neutrino(
                 double mass_top = 172.62*1000, double mass_wboson = 80.385*1000, 
-                double top_perc = 0.995, double w_perc = 0.995, double distance = 1e-10, int steps = 100
+                double top_perc = 0.85, double w_perc = 0.95, double distance = 1e-8, int steps = 10
         ); 
 }; 
  

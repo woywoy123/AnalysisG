@@ -182,18 +182,21 @@ bool dataloader::restore_dataset(std::string path){
     delete io_g; 
 
     for (size_t x(0); x < data.size(); ++x){
-        folds_t* kf = &data[x]; 
-        int index = this -> hash_map[std::string(kf -> hash)]; 
-        if (kf -> is_eval){this -> test_set -> push_back(index);continue;}
-        if (kf -> k == 0){this -> train_set -> push_back(index);}
-        if (!this -> k_fold_training.count(kf -> k)){
-            this -> k_fold_training[kf -> k]   = new std::vector<int>();
-            this -> k_fold_validation[kf -> k] = new std::vector<int>(); 
+        folds_t* kf = &data[x];
+        int kv = kf -> k;  
+        std::string hash = std::string(kf -> hash); 
+
+        int index = this -> hash_map[hash]; 
+        if (kf -> is_eval){this -> test_set -> push_back(index); continue;}
+        if (kv == 0){this -> train_set -> push_back(index);}
+        if (!this -> k_fold_training.count(kv)){
+            this -> k_fold_training[kv]   = new std::vector<int>();
+            this -> k_fold_validation[kv] = new std::vector<int>(); 
         }
 
         std::vector<int>* bin = nullptr; 
-        if (kf -> is_train){bin = this -> k_fold_training[kf -> k];}
-        else {bin = this -> k_fold_validation[kf -> k];}
+        if (kf -> is_train){bin = this -> k_fold_training[kv];}
+        else {bin = this -> k_fold_validation[kv];}
         bin -> push_back(index); 
     }
     if (!data.size()){return false;}

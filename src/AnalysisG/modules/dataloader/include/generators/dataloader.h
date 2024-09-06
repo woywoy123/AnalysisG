@@ -6,6 +6,7 @@
 
 #include <tools/tools.h>
 #include <structs/property.h>
+#include <structs/settings.h>
 #include <notification/notification.h>
 #include <templates/graph_template.h>
 
@@ -44,6 +45,7 @@ class dataloader:
 
     private:
         friend class analysis;
+        settings_t* setting = nullptr; 
 
         void cuda_memory_server(); 
         void clean_data_elements(

@@ -118,13 +118,13 @@ void analysis::start(){
     int threads_ = this -> m_settings.threads; 
     std::string path_data = this -> m_settings.training_dataset; 
     std::string pth_cache = this -> m_settings.graph_cache; 
+    this -> loader -> setting = &this -> m_settings; 
     if (pth_cache.size() && !this -> ends_with(&pth_cache, "/")){pth_cache += "/";}
     if (this -> selection_names.size()){this -> build_selections();}
     if (this -> graph_labels.size()){this -> build_graphs();}
 
     this -> tracer -> compile_objects(threads_); 
     if (this -> selection_names.size()){return this -> tracer -> fill_selections(&this -> selection_names);} 
-
     this -> build_dataloader(false); 
 
     std::map<std::string, std::string>::iterator itg; 

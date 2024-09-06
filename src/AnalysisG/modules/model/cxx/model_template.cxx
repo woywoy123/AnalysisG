@@ -226,7 +226,7 @@ void model_template::prediction_edge_feature(std::string key, torch::Tensor pred
 }
 
 void model_template::prediction_extra(std::string key, torch::Tensor pred){
-    if (!this -> m_p_undef[key]){return;}
+    if (this -> m_p_undef[key]){return;}
     this -> m_p_undef[key] = new torch::Tensor(pred); 
 }
 
