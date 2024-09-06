@@ -272,6 +272,7 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
     for (size_t x(0); x < cache_rebuild.size(); ++x){
         if (th_[x]){th_[x] -> join(); delete th_[x];  th_[x] = nullptr;}
         std::vector<graph_t*>* datax = cache_rebuild[x]; 
+        if (!datax){continue;}
         for (size_t p(0); p < datax -> size(); ++p){
             graph_t* gr = (*datax)[p];
             (*restored)[*gr -> hash] = gr;  
