@@ -173,6 +173,7 @@ void dataloader::dump_dataset(std::string path){
 }
 
 bool dataloader::restore_dataset(std::string path){
+    if (!path.size()){return true;}
     if (this -> k_fold_training.size()){return true;}
     io* io_g = new io(); 
     io_g -> start(path, "read"); 
@@ -185,7 +186,7 @@ bool dataloader::restore_dataset(std::string path){
         folds_t* kf = &data[x];
         int kv = kf -> k;  
         std::string hash = std::string(kf -> hash); 
-
+        if (!this -> hash_map.count(hash)){continue;}
         int index = this -> hash_map[hash]; 
         if (kf -> is_eval){this -> test_set -> push_back(index); continue;}
         if (kv == 0){this -> train_set -> push_back(index);}
@@ -202,7 +203,9 @@ bool dataloader::restore_dataset(std::string path){
     if (!data.size()){return false;}
 
     this -> success("Restored training dataset (" + this -> to_string(this -> train_set -> size()) + ")"); 
-    this -> success("Leave out sample is (" + this -> to_string(this -> test_set -> size()) + ")"); 
+    if (this -> test_set -> size()){
+        this -> success("Leave out sample is (" + this -> to_string(this -> test_set -> size()) + ")"); 
+    }
     std::map<int, std::vector<int>*>::iterator itr = this -> k_fold_training.begin(); 
     for (; itr != this -> k_fold_training.end(); ++itr){
         int k = itr -> first; 
@@ -211,6 +214,7 @@ bool dataloader::restore_dataset(std::string path){
         this -> success("-> train: " + this -> to_string(this -> k_fold_training[k] -> size()) + ")"); 
         this -> success("-> validation: " + this -> to_string(this -> k_fold_validation[k] -> size()) + ")"); 
     }
+    this -> hash_map.clear(); 
     return true;
 }
 

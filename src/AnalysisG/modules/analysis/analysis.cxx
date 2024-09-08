@@ -116,9 +116,9 @@ void analysis::start(){
     }
 
     int threads_ = this -> m_settings.threads; 
-    std::string path_data = this -> m_settings.training_dataset; 
     std::string pth_cache = this -> m_settings.graph_cache; 
     this -> loader -> setting = &this -> m_settings; 
+
     if (pth_cache.size() && !this -> ends_with(&pth_cache, "/")){pth_cache += "/";}
     if (this -> selection_names.size()){this -> build_selections();}
     if (this -> graph_labels.size()){this -> build_graphs();}
@@ -127,13 +127,15 @@ void analysis::start(){
     if (this -> selection_names.size()){return this -> tracer -> fill_selections(&this -> selection_names);} 
     this -> build_dataloader(false); 
 
-    std::map<std::string, std::string>::iterator itg; 
-    std::map<std::string, std::string>::iterator itc; 
-    if (pth_cache.size() && this -> loader -> data_set -> size()){this -> loader -> dump_graphs(pth_cache, threads_);}
+    if (pth_cache.size() && this -> loader -> data_set -> size()){
+        this -> loader -> dump_graphs(pth_cache, threads_);
+    }
     else if (pth_cache.size() && this -> file_labels.size()){
         std::vector<std::string> cached = {}; 
-        for (itg = this -> graph_types.begin(); itg != this -> graph_types.end(); ++itg){
-            for (itc = this -> file_labels.begin(); itc != this -> file_labels.end(); ++itc){
+        std::map<std::string, std::string>::iterator itg = this -> graph_types.begin(); 
+        for (; itg != this -> graph_types.end(); ++itg){
+            std::map<std::string, std::string>::iterator itc = this -> file_labels.begin(); 
+            for (; itc != this -> file_labels.end(); ++itc){
                 std::vector<std::string> spl = this -> split(itc -> first, "/");
                 std::string fname = this -> hash(spl[spl.size()-1]) + "-" + spl[spl.size()-1]; 
                 this -> replace(&fname, ".root", ".h5"); 
@@ -143,14 +145,14 @@ void analysis::start(){
         this -> loader -> restore_graphs(cached, threads_); 
     }
     else if (pth_cache.size()){
-        for (itg = this -> graph_types.begin(); itg != this -> graph_types.end(); ++itg){
+        std::map<std::string, std::string>::iterator itg = this -> graph_types.begin(); 
+        for (; itg != this -> graph_types.end(); ++itg){
             this -> loader -> restore_graphs(pth_cache + itg -> first, threads_);
         }
     }
 
-    if (!this -> loader -> restore_dataset(path_data) && path_data.size()){this -> build_dataloader(true);}
-
     if (this -> model_sessions.size()){
+        this -> loader -> restore_dataset(this -> m_settings.training_dataset); 
         this -> build_dataloader(true); 
         this -> build_project(); 
         this -> build_model_session();  

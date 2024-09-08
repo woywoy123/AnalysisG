@@ -43,9 +43,9 @@ void optimizer::import_model_sessions(std::tuple<model_template*, optimizer_para
 
 void optimizer::check_model_sessions(int example_size, std::map<std::string, model_report*>* rep){
     std::vector<graph_t*> rnd = this -> loader -> get_random(example_size); 
-  
-    std::map<int, model_template*>::iterator itx = this -> kfold_sessions.begin(); 
     this -> info("Testing each k-fold model " + std::to_string(rnd.size()) + "-times");
+
+    std::map<int, model_template*>::iterator itx = this -> kfold_sessions.begin(); 
     for (; itx != this -> kfold_sessions.end(); ++itx){
         std::string msg = "____ Checking Model ____:"; 
         msg += " kfold -> " + std::to_string(itx -> first +1); 
