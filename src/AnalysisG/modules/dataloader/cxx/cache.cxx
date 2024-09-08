@@ -213,12 +213,15 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
     std::vector<int> kv = this -> setting -> kfold; 
     for (size_t x(0); x < data_k.size(); ++x){
         std::string hash = std::string(data_k[x].hash);
-        bool load = (data_k[x].is_eval && eval); 
+        bool load = data_k[x].is_eval * eval; 
+        load += data_k[x].is_valid * fold; 
+        load += data_k[x].is_train * train; 
+        bool kfound = false; 
         for (size_t k(0); k < kv.size(); ++k){
-            load = (k == data_k[x].k && data_k[x].is_valid) ? load + fold  : load;
-            load = (data_k[x].is_train) ? load + train : load;
+            kfound = (kv[k] == data_k[x].k+1); 
+            if (kfound){break;}
         }
-        load_hash[hash] = load + !kv.size(); 
+        load_hash[hash] = load + kfound;  
     }
 
     size_t len_cache = 0; 
