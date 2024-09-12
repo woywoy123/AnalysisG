@@ -16,21 +16,14 @@ void topefficiency::merge(selection_template* sl){
     merge_data(&this -> p_zmass,   &slt -> p_zmass); 
     merge_data(&this -> t_zmass,   &slt -> t_zmass); 
 
-    merge_data(&this -> p_ntops,   &slt -> p_ntops); 
-    merge_data(&this -> t_ntops,   &slt -> t_ntops); 
-
     merge_data(&this -> prob_tops,   &slt -> prob_tops); 
     merge_data(&this -> prob_zprime, &slt -> prob_zprime); 
 
-    merge_data(&this -> p_decaymode_topmass, &slt -> p_decaymode_topmass); 
-    merge_data(&this -> t_decaymode_topmass, &slt -> t_decaymode_topmass); 
+    merge_data(&this -> ms_cut_perf_tops, &slt -> ms_cut_perf_tops); 
+    merge_data(&this -> ms_cut_reco_tops, &slt -> ms_cut_reco_tops); 
+    merge_data(&this -> ms_cut_topmass  , &slt -> ms_cut_topmass  ); 
 
-    merge_data(&this -> p_decaymode_zmass, &slt -> p_decaymode_zmass); 
-    merge_data(&this -> t_decaymode_zmass, &slt -> t_decaymode_zmass); 
-
-    merge_data(&this -> purity_tops    , &slt -> purity_tops); 
-    merge_data(&this -> efficiency_tops, &slt -> efficiency_tops);
-
+    merge_data(&this -> n_tru_tops , &slt -> n_tru_tops); 
 
     sum_data(&this -> truth_res_edge,       &slt -> truth_res_edge); 
     sum_data(&this -> truth_top_edge,       &slt -> truth_top_edge);      
@@ -87,70 +80,20 @@ std::string topefficiency::decaymode(std::vector<top*> ev_tops){
     return out; 
 }
 
-bool topefficiency::strategy(event_template* ev){
-    gnn_event* evn = (gnn_event*)ev; 
-    std::vector<std::string> keys = {}; 
-
-    std::string r_decay = this -> decaymode(evn -> r_tops) + "-" + this -> to_string(evn -> num_bjets, 0); 
-    std::string t_decay = this -> decaymode(evn -> t_tops) + "-" + this -> to_string(evn -> num_bjets, 0); 
-    std::vector<std::string> spl = this -> split(evn -> filename, "/"); 
-    std::string fname = spl[spl.size()-2]; 
-    float weight = evn -> weight; 
-
+void topefficiency::score_mass(double score_t, double mass_t, gnn_event* evn, int* perf_tops, std::vector<float>* out_tops){
+    std::vector<top*> cut_tops = {}; 
     for (size_t x(0); x < evn -> r_tops.size(); ++x){
         top* top_ = evn -> r_tops[x]; 
-        float mass = top_ -> mass / 1000; 
-        std::string key = this -> region(top_ -> pt / 1000, std::abs(top_ -> eta));
-        this -> p_topmass[key][fname].push_back(mass);
-        this -> prob_tops[key][fname].push_back(top_ -> av_score); 
-        this -> p_decaymode_topmass[r_decay][key][fname].push_back(mass); 
-
-        if (!this -> p_ntops[key][fname].size()){this -> p_ntops[key][fname].push_back(0);}
-        this -> p_ntops[key][fname][0]+=1;
-        keys.push_back(key); 
+        float mass = top_ -> mass / 1000;
+        if (!(top_ -> av_score > score_t && mass > mass_t)){continue;}
+        out_tops -> push_back(mass);  
+        cut_tops.push_back(top_); 
     }
 
-    for (size_t x(0); x < evn -> t_tops.size(); ++x){
-        top* top_ = evn -> t_tops[x]; 
-        float mass = top_ -> mass / 1000; 
-        std::string key = this -> region(top_ -> pt / 1000, std::abs(top_ -> eta));
-        this -> t_topmass[key][fname].push_back(mass);
-        this -> t_decaymode_topmass[t_decay][key][fname].push_back(mass); 
-
-        if (!this -> t_ntops[key][fname].size()){this -> t_ntops[key][fname].push_back(0);}
-        this -> t_ntops[key][fname][0]+=1;
-        keys.push_back(key); 
-    }
-
-    for (size_t x(0); x < keys.size(); ++x){
-        std::string key = keys[x]; 
-        if (!this -> t_ntops.count(key)){this -> t_ntops[key][fname].push_back(0);}
-        if (!this -> p_ntops.count(key)){this -> p_ntops[key][fname].push_back(0);}
-    }
-
-    std::vector<zprime*> reco_zprime = evn -> r_zprime;  
-    for (size_t x(0); x < reco_zprime.size(); ++x){
-        zprime* zp_ = reco_zprime[x]; 
-        std::string key = this -> region(zp_ -> pt / 1000, std::abs(zp_ -> eta));
-        this -> p_zmass[key][fname].push_back(zp_ -> mass / 1000); 
-        this -> prob_zprime[key][fname].push_back(zp_ -> av_score); 
-        this -> p_decaymode_zmass[r_decay][key][fname].push_back(zp_ -> mass / 1000); 
-    }
-
-    std::vector<zprime*> truth_zprime = evn -> t_zprime;  
-    for (size_t x(0); x < truth_zprime.size(); ++x){
-        zprime* zp_ = truth_zprime[x];
-        std::string key = this -> region(zp_ -> pt / 1000, std::abs(zp_ -> eta));
-        this -> t_zmass[key][fname].push_back(zp_ -> mass / 1000); 
-        this -> t_decaymode_zmass[t_decay][key][fname].push_back(zp_ -> mass / 1000);
-    }
-
-    float n_perfect_tops = 0; 
-    float n_can_tops = evn -> r_tops.size(); 
-    float n_tru_tops = evn -> t_tops.size();
+    int n_perfect_tops = 0; 
     std::map<int, bool> no_double; 
-    for (size_t x(0); x < evn -> r_tops.size(); ++x){
-        std::map<std::string, particle_template*> ch_t = evn -> r_tops[x] -> children; 
+    for (size_t x(0); x < cut_tops.size(); ++x){
+        std::map<std::string, particle_template*> ch_t = cut_tops[x] -> children; 
         for (size_t y(0); y < evn -> t_tops.size(); ++y){
             if (no_double[y]){continue;}
             std::map<std::string, particle_template*> ch = evn -> t_tops[y] -> children; 
@@ -164,14 +107,70 @@ bool topefficiency::strategy(event_template* ev){
             n_perfect_tops++; 
         } 
     }
-    if (n_can_tops && n_tru_tops && n_perfect_tops){
-        this -> purity_tops[fname].push_back(n_perfect_tops/n_can_tops);
-        this -> efficiency_tops[fname].push_back(n_perfect_tops/n_tru_tops); 
+    *perf_tops = n_perfect_tops; 
+}
+
+bool topefficiency::strategy(event_template* ev){
+    gnn_event* evn = (gnn_event*)ev; 
+    std::vector<std::string> keys = {}; 
+
+    std::vector<std::string> spl = this -> split(evn -> filename, "/"); 
+    std::string fname = spl[spl.size()-2]; 
+    float weight = evn -> weight; 
+
+    for (size_t x(0); x < evn -> r_tops.size(); ++x){
+        top* top_ = evn -> r_tops[x]; 
+        float mass = top_ -> mass / 1000; 
+        std::string key = this -> region(top_ -> pt / 1000, std::abs(top_ -> eta));
+        this -> p_topmass[key][fname].push_back(mass);
+        this -> prob_tops[key][fname].push_back(top_ -> av_score); 
+        keys.push_back(key); 
     }
+
+    for (size_t x(0); x < evn -> t_tops.size(); ++x){
+        top* top_ = evn -> t_tops[x]; 
+        float mass = top_ -> mass / 1000; 
+        std::string key = this -> region(top_ -> pt / 1000, std::abs(top_ -> eta));
+        this -> t_topmass[key][fname].push_back(mass);
+        keys.push_back(key); 
+    }
+
+    std::vector<zprime*> reco_zprime = evn -> r_zprime;  
+    for (size_t x(0); x < reco_zprime.size(); ++x){
+        zprime* zp_ = reco_zprime[x]; 
+        std::string key = this -> region(zp_ -> pt / 1000, std::abs(zp_ -> eta));
+        this -> p_zmass[key][fname].push_back(zp_ -> mass / 1000); 
+        this -> prob_zprime[key][fname].push_back(zp_ -> av_score); 
+    }
+
+    std::vector<zprime*> truth_zprime = evn -> t_zprime;  
+    for (size_t x(0); x < truth_zprime.size(); ++x){
+        zprime* zp_ = truth_zprime[x];
+        std::string key = this -> region(zp_ -> pt / 1000, std::abs(zp_ -> eta));
+        this -> t_zmass[key][fname].push_back(zp_ -> mass / 1000); 
+    }
+
+    int mass_size = this -> iters(this -> mass_start, this -> mass_end, this -> mass_step); 
+    int score_size = this -> iters(this -> score_start, this -> score_end, this -> score_step); 
+    for (size_t x(0); x <= mass_size; ++x){
+        double mass_ = this -> mass_start + this -> mass_step*x; 
+        for (size_t y(0); y <= score_size; ++y){
+            double score_ = this -> score_start + this -> score_step*y; 
+            std::string key = this -> to_string(mass_, 0)  + "-"  + this -> to_string(score_, 3); 
+
+            int n_perfect_tops = 0; 
+            std::vector<float> cut_t = {}; 
+            this -> score_mass(score_, mass_, evn, &n_perfect_tops, &cut_t); 
+            this -> ms_cut_perf_tops[key][fname].push_back(n_perfect_tops); 
+            this -> ms_cut_reco_tops[key][fname].push_back(cut_t.size()); 
+            this -> ms_cut_topmass[key][fname] = cut_t; 
+        }
+    }
+
+    this -> n_tru_tops[fname].push_back(evn -> t_tops.size()); 
 
     this -> truth_top_edge = evn -> t_edge_top; 
     this -> truth_res_edge = evn -> t_edge_res; 
-    this -> truth_ntops    = {evn -> t_ntops};    
     this -> truth_signal   = {evn -> t_signal};   
 
     this -> pred_res_edge_score = {evn -> edge_res_scores}; 

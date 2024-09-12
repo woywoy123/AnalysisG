@@ -16,20 +16,14 @@ cdef extern from "topefficiency.h":
         map[string, map[string, vector[float]]] p_zmass
         map[string, map[string, vector[float]]] t_zmass
 
-        map[string, map[string, vector[int]]]   p_ntops
-        map[string, map[string, vector[int]]]   t_ntops
-
         map[string, map[string, vector[float]]] prob_tops
         map[string, map[string, vector[float]]] prob_zprime
 
-        map[string, map[string, map[string, vector[float]]]] p_decaymode_topmass
-        map[string, map[string, map[string, vector[float]]]] t_decaymode_topmass
+        map[string, map[string, vector[int]]]   ms_cut_perf_tops
+        map[string, map[string, vector[int]]]   ms_cut_reco_tops
+        map[string, map[string, vector[float]]] ms_cut_topmass
 
-        map[string, map[string, map[string, vector[float]]]] p_decaymode_zmass
-        map[string, map[string, map[string, vector[float]]]] t_decaymode_zmass
-
-        map[string, vector[float]] purity_tops
-        map[string, vector[float]] efficiency_tops
+        map[string, vector[int]] n_tru_tops
 
         vector[int] truth_res_edge
         vector[int] truth_top_edge
@@ -53,20 +47,14 @@ cdef class TopEfficiency(SelectionTemplate):
     cdef public dict p_zmass
     cdef public dict t_zmass
 
-    cdef public dict p_ntops
-    cdef public dict t_ntops
-
-    cdef public dict p_decaymode_topmass
-    cdef public dict t_decaymode_topmass
-
-    cdef public dict p_decaymode_zmass
-    cdef public dict t_decaymode_zmass
-
     cdef public dict prob_tops
     cdef public dict prob_zprime
 
-    cdef public dict purity_tops
-    cdef public dict efficiency_tops
+    cdef public dict ms_cut_perf_tops
+    cdef public dict ms_cut_reco_tops
+    cdef public dict ms_cut_topmass
+
+    cdef public dict n_tru_tops
 
     cdef public list truth_res_edge
     cdef public list truth_top_edge

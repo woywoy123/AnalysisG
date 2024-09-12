@@ -24,9 +24,19 @@ class topefficiency: public selection_template
         double eta_step = 0.5; 
         double pt_step  = 100; 
 
+        double score_start = 0; 
+        double score_end   = 1;
+        double score_step  = 0.05;  
+
+        double mass_start = 0; 
+        double mass_end   = 200;
+        double mass_step  = 5;  
+
+
         int iters(double start, double end, double step); 
         std::string region(double pt, double eta); 
         std::string decaymode(std::vector<top*> ev_tops); 
+        void score_mass(double score, double mass, gnn_event* evn, int* perf_tops, std::vector<float>* out_tops);  
 
         std::map<std::string, std::map<std::string, std::vector<float>>> p_topmass = {}; 
         std::map<std::string, std::map<std::string, std::vector<float>>> t_topmass = {}; 
@@ -34,20 +44,14 @@ class topefficiency: public selection_template
         std::map<std::string, std::map<std::string, std::vector<float>>> p_zmass = {}; 
         std::map<std::string, std::map<std::string, std::vector<float>>> t_zmass = {}; 
 
-        std::map<std::string, std::map<std::string, std::vector<int>>>   p_ntops = {}; 
-        std::map<std::string, std::map<std::string, std::vector<int>>>   t_ntops = {}; 
-
         std::map<std::string, std::map<std::string, std::vector<float>>> prob_tops = {}; 
         std::map<std::string, std::map<std::string, std::vector<float>>> prob_zprime = {}; 
 
-        std::map<std::string, std::map<std::string, std::map<std::string, std::vector<float>>>> p_decaymode_topmass = {}; 
-        std::map<std::string, std::map<std::string, std::map<std::string, std::vector<float>>>> t_decaymode_topmass = {}; 
+        std::map<std::string, std::map<std::string, std::vector<int>>>   ms_cut_perf_tops = {}; 
+        std::map<std::string, std::map<std::string, std::vector<int>>>   ms_cut_reco_tops = {}; 
+        std::map<std::string, std::map<std::string, std::vector<float>>> ms_cut_topmass   = {}; 
+        std::map<std::string, std::vector<int>> n_tru_tops  = {}; 
 
-        std::map<std::string, std::map<std::string, std::map<std::string, std::vector<float>>>> p_decaymode_zmass = {}; 
-        std::map<std::string, std::map<std::string, std::map<std::string, std::vector<float>>>> t_decaymode_zmass = {}; 
-
-        std::map<std::string, std::vector<float>> purity_tops = {}; 
-        std::map<std::string, std::vector<float>> efficiency_tops = {}; 
 
         // ROC curve variables
         std::vector<int> truth_res_edge = {}; 

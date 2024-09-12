@@ -440,27 +440,28 @@ cdef class TH2F(BasePlotting):
 
     @property
     def yBins(self): return self.ptr.y_bins
-
     @yBins.setter
     def yBins(self, int val): self.ptr.y_bins = val
 
     @property
     def xBins(self): return self.ptr.x_bins
-
     @xBins.setter
     def xBins(self, int val): self.ptr.x_bins = val
 
     @property
     def xData(self): return self.ptr.x_data;
-
     @xData.setter
     def xData(self, list val): self.ptr.x_data = <vector[float]>(val)
 
     @property
     def yData(self): return self.ptr.y_data;
-
     @yData.setter
     def yData(self, list val): self.ptr.y_data = <vector[float]>(val)
+
+    @property
+    def Weights(self): return self.ptr.weights
+    @Weights.setter
+    def Weights(self, list val): self.ptr.weights = <vector[float]>(val)
 
     cdef __build__(self):
         cdef float x_max, x_min
@@ -479,10 +480,12 @@ cdef class TH2F(BasePlotting):
 
         h = bh.Histogram(
             bh.axis.Regular(self.ptr.x_bins, x_min, x_max),
-            bh.axis.Regular(self.ptr.y_bins, y_min, y_max)
+            bh.axis.Regular(self.ptr.y_bins, y_min, y_max),
+            storage = bh.storage.Weight()
         )
 
-        h.fill(self.ptr.x_data, self.ptr.y_data)
+        if not self.ptr.weights.size(): h.fill(self.ptr.x_data, self.ptr.y_data)
+        else: h.fill(self.ptr.x_data, self.ptr.y_data, weight = self.ptr.weights)
         return h
 
     cdef void __compile__(self):
