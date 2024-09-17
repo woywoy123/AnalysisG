@@ -37,9 +37,12 @@ dataloader::~dataloader(){
     this -> data_set = nullptr;
     delete this -> data_index; 
     for (size_t x(0); x < data_ -> size(); ++x){
-        data_ -> at(x) -> _purge_all(); 
-        delete data_ -> at(x); 
+        (*data_)[x] -> _purge_all(); 
+        delete (*data_)[x]; 
+        (*data_)[x] = nullptr;
     }
+    data_ -> clear();
+    data_ -> shrink_to_fit();
     delete data_; 
 }
 

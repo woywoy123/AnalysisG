@@ -136,11 +136,9 @@ bool dataloader::dump_graphs(std::string path, int threads){
         break; 
     }
 
-    std::map<std::string, graph_t*>::iterator itr; 
-    for (itr = restored -> begin(); itr != restored -> end(); ++itr){
-        itr -> second -> _purge_all();
-        delete itr -> second; 
-    }
+    std::map<std::string, graph_t*>::iterator itr = restored -> begin(); 
+    for (; itr != restored -> end(); ++itr){itr -> second -> _purge_all(); delete itr -> second;}
+    restored -> clear(); 
     delete restored; 
 
     if (valid){this -> success("Graph cache has been validated!"); return true;}
@@ -159,8 +157,7 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
         ior -> start(pth, "read"); 
         for (size_t p(0); p < gr_ev -> size(); ++p){
             graph_hdf5_w datar; 
-            ior -> read(&datar, (*gr_ev)[p]); 
-
+            ior -> read(&datar, (*gr_ev)[p]);
             graph_hdf5 w      = graph_hdf5(); 
             w.num_nodes       = datar.num_nodes; 
             w.event_index     = datar.event_index;
@@ -190,6 +187,7 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
             gx -> deserialize(&w); 
             (*c_gr)[p] = gx;
             (*prg) = p+1; 
+            datar.flush_data(); 
         }
         ior -> end();
         delete ior; 
@@ -222,6 +220,7 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
             if (kfound){break;}
         }
         load_hash[hash] = load + kfound;  
+        free(data_k[x].hash);
     }
 
     size_t len_cache = 0; 
@@ -284,6 +283,7 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
             graph_t* gr = (*datax)[p];
             (*restored)[*gr -> hash] = gr;  
         }
+        datax -> clear(); 
         datax -> shrink_to_fit(); 
         delete datax; 
         cache_rebuild[x] = nullptr; 

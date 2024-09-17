@@ -42,25 +42,49 @@ struct graph_hdf5_w {
     double event_weight = 1; 
     long   event_index = -1;
 
-    char* hash; 
-    char* filename; 
-    char* edge_index; 
+    char* hash = nullptr; 
+    char* filename = nullptr; 
+    char* edge_index = nullptr; 
 
-    char* data_map_graph;
-    char* data_map_node;  
-    char* data_map_edge;  
+    char* data_map_graph = nullptr;
+    char* data_map_node = nullptr;  
+    char* data_map_edge = nullptr;  
 
-    char* truth_map_graph; 
-    char* truth_map_node;         
-    char* truth_map_edge;         
+    char* truth_map_graph = nullptr; 
+    char* truth_map_node = nullptr;         
+    char* truth_map_edge = nullptr;         
 
-    char* data_graph; 
-    char* data_node; 
-    char* data_edge; 
+    char* data_graph = nullptr; 
+    char* data_node = nullptr; 
+    char* data_edge = nullptr; 
 
-    char* truth_graph; 
-    char* truth_node; 
-    char* truth_edge;
+    char* truth_graph = nullptr; 
+    char* truth_node = nullptr; 
+    char* truth_edge = nullptr;
+
+
+    void flush_data(){
+        free(this -> hash); 
+        free(this -> filename); 
+        free(this -> edge_index); 
+
+        free(this -> data_map_graph); 
+        free(this -> data_map_node); 
+        free(this -> data_map_edge); 
+
+        free(this -> truth_map_graph); 
+        free(this -> truth_map_node);
+        free(this -> truth_map_edge); 
+
+        free(this -> data_graph); 
+        free(this -> data_node); 
+        free(this -> data_edge); 
+
+        free(this -> truth_graph); 
+        free(this -> truth_node); 
+        free(this -> truth_edge); 
+    }
+
 }; 
 
 
