@@ -183,4 +183,3 @@ std::string tools::decode64(std::string const& encoded_string){
     }
     return ret;
 }
-

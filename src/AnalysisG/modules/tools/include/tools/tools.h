@@ -50,7 +50,7 @@ class tools
                 if (end > n){ end = n; }
                 out.push_back(std::vector<G>(v -> begin() + ib, v -> begin() + end)); 
             }
-            return std::move(out); 
+            return out; 
         }
 
         template <typename g>
@@ -84,7 +84,7 @@ class tools
         std::vector<g*> put(std::vector<g*>* src, std::vector<int>* trg){
             typename std::vector<g*> out(src -> size(), nullptr); 
             for (size_t x(0); x < trg -> size(); ++x){out[x] = (*src)[(*trg)[x]];}
-            return std::move(out); 
+            return out; 
         }
 
         template <typename g>

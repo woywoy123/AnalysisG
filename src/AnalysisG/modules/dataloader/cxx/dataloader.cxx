@@ -10,12 +10,6 @@ dataloader::dataloader(){
 }
 
 dataloader::~dataloader(){
-    if (this -> cuda_mem){
-        this -> tensor_op = nullptr; 
-        this -> cuda_mem -> join(); 
-        delete this -> cuda_mem; 
-    }
-
     for (size_t x(0); x < this -> truth_map_graph.size(); ++x){delete this -> truth_map_graph[x];}
     for (size_t x(0); x < this -> truth_map_node.size(); ++x){delete this -> truth_map_node[x];}
     for (size_t x(0); x < this -> truth_map_edge.size(); ++x){delete this -> truth_map_edge[x];}
@@ -47,7 +41,7 @@ dataloader::~dataloader(){
 }
 
 void dataloader::shuffle(std::vector<int>* idx){
-    std::shuffle(idx -> begin(), idx -> end(), this -> rnd); 
+    for (size_t x(0); x < 10; ++x){std::shuffle(idx -> begin(), idx -> end(), this -> rnd);}
 }
 
 void dataloader::shuffle(std::vector<graph_t*>* idx){
@@ -61,7 +55,7 @@ void dataloader::clean_data_elements(
     int hit = -1; 
     std::map<std::string, int>* dd = *data_map; 
     for (int x(0); x < loader_map -> size(); ++x){
-        std::map<std::string, int>* ld = loader_map -> at(x); 
+        std::map<std::string, int>* ld = (*loader_map)[x];
         if (ld -> size() != dd -> size()){continue;}
 
         int same = 0;  
@@ -76,7 +70,7 @@ void dataloader::clean_data_elements(
     } 
     if (hit < 0){loader_map -> push_back(dd); return; }
     delete *data_map; 
-    *data_map = loader_map -> at(hit); 
+    *data_map = (*loader_map)[hit];
 }
 
 void dataloader::extract_data(graph_t* gr){
@@ -86,9 +80,9 @@ void dataloader::extract_data(graph_t* gr){
     this -> clean_data_elements(&gr -> data_map_graph , &this -> data_map_graph);
     this -> clean_data_elements(&gr -> data_map_node  , &this -> data_map_node);
     this -> clean_data_elements(&gr -> data_map_edge  , &this -> data_map_edge);
+    this -> hash_map[*gr -> hash] = this -> data_set -> size(); 
+    this -> data_index -> push_back(this -> data_set -> size()); 
     this -> data_set -> push_back(gr); 
-    this -> hash_map[*gr -> hash] = this -> data_index -> size(); 
-    this -> data_index -> push_back(this -> data_index -> size()); 
 }
 
 
@@ -112,39 +106,4 @@ void dataloader::datatransfer(torch::TensorOptions* op, int threads){
     for (size_t g(0); g < th.size(); ++g){th[g] -> join(); delete th[g];}
     prg -> join(); delete prg; 
 
-    if (this -> tensor_op){return;}
-    this -> tensor_op = op; 
-}
-
-void dataloader::cuda_memory_server(){
-    if (!this -> tensor_op){return;}
-    torch::TensorOptions* op = new torch::TensorOptions(c10::kCPU);
-    int id = this-> tensor_op -> device().index(); 
-
-    CUdevice dev; 
-    cuDeviceGet(&dev, id); 
-
-    size_t free, total; 
-    cuMemGetInfo(&free, &total); 
-
-    double perc = 100.0*(total - free)/(double)total; 
-    bool full_purge = perc > 95; 
-    for (size_t x(0); x < this -> data_set -> size(); ++x){
-        std::this_thread::sleep_for(std::chrono::microseconds(10));
-        if (!this -> tensor_op){break;}
-        graph_t* gr = (*this -> data_set)[x]; 
-        if (gr -> in_use == 2){continue;}
-        if (gr -> in_use == 1 && !full_purge){continue;}
-        if (gr -> in_use == -1){continue;}
-        gr -> in_use = 0; 
-        gr -> transfer_to_device(op);  
-        gr -> in_use = -1; 
-    }
-    delete op; 
-}
-
-void dataloader::start_cuda_server(){
-    if (this -> cuda_mem){return;}
-    auto monitor = [this](){while (this -> tensor_op){this -> cuda_memory_server();}}; 
-    this -> cuda_mem = new std::thread(monitor);
 }

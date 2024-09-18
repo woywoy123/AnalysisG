@@ -100,9 +100,6 @@ torch::Tensor* model_template::assign_features(std::string inpt, graph_enum type
 
 
 void model_template::forward(graph_t* data, bool train){
-    if (data -> in_use == 0){
-        while (data -> in_use == 0){std::this_thread::sleep_for(std::chrono::milliseconds(1));}
-    }
     data -> transfer_to_device(this -> m_option); 
     this -> flush_outputs(); 
     this -> m_batched = false; 
@@ -254,6 +251,7 @@ void model_template::flush_outputs(){
 
     graph_enum mode; 
     std::map<std::string, std::tuple<torch::Tensor*, loss_enum>>::iterator itx; 
+
     mode = graph_enum::truth_graph; 
     itx = this -> m_o_graph.begin(); 
     for (; itx != this -> m_o_graph.end(); ++itx){delete std::get<0>(itx -> second); std::get<0>(itx -> second) = nullptr;}

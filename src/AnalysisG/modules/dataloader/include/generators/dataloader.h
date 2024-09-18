@@ -37,7 +37,6 @@ class dataloader:
         std::vector<graph_t*> get_random(int num = 5); 
         void extract_data(graph_t* gr); 
         void datatransfer(torch::TensorOptions* op, int threads = 10);
-        void start_cuda_server(); 
         bool dump_graphs(std::string path = "./", int threads = 10); 
 
         void restore_graphs(std::vector<std::string> paths, int threads); 
@@ -78,8 +77,6 @@ class dataloader:
         std::vector<int>*         data_index = nullptr; 
         std::vector<graph_t*>*       gr_test = nullptr; 
         std::vector<graph_t*>*      data_set = nullptr; 
-        torch::TensorOptions*      tensor_op = nullptr; 
-        std::thread*                cuda_mem = nullptr; 
 
         std::default_random_engine rnd{}; 
 }; 

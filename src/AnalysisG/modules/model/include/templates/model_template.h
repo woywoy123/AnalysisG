@@ -9,6 +9,7 @@
 class metrics; 
 class analysis; 
 class model_template; 
+class optimizer; 
 struct graph_t; 
 struct variable_t; 
 
@@ -94,7 +95,7 @@ class model_template:
         void prediction_edge_feature(std::string, torch::Tensor); 
         void prediction_extra(std::string, torch::Tensor); 
 
-        torch::Tensor compute_loss(std::string, graph_enum); 
+        torch::Tensor* compute_loss(std::string, graph_enum); 
 
         void evaluation_mode(bool mode = true); 
 
@@ -104,6 +105,7 @@ class model_template:
         friend struct graph_t; 
         friend class metrics; 
         friend class analysis;
+        friend class optimizer; 
         friend void execution(
                 model_template*, 
                 std::vector<graph_t*>*, 
@@ -139,7 +141,8 @@ class model_template:
         opt_enum         e_optim = opt_enum::invalid_optimizer;  
         std::string      s_optim = ""; 
 
-        std::vector<torch::nn::Sequential*> m_data = {}; 
+        std::vector<torch::nn::Sequential*> m_data = {};
+        std::vector<torch::Tensor*> _losses = {};  
 
         std::map<std::string, torch::Tensor*> m_i_graph = {}; 
         std::map<std::string, torch::Tensor*> m_i_node = {}; 

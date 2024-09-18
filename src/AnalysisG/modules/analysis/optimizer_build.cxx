@@ -75,7 +75,6 @@ std::map<std::string, std::string> analysis::progress_report(){
         plt -> dump_plots(itx -> second -> k); 
         itx -> second -> waiting_plot = nullptr;  
     }
-    this -> loader -> start_cuda_server(); 
     return output; 
 }
 

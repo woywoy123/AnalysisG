@@ -70,7 +70,7 @@ static torch::Tensor build_tensor(std::vector<G>* _data, at::ScalarType _op, g p
 
     int s = linear.size(); 
     g d[s] = {0}; 
-    for (int x(0); x < s; ++x){d[x] = linear.at(x);}
+    for (int x(0); x < s; ++x){d[x] = linear[x];}
     if (dims.size() == 1){dims.push_back(1);}
     return torch::from_blob(d, dims, (*op).dtype(_op)).clone(); 
 }

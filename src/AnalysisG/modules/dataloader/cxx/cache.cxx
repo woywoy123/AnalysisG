@@ -5,7 +5,6 @@
 bool dataloader::dump_graphs(std::string path, int threads){
     auto serialize = [](
             std::vector<graph_t*>* quant, 
-            std::vector<int>*  quant_idx,
             std::vector<std::tuple<graph_hdf5_w, graph_hdf5>>* data_c,
             std::map<std::string, std::vector<int>*>* fname_index, 
             size_t* handle
@@ -58,7 +57,6 @@ bool dataloader::dump_graphs(std::string path, int threads){
     if (!this -> data_set -> size()){this -> warning("Nothing to do. Skipping..."); return true;}
     int x = (this -> data_set -> size()/threads); 
     std::vector<std::vector<graph_t*>> quant = this -> discretize(this -> data_set, x); 
-    std::vector<std::vector<int>>  quant_idx = this -> discretize(this -> data_index, x);
     std::vector<std::vector<std::tuple<graph_hdf5_w, graph_hdf5>>*> serials(quant.size(), nullptr);  
 
     // do prealloc 
@@ -72,7 +70,7 @@ bool dataloader::dump_graphs(std::string path, int threads){
     std::vector<size_t> handles(quant.size(), 0); 
     std::vector<std::thread*> th_(quant.size(), nullptr); 
     for (size_t t(0); t < th_.size(); ++t){
-        th_[t] = new std::thread(serialize, &quant[t], &quant_idx[t], serials[t], &fnames[t], &handles[t]);
+        th_[t] = new std::thread(serialize, &quant[t], serials[t], &fnames[t], &handles[t]);
     }
 
     std::string title = "Graph Serialization"; 
@@ -195,7 +193,6 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
 
 
     std::vector<folds_t> data_k = {}; 
-    std::map<std::string, bool> load_hash; 
     std::string path = this -> setting -> training_dataset; 
     if (path.size()){
         io* io_g = new io(); 
@@ -205,22 +202,22 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
         delete io_g; 
     }
 
+    std::map<std::string, bool> load_hash; 
     bool eval = this -> setting -> evaluation; 
     bool fold = this -> setting -> validation;
     bool train = this -> setting -> training; 
     std::vector<int> kv = this -> setting -> kfold; 
     for (size_t x(0); x < data_k.size(); ++x){
         std::string hash = std::string(data_k[x].hash);
-        bool load = data_k[x].is_eval * eval; 
-        load += data_k[x].is_valid * fold; 
-        load += data_k[x].is_train * train; 
-        bool kfound = false; 
-        for (size_t k(0); k < kv.size(); ++k){
-            kfound = (kv[k] == data_k[x].k+1); 
-            if (kfound){break;}
-        }
-        load_hash[hash] = load + kfound;  
         free(data_k[x].hash);
+        if (this -> hash_map.count(hash)){continue;}
+        if (load_hash.count(hash)){continue;}
+        if (data_k[x].is_eval * eval){load_hash[hash] = true; continue;}
+        for (size_t k(0); k < kv.size(); ++k){
+            if (kv[k] != data_k[x].k+1){continue;}
+            load_hash[hash] = fold * data_k[x].is_valid + train * data_k[x].is_train; 
+            break;
+        }
     }
 
     size_t len_cache = 0; 
@@ -259,9 +256,7 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
     std::thread* prg = new std::thread(this -> progressbar2, &handles, &len_cache, &title); 
 
     std::vector<std::thread*> th_(cache_io.size(), nullptr); 
-    std::vector<std::vector<graph_hdf5>*> data(cache_io.size(), nullptr); 
     std::vector<std::vector<graph_t*>*> cache_rebuild(cache_io.size(), nullptr); 
-
     for (size_t x(0); x < cache_io.size(); ++x){
         std::vector<std::string> lsx = this -> split(cache_io[x], "/"); 
         title = "Reading HDF5 -> " + lsx[lsx.size()-1]; 
@@ -281,13 +276,15 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
         if (!datax){continue;}
         for (size_t p(0); p < datax -> size(); ++p){
             graph_t* gr = (*datax)[p];
-            (*restored)[*gr -> hash] = gr;  
+            (*restored)[(*gr -> hash)] = gr;  
         }
         datax -> clear(); 
         datax -> shrink_to_fit(); 
         delete datax; 
         cache_rebuild[x] = nullptr; 
     }
+    cache_rebuild.clear(); 
+    cache_rebuild.shrink_to_fit(); 
     prg -> join(); delete prg; prg = nullptr; 
     return restored; 
 }
@@ -296,8 +293,12 @@ void dataloader::restore_graphs(std::vector<std::string> path, int threads){
     std::map<std::string, graph_t*>* restored = this -> restore_graphs_(path, threads); 
 
     std::map<std::string, graph_t*>::iterator itr; 
-    for (itr = restored -> begin(); itr != restored -> end(); ++itr){this -> extract_data(itr -> second);}
+    for (itr = restored -> begin(); itr != restored -> end(); ++itr){
+        this -> extract_data(itr -> second);
+        (*restored)[itr -> first] = nullptr; 
+    }
     this -> success("Restored " + std::to_string(restored -> size()) + " Graphs from cache!"); 
+    restored -> clear(); 
     delete restored; 
 }
 

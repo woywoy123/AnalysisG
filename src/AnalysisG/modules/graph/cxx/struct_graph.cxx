@@ -105,8 +105,8 @@ void graph_t::transfer_to_device(torch::TensorOptions* dev){
     this -> _transfer_to_device(&this -> dev_truth_edge[dev_] , this -> truth_edge , dev); 
 
     torch::Tensor dt = torch::from_blob(&this -> event_weight, {1}, torch::TensorOptions(torch::kCPU).dtype(torch::kDouble));
-    this -> dev_event_weight[dev_] = new torch::Tensor(dt.clone().to(dev -> device())); 
-    this -> dev_edge_index[dev_] = new torch::Tensor(this -> edge_index -> to(dev -> device())); 
+    this -> dev_edge_index[dev_]   = new torch::Tensor(this -> edge_index -> to(dev -> device(), true)); 
+    this -> dev_event_weight[dev_] = new torch::Tensor(dt.clone().to(dev -> device(), true)); 
 
     this -> device_index[dev_] = true; 
     this -> device = dev_in; 
@@ -116,7 +116,7 @@ void graph_t::_transfer_to_device(std::vector<torch::Tensor*>** trgt, std::vecto
     if (!src || (*trgt)){return;}
 
     *trgt = new std::vector<torch::Tensor*>(src -> size(), nullptr);
-    for (size_t x(0); x < src -> size(); ++x){(**trgt)[x] = new torch::Tensor((*src)[x] -> to(dev -> device()));}
+    for (size_t x(0); x < src -> size(); ++x){(**trgt)[x] = new torch::Tensor((*src)[x] -> to(dev -> device(), true));}
 }
 
 void graph_t::meta_serialize(std::map<std::string, int>* data, std::string* out){

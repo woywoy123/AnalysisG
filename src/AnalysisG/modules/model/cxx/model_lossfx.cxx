@@ -13,7 +13,7 @@ void model_template::set_output_features(
     }
 }
 
-torch::Tensor model_template::compute_loss(std::string pred, graph_enum feat){
+torch::Tensor* model_template::compute_loss(std::string pred, graph_enum feat){
     std::tuple<torch::Tensor*, loss_enum>* truth = nullptr; 
     torch::Tensor* prediction = nullptr; 
     switch(feat){
@@ -22,38 +22,46 @@ torch::Tensor model_template::compute_loss(std::string pred, graph_enum feat){
         case graph_enum::truth_edge:  prediction = this -> m_p_edge[pred];  truth = &this -> m_o_edge[pred]; break;
         default: break;
     }
-    if (!prediction){return torch::Tensor();}
-    torch::Tensor lss = this -> m_loss -> loss(prediction,  std::get<0>(*truth), std::get<1>(*truth)); 
-    this -> m_p_loss[feat][pred] = lss; 
-    return lss; 
+    if (!prediction){return nullptr;}
+    this -> m_p_loss[feat][pred] = this -> m_loss -> loss(prediction,  std::get<0>(*truth), std::get<1>(*truth)); 
+    return &this -> m_p_loss[feat][pred]; 
 }
 
 void model_template::train_sequence(bool train){
     if (this -> inference_mode){return;}
 
     graph_enum mode; 
-    std::vector<torch::Tensor> losses = {};
     std::map<std::string, std::string> gr = this -> o_graph; 
     std::map<std::string, std::string> nd = this -> o_node; 
     std::map<std::string, std::string> ed = this -> o_edge; 
+    if (!this -> _losses.size()){
+        this -> _losses = std::vector<torch::Tensor*>(gr.size() + nd.size() + ed.size(), nullptr);
+    }
 
+    int inx = -1; 
     mode = graph_enum::truth_graph; 
     std::map<std::string, std::string>::iterator itr; 
-    for (itr = gr.begin(); itr != gr.end(); ++itr){losses.push_back(this -> compute_loss(itr -> first, mode));}
+    for (itr = gr.begin(); itr != gr.end(); ++itr){this -> _losses[++inx] = this -> compute_loss(itr -> first, mode);}
 
     mode = graph_enum::truth_node; 
-    for (itr = nd.begin(); itr != nd.end(); ++itr){losses.push_back(this -> compute_loss(itr -> first, mode));}
+    for (itr = nd.begin(); itr != nd.end(); ++itr){this -> _losses[++inx] = this -> compute_loss(itr -> first, mode);}
 
     mode = graph_enum::truth_edge; 
-    for (itr = ed.begin(); itr != ed.end(); ++itr){losses.push_back(this -> compute_loss(itr -> first, mode));}
+    for (itr = ed.begin(); itr != ed.end(); ++itr){this -> _losses[++inx] = this -> compute_loss(itr -> first, mode);}
 
     if (!train){return;}
     this -> m_optim -> zero_grad();
 
-    torch::Tensor lss = losses.at(0); 
-    for (size_t x(1); x < losses.size(); ++x){lss += losses.at(x);}
-    lss.backward(); 
+    inx = -1; 
+    torch::Tensor lss;
+    for (size_t x(0); x < this -> _losses.size(); ++x){
+        if (!this -> _losses[x]){continue;}
+        if (inx == -1){lss = *this -> _losses[x]; inx = x;}
+        else {lss += *this -> _losses[x];} 
+        this -> _losses[x] = nullptr; 
+    }
 
+    lss.backward(); 
     this -> m_optim -> step();
 }
 

@@ -13,7 +13,8 @@ std::vector<graph_t*> dataloader::get_random(int num){
 }
 
 void dataloader::generate_kfold_set(int k){
-    if (!this -> test_set -> size()){this -> shuffle(this -> data_index);}
+    if (this -> k_fold_validation.size()){return;}
+    if (!this -> test_set -> size()){return;} //this -> shuffle(this -> data_index);}
 
     bool all = false;
     for (int x(0); x < k; ++x){
@@ -66,12 +67,14 @@ std::vector<graph_t*>* dataloader::get_k_train_set(int k){
         return this -> gr_k_fold_training[k];
     }
 
-    if (!this -> k_fold_training.count(k)){
+    std::vector<int>* kdata = nullptr; 
+    if (!this -> k_fold_training.size()){kdata = this -> data_index;}
+    else if (!this -> k_fold_training.count(k)){
         this -> warning("Specified an invalid k-fold index."); 
         return nullptr;
     }
+    else {kdata = this -> k_fold_training[k];}
 
-    std::vector<int>* kdata = this -> k_fold_training[k]; 
     this -> shuffle(kdata); 
     this -> gr_k_fold_training[k] = new std::vector<graph_t*>();
     this -> put(this -> gr_k_fold_training[k], this -> data_set, kdata); 
@@ -127,7 +130,6 @@ std::map<std::string, std::vector<graph_t*>>* dataloader::get_inference(){
 
 // ................... dataset dumping ........................ //
 void dataloader::dump_dataset(std::string path){
-    io* io_g = new io(); 
     std::vector<folds_t> data = {};  
     std::map<int, std::vector<int>*> data_e; 
     std::map<int, std::vector<int>*>::iterator itr; 
@@ -165,6 +167,8 @@ void dataloader::dump_dataset(std::string path){
         kf.hash = const_cast<char*>(gr -> hash -> data()); 
         data.push_back(kf); 
     }
+
+    io* io_g = new io(); 
     io_g -> start(path, "write"); 
     io_g -> write(&data, "kfolds"); 
     io_g -> end(); 
@@ -175,9 +179,10 @@ void dataloader::dump_dataset(std::string path){
 bool dataloader::restore_dataset(std::string path){
     if (!path.size()){return true;}
     if (this -> k_fold_training.size()){return true;}
+
+    std::vector<folds_t> data = {}; 
     io* io_g = new io(); 
     io_g -> start(path, "read"); 
-    std::vector<folds_t> data = {}; 
     io_g -> read(&data, "kfolds"); 
     io_g -> end(); 
     delete io_g; 
@@ -199,7 +204,8 @@ bool dataloader::restore_dataset(std::string path){
 
         std::vector<int>* bin = nullptr; 
         if (kf -> is_train){bin = this -> k_fold_training[kv];}
-        else {bin = this -> k_fold_validation[kv];}
+        else if (kf -> is_valid){bin = this -> k_fold_validation[kv];}
+        else {continue;}
         bin -> push_back(index); 
     }
     if (!data.size()){return false;}
@@ -211,7 +217,6 @@ bool dataloader::restore_dataset(std::string path){
     std::map<int, std::vector<int>*>::iterator itr = this -> k_fold_training.begin(); 
     for (; itr != this -> k_fold_training.end(); ++itr){
         int k = itr -> first; 
-        std::vector<int>* val = itr -> second; 
         this -> success("---------------- k-Fold: " + this -> to_string(k+1) + " ----------------"); 
         this -> success("-> train: " + this -> to_string(this -> k_fold_training[k] -> size()) + ")"); 
         this -> success("-> validation: " + this -> to_string(this -> k_fold_validation[k] -> size()) + ")"); 

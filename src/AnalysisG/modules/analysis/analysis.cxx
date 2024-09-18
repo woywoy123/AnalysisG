@@ -144,13 +144,9 @@ void analysis::start(){
         }
         this -> loader -> restore_graphs(cached, threads_); 
     }
-    else if (pth_cache.size()){
-        std::map<std::string, std::string>::iterator itg = this -> graph_types.begin(); 
-        for (; itg != this -> graph_types.end(); ++itg){
-            this -> loader -> restore_graphs(pth_cache + itg -> first, threads_);
-        }
-    }
-
+    else if (pth_cache.size()){this -> loader -> restore_graphs(pth_cache, threads_);}
+  
+    if (!this -> loader -> data_set -> size()){return this -> failure("No Dataset was found for training. Aborting...");}
     if (this -> model_sessions.size()){
         this -> loader -> restore_dataset(this -> m_settings.training_dataset); 
         this -> build_dataloader(true); 

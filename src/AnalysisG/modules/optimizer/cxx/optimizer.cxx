@@ -65,6 +65,7 @@ void optimizer::check_model_sessions(int example_size, std::map<std::string, mod
 void optimizer::training_loop(int k, int epoch){
     std::vector<graph_t*>* smpl = this -> loader -> get_k_train_set(k); 
     model_template* model = this -> kfold_sessions[k]; 
+    model -> evaluation_mode(false);
 
     int l = smpl -> size(); 
     model_report* mr = this -> reports[this -> m_settings.run_name + std::to_string(k)]; 
@@ -75,16 +76,14 @@ void optimizer::training_loop(int k, int epoch){
         l = batched.size();  
         for (int x(0); x < l; ++x){
             model -> forward(batched[x], true);
-            this -> metric -> capture(mode_enum::training, k, epoch, l); 
             mr -> progress = float(x+1)/float(l); 
+            this -> metric -> capture(mode_enum::training, k, epoch, l); 
         }
     }
     else {
         for (int x(0); x < l; ++x){
             graph_t* gr = (*smpl)[x]; 
-            gr -> in_use = 2; 
             model -> forward(gr, true);
-            gr -> in_use = 1; 
             mr -> progress = float(x+1)/float(l); 
             this -> metric -> capture(mode_enum::training, k, epoch, l); 
         }
@@ -100,14 +99,13 @@ void optimizer::validation_loop(int k, int epoch){
     model_report* mr = this -> reports[this -> m_settings.run_name + std::to_string(k)]; 
     mr -> mode = "validation"; 
 
+    torch::NoGradGuard no_grd; 
     int l = smpl -> size(); 
     for (int x(0); x < l; ++x){
         graph_t* gr = (*smpl)[x]; 
-        gr -> in_use = 2; 
         model -> forward(gr, false);
-        this -> metric -> capture(mode_enum::validation, k, epoch, l); 
         mr -> progress = float(x+1)/float(l);
-        gr -> in_use = 1; 
+        this -> metric -> capture(mode_enum::validation, k, epoch, l); 
     }
 }
 
@@ -119,24 +117,30 @@ void optimizer::evaluation_loop(int k, int epoch){
     model_report* mr = this -> reports[this -> m_settings.run_name + std::to_string(k)]; 
     mr -> mode = "evaluation"; 
 
+    torch::NoGradGuard no_grd; 
     int l = smpl -> size(); 
     for (int x(0); x < l; ++x){
         graph_t* gr = (*smpl)[x]; 
-        gr -> in_use = 2; 
         model -> forward(gr, false);
         this -> metric -> capture(mode_enum::evaluation, k, epoch, l); 
         mr -> progress = float(x+1)/float(l); 
-        gr -> in_use = 1; 
     }
 }
 
 void optimizer::launch_model(int k){
     auto lamb = [this](int k, int ep){
         model_template* model = this -> kfold_sessions[k]; 
+
         model -> epoch = ep+1; 
         model -> kfold = k+1;
 
-        if (!this -> m_settings.continue_training){}
+         // check if the next epoch has a file i+2;
+        std::string pth = model -> model_checkpoint_path; 
+        pth += "state/epoch-" + std::to_string(ep+2) + "/";  
+        pth += "kfold-" + std::to_string(k+1) + "_model.pt"; 
+
+        if (this -> m_settings.continue_training && this -> is_file(pth)){return;}
+        else if (!this -> m_settings.continue_training){} 
         else if (model -> restore_state()){return;}
 
         if (this -> m_settings.training){this -> training_loop(k, ep);}
@@ -148,8 +152,12 @@ void optimizer::launch_model(int k){
         model_report* mr = this -> reports[this -> m_settings.run_name + std::to_string(k)]; 
         mr -> waiting_plot = this -> metric; 
         while (mr -> waiting_plot){std::this_thread::sleep_for(std::chrono::milliseconds(10));}
+
         //c10::cuda::CUDACachingAllocator::emptyCache();  
     }; 
+
+    //torch::init_num_threads();
+    //torch::set_num_threads(48);
 
     for (int ep(0); ep < this -> m_settings.epochs; ++ep){lamb(k, ep);}
     model_report* mr = this -> reports[this -> m_settings.run_name + std::to_string(k)]; 
