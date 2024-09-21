@@ -57,8 +57,6 @@ cdef class Analysis:
         self.optim_.append(op)
 
     def AddModelInference(self, ModelTemplate model, str run_name = "run_name"):
-        import ROOT
-        ROOT.EnableImplicitMT()
         self.ana.add_model(model.nn_ptr, enc(run_name))
         self.models_.append(model)
 

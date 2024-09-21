@@ -1,4 +1,5 @@
 #include <generators/analysis.h>
+#include <ROOT/RDataFrame.hxx>
 
 analysis::analysis(){
     this -> prefix = "Analysis"; 
@@ -102,6 +103,7 @@ void analysis::check_cache(){
 }
 
 void analysis::start(){
+
     if (!this -> started){
         this -> success("+============================+"); 
         this -> success("| Starting Analysis Session! |");
@@ -116,6 +118,8 @@ void analysis::start(){
     }
 
     int threads_ = this -> m_settings.threads; 
+    ROOT::EnableImplicitMT(); 
+
     std::string pth_cache = this -> m_settings.graph_cache; 
     this -> loader -> setting = &this -> m_settings; 
 
@@ -145,7 +149,8 @@ void analysis::start(){
         this -> loader -> restore_graphs(cached, threads_); 
     }
     else if (pth_cache.size()){this -> loader -> restore_graphs(pth_cache, threads_);}
-  
+    //at::set_num_interop_threads(1); 
+
     if (!this -> loader -> data_set -> size()){return this -> failure("No Dataset was found for training. Aborting...");}
     if (this -> model_sessions.size()){
         this -> loader -> restore_dataset(this -> m_settings.training_dataset); 

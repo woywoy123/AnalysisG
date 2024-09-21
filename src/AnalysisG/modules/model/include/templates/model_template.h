@@ -125,10 +125,16 @@ class model_template:
                 std::map<std::string, std::tuple<torch::Tensor*, loss_enum>>*
         ); 
 
+        template <typename G, typename F>
+        void assign(std::map<std::string, G>* inpt, graph_enum mode, F* data){
+            typename std::map<std::string, G>::iterator itr = inpt -> begin(); 
+            for (; itr != inpt -> end(); ++itr){this -> assign_features(itr -> first, mode, data);}
+        }
+
 
         static void set_device(std::string*, model_template*); 
         torch::Tensor* assign_features(std::string inpt, graph_enum type, graph_t* data); 
-        torch::Tensor* assign_features(std::string inpt, graph_enum type, std::vector<graph_t*> data); 
+        torch::Tensor* assign_features(std::string inpt, graph_enum type, std::vector<graph_t*>* data); 
 
         void flush_outputs(); 
 

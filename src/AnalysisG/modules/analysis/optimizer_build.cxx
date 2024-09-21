@@ -36,7 +36,6 @@ void analysis::build_model_session(){
             int k_ = this -> m_settings.kfold[k]; 
             std::vector<graph_t*>* check = this -> loader -> get_k_train_set(k_); 
             if (!check){continue;}
- 
             if (this -> m_settings.debug_mode){itr -> second -> launch_model(k_);}
             else {this -> threads.push_back(new std::thread(lamb, itr -> second, k_));}
         }

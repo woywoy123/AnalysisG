@@ -4,19 +4,36 @@ set(SKBUILD_PROJECT_NAME AnalysisG)
 project(${SKBUILD_PROJECT_NAME} VERSION 5.0 LANGUAGES CXX C)
 
 # ABI is the pre-cxx11 version that pytorch distributes via wheels...
-#add_compile_definitions(_GLIBCXX_USE_CXX11_ABI=0)
+add_compile_definitions(_GLIBCXX_USE_CXX11_ABI=1)
 set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
 set(CMAKE_POLICY_DEFAULT_CMP0135 NEW)
 
-#set(CMAKE_BUILD_TYPE Release)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CUDA_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CUDA_STANDARD_REQUIRED ON)
+#set(CMAKE_CXX_STANDARD_REQUIRED ON)
+#set(CMAKE_CUDA_STANDARD_REQUIRED ON)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
-set(CMAKE_CXX_FLAGS_DEBUG "-g")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+set(BLAS MKL)
+set(USE_TBB ON)
+set(MKL_TBB ON)
+set(USE_MKLDNN ON)  
+set(USE_OPENMP OFF)
+
+set(USE_CUDNN ON)
+set(BUILD_BINARY ON)
+set(MKL_THREADING TBB)
+set(MKLDNN_THREADING TBB)
+set(PARALLEL_BACKEND NATIVE)
+set(USE_EIGEN_THREADPOOL ON)
+
+set(CAFFE2_USE_CUDNN ON)
+set(USE_CUSPARSELT OFF)
+
+set(CMAKE_BUILD_TYPE Release)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Dimt=ON")
+#set(CMAKE_CXX_FLAGS_DEBUG "-g")
+#set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+
 
 include(FetchContent)
 include(CheckLanguage)
@@ -50,24 +67,24 @@ set(RAPIDJSON_INCLUDE_DIR ${CMAKE_BINARY_DIR}/_deps/rapidjson-src/include)
 #execute_process(COMMAND ${Python_EXECUTABLE} -m pip install -v tqdm)
 #execute_process(COMMAND ${Python_EXECUTABLE} -m pip install -v torchmetrics)
 
-FetchContent_Declare(torch URL "https://download.pytorch.org/libtorch/cu121/libtorch-cxx11-abi-shared-with-deps-2.4.0%2Bcu121.zip")
+FetchContent_Declare(torch URL "https://download.pytorch.org/libtorch/cu124/libtorch-cxx11-abi-shared-with-deps-2.4.1%2Bcu124.zip")
 FetchContent_MakeAvailable(torch)
 list(APPEND CMAKE_PREFIX_PATH ${torch_SOURCE_DIR})
 
-#set(BUILD_TESTING "" OFF)
-#set(HDF5_BUILD_CPP_LIB "" ON)
-#set(HDF5_BUILD_SHARED_LIBS "" ON)
-#set(HDF5_BUILD_EXAMPLES "" OFF)
-#set(HDF5_ENABLE_SZIP_SUPPORT "" OFF)
-#set(HDF5_ENABLE_SZIP_ENCODING "" OFF)
-#set(HDF5_ENABLE_Z_LIB_SUPPORT "" OFF)
-#
-#FetchContent_Declare(HDF5
-#GIT_REPOSITORY "https://github.com/HDFGroup/hdf5.git"
-#GIT_TAG origin/hdf5_1_14_4
-#FIND_PACKAGE_ARGS)
-#FetchContent_MakeAvailable(HDF5)
-#list(APPEND CMAKE_PREFIX_PATH ${HDF5_SOURCE_DIR})
+set(BUILD_TESTING "" OFF)
+set(HDF5_BUILD_CPP_LIB "" ON)
+set(HDF5_BUILD_SHARED_LIBS "" ON)
+set(HDF5_BUILD_EXAMPLES "" OFF)
+set(HDF5_ENABLE_SZIP_SUPPORT "" OFF)
+set(HDF5_ENABLE_SZIP_ENCODING "" OFF)
+set(HDF5_ENABLE_Z_LIB_SUPPORT "" OFF)
+
+FetchContent_Declare(HDF5
+GIT_REPOSITORY "https://github.com/HDFGroup/hdf5.git"
+GIT_TAG origin/hdf5_1_14_4
+FIND_PACKAGE_ARGS)
+FetchContent_MakeAvailable(HDF5)
+list(APPEND CMAKE_PREFIX_PATH ${HDF5_SOURCE_DIR})
 
 find_package(HDF5   REQUIRED COMPONENTS CXX)
 find_package(Python COMPONENTS Interpreter Development REQUIRED)
@@ -76,6 +93,8 @@ find_package(ROOT   COMPONENTS RIO Tree Core REQUIRED)
 find_package(Torch  REQUIRED)
 list(APPEND CMAKE_PREFIX_PATH "${ROOT_SOURCE_DIR}")
 include_directories(${ROOT_INCLUDE_DIRS})
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
 
 message(STATUS      "ROOT: ${ROOT_LIBRARIES}")
 message(STATUS     "TORCH: ${TORCH_LIBRARIES}")

@@ -73,11 +73,13 @@ void optimizer::training_loop(int k, int epoch){
     mr -> epoch = epoch+1;  
     if (this -> m_settings.batch_size > 1){
         std::vector<std::vector<graph_t*>> batched = this -> discretize(smpl, this -> m_settings.batch_size); 
+        int bx = this -> m_settings.batch_size; 
         l = batched.size();  
         for (int x(0); x < l; ++x){
             model -> forward(batched[x], true);
             mr -> progress = float(x+1)/float(l); 
             this -> metric -> capture(mode_enum::training, k, epoch, l); 
+            std::this_thread::sleep_for(std::chrono::microseconds(10*bx));
         }
     }
     else {
@@ -86,6 +88,7 @@ void optimizer::training_loop(int k, int epoch){
             model -> forward(gr, true);
             mr -> progress = float(x+1)/float(l); 
             this -> metric -> capture(mode_enum::training, k, epoch, l); 
+            std::this_thread::sleep_for(std::chrono::microseconds(1));
         }
     }
     model -> save_state(); 
@@ -128,7 +131,8 @@ void optimizer::evaluation_loop(int k, int epoch){
 }
 
 void optimizer::launch_model(int k){
-    auto lamb = [this](int k, int ep){
+    //at::set_num_threads(1);
+    for (int ep(0); ep < this -> m_settings.epochs; ++ep){
         model_template* model = this -> kfold_sessions[k]; 
 
         model -> epoch = ep+1; 
@@ -139,27 +143,20 @@ void optimizer::launch_model(int k){
         pth += "state/epoch-" + std::to_string(ep+2) + "/";  
         pth += "kfold-" + std::to_string(k+1) + "_model.pt"; 
 
-        if (this -> m_settings.continue_training && this -> is_file(pth)){return;}
+        if (this -> m_settings.continue_training && this -> is_file(pth)){continue;}
         else if (!this -> m_settings.continue_training){} 
-        else if (model -> restore_state()){return;}
+        else if (model -> restore_state()){continue;}
 
         if (this -> m_settings.training){this -> training_loop(k, ep);}
         if (this -> m_settings.validation){this -> validation_loop(k, ep);}
         if (this -> m_settings.evaluation){this -> evaluation_loop(k, ep);}
-
         if (this -> m_settings.debug_mode){return this -> metric -> dump_plots(k);}
 
         model_report* mr = this -> reports[this -> m_settings.run_name + std::to_string(k)]; 
         mr -> waiting_plot = this -> metric; 
-        while (mr -> waiting_plot){std::this_thread::sleep_for(std::chrono::milliseconds(10));}
+        while (mr -> waiting_plot){std::this_thread::sleep_for(std::chrono::microseconds(10));}
+    }
 
-        //c10::cuda::CUDACachingAllocator::emptyCache();  
-    }; 
-
-    //torch::init_num_threads();
-    //torch::set_num_threads(48);
-
-    for (int ep(0); ep < this -> m_settings.epochs; ++ep){lamb(k, ep);}
     model_report* mr = this -> reports[this -> m_settings.run_name + std::to_string(k)]; 
     mr -> is_complete = true; 
 }

@@ -34,9 +34,8 @@ experimental::experimental(){
     dxx = this -> _xin + this -> _xout*2 + this -> _hidden; 
     this -> rnn_top_edge = new torch::nn::Sequential({
             {"rnn_top_l1", torch::nn::Linear(dxx, dxx)}, 
-            {"rnn_top_t1", torch::nn::Tanh()},
-            {"rnn_top_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({dxx}))}, 
             {"rnn_top_r1", torch::nn::ELU()},
+            {"rnn_top_t1", torch::nn::Tanh()},
             {"rnn_top_l2", torch::nn::Linear(dxx, this -> _xout)}, 
             {"rnn_top_s2", torch::nn::Sigmoid()},
             {"rnn_top_l3", torch::nn::Linear(this -> _xout, this -> _xout)},
@@ -45,10 +44,10 @@ experimental::experimental(){
 
     this -> rnn_res_edge = new torch::nn::Sequential({
             {"rnn_res_l1", torch::nn::Linear(this -> _xin*3, dxx)}, 
-            {"rnn_res_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({dxx}))}, 
-            {"rnn_res_s1", torch::nn::Sigmoid()},
+            {"rnn_res_r1", torch::nn::ELU()},
+            {"rnn_res_t1", torch::nn::Tanh()},
             {"rnn_res_l2", torch::nn::Linear(dxx, this -> _xout)}, 
-            {"rnn_res_t2", torch::nn::Tanh()},
+            {"rnn_res_s2", torch::nn::Sigmoid()},
             {"rnn_res_l3", torch::nn::Linear(this -> _xout, this -> _xout)},
             {"rnn_res_drp", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))}
     }); 
@@ -73,13 +72,13 @@ experimental::experimental(){
             {"res_drp", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))}
     }); 
 
-    this -> register_module(this -> rnn_x       , mlp_init::xavier_uniform);
-    this -> register_module(this -> rnn_dx      , mlp_init::xavier_uniform);
-    this -> register_module(this -> rnn_merge   , mlp_init::xavier_uniform);
-    this -> register_module(this -> rnn_top_edge, mlp_init::xavier_uniform);
-    this -> register_module(this -> rnn_res_edge, mlp_init::xavier_uniform);
-    this -> register_module(this -> mlp_ntop    , mlp_init::xavier_uniform);
-    this -> register_module(this -> mlp_sig     , mlp_init::xavier_uniform);
+    this -> register_module(this -> rnn_x       );
+    this -> register_module(this -> rnn_dx      );
+    this -> register_module(this -> rnn_merge   );
+    this -> register_module(this -> rnn_top_edge);
+    this -> register_module(this -> rnn_res_edge);
+    this -> register_module(this -> mlp_ntop    );
+    this -> register_module(this -> mlp_sig     );
 }
 
 torch::Tensor experimental::message(
@@ -107,29 +106,29 @@ torch::Tensor experimental::message(
 void experimental::forward(graph_t* data){
 
     // get the particle 4-vector and convert it to cartesian
-    torch::Tensor pt     = data -> get_data_node("pt", this) -> clone();
-    torch::Tensor eta    = data -> get_data_node("eta", this) -> clone();
-    torch::Tensor phi    = data -> get_data_node("phi", this) -> clone();
-    torch::Tensor energy = data -> get_data_node("energy", this) -> clone();
-    torch::Tensor is_lep = data -> get_data_node("is_lep", this) -> clone(); 
-    torch::Tensor pmc    = transform::cuda::PxPyPzE(pt, eta, phi, energy) / 1000.0; 
+    torch::Tensor* pt     = data -> get_data_node("pt", this);
+    torch::Tensor* eta    = data -> get_data_node("eta", this);
+    torch::Tensor* phi    = data -> get_data_node("phi", this);
+    torch::Tensor* energy = data -> get_data_node("energy", this);
+    torch::Tensor* is_lep = data -> get_data_node("is_lep", this); 
+    torch::Tensor pmc    = transform::cuda::PxPyPzE(*pt, *eta, *phi, *energy) / 1000.0; 
 
     torch::Tensor edge_index = data -> get_edge_index(this) -> to(torch::kLong); 
     torch::Tensor src        = edge_index.index({0}).view({-1}); 
     torch::Tensor dst        = edge_index.index({1}).view({-1}); 
 
     // the event features
-    torch::Tensor num_jets = data -> get_data_graph("num_jets", this) -> clone(); 
-    torch::Tensor num_leps = data -> get_data_graph("num_leps", this) -> clone(); 
-    torch::Tensor met_phi  = data -> get_data_graph("phi", this) -> clone();
-    torch::Tensor met      = data -> get_data_graph("met", this) -> clone() / 1000.0; 
+    torch::Tensor* num_jets = data -> get_data_graph("num_jets", this); 
+    torch::Tensor* num_leps = data -> get_data_graph("num_leps", this); 
+    torch::Tensor* met_phi  = data -> get_data_graph("phi", this);
+    torch::Tensor* met      = data -> get_data_graph("met", this); 
 
     torch::Tensor num_bjet = data -> get_data_node("is_b", this) -> sum({0}).view({-1, 1});  
-    torch::Tensor pid      = torch::cat({num_jets, num_bjet, num_leps, met, met_phi}, {-1});  
+    torch::Tensor pid      = torch::cat({*num_jets, num_bjet, *num_leps, (*met)/1000.0, *met_phi}, {-1});  
 
     // ------ index the nodes from 0 to N-1 ----- //
-    torch::Tensor trk = (torch::ones_like(pt).cumsum({0}) - 1).to(torch::kInt); 
-    torch::Tensor nds = torch::ones_like(pt).to(torch::kInt); 
+    torch::Tensor trk = (torch::ones_like(*pt).cumsum({0}) - 1).to(torch::kInt); 
+    torch::Tensor nds = torch::ones_like(*pt).to(torch::kInt); 
 
     // ------ index the edges from 0 to N^2 -1 ------ //
     torch::Tensor idx_mlp = torch::ones_like(src).cumsum({-1})-1; 
@@ -180,7 +179,7 @@ void experimental::forward(graph_t* data){
     }
 
     // ----------- compress the top data ----------- //
-    torch::Tensor trk_ = torch::zeros_like(pt).to(torch::kInt).view({-1}); 
+    torch::Tensor trk_ = torch::zeros_like(*pt).to(torch::kInt).view({-1}); 
     gr_ = graph::cuda::edge_aggregation(edge_index, top_edge, pmc)["1"]; 
     trk = (gr_[0].index({gr_[2]}) > -1).sum({-1}, true);
     trk = torch::cat({trk, hx, physics::cuda::cartesian::M(gr_[3]), pid.index({trk_})}, {-1}); 
@@ -213,9 +212,9 @@ void experimental::forward(graph_t* data){
     this -> prediction_extra("ntops_score"   , ntops_.softmax(-1).view({-1})); 
     this -> prediction_extra("is_res_score"  , isres_.softmax(-1).view({-1})); 
 
-    this -> prediction_extra("is_lep"        , is_lep.view({-1})); 
-    this -> prediction_extra("num_leps"      , num_leps.view({-1})); 
-    this -> prediction_extra("num_jets"      , num_jets.view({-1})); 
+    this -> prediction_extra("is_lep"        , is_lep -> view({-1})); 
+    this -> prediction_extra("num_leps"      , num_leps -> view({-1})); 
+    this -> prediction_extra("num_jets"      , num_jets -> view({-1})); 
     this -> prediction_extra("num_bjets"     , num_bjet.view({-1})); 
     if (!this -> is_mc){return;}
 

@@ -171,7 +171,7 @@ bool topefficiency::strategy(event_template* ev){
 
     this -> truth_top_edge = evn -> t_edge_top; 
     this -> truth_res_edge = evn -> t_edge_res; 
-    this -> truth_signal   = {evn -> t_signal};   
+    this -> truth_signal   = std::vector<int>({evn -> t_signal});   
 
     this -> pred_res_edge_score = {evn -> edge_res_scores}; 
     this -> pred_top_edge_score = {evn -> edge_top_scores}; 

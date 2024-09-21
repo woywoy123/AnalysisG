@@ -47,16 +47,16 @@ void graph_t::_purge_all(){
     this -> _purge_data(this -> truth_node); 
     this -> _purge_data(this -> truth_edge); 
 
-    this -> _purge_data(&this -> dev_data_graph); 
-    this -> _purge_data(&this -> dev_data_node); 
-    this -> _purge_data(&this -> dev_data_edge); 
+    this -> dev_data_graph.clear(); 
+    this -> dev_data_node.clear(); 
+    this -> dev_data_edge.clear(); 
 
-    this -> _purge_data(&this -> dev_truth_graph); 
-    this -> _purge_data(&this -> dev_truth_node); 
-    this -> _purge_data(&this -> dev_truth_edge); 
+    this -> dev_truth_graph.clear(); 
+    this -> dev_truth_node.clear(); 
+    this -> dev_truth_edge.clear(); 
 
-    this -> _purge_data(&this -> dev_edge_index); 
-    this -> _purge_data(&this -> dev_event_weight); 
+    this -> dev_edge_index.clear(); 
+    this -> dev_event_weight.clear(); 
 
     if (this -> graph_name){delete this -> graph_name;}
 
@@ -105,18 +105,16 @@ void graph_t::transfer_to_device(torch::TensorOptions* dev){
     this -> _transfer_to_device(&this -> dev_truth_edge[dev_] , this -> truth_edge , dev); 
 
     torch::Tensor dt = torch::from_blob(&this -> event_weight, {1}, torch::TensorOptions(torch::kCPU).dtype(torch::kDouble));
-    this -> dev_edge_index[dev_]   = new torch::Tensor(this -> edge_index -> to(dev -> device(), true)); 
-    this -> dev_event_weight[dev_] = new torch::Tensor(dt.clone().to(dev -> device(), true)); 
+    this -> dev_event_weight[dev_] = dt.clone().to(dev -> device(), true); 
+    this -> dev_edge_index[dev_]   = this -> edge_index -> to(dev -> device(), true); 
 
     this -> device_index[dev_] = true; 
     this -> device = dev_in; 
 }
 
-void graph_t::_transfer_to_device(std::vector<torch::Tensor*>** trgt, std::vector<torch::Tensor*>* src, torch::TensorOptions* dev){
-    if (!src || (*trgt)){return;}
-
-    *trgt = new std::vector<torch::Tensor*>(src -> size(), nullptr);
-    for (size_t x(0); x < src -> size(); ++x){(**trgt)[x] = new torch::Tensor((*src)[x] -> to(dev -> device(), true));}
+void graph_t::_transfer_to_device(std::vector<torch::Tensor>* trgt, std::vector<torch::Tensor*>* src, torch::TensorOptions* dev){
+    if (!src || trgt -> size()){return;}
+    for (size_t x(0); x < src -> size(); ++x){trgt -> push_back((*src)[x] -> to(dev -> device(), true));}
 }
 
 void graph_t::meta_serialize(std::map<std::string, int>* data, std::string* out){

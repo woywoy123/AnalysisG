@@ -21,7 +21,7 @@ class experimental: public model_template
         int _xout = 2; 
         int _hidden = 256; 
 
-        double drop_out = 0.1; 
+        double drop_out = 0.01; 
 
         // Misc
         bool is_mc = true; 

@@ -52,12 +52,12 @@ struct graph_t {
         
         template <typename g>
         torch::Tensor* get_edge_index(g* mdl){
-            return this -> dev_edge_index[(int)mdl -> m_option -> device().index()]; 
+            return &this -> dev_edge_index[(int)mdl -> m_option -> device().index()]; 
         }
 
         template <typename g>
         torch::Tensor* get_event_weight(g* mdl){
-            return this -> dev_event_weight[(int)mdl -> m_option -> device().index()]; 
+            return &this -> dev_event_weight[(int)mdl -> m_option -> device().index()]; 
         }
 
         void add_truth_graph(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
@@ -102,16 +102,16 @@ struct graph_t {
         std::vector<torch::Tensor*>* truth_node  = nullptr; 
         std::vector<torch::Tensor*>* truth_edge  = nullptr;
 
-        std::map<int, std::vector<torch::Tensor*>*> dev_data_graph = {}; 
-        std::map<int, std::vector<torch::Tensor*>*> dev_data_node  = {}; 
-        std::map<int, std::vector<torch::Tensor*>*> dev_data_edge  = {}; 
+        std::map<int, std::vector<torch::Tensor>> dev_data_graph = {}; 
+        std::map<int, std::vector<torch::Tensor>> dev_data_node  = {}; 
+        std::map<int, std::vector<torch::Tensor>> dev_data_edge  = {}; 
 
-        std::map<int, std::vector<torch::Tensor*>*> dev_truth_graph = {}; 
-        std::map<int, std::vector<torch::Tensor*>*> dev_truth_node  = {}; 
-        std::map<int, std::vector<torch::Tensor*>*> dev_truth_edge  = {};
+        std::map<int, std::vector<torch::Tensor>> dev_truth_graph = {}; 
+        std::map<int, std::vector<torch::Tensor>> dev_truth_node  = {}; 
+        std::map<int, std::vector<torch::Tensor>> dev_truth_edge  = {};
 
-        std::map<int, torch::Tensor*> dev_edge_index   = {}; 
-        std::map<int, torch::Tensor*> dev_event_weight = {}; 
+        std::map<int, torch::Tensor> dev_edge_index   = {}; 
+        std::map<int, torch::Tensor> dev_event_weight = {}; 
         std::map<int, bool> device_index = {}; 
 
         void meta_serialize(std::map<std::string, int>* data, std::string* out); 
@@ -130,7 +130,7 @@ struct graph_t {
         std::vector<torch::Tensor*>* add_content(std::map<std::string, torch::Tensor*>* inpt); 
 
         void _transfer_to_device(
-                std::vector<torch::Tensor*>** trg, 
+                std::vector<torch::Tensor>* trg, 
                 std::vector<torch::Tensor*>* data, 
                 torch::TensorOptions* dev
         ); 
@@ -138,13 +138,13 @@ struct graph_t {
         template <typename g>
         torch::Tensor* return_any(
                 std::map<std::string, int>* loc, 
-                std::map<int, std::vector<torch::Tensor*>*>* container, 
+                std::map<int, std::vector<torch::Tensor>>* container, 
                 std::string name, g* mdl
         ){
             if (!loc -> count(name)){return nullptr;}
             int dev_ = (int)mdl -> m_option -> device().index(); 
             int x = (*loc)[name]; 
-            return (*(*container)[dev_])[x];
+            return &(*container)[dev_][x];
         }
 
 }; 

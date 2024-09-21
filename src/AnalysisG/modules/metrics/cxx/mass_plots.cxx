@@ -160,8 +160,8 @@ void metrics::add_th1f_mass(
     pred_mass_cu  = pred_mass_cu.index({(pred_mass_cu > 0).view({-1})}); 
     truth_mass_cu = truth_mass_cu.index({(truth_mass_cu > 0).view({-1})}); 
 
-    pred_mass_cu  = pred_mass_cu.view({-1}).to(torch::kCPU, true); 
-    truth_mass_cu = truth_mass_cu.view({-1}).to(torch::kCPU, true); 
+    pred_mass_cu  = pred_mass_cu.view({-1}).to(torch::kCPU); 
+    truth_mass_cu = truth_mass_cu.view({-1}).to(torch::kCPU); 
 
     std::vector<float> v(pred_mass_cu.data_ptr<float>(), pred_mass_cu.data_ptr<float>() + pred_mass_cu.numel());
     std::vector<float> t(truth_mass_cu.data_ptr<float>(), truth_mass_cu.data_ptr<float>() + truth_mass_cu.numel());
