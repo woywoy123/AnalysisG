@@ -1,7 +1,9 @@
+.. _figure_3g:
+
 Figure 3.g
 ----------
 
-Figures of the azimuthal angular distributions of truth children originating from resonance and spectator tops.
+A collection of normalized **azimuthal** distributions for truth children originating either resonance and spectator tops at various injected resonance mass points.
 
 Mass Point: 400 GeV
 ^^^^^^^^^^^^^^^^^^^

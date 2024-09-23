@@ -4,8 +4,17 @@ global figure_path
 global mass_point
 
 def path(hist):
+    hist.Style = "ATLAS"
     hist.OutputDirectory = figure_path + "/childrenkinematics/" + mass_point
+    hist.Overflow = True
     return hist
+
+def pdgid_mapping(pdgid):
+    if "nu" in pdgid: title = "$\\nu_{\\ell}$"
+    elif "e" in pdgid or "tau" in pdgid or "mu" in pdgid: title = "$\\ell$"
+    elif "u" in pdgid or "c" in pdgid or "d" in pdgid or "s" in pdgid: title = "light-quark"
+    else: title = pdgid
+    return title
 
 def kinematics_pt(ana):
     rkin = ana.res_kinematics
@@ -21,59 +30,71 @@ def kinematics_pt(ana):
 
     th = path(TH1F())
     th.Histograms = [rth_pt, sth_pt]
-    th.Title = "Transverse Momenta of Truth-Children from Spectator and Resonant Tops"
-    th.xTitle = "Transverse Momenta (GeV)"
-    th.yTitle = "Entries (Arb.)"
-    th.xBins = 100
-    th.xStep = 100
+    th.Title = "Normalized $p_T$ Distributions for \n Spectator and Resonant Top Children"
+    th.xTitle = "$p_T$ of Top Children (GeV)"
+    th.yTitle = "Density (Arb.) / ($10$ GeV)"
+    th.xBins = 60
+    th.xStep = 40
     th.xMin = 0
-    th.xMax = 800
-    th.yLogarithmic = True
+    th.xMax = 600
+    th.Density = True
     th.Filename = "Figure.3.a"
     th.SaveFigure()
 
-    hist = []
+    hist = {}
     for pdgid in sorted(ana.res_pdgid_kinematics):
+        title = pdgid_mapping(pdgid)
+        if title not in hist: hist[title] = []
+        hist[title] += ana.res_pdgid_kinematics[pdgid]["pt"]
+
+    for k in hist:
         th = TH1F()
-        th.Title = pdgid
-        th.xData = ana.res_pdgid_kinematics[pdgid]["pt"]
-        hist.append(th)
+        th.Title = k
+        th.xData = hist[k]
+        hist[k] = th
 
     th = path(TH1F())
-    th.Histograms = hist
-    th.Title = "Transverse Momenta of Truth-Children from Resonant Tops"
-    th.xTitle = "Transverse Momenta (GeV)"
-    th.yTitle = "Entries (Arb.)"
-    th.xBins = 100
-    th.xStep = 100
+    th.Histograms = list(hist.values())
+    th.Title  = "Normalized $p_T$ Distributions for Top Children \n from Resonant Top based on Parton Type"
+    th.xTitle = "$p_T$ of Top Children (GeV)"
+    th.yTitle = "Density (Arb.) / ($10$ GeV)"
+    th.xBins = 60
+    th.xStep = 40
     th.xMin = 0
-    th.xMax = 800
+    th.xMax = 600
     th.Stacked = True
+    th.Density = True
     th.yLogarithmic = True
     th.Filename = "Figure.3.b"
     th.SaveFigure()
 
-
-    hist = []
+    hist = {}
     for pdgid in sorted(ana.spec_pdgid_kinematics):
+        title = pdgid_mapping(pdgid)
+        if title not in hist: hist[title] = []
+        hist[title] += ana.spec_pdgid_kinematics[pdgid]["pt"]
+
+    for k in hist:
         th = TH1F()
-        th.Title = pdgid
-        th.xData = ana.spec_pdgid_kinematics[pdgid]["pt"]
-        hist.append(th)
+        th.Title = k
+        th.xData = hist[k]
+        hist[k] = th
 
     th = path(TH1F())
-    th.Histograms = hist
-    th.Title = "Transverse Momenta of Truth-Children from Spectator Tops"
-    th.xTitle = "Transverse Momenta (GeV)"
-    th.yTitle = "Entries (Arb.)"
-    th.xBins = 100
-    th.xStep = 100
+    th.Histograms = list(hist.values())
+    th.Title  = "Normalized $p_T$ Distribution for Top Children \n from Spectator Top based on Parton Type"
+    th.xTitle = "$p_T$ of Top Children (GeV)"
+    th.yTitle = "Density (Arb.) / ($10$ GeV)"
+    th.xBins = 60
+    th.xStep = 40
     th.xMin = 0
-    th.xMax = 800
+    th.xMax = 600
     th.Stacked = True
+    th.Density = True
     th.yLogarithmic = True
     th.Filename = "Figure.3.c"
     th.SaveFigure()
+
 
 def kinematics_eta(ana):
     rkin = ana.res_kinematics
@@ -89,57 +110,70 @@ def kinematics_eta(ana):
 
     th = path(TH1F())
     th.Histograms = [rth_pt, sth_pt]
-    th.Title = "Pseudorapidity ($\\eta$) Truth-Children from Spectator and Resonant Tops"
+    th.Title = "Normalized Pseudorapidity ($\\eta$) Distribution for \n Spectator and Resonance Top Children"
     th.xTitle = "Pseudorapidity ($\\eta$) (Arb.)"
-    th.yTitle = "Entries (Arb.)"
-    th.xBins = 100
+    th.yTitle = "Density (Arb.) / ($0.5$)"
+    th.xBins = 240
     th.xStep = 1
     th.xMin = -6
     th.xMax =  6
-    th.yLogarithmic = True
+    th.Density = True
     th.Filename = "Figure.3.d"
     th.SaveFigure()
 
-    hist = []
+
+    hist = {}
     for pdgid in sorted(ana.res_pdgid_kinematics):
+        title = pdgid_mapping(pdgid)
+        if title not in hist: hist[title] = []
+        hist[title] += ana.res_pdgid_kinematics[pdgid]["eta"]
+
+    for k in hist:
         th = TH1F()
-        th.Title = pdgid
-        th.xData = ana.res_pdgid_kinematics[pdgid]["eta"]
-        hist.append(th)
+        th.Title = k
+        th.xData = hist[k]
+        hist[k] = th
+
 
     th = path(TH1F())
-    th.Histograms = hist
-    th.Title = "Pseudorapidity ($\\eta$) Truth-Children from Resonant Tops"
-    th.xTitle = "Pseudorapidity ($\\eta$) (Arb.)"
-    th.yTitle = "Entries (Arb.)"
-    th.xBins = 100
+    th.Histograms = list(hist.values())
+    th.Title  = "Normalized Pseudorapidity ($\\eta$) Distributions for Top Children \n from Resonant Top based on Parton Type"
+    th.xTitle = "Pseudorapidity ($\\eta$) of Top Children (Arb.)"
+    th.yTitle = "Density (Arb.) / ($0.5$)"
+    th.xBins = 240
     th.xStep = 1
     th.xMin = -6
     th.xMax =  6
     th.Stacked = True
-    th.yLogarithmic = True
+    th.Density = True
+#    th.yLogarithmic = True
     th.Filename = "Figure.3.e"
     th.SaveFigure()
 
-
-    hist = []
+    hist = {}
     for pdgid in sorted(ana.spec_pdgid_kinematics):
+        title = pdgid_mapping(pdgid)
+        if title not in hist: hist[title] = []
+        hist[title] += ana.spec_pdgid_kinematics[pdgid]["eta"]
+
+    for k in hist:
         th = TH1F()
-        th.Title = pdgid
-        th.xData = ana.spec_pdgid_kinematics[pdgid]["eta"]
-        hist.append(th)
+        th.Title = k
+        th.xData = hist[k]
+        hist[k] = th
+
 
     th = path(TH1F())
-    th.Histograms = hist
-    th.Title = "Pseudorapidity ($\\eta$) Truth-Children from Spectator Tops"
-    th.xTitle = "Pseudorapidity ($\\eta$) (Arb.)"
-    th.yTitle = "Entries (Arb.)"
-    th.xBins = 100
+    th.Histograms = list(hist.values())
+    th.Title  = "Normalized Pseudorapidity ($\\eta$) Distributions for Top Children \n from Spectator Top based on Parton Type"
+    th.xTitle = "Pseudorapidity ($\\eta$) of Top Children (Arb.)"
+    th.yTitle = "Density (Arb.) / ($0.5$)"
+    th.xBins = 240
     th.xStep = 1
     th.xMin = -6
     th.xMax =  6
     th.Stacked = True
-    th.yLogarithmic = True
+    th.Density = True
     th.Filename = "Figure.3.f"
     th.SaveFigure()
 
@@ -157,36 +191,45 @@ def kinematics_phi(ana):
 
     th = path(TH1F())
     th.Histograms = [rth_pt, sth_pt]
-    th.Title = "Azimuthal Angle ($\\phi$) Truth-Children from Spectator and Resonant Tops"
+    th.Title = "Normalized Azimuthal Angle ($\\phi$) Distributions for \n Spectator and Resonant Top Children"
     th.xTitle = "Azimuthal Angle ($\\phi$) (rad)"
-    th.yTitle = "Entries (Arb.)"
-    th.xBins = 100
+    th.yTitle = "Density (Abr.) / ($0.1$)"
+    th.xBins = 350
     th.xStep = 1
     th.xMin = -3.5
     th.xMax =  3.5
+    th.Density = True
+    th.Stacked = True
     th.Filename = "Figure.3.g"
     th.SaveFigure()
 
-    hist = []
+    hist = {}
     for pdgid in sorted(ana.res_pdgid_kinematics):
+        title = pdgid_mapping(pdgid)
+        if title not in hist: hist[title] = []
+        hist[title] += ana.res_pdgid_kinematics[pdgid]["phi"]
+
+    for k in hist:
         th = TH1F()
-        th.Title = pdgid
-        th.xData = ana.res_pdgid_kinematics[pdgid]["phi"]
-        hist.append(th)
+        th.Title = k
+        th.xData = hist[k]
+        hist[k] = th
 
     th = path(TH1F())
-    th.Histograms = hist
-    th.Title = "Azimuthal Angle ($\\phi$) Truth-Children from Resonant Tops"
+    th.Histograms = list(hist.values())
+    th.Title = "Normalized Azimuthal Angle ($\\phi$) Distributions for Top Children \n from Resonant Top based on Parton Type"
     th.xTitle = "Azimuthal Angle ($\\phi$) (rad)"
-    th.yTitle = "Entries (Arb.)"
-    th.xBins = 100
+    th.yTitle = "Density (Abr.) / ($0.1$)"
+    th.xBins = 350
     th.xStep = 1
     th.xMin = -3.5
     th.xMax =  3.5
     th.Stacked = True
+    th.Density = True
     th.Filename = "Figure.3.h"
     th.SaveFigure()
 
+    exit()
 
     hist = []
     for pdgid in sorted(ana.spec_pdgid_kinematics):
@@ -652,7 +695,7 @@ def ChildrenKinematics(ana):
     kinematics_pt(ana)
     kinematics_eta(ana)
     kinematics_phi(ana)
-    kinematics_energy(ana)
-    kinematics_decay_mode(ana)
-    dr_clustering(ana)
-    fractional(ana)
+    #kinematics_energy(ana)
+    #kinematics_decay_mode(ana)
+    #dr_clustering(ana)
+    #fractional(ana)

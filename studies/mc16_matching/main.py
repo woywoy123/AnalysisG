@@ -24,7 +24,7 @@ import zprime
 
 import pickle
 
-study = "topmatching"
+study = "childrenkinematics"
 
 plotting_method = {
     "zprime"             : zprime,
@@ -90,8 +90,7 @@ for mass in ["1000", "900", "800", "700", "600", "500", "400"]:
     if study == "topjets"            : method.figures.TopJets(pres)
     if study == "zprime"             : method.figures.ZPrime(pres)
 
-
-
+    break
 
 
 

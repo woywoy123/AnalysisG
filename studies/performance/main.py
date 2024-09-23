@@ -44,6 +44,7 @@ study       = "topefficiency"
 
 graph_name  = "GraphJets"
 inference_mode = False
+plot_only      = False
 
 #root_model = "/import/wu1/tnom6927/TrainingOutput/training-sessions/"
 #data_path  = "/scratch/tnom6927/mc16-full/"
@@ -158,26 +159,27 @@ for k in build_samples(data_path + "sorted-data", "./*/*/*.root", 10):
     del ana
     sample_path = {}
 
-#i = 0
-#for j, k in sample_path.items():
-#    ana = Analysis()
-#    ana.Threads = 12
-#    ana.AddSamples(k, j)
-#    try: ana.AddEvent(event_method[event_name](), j)
-#    except KeyError: pass
-#    except NameError: pass
-#
-#    try: selection_container[selection_name] = selection_method[selection_name]()
-#    except KeyError: continue
-#    except NameError: continue
-#    ana.AddSelection(selection_container[selection_name])
-#    ana.Start()
-#
-#    f = open("./serialized-data/" + j +".pkl", "wb")
-#    pickle.dump(selection_container[selection_name], f)
-#    f.close()
-#    print(i, len(sample_path))
-#    i+=1
+i = 0
+for j, k in sample_path.items():
+    if plot_only: break
+    ana = Analysis()
+    ana.Threads = 12
+    ana.AddSamples(k, j)
+    try: ana.AddEvent(event_method[event_name](), j)
+    except KeyError: pass
+    except NameError: pass
+
+    try: selection_container[selection_name] = selection_method[selection_name]()
+    except KeyError: continue
+    except NameError: continue
+    ana.AddSelection(selection_container[selection_name])
+    ana.Start()
+
+    f = open("./serialized-data/" + j +".pkl", "wb")
+    pickle.dump(selection_container[selection_name], f)
+    f.close()
+    print(i, len(sample_path))
+    i+=1
 
 method = plotting_method[study]
 method.figures.figure_path = figure_path

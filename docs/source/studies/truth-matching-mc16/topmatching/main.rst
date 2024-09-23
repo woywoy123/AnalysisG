@@ -43,6 +43,7 @@ Figures depicting the underlying number of **jets** being matched to a mutual to
 
 .. toctree:: 
    :maxdepth: 1
+   :hidden:
 
    figure2a.rst
    figure2b.rst

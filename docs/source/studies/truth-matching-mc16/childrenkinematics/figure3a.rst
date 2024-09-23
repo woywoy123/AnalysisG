@@ -1,7 +1,9 @@
+.. _figure_3a:
+
 Figure 3.a
 ----------
 
-Figures of the transverse momenta of truth children originating from resonance and spectator tops.
+A collection of normalized transverse momenta distributions for truth children originating either resonance and spectator tops at different mass points.
 
 Mass Point: 400 GeV
 ^^^^^^^^^^^^^^^^^^^

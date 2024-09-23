@@ -1,7 +1,9 @@
+.. _figure_3d:
+
 Figure 3.d
 ----------
 
-Figures of the pseudorapidity of truth children originating from resonance and spectator tops.
+A collection of normalized **pseudorapidity** distributions for truth children originating either resonance and spectator tops at various injected resonance mass points.
 
 Mass Point: 400 GeV
 ^^^^^^^^^^^^^^^^^^^
