@@ -23,6 +23,10 @@ void topefficiency::merge(selection_template* sl){
     merge_data(&this -> ms_cut_reco_tops, &slt -> ms_cut_reco_tops); 
     merge_data(&this -> ms_cut_topmass  , &slt -> ms_cut_topmass  ); 
 
+    merge_data(&this -> kin_truth_tops  , &slt -> kin_truth_tops); 
+    merge_data(&this -> ms_kin_perf_tops, &slt -> ms_kin_perf_tops); 
+    merge_data(&this -> ms_kin_reco_tops, &slt -> ms_kin_reco_tops); 
+
     merge_data(&this -> n_tru_tops , &slt -> n_tru_tops); 
 
     sum_data(&this -> truth_res_edge,       &slt -> truth_res_edge); 
@@ -68,6 +72,20 @@ std::string topefficiency::region(double pt_p, double eta_p){
     return key; 
 }
 
+std::string topefficiency::region(double pt_p){
+    int n_pt  = this -> iters(this -> pt_start , this -> pt_end , this -> pt_step); 
+    int n_eta = this -> iters(this -> eta_start, this -> eta_end, this -> eta_step); 
+
+    double pt_s_ = 0, pt_e_ = 0; 
+    for (int i(0); i < n_pt; ++i){
+        pt_s_ = this -> pt_start +    i  * this -> pt_step; 
+        pt_e_ = this -> pt_start + (i+1) * this -> pt_step;  
+        if (pt_s_ < pt_p && pt_p < pt_e_){break;}
+    }
+    return this -> to_string(pt_s_, 0)  + " < pt < "  + this -> to_string(pt_e_, 0) + ", "; 
+}
+
+
 std::string topefficiency::decaymode(std::vector<top*> ev_tops){
     std::string out = ""; 
     std::map<std::string, int> decay_mode; 
@@ -80,12 +98,18 @@ std::string topefficiency::decaymode(std::vector<top*> ev_tops){
     return out; 
 }
 
-void topefficiency::score_mass(double score_t, double mass_t, gnn_event* evn, int* perf_tops, std::vector<float>* out_tops){
+void topefficiency::score_mass(
+        double score_h, double score_l, double mass_h, double mass_l, 
+        gnn_event* evn, int* perf_tops, std::vector<float>* out_tops, 
+        std::map<std::string, int>* kin_perf,
+        std::map<std::string, int>* kin_reco
+){
     std::vector<top*> cut_tops = {}; 
     for (size_t x(0); x < evn -> r_tops.size(); ++x){
         top* top_ = evn -> r_tops[x]; 
         float mass = top_ -> mass / 1000;
-        if (!(top_ -> av_score > score_t && mass > mass_t)){continue;}
+        bool mask = (mass >= mass_l)*(mass < mass_h) * (top_ -> av_score >= score_l) * (top_ -> av_score <= score_h); 
+        if (!mask){continue;}
         out_tops -> push_back(mass);  
         cut_tops.push_back(top_); 
     }
@@ -94,6 +118,8 @@ void topefficiency::score_mass(double score_t, double mass_t, gnn_event* evn, in
     std::map<int, bool> no_double; 
     for (size_t x(0); x < cut_tops.size(); ++x){
         std::map<std::string, particle_template*> ch_t = cut_tops[x] -> children; 
+        std::string key_r = this -> region(cut_tops[x] -> pt / 1000); 
+        (*kin_reco)[key_r] += 1; 
         for (size_t y(0); y < evn -> t_tops.size(); ++y){
             if (no_double[y]){continue;}
             std::map<std::string, particle_template*> ch = evn -> t_tops[y] -> children; 
@@ -103,11 +129,17 @@ void topefficiency::score_mass(double score_t, double mass_t, gnn_event* evn, in
             std::map<std::string, particle_template*>::iterator itc = ch_t.begin(); 
             for (; itc != ch_t.end(); ++itc){trg += (ch.count(itc -> first)) ? 1 : -10000;}
             if (!(trg == ch.size())){continue;}
+            std::string key_t = this -> region(evn -> t_tops[y] -> pt / 1000); 
+
             no_double[y] = true;
             n_perfect_tops++; 
+            (*kin_perf)[key_r] += 1; 
         } 
     }
     *perf_tops = n_perfect_tops; 
+    
+
+
 }
 
 bool topefficiency::strategy(event_template* ev){
@@ -133,6 +165,10 @@ bool topefficiency::strategy(event_template* ev){
         std::string key = this -> region(top_ -> pt / 1000, std::abs(top_ -> eta));
         this -> t_topmass[key][fname].push_back(mass);
         keys.push_back(key); 
+
+        key = this -> region(top_ -> pt / 1000); 
+        if (!this -> kin_truth_tops.count(key)){this -> kin_truth_tops[key][fname].push_back(0);}
+        this -> kin_truth_tops[key][fname][0] += 1; 
     }
 
     std::vector<zprime*> reco_zprime = evn -> r_zprime;  
@@ -150,20 +186,34 @@ bool topefficiency::strategy(event_template* ev){
         this -> t_zmass[key][fname].push_back(zp_ -> mass / 1000); 
     }
 
-    int mass_size = this -> iters(this -> mass_start, this -> mass_end, this -> mass_step); 
+    int mass_size  = this -> iters(this -> mass_start , this -> mass_end , this -> mass_step); 
     int score_size = this -> iters(this -> score_start, this -> score_end, this -> score_step); 
-    for (size_t x(0); x <= mass_size; ++x){
-        double mass_ = this -> mass_start + this -> mass_step*x; 
-        for (size_t y(0); y <= score_size; ++y){
-            double score_ = this -> score_start + this -> score_step*y; 
-            std::string key = this -> to_string(mass_, 0)  + "-"  + this -> to_string(score_, 3); 
+    for (size_t x(0); x < mass_size; ++x){
+        double mass_l = this -> mass_avg - 0.5 * this -> mass_step*(1+x); 
+        double mass_u = this -> mass_avg + 0.5 * this -> mass_step*(1+x); 
+
+        for (size_t y(0); y < score_size; ++y){
+            double score_l = this -> score_avg - 0.5 * this -> score_step*(1+y); 
+            double score_u = this -> score_avg + 0.5 * this -> score_step*(1+y); 
+            std::string key = this -> to_string(mass_u - mass_l, 2) + "-"  + this -> to_string(score_u - score_l, 2); 
 
             int n_perfect_tops = 0; 
             std::vector<float> cut_t = {}; 
-            this -> score_mass(score_, mass_, evn, &n_perfect_tops, &cut_t); 
+            std::map<std::string, int> kin_perf, kin_reco; 
+
+            this -> score_mass(score_u, score_l, mass_u, mass_l, evn, &n_perfect_tops, &cut_t, &kin_perf, &kin_reco); 
             this -> ms_cut_perf_tops[key][fname].push_back(n_perfect_tops); 
             this -> ms_cut_reco_tops[key][fname].push_back(cut_t.size()); 
             this -> ms_cut_topmass[key][fname] = cut_t; 
+            
+            std::map<std::string, int>::iterator itx; 
+            for (itx = kin_perf.begin(); itx != kin_perf.end(); ++itx){
+                this -> ms_kin_perf_tops[key][itx -> first][fname].push_back(itx -> second);
+            }
+
+            for (itx = kin_reco.begin(); itx != kin_reco.end(); ++itx){
+                this -> ms_kin_reco_tops[key][itx -> first][fname].push_back(itx -> second);
+            }
         }
     }
 

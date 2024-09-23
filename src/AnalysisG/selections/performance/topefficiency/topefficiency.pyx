@@ -29,6 +29,10 @@ cdef class TopEfficiency(SelectionTemplate):
 
         self.n_tru_tops       = as_dict(&self.tt.n_tru_tops)
 
+        self.kin_truth_tops   = as_dict_dict(&self.tt.kin_truth_tops  )
+        self.ms_kin_perf_tops = as_dict_dict_dict(&self.tt.ms_kin_perf_tops)
+        self.ms_kin_reco_tops = as_dict_dict_dict(&self.tt.ms_kin_reco_tops)
+
         self.truth_res_edge   = self.tt.truth_res_edge
         self.truth_top_edge   = self.tt.truth_top_edge
 

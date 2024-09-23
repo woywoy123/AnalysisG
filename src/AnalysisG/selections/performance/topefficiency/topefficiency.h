@@ -25,18 +25,27 @@ class topefficiency: public selection_template
         double pt_step  = 100; 
 
         double score_start = 0; 
-        double score_end   = 1;
-        double score_step  = 0.05;  
+        double score_end   = 0.2;
+        double score_step  = 0.01; 
+        double score_avg   = 0.8;  
 
         double mass_start = 0; 
-        double mass_end   = 200;
-        double mass_step  = 5;  
+        double mass_end   = 70;
+        double mass_step  = 1; 
+        double mass_avg   = 170;  
 
 
         int iters(double start, double end, double step); 
         std::string region(double pt, double eta); 
+        std::string region(double pt); 
+
         std::string decaymode(std::vector<top*> ev_tops); 
-        void score_mass(double score, double mass, gnn_event* evn, int* perf_tops, std::vector<float>* out_tops);  
+        void score_mass(
+                double score_h, double score_l, double mass_h, double mass_l, 
+                gnn_event* evn, int* perf_tops, std::vector<float>* out_tops, 
+                std::map<std::string, int>* kin_perf = nullptr,
+                std::map<std::string, int>* kin_reco = nullptr
+        );  
 
         std::map<std::string, std::map<std::string, std::vector<float>>> p_topmass = {}; 
         std::map<std::string, std::map<std::string, std::vector<float>>> t_topmass = {}; 
@@ -50,6 +59,11 @@ class topefficiency: public selection_template
         std::map<std::string, std::map<std::string, std::vector<int>>>   ms_cut_perf_tops = {}; 
         std::map<std::string, std::map<std::string, std::vector<int>>>   ms_cut_reco_tops = {}; 
         std::map<std::string, std::map<std::string, std::vector<float>>> ms_cut_topmass   = {}; 
+
+        std::map<std::string, std::map<std::string, std::vector<int>>> kin_truth_tops = {}; 
+        std::map<std::string, std::map<std::string, std::map<std::string, std::vector<int>>>> ms_kin_perf_tops = {}; 
+        std::map<std::string, std::map<std::string, std::map<std::string, std::vector<int>>>> ms_kin_reco_tops = {};
+
         std::map<std::string, std::vector<int>> n_tru_tops  = {}; 
 
 
