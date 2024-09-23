@@ -1,7 +1,10 @@
+.. _figure_3r:
+
 Figure 3.r
 ----------
 
-The invariant mass of summed truth-children, which originate from mutual top-quarks, where the parent top-quarks can be spectators or resonance based.
+A collection of figures illustrating the fractional **transverse momentum** dispersed to truth children from **resonance** tops.
+The distribution is segmented into whether the PDGID of the truth child is a lepton, neutrino, light quark or b-quark or rarely a photon.
 
 Mass Point: 400 GeV
 ^^^^^^^^^^^^^^^^^^^

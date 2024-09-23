@@ -1,7 +1,10 @@
+.. _figure_3s:
+
 Figure 3.s
 ----------
 
-Dimensional heat-maps of Figures.3.q and Figures.3.r.
+A collection of figures illustrating the fractional **transverse momentum** dispersed to truth children from **spectator** tops.
+The distribution is segmented into whether the PDGID of the truth child is a lepton, neutrino, light quark or b-quark or rarely a photon.
 
 
 Mass Point: 400 GeV

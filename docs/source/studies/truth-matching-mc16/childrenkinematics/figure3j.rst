@@ -1,7 +1,9 @@
+.. _figure_3j:
+
 Figure 3.j
 ----------
 
-Figures of the truth children's energy originating from resonance and spectator tops.
+A collection of normalized **energy** distributions for truth children originating either from resonance and spectator tops at various injected resonance mass points.
 
 Mass Point: 400 GeV
 ^^^^^^^^^^^^^^^^^^^

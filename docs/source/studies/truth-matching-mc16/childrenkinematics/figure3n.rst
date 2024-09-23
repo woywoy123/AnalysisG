@@ -1,7 +1,9 @@
+.. _figure_3n:
+
 Figure 3.n
 ----------
 
-Pseudorapidity of the top-quark truth children, segmented into their respective decay mode (leptonic and hadronic)
+A collection of normalized **pseudorapidity** distributions of truth children originating from resonance and spectator and decaying either leptonically or hadronically.
 
 Mass Point: 400 GeV
 ^^^^^^^^^^^^^^^^^^^

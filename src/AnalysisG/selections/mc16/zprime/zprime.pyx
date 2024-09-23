@@ -9,23 +9,7 @@ cdef class ZPrime(SelectionTemplate):
         self.ptr = new zprime()
         self.tt = <zprime*>self.ptr
 
-    def __init__(self, inpt = None):
-        if inpt is None: return
-        self.zprime_truth_tops = inpt["zprime_truth_tops"]
-        self.zprime_children   = inpt["zprime_children"]
-        self.zprime_truthjets  = inpt["zprime_truthjets"]
-        self.zprime_jets       = inpt["zprime_jets"]
-
     def __dealloc__(self): del self.tt
-
-    def __reduce__(self):
-        cdef dict dct = {
-                "zprime_truth_tops" : self.zprime_truth_tops,
-                "zprime_children"   : self.zprime_children,
-                "zprime_truthjets"  : self.zprime_truthjets,
-                "zprime_jets"       : self.zprime_jets
-        }
-        return ZPrime, (dct, )
 
     cdef void transform_dict_keys(self):
         self.zprime_truth_tops = self.tt.zprime_truth_tops

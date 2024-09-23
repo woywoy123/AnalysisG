@@ -1,7 +1,10 @@
+.. _figure_3t:
+
 Figure 3.t
 ----------
 
-Heat-maps of the top-quark momenta and :math:`\Delta R` between truth-children.
+A collection of figures illustrating the fractional **energy** dispersed to truth children from **resonance** tops.
+The distribution is segmented into whether the PDGID of the truth child is a lepton, neutrino, light quark or b-quark or rarely a photon.
 
 Mass Point: 400 GeV
 ^^^^^^^^^^^^^^^^^^^

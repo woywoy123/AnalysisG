@@ -292,7 +292,7 @@ cdef class TH1F(BasePlotting):
     @property
     def Alpha(self): return self.ptr.alpha
     @Alpha.setter
-    def Alpha(self, float v): self.ptr.alpha
+    def Alpha(self, float v): self.ptr.alpha = v
 
     @property
     def Density(self): return self.ptr.density
@@ -341,6 +341,7 @@ cdef class TH1F(BasePlotting):
         histpl["edgecolor"] = "black"
         histpl["alpha"] = self.Alpha
         histpl["binticks"] = True
+        histpl["edges"] = True
         histpl["density"] = self.Density
         histpl["flow"] = self.Overflow
         histpl["label"] = []

@@ -1,8 +1,10 @@
+.. _figure_3f:
+
 Figure 3.f
 ----------
 
-Pseudorapidity distributions of the truth children originating from **resonant** top-quarks.
-Stack plots showing the underlying distribution associated with the PDGID's of the truth children.
+A collection of stacked normalized **pseudorapidity** distributions using the truth children matched to a **spectator** top-quark.
+The overall distribution is partitioned into whether the PDGID of the truth child is a lepton, neutrino, light quark, b-quark or rarely a photon.
 
 Mass Point: 400 GeV
 ^^^^^^^^^^^^^^^^^^^
