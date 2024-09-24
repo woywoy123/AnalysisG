@@ -26,6 +26,7 @@ void topefficiency::merge(selection_template* sl){
     merge_data(&this -> kin_truth_tops  , &slt -> kin_truth_tops); 
     merge_data(&this -> ms_kin_perf_tops, &slt -> ms_kin_perf_tops); 
     merge_data(&this -> ms_kin_reco_tops, &slt -> ms_kin_reco_tops); 
+    merge_data(&this -> ntops_efficiency, &slt -> ntops_efficiency);
 
     merge_data(&this -> n_tru_tops , &slt -> n_tru_tops); 
 
@@ -205,11 +206,16 @@ bool topefficiency::strategy(event_template* ev){
             this -> ms_cut_perf_tops[key][fname].push_back(n_perfect_tops); 
             this -> ms_cut_reco_tops[key][fname].push_back(cut_t.size()); 
             this -> ms_cut_topmass[key][fname] = cut_t; 
-            
+           
+            int ntops_p = 0; 
             std::map<std::string, int>::iterator itx; 
             for (itx = kin_perf.begin(); itx != kin_perf.end(); ++itx){
                 this -> ms_kin_perf_tops[key][itx -> first][fname].push_back(itx -> second);
+                ntops_p += itx -> second;
             }
+
+            int lx = (evn -> t_tops.size()) ? ntops_p : -ntops_p;
+            this -> ntops_efficiency[key][fname].push_back(lx);
 
             for (itx = kin_reco.begin(); itx != kin_reco.end(); ++itx){
                 this -> ms_kin_reco_tops[key][itx -> first][fname].push_back(itx -> second);

@@ -28,6 +28,7 @@ cdef extern from "topefficiency.h":
         map[string, map[string, map[string, vector[int]]]] ms_kin_reco_tops
 
         map[string, vector[int]] n_tru_tops
+        map[string, map[string, vector[int]]] ntops_efficiency
 
         vector[int] truth_res_edge
         vector[int] truth_top_edge
@@ -61,6 +62,7 @@ cdef class TopEfficiency(SelectionTemplate):
     cdef public dict n_tru_tops
 
     cdef public dict kin_truth_tops
+    cdef public dict ntops_efficiency
     cdef public dict ms_kin_perf_tops
     cdef public dict ms_kin_reco_tops
 

@@ -44,3 +44,5 @@ cdef class TopEfficiency(SelectionTemplate):
 
         self.pred_ntops_score    = self.tt.pred_ntops_score
         self.pred_signal_score   = self.tt.pred_signal_score
+
+        self.ntops_efficiency    = as_dict_dict(&self.tt.ntops_efficiency)

@@ -392,6 +392,19 @@ def KinematicTops(stacks, ana = None):
         print(mx, key)
         break
 
+def NtopClassification(stacks, ana = None):
+    if ana is not None:
+        eff = ana.ntops_efficiency
+        for fname in eff:
+            print(eff)
+            exit()
+            for fname in truth_tops[kin]:
+                prc = mapping(fname)
+                if prc not in stacks: stacks[prc] = {"ntruth" : {}, "reco" : {}, "perfect" : {}}
+                if kin not in stacks[prc]["ntruth"]: stacks[prc]["ntruth"][kin] = 0
+                stacks[prc]["ntruth"][kin] += sum(truth_tops[kin][fname])
+
+
 def TopEfficiency(ana):
     p = Path(ana)
     files = [str(x) for x in p.glob("**/*.pkl") if str(x).endswith(".pkl")]
@@ -400,6 +413,7 @@ def TopEfficiency(ana):
     stacks_c = {}
     stacks_x = {}
     stacks_k = {}
+    stacks_n = {}
     #files = files[:1]
     for i in range(len(files)):
         print(files[i], (i+1) / len(files))
@@ -409,9 +423,11 @@ def TopEfficiency(ana):
         stacks_k = KinematicTops(stacks_k, pr)
         stacks_x = EfficiencyEvent(stacks_x, pr)
         stacks_c = TopMassComparison(stacks_c, pr)
+#        stacks_n = NtopClassification(stacks_n, pr)
 
     TopScores(stacks_s)
     KinematicTops(stacks_k)
     EfficiencyEvent(stacks_x)
     TopMassComparison(stacks_c)
+#    NtopClassification(stacks_n)
 

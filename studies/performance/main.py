@@ -4,8 +4,7 @@ import pickle
 import pathlib
 
 def chunks(lst, n):
-    for i in range(0, len(lst), n):
-        yield lst[i:i + n]
+    for i in range(0, len(lst), n): yield lst[i:i + n]
 
 def build_samples(pth, pattern, chnks):
     return chunks([str(i) for i in pathlib.Path(pth).glob(pattern) if str(i).endswith(".root")], chnks)
@@ -44,11 +43,11 @@ study       = "topefficiency"
 
 graph_name  = "GraphJets"
 inference_mode = False
-plot_only      = False
+plot_only      = True
 
 #root_model = "/import/wu1/tnom6927/TrainingOutput/training-sessions/"
 #data_path  = "/scratch/tnom6927/mc16-full/"
-data_path = "./ROOT/GraphJets_Experimental/MRK-1/epoch-74/kfold-5/"
+data_path = "ProjectName/ROOT/GraphJets_Experimental/MRK-1/epoch-9/kfold-1/"
 
 model_states = {}
 if inference_mode:
@@ -101,7 +100,7 @@ sample_path_ = {
 
 if not inference_mode:
     ls = sum(list(build_samples(data_path, "./*/*.root", 10)), [])
-    sample_path = {k.split("/")[-1] : k for k in ls if "ttbar" in k}
+    sample_path_ = {k.split("/")[-1] : k for k in ls}
 
 event_name     = "BSM4Tops"      if inference_mode     else "EventGNN"
 graph_name     = graph_name      if inference_mode     else ""
@@ -160,7 +159,7 @@ for k in build_samples(data_path + "sorted-data", "./*/*/*.root", 10):
     sample_path = {}
 
 i = 0
-for j, k in sample_path.items():
+for j, k in sample_path_.items():
     if plot_only: break
     ana = Analysis()
     ana.Threads = 12
@@ -178,7 +177,7 @@ for j, k in sample_path.items():
     f = open("./serialized-data/" + j +".pkl", "wb")
     pickle.dump(selection_container[selection_name], f)
     f.close()
-    print(i, len(sample_path))
+    print(i, len(sample_path_))
     i+=1
 
 method = plotting_method[study]

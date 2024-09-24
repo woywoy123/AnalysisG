@@ -61,8 +61,11 @@ class topefficiency: public selection_template
         std::map<std::string, std::map<std::string, std::vector<float>>> ms_cut_topmass   = {}; 
 
         std::map<std::string, std::map<std::string, std::vector<int>>> kin_truth_tops = {}; 
+        std::map<std::string, std::map<std::string, std::vector<int>>> ntops_efficiency = {};
+
         std::map<std::string, std::map<std::string, std::map<std::string, std::vector<int>>>> ms_kin_perf_tops = {}; 
         std::map<std::string, std::map<std::string, std::map<std::string, std::vector<int>>>> ms_kin_reco_tops = {};
+
 
         std::map<std::string, std::vector<int>> n_tru_tops  = {}; 
 
