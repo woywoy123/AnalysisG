@@ -1,5 +1,5 @@
-Resonance ZPrime Studies
-------------------------
+Resonance ZPrime
+----------------
 
 This collection of studies aims to illustrate the shape of the target resonance at multiple mass points and how the shape resolution degrades with removing truth information.
 Initially, only truth tops are used to construct the resonance's invariant mass, this is followed by replacing truth tops with the decay products of said tops.

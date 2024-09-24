@@ -24,7 +24,6 @@ import zprime
 
 import pickle
 
-study = "childrenkinematics"
 
 plotting_method = {
     "zprime"             : zprime,
@@ -58,8 +57,9 @@ def ExecuteStudy(study, smpls):
 
 #smpls = "../../test/samples/dilepton/*"
 
+study = "topjets"
 plt_data = True
-gen_data = False
+gen_data = True
 figure_path = "./Output/"
 for mass in ["1000", "900", "800", "700", "600", "500", "400"]:
     mass_point = "Mass." + mass + ".GeV"
@@ -74,7 +74,6 @@ for mass in ["1000", "900", "800", "700", "600", "500", "400"]:
         f = open(study + "-" + mass_point + ".pkl", "wb")
         pickle.dump(sel, f)
         f.close()
-
 
     if not plt_data: continue
     print("plotting: " + study)

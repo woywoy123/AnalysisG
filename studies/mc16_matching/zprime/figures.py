@@ -111,10 +111,13 @@ def ZPrime(ana):
     data_ = {}
     masses = ["1000", "900", "800", "700", "600", "500", "400"]
     for i in masses:
-        f = open("zprime-Mass." + i + ".GeV.pkl", "rb")
+        try: f = open("zprime-Mass." + i + ".GeV.pkl", "rb")
+        except: return
+
         data_[i] = pickle.load(f)
         f.close()
     zprime_mass_tops(data_)
     zprime_mass_children(data_)
     zprime_mass_truthjets(data_)
     zprime_mass_jets(data_)
+    exit()

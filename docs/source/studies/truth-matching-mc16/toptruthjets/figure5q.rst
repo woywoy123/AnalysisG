@@ -1,8 +1,10 @@
+.. _figure_5q:
+
 Figure.5.q
 ----------
 
 Heat-maps of the :math:`\Delta R` dependency between the Truth-Jet axis and Ghost Matched Partons as a function of the Ghost Matched Parton's transverse momenta.
-These figures are a decomposition of Figure 7.o, where the underlying distributions are a function of the Ghost Matched Parton transverse momenta.
+These figures are a decomposition of Figure :ref:`figure_5o`, where the underlying distributions are a function of the Ghost Matched Parton transverse momentum.
 
 Mass Point: 400 GeV
 ^^^^^^^^^^^^^^^^^^^

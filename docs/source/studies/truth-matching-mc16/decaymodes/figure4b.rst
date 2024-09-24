@@ -1,8 +1,26 @@
+.. _figure_4b:
+
 Figure.4.b
 ----------
 
-A set of invariant mass distribution plots of the resonance partitioned into **same and opposite sign** decay modes, where resonant top-quarks decay leptonically.
-No entries should be visible for top partons decaying leptonically with identical electric charge (no Same-Sign entries), since the selection is based on **truth children**.
+A set of normalized fractional plots of the PDGID codes from tops decaying into their respective children. 
+The plots are segmented by resonance and spectator top decay.
+
+Fraction values for Mass Point: 1000 GeV
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- :math:`\gamma`: 2.3913222376975236
+- :math:`\mu`: 9.760464072716319
+- :math:`\nu_{\mu}`: 9.760464072716319
+- :math:`\nu_{\tau}`: 2.900454476994334
+- :math:`\nu_{e}`: 7.848462122517806
+- :math:`\tau`: 2.900454476994334
+- b: 32.537882140311815
+- c: 6.037230780219149
+- d: 5.988786358547723
+- e: 7.848462122517806
+- s: 6.037230780219149
+- u: 5.988786358547723
 
 Mass Point: 400 GeV
 ^^^^^^^^^^^^^^^^^^^

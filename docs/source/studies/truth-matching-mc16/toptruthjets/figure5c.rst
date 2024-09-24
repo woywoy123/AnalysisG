@@ -1,8 +1,11 @@
+.. _figure_5c:
+
 Figure.5.c
 ----------
 
 A set of figures illustrating the formed invariant mass of the top-quark from truth jets being matched to **hadronically decaying** tops.
 The underlying distributions are partitioned into the number of truth-jet contributions.
+For this matching scheme the truth children are used to add the missing the neutrinos and leptons.
 
 Mass Point: 400 GeV
 ^^^^^^^^^^^^^^^^^^^

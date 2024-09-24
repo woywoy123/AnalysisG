@@ -1,8 +1,10 @@
+.. _figure_4c:
+
 Figure.4.c
 ----------
 
-A set of invariant mass distribution plots of the spectator tops being combined to create an :math:`m_{tt}` distribution.
-This is predominantly used to verify whether the distributions are different between resonant top pairs and spectator pairs.
+Figures depicting the invariant mass of the resonance, when constraining the **decay mode of one spectator and resonant top to be leptonically**.
+The resulting decaying leptons can be categorized as being opposite (OS) or same-signed (SS), to further resolve the resonance.
 
 Mass Point: 400 GeV
 ^^^^^^^^^^^^^^^^^^^

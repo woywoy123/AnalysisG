@@ -138,9 +138,6 @@ void topefficiency::score_mass(
         } 
     }
     *perf_tops = n_perfect_tops; 
-    
-
-
 }
 
 bool topefficiency::strategy(event_template* ev){
