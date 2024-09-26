@@ -78,7 +78,7 @@ void gnn_event::CompileEvent(){
         std::map<std::string, std::vector<float>> score_av; 
         std::map<int, std::map<std::string, particle_gnn*>>::iterator itr = clust -> begin(); 
         for (; itr != clust -> end(); ++itr){
-            if (itr -> second.size() <= 1){continue;}
+            if (itr -> second.size() <= 2){continue;}
             std::string hsh = ""; 
             std::map<std::string, particle_gnn*>::iterator ix = itr -> second.begin();
             for (; ix != itr -> second.end(); ++ix){ hsh = tools().hash(hsh + std::string(ix -> second -> hash)); }

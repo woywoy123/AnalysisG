@@ -20,6 +20,10 @@ void execution(model_template* md, std::vector<graph_t*>* data, std::string outp
         (*prg) = data -> size(); 
         return;  
     }
+    if (f -> IsZombie()){
+        delete f; 
+        f = TFile::Open(output.c_str(), "RECREATE");
+    }
 
     TTree* t = new TTree("nominal", "data"); 
     std::string msg = "Running model " + std::string(md -> name) + " with sample -> " + output; 

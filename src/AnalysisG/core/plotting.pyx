@@ -1,8 +1,10 @@
 # distutils: language = c++
 # cython: language_level = 3
 
-from libcpp.vector cimport vector
 from libcpp.string cimport string
+from libcpp.vector cimport vector
+from libcpp.map cimport map
+from libcpp cimport bool
 
 from AnalysisG.core.tools cimport *
 from AnalysisG.core.plotting cimport plotting
@@ -11,6 +13,7 @@ import boost_histogram as bh
 import matplotlib.pyplot as plt
 import mplhep as hep
 import numpy as np
+from scipy.stats import ks_2samp
 
 cdef class BasePlotting:
     def __cinit__(self):
@@ -48,11 +51,15 @@ cdef class BasePlotting:
         self.matpl.rcdefaults()
         self.__figure__()
 
-    cdef void __compile__(self): pass
+    cdef dict __compile__(self, bool raw = False): return {}
 
     def __dealloc__(self): del self.ptr
     def __init__(self): pass
 
+    @property
+    def Hatch(self): return env(self.ptr.hatch)
+    @Hatch.setter
+    def Hatch(self, str val): self.ptr.hatch = enc(val)
 
     @property
     def DPI(self): return self.ptr.dpi
@@ -208,6 +215,7 @@ cdef class BasePlotting:
 
     @property
     def Colors(self): return [env(i) for i in self.ptr.colors]
+
     @Colors.setter
     def Colors(self, vals):
         if not isinstance(vals, list): return
@@ -248,7 +256,7 @@ cdef class BasePlotting:
         self.matpl.tight_layout()
         self.matpl.savefig(env(out), dpi = self.ptr.dpi)
         self.matpl.close("all")
-
+        print("Finished Plotting: " + env(out))
 
 cdef class TH1F(BasePlotting):
 
@@ -304,6 +312,32 @@ cdef class TH1F(BasePlotting):
     @xLabels.setter
     def xLabels(self, dict val): as_map(val, &self.ptr.x_labels)
 
+    @property
+    def Weights(self): return self.ptr.weights
+    @Weights.setter
+    def Weights(self, list val): self.ptr.weights = <vector[float]>(val)
+
+    def KStest(self, TH1F hist, bool normalize = True):
+        hist_min = hist.xMin
+        hist_max = hist.xMax
+        hist_bin = hist.xBins
+
+        hist.xMin = self.xMin
+        hist.xMax = self.xMax
+        hist.xBins = self.xBins
+
+        h1 = sum(hist.__compile__(True)["H"])
+        h2 = sum(self.__compile__(True)["H"])
+
+        hist.xMin = hist_min
+        hist.xMax = hist_max
+        hist.xBins = hist_bin
+
+        v1, v2 = h1.values(), h2.values()
+        w1, w2 = h1.axes[0].widths, h2.axes[0].widths
+        if normalize: v1, v2 = (v1*w1)/((v1*w1).sum()), (v2*w2)/((v2*w2).sum())
+        return ks_2samp(v2, v1)
+
     cdef void __error__(self, vector[float] xarr, vector[float] up, vector[float] low):
         self.matpl.fill_between(
                 xarr, low, up,
@@ -337,6 +371,7 @@ cdef class TH1F(BasePlotting):
         histpl["histtype"] = self.HistFill
         histpl["yerr"] = self.ErrorBars
         histpl["stack"] = self.Stacked
+        histpl["hatch"] = [] if not len(self.Hatch) else [self.Hatch]
         histpl["linewidth"] = self.LineWidth
         histpl["edgecolor"] = "black"
         histpl["alpha"] = self.Alpha
@@ -346,7 +381,8 @@ cdef class TH1F(BasePlotting):
         histpl["flow"] = self.Overflow
         histpl["label"] = []
         histpl["H"] = []
-        if len(self.Color): histpl["color"] = self.Color
+        histpl["color"] = []
+        if len(self.Color): histpl["color"] += [self.Color]
         return histpl
 
     cdef __build__(self):
@@ -376,9 +412,10 @@ cdef class TH1F(BasePlotting):
         if self.ApplyScaling: h *= self.scale_f()
         return h
 
-    cdef void __compile__(self):
+    cdef dict __compile__(self, bool raw = False):
         cdef dict labels = self.xLabels
         cdef float _max, _min
+
         if len(labels): pass
         elif self.set_xmin: _min = self.ptr.x_min
         elif not len(labels) and not len(self.xData): pass
@@ -389,6 +426,10 @@ cdef class TH1F(BasePlotting):
         elif not len(labels) and not len(self.xData): pass
         else: _max = self.ptr.get_max(b"x")
 
+        y_max, y_min = None, None
+        if self.set_ymin: y_min = self.ptr.y_min
+        if self.set_ymax: y_max = self.ptr.y_max
+
         cdef TH1F h
         cdef dict histpl = self.factory()
         if self.Histogram is not None:
@@ -397,25 +438,27 @@ cdef class TH1F(BasePlotting):
             if not len(labels): self.Histogram.xBins = self.xBins
             histpl["H"] += [self.Histogram.__build__()]
             histpl["label"] += [self.Histogram.Title]
+            if len(self.Histogram.Color): histpl["color"] += [self.Histogram.Color]
+            if len(self.Histogram.Hatch): histpl["hatch"] += [self.Histogram.Hatch]
 
         if len(self.xData) or len(labels):
-            if not sum(list(self.ptr.weights)):
-                tmp = self.factory()
-                tmp["H"] = self.__build__()
-                del tmp["label"]
-                hep.histplot(**tmp)
-            else:
-                histpl["label"] += [self.Title]
-                histpl["H"] += [self.__build__()]
+            histpl = self.factory()
+            histpl["label"] = None
+            histpl["H"] = [self.__build__()]
+            if raw: return histpl
+            hep.histplot(**histpl)
 
         for h in self.Histograms:
             if not len(labels): h.xMin  = self.xMin
             if not len(labels): h.xMax  = self.xMax
             if not len(labels): h.xBins = self.xBins
             histpl["H"] += [h.__build__()]
-            histpl["label"] += [h.Title]
+            histpl["label"]  += [h.Title]
+            if len(h.Color): histpl["color"] += [h.Color]
+            if len(h.Hatch): histpl["hatch"] += [h.Hatch]
 
-        if not len(histpl["H"]): return
+        if raw: return histpl
+        if not len(histpl["H"]): return {}
         if self.ErrorBars and self.Histogram is not None:
             l = list(histpl["label"])
             lg = list(histpl["H"])
@@ -431,10 +474,27 @@ cdef class TH1F(BasePlotting):
             histpl["H"] = lg
             hep.histplot(**histpl)
             self.__get_error_seg__(error[0])
+
+        elif self.Histogram is not None and len(self.Histograms) and self.Stacked:
+            cpy = dict(histpl)
+            try: cpy["color"] = histpl["color"].pop(0)
+            except IndexError: pass
+
+            cpy["H"] = [histpl["H"].pop(0)]
+            cpy["label"] = [histpl["label"].pop(0)]
+            cpy["stack"] = False
+            cpy["hatch"] = "///" if not len(self.Histogram.Hatch) else [histpl["hatch"].pop(0)]
+
+            hep.histplot(**cpy)
+            hep.histplot(**histpl)
+
         else: hep.histplot(**histpl)
 
-        if not len(labels): self.matpl.xlim(_min, _max)
+        if not len(labels): 
+            self.matpl.xlim(_min, _max)
+            self.matpl.ylim(y_min, y_max)
         self.matpl.legend(loc = "upper right")
+        return {}
 
 cdef class TH2F(BasePlotting):
     def __cinit__(self): pass
@@ -489,7 +549,7 @@ cdef class TH2F(BasePlotting):
         else: h.fill(self.ptr.x_data, self.ptr.y_data, weight = self.ptr.weights)
         return h
 
-    cdef void __compile__(self):
+    cdef dict __compile__(self, bool raw = False):
         cdef dict histpl = {}
         histpl["H"] = self.__build__()
         if len(self.Color): histpl["cmap"] = self.Color
@@ -510,6 +570,7 @@ cdef class TH2F(BasePlotting):
         else: y_max = self.ptr.get_max(b"y")
         self.matpl.xlim(x_min, x_max)
         self.matpl.ylim(y_min, y_max)
+        return {}
 
 cdef class TLine(BasePlotting):
     def __cinit__(self): pass
@@ -566,7 +627,7 @@ cdef class TLine(BasePlotting):
             self.matpl.errorbar(self.xData, self.yData, **coms)
         else: self.matpl.plot(self.xData, self.yData, **coms)
 
-    cdef void __compile__(self):
+    cdef dict __compile__(self, bool raw = False):
         cdef float x_max, x_min
         if self.set_xmin: x_min = self.ptr.x_min
         else: x_min = self.ptr.get_min(b"x")
@@ -584,9 +645,9 @@ cdef class TLine(BasePlotting):
         self.matpl.ylim(y_min, y_max)
 
         self.factory()
-        if self.Lines is None: return
+        if self.Lines is None: return {}
         cdef TLine i
         for i in self.Lines: i.factory()
         self._ax.tick_params(axis = "x", which = "minor", bottom = False)
         self.matpl.legend(loc = "upper right")
-
+        return {}

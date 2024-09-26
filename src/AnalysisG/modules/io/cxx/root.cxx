@@ -140,6 +140,11 @@ bool io::scan_keys(){
     for (; itr != this -> root_files.end(); ++itr){
         if (!this -> files_open.count(itr -> first)){
             this -> file_root = new TFile(itr -> first.c_str(), "READ");
+            if (this -> file_root -> IsZombie()){
+                delete this -> file_root; 
+                this -> file_root = nullptr; 
+                continue;
+            }
             this -> file_root -> SetTitle(itr -> first.c_str()); 
             this -> files_open[itr -> first] = this -> file_root; 
         }

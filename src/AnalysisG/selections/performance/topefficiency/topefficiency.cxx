@@ -183,6 +183,7 @@ bool topefficiency::strategy(event_template* ev){
         std::string key = this -> region(zp_ -> pt / 1000, std::abs(zp_ -> eta));
         this -> t_zmass[key][fname].push_back(zp_ -> mass / 1000); 
     }
+    return true; 
 
     int mass_size  = this -> iters(this -> mass_start , this -> mass_end , this -> mass_step); 
     int score_size = this -> iters(this -> score_start, this -> score_end, this -> score_step); 

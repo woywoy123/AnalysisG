@@ -26,6 +26,7 @@ cdef extern from "<plotting/plotting.h>":
         string histfill
         string overflow
         string marker
+        string hatch
 
         string color
         vector[string] colors
@@ -88,7 +89,7 @@ cdef class BasePlotting:
     cdef bool set_ymax
 
     cdef list __ticks__(self, float s, float e, float st)
-    cdef void __compile__(self)
+    cdef dict __compile__(self, bool raw = *)
     cdef void __resetplt__(self)
     cdef void __figure__(self)
 
@@ -102,16 +103,17 @@ cdef class TH1F(BasePlotting):
     cdef void __error__(self, vector[float] xarr, vector[float] up, vector[float] low)
 
     cdef __build__(self)
-    cdef void __compile__(self)
+    cdef dict __compile__(self, bool raw = *)
     cdef void __get_error_seg__(self, plot)
 
 cdef class TH2F(BasePlotting):
     cdef public bool ApplyScaling
     cdef __build__(self)
-    cdef void __compile__(self)
+    cdef dict __compile__(self, bool raw = *)
 
 cdef class TLine(BasePlotting):
     cdef public list Lines
     cdef public bool ApplyScaling
 
     cdef void factory(self)
+    cdef dict __compile__(self, bool raw = *)
