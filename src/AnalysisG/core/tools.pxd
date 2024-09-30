@@ -10,24 +10,24 @@ from cython.operator cimport dereference as dref
 cdef extern from "<tools/tools.h>":
 
     cdef cppclass tools:
-        tools() except +
+        tools() except+ nogil
 
         # io.cxx 
-        void create_path(string inpt) except +
-        void delete_path(string inpt) except +
-        bool is_file(string inpt) except +
-        string absolute_path(string path) except +
-        vector[string] ls(string path, string ext) except +
+        void create_path(string inpt) except+ nogil
+        void delete_path(string inpt) except+ nogil
+        bool is_file(string inpt) except+ nogil
+        string absolute_path(string path) except+ nogil
+        vector[string] ls(string path, string ext) except+ nogil
 
         # strings.cxx
-        string hash(string inpt, int l) except +
-        bool has_string(string* inpt, string trg) except +
-        void replace(string* inpt, string rpl, string rpwl) except +
-        vector[string] split(string ipt, string delm) except +
-        vector[string] split(string ipt, int n) except +
+        string hash(string inpt, int l) except+ nogil
+        bool has_string(string* inpt, string trg) except+ nogil
+        void replace(string* inpt, string rpl, string rpwl) except+ nogil
+        vector[string] split(string ipt, string delm) except+ nogil
+        vector[string] split(string ipt, int n) except+ nogil
 
-        string encode64(string* data) except +
-        string decode64(string* data) except +
+        string encode64(string* data) except+ nogil
+        string decode64(string* data) except+ nogil
 
 
 

@@ -5,10 +5,10 @@ from libcpp.map cimport map
 from libcpp.vector cimport vector
 from libcpp.string cimport string
 
-cdef extern from "<templates/model_template.h>":
+cdef extern from "<templates/model_template.h>" nogil:
     cdef cppclass model_template:
 
-        model_template() except+
+        model_template() except+ nogil
 
         map[string, string] o_graph
         map[string, string] o_node

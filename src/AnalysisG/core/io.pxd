@@ -8,25 +8,25 @@ from libcpp.vector cimport vector
 from AnalysisG.core.meta cimport meta, Meta
 from AnalysisG.core.structs cimport data_t
 
-cdef extern from "<io/io.h>":
+cdef extern from "<io/io.h>" nogil:
 
     cdef cppclass io:
-        io() except +
+        io() except+ nogil
 
         # hdf5 wrappers
-        bool start(string filename, string read_write) except +
-        void end() except +
+        bool start(string filename, string read_write) except+ nogil
+        void end() except+ nogil
 
-        vector[string] dataset_names() except +
-        bool has_dataset_name(string name) except +
+        vector[string] dataset_names() except+ nogil
+        bool has_dataset_name(string name) except+ nogil
 
         # ROOT wrappers
-        map[string, long] root_size() except +
-        void check_root_file_paths() except +
-        bool scan_keys() except +
-        void root_begin() except +
-        void root_end() except +
-        map[string, data_t*]* get_data() except +
+        map[string, long] root_size() except+ nogil
+        void check_root_file_paths() except+ nogil
+        bool scan_keys() except+ nogil
+        void root_begin() except+ nogil
+        void root_end() except+ nogil
+        map[string, data_t*]* get_data() except+ nogil
 
         # ------ parameters ------- #
         string current_working_path

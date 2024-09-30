@@ -4,14 +4,14 @@
 from libcpp cimport bool
 from libcpp.string cimport string
 
-cdef extern from "<notification/notification.h>":
+cdef extern from "<notification/notification.h>" nogil:
 
     cdef cppclass notification:
 
-        void success(string)
-        void warning(string)
-        void failure(string)
-        void info(string)
+        void success(string) except+ nogil
+        void warning(string) except+ nogil
+        void failure(string) except+ nogil
+        void info(string) except+ nogil
 
         string prefix
         int _warning

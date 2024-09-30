@@ -8,9 +8,9 @@ from libcpp.vector cimport vector
 from AnalysisG.core.structs cimport meta_t
 from AnalysisG.core.notification cimport *
 
-cdef extern from "<meta/meta.h>":
+cdef extern from "<meta/meta.h>" nogil:
     cdef cppclass meta:
-        meta() except +
+        meta() except+ nogil
         meta_t meta_data
         string metacache_path
 

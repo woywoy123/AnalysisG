@@ -8,14 +8,14 @@ from libcpp.vector cimport vector
 
 from AnalysisG.core.structs cimport particle_t
 
-cdef extern from "<templates/particle_template.h>":
+cdef extern from "<templates/particle_template.h>" nogil:
 
     cdef cppclass particle_template:
-        particle_template() except +
+        particle_template() except+ nogil
 
-        particle_template(particle_t* p) except +
-        particle_template(double px, double py, double pz, double e) except +
-        particle_template(double px, double py, double pz) except +
+        particle_template(particle_t* p) except+ nogil
+        particle_template(double px, double py, double pz, double e) except+ nogil
+        particle_template(double px, double py, double pz) except+ nogil
 
         double mass
         double e
@@ -35,7 +35,7 @@ cdef extern from "<templates/particle_template.h>":
         string symbol
         double charge
 
-        double DeltaR(particle_template* p) except +
+        double DeltaR(particle_template* p) except+ nogil
 
         bool is_lep
         bool is_nu
@@ -43,17 +43,17 @@ cdef extern from "<templates/particle_template.h>":
         bool is_add
         bool lep_decay
 
-        void to_cartesian() except +
-        void to_polar() except +
+        void to_cartesian() except+ nogil
+        void to_polar() except+ nogil
 
-        void add_leaf(string key, string leaf) except +
+        void add_leaf(string key, string leaf) except+ nogil
 
-        bool operator == (particle_template& p) except +
-        particle_template* operator+(particle_template* p) except +
-        void iadd(particle_template* p) except +
+        bool operator == (particle_template& p) except+ nogil
+        particle_template* operator+(particle_template* p) except+ nogil
+        void iadd(particle_template* p) except+ nogil
 
-        bool register_parent(particle_template* p) except +
-        bool register_child(particle_template* p) except +
+        bool register_parent(particle_template* p) except+ nogil
+        bool register_child(particle_template* p) except+ nogil
 
         map[string, particle_template*] parents
         map[string, particle_template*] children

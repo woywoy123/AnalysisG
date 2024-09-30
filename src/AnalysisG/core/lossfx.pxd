@@ -6,11 +6,11 @@ from libcpp.vector cimport vector
 from libcpp.string cimport string
 cimport cython.operator
 
-cdef extern from "<templates/fx_enums.h>":
+cdef extern from "<templates/fx_enums.h>" nogil:
 
     cdef cppclass optimizer_params_t:
 
-        void operator()()
+        void operator()() except+ nogil
         string optimizer
 
         double lr

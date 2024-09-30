@@ -71,6 +71,8 @@ void optimizer::training_loop(int k, int epoch){
     model_report* mr = this -> reports[this -> m_settings.run_name + std::to_string(k)]; 
     mr -> mode = "training";
     mr -> epoch = epoch+1;  
+    torch::AutoGradMode grd(true); 
+
     if (this -> m_settings.batch_size > 1){
         std::vector<std::vector<graph_t*>> batched = this -> discretize(smpl, this -> m_settings.batch_size); 
         int bx = this -> m_settings.batch_size; 
@@ -102,7 +104,7 @@ void optimizer::validation_loop(int k, int epoch){
     model_report* mr = this -> reports[this -> m_settings.run_name + std::to_string(k)]; 
     mr -> mode = "validation"; 
 
-    torch::NoGradGuard no_grd; 
+    torch::AutoGradMode no_grd(false);  
     int l = smpl -> size(); 
     for (int x(0); x < l; ++x){
         graph_t* gr = (*smpl)[x]; 
@@ -120,7 +122,7 @@ void optimizer::evaluation_loop(int k, int epoch){
     model_report* mr = this -> reports[this -> m_settings.run_name + std::to_string(k)]; 
     mr -> mode = "evaluation"; 
 
-    torch::NoGradGuard no_grd; 
+    torch::AutoGradMode no_grd(false); 
     int l = smpl -> size(); 
     for (int x(0); x < l; ++x){
         graph_t* gr = (*smpl)[x]; 
@@ -131,7 +133,7 @@ void optimizer::evaluation_loop(int k, int epoch){
 }
 
 void optimizer::launch_model(int k){
-    //at::set_num_threads(1);
+    torch::init_num_threads();
     for (int ep(0); ep < this -> m_settings.epochs; ++ep){
         model_template* model = this -> kfold_sessions[k]; 
 

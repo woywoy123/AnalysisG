@@ -6,14 +6,14 @@ from libcpp.vector cimport vector
 from libcpp.map cimport map
 from libcpp cimport bool
 
-cdef extern from "<plotting/plotting.h>":
+cdef extern from "<plotting/plotting.h>" nogil:
     cdef cppclass plotting:
-        plotting() except +
-        string build_path() except +
-        float get_max(string) except +
-        float get_min(string) except +
-        float sum_of_weights() except +
-        void build_error() except +
+        plotting() except+ nogil
+        string build_path() except+ nogil
+        float get_max(string) except+ nogil
+        float get_min(string) except+ nogil
+        float sum_of_weights() except+ nogil
+        void build_error() except+ nogil
 
         string filename
         string extension

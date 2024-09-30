@@ -37,32 +37,38 @@ cdef class Analysis:
         del self.ana
 
     def AddSamples(self, str path, str label):
-        self.ana.add_samples(enc(path), enc(label))
+        cdef string rm = enc(label)
+        cdef string rn = enc(path)
+        with nogil: self.ana.add_samples(rn, rm)
 
     def AddEvent(self, EventTemplate ev, str label):
-        self.ana.add_event_template(ev.ptr, enc(label))
+        cdef string rm = enc(label)
+        with nogil: self.ana.add_event_template(ev.ptr, rm)
         self.events_.append(ev)
 
     def AddGraph(self, GraphTemplate ev, str label):
-        self.ana.add_graph_template(ev.ptr, enc(label))
+        cdef string rm = enc(label)
+        with nogil: self.ana.add_graph_template(ev.ptr, rm)
         self.graphs_.append(ev)
 
     def AddSelection(self, SelectionTemplate selc):
-        self.ana.add_selection_template(selc.ptr)
+        with nogil: self.ana.add_selection_template(selc.ptr)
         self.selections_.append(selc)
 
     def AddModel(self, ModelTemplate model, OptimizerConfig op, str run_name):
-        self.ana.add_model(model.nn_ptr, op.params, enc(run_name))
+        cdef string rm = enc(run_name)
+        with nogil: self.ana.add_model(model.nn_ptr, op.params, rm)
         self.models_.append(model)
         self.optim_.append(op)
 
     def AddModelInference(self, ModelTemplate model, str run_name = "run_name"):
-        self.ana.add_model(model.nn_ptr, enc(run_name))
+        cdef string rm = enc(run_name)
+        with nogil: self.ana.add_model(model.nn_ptr, rm)
         self.models_.append(model)
 
     def Start(self):
         self.ana.fetch_meta = self.FetchMeta
-        self.ana.start()
+        with nogil: self.ana.start()
 
         cdef Meta data
         cdef pair[string, meta*] itrm
@@ -72,17 +78,23 @@ cdef class Analysis:
                 data.ptr.metacache_path = itrm.second.metacache_path
                 data.__meta__(itrm.second)
                 del data
-            self.ana.start()
+            with nogil: self.ana.start()
 
         cdef dict bars = {}
         cdef pair[string, float] itr
         cdef pair[string, bool] itb
 
-        cdef map[string, float] o = self.ana.progress()
-        cdef map[string, string] desc = self.ana.progress_mode()
-        cdef map[string, string] repo = self.ana.progress_report()
-        cdef map[string, string] updr = repo
+        cdef map[string, float] o
+        cdef map[string, string] desc
+        cdef map[string, string] repo
 
+
+        with nogil:
+            o = self.ana.progress()
+            desc = self.ana.progress_mode()
+            repo = self.ana.progress_report()
+
+        cdef map[string, string] updr = repo
         cdef map[string, bool] compl
         cdef map[string, bool] same
 
@@ -91,10 +103,12 @@ cdef class Analysis:
             same[itr.first] = True
 
         while True:
-            desc = self.ana.progress_mode()
-            updr = self.ana.progress_report()
-            o    = self.ana.progress()
-            compl = self.ana.is_complete()
+            with nogil:
+                desc = self.ana.progress_mode()
+                updr = self.ana.progress_report()
+                o    = self.ana.progress()
+                compl = self.ana.is_complete()
+
             for itr in o:
                 bars[itr.first].update(itr.second - bars[itr.first].n)
                 bars[itr.first].set_description(env(desc[itr.first]))
