@@ -1,7 +1,7 @@
 from AnalysisG.core.plotting import TH1F, TH2F, TLine
 from pathlib import Path
 from .algorithms import *
-import torch
+#import torch
 import pickle
 
 global figure_path
@@ -182,7 +182,7 @@ def TopEfficiency(ana):
     p = Path(ana)
     files = [str(x) for x in p.glob("**/*.pkl") if str(x).endswith(".pkl")]
     files = list(set(files))
-    files = files[:10]
+#    files = files[:10]
 
     stack_topkin = {}
     for i in range(len(files)):
