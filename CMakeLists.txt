@@ -14,34 +14,10 @@ set(CMAKE_POLICY_DEFAULT_CMP0135 NEW)
 #set(CMAKE_CUDA_STANDARD_REQUIRED ON)
 set(CMAKE_CUDA_ARCHITECTURES "native")
 
-set(BLAS MKL)
-set(USE_TBB ON)
-set(MKL_TBB ON)
-
-set(USE_CUDA ON)
-set(USE_CUDNN ON)
-set(USE_MKLDNN ON)  
-set(USE_OPENCV ON)
-set(USE_MPI OFF)
-set(USE_OPENMP ON)
-set(USE_NNPACK ON)
-set(USE_CUSPARSELT ON)
-set(USE_EIGEN_THREADPOOL ON)
-set(CAFFE2_USE_CUDNN ON)
-
-set(MKL_THREADING TBB)
-set(MKLDNN_THREADING TBB)
-set(PARALLEL_BACKEND NATIVE)
-
-set(BUILD_TORCH ON)
-set(BUILD_BINARY ON)
-set(BUILD_CAFFE2 ON)
-set(BUILD_SHARED_LIBS ON)
-
 #set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Dimt=ON")
-#set(CMAKE_CXX_FLAGS_DEBUG "-g")
-#set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 include(FetchContent)
 include(CheckLanguage)
@@ -67,15 +43,59 @@ GIT_TAG origin/master
 FIND_PACKAGE_ARGS)
 FetchContent_MakeAvailable(rapidjson)
 set(RAPIDJSON_INCLUDE_DIR ${CMAKE_BINARY_DIR}/_deps/rapidjson-src/include)
-message(STATUS "RAPIDJSON: ${RAPIDJSON_INCLUDE_DIR}")
 
-FetchContent_Declare(torch URL "https://download.pytorch.org/libtorch/nightly/cu124/libtorch-cxx11-abi-shared-with-deps-latest.zip")
+FetchContent_Declare(torch URL "https://download.pytorch.org/libtorch/cu121/libtorch-cxx11-abi-shared-with-deps-2.4.1%2Bcu121.zip")
+FetchContent_MakeAvailable(torch)
+#FetchContent_Declare(torch
+#GIT_REPOSITORY "https://github.com/pytorch/pytorch.git"
+#GIT_TAG v2.4.1)
+
+execute_process(
+COMMAND python -c "import sysconfig; print(sysconfig.get_paths()['data'])" 
+OUTPUT_VARIABLE LIBX OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+execute_process(
+COMMAND python -c "import sysconfig; print(sysconfig.get_paths()['platlib'])" 
+OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+link_directories("${LIBX}/lib")
+set(TBB_LIB_DIR "${LIBX}/lib")
+set(MKLROOT "${LIBX}/lib")
+
+list(APPEND CMAKE_PREFIX_PATH "${CMAKE_PREFIX_PATH} ${LIBX}/lib/cmake/mkl")
+list(APPEND CMAKE_PREFIX_PATH "${CMAKE_PREFIX_PATH} ${LIBX}/lib/cmake/tbb")
+
+set(BLAS OpenBLAS)
+set(USE_TBB TRUE)
+set(MKL_TBB TRUE)
+set(USE_MKL TRUE)
+set(USE_MKLDNN TRUE)
+
+set(USE_MPI OFF)
+set(USE_OPENMP OFF)
+set(BUILD_BINARY TRUE)
+
+set(MKL_THREADING TBB)
+set(PARALLEL_BACKEND TBB)
+set(MKLDNN_THREADING TBB)
+set(MKLDNN_CPU_RUNTIME TBB)
+#set(USE_EIGEN_THREADPOOL ON)
+
+set(USE_NCCL ON)
+set(USE_CUDA ON)
+set(USE_CUDNN ON)
+set(CAFFE2_USE_CUDNN ON)
+set(BUILD_CAFFE2_OPS ON)
+
 FetchContent_MakeAvailable(torch)
 list(APPEND CMAKE_PREFIX_PATH ${torch_SOURCE_DIR})
-find_package(Torch REQUIRED CONFIG)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
-message(STATUS     "TORCH: ${TORCH_LIBRARIES}")
+find_package(Torch REQUIRED)
 
+FetchContent_Declare(HDF5
+GIT_REPOSITORY "https://github.com/HDFGroup/hdf5.git"
+GIT_TAG origin/hdf5_1_14_5
+FIND_PACKAGE_ARGS)
 set(BUILD_TESTING "" OFF)
 set(HDF5_BUILD_CPP_LIB "" ON)
 set(HDF5_BUILD_SHARED_LIBS "" ON)
@@ -83,11 +103,6 @@ set(HDF5_BUILD_EXAMPLES "" OFF)
 set(HDF5_ENABLE_SZIP_SUPPORT "" OFF)
 set(HDF5_ENABLE_SZIP_ENCODING "" OFF)
 set(HDF5_ENABLE_Z_LIB_SUPPORT "" OFF)
-
-FetchContent_Declare(HDF5
-GIT_REPOSITORY "https://github.com/HDFGroup/hdf5.git"
-GIT_TAG origin/hdf5_1_14_5
-FIND_PACKAGE_ARGS)
 FetchContent_MakeAvailable(HDF5)
 list(APPEND CMAKE_PREFIX_PATH ${HDF5_SOURCE_DIR})
 
@@ -100,10 +115,10 @@ include_directories(${ROOT_INCLUDE_DIRS})
 
 message(STATUS      "ROOT: ${ROOT_LIBRARIES}")
 message(STATUS      "HDF5: ${HDF5_CXX_INCLUDE_DIRS}")
+message(STATUS "RAPIDJSON: ${RAPIDJSON_INCLUDE_DIR}")
+message(STATUS     "TORCH: ${TORCH_LIBRARIES}")
+
 add_subdirectory(src/AnalysisG)
 
-execute_process(
-COMMAND python -c "import sysconfig; print(sysconfig.get_paths()['platlib'])" 
-OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE)
 #file(INSTALL ${torch_SOURCE_DIR}/lib/         DESTINATION ${PYTHON_SITE_PACKAGES}/torch)
 file(INSTALL ${CMAKE_BINARY_DIR}/src/AnalysisG DESTINATION ${PYTHON_SITE_PACKAGES})

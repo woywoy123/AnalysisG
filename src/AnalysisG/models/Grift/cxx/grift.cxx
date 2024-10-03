@@ -1,11 +1,11 @@
-#include <Experimental.h>
+#include <grift.h>
 #include <transform/cartesian-cuda.h>
 #include <physics/cartesian-cuda.h>
 #include <transform/polar-cuda.h>
 #include <graph/graph-cuda.h>
 
 
-experimental::experimental(){
+grift::grift(){
     this -> rnn_x = new torch::nn::Sequential({
             {"rnn_x_l1", torch::nn::Linear(this -> _xin*2, this -> _hidden)},
             {"rnn_x_n1", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _hidden}))}, 
@@ -39,7 +39,7 @@ experimental::experimental(){
             {"rnn_top_l2", torch::nn::Linear(dxx, this -> _xout)}, 
             {"rnn_top_s2", torch::nn::Sigmoid()},
             {"rnn_top_l3", torch::nn::Linear(this -> _xout, this -> _xout)},
-            {"rnn_top_drp", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))}
+//            {"rnn_top_drp", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))}
     }); 
 
     this -> rnn_res_edge = new torch::nn::Sequential({
@@ -49,7 +49,7 @@ experimental::experimental(){
             {"rnn_res_l2", torch::nn::Linear(dxx, this -> _xout)}, 
             {"rnn_res_s2", torch::nn::Sigmoid()},
             {"rnn_res_l3", torch::nn::Linear(this -> _xout, this -> _xout)},
-            {"rnn_res_drp", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))}
+//            {"rnn_res_drp", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))}
     }); 
 
     this -> mlp_ntop = new torch::nn::Sequential({
@@ -59,7 +59,7 @@ experimental::experimental(){
             {"ntop_l2", torch::nn::Linear(this -> _hidden, this -> _xin*2)}, 
             {"ntop_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _xin*2}))}, 
             {"ntop_l3", torch::nn::Linear(this -> _xin*2, 5)},
-            {"ntop_drp", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))}
+//            {"ntop_drp", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))}
     }); 
 
     this -> mlp_sig = new torch::nn::Sequential({
@@ -69,7 +69,7 @@ experimental::experimental(){
             {"res_l2", torch::nn::Linear(this -> _hidden, this -> _xin*3)}, 
             {"res_n2", torch::nn::LayerNorm(torch::nn::LayerNormOptions({this -> _xin*3}))}, 
             {"res_l3", torch::nn::Linear(this -> _xin*3, this -> _xout)},
-            {"res_drp", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))}
+//            {"res_drp", torch::nn::Dropout(torch::nn::DropoutOptions({this -> drop_out}))}
     }); 
 
     this -> register_module(this -> rnn_x       );
@@ -81,7 +81,7 @@ experimental::experimental(){
     this -> register_module(this -> mlp_sig     );
 }
 
-torch::Tensor experimental::message(
+torch::Tensor grift::message(
         torch::Tensor _trk_i, torch::Tensor _trk_j, torch::Tensor pmc, torch::Tensor hx_i, torch::Tensor hx_j
 ){
     torch::Tensor trk_ij = torch::cat({_trk_i, _trk_j}, {-1}); 
@@ -103,7 +103,7 @@ torch::Tensor experimental::message(
     return (*this -> rnn_merge) -> forward(torch::cat({fx_ij, dx}, {-1})); 
 }
 
-void experimental::forward(graph_t* data){
+void grift::forward(graph_t* data){
 
     // get the particle 4-vector and convert it to cartesian
     torch::Tensor* pt     = data -> get_data_node("pt", this);
@@ -143,6 +143,7 @@ void experimental::forward(graph_t* data){
 
     int dxx = this -> _xin + this -> _xout*2 + this -> _hidden; 
     for (size_t x(0); x < dxx; ++x){gr_.push_back(torch::zeros_like(src.view({-1, 1})));}
+
     torch::Tensor top_edge  = (*this -> rnn_top_edge) -> forward(torch::cat(gr_, {-1}).to(torch::kFloat32));
     torch::Tensor top_edge_ = torch::zeros_like(top_edge); 
     torch::Tensor edge_index_ = edge_index.clone();  
@@ -229,9 +230,9 @@ void experimental::forward(graph_t* data){
     this -> prediction_extra("truth_top_edge", t_edge_t); 
 }
 
-experimental::~experimental(){}
-model_template* experimental::clone(){
-    experimental* md = new experimental(); 
+grift::~grift(){}
+model_template* grift::clone(){
+    grift* md = new grift(); 
     md -> drop_out = this -> drop_out; 
     md -> is_mc    = this -> is_mc; 
     return md; 

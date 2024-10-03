@@ -26,40 +26,18 @@ void optimizer::import_model_sessions(std::tuple<model_template*, optimizer_para
     model_settings_t settings;
     base -> clone_settings(&settings); 
 
-    this -> info("_____ IMPORTING MODELS _____"); 
-    for (int x(0); x < this -> m_settings.kfold.size(); ++x){
-        int k_ = this -> m_settings.kfold[x]; 
-        std::vector<graph_t*>* check = this -> loader -> get_k_train_set(k_); 
-        if (!check){continue;}
- 
-        model_template* model_k = base -> clone(); 
-        if (x){model_k -> shush = true;}
-        model_k -> set_optimizer(config -> optimizer);
-        model_k -> import_settings(&settings);
-        model_k -> initialize(config); 
-        this -> kfold_sessions[k_] = model_k; 
+    this -> info("_____ TESTING IMPORTED MODEL WITH OPTIMIZER PARAMS _____"); 
+    model_template* model_k = base -> clone(); 
+    model_k -> set_optimizer(config -> optimizer); 
+    model_k -> import_settings(&settings); 
+    model_k -> initialize(config); 
+    std::vector<graph_t*> rnd = this -> loader -> get_random(this -> m_settings.num_examples); 
+    for (size_t x(0); x < rnd.size(); ++x){
+        if (x){model_k -> shush = true;} 
+        model_k -> check_features(rnd[x]);
     }
-}
-
-void optimizer::check_model_sessions(int example_size, std::map<std::string, model_report*>* rep){
-    std::vector<graph_t*> rnd = this -> loader -> get_random(example_size); 
-    this -> info("Testing each k-fold model " + std::to_string(rnd.size()) + "-times");
-
-    std::map<int, model_template*>::iterator itx = this -> kfold_sessions.begin(); 
-    for (; itx != this -> kfold_sessions.end(); ++itx){
-        std::string msg = "____ Checking Model ____:"; 
-        msg += " kfold -> " + std::to_string(itx -> first +1); 
-        msg += " RunName -> " + this -> m_settings.run_name; 
-        this -> info(msg); 
-        for (size_t x(0); x < rnd.size(); ++x){
-            if (!x){itx -> second -> shush = false;}
-            else {itx -> second -> shush = true;}
-            itx -> second -> check_features(rnd[x]);
-        } 
-        model_report* mr = this -> metric -> register_model(itx -> second, itx -> first); 
-        this -> reports[mr -> run_name + std::to_string(mr -> k)] = mr; 
-        (*rep)[mr -> run_name + std::to_string(mr -> k)] = mr; 
-    }
+    delete model_k; 
+    this -> success("_____ PASSED TESTS AND CONFIGURATION _____"); 
 }
 
 void optimizer::training_loop(int k, int epoch){
@@ -81,7 +59,6 @@ void optimizer::training_loop(int k, int epoch){
             model -> forward(batched[x], true);
             mr -> progress = float(x+1)/float(l); 
             this -> metric -> capture(mode_enum::training, k, epoch, l); 
-            std::this_thread::sleep_for(std::chrono::microseconds(10*bx));
         }
     }
     else {
@@ -90,7 +67,6 @@ void optimizer::training_loop(int k, int epoch){
             model -> forward(gr, true);
             mr -> progress = float(x+1)/float(l); 
             this -> metric -> capture(mode_enum::training, k, epoch, l); 
-            std::this_thread::sleep_for(std::chrono::microseconds(1));
         }
     }
     model -> save_state(); 
@@ -104,7 +80,7 @@ void optimizer::validation_loop(int k, int epoch){
     model_report* mr = this -> reports[this -> m_settings.run_name + std::to_string(k)]; 
     mr -> mode = "validation"; 
 
-    torch::AutoGradMode no_grd(false);  
+    torch::NoGradGuard no_grd;  
     int l = smpl -> size(); 
     for (int x(0); x < l; ++x){
         graph_t* gr = (*smpl)[x]; 
@@ -122,7 +98,7 @@ void optimizer::evaluation_loop(int k, int epoch){
     model_report* mr = this -> reports[this -> m_settings.run_name + std::to_string(k)]; 
     mr -> mode = "evaluation"; 
 
-    torch::AutoGradMode no_grd(false); 
+    torch::NoGradGuard no_grd;  
     int l = smpl -> size(); 
     for (int x(0); x < l; ++x){
         graph_t* gr = (*smpl)[x]; 
@@ -133,8 +109,9 @@ void optimizer::evaluation_loop(int k, int epoch){
 }
 
 void optimizer::launch_model(int k){
-    torch::init_num_threads();
+
     for (int ep(0); ep < this -> m_settings.epochs; ++ep){
+
         model_template* model = this -> kfold_sessions[k]; 
 
         model -> epoch = ep+1; 

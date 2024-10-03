@@ -29,9 +29,12 @@ void execution(model_template* md, std::vector<graph_t*>* data, std::string outp
     std::string msg = "Running model " + std::string(md -> name) + " with sample -> " + output; 
     notification tx = notification(); 
 
+
+    torch::AutoGradMode grd(false); 
     for (size_t x(0); x < data -> size(); ++x){
         int index = 0; 
         for (size_t i(0); i < content -> size(); ++i){(*content)[i].flush();}
+
         md -> forward((*data)[x], false); 
 
         // --- Scan the inputs

@@ -15,7 +15,7 @@ tt = GraphChildren()
 #tt = GraphDetector()
 
 #m = RecursiveGraphNeuralNetwork()
-m = Experimental()
+m = Grift()
 
 m.o_edge  = {"res_edge" : "CrossEntropyLoss", "top_edge" : "CrossEntropyLoss"}
 m.o_graph = {"signal" : "CrossEntropyLoss", "ntops"  : "CrossEntropyLoss"}

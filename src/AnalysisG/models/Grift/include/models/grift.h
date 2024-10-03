@@ -1,12 +1,12 @@
-#ifndef GNN_EXPERIMENTAL_H
-#define GNN_EXPERIMENTAL_H
+#ifndef GNN_GRIFT_H
+#define GNN_GRIFT_H
 #include <templates/model_template.h>
 
-class experimental: public model_template
+class grift: public model_template
 {
     public:
-        experimental(); 
-        ~experimental();
+        grift(); 
+        ~grift();
         model_template* clone() override;
         void forward(graph_t*) override; 
 

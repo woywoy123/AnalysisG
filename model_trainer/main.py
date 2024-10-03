@@ -125,7 +125,7 @@ for m in models:
     model_impl = None
     model = data[m]["model"]
     if model == "RecursiveGraphNeuralNetwork": model_impl = RecursiveGraphNeuralNetwork()
-    if model == "Experimental": model_impl = Experimental()
+    if model == "Experimental": model_impl = Grift()
     if model_impl is None: print("invalid model implementation"); exit()
     model_impl.device = data[m]["device"]
 

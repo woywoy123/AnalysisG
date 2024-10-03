@@ -1,5 +1,5 @@
 [build-system]
-requires = ["pip", "scikit-build-core", "cython", "cmake"]
+requires = ["pip", "scikit-build-core", "cython", "cmake", "mkl-include", "mkl-devel", "tbb-devel"]
 build-backend = "scikit_build_core.build"
 
 [project]
@@ -15,7 +15,8 @@ dependencies = [
     "pyyaml",
     "tqdm", 
     "pwinput",
-    "h5py"
+    "scipy",
+    "h5py",
 #    "torchmetrics"
 ]
 

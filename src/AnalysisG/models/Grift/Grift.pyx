@@ -2,11 +2,11 @@
 # cython: language_level=3
 
 from AnalysisG.core.model_template cimport ModelTemplate
-from AnalysisG.models.Experimental.Experimental cimport experimental
+from AnalysisG.models.Grift.Grift cimport grift
 
-cdef class Experimental(ModelTemplate):
+cdef class Grift(ModelTemplate):
     def __cinit__(self):
-        self.rnn = new experimental()
+        self.rnn = new grift()
         self.nn_ptr = self.rnn
 
     def __init__(self): pass

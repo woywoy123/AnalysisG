@@ -1,5 +1,30 @@
 #include <generators/analysis.h>
 
+static void initialize_loop(
+        optimizer* op, int k, model_template* model, 
+        optimizer_params_t* config, model_report** rep
+){
+   
+    model_settings_t settings; 
+    model -> clone_settings(&settings); 
+    model_template* mk = model -> clone(); 
+
+//    torch::set_num_interop_threads(12); 
+//    torch::init_num_threads();
+
+    std::vector<graph_t*> rnd = op -> loader -> get_random(1); 
+    mk -> set_optimizer(config -> optimizer); 
+    mk -> import_settings(&settings); 
+    mk -> initialize(config); 
+    mk -> shush = true; 
+    mk -> check_features(rnd[0]);
+    op -> kfold_sessions[k] = mk;
+    model_report* mr = op -> metric -> register_model(mk, k); 
+    op -> reports[mr -> run_name + std::to_string(mr -> k)] = mr; 
+    (*rep) = mr; 
+    op -> launch_model(k);
+}
+
 void analysis::build_model_session(){
     if (!this -> model_sessions.size()){return this -> info("No Models Specified. Skipping.");}
     std::vector<int> kfold = this -> m_settings.kfold; 
@@ -7,7 +32,7 @@ void analysis::build_model_session(){
     else {for (int k(0); k < kfold.size(); ++k){kfold[k] = kfold[k]-1;}}
     this -> m_settings.kfold = kfold; 
     int th_ = this -> m_settings.threads; 
-    
+
     for (size_t x(0); x < this -> model_sessions.size(); ++x){
         std::string name = this -> model_session_names[x]; 
 
@@ -16,28 +41,22 @@ void analysis::build_model_session(){
         optim -> m_settings.run_name = name; 
         optim -> import_dataloader(this -> loader);
 
-        std::tuple<model_template*, optimizer_params_t*>* para = nullptr; 
-        para = &this -> model_sessions[x]; 
-        
+        std::tuple<model_template*, optimizer_params_t*>* para = &this -> model_sessions[x]; 
         this -> info("Transferring Graphs to device."); 
         this -> loader -> datatransfer(std::get<0>(*para) -> m_option, th_); 
         this -> success("Transfer Complete!"); 
-
-        optim -> import_model_sessions(para); 
-        optim -> check_model_sessions(this -> m_settings.num_examples, &this -> reports); 
         this -> trainer[name] = optim; 
-    }
+        optim -> import_model_sessions(para); 
 
-    auto lamb = [](optimizer* op, int k){op -> launch_model(k);}; 
-
-    std::map<std::string, optimizer*>::iterator itr = this -> trainer.begin(); 
-    for (; itr != this -> trainer.end(); ++itr){
         for (int k(0); k < this -> m_settings.kfold.size(); ++k){
             int k_ = this -> m_settings.kfold[k]; 
             std::vector<graph_t*>* check = this -> loader -> get_k_train_set(k_); 
             if (!check){continue;}
-            if (this -> m_settings.debug_mode){itr -> second -> launch_model(k_);}
-            else {this -> threads.push_back(new std::thread(lamb, itr -> second, k_));}
+            model_report* mx = nullptr;  
+            if (this -> m_settings.debug_mode){initialize_loop(optim, k_, std::get<0>(*para), std::get<1>(*para), &mx);}
+            else {this -> threads.push_back(new std::thread(initialize_loop, optim, k, std::get<0>(*para), std::get<1>(*para), &mx));}
+            while (!mx){std::this_thread::sleep_for(std::chrono::microseconds(10));}
+            this -> reports[mx -> run_name + std::to_string(mx -> k)] = mx; 
         }
     }
 }

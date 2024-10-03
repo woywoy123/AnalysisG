@@ -1,4 +1,3 @@
-import torch
 import AnalysisG
 from AnalysisG.core.lossfx import OptimizerConfig
 from AnalysisG.generators.analysis import Analysis
@@ -18,10 +17,10 @@ params = [
     ("MRK-1", "adam", {"lr" : 1e-4}),
     ("MRK-2", "adam", {"lr" : 1e-6}),
     ("MRK-3", "adam", {"lr" : 1e-6, "amsgrad" : True}),
-#    ("MRK-4", "sgd", {"lr" : 1e-3}),
-#    ("MRK-5", "sgd", {"lr" : 1e-6}),
-#    ("MRK-6", "sgd", {"lr" : 1e-4, "momentum" : 0.1}),
-#    ("MRK-7", "sgd", {"lr" : 1e-6, "momentum" : 0.01, "dampening" : 0.01})
+    ("MRK-4", "sgd" , {"lr" : 1e-3}),
+    ("MRK-5", "sgd", {"lr" : 1e-6}),
+    ("MRK-6", "sgd", {"lr" : 1e-4, "momentum" : 0.1}),
+    ("MRK-7", "sgd", {"lr" : 1e-6, "momentum" : 0.01, "dampening" : 0.01})
 ]
 
 trains = []
@@ -30,7 +29,7 @@ ana = Analysis()
 p = 0
 for k in params:
 #    m1 = RecursiveGraphNeuralNetwork()
-    m1 = Experimental()
+    m1 = Grift()
     m1.o_edge  = {
             "top_edge" : "CrossEntropyLoss",
             "res_edge" : "CrossEntropyLoss"

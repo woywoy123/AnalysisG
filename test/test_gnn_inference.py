@@ -8,7 +8,7 @@ root1 = "./samples/dilepton/*"
 ev = BSM4Tops()
 gr = GraphTruthJets()
 
-gn = Experimental()
+gn = Grift()
 gn.o_edge = {"top_edge" : "CrossEntropyLoss", "res_edge" : "CrossEntropyLoss"}
 gn.o_graph = {"ntops" : "CrossEntropyLoss", "signal" : "CrossEntropyLoss"}
 gn.i_node = ["pt", "eta", "phi", "energy"]
@@ -16,7 +16,7 @@ gn.i_graph = ["met", "phi"]
 gn.device = "cuda:0"
 gn.checkpoint_path = "./ProjectName/Experimental/MRK-1-0/state/epoch-1/kfold-1_model.pt"
 
-gn2 = Experimental()
+gn2 = Grift()
 gn2.o_edge = {"top_edge" : "CrossEntropyLoss", "res_edge" : "CrossEntropyLoss"}
 gn2.o_graph = {"ntops" : "CrossEntropyLoss", "signal" : "CrossEntropyLoss"}
 gn2.i_node = ["pt", "eta", "phi", "energy"]

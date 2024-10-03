@@ -2,6 +2,7 @@
 #include <ROOT/RDataFrame.hxx>
 
 analysis::analysis(){
+//    ROOT::EnableImplicitMT(); 
     this -> prefix = "Analysis"; 
     this -> tracer  = new sampletracer(); 
     this -> loader  = new dataloader(); 
@@ -103,7 +104,6 @@ void analysis::check_cache(){
 }
 
 void analysis::start(){
-    torch::init_num_threads();
     if (!this -> started){
         this -> success("+============================+"); 
         this -> success("| Starting Analysis Session! |");
@@ -118,7 +118,6 @@ void analysis::start(){
     }
 
     int threads_ = this -> m_settings.threads; 
-    ROOT::EnableImplicitMT(); 
 
     std::string pth_cache = this -> m_settings.graph_cache; 
     this -> loader -> setting = &this -> m_settings; 
