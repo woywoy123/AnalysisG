@@ -2,7 +2,6 @@
 #include <ROOT/RDataFrame.hxx>
 
 analysis::analysis(){
-//    ROOT::EnableImplicitMT(); 
     this -> prefix = "Analysis"; 
     this -> tracer  = new sampletracer(); 
     this -> loader  = new dataloader(); 
@@ -104,6 +103,7 @@ void analysis::check_cache(){
 }
 
 void analysis::start(){
+    this -> create_path(this -> m_settings.output_path + "/"); 
     if (!this -> started){
         this -> success("+============================+"); 
         this -> success("| Starting Analysis Session! |");
@@ -112,13 +112,21 @@ void analysis::start(){
         this -> build_events(); 
     }
 
-    if (this -> fetch_meta && !this -> started){
+    if (this -> m_settings.fetch_meta && !this -> started){
+        if (!this -> event_labels.size() && !this -> graph_labels.size()){
+            this -> reader -> import_settings(&this -> m_settings); 
+            std::map<std::string, std::string>::iterator itf = this -> file_labels.begin(); 
+            for (; itf != this -> file_labels.end(); ++itf){this -> reader -> root_files[itf -> first] = true;}
+            this -> reader -> check_root_file_paths();
+            this -> reader -> scan_keys(); 
+            this -> meta_data = this -> reader -> meta_data; 
+        }
         this -> started = true; 
         return; 
     }
 
+    ROOT::EnableImplicitMT(); 
     int threads_ = this -> m_settings.threads; 
-
     std::string pth_cache = this -> m_settings.graph_cache; 
     this -> loader -> setting = &this -> m_settings; 
 
@@ -148,8 +156,9 @@ void analysis::start(){
         this -> loader -> restore_graphs(cached, threads_); 
     }
     else if (pth_cache.size()){this -> loader -> restore_graphs(pth_cache, threads_);}
-    if (!this -> loader -> data_set -> size()){return this -> failure("No Dataset was found for training. Aborting...");}
+    
     if (this -> model_sessions.size()){
+        if (!this -> loader -> data_set -> size()){return this -> failure("No Dataset was found for training. Aborting...");}
         this -> loader -> restore_dataset(this -> m_settings.training_dataset); 
         this -> build_dataloader(true); 
         this -> build_project(); 
@@ -157,6 +166,7 @@ void analysis::start(){
     }
 
     if (this -> model_inference.size()){
+        if (!this -> loader -> data_set -> size()){return this -> failure("No Dataset was found for training. Aborting...");}
         this -> build_dataloader(false);
         this -> build_inference(); 
     }

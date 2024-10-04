@@ -34,7 +34,6 @@ cdef extern from "<generators/analysis.h>" nogil:
         map[string, bool] is_complete() except+
 
         # settings
-        bool fetch_meta
         map[string, meta*] meta_data
         settings_t m_settings
 
@@ -44,6 +43,6 @@ cdef class Analysis:
     cdef list events_
     cdef list models_
     cdef list optim_
-    cdef public bool FetchMeta
+    cdef dict meta_
     cdef analysis* ana
 

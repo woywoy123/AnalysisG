@@ -126,6 +126,7 @@ class selection_template: public tools
         event_template* m_event = nullptr; 
         void merger(selection_template* sl2); 
         std::map<std::string, particle_template*> garbage = {}; 
+        float sum_of_weights = 0; 
 
 }; 
 

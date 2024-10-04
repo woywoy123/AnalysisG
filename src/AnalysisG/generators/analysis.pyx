@@ -16,19 +16,20 @@ from AnalysisG.generators.analysis cimport analysis
 
 from time import sleep
 from tqdm import tqdm
+import pickle
 
 def factory(title): return tqdm(total = 100, desc = title, leave = False, dynamic_ncols = True)
 
 cdef class Analysis:
 
     def __cinit__(self):
-        self.ana = new analysis()
+        with nogil: self.ana = new analysis()
         self.selections_ = []
         self.graphs_     = []
         self.events_     = []
         self.models_     = []
         self.optim_      = []
-        self.FetchMeta   = False
+        self.meta_       = {}
 
     def __init__(self):
         pass
@@ -67,17 +68,25 @@ cdef class Analysis:
         self.models_.append(model)
 
     def Start(self):
-        self.ana.fetch_meta = self.FetchMeta
+        cdef str prj = self.OutputPath
+        try: self.meta_ = pickle.load(open(prj + "/meta_state.pkl", "rb"))
+        except FileNotFoundError: self.meta_ = {}
         with nogil: self.ana.start()
 
         cdef Meta data
         cdef pair[string, meta*] itrm
-        if self.FetchMeta:
+        if self.ana.m_settings.fetch_meta:
             for itrm in self.ana.meta_data:
-                data = Meta()
-                data.ptr.metacache_path = itrm.second.metacache_path
+                fname = env(itrm.first)
+                if fname not in self.meta_:
+                    data = Meta()
+                    self.meta_[fname] = data
+                    data.ptr.metacache_path = itrm.second.metacache_path
+                data = self.meta_[fname]
                 data.__meta__(itrm.second)
-                del data
+            f = open(prj + "/meta_state.pkl", "wb")
+            pickle.dump(self.meta_, f)
+            f.close()
             with nogil: self.ana.start()
 
         cdef dict bars = {}
@@ -87,7 +96,6 @@ cdef class Analysis:
         cdef map[string, float] o
         cdef map[string, string] desc
         cdef map[string, string] repo
-
 
         with nogil:
             o = self.ana.progress()
@@ -138,6 +146,13 @@ cdef class Analysis:
         cdef SelectionTemplate i
         for i in self.selections_: i.transform_dict_keys()
 
+
+    @property
+    def SumOfWeightsTreeName(self): return env(self.ana.m_settings.sow_name)
+
+    @SumOfWeightsTreeName.setter
+    def SumOfWeightsTreeName(self, str val): self.ana.m_settings.sow_name = enc(val)
+
     @property
     def OutputPath(self): return env(self.ana.m_settings.output_path)
 
@@ -160,6 +175,9 @@ cdef class Analysis:
         elif isinstance(val, list): folds += val
         else: return
         self.ana.m_settings.kfold = <vector[int]>(folds)
+
+    @property
+    def GetMetaData(self): return self.meta_
 
     @property
     def Epochs(self): return self.ana.m_settings.epochs
@@ -283,4 +301,8 @@ cdef class Analysis:
     @BatchSize.setter
     def BatchSize(self, int val): self.ana.m_settings.batch_size = val
 
+    @property
+    def FetchMeta(self): return self.ana.m_settings.fetch_meta
 
+    @FetchMeta.setter
+    def FetchMeta(self, bool val): self.ana.m_settings.fetch_meta = val

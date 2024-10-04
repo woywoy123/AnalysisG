@@ -17,6 +17,8 @@
 #include <tools/tools.h>
 #include <structs/folds.h>
 #include <structs/element.h>
+#include <structs/settings.h>
+
 #include <notification/notification.h>
 
 class io: 
@@ -92,12 +94,14 @@ class io:
         bool scan_keys(); 
         void root_begin(); 
         void root_end(); 
+        void import_settings(settings_t* params); 
 
         std::map<std::string, data_t*>* get_data(); 
 
         bool enable_pyami = true; 
         std::string metacache_path = "./"; 
         std::string current_working_path = "."; 
+        std::string sow_name = ""; 
 
         std::vector<std::string> trees = {}; 
         std::vector<std::string> branches = {}; 

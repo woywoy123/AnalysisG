@@ -6,7 +6,8 @@ from libcpp.string cimport string
 from libcpp.map cimport pair, map
 from libcpp.vector cimport vector
 
-from AnalysisG.core.structs cimport meta_t
+from AnalysisG import auth_pyami
+from AnalysisG.core.structs cimport meta_t, weights_t
 from AnalysisG.core.tools cimport *
 from AnalysisG.core.meta cimport *
 from AnalysisG.core.notification cimport *
@@ -27,9 +28,11 @@ class httpx(pyAMI.httpclient.HttpClient):
         self.endpoint = endpoint
         cdef dict chn = {"certfile" : self.config.cert_file, "keyfile" : self.config.key_file}
         cdef dict confx = {"host" : str(self.endpoint["host"]), "port" : int(self.endpoint["port"])}
-        confx["context"] = self.create_unverified_context()
-        confx["context"].load_cert_chain(**chn)
-        self.connection = http.client.HTTPSConnection(**confx)
+        try:
+            confx["context"] = self.create_unverified_context()
+            confx["context"].load_cert_chain(**chn)
+            self.connection = http.client.HTTPSConnection(**confx)
+        except: auth_pyami(); self.connect(endpoint)
 
 class atlas(pyAMI.client.Client):
 
@@ -163,20 +166,50 @@ cdef class ami_client:
 
 cdef class Meta:
 
-    def __cinit__(self): self.ptr = new meta()
+    def __cinit__(self):
+        self.ptr = new meta()
+        self.loaded = False
 
-    def __init__(self): pass
+    def __init__(self, inpt = None):
+        if inpt is None: return
+        for i in [i for i in self.__dir__() if not i.startswith("__")]:
+            try: setattr(self, i, inpt[i])
+            except KeyError: continue
+            except: continue
+        self.ptr.meta_data = <meta_t>inpt["ptr"]
+        self.ptr.metacache_path = enc(inpt["MetaCachePath"])
 
     def __dealloc__(self): del self.ptr
 
     cdef __meta__(self, meta* _meta):
         cdef ami_client ami = ami_client()
-        self.ptr.meta_data = _meta.meta_data
+        if not self.loaded: self.ptr.meta_data = _meta.meta_data
+        cdef map[string, weights_t] wx = _meta.meta_data.misc
+        if wx.size(): self.ptr.meta_data.misc = wx
+
         ami.list_datasets(self)
         _meta.meta_data = self.ptr.meta_data
 
+    def __reduce__(self):
+        cdef dict out = {"ptr" : self.ptr.meta_data}
+        cdef list keys = self.__dir__()
+        out |= {i : getattr(self, i) for i in keys if not i.startswith("__")}
+        return self.__class__, (out,)
+
+
+    def __str__(self):
+        out = ""
+        for i in self.__dir__():
+            if i.startswith("__"): continue
+            try: out += i + " -> " + str(getattr(self, i)) + "\n"
+            except: pass
+        return out
+
     @property
     def MetaCachePath(self): return env(self.ptr.metacache_path)
+
+    @property
+    def SumOfWeights(self): return self.ptr.meta_data.misc
 
     # Attributes with getter and setter
     @property

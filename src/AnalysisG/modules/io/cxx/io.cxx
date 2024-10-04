@@ -17,3 +17,10 @@ io::~io(){
     this -> meta_data.clear(); 
 }
 
+void io::import_settings(settings_t* params){
+    this -> enable_pyami = params -> fetch_meta; 
+    this -> metacache_path = params -> metacache_path; 
+    this -> sow_name = params -> sow_name; 
+    if (!this -> sow_name.size()){return;}
+    this -> info("Checking for Sum of Weights under tree name: " + this -> sow_name); 
+}

@@ -45,5 +45,65 @@ void meta::compiler(){
     }
 }
 
+void meta::scan_data(TObject* obj){
+    std::string obname = std::string(obj -> GetName()); 
+    if (obname != "AnalysisTracking"){return;}
+    this -> parse_json(this -> parse_string("jsonData", (TTree*)obj)); 
+}
+
+float meta::parse_float(std::string key, TTree* tr){
+    tr -> GetEntry(0); 
+    return tr -> GetLeaf(key.c_str()) -> GetValue();
+}
+
+std::string meta::parse_string(std::string key, TTree* tr){
+    TBranch* lf = tr -> GetBranch(key.c_str()); 
+    tr -> GetEntry(0); 
+    std::string data = ""; 
+    for (TObject* obj : *lf -> GetListOfLeaves()){
+        TLeaf* lx = (TLeaf*)obj; 
+        char** datar = reinterpret_cast<char**>(lx -> GetValuePointer()); 
+        data += std::string(*datar); 
+    }
+    return data; 
+}
+
+void meta::scan_sow(TObject* obj){
+    std::string obname = std::string(obj -> GetName()); 
+    if (obj -> InheritsFrom("TTree")){
+        TTree* r = (TTree*)obj; 
+        weights_t* wg = &this -> meta_data.misc[obname]; 
+        wg -> dsid = this -> parse_float("dsid", r); 
+        wg -> isAFII = this -> parse_float("isAFII", r); 
+        wg -> total_events_weighted = this -> parse_float("totalEventsWeighted", r); 
+        wg -> total_events = this -> parse_float("totalEvents", r); 
+        wg -> processed_events = this -> parse_float("processedEvents", r); 
+        wg -> processed_events_weighted = this -> parse_float("processedEventsWeighted", r); 
+        wg -> processed_events_weighted_squared = this -> parse_float("processedEventsWeightedSquared", r); 
+        wg -> generator = this -> parse_string("generators", r);  
+        wg -> ami_tag = this -> parse_string("AMITag", r);  
+        return;
+    }
+    if (obj -> InheritsFrom("TH1")){
+        TH1F* hs = (TH1F*)obj;
+        TAxis* xs = hs -> GetXaxis(); 
+        weights_t* wg = &this -> meta_data.misc[obname]; 
+        for (size_t x(0); x < xs -> GetNbins(); ++x){
+            wg -> hist_data[xs -> GetBinLabel(x+1)] = hs -> GetBinContent(x+1);
+        }
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
 
 

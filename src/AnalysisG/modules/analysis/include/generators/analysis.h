@@ -40,7 +40,6 @@ class analysis:
         std::map<std::string, meta*> meta_data = {}; 
 
         void attach_threads(); 
-        bool fetch_meta = false; 
         settings_t m_settings; 
 
     private:

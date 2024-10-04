@@ -38,6 +38,18 @@ cdef extern from "<structs/particles.h>":
 
 cdef extern from "<structs/meta.h>":
 
+    struct weights_t:
+        int dsid
+        bool isAFII
+        string generator
+        string ami_tag
+        float total_events_weighted
+        float total_events
+        float processed_events
+        float processed_events_weighted
+        float processed_events_weighted_squared
+        map[string, float] hist_data
+
     struct meta_t:
         unsigned int dsid
         string AMITag
@@ -98,12 +110,16 @@ cdef extern from "<structs/meta.h>":
         vector[int] run_number
         vector[double] fileSize
         map[string, int] LFN
+        map[string, weights_t] misc
 
 cdef extern from "<structs/settings.h>":
 
     struct settings_t:
         string output_path
         string run_name
+        string sow_name
+        string metacache_path
+        bool fetch_meta
 
         int epochs
         int kfolds

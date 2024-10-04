@@ -7,7 +7,10 @@
 struct settings_t {
     std::string output_path = "./ProjectName"; 
     std::string run_name = ""; 
-    
+    std::string sow_name = ""; 
+    std::string metacache_path = "./"; 
+    bool fetch_meta = false; 
+
     // machine learning
     int epochs = 10; 
     int kfolds = 10; 

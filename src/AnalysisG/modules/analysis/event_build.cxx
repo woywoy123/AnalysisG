@@ -1,9 +1,11 @@
 #include <generators/analysis.h>
 
 void analysis::build_events(){
-    std::set<std::string> trees, branches, leaves; 
     event_template* event_f = nullptr; 
-
+    std::vector<std::string>* trees_    = &this -> reader -> trees; 
+    std::vector<std::string>* branches_ = &this -> reader -> branches; 
+    std::vector<std::string>* leaves_   = &this -> reader -> leaves; 
+    this -> reader -> import_settings(&this -> m_settings); 
     std::map<std::string, std::string>::iterator itf = this -> file_labels.begin(); 
     for (; itf != this -> file_labels.end(); ++itf){
         if (!this -> event_labels.count(itf -> second)){continue;}
@@ -12,28 +14,20 @@ void analysis::build_events(){
 
         if (event_f){continue;}
         event_f = this -> event_labels[itf -> second]; 
+        std::vector<std::string> dt = event_f -> trees; 
+        trees_ -> insert(trees_ -> end(), dt.begin(), dt.end()); 
 
-        std::vector<std::string> _trees    = event_f -> trees; 
-        std::vector<std::string> _branches = event_f -> branches; 
-        std::vector<std::string> _leaves   = event_f -> leaves; 
+        dt = event_f -> branches; 
+        branches_ -> insert(branches_ -> end(), dt.begin(), dt.end()); 
 
-        trees.insert(_trees.begin(), _trees.end()); 
-        branches.insert(_branches.begin(), _branches.end()); 
-        leaves.insert(_leaves.begin(), _leaves.end()); 
+        dt = event_f -> leaves; 
+        leaves_ -> insert(leaves_ -> end(), dt.begin(), dt.end()); 
     } 
-    if (!this -> reader -> root_files.size()){return this -> info("Skipping event building due to being in cache.");}
+    if (!this -> reader -> root_files.size()){return this -> info("Skipping event building.");}
     if (!event_f){return this -> warning("Missing Event Implementation for specified samples!");}
     this -> success("+============================+"); 
     this -> success("|   Starting Event Builder   |");
     this -> success("+============================+"); 
-
-    std::vector<std::string>* trees_    = &this -> reader -> trees; 
-    std::vector<std::string>* branches_ = &this -> reader -> branches; 
-    std::vector<std::string>* leaves_   = &this -> reader -> leaves; 
-
-    trees_ -> insert(trees_ -> end(), trees.begin(), trees.end()); 
-    branches_ -> insert(branches_ -> end(), branches.begin(), branches.end()); 
-    leaves_ -> insert(leaves_ -> end(), leaves.begin(), leaves.end()); 
     this -> reader -> check_root_file_paths(); 
 
     long index = 0; 

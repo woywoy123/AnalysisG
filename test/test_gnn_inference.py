@@ -1,3 +1,4 @@
+import AnalysisG
 from AnalysisG.graphs.bsm_4tops import GraphTruthJets
 from AnalysisG.events.bsm_4tops.event_bsm_4tops import BSM4Tops
 from AnalysisG.generators.analysis import Analysis
@@ -6,7 +7,7 @@ from AnalysisG.models import *
 root1 = "./samples/dilepton/*"
 
 ev = BSM4Tops()
-gr = GraphTruthJets()
+gr = GraphJets()
 
 gn = Grift()
 gn.o_edge = {"top_edge" : "CrossEntropyLoss", "res_edge" : "CrossEntropyLoss"}
@@ -25,7 +26,7 @@ gn2.device = "cuda:1"
 gn2.checkpoint_path = "./ProjectName/Experimental/MRK-1-1/state/epoch-1/kfold-1_model.pt"
 
 ana = Analysis()
-ana.Threads = 40
+#ana.Threads = 40
 ana.AddSamples(root1, "tmp")
 ana.AddEvent(ev, "tmp")
 ana.AddGraph(gr, "tmp")

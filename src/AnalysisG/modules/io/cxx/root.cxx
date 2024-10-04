@@ -1,4 +1,5 @@
 #include "io.h"
+#include <TH1.h>
 
 void io::check_root_file_paths(){
     std::map<std::string, bool> tmp = {}; 
@@ -87,41 +88,39 @@ void io::root_key_paths(std::string path){
     TDirectory* dir = gDirectory; 
     std::vector<std::string> tmp = {}; 
     for (TObject* key : *dir -> GetListOfKeys()){tmp.push_back(key -> GetName());}
+
+    if (this -> ends_with(&this -> metacache_path, ".h5")){}
+    else if (!this -> ends_with(&this -> metacache_path, "/")){this -> metacache_path += "/meta.h5";}
+    else {this -> metacache_path += "meta.h5";}
+    if (!this -> is_file(this -> metacache_path)){
+        std::vector<std::string> tmpo = this -> split(this -> metacache_path, "/"); 
+        std::string meta_s = tmpo[tmpo.size()-1]; 
+        this -> replace(&this -> metacache_path, meta_s, ""); 
+        this -> create_path(this -> metacache_path); 
+        this -> metacache_path += meta_s; 
+    }
+
     for (unsigned int x(0); x < tmp.size(); ++x){
         std::string updated = path + tmp[x]; 
         TObject* obj = gDirectory -> Get(updated.c_str()); 
         if (!obj){continue;}
 
         std::string fname = this -> file_root -> GetTitle(); 
-        if (std::string(obj -> GetName()) == "AnalysisTracking"){
-            if (this -> meta_data.count(fname)){continue;}
-            TTree* r = (TTree*)obj;
-            TBranch* lf = r -> GetBranch("jsonData"); 
-            r -> GetEntry(0); 
-            std::string data = ""; 
-            for (TObject* obj : *lf -> GetListOfLeaves()){
-                TLeaf* lx = (TLeaf*)obj; 
-                char** datar = reinterpret_cast<char**>(lx -> GetValuePointer()); 
-                data += std::string(*datar); 
-            }
-            this -> meta_data[fname] = new meta(); 
-            this -> meta_data[fname] -> parse_json(data); 
+        std::string obname = std::string(obj -> GetName()); 
 
-            if (this -> ends_with(&this -> metacache_path, ".h5")){}
-            else if (!this -> ends_with(&this -> metacache_path, "/")){this -> metacache_path += "/meta.h5";}
-            else {this -> metacache_path += "meta.h5";}
-           
-            if (!this -> is_file(this -> metacache_path)){
-                std::vector<std::string> tmpo = this -> split(this -> metacache_path, "/"); 
-                std::string meta_s = tmpo[tmpo.size()-1]; 
-                this -> replace(&this -> metacache_path, meta_s, ""); 
-                this -> create_path(this -> metacache_path); 
-                this -> metacache_path += meta_s; 
-            }
-
-            this -> meta_data[fname] -> metacache_path = this -> metacache_path; 
-            continue; 
+        // ------------ meta data scraping ---------------------- //
+        if (!this -> meta_data.count(fname)){this -> meta_data[fname] = new meta();}
+        meta* mtx = this -> meta_data[fname];  
+        mtx -> metacache_path = this -> metacache_path; 
+        if (obname == "AnalysisTracking"){mtx -> scan_data(obj); continue;}
+        if (this -> sow_name == obname){mtx -> scan_sow(obj); continue;}
+        else if (this -> has_string(&this -> sow_name, "*")){
+            std::vector<std::string> spl = this -> split(this -> sow_name, "*");
+            bool found = spl.size(); 
+            for (std::string v : spl){found *= this -> has_string(&obname, v);}
+            if (found){mtx -> scan_data(obj); continue;}
         }
+        // ------------ meta data scraping ---------------------- //
 
         if (obj -> InheritsFrom("TTree")){
             this -> root_key_paths(updated, (TTree*)obj);

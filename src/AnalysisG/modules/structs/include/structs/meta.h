@@ -5,6 +5,19 @@
 #include <vector>
 #include <map>
 
+struct weights_t {
+    int dsid = -1; 
+    bool isAFII = false; 
+    std::string generator = ""; 
+    std::string ami_tag = ""; 
+    float total_events_weighted = -1;
+    float total_events = -1; 
+    float processed_events = -1; 
+    float processed_events_weighted = -1; 
+    float processed_events_weighted_squared = -1;
+    std::map<std::string, float> hist_data = {}; 
+}; 
+
 struct meta_t {
     // AnalysisTracking values
     unsigned int dsid = 0;
@@ -74,6 +87,7 @@ struct meta_t {
     std::vector<double> fileSize = {};
     std::vector<std::string> fileGUID = {};
     std::map<std::string, int> LFN = {};
+    std::map<std::string, weights_t> misc = {}; 
 };
 
 #endif

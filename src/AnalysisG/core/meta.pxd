@@ -17,6 +17,7 @@ cdef extern from "<meta/meta.h>" nogil:
 cdef class Meta:
     cdef meta* ptr
     cdef __meta__(self, meta* met)
+    cdef loaded
 
 cdef class ami_client:
     cdef client
