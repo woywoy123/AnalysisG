@@ -52,10 +52,10 @@ cdef extern from "<structs/meta.h>":
 
     struct meta_t:
         unsigned int dsid
+        bool isMC
+
         string AMITag
         string generators
-
-        bool isMC
         string derivationFormat
         map[int, int] inputrange
         map[int, string] inputfiles

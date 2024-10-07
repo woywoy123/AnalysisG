@@ -129,7 +129,12 @@ cdef class ami_client:
         cdef dict command = {"client" : self.client, "type" : self.type_, "dataset_number" : dsidr}
         cdef bool hit = self.loadcache(obj)
         if not hit:
-            self.dsids = pyAMI_atlas.api.list_datasets(**command)
+            try: self.dsids = pyAMI_atlas.api.list_datasets(**command)
+            except:
+                auth_pyami()
+                self.list_datasets(obj)
+                return
+
             self.nf.success(enc("DSID not in cache, fetched from PyAMI: " + dsidr))
         else: self.nf.success(enc("DSID cache hit for: " + dsidr))
 
@@ -191,11 +196,10 @@ cdef class Meta:
         _meta.meta_data = self.ptr.meta_data
 
     def __reduce__(self):
+        cdef list keys = [i for i in self.__dir__() if not i.startswith("__")]
         cdef dict out = {"ptr" : self.ptr.meta_data}
-        cdef list keys = self.__dir__()
-        out |= {i : getattr(self, i) for i in keys if not i.startswith("__")}
-        return self.__class__, (out,)
-
+        out |= {i : getattr(self, i) for i in keys if not callable(getattr(self, i))}
+        return (self.__class__, (out,))
 
     def __str__(self):
         out = ""
@@ -626,4 +630,6 @@ cdef class Meta:
     @sample_name.setter
     def sample_name(self, str val):
         self.ptr.meta_data.sample_name = enc(val)
+
+    def expected_events(self, float lumi = 140.1): return self.crossSection*(10**6)*lumi
 

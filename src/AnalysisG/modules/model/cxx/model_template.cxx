@@ -71,7 +71,10 @@ torch::Tensor* model_template::assign_features(std::string inpt, graph_enum type
     auto g_truth = [this](graph_t* d, std::string key) -> torch::Tensor* {return d -> get_truth_graph(key, this);}; 
     auto n_truth = [this](graph_t* d, std::string key) -> torch::Tensor* {return d -> get_truth_node(key, this);}; 
     auto e_truth = [this](graph_t* d, std::string key) -> torch::Tensor* {return d -> get_truth_edge(key, this);}; 
-    auto lamb_d = [this](std::function<torch::Tensor*(graph_t*, std::string)> fx, std::vector<graph_t*>* merge, std::string key) -> torch::Tensor*{
+    auto lamb_d  = [this](
+            std::function<torch::Tensor*(graph_t*, std::string)> fx, 
+            std::vector<graph_t*>* merge, std::string key) -> torch::Tensor* 
+    {
         std::vector<torch::Tensor> arr; 
         for (size_t x(0); x < merge -> size(); ++x){
             torch::Tensor* val = fx((*merge)[x], key);

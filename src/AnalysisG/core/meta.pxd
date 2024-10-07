@@ -11,6 +11,8 @@ from AnalysisG.core.notification cimport *
 cdef extern from "<meta/meta.h>" nogil:
     cdef cppclass meta:
         meta() except+ nogil
+        string hash(string) except+ nogil
+
         meta_t meta_data
         string metacache_path
 

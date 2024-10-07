@@ -53,23 +53,23 @@ for k in params:
 
 ana.AddSamples(root1, "tmp")
 ana.AddEvent(x, "tmp")
-#ana.AddGraph(tt, "tmp")
+ana.AddGraph(tt, "tmp")
 
-#for i in range(len(optims)): ana.AddModel(trains[i], optims[i], params[0][0] + "-"+str(i))
+for i in range(len(optims)): ana.AddModel(trains[i], optims[i], params[0][0] + "-"+str(i))
 
 ana.kFolds = 10
 ana.Epochs = 100
 ana.TrainingDataset = "./ProjectName/sample.h5"
-#ana.Targets = ["top_edge", "res_edge"]
-#ana.GraphCache = "./ProjectName/"
+ana.Targets = ["top_edge", "res_edge"]
+ana.GraphCache = "./ProjectName/"
 ana.kFold = [1] #, 2, 3, 4, 5 , 6]
-#ana.MaxRange = 1500
+ana.MaxRange = 500
 ana.TrainSize = 80
 ana.BatchSize = 1
 ana.ContinueTraining = False
-ana.SumOfWeightsTreeName = "sumWeights"
-ana.FetchMeta = True
-ana.DebugMode = False
+#ana.SumOfWeightsTreeName = "sumWeights"
+#ana.FetchMeta = True
+ana.DebugMode  = False
 ana.Validation = False
 ana.Evaluation = False
 ana.Start()

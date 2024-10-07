@@ -19,10 +19,12 @@ class meta: public tools
         void scan_data(TObject* obj); 
         void scan_sow(TObject* obj); 
         void parse_json(std::string inpt); 
+        std::string hash(std::string fname); 
+
         rapidjson::Document* rpd = nullptr;
         std::string metacache_path; 
         meta_t meta_data; 
-    
+ 
     private:
         void compiler(); 
 

@@ -13,9 +13,9 @@ cdef class Grift(ModelTemplate):
     def __dealloc__(self): del self.nn_ptr
 
     @property
-    def dx(self): return self.rnn._dxin
-    @dx.setter
-    def dx(self, int val): self.rnn._dxin = val
+    def xrec(self): return self.rnn._xrec
+    @xrec.setter
+    def xrec(self, int val): self.rnn._xrec = val
 
     @property
     def x(self): return self.rnn._xin

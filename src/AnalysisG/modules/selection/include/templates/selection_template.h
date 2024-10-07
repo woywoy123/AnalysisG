@@ -6,11 +6,13 @@
 
 #include <structs/property.h>
 #include <structs/event.h>
+#include <structs/meta.h>
 
 #include <tools/merge_cast.h>
 #include <tools/tools.h>
 
 class container; 
+class meta; 
 
 class selection_template: public tools
 {
@@ -31,6 +33,7 @@ class selection_template: public tools
 
         cproperty<double, selection_template> weight;
         void static set_weight(double*, selection_template*); 
+        void static get_weight(double*, selection_template*); 
 
         cproperty<long, selection_template> index; 
         void static set_index(long*, selection_template*); 
@@ -40,13 +43,13 @@ class selection_template: public tools
         virtual bool strategy(event_template* ev);
         virtual void merge(selection_template* sel); 
 
-        void CompileEvent(); 
+        bool CompileEvent(); 
         selection_template* build(event_template* ev); 
         bool operator == (selection_template& p); 
 
+        meta* meta_data  = nullptr; 
         std::string filename = ""; 
         event_t data; 
-
 
         template <typename g>
         void sum(std::vector<g*>* ch, particle_template** out){
@@ -120,14 +123,14 @@ class selection_template: public tools
             return false; 
         }
 
-        friend container;
+        std::map<std::string, std::map<std::string, float>> passed_weights = {}; 
+        std::map<std::string, meta_t> matched_meta = {}; 
 
     private:
+        friend container;
         event_template* m_event = nullptr; 
         void merger(selection_template* sl2); 
         std::map<std::string, particle_template*> garbage = {}; 
-        float sum_of_weights = 0; 
-
 }; 
 
 

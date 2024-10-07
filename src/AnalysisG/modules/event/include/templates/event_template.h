@@ -7,6 +7,8 @@
 #include <structs/event.h>
 #include <tools/tools.h>
 
+class meta; 
+
 class event_template: public tools
 {
     public:
@@ -74,6 +76,7 @@ class event_template: public tools
         bool operator == (event_template& p); 
 
         event_t data; 
+        meta* meta_data = nullptr; 
         std::string filename = ""; 
         void flush_particles();
 

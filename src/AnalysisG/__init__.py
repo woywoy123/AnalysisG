@@ -18,14 +18,15 @@ def auth_pyami():
     code = pwinput("Password: ")
     execute = 'echo "' + code + '" | ' + execute
     try: _getcmd(execute)
-    except subprocess.CalledProcessError: pass
+    except subprocess.CalledProcessError:
+        print("Incorrect permissions on your .pem files.")
+        print("Try the following:")
+        print("-> chmod -R a+rwX <your .pem directory> #<- this will give everyone access to the .pem!")
+        print("The commands below will fix the global access issue.")
+        print("-> chmod 0600 <directory>/usercert.pem")
+        print("-> chmod 0400 <directory>/userkey.pem")
 
     test = ["ami_atlas", "show", "dataset", "info", "data13_2p76TeV.00219364.physics_MinBias.merge.NTUP_HI.f519_m1313"]
-    if "logicalDatasetName" in _getcmd(" ".join(test)): return print("SUCCESS!!!")
-    print("Incorrect permissions on your .pem files.")
-    print("Try the following:")
-    print("-> chmod -R a+rwX <your .pem directory> #<- this will give everyone access to the .pem!")
-    print("The commands below will fix the global access issue.")
-    print("-> chmod 0600 <directory>/usercert.pem")
-    print("-> chmod 0400 <directory>/userkey.pem")
+    try: _getcmd(" ".join(test))
+    except: pass
 

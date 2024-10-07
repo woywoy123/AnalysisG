@@ -11,13 +11,11 @@
 #include <generators/dataloader.h>
 
 struct entry_t {
-    std::string* hash = nullptr; 
-    meta*   meta_data = nullptr; 
-    
-    std::vector<graph_t*>*                m_data  = nullptr; 
-    std::vector<graph_template*>*         m_graph = nullptr; 
-    std::vector<event_template*>*         m_event = nullptr; 
-    std::vector<selection_template*>* m_selection = nullptr; 
+    std::string hash = ""; 
+    std::vector<graph_t*>                m_data  = {}; 
+    std::vector<graph_template*>         m_graph = {}; 
+    std::vector<event_template*>         m_event = {}; 
+    std::vector<selection_template*> m_selection = {}; 
 
     void init(); 
     void destroy(); 
@@ -44,7 +42,7 @@ class container: public tools
         meta* get_meta_data(); 
 
         bool add_selection_template(selection_template*); 
-        bool add_event_template(event_template*, std::string label, long* alloc); 
+        bool add_event_template(event_template*, std::string label); 
         bool add_graph_template(graph_template*, std::string label); 
 
         void fill_selections(std::map<std::string, selection_template*>* inpt); 
@@ -52,16 +50,15 @@ class container: public tools
         void populate_dataloader(dataloader* dl);
         void compile(size_t* len); 
         size_t len(); 
-        long alloc = 0; 
         
     private:
         entry_t* add_entry(std::string hash); 
 
         meta*       meta_data = nullptr; 
         std::string* filename = nullptr; 
-        std::string* label    = nullptr; 
+        std::string  label    = ""; 
 
-        std::map<std::string, entry_t*>* random_access = nullptr; 
+        std::map<std::string, entry_t> random_access; 
         std::map<std::string, selection_template*>* merged = nullptr; 
 }; 
 

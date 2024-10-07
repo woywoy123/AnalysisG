@@ -13,7 +13,7 @@ int add_content(std::map<std::string, torch::Tensor*>* data, std::vector<variabl
 }
 
 void execution(model_template* md, std::vector<graph_t*>* data, std::string output, std::vector<variable_t>* content, size_t* prg){
-    TFile* f = TFile::Open(output.c_str(), "CREATE");
+    TFile* f = TFile::Open(output.c_str(), "new");
     if (!f){
         for (size_t i(0); i < content -> size(); ++i){(*content)[i].purge();}
         delete content;
@@ -28,7 +28,6 @@ void execution(model_template* md, std::vector<graph_t*>* data, std::string outp
     TTree* t = new TTree("nominal", "data"); 
     std::string msg = "Running model " + std::string(md -> name) + " with sample -> " + output; 
     notification tx = notification(); 
-
 
     torch::AutoGradMode grd(false); 
     for (size_t x(0); x < data -> size(); ++x){
@@ -92,6 +91,7 @@ void analysis::build_inference(){
     std::map<std::string, bool> mute; 
     std::map<std::string, bool> device_tr; 
 
+    int para = 0; 
     its = dl -> begin(); 
     for (size_t x(0); x < th_models.size(); ++x){
         int mdx = x%modls; 
@@ -155,24 +155,22 @@ void analysis::build_inference(){
 
         th_prc[x] = new std::thread(execution, md, &its -> second, fname, content, &th_prg[x]);
         th_models[x] = md; 
-        ++itm;
+        ++itm; ++para; 
 
         if (!thr_){thr_ = new std::thread(this -> progressbar1, &th_prg, len, "Model Inference Progress");}
 
-        int i = 0; 
-        int count = 0;
-        //while (count == threads_){
-        //    if (i == th_prc.size()){i = 0; continue;}
-        //    if (!th_prc[i]){++i; continue;}
-        //    if (th_prc[i] -> joinable()){th_prc[i] -> join();} 
-        //    else {++i; continue;}
-        //    delete th_prc[i];
-        //    delete th_models[i]; 
-        //    th_prc[i] = nullptr; 
-        //    th_models[i] = nullptr; 
-        //    ++i; 
-        //    ++count; 
-        //} 
+        while (para >= threads_){
+            for (size_t t(0); t < th_prc.size(); ++t){
+                if (!th_prc[t]){continue;}
+                if (!th_prc[t] -> joinable()){continue;}
+                th_prc[t] -> join(); 
+                delete th_prc[t]; 
+                delete th_models[t]; 
+                th_models[t] = nullptr; 
+                th_prc[t] = nullptr; 
+                --para; 
+            }
+        } 
     } 
 
     std::string msg = "Model Inference Progress"; 
@@ -181,6 +179,8 @@ void analysis::build_inference(){
         th_prc[x] -> join(); 
         delete th_prc[x]; 
         delete th_models[x]; 
+        th_prc[x] = nullptr; 
+        th_models[x] = nullptr; 
     }
     if (!thr_){return this -> failure("No models were executed...");}
     thr_ -> join(); 

@@ -7,5 +7,5 @@ set(SOURCE_FILES
 add_library(cselection_template STATIC ${SOURCE_FILES})
 target_include_directories(cselection_template PRIVATE include/templates)
 target_include_directories(cselection_template PUBLIC include)
-target_link_libraries(cselection_template LINK_PUBLIC cevent_template ctypecasting)
+target_link_libraries(cselection_template PUBLIC cevent_template ctypecasting cnotification)
 target_compile_options(cselection_template PRIVATE -fPIC)

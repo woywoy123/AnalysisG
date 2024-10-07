@@ -27,6 +27,10 @@ void selection_template::set_weight(double* inpt, selection_template* ev){
     ev -> data.weight = *inpt; 
 }
 
+void selection_template::get_weight(double* inpt, selection_template* ev){
+    *inpt = ev -> data.weight; 
+}
+
 void selection_template::set_index(long* inpt, selection_template* ev){
     ev -> data.index = *inpt; 
 }

@@ -8,24 +8,23 @@ void analysis::build_graphs(){
     std::map<std::string, std::map<std::string, graph_template*>>::iterator itx; 
     for (itx = this -> graph_labels.begin(); itx != this -> graph_labels.end(); ++itx){
         std::string label = itx -> first; 
-        std::vector<event_template*>* events_ = this -> tracer -> get_events(label); 
-        std::map<std::string, graph_template*>::iterator itx_; 
+        std::vector<event_template*> events_ = this -> tracer -> get_events(label); 
+        std::map<std::string, graph_template*>::iterator itx_ = itx -> second.begin(); 
+        for (; itx_ != itx -> second.end(); ++itx_){
+            for (size_t x(0); x < events_.size(); ++x){
+                std::string fname_ = events_[x] -> filename; 
 
-        for (itx_ = itx -> second.begin(); itx_ != itx -> second.end(); ++itx_){
-            for (event_template* ev : *events_){
-                std::vector<std::string> spl = this -> split(ev -> filename, "/"); 
+                std::vector<std::string> spl = this -> split(fname_, "/"); 
                 std::string fname = this -> hash(spl[spl.size()-1]) + "-" + spl[spl.size()-1]; 
                 this -> replace(&fname, ".root", ".h5"); 
                 fname = itx_ -> first + "/" + fname; 
-                if (this -> in_cache[ev -> filename][fname]){continue;}
 
-                graph_template* gr_o = itx_ -> second -> build(ev); 
-                bool rm = this -> tracer -> add_graph(gr_o, label);
-                if (!rm){continue;}
+                if (this -> in_cache[fname_][fname]){continue;}
+                graph_template* gr_o = itx_ -> second -> build(events_[x]); 
+                if (!this -> tracer -> add_graph(gr_o, label)){continue;}
                 delete gr_o;
             }
         }
-        delete events_; 
     }
     this -> success("Finished Building Graphs from events"); 
 }

@@ -47,32 +47,39 @@ void analysis::build_events(){
         std::map<std::string, event_template*> evnts = event_f -> build_event(io_handle);
         if (!evnts.size()){continue;}
         th_prg[0]+=1; 
-        ++index;  
-        std::map<std::string, event_template*>::iterator tx = evnts.begin(); 
-        event_template* ev_ = tx -> second; 
+        ++index; 
 
-        std::string label = this -> file_labels[ev_ -> filename]; 
-        meta* meta_ = this -> reader -> meta_data[ev_ -> filename]; 
-        bool detach = this -> tracer -> add_meta_data(meta_, ev_ -> filename); 
-        if (detach){
-            this -> meta_data[ev_ -> filename] = meta_; 
-            this -> reader -> meta_data[ev_ -> filename] = nullptr;
+        std::map<std::string, event_template*>::iterator tx = evnts.begin(); 
+        std::string fname = tx -> second -> filename; 
+        std::string label = this -> file_labels[fname]; 
+
+        meta* meta_ = nullptr; 
+        bool ext = this -> meta_data.count(fname); 
+        if (ext){meta_ = this -> meta_data[fname];}
+        else {meta_ = this -> reader -> meta_data[fname];}
+
+        bool detach = this -> tracer -> add_meta_data(meta_, fname); 
+        if (detach && !ext){
+            this -> reader -> meta_data[fname] = nullptr;
+            this -> meta_data[fname] = meta_; 
         }
 
-        std::vector<std::string> tmp = this -> split(ev_ -> filename, "/"); 
+        std::vector<std::string> tmp = this -> split(fname, "/"); 
         title = tmp[tmp.size()-1]; 
         for (; tx != evnts.end(); ++tx){
-            long lx = root_entries[ev_ -> filename][tx -> first]; 
-            if (!this -> tracer -> add_event(tx -> second, label, &lx)){continue;} 
+            if (!this -> tracer -> add_event(tx -> second, label)){continue;} 
             delete tx -> second; 
+            tx -> second = nullptr; 
         }
     }
     th_ -> join(); 
     delete th_; 
+    th_ = nullptr; 
 
     this -> reader -> root_end(); 
     delete this -> reader; 
     this -> reader = new io(); 
     std::cout << std::endl;
+
     this -> success("Finished Building Events"); 
 }

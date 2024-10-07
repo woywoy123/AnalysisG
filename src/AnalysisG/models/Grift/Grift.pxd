@@ -9,7 +9,7 @@ cdef extern from "<models/grift.h>":
 
         grift() except+
 
-        int _dxin
+        int _xrec
         int _xin
         double drop_out
         bool is_mc

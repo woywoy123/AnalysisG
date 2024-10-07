@@ -92,18 +92,11 @@ void meta::scan_sow(TObject* obj){
             wg -> hist_data[xs -> GetBinLabel(x+1)] = hs -> GetBinContent(x+1);
         }
     }
-
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
+std::string meta::hash(std::string fname){
+    std::vector<std::string> spl = this -> split(fname, "/"); 
+    size_t x = spl.size(); 
+    if (x == 1){return this -> tools::hash(spl[0]);}
+    return this -> tools::hash(spl[x-2] + "." + spl[x-1]);
+}

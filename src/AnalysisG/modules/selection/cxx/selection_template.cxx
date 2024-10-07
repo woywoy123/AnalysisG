@@ -1,4 +1,5 @@
 #include <templates/selection_template.h>
+#include <meta/meta.h>
 
 selection_template::selection_template(){
     this -> name.set_object(this); 
@@ -13,10 +14,12 @@ selection_template::selection_template(){
     this -> tree.set_getter(this -> get_tree); 
 
     this -> weight.set_setter(this -> set_weight); 
+    this -> weight.set_getter(this -> get_weight); 
     this -> weight.set_object(this); 
 
     this -> index.set_setter(this -> set_index); 
     this -> index.set_object(this); 
+
     this -> name = "selection-template"; 
 }
 
@@ -38,18 +41,18 @@ bool selection_template::strategy(event_template* ev){
     return true; 
 }
 
-void selection_template::CompileEvent(){
-    if (!this -> selection(this -> m_event)){return;}
-    if (!this -> strategy(this -> m_event)){return;}
-    return; 
+bool selection_template::CompileEvent(){
+    if (!this -> selection(this -> m_event)){return false;}
+    if (!this -> strategy(this -> m_event)){return false;}
+    return true; 
 }
 
 selection_template* selection_template::build(event_template* ev){
-    event_t* data_ = &ev -> data;
-    data_ -> name = this -> name; 
     selection_template* sel = this -> clone(); 
-    sel -> m_event = ev; 
-    sel -> data = *data_; 
+    std::string name = sel -> name; 
+    sel -> m_event  = ev; 
+    sel -> data     = ev -> data; 
+    sel -> name     = name; 
     sel -> filename = ev -> filename; 
     return sel; 
 }
@@ -63,5 +66,15 @@ void selection_template::merge(selection_template* sl2){}
 void selection_template::merger(selection_template* sl2){
     if (this -> name != sl2 -> name){return;}
     this -> merge(sl2); 
+    if (this -> m_event){return;}
+
+    if (sl2 -> m_event){
+        this -> passed_weights[sl2 -> filename][sl2 -> hash] = sl2 -> weight;
+        this -> matched_meta[sl2 -> filename] = sl2 -> meta_data -> meta_data;
+        return; 
+    }
+
+    merge_data(&this -> passed_weights, &sl2 -> passed_weights);
+    merge_data(&this -> matched_meta, &sl2 -> matched_meta); 
 } 
 

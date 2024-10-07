@@ -58,10 +58,10 @@ void graph_t::_purge_all(){
     this -> dev_edge_index.clear(); 
     this -> dev_event_weight.clear(); 
 
+    delete this -> hash; 
     if (this -> graph_name){delete this -> graph_name;}
 
     if (!this -> is_owner){return;}
-    delete this -> hash; 
     delete this -> filename; 
 }
 

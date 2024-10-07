@@ -45,11 +45,10 @@ void graph_template::flush_particles(){
 
 void graph_template::define_particle_nodes(std::vector<particle_template*>* prt){
     for (size_t x(0); x < prt -> size(); ++x){
-        std::string hash_ = prt -> at(x) -> hash; 
+        std::string hash_ = (*prt)[x] -> hash; 
         if (this -> nodes.count(hash_)){continue;}
-
         int n_nodes = (int)this -> nodes.size();
-        this -> node_particles[n_nodes] = prt -> at(x);  
+        this -> node_particles[n_nodes] = (*prt)[x]; 
         this -> nodes[hash_] = n_nodes; 
     }
     this -> num_nodes = this -> nodes.size(); 

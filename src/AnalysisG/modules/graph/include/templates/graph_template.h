@@ -16,6 +16,7 @@
 
 class graph_template; 
 class dataloader; 
+class meta; 
 
 struct graph_t {
 
@@ -245,6 +246,7 @@ class graph_template: public tools
 
         event_t data; 
         std::string filename = ""; 
+        meta* meta_data = nullptr; 
 
         void flush_particles(); 
         graph_template* build(event_template* el); 

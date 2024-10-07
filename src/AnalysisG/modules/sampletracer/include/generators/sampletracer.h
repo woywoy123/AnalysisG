@@ -16,10 +16,10 @@ class sampletracer:
         bool add_meta_data(meta* meta_, std::string filename); 
         meta* get_meta_data(std::string filename); 
 
-        std::vector<event_template*>* get_events(std::string label); 
+        std::vector<event_template*> get_events(std::string label); 
 
         void fill_selections(std::map<std::string, selection_template*>* inpt); 
-        bool add_event(event_template* ev, std::string label, long* len); 
+        bool add_event(event_template* ev, std::string label); 
         bool add_graph(graph_template* gr, std::string label);
         bool add_selection(selection_template* sel); 
 
@@ -27,7 +27,7 @@ class sampletracer:
         void compile_objects(int threads); 
 
     private:
-        std::map<std::string, container*>* root_container = nullptr; 
+        std::map<std::string, container> root_container = {}; 
 }; 
 
 #endif

@@ -77,12 +77,12 @@ cdef class Analysis:
         cdef pair[string, meta*] itrm
         if self.ana.m_settings.fetch_meta:
             for itrm in self.ana.meta_data:
-                fname = env(itrm.first)
-                if fname not in self.meta_:
+                hash_ = env(itrm.second.hash(itrm.first))
+                if hash_ not in self.meta_:
                     data = Meta()
-                    self.meta_[fname] = data
                     data.ptr.metacache_path = itrm.second.metacache_path
-                data = self.meta_[fname]
+                    self.meta_[hash_] = data
+                data = self.meta_[hash_]
                 data.__meta__(itrm.second)
             f = open(prj + "/meta_state.pkl", "wb")
             pickle.dump(self.meta_, f)
@@ -177,7 +177,11 @@ cdef class Analysis:
         self.ana.m_settings.kfold = <vector[int]>(folds)
 
     @property
-    def GetMetaData(self): return self.meta_
+    def GetMetaData(self):
+        cdef str i
+        cdef dict out = {}
+        for i in self.meta_: out[i + "-" + self.meta_[i].DatasetName] = self.meta_[i]
+        return out
 
     @property
     def Epochs(self): return self.ana.m_settings.epochs
