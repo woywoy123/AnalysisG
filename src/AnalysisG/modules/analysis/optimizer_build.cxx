@@ -54,7 +54,7 @@ void analysis::build_model_session(){
             if (!check){continue;}
             model_report* mx = nullptr;  
             if (this -> m_settings.debug_mode){initialize_loop(optim, k_, std::get<0>(*para), std::get<1>(*para), &mx);}
-            else {this -> threads.push_back(new std::thread(initialize_loop, optim, k, std::get<0>(*para), std::get<1>(*para), &mx));}
+            else {this -> threads.push_back(new std::thread(initialize_loop, optim, k_, std::get<0>(*para), std::get<1>(*para), &mx));}
             while (!mx){std::this_thread::sleep_for(std::chrono::microseconds(10));}
             this -> reports[mx -> run_name + std::to_string(mx -> k)] = mx; 
         }
