@@ -18,6 +18,7 @@ cdef class SelectionTemplate:
         for i in keys:
             try: setattr(self, i, inpt["data"][i])
             except KeyError: continue
+            except AttributeError: continue
         self.ptr.passed_weights = <map[string, map[string, float]]>(inpt["weights"])
         self.ptr.matched_meta   = <map[string, meta_t]>(inpt["meta"])
 

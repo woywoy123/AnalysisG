@@ -19,8 +19,9 @@ class top: public particle_template
     public:
         top(); 
         ~top() override; 
-        bool is_lep = false; 
-        float av_score = 1; 
+        float av_score = 0;
+        int n_leps = 0;  
+        int n_nodes = 0; 
 }; 
 
 
@@ -29,7 +30,9 @@ class zprime: public particle_template
     public:
         zprime(); 
         ~zprime() override; 
-        float av_score = 1; 
+        float av_score = 0; 
+        int n_leps = 0;  
+        int n_nodes = 0; 
 }; 
 
 

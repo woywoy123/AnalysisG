@@ -23,15 +23,12 @@ cdef class TopEfficiency(SelectionTemplate):
         self.prob_tops   = as_dict_dict(&self.tt.prob_tops)
         self.prob_zprime = as_dict_dict(&self.tt.prob_zprime)
 
-        self.ms_cut_perf_tops = as_dict_dict(&self.tt.ms_cut_perf_tops)
-        self.ms_cut_reco_tops = as_dict_dict(&self.tt.ms_cut_reco_tops)
-        self.ms_cut_topmass   = as_dict_dict(&self.tt.ms_cut_topmass  )
+        self.t_decay_region = as_dict_dict(&self.tt.t_decay_region)
+        self.p_decay_region = as_dict_dict(&self.tt.p_decay_region)
 
-        self.n_tru_tops       = as_dict(&self.tt.n_tru_tops)
-
-        self.kin_truth_tops   = as_dict_dict(&self.tt.kin_truth_tops  )
-        self.ms_kin_perf_tops = as_dict_dict_dict(&self.tt.ms_kin_perf_tops)
-        self.ms_kin_reco_tops = as_dict_dict_dict(&self.tt.ms_kin_reco_tops)
+        self.n_tru_tops      = as_basic_dict(&self.tt.n_tru_tops)
+        self.n_pred_tops     = as_basic_dict(&self.tt.n_pred_tops)
+        self.n_perfect_tops  = as_basic_dict(&self.tt.n_perfect_tops)
 
         self.truth_res_edge   = self.tt.truth_res_edge
         self.truth_top_edge   = self.tt.truth_top_edge
@@ -45,4 +42,3 @@ cdef class TopEfficiency(SelectionTemplate):
         self.pred_ntops_score    = self.tt.pred_ntops_score
         self.pred_signal_score   = self.tt.pred_signal_score
 
-        self.ntops_efficiency    = as_dict_dict(&self.tt.ntops_efficiency)

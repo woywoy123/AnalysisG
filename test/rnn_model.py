@@ -57,12 +57,12 @@ ana.AddGraph(tt, "tmp")
 
 for i in range(len(optims)): ana.AddModel(trains[i], optims[i], params[0][0] + "-"+str(i))
 
-ana.kFolds = 10
+##ana.kFolds = 10
 ana.Epochs = 100
 ana.TrainingDataset = "./ProjectName/sample.h5"
 ana.Targets = ["top_edge", "res_edge"]
 ana.GraphCache = "./ProjectName/"
-ana.kFold = [1] #, 2, 3, 4, 5 , 6]
+ana.kFold = [6]
 ana.MaxRange = 500
 ana.TrainSize = 80
 ana.BatchSize = 1

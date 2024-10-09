@@ -182,6 +182,14 @@ void analysis::build_inference(){
         th_prc[x] = nullptr; 
         th_models[x] = nullptr; 
     }
+    
+    for (its = dl -> begin(); its != dl -> end(); ++its){
+        its -> second.clear(); 
+        its -> second.shrink_to_fit(); 
+    }
+    dl -> clear();
+    delete dl; 
+
     if (!thr_){return this -> failure("No models were executed...");}
     thr_ -> join(); 
     delete thr_; 

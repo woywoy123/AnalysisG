@@ -72,28 +72,68 @@ void gnn_event::CompileEvent(){
             std::map<int, std::map<std::string, particle_gnn*>>* clust, 
             std::map<std::string, std::vector<particle_gnn*>>* out,
             std::map<std::string, float>* bin_out,
-            std::map<int, std::vector<float>>* bin_data
+            std::map<int, std::map<int, float>>* bin_data
     ){
 
-        std::map<std::string, std::vector<float>> score_av; 
-        std::map<int, std::map<std::string, particle_gnn*>>::iterator itr = clust -> begin(); 
-        for (; itr != clust -> end(); ++itr){
-            if (itr -> second.size() <= 2){continue;}
-            std::string hsh = ""; 
-            std::map<std::string, particle_gnn*>::iterator ix = itr -> second.begin();
-            for (; ix != itr -> second.end(); ++ix){ hsh = tools().hash(hsh + std::string(ix -> second -> hash)); }
-            if (bin_out){
-                for (float k : (*bin_data)[itr -> first]){ score_av[hsh].push_back(k); }
+        std::map<int, float> PR; 
+        size_t n_nodes = clust -> size(); 
+        std::map<int, std::map<int, float>> Mij; 
+        for (size_t x(0); x < n_nodes; ++x){
+            float wij_n = 0; 
+            PR[x] = 1 / float(n_nodes); 
+            if (!bin_data){continue;}
+            for (size_t y(0); y < clust -> size(); ++y){
+                Mij[x][y] = (*bin_data)[x][y]; 
+                wij_n += (*bin_data)[x][y]; 
             }
-            if (out -> count(hsh)){continue;}
-            this -> vectorize(&itr -> second, &(*out)[hsh]); 
+
+            if (wij_n == 0){continue;} 
+            wij_n = 1 / wij_n;
+            for (size_t y(0); y < n_nodes; ++y){Mij[x][y] = Mij[x][y] * wij_n;}
         }
-        std::map<std::string, std::vector<float>>::iterator itx;
-        for (itx = score_av.begin(); itx != score_av.end(); ++itx){
-            float p = 0; 
-            for (float k : itx -> second){p += k;}
-            (*bin_out)[itx -> first] = p / float(itx -> second.size()); 
+
+        int t_out = 0; 
+        float norm_ = 0; 
+        std::map<int, std::map<std::string, particle_gnn*>>::iterator itr;
+        while (bin_data && t_out < n_nodes){
+            float norm = 0; 
+            std::map<int, float> pr_;
+            for (size_t p(0); p < PR.size(); ++p){norm += PR[p];}
+
+            if (!norm + !std::abs(norm_ - norm)){break;}
+            for (size_t p(0); p < PR.size(); ++p){PR[p] = PR[p]/norm;}
+            for (itr = clust -> begin(); itr != clust -> end(); ++itr){
+                int src = itr -> first; 
+                for (size_t x(0); x < n_nodes; ++x){
+                    if (!Mij[x][src] + (x == src)){continue;}
+                    float out_s = (*clust)[x].size(); 
+                    pr_[src] += PR[x]*Mij[x][src]; 
+                }
+            }
+            PR = pr_; 
+            norm_ = norm; 
+            ++t_out; 
         }
+
+        tools tl = tools(); 
+        for (itr = clust -> begin(); itr != clust -> end(); ++itr){
+            int src = itr -> first; 
+            if (!PR[src] && bin_data){continue;}
+            std::map<std::string, particle_gnn*> tmp; 
+            std::map<std::string, particle_gnn*>::iterator itp; 
+            for (itp = itr -> second.begin(); itp != itr -> second.end(); ++itp){
+                int p_node = itp -> second -> index; 
+                if (bin_data && !(*bin_data)[src][p_node]){continue;}
+                tmp[itp -> second -> hash] = itp -> second;
+            }
+            if (tmp.size() <= 2){continue;}
+            std::string hash = ""; 
+            for (itp = tmp.begin(); itp != tmp.end(); ++itp){hash = tl.hash(hash + itp -> first);}
+            if (out -> count(hash)){continue;}
+            this -> vectorize(&tmp, &(*out)[hash]); 
+            if (!bin_out){continue;}
+            for (itp = tmp.begin(); itp != tmp.end(); ++itp){(*bin_out)[hash] += PR[itp -> second -> index];}
+        } 
     }; 
 
 
@@ -110,7 +150,7 @@ void gnn_event::CompileEvent(){
     }
 
 
-    std::map<int, std::vector<float>> bin_top, bin_zprime; 
+    std::map<int, std::map<int, float>> bin_top, bin_zprime; 
     std::map<int, std::map<std::string, particle_gnn*>> real_tops; 
     std::map<int, std::map<std::string, particle_gnn*>> real_zprime; 
 
@@ -122,13 +162,12 @@ void gnn_event::CompileEvent(){
     for (size_t x(0); x < src.size(); ++x){
         int top_ij = (this -> edge_top_scores[x][0] < this -> edge_top_scores[x][1]); 
         int res_ij = (this -> edge_res_scores[x][0] < this -> edge_res_scores[x][1]); 
-
-        if (top_ij){bin_top[src[x]].push_back(this -> edge_top_scores[x][1]);}
-        if (res_ij){bin_zprime[src[x]].push_back(this -> edge_res_scores[x][1]);}
+        if (top_ij){bin_top[src[x]][dst[x]]    = this -> edge_top_scores[x][1];}
+        if (res_ij){bin_zprime[src[x]][dst[x]] = this -> edge_res_scores[x][1];}
 
         std::string hx = particle[dst[x]] -> hash; 
-        if (top_ij){reco_tops[src[x]][hx]   = particle[dst[x]];}
-        if (res_ij){reco_zprime[src[x]][hx] = particle[dst[x]];}
+        reco_tops[src[x]][hx]   = particle[dst[x]];
+        reco_zprime[src[x]][hx] = particle[dst[x]];
         
         if (this -> t_edge_top[x]){real_tops[src[x]][hx]   = particle[dst[x]];}
         if (this -> t_edge_res[x]){real_zprime[src[x]][hx] = particle[dst[x]];}
@@ -146,7 +185,8 @@ void gnn_event::CompileEvent(){
 
         std::map<std::string, particle_template*> ch = t -> children; 
         std::map<std::string, particle_template*>::iterator itc = ch.begin(); 
-        for (; itc != ch.end(); ++itc){t -> is_lep += ((particle_gnn*)itc -> second) -> is_lep;}
+        for (; itc != ch.end(); ++itc){t -> n_leps += ((particle_gnn*)itc -> second) -> is_lep;}
+        t -> n_nodes = ch.size(); 
     }
 
     std::map<std::string, std::vector<particle_gnn*>> c_real_zprime;
@@ -155,6 +195,11 @@ void gnn_event::CompileEvent(){
         zprime* t = nullptr;
         this -> sum(&it -> second, &t);  
         this -> m_t_zprime[t -> hash] = t; 
+
+        std::map<std::string, particle_template*> ch = t -> children; 
+        std::map<std::string, particle_template*>::iterator itc = ch.begin(); 
+        for (; itc != ch.end(); ++itc){t -> n_leps += ((particle_gnn*)itc -> second) -> is_lep;}
+        t -> n_nodes = ch.size(); 
     }
 
  
@@ -170,7 +215,8 @@ void gnn_event::CompileEvent(){
 
         std::map<std::string, particle_template*> ch = t -> children; 
         std::map<std::string, particle_template*>::iterator itc = ch.begin(); 
-        for (; itc != ch.end(); ++itc){t -> is_lep += ((particle_gnn*)itc -> second) -> is_lep;}
+        for (; itc != ch.end(); ++itc){t -> n_leps += ((particle_gnn*)itc -> second) -> is_lep;}
+        t -> n_nodes = ch.size(); 
     }
 
     std::map<std::string, float> c_reco_zprime_bin; 
@@ -181,7 +227,12 @@ void gnn_event::CompileEvent(){
         this -> sum(&it -> second, &t);  
         t -> av_score = c_reco_zprime_bin[it -> first]; 
         this -> m_r_zprime[t -> hash] = t; 
-    }
+
+        std::map<std::string, particle_template*> ch = t -> children; 
+        std::map<std::string, particle_template*>::iterator itc = ch.begin(); 
+        for (; itc != ch.end(); ++itc){t -> n_leps += ((particle_gnn*)itc -> second) -> is_lep;}
+        t -> n_nodes = ch.size(); 
+     }
 
     // ----- vectorize the output particles ------ //
     this -> vectorize(&this -> m_r_zprime, &this -> r_zprime); 

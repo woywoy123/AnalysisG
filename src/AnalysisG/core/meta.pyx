@@ -23,6 +23,7 @@ class httpx(pyAMI.httpclient.HttpClient):
 
     def __init__(self, config):
         super(httpx, self).__init__(config)
+        self._tries = False
 
     def connect(self, endpoint):
         self.endpoint = endpoint
@@ -32,7 +33,11 @@ class httpx(pyAMI.httpclient.HttpClient):
             confx["context"] = self.create_unverified_context()
             confx["context"].load_cert_chain(**chn)
             self.connection = http.client.HTTPSConnection(**confx)
-        except: auth_pyami(); self.connect(endpoint)
+        except:
+            if self._tries: return
+            auth_pyami()
+            self._tries = True
+            self.connect(endpoint)
 
 class atlas(pyAMI.client.Client):
 
