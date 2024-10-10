@@ -10,7 +10,7 @@ static void initialize_loop(
     model_template* mk = model -> clone(); 
 
 //    torch::set_num_interop_threads(12); 
-//    torch::init_num_threads();
+    torch::init_num_threads();
 
     std::vector<graph_t*> rnd = op -> loader -> get_random(1); 
     mk -> set_optimizer(config -> optimizer); 

@@ -43,16 +43,16 @@ study       = "topefficiency"
 
 graph_name     = "GraphJets"
 graph_prefix   = "_bn_1"
-inference_mode = True
+inference_mode = False
 plot_only      = False
 fetch_meta     = False
 threads        = 8
 
 graph_cache = "/scratch/tnom6927/graph-data-mc16-full/"
 root_model  = "/import/wu1/tnom6927/TrainingOutput/training-sessions/"
-data_path   = "/import/wu1/tnom6927/TrainingOutput/mc16-full/" # <----- cluster
+#data_path   = "/import/wu1/tnom6927/TrainingOutput/mc16-full/" # <----- cluster
 #data_path = "/CERN/Samples/mc16-full" # <----- local
-#data_path = "ProjectName/ROOT/GraphJets_Experimental/MRK-1/epoch-9/kfold-1/"
+data_path = "/CERN/trainings/mc16-full-inference/ROOT/" + graph_name + graph_prefix + "_Grift/MRK-1/epoch-1/kfold-1/"
 
 model_states = {}
 if inference_mode:
@@ -180,7 +180,7 @@ i = 0
 for j, k in sample_path_.items():
     if plot_only: break
     ana = Analysis()
-    ana.Threads = 12
+    ana.Threads = 1
     ana.AddSamples(k, j)
     try: ana.AddEvent(event_method[event_name](), j)
     except KeyError: pass

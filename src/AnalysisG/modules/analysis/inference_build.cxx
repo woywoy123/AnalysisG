@@ -1,5 +1,6 @@
 #include <generators/analysis.h>
 #include <tools/vector_cast.h>
+#include <ROOT/RDataFrame.hxx>
 #include <TFile.h>
 #include <TTree.h>
 
@@ -13,11 +14,10 @@ int add_content(std::map<std::string, torch::Tensor*>* data, std::vector<variabl
 }
 
 void execution(model_template* md, std::vector<graph_t*>* data, std::string output, std::vector<variable_t>* content, size_t* prg){
-    TFile* f = TFile::Open(output.c_str(), "new");
+    TFile* f = TFile::Open(output.c_str(), "NEW");
     if (!f){
-        for (size_t i(0); i < content -> size(); ++i){(*content)[i].purge();}
-        delete content;
         (*prg) = data -> size(); 
+        delete content;
         return;  
     }
     if (f -> IsZombie()){
@@ -25,7 +25,7 @@ void execution(model_template* md, std::vector<graph_t*>* data, std::string outp
         f = TFile::Open(output.c_str(), "RECREATE");
     }
 
-    TTree* t = new TTree("nominal", "data"); 
+    TTree t = TTree("nominal", "data"); 
     std::string msg = "Running model " + std::string(md -> name) + " with sample -> " + output; 
     notification tx = notification(); 
 
@@ -37,31 +37,30 @@ void execution(model_template* md, std::vector<graph_t*>* data, std::string outp
         md -> forward((*data)[x], false); 
 
         // --- Scan the inputs
-        index = add_content(&md -> m_i_graph, content, index, t); 
-        index = add_content(&md -> m_i_node, content, index, t); 
-        index = add_content(&md -> m_i_edge, content, index, t); 
+        index = add_content(&md -> m_i_graph, content, index, &t); 
+        index = add_content(&md -> m_i_node, content, index, &t); 
+        index = add_content(&md -> m_i_edge, content, index, &t); 
 
         // --- Scan the outputs
-        index = add_content(&md -> m_p_graph, content, index, t); 
-        index = add_content(&md -> m_p_node, content, index, t); 
-        index = add_content(&md -> m_p_edge, content, index, t); 
+        index = add_content(&md -> m_p_graph, content, index, &t); 
+        index = add_content(&md -> m_p_node, content, index, &t); 
+        index = add_content(&md -> m_p_edge, content, index, &t); 
 
         std::map<std::string, torch::Tensor*> addhoc;
-        addhoc["edge_index"] = (*data)[x] -> get_edge_index(md);
+        addhoc["edge_index"]   = (*data)[x] -> get_edge_index(md);
         addhoc["event_weight"] = (*data)[x] -> get_event_weight(md); 
 
-        index = add_content(&addhoc, content, index, t);
-        index = add_content(&md -> m_p_undef, content, index, t); 
+        index = add_content(&addhoc, content, index, &t);
+        index = add_content(&md -> m_p_undef, content, index, &t); 
 
-        t -> Fill();
+        t.Fill();
 
         *prg = x+1;  
     }
-    t -> ResetBranchAddresses(); 
-    t -> Write();
+    t.ResetBranchAddresses(); 
+    t.Write();
+    f -> Close(); 
     delete f; 
-
-    for (size_t i(0); i < content -> size(); ++i){(*content)[i].purge();}
     delete content; 
 }
 
