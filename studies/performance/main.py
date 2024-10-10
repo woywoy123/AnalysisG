@@ -11,7 +11,7 @@ def build_samples(pth, pattern, chnks):
 
 # model implementations
 from AnalysisG.models import *
-model_method = {"RecursiveGraphNeuralNetwork" : RecursiveGraphNeuralNetwork, "Experimental" : Grift}
+model_method = {"RecursiveGraphNeuralNetwork" : RecursiveGraphNeuralNetwork, "Grift" : Grift}
 
 # selection studies
 from AnalysisG.selections.performance.topefficiency.topefficiency import TopEfficiency
@@ -41,23 +41,30 @@ plotting_method = {"topefficiency" : topefficiency}
 figure_path = "./Output/"
 study       = "topefficiency"
 
-graph_name  = "GraphJets"
-inference_mode = False
-plot_only      = True
-fetch_meta     = True
+graph_name     = "GraphJets"
+graph_prefix   = "_bn_1"
+inference_mode = True
+plot_only      = False
+fetch_meta     = False
+threads        = 8
 
-#root_model = "/import/wu1/tnom6927/TrainingOutput/training-sessions/"
-#data_path  = "/scratch/tnom6927/mc16-full/sorted-data" # <----- cluster
-data_path = "/CERN/Samples/mc16-full" # <----- local
+graph_cache = "/scratch/tnom6927/graph-data-mc16-full/"
+root_model  = "/import/wu1/tnom6927/TrainingOutput/training-sessions/"
+data_path   = "/import/wu1/tnom6927/TrainingOutput/mc16-full/" # <----- cluster
+#data_path = "/CERN/Samples/mc16-full" # <----- local
 #data_path = "ProjectName/ROOT/GraphJets_Experimental/MRK-1/epoch-9/kfold-1/"
 
 model_states = {}
 if inference_mode:
     model_states |= {
-            "MRK-1" : {
-                "epoch-1"  : (["kfold-1"], ["cuda:1"]),
-                "epoch-74" : (["kfold-5"], ["cuda:0"]),
-            }
+            "MRK-1" : {"epoch-" + str(ep) : (["kfold-1"], ["cuda:1"]) for ep in [1, 2, 3, 4]},
+            "MRK-2" : {"epoch-" + str(ep) : (["kfold-1"], ["cuda:0"]) for ep in [1, 2, 3, 4]},
+            "MRK-3" : {"epoch-" + str(ep) : (["kfold-1"], ["cuda:1"]) for ep in [1, 2, 3, 4]},
+            "MRK-4" : {"epoch-" + str(ep) : (["kfold-1"], ["cuda:0"]) for ep in [1, 2, 3, 4]},
+            "MRK-5" : {"epoch-" + str(ep) : (["kfold-1"], ["cuda:1"]) for ep in [1, 2, 3, 4]},
+            "MRK-6" : {"epoch-" + str(ep) : (["kfold-1"], ["cuda:0"]) for ep in [1, 2, 3, 4]},
+            "MRK-7" : {"epoch-" + str(ep) : (["kfold-1"], ["cuda:1"]) for ep in [1, 2, 3, 4]},
+            "MRK-8" : {"epoch-" + str(ep) : (["kfold-1"], ["cuda:0"]) for ep in [1, 2, 3, 4]},
     }
 
 sample_path_ = {
@@ -114,19 +121,18 @@ for i in sample_path_:
     ana.FetchMeta = True
     ana.SumOfWeightsTreeName = "sumWeights"
     ana.Start()
-
 if fetch_meta: exit()
 
 if not inference_mode:
     ls = sum(list(build_samples(data_path, "./*/*.root", 10)), [])
-    sample_path_ = {k.split("/")[-1] : k for k in ls if "ttbar" in k}
+    sample_path_ = {k.split("/")[-1] : k for k in ls}
 
 event_name     = "BSM4Tops"      if inference_mode     else "EventGNN"
 graph_name     = graph_name      if inference_mode     else ""
-model_name     = "Experimental"  if inference_mode     else ""
+model_name     = "Grift"         if inference_mode     else ""
 selection_name = "TopEfficiency" if not inference_mode else ""
 
-for k in build_samples(data_path + "sorted-data", "./*/*/*.root", 10):
+for k in build_samples(data_path, "./*/*/*.root", 10):
     sample_path = {}
     for l in k:
         for t in sample_path_:
@@ -134,44 +140,37 @@ for k in build_samples(data_path + "sorted-data", "./*/*/*.root", 10):
             if t not in sample_path: sample_path[t] = []
             sample_path[t] += [l]
             break
-
-    skip = 0
-    for l in sample_path:
-        iox = IO(sample_path[l])
-        iox.Trees = ["nominal"]
-        iox.Leaves = ["weight_mc"]
-        skip = len(iox)
-    if skip == 0: continue
-    if skip < 1000: th = 1
-    else: th = 2
+    if not len(sample_path): continue
 
     ana = Analysis()
-    ana.Threads = th
-    ana.GraphCache = "ProjectName"
+    ana.Threads = threads
+    ana.GraphCache = graph_cache
     if len(model_states): ana.FetchMeta = False
     for j in sample_path:
-        for p in sample_path[j]: ana.AddSamples(p, j)
+        for p in sample_path[j]:
+            label = j + p.split("/")[-1]
+            ana.AddSamples(p, label)
 
-        try: ana.AddEvent(event_method[event_name](), j)
-        except KeyError: pass
-        except NameError: pass
+            try: ana.AddEvent(event_method[event_name](), label)
+            except KeyError: pass
+            except NameError: pass
 
-        try: ana.AddGraph(graph_method[graph_name](), j)
-        except KeyError: pass
-        except NameError: pass
+            try: ana.AddGraph(graph_method[graph_name](), label)
+            except KeyError: pass
+            except NameError: pass
 
     for j in model_states:
         for ep in model_states[j]:
-            mdl = root_model + graph_name + "/" + model_name + "/" + j + "/state/" + ep + "/"
+            mdl = root_model + graph_name + graph_prefix + "/" + model_name + "/" + j + "/state/" + ep + "/"
             kf, dev = model_states[j][ep]
             for i in range(len(kf)):
                 gnn = model_method[model_name]()
-                gnn.o_edge = {"top_edge" : "CrossEntropyLoss", "res_edge" : "CrossEntropyLoss"}
-                gnn.o_graph = {"ntops"   : "CrossEntropyLoss", "signal"   : "CrossEntropyLoss"}
-                gnn.i_node = ["pt", "eta", "phi", "energy"]
-                gnn.device = dev[i]
+                gnn.o_edge  = {"top_edge" : "CrossEntropyLoss", "res_edge" : "CrossEntropyLoss"}
+                gnn.o_graph = {"ntops"    : "CrossEntropyLoss", "signal"   : "CrossEntropyLoss"}
+                gnn.i_node  = ["pt", "eta", "phi", "energy"]
+                gnn.device  = dev[i]
                 gnn.checkpoint_path = mdl + kf[i] + "_model.pt"
-                name = "ROOT/" + graph_name + "_" + model_name + "/" + j + "/" + ep + "/" + kf[i]
+                name = "ROOT/" + graph_name + graph_prefix + "_" + model_name + "/" + j + "/" + ep + "/" + kf[i]
                 ana.AddModelInference(gnn, name)
     ana.Start()
     del ana
