@@ -11,7 +11,7 @@ def build_samples(pth, pattern, chnks):
 
 # model implementations
 from AnalysisG.models import *
-model_method = {"RecursiveGraphNeuralNetwork" : RecursiveGraphNeuralNetwork, "Experimental" : Experimental}
+model_method = {"RecursiveGraphNeuralNetwork" : RecursiveGraphNeuralNetwork, "Experimental" : Grift}
 
 # selection studies
 from AnalysisG.selections.performance.topefficiency.topefficiency import TopEfficiency
@@ -44,10 +44,12 @@ study       = "topefficiency"
 graph_name  = "GraphJets"
 inference_mode = False
 plot_only      = True
+fetch_meta     = True
 
 #root_model = "/import/wu1/tnom6927/TrainingOutput/training-sessions/"
-#data_path  = "/scratch/tnom6927/mc16-full/"
-data_path = "ProjectName/ROOT/GraphJets_Experimental/MRK-1/epoch-9/kfold-1/"
+#data_path  = "/scratch/tnom6927/mc16-full/sorted-data" # <----- cluster
+data_path = "/CERN/Samples/mc16-full" # <----- local
+#data_path = "ProjectName/ROOT/GraphJets_Experimental/MRK-1/epoch-9/kfold-1/"
 
 model_states = {}
 if inference_mode:
@@ -59,48 +61,65 @@ if inference_mode:
     }
 
 sample_path_ = {
-        "singletop"  : data_path + "sorted-data/singletop"  + "/*",
-        "ttH125"     : data_path + "sorted-data/ttH125"     + "/*",
-        "ttbarHT1k"  : data_path + "sorted-data/ttbarHT1k"  + "/*",
-        "SM4topsNLO" : data_path + "sorted-data/SM4topsNLO" + "/*",
-        "ttbar"      : data_path + "sorted-data/ttbar"      + "/*",
-        "ttbarHT1k5" : data_path + "sorted-data/ttbarHT1k5" + "/*",
-        "ttbarHT6c"  : data_path + "sorted-data/ttbarHT6c"  + "/*",
-        "Ztautau"    : data_path + "sorted-data/Ztautau"    + "/*",
-        "llll"       : data_path + "sorted-data/llll"       + "/*",
-        "lllv"       : data_path + "sorted-data/lllv"       + "/*",
-        "llvv"       : data_path + "sorted-data/llvv"       + "/*",
-        "lvvv"       : data_path + "sorted-data/lvvv"       + "/*",
-        "tchan"      : data_path + "sorted-data/tchan"      + "/*",
-        "tt"         : data_path + "sorted-data/tt"         + "/*",
-        "ttee"       : data_path + "sorted-data/ttee"       + "/*",
-        "ttmumu"     : data_path + "sorted-data/ttmumu"     + "/*",
-        "tttautau"   : data_path + "sorted-data/tttautau"   + "/*",
-        "ttW"        : data_path + "sorted-data/ttW"        + "/*",
-        "ttZnunu"    : data_path + "sorted-data/ttZnunu"    + "/*",
-        "ttZqq"      : data_path + "sorted-data/ttZqq"      + "/*",
-        "tW"         : data_path + "sorted-data/tW"         + "/*",
-        "tZ"         : data_path + "sorted-data/tZ"         + "/*",
-        "Wenu"       : data_path + "sorted-data/Wenu"       + "/*",
-        "WH125"      : data_path + "sorted-data/WH125"      + "/*",
-        "WlvZqq"     : data_path + "sorted-data/WlvZqq"     + "/*",
-        "Wmunu"      : data_path + "sorted-data/Wmunu"      + "/*",
-        "WplvWmqq"   : data_path + "sorted-data/WplvWmqq"   + "/*",
-        "WpqqWmlv"   : data_path + "sorted-data/WpqqWmlv"   + "/*",
-        "WqqZll"     : data_path + "sorted-data/WqqZll"     + "/*",
-        "WqqZvv"     : data_path + "sorted-data/WqqZvv"     + "/*",
-        "Wt"         : data_path + "sorted-data/Wt"         + "/*",
-        "Wtaunu"     : data_path + "sorted-data/Wtaunu"     + "/*",
-        "Zee"        : data_path + "sorted-data/Zee"        + "/*",
-        "ZH125"      : data_path + "sorted-data/ZH125"      + "/*",
-        "Zmumu"      : data_path + "sorted-data/Zmumu"      + "/*",
-        "ZqqZll"     : data_path + "sorted-data/ZqqZll"     + "/*",
-        "ZqqZvv"     : data_path + "sorted-data/ZqqZvv"     + "/*",
+        "singletop"      : data_path + "/singletop"  + "/*",
+        "ttH125"         : data_path + "/ttH125"     + "/*",
+        "ttbarHT1k"      : data_path + "/ttbarHT1k"  + "/*",
+        "SM4topsNLO"     : data_path + "/SM4topsNLO" + "/*",
+        "ttbar"          : data_path + "/ttbar"      + "/*",
+        "ttbarHT1k5"     : data_path + "/ttbarHT1k5" + "/*",
+        "ttbarHT6c"      : data_path + "/ttbarHT6c"  + "/*",
+        "Ztautau"        : data_path + "/Ztautau"    + "/*",
+        "llll"           : data_path + "/llll"       + "/*",
+        "lllv"           : data_path + "/lllv"       + "/*",
+        "llvv"           : data_path + "/llvv"       + "/*",
+        "lvvv"           : data_path + "/lvvv"       + "/*",
+        "tchan"          : data_path + "/tchan"      + "/*",
+        "tt"             : data_path + "/tt"         + "/*",
+        "ttee"           : data_path + "/ttee"       + "/*",
+        "ttmumu"         : data_path + "/ttmumu"     + "/*",
+        "tttautau"       : data_path + "/tttautau"   + "/*",
+        "ttW"            : data_path + "/ttW"        + "/*",
+        "ttZnunu"        : data_path + "/ttZnunu"    + "/*",
+        "ttZqq"          : data_path + "/ttZqq"      + "/*",
+        "tW"             : data_path + "/tW"         + "/*",
+        "tZ"             : data_path + "/tZ"         + "/*",
+        "Wenu"           : data_path + "/Wenu"       + "/*",
+        "WH125"          : data_path + "/WH125"      + "/*",
+        "WlvZqq"         : data_path + "/WlvZqq"     + "/*",
+        "Wmunu"          : data_path + "/Wmunu"      + "/*",
+        "WplvWmqq"       : data_path + "/WplvWmqq"   + "/*",
+        "WpqqWmlv"       : data_path + "/WpqqWmlv"   + "/*",
+        "WqqZll"         : data_path + "/WqqZll"     + "/*",
+        "WqqZvv"         : data_path + "/WqqZvv"     + "/*",
+        "Wt"             : data_path + "/Wt"         + "/*",
+        "Wtaunu"         : data_path + "/Wtaunu"     + "/*",
+        "Zee"            : data_path + "/Zee"        + "/*",
+        "ZH125"          : data_path + "/ZH125"      + "/*",
+        "Zmumu"          : data_path + "/Zmumu"      + "/*",
+        "ZqqZll"         : data_path + "/ZqqZll"     + "/*",
+        "ZqqZvv"         : data_path + "/ZqqZvv"     + "/*",
+        "ttH_tttt_m400"  : data_path + "/tttt_m400"  + "/*",
+        "ttH_tttt_m500"  : data_path + "/tttt_m500"  + "/*",
+        "ttH_tttt_m600"  : data_path + "/tttt_m600"  + "/*",
+        "ttH_tttt_m700"  : data_path + "/tttt_m700"  + "/*",
+        "ttH_tttt_m800"  : data_path + "/tttt_m800"  + "/*",
+        "ttH_tttt_m900"  : data_path + "/tttt_m900"  + "/*",
+        "ttH_tttt_m1000" : data_path + "/tttt_m1000" + "/*",
 }
+
+for i in sample_path_:
+    if not fetch_meta: break
+    ana = Analysis()
+    ana.AddSamples(sample_path_[i], i)
+    ana.FetchMeta = True
+    ana.SumOfWeightsTreeName = "sumWeights"
+    ana.Start()
+
+if fetch_meta: exit()
 
 if not inference_mode:
     ls = sum(list(build_samples(data_path, "./*/*.root", 10)), [])
-    sample_path_ = {k.split("/")[-1] : k for k in ls}
+    sample_path_ = {k.split("/")[-1] : k for k in ls if "ttbar" in k}
 
 event_name     = "BSM4Tops"      if inference_mode     else "EventGNN"
 graph_name     = graph_name      if inference_mode     else ""

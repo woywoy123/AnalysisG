@@ -53,7 +53,7 @@ def top_kinematic_region(stacks, data = None):
             if prc not in prc_topscore[pt_r]: prc_topscore[pt_r][prc] = []
             prc_topscore[pt_r][prc] += stacks["top_score"][kin][prc]
 
-        tlt = kin.replace("_", " \\leq p^{top}_T \\leq ")
+        tlt = kin.replace("_", " \\leq p^{top}_T \\leq ") + " (GeV)"
         tlt = tlt.replace("-", " \\leq | \\eta_{top} | \\leq ")
 
         reco = path(TH1F(), "/" + kin.split(",")[0])
@@ -177,12 +177,11 @@ def top_kinematic_region(stacks, data = None):
     eta_pt_ks.SaveFigure()
 
 
-
 def TopEfficiency(ana):
     p = Path(ana)
     files = [str(x) for x in p.glob("**/*.pkl") if str(x).endswith(".pkl")]
     files = list(set(files))
-#    files = files[:10]
+    files = files[:1]
 
     stack_topkin = {}
     for i in range(len(files)):
