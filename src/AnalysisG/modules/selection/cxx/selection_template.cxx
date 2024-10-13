@@ -78,3 +78,22 @@ void selection_template::merger(selection_template* sl2){
     merge_data(&this -> matched_meta, &sl2 -> matched_meta); 
 } 
 
+std::vector<std::map<std::string, float>> selection_template::reverse_hash(std::vector<std::string>* hashes){
+    std::vector<std::map<std::string, float>> output; 
+    output.assign(hashes -> size(), {{"None", 0}}); 
+    for (size_t x(0); x < hashes -> size(); ++x){
+        std::string hash = (*hashes)[x]; 
+        std::map<std::string, std::map<std::string, float>>::iterator itr;
+        for (itr = this -> passed_weights.begin(); itr != this -> passed_weights.end(); ++itr){
+            if (!itr -> second.count(hash)){continue;}
+            output[x] = {{itr -> first, itr -> second[hash]}}; 
+            break; 
+        }
+    }
+    return output; 
+}
+
+
+
+
+

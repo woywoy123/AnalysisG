@@ -22,11 +22,14 @@ cdef extern from "<templates/selection_template.h>" nogil:
         bool selection(event_template*) except+ nogil
         bool strategy(event_template*) except+ nogil
         void merge(selection_template*) except+ nogil
+
+        vector[map[string, float]] reverse_hash(vector[string]* hashes) except+ nogil
         bool CompileEvent() except+ nogil
 
         bool operator == (selection_template& p) except+ nogil
         map[string, map[string, float]] passed_weights
         map[string, meta_t] matched_meta
+
 
 cdef class SelectionTemplate:
     cdef selection_template* ptr

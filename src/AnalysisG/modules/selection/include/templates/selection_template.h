@@ -42,6 +42,7 @@ class selection_template: public tools
         virtual bool selection(event_template* ev);
         virtual bool strategy(event_template* ev);
         virtual void merge(selection_template* sel); 
+        std::vector<std::map<std::string, float>> reverse_hash(std::vector<std::string>* hashes); 
 
         bool CompileEvent(); 
         selection_template* build(event_template* ev); 

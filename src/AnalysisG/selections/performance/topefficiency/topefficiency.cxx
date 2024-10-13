@@ -136,16 +136,20 @@ bool topefficiency::strategy(event_template* ev){
     }
 
     this -> n_perfect_tops[hash] = perf; 
-    this -> n_pred_tops[hash] = reco_tops.size(); 
-    this -> n_tru_tops[hash]  = t_top_map.size(); 
-    this -> truth_top_edge = evn -> t_edge_top; 
-    this -> truth_res_edge = evn -> t_edge_res; 
-    this -> truth_signal   = std::vector<int>({evn -> t_signal});   
+    this -> n_pred_tops[hash]    = reco_tops.size(); 
+    this -> n_tru_tops[hash]     = t_top_map.size(); 
 
-    this -> pred_res_edge_score = {evn -> edge_res_scores}; 
+    this -> truth_top_edge      = evn -> t_edge_top; 
     this -> pred_top_edge_score = {evn -> edge_top_scores}; 
-    this -> pred_ntops_score    = {evn -> ntops_scores}; 
+
+    this -> truth_res_edge      = evn -> t_edge_res; 
+    this -> pred_res_edge_score = {evn -> edge_res_scores}; 
+
+    this -> truth_signal        = std::vector<int>({evn -> t_signal});   
     this -> pred_signal_score   = {evn -> signal_scores}; 
+
+    this -> truth_ntops         = std::vector<int>({evn -> t_ntops}); 
+    this -> pred_ntops_score    = {evn -> ntops_scores}; 
     return true; 
 }
 

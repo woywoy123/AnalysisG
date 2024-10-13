@@ -112,7 +112,7 @@ void analysis::start(){
         this -> build_events(); 
     }
 
-    if (this -> m_settings.fetch_meta && !this -> started){
+    if (!this -> started){
         if (!this -> event_labels.size() && !this -> graph_labels.size()){
             this -> reader -> import_settings(&this -> m_settings); 
             std::map<std::string, std::string>::iterator itf = this -> file_labels.begin(); 

@@ -17,7 +17,7 @@ class container:
         self._lint_atlas = 140.1
 
     @property
-    def cross_section(self): return self._cross_section*self._nb_to_fb
+    def cross_section(self): return self._cross_section
 
     @property
     def expected_events(self): return self.cross_section*self._lint_atlas
@@ -56,12 +56,13 @@ def get_met(pth, proc):
 def compute_data(mtx, proc, root):
     c = container()
     c.proc = proc
+    smpl = {}
     for i in mtx:
         if proc not in i: continue
         c._cross_section = mtx[i].crossSection
-        c._num_events   += [mtx[i].SumOfWeights[b"sumWeights"]["total_events"]]
+        smpl[i.split("-")[-1]] = mtx[i].totalEvents
         c._sow_weights  += [mtx[i].SumOfWeights[b"sumWeights"]["processed_events_weighted"]]
-
+    c._num_events = list(smpl.values())
     data = get_met(root, proc)
     c._sow_nominal = data["weight_mc"]
     c._plot_data   = data["met"]
@@ -75,30 +76,30 @@ def buffs(tl, val, tm):
 
 root = "/home/tnom6927/Downloads/mc16/"
 x = Analysis()
-x.AddSamples(root + "MadGraphPythia8EvtGen_noallhad_ttH_tttt_m1000/*", "m1000")
-x.AddSamples(root + "MadGraphPythia8EvtGen_noallhad_ttH_tttt_m900/*" , "m900")
-x.AddSamples(root + "MadGraphPythia8EvtGen_noallhad_ttH_tttt_m800/*" , "m800")
-x.AddSamples(root + "MadGraphPythia8EvtGen_noallhad_ttH_tttt_m700/*" , "m700")
-x.AddSamples(root + "MadGraphPythia8EvtGen_noallhad_ttH_tttt_m600/*" , "m600")
-x.AddSamples(root + "MadGraphPythia8EvtGen_noallhad_ttH_tttt_m500/*" , "m500")
-x.AddSamples(root + "MadGraphPythia8EvtGen_noallhad_ttH_tttt_m400/*" , "m400")
-x.AddSamples(root + "SM4topsNLO/*" , "tttt")
-x.AddSamples(root + "ttH125/*" , "ttH")
-x.SumOfWeightsTreeName = "sumWeights"
-x.FetchMeta = True
+#x.AddSamples(root + "MadGraphPythia8EvtGen_noallhad_ttH_tttt_m1000/*", "m1000")
+#x.AddSamples(root + "MadGraphPythia8EvtGen_noallhad_ttH_tttt_m900/*" , "m900")
+#x.AddSamples(root + "MadGraphPythia8EvtGen_noallhad_ttH_tttt_m800/*" , "m800")
+#x.AddSamples(root + "MadGraphPythia8EvtGen_noallhad_ttH_tttt_m700/*" , "m700")
+#x.AddSamples(root + "MadGraphPythia8EvtGen_noallhad_ttH_tttt_m600/*" , "m600")
+#x.AddSamples(root + "MadGraphPythia8EvtGen_noallhad_ttH_tttt_m500/*" , "m500")
+#x.AddSamples(root + "MadGraphPythia8EvtGen_noallhad_ttH_tttt_m400/*" , "m400")
+#x.AddSamples(root + "SM4topsNLO/*" , "tttt")
+#x.AddSamples(root + "ttH125/*" , "ttH")
+#x.SumOfWeightsTreeName = "sumWeights"
+#x.FetchMeta = True
 x.Start()
 mtx = x.GetMetaData
 
 opt = {}
 opt["m1000"] = compute_data(mtx, "MadGraphPythia8EvtGen_noallhad_ttH_tttt_m1000", root)
-opt["m900" ] = compute_data(mtx, "MadGraphPythia8EvtGen_noallhad_ttH_tttt_m900" , root)
-opt["m800" ] = compute_data(mtx, "MadGraphPythia8EvtGen_noallhad_ttH_tttt_m800" , root)
-opt["m700" ] = compute_data(mtx, "MadGraphPythia8EvtGen_noallhad_ttH_tttt_m700" , root)
-opt["m600" ] = compute_data(mtx, "MadGraphPythia8EvtGen_noallhad_ttH_tttt_m600" , root)
-opt["m500" ] = compute_data(mtx, "MadGraphPythia8EvtGen_noallhad_ttH_tttt_m500" , root)
-opt["m400" ] = compute_data(mtx, "MadGraphPythia8EvtGen_noallhad_ttH_tttt_m400" , root)
+#opt["m900" ] = compute_data(mtx, "MadGraphPythia8EvtGen_noallhad_ttH_tttt_m900" , root)
+#opt["m800" ] = compute_data(mtx, "MadGraphPythia8EvtGen_noallhad_ttH_tttt_m800" , root)
+#opt["m700" ] = compute_data(mtx, "MadGraphPythia8EvtGen_noallhad_ttH_tttt_m700" , root)
+#opt["m600" ] = compute_data(mtx, "MadGraphPythia8EvtGen_noallhad_ttH_tttt_m600" , root)
+#opt["m500" ] = compute_data(mtx, "MadGraphPythia8EvtGen_noallhad_ttH_tttt_m500" , root)
+#opt["m400" ] = compute_data(mtx, "MadGraphPythia8EvtGen_noallhad_ttH_tttt_m400" , root)
 opt["tttt" ] = compute_data(mtx, "SM4topsNLO", root)
-opt["ttH"  ] = compute_data(mtx, "ttH125", root)
+#opt["ttH"  ] = compute_data(mtx, "ttH125", root)
 
 titles = [
     "Sample Processed",
@@ -108,9 +109,9 @@ titles = [
     "Sum of Weights (weight_mc)",
     "Sum of Weights (Tree)",
     "Scale factor (Exp. / sow Tree)",
+    "Sum of Weights Ratio (weight_mc / sow Tree)",
     ""
 ]
-
 
 h = []
 print(" | ".join(titles))
@@ -124,6 +125,7 @@ for i in list(opt.values()):
     tmp = buffs(titles[4], i.sow_nominal, tmp)
     tmp = buffs(titles[5], i.sow_weights, tmp)
     tmp = buffs(titles[6], i.scale_factor, tmp)
+    tmp = buffs(titles[7], (i.sow_nominal / i.sow_weights), tmp)
     h.append(i.hist)
     print(tmp)
 

@@ -2,7 +2,7 @@ def mapping(name):
     if "_singletop_"  in name: return ( "singletop" , "$t$"                      )
     if "_ttH125_"     in name: return ( "ttH"       , "$t\\bar{t}H$"             )
     if "_ttbarHT1k_"  in name: return ( "ttbar"     , "$t\\bar{t}$"              )
-    if "_SM4topsNLO"  in name: return ( "SM4topsNLO", "$t\\bar{t}t\\bar{t}"      )
+    if "_SM4topsNLO"  in name: return ( "SM4topsNLO", "$t\\bar{t}t\\bar{t}$"     )
     if "_ttbar_"      in name: return ( "ttbar"     , "$t\\bar{t}$"              )
     if "_ttbarHT1k5_" in name: return ( "ttbar"     , "$t\\bar{t}$"              )
     if "_ttbarHT6c_"  in name: return ( "ttbar"     , "$t\\bar{t}$"              )
@@ -49,6 +49,14 @@ def kinesplit(reg):
     eta = x[1].split("<")
     return float(pt[0]), float(pt[2]), float(eta[0]), float(eta[2])
 
+def add_entry(inpt, key, fname, val, weight):
+    if key not in inpt: inpt[key] = {}
+    if fname not in inpt[key]: inpt[key][fname] = {"value" : [], "weights" : []}
+    if not isinstance(val, list): val = [val]; weight = [weight]
+    else: weight = [weight]*len(val)
+    inpt[key][fname]["value"] += val
+    inpt[key][fname]["weights"] += weight
+
 def top_pteta(stacks, data):
     pred_mass = data.p_topmass
     tru_mass  = data.t_topmass
@@ -56,24 +64,59 @@ def top_pteta(stacks, data):
 
     if "truth" not in stacks: stacks = {"truth" : {}, "prediction" : {}, "top_score" : {}}
     for reg in pred_mass:
-        for fname in pred_mass[reg]:
-            prc, ttl = mapping(fname)
-            fn = prc + "#" + ttl
-            ptl, pth, etl, eth = kinesplit(reg)
-
-            rg = str(int(ptl)) + "_" + str(int(pth)) + ", " + str(etl) + "-" + str(eth)
-            if rg not in stacks["prediction"]: stacks["prediction"][rg] = {}
-            if rg not in stacks["top_score"]:  stacks["top_score"][rg] = {}
-
-            if fn not in stacks["prediction"][rg]: stacks["prediction"][rg][fn] = []
-            if fn not in stacks["top_score"][rg]:  stacks["top_score"][rg][fn] = []
-            stacks["prediction"][rg][fn] += pred_mass[reg][fname]
-            stacks["top_score"][rg][fn]  += top_scr[reg][fname]
+        ptl, pth, etl, eth = kinesplit(reg)
+        rg = str(int(ptl)) + "_" + str(int(pth)) + ", " + str(etl) + "-" + str(eth)
+        hashes = list(pred_mass[reg])
+        fn_weight = data.HashToWeightFile(hashes)
+        for i in range(len(hashes)):
+            hash = hashes[i]
+            fn, weight = fn_weight[i]
+            fn = "/".join(fn.decode("utf-8").split("/")[-2:])
+            add_entry(stacks["prediction"], rg, fn, pred_mass[reg][hash], weight)
+            add_entry(stacks["top_score"] , rg, fn,   top_scr[reg][hash], weight)
 
     for reg in tru_mass:
-        for fname in tru_mass[reg]:
-            ptl, pth, etl, eth = kinesplit(reg)
-            rg = str(int(ptl)) + "_" + str(int(pth)) + ", " + str(etl) + "-" + str(eth)
-            if rg not in stacks["truth"]: stacks["truth"][rg] = []
-            stacks["truth"][rg] += tru_mass[reg][fname]
+        ptl, pth, etl, eth = kinesplit(reg)
+        rg = str(int(ptl)) + "_" + str(int(pth)) + ", " + str(etl) + "-" + str(eth)
+        hashes = list(tru_mass[reg])
+        fn_weight = data.HashToWeightFile(hashes)
+        for i in range(len(hashes)):
+            hash = hashes[i]
+            fn, weight = fn_weight[i]
+            add_entry(stacks["truth"], rg, fn, tru_mass[reg][hash], weight)
+    return stacks
+
+def roc_data_get(stacks, data):
+    if "n-tops_t" not in stacks:
+        stacks = {"n-tops_t" : [], "n-tops_p" : [], "signal_t" : [], "signal_p" : [], "edge_top_t" : [], "edge_top_p" : []}
+
+    stacks["n-tops_t"] += data.truth_ntops
+    stacks["n-tops_p"] += data.pred_ntops_score
+
+    stacks["signal_t"] += data.truth_signal
+    stacks["signal_p"] += data.pred_signal_score
+
+    stacks["edge_top_t"] += data.truth_top_edge
+    stacks["edge_top_p"] += data.pred_top_edge_score
+    return stacks
+
+def ntops_reco_compl(stacks, data, target):
+    n_perfect_tops = data.n_perfect_tops
+    n_pred_tops    = data.n_pred_tops
+    n_tru_tops     = data.n_tru_tops
+    if "e_ntop" not in stacks: stacks |= {"e_ntop" : {}, "p_ntop" : {}, "cls_ntop_w" : {}}
+    if target not in stacks["e_ntop"]:
+        stacks["e_ntop"][target] = []
+        stacks["p_ntop"][target] = []
+        stacks["cls_ntop_w"][target] = []
+
+    hashes_ = list(n_perfect_tops)
+    fn_weight = data.HashToWeightFile(hashes_)
+    for h in range(len(hashes_)):
+        hash = hashes_[h]
+        fn, weight = fn_weight[h]
+        weight = 1
+        stacks["cls_ntop_w"][target] += [(n_tru_tops[hash] == target)*weight]
+        stacks["e_ntop"][target]     += [(n_perfect_tops[hash] == target)*weight]
+        stacks["p_ntop"][target]     += [(n_pred_tops[hash] == target)*weight]
     return stacks

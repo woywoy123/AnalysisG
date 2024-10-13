@@ -214,6 +214,16 @@ cdef class Meta:
             except: pass
         return out
 
+    def expected_events(self, float lumi = 140.1):
+        cdef float s = self.crossSection
+        if s < 0: return 0
+        else: return s*(10**6)*lumi
+
+    def GetSumOfWeights(self, str name):
+        cdef float f = self.ptr.meta_data.misc[enc(name)].processed_events_weighted
+        if not f: return 1
+        return f
+
     @property
     def MetaCachePath(self): return env(self.ptr.metacache_path)
 
@@ -304,7 +314,7 @@ cdef class Meta:
 
     @property
     def crossSection(self) -> float:
-        return self.ptr.meta_data.crossSection
+        return self.ptr.meta_data.crossSection*(10**6)
 
     @crossSection.setter
     def crossSection(self, val):
@@ -636,5 +646,4 @@ cdef class Meta:
     def sample_name(self, str val):
         self.ptr.meta_data.sample_name = enc(val)
 
-    def expected_events(self, float lumi = 140.1): return self.crossSection*(10**6)*lumi
 

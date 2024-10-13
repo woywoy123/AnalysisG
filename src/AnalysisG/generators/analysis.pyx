@@ -75,19 +75,24 @@ cdef class Analysis:
 
         cdef Meta data
         cdef pair[string, meta*] itrm
-        if self.ana.m_settings.fetch_meta:
-            for itrm in self.ana.meta_data:
-                hash_ = env(itrm.second.hash(itrm.first))
-                if hash_ not in self.meta_:
-                    data = Meta()
-                    data.ptr.metacache_path = itrm.second.metacache_path
-                    self.meta_[hash_] = data
-                data = self.meta_[hash_]
+        cdef int l = len(self.meta_)
+        for itrm in self.ana.meta_data:
+            hash_ = env(itrm.second.hash(itrm.first))
+            if hash_ not in self.meta_:
+                data = Meta()
+                data.ptr.metacache_path = itrm.second.metacache_path
+                self.meta_[hash_] = data
                 data.__meta__(itrm.second)
+            else:
+                data = self.meta_[hash_]
+                itrm.second.meta_data = data.ptr.meta_data
+
+
+        if len(self.meta_) > l:
             f = open(prj + "/meta_state.pkl", "wb")
             pickle.dump(self.meta_, f)
             f.close()
-            with nogil: self.ana.start()
+        with nogil: self.ana.start()
 
         cdef dict bars = {}
         cdef pair[string, float] itr

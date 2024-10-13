@@ -32,6 +32,7 @@ void graph_tops::CompileEvent(){
     this -> add_node_data_feature<double, particle_template>(eta   , "eta"); 
     this -> add_node_data_feature<double, particle_template>(phi   , "phi"); 
     this -> add_node_data_feature<double, particle_template>(energy, "energy"); 
+    this -> add_node_data_feature<double, particle_template>(charge, "charge"); 
 }
 
 // ---------------- GRAPH-TOPS ------------------- //
@@ -68,6 +69,7 @@ void graph_children::CompileEvent(){
     this -> add_node_data_feature<double, particle_template>(eta   , "eta"); 
     this -> add_node_data_feature<double, particle_template>(phi   , "phi"); 
     this -> add_node_data_feature<double, particle_template>(energy, "energy"); 
+    this -> add_node_data_feature<double, particle_template>(charge, "charge"); 
 
     this -> add_node_data_feature<int, particle_template>(is_lepton, "is_lep");
     this -> add_node_data_feature<int, particle_template>(is_bquark, "is_b");
@@ -116,6 +118,7 @@ void graph_truthjets::CompileEvent(){
     this -> add_node_data_feature<double, particle_template>(eta, "eta"); 
     this -> add_node_data_feature<double, particle_template>(phi, "phi"); 
     this -> add_node_data_feature<double, particle_template>(energy, "energy"); 
+    this -> add_node_data_feature<double, particle_template>(charge, "charge"); 
 
     this -> add_node_data_feature<int, particle_template>(is_lepton, "is_lep");
     this -> add_node_data_feature<int, particle_template>(is_bquark, "is_b");
@@ -163,6 +166,7 @@ void graph_truthjets_nonu::CompileEvent(){
     this -> add_node_data_feature<double, particle_template>(eta, "eta"); 
     this -> add_node_data_feature<double, particle_template>(phi, "phi"); 
     this -> add_node_data_feature<double, particle_template>(energy, "energy"); 
+    this -> add_node_data_feature<double, particle_template>(charge, "charge"); 
 
     this -> add_node_data_feature<int, particle_template>(is_lepton, "is_lep");
     this -> add_node_data_feature<int, particle_template>(is_bquark, "is_b");
@@ -211,6 +215,7 @@ void graph_jets::CompileEvent(){
     this -> add_node_data_feature<double, particle_template>(eta, "eta"); 
     this -> add_node_data_feature<double, particle_template>(phi, "phi"); 
     this -> add_node_data_feature<double, particle_template>(energy, "energy"); 
+    this -> add_node_data_feature<double, particle_template>(charge, "charge"); 
 
     this -> add_node_data_feature<int, particle_template>(is_lepton, "is_lep");
     this -> add_node_data_feature<int, particle_template>(is_bquark, "is_b");
@@ -257,6 +262,7 @@ void graph_jets_nonu::CompileEvent(){
     this -> add_node_data_feature<double, particle_template>(eta, "eta"); 
     this -> add_node_data_feature<double, particle_template>(phi, "phi"); 
     this -> add_node_data_feature<double, particle_template>(energy, "energy"); 
+    this -> add_node_data_feature<double, particle_template>(charge, "charge"); 
 
     this -> add_node_data_feature<int, particle_template>(is_lepton, "is_lep");
     this -> add_node_data_feature<int, particle_template>(is_bquark, "is_b");
@@ -307,6 +313,7 @@ void graph_jets_detector_lep::CompileEvent(){
     this -> add_node_data_feature<double, particle_template>(eta, "eta"); 
     this -> add_node_data_feature<double, particle_template>(phi, "phi"); 
     this -> add_node_data_feature<double, particle_template>(energy, "energy"); 
+    this -> add_node_data_feature<double, particle_template>(charge, "charge"); 
 
     this -> add_node_data_feature<int, particle_template>(is_lepton, "is_lep");
     this -> add_node_data_feature<int, particle_template>(is_bquark, "is_b");
@@ -350,6 +357,7 @@ void graph_detector::CompileEvent(){
     this -> add_node_data_feature<double, particle_template>(eta, "eta"); 
     this -> add_node_data_feature<double, particle_template>(phi, "phi"); 
     this -> add_node_data_feature<double, particle_template>(energy, "energy"); 
+    this -> add_node_data_feature<double, particle_template>(charge, "charge"); 
 
     this -> add_node_data_feature<int, particle_template>(is_lepton, "is_lep");
     this -> add_node_data_feature<int, particle_template>(is_bquark, "is_b");

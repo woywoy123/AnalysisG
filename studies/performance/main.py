@@ -68,50 +68,50 @@ if inference_mode:
     }
 
 sample_path_ = {
-        "singletop"      : data_path + "/singletop"  + "/*",
-        "ttH125"         : data_path + "/ttH125"     + "/*",
-        "ttbarHT1k"      : data_path + "/ttbarHT1k"  + "/*",
-        "SM4topsNLO"     : data_path + "/SM4topsNLO" + "/*",
-        "ttbar"          : data_path + "/ttbar"      + "/*",
-        "ttbarHT1k5"     : data_path + "/ttbarHT1k5" + "/*",
-        "ttbarHT6c"      : data_path + "/ttbarHT6c"  + "/*",
-        "Ztautau"        : data_path + "/Ztautau"    + "/*",
-        "llll"           : data_path + "/llll"       + "/*",
-        "lllv"           : data_path + "/lllv"       + "/*",
-        "llvv"           : data_path + "/llvv"       + "/*",
-        "lvvv"           : data_path + "/lvvv"       + "/*",
-        "tchan"          : data_path + "/tchan"      + "/*",
-        "tt"             : data_path + "/tt"         + "/*",
-        "ttee"           : data_path + "/ttee"       + "/*",
-        "ttmumu"         : data_path + "/ttmumu"     + "/*",
-        "tttautau"       : data_path + "/tttautau"   + "/*",
-        "ttW"            : data_path + "/ttW"        + "/*",
-        "ttZnunu"        : data_path + "/ttZnunu"    + "/*",
-        "ttZqq"          : data_path + "/ttZqq"      + "/*",
-        "tW"             : data_path + "/tW"         + "/*",
-        "tZ"             : data_path + "/tZ"         + "/*",
-        "Wenu"           : data_path + "/Wenu"       + "/*",
-        "WH125"          : data_path + "/WH125"      + "/*",
-        "WlvZqq"         : data_path + "/WlvZqq"     + "/*",
-        "Wmunu"          : data_path + "/Wmunu"      + "/*",
-        "WplvWmqq"       : data_path + "/WplvWmqq"   + "/*",
-        "WpqqWmlv"       : data_path + "/WpqqWmlv"   + "/*",
-        "WqqZll"         : data_path + "/WqqZll"     + "/*",
-        "WqqZvv"         : data_path + "/WqqZvv"     + "/*",
-        "Wt"             : data_path + "/Wt"         + "/*",
-        "Wtaunu"         : data_path + "/Wtaunu"     + "/*",
-        "Zee"            : data_path + "/Zee"        + "/*",
-        "ZH125"          : data_path + "/ZH125"      + "/*",
-        "Zmumu"          : data_path + "/Zmumu"      + "/*",
-        "ZqqZll"         : data_path + "/ZqqZll"     + "/*",
-        "ZqqZvv"         : data_path + "/ZqqZvv"     + "/*",
-        "ttH_tttt_m400"  : data_path + "/tttt_m400"  + "/*",
-        "ttH_tttt_m500"  : data_path + "/tttt_m500"  + "/*",
-        "ttH_tttt_m600"  : data_path + "/tttt_m600"  + "/*",
-        "ttH_tttt_m700"  : data_path + "/tttt_m700"  + "/*",
-        "ttH_tttt_m800"  : data_path + "/tttt_m800"  + "/*",
-        "ttH_tttt_m900"  : data_path + "/tttt_m900"  + "/*",
-        "ttH_tttt_m1000" : data_path + "/tttt_m1000" + "/*",
+                "singletop"      : data_path + "/singletop"  + "/*",
+                "ttH125"         : data_path + "/ttH125"     + "/*",
+        #        "ttbarHT1k"      : data_path + "/ttbarHT1k"  + "/*",
+                "SM4topsNLO"     : data_path + "/SM4topsNLO" + "/*",
+        #        "ttbar"          : data_path + "/ttbar"      + "/*",
+        #        "ttbarHT1k5"     : data_path + "/ttbarHT1k5" + "/*",
+        #        "ttbarHT6c"      : data_path + "/ttbarHT6c"  + "/*",
+        #        "Ztautau"        : data_path + "/Ztautau"    + "/*",
+        #        "llll"           : data_path + "/llll"       + "/*",
+        #        "lllv"           : data_path + "/lllv"       + "/*",
+        #        "llvv"           : data_path + "/llvv"       + "/*",
+        #        "lvvv"           : data_path + "/lvvv"       + "/*",
+        #        "tchan"          : data_path + "/tchan"      + "/*",
+        #        "tt"             : data_path + "/tt"         + "/*",
+        #        "ttee"           : data_path + "/ttee"       + "/*",
+        #        "ttmumu"         : data_path + "/ttmumu"     + "/*",
+        #        "tttautau"       : data_path + "/tttautau"   + "/*",
+        #        "ttW"            : data_path + "/ttW"        + "/*",
+        #        "ttZnunu"        : data_path + "/ttZnunu"    + "/*",
+        #        "ttZqq"          : data_path + "/ttZqq"      + "/*",
+        #        "tW"             : data_path + "/tW"         + "/*",
+        #        "tZ"             : data_path + "/tZ"         + "/*",
+        #        "Wenu"           : data_path + "/Wenu"       + "/*",
+        #        "WH125"          : data_path + "/WH125"      + "/*",
+        #        "WlvZqq"         : data_path + "/WlvZqq"     + "/*",
+        #        "Wmunu"          : data_path + "/Wmunu"      + "/*",
+        #        "WplvWmqq"       : data_path + "/WplvWmqq"   + "/*",
+        #        "WpqqWmlv"       : data_path + "/WpqqWmlv"   + "/*",
+        #        "WqqZll"         : data_path + "/WqqZll"     + "/*",
+        #        "WqqZvv"         : data_path + "/WqqZvv"     + "/*",
+        #        "Wt"             : data_path + "/Wt"         + "/*",
+        #        "Wtaunu"         : data_path + "/Wtaunu"     + "/*",
+        #        "Zee"            : data_path + "/Zee"        + "/*",
+        #        "ZH125"          : data_path + "/ZH125"      + "/*",
+        #        "Zmumu"          : data_path + "/Zmumu"      + "/*",
+        #        "ZqqZll"         : data_path + "/ZqqZll"     + "/*",
+        #        "ZqqZvv"         : data_path + "/ZqqZvv"     + "/*",
+        #        "ttH_tttt_m400"  : data_path + "/tttt_m400"  + "/*",
+        #        "ttH_tttt_m500"  : data_path + "/tttt_m500"  + "/*",
+        #        "ttH_tttt_m600"  : data_path + "/tttt_m600"  + "/*",
+        #        "ttH_tttt_m700"  : data_path + "/tttt_m700"  + "/*",
+        #        "ttH_tttt_m800"  : data_path + "/tttt_m800"  + "/*",
+        #        "ttH_tttt_m900"  : data_path + "/tttt_m900"  + "/*",
+        #        "ttH_tttt_m1000" : data_path + "/tttt_m1000" + "/*",
 }
 
 for i in sample_path_:
@@ -167,7 +167,7 @@ for k in build_samples(data_path, "./*/*/*.root", 10):
                 gnn = model_method[model_name]()
                 gnn.o_edge  = {"top_edge" : "CrossEntropyLoss", "res_edge" : "CrossEntropyLoss"}
                 gnn.o_graph = {"ntops"    : "CrossEntropyLoss", "signal"   : "CrossEntropyLoss"}
-                gnn.i_node  = ["pt", "eta", "phi", "energy"]
+                gnn.i_node  = ["pt", "eta", "phi", "energy", "charge"]
                 gnn.device  = dev[i]
                 gnn.checkpoint_path = mdl + kf[i] + "_model.pt"
                 name = "ROOT/" + graph_name + graph_prefix + "_" + model_name + "/" + j + "/" + ep + "/" + kf[i]
@@ -179,8 +179,10 @@ for k in build_samples(data_path, "./*/*/*.root", 10):
 i = 0
 for j, k in sample_path_.items():
     if plot_only: break
+    break
+
     ana = Analysis()
-    ana.Threads = 1
+    ana.Threads = threads
     ana.AddSamples(k, j)
     try: ana.AddEvent(event_method[event_name](), j)
     except KeyError: pass

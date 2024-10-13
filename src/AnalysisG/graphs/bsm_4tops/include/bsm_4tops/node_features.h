@@ -44,6 +44,7 @@ void static pt(double* o, particle_template* p){*o = p -> pt;}
 void static eta(double* o, particle_template* p){*o = p -> eta;} 
 void static phi(double* o, particle_template* p){*o = p -> phi;} 
 void static energy(double* o, particle_template* p){*o = p -> e;}
+void static charge(double* o, particle_template* p){*o = (p -> charge)*(p -> is_lep);}
 
 void static is_lepton(int* o, particle_template* p){*o = (p -> is_lep && !p -> is_nu);}
 void static is_bquark(int* o, particle_template* p){*o = p -> is_b;}
