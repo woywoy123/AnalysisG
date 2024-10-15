@@ -1,6 +1,8 @@
 from pwinput import pwinput
 import subprocess
 
+global init_ami
+
 def _getcmd(cmd):
     return subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True).decode("UTF-8")
 
@@ -10,6 +12,9 @@ def config_pyami():
     print("-------- FINISHED PYAMI ---------")
 
 def auth_pyami():
+    if init_ami is not None: return
+    init_ami = True
+
     print("Please specify the directory where your .globus directory is located.")
     globu = input("(default: ~/.globus): ")
     globu = "~/.globus/" if globu == "" else globu

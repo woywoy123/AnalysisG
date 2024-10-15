@@ -168,6 +168,7 @@ void analysis::build_inference(){
                 th_models[t] = nullptr; 
                 th_prc[t] = nullptr; 
                 --para; 
+                break; 
             }
         } 
     } 

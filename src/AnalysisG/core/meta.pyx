@@ -22,22 +22,17 @@ import h5py
 class httpx(pyAMI.httpclient.HttpClient):
 
     def __init__(self, config):
-        super(httpx, self).__init__(config)
-        self._tries = False
+        try: super(httpx, self).__init__(config)
+        except: pass
+        auth_pyami()
 
     def connect(self, endpoint):
         self.endpoint = endpoint
         cdef dict chn = {"certfile" : self.config.cert_file, "keyfile" : self.config.key_file}
         cdef dict confx = {"host" : str(self.endpoint["host"]), "port" : int(self.endpoint["port"])}
-        try:
-            confx["context"] = self.create_unverified_context()
-            confx["context"].load_cert_chain(**chn)
-            self.connection = http.client.HTTPSConnection(**confx)
-        except:
-            if self._tries: return
-            auth_pyami()
-            self._tries = True
-            self.connect(endpoint)
+        confx["context"] = self.create_unverified_context()
+        confx["context"].load_cert_chain(**chn)
+        self.connection = http.client.HTTPSConnection(**confx)
 
 class atlas(pyAMI.client.Client):
 
