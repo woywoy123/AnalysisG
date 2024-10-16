@@ -71,6 +71,8 @@ cdef class Analysis:
         cdef str prj = self.OutputPath
         try: self.meta_ = pickle.load(open(prj + "/meta_state.pkl", "rb"))
         except FileNotFoundError: self.meta_ = {}
+        except: self.meta_ = {}
+
         with nogil: self.ana.start()
 
         cdef Meta data
@@ -78,6 +80,7 @@ cdef class Analysis:
         cdef int l = len(self.meta_)
         for itrm in self.ana.meta_data:
             hash_ = env(itrm.second.hash(itrm.first))
+            if not self.FetchMeta: continue
             if hash_ not in self.meta_:
                 data = Meta()
                 data.ptr.metacache_path = itrm.second.metacache_path

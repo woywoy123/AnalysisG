@@ -14,11 +14,9 @@ struct graph_t;
 struct variable_t; 
 
 void execution(
-        model_template*, 
-        std::vector<graph_t*>*, 
-        std::string, 
-        std::vector<variable_t>*, 
-        size_t*
+        model_template* md, model_settings_t mds, 
+        std::vector<graph_t*>* data, size_t* prg,
+        std::string output, std::vector<variable_t>* content
 ); 
 
 class model_template: 
@@ -107,11 +105,9 @@ class model_template:
         friend class analysis;
         friend class optimizer; 
         friend void execution(
-                model_template*, 
-                std::vector<graph_t*>*, 
-                std::string, 
-                std::vector<variable_t>*,
-                size_t*
+            model_template* md, model_settings_t mds, 
+            std::vector<graph_t*>* data, size_t* prg,
+            std::string output, std::vector<variable_t>* content
         ); 
 
     private:

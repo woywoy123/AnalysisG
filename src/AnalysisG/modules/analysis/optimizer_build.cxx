@@ -1,16 +1,15 @@
 #include <generators/analysis.h>
+#include <ROOT/RDataFrame.hxx>
 
 static void initialize_loop(
         optimizer* op, int k, model_template* model, 
         optimizer_params_t* config, model_report** rep
 ){
    
+    ROOT::EnableImplicitMT(); 
     model_settings_t settings; 
     model -> clone_settings(&settings); 
     model_template* mk = model -> clone(); 
-
-//    torch::set_num_interop_threads(12); 
-//    torch::init_num_threads();
 
     std::vector<graph_t*> rnd = op -> loader -> get_random(1); 
     mk -> set_optimizer(config -> optimizer); 
@@ -33,6 +32,8 @@ void analysis::build_model_session(){
     this -> m_settings.kfold = kfold; 
     int th_ = this -> m_settings.threads; 
 
+    //torch::set_num_threads(144);
+    //torch::set_num_interop_threads(1); 
     for (size_t x(0); x < this -> model_sessions.size(); ++x){
         std::string name = this -> model_session_names[x]; 
 

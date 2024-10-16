@@ -42,17 +42,17 @@ figure_path = "./Output/"
 study       = "topefficiency"
 
 graph_name     = "GraphJets"
-graph_prefix   = "_bn_1"
+graph_prefix   = "_bn_1_"
 inference_mode = False
-plot_only      = False
+plot_only      = True
 fetch_meta     = False
-threads        = 8
+threads        = 12
 
 graph_cache = "/scratch/tnom6927/graph-data-mc16-full/"
-root_model  = "/import/wu1/tnom6927/TrainingOutput/training-sessions/"
+#root_model  = "/import/wu1/tnom6927/TrainingOutput/training-sessions/"
 #data_path   = "/import/wu1/tnom6927/TrainingOutput/mc16-full/" # <----- cluster
 #data_path = "/CERN/Samples/mc16-full" # <----- local
-data_path = "/CERN/trainings/mc16-full-inference/ROOT/" + graph_name + graph_prefix + "_Grift/MRK-1/epoch-1/kfold-1/"
+data_path = "/CERN/trainings/mc16-full-inference/ROOT/" + graph_name + graph_prefix + "Grift/MRK-1/epoch-18/kfold-1/"
 
 model_states = {}
 if inference_mode:
@@ -67,97 +67,46 @@ if inference_mode:
             "MRK-8" : {"epoch-" + str(ep) : (["kfold-1"], ["cuda:0"]) for ep in [1, 2, 3, 4]},
     }
 
-sample_path_ = {
-                "singletop"      : data_path + "/singletop"  + "/*",
-                "ttH125"         : data_path + "/ttH125"     + "/*",
-        #        "ttbarHT1k"      : data_path + "/ttbarHT1k"  + "/*",
-                "SM4topsNLO"     : data_path + "/SM4topsNLO" + "/*",
-        #        "ttbar"          : data_path + "/ttbar"      + "/*",
-        #        "ttbarHT1k5"     : data_path + "/ttbarHT1k5" + "/*",
-        #        "ttbarHT6c"      : data_path + "/ttbarHT6c"  + "/*",
-        #        "Ztautau"        : data_path + "/Ztautau"    + "/*",
-        #        "llll"           : data_path + "/llll"       + "/*",
-        #        "lllv"           : data_path + "/lllv"       + "/*",
-        #        "llvv"           : data_path + "/llvv"       + "/*",
-        #        "lvvv"           : data_path + "/lvvv"       + "/*",
-        #        "tchan"          : data_path + "/tchan"      + "/*",
-        #        "tt"             : data_path + "/tt"         + "/*",
-        #        "ttee"           : data_path + "/ttee"       + "/*",
-        #        "ttmumu"         : data_path + "/ttmumu"     + "/*",
-        #        "tttautau"       : data_path + "/tttautau"   + "/*",
-        #        "ttW"            : data_path + "/ttW"        + "/*",
-        #        "ttZnunu"        : data_path + "/ttZnunu"    + "/*",
-        #        "ttZqq"          : data_path + "/ttZqq"      + "/*",
-        #        "tW"             : data_path + "/tW"         + "/*",
-        #        "tZ"             : data_path + "/tZ"         + "/*",
-        #        "Wenu"           : data_path + "/Wenu"       + "/*",
-        #        "WH125"          : data_path + "/WH125"      + "/*",
-        #        "WlvZqq"         : data_path + "/WlvZqq"     + "/*",
-        #        "Wmunu"          : data_path + "/Wmunu"      + "/*",
-        #        "WplvWmqq"       : data_path + "/WplvWmqq"   + "/*",
-        #        "WpqqWmlv"       : data_path + "/WpqqWmlv"   + "/*",
-        #        "WqqZll"         : data_path + "/WqqZll"     + "/*",
-        #        "WqqZvv"         : data_path + "/WqqZvv"     + "/*",
-        #        "Wt"             : data_path + "/Wt"         + "/*",
-        #        "Wtaunu"         : data_path + "/Wtaunu"     + "/*",
-        #        "Zee"            : data_path + "/Zee"        + "/*",
-        #        "ZH125"          : data_path + "/ZH125"      + "/*",
-        #        "Zmumu"          : data_path + "/Zmumu"      + "/*",
-        #        "ZqqZll"         : data_path + "/ZqqZll"     + "/*",
-        #        "ZqqZvv"         : data_path + "/ZqqZvv"     + "/*",
-        #        "ttH_tttt_m400"  : data_path + "/tttt_m400"  + "/*",
-        #        "ttH_tttt_m500"  : data_path + "/tttt_m500"  + "/*",
-        #        "ttH_tttt_m600"  : data_path + "/tttt_m600"  + "/*",
-        #        "ttH_tttt_m700"  : data_path + "/tttt_m700"  + "/*",
-        #        "ttH_tttt_m800"  : data_path + "/tttt_m800"  + "/*",
-        #        "ttH_tttt_m900"  : data_path + "/tttt_m900"  + "/*",
-        #        "ttH_tttt_m1000" : data_path + "/tttt_m1000" + "/*",
-}
 
-for i in sample_path_:
-    if not fetch_meta: break
-    ana = Analysis()
-    ana.AddSamples(sample_path_[i], i)
-    ana.FetchMeta = True
-    ana.SumOfWeightsTreeName = "sumWeights"
-    ana.Start()
-if fetch_meta: exit()
-
-if not inference_mode:
-    ls = sum(list(build_samples(data_path, "./*/*.root", 10)), [])
-    sample_path_ = {k.split("/")[-1] : k for k in ls}
+ls = list(build_samples(data_path, "**/*.root", 5))
+if fetch_meta:
+    for i in ls:
+        ana = Analysis()
+        for k in i: ana.AddSamples(k, k.split("/")[-1])
+        ana.FetchMeta = True
+        ana.SumOfWeightsTreeName = "sumWeights"
+        ana.Start()
+    exit()
 
 event_name     = "BSM4Tops"      if inference_mode     else "EventGNN"
 graph_name     = graph_name      if inference_mode     else ""
 model_name     = "Grift"         if inference_mode     else ""
 selection_name = "TopEfficiency" if not inference_mode else ""
 
-for k in build_samples(data_path, "./*/*/*.root", 10):
-    sample_path = {}
-    for l in k:
-        for t in sample_path_:
-            if "/" + t + "/" not in l: continue
-            if t not in sample_path: sample_path[t] = []
-            sample_path[t] += [l]
-            break
-    if not len(sample_path): continue
-
+i = 0
+for k in ls:
+    if plot_only: break
     ana = Analysis()
     ana.Threads = threads
     ana.GraphCache = graph_cache
     if len(model_states): ana.FetchMeta = False
-    for j in sample_path:
-        for p in sample_path[j]:
-            label = j + p.split("/")[-1]
-            ana.AddSamples(p, label)
 
-            try: ana.AddEvent(event_method[event_name](), label)
-            except KeyError: pass
-            except NameError: pass
+    try:
+        selection_container[selection_name] = selection_method[selection_name]()
+        ana.AddSelection(selection_container[selection_name])
+    except: pass
 
-            try: ana.AddGraph(graph_method[graph_name](), label)
-            except KeyError: pass
-            except NameError: pass
+    for j in k:
+        label = j.split("/")[-1]
+        ana.AddSamples(j, label)
+
+        try: ana.AddEvent(event_method[event_name](), label)
+        except KeyError: pass
+        except NameError: pass
+
+        try: ana.AddGraph(graph_method[graph_name](), label)
+        except KeyError: pass
+        except NameError: pass
 
     for j in model_states:
         for ep in model_states[j]:
@@ -173,32 +122,13 @@ for k in build_samples(data_path, "./*/*/*.root", 10):
                 name = "ROOT/" + graph_name + graph_prefix + "_" + model_name + "/" + j + "/" + ep + "/" + kf[i]
                 ana.AddModelInference(gnn, name)
     ana.Start()
+    if len(selection_name):
+        f = open("./serialized-data/" + str(i) +".pkl", "wb")
+        pickle.dump(selection_container[selection_name], f)
+        f.close()
+        print(i, len(ls))
+        i+=1
     del ana
-    sample_path = {}
-
-i = 0
-for j, k in sample_path_.items():
-    if plot_only: break
-    break
-
-    ana = Analysis()
-    ana.Threads = threads
-    ana.AddSamples(k, j)
-    try: ana.AddEvent(event_method[event_name](), j)
-    except KeyError: pass
-    except NameError: pass
-
-    try: selection_container[selection_name] = selection_method[selection_name]()
-    except KeyError: continue
-    except NameError: continue
-    ana.AddSelection(selection_container[selection_name])
-    ana.Start()
-
-    f = open("./serialized-data/" + j +".pkl", "wb")
-    pickle.dump(selection_container[selection_name], f)
-    f.close()
-    print(i, len(sample_path_))
-    i+=1
 
 method = plotting_method[study]
 method.figures.figure_path = figure_path

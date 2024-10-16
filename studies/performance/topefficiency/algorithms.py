@@ -1,3 +1,7 @@
+from AnalysisG.core import Meta
+
+global meta_cache
+
 def mapping(name):
     if "_singletop_"  in name: return ( "singletop" , "$t$"                      )
     if "_ttH125_"     in name: return ( "ttH"       , "$t\\bar{t}H$"             )
@@ -38,9 +42,19 @@ def mapping(name):
     if "_ZqqZll"      in name: return ( "ZqqZll"    , "$ZqqZ\\ell\\ell$"         )
     if "_ZqqZvv"      in name: return ( "ZqqZvv"    , "$ZqqZ\\nu\\nu$"           )
     if "ttH_tttt"     in name: return ( "tttt_mX"   , "$t\\bar{t}t\\bar{t}H_{X}$")
-    print(name)
-    exit()
-    return "ndef"
+    try: meta_cache
+    except: meta_cache = {}
+    try: return mapping(meta_cache[name].DatasetName)
+    except: pass
+
+    spl = name.split(".")
+    meta = Meta()
+    meta.MetaCachePath = "meta.h5"
+    meta.FetchMeta(int(spl[2]), spl[5])
+    meta_cache[name] = meta
+
+    try: return mapping(meta_cache[name].DatasetName)
+    except: print(name); exit()
 
 
 def kinesplit(reg):
@@ -115,7 +129,6 @@ def ntops_reco_compl(stacks, data, target):
     for h in range(len(hashes_)):
         hash = hashes_[h]
         fn, weight = fn_weight[h]
-        weight = 1
         stacks["cls_ntop_w"][target] += [(n_tru_tops[hash] == target)*weight]
         stacks["e_ntop"][target]     += [(n_perfect_tops[hash] == target)*weight]
         stacks["p_ntop"][target]     += [(n_pred_tops[hash] == target)*weight]

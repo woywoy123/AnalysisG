@@ -37,7 +37,8 @@ void tensor_vector(std::vector<G>* trgt, std::vector<g>* chnks, std::vector<sign
 
 template <typename G, typename g>
 void tensor_to_vector(torch::Tensor* data, std::vector<G>* out, std::vector<signed long>* dims, g prim){
-    torch::Tensor tens = data -> view({-1}).to(torch::kCPU); 
+    torch::Tensor tens = data -> view({-1}).to(torch::kCPU, true); 
+    torch::cuda::synchronize(); 
     typename std::vector<g> linear(tens.data_ptr<g>(), tens.data_ptr<g>() + tens.numel()); 
     tensor_vector(out, &linear, dims, dims -> size()-1); 
 }
@@ -59,7 +60,7 @@ void add_to_dict(std::vector<bool>* dummy);
 struct variable_t {
     public:
         void flush();
-        void process(torch::Tensor* data, std::string varname, TTree* tr);
+        void process(torch::Tensor* data, std::string* varname, TTree* tr);
 
     private: 
         std::vector<std::vector<float>>  vvf = {}; 

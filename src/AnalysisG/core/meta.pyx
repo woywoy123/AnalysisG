@@ -22,9 +22,7 @@ import h5py
 class httpx(pyAMI.httpclient.HttpClient):
 
     def __init__(self, config):
-        try: super(httpx, self).__init__(config)
-        except: pass
-        auth_pyami()
+        super(httpx, self).__init__(config)
 
     def connect(self, endpoint):
         self.endpoint = endpoint
@@ -132,6 +130,7 @@ cdef class ami_client:
             try: self.dsids = pyAMI_atlas.api.list_datasets(**command)
             except:
                 auth_pyami()
+                self.client = atlas()
                 self.list_datasets(obj)
                 return
 
@@ -219,8 +218,16 @@ cdef class Meta:
         if not f: return 1
         return f
 
+    def FetchMeta(self, int dsid, str amitag):
+        self.dsid = dsid
+        self.amitag = amitag
+        self.__meta__(self.ptr)
+
     @property
     def MetaCachePath(self): return env(self.ptr.metacache_path)
+
+    @MetaCachePath.setter
+    def MetaCachePath(self, str val): self.ptr.metacache_path = enc(val)
 
     @property
     def SumOfWeights(self): return self.ptr.meta_data.misc

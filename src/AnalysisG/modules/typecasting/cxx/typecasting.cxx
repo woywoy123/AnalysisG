@@ -20,46 +20,46 @@ std::vector<signed long> tensor_size(torch::Tensor* inpt){
     return out;  
 }
 
-void variable_t::process(torch::Tensor* data, std::string varname, TTree* tr){
+void variable_t::process(torch::Tensor* data, std::string* varname, TTree* tr){
     if (!this -> tt){this -> tt = tr;}
 
     std::vector<signed long> s = tensor_size(data); 
 
     // type and dim switch for the tensors
     if (s.size() == 2 && data -> dtype() == torch::kDouble){
-        return this -> add_data(&this -> vvd, data, &s, &varname, double(0));
+        return this -> add_data(&this -> vvd, data, &s, varname, double(0));
     }
 
     if (s.size() == 1 && data -> dtype() == torch::kDouble){
-        return this -> add_data(&this -> vd, data, &s, &varname, double(0));
+        return this -> add_data(&this -> vd, data, &s, varname, double(0));
     }
 
     if (s.size() == 2 && data -> dtype() == torch::kFloat32){
-        return this -> add_data(&this -> vvf, data, &s, &varname, float(0));
+        return this -> add_data(&this -> vvf, data, &s, varname, float(0));
     }
 
     if (s.size() == 1 && data -> dtype() == torch::kFloat32){
-        return this -> add_data(&this -> vf, data, &s, &varname, float(0));
+        return this -> add_data(&this -> vf, data, &s, varname, float(0));
     }
 
     if (s.size() == 2 && data -> dtype() == torch::kLong){
-        return this -> add_data(&this -> vvl, data, &s, &varname, long(0)); 
+        return this -> add_data(&this -> vvl, data, &s, varname, long(0)); 
     }
 
     if (s.size() == 1 && data -> dtype() == torch::kLong){
-        return this -> add_data(&this -> vl, data, &s, &varname, long(0)); 
+        return this -> add_data(&this -> vl, data, &s, varname, long(0)); 
     }
 
     if (s.size() == 2 && data -> dtype() == torch::kInt){
-        return this -> add_data(&this -> vvi, data, &s, &varname, int(0)); 
+        return this -> add_data(&this -> vvi, data, &s, varname, int(0)); 
     }
 
     if (s.size() == 1 && data -> dtype() == torch::kInt){
-        return this -> add_data(&this -> vi, data, &s, &varname, int(0)); 
+        return this -> add_data(&this -> vi, data, &s, varname, int(0)); 
     }
 
     if (s.size() == 1 && data -> dtype() == torch::kBool){
-        return this -> add_data(&this -> vb, data, &s, &varname, bool(0)); 
+        return this -> add_data(&this -> vb, data, &s, varname, bool(0)); 
     }
 
     std::cout << "DIM: " << s.size() << std::endl;

@@ -35,21 +35,19 @@ def top_kinematic_region(stacks, data = None):
             pt_topmass_prc["truth"][pt_r]["v"] += sum([stacks["truth"][kin][f]["value"]   for f in prx], [])
             pt_topmass_prc["truth"][pt_r]["w"] += sum([stacks["truth"][kin][f]["weights"] for f in prx], [])
 
-        hists = []
         if kin not in stacks["prediction"]: stacks["prediction"][kin] = {}
 
+        hists = {}
         for prc in stacks["prediction"][kin]:
             _, tl = mapping(prc)
-            prc_h = TH1F()
-            prc_h.Title   = tl
-            prc_h.xData   = stacks["prediction"][kin][prc]["value"]
-            prc_h.Weights = stacks["prediction"][kin][prc]["weights"]
-            hists.append(prc_h)
+            if tl not in hists: hists[tl] = {"value": [], "weights" : []}
+            hists[tl]["value"]   += stacks["prediction"][kin][prc]["value"]
+            hists[tl]["weights"] += stacks["prediction"][kin][prc]["weights"]
 
             if pt_r not in pt_topmass_prc["prediction"]: pt_topmass_prc["prediction"][pt_r] = {}
-            if prc not in pt_topmass_prc["prediction"][pt_r]: pt_topmass_prc["prediction"][pt_r][prc] = {"v" : [], "w" : []}
-            pt_topmass_prc["prediction"][pt_r][prc]["v"] += stacks["prediction"][kin][prc]["value"]
-            pt_topmass_prc["prediction"][pt_r][prc]["w"] += stacks["prediction"][kin][prc]["weights"]
+            if tl not in pt_topmass_prc["prediction"][pt_r]: pt_topmass_prc["prediction"][pt_r][tl] = {"v" : [], "w" : []}
+            pt_topmass_prc["prediction"][pt_r][tl]["v"] += stacks["prediction"][kin][prc]["value"]
+            pt_topmass_prc["prediction"][pt_r][tl]["w"] += stacks["prediction"][kin][prc]["weights"]
 
             if pt_r not in top_score_mass: top_score_mass[pt_r] = {"mass" : {"v" : [], "w" : []}, "score" : {"v" : [], "w" : []}}
             top_score_mass[pt_r]["mass"]["v"]  += stacks["prediction"][kin][prc]["value"]
@@ -59,16 +57,25 @@ def top_kinematic_region(stacks, data = None):
             top_score_mass[pt_r]["score"]["w"] += stacks["top_score"][kin][prc]["weights"]
 
             if pt_r not in prc_topscore: prc_topscore[pt_r] = {}
-            if prc not in prc_topscore[pt_r]: prc_topscore[pt_r][prc] = {"v" : [], "w" : []}
-            prc_topscore[pt_r][prc]["v"] += stacks["top_score"][kin][prc]["value"]
-            prc_topscore[pt_r][prc]["w"] += stacks["top_score"][kin][prc]["weights"]
+            if tl not in prc_topscore[pt_r]: prc_topscore[pt_r][tl] = {"v" : [], "w" : []}
+            prc_topscore[pt_r][tl]["v"] += stacks["top_score"][kin][prc]["value"]
+            prc_topscore[pt_r][tl]["w"] += stacks["top_score"][kin][prc]["weights"]
+            stacks["top_score"][kin][prc] = []
+            stacks["prediction"][kin][prc] = []
+
+        for prc in hists:
+            prc_h = TH1F()
+            prc_h.Title   = prc
+            prc_h.xData   = hists[prc]["value"]
+            prc_h.Weights = hists[prc]["weights"]
+            hists[prc] = prc_h
 
         tlt = kin.replace("_", " \\leq p^{top}_T (GeV) \\leq ")
         tlt = tlt.replace("-", " \\leq | \\eta_{top} | \\leq ")
 
         reco = path(TH1F(), "/" + kin.split(",")[0])
         reco.Title = "Reconstructed Invariant Mass of Top Candidate within \n Kinematic Region: $" + tlt + "$"
-        reco.Histograms = hists
+        reco.Histograms = list(hists.values())
         reco.Histogram = tru_h
         reco.Stacked = True
         reco.xStep = 20
@@ -96,9 +103,8 @@ def top_kinematic_region(stacks, data = None):
 
         hists = []
         for prc in pt_topmass_prc["prediction"][kin]:
-            _, tl = mapping(prc)
             prc_h = TH1F()
-            prc_h.Title = tl
+            prc_h.Title   = prc
             prc_h.xData   = pt_topmass_prc["prediction"][kin][prc]["v"]
             prc_h.Weights = pt_topmass_prc["prediction"][kin][prc]["w"]
             hists.append(prc_h)
@@ -123,9 +129,8 @@ def top_kinematic_region(stacks, data = None):
 
         hists = []
         for prc in prc_topscore[kin]:
-            _, tl = mapping(prc)
             prc_h = TH1F()
-            prc_h.Title = tl
+            prc_h.Title   = prc
             prc_h.xData   = prc_topscore[kin][prc]["v"]
             prc_h.Weights = prc_topscore[kin][prc]["w"]
             hists.append(prc_h)
@@ -217,10 +222,11 @@ def roc_data(stacks, data = None):
     print(auc_top_edge, auc_ntops, auc_signal)
 
 def ntops_reco(stacks, data = None):
-    if data is not None: return ntops_reco_compl(stacks, data, 4)
-    w2 = sum(stacks["cls_ntop_w"][4])
-    et = sum(stacks["e_ntop"][4])/float(w2)
-    pt = sum(stacks["e_ntop"][4]) / sum(stacks["p_ntop"][4])
+    if data is not None: return ntops_reco_compl(stacks, data, 2)
+    w2 = sum(stacks["cls_ntop_w"][2])
+    print(w2)
+    et = sum(stacks["e_ntop"][2]) / float(w2)
+    pt = sum(stacks["e_ntop"][2]) / sum(stacks["p_ntop"][2])
     print(et, pt)
 
 def TopEfficiency(ana):
@@ -235,11 +241,11 @@ def TopEfficiency(ana):
     for i in range(len(files)):
         print(files[i], (i+1) / len(files))
         pr = pickle.load(open(files[i], "rb"))
-        #stack_roc = roc_data(stack_roc, pr)
-        #stack_topkin = top_kinematic_region(stack_topkin, pr)
+        stack_roc = roc_data(stack_roc, pr)
+        stack_topkin = top_kinematic_region(stack_topkin, pr)
         stack_ntops = ntops_reco(stack_ntops, pr)
 
     ntops_reco(stack_ntops)
-    #roc_data(stack_roc)
-    #top_kinematic_region(stack_topkin)
+    roc_data(stack_roc)
+    top_kinematic_region(stack_topkin)
 

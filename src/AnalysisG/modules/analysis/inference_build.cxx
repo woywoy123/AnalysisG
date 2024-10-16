@@ -1,67 +1,118 @@
 #include <generators/analysis.h>
-#include <tools/vector_cast.h>
 #include <ROOT/RDataFrame.hxx>
+#include <tools/vector_cast.h>
 #include <TFile.h>
 #include <TTree.h>
 
-int add_content(std::map<std::string, torch::Tensor*>* data, std::vector<variable_t>* content, int index, TTree* tt = nullptr){
+int add_content(
+        std::map<std::string, torch::Tensor*>* data, 
+        std::vector<variable_t>* content, 
+        int index, TTree* tt = nullptr
+){
     std::map<std::string, torch::Tensor*>::iterator itr = data -> begin();
     for (; itr != data -> end(); ++itr, ++index){
         if (!tt){content -> push_back(variable_t());}
-        (*content)[index].process(itr -> second, itr -> first, tt); 
+        std::string name = itr -> first; 
+        (*content)[index].process(itr -> second, &name, tt); 
     }
     return index; 
 }
 
-void execution(model_template* md, std::vector<graph_t*>* data, std::string output, std::vector<variable_t>* content, size_t* prg){
-    TFile* f = TFile::Open(output.c_str(), "NEW");
-    if (!f){
-        (*prg) = data -> size(); 
-        delete content;
-        return;  
-    }
-    if (f -> IsZombie()){
-        delete f; 
-        f = TFile::Open(output.c_str(), "RECREATE");
-    }
+void add_content(std::map<std::string, torch::Tensor*>* data, std::vector<torch::Tensor>* buff){
+    std::map<std::string, torch::Tensor*>::iterator itr = data -> begin();
+    for (; itr != data -> end(); ++itr){buff -> push_back(itr -> second -> clone());}
+}
 
-    TTree t = TTree("nominal", "data"); 
-    std::string msg = "Running model " + std::string(md -> name) + " with sample -> " + output; 
-    notification tx = notification(); 
+void execution(
+        model_template* md, model_settings_t mds, 
+        std::vector<graph_t*>* data, size_t* prg,
+        std::string output, std::vector<variable_t>* content
+){
+
+    ROOT::EnableImplicitMT(); 
+ 
+    TFile* f = new TFile(output.c_str(), "UPDATE"); 
+    if (f -> IsZombie()){delete f; f = new TFile(output.c_str(), "RECREATE");}
+
+    TTree* t = (TTree*)f -> Get("nominal"); 
+    if (!t){t = new TTree("nominal", "data");}
+
+    size_t l = t -> GetEntries();
+    std::cout << l << " " << data -> size() << std::endl; 
+    if (l == data -> size()){
+        delete content; content = nullptr; 
+        delete f; f = nullptr;  
+        *prg = data -> size(); 
+        return;
+    }
+    if (l){f -> Delete("*;*");}
+    
+    md = md -> clone(); 
+    md -> import_settings(&mds); 
+    if(!md -> restore_state()){
+        delete content; content = nullptr; 
+        delete md; md = nullptr; 
+        delete f; f = nullptr; 
+        (*prg) = data -> size(); 
+        return; 
+    }
 
     torch::AutoGradMode grd(false); 
+    std::map<size_t, std::vector<torch::Tensor>> buffer; 
     for (size_t x(0); x < data -> size(); ++x){
-        int index = 0; 
-        for (size_t i(0); i < content -> size(); ++i){(*content)[i].flush();}
+        md -> forward((*data)[x], false);  
 
-        md -> forward((*data)[x], false); 
-
-        // --- Scan the inputs
-        index = add_content(&md -> m_i_graph, content, index, &t); 
-        index = add_content(&md -> m_i_node, content, index, &t); 
-        index = add_content(&md -> m_i_edge, content, index, &t); 
+        std::vector<torch::Tensor>* bf = &buffer[x]; 
+        add_content(&md -> m_i_graph, bf); 
+        add_content(&md -> m_i_node, bf); 
+        add_content(&md -> m_i_edge, bf); 
 
         // --- Scan the outputs
-        index = add_content(&md -> m_p_graph, content, index, &t); 
-        index = add_content(&md -> m_p_node, content, index, &t); 
-        index = add_content(&md -> m_p_edge, content, index, &t); 
+        add_content(&md -> m_p_graph, bf); 
+        add_content(&md -> m_p_node, bf); 
+        add_content(&md -> m_p_edge, bf); 
 
         std::map<std::string, torch::Tensor*> addhoc;
-        addhoc["edge_index"]   = (*data)[x] -> get_edge_index(md);
+        addhoc["edge_index"] = (*data)[x] -> get_edge_index(md);
         addhoc["event_weight"] = (*data)[x] -> get_event_weight(md); 
+        add_content(&addhoc, bf);
+        add_content(&md -> m_p_undef, bf); 
+        (*prg) = x+1; 
 
-        index = add_content(&addhoc, content, index, &t);
-        index = add_content(&md -> m_p_undef, content, index, &t); 
 
-        t.Fill();
+        if (x != 0){continue;}
+        int index = 0; 
+        // --- Scan the inputs
+        index = add_content(&md -> m_i_graph, content, index, t); 
+        index = add_content(&md -> m_i_node, content, index, t); 
+        index = add_content(&md -> m_i_edge, content, index, t); 
 
-        *prg = x+1;  
+        // --- Scan the outputs
+        index = add_content(&md -> m_p_graph, content, index, t); 
+        index = add_content(&md -> m_p_node, content, index, t); 
+        index = add_content(&md -> m_p_edge, content, index, t); 
+
+        // --- add additional content
+        index = add_content(&addhoc, content, index, t); 
+        index = add_content(&md -> m_p_undef, content, index, t); 
+    }    
+   
+    std::map<size_t, std::vector<torch::Tensor>>::iterator itr; 
+    for (itr = buffer.begin(); itr != buffer.end(); ++itr){
+        for (size_t i(0); i < content -> size(); ++i){
+            (*content)[i].flush();
+            (*content)[i].process(&itr -> second[i], nullptr, t); 
+        }
+        t -> Fill();
     }
-    t.ResetBranchAddresses(); 
-    t.Write();
+
+    t -> ResetBranchAddresses(); 
+    t -> Write("", TObject::kOverwrite);
     f -> Close(); 
-    delete f; 
-    delete content; 
+    delete f; f = nullptr; 
+    delete content; content = nullptr; 
+    delete md; md = nullptr; 
+    (*prg) = data -> size(); 
 }
 
 void analysis::build_inference(){
@@ -80,7 +131,6 @@ void analysis::build_inference(){
     for (; its != dl -> end(); ++its){len += its -> second.size();}
     len *= modls; 
 
-    std::vector<model_template*> th_models = std::vector<model_template*>(smpls*modls, nullptr); 
     std::vector<std::thread*> th_prc = std::vector<std::thread*>(smpls*modls, nullptr); 
     std::vector<size_t> th_prg(smpls*modls, 0); 
     std::thread* thr_ = nullptr; 
@@ -92,7 +142,7 @@ void analysis::build_inference(){
 
     int para = 0; 
     its = dl -> begin(); 
-    for (size_t x(0); x < th_models.size(); ++x){
+    for (size_t x(0); x < th_prc.size(); ++x){
         int mdx = x%modls; 
         if (!mdx){itm = this -> model_inference.begin();}
         if (x && !mdx){++its;}
@@ -106,19 +156,13 @@ void analysis::build_inference(){
         }
 
         model_settings_t mds; 
-        itm -> second -> clone_settings(&mds); 
+        model_template* md = itm -> second; 
+        md -> clone_settings(&mds);
+        md -> inference_mode = true; 
 
         if (!mute[itm -> second-> name]){
-            this -> success("Cloned model: " + std::string(itm -> second -> name)); 
+            this -> success("Starting model: " + std::string(itm -> second -> name)); 
             mute[itm -> second -> name] = true; 
-        }
-
-        model_template* md = itm -> second -> clone(); 
-        md -> import_settings(&mds); 
-
-        if(!md -> restore_state()){
-            this -> warning("File not found under specified checkpoint path. Skipping"); 
-            continue;
         }
 
         std::string fname = this -> m_settings.output_path + "/" + itm -> first + "/"; 
@@ -133,7 +177,6 @@ void analysis::build_inference(){
         // -------- fetch the input and output features ------- //
         int index = 0; 
         std::vector<variable_t>* content = new std::vector<variable_t>(); 
-        std::map<std::string, torch::Tensor*>::iterator itr; 
 
         // --- Scan the inputs
         index = add_content(&md -> m_i_graph, content, index); 
@@ -152,8 +195,7 @@ void analysis::build_inference(){
         index = add_content(&addhoc, content, index); 
         index = add_content(&md -> m_p_undef, content, index); 
 
-        th_prc[x] = new std::thread(execution, md, &its -> second, fname, content, &th_prg[x]);
-        th_models[x] = md; 
+        th_prc[x] = new std::thread(execution, md, mds, &its -> second, &th_prg[x], fname, content);
         ++itm; ++para; 
 
         if (!thr_){thr_ = new std::thread(this -> progressbar1, &th_prg, len, "Model Inference Progress");}
@@ -164,8 +206,6 @@ void analysis::build_inference(){
                 if (!th_prc[t] -> joinable()){continue;}
                 th_prc[t] -> join(); 
                 delete th_prc[t]; 
-                delete th_models[t]; 
-                th_models[t] = nullptr; 
                 th_prc[t] = nullptr; 
                 --para; 
                 break; 
@@ -178,21 +218,22 @@ void analysis::build_inference(){
         if (!th_prc[x]){continue;}
         th_prc[x] -> join(); 
         delete th_prc[x]; 
-        delete th_models[x]; 
         th_prc[x] = nullptr; 
-        th_models[x] = nullptr; 
     }
-    
+
+    for (size_t x(0); x < th_prg.size(); ++x){th_prg[x] = len / modls;}
     for (its = dl -> begin(); its != dl -> end(); ++its){
         its -> second.clear(); 
         its -> second.shrink_to_fit(); 
     }
+
     dl -> clear();
     delete dl; 
-
+    dl = nullptr; 
+    
     if (!thr_){return this -> failure("No models were executed...");}
     thr_ -> join(); 
-    delete thr_; 
+    delete thr_; thr_ = nullptr; 
     std::cout << "" << std::endl;
     this -> success("Model inference completed!"); 
 }

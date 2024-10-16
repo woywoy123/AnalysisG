@@ -37,6 +37,7 @@ void model_template::register_module(torch::nn::Sequential* data){
 }
 
 void model_template::register_module(torch::nn::Sequential* data, mlp_init method){
+    if (this -> m_option){(*data) -> to(this -> m_option -> device());}
     this -> m_loss -> weight_init(data, method); 
     this -> m_data.push_back(data);
 }
@@ -100,7 +101,7 @@ torch::Tensor* model_template::assign_features(std::string inpt, graph_enum type
 
 
 void model_template::forward(graph_t* data, bool train){
-    data -> transfer_to_device(this -> m_option); 
+    //data -> transfer_to_device(this -> m_option); 
     this -> flush_outputs(); 
     this -> m_batched = false; 
 
