@@ -17,6 +17,7 @@ class tools
         void create_path(std::string path); 
         void delete_path(std::string path); 
         bool is_file(std::string path); 
+        void rename(std::string start, std::string target); 
         std::string absolute_path(std::string path); 
         std::vector<std::string> ls(std::string path, std::string ext = ""); 
 

@@ -38,7 +38,6 @@ void execution(
     if (!t){t = new TTree("nominal", "data");}
 
     size_t l = t -> GetEntries();
-    std::cout << l << " " << data -> size() << std::endl; 
     if (l == data -> size()){
         delete content; content = nullptr; 
         delete f; f = nullptr;  

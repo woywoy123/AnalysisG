@@ -89,6 +89,7 @@ void analysis::check_cache(){
             for (size_t y(0); y < cache.size(); ++y){
                 std::vector<std::string> spl_ = this -> split(cache[y], "/"); 
                 std::string fname_ = spl_[spl_.size()-2] + "/" + spl_[spl_.size()-1]; 
+                if (this -> has_string(&cache[y], "/." + spl_[spl_.size()-1])){continue;}
                 if (!this -> in_cache[file_n].count(fname_)){continue;}
                 this -> in_cache[file_n][fname_] = true;
                 ++sg; 

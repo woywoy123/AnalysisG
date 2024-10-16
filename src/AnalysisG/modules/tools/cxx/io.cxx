@@ -15,6 +15,10 @@ void tools::create_path(std::string input_path){
     }
 }
 
+void tools::rename(std::string start, std::string target){
+    std::filesystem::rename(start, target); 
+}
+
 void tools::delete_path(std::string input_path){
     struct stat sb;
     if (!stat(input_path.c_str(), &sb)){

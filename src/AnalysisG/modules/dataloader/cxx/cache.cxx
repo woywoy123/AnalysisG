@@ -46,7 +46,7 @@ bool dataloader::dump_graphs(std::string path, int threads){
             fname = spl[spl.size()-1]; 
             std::string hash  = tl.hash(fname);  
             tl.replace(&fname, ".root", ".h5"); 
-            fname = (*gr -> graph_name) + "/" + hash + "-" + fname; 
+            fname = (*gr -> graph_name) + "/." + hash + "-" + fname; 
             delete gr -> graph_name; gr -> graph_name = nullptr; 
             if (!fname_index -> count(fname)){(*fname_index)[fname] = new std::vector<int>();}
             (*fname_index)[fname] -> push_back(t); 
@@ -121,7 +121,12 @@ bool dataloader::dump_graphs(std::string path, int threads){
     }
     for (size_t t(0); t < quant.size(); ++t){delete serials[t];}
     prg -> join(); delete prg; 
-
+    for (size_t x(0); x < pth_verify.size(); ++x){
+        std::string nx = pth_verify[x];  
+        this -> replace(&nx, "/.", "/"); 
+        this -> rename(pth_verify[x], nx); 
+        pth_verify[x] = nx; 
+    }
 
     this -> info("Validating Graph Cache..."); 
     std::map<std::string, graph_t*>* restored = this -> restore_graphs_(pth_verify, threads); 
