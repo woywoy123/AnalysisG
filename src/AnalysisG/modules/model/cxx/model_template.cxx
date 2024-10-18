@@ -101,7 +101,6 @@ torch::Tensor* model_template::assign_features(std::string inpt, graph_enum type
 
 
 void model_template::forward(graph_t* data, bool train){
-    //data -> transfer_to_device(this -> m_option); 
     this -> flush_outputs(); 
     this -> m_batched = false; 
 

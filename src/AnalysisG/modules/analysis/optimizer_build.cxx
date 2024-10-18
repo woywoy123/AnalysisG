@@ -6,15 +6,32 @@ static void initialize_loop(
         optimizer_params_t* config, model_report** rep
 ){
    
-    ROOT::EnableImplicitMT(); 
+//    ROOT::EnableImplicitMT(); 
     model_settings_t settings; 
     model -> clone_settings(&settings); 
     model_template* mk = model -> clone(); 
+    std::string pth = model -> model_checkpoint_path; 
+
+    mk -> import_settings(&settings); 
+    mk -> set_optimizer(config -> optimizer); 
+    mk -> initialize(config); 
+
+    mk -> epoch = 0; 
+    mk -> kfold = k+1; 
+    for (int ep(0); ep < op -> m_settings.epochs; ++ep){
+
+         // check if the next epoch has a file i+2;
+        std::string pth_ = pth + "state/epoch-" + std::to_string(ep+1) + "/";  
+        pth_ += "kfold-" + std::to_string(k+1) + "_model.pt"; 
+
+        if (op -> m_settings.continue_training && op -> is_file(pth_)){continue;}
+        if (!op -> m_settings.continue_training){break;} 
+        mk -> epoch = ep+1;
+        mk -> restore_state(); 
+        break; 
+    }
 
     std::vector<graph_t*> rnd = op -> loader -> get_random(1); 
-    mk -> set_optimizer(config -> optimizer); 
-    mk -> import_settings(&settings); 
-    mk -> initialize(config); 
     mk -> shush = true; 
     mk -> check_features(rnd[0]);
     op -> kfold_sessions[k] = mk;

@@ -13,6 +13,7 @@ VERBATIM COMMAND Python::Interpreter -m cython
 )
 python_add_library(${name} MODULE c${name}.cpp WITH_SOABI)
 target_link_libraries(${name} PUBLIC c${name} "${links}")
+target_link_libraries(${name} PRIVATE ctools)
 target_compile_options(${name} PRIVATE -fPIC)
 install(TARGETS ${name} DESTINATION ${out})
 endfunction()

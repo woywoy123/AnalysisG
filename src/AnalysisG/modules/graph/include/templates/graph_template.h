@@ -61,12 +61,18 @@ struct graph_t {
             return &this -> dev_event_weight[(int)mdl -> m_option -> device().index()]; 
         }
 
+        template <typename g>
+        torch::Tensor* get_batch_index(g* mdl){
+            return &this -> dev_batch_index[(int)mdl -> m_option -> device().index()]; 
+        }
+
         void add_truth_graph(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
         void add_truth_node(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
         void add_truth_edge(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
         void add_data_graph(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
         void add_data_node(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
         void add_data_edge(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
+
         void transfer_to_device(torch::TensorOptions* dev); 
         void _purge_all(); 
 
@@ -112,6 +118,7 @@ struct graph_t {
         std::map<int, std::vector<torch::Tensor>> dev_truth_edge  = {};
 
         std::map<int, torch::Tensor> dev_edge_index   = {}; 
+        std::map<int, torch::Tensor> dev_batch_index  = {}; 
         std::map<int, torch::Tensor> dev_event_weight = {}; 
         std::map<int, bool> device_index = {}; 
 

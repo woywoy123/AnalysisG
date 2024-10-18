@@ -164,6 +164,7 @@ class electron: public particle_template
         electron();
         ~electron() override;
         bool from_res = false; 
+        int top_index = -1; 
 
         particle_template* clone() override; 
         void build(std::map<std::string, particle_template*>* prt, element_t* el) override;
@@ -176,6 +177,7 @@ class muon: public particle_template
         muon();
         ~muon() override;
         bool from_res = false; 
+        int top_index = -1; 
 
         particle_template* clone() override; 
         void build(std::map<std::string, particle_template*>* prt, element_t* el) override;

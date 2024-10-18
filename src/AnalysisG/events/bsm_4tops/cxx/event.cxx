@@ -58,7 +58,7 @@ void bsm_4tops::CompileEvent(){
     for (itj = _TruthJets.begin(); itj != _TruthJets.end(); ++itj){
         truthjet* tj = itj -> second; 
         for (int x : tj -> top_index){
-            if (x == -1 || !_Tops.count(x)){continue;}
+            if (!_Tops.count(x)){continue;}
             tj -> Tops.push_back(_Tops[x]); 
             _Tops[x] -> TruthJets.push_back(tj); 
         }
@@ -77,7 +77,7 @@ void bsm_4tops::CompileEvent(){
         jet* jt = ij -> second; 
         jt -> pdgid = (jt -> btag_DL1r_85) ? 5 : 0; 
         for (int x : jt -> top_index){
-            if (x == -1 || !_Tops.count(x)){continue;}
+            if (!_Tops.count(x)){continue;}
             jt -> Tops.push_back(_Tops[x]); 
             _Tops[x] -> Jets.push_back(jt); 
         }
@@ -126,16 +126,17 @@ void bsm_4tops::CompileEvent(){
 
         c -> register_child(l); 
         l -> register_parent(c); 
-        l -> index = c -> index; 
 
         if (l -> type == "mu"){
             muon* lt = (muon*)l; 
             lt -> from_res = c -> from_res; 
+            lt -> top_index = c -> index; 
         }
 
         if (l -> type == "el"){
             electron* lt = (electron*)l; 
             lt -> from_res = c -> from_res; 
+            lt -> top_index = c -> index; 
         }
         accept[hash_] = true;
     }

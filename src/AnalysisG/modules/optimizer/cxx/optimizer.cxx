@@ -44,41 +44,41 @@ void optimizer::training_loop(int k, int epoch){
     std::vector<graph_t*>* smpl = this -> loader -> get_k_train_set(k); 
     model_template* model = this -> kfold_sessions[k]; 
     model -> evaluation_mode(false);
+    model -> epoch = epoch+1; 
 
-    int l = smpl -> size(); 
     model_report* mr = this -> reports[this -> m_settings.run_name + std::to_string(k)]; 
     mr -> mode = "training";
-    mr -> epoch = epoch+1;  
-    torch::AutoGradMode grd(true); 
+    mr -> epoch = epoch;  
 
-    if (this -> m_settings.batch_size > 1){
-        std::vector<std::vector<graph_t*>> batched = this -> discretize(smpl, this -> m_settings.batch_size); 
-        int bx = this -> m_settings.batch_size; 
-        l = batched.size();  
-        for (int x(0); x < l; ++x){
-            model -> forward(batched[x], true);
-            mr -> progress = float(x+1)/float(l); 
-            this -> metric -> capture(mode_enum::training, k, epoch, l); 
-        }
-    }
-    else {
-        for (int x(0); x < l; ++x){
-            graph_t* gr = (*smpl)[x]; 
-            model -> forward(gr, true);
-            mr -> progress = float(x+1)/float(l); 
-            this -> metric -> capture(mode_enum::training, k, epoch, l); 
-        }
+    bool batched = this -> m_settings.batch_size > 1;
+    if (batched){smpl = this -> loader -> build_batch(smpl, model, mr);}
+    int l = smpl -> size(); 
+
+    torch::AutoGradMode grd(true); 
+    for (int x(0); x < l; ++x){
+        graph_t* gr = (*smpl)[x]; 
+        model -> forward(gr, true);
+        mr -> progress = float(x+1)/float(l); 
+        this -> metric -> capture(mode_enum::training, k, epoch, l); 
+        if (!batched){continue;}
+        gr -> _purge_all(); 
+        delete gr; 
+        (*smpl)[x] = nullptr; 
     }
     model -> save_state(); 
+    if (batched){delete smpl;}
 }
 
 void optimizer::validation_loop(int k, int epoch){
-    std::vector<graph_t*>* smpl = this -> loader -> get_k_validation_set(k); 
     model_template* model = this -> kfold_sessions[k]; 
     model -> evaluation_mode(true); 
 
     model_report* mr = this -> reports[this -> m_settings.run_name + std::to_string(k)]; 
     mr -> mode = "validation"; 
+
+    std::vector<graph_t*>* smpl = this -> loader -> get_k_validation_set(k); 
+    bool batched = this -> m_settings.batch_size > 1;
+    if (batched){smpl = this -> loader -> build_batch(smpl, model, mr);}
 
     torch::NoGradGuard no_grd;  
     int l = smpl -> size(); 
@@ -91,12 +91,14 @@ void optimizer::validation_loop(int k, int epoch){
 }
 
 void optimizer::evaluation_loop(int k, int epoch){
-    std::vector<graph_t*>* smpl = this -> loader -> get_test_set(); 
     model_template* model = this -> kfold_sessions[k]; 
     model -> evaluation_mode(true); 
-
     model_report* mr = this -> reports[this -> m_settings.run_name + std::to_string(k)]; 
     mr -> mode = "evaluation"; 
+
+    std::vector<graph_t*>* smpl = this -> loader -> get_test_set(); 
+    bool batched = this -> m_settings.batch_size > 1;
+    if (batched){smpl = this -> loader -> build_batch(smpl, model, mr);}
 
     torch::NoGradGuard no_grd;  
     int l = smpl -> size(); 
@@ -113,19 +115,7 @@ void optimizer::launch_model(int k){
     for (int ep(0); ep < this -> m_settings.epochs; ++ep){
 
         model_template* model = this -> kfold_sessions[k]; 
-
-        model -> epoch = ep+1; 
-        model -> kfold = k+1;
-
-         // check if the next epoch has a file i+2;
-        std::string pth = model -> model_checkpoint_path; 
-        pth += "state/epoch-" + std::to_string(ep+2) + "/";  
-        pth += "kfold-" + std::to_string(k+1) + "_model.pt"; 
-
-        if (this -> m_settings.continue_training && this -> is_file(pth)){continue;}
-        else if (!this -> m_settings.continue_training){} 
-        else if (model -> restore_state()){continue;}
-
+        if (model -> epoch > ep){continue;}
         if (this -> m_settings.training){this -> training_loop(k, ep);}
         if (this -> m_settings.validation){this -> validation_loop(k, ep);}
         if (this -> m_settings.evaluation){this -> evaluation_loop(k, ep);}

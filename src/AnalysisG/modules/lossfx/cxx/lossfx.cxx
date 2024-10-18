@@ -73,5 +73,36 @@ bool lossfx::build_loss_function(loss_enum lss){
     return false;
 }
 
+void lossfx::to(torch::TensorOptions* op){
+    if (this -> m_bce                         ){this -> m_bce                          -> to(op -> device(), true);}
+    if (this -> m_bce_with_logits             ){this -> m_bce_with_logits              -> to(op -> device(), true);}
+    if (this -> m_cosine_embedding            ){this -> m_cosine_embedding             -> to(op -> device(), true);}
+    if (this -> m_cross_entropy               ){this -> m_cross_entropy                -> to(op -> device(), true);}
+    if (this -> m_ctc                         ){this -> m_ctc                          -> to(op -> device(), true);}
+    if (this -> m_hinge_embedding             ){this -> m_hinge_embedding              -> to(op -> device(), true);}
+    if (this -> m_huber                       ){this -> m_huber                        -> to(op -> device(), true);}
+    if (this -> m_kl_div                      ){this -> m_kl_div                       -> to(op -> device(), true);}
+    if (this -> m_l1                          ){this -> m_l1                           -> to(op -> device(), true);}
+    if (this -> m_margin_ranking              ){this -> m_margin_ranking               -> to(op -> device(), true);}
+    if (this -> m_mse                         ){this -> m_mse                          -> to(op -> device(), true);}
+    if (this -> m_multi_label_margin          ){this -> m_multi_label_margin           -> to(op -> device(), true);}
+    if (this -> m_multi_label_soft_margin     ){this -> m_multi_label_soft_margin      -> to(op -> device(), true);}
+    if (this -> m_multi_margin                ){this -> m_multi_margin                 -> to(op -> device(), true);}
+    if (this -> m_nll                         ){this -> m_nll                          -> to(op -> device(), true);}
+    if (this -> m_poisson_nll                 ){this -> m_poisson_nll                  -> to(op -> device(), true);}
+    if (this -> m_smooth_l1                   ){this -> m_smooth_l1                    -> to(op -> device(), true);}
+    if (this -> m_soft_margin                 ){this -> m_soft_margin                  -> to(op -> device(), true);}
+    if (this -> m_triplet_margin              ){this -> m_triplet_margin               -> to(op -> device(), true);}
+    if (this -> m_triplet_margin_with_distance){this -> m_triplet_margin_with_distance -> to(op -> device(), true);}
+}
+
+
+
+
+
+
+
+
+
 
 

@@ -1,5 +1,6 @@
 #ifndef LOSSFX_H
 #define LOSSFX_H
+
 #include <map>
 #include <vector>
 #include <string>
@@ -22,6 +23,7 @@ class lossfx : public tools
 
         torch::optim::Optimizer* build_optimizer(optimizer_params_t* op, std::vector<torch::Tensor>* params); 
         bool build_loss_function(loss_enum lss); 
+        void to(torch::TensorOptions*); 
 
     private:
         void build_adam(optimizer_params_t* op, std::vector<torch::Tensor>* params); 

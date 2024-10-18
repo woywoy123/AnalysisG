@@ -16,7 +16,7 @@ class grift: public model_template
         ); 
 
         // Neural Network Parameters
-        int _hidden = 128; 
+        int _hidden = 1024; 
         int _xrec = 128; 
 
         int _xin  = 6; 
@@ -31,9 +31,10 @@ class grift: public model_template
 
         torch::nn::Sequential* rnn_x        = nullptr; 
         torch::nn::Sequential* rnn_dx       = nullptr; 
-        torch::nn::Sequential* rnn_merge    = nullptr; 
         torch::nn::Sequential* rnn_top_edge = nullptr;
         torch::nn::Sequential* rnn_res_edge = nullptr; 
+        torch::nn::Sequential* rnn_hxx      = nullptr; 
+
         torch::nn::Sequential* mlp_ntop     = nullptr; 
         torch::nn::Sequential* mlp_sig      = nullptr; 
         torch::Tensor  x_nulls; 

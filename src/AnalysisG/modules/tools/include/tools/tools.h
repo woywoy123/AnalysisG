@@ -1,10 +1,10 @@
+#ifndef TOOLS_TOOLS_H
+#define TOOLS_TOOLS_H
+
 #include <iostream>
 #include <string>
 #include <vector>
 #include <cstdint>
-
-#ifndef TOOLS_TOOLS_H
-#define TOOLS_TOOLS_H
 
 class tools
 {

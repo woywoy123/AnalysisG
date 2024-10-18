@@ -15,6 +15,8 @@
 #include <algorithm>
 
 class analysis; 
+class model_template; 
+struct model_report; 
 
 class dataloader: 
     public notification, 
@@ -27,6 +29,8 @@ class dataloader:
         std::vector<graph_t*>* get_k_train_set(int k); 
         std::vector<graph_t*>* get_k_validation_set(int k); 
         std::vector<graph_t*>* get_test_set(); 
+        std::vector<graph_t*>* build_batch(std::vector<graph_t*>* data, model_template* mdl, model_report* rep); 
+
         std::map<std::string, std::vector<graph_t*>>* get_inference(); 
 
         void generate_test_set(float percentage = 50); 
@@ -41,7 +45,7 @@ class dataloader:
 
         void restore_graphs(std::vector<std::string> paths, int threads); 
         void restore_graphs(std::string paths, int threads); 
-
+    
     private:
         friend class analysis;
         settings_t* setting = nullptr; 
@@ -55,6 +59,8 @@ class dataloader:
         void shuffle(std::vector<int>* idx); 
         void shuffle(std::vector<graph_t*>* idx); 
         std::map<std::string, graph_t*>* restore_graphs_(std::vector<std::string>, int threads); 
+
+        std::map<int, std::vector<graph_t*>*> batched_cache = {}; 
 
         std::map<int, std::vector<int>*> k_fold_training = {}; 
         std::map<int, std::vector<int>*> k_fold_validation = {}; 

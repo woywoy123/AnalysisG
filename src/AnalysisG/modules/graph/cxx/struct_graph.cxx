@@ -41,7 +41,7 @@ void graph_t::_purge_all(){
     this -> _purge_data(this -> data_graph); 
     this -> _purge_data(this -> data_node); 
     this -> _purge_data(this -> data_edge); 
-    delete this -> edge_index;
+    if (this -> edge_index){delete this -> edge_index;}
 
     this -> _purge_data(this -> truth_graph); 
     this -> _purge_data(this -> truth_node); 
@@ -57,15 +57,16 @@ void graph_t::_purge_all(){
 
     this -> dev_edge_index.clear(); 
     this -> dev_event_weight.clear(); 
+    this -> dev_batch_index.clear(); 
 
-    delete this -> hash; 
+    if (this -> hash){delete this -> hash;}
     if (this -> graph_name){delete this -> graph_name;}
-
     if (!this -> is_owner){return;}
     delete this -> filename; 
 }
 
 void graph_t::_purge_data(std::map<int, torch::Tensor*>* data){
+    if (!data){return;}
     std::map<int, torch::Tensor*>::iterator itr = data -> begin();
     for (; itr != data -> end(); ++itr){delete itr -> second;}
     data -> clear(); 
@@ -104,19 +105,24 @@ void graph_t::transfer_to_device(torch::TensorOptions* dev){
     this -> _transfer_to_device(&this -> dev_truth_node[dev_] , this -> truth_node , dev); 
     this -> _transfer_to_device(&this -> dev_truth_edge[dev_] , this -> truth_edge , dev); 
 
-    torch::Tensor dt = torch::from_blob(&this -> event_weight, {1}, torch::TensorOptions(torch::kCPU).dtype(torch::kDouble));
-    this -> dev_event_weight[dev_] = dt.pin_memory().to(dev -> device(), true); 
-    this -> dev_edge_index[dev_]   = this -> edge_index -> pin_memory().to(dev -> device(), true); 
+    std::vector<long> bc(this -> num_nodes, 0);
+    std::vector<double> evw = {this -> event_weight}; 
+    torch::TensorOptions op = torch::TensorOptions(torch::kCPU); 
 
+    torch::Tensor dt = build_tensor(&evw, torch::kDouble, double(), &op);
+    torch::Tensor bx = build_tensor(&bc, torch::kLong, long(), &op); 
+
+    this -> dev_event_weight[dev_] = dt.clone().to(dev -> device(), true); 
+    this -> dev_batch_index[dev_]  = bx.clone().to(dev -> device(), true); 
+    this -> dev_edge_index[dev_]   = this -> edge_index -> to(dev -> device(), true); 
     this -> device_index[dev_] = true; 
-    this -> device = dev_in; 
+    this -> device = dev_in;
+    torch::cuda::synchronize(); 
 }
 
 void graph_t::_transfer_to_device(std::vector<torch::Tensor>* trgt, std::vector<torch::Tensor*>* src, torch::TensorOptions* dev){
     if (!src || trgt -> size()){return;}
-    for (size_t x(0); x < src -> size(); ++x){
-        trgt -> push_back((*src)[x] -> pin_memory().to(dev -> device(), true));
-    }
+    for (size_t x(0); x < src -> size(); ++x){trgt -> push_back((*src)[x] -> to(dev -> device(), true));}
 }
 
 void graph_t::meta_serialize(std::map<std::string, int>* data, std::string* out){

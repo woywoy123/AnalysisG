@@ -1,23 +1,28 @@
 cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
 
 set(SKBUILD_PROJECT_NAME AnalysisG)
-project(${SKBUILD_PROJECT_NAME} VERSION 5.0 LANGUAGES CXX C)
+project(${SKBUILD_PROJECT_NAME} VERSION 5.0 LANGUAGES CXX CUDA)
 
 # ABI is the pre-cxx11 version that pytorch distributes via wheels...
-set(_GLIBCXX_USE_CXX11_ABI=1)
+#set(_GLIBCXX_USE_CXX11_ABI=0)
 set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
 set(CMAKE_POLICY_DEFAULT_CMP0135 NEW)
 
-#set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 17)
 #set(CMAKE_CUDA_STANDARD 17)
-#set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #set(CMAKE_CUDA_STANDARD_REQUIRED ON)
 set(CMAKE_CUDA_ARCHITECTURES "native")
 
 #set(CMAKE_BUILD_TYPE Release)
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Dimt=ON")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Dimt=ON")
 #set(CMAKE_CXX_FLAGS_DEBUG "-g")
 #set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+
+SET(CUDA_cublas_device_LIBRARY /usr/local/cuda/lib64)
+SET(CMAKE_CUDA_COMPILER /usr/local/cuda/bin/nvcc)
+SET(CUDA_INCLUDE_DIRS /usr/local/cuda/include)
+SET(CUDA_TOOLKIT_ROOT_DIR /usr/local/cuda)
 
 include(FetchContent)
 include(CheckLanguage)
@@ -44,23 +49,21 @@ FIND_PACKAGE_ARGS)
 FetchContent_MakeAvailable(rapidjson)
 set(RAPIDJSON_INCLUDE_DIR ${CMAKE_BINARY_DIR}/_deps/rapidjson-src/include)
 
-FetchContent_Declare(torch URL "https://download.pytorch.org/libtorch/cu121/libtorch-cxx11-abi-shared-with-deps-2.4.1%2Bcu121.zip")
-#FetchContent_Declare(torch
-#GIT_REPOSITORY "https://github.com/pytorch/pytorch.git"
-#GIT_TAG v2.4.1)
+FetchContent_Declare(torch 
+URL "https://download.pytorch.org/libtorch/cu121/libtorch-cxx11-abi-shared-with-deps-2.4.1%2Bcu121.zip")
+FetchContent_MakeAvailable(torch)
 
-execute_process(
-COMMAND python -c "import sysconfig; print(sysconfig.get_paths()['data'])" 
-OUTPUT_VARIABLE LIBX OUTPUT_STRIP_TRAILING_WHITESPACE)
+#execute_process(
+#COMMAND python -c "import sysconfig; print(sysconfig.get_paths()['data'])" 
+#OUTPUT_VARIABLE LIBX OUTPUT_STRIP_TRAILING_WHITESPACE)
 
 execute_process(
 COMMAND python -c "import sysconfig; print(sysconfig.get_paths()['platlib'])" 
 OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE)
 
-link_directories("${LIBX}/lib")
-set(TBB_LIB_DIR "${LIBX}/lib")
-set(MKLROOT "${LIBX}/lib")
-
+#link_directories("${LIBX}/lib")
+#set(ENV{MKLROOT} "${LIBX}/lib")
+#
 set(BLAS MKL)
 set(USE_TBB ON)
 set(MKL_TBB ON)
@@ -80,19 +83,18 @@ set(USE_EIGEN_THREADPOOL ON)
 set(USE_NNPACK ON)
 set(USE_NCCL ON)
 set(USE_CUDA ON)
-set(WITH_CUDA ON)
 set(USE_CUDNN ON)
-set(CAFFE2_USE_CUDNN ON)
+set(CAFFE2_USE_CUDNN TRUE)
 set(BUILD_CAFFE2_OPS ON)
 
 list(APPEND CMAKE_PREFIX_PATH "${CMAKE_PREFIX_PATH} ${LIBX}/lib/cmake/mkl")
 list(APPEND CMAKE_PREFIX_PATH "${CMAKE_PREFIX_PATH} ${LIBX}/lib/cmake/tbb")
-find_package(BLAS REQUIRED)
+#find_package(BLAS REQUIRED)
 
-FetchContent_MakeAvailable(torch)
 list(APPEND CMAKE_PREFIX_PATH ${torch_SOURCE_DIR})
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
 find_package(Torch REQUIRED)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
+message(STATUS "CAFFE2_USE_CUDNN is: ${CAFFE2_USE_CUDNN}")
 
 FetchContent_Declare(HDF5
 GIT_REPOSITORY "https://github.com/HDFGroup/hdf5.git"
@@ -121,6 +123,5 @@ message(STATUS "RAPIDJSON: ${RAPIDJSON_INCLUDE_DIR}")
 message(STATUS     "TORCH: ${TORCH_LIBRARIES}")
 
 add_subdirectory(src/AnalysisG)
-
-#file(INSTALL ${torch_SOURCE_DIR}/lib/         DESTINATION ${PYTHON_SITE_PACKAGES}/torch)
+#file(INSTALL ${torch_SOURCE_DIR}/lib/          DESTINATION ${PYTHON_SITE_PACKAGES}/torch)
 file(INSTALL ${CMAKE_BINARY_DIR}/src/AnalysisG DESTINATION ${PYTHON_SITE_PACKAGES})

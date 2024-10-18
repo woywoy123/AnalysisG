@@ -40,8 +40,8 @@ int static m_top_edge(top* t){return t -> index;}
 int static m_top_edge(top_children* t){return t -> top_index;}
 std::vector<int> static m_top_edge(truthjet* t){return t -> top_index;}
 std::vector<int> static m_top_edge(jet* t){return t -> top_index;}
-std::vector<int> static m_top_edge(electron* t){return {t -> index};}
-std::vector<int> static m_top_edge(muon* t){return {t -> index};}
+std::vector<int> static m_top_edge(electron* t){return {t -> top_index};}
+std::vector<int> static m_top_edge(muon* t){return {t -> top_index};}
 
 void static top_edge(int* o, std::tuple<particle_template*, particle_template*>* pij){
     particle_template* p1 = std::get<0>(*pij); 
@@ -68,9 +68,9 @@ void static top_edge(int* o, std::tuple<particle_template*, particle_template*>*
 
     *o = 0;  
     for (size_t x(0); x < o1_.size(); ++x){
-        if (o1_[x] == -1){continue;}
+        if (o1_[x] < 0){continue;}
         for (size_t y(0); y < o2_.size(); ++y){
-            if (o2_[y] == -1){continue;}
+            if (o2_[y] < 0){continue;}
             if (o1_[x] != o2_[y]){continue;}
             *o = 1; return; 
         }

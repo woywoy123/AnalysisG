@@ -10,6 +10,8 @@ class metrics;
 class analysis; 
 class model_template; 
 class optimizer; 
+class dataloader; 
+
 struct graph_t; 
 struct variable_t; 
 
@@ -104,6 +106,8 @@ class model_template:
         friend class metrics; 
         friend class analysis;
         friend class optimizer; 
+        friend class dataloader; 
+
         friend void execution(
             model_template* md, model_settings_t mds, 
             std::vector<graph_t*>* data, size_t* prg,

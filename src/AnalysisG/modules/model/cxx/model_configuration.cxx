@@ -59,7 +59,7 @@ void model_template::set_device(std::string* dev, model_template* md){
         case c10::kCUDA: md -> m_option = new torch::TensorOptions(device_enum, device_n); break; 
         default: md -> m_option = new torch::TensorOptions(device_enum); break; 
     }
-    for (size_t x(0); x < md -> m_data.size(); ++x){(*md -> m_data[x]) -> to(md -> m_option -> device());}
+    for (size_t x(0); x < md -> m_data.size(); ++x){(*md -> m_data[x]) -> to(md -> m_option -> device(), true);}
 }
 
 void model_template::set_optimizer(std::string name){
@@ -93,8 +93,7 @@ void model_template::initialize(optimizer_params_t* op_params){
 
     std::vector<torch::Tensor> params = {}; 
     for (size_t x(0); x < this -> m_data.size(); ++x){
-        torch::nn::Sequential sq = *this -> m_data[x];
-        std::vector<torch::Tensor> p_ = sq.ptr() -> parameters(); 
+        std::vector<torch::Tensor> p_ = (*this -> m_data[x]).ptr() -> parameters(); 
         params.insert(params.end(), p_.begin(), p_.end()); 
     }
 
@@ -163,3 +162,4 @@ bool model_template::restore_state(){
     this -> m_optim -> step();  
     return true; 
 }
+
