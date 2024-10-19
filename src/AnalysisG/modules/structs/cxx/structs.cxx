@@ -196,13 +196,20 @@ bool data_t::element(unsigned long long* el){
 
 void data_t::flush(){
     this -> flush_buffer();
-    if (this -> files_s){delete this -> files_s;}
-    if (this -> files_i){delete this -> files_i;}
-    if (this -> files_t){delete this -> files_t;}
+    for (size_t x(0); x < this -> files_t -> size(); ++x){
+        if (!(*this -> files_t)[x]){continue;}
+        delete (*this -> files_t)[x]; (*this -> files_t)[x] = nullptr; 
+    }
+    this -> leaf = nullptr; 
+    this -> branch = nullptr; 
+    this -> tree = nullptr; 
+    if (this -> files_s){delete this -> files_s; this -> files_s = nullptr;}
+    if (this -> files_i){delete this -> files_i; this -> files_i = nullptr;}
+    if (this -> files_t){delete this -> files_t; this -> files_t = nullptr;}
 }
 
 void data_t::initialize(){
-    TFile* c = this -> files_t -> at(this -> file_index); 
+    TFile* c = (*this -> files_t)[this -> file_index]; 
     c = c -> Open(c -> GetTitle()); 
 
     this -> tree        = (TTree*)c -> Get(this -> tree_name.c_str()); 
@@ -219,6 +226,7 @@ void data_t::initialize(){
     this -> index = 0; 
     c -> Close(); 
     delete c; 
+    (*this -> files_t)[this -> file_index] = nullptr; 
 } 
 
 bool data_t::next(){

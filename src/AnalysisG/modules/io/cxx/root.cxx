@@ -299,14 +299,9 @@ std::map<std::string, data_t*>* io::get_data(){
 void io::root_end(){
     if (!this -> iters){return;}
     std::map<std::string, data_t*>::iterator it = this -> iters -> begin(); 
-    for (; it != this -> iters -> end(); ++it){
-        data_t* v = it -> second;
-        v -> flush();
-        delete v; 
-    }
+    for (; it != this -> iters -> end(); ++it){it -> second -> flush(); delete it -> second;}
     this -> iters -> clear(); 
-    delete this -> iters; 
-    this -> iters = nullptr; 
+    delete this -> iters; this -> iters = nullptr; 
 }
 
 

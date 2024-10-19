@@ -14,7 +14,7 @@ std::vector<graph_t*> dataloader::get_random(int num){
 
 void dataloader::generate_kfold_set(int k){
     if (this -> k_fold_validation.size()){return;}
-    if (!this -> test_set -> size()){return;} //this -> shuffle(this -> data_index);}
+    if (!this -> test_set -> size()){return;}
 
     bool all = false;
     for (int x(0); x < k; ++x){

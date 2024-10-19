@@ -78,6 +78,7 @@ void graph_t::_purge_data(std::vector<torch::Tensor*>* data){
 }
 
 void graph_t::_purge_data(std::map<int, std::vector<torch::Tensor*>*>* data){
+    if (!data){return;}
     std::map<int, std::vector<torch::Tensor*>*>::iterator itr = data -> begin();
     for (; itr != data -> end(); ++itr){this -> _purge_data(itr -> second);}
     data -> clear(); 

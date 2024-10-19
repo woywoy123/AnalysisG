@@ -68,18 +68,17 @@ void analysis::build_events(){
         title = tmp[tmp.size()-1]; 
         for (; tx != evnts.end(); ++tx){
             if (!this -> tracer -> add_event(tx -> second, label)){continue;} 
-            delete tx -> second; 
-            tx -> second = nullptr; 
+            delete tx -> second; tx -> second = nullptr; 
         }
     }
-    th_ -> join(); 
-    delete th_; 
-    th_ = nullptr; 
 
+    th_prg[0] = nevents; 
     this -> reader -> root_end(); 
     delete this -> reader; 
     this -> reader = new io(); 
-    std::cout << std::endl;
 
+    th_ -> join(); 
+    delete th_; 
+    th_ = nullptr; 
     this -> success("Finished Building Events"); 
 }

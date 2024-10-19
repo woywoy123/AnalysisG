@@ -85,7 +85,7 @@ struct graph_t {
         std::string* graph_name = nullptr; 
 
         c10::DeviceType device = c10::kCPU;  
-        int in_use = -1; 
+        int in_use = 1; 
 
     private:
         friend graph_template; 

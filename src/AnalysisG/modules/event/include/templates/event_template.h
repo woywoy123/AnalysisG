@@ -68,8 +68,12 @@ class event_template: public tools
 
         template <typename G>
         void deregister_particle(std::map<std::string, G*>* object){
+            if (!object -> size()){return;}
             typename std::map<std::string, G*>::iterator itr = object -> begin(); 
-            for (; itr != object -> end(); ++itr){delete itr -> second;}
+            for (; itr != object -> end(); ++itr){
+                delete itr -> second; 
+                itr -> second = nullptr;
+            }
             object -> clear(); 
         }
 

@@ -32,12 +32,13 @@ void execution(
     ROOT::EnableImplicitMT(); 
  
     TFile* f = new TFile(output.c_str(), "UPDATE"); 
-    if (f -> IsZombie()){delete f; f = new TFile(output.c_str(), "RECREATE");}
+    if (!f){f = new TFile(output.c_str(), "RECREATE");}
+    else if (f -> IsZombie()){delete f; f = new TFile(output.c_str(), "RECREATE");}
 
     TTree* t = (TTree*)f -> Get("nominal"); 
     if (!t){t = new TTree("nominal", "data");}
-
     size_t l = t -> GetEntries();
+
     if (l == data -> size()){
         delete content; content = nullptr; 
         delete f; f = nullptr;  
@@ -51,7 +52,7 @@ void execution(
     if(!md -> restore_state()){
         delete content; content = nullptr; 
         delete md; md = nullptr; 
-        delete f; f = nullptr; 
+        delete t; t = nullptr; 
         (*prg) = data -> size(); 
         return; 
     }
@@ -115,6 +116,18 @@ void execution(
 }
 
 void analysis::build_inference(){
+    auto flush = [](std::vector<graph_t*>* grx) -> std::vector<graph_t*>* {
+        for (size_t x(0); x < grx -> size(); ++x){
+            (*grx)[x] -> _purge_all(); 
+            delete (*grx)[x]; 
+            (*grx)[x] = nullptr;
+        }
+        grx -> clear();
+        grx -> shrink_to_fit(); 
+        delete grx; 
+        return nullptr; 
+    }; 
+
     int threads_ = this -> m_settings.threads; 
     this -> success("+=============================+"); 
     this -> success("|Starting the model inference.|");
@@ -135,33 +148,46 @@ void analysis::build_inference(){
     std::thread* thr_ = nullptr; 
 
     this -> info("------------- Cloning Models -------------"); 
-    std::map<std::string, model_template*>::iterator itm; 
     std::map<std::string, bool> mute; 
     std::map<std::string, bool> device_tr; 
+    std::map<std::string, model_template*>::iterator itm; 
+    std::map<std::string, std::vector<graph_t*>*> batched_data; 
+
+    itm = this -> model_inference.begin(); 
+    for (; itm != this -> model_inference.end(); ++itm){
+        std::string dev_n = itm -> second -> device; 
+        if (device_tr[dev_n]){continue;}
+        device_tr[dev_n] = true;
+
+        this -> info("Transferring graphs to device: " + std::string(dev_n)); 
+        this -> loader -> datatransfer(itm -> second -> m_option, threads_); 
+        this -> success("Completed transfer");
+    }
+
 
     int para = 0; 
     its = dl -> begin(); 
     for (size_t x(0); x < th_prc.size(); ++x){
         int mdx = x%modls; 
         if (!mdx){itm = this -> model_inference.begin();}
-        if (x && !mdx){++its;}
-
-        if (!device_tr[itm -> second -> device]){
-            this -> info("Transferring graphs to device: " + std::string(itm -> second -> device)); 
-            torch::TensorOptions* dev = itm -> second -> m_option; 
-            this -> loader -> datatransfer(dev, threads_); 
-            this -> success("Completed transfer");
-            device_tr[itm -> second -> device] = true;
-        }
 
         model_settings_t mds; 
         model_template* md = itm -> second; 
         md -> clone_settings(&mds);
         md -> inference_mode = true; 
+        std::string dev_ = itm -> second -> device; 
 
         if (!mute[itm -> second-> name]){
             this -> success("Starting model: " + std::string(itm -> second -> name)); 
             mute[itm -> second -> name] = true; 
+        }
+
+        bool batched = this -> m_settings.batch_size > 1;
+
+        if (x && !mdx){
+            ++its;
+            //if (batched){flush(batched_data[dev_]);}
+            //batched_data[dev_] = nullptr; 
         }
 
         std::string fname = this -> m_settings.output_path + "/" + itm -> first + "/"; 
@@ -193,6 +219,12 @@ void analysis::build_inference(){
         addhoc["event_weight"] = its -> second[0] -> get_event_weight(md); 
         index = add_content(&addhoc, content, index); 
         index = add_content(&md -> m_p_undef, content, index); 
+
+
+//        if (batched && !batched_data[dev_]){
+//            batched_data[dev_] = this -> loader -> build_batch(&its -> second, itm -> second, nullptr);
+//        }
+//        else {batched_data[dev_] = &its -> second;}
 
         th_prc[x] = new std::thread(execution, md, mds, &its -> second, &th_prg[x], fname, content);
         ++itm; ++para; 

@@ -45,12 +45,15 @@ class dataloader:
 
         void restore_graphs(std::vector<std::string> paths, int threads); 
         void restore_graphs(std::string paths, int threads); 
+        void start_cuda_server(); 
     
     private:
         friend class analysis;
         settings_t* setting = nullptr; 
+        std::thread* cuda_mem = nullptr; 
 
         void cuda_memory_server(); 
+
         void clean_data_elements(
                 std::map<std::string, int>** data_map, 
                 std::vector<std::map<std::string, int>*>* loader_map

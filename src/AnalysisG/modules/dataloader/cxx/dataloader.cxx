@@ -1,3 +1,4 @@
+#include <c10/cuda/CUDACachingAllocator.h>
 #include <templates/model_template.h>
 #include <structs/report.h>
 #include <dataloader.h>
@@ -41,6 +42,8 @@ dataloader::~dataloader(){
 
     std::vector<graph_t*>* data_ = this -> data_set; 
     this -> data_set = nullptr;
+    if (this -> cuda_mem){this -> cuda_mem -> join(); delete this -> cuda_mem;}
+
     delete this -> data_index; 
     flush(data_); 
     delete data_; data_ = nullptr; 
@@ -80,8 +83,7 @@ void dataloader::clean_data_elements(
         hit = x; break;
     } 
     if (hit < 0){loader_map -> push_back(dd); return; }
-    delete *data_map; 
-    *data_map = (*loader_map)[hit];
+    delete *data_map; *data_map = (*loader_map)[hit];
 }
 
 void dataloader::extract_data(graph_t* gr){
@@ -156,10 +158,15 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* data, mode
             std::vector<graph_t*>* inpt, std::vector<graph_t*>* out, 
             model_template* mdl, size_t index)
     {
+        torch::TensorOptions* op = mdl -> m_option; 
+        for (size_t x(0); x < inpt -> size(); ++x){
+            (*inpt)[x] -> in_use = 1;
+            (*inpt)[x] -> transfer_to_device(op); 
+        }
+
         graph_t* tr = (*inpt)[0];  
         graph_t* gr = new graph_t(); 
 
-        torch::TensorOptions* op = mdl -> m_option; 
         int dev_ = (int)op -> device().index();  
         unsigned int len = inpt -> size();
 
@@ -200,11 +207,13 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* data, mode
         gr -> dev_batch_index[dev_]  = bx.clone().to(op -> device(), true);
         (*out)[index] = gr; 
         torch::cuda::synchronize(); 
+        for (size_t x(0); x < inpt -> size(); ++x){(*inpt)[x] -> in_use = 0;}
     }; 
 
 
     int k = mdl -> kfold-1; 
-    if (rep -> mode == "validation" && this -> batched_cache.count(k)){return this -> batched_cache[k];}
+    if (!rep){}
+    else if (rep -> mode == "validation" && this -> batched_cache.count(k)){return this -> batched_cache[k];}
     else if (rep -> mode == "evaluation" && this -> batched_cache.count(-1)){return this -> batched_cache[-1];}
 
     int thr = this -> setting -> threads; 
@@ -237,7 +246,97 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* data, mode
         delete th_[i]; th_[i] = nullptr; 
     }
 
-    if (rep -> mode == "validation"){this -> batched_cache[k] = out;}
+    if (!rep){}
+    else if (rep -> mode == "validation"){this -> batched_cache[k] = out;}
     else if (rep -> mode == "evaluation"){this -> batched_cache[-1] = out;}
     return out; 
 }
+
+void dataloader::cuda_memory_server(){
+    auto cuda_memory = [this](int device_i) -> bool {
+        CUdevice dev; 
+        cuDeviceGet(&dev, device_i); 
+
+        size_t free, total;
+        cuMemGetInfo(&free, &total);
+
+        double perc = 100.0*(total - free)/(double)total;
+        return perc > 95;
+    }; 
+
+    auto check_m = [this](std::map<int, std::vector<torch::Tensor>>* in_memory, bool purge, int device){
+        std::map<int, std::vector<torch::Tensor>>::iterator ix; 
+        for (ix = in_memory -> begin(); ix != in_memory -> end();){
+            if (ix -> first == device){++ix; continue;}
+            if (!purge){++ix; continue;}
+            ix -> second.clear(); 
+            ix = in_memory -> erase(++ix); 
+        }
+    }; 
+
+    auto check_t = [this](std::map<int, torch::Tensor>* in_memory, bool purge, int device){
+        std::map<int, torch::Tensor>::iterator ix; 
+        for (ix = in_memory -> begin(); ix != in_memory -> end();){
+            if (ix -> first == device){++ix; continue;}
+            if (!purge){++ix; continue;}
+            ix = in_memory -> erase(++ix); 
+        }
+    }; 
+
+    auto check_b = [this](std::map<int, bool>* in_memory, bool purge, int device){
+        std::map<int, bool>::iterator ix; 
+        for (ix = in_memory -> begin(); ix != in_memory -> end();){
+            if (ix -> first == device){++ix; continue;}
+            if (!purge){++ix; continue;}
+            ix = in_memory -> erase(++ix); 
+        }
+    }; 
+    
+    std::vector<graph_t*>* ptr = this -> data_set; 
+    for (size_t x(0); x < ptr -> size(); ++x){
+        std::this_thread::sleep_for(std::chrono::microseconds(10));
+        graph_t* gr = (*ptr)[x];
+        if (gr -> in_use == 1){continue;}
+        std::map<int, bool>::iterator itx = gr -> device_index.begin(); 
+        for (; itx != gr -> device_index.end(); ++itx){
+            int dev = itx -> first; 
+            if (!cuda_memory(dev)){continue;}
+            if (gr -> in_use == 1){break;}
+            check_m(&gr -> dev_data_graph  , true, dev); 
+            check_m(&gr -> dev_data_node   , true, dev); 
+            check_m(&gr -> dev_data_edge   , true, dev); 
+            check_m(&gr -> dev_truth_graph , true, dev); 
+            check_m(&gr -> dev_truth_node  , true, dev); 
+            check_m(&gr -> dev_truth_edge  , true, dev);
+            check_t(&gr -> dev_edge_index  , true, dev);  
+            check_t(&gr -> dev_batch_index , true, dev);  
+            check_t(&gr -> dev_event_weight, true, dev);  
+            check_b(&gr -> device_index    , true, dev);  
+            c10::cuda::CUDACachingAllocator::emptyCache();
+        }
+        gr -> in_use = 1; 
+    }
+}
+
+void dataloader::start_cuda_server(){
+    if (this -> cuda_mem){return;}
+    auto monitor = [this](){
+        this -> info("Starting CUDA server!");
+        while (this -> data_set){this -> cuda_memory_server();}
+        this -> info("Closing CUDA server!");
+    };
+    this -> cuda_mem = new std::thread(monitor);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

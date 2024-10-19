@@ -119,7 +119,7 @@ bool dataloader::dump_graphs(std::string path, int threads){
         delete wrt; 
         pth_verify.push_back(itf -> first); 
     }
-    for (size_t t(0); t < quant.size(); ++t){delete serials[t];}
+    for (size_t t(0); t < quant.size(); ++t){delete serials[t]; serials[t] = nullptr;}
     prg -> join(); delete prg; 
     for (size_t x(0); x < pth_verify.size(); ++x){
         std::string nx = pth_verify[x];  

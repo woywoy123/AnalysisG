@@ -162,6 +162,7 @@ void analysis::start(){
         if (!this -> loader -> data_set -> size()){return this -> failure("No Dataset was found for training. Aborting...");}
         this -> loader -> restore_dataset(this -> m_settings.training_dataset); 
         this -> build_dataloader(true); 
+        this -> loader -> start_cuda_server(); 
         this -> build_project(); 
         this -> build_model_session();  
     }
@@ -169,6 +170,7 @@ void analysis::start(){
     if (this -> model_inference.size()){
         if (!this -> loader -> data_set -> size()){return this -> failure("No Dataset was found for training. Aborting...");}
         this -> build_dataloader(false);
+        this -> loader -> start_cuda_server(); 
         this -> build_inference(); 
     }
 }
