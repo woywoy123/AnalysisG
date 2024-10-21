@@ -4,6 +4,34 @@
 #include <templates/event_template.h>
 #include <inference/gnn-particles.h>
 
+template <typename g>
+void reduce(element_t* el, std::string key, std::vector<g>* out){
+    std::vector<std::vector<g>> tmp;
+    if (!el -> get(key, &tmp)){return;}
+    (*out) = tmp[0]; 
+};
+
+template <typename g>
+void reduce(element_t* el, std::string key, g* out){
+    std::vector<g> tmp;
+    if (!el -> get(key, &tmp)){return;}
+    (*out) = tmp[0]; 
+};
+
+template <typename g>
+void reduce_2(element_t* el, std::string key, g* out){
+    std::vector<std::vector<g>> tmp;
+    if (!el -> get(key, &tmp)){return;}
+    (*out) = tmp[0][0]; 
+};
+
+template <typename g>
+void read(element_t* el, std::string key, std::vector<g>* out){
+    if (!el -> get(key, out)){return;}
+};
+
+
+
 class gnn_event: public event_template
 {
     public:
@@ -11,7 +39,7 @@ class gnn_event: public event_template
         ~gnn_event() override; 
 
         // ------- observables ------- //
-        long  num_bjets = 0; 
+        int   num_bjets = 0; 
         double num_jets = 0; 
         double num_leps = 0;  
 
@@ -40,7 +68,7 @@ class gnn_event: public event_template
         std::vector<int> t_edge_top = {}; 
 
         int t_ntops  = 0; 
-        int t_signal = 0; 
+        bool t_signal = 0; 
 
         event_template* clone() override; 
         void build(element_t* el) override; 

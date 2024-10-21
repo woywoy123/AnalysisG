@@ -37,7 +37,7 @@ void tensor_vector(std::vector<G>* trgt, std::vector<g>* chnks, std::vector<sign
 
 template <typename G, typename g>
 void tensor_to_vector(torch::Tensor* data, std::vector<G>* out, std::vector<signed long>* dims, g prim){
-    torch::Tensor tens = data -> view({-1}).to(torch::kCPU, true); 
+    torch::Tensor tens = data -> reshape(-1).to(torch::kCPU, true); 
     torch::cuda::synchronize(); 
     typename std::vector<g> linear(tens.data_ptr<g>(), tens.data_ptr<g>() + tens.numel()); 
     tensor_vector(out, &linear, dims, dims -> size()-1); 
@@ -50,6 +50,7 @@ void add_to_dict(std::vector<std::vector<float>>* dummy);
 void add_to_dict(std::vector<std::vector<double>>* dummy); 
 void add_to_dict(std::vector<std::vector<long>>* dummy); 
 void add_to_dict(std::vector<std::vector<int>>* dummy); 
+void add_to_dict(std::vector<std::vector<bool>>* dummy); 
 
 void add_to_dict(std::vector<float>* dummy); 
 void add_to_dict(std::vector<double>* dummy); 
@@ -61,12 +62,14 @@ struct variable_t {
     public:
         void flush();
         void process(torch::Tensor* data, std::string* varname, TTree* tr);
+        std::string variable_name = ""; 
 
     private: 
         std::vector<std::vector<float>>  vvf = {}; 
         std::vector<std::vector<double>> vvd = {}; 
         std::vector<std::vector<long>>   vvl = {}; 
         std::vector<std::vector<int>>    vvi = {}; 
+        std::vector<std::vector<bool>>   vvb = {}; 
 
         std::vector<float>               vf = {}; 
         std::vector<double>              vd = {}; 
@@ -74,8 +77,8 @@ struct variable_t {
         std::vector<int>                 vi = {}; 
         std::vector<bool>                vb = {}; 
 
-        TBranch*                           tb = nullptr; 
-        TTree*                             tt = nullptr; 
+        TBranch* tb = nullptr; 
+        TTree*   tt = nullptr; 
 
         template <typename g, typename p>
         void add_data(std::vector<g>* type, torch::Tensor* data, std::vector<signed long>* s, std::string* varname, p prim){

@@ -5,6 +5,7 @@ void add_to_dict(std::vector<std::vector<float>>* dummy){gInterpreter -> Generat
 void add_to_dict(std::vector<std::vector<double>>* dummy){gInterpreter -> GenerateDictionary("vector<vector<double>>", "vector");}
 void add_to_dict(std::vector<std::vector<long>>* dummy){gInterpreter -> GenerateDictionary("vector<vector<long>>", "vector");}
 void add_to_dict(std::vector<std::vector<int>>* dummy){gInterpreter -> GenerateDictionary("vector<vector<int>>", "vector");}
+void add_to_dict(std::vector<std::vector<bool>>* dummy){gInterpreter -> GenerateDictionary("vector<vector<bool>>", "vector");}
 
 void add_to_dict(std::vector<float>* dummy){gInterpreter -> GenerateDictionary("vector<float>", "vector");}
 void add_to_dict(std::vector<double>* dummy){gInterpreter -> GenerateDictionary("vector<double>", "vector");}
@@ -21,8 +22,7 @@ std::vector<signed long> tensor_size(torch::Tensor* inpt){
 }
 
 void variable_t::process(torch::Tensor* data, std::string* varname, TTree* tr){
-    if (!this -> tt){this -> tt = tr;}
-
+    if (!this -> tt){this -> tt = tr; this -> variable_name = *varname;}
     std::vector<signed long> s = tensor_size(data); 
 
     // type and dim switch for the tensors
@@ -58,9 +58,18 @@ void variable_t::process(torch::Tensor* data, std::string* varname, TTree* tr){
         return this -> add_data(&this -> vi, data, &s, varname, int(0)); 
     }
 
+    if (s.size() == 2 && data -> dtype() == torch::kInt){
+        return this -> add_data(&this -> vvi, data, &s, varname, int(0)); 
+    }
+
     if (s.size() == 1 && data -> dtype() == torch::kBool){
         return this -> add_data(&this -> vb, data, &s, varname, bool(0)); 
     }
+
+    if (s.size() == 2 && data -> dtype() == torch::kBool){
+        return this -> add_data(&this -> vvb, data, &s, varname, bool(0)); 
+    }
+
 
     std::cout << "DIM: " << s.size() << std::endl;
     std::cout << "Tensor Type: " << data -> dtype() << std::endl; 
@@ -74,6 +83,7 @@ void variable_t::flush(){
     if (this -> vvd.size()){this -> vvd.clear(); return; }
     if (this -> vvl.size()){this -> vvl.clear(); return; }
     if (this -> vvi.size()){this -> vvi.clear(); return; }
+    if (this -> vvb.size()){this -> vvb.clear(); return; }
 
     if (this -> vf.size()){this -> vf.clear(); return; }
     if (this -> vd.size()){this -> vd.clear(); return; }
@@ -81,12 +91,3 @@ void variable_t::flush(){
     if (this -> vi.size()){this -> vi.clear(); return; }
     if (this -> vb.size()){this -> vb.clear(); return; }
 }
-
-
-
-
-
-
-
-
-

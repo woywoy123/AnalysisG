@@ -15,16 +15,22 @@
 #include <vector>
 
 // -------------------------- If you were directed here, simply add the data type within this section ----------------- //
-enum class data_enum {vvf, vvd, vvl, vvi, vd, vf, vl, vi, vc, vb, d, f, l, i, ull, b}; 
+enum class data_enum {
+    vvf, vvd, vvl, vvi, vvb,
+    vd, vf, vl, vi, vc, vb, 
+    d, f, l, i, ull, b              // <---- (1). add the type here v -- vector, vv -- vector<vector>, ....
+}; 
 
 struct data_t {
     public:
         data_enum type; 
 
+        // ------------- (2). add the data type here -------------- //
         std::vector<std::vector<std::vector<float>>>*  r_vvf = nullptr; 
         std::vector<std::vector<std::vector<double>>>* r_vvd = nullptr; 
         std::vector<std::vector<std::vector<long>>>*   r_vvl = nullptr; 
         std::vector<std::vector<std::vector<int>>>*    r_vvi = nullptr; 
+        std::vector<std::vector<std::vector<bool>>>*    r_vvb = nullptr; 
 
         std::vector<std::vector<long>>*   r_vl = nullptr; 
         std::vector<std::vector<double>>* r_vd = nullptr; 
@@ -40,10 +46,12 @@ struct data_t {
         std::vector<int>*    r_i = nullptr; 
         std::vector<bool>*   r_b = nullptr; 
 
+        // ------------- (3). add the data type interface -------------- //
         bool element(std::vector<std::vector<float>>* el);
         bool element(std::vector<std::vector<double>>* el);
         bool element(std::vector<std::vector<long>>* el);
         bool element(std::vector<std::vector<int>>* el);
+        bool element(std::vector<std::vector<bool>>* el);
 
         bool element(std::vector<float>* el); 
         bool element(std::vector<double>* el); 

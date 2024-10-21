@@ -63,10 +63,8 @@ class selection_template: public tools
             }
 
             std::string hash_ = prt -> hash; 
-            bool h = this -> garbage.count(hash_); 
-            if (!h){(*out) = prt; this -> garbage[hash_] = prt; return;}
-            (*out) = this -> garbage[hash_]; 
-            delete prt; 
+            this -> garbage[hash_].push_back(prt); 
+            (*out) = prt;  
         }
 
         template <typename g>
@@ -131,7 +129,7 @@ class selection_template: public tools
         friend container;
         event_template* m_event = nullptr; 
         void merger(selection_template* sl2); 
-        std::map<std::string, particle_template*> garbage = {}; 
+        std::map<std::string, std::vector<particle_template*>> garbage = {}; 
 }; 
 
 

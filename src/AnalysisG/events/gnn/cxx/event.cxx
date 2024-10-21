@@ -2,22 +2,25 @@
 
 gnn_event::gnn_event(){
     this -> name = "gnn_event"; 
+
     // ------ observables ------- //
-    this -> add_leaf("signal"    , "is_res_score"); 
-    this -> add_leaf("ntops"     , "ntops_score"); 
-    this -> add_leaf("res_edge"  , "res_edge_score"); 
-    this -> add_leaf("top_edge"  , "top_edge_score"); 
-    this -> add_leaf("edge_index", "edge_index");
-    this -> add_leaf("num_jets"  , "num_jets");  
-    this -> add_leaf("num_bjets" , "num_bjets");  
-    this -> add_leaf("num_leps"  , "num_leps");  
+    this -> add_leaf("signal"    , "extra_is_res_score"); 
+    this -> add_leaf("ntops"     , "extra_ntops_score"); 
+    this -> add_leaf("res_edge"  , "extra_res_edge_score"); 
+    this -> add_leaf("top_edge"  , "extra_top_edge_score"); 
     this -> add_leaf("weight"    , "event_weight");
+    this -> add_leaf("edge_index", "edge_index");
+    this -> add_leaf("num_jets"  , "extra_num_jets");  
+    this -> add_leaf("num_bjets" , "extra_num_bjets");  
+    this -> add_leaf("num_leps"  , "extra_num_leps"); 
+    this -> add_leaf("met"       , "g_i_met");
+    this -> add_leaf("phi"       , "g_i_phi");
 
     // ------ truth features ------ //
-    this -> add_leaf("truth_ntops"   , "truth_ntops"   ); 
-    this -> add_leaf("truth_signal"  , "truth_signal"  ); 
-    this -> add_leaf("truth_res_edge", "truth_res_edge"); 
-    this -> add_leaf("truth_top_edge", "truth_top_edge"); 
+    this -> add_leaf("truth_ntops"   , "extra_truth_ntops"   ); 
+    this -> add_leaf("truth_signal"  , "extra_truth_signal"  ); 
+    this -> add_leaf("truth_res_edge", "extra_truth_res_edge"); 
+    this -> add_leaf("truth_top_edge", "extra_truth_top_edge"); 
 
     this -> trees = {"nominal"}; 
     this -> register_particle(&this -> m_event_particles);
@@ -33,37 +36,33 @@ gnn_event::~gnn_event(){
 event_template* gnn_event::clone(){return (event_template*)new gnn_event();}
 
 void gnn_event::build(element_t* el){
-    el -> get("ntops"     , &this -> ntops_scores); 
-    el -> get("signal"    , &this -> signal_scores); 
-    el -> get("res_edge"  , &this -> edge_res_scores); 
-    el -> get("top_edge"  , &this -> edge_top_scores); 
-    el -> get("edge_index", &this -> m_edge_index);
+    auto lamb_vvi = [](element_t* el, std::string key, std::vector<std::vector<int>>* out){
+        std::vector<std::vector<int>> tmp; 
+        if (!el -> get(key, &tmp)){return;}
+        out -> assign(2, {}); 
+        for (size_t x(0); x < tmp.size(); ++x){
+            (*out)[0].push_back(tmp[x][0]); 
+            (*out)[1].push_back(tmp[x][1]); 
+        }
+    };
 
-    std::vector<double> t_; 
-    el -> get("num_jets", &t_); 
-    this -> num_jets = t_[0]; 
+    reduce_2(el, "weight"      , &this -> weight); 
+    lamb_vvi(el, "edge_index"  , &this -> m_edge_index);
 
-    el -> get("num_leps", &t_); 
-    this -> num_leps = t_[0]; 
+    reduce(el, "signal", &this -> signal_scores); 
+    read(el, "res_edge", &this -> edge_res_scores); 
+    read(el, "top_edge", &this -> edge_top_scores); 
+   
+    reduce(el, "ntops"      , &this -> ntops_scores); 
+    reduce_2(el, "num_jets" , &this -> num_jets); 
+    reduce_2(el, "num_leps" , &this -> num_leps); 
+    reduce_2(el, "num_bjets", &this -> num_bjets); 
 
-    el -> get("weight", &t_);  
-    this -> weight = t_[0]; 
+    reduce_2(el, "truth_ntops" , &this -> t_ntops);  
+    reduce_2(el, "truth_signal", &this -> t_signal);  
 
-    std::vector<long> x_; 
-    el -> get("num_bjets", &x_);
-    this -> num_bjets = x_[0]; 
-
-    // truth features used to create ROC curves
-    std::vector<int> i_;
-    el -> get("truth_ntops", &i_); 
-    this -> t_ntops = i_[0]; 
-
-    std::vector<bool> b_; 
-    el -> get("truth_signal", &b_); 
-    this -> t_signal = b_[0]; 
-
-    el -> get("truth_res_edge", &this -> t_edge_res); 
-    el -> get("truth_top_edge", &this -> t_edge_top); 
+    reduce(el, "truth_res_edge", &this -> t_edge_res); 
+    reduce(el, "truth_top_edge", &this -> t_edge_top); 
 }
 
 void gnn_event::CompileEvent(){
@@ -138,7 +137,6 @@ void gnn_event::CompileEvent(){
 
 
     std::map<int, particle_gnn*> particle = this -> sort_by_index(&this -> m_event_particles);
-
     this -> p_signal = this -> signal_scores[0] < this -> signal_scores[1];  
     this -> s_signal = this -> signal_scores[1]; 
     this -> s_ntops  = this -> max(&this -> ntops_scores); 
@@ -185,7 +183,7 @@ void gnn_event::CompileEvent(){
 
         std::map<std::string, particle_template*> ch = t -> children; 
         std::map<std::string, particle_template*>::iterator itc = ch.begin(); 
-        for (; itc != ch.end(); ++itc){t -> n_leps += ((particle_gnn*)itc -> second) -> is_lep;}
+        for (; itc != ch.end(); ++itc){t -> n_leps += ((particle_gnn*)itc -> second) -> lep;}
         t -> n_nodes = ch.size(); 
     }
 
@@ -198,7 +196,7 @@ void gnn_event::CompileEvent(){
 
         std::map<std::string, particle_template*> ch = t -> children; 
         std::map<std::string, particle_template*>::iterator itc = ch.begin(); 
-        for (; itc != ch.end(); ++itc){t -> n_leps += ((particle_gnn*)itc -> second) -> is_lep;}
+        for (; itc != ch.end(); ++itc){t -> n_leps += ((particle_gnn*)itc -> second) -> lep;}
         t -> n_nodes = ch.size(); 
     }
 
@@ -215,7 +213,7 @@ void gnn_event::CompileEvent(){
 
         std::map<std::string, particle_template*> ch = t -> children; 
         std::map<std::string, particle_template*>::iterator itc = ch.begin(); 
-        for (; itc != ch.end(); ++itc){t -> n_leps += ((particle_gnn*)itc -> second) -> is_lep;}
+        for (; itc != ch.end(); ++itc){t -> n_leps += ((particle_gnn*)itc -> second) -> lep;}
         t -> n_nodes = ch.size(); 
     }
 
@@ -230,7 +228,7 @@ void gnn_event::CompileEvent(){
 
         std::map<std::string, particle_template*> ch = t -> children; 
         std::map<std::string, particle_template*>::iterator itc = ch.begin(); 
-        for (; itc != ch.end(); ++itc){t -> n_leps += ((particle_gnn*)itc -> second) -> is_lep;}
+        for (; itc != ch.end(); ++itc){t -> n_leps += ((particle_gnn*)itc -> second) -> lep;}
         t -> n_nodes = ch.size(); 
      }
 

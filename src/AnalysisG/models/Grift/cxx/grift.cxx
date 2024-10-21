@@ -265,24 +265,24 @@ void grift::forward(graph_t* data){
 
     this -> prediction_extra("top_edge_score", top_edge.softmax(-1));
     this -> prediction_extra("res_edge_score", res_edge.softmax(-1));
-    this -> prediction_extra("ntops_score"   , tmlp.softmax(-1).view({-1})); 
-    this -> prediction_extra("is_res_score"  , isres_.softmax(-1).view({-1})); 
+    this -> prediction_extra("ntops_score"   , tmlp.softmax(-1)); 
+    this -> prediction_extra("is_res_score"  , isres_.softmax(-1)); 
 
-    this -> prediction_extra("is_lep"        , is_lep -> view({-1})); 
-    this -> prediction_extra("num_leps"      , num_leps -> view({-1})); 
-    this -> prediction_extra("num_jets"      , num_jets -> view({-1})); 
-    this -> prediction_extra("num_bjets"     , num_bjet.view({-1})); 
+    this -> prediction_extra("is_lep"        , *is_lep); 
+    this -> prediction_extra("num_leps"      , *num_leps); 
+    this -> prediction_extra("num_jets"      , *num_jets); 
+    this -> prediction_extra("num_bjets"     , num_bjets_); 
     if (!this -> is_mc){return;}
 
-    torch::Tensor ntops_t  = data -> get_truth_graph("ntops"  , this) -> view({-1}); 
-    torch::Tensor signa_t  = data -> get_truth_graph("signal" , this) -> view({-1});
-    torch::Tensor r_edge_t = data -> get_truth_edge("res_edge", this) -> view({-1}); 
-    torch::Tensor t_edge_t = data -> get_truth_edge("top_edge", this) -> view({-1}); 
+    torch::Tensor* ntops_t  = data -> get_truth_graph("ntops"  , this); 
+    torch::Tensor* signa_t  = data -> get_truth_graph("signal" , this);
+    torch::Tensor* r_edge_t = data -> get_truth_edge("res_edge", this); 
+    torch::Tensor* t_edge_t = data -> get_truth_edge("top_edge", this); 
 
-    this -> prediction_extra("truth_ntops"   , ntops_t); 
-    this -> prediction_extra("truth_signal"  , signa_t); 
-    this -> prediction_extra("truth_res_edge", r_edge_t); 
-    this -> prediction_extra("truth_top_edge", t_edge_t); 
+    this -> prediction_extra("truth_ntops"   , *ntops_t); 
+    this -> prediction_extra("truth_signal"  , *signa_t); 
+    this -> prediction_extra("truth_res_edge", *r_edge_t); 
+    this -> prediction_extra("truth_top_edge", *t_edge_t); 
 }
 
 grift::~grift(){}

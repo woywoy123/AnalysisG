@@ -3,12 +3,21 @@
 
 #include <templates/particle_template.h>
 
+template <typename g>
+void reduce(element_t* el, std::string key, std::vector<g>* out);
+
+template <typename g>
+void reduce(element_t* el, std::string key, g* out);
+
+template <typename g>
+void read(element_t* el, std::string key, std::vector<g>* out);
+
 class particle_gnn: public particle_template
 {
     public:
         particle_gnn(); 
         ~particle_gnn() override; 
-        bool is_lep = false; 
+        bool lep = false; 
 
         particle_template* clone() override; 
         void build(std::map<std::string, particle_template*>* prt, element_t* el) override; 

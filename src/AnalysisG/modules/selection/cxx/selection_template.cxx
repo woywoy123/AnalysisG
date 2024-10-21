@@ -24,8 +24,10 @@ selection_template::selection_template(){
 }
 
 selection_template::~selection_template(){
-    std::map<std::string, particle_template*>::iterator itr = this -> garbage.begin();
-    for (; itr != this -> garbage.end(); ++itr){delete itr -> second;}
+    std::map<std::string, std::vector<particle_template*>>::iterator itr = this -> garbage.begin();
+    for (; itr != this -> garbage.end(); ++itr){
+        for (size_t x(0); x < itr -> second.size(); ++x){delete itr -> second[x];}
+    }
     this -> garbage.clear();
 }
 
@@ -53,7 +55,8 @@ selection_template* selection_template::build(event_template* ev){
     sel -> m_event  = ev; 
     sel -> data     = ev -> data; 
     sel -> name     = name; 
-    sel -> filename = ev -> filename; 
+    sel -> weight   = ev -> weight; 
+    sel -> filename = ev -> filename;
     return sel; 
 }
 

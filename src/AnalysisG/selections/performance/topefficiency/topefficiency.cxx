@@ -72,7 +72,9 @@ std::string topefficiency::region(double pt_p, double eta_p){
 std::string topefficiency::decaymode(std::vector<top*> ev_tops){
     std::string out = ""; 
     std::map<std::string, int> decay_mode; 
-    for (size_t x(0); x < ev_tops.size(); ++x){decay_mode[(ev_tops[x] -> n_leps) ? "l" : "h"] += 1;}
+    for (size_t x(0); x < ev_tops.size(); ++x){
+        decay_mode[(ev_tops[x] -> n_leps) ? "l" : "h"] += 1;
+    }
 
     std::map<std::string, int>::iterator itx; 
     for (itx = decay_mode.begin(); itx != decay_mode.end(); ++itx){

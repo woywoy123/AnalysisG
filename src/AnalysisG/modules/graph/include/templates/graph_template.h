@@ -66,6 +66,13 @@ struct graph_t {
             return &this -> dev_batch_index[(int)mdl -> m_option -> device().index()]; 
         }
 
+        template <typename g>
+        torch::Tensor* get_batched_events(g* mdl){
+            return &this -> dev_batched_events[(int)mdl -> m_option -> device().index()]; 
+        }
+
+
+
         void add_truth_graph(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
         void add_truth_node(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
         void add_truth_edge(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
@@ -79,6 +86,7 @@ struct graph_t {
         int       num_nodes = 0; 
         long    event_index = 0; 
         double event_weight = 1; 
+        std::vector<long> batched_events = {}; 
 
         std::string* hash       = nullptr; 
         std::string* filename   = nullptr; 
@@ -119,7 +127,8 @@ struct graph_t {
 
         std::map<int, torch::Tensor> dev_edge_index   = {}; 
         std::map<int, torch::Tensor> dev_batch_index  = {}; 
-        std::map<int, torch::Tensor> dev_event_weight = {}; 
+        std::map<int, torch::Tensor> dev_event_weight = {};
+        std::map<int, torch::Tensor> dev_batched_events = {};  
         std::map<int, bool> device_index = {}; 
 
         void meta_serialize(std::map<std::string, int>* data, std::string* out); 

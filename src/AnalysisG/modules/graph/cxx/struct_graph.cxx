@@ -106,16 +106,19 @@ void graph_t::transfer_to_device(torch::TensorOptions* dev){
     this -> _transfer_to_device(&this -> dev_truth_node[dev_] , this -> truth_node , dev); 
     this -> _transfer_to_device(&this -> dev_truth_edge[dev_] , this -> truth_edge , dev); 
 
+    this -> batched_events = std::vector<long>({0}); 
     std::vector<long> bc(this -> num_nodes, 0);
     std::vector<double> evw = {this -> event_weight}; 
     torch::TensorOptions op = torch::TensorOptions(torch::kCPU); 
-
+    
     torch::Tensor dt = build_tensor(&evw, torch::kDouble, double(), &op);
     torch::Tensor bx = build_tensor(&bc, torch::kLong, long(), &op); 
+    torch::Tensor bi = build_tensor(&this -> batched_events, torch::kLong, long(), &op); 
 
-    this -> dev_event_weight[dev_] = dt.clone().to(dev -> device(), true); 
-    this -> dev_batch_index[dev_]  = bx.clone().to(dev -> device(), true); 
-    this -> dev_edge_index[dev_]   = this -> edge_index -> to(dev -> device(), true); 
+    this -> dev_event_weight[dev_]   = dt.clone().to(dev -> device(), true); 
+    this -> dev_batch_index[dev_]    = bx.clone().to(dev -> device(), true); 
+    this -> dev_batched_events[dev_] = bi.clone().to(dev -> device(), true);
+    this -> dev_edge_index[dev_]     = this -> edge_index -> to(dev -> device(), true); 
     this -> device_index[dev_] = true; 
     this -> device = dev_in;
     torch::cuda::synchronize(); 

@@ -2,11 +2,11 @@
 
 particle_gnn::particle_gnn(){
     this -> type = "gnn-particle"; 
-    this -> add_leaf("pt", "pt"); 
-    this -> add_leaf("eta", "eta"); 
-    this -> add_leaf("phi", "phi"); 
-    this -> add_leaf("energy", "energy"); 
-    this -> add_leaf("lep", "is_lep"); 
+    this -> add_leaf("pt", "n_i_pt"); 
+    this -> add_leaf("eta", "n_i_eta"); 
+    this -> add_leaf("phi", "n_i_phi"); 
+    this -> add_leaf("energy", "n_i_energy"); 
+    this -> add_leaf("lep", "extra_is_lep"); 
 }
 
 particle_gnn::~particle_gnn(){}
@@ -20,7 +20,7 @@ void particle_gnn::build(std::map<std::string, particle_template*>* prt, element
     el -> get("phi"   , &_phi); 
     el -> get("energy", &_energy); 
 
-    std::vector<int> _is_lep, _is_b; 
+    std::vector<std::vector<int>> _is_lep, _is_b; 
     el -> get("lep", &_is_lep); 
     for (int x(0); x < _energy.size(); ++x){
         particle_gnn* p = new particle_gnn(); 
@@ -29,7 +29,7 @@ void particle_gnn::build(std::map<std::string, particle_template*>* prt, element
         p -> eta        = _eta[x][0]; 
         p -> phi        = _phi[x][0]; 
         p -> e          = _energy[x][0]; 
-        p -> is_lep     = _is_lep[x]; 
+        p -> lep        = _is_lep[x][0]; 
         (*prt)[std::string(p -> hash)] = p; 
     }
 }

@@ -1,4 +1,5 @@
 #include <c10/cuda/CUDACachingAllocator.h>
+#include <chrono>
 #include <templates/model_template.h>
 #include <structs/report.h>
 #include <dataloader.h>
@@ -196,20 +197,24 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* data, mode
             for (size_t t(0); t < grx -> num_nodes; ++t){batch_index.push_back(x);}
             _event_weight.push_back(*grx -> get_event_weight(mdl)); 
             offset_nodes += grx -> num_nodes; 
+            gr -> batched_events.push_back(x); 
         }
         gr -> num_nodes = offset_nodes; 
         gr -> device = op -> device().type(); 
+
+        torch::TensorOptions opx = torch::TensorOptions(torch::kCPU).dtype(torch::kLong); 
+        torch::Tensor bx = torch::from_blob(batch_index.data(), {offset_nodes}, opx); 
+        torch::Tensor bi = torch::from_blob(gr -> batched_events.data(), {(long)inpt -> size()}, opx); 
+
+        gr -> dev_edge_index[dev_]     = torch::Tensor(torch::cat(_edge_index, {-1})); 
+        gr -> dev_event_weight[dev_]   = torch::Tensor(torch::cat(_event_weight, {0})); 
+        gr -> dev_batch_index[dev_]    = bx.clone().to(op -> device(), true);
+        gr -> dev_batched_events[dev_] = bi.clone().to(op -> device(), true); 
         gr -> device_index[dev_] = true; 
 
-        torch::Tensor bx = torch::from_blob(batch_index.data(), {offset_nodes}, torch::TensorOptions(torch::kCPU).dtype(torch::kLong)); 
-        gr -> dev_edge_index[dev_]   = torch::Tensor(torch::cat(_edge_index, {-1})); 
-        gr -> dev_event_weight[dev_] = torch::Tensor(torch::cat(_event_weight, {0})); 
-        gr -> dev_batch_index[dev_]  = bx.clone().to(op -> device(), true);
         (*out)[index] = gr; 
         torch::cuda::synchronize(); 
-        for (size_t x(0); x < inpt -> size(); ++x){(*inpt)[x] -> in_use = 0;}
     }; 
-
 
     int k = mdl -> kfold-1; 
     if (!rep){}
@@ -293,8 +298,8 @@ void dataloader::cuda_memory_server(){
     }; 
     
     std::vector<graph_t*>* ptr = this -> data_set; 
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
     for (size_t x(0); x < ptr -> size(); ++x){
-        std::this_thread::sleep_for(std::chrono::microseconds(10));
         graph_t* gr = (*ptr)[x];
         if (gr -> in_use == 1){continue;}
         std::map<int, bool>::iterator itx = gr -> device_index.begin(); 

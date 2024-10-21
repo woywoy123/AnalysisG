@@ -23,13 +23,16 @@ bool element_t::boundary(){
 }
 
 // -------------------------- If you were directed here, simply add the data type within this section ----------------- //
+// also make sure to checkout the structs/include/structs/element.h file! 
 
 void data_t::flush_buffer(){
+    // ------------ (7.) Add the buffer flush -------------------- //
     switch (this -> type){
-        case data_enum::vvf: this -> flush_buffer(&this -> r_vvf); return; 
+        case data_enum::vvf: this -> flush_buffer(&this -> r_vvf); return;  
         case data_enum::vvd: this -> flush_buffer(&this -> r_vvd); return; 
         case data_enum::vvl: this -> flush_buffer(&this -> r_vvl); return; 
         case data_enum::vvi: this -> flush_buffer(&this -> r_vvi); return; 
+        case data_enum::vvb: this -> flush_buffer(&this -> r_vvb); return; 
 
         case data_enum::vl:  this -> flush_buffer(&this -> r_vl ); return; 
         case data_enum::vd:  this -> flush_buffer(&this -> r_vd ); return; 
@@ -49,11 +52,13 @@ void data_t::flush_buffer(){
 }
 
 void data_t::fetch_buffer(){
+    // ------------ (8.) Add the buffer fletch -------------------- //
     switch (this -> type){
         case data_enum::vvf: return this -> fetch_buffer(&this -> r_vvf);
         case data_enum::vvd: return this -> fetch_buffer(&this -> r_vvd);
         case data_enum::vvl: return this -> fetch_buffer(&this -> r_vvl);
         case data_enum::vvi: return this -> fetch_buffer(&this -> r_vvi);
+        case data_enum::vvb: return this -> fetch_buffer(&this -> r_vvb);
 
         case data_enum::vl:  return this -> fetch_buffer(&this -> r_vl );
         case data_enum::vd:  return this -> fetch_buffer(&this -> r_vd );
@@ -74,10 +79,12 @@ void data_t::fetch_buffer(){
 
 void data_t::string_type(){
 
+    // -------------------- (0). add the routing -------------- //
     if (this -> leaf_type == "vector<vector<float> >"){ this -> type = data_enum::vvf; return;}
     if (this -> leaf_type == "vector<vector<double> >"){this -> type = data_enum::vvd; return;}
     if (this -> leaf_type == "vector<vector<long> >"){  this -> type = data_enum::vvl; return;}
     if (this -> leaf_type == "vector<vector<int> >"){   this -> type = data_enum::vvi; return;}
+    if (this -> leaf_type == "vector<vector<bool> >"){  this -> type = data_enum::vvb; return;}
 
     if (this -> leaf_type == "vector<float>"){ this -> type = data_enum::vf; return;}
     if (this -> leaf_type == "vector<long>"){  this -> type = data_enum::vl; return;}
@@ -96,6 +103,8 @@ void data_t::string_type(){
     abort(); 
 }
 
+
+// -------------- (5). add the data type interace ---------- //
 bool data_t::element(std::vector<std::vector<float>>* el){
     if (!this -> r_vvf){return false;}
     (*el) = (*this -> r_vvf)[this -> index]; 
@@ -117,6 +126,12 @@ bool data_t::element(std::vector<std::vector<long>>* el){
 bool data_t::element(std::vector<std::vector<int>>* el){
     if (!this -> r_vvi){return false;} 
     (*el) = (*this -> r_vvi)[this -> index];
+    return true; 
+}
+
+bool data_t::element(std::vector<std::vector<bool>>* el){
+    if (!this -> r_vvb){return false;} 
+    (*el) = (*this -> r_vvb)[this -> index];
     return true; 
 }
 
