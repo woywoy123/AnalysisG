@@ -141,7 +141,17 @@ bool dataloader::dump_graphs(std::string path, int threads){
     }
 
     std::map<std::string, graph_t*>::iterator itr = restored -> begin(); 
-    for (; itr != restored -> end(); ++itr){itr -> second -> _purge_all(); delete itr -> second;}
+    for (; itr != restored -> end(); ++itr){
+        graph_t* grs = itr -> second; 
+        grs -> _purge_all(); 
+        delete grs -> data_map_graph ; grs -> data_map_graph  = nullptr; 
+        delete grs -> data_map_node  ; grs -> data_map_node   = nullptr; 
+        delete grs -> data_map_edge  ; grs -> data_map_edge   = nullptr; 
+        delete grs -> truth_map_graph; grs -> truth_map_graph = nullptr; 
+        delete grs -> truth_map_node ; grs -> truth_map_node  = nullptr; 
+        delete grs -> truth_map_edge ; grs -> truth_map_edge  = nullptr; 
+        delete grs; itr -> second = nullptr; 
+    }
     restored -> clear(); 
     delete restored; 
 

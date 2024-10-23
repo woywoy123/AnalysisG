@@ -41,7 +41,7 @@ herr_t io::file_info(hid_t loc_id, const char* name, const H5L_info_t* linfo, vo
     hid_t data;
     std::vector<std::string>* names = reinterpret_cast<std::vector<std::string>*>(opdata);
     data = H5Dopen2(loc_id, name, H5P_DEFAULT);
-    names -> push_back(std::string(name)); 
+    names -> push_back(std::string(name));
     H5Dclose(data);
     return 0;
 }

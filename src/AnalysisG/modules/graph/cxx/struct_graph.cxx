@@ -41,11 +41,18 @@ void graph_t::_purge_all(){
     this -> _purge_data(this -> data_graph); 
     this -> _purge_data(this -> data_node); 
     this -> _purge_data(this -> data_edge); 
-    if (this -> edge_index){delete this -> edge_index;}
 
     this -> _purge_data(this -> truth_graph); 
     this -> _purge_data(this -> truth_node); 
     this -> _purge_data(this -> truth_edge); 
+
+    if (this -> data_graph ){delete this -> data_graph;  this -> data_graph  = nullptr;}
+    if (this -> data_node  ){delete this -> data_node;   this -> data_node   = nullptr;} 
+    if (this -> data_edge  ){delete this -> data_edge;   this -> data_edge   = nullptr;}
+    if (this -> truth_graph){delete this -> truth_graph; this -> truth_graph = nullptr;}
+    if (this -> truth_node ){delete this -> truth_node;  this -> truth_node  = nullptr;}
+    if (this -> truth_edge ){delete this -> truth_edge;  this -> truth_edge  = nullptr;}
+    if (this -> edge_index ){delete this -> edge_index;  this -> edge_index  = nullptr;}
 
     this -> dev_data_graph.clear(); 
     this -> dev_data_node.clear(); 
@@ -74,7 +81,7 @@ void graph_t::_purge_data(std::map<int, torch::Tensor*>* data){
 
 void graph_t::_purge_data(std::vector<torch::Tensor*>* data){
     if (!data){return;}
-    for (size_t x(0); x < data -> size(); ++x){delete data -> at(x);}
+    for (size_t x(0); x < data -> size(); ++x){delete (*data)[x]; (*data)[x] = nullptr;}
 }
 
 void graph_t::_purge_data(std::map<int, std::vector<torch::Tensor*>*>* data){

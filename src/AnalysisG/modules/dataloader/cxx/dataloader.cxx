@@ -230,16 +230,15 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* data, mode
 
     int k = mdl -> kfold-1; 
     int dev = mdl -> m_option -> device().index(); 
-    if (!rep){}
 
     std::vector<graph_t*>* out = nullptr; 
-    if (rep -> mode == "evaluation"){k = -1;}
+    if (rep && rep -> mode == "evaluation"){k = -1;}
 
     std::vector<std::vector<graph_t*>> batched = this -> discretize(data, this -> setting -> batch_size); 
     int thr = this -> setting -> threads; 
     bool skip = thr > batched.size(); 
 
-    if ((rep -> mode == "validation" || rep -> mode == "evaluation") && this -> batched_cache.count(k)){
+    if (rep && (rep -> mode == "validation" || rep -> mode == "evaluation") && this -> batched_cache.count(k)){
         out = this -> batched_cache[k];
         if (out -> at(0) -> device_index[dev]){return out;}
     }
