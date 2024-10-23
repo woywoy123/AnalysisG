@@ -204,6 +204,7 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* data, mode
             for (size_t t(0); t < grx -> num_nodes; ++t){batch_index.push_back(x);}
             _event_weight.push_back(*grx -> get_event_weight(mdl)); 
             offset_nodes += grx -> num_nodes; 
+            gr -> in_use = 0; 
             if (cached){continue;}
             gr -> batched_events.push_back(x);
         }
@@ -313,9 +314,11 @@ void dataloader::cuda_memory_server(){
     }; 
     
     std::vector<graph_t*>* ptr = this -> data_set; 
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    c10::cuda::CUDACachingAllocator::emptyCache();
     for (size_t x(0); x < ptr -> size(); ++x){
         graph_t* gr = (*ptr)[x];
+        std::this_thread::sleep_for(std::chrono::microseconds(1));
+
         if (gr -> in_use == 1){continue;}
         std::map<int, bool>::iterator itx = gr -> device_index.begin(); 
         for (; itx != gr -> device_index.end(); ++itx){
@@ -332,7 +335,6 @@ void dataloader::cuda_memory_server(){
             check_t(&gr -> dev_batch_index , true, dev);  
             check_t(&gr -> dev_event_weight, true, dev);  
             check_b(&gr -> device_index    , true, dev);  
-            c10::cuda::CUDACachingAllocator::emptyCache();
         }
         gr -> in_use = 1; 
     }
