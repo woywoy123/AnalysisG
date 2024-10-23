@@ -42,6 +42,10 @@ static void initialize_loop(
 }
 
 void analysis::build_model_session(){
+    auto lamb = [](dataloader* ld, torch::TensorOptions* op, int th_){
+        ld -> datatransfer(op, th_);
+    };
+
     if (!this -> model_sessions.size()){return this -> info("No Models Specified. Skipping.");}
     std::vector<int> kfold = this -> m_settings.kfold; 
     if (!kfold.size()){for (int k(0); k < this -> m_settings.kfolds; ++k){kfold.push_back(k);}}
@@ -49,8 +53,21 @@ void analysis::build_model_session(){
     this -> m_settings.kfold = kfold; 
     int th_ = this -> m_settings.threads; 
 
-    //torch::set_num_threads(144);
-    //torch::set_num_interop_threads(1); 
+    std::map<int, std::thread*> trans; 
+    std::tuple<model_template*, optimizer_params_t*>* para;
+    this -> info("Transferring Graphs to device."); 
+    for (size_t x(0); x < this -> model_sessions.size(); ++x){
+        para = &this -> model_sessions[x]; 
+        torch::TensorOptions* op = std::get<0>(*para) -> m_option;
+        int dev = op -> device().index();
+        if (trans.count(dev)){continue;}
+        trans[dev] = new std::thread(lamb, this -> loader, op, th_); 
+    }
+    std::map<int, std::thread*>::iterator ix = trans.begin(); 
+    for (; ix != trans.end(); ++ix){ix -> second -> join(); delete ix -> second;}
+    this -> success("Transfer Complete!"); 
+    trans.clear(); 
+
     for (size_t x(0); x < this -> model_sessions.size(); ++x){
         std::string name = this -> model_session_names[x]; 
 
@@ -59,10 +76,7 @@ void analysis::build_model_session(){
         optim -> m_settings.run_name = name; 
         optim -> import_dataloader(this -> loader);
 
-        std::tuple<model_template*, optimizer_params_t*>* para = &this -> model_sessions[x]; 
-        this -> info("Transferring Graphs to device."); 
-        this -> loader -> datatransfer(std::get<0>(*para) -> m_option, th_); 
-        this -> success("Transfer Complete!"); 
+        para = &this -> model_sessions[x]; 
         this -> trainer[name] = optim; 
         optim -> import_model_sessions(para); 
 
