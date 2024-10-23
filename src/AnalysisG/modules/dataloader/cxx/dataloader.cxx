@@ -206,10 +206,10 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* data, mode
         torch::Tensor bx = torch::from_blob(batch_index.data(), {offset_nodes}, opx); 
         torch::Tensor bi = torch::from_blob(gr -> batched_events.data(), {(long)inpt -> size()}, opx); 
 
-        gr -> dev_edge_index[dev_]     = torch::Tensor(torch::cat(_edge_index, {-1})); 
-        gr -> dev_event_weight[dev_]   = torch::Tensor(torch::cat(_event_weight, {0})); 
-        gr -> dev_batch_index[dev_]    = bx.clone().to(op -> device(), true);
-        gr -> dev_batched_events[dev_] = bi.clone().to(op -> device(), true); 
+        gr -> dev_edge_index[dev_]     = torch::cat(_edge_index, {-1}); 
+        gr -> dev_event_weight[dev_]   = torch::cat(_event_weight, {0}); 
+        gr -> dev_batch_index[dev_]    = bx.clone().to(op -> device());
+        gr -> dev_batched_events[dev_] = bi.clone().to(op -> device()); 
         gr -> device_index[dev_] = true; 
 
         (*out)[index] = gr; 
@@ -261,12 +261,9 @@ void dataloader::cuda_memory_server(){
     auto cuda_memory = [this](int device_i) -> bool {
         CUdevice dev; 
         cuDeviceGet(&dev, device_i); 
-
         size_t free, total;
         cuMemGetInfo(&free, &total);
-
-        double perc = 100.0*(total - free)/(double)total;
-        return perc > 95;
+        return 100.0*(total - free)/(double)total > 95;
     }; 
 
     auto check_m = [this](std::map<int, std::vector<torch::Tensor>>* in_memory, bool purge, int device){
@@ -299,6 +296,7 @@ void dataloader::cuda_memory_server(){
     
     std::vector<graph_t*>* ptr = this -> data_set; 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    return; 
     for (size_t x(0); x < ptr -> size(); ++x){
         graph_t* gr = (*ptr)[x];
         if (gr -> in_use == 1){continue;}

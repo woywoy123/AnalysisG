@@ -162,13 +162,14 @@ void gnn_event::CompileEvent(){
         int res_ij = (this -> edge_res_scores[x][0] < this -> edge_res_scores[x][1]); 
         if (top_ij){bin_top[src[x]][dst[x]]    = this -> edge_top_scores[x][1];}
         if (res_ij){bin_zprime[src[x]][dst[x]] = this -> edge_res_scores[x][1];}
-
-        std::string hx = particle[dst[x]] -> hash; 
-        reco_tops[src[x]][hx]   = particle[dst[x]];
-        reco_zprime[src[x]][hx] = particle[dst[x]];
+        int d = dst[x]; 
+        int s = src[x]; 
+        std::string hx = particle[d] -> hash; 
+        reco_tops[s][hx]   = particle[d];
+        reco_zprime[s][hx] = particle[d];
         
-        if (this -> t_edge_top[x]){real_tops[src[x]][hx]   = particle[dst[x]];}
-        if (this -> t_edge_res[x]){real_zprime[src[x]][hx] = particle[dst[x]];}
+        if (this -> t_edge_top[x]){real_tops[s][hx]   = particle[d];}
+        if (this -> t_edge_res[x]){real_zprime[s][hx] = particle[d];}
     }
 
     std::map<std::string, std::vector<particle_gnn*>>::iterator it;

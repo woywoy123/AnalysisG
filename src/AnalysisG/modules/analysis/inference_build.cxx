@@ -187,6 +187,7 @@ void analysis::build_inference(){
     len *= modls; 
 
     std::vector<std::thread*> th_prc = std::vector<std::thread*>(smpls*modls, nullptr); 
+    std::vector<std::vector<graph_t*>*> batched_data(smpls*modls, nullptr); 
     std::vector<size_t> th_prg(smpls*modls, 0); 
     std::thread* thr_ = nullptr; 
 
@@ -194,7 +195,6 @@ void analysis::build_inference(){
     std::map<std::string, bool> mute; 
     std::map<std::string, bool> device_tr; 
     std::map<std::string, model_template*>::iterator itm; 
-    std::vector<std::vector<graph_t*>*> batched_data(smpls, nullptr); 
 
     itm = this -> model_inference.begin(); 
     for (; itm != this -> model_inference.end(); ++itm){
@@ -213,7 +213,6 @@ void analysis::build_inference(){
     bool batched = this -> m_settings.batch_size > 1;
     for (size_t x(0); x < th_prc.size(); ++x){
         int mdx = x%modls; 
-        int sml = x%smpls;
         if (!mdx){itm = this -> model_inference.begin();}
 
         model_settings_t mds; 
@@ -229,15 +228,13 @@ void analysis::build_inference(){
 
         if (x && !mdx){++its;}
 
-        if (!batched_data[sml]){
-            std::vector<graph_t*>* grx = nullptr; 
-            if (batched){
-                grx = this -> loader -> build_batch(&its -> second, itm -> second, nullptr);
-                for (size_t i(0); i < its -> second.size(); ++i){its -> second[i] -> in_use = 0;}
-            }
-            else {grx = &its -> second;}
-            batched_data[sml] = grx; 
+        std::vector<graph_t*>* grx = nullptr; 
+        if (batched){
+            grx = this -> loader -> build_batch(&its -> second, itm -> second, nullptr);
+            for (size_t i(0); i < its -> second.size(); ++i){its -> second[i] -> in_use = 0;}
         }
+        else {grx = &its -> second;}
+        batched_data[x] = grx; 
 
         std::string fname = this -> m_settings.output_path + "/" + itm -> first + "/"; 
         std::vector<std::string> fnames = tools().split(its -> first, "/");
@@ -269,7 +266,7 @@ void analysis::build_inference(){
         addhoc["event_weight"] = its -> second[0] -> get_event_weight(md); 
         index = add_content(&addhoc, content, index, ""); 
         index = add_content(&md -> m_p_undef, content, index, "extra_"); 
-        th_prc[x] = new std::thread(execution, md, mds, batched_data[sml], &th_prg[x], fname, content);
+        th_prc[x] = new std::thread(execution, md, mds, batched_data[x], &th_prg[x], fname, content);
         ++itm; ++para; 
 
         if (!thr_){thr_ = new std::thread(this -> progressbar1, &th_prg, len, "Model Inference Progress");}
@@ -280,6 +277,8 @@ void analysis::build_inference(){
                 th_prc[t] -> join(); 
                 delete th_prc[t]; 
                 th_prc[t] = nullptr; 
+                if (batched){flush(batched_data[t]);}
+                batched_data[t] = nullptr; 
                 --para; 
                 break; 
             }
@@ -292,11 +291,8 @@ void analysis::build_inference(){
         th_prc[x] -> join(); 
         delete th_prc[x]; 
         th_prc[x] = nullptr; 
-    }
-
-    for (size_t f(0); f < batched_data.size(); ++f){
-        if (!batched){break;}
-        flush(batched_data[f]);
+        if (batched){flush(batched_data[x]);}
+        batched_data[x] = nullptr;
     }
 
     for (size_t x(0); x < th_prg.size(); ++x){th_prg[x] = len / modls;}

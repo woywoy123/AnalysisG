@@ -43,32 +43,35 @@ study       = "topefficiency"
 
 graph_name     = "GraphJets"
 graph_prefix   = "_bn_1_"
-inference_mode = False
-plot_only      = True
+inference_mode = True
+plot_only      = False
 fetch_meta     = False
-threads        = 12
+build_cache    = True
+threads        = 8
+bts            = 50
 
 graph_cache = "/scratch/tnom6927/graph-data-mc16-full/"
-#root_model  = "/import/wu1/tnom6927/TrainingOutput/training-sessions/"
-#data_path   = "/import/wu1/tnom6927/TrainingOutput/mc16-full/" # <----- cluster
+root_model  = "/import/wu1/tnom6927/TrainingOutput/training-sessions/"
+data_path   = "/import/wu1/tnom6927/TrainingOutput/grid-data/" # <----- cluster
 #data_path = "/CERN/Samples/mc16-full" # <----- local
-data_path = "/CERN/trainings/mc16-full-inference/ROOT/" + graph_name + graph_prefix + "Grift/MRK-1/epoch-18/kfold-1/"
+#data_path = "ProjectName/ROOT/" + graph_name + graph_prefix + "Grift/MRK-1/epoch-23/kfold-5/"
 
+epx = [i+1 for i in range(22, 24)]
 model_states = {}
 if inference_mode:
     model_states |= {
-            "MRK-1" : {"epoch-" + str(ep) : (["kfold-1"], ["cuda:1"]) for ep in [1, 2, 3, 4]},
-            "MRK-2" : {"epoch-" + str(ep) : (["kfold-1"], ["cuda:0"]) for ep in [1, 2, 3, 4]},
-            "MRK-3" : {"epoch-" + str(ep) : (["kfold-1"], ["cuda:1"]) for ep in [1, 2, 3, 4]},
-            "MRK-4" : {"epoch-" + str(ep) : (["kfold-1"], ["cuda:0"]) for ep in [1, 2, 3, 4]},
-            "MRK-5" : {"epoch-" + str(ep) : (["kfold-1"], ["cuda:1"]) for ep in [1, 2, 3, 4]},
-            "MRK-6" : {"epoch-" + str(ep) : (["kfold-1"], ["cuda:0"]) for ep in [1, 2, 3, 4]},
-            "MRK-7" : {"epoch-" + str(ep) : (["kfold-1"], ["cuda:1"]) for ep in [1, 2, 3, 4]},
-            "MRK-8" : {"epoch-" + str(ep) : (["kfold-1"], ["cuda:0"]) for ep in [1, 2, 3, 4]},
+            "MRK-1" : {"epoch-" + str(ep) : (["kfold-5"], ["cuda:0"]) for ep in epx},
+            "MRK-2" : {"epoch-" + str(ep) : (["kfold-5"], ["cuda:1"]) for ep in epx},
+            "MRK-3" : {"epoch-" + str(ep) : (["kfold-5"], ["cuda:0"]) for ep in epx},
+            "MRK-4" : {"epoch-" + str(ep) : (["kfold-5"], ["cuda:1"]) for ep in epx},
+            "MRK-5" : {"epoch-" + str(ep) : (["kfold-5"], ["cuda:0"]) for ep in epx},
+            "MRK-6" : {"epoch-" + str(ep) : (["kfold-5"], ["cuda:1"]) for ep in epx},
+            "MRK-7" : {"epoch-" + str(ep) : (["kfold-5"], ["cuda:0"]) for ep in epx},
+            "MRK-8" : {"epoch-" + str(ep) : (["kfold-5"], ["cuda:1"]) for ep in epx},
     }
 
 
-ls = list(build_samples(data_path, "**/*.root", 5))
+ls = list(build_samples(data_path, "**/*.root", 8))
 if fetch_meta:
     for i in ls:
         ana = Analysis()
@@ -78,16 +81,17 @@ if fetch_meta:
         ana.Start()
     exit()
 
-event_name     = "BSM4Tops"      if inference_mode     else "EventGNN"
-graph_name     = graph_name      if inference_mode     else ""
-model_name     = "Grift"         if inference_mode     else ""
-selection_name = "TopEfficiency" if not inference_mode else ""
+event_name     = "BSM4Tops"      if inference_mode     or build_cache else "EventGNN"
+graph_name     = graph_name      if inference_mode     or build_cache else ""
+model_name     = "Grift"         if inference_mode     or build_cache else ""
+selection_name = "TopEfficiency" if not inference_mode and not build_cache else ""
 
 i = 0
 for k in ls:
     if plot_only: break
     ana = Analysis()
     ana.Threads = threads
+    ana.BatchSize = bts
     ana.GraphCache = graph_cache
     if len(model_states): ana.FetchMeta = False
 
@@ -110,16 +114,17 @@ for k in ls:
 
     for j in model_states:
         for ep in model_states[j]:
-            mdl = root_model + graph_name + graph_prefix + "/" + model_name + "/" + j + "/state/" + ep + "/"
+            mdl = root_model + graph_name + graph_prefix[:-1] + "/" + model_name + "/" + j + "/state/" + ep + "/"
             kf, dev = model_states[j][ep]
             for i in range(len(kf)):
                 gnn = model_method[model_name]()
                 gnn.o_edge  = {"top_edge" : "CrossEntropyLoss", "res_edge" : "CrossEntropyLoss"}
                 gnn.o_graph = {"ntops"    : "CrossEntropyLoss", "signal"   : "CrossEntropyLoss"}
                 gnn.i_node  = ["pt", "eta", "phi", "energy", "charge"]
+                gnn.i_graph = ["met", "phi"]
                 gnn.device  = dev[i]
                 gnn.checkpoint_path = mdl + kf[i] + "_model.pt"
-                name = "ROOT/" + graph_name + graph_prefix + "_" + model_name + "/" + j + "/" + ep + "/" + kf[i]
+                name = "ROOT/" + graph_name + graph_prefix + model_name + "/" + j + "/" + ep + "/" + kf[i]
                 ana.AddModelInference(gnn, name)
     ana.Start()
     if len(selection_name):

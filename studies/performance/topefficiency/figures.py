@@ -1,5 +1,6 @@
 from torchmetrics.classification import MulticlassAUROC, BinaryAUROC
 from AnalysisG.core.plotting import TH1F, TH2F, TLine
+from AnalysisG.core import Meta
 from pathlib import Path
 from .algorithms import *
 import pickle
@@ -18,6 +19,7 @@ def top_kinematic_region(stacks, data = None):
     ks_topscore_eta_pt = {}
     pt_topmass_prc = {"truth" : {}, "prediction" : {}}
 
+    meta_cache = {}
     for kin in set(list(stacks["truth"]) + list(stacks["prediction"])):
         pt_r = kin.split(",")[0]
         tru_h = None
@@ -39,7 +41,15 @@ def top_kinematic_region(stacks, data = None):
 
         hists = {}
         for prc in stacks["prediction"][kin]:
-            _, tl = mapping(prc)
+            try: meta = meta_cache[prc]
+            except KeyError:
+                spl = prc.split(".")
+                meta = Meta()
+                meta.MetaCachePath = "meta.h5"
+                meta.FetchMeta(int(spl[2]), spl[5])
+                meta_cache[prc] = meta
+            _, tl = mapping(meta.DatasetName)
+
             if tl not in hists: hists[tl] = {"value": [], "weights" : []}
             hists[tl]["value"]   += stacks["prediction"][kin][prc]["value"]
             hists[tl]["weights"] += stacks["prediction"][kin][prc]["weights"]
@@ -199,6 +209,7 @@ def top_kinematic_region(stacks, data = None):
 
 def roc_data(stacks, data = None):
     if data is not None: return roc_data_get(stacks, data)
+    return 
     import torch
     t_ntops  = torch.tensor(stacks["n-tops_t"])
     p_ntops  = torch.tensor(stacks["n-tops_p"])
@@ -211,6 +222,9 @@ def roc_data(stacks, data = None):
     auc_ntops = metric(p_ntops, t_ntops)
     fig_, ax_ = metric.plot()
 
+
+    print(p_top_edge.size())
+    print(t_top_edge.size())
     metric = BinaryAUROC()
     auc_top_edge = metric(p_top_edge[:, 1], t_top_edge)
     fig_, ax_ = metric.plot()
@@ -222,9 +236,9 @@ def roc_data(stacks, data = None):
     print(auc_top_edge, auc_ntops, auc_signal)
 
 def ntops_reco(stacks, data = None):
+    return stacks
     if data is not None: return ntops_reco_compl(stacks, data, 2)
     w2 = sum(stacks["cls_ntop_w"][2])
-    print(w2)
     et = sum(stacks["e_ntop"][2]) / float(w2)
     pt = sum(stacks["e_ntop"][2]) / sum(stacks["p_ntop"][2])
     print(et, pt)

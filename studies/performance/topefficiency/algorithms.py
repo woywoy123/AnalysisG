@@ -1,7 +1,3 @@
-from AnalysisG.core import Meta
-
-global meta_cache
-
 def mapping(name):
     if "_singletop_"  in name: return ( "singletop" , "$t$"                      )
     if "_ttH125_"     in name: return ( "ttH"       , "$t\\bar{t}H$"             )
@@ -42,20 +38,8 @@ def mapping(name):
     if "_ZqqZll"      in name: return ( "ZqqZll"    , "$ZqqZ\\ell\\ell$"         )
     if "_ZqqZvv"      in name: return ( "ZqqZvv"    , "$ZqqZ\\nu\\nu$"           )
     if "ttH_tttt"     in name: return ( "tttt_mX"   , "$t\\bar{t}t\\bar{t}H_{X}$")
-    try: meta_cache
-    except: meta_cache = {}
-    try: return mapping(meta_cache[name].DatasetName)
-    except: pass
 
-    spl = name.split(".")
-    meta = Meta()
-    meta.MetaCachePath = "meta.h5"
-    meta.FetchMeta(int(spl[2]), spl[5])
-    meta_cache[name] = meta
-
-    try: return mapping(meta_cache[name].DatasetName)
-    except: print(name); exit()
-
+    print(name)
 
 def kinesplit(reg):
     x = reg.split(",")

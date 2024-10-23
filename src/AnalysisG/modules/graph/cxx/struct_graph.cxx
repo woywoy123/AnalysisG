@@ -115,10 +115,10 @@ void graph_t::transfer_to_device(torch::TensorOptions* dev){
     torch::Tensor bx = build_tensor(&bc, torch::kLong, long(), &op); 
     torch::Tensor bi = build_tensor(&this -> batched_events, torch::kLong, long(), &op); 
 
-    this -> dev_event_weight[dev_]   = dt.clone().to(dev -> device(), true); 
-    this -> dev_batch_index[dev_]    = bx.clone().to(dev -> device(), true); 
-    this -> dev_batched_events[dev_] = bi.clone().to(dev -> device(), true);
-    this -> dev_edge_index[dev_]     = this -> edge_index -> to(dev -> device(), true); 
+    this -> dev_event_weight[dev_]   = dt.clone().to(dev -> device()); 
+    this -> dev_batch_index[dev_]    = bx.clone().to(dev -> device()); 
+    this -> dev_batched_events[dev_] = bi.clone().to(dev -> device());
+    this -> dev_edge_index[dev_]     = this -> edge_index -> to(dev -> device()); 
     this -> device_index[dev_] = true; 
     this -> device = dev_in;
     torch::cuda::synchronize(); 
@@ -126,7 +126,7 @@ void graph_t::transfer_to_device(torch::TensorOptions* dev){
 
 void graph_t::_transfer_to_device(std::vector<torch::Tensor>* trgt, std::vector<torch::Tensor*>* src, torch::TensorOptions* dev){
     if (!src || trgt -> size()){return;}
-    for (size_t x(0); x < src -> size(); ++x){trgt -> push_back((*src)[x] -> to(dev -> device(), true));}
+    for (size_t x(0); x < src -> size(); ++x){trgt -> push_back((*src)[x] -> to(dev -> device()));}
 }
 
 void graph_t::meta_serialize(std::map<std::string, int>* data, std::string* out){
