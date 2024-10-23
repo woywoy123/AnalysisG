@@ -93,12 +93,13 @@ std::vector<torch::Tensor*>* graph_t::add_content(std::map<std::string, torch::T
 
 void graph_t::transfer_to_device(torch::TensorOptions* dev){
     c10::DeviceType dev_in = dev -> device().type(); 
-    if (dev_in == c10::kCPU && this -> device == c10::kCPU){return;}
+    if (dev_in == c10::kCPU){return;}
     int dev_ = (int)dev -> device().index(); 
     bool sm = (dev_in == c10::kCUDA && this -> device == c10::kCUDA); 
     sm *= this -> device_index[dev_]; 
     if (sm){return;}
-
+    this -> device_index[dev_] = true; 
+    std::unique_lock<std::mutex> lk(this -> mut); 
     this -> _transfer_to_device(&this -> dev_data_graph[dev_] , this -> data_graph , dev);  
     this -> _transfer_to_device(&this -> dev_data_node[dev_]  , this -> data_node  , dev); 
     this -> _transfer_to_device(&this -> dev_data_edge[dev_]  , this -> data_edge  , dev); 
@@ -119,9 +120,9 @@ void graph_t::transfer_to_device(torch::TensorOptions* dev){
     this -> dev_batch_index[dev_]    = bx.clone().to(dev -> device()); 
     this -> dev_batched_events[dev_] = bi.clone().to(dev -> device());
     this -> dev_edge_index[dev_]     = this -> edge_index -> to(dev -> device()); 
-    this -> device_index[dev_] = true; 
-    this -> device = dev_in;
     torch::cuda::synchronize(); 
+    this -> device = dev_in;
+    lk.unlock(); 
 }
 
 void graph_t::_transfer_to_device(std::vector<torch::Tensor>* trgt, std::vector<torch::Tensor*>* src, torch::TensorOptions* dev){

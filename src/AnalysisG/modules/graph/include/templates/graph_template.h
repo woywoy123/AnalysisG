@@ -13,6 +13,7 @@
 
 #include <c10/core/DeviceType.h>
 #include <torch/torch.h>
+#include <mutex> 
 
 class graph_template; 
 class dataloader; 
@@ -99,6 +100,7 @@ struct graph_t {
         friend graph_template; 
         friend dataloader; 
         bool is_owner = false; 
+        std::mutex mut; 
 
         torch::Tensor* edge_index = nullptr; 
         std::map<std::string, int>* data_map_graph = nullptr; 

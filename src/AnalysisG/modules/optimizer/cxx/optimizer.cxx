@@ -64,10 +64,10 @@ void optimizer::training_loop(int k, int epoch){
         gr -> _purge_all(); 
         delete gr; 
         (*smpl)[x] = nullptr; 
-        c10::cuda::CUDACachingAllocator::emptyCache();
     }
     model -> save_state(); 
     if (batched){delete smpl;}
+    c10::cuda::CUDACachingAllocator::emptyCache();
 }
 
 void optimizer::validation_loop(int k, int epoch){
