@@ -1,4 +1,3 @@
-from torchmetrics.classification import MulticlassAUROC, BinaryAUROC
 from AnalysisG.core.plotting import TH1F, TH2F, TLine
 from AnalysisG.core import Meta
 from pathlib import Path
@@ -6,6 +5,46 @@ from .algorithms import *
 import pickle
 
 global figure_path
+global metacache
+global metalookup
+
+class MetaLookup:
+    def __init__(self):
+        self.metadata = {}
+        self.matched = {}
+        self.meta = None
+
+    def __find__(self, inpt):
+        try: inpt = inpt.decode("utf-8")
+        except: pass
+
+        try: return self.matched[inpt]
+        except: pass
+
+        for i in self.metadata:
+            if self.metadata[i].hash(inpt) not in i: continue
+            self.matched[inpt] = self.metadata[i]
+            return self.__find__(inpt)
+
+    def __call__(self, inpt):
+        self.meta = self.__find__(inpt)
+        return self
+
+    def title(self, inpt):
+        return mapping(self.__find__(inpt).DatasetName)
+
+    @property
+    def SumOfWeights(self):
+        return self.meta.SumOfWeights[b"sumWeights"]["total_events_weighted"]
+
+    @property
+    def CrossSection(self):
+        return self.meta.crossSection
+
+    @property
+    def Scale(self):
+        return (self.CrossSection*140.1)/self.SumOfWeights
+
 def path(hist, subx = ""):
     hist.Style = "ATLAS"
     hist.OutputDirectory = figure_path + "/topefficiency" + subx
@@ -19,21 +58,25 @@ def top_kinematic_region(stacks, data = None):
     ks_topscore_eta_pt = {}
     pt_topmass_prc = {"truth" : {}, "prediction" : {}}
 
-    meta_cache = {}
-    for kin in set(list(stacks["truth"]) + list(stacks["prediction"])):
+    k = 0
+    regions = list(set(list(stacks["truth"]) + list(stacks["prediction"])))
+    for kin in sorted(regions):
         pt_r = kin.split(",")[0]
         tru_h = None
 
         if pt_r not in pt_topmass_prc["truth"]: pt_topmass_prc["truth"][pt_r] = {"v" : [], "w" : []}
         if kin in stacks["truth"]:
             prx = list(stacks["truth"][kin])
+            for n in prx:
+                scale = metalookup(n).Scale
+                stacks["truth"][kin][n]["weights"] = [i*scale for i in stacks["truth"][kin][n]["weights"]]
 
             tru_h = TH1F()
-            tru_h.Title = "Truth"
+            tru_h.Title   = "Truth"
             tru_h.xData   = sum([stacks["truth"][kin][f]["value"]   for f in prx], [])
             tru_h.Weights = sum([stacks["truth"][kin][f]["weights"] for f in prx], [])
-            tru_h.Hatch = "\\\\////"
-            tru_h.Color = "black"
+            tru_h.Hatch   = "\\\\////"
+            tru_h.Color   = "black"
             pt_topmass_prc["truth"][pt_r]["v"] += sum([stacks["truth"][kin][f]["value"]   for f in prx], [])
             pt_topmass_prc["truth"][pt_r]["w"] += sum([stacks["truth"][kin][f]["weights"] for f in prx], [])
 
@@ -41,14 +84,11 @@ def top_kinematic_region(stacks, data = None):
 
         hists = {}
         for prc in stacks["prediction"][kin]:
-            try: meta = meta_cache[prc]
-            except KeyError:
-                spl = prc.split(".")
-                meta = Meta()
-                meta.MetaCachePath = "meta.h5"
-                meta.FetchMeta(int(spl[2]), spl[5])
-                meta_cache[prc] = meta
-            _, tl = mapping(meta.DatasetName)
+            scale = metalookup(prc).Scale
+            _, tl = metalookup.title(prc)
+
+            stacks["prediction"][kin][prc]["weights"] = [i*scale for i in stacks["prediction"][kin][prc]["weights"]]
+            stacks["top_score"][kin][prc]["weights"]  = [i*scale for i in stacks["top_score"][kin][prc]["weights"]]
 
             if tl not in hists: hists[tl] = {"value": [], "weights" : []}
             hists[tl]["value"]   += stacks["prediction"][kin][prc]["value"]
@@ -90,8 +130,10 @@ def top_kinematic_region(stacks, data = None):
         reco.Stacked = True
         reco.xStep = 20
         reco.Overflow = False
+        reco.yLogarithmic = True
         reco.xTitle = "Invariant Mass of Candidate Top (GeV)"
-        reco.yTitle = "Entries / ($1$ GeV)"
+        reco.yTitle = "Tops / ($1$ GeV)"
+        reco.yMin = 0.0001
         reco.xMin = 0
         reco.xMax = 400
         reco.xBins = 400
@@ -128,7 +170,7 @@ def top_kinematic_region(stacks, data = None):
         reco.Stacked = True
         reco.Overflow = False
         reco.xTitle = "Invariant Mass of Candidate Top (GeV)"
-        reco.yTitle = "Entries / ($1$ GeV)"
+        reco.yTitle = "Tops / ($1$ GeV)"
         reco.xMin = 0
         reco.xMax = 400
         reco.xBins = 400
@@ -150,7 +192,7 @@ def top_kinematic_region(stacks, data = None):
         s_s.Histograms = hists
         s_s.Title = "Reconstructed Top Candidate Score with \n Transverse Momentum $" + tlt + "$"
         s_s.xTitle = "MVA Score of Candidate Top (Arb.)"
-        s_s.yTitle = "Entries / ($0.01$)"
+        s_s.yTitle = "Tops / ($0.01$)"
 
         s_s.xMin = 0
         s_s.xMax = 1
@@ -209,8 +251,9 @@ def top_kinematic_region(stacks, data = None):
 
 def roc_data(stacks, data = None):
     if data is not None: return roc_data_get(stacks, data)
-    return 
     import torch
+    from torchmetrics.classification import MulticlassAUROC, BinaryAUROC, MulticlassROC
+
     t_ntops  = torch.tensor(stacks["n-tops_t"])
     p_ntops  = torch.tensor(stacks["n-tops_p"])
     t_signal = torch.tensor(stacks["signal_t"])
@@ -220,11 +263,24 @@ def roc_data(stacks, data = None):
 
     metric = MulticlassAUROC(num_classes = 5, average = None)
     auc_ntops = metric(p_ntops, t_ntops)
-    fig_, ax_ = metric.plot()
 
+    roc = MulticlassROC(num_classes = 5)
+    fpr, tpr, _ = roc(p_ntops, t_ntops)
 
-    print(p_top_edge.size())
-    print(t_top_edge.size())
+    pltx = path(TLine())
+    pltx.Title = "ROC Classification for Multi-Tops"
+    for i in range(len(fpr)):
+        t = TLine()
+        t.Title = str(i) + "-Tops"
+        t.xData = fpr[i].tolist()
+        t.yData = tpr[i].tolist()
+        pltx.Lines.append(t)
+
+    pltx.xTitle = "False Positive Rate"
+    pltx.yTitle = "True Positive Rate"
+    pltx.Filename = "ROC-multitop"
+    pltx.SaveFigure()
+
     metric = BinaryAUROC()
     auc_top_edge = metric(p_top_edge[:, 1], t_top_edge)
     fig_, ax_ = metric.plot()
@@ -233,10 +289,7 @@ def roc_data(stacks, data = None):
     auc_signal = metric(p_signal[:, 1], t_signal)
     fig_, ax_ = metric.plot()
 
-    print(auc_top_edge, auc_ntops, auc_signal)
-
 def ntops_reco(stacks, data = None):
-    return stacks
     if data is not None: return ntops_reco_compl(stacks, data, 2)
     w2 = sum(stacks["cls_ntop_w"][2])
     et = sum(stacks["e_ntop"][2]) / float(w2)
@@ -247,7 +300,13 @@ def TopEfficiency(ana):
     p = Path(ana)
     files = [str(x) for x in p.glob("**/*.pkl") if str(x).endswith(".pkl")]
     files = list(set(files))
-    files = files[:1]
+    files = sorted(files)
+    files = files[:4]
+
+    metl = MetaLookup()
+    metl.metadata = metacache
+    global metalookup
+    metalookup = metl
 
     stack_roc = {}
     stack_topkin = {}
@@ -255,11 +314,11 @@ def TopEfficiency(ana):
     for i in range(len(files)):
         print(files[i], (i+1) / len(files))
         pr = pickle.load(open(files[i], "rb"))
-        stack_roc = roc_data(stack_roc, pr)
-        stack_topkin = top_kinematic_region(stack_topkin, pr)
-        stack_ntops = ntops_reco(stack_ntops, pr)
+        stack_roc    = roc_data(stack_roc, pr)
+        stack_ntops  = ntops_reco(stack_ntops, pr)
+        #stack_topkin = top_kinematic_region(stack_topkin, pr)
 
-    ntops_reco(stack_ntops)
     roc_data(stack_roc)
-    top_kinematic_region(stack_topkin)
+    ntops_reco(stack_ntops)
+    #top_kinematic_region(stack_topkin)
 

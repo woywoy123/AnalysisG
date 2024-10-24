@@ -170,7 +170,7 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
         io* ior = new io();
         ior -> start(pth, "read"); 
         for (size_t p(0); p < gr_ev -> size(); ++p){
-            graph_hdf5_w datar; 
+            graph_hdf5_w datar = graph_hdf5_w(); 
             ior -> read(&datar, (*gr_ev)[p]);
             graph_hdf5 w      = graph_hdf5(); 
             w.num_nodes       = datar.num_nodes; 
@@ -225,7 +225,7 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
     std::vector<int> kv = this -> setting -> kfold; 
     for (size_t x(0); x < data_k.size(); ++x){
         std::string hash = std::string(data_k[x].hash);
-        free(data_k[x].hash);
+        delete [] data_k[x].hash; data_k[x].hash = nullptr; 
         if (this -> hash_map.count(hash)){continue;}
         if (load_hash.count(hash)){continue;}
         if (data_k[x].is_eval * eval){load_hash[hash] = true; continue;}

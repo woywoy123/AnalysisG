@@ -211,7 +211,7 @@ cdef class Meta:
     def expected_events(self, float lumi = 140.1):
         cdef float s = self.crossSection
         if s < 0: return 0
-        else: return s*(10**6)*lumi
+        else: return s*lumi
 
     def GetSumOfWeights(self, str name):
         cdef float f = self.ptr.meta_data.misc[enc(name)].processed_events_weighted
@@ -222,6 +222,8 @@ cdef class Meta:
         self.dsid = dsid
         self.amitag = amitag
         self.__meta__(self.ptr)
+
+    def hash(self, str val): return env(self.ptr.hash(enc(val)))
 
     @property
     def MetaCachePath(self): return env(self.ptr.metacache_path)

@@ -152,6 +152,7 @@ void execution(
     t -> ResetBranchAddresses(); 
     t -> Write("", TObject::kOverwrite);
     f -> Close(); 
+    delete t; t = nullptr; 
     delete f; f = nullptr; 
     delete content; content = nullptr; 
     delete md; md = nullptr; 
@@ -170,6 +171,9 @@ void analysis::build_inference(){
         delete grx; 
         return nullptr; 
     }; 
+    auto lamb = [](dataloader* ld, torch::TensorOptions* op, int th_){
+        ld -> datatransfer(op, th_);
+    };
 
     int threads_ = this -> m_settings.threads; 
     this -> success("+=============================+"); 
@@ -191,22 +195,23 @@ void analysis::build_inference(){
     std::vector<size_t> th_prg(smpls*modls, 0); 
     std::thread* thr_ = nullptr; 
 
-    this -> info("------------- Cloning Models -------------"); 
     std::map<std::string, bool> mute; 
     std::map<std::string, bool> device_tr; 
     std::map<std::string, model_template*>::iterator itm; 
 
+    std::map<std::string, std::thread*> trans; 
     itm = this -> model_inference.begin(); 
     for (; itm != this -> model_inference.end(); ++itm){
         std::string dev_n = itm -> second -> device; 
         if (device_tr[dev_n]){continue;}
-        device_tr[dev_n] = true;
-
         this -> info("Transferring graphs to device: " + std::string(dev_n)); 
-        this -> loader -> datatransfer(itm -> second -> m_option, threads_); 
-        this -> success("Completed transfer");
+        device_tr[dev_n] = true;
+        trans[dev_n] = new std::thread(lamb, this -> loader, itm -> second -> m_option, 1); 
     }
-
+    std::map<std::string, std::thread*>::iterator ix = trans.begin(); 
+    for (; ix != trans.end(); ++ix){ix -> second -> join(); delete ix -> second;}
+    this -> success("Transfer Complete!"); 
+    trans.clear(); 
 
     int para = 0; 
     its = dl -> begin(); 

@@ -26,6 +26,7 @@ cdef extern from "<plotting/plotting.h>" nogil:
         string histfill
         string overflow
         string marker
+        string linestyle
         string hatch
 
         string color

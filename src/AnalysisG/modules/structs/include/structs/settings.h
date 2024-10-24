@@ -38,8 +38,9 @@ struct settings_t {
     int refresh = 10;
     int max_range = 400; 
 
-    bool debug_mode = false;
     int threads = 10; 
+    bool debug_mode = false;
+    bool build_cache = false; 
 }; 
 
 #endif

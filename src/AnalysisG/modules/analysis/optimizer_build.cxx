@@ -26,7 +26,7 @@ static void initialize_loop(
 
         if (op -> m_settings.continue_training && op -> is_file(pth_)){continue;}
         if (!op -> m_settings.continue_training){break;} 
-        mk -> epoch = ep+1;
+        mk -> epoch = ep;
         mk -> restore_state(); 
         break; 
     }

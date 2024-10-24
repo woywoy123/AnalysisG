@@ -191,7 +191,7 @@ bool dataloader::restore_dataset(std::string path){
         folds_t* kf = &data[x];
         int kv = kf -> k;  
         std::string hash = std::string(kf -> hash); 
-        free(kf -> hash); 
+        kf -> flush_data();
 
         if (!this -> hash_map.count(hash)){continue;}
         int index = this -> hash_map[hash]; 

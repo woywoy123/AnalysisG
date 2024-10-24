@@ -43,18 +43,19 @@ study       = "topefficiency"
 
 graph_name     = "GraphJets"
 graph_prefix   = "_bn_1_"
-inference_mode = True
-plot_only      = False
+inference_mode = False
+plot_only      = True
 fetch_meta     = False
-build_cache    = True
+build_cache    = False
 threads        = 8
 bts            = 50
 
 graph_cache = "/scratch/tnom6927/graph-data-mc16-full/"
 root_model  = "/import/wu1/tnom6927/TrainingOutput/training-sessions/"
-data_path   = "/import/wu1/tnom6927/TrainingOutput/grid-data/" # <----- cluster
-#data_path = "/CERN/Samples/mc16-full" # <----- local
+#data_path   = "/import/wu1/tnom6927/TrainingOutput/grid-data/" # <----- cluster
+data_path = "/CERN/trainings/mc16-full-inference" # <----- local
 #data_path = "ProjectName/ROOT/" + graph_name + graph_prefix + "Grift/MRK-1/epoch-23/kfold-5/"
+#data_path = "/CERN/Samples/mc16-full/"
 
 epx = [i+1 for i in range(22, 24)]
 model_states = {}
@@ -71,14 +72,17 @@ if inference_mode:
     }
 
 
-ls = list(build_samples(data_path, "**/*.root", 8))
+ls = list(build_samples(data_path, "**/*.root", 10))
 if fetch_meta:
+    x = 0
     for i in ls:
         ana = Analysis()
         for k in i: ana.AddSamples(k, k.split("/")[-1])
         ana.FetchMeta = True
         ana.SumOfWeightsTreeName = "sumWeights"
         ana.Start()
+        print(x, len(ls))
+        x+=1
     exit()
 
 event_name     = "BSM4Tops"      if inference_mode     or build_cache else "EventGNN"
@@ -135,6 +139,9 @@ for k in ls:
         i+=1
     del ana
 
+ana = Analysis()
+ana.Start()
 method = plotting_method[study]
 method.figures.figure_path = figure_path
+method.figures.metacache = ana.GetMetaData
 if study == "topefficiency": method.figures.TopEfficiency("./serialized-data/")

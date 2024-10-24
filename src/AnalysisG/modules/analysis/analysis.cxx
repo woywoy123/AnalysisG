@@ -139,6 +139,8 @@ void analysis::start(){
     if (this -> selection_names.size()){return this -> tracer -> fill_selections(&this -> selection_names);} 
     this -> build_dataloader(false); 
 
+    if (this -> m_settings.build_cache && !this -> loader -> data_set -> size()){return;}
+
     if (pth_cache.size() && this -> loader -> data_set -> size()){
         this -> loader -> dump_graphs(pth_cache, threads_);
     }

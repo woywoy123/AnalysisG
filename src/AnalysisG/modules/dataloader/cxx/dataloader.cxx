@@ -33,10 +33,16 @@ dataloader::~dataloader(){
     for (size_t x(0); x < this -> data_map_edge.size(); ++x){delete this -> data_map_edge[x];}
 
     std::map<int, std::vector<int>*>::iterator itr = this -> k_fold_training.begin(); 
-    for (; itr != this -> k_fold_training.end(); ++itr){delete itr -> second;}
+    for (; itr != this -> k_fold_training.end(); ++itr){
+        delete this -> gr_k_fold_training[itr -> first]; 
+        delete itr -> second;
+    }
 
     std::map<int, std::vector<int>*>::iterator itx = this -> k_fold_validation.begin(); 
-    for (; itx != this -> k_fold_validation.end(); ++itx){delete itx -> second;}
+    for (; itx != this -> k_fold_validation.end(); ++itx){
+        delete this -> gr_k_fold_validation[itr -> first]; 
+        delete itx -> second;
+    }
 
     delete this -> test_set; 
     delete this -> train_set; 
@@ -53,6 +59,7 @@ dataloader::~dataloader(){
     for (; itc != this -> batched_cache.end(); ++itc){
         flush(itc -> second); delete itc -> second; itc -> second = nullptr; 
     }
+    if (this -> gr_test){delete this -> gr_test;}
 }
 
 void dataloader::shuffle(std::vector<int>* idx){

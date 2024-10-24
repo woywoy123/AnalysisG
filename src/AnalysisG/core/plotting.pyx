@@ -132,6 +132,10 @@ cdef class BasePlotting:
     @AutoScaling.setter
     def AutoScaling(self, bool val): self.ptr.auto_scale = val
 
+    @property
+    def LineStyle(self): return env(self.ptr.linestyle)
+    @LineStyle.setter
+    def LineStyle(self, str val): self.ptr.linestyle = enc(val)
 
     @property
     def Title(self): return env(self.ptr.title)
@@ -198,7 +202,6 @@ cdef class BasePlotting:
 
     @property
     def Overflow(self): return env(self.ptr.overflow)
-
     @Overflow.setter
     def Overflow(self, val):
         if isinstance(val, int): self.ptr.overflow = enc("sum" if val else "none")
@@ -215,7 +218,6 @@ cdef class BasePlotting:
 
     @property
     def Colors(self): return [env(i) for i in self.ptr.colors]
-
     @Colors.setter
     def Colors(self, vals):
         if not isinstance(vals, list): return
@@ -363,8 +365,7 @@ cdef class TH1F(BasePlotting):
         self.__error__(x_arr, y_err_lo, y_err_up)
 
     cdef float scale_f(self):
-        cdef float s = self.CrossSection * self.IntegratedLuminosity
-        return s/self.ptr.sum_of_weights()
+        return self.CrossSection * self.IntegratedLuminosity
 
     cdef dict factory(self):
         cdef dict histpl = {}
@@ -575,6 +576,11 @@ cdef class TH2F(BasePlotting):
 cdef class TLine(BasePlotting):
     def __cinit__(self): pass
 
+    def __init__(self):
+        self.Lines = []
+        self.LineWidth = 0.5
+        self.Marker = ""
+
     @property
     def xData(self): return self.ptr.x_data;
 
@@ -611,10 +617,9 @@ cdef class TLine(BasePlotting):
     @LineWidth.setter
     def LineWidth(self, float val): self.ptr.line_width = val
 
-
     cdef void factory(self):
         cdef dict coms = {}
-        coms["linestyle"] = "-"
+        coms["linestyle"] = self.LineStyle
         if len(self.Color): coms["color"]
         coms["marker"] = self.Marker
         coms["linewidth"] = self.LineWidth
@@ -628,26 +633,33 @@ cdef class TLine(BasePlotting):
         else: self.matpl.plot(self.xData, self.yData, **coms)
 
     cdef dict __compile__(self, bool raw = False):
+
         cdef float x_max, x_min
         if self.set_xmin: x_min = self.ptr.x_min
+        elif not self.ptr.x_data.size(): x_min = -1
         else: x_min = self.ptr.get_min(b"x")
 
         if self.set_xmax: x_max = self.ptr.x_max
+        elif not self.ptr.x_data.size(): x_max = -1
         else: x_max = self.ptr.get_max(b"x")
 
         cdef float y_max, y_min
         if self.set_ymin: y_min = self.ptr.y_min
+        elif not self.ptr.y_data.size(): y_min = -1
         else: y_min = self.ptr.get_min(b"y")
 
         if self.set_ymax: y_max = self.ptr.y_max
+        elif not self.ptr.y_data.size(): y_max = -1
         else: y_max = self.ptr.get_max(b"y")
-        self.matpl.xlim(x_min, x_max)
-        self.matpl.ylim(y_min, y_max)
 
-        self.factory()
-        if self.Lines is None: return {}
+        if x_max > x_min: self.matpl.xlim(x_min, x_max)
+        if y_max > y_min: self.matpl.ylim(y_min, y_max)
+        self.matpl.title(self.Title)
+
+        if not len(self.Lines): return {}
         cdef TLine i
         for i in self.Lines: i.factory()
         self._ax.tick_params(axis = "x", which = "minor", bottom = False)
         self.matpl.legend(loc = "upper right")
+        self.factory()
         return {}

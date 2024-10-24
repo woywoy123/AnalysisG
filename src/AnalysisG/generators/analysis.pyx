@@ -318,3 +318,8 @@ cdef class Analysis:
 
     @FetchMeta.setter
     def FetchMeta(self, bool val): self.ana.m_settings.fetch_meta = val
+
+    @property
+    def BuildCache(self): return self.ana.m_settings.build_cache
+    @BuildCache.setter
+    def BuildCache(self, bool val): self.ana.m_settings.build_cache = val

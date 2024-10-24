@@ -145,6 +145,7 @@ cdef extern from "<structs/settings.h>":
         int refresh
         int max_range
 
+        bool build_cache
         bool debug_mode
         int threads
 

@@ -45,6 +45,7 @@ class plotting: public tools
         std::string overflow = "sum"; 
         std::string marker = "."; 
         std::string hatch = ""; 
+        std::string linestyle = "-"; 
 
         std::string color = "";
         std::vector<std::string> colors = {}; 
