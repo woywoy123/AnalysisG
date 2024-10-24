@@ -44,20 +44,24 @@ study       = "topefficiency"
 graph_name     = "GraphJets"
 graph_prefix   = "_bn_1_"
 inference_mode = False
-plot_only      = True
-fetch_meta     = False
+plot_only      = False
+fetch_meta     = True
 build_cache    = False
-threads        = 8
-bts            = 50
+threads        = 2
+bts            = 250
+kfold          = "kfold-5"
+epoch          = "epoch-23"
+mrk            = "MRK-1"
+
 
 graph_cache = "/scratch/tnom6927/graph-data-mc16-full/"
 root_model  = "/import/wu1/tnom6927/TrainingOutput/training-sessions/"
-#data_path   = "/import/wu1/tnom6927/TrainingOutput/grid-data/" # <----- cluster
-data_path = "/CERN/trainings/mc16-full-inference" # <----- local
-#data_path = "ProjectName/ROOT/" + graph_name + graph_prefix + "Grift/MRK-1/epoch-23/kfold-5/"
+data_path   = "/import/wu1/tnom6927/TrainingOutput/grid-data/" # <----- cluster
+#data_path = "/CERN/trainings/mc16-full-inference" # <----- local
+#data_path = "ProjectName/ROOT/" + graph_name + graph_prefix + "Grift/" + mrk + "/" + epoch + "/" + kfold + "/"
 #data_path = "/CERN/Samples/mc16-full/"
 
-epx = [i+1 for i in range(22, 24)]
+epx = [i+1 for i in range(1, 2)]
 model_states = {}
 if inference_mode:
     model_states |= {
@@ -71,8 +75,7 @@ if inference_mode:
             "MRK-8" : {"epoch-" + str(ep) : (["kfold-5"], ["cuda:1"]) for ep in epx},
     }
 
-
-ls = list(build_samples(data_path, "**/*.root", 10))
+ls = list(build_samples(data_path, "**/*.root", 100))
 if fetch_meta:
     x = 0
     for i in ls:
@@ -94,6 +97,7 @@ i = 0
 for k in ls:
     if plot_only: break
     ana = Analysis()
+    ana.BuildCache = build_cache
     ana.Threads = threads
     ana.BatchSize = bts
     ana.GraphCache = graph_cache
@@ -132,7 +136,9 @@ for k in ls:
                 ana.AddModelInference(gnn, name)
     ana.Start()
     if len(selection_name):
-        f = open("./serialized-data/" + str(i) +".pkl", "wb")
+        pth = "./serialized-data/" + mrk + "/" + epoch + "/" + kfold + "/"
+        pathlib.Path(pth).mkdir(parents = True, exist_ok = True)
+        f = open(pth + str(i) +".pkl", "wb")
         pickle.dump(selection_container[selection_name], f)
         f.close()
         print(i, len(ls))

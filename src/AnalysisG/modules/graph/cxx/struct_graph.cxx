@@ -81,13 +81,21 @@ void graph_t::_purge_data(std::map<int, torch::Tensor*>* data){
 
 void graph_t::_purge_data(std::vector<torch::Tensor*>* data){
     if (!data){return;}
-    for (size_t x(0); x < data -> size(); ++x){delete (*data)[x]; (*data)[x] = nullptr;}
+    for (size_t x(0); x < data -> size(); ++x){
+        if (!(*data)[x]){continue;}
+        delete (*data)[x]; (*data)[x] = nullptr;
+    }
 }
 
 void graph_t::_purge_data(std::map<int, std::vector<torch::Tensor*>*>* data){
     if (!data){return;}
     std::map<int, std::vector<torch::Tensor*>*>::iterator itr = data -> begin();
-    for (; itr != data -> end(); ++itr){this -> _purge_data(itr -> second);}
+    for (; itr != data -> end(); ++itr){
+        if (!itr -> second){continue;}
+        this -> _purge_data(itr -> second);
+        delete itr -> second; 
+        itr -> second = nullptr; 
+    }
     data -> clear(); 
 }
 

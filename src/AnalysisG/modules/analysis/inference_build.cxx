@@ -152,7 +152,6 @@ void execution(
     t -> ResetBranchAddresses(); 
     t -> Write("", TObject::kOverwrite);
     f -> Close(); 
-    delete t; t = nullptr; 
     delete f; f = nullptr; 
     delete content; content = nullptr; 
     delete md; md = nullptr; 
