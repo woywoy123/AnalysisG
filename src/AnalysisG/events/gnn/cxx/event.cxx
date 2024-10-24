@@ -4,12 +4,12 @@ gnn_event::gnn_event(){
     this -> name = "gnn_event"; 
 
     // ------ observables ------- //
-    this -> add_leaf("signal"    , "extra_is_res_score"); 
-    this -> add_leaf("ntops"     , "extra_ntops_score"); 
-    this -> add_leaf("res_edge"  , "extra_res_edge_score"); 
-    this -> add_leaf("top_edge"  , "extra_top_edge_score"); 
     this -> add_leaf("weight"    , "event_weight");
     this -> add_leaf("edge_index", "edge_index");
+    this -> add_leaf("res_edge"  , "extra_res_edge_score"); 
+    this -> add_leaf("top_edge"  , "extra_top_edge_score"); 
+    this -> add_leaf("ntops"     , "extra_ntops_score"); 
+    this -> add_leaf("signal"    , "extra_is_res_score"); 
     this -> add_leaf("num_jets"  , "extra_num_jets");  
     this -> add_leaf("num_bjets" , "extra_num_bjets");  
     this -> add_leaf("num_leps"  , "extra_num_leps"); 
@@ -36,33 +36,23 @@ gnn_event::~gnn_event(){
 event_template* gnn_event::clone(){return (event_template*)new gnn_event();}
 
 void gnn_event::build(element_t* el){
-    auto lamb_vvi = [](element_t* el, std::string key, std::vector<std::vector<int>>* out){
-        std::vector<std::vector<int>> tmp; 
-        if (!el -> get(key, &tmp)){return;}
-        out -> assign(2, {}); 
-        for (size_t x(0); x < tmp.size(); ++x){
-            (*out)[0].push_back(tmp[x][0]); 
-            (*out)[1].push_back(tmp[x][1]); 
-        }
-    };
+    el -> get("edge_index" , &this -> m_edge_index);
+    el -> get("res_edge"   , &this -> edge_res_scores); 
+    el -> get("top_edge"   , &this -> edge_top_scores); 
 
-    reduce_2(el, "weight"      , &this -> weight); 
-    lamb_vvi(el, "edge_index"  , &this -> m_edge_index);
+    reduce(el, "weight"    , &this -> weight); 
+    reduce(el, "ntops"     , &this -> ntops_scores, -1);
+    reduce(el, "signal"    , &this -> signal_scores, -1);
+    reduce(el, "num_jets"  , &this -> num_jets);
+    reduce(el, "num_bjets" , &this -> num_bjets);
+    reduce(el, "num_leps"  , &this -> num_leps); 
+    reduce(el, "met"       , &this -> met); 
+    reduce(el, "phi"       , &this -> phi); 
 
-    reduce(el, "signal", &this -> signal_scores); 
-    read(el, "res_edge", &this -> edge_res_scores); 
-    read(el, "top_edge", &this -> edge_top_scores); 
-   
-    reduce(el, "ntops"      , &this -> ntops_scores); 
-    reduce_2(el, "num_jets" , &this -> num_jets); 
-    reduce_2(el, "num_leps" , &this -> num_leps); 
-    reduce_2(el, "num_bjets", &this -> num_bjets); 
-
-    reduce_2(el, "truth_ntops" , &this -> t_ntops);  
-    reduce_2(el, "truth_signal", &this -> t_signal);  
-
-    reduce(el, "truth_res_edge", &this -> t_edge_res); 
-    reduce(el, "truth_top_edge", &this -> t_edge_top); 
+    reduce(el, "truth_ntops"   , &this -> t_ntops); 
+    reduce(el, "truth_signal"  , &this -> t_signal); 
+    reduce(el, "truth_res_edge", &this -> t_edge_res, 0); 
+    reduce(el, "truth_top_edge", &this -> t_edge_top, 0); 
 }
 
 void gnn_event::CompileEvent(){
@@ -155,21 +145,23 @@ void gnn_event::CompileEvent(){
     std::map<int, std::map<std::string, particle_gnn*>> reco_tops; 
     std::map<int, std::map<std::string, particle_gnn*>> reco_zprime; 
 
-    std::vector<int> src = this -> m_edge_index[0]; 
-    std::vector<int> dst = this -> m_edge_index[1]; 
-    for (size_t x(0); x < src.size(); ++x){
+    for (size_t x(0); x < this -> m_edge_index.size(); ++x){
+        int src = this -> m_edge_index[x][0]; 
+        int dst = this -> m_edge_index[x][1];  
+        particle_gnn* ptr = particle[dst]; 
+
         int top_ij = (this -> edge_top_scores[x][0] < this -> edge_top_scores[x][1]); 
         int res_ij = (this -> edge_res_scores[x][0] < this -> edge_res_scores[x][1]); 
-        if (top_ij){bin_top[src[x]][dst[x]]    = this -> edge_top_scores[x][1];}
-        if (res_ij){bin_zprime[src[x]][dst[x]] = this -> edge_res_scores[x][1];}
-        int d = dst[x]; 
-        int s = src[x]; 
-        std::string hx = particle[d] -> hash; 
-        reco_tops[s][hx]   = particle[d];
-        reco_zprime[s][hx] = particle[d];
-        
-        if (this -> t_edge_top[x]){real_tops[s][hx]   = particle[d];}
-        if (this -> t_edge_res[x]){real_zprime[s][hx] = particle[d];}
+
+        std::string hx       = ptr -> hash; 
+        reco_tops[src][hx]   = ptr;
+        reco_zprime[src][hx] = ptr;
+
+        if (top_ij){bin_top[src][dst]    = this -> edge_top_scores[x][1];}
+        if (res_ij){bin_zprime[src][dst] = this -> edge_res_scores[x][1];}
+
+        if (this -> t_edge_top[x]){real_tops[src][hx]   = ptr;}
+        if (this -> t_edge_res[x]){real_zprime[src][hx] = ptr;}
     }
 
     std::map<std::string, std::vector<particle_gnn*>>::iterator it;

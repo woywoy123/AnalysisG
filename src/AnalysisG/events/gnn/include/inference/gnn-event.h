@@ -5,32 +5,21 @@
 #include <inference/gnn-particles.h>
 
 template <typename g>
-void reduce(element_t* el, std::string key, std::vector<g>* out){
-    std::vector<std::vector<g>> tmp;
-    if (!el -> get(key, &tmp)){return;}
-    (*out) = tmp[0]; 
-};
-
-template <typename g>
 void reduce(element_t* el, std::string key, g* out){
-    std::vector<g> tmp;
-    if (!el -> get(key, &tmp)){return;}
-    (*out) = tmp[0]; 
-};
-
-template <typename g>
-void reduce_2(element_t* el, std::string key, g* out){
     std::vector<std::vector<g>> tmp;
     if (!el -> get(key, &tmp)){return;}
     (*out) = tmp[0][0]; 
 };
 
 template <typename g>
-void read(element_t* el, std::string key, std::vector<g>* out){
-    if (!el -> get(key, out)){return;}
-};
-
-
+void reduce(element_t* el, std::string key, std::vector<g>* out, int dim){
+    std::vector<std::vector<g>> tmp;
+    if (!el -> get(key, &tmp)){return;}
+    if (dim == -1){(*out) = tmp[0]; return;}
+    for (size_t x(0); x < tmp.size(); ++x){
+        (*out).push_back(tmp[x][0]); 
+    }
+}
 
 class gnn_event: public event_template
 {
@@ -42,6 +31,8 @@ class gnn_event: public event_template
         int   num_bjets = 0; 
         double num_jets = 0; 
         double num_leps = 0;  
+        double met      = 0; 
+        double phi      = 0; 
 
         // ------- MVA predictions ------ //
         int   p_ntops  = 0; 

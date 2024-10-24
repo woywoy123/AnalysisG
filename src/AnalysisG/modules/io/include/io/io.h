@@ -64,10 +64,8 @@ class io:
             hsize_t dim_r[1];
             space_r.getSimpleExtentDims(dim_r); 
             int length = dim_r[0];
-            g* ptr = (g*)malloc(length * sizeof(g));
-            dataset -> read(ptr, pairs); 
-            for (int i(0); i < length; ++i){outpt -> push_back(ptr[i]);}
-            free(ptr);
+            outpt -> assign(length, g()); 
+            dataset -> read(outpt -> data(), pairs); 
         } 
 
         template <typename g>
@@ -78,10 +76,7 @@ class io:
             H5::DataSpace space_r = dataset -> getSpace();
             hsize_t dim_r[1];
             space_r.getSimpleExtentDims(dim_r); 
-            g* ptr = (g*)malloc(dim_r[0]*sizeof(g));
-            dataset -> read(ptr, pairs); 
-            *out = *ptr;
-            free(ptr);
+            dataset -> read(out, pairs); 
         }
 
         bool start(std::string filename, std::string read_write); 
