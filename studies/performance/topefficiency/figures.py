@@ -130,7 +130,6 @@ def top_kinematic_region(stacks, data = None):
         reco.Stacked = True
         reco.xStep = 20
         reco.Overflow = False
-        reco.yLogarithmic = True
         reco.xTitle = "Invariant Mass of Candidate Top (GeV)"
         reco.yTitle = "Tops / ($1$ GeV)"
         reco.yMin = 0.0001
@@ -301,7 +300,7 @@ def TopEfficiency(ana):
     files = [str(x) for x in p.glob("**/*.pkl") if str(x).endswith(".pkl")]
     files = list(set(files))
     files = sorted(files)
-    files = files[:4]
+    #files = files[:4]
 
     metl = MetaLookup()
     metl.metadata = metacache
@@ -314,11 +313,11 @@ def TopEfficiency(ana):
     for i in range(len(files)):
         print(files[i], (i+1) / len(files))
         pr = pickle.load(open(files[i], "rb"))
-        stack_roc    = roc_data(stack_roc, pr)
-        stack_ntops  = ntops_reco(stack_ntops, pr)
-        #stack_topkin = top_kinematic_region(stack_topkin, pr)
+        #stack_roc    = roc_data(stack_roc, pr)
+        #stack_ntops  = ntops_reco(stack_ntops, pr)
+        stack_topkin = top_kinematic_region(stack_topkin, pr)
 
-    roc_data(stack_roc)
-    ntops_reco(stack_ntops)
-    #top_kinematic_region(stack_topkin)
+    #roc_data(stack_roc)
+    #ntops_reco(stack_ntops)
+    top_kinematic_region(stack_topkin)
 

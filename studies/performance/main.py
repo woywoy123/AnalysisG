@@ -43,12 +43,12 @@ study       = "topefficiency"
 
 graph_name     = "GraphJets"
 graph_prefix   = "_bn_1_"
-inference_mode = False
+inference_mode = True
 plot_only      = False
-fetch_meta     = True
+fetch_meta     = False
 build_cache    = False
-threads        = 2
-bts            = 250
+threads        = 4
+bts            = 100
 kfold          = "kfold-5"
 epoch          = "epoch-23"
 mrk            = "MRK-1"
@@ -58,24 +58,24 @@ graph_cache = "/scratch/tnom6927/graph-data-mc16-full/"
 root_model  = "/import/wu1/tnom6927/TrainingOutput/training-sessions/"
 data_path   = "/import/wu1/tnom6927/TrainingOutput/grid-data/" # <----- cluster
 #data_path = "/CERN/trainings/mc16-full-inference" # <----- local
-#data_path = "ProjectName/ROOT/" + graph_name + graph_prefix + "Grift/" + mrk + "/" + epoch + "/" + kfold + "/"
+data_path = "ProjectName/ROOT/" + graph_name + graph_prefix + "Grift/" + mrk + "/" + epoch + "/" + kfold + "/"
 #data_path = "/CERN/Samples/mc16-full/"
 
-epx = [i+1 for i in range(1, 2)]
+epx = [i+1 for i in range(1, 30)]
 model_states = {}
 if inference_mode:
     model_states |= {
-            "MRK-1" : {"epoch-" + str(ep) : (["kfold-5"], ["cuda:0"]) for ep in epx},
-            "MRK-2" : {"epoch-" + str(ep) : (["kfold-5"], ["cuda:1"]) for ep in epx},
-            "MRK-3" : {"epoch-" + str(ep) : (["kfold-5"], ["cuda:0"]) for ep in epx},
-            "MRK-4" : {"epoch-" + str(ep) : (["kfold-5"], ["cuda:1"]) for ep in epx},
-            "MRK-5" : {"epoch-" + str(ep) : (["kfold-5"], ["cuda:0"]) for ep in epx},
-            "MRK-6" : {"epoch-" + str(ep) : (["kfold-5"], ["cuda:1"]) for ep in epx},
-            "MRK-7" : {"epoch-" + str(ep) : (["kfold-5"], ["cuda:0"]) for ep in epx},
-            "MRK-8" : {"epoch-" + str(ep) : (["kfold-5"], ["cuda:1"]) for ep in epx},
+            "MRK-1" : {"epoch-" + str(ep) : (["kfold-1", "kfold-5"], ["cuda:1", "cuda:0"]) for ep in epx},
+            "MRK-2" : {"epoch-" + str(ep) : (["kfold-1", "kfold-5"], ["cuda:0", "cuda:1"]) for ep in epx},
+            "MRK-3" : {"epoch-" + str(ep) : (["kfold-1", "kfold-5"], ["cuda:1", "cuda:0"]) for ep in epx},
+            "MRK-4" : {"epoch-" + str(ep) : (["kfold-1", "kfold-5"], ["cuda:0", "cuda:1"]) for ep in epx},
+#            "MRK-5" : {"epoch-" + str(ep) : (["kfold-1", "kfold-5"], ["cuda:1", "cuda:0"]) for ep in epx},
+#            "MRK-6" : {"epoch-" + str(ep) : (["kfold-1", "kfold-5"], ["cuda:0", "cuda:1"]) for ep in epx},
+#            "MRK-7" : {"epoch-" + str(ep) : (["kfold-1", "kfold-5"], ["cuda:1", "cuda:0"]) for ep in epx},
+#            "MRK-8" : {"epoch-" + str(ep) : (["kfold-1", "kfold-5"], ["cuda:0", "cuda:1"]) for ep in epx},
     }
 
-ls = list(build_samples(data_path, "**/*.root", 100))
+ls = list(build_samples(data_path, "**/*.root", 1))
 if fetch_meta:
     x = 0
     for i in ls:
@@ -120,6 +120,7 @@ for k in ls:
         except KeyError: pass
         except NameError: pass
 
+    x = 0
     for j in model_states:
         for ep in model_states[j]:
             mdl = root_model + graph_name + graph_prefix[:-1] + "/" + model_name + "/" + j + "/state/" + ep + "/"
@@ -130,10 +131,11 @@ for k in ls:
                 gnn.o_graph = {"ntops"    : "CrossEntropyLoss", "signal"   : "CrossEntropyLoss"}
                 gnn.i_node  = ["pt", "eta", "phi", "energy", "charge"]
                 gnn.i_graph = ["met", "phi"]
-                gnn.device  = dev[i]
+                gnn.device  = "cuda:" + str(x%2)
                 gnn.checkpoint_path = mdl + kf[i] + "_model.pt"
                 name = "ROOT/" + graph_name + graph_prefix + model_name + "/" + j + "/" + ep + "/" + kf[i]
                 ana.AddModelInference(gnn, name)
+                x+=1
     ana.Start()
     if len(selection_name):
         pth = "./serialized-data/" + mrk + "/" + epoch + "/" + kfold + "/"
@@ -150,4 +152,4 @@ ana.Start()
 method = plotting_method[study]
 method.figures.figure_path = figure_path
 method.figures.metacache = ana.GetMetaData
-if study == "topefficiency": method.figures.TopEfficiency("./serialized-data/")
+if study == "topefficiency": method.figures.TopEfficiency("./serialized-data/" + mrk + "/" + epoch + "/" + kfold + "/")
