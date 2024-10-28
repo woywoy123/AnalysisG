@@ -74,6 +74,7 @@ cdef extern from "<structs/meta.h>":
         double crossSection
         double crossSection_mean
         double totalSize
+        double kfactor
 
         unsigned int nFiles
         unsigned int totalEvents
@@ -169,6 +170,7 @@ cdef extern from "<structs/element.h>":
         string branch_name
         string tree_name
         string leaf_type
+        string* fname
         string path
         data_enum type
         int file_index

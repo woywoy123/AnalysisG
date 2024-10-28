@@ -213,7 +213,7 @@ void data_t::flush(){
     this -> flush_buffer();
     for (size_t x(0); x < this -> files_t -> size(); ++x){
         if (!(*this -> files_t)[x]){continue;}
-        delete (*this -> files_t)[x]; (*this -> files_t)[x] = nullptr; 
+        //delete (*this -> files_t)[x]; (*this -> files_t)[x] = nullptr; 
     }
     this -> leaf = nullptr; 
     this -> branch = nullptr; 
@@ -245,16 +245,15 @@ void data_t::initialize(){
 } 
 
 bool data_t::next(){
-    bool sk = this -> file_index >= (int)this -> files_i -> size(); 
-    if (sk){return true;}
-
+    if (this -> file_index >= (int)this -> files_i -> size()){return true;} 
     long idx = (*this -> files_i)[this -> file_index];
+    if (!this -> fname){this -> fname = &(*this -> files_s)[this -> file_index];}
     if (this -> index+1 < idx){this -> index++; return false;}
 
     this -> file_index++; 
-    sk = this -> file_index >= (int)this -> files_i -> size(); 
-    if (sk){return true;}
+    if (this -> file_index >= (int)this -> files_i -> size()){return true;}
     this -> initialize();
+    this -> fname = &(*this -> files_s)[this -> file_index];
     return false; 
 }
 

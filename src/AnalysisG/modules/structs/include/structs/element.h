@@ -74,6 +74,7 @@ struct data_t {
         std::string   tree_name = ""; 
         std::string   leaf_type = ""; 
         std::string        path = ""; 
+        std::string*      fname = nullptr; 
 
         TLeaf*     leaf = nullptr; 
         TBranch* branch = nullptr; 

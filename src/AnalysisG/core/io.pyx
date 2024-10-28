@@ -39,13 +39,17 @@ cdef class IO:
     def __next__(self):
         cdef dict output = {}
         cdef pair[string, data_t*] itr
+        cdef data_t* idx = NULL
         for itr in deref(self.data_ops):
             if self.skip[itr.first]: continue
             output |= switch_board(itr.second)
             self.skip[itr.first] = itr.second.next()
+            if idx != NULL: continue
+            idx = itr.second
         if not len(output):
             self.ptr.root_end()
             raise StopIteration
+        if idx != NULL: output["filename"] = deref(idx.fname)
         return output
 
     cpdef dict MetaData(self):

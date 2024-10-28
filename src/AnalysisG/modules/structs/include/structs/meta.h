@@ -43,6 +43,7 @@ struct meta_t {
     std::string DatasetName = "";
 
     // dataset attributes
+    double kfactor   = 0; 
     double ecmEnergy = 0;
     double genFiltEff = 0;
     double completion = 0;

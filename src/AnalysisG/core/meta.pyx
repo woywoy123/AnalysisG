@@ -110,14 +110,18 @@ cdef class ami_client:
             try: setattr(obj, i, info[i])
             except KeyError: continue
 
-        obj.DatasetName        = info["logicalDatasetName"]
-        obj.keywords           = info["keywords"].split(", ")
-        obj.keyword            = info["keyword"].split(", ")
+        obj.DatasetName  = info["logicalDatasetName"]
+        obj.keywords     = info["keywords"].split(", ")
+        obj.keyword      = info["keyword"].split(", ")
+        obj.events       = [int(files[i]["events"]) for i in obj.Files.values()]
+        obj.fileSize     = [int(files[i]["fileSize"]) for i in obj.Files.values()]
+        obj.fileGUID     = [enc(files[i]["fileGUID"]) for i in obj.Files.values()]
+
+        try: obj.kfactor = info["kFactor@PMG"]
+        except KeyError: obj.kfactor = 1
+
         try: obj.weights = info["weights"].split(" | ")[:-1]
         except KeyError: pass
-        obj.events   = [int(files[i]["events"]) for i in obj.Files.values()]
-        obj.fileSize = [int(files[i]["fileSize"]) for i in obj.Files.values()]
-        obj.fileGUID = [enc(files[i]["fileGUID"]) for i in obj.Files.values()]
         obj.found = True
 
     cdef void list_datasets(self, Meta obj):
@@ -295,6 +299,13 @@ cdef class Meta:
     @property
     def genFiltEff(self) -> float:
         return self.ptr.meta_data.genFiltEff
+
+    @property
+    def kfactor(self) -> float:
+        return self.ptr.meta_data.kfactor
+
+    @kfactor.setter
+    def kfactor(self, val): self.ptr.meta_data.kfactor = float(val)
 
     @genFiltEff.setter
     def genFiltEff(self, val):

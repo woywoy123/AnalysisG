@@ -21,7 +21,7 @@ class plotting: public tools
         std::tuple<float, float> mean_stdev(std::vector<float>* data);
 
         // io
-        std::string extension = ".png"; 
+        std::string extension = ".pdf"; 
         std::string filename = "untitled"; 
         std::string output_path = "./Figures"; 
 
