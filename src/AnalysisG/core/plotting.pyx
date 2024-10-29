@@ -54,7 +54,30 @@ cdef class BasePlotting:
     cdef dict __compile__(self, bool raw = False): return {}
 
     def __dealloc__(self): del self.ptr
-    def __init__(self): pass
+    def __init__(self, inpt = None):
+        if inpt is None: return
+        cdef list keys = [i for i in self.__dir__() if not i.startswith("__")]
+        for i in keys:
+            try: setattr(self, i, inpt["data"][i])
+            except KeyError: continue
+            except AttributeError: continue
+
+    def __reduce__(self):
+        cdef list keys = [i for i in self.__dir__() if not i.startswith("__")]
+        cdef dict out = {}
+        out["data"] = {i : getattr(self, i) for i in keys if not callable(getattr(self, i))}
+        return self.__class__, (out,)
+
+    def __add__(self, BasePlotting other):
+        self.ptr.x_data.insert( self.ptr.x_data.end() , other.ptr.x_data.begin() , other.ptr.x_data.end())
+        self.ptr.y_data.insert( self.ptr.y_data.end() , other.ptr.y_data.begin() , other.ptr.y_data.end())
+        self.ptr.weights.insert(self.ptr.weights.end(), other.ptr.weights.begin(), other.ptr.weights.end())
+        return self
+
+    def __radd__(self, other):
+        if isinstance(other, BasePlotting): return self.__add__(other)
+        cdef BasePlotting s = self.__class__()
+        return s.__add__(self)
 
     @property
     def Hatch(self): return env(self.ptr.hatch)
@@ -83,7 +106,7 @@ cdef class BasePlotting:
     def ErrorBars(self, bool val): self.ptr.errors = val
 
     @property
-    def Filename(self): return self.ptr.filename
+    def Filename(self): return env(self.ptr.filename)
     @Filename.setter
     def Filename(self, str val): self.ptr.filename = enc(val)
 
@@ -262,7 +285,16 @@ cdef class BasePlotting:
 
 cdef class TH1F(BasePlotting):
 
-    def __init__(self): self.Histograms = []
+    def __init__(self, inpt = None):
+        self.Histograms = []
+        self.Histogram = None
+        if inpt is None: return
+        cdef list keys = [i for i in self.__dir__() if not i.startswith("__")]
+        for i in keys:
+            try: setattr(self, i, inpt["data"][i])
+            except KeyError: continue
+            except AttributeError: continue
+            except: pass
 
     @property
     def xData(self): return self.ptr.x_data;
@@ -310,6 +342,11 @@ cdef class TH1F(BasePlotting):
     def Density(self, bool val): self.ptr.density = val
 
     @property
+    def counts(self):
+        try: return sum(self.__compile__(True)["H"]).counts()
+        except ValueError: return []
+
+    @property
     def xLabels(self): return as_basic_dict(&self.ptr.x_labels)
     @xLabels.setter
     def xLabels(self, dict val): as_map(val, &self.ptr.x_labels)
@@ -331,8 +368,8 @@ cdef class TH1F(BasePlotting):
         h1 = sum(hist.__compile__(True)["H"])
         h2 = sum(self.__compile__(True)["H"])
 
-        hist.xMin = hist_min
-        hist.xMax = hist_max
+        hist.xMin  = hist_min
+        hist.xMax  = hist_max
         hist.xBins = hist_bin
 
         v1, v2 = h1.values(), h2.values()
@@ -346,7 +383,7 @@ cdef class TH1F(BasePlotting):
                 facecolor = "k",
                 hatch = "/////",
                 step  = "mid",
-                alpha = 0.1
+                alpha = 0.2
         )
 
     cdef void __get_error_seg__(self, plot):
@@ -437,10 +474,10 @@ cdef class TH1F(BasePlotting):
             if not len(labels): self.Histogram.xMin  = self.xMin
             if not len(labels): self.Histogram.xMax  = self.xMax
             if not len(labels): self.Histogram.xBins = self.xBins
-            histpl["H"] += [self.Histogram.__build__()]
-            histpl["label"] += [self.Histogram.Title]
-            if len(self.Histogram.Color): histpl["color"] += [self.Histogram.Color]
-            if len(self.Histogram.Hatch): histpl["hatch"] += [self.Histogram.Hatch]
+            #histpl["H"] += [self.Histogram.__build__()]
+            #histpl["label"] += [self.Histogram.Title]
+            #if len(self.Histogram.Color): histpl["color"] += [self.Histogram.Color]
+            #if len(self.Histogram.Hatch): histpl["hatch"] += [self.Histogram.Hatch]
 
         if len(self.xData) or len(labels):
             histpl = self.factory()
@@ -499,6 +536,14 @@ cdef class TH1F(BasePlotting):
 
 cdef class TH2F(BasePlotting):
     def __cinit__(self): pass
+
+    def __init__(self, inpt = None):
+        if inpt is None: return
+        cdef list keys = [i for i in self.__dir__() if not i.startswith("__")]
+        for i in keys:
+            try: setattr(self, i, inpt["data"][i])
+            except KeyError: continue
+            except AttributeError: continue
 
     @property
     def yBins(self): return self.ptr.y_bins
@@ -576,10 +621,16 @@ cdef class TH2F(BasePlotting):
 cdef class TLine(BasePlotting):
     def __cinit__(self): pass
 
-    def __init__(self):
+    def __init__(self, inpt = None):
         self.Lines = []
         self.LineWidth = 0.5
         self.Marker = ""
+        if inpt is None: return
+        cdef list keys = [i for i in self.__dir__() if not i.startswith("__")]
+        for i in keys:
+            try: setattr(self, i, inpt["data"][i])
+            except KeyError: continue
+            except AttributeError: continue
 
     @property
     def xData(self): return self.ptr.x_data;

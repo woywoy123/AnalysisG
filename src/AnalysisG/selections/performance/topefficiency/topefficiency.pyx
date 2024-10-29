@@ -27,8 +27,8 @@ cdef class TopEfficiency(SelectionTemplate):
         self.p_decay_region = as_dict_dict(&self.tt.p_decay_region)
 
         self.n_tru_tops      = as_basic_dict(&self.tt.n_tru_tops)
-        self.n_pred_tops     = as_basic_dict(&self.tt.n_pred_tops)
-        self.n_perfect_tops  = as_basic_dict(&self.tt.n_perfect_tops)
+        self.n_pred_tops     = as_basic_dict_dict_f(&self.tt.n_pred_tops)
+        self.n_perfect_tops  = as_basic_dict_dict_f(&self.tt.n_perfect_tops)
 
         self.truth_res_edge   = self.tt.truth_res_edge
         self.truth_top_edge   = self.tt.truth_top_edge

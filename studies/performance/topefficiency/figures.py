@@ -34,6 +34,9 @@ class MetaLookup:
         return mapping(self.__find__(inpt).DatasetName)
 
     @property
+    def DatasetName(self): return self.meta.DatasetName
+
+    @property
     def SumOfWeights(self):
         return self.meta.SumOfWeights[b"sumWeights"]["total_events_weighted"]
 
@@ -44,6 +47,24 @@ class MetaLookup:
     @property
     def Scale(self):
         return (self.CrossSection*140.1)/self.SumOfWeights
+
+class container:
+
+    def __init__(self):
+        self._weights = []
+        self._data    = []
+        self._sow     = None
+
+    
+
+
+
+
+
+
+
+
+
 
 def path(hist, subx = ""):
     hist.Style = "ATLAS"
@@ -68,8 +89,10 @@ def top_kinematic_region(stacks, data = None):
         if kin in stacks["truth"]:
             prx = list(stacks["truth"][kin])
             for n in prx:
+                print(n)
+                print(metalookup(n).DatasetName)
+                exit()
                 scale = metalookup(n).Scale
-                stacks["truth"][kin][n]["weights"] = [i*scale for i in stacks["truth"][kin][n]["weights"]]
 
             tru_h = TH1F()
             tru_h.Title   = "Truth"
@@ -84,11 +107,7 @@ def top_kinematic_region(stacks, data = None):
 
         hists = {}
         for prc in stacks["prediction"][kin]:
-            scale = metalookup(prc).Scale
             _, tl = metalookup.title(prc)
-
-            stacks["prediction"][kin][prc]["weights"] = [i*scale for i in stacks["prediction"][kin][prc]["weights"]]
-            stacks["top_score"][kin][prc]["weights"]  = [i*scale for i in stacks["top_score"][kin][prc]["weights"]]
 
             if tl not in hists: hists[tl] = {"value": [], "weights" : []}
             hists[tl]["value"]   += stacks["prediction"][kin][prc]["value"]
@@ -300,7 +319,7 @@ def TopEfficiency(ana):
     files = [str(x) for x in p.glob("**/*.pkl") if str(x).endswith(".pkl")]
     files = list(set(files))
     files = sorted(files)
-    #files = files[:4]
+    files = files[:1]
 
     metl = MetaLookup()
     metl.metadata = metacache
@@ -313,11 +332,11 @@ def TopEfficiency(ana):
     for i in range(len(files)):
         print(files[i], (i+1) / len(files))
         pr = pickle.load(open(files[i], "rb"))
+        stack_topkin = top_kinematic_region(stack_topkin, pr)
         #stack_roc    = roc_data(stack_roc, pr)
         #stack_ntops  = ntops_reco(stack_ntops, pr)
-        stack_topkin = top_kinematic_region(stack_topkin, pr)
 
+    top_kinematic_region(stack_topkin)
     #roc_data(stack_roc)
     #ntops_reco(stack_ntops)
-    top_kinematic_region(stack_topkin)
 

@@ -65,6 +65,11 @@ cdef class IO:
         return self.meta_data
 
     @property
+    def Verbose(self): return not self.ptr.shush
+    @Verbose.setter
+    def Verbose(self, bool val): self.ptr.shush = not val
+
+    @property
     def EnablePyAMI(self): return self.ptr.enable_pyami
 
     @EnablePyAMI.setter

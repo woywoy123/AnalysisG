@@ -99,6 +99,7 @@ bool topefficiency::strategy(event_template* ev){
         t_top_map[top_ -> hash] = false; 
         this -> t_decay_region[decay_region_t][hash].push_back(mass); 
     }
+    this -> n_tru_tops[hash] = t_top_map.size(); 
 
     std::vector<zprime*> truth_zprime = evn -> t_zprime;  
     for (size_t x(0); x < truth_zprime.size(); ++x){
@@ -128,18 +129,25 @@ bool topefficiency::strategy(event_template* ev){
     }
 
     // ------------------ Efficiency Reconstruction ------------------- //
-    int perf = 0; 
-    for (size_t x(0); x < reco_tops.size(); ++x){
-        top* top_ = reco_tops[x]; 
-        std::string id = top_ -> hash; 
-        if (!t_top_map.count(id)){continue;}
-        if (!t_top_map[id]){++perf;} // prevent double counting
-        t_top_map[id] = true; 
-    }
+    for (size_t s(0); s <= int(1.0/this -> score_step); ++s){
+        int perf = 0; 
+        int reco = 0; 
+        float sc = s*this -> score_step; 
+        for (size_t x(0); x < reco_tops.size(); ++x){
+            top* top_ = reco_tops[x]; 
+            std::string id = top_ -> hash; 
+            if (top_ -> av_score < sc){continue;}
+            ++reco; 
 
-    this -> n_perfect_tops[hash] = perf; 
-    this -> n_pred_tops[hash]    = reco_tops.size(); 
-    this -> n_tru_tops[hash]     = t_top_map.size(); 
+            if (!t_top_map.count(id)){continue;}
+            if (!t_top_map[id]){++perf;} // prevent double counting
+            t_top_map[id] = true; 
+        }
+        this -> n_perfect_tops[hash][sc] = perf; 
+        this -> n_pred_tops[hash][sc]    = reco;  
+        std::map<std::string, bool>::iterator ib = t_top_map.begin(); 
+        for (; ib != t_top_map.end(); ++ib){ib -> second = false;}
+    }
 
     this -> truth_top_edge      = evn -> t_edge_top; 
     this -> pred_top_edge_score = {evn -> edge_top_scores}; 

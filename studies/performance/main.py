@@ -43,14 +43,14 @@ study       = "topefficiency"
 
 graph_name     = "GraphJets"
 graph_prefix   = "_bn_1_"
-inference_mode = True
-plot_only      = False
+inference_mode = False
+plot_only      = True
 fetch_meta     = False
 build_cache    = False
 threads        = 4
 bts            = 100
 kfold          = "kfold-5"
-epoch          = "epoch-23"
+epoch          = "epoch-5"
 mrk            = "MRK-1"
 
 
@@ -69,10 +69,6 @@ if inference_mode:
             "MRK-2" : {"epoch-" + str(ep) : (["kfold-1", "kfold-5"], ["cuda:0", "cuda:1"]) for ep in epx},
             "MRK-3" : {"epoch-" + str(ep) : (["kfold-1", "kfold-5"], ["cuda:1", "cuda:0"]) for ep in epx},
             "MRK-4" : {"epoch-" + str(ep) : (["kfold-1", "kfold-5"], ["cuda:0", "cuda:1"]) for ep in epx},
-#            "MRK-5" : {"epoch-" + str(ep) : (["kfold-1", "kfold-5"], ["cuda:1", "cuda:0"]) for ep in epx},
-#            "MRK-6" : {"epoch-" + str(ep) : (["kfold-1", "kfold-5"], ["cuda:0", "cuda:1"]) for ep in epx},
-#            "MRK-7" : {"epoch-" + str(ep) : (["kfold-1", "kfold-5"], ["cuda:1", "cuda:0"]) for ep in epx},
-#            "MRK-8" : {"epoch-" + str(ep) : (["kfold-1", "kfold-5"], ["cuda:0", "cuda:1"]) for ep in epx},
     }
 
 ls = list(build_samples(data_path, "**/*.root", 1))

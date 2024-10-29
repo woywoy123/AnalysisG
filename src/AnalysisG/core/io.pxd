@@ -5,12 +5,13 @@ from libcpp cimport bool
 from libcpp.map cimport map
 from libcpp.string cimport string
 from libcpp.vector cimport vector
-from AnalysisG.core.meta cimport meta, Meta
 from AnalysisG.core.structs cimport data_t
+from AnalysisG.core.meta cimport meta, Meta
+from AnalysisG.core.notification cimport notification
 
 cdef extern from "<io/io.h>" nogil:
 
-    cdef cppclass io:
+    cdef cppclass io(notification):
         io() except+ nogil
 
         # hdf5 wrappers

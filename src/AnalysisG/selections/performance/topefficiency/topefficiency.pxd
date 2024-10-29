@@ -23,8 +23,8 @@ cdef extern from "topefficiency.h":
         map[string, map[string, vector[float]]] p_decay_region
 
         map[string, int] n_tru_tops
-        map[string, int] n_pred_tops
-        map[string, int] n_perfect_tops
+        map[string, map[float, int]] n_pred_tops
+        map[string, map[float, int]] n_perfect_tops
 
         vector[int] truth_res_edge
         vector[int] truth_top_edge
