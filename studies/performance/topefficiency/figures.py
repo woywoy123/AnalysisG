@@ -13,6 +13,7 @@ class MetaLookup:
         self.metadata = {}
         self.matched = {}
         self.meta = None
+        self._lint_atlas = 140.1
 
     def __find__(self, inpt):
         try: inpt = inpt.decode("utf-8")
@@ -24,56 +25,77 @@ class MetaLookup:
         for i in self.metadata:
             if self.metadata[i].hash(inpt) not in i: continue
             self.matched[inpt] = self.metadata[i]
-            return self.__find__(inpt)
+            return self.metadata[i]
 
     def __call__(self, inpt):
         self.meta = self.__find__(inpt)
         return self
 
-    def title(self, inpt):
-        return mapping(self.__find__(inpt).DatasetName)
+    def title(self, inpt): return mapping(self.__find__(inpt).DatasetName)
 
     @property
     def DatasetName(self): return self.meta.DatasetName
-
     @property
     def SumOfWeights(self):
         return self.meta.SumOfWeights[b"sumWeights"]["total_events_weighted"]
 
     @property
-    def CrossSection(self):
-        return self.meta.crossSection
+    def CrossSection(self): return self.meta.crossSection
+    @property
+    def expected_events(self): return self.CrossSection*self._lint_atlas
+
+def MakeData(inpt,  key):
+    try: return inpt[key]
+    except KeyError: pass
+    dt = data(metalookup)
+    inpt[key] = dt
+    return dt
+
+class data:
+
+    def __init__(self, meta):
+        self._weights = {}
+        self._data    = {}
+        self._sow     = {}
+        self._exp     = {}
+        self._meta    = meta
+
+    def __populate__(self, inpt, trgt):
+        for fname, val in inpt.items():
+            key = self._meta(fname).DatasetName
+            if key not in trgt: trgt[key] = []
+            trgt[key] += val
+            if key not in self._sow: self._sow[key] = {}
+            if fname in self._sow[key]: continue
+            self._sow[key][fname] = self._meta(fname).SumOfWeights
+            self._exp[key] = self._meta(fname).expected_events
+
+    def __rescale__(self):
+        weights = []
+        for i in self._sow:
+            scale = self._exp[i] / sum(self._sow[i].values())
+            weights += [l/scale for l in self._weights[i]]
+        return weights
 
     @property
-    def Scale(self):
-        return (self.CrossSection*140.1)/self.SumOfWeights
+    def weights(self): return self.__rescale__()
+    @weights.setter
+    def weights(self, val): self.__populate__(val, self._weights)
 
-class container:
-
-    def __init__(self):
-        self._weights = []
-        self._data    = []
-        self._sow     = None
-
-    
-
-
-
-
-
-
-
-
-
+    @property
+    def data(self): return sum(list(self._data.values()), [])
+    @data.setter
+    def data(self, val): self.__populate__(val, self._data)
 
 def path(hist, subx = ""):
     hist.Style = "ATLAS"
     hist.OutputDirectory = figure_path + "/topefficiency" + subx
     return hist
 
-def top_kinematic_region(stacks, data = None):
-    if data is not None: return top_pteta(stacks, data)
+def top_kinematic_region(stacks, tmp = None):
+    if tmp is not None: return top_pteta(stacks, tmp)
 
+    cols = {}
     prc_topscore = {}
     top_score_mass = {}
     ks_topscore_eta_pt = {}
@@ -85,73 +107,85 @@ def top_kinematic_region(stacks, data = None):
         pt_r = kin.split(",")[0]
         tru_h = None
 
-        if pt_r not in pt_topmass_prc["truth"]: pt_topmass_prc["truth"][pt_r] = {"v" : [], "w" : []}
+        dt = MakeData(pt_topmass_prc["truth"], pt_r)
         if kin in stacks["truth"]:
-            prx = list(stacks["truth"][kin])
-            for n in prx:
-                print(n)
-                print(metalookup(n).DatasetName)
-                exit()
-                scale = metalookup(n).Scale
+            fnames = list(stacks["truth"][kin])
+            th = data(metalookup)
+            w = {f : stacks["truth"][kin][f]["weights"] for f in fnames}
+            d = {f : stacks["truth"][kin][f]["value"]   for f in fnames}
+
+            th.weights = w
+            th.data    = d
 
             tru_h = TH1F()
             tru_h.Title   = "Truth"
-            tru_h.xData   = sum([stacks["truth"][kin][f]["value"]   for f in prx], [])
-            tru_h.Weights = sum([stacks["truth"][kin][f]["weights"] for f in prx], [])
+            tru_h.xData   = th.data
+            tru_h.Weights = th.weights
             tru_h.Hatch   = "\\\\////"
             tru_h.Color   = "black"
-            pt_topmass_prc["truth"][pt_r]["v"] += sum([stacks["truth"][kin][f]["value"]   for f in prx], [])
-            pt_topmass_prc["truth"][pt_r]["w"] += sum([stacks["truth"][kin][f]["weights"] for f in prx], [])
+
+            dt.weights = w
+            dt.data    = d
+
 
         if kin not in stacks["prediction"]: stacks["prediction"][kin] = {}
+        if pt_r not in pt_topmass_prc["prediction"]: pt_topmass_prc["prediction"][pt_r] = {}
+        if pt_r not in top_score_mass: top_score_mass[pt_r] = {"mass" : data(metalookup), "score" : data(metalookup)}
+        if pt_r not in prc_topscore: prc_topscore[pt_r] = {}
 
         hists = {}
         for prc in stacks["prediction"][kin]:
-            _, tl = metalookup.title(prc)
+            _, tl, col = metalookup.title(prc)
+            dh = MakeData(hists, tl)
+            cols[tl] = col
+            mass  = {prc : stacks["prediction"][kin][prc]["value"]}
+            score = {prc : stacks["top_score"][kin][prc]["value"]}
+            mwei  = {prc : stacks["prediction"][kin][prc]["weights"]}
+            swei  = {prc : stacks["top_score"][kin][prc]["weights"]}
 
-            if tl not in hists: hists[tl] = {"value": [], "weights" : []}
-            hists[tl]["value"]   += stacks["prediction"][kin][prc]["value"]
-            hists[tl]["weights"] += stacks["prediction"][kin][prc]["weights"]
+            dh.weights = mwei
+            dh.data    = mass
 
-            if pt_r not in pt_topmass_prc["prediction"]: pt_topmass_prc["prediction"][pt_r] = {}
-            if tl not in pt_topmass_prc["prediction"][pt_r]: pt_topmass_prc["prediction"][pt_r][tl] = {"v" : [], "w" : []}
-            pt_topmass_prc["prediction"][pt_r][tl]["v"] += stacks["prediction"][kin][prc]["value"]
-            pt_topmass_prc["prediction"][pt_r][tl]["w"] += stacks["prediction"][kin][prc]["weights"]
+            dptr = MakeData(pt_topmass_prc["prediction"][pt_r], tl)
+            dptr.weights = mwei
+            dptr.data    = mass
 
-            if pt_r not in top_score_mass: top_score_mass[pt_r] = {"mass" : {"v" : [], "w" : []}, "score" : {"v" : [], "w" : []}}
-            top_score_mass[pt_r]["mass"]["v"]  += stacks["prediction"][kin][prc]["value"]
-            top_score_mass[pt_r]["score"]["v"] += stacks["top_score"][kin][prc]["value"]
+            top_score_mass[pt_r]["mass"].weights = mwei
+            top_score_mass[pt_r]["mass"].data = mass
 
-            top_score_mass[pt_r]["mass"]["w"]  += stacks["prediction"][kin][prc]["weights"]
-            top_score_mass[pt_r]["score"]["w"] += stacks["top_score"][kin][prc]["weights"]
+            top_score_mass[pt_r]["score"].weights = swei
+            top_score_mass[pt_r]["score"].data = score
 
-            if pt_r not in prc_topscore: prc_topscore[pt_r] = {}
-            if tl not in prc_topscore[pt_r]: prc_topscore[pt_r][tl] = {"v" : [], "w" : []}
-            prc_topscore[pt_r][tl]["v"] += stacks["top_score"][kin][prc]["value"]
-            prc_topscore[pt_r][tl]["w"] += stacks["top_score"][kin][prc]["weights"]
+            dsc = MakeData(prc_topscore[pt_r], tl)
+            dsc.weights = swei
+            dsc.data    = score
+
             stacks["top_score"][kin][prc] = []
             stacks["prediction"][kin][prc] = []
 
+        tmp = {}
         for prc in hists:
             prc_h = TH1F()
             prc_h.Title   = prc
-            prc_h.xData   = hists[prc]["value"]
-            prc_h.Weights = hists[prc]["weights"]
-            hists[prc] = prc_h
+            prc_h.Color   = cols[prc]
+            prc_h.xData   = hists[prc].data
+            prc_h.Weights = hists[prc].weights
+            tmp[float(sum(prc_h.counts))] = prc_h
+        hists = tmp
 
         tlt = kin.replace("_", " \\leq p^{top}_T (GeV) \\leq ")
         tlt = tlt.replace("-", " \\leq | \\eta_{top} | \\leq ")
 
         reco = path(TH1F(), "/" + kin.split(",")[0])
         reco.Title = "Reconstructed Invariant Mass of Top Candidate within \n Kinematic Region: $" + tlt + "$"
-        reco.Histograms = list(hists.values())
+        reco.Histograms = [hists[k] for k in sorted(hists)]
         reco.Histogram = tru_h
         reco.Stacked = True
         reco.xStep = 20
         reco.Overflow = False
         reco.xTitle = "Invariant Mass of Candidate Top (GeV)"
         reco.yTitle = "Tops / ($1$ GeV)"
-        reco.yMin = 0.0001
+        reco.yMin = 0
         reco.xMin = 0
         reco.xMax = 400
         reco.xBins = 400
@@ -160,29 +194,29 @@ def top_kinematic_region(stacks, data = None):
 
         try: ks = float(reco.KStest(tru_h).pvalue)
         except: ks = 0
-
         ks_topscore_eta_pt[kin] = ks
 
     for kin in set(list(pt_topmass_prc["truth"]) + list(pt_topmass_prc["prediction"])):
         tru = TH1F()
         tru.Title = "Truth"
-        tru.xData   = pt_topmass_prc["truth"][kin]["v"]
-        tru.Weights = pt_topmass_prc["truth"][kin]["w"]
+        tru.xData   = pt_topmass_prc["truth"][kin].data
+        tru.Weights = pt_topmass_prc["truth"][kin].weights
         tru.Hatch = "\\\\////"
         tru.Color = "black"
 
-        hists = []
+        hists = {}
         for prc in pt_topmass_prc["prediction"][kin]:
             prc_h = TH1F()
+            prc_h.Color   = cols[prc]
             prc_h.Title   = prc
-            prc_h.xData   = pt_topmass_prc["prediction"][kin][prc]["v"]
-            prc_h.Weights = pt_topmass_prc["prediction"][kin][prc]["w"]
-            hists.append(prc_h)
+            prc_h.xData   = pt_topmass_prc["prediction"][kin][prc].data
+            prc_h.Weights = pt_topmass_prc["prediction"][kin][prc].weights
+            hists[float(sum(prc_h.counts))] = prc_h
 
         tlt = kin.replace("_", " \\leq p^{top}_T (GeV) \\leq ")
         reco = path(TH1F(), "/aggregated-pt/")
         reco.Title = "Reconstructed Invariant Mass of Top Candidate with \n Transverse Momentum: $" + tlt + "$"
-        reco.Histograms = hists
+        reco.Histograms = [hists[k] for k in sorted(hists)]
         reco.Histogram = tru
         reco.xStep = 20
         reco.Stacked = True
@@ -190,6 +224,7 @@ def top_kinematic_region(stacks, data = None):
         reco.xTitle = "Invariant Mass of Candidate Top (GeV)"
         reco.yTitle = "Tops / ($1$ GeV)"
         reco.xMin = 0
+        reco.yMin = 0
         reco.xMax = 400
         reco.xBins = 400
         reco.Filename = kin.split(", ")[0]
@@ -197,25 +232,28 @@ def top_kinematic_region(stacks, data = None):
 
     for kin in prc_topscore:
 
-        hists = []
+        hists = {}
         for prc in prc_topscore[kin]:
             prc_h = TH1F()
+            prc_h.Color   = cols[prc]
             prc_h.Title   = prc
-            prc_h.xData   = prc_topscore[kin][prc]["v"]
-            prc_h.Weights = prc_topscore[kin][prc]["w"]
-            hists.append(prc_h)
+            prc_h.xData   = prc_topscore[kin][prc].data
+            #prc_h.Weights = prc_topscore[kin][prc].weights
+            hists[float(sum(prc_h.counts))] = prc_h
 
         tlt = kin.replace("_", " \\leq p^{top}_T (GeV) \\leq ")
         s_s = path(TH1F(), "/pt-score")
-        s_s.Histograms = hists
+        s_s.Histograms = [hists[k] for k in sorted(hists)]
         s_s.Title = "Reconstructed Top Candidate Score with \n Transverse Momentum $" + tlt + "$"
         s_s.xTitle = "MVA Score of Candidate Top (Arb.)"
         s_s.yTitle = "Tops / ($0.01$)"
 
         s_s.xMin = 0
         s_s.xMax = 1
+        s_s.yMin = 1
         s_s.xBins = 100
         s_s.xStep = 0.05
+        s_s.yLogarithmic = True
         s_s.Stacked = True
 
         s_s.Filename = "mva-score_" + kin
@@ -230,8 +268,8 @@ def top_kinematic_region(stacks, data = None):
         mass_s.xTitle = "Reconstructed Top Candidate Invariant Mass / ($1$ GeV)"
         mass_s.yTitle = "MVA Score of Candidate Top / ($0.01$)"
 
-        mass_s.xMin = 0
-        mass_s.xMax = 400
+        mass_s.xMin  = 0
+        mass_s.xMax  = 400
         mass_s.xBins = 400
         mass_s.xStep = 20
 
@@ -240,9 +278,9 @@ def top_kinematic_region(stacks, data = None):
         mass_s.yStep = 0.05
         mass_s.yBins = 100
 
-        mass_s.xData   = top_score_mass[kin]["mass"]["v"]
-        mass_s.yData   = top_score_mass[kin]["score"]["v"]
-        mass_s.Weights = top_score_mass[kin]["score"]["w"]
+        mass_s.xData   = top_score_mass[kin]["mass"].data
+        mass_s.yData   = top_score_mass[kin]["score"].data
+        #mass_s.Weights = top_score_mass[kin]["score"].weights
         mass_s.Filename = "pt_range_" + kin
         mass_s.SaveFigure()
 
@@ -319,7 +357,7 @@ def TopEfficiency(ana):
     files = [str(x) for x in p.glob("**/*.pkl") if str(x).endswith(".pkl")]
     files = list(set(files))
     files = sorted(files)
-    files = files[:1]
+    #files = files[:10]
 
     metl = MetaLookup()
     metl.metadata = metacache
@@ -335,6 +373,13 @@ def TopEfficiency(ana):
         stack_topkin = top_kinematic_region(stack_topkin, pr)
         #stack_roc    = roc_data(stack_roc, pr)
         #stack_ntops  = ntops_reco(stack_ntops, pr)
+
+    f = open("tmp.pkl", "wb")
+    pickle.dump(stack_topkin, f)
+    f.close()
+    f = open("tmp.pkl", "rb")
+    stack_topkin = pickle.load(f)
+    f.close()
 
     top_kinematic_region(stack_topkin)
     #roc_data(stack_roc)

@@ -474,10 +474,10 @@ cdef class TH1F(BasePlotting):
             if not len(labels): self.Histogram.xMin  = self.xMin
             if not len(labels): self.Histogram.xMax  = self.xMax
             if not len(labels): self.Histogram.xBins = self.xBins
-            #histpl["H"] += [self.Histogram.__build__()]
-            #histpl["label"] += [self.Histogram.Title]
-            #if len(self.Histogram.Color): histpl["color"] += [self.Histogram.Color]
-            #if len(self.Histogram.Hatch): histpl["hatch"] += [self.Histogram.Hatch]
+            histpl["H"] += [self.Histogram.__build__()]
+            histpl["label"] += [self.Histogram.Title]
+            if len(self.Histogram.Color): histpl["color"] += [self.Histogram.Color]
+            if len(self.Histogram.Hatch): histpl["hatch"] += [self.Histogram.Hatch]
 
         if len(self.xData) or len(labels):
             histpl = self.factory()

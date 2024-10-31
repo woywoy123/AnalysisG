@@ -47,10 +47,10 @@ inference_mode = False
 plot_only      = True
 fetch_meta     = False
 build_cache    = False
-threads        = 4
+threads        = 1
 bts            = 100
 kfold          = "kfold-5"
-epoch          = "epoch-5"
+epoch          = "epoch-24"
 mrk            = "MRK-1"
 
 
@@ -88,6 +88,7 @@ event_name     = "BSM4Tops"      if inference_mode     or build_cache else "Even
 graph_name     = graph_name      if inference_mode     or build_cache else ""
 model_name     = "Grift"         if inference_mode     or build_cache else ""
 selection_name = "TopEfficiency" if not inference_mode and not build_cache else ""
+pth = "./serialized-data/" + mrk + "/" + epoch + "/" + kfold + "/"
 
 i = 0
 for k in ls:
@@ -102,6 +103,8 @@ for k in ls:
     try:
         selection_container[selection_name] = selection_method[selection_name]()
         ana.AddSelection(selection_container[selection_name])
+        try: open(pth + str(i), "r"); i+=1; continue
+        except: pass
     except: pass
 
     for j in k:
@@ -134,7 +137,6 @@ for k in ls:
                 x+=1
     ana.Start()
     if len(selection_name):
-        pth = "./serialized-data/" + mrk + "/" + epoch + "/" + kfold + "/"
         pathlib.Path(pth).mkdir(parents = True, exist_ok = True)
         f = open(pth + str(i) +".pkl", "wb")
         pickle.dump(selection_container[selection_name], f)
