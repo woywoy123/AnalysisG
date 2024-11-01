@@ -281,9 +281,11 @@ cdef class BasePlotting:
         self.matpl.tight_layout()
         self.matpl.savefig(env(out), dpi = self.ptr.dpi)
         self.matpl.close("all")
-        print("Finished Plotting: " + env(out))
+        self.ptr.success(b"Finished Plotting: " + out)
 
 cdef class TH1F(BasePlotting):
+
+    def __cinit__(self): self.ptr.prefix = b"TH1F"
 
     def __init__(self, inpt = None):
         self.Histograms = []
@@ -448,6 +450,7 @@ cdef class TH1F(BasePlotting):
         elif len(labels): h.fill(list(labels), weight = self.ptr.weights)
         else: h.fill(self.ptr.x_data, weight = self.ptr.weights)
         if self.ApplyScaling: h *= self.scale_f()
+        if self.Density and h is not None: h *= 1/float(sum(h.counts()))
         return h
 
     cdef dict __compile__(self, bool raw = False):
@@ -528,7 +531,7 @@ cdef class TH1F(BasePlotting):
 
         else: hep.histplot(**histpl)
 
-        if not len(labels): 
+        if not len(labels):
             self.matpl.xlim(_min, _max)
             self.matpl.ylim(y_min, y_max)
         self.matpl.legend(loc = "upper right")
@@ -714,3 +717,84 @@ cdef class TLine(BasePlotting):
         self.matpl.legend(loc = "upper right")
         self.factory()
         return {}
+
+
+cdef class ROC(TLine):
+    def __cinit__(self):
+        self.num_cls = 0
+        self.inits = True
+        self.Binary = False
+        self.ptr.prefix = b"ROC Curve"
+        try: import torch
+        except: self.inits *= False
+        try: from torchmetrics.classification import MulticlassAUROC, BinaryAUROC, MulticlassROC
+        except: self.inits *= False
+        if self.inits: return
+        self.ptr.failure(b"Error with torch or torchmetrics! - This is likely an ABI issue. See the documentation.")
+
+    def __init__(self, inpt = None):
+        self.xTitle = "False Positive Rate"
+        self.yTitle = "True Positive Rate"
+        self.xMax = 1
+        self.yMax = 1
+        self.xMin = 0
+        self.yMin = 0
+        self.auc = {}
+        self.Lines = []
+
+    cdef void factory(self): return
+
+    cdef dict __compile__(self, bool raw = False):
+        if not self.inits: return {}
+        cdef int i
+        cdef TLine pl
+
+        import torch
+        from torchmetrics.classification import MulticlassAUROC, BinaryAUROC, MulticlassROC
+        data = torch.tensor(self.ptr.roc_data)
+        truth = torch.tensor(self.ptr.x_data, dtype = torch.long)
+        metrics = MulticlassAUROC(num_classes = self.num_cls, average = None)
+
+        cdef vector[float] auc_ntops = metrics(data, truth)
+        roc = MulticlassROC(num_classes = self.num_cls)
+        fpr, tpr, _ = roc(data, truth)
+
+        cdef list lines = [TLine() for i in range(self.num_cls)]
+        if not len(self.Lines): self.Lines = ["label-" + str(i) for i in range(self.num_cls)]
+        for i in range(self.Binary, self.num_cls):
+            pl = lines[i]
+            pl.matpl = self.matpl
+            pl.Title = self.Lines[i] + " AUC: " + str(auc_ntops[i])
+            pl.xData = fpr[i].tolist()
+            pl.yData = tpr[i].tolist()
+            pl.factory()
+            self.auc[i] = auc_ntops[i]
+
+        self.matpl.title(self.Title)
+        self._ax.tick_params(axis = "x", which = "minor", bottom = False)
+        self.matpl.legend(loc = "upper right")
+        return {}
+
+    @property
+    def xData(self): return self.ptr.roc_data
+    @xData.setter
+    def xData(self, val):
+        if not self.inits: return
+        if isinstance(val, list): self.ptr.roc_data = val
+        else: self.ptr.roc_data = val.tolist()
+        self.num_cls = self.ptr.roc_data[0].size()
+
+    @property
+    def Truth(self): return self.ptr.x_data
+    @Truth.setter
+    def Truth(self, list val): self.ptr.x_data = val
+
+    @property
+    def Titles(self): return self.Lines
+    @Titles.setter
+    def Titles(self, list val): self.Lines = val
+
+
+
+
+

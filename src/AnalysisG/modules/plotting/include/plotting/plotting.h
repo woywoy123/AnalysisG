@@ -1,14 +1,14 @@
 #ifndef PLOTTING_H
 #define PLOTTING_H
 
+#include <notification/notification.h>
 #include <structs/property.h>
 #include <tools/tools.h>
-#include <iostream>
-#include <string>
-#include <vector>
 #include <map>
 
-class plotting: public tools
+class plotting: 
+    public tools, 
+    public notification
 {
     public:
         plotting(); 
@@ -77,6 +77,7 @@ class plotting: public tools
         // data containers
         std::vector<float> x_data = {};
         std::vector<float> y_data = {}; 
+        std::vector<std::vector<float>> roc_data = {}; 
 
         std::vector<float> y_error_up   = {}; 
         std::vector<float> y_error_down = {}; 

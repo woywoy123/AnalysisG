@@ -62,16 +62,14 @@ data_path = "ProjectName/ROOT/" + graph_name + graph_prefix + "Grift/" + mrk + "
 #data_path = "/CERN/Samples/mc16-full/"
 
 epx = [i+1 for i in range(1, 30)]
-model_states = {}
-if inference_mode:
-    model_states |= {
-            "MRK-1" : {"epoch-" + str(ep) : (["kfold-1", "kfold-5"], ["cuda:1", "cuda:0"]) for ep in epx},
-            "MRK-2" : {"epoch-" + str(ep) : (["kfold-1", "kfold-5"], ["cuda:0", "cuda:1"]) for ep in epx},
-            "MRK-3" : {"epoch-" + str(ep) : (["kfold-1", "kfold-5"], ["cuda:1", "cuda:0"]) for ep in epx},
-            "MRK-4" : {"epoch-" + str(ep) : (["kfold-1", "kfold-5"], ["cuda:0", "cuda:1"]) for ep in epx},
-    }
+model_states = {
+    "MRK-1" : {"epoch-" + str(ep) : (["kfold-1", "kfold-5"], ["cuda:1", "cuda:0"]) for ep in epx},
+    "MRK-2" : {"epoch-" + str(ep) : (["kfold-1", "kfold-5"], ["cuda:0", "cuda:1"]) for ep in epx},
+    "MRK-3" : {"epoch-" + str(ep) : (["kfold-1", "kfold-5"], ["cuda:1", "cuda:0"]) for ep in epx},
+    "MRK-4" : {"epoch-" + str(ep) : (["kfold-1", "kfold-5"], ["cuda:0", "cuda:1"]) for ep in epx},
+}
 
-ls = list(build_samples(data_path, "**/*.root", 1))
+ls = list(build_samples(data_path, "**/*.root", 20))
 if fetch_meta:
     x = 0
     for i in ls:
@@ -102,9 +100,8 @@ for k in ls:
 
     try:
         selection_container[selection_name] = selection_method[selection_name]()
-        ana.AddSelection(selection_container[selection_name])
-        try: open(pth + str(i), "r"); i+=1; continue
-        except: pass
+        try: open(pth + str(i), "r")
+        except: ana.AddSelection(selection_container[selection_name])
     except: pass
 
     for j in k:
@@ -121,20 +118,22 @@ for k in ls:
 
     x = 0
     for j in model_states:
+        if not inference_mode: break
         for ep in model_states[j]:
             mdl = root_model + graph_name + graph_prefix[:-1] + "/" + model_name + "/" + j + "/state/" + ep + "/"
             kf, dev = model_states[j][ep]
-            for i in range(len(kf)):
+            for k in range(len(kf)):
                 gnn = model_method[model_name]()
                 gnn.o_edge  = {"top_edge" : "CrossEntropyLoss", "res_edge" : "CrossEntropyLoss"}
                 gnn.o_graph = {"ntops"    : "CrossEntropyLoss", "signal"   : "CrossEntropyLoss"}
                 gnn.i_node  = ["pt", "eta", "phi", "energy", "charge"]
                 gnn.i_graph = ["met", "phi"]
                 gnn.device  = "cuda:" + str(x%2)
-                gnn.checkpoint_path = mdl + kf[i] + "_model.pt"
-                name = "ROOT/" + graph_name + graph_prefix + model_name + "/" + j + "/" + ep + "/" + kf[i]
+                gnn.checkpoint_path = mdl + kf[k] + "_model.pt"
+                name = "ROOT/" + graph_name + graph_prefix + model_name + "/" + j + "/" + ep + "/" + kf[k]
                 ana.AddModelInference(gnn, name)
                 x+=1
+
     ana.Start()
     if len(selection_name):
         pathlib.Path(pth).mkdir(parents = True, exist_ok = True)
@@ -142,8 +141,9 @@ for k in ls:
         pickle.dump(selection_container[selection_name], f)
         f.close()
         print(i, len(ls))
-        i+=1
+    i+=1
     del ana
+    if i > 40: break
 
 ana = Analysis()
 ana.Start()

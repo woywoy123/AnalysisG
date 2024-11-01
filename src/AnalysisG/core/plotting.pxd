@@ -1,13 +1,14 @@
 # distutils: language = c++
 # cython: language_level = 3
 
+from AnalysisG.core.notification cimport notification
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 from libcpp.map cimport map
 from libcpp cimport bool
 
 cdef extern from "<plotting/plotting.h>" nogil:
-    cdef cppclass plotting:
+    cdef cppclass plotting(notification):
         plotting() except+ nogil
         string build_path() except+ nogil
         float get_max(string) except+ nogil
@@ -53,6 +54,7 @@ cdef extern from "<plotting/plotting.h>" nogil:
 
         vector[float] x_data
         vector[float] y_data
+        vector[vector[float]] roc_data
 
         vector[float] y_error_up
         vector[float] y_error_down
@@ -118,3 +120,13 @@ cdef class TLine(BasePlotting):
 
     cdef void factory(self)
     cdef dict __compile__(self, bool raw = *)
+
+cdef class ROC(TLine):
+    cdef bool inits
+    cdef int  num_cls
+    cdef public bool Binary
+    cdef public dict auc
+
+    cdef void factory(self)
+    cdef dict __compile__(self, bool raw = *)
+

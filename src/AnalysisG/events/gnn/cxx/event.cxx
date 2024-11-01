@@ -64,52 +64,65 @@ void gnn_event::CompileEvent(){
             std::map<int, std::map<int, float>>* bin_data
     ){
 
-        std::map<int, float> PR; 
-        size_t n_nodes = clust -> size(); 
+        float alpha = 0.85; 
+        float n_nodes = clust -> size(); 
         std::map<int, std::map<int, float>> Mij; 
-        for (size_t x(0); x < n_nodes; ++x){
-            float wij_n = 0; 
-            PR[x] = 1 / float(n_nodes); 
-            if (!bin_data){continue;}
-            for (size_t y(0); y < clust -> size(); ++y){
-                Mij[x][y] = (*bin_data)[x][y]; 
-                wij_n += (*bin_data)[x][y]; 
-            }
+        std::map<int, std::map<std::string, particle_gnn*>>::iterator itr;
 
-            if (wij_n == 0){continue;} 
-            wij_n = 1 / wij_n;
-            for (size_t y(0); y < n_nodes; ++y){Mij[x][y] = Mij[x][y] * wij_n;}
+        for (itr = clust -> begin(); itr != clust -> end(); ++itr){
+            if (!bin_data){break;}
+            int src = itr -> first; 
+            for (size_t y(0); y < n_nodes; ++y){Mij[src][y] = (src != y)*(*bin_data)[src][y];}
         }
 
-        int t_out = 0; 
-        float norm_ = 0; 
-        std::map<int, std::map<std::string, particle_gnn*>>::iterator itr;
-        while (bin_data && t_out < n_nodes){
-            float norm = 0; 
-            std::map<int, float> pr_;
-            for (size_t p(0); p < PR.size(); ++p){norm += PR[p];}
+        std::map<int, float> pr_;
+        for (size_t y(0); y < n_nodes; ++y){
+            if (!bin_data){break;}
+            float sm = 0; 
+            for (size_t x(0); x < n_nodes; ++x){sm += Mij[x][y];} 
+            sm = ((sm) ? 1.0/sm : 0); 
+            for (size_t x(0); x < n_nodes; ++x){Mij[x][y] = ((sm) ? Mij[x][y]*sm : 1.0/n_nodes)*alpha;}
+            pr_[y] = (*bin_data)[y][y]/n_nodes;  
+        }
 
-            if (!norm + !std::abs(norm_ - norm)){break;}
-            for (size_t p(0); p < PR.size(); ++p){PR[p] = PR[p]/norm;}
-            for (itr = clust -> begin(); itr != clust -> end(); ++itr){
-                int src = itr -> first; 
-                for (size_t x(0); x < n_nodes; ++x){
-                    if (!Mij[x][src] + (x == src)){continue;}
-                    float out_s = (*clust)[x].size(); 
-                    pr_[src] += PR[x]*Mij[x][src]; 
-                }
+        std::map<int, float> PR = pr_; 
+        while (bin_data){
+            pr_.clear(); 
+            float sx = 0; 
+            for (size_t src(0); src < n_nodes; ++src){
+                for (size_t x(0); x < n_nodes; ++x){pr_[src] += (Mij[src][x]*PR[x]);}
+                pr_[src] += (1-alpha)/n_nodes; 
+                sx += pr_[src]; 
             }
-            PR = pr_; 
-            norm_ = norm; 
-            ++t_out; 
+            itr = clust -> begin(); 
+
+            float norm = 0; 
+            for (; itr != clust -> end(); ++itr){
+                pr_[itr -> first] = pr_[itr -> first] / sx;
+                norm += std::abs(pr_[itr -> first] - PR[itr -> first]); 
+                PR[itr -> first] = pr_[itr -> first]; 
+            }
+            if (norm > 1e-6){continue;}
+            //norm = 0; 
+            //for (size_t x(0); x < n_nodes; ++x){
+            //    float sc = 0; 
+            //    for (size_t y(0); y < n_nodes; ++y){
+            //        sc += (x!=y) * Mij[x][y] * pr_[y] * pr_[x];
+            //    }
+            //    PR[x] = sc;  
+            //    norm += sc;
+            //}
+            //if (!norm){break;}
+            //for (size_t x(0); x < n_nodes; ++x){PR[x] = PR[x] / norm;}
+            break; 
         }
 
         tools tl = tools(); 
+        std::map<std::string, particle_gnn*> tmp; 
+        std::map<std::string, particle_gnn*>::iterator itp; 
         for (itr = clust -> begin(); itr != clust -> end(); ++itr){
             int src = itr -> first; 
             if (!PR[src] && bin_data){continue;}
-            std::map<std::string, particle_gnn*> tmp; 
-            std::map<std::string, particle_gnn*>::iterator itp; 
             for (itp = itr -> second.begin(); itp != itr -> second.end(); ++itp){
                 int p_node = itp -> second -> index; 
                 if (bin_data && !(*bin_data)[src][p_node]){continue;}
@@ -122,7 +135,7 @@ void gnn_event::CompileEvent(){
             this -> vectorize(&tmp, &(*out)[hash]); 
             if (!bin_out){continue;}
             for (itp = tmp.begin(); itp != tmp.end(); ++itp){(*bin_out)[hash] += PR[itp -> second -> index];}
-        } 
+        }
     }; 
 
 
@@ -153,19 +166,21 @@ void gnn_event::CompileEvent(){
         int top_ij = (this -> edge_top_scores[x][0] < this -> edge_top_scores[x][1]); 
         int res_ij = (this -> edge_res_scores[x][0] < this -> edge_res_scores[x][1]); 
 
-        std::string hx       = ptr -> hash; 
-        reco_tops[src][hx]   = ptr;
-        reco_zprime[src][hx] = ptr;
+        if (!reco_tops.count(src)){reco_tops[src] = {};}
+        if (!reco_zprime.count(src)){reco_zprime[src] = {};}
 
-        if (top_ij){bin_top[src][dst]    = this -> edge_top_scores[x][1];}
-        if (res_ij){bin_zprime[src][dst] = this -> edge_res_scores[x][1];}
+        std::string hx       = ptr -> hash; 
+        if (top_ij){reco_tops[src][hx]   = ptr;}
+        if (res_ij){reco_zprime[src][hx] = ptr;}
+
+        bin_top[src][dst]    = this -> edge_top_scores[x][1]*(1-this -> edge_top_scores[x][0]);
+        bin_zprime[src][dst] = this -> edge_res_scores[x][1]*(1-this -> edge_top_scores[x][0]);
 
         if (this -> t_edge_top[x]){real_tops[src][hx]   = ptr;}
         if (this -> t_edge_res[x]){real_zprime[src][hx] = ptr;}
     }
 
     std::map<std::string, std::vector<particle_gnn*>>::iterator it;
-
     // ---- truth --- //
     std::map<std::string, std::vector<particle_gnn*>> c_real_tops;
     cluster(&real_tops  , &c_real_tops, nullptr, nullptr); 
