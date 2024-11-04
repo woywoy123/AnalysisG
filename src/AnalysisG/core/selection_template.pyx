@@ -4,7 +4,6 @@
 from libcpp cimport string
 from libcpp.map cimport map, pair
 from libcpp.vector cimport vector
-from cython.parallel import prange
 
 from AnalysisG.core.tools cimport *
 from AnalysisG.core.meta cimport *
@@ -50,9 +49,10 @@ cdef class SelectionTemplate:
         if isinstance(hash_, list):   hashes = [enc(hash) for hash in hash_]
         elif isinstance(hash_, dict): hashes = [enc(hash) for hash in hash_]
         else: hashes = [enc(hash_)]
+        cdef vector[map[string, float]] rev = self.ptr.reverse_hash(&hashes)
 
         cdef map[string, float] i
-        return [tuple(dict(i).items())[0] for i in self.ptr.reverse_hash(&hashes)]
+        return [tuple(dict(i).items())[0] for i in rev]
 
     @property
     def GetMetaData(self):

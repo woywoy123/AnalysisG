@@ -1,5 +1,5 @@
 import AnalysisG
-from AnalysisG.core import IO
+from AnalysisG.core import IO, MetaLookup, Data
 from AnalysisG.core.plotting import *
 from AnalysisG.generators import Analysis
 
@@ -514,79 +514,48 @@ def mapping(name):
     print("----> " + name)
     exit()
 
-class container:
-    def __init__(self):
-        self.proc = ""
-        self._sow_nominal = []
-        self._plot_data   = []
-        self._weights     = None
-        self._meta        = None
-        self.lint_atlas   = 140.1
-
-    def __add__(self, other):
-        self._weights     += other.sow_weights
-        self._sow_nominal += other._sow_nominal
-        self._plot_data   += other._plot_data
-        return self
-
-    def __radd__(self, other):
-        if not isinstance(other, int): return self.__add__(other)
-        c = container()
-        c._meta = self._meta
-        c.proc  = self.proc
-        c._weights = 0
-        return c.__add__(self)
+class MetaX(MetaLookup):
 
     @property
-    def expected_events(self): return (self.cross_section*self.lint_atlas)
+    def title(self): return mapping(self.meta.DatasetName)
 
     @property
-    def scale_factor(self): return self.expected_events / self.sow_weights
+    def SumOfWeights(self): return self.meta.SumOfWeights[b"sumWeights"]["total_events_weighted"]
 
     @property
-    def cross_section(self): return self._meta.crossSection
+    def GenerateData(self): return DataX(self)
+
+class DataX(Data):
 
     @property
-    def sow_weights(self):
-        if self._weights is not None: return self._weights
-        return self._meta.SumOfWeights[b"sumWeights"]["total_events_weighted"]
+    def num_events(self): return len(self.data)
 
     @property
-    def num_events(self): return len(self._sow_nominal)
+    def sow_weights(self): return sum([self._meta(k).SumOfWeights for k in self._meta.matched])
 
-    @property
-    def DatasetName(self): return self._meta.DatasetName
+    def title(self, fname): return self._meta(fname).title
 
-    def rescale(self):
-        s = self.scale_factor
-        self._sow_nominal = [i*s for i in self._sow_nominal]
-
-    @property
-    def hist(self):
+    def hist(self, tlt):
         th = TH1F()
-        th.Weights = self._sow_nominal
-        th.xData   = self._plot_data
-        th.Title   = self.proc
+        th.Weights = self.weights
+        th.xData   = self.data
+        th.Title   = tlt
         return th
 
 def compute_data(io_handle, meta):
     stacks = {}
     for i in io_handle:
         fname = i["filename"].decode("utf-8")
-        try: c = stacks[fname]
-        except:
-            m = None
-            c = container()
-            for h, k in zip(meta.keys(), meta.values()):
-                if k.hash(fname) not in h: continue
-                m = k
-                break
-            if m is None: print("-> ", fname); exit()
-            c.proc          = m.DatasetName
-            c._meta         = m
-            stacks[fname]   = c
-        c._plot_data.append(i[b"nominal.met_met.met_met"]/1000)
-        c._sow_nominal.append(i[b"nominal.weight_mc.weight_mc"])
+        if fname not in stacks: stacks[fname] = {"w" : [], "v" : []}
+        stacks[fname]["v"].append(i[b"nominal.met_met.met_met"]/1000)
+        stacks[fname]["w"].append(i[b"nominal.weight_mc.weight_mc"])
+
+    print("finished")
+    for fn in stacks:
+        data = meta.GenerateData
+        data.weights = {fn : stacks[fn]["w"]}
+        data.data    = {fn : stacks[fn]["v"]}
+        stacks[fn]   = data
     return stacks
 
 def buffs(tl, val, tm):
@@ -597,25 +566,25 @@ def buffs(tl, val, tm):
 
 
 x = Analysis()
-x.FetchMeta = True
+#x.FetchMeta = True
 #x.SumOfWeightsTreeName = "sumWeights"
 #x.AddSamples(root, "data")
 x.Start()
-mtx = x.GetMetaData
+mtx = MetaX(x.GetMetaData)
 
 gxt = []
 for i in sets:
     msk = False
     msk += "ttH_tttt" in i
-    msk += "Pythia8EvtGen" in i
-    msk += "PhPy8EG" in i
-    msk += "Sherpa" in i
-    msk += "aMcAtNloPy8EvtGen" in i
-    msk += "MadGraphPythia8EvtGen" in i
-    msk += "PowhegPythia8EvtGen" in i
-    msk += "PowhegHerwig7EvtGen" in i
-    msk += "PhHerwig7EG" in i
-    msk += "aMcAtNloPythia8EvtGen" in i
+    #msk += "Pythia8EvtGen" in i
+    #msk += "PhPy8EG" in i
+    #msk += "Sherpa" in i
+    #msk += "aMcAtNloPy8EvtGen" in i
+    #msk += "MadGraphPythia8EvtGen" in i
+    #msk += "PowhegPythia8EvtGen" in i
+    #msk += "PowhegHerwig7EvtGen" in i
+    #msk += "PhHerwig7EG" in i
+    #msk += "aMcAtNloPythia8EvtGen" in i
     msk += "aMcAtNloPy8EG" in i
     if not msk: continue
     gxt.append(i+"/*")
@@ -626,27 +595,13 @@ smpl.Trees = ["nominal"]
 smpl.Leaves = ["weight_mc", "met_met"]
 opt = compute_data(smpl, mtx)
 
-proc = {}
-for i in opt:
-    c = opt[i]
-    prc = c.DatasetName
-    if prc not in proc: proc[prc] = []
-    proc[prc] += [c]
+prc = {}
+for k in opt:
+    tlt = opt[k].title(k)
+    if tlt not in prc: prc[tlt] = []
+    prc[tlt].append(opt[k])
 
-tmp = {}
-for i in proc:
-    proc[i] = sum(proc[i])
-    proc[i].rescale()
-    pc = mapping(proc[i].DatasetName)
-    if pc not in tmp: tmp[pc] = []
-    tmp[pc] += [proc[i]]
-
-proc.clear()
-for i in tmp:
-    c = sum(tmp[i])
-    c.proc = i
-    entries = float(sum(c.hist.counts))
-    proc[entries] = c
+prc = {tlt : sum(prc[tlt]) for tlt in prc}
 
 titles = [
     "Sample Processed           ",
@@ -659,29 +614,28 @@ titles = [
     ""
 ]
 
-h = []
+h = {}
 print(" | ".join(titles))
-for i in list(sorted(proc)):
-    i = proc[i]
-    prx = i.proc
-    hx  = i.hist
+for prx in prc:
+    data = prc[prx]
+    hx  = data.hist(prx)
 
     tmp = ""
     tmp = buffs(titles[0], prx, tmp)
-    tmp = buffs(titles[1], i.expected_events, tmp)
-    tmp = buffs(titles[2], i.cross_section, tmp)
-    tmp = buffs(titles[3], i.num_events, tmp)
-    tmp = buffs(titles[4], i.sow_weights, tmp)
-    tmp = buffs(titles[5], i.scale_factor, tmp)
+#    tmp = buffs(titles[1], data.expected_events, tmp)
+#    tmp = buffs(titles[2], i.cross_section, tmp)
+    tmp = buffs(titles[3], data.num_events, tmp)
+    tmp = buffs(titles[4], data.sow_weights, tmp)
+#    tmp = buffs(titles[5], i.scale_factor, tmp)
     tmp = buffs(titles[6], float(sum(hx.counts)), tmp)
-    h.append(hx)
+    h[float(sum(hx.counts))] = hx
     print(tmp)
 
 comb = TH1F()
 comb.Stacked = True
 comb.yScaling = 5*4.8
 comb.xScaling = 5*6.4
-comb.Histograms = h
+comb.Histograms = [h[k] for k in sorted(list(h))]
 comb.LegendSize = 0.1
 comb.Title  = "Weighted Missing Transverse Energy"
 comb.xTitle = "Missing ET (GeV)"

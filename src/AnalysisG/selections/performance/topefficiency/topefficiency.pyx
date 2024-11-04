@@ -30,6 +30,9 @@ cdef class TopEfficiency(SelectionTemplate):
         self.n_pred_tops     = as_basic_dict_dict_f(&self.tt.n_pred_tops)
         self.n_perfect_tops  = as_basic_dict_dict_f(&self.tt.n_perfect_tops)
 
+        self.t_nodes  = as_basic_dict_dict_f(&self.tt.t_nodes)
+        self.p_nodes  = as_basic_dict_dict_f(&self.tt.p_nodes)
+
         self.truth_res_edge   = self.tt.truth_res_edge
         self.truth_top_edge   = self.tt.truth_top_edge
 

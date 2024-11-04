@@ -22,6 +22,9 @@ cdef extern from "topefficiency.h":
         map[string, map[string, vector[float]]] t_decay_region
         map[string, map[string, vector[float]]] p_decay_region
 
+        map[string, map[float, int]] t_nodes
+        map[string, map[float, int]] p_nodes
+
         map[string, int] n_tru_tops
         map[string, map[float, int]] n_pred_tops
         map[string, map[float, int]] n_perfect_tops
@@ -54,6 +57,9 @@ cdef class TopEfficiency(SelectionTemplate):
     cdef public dict t_decay_region
     cdef public dict p_decay_region
 
+    cdef public dict t_nodes
+    cdef public dict p_nodes
+
     cdef public dict n_tru_tops
     cdef public dict n_pred_tops
     cdef public dict n_perfect_tops
@@ -69,4 +75,7 @@ cdef class TopEfficiency(SelectionTemplate):
 
     cdef public list pred_ntops_score
     cdef public list pred_signal_score
+
+
+
 

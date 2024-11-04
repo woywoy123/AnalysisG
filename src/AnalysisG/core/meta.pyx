@@ -5,6 +5,7 @@ from cython.operator cimport dereference as deref
 from libcpp.string cimport string
 from libcpp.map cimport pair, map
 from libcpp.vector cimport vector
+from cython.parallel cimport prange
 
 from AnalysisG import auth_pyami
 from AnalysisG.core.structs cimport meta_t, weights_t
@@ -171,6 +172,115 @@ cdef class ami_client:
             self.dressmeta(obj, dset_name)
         if hit: return
         self.savecache(obj)
+
+
+cdef class MetaLookup:
+
+    def __cinit__(self):
+        self.metadata = {}
+        self.matched  = {}
+
+        self.meta = None
+        self.luminosity = 140.1
+
+    def __init__(self, MetaLookup data = None):
+        if data is None: return
+        self.metadata = data.metadata
+
+    cdef Meta __find__(self, str inpt):
+        try: self.meta = self.matched[inpt]
+        except: self.meta = None
+        if self.meta is not None: return self.meta
+
+        cdef str i
+        cdef Meta mtl
+        for i in self.metadata:
+            mtl = self.metadata[i]
+            if mtl.hash(inpt) not in i: continue
+            self.matched[inpt] = mtl
+            self.meta = mtl
+            return mtl
+        return None
+
+    def __call__(self, inpt):
+        cdef str ds
+        try: ds = inpt.decode("utf-8")
+        except: ds = inpt
+        self.__find__(ds)
+        return self
+
+    @property
+    def DatasetName(self): return self.meta.DatasetName
+    @property
+    def CrossSection(self): return self.meta.crossSection
+    @property
+    def ExpectedEvents(self): return self.meta.crossSection*self.luminosity
+    @property
+    def SumOfWeights(self): return 1
+    @property
+    def GenerateData(self): return Data(self)
+
+cdef class Data:
+
+    def __cinit__(self): pass
+    def __init__(self, mtl): self._meta = mtl
+
+    def __add__(self, Data other):
+        self.weights = other._weights
+        self.data    = other._data
+        return self
+
+    def __radd__(self, other):
+        if not isinstance(other, int): return self.__add__(other)
+        return self._meta.GenerateData.__add__(self)
+
+    cdef void __populate__(self, dict inpt, map[string, vector[float]]* ptx):
+        cdef int i
+        cdef string fname, key
+        cdef vector[float] val
+        cdef list names = list(inpt)
+        for i in range(len(names)):
+            try: fname = names[i].encode("utf-8")
+            except: fname = names[i]
+            val = inpt[names[i]]
+            key = self._meta(fname).DatasetName.encode("utf-8")
+            deref(ptx)[fname].insert(deref(ptx)[fname].end(), val.begin(), val.end())
+            if self.sumofweights[key].count(fname): continue
+            self.sumofweights[key][fname] = self._meta.SumOfWeights
+            self.expected_events[key] = self._meta.ExpectedEvents
+
+    cdef void __rescale__(self, vector[float]* ptx):
+        cdef int i
+        cdef float scale
+        cdef vector[float] lst
+        cdef pair[string, float] ix
+        cdef pair[string, map[string, float]] itr
+        for itr in self.sumofweights:
+            scale = sum([ix.second for ix in itr.second])
+            scale = self.expected_events[itr.first]/scale
+            lst   = sum([self._weights[ix.first] for ix in itr.second], [])
+            for i in prange(lst.size(), nogil = True): lst[i] = lst[i]*scale
+            ptx.insert(ptx.end(), lst.begin(), lst.end())
+
+    @property
+    def weights(self):
+        cdef vector[float] tx
+        self.__rescale__(&tx)
+        return list(tx)
+
+    @weights.setter
+    def weights(self, dict val): self.__populate__(val, &self._weights)
+
+    @property
+    def data(self):
+        cdef vector[float] out
+        cdef pair[string, vector[float]] itx
+        for itx in self._data: out.insert(out.end(), itx.second.begin(), itx.second.end())
+        return out
+
+    @data.setter
+    def data(self, dict val): self.__populate__(val, &self._data)
+
 
 cdef class Meta:
 

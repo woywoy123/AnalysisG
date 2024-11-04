@@ -5,6 +5,7 @@ from libcpp cimport bool
 from libcpp.map cimport map
 from libcpp.vector cimport vector
 from libcpp.string cimport string
+from AnalysisG.core.notification cimport notification
 from AnalysisG.core.event_template cimport event_template
 from AnalysisG.core.graph_template cimport graph_template
 from AnalysisG.core.selection_template cimport selection_template
@@ -15,7 +16,7 @@ from AnalysisG.core.meta cimport *
 
 cdef extern from "<generators/analysis.h>" nogil:
 
-    cdef cppclass analysis:
+    cdef cppclass analysis(notification):
         analysis() except+ nogil
 
         void add_samples(string path, string label) except+ nogil

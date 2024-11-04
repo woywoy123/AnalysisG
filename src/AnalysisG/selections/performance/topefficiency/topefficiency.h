@@ -16,7 +16,7 @@ class topefficiency: public selection_template
         void merge(selection_template* sl) override;
 
         double pt_start  = 0; 
-        double eta_start = -6; 
+        double eta_start = 0; 
 
         double pt_end  = 1500; 
         double eta_end = 6; 
@@ -40,6 +40,9 @@ class topefficiency: public selection_template
 
         std::map<std::string, std::map<std::string, std::vector<float>>> t_decay_region = {}; 
         std::map<std::string, std::map<std::string, std::vector<float>>> p_decay_region = {}; 
+
+        std::map<std::string, std::map<float, int>> p_nodes = {};
+        std::map<std::string, std::map<float, int>> t_nodes = {}; 
 
         std::map<std::string, int> n_tru_tops  = {}; 
         std::map<std::string, std::map<float, int>> n_pred_tops = {}; 

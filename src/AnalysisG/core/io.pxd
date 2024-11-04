@@ -47,7 +47,9 @@ cdef extern from "<io/io.h>" nogil:
 
 cdef class IO:
     cdef io* ptr
+    cdef prg
     cdef dict meta_data
+    cdef map[string, string] fnames
     cdef map[string, data_t*]* data_ops
     cdef map[string, bool] skip
 

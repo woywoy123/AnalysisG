@@ -5,7 +5,7 @@ from libcpp cimport bool
 from libcpp.string cimport string
 from libcpp.map cimport pair, map
 
-from AnalysisG.core.meta cimport Meta, meta
+from AnalysisG.core.meta cimport *
 from AnalysisG.core.tools cimport *
 from AnalysisG.core.event_template cimport *
 from AnalysisG.core.graph_template cimport *
@@ -187,9 +187,11 @@ cdef class Analysis:
     @property
     def GetMetaData(self):
         cdef str i
-        cdef dict out = {}
-        for i in self.meta_: out[i + "-" + self.meta_[i].DatasetName] = self.meta_[i]
-        return out
+        cdef MetaLookup mlt = MetaLookup()
+        if len(self.meta_): self.ana.success(b"Found MetaData: " + enc(str(len(self.meta_))))
+        else: self.ana.failure(b"Missing MetaData! Run the Analysis instance with 'SumOfWeightsTreeName' and 'FetchMeta = True'")
+        for i in self.meta_: mlt.metadata[i + "-" + self.meta_[i].DatasetName] = self.meta_[i]
+        return mlt
 
     @property
     def Epochs(self): return self.ana.m_settings.epochs

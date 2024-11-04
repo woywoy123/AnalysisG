@@ -1,7 +1,18 @@
 from AnalysisG.generators import Analysis
-from AnalysisG.core import IO
+from AnalysisG.core import IO, MetaLookup
+from topefficiency.algorithms import mapping
+
 import pickle
 import pathlib
+
+class MetaX(MetaLookup):
+    def __init__(self, inpt):
+        self.metadata = inpt.metadata
+
+    @property
+    def title(self): return mapping(self.meta.DatasetName)
+    @property
+    def SumOfWeights(self): return self.meta.SumOfWeights[b"sumWeights"]["total_events_weighted"]
 
 def chunks(lst, n):
     for i in range(0, len(lst), n): yield lst[i:i + n]
@@ -47,7 +58,7 @@ inference_mode = False
 plot_only      = True
 fetch_meta     = False
 build_cache    = False
-threads        = 1
+threads        = 10
 bts            = 100
 kfold          = "kfold-5"
 epoch          = "epoch-24"
@@ -61,7 +72,7 @@ data_path   = "/import/wu1/tnom6927/TrainingOutput/grid-data/" # <----- cluster
 data_path = "ProjectName/ROOT/" + graph_name + graph_prefix + "Grift/" + mrk + "/" + epoch + "/" + kfold + "/"
 #data_path = "/CERN/Samples/mc16-full/"
 
-epx = [i+1 for i in range(1, 30)]
+epx = [i+1 for i in range(1, 100)]
 model_states = {
     "MRK-1" : {"epoch-" + str(ep) : (["kfold-1", "kfold-5"], ["cuda:1", "cuda:0"]) for ep in epx},
     "MRK-2" : {"epoch-" + str(ep) : (["kfold-1", "kfold-5"], ["cuda:0", "cuda:1"]) for ep in epx},
@@ -69,7 +80,7 @@ model_states = {
     "MRK-4" : {"epoch-" + str(ep) : (["kfold-1", "kfold-5"], ["cuda:0", "cuda:1"]) for ep in epx},
 }
 
-ls = list(build_samples(data_path, "**/*.root", 20))
+ls = list(build_samples(data_path, "**/*.root", 5))
 if fetch_meta:
     x = 0
     for i in ls:
@@ -143,11 +154,11 @@ for k in ls:
         print(i, len(ls))
     i+=1
     del ana
-    if i > 40: break
+    if i > 60: break
 
 ana = Analysis()
 ana.Start()
 method = plotting_method[study]
 method.figures.figure_path = figure_path
-method.figures.metacache = ana.GetMetaData
+method.figures.metalookup = MetaX(ana.GetMetaData)
 if study == "topefficiency": method.figures.TopEfficiency("./serialized-data/" + mrk + "/" + epoch + "/" + kfold + "/")

@@ -100,22 +100,30 @@ def roc_data_get(stacks, data):
     stacks["edge_top_p"] += data.pred_top_edge_score
     return stacks
 
-def ntops_reco_compl(stacks, data, target):
+def ntops_reco_compl(stacks, data):
     n_perfect_tops = data.n_perfect_tops
     n_pred_tops    = data.n_pred_tops
     n_tru_tops     = data.n_tru_tops
-    if "e_ntop" not in stacks: stacks |= {"e_ntop" : {}, "p_ntop" : {}, "cls_ntop_w" : {}}
-    if target not in stacks["e_ntop"]:
-        stacks["e_ntop"][target] = []
-        stacks["p_ntop"][target] = []
-        stacks["cls_ntop_w"][target] = []
+    if "tru_ntops" not in stacks: stacks = {"tru_ntops" : {}, "weights" : {}, "pred_ntops" : {}, "perf_ntops" : {}}
 
     hashes_ = list(n_perfect_tops)
     fn_weight = data.HashToWeightFile(hashes_)
     for h in range(len(hashes_)):
-        hash = hashes_[h]
         fn, weight = fn_weight[h]
-        stacks["cls_ntop_w"][target] += [(n_tru_tops[hash] == target)*weight]
-        stacks["e_ntop"][target]     += [(n_perfect_tops[hash] == target)*weight]
-        stacks["p_ntop"][target]     += [(n_pred_tops[hash] == target)*weight]
+        if fn not in stacks["tru_ntops"]:
+            stacks["tru_ntops"][fn] = []
+            stacks["weights"][fn] = []
+            stacks["pred_ntops"][fn] = {}
+            stacks["perf_ntops"][fn] = {}
+
+        hash = hashes_[h]
+        stacks["weights"][fn].append(weight)
+        stacks["tru_ntops"][fn].append(n_tru_tops[hash])
+        for score in n_perfect_tops[hash]:
+            score_ = round(score, 3)
+            if score_ not in stacks["pred_ntops"][fn]: stacks["pred_ntops"][fn][score_] = []
+            stacks["pred_ntops"][fn][score_].append(n_pred_tops[hash][score])
+
+            if score_ not in stacks["perf_ntops"][fn]: stacks["perf_ntops"][fn][score_] = []
+            stacks["perf_ntops"][fn][score_].append(n_perfect_tops[hash][score])
     return stacks

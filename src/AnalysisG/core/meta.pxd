@@ -16,10 +16,28 @@ cdef extern from "<meta/meta.h>" nogil:
         meta_t meta_data
         string metacache_path
 
+
 cdef class Meta:
     cdef meta* ptr
     cdef __meta__(self, meta* met)
     cdef loaded
+
+cdef class MetaLookup:
+    cdef public Meta meta
+    cdef public dict matched
+    cdef public dict metadata
+    cdef public float luminosity
+    cdef Meta __find__(self, str inpt)
+
+cdef class Data:
+    cdef public MetaLookup _meta
+    cdef map[string, vector[float]] _data
+    cdef map[string, vector[float]] _weights
+    cdef map[string, map[string, float]] sumofweights
+    cdef map[string, float] expected_events
+
+    cdef void __populate__(self, dict inpt, map[string, vector[float]]* ptx)
+    cdef void __rescale__(self, vector[float]* ptx)
 
 cdef class ami_client:
     cdef client

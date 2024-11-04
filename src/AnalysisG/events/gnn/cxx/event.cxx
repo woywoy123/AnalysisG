@@ -85,6 +85,7 @@ void gnn_event::CompileEvent(){
             pr_[y] = (*bin_data)[y][y]/n_nodes;  
         }
 
+        int timeout = 0; 
         std::map<int, float> PR = pr_; 
         while (bin_data){
             pr_.clear(); 
@@ -102,18 +103,20 @@ void gnn_event::CompileEvent(){
                 norm += std::abs(pr_[itr -> first] - PR[itr -> first]); 
                 PR[itr -> first] = pr_[itr -> first]; 
             }
-            if (norm > 1e-6){continue;}
-            //norm = 0; 
-            //for (size_t x(0); x < n_nodes; ++x){
-            //    float sc = 0; 
-            //    for (size_t y(0); y < n_nodes; ++y){
-            //        sc += (x!=y) * Mij[x][y] * pr_[y] * pr_[x];
-            //    }
-            //    PR[x] = sc;  
-            //    norm += sc;
-            //}
-            //if (!norm){break;}
-            //for (size_t x(0); x < n_nodes; ++x){PR[x] = PR[x] / norm;}
+            timeout += 1; 
+            if (norm > 1e-6 && timeout < 1e6){continue;}
+            norm = 0; 
+            for (size_t x(0); x < n_nodes; ++x){
+                float sc = 0; 
+                for (size_t y(0); y < n_nodes; ++y){
+                    if ((*bin_data)[x][y] <= 0.5){continue;}
+                    sc += (x != y) * Mij[x][y] * (pr_[y]); 
+                }
+                PR[x] = sc;  
+                norm += sc;
+            }
+//            if (!norm){break;}
+//            for (size_t x(0); x < n_nodes; ++x){PR[x] = PR[x] / norm;}
             break; 
         }
 
@@ -173,8 +176,8 @@ void gnn_event::CompileEvent(){
         if (top_ij){reco_tops[src][hx]   = ptr;}
         if (res_ij){reco_zprime[src][hx] = ptr;}
 
-        bin_top[src][dst]    = this -> edge_top_scores[x][1]*(1-this -> edge_top_scores[x][0]);
-        bin_zprime[src][dst] = this -> edge_res_scores[x][1]*(1-this -> edge_top_scores[x][0]);
+        bin_top[src][dst]    = this -> edge_top_scores[x][1];
+        bin_zprime[src][dst] = this -> edge_res_scores[x][1];
 
         if (this -> t_edge_top[x]){real_tops[src][hx]   = ptr;}
         if (this -> t_edge_res[x]){real_zprime[src][hx] = ptr;}

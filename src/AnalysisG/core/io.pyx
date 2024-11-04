@@ -6,6 +6,7 @@ from AnalysisG.core.tools cimport *
 from AnalysisG.core.meta cimport Meta, meta
 from AnalysisG.core.structs cimport data_t, data_enum, switch_board
 
+from tqdm import tqdm
 from libcpp cimport bool
 from libcpp.map cimport map, pair
 from libcpp.string cimport string
@@ -19,6 +20,7 @@ cdef class IO:
         self.meta_data = {}
 
     def __init__(self, root = []):
+        self.prg = None
         if isinstance(root, list): self.Files = root
         elif isinstance(root, str): self.Files = [root]
         else: return
@@ -32,6 +34,7 @@ cdef class IO:
         return max([itx.second for itx in self.ptr.root_size()] + [0])
 
     def __iter__(self):
+        if self.prg is None: self.prg = tqdm(total = len(self), dynamic_ncols = True, leave = False)
         self.ptr.root_begin()
         self.data_ops = self.ptr.get_data()
         return self
@@ -46,10 +49,20 @@ cdef class IO:
             self.skip[itr.first] = itr.second.next()
             if idx != NULL: continue
             idx = itr.second
+
         if not len(output):
             self.ptr.root_end()
+            self.prg = None
             raise StopIteration
-        if idx != NULL: output["filename"] = deref(idx.fname)
+
+        cdef string di = deref(idx.fname)
+        cdef string dx = self.fnames[di]
+        if not dx.size():
+            self.fnames[di] = enc(env(di).split("/")[-1])
+            self.prg.set_description(env(self.fnames[di]))
+            self.prg.refresh()
+        self.prg.update(1)
+        output["filename"] = di
         return output
 
     cpdef dict MetaData(self):

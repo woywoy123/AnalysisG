@@ -26,6 +26,9 @@ void topefficiency::merge(selection_template* sl){
     merge_data(&this -> p_decay_region, &slt -> p_decay_region); 
     merge_data(&this -> t_decay_region, &slt -> t_decay_region); 
 
+    merge_data(&this -> p_nodes, &slt -> p_nodes); 
+    merge_data(&this -> t_nodes, &slt -> t_nodes); 
+
     sum_data(&this -> truth_res_edge,       &slt -> truth_res_edge); 
     sum_data(&this -> truth_top_edge,       &slt -> truth_top_edge);      
 
@@ -97,6 +100,7 @@ bool topefficiency::strategy(event_template* ev){
         std::string key = this -> region(top_ -> pt / 1000, std::abs(top_ -> eta));
         this -> t_topmass[key][hash].push_back(mass);
         t_top_map[top_ -> hash] = false; 
+        this -> t_nodes[hash][mass] = top_ -> n_nodes; 
         this -> t_decay_region[decay_region_t][hash].push_back(mass); 
     }
     this -> n_tru_tops[hash] = t_top_map.size(); 
@@ -125,6 +129,7 @@ bool topefficiency::strategy(event_template* ev){
         std::string key = this -> region(top_ -> pt / 1000, std::abs(top_ -> eta));
         this -> p_topmass[key][hash].push_back(mass);
         this -> prob_tops[key][hash].push_back(top_ -> av_score); 
+        this -> p_nodes[hash][mass] = top_ -> n_nodes; 
         this -> p_decay_region[decay_region_p][hash].push_back(mass); 
     }
 
@@ -132,19 +137,20 @@ bool topefficiency::strategy(event_template* ev){
     for (size_t s(0); s <= int(1.0/this -> score_step); ++s){
         int perf = 0; 
         int reco = 0; 
-        float sc = s*this -> score_step; 
+        float sc = 1-s*this -> score_step; 
         for (size_t x(0); x < reco_tops.size(); ++x){
             top* top_ = reco_tops[x]; 
             std::string id = top_ -> hash; 
-            if (top_ -> av_score < sc){continue;}
+            if (top_ -> av_score <= sc){continue;}
             ++reco; 
 
             if (!t_top_map.count(id)){continue;}
-            if (!t_top_map[id]){++perf;} // prevent double counting
+            if (t_top_map[id]){continue;} // prevent double counting
             t_top_map[id] = true; 
+            ++perf;
         }
         this -> n_perfect_tops[hash][sc] = perf; 
-        this -> n_pred_tops[hash][sc]    = reco;  
+        this -> n_pred_tops[hash][sc]    = reco; 
         std::map<std::string, bool>::iterator ib = t_top_map.begin(); 
         for (; ib != t_top_map.end(); ++ib){ib -> second = false;}
     }

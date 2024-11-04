@@ -62,6 +62,7 @@ cdef inline dict as_basic_dict_dict_f(map[string, map[float, base_types]]* inpt)
     cdef dict output = {}
     cdef pair[string, map[float, base_types]] itr
     for pair in dref(inpt): output[env(pair.first)] = pair.second
+    return output
 
 cdef inline dict as_basic_dict_dict(map[string, map[string, base_types]]* inpt):
     cdef dict output = {}
