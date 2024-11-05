@@ -399,7 +399,7 @@ def TopEfficiency(ana):
         pr = pickle.load(open(files[i], "rb"))
         stack_topkin = top_kinematic_region(stack_topkin, pr)
         stack_roc    = roc_data(stack_roc, pr)
-        #stack_ntops  = ntops_reco(stack_ntops, pr)
+        stack_ntops  = ntops_reco(stack_ntops, pr)
 
     #f = open("tmp.pkl", "wb")
     #pickle.dump(stack_topkin, f)
@@ -411,5 +411,5 @@ def TopEfficiency(ana):
 
     top_kinematic_region(stack_topkin)
     roc_data(stack_roc)
-    #ntops_reco(stack_ntops)
+    ntops_reco(stack_ntops)
 

@@ -49,38 +49,39 @@ graph_method = {
 import topefficiency
 plotting_method = {"topefficiency" : topefficiency}
 
-figure_path = "./Output/"
+figure_path = "/import/wu1/tnom6927/TrainingOutput/Output/"
 study       = "topefficiency"
 
 graph_name     = "GraphJets"
 graph_prefix   = "_bn_1_"
-inference_mode = False
-plot_only      = True
+inference_mode = True
+plot_only      = False
 fetch_meta     = False
 build_cache    = False
-threads        = 10
-bts            = 100
+threads        = 2
+bts            = 250
 kfold          = "kfold-5"
 epoch          = "epoch-24"
 mrk            = "MRK-1"
-
+out            = "/import/wu1/tnom6927/TrainingOutput/mc16-inference/"
 
 graph_cache = "/scratch/tnom6927/graph-data-mc16-full/"
 root_model  = "/import/wu1/tnom6927/TrainingOutput/training-sessions/"
 data_path   = "/import/wu1/tnom6927/TrainingOutput/grid-data/" # <----- cluster
+
 #data_path = "/CERN/trainings/mc16-full-inference" # <----- local
-data_path = "ProjectName/ROOT/" + graph_name + graph_prefix + "Grift/" + mrk + "/" + epoch + "/" + kfold + "/"
+#data_path = "/import/wu1/tnom6927/TrainingOutput/ProjectName/ROOT/" + graph_name + graph_prefix + "Grift/" + mrk + "/" + epoch + "/" + kfold + "/"
 #data_path = "/CERN/Samples/mc16-full/"
 
-epx = [i+1 for i in range(1, 100)]
+epx = [i+1 for i in range(0, 100)]
 model_states = {
-    "MRK-1" : {"epoch-" + str(ep) : (["kfold-1", "kfold-5"], ["cuda:1", "cuda:0"]) for ep in epx},
-    "MRK-2" : {"epoch-" + str(ep) : (["kfold-1", "kfold-5"], ["cuda:0", "cuda:1"]) for ep in epx},
-    "MRK-3" : {"epoch-" + str(ep) : (["kfold-1", "kfold-5"], ["cuda:1", "cuda:0"]) for ep in epx},
-    "MRK-4" : {"epoch-" + str(ep) : (["kfold-1", "kfold-5"], ["cuda:0", "cuda:1"]) for ep in epx},
+    "MRK-1" : {"epoch-" + str(ep) : (["kfold-" + str(i+1) for i in range(0, 2)], ["cuda:1", "cuda:0"]) for ep in epx},
+    "MRK-2" : {"epoch-" + str(ep) : (["kfold-" + str(i+1) for i in range(0, 2)], ["cuda:0", "cuda:1"]) for ep in epx},
+    "MRK-3" : {"epoch-" + str(ep) : (["kfold-" + str(i+1) for i in range(0, 2)], ["cuda:1", "cuda:0"]) for ep in epx},
+    "MRK-4" : {"epoch-" + str(ep) : (["kfold-" + str(i+1) for i in range(0, 2)], ["cuda:0", "cuda:1"]) for ep in epx},
 }
 
-ls = list(build_samples(data_path, "**/*.root", 5))
+ls = list(build_samples(data_path, "**/*.root", 100))
 if fetch_meta:
     x = 0
     for i in ls:
@@ -106,6 +107,7 @@ for k in ls:
     ana.BuildCache = build_cache
     ana.Threads = threads
     ana.BatchSize = bts
+    ana.OutputPath = out
     ana.GraphCache = graph_cache
     if len(model_states): ana.FetchMeta = False
 
@@ -154,7 +156,6 @@ for k in ls:
         print(i, len(ls))
     i+=1
     del ana
-    if i > 60: break
 
 ana = Analysis()
 ana.Start()
