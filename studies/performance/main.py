@@ -1,18 +1,23 @@
 from AnalysisG.generators import Analysis
-from AnalysisG.core import IO, MetaLookup
+from AnalysisG.core import IO, MetaLookup, Data
 from topefficiency.algorithms import mapping
 
 import pickle
 import pathlib
 
+class DataX(Data):
+    def title(self, val): return self._meta(val).title
+
 class MetaX(MetaLookup):
-    def __init__(self, inpt):
-        self.metadata = inpt.metadata
 
     @property
     def title(self): return mapping(self.meta.DatasetName)
     @property
     def SumOfWeights(self): return self.meta.SumOfWeights[b"sumWeights"]["total_events_weighted"]
+    @property
+    def GenerateData(self): return DataX(self)
+
+
 
 def chunks(lst, n):
     for i in range(0, len(lst), n): yield lst[i:i + n]
@@ -49,13 +54,13 @@ graph_method = {
 import topefficiency
 plotting_method = {"topefficiency" : topefficiency}
 
-figure_path = "/import/wu1/tnom6927/TrainingOutput/Output/"
+figure_path = "./figs"  #import/wu1/tnom6927/TrainingOutput/Output/"
 study       = "topefficiency"
 
 graph_name     = "GraphJets"
 graph_prefix   = "_bn_1_"
-inference_mode = True
-plot_only      = False
+inference_mode = False
+plot_only      = True
 fetch_meta     = False
 build_cache    = False
 threads        = 2
@@ -69,7 +74,7 @@ graph_cache = "/scratch/tnom6927/graph-data-mc16-full/"
 root_model  = "/import/wu1/tnom6927/TrainingOutput/training-sessions/"
 data_path   = "/import/wu1/tnom6927/TrainingOutput/grid-data/" # <----- cluster
 
-#data_path = "/CERN/trainings/mc16-full-inference" # <----- local
+data_path = "/CERN/trainings/mc16-full-inference/ROOT/" + graph_name + graph_prefix + "Grift/" + mrk + "/" + epoch + "/" + kfold + "/" # <----- local
 #data_path = "/import/wu1/tnom6927/TrainingOutput/ProjectName/ROOT/" + graph_name + graph_prefix + "Grift/" + mrk + "/" + epoch + "/" + kfold + "/"
 #data_path = "/CERN/Samples/mc16-full/"
 
@@ -81,7 +86,7 @@ model_states = {
     "MRK-4" : {"epoch-" + str(ep) : (["kfold-" + str(i+1) for i in range(0, 2)], ["cuda:0", "cuda:1"]) for ep in epx},
 }
 
-ls = list(build_samples(data_path, "**/*.root", 100))
+ls = list(build_samples(data_path, "**/*.root", 1))
 if fetch_meta:
     x = 0
     for i in ls:

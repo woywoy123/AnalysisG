@@ -35,6 +35,7 @@ class plotting:
         int x_bins = 100; 
         int y_bins = 100; 
         bool errors = false; 
+        bool counts = false; 
 
         // cosmetics
         std::string style = "ROOT"; 

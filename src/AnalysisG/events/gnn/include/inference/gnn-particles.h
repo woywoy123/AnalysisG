@@ -16,7 +16,7 @@ class particle_gnn: public particle_template
 {
     public:
         particle_gnn(); 
-        ~particle_gnn() override; 
+        ~particle_gnn(); 
         bool lep = false; 
 
         particle_template* clone() override; 
@@ -27,7 +27,7 @@ class top: public particle_template
 {
     public:
         top(); 
-        ~top() override; 
+        ~top(); 
         float av_score = 0;
         int n_leps = 0;  
         int n_nodes = 0; 
@@ -38,7 +38,7 @@ class zprime: public particle_template
 {
     public:
         zprime(); 
-        ~zprime() override; 
+        ~zprime(); 
         float av_score = 0; 
         int n_leps = 0;  
         int n_nodes = 0; 

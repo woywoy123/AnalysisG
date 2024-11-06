@@ -8,7 +8,7 @@ class topefficiency: public selection_template
 {
     public:
         topefficiency();
-        ~topefficiency() override; 
+        ~topefficiency(); 
         selection_template* clone() override; 
 
         bool selection(event_template* ev) override; 

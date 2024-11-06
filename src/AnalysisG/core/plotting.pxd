@@ -35,6 +35,7 @@ cdef extern from "<plotting/plotting.h>" nogil:
 
         bool stack
         bool density
+        bool counts
         bool x_logarithmic
         bool y_logarithmic
 
@@ -94,12 +95,13 @@ cdef class BasePlotting:
     cdef list __ticks__(self, float s, float e, float st)
     cdef dict __compile__(self, bool raw = *)
     cdef void __resetplt__(self)
-    cdef void __figure__(self)
+    cdef void __figure__(self, dict com = *)
 
 cdef class TH1F(BasePlotting):
     cdef public bool ApplyScaling
     cdef public list Histograms
     cdef public TH1F Histogram
+    cdef fx
 
     cdef float scale_f(self)
     cdef dict factory(self)

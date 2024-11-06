@@ -266,7 +266,7 @@ cdef class Data:
     def weights(self):
         cdef vector[float] tx
         self.__rescale__(&tx)
-        return list(tx)
+        return tx
 
     @weights.setter
     def weights(self, dict val): self.__populate__(val, &self._weights)

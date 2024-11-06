@@ -109,14 +109,14 @@ void gnn_event::CompileEvent(){
             for (size_t x(0); x < n_nodes; ++x){
                 float sc = 0; 
                 for (size_t y(0); y < n_nodes; ++y){
-                    if ((*bin_data)[x][y] <= 0.5){continue;}
+                    //if ((*bin_data)[x][y] <= 0.5){continue;}
                     sc += (x != y) * Mij[x][y] * (pr_[y]); 
                 }
                 PR[x] = sc;  
                 norm += sc;
             }
-//            if (!norm){break;}
-//            for (size_t x(0); x < n_nodes; ++x){PR[x] = PR[x] / norm;}
+            if (!norm){break;}
+            for (size_t x(0); x < n_nodes; ++x){PR[x] = PR[x] / norm;}
             break; 
         }
 
@@ -127,9 +127,19 @@ void gnn_event::CompileEvent(){
             int src = itr -> first; 
             if (!PR[src] && bin_data){continue;}
             for (itp = itr -> second.begin(); itp != itr -> second.end(); ++itp){
-                int p_node = itp -> second -> index; 
-                if (bin_data && !(*bin_data)[src][p_node]){continue;}
-                tmp[itp -> second -> hash] = itp -> second;
+                particle_gnn* ptr = itp -> second; 
+                if (bin_data && (*bin_data)[src][ptr -> index] < 0.5){continue;}
+                tmp[ptr -> hash] = ptr;
+
+                std::map<std::string, particle_gnn*> mps = (*clust)[ptr -> index]; 
+                std::map<std::string, particle_gnn*>::iterator itx = mps.begin(); 
+                for (; itx != mps.end(); ++itx){
+                    ptr = itx -> second; 
+                    if (tmp.count(ptr -> hash) || clust -> count(ptr -> index)){continue;}
+                    tmp[ptr -> hash] = itx -> second;
+                    mps = (*clust)[ptr -> index]; 
+                    itx = mps.begin(); 
+                }
             }
             if (tmp.size() <= 2){continue;}
             std::string hash = ""; 

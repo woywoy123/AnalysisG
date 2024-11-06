@@ -40,7 +40,7 @@ class top: public particle_template
     public:
        
         top(); 
-        ~top() override; 
+        ~top(); 
 
         bool from_res = false; 
         int status = -1; 
@@ -56,7 +56,7 @@ class top_children: public particle_template
 {
     public: 
         top_children();
-        ~top_children() override;   
+        ~top_children();   
 
         int top_index = -1;  
 
@@ -74,7 +74,7 @@ class truthjet: public particle_template
 {
     public: 
         truthjet();
-        ~truthjet() override;   
+        ~truthjet();   
 
         int top_quark_count = -1;
         int w_boson_count = -1; 
@@ -96,7 +96,7 @@ class truthjetparton: public particle_template
 {
     public: 
         truthjetparton();
-        ~truthjetparton() override;
+        ~truthjetparton();
 
         int truthjet_index;
         std::vector<int> topchild_index = {};
@@ -110,7 +110,7 @@ class jet: public particle_template
 {
     public: 
         jet();
-        ~jet() override;   
+        ~jet();   
 
         std::vector<top*> Tops = {}; 
         std::vector<jetparton*> Parton = {}; 
@@ -148,7 +148,7 @@ class jetparton: public particle_template
 {
     public: 
         jetparton();
-        ~jetparton() override;
+        ~jetparton();
 
         int jet_index;
         std::vector<int> topchild_index = {}; 
@@ -162,7 +162,7 @@ class electron: public particle_template
 {
     public: 
         electron();
-        ~electron() override;
+        ~electron();
         bool from_res = false; 
         int top_index = -1; 
 
@@ -175,7 +175,7 @@ class muon: public particle_template
 {
     public: 
         muon();
-        ~muon() override;
+        ~muon();
         bool from_res = false; 
         int top_index = -1; 
 

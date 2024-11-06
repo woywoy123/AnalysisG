@@ -41,7 +41,8 @@ def mapping(name):
     if "_llvv"        in name: return ( "llvv"      , "$\\ell\\ell\\nu\\nu$"     , "indigo")
     if "_lvvv"        in name: return ( "lvvv"      , "$\\ell\\nu\\nu\\nu$"      , "lightblue")
 
-    print(name)
+    print("----> " + name)
+    exit()
 
 def kinesplit(reg):
     x = reg.split(",")

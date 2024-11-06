@@ -137,7 +137,7 @@ bool topefficiency::strategy(event_template* ev){
     for (size_t s(0); s <= int(1.0/this -> score_step); ++s){
         int perf = 0; 
         int reco = 0; 
-        float sc = 1-s*this -> score_step; 
+        float sc = s*this -> score_step; 
         for (size_t x(0); x < reco_tops.size(); ++x){
             top* top_ = reco_tops[x]; 
             std::string id = top_ -> hash; 

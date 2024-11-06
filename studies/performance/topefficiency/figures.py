@@ -47,13 +47,10 @@ def top_kinematic_region(stacks, tmp = None):
             tru_h = TH1F()
             tru_h.Title   = "Truth"
             tru_h.xData   = th.data
-            tru_h.Weights = th.weights
-            tru_h.Hatch   = "\\\\////"
-            tru_h.Color   = "black"
-
+            #tru_h.Weights = th.weights
             dt.weights = w
             dt.data    = d
-
+            del stacks["truth"][kin]
 
         if kin not in stacks["prediction"]: stacks["prediction"][kin] = {}
         if pt_r not in pt_topmass_prc["prediction"]: pt_topmass_prc["prediction"][pt_r] = {}
@@ -64,11 +61,11 @@ def top_kinematic_region(stacks, tmp = None):
         for prc in stacks["prediction"][kin]:
             _, tl, col = metalookup(prc).title
             dh = MakeData(hists, tl)
-
             cols[tl] = col
+
             mass  = {prc : stacks["prediction"][kin][prc]["value"]}
-            score = {prc : stacks["top_score"][kin][prc]["value"]}
             mwei  = {prc : stacks["prediction"][kin][prc]["weights"]}
+            score = {prc : stacks["top_score"][kin][prc]["value"]}
             swei  = {prc : stacks["top_score"][kin][prc]["weights"]}
 
             dh.weights = mwei
@@ -79,10 +76,10 @@ def top_kinematic_region(stacks, tmp = None):
             dptr.data    = mass
 
             top_score_mass[pt_r]["mass"].weights = mwei
-            top_score_mass[pt_r]["mass"].data = mass
+            top_score_mass[pt_r]["mass"].data    = mass
 
             top_score_mass[pt_r]["score"].weights = swei
-            top_score_mass[pt_r]["score"].data = score
+            top_score_mass[pt_r]["score"].data    = score
 
             dsc = MakeData(prc_topscore[pt_r], tl)
             dsc.weights = swei
@@ -98,7 +95,7 @@ def top_kinematic_region(stacks, tmp = None):
             prc_h.Title   = prc
             prc_h.Color   = cols[prc]
             prc_h.xData   = hists[prc].data
-            prc_h.Weights = hists[prc].weights
+            #prc_h.Weights = hists[prc].weights
             tmp.append(prc_h)
             nums.append(len(prc_h.xData))
         hists = tmp
@@ -107,18 +104,19 @@ def top_kinematic_region(stacks, tmp = None):
         tlt = tlt.replace("-", " \\leq | \\eta_{top} | \\leq ")
 
         reco = path(TH1F(), "/" + kin.split(",")[0])
-        reco.Title = "Reconstructed Invariant Mass of Top Candidate within \n Kinematic Region: $" + tlt + "$"
-        reco.Histograms = [hists[k] for k in sorted(range(len(nums)), key = lambda k : nums[k])]
+        reco.Title = "Reconstructed Invariant Mass of Top Candidate within Kinematic Region: $" + tlt + "$"
+        reco.Histograms = hists
         reco.Histogram = tru_h
         reco.Stacked = True
         reco.xStep = 20
         reco.Overflow = False
+        reco.ShowCount = True
         reco.xTitle = "Invariant Mass of Candidate Top (GeV)"
         reco.yTitle = "Tops / ($1$ GeV)"
         reco.yMin = 0
         reco.xMin = 0
         reco.xMax = 400
-        reco.xBins = 400
+        reco.xBins = 100
         reco.Filename = kin.split(", ")[1]
         reco.SaveFigure()
 
@@ -130,9 +128,7 @@ def top_kinematic_region(stacks, tmp = None):
         tru = TH1F()
         tru.Title = "Truth"
         tru.xData   = pt_topmass_prc["truth"][kin].data
-        tru.Weights = pt_topmass_prc["truth"][kin].weights
-        tru.Hatch = "\\\\////"
-        tru.Color = "black"
+        #tru.Weights = pt_topmass_prc["truth"][kin].weights
 
         nums = []
         hists = []
@@ -141,13 +137,13 @@ def top_kinematic_region(stacks, tmp = None):
             prc_h.Color   = cols[prc]
             prc_h.Title   = prc
             prc_h.xData   = pt_topmass_prc["prediction"][kin][prc].data
-            prc_h.Weights = pt_topmass_prc["prediction"][kin][prc].weights
+            #prc_h.Weights = pt_topmass_prc["prediction"][kin][prc].weights
             hists.append(prc_h)
             nums.append(len(prc_h.xData))
 
         tlt = kin.replace("_", " \\leq p^{top}_T (GeV) \\leq ")
         reco = path(TH1F(), "/aggregated-pt/")
-        reco.Title = "Reconstructed Invariant Mass of Top Candidate with \n Transverse Momentum: $" + tlt + "$"
+        reco.Title = "Reconstructed Invariant Mass of Top Candidate with Transverse Momentum: $" + tlt + "$"
         reco.Histograms = [hists[k] for k in sorted(range(len(nums)), key = lambda k : nums[k])]
         reco.Histogram = tru
         reco.xStep = 20
@@ -158,7 +154,8 @@ def top_kinematic_region(stacks, tmp = None):
         reco.xMin = 0
         reco.yMin = 0
         reco.xMax = 400
-        reco.xBins = 400
+        reco.xBins = 100
+        reco.ShowCount = True
         reco.Filename = kin.split(", ")[0]
         reco.SaveFigure()
 
@@ -175,18 +172,18 @@ def top_kinematic_region(stacks, tmp = None):
 
         tlt = kin.replace("_", " \\leq p^{top}_T (GeV) \\leq ")
         s_s = path(TH1F(), "/pt-score")
-        s_s.Histograms = list(hists.values()) #[hists[x] for x in sorted(list(hists))]
+        s_s.Histograms = list(hists.values())
         s_s.Title = "Reconstructed Top Candidate Score with \n Transverse Momentum $" + tlt + "$"
         s_s.xTitle = "MVA Score of Candidate Top (Arb.)"
-        s_s.yTitle = "Tops / ($0.001$)"
+        s_s.yTitle = "Tops / ($0.002$)"
 
-        s_s.yMin = 0.0001
+        s_s.yMin = 0
         s_s.xMin = 0
-        s_s.xMax = 1.001
-        s_s.xBins = 1001
+        s_s.xMax = 1
+        s_s.xBins = 500
         s_s.xStep = 0.05
-        s_s.Density = True
-        s_s.Stacked = True
+        s_s.ShowCount = True
+        s_s.Stacked = False
 
         s_s.Filename = "mva-score_" + kin
         s_s.SaveFigure()
@@ -232,7 +229,7 @@ def top_kinematic_region(stacks, tmp = None):
 
     eta_pt_ks.xData = [float(k.split(",")[0].split("_")[0]) for k in ks_topscore_eta_pt]
     eta_pt_ks.yData = [float(k.split(",")[1].split("-")[0]) for k in ks_topscore_eta_pt]
-    eta_pt_ks.Weights = list(ks_topscore_eta_pt.values())
+    #eta_pt_ks.Weights = list(ks_topscore_eta_pt.values())
     eta_pt_ks.Filename = "ks_score_eta_pt"
     eta_pt_ks.SaveFigure()
 
@@ -270,126 +267,103 @@ def ntops_reco(stacks, data = None):
         data = metalookup.GenerateData
         data_[key] = data
         return data
-
-
     if data is not None: return ntops_reco_compl(stacks, data)
 
     fnames = list(stacks["weights"])
-    scores = sorted(set(list(stacks["pred_ntops"][fnames[0]])))
-    ntops = sorted(set(sum([stacks["tru_ntops"][fn] for fn in fnames], [])))
-    cls_ntops = {}
 
+    content = {"truth" : {}, "prediction" : {}, "perfect" : {}}
     for fn in fnames:
-        for i in range(len(stacks["tru_ntops"][fn])):
-            n = stacks["tru_ntops"][fn][i]
-            w = stacks["weights"][fn][i]
-            w = {fn : [w]}
-            ntk = str(n) + "-ntops"
+        w = stacks["weights"][fn]
+        p_nt_pred = stacks["pred_ntops"][fn]
+        p_nt_perf = stacks["perf_ntops"][fn]
+        t_nt      = stacks["tru_ntops"][fn]
+        scores    = list(p_nt_pred)
 
-            data = add_data(cls_ntops, ntk + ".tru")
-            data.weights = w
+        tru_ = add_data(content["truth"], fn)
+        tru_.weights = {fn : w}
+        tru_.data    = {fn : t_nt}
 
-            for sc in scores:
-                prd = stacks["pred_ntops"][fn][sc][i]
-                prf = stacks["perf_ntops"][fn][sc][i]
+        for i in range(len(scores)):
+            sc = scores[i]
+            pred_nt = p_nt_pred[sc]
+            perf_nt = p_nt_perf[sc]
 
-                # num correct
-                data = add_data(cls_ntops, ntk + ".prd@"  + str(sc))
-                if n == prd: data.weights = w
+            if fn not in content["prediction"]:
+                content["perfect"][fn] = {}
+                content["prediction"][fn] = {}
 
-                data = add_data(cls_ntops, ntk + ".prf@"  + str(sc))
-                if n == prf: data.weights = w
+            perf_ = add_data(content["perfect"][fn], sc)
+            perf_.weights = {fn : w}
+            perf_.data    = {fn : perf_nt}
 
-                for nt in ntops:
-                    # candidates
-                    data = add_data(cls_ntops, ntk + ".nprd@" + str(sc))
-                    if nt == prd: data.weights = w
+            pred_ = add_data(content["prediction"][fn], sc)
+            pred_.weights = {fn : w}
+            pred_.data    = {fn : pred_nt}
 
-                    data = add_data(cls_ntops, ntk + ".nprf@" + str(sc))
-                    if nt == prf: data.weights = w
+    merged = {"truth" : {}, "prediction" : {}, "perfect" : {}}
+    for fn in fnames:
+        _, prc, _ = content["truth"][fn].title(fn)
+        if prc not in merged["truth"]: merged["truth"][prc] = []
+        merged["truth"][prc].append(content["truth"][fn])
+        content["truth"][fn] = None
 
+        scores = list(content["prediction"][fn])
+        if prc not in merged["prediction"]: merged["prediction"][prc] = {sc : [] for sc in scores}
+        if prc not in merged["perfect"]:    merged["perfect"][prc]    = {sc : [] for sc in scores}
 
+        for sc in scores:
+            merged["prediction"][prc][sc].append(content["prediction"][fn][sc])
+            merged["perfect"][prc][sc].append(content["perfect"][fn][sc])
 
-    truths = {k : d for k, d in cls_ntops.items() if ".tru" in k}
-    for key in truths:
-        ntops = key.split(".tru")[0]
-        data  = truths[key]
-        st = sum(data.weights)
+        content["prediction"][fn] = None
+        content["perfect"][fn] = None
 
-        eff_predt, pur_predt = {}, {}
-        eff_prfct, pur_prfct = {}, {}
-        for k, d in cls_ntops.items():
-            if ntops not in k: continue
-            if ".prd" not in k and ".prf" not in k: continue
-            sc = float(k.split("@")[-1])
-            sm = sum(d.weights)
-
-            ki = k.replace("prd", "nprd") if ".prd" in k else k.replace("prf", "nprf")
-            cm = sum(cls_ntops[ki].weights)
-            if cm == 0: continue
-
-            if ".prd" in k:
-                eff_predt |= {sc : sm / st}
-                pur_predt |= {sc : sm / cm}
-                continue
-
-            if ".prf" in k:
-                eff_prfct |= {sc : sm / st}
-                pur_prfct |= {sc : sm / cm}
-                continue
+    for prc in merged["truth"]:      merged["truth"][prc]      = sum(merged["truth"][prc])
+    for prc in merged["perfect"]:    merged["perfect"][prc]    = {sc: sum(merged["perfect"][prc][sc]) for sc in merged["perfect"][prc]}
+    for prc in merged["prediction"]: merged["prediction"][prc] = {sc: sum(merged["prediction"][prc][sc]) for sc in merged["prediction"][prc]}
 
 
-        tlpf = TLine()
-        tlpf.Title = "Perfect Tops"
-        tlpf.xData = list(eff_prfct) #list(eff_prfct.values())
-        tlpf.yData = list(eff_prfct.values())
+    tl = path(TLine())
+    tl.Title = "Efficiency Purity Top Reconstruction for \n n-Top Multiplicity Topologies"
+    tl.xTitle = "Efficiency ($N_{perfect} / N_{truth}$)"
+    tl.yTitle = "Purity ($N_{perfect} / N_{candidate}$)"
+    tl.xMin = 0
+    tl.yMin = 0
+    tl.xMax = 1
+    tl.yMax = 1
+    tl.Filename = "purity_efficiency"
 
-        tlpd = TLine()
-        tlpd.Title = "Predicted Tops"
-        tlpd.xData = list(eff_predt) #.values())
-        tlpd.yData = list(eff_predt.values())
+    pairs = {}
+    for prc in merged["truth"]:
+        tru_data = merged["truth"][prc].data
+        weights  = merged["truth"][prc].weights
+        num_tru  = sum([tru_data[i]*weights[i] for i in range(len(weights))])
 
-        tl = path(TLine())
-        tl.Lines = [tlpf, tlpd]
-        tl.Title = "Multi-Top Reconstruction Efficiency: " + ntops
-        tl.xTitle = "Reconstructed Top Score"
-        tl.yTitle = "Efficiency"
-        tl.xMax = 1.2
-        tl.xMin = 0
-        tl.yMax = 1.2
-        tl.yMin = 0
-        tl.Filename = "efficiency_" + ntops
-        tl.SaveFigure()
+        for sc in list(merged["perfect"][prc]):
+            prf = merged["perfect"][prc][sc].data
+            num_prf = sum([prf[i]*weights[i] for i in range(len(weights))])
+
+            prd = merged["prediction"][prc][sc].data
+            num_can = sum([prd[i]*weights[i] for i in range(len(weights))])
+
+            if num_can == 0: continue
+            purity = num_prf / num_can
+            effi   = num_prf / num_tru
+            pairs[effi] = purity
+
+    tl.xData = sorted(pairs)
+    tl.yData = [pairs[k] for k in sorted(pairs)]
+    #tl.Lines.append(ln)
+    tl.SaveFigure()
 
 
-        tlpf = TLine()
-        tlpf.Title = "Perfect Tops"
-        tlpf.xData = list(pur_prfct)
-        tlpf.yData = list(pur_prfct.values())
-
-        tlpd = TLine()
-        tlpd.Title = "Predicted Tops"
-        tlpd.xData = list(pur_predt)
-        tlpd.yData = list(pur_predt.values())
-
-        tl = path(TLine())
-        tl.Lines = [tlpf, tlpd]
-        tl.Title = "Multi-Top Reconstruction Purity: " + ntops
-        tl.xTitle = "Reconstructed Top Score"
-        tl.yTitle = "Purity"
-        tl.xMax = 1.2
-        tl.xMin = 0
-        tl.yMax = 1.2
-        tl.yMin = 0
-        tl.Filename = "purity_" + ntops
-        tl.SaveFigure()
 
 def TopEfficiency(ana):
     p = Path(ana)
     files = [str(x) for x in p.glob("**/*.pkl") if str(x).endswith(".pkl")]
     files = list(set(files))
     files = sorted(files)
-    #files = files[:1]
+#    files = files[:10]
 
     stack_roc = {}
     stack_topkin = {}
@@ -398,7 +372,7 @@ def TopEfficiency(ana):
         print(files[i], (i+1) / len(files))
         pr = pickle.load(open(files[i], "rb"))
         stack_topkin = top_kinematic_region(stack_topkin, pr)
-        stack_roc    = roc_data(stack_roc, pr)
+        #stack_roc    = roc_data(stack_roc, pr)
         stack_ntops  = ntops_reco(stack_ntops, pr)
 
     #f = open("tmp.pkl", "wb")
@@ -410,6 +384,6 @@ def TopEfficiency(ana):
     #f.close()
 
     top_kinematic_region(stack_topkin)
-    roc_data(stack_roc)
+    #roc_data(stack_roc)
     ntops_reco(stack_ntops)
 
