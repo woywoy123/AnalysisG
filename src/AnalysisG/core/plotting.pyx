@@ -13,11 +13,13 @@ warnings.filterwarnings(action='ignore', module='matplotlib.figure', category=Us
 from AnalysisG.core.tools cimport *
 from AnalysisG.core.plotting cimport plotting
 
-import boost_histogram as bh
+from scipy.stats import ks_2samp
 import matplotlib.pyplot as plt
+import boost_histogram as bh
 import mplhep as hep
 import numpy as np
-from scipy.stats import ks_2samp
+import random
+
 
 cdef class BasePlotting:
     def __cinit__(self):
@@ -233,8 +235,8 @@ cdef class BasePlotting:
     @property
     def Color(self):
         if len(self.ptr.color): return env(self.ptr.color)
-        #self.Color = next(self._ax._get_lines.prop_cycler)["color"]
-        return ""
+        self.Color = "#"+''.join([random.choice('0123456789ABCDEF') for j in range(6)])
+        return self.Color
 
     @Color.setter
     def Color(self, str val): self.ptr.color = enc(val)
@@ -462,7 +464,7 @@ cdef class TH1F(BasePlotting):
         histpl["label"] = []
         histpl["H"] = []
         histpl["color"] = []
-        if len(self.Color): histpl["color"] += [self.Color]
+        if self.ptr.x_data.size(): histpl["color"] += [self.Color]
         return histpl
 
     cdef __build__(self):
@@ -519,12 +521,12 @@ cdef class TH1F(BasePlotting):
             if not len(labels): self.Histogram.xBins = self.xBins
             if self.ShowCount:  self.Histogram.ShowCount = self.ShowCount
 
-            histpl["label"] += [self.Histogram.Title]
             histpl["H"]     += [self.Histogram.__build__()]
-            histpl["alpha"]  = [self.Histogram.Alpha]
-
-            if len(self.Histogram.Color): histpl["color"] += [self.Histogram.Color]
-            if len(self.Histogram.Hatch): histpl["hatch"] += [self.Histogram.Hatch]
+            histpl["label"] += [self.Histogram.Title]
+            histpl["color"] += [self.Histogram.Color]
+            histpl["hatch"] += [self.Histogram.Hatch]
+            if len(histpl["alpha"]): histpl["alpha"] += [self.Histogram.Alpha]
+            else: histpl["alpha"] += [1]
 
         if len(self.xData) or len(labels):
             histpl = self.factory()
@@ -538,11 +540,12 @@ cdef class TH1F(BasePlotting):
             if not len(labels): h.xMax  = self.xMax
             if not len(labels): h.xBins = self.xBins
             if self.ShowCount:  h.ShowCount = self.ShowCount
-            histpl["label"]  += [h.Title]
-            histpl["H"]      += [h.__build__()]
-            if len(h.Color): histpl["color"] += [h.Color]
-            if len(h.Hatch): histpl["hatch"] += [h.Hatch]
+            histpl["label"] += [h.Title]
+            histpl["H"]     += [h.__build__()]
+            histpl["color"] += [h.Color]
+            histpl["hatch"] += [h.Hatch]
             if len(histpl["alpha"]): histpl["alpha"] += [h.Alpha]
+            else: histpl["alpha"] += [1]
 
         if raw: return histpl
         if not len(histpl["H"]): return {}
@@ -567,19 +570,18 @@ cdef class TH1F(BasePlotting):
             self.__figure__({"nrows" : 2, "ncols" : 1, "sharex" : True, "gridspec_kw" : {"height_ratios" : [4, 1], "hspace" : 0.05}})
 
             cpy = {}
-            cpy["yerr"]      = True
-            cpy["histtype"]  = "step"
-            cpy["H"]         = sum(histpl["H"][1:])
-            cpy["ax"]        = self._ax[0]
             cpy["linewidth"] = 0
+            cpy["histtype"]  = "step"
+            cpy["yerr"]      = True
+            cpy["ax"]        = self._ax[0]
+            cpy["H"]         = sum(histpl["H"][1:])
             error            = hep.histplot(**cpy)
 
             cpy = {}
-            try: cpy["color"] = histpl["color"].pop(0)
-            except IndexError: pass
+            cpy["color"]      = "black"
             cpy["H"]          = histpl["H"].pop(0)
             cpy["label"]      = histpl["label"].pop(0)
-            cpy["alpha"]      = histpl["alpha"].pop(0)*0 +1
+            cpy["alpha"]      = histpl["alpha"].pop(0)
             cpy["histtype"]   = "errorbar"
             cpy["markersize"] = 5
             cpy["linewidth"]  = 2
@@ -587,8 +589,10 @@ cdef class TH1F(BasePlotting):
             cpy["ax"]         = self._ax[0]
             hep.histplot(**cpy)
 
-            histpl["ax"] = self._ax[0]
             del histpl["hatch"]
+            histpl["color"].pop(0)
+            histpl["ax"] = self._ax[0]
+
             hep.histplot(**histpl)
             self.__get_error_seg__(error[0])
             self._ax[0].legend(loc = "upper right")

@@ -17,8 +17,6 @@ class MetaX(MetaLookup):
     @property
     def GenerateData(self): return DataX(self)
 
-
-
 def chunks(lst, n):
     for i in range(0, len(lst), n): yield lst[i:i + n]
 
@@ -54,7 +52,6 @@ graph_method = {
 import topefficiency
 plotting_method = {"topefficiency" : topefficiency}
 
-figure_path = "./figs"  #import/wu1/tnom6927/TrainingOutput/Output/"
 study       = "topefficiency"
 
 graph_name     = "GraphJets"
@@ -63,10 +60,10 @@ inference_mode = False
 plot_only      = True
 fetch_meta     = False
 build_cache    = False
-threads        = 2
+threads        = 4
 bts            = 250
-kfold          = "kfold-5"
-epoch          = "epoch-24"
+kfold          = "kfold-2"
+epoch          = "epoch-33"
 mrk            = "MRK-1"
 out            = "/import/wu1/tnom6927/TrainingOutput/mc16-inference/"
 
@@ -86,7 +83,10 @@ model_states = {
     "MRK-4" : {"epoch-" + str(ep) : (["kfold-" + str(i+1) for i in range(0, 2)], ["cuda:0", "cuda:1"]) for ep in epx},
 }
 
-ls = list(build_samples(data_path, "**/*.root", 1))
+figure_path = "./figs"  #import/wu1/tnom6927/TrainingOutput/Output/"
+figure_path += "/" + mrk + "/" + epoch + "/" + kfold
+
+ls = list(build_samples(data_path, "**/*.root", 4))
 if fetch_meta:
     x = 0
     for i in ls:

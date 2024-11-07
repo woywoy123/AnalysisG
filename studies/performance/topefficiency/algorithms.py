@@ -17,7 +17,6 @@ def mapping(name):
     if "_tW."         in name: return ( "tW"        , "$tV$"                     , "teal")
     if "_tW_"         in name: return ( "tW"        , "$tV$"                     , "teal")
     if "_tZ."         in name: return ( "tZ"        , "$tV$"                     , "teal")
-    if "ttH_tttt"     in name: return ( "tttt_mX"   , "$t\\bar{t}t\\bar{t}H_{X}$", "darkgreen")
     if "_SM4topsNLO"  in name: return ( "SM4topsNLO", "$t\\bar{t}t\\bar{t}$"     , "coral")
 
     if "_WlvZqq"      in name: return ( "WlvZqq"    , "$WZ$"                     , "darkblue")
@@ -33,13 +32,17 @@ def mapping(name):
     if "_Wenu_"       in name: return ( "Wlv"       , "$V\\ell\\nu$"             , "cyan")
     if "_Wmunu_"      in name: return ( "Wmunu"     , "$V\\ell\\nu$"             , "cyan")
     if "_Wtaunu_"     in name: return ( "Wtaunu"    , "$V\\ell\\nu$"             , "cyan")
-    if "_Zee_"        in name: return ( "Zee"       , "$V\\ell\\ell$"            , "magneta")
-    if "_Zmumu_"      in name: return ( "Zmumu"     , "$V\\ell\\ell$"            , "magneta")
+    if "_Zee_"        in name: return ( "Zee"       , "$V\\ell\\ell$"            , "magenta")
+    if "_Zmumu_"      in name: return ( "Zmumu"     , "$V\\ell\\ell$"            , "magenta")
     if "_Ztautau_"    in name: return ( "Zll"       , "$V\\ell\\ell$"            , "magneta")
     if "_llll"        in name: return ( "llll"      , "$\\ell\\ell\\ell\\ell$"   , "green")
     if "_lllv"        in name: return ( "lllv"      , "$\\ell\\ell\\ell\\nu$"    , "grey")
     if "_llvv"        in name: return ( "llvv"      , "$\\ell\\ell\\nu\\nu$"     , "indigo")
     if "_lvvv"        in name: return ( "lvvv"      , "$\\ell\\nu\\nu\\nu$"      , "lightblue")
+
+    if "ttH_tttt" in name:
+        m = [str(i*100) for i in range(1, 11) if str(i*100) in name][0]
+        return ( "tttt_m"+m, "$t\\bar{t}t\\bar{t}H_{" + m + "}$", "darkgreen")
 
     print("----> " + name)
     exit()
@@ -50,41 +53,71 @@ def kinesplit(reg):
     eta = x[1].split("<")
     return float(pt[0]), float(pt[2]), float(eta[0]), float(eta[2])
 
-def add_entry(inpt, key, fname, val, weight):
-    if key not in inpt: inpt[key] = {}
-    if fname not in inpt[key]: inpt[key][fname] = {"value" : [], "weights" : []}
-    if not isinstance(val, list): val = [val]; weight = [weight]
-    else: weight = [weight]*len(val)
-    inpt[key][fname]["value"] += val
-    inpt[key][fname]["weights"] += weight
-
-def top_pteta(stacks, data):
+def top_pteta(stacks, data, metal):
     pred_mass = data.p_topmass
     tru_mass  = data.t_topmass
     top_scr   = data.prob_tops
 
     if "truth" not in stacks: stacks = {"truth" : {}, "prediction" : {}, "top_score" : {}}
+    mtops_pred, mtops_tru = {}, {}
+
     for reg in pred_mass:
         ptl, pth, etl, eth = kinesplit(reg)
         rg = str(int(ptl)) + "_" + str(int(pth)) + ", " + str(etl) + "-" + str(eth)
+        if rg not in mtops_pred: mtops_pred[rg] = {}
+
         hashes = list(pred_mass[reg])
         fn_weight = data.HashToWeightFile(hashes)
         for i in range(len(hashes)):
             hash = hashes[i]
             fn, weight = fn_weight[i]
-            fn = "/".join(fn.decode("utf-8").split("/")[-2:])
-            add_entry(stacks["prediction"], rg, fn, pred_mass[reg][hash], weight)
-            add_entry(stacks["top_score"] , rg, fn,   top_scr[reg][hash], weight)
+            tops_pred = pred_mass[reg][hash]
+            tops_scr  = top_scr[reg][hash]
+            weights   = [weight]*len(tops_pred)
+
+            if fn not in mtops_pred[rg]: mtops_pred[rg][fn] = {"w" : [], "m" : [], "s" : []}
+            mtops_pred[rg][fn]["w"] += weights
+            mtops_pred[rg][fn]["m"] += tops_pred
+            mtops_pred[rg][fn]["s"] += tops_scr
+
+    for rg in mtops_pred:
+        if rg not in stacks["prediction"]:
+            stacks["prediction"][rg] = {}
+            stacks["top_score"][rg]  = {}
+
+        for fn in mtops_pred[rg]:
+            if fn not in stacks["prediction"][rg]:
+                stacks["prediction"][rg][fn] = metal.GenerateData
+                stacks["top_score"][rg][fn]  = metal.GenerateData
+
+            stacks["prediction"][rg][fn].data    = {fn : mtops_pred[rg][fn]["m"]}
+            stacks["prediction"][rg][fn].weights = {fn : mtops_pred[rg][fn]["w"]}
+
+            stacks["top_score"][rg][fn].data    = {fn : mtops_pred[rg][fn]["s"]}
+            stacks["top_score"][rg][fn].weights = {fn : mtops_pred[rg][fn]["w"]}
 
     for reg in tru_mass:
         ptl, pth, etl, eth = kinesplit(reg)
         rg = str(int(ptl)) + "_" + str(int(pth)) + ", " + str(etl) + "-" + str(eth)
+        if rg not in mtops_tru: mtops_tru[rg] = {}
+
         hashes = list(tru_mass[reg])
         fn_weight = data.HashToWeightFile(hashes)
         for i in range(len(hashes)):
-            hash = hashes[i]
             fn, weight = fn_weight[i]
-            add_entry(stacks["truth"], rg, fn, tru_mass[reg][hash], weight)
+            hash = hashes[i]
+            tops_tru = tru_mass[reg][hash]
+            weights  = [weight]*len(tops_tru)
+            if fn not in mtops_tru[rg]: mtops_tru[rg][fn] = {"w" : [], "m" : []}
+            mtops_tru[rg][fn]["w"] += weights
+            mtops_tru[rg][fn]["m"] += tops_tru
+
+    for rg in mtops_tru:
+        if rg not in stacks["truth"]: stacks["truth"][rg] = {}
+        for fn in mtops_tru[rg]:
+            if fn not in stacks["truth"][rg]: stacks["truth"][rg][fn]  = metal.GenerateData
+            stacks["truth"][rg][fn].data    = {fn : mtops_tru[rg][fn]["m"]}
+            stacks["truth"][rg][fn].weights = {fn : mtops_tru[rg][fn]["w"]}
     return stacks
 
 def roc_data_get(stacks, data):
