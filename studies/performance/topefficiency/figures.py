@@ -15,6 +15,7 @@ def MakeData(inpt,  key):
     return dt
 
 def path(hist, subx = "", defaults = None):
+    hist.UseLateX = False
     hist.Style = "ATLAS"
     hist.OutputDirectory = figure_path + "/topefficiency" + subx
     if defaults is None: return hist
@@ -343,7 +344,7 @@ def TopEfficiency(ana):
     files = [str(x) for x in p.glob("**/*.pkl") if str(x).endswith(".pkl")]
     files = list(set(files))
     files = sorted(files)
-    files = files[:1]
+#    files = files[:1]
 
     stack_roc = {}
     stack_topkin = {}

@@ -56,26 +56,28 @@ study       = "topefficiency"
 
 graph_name     = "GraphJets"
 graph_prefix   = "_bn_1_"
-inference_mode = False
-plot_only      = True
+inference_mode = True
+plot_only      = False
 fetch_meta     = False
 build_cache    = False
 threads        = 4
-bts            = 250
+bts            = 50
 kfold          = "kfold-2"
 epoch          = "epoch-33"
 mrk            = "MRK-1"
 out            = "/import/wu1/tnom6927/TrainingOutput/mc16-inference/"
+pth            = "./serialized-data/" + mrk + "/" + epoch + "/" + kfold + "/"
+figure_path    = "/import/wu1/tnom6927/TrainingOutput/Output/"
 
 graph_cache = "/scratch/tnom6927/graph-data-mc16-full/"
 root_model  = "/import/wu1/tnom6927/TrainingOutput/training-sessions/"
 data_path   = "/import/wu1/tnom6927/TrainingOutput/grid-data/" # <----- cluster
 
-data_path = "/CERN/trainings/mc16-full-inference/ROOT/" + graph_name + graph_prefix + "Grift/" + mrk + "/" + epoch + "/" + kfold + "/" # <----- local
-#data_path = "/import/wu1/tnom6927/TrainingOutput/ProjectName/ROOT/" + graph_name + graph_prefix + "Grift/" + mrk + "/" + epoch + "/" + kfold + "/"
+#data_path = "/CERN/trainings/mc16-full-inference/ROOT/" + graph_name + graph_prefix + "Grift/" + mrk + "/" + epoch + "/" + kfold + "/" # <----- local
+data_path = "/import/wu1/tnom6927/TrainingOutput/mc16-inference/ROOT/" + graph_name + graph_prefix + "Grift/" + mrk + "/" + epoch + "/" + kfold + "/"
 #data_path = "/CERN/Samples/mc16-full/"
 
-epx = [i+1 for i in range(0, 100)]
+epx = [i+1*(i==0) for i in range(0, 180, 10)]
 model_states = {
     "MRK-1" : {"epoch-" + str(ep) : (["kfold-" + str(i+1) for i in range(0, 2)], ["cuda:1", "cuda:0"]) for ep in epx},
     "MRK-2" : {"epoch-" + str(ep) : (["kfold-" + str(i+1) for i in range(0, 2)], ["cuda:0", "cuda:1"]) for ep in epx},
@@ -83,10 +85,9 @@ model_states = {
     "MRK-4" : {"epoch-" + str(ep) : (["kfold-" + str(i+1) for i in range(0, 2)], ["cuda:0", "cuda:1"]) for ep in epx},
 }
 
-figure_path = "./figs"  #import/wu1/tnom6927/TrainingOutput/Output/"
 figure_path += "/" + mrk + "/" + epoch + "/" + kfold
 
-ls = list(build_samples(data_path, "**/*.root", 4))
+ls = list(build_samples(data_path, "**/*.root", 1))
 if fetch_meta:
     x = 0
     for i in ls:
@@ -103,7 +104,6 @@ event_name     = "BSM4Tops"      if inference_mode     or build_cache else "Even
 graph_name     = graph_name      if inference_mode     or build_cache else ""
 model_name     = "Grift"         if inference_mode     or build_cache else ""
 selection_name = "TopEfficiency" if not inference_mode and not build_cache else ""
-pth = "./serialized-data/" + mrk + "/" + epoch + "/" + kfold + "/"
 
 i = 0
 for k in ls:
