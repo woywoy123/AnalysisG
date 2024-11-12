@@ -43,8 +43,6 @@ void tensor_to_vector(torch::Tensor* data, std::vector<G>* out, std::vector<sign
     tensor_vector(out, &linear, dims, dims -> size()-1); 
 }
 
-
-
 std::vector<signed long> tensor_size(torch::Tensor* inpt);
 void add_to_dict(std::vector<std::vector<float>>* dummy); 
 void add_to_dict(std::vector<std::vector<double>>* dummy); 
@@ -57,6 +55,13 @@ void add_to_dict(std::vector<double>* dummy);
 void add_to_dict(std::vector<long>* dummy); 
 void add_to_dict(std::vector<int>* dummy); 
 void add_to_dict(std::vector<bool>* dummy); 
+
+template <typename g>
+void tensor_to_vector(torch::Tensor* data, std::vector<g>* out){
+    std::vector<signed long> s = tensor_size(data); 
+    tensor_to_vector(data, out, &s, g()); 
+}
+
 
 struct variable_t {
     public:

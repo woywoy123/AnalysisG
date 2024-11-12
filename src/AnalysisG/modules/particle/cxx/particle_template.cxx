@@ -80,15 +80,15 @@ particle_template::particle_template(){
     this -> index.set_object(this); 
 }
 
-particle_template::particle_template(particle_t* p){this -> data = *p;}
+particle_template::particle_template(particle_t* p) : particle_template(){this -> data = *p;}
 
-particle_template::particle_template(double px, double py, double pz, double e){
+particle_template::particle_template(double px, double py, double pz, double e) : particle_template(){
     particle_t* p = &this -> data; 
     p -> px = px; p -> py = py; p -> pz = pz; p -> e = e; 
     p -> polar = true; 
 }
 
-particle_template::particle_template(double px, double py, double pz){
+particle_template::particle_template(double px, double py, double pz) : particle_template() {
     particle_t* p = &this -> data; 
     p -> px = px; p -> py = py; p -> pz = pz; this -> e; 
     p -> polar = true; 

@@ -52,9 +52,9 @@ class selection_template: public tools
         std::string filename = ""; 
         event_t data; 
 
-        template <typename g>
-        void sum(std::vector<g*>* ch, particle_template** out){
-            particle_template* prt = new particle_template(); 
+        template <typename g, typename k>
+        void sum(std::vector<g*>* ch, k** out){
+            k* prt = new k(); 
             std::map<std::string, bool> maps; 
             for (size_t x(0); x < ch -> size(); ++x){
                 if (maps[ch -> at(x) -> hash]){continue;}
@@ -63,8 +63,16 @@ class selection_template: public tools
             }
 
             std::string hash_ = prt -> hash; 
-            this -> garbage[hash_].push_back(prt); 
+            this -> garbage[hash_].push_back((particle_template*)prt); 
             (*out) = prt;  
+        }
+
+        template <typename g>
+        g* sum(std::map<std::string, g*>* ch){
+            g* out = nullptr; 
+            typename std::vector<g*> vec = this -> vectorize(ch); 
+            this -> sum(&vec, &out); 
+            return out; 
         }
 
         template <typename g>

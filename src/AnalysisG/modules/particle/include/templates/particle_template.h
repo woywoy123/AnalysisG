@@ -18,9 +18,9 @@ class particle_template : public tools
         particle_template();
         virtual ~particle_template(); 
 
-        particle_template(particle_t* p);
-        particle_template(double px, double py, double pz, double e); 
-        particle_template(double px, double py, double pz);
+        explicit particle_template(particle_t* p);
+        explicit particle_template(double px, double py, double pz, double e); 
+        explicit particle_template(double px, double py, double pz);
 
         void to_cartesian(); 
         void to_polar(); 
