@@ -51,6 +51,17 @@ torch::Tensor _Dot(torch::Tensor v1, torch::Tensor v2){
     return out.index({torch::indexing::Slice(), 0}).view({-1, 1}); 
 }
 
+
+
+
+
+
+
+
+
+
+
+
 torch::Tensor _Mul(torch::Tensor v1, torch::Tensor v2){
     const torch::TensorOptions op = _MakeOp(v1); 
     const unsigned int  n_ten = v1.size(0); 

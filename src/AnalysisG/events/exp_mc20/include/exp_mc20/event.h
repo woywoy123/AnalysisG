@@ -8,7 +8,7 @@ class exp_mc20: public event_template
 {
     public:
         exp_mc20(); 
-        ~exp_mc20() override; 
+        virtual ~exp_mc20(); 
 
         std::vector<particle_template*> Tops; 
         std::vector<particle_template*> TruthChildren; 

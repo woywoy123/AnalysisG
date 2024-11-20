@@ -8,7 +8,7 @@ class bsm_4tops: public event_template
 {
     public:
         bsm_4tops(); 
-        ~bsm_4tops(); 
+        virtual ~bsm_4tops(); 
 
         std::vector<particle_template*> Tops = {}; 
         std::vector<particle_template*> Children = {}; 

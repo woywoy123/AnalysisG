@@ -1,32 +1,16 @@
 #include <c10/cuda/CUDAFunctions.h>
+#include <cutils/utils.cuh>
 #include <cuda_runtime.h>
 #include <torch/torch.h>
 #include <cuda.h>
 
 #ifndef TRANSFORM_CARTESIAN_CUDA_H
 #define TRANSFORM_CARTESIAN_CUDA_H
+#include <transform/cartesian.cuh>
+
+
+
 #include "kernel.cu"
-
-#define CHECK_CUDA(x) TORCH_CHECK(x.device().is_cuda(), "#x must be on CUDA")
-#define CHECK_CONTIGUOUS(x) TORCH_CHECK(x.is_contiguous(), "#x must be contiguous")
-#define CHECK_INPUT(x) CHECK_CUDA(x); CHECK_CONTIGUOUS(x)
-
-static const dim3 BLOCKS(const unsigned int threads, const unsigned int len){
-    const dim3 blocks( (len + threads -1) / threads ); 
-    return blocks; 
-}
-
-static const dim3 BLOCKS(
-    const unsigned int threads, const unsigned int len, 
-    const unsigned int dy,      const unsigned int dz
-){
-    const dim3 blocks( (len + threads -1) / threads, dy, dz); 
-    return blocks; 
-}
-
-torch::TensorOptions _MakeOp(torch::Tensor v1){
-    return torch::TensorOptions().dtype(v1.scalar_type()).device(v1.device()); 
-}
 
 torch::Tensor _Px(torch::Tensor pt, torch::Tensor phi){
     const auto current_device = c10::cuda::current_device();
@@ -35,7 +19,7 @@ torch::Tensor _Px(torch::Tensor pt, torch::Tensor phi){
     pt = pt.view({-1, 1}).contiguous(); 
     phi = phi.view({-1, 1}).contiguous();
     CHECK_INPUT(pt); CHECK_INPUT(phi);  
-    const torch::TensorOptions op = _MakeOp(pt); 
+    const torch::TensorOptions op = MakeOp(&pt); 
 
     torch::Tensor px = torch::zeros_like(pt, op);
     const unsigned int threads = 1024;   
@@ -63,7 +47,7 @@ torch::Tensor _Py(torch::Tensor pt, torch::Tensor phi){
     pt = pt.view({-1, 1}).contiguous(); 
     phi = phi.view({-1, 1}).contiguous(); 
     CHECK_INPUT(pt); CHECK_INPUT(phi);  
-    const torch::TensorOptions op = _MakeOp(pt); 
+    const torch::TensorOptions op = MakeOp(&pt); 
 
     torch::Tensor py = torch::zeros_like(pt, op);
     const unsigned int threads = 1024;   
@@ -91,7 +75,7 @@ torch::Tensor _Pz(torch::Tensor pt, torch::Tensor eta){
     pt = pt.view({-1, 1}).contiguous(); 
     eta = eta.view({-1, 1}).contiguous(); 
     CHECK_INPUT(pt); CHECK_INPUT(eta);  
-    const torch::TensorOptions op = _MakeOp(pt); 
+    const torch::TensorOptions op = MakeOp(&pt); 
 
     torch::Tensor pz = torch::zeros_like(pt, op);
     const unsigned int threads = 1024;   
@@ -119,7 +103,7 @@ torch::Tensor _PxPyPz(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi){
     pt  = pt.view({-1, 1}).contiguous(); 
     eta = eta.view({-1, 1}).contiguous(); 
     phi = phi.view({-1, 1}).contiguous();     
-    const torch::TensorOptions op = _MakeOp(pt); 
+    const torch::TensorOptions op = MakeOp(&pt); 
 
     torch::Tensor out = torch::zeros_like(pt, op);
     out = torch::cat({out, out, out}, -1).contiguous(); 
@@ -148,7 +132,7 @@ torch::Tensor _PxPyPzE(torch::Tensor pmu){
     const auto current_device = c10::cuda::current_device();
     c10::cuda::set_device(pmu.get_device()); 
 
-    const torch::TensorOptions op = _MakeOp(pmu); 
+    const torch::TensorOptions op = MakeOp(&pmu); 
     torch::Tensor out = torch::zeros_like(pmu, op);
     CHECK_INPUT(out); CHECK_INPUT(pmu); 
 

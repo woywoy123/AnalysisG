@@ -14,6 +14,35 @@ __global__ void _DotK(
     dot_ij(i[idx][idy], j[idx][idy]); 
 }
 
+
+
+
+template <typename scalar_t>
+__global__ void _SumK(
+        torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmc, 
+        const unsigned int length, 
+        const unsigned int len_j)
+{
+    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    if (idx >= length){ return; }
+    for (unsigned int i(1); i < len_j; ++i){
+        sum(pmc[idx][0], pmc[idx][i]);  
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 template <typename scalar_t>
 __global__ void _DotK(
         torch::PackedTensorAccessor64<scalar_t, 4, torch::RestrictPtrTraits> out,
@@ -47,19 +76,6 @@ __global__ void _DotK(
     if (idz == 0){ dot_ij(out[idx][idy][idz], v1[idx][idy], v1[idx][idy]); return; }
     if (idz == 1){ dot_ij(out[idx][idy][idz], v2[idx][idy], v2[idx][idy]); return; }
     dot_ij(out[idx][idy][idz], v1[idx][idy], v2[idx][idy]); 
-}
-
-template <typename scalar_t>
-__global__ void _SumK(
-        torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmc, 
-        const unsigned int length, 
-        const unsigned int len_j)
-{
-    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
-    if (idx >= length){ return; }
-    for (unsigned int i(1); i < len_j; ++i){
-        sum(pmc[idx][0], pmc[idx][i]);  
-    }
 }
 
 template <typename scalar_t>

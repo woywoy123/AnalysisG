@@ -45,7 +45,7 @@ class zprime: public particle_template
 {
     public:
         zprime(); 
-        ~zprime() override; 
+        virtual ~zprime(); 
 
         particle_template* clone() override; 
         void build(std::map<std::string, particle_template*>* prt, element_t* el) override; 
@@ -55,7 +55,7 @@ class top: public particle_template
 {
     public:
         top(); 
-        ~top() override; 
+        virtual ~top(); 
 
         bool from_res = false; 
         bool is_hadronic = false; 
@@ -73,7 +73,7 @@ class parton_w2: public particle_template
 {
     public:
         parton_w2(); 
-        ~parton_w2() override; 
+        virtual ~parton_w2(); 
 
         particle_template* clone() override; 
         void build(std::map<std::string, particle_template*>* prt, element_t* el) override; 
@@ -84,7 +84,7 @@ class parton_w1: public particle_template
 {
     public:
         parton_w1(); 
-        ~parton_w1() override; 
+        virtual ~parton_w1(); 
 
         particle_template* clone() override; 
         void build(std::map<std::string, particle_template*>* prt, element_t* el) override; 
@@ -95,7 +95,7 @@ class parton_b: public particle_template
 {
     public:
         parton_b(); 
-        ~parton_b() override; 
+        virtual ~parton_b(); 
 
         particle_template* clone() override; 
         void build(std::map<std::string, particle_template*>* prt, element_t* el) override; 
@@ -105,7 +105,7 @@ class truthjet: public particle_template
 {
     public:
         truthjet(); 
-        ~truthjet() override; 
+        virtual ~truthjet(); 
 
         particle_template* clone() override; 
         void build(std::map<std::string, particle_template*>* prt, element_t* el) override; 
@@ -115,7 +115,7 @@ class jet: public particle_template
 {
     public:
         jet(); 
-        ~jet() override; 
+        virtual ~jet(); 
 
         cproperty<bool, jet> from_res; 
         int top_index = -1; 
@@ -137,7 +137,7 @@ class electron: public particle_template
 {
     public:
         electron(); 
-        ~electron() override; 
+        virtual ~electron(); 
 
         cproperty<bool, electron> from_res; 
         int top_index = -1; 
@@ -154,7 +154,7 @@ class muon: public particle_template
 {
     public:
         muon(); 
-        ~muon() override; 
+        virtual ~muon(); 
 
         int top_index = -1; 
         cproperty<bool, muon> from_res; 

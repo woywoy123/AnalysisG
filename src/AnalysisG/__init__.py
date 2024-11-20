@@ -25,3 +25,5 @@ def auth_pyami():
         print("The commands below will fix the global access issue.")
         print("-> chmod 0600 <directory>/usercert.pem")
         print("-> chmod 0400 <directory>/userkey.pem")
+
+from .generators import Analysis

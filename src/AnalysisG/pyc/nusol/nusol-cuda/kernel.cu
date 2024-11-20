@@ -4,24 +4,6 @@
 #include <cmath>
 
 template <typename scalar_t>
-__global__ void _ShapeKernel(
-        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> out, 
-        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> inpt, 
-        const unsigned int len_i, 
-        const unsigned int len_k, 
-        const unsigned int len_j, 
-        const bool assign)
-{
-    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
-    const unsigned int idy = blockIdx.y; 
-    const unsigned int idz = blockIdx.z; 
-
-    if (idx >= len_i || idy >= len_k || idz >= len_j){ return; }
-    if (assign){ out[idx][idy][idz] = inpt[(idx >= inpt.size(0)) ? 0 : idx][idy][idz]; return; }
-    if (idy == idz){ out[idx][idy][idz] = inpt[0][0][idz]; }
-}
-
-template <typename scalar_t>
 __global__ void _H_Base(
         torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> out, 
         const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> beta2_b, 

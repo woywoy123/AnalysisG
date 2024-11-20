@@ -25,7 +25,7 @@ class top: public particle_template
 {
     public:
         top(); 
-        ~top() override; 
+        virtual ~top(); 
 
         int barcode; 
         int status; 
@@ -39,7 +39,7 @@ class child: public particle_template
 {
     public:
         child(); 
-        ~child() override; 
+        virtual ~child(); 
 
         int barcode; 
         int status; 
@@ -53,7 +53,7 @@ class physics_detector: public particle_template
 {
     public:
         physics_detector(); 
-        ~physics_detector() override; 
+        virtual ~physics_detector(); 
 
         std::vector<int> top_index = {}; 
 
@@ -78,7 +78,7 @@ class physics_truth: public particle_template
 {
     public:
         physics_truth(); 
-        ~physics_truth() override; 
+        virtual ~physics_truth(); 
 
         std::vector<int> top_index = {}; 
 
@@ -103,7 +103,7 @@ class electron: public particle_template
 {
     public: 
         electron();
-        ~electron() override;
+        virtual ~electron();
 
         float d0 = 0; 
         int true_type = 0; 
@@ -120,7 +120,7 @@ class muon: public particle_template
 {
     public: 
         muon();
-        ~muon() override;
+        virtual ~muon();
 
         float d0 = 0; 
         int true_type = 0; 
@@ -136,7 +136,7 @@ class jet: public particle_template
 {
     public: 
         jet();
-        ~jet() override;   
+        virtual ~jet();   
 
         bool btag_65; 
         bool btag_70; 

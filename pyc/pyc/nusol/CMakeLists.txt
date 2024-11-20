@@ -1,0 +1,26 @@
+set(SOURCE_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/nusol/base.cuh
+    ${CMAKE_CURRENT_SOURCE_DIR}/base.cu
+)
+
+add_library(cunusol-base ${SOURCE_FILES})
+target_include_directories(cunusol-base PRIVATE include/nusol)
+target_include_directories(cunusol-base PUBLIC include)
+target_compile_options(cunusol-base PRIVATE $<$<COMPILE_LANGUAGE:CUDA>: --expt-relaxed-constexpr>)
+target_link_libraries(cunusol-base PUBLIC cuatomic cutils)
+set_property(TARGET cunusol-base PROPERTY CUDA_SEPARATE_COMPILATION ON)
+target_compile_options(cunusol-base PRIVATE -fPIC)
+
+
+set(SOURCE_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/nusol/nusol.cuh
+    ${CMAKE_CURRENT_SOURCE_DIR}/nusol.cu
+)
+
+add_library(cunusol ${SOURCE_FILES})
+target_include_directories(cunusol PRIVATE include/nusol)
+target_include_directories(cunusol PUBLIC include)
+target_compile_options(cunusol PRIVATE $<$<COMPILE_LANGUAGE:CUDA>: --expt-relaxed-constexpr>)
+target_link_libraries(cunusol PUBLIC cunusol-base cutils cuphysics cuoperators)
+set_property(TARGET cunusol PROPERTY CUDA_SEPARATE_COMPILATION ON)
+target_compile_options(cunusol PRIVATE -fPIC)

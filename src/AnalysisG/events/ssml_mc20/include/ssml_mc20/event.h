@@ -8,7 +8,7 @@ class ssml_mc20: public event_template
 {
     public:
         ssml_mc20(); 
-        ~ssml_mc20() override; 
+        virtual ~ssml_mc20(); 
 
         unsigned long long eventNumber; 
 

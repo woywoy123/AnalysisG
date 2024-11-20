@@ -18,7 +18,6 @@ target_compile_options(${name} PRIVATE -fPIC)
 install(TARGETS ${name} DESTINATION ${out})
 endfunction()
 
-
 add_subdirectory(pyc)
 add_subdirectory(modules)
 add_subdirectory(generators)

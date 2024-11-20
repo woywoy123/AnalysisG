@@ -38,9 +38,10 @@ void assign_vector(std::vector<g*>* inpt, element_t* el){
 class top: public particle_template
 {
     public:
-       
+        using particle_template::particle_template; 
+
         top(); 
-        ~top(); 
+        virtual ~top(); 
 
         bool from_res = false; 
         int status = -1; 
@@ -55,8 +56,10 @@ class top: public particle_template
 class top_children: public particle_template
 {
     public: 
+        using particle_template::particle_template; 
+
         top_children();
-        ~top_children();   
+        virtual ~top_children();   
 
         int top_index = -1;  
 
@@ -73,8 +76,10 @@ class top_children: public particle_template
 class truthjet: public particle_template
 {
     public: 
+        using particle_template::particle_template; 
+
         truthjet();
-        ~truthjet();   
+        virtual ~truthjet();   
 
         int top_quark_count = -1;
         int w_boson_count = -1; 
@@ -95,8 +100,10 @@ class truthjet: public particle_template
 class truthjetparton: public particle_template
 {
     public: 
+        using particle_template::particle_template; 
+
         truthjetparton();
-        ~truthjetparton();
+        virtual ~truthjetparton();
 
         int truthjet_index;
         std::vector<int> topchild_index = {};
@@ -109,8 +116,10 @@ class truthjetparton: public particle_template
 class jet: public particle_template
 {
     public: 
+        using particle_template::particle_template; 
+
         jet();
-        ~jet();   
+        virtual ~jet();   
 
         std::vector<top*> Tops = {}; 
         std::vector<jetparton*> Parton = {}; 
@@ -147,8 +156,10 @@ class jet: public particle_template
 class jetparton: public particle_template
 {
     public: 
+        using particle_template::particle_template; 
+
         jetparton();
-        ~jetparton();
+        virtual ~jetparton();
 
         int jet_index;
         std::vector<int> topchild_index = {}; 
@@ -161,8 +172,10 @@ class jetparton: public particle_template
 class electron: public particle_template
 {
     public: 
+        using particle_template::particle_template; 
+
         electron();
-        ~electron();
+        virtual ~electron();
         bool from_res = false; 
         int top_index = -1; 
 
@@ -174,8 +187,10 @@ class electron: public particle_template
 class muon: public particle_template
 {
     public: 
+        using particle_template::particle_template; 
+
         muon();
-        ~muon();
+        virtual ~muon();
         bool from_res = false; 
         int top_index = -1; 
 

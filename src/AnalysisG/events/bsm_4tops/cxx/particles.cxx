@@ -1,7 +1,7 @@
 #include "particles.h"
 
 // ============================= Top ========================= //
-top::top(){
+top::top() : particle_template() {
     this -> type = "top"; 
     this -> add_leaf("pt" , "_pt"); 
     this -> add_leaf("eta", "_eta"); 
@@ -35,7 +35,7 @@ void top::build(std::map<std::string, particle_template*>* prt, element_t* el){
 top::~top(){}
 
 // ============================= Children ========================= //
-top_children::top_children(){
+top_children::top_children() : particle_template(){
     this -> type = "children"; 
     this -> add_leaf("pt" , "_pt"); 
     this -> add_leaf("eta", "_eta"); 
@@ -100,7 +100,7 @@ void top_children::build(std::map<std::string, particle_template*>* prt, element
 top_children::~top_children(){}
 
 // ============================= TruthJets ========================= //
-truthjet::truthjet(){
+truthjet::truthjet() : particle_template(){
     this -> type = "truthjets"; 
     this -> add_leaf("pt" , "_pt"); 
     this -> add_leaf("eta", "_eta"); 
@@ -153,7 +153,7 @@ void truthjet::get_from_res(bool* val, truthjet* prt){
 truthjet::~truthjet(){}
 
 // ============================= TruthJetParton ========================= //
-truthjetparton::truthjetparton(){
+truthjetparton::truthjetparton() : particle_template(){
     this -> type = "TJparton"; 
     this -> add_leaf("pt" , "_pt"); 
     this -> add_leaf("eta", "_eta"); 
@@ -206,7 +206,7 @@ truthjetparton::~truthjetparton(){}
 
 // ============================= Jets ========================= //
 
-jet::jet(){
+jet::jet() : particle_template(){
     this -> type = "jet"; 
     this -> add_leaf("pt" , "_pt"); 
     this -> add_leaf("eta", "_eta"); 
@@ -331,7 +331,7 @@ jet::~jet(){}
 
 // ============================= JetPartons ========================= //
 
-jetparton::jetparton(){
+jetparton::jetparton() : particle_template(){
     this -> type = "Jparton"; 
     this -> add_leaf("pt"    , "_pt"); 
     this -> add_leaf("eta"   , "_eta"); 
@@ -386,7 +386,7 @@ jetparton::~jetparton(){}
 
 // ============================= Electron ========================= //
 
-electron::electron(){
+electron::electron() : particle_template(){
     this -> type = "el"; 
     this -> add_leaf("pt"    , "_pt"); 
     this -> add_leaf("eta"   , "_eta"); 
@@ -424,7 +424,7 @@ void electron::build(std::map<std::string, particle_template*>* prt, element_t* 
 electron::~electron(){}
 
 // ============================= Muon ========================= //
-muon::muon(){
+muon::muon() : particle_template(){
     this -> type = "mu"; 
     this -> add_leaf("pt"    , "_pt"); 
     this -> add_leaf("eta"   , "_eta"); 
