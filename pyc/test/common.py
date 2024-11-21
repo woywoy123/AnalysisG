@@ -34,10 +34,28 @@ def AttestEqual(truth, custom, threshold = 10**-10):
     if not t:
         print(truth)
         print(custom)
-        print(custom - truth)
-        print(x)
+        print((custom - truth)[x == False])
     return t
 
+def compare(truth, pred, tolerance = 10**-6):
+    mskt = truth == 0
+    mskp = pred == 0
+    ok = (mskt == mskp).view(-1)
+    if not ok.sum(-1):
+        print(truth)
+        print(pred)
+        print(pred - truth)
+        return False
+
+    x = abs(truth - pred)[mskt == False] / truth[mskt == False]
+    x = (x > tolerance).view(-1)
+    x = x.sum(-1) == 0
+    if not x:
+        print(truth)
+        print(pred)
+        print(pred - truth)
+        return False
+    return x
 
 class Particle:
     def __init__(self, pt, eta, phi, e):

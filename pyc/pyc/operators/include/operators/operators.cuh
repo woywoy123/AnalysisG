@@ -11,12 +11,11 @@ namespace operators_ {
     torch::Tensor Ry(torch::Tensor* angle); 
     torch::Tensor Rz(torch::Tensor* angle); 
     torch::Tensor RT(torch::Tensor* pmu, torch::Tensor* phi, torch::Tensor* theta); 
-
+    torch::Tensor CoFactors(torch::Tensor* matrix);
+    torch::Tensor Determinant(torch::Tensor* matrix);
+    std::tuple<torch::Tensor, torch::Tensor> Inverse(torch::Tensor* matrix);
 //    torch::Tensor Mul(torch::Tensor* v1, torch::Tensor* v2); 
 //    torch::Tensor Rot(torch::Tensor* angle, const unsigned int dim);
-//    torch::Tensor CoFactors(torch::Tensor* matrix);
-//    torch::Tensor Determinant(torch::Tensor* matrix);
-//    std::tuple<torch::Tensor, torch::Tensor> Inverse(torch::Tensor* matrix);
 //    torch::Tensor Cross(torch::Tensor* mat1, torch::Tensor* mat2);
 }
 

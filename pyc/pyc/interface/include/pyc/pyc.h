@@ -1,9 +1,12 @@
 #ifndef PYCU_H
 #define PYCU_H
 
-#include <torch/torch.h>
+#include <tuple>
+#include <torch/all.h> 
 
 namespace pyc {
+    torch::Dict<std::string, torch::Tensor> std_to_dict(std::map<std::string, torch::Tensor>* inpt); 
+    torch::Dict<std::string, torch::Tensor> std_to_dict(std::map<std::string, torch::Tensor> inpt); 
     namespace transform {
         namespace separate {
             torch::Tensor Pt(torch::Tensor px, torch::Tensor py); 
@@ -104,18 +107,19 @@ namespace pyc {
 
         torch::Tensor CoFactors(torch::Tensor matrix);
         torch::Tensor Determinant(torch::Tensor matrix); 
-        torch::Tensor Inverse(torch::Tensor matrix); 
+        std::tuple<torch::Tensor, torch::Tensor> Inverse(torch::Tensor matrix); 
+        
         torch::Tensor Cross(torch::Tensor mat1, torch::Tensor mat2); 
     }
 
     namespace nusol {
-       torch::Tensor BaseMatrix(torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Tensor masses); 
-       std::tuple<torch::Tensor, torch::Tensor> Intersection(torch::Tensor A, torch::Tensor B, const double null); 
-       //std::vector<torch::Tensor> Nu(
-       //        torch::Tensor pmc_b, torch::Tensor pmc_mu, 
-       //        torch::Tensor met_xy, torch::Tensor masses, 
-       //        torch::Tensor sigma, const double null); 
+       torch::Dict<std::string, torch::Tensor> BaseMatrix(torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Tensor masses); 
+       torch::Dict<std::string, torch::Tensor> Nu(
+               torch::Tensor pmc_b, torch::Tensor pmc_mu, 
+               torch::Tensor met_xy, torch::Tensor masses, 
+               torch::Tensor sigma, double null = 10e-10); 
 
+       std::tuple<torch::Tensor, torch::Tensor> Intersection(torch::Tensor A, torch::Tensor B, double null = 10e-10); 
        //std::vector<torch::Tensor> NuNu(
        //        torch::Tensor pmc_b1, torch::Tensor pmc_b2, 
        //        torch::Tensor pmc_l1, torch::Tensor pmc_l2, 
@@ -133,104 +137,7 @@ namespace pyc {
 
 }
 
-//    namespace nusol
-//    {
-//        torch::Tensor BaseMatrix(
-//                torch::Tensor pmc_b, torch::Tensor pmc_mu, 
-//                torch::Tensor masses); 
-//
-//        std::tuple<torch::Tensor, torch::Tensor> Intersection(
-//                torch::Tensor A, torch::Tensor B, const double null); 
-//
-//        std::vector<torch::Tensor> Nu(
-//                torch::Tensor pmc_b, torch::Tensor pmc_mu, 
-//                torch::Tensor met_xy, torch::Tensor masses, 
-//                torch::Tensor sigma, const double null); 
-//
-//        std::vector<torch::Tensor> NuNu(
-//                torch::Tensor pmc_b1, torch::Tensor pmc_b2, 
-//                torch::Tensor pmc_l1, torch::Tensor pmc_l2, 
-//                torch::Tensor met_xy, 
-//                torch::Tensor masses, const double null); 
-//
-//        std::vector<torch::Tensor> combinatorial(
-//                torch::Tensor edge_index, torch::Tensor batch, 
-//                torch::Tensor pmc, torch::Tensor pid, torch::Tensor met_xy, 
-//                double mass_top = 172.62*1000, double mass_W = 80.385*1000, 
-//                double top_up_down = 0.95, double w_up_down = 0.95, 
-//                double null = 1e-10, bool gev = false); 
-//
-//        namespace polar
-//        {
-//            
-//            namespace combined 
-//            {
-//                std::vector<torch::Tensor> Nu(
-//                        torch::Tensor pmu_b, torch::Tensor pmu_mu, 
-//                        torch::Tensor met_phi, torch::Tensor masses, 
-//                        torch::Tensor sigma, const double null); 
-//
-//                std::vector<torch::Tensor> NuNu(
-//                        torch::Tensor pmu_b1 , torch::Tensor pmu_b2, 
-//                        torch::Tensor pmu_mu1, torch::Tensor pmu_mu2, 
-//                        torch::Tensor met_phi, torch::Tensor masses, 
-//                        const double null); 
-//            }
-//
-//            namespace separate
-//            {
-//                std::vector<torch::Tensor> Nu(
-//                        torch::Tensor pt_b, torch::Tensor eta_b, torch::Tensor phi_b, torch::Tensor e_b, 
-//                        torch::Tensor pt_mu, torch::Tensor eta_mu, torch::Tensor phi_mu, torch::Tensor e_mu, 
-//                        torch::Tensor met, torch::Tensor phi, torch::Tensor masses, 
-//                        torch::Tensor sigma, const double null); 
-//
-//                std::vector<torch::Tensor> NuNu(
-//                        torch::Tensor pt_b1, torch::Tensor eta_b1, torch::Tensor phi_b1, torch::Tensor e_b1, 
-//                        torch::Tensor pt_b2, torch::Tensor eta_b2, torch::Tensor phi_b2, torch::Tensor e_b2, 
-//                
-//                        torch::Tensor pt_mu1, torch::Tensor eta_mu1, torch::Tensor phi_mu1, torch::Tensor e_mu1, 
-//                        torch::Tensor pt_mu2, torch::Tensor eta_mu2, torch::Tensor phi_mu2, torch::Tensor e_mu2, 
-//                
-//                        torch::Tensor met, torch::Tensor phi, 
-//                        torch::Tensor masses, const double null); 
-//            }
-//        }
-//
-//        namespace cartesian
-//        {
-//            namespace combined
-//            {
-//                std::vector<torch::Tensor> Nu(
-//                        torch::Tensor pmc_b, torch::Tensor pmc_mu, 
-//                        torch::Tensor met_xy, torch::Tensor masses, 
-//                        torch::Tensor sigma, const double null); 
-//
-//                std::vector<torch::Tensor> NuNu(
-//                        torch::Tensor pmc_b1, torch::Tensor pmc_b2, 
-//                        torch::Tensor pmc_mu1, torch::Tensor pmc_mu2,
-//                        torch::Tensor met_xy, torch::Tensor masses, const double null); 
-//            }
-//            namespace separate
-//            {
-//                std::vector<torch::Tensor> Nu(
-//                        torch::Tensor px_b , torch::Tensor py_b , torch::Tensor pz_b , torch::Tensor e_b, 
-//                        torch::Tensor px_mu, torch::Tensor py_mu, torch::Tensor pz_mu, torch::Tensor e_mu, 
-//                        torch::Tensor metx, torch::Tensor mety, torch::Tensor masses, 
-//                        torch::Tensor sigma, const double null); 
-//
-//                std::vector<torch::Tensor> NuNu(
-//                        torch::Tensor px_b1, torch::Tensor py_b1, torch::Tensor pz_b1, torch::Tensor e_b1, 
-//                        torch::Tensor px_b2, torch::Tensor py_b2, torch::Tensor pz_b2, torch::Tensor e_b2, 
-//                
-//                        torch::Tensor px_mu1, torch::Tensor py_mu1, torch::Tensor pz_mu1, torch::Tensor e_mu1, 
-//                        torch::Tensor px_mu2, torch::Tensor py_mu2, torch::Tensor pz_mu2, torch::Tensor e_mu2, 
-//                
-//                        torch::Tensor metx, torch::Tensor mety, torch::Tensor masses, const double null); 
-//            }
-//        }
-//    }
-//
+
 //    namespace graph {
 //        std::vector<std::vector<torch::Tensor>> dress(std::map<std::string, std::vector<torch::Tensor>> inpt); 
 //        std::vector<std::vector<torch::Tensor>> edge_aggregation(torch::Tensor edge_index, torch::Tensor prediction, torch::Tensor node_feature); 

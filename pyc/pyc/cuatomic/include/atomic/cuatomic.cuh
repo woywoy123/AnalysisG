@@ -84,6 +84,15 @@ __device__ scalar_t _rz(scalar_t* _a, const unsigned int _idy, const unsigned in
     return val + (!ii)*ly*lz*(1 - 2*(_idz > _idy))*sin(*_a); 
 }
 
+template <typename scalar_t, size_t size_x1, size_t size_y1, size_t size_x2, size_t size_y2>
+__device__ scalar_t _dot(
+        scalar_t (&v1)[size_x1][size_y1], scalar_t (&v2)[size_x2][size_y2], 
+        const unsigned int row, unsigned int col, unsigned int dx
+){
+    scalar_t out = 0;  
+    for (size_t x(0); x < dx; ++x){out += v1[row][x] * v2[x][col];}
+    return out; 
+}
 
 
 #endif

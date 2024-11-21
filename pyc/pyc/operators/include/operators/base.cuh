@@ -127,8 +127,8 @@ __global__ void _rt(
     const unsigned int _idy  = _blk/3;
     const unsigned int _idz  = _blk%3; 
 
-    scalar_t phi_   = -phi[_idx]; 
-    scalar_t theta_ = 0.5*M_PI - theta[_idx][0]; 
+    double phi_   = -phi[_idx]; 
+    double theta_ = 0.5*M_PI - theta[_idx][0]; 
     pmx[_idz] = pmc[_idx][_idz]; 
 
     double rz_ = _rz(&phi_  , _idy, _idz); 
@@ -142,23 +142,111 @@ __global__ void _rt(
     __syncthreads(); 
 
     for (size_t x(0); x < 3; ++x){
-        for (size_t y(0); y < 3; ++y){pmr[_blk][x] += pmx[y] * rz[x][y];}
+        double sm = 0; 
+        for (size_t y(0); y < 3; ++y){sm += pmx[y] * rz[x][y];}
+        pmr[_blk][x] = sm; 
     }
     for (size_t x(0); x < 3; ++x){
-        for (size_t y(0); y < 3; ++y){pmd[_blk][x] += pmr[_blk][y] * ry[x][y];}
+        double sm = 0; 
+        for (size_t y(0); y < 3; ++y){sm += pmr[_blk][y] * ry[x][y];}
+        pmd[_blk][x] = sm; 
     }
 
     double smz = -atan2(pmd[_blk][2], pmd[_blk][1]); 
     rxt[_idz][_idy] = _rx(&smz, _idy, _idz); 
-    for (size_t y(0); y < 3; ++y){pmr[_blk][y] = 0;}
-    for (size_t y(0); y < 3; ++y){pmd[_blk][y] = 0;}
     __syncthreads(); 
 
-    for (size_t x(0); x < 3; ++x){pmr[_idz][_idy] += ryt[_idz][x] * rxt[x][_idy];}
+    double sx = 0; 
+    for (size_t x(0); x < 3; ++x){sx += ryt[_idz][x] * rxt[x][_idy];}
+    pmr[_idz][_idy] = sx; 
     __syncthreads(); 
 
-    for (size_t x(0); x < 3; ++x){pmd[_idz][_idy] += rzt[_idz][x] * pmr[x][_idy];}
-    out[_idx][_idz][_idy] = pmd[_idz][_idy]; 
+    double sy = 0; 
+    for (size_t x(0); x < 3; ++x){sy += rzt[_idz][x] * pmr[x][_idy];}
+    out[_idx][_idz][_idy] = sy; 
 }
+
+
+__device__ __constant__ const unsigned int _x[12] = {1, 1, 2, 2, 0, 0, 2, 2, 0, 0, 1, 1}; 
+__device__ __constant__ const unsigned int _y[12] = {1, 2, 1, 2, 0, 2, 0, 2, 0, 1, 0, 1}; 
+
+template <typename scalar_t>
+__global__ void _cofactor(
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> matrix,
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> out
+){
+    __shared__ double mat[3][3]; 
+    const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
+
+    const unsigned int idy = threadIdx.y*4;
+    const unsigned int idz = threadIdx.z*4;  
+
+    mat[threadIdx.y][threadIdx.z] = matrix[_idx][threadIdx.y][threadIdx.z]; 
+    __syncthreads();
+
+    double ad = mat[ _x[idy  ] ][ _y[idz  ] ] * mat[ _x[idy+3] ][ _y[idz+3] ]; 
+    double bc = mat[ _x[idy+1] ][ _y[idz+1] ] * mat[ _x[idy+2] ][ _y[idz+2] ]; 
+    double cf = pow(-1, int(threadIdx.y) + int(threadIdx.z)); 
+    out[_idx][threadIdx.y][threadIdx.z] = (ad - bc)*cf;
+}
+
+template <typename scalar_t>
+__global__ void _determinant(
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> matrix,
+        torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> out
+){
+    __shared__ double mat[3][3]; 
+    __shared__ double det[3][3];
+    const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    const unsigned int idy = threadIdx.y*4;
+    const unsigned int idz = threadIdx.z*4;  
+
+    mat[threadIdx.y][threadIdx.z] = matrix[_idx][threadIdx.y][threadIdx.z]; 
+    __syncthreads();
+
+    double ad = mat[ _x[idy  ] ][ _y[idz  ] ] * mat[ _x[idy+3] ][ _y[idz+3] ]; 
+    double bc = mat[ _x[idy+1] ][ _y[idz+1] ] * mat[ _x[idy+2] ][ _y[idz+2] ]; 
+    double cf = pow(-1, int(threadIdx.y) + int(threadIdx.z)); 
+    det[threadIdx.y][threadIdx.z] = (ad - bc)*mat[threadIdx.y][threadIdx.z]*cf;
+    if (threadIdx.y || threadIdx.z){return;}
+    __syncthreads(); 
+    out[_idx][0] = det[0][0] + det[0][1] + det[0][2];  
+}
+
+template <typename scalar_t>
+__global__ void _inverse(
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> matrix,
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> inv,
+        torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> det
+){
+    __shared__ double _mat[3][3];
+    __shared__ double _cof[3][3];  
+    __shared__ double _det[3][3];
+
+    const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    const unsigned int idy = threadIdx.y*4;
+    const unsigned int idz = threadIdx.z*4;  
+
+    _mat[threadIdx.y][threadIdx.z] = matrix[_idx][threadIdx.y][threadIdx.z]; 
+    double cf = pow(-1, int(threadIdx.y) + int(threadIdx.z)); 
+    __syncthreads();
+
+    double ad = _mat[ _x[idy  ] ][ _y[idz  ] ] * _mat[ _x[idy+3] ][ _y[idz+3] ]; 
+    double bc = _mat[ _x[idy+1] ][ _y[idz+1] ] * _mat[ _x[idy+2] ][ _y[idz+2] ]; 
+    double mx = (ad - bc)*cf; 
+
+    _cof[threadIdx.z][threadIdx.y] = mx;  // transpose cofactor matrix to get adjoint 
+    _det[threadIdx.y][threadIdx.z] = mx * _mat[threadIdx.y][threadIdx.z]; 
+    __syncthreads(); 
+
+    double _dt = _det[0][0] + _det[0][1] + _det[0][2];
+ 
+    if (!threadIdx.y && !threadIdx.z){det[_idx][0] = _dt;}
+    inv[_idx][threadIdx.y][threadIdx.z] = _cof[threadIdx.y][threadIdx.z]*_div(&_dt); 
+}
+
+
+
+
 
 #endif

@@ -1,9 +1,10 @@
+
 #include <pyc/pyc.h>
+#include <nusol/nusol.cuh>
 #include <cutils/utils.cuh>
 #include <physics/physics.cuh>
 #include <transform/transform.cuh>
 #include <operators/operators.cuh>
-#include <nusol/nusol.cuh>
 
 torch::Tensor pyc::transform::separate::Pt(torch::Tensor px, torch::Tensor py){
     return transform_::Pt(&px, &py); 
@@ -331,26 +332,48 @@ torch::Tensor pyc::operators::RT(torch::Tensor pmc_b, torch::Tensor pmc_mu){
 }
 
 torch::Tensor pyc::operators::CoFactors(torch::Tensor matrix){
-    return matrix; 
+    return operators_::CoFactors(&matrix); 
 }
 
 torch::Tensor pyc::operators::Determinant(torch::Tensor matrix){
-    return matrix; 
+    return operators_::Determinant(&matrix); 
 }
 
-torch::Tensor pyc::operators::Inverse(torch::Tensor matrix){
-    return matrix; 
+std::tuple<torch::Tensor, torch::Tensor> pyc::operators::Inverse(torch::Tensor matrix){
+    return operators_::Inverse(&matrix); 
 }
 
 torch::Tensor pyc::operators::Cross(torch::Tensor mat1, torch::Tensor mat2){
     return mat1; 
 }
 
-torch::Tensor pyc::nusol::BaseMatrix(torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Tensor masses){
-    return nusol_::BaseMatrix(&pmc_b, &pmc_mu, &masses); 
+
+torch::Dict<std::string, torch::Tensor> pyc::std_to_dict(std::map<std::string, torch::Tensor>* inpt){
+    torch::Dict<std::string, torch::Tensor> out;  
+    std::map<std::string, torch::Tensor>::iterator itr = inpt -> begin(); 
+    for (; itr != inpt -> end(); ++itr){out.insert(itr -> first, itr -> second);}
+    return out; 
 }
 
-std::tuple<torch::Tensor, torch::Tensor> Intersection(torch::Tensor A, torch::Tensor B, const double null){
+torch::Dict<std::string, torch::Tensor> pyc::std_to_dict(std::map<std::string, torch::Tensor> inpt){
+    return pyc::std_to_dict(&inpt); 
+}
+
+torch::Dict<std::string, torch::Tensor> pyc::nusol::BaseMatrix(torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Tensor masses){
+    return pyc::std_to_dict(nusol_::BaseMatrix(&pmc_b, &pmc_mu, &masses)); 
+}
+
+torch::Dict<std::string, torch::Tensor> pyc::nusol::Nu(
+        torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Tensor met_xy, 
+        torch::Tensor masses, torch::Tensor sigma, double null
+){
+
+    std::map<std::string, torch::Tensor> out = nusol_::Nu(&pmc_b, &pmc_mu, &met_xy, &masses, &sigma, null);
+    return pyc::std_to_dict(&out); 
+}
+
+
+std::tuple<torch::Tensor, torch::Tensor> Intersection(torch::Tensor A, torch::Tensor B, double null){
     return {}; 
 }
 
@@ -440,5 +463,15 @@ TORCH_LIBRARY(cupyc, m){
     m.def("operators_rz"      , &pyc::operators::Rz); 
     m.def("operators_rt"      , &pyc::operators::RT); 
 
+    m.def("operators_cofactors"  , &pyc::operators::CoFactors); 
+    m.def("operators_determinant", &pyc::operators::Determinant); 
+    m.def("operators_inverse"    , &pyc::operators::Inverse); 
+
     m.def("nusol_base_basematrix", &pyc::nusol::BaseMatrix); 
+    m.def("nusol_nu"             , &pyc::nusol::Nu); 
+
+
+
+
+
 }

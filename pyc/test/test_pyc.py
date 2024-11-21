@@ -338,69 +338,114 @@ def test_operators():
         tru = torch.cat([c, -s, z, s, c, z, z, z, o], dim = -1).view(-1, 3, 3)
         assert AttestEqual(tru, rz_)
 
+    def _test_cofactor(dx = 10000):
+        x = torch.tensor([[[(i+1) + (k+1) for i in range(3)] for k in range(3)] for i in range(dx)], device = device, dtype = torch.float64)
+        x_ = torch.ops.cupyc.operators_cofactors(x)
+        x = torch.tensor([[-1, 2, -1, 2, -4, 2, -1, 2, -1] for i in range(dx)], device = device, dtype = torch.float64).view(-1, 3, 3)
+        assert AttestEqual(x, x_)
+
+    def _test_det(dx):
+        x = torch.tensor([[[random.random()*10 for i in range(3)] for k in range(3)] for i in range(dx)], device = device, dtype = torch.float64)
+
+        t1 = time.time()
+        x_t = torch.det(x)
+        ttt = time.time() - t1
+
+        t1 = time.time()
+        x_ = torch.ops.cupyc.operators_determinant(x)
+        cut = time.time() - t1
+        assert AttestEqual(x_t.view(-1, 1), x_)
+
+        print(dx, "REFERNCE/CUDA: ", ttt/cut)
+        return ttt/cut
+
+    def _test_inverse(dx = 1):
+        x = torch.tensor([[[random.random()*10 for i in range(3)] for k in range(3)] for i in range(dx)], device = device, dtype = torch.float64)
+
+        t1 = time.time()
+        inv, det = torch.ops.cupyc.operators_inverse(x)
+        cut = time.time() - t1
+
+        t1 = time.time()
+        x_t = torch.inverse(x)
+        ttt = time.time() - t1
+
+        det = det.view(-1) > 0
+        assert compare(x_t[det].reshape(-1), inv[det].reshape(-1), 10**-3)
+
+        print(dx, "REFERNCE/CUDA: ", ttt/cut)
+        return ttt/cut
+
     #testx = [_testdot(i, j) for i in range(48, 4096, 48) for j in range(48, 1024, 48)]
     #testx = [_testcostheta(i, j) for i in range(1, 1024, 1) for j in range(48, 1024, 24)]
     #testx = [_testsintheta(i, j) for i in range(3, 1024, 1) for j in range(48, 1024, 24)]
-    testx = [_test_rotation(i) for i in range(100, 100000, 100)]
+    #testx = [_test_rotation(i) for i in range(100, 100000, 100)]
+    #testx = _test_cofactor(1000)
+    #testx =  [_test_det(i) for i in range(1000, 1000000, 1000)]
+    testx =  [_test_inverse(i) for i in range(1000, 1000000, 1000)]
 
 
-def test_nusol():
+def test_nusol_base_matrix():
     mW = 80.385*1000
     mT = 172.0*1000
     mN = 0
-
-    dev = "cuda" if torch.cuda.is_available() else "cpu"
-    masses = torch.tensor([[mT, mW, mN]], dtype = torch.float64, device = dev)
-    S2 = torch.tensor([[100, 9], [50, 100]], dtype = torch.float64, device = dev)
-
-    # Numerical differences in C++ and Python appear below this number
-    precision = 10e-10
-    tolerance = 1e-3
+    masses = torch.tensor([[mT, mW, mN]], dtype = torch.float64, device = device)
 
     x = loadSingle()
     ita = iter(x)
-    inpt = {"bq" : [], "lep" : []}
+    inpt = {"bq" : [], "lep" : [], "pred" : []}
     for i in range(len(x)):
         x_ = next(ita)
         lep, bquark = x_[1], x_[2]
         nu = NuSol(bquark.vec, lep.vec)
         lep_    = pyc().transform_combined_pxpypze(lep.ten)
         bquark_ = pyc().transform_combined_pxpypze(bquark.ten)
-        inpt["bq"] += [bquark_]
-        inpt["lep"] += [lep_]
-        truth = torch.tensor(nu.BaseMatrix).to(device = device)
+        inpt["bq"] += [bquark_.clone()]
+        inpt["lep"] += [lep_.clone()]
 
-        stress = 10000000
-        bq_ = torch.cat([bquark_]*stress, 0)
-        lq_ = torch.cat([lep_]*stress, 0)
-        mq_ = torch.cat([masses]*stress, 0)
-        print("----")
-        for f in range(stress): 
-            torch.ops.cupyc.operators_rt(bq_, lq_)
-#            pred = torch.ops.cupyc.nusol_base_basematrix(bq_, lq_, mq_)
-            print(f)
-        print("yyy")
+        truth = torch.tensor(nu.H).to(device = device).view(-1, 3, 3)
+        pred = torch.ops.cupyc.nusol_base_basematrix(bquark_, lep_, masses)["H"]
+        inpt["pred"].append(pred)
+        assert compare(truth, pred, 10**-1)
+        print(i)
 
-        print(pred)
-        print(truth)
-        exit()
-        assert compare(truth, pred)
-
-    multi = 1000
-    inpt["bq"] = torch.cat(inpt["bq"], dim = 0)
+    inpt["bq"]  = torch.cat(inpt["bq"], dim = 0)
     inpt["lep"] = torch.cat(inpt["lep"], dim = 0)
-    inpt["bq"]  = torch.cat([inpt["bq"] for _ in range(multi)], dim = 0)
-    inpt["lep"] = torch.cat([inpt["lep"] for _ in range(multi)], dim = 0)
-    nEvents = inpt["lep"].size(0)
-    _cu = pyc.NuSol.BaseMatrix(inpt["bq"], inpt["lep"], masses)
+    masses = torch.cat([masses]*len(x), 0)
+    preds = torch.cat(inpt["pred"], dim = 0)
+    pred = torch.ops.cupyc.nusol_base_basematrix(inpt["bq"], inpt["lep"], masses)["H"]
+    assert compare(preds, pred, 10**-6)
 
 
+def test_nusol_nu_cuda():
+    x = loadSingle()
+    ita = iter(x)
+    S2 = torch.tensor([[[100, 9], [50, 100]]], dtype = torch.float64, device = device)
+
+    mW = 80.385*1000
+    mT = 172.0*1000
+    mN = 0
+    masses = torch.tensor([[mT, mW, mN]], dtype = torch.float64, device = device)
+
+    for i in range(len(x)):
+        x_ = next(ita)
+        ev, lep, bquark = x_[0], x_[1], x_[2]
+        ev_     = ev.ten
+
+        lep_    = torch.ops.cupyc.transform_combined_pxpypze(lep.ten)
+        bquark_ = torch.ops.cupyc.transform_combined_pxpypze(bquark.ten)
+        nu      = NuSol(bquark.vec, lep.vec, ev.vec)
+        truth = torch.tensor(nu.M, device = device).view(-1, 3, 3)
+        pred = torch.ops.cupyc.nusol_nu(bquark_, lep_, ev_, masses, S2, 10**-10)
+        assert compare(truth, pred["M"], 10**-2)
+        print(i)
 
 if __name__ == "__main__":
     #test_transform()
     #test_physics()
     #test_operators()
-    test_nusol()
+    #test_nusol_base_matrix()
+    test_nusol_nu_cuda()
 
 
 
@@ -413,96 +458,3 @@ if __name__ == "__main__":
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#def _makeMatrix(l, m, n, tmp):
-#    tx = [[[random.random() for i in range(tmp)] for k in range(n)] for t in range(l)]
-#    x = torch.tensor(tx, device = device, dtype = torch.float64)
-#
-#    tx = [[[random.random() for i in range(m)] for k in range(tmp)] for t in range(l)]
-#    y = torch.tensor(tx, device = device, dtype = torch.float64)
-#    return x, y
-#
-
-#def _compareMulti(l, m, n, tmp):
-#    x, y = _makeMatrix(l, m, n, tmp)
-#    x_ = x.matmul(y)
-#    x_cu = pyc().operators_mul(x, y)
-#    _AttestEqual(x_, x_cu)
-#
-#def test_matrix_multi():
-#    # Equally sized 
-#    _compareMulti(10, 10, 10, 10)
-#
-#    # M > N
-#    _compareMulti(10, 17, 10, 10)
-#
-#    # M < N
-#    _compareMulti(10, 10, 17, 10)
-#
-#    # intermediate n, M < N
-#    _compareMulti(10, 15, 18, 5)
-#
-#    # intermediate n, M > N
-#    _compareMulti(10, 18, 15, 5)
-#
-#    # intermediate n, M = N
-#    _compareMulti(10, 15, 15, 5)
-#
-#def test_costheta():
-#
-#
-#def test_sintheta():
-#    x = torch.tensor([[random.random() for i in range(1000)] for _ in range(100)], device = device, dtype = torch.float64)
-#    y = torch.tensor([[random.random() for i in range(1000)] for _ in range(100)], device = device, dtype = torch.float64)
-#
-#    cu = pyc.Operators.SinTheta(x, y)
-#
-#    xy2 = torch.pow((x*y).sum(-1, keepdim = True), 2)
-#    x2 = (x*x).sum(-1, keepdim = True)
-#    y2 = (y*y).sum(-1, keepdim = True)
-#    x2y2 = x2*y2
-#
-#    t = torch.sqrt(1 - xy2/x2y2)
-#    _AttestEqual(t, cu)
-#
-#def test_cofactor():
-#    x = torch.tensor([[[(i+1) + (k+1) for i in range(3)] for k in range(3)] for i in range(2)], device = device, dtype = torch.float64)
-#    x_ = pyc.Operators.CoFactors(x)
-#    x = torch.tensor([[-1, 2, -1, 2, -4, 2, -1, 2, -1] for i in range(2)], device = device, dtype = torch.float64).view(-1, 3, 3)
-#    _AttestEqual(x, x_)
-#
-#def test_det():
-#    x = torch.tensor([[[random.random()*10 for i in range(3)] for k in range(3)] for i in range(100)], device = device, dtype = torch.float64)
-#    x_t = torch.det(x)
-#    x_ = pyc.Operators.Determinant(x)
-#    _AttestEqual(x_t.view(-1, 1), x_)
-#
-#
-#
-#
-#
-#
-#
-#
-#    #test_matrix_multi()
-#
-#
-#

@@ -128,6 +128,48 @@ torch::Tensor operators_::RT(torch::Tensor* pmc, torch::Tensor* phi, torch::Tens
     return out; 
 }
 
+torch::Tensor operators_::CoFactors(torch::Tensor* matrix){
+    const unsigned int dx = matrix -> size({0}); 
+    const dim3 thd = dim3(1, 3, 3); 
+    const dim3 blk = blk_(dx, 1, 3, 3, 3, 3); 
+    torch::Tensor out = torch::zeros({dx, 3, 3}, MakeOp(matrix));
+
+    AT_DISPATCH_ALL_TYPES(matrix -> scalar_type(), "CoFactors", [&]{
+        _cofactor<scalar_t><<<blk, thd>>>(
+            matrix -> packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+            out.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>()); 
+    }); 
+    return out;
+}
+
+torch::Tensor operators_::Determinant(torch::Tensor* matrix){
+    const unsigned int dx = matrix -> size({0}); 
+    const dim3 thd = dim3(1, 3, 3); 
+    const dim3 blk = blk_(dx, 1, 3, 3, 3, 3); 
+    torch::Tensor out = torch::zeros({dx, 1}, MakeOp(matrix));
+    AT_DISPATCH_ALL_TYPES(matrix -> scalar_type(), "Determinant", [&]{
+        _determinant<scalar_t><<<blk, thd>>>(
+            matrix -> packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+            out.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>()); 
+    }); 
+    return out;
+}
+
+
+std::tuple<torch::Tensor, torch::Tensor> operators_::Inverse(torch::Tensor* matrix){
+    const unsigned int dx = matrix -> size({0}); 
+    const dim3 thd = dim3(1, 3, 3); 
+    const dim3 blk = blk_(dx, 1, 3, 3, 3, 3); 
+    torch::Tensor det = torch::zeros({dx, 1}, MakeOp(matrix));
+    torch::Tensor inv = torch::zeros({dx, 3, 3}, MakeOp(matrix)); 
+    AT_DISPATCH_ALL_TYPES(matrix -> scalar_type(), "Inverse", [&]{
+        _inverse<scalar_t><<<blk, thd>>>(
+            matrix -> packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+            inv.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+            det.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>()); 
+    }); 
+    return {inv, det};
+}
 
 
 

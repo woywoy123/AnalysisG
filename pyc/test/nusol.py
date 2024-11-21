@@ -162,7 +162,7 @@ class NuSol(object):
 
     @property
     def Z2(self):
-        p1 = (self.x1**2)* self.Om2 
+        p1 = (self.x1**2)* self.Om2
         p2 = - (self.Sy - self.w * self.Sx)**2
         p3 = - (self.mW2 - self.x0**2 - self.eps2)
         return  p1 + p2 + p3
@@ -170,7 +170,7 @@ class NuSol(object):
     @property
     def Z(self): return math.sqrt(max(0, self.Z2))
 
-    @property 
+    @property
     def BaseMatrix(self):
         return np.array([
             [self.Z/math.sqrt(self.Om2)           , 0   , self.x1 - self.mu.mag],
@@ -186,8 +186,7 @@ class NuSol(object):
         return R_z.T.dot(R_y.T.dot(R_x.T))
 
     @property
-    def H(self):
-        return self.R_T.dot(self.BaseMatrix)
+    def H(self): return self.R_T.dot(self.BaseMatrix)
 
     @property
     def X(self):
@@ -200,8 +199,7 @@ class NuSol(object):
     def M(self): return next(XD + XD.T for XD in (self.X.dot(Derivative()),))
 
     @property
-    def H_perp(self):
-        return np.vstack([self.H[:2], [0, 0, 1]])
+    def H_perp(self): return np.vstack([self.H[:2], [0, 0, 1]])
 
     @property
     def N(self):
@@ -243,8 +241,7 @@ class DoubleNu(NuSol):
         v, diag = intersections_ellipses(N, n_)
         v_ = [self.S.dot(sol) for sol in v]
         self.solutionSets = [sol1, sol2]
-        for k, v in {"perp": v, "perp_": v_, "n_": n_}.items():
-            setattr(self, k, v)
+        for k, v in {"perp": v, "perp_": v_, "n_": n_}.items(): setattr(self, k, v)
         return; 
 
         self.lsq = False
