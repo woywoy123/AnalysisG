@@ -1,6 +1,5 @@
 #include <nusol/nusol.cuh>
 #include <nusol/base.cuh>
-
 #include <cutils/utils.cuh>
 #include <physics/physics.cuh>
 #include <operators/operators.cuh>
@@ -63,14 +62,51 @@ std::map<std::string, torch::Tensor> nusol_::BaseMatrix(torch::Tensor* pmc_b, to
 }
 
 
-std::map<std::string, torch::Tensor> nusol_::Intersection(torch::Tensor* A, torch::Tensor* B){
+std::map<std::string, torch::Tensor> nusol_::Intersection(torch::Tensor* A, torch::Tensor* B, double nulls){
+    const unsigned int dx = A -> size({0}); 
+    const dim3 thd  = dim3(1, 3, 3);
+    const dim3 thdX = dim3(1, 9, 9);
+
+    const dim3 blk  = blk_(dx, 1, 3, 3, 3, 3); 
+    const dim3 blkX = blk_(dx, 1, 9, 9, 9, 9); 
+
+    torch::Tensor A_ = A -> clone(); 
+    torch::Tensor B_ = B -> clone(); 
+    torch::Tensor inv_A_dot_B = torch::zeros_like(*A); 
+    torch::Tensor lines = torch::zeros({dx, 3, 3, 3}, MakeOp(A)); 
+
     torch::Tensor a_ = operators_::Determinant(A); 
     torch::Tensor b_ = operators_::Determinant(B);
 
-    return {}; 
+    AT_DISPATCH_ALL_TYPES(A -> scalar_type(), "swp", [&]{
+        _swapAB<scalar_t><<<blk, thd>>>(
+          inv_A_dot_B.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                   A_.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                   B_.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                   a_.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+                   b_.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>()); 
+    });
+
+    //std::tuple<torch::Tensor, torch::Tensor> eig = operators_::Eigenvalue(&inv_A_dot_B); 
+    torch::Tensor eig = torch::linalg::eigvals(inv_A_dot_B); 
+    torch::Tensor real = torch::real(eig).to(A -> scalar_type()); //std::get<0>(eig); 
+    torch::Tensor imag = torch::imag(eig).to(A -> scalar_type()); //std::get<1>(eig); 
+    
+    AT_DISPATCH_ALL_TYPES(A -> scalar_type(), "B-e*A", [&]{
+        _factor_degen<scalar_t><<<blkX, thdX>>>(
+                 real.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+                 imag.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+                   A_.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                   B_.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                lines.packed_accessor64<scalar_t, 4, torch::RestrictPtrTraits>(),
+                nulls); 
+    });
+
+    std::map<std::string, torch::Tensor> out;
+    out["lines"] = lines; 
+    out["InvAB"] = inv_A_dot_B; 
+    return out; 
 }
-
-
 
 std::map<std::string, torch::Tensor> nusol_::Nu(
         torch::Tensor* pmc_b , torch::Tensor* pmc_mu, torch::Tensor* met_xy, 
@@ -93,8 +129,7 @@ std::map<std::string, torch::Tensor> nusol_::Nu(
 
     }); 
 
-    std::map<std::string, torch::Tensor> out;
-    out = nusol_::Intersection(&M, &X); 
+    std::map<std::string, torch::Tensor> out = nusol_::Intersection(&M, &X, null); 
     out["X"] = X; 
     out["M"] = M; 
     return out; 

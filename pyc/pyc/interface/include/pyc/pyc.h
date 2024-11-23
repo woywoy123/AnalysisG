@@ -108,7 +108,7 @@ namespace pyc {
         torch::Tensor CoFactors(torch::Tensor matrix);
         torch::Tensor Determinant(torch::Tensor matrix); 
         std::tuple<torch::Tensor, torch::Tensor> Inverse(torch::Tensor matrix); 
-        
+        std::tuple<torch::Tensor, torch::Tensor> Eigenvalue(torch::Tensor matrix); 
         torch::Tensor Cross(torch::Tensor mat1, torch::Tensor mat2); 
     }
 

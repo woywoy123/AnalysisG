@@ -11,7 +11,7 @@ namespace nusol_ {
             torch::Tensor* pmc_b , torch::Tensor* pmc_mu, torch::Tensor* met_xy, 
             torch::Tensor* masses, torch::Tensor* sigma , double null); 
 
-    std::map<std::string, torch::Tensor> Intersection(torch::Tensor* A, torch::Tensor* B); 
+    std::map<std::string, torch::Tensor> Intersection(torch::Tensor* A, torch::Tensor* B, double nulls); 
 
 
 }

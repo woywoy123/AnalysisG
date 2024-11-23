@@ -21,6 +21,26 @@ torch::Tensor operators_::Dot(torch::Tensor* v1, torch::Tensor* v2){
     return out;
 }
 
+torch::Tensor operators_::Cross(torch::Tensor* v1, torch::Tensor* v2){
+    const unsigned int dx = v1 -> size({0}); 
+    const unsigned int dy = v1 -> size({1}); 
+    const unsigned int dz = v1 -> size({2}); 
+
+    const dim3 thd = dim3(1, dy, dz); 
+    const dim3 blk = blk_(dx, 1, dy, dy, dz, dz); 
+    torch::Tensor out = torch::zeros({dx, dy, dz, dz}, MakeOp(v1)); 
+
+    unsigned int sx = sizeof(double)*dy*dy*dz*dz; 
+    AT_DISPATCH_FLOATING_TYPES(v1 -> scalar_type(), "cross", [&]{
+        _cross<scalar_t><<<blk, thd, sx>>>(
+                v1 -> packed_accessor64<scalar_t, 4, torch::RestrictPtrTraits>(), 
+                v2 -> packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                out.packed_accessor64<scalar_t  , 4, torch::RestrictPtrTraits>(),
+                dy, dz); 
+    }); 
+    return out;
+}
+
 torch::Tensor operators_::CosTheta(torch::Tensor* v1, torch::Tensor* v2, unsigned int lm){
     const unsigned int dy = (lm) ? lm : v1 -> size({1}); 
     const unsigned int dx = v1 -> size({0});
@@ -170,6 +190,22 @@ std::tuple<torch::Tensor, torch::Tensor> operators_::Inverse(torch::Tensor* matr
     }); 
     return {inv, det};
 }
+
+std::tuple<torch::Tensor, torch::Tensor> operators_::Eigenvalue(torch::Tensor* matrix){
+    const unsigned int dx = matrix -> size({0}); 
+    const dim3 thd = dim3(1, 3, 3); 
+    const dim3 blk = blk_(dx, 1, 3, 3, 3, 3); 
+    torch::Tensor eig = torch::zeros({dx, 3}, MakeOp(matrix)); 
+    torch::Tensor img = torch::zeros({dx, 3}, MakeOp(matrix)); 
+    AT_DISPATCH_ALL_TYPES(matrix -> scalar_type(), "Eigenvalue", [&]{
+        _eigenvalue<scalar_t><<<blk, thd>>>(
+            matrix -> packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+            eig.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+            img.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>()); 
+    }); 
+    return {eig, img};
+}
+
 
 
 

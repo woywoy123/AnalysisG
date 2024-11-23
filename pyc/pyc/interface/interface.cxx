@@ -1,4 +1,3 @@
-
 #include <pyc/pyc.h>
 #include <nusol/nusol.cuh>
 #include <cutils/utils.cuh>
@@ -344,7 +343,11 @@ std::tuple<torch::Tensor, torch::Tensor> pyc::operators::Inverse(torch::Tensor m
 }
 
 torch::Tensor pyc::operators::Cross(torch::Tensor mat1, torch::Tensor mat2){
-    return mat1; 
+    return operators_::Cross(&mat1, &mat2); 
+}
+
+std::tuple<torch::Tensor, torch::Tensor> pyc::operators::Eigenvalue(torch::Tensor matrix){
+    return operators_::Eigenvalue(&matrix); 
 }
 
 
@@ -466,6 +469,7 @@ TORCH_LIBRARY(cupyc, m){
     m.def("operators_cofactors"  , &pyc::operators::CoFactors); 
     m.def("operators_determinant", &pyc::operators::Determinant); 
     m.def("operators_inverse"    , &pyc::operators::Inverse); 
+    m.def("operators_eigenvalue" , &pyc::operators::Eigenvalue); 
 
     m.def("nusol_base_basematrix", &pyc::nusol::BaseMatrix); 
     m.def("nusol_nu"             , &pyc::nusol::Nu); 

@@ -2,15 +2,43 @@
 #define CUATOMIC_H
 #include <torch/torch.h>
 
+__device__ __constant__ const unsigned int _x[12] = {1, 1, 2, 2, 0, 0, 2, 2, 0, 0, 1, 1}; 
+__device__ __constant__ const unsigned int _y[12] = {1, 2, 1, 2, 0, 2, 0, 2, 0, 1, 0, 1}; 
+
+template <typename scalar_t, size_t size_x1, size_t size_y1>
+__device__ scalar_t _cofactor(scalar_t (&_M)[size_x1][size_y1], const unsigned int _idy, unsigned int _idz, bool cf = true){
+    unsigned int idy = 4*_idy; 
+    unsigned int idz = 4*_idz; 
+    double ad = _M[ _x[idy  ] ][ _y[idz  ] ] * _M[ _x[idy+3] ][ _y[idz+3] ]; 
+    double bc = _M[ _x[idy+1] ][ _y[idz+1] ] * _M[ _x[idy+2] ][ _y[idz+2] ]; 
+    double _f = (cf) ? pow(-1, int(_idy) + int(_idz)) : 1; 
+    return (ad - bc) * _f;
+}
+
 template <typename scalar_t>
 __device__ scalar_t _div(scalar_t* p){return (*p) ? 1/(*p) : 0;}
+
+template <typename scalar_t>
+__device__ scalar_t _div(scalar_t p){return (p) ? 1/p : 0;}
 
 template <typename scalar_t>
 __device__ scalar_t _p2(scalar_t* p){return pow(*p, 2);}
 
 template <typename scalar_t>
-__device__ scalar_t _sqrt(scalar_t* p){return (1 - (*p <= 0)*2) * pow(abs(*p), 0.5);}
+__device__ scalar_t _clp(scalar_t p){
+    double sv = 10000000000; 
+    return round(sv * p)/sv; 
+}
 
+template <typename scalar_t>
+__device__ scalar_t _sqrt(scalar_t* p){
+    return (signbit(*p) && _clp(*p) < -0.0) ? -pow(abs(*p), 0.5) : pow(*p, 0.5);
+}
+
+template <typename scalar_t>
+__device__ scalar_t _sqrt(scalar_t p){
+    return (signbit(p) && _clp(p) < -0.0) ? -pow(abs(p), 0.5) : pow(p, 0.5);
+}
 
 template <typename scalar_t>
 __device__ scalar_t _cmp(scalar_t xx, scalar_t yy, scalar_t xy){

@@ -59,10 +59,10 @@ def compare(truth, pred, tolerance = 10**-6):
 
 class Particle:
     def __init__(self, pt, eta, phi, e):
-        self.pt = pt
+        self.pt  = pt
         self.eta = eta
         self.phi = phi
-        self.e = e
+        self.e   = e
         self._cuda = torch.cuda.is_available()
 
     @property
@@ -78,8 +78,7 @@ class Particle:
     @property
     def ten(self):
         vec = [self.pt, self.eta, self.phi, self.e]
-        vec = torch.tensor([vec], dtype = torch.float64)
-        vec = vec.to(device = self.cuda)
+        vec = torch.tensor([vec], dtype = torch.float64, device = self.cuda)
         return vec
 
     @property
@@ -112,8 +111,7 @@ class event:
 
     @property
     def ten(self):
-        vec = torch.tensor([self.vec.px, self.vec.py], dtype = torch.float64).view(-1, 2)
-        vec = vec.to(device = self.cuda)
+        vec = torch.tensor([self.vec.px, self.vec.py], dtype = torch.float64, device = self.cuda).view(-1, 2)
         return vec
 
     @property
@@ -122,7 +120,7 @@ class event:
 
     @property
     def ten_polar(self):
-        vec = torch.tensor([self.met, self.phi], dtype = torch.float64).view(-1, 2)
+        vec = torch.tensor([self.met, self.phi], dtype = torch.float64, device = self.cuda).view(-1, 2)
         vec = vec.to(device = self.cuda)
         return vec
 

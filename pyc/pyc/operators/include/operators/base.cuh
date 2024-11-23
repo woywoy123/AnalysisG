@@ -23,6 +23,26 @@ __global__ void _dot(
     out[_idx] = sdata[0]; 
 }
 
+
+template <typename scalar_t>
+__global__ void _cross(
+        const torch::PackedTensorAccessor64<scalar_t, 4, torch::RestrictPtrTraits> v1, 
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> v2, 
+        torch::PackedTensorAccessor64<scalar_t, 4, torch::RestrictPtrTraits> out, 
+        const unsigned int dy, const unsigned int dz
+){
+
+    extern __shared__ double sdata[]; 
+    const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    const unsigned int _idy = blockIdx.y * blockDim.y + threadIdx.y; 
+    const unsigned int _idz = blockIdx.z * blockDim.z + threadIdx.z; 
+    double crx[3][3][3]; // = {0x0}; 
+
+
+
+}
+
+
 template <typename scalar_t>
 __global__ void _costheta(
         const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> x,
@@ -155,20 +175,11 @@ __global__ void _rt(
     double smz = -atan2(pmd[_blk][2], pmd[_blk][1]); 
     rxt[_idz][_idy] = _rx(&smz, _idy, _idz); 
     __syncthreads(); 
-
-    double sx = 0; 
-    for (size_t x(0); x < 3; ++x){sx += ryt[_idz][x] * rxt[x][_idy];}
-    pmr[_idz][_idy] = sx; 
+    pmr[_idz][_idy] = _dot(ryt, rxt, _idz, _idy, 3); 
     __syncthreads(); 
-
-    double sy = 0; 
-    for (size_t x(0); x < 3; ++x){sy += rzt[_idz][x] * pmr[x][_idy];}
-    out[_idx][_idz][_idy] = sy; 
+    out[_idx][_idz][_idy] = _dot(rzt, pmr, _idz, _idy, 3); 
 }
 
-
-__device__ __constant__ const unsigned int _x[12] = {1, 1, 2, 2, 0, 0, 2, 2, 0, 0, 1, 1}; 
-__device__ __constant__ const unsigned int _y[12] = {1, 2, 1, 2, 0, 2, 0, 2, 0, 1, 0, 1}; 
 
 template <typename scalar_t>
 __global__ void _cofactor(
@@ -177,17 +188,10 @@ __global__ void _cofactor(
 ){
     __shared__ double mat[3][3]; 
     const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
-
-    const unsigned int idy = threadIdx.y*4;
-    const unsigned int idz = threadIdx.z*4;  
-
     mat[threadIdx.y][threadIdx.z] = matrix[_idx][threadIdx.y][threadIdx.z]; 
     __syncthreads();
 
-    double ad = mat[ _x[idy  ] ][ _y[idz  ] ] * mat[ _x[idy+3] ][ _y[idz+3] ]; 
-    double bc = mat[ _x[idy+1] ][ _y[idz+1] ] * mat[ _x[idy+2] ][ _y[idz+2] ]; 
-    double cf = pow(-1, int(threadIdx.y) + int(threadIdx.z)); 
-    out[_idx][threadIdx.y][threadIdx.z] = (ad - bc)*cf;
+    out[_idx][threadIdx.y][threadIdx.z] = _cofactor(mat, threadIdx.y, threadIdx.z);
 }
 
 template <typename scalar_t>
@@ -198,16 +202,12 @@ __global__ void _determinant(
     __shared__ double mat[3][3]; 
     __shared__ double det[3][3];
     const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
-    const unsigned int idy = threadIdx.y*4;
-    const unsigned int idz = threadIdx.z*4;  
-
     mat[threadIdx.y][threadIdx.z] = matrix[_idx][threadIdx.y][threadIdx.z]; 
     __syncthreads();
 
-    double ad = mat[ _x[idy  ] ][ _y[idz  ] ] * mat[ _x[idy+3] ][ _y[idz+3] ]; 
-    double bc = mat[ _x[idy+1] ][ _y[idz+1] ] * mat[ _x[idy+2] ][ _y[idz+2] ]; 
-    double cf = pow(-1, int(threadIdx.y) + int(threadIdx.z)); 
-    det[threadIdx.y][threadIdx.z] = (ad - bc)*mat[threadIdx.y][threadIdx.z]*cf;
+    double minor = _cofactor(mat, threadIdx.y, threadIdx.z); 
+    det[threadIdx.y][threadIdx.z] = minor * mat[threadIdx.y][threadIdx.z];
+
     if (threadIdx.y || threadIdx.z){return;}
     __syncthreads(); 
     out[_idx][0] = det[0][0] + det[0][1] + det[0][2];  
@@ -224,29 +224,66 @@ __global__ void _inverse(
     __shared__ double _det[3][3];
 
     const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
-    const unsigned int idy = threadIdx.y*4;
-    const unsigned int idz = threadIdx.z*4;  
-
     _mat[threadIdx.y][threadIdx.z] = matrix[_idx][threadIdx.y][threadIdx.z]; 
-    double cf = pow(-1, int(threadIdx.y) + int(threadIdx.z)); 
     __syncthreads();
 
-    double ad = _mat[ _x[idy  ] ][ _y[idz  ] ] * _mat[ _x[idy+3] ][ _y[idz+3] ]; 
-    double bc = _mat[ _x[idy+1] ][ _y[idz+1] ] * _mat[ _x[idy+2] ][ _y[idz+2] ]; 
-    double mx = (ad - bc)*cf; 
-
+    double mx = _cofactor(_mat, threadIdx.y, threadIdx.z);
     _cof[threadIdx.z][threadIdx.y] = mx;  // transpose cofactor matrix to get adjoint 
     _det[threadIdx.y][threadIdx.z] = mx * _mat[threadIdx.y][threadIdx.z]; 
     __syncthreads(); 
 
     double _dt = _det[0][0] + _det[0][1] + _det[0][2];
- 
     if (!threadIdx.y && !threadIdx.z){det[_idx][0] = _dt;}
     inv[_idx][threadIdx.y][threadIdx.z] = _cof[threadIdx.y][threadIdx.z]*_div(&_dt); 
 }
 
+template <typename scalar_t>
+__global__ void _eigenvalue(
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> matrix,
+        torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> real,
+        torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> img
+){
+    
+    __shared__ double _mat[3][3]; 
+    __shared__ double _cof[3][3]; 
+    __shared__ double _det[3][3]; 
 
+    const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    _mat[threadIdx.y][threadIdx.z] = matrix[_idx][threadIdx.y][threadIdx.z]; 
+    __syncthreads();
+    
+    double minor = _cofactor(_mat, threadIdx.y, threadIdx.z, false); 
+    _cof[threadIdx.y][threadIdx.z] = -minor;
+    _det[threadIdx.y][threadIdx.z] = pow(-1, int(threadIdx.y) + int(threadIdx.z)) * minor * _mat[threadIdx.y][threadIdx.z]; 
+    if (threadIdx.y || threadIdx.z){return;}
+    __syncthreads(); 
 
+    c10::complex<double> tr = _mat[0][0] + _mat[1][1] + _mat[2][2]; 
+    c10::complex<double> c  = _cof[0][0] + _cof[1][1] + _cof[2][2]; 
+    c10::complex<double> d  = _det[0][0] + _det[0][1] + _det[0][2];  
+    c10::complex<double> o  = c10::complex<double>( -0.5, 0.5 * sqrt( 3.0 ) ); 
+    c10::complex<double> o2 = o * o;
 
+    c10::complex<double> p = (tr * tr + 3.0 * c) / 9.0; 
+    c10::complex<double> q = (9.0 * tr * c + 27.0 * d + 2.0 * tr * tr * tr) / 54.0; 
+    c10::complex<double> dt = q * q - p * p * p; 
+
+    c10::complex<double> g1 = std::pow(q + std::sqrt(dt), 1.0 / 3.0 );
+    c10::complex<double> g2 = std::pow(q - std::sqrt(dt), 1.0 / 3.0 );
+
+    c10::complex<double> offset = tr / 3.0;
+    c10::complex<double> lmb1 = g1      + g2      + offset;
+    c10::complex<double> lmb2 = g1 * o  + g2 * o2 + offset;
+    c10::complex<double> lmb3 = g1 * o2 + g2 * o  + offset;
+ 
+    real[_idx][0] = lmb1.real(); 
+    img [_idx][0] = _clp(lmb1.imag()); 
+
+    real[_idx][1] = lmb2.real(); 
+    img [_idx][1] = _clp(lmb2.imag()); 
+
+    real[_idx][2] = lmb3.real(); 
+    img [_idx][2] = _clp(lmb3.imag()); 
+}
 
 #endif

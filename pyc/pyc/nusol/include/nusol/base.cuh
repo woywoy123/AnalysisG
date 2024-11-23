@@ -1,7 +1,25 @@
 #ifndef CU_NUSOL_BASE_H
 #define CU_NUSOL_BASE_H
+
 #include <torch/torch.h>
 #include <atomic/cuatomic.cuh>
+
+template <typename scalar_t>
+__global__ void _shape_matrix(
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> out,
+        unsigned int dx, unsigned int dy, unsigned int dl, long* diag
+){
+    const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    const unsigned int _idy = blockIdx.y * blockDim.y + threadIdx.y; 
+    const unsigned int _idz = blockIdx.z * blockDim.z + threadIdx.z; 
+    if (_idx >= dx || _idy >= dy || _idz >= dl){return;}
+    out[_idx][_idy][_idz] += diag[_idz];  
+}
+
+
+namespace nusol_ {
+    torch::Tensor ShapeMatrix(torch::Tensor* inpt, std::vector<long> vec); 
+}
 
 struct nusol {
     double cos, sin;
@@ -20,24 +38,6 @@ struct nusol {
     bool passed = true; 
     nusol() = default; 
 }; 
-
-
-template <typename scalar_t>
-__global__ void _shape_matrix(
-        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> out,
-        unsigned int dx, unsigned int dy, unsigned int dl, long* diag
-){
-    const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
-    const unsigned int _idy = blockIdx.y * blockDim.y + threadIdx.y; 
-    const unsigned int _idz = blockIdx.z * blockDim.z + threadIdx.z; 
-    if (_idx >= dx || _idy >= dy || _idz >= dl){return;}
-    out[_idx][_idy][_idz] += diag[_idz];  
-}
-
-
-namespace nusol_ {
-    torch::Tensor ShapeMatrix(torch::Tensor* inpt, std::vector<long> vec); 
-}
 
 __device__ void _makeNuSol(nusol* sl){
     double b2l = sl -> betas[0]; 
@@ -269,8 +269,156 @@ __global__ void _nu_init_(
 
     X[_idx][_idy][_idz] = _T[_idy][_idz];
     M[_idx][_idy][_idz] = _XD[_idy][_idz]; 
-
-
 }
+
+
+template <typename scalar_t>
+__global__ void _swapAB(
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> inv_A_dot_B,
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> A,
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> B,
+        torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> detA, 
+        torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> detB
+){
+
+    __shared__ double A_[3][3]; 
+    __shared__ double B_[3][3]; 
+
+    __shared__ double _cofA[3][3];  
+    __shared__ double _detA[3][3];
+    __shared__ double _InvA[3][3]; 
+
+    const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    A_[threadIdx.y][threadIdx.z]  = A[_idx][threadIdx.y][threadIdx.z]; 
+    B_[threadIdx.y][threadIdx.z]  = B[_idx][threadIdx.y][threadIdx.z]; 
+
+    // ----- swap if abs(det(B)) > abs(det(A)) -------- //
+    bool swp = abs(detB[_idx][0]) > abs(detA[_idx][0]); 
+    double a_ = (!swp)*A_[threadIdx.y][threadIdx.z] + (swp)*B_[threadIdx.y][threadIdx.z]; 
+    double b_ = (!swp)*B_[threadIdx.y][threadIdx.z] + (swp)*A_[threadIdx.y][threadIdx.z];
+    A_[threadIdx.y][threadIdx.z] = a_;  
+    B_[threadIdx.y][threadIdx.z] = b_;  
+    __syncthreads(); 
+
+    // ----- compute the inverse of A -------- //
+    double mx = _cofactor(A_, threadIdx.y, threadIdx.z); 
+    _cofA[threadIdx.z][threadIdx.y] = mx;  // transpose cofactor matrix to get adjoint 
+    _detA[threadIdx.y][threadIdx.z] = mx * A_[threadIdx.y][threadIdx.z]; 
+    __syncthreads(); 
+
+    double _dt = _detA[0][0] + _detA[0][1] + _detA[0][2];
+    _InvA[threadIdx.y][threadIdx.z] = _cofA[threadIdx.y][threadIdx.z]*_div(&_dt); 
+    __syncthreads(); 
+    // --------------------------------------- //
+
+    // -------- take the dot product of inv(A) and B --------- //
+    inv_A_dot_B[_idx][threadIdx.y][threadIdx.z] = _dot(_InvA, B_, threadIdx.y, threadIdx.z, 3); 
+    B[_idx][threadIdx.y][threadIdx.z] = B_[threadIdx.y][threadIdx.z]; 
+    A[_idx][threadIdx.y][threadIdx.z] = A_[threadIdx.y][threadIdx.z]; 
+} 
+
+
+
+__device__ double _case1(double G[3][3], const unsigned int _idy, const unsigned int _idz){
+    if (_idy == 0 && _idz == 0){return G[0][1];}
+    if (_idy == 0 && _idz == 2){return G[1][2];}
+    if (_idy == 1 && _idz == 1){return G[0][1];}
+    if (_idy == 1 && _idz == 2){return G[0][2] - G[1][2];}
+    return 0; 
+}
+
+__device__ double _case2(double G[3][3], const unsigned int _idy, const unsigned int _idz, bool swpXY){
+    if (!swpXY){return G[_idy][_idz];}
+    if (_idy == 0 && _idz == 0){return G[1][1];}
+    if (_idy == 0 && _idz == 1){return G[1][0];}
+    if (_idy == 0 && _idz == 2){return G[1][2];}
+
+    if (_idy == 1 && _idz == 0){return G[0][1];}
+    if (_idy == 1 && _idz == 1){return G[0][0];}
+    if (_idy == 1 && _idz == 2){return G[0][2];}
+
+    if (_idy == 2 && _idz == 0){return G[2][1];}
+    if (_idy == 2 && _idz == 1){return G[2][0];}
+    if (_idy == 2 && _idz == 2){return G[2][2];}
+    return 0; 
+}
+
+__device__ double _leqnulls(double coF[3][3], double Q[3][3], const unsigned int _idy, const unsigned int _idz){
+    if (_idy >= 2){return 0;}
+    double q00 = -coF[0][0]; 
+    if (q00 < 0){return 0;}
+
+    if (_idy == 0 && _idz == 0){return Q[0][1];}
+    if (_idy == 0 && _idz == 1){return Q[1][1];}
+    if (_idy == 0 && _idz == 2){return Q[1][2] - _sqrt(&q00);}
+    if (q00 == 0){return 0;}
+
+    if (_idy == 1 && _idz == 0){return Q[0][1];}
+    if (_idy == 1 && _idz == 1){return Q[1][1];}
+    if (_idy == 1 && _idz == 2){return Q[1][2] + _sqrt(&q00);}
+    return 0; 
+}
+
+__device__ double _gnulls(double coF[3][3], double Q[3][3], const unsigned int _idy, const unsigned int _idz){
+    if (_idy >= 2){return 0;}
+    double s22 = _sqrt(-coF[2][2]);
+    double q22 = _div(coF[2][2]); 
+
+    if (_idy == 0 && _idz == 0){return  Q[0][1] - s22;}
+    if (_idy == 0 && _idz == 1){return  Q[1][1];}
+    if (_idy == 0 && _idz == 2){return -Q[1][1] * coF[1][2] * q22 - (Q[0][1] - s22) * coF[0][2] * q22;}
+
+    if (_idy == 1 && _idz == 0){return  Q[0][1] + s22;}
+    if (_idy == 1 && _idz == 1){return  Q[1][1];}
+    if (_idy == 1 && _idz == 2){return -Q[1][1] * coF[1][2] * q22 - (Q[0][1] + s22) * coF[0][2] * q22;}
+    return 0; 
+}
+
+template <typename scalar_t>
+__global__ void _factor_degen(
+        torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> real,
+        torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> imag,
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> A,
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> B,
+        torch::PackedTensorAccessor64<scalar_t, 4, torch::RestrictPtrTraits> Lins,
+        const double nulls
+){
+    __shared__ double G[3][3][3]; 
+    __shared__ double g[3][3][3]; 
+    __shared__ double coG[3][3][3]; 
+    __shared__ double lines[3][3][3]; 
+
+    const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    const unsigned int _ixd = threadIdx.y*9 + threadIdx.z; 
+    const unsigned int _idt = (_ixd / 9)%3; 
+    const unsigned int _idy = (_ixd / 3)%3; 
+    const unsigned int _idz =  _ixd % 3; 
+    if (abs(imag[_idx][_idt]) > 0.0){return;}
+
+    G[_idt][_idy][_idz] = B[_idx][_idy][_idz] - real[_idx][_idt] * A[_idx][_idy][_idz]; 
+    __syncthreads(); 
+
+    bool c1 = (G[_idt][0][0] == G[_idt][1][1]) * (G[_idt][1][1] == 0); 
+    if (c1){Lins[_idx][_idt][_idy][_idz] = _case1(G[_idt], _idy, _idz); return;}
+
+    lines[_idt][_idy][_idz] = 0; 
+    bool sw = abs(G[_idt][0][0]) > abs(G[_idt][1][1]); 
+    g[_idt][_idy][_idz] = _case2(G[_idt], _idy, _idz, sw)*_div(G[_idt][!sw][!sw]);
+    __syncthreads();
+
+    coG[_idt][_idy][_idz] = _cofactor(g[_idt], _idy, _idz); 
+    __syncthreads(); 
+
+    double elx = 0; 
+    if (-coG[_idt][2][2] <= nulls){ elx = _leqnulls(coG[_idt], g[_idt], _idy, _idz); }
+    else { elx = _gnulls(coG[_idt], g[_idt], _idy, _idz); }
+
+    if (_idz == 0){Lins[_idx][_idt][_idy][1 - !sw] = elx;}
+    if (_idz == 1){Lins[_idx][_idt][_idy][!sw] = elx;}
+    if (_idz == 2){Lins[_idx][_idt][_idy][2] = elx;}
+}
+
+
+
 
 #endif

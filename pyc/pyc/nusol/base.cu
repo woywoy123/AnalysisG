@@ -22,3 +22,5 @@ torch::Tensor nusol_::ShapeMatrix(torch::Tensor* inpt, std::vector<long> vec){
     cudaFree(diag); 
     return out; 
 }
+
+
