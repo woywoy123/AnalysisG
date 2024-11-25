@@ -32,14 +32,19 @@ __global__ void _cross(
         const unsigned int dy, const unsigned int dz
 ){
 
-    extern __shared__ double sdata[]; 
+    __shared__ double Av[9][3][3]; 
     const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
-    const unsigned int _idy = blockIdx.y * blockDim.y + threadIdx.y; 
-    const unsigned int _idz = blockIdx.z * blockDim.z + threadIdx.z; 
-    double crx[3][3][3]; // = {0x0}; 
-
-
-
+    const unsigned int _dtt = threadIdx.y; 
+    const unsigned int _idy1 = (_dtt/9); 
+    const unsigned int _idy2 = (_dtt%3); 
+    const unsigned int _idy3 = (_dtt/3); 
+    double v1_ = v1[_idx][_idy1][_idy3][threadIdx.z]; 
+    double v2_ = v2[_idx][_idy2][threadIdx.z];
+    Av[threadIdx.y][0][threadIdx.z] = v1_; 
+    Av[threadIdx.y][1][threadIdx.z] = v1_; 
+    Av[threadIdx.y][2][threadIdx.z] = v2_; 
+    __syncthreads(); 
+    out[_idx][_idy3][_idy2][threadIdx.z] = _cofactor(Av[threadIdx.y], 0, threadIdx.z); 
 }
 
 
@@ -74,7 +79,7 @@ __global__ void _costheta(
     __syncthreads(); 
     double cs = _cmp(smem[0], smem[2], smem[1]); 
     if (!get_sin){out[_idx][0] = cs; return; }
-    cs = 1 - pow(cs, 2); 
+    cs = 1 - cs*cs; 
     out[_idx][0] = _sqrt(&cs); 
 }
 

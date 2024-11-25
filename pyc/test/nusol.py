@@ -38,29 +38,10 @@ def multisqrt(y):
 def intersections_ellipse_line(ellipse, line, zero=1e-10):
     """Points of intersection between ellipse and line"""
     _, V = np.linalg.eig(np.cross(line, ellipse).T)
-    sols = sorted(
-        [
-            (
-                v.real / v[2].real,
-                np.dot(line, v.real) ** 2 + np.dot(v.real, ellipse).dot(v.real) ** 2,
-            )
-            for v in V.T if v[2].real != 0
-        ],
-        key=lambda k: k[1],
-    )#[:2]
-    return [s for s, k in sols if k < zero]
-
-# A = ellipse, Q[i] = line
-def intersections_diagonal_number(ellipse, line, zero=1e-10):
-    """Points of intersection between ellipse and line"""
-    _, V = np.linalg.eig(np.cross(line, ellipse).T)
-    sols = sorted(
-        [
-            np.dot(line, v.real) ** 2 + np.dot(v.real, ellipse).dot(v.real) ** 2
-            for v in V.T
-        ]
-    )#[:2]
-    return sols
+    sols = [(v.real / v[2].real, np.log10(np.dot(line, v.real) ** 2 + np.dot(v.real, ellipse).dot(v.real) ** 2)) for v in V.T if v[2].real != 0]
+    sols.sort(key=lambda k : k[1])
+    sols = sols[:2]
+    return [s for s, k in sols if k < np.log10(zero)]
 
 def cofactor(A, i, j):
     """Cofactor[i,j] of 3x3 matrix A"""
@@ -69,6 +50,32 @@ def cofactor(A, i, j):
         not j : 2 if j == 2 else None : 2 if j == 1 else 1,
     ]
     return (-1) ** (i + j) * (a[0, 0] * a[1, 1] - a[1, 0] * a[0, 1])
+
+
+def factor_degenerate(G, zero=0):
+    """Linear factors of degenerate quadratic polynomial"""
+    if G[0, 0] == 0 == G[1, 1]: return [[G[0, 1], 0, G[1, 2]], [0, G[0, 1], G[0, 2] - G[1, 2]]]
+    swapXY = abs(G[0, 0]) > abs(G[1, 1])
+    Q = G[(1, 0, 2),][:, (1, 0, 2)] if swapXY else G
+    Q /= Q[1, 1]
+
+    q22 = cofactor(Q, 2, 2)
+    if -q22 <= zero: lines = [[Q[0, 1], Q[1, 1], (Q[1, 2] + s)] for s in multisqrt(-cofactor(Q, 0, 0))]
+    else:
+        x0, y0 = [cofactor(Q, i, 2) / q22 for i in [0, 1]]
+        lines = [ [m, Q[1, 1], (-Q[1, 1] * y0 - m * x0)] for m in [Q[0, 1] + s for s in multisqrt(-q22)] ]
+
+    lines = [[L[swapXY], L[not swapXY], L[2]] for L in lines]
+    return lines
+
+def intersections_ellipses(A, B, returnLines=False, zero = 10e-10):
+    """Points of intersection between two ellipses"""
+    LA = np.linalg
+    if abs(LA.det(B)) > abs(LA.det(A)): A, B = B, A
+    e = [e.real for e in LA.eigvals(LA.inv(A).dot(B)) if not e.imag]
+    lines = factor_degenerate(B - next(iter(e)) * A, zero)
+    points = sum([intersections_ellipse_line(A, L, zero) for L in lines], [])
+    return points, lines
 
 class NuSol(object):
     def __init__(self, b, mu, ev = None, mW2 = mW**2, mT2 = mT**2, mN2 = mN**2):
@@ -180,33 +187,6 @@ class NuSol(object):
         hinv = np.linalg.inv(self.H_perp)
         return hinv.T.dot(UnitCircle()).dot(hinv)
 
-
-def factor_degenerate(G, zero=0):
-    """Linear factors of degenerate quadratic polynomial"""
-    if G[0, 0] == 0 == G[1, 1]: return [[G[0, 1], 0, G[1, 2]], [0, G[0, 1], G[0, 2] - G[1, 2]]]
-    swapXY = abs(G[0, 0]) > abs(G[1, 1])
-    Q = G[(1, 0, 2),][:, (1, 0, 2)] if swapXY else G
-    Q /= Q[1, 1]
-
-    q22 = cofactor(Q, 2, 2)
-    if -q22 <= zero: lines = [[Q[0, 1], Q[1, 1], (Q[1, 2] + s)] for s in multisqrt(-cofactor(Q, 0, 0))]
-    else:
-        x0, y0 = [cofactor(Q, i, 2) / q22 for i in [0, 1]]
-        lines = [ [m, Q[1, 1], (-Q[1, 1] * y0 - m * x0)] for m in [Q[0, 1] + s for s in multisqrt(-q22)] ]
-
-    lines = [[L[swapXY], L[not swapXY], L[2]] for L in lines]
-    return lines
-
-def intersections_ellipses(A, B, returnLines=False, zero = 10e-10):
-    """Points of intersection between two ellipses"""
-    LA = np.linalg
-    if abs(LA.det(B)) > abs(LA.det(A)): A, B = B, A
-    e = [e.real for e in LA.eigvals(LA.inv(A).dot(B)) if not e.imag]
-    lines = factor_degenerate(B - next(iter(e)) * A, zero)
-    print(np.array(lines))
-    points = sum([intersections_ellipse_line(A, L, zero) for L in lines], [])
-    diag = sum([intersections_diagonal_number(A, L, zero) for L in lines], [])
-    return points, diag
 
 
 class SingleNu(NuSol):

@@ -23,16 +23,15 @@ torch::Tensor operators_::Dot(torch::Tensor* v1, torch::Tensor* v2){
 
 torch::Tensor operators_::Cross(torch::Tensor* v1, torch::Tensor* v2){
     const unsigned int dx = v1 -> size({0}); 
-    const unsigned int dy = v1 -> size({1}); 
-    const unsigned int dz = v1 -> size({2}); 
+    const unsigned int dy = v1 -> size({-2}); 
+    const unsigned int dz = v1 -> size({-1}); 
 
-    const dim3 thd = dim3(1, dy, dz); 
-    const dim3 blk = blk_(dx, 1, dy, dy, dz, dz); 
+    const dim3 thd = dim3(1, dy*dy, dz); 
+    const dim3 blk = blk_(dx, 1, dy*dy, dy*dy, dz, dz); 
     torch::Tensor out = torch::zeros({dx, dy, dz, dz}, MakeOp(v1)); 
 
-    unsigned int sx = sizeof(double)*dy*dy*dz*dz; 
     AT_DISPATCH_FLOATING_TYPES(v1 -> scalar_type(), "cross", [&]{
-        _cross<scalar_t><<<blk, thd, sx>>>(
+        _cross<scalar_t><<<blk, thd>>>(
                 v1 -> packed_accessor64<scalar_t, 4, torch::RestrictPtrTraits>(), 
                 v2 -> packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
                 out.packed_accessor64<scalar_t  , 4, torch::RestrictPtrTraits>(),
@@ -60,7 +59,7 @@ torch::Tensor operators_::CosTheta(torch::Tensor* v1, torch::Tensor* v2, unsigne
         _costheta<scalar_t><<<blk, thd, sx>>>(
                 v1 -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
                 v2 -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
-                out.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+                  out.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
                 dx, dy); 
     }); 
     return out; 

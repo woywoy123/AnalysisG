@@ -22,7 +22,7 @@ template <typename scalar_t>
 __device__ scalar_t _div(scalar_t p){return (p) ? 1/p : 0;}
 
 template <typename scalar_t>
-__device__ scalar_t _p2(scalar_t* p){return pow(*p, 2);}
+__device__ scalar_t _p2(scalar_t* p){return (*p)*(*p);}
 
 template <typename scalar_t>
 __device__ scalar_t _clp(scalar_t p){
@@ -32,12 +32,12 @@ __device__ scalar_t _clp(scalar_t p){
 
 template <typename scalar_t>
 __device__ scalar_t _sqrt(scalar_t* p){
-    return (signbit(*p) && _clp(*p) < -0.0) ? -pow(abs(*p), 0.5) : pow(*p, 0.5);
+    return (signbit(*p) && _clp(*p) < -0.0) ? -sqrt(abs(*p)) : sqrt(*p);
 }
 
 template <typename scalar_t>
 __device__ scalar_t _sqrt(scalar_t p){
-    return (signbit(p) && _clp(p) < -0.0) ? -pow(abs(p), 0.5) : pow(p, 0.5);
+    return (signbit(p) && _clp(p) < -0.0) ? -sqrt(abs(p)) : sqrt(p);
 }
 
 template <typename scalar_t>
@@ -55,9 +55,6 @@ __device__ scalar_t _arccos(scalar_t* sm, scalar_t* _pz){
 
 template <typename scalar_t> 
 __device__ scalar_t minus_mod(scalar_t* diff){
-//    if (*diff > M_PI){return *diff - 2.0*M_PI;}
-//    if (*diff <= -M_PI){return *diff + 2.0*M_PI;} 
-//    return *diff; 
     return M_PI - fabs(fmod(fabs(*diff),  2*M_PI) - M_PI); 
 }
 
@@ -71,11 +68,11 @@ template <typename scalar_t>
 __device__ scalar_t pz_(scalar_t* _pt, scalar_t* _eta){return (*_pt) * sinh(*_eta);}
 
 template <typename scalar_t>
-__device__ scalar_t pt_(scalar_t* _px, scalar_t* _py){return sqrt(pow(*_px, 2) + pow(*_py, 2));}
+__device__ scalar_t pt_(scalar_t* _px, scalar_t* _py){return sqrt((*_px) * (*_px) + (*_py) * (*_py));}
 
 template <typename scalar_t>
 __device__ scalar_t eta_(scalar_t* _px, scalar_t* _py, scalar_t* _pz){
-    return (*_px + *_py) ? asinh(*_pz / sqrt(pow(*_px, 2) + pow(*_py, 2))) : 0; 
+    return (*_px + *_py) ? asinh(*_pz / sqrt((*_px) * (*_px) + (*_py) * (*_py))) : 0; 
 }
 
 template <typename scalar_t>
@@ -119,6 +116,13 @@ __device__ scalar_t _dot(
 ){
     scalar_t out = 0;  
     for (size_t x(0); x < dx; ++x){out += v1[row][x] * v2[x][col];}
+    return out; 
+}
+
+template <typename scalar_t, size_t size_x1, size_t size_x2>
+__device__ scalar_t _dot(scalar_t (&v1)[size_x1], scalar_t (&v2)[size_x2], unsigned int dx){
+    scalar_t out = 0;  
+    for (size_t x(0); x < dx; ++x){out += v1[x] * v2[x];}
     return out; 
 }
 

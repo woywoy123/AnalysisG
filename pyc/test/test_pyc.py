@@ -412,6 +412,42 @@ def test_operators():
         print(dx, "REFERNCE/CUDA: ", ttt/cut)
         return ttt/cut
 
+    def _test_cross(dx):
+        def _r(v, k): return v*random.random() + k
+
+        hr = torch.tensor([
+                [
+                    [
+                        [_r(1, k), _r(-1, k), _r(1, k)],
+                        [_r(1, k),  _r(2, k), _r(3, k)],
+                        [_r(3, k),  _r(1, k), _r(2, k)]
+                    ]
+                ] for k in range(dx)
+        ], device = device, dtype = torch.float64)
+
+        hi = torch.tensor([
+                [
+                    [_r(1, k), _r(2, k), _r(3, k)],
+                    [_r(2, k), _r(3, k), _r(4, k)],
+                    [_r(0, k), _r(0, k), _r(0, k)]
+                ]  for k in range(dx)
+        ], device = device, dtype = torch.float64)
+        hrx = hr.view(-1, 3, 1, 3)
+        hix = hi.view(-1, 1, 3, 3)
+
+        t1 = time.time()
+        truth = torch.linalg.cross(hrx, hix)
+        ttt = time.time() - t1
+
+        t1 = time.time()
+        cu = torch.ops.cupyc.operators_cross(hr, hi)
+        cut = time.time() - t1
+
+        assert compare(truth, cu, 10**-3)
+        print(dx, "REFERNCE/CUDA: ", ttt/cut)
+        return ttt/cut
+
+
 #    testx = [_testdot(i, j) for i in range(48, 4096, 48) for j in range(48, 1024, 48)]
 #    testx = [_testcostheta(i, j) for i in range(1, 1024, 1) for j in range(48, 1024, 24)]
 #    testx = [_testsintheta(i, j) for i in range(3, 1024, 1) for j in range(48, 1024, 24)]
@@ -419,7 +455,8 @@ def test_operators():
 #    testx = _test_cofactor(1000)
 #    testx = [_test_det(i) for i in range(1000, 1000000, 1000)]
 #    testx = [_test_inverse(i) for i in range(1000, 1000000, 1000)]
-    testx = [_test_eig(i) for i in range(1, 1000000, 1000)]
+#    testx = [_test_eig(i) for i in range(1, 1000000, 1000)]
+    testx = [_test_cross(i) for i in range(1, 1000000, 1000)]
 
 
 def test_nusol_base_matrix():
@@ -469,6 +506,7 @@ def test_nusol_nu_cuda():
         ev, lep, bquark = x_[0], x_[1], x_[2]
         ev_     = ev.ten
 
+        if i == 0: continue
         print("_______", i, "________")
         lep_    = torch.ops.cupyc.transform_combined_pxpypze(lep.ten)
         bquark_ = torch.ops.cupyc.transform_combined_pxpypze(bquark.ten)
@@ -484,9 +522,17 @@ def test_nusol_nu_cuda():
         pred = torch.ops.cupyc.nusol_nu(bquark, lep, ev, mass, S, 10e-10)
 
         assert compare(truth, pred["M"], 10**-1)
-        lines = pred["lines"]
-        print(lines)
+        #print(nu.nu)
+        print(pred["chi2"])
+        print(nu.chi2)
+        exit()
+        print(pred["nu"])
+        print("_____")
+        #print(pred["r"])
+        #print(pred["lines"])
+        #print(pred["A"])
         time.sleep(0.2)
+        exit()
 
 if __name__ == "__main__":
 #    test_transform()

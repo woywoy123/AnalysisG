@@ -1,4 +1,5 @@
 set(SOURCE_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/nusol/device.cuh
     ${CMAKE_CURRENT_SOURCE_DIR}/include/nusol/base.cuh
     ${CMAKE_CURRENT_SOURCE_DIR}/base.cu
 )

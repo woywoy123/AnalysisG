@@ -53,7 +53,8 @@ def compare(truth, pred, tolerance = 10**-6):
     if not x:
         print(truth)
         print(pred)
-        print(pred - truth)
+        mdk = abs(pred - truth) > tolerance
+        print(pred[mdk], truth[mdk])
         return False
     return x
 
