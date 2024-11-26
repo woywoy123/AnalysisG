@@ -126,5 +126,18 @@ __device__ scalar_t _dot(scalar_t (&v1)[size_x1], scalar_t (&v2)[size_x2], unsig
     return out; 
 }
 
+template <typename scalar_t, size_t size_x1>
+__device__ scalar_t _sum(scalar_t (&v1)[size_x1], const unsigned int dx){
+    scalar_t out = 0;  
+    for (size_t x(0); x < dx; ++x){out += v1[x];}
+    return out; 
+}
+
+template <typename scalar_t>
+__device__ scalar_t _sum(scalar_t (&v1)[], const unsigned int dx){
+    scalar_t out = 0;  
+    for (size_t x(0); x < dx; ++x){out += v1[x];}
+    return out; 
+}
 
 #endif

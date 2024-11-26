@@ -10,7 +10,9 @@ torch::Tensor pyc::transform::separate::Pt(torch::Tensor px, torch::Tensor py){
 }
 
 torch::Tensor pyc::transform::combined::Pt(torch::Tensor pmc){
-    return transform_::PtEtaPhi(&pmc).index({torch::indexing::Slice(), 0}); 
+    torch::Tensor px = pmc.index({torch::indexing::Slice(), 0});
+    torch::Tensor py = pmc.index({torch::indexing::Slice(), 1}); 
+    return transform_::Pt(&px, &py); 
 }
 
 torch::Tensor pyc::transform::separate::Eta(torch::Tensor px, torch::Tensor py, torch::Tensor pz){

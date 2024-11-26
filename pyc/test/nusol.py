@@ -1,6 +1,7 @@
 import vector
 import math
 import numpy as np
+from scipy.optimize import leastsq
 mW = 80.385*1000
 mT = 172.0*1000
 mN = 0
@@ -38,7 +39,11 @@ def multisqrt(y):
 def intersections_ellipse_line(ellipse, line, zero=1e-10):
     """Points of intersection between ellipse and line"""
     _, V = np.linalg.eig(np.cross(line, ellipse).T)
-    sols = [(v.real / v[2].real, np.log10(np.dot(line, v.real) ** 2 + np.dot(v.real, ellipse).dot(v.real) ** 2)) for v in V.T if v[2].real != 0]
+    sols = [(
+        v.real / v[2].real,
+        np.log10(np.dot(line, v.real) ** 2 + np.dot(v.real, ellipse).dot(v.real) ** 2)
+        ) for v in V.T if v[2].real != 0
+    ]
     sols.sort(key=lambda k : k[1])
     sols = sols[:2]
     return [s for s, k in sols if k < np.log10(zero)]
@@ -201,10 +206,10 @@ class SingleNu(NuSol):
     def calcX2(self, t): return np.dot(t, self.X).dot(t)
 
     @property
-    def chi2(self): return [self.calcX2(self.sols[i]) for i in range(len(self.sols))]
+    def chi2(self): return np.array([self.calcX2(self.sols[i]) for i in range(len(self.sols))])
 
     @property
-    def nu(self): return [self.H.dot(self.sols[i]) for i in range(len(self.sols))]
+    def nu(self): return np.array([self.H.dot(self.sols[i]) for i in range(len(self.sols))])
 
 class DoubleNu(NuSol):
 
@@ -218,37 +223,39 @@ class DoubleNu(NuSol):
         V0 = np.outer([ev.vec.px, ev.vec.py, 0], [0, 0, 1])
         self.S = V0 - UnitCircle()
 
+        #lst = ["x0p","x0","Sx","Sy","w","Om2","eps2","x1","y1","Z","R_T"]
+        #lst = ["eps2", "Z"]
+        #for i in lst: print(i, getattr(sol1, i))
+        #for i in lst: print(i, getattr(sol2, i))
+
         N, N_ = sol1.N, sol2.N
         n_ = self.S.T.dot(N_).dot(self.S)
+
         v, diag = intersections_ellipses(N, n_)
         v_ = [self.S.dot(sol) for sol in v]
         self.solutionSets = [sol1, sol2]
-        for k, v in {"perp": v, "perp_": v_, "n_": n_}.items(): setattr(self, k, v)
-        return; 
-
         self.lsq = False
+        v = []
         if not v and leastsq:
             es = [ss.H_perp for ss in self.solutionSets]
-            met = np.array([metX, metY, 1])
+            met = np.array([ev.vec.px, ev.vec.py, 1])
 
             def nus(ts):
-                return tuple(
-                    e.dot([math.cos(t), math.sin(t), 1]) for e, t in zip(es, ts)
-                )
+                print(ts)
+                return tuple(e.dot([math.cos(t), math.sin(t), 1]) for e, t in zip(es, ts))
 
-            def residuals(params):
-                return sum(nus(params), -met)[:2]
+            def residuals(params): return sum(nus(params), -met)[:2]
 
             ts, _ = leastsq(residuals, [0, 0], ftol=5e-5, epsfcn=0.01)
+            print(ts)
             v, v_ = [[i] for i in nus(ts)]
             self.lsq = True
-
-        for k, v in {"perp": v, "perp_": v_, "n_": n_}.items():
-            setattr(self, k, v)
+        for k, v in {"perp": v, "perp_": v_, "n_": n_}.items(): setattr(self, k, v)
 
     @property
     def nunu_s(self):
         """Solution pairs for neutrino momenta"""
         K, K_ = [ss.H.dot(np.linalg.inv(ss.H_perp)) for ss in self.solutionSets]
-        return [(K.dot(s), K_.dot(s_)) for s, s_ in zip(self.perp, self.perp_)]
-
+        nu1 = np.array([K.dot(s)   for s in self.perp  ])
+        nu2 = np.array([K_.dot(s_) for s_ in self.perp_])
+        return nu1, nu2

@@ -21,20 +21,19 @@ struct nusol {
 
 __device__ void _makeNuSol(nusol* sl){
     double b2l = sl -> betas[0]; 
-    double b2b = sl -> betas[1]; 
 
-    for (size_t x(0); x < 3; ++x){sl -> masses[x] = powf(sl -> masses[x], 2);}
+    for (size_t x(0); x < 3; ++x){sl -> masses[x] = pow(sl -> masses[x], 2);}
     for (size_t x(0); x < 2; ++x){sl -> betas[x] = _sqrt(&sl -> betas[x]);}
-    sl -> eps2 = (sl -> masses[1] - sl -> masses[2])*(1 - b2b); 
+    sl -> eps2 = (sl -> masses[1] - sl -> masses[2])*(1 - b2l); 
 
-    sl -> sin = 1 - powf(sl -> cos, 2); 
+    sl -> sin = 1 - pow(sl -> cos, 2); 
     sl -> sin = _sqrt(&sl -> sin); 
     double div_sin = _div(&sl -> sin); 
 
     double r = sl -> betas[0] * _div(&sl -> betas[1]); 
     sl -> w    = ( r - sl -> cos) * div_sin; 
     sl -> w_   = (-r - sl -> cos) * div_sin; 
-    sl -> o2   = powf(sl -> w, 2) + 1 - b2l; 
+    sl -> o2   = pow(sl -> w, 2) + 1 - b2l; 
 
     sl -> x0  = - (sl -> masses[1] - sl -> masses[2] - sl -> pmass[0]) * _div(&sl -> pmu_l[3]) * 0.5;
     sl -> x0p = - (sl -> masses[0] - sl -> masses[1] - sl -> pmass[1]) * _div(&sl -> pmu_b[3]) * 0.5;
@@ -47,9 +46,9 @@ __device__ void _makeNuSol(nusol* sl){
     sl -> y1 = sl -> sy - (sl -> sx + sl -> w * sl -> sy) * sl -> w * _div_o2; 
     sl -> passed *= (_div_o2 > 0) * (r > 0); 
 
-    double z2 = powf(sl -> x1, 2)*sl -> o2; 
-    z2 -= powf(sl -> sy - sl -> w * sl -> sx, 2); 
-    z2 -= (sl -> masses[1] - powf(sl -> x0, 2) - sl -> eps2); 
+    double z2 = pow(sl -> x1, 2)*sl -> o2; 
+    z2 -= pow(sl -> sy - sl -> w * sl -> sx, 2); 
+    z2 -= (sl -> masses[1] - pow(sl -> x0, 2) - sl -> eps2); 
     sl -> z = (z2 <= 0) ? 0 : _sqrt(&z2); 
 }
 
@@ -63,9 +62,9 @@ __device__ double _krot(nusol* sl, const unsigned int _iky, const unsigned int _
 __device__ double _amu(nusol* sl, const unsigned int _iky, const unsigned int _ikz){
     bool ii = (_ikz == _iky); 
 
-    double b2 = powf(sl -> betas[0], 2);
+    double b2 = pow(sl -> betas[0], 2);
     double val = ii*(_iky == 0)*(1 - b2);
-    val += ii*(_iky == 3)*(sl -> masses[1] - powf(sl -> x0, 2) - sl -> eps2); 
+    val += ii*(_iky == 3)*(sl -> masses[1] - pow(sl -> x0, 2) - sl -> eps2); 
     val += ii*(_ikz == 2 + _ikz == 1); 
     val += ((_ikz == 3)*(_iky == 0) + (_ikz == 0)*(_iky == 3))*(sl -> sx * b2); 
     return val; 
@@ -74,8 +73,8 @@ __device__ double _amu(nusol* sl, const unsigned int _iky, const unsigned int _i
 __device__ double _abq(nusol* sl, const unsigned int _iky, const unsigned int _ikz){
     bool ii = (_ikz == _iky); 
 
-    double val = ii*(_iky == 0)*(1 - powf(sl -> betas[1], 2));
-    val += ii*(_iky == 3)*(sl -> masses[1] - powf(sl -> x0p, 2)); 
+    double val = ii*(_iky == 0)*(1 - pow(sl -> betas[1], 2));
+    val += ii*(_iky == 3)*(sl -> masses[1] - pow(sl -> x0p, 2)); 
     val += ii*(_ikz == 2 + _ikz == 1); 
     val += ((_ikz == 3)*(_iky == 0) + (_ikz == 0)*(_iky == 3))*(sl -> betas[1] * sl -> x0p); 
     return val; 

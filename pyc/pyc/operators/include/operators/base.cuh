@@ -132,9 +132,9 @@ __global__ void _rz(
 template <typename scalar_t>
 __global__ void _rt(
         const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmc, 
-        const torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> phi, 
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> phi, 
         const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> theta, 
-        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> out
+              torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> out
 ){
     __shared__ double pmx[3]; 
     __shared__ double pmr[9][3];
@@ -152,7 +152,7 @@ __global__ void _rt(
     const unsigned int _idy  = _blk/3;
     const unsigned int _idz  = _blk%3; 
 
-    double phi_   = -phi[_idx]; 
+    double phi_   = -phi[_idx][0]; 
     double theta_ = 0.5*M_PI - theta[_idx][0]; 
     pmx[_idz] = pmc[_idx][_idz]; 
 

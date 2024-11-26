@@ -5,6 +5,89 @@
 #include <operators/operators.cuh>
 #include <transform/transform.cuh>
 
+
+std::map<std::string, torch::Tensor> nusol_::BaseDebug(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, torch::Tensor* masses){
+    torch::Tensor b2_b  = physics_::Beta2(pmc_b);
+    torch::Tensor b2_l  = physics_::Beta2(pmc_mu); 
+    torch::Tensor m2_b  = physics_::M2(pmc_b);
+    torch::Tensor m2_l  = physics_::M2(pmc_mu); 
+    torch::Tensor theta = physics_::Theta(pmc_mu); 
+    torch::Tensor cthe  = operators_::CosTheta(pmc_b, pmc_mu, 3); 
+
+    torch::Tensor px    = pmc_mu -> index({torch::indexing::Slice(), 0});
+    torch::Tensor py    = pmc_mu -> index({torch::indexing::Slice(), 1}); 
+    torch::Tensor phi   = transform_::Phi(&px, &py);
+    torch::Tensor rt    = operators_::RT(pmc_b, &phi, &theta); 
+
+    const unsigned int dx = pmc_b -> size({0}); 
+    const dim3 thd = dim3(1, 4, 4);
+    const dim3 blk = blk_(dx, 1, 4, 4, 4, 4); 
+
+    torch::Tensor HMatrix = torch::zeros({dx, 3, 3}, MakeOp(pmc_mu)); 
+    torch::Tensor H_perp  = torch::zeros({dx, 3, 3}, MakeOp(pmc_mu)); 
+    torch::Tensor isNan   = torch::zeros({dx}, MakeOp(pmc_mu)); 
+
+    torch::Tensor x0p   = torch::zeros({dx}, MakeOp(pmc_mu)); 
+    torch::Tensor x0    = torch::zeros({dx}, MakeOp(pmc_mu)); 
+    torch::Tensor Sx    = torch::zeros({dx}, MakeOp(pmc_mu)); 
+    torch::Tensor Sy    = torch::zeros({dx}, MakeOp(pmc_mu)); 
+    torch::Tensor w     = torch::zeros({dx}, MakeOp(pmc_mu)); 
+    torch::Tensor om2   = torch::zeros({dx}, MakeOp(pmc_mu)); 
+    torch::Tensor eps2  = torch::zeros({dx}, MakeOp(pmc_mu)); 
+    torch::Tensor x1    = torch::zeros({dx}, MakeOp(pmc_mu)); 
+    torch::Tensor y1    = torch::zeros({dx}, MakeOp(pmc_mu)); 
+    torch::Tensor z     = torch::zeros({dx}, MakeOp(pmc_mu)); 
+
+
+    AT_DISPATCH_ALL_TYPES(pmc_b -> scalar_type(), "BaseMatrix", [&]{
+        _hmatrix_debug<scalar_t><<<blk, thd>>>(
+                masses -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+                     cthe.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+                       rt.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+
+                pmc_mu -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+                     m2_l.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+                     b2_l.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+
+                pmc_b -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+                    m2_b.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+                    b2_b.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+
+                // ---------- outputs ---------- //
+                HMatrix.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                 H_perp.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                  isNan.packed_accessor64<scalar_t, 1, torch::RestrictPtrTraits>(),
+        
+                    x0p.packed_accessor64<scalar_t, 1, torch::RestrictPtrTraits>(), 
+                     x0.packed_accessor64<scalar_t, 1, torch::RestrictPtrTraits>(),
+                     Sx.packed_accessor64<scalar_t, 1, torch::RestrictPtrTraits>(),
+                     Sy.packed_accessor64<scalar_t, 1, torch::RestrictPtrTraits>(),
+                      w.packed_accessor64<scalar_t, 1, torch::RestrictPtrTraits>(),
+                    om2.packed_accessor64<scalar_t, 1, torch::RestrictPtrTraits>(),
+                   eps2.packed_accessor64<scalar_t, 1, torch::RestrictPtrTraits>(),
+                     x1.packed_accessor64<scalar_t, 1, torch::RestrictPtrTraits>(),
+                     y1.packed_accessor64<scalar_t, 1, torch::RestrictPtrTraits>(),
+                      z.packed_accessor64<scalar_t, 1, torch::RestrictPtrTraits>()); 
+    }); 
+
+    std::map<std::string, torch::Tensor> out; 
+    out["H"]      = HMatrix; 
+    out["H_perp"] = H_perp; 
+    out["FailedSols"] = isNan; 
+    out["x0p"]  =  x0p;
+    out["x0"]   =   x0;
+    out["Sx"]   =   Sx;
+    out["Sy"]   =   Sy;
+    out["w"]    =    w;
+    out["om2"]  =  om2;
+    out["eps2"] = eps2;
+    out["x1"]   =   x1;
+    out["y1"]   =   y1;
+    out["z"]    =    z;
+    out["rt"]   =   rt;
+    return out; 
+}
+
 std::map<std::string, torch::Tensor> nusol_::BaseMatrix(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, torch::Tensor* masses){
     torch::Tensor b2_b  = physics_::Beta2(pmc_b);
     torch::Tensor b2_l  = physics_::Beta2(pmc_mu); 
@@ -17,7 +100,7 @@ std::map<std::string, torch::Tensor> nusol_::BaseMatrix(torch::Tensor* pmc_b, to
     torch::Tensor py    = pmc_mu -> index({torch::indexing::Slice(), 1}); 
     torch::Tensor phi   = transform_::Phi(&px, &py);
     torch::Tensor rt    = operators_::RT(pmc_b, &phi, &theta); 
- 
+
     const unsigned int dx = pmc_b -> size({0}); 
     const dim3 thd = dim3(1, 4, 4);
     const dim3 blk = blk_(dx, 1, 4, 4, 4, 4); 
@@ -51,12 +134,10 @@ std::map<std::string, torch::Tensor> nusol_::BaseMatrix(torch::Tensor* pmc_b, to
                 A_bqrk.packed_accessor64<scalar_t  , 3, torch::RestrictPtrTraits>(),
                 isNan.packed_accessor64<scalar_t   , 1, torch::RestrictPtrTraits>()); 
     }); 
+
     std::map<std::string, torch::Tensor> out; 
     out["H"] = HMatrix; 
     out["H_perp"] = H_perp; 
-    out["K"] = KMatrix;
-    out["A_lepton"] = A_leps;
-    out["A_bquark"] = A_bqrk; 
     out["FailedSols"] = isNan; 
     return out; 
 }
@@ -133,7 +214,7 @@ std::map<std::string, torch::Tensor> nusol_::Intersection(torch::Tensor* A, torc
                 s_dst.packed_accessor64<scalar_t, 4, torch::RestrictPtrTraits>(),
                  sols.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
                  solx.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
-                  idx.packed_accessor64<long, 4, torch::RestrictPtrTraits>()); 
+                  idx.packed_accessor64<long    , 4, torch::RestrictPtrTraits>()); 
     });
  
     std::map<std::string, torch::Tensor> out;
@@ -189,13 +270,72 @@ std::map<std::string, torch::Tensor> nusol_::Nu(
 }
 
 std::map<std::string, torch::Tensor> nusol_::NuNu(
-            torch::Tensor* pmc_b1, torch::Tensor* pmc_b2, 
+            torch::Tensor* pmc_b1,  torch::Tensor* pmc_b2, 
             torch::Tensor* pmc_mu1, torch::Tensor* pmc_mu2,
-            torch::Tensor* met_xy, torch::Tensor* masses, double null
+            torch::Tensor* met_xy,  torch::Tensor* masses, double null
 ){
+    std::map<std::string, torch::Tensor> H1_m = nusol_::BaseMatrix(pmc_b1, pmc_mu1, masses);
+    torch::Tensor H1_inv = std::get<0>(operators_::Inverse(&H1_m["H_perp"])); 
+    torch::Tensor H1_    = H1_m["H"]; 
 
+    std::map<std::string, torch::Tensor> H2_m = nusol_::BaseMatrix(pmc_b2, pmc_mu2, masses);
+    torch::Tensor H2_inv = std::get<0>(operators_::Inverse(&H2_m["H_perp"])); 
+    torch::Tensor H2_    = H2_m["H"]; 
 
-    return {}; 
+    torch::Tensor fall = (H1_m["FailedSols"] + H2_m["FailedSols"]) == false; 
+    const unsigned int dx = pmc_b1 -> size({0}); 
+    const dim3 thd = dim3(1, 3, 3);
+    const dim3 blk = blk_(dx, 1, 3, 3, 3, 3); 
+    
+    torch::Tensor S  = torch::zeros({dx, 3, 3}, MakeOp(pmc_b1)); 
+    torch::Tensor N  = torch::zeros({dx, 3, 3}, MakeOp(pmc_b1)); 
+    torch::Tensor K  = torch::zeros({dx, 3, 3}, MakeOp(pmc_b1)); 
+    torch::Tensor n_ = torch::zeros({dx, 3, 3}, MakeOp(pmc_b1)); 
+    torch::Tensor K_ = torch::zeros({dx, 3, 3}, MakeOp(pmc_b1)); 
+
+    AT_DISPATCH_ALL_TYPES(pmc_b1 -> scalar_type(), "NuNu", [&]{
+        _nunu_init_<scalar_t><<<blk, thd>>>(
+                met_xy -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+                   H1_inv.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                   H2_inv.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                      H1_.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                      H2_.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+
+                       n_.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                        N.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                        K.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                       K_.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                        S.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>());
+    }); 
+
+    std::map<std::string, torch::Tensor> out = nusol_::Intersection(&N, &n_, null); 
+    torch::Tensor nu1 = torch::zeros_like(out["solutions"]); 
+    torch::Tensor nu2 = torch::zeros_like(out["solutions"]); 
+    torch::Tensor v_  = torch::zeros_like(out["solutions"]); 
+    torch::Tensor v   = out["solutions"]; 
+    torch::Tensor ds  = out["distances"]; 
+    torch::Tensor srt = std::get<1>(ds.sort(-2, false));
+
+    const dim3 thN = dim3(1, 18, 3);
+    const dim3 blN = blk_(dx, 1, 18, 18, 3, 3); 
+    AT_DISPATCH_ALL_TYPES(pmc_b1 -> scalar_type(), "NuNu", [&]{
+        _nunu_vp_<scalar_t><<<blN, thN>>>(
+                      srt.packed_accessor64<long    , 3, torch::RestrictPtrTraits>(),
+                        S.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                        K.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                       K_.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                        v.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+                       v_.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                      nu1.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+                      nu2.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                       ds.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>()); 
+    }); 
+
+    out["n_"]  = n_; 
+    out["nu1"] = nu1; 
+    out["nu2"] = nu2; 
+    out["passed"] = fall; 
+    return out;  
 }
 
 

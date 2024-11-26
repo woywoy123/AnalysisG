@@ -5,6 +5,81 @@
 #include <atomic/cuatomic.cuh>
 #include <nusol/device.cuh>
 
+
+template <typename scalar_t>
+__global__ void _hmatrix_debug(
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> masses, 
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> cosine, 
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> rt,
+
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmc_l, 
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> m2l, 
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> b2l, 
+
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmc_b, 
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> m2b, 
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> b2b, 
+
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> Hmatrix,
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> H_perp ,
+        torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> isNan,
+
+        torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> x0p,
+        torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits>  x0,
+        torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits>  Sx,
+        torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits>  Sy,
+        torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits>   w,
+        torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> om2,
+        torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> eps2,
+        torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits>  x1,
+        torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits>  y1,
+        torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits>  z
+){
+    __shared__ double rotT[3][3]; 
+    __shared__ double Htil[4][4];
+
+    const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    const unsigned int _idy = blockIdx.y * blockDim.y + threadIdx.y; 
+    const unsigned int _idz = blockIdx.z * blockDim.z + threadIdx.z; 
+    const unsigned int _iky = (_idy * 4 + _idz)/4; 
+    const unsigned int _ikz = (_idy * 4 + _idz)%4; 
+
+    nusol sl = nusol(); 
+    sl.cos = cosine[_idx][0]; 
+    sl.betas[0] = b2l[_idx][0]; 
+    sl.pmass[0] = m2l[_idx][0]; 
+
+    sl.betas[1] = b2b[_idx][0]; 
+    sl.pmass[1] = m2b[_idx][0]; 
+    for (size_t x(0); x < 4; ++x){
+        sl.pmu_b[x] = pmc_b[_idx][x];
+        sl.pmu_l[x] = pmc_l[_idx][x];
+        if (x > 2){continue;}
+        sl.masses[x] = masses[_idx][x];
+    } 
+    _makeNuSol(&sl); 
+    if (_iky < 3 && _ikz < 3){rotT[_iky][_ikz] = rt[_idx][_iky][_ikz];}
+    Htil[_iky][_ikz] = _htilde(&sl, _iky, _ikz);  
+    __syncthreads(); 
+    if (_iky < 3 && _ikz < 3){
+        double hx = _dot(rotT, Htil, _iky, _ikz, 3); 
+        Hmatrix[_idx][_iky][_ikz] = hx;
+        H_perp[_idx][_iky][_ikz] = (_iky < 2) ? hx : _ikz == 2; 
+    }
+    if (threadIdx.y || threadIdx.z){return;}
+    isNan[_idx] = sl.passed; 
+      x0p[_idx] = sl.x0p ;
+       x0[_idx] = sl.x0  ;
+       Sx[_idx] = sl.sx  ;
+       Sy[_idx] = sl.sy  ;
+        w[_idx] = sl.w   ;
+      om2[_idx] = sl.o2  ;
+     eps2[_idx] = sl.eps2;
+       x1[_idx] = sl.x1  ;
+       y1[_idx] = sl.y1  ;
+        z[_idx] = sl.z   ;
+}
+
 template <typename scalar_t>
 __global__ void _hmatrix(
         const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> masses, 
@@ -72,7 +147,7 @@ __global__ void _hmatrix(
     if (_iky < 3 && _ikz < 3){
         double hx = _dot(rotT, Htil, _iky, _ikz, 3); 
         Hmatrix[_idx][_iky][_ikz] = hx;
-        H_perp[_idx][_iky][_ikz] = (_iky < 2) ? _ikz == 2 : hx; 
+        H_perp[_idx][_iky][_ikz] = (_iky < 2) ? hx : _ikz == 2; 
     }
 
     Kdot[_iky][_ikz] = _dot(K, A_b, _iky, _ikz, 4); 
@@ -359,5 +434,118 @@ __global__ void _chi2(
     chi2[_idx][_idy][0]  = _dot(_C[_idy], _S[_idy], 3)*_dst;
 }
 
+template <typename scalar_t>
+__global__ void _nunu_init_(
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> met_xy,
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> H1_inv, 
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> H2_inv,
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> H1, 
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> H2,
+
+              torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> n_,
+              torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> N,
+              torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> K,
+              torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> K_,
+              torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> S
+){
+
+    __shared__ double _H1[3][3];
+    __shared__ double _H1inv[3][3];
+    __shared__ double _H1invT[3][3]; 
+
+    __shared__ double _H2[3][3];
+    __shared__ double _H2inv[3][3]; 
+    __shared__ double _H2invT[3][3]; 
+
+    __shared__ double _N1[3][3]; 
+    __shared__ double _N2[3][3]; 
+
+    __shared__ double _uC[3][3]; 
+    __shared__ double _V0[3][3];
+
+    __shared__ double _S_[3][3];
+    __shared__ double _ST[3][3];
+
+    const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
+
+    _H1[threadIdx.y][threadIdx.z]     = H1[_idx][threadIdx.y][threadIdx.z]; 
+    _H2[threadIdx.y][threadIdx.z]     = H2[_idx][threadIdx.y][threadIdx.z]; 
+
+    _H1inv[threadIdx.y][threadIdx.z]  = H1_inv[_idx][threadIdx.y][threadIdx.z]; 
+    _H2inv[threadIdx.y][threadIdx.z]  = H2_inv[_idx][threadIdx.y][threadIdx.z]; 
+
+    _H1invT[threadIdx.z][threadIdx.y] = _H1inv[threadIdx.y][threadIdx.z]; 
+    _H2invT[threadIdx.z][threadIdx.y] = _H2inv[threadIdx.y][threadIdx.z]; 
+    
+    _V0[threadIdx.y][threadIdx.z] = met_xy[_idx][threadIdx.y] * (threadIdx.z == 2 && threadIdx.y < 2);
+    _uC[threadIdx.y][threadIdx.z] = (threadIdx.y == threadIdx.z)*(2*(threadIdx.y < 2) - 1);
+    __syncthreads();
+
+    _N1[threadIdx.y][threadIdx.z] = _dot(_H1invT, _uC, threadIdx.y, threadIdx.z, 3); 
+    _N2[threadIdx.y][threadIdx.z] = _dot(_H2invT, _uC, threadIdx.y, threadIdx.z, 3); 
+
+    _S_[threadIdx.y][threadIdx.z] = _V0[threadIdx.y][threadIdx.z] - _uC[threadIdx.y][threadIdx.z]; 
+    _ST[threadIdx.z][threadIdx.y] = _V0[threadIdx.y][threadIdx.z] - _uC[threadIdx.y][threadIdx.z];
+    __syncthreads(); 
+
+    _H1invT[threadIdx.y][threadIdx.z] = _dot(_N1, _H1inv, threadIdx.y, threadIdx.z, 3); 
+    _H2invT[threadIdx.y][threadIdx.z] = _dot(_N2, _H2inv, threadIdx.y, threadIdx.z, 3); 
+    __syncthreads(); 
+    
+    _N1[threadIdx.y][threadIdx.z] = _H1invT[threadIdx.y][threadIdx.z]; 
+    _N2[threadIdx.y][threadIdx.z] = _H2invT[threadIdx.y][threadIdx.z]; 
+    __syncthreads(); 
+
+    _V0[threadIdx.y][threadIdx.z] = _dot(_ST, _N2, threadIdx.y, threadIdx.z, 3); 
+    __syncthreads();
+
+    N[_idx][threadIdx.y][threadIdx.z]  = _N1[threadIdx.y][threadIdx.z]; 
+    S[_idx][threadIdx.y][threadIdx.z]  = _S_[threadIdx.y][threadIdx.z]; 
+    K[_idx][threadIdx.y][threadIdx.z]  = _dot(_H1, _H1inv, threadIdx.y, threadIdx.z, 3); 
+    K_[_idx][threadIdx.y][threadIdx.z] = _dot(_H2, _H2inv, threadIdx.y, threadIdx.z, 3); 
+    n_[_idx][threadIdx.y][threadIdx.z] = _dot(_V0, _S_   , threadIdx.y, threadIdx.z, 3); 
+}
+
+
+template <typename scalar_t>
+__global__ void _nunu_vp_(
+        const torch::PackedTensorAccessor64<long    , 3, torch::RestrictPtrTraits> srt, 
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> S, 
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> K, 
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> K_,
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> v,
+              torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> v_,
+              torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> nu1,
+              torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> nu2,
+              torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> dst
+){
+    __shared__ double  _v[18][3]; 
+    __shared__ double __v[18][3]; 
+    __shared__ double  _S[18][3][3]; 
+    __shared__ double  _K[18][3][3];
+    __shared__ double __K[18][3][3]; 
+    __shared__ double _sd[18]; 
+
+    const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    const unsigned int _idy = blockIdx.y * blockDim.y + threadIdx.y; 
+    const unsigned int _idz = blockIdx.z * blockDim.z + threadIdx.z; 
+    const long idx  = srt[_idx][threadIdx.y][0];
+    if (!threadIdx.z){_sd[_idy] = dst[_idx][idx][0];}
+
+    _v[_idy][_idz] = v[_idx][idx][threadIdx.z]; 
+    for (size_t x(0); x < 3; ++x){ _S[_idy][_idz][x] =  S[_idx][_idz][x];}
+    for (size_t x(0); x < 3; ++x){ _K[_idy][_idz][x] =  K[_idx][_idz][x];}
+    for (size_t x(0); x < 3; ++x){__K[_idy][_idz][x] = K_[_idx][_idz][x];}
+    __syncthreads();
+
+    __v[_idy][_idz] = _dot(_S[_idy][_idz], _v[_idy], 3); 
+    v_[_idx][_idy][_idz] = __v[_idy][_idz]; 
+    __syncthreads(); 
+
+    nu1[_idx][_idy][_idz] = _dot( _K[_idy][_idz],  _v[_idy], 3)*(_sd[_idy] < 200); 
+    nu2[_idx][_idy][_idz] = _dot(__K[_idy][_idz], __v[_idy], 3)*(_sd[_idy] < 200); 
+    if (threadIdx.z){return;}
+    dst[_idx][_idy][0] = _sd[_idy]; 
+}
 
 #endif

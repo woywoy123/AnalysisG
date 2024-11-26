@@ -2,126 +2,149 @@
 
 template <typename scalar_t>
 __global__ void PxK(
-    const torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> pt, 
-    const torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> phi, 
-    torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> px,
-    const unsigned int dx
+    const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pt, 
+    const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> phi, 
+          torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> px
 ){
     const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
-    if (idx < dx){ px[idx] = px_(&pt[idx], &phi[idx]); }
+    px[idx][0] = px_(&pt[idx][0], &phi[idx][0]);
 }
 
 template <typename scalar_t>
 __global__ void PyK(
-    const torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> pt, 
-    const torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> phi, 
-    torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> py,
-    const unsigned int dx
+    const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pt, 
+    const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> phi, 
+          torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> py
 ){
     const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
-    if (idx < dx){ py[idx] = py_(&pt[idx], &phi[idx]); }
+    py[idx][0] = py_(&pt[idx][0], &phi[idx][0]);
 }
 
 template <typename scalar_t>
 __global__ void PzK(
-    const torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> pt, 
-    const torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> eta, 
-    torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> pz,
-    const unsigned int dx
+    const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pt, 
+    const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> eta, 
+          torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pz
 ){
     const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
-    if (idx < dx){ pz[idx] = pz_(&pt[idx], &eta[idx]); }
+    pz[idx][0] = pz_(&pt[idx][0], &eta[idx][0]);
 } 
 
 template <typename scalar_t>
 __global__ void PxPyPzK(
         const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmu,
-        torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmc,
-        const unsigned int dx
+              torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmc
 ){
-    const unsigned int idx = blockIdx.x*blockDim.x + threadIdx.x; 
-    const unsigned int idy = blockIdx.y; 
-    if ((idx >= dx) + (idy >= 3)){return;}
-    else if (idy == 0){pmc[idx][idy] = px_(&pmu[idx][0], &pmu[idx][2]);}
-    else if (idy == 1){pmc[idx][idy] = py_(&pmu[idx][0], &pmu[idx][2]);}
-    else {pmc[idx][idy] = pz_(&pmu[idx][0], &pmu[idx][1]);}
+    extern __shared__ double pmx[]; 
+
+    const unsigned int _idx = blockIdx.x*blockDim.x + threadIdx.x; 
+    pmx[threadIdx.y] = pmu[_idx][threadIdx.y]; 
+    __syncthreads(); 
+    if (threadIdx.y == 0){pmc[_idx][threadIdx.y] = px_(&pmx[0], &pmx[2]); return;}
+    if (threadIdx.y == 1){pmc[_idx][threadIdx.y] = py_(&pmx[0], &pmx[2]); return;}
+    if (threadIdx.y == 2){pmc[_idx][threadIdx.y] = pz_(&pmx[0], &pmx[1]); return;}
+    pmc[_idx][threadIdx.y] = pmx[threadIdx.y]; 
 }
 
 template <typename scalar_t>
 __global__ void PxPyPzEK(
         const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmu,
-        torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmc,
-        const unsigned int dx
+              torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmc
 ){
-    const unsigned int idx = blockIdx.x*blockDim.x + threadIdx.x; 
-    const unsigned int idy = blockIdx.y; 
-    if ((idx >= dx) + (idy >= 4)){return;}
-    else if (idy == 0){pmc[idx][idy] = px_(&pmu[idx][0], &pmu[idx][2]);}
-    else if (idy == 1){pmc[idx][idy] = py_(&pmu[idx][0], &pmu[idx][2]);}
-    else if (idy == 2){pmc[idx][idy] = pz_(&pmu[idx][0], &pmu[idx][1]);}
-    else {pmc[idx][idy] = pmu[idx][idy];}
+    __shared__ double pmx[4]; 
+    __shared__ double pmt[4]; 
+
+    const unsigned int _idx = blockIdx.x*blockDim.x + threadIdx.x; 
+    if (threadIdx.y < 3){pmx[threadIdx.y] = pmu[_idx][threadIdx.y];}
+    else {pmt[threadIdx.y] = 0;}
+
+    __syncthreads(); 
+    double xt = 0; 
+    if (threadIdx.y == 0){xt = px_(&pmx[0], &pmx[2]);}
+    if (threadIdx.y == 1){xt = py_(&pmx[0], &pmx[2]);}
+    if (threadIdx.y == 2){xt = pz_(&pmx[0], &pmx[1]);}
+    pmt[threadIdx.y] = xt*xt;
+    __syncthreads(); 
+
+    if (threadIdx.y == 3){xt = _sqrt(_sum(pmt, 3));} 
+    pmc[_idx][threadIdx.y] = xt; 
 }
 
 
 template <typename scalar_t> 
 __global__ void PtK(
-    const torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> px, 
-    const torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> py, 
-    torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> pt, 
-    const unsigned int dx
+    const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> px, 
+    const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> py, 
+          torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pt
 ){
     const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
-    if (idx < dx){ pt[idx] = pt_(&px[idx], &py[idx]); }
-}
-
-template <typename scalar_t> 
-__global__ void EtaK(
-    const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmc, 
-    torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> eta, 
-    const unsigned int dx
-){
-    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
-    if (idx < dx){ eta[idx] = eta_(&pmc[idx][0], &pmc[idx][1], &pmc[idx][2]); }
+    pt[idx][0] = pt_(&px[idx][0], &py[idx][0]);
 }
 
 template <typename scalar_t> 
 __global__ void PhiK(
-    const torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> px, 
-    const torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> py, 
-    torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> phi, 
-    const unsigned int dx
+    const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> px, 
+    const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> py, 
+          torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> phi
 ){
     const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
-    if (idx < dx){ phi[idx] = phi_( &px[idx], &py[idx]); }
+    phi[idx][0] = phi_(&px[idx][0], &py[idx][0]);
 }        
+
+
+template <typename scalar_t> 
+__global__ void EtaK(
+    const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmc, 
+          torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> eta
+){
+    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    eta[idx][0] = eta_(&pmc[idx][0], &pmc[idx][1], &pmc[idx][2]);
+}
 
 template <typename scalar_t>
 __global__ void PtEtaPhiK(
-    torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmc, 
-    torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmu,
-    const unsigned int dx)
-{
-    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
-    if ((idx >= dx) + (blockIdx.y > 1)){return;}
-    if (blockIdx.y == 0){pmu[idx][2] = phi_(&pmc[idx][0], &pmc[idx][1]); return;}
-    scalar_t data = pt_(&pmc[idx][0], &pmc[idx][1]); 
-    pmu[idx][1] = eta_(&data, &pmc[idx][2]); 
-    pmu[idx][0] = data;
+    const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmc, 
+          torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmu
+){
+    extern __shared__ double pmx[]; 
+
+    const unsigned int _idx = blockIdx.x*blockDim.x + threadIdx.x; 
+    pmx[threadIdx.y] = pmc[_idx][threadIdx.y]; 
+    __syncthreads(); 
+
+    double rx = 0; 
+    if (threadIdx.y == 0){rx = pt_(&pmx[0], &pmx[1]);}
+    else if (threadIdx.y == 1){
+        rx = pt_(&pmx[0], &pmx[1]); 
+        rx = eta_(&rx, &pmx[2]); 
+    }
+    else if (threadIdx.y == 2){rx = phi_(&pmx[0], &pmx[1]);}
+    else {rx = pmx[threadIdx.y];}
+    pmu[_idx][threadIdx.y] = rx; 
 } 
 
 template <typename scalar_t>
 __global__ void PtEtaPhiEK(
-    torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmc, 
-    torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmu,
-    const unsigned int dx
+    const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmc, 
+          torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pmu
 ){
-    const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
-    const unsigned int idy = blockIdx.y; 
-    if ((idx >= dx) + (idy > 2)){return;}
-    if (idy == 0){pmu[idx][2] = phi_(&pmc[idx][0], &pmc[idx][1]); return;}
-    else if (idy == 1){pmu[idx][3] = pmc[idx][3]; return; }
-    scalar_t data = pt_(&pmc[idx][0], &pmc[idx][1]);
-    pmu[idx][1]   = eta_(&data, &pmc[idx][2]); 
-    pmu[idx][0]   = data;
+    __shared__ double pmx[4]; 
+    __shared__ double pmt[4]; 
+
+    const unsigned int _idx = blockIdx.x*blockDim.x + threadIdx.x; 
+    double rx = 0; 
+    if (threadIdx.y < 3){rx = pmc[_idx][threadIdx.y];}
+    pmx[threadIdx.y] = rx; 
+    pmt[threadIdx.y] = rx*rx;  
+    __syncthreads(); 
+
+    if (threadIdx.y == 0){rx =  pt_(&pmx[0], &pmx[1]);}
+    else if (threadIdx.y == 1){
+        rx = pt_(&pmx[0], &pmx[1]); 
+        rx = eta_(&rx, &pmx[2]); 
+    }
+    else if (threadIdx.y == 2){rx = phi_(&pmx[0], &pmx[1]);}
+    else {rx = _sqrt(_sum(pmt, 3));}
+    pmu[_idx][threadIdx.y] = rx; 
 }
 

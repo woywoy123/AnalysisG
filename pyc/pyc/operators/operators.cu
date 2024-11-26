@@ -139,10 +139,10 @@ torch::Tensor operators_::RT(torch::Tensor* pmc, torch::Tensor* phi, torch::Tens
     torch::Tensor out = torch::zeros({dx, 3, 3}, MakeOp(theta));
     AT_DISPATCH_ALL_TYPES(theta -> scalar_type(), "RT", [&]{
         _rt<scalar_t><<<blk, thd>>>(
-                pmc -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
-                phi -> packed_accessor64<scalar_t, 1, torch::RestrictPtrTraits>(),
+                  pmc -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
+                  phi -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
                 theta -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
-                out.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>()); 
+                     out.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>()); 
     }); 
     return out; 
 }

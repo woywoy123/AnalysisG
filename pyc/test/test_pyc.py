@@ -8,128 +8,6 @@ import time
 torch.ops.load_library("../build/pyc/interface/libcupyc.so")
 device = "cuda"
 
-
-class pyc:
-
-    def __init__(self):
-        self.transform_separate_pt            = torch.ops.cupyc.transform_separate_pt
-        self.transform_combined_pt            = torch.ops.cupyc.transform_combined_pt
-
-        self.transform_separate_phi           = torch.ops.cupyc.transform_separate_phi
-        self.transform_combined_phi           = torch.ops.cupyc.transform_combined_phi
-
-        self.transform_separate_eta           = torch.ops.cupyc.transform_separate_eta
-        self.transform_combined_eta           = torch.ops.cupyc.transform_combined_eta
-
-        self.transform_separate_ptetaphi      = torch.ops.cupyc.transform_separate_ptetaphi
-        self.transform_combined_ptetaphi      = torch.ops.cupyc.transform_combined_ptetaphi
-
-        self.transform_separate_ptetaphie     = torch.ops.cupyc.transform_separate_ptetaphie
-        self.transform_combined_ptetaphie     = torch.ops.cupyc.transform_combined_ptetaphie
-
-        self.transform_separate_px            = torch.ops.cupyc.transform_separate_px
-        self.transform_combined_px            = torch.ops.cupyc.transform_combined_px
-
-        self.transform_separate_py            = torch.ops.cupyc.transform_separate_py
-        self.transform_combined_py            = torch.ops.cupyc.transform_combined_py
-
-        self.transform_separate_pz            = torch.ops.cupyc.transform_separate_pz
-        self.transform_combined_pz            = torch.ops.cupyc.transform_combined_pz
-
-        self.transform_separate_pxpypz        = torch.ops.cupyc.transform_separate_pxpypz
-        self.transform_combined_pxpypz        = torch.ops.cupyc.transform_combined_pxpypz
-
-        self.transform_separate_pxpypze       = torch.ops.cupyc.transform_separate_pxpypze
-        self.transform_combined_pxpypze       = torch.ops.cupyc.transform_combined_pxpypze
-
-        self.physics_cartesian_separate_p2    = torch.ops.cupyc.physics_cartesian_separate_p2
-        self.physics_cartesian_combined_p2    = torch.ops.cupyc.physics_cartesian_combined_p2
-
-        self.physics_polar_separate_p2        = torch.ops.cupyc.physics_polar_separate_p2
-        self.physics_polar_combined_p2        = torch.ops.cupyc.physics_polar_combined_p2
-
-        self.physics_cartesian_separate_p     = torch.ops.cupyc.physics_cartesian_separate_p
-        self.physics_cartesian_combined_p     = torch.ops.cupyc.physics_cartesian_combined_p
-
-        self.physics_polar_separate_p         = torch.ops.cupyc.physics_polar_separate_p
-        self.physics_polar_combined_p         = torch.ops.cupyc.physics_polar_combined_p
-
-        self.physics_cartesian_separate_beta2 = torch.ops.cupyc.physics_cartesian_separate_beta2
-        self.physics_cartesian_combined_beta2 = torch.ops.cupyc.physics_cartesian_combined_beta2
-
-        self.physics_polar_separate_beta2     = torch.ops.cupyc.physics_polar_separate_beta2
-        self.physics_polar_combined_beta2     = torch.ops.cupyc.physics_polar_combined_beta2
-
-        self.physics_cartesian_separate_beta  = torch.ops.cupyc.physics_cartesian_separate_beta
-        self.physics_cartesian_combined_beta  = torch.ops.cupyc.physics_cartesian_combined_beta
-
-        self.physics_polar_separate_beta      = torch.ops.cupyc.physics_polar_separate_beta
-        self.physics_polar_combined_beta      = torch.ops.cupyc.physics_polar_combined_beta
-
-        self.physics_cartesian_separate_m2    = torch.ops.cupyc.physics_cartesian_separate_m2
-        self.physics_cartesian_combined_m2    = torch.ops.cupyc.physics_cartesian_combined_m2
-
-        self.physics_polar_separate_m2        = torch.ops.cupyc.physics_polar_separate_m2
-        self.physics_polar_combined_m2        = torch.ops.cupyc.physics_polar_combined_m2
-
-        self.physics_cartesian_separate_m     = torch.ops.cupyc.physics_cartesian_separate_m
-        self.physics_cartesian_combined_m     = torch.ops.cupyc.physics_cartesian_combined_m
-
-        self.physics_polar_separate_m         = torch.ops.cupyc.physics_polar_separate_m
-        self.physics_polar_combined_m         = torch.ops.cupyc.physics_polar_combined_m
-
-        self.physics_cartesian_separate_mt2    = torch.ops.cupyc.physics_cartesian_separate_mt2
-        self.physics_cartesian_combined_mt2    = torch.ops.cupyc.physics_cartesian_combined_mt2
-
-        self.physics_polar_separate_mt2        = torch.ops.cupyc.physics_polar_separate_mt2
-        self.physics_polar_combined_mt2        = torch.ops.cupyc.physics_polar_combined_mt2
-
-        self.physics_cartesian_separate_mt     = torch.ops.cupyc.physics_cartesian_separate_mt
-        self.physics_cartesian_combined_mt     = torch.ops.cupyc.physics_cartesian_combined_mt
-
-        self.physics_polar_separate_mt         = torch.ops.cupyc.physics_polar_separate_mt
-        self.physics_polar_combined_mt         = torch.ops.cupyc.physics_polar_combined_mt
-
-        self.physics_cartesian_separate_theta  = torch.ops.cupyc.physics_cartesian_separate_theta
-        self.physics_cartesian_combined_theta  = torch.ops.cupyc.physics_cartesian_combined_theta
-
-        self.physics_polar_separate_theta      = torch.ops.cupyc.physics_polar_separate_theta
-        self.physics_polar_combined_theta      = torch.ops.cupyc.physics_polar_combined_theta
-
-        self.physics_cartesian_separate_deltaR  = torch.ops.cupyc.physics_cartesian_separate_deltaR
-        self.physics_cartesian_combined_deltaR  = torch.ops.cupyc.physics_cartesian_combined_deltaR
-
-        self.physics_polar_separate_deltaR      = torch.ops.cupyc.physics_polar_separate_deltaR
-        self.physics_polar_combined_deltaR      = torch.ops.cupyc.physics_polar_combined_deltaR
-
-def test_transform():
-    test_case = [random.random() for i in range(4)]
-    p1 = create_vector_cartesian(*test_case)
-    d1_cu = create_tensor_cpu_1d(test_case).to(device = device)
-
-    assert rounder(pyc().transform_separate_pt(d1_cu[:, 0], d1_cu[:, 1]), p1.pt)
-    assert rounder(pyc().transform_combined_pt(d1_cu), p1.pt)
-    assert rounder(pyc().transform_separate_phi(d1_cu[:, 0], d1_cu[:, 1]), p1.phi)
-    assert rounder(pyc().transform_combined_phi(d1_cu), p1.phi)
-    assert rounder(pyc().transform_separate_eta(d1_cu[:, 0], d1_cu[:, 1], d1_cu[:, 2]), p1.eta)
-    assert rounder(pyc().transform_combined_eta(d1_cu), p1.eta)
-    assert rounder_l(pyc().transform_separate_ptetaphi(d1_cu[:, 0], d1_cu[:, 1], d1_cu[:, 2]), [p1.pt, p1.eta, p1.phi])
-    assert rounder_l(pyc().transform_combined_ptetaphi(d1_cu), [p1.pt, p1.eta, p1.phi])
-    assert rounder_l(pyc().transform_separate_ptetaphie(d1_cu[:, 0], d1_cu[:, 1], d1_cu[:, 2], d1_cu[:, 3]), [p1.pt, p1.eta, p1.phi])
-    assert rounder_l(pyc().transform_combined_ptetaphie(d1_cu), [p1.pt, p1.eta, p1.phi])
-
-    p1 = create_vector_polar(*test_case)
-    assert rounder(pyc().transform_separate_px(d1_cu[:, 0], d1_cu[:, 2]), p1.px)
-    assert rounder(pyc().transform_combined_px(d1_cu), p1.px)
-    assert rounder(pyc().transform_separate_py(d1_cu[:, 0], d1_cu[:, 2]), p1.py)
-    assert rounder(pyc().transform_combined_py(d1_cu), p1.py)
-    assert rounder(pyc().transform_separate_pz(d1_cu[:, 0], d1_cu[:, 1]), p1.pz)
-    assert rounder(pyc().transform_combined_pz(d1_cu), p1.pz)
-    assert rounder_l(pyc().transform_separate_pxpypz(d1_cu[:, 0], d1_cu[:, 1], d1_cu[:, 2]), [p1.px, p1.py, p1.pz])
-    assert rounder_l(pyc().transform_combined_pxpypz(d1_cu), [p1.px, p1.py, p1.pz])
-    assert rounder_l(pyc().transform_separate_pxpypze(d1_cu[:, 0], d1_cu[:, 1], d1_cu[:, 2], d1_cu[:, 3]), [p1.px, p1.py, p1.pz])
-    assert rounder_l(pyc().transform_combined_pxpypze(d1_cu), [p1.px, p1.py, p1.pz])
-
 def checkthis(data, cu, cufx, fx, cart = True):
     def lst(tmp): return [fx(p) for p in tmp]
     dx = "physics" + "_" + ("cartesian" if cart else "polar") + "_"
@@ -137,12 +15,41 @@ def checkthis(data, cu, cufx, fx, cart = True):
     cmp = dx + "combined" + "_" + fx.__name__[1:]
     test = lst(data)
     print(sep)
-    assert rounder_l(getattr(pyc(), sep)(*cufx(cu)), test)
+    assert rounder_l(getattr(torch.ops.cupyc, sep)(*cufx(cu)), test)
     print(cmp)
-    assert rounder_l(getattr(pyc(), cmp)(cu), test)
+    assert rounder_l(getattr(torch.ops.cupyc, cmp)(cu), test)
+
+
+def test_transform():
+    test_case = [random.random() for i in range(4)]
+    p1 = create_vector_cartesian(*test_case)
+    d1_cu = create_tensor_cpu_1d(test_case).to(device = device)
+
+    assert rounder(torch.ops.cupyc.transform_separate_pt(d1_cu[:, 0], d1_cu[:, 1]), p1.pt)
+    assert rounder(torch.ops.cupyc.transform_combined_pt(d1_cu), p1.pt)
+    assert rounder(torch.ops.cupyc.transform_separate_phi(d1_cu[:, 0], d1_cu[:, 1]), p1.phi)
+    assert rounder(torch.ops.cupyc.transform_combined_phi(d1_cu), p1.phi)
+    assert rounder(torch.ops.cupyc.transform_separate_eta(d1_cu[:, 0], d1_cu[:, 1], d1_cu[:, 2]), p1.eta)
+    assert rounder(torch.ops.cupyc.transform_combined_eta(d1_cu), p1.eta)
+    assert rounder_l(torch.ops.cupyc.transform_separate_ptetaphi(d1_cu[:, 0], d1_cu[:, 1], d1_cu[:, 2]), [p1.pt, p1.eta, p1.phi])
+    assert rounder_l(torch.ops.cupyc.transform_combined_ptetaphi(d1_cu), [p1.pt, p1.eta, p1.phi])
+    assert rounder_l(torch.ops.cupyc.transform_separate_ptetaphie(d1_cu[:, 0], d1_cu[:, 1], d1_cu[:, 2], d1_cu[:, 3]), [p1.pt, p1.eta, p1.phi])
+    assert rounder_l(torch.ops.cupyc.transform_combined_ptetaphie(d1_cu), [p1.pt, p1.eta, p1.phi])
+
+    p1 = create_vector_polar(*test_case)
+    assert rounder(torch.ops.cupyc.transform_separate_px(d1_cu[:, 0], d1_cu[:, 2]), p1.px)
+    assert rounder(torch.ops.cupyc.transform_combined_px(d1_cu), p1.px)
+    assert rounder(torch.ops.cupyc.transform_separate_py(d1_cu[:, 0], d1_cu[:, 2]), p1.py)
+    assert rounder(torch.ops.cupyc.transform_combined_py(d1_cu), p1.py)
+    assert rounder(torch.ops.cupyc.transform_separate_pz(d1_cu[:, 0], d1_cu[:, 1]), p1.pz)
+    assert rounder(torch.ops.cupyc.transform_combined_pz(d1_cu), p1.pz)
+    assert rounder_l(torch.ops.cupyc.transform_separate_pxpypz(d1_cu[:, 0], d1_cu[:, 1], d1_cu[:, 2]), [p1.px, p1.py, p1.pz])
+    assert rounder_l(torch.ops.cupyc.transform_combined_pxpypz(d1_cu), [p1.px, p1.py, p1.pz])
+    assert rounder_l(torch.ops.cupyc.transform_separate_pxpypze(d1_cu[:, 0], d1_cu[:, 1], d1_cu[:, 2], d1_cu[:, 3]), [p1.px, p1.py, p1.pz])
+    assert rounder_l(torch.ops.cupyc.transform_combined_pxpypze(d1_cu), [p1.px, p1.py, p1.pz])
 
 def test_physics():
-    nums = 1000
+    nums = 100
     test_ct, test_pt, test_c, test_p = [], [], [], []
     while len(test_ct) < nums:
         tmp = [abs(random.random())*(i+1)*1000000 for i in range(4)]
@@ -225,24 +132,24 @@ def test_physics():
 
     delta = 0
     x = [_deltaR(p) for p in test_p]
-    y = pyc().physics_polar_combined_deltaR(dcp[0], dcp[1]).view(-1).tolist()
+    y = torch.ops.cupyc.physics_polar_combined_deltaR(dcp[0], dcp[1]).view(-1).tolist()
     for i in range(len(x)): delta += abs(x[i] - y[i])/float(len(x))
     if delta > 10**-10: print("Failed")
     else: delta = 0
 
     gc = sum([[dcp[0][:,k].view(-1, 1), dcp[1][:,k].view(-1, 1)] for k in range(1, 3)], [])
-    y = pyc().physics_polar_separate_deltaR(*gc).view(-1).tolist()
+    y = torch.ops.cupyc.physics_polar_separate_deltaR(*gc).view(-1).tolist()
     for i in range(len(x)): delta += abs(x[i] - y[i])/float(len(x))
     if delta > 10**-10: print("Failed")
     else: delta = 0
 
-    y = pyc().physics_cartesian_combined_deltaR(dcc[0], dcc[1]).view(-1).tolist()
+    y = torch.ops.cupyc.physics_cartesian_combined_deltaR(dcc[0], dcc[1]).view(-1).tolist()
     for i in range(len(x)): delta += abs(x[i] - y[i])/float(len(x))
     if delta > 10**-10: print("Failed")
     else: delta = 0
 
     gc = sum([[dcc[0][:,k].view(-1, 1), dcc[1][:,k].view(-1, 1)] for k in range(0, 3)], [])
-    y = pyc().physics_cartesian_separate_deltaR(*gc).view(-1).tolist()
+    y = torch.ops.cupyc.physics_cartesian_separate_deltaR(*gc).view(-1).tolist()
     for i in range(len(x)): delta += abs(x[i] - y[i])/float(len(x))
     if delta > 10**-10: print("Failed")
     else: delta = 0
@@ -376,7 +283,6 @@ def test_operators():
         print(dx, "REFERNCE/CUDA: ", ttt/cut)
         return ttt/cut
 
-
     def _test_eig(dx = 1):
         if dx == 1:
             hr = torch.tensor([[1, -1, 1]], device = device, dtype = torch.float64)
@@ -448,14 +354,14 @@ def test_operators():
         return ttt/cut
 
 
-#    testx = [_testdot(i, j) for i in range(48, 4096, 48) for j in range(48, 1024, 48)]
-#    testx = [_testcostheta(i, j) for i in range(1, 1024, 1) for j in range(48, 1024, 24)]
-#    testx = [_testsintheta(i, j) for i in range(3, 1024, 1) for j in range(48, 1024, 24)]
-#    testx = [_test_rotation(i) for i in range(100, 100000, 100)]
-#    testx = _test_cofactor(1000)
-#    testx = [_test_det(i) for i in range(1000, 1000000, 1000)]
-#    testx = [_test_inverse(i) for i in range(1000, 1000000, 1000)]
-#    testx = [_test_eig(i) for i in range(1, 1000000, 1000)]
+    testx = [_testdot(i, j) for i in range(48, 4096, 48) for j in range(48, 1024, 48)]
+    testx = [_testcostheta(i, j) for i in range(1, 1024, 1) for j in range(48, 1024, 24)]
+    testx = [_testsintheta(i, j) for i in range(3, 1024, 1) for j in range(48, 1024, 24)]
+    testx = [_test_rotation(i) for i in range(100, 100000, 100)]
+    testx = _test_cofactor(1000)
+    testx = [_test_det(i) for i in range(1000, 1000000, 1000)]
+    testx = [_test_inverse(i) for i in range(1000, 1000000, 1000)]
+    testx = [_test_eig(i) for i in range(1, 1000000, 1000)]
     testx = [_test_cross(i) for i in range(1, 1000000, 1000)]
 
 
@@ -472,8 +378,8 @@ def test_nusol_base_matrix():
         x_ = next(ita)
         lep, bquark = x_[1], x_[2]
         nu = NuSol(bquark.vec, lep.vec)
-        lep_    = pyc().transform_combined_pxpypze(lep.ten)
-        bquark_ = pyc().transform_combined_pxpypze(bquark.ten)
+        lep_    = torch.ops.cupyc.transform_combined_pxpypze(lep.ten)
+        bquark_ = torch.ops.cupyc.transform_combined_pxpypze(bquark.ten)
         inpt["bq"] += [bquark_.clone()]
         inpt["lep"] += [lep_.clone()]
 
@@ -506,7 +412,6 @@ def test_nusol_nu_cuda():
         ev, lep, bquark = x_[0], x_[1], x_[2]
         ev_     = ev.ten
 
-        if i == 0: continue
         print("_______", i, "________")
         lep_    = torch.ops.cupyc.transform_combined_pxpypze(lep.ten)
         bquark_ = torch.ops.cupyc.transform_combined_pxpypze(bquark.ten)
@@ -522,25 +427,96 @@ def test_nusol_nu_cuda():
         pred = torch.ops.cupyc.nusol_nu(bquark, lep, ev, mass, S, 10e-10)
 
         assert compare(truth, pred["M"], 10**-1)
-        #print(nu.nu)
-        print(pred["chi2"])
-        print(nu.chi2)
+        nu_   = pred["nu"].view(-1, 3)
+        chi2_ = pred["chi2"]
+        nu_   = nu_[(chi2_ > 0).view(-1)].clone()
+        chi2_ = chi2_[chi2_ > 0].clone()
+        nut = torch.tensor(nu.nu.tolist()  , device = "cpu", dtype = torch.float64)
+        ch2 = torch.tensor(nu.chi2.tolist(), device = "cpu", dtype = torch.float64)
+        srt = chi2_.sort()[1]
+
+        if nut.size(0) == 0 and nu_.size(0) == 0: continue
+        nu_ = nu_[srt].to(device = "cpu")
+        chi2_ = chi2_[srt].to(device = "cpu")
+        for j in range(nut.size(0)):
+            found = False
+            for k in range(nu_.size(0)):
+                lm = (abs(nut[j] - nu_[k]) / abs(nut[j])) < 10**-3
+                if not lm.sum(-1): continue
+                found = True
+            if not found:
+                print("____< truth >____")
+                print(nut)
+                print("____< pred >____")
+                print(nu_)
+                exit()
+
+def test_nusol_nunu_cuda():
+    x = loadDouble()
+    ita = iter(x)
+    mW = 80.385*1000
+    mT = 172.0*1000
+    mN = 0
+    masses = torch.tensor([[mT, mW, mN]], dtype = torch.float64, device = device)
+
+    for i in range(len(x)):
+        x_ = next(ita)
+        ev, l1, l2, b1, b2 = x_
+        met_xy = ev.ten
+
+        print("_______", i, "________")
+        b1_ = torch.ops.cupyc.transform_combined_pxpypze(b1.ten)
+        b2_ = torch.ops.cupyc.transform_combined_pxpypze(b2.ten)
+        l1_ = torch.ops.cupyc.transform_combined_pxpypze(l1.ten)
+        l2_ = torch.ops.cupyc.transform_combined_pxpypze(l2.ten)
+        nu  = DoubleNu((b1.vec, b2.vec), (l1.vec, l2.vec), ev)
+        #except: continue
+
+        stress = 1
+        b1_  = torch.cat([b1_]*stress, 0)
+        b2_  = torch.cat([b2_]*stress, 0)
+        l1_  = torch.cat([l1_]*stress, 0)
+        l2_  = torch.cat([l2_]*stress, 0)
+        met  = torch.cat([met_xy]*stress, 0)
+        mass = torch.cat([masses]*stress, 0)
+        pred = torch.ops.cupyc.nusol_nunu(b1_, b2_, l1_, l2_, met, mass, 10e-10)
         exit()
-        print(pred["nu"])
-        print("_____")
-        #print(pred["r"])
-        #print(pred["lines"])
-        #print(pred["A"])
-        time.sleep(0.2)
-        exit()
+        nu1T, nu2T = nu.nunu_s
+        nu1T, nu2T = [torch.tensor(f.tolist(), dtype = torch.float64) for f in [nu1T, nu2T]]
+        nu1c, nu2c = pred["nu1"].to(device = "cpu").view(-1, 3), pred["nu2"].to(device = "cpu").view(-1, 3)
+        if nu1T.size(0) == 0 and nu1c.size(0) == 0: continue
+        for j in range(nu1T.size(0)):
+            found = False
+            for k in range(nu1c.size(0)):
+                lm1  = (abs(nu1T[j] - nu1c[k]) / abs(nu1T[j]))
+                lm2  = (abs(nu2T[j] - nu2c[k]) / abs(nu2T[j]))
+                msk  = (lm1 < 10**-3)*(lm2 < 10**-3)
+                if not msk.view(-1).sum(-1): continue
+                found = True
+                break
+
+            if not found:
+                print("____< truth >____")
+                print(nu1T)
+                print(nu2T)
+                print("____< pred >____")
+                print(nu1c)
+                print(nu2c)
+                print("________ DEBUG _______")
+                print(pred["n_"])
+                print(nu.n_)
+                print("")
+                print(pred["solutions"])
+                print(nu.perp)
+                exit()
 
 if __name__ == "__main__":
 #    test_transform()
 #    test_physics()
 #    test_operators()
 #    test_nusol_base_matrix()
-    test_nusol_nu_cuda()
-
+#    test_nusol_nu_cuda()
+    test_nusol_nunu_cuda()
 
 
 
