@@ -1,5 +1,6 @@
 #ifndef CU_NUSOL_DEVICE_H
 #define CU_NUSOL_DEVICE_H
+#include <atomic/cuatomic.cuh>
 
 struct nusol {
     double cos, sin;
@@ -19,7 +20,7 @@ struct nusol {
     nusol() = default; 
 }; 
 
-__device__ void _makeNuSol(nusol* sl){
+__device__ __forceinline__ void _makeNuSol(nusol* sl){
     double b2l = sl -> betas[0]; 
 
     for (size_t x(0); x < 3; ++x){sl -> masses[x] = pow(sl -> masses[x], 2);}
@@ -53,13 +54,13 @@ __device__ void _makeNuSol(nusol* sl){
 }
 
 
-__device__ double _krot(nusol* sl, const unsigned int _iky, const unsigned int _ikz){
+__device__ __forceinline__ double _krot(nusol* sl, const unsigned int _iky, const unsigned int _ikz){
     double r = ((_ikz < 2)*(_iky < 2) + (_ikz == _iky)) > 0; 
     r *= (_ikz == _iky)*sl -> cos + (_iky - _ikz)*sl -> sin;
     return r; 
 }
 
-__device__ double _amu(nusol* sl, const unsigned int _iky, const unsigned int _ikz){
+__device__ __forceinline__ double _amu(nusol* sl, const unsigned int _iky, const unsigned int _ikz){
     bool ii = (_ikz == _iky); 
 
     double b2 = pow(sl -> betas[0], 2);
@@ -70,7 +71,7 @@ __device__ double _amu(nusol* sl, const unsigned int _iky, const unsigned int _i
     return val; 
 }
 
-__device__ double _abq(nusol* sl, const unsigned int _iky, const unsigned int _ikz){
+__device__ __forceinline__ double _abq(nusol* sl, const unsigned int _iky, const unsigned int _ikz){
     bool ii = (_ikz == _iky); 
 
     double val = ii*(_iky == 0)*(1 - pow(sl -> betas[1], 2));
@@ -83,7 +84,7 @@ __device__ double _abq(nusol* sl, const unsigned int _iky, const unsigned int _i
 
 // ---- Htilde -----
 // [Z/o, 0, x1 - P_l], [w * Z / o, 0, y1], [0, Z, 0]
-__device__ double _htilde(nusol* sl, const unsigned int _iky, const unsigned int _ikz){
+__device__ __forceinline__ double _htilde(nusol* sl, const unsigned int _iky, const unsigned int _ikz){
     double z_div_o = _sqrt( &sl -> o2 ); 
     z_div_o = (sl -> z) * _div(&z_div_o); 
 
@@ -96,7 +97,7 @@ __device__ double _htilde(nusol* sl, const unsigned int _iky, const unsigned int
 }
 
 
-__device__ double _case1(double G[3][3], const unsigned int _idy, const unsigned int _idz){
+__device__ __forceinline__ double _case1(double G[3][3], const unsigned int _idy, const unsigned int _idz){
     if (_idy == 0 && _idz == 0){return G[0][1];}
     if (_idy == 0 && _idz == 2){return G[1][2];}
     if (_idy == 1 && _idz == 1){return G[0][1];}
@@ -104,7 +105,7 @@ __device__ double _case1(double G[3][3], const unsigned int _idy, const unsigned
     return 0; 
 }
 
-__device__ double _case2(double G[3][3], const unsigned int _idy, const unsigned int _idz, bool swpXY){
+__device__ __forceinline__ double _case2(double G[3][3], const unsigned int _idy, const unsigned int _idz, bool swpXY){
     if (!swpXY){return G[_idy][_idz];}
     if (_idy == 0 && _idz == 0){return G[1][1];}
     if (_idy == 0 && _idz == 1){return G[1][0];}
@@ -120,7 +121,7 @@ __device__ double _case2(double G[3][3], const unsigned int _idy, const unsigned
     return 0; 
 }
 
-__device__ double _leqnulls(double coF[3][3], double Q[3][3], const unsigned int _idy, const unsigned int _idz){
+__device__ __forceinline__ double _leqnulls(double coF[3][3], double Q[3][3], const unsigned int _idy, const unsigned int _idz){
     if (_idy >= 2){return 0;}
     double q00 = -coF[0][0]; 
     if (q00 < 0){return 0;}
@@ -136,7 +137,7 @@ __device__ double _leqnulls(double coF[3][3], double Q[3][3], const unsigned int
     return 0; 
 }
 
-__device__ double _gnulls(double coF[3][3], double Q[3][3], const unsigned int _idy, const unsigned int _idz){
+__device__ __forceinline__ double _gnulls(double coF[3][3], double Q[3][3], const unsigned int _idy, const unsigned int _idz){
     if (_idy >= 2){return 0;}
     double s22 = _sqrt(-coF[2][2]);
     double q22 = _div(coF[2][2]); 

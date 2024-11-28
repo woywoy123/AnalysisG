@@ -7,6 +7,7 @@ import time
 
 torch.ops.load_library("../build/pyc/interface/libcupyc.so")
 device = "cuda"
+torch.set_printoptions(threshold=10_000)
 
 def checkthis(data, cu, cufx, fx, cart = True):
     def lst(tmp): return [fx(p) for p in tmp]
@@ -469,8 +470,8 @@ def test_nusol_nunu_cuda():
         b2_ = torch.ops.cupyc.transform_combined_pxpypze(b2.ten)
         l1_ = torch.ops.cupyc.transform_combined_pxpypze(l1.ten)
         l2_ = torch.ops.cupyc.transform_combined_pxpypze(l2.ten)
-        nu  = DoubleNu((b1.vec, b2.vec), (l1.vec, l2.vec), ev)
-        #except: continue
+        try: nu  = DoubleNu((b1.vec, b2.vec), (l1.vec, l2.vec), ev)
+        except: continue
 
         stress = 1
         b1_  = torch.cat([b1_]*stress, 0)
@@ -480,7 +481,7 @@ def test_nusol_nunu_cuda():
         met  = torch.cat([met_xy]*stress, 0)
         mass = torch.cat([masses]*stress, 0)
         pred = torch.ops.cupyc.nusol_nunu(b1_, b2_, l1_, l2_, met, mass, 10e-10)
-        exit()
+
         nu1T, nu2T = nu.nunu_s
         nu1T, nu2T = [torch.tensor(f.tolist(), dtype = torch.float64) for f in [nu1T, nu2T]]
         nu1c, nu2c = pred["nu1"].to(device = "cpu").view(-1, 3), pred["nu2"].to(device = "cpu").view(-1, 3)
@@ -502,13 +503,77 @@ def test_nusol_nunu_cuda():
                 print("____< pred >____")
                 print(nu1c)
                 print(nu2c)
-                print("________ DEBUG _______")
-                print(pred["n_"])
-                print(nu.n_)
-                print("")
-                print(pred["solutions"])
-                print(nu.perp)
+                print(pred["distances"])
+                print(pred["passed"])
                 exit()
+
+
+
+def test_nusol_combinatorial_cuda():
+    mW = 80.385*1000
+    mT = 172.0*1000
+    t_pm = 0.95
+    w_pm = 0.95
+    step = 20
+    null = 1e-10
+    gev = False
+
+    batch = []
+    metxy = []
+    pid = []
+    src = []
+    dst = []
+    particles = []
+
+    tx = 0
+    nunu_ = loadDouble()
+    for i in iter(nunu_):
+        ev, l1, l2, b1, b2 = i
+        e_i         = len(particles)
+        particles  += [l1.ten, l2.ten, b1.ten, b2.ten]
+        pid        += [[1, 0], [1, 0], [0, 1], [0, 1]]
+        src        += [k for k in range(e_i, len(particles)) for _ in range(e_i, len(particles))]
+        dst        += [k for _ in range(e_i, len(particles)) for k in range(e_i, len(particles))]
+        metxy      += [ev.ten]
+        batch      += [tx]*4
+        tx         += 1
+        if tx == 2: break
+
+    #nu_   = loadSingle()
+    #for i in iter(nu_):
+    #    e_i         = len(particles)
+    #    particles  += [i[1].ten, i[2].ten, i[2].ten]
+    #    pid        += [[1, 0]  , [0, 1]  , [0, 1]  ]
+    #    src        += [k for k in range(e_i, len(particles)) for _ in range(e_i, len(particles))]
+    #    dst        += [k for _ in range(e_i, len(particles)) for k in range(e_i, len(particles))]
+    #    metxy      += [i[0].ten]
+    #    batch      += [tx]*3
+    #    tx         += 1
+    #    if tx == 6: break
+
+    print(batch)
+    pid        = torch.tensor(pid, device = "cuda")
+    batch      = torch.tensor(batch, device = "cuda")
+    edge_index = torch.tensor([src, dst], device = "cuda")
+    particles  = torch.ops.cupyc.transform_combined_pxpypze(torch.cat(particles, 0).to(device = "cuda"))
+    metxy      = torch.cat(metxy, 0).to(device = "cuda")
+    cmb = torch.ops.cupyc.nusol_combinatorial(edge_index, batch, particles, pid, metxy, mT, mW, t_pm, w_pm, 32, 1e-10, True)
+    print(cmb["distances"])
+    print(cmb)
+
+
+
+    #print(edge_index)
+    #print(cmb["b1"])
+    #print(cmb["b2"])
+    #print(cmb["l1"])
+    #print(cmb["l2"])
+    #print(cmb["nu1"])
+    #print(cmb["nu2"])
+    #print(cmb["masses"])
+    #print(cmb["distances"])
+
+
 
 if __name__ == "__main__":
 #    test_transform()
@@ -516,8 +581,8 @@ if __name__ == "__main__":
 #    test_operators()
 #    test_nusol_base_matrix()
 #    test_nusol_nu_cuda()
-    test_nusol_nunu_cuda()
-
+#    test_nusol_nunu_cuda()
+    test_nusol_combinatorial_cuda()
 
 
 
