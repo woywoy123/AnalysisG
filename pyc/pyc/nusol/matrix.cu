@@ -162,6 +162,7 @@ std::map<std::string, torch::Tensor> nusol_::BaseDebug(torch::Tensor* pmc_b, tor
     return out; 
 }
 
+template <size_t size_x>
 __global__ void _hmatrix(
         const torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> masses, 
         const torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> cosine, 
@@ -178,48 +179,46 @@ __global__ void _hmatrix(
         torch::PackedTensorAccessor64<double, 3, torch::RestrictPtrTraits> Hmatrix,
         torch::PackedTensorAccessor64<double, 3, torch::RestrictPtrTraits> H_perp,
         torch::PackedTensorAccessor64<double, 1, torch::RestrictPtrTraits> passed, 
-        unsigned int dx
+        const unsigned int dy, const unsigned int dx, const bool sm
 ){
-    __shared__ double rotT[3][3]; 
-    __shared__ double Htil[4][4];
+    __shared__ double rotT[size_x][3][3]; 
+    __shared__ double Htil[size_x][3][3];
+
+    const unsigned int idx  = threadIdx.x;
+    const unsigned int idy  = threadIdx.y;
+    const unsigned int idz  = threadIdx.z; 
 
     const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
-    const unsigned int _idy = blockIdx.y * blockDim.y + threadIdx.y; 
-    const unsigned int _idz = blockIdx.z * blockDim.z + threadIdx.z; 
-    const unsigned int _iky = (_idy * 4 + _idz)/4; 
-    const unsigned int _ikz = (_idy * 4 + _idz)%4; 
+    const unsigned int _lim = (dy*dx)*(!sm) + sm*dx; 
+    const unsigned int _ikx = _idx / ((!sm)*dy + sm);
+    const unsigned int _ikm = _idx % dy;  
+    if (_idx >= _lim){return;}
 
-    for (size_t t(0); t < dx; ++t){
-        const unsigned int dx_ = t + dx*_idx; 
+    nusol sl = nusol(); 
+    sl.cos = cosine[_ikx][0]; 
+    sl.betas[0] = b2l[_ikx][0]; 
+    sl.pmass[0] = m2l[_ikx][0]; 
 
-        nusol sl = nusol(); 
-        sl.cos = cosine[_idx][0]; 
-        sl.betas[0] = b2l[_idx][0]; 
-        sl.pmass[0] = m2l[_idx][0]; 
+    sl.betas[1] = b2b[_ikx][0]; 
+    sl.pmass[1] = m2b[_ikx][0]; 
+    for (size_t x(0); x < 4; ++x){
+        sl.pmu_b[x] = pmc_b[_ikx][x];
+        sl.pmu_l[x] = pmc_l[_ikx][x];
+    } 
+    sl.masses[0] = masses[_ikm][0];
+    sl.masses[1] = masses[_ikm][1]; 
+    sl.masses[2] = 0; 
 
-        sl.betas[1] = b2b[_idx][0]; 
-        sl.pmass[1] = m2b[_idx][0]; 
-        for (size_t x(0); x < 4; ++x){
-            sl.pmu_b[x] = pmc_b[_idx][x];
-            sl.pmu_l[x] = pmc_l[_idx][x];
-        } 
-        sl.masses[0] = masses[t][0];
-        sl.masses[1] = masses[t][1]; 
-        sl.masses[2] = 0; 
+    _makeNuSol(&sl); 
+    rotT[idx][idy][idz] = rt[_ikx][idy][idz];
+    Htil[idx][idy][idz] = _htilde(&sl, idy, idz);  
+    __syncthreads(); 
 
-        _makeNuSol(&sl); 
-        if (_iky < 3 && _ikz < 3){rotT[_iky][_ikz] = rt[_idx][_iky][_ikz];}
-        Htil[_iky][_ikz] = _htilde(&sl, _iky, _ikz);  
-        __syncthreads(); 
-        if (_iky < 3 && _ikz < 3){
-            double hx = _dot(rotT, Htil, _iky, _ikz, 3); 
-            Hmatrix[dx_][_iky][_ikz] = hx;
-            H_perp[dx_][_iky][_ikz] = (_iky < 2) ? hx : _ikz == 2; 
-        }
-        __syncthreads(); 
-        if (threadIdx.y || threadIdx.z){continue;}
-        passed[dx_] = sl.passed; 
-    }
+    double hx = _dot(rotT[idx], Htil[idx], idy, idz, 3); 
+    Hmatrix[_idx][idy][idz] = hx;
+    H_perp[_idx][idy][idz] = (idy < 2) ? hx : idz == 2; 
+    if (idy || idz){return;}
+    passed[_idx] = sl.passed; 
 }
 
 std::map<std::string, torch::Tensor> nusol_::BaseMatrix(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, torch::Tensor* masses){
@@ -237,15 +236,15 @@ std::map<std::string, torch::Tensor> nusol_::BaseMatrix(torch::Tensor* pmc_b, to
 
     const unsigned int dy = masses -> size({0}); 
     const unsigned int dx = pmc_b -> size({0}); 
-    const dim3 thd = dim3(1, 4, 4);
-    const dim3 blk = blk_(dx, 1, 4, 4, 4, 4); 
-
-    torch::Tensor HMatrix = torch::zeros({dx*dy, 3, 3}, MakeOp(pmc_mu)); 
-    torch::Tensor H_perp  = torch::zeros({dx*dy, 3, 3}, MakeOp(pmc_mu)); 
-    torch::Tensor passed  = torch::zeros({dx*dy}, MakeOp(pmc_mu)); 
+    const unsigned int px_ = (dy == dx) ? dx : dx * dy; 
+    const dim3 thd = dim3(64, 3, 3);
+    const dim3 blk = blk_(px_, 64, 3, 3, 3, 3); 
+    torch::Tensor HMatrix = torch::zeros({px_, 3, 3}, MakeOp(pmc_mu)); 
+    torch::Tensor H_perp  = torch::zeros({px_, 3, 3}, MakeOp(pmc_mu)); 
+    torch::Tensor passed  = torch::zeros({px_}, MakeOp(pmc_mu)); 
 
     AT_DISPATCH_ALL_TYPES(pmc_b -> scalar_type(), "BaseMatrix", [&]{
-        _hmatrix<<<blk, thd>>>(
+        _hmatrix<64><<<blk, thd>>>(
                 masses -> packed_accessor64<double, 2, torch::RestrictPtrTraits>(),
                      cthe.packed_accessor64<double, 2, torch::RestrictPtrTraits>(),
                        rt.packed_accessor64<double, 3, torch::RestrictPtrTraits>(),
@@ -261,8 +260,8 @@ std::map<std::string, torch::Tensor> nusol_::BaseMatrix(torch::Tensor* pmc_b, to
                 // ---------- outputs ---------- //
                  HMatrix.packed_accessor64<double, 3, torch::RestrictPtrTraits>(),
                   H_perp.packed_accessor64<double, 3, torch::RestrictPtrTraits>(),
-                  passed.packed_accessor64<double, 1, torch::RestrictPtrTraits>(),
-                  dy);
+                  passed.packed_accessor64<double, 1, torch::RestrictPtrTraits>(), 
+                  dy, dx, dy == dx);
     }); 
 
     std::map<std::string, torch::Tensor> out; 

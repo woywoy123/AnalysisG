@@ -1,5 +1,4 @@
 from random import random
-import pyc
 import torch
 
 def test_edge_feature_aggregation():
@@ -87,18 +86,18 @@ def test_edge_feature_aggregation():
         assert attest.sum(-1).sum(-1) == 0
 
 
-    x = pyc.Graph.Base.edge_aggregation(edge_index, edges_t, nodes, True)
+    x = torch.ops.cupyc.graph_edge_aggregation(edge_index, edges_t, nodes, True)
     compare(out, x)
 
     dev = "cuda" if torch.cuda.is_available() else "cpu"
     edge_index = edge_index.to(device = dev)
     edges_t = edges_t.to(device = dev)
     nodes = nodes.to(device = dev)
-    cu = pyc.Graph.Base.edge_aggregation(edge_index, edges_t, nodes, True)
+    cu = torch.ops.cupyc.graph_edge_aggregation(edge_index, edges_t, nodes, True)
     compare(out, cu)
 
     a, b, c, d = [nodes[:, i] for i in range(4)]
-    x = pyc.Graph.Cartesian.edge(edge_index, edges_t, a, b, c, d, True)
+    x = torch.ops.cupyc.graph_cartesian_edge(edge_index, edges_t, a, b, c, d, True)
     compare(out, x)
 
     x = pyc.Graph.Cartesian.edge(edge_index, edges_t, nodes, True)

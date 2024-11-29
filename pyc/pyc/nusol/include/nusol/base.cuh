@@ -13,17 +13,23 @@ namespace nusol_ {
     std::map<std::string, torch::Tensor> Intersection(torch::Tensor* A, torch::Tensor* B, double nulls); 
 
     std::map<std::string, torch::Tensor> Nu(
+            torch::Tensor* H, torch::Tensor* sigma, 
+            torch::Tensor* met_xy, double null
+    ); 
+
+    std::map<std::string, torch::Tensor> NuNu(
+            torch::Tensor* H1_, torch::Tensor* H1_inv, 
+            torch::Tensor* H2_, torch::Tensor* H2_inv, 
+            torch::Tensor* met_xy, double null
+    ); 
+
+    std::map<std::string, torch::Tensor> Nu(
             torch::Tensor* pmc_b , torch::Tensor* pmc_mu, torch::Tensor* met_xy, 
             torch::Tensor* masses, torch::Tensor* sigma , double null); 
 
     std::map<std::string, torch::Tensor> Nu(
             torch::Tensor* pmc_b , torch::Tensor* pmc_mu, torch::Tensor* met_xy, 
             torch::Tensor* sigma , double null, double massT, double massW); 
-
-    std::map<std::string, torch::Tensor> NuNu(
-            torch::Tensor* H1_, torch::Tensor* H1_inv, 
-            torch::Tensor* H2_, torch::Tensor* H2_inv, 
-            torch::Tensor* met_xy, double null); 
 
     std::map<std::string, torch::Tensor> NuNu(
             torch::Tensor* pmc_b1, torch::Tensor* pmc_b2, torch::Tensor* pmc_mu1, torch::Tensor* pmc_mu2,

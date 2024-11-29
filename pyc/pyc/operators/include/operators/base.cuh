@@ -186,60 +186,63 @@ __global__ void _rt(
 }
 
 
-template <typename scalar_t>
+template <typename scalar_t, size_t size_x>
 __global__ void _cofactor(
         const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> matrix,
         torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> out
 ){
-    __shared__ double mat[3][3]; 
+    __shared__ double mat[size_x][3][3]; 
     const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
-    mat[threadIdx.y][threadIdx.z] = matrix[_idx][threadIdx.y][threadIdx.z]; 
-    __syncthreads();
+    if (_idx >= matrix.size({0})){return;}
 
-    out[_idx][threadIdx.y][threadIdx.z] = _cofactor(mat, threadIdx.y, threadIdx.z);
+    mat[threadIdx.x][threadIdx.y][threadIdx.z] = matrix[_idx][threadIdx.y][threadIdx.z]; 
+    __syncthreads();
+    out[_idx][threadIdx.y][threadIdx.z] = _cofactor(mat[threadIdx.x], threadIdx.y, threadIdx.z);
 }
 
-template <typename scalar_t>
+template <typename scalar_t, size_t size_x>
 __global__ void _determinant(
         const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> matrix,
         torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> out
 ){
-    __shared__ double mat[3][3]; 
-    __shared__ double det[3][3];
+    __shared__ double mat[size_x][3][3]; 
+    __shared__ double det[size_x][3][3];
     const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
-    mat[threadIdx.y][threadIdx.z] = matrix[_idx][threadIdx.y][threadIdx.z]; 
+    if (_idx >= matrix.size({0})){return;}
+    mat[threadIdx.x][threadIdx.y][threadIdx.z] = matrix[_idx][threadIdx.y][threadIdx.z]; 
     __syncthreads();
 
-    double minor = _cofactor(mat, threadIdx.y, threadIdx.z); 
-    det[threadIdx.y][threadIdx.z] = minor * mat[threadIdx.y][threadIdx.z];
+    double minor = _cofactor(mat[threadIdx.x], threadIdx.y, threadIdx.z); 
+    det[threadIdx.x][threadIdx.y][threadIdx.z] = minor * mat[threadIdx.x][threadIdx.y][threadIdx.z];
 
     if (threadIdx.y || threadIdx.z){return;}
     __syncthreads(); 
-    out[_idx][0] = det[0][0] + det[0][1] + det[0][2];  
+    out[_idx][0] = det[threadIdx.x][0][0] + det[threadIdx.x][0][1] + det[threadIdx.x][0][2];  
 }
 
-template <typename scalar_t>
+template <typename scalar_t, size_t size_x>
 __global__ void _inverse(
         const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> matrix,
         torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> inv,
         torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> det
 ){
-    __shared__ double _mat[3][3];
-    __shared__ double _cof[3][3];  
-    __shared__ double _det[3][3];
+    __shared__ double _mat[size_x][3][3];
+    __shared__ double _cof[size_x][3][3];  
+    __shared__ double _det[size_x][3][3];
 
     const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
-    _mat[threadIdx.y][threadIdx.z] = matrix[_idx][threadIdx.y][threadIdx.z]; 
+    if (_idx >= matrix.size({0})){return;}
+    _mat[threadIdx.x][threadIdx.y][threadIdx.z] = matrix[_idx][threadIdx.y][threadIdx.z]; 
     __syncthreads();
 
-    double mx = _cofactor(_mat, threadIdx.y, threadIdx.z);
-    _cof[threadIdx.z][threadIdx.y] = mx;  // transpose cofactor matrix to get adjoint 
-    _det[threadIdx.y][threadIdx.z] = mx * _mat[threadIdx.y][threadIdx.z]; 
+    double mx = _cofactor(_mat[threadIdx.x], threadIdx.y, threadIdx.z);
+    _cof[threadIdx.x][threadIdx.z][threadIdx.y] = mx;  // transpose cofactor matrix to get adjoint 
+    _det[threadIdx.x][threadIdx.y][threadIdx.z] = mx * _mat[threadIdx.x][threadIdx.y][threadIdx.z]; 
     __syncthreads(); 
 
-    double _dt = _det[0][0] + _det[0][1] + _det[0][2];
+    double _dt = _det[threadIdx.x][0][0] + _det[threadIdx.x][0][1] + _det[threadIdx.x][0][2];
     if (!threadIdx.y && !threadIdx.z){det[_idx][0] = _dt;}
-    inv[_idx][threadIdx.y][threadIdx.z] = _cof[threadIdx.y][threadIdx.z]*_div(&_dt); 
+    inv[_idx][threadIdx.y][threadIdx.z] = _cof[threadIdx.x][threadIdx.y][threadIdx.z]*_div(&_dt); 
 }
 
 template <typename scalar_t>

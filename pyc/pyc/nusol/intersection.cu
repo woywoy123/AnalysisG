@@ -3,52 +3,55 @@
 #include <cutils/utils.cuh>
 #include <operators/operators.cuh>
 
-template <typename scalar_t>
+template <size_t size_x>
 __global__ void _swapAB(
-        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> inv_A_dot_B,
-        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> A,
-        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> B,
-        torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> detA, 
-        torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> detB
+        torch::PackedTensorAccessor64<double, 3, torch::RestrictPtrTraits> inv_A_dot_B,
+        torch::PackedTensorAccessor64<double, 3, torch::RestrictPtrTraits> A,
+        torch::PackedTensorAccessor64<double, 3, torch::RestrictPtrTraits> B,
+        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> detA, 
+        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> detB
 ){
 
-    __shared__ double A_[3][3]; 
-    __shared__ double B_[3][3]; 
+    __shared__ double A_[size_x][3][3]; 
+    __shared__ double B_[size_x][3][3]; 
 
-    __shared__ double _cofA[3][3];  
-    __shared__ double _detA[3][3];
-    __shared__ double _InvA[3][3]; 
+    __shared__ double _cofA[size_x][3][3];  
+    __shared__ double _detA[size_x][3][3];
+    __shared__ double _InvA[size_x][3][3]; 
 
     const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
-    A_[threadIdx.y][threadIdx.z]  = A[_idx][threadIdx.y][threadIdx.z]; 
-    B_[threadIdx.y][threadIdx.z]  = B[_idx][threadIdx.y][threadIdx.z]; 
+    const unsigned int idx = threadIdx.x; 
+    const unsigned int idy = threadIdx.y; 
+    const unsigned int idz = threadIdx.z; 
+    if (_idx >= detB.size({0})){return;}
+
+    A_[idx][idy][idz] = A[_idx][idy][idz]; 
+    B_[idx][idy][idz] = B[_idx][idy][idz]; 
 
     // ----- swap if abs(det(B)) > abs(det(A)) -------- //
     bool swp = abs(detB[_idx][0]) > abs(detA[_idx][0]); 
-    double a_ = (!swp)*A_[threadIdx.y][threadIdx.z] + (swp)*B_[threadIdx.y][threadIdx.z]; 
-    double b_ = (!swp)*B_[threadIdx.y][threadIdx.z] + (swp)*A_[threadIdx.y][threadIdx.z];
-    A_[threadIdx.y][threadIdx.z] = a_;  
-    B_[threadIdx.y][threadIdx.z] = b_;  
+    double a_ = (!swp)*A_[idx][idy][idz] + (swp)*B_[idx][idy][idz]; 
+    double b_ = (!swp)*B_[idx][idy][idz] + (swp)*A_[idx][idy][idz];
+    A_[idx][idy][idz] = a_;  
+    B_[idx][idy][idz] = b_;  
     __syncthreads(); 
 
     // ----- compute the inverse of A -------- //
-    double mx = _cofactor(A_, threadIdx.y, threadIdx.z); 
-    _cofA[threadIdx.z][threadIdx.y] = mx;  // transpose cofactor matrix to get adjoint 
-    _detA[threadIdx.y][threadIdx.z] = mx * A_[threadIdx.y][threadIdx.z]; 
+    double mx = _cofactor(A_[idx], idy, idz); 
+    _cofA[idx][idz][idy] = mx;  // transpose cofactor matrix to get adjoint 
+    _detA[idx][idy][idz] = mx * A_[idx][idy][idz]; 
     __syncthreads(); 
 
-    double _dt = _detA[0][0] + _detA[0][1] + _detA[0][2];
-    _InvA[threadIdx.y][threadIdx.z] = _cofA[threadIdx.y][threadIdx.z]*_div(&_dt); 
+    double _dt = _detA[idx][0][0] + _detA[idx][0][1] + _detA[idx][0][2];
+    _InvA[idx][idy][idz] = _cofA[idx][idy][idz]*_div(&_dt); 
     __syncthreads(); 
     // --------------------------------------- //
 
     // -------- take the dot product of inv(A) and B --------- //
-    inv_A_dot_B[_idx][threadIdx.y][threadIdx.z] = _dot(_InvA, B_, threadIdx.y, threadIdx.z, 3); 
-    B[_idx][threadIdx.y][threadIdx.z] = B_[threadIdx.y][threadIdx.z]; 
-    A[_idx][threadIdx.y][threadIdx.z] = A_[threadIdx.y][threadIdx.z]; 
+    inv_A_dot_B[_idx][idy][idz] = _dot(_InvA[idx], B_[idx], idy, idz, 3); 
+    B[_idx][idy][idz] = B_[idx][idy][idz]; 
+    A[_idx][idy][idz] = A_[idx][idy][idz]; 
 } 
-
-
 
 template <typename scalar_t>
 __global__ void _factor_degen(
@@ -170,11 +173,12 @@ __global__ void _solsx(
 
 std::map<std::string, torch::Tensor> nusol_::Intersection(torch::Tensor* A, torch::Tensor* B, double nulls){
     const unsigned int dx = A -> size({0}); 
-    const dim3 thd  = dim3(1, 3, 3);
+    const unsigned int thx = (dx >= 64) ? 64 : dx; 
+    const dim3 thd  = dim3(thx, 3, 3);
     const dim3 thdX = dim3(1, 9, 9);
     const dim3 thdY = dim3(1, 27, 3); 
 
-    const dim3 blk  = blk_(dx, 1, 3, 3, 3, 3); 
+    const dim3 blk  = blk_(dx, thx, 3, 3, 3, 3); 
     const dim3 blkX = blk_(dx, 1, 9, 9, 9, 9); 
     const dim3 blkY = blk_(dx, 1, 27, 27, 3, 3); 
 
@@ -185,21 +189,19 @@ std::map<std::string, torch::Tensor> nusol_::Intersection(torch::Tensor* A, torc
 
     torch::Tensor a_ = operators_::Determinant(A); 
     torch::Tensor b_ = operators_::Determinant(B);
-
     AT_DISPATCH_ALL_TYPES(A -> scalar_type(), "swp", [&]{
-        _swapAB<scalar_t><<<blk, thd>>>(
-          inv_A_dot_B.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
-                 A -> packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
-                 B -> packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
-                   a_.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
-                   b_.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>()); 
+        _swapAB<64><<<blk, thd>>>(
+          inv_A_dot_B.packed_accessor64<double, 3, torch::RestrictPtrTraits>(),
+                 A -> packed_accessor64<double, 3, torch::RestrictPtrTraits>(),
+                 B -> packed_accessor64<double, 3, torch::RestrictPtrTraits>(),
+                   a_.packed_accessor64<double, 2, torch::RestrictPtrTraits>(),
+                   b_.packed_accessor64<double, 2, torch::RestrictPtrTraits>()); 
     });
 
     //std::tuple<torch::Tensor, torch::Tensor> eig = operators_::Eigenvalue(&inv_A_dot_B); 
     torch::Tensor eig = torch::linalg::eigvals(inv_A_dot_B); 
     torch::Tensor real = torch::real(eig).to(A -> scalar_type()); //std::get<0>(eig); 
     torch::Tensor imag = torch::imag(eig).to(A -> scalar_type()); //std::get<1>(eig); 
-    
     AT_DISPATCH_ALL_TYPES(A -> scalar_type(), "B-e*A", [&]{
         _factor_degen<scalar_t><<<blkX, thdX>>>(
                  real.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),

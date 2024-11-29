@@ -4,6 +4,20 @@
 #include <cutils/utils.cuh>
 #include <operators/operators.cuh>
 
+torch::Tensor reshaped(torch::Tensor* tx, torch::Tensor* ix, unsigned int dx, signed int dim){
+    torch::Tensor id = ix -> index({torch::indexing::Slice(), dim});
+    torch::Tensor  H = tx -> view({-1, dx, dx, 3, 3});
+    H = H.index({torch::indexing::Slice(), id}).index({torch::indexing::Slice(), torch::indexing::Slice(), id});
+    return H.view({-1, 3, 3}); 
+}
+
+torch::Tensor masked(torch::Tensor* tx, torch::Tensor* ix, unsigned int dx, signed int dim){
+    torch::Tensor id = ix -> index({torch::indexing::Slice(), dim});
+    torch::Tensor  H = tx -> view({-1, dx, dx});
+    H = H.index({torch::indexing::Slice(), id}).index({torch::indexing::Slice(), torch::indexing::Slice(), id});
+    return H.view({-1}); 
+}
+
 std::map<std::string, torch::Tensor> nusol_::combinatorial(
     torch::Tensor* edge_index, torch::Tensor* batch, torch::Tensor* pmc, 
     torch::Tensor* pid, torch::Tensor* met_xy, 
@@ -52,7 +66,7 @@ std::map<std::string, torch::Tensor> nusol_::combinatorial(
                      edge_dx, mx); 
     }); 
     combi = combi.index({msk > 0}); 
-    msk   = msk.index({msk > 0}); 
+    msk   = msk.index({msk > 1}); 
     if (!msk.size({0})){return {};}
 
     double scale = (gev) ? 1.0/1000.0 : 1.0; 
@@ -64,21 +78,10 @@ std::map<std::string, torch::Tensor> nusol_::combinatorial(
     double msT = (mTu - mTl) / double(steps); 
     const unsigned int n_msk = msk.size({0}); 
 
-    torch::Tensor mass  = torch::zeros({evnt_dx, 4}, MakeOp(pmc)); 
     torch::Tensor nu1   = torch::zeros({evnt_dx, 3}, MakeOp(pmc)); 
     torch::Tensor nu2   = torch::zeros({evnt_dx, 3}, MakeOp(pmc)); 
     torch::Tensor sol   = torch::zeros({evnt_dx}   , MakeOp(pmc)); 
     torch::Tensor edge  = torch::zeros({evnt_dx, 4}, MakeOp(batch)); 
-
-    long dx_s = (steps+1); 
-    const dim3 thmss  = dim3(1, 1); 
-    const dim3 blkmss = blk_(dx_s, 1, dx_s, 1);
-    torch::Tensor massTW = torch::ones({dx_s*dx_s, 2}, MakeOp(pmc)); 
-    AT_DISPATCH_ALL_TYPES(pmc -> scalar_type(), "massx", [&]{
-        _mass_matrix<<<blkmss, thmss>>>(
-                massTW.packed_accessor64<double, 2, torch::RestrictPtrTraits>(), 
-                mTl, msT, mWl, msW, dx_s); 
-    }); 
 
     torch::Tensor n1 = msk == 1; 
     torch::Tensor n2 = msk == 2; 
@@ -87,7 +90,25 @@ std::map<std::string, torch::Tensor> nusol_::combinatorial(
     torch::Tensor b1 = combi.index({torch::indexing::Slice(), 2}); 
     torch::Tensor b2 = combi.index({torch::indexing::Slice(), 3}); 
     torch::Tensor ev = combi.index({torch::indexing::Slice(), 4}); 
-    ev = ev.index({(torch::ones({n_msk, dx_s * dx_s}, MakeOp(batch)).cumsum({0})-1).view({-1})});
+
+    // build matrix
+    long dx_s = steps; 
+    const dim3 thmss  = dim3(1, 1); 
+    const dim3 blkmss = blk_(dx_s, 1, dx_s, 1);
+    torch::Tensor massTW = torch::rand({dx_s*dx_s, 2}, MakeOp(pmc)); 
+
+    const dim3 thmc   = dim3(_threads, 1); 
+    const dim3 blkmc  = blk_(dx_s*dx_s, _threads, 2, 1);
+    torch::Tensor ix = torch::zeros({dx_s*dx_s, 2}, MakeOp(batch)); 
+
+    AT_DISPATCH_ALL_TYPES(pmc -> scalar_type(), "massx", [&]{
+        _mass_matrix<<<blkmss, thmss>>>(
+                massTW.packed_accessor64<double, 2, torch::RestrictPtrTraits>(), mTl, msT, mWl, msW, dx_s
+        ); 
+        _combination_matrix<<<blkmc, thmc>>>(
+                ix.packed_accessor64<long, 2, torch::RestrictPtrTraits>(), dx_s
+        ); 
+    }); 
 
     torch::Tensor pmcl1 = pmc -> index({l1, true})*scale; 
     torch::Tensor pmcl2 = pmc -> index({l2, true})*scale; 
@@ -96,51 +117,59 @@ std::map<std::string, torch::Tensor> nusol_::combinatorial(
     torch::Tensor metxy = met_xy -> index({ev, true})*scale; 
 
     std::map<std::string, torch::Tensor> H1_m = nusol_::BaseMatrix(&pmcb1, &pmcl1, &massTW); 
-    torch::Tensor H1_inv = std::get<0>(operators_::Inverse(&H1_m["H_perp"])); 
-    torch::Tensor H1     = H1_m["H"]; 
+    torch::Tensor H1      = reshaped(&H1_m["H"]     , &ix, dx_s, 0); 
+    torch::Tensor H1_inv  = reshaped(&H1_m["H_perp"], &ix, dx_s, 0); 
+    H1_inv = std::get<0>(operators_::Inverse(&H1_inv)); 
 
     std::map<std::string, torch::Tensor> H2_m = nusol_::BaseMatrix(&pmcb2, &pmcl2, &massTW); 
-    torch::Tensor H2_inv = std::get<0>(operators_::Inverse(&H2_m["H_perp"])); 
-    torch::Tensor H2     = H2_m["H"]; 
-   
-    torch::Tensor tmp = massTW.clone();  
-    for (size_t x(0); x < n_msk-1; ++x){massTW = torch::cat({massTW, tmp}, {0});}
+    torch::Tensor H2      = reshaped(&H2_m["H"]     , &ix, dx_s, 1); 
+    torch::Tensor H2_inv  = reshaped(&H2_m["H_perp"], &ix, dx_s, 1); 
+    H2_inv = std::get<0>(operators_::Inverse(&H2_inv)); 
+    torch::Tensor skp = (torch::abs(H1_inv) + torch::abs(H2_inv)).sum({-1}).sum({-1}) > 0; 
+    
+    H1_inv = H1_inv.index({skp}); 
+    H2_inv = H2_inv.index({skp}); 
+    H1 = H1.index({skp}); 
+    H2 = H2.index({skp}); 
+
+    torch::Tensor xt = (torch::ones({ev.size({0}), dx_s*dx_s*dx_s*dx_s}, MakeOp(batch)).cumsum({0})-1); 
+    xt    = xt.view({-1}).index({skp}); 
+    metxy = metxy.index({xt}); 
+    ev    = ev.index({xt}); 
 
     std::map<std::string, torch::Tensor> solx = nusol_::NuNu(&H1, &H1_inv, &H2, &H2_inv, &metxy, null); 
-    torch::Tensor solxT = solx["distances"].reshape({-1, n_msk, 18, 1}); 
-    torch::Tensor nu1_  = solx["nu1"].reshape({-1, n_msk, 18, 3});
-    torch::Tensor nu2_  = solx["nu2"].reshape({-1, n_msk, 18, 3});
-    torch::Tensor mTW   = massTW.reshape({-1, n_msk, 2});
-    torch::Tensor evn   = ev.reshape({-1, n_msk}); 
-    unsigned int mxsolx = mTW.size({0}); 
+    torch::Tensor cmx = (torch::ones({combi.size({0})}, MakeOp(batch)).cumsum({0})-1).index({xt}); 
 
-    const dim3 thsol  = dim3(n_msk); 
-    const dim3 blksol = blk_(n_msk, n_msk);
-    const unsigned int size_sol = sizeof(double)*(n_msk*n_msk + evnt_dx * evnt_dx + evnt_dx)*6; 
+    torch::Tensor nu1_ = solx["nu1"].reshape({-1, 3}); 
+    torch::Tensor nu2_ = solx["nu2"].reshape({-1, 3});  
+    torch::Tensor solD = solx["distances"].reshape({-1});  
+
+    const unsigned int lenx = nu1_.size({0})/18; 
+    const dim3 thsol  = dim3(evnt_dx, n_msk); 
+    const dim3 blksol = blk_(evnt_dx, evnt_dx, n_msk, n_msk);
+    const unsigned int size_sol = sizeof(double)*n_msk*evnt_dx*4;
     AT_DISPATCH_ALL_TYPES(pmc -> scalar_type(), "compare_solx", [&]{
-        _compare_solx<scalar_t><<<blksol, thsol, size_sol>>>(
-                    evn.packed_accessor64<long  , 2, torch::RestrictPtrTraits>(),
+        _compare_solx<<<blksol, thsol, size_sol>>>(
+                     ev.packed_accessor64<long  , 1, torch::RestrictPtrTraits>(),
                     sol.packed_accessor64<double, 1, torch::RestrictPtrTraits>(),
-                   mass.packed_accessor64<double, 2, torch::RestrictPtrTraits>(),
                    edge.packed_accessor64<long  , 2, torch::RestrictPtrTraits>(),
                     nu1.packed_accessor64<double, 2, torch::RestrictPtrTraits>(),
                     nu2.packed_accessor64<double, 2, torch::RestrictPtrTraits>(),
+                    cmx.packed_accessor64<long  , 1, torch::RestrictPtrTraits>(),
 
-                    mTW.packed_accessor64<double, 3, torch::RestrictPtrTraits>(),
                   combi.packed_accessor64<long  , 2, torch::RestrictPtrTraits>(),
-                  solxT.packed_accessor64<double, 4, torch::RestrictPtrTraits>(),
-                   nu1_.packed_accessor64<double, 4, torch::RestrictPtrTraits>(),
-                   nu2_.packed_accessor64<double, 4, torch::RestrictPtrTraits>(),
-                    n_msk, mxsolx, evnt_dx); 
+                   solD.packed_accessor64<double, 1, torch::RestrictPtrTraits>(),
+                   nu1_.packed_accessor64<double, 2, torch::RestrictPtrTraits>(),
+                   nu2_.packed_accessor64<double, 2, torch::RestrictPtrTraits>(),
+                    lenx,  n_msk, evnt_dx); 
     }); 
-    
-    std::map<std::string, torch::Tensor> out; 
+
+    std::map<std::string, torch::Tensor> out;
+    out["distances"] = sol; 
     out["l1"] = edge.index({torch::indexing::Slice(), 0, true}); 
     out["l2"] = edge.index({torch::indexing::Slice(), 1, true}); 
     out["b1"] = edge.index({torch::indexing::Slice(), 2, true}); 
     out["b2"] = edge.index({torch::indexing::Slice(), 3, true}); 
-    out["distances"] = sol; 
-    out["masses"] = mass; 
     out["nu1"] = nu1;
     out["nu2"] = nu2; 
     out["msk"] = msk; 

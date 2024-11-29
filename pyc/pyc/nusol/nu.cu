@@ -4,7 +4,7 @@
 #include <operators/operators.cuh>
 #include <transform/transform.cuh>
 
-template <typename scalar_t>
+template <typename scalar_t, size_t size_x>
 __global__ void _nu_init_(
         const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> s2,
         const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> met_xy,
@@ -15,71 +15,73 @@ __global__ void _nu_init_(
         torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> Unit
 ){
 
-    __shared__ double _H[3][3];
-    __shared__ double _S2[3][3]; 
-    __shared__ double _V0[3][3]; 
+    __shared__ double _H[size_x][3][3];
+    __shared__ double _S2[size_x][3][3]; 
+    __shared__ double _V0[size_x][3][3]; 
 
-    __shared__ double _dNu[3][3]; 
-    __shared__ double _dNuT[3][3]; 
+    __shared__ double _dNu[size_x][3][3]; 
+    __shared__ double _dNuT[size_x][3][3]; 
 
-    __shared__ double _X[3][3]; 
-    __shared__ double _T[3][3]; 
-    __shared__ double _Dx[3][3]; 
+    __shared__ double _X[size_x][3][3]; 
+    __shared__ double _T[size_x][3][3]; 
+    __shared__ double _Dx[size_x][3][3]; 
 
-    __shared__ double _XD[3][3]; 
+    __shared__ double _XD[size_x][3][3]; 
 
     const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
-    const unsigned int _idy = threadIdx.y;
-    const unsigned int _idz = threadIdx.z;  
+    const unsigned int idx = threadIdx.x;
+    const unsigned int idy = threadIdx.y;
+    const unsigned int idz = threadIdx.z;  
+    if (_idx >= met_xy.size({0})){return;}
 
     // ------- Populate data ----------- //
-    _S2[_idy][_idz] = 0; 
-    _V0[_idy][_idz] = 0; 
-    _H[_idy][_idz] = H[_idx][_idy][_idz]; 
+    _S2[idx][idy][idz] = 0; 
+    _V0[idx][idy][idz] = 0; 
+    _H[idx][idy][idz] = H[_idx][idy][idz]; 
 
     double pi = M_PI*0.5; 
-    _Dx[_idy][_idz] = _rz(&pi, _idy, _idz); 
-    _T[_idy][_idz] = (_idy == _idz)*(_idy < 2); 
+    _Dx[idx][idy][idz] = _rz(&pi, idy, idz); 
+    _T[idx][idy][idz] = (idy == idz)*(idy < 2); 
 
-    if (_idy < 2  && _idz < 2){_S2[_idy][_idz] = s2[_idx][_idy][_idz];}
-    if (_idz == 2 && _idy < 2){_V0[_idy][_idz] = met_xy[_idx][_idy];}
+    if (idy < 2  && idz < 2){_S2[idx][idy][idz] = s2[_idx][idy][idz];}
+    if (idz == 2 && idy < 2){_V0[idx][idy][idz] = met_xy[_idx][idy];}
     __syncthreads(); 
 
     // ------- matrix inversion for S2 ------ //
-    if (!_idy && !_idz){
-        double s00 = _S2[0][0]; 
-        double s11 = _S2[1][1]; 
-        double s01 = _S2[0][1]; 
-        double s10 = _S2[1][0]; 
+    if (!idy && !idz){
+        double s00 = _S2[idx][0][0]; 
+        double s11 = _S2[idx][1][1]; 
+        double s01 = _S2[idx][0][1]; 
+        double s10 = _S2[idx][1][0]; 
         double det = (s00*s11 - s01*s10);
         det = _div(&det);
     
         // S2^-1 with transpose
-        _S2[0][0] =  s11*det; 
-        _S2[1][1] =  s00*det; 
+        _S2[idx][0][0] =  s11*det; 
+        _S2[idx][1][1] =  s00*det; 
 
-        _S2[0][1] = -s10*det; 
-        _S2[1][0] = -s01*det; 
+        _S2[idx][0][1] = -s10*det; 
+        _S2[idx][1][0] = -s01*det; 
     }
 
-    double di = _dot(_Dx, _T, _idy, _idz, 3); 
-    _dNu[_idy][_idz]  = _V0[_idy][_idz] - _H[_idy][_idz]; 
-    _dNuT[_idz][_idy] = _V0[_idy][_idz] - _H[_idy][_idz]; 
+    double di = _dot(_Dx[idx], _T[idx], idy, idz, 3); 
+    _dNu[idx][idy][idz]  = _V0[idx][idy][idz] - _H[idx][idy][idz]; 
+    _dNuT[idx][idz][idy] = _V0[idx][idy][idz] - _H[idx][idy][idz]; 
     __syncthreads(); 
 
-    _Dx[_idy][_idz] = di; 
-    _T[_idy][_idz] = _dot(_dNuT, _S2, _idy, _idz, 3); 
+    _Dx[idx][idy][idz] = di; 
+    _T[idx][idy][idz] = _dot(_dNuT[idx], _S2[idx], idy, idz, 3); 
     __syncthreads(); 
 
-    _X[_idy][_idz] = _dot(_T, _dNu, _idy, _idz, 3); 
+    _X[idx][idy][idz] = _dot(_T[idx], _dNu[idx], idy, idz, 3); 
     __syncthreads(); 
 
-    _T[_idy][_idz]  = (_idy == _idz)*(2*(_idy < 2) - 1); 
-    _XD[_idy][_idz] = _dot(_X, _Dx, _idy, _idz, 3) + _dot(_X, _Dx, _idz, _idy, 3);  
+    _T[idx][idy][idz]  = (idy == idz)*(2*(idy < 2) - 1); 
+    _XD[idx][idy][idz] = _dot(_X[idx], _Dx[idx], idy, idz, 3) + _dot(_X[idx], _Dx[idx], idz, idy, 3);  
 
-    X[_idx][_idy][_idz] = _X[_idy][_idz]; 
-    M[_idx][_idy][_idz] = _XD[_idy][_idz]; 
-    Unit[_idx][_idy][_idz] = _T[_idy][_idz];
+    X[_idx][idy][idz] = _X[idx][idy][idz]; 
+    M[_idx][idy][idz] = _XD[idx][idy][idz]; 
+    Unit[_idx][idy][idz] = _T[idx][idy][idz];
 }
 
 template <typename scalar_t>
@@ -115,25 +117,22 @@ __global__ void _chi2(
 
 
 
-
-
 std::map<std::string, torch::Tensor> nusol_::Nu(
-        torch::Tensor* pmc_b , torch::Tensor* pmc_mu, torch::Tensor* met_xy, 
-        torch::Tensor* masses, torch::Tensor* sigma , double null
+        torch::Tensor* H, torch::Tensor* sigma, torch::Tensor* met_xy, double null
 ){
-    torch::Tensor H = nusol_::BaseMatrix(pmc_b, pmc_mu, masses)["H"];
-    torch::Tensor X = torch::zeros_like(H); 
-    torch::Tensor M = torch::zeros_like(H); 
-    torch::Tensor Unit = torch::zeros_like(H); 
+    torch::Tensor X = torch::zeros_like(*H); 
+    torch::Tensor M = torch::zeros_like(*H); 
+    torch::Tensor Unit = torch::zeros_like(*H); 
    
-    const unsigned int dx = pmc_b -> size({0}); 
-    const dim3 thd = dim3(1, 3, 3);
-    const dim3 blk = blk_(dx, 1, 3, 3, 3, 3); 
-    AT_DISPATCH_ALL_TYPES(pmc_b -> scalar_type(), "Nu", [&]{
-        _nu_init_<scalar_t><<<blk, thd>>>(
+    const unsigned int dx = H -> size({0}); 
+    const unsigned int thx = (dx >= 64) ? 64 : dx; 
+    const dim3 thd = dim3(thx, 3, 3);
+    const dim3 blk = blk_(dx, thx, 3, 3, 3, 3); 
+    AT_DISPATCH_ALL_TYPES(H -> scalar_type(), "Nu", [&]{
+        _nu_init_<scalar_t, 64><<<blk, thd>>>(
                  sigma -> packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
                 met_xy -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
-                        H.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                     H -> packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
                         X.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
                         M.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
                         Unit.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>());
@@ -144,23 +143,30 @@ std::map<std::string, torch::Tensor> nusol_::Nu(
 
     const dim3 thN = dim3(1, 18, 3);
     const dim3 blN = blk_(dx, 1, 18, 18, 3, 3); 
-    torch::Tensor nu   = torch::zeros({dx, 18, 3}, MakeOp(pmc_b)); 
-    torch::Tensor chi2 = torch::zeros({dx, 18, 1}, MakeOp(pmc_b)); 
-    AT_DISPATCH_ALL_TYPES(pmc_b -> scalar_type(), "Nu", [&]{
+    torch::Tensor nu   = torch::zeros({dx, 18, 3}, MakeOp(H)); 
+    torch::Tensor chi2 = torch::zeros({dx, 18, 1}, MakeOp(H)); 
+    AT_DISPATCH_ALL_TYPES(H -> scalar_type(), "Nu", [&]{
         _chi2<scalar_t><<<blN, thN>>>(
          out["solutions"].packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
          out["distances"].packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
-                        H.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                     H -> packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
                         X.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
                        nu.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
                      chi2.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>());
     }); 
-
     out["X"] = X; 
     out["M"] = M; 
     out["nu"] = nu; 
-    out["chi2"] = chi2;
+    out["distances"] = chi2;
     return out; 
+}
+ 
+std::map<std::string, torch::Tensor> nusol_::Nu(
+        torch::Tensor* pmc_b , torch::Tensor* pmc_mu, torch::Tensor* met_xy, 
+        torch::Tensor* masses, torch::Tensor* sigma , double null
+){
+    torch::Tensor H = nusol_::BaseMatrix(pmc_b, pmc_mu, masses)["H"];
+    return nusol_::Nu(&H, sigma, met_xy, null); 
 }
 
 
@@ -169,45 +175,7 @@ std::map<std::string, torch::Tensor> nusol_::Nu(
         torch::Tensor* sigma, double null, double massT, double massW
 ){
     torch::Tensor H = nusol_::BaseMatrix(pmc_b, pmc_mu, massT, massW, 0)["H"];
-    torch::Tensor X = torch::zeros_like(H); 
-    torch::Tensor M = torch::zeros_like(H); 
-    torch::Tensor Unit = torch::zeros_like(H); 
-   
-    const unsigned int dx = pmc_b -> size({0}); 
-    const dim3 thd = dim3(1, 3, 3);
-    const dim3 blk = blk_(dx, 1, 3, 3, 3, 3); 
-    AT_DISPATCH_ALL_TYPES(pmc_b -> scalar_type(), "Nu", [&]{
-        _nu_init_<scalar_t><<<blk, thd>>>(
-                 sigma -> packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
-                met_xy -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
-                        H.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
-                        X.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
-                        M.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
-                     Unit.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>());
-
-    }); 
-
-    std::map<std::string, torch::Tensor> out = nusol_::Intersection(&M, &Unit, null); 
-
-    const dim3 thN = dim3(1, 18, 3);
-    const dim3 blN = blk_(dx, 1, 18, 18, 3, 3); 
-    torch::Tensor nu   = torch::zeros({dx, 18, 3}, MakeOp(pmc_b)); 
-    torch::Tensor chi2 = torch::zeros({dx, 18, 1}, MakeOp(pmc_b)); 
-    AT_DISPATCH_ALL_TYPES(pmc_b -> scalar_type(), "Nu", [&]{
-        _chi2<scalar_t><<<blN, thN>>>(
-         out["solutions"].packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
-         out["distances"].packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
-                        H.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
-                        X.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
-                       nu.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
-                     chi2.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>());
-    }); 
-
-    out["X"] = X; 
-    out["M"] = M; 
-    out["nu"] = nu; 
-    out["chi2"] = chi2;
-    return out; 
+    return nusol_::Nu(&H, sigma, met_xy, null); 
 }
 
 

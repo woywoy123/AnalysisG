@@ -1,5 +1,6 @@
 #ifndef CU_NUSOL_UTILS_H
 #define CU_NUSOL_UTILS_H
+#include <atomic/cuatomic.cuh>
 
 template <typename scalar_t>
 __global__ void _count(
@@ -106,92 +107,84 @@ __global__ void _mass_matrix(
     const unsigned int _idy = blockIdx.y * blockDim.y + threadIdx.y; 
     const unsigned int _idz = _idx*steps + _idy; 
     if (steps*steps <= _idz){return;}
-    mass_[_idz][0] = mTl + mTs*_idx; 
-    mass_[_idz][1] = mWl + mWs*_idy; 
+    mass_[_idz][0] = mTl + mass_[_idz][0]*mTs*_idx; 
+    mass_[_idz][1] = mWl + mass_[_idz][1]*mWs*_idy; 
+}
+
+__global__ void _combination_matrix(
+        torch::PackedTensorAccessor64<long, 2, torch::RestrictPtrTraits> indx, 
+        const unsigned int ds
+){
+    const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    const unsigned int _idy = blockIdx.y * blockDim.y + threadIdx.y; 
+    if (_idx >= indx.size({0})){return;}
+    long val = 1; 
+    for (size_t x(0); x < _idy; ++x){val *= ds;}
+    indx[_idx][1 - _idy] = (_idx / val)%ds;  
 }
 
 
-template <typename scalar_t>
 __global__ void _compare_solx(
-        torch::PackedTensorAccessor64<long  , 2, torch::RestrictPtrTraits> evnt_dx,
+        torch::PackedTensorAccessor64<long  , 1, torch::RestrictPtrTraits> evnt_dx,
         torch::PackedTensorAccessor64<double, 1, torch::RestrictPtrTraits> cur_sol,
-        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> cur_mass,
         torch::PackedTensorAccessor64<long  , 2, torch::RestrictPtrTraits> cur_cmb,
         torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> nu1,
         torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> nu2,
+        torch::PackedTensorAccessor64<long  , 1, torch::RestrictPtrTraits> cmx,
 
-        torch::PackedTensorAccessor64<double, 3, torch::RestrictPtrTraits> massTW,
         torch::PackedTensorAccessor64<long  , 2, torch::RestrictPtrTraits> new_cmb,
-        torch::PackedTensorAccessor64<double, 4, torch::RestrictPtrTraits> new_sol,
-        torch::PackedTensorAccessor64<double, 4, torch::RestrictPtrTraits> nu1_,
-        torch::PackedTensorAccessor64<double, 4, torch::RestrictPtrTraits> nu2_, 
-        const unsigned int lx, const unsigned int mxsolx, const unsigned int num_ev
+        torch::PackedTensorAccessor64<double, 1, torch::RestrictPtrTraits> new_sol,
+        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> nu1_,
+        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> nu2_, 
+        const unsigned int lx, const unsigned int n_msk, const unsigned int n_evn
 ){
-    extern __shared__ double _inpt[][6];  
-    const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    extern __shared__ double _inpt[][4];  
+    const unsigned int _idx = threadIdx.x; 
+    const unsigned int _idy = threadIdx.y; 
+    const unsigned int _idz = _idx*n_msk + _idy; 
 
-    for (size_t g(0); g < mxsolx; ++g){
-        unsigned int edx  = evnt_dx[g][_idx]; 
-        unsigned int _dx = (lx * _idx + edx)*6; 
-
-        double sol_ = (_inpt[_dx + 4]) ? _inpt[_dx + 2] : cur_sol[edx];
-        int ix = (_inpt[_dx + 4]) ? _inpt[_dx] : -1;
-
-        for (size_t x(0); x < 18; ++x){
-            double nsol_ = new_sol[g][_idx][x][0]; 
-            if (sol_ < nsol_){continue;}
-            sol_ = nsol_; 
-            ix = x; 
-        }
-
-        _inpt[_dx    ] = ix; 
-        _inpt[_dx + 1] = edx; 
-        _inpt[_dx + 2] = sol_;
-        _inpt[_dx + 3] = g;  
-        _inpt[_dx + 4] = 1; 
-        _inpt[_dx + 5] = _idx; 
+    _inpt[_idz][0] = 0; 
+    _inpt[_idz][1] = -1;
+    _inpt[_idz][2] = -1; 
+    _inpt[_idz][3] = -1; 
+    for (size_t x(0); x < lx; ++x){
+        unsigned int edx = evnt_dx[x]; 
+        if (cmx[x] != threadIdx.y || edx != threadIdx.x){continue;}
+        for (size_t j(x*18); j < 18*(x+1); ++j){
+            double xol = new_sol[j]; 
+            if (_inpt[_idz][0] < xol){continue;}
+            _inpt[_idz][0] = xol; 
+            _inpt[_idz][1] = j;
+            _inpt[_idz][2] = x; 
+            _inpt[_idz][3] = edx; 
+        } 
     }
-    if (threadIdx.x){return;}
-    __syncthreads();
+    if (_inpt[_idz][1] == -1){return;}
+    const double solx = _inpt[_idz][0]; 
+    const unsigned int j_ = _inpt[_idz][1]; 
+    const unsigned int x_ = _inpt[_idz][2]; 
+    const unsigned int edx = evnt_dx[x_]; 
+    for (size_t t(0); t < n_evn*n_msk; ++t){
+        if (_inpt[t][3] != edx){continue;}
+        if (_inpt[t][0] < solx){return;}
+    }
 
-    //unsigned int offset = lx*num_ev*6; 
-    //for (size_t x(0); x < lx*num_ev; ++x){
-    //    int    edx = 6 * _inpt[6 * x + 1]; 
-    //    double sol = _inpt[6 * x + 2];
-    //    int      g = _inpt[6 * x + 3]; 
-    //    int     th = _inpt[6 * x + 5]; 
-    //    if (_inpt[edx + offset    ] < 0){continue;}
-    //    if (_inpt[edx + offset + 2] < sol){continue;}
+    const unsigned int cx = cmx[x_]; 
+    cur_cmb[edx][0] = new_cmb[cx][0]; 
+    cur_cmb[edx][1] = new_cmb[cx][1]; 
+    cur_cmb[edx][2] = new_cmb[cx][2]; 
+    cur_cmb[edx][3] = new_cmb[cx][3]; 
 
-    //    _inpt[edx + offset] = _inpt[6 * x]; 
-    //    _inpt[edx + offset + 2] = sol; 
-    //    _inpt[edx + offset + 3] = g;
-    //    _inpt[edx + offset + 5] = th; 
-    //}
-    //
-    //for (size_t x(0); x < num_ev; ++x){
-    //    int     ix = _inpt[offset + x*6]; 
-    //    int    edx = _inpt[offset + x*6 + 1]; 
-    //    double sol = _inpt[offset + x*6 + 2]; 
-    //    int      g = _inpt[offset + x*6 + 3]; 
-    //    double idx = _inpt[offset + x*6 + 5]; 
+    nu1[edx][0] = nu1_[j_][0]; 
+    nu1[edx][1] = nu1_[j_][1]; 
+    nu1[edx][2] = nu1_[j_][2]; 
+    nu1[edx][3] = nu1_[j_][3]; 
 
-    //    cur_sol[edx] = sol; 
-    //    nu1[edx][0]  = nu1_[g][idx][ix][0]; 
-    //    nu1[edx][1]  = nu1_[g][idx][ix][1]; 
-    //    nu1[edx][2]  = nu1_[g][idx][ix][2]; 
-
-    //    nu2[edx][0]  = nu2_[g][idx][ix][0]; 
-    //    nu2[edx][1]  = nu2_[g][idx][ix][1]; 
-    //    nu2[edx][2]  = nu2_[g][idx][ix][2]; 
-
-    //    cur_cmb[edx][0] = new_cmb[idx][0]; 
-    //    cur_cmb[edx][1] = new_cmb[idx][1]; 
-    //    cur_cmb[edx][2] = new_cmb[idx][2]; 
-    //    cur_cmb[edx][3] = new_cmb[idx][3]; 
-    //}
-
-
+    nu2[edx][0] = nu2_[j_][0]; 
+    nu2[edx][1] = nu2_[j_][1]; 
+    nu2[edx][2] = nu2_[j_][2]; 
+    nu2[edx][3] = nu2_[j_][3]; 
+    cur_sol[edx] = solx;  
 }
 
 #endif
