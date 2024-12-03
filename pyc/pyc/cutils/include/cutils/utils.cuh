@@ -6,10 +6,6 @@
 #include <c10/cuda/CUDAFunctions.h>
 #define _threads 1024
 
-const dim3 BLOCKS(unsigned int dx); 
-const dim3 BLOCKS(unsigned int dx, unsigned int dy); 
-const dim3 BLOCKS(unsigned int dx, unsigned int dy, unsigned int dz); 
-
 unsigned int blkn(unsigned int lx, int thl); 
 const dim3 blk_(unsigned int dx, int thrx); 
 const dim3 blk_(unsigned int dx, int thrx, unsigned int dy, int thry); 

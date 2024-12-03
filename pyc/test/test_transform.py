@@ -52,13 +52,7 @@ def test_transform():
 
 
 if __name__ == "__main__":
-#    test_transform()
-#    test_physics()
-#    test_operators()
-#    test_nusol_base_matrix()
-    test_nusol_nu_cuda()
-#    test_nusol_nunu_cuda()
-    test_nusol_combinatorial_cuda()
+    test_transform()
 
 
 

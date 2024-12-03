@@ -12,4 +12,12 @@ target_link_libraries(cutransform PUBLIC cutils cuatomic)
 set_property(TARGET cutransform PROPERTY CUDA_SEPARATE_COMPILATION ON)
 target_compile_options(cutransform PRIVATE -fPIC)
 
+set(SOURCE_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/transform/transform.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/transform.cxx
+)
 
+add_library(ctransform ${SOURCE_FILES})
+target_include_directories(ctransform PRIVATE include/transform)
+target_include_directories(ctransform PUBLIC include)
+target_link_libraries(ctransform PUBLIC ctils)

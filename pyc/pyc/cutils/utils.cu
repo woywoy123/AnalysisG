@@ -1,17 +1,5 @@
 #include <cutils/utils.cuh>
 
-const dim3 BLOCKS(unsigned int dx){
-    return dim3( (dx + _threads -1) / _threads);
-}
-
-const dim3 BLOCKS(unsigned int dx, unsigned int dy){
-    return dim3( (dx + _threads -1) / _threads, dy);
-}
-
-const dim3 BLOCKS(unsigned int dx, unsigned int dy, unsigned int dz){
-    return dim3( (dx + _threads -1) / _threads, dy, dz);
-}
-
 unsigned int blkn(unsigned int lx, int thl){
     return (lx + thl - 1) / thl; 
 }
