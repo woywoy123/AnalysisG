@@ -30,7 +30,7 @@ optims = []
 ana = Analysis()
 p = 0
 for k in params:
-#    m1 = RecursiveGraphNeuralNetwork()
+    #m1 = RecursiveGraphNeuralNetwork()
     m1 = Grift()
     m1.o_edge  = {
             "top_edge" : "CrossEntropyLoss",
@@ -66,7 +66,7 @@ ana.kFold = [1] #, 2, 3, 4] #6, 7, 3, 5, 9]
 ana.MaxRange = 1500
 ana.TrainSize = 80
 ana.BatchSize = 10
-ana.ContinueTraining = True
+ana.ContinueTraining = False
 #ana.SumOfWeightsTreeName = "sumWeights"
 #ana.FetchMeta = True
 ana.DebugMode  = False

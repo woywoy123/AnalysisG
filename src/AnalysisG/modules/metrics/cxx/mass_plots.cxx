@@ -1,9 +1,7 @@
-#include <transform/cartesian-cuda.h>
-#include <physics/physics-cuda.h>
-#include <graph/graph-cuda.h>
 #include <metrics/metrics.h>
-#include <THStack.h>
 #include <TRatioPlot.h>
+#include <pyc/cupyc.h>
+#include <THStack.h>
 
 void metrics::dump_mass_plots(int k){
     std::string out_pth = this -> m_settings.output_path + "masses/"; 
@@ -147,15 +145,15 @@ void metrics::add_th1f_mass(
     std::map<mode_enum, std::map<std::string, TH1F*>>* type_ = nullptr;
     torch::Tensor edge_index_ = edge_index -> to(torch::kLong); 
 
-    std::map<std::string, std::vector<torch::Tensor>> pred_mass = graph::cuda::edge_aggregation(edge_index_, *pred, *pmc); 
-    torch::Tensor pred_mass_cu = physics::cuda::M(pred_mass["1"][1]); 
+    torch::Dict<std::string, torch::Tensor> pred_mass = pyc::graph::edge_aggregation(edge_index_, *pred, *pmc); 
+    torch::Tensor pred_mass_cu = pyc::physics::cartesian::combined::M(pred_mass.at("cls::1::node-sum")); 
 
     torch::Tensor truth_t = truth -> view({-1}); 
     torch::Tensor truth_ = torch::zeros_like(*pred); 
     for (int x(0); x < pred -> size({-1}); ++x){truth_.index_put_({truth_t == x, x}, 1);}
-    std::map<std::string, std::vector<torch::Tensor>> truth_mass = graph::cuda::edge_aggregation(edge_index_, truth_, *pmc); 
-    torch::Tensor truth_mass_cu = physics::cuda::M(truth_mass["1"][1]); 
-    truth_mass_cu.index_put_({((truth_mass["1"][0] > -1).sum({-1}) == 1), 0}, 0); 
+    torch::Dict<std::string, torch::Tensor> truth_mass = pyc::graph::edge_aggregation(edge_index_, truth_, *pmc); 
+    torch::Tensor truth_mass_cu = pyc::physics::cartesian::combined::M(truth_mass.at("cls::1::node-sum")); 
+    truth_mass_cu.index_put_({((truth_mass.at("cls::1::node-indices") > -1).sum({-1}) == 1), 0}, 0); 
 
     pred_mass_cu  = pred_mass_cu.index({(pred_mass_cu > 0).view({-1})}); 
     truth_mass_cu = truth_mass_cu.index({(truth_mass_cu > 0).view({-1})}); 
@@ -164,8 +162,8 @@ void metrics::add_th1f_mass(
     truth_mass_cu = truth_mass_cu.view({-1}).to(torch::kCPU, true); 
     torch::cuda::synchronize(); 
 
-    std::vector<float> v(pred_mass_cu.data_ptr<float>(), pred_mass_cu.data_ptr<float>() + pred_mass_cu.numel());
-    std::vector<float> t(truth_mass_cu.data_ptr<float>(), truth_mass_cu.data_ptr<float>() + truth_mass_cu.numel());
+    std::vector<double> v(pred_mass_cu.data_ptr<double>(), pred_mass_cu.data_ptr<double>() + pred_mass_cu.numel());
+    std::vector<double> t(truth_mass_cu.data_ptr<double>(), truth_mass_cu.data_ptr<double>() + truth_mass_cu.numel());
 
     type_ = &an -> pred_mass_edge; 
     for (size_t x(0); x < v.size(); ++x){(*type_)[mode][var_name] -> Fill(v[x]);} 

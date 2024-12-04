@@ -8,13 +8,11 @@ class nu: public particle_template
 {
     public:
         using particle_template::particle_template; 
-        double nusol_tmass = 0; 
-        double nusol_wmass = 0; 
         double exp_tmass = 0; 
         double exp_wmass = 0; 
         double min = 0; 
         double leppid = -99; 
-        int idx = -1; 
+        long idx = -1; 
 }; 
 
 
@@ -40,16 +38,13 @@ class neutrino: public selection_template
         std::map<std::string, std::vector<double>> tru_topmass; 
         std::map<std::string, std::vector<double>> tru_wmass; 
 
-        std::map<std::string, std::vector<double>> nusol_tmass; 
-        std::map<std::string, std::vector<double>> nusol_wmass; 
-
         std::map<std::string, std::vector<double>> exp_topmass; 
         std::map<std::string, std::vector<double>> exp_wmass; 
 
 
-        double scale   = 1000;
-        double masstop = 172.62*scale; 
-        double massw   = 80.385*scale; 
+        double scale   = 1.0; //1000;
+        double masstop = 172.62*1000; 
+        double massw   = 80.385*1000; 
         int    steps   = 10; 
 
     private:
@@ -102,7 +97,7 @@ class neutrino: public selection_template
         ){
             std::vector<int> pidlep_;
             for (size_t x(0); x < leps -> size(); ++x){pidlep_.push_back((*leps)[x] -> pdgid);}
-
+            met = met / scale; 
             std::vector<long> isb_, isl_; 
             std::vector<double> pt_, eta_, phi_, energy_; 
             this -> fill(&pt_, &eta_, &phi_, &energy_, &isb_, &isl_, leps, scale); 

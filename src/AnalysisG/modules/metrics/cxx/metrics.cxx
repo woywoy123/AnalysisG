@@ -1,5 +1,5 @@
-#include <transform/cartesian-cuda.h>
 #include <metrics/metrics.h>
+#include <pyc/cupyc.h>
 #include <TError.h>
 
 metrics::metrics(){
@@ -73,7 +73,7 @@ void metrics::capture(mode_enum mode, int kfold, int epoch, int smpl_len){
             *(node_feat)[this -> m_settings.var_pt] , *(node_feat)[this -> m_settings.var_eta], 
             *(node_feat)[this -> m_settings.var_phi], *(node_feat)[this -> m_settings.var_energy]
     }, {-1}); 
-    pmc = transform::cuda::PxPyPzE(pmc)/1000;
+    pmc = pyc::transform::combined::PxPyPzE(pmc)/1000;
     for (std::string var : this -> m_settings.targets){
         torch::Tensor* pred  = an -> model -> m_p_edge[var]; 
         torch::Tensor* truth = std::get<0>(an -> model -> m_o_edge[var]); 

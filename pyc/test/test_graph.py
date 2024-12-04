@@ -1,9 +1,10 @@
 import torch
 from random import random
-torch.ops.load_library("../build/pyc/interface/libgraph_cuda.so")
+from pyc import pyc
+
 device = "cuda"
 torch.set_printoptions(threshold=1000000, linewidth = 120)
-
+inst = pyc()
 
 def test_edge_feature_aggregation():
     def aggregation(edge_index, pred, pmu):
@@ -52,8 +53,8 @@ def test_edge_feature_aggregation():
     nodes = torch.tensor([[int(1 + 10*random()*(t+1)) for _ in range(n)] for t in range(n_nodes)])
 
     # create some fake truth connections 
-    n_cls = 2 # classifications
-    p_ = 0.95 # probability that nodes are always connected with the same class, i.e. more equal clusters
+    n_cls = 100 # classifications
+    p_ = 0.49 # probability that nodes are always connected with the same class, i.e. more equal clusters
     edges_t = torch.tensor([[(random() > p_)*int(random()*n_cls)] for _ in range(n_nodes**2)])
 
     # create the edge index
@@ -82,7 +83,7 @@ def test_edge_feature_aggregation():
     t = t.view(-1, n_cls)
 
     nodes = nodes.to(device = "cuda")
-    x = torch.ops.graph_cuda.graph_edge_aggregation(edge_index, t, nodes)
+    x = inst.cuda_graph_edge_aggregation(edge_index, t, nodes)
     assert not (x["cls::1::node-sum"] != out[1]["node_sum"].to(device = "cuda")).view(-1).sum(-1)
 
     node_inc = x["cls::1::node-indices"]
@@ -93,7 +94,13 @@ def test_edge_feature_aggregation():
     assert not (node_inc != node_int).view(-1).sum(-1)
 
     node_t = torch.rand((n_nodes, n_cls), device = "cuda").softmax(-1)
-    x = torch.ops.graph_cuda.graph_node_aggregation(edge_index, node_t, nodes)
+    x1 = inst.cuda_graph_node_aggregation(edge_index.clone()  , node_t.clone(), nodes.clone())
+    x2 = inst.tensor_graph_node_aggregation(edge_index.clone(), node_t.clone(), nodes.clone())
+
+    for i in range(n_cls):
+        assert not (x1["cls::" + str(i) + "::node-indices"] != x2["cls::" + str(i) + "::node-indices"]).view(-1).sum(-1)
+        assert not (x1["cls::" + str(i) + "::node-sum"]     != x2["cls::" + str(i) + "::node-sum"]).view(-1).sum(-1)
+
 
 def test_edge_aggregation_nodupl():
     dev = "cuda" if torch.cuda.is_available() else "cpu"
@@ -115,11 +122,11 @@ def test_edge_aggregation_nodupl():
 
     edge_index = torch.cat([edge_index, edge_index], -1)
     edges_t = torch.cat([edges_t, edges_t], 0)
-    x = torch.ops.graph_cuda.graph_edge_aggregation(edge_index, edges_t, nodes)
+    x = inst.cuda_graph_edge_aggregation(edge_index, edges_t, nodes)
     clust = x["cls::1::node-indices"]
     clust_l, node_l = clust.tolist(), nodes.tolist()
     non_dupl = [[sum([node_l[k][f] for k in set(i) if k != -1]) for f in range(dim)] for i in clust_l]
-    x = torch.ops.graph_cuda.graph_unique_aggregation(clust, nodes)["node-sum"]
+    x = inst.cuda_graph_unique_aggregation(clust, nodes)["node-sum"]
     x = x.to(device = "cpu")
     assert not (torch.abs(x - torch.tensor(non_dupl)) > 10e-4).view(-1).sum(-1)
 

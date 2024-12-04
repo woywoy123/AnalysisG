@@ -5,7 +5,7 @@ add_library(cgnn_grift STATIC ${SOURCE_FILES})
 target_include_directories(cgnn_grift PRIVATE include/models)
 target_include_directories(cgnn_grift PUBLIC include)
 
-target_link_libraries(cgnn_grift LINK_PUBLIC cmodel_template nusol-cuda graph-cuda)
+target_link_libraries(cgnn_grift LINK_PUBLIC cmodel_template cupyc)
 target_compile_options(cgnn_grift PRIVATE -fPIC)
 
 add_custom_command(OUTPUT GRIFT.cpp

@@ -19,9 +19,6 @@ cdef extern from "neutrino.h":
         map[string, vector[double]] tru_topmass
         map[string, vector[double]] tru_wmass
 
-        map[string, vector[double]] nusol_tmass
-        map[string, vector[double]] nusol_wmass
-
         map[string, vector[double]] exp_topmass
         map[string, vector[double]] exp_wmass
 
@@ -35,9 +32,9 @@ cdef class Neutrino(SelectionTemplate):
 
     cdef public dict dist_nu
     cdef public dict pdgid
+
     cdef public dict tru_topmass
     cdef public dict tru_wmass
-    cdef public dict nusol_tmass
-    cdef public dict nusol_wmass
+
     cdef public dict exp_topmass
     cdef public dict exp_wmass

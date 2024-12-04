@@ -1,9 +1,5 @@
 #include <grift.h>
-#include <transform/cartesian-cuda.h>
-#include <physics/cartesian-cuda.h>
-#include <transform/polar-cuda.h>
-#include <graph/graph-cuda.h>
-
+#include <pyc/cupyc.h>
 
 grift::grift(){
 
@@ -87,25 +83,28 @@ grift::grift(){
 torch::Tensor grift::message(
         torch::Tensor _trk_i, torch::Tensor _trk_j, torch::Tensor pmc, torch::Tensor hx_i, torch::Tensor hx_j
 ){
-    std::tuple<torch::Tensor, torch::Tensor> aggr; 
+    std::string key_idx = "unique"; 
+    std::string key_smx = "node-sum"; 
+
+    torch::Dict<std::string, torch::Tensor> aggr; 
     torch::Tensor trk_ij = torch::cat({_trk_i, _trk_j}, {-1}); 
 
-    aggr = graph::cuda::unique_aggregation(trk_ij, pmc); 
-    torch::Tensor pmc_ij = std::get<0>(aggr); 
-    torch::Tensor m_ij   = physics::cuda::cartesian::M(pmc_ij);
-    torch::Tensor nds_ij = (std::get<1>(aggr) > -1).sum({-1}, true); 
+    aggr = pyc::graph::unique_aggregation(trk_ij, pmc); 
+    torch::Tensor pmc_ij = aggr.at(key_smx); 
+    torch::Tensor m_ij   = pyc::physics::cartesian::combined::M(pmc_ij);
+    torch::Tensor nds_ij = (aggr.at(key_idx) > -1).sum({-1}, true);
     torch::Tensor fx_ij  = torch::cat({m_ij, pmc_ij, nds_ij, hx_i+hx_j}, {-1}); 
 
-    aggr = graph::cuda::unique_aggregation(_trk_i, pmc); 
-    torch::Tensor pmc_i = std::get<0>(aggr); 
-    torch::Tensor m_i   = physics::cuda::cartesian::M(pmc_i);
-    torch::Tensor nds_i = (std::get<1>(aggr) > -1).sum({-1}, true); 
+    aggr = pyc::graph::unique_aggregation(_trk_i, pmc); 
+    torch::Tensor pmc_i = aggr.at(key_smx); 
+    torch::Tensor m_i   = pyc::physics::cartesian::combined::M(pmc_i);
+    torch::Tensor nds_i = (aggr.at(key_idx) > -1).sum({-1}, true); 
     torch::Tensor fx_i  = torch::cat({m_i, pmc_i, nds_i, hx_i}, {-1}); 
 
-    aggr = graph::cuda::unique_aggregation(_trk_j, pmc); 
-    torch::Tensor pmc_j = std::get<0>(aggr); 
-    torch::Tensor m_j   = physics::cuda::cartesian::M(pmc_i);
-    torch::Tensor nds_j = (std::get<1>(aggr) > -1).sum({-1}, true); 
+    aggr = pyc::graph::unique_aggregation(_trk_j, pmc); 
+    torch::Tensor pmc_j = aggr.at(key_smx);
+    torch::Tensor m_j   = pyc::physics::cartesian::combined::M(pmc_j);
+    torch::Tensor nds_j = (aggr.at(key_idx) > -1).sum({-1}, true); 
     torch::Tensor fx_j  = torch::cat({m_j, pmc_j, nds_j, hx_j}, {-1}); 
     return (*this -> rnn_dx) -> forward(torch::cat({fx_ij, fx_i, fx_j - fx_i}, {-1}).to(torch::kFloat32)); 
 }
@@ -120,7 +119,7 @@ void grift::forward(graph_t* data){
     torch::Tensor* phi         = data -> get_data_node("phi", this);
     torch::Tensor* energy      = data -> get_data_node("energy", this);
     torch::Tensor* is_lep      = data -> get_data_node("is_lep", this); 
-    torch::Tensor pmc          = transform::cuda::PxPyPzE(*pt, *eta, *phi, *energy) / 1000.0; 
+    torch::Tensor pmc          = pyc::transform::separate::PxPyPzE(*pt, *eta, *phi, *energy) / 1000.0; 
 
     torch::Tensor edge_index   = data -> get_edge_index(this) -> to(torch::kLong); 
     torch::Tensor src          = edge_index.index({0}).view({-1}); 
@@ -155,7 +154,7 @@ void grift::forward(graph_t* data){
     torch::Tensor node_i   = num_node.cumsum({0})-1;
     torch::Tensor node_i_  = node_i.clone();  
 
-    torch::Tensor node_s = torch::cat({physics::cuda::cartesian::M(pmc), pmc, num_node, node_rnn}, {-1}); 
+    torch::Tensor node_s = torch::cat({pyc::physics::cartesian::combined::M(pmc), pmc, num_node, node_rnn}, {-1}); 
     node_s = (*this -> rnn_x) -> forward(node_s.to(torch::kFloat32));
 
     // ------ index the edges from 0 to N^2 -1 ------ //
@@ -169,7 +168,10 @@ void grift::forward(graph_t* data){
     torch::Tensor hx_i  = node_s.index({src});
     torch::Tensor hx_j  = node_s.index({dst});  
 
-    std::vector<torch::Tensor> gr_; 
+    std::string key_idx = "cls::1::node-indices"; 
+    std::string key_smx = "cls::1::node-sum"; 
+
+    torch::Dict<std::string, torch::Tensor> gr_; 
     torch::Tensor top_edge_   = top_edge.clone(); 
     torch::Tensor edge_index_ = edge_index.clone();  
     while (edge_index_.size({1})){
@@ -202,9 +204,10 @@ void grift::forward(graph_t* data){
         node_i_ = node_i; 
 
         // ----------- create a new intermediate state of the nodes ----------- //
-        gr_ = graph::cuda::edge_aggregation(edge_index, top_edge, pmc)["1"]; 
-        num_node = (gr_[0].index({gr_[2]}) > -1).sum({-1}, true); 
-        node_state = torch::cat({physics::cuda::cartesian::M(gr_[3]), gr_[3], num_node, node_rnn}, {-1}); 
+        gr_ = pyc::graph::edge_aggregation(edge_index, top_edge, pmc); 
+        num_node = (gr_.at(key_idx) > -1).sum({-1}, true); 
+        torch::Tensor pmx = gr_.at(key_smx); 
+        node_state = torch::cat({pyc::physics::cartesian::combined::M(pmx), pmx, num_node, node_rnn}, {-1}); 
 
         // ------ protection against depleted event graphs ---------- //
         //if (!skp.index({skp}).size({0})){break;}
@@ -218,17 +221,18 @@ void grift::forward(graph_t* data){
         hx_j        = hx_j.index({sel}); 
         edge_rnn    = edge_rnn.index({sel});
         top_edge_   = top_edge_.index({sel}); 
-        node_i      = gr_[0].index({gr_[2]}); 
+        node_i      = gr_.at(key_idx); 
         edge_index_ = edge_index_.index({torch::indexing::Slice(), sel}); 
     }
 
     // ----------- compress the top data ----------- //
-    gr_ = graph::cuda::edge_aggregation(edge_index, top_edge, pmc)["1"]; 
-    torch::Tensor node_trk = gr_[0].index({gr_[2]}); 
+    gr_ = pyc::graph::edge_aggregation(edge_index, top_edge, pmc); 
+    torch::Tensor node_trk = gr_.at(key_idx); 
     num_node = (node_trk > -1).sum({-1}, true);
 
-    torch::Tensor top_mass = physics::cuda::cartesian::M(gr_[3]);
-    torch::Tensor enc_tops = torch::cat({top_mass, gr_[3], num_node, node_rnn}, {-1});
+    torch::Tensor pmx_     = gr_.at(key_smx); 
+    torch::Tensor top_mass = pyc::physics::cartesian::combined::M(pmx_);
+    torch::Tensor enc_tops = torch::cat({top_mass, pmx_, num_node, node_rnn}, {-1});
     torch::Tensor ntops    = (*this -> rnn_x) -> forward(enc_tops.to(torch::kFloat32)) / num_node;
     torch::Tensor tmlp     = torch::zeros({event_index.size({0}), ntops.size({1})}, ntops.device()).to(ntops.dtype()); 
     tmlp.index_add_({0}, batch_index, ntops); 
@@ -239,11 +243,12 @@ void grift::forward(graph_t* data){
     torch::Tensor hxt_j = node_rnn.index({dst}); 
 
     torch::Tensor _trk_j = torch::cat({node_trk.index({src}), node_trk.index({dst})}, {-1}); 
-    std::tuple<torch::Tensor, torch::Tensor> aggr = graph::cuda::unique_aggregation(_trk_j, pmc); 
-    num_node = (std::get<1>(aggr) > -1).sum({-1}, true);
+    torch::Dict<std::string, torch::Tensor> aggr = pyc::graph::unique_aggregation(_trk_j, pmc); 
+    num_node = (aggr.at("unique") > -1).sum({-1}, true);
 
-    torch::Tensor res_mass = physics::cuda::cartesian::M(std::get<0>(aggr)); 
-    torch::Tensor enc_res  = torch::cat({res_mass, std::get<0>(aggr), num_node, hxt_i}, {-1}); 
+    torch::Tensor pmy_     = aggr.at("node-sum");
+    torch::Tensor res_mass = pyc::physics::cartesian::combined::M(pmy_); 
+    torch::Tensor enc_res  = torch::cat({res_mass, pmy_, num_node, hxt_i}, {-1}); 
     torch::Tensor node_res = (*this -> rnn_x) -> forward(enc_res.to(torch::kFloat32)) / num_node;
 
     torch::Tensor fx_ij  = torch::cat({node_res, ntops.index({src}), hxt_i, hxt_j - hxt_i}, {-1});

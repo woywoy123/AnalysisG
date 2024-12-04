@@ -15,7 +15,7 @@ def double_neutrino(data, total = False):
             f = TH1F()
             f.Density = True
             f.Title = name
-            f.Color = ["red", "blue", "green"][len(hists)%3]
+            f.Color = ["red", "blue"][len(hists)%2]
             f.xData = datax[keys]
             hists.append(f)
         return hists
@@ -46,41 +46,34 @@ def double_neutrino(data, total = False):
 
     tru_topmass = data.tru_topmass
     exp_topmass = data.exp_topmass
-    nusol_tmass = data.nusol_tmass
 
     tru_wmass   = data.tru_wmass
     exp_wmass   = data.exp_wmass
-    nusol_wmass = data.nusol_wmass
 
     wmass_pdgid   = {}
     topmass_pdgid = {}
     nusol_pdgid   = {}
 
     for i in list(dist_nu):
-        if len([k for k in tru_topmass[i] if abs(k-172.62) < 2]) != 2: continue
+        #        if len([k for k in tru_topmass[i] if abs(k-172.62) < 2]) != 2: continue
         lepsym = " ".join([mapping(l) for l in sorted(pdgids[i])])
-        if lepsym not in topmass_pdgid: topmass_pdgid[lepsym] = {"truth" : [], "expected" : [], "nusol" : []}
-        if lepsym not in   wmass_pdgid: wmass_pdgid[lepsym]   = {"truth" : [], "expected" : [], "nusol" : []}
+        if lepsym not in topmass_pdgid: topmass_pdgid[lepsym] = {"truth" : [], "expected" : []}
+        if lepsym not in   wmass_pdgid: wmass_pdgid[lepsym]   = {"truth" : [], "expected" : []}
         if lepsym not in   nusol_pdgid: nusol_pdgid[lepsym]   = []
-        if i != "0xd0edab7810edc54f": continue
-        print(i, tru_topmass[i], exp_topmass[i], tru_wmass[i], exp_wmass[i])
-        exit()
-
         wmass_pdgid[lepsym]["truth"]   += tru_wmass[i]
         topmass_pdgid[lepsym]["truth"] += tru_topmass[i]
 
         wmass_pdgid[lepsym]["expected"]   += exp_wmass[i]
         topmass_pdgid[lepsym]["expected"] += exp_topmass[i]
 
-        wmass_pdgid[lepsym]["nusol"]   += nusol_wmass[i]
-        topmass_pdgid[lepsym]["nusol"] += nusol_tmass[i]
+        nusol_pdgid[lepsym] += [dist_nu[i]]
+        print(exp_wmass[i], exp_topmass[i], -dist_nu[i])
 
-        nusol_pdgid[lepsym] += [-math.log(dist_nu[i], 10)]
-
-    keys = {"Truth" : "truth", "Bruteforced" : "expected", "Solution" : "nusol"}
+    keys = {"Truth" : "truth", "Bruteforced" : "expected"}
 
     sol_hist = []
     for i in list(nusol_pdgid):
+        if not len(nusol_pdgid[i]): continue
         sol_dist = TH1F()
         sol_dist.Title = i
         sol_dist.Density = True
@@ -131,35 +124,41 @@ def double_neutrino(data, total = False):
 
     hists = []
     for name, keyx in keys.items():
+        data = sum([topmass_pdgid[i][keyx] for i in list(nusol_pdgid)], [])
+        if not len(data): continue
         f = TH1F()
         f.Density = True
         f.Color = ["red", "blue", "green"][len(hists)%3]
         f.Title = name
-        f.xData = sum([topmass_pdgid[i][keyx] for i in list(nusol_pdgid)], [])
+        f.xData = data
         hists.append(f)
 
-    th = path(TH1F())
-    th.Title  = "Comparison of Invariant Top Mass and Double Neutrino Algorithm"
-    th.xTitle = "Invariant Mass (GeV)"
-    th.yTitle = "Leptonic Top / 1 GeV"
-    th.Histograms = hists
-    th.xBins  = 400
-    th.xStep  = 5
-    th.xMin   = 150
-    th.xMax   = 190
-    th.ShowCount = True
-    th.Filename = "top_nunu_total"
-    th.SaveFigure()
+    if len(hists):
+        th = path(TH1F())
+        th.Title  = "Comparison of Invariant Top Mass and Double Neutrino Algorithm"
+        th.xTitle = "Invariant Mass (GeV)"
+        th.yTitle = "Leptonic Top / 1 GeV"
+        th.Histograms = hists
+        th.xBins  = 400
+        th.xStep  = 5
+        th.xMin   = 150
+        th.xMax   = 190
+        th.ShowCount = True
+        th.Filename = "top_nunu_total"
+        th.SaveFigure()
 
     hists = []
     for name, keyx in keys.items():
+        data = sum([wmass_pdgid[i][keyx] for i in list(nusol_pdgid)], [])
+        if not len(data): continue
         f = TH1F()
         f.Density = True
         f.Color = ["red", "blue", "green"][len(hists)%3]
         f.Title = name
-        f.xData = sum([wmass_pdgid[i][keyx] for i in list(nusol_pdgid)], [])
+        f.xData = data
         hists.append(f)
 
+    if not len(hists): return
     th = path(TH1F())
     th.Title  = "Comparison of Invariant W-Boson Mass and Double Neutrino Algorithm"
     th.xTitle = "Invariant Mass (GeV)"

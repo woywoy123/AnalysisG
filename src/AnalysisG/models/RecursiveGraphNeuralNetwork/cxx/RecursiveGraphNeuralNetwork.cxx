@@ -1,8 +1,5 @@
 #include <RecursiveGraphNeuralNetwork.h>
-#include <transform/cartesian-cuda.h>
-#include <physics/cartesian-cuda.h>
-#include <transform/polar-cuda.h>
-#include <graph/graph-cuda.h>
+#include <pyc/cupyc.h>
 
 
 recursivegraphneuralnetwork::recursivegraphneuralnetwork(int rep, double drop_out){
@@ -112,20 +109,22 @@ torch::Tensor recursivegraphneuralnetwork::message(
         torch::Tensor hx_i, torch::Tensor hx_j
 
 ){
+    std::string key_smx = "node-sum";
+
     torch::Tensor trk_ij = torch::cat({_trk_i, _trk_j}, {-1}); 
 
-    torch::Tensor pmc_i_ = std::get<0>(graph::cuda::unique_aggregation(_trk_i, pmc)); 
-    torch::Tensor pmc_j_ = std::get<0>(graph::cuda::unique_aggregation(_trk_j, pmc)); 
-    torch::Tensor pmc_ij = std::get<0>(graph::cuda::unique_aggregation(trk_ij, pmc)); 
+    torch::Tensor pmc_i_ = pyc::graph::unique_aggregation(_trk_i, pmc).at(key_smx); 
+    torch::Tensor pmc_j_ = pyc::graph::unique_aggregation(_trk_j, pmc).at(key_smx); 
+    torch::Tensor pmc_ij = pyc::graph::unique_aggregation(trk_ij, pmc).at(key_smx); 
    
-    torch::Tensor m_i  = physics::cuda::cartesian::M(pmc_i);
-    torch::Tensor m_j  = physics::cuda::cartesian::M(pmc_j); 
-    torch::Tensor m_ij = physics::cuda::cartesian::M(pmc_ij);
+    torch::Tensor m_i  = pyc::physics::cartesian::combined::M(pmc_i);
+    torch::Tensor m_j  = pyc::physics::cartesian::combined::M(pmc_j); 
+    torch::Tensor m_ij = pyc::physics::cartesian::combined::M(pmc_ij);
    
-    torch::Tensor m_i_  = physics::cuda::cartesian::M(pmc_i_);
-    torch::Tensor m_j_  = physics::cuda::cartesian::M(pmc_j_); 
+    torch::Tensor m_i_ = pyc::physics::cartesian::combined::M(pmc_i_);
+    torch::Tensor m_j_ = pyc::physics::cartesian::combined::M(pmc_j_); 
 
-    torch::Tensor dr   = physics::cuda::cartesian::DeltaR(pmc_i, pmc_j); 
+    torch::Tensor dr   = pyc::physics::cartesian::combined::DeltaR(pmc_i, pmc_j); 
 
     std::vector<torch::Tensor> dx_ = {
         m_ij  , pmc_ij, dr, 
@@ -143,6 +142,8 @@ torch::Tensor recursivegraphneuralnetwork::message(
 }
 
 void recursivegraphneuralnetwork::forward(graph_t* data){
+    std::string key_idx = "cls::1::node-indices";
+    std::string key_smx = "cls::1::node-sum";
 
     // get the particle 4-vector and convert it to cartesian
     torch::Tensor pt     = data -> get_data_node("pt", this) -> clone();
@@ -150,7 +151,7 @@ void recursivegraphneuralnetwork::forward(graph_t* data){
     torch::Tensor phi    = data -> get_data_node("phi", this) -> clone();
     torch::Tensor energy = data -> get_data_node("energy", this) -> clone();
     torch::Tensor is_lep = data -> get_data_node("is_lep", this) -> clone(); 
-    torch::Tensor pmc    = transform::cuda::PxPyPzE(pt, eta, phi, energy); 
+    torch::Tensor pmc    = pyc::transform::separate::PxPyPzE(pt, eta, phi, energy); 
 
     // the event graph attributes
     torch::Tensor num_jets = data -> get_data_graph("num_jets", this) -> clone(); 
@@ -158,7 +159,10 @@ void recursivegraphneuralnetwork::forward(graph_t* data){
     torch::Tensor met      = data -> get_data_graph("met", this) -> clone(); 
     torch::Tensor met_phi  = data -> get_data_graph("phi", this) -> clone();
     torch::Tensor num_bjet = data -> get_data_node("is_b", this) -> sum({0}).view({-1, 1});  
-    torch::Tensor met_xy   = torch::cat({transform::cuda::Px(met, met_phi), transform::cuda::Py(met, met_phi)}, {-1});
+    torch::Tensor met_xy   = torch::cat({
+            pyc::transform::separate::Px(met, met_phi), 
+            pyc::transform::separate::Py(met, met_phi)
+    }, {-1});
 
     torch::Tensor edge_index = data -> get_edge_index(this) -> to(torch::kLong); 
     torch::Tensor src     = edge_index.index({0}).view({-1}); 
@@ -171,7 +175,7 @@ void recursivegraphneuralnetwork::forward(graph_t* data){
     nulls = torch::cat(x_, {-1}).to(torch::kFloat32); 
 
     // ------ Create an initial prediction with the edge classifier ------ //
-    nulls = torch::cat({physics::cuda::cartesian::M(pmc), pmc, nulls}, {-1}).to(torch::kFloat32); 
+    nulls = torch::cat({pyc::physics::cartesian::combined::M(pmc), pmc, nulls}, {-1}).to(torch::kFloat32); 
     torch::Tensor hx = (*this -> rnn_x) -> forward(nulls);
 
     // ------ index the nodes from 0 to N-1 ----- //
@@ -229,24 +233,24 @@ void recursivegraphneuralnetwork::forward(graph_t* data){
         edge_index_ = edge_index_.index({torch::indexing::Slice(), sel != 1}); 
 
         // ----- create a new intermediate state of the node ----- //
-        std::vector<torch::Tensor> gr_ = graph::cuda::edge_aggregation(edge_index, G_, pmc)["1"]; 
+        torch::Dict<std::string, torch::Tensor> gr_ = pyc::graph::edge_aggregation(edge_index, G_, pmc); 
 
-        trk  = gr_[0].index({gr_[2]});
-        torch::Tensor pmc_ = gr_[3]; 
-        nulls = torch::cat({physics::cuda::cartesian::M(pmc_), pmc_, hx}, {-1}); 
+        trk  = gr_.at(key_idx);
+        torch::Tensor pmc_ = gr_.at(key_smx); 
+        nulls = torch::cat({pyc::physics::cartesian::combined::M(pmc_), pmc_, hx}, {-1}); 
         hx = (*this -> rnn_x) -> forward(nulls.to(torch::kFloat32));
     }
 
     // ----------- count the number of tops and use them for Z/H boson ---------- //
-    std::vector<torch::Tensor> gr_clust = graph::cuda::edge_aggregation(edge_index, G_, pmc)["1"];  
+    torch::Dict<std::string, torch::Tensor> gr_clust = pyc::graph::edge_aggregation(edge_index, G_, pmc);  
 
     // ----------- reverse the clustering on a per node basis ----------- //
-    torch::Tensor clusters = gr_clust[0].index({gr_clust[2]}); 
+    torch::Tensor clusters = gr_clust.at(key_idx); 
     torch::Tensor c_ij  = torch::cat({clusters.index({src}), clusters.index({dst})}, {-1}); 
    
     // ----------- perform a single edge update based on clusters ----------- //
-    torch::Tensor z_pmc = std::get<0>(graph::cuda::unique_aggregation(c_ij, pmc));
-    torch::Tensor z_inv = physics::cuda::cartesian::M(z_pmc) - this -> res_mass;  
+    torch::Tensor z_pmc = pyc::graph::unique_aggregation(c_ij, pmc).at("node-sum");
+    torch::Tensor z_inv = pyc::physics::cartesian::combined::M(z_pmc) - this -> res_mass;  
     torch::Tensor z_feat = torch::cat({z_pmc, z_inv, G_}, {-1}); 
     torch::Tensor res_edge = (*this -> exotic_mlp) -> forward(z_feat.to(torch::kFloat32));  
 
@@ -257,8 +261,9 @@ void recursivegraphneuralnetwork::forward(graph_t* data){
     top_matrix_0.index_put_({src, dst}, G_.index({torch::indexing::Slice(), 0})); 
     top_matrix_1.index_put_({src, dst}, G_.index({torch::indexing::Slice(), 1})); 
     torch::Tensor top_matrix = torch::cat({top_matrix_0.sum({-1}, true), top_matrix_1.sum({-1}, true)}, {-1}); 
-    top_matrix = torch::cat({top_matrix, physics::cuda::cartesian::M(gr_clust[3]) - torch::ones_like(pt)*172.62*1000}, {-1}); 
-    top_matrix = torch::cat({top_matrix, (clusters > -1).sum({-1}, true), torch::ones_like(pt)*gr_clust[0].size({0})}, {-1}); 
+
+    top_matrix = torch::cat({top_matrix, pyc::physics::cartesian::combined::M(gr_clust.at(key_smx)) - torch::ones_like(pt)*172.62*1000}, {-1}); 
+    top_matrix = torch::cat({top_matrix, (clusters > -1).sum({-1}, true), torch::ones_like(pt)*clusters.size({0})}, {-1}); 
     top_matrix = (*this -> node_aggr_mlp) -> forward(top_matrix.to(torch::kFloat32)); 
 
     // ---------- compress node details to graph -------- //

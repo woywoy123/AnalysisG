@@ -1,13 +1,14 @@
 from common import *
 from nusol import *
+from pyc import pyc
 import random
 import torch
 import math
 import time
 
-torch.ops.load_library("../build/pyc/interface/libcupyc.so")
 device = "cuda"
 torch.set_printoptions(threshold=1000000)
+pyc = pyc()
 
 def test_nusol_base_matrix():
     mW = 80.385*1000
@@ -22,13 +23,13 @@ def test_nusol_base_matrix():
         x_ = next(ita)
         lep, bquark = x_[1], x_[2]
         nu = NuSol(bquark.vec, lep.vec)
-        lep_    = torch.ops.cupyc.transform_combined_pxpypze(lep.ten)
-        bquark_ = torch.ops.cupyc.transform_combined_pxpypze(bquark.ten)
+        lep_    = pyc.cuda_transform_combined_pxpypze(lep.ten)
+        bquark_ = pyc.cuda_transform_combined_pxpypze(bquark.ten)
         inpt["bq"] += [bquark_.clone()]
         inpt["lep"] += [lep_.clone()]
 
         truth = torch.tensor(nu.H, device = device, dtype = torch.float64).view(-1, 3, 3)
-        pred = torch.ops.cupyc.nusol_base_basematrix(bquark_, lep_, masses)["H"]
+        pred = pyc.cuda_nusol_base_basematrix(bquark_, lep_, masses)["H"]
         inpt["pred"].append(pred)
         assert compare(truth, pred, 10**-5)
 
@@ -36,7 +37,7 @@ def test_nusol_base_matrix():
     inpt["lep"] = torch.cat(inpt["lep"], dim = 0)
     masses = torch.cat([masses]*len(x), 0)
     preds = torch.cat(inpt["pred"], dim = 0)
-    pred = torch.ops.cupyc.nusol_base_basematrix(inpt["bq"], inpt["lep"], masses)["H"]
+    pred = pyc.cuda_nusol_base_basematrix(inpt["bq"], inpt["lep"], masses)["H"]
     assert compare(preds, pred, 10**-5)
 
 
@@ -56,8 +57,8 @@ def test_nusol_nu_cuda():
         ev_     = ev.ten
 
         print("_______", i, "________")
-        lep_    = torch.ops.cupyc.transform_combined_pxpypze(lep.ten)
-        bquark_ = torch.ops.cupyc.transform_combined_pxpypze(bquark.ten)
+        lep_    = pyc.cuda_transform_combined_pxpypze(lep.ten)
+        bquark_ = pyc.cuda_transform_combined_pxpypze(bquark.ten)
         nu      = SingleNu(bquark.vec, lep.vec, ev.vec)
         truth = torch.tensor(nu.M, device = device).view(-1, 3, 3)
 
@@ -67,7 +68,7 @@ def test_nusol_nu_cuda():
         ev     = torch.cat([ev_    ]*stress, 0)
         mass   = torch.cat([masses ]*stress, 0)
         S      = torch.cat([S2     ]*stress, 0)
-        pred = torch.ops.cupyc.nusol_nu(bquark, lep, ev, mass, S, 10e-10)
+        pred = pyc.cuda_nusol_nu(bquark, lep, ev, mass, S, 10e-10)
 
         assert compare(truth, pred["M"], 10**-1)
         nu_   = pred["nu"].view(-1, 3)
@@ -108,10 +109,10 @@ def test_nusol_nunu_cuda():
         met_xy = ev.ten
 
         print("_______", i, "________")
-        b1_ = torch.ops.cupyc.transform_combined_pxpypze(b1.ten)
-        b2_ = torch.ops.cupyc.transform_combined_pxpypze(b2.ten)
-        l1_ = torch.ops.cupyc.transform_combined_pxpypze(l1.ten)
-        l2_ = torch.ops.cupyc.transform_combined_pxpypze(l2.ten)
+        b1_ = pyc.cuda_transform_combined_pxpypze(b1.ten)
+        b2_ = pyc.cuda_transform_combined_pxpypze(b2.ten)
+        l1_ = pyc.cuda_transform_combined_pxpypze(l1.ten)
+        l2_ = pyc.cuda_transform_combined_pxpypze(l2.ten)
         try: nu  = DoubleNu((b1.vec, b2.vec), (l1.vec, l2.vec), ev)
         except: continue
 
@@ -122,7 +123,7 @@ def test_nusol_nunu_cuda():
         l2_  = torch.cat([l2_]*stress, 0)
         met  = torch.cat([met_xy]*stress, 0)
         mass = torch.cat([masses]*stress, 0)
-        pred = torch.ops.cupyc.nusol_nunu(b1_, b2_, l1_, l2_, met, mass, 10e-10)
+        pred = pyc.cuda_nusol_nunu(b1_, b2_, l1_, l2_, met, mass, 10e-10)
 
         nu1T, nu2T = nu.nunu_s
         nu1T, nu2T = [torch.tensor(f.tolist(), dtype = torch.float64) for f in [nu1T, nu2T]]
@@ -197,10 +198,10 @@ def test_nusol_combinatorial_cuda():
     pid        = torch.tensor(pid, device = "cuda")
     batch      = torch.tensor(batch, device = "cuda")
     edge_index = torch.tensor([src, dst], device = "cuda")
-    particles  = torch.ops.cupyc.transform_combined_pxpypze(torch.cat(particles, 0).to(device = "cuda"))
+    particles  = pyc.cuda_transform_combined_pxpypze(torch.cat(particles, 0).to(device = "cuda"))
     metxy      = torch.cat(metxy, 0).to(device = "cuda")
 
-    cmb = torch.ops.cupyc.nusol_combinatorial(edge_index, batch, particles, pid, metxy, mT, mW, t_pm, w_pm, 20, 1e-10, True)
+    cmb = pyc.cuda_nusol_combinatorial(edge_index, batch, particles, pid, metxy, mT, mW, t_pm, w_pm, 20, 1e-10, True)
     print(cmb["distances"])
     print(cmb["nu1"])
     print(torch.cat([cmb["l1"], cmb["l2"], cmb["b1"], cmb["b2"]], -1))

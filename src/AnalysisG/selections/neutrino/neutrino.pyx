@@ -21,7 +21,6 @@ cdef class Neutrino(SelectionTemplate):
         self.pdgid       = as_dict(&self.tt.pdgid      )
         self.tru_topmass = as_dict(&self.tt.tru_topmass)
         self.tru_wmass   = as_dict(&self.tt.tru_wmass  )
-        self.nusol_tmass = as_dict(&self.tt.nusol_tmass)
-        self.nusol_wmass = as_dict(&self.tt.nusol_wmass)
+
         self.exp_topmass = as_dict(&self.tt.exp_topmass)
         self.exp_wmass   = as_dict(&self.tt.exp_wmass  )
