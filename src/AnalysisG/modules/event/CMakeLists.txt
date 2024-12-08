@@ -4,7 +4,7 @@ set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/cxx/properties.cxx
 )
 
-add_library(cevent_template STATIC ${SOURCE_FILES})
+add_library(cevent_template ${SOURCE_FILES})
 target_include_directories(cevent_template PRIVATE include/templates)
 target_include_directories(cevent_template PUBLIC include)
 target_link_libraries(cevent_template  PUBLIC cstructs cparticle_template ctools cmeta)

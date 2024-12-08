@@ -6,3 +6,9 @@ add_subdirectory(operators)
 add_subdirectory(nusol)
 add_subdirectory(graph)
 add_subdirectory(interface)
+
+add_subdirectory(notification)
+add_subdirectory(tools)
+add_subdirectory(plotting)
+add_subdirectory(core)
+

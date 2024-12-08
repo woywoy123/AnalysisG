@@ -15,7 +15,8 @@ from AnalysisG.core.notification cimport *
 
 import pyAMI.client
 import pyAMI.httpclient
-import pyAMI_atlas.api
+try: import pyAMI_atlas.api
+except: pass
 import http.client
 import pickle
 import h5py

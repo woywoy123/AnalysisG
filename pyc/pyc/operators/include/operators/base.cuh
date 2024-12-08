@@ -245,30 +245,34 @@ __global__ void _inverse(
     inv[_idx][threadIdx.y][threadIdx.z] = _cof[threadIdx.x][threadIdx.y][threadIdx.z]*_div(&_dt); 
 }
 
-template <typename scalar_t>
+template <typename scalar_t, size_t size_x>
 __global__ void _eigenvalue(
         const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> matrix,
         torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> real,
         torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> img
 ){
     
-    __shared__ double _mat[3][3]; 
-    __shared__ double _cof[3][3]; 
-    __shared__ double _det[3][3]; 
+    __shared__ double _mat[size_x][3][3]; 
+    __shared__ double _cof[size_x][3][3]; 
+    __shared__ double _det[size_x][3][3]; 
 
     const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
-    _mat[threadIdx.y][threadIdx.z] = matrix[_idx][threadIdx.y][threadIdx.z]; 
+    const unsigned int idx = threadIdx.x; 
+    const unsigned int idy = threadIdx.y;
+    const unsigned int idz = threadIdx.z; 
+
+    if (_idx >= matrix.size({0})){return;}
+    _mat[idx][idy][idz] = matrix[_idx][idy][idz]; 
     __syncthreads();
     
-    double minor = _cofactor(_mat, threadIdx.y, threadIdx.z, false); 
-    _cof[threadIdx.y][threadIdx.z] = -minor;
-    _det[threadIdx.y][threadIdx.z] = pow(-1, int(threadIdx.y) + int(threadIdx.z)) * minor * _mat[threadIdx.y][threadIdx.z]; 
-    if (threadIdx.y || threadIdx.z){return;}
+    double minor = _cofactor(_mat[idx], idy, idz, false); 
+    _cof[idx][idy][idz] = -minor;
+    _det[idx][idy][idz] = pow(-1, int(idy) + int(idz)) * minor * _mat[idx][idy][idz]; 
     __syncthreads(); 
 
-    c10::complex<double> tr = _mat[0][0] + _mat[1][1] + _mat[2][2]; 
-    c10::complex<double> c  = _cof[0][0] + _cof[1][1] + _cof[2][2]; 
-    c10::complex<double> d  = _det[0][0] + _det[0][1] + _det[0][2];  
+    c10::complex<double> tr = _mat[idx][0][0] + _mat[idx][1][1] + _mat[idx][2][2]; 
+    c10::complex<double> c  = _cof[idx][0][0] + _cof[idx][1][1] + _cof[idx][2][2]; 
+    c10::complex<double> d  = _det[idx][0][0] + _det[idx][0][1] + _det[idx][0][2];  
     c10::complex<double> o  = c10::complex<double>( -0.5, 0.5 * sqrt( 3.0 ) ); 
     c10::complex<double> o2 = o * o;
 
@@ -284,14 +288,12 @@ __global__ void _eigenvalue(
     c10::complex<double> lmb2 = g1 * o  + g2 * o2 + offset;
     c10::complex<double> lmb3 = g1 * o2 + g2 * o  + offset;
  
-    real[_idx][0] = lmb1.real(); 
-    img [_idx][0] = _clp(lmb1.imag()); 
-
-    real[_idx][1] = lmb2.real(); 
-    img [_idx][1] = _clp(lmb2.imag()); 
-
-    real[_idx][2] = lmb3.real(); 
-    img [_idx][2] = _clp(lmb3.imag()); 
+    if (idz == 0 && idy == 0){real[_idx][0] = lmb1.real(); return;}
+    if (idz == 0 && idy == 1){img [_idx][0] = _clp(lmb1.imag()); return;}
+    if (idz == 0 && idy == 2){real[_idx][1] = lmb2.real(); return;}
+    if (idz == 1 && idy == 0){img [_idx][1] = _clp(lmb2.imag()); return;}
+    if (idz == 1 && idy == 1){real[_idx][2] = lmb3.real(); return;}
+    if (idz == 1 && idy == 2){img [_idx][2] = _clp(lmb3.imag()); return;}
 }
 
 #endif

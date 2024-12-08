@@ -28,7 +28,9 @@ def R(axis, angle):
 
 def Derivative():
     """Matrix to differentiate [cos(t),sin(t),1]"""
-    return R(2, math.pi / 2).dot(np.diag([1, 1, 0]))
+    cx = np.array([[0, -1, 0], [1, 0, 0], [0, 0, 0]])
+    #R(2, math.pi / 2) 
+    return cx.dot(np.diag([1, 1, 0]))
 
 def multisqrt(y):
     """Valid real solutions to y=x*x"""
@@ -106,12 +108,12 @@ class NuSol(object):
     def s(self): return math.sqrt(1 - self.c**2)
 
     @property
-    def x0p(self): 
+    def x0p(self):
         m2 = self.b.tau2
         return -(self.mT2 - self.mW2 - m2)/(2*self.b.e)
 
     @property
-    def x0(self): 
+    def x0(self):
         m2 = self.mu.tau2
         return -(self.mW2 - m2 - self.mN2)/(2*self.mu.e)
 
@@ -120,7 +122,7 @@ class NuSol(object):
         P = self.mu.mag
         beta = self.mu.beta
         return (self.x0 * beta - P * (1 - beta**2))/beta**2
- 
+
     @property
     def Sy(self):
         beta = self.b.beta
@@ -182,7 +184,8 @@ class NuSol(object):
         return np.dot(dNu.T, S2).dot(dNu)
 
     @property
-    def M(self): return next(XD + XD.T for XD in (self.X.dot(Derivative()),))
+    def M(self):
+        return next(XD + XD.T for XD in (self.X.dot(Derivative()),))
 
     @property
     def H_perp(self): return np.vstack([self.H[:2], [0, 0, 1]])
@@ -197,19 +200,22 @@ class NuSol(object):
 class SingleNu(NuSol):
 
     def __init__(self, b, nu, ev):
-        NuSol.__init__(self, b, nu, ev)
-        self._M = self.M
+        t = NuSol(b, nu, ev)
+        self._M = t.M
+        self._X = t.X
+        self._H = t.H
 
+        print(self._M)
         sols, diag = intersections_ellipses(self._M, UnitCircle())
         self.sols = sorted(sols, key = self.calcX2)
 
-    def calcX2(self, t): return np.dot(t, self.X).dot(t)
+    def calcX2(self, t): return np.dot(t, self._X).dot(t)
 
     @property
     def chi2(self): return np.array([self.calcX2(self.sols[i]) for i in range(len(self.sols))])
 
     @property
-    def nu(self): return np.array([self.H.dot(self.sols[i]) for i in range(len(self.sols))])
+    def nu(self): return np.array([self._H.dot(self.sols[i]) for i in range(len(self.sols))])
 
 class DoubleNu(NuSol):
 

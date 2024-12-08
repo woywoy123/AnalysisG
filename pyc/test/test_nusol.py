@@ -60,8 +60,9 @@ def test_nusol_nu_cuda():
         lep_    = pyc.cuda_transform_combined_pxpypze(lep.ten)
         bquark_ = pyc.cuda_transform_combined_pxpypze(bquark.ten)
         nu      = SingleNu(bquark.vec, lep.vec, ev.vec)
-        truth = torch.tensor(nu.M, device = device).view(-1, 3, 3)
 
+        MT     = torch.tensor(nu._M, device = device).view(-1, 3, 3)
+        XT     = torch.tensor(nu._X, device = device).view(-1, 3, 3)
         stress = 1
         bquark = torch.cat([bquark_]*stress, 0)
         lep    = torch.cat([lep_   ]*stress, 0)
@@ -70,11 +71,14 @@ def test_nusol_nu_cuda():
         S      = torch.cat([S2     ]*stress, 0)
         pred = pyc.cuda_nusol_nu(bquark, lep, ev, mass, S, 10e-10)
 
-        assert compare(truth, pred["M"], 10**-1)
+        assert compare(MT, pred["M"], 10**-5)
+        assert compare(XT, pred["X"], 10**-5)
         nu_   = pred["nu"].view(-1, 3)
         chi2_ = pred["distances"]
+
         nu_   = nu_[(chi2_ > 0).view(-1)].clone()
         chi2_ = chi2_[chi2_ > 0].clone()
+
         nut = torch.tensor(nu.nu.tolist()  , device = "cpu", dtype = torch.float64)
         ch2 = torch.tensor(nu.chi2.tolist(), device = "cpu", dtype = torch.float64)
         srt = chi2_.sort()[1]
@@ -207,10 +211,10 @@ def test_nusol_combinatorial_cuda():
     print(torch.cat([cmb["l1"], cmb["l2"], cmb["b1"], cmb["b2"]], -1))
 
 if __name__ == "__main__":
-    test_nusol_base_matrix()
+    #test_nusol_base_matrix()
     test_nusol_nu_cuda()
-    test_nusol_nunu_cuda()
-    test_nusol_combinatorial_cuda()
+    #test_nusol_nunu_cuda()
+    #test_nusol_combinatorial_cuda()
 
 
 

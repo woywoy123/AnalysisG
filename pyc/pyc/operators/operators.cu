@@ -195,12 +195,13 @@ std::tuple<torch::Tensor, torch::Tensor> operators_::Inverse(torch::Tensor* matr
 
 std::tuple<torch::Tensor, torch::Tensor> operators_::Eigenvalue(torch::Tensor* matrix){
     const unsigned int dx = matrix -> size({0}); 
-    const dim3 thd = dim3(1, 3, 3); 
-    const dim3 blk = blk_(dx, 1, 3, 3, 3, 3); 
+    const unsigned int thr = (dx >= 64) ? 64 : dx; 
+    const dim3 thd = dim3(thr, 3, 3); 
+    const dim3 blk = blk_(dx, thr, 3, 3, 3, 3); 
     torch::Tensor eig = torch::zeros({dx, 3}, MakeOp(matrix)); 
     torch::Tensor img = torch::zeros({dx, 3}, MakeOp(matrix)); 
     AT_DISPATCH_ALL_TYPES(matrix -> scalar_type(), "Eigenvalue", [&]{
-        _eigenvalue<scalar_t><<<blk, thd>>>(
+        _eigenvalue<scalar_t, 64><<<blk, thd>>>(
             matrix -> packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
             eig.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
             img.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>()); 

@@ -14,19 +14,14 @@ __global__ void _nu_init_(
         torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> M, 
         torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> Unit
 ){
+    //__shared__ double _H[size_x][3][3];
 
-    __shared__ double _H[size_x][3][3];
     __shared__ double _S2[size_x][3][3]; 
-    __shared__ double _V0[size_x][3][3]; 
-
     __shared__ double _dNu[size_x][3][3]; 
     __shared__ double _dNuT[size_x][3][3]; 
 
     __shared__ double _X[size_x][3][3]; 
     __shared__ double _T[size_x][3][3]; 
-    __shared__ double _Dx[size_x][3][3]; 
-
-    __shared__ double _XD[size_x][3][3]; 
 
     const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
     const unsigned int idx = threadIdx.x;
@@ -34,27 +29,17 @@ __global__ void _nu_init_(
     const unsigned int idz = threadIdx.z;  
     if (_idx >= met_xy.size({0})){return;}
 
-    // ------- Populate data ----------- //
-    _S2[idx][idy][idz] = 0; 
-    _V0[idx][idy][idz] = 0; 
-    _H[idx][idy][idz] = H[_idx][idy][idz]; 
-
-    double pi = M_PI*0.5; 
-    _Dx[idx][idy][idz] = _rz(&pi, idy, idz); 
-    _T[idx][idy][idz] = (idy == idz)*(idy < 2); 
-
-    if (idy < 2  && idz < 2){_S2[idx][idy][idz] = s2[_idx][idy][idz];}
-    if (idz == 2 && idy < 2){_V0[idx][idy][idz] = met_xy[_idx][idy];}
+    // ------- matrix inversion for S2 ------ //
+    _dNu[idx][idy][idz]  = ((idz == 2 && idy < 2) ? met_xy[_idx][idy] : 0x0) - H[_idx][idy][idz]; 
+    _S2[idx][idy][idz] = (idy < 2  && idz < 2) ? s2[_idx][idy][idz] : 0x0; 
     __syncthreads(); 
 
-    // ------- matrix inversion for S2 ------ //
     if (!idy && !idz){
         double s00 = _S2[idx][0][0]; 
         double s11 = _S2[idx][1][1]; 
         double s01 = _S2[idx][0][1]; 
         double s10 = _S2[idx][1][0]; 
-        double det = (s00*s11 - s01*s10);
-        det = _div(&det);
+        double det = _div(s00*s11 - s01*s10);
     
         // S2^-1 with transpose
         _S2[idx][0][0] =  s11*det; 
@@ -63,25 +48,18 @@ __global__ void _nu_init_(
         _S2[idx][0][1] = -s10*det; 
         _S2[idx][1][0] = -s01*det; 
     }
-
-    double di = _dot(_Dx[idx], _T[idx], idy, idz, 3); 
-    _dNu[idx][idy][idz]  = _V0[idx][idy][idz] - _H[idx][idy][idz]; 
-    _dNuT[idx][idz][idy] = _V0[idx][idy][idz] - _H[idx][idy][idz]; 
+    _dNuT[idx][idz][idy] = _dNu[idx][idy][idz]; 
     __syncthreads(); 
 
-    _Dx[idx][idy][idz] = di; 
     _T[idx][idy][idz] = _dot(_dNuT[idx], _S2[idx], idy, idz, 3); 
-    __syncthreads(); 
+    Unit[_idx][idy][idz] = _circl[idy][idz];
+    __syncthreads();  
 
     _X[idx][idy][idz] = _dot(_T[idx], _dNu[idx], idy, idz, 3); 
+    X[_idx][idy][idz] = _X[idx][idy][idz]; 
     __syncthreads(); 
 
-    _T[idx][idy][idz]  = (idy == idz)*(2*(idy < 2) - 1); 
-    _XD[idx][idy][idz] = _dot(_X[idx], _Dx[idx], idy, idz, 3) + _dot(_X[idx], _Dx[idx], idz, idy, 3);  
-
-    X[_idx][idy][idz] = _X[idx][idy][idz]; 
-    M[_idx][idy][idz] = _XD[idx][idy][idz]; 
-    Unit[_idx][idy][idz] = _T[idx][idy][idz];
+    M[idx][idy][idz] = _dot(_X[idx], _Deriv, idy, idz, 3) + _dot(_X[idx], _Deriv, idz, idy, 3); 
 }
 
 template <typename scalar_t>
@@ -135,11 +113,12 @@ std::map<std::string, torch::Tensor> nusol_::Nu(
                      H -> packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
                         X.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
                         M.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
-                        Unit.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>());
+                     Unit.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>());
 
     }); 
 
-    std::map<std::string, torch::Tensor> out = nusol_::Intersection(&M, &Unit, null); 
+    torch::Tensor M_ = M.clone(); 
+    std::map<std::string, torch::Tensor> out = nusol_::Intersection(&M_, &Unit, null); 
 
     const dim3 thN = dim3(1, 18, 3);
     const dim3 blN = blk_(dx, 1, 18, 18, 3, 3); 

@@ -18,16 +18,15 @@ message(STATUS "CMAKE_CUDA_COMPILER_ID = ${CMAKE_CUDA_COMPILER_ID}")
 message(STATUS "CMAKE_CUDA_COMPILER_VERSION = ${CUDA_V}")
 
 FetchContent_Declare(torch URL "https://download.pytorch.org/libtorch/cu121/libtorch-shared-with-deps-2.5.1%2Bcu121.zip")
-#"https://download.pytorch.org/libtorch/cu121/libtorch-cxx11-abi-shared-with-deps-2.4.1%2Bcu121.zip")
 FetchContent_MakeAvailable(torch)
 
 list(APPEND CMAKE_PREFIX_PATH ${torch_SOURCE_DIR})
 find_package(Torch REQUIRED)
 find_package(pybind11 REQUIRED)
+find_package(Python COMPONENTS Interpreter Development REQUIRED)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
 set(TORCH_USE_CUDA_DSA ON)
 message(STATUS "CAFFE2_USE_CUDNN is: ${CAFFE2_USE_CUDNN}")
 message(STATUS "TORCH: ${TORCH_LIBRARIES}")
-
 add_subdirectory(pyc)
