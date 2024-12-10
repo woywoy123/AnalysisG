@@ -3,6 +3,9 @@
 #include <cutils/utils.cuh>
 #include <operators/operators.cuh>
 
+#define _th_inter 8
+
+
 template <size_t size_x>
 __global__ void _swapAB(
         torch::PackedTensorAccessor64<double, 3, torch::RestrictPtrTraits> inv_A_dot_B,
@@ -53,7 +56,7 @@ __global__ void _swapAB(
     A[_idx][idy][idz] = A_[idx][idy][idz]; 
 } 
 
-template <typename scalar_t>
+template <typename scalar_t, size_t size_x>
 __global__ void _factor_degen(
         torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> real,
         torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> imag,
@@ -62,89 +65,80 @@ __global__ void _factor_degen(
         torch::PackedTensorAccessor64<scalar_t, 4, torch::RestrictPtrTraits> Lins,
         const double nulls
 ){
-    __shared__ double G[3][3][3]; 
-    __shared__ double g[3][3][3]; 
-    __shared__ double coG[3][3][3]; 
-    __shared__ double lines[3][3][3]; 
+    __shared__ double G[size_x][3][3][3]; 
+    __shared__ double g[size_x][3][3][3]; 
+    __shared__ double coG[size_x][3][3][3]; 
 
     const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
     const unsigned int _ixd = threadIdx.y*9 + threadIdx.z; 
     const unsigned int _idt = (_ixd / 9)%3; 
     const unsigned int _idy = (_ixd / 3)%3; 
     const unsigned int _idz =  _ixd % 3; 
+    const unsigned int idx  = threadIdx.x; 
+    if (_idx >= imag.size({0})){return;}
     if (abs(imag[_idx][_idt]) > 0.0){return;}
 
-    G[_idt][_idy][_idz] = B[_idx][_idy][_idz] - real[_idx][_idt] * A[_idx][_idy][_idz]; 
+    G[idx][_idt][_idy][_idz] = B[_idx][_idy][_idz] - real[_idx][_idt] * A[_idx][_idy][_idz]; 
     __syncthreads(); 
 
-    bool c1 = (G[_idt][0][0] == G[_idt][1][1]) * (G[_idt][1][1] == 0); 
-    if (c1){Lins[_idx][_idt][_idy][_idz] = _case1(G[_idt], _idy, _idz); return;}
+    bool c1 = (G[idx][_idt][0][0] == G[idx][_idt][1][1]) * (G[idx][_idt][1][1] == 0); 
+    if (c1){Lins[_idx][_idt][_idy][_idz] = _case1(G[idx][_idt], _idy, _idz); return;}
 
-    lines[_idt][_idy][_idz] = 0; 
-    bool sw = abs(G[_idt][0][0]) > abs(G[_idt][1][1]); 
-    g[_idt][_idy][_idz] = _case2(G[_idt], _idy, _idz, sw)*_div(G[_idt][!sw][!sw]);
+    bool sw = abs(G[idx][_idt][0][0]) > abs(G[idx][_idt][1][1]); 
+    g[idx][_idt][_idy][_idz] = _case2(G[idx][_idt], _idy, _idz, sw)*_div(G[idx][_idt][!sw][!sw]);
     __syncthreads();
 
-    coG[_idt][_idy][_idz] = _cofactor(g[_idt], _idy, _idz); 
+    coG[idx][_idt][_idy][_idz] = _cofactor(g[idx][_idt], _idy, _idz); 
     __syncthreads(); 
 
     double elx = 0; 
-    if (-coG[_idt][2][2] <= nulls){ elx = _leqnulls(coG[_idt], g[_idt], _idy, _idz); }
-    else { elx = _gnulls(coG[_idt], g[_idt], _idy, _idz); }
+    if (-coG[idx][_idt][2][2] <= nulls){ elx = _leqnulls(coG[idx][_idt], g[idx][_idt], _idy, _idz); }
+    else { elx = _gnulls(coG[idx][_idt], g[idx][_idt], _idy, _idz); }
 
     if (_idz == 0){Lins[_idx][_idt][_idy][1 - !sw] = elx;}
     if (_idz == 1){Lins[_idx][_idt][_idy][!sw] = elx;}
     if (_idz == 2){Lins[_idx][_idt][_idy][2] = elx;}
 }
 
-template <typename scalar_t>
+template <typename scalar_t, size_t size_x>
 __global__ void _intersections(
         torch::PackedTensorAccessor64<scalar_t, 4, torch::RestrictPtrTraits> real,
-        torch::PackedTensorAccessor64<scalar_t, 4, torch::RestrictPtrTraits> imag,
         torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> ellipse,
         torch::PackedTensorAccessor64<scalar_t, 4, torch::RestrictPtrTraits> lines,
         torch::PackedTensorAccessor64<scalar_t, 4, torch::RestrictPtrTraits> s_pts,
         torch::PackedTensorAccessor64<scalar_t, 4, torch::RestrictPtrTraits> s_dst,
         const double nulls
 ){
-    __shared__ double _real[9][3][3]; 
-    __shared__ double _imag[9][3][3];
+    __shared__ double _real[size_x][9][3][3]; 
+    __shared__ double _elip[size_x][9][3][3]; 
+    __shared__ double _line[size_x][9][3][3]; 
+    __shared__ double _solx[size_x][9][3][3]; 
 
-    __shared__ double _elip[9][3][3]; 
-    __shared__ double _line[9][3][3]; 
-    __shared__ double _solx[9][3][3]; 
-    __shared__ double _soly[9][3][3]; 
-    __shared__ double _dist[9][3][3]; 
+    const unsigned int _idx  = blockIdx.x * blockDim.x + threadIdx.x; 
+    const unsigned int idy   = threadIdx.y;
+    const unsigned int idt   = idy / 3;
+    const unsigned int idv   = idy % 3;   
+    if (_idx >= real.size({0})){return;}
 
-    const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
-    const unsigned int _idy = threadIdx.y/9;
-    const unsigned int _idz = threadIdx.y/3;
-    const unsigned int _idt = threadIdx.y%3; 
-    
-    _real[_idz][_idt][threadIdx.z] = real[_idx][_idz][_idt][threadIdx.z]; 
-    _imag[_idz][_idt][threadIdx.z] = imag[_idx][_idz][_idt][threadIdx.z]; 
-
-    _line[_idz][_idt][threadIdx.z] = lines[_idx][_idy][_idz%3][threadIdx.z];
-    _elip[_idz][_idt][threadIdx.z] = ellipse[_idx][_idt][threadIdx.z];
-    __syncthreads();  
-
-    double v1 = 0; 
-    for (size_t x(0); x < 3; ++x){v1 += _line[_idz][_idt][x] * _real[_idz][_idt][x];}
-    _soly[_idz][_idt][threadIdx.z] = _dot(_real[_idz], _elip[_idz], _idt, threadIdx.z, 3); 
-    _solx[_idz][_idt][threadIdx.z] = _real[_idz][_idt][threadIdx.z]*_div(_real[_idz][_idt][2]); 
+    _line[threadIdx.x][idt][idv][threadIdx.z] = lines[_idx][(idy / 9)%3][idt%3][threadIdx.z]; 
+    _real[threadIdx.x][idt][idv][threadIdx.z] = real[_idx][idt][idv][threadIdx.z]; 
+    _elip[threadIdx.x][idt][idv][threadIdx.z] = ellipse[_idx][idv][threadIdx.z]; 
     __syncthreads(); 
 
-    double v2 = 0; 
-    for (size_t x(0); x < 3; ++x){v2 += _soly[_idz][_idt][x] * _real[_idz][_idt][x];}
-    v2 = (v2 + v1) ? log10(v2*v2 + v1*v1) : 200;
+    _solx[threadIdx.x][idt][idv][threadIdx.z] = _dot(_real[threadIdx.x][idt], _elip[threadIdx.x][idt], idv, threadIdx.z, 3); 
+    __syncthreads(); 
 
-    _dist[_idz][_idt][threadIdx.z] = (v2 < log10(nulls)) ? v2 : 200; 
-    s_pts[_idx][_idz][_idt][threadIdx.z] = _dist[_idz][_idt][threadIdx.z]; 
-    s_dst[_idx][_idz][_idt][threadIdx.z] = _solx[_idz][_idt][threadIdx.z]; 
+    double v1 = _dot(_line[threadIdx.x][idt][idv], _real[threadIdx.x][idt][idv], 3);
+    double v2 = _dot(_solx[threadIdx.x][idt][idv], _real[threadIdx.x][idt][idv], 3); 
+    double dist = (v1 + v2) ? log10(v2*v2 + v1*v1) : 200; 
+    bool msk = _sum(_real[threadIdx.x][idt][idv], 3) != 1 && dist < log10(nulls);
+
+    s_pts[_idx][idt][idv][threadIdx.z] = (msk) ? dist : 200; 
+    s_dst[_idx][idt][idv][threadIdx.z] = _real[threadIdx.x][idt][idv][threadIdx.z] * _div(_real[threadIdx.x][idt][idv][2]); 
 }
 
 
-template <typename scalar_t>
+template <typename scalar_t, size_t size_x>
 __global__ void _solsx(
         const torch::PackedTensorAccessor64<scalar_t, 4, torch::RestrictPtrTraits> s_pts,
         const torch::PackedTensorAccessor64<scalar_t, 4, torch::RestrictPtrTraits> s_dst,
@@ -152,35 +146,37 @@ __global__ void _solsx(
         torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> solx,
         torch::PackedTensorAccessor64<long    , 4, torch::RestrictPtrTraits> idxs
 ){
-    __shared__ double _point[9][3][3]; 
-    __shared__ double _lines[9][3][3]; 
+    __shared__ double _point[size_x][9][3][3]; 
+    __shared__ double _lines[size_x][9][3][3]; 
+
     const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
     const unsigned int _idy = blockIdx.y * blockDim.y + threadIdx.y; 
     const unsigned int _idz = blockIdx.z * blockDim.z + threadIdx.z; 
     const unsigned int _id1 = _idy/3; 
     const unsigned int _id2 = _idy%3; 
-    
+    if (_idx >= s_pts.size({0})){return;}
+
     long id_ = idxs[_idx][_id1][_id2][_idz]; 
-    _point[_id1][_id2][_idz] = s_pts[_idx][_id1][id_][_idz]; 
-    _lines[_id1][_id2][_idz] = s_dst[_idx][_id1][id_][_idz]; 
+    _point[threadIdx.x][_id1][_id2][_idz] = s_pts[_idx][_id1][id_][_idz]; 
+    _lines[threadIdx.x][_id1][_id2][_idz] = s_dst[_idx][_id1][id_][_idz]; 
     __syncthreads(); 
 
     const unsigned dx_ = _id1*2 + _id2; 
-    if (_id2 < 2){sols[_idx][dx_][_idz] = _lines[_id1][_id2][_idz];}
-    if (_id2 < 2 && !threadIdx.z){solx[_idx][dx_][0] = _point[_id1][_id2][0];}
+    if (_id2 < 2){sols[_idx][dx_][_idz] = _lines[threadIdx.x][_id1][_id2][_idz];}
+    if (_id2 < 2 && !threadIdx.z){solx[_idx][dx_][0] = _point[threadIdx.x][_id1][_id2][0];}
 }
 
 
 std::map<std::string, torch::Tensor> nusol_::Intersection(torch::Tensor* A, torch::Tensor* B, double nulls){
     const unsigned int dx = A -> size({0}); 
-    const unsigned int thx = (dx >= 64) ? 64 : dx; 
+    const unsigned int thx = (dx >= _th_inter) ? _th_inter : dx; 
     const dim3 thd  = dim3(thx, 3, 3);
-    const dim3 thdX = dim3(1, 9, 9);
-    const dim3 thdY = dim3(1, 27, 3); 
+    const dim3 thdX = dim3(thx, 9, 9);
+    const dim3 thdY = dim3(thx, 27, 3); 
 
     const dim3 blk  = blk_(dx, thx, 3, 3, 3, 3); 
-    const dim3 blkX = blk_(dx, 1, 9, 9, 9, 9); 
-    const dim3 blkY = blk_(dx, 1, 27, 27, 3, 3); 
+    const dim3 blkX = blk_(dx, thx, 9, 9, 9, 9); 
+    const dim3 blkY = blk_(dx, thx, 27, 27, 3, 3); 
 
     torch::Tensor inv_A_dot_B = torch::zeros_like(*A); 
     torch::Tensor lines = torch::zeros({dx, 3, 3, 3}, MakeOp(A)); 
@@ -190,7 +186,7 @@ std::map<std::string, torch::Tensor> nusol_::Intersection(torch::Tensor* A, torc
     torch::Tensor a_ = operators_::Determinant(A); 
     torch::Tensor b_ = operators_::Determinant(B);
     AT_DISPATCH_ALL_TYPES(A -> scalar_type(), "swp", [&]{
-        _swapAB<64><<<blk, thd>>>(
+        _swapAB<_th_inter><<<blk, thd>>>(
           inv_A_dot_B.packed_accessor64<double, 3, torch::RestrictPtrTraits>(),
                  A -> packed_accessor64<double, 3, torch::RestrictPtrTraits>(),
                  B -> packed_accessor64<double, 3, torch::RestrictPtrTraits>(),
@@ -198,12 +194,19 @@ std::map<std::string, torch::Tensor> nusol_::Intersection(torch::Tensor* A, torc
                    b_.packed_accessor64<double, 2, torch::RestrictPtrTraits>()); 
     });
 
-    //std::tuple<torch::Tensor, torch::Tensor> eig = operators_::Eigenvalue(&inv_A_dot_B); 
-    torch::Tensor eig = torch::linalg::eigvals(inv_A_dot_B); 
-    torch::Tensor real = torch::real(eig).to(A -> scalar_type()); //std::get<0>(eig); 
-    torch::Tensor imag = torch::imag(eig).to(A -> scalar_type()); //std::get<1>(eig); 
+
+    std::tuple<torch::Tensor, torch::Tensor> eigf = operators_::Eigenvalue(&inv_A_dot_B); 
+    torch::Tensor real = std::get<0>(eigf); 
+    torch::Tensor imag = std::get<1>(eigf); 
+    torch::Tensor msk = real.sum(-1) == 0 * imag.sum(-1) != 0; 
+    if (msk.index({msk}).size({0}) != msk.size({0})){
+        torch::Tensor eig = torch::linalg::eigvals(inv_A_dot_B.index({msk == false})); 
+        real.index_put_({msk == false}, torch::real(eig).to(A -> scalar_type())); 
+        imag.index_put_({msk == false}, torch::imag(eig).to(A -> scalar_type())); 
+    }
+
     AT_DISPATCH_ALL_TYPES(A -> scalar_type(), "B-e*A", [&]{
-        _factor_degen<scalar_t><<<blkX, thdX>>>(
+        _factor_degen<scalar_t, _th_inter><<<blkX, thdX>>>(
                  real.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
                  imag.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
                  A -> packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
@@ -211,20 +214,15 @@ std::map<std::string, torch::Tensor> nusol_::Intersection(torch::Tensor* A, torc
                 lines.packed_accessor64<scalar_t, 4, torch::RestrictPtrTraits>(),
                 nulls); 
     });
-
     std::vector<signed long> dim313 = {-1, 9, 1, 3}; 
     std::vector<signed long> dim133 = {-1, 1, 3, 3}; 
-    torch::Tensor V = torch::cross(lines.view(dim313), A -> view(dim133), 3); 
-    V = torch::transpose(V, 2, 3);
-    V = std::get<1>(torch::linalg::eig(V)); 
-    V = torch::transpose(V, 2, 3).view({-1, 9, 3, 3}); 
-    real = torch::real(V);
-    imag = torch::imag(V); 
-
+    torch::Tensor V = torch::cross(lines.view({-1, 9, 1, 3}), A -> view({-1, 1, 3, 3}), 3); 
+    V = torch::transpose(V.view({-1, 3, 3}), 1, 2);
+    V = torch::real(std::get<1>(torch::linalg::eig(V))).view({-1, 9, 3, 3}); 
+    V = torch::transpose(V, 2, 3); 
     AT_DISPATCH_ALL_TYPES(A -> scalar_type(), "intersection", [&]{
-        _intersections<scalar_t><<<blkY, thdY>>>(
-                 real.packed_accessor64<scalar_t, 4, torch::RestrictPtrTraits>(),
-                 imag.packed_accessor64<scalar_t, 4, torch::RestrictPtrTraits>(),
+        _intersections<scalar_t, _th_inter><<<blkY, thdY>>>(
+                    V.packed_accessor64<scalar_t, 4, torch::RestrictPtrTraits>(),
                  A -> packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
                 lines.packed_accessor64<scalar_t, 4, torch::RestrictPtrTraits>(),
                 s_pts.packed_accessor64<scalar_t, 4, torch::RestrictPtrTraits>(),
@@ -236,7 +234,7 @@ std::map<std::string, torch::Tensor> nusol_::Intersection(torch::Tensor* A, torc
     torch::Tensor solx = torch::zeros({dx, 18, 1}, MakeOp(A)); 
     torch::Tensor idx = std::get<1>(s_pts.sort(-2, false)); 
     AT_DISPATCH_ALL_TYPES(A -> scalar_type(), "sorted", [&]{
-        _solsx<scalar_t><<<blkY, thdY>>>(
+        _solsx<scalar_t, _th_inter><<<blkY, thdY>>>(
                 s_pts.packed_accessor64<scalar_t, 4, torch::RestrictPtrTraits>(),
                 s_dst.packed_accessor64<scalar_t, 4, torch::RestrictPtrTraits>(),
                  sols.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),

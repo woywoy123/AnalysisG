@@ -215,8 +215,8 @@ __global__ void _hmatrix(
     __syncthreads(); 
 
     double hx = _dot(rotT[idx], Htil[idx], idy, idz, 3); 
-    Hmatrix[_idx][idy][idz] = hx;
-    H_perp[_idx][idy][idz] = (idy < 2) ? hx : idz == 2; 
+    Hmatrix[_idx][idy][idz] = sl.passed*hx;
+    H_perp[_idx][idy][idz] = sl.passed*((idy < 2) ? hx : idz == 2); 
     if (idy || idz){return;}
     passed[_idx] = sl.passed; 
 }
@@ -319,8 +319,8 @@ __global__ void _hmatrix(
     __syncthreads(); 
     if (_iky < 3 && _ikz < 3){
         double hx = _dot(rotT, Htil, _iky, _ikz, 3); 
-        Hmatrix[_idx][_iky][_ikz] = hx;
-        H_perp[_idx][_iky][_ikz] = (_iky < 2) ? hx : _ikz == 2; 
+        Hmatrix[_idx][_iky][_ikz] = sl.passed*hx;
+        H_perp[_idx][_iky][_ikz] = sl.passed*((_iky < 2) ? hx : _ikz == 2); 
     }
     if (threadIdx.y || threadIdx.z){return;}
     passed[_idx] = sl.passed; 

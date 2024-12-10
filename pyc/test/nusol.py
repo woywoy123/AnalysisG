@@ -29,7 +29,6 @@ def R(axis, angle):
 def Derivative():
     """Matrix to differentiate [cos(t),sin(t),1]"""
     cx = np.array([[0, -1, 0], [1, 0, 0], [0, 0, 0]])
-    #R(2, math.pi / 2) 
     return cx.dot(np.diag([1, 1, 0]))
 
 def multisqrt(y):
@@ -41,13 +40,10 @@ def multisqrt(y):
 def intersections_ellipse_line(ellipse, line, zero=1e-10):
     """Points of intersection between ellipse and line"""
     _, V = np.linalg.eig(np.cross(line, ellipse).T)
-    sols = [(
+    sols = sorted([(
         v.real / v[2].real,
-        np.log10(np.dot(line, v.real) ** 2 + np.dot(v.real, ellipse).dot(v.real) ** 2)
-        ) for v in V.T if v[2].real != 0
-    ]
-    sols.sort(key=lambda k : k[1])
-    sols = sols[:2]
+        math.log10(sum((line*v.real).tolist())**2 + sum((np.dot(v.real, ellipse) * v.real).tolist())**2)
+        ) for v in V.T if v[2].real != 0], key = lambda k : k[1])[:2]
     return [s for s, k in sols if k < np.log10(zero)]
 
 def cofactor(A, i, j):
@@ -72,15 +68,16 @@ def factor_degenerate(G, zero=0):
         x0, y0 = [cofactor(Q, i, 2) / q22 for i in [0, 1]]
         lines = [ [m, Q[1, 1], (-Q[1, 1] * y0 - m * x0)] for m in [Q[0, 1] + s for s in multisqrt(-q22)] ]
 
-    lines = [[L[swapXY], L[not swapXY], L[2]] for L in lines]
-    return lines
+    return [[L[swapXY], L[not swapXY], L[2]] for L in lines]
 
 def intersections_ellipses(A, B, returnLines=False, zero = 10e-10):
     """Points of intersection between two ellipses"""
     LA = np.linalg
-    if abs(LA.det(B)) > abs(LA.det(A)): A, B = B, A
-    e = [e.real for e in LA.eigvals(LA.inv(A).dot(B)) if not e.imag]
-    lines = factor_degenerate(B - next(iter(e)) * A, zero)
+    sw = abs(LA.det(B)) > abs(LA.det(A))
+    if sw: A, B = B, A
+    t = LA.inv(A).dot(B)
+    e = next(iter([e.real for e in LA.eigvals(t) if not e.imag]))
+    lines = factor_degenerate(B - e * A, zero)
     points = sum([intersections_ellipse_line(A, L, zero) for L in lines], [])
     return points, lines
 
@@ -160,7 +157,8 @@ class NuSol(object):
 
     @property
     def BaseMatrix(self):
-        return np.array([
+        x = (self.b.M >= 0)*(self.mu.M >= 0)
+        return x*np.array([
             [self.Z/math.sqrt(self.Om2)           , 0   , self.x1 - self.mu.mag],
             [self.w * self.Z / math.sqrt(self.Om2), 0   , self.y1              ],
             [0,                                   self.Z, 0                    ]])
@@ -199,13 +197,12 @@ class NuSol(object):
 
 class SingleNu(NuSol):
 
-    def __init__(self, b, nu, ev):
-        t = NuSol(b, nu, ev)
+    def __init__(self, b, mu, ev):
+        t = NuSol(b, mu, ev)
         self._M = t.M
         self._X = t.X
         self._H = t.H
 
-        print(self._M)
         sols, diag = intersections_ellipses(self._M, UnitCircle())
         self.sols = sorted(sols, key = self.calcX2)
 
@@ -220,7 +217,7 @@ class SingleNu(NuSol):
 class DoubleNu(NuSol):
 
     def __init__(self, bs, mus, ev):
-        b, b_ = bs
+        b ,  b_ = bs
         mu, mu_ = mus
 
         sol1 = NuSol(b , mu )
@@ -229,32 +226,21 @@ class DoubleNu(NuSol):
         V0 = np.outer([ev.vec.px, ev.vec.py, 0], [0, 0, 1])
         self.S = V0 - UnitCircle()
 
-        #lst = ["x0p","x0","Sx","Sy","w","Om2","eps2","x1","y1","Z","R_T"]
-        #lst = ["eps2", "Z"]
-        #for i in lst: print(i, getattr(sol1, i))
-        #for i in lst: print(i, getattr(sol2, i))
-
         N, N_ = sol1.N, sol2.N
         n_ = self.S.T.dot(N_).dot(self.S)
 
-        v, diag = intersections_ellipses(N, n_)
+        v, _ = intersections_ellipses(N, n_)
         v_ = [self.S.dot(sol) for sol in v]
         self.solutionSets = [sol1, sol2]
-        self.lsq = False
-        #if not v and leastsq:
-        #    es = [ss.H_perp for ss in self.solutionSets]
-        #    met = np.array([ev.vec.px, ev.vec.py, 1])
+        if not v and leastsq:
+            es = [ss.H_perp for ss in self.solutionSets]
+            met = np.array([ev.vec.px, ev.vec.py, 1])
 
-        #    def nus(ts):
-        #        print(ts)
-        #        return tuple(e.dot([math.cos(t), math.sin(t), 1]) for e, t in zip(es, ts))
-
-        #    def residuals(params): return sum(nus(params), -met)[:2]
-
-        #    ts, _ = leastsq(residuals, [0, 0], ftol=5e-5, epsfcn=0.01)
-        #    print(ts)
-        #    v, v_ = [[i] for i in nus(ts)]
-        #    self.lsq = True
+            def nus(ts): return tuple(e.dot([math.cos(t), math.sin(t), 1]) for e, t in zip(es, ts))
+            def residuals(params): return sum(nus(params), -met)[:2]
+            ts, _ = leastsq(residuals, [0, 0], ftol=5e-5, epsfcn=0.01)
+            v, v_ = [[i] for i in nus(ts)]
+            self.lsq = True
         for k, v in {"perp": v, "perp_": v_, "n_": n_}.items(): setattr(self, k, v)
 
     @property

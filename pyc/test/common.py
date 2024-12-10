@@ -50,7 +50,6 @@ def compare(truth, pred, tolerance = 10**-6):
     x = abs(truth - pred)[mskt == False] / truth[mskt == False]
     x = (x > tolerance).view(-1)
     x = x.sum(-1) == 0
-    print(x)
     if not x:
         print(x)
         print(truth)

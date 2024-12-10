@@ -11,8 +11,8 @@ std::map<std::string, torch::Tensor> GetMasses(torch::Tensor* L, torch::Tensor* 
     const unsigned int dim_i_ = _masses.size(0); 
     if (dim_i != dim_i_){_masses = torch::ones({dim_i, 3}, MakeOp(masses))*_masses[0];}
     std::map<std::string, torch::Tensor> out; 
-    out["W2"] = torch::pow(_masses.index({torch::indexing::Slice(), 0}), 2).view({dim_i, 1});  
-    out["T2"] = torch::pow(_masses.index({torch::indexing::Slice(), 1}), 2).view({dim_i, 1});  
+    out["T2"] = torch::pow(_masses.index({torch::indexing::Slice(), 0}), 2).view({dim_i, 1});  
+    out["W2"] = torch::pow(_masses.index({torch::indexing::Slice(), 1}), 2).view({dim_i, 1});  
     out["N2"] = torch::pow(_masses.index({torch::indexing::Slice(), 2}), 2).view({dim_i, 1});  
     return out; 
 }
@@ -196,6 +196,7 @@ torch::Tensor _N(torch::Tensor* hperp){
 
 
 torch::Tensor nusol_::BaseMatrix(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, torch::Tensor* masses){
+
     torch::Tensor pmx_b  = pmc_b -> view({-1, 4}); 
     torch::Tensor pmx_mu = pmc_mu -> view({-1, 4}); 
     std::map<std::string, torch::Tensor> mass = GetMasses(&pmx_b, masses); 
@@ -219,17 +220,17 @@ torch::Tensor nusol_::BaseMatrix(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, to
 
     torch::Tensor c_ = operators_::CosTheta(&pmc_b3, &pmc_mu3); 
     torch::Tensor s_ = operators_::SinTheta(&pmc_b3, &pmc_mu3);
-    
+   
     torch::Tensor tmp_ = muB / bB; 
     torch::Tensor w_ = ( - tmp_ - c_ ) / s_; 
-    torch::Tensor w = ( tmp_ - c_ ) / s_; 
+    torch::Tensor w  = ( tmp_ - c_ ) / s_; 
     
     torch::Tensor O2 = w.pow(2) + 1 - muB2;
-    torch::Tensor e2 = (mass["W2"] - mass["N2"]) * ( 1 - muB2 ); 
-    
+    torch::Tensor e2 = (mass["W2"] - mass["N2"]) * ( 1 - muB2 );
+
     torch::Tensor Sx = (x0 * muB - muP * ( 1 - muB2 )) / muB2; 
     torch::Tensor Sy = ( (x0p / bB) - c_ * Sx ) / s_; 
-    
+
     tmp_ = Sx + w*Sy; 
     torch::Tensor x1 = Sx - tmp_ / O2; 
     torch::Tensor y1 = Sy - tmp_ * (w / O2); 
@@ -238,6 +239,15 @@ torch::Tensor nusol_::BaseMatrix(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, to
     torch::Tensor  O = torch::sqrt(O2);
     torch::Tensor _0 = torch::zeros({dim_i, 1}, op);
     return torch::cat({ Z / O, _0, x1 - muP, (w*Z)/O, _0, y1, _0, Z, _0}, -1).view({dim_i, 3, 3}); 
+}
+
+torch::Tensor nusol_::Hperp(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, torch::Tensor* masses){
+    torch::Tensor H = nusol_::BaseMatrix(pmc_b, pmc_mu, masses); 
+    H = Rotation(pmc_b, pmc_mu, &H); 
+    H = _H_perp(&H); 
+    torch::Tensor nullx = torch::isnan(H).sum(-1).sum(-1) == 0; 
+    H.index_put_({nullx, torch::indexing::Slice(), torch::indexing::Slice()}, 0); 
+    return H; 
 }
 
 std::tuple<torch::Tensor, torch::Tensor> nusol_::Intersection(torch::Tensor* A, torch::Tensor* B, double null){

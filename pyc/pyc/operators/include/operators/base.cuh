@@ -4,23 +4,32 @@
 
 template <typename scalar_t>
 __global__ void _dot(
-        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> v1, 
-        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> v2, 
-        torch::PackedTensorAccessor64<scalar_t, 1, torch::RestrictPtrTraits> out, 
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> v1, 
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> v2, 
+        torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> out, 
         const unsigned int dx, const unsigned int dy
 ){
-
     extern __shared__ double sdata[]; 
-    const unsigned int _idx = (blockIdx.x * blockDim.x + threadIdx.x); 
-    const unsigned int _idy = (blockIdx.y * blockDim.y + threadIdx.y); 
-    const unsigned int _idz = (_idx*dy + _idy)%dy; 
 
-    if (_idx >= dx || _idy >= dy){return;}
-    sdata[_idz] = v1[_idx][_idy] * v2[_idx][_idy];  
+    const unsigned int _idx = (blockIdx.x * blockDim.x + threadIdx.x); 
+    const unsigned int _idy = threadIdx.y; 
+    const unsigned int _idz = threadIdx.z; 
+    const unsigned int idx = threadIdx.x*dy*dy*2; 
+
+    const unsigned int _xi = (_idy * dy + _idz) + idx; 
+    const unsigned int _ri = (_xi / dy) % dy;
+    const unsigned int _rj = _xi % dy;  
+    if (_idx >= dx){return;}
+
+    sdata[_xi] = v1[_idx][_ri][_rj]; 
+    sdata[_xi + dy*dy] = v2[_idx][_rj][_ri]; 
     __syncthreads(); 
-    if (_idz){return;}
-    for (size_t x(1); x < dy; ++x){sdata[0] += sdata[x];}
-    out[_idx] = sdata[0]; 
+
+    double sm = 0; 
+    unsigned int rol = _ri*dy + idx; 
+    unsigned int col = _rj*dy + dy*dy + idx; 
+    for (size_t x(0); x < dy; ++x){sm += sdata[rol + x] * sdata[col + x];}
+    out[_idx][_ri][_rj] = sm; 
 }
 
 

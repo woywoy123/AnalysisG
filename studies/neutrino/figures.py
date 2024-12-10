@@ -66,7 +66,7 @@ def double_neutrino(data, total = False):
         wmass_pdgid[lepsym]["expected"]   += exp_wmass[i]
         topmass_pdgid[lepsym]["expected"] += exp_topmass[i]
 
-        nusol_pdgid[lepsym] += [dist_nu[i]]
+        nusol_pdgid[lepsym] += [-dist_nu[i]]
         print(exp_wmass[i], exp_topmass[i], -dist_nu[i])
 
     keys = {"Truth" : "truth", "Bruteforced" : "expected"}

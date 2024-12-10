@@ -346,7 +346,7 @@ torch::Dict<std::string, torch::Tensor> pyc::std_to_dict(std::map<std::string, t
 }
 
 torch::Tensor pyc::nusol::BaseMatrix(torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Tensor masses){
-    return nusol_::BaseMatrix(&pmc_b, &pmc_mu, &masses); 
+    return nusol_::Hperp(&pmc_b, &pmc_mu, &masses); 
 }
 
 torch::Dict<std::string, torch::Tensor> pyc::nusol::Nu(

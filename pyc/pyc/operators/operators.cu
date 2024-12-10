@@ -6,16 +6,16 @@ torch::Tensor operators_::Dot(torch::Tensor* v1, torch::Tensor* v2){
     const unsigned int dx = v1 -> size({0}); 
     const unsigned int dy = v1 -> size({1}); 
 
-    const dim3 thd = dim3(1, dy); 
-    const dim3 blk = blk_(dx, 1, dy, dy); 
-    torch::Tensor out = torch::zeros({dx}, MakeOp(v1)); 
+    const dim3 thd = dim3(32, dy, dy); 
+    const dim3 blk = blk_(dx, 32, dy, dy, dy, dy); 
+    torch::Tensor out = torch::zeros({dx, dy, dy}, MakeOp(v1)); 
 
-    unsigned int sx = sizeof(double)*dy; 
+    unsigned int sx = sizeof(double)*dy*dy*2*32; 
     AT_DISPATCH_FLOATING_TYPES(v1 -> scalar_type(), "dot", [&]{
         _dot<scalar_t><<<blk, thd, sx>>>(
-                v1 -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(), 
-                v2 -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
-                out.packed_accessor64<scalar_t, 1, torch::RestrictPtrTraits>(), 
+                v1 -> packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
+                v2 -> packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                out.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
                 dx, dy); 
     }); 
     return out;
@@ -208,7 +208,4 @@ std::tuple<torch::Tensor, torch::Tensor> operators_::Eigenvalue(torch::Tensor* m
     }); 
     return {eig, img};
 }
-
-
-
 

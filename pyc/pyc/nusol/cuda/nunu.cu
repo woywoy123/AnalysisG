@@ -183,9 +183,61 @@ std::map<std::string, torch::Tensor> nusol_::NuNu(
 
     out["n_"]  = n_; 
     out["nu1"] = nu1; 
+    out["K"] = K; 
+
     out["nu2"] = nu2; 
+    out["K_"] = K_; 
     return out;  
 }
+
+
+std::vector<torch::Tensor> residuals(
+        torch::Tensor* H_perp, torch::Tensor* H_perp_, torch::Tensor* met_xy, 
+        torch::Tensor resid, double limit = 1e-5, int max_iter = 10000
+){
+    //pybind11::gil_scoped_release no_gil; 
+    torch::Tensor _H_perp  = H_perp  -> index({resid}); 
+    torch::Tensor _H_perp_ = H_perp_ -> index({resid}); 
+    torch::Tensor _met     = met_xy -> index({resid}); 
+    unsigned int dx = _met.size(0); 
+    if (dx == 0){ return {}; }
+	
+    torch::Tensor t1 = torch::ones( {dx, 1}, MakeOp(H_perp));
+    torch::Tensor t0 = torch::zeros({dx, 1}, MakeOp(H_perp)); 
+    torch::Tensor pi = torch::cos(t1)*2; 
+    _met = torch::cat({_met, t1}, -1);
+    t0 = torch::cat({t0, t0}, -1); 
+    
+    torch::Tensor t  = torch::zeros({dx, 1}, MakeOp(H_perp).requires_grad(true)); 
+    torch::Tensor t_ = torch::zeros({dx, 1}, MakeOp(H_perp).requires_grad(true));
+    torch::nn::functional::MSELossFuncOptions fx(torch::kNone); 
+    
+    torch::optim::AdamOptions set(0.001); 
+    torch::optim::Adam opti({t, t_}, set); 
+
+    torch::Tensor nu, nu_, loss, l1; 
+    for (int i(0); i < max_iter; ++i){
+        torch::Tensor px_ = pi*t; 
+        torch::Tensor py_ = pi*t_; 
+
+        nu  = ( _H_perp * (torch::cat({torch::cos(px_), torch::sin(px_), t1}, -1).view({-1, 1, 3}))).sum(-1); 
+	nu_ = (_H_perp_ * (torch::cat({torch::cos(py_), torch::sin(py_), t1}, -1).view({-1, 1, 3}))).sum(-1);
+        torch::Tensor nus = (nu_ + nu - _met).index({torch::indexing::Slice(), torch::indexing::Slice(torch::indexing::None, 2)});
+	opti.zero_grad(); 
+
+	loss = torch::nn::functional::mse_loss(nus, t0, fx); 
+	loss.sum().backward(); 
+	opti.step();
+        if (!i){l1 = loss.detach(); continue;}
+        if ((torch::abs(l1 - loss).sum() < 1e-12).item<bool>()){break;}
+        l1 = loss.detach(); 
+        if (!t0.index({loss < limit}).size({0})){continue;}
+        break;  
+    }
+    std::cout << loss << std::endl;
+    return {nu.detach(), nu_.detach(), loss.sum(-1).detach()};  
+}
+
 
 std::map<std::string, torch::Tensor> nusol_::NuNu(
             torch::Tensor* pmc_b1,  torch::Tensor* pmc_b2, torch::Tensor* pmc_mu1, torch::Tensor* pmc_mu2,
@@ -201,7 +253,39 @@ std::map<std::string, torch::Tensor> nusol_::NuNu(
     torch::Tensor H2_    = H2_m["H"]; 
 
     torch::Tensor passed = H1_m["passed"] * H2_m["passed"]; 
-    std::map<std::string, torch::Tensor> out = nusol_::NuNu(&H1_, &H1_inv, &H2_, &H2_inv, met_xy, null); 
+    std::map<std::string, torch::Tensor> out; 
+    out = nusol_::NuNu(&H1_, &H1_inv, &H2_, &H2_inv, met_xy, null); 
+
+    unsigned int dx = met_xy -> size(0); 
+
+    torch::Tensor nu1 = out["nu1"].view({dx, -1, 3});  
+    torch::Tensor nu2 = out["nu2"].view({dx, -1, 3});  
+    torch::Tensor msk = nu1.sum(-1).sum(-1) == 0; 
+
+    std::vector<torch::Tensor> mx = residuals(&H1_m["H_perp"], &H2_m["H_perp"], met_xy, msk); 
+    if (mx.size()){
+
+        //torch::Tensor nu1_ = (out["K"].index({msk}) * mx[0]).sum(-1).view({-1, 1, 3}); 
+        //torch::Tensor nu2_ = (out["K_"].index({msk}) * mx[1]).sum(-1).view({-1, 1, 3});
+        //unsigned int lx = msk.index({msk}).size(0);
+
+        //torch::Tensor nullx = torch::zeros_like(nu1_); 
+        //torch::Tensor nulld = torch::zeros({lx, 17}, MakeOp(pmc_mu1)); 
+
+        //std::cout << lx << std::endl; 
+        //std::vector<torch::Tensor> vx = {}; 
+        //for (size_t x(0); x < 17; ++x){vx.push_back(nullx);}
+        //nullx = torch::cat(vx, -1); 
+
+        //std::cout << torch::cat({nu1_, nullx}, -1).view({-1, 18, 3}) << std::endl;
+        //nu1.index_put_({msk}, torch::cat({nu1_, nullx}, -1).view({-1, 18, 3}));  
+        //nu2.index_put_({msk}, torch::cat({nu2_, nullx}, -1).view({-1, 18, 3}));  
+       // std::cout << torch::cat({mx[2].view({-1, 1}), nulld}, -1).view({-1, 1}) << std::endl; 
+      //  std::cout << out["distances"].index({msk}) << std::endl; 
+       // out["distances"].index_put_({msk}, torch::cat({mx[2].view({-1, 1}), nulld}, -1).view({-1, 1})); 
+    }
+    out["nu1"] = nu1; 
+    out["nu2"] = nu2; 
     out["passed"] = passed; 
     return out; 
 }

@@ -21,3 +21,5 @@ add_library(cphysics ${SOURCE_FILES})
 target_include_directories(cphysics PRIVATE include/physics)
 target_include_directories(cphysics PUBLIC include)
 target_link_libraries(cphysics PUBLIC ctils)
+target_compile_options(cphysics PRIVATE -fPIC)
+

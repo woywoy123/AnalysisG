@@ -21,3 +21,5 @@ add_library(coperators ${SOURCE_FILES})
 target_include_directories(coperators PRIVATE include/operators)
 target_include_directories(coperators PUBLIC include)
 target_link_libraries(coperators PUBLIC ctils)
+target_compile_options(coperators PRIVATE -fPIC)
+

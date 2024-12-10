@@ -1,3 +1,4 @@
+#import torch
 import AnalysisG
 from AnalysisG.core.lossfx import OptimizerConfig
 from AnalysisG.generators.analysis import Analysis

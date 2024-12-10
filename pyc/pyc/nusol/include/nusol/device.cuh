@@ -22,6 +22,7 @@ struct nusol {
 
 __device__ __forceinline__ void _makeNuSol(nusol* sl){
     double b2l = sl -> betas[0]; 
+    sl -> passed *= (sl -> pmass[0] >= 0) * (sl -> pmass[1] >= 0); 
 
     for (size_t x(0); x < 3; ++x){sl -> masses[x] = pow(sl -> masses[x], 2);}
     for (size_t x(0); x < 2; ++x){sl -> betas[x] = _sqrt(&sl -> betas[x]);}
@@ -45,7 +46,7 @@ __device__ __forceinline__ void _makeNuSol(nusol* sl){
     double _div_o2 = _div(&sl -> o2); 
     sl -> x1 = sl -> sx - (sl -> sx + sl -> w * sl -> sy) * _div_o2; 
     sl -> y1 = sl -> sy - (sl -> sx + sl -> w * sl -> sy) * sl -> w * _div_o2; 
-    sl -> passed *= (_div_o2 > 0) * (r > 0); 
+    sl -> passed *= (_div_o2 != 0) * (r > 0) * (div_sin != 0); 
 
     double z2 = pow(sl -> x1, 2)*sl -> o2; 
     z2 -= pow(sl -> sy - sl -> w * sl -> sx, 2); 

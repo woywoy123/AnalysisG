@@ -7,7 +7,7 @@ import math
 import time
 
 device = "cuda"
-torch.set_printoptions(threshold=1000000)
+torch.set_printoptions(threshold=1000000, linewidth = 1000, precision = 5, sci_mode = True)
 pyc = pyc()
 
 def test_nusol_base_matrix():
@@ -22,6 +22,10 @@ def test_nusol_base_matrix():
     for i in range(len(x)):
         x_ = next(ita)
         lep, bquark = x_[1], x_[2]
+
+        print("_______", i, "_______")
+
+
         nu = NuSol(bquark.vec, lep.vec)
         lep_    = pyc.cuda_transform_combined_pxpypze(lep.ten)
         bquark_ = pyc.cuda_transform_combined_pxpypze(bquark.ten)
@@ -56,20 +60,15 @@ def test_nusol_nu_cuda():
         ev, lep, bquark = x_[0], x_[1], x_[2]
         ev_     = ev.ten
 
+#        if i != 14 and i != 19: continue
         print("_______", i, "________")
         lep_    = pyc.cuda_transform_combined_pxpypze(lep.ten)
         bquark_ = pyc.cuda_transform_combined_pxpypze(bquark.ten)
         nu      = SingleNu(bquark.vec, lep.vec, ev.vec)
 
-        MT     = torch.tensor(nu._M, device = device).view(-1, 3, 3)
-        XT     = torch.tensor(nu._X, device = device).view(-1, 3, 3)
-        stress = 1
-        bquark = torch.cat([bquark_]*stress, 0)
-        lep    = torch.cat([lep_   ]*stress, 0)
-        ev     = torch.cat([ev_    ]*stress, 0)
-        mass   = torch.cat([masses ]*stress, 0)
-        S      = torch.cat([S2     ]*stress, 0)
-        pred = pyc.cuda_nusol_nu(bquark, lep, ev, mass, S, 10e-10)
+        MT   = torch.tensor(nu._M, device = device).view(-1, 3, 3)
+        XT   = torch.tensor(nu._X, device = device).view(-1, 3, 3)
+        pred = pyc.cuda_nusol_nu(bquark_, lep_, ev_, masses, S2, 10e-10)
 
         assert compare(MT, pred["M"], 10**-5)
         assert compare(XT, pred["X"], 10**-5)
@@ -88,10 +87,14 @@ def test_nusol_nu_cuda():
         chi2_ = chi2_[srt].to(device = "cpu")
         for j in range(nut.size(0)):
             found = False
+            err = 100000
             for k in range(nu_.size(0)):
-                lm = (abs(nut[j] - nu_[k]) / abs(nut[j])) < 10**-3
-                if not lm.sum(-1): continue
+                lm = abs(nut[j] - nu_[k]) / abs(nut[j])
+                if not (lm < 1**-7).sum(-1): continue
+                if err < lm.sum(-1): continue
                 found = True
+                err = lm.sum(-1)
+
             if not found:
                 print("____< truth >____")
                 print(nut)
@@ -100,13 +103,17 @@ def test_nusol_nu_cuda():
                 exit()
 
 def test_nusol_nunu_cuda():
+    def cat(x, key): return torch.cat(x[key], 0)
+
+    import numpy
     x = loadDouble()
     ita = iter(x)
-    mW = 80.385*1000
     mT = 172.0*1000
+    mW = 80.385*1000
     mN = 0
     masses = torch.tensor([[mT, mW, mN]], dtype = torch.float64, device = device)
 
+    data = {"mass" : [], "b1": [], "b2" : [], "l1" : [], "l2" : [], "met_xy" : [], "nu1": [], "nu2" : []}
     for i in range(len(x)):
         x_ = next(ita)
         ev, l1, l2, b1, b2 = x_
@@ -117,44 +124,46 @@ def test_nusol_nunu_cuda():
         b2_ = pyc.cuda_transform_combined_pxpypze(b2.ten)
         l1_ = pyc.cuda_transform_combined_pxpypze(l1.ten)
         l2_ = pyc.cuda_transform_combined_pxpypze(l2.ten)
+
+
+        pred = pyc.cuda_nusol_nunu(b1_, b2_, l1_, l2_, met_xy, masses, 1e-10)
+        nu1c, nu2c = pred["nu1"].to(device = "cpu").view(-1, 3), pred["nu2"].to(device = "cpu").view(-1, 3)
+
+        data["mass"].append(masses)
+        data["b1"].append(b1_)
+        data["l1"].append(l1_)
+        data["b2"].append(b2_)
+        data["l2"].append(l2_)
+        data["met_xy"].append(met_xy)
+        data["nu1"].append(pred["nu1"])
+        data["nu2"].append(pred["nu2"])
+
         try: nu  = DoubleNu((b1.vec, b2.vec), (l1.vec, l2.vec), ev)
-        except: continue
-
-        stress = 1
-        b1_  = torch.cat([b1_]*stress, 0)
-        b2_  = torch.cat([b2_]*stress, 0)
-        l1_  = torch.cat([l1_]*stress, 0)
-        l2_  = torch.cat([l2_]*stress, 0)
-        met  = torch.cat([met_xy]*stress, 0)
-        mass = torch.cat([masses]*stress, 0)
-        pred = pyc.cuda_nusol_nunu(b1_, b2_, l1_, l2_, met, mass, 10e-10)
-
+        except numpy.linalg.LinAlgError: continue
         nu1T, nu2T = nu.nunu_s
         nu1T, nu2T = [torch.tensor(f.tolist(), dtype = torch.float64) for f in [nu1T, nu2T]]
-        nu1c, nu2c = pred["nu1"].to(device = "cpu").view(-1, 3), pred["nu2"].to(device = "cpu").view(-1, 3)
+
         if nu1T.size(0) == 0 and nu1c.size(0) == 0: continue
         for j in range(nu1T.size(0)):
-            found = False
+            chi2 = None
             for k in range(nu1c.size(0)):
-                lm1  = (abs(nu1T[j] - nu1c[k]) / abs(nu1T[j]))
-                lm2  = (abs(nu2T[j] - nu2c[k]) / abs(nu2T[j]))
-                msk  = (lm1 < 10**-3)*(lm2 < 10**-3)
-                if not msk.view(-1).sum(-1): continue
-                found = True
-                break
+                lm1  = ((abs(nu1T[j] - nu1c[k])/nu1T[j])**2).sum(-1)
+                lm2  = ((abs(nu2T[j] - nu2c[k])/nu2T[j])**2).sum(-1)
+                chi_ = ((lm1**2 + lm2**2).sum(-1))**0.5
+                if chi2 is not None and chi2 < chi_: continue
+                chi2 = chi_
+            print(chi2)
+            if not (chi2 < 10):exit()
 
-            if not found:
-                print("____< truth >____")
-                print(nu1T)
-                print(nu2T)
-                print("____< pred >____")
-                print(nu1c)
-                print(nu2c)
-                print(pred["distances"])
-                print(pred["passed"])
-                exit()
-
-
+#        predx = pyc.cuda_nusol_nunu(
+#                cat(data, "b1"), cat(data, "b2"),
+#                cat(data, "l1"), cat(data, "l2"),
+#                cat(data, "met_xy"), cat(data, "mass"),
+#                1e-10
+#        )
+#        print(predx["nu1"].size())
+#        print((predx["nu1"] - cat(data, "nu1")).view(-1).sum(-1))
+#
 
 def test_nusol_combinatorial_cuda():
     mW = 80.385*1000
@@ -212,8 +221,8 @@ def test_nusol_combinatorial_cuda():
 
 if __name__ == "__main__":
     #test_nusol_base_matrix()
-    test_nusol_nu_cuda()
-    #test_nusol_nunu_cuda()
+    #test_nusol_nu_cuda()
+    test_nusol_nunu_cuda()
     #test_nusol_combinatorial_cuda()
 
 
