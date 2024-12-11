@@ -47,7 +47,7 @@ torch::Tensor physics_::M2(torch::Tensor* pmc){
     torch::Tensor mass = pmc -> index({torch::indexing::Slice(), torch::indexing::Slice(3, 4)}); 
     mass = mass.pow(2); 
     mass -= physics_::P2(pmc); 
-    return torch::relu(mass);
+    return mass;
 }
 
 torch::Tensor physics_::M2(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz, torch::Tensor* e){
@@ -56,7 +56,8 @@ torch::Tensor physics_::M2(torch::Tensor* px, torch::Tensor* py, torch::Tensor* 
 }    
 
 torch::Tensor physics_::M(torch::Tensor* pmc){
-    return torch::sqrt(physics_::M2(pmc));
+    torch::Tensor mass2 = physics_::M2(pmc);
+    return (1 - 2*(mass2 < 0))*torch::sqrt(torch::abs(mass2));
 }
 
 torch::Tensor physics_::M(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz, torch::Tensor* e){
@@ -66,20 +67,22 @@ torch::Tensor physics_::M(torch::Tensor* px, torch::Tensor* py, torch::Tensor* p
 
 torch::Tensor physics_::Mt2(torch::Tensor* pmc){
     torch::Tensor pz = pmc -> index({torch::indexing::Slice(), torch::indexing::Slice(2, 3)}); 
-    torch::Tensor e = pmc -> index({torch::indexing::Slice(), torch::indexing::Slice(3, 4)}); 
-    return (torch::relu(e.pow(2) - pz.pow(2))).view({-1, 1}); 
+    torch::Tensor e  = pmc -> index({torch::indexing::Slice(), torch::indexing::Slice(3, 4)}); 
+    return (e.pow(2) - pz.pow(2)).view({-1, 1}); 
 }
 
 torch::Tensor physics_::Mt2(torch::Tensor* pz, torch::Tensor* e){
-    return  (torch::relu(e -> pow(2) - pz -> pow(2))).view({-1, 1});    
+    return  (e -> pow(2) - pz -> pow(2)).view({-1, 1});    
 }    
 
 torch::Tensor physics_::Mt(torch::Tensor* pmc){
-    return torch::sqrt(physics_::Mt2(pmc)); 
+    torch::Tensor mt = physics_::Mt2(pmc); 
+    return (1 - 2*(mt < 0))*torch::sqrt(torch::abs(mt)); 
 }
 
 torch::Tensor physics_::Mt(torch::Tensor* pz, torch::Tensor* e){
-    return torch::sqrt(physics_::Mt2(pz, e));     
+    torch::Tensor mt = physics_::Mt2(pz, e);
+    return  (1 - 2*(mt < 0))*torch::sqrt(torch::abs(mt));     
 }
 
 torch::Tensor physics_::Theta(torch::Tensor* pmc){
@@ -93,15 +96,12 @@ torch::Tensor physics_::Theta(torch::Tensor* px, torch::Tensor* py, torch::Tenso
 }
 
 torch::Tensor physics_::DeltaR(torch::Tensor* pmu1, torch::Tensor* pmu2){
-    torch::Tensor d_eta = pmu1 -> index({torch::indexing::Slice(), torch::indexing::Slice(1, 3)}); 
-    d_eta -= pmu2 -> index({torch::indexing::Slice(), torch::indexing::Slice(1, 3)});    
-    
-    torch::Tensor d_phi = d_eta.index({torch::indexing::Slice(), torch::indexing::Slice(1, 2)}); 
-    d_eta = d_eta.index({torch::indexing::Slice(), torch::indexing::Slice(0, 1)}); 
+    torch::Tensor eta1 = pmu1 -> index({torch::indexing::Slice(), torch::indexing::Slice(1, 2)}); 
+    torch::Tensor eta2 = pmu2 -> index({torch::indexing::Slice(), torch::indexing::Slice(1, 2)}); 
 
-    torch::Tensor pi = M_PI*torch::ones_like(d_eta); 
-    d_phi = pi - torch::abs(torch::fmod(torch::abs(d_phi), 2*pi) - pi);   
-    return torch::sqrt(d_eta.pow(2) + d_phi.pow(2)); 
+    torch::Tensor phi1 = pmu1 -> index({torch::indexing::Slice(), torch::indexing::Slice(2, 3)}); 
+    torch::Tensor phi2 = pmu2 -> index({torch::indexing::Slice(), torch::indexing::Slice(2, 3)}); 
+    return physics_::DeltaR(&eta1, &eta2, &phi1, &phi2);
 }
 
 torch::Tensor physics_::DeltaR(torch::Tensor* eta1, torch::Tensor* eta2, torch::Tensor* phi1, torch::Tensor* phi2){

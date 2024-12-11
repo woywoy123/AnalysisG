@@ -27,20 +27,21 @@ torch::Tensor transform_::PxPyPzE(torch::Tensor* pt, torch::Tensor* eta, torch::
 torch::Tensor transform_::PxPyPz(torch::Tensor* pmu){
     torch::Tensor pt  = clip(pmu, 0); 
     torch::Tensor eta = clip(pmu, 1); 
-    torch::Tensor phi = clip(pmu, 2);  
-    return transform_::PxPyPz(&pt, &eta, &phi);
+    torch::Tensor phi = clip(pmu, 2);
+    if (pmu -> size({-1}) < 4){return transform_::PxPyPz(&pt, &eta, &phi);}
+    return torch::cat({transform_::PxPyPz(&pt, &eta, &phi), clip(pmu, 3).view({-1, 1})}, {-1});
 }
 
 torch::Tensor transform_::PxPyPzE(torch::Tensor* pmu){
-    torch::Tensor pmx = pmu -> view({-1, 4}); 
-    torch::Tensor pt  = clip(&pmx, 0); 
-    torch::Tensor eta = clip(&pmx, 1); 
-    torch::Tensor phi = clip(&pmx, 2); 
-    torch::Tensor e   = clip(&pmx, 3).view({-1, 1}); 
+    torch::Tensor pt  = clip(pmu, 0).view({-1, 1}); 
+    torch::Tensor eta = clip(pmu, 1).view({-1, 1}); 
+    torch::Tensor phi = clip(pmu, 2).view({-1, 1}); 
+    torch::Tensor e   = clip(pmu, 3).view({-1, 1}); 
 
     torch::Tensor _px = transform_::Px(&pt, &phi);
     torch::Tensor _py = transform_::Py(&pt, &phi); 
     torch::Tensor _pz = transform_::Pz(&pt, &eta); 
+
     return torch::cat({_px, _py, _pz, e}, -1);
 }
 
@@ -60,7 +61,7 @@ torch::Tensor transform_::Phi(torch::Tensor* pmc){
 }
 
 torch::Tensor transform_::PtEta(torch::Tensor* pt, torch::Tensor* pz){
-    return torch::asinh( *pz / *pt ).view({-1, 1}); 
+    return torch::asinh( pz -> view({-1, 1}) / pt -> view({-1, 1}) ); 
 }
 
 torch::Tensor transform_::Eta(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz){
@@ -79,6 +80,7 @@ torch::Tensor transform_::PtEtaPhi(torch::Tensor* px, torch::Tensor* py, torch::
     torch::Tensor _pt  = transform_::Pt(px, py); 
     torch::Tensor _eta = transform_::PtEta(&_pt, pz); 
     torch::Tensor _phi = transform_::Phi(px, py);
+
     return torch::cat({_pt, _eta, _phi}, -1);
 }
 
@@ -86,7 +88,8 @@ torch::Tensor transform_::PtEtaPhi(torch::Tensor* pmc){
     torch::Tensor px = clip(pmc, 0); 
     torch::Tensor py = clip(pmc, 1);
     torch::Tensor pz = clip(pmc, 2);     
-    return transform_::PtEtaPhi(&px, &py, &pz);
+    if (pmc -> size({-1}) < 4){return transform_::PtEtaPhi(&px, &py, &pz);}
+    return torch::cat({transform_::PtEtaPhi(&px, &py, &pz), clip(pmc, 3).view({-1, 1})}, {-1});
 }
 
 torch::Tensor transform_::PtEtaPhiE(torch::Tensor* px, torch::Tensor* py, torch::Tensor* pz, torch::Tensor* e){
@@ -94,6 +97,6 @@ torch::Tensor transform_::PtEtaPhiE(torch::Tensor* px, torch::Tensor* py, torch:
 }
 
 torch::Tensor transform_::PtEtaPhiE(torch::Tensor* pmc){
-    return torch::cat({transform_::PtEtaPhi(pmc), clip(pmc, 3).view({-1, 1})}, -1);
+    return transform_::PtEtaPhi(pmc); 
 }
 

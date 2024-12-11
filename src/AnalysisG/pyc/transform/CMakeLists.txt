@@ -21,3 +21,5 @@ add_library(ctransform ${SOURCE_FILES})
 target_include_directories(ctransform PRIVATE include/transform)
 target_include_directories(ctransform PUBLIC include)
 target_link_libraries(ctransform PUBLIC ctils)
+target_compile_options(ctransform PRIVATE -fPIC)
+

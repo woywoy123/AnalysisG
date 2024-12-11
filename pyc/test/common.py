@@ -89,10 +89,6 @@ class Particle:
         return self.ten
 
     @property
-    def ten_cart(self):
-        return pyc.Transform.PxPyPzE(self.ten)
-
-    @property
     def cuda(self):
         try: return "cuda" if self._cuda else "cpu"
         except: self._cuda = torch.cuda.is_available()

@@ -4,6 +4,8 @@
 
 __device__ __constant__ const unsigned int _x[12] = {1, 1, 2, 2, 0, 0, 2, 2, 0, 0, 1, 1}; 
 __device__ __constant__ const unsigned int _y[12] = {1, 2, 1, 2, 0, 2, 0, 2, 0, 1, 0, 1}; 
+__device__ __constant__ double _Deriv[3][3] = {0, -1, 0, 1, 0, 0, 0, 0, 0};
+__device__ __constant__ double _circl[3][3] = {1, 0, 0, 0, 1, 0, 0, 0, -1}; 
 
 template <typename scalar_t, size_t size_x1, size_t size_y1>
 __device__ scalar_t _cofactor(scalar_t (&_M)[size_x1][size_y1], const unsigned int _idy, unsigned int _idz, bool cf = true){

@@ -495,7 +495,7 @@ std::map<std::string, torch::Tensor> nusol_::NuNu(
     const unsigned int dim_i = met_xy -> index({none}).size(0); 
 
     if (dim_i == 0){ 
-        output["n_"]      = torch::zeros({1, 3}, op); 
+        output["n_"]   = torch::zeros({1, 3}, op); 
         output["nu_1"] = torch::zeros({1, 3}, op); 
         output["nu_2"] = torch::zeros({1, 3}, op);        
         output["H_perp_1"] = H1; 

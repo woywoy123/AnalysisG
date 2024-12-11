@@ -229,27 +229,3 @@ torch::Tensor physics_::Theta(torch::Tensor* px, torch::Tensor* py, torch::Tenso
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

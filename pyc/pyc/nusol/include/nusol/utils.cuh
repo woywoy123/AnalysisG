@@ -104,87 +104,56 @@ __global__ void _mass_matrix(
         double mTl, double mTs, double mWl, double mWs, unsigned int steps
 ){
     const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
-    const unsigned int _idy = blockIdx.y * blockDim.y + threadIdx.y; 
-    const unsigned int _idz = _idx*steps + _idy; 
-    if (steps*steps <= _idz){return;}
-    mass_[_idz][0] = mTl + mass_[_idz][0]*mTs*_idx; 
-    mass_[_idz][1] = mWl + mass_[_idz][1]*mWs*_idy; 
+    if (steps <= _idx){return;}
+    double lw = mWl*threadIdx.y + mTl*(1 - threadIdx.y); 
+    double dx = mWs*threadIdx.y + mTs*(1 - threadIdx.y);
+    mass_[_idx][threadIdx.y] = lw + mass_[_idx][threadIdx.y]*dx*_idx; 
 }
 
-__global__ void _combination_matrix(
-        torch::PackedTensorAccessor64<long, 2, torch::RestrictPtrTraits> indx, 
-        const unsigned int ds
-){
-    const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
-    const unsigned int _idy = blockIdx.y * blockDim.y + threadIdx.y; 
-    if (_idx >= indx.size({0})){return;}
-    long val = 1; 
-    for (size_t x(0); x < _idy; ++x){val *= ds;}
-    indx[_idx][1 - _idy] = (_idx / val)%ds;  
-}
 
 
 __global__ void _compare_solx(
+        torch::PackedTensorAccessor64<long  , 1, torch::RestrictPtrTraits> cmx_dx,
         torch::PackedTensorAccessor64<long  , 1, torch::RestrictPtrTraits> evnt_dx,
-        torch::PackedTensorAccessor64<double, 1, torch::RestrictPtrTraits> cur_sol,
-        torch::PackedTensorAccessor64<long  , 2, torch::RestrictPtrTraits> cur_cmb,
-        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> nu1,
-        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> nu2,
-        torch::PackedTensorAccessor64<long  , 1, torch::RestrictPtrTraits> cmx,
 
-        torch::PackedTensorAccessor64<long  , 2, torch::RestrictPtrTraits> new_cmb,
-        torch::PackedTensorAccessor64<double, 1, torch::RestrictPtrTraits> new_sol,
-        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> nu1_,
-        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> nu2_, 
-        const unsigned int lx, const unsigned int n_msk, const unsigned int n_evn
+        torch::PackedTensorAccessor64<double, 1, torch::RestrictPtrTraits> o_sol,
+        torch::PackedTensorAccessor64<long  , 2, torch::RestrictPtrTraits> o_cmb,
+        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> o_nu1,
+        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> o_nu2,
+
+        torch::PackedTensorAccessor64<long  , 2, torch::RestrictPtrTraits> i_cmb,
+        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> i_sol,
+        torch::PackedTensorAccessor64<double, 3, torch::RestrictPtrTraits> i_nu1,
+        torch::PackedTensorAccessor64<double, 3, torch::RestrictPtrTraits> i_nu2, 
+        const unsigned int lx, const unsigned int evnts
 ){
-    extern __shared__ double _inpt[][4];  
-    const unsigned int _idx = threadIdx.x; 
-    const unsigned int _idy = threadIdx.y; 
-    const unsigned int _idz = _idx*n_msk + _idy; 
 
-    _inpt[_idz][0] = 0; 
-    _inpt[_idz][1] = -1;
-    _inpt[_idz][2] = -1; 
-    _inpt[_idz][3] = -1; 
+    __shared__ double _score[32][4]; 
+    __shared__ double _nu1[32][4]; 
+    __shared__ double _nu2[32][4]; 
+    __shared__ double _cmx[32][4]; 
+
+    const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    if (_idx >= evnts){return;}
+
     for (size_t x(0); x < lx; ++x){
-        unsigned int edx = evnt_dx[x]; 
-        if (cmx[x] != threadIdx.y || edx != threadIdx.x){continue;}
-        for (size_t j(x*18); j < 18*(x+1); ++j){
-            double xol = new_sol[j]; 
-            if (_inpt[_idz][0] < xol){continue;}
-            _inpt[_idz][0] = xol; 
-            _inpt[_idz][1] = j;
-            _inpt[_idz][2] = x; 
-            _inpt[_idz][3] = edx; 
-        } 
+        long cmx_id = cmx_dx[x]; 
+        long evn_id = evnt_dx[cmx_id]; 
+        if (evn_id != _idx){continue;}
+        for (size_t y(0); y < 18; ++y){
+            double sol = i_sol[x][y]; 
+            if (_score[threadIdx.x][threadIdx.y] < sol){continue;}
+            _score[threadIdx.x][threadIdx.y] = sol; 
+            _cmx[threadIdx.x][threadIdx.y] = i_cmb[cmx_id][threadIdx.y]; 
+            _nu1[threadIdx.x][threadIdx.y] = (threadIdx.y < 3) ? i_nu1[x][y][threadIdx.y] : 0; 
+            _nu2[threadIdx.x][threadIdx.y] = (threadIdx.y < 3) ? i_nu2[x][y][threadIdx.y] : 0; 
+        }
     }
-    if (_inpt[_idz][1] == -1){return;}
-    const double solx = _inpt[_idz][0]; 
-    const unsigned int j_ = _inpt[_idz][1]; 
-    const unsigned int x_ = _inpt[_idz][2]; 
-    const unsigned int edx = evnt_dx[x_]; 
-    for (size_t t(0); t < n_evn*n_msk; ++t){
-        if (_inpt[t][3] != edx){continue;}
-        if (_inpt[t][0] < solx){return;}
-    }
-
-    const unsigned int cx = cmx[x_]; 
-    cur_cmb[edx][0] = new_cmb[cx][0]; 
-    cur_cmb[edx][1] = new_cmb[cx][1]; 
-    cur_cmb[edx][2] = new_cmb[cx][2]; 
-    cur_cmb[edx][3] = new_cmb[cx][3]; 
-
-    nu1[edx][0] = nu1_[j_][0]; 
-    nu1[edx][1] = nu1_[j_][1]; 
-    nu1[edx][2] = nu1_[j_][2]; 
-    nu1[edx][3] = nu1_[j_][3]; 
-
-    nu2[edx][0] = nu2_[j_][0]; 
-    nu2[edx][1] = nu2_[j_][1]; 
-    nu2[edx][2] = nu2_[j_][2]; 
-    nu2[edx][3] = nu2_[j_][3]; 
-    cur_sol[edx] = solx;  
+    __syncthreads(); 
+    o_sol[_idx] = _score[threadIdx.x][threadIdx.y]; 
+    o_cmb[_idx][threadIdx.y] = _cmx[threadIdx.x][threadIdx.y]; 
+    o_nu1[_idx][threadIdx.y] = (threadIdx.y < 3) ? _nu1[threadIdx.x][threadIdx.y] : _sqrt(_dot(_nu1[threadIdx.x], _nu1[threadIdx.x], 3)); 
+    o_nu2[_idx][threadIdx.y] = (threadIdx.y < 3) ? _nu2[threadIdx.x][threadIdx.y] : _sqrt(_dot(_nu2[threadIdx.x], _nu2[threadIdx.x], 3)); 
 }
 
 #endif

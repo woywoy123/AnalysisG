@@ -2,21 +2,22 @@
 #include <cutils/utils.h>
 
 torch::Tensor operators_::Dot(torch::Tensor* v1, torch::Tensor* v2){
-    return ((*v1)*(*v2)).sum({-1}, true); 
+    int sx = v2 -> size({-1}); 
+    return v1 -> matmul(v2 -> view({-1, sx, sx})); 
 }
 
 torch::Tensor operators_::CosTheta(torch::Tensor* v1, torch::Tensor* v2){
-    torch::Tensor v1_2 = operators_::Dot(v1, v1);
-    torch::Tensor v2_2 = operators_::Dot(v2, v2);
-    torch::Tensor dot  = operators_::Dot(v1, v2); 
-    return dot/( torch::sqrt(v1_2 * v2_2) ); 
+    torch::Tensor v1_2 = ((*v1)*(*v1)).sum(-1);
+    torch::Tensor v2_2 = ((*v2)*(*v2)).sum(-1);
+    torch::Tensor dot  = ((*v1)*(*v2)).sum(-1); 
+    return (dot/( torch::sqrt( (v1_2 * v2_2) ))).view({-1, 1}); 
 }
 
 torch::Tensor operators_::SinTheta(torch::Tensor* v1, torch::Tensor* v2){    
-    torch::Tensor v1_2 = operators_::Dot(v1, v1);
-    torch::Tensor v2_2 = operators_::Dot(v2, v2);
-    torch::Tensor dot2  = torch::pow(operators_::Dot(v1, v2), 2); 
-    return torch::sqrt(1 - dot2/(v1_2*v2_2));  
+    torch::Tensor v1_2 = ((*v1)*(*v1)).sum(-1);
+    torch::Tensor v2_2 = ((*v2)*(*v2)).sum(-1);
+    torch::Tensor dot2  = torch::pow( ((*v1)*(*v2)).sum(-1) , 2); 
+    return torch::sqrt(1 - dot2/(v1_2*v2_2)).view({-1, 1});  
 }
 
 torch::Tensor operators_::Rx(torch::Tensor* angle){	

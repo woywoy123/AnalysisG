@@ -10,8 +10,8 @@ import warnings
 msg = 'This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.'
 warnings.filterwarnings(action='ignore', module='matplotlib.figure', category=UserWarning, message=(msg))
 
-from AnalysisG.core.tools cimport *
-from AnalysisG.core.plotting cimport plotting
+from .tools cimport *
+from .plotting cimport plotting
 
 from scipy.stats import ks_2samp
 import matplotlib.pyplot as plt
@@ -749,7 +749,7 @@ cdef class TLine(BasePlotting):
     cdef void factory(self):
         cdef dict coms = {}
         coms["linestyle"] = self.LineStyle
-        if len(self.Color): coms["color"]
+        if len(self.Color): coms["color"] = self.Color
         coms["marker"] = self.Marker
         coms["linewidth"] = self.LineWidth
         coms["label"] = self.Title

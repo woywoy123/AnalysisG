@@ -7,7 +7,7 @@ import math
 import time
 
 device = "cuda"
-torch.set_printoptions(threshold=1000000, linewidth = 1000, precision = 5, sci_mode = True)
+torch.set_printoptions(threshold=1000000, linewidth = 1000, precision = 5, sci_mode = False)
 pyc = pyc()
 
 def test_nusol_base_matrix():
@@ -155,23 +155,23 @@ def test_nusol_nunu_cuda():
             print(chi2)
             if not (chi2 < 10):exit()
 
-#        predx = pyc.cuda_nusol_nunu(
-#                cat(data, "b1"), cat(data, "b2"),
-#                cat(data, "l1"), cat(data, "l2"),
-#                cat(data, "met_xy"), cat(data, "mass"),
-#                1e-10
-#        )
-#        print(predx["nu1"].size())
-#        print((predx["nu1"] - cat(data, "nu1")).view(-1).sum(-1))
-#
+        predx = pyc.cuda_nusol_nunu(
+                cat(data, "b1"), cat(data, "b2"),
+                cat(data, "l1"), cat(data, "l2"),
+                cat(data, "met_xy"), cat(data, "mass"),
+                1e-10
+        )
+        print(predx["nu1"].size())
+        print((predx["nu1"] - cat(data, "nu1")).view(-1).sum(-1))
+
 
 def test_nusol_combinatorial_cuda():
     mW = 80.385*1000
     mT = 172.0*1000
     t_pm = 0.95
     w_pm = 0.95
-    step = 20
-    null = 1e-10
+    step = 10
+    null = 1e-1
     gev = False
 
     batch = []
@@ -181,49 +181,62 @@ def test_nusol_combinatorial_cuda():
     dst = []
     particles = []
 
+    print("W_UP:",  mW * (2 - w_pm)/1000)
+    print("W_LW:",  mW * w_pm/1000)
+
     tx = 0
     nunu_ = loadDouble()
-    for i in iter(nunu_):
-        ev, l1, l2, b1, b2 = i
-        e_i         = len(particles)
-        particles  += [l1.ten, l2.ten, b1.ten, b2.ten]
-        pid        += [[1, 0], [1, 0], [0, 1], [0, 1]]
-        src        += [k for k in range(e_i, len(particles)) for _ in range(e_i, len(particles))]
-        dst        += [k for _ in range(e_i, len(particles)) for k in range(e_i, len(particles))]
-        metxy      += [ev.ten]
-        batch      += [tx]*4
-        tx         += 1
-        if tx == 3: break
-
-    #nu_   = loadSingle()
-    #for i in iter(nu_):
+    #for i in iter(nunu_):
+    #    ev, l1, l2, b1, b2 = i
     #    e_i         = len(particles)
-    #    particles  += [i[1].ten, i[2].ten, i[2].ten]
-    #    pid        += [[1, 0]  , [0, 1]  , [0, 1]  ]
+    #    particles  += [l1.ten, l2.ten, b1.ten, b2.ten]
+    #    pid        += [[1, 0], [1, 0], [0, 1], [0, 1]]
     #    src        += [k for k in range(e_i, len(particles)) for _ in range(e_i, len(particles))]
     #    dst        += [k for _ in range(e_i, len(particles)) for k in range(e_i, len(particles))]
-    #    metxy      += [i[0].ten]
-    #    batch      += [tx]*3
+    #    metxy      += [ev.ten]
+    #    batch      += [tx]*4
     #    tx         += 1
-    #    if tx == 6: break
+    #    if tx == 10: break
 
-    print(batch)
+    nu_   = loadSingle()
+    for i in iter(nu_):
+        e_i         = len(particles)
+        particles  += [i[1].ten, i[2].ten]
+        pid        += [[1, 0], [0, 1]]
+        src        += [k for k in range(e_i, len(particles)) for _ in range(e_i, len(particles))]
+        dst        += [k for _ in range(e_i, len(particles)) for k in range(e_i, len(particles))]
+        metxy      += [i[0].ten]
+        batch      += [tx]*2
+        tx         += 1
+        if tx == 100: break
+
     pid        = torch.tensor(pid, device = "cuda")
     batch      = torch.tensor(batch, device = "cuda")
     edge_index = torch.tensor([src, dst], device = "cuda")
     particles  = pyc.cuda_transform_combined_pxpypze(torch.cat(particles, 0).to(device = "cuda"))
     metxy      = torch.cat(metxy, 0).to(device = "cuda")
 
-    cmb = pyc.cuda_nusol_combinatorial(edge_index, batch, particles, pid, metxy, mT, mW, t_pm, w_pm, 20, 1e-10, True)
+    cmb = pyc.cuda_nusol_combinatorial(edge_index, batch, particles, pid, metxy, mT, mW, t_pm, w_pm, step, null, gev)
+
     print(cmb["distances"])
     print(cmb["nu1"])
+    print(cmb["nu2"])
+
+
+    #w1 = pyc.cuda_physics_cartesian_combined_m(cmb["nu1"] + particles[cmb["l1"].view(-1)]*0.001)
+    #w2 = pyc.cuda_physics_cartesian_combined_m(cmb["nu2"] + particles[cmb["l2"].view(-1)]*0.001)
+
+    #print(w1 * (cmb["distances"].view(-1, 1) < 0))
+    #print(w2 * (cmb["distances"].view(-1, 1) < 0))
+
+
     print(torch.cat([cmb["l1"], cmb["l2"], cmb["b1"], cmb["b2"]], -1))
 
 if __name__ == "__main__":
     #test_nusol_base_matrix()
     #test_nusol_nu_cuda()
-    test_nusol_nunu_cuda()
-    #test_nusol_combinatorial_cuda()
+    #test_nusol_nunu_cuda()
+    test_nusol_combinatorial_cuda()
 
 
 

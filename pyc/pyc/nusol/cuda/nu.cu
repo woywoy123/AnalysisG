@@ -101,7 +101,14 @@ std::map<std::string, torch::Tensor> nusol_::Nu(
     torch::Tensor X = torch::zeros_like(*H); 
     torch::Tensor M = torch::zeros_like(*H); 
     torch::Tensor Unit = torch::zeros_like(*H); 
-   
+  
+    bool no_sig = sigma == nullptr; 
+    if (!sigma){
+        torch::Tensor sx = met_xy -> view({-1, 1, 2})*0.001;
+        torch::Tensor sy = sx.transpose(-1, -2); 
+        sigma = new torch::Tensor(sx * sy); 
+    }
+
     const unsigned int dx = H -> size({0}); 
     const unsigned int thx = (dx >= 64) ? 64 : dx; 
     const dim3 thd = dim3(thx, 3, 3);
@@ -116,6 +123,7 @@ std::map<std::string, torch::Tensor> nusol_::Nu(
                      Unit.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>());
 
     }); 
+    if (no_sig){delete sigma;}
 
     torch::Tensor M_ = M.clone(); 
     std::map<std::string, torch::Tensor> out = nusol_::Intersection(&M_, &Unit, null); 
@@ -136,7 +144,7 @@ std::map<std::string, torch::Tensor> nusol_::Nu(
     out["X"] = X; 
     out["M"] = M; 
     out["nu"] = nu; 
-    out["distances"] = chi2;
+    out["distances"] = chi2.view({-1, 18});
     return out; 
 }
  

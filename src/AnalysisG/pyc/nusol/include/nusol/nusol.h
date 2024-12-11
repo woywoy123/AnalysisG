@@ -8,6 +8,7 @@
 
 namespace nusol_ {
     torch::Tensor BaseMatrix(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, torch::Tensor* masses); 
+    torch::Tensor Hperp(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, torch::Tensor* masses); 
 
     std::tuple<torch::Tensor, torch::Tensor> Intersection(torch::Tensor* A, torch::Tensor* B, double nulls); 
 
