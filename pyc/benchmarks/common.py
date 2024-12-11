@@ -63,6 +63,7 @@ def merge(data1, data2):
 def Line(title, xdata = None, ydata = None, err = None, col = None, linst = None):
     tl = TLine()
     tl.Title = title
+    tl.UseLateX = False
     if xdata is not None: tl.xData = xdata
     if ydata is not None: tl.yData = ydata
     if err is not None: tl.yDataUp   = err

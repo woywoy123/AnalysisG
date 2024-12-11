@@ -20,25 +20,10 @@ message(STATUS "CMAKE_CUDA_COMPILER_VERSION = ${CUDA_V}")
 FetchContent_Declare(torch URL "https://download.pytorch.org/libtorch/cu121/libtorch-shared-with-deps-2.5.1%2Bcu121.zip")
 FetchContent_MakeAvailable(torch)
 
-FetchContent_Declare(Eigen
-GIT_REPOSITORY "https://gitlab.com/libeigen/eigen.git"
-GIT_TAG master
-GIT_PROGRESS TRUE)
-set(BUILD_TESTING OFF)
-set(EIGEN_BUILD_TESTING OFF)
-set(EIGEN_MPL2_ONLY ON)
-set(EIGEN_BUILD_PKGCONFIG OFF)
-set(EIGEN_BUILD_DOC OFF) 
-FetchContent_MakeAvailable(Eigen)
-
 list(APPEND CMAKE_PREFIX_PATH ${torch_SOURCE_DIR})
-list(APPEND CMAKE_PREFIX_PATH ${EIGEN_SOURCE_DIR})
 find_package(Torch REQUIRED)
 find_package(pybind11 REQUIRED)
 find_package(Python COMPONENTS Interpreter Development REQUIRED)
-
-find_package(CUDA REQUIRED)
-add_definitions(-DUSE_CUDA)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS}")
 set(TORCH_USE_CUDA_DSA ON)
