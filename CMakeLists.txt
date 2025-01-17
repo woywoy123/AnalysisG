@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
 
 set(SKBUILD_PROJECT_NAME AnalysisG)
-project(${SKBUILD_PROJECT_NAME} VERSION 5.0 LANGUAGES C CXX CUDA)
+project(${SKBUILD_PROJECT_NAME}  VERSION 5.0 LANGUAGES CXX)
 
 # ABI is the pre-cxx11 version that pytorch distributes via wheels...
 #set(_GLIBCXX_USE_CXX11_ABI=0)
