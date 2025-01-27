@@ -32,8 +32,9 @@ def top_mass_jets(ana):
     th_.SaveFigure()
 
     for kx, name in zip(["Leptonic", "Hadronic"], ["b", "c"]):
-        x = kx.lower()
         hists = {}
+        x = kx.lower()
+        cl = iter(["orange", "green", "magenta", "red"])
         for nj in sorted(ana.top_mass["njets"][x]):
             data = ana.top_mass["njets"][x][nj]
             if int(nj) > 3: title = "$\\geq 4$ Jets"
@@ -45,6 +46,8 @@ def top_mass_jets(ana):
             th = TH1F()
             th.Title = k
             th.xData = hists[k]
+            th.Color = next(cl)
+            th.Alpha = 0.5
             hists[k] = th
 
         th_ = path(TH1F())
@@ -63,12 +66,15 @@ def top_mass_jets(ana):
         th_.SaveFigure()
 
     for kx, name in zip(["Leptonic", "Hadronic"], ["d", "e"]):
-        x = kx.lower()
         hists = []
+        x = kx.lower()
+        cl = iter(["orange", "green", "magenta", "red"])
         for nj in sorted(ana.top_mass["merged_tops"][x]):
             th = TH1F()
             th.Title = str(nj) + "-Tops"
             th.xData = ana.top_mass["merged_tops"][x][nj]
+            th.Color = next(cl)
+            th.Alpha = 0.5
             hists += [th]
 
         th_ = path(TH1F())

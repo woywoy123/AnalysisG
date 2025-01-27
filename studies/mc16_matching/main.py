@@ -12,6 +12,7 @@ from AnalysisG.selections.mc16.decaymodes.decaymodes import DecayModes
 from AnalysisG.selections.mc16.toptruthjets.toptruthjets import TopTruthJets
 from AnalysisG.selections.mc16.topjets.topjets import TopJets
 from AnalysisG.selections.mc16.zprime.zprime import ZPrime
+from AnalysisG.selections.mc16.parton.parton import Parton
 
 # figures
 import topkinematics
@@ -21,18 +22,20 @@ import decaymodes
 import toptruthjets
 import topjets
 import zprime
+import parton
 
 import pickle
 
 
 plotting_method = {
-    "zprime"             : zprime,
-    "topmatching"        : topmatching,
-    "topkinematics"      : topkinematics,
-    "childrenkinematics" : childrenkinematics,
-    "decaymodes"         : decaymodes,
-    "toptruthjets"       : toptruthjets,
-    "topjets"            : topjets
+#    "zprime"             : zprime,
+#    "topmatching"        : topmatching,
+#    "topkinematics"      : topkinematics,
+#    "childrenkinematics" : childrenkinematics,
+#    "decaymodes"         : decaymodes,
+#    "toptruthjets"       : toptruthjets,
+#    "topjets"            : topjets, 
+    "parton"              : parton
 }
 
 
@@ -47,8 +50,11 @@ def ExecuteStudy(study, smpls):
     if study == "toptruthjets"       : sel = TopTruthJets()
     if study == "topjets"            : sel = TopJets()
     if study == "zprime"             : sel = ZPrime()
+    if study == "parton"             : sel = Parton()
 
     ana = Analysis()
+    ana.Threads = 4
+    ana.SumOfWeightsTreeName = "sumWeights"
     ana.AddSamples(smpls, "tmp")
     ana.AddEvent(ev, "tmp")
     ana.AddSelection(sel)
@@ -57,36 +63,38 @@ def ExecuteStudy(study, smpls):
 
 #smpls = "../../test/samples/dilepton/*"
 
-study = "topjets"
-plt_data = True
-gen_data = True
-figure_path = "./Output/"
-for mass in ["1000", "900", "800", "700", "600", "500", "400"]:
-    mass_point = "Mass." + mass + ".GeV"
-    smpls = "/home/tnom6927/Downloads/mc16/MadGraphPythia8EvtGen_noallhad_ttH_tttt_m" + mass + "/*"
+for i in plotting_method:
+    study = i
+    plt_data = True
+    gen_data = False
+    figure_path = "./Output/"
+    for mass in ["1000"]: #, "900", "800", "700", "600", "500", "400"]:
+        mass_point = "Mass." + mass + ".GeV"
+        smpls = "/home/tnom6927/Downloads/mc16/ttH_tttt_m" + mass + "/*"
 
-    method = plotting_method[study]
-    method.figures.figure_path = figure_path
-    method.figures.mass_point  = mass_point
+        method = plotting_method[study]
+        method.figures.figure_path = figure_path
+        method.figures.mass_point  = mass_point
 
-    if gen_data:
-        sel = ExecuteStudy(study, smpls)
-        f = open(study + "-" + mass_point + ".pkl", "wb")
-        pickle.dump(sel, f)
+        if gen_data:
+            sel = ExecuteStudy(study, smpls)
+            f = open(study + "-" + mass_point + ".pkl", "wb")
+            pickle.dump(sel, f)
+            f.close()
+
+        if not plt_data: continue
+        print("plotting: " + study)
+        f = open(study + "-" + mass_point + ".pkl", "rb")
+        pres = pickle.load(f)
         f.close()
 
-    if not plt_data: continue
-    print("plotting: " + study)
-    f = open(study + "-" + mass_point + ".pkl", "rb")
-    pres = pickle.load(f)
-    f.close()
-
-    if study == "topkinematics"      : method.figures.TopKinematics(pres)
-    if study == "topmatching"        : method.figures.TopMatching(pres)
-    if study == "childrenkinematics" : method.figures.ChildrenKinematics(pres)
-    if study == "decaymodes"         : method.figures.DecayModes(pres)
-    if study == "toptruthjets"       : method.figures.TopTruthJets(pres)
-    if study == "topjets"            : method.figures.TopJets(pres)
-    if study == "zprime"             : method.figures.ZPrime(pres)
-
+        mp = mass_point.replace("GeV", "(GeV)").replace(".", " ")
+        if study == "topkinematics"      : method.figures.TopKinematics(pres, mp)
+        if study == "topmatching"        : method.figures.TopMatching(pres)
+        if study == "childrenkinematics" : method.figures.ChildrenKinematics(pres, mp)
+        if study == "decaymodes"         : method.figures.DecayModes(pres)
+        if study == "toptruthjets"       : method.figures.TopTruthJets(pres)
+        if study == "topjets"            : method.figures.TopJets(pres)
+        if study == "zprime"             : method.figures.ZPrime(pres)
+        if study == "parton"             : method.figures.Parton(pres)
 

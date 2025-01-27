@@ -16,21 +16,23 @@ def pdgid_mapping(pdgid):
     else: title = pdgid
     return title
 
-def kinematics_pt(ana):
+def kinematics_pt(ana, mp):
     rkin = ana.res_kinematics
     skin = ana.spec_kinematics
 
     rth_pt = TH1F()
     rth_pt.Title = "Resonance"
     rth_pt.xData = rkin["pt"]
+    rth_pt.Color = "red"
 
     sth_pt = TH1F()
     sth_pt.Title = "Spectator"
     sth_pt.xData = skin["pt"]
+    sth_pt.Color = "blue"
 
     th = path(TH1F())
     th.Histograms = [rth_pt, sth_pt]
-    th.Title = "Normalized $p_T$ Distributions for \n Spectator and Resonant Top Children"
+    th.Title = "$p_T$ for Top Children from Top-Philic Mass Injection at " + mp #Distributions for \n Spectator and Resonant Top Children"
     th.xTitle = "$p_T$ of Top Children (GeV)"
     th.yTitle = "Density (Arb.) / ($10$ GeV)"
     th.xBins = 60
@@ -254,21 +256,23 @@ def kinematics_phi(ana):
     th.Filename = "Figure.3.i"
     th.SaveFigure()
 
-def kinematics_energy(ana):
+def kinematics_energy(ana, mp):
     rkin = ana.res_kinematics
     skin = ana.spec_kinematics
 
     rth_pt = TH1F()
     rth_pt.Title = "Resonance"
     rth_pt.xData = rkin["energy"]
+    rth_pt.Color = "red"
 
     sth_pt = TH1F()
     sth_pt.Title = "Spectator"
     sth_pt.xData = skin["energy"]
+    sth_pt.Color = "blue"
 
     th = path(TH1F())
     th.Histograms = [rth_pt, sth_pt]
-    th.Title = "Normalized Energy Distribution for \n from Spectator and Resonant Top Children"
+    th.Title = "Energy for Top Children from Top-Philic Mass Injection at " + mp
     th.xTitle = "Energy of Top Children (GeV)"
     th.yTitle = "Density (Arb.) / ($10$ GeV)"
     th.xBins = 100
@@ -605,11 +609,11 @@ def fractional(ana):
     th.Filename = "Figure.3.u"
     th.SaveFigure()
 
-def ChildrenKinematics(ana):
-    kinematics_pt(ana)
+def ChildrenKinematics(ana, mp):
+    kinematics_pt(ana, mp)
     kinematics_eta(ana)
     kinematics_phi(ana)
-    kinematics_energy(ana)
+    kinematics_energy(ana, mp)
     kinematics_decay_mode(ana)
     dr_clustering(ana)
     fractional(ana)

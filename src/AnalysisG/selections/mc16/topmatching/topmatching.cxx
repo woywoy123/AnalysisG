@@ -77,20 +77,21 @@ bool topmatching::strategy(event_template* ev){
         else {this -> jets_truth_leps["had"].push_back(mass_j);}
         this -> jets_truth_leps["all"].push_back(mass_j); 
 
-
+        int pdgid = 0; 
         std::vector<particle_template*> jts = this -> downcast(&top_i -> Jets);
         for (size_t c(0); c < dleps.size(); ++c){
             std::map<std::string, particle_template*> pr = dleps[c] -> parents; 
-
             bool lep_match = false; 
             for (size_t x(0); x < ch.size(); ++x){
                 if (!pr.count(ch[x] -> hash)){continue;}
-                lep_match = true; 
+                if (!ch[x] -> is_lep){continue;}
+                pdgid = ch[x] -> pdgid; 
+                lep_match = true;
                 break; 
             }
-
             if (!lep_match){continue;}
             jts.push_back(dleps[c]); 
+            break;
         }
 
         for (size_t c(0); c < ch_.size(); ++c){
@@ -102,6 +103,11 @@ bool topmatching::strategy(event_template* ev){
         if (is_lepton){this -> jet_leps["lep"].push_back(mass_j_);}
         else {this -> jet_leps["had"].push_back(mass_j_);}
         this -> jet_leps["all"].push_back(mass_j_); 
+        if (is_lepton){
+            pdgid = std::abs(pdgid); 
+            if (pdgid){this -> jet_leps["lep-" + this -> to_string(pdgid)].push_back(mass_j_);}
+            else {this -> jet_leps["lep-miss"].push_back(mass_j_);}
+        }
 
         std::string _ntj = std::to_string(top_i -> Jets.size()) + " - Jets";
         if (is_lepton){this -> n_jets_lep[_ntj].push_back(mass_j_);}

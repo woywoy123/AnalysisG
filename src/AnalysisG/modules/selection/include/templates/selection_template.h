@@ -104,12 +104,20 @@ class selection_template: public tools
             return out; 
         }
 
-
         template <typename g>
         void downcast(std::vector<g*>* inpt, std::vector<particle_template*>* out){
-            for (size_t x(0); x < inpt -> size(); ++x){
-                out -> push_back((particle_template*)(*inpt)[x]);
-            }
+            for (size_t x(0); x < inpt -> size(); ++x){out -> push_back((particle_template*)(*inpt)[x]);}
+        }
+
+        template <typename o, typename g>
+        void upcast(std::map<std::string, o*>* inpt, std::vector<g*>* out){
+            typename std::map<std::string, o*>::iterator itx = inpt -> begin(); 
+            for (; itx != inpt -> end(); ++itx){out -> push_back((g*)itx -> second);}
+        }
+
+        template <typename o, typename g>
+        void upcast(std::vector<o*>* inpt, std::vector<g*>* out){
+            for (size_t x(0); x < inpt -> size(); ++x){out -> push_back((g*)(*inpt)[x]);}
         }
 
         template <typename g>

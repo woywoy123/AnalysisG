@@ -38,6 +38,7 @@ void decaymodes::merge(selection_template* sl){
     sum_data(&this -> res_top_pdgid, &slt -> res_top_pdgid); 
     sum_data(&this -> spec_top_pdgid, &slt -> spec_top_pdgid); 
     sum_data(&this -> all_pdgid, &slt -> all_pdgid); 
+    sum_data(&this -> lepton_statistics, &slt -> lepton_statistics); 
 }
 
 bool decaymodes::selection(event_template* ev){
@@ -46,7 +47,7 @@ bool decaymodes::selection(event_template* ev){
     this -> ntops.push_back((int)tops.size());  
     
     int res = 0;
-    int spc = 0;  
+    int spc = 0;
     for (size_t x(0); x < tops.size(); ++x){
         top* t = (top*)tops[x]; 
         res += t -> from_res; 
@@ -178,8 +179,33 @@ bool decaymodes::strategy(event_template* ev){
     cheader = ""; 
     if (signs["S"] == 2 || signs["O"] == 2){cheader = "SS";}
     if (signs["S"] == 1 && signs["O"] == 1){cheader = "SO";}
-    if (!cheader.size()){return true;}
-    this -> signal_region[cheader].push_back(this -> sum(&rchildren));
+    if (cheader.size()){this -> signal_region[cheader].push_back(this -> sum(&rchildren));}
+
+    std::map<std::string, int> clsZ;
+    for (size_t x(0); x < tops.size(); ++x){
+        top* t = (top*)tops[x]; 
+        int sign = 0; 
+        bool isres = t -> from_res; 
+        std::map<std::string, particle_template*> c = t -> children; 
+        std::map<std::string, particle_template*>::iterator itr = c.begin(); 
+        for (; itr != c.end(); ++itr){
+            if (!itr -> second -> is_lep){continue;}
+            if (itr -> second -> is_nu){continue;}
+            sign = itr -> second -> charge; 
+            break;
+        }
+        std::string kx = (sign) ? "l" : "h"; 
+        if (sign != 0){kx += (sign > 0) ? "(+)" : "(-)";}
+        kx += (isres) ? "R" : "S";
+        clsZ[kx] += 1; 
+    }
+
+    std::string ttZ = ""; 
+    std::map<std::string, int>::iterator ix = clsZ.begin(); 
+    for (; ix != clsZ.end(); ++ix){
+        for (size_t x(0); x < ix -> second; ++x){ttZ += ix -> first + ".";}
+    }
+    this -> lepton_statistics[ttZ] = 1; 
     return true; 
 }
 

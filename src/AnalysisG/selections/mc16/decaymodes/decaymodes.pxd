@@ -17,8 +17,9 @@ cdef extern from "decaymodes.h":
         map[string, vector[double]] spec_top_charges
         map[string, int] spec_top_pdgid
 
-        map[string, int] all_pdgid
         map[string, vector[double]] signal_region
+        map[string, int] lepton_statistics
+        map[string, int] all_pdgid
         vector[int] ntops
 
 
@@ -34,6 +35,7 @@ cdef class DecayModes(SelectionTemplate):
 
     cdef public dict all_pdgid
     cdef public dict signal_region
+    cdef public dict lepton_statistics
     cdef public list ntops
 
 

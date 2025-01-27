@@ -530,10 +530,12 @@ cdef class TH1F(BasePlotting):
 
         if len(self.xData) or len(labels):
             histpl = self.factory()
-            histpl["label"] = None
-            histpl["H"]     = [self.__build__()]
-            if raw: return histpl
-            hep.histplot(**histpl)
+            if len(self.Histograms) and not len(self.xData): histpl["label"] = []
+            else:
+                histpl["label"] = None
+                histpl["H"]     = [self.__build__()]
+                if raw: return histpl
+                hep.histplot(**histpl)
 
         for h in self.Histograms:
             if not len(labels): h.xMin  = self.xMin

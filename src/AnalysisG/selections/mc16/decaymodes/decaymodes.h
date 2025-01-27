@@ -25,6 +25,7 @@ class decaymodes: public selection_template
 
         std::map<std::string, int> all_pdgid = {}; 
         std::map<std::string, std::vector<double>> signal_region = {}; 
+        std::map<std::string, int> lepton_statistics = {}; 
         std::vector<int> ntops = {};  
 };
 

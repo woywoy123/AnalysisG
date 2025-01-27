@@ -9,19 +9,21 @@ def path(hist):
     hist.Overflow = False
     return hist
 
-def top_pt(ana):
+def top_pt(ana, mp):
 
     thr = TH1F()
     thr.Title = "Resonance"
+    thr.Color = "red"
     thr.xData = ana.res_top_kinematics["pt"]
 
     ths = TH1F()
     ths.Title = "Spectator"
+    ths.Color = "blue"
     ths.xData = ana.spec_top_kinematics["pt"]
 
     tha = path(TH1F())
     tha.Histograms = [thr, ths]
-    tha.Title = "$p_T$ of Truth Tops"
+    tha.Title = "$p_T$ of Tops from Top-Philic Mass Injection at " + mp
     tha.xTitle = "$p_T$ (GeV)"
     tha.yTitle = "Density (Arb.) / ($10$ GeV)"
     tha.Density = True
@@ -32,19 +34,21 @@ def top_pt(ana):
     tha.Filename = "Figure.1.a"
     tha.SaveFigure()
 
-def top_energy(ana):
+def top_energy(ana, mp):
 
     thr = TH1F()
     thr.Title = "Resonance"
+    thr.Color = "red"
     thr.xData = ana.res_top_kinematics["energy"]
 
     ths = TH1F()
     ths.Title = "Spectator"
+    ths.Color = "blue"
     ths.xData = ana.spec_top_kinematics["energy"]
 
     tha = path(TH1F())
     tha.Histograms = [thr, ths]
-    tha.Title = "Energy of Truth Tops"
+    tha.Title = "Energy of Tops from Top-Philic Mass Injection at " + mp
     tha.xTitle = "Energy (GeV)"
     tha.yTitle = "Density (Arb.) / ($15$ GeV)"
     tha.Density = True
@@ -119,6 +123,7 @@ def top_pt_energy(ana):
     th.yMax = 800
     th.yBins = 160
     th.yStep = 100
+    th.Color = "tab20c"
     th.yTitle = "Energy of Resonant Truth Top / 5 GeV"
     th.SaveFigure()
 
@@ -137,6 +142,7 @@ def top_pt_energy(ana):
     th.yMax = 800
     th.yBins = 160
     th.yStep = 100
+    th.Color = "tab20c"
     th.yTitle = "Energy of Spectator Truth Top / 5 GeV"
     th.SaveFigure()
 
@@ -209,12 +215,14 @@ def top_pair_mass(ana):
     th.yMax = 1200
     th.yBins = 100
     th.yStep = 100
+
+    th.Color = "tab20c"
     th.yTitle = "Invariant Mass of Truth-Top Pair Permutation / 10 GeV"
     th.SaveFigure()
 
-def TopKinematics(ana):
-    top_pt(ana)
-    top_energy(ana)
+def TopKinematics(ana, mp):
+    top_pt(ana, mp)
+    top_energy(ana, mp)
     top_phi(ana)
     top_eta(ana)
     top_pt_energy(ana)
