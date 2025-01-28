@@ -321,10 +321,10 @@ def top_jets_contributions(ana):
     all_t2.SaveFigure()
 
 def TopMatching(ana):
-#    top_matching(ana)
-#    top_decay_channel_children(ana)
-#    top_decay_channel_truth_jets(ana)
-#    top_decay_channel_jets_truth_leps(ana)
+    top_matching(ana)
+    top_decay_channel_children(ana)
+    top_decay_channel_truth_jets(ana)
+    top_decay_channel_jets_truth_leps(ana)
     top_decay_channel_jets_leps(ana)
     top_truth_jets_contributions(ana)
     top_jets_contributions(ana)

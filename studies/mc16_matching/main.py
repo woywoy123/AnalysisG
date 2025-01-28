@@ -34,8 +34,8 @@ plotting_method = {
 #    "childrenkinematics" : childrenkinematics,
 #    "decaymodes"         : decaymodes,
 #    "toptruthjets"       : toptruthjets,
-#    "topjets"            : topjets, 
-    "parton"              : parton
+#    "topjets"            : topjets,
+    "parton"             : parton
 }
 
 
@@ -53,7 +53,7 @@ def ExecuteStudy(study, smpls):
     if study == "parton"             : sel = Parton()
 
     ana = Analysis()
-    ana.Threads = 4
+    ana.Threads = 12
     ana.SumOfWeightsTreeName = "sumWeights"
     ana.AddSamples(smpls, "tmp")
     ana.AddEvent(ev, "tmp")
@@ -63,21 +63,26 @@ def ExecuteStudy(study, smpls):
 
 #smpls = "../../test/samples/dilepton/*"
 
+root = "/home/tnom6927/Downloads/mc16/"
 for i in plotting_method:
     study = i
     plt_data = True
-    gen_data = False
+    gen_data = True
     figure_path = "./Output/"
-    for mass in ["1000"]: #, "900", "800", "700", "600", "500", "400"]:
-        mass_point = "Mass." + mass + ".GeV"
-        smpls = "/home/tnom6927/Downloads/mc16/ttH_tttt_m" + mass + "/*"
+    for mass in ["ttbar", "tttt"]: #, "1000", "900", "800", "700", "600", "500", "400"]:
+        if mass == "ttbar" or mass == "tttt":
+            mass_point = mass
+            smpls = mass + "/*"
+        else:
+            mass_point = "Mass." + mass + ".GeV"
+            smpls = "ttH_tttt_m" + mass + "/*"
 
         method = plotting_method[study]
         method.figures.figure_path = figure_path
         method.figures.mass_point  = mass_point
 
         if gen_data:
-            sel = ExecuteStudy(study, smpls)
+            sel = ExecuteStudy(study, root + smpls)
             f = open(study + "-" + mass_point + ".pkl", "wb")
             pickle.dump(sel, f)
             f.close()

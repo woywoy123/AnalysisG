@@ -113,12 +113,6 @@ def region_stats(ana):
     print(total)
     print({i : (Zprod[i] / total)*100 for i in Zprod})
     print({i : (tttt[i] / total)*100 for i in tttt})
-    exit()
-
-
-
-
-
 
 def DecayModes(ana):
     resonance_decay_modes(ana.res_top_modes)

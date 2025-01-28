@@ -27,7 +27,7 @@ void parton::merge(selection_template* sl){
 
 bool parton::selection(event_template* ev){
     bsm_4tops* bsm = (bsm_4tops*)ev; 
-    return bsm -> Tops.size() == 4; 
+    return bsm -> Tops.size() >= 2 && bsm -> Tops.size() < 5; 
 }
 
 bool parton::strategy(event_template* ev){
