@@ -284,6 +284,9 @@ cdef class BasePlotting:
         if self.yStep > 0: self.matpl.yticks(self.__ticks__(self.yMin, self.yMax, self.yStep))
 
         self.matpl.savefig(env(out), dpi = self.ptr.dpi, bbox_inches = "tight")
+        cdef str raw = env(out).replace(self.Filename + env(self.ptr.extension), "raw/" + self.Filename + ".pgf")
+        self.matpl.savefig(raw)
+
         self.matpl.close("all")
         self.ptr.success(b"Finished Plotting: " + out)
 
@@ -757,7 +760,7 @@ cdef class TLine(BasePlotting):
         elif self.ErrorBars:
             self.ptr.build_error()
             coms["yerr"] = [self.yDataDown, self.yDataUp]
-            coms["capsize"] = 3
+            coms["capsize"] = 1
             self.matpl.errorbar(self.xData, self.yData, **coms)
         else: self.matpl.plot(self.xData, self.yData, **coms)
 
@@ -789,7 +792,8 @@ cdef class TLine(BasePlotting):
         cdef TLine i
         for i in self.Lines: i.factory()
         self._ax.tick_params(axis = "x", which = "minor", bottom = False)
-        self.matpl.legend(loc = "upper right")
+        self._ax.tick_params(axis = "y", which = "minor", bottom = False)
+        self.matpl.legend(loc = "upper left")
         self.factory()
         return {}
 

@@ -150,6 +150,7 @@ cdef extern from "<structs/settings.h>":
         bool debug_mode
         int threads
 
+# ------------------- (7.) Add the enum --------------- #
 cdef extern from "<structs/element.h>":
     enum data_enum:
         vvf "data_enum::vvf"
@@ -164,6 +165,8 @@ cdef extern from "<structs/element.h>":
         l   "data_enum::l"
         i   "data_enum::i"
         ull "data_enum::ull"
+        ui  "data_enum::ui"
+
 
     cdef cppclass data_t:
         string leaf_name
@@ -179,6 +182,7 @@ cdef extern from "<structs/element.h>":
         void flush() except+
         bool next() except+
 
+# ------------------- (8.) Add the interface --------------- #
         bool element(vector[vector[double]]* data) except +
         bool element(vector[vector[float]]* data) except +
         bool element(vector[vector[long ]]* data) except +
@@ -193,8 +197,9 @@ cdef extern from "<structs/element.h>":
         bool element(long* data) except +
         bool element(int* data) except +
         bool element(unsigned long long* data) except +
+        bool element(unsigned int* data) except +
 
-
+# ------------------- (8.) Add the switch. And you are done =) --------------- #
 cdef inline dict switch_board(data_t* data):
     cdef vector[vector[float]] vvf
     if data.type == data_enum.vvf and data.element(&vvf): return {data.path : vvf}
@@ -231,6 +236,9 @@ cdef inline dict switch_board(data_t* data):
 
     cdef unsigned long long ull
     if data.type == data_enum.ull and data.element(&ull): return {data.path : ull}
+
+    cdef unsigned int ui
+    if data.type == data_enum.ui and data.element(&ui): return {data.path : ui}
 
     return {}
 

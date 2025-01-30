@@ -299,43 +299,47 @@ def frac_ntop_jet_contrib(ana, col):
 
 def top_mass_wth_cuts(ana, col):
     pt = ana.frac_mass_top
-    hists = {}
+    hists = []
     for i in pt:
+        thx = i.split("::")[0]
         if "::jet" not in i: continue
-        if "0.00" in i: pass
-        elif "0.10" in i: pass
-        elif "0.20" in i: pass
-#        elif "0.30" in i: pass
-#        elif "0.40" in i: pass
-#        elif "0.50" in i: pass
-#        elif "0.60" in i: pass
-#        elif "0.70" in i: pass
-#        elif "0.80" in i: pass
-#        elif "0.90" in i: pass
-#        elif "1.00" in i: pass
+        if "0.00" == thx: tlt = "No threshold"
+        elif "0.10" == thx: tlt = "$\\geq$" + thx
+        elif "0.20" == thx: tlt = "$\\geq$" + thx
+        elif "0.30" == thx: tlt = "$\\geq$" + thx
+        elif "0.40" == thx: tlt = "$\\geq$" + thx
+        #elif "0.50" in i: pass
+        #elif "0.60" in i: pass
+        #elif "0.70" in i: pass
+        #elif "0.80" in i: pass
+        #elif "0.90" in i: pass
+        #elif "1.00" in i: pass
         else: continue
 
         th = TH1F()
         th.xData = pt[i]
-        th.Title = "@ " + i.split("::")[0]
+        th.Title = tlt #"$\\geq$ " + i.split("::")[0]
         th.Color = next(col)
         th.Alpha = 0.5
-        th.Density = True
-        hists[i] = th
+        #th.Density = True
+        hists.append(th)
 
-    th_tj = path(TH1F())
-    th_tj.Title = "Invariant Top Mass at Various Contribution Thresholds Using Truth Jets"
-    th_tj.Histograms = list(hists.values())
-    th_tj.xMin = 0
-    th_tj.xMax = 400
-    th_tj.xBins = 200
-    th_tj.xStep = 40
-    th_tj.Stacked = True
-    th_tj.Overflow = False
-    th_tj.yTitle = "Tops / $1$ (GeV)"
-    th_tj.xTitle = "Invariant Top Mass (GeV)"
-    th_tj.Filename = "Figure.8.k"
-    th_tj.SaveFigure()
+    for i in range(1, len(hists)):
+        hists[0].Color = "red"
+        hists[i].Color = "blue"
+        th_tj = path(TH1F())
+        th_tj.Title = "Invariant Top Mass at Constituent Threshold " + hists[i].Title + " for Jets"
+        th_tj.Histograms = [hists[0], hists[i]]
+        th_tj.xMin = 0
+        th_tj.xMax = 400
+        th_tj.xBins = 200
+        th_tj.xStep = 40
+        th_tj.Alpha = 0.5
+        th_tj.Overflow = False
+        th_tj.yTitle = "Tops / $1$ (GeV)"
+        th_tj.xTitle = "Invariant Top Mass (GeV)"
+        th_tj.Filename = "Figure.8.k-" + str(i)
+        th_tj.SaveFigure()
 
 def Parton(ana):
     ntops_tjets_pt(ana , iter(colors))
@@ -348,6 +352,6 @@ def Parton(ana):
     nparton_jets_pdgid_e(ana, iter(colors))
     frac_ntop_tjet_contrib(ana, iter(colors))
     frac_ntop_jet_contrib(ana, iter(colors))
-#    top_mass_wth_cuts(ana, iter(colors))
+    top_mass_wth_cuts(ana, iter(colors))
 
 

@@ -258,6 +258,7 @@ cdef class BasePlotting:
 
     def SaveFigure(self):
         cdef string out = self.ptr.build_path()
+        cdef str raw = env(out).replace(self.Filename + env(self.ptr.extension), "raw/" + self.Filename + ".pgf")
         cdef dict com = {}
         com["font.size"] = self.ptr.font_size
         com["axes.labelsize"] = self.ptr.axis_size
@@ -284,6 +285,7 @@ cdef class BasePlotting:
         if self.yStep > 0: self.matpl.yticks(self.__ticks__(self.yMin, self.yMax, self.yStep))
 
         self.matpl.savefig(env(out), dpi = self.ptr.dpi, bbox_inches = "tight")
+        self.matpl.savefig(raw)
         self.matpl.close("all")
         self.ptr.success(b"Finished Plotting: " + out)
 

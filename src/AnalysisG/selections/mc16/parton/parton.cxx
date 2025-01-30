@@ -103,8 +103,8 @@ bool parton::strategy(event_template* ev){
         this -> frac_mass_top["0.00::truthjet"].push_back(this -> top_mass_contribution(tjets_, &this -> frac_ntop_tjet_contribution, p, ti, 0));
         this -> frac_mass_top["0.00::jet"].push_back(this -> top_mass_contribution(jets_, &this -> frac_ntop_jet_contribution, p_, ti, 0));
 
-        for (size_t x(1); x <= 100; ++x){
-            float v = 0.1 * x; 
+        for (size_t x(1); x <= 40; ++x){
+            float v = 0.01 * x; 
             std::string kx = this -> to_string(v, 2); 
             this -> frac_mass_top[kx + "::truthjet"].push_back(this -> top_mass_contribution(tjets_, nullptr, p, ti, v));
             this -> frac_mass_top[kx + "::jet"].push_back(this -> top_mass_contribution(jets_, nullptr, p_, ti, v));

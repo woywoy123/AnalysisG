@@ -18,7 +18,7 @@
 enum class data_enum {
     vvf, vvd, vvl, vvi, vvb,
     vd, vf, vl, vi, vc, vb, 
-    d, f, l, i, ull, b              // <---- (1). add the type here v -- vector, vv -- vector<vector>, ....
+    d, f, l, i, ull, b, ui              // <---- (1). add the type here v -- vector, vv -- vector<vector>, ....
 }; 
 
 struct data_t {
@@ -40,12 +40,13 @@ struct data_t {
         std::vector<std::vector<bool>>*   r_vb = nullptr; 
 
         std::vector<unsigned long long>* r_ull = nullptr; 
+        std::vector<unsigned int>* r_ui = nullptr; 
         std::vector<double>* r_d = nullptr; 
         std::vector<long>*   r_l = nullptr; 
         std::vector<float>*  r_f = nullptr; 
         std::vector<int>*    r_i = nullptr; 
         std::vector<bool>*   r_b = nullptr; 
-
+        
         // ------------- (3). add the data type interface -------------- //
         bool element(std::vector<std::vector<float>>* el);
         bool element(std::vector<std::vector<double>>* el);
@@ -66,9 +67,11 @@ struct data_t {
         bool element(int* el); 
         bool element(bool* el); 
         bool element(unsigned long long* el); 
+        bool element(unsigned int* el); 
 
-
+// -> go to modules/structs/cxx/structs.cxx
 // ******************************************************************************************* //
+//
         std::string   leaf_name = "";
         std::string branch_name = "";
         std::string   tree_name = ""; 

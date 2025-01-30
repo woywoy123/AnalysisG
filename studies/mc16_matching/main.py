@@ -69,7 +69,7 @@ for i in plotting_method:
     plt_data = True
     gen_data = True
     figure_path = "./Output/"
-    for mass in ["ttbar", "tttt"]: #, "1000", "900", "800", "700", "600", "500", "400"]:
+    for mass in ["1000"]: #, "900", "800", "700", "600", "500", "400"]:
         if mass == "ttbar" or mass == "tttt":
             mass_point = mass
             smpls = mass + "/*"

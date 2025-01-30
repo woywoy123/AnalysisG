@@ -8,6 +8,7 @@ std::string plotting::build_path(){
     std::string path = this -> output_path;
     if (!this -> ends_with(&path, "/")){path += "/";}
     this -> create_path(path); 
+    this -> create_path(path + "raw/"); 
     path += this -> filename; 
     path += this -> extension; 
     return path;  

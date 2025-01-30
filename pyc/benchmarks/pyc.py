@@ -2,8 +2,8 @@ import torch
 
 class pyc:
 
-    def __init__(self, devices = ["tensor", "cuda"]):
-        self._pth = "../build/pyc/interface"
+    def __init__(self, pth, devices = ["tensor", "cuda"]):
+        self._pth = pth
         self._fx = ["graph", "nusol", "operators", "physics", "transform"]
         self._ops = {
                 "nusol" : [

@@ -26,7 +26,7 @@ bool element_t::boundary(){
 // also make sure to checkout the structs/include/structs/element.h file! 
 
 void data_t::flush_buffer(){
-    // ------------ (7.) Add the buffer flush -------------------- //
+    // ------------ (5.) Add the buffer flush -------------------- //
     switch (this -> type){
         case data_enum::vvf: this -> flush_buffer(&this -> r_vvf); return;  
         case data_enum::vvd: this -> flush_buffer(&this -> r_vvd); return; 
@@ -42,6 +42,7 @@ void data_t::flush_buffer(){
         case data_enum::vb:  this -> flush_buffer(&this -> r_vb ); return; 
        
         case data_enum::ull: this -> flush_buffer(&this -> r_ull); return; 
+        case data_enum::ui:  this -> flush_buffer(&this -> r_ui); return; 
         case data_enum::d:   this -> flush_buffer(&this -> r_d  ); return; 
         case data_enum::l:   this -> flush_buffer(&this -> r_l  ); return; 
         case data_enum::f:   this -> flush_buffer(&this -> r_f  ); return; 
@@ -52,7 +53,7 @@ void data_t::flush_buffer(){
 }
 
 void data_t::fetch_buffer(){
-    // ------------ (8.) Add the buffer fletch -------------------- //
+    // ------------ (6.) Add the buffer fletch -------------------- //
     switch (this -> type){
         case data_enum::vvf: return this -> fetch_buffer(&this -> r_vvf);
         case data_enum::vvd: return this -> fetch_buffer(&this -> r_vvd);
@@ -68,6 +69,7 @@ void data_t::fetch_buffer(){
         case data_enum::vb:  return this -> fetch_buffer(&this -> r_vb );
 
         case data_enum::ull: return this -> fetch_buffer(&this -> r_ull);
+        case data_enum::ui:  return this -> fetch_buffer(&this -> r_ui );
         case data_enum::l:   return this -> fetch_buffer(&this -> r_l  );
         case data_enum::d:   return this -> fetch_buffer(&this -> r_d  );
         case data_enum::f:   return this -> fetch_buffer(&this -> r_f  );
@@ -75,6 +77,7 @@ void data_t::fetch_buffer(){
         case data_enum::b:   return this -> fetch_buffer(&this -> r_b  );
         default: return; 
     }
+    // -> go to core/structs.pxd
 }
 
 void data_t::string_type(){
@@ -97,6 +100,7 @@ void data_t::string_type(){
     if (this -> leaf_type == "Float_t"){  this -> type = data_enum::f; return;}
     if (this -> leaf_type == "Int_t"){    this -> type = data_enum::i; return;}
     if (this -> leaf_type == "ULong64_t"){this -> type = data_enum::ull; return;}
+    if (this -> leaf_type == "UInt_t"){   this -> type = data_enum::ui; return;}
 
     std::cout << "UNKNOWN TYPE: " << this -> leaf_type << " " << path << std::endl; 
     std::cout << "Add the type under modules/structs/cxx/structs.cxx" << std::endl;
@@ -104,7 +108,7 @@ void data_t::string_type(){
 }
 
 
-// -------------- (5). add the data type interace ---------- //
+// -------------- (4). add the data type interace ---------- //
 bool data_t::element(std::vector<std::vector<float>>* el){
     if (!this -> r_vvf){return false;}
     (*el) = (*this -> r_vvf)[this -> index]; 
@@ -207,13 +211,20 @@ bool data_t::element(unsigned long long* el){
     return true; 
 }
 
+bool data_t::element(unsigned int* el){
+    if (!this -> r_ui){return false;}
+    (*el) = (*this -> r_ui)[this -> index];
+    return true; 
+}
+
 // ******************************************************************************************* //
 
 void data_t::flush(){
     this -> flush_buffer();
     for (size_t x(0); x < this -> files_t -> size(); ++x){
         if (!(*this -> files_t)[x]){continue;}
-        delete (*this -> files_t)[x]; (*this -> files_t)[x] = nullptr; 
+        delete (*this -> files_t)[x]; 
+        (*this -> files_t)[x] = nullptr; 
     }
     this -> leaf = nullptr; 
     this -> branch = nullptr; 

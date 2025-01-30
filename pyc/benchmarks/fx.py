@@ -1,8 +1,7 @@
 import time
 import pyc
 import torch
-pyx = pyc.pyc()
-
+global pyx
 tolerance = 10e-7
 
 def test_this(fx, data):

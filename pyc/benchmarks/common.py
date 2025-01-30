@@ -1,7 +1,4 @@
-import sys
-sys.path.append("../build/pyc/")
 from core.plotting import TLine, TH1F
-
 import random
 import vector
 import torch
@@ -25,7 +22,6 @@ def create_particle(nums = 100, device = "cpu"):
         test_c.append(p1)
         test_p.append(p2)
         if (len(test_ct) / nums)%10: continue
-        print(len(test_ct))
 
     dcc = torch.tensor(test_ct, device = device, dtype = torch.float64)
     dcp = torch.tensor(test_pt, device = device, dtype = torch.float64)
@@ -60,29 +56,25 @@ def merge(data1, data2):
     return data1
 
 
-def Line(title, xdata = None, ydata = None, err = None, col = None, linst = None):
+def Line(title, xdata = None, ydata = None, err = None, col = None, linst = None, restrict = 2):
     tl = TLine()
     tl.Title = title
-    tl.UseLateX = False
-    if xdata is not None: tl.xData = xdata
-    if ydata is not None: tl.yData = ydata
-    if err is not None: tl.yDataUp   = err
-    if err is not None: tl.yDataDown = err
+    tl.ErrorBars = True
+    if xdata is not None: tl.xData = [xdata[i] / 1000 for i in range(10,len(xdata)) if i % restrict == 0]
+    if ydata is not None: tl.yData = [ydata[i] for i in range(10,len(xdata)) if i % restrict == 0]
+    if err is not None: tl.yDataUp   = [err[i] for i in range(10,len(xdata)) if i % restrict == 0]
+    if err is not None: tl.yDataDown = [err[i] for i in range(10,len(xdata)) if i % restrict == 0]
     if col is not None: tl.Color = col
     if linst is not None: tl.LineStyle = linst
-    if xdata is None: tl.xTitle = "Length of Tensor (Arb.)"
-    if xdata is None: tl.yTitle = "Ratio (See Legend) - Higher is Better"
-    tl.xMin = 0
-    tl.yMin = 0
-    tl.Style = "ATLAS"
-    tl.ErrorBars = True
+    if xdata is None: tl.xTitle = "Length of Tensor - (Units of 1000)"
+    if xdata is None: tl.yTitle = "Ratio (CPU) / <X> (CUDA) (see Legend for <X>) - Higher is Better"
     return [tl] if xdata is not None else tl
 
-def MakeLines(data):
+def MakeLines(data, dev, col = "red"):
     lins = []
-    lins += Line("Tensor (CPU)/Tensor (CUDA)"   , data["dx"], data["cpu/cuda(t)"], data["sig(cpu/cuda(t))"], "red", "--")
-    lins += Line("Tensor (CPU)/Kernel (CUDA)"   , data["dx"], data["cpu/cuda(k)"], data["sig(cpu/cuda(k))"], "blue", "-.")
-    lins += Line("Tensor (CUDA) / Kernel (CUDA)", data["dx"], data["cuda(t)/cuda(k)"], data["sig(cuda(t)/cuda(k))"], "green", ":")
+    lins += Line("Tensor - (" + dev + ")" , data["dx"], data["cpu/cuda(t)"], data["sig(cpu/cuda(t))"], col, ":", 10)
+    lins += Line("Kernel - (" + dev + ")" , data["dx"], data["cpu/cuda(k)"], data["sig(cpu/cuda(k))"], col, "-", 10)
+#    lins += Line("Tensor (CUDA) / Kernel (CUDA)", data["dx"], data["cuda(t)/cuda(k)"], data["sig(cuda(t)/cuda(k))"], "green", ":")
     return lins
 
 def repeat(fx, data, iters, dx):

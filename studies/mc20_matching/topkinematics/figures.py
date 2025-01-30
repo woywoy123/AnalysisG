@@ -4,47 +4,53 @@ global figure_path
 global mass_point
 
 def path(hist):
+    hist.Style = "ATLAS"
     hist.OutputDirectory = figure_path + "/top-kinematics/" + mass_point
+    hist.Overflow = False
     return hist
 
-def top_pt(ana):
+def top_pt(ana, mp):
 
     thr = TH1F()
     thr.Title = "Resonance"
+    thr.Color = "red"
     thr.xData = ana.res_top_kinematics["pt"]
 
     ths = TH1F()
     ths.Title = "Spectator"
+    ths.Color = "blue"
     ths.xData = ana.spec_top_kinematics["pt"]
 
     tha = path(TH1F())
     tha.Histograms = [thr, ths]
-    tha.Title = "Transverse Momenta of Truth Tops (Resonance at " + mass_point.split(".")[1] +" GeV)"
-    tha.xTitle = "Transverse Momenta (GeV)"
-    tha.yTitle = "Entries / $15$ GeV"
-    tha.xMin = 0
+    tha.Title = "$p_T$ of Tops from Top-Philic Mass Injection at " + mp
+    tha.xTitle = "$p_T$ (GeV)"
+    tha.yTitle = "Density (Arb.) / ($10$ GeV)"
     tha.Density = True
-    tha.xMax = 1500
+    tha.xMin = 0
+    tha.xMax = 1000
     tha.xBins = 100
-    tha.xStep = 150
+    tha.xStep = 100
     tha.Filename = "Figure.1.a"
     tha.SaveFigure()
 
-def top_energy(ana):
+def top_energy(ana, mp):
 
     thr = TH1F()
     thr.Title = "Resonance"
+    thr.Color = "red"
     thr.xData = ana.res_top_kinematics["energy"]
 
     ths = TH1F()
     ths.Title = "Spectator"
+    ths.Color = "blue"
     ths.xData = ana.spec_top_kinematics["energy"]
 
     tha = path(TH1F())
     tha.Histograms = [thr, ths]
-    tha.Title = "Energy of Truth Tops (Resonance at " + mass_point.split(".")[1] +" GeV)"
+    tha.Title = "Energy of Tops from Top-Philic Mass Injection at " + mp
     tha.xTitle = "Energy (GeV)"
-    tha.yTitle = "Entries / $15$ GeV"
+    tha.yTitle = "Density (Arb.) / ($15$ GeV)"
     tha.Density = True
     tha.xMin = 0
     tha.xMax = 1500
@@ -65,11 +71,11 @@ def top_phi(ana):
 
     tha = path(TH1F())
     tha.Histograms = [thr, ths]
-    tha.Title = "Azimuthal Angle of Truth Tops (Resonance at " + mass_point.split(".")[1] +" GeV)"
+    tha.Title = "Azimuthal Angle of Truth Tops"
     tha.xTitle = "Azimuthal Angle ($\\phi$)"
-    tha.yTitle = "Entries / 0.1"
-    tha.xMin = -3.5
+    tha.yTitle = "Density (Arb.) / (0.1)"
     tha.Density = True
+    tha.xMin = -3.5
     tha.xMax = 3.5
     tha.xBins = 70
     tha.xStep = 0.5
@@ -88,9 +94,9 @@ def top_eta(ana):
 
     tha = path(TH1F())
     tha.Histograms = [thr, ths]
-    tha.Title = "Pseudorapidity of Truth Tops (Resonance at " + mass_point.split(".")[1] +" GeV)"
+    tha.Title = "Pseudorapidity of Truth Tops"
     tha.xTitle = "Pseudorapidity ($\\eta$)"
-    tha.yTitle = "Entries / 0.1"
+    tha.yTitle = "Density (Arb.) / 0.1"
     tha.Density = True
     tha.xMin = -6
     tha.xMax = 6
@@ -103,63 +109,65 @@ def top_pt_energy(ana):
 
     th = path(TH2F())
     th.Filename = "Figure.1.e"
-    th.Title = "Energy as a Function of Transverse Momenta for Resonant Truth-Tops \n (Resonance at " + mass_point.split(".")[1] +" GeV)"
+    th.Title = "Energy as a Function of $p_T$ for Resonant Truth-Tops"
 
     th.xData = ana.res_top_kinematics["pt"]
     th.xMin = 0
-    th.xMax = 1000
-    th.xBins = 200
-    th.xStep = 200
-    th.xTitle = "Transverse Momenta of Resonant Truth Top / 5 GeV"
+    th.xMax = 800
+    th.xBins = 160
+    th.xStep = 100
+    th.xTitle = "$p_T$ of Resonant Truth Top / 5 GeV"
 
     th.yData = ana.res_top_kinematics["energy"]
     th.yMin = 0
-    th.yMax = 1000
-    th.yBins = 200
-    th.yStep = 200
+    th.yMax = 800
+    th.yBins = 160
+    th.yStep = 100
+    th.Color = "tab20c"
     th.yTitle = "Energy of Resonant Truth Top / 5 GeV"
     th.SaveFigure()
 
     th = path(TH2F())
     th.Filename = "Figure.1.f"
-    th.Title = "Energy as a Function of Transverse Momenta for Spectator Truth-Tops \n (Resonance at " + mass_point.split(".")[1] +" GeV)"
+    th.Title = "Energy as a Function of $p_T$ for Spectator Truth-Tops"
     th.xData = ana.spec_top_kinematics["pt"]
     th.xMin = 0
-    th.xMax = 1000
-    th.xBins = 200
-    th.xStep = 200
-    th.xTitle = "Transverse Momenta of Spectator Truth Top / 5 GeV"
+    th.xMax = 800
+    th.xBins = 160
+    th.xStep = 100
+    th.xTitle = "$p_T$ of Spectator Truth Top / 5 GeV"
 
     th.yData = ana.spec_top_kinematics["energy"]
     th.yMin = 0
-    th.yMax = 1000
-    th.yBins = 200
-    th.yStep = 200
+    th.yMax = 800
+    th.yBins = 160
+    th.yStep = 100
+    th.Color = "tab20c"
     th.yTitle = "Energy of Spectator Truth Top / 5 GeV"
     th.SaveFigure()
 
 def top_delta_r(ana):
 
     thr = TH1F()
-    thr.Title = "Resonance"
+    thr.Title = "Resonance Pairs"
     thr.xData = ana.deltaR["RR"]
 
     ths = TH1F()
-    ths.Title = "Spectator"
+    ths.Title = "Spectator Pairs"
     ths.xData = ana.deltaR["SS"]
 
     thx = TH1F()
-    thx.Title = "Mixture"
+    thx.Title = "Mixture (Resonance - Spectator)"
     thx.xData = ana.deltaR["RS"]
 
     tha = path(TH1F())
     tha.Histograms = [thx, thr, ths]
-    tha.Title = "$\\Delta$ R of Truth-Top Pairs (All permutations) \n (Resonance at " + mass_point.split(".")[1] +" GeV)"
-    tha.xTitle = "$\\Delta$ R between All Possible Truth-Top Pair Permutations"
-    tha.yTitle = "Entries / 0.05"
+    tha.Title = "$\\Delta R$ of Truth-Top Pairs (All Possible Permutations)"
+    tha.xTitle = "$\\Delta R$ Between Possible Pair Permutations"
+    tha.yTitle = "Density (Arb.) / 0.05"
+    tha.Density = True
     tha.xMin = 0
     tha.xMax = 6
-    tha.Density = True
     tha.xBins = 120
     tha.xStep = 0.5
     tha.Filename = "Figure.1.g"
@@ -167,57 +175,58 @@ def top_delta_r(ana):
 
 def top_pair_mass(ana):
     thr = TH1F()
-    thr.Title = "Resonance"
+    thr.Title = "Resonance Pairs"
     thr.xData = ana.mass_combi["RR"]
 
     ths = TH1F()
-    ths.Title = "Spectator"
+    ths.Title = "Spectator Pairs"
     ths.xData = ana.mass_combi["SS"]
 
     thx = TH1F()
-    thx.Title = "Mixture"
+    thx.Title = "Mixture (Resonance - Spectator)"
     thx.xData = ana.mass_combi["RS"]
 
     tha = path(TH1F())
     tha.Histograms = [thx, thr, ths]
-    tha.Title = "Invariant Mass of Truth-Top Pairs (All permutations) \n (Resonance at " + mass_point.split(".")[1] +" GeV)"
-    tha.xTitle = "Invariant Mass of Permutating All Possible Truth-Top Pairs (GeV)"
+    tha.Title = "Invariant Mass of Truth-Top Pairs (All Possible Permutations)"
+    tha.xTitle = "Invariant Mass of Possible Pair Permutations (GeV)"
     tha.yTitle = "Entries / 5 GeV"
     tha.Density = True
-    tha.xMin = 0
-    tha.xMax = 2000
-    tha.xBins = 400
-    tha.xStep = 200
+    tha.xMin = 200
+    tha.xMax = 1400
+    tha.xBins = 240
+    tha.xStep = 100
     tha.Filename = "Figure.1.h"
     tha.SaveFigure()
 
     th = path(TH2F())
-    th.Title = "Invariant Mass as a Function of $\\Delta$R for All Truth-Top Pair Permutations \n (Resonance at " + mass_point.split(".")[1] +" GeV)"
+    th.Title = "Invariant Mass as a Function of $\\Delta R$ for Possible Top Pair Permutations"
     th.Filename = "Figure.1.i"
 
     th.xData = sum(ana.deltaR.values(), [])
     th.xMin = 0
     th.xMax = 4
-    th.xBins = 400
-    th.xStep = 0.5
-    th.xTitle = "$\\Delta$R Between Truth-Top Pair Permutation / 0.01"
+    th.xBins = 100
+    th.xStep = 0.25
+    th.xTitle = "$\\Delta R$ Between Pair Permutations / 0.04"
 
     th.yData = sum(ana.mass_combi.values(), [])
-    th.yMin = 0
+    th.yMin = 200
     th.yMax = 1200
-    th.yBins = 400
-    th.yStep = 200
-    th.yTitle = "Invariant Mass of Truth-Top Pair Permutation / 3 GeV"
+    th.yBins = 100
+    th.yStep = 100
+
+    th.Color = "tab20c"
+    th.yTitle = "Invariant Mass of Truth-Top Pair Permutation / 10 GeV"
     th.SaveFigure()
 
-def TopKinematics(ana):
-    pass
-#    top_pt(ana)
-#    top_energy(ana)
-#    top_phi(ana)
-#    top_eta(ana)
-#    top_pt_energy(ana)
-#    top_delta_r(ana)
-#    top_pair_mass(ana)
+def TopKinematics(ana, mp):
+    top_pt(ana, mp)
+    top_energy(ana, mp)
+    top_phi(ana)
+    top_eta(ana)
+    top_pt_energy(ana)
+    top_delta_r(ana)
+    top_pair_mass(ana)
 
 

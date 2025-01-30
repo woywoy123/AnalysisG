@@ -28,6 +28,7 @@ class parton: public selection_template
                 particle_template* sm = nullptr; 
                 this -> sum(&tjp, &sm); 
 
+                bool keep_light = false; 
                 typename std::map<std::string, std::vector<gx*>> parton_to_top; 
                 for (size_t tx(0); tx < tjp.size(); ++tx){
                     std::vector<top*> tti; 
@@ -41,13 +42,15 @@ class parton: public selection_template
                     std::string ket = tti[0] -> hash; 
                     parton_to_top[ket].push_back(tjp[tx]); 
                     parton_to_top[ket] = this -> make_unique(&parton_to_top[ket]); 
+                    if (ket != std::string(ti -> hash)){continue;}
+                    keep_light += std::abs(tjp[tx] -> pdgid) != 21; 
                 }
                 if (!parton_to_top[ti -> hash].size()){continue;}
                 particle_template* tsm = nullptr; 
                 this -> sum(&parton_to_top[ti -> hash], &tsm); 
                 float r = tsm -> e / jts[tn] -> e;
                 if (fracx){(*fracx)[this -> to_string(jts[tn] -> Tops.size()) + "::tops"].push_back(r);}
-                if (r < cut){continue;}
+                if (r < cut && !keep_light){continue;}
                 passed.push_back(jts[tn]); 
             } 
             return this -> sum(&passed); 

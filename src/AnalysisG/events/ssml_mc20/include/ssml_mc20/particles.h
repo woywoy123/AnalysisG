@@ -11,12 +11,13 @@ void pmu(std::vector<g*>* out, element_t* el){
     el -> get("phi"   , &phi); 
     el -> get("energy", &en); 
 
-    for (size_t x(0); x < pt.size(); ++x){
+    for (int x(0); x < pt.size(); ++x){
         g* prt     = new g(); 
         prt -> pt  = pt[x]; 
         prt -> eta = eta[x]; 
         prt -> phi = phi[x]; 
         prt -> e   = en[x]; 
+        prt -> index = x; 
         out -> push_back(prt); 
     }
 }; 
@@ -41,11 +42,11 @@ void pmu_mass(std::vector<g*>* out, element_t* el){
 }; 
 
 
-class zprime: public particle_template
+class zboson: public particle_template
 {
     public:
-        zprime(); 
-        virtual ~zprime(); 
+        zboson(); 
+        virtual ~zboson(); 
 
         particle_template* clone() override; 
         void build(std::map<std::string, particle_template*>* prt, element_t* el) override; 
@@ -58,48 +59,14 @@ class top: public particle_template
         virtual ~top(); 
 
         bool from_res = false; 
-        bool is_hadronic = false; 
 
-        std::vector<particle_template*> Children = {}; 
-        std::vector<particle_template*> Jets = {}; 
-        std::vector<particle_template*> Leptons = {}; 
-        std::vector<particle_template*> Neutrinos = {}; 
+        std::vector<particle_template*> jets = {}; 
+        std::vector<particle_template*> leptons = {}; 
+        std::vector<particle_template*> truthjets = {}; 
 
         particle_template* clone() override; 
         void build(std::map<std::string, particle_template*>* prt, element_t* el) override; 
 };
-
-class parton_w2: public particle_template
-{
-    public:
-        parton_w2(); 
-        virtual ~parton_w2(); 
-
-        particle_template* clone() override; 
-        void build(std::map<std::string, particle_template*>* prt, element_t* el) override; 
-}; 
-
-
-class parton_w1: public particle_template
-{
-    public:
-        parton_w1(); 
-        virtual ~parton_w1(); 
-
-        particle_template* clone() override; 
-        void build(std::map<std::string, particle_template*>* prt, element_t* el) override; 
-}; 
-
-
-class parton_b: public particle_template
-{
-    public:
-        parton_b(); 
-        virtual ~parton_b(); 
-
-        particle_template* clone() override; 
-        void build(std::map<std::string, particle_template*>* prt, element_t* el) override; 
-}; 
 
 class truthjet: public particle_template
 {
@@ -107,6 +74,7 @@ class truthjet: public particle_template
         truthjet(); 
         virtual ~truthjet(); 
 
+        int top_index = -1; 
         particle_template* clone() override; 
         void build(std::map<std::string, particle_template*>* prt, element_t* el) override; 
 }; 
@@ -118,13 +86,11 @@ class jet: public particle_template
         virtual ~jet(); 
 
         cproperty<bool, jet> from_res; 
+
         int top_index = -1; 
-        bool btag_65 = false; 
-        bool btag_70 = false; 
         bool btag_77 = false; 
         bool btag_85 = false; 
         bool btag_90 = false; 
-        int flav = -1; 
 
         particle_template* clone() override; 
         void build(std::map<std::string, particle_template*>* prt, element_t* el) override; 
@@ -166,6 +132,24 @@ class muon: public particle_template
         static void get_from_res(bool* val, muon* el);
 }; 
 
+class parton: public particle_template
+{
+    public:
+        parton(); 
+        virtual ~parton(); 
+        int top_index      = -1; 
+        int jet_index      = -1; 
+        int truthjet_index = -1; 
+
+        int muon_index     = -1; 
+        int electron_index = -1; 
+
+        std::map<std::string, jet*> jets; 
+        std::map<std::string, truthjet*> truthjets; 
+
+        particle_template* clone() override; 
+        void build(std::map<std::string, particle_template*>* prt, element_t* el) override; 
+}; 
 
 
 #endif

@@ -28,15 +28,13 @@ void static res_edge(int* o, std::tuple<particle_template*, particle_template*>*
     *o = 1; 
 
     if (type1 == "parton"){m_res_edge(o, p1);}
-    if (type2 == "parton"){m_res_edge(o, p2);}
-
     if (type1 == "jet"){m_res_edge(o, (jet*)p1);}
-    if (type2 == "jet"){m_res_edge(o, (jet*)p2);}
-
     if (type1 == "el"){m_res_edge(o, (electron*)p1);}
-    if (type2 == "el"){m_res_edge(o, (electron*)p2);}
-
     if (type1 == "mu"){m_res_edge(o, (muon*)p1);}
+
+    if (type2 == "parton"){m_res_edge(o, p2);}
+    if (type2 == "jet"){m_res_edge(o, (jet*)p2);}
+    if (type2 == "el"){m_res_edge(o, (electron*)p2);}
     if (type2 == "mu"){m_res_edge(o, (muon*)p2);}
 }
 
@@ -66,8 +64,7 @@ void static top_edge(int* o, std::tuple<particle_template*, particle_template*>*
     *o = 0;  
     for (size_t x(0); x < o1_.size(); ++x){
         for (size_t y(0); y < o2_.size(); ++y){
-            if (o1_[x] < 0){continue;}
-            if (o2_[x] < 0){continue;}
+            if (o1_[x] < 0 || o2_[x] < 0){continue;}
             if (o1_[x] != o2_[y]){continue;}
             *o = 1; return; 
         }
