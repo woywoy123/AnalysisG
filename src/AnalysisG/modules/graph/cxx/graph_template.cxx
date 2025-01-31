@@ -194,3 +194,5 @@ graph_template* graph_template::build(event_template* ev){
 }
 
 void graph_template::CompileEvent(){}
+bool graph_template::PreSelection(){return true;}
+

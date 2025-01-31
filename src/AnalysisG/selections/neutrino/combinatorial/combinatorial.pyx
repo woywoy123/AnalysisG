@@ -4,10 +4,10 @@
 from AnalysisG.core.selection_template cimport *
 from AnalysisG.core.tools cimport *
 
-cdef class Neutrino(SelectionTemplate):
+cdef class Combinatorial(SelectionTemplate):
     def __cinit__(self):
-        self.ptr = new neutrino()
-        self.tt = <neutrino*>self.ptr
+        self.ptr = new combinatorial()
+        self.tt = <combinatorial*>self.ptr
 
     def __dealloc__(self): del self.tt
 

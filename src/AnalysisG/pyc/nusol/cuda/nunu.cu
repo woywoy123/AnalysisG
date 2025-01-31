@@ -192,8 +192,10 @@ std::map<std::string, torch::Tensor> nusol_::NuNu(
 
 std::vector<torch::Tensor> residuals(
         torch::Tensor* H_perp, torch::Tensor* H_perp_, torch::Tensor* met_xy, 
-        torch::Tensor resid, double limit = 1e-5, int max_iter = 10000
+        torch::Tensor resid, double limit = 1e-5, int max_iter = 100
 ){
+    //torch::NoGradGuard no_guard;
+
     //pybind11::gil_scoped_release no_gil; 
     torch::Tensor _H_perp  = H_perp  -> index({resid}); 
     torch::Tensor _H_perp_ = H_perp_ -> index({resid}); 

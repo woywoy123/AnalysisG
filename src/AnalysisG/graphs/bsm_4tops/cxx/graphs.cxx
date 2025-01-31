@@ -179,6 +179,15 @@ graph_jets::graph_jets(){this -> name = "graph_jets";}
 graph_jets::~graph_jets(){}
 graph_template* graph_jets::clone(){return (graph_template*)new graph_jets();}
 
+bool graph_jets::PreSelection(){
+    bsm_4tops* evn = this -> get_event<bsm_4tops>();
+    std::vector<particle_template*> leptons; 
+    for (size_t x(0); x < evn -> Electrons.size(); ++x){leptons.push_back(evn -> Electrons[x]);} 
+    for (size_t x(0); x < evn -> Muons.size(); ++x){leptons.push_back(evn -> Muons[x]);} 
+    if (leptons.size() != 2){return false;}
+    return leptons[0] -> charge == leptons[1] -> charge; 
+}
+
 void graph_jets::CompileEvent(){
     bsm_4tops* event = this -> get_event<bsm_4tops>(); 
     

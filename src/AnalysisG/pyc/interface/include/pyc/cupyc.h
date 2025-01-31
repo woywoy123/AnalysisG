@@ -123,6 +123,11 @@ namespace pyc {
                torch::Tensor pmc_l1, torch::Tensor pmc_l2, 
                torch::Tensor met_xy, torch::Tensor masses, double null = 10e-10); 
 
+       torch::Dict<std::string, torch::Tensor> NuNu(
+               torch::Tensor pmc_b1, torch::Tensor pmc_b2, 
+               torch::Tensor pmc_l1, torch::Tensor pmc_l2, torch::Tensor met_xy, 
+               torch::Tensor mass1 , torch::Tensor mass2, double null = 10e-10); 
+
        torch::Dict<std::string, torch::Tensor> combinatorial(
                torch::Tensor edge_index, torch::Tensor batch , torch::Tensor pmc, 
                torch::Tensor pid       , torch::Tensor met_xy, 

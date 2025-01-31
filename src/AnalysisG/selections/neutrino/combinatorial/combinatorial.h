@@ -1,5 +1,5 @@
-#ifndef neutrino_H
-#define neutrino_H
+#ifndef NEUTRINO_COMBINATORIAL_H
+#define NEUTRINO_COMBINATORIAL_H
 
 #include <bsm_4tops/event.h>
 #include <templates/selection_template.h>
@@ -16,11 +16,11 @@ class nu: public particle_template
 }; 
 
 
-class neutrino: public selection_template
+class combinatorial: public selection_template
 {
     public:
-        neutrino();
-        virtual ~neutrino(); 
+        combinatorial();
+        virtual ~combinatorial(); 
         selection_template* clone(); 
 
         bool selection(event_template* ev) override; 

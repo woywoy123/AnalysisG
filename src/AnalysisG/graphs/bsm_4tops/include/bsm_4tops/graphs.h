@@ -35,8 +35,8 @@ class graph_truthjets_nonu: public graph_template
 {
     public:
         graph_truthjets_nonu(); 
-        virtual ~graph_truthjets_nonu(); 
         graph_template* clone() override; 
+        virtual ~graph_truthjets_nonu(); 
         void CompileEvent() override; 
 }; 
 
@@ -47,6 +47,7 @@ class graph_jets: public graph_template
         virtual ~graph_jets(); 
         graph_template* clone() override; 
         void CompileEvent() override; 
+        bool PreSelection() override; 
 }; 
 
 

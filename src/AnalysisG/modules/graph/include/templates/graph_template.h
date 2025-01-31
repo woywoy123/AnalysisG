@@ -275,6 +275,7 @@ class graph_template: public tools
         virtual ~graph_template(); 
         virtual graph_template* clone(); 
         virtual void CompileEvent(); 
+        virtual bool PreSelection();
 
         bool operator == (graph_template& p); 
 

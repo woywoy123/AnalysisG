@@ -1,17 +1,17 @@
 #include <tools/tensor_cast.h>
 #include <tools/vector_cast.h>
 #include <pyc/cupyc.h>
-#include "neutrino.h"
+#include "combinatorial.h"
 
-neutrino::neutrino(){this -> name = "neutrino";}
-neutrino::~neutrino(){}
+combinatorial::combinatorial(){this -> name = "combinatorial";}
+combinatorial::~combinatorial(){}
 
-selection_template* neutrino::clone(){
-    return (selection_template*)new neutrino();
+selection_template* combinatorial::clone(){
+    return (selection_template*)new combinatorial();
 }
 
-void neutrino::merge(selection_template* sl){
-    neutrino* slt = (neutrino*)sl; 
+void combinatorial::merge(selection_template* sl){
+    combinatorial* slt = (combinatorial*)sl; 
 
     merge_data(&this -> delta_met  , &slt -> delta_met);  
     merge_data(&this -> delta_metnu, &slt -> delta_metnu);  
@@ -27,7 +27,7 @@ void neutrino::merge(selection_template* sl){
     merge_data(&this -> exp_wmass  , &slt -> exp_wmass);  
 }
 
-bool neutrino::selection(event_template* ev){
+bool combinatorial::selection(event_template* ev){
     bsm_4tops* evn = (bsm_4tops*)ev;
     if (evn -> hash != "0xd0edab7810edc54f"){return false;}
     std::vector<top*> tops = this -> upcast<top>(&evn -> Tops); 
@@ -46,7 +46,7 @@ bool neutrino::selection(event_template* ev){
     return num_leps == 2; // || num_leps == 1;
 }
 
-std::vector<nu> neutrino::build_nus(
+std::vector<nu> combinatorial::build_nus(
                 std::vector<long>* isb_, std::vector<long>* isl_,
                 std::vector<double>* pt_, std::vector<double>* eta_, 
                 std::vector<double>* phi_, std::vector<double>* energy_,
@@ -150,7 +150,7 @@ std::vector<nu> neutrino::build_nus(
     return out;
 }
 
-bool neutrino::strategy(event_template* ev){
+bool combinatorial::strategy(event_template* ev){
     bsm_4tops* evn = (bsm_4tops*)ev; 
     std::string hash = evn -> hash; 
 

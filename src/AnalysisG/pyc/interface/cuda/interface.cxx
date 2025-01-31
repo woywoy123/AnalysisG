@@ -456,6 +456,16 @@ torch::Dict<std::string, torch::Tensor> pyc::nusol::NuNu(
     return pyc::std_to_dict(&out); 
 }
 
+torch::Dict<std::string, torch::Tensor> pyc::nusol::NuNu(
+        torch::Tensor pmc_b1, torch::Tensor pmc_b2, torch::Tensor pmc_l1, torch::Tensor pmc_l2, 
+        torch::Tensor met_xy, torch::Tensor mass1, torch::Tensor mass2, double null
+){
+    changedev(&pmc_b1); 
+    std::map<std::string, torch::Tensor> out = nusol_::NuNu(&pmc_b1, &pmc_b2, &pmc_l1, &pmc_l2, &met_xy, null, &mass1, &mass2);
+    return pyc::std_to_dict(&out); 
+}
+
+
 torch::Dict<std::string, torch::Tensor> pyc::nusol::combinatorial(
         torch::Tensor edge_index, torch::Tensor batch, torch::Tensor pmc, torch::Tensor pid, torch::Tensor met_xy, 
         double mT, double mW, double top_pm, double w_pm, long steps, double null, bool gev

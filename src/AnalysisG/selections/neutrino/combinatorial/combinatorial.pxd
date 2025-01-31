@@ -6,9 +6,9 @@ from libcpp.vector cimport vector
 from libcpp.string cimport string
 from AnalysisG.core.selection_template cimport *
 
-cdef extern from "neutrino.h":
-    cdef cppclass neutrino(selection_template):
-        neutrino() except +
+cdef extern from "combinatorial.h":
+    cdef cppclass combinatorial(selection_template):
+        combinatorial() except +
         map[string, double] delta_met
         map[string, double] delta_metnu
         map[string, double] obs_met
@@ -22,8 +22,8 @@ cdef extern from "neutrino.h":
         map[string, vector[double]] exp_topmass
         map[string, vector[double]] exp_wmass
 
-cdef class Neutrino(SelectionTemplate):
-    cdef neutrino* tt
+cdef class Combinatorial(SelectionTemplate):
+    cdef combinatorial* tt
 
     cdef public dict delta_met
     cdef public dict delta_metnu

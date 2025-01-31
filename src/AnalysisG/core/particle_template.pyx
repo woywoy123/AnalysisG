@@ -18,10 +18,25 @@ cdef class ParticleTemplate:
         if type(self) is not ParticleTemplate: return
         self.ptr = new particle_template()
 
-    def __init__(self): pass
+    def __init__(self, inpt = None):
+        if inpt is None: return
+        cdef list keys = [i for i in self.__dir__() if not i.startswith("__")]
+        for i in keys:
+            try: setattr(self, i, inpt["extra"][i])
+            except KeyError: continue
+            except AttributeError: continue
+        self.ptr.data = <particle_t>(inpt["data"])
+
     def __dealloc__(self):
         if type(self) is not ParticleTemplate: return
         del self.ptr
+
+    def __reduce__(self): 
+        cdef list keys = [i for i in self.__dir__() if not i.startswith("__")]
+        cdef dict out = {}
+        out["extra"] = {i : getattr(self, i) for i in keys if not callable(getattr(self, i))}
+        out["data"]  = self.ptr.data
+        return self.__class__, (out,)
 
     def __hash__(self): return int(string(self.ptr.hash).substr(0, 8), 0)
     def __add__(self, ParticleTemplate other):
