@@ -101,7 +101,7 @@ std::vector<nu*> validation::build_neutrinos(
             pyc::transform::separate::Py(_mett, _phit)
     }, {-1});
 
-    torch::Dict res = pyc::nusol::NuNu(b1t, b2t, l1t, l2t, metxy, m1t, m2t);   
+    torch::Dict res = pyc::nusol::NuNu(b1t, b2t, l1t, l2t, metxy, m1t, m2t, 10e-10);   
     torch::Tensor nu1 = res.at("nu1").view({-1, 3});
     torch::Tensor nu2 = res.at("nu2").view({-1, 3});
     torch::Tensor dst = res.at("distances").view({-1}); 

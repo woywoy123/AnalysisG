@@ -8,7 +8,10 @@ struct folds_t {
     bool is_valid = false; 
     bool is_eval = false; 
     char* hash = nullptr;
-    void flush_data(){delete [] this -> hash;} 
+    void flush_data(){
+        free(this -> hash);
+        this -> hash = nullptr; 
+    } 
 }; 
 
 
@@ -65,25 +68,25 @@ struct graph_hdf5_w {
 
 
     void flush_data(){
-        delete [] this -> hash; 
-        delete [] this -> filename; 
-        delete [] this -> edge_index; 
+        free(this -> hash); 
+        free(this -> filename); 
+        free(this -> edge_index); 
 
-        delete [] this -> data_map_graph; 
-        delete [] this -> data_map_node; 
-        delete [] this -> data_map_edge; 
+        free(this -> data_map_graph); 
+        free(this -> data_map_node); 
+        free(this -> data_map_edge); 
 
-        delete [] this -> truth_map_graph; 
-        delete [] this -> truth_map_node;
-        delete [] this -> truth_map_edge; 
+        free(this -> truth_map_graph); 
+        free(this -> truth_map_node);
+        free(this -> truth_map_edge); 
 
-        delete [] this -> data_graph; 
-        delete [] this -> data_node; 
-        delete [] this -> data_edge; 
+        free(this -> data_graph); 
+        free(this -> data_node); 
+        free(this -> data_edge); 
 
-        delete [] this -> truth_graph; 
-        delete [] this -> truth_node; 
-        delete [] this -> truth_edge; 
+        free(this -> truth_graph); 
+        free(this -> truth_node); 
+        free(this -> truth_edge); 
 
         this -> hash = nullptr; 
         this -> filename = nullptr; 

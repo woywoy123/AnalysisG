@@ -31,7 +31,7 @@ class io:
        
         template <typename g>
         void write(std::vector<g>* inpt, std::string set_name){
-            int length = inpt -> size(); 
+            long long unsigned int length = inpt -> size(); 
 
             hid_t pairs = this -> member(g()); 
             H5::DataSet* dataset = this -> dataset(set_name, pairs, length); 
@@ -44,7 +44,7 @@ class io:
  
         template <typename g>
         void write(g* inpt, std::string set_name){
-            int length = 1; 
+            long long unsigned int length = 1; 
             hid_t pairs = this -> member(g()); 
             H5::DataSet* dataset = this -> dataset(set_name, pairs, length); 
             if (!dataset){return;}
@@ -63,7 +63,7 @@ class io:
             H5::DataSpace space_r = dataset -> getSpace();
             hsize_t dim_r[1];
             space_r.getSimpleExtentDims(dim_r); 
-            int length = dim_r[0];
+            long long unsigned int length = dim_r[0];
             outpt -> assign(length, g()); 
             dataset -> read(outpt -> data(), pairs); 
         } 
@@ -129,7 +129,7 @@ class io:
         std::map<std::string, H5::DataSet*> data_r; 
         H5::H5File* file = nullptr; 
 
-        H5::DataSet* dataset(std::string set_name, hid_t type, int length); 
+        H5::DataSet* dataset(std::string set_name, hid_t type, long long unsigned int length); 
         H5::DataSet* dataset(std::string set_name); 
 
         TFile* file_root = nullptr; 

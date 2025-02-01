@@ -26,7 +26,7 @@ void io::end(){
     this -> data_r.clear();
 }
 
-H5::DataSet* io::dataset(std::string set_name, hid_t type, int length){
+H5::DataSet* io::dataset(std::string set_name, hid_t type, long long unsigned int length){
     if (!this -> file){return nullptr;}
     if (this -> data_w.count(set_name)){return this -> data_w[set_name];}
 
