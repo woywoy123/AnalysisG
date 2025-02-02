@@ -9,8 +9,8 @@ root1 = "./samples/dilepton/*"
 #root1 = "/home/tnom6927/Downloads/sample/*"
 
 x = BSM4Tops()
-tt = GraphChildren()
-#tt = GraphTruthJets()
+#tt = GraphChildren()
+tt = GraphTruthJets()
 #tt = GraphJets()
 #tt = GraphDetector()
 
@@ -29,7 +29,7 @@ op.Optimizer = "adam"
 op.lr = 1e-3
 
 ana = Analysis()
-ana.FetchMeta = True
+#ana.FetchMeta = True
 ana.TrainingDataset = "./ProjectName/dataset"
 ana.AddSamples(root1, "tmp")
 ana.AddEvent(x, "tmp")
@@ -40,11 +40,12 @@ ana.kFold = [1]
 ana.Targets = ["top_edge"]
 ana.ContinueTraining = False
 ana.GraphCache = "./ProjectName/GraphCache/"
-ana.Evaluation = False
-ana.Validation = False
+ana.Evaluation = True
+ana.Validation = True
 ana.DebugMode = False
 ana.Epochs = 1000
 ana.MaxRange = 400
-ana.TrainSize = 95
+ana.TrainSize = 80
+ana.Threads = 12
 ana.Start()
 

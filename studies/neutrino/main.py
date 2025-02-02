@@ -11,7 +11,7 @@ import pathlib
 import pickle
 
 i = 0
-run = True
+run = False
 pth = "./data/"
 data_path = "/home/tnom6927/Downloads/mc16/ttH_tttt_m400/*"
 
@@ -30,11 +30,6 @@ if run:
     f = open(pth + str(i) +".pkl", "wb")
     pickle.dump(data, f)
     f.close()
-data = pickle.load(open(pth+str(i) + ".pkl", "rb"))
-for i in data.c1_reconstructed_jetchild_nu:
-    if not len(i): continue
-    print(i[0].distance, i[0].pt)
 
-
-#missing_energy(data)
-#double_neutrino(data, True)
+data = None #pickle.load(open(pth+str(i) + ".pkl", "rb"))
+nunuValidation(data)

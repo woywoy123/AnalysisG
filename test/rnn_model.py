@@ -7,14 +7,17 @@ from AnalysisG.events import SSML_MC20
 from AnalysisG.graphs.bsm_4tops import *
 from AnalysisG.models import *
 
-root1 = "./samples/dilepton/*"
+#root1 = "./samples/dilepton/*"
 #root1 = "/home/tnom6927/Downloads/mc20/user.bdong.503575.MGPy8EG.DAOD_PHYS.e8307_s3797_r13144_p6266.tom_sample_v01_output/user.bdong.41003314._000001.output.root"
+root1 = "/home/tnom6927/Downloads/mc16/ttbar/user.tnommens.40945479._000001.output.root"
+#ttZ = "/home/tnom6927/Downloads/mc16/ttH_tttt_m400/*"
+
 x = BSM4Tops()
 #x = SSML_MC20()
 #tt = GraphChildren()
 #tt = GraphTruthJets()
 #tt = GraphDetector()
-tt = GraphJets()
+tt = GraphTruthJets()
 
 params = [
     ("MRK-1", "adam", {"lr" : 1e-4}),
@@ -53,12 +56,16 @@ for k in params:
     optims.append(opti)
 
 ana.AddSamples(root1, "tmp")
+#ana.AddSamples(ttZ, "ttZ")
 ana.AddEvent(x, "tmp")
 ana.AddGraph(tt, "tmp")
 
+#ana.AddEvent(x, "ttZ")
+#ana.AddGraph(tt, "ttZ")
+
 for i in range(len(optims)): ana.AddModel(trains[i], optims[i], params[0][0] + "-"+str(i))
 
-##ana.kFolds = 10
+ana.kFolds = 10
 ana.Epochs = 100
 ana.TrainingDataset = "./ProjectName/sample.h5"
 ana.Targets = ["top_edge", "res_edge"]
