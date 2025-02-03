@@ -39,7 +39,10 @@ class model_template:
         bool is_mc = false; 
         bool use_pkl = false; 
         bool inference_mode = false; 
+
         std::string model_checkpoint_path = ""; 
+        std::string weight_name = "event_weight";
+        std::string tree_name  = "nominal"; 
 
         // target properties for each graph object: name - loss
         cproperty<

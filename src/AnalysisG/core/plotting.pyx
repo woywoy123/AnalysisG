@@ -265,6 +265,7 @@ cdef class BasePlotting:
         com["legend.fontsize"] = self.ptr.legend_size
         com["figure.titlesize"] = self.ptr.title_size
         com["text.usetex"] = self.ptr.use_latex
+        if self.ptr.use_latex: com["text.latex.preamble"] = r'\usepackage{amsmath}'
         com["hatch.linewidth"] = 0.1
         self.matpl.rcParams.update(com)
         self.__compile__()

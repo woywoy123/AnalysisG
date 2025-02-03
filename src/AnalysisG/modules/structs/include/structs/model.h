@@ -58,6 +58,9 @@ struct model_settings_t {
     opt_enum    e_optim; 
     std::string s_optim; 
 
+    std::string weight_name; 
+    std::string tree_name; 
+
     std::string model_name; 
     std::string model_device; 
     std::string model_checkpoint_path; 

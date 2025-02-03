@@ -6,6 +6,7 @@ from AnalysisG.events import SSML_MC20
 from AnalysisG.core.lossfx import OptimizerConfig
 from AnalysisG.models import Grift
 
+ttbar = "/home/tnom6927/Downloads/mc20/user.rqian.503575.MGPy8EG.DAOD_PHYS.e8307_s3797_r13167_p6490.2024-11-23_output"
 
 ev = SSML_MC20()
 gr = GraphDetector()
@@ -20,20 +21,20 @@ md.o_graph = {
         "signal" : "CrossEntropyLoss"
 }
 
-md.i_node  = ["pt", "eta", "phi", "energy"]
-md.i_graph = ["met", "phi"]
+#md.i_node  = ["pt", "eta", "phi", "energy"]
+#md.i_graph = ["met", "phi"]
 md.device  = "cuda:0"
-md.checkpoint_path = "./ProjectName/Grift/run-name/state/epoch-1/kfold-1_model.pt"
+md.checkpoint_path = "./ProjectName/Grift/MRK-1-0/state/epoch-1/kfold-1_model.pt"
 
-k = ("MRK-1", "adam", {"lr" : 1e-4}),
-opti = OptimizerConfig()
-opti.Optimizer = k[0][1]
-for t in k[0][2]: setattr(opti, t, k[0][2][t])
+#k = ("MRK-1", "adam", {"lr" : 1e-4}),
+#opti = OptimizerConfig()
+#opti.Optimizer = k[0][1]
+#for t in k[0][2]: setattr(opti, t, k[0][2][t])
 
 ana = Analysis()
-ana.kFold = [1]
-ana.kFolds = 10
-ana.TrainingDataset = "./ProjectName/sample.h5"
+#ana.kFold = [1]
+#ana.kFolds = 10
+#ana.TrainingDataset = "./ProjectName/sample.h5"
 
 #ana.AddSamples(bsm  , "bsm")
 #ana.AddSamples(tttt , "tttt")

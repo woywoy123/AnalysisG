@@ -77,3 +77,16 @@ cdef class ModelTemplate:
 
     @checkpoint_path.setter
     def checkpoint_path(self, str pth): self.nn_ptr.model_checkpoint_path = enc(pth)
+
+    @property
+    def weight_name(self): return env(self.nn_ptr.weight_name)
+
+    @weight_name.setter
+    def weight_name(self, str val): self.nn_ptr.weight_name = enc(val)
+
+    @property
+    def tree_name(self): return env(self.nn_ptr.tree_name)
+
+    @tree_name.setter
+    def tree_name(self, str val): self.nn_ptr.tree_name = enc(val)
+

@@ -20,6 +20,8 @@ cdef extern from "<templates/model_template.h>" nogil:
 
         string device
         string name
+        string weight_name
+        string tree_name
         string model_checkpoint_path
 
 cdef class ModelTemplate:

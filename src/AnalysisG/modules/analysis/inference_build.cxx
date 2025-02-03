@@ -71,7 +71,7 @@ void execution(
         TDirectory* dir = gDirectory; 
         for (TObject* key : *dir -> GetListOfKeys()){
             std::string name = std::string(key -> GetName()); 
-            if (name != "nominal"){continue;}
+            if (name != mds.tree_name){continue;}
             TTree* tx = tmp -> Get<TTree>(key -> GetName());
             size_t l = tx -> GetEntries();
             if (l != ds){break;}
@@ -86,7 +86,7 @@ void execution(
  
     TFile* f = TFile::Open(output.c_str(), "RECREATE"); 
     f -> TestBit(TFile::kRecovered);  
-    TTree* t = new TTree("nominal", "data");
+    TTree* t = new TTree(mds.tree_name.c_str(), "data");
 
     torch::AutoGradMode grd(false); 
     for (size_t x(0); x < data -> size(); ++x){
@@ -104,7 +104,7 @@ void execution(
 
         std::map<std::string, torch::Tensor*> addhoc;
         addhoc["edge_index"]   = &ei; 
-        addhoc["event_weight"] = (*data)[x] -> get_event_weight(md); 
+        addhoc[mds.weight_name] = (*data)[x] -> get_event_weight(md); 
 
         if (!x){
             int index = 0; 
@@ -267,7 +267,7 @@ void analysis::build_inference(){
         std::map<std::string, torch::Tensor*> addhoc; 
         torch::Tensor ex = its -> second[0] -> get_edge_index(md) -> transpose(0, 1);
         addhoc["edge_index"]   = &ex;
-        addhoc["event_weight"] = its -> second[0] -> get_event_weight(md); 
+        addhoc[mds.weight_name] = its -> second[0] -> get_event_weight(md); 
         index = add_content(&addhoc, content, index, ""); 
         index = add_content(&md -> m_p_undef, content, index, "extra_"); 
         th_prc[x] = new std::thread(execution, md, mds, batched_data[x], &th_prg[x], fname, content);

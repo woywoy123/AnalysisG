@@ -2,6 +2,14 @@ from .nusol import DoubleNu, Particle, event
 import numpy
 import pickle
 
+def path(hist, sub = None):
+    hist.UseLateX = False
+    hist.Style = "ATLAS"
+    o = "Figures/neutrino-validation/"
+    if sub is not None: o += sub
+    hist.OutputDirectory = o
+    return hist
+
 def chi2(tru, reco):
     dx = (tru.px - reco.px)/1000
     dy = (tru.py - reco.py)/1000
@@ -39,7 +47,7 @@ def record_data(inpt, truth, data, leps, bqrk):
 
 def makeData():
     return {
-        "missed": 0, "dst" : [],
+        "missed": [], "dst" : [],
         "chi2" : {"n1" : [], "n2" : []},
         "px"   : {"n1" : [], "n2" : []},
         "py"   : {"n1" : [], "n2" : []},
@@ -58,6 +66,32 @@ def makeTruth():
     }
 
 def reload(fname): return pickle.load(open("./data/" + fname +".pkl", "rb"))
+
+def get_population(data, truth, nu_n):
+    idx = 0
+    tmass, wmass = [], []
+    for i in range(len(truth["tmass"][nu_n])):
+        if not data["missed"][i]: continue
+        tmass_r, tmass_t = data["tmass"][nu_n][idx], truth["tmass"][nu_n][i]
+        tmass.append(abs((tmass_r - tmass_t)/tmass_t))
+
+        wmass_r, wmass_t = data["wmass"][nu_n][idx], truth["wmass"][nu_n][i]
+        wmass.append(abs((wmass_r - wmass_t)/wmass_t))
+        idx+=1
+    return tmass, wmass
+
+def get_efficiency(tn1, tn2, wn1, wn2, threshold):
+    loss = 0
+    ok_index = []
+    for i in range(len(tn1)):
+        ok = True
+        ok *= tn1[i] < threshold
+        ok *= wn1[i] < threshold
+        ok *= wn2[i] < threshold
+        ok *= tn2[i] < threshold
+        if not ok: loss += 1
+        ok_index.append(ok)
+    return loss, ok_index
 
 def compile_neutrinos(ana = None, truth_top = None, truth_lep = None, truth_b = None, truth_w = None, reco_c1 = None, reco_c2 = None, fname = None):
     if ana is None: return reload(fname)
@@ -100,8 +134,8 @@ def compile_neutrinos(ana = None, truth_top = None, truth_lep = None, truth_b = 
         l1, l2 = MakeParticle(tru_lep)
         ev = event(met[i], phi[i])
 
-        r1_cu["missed"] += record_data(r1_nunu, tru_nunu, r1_cu, tru_lep, tru_b)
-        r2_cu["missed"] += record_data(r2_nunu, tru_nunu, r2_cu, tru_lep, tru_b)
+        r1_cu["missed"] += [record_data(r1_nunu, tru_nunu, r1_cu, tru_lep, tru_b)]
+        r2_cu["missed"] += [record_data(r2_nunu, tru_nunu, r2_cu, tru_lep, tru_b)]
 
         try: nunu = DoubleNu((b1, b2), (l1, l2), ev, tru_w[0].Mass, tru_top[0].Mass, tru_w[1].Mass, tru_top[1].Mass)
         except numpy.linalg.LinAlgError: nunu = None
@@ -109,7 +143,7 @@ def compile_neutrinos(ana = None, truth_top = None, truth_lep = None, truth_b = 
 
         if nunu is not None: nunu = nunu.nunu_s
         else: nunu = []
-        r1_rf["missed"] += record_data(nunu, tru_nunu, r1_rf, tru_lep, tru_b)
+        r1_rf["missed"] += [record_data(nunu, tru_nunu, r1_rf, tru_lep, tru_b)]
 
         try: nunu = DoubleNu((b1, b2), (l1, l2), ev, mw, mt, mw, mt)
         except numpy.linalg.LinAlgError: nunu = None
@@ -117,7 +151,7 @@ def compile_neutrinos(ana = None, truth_top = None, truth_lep = None, truth_b = 
 
         if nunu is not None: nunu = nunu.nunu_s
         else: nunu = []
-        r2_rf["missed"] += record_data(nunu, tru_nunu, r2_rf, tru_lep, tru_b)
+        r2_rf["missed"] += [record_data(nunu, tru_nunu, r2_rf, tru_lep, tru_b)]
 
         record_data(tru_nunu, None, truth_nux, tru_lep, tru_b)
 

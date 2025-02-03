@@ -18,6 +18,9 @@ void model_template::clone_settings(model_settings_t* setd){
     setd -> i_edge  = this -> i_edge;
     setd -> is_mc   = this -> is_mc; 
 
+    setd -> weight_name = this -> weight_name; 
+    setd -> tree_name   = this -> tree_name; 
+
     setd -> inference_mode = this -> inference_mode; 
 }
 
@@ -37,6 +40,9 @@ void model_template::import_settings(model_settings_t* setd){
     this -> i_node  = setd -> i_node;         
     this -> i_edge  = setd -> i_edge;
     this -> is_mc   = setd -> is_mc; 
+
+    this -> weight_name = setd -> weight_name; 
+    this -> tree_name   = setd -> tree_name; 
 
     this -> inference_mode = setd -> inference_mode; 
 }
