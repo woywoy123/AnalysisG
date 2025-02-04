@@ -23,8 +23,8 @@ def benchmark(gen, fx, dx, lf, title, iters = 1000, gen_data_only = False, plot_
     df = {}
     name = gen.__name__
     data, data_ = None, None
-    m_ = 0
-    dex = ["v100", "a100"]
+#    m_ = 0
+    dex = ["v100", "a100"] #, "h100"]
     for k in dex:
         df[k] = {}
         dev_name = "./" + k
@@ -47,13 +47,14 @@ def benchmark(gen, fx, dx, lf, title, iters = 1000, gen_data_only = False, plot_
                 try: df[k] = merge(df[k], repeat(fx, data, iters, lx))
                 except: break
             if ld is None: serialize(df, fx.__name__, lx, dev_name)
-        #my = max(df[k]["cpu/cuda(t)"] +  df[k]["cpu/cuda(k)"])
-        #if my > m_: m_ = my
+#        my = max(df[k]["cuda(t)/cuda(k)"] +  df[k]["cuda(t)/cuda(k)"])
+#        if my > m_: m_ = my
 
     if dx == lx: return
     if gen_data_only: return
     cols = iter(["red", "blue", "green"])
-    ln = sum([MakeLines(df[k], k, next(cols)) for k in dex], [])
+    try: ln = sum([MakeLines(df[k], k, next(cols)) for k in dex], [])
+    except: return
 
     tl = Line(title)
     tl.Lines = ln #MakeLines(df[k])
@@ -61,7 +62,8 @@ def benchmark(gen, fx, dx, lf, title, iters = 1000, gen_data_only = False, plot_
     tl.xMax = lf
     tl.xStep = 50
     tl.yMin = 0
-    tl.yMax = 400 #m_*1.2
+    tl.yStep = 1
+    tl.yMax = 4 #m_*1.2
     tl.DPI = 100
 #    tl.yLogarithmic = True
 #    tl.yStep = 10
@@ -142,26 +144,26 @@ def start(mode):
     mode = int(mode)
 
     # ------------------ Transformation --------------------------- #
-    #if mode ==  0 or plot_only: benchmark(create_polar_separate, fx.px_separate     , step_size, leng, msg + "(Separate) Polar to Px", sampling, gen_data_only, plot_only)
-    #if mode ==  1 or plot_only: benchmark(create_polar_separate, fx.py_separate     , step_size, leng, msg + "(Separate) Polar to Py", sampling, gen_data_only, plot_only)
-    #if mode ==  2 or plot_only: benchmark(create_polar_separate, fx.pz_separate     , step_size, leng, msg + "(Separate) Polar to Pz", sampling, gen_data_only, plot_only)
-    #if mode ==  3 or plot_only: benchmark(create_polar_separate, fx.pxpypz_separate , step_size, leng, msg + "(Separate) Polar to PxPyPz", sampling, gen_data_only, plot_only)
-    #if mode ==  4 or plot_only: benchmark(create_polar_separate, fx.pxpypze_separate, step_size, leng, msg + "(Separate) Polar to PxPyPzE", sampling, gen_data_only, plot_only)
-    #if mode ==  5 or plot_only: benchmark(create_cartesian_separate, fx.pt_separate       , step_size, leng, msg + "(Separate) Cartesian to $p_T$", sampling, gen_data_only, plot_only)
-    #if mode ==  6 or plot_only: benchmark(create_cartesian_separate, fx.eta_separate      , step_size, leng, msg + "(Separate) Cartesian to $\\eta$", sampling, gen_data_only, plot_only)
-    #if mode ==  7 or plot_only: benchmark(create_cartesian_separate, fx.phi_separate      , step_size, leng, msg + "(Separate) Cartesian to $\\phi$", sampling, gen_data_only, plot_only)
-    #if mode ==  8 or plot_only: benchmark(create_cartesian_separate, fx.ptetaphi_separate , step_size, leng, msg + "(Separate) Cartesian to $p_T, \\eta, \\phi $", sampling, gen_data_only, plot_only)
-    #if mode ==  9 or plot_only: benchmark(create_cartesian_separate, fx.ptetaphie_separate, step_size, leng, msg + "(Separate) Cartesian to $p_T, \\eta, \\phi E$", sampling, gen_data_only, plot_only)
-    #if mode == 10 or plot_only: benchmark(create_polar_combined, fx.px_combined     , step_size, leng, msg + "(Combined) Polar to Px", sampling, gen_data_only, plot_only)
-    #if mode == 11 or plot_only: benchmark(create_polar_combined, fx.py_combined     , step_size, leng, msg + "(Combined) Polar to Py", sampling, gen_data_only, plot_only)
-    #if mode == 12 or plot_only: benchmark(create_polar_combined, fx.pz_combined     , step_size, leng, msg + "(Combined) Polar to Pz", sampling, gen_data_only, plot_only)
-    #if mode == 13 or plot_only: benchmark(create_polar_combined, fx.pxpypz_combined , step_size, leng, msg + "(Combined) Polar to PxPyPz", sampling, gen_data_only, plot_only)
-    #if mode == 14 or plot_only: benchmark(create_polar_combined, fx.pxpypze_combined, step_size, leng, msg + "(Combined) Polar to PxPyPzE", sampling, gen_data_only, plot_only)
-    #if mode == 15 or plot_only: benchmark(create_cartesian_combined, fx.pt_combined       , step_size, leng, msg + "(Combined) Cartesian to $p_T$", sampling, gen_data_only, plot_only)
-    #if mode == 16 or plot_only: benchmark(create_cartesian_combined, fx.eta_combined      , step_size, leng, msg + "(Combined) Cartesian to $\\eta$", sampling, gen_data_only, plot_only)
-    #if mode == 17 or plot_only: benchmark(create_cartesian_combined, fx.phi_combined      , step_size, leng, msg + "(Combined) Cartesian to $\\phi$", sampling, gen_data_only, plot_only)
-    #if mode == 18 or plot_only: benchmark(create_cartesian_combined, fx.ptetaphi_combined , step_size, leng, msg + "(Combined) Cartesian to $p_T, \\eta, \\phi$", sampling, gen_data_only, plot_only)
-    #if mode == 19 or plot_only: benchmark(create_cartesian_combined, fx.ptetaphie_combined, step_size, leng, msg + "(Combined) Cartesian to $p_T, \\eta, \\phi, E$", sampling, gen_data_only, plot_only)
+    if mode ==  0 or plot_only: benchmark(create_polar_separate, fx.px_separate     , step_size, leng, msg + "(Separate) Polar to Px", sampling, gen_data_only, plot_only)
+    if mode ==  1 or plot_only: benchmark(create_polar_separate, fx.py_separate     , step_size, leng, msg + "(Separate) Polar to Py", sampling, gen_data_only, plot_only)
+    if mode ==  2 or plot_only: benchmark(create_polar_separate, fx.pz_separate     , step_size, leng, msg + "(Separate) Polar to Pz", sampling, gen_data_only, plot_only)
+    if mode ==  3 or plot_only: benchmark(create_polar_separate, fx.pxpypz_separate , step_size, leng, msg + "(Separate) Polar to PxPyPz", sampling, gen_data_only, plot_only)
+    if mode ==  4 or plot_only: benchmark(create_polar_separate, fx.pxpypze_separate, step_size, leng, msg + "(Separate) Polar to PxPyPzE", sampling, gen_data_only, plot_only)
+    if mode ==  5 or plot_only: benchmark(create_cartesian_separate, fx.pt_separate       , step_size, leng, msg + "(Separate) Cartesian to $p_T$", sampling, gen_data_only, plot_only)
+    if mode ==  6 or plot_only: benchmark(create_cartesian_separate, fx.eta_separate      , step_size, leng, msg + "(Separate) Cartesian to $\\eta$", sampling, gen_data_only, plot_only)
+    if mode ==  7 or plot_only: benchmark(create_cartesian_separate, fx.phi_separate      , step_size, leng, msg + "(Separate) Cartesian to $\\phi$", sampling, gen_data_only, plot_only)
+    if mode ==  8 or plot_only: benchmark(create_cartesian_separate, fx.ptetaphi_separate , step_size, leng, msg + "(Separate) Cartesian to $p_T, \\eta, \\phi $", sampling, gen_data_only, plot_only)
+    if mode ==  9 or plot_only: benchmark(create_cartesian_separate, fx.ptetaphie_separate, step_size, leng, msg + "(Separate) Cartesian to $p_T, \\eta, \\phi E$", sampling, gen_data_only, plot_only)
+    if mode == 10 or plot_only: benchmark(create_polar_combined, fx.px_combined     , step_size, leng, msg + "(Combined) Polar to Px", sampling, gen_data_only, plot_only)
+    if mode == 11 or plot_only: benchmark(create_polar_combined, fx.py_combined     , step_size, leng, msg + "(Combined) Polar to Py", sampling, gen_data_only, plot_only)
+    if mode == 12 or plot_only: benchmark(create_polar_combined, fx.pz_combined     , step_size, leng, msg + "(Combined) Polar to Pz", sampling, gen_data_only, plot_only)
+    if mode == 13 or plot_only: benchmark(create_polar_combined, fx.pxpypz_combined , step_size, leng, msg + "(Combined) Polar to PxPyPz", sampling, gen_data_only, plot_only)
+    if mode == 14 or plot_only: benchmark(create_polar_combined, fx.pxpypze_combined, step_size, leng, msg + "(Combined) Polar to PxPyPzE", sampling, gen_data_only, plot_only)
+    if mode == 15 or plot_only: benchmark(create_cartesian_combined, fx.pt_combined       , step_size, leng, msg + "(Combined) Cartesian to $p_T$", sampling, gen_data_only, plot_only)
+    if mode == 16 or plot_only: benchmark(create_cartesian_combined, fx.eta_combined      , step_size, leng, msg + "(Combined) Cartesian to $\\eta$", sampling, gen_data_only, plot_only)
+    if mode == 17 or plot_only: benchmark(create_cartesian_combined, fx.phi_combined      , step_size, leng, msg + "(Combined) Cartesian to $\\phi$", sampling, gen_data_only, plot_only)
+    if mode == 18 or plot_only: benchmark(create_cartesian_combined, fx.ptetaphi_combined , step_size, leng, msg + "(Combined) Cartesian to $p_T, \\eta, \\phi$", sampling, gen_data_only, plot_only)
+    if mode == 19 or plot_only: benchmark(create_cartesian_combined, fx.ptetaphie_combined, step_size, leng, msg + "(Combined) Cartesian to $p_T, \\eta, \\phi, E$", sampling, gen_data_only, plot_only)
 
     # --------------- Physics --------------------------- #
     if mode == 20 or plot_only: benchmark(create_cartesian_separate, fx.    p2_cartesian_separate, step_size, leng, msg + "(Separate) Cartesian to $P^{2}$", sampling, gen_data_only, plot_only)

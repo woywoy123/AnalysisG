@@ -762,6 +762,10 @@ cdef class TLine(BasePlotting):
             coms["yerr"] = [self.yDataDown, self.yDataUp]
             coms["capsize"] = 1
             self.matpl.errorbar(self.xData, self.yData, **coms)
+        elif len(self.yDataDown) == len(self.yDataUp) == len(self.xData):
+            coms["yerr"] = [self.yDataDown, self.yDataUp]
+            coms["capsize"] = 1
+            self.matpl.errorbar(self.xData, self.yData, **coms)
         else: self.matpl.plot(self.xData, self.yData, **coms)
 
     cdef dict __compile__(self, bool raw = False):

@@ -33,48 +33,69 @@ def performance(cpu, tcuda, cuda):
         m2 = sum(lst2)/len(lst2)
         sig1 = sum([(m1 - x)**2 for x in lst1])/len(lst1)
         sig2 = sum([(m2 - x)**2 for x in lst2])/len(lst2)
-        err = ((m1/m2)**2)*(sig1/m1 + sig2/m2)
+        err = ((m1/m2)**2)*(sig1/(m1**2) + sig2/(m2**2))
         return (m1/m2), math.sqrt(err)
-    data1 = error(cpu, tcuda)
-    data2 = error(cpu, cuda)
-    data3 = error(tcuda, cuda)
+
+    def single_error(lst):
+        m1 = sum(lst)/len(lst)
+        sig1 = sum([(m1 - x)**2 for x in lst])/len(lst)
+        return m1, math.sqrt(sig1)
+
+    datac1 = single_error(cpu)
+    datac2 = single_error(tcuda)
+    datac3 = single_error(cuda)
+
+    data1  = error(cpu, tcuda)
+    data2  = error(cpu, cuda)
+    data3  = error(tcuda, cuda)
     out = {}
+    out |= {"cpu"     : [datac1[0]], "sig(cpu)"             : [datac1[1]]}
+    out |= {"cuda(t)" : [datac2[0]], "sig(cuda(t))"         : [datac2[1]]}
+    out |= {"cuda(k)" : [datac3[0]], "sig(cuda(k))"         : [datac3[1]]}
+
     out |= {"cpu/cuda(t)"     : [data1[0]], "sig(cpu/cuda(t))"     : [data1[1]]}
     out |= {"cpu/cuda(k)"     : [data2[0]], "sig(cpu/cuda(k))"     : [data2[1]]}
     out |= {"cuda(t)/cuda(k)" : [data3[0]], "sig(cuda(t)/cuda(k))" : [data3[1]]}
     return out
 
+
 def merge(data1, data2):
     if not len(data1): return data2
+    data1["cpu"]                  += data2["cpu"]
+    data1["cuda(t)"]              += data2["cuda(t)"]
+    data1["cuda(k)"]              += data2["cuda(k)"]
+    data1["sig(cpu)"]             += data2["sig(cpu)"]
+    data1["sig(cuda(t))"]         += data2["sig(cuda(t))"]
+    data1["sig(cuda(k))"]         += data2["sig(cuda(k))"]
+
     data1["cpu/cuda(t)"]          += data2["cpu/cuda(t)"    ]
-    data1["sig(cpu/cuda(t))"]     += data2["sig(cpu/cuda(t))"]
     data1["cpu/cuda(k)"]          += data2["cpu/cuda(k)"    ]
-    data1["sig(cpu/cuda(k))"]     += data2["sig(cpu/cuda(k))"]
     data1["cuda(t)/cuda(k)"]      += data2["cuda(t)/cuda(k)"]
+    data1["sig(cpu/cuda(t))"]     += data2["sig(cpu/cuda(t))"]
+    data1["sig(cpu/cuda(k))"]     += data2["sig(cpu/cuda(k))"]
     data1["sig(cuda(t)/cuda(k))"] += data2["sig(cuda(t)/cuda(k))"]
     data1["dx"]                   += data2["dx"]
     return data1
 
-
 def Line(title, xdata = None, ydata = None, err = None, col = None, linst = None, restrict = 2):
     tl = TLine()
     tl.Title = title
-    tl.ErrorBars = True
+    tl.ErrorBars = False
     if xdata is not None: tl.xData = [xdata[i] / 1000 for i in range(10,len(xdata)) if i % restrict == 0]
     if ydata is not None: tl.yData = [ydata[i] for i in range(10,len(xdata)) if i % restrict == 0]
-    if err is not None: tl.yDataUp   = [err[i] for i in range(10,len(xdata)) if i % restrict == 0]
-    if err is not None: tl.yDataDown = [err[i] for i in range(10,len(xdata)) if i % restrict == 0]
+    if err is not None: tl.yDataUp   = [err[i]*(1/math.sqrt(10000-1)) for i in range(10,len(xdata)) if i % restrict == 0]
+    if err is not None: tl.yDataDown = [err[i]*(1/math.sqrt(10000-1)) for i in range(10,len(xdata)) if i % restrict == 0]
     if col is not None: tl.Color = col
     if linst is not None: tl.LineStyle = linst
     if xdata is None: tl.xTitle = "Length of Tensor - (Units of 1000)"
-    if xdata is None: tl.yTitle = "Ratio (CPU) / <X> (CUDA) (see Legend for <X>) - Higher is Better"
+    if xdata is None: tl.yTitle = "Ratio (CUDA - Tensor) / (CUDA - Kernel) - Higher is Better"
     return [tl] if xdata is not None else tl
 
 def MakeLines(data, dev, col = "red"):
     lins = []
-    lins += Line("Tensor - (" + dev + ")" , data["dx"], data["cpu/cuda(t)"], data["sig(cpu/cuda(t))"], col, ":", 10)
-    lins += Line("Kernel - (" + dev + ")" , data["dx"], data["cpu/cuda(k)"], data["sig(cpu/cuda(k))"], col, "-", 10)
-#    lins += Line("Tensor (CUDA) / Kernel (CUDA)", data["dx"], data["cuda(t)/cuda(k)"], data["sig(cuda(t)/cuda(k))"], "green", ":")
+#    lins += Line("Tensor - (" + dev + ")" , data["dx"], data["cpu/cuda(t)"], data["sig(cpu/cuda(t))"], col, ":", 10)
+#    lins += Line("Kernel - (" + dev + ")" , data["dx"], data["cpu/cuda(k)"], data["sig(cpu/cuda(k))"], col, "-", 10)
+    lins += Line("Tensor (CUDA) / Kernel (CUDA) - (" + dev + ")", data["dx"], data["cuda(t)/cuda(k)"], data["sig(cuda(t)/cuda(k))"], col, ":", 10)
     return lins
 
 def repeat(fx, data, iters, dx):
