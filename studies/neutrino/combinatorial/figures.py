@@ -5,7 +5,7 @@ import math
 def path(hist, subx = "", defaults = None):
     hist.UseLateX = False
     hist.Style = "ATLAS"
-    hist.OutputDirectory = "Figures" + subx
+    hist.OutputDirectory = "Figures/neutrino-combinatorial" + subx
     return hist
 
 def double_neutrino(data, total = False):

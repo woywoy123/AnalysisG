@@ -41,8 +41,7 @@ def record_data(inpt, truth, data, leps, bqrk):
         if tr is None: continue
         data["chi2"][kx] += [chi2(tr, nu)]
         if i: continue
-        try: data["dst"] += [nu.distance]
-        except AttributeError: pass
+        data["dst"] += [nu.distance]
     return 0
 
 def makeData():
@@ -140,19 +139,16 @@ def compile_neutrinos(ana = None, truth_top = None, truth_lep = None, truth_b = 
         try: nunu = DoubleNu((b1, b2), (l1, l2), ev, tru_w[0].Mass, tru_top[0].Mass, tru_w[1].Mass, tru_top[1].Mass)
         except numpy.linalg.LinAlgError: nunu = None
         except ValueError: nunu = None
-
-        if nunu is not None: nunu = nunu.nunu_s
-        else: nunu = []
+        if nunu is None: nunu = []
+        else: nunu = nunu.nunu_s
         r1_rf["missed"] += [record_data(nunu, tru_nunu, r1_rf, tru_lep, tru_b)]
 
         try: nunu = DoubleNu((b1, b2), (l1, l2), ev, mw, mt, mw, mt)
         except numpy.linalg.LinAlgError: nunu = None
         except ValueError: nunu = None
-
-        if nunu is not None: nunu = nunu.nunu_s
-        else: nunu = []
+        if nunu is None: nunu = []
+        else: nunu = nunu.nunu_s
         r2_rf["missed"] += [record_data(nunu, tru_nunu, r2_rf, tru_lep, tru_b)]
-
         record_data(tru_nunu, None, truth_nux, tru_lep, tru_b)
 
         print(i, len(truth_nu))

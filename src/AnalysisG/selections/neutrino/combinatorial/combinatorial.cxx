@@ -29,7 +29,7 @@ void combinatorial::merge(selection_template* sl){
 
 bool combinatorial::selection(event_template* ev){
     bsm_4tops* evn = (bsm_4tops*)ev;
-    if (evn -> hash != "0xd0edab7810edc54f"){return false;}
+    //if (evn -> hash != "0xd0edab7810edc54f"){return false;}
     std::vector<top*> tops = this -> upcast<top>(&evn -> Tops); 
     if (tops.size() != 4){return false;}
     int num_leps = 0; 
@@ -69,17 +69,14 @@ std::vector<nu> combinatorial::build_nus(
 
     torch::Tensor phit = build_tensor(&_phi  , torch::kDouble, double(), &ops).to(torch::kCUDA).view({-1, 1}); 
     torch::Tensor mett = build_tensor(&_met  , torch::kDouble, double(), &ops).to(torch::kCUDA).view({-1, 1}); 
-    torch::Tensor metxy = torch::cat({
-            pyc::transform::separate::Px(mett, phit), 
-            pyc::transform::separate::Py(mett, phit)
-    }, {-1}); 
+    torch::Tensor metxy = torch::cat({pyc::transform::separate::Px(mett, phit), pyc::transform::separate::Py(mett, phit)}, {-1}); 
 
     torch::Tensor m_pt  = build_tensor(pt_    , torch::kDouble, double(), &ops).to(torch::kCUDA).view({-1, 1}); 
     torch::Tensor m_eta = build_tensor(eta_   , torch::kDouble, double(), &ops).to(torch::kCUDA).view({-1, 1}); 
     torch::Tensor m_phi = build_tensor(phi_   , torch::kDouble, double(), &ops).to(torch::kCUDA).view({-1, 1}); 
     torch::Tensor m_enx = build_tensor(energy_, torch::kDouble, double(), &ops).to(torch::kCUDA).view({-1, 1}); 
-    torch::Tensor m_isb = build_tensor(isb_   , torch::kLong  , long(), &ops).to(torch::kCUDA).view({-1, 1}); 
-    torch::Tensor m_isl = build_tensor(isl_   , torch::kLong  , long(), &ops).to(torch::kCUDA).view({-1, 1}); 
+    torch::Tensor m_isb = build_tensor(isb_   , torch::kLong  ,   long(), &ops).to(torch::kCUDA).view({-1, 1}); 
+    torch::Tensor m_isl = build_tensor(isl_   , torch::kLong  ,   long(), &ops).to(torch::kCUDA).view({-1, 1}); 
     torch::Tensor pmc   = pyc::transform::separate::PxPyPzE(m_pt, m_eta, m_phi, m_enx); 
     torch::Tensor pid   = torch::cat({m_isl, m_isb}, {-1}); 
     torch::Tensor bth   = torch::zeros_like(m_isl).view({-1}); 
@@ -88,28 +85,21 @@ std::vector<nu> combinatorial::build_nus(
     double mt = this -> masstop / scale;  
     torch::Dict<std::string, torch::Tensor> nuxt;
 
-    std::cout << "::::" << std::endl;
-    std::cout << topo << std::endl; 
-    std::cout << bth << std::endl;
-    std::cout << pid << std::endl;
-    std::cout << metxy << std::endl;
-    std::cout << pmc << std::endl;
-    std::cout << mw << " " << mt << std::endl; 
+    //std::cout << "::::" << std::endl;
+    //std::cout << topo << std::endl; 
+    //std::cout << bth << std::endl;
+    //std::cout << pid << std::endl;
+    //std::cout << metxy << std::endl;
+    //std::cout << pmc << std::endl;
+    //std::cout << mw << " " << mt << std::endl; 
 
-    nuxt = pyc::nusol::combinatorial(topo, bth, pmc, pid, metxy, mt, mw, 0.95, 0.95, this -> steps, 1e-10); 
-
-    std::cout << nuxt.at("nu1") << std::endl; 
-
-
-
-
+    nuxt = pyc::nusol::combinatorial(topo, bth, pmc, pid, metxy, mt, mw, 0.90, 0.90, this -> steps, 1e-10); 
     torch::Tensor l1  = pmc.index({nuxt.at("l1").view({-1})}); 
     torch::Tensor l2  = pmc.index({nuxt.at("l2").view({-1})});
     torch::Tensor b1  = pmc.index({nuxt.at("b1").view({-1})}); 
     torch::Tensor b2  = pmc.index({nuxt.at("b2").view({-1})}); 
-
-    torch::Tensor nu1 = torch::cat({nuxt.at("nu1"), nuxt.at("nu1").pow(2).sum({-1}, true).sqrt()}, {-1}); 
-    torch::Tensor nu2 = torch::cat({nuxt.at("nu2"), nuxt.at("nu2").pow(2).sum({-1}, true).sqrt()}, {-1}); 
+    torch::Tensor nu1 = nuxt.at("nu1"); 
+    torch::Tensor nu2 = nuxt.at("nu2"); 
     torch::Tensor distx = nuxt.at("distances"); 
 
     torch::Tensor w1 = nu1 + l1; 
@@ -122,7 +112,9 @@ std::vector<nu> combinatorial::build_nus(
 
     std::vector<double> w_mass, t_mass, nu1f_, nu2f_, dist; 
     tensor_to_vector(&distx, &dist); 
-    //if (dist[0] >= -10){return {};}
+
+    std::vector<nu> out;  
+    if (dist[0] == 0){return out;}
 
     tensor_to_vector(&wmass, &w_mass); 
     tensor_to_vector(&tmass, &t_mass); 
@@ -135,7 +127,6 @@ std::vector<nu> combinatorial::build_nus(
     tensor_to_vector(&l1, &l1_); 
     tensor_to_vector(&l2, &l2_); 
 
-    std::vector<nu> out;  
     out.push_back(nu(nu1f_[0], nu1f_[1], nu1f_[2], nu1f_[3])); 
     out[0].exp_wmass   = w_mass[0] / 1000; 
     out[0].exp_tmass   = t_mass[0] / 1000; 
@@ -193,15 +184,12 @@ bool combinatorial::strategy(event_template* ev){
     double met = evn -> met; 
     double phi = evn -> phi; 
    
-    //std::cout << std::endl;
-    //std::cout << met << " " << phi << std::endl;
-    //std::cout << all_nus -> pt << " " << all_nus -> phi << std::endl;  
     this -> delta_met[hash] = std::abs(all_children -> pt - met) / 1000; 
     this -> delta_metnu[hash] = std::abs(all_nus -> pt - met) / 1000; 
     this -> nus_met[hash] = all_nus -> pt / 1000;
     this -> obs_met[hash] = met / 1000;
 
-    std::vector<nu> ch_nus = this -> get_neutrinos(&leps, &bs, all_nus -> pt, all_nus -> phi, this -> scale); 
+    std::vector<nu> ch_nus = this -> get_neutrinos(&leps, &bs, met, phi, this -> scale); 
     for (nu &p : ch_nus){
         this -> pdgid[hash].push_back(p.leppid); 
 

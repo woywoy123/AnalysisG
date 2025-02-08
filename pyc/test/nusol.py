@@ -43,7 +43,7 @@ def intersections_ellipse_line(ellipse, line, zero=1e-10):
     sols = sorted([(
         v.real / v[2].real,
         math.log10(sum((line*v.real).tolist())**2 + sum((np.dot(v.real, ellipse) * v.real).tolist())**2)
-        ) for v in V.T if v[2].real != 0], key = lambda k : k[1])[:2]
+        ) for v in V.T if v[2].real != 0 and not sum(v.imag)], key = lambda k : k[1])[:2]
     return [s for s, k in sols if k < np.log10(zero)]
 
 def cofactor(A, i, j):
@@ -228,6 +228,7 @@ class DoubleNu(NuSol):
 
         N, N_ = sol1.N, sol2.N
         n_ = self.S.T.dot(N_).dot(self.S)
+        n  = self.S.T.dot(N ).dot(self.S)
 
         v, _ = intersections_ellipses(N, n_)
         v_ = [self.S.dot(sol) for sol in v]
@@ -241,12 +242,18 @@ class DoubleNu(NuSol):
             ts, _ = leastsq(residuals, [0, 0], ftol=5e-5, epsfcn=0.01)
             v, v_ = [[i] for i in nus(ts)]
             self.lsq = True
-        for k, v in {"perp": v, "perp_": v_, "n_": n_}.items(): setattr(self, k, v)
+        for k, v in {"perp": v, "perp_": v_, "n_": n_, "n" : n}.items(): setattr(self, k, v)
 
     @property
     def nunu_s(self):
         """Solution pairs for neutrino momenta"""
+
+        pairs = []
+        for s, s_ in zip(self.perp, self.perp_):
+            pairs.append(math.log10((np.dot(s.T , self.n_).dot(s) - np.dot(s_.T, self.n).dot(s_))**2))
+
         K, K_ = [ss.H.dot(np.linalg.inv(ss.H_perp)) for ss in self.solutionSets]
         nu1 = np.array([K.dot(s)   for s in self.perp  ])
         nu2 = np.array([K_.dot(s_) for s_ in self.perp_])
+        self.pairs = pairs
         return nu1, nu2

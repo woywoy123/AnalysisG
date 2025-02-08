@@ -140,7 +140,7 @@ __global__ void _compare_solx(
         long cmx_id = cmx_dx[x]; 
         long evn_id = evnt_dx[cmx_id]; 
         if (evn_id != _idx){continue;}
-        for (size_t y(0); y < 18; ++y){
+        for (size_t y(0); y < 6; ++y){
             double sol = i_sol[x][y]; 
             if (_score[threadIdx.x][threadIdx.y] < sol){continue;}
             _score[threadIdx.x][threadIdx.y] = sol; 

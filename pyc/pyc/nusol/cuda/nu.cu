@@ -14,7 +14,6 @@ __global__ void _nu_init_(
         torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> M, 
         torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> Unit
 ){
-    //__shared__ double _H[size_x][3][3];
 
     __shared__ double _S2[size_x][3][3]; 
     __shared__ double _dNu[size_x][3][3]; 
@@ -71,10 +70,10 @@ __global__ void _chi2(
         torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> nu,
         torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> chi2
 ){
-    __shared__ double _S[18][3]; 
-    __shared__ double _X[18][3][3]; 
-    __shared__ double _H[18][3][3]; 
-    __shared__ double _C[18][3]; 
+    __shared__ double _S[6][3]; 
+    __shared__ double _X[6][3][3]; 
+    __shared__ double _H[6][3][3]; 
+    __shared__ double _C[6][3]; 
 
     const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
     const unsigned int _idy = blockIdx.y * blockDim.y + threadIdx.y; 
@@ -128,10 +127,10 @@ std::map<std::string, torch::Tensor> nusol_::Nu(
     torch::Tensor M_ = M.clone(); 
     std::map<std::string, torch::Tensor> out = nusol_::Intersection(&M_, &Unit, null); 
 
-    const dim3 thN = dim3(1, 18, 3);
-    const dim3 blN = blk_(dx, 1, 18, 18, 3, 3); 
-    torch::Tensor nu   = torch::zeros({dx, 18, 3}, MakeOp(H)); 
-    torch::Tensor chi2 = torch::zeros({dx, 18, 1}, MakeOp(H)); 
+    const dim3 thN = dim3(1, 6, 3);
+    const dim3 blN = blk_(dx, 1, 6, 6, 3, 3); 
+    torch::Tensor nu   = torch::zeros({dx, 6, 3}, MakeOp(H)); 
+    torch::Tensor chi2 = torch::zeros({dx, 6, 1}, MakeOp(H)); 
     AT_DISPATCH_ALL_TYPES(H -> scalar_type(), "Nu", [&]{
         _chi2<scalar_t><<<blN, thN>>>(
          out["solutions"].packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
@@ -144,7 +143,7 @@ std::map<std::string, torch::Tensor> nusol_::Nu(
     out["X"] = X; 
     out["M"] = M; 
     out["nu"] = nu; 
-    out["distances"] = chi2.view({-1, 18});
+    out["distances"] = chi2.view({-1, 6});
     return out; 
 }
  

@@ -4,20 +4,6 @@
 #include <cutils/utils.cuh>
 #include <operators/operators.cuh>
 
-torch::Tensor reshaped(torch::Tensor* tx, torch::Tensor* ix, unsigned int dx, signed int dim){
-    torch::Tensor id = ix -> index({torch::indexing::Slice(), dim});
-    torch::Tensor  H = tx -> view({-1, dx, dx, 3, 3});
-    H = H.index({torch::indexing::Slice(), id}).index({torch::indexing::Slice(), torch::indexing::Slice(), id});
-    return H.view({-1, 3, 3}); 
-}
-
-torch::Tensor masked(torch::Tensor* tx, torch::Tensor* ix, unsigned int dx, signed int dim){
-    torch::Tensor id = ix -> index({torch::indexing::Slice(), dim});
-    torch::Tensor  H = tx -> view({-1, dx, dx});
-    H = H.index({torch::indexing::Slice(), id}).index({torch::indexing::Slice(), torch::indexing::Slice(), id});
-    return H.view({-1}); 
-}
-
 std::map<std::string, torch::Tensor> nusol_::combinatorial(
     torch::Tensor* edge_index, torch::Tensor* batch, torch::Tensor* pmc, 
     torch::Tensor* pid, torch::Tensor* met_xy, 
@@ -82,13 +68,12 @@ std::map<std::string, torch::Tensor> nusol_::combinatorial(
     long dx_s = steps; 
     const dim3 thmss  = dim3((dx_s >= 512) ? 512 : dx_s, 2); 
     const dim3 blkmss = blk_(dx_s, (dx_s >= 512) ? 512 : dx_s, 2, 2);
-    torch::Tensor massTW = torch::rand({dx_s, 2}, MakeOp(pmc)); 
+    torch::Tensor mass1TW = torch::rand({dx_s, 2}, MakeOp(pmc)); 
+    torch::Tensor mass2TW = torch::rand({dx_s, 2}, MakeOp(pmc)); 
 
     AT_DISPATCH_ALL_TYPES(pmc -> scalar_type(), "massx", [&]{
-        _mass_matrix<<<blkmss, thmss>>>(
-            massTW.packed_accessor64<double, 2, torch::RestrictPtrTraits>(), 
-            mTl, msT, mWl, msW, dx_s
-        ); 
+        _mass_matrix<<<blkmss, thmss>>>(mass1TW.packed_accessor64<double, 2, torch::RestrictPtrTraits>(), mTl, msT, mWl, msW, dx_s); 
+        _mass_matrix<<<blkmss, thmss>>>(mass2TW.packed_accessor64<double, 2, torch::RestrictPtrTraits>(), mTl, msT, mWl, msW, dx_s); 
     }); 
     
     // -------------- output ----------- //
@@ -110,9 +95,9 @@ std::map<std::string, torch::Tensor> nusol_::combinatorial(
     torch::Tensor metxy = met_xy -> index({ev})*scale; 
 
     const unsigned int lenx = ev_id.size({0}); 
-    torch::Tensor nu1_ = torch::zeros({lenx, 18, 3}, MakeOp(pmc));
-    torch::Tensor nu2_ = torch::zeros({lenx, 18, 3}, MakeOp(pmc));
-    torch::Tensor dst_ = torch::zeros({lenx, 18}, MakeOp(pmc));
+    torch::Tensor nu1_ = torch::zeros({lenx, 6, 3}, MakeOp(pmc));
+    torch::Tensor nu2_ = torch::zeros({lenx, 6, 3}, MakeOp(pmc));
+    torch::Tensor dst_ = torch::zeros({lenx, 6}, MakeOp(pmc));
     torch::Tensor msk_ = torch::cat({n1.index({ev_id}).view({-1, 1}), n2.index({ev_id}).view({-1, 1})}, -1); 
 
     if (n1.index({n1}).size({0})){
@@ -120,7 +105,7 @@ std::map<std::string, torch::Tensor> nusol_::combinatorial(
         torch::Tensor snu_metxy = metxy.index({ev_id}).index({n1.index({ev_id})}); 
         torch::Tensor snu_pmcl1 = (pmc -> index({l2})*scale).index({n1}); 
         torch::Tensor snu_pmcb1 = (pmc -> index({b1})*scale).index({n1}); 
-        std::map<std::string, torch::Tensor> H1_m = nusol_::BaseMatrix(&snu_pmcb1, &snu_pmcl1, &massTW); 
+        std::map<std::string, torch::Tensor> H1_m = nusol_::BaseMatrix(&snu_pmcb1, &snu_pmcl1, &mass1TW); 
         s_nu = nusol_::Nu(&H1_m["H"], nullptr, &snu_metxy, null); 
 
         torch::Tensor nux = n1.index({ev_id}); 
@@ -135,8 +120,7 @@ std::map<std::string, torch::Tensor> nusol_::combinatorial(
         torch::Tensor dnu_pmcl2 = (pmc -> index({l2})*scale).index({n2}); 
         torch::Tensor dnu_pmcb1 = (pmc -> index({b1})*scale).index({n2}); 
         torch::Tensor dnu_pmcb2 = (pmc -> index({b2})*scale).index({n2}); 
-        d_nu = nusol_::NuNu(&dnu_pmcb1, &dnu_pmcb2, &dnu_pmcl1, &dnu_pmcl2, &dnu_metxy, null, &massTW); 
-
+        d_nu = nusol_::NuNu(&dnu_pmcb1, &dnu_pmcb2, &dnu_pmcl1, &dnu_pmcl2, &dnu_metxy, null, &mass1TW, &mass2TW); 
         torch::Tensor nux = n2.index({ev_id}); 
         nu1_.index_put_({nux}, d_nu["nu1"]); 
         nu2_.index_put_({nux}, d_nu["nu2"]); 

@@ -20,5 +20,6 @@ add_library(ctils ${SOURCE_FILES})
 target_include_directories(ctils PRIVATE include/cutils)
 target_include_directories(ctils PUBLIC include)
 target_link_libraries(ctils PUBLIC ${TORCH_LIBRARIES})
+target_compile_options(ctils PRIVATE -fPIC)
 
 

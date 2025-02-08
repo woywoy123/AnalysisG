@@ -3,6 +3,7 @@ import math
 import numpy as np
 from scipy.optimize import leastsq
 from AnalysisG.core.particle_template import ParticleTemplate
+from AnalysisG.selections.neutrino.validation.validation import Neutrino
 
 mW = 80.385*1000
 mT = 172.62*1000
@@ -72,8 +73,8 @@ def intersections_ellipse_line(ellipse, line, zero=1e-10):
     sols = sorted([(
         v.real / v[2].real,
         math.log10(sum((line*v.real).tolist())**2 + sum((np.dot(v.real, ellipse) * v.real).tolist())**2)
-        ) for v in V.T if v[2].real != 0], key = lambda k : k[1])[:2]
-    return [s for s, k in sols if k < np.log10(zero)] #[s for s, k in sols if k < np.log10(zero)]
+        ) for v in V.T if v[2].real != 0 and not sum(v.imag)], key = lambda k : k[1])[:2]
+    return [s for s, k in sols if k < np.log10(zero)]
 
 def cofactor(A, i, j):
     """Cofactor[i,j] of 3x3 matrix A"""
@@ -232,7 +233,7 @@ class SingleNu(NuSol):
         self._X = t.X
         self._H = t.H
 
-        sols, diag, _ = intersections_ellipses(self._M, UnitCircle())
+        sols, _ = intersections_ellipses(self._M, UnitCircle())
         self.sols = sorted(sols, key = self.calcX2)
 
     def calcX2(self, t): return np.dot(t, self._X).dot(t)
@@ -246,46 +247,61 @@ class SingleNu(NuSol):
 class DoubleNu(NuSol):
 
     def __init__(self, bs, mus, ev, mW1, mT1, mW2, mT2):
+        self.lsq = False
         b ,  b_ = [i.vec for i in bs]
         mu, mu_ = [i.vec for i in mus]
+        self.ev = np.array([ev.vec.px, ev.vec.py, 1])
 
         sol1 = NuSol(b , mu , None, mW1**2, mT1**2, 0)
         sol2 = NuSol(b_, mu_, None, mW2**2, mT2**2, 0)
+        self.solutionSets = [sol1, sol2]
 
         V0 = np.outer([ev.vec.px, ev.vec.py, 0], [0, 0, 1])
         self.S = V0 - UnitCircle()
 
         N, N_ = sol1.N, sol2.N
-        n_ = self.S.T.dot(N_).dot(self.S)
+        n_   = self.S.T.dot(N_).dot(self.S)
+        n    = self.S.T.dot(N ).dot(self.S)
+        v, _ = intersections_ellipses(N , n_)
+        v_   = [self.S.dot(sol) for sol in v]
 
-        v, _ = intersections_ellipses(N, n_)
-        v_ = [self.S.dot(sol) for sol in v]
-        self.solutionSets = [sol1, sol2]
-        if not v and leastsq:
+
+        if not v:
             es = [ss.H_perp for ss in self.solutionSets]
-            met = np.array([ev.vec.px, ev.vec.py, 1])
-
+            met = self.ev
             def nus(ts): return tuple(e.dot([math.cos(t), math.sin(t), 1]) for e, t in zip(es, ts))
             def residuals(params): return sum(nus(params), -met)[:2]
             ts, _ = leastsq(residuals, [0, 0], ftol=5e-5, epsfcn=0.01)
             v, v_ = [[i] for i in nus(ts)]
+
             self.lsq = True
-        for k, v in {"perp": v, "perp_": v_, "n_": n_}.items(): setattr(self, k, v)
+        for k, v in {"perp" : v , "perp_":  v_, "n_" : n_, "n" : n}.items(): setattr(self, k, v)
 
     @property
     def nunu_s(self):
         """Solution pairs for neutrino momenta"""
+
+        pairs = []
+        for s, s_ in zip(self.perp, self.perp_):
+            pairs.append((np.dot(s.T , self.n_).dot(s) - np.dot(s_.T, self.n).dot(s_))**2)
+
         K, K_ = [ss.H.dot(np.linalg.inv(ss.H_perp)) for ss in self.solutionSets]
-        nu1 = np.array([K.dot(s)   for s in self.perp  ])
+        nu1 = np.array([K.dot(s)   for s  in self.perp])
         nu2 = np.array([K_.dot(s_) for s_ in self.perp_])
-        p1 = ParticleTemplate()
-        p1.px = nu1[0][0]
-        p1.py = nu1[0][1]
-        p1.pz = nu1[0][2]
 
-        p2 = ParticleTemplate()
-        p2.px = nu2[0][0]
-        p2.py = nu2[0][1]
-        p2.pz = nu2[0][2]
+        x = None
+        for i in range(len(nu1)):
+            if x is not None and x < pairs[i]: continue
+            p1 = Neutrino()
+            p1.px = nu1[i][0]
+            p1.py = nu1[i][1]
+            p1.pz = nu1[i][2]
 
+            p2 = Neutrino()
+            p2.px = nu2[i][0]
+            p2.py = nu2[i][1]
+            p2.pz = nu2[i][2]
+            x = pairs[i]
+            setattr(p2, "distance", x)
+            setattr(p1, "distance", x)
         return [p1, p2]

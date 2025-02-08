@@ -61,11 +61,55 @@ def LossStatistics():
     print("cuda - dyn:", round(d_c1, sx), "cuda-static:", round(d_c2, sx))
     print("ref - dyn:" , round(d_r1, sx), "ref-static:" , round(d_r2, sx))
 
-def template_nunu_top_mass(dt, a, b, c, d, mode, out_path):
+def test_implementations(dt, mode, out_path, xlims, xbins, xstep, tl):
     r1_cu, r2_cu = dt["r1_cu"], dt["r2_cu"]
     r1_rf, r2_rf = dt["r1_rf"], dt["r2_rf"]
     truth_nux = dt["truth_nux"]
 
+    n = "n1"
+    th1c = template_hist("CUDA"     , r1_cu["tmass"][n], "red")
+    th1r = template_hist("Reference", r1_rf["tmass"][n], "blue")
+    th = path(TH1F(), out_path)
+    th.Title = "Derived Top Quark Invariant Mass from Neutrino " + n.replace("n", "") + " (Dynamic - " + mode + ")"
+    th.Histogram = th1r
+    th.Histograms = [th1c]
+    th.xBins = xbins
+    th.xMax = xlims[1]
+    th.xMin = xlims[0]
+    th.xStep = xstep
+    th.Overflow = False
+    th.Density = True
+    th.FX("chi2")
+    th.xTitle = "Invariant Top Mass (GeV)"
+    th.yTitle = "Density (Arb.) / " + tl + " GeV"
+    th.Filename = "implementation-neutrino-1"
+    th.SaveFigure()
+
+    n = "n2"
+    th1c = template_hist("CUDA"     , r1_cu["tmass"][n], "red")
+    th1r = template_hist("Reference", r1_rf["tmass"][n], "blue")
+
+    th = path(TH1F(), out_path)
+    th.Title = "Derived Top Quark Invariant Mass from Neutrino " + n.replace("n", "") + " (Dynamic - " + mode + ")"
+    th.Histogram = th1r
+    th.Histograms = [th1c]
+    th.xBins = xbins
+    th.xMax = xlims[1]
+    th.xMin = xlims[0]
+    th.xStep = xstep
+    th.Overflow = False
+    th.Density = True
+    th.FX("chi2")
+    th.xTitle = "Invariant Top Mass (GeV)"
+    th.yTitle = "Density (Arb.) / " + tl + " GeV"
+    th.Filename = "implementation-neutrino-2"
+    th.SaveFigure()
+
+
+def template_nunu_top_mass(dt, a, b, c, d, mode, out_path):
+    r1_cu, r2_cu = dt["r1_cu"], dt["r2_cu"]
+    r1_rf, r2_rf = dt["r1_rf"], dt["r2_rf"]
+    truth_nux = dt["truth_nux"]
     for i in [("n1", a), ("n2", b)]:
         n, f = i
         th1t = template_hist("Truth"              , truth_nux["tmass"][n], "red")
