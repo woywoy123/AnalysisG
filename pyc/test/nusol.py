@@ -193,7 +193,30 @@ class NuSol(object):
         hinv = np.linalg.inv(self.H_perp)
         return hinv.T.dot(UnitCircle()).dot(hinv)
 
+def Jacobi(obj, params):
+    sml = -1e-9
+    for j in range(10000000):
+        jbk = []
+        res = []
+        dres = []
+        res_t = None
+        v  = obj.residuals(params)
+        v_i = sum(v**2)
+        for u in range(len(params)):
+            dp_ = [x for x in params]
+            dp_[u] += sml
+            dv = sum(obj.residuals(dp_)**2)
+            jbk.append((dv - v_i) / sml)
 
+        jbk = np.array(jbk)
+        res = v #np.array(res)
+        #if res_t is not None and sum(res) > res_t: delta = -sml * jbk
+        delta = -(jbk.T.dot(jbk))**(-1) * jbk.T * v_i
+        res_t = sum(res)
+
+        params = params + delta
+        print(params, delta, jbk.T, sum(res**2), j)
+        if j == 1000: exit()
 
 class SingleNu(NuSol):
 
@@ -233,16 +256,22 @@ class DoubleNu(NuSol):
         v, _ = intersections_ellipses(N, n_)
         v_ = [self.S.dot(sol) for sol in v]
         self.solutionSets = [sol1, sol2]
+        self.es = [ss.H_perp for ss in self.solutionSets]
+        self.met = np.array([ev.vec.px, ev.vec.py, 1])
+
+        v = []
         if not v and leastsq:
             es = [ss.H_perp for ss in self.solutionSets]
             met = np.array([ev.vec.px, ev.vec.py, 1])
-
             def nus(ts): return tuple(e.dot([math.cos(t), math.sin(t), 1]) for e, t in zip(es, ts))
             def residuals(params): return sum(nus(params), -met)[:2]
             ts, _ = leastsq(residuals, [0, 0], ftol=5e-5, epsfcn=0.01)
             v, v_ = [[i] for i in nus(ts)]
             self.lsq = True
         for k, v in {"perp": v, "perp_": v_, "n_": n_, "n" : n}.items(): setattr(self, k, v)
+
+    def nus(self, ts): return tuple(e.dot([math.cos(t), math.sin(t), 1]) for e, t in zip(self.es, ts))
+    def residuals(self, params): return sum(self.nus(params), -self.met)[:2]
 
     @property
     def nunu_s(self):

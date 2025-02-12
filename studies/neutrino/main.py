@@ -4,7 +4,7 @@ from AnalysisG.selections.neutrino.validation import Validation
 from AnalysisG.events.bsm_4tops import BSM4Tops
 from AnalysisG import Analysis
 
-from combinatorial.figures import double_neutrino, missing_energy
+from combinatorial.figures import double_neutrino
 from validation.figures import nunuValidation
 
 import pathlib
@@ -13,7 +13,7 @@ import pickle
 i = 0
 run = True
 pth = "./data/"
-data_path = "/home/tnom6927/Downloads/mc16/ttH_tttt_m400/*"
+data_path = "/home/tnom6927/Downloads/mc16/ttH_tttt_m400/DAOD_TOPQ1.21955708._000011.root"
 
 if run:
     data = Combinatorial() #Validation()

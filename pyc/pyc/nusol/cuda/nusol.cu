@@ -127,33 +127,33 @@ std::map<std::string, torch::Tensor> nusol_::combinatorial(
         dst_.index_put_({nux}, d_nu["distances"]); 
     }
 
-    const dim3 thsol  = dim3(32, 4); 
-    const dim3 blksol = blk_(evnt_dx, 32, 4, 4);
-    AT_DISPATCH_ALL_TYPES(pmc -> scalar_type(), "compare_solx", [&]{
-        _compare_solx<<<blksol, thsol>>>(
-                  ev_id.packed_accessor64<long  , 1, torch::RestrictPtrTraits>(),
-                     ev.packed_accessor64<long  , 1, torch::RestrictPtrTraits>(),
+    //const dim3 thsol  = dim3(32, 4); 
+    //const dim3 blksol = blk_(evnt_dx, 32, 4, 4);
+    //AT_DISPATCH_ALL_TYPES(pmc -> scalar_type(), "compare_solx", [&]{
+    //    _compare_solx<<<blksol, thsol>>>(
+    //              ev_id.packed_accessor64<long  , 1, torch::RestrictPtrTraits>(),
+    //                 ev.packed_accessor64<long  , 1, torch::RestrictPtrTraits>(),
 
-                    sol.packed_accessor64<double, 1, torch::RestrictPtrTraits>(),
-                   edge.packed_accessor64<long  , 2, torch::RestrictPtrTraits>(),
-                    nu1.packed_accessor64<double, 2, torch::RestrictPtrTraits>(),
-                    nu2.packed_accessor64<double, 2, torch::RestrictPtrTraits>(),
+    //                sol.packed_accessor64<double, 1, torch::RestrictPtrTraits>(),
+    //               edge.packed_accessor64<long  , 2, torch::RestrictPtrTraits>(),
+    //                nu1.packed_accessor64<double, 2, torch::RestrictPtrTraits>(),
+    //                nu2.packed_accessor64<double, 2, torch::RestrictPtrTraits>(),
 
-                  combi.packed_accessor64<long  , 2, torch::RestrictPtrTraits>(),
-                   dst_.packed_accessor64<double, 2, torch::RestrictPtrTraits>(),
-                   nu1_.packed_accessor64<double, 3, torch::RestrictPtrTraits>(),
-                   nu2_.packed_accessor64<double, 3, torch::RestrictPtrTraits>(),
-                    lenx, evnt_dx); 
-    }); 
+    //              combi.packed_accessor64<long  , 2, torch::RestrictPtrTraits>(),
+    //               dst_.packed_accessor64<double, 2, torch::RestrictPtrTraits>(),
+    //               nu1_.packed_accessor64<double, 3, torch::RestrictPtrTraits>(),
+    //               nu2_.packed_accessor64<double, 3, torch::RestrictPtrTraits>(),
+    //                lenx, evnt_dx); 
+    //}); 
 
     std::map<std::string, torch::Tensor> out;
-    out["distances"] = sol; 
+    out["distances"] = dst_; //sol; 
     out["l1"] = edge.index({torch::indexing::Slice(), 0, true}); 
     out["l2"] = edge.index({torch::indexing::Slice(), 1, true}); 
     out["b1"] = edge.index({torch::indexing::Slice(), 2, true}); 
     out["b2"] = edge.index({torch::indexing::Slice(), 3, true}); 
-    out["nu1"] = nu1;
-    out["nu2"] = nu2; 
+    out["nu1"] = nu1_;
+    out["nu2"] = nu2_; 
     out["msk"] = msk; 
     return out; 
 }

@@ -107,7 +107,6 @@ std::map<std::string, torch::Tensor> nusol_::combinatorial(
         torch::Tensor snu_pmcb1 = (pmc -> index({b1})*scale).index({n1}); 
         std::map<std::string, torch::Tensor> H1_m = nusol_::BaseMatrix(&snu_pmcb1, &snu_pmcl1, &mass1TW); 
         s_nu = nusol_::Nu(&H1_m["H"], nullptr, &snu_metxy, null); 
-
         torch::Tensor nux = n1.index({ev_id}); 
         nu1_.index_put_({nux}, s_nu["nu"]); 
         dst_.index_put_({nux}, s_nu["distances"]); 

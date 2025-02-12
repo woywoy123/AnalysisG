@@ -18,10 +18,10 @@ __device__ scalar_t _cofactor(scalar_t (&_M)[size_x1][size_y1], const unsigned i
 }
 
 template <typename scalar_t>
-__device__ scalar_t _div(scalar_t* p){return (*p) ? 1/(*p) : 0;}
+__device__ scalar_t _div(scalar_t* p){return (*p) ? 1.0/(*p) : 0.0;}
 
 template <typename scalar_t>
-__device__ scalar_t _div(scalar_t p){return (p) ? 1/p : 0;}
+__device__ scalar_t _div(scalar_t p){return (p) ? 1.0/p : 0.0;}
 
 template <typename scalar_t>
 __device__ scalar_t _p2(scalar_t* p){return (*p)*(*p);}

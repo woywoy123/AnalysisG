@@ -156,4 +156,5 @@ __global__ void _compare_solx(
     o_nu2[_idx][threadIdx.y] = (threadIdx.y < 3) ? _nu2[threadIdx.x][threadIdx.y] : _sqrt(_dot(_nu2[threadIdx.x], _nu2[threadIdx.x], 3)); 
 }
 
+
 #endif
