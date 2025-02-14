@@ -335,33 +335,37 @@ cdef class BasePlotting:
         com["figure.titlesize"] = self.ptr.title_size
         com["text.usetex"] = self.ptr.use_latex
         if self.ptr.use_latex: com["text.latex.preamble"] = r'\usepackage{amsmath}'
-        com["hatch.linewidth"] = 0.1
+        com["hatch.linewidth"] = self.ptr.line_width
         self.matpl.rcParams.update(com)
         self.__compile__()
 
-        self.matpl.xlabel(self.xTitle)
+        self.matpl.xlabel(self.xTitle, fontsize = self.ptr.font_size)
         try:
-            self._ax[0].set_ylabel(self.yTitle)
-            self.matpl.suptitle(self.Title)
+            self._ax[0].set_ylabel(self.yTitle, fontsize = self.ptr.font_size)
+            self.matpl.suptitle(self.Title, self.ptr.font_size)
         except:
-            self.matpl.ylabel(self.yTitle)
-            self.matpl.title(self.Title)
-        #self.matpl.tight_layout()
+            self.matpl.ylabel(self.yTitle, fontsize = self.ptr.font_size)
+            self.matpl.title(self.Title, fontsize = self.ptr.title_size)
 
         if self.xLogarithmic: self.matpl.xscale("log")
         if self.yLogarithmic: self.matpl.yscale("log")
 
-        if self.xStep > 0: self.matpl.xticks(self.__ticks__(self.xMin, self.xMax, self.xStep))
-        if self.yStep > 0: self.matpl.yticks(self.__ticks__(self.yMin, self.yMax, self.yStep))
+        if self.xStep > 0: self.matpl.xticks(self.__ticks__(self.xMin, self.xMax, self.xStep), fontsize = self.ptr.axis_size)
+        else: self.matpl.xticks(fontsize = self.ptr.axis_size)
 
-#        plt.gca().set_axis_off()
-#        plt.subplots_adjust(top = 1, bottom = 0, right = 1, left = 0, hspace = 0, wspace = 0)
-#        plt.margins(0,0)
-#        plt.gca().xaxis.set_major_locator(plt.NullLocator())
-#        plt.gca().yaxis.set_major_locator(plt.NullLocator())
+        if self.yStep > 0: self.matpl.yticks(self.__ticks__(self.yMin, self.yMax, self.yStep), fontsize = self.ptr.axis_size)
+        else: self.matpl.yticks(fontsize = self.ptr.axis_size)
 
-        self.matpl.savefig(env(out), dpi = self.ptr.dpi, bbox_inches = 'tight', pad_inches = 0)
-        self.matpl.savefig(raw, bbox_inches = 'tight', pad_inches = 0)
+        self.matpl.gcf().set_size_inches(self.ptr.xscaling, self.ptr.yscaling)
+
+        com = {}
+        com["dpi"] = self.ptr.dpi
+        com["bbox_inches"] = "tight"
+        com["pad_inches"] = 0
+        com["transparent"] = True
+
+        self.matpl.savefig(env(out), **com)
+        self.matpl.savefig(raw, **com)
         self.matpl.close("all")
         self.ptr.success(b"Finished Plotting: " + out)
 

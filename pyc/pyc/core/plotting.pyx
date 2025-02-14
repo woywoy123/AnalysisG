@@ -10,8 +10,8 @@ import warnings
 msg = 'This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.'
 warnings.filterwarnings(action='ignore', module='matplotlib.figure', category=UserWarning, message=(msg))
 
+from .plotting cimport *
 from .tools cimport *
-from .plotting cimport plotting
 
 from scipy.stats import ks_2samp
 import matplotlib.pyplot as plt
@@ -20,6 +20,75 @@ import mplhep as hep
 import numpy as np
 import random
 
+def ratio(H1, H2, axis, ylabel = "Ratio", normalize = False, yerror = False):
+    cdef dict out = {}
+    axis.set_ylim(0, 2)
+    axis.set_ylabel(ylabel)
+
+    if normalize:
+        t1, t2 = H1.values(), H2.values()
+        w1, w2 = H1.axes[0].widths, H2.axes[0].widths
+        t1, t2 = (t1*w1)/((t1*w1).sum()), (t2*w2)/((t2*w2).sum())
+        H1.reset()
+        H2.reset()
+        H1.view().value = t1
+        H2.view().value = t2
+
+    cdef float v1, v2
+    cdef vector[float] h1 = H1.counts().tolist()
+    cdef vector[float] h2 = H2.counts().tolist()
+    cdef vector[float] s1 = H1.variances().tolist()
+    cdef vector[float] s2 = H2.variances().tolist()
+    for i in range(h2.size()):
+        v1 = (h1[i] if h1[i] else 1)**2
+        v2 = (h2[i] if h2[i] else 1)**2
+        h2[i] = h1[i]/(h2[i] if h2[i] else 1)
+        if not yerror: s2[i] = 0
+        else: s2[i] = (h2[i]**2)*( (s1[i]/v1) + (s2[i]/v2) )
+
+    H1.reset()
+    H1.view().value = h2
+    H1.view().variance = s2
+    out["H"] = H1
+    out["ax"] = axis
+    out["color"] = "black"
+    out["histtype"] = "errorbar"
+    out["markersize"] = 5
+    axis.axhline(1, linestyle = "--", color = "grey")
+    return out
+
+def chi2(H1, H2, axis, ylabel = "Ratio", normalize = False, yerror = False):
+    cdef dict out = {}
+    axis.set_ylim(-1, 1)
+    axis.set_ylabel(
+            "$\\frac{O_i - E_i}{E_i}$", fontsize = 14, loc = "center",
+    )
+
+    if normalize:
+        t1, t2 = H1.values(), H2.values()
+        w1, w2 = H1.axes[0].widths, H2.axes[0].widths
+        t1, t2 = (t1*w1)/((t1*w1).sum()), (t2*w2)/((t2*w2).sum())
+        H1.reset()
+        H2.reset()
+        H1.view().value = t1
+        H2.view().value = t2
+
+    cdef float _chi2 = 0
+    cdef vector[float] h1 = H1.counts().tolist()
+    cdef vector[float] h2 = H2.counts().tolist()
+    for i in range(h2.size()):
+        _chi2 += (h1[i] - h2[i])**2/(h2[i] if h2[i] else 1)
+        h2[i] = (h1[i] - h2[i])/(h2[i] if h2[i] else 1)
+    H1.reset()
+    H1.view().value = h2
+    out["H"] = H1
+    out["ax"] = axis
+    out["color"] = "black"
+    out["histtype"] = "errorbar"
+    out["markersize"] = 5
+    out["add"] = "$\\left(\\chi^2 = " + "{:e}".format(_chi2) + "\\right)$"
+    axis.axhline(0, linestyle = "--", color = "grey")
+    return out
 
 cdef class BasePlotting:
     def __cinit__(self):
@@ -258,65 +327,47 @@ cdef class BasePlotting:
 
     def SaveFigure(self):
         cdef string out = self.ptr.build_path()
+        cdef str raw = env(out).replace(self.Filename + env(self.ptr.extension), "raw/" + self.Filename + ".pgf")
         cdef dict com = {}
         com["font.size"] = self.ptr.font_size
         com["axes.labelsize"] = self.ptr.axis_size
         com["legend.fontsize"] = self.ptr.legend_size
         com["figure.titlesize"] = self.ptr.title_size
         com["text.usetex"] = self.ptr.use_latex
-        com["hatch.linewidth"] = 0.1
+        if self.ptr.use_latex: com["text.latex.preamble"] = r'\usepackage{amsmath}'
+        com["hatch.linewidth"] = self.ptr.line_width
         self.matpl.rcParams.update(com)
         self.__compile__()
 
-        self.matpl.xlabel(self.xTitle)
+        self.matpl.xlabel(self.xTitle, fontsize = self.ptr.font_size)
         try:
-            self._ax[0].set_ylabel(self.yTitle)
-            self.matpl.suptitle(self.Title)
+            self._ax[0].set_ylabel(self.yTitle, fontsize = self.ptr.font_size)
+            self.matpl.suptitle(self.Title, self.ptr.font_size)
         except:
-            self.matpl.ylabel(self.yTitle)
-            self.matpl.title(self.Title)
-        self.matpl.tight_layout()
+            self.matpl.ylabel(self.yTitle, fontsize = self.ptr.font_size)
+            self.matpl.title(self.Title, fontsize = self.ptr.title_size)
 
         if self.xLogarithmic: self.matpl.xscale("log")
         if self.yLogarithmic: self.matpl.yscale("log")
 
-        if self.xStep > 0: self.matpl.xticks(self.__ticks__(self.xMin, self.xMax, self.xStep))
-        if self.yStep > 0: self.matpl.yticks(self.__ticks__(self.yMin, self.yMax, self.yStep))
+        if self.xStep > 0: self.matpl.xticks(self.__ticks__(self.xMin, self.xMax, self.xStep), fontsize = self.ptr.axis_size)
+        else: self.matpl.xticks(fontsize = self.ptr.axis_size)
 
-        self.matpl.savefig(env(out), dpi = self.ptr.dpi, bbox_inches = "tight")
-        cdef str raw = env(out).replace(self.Filename + env(self.ptr.extension), "raw/" + self.Filename + ".pgf")
-        self.matpl.savefig(raw)
+        if self.yStep > 0: self.matpl.yticks(self.__ticks__(self.yMin, self.yMax, self.yStep), fontsize = self.ptr.axis_size)
+        else: self.matpl.yticks(fontsize = self.ptr.axis_size)
 
+        self.matpl.gcf().set_size_inches(self.ptr.xscaling, self.ptr.yscaling)
+
+        com = {}
+        com["dpi"] = self.ptr.dpi
+        com["bbox_inches"] = "tight"
+        com["pad_inches"] = 0
+        com["transparent"] = True
+
+        self.matpl.savefig(env(out), **com)
+        self.matpl.savefig(raw, **com)
         self.matpl.close("all")
         self.ptr.success(b"Finished Plotting: " + out)
-
-
-cdef dict ratio(H1, H2, axis):
-    cdef dict out = {}
-    axis.set_ylim(0, 2)
-    axis.set_ylabel("MC/Data")
-    cdef vector[float] h1 = H1.counts().tolist()
-    cdef vector[float] h2 = H2.counts().tolist()
-    cdef vector[float] s1 = H1.variances().tolist()
-    cdef vector[float] s2 = H2.variances().tolist()
-    cdef float v1, v2
-    for i in range(h2.size()):
-        v1 = (h1[i] if h1[i] else 1)**2
-        v2 = (h2[i] if h2[i] else 1)**2
-        h2[i] = h1[i]/(h2[i] if h2[i] else 1)
-        s2[i] = (h2[i]**2)*( (s1[i]/v1) + (s2[i]/v2) )
-
-    H1.reset()
-    H1.view().value = h2
-    H1.view().variance = s2
-    out["H"] = H1
-    out["histtype"] = "errorbar"
-    out["markersize"] = 5
-    out["ax"] = axis
-    out["color"] = "black"
-    axis.axhline(1, linestyle = "--", color = "grey")
-    return out
-
 
 cdef class TH1F(BasePlotting):
 
@@ -398,7 +449,11 @@ cdef class TH1F(BasePlotting):
     def ShowCount(self, bool val): self.ptr.counts = val
 
     def FX(self, val = None):
-        if val is None: self.fx = ratio
+        if isinstance(val, str):
+            if   val.lower() == "ratio": self.fx = ratio
+            elif val.lower() == "chi2": self.fx = chi2
+            else: self.ptr.warning(b"Input Option: " + enc(val) + " is an invalid option! (ratio, ratio_chi2)")
+        elif val is None: self.fx = ratio
         else: self.fx = val
 
     def KStest(self, TH1F hist, bool normalize = True):
@@ -500,17 +555,17 @@ cdef class TH1F(BasePlotting):
 
     cdef dict __compile__(self, bool raw = False):
         cdef dict labels = self.xLabels
-        cdef float _max, _min
+        cdef float x_max, x_min
 
         if len(labels): pass
-        elif self.set_xmin: _min = self.ptr.x_min
+        elif self.set_xmin: x_min = self.ptr.x_min
         elif not len(labels) and not len(self.xData): pass
-        else: _min = self.ptr.get_min(b"x")
+        else: x_min = self.ptr.get_min(b"x")
 
         if len(labels): pass
-        elif self.set_xmax: _max = self.ptr.x_max
+        elif self.set_xmax: x_max = self.ptr.x_max
         elif not len(labels) and not len(self.xData): pass
-        else: _max = self.ptr.get_max(b"x")
+        else: x_max = self.ptr.get_max(b"x")
 
         y_max, y_min = None, None
         if self.set_ymin: y_min = self.ptr.y_min
@@ -528,15 +583,16 @@ cdef class TH1F(BasePlotting):
             histpl["label"] += [self.Histogram.Title]
             histpl["color"] += [self.Histogram.Color]
             histpl["hatch"] += [self.Histogram.Hatch]
-            if len(histpl["alpha"]): histpl["alpha"] += [self.Histogram.Alpha]
-            else: histpl["alpha"] += [1]
+            histpl["alpha"] += [self.Histogram.Alpha]
 
         if len(self.xData) or len(labels):
             histpl = self.factory()
-            histpl["label"] = None
-            histpl["H"]     = [self.__build__()]
-            if raw: return histpl
-            hep.histplot(**histpl)
+            if len(self.Histograms) and not len(self.xData): histpl["label"] = []
+            else:
+                histpl["label"] = None
+                histpl["H"]     = [self.__build__()]
+                if raw: return histpl
+                hep.histplot(**histpl)
 
         for h in self.Histograms:
             if not len(labels): h.xMin  = self.xMin
@@ -547,8 +603,7 @@ cdef class TH1F(BasePlotting):
             histpl["H"]     += [h.__build__()]
             histpl["color"] += [h.Color]
             histpl["hatch"] += [h.Hatch]
-            if len(histpl["alpha"]): histpl["alpha"] += [h.Alpha]
-            else: histpl["alpha"] += [1]
+            histpl["alpha"] += [h.Alpha]
 
         if raw: return histpl
         if not len(histpl["H"]): return {}
@@ -570,7 +625,12 @@ cdef class TH1F(BasePlotting):
             self.__get_error_seg__(error[0])
 
         elif self.Histogram is not None and len(self.Histograms) and self.Stacked:
-            self.__figure__({"nrows" : 2, "ncols" : 1, "sharex" : True, "gridspec_kw" : {"height_ratios" : [4, 1], "hspace" : 0.05}})
+            self.__figure__({
+                "nrows" : 2, "ncols" : 1, "sharex" : True,
+                "gridspec_kw" : {
+                    "height_ratios" : [4, 1], "hspace" : 0.05
+                }
+            })
 
             cpy = {}
             cpy["linewidth"] = 0
@@ -599,18 +659,47 @@ cdef class TH1F(BasePlotting):
             hep.histplot(**histpl)
             self.__get_error_seg__(error[0])
             self._ax[0].legend(loc = "upper right")
-            self._ax[0].set_xlim(_min, _max, auto = True)
+            self._ax[0].set_xlim(x_min, x_max, auto = True)
             self._ax[0].set_ylim(y_min, y_max, auto = True)
 
             if self.fx is None: self.FX()
-            cpy = self.fx(sum(histpl["H"]), cpy["H"], self._ax[1])
+            cpy = self.fx(
+                    sum(histpl["H"]), cpy["H"], self._ax[1],
+                    "Ratio - (" + self.Histogram.Title + "/" + cpy["label"],
+                    self.Density, self.ErrorBars
+            )
             hep.histplot(**cpy)
             return {}
 
+        elif self.Histogram is not None and len(self.Histograms) and not self.Stacked:
+            self.__figure__({
+                "nrows" : 2, "ncols" : 1, "sharex" : True,
+                "gridspec_kw" : {
+                    "height_ratios" : [4, 1], "hspace" : 0.05
+                }
+            })
+
+            histpl["ax"] = self._ax[0]
+            hep.histplot(**histpl)
+            self._ax[0].legend(loc = "upper right")
+            if self.fx is None: self.FX()
+
+            if len(self.Histograms) > 1: yl = "Ratio (" + self.Histogram.Title + "/ $H_{X}$)"
+            else: yl = self.Histogram.Title + "/" + self.Histograms[0].Title
+
+            for i in range(1, len(histpl["H"])):
+                try: cpy = self.fx(histpl["H"][0].copy(), histpl["H"][i].copy(), self._ax[1], yl, self.Density, histpl["yerr"])
+                except: cpy = self.fx(histpl["H"][0].copy(), histpl["H"][i].copy(), self._ax[1])
+                cpy["color"] = histpl["color"][i]
+                if "label" not in cpy: cpy["label"] = histpl["label"][i]
+                if "add" in cpy: cpy["label"] += " " + cpy["add"]; del cpy["add"]
+                hep.histplot(**cpy)
+            self._ax[1].legend(loc = "upper right")
+            return {}
         else: hep.histplot(**histpl)
 
         if not len(labels):
-            self._ax.set_xlim(_min, _max, auto = True)
+            self._ax.set_xlim(x_min, x_max, auto = True)
             self._ax.set_ylim(y_min, y_max, auto = True)
         self._ax.legend(loc = "upper right")
         return {}
@@ -756,6 +845,7 @@ cdef class TLine(BasePlotting):
         coms["marker"] = self.Marker
         coms["linewidth"] = self.LineWidth
         coms["label"] = self.Title
+
         if not len(self.xData): return
         elif self.ErrorBars:
             self.ptr.build_error()
@@ -796,8 +886,7 @@ cdef class TLine(BasePlotting):
         cdef TLine i
         for i in self.Lines: i.factory()
         self._ax.tick_params(axis = "x", which = "minor", bottom = False)
-        self._ax.tick_params(axis = "y", which = "minor", bottom = False)
-        self.matpl.legend(loc = "upper left")
+        self.matpl.legend(loc = "upper right")
         self.factory()
         return {}
 

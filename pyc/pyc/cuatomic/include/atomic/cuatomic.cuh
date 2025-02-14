@@ -149,4 +149,21 @@ __device__ scalar_t _sum(scalar_t (&v1)[], const unsigned int dx){
     return out; 
 }
 
+
+template <typename scalar_t>
+__device__ scalar_t foptim(scalar_t t, const unsigned int l){
+    return cos(t)*(l == 0) + sin(t)*(l==1) + (l == 2);
+}
+
+template <typename scalar_t>
+__device__ scalar_t trigger(bool con, scalar_t v1, scalar_t v2){
+    return con * v1 + (!con)*v2;
+}
+
+template <typename scalar_t>
+__device__ scalar_t trigger(const unsigned int dx, scalar_t v1, scalar_t v2, scalar_t v3){
+    return (dx == 0)*v1 + (dx == 1)*v2 + (dx == 2)*v3;
+}
+
+
 #endif
