@@ -265,7 +265,6 @@ class DoubleNu(NuSol):
         v, _ = intersections_ellipses(N , n_)
         v_   = [self.S.dot(sol) for sol in v]
 
-
         if not v:
             es = [ss.H_perp for ss in self.solutionSets]
             met = self.ev
@@ -286,12 +285,10 @@ class DoubleNu(NuSol):
             pairs.append((np.dot(s.T , self.n_).dot(s) - np.dot(s_.T, self.n).dot(s_))**2)
 
         K, K_ = [ss.H.dot(np.linalg.inv(ss.H_perp)) for ss in self.solutionSets]
-        nu1 = np.array([K.dot(s)   for s  in self.perp])
+        nu1 = np.array([K.dot(s)   for s  in self.perp ])
         nu2 = np.array([K_.dot(s_) for s_ in self.perp_])
 
-        x = None
         for i in range(len(nu1)):
-            if x is not None and x < pairs[i]: continue
             p1 = Neutrino()
             p1.px = nu1[i][0]
             p1.py = nu1[i][1]
@@ -304,4 +301,5 @@ class DoubleNu(NuSol):
             x = pairs[i]
             setattr(p2, "distance", x)
             setattr(p1, "distance", x)
-        return [p1, p2]
+            pairs[i] = [p1, p2]
+        return pairs

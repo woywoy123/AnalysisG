@@ -183,10 +183,10 @@ def topdetector_nunu(ana):
 
 def nunuValidation(ana):
     topchildren_nunu(ana)
-    toptruthjets_nunu(ana)
-    topjetchild_nunu(ana)
-    topdetector_nunu(ana)
-    LossStatistics()
+    #toptruthjets_nunu(ana)
+    #topjetchild_nunu(ana)
+    #topdetector_nunu(ana)
+    #LossStatistics()
     pass
 
 

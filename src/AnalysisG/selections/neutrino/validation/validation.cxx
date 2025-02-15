@@ -42,33 +42,34 @@ torch::Tensor pxpypze(particle_template* pc){
 }
 
 
-nu* construct_particle(torch::Tensor* inpt, std::vector<double>* dst){
+std::vector<nu*> construct_particle(torch::Tensor* inpt, std::vector<double>* dst){
     std::vector<std::vector<double>> pmc; 
     std::vector<signed long> s = tensor_size(inpt); 
     tensor_to_vector(inpt, &pmc, &s, double(0));
-
-    int idx = -1; 
-    double lst = 0; 
+    std::vector<nu*> outpt = {}; 
+    outpt.reserve(dst -> size()); 
     for (size_t x(0); x < pmc.size(); ++x){
         double d = dst -> at(x); 
         if (!d){continue;}
-        bool tx = lst > d;
-        if (!tx){continue;}
-        idx = x;
-        lst = d; 
+        std::vector<double> solx = pmc[x]; 
+        nu* nx = new nu(solx[0], solx[1], solx[2]); 
+        nx -> distance = d; 
+        outpt.push_back(nx); 
     }
-    if (idx == -1){return nullptr;}
-    std::vector<double> solx = pmc[idx]; 
-    nu* nx = new nu(solx[0], solx[1], solx[2]); 
-    nx -> distance = lst; 
-    return nx; 
+    return outpt; 
 }
 
+double compute_chi2(nu* v, nu* vt){
+    double vx2 = std::pow(v -> px - vt -> px, 2); 
+    double vy2 = std::pow(v -> py - vt -> py, 2); 
+    double vz2 = std::pow(v -> pz - vt -> pz, 2); 
+    return vx2 + vy2 + vz2; 
+}
 
 std::vector<nu*> validation::build_neutrinos(
                 std::vector<bquark*>* bqs, std::vector<lepton*>* lpt, 
                 std::vector<tquark*>* tps, std::vector<boson*>* wbs,
-                double met, double phi
+                double met, double phi, std::vector<nu*>* truth
 ){
     std::vector<double> _phi = {phi}; 
     std::vector<double> _met = {met}; 
@@ -114,12 +115,31 @@ std::vector<nu*> validation::build_neutrinos(
 
     std::vector<double> distance; 
     tensor_to_vector(&dst, &distance); 
-    nu* nu1_ = construct_particle(&nu1, &distance);  
-    nu* nu2_ = construct_particle(&nu2, &distance);  
-    if (nu1_ && nu2_){return {nu1_, nu2_};}
-    if (nu1_){delete nu1_;}
-    if (nu2_){delete nu2_;}
-    return {}; 
+    std::vector<nu*> nu1_ = construct_particle(&nu1, &distance);  
+    std::vector<nu*> nu2_ = construct_particle(&nu2, &distance);  
+    if (!nu1_.size() && !nu2_.size()){return {};}
+    nu* nu_1t = truth -> at(0); 
+    nu* nu_2t = truth -> at(1); 
+
+    int bst(0);  
+    double chi2(-1);
+    for (unsigned int x(0); x < nu1_.size(); ++x){
+        nu* nx1 = nu1_[x]; 
+        nu* nx2 = nu2_[x]; 
+        double v1 = compute_chi2(nx1, nu_1t); 
+        double v2 = compute_chi2(nx2, nu_2t); 
+        if (!x){chi2 = v1 + v2; continue;}
+        if (chi2 < v1 + v2){continue;}
+        chi2 = v1 + v2; 
+        bst = x; 
+    }
+
+    for (unsigned int x(0); x < nu1_.size(); ++x){
+        if (x == bst){continue;}
+        delete nu1_[x]; 
+        delete nu2_[x]; 
+    }
+    return {nu1_[bst], nu2_[bst]}; 
 }
 
 bool validation::strategy(event_template* ev){
@@ -224,14 +244,15 @@ bool validation::strategy(event_template* ev){
     }
     
     pkl -> c1_reconstructed_children_nu = this -> build_neutrinos(
-                &pkl -> truth_bquarks, &pkl -> truth_leptons, 
-                &pkl -> truth_tops   , &pkl -> truth_bosons, 
-                pkl -> met, pkl -> phi
+                &pkl -> truth_bquarks , &pkl -> truth_leptons, 
+                &pkl -> truth_tops    , &pkl -> truth_bosons, 
+                pkl -> met, pkl -> phi, &pkl -> truth_nus
     ); 
 
     pkl -> c2_reconstructed_children_nu = this -> build_neutrinos(
-                &pkl -> truth_bquarks, &pkl -> truth_leptons, 
-                nullptr, nullptr, pkl -> met, pkl -> phi
+                &pkl -> truth_bquarks , &pkl -> truth_leptons, 
+                nullptr, nullptr, 
+                pkl -> met, pkl -> phi, &pkl -> truth_nus
     ); 
 
     if (truthjets_tops.size() == 2){
@@ -244,12 +265,13 @@ bool validation::strategy(event_template* ev){
         pkl -> c1_reconstructed_truthjet_nu = this -> build_neutrinos(
                 &pkl -> truth_bjets   , &pkl -> truth_leptons,  
                 &pkl -> truth_jets_top, &pkl -> truth_bosons, 
-                pkl -> met, pkl -> phi
+                pkl -> met, pkl -> phi, &pkl -> truth_nus
         ); 
 
         pkl -> c2_reconstructed_truthjet_nu = this -> build_neutrinos(
                 &pkl -> truth_bjets   , &pkl -> truth_leptons, 
-                nullptr, nullptr, pkl -> met, pkl -> phi
+                nullptr, nullptr, 
+                pkl -> met, pkl -> phi, &pkl -> truth_nus
         ); 
     }
 
@@ -263,12 +285,13 @@ bool validation::strategy(event_template* ev){
         pkl -> c1_reconstructed_jetchild_nu = this -> build_neutrinos(
                 &pkl -> bjets   , &pkl -> truth_leptons,  
                 &pkl -> jets_top, &pkl -> truth_bosons, 
-                pkl -> met, pkl -> phi
+                pkl -> met, pkl -> phi, &pkl -> truth_nus
         ); 
 
         pkl -> c2_reconstructed_jetchild_nu = this -> build_neutrinos(
                 &pkl -> bjets   , &pkl -> truth_leptons, 
-                nullptr, nullptr, pkl -> met, pkl -> phi
+                nullptr, nullptr, 
+                pkl -> met, pkl -> phi, &pkl -> truth_nus
         ); 
     }
 
@@ -283,14 +306,15 @@ bool validation::strategy(event_template* ev){
         pkl -> lepton_jets_top.push_back(new tquark(&ljets_tops[1] -> data)); 
 
         pkl -> c1_reconstructed_jetlep_nu = this -> build_neutrinos(
-                &pkl -> bjets   , &pkl -> reco_leptons,  
+                &pkl -> bjets          , &pkl -> reco_leptons,  
                 &pkl -> lepton_jets_top, &pkl -> reco_bosons, 
-                pkl -> met, pkl -> phi
+                pkl -> met,  pkl -> phi, &pkl -> truth_nus
         ); 
 
         pkl -> c2_reconstructed_jetlep_nu = this -> build_neutrinos(
                 &pkl -> bjets   , &pkl -> reco_leptons, 
-                nullptr, nullptr, pkl -> met, pkl -> phi
+                nullptr, nullptr, 
+                pkl -> met, pkl -> phi, &pkl -> truth_nus
         ); 
     }
     return true; 

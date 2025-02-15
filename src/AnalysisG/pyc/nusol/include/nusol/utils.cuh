@@ -111,6 +111,41 @@ __global__ void _mass_matrix(
 }
 
 
+template <size_t size_x>
+__global__ void _perturbation(
+        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> dnu_tw1,
+        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> dnu_tw2,
+        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> dnu_met,
+        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> dnu_res,
+        const double perturb, const double top_mass, 
+        const double w_mass, const bool start
+){
+    __shared__ double _dnu_res[size_x][36][6]; 
+    __shared__ double _dnu_par[size_x][36][6]; 
+
+    const unsigned int idx  = threadIdx.x;
+    const unsigned int idy  = threadIdx.y; 
+    const unsigned int idz  = threadIdx.z;  
+    const unsigned int _idx = (blockIdx.x * blockDim.x + threadIdx.x)*36 + idy; 
+    if (_idx >= dnu_res.size({0})){return;}
+
+    if (idz < 2){     dnu_par[idx][idy][idz] = dnu_tw1[_idx][idz] * top_mass;}
+    else if (idz < 4){dnu_par[idx][idy][idz] = dnu_tw2[_idx][idz] * w_mass;}
+    else if (idz < 6){dnu_par[idx][idy][idz] = dnu_met[_idx][idz];}
+    _dnu_res[idx][idy][idz] = dnu_res[_idx][idz]; 
+    __syncthreads();
+
+    
+
+
+
+
+
+
+
+}
+
+
 
 __global__ void _compare_solx(
         torch::PackedTensorAccessor64<long  , 1, torch::RestrictPtrTraits> cmx_dx,
@@ -155,5 +190,6 @@ __global__ void _compare_solx(
     o_nu1[_idx][threadIdx.y] = (threadIdx.y < 3) ? _nu1[threadIdx.x][threadIdx.y] : _sqrt(_dot(_nu1[threadIdx.x], _nu1[threadIdx.x], 3)); 
     o_nu2[_idx][threadIdx.y] = (threadIdx.y < 3) ? _nu2[threadIdx.x][threadIdx.y] : _sqrt(_dot(_nu2[threadIdx.x], _nu2[threadIdx.x], 3)); 
 }
+
 
 #endif

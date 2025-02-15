@@ -1,4 +1,1 @@
 #include <nusol/base.cuh>
-
-
-

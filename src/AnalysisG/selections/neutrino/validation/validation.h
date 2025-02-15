@@ -106,11 +106,10 @@ class validation: public selection_template
         }
 
         std::vector<nu*> build_neutrinos(
-                std::vector<bquark*>* bqs, 
-                std::vector<lepton*>* lpt, 
-                std::vector<tquark*>* tps,
-                std::vector<boson*>* wbs,
-                double met, double phi); 
+                std::vector<bquark*>* bqs, std::vector<lepton*>* lpt, 
+                std::vector<tquark*>* tps, std::vector<boson*>* wbs,
+                double met, double phi, std::vector<nu*>* truth
+        ); 
 
 
 

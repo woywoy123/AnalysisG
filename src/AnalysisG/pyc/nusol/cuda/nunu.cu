@@ -157,17 +157,111 @@ __global__ void _nunu_vp_(
     ds[_idx][pos] = dq; 
 }
 
+template <typename scalar_t, size_t size_x, size_t size_y>
+__global__ void _residual_(
+        const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> metxy, 
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> H_perp, 
+        const torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> H_perp_,
+              torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> nu1, 
+              torch::PackedTensorAccessor64<scalar_t, 3, torch::RestrictPtrTraits> nu2, 
+              torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> dst, 
+              const double tol, const double step, const unsigned int timeout
+){
+
+    __shared__ double _metxy_[size_x][3]; 
+    __shared__ double _H_perp[size_x][6][3]; 
+
+    __shared__ double _res_[size_x][8][8][3]; 
+    __shared__ double _Jxb_[size_x][size_y][3];
+    __shared__ double _params[size_x][size_y][3]; 
+    __shared__ double _buffer[size_x][size_y][2][3]; 
+
+    const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
+    const unsigned int idx = threadIdx.x; 
+    const unsigned int idy = threadIdx.y;
+    const unsigned int idz = threadIdx.z;
+    if (_idx >= metxy.size({0})){return;}
+
+    if (idy < 6){_H_perp[idx][idy][idz] = (idy <= 2)*H_perp [_idx][idy%3][idz] + (idy <= 5 && idy >= 3)*H_perp_[_idx][(idy-3)%3][idz];}
+    _metxy_[idx][idz] = metxy[_idx][idz*(idz < 2)]*(idz < 2) + 1*(idz == 2); 
+    
+    int ix = idy % 8; 
+    int iy = idy / 8;
+    double dt0 = double(4 - ix)*step; 
+    double dt1 = double(4 - iy)*step; 
+    double v1(0), v2(0), r2c(0); 
+
+    _params[idx][idy][idz] = 0;
+    _res_[idx][ix][iy][idz] = 0; 
+    _buffer[idx][idy][0][idz] = 0; 
+    _buffer[idx][idy][1][idz] = 0; 
+    __syncthreads(); 
+
+    for (unsigned int t(0); t < timeout; ++t){
+        _buffer[idx][idy][0][idz] = foptim(_params[idx][idy][0] + dt0, idz); 
+        _buffer[idx][idy][1][idz] = foptim(_params[idx][idy][1] + dt1, idz); 
+        __syncthreads(); 
+
+        v1 = _dot(_H_perp[idx][idz  ], _buffer[idx][idy][0], 3); 
+        v2 = _dot(_H_perp[idx][idz+3], _buffer[idx][idy][1], 3);
+        r2c = _params[idx][idy][2]; 
+        if ( (r2c < tol || t >= timeout - 1) && t ){break;}
+        _res_[idx][iy][ix][idz] = pow(v1 + v2 - _metxy_[idx][idz], 2); 
+
+        __syncthreads(); 
+        double r2_t  = _sum(_res_[idx][4 ][4 ], 2); 
+        double r2_dx = _sum(_res_[idx][iy][ix], 2);
+        double r2_dy = _sum(_res_[idx][iy][ix], 2); 
+
+        double gr_t0 = (r2_dx - r2_t)*_div(dt0);
+        double gr_t1 = (r2_dy - r2_t)*_div(dt1); 
+        double dotx  = gr_t0*gr_t0 + gr_t1*gr_t1; 
+        dotx = dotx - _cmp(abs(dt0), abs(dt1), (r2_dx - r2_t)*(r2_dy - r2_t));
+
+        _buffer[idx][idy][0][idz] = trigger(idz < 2, _params[idx][idy][idz], r2_t); 
+        _buffer[idx][idy][1][idz] = trigger(idz, r2_dx, r2_dy, r2_t); 
+        _Jxb_[idx][idy][idz] = trigger(idz, gr_t0, gr_t1, dotx);
+
+        __syncthreads(); 
+        unsigned int py(0), pz(0); 
+        for (unsigned int y(0); y < size_y; ++y){
+            for (unsigned int z(0); z < 3; ++z){pz = trigger(_buffer[idx][py][1][pz] < _buffer[idx][y][1][z], pz, z);}
+            py = trigger(_buffer[idx][py][1][pz] < _buffer[idx][y][1][pz], py, y);
+        }
+        _params[idx][idy][idz] = _buffer[idx][idy][0][idz] - _div(_Jxb_[idx][py][2]) * _Jxb_[idx][py][idz] * r2_t * (idz < 2);
+        __syncthreads(); 
+    }
+
+    if (idy == 36 && r2c < tol){
+        nu1[_idx][5][idz] = v1; 
+        nu2[_idx][5][idz] = v2;
+        dst[_idx][5] = log10(r2c);
+    }
+}
 
 std::map<std::string, torch::Tensor> nusol_::NuNu(
-        torch::Tensor* H1_, torch::Tensor* H1_inv, 
-        torch::Tensor* H2_, torch::Tensor* H2_inv, 
+        torch::Tensor* H1_, torch::Tensor* H1_perp, 
+        torch::Tensor* H2_, torch::Tensor* H2_perp, 
         torch::Tensor* met_xy, double null
 ){
     const unsigned int dx = H1_ -> size({0}); 
     const unsigned int thx = (dx >= 48) ? 48 : dx; 
+
+    const double step = 1e-9; 
+    const double tolerance = 1e-6; 
+    const unsigned int timeout = 1000; 
+
+    const dim3 thr = dim3(4, 64, 3);
     const dim3 thd = dim3(thx, 3, 3);
+    const dim3 thN = dim3(thx, 6, 3);
+
+    const dim3 blr = blk_(dx, 4, 64, 64, 3, 3); 
     const dim3 blk = blk_(dx, thx, 3, 3, 3, 3); 
-    
+    const dim3 blN = blk_(dx, thx, 6, 6, 3, 3); 
+
+    torch::Tensor H1_inv = std::get<0>(operators_::Inverse(H1_perp)); 
+    torch::Tensor H2_inv = std::get<0>(operators_::Inverse(H2_perp)); 
+
     torch::Tensor S  = torch::zeros({dx, 3, 3}, MakeOp(H1_)); 
     torch::Tensor N  = torch::zeros({dx, 3, 3}, MakeOp(H1_)); 
     torch::Tensor n  = torch::zeros({dx, 3, 3}, MakeOp(H1_)); 
@@ -178,8 +272,8 @@ std::map<std::string, torch::Tensor> nusol_::NuNu(
     AT_DISPATCH_ALL_TYPES(H1_ -> scalar_type(), "NuNu", [&]{
         _nunu_init_<scalar_t, 48><<<blk, thd>>>(
                 met_xy -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
-                H1_inv -> packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
-                H2_inv -> packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                   H1_inv.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                   H2_inv.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
                    H1_ -> packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
                    H2_ -> packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
 
@@ -198,9 +292,16 @@ std::map<std::string, torch::Tensor> nusol_::NuNu(
     torch::Tensor v   = out["solutions"]; 
     torch::Tensor ds  = out["distances"]; 
 
-    const dim3 thN = dim3(thx, 6, 3);
-    const dim3 blN = blk_(dx, thx, 6, 6, 3, 3); 
     AT_DISPATCH_ALL_TYPES(H1_ -> scalar_type(), "NuNu", [&]{
+        _residual_<scalar_t, 4, 64><<<blr, thr>>>(
+                met_xy -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+               H1_perp -> packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+               H2_perp -> packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                        v.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                       v_.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                       ds.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+                        tolerance, step, timeout); 
+
         _nunu_vp_<scalar_t, 48><<<blN, thN>>>(
                         S.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
                         K.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
@@ -225,97 +326,27 @@ std::map<std::string, torch::Tensor> nusol_::NuNu(
     return out;  
 }
 
-
-std::vector<torch::Tensor> residuals(
-        torch::Tensor* H_perp, torch::Tensor* H_perp_, torch::Tensor* met_xy, 
-        torch::Tensor resid, double limit = 1e-5, int max_iter = 10000
-){
-    //pybind11::gil_scoped_release no_gil; 
-    torch::Tensor _H_perp  = H_perp  -> index({resid}); 
-    torch::Tensor _H_perp_ = H_perp_ -> index({resid}); 
-    torch::Tensor _met     = met_xy -> index({resid}); 
-    unsigned int dx = _met.size(0); 
-    if (dx == met_xy -> size(0)){ return {}; }
-	
-    torch::Tensor t1 = torch::ones( {dx, 1}, MakeOp(H_perp));
-    torch::Tensor t0 = torch::zeros({dx, 1}, MakeOp(H_perp)); 
-    torch::Tensor pi = torch::cos(t1)*2; 
-    _met = torch::cat({_met, t1}, -1);
-    t0 = torch::cat({t0, t0}, -1); 
-    
-    torch::Tensor t  = torch::zeros({dx, 1}, MakeOp(H_perp).requires_grad(true)); 
-    torch::Tensor t_ = torch::zeros({dx, 1}, MakeOp(H_perp).requires_grad(true));
-    torch::nn::functional::MSELossFuncOptions fx(torch::kNone); 
-    
-    torch::optim::AdamOptions set(0.001); 
-    torch::optim::Adam opti({t, t_}, set); 
-
-    torch::Tensor nu, nu_, loss, l1; 
-    for (int i(0); i < max_iter; ++i){
-        torch::Tensor px_ = pi*t; 
-        torch::Tensor py_ = pi*t_; 
-
-        nu  = ( _H_perp * (torch::cat({torch::cos(px_), torch::sin(px_), t1}, -1).view({-1, 1, 3}))).sum(-1); 
-	nu_ = (_H_perp_ * (torch::cat({torch::cos(py_), torch::sin(py_), t1}, -1).view({-1, 1, 3}))).sum(-1);
-        torch::Tensor nus = (nu_ + nu - _met).index({torch::indexing::Slice(), torch::indexing::Slice(torch::indexing::None, 2)});
-	opti.zero_grad(); 
-
-	loss = torch::nn::functional::mse_loss(nus, t0, fx); 
-	loss.sum().backward(); 
-	opti.step();
-        if (!i){l1 = loss.detach(); continue;}
-        if ((torch::abs(l1 - loss).sum(-1) < 1e-12).sum(-1).item<bool>()){break;}
-        l1 = loss.detach(); 
-        if (!t0.index({loss < limit}).size({0})){continue;}
-    }
-    return {nu.detach().view({-1, 1, 1, 3}), nu_.detach().view({-1, 1, 1, 3}), torch::log10(loss.detach().sum(-1))};  
-}
-
-
 std::map<std::string, torch::Tensor> nusol_::NuNu(
             torch::Tensor* pmc_b1,  torch::Tensor* pmc_b2, torch::Tensor* pmc_mu1, torch::Tensor* pmc_mu2,
             torch::Tensor* met_xy,  double null, torch::Tensor* m1, torch::Tensor* m2
 ){
     if (!m2){m2 = m1;}
+    unsigned int dx = met_xy -> size(0); 
     std::map<std::string, torch::Tensor> H1_m = nusol_::BaseMatrix(pmc_b1, pmc_mu1, m1);
     std::map<std::string, torch::Tensor> H2_m = nusol_::BaseMatrix(pmc_b2, pmc_mu2, m2);
     torch::Tensor passed = H1_m["passed"] * H2_m["passed"]; 
 
-    torch::Tensor H1_inv = std::get<0>(operators_::Inverse(&H1_m["H_perp"])); 
-    torch::Tensor H2_inv = std::get<0>(operators_::Inverse(&H2_m["H_perp"])); 
+    torch::Tensor H1_ = H1_m["H"]; 
+    torch::Tensor H1p = H1_m["H_perp"]; 
 
-    torch::Tensor H1_    = H1_m["H"]; 
-    torch::Tensor H2_    = H2_m["H"]; 
+    torch::Tensor H2_ = H2_m["H"]; 
+    torch::Tensor H2p = H2_m["H_perp"]; 
 
-    std::map<std::string, torch::Tensor> out = nusol_::NuNu(&H1_, &H1_inv, &H2_, &H2_inv, met_xy, null); 
-
-    //unsigned int dx = met_xy -> size(0); 
-    //torch::Tensor nu1 = out["nu1"].view({dx, -1, 3});  
-    //torch::Tensor nu2 = out["nu2"].view({dx, -1, 3}); 
-    //torch::Tensor dst = out["distances"].view({dx, -1}); 
-
-    //torch::Tensor msk = ((dst != 0).sum(-1) != 0)*(passed == 1); 
-    //std::vector<torch::Tensor> mx = residuals(&H1_m["H_perp"], &H2_m["H_perp"], met_xy, msk); 
-
-    //if (mx.size()){
-    //    unsigned int lx = msk.index({msk}).size(0);
-    //    torch::Tensor nu1_ = ( out["K"].index({msk}).view({lx, 1, 3, 3}) * mx[0]).sum(-1).view({-1, 1, 3}); 
-    //    torch::Tensor nu2_ = (out["K_"].index({msk}).view({lx, 1, 3, 3}) * mx[1]).sum(-1).view({-1, 1, 3});
-    //    torch::Tensor nullx = torch::zeros_like(nu1_); 
-    //    torch::Tensor nulld = torch::zeros({lx, 5}, MakeOp(pmc_mu1)); 
-
-    //    std::vector<torch::Tensor> vx = {}; 
-    //    for (size_t x(0); x < 5; ++x){vx.push_back(nullx);}
-    //    nullx = torch::cat(vx, -1); 
-    //    
-    //    nu1.index_put_({msk}, torch::cat({nu1_, nullx}, -1).view({-1, 6, 3}));  
-    //    nu2.index_put_({msk}, torch::cat({nu2_, nullx}, -1).view({-1, 6, 3}));  
-    //    dst.index_put_({msk}, torch::cat({mx[2].view({-1, 1}), nulld}, -1).view({lx, -1})); 
-    //}
-    //out["nu1"] = nu1; 
-    //out["nu2"] = nu2; 
+    std::map<std::string, torch::Tensor> out = nusol_::NuNu(&H1_, &H1p, &H2_, &H2p, met_xy, null); 
+    torch::Tensor nu1 = out["nu1"].view({dx, -1, 3});  
+    torch::Tensor nu2 = out["nu2"].view({dx, -1, 3}); 
+    torch::Tensor dst = out["distances"].view({dx, -1}); 
     out["passed"] = passed; 
-    //out["distances"] = dst; 
     return out; 
 }
 
@@ -324,15 +355,16 @@ std::map<std::string, torch::Tensor> nusol_::NuNu(
             torch::Tensor* met_xy, double null, double massT1, double massW1, double massT2, double massW2
 ){
     std::map<std::string, torch::Tensor> H1_m = nusol_::BaseMatrix(pmc_b1, pmc_mu1, massT1, massW1, 0);
-    torch::Tensor H1_inv = std::get<0>(operators_::Inverse(&H1_m["H_perp"])); 
-    torch::Tensor H1_    = H1_m["H"]; 
-
     std::map<std::string, torch::Tensor> H2_m = nusol_::BaseMatrix(pmc_b2, pmc_mu2, massT2, massW2, 0);
-    torch::Tensor H2_inv = std::get<0>(operators_::Inverse(&H2_m["H_perp"])); 
-    torch::Tensor H2_    = H2_m["H"]; 
-    torch::Tensor passed = H1_m["passed"] * H2_m["passed"]; 
-    std::map<std::string, torch::Tensor> out = nusol_::NuNu(&H1_, &H1_inv, &H2_, &H2_inv, met_xy, null); 
-    out["passed"] = passed; 
+
+    torch::Tensor H1_ = H1_m["H"]; 
+    torch::Tensor H1p = H1_m["H_perp"]; 
+
+    torch::Tensor H2_ = H2_m["H"]; 
+    torch::Tensor H2p = H2_m["H_perp"]; 
+
+    std::map<std::string, torch::Tensor> out = nusol_::NuNu(&H1_, &H1p, &H2_, &H2p, met_xy, null); 
+    out["passed"] = H1_m["passed"] * H2_m["passed"]; 
     return out; 
 }
 

@@ -21,8 +21,16 @@ def MakeParticle(p):
     for i in p: x.append(Particle(i.pt, i.eta, i.phi, i.e))
     return x
 
+def get_low(nu, nut):
+    if nu is None: return []
+    if not len(nu): return []
+    tmp = {chi2(nut[0], n[0]) + chi2(nut[1], n[1]) : n for n in nu}
+    tlw = list(sorted(tmp)).pop(0)
+    return tmp[tlw]
+
 def record_data(inpt, truth, data, leps, bqrk):
     if not len(inpt): return 1
+    print(inpt)
     for i in range(len(inpt)):
         kx = "n" + str(i+1)
         if truth is not None: tr = truth[i]
@@ -70,7 +78,7 @@ def get_population(data, truth, nu_n):
     idx = 0
     tmass, wmass = [], []
     for i in range(len(truth["tmass"][nu_n])):
-        if not data["missed"][i]: continue
+        if data["missed"][i]: continue
         tmass_r, tmass_t = data["tmass"][nu_n][idx], truth["tmass"][nu_n][i]
         tmass.append(abs((tmass_r - tmass_t)/tmass_t))
 
@@ -125,7 +133,6 @@ def compile_neutrinos(ana = None, truth_top = None, truth_lep = None, truth_b = 
         tru_b    = truth_b[i]
         tru_w    = truth_w[i]
         if not len(tru_b) or not len(tru_lep): continue
-
         r1_nunu = reco_c1[i]
         r2_nunu = reco_c2[i]
 
@@ -141,6 +148,8 @@ def compile_neutrinos(ana = None, truth_top = None, truth_lep = None, truth_b = 
         except ValueError: nunu = None
         if nunu is None: nunu = []
         else: nunu = nunu.nunu_s
+        if not len(nunu): continue
+        nunu = get_low(nunu, tru_nunu)
         r1_rf["missed"] += [record_data(nunu, tru_nunu, r1_rf, tru_lep, tru_b)]
 
         try: nunu = DoubleNu((b1, b2), (l1, l2), ev, mw, mt, mw, mt)
@@ -148,11 +157,13 @@ def compile_neutrinos(ana = None, truth_top = None, truth_lep = None, truth_b = 
         except ValueError: nunu = None
         if nunu is None: nunu = []
         else: nunu = nunu.nunu_s
+        nunu = get_low(nunu, tru_nunu)
+
         r2_rf["missed"] += [record_data(nunu, tru_nunu, r2_rf, tru_lep, tru_b)]
         record_data(tru_nunu, None, truth_nux, tru_lep, tru_b)
 
-        print(i, len(truth_nu))
         if i % 50 != 49: continue
+        print(i, len(truth_nu))
         dt["i"] = i
         f = open("./data/" + fname +".pkl", "wb")
         pickle.dump(dt, f)
