@@ -339,13 +339,15 @@ cdef class BasePlotting:
         self.matpl.rcParams.update(com)
         self.__compile__()
 
+        try: self._ax[0].set_title(self.Title, fontsize = self.ptr.title_size)
+        except TypeError: self._ax.set_title(self.Title, fontsize = self.ptr.title_size)
+
         self.matpl.xlabel(self.xTitle, fontsize = self.ptr.font_size)
         try:
             self._ax[0].set_ylabel(self.yTitle, fontsize = self.ptr.font_size)
             self.matpl.suptitle(self.Title, self.ptr.font_size)
         except:
             self.matpl.ylabel(self.yTitle, fontsize = self.ptr.font_size)
-            self.matpl.title(self.Title, fontsize = self.ptr.title_size)
 
         if self.xLogarithmic: self.matpl.xscale("log")
         if self.yLogarithmic: self.matpl.yscale("log")

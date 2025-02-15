@@ -113,8 +113,8 @@ def define_metrics(dt, tlt):
 
     # -------- Case one ----------- #
     n_events = len(truth_nux["tmass"]["n1"])
-    c1, c2 = sum(r1_cu["missed"]), sum(r2_cu["missed"])
-    r1, r2 = sum(r1_rf["missed"]), sum(r2_rf["missed"])
+    c1, c2 = n_events - sum(r1_cu["missed"]), n_events - sum(r2_cu["missed"])
+    r1, r2 = n_events - sum(r1_rf["missed"]), n_events - sum(r2_rf["missed"])
 
     # --------- Case two: Inconsistent candidates ---------- #
     tmass_c1_n1, wmass_c1_n1 = get_population(r1_cu, truth_nux, "n1")
@@ -152,7 +152,7 @@ def topchildren_nunu(ana):
     distance_chi2(dt, "TopChildren", "top-children")
     mass_differential(dt, "", "top-children")
     define_metrics(dt, "TopChildren")
-    #chi2_neutrinos(dt, "TopChildren", out)
+    chi2_neutrinos(dt, "TopChildren", out)
 
 def toptruthjets_nunu(ana):
     out = "truthjets-children"
@@ -183,10 +183,10 @@ def topdetector_nunu(ana):
 
 def nunuValidation(ana):
     topchildren_nunu(ana)
-    #toptruthjets_nunu(ana)
-    #topjetchild_nunu(ana)
-    #topdetector_nunu(ana)
-    #LossStatistics()
+    toptruthjets_nunu(ana)
+    topjetchild_nunu(ana)
+    topdetector_nunu(ana)
+    LossStatistics()
     pass
 
 

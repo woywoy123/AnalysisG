@@ -204,13 +204,12 @@ std::map<std::string, torch::Tensor> nusol_::Intersection(torch::Tensor* A, torc
     torch::Tensor real = std::get<0>(eigf); 
     torch::Tensor imag = std::get<1>(eigf); 
 
-    //torch::Tensor  msk = real.sum(-1) == 0 * imag.sum(-1) != 0; 
-    //if (msk.index({msk}).size({0}) != msk.size({0})){
-    //    torch::Tensor eig = torch::linalg::eigvals(inv_A_dot_B.index({msk == false})); 
-    //    real.index_put_({msk == false}, torch::real(eig).to(A -> scalar_type())); 
-    //    imag.index_put_({msk == false}, torch::imag(eig).to(A -> scalar_type())); 
-    //}
-    //std::cout << real << std::endl;
+    torch::Tensor  msk = real.sum(-1) == 0 * imag.sum(-1) != 0; 
+    if (msk.index({msk}).size({0}) != msk.size({0})){
+        torch::Tensor eig = torch::linalg::eigvals(inv_A_dot_B.index({msk == false})); 
+        real.index_put_({msk == false}, torch::real(eig).to(A -> scalar_type())); 
+        imag.index_put_({msk == false}, torch::imag(eig).to(A -> scalar_type())); 
+    }
 
     AT_DISPATCH_ALL_TYPES(A -> scalar_type(), "B-e*A", [&]{
         _factor_degen<scalar_t, _th_inter><<<blkX, thdX>>>(

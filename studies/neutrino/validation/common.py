@@ -30,7 +30,6 @@ def get_low(nu, nut):
 
 def record_data(inpt, truth, data, leps, bqrk):
     if not len(inpt): return 1
-    print(inpt)
     for i in range(len(inpt)):
         kx = "n" + str(i+1)
         if truth is not None: tr = truth[i]
@@ -148,7 +147,6 @@ def compile_neutrinos(ana = None, truth_top = None, truth_lep = None, truth_b = 
         except ValueError: nunu = None
         if nunu is None: nunu = []
         else: nunu = nunu.nunu_s
-        if not len(nunu): continue
         nunu = get_low(nunu, tru_nunu)
         r1_rf["missed"] += [record_data(nunu, tru_nunu, r1_rf, tru_lep, tru_b)]
 
@@ -158,8 +156,8 @@ def compile_neutrinos(ana = None, truth_top = None, truth_lep = None, truth_b = 
         if nunu is None: nunu = []
         else: nunu = nunu.nunu_s
         nunu = get_low(nunu, tru_nunu)
-
         r2_rf["missed"] += [record_data(nunu, tru_nunu, r2_rf, tru_lep, tru_b)]
+
         record_data(tru_nunu, None, truth_nux, tru_lep, tru_b)
 
         if i % 50 != 49: continue

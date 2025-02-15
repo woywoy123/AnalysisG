@@ -133,7 +133,7 @@ std::map<std::string, torch::Tensor> nusol_::combinatorial(
             const dim3 thdx  = dim3(4, 36, 6); 
             const dim3 blkdx = blk_(lx, 4, 36, 36, 6, 6);
             AT_DISPATCH_ALL_TYPES(pmc -> scalar_type(), "leastsquares", [&]{
-                _perturbation<<<blkdx, thdx>>><4>(
+                _perturbation<4><<<blkdx, thdx>>>(
                     dnu_tw1.packed_accessor64<double, 2, torch::RestrictPtrTraits>(), 
                     dnu_tw2.packed_accessor64<double, 2, torch::RestrictPtrTraits>(), 
                     dnu_met.packed_accessor64<double, 2, torch::RestrictPtrTraits>(), 

@@ -20,7 +20,7 @@ if run:
     ev = BSM4Tops()
 
     ana = Analysis()
-    ana.Threads = 1
+    ana.Threads = 12
     ana.AddSelection(data)
     ana.AddEvent(ev, "nu")
     ana.AddSamples(data_path, "nu")

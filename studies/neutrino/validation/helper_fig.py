@@ -17,28 +17,28 @@ def LossStatistics():
     d = topdetector_nunu_build()
 
     a_nevents = len(a["truth_nux"]["tmass"]["n1"])
-    a_c1 = sum(a["r1_cu"]["missed"]) * 100 / a_nevents
-    a_c2 = sum(a["r2_cu"]["missed"]) * 100 / a_nevents
-    a_r1 = sum(a["r1_rf"]["missed"]) * 100 / a_nevents
-    a_r2 = sum(a["r2_rf"]["missed"]) * 100 / a_nevents
+    a_c1 = sum([k == 0 for k in a["r1_cu"]["missed"]]) * 100 / a_nevents
+    a_c2 = sum([k == 0 for k in a["r2_cu"]["missed"]]) * 100 / a_nevents
+    a_r1 = sum([k == 0 for k in a["r1_rf"]["missed"]]) * 100 / a_nevents
+    a_r2 = sum([k == 0 for k in a["r2_rf"]["missed"]]) * 100 / a_nevents
 
     b_nevents = len(b["truth_nux"]["tmass"]["n1"])
-    b_c1 = sum(b["r1_cu"]["missed"]) * 100 / b_nevents
-    b_c2 = sum(b["r2_cu"]["missed"]) * 100 / b_nevents
-    b_r1 = sum(b["r1_rf"]["missed"]) * 100 / b_nevents
-    b_r2 = sum(b["r2_rf"]["missed"]) * 100 / b_nevents
+    b_c1 = sum([k == 0 for k in b["r1_cu"]["missed"]]) * 100 / b_nevents
+    b_c2 = sum([k == 0 for k in b["r2_cu"]["missed"]]) * 100 / b_nevents
+    b_r1 = sum([k == 0 for k in b["r1_rf"]["missed"]]) * 100 / b_nevents
+    b_r2 = sum([k == 0 for k in b["r2_rf"]["missed"]]) * 100 / b_nevents
 
     c_nevents = len(c["truth_nux"]["tmass"]["n1"])
-    c_c1 = sum(c["r1_cu"]["missed"]) * 100 / c_nevents
-    c_c2 = sum(c["r2_cu"]["missed"]) * 100 / c_nevents
-    c_r1 = sum(c["r1_rf"]["missed"]) * 100 / c_nevents
-    c_r2 = sum(c["r2_rf"]["missed"]) * 100 / c_nevents
+    c_c1 = sum([k == 0 for k in c["r1_cu"]["missed"]]) * 100 / c_nevents
+    c_c2 = sum([k == 0 for k in c["r2_cu"]["missed"]]) * 100 / c_nevents
+    c_r1 = sum([k == 0 for k in c["r1_rf"]["missed"]]) * 100 / c_nevents
+    c_r2 = sum([k == 0 for k in c["r2_rf"]["missed"]]) * 100 / c_nevents
 
     d_nevents = len(d["truth_nux"]["tmass"]["n1"])
-    d_c1 = sum(d["r1_cu"]["missed"]) * 100 / d_nevents
-    d_c2 = sum(d["r2_cu"]["missed"]) * 100 / d_nevents
-    d_r1 = sum(d["r1_rf"]["missed"]) * 100 / d_nevents
-    d_r2 = sum(d["r2_rf"]["missed"]) * 100 / d_nevents
+    d_c1 = sum([k == 0 for k in d["r1_cu"]["missed"]]) * 100 / d_nevents
+    d_c2 = sum([k == 0 for k in d["r2_cu"]["missed"]]) * 100 / d_nevents
+    d_r1 = sum([k == 0 for k in d["r1_rf"]["missed"]]) * 100 / d_nevents
+    d_r2 = sum([k == 0 for k in d["r2_rf"]["missed"]]) * 100 / d_nevents
 
     sx = 3
     print("------------ Truth Children ------------")

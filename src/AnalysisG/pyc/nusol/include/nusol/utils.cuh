@@ -129,19 +129,11 @@ __global__ void _perturbation(
     const unsigned int _idx = (blockIdx.x * blockDim.x + threadIdx.x)*36 + idy; 
     if (_idx >= dnu_res.size({0})){return;}
 
-    if (idz < 2){     dnu_par[idx][idy][idz] = dnu_tw1[_idx][idz] * top_mass;}
-    else if (idz < 4){dnu_par[idx][idy][idz] = dnu_tw2[_idx][idz] * w_mass;}
-    else if (idz < 6){dnu_par[idx][idy][idz] = dnu_met[_idx][idz];}
+    if (idz < 2){     _dnu_par[idx][idy][idz] = dnu_tw1[_idx][idz] * top_mass;}
+    else if (idz < 4){_dnu_par[idx][idy][idz] = dnu_tw2[_idx][idz] * w_mass;}
+    else if (idz < 6){_dnu_par[idx][idy][idz] = dnu_met[_idx][idz];}
     _dnu_res[idx][idy][idz] = dnu_res[_idx][idz]; 
     __syncthreads();
-
-    
-
-
-
-
-
-
 
 }
 

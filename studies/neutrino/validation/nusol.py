@@ -271,9 +271,9 @@ class DoubleNu(NuSol):
             def nus(ts): return tuple(e.dot([math.cos(t), math.sin(t), 1]) for e, t in zip(es, ts))
             def residuals(params): return sum(nus(params), -met)[:2]
             ts, _ = leastsq(residuals, [0, 0], ftol=5e-5, epsfcn=0.01)
-            v, v_ = [[i] for i in nus(ts)]
-
             self.lsq = True
+            if sum(residuals(ts)**2) > 1e-6: pass
+            else: v, v_ = [[i] for i in nus(ts)]
         for k, v in {"perp" : v , "perp_":  v_, "n_" : n_, "n" : n}.items(): setattr(self, k, v)
 
     @property
@@ -283,23 +283,22 @@ class DoubleNu(NuSol):
         pairs = []
         for s, s_ in zip(self.perp, self.perp_):
             pairs.append((np.dot(s.T , self.n_).dot(s) - np.dot(s_.T, self.n).dot(s_))**2)
-
         K, K_ = [ss.H.dot(np.linalg.inv(ss.H_perp)) for ss in self.solutionSets]
         nu1 = np.array([K.dot(s)   for s  in self.perp ])
         nu2 = np.array([K_.dot(s_) for s_ in self.perp_])
 
         for i in range(len(nu1)):
+            x = pairs[i]
             p1 = Neutrino()
             p1.px = nu1[i][0]
             p1.py = nu1[i][1]
             p1.pz = nu1[i][2]
+            setattr(p1, "distance", x)
 
             p2 = Neutrino()
             p2.px = nu2[i][0]
             p2.py = nu2[i][1]
             p2.pz = nu2[i][2]
-            x = pairs[i]
             setattr(p2, "distance", x)
-            setattr(p1, "distance", x)
             pairs[i] = [p1, p2]
         return pairs
