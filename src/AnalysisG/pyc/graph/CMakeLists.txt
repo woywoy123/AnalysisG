@@ -1,3 +1,4 @@
+if(CMAKE_ANALYSISG_CUDA)
 set(SOURCE_FILES
     ${CMAKE_CURRENT_LIST_DIR}/include/graph/graph.cuh
     ${CMAKE_CURRENT_LIST_DIR}/include/graph/base.cuh
@@ -13,6 +14,7 @@ target_compile_options(cugraph PUBLIC
     $<$<COMPILE_LANGUAGE:CUDA>: --expt-relaxed-constexpr>
 )
 target_compile_options(cugraph PRIVATE -fPIC)
+endif()
 
 set(SOURCE_FILES
     ${CMAKE_CURRENT_LIST_DIR}/include/graph/graph.h

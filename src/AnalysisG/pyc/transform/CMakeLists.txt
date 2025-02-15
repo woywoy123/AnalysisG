@@ -1,3 +1,4 @@
+if(CMAKE_ANALYSISG_CUDA)
 set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/include/transform/transform.cuh
     ${CMAKE_CURRENT_SOURCE_DIR}/include/transform/base.cuh
@@ -11,6 +12,7 @@ target_compile_options(cutransform PRIVATE $<$<COMPILE_LANGUAGE:CUDA>: --expt-re
 target_link_libraries(cutransform PUBLIC cutils cuatomic)
 set_property(TARGET cutransform PROPERTY CUDA_SEPARATE_COMPILATION ON)
 target_compile_options(cutransform PRIVATE -fPIC)
+endif()
 
 set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/include/transform/transform.h

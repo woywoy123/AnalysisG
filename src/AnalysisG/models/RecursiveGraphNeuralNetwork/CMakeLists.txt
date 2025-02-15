@@ -5,7 +5,13 @@ add_library(recursivegraphneuralnetwork STATIC ${SOURCE_FILES})
 target_include_directories(recursivegraphneuralnetwork PRIVATE include/models)
 target_include_directories(recursivegraphneuralnetwork PUBLIC include)
 
+if (CMAKE_ANALYSISG_CUDA)
 target_link_libraries(recursivegraphneuralnetwork  PUBLIC cmodel_template cupyc)
+target_compile_definitions(recursivegraphneuralnetwork PRIVATE PYC_CUDA ON)
+else()
+target_link_libraries(recursivegraphneuralnetwork  PUBLIC cmodel_template tpyc)
+endif()
+
 target_compile_options(recursivegraphneuralnetwork PRIVATE -fPIC)
 
 add_custom_command(OUTPUT RecursiveGraphNeuralNetwork.cpp

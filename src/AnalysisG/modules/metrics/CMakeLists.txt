@@ -8,5 +8,11 @@ set(SOURCE_FILES
 add_library(cmetrics STATIC ${SOURCE_FILES})
 target_include_directories(cmetrics PRIVATE include/metrics)
 target_include_directories(cmetrics PUBLIC include ${ROOT_INCLUDES_DIR})
+
+if(CMAKE_ANALYSISG_CUDA)
 target_link_libraries(cmetrics LINK_PUBLIC cmodel_template cupyc ${ROOT_LIBRARIES})
+target_compile_definitions(cmetrics PRIVATE PYC_CUDA ON)
+else()
+target_link_libraries(cmetrics LINK_PUBLIC cmodel_template tpyc ${ROOT_LIBRARIES})
+endif()
 target_compile_options(cmetrics PRIVATE -fPIC)

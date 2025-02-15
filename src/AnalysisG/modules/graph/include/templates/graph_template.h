@@ -15,6 +15,15 @@
 #include <torch/torch.h>
 #include <mutex> 
 
+#ifdef PYC_CUDA
+#include <pyc/cupyc.h>
+#define cu_pyc c10::kCUDA
+#else
+#include <pyc/tpyc.h>
+#define cu_pyc c10::kCPU
+#endif
+
+
 class graph_template; 
 class dataloader; 
 class meta; 

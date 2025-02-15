@@ -116,25 +116,29 @@ namespace pyc {
        torch::Dict<std::string, torch::Tensor> Nu(
                torch::Tensor pmc_b, torch::Tensor pmc_mu, 
                torch::Tensor met_xy, torch::Tensor masses, 
-               torch::Tensor sigma, double null = 10e-10); 
+               torch::Tensor sigma, double null = 10e-10
+        ); 
 
        torch::Dict<std::string, torch::Tensor> NuNu(
                torch::Tensor pmc_b1, torch::Tensor pmc_b2, 
                torch::Tensor pmc_l1, torch::Tensor pmc_l2, 
-               torch::Tensor met_xy, torch::Tensor masses, double null = 10e-10); 
+               torch::Tensor met_xy, torch::Tensor masses, double null = 10e-10
+        ); 
 
 
        torch::Dict<std::string, torch::Tensor> NuNu(
                torch::Tensor pmc_b1, torch::Tensor pmc_b2, 
                torch::Tensor pmc_l1, torch::Tensor pmc_l2, 
                torch::Tensor met_xy, double null, 
-               torch::Tensor mass1, torch::Tensor mass2); 
+               torch::Tensor mass1, torch::Tensor mass2
+        ); 
 
        torch::Dict<std::string, torch::Tensor> combinatorial(
                torch::Tensor edge_index, torch::Tensor batch , torch::Tensor pmc, 
                torch::Tensor pid       , torch::Tensor met_xy, 
                double mT = 172.62*1000 , double mW = 80.385*1000, double top_pm = 0.95, double w_pm = 0.95, 
-               long steps = 20         , double null = 1e-10    , bool gev = false); 
+               long steps = 20         , double null = 1e-10    , bool gev = false
+        ); 
     }
 
     namespace graph {

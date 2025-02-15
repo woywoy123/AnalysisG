@@ -1,5 +1,4 @@
 #include <templates/graph_template.h>
-#include <pyc/cupyc.h>
 
 graph_template::graph_template(){
     this -> op = new torch::TensorOptions(torch::kCPU);
@@ -99,16 +98,16 @@ bool graph_template::double_neutrino(
     torch::Tensor chk = (is_b.view({-1}).sum({-1}) >= 2) * (is_lep.view({-1}).sum({-1}) >= 2); 
     if (!chk.index({chk}).size({0})){return true;}
 
-    torch::Tensor pt         = this -> node_fx["D-pt"].to(c10::kCUDA);
-    torch::Tensor eta        = this -> node_fx["D-eta"].to(c10::kCUDA);
-    torch::Tensor phi        = this -> node_fx["D-phi"].to(c10::kCUDA); 
-    torch::Tensor energy     = this -> node_fx["D-energy"].to(c10::kCUDA);
+    torch::Tensor pt         = this -> node_fx["D-pt"].to(cu_pyc);
+    torch::Tensor eta        = this -> node_fx["D-eta"].to(cu_pyc);
+    torch::Tensor phi        = this -> node_fx["D-phi"].to(cu_pyc); 
+    torch::Tensor energy     = this -> node_fx["D-energy"].to(cu_pyc);
     torch::Tensor pmc        = pyc::transform::separate::PxPyPzE(pt, eta, phi, energy); 
 
-    torch::Tensor pid        = torch::cat({is_lep, is_b}, {-1}).to(c10::kCUDA); 
-    torch::Tensor edge_index = this -> m_topology.to(torch::kLong).to(c10::kCUDA); 
-    torch::Tensor met        = this -> graph_fx["D-met"].to(c10::kCUDA); 
-    torch::Tensor met_phi    = this -> graph_fx["D-phi"].to(c10::kCUDA);
+    torch::Tensor pid        = torch::cat({is_lep, is_b}, {-1}).to(cu_pyc); 
+    torch::Tensor edge_index = this -> m_topology.to(torch::kLong).to(cu_pyc); 
+    torch::Tensor met        = this -> graph_fx["D-met"].to(cu_pyc); 
+    torch::Tensor met_phi    = this -> graph_fx["D-phi"].to(cu_pyc);
     torch::Tensor batch      = torch::zeros_like(pt.view({-1})).to(torch::kLong); 
     torch::Tensor met_xy     = torch::cat({
             pyc::transform::separate::Px(met, met_phi), 

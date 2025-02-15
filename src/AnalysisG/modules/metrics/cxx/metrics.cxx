@@ -1,5 +1,4 @@
 #include <metrics/metrics.h>
-#include <pyc/cupyc.h>
 #include <TError.h>
 
 metrics::metrics(){

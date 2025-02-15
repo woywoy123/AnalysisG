@@ -1,4 +1,6 @@
+if(CMAKE_ANALYSISG_CUDA)
 add_subdirectory(cuatomic)
+endif()
 add_subdirectory(cutils)
 add_subdirectory(transform)
 add_subdirectory(physics)

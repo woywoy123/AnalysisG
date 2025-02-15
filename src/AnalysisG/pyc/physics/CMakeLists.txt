@@ -1,3 +1,4 @@
+if(CMAKE_ANALYSIS_CUDA)
 set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/include/physics/physics.cuh
     ${CMAKE_CURRENT_SOURCE_DIR}/include/physics/base.cuh
@@ -11,6 +12,7 @@ target_compile_options(cuphysics PRIVATE $<$<COMPILE_LANGUAGE:CUDA>: --expt-rela
 target_link_libraries(cuphysics PUBLIC cutils cutransform cuatomic)
 set_property(TARGET cuphysics PROPERTY CUDA_SEPARATE_COMPILATION ON)
 target_compile_options(cuphysics PRIVATE -fPIC)
+endif()
 
 set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/include/physics/physics.h

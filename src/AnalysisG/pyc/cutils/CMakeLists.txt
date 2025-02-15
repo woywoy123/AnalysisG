@@ -1,3 +1,4 @@
+if(CMAKE_ANALYSISG_CUDA)
 set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/include/cutils/utils.cuh
     ${CMAKE_CURRENT_SOURCE_DIR}/utils.cu
@@ -10,6 +11,7 @@ target_compile_options(cutils PRIVATE $<$<COMPILE_LANGUAGE:CUDA>: --expt-relaxed
 target_link_libraries(cutils PUBLIC ${TORCH_LIBRARIES})
 set_property(TARGET cutils PROPERTY CUDA_SEPARATE_COMPILATION ON)
 target_compile_options(cutils PRIVATE -fPIC)
+endif()
 
 set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/include/cutils/utils.h

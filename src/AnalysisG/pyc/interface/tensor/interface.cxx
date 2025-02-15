@@ -365,6 +365,22 @@ torch::Dict<std::string, torch::Tensor> pyc::nusol::NuNu(
     return pyc::std_to_dict(&out); 
 }
 
+torch::Dict<std::string, torch::Tensor> pyc::nusol::combinatorial(
+        torch::Tensor edge_index, torch::Tensor batch , torch::Tensor pmc, 
+        torch::Tensor pid       , torch::Tensor met_xy, 
+        double mT, double mW, double top_pm, double w_pm, long steps, double null, bool gev
+){
+    std::map<std::string, torch::Tensor> out; 
+    return pyc::std_to_dict(&out); 
+}
+
+torch::Dict<std::string, torch::Tensor> pyc::graph::unique_aggregation(
+        torch::Tensor cluster_map, torch::Tensor features
+){
+    std::map<std::string, torch::Tensor> out; 
+    return pyc::std_to_dict(&out); 
+}
+ 
 torch::Dict<std::string, torch::Tensor> pyc::graph::edge_aggregation(
         torch::Tensor edge_index, torch::Tensor prediction, torch::Tensor edge_feature
 ){

@@ -1,8 +1,8 @@
 #include <c10/cuda/CUDACachingAllocator.h>
-#include <chrono>
 #include <templates/model_template.h>
 #include <structs/report.h>
 #include <dataloader.h>
+#include <chrono>
 
 dataloader::dataloader(){
     this -> prefix = "dataloader";

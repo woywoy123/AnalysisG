@@ -1,3 +1,4 @@
+if (CMAKE_ANALYSISG_CUDA)
 set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/include/nusol/device.cuh
     ${CMAKE_CURRENT_SOURCE_DIR}/include/nusol/utils.cuh
@@ -34,6 +35,7 @@ target_compile_options(cunusol PUBLIC
     $<$<COMPILE_LANGUAGE:CUDA>: --expt-relaxed-constexpr>
 )
 target_compile_options(cunusol PRIVATE -fPIC)
+endif()
 
 set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/include/nusol/nusol.h

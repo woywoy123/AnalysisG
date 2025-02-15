@@ -1,3 +1,4 @@
+if(CMAKE_ANALYSISG_CUDA)
 set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/include/pyc/cupyc.h
     ${CMAKE_CURRENT_SOURCE_DIR}/cuda/interface.cxx
@@ -54,8 +55,7 @@ target_include_directories(graph_cuda PUBLIC include)
 target_link_libraries(graph_cuda PUBLIC cupyc)
 target_compile_options(graph_cuda PRIVATE -fPIC)
 install(TARGETS graph_cuda DESTINATION .)
-
-
+endif()
 
 set(SOURCE_FILES
     ${CMAKE_CURRENT_LIST_DIR}/include/pyc/tpyc.h

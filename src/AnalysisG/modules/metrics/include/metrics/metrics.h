@@ -13,6 +13,14 @@
 #include <templates/model_template.h>
 #include <notification/notification.h>
 
+#ifdef PYC_CUDA
+#include <pyc/cupyc.h>
+#define cu_pyc c10::kCUDA
+#else
+#include <pyc/tpyc.h>
+#define cu_pyc c10::kCPU
+#endif
+
 struct analytics_t {
     model_template* model = nullptr; 
     model_report* report = nullptr; 

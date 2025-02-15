@@ -1,6 +1,5 @@
 #include <metrics/metrics.h>
 #include <TRatioPlot.h>
-#include <pyc/cupyc.h>
 #include <THStack.h>
 
 void metrics::dump_mass_plots(int k){
