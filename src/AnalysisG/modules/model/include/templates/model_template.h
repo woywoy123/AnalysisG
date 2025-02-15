@@ -6,6 +6,11 @@
 #include <templates/lossfx.h>
 #include <structs/settings.h>
 
+#ifdef PYC_CUDA
+#include <c10/cuda/CUDAStream.h>
+#include <ATen/cuda/CUDAGraph.h>
+#endif
+
 class metrics; 
 class analysis; 
 class model_template; 

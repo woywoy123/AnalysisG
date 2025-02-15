@@ -7,3 +7,9 @@ target_include_directories(coptimizer PUBLIC include)
 target_link_libraries(coptimizer LINK_PUBLIC cmodel_template cdataloader cmetrics)
 target_link_libraries(coptimizer LINK_PRIVATE ${TORCH_LIBRARIES})
 target_compile_options(coptimizer PRIVATE -fPIC)
+
+if(CMAKE_ANALYSISG_CUDA)
+target_compile_definitions(coptimizer PRIVATE PYC_CUDA ON)
+endif()
+
+

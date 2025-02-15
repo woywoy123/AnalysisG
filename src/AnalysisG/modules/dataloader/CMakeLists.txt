@@ -11,3 +11,7 @@ target_include_directories(cdataloader PUBLIC include)
 target_link_libraries(cdataloader PUBLIC cgraph_template cnotification ctools cstructs cio cmodel_template)
 target_compile_options(cdataloader PRIVATE -fPIC)
 
+if(CMAKE_ANALYSISG_CUDA)
+target_compile_definitions(cdataloader PRIVATE PYC_CUDA ON)
+endif()
+

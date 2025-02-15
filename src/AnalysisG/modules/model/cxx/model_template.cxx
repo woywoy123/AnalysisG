@@ -1,6 +1,4 @@
 #include <templates/model_template.h>
-#include <c10/cuda/CUDAStream.h>
-#include <ATen/cuda/CUDAGraph.h>
 
 model_template::model_template(){
     // input features

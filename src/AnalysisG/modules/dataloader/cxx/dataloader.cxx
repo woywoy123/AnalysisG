@@ -1,4 +1,3 @@
-#include <c10/cuda/CUDACachingAllocator.h>
 #include <templates/model_template.h>
 #include <structs/report.h>
 #include <dataloader.h>
@@ -284,13 +283,16 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* data, mode
 
 void dataloader::cuda_memory_server(){
     auto cuda_memory = [this](int device_i) -> bool {
-        CUdevice dev; 
-        cuDeviceGet(&dev, device_i); 
-        size_t free, total;
-        cuMemGetInfo(&free, &total);
-        return 100.0*(total - free)/(double)total > 95;
-    }; 
-
+    #if server
+        CUdevice dev;                                    
+        cuDeviceGet(&dev, device_i);                     
+        size_t free, total;                              
+        cuMemGetInfo(&free, &total);                     
+        return 100.0*(total - free)/(double)total > 95;  
+    #else 
+        return false;                                
+    #endif
+    };                                                   
     auto check_m = [this](std::map<int, std::vector<torch::Tensor>>* in_memory, bool purge, int device){
         std::map<int, std::vector<torch::Tensor>>::iterator ix; 
         for (ix = in_memory -> begin(); ix != in_memory -> end();){
@@ -320,7 +322,9 @@ void dataloader::cuda_memory_server(){
     }; 
     
     std::vector<graph_t*>* ptr = this -> data_set; 
+    #if server
     c10::cuda::CUDACachingAllocator::emptyCache();
+    #endif
     for (size_t x(0); x < ptr -> size(); ++x){
         graph_t* gr = (*ptr)[x];
         std::this_thread::sleep_for(std::chrono::microseconds(1));
@@ -347,6 +351,7 @@ void dataloader::cuda_memory_server(){
 }
 
 void dataloader::start_cuda_server(){
+    if (!server){return;}
     if (this -> cuda_mem){return;}
     auto monitor = [this](){
         this -> info("Starting CUDA server!");
@@ -355,16 +360,4 @@ void dataloader::start_cuda_server(){
     };
     this -> cuda_mem = new std::thread(monitor);
 }
-
-
-
-
-
-
-
-
-
-
-
-
 

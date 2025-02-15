@@ -1,8 +1,15 @@
 #ifndef DATALOADER_GENERATOR_H
 #define DATALOADER_GENERATOR_H
 
+#ifdef PYC_CUDA
 #include <cuda.h>
 #include <c10/cuda/CUDACachingAllocator.h>
+#define server true
+#endif
+
+#ifndef server
+#define server false
+#endif
 
 #include <tools/tools.h>
 #include <structs/property.h>

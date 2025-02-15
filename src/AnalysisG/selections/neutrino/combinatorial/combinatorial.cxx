@@ -1,6 +1,11 @@
 #include <tools/tensor_cast.h>
 #include <tools/vector_cast.h>
+
+#ifdef PYC_CUDA
 #include <pyc/cupyc.h>
+#else 
+#include <pyc/tpyc.h>
+#endif
 
 #include "combinatorial.h"
 
@@ -184,6 +189,7 @@ std::vector<nu*> combinatorial::get_baseline(
             pyc::transform::separate::Py(_mett, _phit)
     }, {-1});
 
+    #ifdef PYC_CUDA
     torch::Dict res = pyc::nusol::NuNu(b1t, b2t, l1t, l2t, metxy, 1e-10, m1t, m2t);   
     torch::Tensor nu1 = res.at("nu1").view({-1, 3});
     torch::Tensor nu2 = res.at("nu2").view({-1, 3});
@@ -197,6 +203,7 @@ std::vector<nu*> combinatorial::get_baseline(
     if (nu1_ && nu2_){return {nu1_, nu2_};}
     if (nu1_){delete nu1_;}
     if (nu2_){delete nu2_;}
+    #endif
     return {}; 
 }
 

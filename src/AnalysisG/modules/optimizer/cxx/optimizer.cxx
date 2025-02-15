@@ -67,7 +67,10 @@ void optimizer::training_loop(int k, int epoch){
     }
     model -> save_state(); 
     if (batched){delete smpl;}
+    
+    #ifdef PYC_CUDA
     c10::cuda::CUDACachingAllocator::emptyCache();
+    #endif
 }
 
 void optimizer::validation_loop(int k, int epoch){

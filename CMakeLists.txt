@@ -43,8 +43,13 @@ FIND_PACKAGE_ARGS)
 FetchContent_MakeAvailable(rapidjson)
 set(RAPIDJSON_INCLUDE_DIR ${CMAKE_BINARY_DIR}/_deps/rapidjson-src/include)
 
+if(CMAKE_ANALYSISG_CUDA)
 FetchContent_Declare(torch 
 URL "https://download.pytorch.org/libtorch/cu121/libtorch-cxx11-abi-shared-with-deps-2.4.1%2Bcu121.zip")
+else()
+FetchContent_Declare(torch 
+URL "https://download.pytorch.org/libtorch/cpu/libtorch-cxx11-abi-shared-with-deps-2.4.1%2Bcpu.zip")
+endif()
 FetchContent_MakeAvailable(torch)
 
 execute_process(

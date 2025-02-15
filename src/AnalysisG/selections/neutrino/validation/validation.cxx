@@ -2,7 +2,12 @@
 
 #include <tools/tensor_cast.h>
 #include <tools/vector_cast.h>
+
+#ifdef PYC_CUDA
 #include <pyc/cupyc.h>
+#else
+#include <pyc/tpyc.h>
+#endif
 
 validation::validation(){this -> name = "validation";}
 validation::~validation(){}
@@ -102,6 +107,7 @@ std::vector<nu*> validation::build_neutrinos(
             pyc::transform::separate::Py(_mett, _phit)
     }, {-1});
 
+    #ifdef PYC_CUDA
     torch::Dict res = pyc::nusol::NuNu(b1t, b2t, l1t, l2t, metxy, 10e-10, m1t, m2t);   
     torch::Tensor nu1 = res.at("nu1").view({-1, 3});
     torch::Tensor nu2 = res.at("nu2").view({-1, 3});
@@ -140,6 +146,10 @@ std::vector<nu*> validation::build_neutrinos(
         delete nu2_[x]; 
     }
     return {nu1_[bst], nu2_[bst]}; 
+    #else
+    return {}; 
+    #endif
+
 }
 
 bool validation::strategy(event_template* ev){
