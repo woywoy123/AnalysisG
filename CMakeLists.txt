@@ -9,9 +9,7 @@ set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
 set(CMAKE_POLICY_DEFAULT_CMP0135 NEW)
 
 set(CMAKE_CXX_STANDARD 17)
-#set(CMAKE_CUDA_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-#set(CMAKE_CUDA_STANDARD_REQUIRED ON)
 set(CMAKE_CUDA_ARCHITECTURES "native")
 
 #set(CMAKE_BUILD_TYPE Release)
@@ -19,20 +17,17 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Dimt=ON")
 #set(CMAKE_CXX_FLAGS_DEBUG "-g")
 #set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
-#SET(CUDA_cublas_device_LIBRARY /usr/local/cuda/lib64)
-#SET(CMAKE_CUDA_COMPILER /usr/local/cuda/bin/nvcc)
-#SET(CUDA_INCLUDE_DIRS /usr/local/cuda/include)
-#SET(CUDA_TOOLKIT_ROOT_DIR /usr/local/cuda)
+set(CMAKE_ANALYSISG_CUDA OFF)
 
 include(FetchContent)
 include(CheckLanguage)
-check_language(CUDA)
-enable_language(CUDA)
-message(STATUS "INSTALLING EXTENSIONS WITH CUDA!")
-string(REGEX REPLACE ".[0-9][0-9]|\\." "" CUDA_V ${CMAKE_CUDA_COMPILER_VERSION})
-message(STATUS "CMAKE_CUDA_COMPILER = ${CMAKE_CUDA_COMPILER}")
-message(STATUS "CMAKE_CUDA_COMPILER_ID = ${CMAKE_CUDA_COMPILER_ID}")
-message(STATUS "CMAKE_CUDA_COMPILER_VERSION = ${CUDA_V}")
+#check_language(CUDA)
+#enable_language(CUDA)
+#message(STATUS "INSTALLING EXTENSIONS WITH CUDA!")
+#string(REGEX REPLACE ".[0-9][0-9]|\\." "" CUDA_V ${CMAKE_CUDA_COMPILER_VERSION})
+#message(STATUS "CMAKE_CUDA_COMPILER = ${CMAKE_CUDA_COMPILER}")
+#message(STATUS "CMAKE_CUDA_COMPILER_ID = ${CMAKE_CUDA_COMPILER_ID}")
+#message(STATUS "CMAKE_CUDA_COMPILER_VERSION = ${CUDA_V}")
 
 set(RAPIDJSON_BUILD_THIRDPARTY_GTEST OFF)
 set(RAPIDJSON_BUILD_EXAMPLES OFF)
@@ -52,17 +47,10 @@ FetchContent_Declare(torch
 URL "https://download.pytorch.org/libtorch/cu121/libtorch-cxx11-abi-shared-with-deps-2.4.1%2Bcu121.zip")
 FetchContent_MakeAvailable(torch)
 
-#execute_process(
-#COMMAND python -c "import sysconfig; print(sysconfig.get_paths()['data'])" 
-#OUTPUT_VARIABLE LIBX OUTPUT_STRIP_TRAILING_WHITESPACE)
-
 execute_process(
 COMMAND python -c "import sysconfig; print(sysconfig.get_paths()['platlib'])" 
 OUTPUT_VARIABLE PYTHON_SITE_PACKAGES OUTPUT_STRIP_TRAILING_WHITESPACE)
 
-#link_directories("${LIBX}/lib")
-#set(ENV{MKLROOT} "${LIBX}/lib")
-#
 set(BLAS MKL)
 set(USE_TBB ON)
 set(MKL_TBB ON)
@@ -85,10 +73,6 @@ set(USE_CUDA ON)
 set(USE_CUDNN ON)
 set(CAFFE2_USE_CUDNN TRUE)
 set(BUILD_CAFFE2_OPS ON)
-
-list(APPEND CMAKE_PREFIX_PATH "${CMAKE_PREFIX_PATH} ${LIBX}/lib/cmake/mkl")
-list(APPEND CMAKE_PREFIX_PATH "${CMAKE_PREFIX_PATH} ${LIBX}/lib/cmake/tbb")
-#find_package(BLAS REQUIRED)
 
 list(APPEND CMAKE_PREFIX_PATH ${torch_SOURCE_DIR})
 find_package(Torch REQUIRED)
@@ -122,5 +106,4 @@ message(STATUS "RAPIDJSON: ${RAPIDJSON_INCLUDE_DIR}")
 message(STATUS     "TORCH: ${TORCH_LIBRARIES}")
 
 add_subdirectory(src/AnalysisG)
-#file(INSTALL ${torch_SOURCE_DIR}/lib/          DESTINATION ${PYTHON_SITE_PACKAGES}/torch)
 file(INSTALL ${CMAKE_BINARY_DIR}/src/AnalysisG DESTINATION ${PYTHON_SITE_PACKAGES})
