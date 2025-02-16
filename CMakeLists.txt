@@ -12,22 +12,13 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CUDA_ARCHITECTURES "native")
 
-#set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Dimt=ON")
-#set(CMAKE_CXX_FLAGS_DEBUG "-g")
-#set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
-set(CMAKE_ANALYSISG_CUDA OFF)
-
+set(CMAKE_ANALYSISG_CUDA ON)
 include(FetchContent)
 include(CheckLanguage)
-#check_language(CUDA)
-#enable_language(CUDA)
-#message(STATUS "INSTALLING EXTENSIONS WITH CUDA!")
-#string(REGEX REPLACE ".[0-9][0-9]|\\." "" CUDA_V ${CMAKE_CUDA_COMPILER_VERSION})
-#message(STATUS "CMAKE_CUDA_COMPILER = ${CMAKE_CUDA_COMPILER}")
-#message(STATUS "CMAKE_CUDA_COMPILER_ID = ${CMAKE_CUDA_COMPILER_ID}")
-#message(STATUS "CMAKE_CUDA_COMPILER_VERSION = ${CUDA_V}")
 
 set(RAPIDJSON_BUILD_THIRDPARTY_GTEST OFF)
 set(RAPIDJSON_BUILD_EXAMPLES OFF)
@@ -35,7 +26,6 @@ set(RAPIDJSON_BUILD_TESTS OFF)
 set(RAPIDJSON_BUILD_DOC OFF)
 set(RAPIDJSON_BUILD_CXX11 OFF)
 set(RAPIDJSON_BUILD_CXX17 ON)
-
 FetchContent_Declare(rapidjson
 GIT_REPOSITORY "https://github.com/Tencent/rapidjson.git"
 GIT_TAG origin/master
@@ -44,6 +34,13 @@ FetchContent_MakeAvailable(rapidjson)
 set(RAPIDJSON_INCLUDE_DIR ${CMAKE_BINARY_DIR}/_deps/rapidjson-src/include)
 
 if(CMAKE_ANALYSISG_CUDA)
+check_language(CUDA)
+enable_language(CUDA)
+message(STATUS "INSTALLING EXTENSIONS WITH CUDA!")
+string(REGEX REPLACE ".[0-9][0-9]|\\." "" CUDA_V ${CMAKE_CUDA_COMPILER_VERSION})
+message(STATUS "CMAKE_CUDA_COMPILER = ${CMAKE_CUDA_COMPILER}")
+message(STATUS "CMAKE_CUDA_COMPILER_ID = ${CMAKE_CUDA_COMPILER_ID}")
+message(STATUS "CMAKE_CUDA_COMPILER_VERSION = ${CUDA_V}")
 FetchContent_Declare(torch 
 URL "https://download.pytorch.org/libtorch/cu121/libtorch-cxx11-abi-shared-with-deps-2.4.1%2Bcu121.zip")
 else()

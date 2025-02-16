@@ -11,4 +11,3 @@ add_subdirectory(notification)
 add_subdirectory(tools)
 add_subdirectory(plotting)
 add_subdirectory(core)
-

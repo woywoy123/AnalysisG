@@ -1,4 +1,4 @@
-if(CMAKE_ANALYSIS_CUDA)
+if(CMAKE_ANALYSISG_CUDA)
 set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/include/physics/physics.cuh
     ${CMAKE_CURRENT_SOURCE_DIR}/include/physics/base.cuh

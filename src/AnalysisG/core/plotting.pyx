@@ -347,7 +347,8 @@ cdef class BasePlotting:
             self._ax[0].set_ylabel(self.yTitle, fontsize = self.ptr.font_size)
             self.matpl.suptitle(self.Title, self.ptr.font_size)
         except:
-            self.matpl.ylabel(self.yTitle, fontsize = self.ptr.font_size)
+            pass
+            #self.matpl.ylabel(self.yTitle, fontsize = self.ptr.font_size)
 
         if self.xLogarithmic: self.matpl.xscale("log")
         if self.yLogarithmic: self.matpl.yscale("log")
