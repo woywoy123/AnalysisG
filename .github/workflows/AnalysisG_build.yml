@@ -90,6 +90,9 @@ jobs:
                 pip install cython 
                 pip install pyyaml 
 
-                pip install -e .
+                mkdir build && cd build 
+                cmake ..
+                make -j12
               env:
-                CUDACXX: /usr/local/cuda/bin/nvcc
+                CUDACXX: /usr/local/cuda-12.5/bin/nvcc
+
