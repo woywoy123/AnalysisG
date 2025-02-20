@@ -87,11 +87,9 @@ jobs:
                 export CMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH:$ROOTSYS/cmake
                 export PATH=$ROOTSYS/bin:$PATH
 
-                export CUDACXX=/usr/local/cuda-12.5/bin/nvcc
                 pip install cython 
                 pip install pyyaml 
 
-                mkdir build && cd build 
-                sudo cmake .. 
-                make -j12
-
+                pip install -e .
+              env:
+                CUDACXX: /usr/local/cuda/bin/nvcc
