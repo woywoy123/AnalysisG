@@ -7,11 +7,6 @@ jobs:
     steps:
       - name: checkout repo
         uses: actions/checkout@v4
-           
-      - uses: Jimver/cuda-toolkit@master
-        id: cuda-toolkit
-        with:
-          cuda: '12.5.0'
 
       - name: Building binary wheel
         uses: pypa/cibuildwheel@v2.15.0
@@ -19,8 +14,12 @@ jobs:
           CIBW_SKIP: cp312-*
           CIBW_BUILD: cp3*manylinux_x86_64
 
-      - name: "Building ROOT from source"
+      - uses: Jimver/cuda-toolkit@master
+        id: cuda-toolkit
+        with:
+          cuda: '12.5.0'
         run: |
+              nvcc --version
               sudo apt-get install -y git wget
               sudo apt-get install -y build-essential
               sudo apt-get install -y curl 
