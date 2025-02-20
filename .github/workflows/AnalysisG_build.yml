@@ -92,8 +92,6 @@ jobs:
                 pip install pyyaml 
 
                 mkdir build && cd build 
-                cmake .. 
+                sudo cmake .. 
                 make -j12
-
-                cd .. && pip install -v .
 
