@@ -18,7 +18,9 @@ from time import sleep
 from tqdm import tqdm
 import pickle
 
-def factory(title): return tqdm(total = 100, desc = title, leave = False, dynamic_ncols = True)
+def factory(title, total): return tqdm(
+        total = total, desc = title, leave = False, dynamic_ncols = True)
+        #bar_format = '{desc}| {bar}{percentage:3.4f}%')
 
 cdef class Analysis:
 
@@ -72,88 +74,90 @@ cdef class Analysis:
         try: self.meta_ = pickle.load(open(prj + "/meta_state.pkl", "rb"))
         except FileNotFoundError: self.meta_ = {}
         except: self.meta_ = {}
+        cdef pair[string, vector[float]] itr
+        cdef pair[string, bool] itb
+
+        cdef map[string, vector[float]] o
+        cdef map[string, string] desc
+        cdef map[string, string] repo
+        cdef map[string, string] updr
+        cdef map[string, bool] compl
+        cdef dict bars = {}
+        cdef bool is_ok = True
+        cdef map[string, bool] same
+        cdef SelectionTemplate i
 
         with nogil: self.ana.start()
 
         cdef Meta data
         cdef pair[string, meta*] itrm
         cdef int l = len(self.meta_)
-        for itrm in self.ana.meta_data:
-            hash_ = env(itrm.second.hash(itrm.first))
-            if not self.FetchMeta: continue
-            if hash_ not in self.meta_:
-                data = Meta()
-                data.ptr.metacache_path = itrm.second.metacache_path
-                self.meta_[hash_] = data
-                data.__meta__(itrm.second)
-            else:
-                data = self.meta_[hash_]
-                itrm.second.meta_data = data.ptr.meta_data
+        try:
+            for itrm in self.ana.meta_data:
+                hash_ = env(itrm.second.hash(itrm.first))
+                if not self.FetchMeta: continue
+                if hash_ not in self.meta_:
+                    data = Meta()
+                    data.ptr.metacache_path = itrm.second.metacache_path
+                    self.meta_[hash_] = data
+                    data.__meta__(itrm.second)
+                else:
+                    data = self.meta_[hash_]
+                    itrm.second.meta_data = data.ptr.meta_data
 
 
-        if len(self.meta_) > l:
-            f = open(prj + "/meta_state.pkl", "wb")
-            pickle.dump(self.meta_, f)
-            f.close()
-        with nogil: self.ana.start()
-
-        cdef dict bars = {}
-        cdef pair[string, float] itr
-        cdef pair[string, bool] itb
-
-        cdef map[string, float] o
-        cdef map[string, string] desc
-        cdef map[string, string] repo
-
-        with nogil:
-            o = self.ana.progress()
-            desc = self.ana.progress_mode()
-            repo = self.ana.progress_report()
-
-        cdef map[string, string] updr = repo
-        cdef map[string, bool] compl
-        cdef map[string, bool] same
-
-        for itr in o:
-            bars[itr.first] = factory(env(itr.first))
-            same[itr.first] = True
-
-        while True:
-            with nogil:
+            if len(self.meta_) > l:
+                f = open(prj + "/meta_state.pkl", "wb")
+                pickle.dump(self.meta_, f)
+                f.close()
+            with nogil: self.ana.start()
+            while True:
+                o = self.ana.progress()
                 desc = self.ana.progress_mode()
-                updr = self.ana.progress_report()
-                o    = self.ana.progress()
+                repo = self.ana.progress_report()
+                if not o.size():break
+                is_ok = True
+                for itr in o: is_ok *= itr.second[2] != 1
+                if not is_ok: continue
+                for itr in o:
+                    if env(itr.first) in bars: continue
+                    bars[itr.first] = factory(env(itr.first), itr.second[2])
+                    same[itr.first] = True
+                break
+
+            updr = repo
+            while True:
+                o     = self.ana.progress()
                 compl = self.ana.is_complete()
+                desc  = self.ana.progress_mode()
+                updr  = self.ana.progress_report()
+                for itr in o:
+                    bars[itr.first].update(itr.second[1] - bars[itr.first].n)
+                    bars[itr.first].set_description(env(desc[itr.first]))
+                    same[itr.first] = updr[itr.first] == repo[itr.first]
+                    bars[itr.first].refresh()
+                sleep(0.1)
 
-            for itr in o:
-                bars[itr.first].update(itr.second - bars[itr.first].n)
-                bars[itr.first].set_description(env(desc[itr.first]))
-                bars[itr.first].refresh()
-                same[itr.first] = updr[itr.first] == repo[itr.first]
-            sleep(0.1)
+                c = 0
+                for itb in compl: c += compl[itb.first]
+                if c == compl.size(): break
 
-            c = 0
-            for itb in compl: c += compl[itb.first]
-            if c == compl.size(): break
+                x = 0
+                for itb in same: x += not itb.second
+                if x != same.size(): continue
 
-            x = 0
-            for itb in same: x += not itb.second
-            if x != same.size(): continue
+                repo = updr
+                for itr in o: bars[itr.first].close(); del bars[itr.first]
 
-            repo = updr
-            for itr in o: bars[itr.first].close(); del bars[itr.first]
-
-            print("========= Model Report =========")
-            for itr in o: print(env(updr[itr.first]))
-            print("========= END Report =========")
-            for itr in o:
-                bars[itr.first] = factory(env(desc[itr.first]))
-                same[itr.first] = updr[itr.first] == repo[itr.first]
-        self.ana.attach_threads()
-
-        cdef SelectionTemplate i
-        for i in self.selections_: i.transform_dict_keys()
-
+                print("========= Model Report =========")
+                for itr in o: print(env(updr[itr.first]))
+                print("========= END Report =========")
+                for itr in o:
+                    bars[itr.first] = factory(env(desc[itr.first]), itr.second[2])
+                    same[itr.first] = updr[itr.first] == repo[itr.first]
+            self.ana.attach_threads()
+            for i in self.selections_: i.transform_dict_keys()
+        except KeyboardInterrupt: exit()
 
     @property
     def SumOfWeightsTreeName(self): return env(self.ana.m_settings.sow_name)

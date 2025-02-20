@@ -36,10 +36,9 @@ class io:
             hid_t pairs = this -> member(g()); 
             H5::DataSet* dataset = this -> dataset(set_name, pairs, length); 
             if (!dataset){return;}
-
             dataset -> write(inpt -> data(), pairs); 
-            hid_t id = this -> file -> getId(); 
-            H5Fflush(id, H5F_SCOPE_LOCAL); 
+            //hid_t id = this -> file -> getId(); 
+            //H5Fflush(id, H5F_SCOPE_LOCAL); 
         } 
  
         template <typename g>
@@ -48,10 +47,9 @@ class io:
             hid_t pairs = this -> member(g()); 
             H5::DataSet* dataset = this -> dataset(set_name, pairs, length); 
             if (!dataset){return;}
-
             dataset -> write(inpt, pairs); 
-            hid_t id = this -> file -> getId(); 
-            H5Fflush(id, H5F_SCOPE_LOCAL); 
+            //hid_t id = this -> file -> getId(); 
+            //H5Fflush(id, H5F_SCOPE_LOCAL); 
         }
 
 

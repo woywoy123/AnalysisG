@@ -53,12 +53,13 @@ void optimizer::training_loop(int k, int epoch){
     bool batched = this -> m_settings.batch_size > 1;
     if (batched){smpl = this -> loader -> build_batch(smpl, model, mr);}
     int l = smpl -> size(); 
+    mr -> num_evnt = l;
 
     torch::AutoGradMode grd(true); 
     for (int x(0); x < l; ++x){
+        mr -> iters = x; 
         graph_t* gr = (*smpl)[x]; 
         model -> forward(gr, true);
-        mr -> progress = float(x+1)/float(l); 
         this -> metric -> capture(mode_enum::training, k, epoch, l); 
         if (!batched){continue;}
         gr -> _purge_all(); 
@@ -86,10 +87,11 @@ void optimizer::validation_loop(int k, int epoch){
 
     torch::NoGradGuard no_grd;  
     int l = smpl -> size(); 
+    mr -> num_evnt = l; 
     for (int x(0); x < l; ++x){
+        mr -> iters = x; 
         graph_t* gr = (*smpl)[x]; 
         model -> forward(gr, false);
-        mr -> progress = float(x+1)/float(l);
         this -> metric -> capture(mode_enum::validation, k, epoch, l); 
     }
 }
@@ -106,11 +108,12 @@ void optimizer::evaluation_loop(int k, int epoch){
 
     torch::NoGradGuard no_grd;  
     int l = smpl -> size(); 
+    mr -> num_evnt = l; 
     for (int x(0); x < l; ++x){
+        mr -> iters = x; 
         graph_t* gr = (*smpl)[x]; 
         model -> forward(gr, false);
         this -> metric -> capture(mode_enum::evaluation, k, epoch, l); 
-        mr -> progress = float(x+1)/float(l); 
     }
 }
 

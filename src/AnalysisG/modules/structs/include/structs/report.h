@@ -23,7 +23,9 @@ struct model_report {
 
     std::string run_name;
     std::string mode;
-    
+   
+    long iters = 0; 
+    long num_evnt = 0;  
     float progress;
 
     std::string print(){

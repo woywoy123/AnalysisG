@@ -29,7 +29,7 @@ cdef extern from "<generators/analysis.h>" nogil:
         void start() except+ nogil
         void attach_threads() except+ nogil
 
-        map[string, float] progress() except+ nogil
+        map[string, vector[float]] progress() except+ nogil
         map[string, string] progress_mode() except+ nogil
         map[string, string] progress_report() except+ nogil
         map[string, bool] is_complete() except+

@@ -13,7 +13,7 @@ import pickle
 i = 0
 run = False
 pth = "./data/"
-data_path = "/home/tnom6927/Downloads/mc16/ttH_tttt_m400/DAOD_TOPQ1.21955708._000011.root"
+data_path = "/home/tnom6927/Downloads/mc16/ttH_tttt_m400/*"
 
 if run:
     data = Validation() #Combinatorial() #Validation()
@@ -31,6 +31,6 @@ if run:
     pickle.dump(data, f)
     f.close()
 
-data = pickle.load(open(pth+str(i) + ".pkl", "rb"))
+data = None #pickle.load(open(pth+str(i) + ".pkl", "rb"))
 nunuValidation(data)
 #double_neutrino(data)

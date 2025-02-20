@@ -129,19 +129,19 @@ std::map<std::string, torch::Tensor> nusol_::combinatorial(
         torch::Tensor dnu_res = torch::ones({lx*36, 6}, MakeOp(pmc)); 
 
         //d_nu = nusol_::NuNu(&dnu_pmcb1, &dnu_pmcb2, &dnu_pmcl1, &dnu_pmcl2, &dnu_met, null, &dnu_tw1, &dnu_tw2); 
-        for (size_t x(0); x < 10; ++x){
-            const dim3 thdx  = dim3(4, 36, 6); 
-            const dim3 blkdx = blk_(lx, 4, 36, 36, 6, 6);
-            AT_DISPATCH_ALL_TYPES(pmc -> scalar_type(), "leastsquares", [&]{
-                _perturbation<<<blkdx, thdx>>><4>(
-                    dnu_tw1.packed_accessor64<double, 2, torch::RestrictPtrTraits>(), 
-                    dnu_tw2.packed_accessor64<double, 2, torch::RestrictPtrTraits>(), 
-                    dnu_met.packed_accessor64<double, 2, torch::RestrictPtrTraits>(), 
-                    dnu_res.packed_accessor64<double, 2, torch::RestrictPtrTraits>(), 
-                    perturb, mT, mW, true
-                ); 
-            }); 
-        }
+        //for (size_t x(0); x < 10; ++x){
+        //    const dim3 thdx  = dim3(4, 36, 6); 
+        //    const dim3 blkdx = blk_(lx, 4, 36, 36, 6, 6);
+        //    AT_DISPATCH_ALL_TYPES(pmc -> scalar_type(), "leastsquares", [&]{
+        //        _perturbation<<<blkdx, thdx>>><4>(
+        //            dnu_tw1.packed_accessor64<double, 2, torch::RestrictPtrTraits>(), 
+        //            dnu_tw2.packed_accessor64<double, 2, torch::RestrictPtrTraits>(), 
+        //            dnu_met.packed_accessor64<double, 2, torch::RestrictPtrTraits>(), 
+        //            dnu_res.packed_accessor64<double, 2, torch::RestrictPtrTraits>(), 
+        //            perturb, mT, mW, true
+        //        ); 
+        //    }); 
+        //}
 
 
 

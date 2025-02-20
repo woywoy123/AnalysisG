@@ -3,10 +3,13 @@ import pickle
 
 global figure_path
 global mass_point
+global default
+global study
 
 colors = ["red", "green", "blue", "orange", "magenta", "cyan", "pink"]
 def path(hist):
     hist.OutputDirectory = figure_path + "/zprime/" + mass_point
+    default(hist)
     return hist
 
 def zprime_mass_tops(ana):
@@ -15,16 +18,16 @@ def zprime_mass_tops(ana):
     hists = []
     for i in ana:
         th_ = TH1F()
-        th_.Title = "mass-point " + i
+        th_.Title = "Mass Point " + i
         th_.xData = ana[i].zprime_truth_tops
         th_.Color = next(xp)
         hists.append(th_)
 
     th = path(TH1F())
     th.Histograms = hists
-    th.Title = "Invariant Mass Distribution of Multiple Target Resonance Mass-Points"
-    th.xTitle = "Invariant Mass (GeV)"
-    th.yTitle = "Density (Arb.) / ($4$ GeV)"
+    th.Title = r"Invariant Mass Distribution of Multiple Target Resonance Mass-Points"
+    th.xTitle = r"Invariant Mass (GeV)"
+    th.yTitle = r"Density (Arb.) / ($4$ GeV)"
     th.Style = "ATLAS"
     th.xStep = 100
     th.xBins = 300
@@ -41,7 +44,7 @@ def zprime_mass_children(ana):
     hists = []
     for i in ana:
         th_ = TH1F()
-        th_.Title = "mass-point " + i
+        th_.Title = "Mass Point " + i
         th_.xData = ana[i].zprime_children
         th_.Color = next(xp)
         hists.append(th_)
@@ -50,7 +53,7 @@ def zprime_mass_children(ana):
     th.Histograms = hists
     th.Title = "Invariant Mass Distribution of Multiple Target Resonance Mass-Points"
     th.xTitle = "Invariant Mass (GeV)"
-    th.yTitle = "Density (Arb.) / ($4$ GeV)"
+    th.yTitle = r"Density (Arb.) / ($4$ GeV)"
     th.Style = "ATLAS"
     th.xStep = 100
     th.xBins = 300
@@ -67,16 +70,16 @@ def zprime_mass_truthjets(ana):
     hists = []
     for i in ana:
         th_ = TH1F()
-        th_.Title = "mass-point " + i
+        th_.Title = "Mass Point " + i
         th_.xData = ana[i].zprime_truthjets
         th_.Color = next(xp)
         hists.append(th_)
 
     th = path(TH1F())
     th.Histograms = hists
-    th.Title = "Invariant Mass Distribution of Multiple Target Resonance Mass-Points"
-    th.xTitle = "Invariant Mass (GeV)"
-    th.yTitle = "Density (Arb.) / ($4$ GeV)"
+    th.Title = r"Invariant Mass Distribution of Multiple Target Resonance Mass-Points"
+    th.xTitle = r"Invariant Mass (GeV)"
+    th.yTitle = r"Density (Arb.) / ($4$ GeV)"
     th.Style = "ATLAS"
     th.xStep = 100
     th.xBins = 300
@@ -93,16 +96,16 @@ def zprime_mass_jets(ana):
     hists = []
     for i in ana:
         th_ = TH1F()
-        th_.Title = "mass-point " + i
+        th_.Title = "Mass Point " + i
         th_.xData = ana[i].zprime_jets
         th_.Color = next(xp)
         hists.append(th_)
 
     th = path(TH1F())
     th.Histograms = hists
-    th.Title = "Invariant Mass Distribution of Multiple Target Resonance Mass-Points"
+    th.Title = r"Invariant Mass Distribution of Multiple Target Resonance Mass-Points"
     th.xTitle = "Invariant Mass (GeV)"
-    th.yTitle = "Density (Arb.) / ($4$ GeV)"
+    th.yTitle = r"Density (Arb.) / ($4$ GeV)"
     th.Style = "ATLAS"
     th.xStep = 100
     th.xBins = 300
@@ -118,7 +121,7 @@ def ZPrime(ana):
     data_ = {}
     masses = ["1000", "900", "800", "700", "600", "500", "400"]
     for i in masses:
-        try: f = open("zprime-Mass." + i + ".GeV.pkl", "rb")
+        try: f = open("pkl-data/zprime-Mass." + i + ".GeV.pkl", "rb")
         except: return
 
         data_[i] = pickle.load(f)

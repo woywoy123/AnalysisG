@@ -160,7 +160,7 @@ def compile_neutrinos(ana = None, truth_top = None, truth_lep = None, truth_b = 
 
         record_data(tru_nunu, None, truth_nux, tru_lep, tru_b)
 
-        if i % 50 != 49: continue
+        if i % 1000 != 1000-1: continue
         print(i, len(truth_nu))
         dt["i"] = i
         f = open("./data/" + fname +".pkl", "wb")

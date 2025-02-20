@@ -54,6 +54,24 @@ bool dataloader::dump_graphs(std::string path, int threads){
         }
     };
 
+    auto write = [this](
+            std::string* title, std::string fname, size_t* dx, 
+            std::vector< std::tuple<graph_hdf5_w, graph_hdf5>* > datax 
+    ){
+        io* wrt = new io(); 
+        wrt -> start(fname, "write"); 
+        std::vector<std::string> spl = this -> split(fname, "/"); 
+        *title = "Writing HDF5 -> " + spl[spl.size()-1]; 
+        for (size_t l(0); l < datax.size(); ++l){
+            graph_hdf5_w* h5wrt = &std::get<0>(*datax[l]); 
+            graph_hdf5*   h5_   = &std::get<1>(*datax[l]); 
+            wrt -> write(h5wrt, h5_ -> hash); 
+            *dx = l+1; 
+        }
+        wrt -> end(); 
+        delete wrt;     
+    }; 
+
     if (!this -> data_set -> size()){this -> warning("Nothing to do. Skipping..."); return true;}
     int x = (this -> data_set -> size()/threads); 
     if (this -> data_set -> size() < threads){ x = this -> data_set -> size(); }
@@ -70,9 +88,7 @@ bool dataloader::dump_graphs(std::string path, int threads){
 
     std::vector<size_t> handles(quant.size(), 0); 
     std::vector<std::thread*> th_(quant.size(), nullptr); 
-    for (size_t t(0); t < th_.size(); ++t){
-        th_[t] = new std::thread(serialize, &quant[t], serials[t], &fnames[t], &handles[t]);
-    }
+    for (size_t t(0); t < th_.size(); ++t){th_[t] = new std::thread(serialize, &quant[t], serials[t], &fnames[t], &handles[t]);}
 
     std::string title = "Graph Serialization"; 
     std::thread* prg = new std::thread(this -> progressbar1, &handles, this -> data_set -> size(), title); 
@@ -96,29 +112,28 @@ bool dataloader::dump_graphs(std::string path, int threads){
     std::vector<std::map<std::string, std::vector<int>*>>().swap(fnames); 
     prg -> join(); delete prg; 
   
-    handles = std::vector<size_t>(collect.size(), 0);
-    prg = new std::thread(this -> progressbar2, &handles, &idx, &title); 
+    std::vector<size_t> prdata(collect.size(), 0); 
+    std::vector<size_t> lrdata(collect.size(), 0);
+    std::vector<std::string*> titles(collect.size(), nullptr); 
+    std::vector<std::thread*> thdata(collect.size(), nullptr);
+    std::vector<std::string> pth_verify(collect.size(), ""); 
 
-    int dx = 0; 
-    std::vector<std::string> pth_verify; 
+    int dx(0), thrs(0); 
     std::map<std::string, std::vector< std::tuple<graph_hdf5_w, graph_hdf5>* >>::iterator itf; 
     for (itf = collect.begin(); itf != collect.end(); ++itf, ++dx){
-        
-        io* wrt = new io(); 
-        wrt -> start(itf -> first, "write"); 
-        std::vector<std::string> spl = this -> split(itf -> first, "/"); 
-        title = "Writing HDF5 -> " + spl[spl.size()-1]; 
-        std::vector< std::tuple<graph_hdf5_w, graph_hdf5>* > datax = itf -> second; 
-        for (size_t l(0); l < datax.size(); ++l){
-            graph_hdf5_w* h5wrt = &std::get<0>(*datax[l]); 
-            graph_hdf5*   h5_   = &std::get<1>(*datax[l]); 
-            wrt -> write(h5wrt, h5_ -> hash); 
-            handles[dx] = l+1; 
-        }
-        wrt -> end(); 
-        delete wrt; 
-        pth_verify.push_back(itf -> first); 
+        pth_verify[dx] = itf -> first; 
+        lrdata[dx] = itf -> second.size(); 
+        titles[dx] = new std::string(); 
     }
+
+    dx = 0; 
+    prg = new std::thread(this -> progressbar3, &prdata, &lrdata, &titles); 
+    for (itf = collect.begin(); itf != collect.end(); ++itf, ++dx, ++thrs){
+        thdata[dx] = new std::thread(write, titles[dx], itf -> first, &prdata[dx], itf -> second); 
+        while (thrs >= threads){thrs = this -> running(&thdata);}
+    }
+    this -> monitor(&thdata); 
+
     for (size_t t(0); t < quant.size(); ++t){delete serials[t]; serials[t] = nullptr;}
     prg -> join(); delete prg; 
     for (size_t x(0); x < pth_verify.size(); ++x){
@@ -273,21 +288,19 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
 
     std::vector<std::thread*> th_(cache_io.size(), nullptr); 
     std::vector<std::vector<graph_t*>*> cache_rebuild(cache_io.size(), nullptr); 
-    for (size_t x(0); x < cache_io.size(); ++x){
+    for (size_t x(0), tidx(0); x < cache_io.size(); ++x, ++tidx){
         std::vector<std::string> lsx = this -> split(cache_io[x], "/"); 
         title = "Reading HDF5 -> " + lsx[lsx.size()-1]; 
         std::vector<std::string>* gr_ev = &data_set[cache_io[x]]; 
         if (!gr_ev -> size()){continue;}
 
-        std::vector<graph_t*>*  c_gr = new std::vector<graph_t*>(gr_ev -> size(), nullptr); 
-        th_[x] = new std::thread(threaded_reader, cache_io[x], gr_ev, c_gr, &handles[x]); 
-        cache_rebuild[x] = c_gr; 
-        if (x % threads != threads -1){continue;}
-        th_[x] -> join(); delete th_[x]; th_[x] = nullptr; 
+        cache_rebuild[x] = new std::vector<graph_t*>(gr_ev -> size(), nullptr); 
+        th_[x] = new std::thread(threaded_reader, cache_io[x], gr_ev, cache_rebuild[x], &handles[x]); 
+        while (tidx > threads -1){tidx = this -> running(&th_);}
     }
+    this -> monitor(&th_); 
 
     for (size_t x(0); x < cache_rebuild.size(); ++x){
-        if (th_[x]){th_[x] -> join(); delete th_[x];  th_[x] = nullptr;}
         std::vector<graph_t*>* datax = cache_rebuild[x]; 
         if (!datax){continue;}
         for (size_t p(0); p < datax -> size(); ++p){

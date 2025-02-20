@@ -333,10 +333,14 @@ cdef class BasePlotting:
         com["axes.labelsize"] = self.ptr.axis_size
         com["legend.fontsize"] = self.ptr.legend_size
         com["figure.titlesize"] = self.ptr.title_size
-        com["text.usetex"] = self.ptr.use_latex
-        if self.ptr.use_latex: com["text.latex.preamble"] = r'\usepackage{amsmath}'
         com["hatch.linewidth"] = self.ptr.line_width
-        self.matpl.rcParams.update(com)
+        com["text.usetex"] = self.ptr.use_latex
+        if self.ptr.use_latex:
+            com["pgf.texsystem"] = "lualatex"
+            com["text.latex.preamble"] = r"\usepackage{amsmath}"
+            com["pgf.preamble"] = r"\usepackage{amsmath}"
+
+        self.matpl.rcParams.update(**com)
         self.__compile__()
 
         try: self._ax[0].set_title(self.Title, fontsize = self.ptr.title_size)
@@ -346,9 +350,7 @@ cdef class BasePlotting:
         try:
             self._ax[0].set_ylabel(self.yTitle, fontsize = self.ptr.font_size)
             self.matpl.suptitle(self.Title, self.ptr.font_size)
-        except:
-            pass
-            #self.matpl.ylabel(self.yTitle, fontsize = self.ptr.font_size)
+        except: self.matpl.ylabel(self.yTitle, fontsize = self.ptr.font_size)
 
         if self.xLogarithmic: self.matpl.xscale("log")
         if self.yLogarithmic: self.matpl.yscale("log")
@@ -366,6 +368,7 @@ cdef class BasePlotting:
         com["bbox_inches"] = "tight"
         com["pad_inches"] = 0
         com["transparent"] = True
+        com["backend"] = "pgf"
 
         self.matpl.savefig(env(out), **com)
         self.matpl.savefig(raw, **com)
@@ -708,7 +711,7 @@ cdef class TH1F(BasePlotting):
         return {}
 
 cdef class TH2F(BasePlotting):
-    def __cinit__(self): pass
+    def __cinit__(self): self.ptr.prefix = b"TH2F"
 
     def __init__(self, inpt = None):
         if inpt is None: return
@@ -792,7 +795,7 @@ cdef class TH2F(BasePlotting):
         return {}
 
 cdef class TLine(BasePlotting):
-    def __cinit__(self): pass
+    def __cinit__(self): self.ptr.prefix = b"TLine"
 
     def __init__(self, inpt = None):
         self.Lines = []

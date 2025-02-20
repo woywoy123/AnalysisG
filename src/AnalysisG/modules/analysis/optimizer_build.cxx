@@ -93,11 +93,14 @@ void analysis::build_model_session(){
     }
 }
 
-std::map<std::string, float> analysis::progress(){
-    std::map<std::string, float> output; 
+std::map<std::string, std::vector<float>> analysis::progress(){
+    std::map<std::string, std::vector<float>> output; 
     std::map<std::string, model_report*>::iterator itx;
     for (itx = this -> reports.begin(); itx != this -> reports.end(); ++itx){
-        output[itx -> first] = itx -> second -> progress*100; 
+        model_report* mr = itx -> second; 
+        if (!mr -> num_evnt){mr -> num_evnt = 1;}
+        mr -> progress = float(mr -> iters) / float(mr -> num_evnt); 
+        output[itx -> first] = {itx -> second -> progress*100, float(mr -> iters), float(mr -> num_evnt)}; 
     }
     return output; 
 }
@@ -135,11 +138,4 @@ std::map<std::string, bool> analysis::is_complete(){
     return output; 
 }
 
-void analysis::attach_threads(){
-    for (int x(0); x < this -> threads.size(); ++x){
-        if (!this -> threads[x]){continue;}
-        this -> threads[x] -> join(); 
-        delete this -> threads[x]; 
-        this -> threads[x] = nullptr; 
-    }
-}
+void analysis::attach_threads(){this -> monitor(&this -> threads);}

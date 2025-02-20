@@ -5,6 +5,7 @@ global mass_point
 
 def path(hist):
     hist.Style = "ATLAS"
+    hist.UseLateX = True
     hist.OutputDirectory = figure_path + "/top-jets/" + mass_point
     return hist
 
@@ -37,7 +38,7 @@ def top_mass_jets(ana):
         cl = iter(["orange", "green", "magenta", "red"])
         for nj in sorted(ana.top_mass["njets"][x]):
             data = ana.top_mass["njets"][x][nj]
-            if int(nj) > 3: title = "$\\geq 4$ Jets"
+            if int(nj) > 3: title = r"$\geq 4$ Jets"
             else: title = str(nj) + " Jets"
             if title not in hists: hists[title] = []
             hists[title] += data
@@ -104,8 +105,8 @@ def top_jet_cluster(ana):
 
     th_ = path(TH1F())
     th_.Histograms = hists
-    th_.Title = "Normalized $\\Delta$R Between Jets matched to a Mutal Top \n compared to Background (Other Jets)"
-    th_.xTitle = "$\\Delta$R Between Jets (Arb.)"
+    th_.Title = r"Normalized $\Delta$R Between Jets matched to a Mutal Top \n compared to Background (Other Jets)"
+    th_.xTitle = r"$\Delta$R Between Jets (Arb.)"
     th_.yTitle = "Density (Arb.) / $0.02$"
     th_.Filename = "Figure.7.f"
     th_.xBins = 300
@@ -123,12 +124,12 @@ def top_jet_cluster(ana):
 
     for n, j, f in zip(names, map_m, fig_):
         th2 = path(TH2F())
-        th2.Title = "$\\Delta$R Between Jets from " + n + " Top \n as a Function of the Top's Energy"
+        th2.Title = r"$\Delta$R Between Jets from " + n + " Top \n as a Function of the Top's Energy"
         th2.xData = ana.jet_top[j]["energy"]
         th2.yData = ana.jet_top[j]["dr"]
 
         th2.xTitle = "Truth Top Energy / ($3$ GeV)"
-        th2.yTitle = "$\\Delta R$ (Arb.) / $0.02$"
+        th2.yTitle = r"$\Delta R$ (Arb.) / $0.02$"
 
         th2.xBins = 500
         th2.yBins = 200
@@ -148,12 +149,12 @@ def top_jet_cluster(ana):
     fig_ = ["k", "l", "m", "n"]
     for n, j, f in zip(names, map_m, fig_):
         th2 = path(TH2F())
-        th2.Title = "$\\Delta$R Between Jets from " + n + " Top \n as a Function of the Top's Transverse Momentum"
+        th2.Title = r"$\Delta$R Between Jets from " + n + " Top \n as a Function of the Top's Transverse Momentum"
         th2.xData = ana.jet_top[j]["energy"]
         th2.yData = ana.jet_top[j]["dr"]
 
         th2.xTitle = "Truth Top $p_T$ / ($3$ GeV)"
-        th2.yTitle = "$\\Delta R$ (Arb.) / $0.02$"
+        th2.yTitle = r"$\Delta R$ (Arb.) / $0.02$"
 
         th2.xBins = 500
         th2.yBins = 200
@@ -201,8 +202,8 @@ def jet_partons(ana):
 
     th_p = path(TH1F())
     th_p.Histograms = hists
-    th_p.Title = "$\\Delta$R Distribution Between \n the Jet Axis and Ghost Matched Partons"
-    th_p.xTitle = "$\\Delta$R Between Jet Axis and Matched Ghost Parton (Arb.)"
+    th_p.Title = r"$\Delta$R Distribution Between \n the Jet Axis and Ghost Matched Partons"
+    th_p.xTitle = r"$\Delta$R Between Jet Axis and Matched Ghost Parton (Arb.)"
     th_p.yTitle = "Entries / $0.005$"
     th_p.Filename = "Figure.7.o"
     th_p.xBins = 120
@@ -213,11 +214,11 @@ def jet_partons(ana):
     th_p.SaveFigure()
 
     th2 = path(TH2F())
-    th2.Title = "$\\Delta$R Between Jet Axis and Ghost Matched Partons \n as a function of Ghost Parton Energy"
+    th2.Title = r"$\Delta$R Between Jet Axis and Ghost Matched Partons \n as a function of Ghost Parton Energy"
     th2.xData = sum([x for x in energy.values()], [])
     th2.yData = sum([x for x in symbolic.values()], [])
     th2.xTitle = "Ghost Matched Parton Energy / ($2$ GeV)"
-    th2.yTitle = "$\\Delta R$ Between Jet Axis and Parton (Arb.) / 0.005"
+    th2.yTitle = r"$\Delta R$ Between Jet Axis and Parton (Arb.) / 0.005"
 
     th2.xBins = 200
     th2.yBins = 100
@@ -236,11 +237,11 @@ def jet_partons(ana):
     th2.SaveFigure()
 
     th2 = path(TH2F())
-    th2.Title = "$\\Delta$R Between Jet Axis and Ghost Matched Partons \n as a function of Ghost Parton $p_T$"
+    th2.Title = r"$\Delta$R Between Jet Axis and Ghost Matched Partons \n as a function of Ghost Parton $p_T$"
     th2.xData = sum([x for x in transverse.values()], [])
     th2.yData = sum([x for x in symbolic.values()], [])
     th2.xTitle = "Ghost Matched Parton $p_T$ / ($1$ GeV)"
-    th2.yTitle = "$\\Delta R$ between Jet Axis and Parton (Arb.) / 0.005"
+    th2.yTitle = r"$\Delta R$ between Jet Axis and Parton (Arb.) / 0.005"
 
     th2.xBins = 250
     th2.yBins = 100
@@ -281,8 +282,8 @@ def jet_partons(ana):
 
         th_p = path(TH1F())
         th_p.Histograms = list(hists.values())
-        th_p.Title = "$\\Delta$R Between the Jet Axis and Ghost Matched Partons \n for " + name + " Matched Jets"
-        th_p.xTitle = "$\\Delta$R Between Jets (Arb.)"
+        th_p.Title = r"$\Delta$R Between the Jet Axis and Ghost Matched Partons \n for " + name + " Matched Jets"
+        th_p.xTitle = r"$\Delta$R Between Jets (Arb.)"
         th_p.yTitle = "Entries / $0.02$"
         th_p.Filename = "Figure.7." + fig_[x]
         th_p.xBins = 300
@@ -300,7 +301,7 @@ def jet_contribution(ana):
     th2.xData = data[""]["all"]["n-partons"]
     th2.yData = data[""]["all"]["energy"]
     th2.xTitle = "Number of Ghost Matched Partons"
-    th2.yTitle = "Energy Ratio (Jet / $\\Sigma$ Ghost Partons)"
+    th2.yTitle = r"Energy Ratio (Jet / $\Sigma$ Ghost Partons)"
 
     th2.xBins = 10
     th2.yBins = 120
@@ -322,7 +323,7 @@ def jet_contribution(ana):
     th2.xData = data[""]["all"]["n-partons"]
     th2.yData = data[""]["all"]["pt"]
     th2.xTitle = "Number of Ghost Matched Partons"
-    th2.yTitle = "$p_T$ Ratio (Jet / $\\Sigma$ Ghost Partons)"
+    th2.yTitle = r"$p_T$ Ratio (Jet / $\Sigma$ Ghost Partons)"
 
     th2.xBins = 10
     th2.yBins = 120
@@ -349,7 +350,7 @@ def jet_contribution(ana):
     th_p = path(TH1F())
     th_p.Histograms = hists
     th_p.Title = "Energy Ratio of n-Top Contributions to Matched Jet"
-    th_p.xTitle = "Energy Ratio ($\\text{top}_{i}$ / $\\Sigma_{i}^{n} \\text{top}_{i}$)"
+    th_p.xTitle = r"Energy Ratio ($\text{top}_{i}$ / $\Sigma_{i}^{n} \text{top}_{i}$)"
     th_p.yTitle = "Entries / $0.01$"
     th_p.Filename = "Figure.7.x"
     th_p.xBins = 100
@@ -383,7 +384,11 @@ def jet_contribution(ana):
     th2.SaveFigure()
 
 def TopJets(ana):
-    top_mass_jets(ana)
-    top_jet_cluster(ana)
-    jet_partons(ana)
-    jet_contribution(ana)
+    try: top_mass_jets(ana)
+    except KeyError: pass
+    try: top_jet_cluster(ana)
+    except KeyError: pass
+    try: jet_partons(ana)
+    except KeyError: pass
+    try: jet_contribution(ana)
+    except KeyError: pass

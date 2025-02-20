@@ -147,39 +147,39 @@ def define_metrics(dt, tlt):
 def topchildren_nunu(ana):
     out = "top-children"
     dt = topchildren_nunu_build(ana)
-    template_nunu_top_mass(dt, "a", "b", "c", "d", " \n Truth Children", out)
+    #template_nunu_top_mass(dt, "a", "b", "c", "d", " \n Truth Children", out)
     test_implementations(dt, "TopChildren", out, [150, 200], 100, 4, "0.5")
-    distance_chi2(dt, "TopChildren", "top-children")
-    mass_differential(dt, "", "top-children")
-    define_metrics(dt, "TopChildren")
-    chi2_neutrinos(dt, "TopChildren", out)
+    #distance_chi2(dt, "TopChildren", "top-children")
+    #mass_differential(dt, "", "top-children")
+    #define_metrics(dt, "TopChildren")
+    #chi2_neutrinos(dt, "TopChildren", out)
 
 def toptruthjets_nunu(ana):
     out = "truthjets-children"
     dt = toptruthjets_nunu_build(ana)
-    template_nunu_top_mass(dt, "a", "b", "c", "d", " \n Truth Jets with Leptonic Truth Children", out)
+    #template_nunu_top_mass(dt, "a", "b", "c", "d", " \n Truth Jets with Leptonic Truth Children", out)
     test_implementations(dt, "TruthJets", out, [150, 200], 100, 4, "0.5")
-    distance_chi2(dt, "Truth Jets with Leptonic Truth Children", "truthjets-children")
-    mass_differential(dt, "", "truthjets-children")
-    define_metrics(dt, "TruthJet Leptonic TopChildren")
+    #distance_chi2(dt, "Truth Jets with Leptonic Truth Children", "truthjets-children")
+    #mass_differential(dt, "", "truthjets-children")
+    #define_metrics(dt, "TruthJet Leptonic TopChildren")
 
 def topjetchild_nunu(ana):
     out = "jets-children"
     dt = topjetchild_nunu_build(ana)
-    template_nunu_top_mass(dt, "a", "b", "c", "d", " \n Detector Jets with Leptonic Truth Children", out)
+    #template_nunu_top_mass(dt, "a", "b", "c", "d", " \n Detector Jets with Leptonic Truth Children", out)
     test_implementations(dt, "JetsChildren", out, [100, 250], 150, 10, "1.0")
-    distance_chi2(dt, "Detector Jets with Leptonic Truth Children", "jets-children")
-    mass_differential(dt, "", "jets-children")
-    define_metrics(dt, "Detector Jets Leptonic TopChildren")
+    #distance_chi2(dt, "Detector Jets with Leptonic Truth Children", "jets-children")
+    #mass_differential(dt, "", "jets-children")
+    #define_metrics(dt, "Detector Jets Leptonic TopChildren")
 
 def topdetector_nunu(ana):
     out = "jets-detector"
     dt = topdetector_nunu_build(ana)
-    template_nunu_top_mass(dt, "a", "b", "c", "d", " \n Detector Jets and Leptons", out)
+    #template_nunu_top_mass(dt, "a", "b", "c", "d", " \n Detector Jets and Leptons", out)
     test_implementations(dt, "JetsLeptons", out, [100, 250], 150, 10, "1.0")
-    distance_chi2(dt, "Detector Jets and Leptons", "jets-detector")
-    mass_differential(dt, "", "jets-detector")
-    define_metrics(dt, "Detector Jets and Leptons")
+    #distance_chi2(dt, "Detector Jets and Leptons", "jets-detector")
+    #mass_differential(dt, "", "jets-detector")
+    #define_metrics(dt, "Detector Jets and Leptons")
 
 def nunuValidation(ana):
     topchildren_nunu(ana)

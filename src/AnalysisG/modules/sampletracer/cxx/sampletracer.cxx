@@ -37,31 +37,27 @@ void sampletracer::compile_objects(int threads){
     auto lamb = [](size_t* l, container* data){data -> compile(l);}; 
 
     int index = 0; 
-    size_t len = 0; 
+    std::vector<size_t> progres(this -> root_container.size(), 0); 
     std::vector<size_t> handles(this -> root_container.size(), 0); 
+    std::vector<std::string*> titles_(this -> root_container.size(), nullptr); 
     std::vector<std::thread*> threads_(this -> root_container.size(), nullptr); 
 
     std::map<std::string, container>::iterator itr = this -> root_container.begin(); 
-    for (; itr != this -> root_container.end(); ++itr){len += itr -> second.len();}
-    if (!len){return;}
+    for (int x(0); itr != this -> root_container.end(); ++itr, ++x){
+        progres[x] = itr -> second.len();
+        std::vector<std::string> vec = this -> split(itr -> first, "/"); 
+        titles_[x] = new std::string(vec[vec.size()-1]); 
+    }
+    if (!this -> tools::sum(&progres)){return;}
+    std::thread* thr = new std::thread(this -> progressbar3, &handles, &progres, &titles_);
 
-    std::thread* thr = new std::thread(this -> progressbar1, &handles, len, "Compiling Containers");
-
+    int tidx = 0; 
     itr = this -> root_container.begin(); 
-    for (; itr != this -> root_container.end(); ++itr, ++index){
+    for (; itr != this -> root_container.end(); ++itr, ++index, ++tidx){
         threads_[index] = new std::thread(lamb, &handles[index], &itr -> second); 
-        if (index % threads != threads -1){continue;}
-        threads_[index] -> join(); 
-        delete threads_[index]; 
-        threads_[index] = nullptr; 
+        while (tidx > threads-1){tidx = this -> running(&threads_);}
     }
-
-    for (int x(0); x < threads_.size(); ++x){
-        if (!threads_[x]){continue;}
-        threads_[x] -> join(); 
-        delete threads_[x];
-        threads_[x] = nullptr; 
-    }
+    this -> monitor(&threads_); 
     thr -> join(); delete thr; thr = nullptr; 
 }
 

@@ -26,16 +26,32 @@ import parton
 
 import pickle
 
+def default(tl):
+    tl.Style = r"ATLAS"
+    tl.DPI = 250
+    tl.TitleSize = 20
+    tl.AutoScaling = False
+    tl.Overflow = False
+
+    if study == "zprime":
+        tl.yScaling = 10*0.75
+        tl.xScaling = 15*1.0
+    else:
+        tl.yScaling = 10*0.75
+        tl.xScaling = 15*0.6
+    tl.FontSize = 15
+    tl.AxisSize = 14
+
 
 plotting_method = {
 #    "zprime"             : zprime,
+    "topkinematics"      : topkinematics,
 #    "topmatching"        : topmatching,
-#    "topkinematics"      : topkinematics,
 #    "childrenkinematics" : childrenkinematics,
 #    "decaymodes"         : decaymodes,
 #    "toptruthjets"       : toptruthjets,
 #    "topjets"            : topjets,
-    "parton"             : parton
+#    "parton"             : parton
 }
 
 
@@ -67,9 +83,9 @@ root = "/home/tnom6927/Downloads/mc16/"
 for i in plotting_method:
     study = i
     plt_data = True
-    gen_data = True
+    gen_data = False
     figure_path = "./Output/"
-    for mass in ["1000"]: #, "900", "800", "700", "600", "500", "400"]:
+    for mass in ["1000", "900", "800", "700", "600", "500", "400"]:
         if mass == "ttbar" or mass == "tttt":
             mass_point = mass
             smpls = mass + "/*"
@@ -80,16 +96,18 @@ for i in plotting_method:
         method = plotting_method[study]
         method.figures.figure_path = figure_path
         method.figures.mass_point  = mass_point
+        method.figures.default     = default
+        method.study               = i
 
         if gen_data:
             sel = ExecuteStudy(study, root + smpls)
-            f = open(study + "-" + mass_point + ".pkl", "wb")
+            f = open("pkl-data/" + study + "-" + mass_point + ".pkl", "wb")
             pickle.dump(sel, f)
             f.close()
 
         if not plt_data: continue
         print("plotting: " + study)
-        f = open(study + "-" + mass_point + ".pkl", "rb")
+        f = open("pkl-data/" + study + "-" + mass_point + ".pkl", "rb")
         pres = pickle.load(f)
         f.close()
 

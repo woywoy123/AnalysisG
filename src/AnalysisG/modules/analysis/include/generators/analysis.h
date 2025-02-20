@@ -33,7 +33,7 @@ class analysis:
         void add_model(model_template* model, std::string run_name); 
         void start(); 
 
-        std::map<std::string, float> progress(); 
+        std::map<std::string, std::vector<float>> progress(); 
         std::map<std::string, std::string> progress_mode(); 
         std::map<std::string, std::string> progress_report(); 
         std::map<std::string, bool> is_complete();
