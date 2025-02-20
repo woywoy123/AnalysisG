@@ -6,9 +6,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
            
-      - uses: Jimver/cuda-toolkit@v0.2.16
+      - uses: Jimver/cuda-toolkit@master
         id: cuda-toolkit
         with:
           cuda: '12.5.0'
@@ -21,6 +21,28 @@ jobs:
 
       - name: "Building ROOT from source"
         run: |
+              sudo apt-get install -y git wget
+              sudo apt-get install -y build-essential
+              sudo apt-get install -y curl 
+              sudo apt-get install -y llvm 
+              sudo apt-get install -y libhdf5-dev 
+              sudo apt-get install -y cmake  
+              sudo apt-get install -y libsqlite3-dev
+              sudo apt-get install -y build-essential
+              sudo apt-get install -y zlib1g-dev
+              sudo apt-get install -y libbz2-dev
+              sudo apt-get install -y libreadline-dev 
+              sudo apt-get install -y liblzma-dev
+
+              wget https://root.cern/download/root_v6.32.02.Linux-almalinux9.4-x86_64-gcc11.4.tar.gz
+              tar -xzvf root_v6.32.02.Linux-almalinux9.4-x86_64-gcc11.4.tar.gz
+              rm root_v6.32.02.Linux-almalinux9.4-x86_64-gcc11.4.tar.gz
+              export HOME=$PWD
+              export ROOTSYS=$HOME/root
+              export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ROOTSYS/lib
+              export CMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH:$ROOTSYS/cmake
+              export PATH=$ROOTSYS/bin:$PATH
+
               sudo apt update
               sudo apt install -y libhdf5-dev
               sudo apt-get install -y binutils cmake dpkg-dev g++ gcc libssl-dev git libx11-dev
@@ -31,20 +53,11 @@ jobs:
               sudo apt-get install -y python3-dev python3-numpy libxml2-dev libkrb5-dev 
               sudo apt-get install -y libgsl-dev qtwebengine5-dev nlohmann-json3-dev libmysqlclient-dev
               
-              git clone --branch latest-stable --depth=1 https://github.com/root-project/root.git root_src
-              mkdir build install
-              cd build 
-
-              cmake -Dxrootd=OFF -Dminimal=ON -DCMAKE_INSTALL_PREFIX=../install ../root_src
-              cmake --build . --target install -j12
-              source ../install/bin/thisroot.sh
-              cd ..
-
               export TORCH_CUDA_ARCH_LIST="8.0 8.6 8.9 9.0+PTX"
               python -m pip install pipx
               python -m pipx run build --sdist  
      
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           path: ./wheelhouse/*.whl
 
@@ -53,12 +66,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
            
       - name: Build sdist
         run: pipx run build --sdist
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           path: dist/*.tar.gz
 
@@ -69,7 +82,7 @@ jobs:
     permissions:
       id-token: write
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with: 
           name: artifact
           path: dist
