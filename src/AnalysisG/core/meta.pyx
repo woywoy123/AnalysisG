@@ -90,6 +90,7 @@ cdef class ami_client:
 
         try: ref = self.file_cache.create_dataset(dsidr, (1), dtype = h5py.ref_dtype)
         except: ref = self.file_cache[dsidr]
+
         ref.attrs["dsids"] = tools().encode64(&cached_dsid)
         ref.attrs["datasets"] = tools().encode64(&cached_maps)
         ref.attrs["infos"] = tools().encode64(&cached_info)
@@ -100,7 +101,6 @@ cdef class ami_client:
         cdef dict files = {}
         for l in [dict(k) for k in self.datas[dset_name]]: files[l["LFN"]] = l
 
-
         cdef list keys = [
                 "logicalDatasetName", "identifier", "nFiles", "totalEvents", "totalSize", "dataType", "prodsysStatus", "completion", "ecmEnergy",
                 "PDF", "version", "AtlasRelease", "crossSection", "genFiltEff", "datasetNumber", "physicsShort", "generatorName", "geometryVersion",
@@ -110,7 +110,8 @@ cdef class ami_client:
 
         for i in keys:
             try: setattr(obj, i, info[i])
-            except KeyError: continue
+            except KeyError: pass
+            except ValueError: pass
 
         obj.DatasetName  = info["logicalDatasetName"]
         obj.keywords     = info["keywords"].split(", ")
@@ -129,17 +130,24 @@ cdef class ami_client:
     cdef void list_datasets(self, Meta obj):
         if not self.client.authenticated: return
         cdef str dsidr = str(obj.dsid)
-        cdef list ami_tags = list(set(obj.amitag.split("_")))
-        cdef dict command = {"client" : self.client, "type" : self.type_, "dataset_number" : dsidr}
+        cdef list ami_tags = sum([i.split(".") for i in list(set(obj.amitag.split("_")))], [])
+        cdef dict command = {"client" : self.client, "type" : self.type_, "dataset_number" : dsidr, "show_archived" : True}
         cdef bool hit = self.loadcache(obj)
         if not hit:
-            try: self.dsids = pyAMI_atlas.api.list_datasets(**command)
+            command["type"] = "DAOD_" + obj.derivationFormat
+            try:
+                self.dsids = pyAMI_atlas.api.list_datasets(**command)
+                for f in obj.Files.values():
+                    for k in pyAMI_atlas.api.get_file(self.client, f):
+                        if k["logicalDatasetName"] not in self.datas:
+                            self.datas[k["logicalDatasetName"]] = []
+                            self.dsids += [{"ldn" : k["logicalDatasetName"]}]
+                        self.datas[k["logicalDatasetName"]] += [k]
             except:
                 auth_pyami()
                 self.client = atlas()
                 self.list_datasets(obj)
                 return
-
             self.nf.success(enc("DSID not in cache, fetched from PyAMI: " + dsidr))
         else: self.nf.success(enc("DSID cache hit for: " + dsidr))
 

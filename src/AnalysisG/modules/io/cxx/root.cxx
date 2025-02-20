@@ -112,6 +112,7 @@ void io::root_key_paths(std::string path){
         if (!this -> meta_data.count(fname)){this -> meta_data[fname] = new meta();}
         meta* mtx = this -> meta_data[fname];  
         mtx -> metacache_path = this -> metacache_path; 
+        mtx -> meta_data.sample_name = fname; 
         if (obname == "AnalysisTracking"){mtx -> scan_data(obj); continue;}
         if (this -> sow_name == obname){mtx -> scan_sow(obj); continue;}
         else if (this -> has_string(&this -> sow_name, "*")){

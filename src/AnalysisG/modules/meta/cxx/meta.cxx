@@ -21,10 +21,17 @@ void meta::parse_json(std::string inpt){
 
 void meta::compiler(){
     rapidjson::Value* cfg = &(*this -> rpd)["inputConfig"]; 
-    this -> meta_data.dsid = (*cfg)["dsid"].GetDouble(); 
-    this -> meta_data.isMC = (*cfg)["isMC"].GetBool(); 
-    this -> meta_data.AMITag = (*cfg)["amiTag"].GetString(); 
-    this -> meta_data.derivationFormat = (*cfg)["derivationFormat"].GetString(); 
+    if (!cfg){return;}
+    if (cfg -> HasMember("amiTag")){this -> meta_data.AMITag = (*cfg)["amiTag"].GetString();}
+    else {
+        std::vector<std::string> spl = this -> split(this -> meta_data.sample_name, "/"); 
+        size_t x = spl.size(); 
+        if (x >= 2){this -> meta_data.AMITag = spl[x-2];}
+    }
+
+    if (cfg -> HasMember("dsid")){this -> meta_data.dsid = (*cfg)["dsid"].GetDouble();}
+    if (cfg -> HasMember("isMC")){this -> meta_data.isMC = (*cfg)["isMC"].GetBool();}
+    if (cfg -> HasMember("derivationFormat")){this -> meta_data.derivationFormat = (*cfg)["derivationFormat"].GetString();}
     rapidjson::Value* cfg_s = &(*this -> rpd)["configSettings"]; 
     if (cfg_s -> IsArray()){
         for (rapidjson::SizeType i(0); i < cfg_s -> Size(); ++i){
