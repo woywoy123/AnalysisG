@@ -42,15 +42,14 @@ jobs:
                         #- '11.7.0'
         steps:      
             - name: "Checkout the repo"
-              uses: "actions/checkout@v3"
+              uses: "actions/checkout@v4"
 
             - name: "Config-CUDA"
               if: ${{ matrix.cuda != 'cpu' }}
-              uses: Jimver/cuda-toolkit@v0.2.16
+              uses: Jimver/cuda-toolkit@master
               id: cuda-toolkit
               with:
                 cuda: ${{ matrix.cuda }}
-                method: 'network'
 
             - name: "Configuring Python - ${{ matrix.python-version }}"
               uses: "actions/setup-python@v4"
@@ -88,6 +87,7 @@ jobs:
                 export CMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH:$ROOTSYS/cmake
                 export PATH=$ROOTSYS/bin:$PATH
 
+                export CUDACXX=/usr/local/cuda-12.5/bin/nvcc
                 pip install cython 
                 pip install pyyaml 
 
