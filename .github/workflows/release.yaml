@@ -8,12 +8,6 @@ jobs:
       - name: checkout repo
         uses: actions/checkout@v4
 
-      - name: Building binary wheel
-        uses: pypa/cibuildwheel@v2.15.0
-        env:
-          CIBW_SKIP: cp312-*
-          CIBW_BUILD: cp3*manylinux_x86_64
-
       - name: "Config CUDA"
         uses: Jimver/cuda-toolkit@master
         id: cuda-toolkit
@@ -61,6 +55,12 @@ jobs:
           export TORCH_CUDA_ARCH_LIST="8.0 8.6 8.9 9.0+PTX"
           python -m pip install pipx
           python -m pipx run build --sdist  
+
+      - name: Building binary wheel
+        uses: pypa/cibuildwheel@v2.15.0
+        env:
+          CIBW_SKIP: cp312-*
+          CIBW_BUILD: cp3*manylinux_x86_64
 
       - uses: actions/upload-artifact@v4
         with:
