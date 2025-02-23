@@ -4,8 +4,10 @@
 from AnalysisG.core.notification cimport notification
 from libcpp.string cimport string
 from libcpp.vector cimport vector
+from libcpp.unordered_map cimport unordered_map
 from libcpp.map cimport map
 from libcpp cimport bool
+
 
 cdef extern from "<plotting/plotting.h>" nogil:
     cdef cppclass plotting(notification):
@@ -60,8 +62,11 @@ cdef extern from "<plotting/plotting.h>" nogil:
         vector[float] y_error_up
         vector[float] y_error_down
 
-        map[string, float] x_labels
-        map[string, float] y_labels
+        unordered_map[string, float] x_labels
+        unordered_map[string, float] y_labels
+
+        vector[float] variable_x_bins
+        vector[float] variable_y_bins
 
         vector[float] weights
         float cross_section

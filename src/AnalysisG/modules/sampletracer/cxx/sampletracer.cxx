@@ -43,7 +43,7 @@ void sampletracer::compile_objects(int threads){
     std::vector<std::thread*> threads_(this -> root_container.size(), nullptr); 
 
     std::map<std::string, container>::iterator itr = this -> root_container.begin(); 
-    for (int x(0); itr != this -> root_container.end(); ++itr, ++x){
+    for (size_t x(0); itr != this -> root_container.end(); ++itr, ++x){
         progres[x] = itr -> second.len();
         std::vector<std::string> vec = this -> split(itr -> first, "/"); 
         titles_[x] = new std::string(vec[vec.size()-1]); 

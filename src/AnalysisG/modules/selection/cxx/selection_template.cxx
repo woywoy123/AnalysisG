@@ -24,24 +24,17 @@ selection_template::selection_template(){
 }
 
 selection_template::~selection_template(){
-    std::map<std::string, std::vector<particle_template*>>::iterator itr = this -> garbage.begin();
-    for (; itr != this -> garbage.end(); ++itr){
+    std::map<std::string, std::vector<particle_template*>>::iterator itr;
+    for (itr = this -> garbage.begin(); itr != this -> garbage.end(); ++itr){
         for (size_t x(0); x < itr -> second.size(); ++x){delete itr -> second[x];}
     }
     this -> garbage.clear();
 }
 
-bool selection_template::operator == (selection_template& p){
-    return this -> hash == p.hash; 
-}
-
-bool selection_template::selection(event_template* ev){
-    return true; 
-}
-
-bool selection_template::strategy(event_template* ev){
-    return true; 
-}
+bool selection_template::operator == (selection_template& p){return this -> hash == p.hash;}
+bool selection_template::selection(event_template* ev){return true;}
+bool selection_template::strategy(event_template* ev){return true;}
+selection_template* selection_template::clone(){return new selection_template();}
 
 bool selection_template::CompileEvent(){
     if (!this -> selection(this -> m_event)){return false;}
@@ -60,9 +53,6 @@ selection_template* selection_template::build(event_template* ev){
     return sel; 
 }
 
-selection_template* selection_template::clone(){
-    return new selection_template(); 
-}
 
 void selection_template::merge(selection_template* sl2){}
 

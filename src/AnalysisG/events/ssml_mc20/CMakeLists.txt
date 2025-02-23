@@ -1,6 +1,10 @@
 # --------------- DEFINE THE PARTICLES ------------------ #
 set(HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/include/ssml_mc20/particles.h)
-set(SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/cxx/particles.cxx)
+set(SOURCE_FILES 
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/particles.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/leptons.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/jets.cxx
+)
 
 add_library(cparticle_ssml_mc20 STATIC ${SOURCE_FILES})
 target_include_directories(cparticle_ssml_mc20 PRIVATE include/ssml_mc20)

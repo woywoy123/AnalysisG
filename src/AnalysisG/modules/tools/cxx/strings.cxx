@@ -35,15 +35,11 @@ std::vector<std::string> tools::split(std::string inpt, std::string search) {
     return out;
 }
 
-std::vector<std::string> tools::split(std::string in, int n){
-    int x = 0; 
+std::vector<std::string> tools::split(std::string in, size_t n){
+    size_t x = 0; 
     std::vector<std::string> out = {""}; 
-    for (int i(0); i < in.size(); ++i){
-        if (out[x].size() < n){}
-        else {
-            out.push_back(""); 
-            ++x; 
-        }
+    for (size_t i(0); i < in.size(); ++i){
+        if (out[x].size() >= n){out.push_back(""); ++x;}
         out[x] += in[i]; 
     }
     return out; 
@@ -79,7 +75,7 @@ bool tools::ends_with(std::string* inpt, std::string val){
 }
 
 bool tools::has_value(std::vector<std::string>* data, std::string trg){
-    for (int x(0); x < data -> size(); ++x){
+    for (size_t x(0); x < data -> size(); ++x){
         if (trg != data -> at(x)){continue;}
         return true; 
     }
@@ -88,7 +84,7 @@ bool tools::has_value(std::vector<std::string>* data, std::string trg){
 
 std::string tools::lower(std::string* in){
     std::string out = *in;
-    for (int t(0); t < in -> size(); ++t){out[t] = std::tolower(out[t]);}
+    for (size_t t(0); t < in -> size(); ++t){out[t] = std::tolower(out[t]);}
     return out;
 }
 

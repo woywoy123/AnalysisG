@@ -89,7 +89,6 @@ void analysis::build_events(){
     this -> success("+============================+"); 
     this -> reader -> check_root_file_paths(); 
 
-    long index = 0; 
     size_t nevents = 0;
     std::map<std::string, long> len = this -> reader -> root_size(); 
     std::map<std::string, long>::iterator ity = len.begin(); 

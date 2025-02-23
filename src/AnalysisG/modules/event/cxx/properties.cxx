@@ -1,18 +1,17 @@
 #include <templates/event_template.h>
 
 void event_template::set_trees(std::vector<std::string>* inpt, event_template* ev){
-    for (int x(0); x < inpt -> size(); ++x){
+    for (size_t x(0); x < inpt -> size(); ++x){
         ev -> m_trees[inpt -> at(x)] = "tree"; 
     }
 }
 
 void event_template::set_branches(std::vector<std::string>* inpt, event_template* ev){
-    for (int x(0); x < inpt -> size(); ++x){
-        ev -> m_branches[inpt -> at(x)] = "branch"; 
-    }
+    for (size_t x(0); x < inpt -> size(); ++x){ev -> m_branches[inpt -> at(x)] = "branch";}
 }
 
 void event_template::add_leaf(std::string key, std::string val){
+    if (!val.size()){val = key;}
     std::string n = this -> name; 
     this -> m_leaves[n + "/" + key] = val; 
 }

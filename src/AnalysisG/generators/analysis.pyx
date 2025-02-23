@@ -117,7 +117,7 @@ cdef class Analysis:
                 repo = self.ana.progress_report()
                 if not o.size():break
                 is_ok = True
-                for itr in o: is_ok *= itr.second[2] != 1
+                for itr in o: is_ok = is_ok and itr.second[2] != 1
                 if not is_ok: continue
                 for itr in o:
                     if env(itr.first) in bars: continue

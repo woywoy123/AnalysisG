@@ -73,7 +73,7 @@ bool dataloader::dump_graphs(std::string path, int threads){
     }; 
 
     if (!this -> data_set -> size()){this -> warning("Nothing to do. Skipping..."); return true;}
-    int x = (this -> data_set -> size()/threads); 
+    size_t x = (this -> data_set -> size()/threads); 
     if (this -> data_set -> size() < threads){ x = this -> data_set -> size(); }
     std::vector<std::vector<graph_t*>> quant = this -> discretize(this -> data_set, x); 
     std::vector<std::vector<std::tuple<graph_hdf5_w, graph_hdf5>>*> serials(quant.size(), nullptr);  

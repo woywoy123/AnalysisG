@@ -75,11 +75,11 @@ void dataloader::clean_data_elements(
 ){
     int hit = -1; 
     std::map<std::string, int>* dd = *data_map; 
-    for (int x(0); x < loader_map -> size(); ++x){
+    for (size_t x(0); x < loader_map -> size(); ++x){
         std::map<std::string, int>* ld = (*loader_map)[x];
         if (ld -> size() != dd -> size()){continue;}
 
-        int same = 0;  
+        size_t same = 0;  
         std::map<std::string, int>::iterator itr; 
         for (itr = ld -> begin(); itr != ld -> end(); ++itr){
             if (!dd -> count(itr -> first)){break;}
@@ -87,7 +87,7 @@ void dataloader::clean_data_elements(
             ++same;
         }
         if (same != dd -> size()){continue;}
-        hit = x; break;
+        hit = int(x); break;
     } 
     if (hit < 0){loader_map -> push_back(dd); return; }
     delete *data_map; *data_map = (*loader_map)[hit];
@@ -188,7 +188,6 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* data, mode
         }
 
         int dev_ = (int)op -> device().index();  
-        unsigned int len = inpt -> size();
 
         // observables 
         collect(mdl, inpt, gr -> data_map_graph, &gr -> dev_data_graph, g_data); 
@@ -207,7 +206,7 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* data, mode
         for (size_t x(0); x < inpt -> size(); ++x){
             graph_t* grx = (*inpt)[x]; 
             _edge_index.push_back((*grx -> get_edge_index(mdl)) + offset_nodes);
-            for (size_t t(0); t < grx -> num_nodes; ++t){batch_index.push_back(x);}
+            for (int t(0); t < grx -> num_nodes; ++t){batch_index.push_back(x);}
             _event_weight.push_back(*grx -> get_event_weight(mdl)); 
             offset_nodes += grx -> num_nodes; 
             gr -> in_use = 0; 
@@ -242,7 +241,7 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* data, mode
 
     std::vector<std::vector<graph_t*>> batched = this -> discretize(data, this -> setting -> batch_size); 
     int thr = this -> setting -> threads; 
-    bool skip = thr > batched.size(); 
+    bool skip = bool(thr > batched.size()); 
 
     if (rep && (rep -> mode == "validation" || rep -> mode == "evaluation") && this -> batched_cache.count(k)){
         out = this -> batched_cache[k];

@@ -76,7 +76,7 @@ void particle_template::get_isadd(bool* val, particle_template* prt){
 
 
 bool particle_template::is(std::vector<int> p){
-    for (int i : p){ 
+    for (int& i : p){ 
         if (std::abs(i) != std::abs(this -> data.pdgid)){continue;} 
         return true;
     }
@@ -97,6 +97,7 @@ void particle_template::get_lepdecay(bool* val, particle_template* prt){
 }
 
 void particle_template::add_leaf(std::string key, std::string leaf){
+    if (!leaf.size()){leaf = key;}
     this -> leaves[key] = leaf; 
 }
 

@@ -102,7 +102,7 @@ void graph_t::_purge_data(std::map<int, std::vector<torch::Tensor*>*>* data){
 std::vector<torch::Tensor*>* graph_t::add_content(std::map<std::string, torch::Tensor*>* inpt){
     std::vector<torch::Tensor*>* out = new std::vector<torch::Tensor*>(inpt -> size(), nullptr); 
     std::map<std::string, torch::Tensor*>::iterator itr = inpt -> begin();
-    for (int t(0); t < inpt -> size(); ++t, ++itr){(*out)[t] = itr -> second;}
+    for (size_t t(0); t < inpt -> size(); ++t, ++itr){(*out)[t] = itr -> second;}
     return out; 
 }
 
@@ -128,7 +128,7 @@ void graph_t::transfer_to_device(torch::TensorOptions* dev){
     torch::TensorOptions op = torch::TensorOptions(torch::kCPU); 
     
     torch::Tensor dt = build_tensor(&evw, torch::kDouble, double(), &op);
-    torch::Tensor bx = build_tensor(&bc, torch::kLong, long(), &op); 
+    torch::Tensor bx = build_tensor(&bc , torch::kLong, long(), &op); 
     torch::Tensor bi = build_tensor(&this -> batched_events, torch::kLong, long(), &op); 
 
     this -> dev_event_weight[dev_]   = dt.clone().to(dev -> device()); 

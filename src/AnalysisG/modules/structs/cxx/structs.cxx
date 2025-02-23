@@ -1,4 +1,5 @@
 #include <element.h>
+#include <report.h>
 
 void element_t::set_meta(){
     std::map<std::string, data_t*>::iterator itr = this -> handle.begin();
@@ -42,18 +43,19 @@ void data_t::flush_buffer(){
         case data_enum::vb:  this -> flush_buffer(&this -> r_vb ); return; 
        
         case data_enum::ull: this -> flush_buffer(&this -> r_ull); return; 
-        case data_enum::ui:  this -> flush_buffer(&this -> r_ui); return; 
+        case data_enum::ui:  this -> flush_buffer(&this -> r_ui);  return; 
         case data_enum::d:   this -> flush_buffer(&this -> r_d  ); return; 
         case data_enum::l:   this -> flush_buffer(&this -> r_l  ); return; 
         case data_enum::f:   this -> flush_buffer(&this -> r_f  ); return; 
         case data_enum::i:   this -> flush_buffer(&this -> r_i  ); return; 
         case data_enum::b:   this -> flush_buffer(&this -> r_b  ); return; 
+        case data_enum::c:   this -> flush_buffer(&this -> r_c  ); return; 
         default: return; 
     }
 }
 
 void data_t::fetch_buffer(){
-    // ------------ (6.) Add the buffer fletch -------------------- //
+    // ------------ (6.) Add the fetch buffer -------------------- //
     switch (this -> type){
         case data_enum::vvf: return this -> fetch_buffer(&this -> r_vvf);
         case data_enum::vvd: return this -> fetch_buffer(&this -> r_vvd);
@@ -75,6 +77,7 @@ void data_t::fetch_buffer(){
         case data_enum::f:   return this -> fetch_buffer(&this -> r_f  );
         case data_enum::i:   return this -> fetch_buffer(&this -> r_i  );
         case data_enum::b:   return this -> fetch_buffer(&this -> r_b  );
+        case data_enum::c:   return this -> fetch_buffer(&this -> r_c  );
         default: return; 
     }
     // -> go to core/structs.pxd
@@ -96,15 +99,17 @@ void data_t::string_type(){
     if (this -> leaf_type == "vector<bool>"){  this -> type = data_enum::vb; return;}
     if (this -> leaf_type == "vector<double>"){this -> type = data_enum::vd; return;}
 
-    if (this -> leaf_type == "double"){   this -> type = data_enum::d; return;}
-    if (this -> leaf_type == "Float_t"){  this -> type = data_enum::f; return;}
-    if (this -> leaf_type == "Int_t"){    this -> type = data_enum::i; return;}
+    if (this -> leaf_type == "double"){   this -> type = data_enum::d;   return;}
+    if (this -> leaf_type == "Float_t"){  this -> type = data_enum::f;   return;}
+    if (this -> leaf_type == "Int_t"){    this -> type = data_enum::i;   return;}
     if (this -> leaf_type == "ULong64_t"){this -> type = data_enum::ull; return;}
-    if (this -> leaf_type == "UInt_t"){   this -> type = data_enum::ui; return;}
+    if (this -> leaf_type == "UInt_t"){   this -> type = data_enum::ui;  return;}
+    if (this -> leaf_type == "Char_t"){   this -> type = data_enum::c;   return;}
 
     std::cout << "UNKNOWN TYPE: " << this -> leaf_type << " " << path << std::endl; 
     std::cout << "Add the type under modules/structs/cxx/structs.cxx" << std::endl;
     abort(); 
+    // open -> /modules/structs/include/structs/element.h
 }
 
 
@@ -217,6 +222,12 @@ bool data_t::element(unsigned int* el){
     return true; 
 }
 
+bool data_t::element(char* el){
+    if (!this -> r_c){return false;}
+    (*el) = (*this -> r_c)[this -> index];
+    return true; 
+}
+
 // ******************************************************************************************* //
 
 void data_t::flush(){
@@ -265,6 +276,45 @@ bool data_t::next(){
     if (this -> file_index >= (int)this -> files_i -> size()){return true;}
     this -> initialize();
     return false; 
+}
+
+
+std::string model_report::print(){
+    std::string msg = "Run Name: " + this -> run_name; 
+    msg += " Epoch: " + std::to_string(this -> epoch); 
+    msg += " K-Fold: " + std::to_string(this -> k+1); 
+    msg += "\n"; 
+    msg += "__________ LOSS FEATURES ___________ \n"; 
+    msg += this -> prx(&this -> loss_graph, "Graph Loss");
+    msg += this -> prx(&this -> loss_node, "Node Loss"); 
+    msg += this -> prx(&this -> loss_edge, "Edge Loss"); 
+
+    msg += "__________ ACCURACY FEATURES ___________ \n"; 
+    msg += this -> prx(&this -> accuracy_graph, "Graph Accuracy");
+    msg += this -> prx(&this -> accuracy_node, "Node Accuracy"); 
+    msg += this -> prx(&this -> accuracy_edge, "Edge Accuracy"); 
+    return msg; 
+}
+
+std::string model_report::prx(std::map<mode_enum, std::map<std::string, float>>* data, std::string title){
+    bool trig = false; 
+    std::string out = ""; 
+    std::map<std::string, float>::iterator itf; 
+    std::map<mode_enum, std::map<std::string, float>>::iterator itx; 
+    for (itx = data -> begin(); itx != data -> end(); ++itx){
+        if (!itx -> second.size()){return "";}
+        if (!trig){out += title + ": \n"; trig = true;}
+        switch (itx -> first){
+            case mode_enum::training:   out += "Training -> "; break;
+            case mode_enum::validation: out += "Validation -> "; break;
+            case mode_enum::evaluation: out += "Evaluation -> "; break; 
+        }
+        for (itf = itx -> second.begin(); itf != itx -> second.end(); ++itf){
+            out += itf -> first + ": " + std::to_string(itf -> second) + " | "; 
+        }
+        out += "\n"; 
+    }
+    return out; 
 }
 
 

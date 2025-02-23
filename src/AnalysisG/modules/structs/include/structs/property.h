@@ -33,6 +33,7 @@ class cproperty
             return *this; 
         }
 
+        T    operator+(const T& val){return this -> data + val;}
         bool operator==(const T& val){return this -> data == val;}
         bool operator!=(const T& val){return this -> data != val;}
 

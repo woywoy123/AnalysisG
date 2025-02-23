@@ -1,14 +1,18 @@
 #include <generators/analysis.h>
 #include <ROOT/RDataFrame.hxx>
 
-static void initialize_loop(
+void initialize_loop(
         optimizer* op, int k, model_template* model, 
         optimizer_params_t* config, model_report** rep
 ){
-   
-//    ROOT::EnableImplicitMT(); 
+    ROOT::EnableImplicitMT(); 
     model_settings_t settings; 
     model -> clone_settings(&settings); 
+
+    #ifdef PYC_CUDA
+    c10::cuda::set_device(model -> m_option -> get_device()); 
+    #endif 
+    
     model_template* mk = model -> clone(); 
     std::string pth = model -> model_checkpoint_path; 
 
@@ -49,7 +53,7 @@ void analysis::build_model_session(){
     if (!this -> model_sessions.size()){return this -> info("No Models Specified. Skipping.");}
     std::vector<int> kfold = this -> m_settings.kfold; 
     if (!kfold.size()){for (int k(0); k < this -> m_settings.kfolds; ++k){kfold.push_back(k);}}
-    else {for (int k(0); k < kfold.size(); ++k){kfold[k] = kfold[k]-1;}}
+    else {for (size_t k(0); k < kfold.size(); ++k){kfold[k] = kfold[k]-1;}}
     this -> m_settings.kfold = kfold; 
     int th_ = this -> m_settings.threads; 
 
@@ -80,7 +84,7 @@ void analysis::build_model_session(){
         this -> trainer[name] = optim; 
         optim -> import_model_sessions(para); 
 
-        for (int k(0); k < this -> m_settings.kfold.size(); ++k){
+        for (size_t k(0); k < this -> m_settings.kfold.size(); ++k){
             int k_ = this -> m_settings.kfold[k]; 
             std::vector<graph_t*>* check = this -> loader -> get_k_train_set(k_); 
             if (!check){continue;}

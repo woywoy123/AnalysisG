@@ -23,7 +23,7 @@ class event_template: public tools
 
         cproperty<std::vector<std::string>, event_template> leaves;  
         void static get_leaves(std::vector<std::string>*, event_template*); 
-        void add_leaf(std::string key, std::string leaf); 
+        void add_leaf(std::string key, std::string leaf = ""); 
 
         cproperty<std::string, event_template> name; 
         void static set_name(std::string*, event_template*); 

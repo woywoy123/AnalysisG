@@ -83,8 +83,11 @@ class plotting:
         std::vector<float> y_error_up   = {}; 
         std::vector<float> y_error_down = {}; 
 
-        std::map<std::string, float> x_labels = {}; 
-        std::map<std::string, float> y_labels = {}; 
+        std::unordered_map<std::string, float> x_labels = {}; 
+        std::unordered_map<std::string, float> y_labels = {}; 
+
+        std::vector<float> variable_x_bins = {}; 
+        std::vector<float> variable_y_bins = {}; 
 
         std::vector<float> weights = {}; 
         float cross_section = -1; 

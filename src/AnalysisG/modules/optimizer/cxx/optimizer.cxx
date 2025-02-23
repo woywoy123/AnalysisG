@@ -52,11 +52,11 @@ void optimizer::training_loop(int k, int epoch){
 
     bool batched = this -> m_settings.batch_size > 1;
     if (batched){smpl = this -> loader -> build_batch(smpl, model, mr);}
-    int l = smpl -> size(); 
+    size_t l = smpl -> size(); 
     mr -> num_evnt = l;
 
     torch::AutoGradMode grd(true); 
-    for (int x(0); x < l; ++x){
+    for (size_t x(0); x < l; ++x){
         mr -> iters = x; 
         graph_t* gr = (*smpl)[x]; 
         model -> forward(gr, true);
@@ -86,9 +86,9 @@ void optimizer::validation_loop(int k, int epoch){
     if (batched){smpl = this -> loader -> build_batch(smpl, model, mr);}
 
     torch::NoGradGuard no_grd;  
-    int l = smpl -> size(); 
+    size_t l = smpl -> size(); 
     mr -> num_evnt = l; 
-    for (int x(0); x < l; ++x){
+    for (size_t x(0); x < l; ++x){
         mr -> iters = x; 
         graph_t* gr = (*smpl)[x]; 
         model -> forward(gr, false);
@@ -107,9 +107,9 @@ void optimizer::evaluation_loop(int k, int epoch){
     if (batched){smpl = this -> loader -> build_batch(smpl, model, mr);}
 
     torch::NoGradGuard no_grd;  
-    int l = smpl -> size(); 
+    size_t l = smpl -> size(); 
     mr -> num_evnt = l; 
-    for (int x(0); x < l; ++x){
+    for (size_t x(0); x < l; ++x){
         mr -> iters = x; 
         graph_t* gr = (*smpl)[x]; 
         model -> forward(gr, false);
@@ -118,9 +118,7 @@ void optimizer::evaluation_loop(int k, int epoch){
 }
 
 void optimizer::launch_model(int k){
-
     for (int ep(0); ep < this -> m_settings.epochs; ++ep){
-
         model_template* model = this -> kfold_sessions[k]; 
         if (model -> epoch > ep){continue;}
         if (this -> m_settings.training){this -> training_loop(k, ep);}

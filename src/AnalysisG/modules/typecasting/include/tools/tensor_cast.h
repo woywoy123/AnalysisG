@@ -15,12 +15,12 @@ template <typename g>
 bool standard(g* data, int* mx_dim){ return true; }
 
 template <typename G, typename g>
-void as_primitive(G* data, std::vector<g>* lin, std::vector<signed long>* dims, int depth){lin -> push_back(*data);} 
+void as_primitive(G* data, std::vector<g>* lin, std::vector<signed long>* dims, unsigned int depth){lin -> push_back(*data);} 
 
 template <typename G>
 void scout_dim(const std::vector<G>* vec, int* mx_dim){
     int dim_ = 0;
-    for (int x(0); x < vec -> size(); ++x){
+    for (size_t x(0); x < vec -> size(); ++x){
         scout_dim(&vec -> at(x), &dim_);
         if (!dim_){dim_ = vec -> size();}
     }
@@ -30,7 +30,7 @@ void scout_dim(const std::vector<G>* vec, int* mx_dim){
 
 template <typename g>
 void nulls(const std::vector<g>* d, int* mx_dim){
-    for (int t(d -> size()); t < *mx_dim; ++t){
+    for (size_t t(d -> size()); t < *mx_dim; ++t){
         d -> push_back({});
         nulls(&d -> at(t), mx_dim);
     }
@@ -38,7 +38,7 @@ void nulls(const std::vector<g>* d, int* mx_dim){
 
 template <typename g>
 bool standard(const std::vector<g>* vec, int* mx_dim){
-    int l = vec -> size();
+    size_t l = vec -> size();
     if (!l){nulls(vec, mx_dim);}
     for (size_t x(0); x < l; ++x){
         if (!standard(&vec -> at(x), mx_dim)){continue;}
@@ -49,9 +49,9 @@ bool standard(const std::vector<g>* vec, int* mx_dim){
 }
 
 template <typename G, typename g>
-static void as_primitive(std::vector<G>* data, std::vector<g>* linear, std::vector<signed long>* dims, int depth = 0){
+static void as_primitive(std::vector<G>* data, std::vector<g>* linear, std::vector<signed long>* dims, unsigned int depth = 0){
     if (depth == dims -> size()){dims -> push_back(data -> size());}
-    for (int x(0); x < data -> size(); ++x){
+    for (size_t x(0); x < data -> size(); ++x){
         G tx = (*data)[x]; 
         as_primitive(&tx, linear, dims, depth+1);
     }
@@ -68,11 +68,13 @@ static torch::Tensor build_tensor(std::vector<G>* _data, at::ScalarType _op, g p
     standard(_data, &max_dim);
     as_primitive(_data, &linear, &dims); 
 
-    int s = linear.size(); 
-    g d[s] = {}; 
-    for (int x(0); x < s; ++x){d[x] = linear[x];}
+    size_t s = linear.size(); 
+    g* d = new g[s]; 
+    for (size_t x(0); x < s; ++x){d[x] = linear[x];}
     if (dims.size() == 1){dims.push_back(1);}
-    return torch::from_blob(d, dims, (*op).dtype(_op)).clone(); 
+    torch::Tensor ten = torch::from_blob(d, dims, (*op).dtype(_op)).clone(); 
+    delete [] d;  
+    return ten; //torch::from_blob((void*)linear.data(), dims, (*op).dtype(_op)).clone(); 
 }
 
 #endif

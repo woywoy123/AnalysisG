@@ -81,8 +81,6 @@ struct graph_t {
             return &this -> dev_batched_events[(int)mdl -> m_option -> device().index()]; 
         }
 
-
-
         void add_truth_graph(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
         void add_truth_node(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
         void add_truth_edge(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 

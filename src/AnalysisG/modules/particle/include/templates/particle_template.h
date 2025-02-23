@@ -132,7 +132,7 @@ class particle_template : public tools
         bool register_child(particle_template* p);
         std::map<std::string, particle_template*> m_children; 
 
-        void add_leaf(std::string key, std::string leaf); 
+        void add_leaf(std::string key, std::string leaf = ""); 
         std::map<std::string, std::string> leaves = {}; 
 
         void apply_type_prefix(); 

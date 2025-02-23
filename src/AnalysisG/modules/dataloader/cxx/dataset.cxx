@@ -17,7 +17,7 @@ void dataloader::generate_kfold_set(int k){
     if (!this -> test_set -> size()){return;}
 
     bool all = false;
-    for (int x(0); x < k; ++x){
+    for (size_t x(0); x < k; ++x){
         if (this -> k_fold_training.count(x)){continue;}
         this -> k_fold_training[x] = new std::vector<int>(); 
         this -> k_fold_validation[x] = new std::vector<int>();
@@ -25,12 +25,12 @@ void dataloader::generate_kfold_set(int k){
     }
     if (!all){return;}
     std::map<int, std::vector<int>> folds = {}; 
-    for (int x(0); x < this -> train_set -> size(); ++x){folds[x%(k+1)].push_back((*this -> train_set)[x]);}
+    for (size_t x(0); x < this -> train_set -> size(); ++x){folds[x%(k+1)].push_back((*this -> train_set)[x]);}
     this -> success("Splitting training dataset (" + this -> to_string(this -> train_set -> size()) + ")"); 
-    for (int x(0); x < k; ++x){
+    for (size_t x(0); x < k; ++x){
         std::vector<int>* val = this -> k_fold_validation[x]; 
         val -> insert(val -> end(), folds[x].begin(), folds[x].end()); 
-        for (int y(0); y < k+1; ++y){
+        for (size_t y(0); y < k+1; ++y){
             if (y == x){continue;}
             val = this -> k_fold_training[x]; 
             val -> insert(val -> end(), folds[y].begin(), folds[y].end()); 
@@ -110,7 +110,7 @@ std::map<std::string, std::vector<graph_t*>>* dataloader::get_inference(){
         for (size_t x(0); x < sort -> size(); ++x){tmp[(*sort)[x] -> event_index] = (*sort)[x];}
 
         std::map<long, graph_t*>::iterator itr = tmp.begin(); 
-        for (int t(0); itr != tmp.end(); ++itr, ++t){(*sort)[t] = itr -> second;}
+        for (size_t t(0); itr != tmp.end(); ++itr, ++t){(*sort)[t] = itr -> second;}
     }; 
 
 
@@ -122,8 +122,8 @@ std::map<std::string, std::vector<graph_t*>>* dataloader::get_inference(){
 
     std::vector<std::thread*> th(out -> size(), nullptr); 
     std::map<std::string, std::vector<graph_t*>>::iterator itr = out -> begin(); 
-    for (int t(0); itr != out -> end(); ++itr, ++t){th[t] = new std::thread(lamb, &itr -> second);}
-    for (int t(0); t < th.size(); ++t){th[t] -> join(); delete th[t]; th[t] = nullptr;}
+    for (size_t t(0); itr != out -> end(); ++itr, ++t){th[t] = new std::thread(lamb, &itr -> second);}
+    for (size_t t(0); t < th.size(); ++t){th[t] -> join(); delete th[t]; th[t] = nullptr;}
     return out; 
 }
 

@@ -149,7 +149,7 @@ void metrics::add_th1f_mass(
 
     torch::Tensor truth_t = truth -> view({-1}); 
     torch::Tensor truth_ = torch::zeros_like(*pred); 
-    for (int x(0); x < pred -> size({-1}); ++x){truth_.index_put_({truth_t == x, x}, 1);}
+    for (signed int x(0); x < pred -> size({-1}); ++x){truth_.index_put_({truth_t == x, x}, 1);}
     torch::Dict<std::string, torch::Tensor> truth_mass = pyc::graph::edge_aggregation(edge_index_, truth_, *pmc); 
     torch::Tensor truth_mass_cu = pyc::physics::cartesian::combined::M(truth_mass.at("cls::1::node-sum")); 
     truth_mass_cu.index_put_({((truth_mass.at("cls::1::node-indices") > -1).sum({-1}) == 1), 0}, 0); 
@@ -159,7 +159,10 @@ void metrics::add_th1f_mass(
 
     pred_mass_cu  = pred_mass_cu.view({-1}).to(torch::kCPU, true); 
     truth_mass_cu = truth_mass_cu.view({-1}).to(torch::kCPU, true); 
+
+    #ifdef PYC_CUDA
     torch::cuda::synchronize(); 
+    #endif
 
     std::vector<double> v(pred_mass_cu.data_ptr<double>(), pred_mass_cu.data_ptr<double>() + pred_mass_cu.numel());
     std::vector<double> t(truth_mass_cu.data_ptr<double>(), truth_mass_cu.data_ptr<double>() + truth_mass_cu.numel());

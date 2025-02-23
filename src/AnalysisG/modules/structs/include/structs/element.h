@@ -18,7 +18,7 @@
 enum class data_enum {
     vvf, vvd, vvl, vvi, vvb,
     vd, vf, vl, vi, vc, vb, 
-    d, f, l, i, ull, b, ui              // <---- (1). add the type here v -- vector, vv -- vector<vector>, ....
+    d, f, l, i, ull, b, ui, c              // <---- (1). add the type here v -- vector, vv -- vector<vector>, ....
 }; 
 
 struct data_t {
@@ -30,7 +30,7 @@ struct data_t {
         std::vector<std::vector<std::vector<double>>>* r_vvd = nullptr; 
         std::vector<std::vector<std::vector<long>>>*   r_vvl = nullptr; 
         std::vector<std::vector<std::vector<int>>>*    r_vvi = nullptr; 
-        std::vector<std::vector<std::vector<bool>>>*    r_vvb = nullptr; 
+        std::vector<std::vector<std::vector<bool>>>*   r_vvb = nullptr; 
 
         std::vector<std::vector<long>>*   r_vl = nullptr; 
         std::vector<std::vector<double>>* r_vd = nullptr; 
@@ -40,12 +40,13 @@ struct data_t {
         std::vector<std::vector<bool>>*   r_vb = nullptr; 
 
         std::vector<unsigned long long>* r_ull = nullptr; 
-        std::vector<unsigned int>* r_ui = nullptr; 
-        std::vector<double>* r_d = nullptr; 
-        std::vector<long>*   r_l = nullptr; 
-        std::vector<float>*  r_f = nullptr; 
-        std::vector<int>*    r_i = nullptr; 
-        std::vector<bool>*   r_b = nullptr; 
+        std::vector<unsigned int>*       r_ui  = nullptr; 
+        std::vector<double>*             r_d   = nullptr; 
+        std::vector<long>*               r_l   = nullptr; 
+        std::vector<float>*              r_f   = nullptr; 
+        std::vector<int>*                r_i   = nullptr; 
+        std::vector<bool>*               r_b   = nullptr; 
+        std::vector<char>*               r_c   = nullptr; 
         
         // ------------- (3). add the data type interface -------------- //
         bool element(std::vector<std::vector<float>>* el);
@@ -68,6 +69,7 @@ struct data_t {
         bool element(bool* el); 
         bool element(unsigned long long* el); 
         bool element(unsigned int* el); 
+        bool element(char* el); 
 
 // -> go to modules/structs/cxx/structs.cxx
 // ******************************************************************************************* //
@@ -132,15 +134,14 @@ struct element_t {
         if (!this -> handle.count(key)){return false;}
         if (this -> handle[key] -> element(var)){return true;}
         std::cout << "INVALID DATA TYPE GIVEN FOR: " + key << std::endl; 
-        std::map<std::string, data_t*>::iterator itr = this -> handle.begin(); 
-        for (; itr != this -> handle.end(); ++itr){
+        std::map<std::string, data_t*>::iterator itr; 
+        for (itr = this -> handle.begin(); itr != this -> handle.end(); ++itr){
             data_t* d = itr -> second; 
             std::cout << "Leaf name: " << d -> leaf_name; 
             std::cout << "|" << d -> leaf_type << std::endl;
         }
         abort(); 
     }
-
     std::map<std::string, data_t*> handle = {}; 
 }; 
 

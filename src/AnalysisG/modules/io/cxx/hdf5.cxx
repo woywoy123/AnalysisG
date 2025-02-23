@@ -49,8 +49,8 @@ herr_t io::file_info(hid_t loc_id, const char* name, const H5L_info_t* linfo, vo
 std::vector<std::string> io::dataset_names(){
     if (!this -> file){return {};}
     std::vector<std::string> output; 
-    herr_t idx = H5Literate(this -> file -> getId(), H5_INDEX_NAME, H5_ITER_INC, NULL, this -> file_info, &output);
-    return std::move(output); 
+    H5Literate(this -> file -> getId(), H5_INDEX_NAME, H5_ITER_INC, NULL, this -> file_info, &output);
+    return output; 
 }
 
 H5::DataSet* io::dataset(std::string set_name){

@@ -9,10 +9,10 @@
 
 template <typename G>
 std::vector<std::vector<G>> chunking(std::vector<G>* v, int N){
-    int n = v -> size(); 
+    size_t n = v -> size(); 
     typename std::vector<std::vector<G>> out; 
-    for (int ib = 0; ib < n; ib += N){
-        int end = ib + N; 
+    for (size_t ib = 0; ib < n; ib += N){
+        size_t end = ib + N; 
         if (end > n){ end = n; }
         out.push_back(std::vector<G>(v -> begin() + ib, v -> begin() + end)); 
     }

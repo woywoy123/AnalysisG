@@ -17,7 +17,7 @@ void io::check_root_file_paths(){
         last = itr -> first; 
         if (!this -> ends_with(&last, ".root")){
             std::vector<std::string> f = this -> ls(last, ".root"); 
-            for (int x(0); x < f.size(); ++x){
+            for (size_t x(0); x < f.size(); ++x){
                 this -> success(f[x]);
                 tmp[f[x]] = true; 
             }
@@ -35,7 +35,7 @@ void io::root_key_paths(std::string path, TTree* t){
     if (!tr){return;}
     bool found = false; 
     std::string file_name = this -> file_root -> GetTitle(); 
-    for (unsigned int x(0); x < this -> trees.size(); ++x){
+    for (size_t x(0); x < this -> trees.size(); ++x){
         std::string name = this -> trees[x];
         if (std::string(tr -> GetName()) != name){continue;}
         this -> tree_data[file_name][name] = tr; 
@@ -45,7 +45,7 @@ void io::root_key_paths(std::string path, TTree* t){
     }
     if (!found){return;}
 
-    for (unsigned int x(0); x < this -> branches.size(); ++x){
+    for (size_t x(0); x < this -> branches.size(); ++x){
         std::string name = this -> branches[x]; 
         TBranch* br = tr -> FindBranch(name.c_str()); 
         if (!br){continue;}
@@ -53,7 +53,7 @@ void io::root_key_paths(std::string path, TTree* t){
         this -> branch_data[file_name][name] = br; 
     }
 
-    for (unsigned int x(0); x < this -> leaves.size(); ++x){
+    for (size_t x(0); x < this -> leaves.size(); ++x){
         std::string name = this -> leaves[x]; 
         TLeaf* lf = tr -> FindLeaf(name.c_str());
         if (!lf){continue;}
@@ -100,7 +100,7 @@ void io::root_key_paths(std::string path){
         this -> metacache_path += meta_s; 
     }
 
-    for (unsigned int x(0); x < tmp.size(); ++x){
+    for (size_t x(0); x < tmp.size(); ++x){
         std::string updated = path + tmp[x]; 
         TObject* obj = gDirectory -> Get(updated.c_str()); 
         if (!obj){continue;}
@@ -118,7 +118,7 @@ void io::root_key_paths(std::string path){
         else if (this -> has_string(&this -> sow_name, "*")){
             std::vector<std::string> spl = this -> split(this -> sow_name, "*");
             bool found = spl.size(); 
-            for (std::string v : spl){found *= this -> has_string(&obname, v);}
+            for (std::string& v : spl){found *= this -> has_string(&obname, v);}
             if (found){mtx -> scan_data(obj); continue;}
         }
         // ------------ meta data scraping ---------------------- //
@@ -166,7 +166,7 @@ bool io::scan_keys(){
         }
 
         std::map<std::string, TTree*>* tr = &this -> tree_data[fname]; 
-        for (int x(0); x < this -> trees.size(); ++x){
+        for (size_t x(0); x < this -> trees.size(); ++x){
             if (tr -> count(this -> trees[x])){continue;}
             bool has = this -> has_value(&this -> keys[fname]["missed"]["Trees"], this -> trees[x]); 
             if (has){continue;}
@@ -174,7 +174,7 @@ bool io::scan_keys(){
         }
     
         std::map<std::string, TBranch*>* br = &this -> branch_data[fname]; 
-        for (int x(0); x < this -> branches.size(); ++x){
+        for (size_t x(0); x < this -> branches.size(); ++x){
             bool found = false; 
 
             std::map<std::string, TBranch*>::iterator itb = br -> begin();
@@ -191,7 +191,7 @@ bool io::scan_keys(){
         }
 
         std::map<std::string, TLeaf*>* lf = &this -> leaf_data[fname]; 
-        for (int x(0); x < this -> leaves.size(); ++x){
+        for (size_t x(0); x < this -> leaves.size(); ++x){
             bool found = false; 
 
             std::map<std::string, TLeaf*>::iterator itf = lf -> begin();
@@ -223,19 +223,19 @@ bool io::scan_keys(){
            this -> success_trigger[fname] = true; 
            continue;
        }
-       for (int x(0); x < trees_m.size(); ++x){
+       for (size_t x(0); x < trees_m.size(); ++x){
            if (this -> missing_trigger[trees_m[x]]){continue;}
            this -> missing_trigger[trees_m[x]] = true; 
            this -> warning("Missing Tree: " + trees_m[x]); 
        }
 
-       for (int x(0); x < branches_m.size(); ++x){
+       for (size_t x(0); x < branches_m.size(); ++x){
            if (this -> missing_trigger[branches_m[x]]){continue;}
            this -> missing_trigger[branches_m[x]] = true; 
            this -> warning("Missing Branch: " + branches_m[x]); 
        }
 
-       for (int x(0); x < leaves_m.size(); ++x){
+       for (size_t x(0); x < leaves_m.size(); ++x){
            if (this -> missing_trigger[leaves_m[x]]){continue;}
            this -> missing_trigger[leaves_m[x]] = true; 
            this -> warning("Missing Leaves: " + leaves_m[x]); 

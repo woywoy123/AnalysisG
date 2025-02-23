@@ -12,11 +12,11 @@ void pmu(std::vector<g*>* out, element_t* el){
     el -> get("energy", &en); 
 
     for (int x(0); x < pt.size(); ++x){
-        g* prt     = new g(); 
-        prt -> pt  = pt[x]; 
-        prt -> eta = eta[x]; 
-        prt -> phi = phi[x]; 
-        prt -> e   = en[x]; 
+        g* prt       = new g(); 
+        prt -> pt    = pt[x]; 
+        prt -> eta   = eta[x]; 
+        prt -> phi   = phi[x]; 
+        prt -> e     = en[x]; 
         prt -> index = x; 
         out -> push_back(prt); 
     }
@@ -32,12 +32,13 @@ void pmu_mass(std::vector<g*>* out, element_t* el){
 
     for (size_t x(0); x < pt.size(); ++x){
         if (en[x] < 0){break;}
-        g* prt      = new g(); 
-        prt -> pt   = pt[x]; 
-        prt -> eta  = eta[x]; 
-        prt -> phi  = phi[x]; 
-        prt -> mass = en[x]; 
-        out -> push_back(prt); 
+        g* prt       = new g(); 
+        prt -> pt    = pt[x]; 
+        prt -> eta   = eta[x]; 
+        prt -> phi   = phi[x]; 
+        prt -> mass  = en[x]; 
+        prt -> index = x; 
+        out-> push_back(prt); 
     }
 }; 
 
@@ -91,6 +92,7 @@ class jet: public particle_template
         bool btag_77 = false; 
         bool btag_85 = false; 
         bool btag_90 = false; 
+        bool sel_85  = false; 
 
         particle_template* clone() override; 
         void build(std::map<std::string, particle_template*>* prt, element_t* el) override; 
@@ -107,6 +109,7 @@ class electron: public particle_template
 
         cproperty<bool, electron> from_res; 
         int top_index = -1; 
+        int pass_ecids = -1; 
 
         particle_template* clone() override; 
         void build(std::map<std::string, particle_template*>* prt, element_t* el) override; 
@@ -150,6 +153,21 @@ class parton: public particle_template
         particle_template* clone() override; 
         void build(std::map<std::string, particle_template*>* prt, element_t* el) override; 
 }; 
+
+class lepton: public particle_template
+{
+    public:
+        lepton(); 
+        virtual ~lepton();
+
+        int ambiguity = 99; 
+
+        particle_template* clone() override; 
+        void build(std::map<std::string, particle_template*>* prt, element_t* el) override;  
+}; 
+
+
+
 
 
 #endif

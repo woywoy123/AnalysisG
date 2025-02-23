@@ -166,7 +166,7 @@ cdef extern from "<structs/element.h>":
         i   "data_enum::i"
         ull "data_enum::ull"
         ui  "data_enum::ui"
-
+        c   "data_enum::c"
 
     cdef cppclass data_t:
         string leaf_name
@@ -198,6 +198,7 @@ cdef extern from "<structs/element.h>":
         bool element(int* data) except +
         bool element(unsigned long long* data) except +
         bool element(unsigned int* data) except +
+        bool element(char* data) except +
 
 # ------------------- (8.) Add the switch. And you are done =) --------------- #
 cdef inline dict switch_board(data_t* data):
@@ -239,6 +240,9 @@ cdef inline dict switch_board(data_t* data):
 
     cdef unsigned int ui
     if data.type == data_enum.ui and data.element(&ui): return {data.path : ui}
+
+    cdef char c
+    if data.type == data_enum.c and data.element(&c): return {data.path : c}
 
     return {}
 

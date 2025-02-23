@@ -115,10 +115,9 @@ bool particle_template::operator == (particle_template& p){
 }
 
 void particle_template::apply_type_prefix(){
-    std::string _type = this -> type; 
     std::map<std::string, std::string> lf = {}; 
     std::map<std::string, std::string>::iterator itr = this -> leaves.begin();
-    for (; itr != this -> leaves.end(); ++itr){lf[itr -> first] = _type + itr -> second;}
+    for (; itr != this -> leaves.end(); ++itr){lf[itr -> first] = this -> type + itr -> second;}
     this -> leaves = lf; 
 }
 

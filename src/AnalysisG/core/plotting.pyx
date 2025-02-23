@@ -355,10 +355,12 @@ cdef class BasePlotting:
         if self.xLogarithmic: self.matpl.xscale("log")
         if self.yLogarithmic: self.matpl.yscale("log")
 
-        if self.xStep > 0: self.matpl.xticks(self.__ticks__(self.xMin, self.xMax, self.xStep), fontsize = self.ptr.axis_size)
+        if self.ptr.variable_x_bins.size(): self.matpl.xticks(self.ptr.variable_x_bins, fontsize = self.ptr.axis_size)
+        elif self.xStep > 0: self.matpl.xticks(self.__ticks__(self.xMin, self.xMax, self.xStep), fontsize = self.ptr.axis_size)
         else: self.matpl.xticks(fontsize = self.ptr.axis_size)
 
-        if self.yStep > 0: self.matpl.yticks(self.__ticks__(self.yMin, self.yMax, self.yStep), fontsize = self.ptr.axis_size)
+        if self.ptr.variable_y_bins.size(): self.matpl.yticks(self.ptr.variable_y_bins, fontsize = self.ptr.axis_size)
+        elif self.yStep > 0: self.matpl.yticks(self.__ticks__(self.yMin, self.yMax, self.yStep), fontsize = self.ptr.axis_size)
         else: self.matpl.yticks(fontsize = self.ptr.axis_size)
 
         self.matpl.gcf().set_size_inches(self.ptr.xscaling, self.ptr.yscaling)
@@ -396,9 +398,15 @@ cdef class TH1F(BasePlotting):
     def xData(self, list val): self.ptr.x_data = <vector[float]>(val)
 
     @property
-    def xBins(self): return self.ptr.x_bins
+    def xBins(self):
+        if not self.ptr.variable_x_bins.size(): return self.ptr.x_bins
+        else: return self.ptr.variable_x_bins
+
     @xBins.setter
-    def xBins(self, int val): self.ptr.x_bins = val
+    def xBins(self, val):
+        if isinstance(val, int): self.ptr.x_bins = val
+        elif isinstance(val, list): self.ptr.variable_x_bins = <vector[float]>(val)
+        else: self.ptr.warning(b"Invalid Bins specified")
 
     @property
     def CrossSection(self): return self.ptr.cross_section
@@ -441,14 +449,15 @@ cdef class TH1F(BasePlotting):
         except ValueError: return []
 
     @property
-    def xLabels(self): return as_basic_dict(&self.ptr.x_labels)
+    def xLabels(self): return as_basic_udict(&self.ptr.x_labels)
     @xLabels.setter
-    def xLabels(self, dict val): as_map(val, &self.ptr.x_labels)
+    def xLabels(self, dict val): as_umap(val, &self.ptr.x_labels)
 
     @property
     def Weights(self): return self.ptr.weights
     @Weights.setter
     def Weights(self, list val): self.ptr.weights = <vector[float]>(val)
+
     @property
     def ShowCount(self): return self.ptr.counts
     @ShowCount.setter
@@ -486,17 +495,17 @@ cdef class TH1F(BasePlotting):
     cdef void __error__(self, vector[float] xarr, vector[float] up, vector[float] low):
         try: ax = self._ax[0]
         except: ax = self._ax
-        ax.fill_between(
+        h = ax.fill_between(
                 xarr, low, up,
                 facecolor = "k",
                 hatch = "/////",
                 step  = "mid",
+                label = "Uncertainty",
                 alpha = 0.4,
         )
 
     cdef void __get_error_seg__(self, plot):
         error = plot.errorbar.lines[2][0]
-
         cdef list k
         cdef vector[float] x_arr = []
         cdef vector[float] y_err_up = []
@@ -509,8 +518,7 @@ cdef class TH1F(BasePlotting):
             y_err_up.push_back(k[1][1])
         self.__error__(x_arr, y_err_lo, y_err_up)
 
-    cdef float scale_f(self):
-        return self.CrossSection * self.IntegratedLuminosity
+    cdef float scale_f(self): return self.CrossSection * self.IntegratedLuminosity
 
     cdef dict factory(self):
         cdef dict histpl = {}
@@ -533,7 +541,7 @@ cdef class TH1F(BasePlotting):
 
     cdef __build__(self):
         cdef dict labels = self.xLabels
-        cdef float _max, _min
+        cdef float _max, _min, norm
 
         if len(labels): pass
         elif self.set_xmin: _min = self.ptr.x_min
@@ -545,18 +553,20 @@ cdef class TH1F(BasePlotting):
         elif not len(labels) and not len(self.xData): pass
         else: _max = self.ptr.get_max(b"x")
 
-        h = None
-        if not len(labels):
-            h = bh.Histogram(bh.axis.Regular(self.ptr.x_bins, _min, _max), storage = bh.storage.Weight())
-        else:
-            h = bh.Histogram(bh.axis.StrCategory(list(labels)), storage = bh.storage.Weight())
+        if len(labels):
+            ax_ = bh.axis.StrCategory(list(labels))
             self.ptr.weights = <vector[float]>(list(labels.values()))
+        elif self.ptr.variable_x_bins.size(): ax_ = bh.axis.Variable(self.ptr.variable_x_bins)
+        else: ax_ = bh.axis.Regular(self.ptr.x_bins, _min, _max)
+        h = bh.Histogram(ax_, storage = bh.storage.Weight())
 
         if not self.ptr.weights.size(): h.fill(self.ptr.x_data)
         elif len(labels): h.fill(list(labels), weight = self.ptr.weights)
         else: h.fill(self.ptr.x_data, weight = self.ptr.weights)
         if self.ApplyScaling: h *= self.scale_f()
-        if self.Density and h is not None: h *= 1/float(sum(h.counts()))
+        if self.Density and h is not None:
+            norm = float(sum(h.counts()))
+            h *= 1/(norm if norm != 0 else 1)
         return h
 
     cdef dict __compile__(self, bool raw = False):
@@ -566,11 +576,13 @@ cdef class TH1F(BasePlotting):
         if len(labels): pass
         elif self.set_xmin: x_min = self.ptr.x_min
         elif not len(labels) and not len(self.xData): pass
+        elif self.ptr.variable_x_bins.size(): x_min = self.ptr.variable_x_bins.front()
         else: x_min = self.ptr.get_min(b"x")
 
         if len(labels): pass
         elif self.set_xmax: x_max = self.ptr.x_max
         elif not len(labels) and not len(self.xData): pass
+        elif self.ptr.variable_x_bins.size(): x_max = self.ptr.variable_x_bins.back()
         else: x_max = self.ptr.get_max(b"x")
 
         y_max, y_min = None, None
@@ -619,7 +631,6 @@ cdef class TH1F(BasePlotting):
             del histpl["edgecolor"]
             histpl["histtype"] = "step"
             histpl["H"] = [self.Histogram.__build__()]
-            self.Histogram.ShowCount = False
             histpl["label"] = [self.Histogram.Title + " (Uncertainty)"]
             error = hep.histplot(**histpl)
 
@@ -702,6 +713,24 @@ cdef class TH1F(BasePlotting):
                 hep.histplot(**cpy)
             self._ax[1].legend(loc = "upper right")
             return {}
+
+        elif self.ErrorBars:
+            lg = [self.__build__()]
+            del histpl["edgecolor"]
+            histpl["histtype"] = "errorbar"
+            histpl["H"] = [self.__build__()]
+            del histpl["label"]
+            histpl["alpha"] = 0.0
+            error = hep.histplot(**histpl)
+            del histpl["alpha"]
+
+            histpl["label"] = [self.Title]
+            histpl["histtype"] = "fill"
+            histpl["edgecolor"] = "black"
+            histpl["H"] = lg
+            hep.histplot(**histpl)
+            self.__get_error_seg__(error[0])
+
         else: hep.histplot(**histpl)
 
         if not len(labels):
@@ -722,14 +751,36 @@ cdef class TH2F(BasePlotting):
             except AttributeError: continue
 
     @property
-    def yBins(self): return self.ptr.y_bins
+    def yBins(self):
+        if not self.ptr.variable_y_bins.size(): return self.ptr.y_bins
+        else: return self.ptr.variable_y_bins
+
     @yBins.setter
-    def yBins(self, int val): self.ptr.y_bins = val
+    def yBins(self, val):
+        if isinstance(val, int): self.ptr.y_bins = val
+        elif isinstance(val, list): self.ptr.variable_y_bins = <vector[float]>(val)
+        else: self.ptr.warning(b"Invalid Bins specified")
 
     @property
-    def xBins(self): return self.ptr.x_bins
+    def xBins(self):
+        if not self.ptr.variable_x_bins.size(): return self.ptr.x_bins
+        else: return self.ptr.variable_x_bins
+
     @xBins.setter
-    def xBins(self, int val): self.ptr.x_bins = val
+    def xBins(self, val):
+        if isinstance(val, int): self.ptr.x_bins = val
+        elif isinstance(val, list): self.ptr.variable_x_bins = <vector[float]>(val)
+        else: self.ptr.warning(b"Invalid Bins specified")
+
+    @property
+    def xLabels(self): return as_basic_udict(&self.ptr.x_labels)
+    @xLabels.setter
+    def xLabels(self, dict val): as_umap(val, &self.ptr.x_labels)
+
+    @property
+    def yLabels(self): return as_basic_udict(&self.ptr.y_labels)
+    @yLabels.setter
+    def yLabels(self, dict val): as_umap(val, &self.ptr.y_labels)
 
     @property
     def xData(self): return self.ptr.x_data;
@@ -748,25 +799,43 @@ cdef class TH2F(BasePlotting):
 
     cdef __build__(self):
         cdef float x_max, x_min
-        if self.set_xmin: x_min = self.ptr.x_min
+        cdef dict xlabels = self.xLabels
+
+        if len(xlabels): pass
+        elif self.set_xmin: x_min = self.ptr.x_min
+        elif not len(xlabels) and not len(self.xData): pass
+        elif self.ptr.variable_x_bins.size(): x_min = self.ptr.variable_x_bins.front()
         else: x_min = self.ptr.get_min(b"x")
 
-        if self.set_xmax: x_max = self.ptr.x_max
+        if len(xlabels): pass
+        elif self.set_xmax: x_max = self.ptr.x_max
+        elif not len(xlabels) and not len(self.xData): pass
+        elif self.ptr.variable_x_bins.size(): x_max = self.ptr.variable_x_bins.back()
         else: x_max = self.ptr.get_max(b"x")
 
         cdef float y_max, y_min
-        if self.set_ymin: y_min = self.ptr.y_min
+        cdef dict ylabels = self.yLabels
+
+        if len(ylabels): pass
+        elif self.set_ymin: y_min = self.ptr.y_min
+        elif not len(ylabels) and not len(self.yData): pass
+        elif self.ptr.variable_y_bins.size(): y_min = self.ptr.variable_y_bins.front()
         else: y_min = self.ptr.get_min(b"y")
 
-        if self.set_ymax: y_max = self.ptr.y_max
+        if len(ylabels): pass
+        elif self.set_xmax: y_max = self.ptr.y_max
+        elif not len(ylabels) and not len(self.yData): pass
+        elif self.ptr.variable_x_bins.size(): y_max = self.ptr.variable_y_bins.back()
         else: y_max = self.ptr.get_max(b"y")
 
-        h = bh.Histogram(
-            bh.axis.Regular(self.ptr.x_bins, x_min, x_max),
-            bh.axis.Regular(self.ptr.y_bins, y_min, y_max),
-            storage = bh.storage.Weight()
-        )
 
+        if self.ptr.variable_x_bins.size(): ax_ = bh.axis.Variable(self.ptr.variable_x_bins)
+        else: ax_ = bh.axis.Regular(self.ptr.x_bins, x_min, x_max)
+
+        if self.ptr.variable_y_bins.size(): ay_ = bh.axis.Variable(self.ptr.variable_y_bins)
+        else: ay_ = bh.axis.Regular(self.ptr.y_bins, y_min, y_max)
+
+        h = bh.Histogram(ax_, ay_, storage = bh.storage.Weight())
         if not self.ptr.weights.size(): h.fill(self.ptr.x_data, self.ptr.y_data)
         else: h.fill(self.ptr.x_data, self.ptr.y_data, weight = self.ptr.weights)
         return h

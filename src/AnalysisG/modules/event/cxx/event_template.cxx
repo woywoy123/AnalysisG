@@ -44,7 +44,7 @@ void event_template::build_mapping(std::map<std::string, data_t*>* evnt){
     std::map<std::string, std::string>::iterator itl;   
     std::vector<std::string> tr = this -> trees; 
 
-    for (int x(0); x < tr.size(); ++x){
+    for (size_t x(0); x < tr.size(); ++x){
         this -> next_[tr[x]] = false; 
         for (ite = evnt -> begin(); ite != evnt -> end(); ++ite){
             bool s = tr[x] == ite -> second -> tree_name;

@@ -19,12 +19,17 @@ class dataloader;
 
 struct graph_t; 
 struct variable_t; 
+struct optimizer_params_t;
+struct model_report; 
 
 void execution(
-        model_template* md, model_settings_t mds, 
-        std::vector<graph_t*>* data, size_t* prg,
-        std::string output, std::vector<variable_t>* content
+    model_template* md, model_settings_t mds, 
+    std::vector<graph_t*>* data, size_t* prg,
+    std::string output, std::vector<variable_t>* content
 ); 
+
+void initialize_loop(optimizer* op, int k, model_template* md, optimizer_params_t* config, model_report** rep); 
+
 
 class model_template: 
     public notification, 
@@ -120,6 +125,11 @@ class model_template:
             model_template* md, model_settings_t mds, 
             std::vector<graph_t*>* data, size_t* prg,
             std::string output, std::vector<variable_t>* content
+        ); 
+
+        friend void initialize_loop(
+            optimizer* op, int k, model_template* md, 
+            optimizer_params_t* config, model_report** rep
         ); 
 
     private:
