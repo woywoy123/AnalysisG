@@ -17,7 +17,7 @@ dependencies = [
     "pwinput",
     "scipy",
     "h5py",
-    "torchmetrics"
+#    "torchmetrics"
 ]
 
 [tool.scikit-build]
