@@ -44,7 +44,7 @@ jobs:
           sudo apt-get install -y libbz2-dev
           sudo apt-get install -y libreadline-dev 
           sudo apt-get install -y liblzma-dev
-          sudo apt-get install cuda-toolkit-12-5
+          sudo apt-get install -y cuda-toolkit-12-5
 
           wget https://root.cern/download/root_v6.32.02.Linux-almalinux9.4-x86_64-gcc11.4.tar.gz
           tar -xzvf root_v6.32.02.Linux-almalinux9.4-x86_64-gcc11.4.tar.gz
