@@ -38,7 +38,6 @@ jobs:
           sudo apt-get install -y libbz2-dev
           sudo apt-get install -y libreadline-dev 
           sudo apt-get install -y liblzma-dev
-          sudo apt-get install -y cuda-toolkit-12-5
 
           wget https://root.cern/download/root_v6.32.02.Linux-almalinux9.4-x86_64-gcc11.4.tar.gz
           tar -xzvf root_v6.32.02.Linux-almalinux9.4-x86_64-gcc11.4.tar.gz
@@ -66,13 +65,6 @@ jobs:
         with:
           path: ./wheelhouse/*.whl
 
-  build_sdist:
-    name: Build source distribution
-    runs-on: ubuntu-latest
-    steps:
-      - name: checkout
-        uses: actions/checkout@v4
-           
       - name: Build sdist
         run: pipx run build --sdist
 
@@ -81,7 +73,7 @@ jobs:
           path: dist/*.tar.gz
 
   upload_pypi:
-    needs: [build_wheels, build_sdist]
+    needs: [build_wheels]
     runs-on: ubuntu-latest
     environment: pypi
     permissions:
