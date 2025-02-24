@@ -16,8 +16,8 @@ void analysis::build_events(){
         event_template* evn = evnt_comp -> clone(); 
         ROOT::EnableImplicitMT(); 
         io* rdr = new io(); 
-        rdr -> import_settings(&this -> m_settings); 
         rdr -> shush = true; 
+        rdr -> import_settings(&this -> m_settings); 
         rdr -> trees = *trees; 
         rdr -> branches = *branches; 
         rdr -> leaves = *leaves; 
@@ -65,6 +65,7 @@ void analysis::build_events(){
     std::vector<std::string>* branches_ = &this -> reader -> branches; 
     std::vector<std::string>* leaves_   = &this -> reader -> leaves; 
     this -> reader -> import_settings(&this -> m_settings); 
+
     std::map<std::string, std::string>::iterator itf = this -> file_labels.begin(); 
     for (; itf != this -> file_labels.end(); ++itf){
         if (!this -> event_labels.count(itf -> second)){continue;}
@@ -82,6 +83,7 @@ void analysis::build_events(){
         dt = event_f -> leaves; 
         leaves_ -> insert(leaves_ -> end(), dt.begin(), dt.end()); 
     } 
+    this -> reader -> scan_keys();
     if (!this -> reader -> root_files.size()){return this -> info("Skipping event building.");}
     if (!event_f){return this -> warning("Missing Event Implementation for specified samples!");}
     this -> success("+============================+"); 

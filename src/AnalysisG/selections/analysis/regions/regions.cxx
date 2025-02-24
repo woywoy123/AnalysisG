@@ -24,16 +24,18 @@ bool regions::strategy(event_template* ev){
     this -> upcast(&evn -> Leptsn, &leps);  
     this -> upcast(&evn -> Electrons, &elx); 
     this -> upcast(&evn -> Jets, &jets); 
+
     float event_weight = evn -> weight_mc * evn -> weight_pileup * evn -> weight_beamspot;
     event_weight *= evn -> weight_jvt_effSF * evn -> weight_lep_tightSF * evn -> weight_ftag_effSF; 
 
-    float xsec = 0.041047999999999994; 
-    if (this -> has_string(&this -> filename, "user.rqian.42182125._000001.output.root")){event_weight      *= (36646.74/13133.5888671875);}
-    else if (this -> has_string(&this -> filename, "user.rqian.42182127._000001.output.root")){event_weight *= (44630.6/16013.2939453125);}
-    else if (this -> has_string(&this -> filename, "user.rqian.42182128._000001.output.root")){event_weight *= (58791.6/22164.791015625);}
-    else {event_weight = 0;}
-    event_weight *= xsec; 
-
+    std::string camp = this -> meta_data -> campaign; 
+    double sow   = this -> meta_data -> sum_of_weights; 
+    double cross = this -> meta_data -> cross_section_pb; 
+    if      (camp == "mc20a"){event_weight *= 36646.74;}
+    else if (camp == "mc20d"){event_weight *= 44630.6;}
+    else if (camp == "mc20e"){event_weight *= 58791.6;}
+    event_weight *= cross/sow; 
+    
     // ----- nBjets_GN2v01_85WP_NOSYS ----- //
     int nbjet_85wp = 0; 
     for (size_t x(0); x < jets.size(); ++x){nbjet_85wp += (jets[x] -> sel_85 == 1);}
@@ -47,7 +49,6 @@ bool regions::strategy(event_template* ev){
     bool pass_ssem = evn -> pass_ssem == 1;
     if (evn -> Electrons.size() > 0){pass_ssem *= elx[0] -> pass_ecids == 1;}
     else {pass_ssem *= false;}
-
     bool pass_ssmm = evn -> pass_ssmm == 1; 
 
     // ----- pass_SSem_passEtaCut_NOSYS ----- //
@@ -93,14 +94,14 @@ bool regions::strategy(event_template* ev){
 
     data.CRttbarCO2l_CO.variable1 = 1; 
     data.CRttbarCO2l_CO.weight = event_weight; 
-    data.CRttbarCO2l_CO.passed *= lepton_0_pt * (pass_ssee || pass_ssem); 
+    data.CRttbarCO2l_CO.passed *= (lepton_0_pt && (pass_ssee || pass_ssem));
     data.CRttbarCO2l_CO.passed *= (lepton_0_ambiguity == 2 || lepton_1_ambiguity == 2); 
-    data.CRttbarCO2l_CO.passed *= (nbjet_85wp >= 1) * (evn -> n_jets >= 4) * (evn -> n_jets < 6); 
+    data.CRttbarCO2l_CO.passed *= (nbjet_85wp >= 1) && (evn -> n_jets >= 4) && (evn -> n_jets < 6); 
     // lepton_0_pt_GeV_NOSYS>28 
     // && (pass_SSee_passECIDS_NOSYS||pass_SSem_passECIDS_NOSYS) 
     // && (lepton_0_DFCommonAddAmbiguity_NOSYS==2||lepton_1_DFCommonAddAmbiguity_NOSYS==2) 
     // && nBjets_GN2v01_85WP_NOSYS>=1 
-    // && nJets>=4 && nJets<6"
+    // && nJets>=4 && nJets<6
     // name: "1"
     // definition: "zero_NOSYS"
     // min: 0

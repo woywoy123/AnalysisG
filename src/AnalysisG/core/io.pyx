@@ -97,6 +97,11 @@ cdef class IO:
     @property
     def Trees(self): return env_vec(&self.ptr.trees)
 
+    @property
+    def SumOfWeightsTreeName(self): return env(self.ptr.sow_name)
+    @SumOfWeightsTreeName.setter
+    def SumOfWeightsTreeName(self, str val): self.ptr.sow_name = enc(val)
+
     @Trees.setter
     def Trees(self, val):
         if isinstance(val, str): val = [val]

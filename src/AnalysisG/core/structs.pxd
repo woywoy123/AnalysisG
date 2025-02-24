@@ -54,9 +54,6 @@ cdef extern from "<structs/meta.h>":
         unsigned int dsid
         bool isMC
 
-        string AMITag
-        string generators
-        string derivationFormat
         map[int, int] inputrange
         map[int, string] inputfiles
         map[string, string] config
@@ -73,6 +70,7 @@ cdef extern from "<structs/meta.h>":
         double beam_energy
         double crossSection
         double crossSection_mean
+        double campaign_luminosity
         double totalSize
         double kfactor
 
@@ -101,6 +99,10 @@ cdef extern from "<structs/meta.h>":
         string file_type
         string sample_name
         string logicalDatasetName
+        string AMITag
+        string generators
+        string derivationFormat
+        string campaign
 
         vector[string] keywords
         vector[string] weights

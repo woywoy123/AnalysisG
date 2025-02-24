@@ -89,6 +89,13 @@ void io::root_key_paths(std::string path){
     std::vector<std::string> tmp = {}; 
     for (TObject* key : *dir -> GetListOfKeys()){tmp.push_back(key -> GetName());}
 
+    std::vector<std::string> scrape_meta_ = this -> split(this -> sow_name, ":"); 
+    std::vector<std::vector<std::string>> scrape_meta = {}; 
+    for (size_t x(0); x < scrape_meta_.size(); ++x){
+        if (!this -> sow_name.size()){continue;}
+        scrape_meta.push_back(this -> split(scrape_meta_[x], "*")); 
+    } 
+
     if (this -> ends_with(&this -> metacache_path, ".h5")){}
     else if (!this -> ends_with(&this -> metacache_path, "/")){this -> metacache_path += "/meta.h5";}
     else {this -> metacache_path += "meta.h5";}
@@ -108,26 +115,30 @@ void io::root_key_paths(std::string path){
         std::string fname = this -> file_root -> GetTitle(); 
         std::string obname = std::string(obj -> GetName()); 
 
+        bool is_ttree = obj -> InheritsFrom("TTree"); 
+        bool is_th1f  = obj -> InheritsFrom("TH1"); 
+
         // ------------ meta data scraping ---------------------- //
         if (!this -> meta_data.count(fname)){this -> meta_data[fname] = new meta();}
         meta* mtx = this -> meta_data[fname];  
         mtx -> metacache_path = this -> metacache_path; 
         mtx -> meta_data.sample_name = fname; 
         if (obname == "AnalysisTracking"){mtx -> scan_data(obj); continue;}
-        if (this -> sow_name == obname){mtx -> scan_sow(obj); continue;}
-        else if (this -> has_string(&this -> sow_name, "*")){
-            std::vector<std::string> spl = this -> split(this -> sow_name, "*");
-            bool found = spl.size(); 
-            for (std::string& v : spl){found *= this -> has_string(&obname, v);}
-            if (found){mtx -> scan_data(obj); continue;}
+        if (obname == "EventLoop_FileExecuted"){mtx -> scan_data(obj); continue;}
+        if (obname == "metadata"){mtx -> scan_data(obj); continue;}
+        if (this -> sow_name == obname){  mtx -> scan_data(obj); continue;}
+        for (size_t t(0); t < scrape_meta.size(); ++t){
+            bool found = true; 
+            for (size_t m(0); m < scrape_meta[t].size(); ++m){
+                found *= this -> has_string(&obname, scrape_meta[t][m]); 
+            }
+            if (!found){continue;}
+            mtx -> scan_data(obj);
         }
         // ------------ meta data scraping ---------------------- //
 
-        if (obj -> InheritsFrom("TTree")){
-            this -> root_key_paths(updated, (TTree*)obj);
-            continue;
-        }
-        if (obj -> InheritsFrom("TH1")){continue;}
+        if (is_ttree){this -> root_key_paths(updated, (TTree*)obj); continue;}
+        if (is_th1f){continue;}
 
         dir -> cd(updated.c_str()); 
         this -> root_key_paths(updated + "/"); 
@@ -304,5 +315,4 @@ void io::root_end(){
     this -> iters -> clear(); 
     delete this -> iters; this -> iters = nullptr; 
 }
-
 

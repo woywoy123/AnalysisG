@@ -43,6 +43,7 @@ struct meta_t {
     std::string DatasetName = "";
 
     // dataset attributes
+    double totalSize = 0;
     double kfactor   = 0; 
     double ecmEnergy = 0;
     double genFiltEff = 0;
@@ -50,7 +51,7 @@ struct meta_t {
     double beam_energy = 0;
     double crossSection = 0;
     double crossSection_mean = 0;
-    double totalSize = 0;
+    double campaign_luminosity = 0; 
 
     unsigned int nFiles = 0;
     unsigned int totalEvents = 0;
@@ -77,6 +78,7 @@ struct meta_t {
     std::string file_type = "";
     std::string sample_name = ""; 
     std::string logicalDatasetName = ""; 
+    std::string campaign = "";
 
     std::vector<std::string> keywords = {};
     std::vector<std::string> weights = {};

@@ -6,13 +6,12 @@
 
 #include <structs/property.h>
 #include <structs/event.h>
-#include <structs/meta.h>
+#include <meta/meta.h>
 
 #include <tools/merge_cast.h>
 #include <tools/tools.h>
 
 class container; 
-class meta; 
 
 class selection_template: public tools
 {

@@ -299,7 +299,7 @@ cdef class BasePlotting:
     @Overflow.setter
     def Overflow(self, val):
         if isinstance(val, int): self.ptr.overflow = enc("sum" if val else "none")
-        else: self.ptr.overflow = env(val)
+        else: self.ptr.overflow = enc(val)
 
     @property
     def Color(self):
@@ -499,7 +499,7 @@ cdef class TH1F(BasePlotting):
                 xarr, low, up,
                 facecolor = "k",
                 hatch = "/////",
-                step  = "mid",
+                step  = "pre",
                 label = "Uncertainty",
                 alpha = 0.4,
         )
@@ -720,16 +720,32 @@ cdef class TH1F(BasePlotting):
             histpl["histtype"] = "errorbar"
             histpl["H"] = [self.__build__()]
             del histpl["label"]
+            histpl["binticks"] = True
             histpl["alpha"] = 0.0
+
+            w1 = iter(histpl["H"][0].axes[0].widths)
             error = hep.histplot(**histpl)
+            error = error[0].errorbar.lines[2][0]
             del histpl["alpha"]
+
+            x_arr = []
+            y_err_lo = []
+            y_err_up = []
+
+            sm = x_min
+            for i in error.get_segments():
+                sm += next(w1)
+                k = i.tolist()
+                x_arr.append(sm)
+                y_err_lo.append(k[0][1])
+                y_err_up.append(k[1][1])
 
             histpl["label"] = [self.Title]
             histpl["histtype"] = "fill"
             histpl["edgecolor"] = "black"
             histpl["H"] = lg
             hep.histplot(**histpl)
-            self.__get_error_seg__(error[0])
+            self.__error__(x_arr, y_err_lo, y_err_up)
 
         else: hep.histplot(**histpl)
 

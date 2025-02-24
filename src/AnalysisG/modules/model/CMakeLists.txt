@@ -18,4 +18,4 @@ target_link_libraries(cmodel_template PUBLIC cgraph_template cnotification closs
 endif()
 
 target_compile_options(cmodel_template PRIVATE -fPIC)
-target_compile_options(cmodel_template PUBLIC -Wall -pedantic -Wextra)
+target_compile_options(cmodel_template PRIVATE -Wall -pedantic -Wextra)

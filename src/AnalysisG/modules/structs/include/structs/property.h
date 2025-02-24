@@ -37,6 +37,11 @@ class cproperty
         bool operator==(const T& val){return this -> data == val;}
         bool operator!=(const T& val){return this -> data != val;}
 
+        std::ostream& operator<<(std::ostream& out){
+            out << this -> data; 
+            return out;  
+        }
+
         operator T(){
             if (!this -> has_getter){return this -> data;}
             this -> getter(&this -> data, this -> obj); 

@@ -31,6 +31,7 @@ cdef extern from "<io/io.h>" nogil:
 
         # ------ parameters ------- #
         string current_working_path
+        string sow_name
 
         bool enable_pyami
         vector[string] trees

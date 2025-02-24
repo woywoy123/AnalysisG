@@ -102,10 +102,16 @@ cdef class ami_client:
         for l in [dict(k) for k in self.datas[dset_name]]: files[l["LFN"]] = l
 
         cdef list keys = [
-                "logicalDatasetName", "identifier", "nFiles", "totalEvents", "totalSize", "dataType", "prodsysStatus", "completion", "ecmEnergy",
-                "PDF", "version", "AtlasRelease", "crossSection", "genFiltEff", "datasetNumber", "physicsShort", "generatorName", "geometryVersion",
-                "conditionsTag", "generatorTune", "amiStatus", "beamType", "productionStep", "projectName", "statsAlgorithm", "beam_energy",
-                "crossSection_mean", "file_type", "genFilterNames", "run_number", "principalPhysicsGroup"
+                "logicalDatasetName", "identifier",
+                "nFiles", "totalEvents", "totalSize",
+                "dataType", "prodsysStatus", "completion", "ecmEnergy",
+                "PDF", "version", "AtlasRelease", "crossSection",
+                "genFiltEff", "datasetNumber", "physicsShort",
+                "generatorName", "geometryVersion",
+                "conditionsTag", "generatorTune", "amiStatus", "beamType",
+                "productionStep", "projectName", "statsAlgorithm", "beam_energy",
+                "crossSection_mean", "file_type", "genFilterNames", "run_number",
+                "principalPhysicsGroup"
         ]
 
         for i in keys:
@@ -780,4 +786,8 @@ cdef class Meta:
     def sample_name(self, str val):
         self.ptr.meta_data.sample_name = enc(val)
 
+    @property
+    def campaign(self): return env(self.ptr.meta_data.campaign)
 
+    @campaign.setter
+    def campaign(self, str val): self.ptr.meta_data.campaign = enc(val)
