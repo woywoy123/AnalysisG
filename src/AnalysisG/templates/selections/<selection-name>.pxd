@@ -10,8 +10,6 @@ cdef extern from "<selection-name>.h":
     cdef cppclass <selection-name>(selection_template):
         <selection-name>() except +
 
-
-
 cdef class <selection-name-python>(SelectionTemplate):
     cdef <selection-name>* tt
 

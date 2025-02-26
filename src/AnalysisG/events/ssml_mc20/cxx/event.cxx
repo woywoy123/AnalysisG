@@ -174,6 +174,9 @@ void ssml_mc20::CompileEvent(){
     this -> vectorize(&this -> m_jets     , &this -> Detector); 
     this -> vectorize(&this -> m_muons    , &this -> Detector); 
     this -> vectorize(&this -> m_electrons, &this -> Detector); 
-    this -> vectorize(&leps_, &this -> Leptsn);
-    this -> vectorize(&elx  , &this -> Electrons); 
+    this -> vectorize(&this -> m_muons    , &this -> Leptons);
+    this -> vectorize(&this -> m_electrons, &this -> Leptons);
+
+    this -> vectorize(&leps_              , &this -> Leptsn);
+    this -> vectorize(&elx                , &this -> Electrons); 
 }

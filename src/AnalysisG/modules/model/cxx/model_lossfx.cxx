@@ -34,9 +34,7 @@ void model_template::train_sequence(bool train){
     std::map<std::string, std::string> gr = this -> o_graph; 
     std::map<std::string, std::string> nd = this -> o_node; 
     std::map<std::string, std::string> ed = this -> o_edge; 
-    if (!this -> _losses.size()){
-        this -> _losses = std::vector<torch::Tensor*>(gr.size() + nd.size() + ed.size(), nullptr);
-    }
+    if (!this -> _losses.size()){this -> _losses = std::vector<torch::Tensor*>(gr.size() + nd.size() + ed.size(), nullptr);}
 
     int inx = -1; 
     mode = graph_enum::truth_graph; 

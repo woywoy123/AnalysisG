@@ -97,9 +97,12 @@ physics_detector::physics_detector(){
     this -> add_leaf("top_index", "_top_index"); 
     this -> apply_type_prefix(); 
 
-    this -> is_jet.set_getter(get_type_jet); 
-    this -> is_lepton.set_getter(get_type_lepton);
-    this -> is_photon.set_getter(get_type_photon); 
+    this -> is_jet.set_getter(this -> get_type_jet); 
+    this -> is_lepton.set_getter(this -> get_type_lepton);
+    this -> is_photon.set_getter(this -> get_type_photon); 
+    this -> is_jet.set_object(this); 
+    this -> is_lepton.set_object(this);
+    this -> is_photon.set_object(this); 
 }
 
 physics_detector::~physics_detector(){}
@@ -161,9 +164,12 @@ physics_truth::physics_truth(){
     this -> add_leaf("top_index", "_top_index"); 
     this -> apply_type_prefix(); 
 
-    this -> is_jet.set_getter(get_type_jet); 
-    this -> is_lepton.set_getter(get_type_lepton);
-    this -> is_photon.set_getter(get_type_photon); 
+    this -> is_jet.set_getter(this -> get_type_jet); 
+    this -> is_lepton.set_getter(this -> get_type_lepton);
+    this -> is_photon.set_getter(this -> get_type_photon); 
+    this -> is_jet.set_object(this); 
+    this -> is_lepton.set_object(this);
+    this -> is_photon.set_object(this); 
 }
 
 physics_truth::~physics_truth(){}
@@ -217,11 +223,11 @@ jet::jet(){
     this -> add_leaf("phi"   , "_phi"); 
     this -> add_leaf("energy", "_e"); 
 
-    this -> add_leaf("btag_65", "_isbtagged_GN2v01_65"); 
-    this -> add_leaf("btag_70", "_isbtagged_GN2v01_70"); 
-    this -> add_leaf("btag_77", "_isbtagged_GN2v01_77"); 
-    this -> add_leaf("btag_85", "_isbtagged_GN2v01_85"); 
-    this -> add_leaf("btag_90", "_isbtagged_GN2v01_90"); 
+    //this -> add_leaf("btag_65", "_isbtagged_GN2v01_65"); 
+    //this -> add_leaf("btag_70", "_isbtagged_GN2v01_70"); 
+    //this -> add_leaf("btag_77", "_isbtagged_GN2v01_77"); 
+    //this -> add_leaf("btag_85", "_isbtagged_GN2v01_85"); 
+    //this -> add_leaf("btag_90", "_isbtagged_GN2v01_90"); 
 
     this -> add_leaf("flav"  , "_truthflav"); 
     this -> add_leaf("parton", "_truthPartonLabel"); 
@@ -234,17 +240,17 @@ void jet::build(std::map<std::string, particle_template*>* prt, element_t* el){
     std::vector<jet*> tps; 
     pmu(&tps, el); 
 
-    std::vector<char> _btag_65; 
-    std::vector<char> _btag_70; 
-    std::vector<char> _btag_77; 
-    std::vector<char> _btag_85; 
-    std::vector<char> _btag_90; 
+    //std::vector<char> _btag_65; 
+    //std::vector<char> _btag_70; 
+    //std::vector<char> _btag_77; 
+    //std::vector<char> _btag_85; 
+    //std::vector<char> _btag_90; 
 
-    el -> get("btag_65", &_btag_65); 
-    el -> get("btag_70", &_btag_70); 
-    el -> get("btag_77", &_btag_77); 
-    el -> get("btag_85", &_btag_85); 
-    el -> get("btag_90", &_btag_90); 
+    //el -> get("btag_65", &_btag_65); 
+    //el -> get("btag_70", &_btag_70); 
+    //el -> get("btag_77", &_btag_77); 
+    //el -> get("btag_85", &_btag_85); 
+    //el -> get("btag_90", &_btag_90); 
 
     std::vector<int> fl, prtn; 
     el -> get("flav", &fl); 
@@ -252,11 +258,11 @@ void jet::build(std::map<std::string, particle_template*>* prt, element_t* el){
 
     for (int x(0); x < tps.size(); ++x){
         jet* p = tps[x]; 
-        p -> btag_65 = (bool)_btag_65[x];
-        p -> btag_70 = (bool)_btag_70[x];
-        p -> btag_77 = (bool)_btag_77[x];
-        p -> btag_85 = (bool)_btag_85[x];
-        p -> btag_90 = (bool)_btag_90[x]; 
+    //    p -> btag_65 = (bool)_btag_65[x];
+    //    p -> btag_70 = (bool)_btag_70[x];
+    //    p -> btag_77 = (bool)_btag_77[x];
+    //    p -> btag_85 = (bool)_btag_85[x];
+    //    p -> btag_90 = (bool)_btag_90[x]; 
         p -> flav    = fl[x]; 
         p -> label   = prtn[x]; 
 

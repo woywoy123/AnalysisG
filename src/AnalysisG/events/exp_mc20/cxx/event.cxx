@@ -39,8 +39,8 @@ void exp_mc20::CompileEvent(){
 
     std::map<int, top*> tops_ = this -> sort_by_index(&this -> m_tops); 
     this -> vectorize(&this -> m_children, &children_); 
-    this -> vectorize(&this -> m_physdet, &physdet); 
-    this -> vectorize(&this -> m_phystru, &phystru); 
+    this -> vectorize(&this -> m_physdet , &physdet); 
+    this -> vectorize(&this -> m_phystru , &phystru); 
 
     for (size_t x(0); x < children_.size(); ++x){
         child* c = children_[x]; 
@@ -51,24 +51,23 @@ void exp_mc20::CompileEvent(){
     for (size_t x(0); x < phystru.size(); ++x){
         physics_truth* c = phystru[x]; 
         for (size_t t(0); t < c -> top_index.size(); ++t){
-            if (c -> top_index[t] == -1){continue;}
-            c -> register_parent(tops_[t]); 
+            if (c -> top_index[t] < 0){continue;}
+            c -> register_parent(tops_[t]);
         }
     } 
 
     for (size_t x(0); x < physdet.size(); ++x){
         physics_detector* c = physdet[x]; 
         for (size_t t(0); t < c -> top_index.size(); ++t){
-            if (c -> top_index[t] == -1){continue;}
-            c -> register_parent(tops_[t]); 
+            if (c -> top_index[t] < 0){continue;}
+            c -> register_parent(tops_[t]);
         }
     } 
 
-
     std::vector<particle_template*> detectors = {}; 
     this -> vectorize(&this -> m_electrons, &detectors); 
-    this -> vectorize(&this -> m_muons, &detectors); 
-    this -> vectorize(&this -> m_jets, &detectors); 
+    this -> vectorize(&this -> m_muons    , &detectors); 
+    this -> vectorize(&this -> m_jets     , &detectors); 
     for (size_t x(0); x < detectors.size(); ++x){
         std::map<double, physics_detector*>::iterator itr;  
         particle_template* prt = detectors[x]; 
@@ -83,14 +82,15 @@ void exp_mc20::CompileEvent(){
         if (!prnt.size()){continue;}
         std::map<std::string, particle_template*>::iterator itr_ = prnt.begin(); 
         for (; itr_ != prnt.end(); ++itr_){prt -> register_parent(itr_ -> second);}
+
     }
 
-    this -> vectorize(&this -> m_tops, &this -> Tops); 
-    this -> vectorize(&this -> m_children, &this -> TruthChildren); 
-    this -> vectorize(&this -> m_phystru, &this -> PhysicsTruth); 
-    this -> vectorize(&this -> m_jets, &this -> Jets); 
+    this -> vectorize(&this -> m_tops     , &this -> Tops); 
+    this -> vectorize(&this -> m_children , &this -> TruthChildren); 
+    this -> vectorize(&this -> m_phystru  , &this -> PhysicsTruth); 
+    this -> vectorize(&this -> m_jets     , &this -> Jets); 
     this -> vectorize(&this -> m_electrons, &this -> Leptons); 
-    this -> vectorize(&this -> m_muons, &this -> Leptons);
-    this -> vectorize(&this -> m_physdet, &this -> PhysicsDetector); 
+    this -> vectorize(&this -> m_muons    , &this -> Leptons);
+    this -> vectorize(&this -> m_physdet  , &this -> PhysicsDetector); 
     this -> Detector = detectors; 
 }

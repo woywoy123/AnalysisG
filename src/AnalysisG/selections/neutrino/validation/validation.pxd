@@ -59,22 +59,6 @@ cdef extern from "validation.h":
         validation() except +
         map[string, package] data_out
 
-cdef class Neutrino(ParticleTemplate):
-    cdef void set_particle(self, nu* ox)
-
-cdef class TopQ(ParticleTemplate):
-    cdef void set_particle(self, tquark* ox)
-
-cdef class BottomQ(ParticleTemplate):
-    cdef void set_particle(self, bquark* ox)
-
-cdef class Lepton(ParticleTemplate):
-    cdef void set_particle(self, lepton* ox)
-
-cdef class Boson(ParticleTemplate):
-    cdef void set_particle(self, boson* ox)
-
-
 cdef class Validation(SelectionTemplate):
     cdef validation* tt
     cdef list build_p0(self, vector[tquark*]* inpt)

@@ -41,7 +41,7 @@ class notification
         template <typename g>
         g sum(std::vector<g>* inpt){
             g ix = 0; 
-            for (int t(0); t < inpt -> size(); ++t){ix += (*inpt)[t];}
+            for (size_t t(0); t < inpt -> size(); ++t){ix += (*inpt)[t];}
             return ix; 
         }
 }; 

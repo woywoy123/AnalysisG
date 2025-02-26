@@ -80,22 +80,28 @@ def merge(data1, data2):
 def Line(title, xdata = None, ydata = None, err = None, col = None, linst = None, restrict = 2):
     tl = TLine()
     tl.Title = title
+    tl.LineWidth = 0.5
     tl.ErrorBars = False
-    if xdata is not None: tl.xData = [xdata[i] / 1000 for i in range(10,len(xdata)) if i % restrict == 0]
-    if ydata is not None: tl.yData = [ydata[i] for i in range(10,len(xdata)) if i % restrict == 0]
-    if err is not None: tl.yDataUp   = [err[i]*(1/math.sqrt(10000-1)) for i in range(10,len(xdata)) if i % restrict == 0]
-    if err is not None: tl.yDataDown = [err[i]*(1/math.sqrt(10000-1)) for i in range(10,len(xdata)) if i % restrict == 0]
+    if xdata is not None: tl.xData = [xdata[i] / 1000 for i in range(len(xdata))]
+    if ydata is not None: tl.yData = [ydata[i] for i in range(len(xdata))]
+    if err is not None: tl.yDataUp   = [err[i]*(1/math.sqrt(10000-1)) for i in range(len(xdata))]
+    if err is not None: tl.yDataDown = [err[i]*(1/math.sqrt(10000-1)) for i in range(len(xdata))]
     if col is not None: tl.Color = col
     if linst is not None: tl.LineStyle = linst
     if xdata is None: tl.xTitle = "Length of Tensor - (Units of 1000)"
-    if xdata is None: tl.yTitle = "Ratio (CUDA - Tensor) / (CUDA - Kernel) - Higher is Better"
+    if xdata is None: tl.yTitle = "CUDA Performance Ratio (Tensor / Kernel) - Higher is Better"
     return [tl] if xdata is not None else tl
 
 def MakeLines(data, dev, col = "red"):
     lins = []
 #    lins += Line("Tensor - (" + dev + ")" , data["dx"], data["cpu/cuda(t)"], data["sig(cpu/cuda(t))"], col, ":", 10)
 #    lins += Line("Kernel - (" + dev + ")" , data["dx"], data["cpu/cuda(k)"], data["sig(cpu/cuda(k))"], col, "-", 10)
-    lins += Line("Tensor (CUDA) / Kernel (CUDA) - (" + dev + ")", data["dx"], data["cuda(t)/cuda(k)"], data["sig(cuda(t)/cuda(k))"], col, ":", 10)
+    if   dev == "a100": dv = "A100"
+    elif dev == "a30" : dv = "A30 "
+    elif dev == "h100": dv = "H100"
+    elif dev == "v100": dv = "V100"
+    else: dv = dev
+    lins += Line(dv, data["dx"], data["cuda(t)/cuda(k)"], data["sig(cuda(t)/cuda(k))"], col, ":", 10)
     return lins
 
 def repeat(fx, data, iters, dx):

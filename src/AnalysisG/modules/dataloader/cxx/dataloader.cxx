@@ -117,13 +117,17 @@ void dataloader::datatransfer(torch::TensorOptions* op, int threads){
     x = this -> data_set -> size()/threads; 
     std::vector<std::vector<graph_t*>> quant = this -> discretize(this -> data_set, x); 
 
+    std::vector<size_t> lenx(quant.size(), 0); 
     std::vector<size_t> handles(quant.size(), 0); 
     std::vector<std::thread*> th(quant.size(), nullptr);
-    for (size_t g(0); g < th.size(); ++g){th[g] = new std::thread(lamb, &quant[g], op, &handles[g]);}
+    for (size_t g(0); g < th.size(); ++g){
+        lenx[g] = quant[g].size(); 
+        th[g] = new std::thread(lamb, &quant[g], op, &handles[g]);
+    }
 
-    std::string msg = "Transferring data to device."; 
-    std::thread* prg = new std::thread(this -> progressbar1, &handles, this -> data_set -> size(), msg);
-    for (size_t g(0); g < th.size(); ++g){th[g] -> join(); delete th[g];}
+    this -> info("Transferring data to device."); 
+    std::thread* prg = new std::thread(this -> progressbar3, &handles, &lenx, nullptr);
+    this -> monitor(&th); 
     prg -> join(); delete prg; 
 }
 
@@ -245,34 +249,18 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* data, mode
 
     if (rep && (rep -> mode == "validation" || rep -> mode == "evaluation") && this -> batched_cache.count(k)){
         out = this -> batched_cache[k];
-        if (out -> at(0) -> device_index[dev]){return out;}
+        if ((*out)[0] -> device_index[dev]){return out;}
     }
     else {out = new std::vector<graph_t*>(batched.size(), nullptr);}
 
     int r = 0; 
     std::vector<std::thread*> th_(batched.size(), nullptr); 
-    for (size_t x(0); x < batched.size(); ++x){
+    for (size_t x(0); x < batched.size(); ++x, ++r){
         if (skip){build_graph(&batched[x], out, mdl, x); continue;}
         th_[x] = new std::thread(build_graph, &batched[x], out, mdl, x);
-        ++r; 
-        while (r >= thr){
-            for (size_t i(0); i < x; ++i){
-                if (!th_[i]){continue;}
-                if (!th_[i] -> joinable()){continue;}
-                th_[i] -> join(); 
-                delete th_[i]; th_[i] = nullptr; 
-                --r; 
-                break;
-            }
-        }
+        while (r >= thr){r = this -> running(&th_);}
     }
-
-    for (size_t i(0); i < batched.size(); ++i){
-        if (!th_[i]){continue;}
-        if (!th_[i] -> joinable()){continue;}
-        th_[i] -> join(); 
-        delete th_[i]; th_[i] = nullptr; 
-    }
+    this -> monitor(&th_); 
 
     if (!rep){}
     else if (rep -> mode == "validation"){this -> batched_cache[k] = out;}

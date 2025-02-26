@@ -19,6 +19,7 @@ class particle_template : public tools
         virtual ~particle_template(); 
 
         explicit particle_template(particle_t* p);
+        explicit particle_template(particle_template* p, bool dump = false); 
         explicit particle_template(double px, double py, double pz, double e); 
         explicit particle_template(double px, double py, double pz);
 
@@ -136,11 +137,14 @@ class particle_template : public tools
         std::map<std::string, std::string> leaves = {}; 
 
         void apply_type_prefix(); 
+        std::map<std::string, std::map<std::string, particle_t>> __reduce__(); 
 
         virtual void build(std::map<std::string, particle_template*>* event, element_t* el); 
         virtual particle_template* clone(); 
-
         particle_t data;  
+
+        bool _is_serial = false; 
+
 }; 
 #endif
 

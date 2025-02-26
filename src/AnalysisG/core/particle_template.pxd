@@ -16,6 +16,7 @@ cdef extern from "<templates/particle_template.h>" nogil:
         particle_template(particle_t* p) except+ nogil
         particle_template(double px, double py, double pz, double e) except+ nogil
         particle_template(double px, double py, double pz) except+ nogil
+        map[string, map[string, particle_t]] __reduce__() except+ nogil
 
         double mass
         double e
@@ -42,6 +43,7 @@ cdef extern from "<templates/particle_template.h>" nogil:
         bool is_b
         bool is_add
         bool lep_decay
+        bool _is_serial
 
         void to_cartesian() except+ nogil
         void to_polar() except+ nogil
@@ -62,8 +64,14 @@ cdef extern from "<templates/particle_template.h>" nogil:
 
 cdef class ParticleTemplate:
     cdef particle_template* ptr
+    cdef bool is_owner
+    cdef list keys
     cdef list children
     cdef list parents
+    cdef list make_particle(self, map[string, particle_template*] px)
+    cdef void set_particle(self, particle_template* ox)
 
     cpdef ParticleTemplate clone(self)
     cpdef double DeltaR(self, ParticleTemplate inpt)
+
+

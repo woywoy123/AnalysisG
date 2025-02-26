@@ -47,7 +47,7 @@ void notification::info(std::string message){
 }
 
 void notification::progressbar(float lProgress, std::string title){
-    const char cFilled[] = "|||||||||||||||||||||||||||||||||||||";
+    const char cFilled[] = "#####################################";
     const char cEmpty[]  = "                                     ";
     size_t lFilledStart = (sizeof cFilled - 1) * (1 - lProgress);
     size_t lEmptyStart  = (sizeof cFilled - 1) * lProgress;
@@ -56,7 +56,7 @@ void notification::progressbar(float lProgress, std::string title){
 }
 
 void notification::progressbar(std::vector<size_t>* threads, std::vector<size_t>* trgt, std::vector<std::string>* title){
-    const char cFilled[] = "|||||||||||||||||||||||||||||||||||||";
+    const char cFilled[] = "#####################################";
     const char cEmpty[]  = "                                     ";
     for (size_t x(0); x < trgt -> size(); ++x){std::cout << "\033[F";}
     for (size_t x(0); x < trgt -> size(); ++x){
@@ -73,8 +73,8 @@ void notification::progressbar1(std::vector<size_t>* threads, size_t l, std::str
     while (true){
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
         float prgs = float(notification().sum(threads))/float(l); 
-        if (prgs > 0.995){break;}
         notification().progressbar(prgs, title); 
+        if (prgs > 0.995){break;}
     } 
     notification().progressbar(1, title); 
     std::cout << "" << std::endl;
@@ -84,8 +84,8 @@ void notification::progressbar2(std::vector<size_t>* threads, size_t* l, std::st
     while (true){
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
         float prgs = float(notification().sum(threads))/float(*l); 
-        if (prgs > 0.995){break;}
         notification().progressbar(prgs, *title); 
+        if (prgs > 0.995){break;}
     } 
     notification().progressbar(1, *title); 
     std::cout << "" << std::endl;
@@ -93,27 +93,51 @@ void notification::progressbar2(std::vector<size_t>* threads, size_t* l, std::st
 
 
 void notification::progressbar3(std::vector<size_t>* threads, std::vector<size_t>* l, std::vector<std::string*>* title){
-    notification n = notification(); 
+    notification n = notification();
+
+    std::vector<std::string*> bars = {}; 
     for (size_t x(0); x < l -> size(); ++x){
-        if (!(*title)[x]){(*title)[x] = new std::string("");}
+        std::string* bi = nullptr; 
+        if (title && (*title)[x]){bi = (*title)[x];}
+        else {bi = new std::string("Thread (" + std::to_string(x) + ")");}
+        bars.push_back(bi); 
         std::cout << "" << std::endl;
     }
-    while (true){
+    std::cout << "" << std::endl;
+
+    float prgs = 0; 
+    while (prgs < 1.0){
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
-        float prgs = float(n.sum(threads))/float(n.sum(l)); 
-        if (prgs >= 1){break;}
+        size_t xl = n.sum(l);  
+        size_t xp = n.sum(threads);
+        prgs = float(xp)/float(xl); 
+        std::vector<size_t> prx = {}; 
+        std::vector<size_t> totl = {}; 
         std::vector<std::string> vec = {};
-        for (size_t x(0); x < title -> size(); ++x){vec.push_back(std::string((*title)[x] -> c_str()));}
-        n.progressbar(threads, l, &vec);  
-    } 
-    for (size_t x(0); x < title -> size(); ++x){delete (*title)[x];}
+        size_t ln = 0; 
+
+        for (size_t x(0); x < bars.size(); ++x){
+            vec.push_back(std::string(bars[x] -> c_str()));
+            prx.push_back((*threads)[x]);
+            totl.push_back((*l)[x]); 
+            ln = (bars[x] -> size() < ln) ? ln : bars[x] -> size(); 
+        }
+        prx.push_back(xp); 
+        totl.push_back(xl); 
+        std::string tmp = "Total Progress:"; 
+        for (size_t x(tmp.size()); x < ln; ++x){tmp += " ";}
+        vec.push_back(tmp); 
+        n.progressbar(&prx, &totl, &vec);  
+    }
+
+    for (size_t x(0); x < bars.size(); ++x){delete bars[x];}
     std::cout << "" << std::endl;
 } 
 
 void notification::monitor(std::vector<std::thread*>* thr){
     for (size_t x(0); x < thr -> size(); ++x){
-        if (!thr -> at(x)){continue;}
-        if (!thr -> at(x) -> joinable()){continue;}
+        if (!(*thr)[x]){continue;}
+        if (!(*thr)[x] -> joinable()){continue;}
         (*thr)[x] -> join(); 
         delete (*thr)[x]; 
         (*thr)[x] = nullptr; 
@@ -124,8 +148,8 @@ void notification::monitor(std::vector<std::thread*>* thr){
 int notification::running(std::vector<std::thread*>* thr){
     int idx = 0; 
     for (size_t x(0); x < thr -> size(); ++x){
-        if (!thr -> at(x)){continue;}
-        if (!thr -> at(x) -> joinable()){idx++; continue;}
+        if (!(*thr)[x]){continue;}
+        if (!(*thr)[x] -> joinable()){idx++; continue;}
         (*thr)[x] -> join(); 
         delete (*thr)[x]; 
         (*thr)[x] = nullptr; 

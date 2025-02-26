@@ -82,6 +82,69 @@ particle_template::particle_template(){
 
 particle_template::particle_template(particle_t* p) : particle_template(){this -> data = *p;}
 
+particle_template::particle_template(particle_template* p, bool dump) : particle_template(){
+    if (!p){return;}
+    this -> data = p -> data;
+    this -> data.children.clear();
+    this -> data.parents.clear(); 
+    if (!dump){return;}
+
+    p -> data.data_p = nullptr; 
+    bool init = (!this -> data.data_p); 
+    std::map<std::string, particle_template*>* tr = nullptr; 
+    if (init){tr = new std::map<std::string, particle_template*>();}
+    else {tr = this -> data.data_p;}
+    (*tr)[this -> hash] = this; 
+    this -> _is_serial = p -> _is_serial; 
+
+    std::map<std::string, particle_template*> ch_ = p -> children; 
+    std::map<std::string, particle_template*> pr_ = p -> parents; 
+
+    std::map<std::string, particle_template*>::iterator itr; 
+    for (itr = ch_.begin(); itr != ch_.end(); ++itr){
+        itr -> second -> data.data_p = tr; 
+        if (!tr -> count(itr -> first)){(*tr)[itr -> first] = new particle_template(itr -> second, true);}
+        itr -> second -> data.data_p = nullptr; 
+
+        particle_template* pr = (*tr)[itr -> first];
+        this -> register_child(pr); 
+        pr -> data.data_p = nullptr; 
+        itr -> second -> _is_serial += p -> _is_serial; 
+        pr -> _is_serial = itr -> second -> _is_serial; 
+    }
+
+    for (itr = pr_.begin(); itr != pr_.end(); ++itr){
+        itr -> second -> data.data_p = tr; 
+        if (!tr -> count(itr -> first)){(*tr)[itr -> first] = new particle_template(itr -> second, true);}
+        itr -> second -> data.data_p = nullptr; 
+
+        particle_template* pr = (*tr)[itr -> first];
+        this -> register_parent(pr); 
+        pr -> data.data_p = nullptr; 
+        itr -> second -> _is_serial += p -> _is_serial; 
+        pr -> _is_serial = itr -> second -> _is_serial; 
+    }
+    if (init){this -> data.data_p = tr;}
+    else {this -> data.data_p = nullptr;}
+}
+
+std::map<std::string, std::map<std::string, particle_t>> particle_template::__reduce__(){
+    std::map<std::string, particle_template*>* tmp = this -> data.data_p; 
+    this -> data.data_p = nullptr; 
+
+    particle_template* t = new particle_template(this, true); 
+    std::map<std::string, std::map<std::string, particle_t>> out; 
+    std::map<std::string, particle_template*>::iterator itr = t -> data.data_p -> begin(); 
+    for (; itr != t -> data.data_p -> end(); ++itr){
+        if (itr -> second -> _is_serial){continue;}
+        out[itr -> first]["data"] = itr -> second -> data;
+    }
+    delete t; 
+
+    this -> data.data_p = tmp; 
+    return out; 
+}
+
 particle_template::particle_template(double px, double py, double pz, double e) : particle_template(){
     particle_t* p = &this -> data; 
     p -> px = px; p -> py = py; p -> pz = pz; p -> e = e; 
@@ -90,11 +153,22 @@ particle_template::particle_template(double px, double py, double pz, double e) 
 
 particle_template::particle_template(double px, double py, double pz) : particle_template() {
     particle_t* p = &this -> data; 
-    p -> px = px; p -> py = py; p -> pz = pz; this -> e; 
+    p -> px = px; p -> py = py; p -> pz = pz; p -> e = this -> e; 
     p -> polar = true; 
 }
 
-particle_template::~particle_template(){}
+particle_template::~particle_template(){
+    if (!this -> data.data_p){return;}
+    std::string hash_ = this -> hash; 
+    (*this -> data.data_p)[hash_] = nullptr; 
+    std::map<std::string, particle_template*>::iterator itr = this -> data.data_p -> begin(); 
+    for (; itr != this -> data.data_p -> end(); ++itr){
+        if (!itr -> second){continue;}
+        delete itr -> second;
+    }
+    this -> data.data_p -> clear(); 
+    delete this -> data.data_p; 
+}
 
 void particle_template::operator += (particle_template* p){
     p -> to_cartesian(); 

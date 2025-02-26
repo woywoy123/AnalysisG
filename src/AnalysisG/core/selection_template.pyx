@@ -8,6 +8,9 @@ from libcpp.vector cimport vector
 from AnalysisG.core.tools cimport *
 from AnalysisG.core.meta cimport *
 
+import pathlib
+import pickle
+
 cdef class SelectionTemplate:
     def __cinit__(self):
         if type(self) is not SelectionTemplate: return
@@ -39,6 +42,19 @@ cdef class SelectionTemplate:
         return self.__class__, (out,)
 
     cdef void transform_dict_keys(self): pass
+
+    def dump(self, str path = "./pkl-data", str name = ""):
+        if not len(name): name = env(self.ptr.name)
+        pathlib.Path(path).mkdir(parents = True, exist_ok = True)
+        try: pickle.dump(self, open(path + "/" + name + ".pkl", "wb"))
+        except OSError: print("Failed to save the SelectionTemplate")
+
+    def load(self, str path = "./pkl-data", str name = ""):
+        if not len(name): name = env(self.ptr.name)
+        try: return pickle.load(open(path + "/" + name + ".pkl", "rb"))
+        except OSError: print("Failed to load the SelectionTemplate")
+        except EOFError: print("Failed to load the SelectionTemplate")
+        return None
 
     @property
     def PassedWeights(self): return as_basic_dict_dict(&self.ptr.passed_weights)

@@ -5,6 +5,8 @@
 #include <vector>
 #include <map>
 
+class particle_template; 
+
 struct particle_t {
     double e = -0.000000000000001; 
     double mass = -1;  
@@ -32,6 +34,7 @@ struct particle_t {
     std::vector<int> nudef  = {12, 14, 16};         
     std::map<std::string, bool> children = {};
     std::map<std::string, bool> parents = {};
+    std::map<std::string, particle_template*>* data_p = nullptr; 
 
 }; 
 

@@ -40,12 +40,6 @@ cdef extern from "combinatorial.h":
         combinatorial() except +
         map[string, event_data] output
 
-cdef class Neutrino(ParticleTemplate):
-    cdef void set_particle(self, nu* ox)
-
-cdef class Particle(ParticleTemplate):
-    cdef void set_particle(self, particle* ox)
-
 cdef class Event:
     cdef list build_nu(self, vector[nu*] inpt)
     cdef list build_particle(self, vector[particle*] inpt)

@@ -8,9 +8,6 @@ from AnalysisG.core.tools cimport *
 cdef class Neutrino(ParticleTemplate):
     def __cinit__(self): self.ptr = new nu()
     def __dealloc__(self): del self.ptr
-    cdef void set_particle(self, nu* ox):
-        del self.ptr
-        self.ptr = ox
 
     @property
     def distance(self):
@@ -25,32 +22,18 @@ cdef class Neutrino(ParticleTemplate):
 cdef class TopQ(ParticleTemplate):
     def __cinit__(self): self.ptr = new tquark()
     def __dealloc__(self): del self.ptr
-    cdef void set_particle(self, tquark* ox):
-        del self.ptr
-        self.ptr = ox
 
 cdef class BottomQ(ParticleTemplate):
     def __cinit__(self): self.ptr = new bquark()
     def __dealloc__(self): del self.ptr
-    cdef void set_particle(self, bquark* ox):
-        del self.ptr
-        self.ptr = ox
 
 cdef class Lepton(ParticleTemplate):
     def __cinit__(self): self.ptr = new lepton()
     def __dealloc__(self): del self.ptr
-    cdef void set_particle(self, lepton* ox):
-        del self.ptr
-        self.ptr = ox
-
 
 cdef class Boson(ParticleTemplate):
     def __cinit__(self): self.ptr = new boson()
     def __dealloc__(self): del self.ptr
-    cdef void set_particle(self, boson* ox):
-        del self.ptr
-        self.ptr = ox
-
 
 cdef class Validation(SelectionTemplate):
     def __cinit__(self):

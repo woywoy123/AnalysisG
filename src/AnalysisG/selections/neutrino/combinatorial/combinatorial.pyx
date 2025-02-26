@@ -9,9 +9,6 @@ from AnalysisG.core.tools cimport *
 cdef class Neutrino(ParticleTemplate):
     def __cinit__(self): self.ptr = new nu()
     def __dealloc__(self): del self.ptr
-    cdef void set_particle(self, nu* ox):
-        del self.ptr
-        self.ptr = ox
 
     @property
     def distance(self):
@@ -31,9 +28,6 @@ cdef class Neutrino(ParticleTemplate):
 cdef class Particle(ParticleTemplate):
     def __cinit__(self): self.ptr = new particle()
     def __dealloc__(self): del self.ptr
-    cdef void set_particle(self, particle* ox):
-        del self.ptr
-        self.ptr = ox
 
 cdef class Event:
     cdef list build_nu(self, vector[nu*] inpt):

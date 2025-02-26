@@ -15,30 +15,52 @@ cdef class ParticleTemplate:
     def __cinit__(self):
         self.children = []
         self.parents = []
+        self.is_owner = True
+        self.keys = []
         if type(self) is not ParticleTemplate: return
         self.ptr = new particle_template()
 
     def __init__(self, inpt = None):
         if inpt is None: return
-        cdef list keys = [i for i in self.__dir__() if not i.startswith("__")]
-        for i in keys:
-            try: setattr(self, i, inpt["extra"][i])
+        if not len(self.keys): self.keys = [i for i in self.__dir__() if not i.startswith("__")]
+        for i in self.keys:
+            try: setattr(self, i, inpt[b"extra"][i])
             except KeyError: continue
             except AttributeError: continue
-        self.ptr.data = <particle_t>(inpt["data"])
+        self.ptr.data = <particle_t>(inpt[b"data"])
 
     def __dealloc__(self):
         if type(self) is not ParticleTemplate: return
+        if not self.is_owner: return
         del self.ptr
 
-    def __reduce__(self): 
-        cdef list keys = [i for i in self.__dir__() if not i.startswith("__")]
-        cdef dict out = {}
-        out["extra"] = {i : getattr(self, i) for i in keys if not callable(getattr(self, i))}
-        out["data"]  = self.ptr.data
-        return self.__class__, (out,)
+    def __reduce__(self, dict dictout = {}):
+        cdef map[string, map[string, particle_t]] mx
+        cdef pair[string, map[string, particle_t]] itx
+
+        try:
+            dictout[self.ptr.hash]
+            self.ptr._is_serial = True
+        except KeyError:
+            self.ptr._is_serial = False
+            mx = self.ptr.__reduce__()
+            for itx in mx: 
+                try: dictout[itx.first] |= dict(itx.second)
+                except KeyError: dictout[itx.first] = itx.second
+            self.ptr._is_serial = True
+
+        if not len(self.keys): self.keys = [i for i in self.__dir__() if not i.startswith("__")]
+        cdef dict slf_dict = dict(dictout[self.ptr.hash])
+
+        try: return slf_dict.pop(b"__class__"), (slf_dict,)
+        except KeyError: pass
+
+        dictout[self.ptr.hash][b"extra"] = {i : getattr(self, i) for i in self.keys if not callable(getattr(self, i))}
+        dictout[self.ptr.hash][b"__class__"] = self.__class__
+        return self.__reduce__(dictout)
 
     def __hash__(self): return int(string(self.ptr.hash).substr(0, 8), 0)
+
     def __add__(self, ParticleTemplate other):
         cdef ParticleTemplate p = self.clone()
         p.ptr.iadd(other.ptr)
@@ -74,6 +96,21 @@ cdef class ParticleTemplate:
         v = v()
         v.Type = self.Type
         return v
+
+    cdef void set_particle(self, particle_template* ox):
+        del self.ptr
+        self.ptr = ox
+        self.is_owner = False
+
+    cdef list make_particle(self, map[string, particle_template*] px):
+        cdef list out = []
+        cdef ParticleTemplate pi
+        cdef pair[string, particle_template*] p
+        for p in px:
+            pi = ParticleTemplate()
+            pi.set_particle(p.second)
+            out.append(pi)
+        return out
 
     def is_self(self, inpt):
         if isinstance(inpt, ParticleTemplate): return True
@@ -216,8 +253,9 @@ cdef class ParticleTemplate:
 
     @property
     def Children(self) -> list:
-        self.children = list(set(self.children))
-        return self.children
+        if len(self.children): return list(set(self.children))
+        self.children = self.children + self.make_particle(self.ptr.children)
+        return list(set(self.children))
 
     @Children.setter
     def Children(self, inpt):
@@ -237,12 +275,13 @@ cdef class ParticleTemplate:
         else: self.Children += [inpt]
 
     @property
-    def Parent(self) -> list:
-        self.parents = list(set(self.parents))
-        return self.parents
+    def Parents(self) -> list:
+        if len(self.parents): return list(set(self.parents))
+        self.parents = self.parents + self.make_particle(self.ptr.parents)
+        return list(set(self.parents))
 
-    @Parent.setter
-    def Parent(self, inpt):
+    @Parents.setter
+    def Parents(self, inpt):
         cdef ParticleTemplate p
         cdef particle_template* ptx
 
@@ -255,7 +294,7 @@ cdef class ParticleTemplate:
                 ptx = p.ptr
                 if not self.ptr.register_parent(ptx): continue
                 self.parents.append(p)
-        else: self.Parent += [inpt]
+        else: self.Parents += [inpt]
 
 
 
