@@ -6,11 +6,11 @@ from AnalysisG.selections.mc20_compare.topmatching_fuzzy.mc20_fuzzy import TopMa
 from AnalysisG.selections.mc20_compare.topmatching_current.mc20_cur import TopMatchingCurrent
 from figures import entry
 
-smpls = "/home/tnom6927/Downloads/mc20/fuzzy/other/mc20_13TeV.412043.aMcAtNloPythia8EvtGen_A14NNPDF31_SM4topsNLO.deriv.DAOD_PHYS.e7101_a907_r14859_p6117/*"
+smpls = "/home/tnom6927/Downloads/mc20/current/mc20_13TeV.412043.aMcAtNloPythia8EvtGen_A14NNPDF31_SM4topsNLO.deriv.DAOD_PHYS.e7101_a907_r14859_p6490/user.rqian.42181793._000001.output.root"  #fuzzy/tttt.root"
 
-ev = ExpMC20()
-sel = TopMatchingFuzzy()
-selx = None # sel.load()
+ev = SSML_MC20()
+sel = TopMatchingCurrent()
+selx = sel.load()
 if selx is None:
     ana = Analysis()
     ana.FetchMeta = False
@@ -19,7 +19,7 @@ if selx is None:
     ana.AddEvent(ev, "dr")
     ana.AddSelection(sel)
     ana.Start()
-    #sel.dump()
+    sel.dump()
     selx = sel
 
 print("plotting")

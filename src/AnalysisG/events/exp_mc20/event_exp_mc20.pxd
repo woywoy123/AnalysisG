@@ -6,8 +6,8 @@ from libcpp.map cimport map
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 
-from AnalysisG.events.exp_mc20.particle_exp_mc20 cimport *
 from AnalysisG.core.event_template cimport *
+from AnalysisG.events.exp_mc20.particle_exp_mc20 cimport *
 
 cdef extern from "<exp_mc20/event.h>":
 

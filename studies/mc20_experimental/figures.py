@@ -9,7 +9,7 @@ def default(tl):
     tl.AutoScaling = False
     tl.Overflow = False
     tl.yScaling = 10*0.75
-    tl.xScaling = 15*0.6
+    tl.xScaling = 15#*0.6
     tl.FontSize = 15
     tl.Alpha = 0.5
     tl.AxisSize = 14
@@ -74,10 +74,10 @@ def topmass(sel):
     th.xBins = 400
     th.xMin = 0
     th.xMax = 400
-    th.yMin = 1
+    th.yMin = 0
 #    th.yMax = 1
-#    th.Density = True
-    th.yLogarithmic = True
+    th.Density = True
+#    th.yLogarithmic = True
     th.yTitle = "Tops (arb.)"
     th.Filename = "TopMass"
     th.SaveFigure()

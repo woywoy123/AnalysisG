@@ -11,11 +11,12 @@ class exp_mc20: public event_template
         virtual ~exp_mc20(); 
 
         std::vector<particle_template*> Tops; 
-        std::vector<particle_template*> TruthChildren; 
+        std::vector<particle_template*> TopChildren; 
         std::vector<particle_template*> PhysicsTruth;
+        std::vector<particle_template*> PhysicsDetector; 
+
         std::vector<particle_template*> Jets; 
         std::vector<particle_template*> Leptons; 
-        std::vector<particle_template*> PhysicsDetector; 
         std::vector<particle_template*> Detector; 
 
         unsigned long long event_number = 0; 
@@ -29,14 +30,15 @@ class exp_mc20: public event_template
         void CompileEvent() override;  
     
     private:
-        std::map<std::string, top*> m_tops; 
-        std::map<std::string, child*> m_children; 
-        std::map<std::string, physics_detector*> m_physdet; 
-        std::map<std::string, physics_truth*> m_phystru; 
+        std::map<std::string, top*>   m_tops; 
+        std::map<std::string, child*> m_children;
 
+        std::map<std::string, physics_truth*>    m_phystru; 
+        std::map<std::string, physics_detector*> m_physdet; 
+
+        std::map<std::string, jet*>      m_jets; 
+        std::map<std::string, muon*>     m_muons; 
         std::map<std::string, electron*> m_electrons; 
-        std::map<std::string, muon*> m_muons; 
-        std::map<std::string, jet*> m_jets; 
 
         template <typename G>
         std::map<int, G*> sort_by_index(std::map<std::string, G*>* ipt){
