@@ -19,10 +19,8 @@ int add_content(
 }
 
 void add_content(
-        std::map<std::string, torch::Tensor*>* data, 
-        std::vector<std::vector<torch::Tensor>>* buff, 
-        torch::Tensor* edge, torch::Tensor* node, torch::Tensor* batch, 
-        std::vector<long> mask
+        std::map<std::string, torch::Tensor*>* data, std::vector<std::vector<torch::Tensor>>* buff, 
+        torch::Tensor* edge, torch::Tensor* node, torch::Tensor* batch, std::vector<long> mask
 ){
     torch::Tensor edge_i = edge -> view({-1}); 
     torch::Tensor node_i = node -> view({-1}); 
@@ -39,33 +37,31 @@ void add_content(
         else if (tn -> size({0}) == ni){idx = &node_i;}
         else if (tn -> size({0}) == bi){idx = &batch_i;}
         else {continue;}
-        for (size_t x(0); x < mask.size(); ++x){
-            (*buff)[x].push_back(tn -> index({(*idx) == mask[x]}).clone());
-        } 
+        for (size_t x(0); x < mask.size(); ++x){(*buff)[x].push_back(tn -> index({(*idx) == mask[x]}).clone());} 
     }
 }
 
 void execution(
-        model_template* md, model_settings_t mds, 
-        std::vector<graph_t*>* data, size_t* prg,
-        std::string output, std::vector<variable_t>* content
+        model_template* md, model_settings_t mds, std::vector<graph_t*>* data, size_t* prg,
+        std::string output, std::vector<variable_t>* content, std::string* msg
 ){
  
     md = md -> clone(); 
     md -> import_settings(&mds); 
-    int ds = 0; 
+    size_t ds = 0; 
     for (size_t x(0); x < data -> size(); ++x){ds += (*data)[x] -> batched_events.size();}
-
     if(!md -> restore_state()){
-        md -> failure("Failed to load model: " + md -> model_checkpoint_path); 
+        (*prg) = 1; 
+        (*msg) = "\033[1;31m (Missing Model) " + (*msg) + "\033[0m"; 
+        std::this_thread::sleep_for(std::chrono::seconds(1));
         delete content; content = nullptr; 
         delete md; md = nullptr; 
         (*prg) = ds; 
         return; 
     }
 
-    ROOT::EnableImplicitMT(); 
-    gErrorIgnoreLevel = kWarning;
+    md -> shush = true; 
+    (*msg) = "\033[1;32m (Processing) " + (*msg) + "\033[0m";
     TFile* tmp = TFile::Open(output.c_str(), "READ");
     if (tmp){
         TDirectory* dir = gDirectory; 
@@ -135,20 +131,19 @@ void execution(
         // --- Scan the outputs
         add_content(&addhoc, &bf, bt, nb, &ex, batch_i);
         add_content(&md -> m_p_undef, &bf, bt, nb, &ex, batch_i); 
+        if (batch_i.size() + (*prg) >= ds){(*msg) = "\033[1;32m (Done) " + (*msg) + "\033[0m";}
         (*prg) += batch_i.size(); 
         
         for (size_t l(0); l < bf.size(); ++l){
             for (size_t i(0); i < content -> size(); ++i){
-                if ((*content)[i].variable_name == "edge_index"){
-                    bf[l][i] -= std::get<0>(bf[l][i].min({0}));
-                }
+                if ((*content)[i].variable_name == "edge_index"){bf[l][i] -= std::get<0>(bf[l][i].min({0}));}
                 (*content)[i].flush();
                 (*content)[i].process(&bf[l][i], nullptr, t); 
             }
             t -> Fill();
         }
     }
-
+    std::this_thread::sleep_for(std::chrono::seconds(1));
     t -> ResetBranchAddresses(); 
     t -> Write("", TObject::kOverwrite);
     f -> Close(); 
@@ -170,8 +165,9 @@ void analysis::build_inference(){
         delete grx; 
         return nullptr; 
     }; 
-    auto lamb = [](dataloader* ld, torch::TensorOptions* op, int th_){
-        ld -> datatransfer(op, th_);
+
+    auto lamb = [](dataloader* ld, torch::TensorOptions* op, size_t* num_ev, size_t* prg_ev){
+        ld -> datatransfer(op, num_ev, prg_ev);
     };
 
     int threads_ = this -> m_settings.threads; 
@@ -181,59 +177,63 @@ void analysis::build_inference(){
     std::map<std::string, std::vector<graph_t*>>* dl = this -> loader -> get_inference(); 
     
     this -> success("Sorted events by event index. Preparing for multithreading.");
-    int smpls = dl -> size(); 
-    int modls = this -> model_inference.size(); 
+    size_t dev_i = 0; 
+    size_t smpls = dl -> size(); 
+    size_t modls = this -> model_inference.size(); 
 
-    size_t len = 0; 
-    std::map<std::string, std::vector<graph_t*>>::iterator its = dl -> begin(); 
-    for (; its != dl -> end(); ++its){len += its -> second.size();}
-    len *= modls; 
-
-    std::vector<std::thread*> th_prc = std::vector<std::thread*>(smpls*modls, nullptr); 
-    std::vector<std::vector<graph_t*>*> batched_data(smpls*modls, nullptr); 
-    std::vector<size_t> th_prg(smpls*modls, 0); 
-    std::thread* thr_ = nullptr; 
-
-    std::map<std::string, bool> mute; 
+    gErrorIgnoreLevel = 6001;
+    ROOT::EnableImplicitMT(threads_); 
     std::map<std::string, bool> device_tr; 
-    std::map<std::string, model_template*>::iterator itm; 
+    std::vector<size_t> th_prg(smpls*modls, 0); 
+    std::vector<size_t> num_data(modls * smpls, 0);
+    std::vector<std::thread*> th_prc(smpls*modls, nullptr); 
+    std::vector<std::string*> mdl_title(smpls*modls, nullptr); 
+    std::vector<std::vector<graph_t*>*> batched_data(smpls*modls, nullptr); 
 
-    std::map<std::string, std::thread*> trans; 
-    itm = this -> model_inference.begin(); 
-    for (; itm != this -> model_inference.end(); ++itm){
+    std::map<std::string, std::vector<graph_t*>>::iterator its = dl -> begin(); 
+    for (; its != dl -> end(); ++its){
+        for (size_t x(0); x < modls; ++x, ++dev_i){
+            num_data[dev_i] = its -> second.size();
+            mdl_title[dev_i] = new std::string(""); 
+        }
+    }
+
+    std::map<std::string, model_template*>::iterator itm = this -> model_inference.begin(); 
+    for (; itm != this -> model_inference.end(); ++itm){device_tr[itm -> second -> device] = false;}
+    this -> info("Transferring graphs to device" + std::string((device_tr.size() > 1) ? "s" : "")); 
+    std::vector<std::thread*> trans(device_tr.size() , nullptr); 
+    std::vector<std::string*> titles(device_tr.size(), nullptr); 
+    std::vector<size_t> handles(device_tr.size(), 0);
+    std::vector<size_t> num_evn(device_tr.size(), 0); 
+
+    dev_i = 0; 
+    for (itm = this -> model_inference.begin(); itm != this -> model_inference.end(); ++itm){
         std::string dev_n = itm -> second -> device; 
         if (device_tr[dev_n]){continue;}
-        this -> info("Transferring graphs to device: " + std::string(dev_n)); 
         device_tr[dev_n] = true;
-        trans[dev_n] = new std::thread(lamb, this -> loader, itm -> second -> m_option, 1); 
+        titles[dev_i] = new std::string("Progress Device: " + std::string(dev_n)); 
+        trans[dev_i]  = new std::thread(lamb, this -> loader, itm -> second -> m_option, &num_evn[dev_i], &handles[dev_i]); 
+        ++dev_i; 
     }
-    std::map<std::string, std::thread*>::iterator ix = trans.begin(); 
-    for (; ix != trans.end(); ++ix){ix -> second -> join(); delete ix -> second;}
+    
+    std::thread* thr_ = new std::thread(this -> progressbar3, &handles, &num_evn, &titles); 
+    this -> monitor(&trans); 
     this -> success("Transfer Complete!"); 
-    trans.clear(); 
+    thr_ -> join(); delete thr_; thr_ = nullptr; 
 
     int para = 0; 
     its = dl -> begin(); 
-    bool batched = this -> m_settings.batch_size > 1;
     for (size_t x(0); x < th_prc.size(); ++x){
         int mdx = x%modls; 
         if (!mdx){itm = this -> model_inference.begin();}
-
         model_settings_t mds; 
         model_template* md = itm -> second; 
         md -> clone_settings(&mds);
         md -> inference_mode = true; 
-        std::string dev_ = itm -> second -> device; 
-
-        if (!mute[itm -> second-> name]){
-            this -> success("Starting model: " + std::string(itm -> second -> name)); 
-            mute[itm -> second -> name] = true; 
-        }
-
         if (x && !mdx){++its;}
 
         std::vector<graph_t*>* grx = nullptr; 
-        if (batched){
+        if (this -> m_settings.batch_size > 1){
             grx = this -> loader -> build_batch(&its -> second, itm -> second, nullptr);
             for (size_t i(0); i < its -> second.size(); ++i){its -> second[i] -> in_use = 0;}
         }
@@ -242,6 +242,8 @@ void analysis::build_inference(){
 
         std::string fname = this -> m_settings.output_path + "/" + itm -> first + "/"; 
         std::vector<std::string> fnames = tools().split(its -> first, "/");
+        (*mdl_title[x]) = fnames[fnames.size()-1] + " | " + std::string(md -> name); 
+
         fname += fnames[fnames.size()-2] + "/";
         this -> create_path(fname);
         fname += fnames[fnames.size()-1]; 
@@ -250,10 +252,10 @@ void analysis::build_inference(){
         md -> forward(its -> second[0], false); 
    
         // -------- fetch the input and output features ------- //
-        int index = 0; 
         std::vector<variable_t>* content = new std::vector<variable_t>(); 
 
         // --- Scan the inputs
+        int index = 0; 
         index = add_content(&md -> m_i_graph, content, index, "g_i_"); 
         index = add_content(&md -> m_i_node, content, index,  "n_i_"); 
         index = add_content(&md -> m_i_edge, content, index,  "e_i_"); 
@@ -270,48 +272,33 @@ void analysis::build_inference(){
         addhoc[mds.weight_name] = its -> second[0] -> get_event_weight(md); 
         index = add_content(&addhoc, content, index, ""); 
         index = add_content(&md -> m_p_undef, content, index, "extra_"); 
-        th_prc[x] = new std::thread(execution, md, mds, batched_data[x], &th_prg[x], fname, content);
+        th_prc[x] = new std::thread(execution, md, mds, batched_data[x], &th_prg[x], fname, content, mdl_title[x]);
         ++itm; ++para; 
 
-        if (!thr_){thr_ = new std::thread(this -> progressbar1, &th_prg, len, "Model Inference Progress");}
+        if (!thr_){thr_ = new std::thread(this -> progressbar3, &th_prg, &num_data, &mdl_title);}
         while (para >= threads_){
+            para = this -> running(&th_prc);
             for (size_t t(0); t < th_prc.size(); ++t){
-                if (!th_prc[t]){continue;}
-                if (!th_prc[t] -> joinable()){continue;}
-                th_prc[t] -> join(); 
-                delete th_prc[t]; 
-                th_prc[t] = nullptr; 
-                if (batched){flush(batched_data[t]);}
+                if ( th_prc[t] && batched_data[t]){continue;}
+                if (!th_prc[t] && batched_data[t]){flush(batched_data[t]);}
                 batched_data[t] = nullptr; 
-                --para; 
-                break; 
             }
         } 
     } 
 
-    std::string msg = "Model Inference Progress"; 
-    for (size_t x(0); x < th_prc.size(); ++x){
-        if (!th_prc[x]){continue;}
-        th_prc[x] -> join(); 
-        delete th_prc[x]; 
-        th_prc[x] = nullptr; 
-        if (batched){flush(batched_data[x]);}
-        batched_data[x] = nullptr;
+    monitor(&th_prc); 
+    for (size_t t(0); t < th_prc.size(); ++t){
+        if (batched_data[t]){flush(batched_data[t]);}
+        batched_data[t] = nullptr;
     }
 
-    for (size_t x(0); x < th_prg.size(); ++x){th_prg[x] = len / modls;}
     for (its = dl -> begin(); its != dl -> end(); ++its){
         its -> second.clear(); 
         its -> second.shrink_to_fit(); 
     }
 
-    dl -> clear();
-    delete dl; 
-    dl = nullptr; 
-    
+    dl -> clear(); delete dl; dl = nullptr; 
     if (!thr_){return this -> failure("No models were executed...");}
-    thr_ -> join(); 
-    delete thr_; thr_ = nullptr; 
-    std::cout << "" << std::endl;
+    thr_ -> join(); delete thr_; thr_ = nullptr; 
     this -> success("Model inference completed!"); 
 }

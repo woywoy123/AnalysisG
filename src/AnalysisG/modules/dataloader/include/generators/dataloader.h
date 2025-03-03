@@ -47,7 +47,7 @@ class dataloader:
 
         std::vector<graph_t*> get_random(int num = 5); 
         void extract_data(graph_t* gr); 
-        void datatransfer(torch::TensorOptions* op, int threads = 10);
+        void datatransfer(torch::TensorOptions* op, size_t* num_events = nullptr, size_t* prg_events = nullptr);
         bool dump_graphs(std::string path = "./", int threads = 10); 
 
         void restore_graphs(std::vector<std::string> paths, int threads); 

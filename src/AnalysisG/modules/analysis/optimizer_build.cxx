@@ -46,31 +46,43 @@ void initialize_loop(
 }
 
 void analysis::build_model_session(){
-    auto lamb = [](dataloader* ld, torch::TensorOptions* op, int th_){
-        ld -> datatransfer(op, th_);
-    };
+    auto lamb = [](dataloader* ld, torch::TensorOptions* op, size_t* num_ev, size_t* prg){ld -> datatransfer(op, num_ev, prg);};
 
     if (!this -> model_sessions.size()){return this -> info("No Models Specified. Skipping.");}
     std::vector<int> kfold = this -> m_settings.kfold; 
     if (!kfold.size()){for (int k(0); k < this -> m_settings.kfolds; ++k){kfold.push_back(k);}}
     else {for (size_t k(0); k < kfold.size(); ++k){kfold[k] = kfold[k]-1;}}
     this -> m_settings.kfold = kfold; 
-    int th_ = this -> m_settings.threads; 
 
-    std::map<int, std::thread*> trans; 
+    // --------------- transferring data graphs -------------- //
+    std::map<int, bool> dev_map; 
+    for (size_t x(0); x < this -> model_sessions.size(); ++x){
+        dev_map[std::get<0>(this -> model_sessions[x]) -> m_option -> device().index()] = false; 
+    }
+  
+    size_t num_thr = 0;  
+    std::vector<std::thread*> trans(dev_map.size(), nullptr); 
+    std::vector<std::string*> titles(dev_map.size(), nullptr); 
+    std::vector<size_t> num_events(dev_map.size(), 0); 
+    std::vector<size_t> prg_events(dev_map.size(), 0);
+
     std::tuple<model_template*, optimizer_params_t*>* para;
     this -> info("Transferring Graphs to device."); 
     for (size_t x(0); x < this -> model_sessions.size(); ++x){
         para = &this -> model_sessions[x]; 
         torch::TensorOptions* op = std::get<0>(*para) -> m_option;
         int dev = op -> device().index();
-        if (trans.count(dev)){continue;}
-        trans[dev] = new std::thread(lamb, this -> loader, op, th_); 
+        if (dev_map[dev]){continue;}
+        dev_map[dev] = true; 
+        trans[num_thr]  = new std::thread(lamb, this -> loader, op, &num_events[num_thr], &prg_events[num_thr]); 
+        titles[num_thr] = new std::string("Device" + std::to_string(dev)); 
+        ++num_thr; 
     }
-    std::map<int, std::thread*>::iterator ix = trans.begin(); 
-    for (; ix != trans.end(); ++ix){ix -> second -> join(); delete ix -> second;}
+    std::thread* thr = new std::thread(this -> progressbar3, &prg_events, &num_events, &titles); 
+    this -> monitor(&trans); 
     this -> success("Transfer Complete!"); 
-    trans.clear(); 
+    thr -> join(); delete thr; thr = nullptr; 
+    // --------------- transferring data graphs -------------- //
 
     for (size_t x(0); x < this -> model_sessions.size(); ++x){
         std::string name = this -> model_session_names[x]; 

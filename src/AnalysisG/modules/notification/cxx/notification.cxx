@@ -12,9 +12,7 @@ void notification::_format(std::string* message){
     if (this -> bold){ stream << "1;"; }
     stream << this -> caller; 
     stream << "m"; 
-    if (this -> prefix.size()){ 
-        stream << this -> prefix << "::"; 
-    }
+    if (this -> prefix.size()){stream << this -> prefix << "::";}
     stream << *message; 
     stream << "\033[0m"; 
     std::cout << stream.str() << std::endl; 
@@ -58,7 +56,9 @@ void notification::progressbar(float lProgress, std::string title){
 void notification::progressbar(std::vector<size_t>* threads, std::vector<size_t>* trgt, std::vector<std::string>* title){
     const char cFilled[] = "#####################################";
     const char cEmpty[]  = "                                     ";
-    for (size_t x(0); x < trgt -> size(); ++x){std::cout << "\033[F";}
+
+    for (size_t x(0); x < trgt -> size(); ++x){std::cout << "\033[F\x1b[2K";}
+    std::cout << std::flush; 
     for (size_t x(0); x < trgt -> size(); ++x){
         float prg = float(threads -> at(x)) / float(trgt -> at(x)); 
         size_t lFilledStart = (sizeof(cFilled) - 1) * (1 - prg);
@@ -99,17 +99,18 @@ void notification::progressbar3(std::vector<size_t>* threads, std::vector<size_t
     for (size_t x(0); x < l -> size(); ++x){
         std::string* bi = nullptr; 
         if (title && (*title)[x]){bi = (*title)[x];}
-        else {bi = new std::string("Thread (" + std::to_string(x) + ")");}
+        else {bi = new std::string("Thread (" + std::to_string(x+1) + ")");}
         bars.push_back(bi); 
-        std::cout << "" << std::endl;
     }
-    std::cout << "" << std::endl;
 
     float prgs = 0; 
+    size_t count_white = 0; 
     while (prgs < 1.0){
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        std::this_thread::sleep_for(std::chrono::microseconds(100));
         size_t xl = n.sum(l);  
         size_t xp = n.sum(threads);
+        if (!xl){continue;}
+
         prgs = float(xp)/float(xl); 
         std::vector<size_t> prx = {}; 
         std::vector<size_t> totl = {}; 
@@ -117,6 +118,7 @@ void notification::progressbar3(std::vector<size_t>* threads, std::vector<size_t
         size_t ln = 0; 
 
         for (size_t x(0); x < bars.size(); ++x){
+            if (!(*threads)[x]){continue;}
             vec.push_back(std::string(bars[x] -> c_str()));
             prx.push_back((*threads)[x]);
             totl.push_back((*l)[x]); 
@@ -124,14 +126,20 @@ void notification::progressbar3(std::vector<size_t>* threads, std::vector<size_t
         }
         prx.push_back(xp); 
         totl.push_back(xl); 
-        std::string tmp = "Total Progress:"; 
-        for (size_t x(tmp.size()); x < ln; ++x){tmp += " ";}
-        vec.push_back(tmp); 
+        vec.push_back("Total Progress:"); 
+
+        for (size_t x(0); x < prx.size()-1; ++x){
+            size_t t = vec[x].size(); 
+            for (size_t y(t); y < ln; ++y){vec[x]+= " ";}
+        }
+        if (count_white < prx.size()){count_white = prx.size();}
+        for (size_t x(prx.size()); x < count_white; ++x){std::cout << "\n";}
+        for (size_t x(prx.size()); x < count_white; ++x){std::cout << "\033[F\x1b[2K";}
+        std::cout << std::flush; 
         n.progressbar(&prx, &totl, &vec);  
     }
 
     for (size_t x(0); x < bars.size(); ++x){delete bars[x];}
-    std::cout << "" << std::endl;
 } 
 
 void notification::monitor(std::vector<std::thread*>* thr){

@@ -14,7 +14,6 @@ void analysis::build_events(){
     ){
         if (!files -> size()){return;}
         event_template* evn = evnt_comp -> clone(); 
-        ROOT::EnableImplicitMT(); 
         io* rdr = new io(); 
         rdr -> shush = true; 
         rdr -> import_settings(&this -> m_settings); 
@@ -119,6 +118,7 @@ void analysis::build_events(){
         thsmpl.push_back({}); 
     }
 
+    ROOT::EnableImplicitMT(thsmpl.size()); 
     std::vector<size_t> th_prg(thsmpl.size(), 0);
     std::vector<std::thread*> thrs(thsmpl.size(), nullptr); 
     std::vector<std::string*> title(thsmpl.size(), nullptr); 
@@ -132,9 +132,6 @@ void analysis::build_events(){
     this -> reader -> root_end(); 
     delete this -> reader; 
     this -> reader = new io(); 
-    th_ -> join(); 
-
-    delete th_; 
-    th_ = nullptr; 
+    th_ -> join(); delete th_; th_ = nullptr; 
     this -> success("Finished Building Events"); 
 }

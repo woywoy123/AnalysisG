@@ -106,29 +106,17 @@ void dataloader::extract_data(graph_t* gr){
 }
 
 
-void dataloader::datatransfer(torch::TensorOptions* op, int threads){
+void dataloader::datatransfer(torch::TensorOptions* op, size_t* num_ev, size_t* cur_evnt){
     auto lamb = [](std::vector<graph_t*>* data, torch::TensorOptions* op, size_t* handle){
-        for (size_t f(0); f < data -> size(); ++f){(*data)[f] -> transfer_to_device(op); *handle = f+1;}
+        for (size_t f(0); f < data -> size(); ++f){
+            (*data)[f] -> transfer_to_device(op); 
+            if (!handle){continue;}
+            *handle = f+1;
+        }
     };
 
-    int x = this -> data_set -> size();
-    if (!x){return;}
-    if (x < threads){threads = 1;}
-    x = this -> data_set -> size()/threads; 
-    std::vector<std::vector<graph_t*>> quant = this -> discretize(this -> data_set, x); 
-
-    std::vector<size_t> lenx(quant.size(), 0); 
-    std::vector<size_t> handles(quant.size(), 0); 
-    std::vector<std::thread*> th(quant.size(), nullptr);
-    for (size_t g(0); g < th.size(); ++g){
-        lenx[g] = quant[g].size(); 
-        th[g] = new std::thread(lamb, &quant[g], op, &handles[g]);
-    }
-
-    this -> info("Transferring data to device."); 
-    std::thread* prg = new std::thread(this -> progressbar3, &handles, &lenx, nullptr);
-    this -> monitor(&th); 
-    prg -> join(); delete prg; 
+    if (num_ev){*num_ev = this -> data_set -> size();}
+    lamb(this -> data_set, op, cur_evnt); 
 }
 
 std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* data, model_template* mdl, model_report* rep){
