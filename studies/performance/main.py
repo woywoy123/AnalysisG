@@ -11,7 +11,7 @@ class DataX(Data):
 class MetaX(MetaLookup):
 
     @property
-    def title(self): return mapping(self.meta.DatasetName)
+    def title(self): return mapping(self.meta.DatasetName) if self.meta is not None else "data"
     @property
     def SumOfWeights(self): return self.meta.SumOfWeights[b"sumWeights"]["total_events_weighted"]
     @property
@@ -56,38 +56,38 @@ study       = "topefficiency"
 
 graph_name     = "GraphJets"
 graph_prefix   = "_bn_1_"
-inference_mode = True
-plot_only      = False
+inference_mode = False
+plot_only      = True
 fetch_meta     = False
 build_cache    = False
-threads        = 4
-bts            = 50
-kfold          = "kfold-2"
-epoch          = "epoch-33"
+threads        = 12
+bts            = 250
+kfold          = "kfold-1"
+epoch          = "epoch-10"
 mrk            = "MRK-1"
-out            = "/import/wu1/tnom6927/TrainingOutput/mc16-inference/"
 pth            = "./serialized-data/" + mrk + "/" + epoch + "/" + kfold + "/"
+out            = "/import/wu1/tnom6927/TrainingOutput/mc16-inference/"
 figure_path    = "/import/wu1/tnom6927/TrainingOutput/Output/"
 
 graph_cache = "/scratch/tnom6927/graph-data-mc16-full/"
 root_model  = "/import/wu1/tnom6927/TrainingOutput/training-sessions/"
-data_path   = "/import/wu1/tnom6927/TrainingOutput/grid-data/" # <----- cluster
+#data_path   = "/import/wu1/tnom6927/TrainingOutput/grid-data/" # <----- cluster
 
 #data_path = "/CERN/trainings/mc16-full-inference/ROOT/" + graph_name + graph_prefix + "Grift/" + mrk + "/" + epoch + "/" + kfold + "/" # <----- local
 data_path = "/import/wu1/tnom6927/TrainingOutput/mc16-inference/ROOT/" + graph_name + graph_prefix + "Grift/" + mrk + "/" + epoch + "/" + kfold + "/"
 #data_path = "/CERN/Samples/mc16-full/"
 
-epx = [i+1*(i==0) for i in range(0, 180, 10)]
+epx = [i+1*(i==0) for i in range(0, 10, 1)]
 model_states = {
     "MRK-1" : {"epoch-" + str(ep) : (["kfold-" + str(i+1) for i in range(0, 2)], ["cuda:1", "cuda:0"]) for ep in epx},
     "MRK-2" : {"epoch-" + str(ep) : (["kfold-" + str(i+1) for i in range(0, 2)], ["cuda:0", "cuda:1"]) for ep in epx},
-    "MRK-3" : {"epoch-" + str(ep) : (["kfold-" + str(i+1) for i in range(0, 2)], ["cuda:1", "cuda:0"]) for ep in epx},
-    "MRK-4" : {"epoch-" + str(ep) : (["kfold-" + str(i+1) for i in range(0, 2)], ["cuda:0", "cuda:1"]) for ep in epx},
+#    "MRK-3" : {"epoch-" + str(ep) : (["kfold-" + str(i+1) for i in range(0, 2)], ["cuda:1", "cuda:0"]) for ep in epx},
+#    "MRK-4" : {"epoch-" + str(ep) : (["kfold-" + str(i+1) for i in range(0, 2)], ["cuda:0", "cuda:1"]) for ep in epx},
 }
 
 figure_path += "/" + mrk + "/" + epoch + "/" + kfold
 
-ls = list(build_samples(data_path, "**/*.root", 1))
+ls = list(build_samples(data_path, "**/*.root", 12))
 if fetch_meta:
     x = 0
     for i in ls:

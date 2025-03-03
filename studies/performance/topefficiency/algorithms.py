@@ -44,9 +44,8 @@ def mapping(name):
     if "ttH_tttt" in name:
         c, m = [(tmp[i-4], str(i*100)) for i in range(4, 11) if str(i*100) in name][0]
         return ( "tttt_m"+m, "$t\\bar{t}t\\bar{t}H_{" + m + "}$", c)
-
     print("----> " + name)
-    exit()
+    return ("N/A", "Bkg", "black")
 
 def kinesplit(reg):
     x = reg.split(",")
@@ -91,7 +90,8 @@ def top_pteta(stacks, data, metal):
                 stacks["prediction"][rg][fn] = metal.GenerateData
                 stacks["top_score"][rg][fn]  = metal.GenerateData
 
-            stacks["prediction"][rg][fn].data    = {fn : mtops_pred[rg][fn]["m"]}
+            try: stacks["prediction"][rg][fn].data    = {fn : mtops_pred[rg][fn]["m"]}
+            except: continue
             stacks["prediction"][rg][fn].weights = {fn : mtops_pred[rg][fn]["w"]}
 
             stacks["top_score"][rg][fn].data    = {fn : mtops_pred[rg][fn]["s"]}

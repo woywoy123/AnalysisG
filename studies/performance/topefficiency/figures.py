@@ -61,7 +61,7 @@ def top_kinematic_region(stacks, tmp = None):
         tru_h = TH1F()
         tru_h.Title   = "Truth"
         tru_h.xData   = data_tru.data
-        tru_h.Weights = data_tru.weights
+        #tru_h.Weights = data_tru.weights
         tru_h.Color   = "black"
 
         if pt_r not in pt_topmass_prc["truth"]: pt_topmass_prc["truth"][pt_r] = []
@@ -71,7 +71,8 @@ def top_kinematic_region(stacks, tmp = None):
 
         hists = {}
         for fn in stacks["prediction"][kin]:
-            _, tl, col = mapping(metalookup(fn).DatasetName)
+            try: _, tl, col = mapping(metalookup(fn).DatasetName)
+            except: continue
             if tl not in pt_topmass_prc["prediction"][pt_r]:
                 pt_topmass_prc["prediction"][pt_r][tl] = []
                 pt_topmass_cmp["prediction"][pt_r][tl] = []
@@ -93,7 +94,7 @@ def top_kinematic_region(stacks, tmp = None):
             prc_h.Title   = prc
             prc_h.Color   = cols[prc]
             prc_h.xData   = data_p.data
-            prc_h.Weights = data_p.weights
+            #prc_h.Weights = data_p.weights
             hists[prc] = prc_h
 
         tlt = kin.replace("_", " \\leq p^{top}_T (GeV) \\leq ")
@@ -112,7 +113,7 @@ def top_kinematic_region(stacks, tmp = None):
         tru = TH1F()
         tru.Title = "Truth"
         tru.xData   = data_tru.data
-        tru.Weights = data_tru.weights
+        #tru.Weights = data_tru.weights
 
         nums = []
         hists = []
@@ -123,10 +124,11 @@ def top_kinematic_region(stacks, tmp = None):
             prc_h.Title   = prc
             prc_h.Color   = cols[prc]
             prc_h.xData   = data_p.data
-            prc_h.Weights = data_p.weights
+            #prc_h.Weights = data_p.weights
             hists.append(prc_h)
             nums.append(len(prc_h.xData))
 
+        continue
         tlt = kin.replace("_", " \\leq p^{top}_T (GeV) \\leq ")
         reco = path(TH1F(), "/aggregated-pt/", True)
         reco.Title = "Reconstructed Invariant Mass of Top Candidate with Transverse Momentum: $" + tlt + "$"
@@ -142,7 +144,7 @@ def top_kinematic_region(stacks, tmp = None):
             prc_t         = TH1F()
             prc_t.Title   = "Truth"
             prc_t.xData   = data_t.data
-            prc_t.Weights = data_t.weights
+            #prc_t.Weights = data_t.weights
 
             try: data_p    = sum(pt_topmass_cmp["prediction"][kin][p])
             except: data_p = metalookup.GenerateData
@@ -150,7 +152,7 @@ def top_kinematic_region(stacks, tmp = None):
             prc_d.Title   = "Reconstructed"
             prc_d.Color   = cols[p]
             prc_d.xData   = data_p.data
-            prc_d.Weights = data_p.weights
+            #prc_d.Weights = data_p.weights
 
             reco = path(TH1F(), "/aggregated-pt/" + kin.split(", ")[0] + "/", True)
             reco.Title = "Reconstructed Invariant Mass of Top Candidate with Transverse Momentum: $" + tlt + "$ (" + p + ")"
@@ -168,7 +170,7 @@ def top_kinematic_region(stacks, tmp = None):
             prc_h.Title   = prc
             prc_h.Color   = cols[prc]
             prc_h.xData   = data_p.data
-            prc_h.Weights = data_p.weights
+            #prc_h.Weights = data_p.weights
             hists[prc]    = prc_h
         if not len(hists): continue
 
@@ -178,12 +180,12 @@ def top_kinematic_region(stacks, tmp = None):
         s_s.Title = "Reconstructed Top Candidate Score with \n Transverse Momentum $" + tlt + "$"
         s_s.xTitle = "MVA PageRanked Candidate Top Score (Arb.)"
         s_s.yTitle = "Tops / ($0.002$)"
-        s_s.yMin = 1e-1
+        s_s.yMin = 0
         s_s.xMin = 0
         s_s.xMax = 1
         s_s.xBins = 500
-        s_s.xStep = 0.05
-        s_s.yLogarithmic = True
+        s_s.xStep = 0.10
+        #s_s.yLogarithmic = True
         s_s.Stacked   = True
         s_s.ShowCount = True
         s_s.Filename = "mva-score_" + kin
@@ -204,7 +206,7 @@ def top_kinematic_region(stacks, tmp = None):
 
         mass_s.yMin = 0
         mass_s.yMax = 1.00
-        mass_s.yStep = 0.05
+        mass_s.yStep = 0.10
         mass_s.yBins = 100
         mass_s.Color = "magma"
 
@@ -214,7 +216,8 @@ def top_kinematic_region(stacks, tmp = None):
         mass_s.xData   = data_m
         mass_s.yData   = data_s.data
         mass_s.Filename = "pt_range_" + kin
-        mass_s.SaveFigure()
+        try: mass_s.SaveFigure()
+        except: pass
 
 def roc_data(stacks, data = None):
     if data is not None: return roc_data_get(stacks, data)
@@ -320,14 +323,14 @@ def ntops_reco(stacks, data = None):
     for prc in merged["truth"]:
         tru_data = merged["truth"][prc].data
         weights  = merged["truth"][prc].weights
-        num_tru  = sum([tru_data[i]*weights[i] for i in range(len(weights))])
+        num_tru  = sum([tru_data[i] for i in range(len(weights))])
 
         for sc in list(merged["perfect"][prc]):
             prf = merged["perfect"][prc][sc].data
-            num_prf = sum([prf[i]*weights[i] for i in range(len(weights))])
+            num_prf = sum([prf[i] for i in range(len(weights))])
 
             prd = merged["prediction"][prc][sc].data
-            num_can = sum([prd[i]*weights[i] for i in range(len(weights))])
+            num_can = sum([prd[i] for i in range(len(weights))])
 
             if num_can == 0: continue
             purity = num_prf / num_can
@@ -342,9 +345,7 @@ def ntops_reco(stacks, data = None):
 def TopEfficiency(ana):
     p = Path(ana)
     files = [str(x) for x in p.glob("**/*.pkl") if str(x).endswith(".pkl")]
-    files = list(set(files))
-    files = sorted(files)
-#    files = files[:1]
+    #files = files[:10]
 
     stack_roc = {}
     stack_topkin = {}
@@ -353,18 +354,18 @@ def TopEfficiency(ana):
         print(files[i], (i+1) / len(files))
         pr = pickle.load(open(files[i], "rb"))
         stack_topkin = top_kinematic_region(stack_topkin, pr)
-        #stack_roc    = roc_data(stack_roc, pr)
-        #stack_ntops  = ntops_reco(stack_ntops, pr)
+        stack_roc    = roc_data(stack_roc, pr)
+        stack_ntops  = ntops_reco(stack_ntops, pr)
 
-    #f = open("tmp.pkl", "wb")
+    #f = open(str(p) + "/tmp.pkl", "wb")
     #pickle.dump(stack_topkin, f)
     #f.close()
 
-    #f = open("tmp.pkl", "rb")
+    #f = open(str(p) + "/tmp.pkl", "rb")
     #stack_topkin = pickle.load(f)
     #f.close()
 
     top_kinematic_region(stack_topkin)
-    #roc_data(stack_roc)
-    #ntops_reco(stack_ntops)
+    roc_data(stack_roc)
+    ntops_reco(stack_ntops)
 
