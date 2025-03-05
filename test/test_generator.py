@@ -10,29 +10,32 @@ root1 = "./samples/dilepton/*"
 
 x = BSM4Tops()
 #tt = GraphChildren()
-tt = GraphTruthJets()
-#tt = GraphJets()
+#tt = GraphTruthJets()
+tt = GraphJets()
+tt.PreSelection = True
 #tt = GraphDetector()
 
 #m = RecursiveGraphNeuralNetwork()
 m = Grift()
 
 m.o_edge  = {"res_edge" : "CrossEntropyLoss", "top_edge" : "CrossEntropyLoss"}
-m.o_graph = {"signal" : "CrossEntropyLoss", "ntops"  : "CrossEntropyLoss"}
+m.o_graph = {"signal"   : "CrossEntropyLoss", "ntops"    : "CrossEntropyLoss"}
 
 m.i_node  = ["pt", "eta", "phi", "energy", "is_lep", "is_b"]
 m.i_graph = ["met", "phi"]
-m.device  = "cuda:0"
+m.device  = "cuda"
 
 op = OptimizerConfig()
 op.Optimizer = "adam"
 op.lr = 1e-3
 
 ana = Analysis()
+ana.PreTagEvents = True
+
 #ana.FetchMeta = True
 ana.TrainingDataset = "./ProjectName/dataset"
 ana.AddSamples(root1, "tmp")
-ana.AddEvent(x, "tmp")
+ana.AddEvent(x,  "tmp")
 ana.AddGraph(tt, "tmp")
 ana.AddModel(m, op, "test")
 ana.kFolds = 10

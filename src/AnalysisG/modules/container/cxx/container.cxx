@@ -78,7 +78,9 @@ void container::compile(size_t* l){
         }
 
         for (graph_template* gr : ev -> m_graph){
-            if (!gr -> PreSelection()){continue;}
+            if (!gr -> preselection){}
+            else if (!gr -> PreSelection()){continue;}
+
             gr -> CompileEvent(); 
             gr -> flush_particles();
             graph_t* gr_    = gr -> data_export();  

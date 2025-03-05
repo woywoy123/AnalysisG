@@ -213,16 +213,16 @@ void graph_jets::CompileEvent(){
     this -> add_edge_truth_feature<int, particle_template>(top_edge, "top_edge"); 
 
     // ---------------- data -------------------- //
-    this -> add_graph_data_feature<double, bsm_4tops>(event, missing_et, "met"); 
-    this -> add_graph_data_feature<double, bsm_4tops>(event, missing_phi, "phi"); 
-    this -> add_graph_data_feature<double, bsm_4tops>(event, num_jets, "num_jets"); 
+    this -> add_graph_data_feature<double, bsm_4tops>(event, missing_et       , "met"); 
+    this -> add_graph_data_feature<double, bsm_4tops>(event, missing_phi      , "phi"); 
+    this -> add_graph_data_feature<double, bsm_4tops>(event, num_jets         , "num_jets"); 
     this -> add_graph_data_feature<double, bsm_4tops>(event, num_children_leps, "num_leps"); 
-    this -> add_graph_data_feature<double, bsm_4tops>(event, event_weight, "weight"); 
-    this -> add_graph_data_feature<long, bsm_4tops>(event, event_number, "event_number"); 
+    this -> add_graph_data_feature<double, bsm_4tops>(event, event_weight     , "weight"); 
+    this -> add_graph_data_feature<long  , bsm_4tops>(event, event_number     , "event_number"); 
 
-    this -> add_node_data_feature<double, particle_template>(pt, "pt"); 
-    this -> add_node_data_feature<double, particle_template>(eta, "eta"); 
-    this -> add_node_data_feature<double, particle_template>(phi, "phi"); 
+    this -> add_node_data_feature<double, particle_template>(pt    , "pt"); 
+    this -> add_node_data_feature<double, particle_template>(eta   , "eta"); 
+    this -> add_node_data_feature<double, particle_template>(phi   , "phi"); 
     this -> add_node_data_feature<double, particle_template>(energy, "energy"); 
     this -> add_node_data_feature<double, particle_template>(charge, "charge"); 
 

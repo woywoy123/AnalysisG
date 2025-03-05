@@ -2,6 +2,8 @@
 #define META_META_H
 
 #include <structs/meta.h>
+#include <structs/folds.h>
+
 #include <structs/property.h>
 #include <rapidjson/document.h>
 #include <tools/tools.h>
@@ -11,11 +13,15 @@
 #include <TLeaf.h>
 #include <TH1F.h>
 
+class analysis; 
+
 class meta: public tools
 {
     public:
         meta(); 
         ~meta(); 
+
+        const folds_t* get_tags(std::string hash); 
 
         void scan_data(TObject* obj); 
         void scan_sow(TObject* obj); 
@@ -95,7 +101,10 @@ class meta: public tools
         cproperty<std::map<std::string, std::string>, meta> config;
  
     private:
+        friend analysis; 
+
         void compiler(); 
+        std::vector<folds_t>* folds = nullptr; 
 
         float parse_float(std::string key, TTree* tr);
         std::string parse_string(std::string key, TTree* tr); 
@@ -115,48 +124,48 @@ class meta: public tools
         void static get_cross_section_nb(double*, meta*);
         void static get_cross_section_fb(double*, meta*);
 
-        void static get_campaign_luminosity(double*, meta*);                               
-        void static get_dsid(unsigned int*, meta*);                                            
-        void static get_nFiles(unsigned int*, meta*);                                 
-        void static get_totalEvents(unsigned int*, meta*);                                 
-        void static get_datasetNumber(unsigned int*, meta*);                                 
-        void static get_derivationFormat(std::string*, meta*);                                  
-        void static get_AMITag(std::string*, meta*);                                  
-        void static get_generators(std::string*, meta*);                                  
-        void static get_identifier(std::string*, meta*);                                  
-        void static get_DatasetName(std::string*, meta*);                                  
-        void static get_prodsysStatus(std::string*, meta*);                                  
-        void static get_dataType(std::string*, meta*);                                  
-        void static get_version(std::string*, meta*);                                  
-        void static get_PDF(std::string*, meta*);                                  
-        void static get_AtlasRelease(std::string*, meta*);                                  
-        void static get_principalPhysicsGroup(std::string*, meta*);                                  
-        void static get_physicsShort(std::string*, meta*);                                  
-        void static get_generatorName(std::string*, meta*);                                  
-        void static get_geometryVersion(std::string*, meta*);                                  
-        void static get_conditionsTag(std::string*, meta*);                                  
-        void static get_generatorTune(std::string*, meta*);                                  
-        void static get_amiStatus(std::string*, meta*);                                  
-        void static get_beamType(std::string*, meta*);                                  
-        void static get_productionStep(std::string*, meta*);                                  
-        void static get_projectName(std::string*, meta*);                                  
-        void static get_statsAlgorithm(std::string*, meta*);                                  
-        void static get_genFilterNames(std::string*, meta*);                                  
-        void static get_file_type(std::string*, meta*);                                  
-        void static get_sample_name(std::string*, meta*);                                  
-        void static get_logicalDatasetName(std::string*, meta*);                                  
-        void static get_campaign(std::string*, meta*);                                  
-        void static get_keywords(std::vector<std::string>*, meta*);                     
-        void static get_weights(std::vector<std::string>*, meta*);                     
-        void static get_keyword(std::vector<std::string>*, meta*);                     
-        void static get_fileGUID(std::vector<std::string>*, meta*);                     
-        void static get_events(std::vector<int>*, meta*);                             
-        void static get_run_number(std::vector<int>*, meta*);                             
-        void static get_fileSize(std::vector<double>*, meta*);                          
-        void static get_inputrange(std::map<int, int>*, meta*);                           
-        void static get_inputfiles(std::map<int, std::string>*, meta*);                   
-        void static get_LFN(std::map<std::string, int>*, meta*);                   
-        void static get_misc(std::map<std::string, weights_t>*, meta*);             
+        void static get_campaign_luminosity(double*, meta*);                 
+        void static get_dsid(unsigned int*, meta*);                              
+        void static get_nFiles(unsigned int*, meta*);                        
+        void static get_totalEvents(unsigned int*, meta*);                   
+        void static get_datasetNumber(unsigned int*, meta*);                   
+        void static get_derivationFormat(std::string*, meta*);                    
+        void static get_AMITag(std::string*, meta*);                         
+        void static get_generators(std::string*, meta*);                     
+        void static get_identifier(std::string*, meta*);                     
+        void static get_DatasetName(std::string*, meta*);                    
+        void static get_prodsysStatus(std::string*, meta*);                    
+        void static get_dataType(std::string*, meta*);                       
+        void static get_version(std::string*, meta*);                        
+        void static get_PDF(std::string*, meta*);                            
+        void static get_AtlasRelease(std::string*, meta*);                    
+        void static get_principalPhysicsGroup(std::string*, meta*);                    
+        void static get_physicsShort(std::string*, meta*);                    
+        void static get_generatorName(std::string*, meta*);                    
+        void static get_geometryVersion(std::string*, meta*);                    
+        void static get_conditionsTag(std::string*, meta*);                    
+        void static get_generatorTune(std::string*, meta*);                    
+        void static get_amiStatus(std::string*, meta*);                      
+        void static get_beamType(std::string*, meta*);                       
+        void static get_productionStep(std::string*, meta*);                    
+        void static get_projectName(std::string*, meta*);                    
+        void static get_statsAlgorithm(std::string*, meta*);                    
+        void static get_genFilterNames(std::string*, meta*);                    
+        void static get_file_type(std::string*, meta*);                      
+        void static get_sample_name(std::string*, meta*);                    
+        void static get_logicalDatasetName(std::string*, meta*);                    
+        void static get_campaign(std::string*, meta*);                       
+        void static get_keywords(std::vector<std::string>*, meta*);          
+        void static get_weights(std::vector<std::string>*, meta*);           
+        void static get_keyword(std::vector<std::string>*, meta*);           
+        void static get_fileGUID(std::vector<std::string>*, meta*);          
+        void static get_events(std::vector<int>*, meta*);                    
+        void static get_run_number(std::vector<int>*, meta*);                
+        void static get_fileSize(std::vector<double>*, meta*);               
+        void static get_inputrange(std::map<int, int>*, meta*);              
+        void static get_inputfiles(std::map<int, std::string>*, meta*);      
+        void static get_LFN(std::map<std::string, int>*, meta*);             
+        void static get_misc(std::map<std::string, weights_t>*, meta*);      
         void static get_config(std::map<std::string, std::string>*, meta*);
         void static get_sum_of_weights(double*, meta*); 
 }; 

@@ -6,8 +6,7 @@
 #include <structs/element.h>
 #include <structs/event.h>
 #include <tools/tools.h>
-
-class meta; 
+#include <meta/meta.h>
 
 class event_template: public tools
 {

@@ -29,3 +29,9 @@ cdef class GraphTemplate:
 
     @property
     def Tree(self): return env(self.ptr.tree)
+
+    @property
+    def PreSelection(self): return self.ptr.preselection
+
+    @PreSelection.setter
+    def PreSelection(self, val): self.ptr.preselection = val

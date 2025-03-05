@@ -51,6 +51,7 @@ class analysis:
         void build_model_session(); 
         void build_inference();
         void build_dataloader(bool training); 
+        void fetchtags(); 
         bool started = false;  
 
         std::map<std::string, std::string> file_labels = {}; 
@@ -62,7 +63,7 @@ class analysis:
         std::map<std::string, model_template*> model_inference = {}; 
         std::vector<std::tuple<model_template*, optimizer_params_t*>> model_sessions = {}; 
 
-        std::map<std::string, optimizer*> trainer = {};
+        std::map<std::string, optimizer*   > trainer = {};
         std::map<std::string, model_report*> reports = {}; 
         std::vector<std::thread*> threads = {};
 
@@ -70,9 +71,10 @@ class analysis:
         std::map<std::string, bool> skip_event_build = {}; 
         std::map<std::string, std::string> graph_types = {}; 
 
-        dataloader*   loader = nullptr; 
-        sampletracer* tracer = nullptr; 
-        io*           reader = nullptr; 
+        std::vector<folds_t>* tags  = nullptr; 
+        dataloader*          loader = nullptr; 
+        sampletracer*        tracer = nullptr; 
+        io*                  reader = nullptr; 
 
 }; 
 

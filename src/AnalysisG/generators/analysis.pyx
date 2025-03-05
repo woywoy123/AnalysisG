@@ -327,5 +327,12 @@ cdef class Analysis:
 
     @property
     def BuildCache(self): return self.ana.m_settings.build_cache
+
     @BuildCache.setter
     def BuildCache(self, bool val): self.ana.m_settings.build_cache = val
+
+    @property
+    def PreTagEvents(self): return self.ana.m_settings.pretagevents
+
+    @PreTagEvents.setter
+    def PreTagEvents(self, val): self.ana.m_settings.pretagevents = val

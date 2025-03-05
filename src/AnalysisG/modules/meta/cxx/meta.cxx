@@ -83,7 +83,7 @@ meta::meta(){
     this -> nFiles.set_object(this); 
     this -> totalEvents.set_object(this); 
     this -> datasetNumber.set_object(this); 
-    this -> derivationFormat.set_object(this); 
+this -> derivationFormat.set_object(this); 
     this -> AMITag.set_object(this); 
     this -> generators.set_object(this); 
     this -> identifier.set_object(this); 
@@ -263,6 +263,15 @@ void meta::get_sum_of_weights(double* val, meta* m){
         *val = itr -> second.processed_events_weighted; 
         return; 
     }
+}
+
+const folds_t* meta::get_tags(std::string hash_){
+    if (!this -> folds){return nullptr;}
+    for (size_t x(0); x < this -> folds -> size(); ++x){
+        if (hash_ != std::string((*this -> folds)[x].hash)){continue;}
+        return &(*this -> folds)[x]; 
+    } 
+    return nullptr; 
 }
 
 void meta::get_cross_section_fb(double* val, meta* m){

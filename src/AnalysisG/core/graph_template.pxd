@@ -12,10 +12,14 @@ cdef extern from "<templates/graph_template.h>" nogil:
         string tree
         string name
         string hash
-        double index
+        double weight
+        long index
+        bool preselection
 
         graph_template* build(event_template*) except+ nogil
         bool operator == (graph_template& p) except+ nogil
+        void CompileEvent() except+ nogil
+        void PreSelection() except+ nogil
 
 cdef class GraphTemplate:
     cdef graph_template* ptr

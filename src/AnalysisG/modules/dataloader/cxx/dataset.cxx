@@ -5,10 +5,7 @@
 std::vector<graph_t*> dataloader::get_random(int num){
     this -> shuffle(this -> data_index); 
     std::vector<graph_t*> out = {}; 
-    for (int k(0); k < num; ++k){
-        int n = (*this -> data_index)[k]; 
-        out.push_back((*this -> data_set)[n]); 
-    }
+    for (int k(0); k < num; ++k){out.push_back((*this -> data_set)[(*this -> data_index)[k]]);}
     return out; 
 }
 
@@ -57,7 +54,7 @@ void dataloader::generate_test_set(float percentage){
     this -> test_set -> shrink_to_fit();
     this -> train_set -> shrink_to_fit(); 
     this -> success("Splitting entire dataset (" + this -> to_string(this -> data_set -> size()) + ")"); 
-    this -> success("-> test: " + this -> to_string(this -> test_set -> size()) + ")"); 
+    this -> success("-> test: "  + this -> to_string(this -> test_set -> size())  + ")"); 
     this -> success("-> train: " + this -> to_string(this -> train_set -> size()) + ")"); 
 }
 
@@ -123,7 +120,7 @@ std::map<std::string, std::vector<graph_t*>>* dataloader::get_inference(){
     std::vector<std::thread*> th(out -> size(), nullptr); 
     std::map<std::string, std::vector<graph_t*>>::iterator itr = out -> begin(); 
     for (size_t t(0); itr != out -> end(); ++itr, ++t){th[t] = new std::thread(lamb, &itr -> second);}
-    for (size_t t(0); t < th.size(); ++t){th[t] -> join(); delete th[t]; th[t] = nullptr;}
+    this -> monitor(&th); 
     return out; 
 }
 
@@ -172,7 +169,6 @@ void dataloader::dump_dataset(std::string path){
     io_g -> start(path, "write"); 
     io_g -> write(&data, "kfolds"); 
     io_g -> end(); 
-
     delete io_g; 
 }
 
@@ -210,15 +206,17 @@ bool dataloader::restore_dataset(std::string path){
     }
     if (!data.size()){return false;}
 
-    this -> success("Restored training dataset (" + this -> to_string(this -> train_set -> size()) + ")"); 
-    if (this -> test_set -> size()){
-        this -> success("Leave out sample is (" + this -> to_string(this -> test_set -> size()) + ")"); 
-    }
+
+    std::string msg_tr = "Restored training dataset (" + this -> to_string(this -> train_set -> size()) + ")";  
+    std::string msg_ts = "Leave out sample is (" + this -> to_string(this -> test_set -> size()) + ")"; 
+
+    this -> success(msg_tr); 
+    if (this -> test_set -> size()){this -> success(msg_ts);}
     std::map<int, std::vector<int>*>::iterator itr = this -> k_fold_training.begin(); 
     for (; itr != this -> k_fold_training.end(); ++itr){
         int k = itr -> first; 
         this -> success("---------------- k-Fold: " + this -> to_string(k+1) + " ----------------"); 
-        this -> success("-> train: " + this -> to_string(this -> k_fold_training[k] -> size()) + ")"); 
+        this -> success("-> train: "      + this -> to_string(this -> k_fold_training[k] -> size())   + ")"); 
         this -> success("-> validation: " + this -> to_string(this -> k_fold_validation[k] -> size()) + ")"); 
     }
     this -> hash_map.clear(); 

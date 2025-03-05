@@ -123,6 +123,7 @@ cdef extern from "<structs/settings.h>":
         string sow_name
         string metacache_path
         bool fetch_meta
+        bool pretagevents
 
         int epochs
         int kfolds

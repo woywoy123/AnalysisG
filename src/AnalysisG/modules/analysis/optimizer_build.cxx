@@ -75,7 +75,7 @@ void analysis::build_model_session(){
         if (dev_map[dev]){continue;}
         dev_map[dev] = true; 
         trans[num_thr]  = new std::thread(lamb, this -> loader, op, &num_events[num_thr], &prg_events[num_thr]); 
-        titles[num_thr] = new std::string("Device" + std::to_string(dev)); 
+        titles[num_thr] = new std::string("Device:" + std::to_string(dev)); 
         ++num_thr; 
     }
     std::thread* thr = new std::thread(this -> progressbar3, &prg_events, &num_events, &titles); 

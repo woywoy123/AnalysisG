@@ -2,8 +2,12 @@
 
 graph_template::graph_template(){
     this -> op = new torch::TensorOptions(torch::kCPU);
-    this -> name.set_getter(this -> set_name); 
+    this -> name.set_setter(this -> set_name); 
     this -> name.set_object(this); 
+
+    this -> preselection.set_setter(this -> set_preselection); 
+    this -> preselection.set_getter(this -> get_preselection); 
+    this -> preselection.set_object(this); 
 
     this -> hash.set_getter(this -> get_hash); 
     this -> hash.set_object(this); 
@@ -177,6 +181,7 @@ graph_t* graph_template::data_export(){
     gr -> num_nodes    = this -> num_nodes; 
     gr -> event_index  = this -> index;
     gr -> event_weight = this -> weight; 
+    gr -> preselection = this -> preselection; 
     gr -> graph_name   = new std::string(this -> name); 
     return gr; 
 }
@@ -186,9 +191,12 @@ graph_template* graph_template::build(event_template* ev){
     data_ -> name = this -> name; 
 
     graph_template* gr = this -> clone(); 
+    gr -> preselection = this -> preselection; 
+
     gr -> m_event = ev; 
     gr -> data = *data_; 
-    gr -> filename = ev -> filename; 
+    gr -> filename  = ev -> filename; 
+    gr -> meta_data = ev -> meta_data; 
     return gr; 
 }
 

@@ -20,6 +20,15 @@ void graph_template::get_weight(double* inpt, graph_template* ev){
     *inpt = ev -> data.weight; 
 }
 
+void graph_template::set_preselection(bool* inpt, graph_template* ev){
+    ev -> m_preselection = *inpt; 
+}
+
+void graph_template::get_preselection(bool* inpt, graph_template* ev){
+    *inpt = ev -> m_preselection; 
+}
+
+
 void graph_template::add_graph_feature(bool data, std::string name){
     this -> graph_fx[name] = this -> to_tensor(std::vector<bool>{data}, torch::kBool, bool()); 
 }

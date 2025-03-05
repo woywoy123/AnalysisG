@@ -8,7 +8,9 @@ struct folds_t {
     bool is_valid = false; 
     bool is_eval = false; 
     char* hash = nullptr;
+
     void flush_data(){
+        if (!this -> hash){return;}
         free(this -> hash);
         this -> hash = nullptr; 
     } 

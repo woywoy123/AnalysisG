@@ -147,9 +147,9 @@ bool dataloader::dump_graphs(std::string path, int threads){
     std::map<std::string, graph_t*>* restored = this -> restore_graphs_(pth_verify, threads); 
 
     bool valid = true;
-    valid = this -> data_set -> size() == restored -> size(); 
     for (size_t x(0); x < this -> data_set -> size(); ++x){
         graph_t* dt = (*this -> data_set)[x]; 
+        if (dt -> preselection){continue;}
         valid *= restored -> count(*dt -> hash); 
         if (valid){continue;}
         break; 

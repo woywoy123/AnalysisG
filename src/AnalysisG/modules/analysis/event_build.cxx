@@ -3,13 +3,8 @@
 
 void analysis::build_events(){
     auto lamb = [this](
-            std::vector<std::string>* trees, 
-            std::vector<std::string>* branches, 
-            std::vector<std::string>* leaves,
-            std::vector<std::string>* files,
-            std::string* title,
-            size_t* num_events, 
-            size_t* idx,
+            std::vector<std::string>* trees, std::vector<std::string>* branches, std::vector<std::string>* leaves,
+            std::vector<std::string>* files, std::string* title, size_t* num_events, size_t* idx,
             event_template* evnt_comp
     ){
         if (!files -> size()){return;}
@@ -20,9 +15,7 @@ void analysis::build_events(){
         rdr -> trees = *trees; 
         rdr -> branches = *branches; 
         rdr -> leaves = *leaves; 
-        for (size_t x(0); x < files -> size(); ++x){
-            rdr -> root_files[files -> at(x)] = true;
-        }
+        for (size_t x(0); x < files -> size(); ++x){rdr -> root_files[files -> at(x)] = true;}
         rdr -> check_root_file_paths();
 
         size_t num_evn = *num_events;  
@@ -44,8 +37,9 @@ void analysis::build_events(){
             else {meta_ = rdr -> meta_data[fname];}
 
             if (this -> tracer -> add_meta_data(meta_, fname) && !ext){
-                rdr -> meta_data[fname] = nullptr;
+                meta_ -> folds = this -> tags; 
                 this -> meta_data[fname] = meta_; 
+                rdr -> meta_data[fname] = nullptr;
             }
 
             std::vector<std::string> tmp = this -> split(fname, "/"); 

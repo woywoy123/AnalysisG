@@ -10,6 +10,7 @@ struct settings_t {
     std::string sow_name = ""; 
     std::string metacache_path = "./"; 
     bool fetch_meta = false; 
+    bool pretagevents = false; 
 
     // machine learning
     int epochs = 10; 
@@ -24,6 +25,7 @@ struct settings_t {
     bool validation = true;
     bool evaluation = true;
     bool continue_training = false;
+
     std::string training_dataset = ""; 
     std::string graph_cache = ""; 
 

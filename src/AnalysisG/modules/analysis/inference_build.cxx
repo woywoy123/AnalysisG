@@ -42,26 +42,13 @@ void add_content(
 }
 
 void execution(
-        model_template* md, model_settings_t mds, std::vector<graph_t*>* data, size_t* prg,
+        model_template* mdx, model_settings_t mds, std::vector<graph_t*>* data, size_t* prg,
         std::string output, std::vector<variable_t>* content, std::string* msg
 ){
- 
-    md = md -> clone(); 
-    md -> import_settings(&mds); 
+    (*prg) = 1; 
     size_t ds = 0; 
     for (size_t x(0); x < data -> size(); ++x){ds += (*data)[x] -> batched_events.size();}
-    if(!md -> restore_state()){
-        (*prg) = 1; 
-        (*msg) = "\033[1;31m (Missing Model) " + (*msg) + "\033[0m"; 
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-        delete content; content = nullptr; 
-        delete md; md = nullptr; 
-        (*prg) = ds; 
-        return; 
-    }
 
-    md -> shush = true; 
-    (*msg) = "\033[1;32m (Processing) " + (*msg) + "\033[0m";
     TFile* tmp = TFile::Open(output.c_str(), "READ");
     if (tmp){
         TDirectory* dir = gDirectory; 
@@ -72,18 +59,35 @@ void execution(
             size_t l = tx -> GetEntries();
             if (l != ds){break;}
             delete content; content = nullptr; 
-            delete md; md = nullptr; 
             delete tmp; tmp = nullptr; 
+            (*msg) = "\033[1;33m (Already Completed) " + (*msg) + "\033[0m"; 
+            std::this_thread::sleep_for(std::chrono::seconds(1));
             *prg = ds; 
             return;
         }
         delete tmp; 
     }
- 
+
+    model_template* md = mdx -> clone(); 
+    md -> import_settings(&mds); 
+    if(!md -> restore_state()){
+        (*msg) = "\033[1;31m (Missing Model) " + (*msg) + "\033[0m"; 
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        delete content; content = nullptr; 
+        delete md; md = nullptr; 
+        (*prg) = ds; 
+        return; 
+    }
+
+    md -> shush = true; 
+
+    (*msg) = "\033[1;32m (Processing) " + (*msg) + "\033[0m";
+
     TFile* f = TFile::Open(output.c_str(), "RECREATE"); 
     f -> TestBit(TFile::kRecovered);  
     TTree* t = new TTree(mds.tree_name.c_str(), "data");
 
+    (*prg) = 0; 
     torch::AutoGradMode grd(false); 
     for (size_t x(0); x < data -> size(); ++x){
 
@@ -131,9 +135,6 @@ void execution(
         // --- Scan the outputs
         add_content(&addhoc, &bf, bt, nb, &ex, batch_i);
         add_content(&md -> m_p_undef, &bf, bt, nb, &ex, batch_i); 
-        if (batch_i.size() + (*prg) >= ds){(*msg) = "\033[1;32m (Done) " + (*msg) + "\033[0m";}
-        (*prg) += batch_i.size(); 
-        
         for (size_t l(0); l < bf.size(); ++l){
             for (size_t i(0); i < content -> size(); ++i){
                 if ((*content)[i].variable_name == "edge_index"){bf[l][i] -= std::get<0>(bf[l][i].min({0}));}
@@ -142,14 +143,17 @@ void execution(
             }
             t -> Fill();
         }
+        if (!(batch_i.size() + (*prg) >= ds)){(*prg) += batch_i.size(); continue;}
+        (*msg) = "\033[1;32m (Done) " + (*msg) + "\033[0m";
     }
-    std::this_thread::sleep_for(std::chrono::seconds(1));
+
     t -> ResetBranchAddresses(); 
     t -> Write("", TObject::kOverwrite);
     f -> Close(); 
     delete f; f = nullptr; 
     delete content; content = nullptr; 
     delete md; md = nullptr; 
+    std::this_thread::sleep_for(std::chrono::seconds(1));
     (*prg) = ds;
 }
 
@@ -223,7 +227,7 @@ void analysis::build_inference(){
 
     int para = 0; 
     its = dl -> begin(); 
-    for (size_t x(0); x < th_prc.size(); ++x){
+    for (size_t x(0); x < th_prc.size(); ++x, ++para){
         int mdx = x%modls; 
         if (!mdx){itm = this -> model_inference.begin();}
         model_settings_t mds; 
@@ -257,13 +261,13 @@ void analysis::build_inference(){
         // --- Scan the inputs
         int index = 0; 
         index = add_content(&md -> m_i_graph, content, index, "g_i_"); 
-        index = add_content(&md -> m_i_node, content, index,  "n_i_"); 
-        index = add_content(&md -> m_i_edge, content, index,  "e_i_"); 
+        index = add_content(&md -> m_i_node,  content, index, "n_i_"); 
+        index = add_content(&md -> m_i_edge,  content, index, "e_i_"); 
 
         // --- Scan the outputs
         index = add_content(&md -> m_p_graph, content, index, "g_o_"); 
-        index = add_content(&md -> m_p_node, content, index,  "n_o_"); 
-        index = add_content(&md -> m_p_edge, content, index,  "e_o_"); 
+        index = add_content(&md -> m_p_node,  content, index, "n_o_"); 
+        index = add_content(&md -> m_p_edge,  content, index, "e_o_"); 
 
         // --- add additional content
         std::map<std::string, torch::Tensor*> addhoc; 
@@ -273,7 +277,7 @@ void analysis::build_inference(){
         index = add_content(&addhoc, content, index, ""); 
         index = add_content(&md -> m_p_undef, content, index, "extra_"); 
         th_prc[x] = new std::thread(execution, md, mds, batched_data[x], &th_prg[x], fname, content, mdl_title[x]);
-        ++itm; ++para; 
+        ++itm; 
 
         if (!thr_){thr_ = new std::thread(this -> progressbar3, &th_prg, &num_data, &mdl_title);}
         while (para >= threads_){

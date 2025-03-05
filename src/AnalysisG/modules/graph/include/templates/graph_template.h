@@ -26,6 +26,8 @@
 
 class graph_template; 
 class dataloader; 
+class container; 
+class analysis; 
 class meta; 
 
 struct graph_t {
@@ -82,11 +84,11 @@ struct graph_t {
         }
 
         void add_truth_graph(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
-        void add_truth_node(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
-        void add_truth_edge(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
-        void add_data_graph(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
-        void add_data_node(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
-        void add_data_edge(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
+        void add_truth_node( std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
+        void add_truth_edge( std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
+        void add_data_graph( std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
+        void add_data_node(  std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
+        void add_data_edge(  std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
 
         void transfer_to_device(torch::TensorOptions* dev); 
         void _purge_all(); 
@@ -94,6 +96,7 @@ struct graph_t {
         int       num_nodes = 0; 
         long    event_index = 0; 
         double event_weight = 1; 
+        bool   preselection = true;
         std::vector<long> batched_events = {}; 
 
         std::string* hash       = nullptr; 
@@ -180,7 +183,135 @@ bool static fulltopo(particle_template*, particle_template*){return true;};
 
 class graph_template: public tools
 {
+    public:
+        graph_template(); 
+        virtual ~graph_template(); 
+        virtual graph_template* clone(); 
+        virtual void CompileEvent(); 
+        virtual bool PreSelection();
+
+        void define_particle_nodes(std::vector<particle_template*>* prt); 
+        void define_topology(std::function<bool(particle_template*, particle_template*)> fx);
+
+        void flush_particles(); 
+        bool operator == (graph_template& p); 
+
+        cproperty<long  , graph_template> index; 
+        cproperty<double, graph_template> weight; 
+        cproperty<bool  , graph_template> preselection; 
+
+        cproperty<std::string, graph_template> hash; 
+        cproperty<std::string, graph_template> tree;  
+        cproperty<std::string, graph_template> name; 
+
+        std::string filename = ""; 
+        meta* meta_data = nullptr; 
+
+        template <typename G>
+        G* get_event(){return (G*)this -> m_event;}
+
+        template <typename G, typename O, typename X>
+        void add_graph_truth_feature(O* ev, X fx, std::string name){
+            cproperty<G, O> cdef; 
+            cdef.set_getter(fx);
+            cdef.set_object(ev); 
+            G r = cdef; 
+            this -> add_graph_feature(r, "T-" + name); 
+        }
+
+
+        template <typename G, typename O, typename X>
+        void add_graph_data_feature(O* ev, X fx, std::string name){
+            cproperty<G, O> cdef; 
+            cdef.set_getter(fx);
+            cdef.set_object(ev); 
+            G r = cdef; 
+            this -> add_graph_feature(r, "D-" + name); 
+        }
+
+        template <typename G, typename O, typename X>
+        void add_node_truth_feature(X fx, std::string name){
+            std::vector<G> nodes_data = {}; 
+            std::map<int, particle_template*>::iterator itr = this -> node_particles.begin(); 
+            for (; itr != this -> node_particles.end(); ++itr){
+                cproperty<G, O> cdef; 
+                cdef.set_getter(fx);
+                cdef.set_object((O*)itr -> second); 
+                nodes_data.push_back((G)cdef); 
+            }
+            this -> add_node_feature(nodes_data, "T-" + name); 
+        }
+
+
+        template <typename G, typename O, typename X>
+        void add_node_data_feature(X fx, std::string name){
+            std::vector<G> nodes_data = {}; 
+
+            std::map<int, particle_template*>::iterator itr = this -> node_particles.begin(); 
+            for (; itr != this -> node_particles.end(); ++itr){
+                cproperty<G, O> cdef; 
+                cdef.set_getter(fx);
+                cdef.set_object((O*)itr -> second); 
+                nodes_data.push_back((G)cdef); 
+            }
+            this -> add_node_feature(nodes_data, "D-" + name); 
+        }
+
+        template <typename G, typename O, typename X>
+        void add_edge_truth_feature(X fx, std::string name){
+            int dx = -1; 
+            std::vector<G> edge_data = {}; 
+            std::map<int, particle_template*>::iterator itr1;
+            std::map<int, particle_template*>::iterator itr2;
+            if (!this -> _topological_index.size()){this -> define_topology(fulltopo);} 
+            for (itr1 = this -> node_particles.begin(); itr1 != this -> node_particles.end(); ++itr1){
+                for (itr2 = this -> node_particles.begin(); itr2 != this -> node_particles.end(); ++itr2){
+                    ++dx; 
+
+                    if (this -> _topological_index[dx] < 0){continue;}
+                    std::tuple<O*, O*> p_ij((O*)itr1 -> second, (O*)itr2 -> second); 
+                    cproperty<G, std::tuple<O*, O*>> cdef; 
+                    cdef.set_object(&p_ij); 
+                    cdef.set_getter(fx); 
+                    edge_data.push_back(cdef); 
+                }
+            }
+            this -> add_edge_feature(edge_data, "T-" + name); 
+        }
+
+
+        template <typename G, typename O, typename X>
+        void add_edge_data_feature(X fx, std::string name){
+            int dx = -1; 
+            std::vector<G> edge_data = {}; 
+            std::map<int, particle_template*>::iterator itr1;
+            std::map<int, particle_template*>::iterator itr2;
+            if (!this -> _topological_index.size()){this -> define_topology(fulltopo);} 
+            for (itr1 = this -> node_particles.begin(); itr1 != this -> node_particles.end(); ++itr1){
+                for (itr2 = this -> node_particles.begin(); itr2 != this -> node_particles.end(); ++itr2){
+                    ++dx; 
+
+                    if (this -> _topological_index[dx] < 0){continue;}
+                    std::tuple<O*, O*> p_ij(itr1 -> second, itr2 -> second); 
+                    cproperty<G, std::tuple<O*, O*>> cdef; 
+                    cdef.set_object(&p_ij); 
+                    cdef.set_getter(fx); 
+                    edge_data.push_back(cdef); 
+                }
+            }
+            this -> add_edge_feature(edge_data, "D-" + name); 
+        }
+
+
+        bool double_neutrino(
+                double mass_top = 172.62*1000, double mass_wboson = 80.385*1000, 
+                double top_perc = 0.85, double w_perc = 0.95, double distance = 1e-8, int steps = 10
+        ); 
+
     private:
+        friend container; 
+        friend analysis; 
+
         // -------- Graph Features ----------- //
         void add_graph_feature(bool, std::string);   
         void add_graph_feature(std::vector<bool>, std::string);   
@@ -239,11 +370,13 @@ class graph_template: public tools
         } 
 
         void static set_name(std::string*, graph_template*); 
-        void static get_hash(std::string*, graph_template*); 
+        void static set_preselection(bool*, graph_template*); 
 
+        void static get_hash(std::string*, graph_template*); 
         void static get_index(long*, graph_template*); 
         void static get_weight(double*, graph_template*); 
         void static get_tree(std::string*, graph_template*); 
+        void static get_preselection(bool*, graph_template*); 
 
         void static build_export(
                 std::map<std::string, torch::Tensor*>* _truth_t, std::map<std::string, int>* _truth_i,
@@ -266,132 +399,11 @@ class graph_template: public tools
         torch::TensorOptions* op = nullptr; 
         event_template* m_event = nullptr; 
 
-    public:
-        graph_t* data_export(); 
-
-        event_t data; 
-        std::string filename = ""; 
-        meta* meta_data = nullptr; 
-
-        void flush_particles(); 
+        bool m_preselection = true; 
         graph_template* build(event_template* el); 
-        void define_particle_nodes(std::vector<particle_template*>* prt); 
-        void define_topology(std::function<bool(particle_template*, particle_template*)> fx);
+        graph_t* data_export(); 
+        event_t data; 
 
-        graph_template(); 
-        virtual ~graph_template(); 
-        virtual graph_template* clone(); 
-        virtual void CompileEvent(); 
-        virtual bool PreSelection();
-
-        bool operator == (graph_template& p); 
-
-        cproperty<long, graph_template> index; 
-        cproperty<double, graph_template> weight; 
-        cproperty<std::string, graph_template> hash; 
-        cproperty<std::string, graph_template> tree;  
-        cproperty<std::string, graph_template> name; 
-
-        template <typename G>
-        G* get_event(){return (G*)this -> m_event;}
-
-        template <typename G, typename O, typename X>
-        void add_graph_truth_feature(O* ev, X fx, std::string name){
-            cproperty<G, O> cdef; 
-            cdef.set_getter(fx);
-            cdef.set_object(ev); 
-            G r = cdef; 
-            this -> add_graph_feature(r, "T-" + name); 
-        };
-
-
-        template <typename G, typename O, typename X>
-        void add_graph_data_feature(O* ev, X fx, std::string name){
-            cproperty<G, O> cdef; 
-            cdef.set_getter(fx);
-            cdef.set_object(ev); 
-            G r = cdef; 
-            this -> add_graph_feature(r, "D-" + name); 
-        };
-
-        template <typename G, typename O, typename X>
-        void add_node_truth_feature(X fx, std::string name){
-            std::vector<G> nodes_data = {}; 
-            std::map<int, particle_template*>::iterator itr = this -> node_particles.begin(); 
-            for (; itr != this -> node_particles.end(); ++itr){
-                cproperty<G, O> cdef; 
-                cdef.set_getter(fx);
-                cdef.set_object((O*)itr -> second); 
-                nodes_data.push_back((G)cdef); 
-            }
-            this -> add_node_feature(nodes_data, "T-" + name); 
-        };
-
-
-        template <typename G, typename O, typename X>
-        void add_node_data_feature(X fx, std::string name){
-            std::vector<G> nodes_data = {}; 
-
-            std::map<int, particle_template*>::iterator itr = this -> node_particles.begin(); 
-            for (; itr != this -> node_particles.end(); ++itr){
-                cproperty<G, O> cdef; 
-                cdef.set_getter(fx);
-                cdef.set_object((O*)itr -> second); 
-                nodes_data.push_back((G)cdef); 
-            }
-            this -> add_node_feature(nodes_data, "D-" + name); 
-        };
-
-        template <typename G, typename O, typename X>
-        void add_edge_truth_feature(X fx, std::string name){
-            int dx = -1; 
-            std::vector<G> edge_data = {}; 
-            std::map<int, particle_template*>::iterator itr1;
-            std::map<int, particle_template*>::iterator itr2;
-            if (!this -> _topological_index.size()){this -> define_topology(fulltopo);} 
-            for (itr1 = this -> node_particles.begin(); itr1 != this -> node_particles.end(); ++itr1){
-                for (itr2 = this -> node_particles.begin(); itr2 != this -> node_particles.end(); ++itr2){
-                    ++dx; 
-
-                    if (this -> _topological_index[dx] < 0){continue;}
-                    std::tuple<O*, O*> p_ij((O*)itr1 -> second, (O*)itr2 -> second); 
-                    cproperty<G, std::tuple<O*, O*>> cdef; 
-                    cdef.set_object(&p_ij); 
-                    cdef.set_getter(fx); 
-                    edge_data.push_back(cdef); 
-                }
-            }
-            this -> add_edge_feature(edge_data, "T-" + name); 
-        };
-
-
-        template <typename G, typename O, typename X>
-        void add_edge_data_feature(X fx, std::string name){
-            int dx = -1; 
-            std::vector<G> edge_data = {}; 
-            std::map<int, particle_template*>::iterator itr1;
-            std::map<int, particle_template*>::iterator itr2;
-            if (!this -> _topological_index.size()){this -> define_topology(fulltopo);} 
-            for (itr1 = this -> node_particles.begin(); itr1 != this -> node_particles.end(); ++itr1){
-                for (itr2 = this -> node_particles.begin(); itr2 != this -> node_particles.end(); ++itr2){
-                    ++dx; 
-
-                    if (this -> _topological_index[dx] < 0){continue;}
-                    std::tuple<O*, O*> p_ij(itr1 -> second, itr2 -> second); 
-                    cproperty<G, std::tuple<O*, O*>> cdef; 
-                    cdef.set_object(&p_ij); 
-                    cdef.set_getter(fx); 
-                    edge_data.push_back(cdef); 
-                }
-            }
-            this -> add_edge_feature(edge_data, "D-" + name); 
-        };
-
-
-        bool double_neutrino(
-                double mass_top = 172.62*1000, double mass_wboson = 80.385*1000, 
-                double top_perc = 0.85, double w_perc = 0.95, double distance = 1e-8, int steps = 10
-        ); 
 }; 
  
 

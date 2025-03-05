@@ -1,16 +1,21 @@
 #include <generators/analysis.h>
 #include <ROOT/RDataFrame.hxx>
+#include <thread>
 
 analysis::analysis(){
     this -> prefix = "Analysis"; 
     this -> tracer  = new sampletracer(); 
     this -> loader  = new dataloader(); 
     this -> reader  = new io(); 
+    this -> tags    = new std::vector<folds_t>(); 
 }
 
 analysis::~analysis(){
     std::map<std::string, optimizer*>::iterator itt = this -> trainer.begin();
     for (; itt != this -> trainer.end(); ++itt){delete itt -> second;}
+    for (size_t x(0); x < this -> tags -> size(); ++x){(*this -> tags)[x].flush_data();}
+    
+    delete this -> tags; 
     delete this -> loader; 
     delete this -> tracer; 
     delete this -> reader; 
@@ -103,7 +108,17 @@ void analysis::check_cache(){
     this -> file_labels = relabel; 
 }
 
+void analysis::fetchtags(){
+    io* io_g = new io(); 
+    io_g -> start(this -> m_settings.training_dataset, "read"); 
+    io_g -> read(this -> tags, "kfolds"); 
+    io_g -> end(); 
+    delete io_g; 
+}
+
 void analysis::start(){
+    if (this -> m_settings.pretagevents){this -> fetchtags();}
+
     this -> create_path(this -> m_settings.output_path + "/"); 
     if (!this -> started){
         this -> success("+============================+"); 
@@ -126,8 +141,9 @@ void analysis::start(){
         return; 
     }
 
-    ROOT::EnableImplicitMT(); 
     int threads_ = this -> m_settings.threads; 
+    ROOT::EnableImplicitMT(threads_); 
+
     std::string pth_cache = this -> m_settings.graph_cache; 
     this -> loader -> setting = &this -> m_settings; 
 
@@ -140,10 +156,7 @@ void analysis::start(){
     this -> build_dataloader(false); 
 
     if (this -> m_settings.build_cache && !this -> loader -> data_set -> size()){return;}
-
-    if (pth_cache.size() && this -> loader -> data_set -> size()){
-        this -> loader -> dump_graphs(pth_cache, threads_);
-    }
+    if (pth_cache.size() && this -> loader -> data_set -> size()){this -> loader -> dump_graphs(pth_cache, threads_);}
     else if (pth_cache.size() && this -> file_labels.size()){
         std::vector<std::string> cached = {}; 
         std::map<std::string, std::string>::iterator itg = this -> graph_types.begin(); 

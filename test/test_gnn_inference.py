@@ -23,15 +23,15 @@ gn2.o_graph = {"ntops" : "CrossEntropyLoss", "signal" : "CrossEntropyLoss"}
 gn2.i_node = ["pt", "eta", "phi", "energy", "charge"]
 gn2.i_graph = ["met", "phi"]
 gn2.device = "cuda:0"
-gn2.checkpoint_path = "./ProjectName/Grift/MRK-1-0/state/epoch-2/kfold-1_model.pt"
+gn2.checkpoint_path = "./ProjectName/Grift/MRK-1-0/state/epoch-1/kfold-2_model.pt"
 
 ana = Analysis()
-#ana.Threads = 40
-ana.BatchSize = 10
+ana.Threads = 2
+ana.BatchSize = 2
 ana.AddSamples(root1, "tmp")
 ana.AddEvent(ev, "tmp")
 ana.AddGraph(gr, "tmp")
 ana.AddModelInference(gn, "test-run")
-#ana.AddModelInference(gn2, "test-run-2")
+ana.AddModelInference(gn2, "test-run-2")
 ana.Start()
 

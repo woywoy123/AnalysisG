@@ -7,10 +7,10 @@ from AnalysisG.events import SSML_MC20
 from AnalysisG.graphs.bsm_4tops import *
 from AnalysisG.models import *
 
-#root1 = "./samples/dilepton/*"
+root1 = "./samples/dilepton/*"
 #root1 = "/home/tnom6927/Downloads/mc20/user.bdong.503575.MGPy8EG.DAOD_PHYS.e8307_s3797_r13144_p6266.tom_sample_v01_output/user.bdong.41003314._000001.output.root"
-root1 = "/home/tnom6927/Downloads/mc16/ttbar/user.tnommens.40945479._000001.output.root"
-#ttZ = "/home/tnom6927/Downloads/mc16/ttH_tttt_m400/*"
+#root1 = "/home/tnom6927/Downloads/mc16/ttbar/user.tnommens.40945479._000001.output.root"
+#root1 = "/home/tnom6927/Downloads/mc16/ttH_tttt_m400/*"
 
 x = BSM4Tops()
 #x = SSML_MC20()
@@ -21,7 +21,7 @@ tt = GraphTruthJets()
 
 params = [
     ("MRK-1", "adam", {"lr" : 1e-4}),
-    #("MRK-2", "adam", {"lr" : 1e-6}),
+    ("MRK-2", "adam", {"lr" : 1e-6}),
     #    ("MRK-3", "adam", {"lr" : 1e-6, "amsgrad" : True}),
     #("MRK-4", "sgd" , {"lr" : 1e-3}),
     #("MRK-5", "sgd", {"lr" : 1e-6}),
@@ -56,6 +56,7 @@ for k in params:
     optims.append(opti)
 
 ana.AddSamples(root1, "tmp")
+ana.Threads = 2
 #ana.AddSamples(ttZ, "ttZ")
 ana.AddEvent(x, "tmp")
 ana.AddGraph(tt, "tmp")
@@ -73,7 +74,7 @@ ana.GraphCache = "./ProjectName/"
 ana.kFold = [1] #, 2, 3, 4] #6, 7, 3, 5, 9]
 ana.MaxRange = 1500
 ana.TrainSize = 80
-ana.BatchSize = 10
+ana.BatchSize = 2
 ana.ContinueTraining = False
 #ana.SumOfWeightsTreeName = "sumWeights"
 #ana.FetchMeta = True
