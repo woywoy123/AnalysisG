@@ -99,43 +99,71 @@ __global__ void _combination(
     msk[__idx] = lx*num_l; 
 }
 
-__global__ void _mass_matrix(
-        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> mass_,
-        double mTl, double mTs, double mWl, double mWs, unsigned int steps
+__global__ void _assign_mass(
+        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> mass_tw,
+        const double mass_t, const double mass_w, const long lenx
 ){
     const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
-    if (steps <= _idx){return;}
-    double lw = mWl*threadIdx.y + mTl*(1 - threadIdx.y); 
-    double dx = mWs*threadIdx.y + mTs*(1 - threadIdx.y);
-    mass_[_idx][threadIdx.y] = lw + mass_[_idx][threadIdx.y]*dx*_idx; 
+    const bool _idy = threadIdx.y > 0; 
+    if (_idx >= lenx){return;}
+    mass_tw[_idx][threadIdx.y] = mass_t * (1 - _idy) + mass_w*_idy; 
 }
 
+template <size_t size_x>
+__global__ void _perturb(
+        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> nu_params,
+        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> dnu_met,
+        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> dnu_tw1,
+        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> dnu_tw2,
+        const unsigned long lnx, const double dt, const unsigned int ofs
+){
+    __shared__ double _params_[size_x][6]; 
 
-//template <size_t size_x>
-//__global__ void _perturbation(
-//        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> dnu_tw1,
-//        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> dnu_tw2,
-//        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> dnu_met,
-//        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> dnu_res,
-//        const double perturb, const double top_mass, 
-//        const double w_mass, const bool start
-//){
-//    __shared__ double _dnu_res[size_x][36][6]; 
-//    __shared__ double _dnu_par[size_x][36][6]; 
-//
-//    const unsigned int idx  = threadIdx.x;
-//    const unsigned int idy  = threadIdx.y; 
-//    const unsigned int idz  = threadIdx.z;  
-//    const unsigned int _idx = (blockIdx.x * blockDim.x + threadIdx.x)*36 + idy; 
-//    if (_idx >= dnu_res.size({0})){return;}
-//
-//    if (idz < 2){     dnu_par[idx][idy][idz] = dnu_tw1[_idx][idz] * top_mass;}
-//    else if (idz < 4){dnu_par[idx][idy][idz] = dnu_tw2[_idx][idz] * w_mass;}
-//    else if (idz < 6){dnu_par[idx][idy][idz] = dnu_met[_idx][idz];}
-//    _dnu_res[idx][idy][idz] = dnu_res[_idx][idz]; 
-//    __syncthreads();
-//}
+    const unsigned int _idx = threadIdx.x; 
+    const unsigned int _idy = threadIdx.y; 
+    const unsigned int _idz = threadIdx.z;  
+    const unsigned int idx  = blockIdx.x * blockDim.x + _idx; 
+    if (idx >= lnx){return;}
+    if (!_idy){_params_[_idx][_idz] = nu_params[idx][_idz];}
+    const unsigned int _idt = idx * ofs + _idy; 
+    __syncthreads(); 
 
+    double dx_ = _params_[_idx][_idz] + (_idy == _idz) * dt; 
+    if (_idz < 2){dnu_met[_idt][_idz  ] = dx_; return;}
+    if (_idz < 4){dnu_tw1[_idt][_idz-2] = dx_; return;}
+    if (_idz < 6){dnu_tw2[_idt][_idz-4] = dx_; return;}
+}
+
+template <size_t size_x>
+__global__ void _jacobi(
+        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> nu_params,
+        torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> dnu_res,
+        const unsigned long lnx, const double dt, unsigned int ofs
+){
+    __shared__ double _jacobi_ [size_x][6]; 
+    __shared__ double _Jxt_    [size_x][6]; 
+    __shared__ double _param_  [size_x][7]; 
+
+    const unsigned int _idx = threadIdx.x; 
+    const unsigned int _idy = threadIdx.y; 
+    const unsigned int _idp = blockIdx.x * blockDim.x + _idx; 
+    const unsigned int idx  = (blockIdx.x * blockDim.x + _idx  )*ofs + _idy; 
+    if (idx >= lnx*ofs){return;}
+
+    if (_idy == 1){_param_[_idx][6] = dnu_res[(blockIdx.x * blockDim.x + _idx+1)*ofs-1][0];}
+    _param_[_idx][_idy] = nu_params[_idp][_idy];
+    __syncthreads(); 
+
+    double nu_x0 = _param_[_idx][6]; 
+    _jacobi_[_idx][_idy] = (dnu_res[idx][0] - nu_x0)/dt;
+    _Jxt_   [_idx][_idy] = _jacobi_[_idx][_idy] * _jacobi_[_idx][_idy]; 
+    __syncthreads();
+
+    double dv = _div(_sum(_Jxt_[_idx], 6)) * _jacobi_[_idx][_idy] * nu_x0; 
+    nu_params[_idp][_idy] = _param_[_idx][_idy] - dv;  
+}
+
+template <size_t size_x>
 __global__ void _compare_solx(
         torch::PackedTensorAccessor64<long  , 1, torch::RestrictPtrTraits> cmx_dx,
         torch::PackedTensorAccessor64<long  , 1, torch::RestrictPtrTraits> evnt_dx,
@@ -152,10 +180,10 @@ __global__ void _compare_solx(
         const unsigned int lx, const unsigned int evnts
 ){
 
-    __shared__ double _score[32][4]; 
-    __shared__ double _nu1[32][4]; 
-    __shared__ double _nu2[32][4]; 
-    __shared__ double _cmx[32][4]; 
+    __shared__ double _nu1[size_x][4]; 
+    __shared__ double _nu2[size_x][4]; 
+    __shared__ double _cmx[size_x][4]; 
+    __shared__ double _score[size_x][4]; 
 
     const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
     if (_idx >= evnts){return;}
@@ -173,6 +201,7 @@ __global__ void _compare_solx(
             _nu2[threadIdx.x][threadIdx.y] = (threadIdx.y < 3) ? i_nu2[x][y][threadIdx.y] : 0; 
         }
     }
+
     __syncthreads(); 
     o_sol[_idx] = _score[threadIdx.x][threadIdx.y]; 
     o_cmb[_idx][threadIdx.y] = _cmx[threadIdx.x][threadIdx.y]; 

@@ -11,12 +11,12 @@ import pathlib
 import pickle
 
 i = 0
-run = False
+run = True
 pth = "./data/"
-data_path = "/home/tnom6927/Downloads/mc16/ttH_tttt_m400/*"
+data_path = "/home/tnom6927/Downloads/mc16/ttH_tttt_m400/DAOD_TOPQ1.21955708._000011.root"
 
 if run:
-    data = Validation() #Combinatorial() #Validation()
+    data = Combinatorial() #Validation()
     ev = BSM4Tops()
 
     ana = Analysis()
@@ -31,6 +31,6 @@ if run:
     pickle.dump(data, f)
     f.close()
 
-data = None #pickle.load(open(pth+str(i) + ".pkl", "rb"))
-nunuValidation(data)
-#double_neutrino(data)
+data = pickle.load(open(pth+str(i) + ".pkl", "rb"))
+#nunuValidation(data)
+double_neutrino(data)

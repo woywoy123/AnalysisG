@@ -57,7 +57,7 @@ class combinatorial: public selection_template
         double scale   = 1.0; //1000;
         double masstop = 172.62*1000; 
         double massw   = 80.385*1000; 
-        int    steps   = 25; 
+        int    steps   = 1000; 
 
     private:
         void fill(

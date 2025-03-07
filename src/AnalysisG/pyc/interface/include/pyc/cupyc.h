@@ -48,11 +48,7 @@ namespace pyc {
                 torch::Tensor Mt2(torch::Tensor pz, torch::Tensor e);
                 torch::Tensor Mt(torch::Tensor pz, torch::Tensor e);
                 torch::Tensor Theta(torch::Tensor px, torch::Tensor py, torch::Tensor pz); 
-                torch::Tensor DeltaR(
-                        torch::Tensor px1, torch::Tensor px2, 
-                        torch::Tensor py1, torch::Tensor py2, 
-                        torch::Tensor pz1, torch::Tensor pz2
-                );
+                torch::Tensor DeltaR(torch::Tensor px1, torch::Tensor px2, torch::Tensor py1, torch::Tensor py2, torch::Tensor pz1, torch::Tensor pz2);
             }
             namespace combined {
                 torch::Tensor P2(torch::Tensor pmc); 
@@ -114,30 +110,27 @@ namespace pyc {
     namespace nusol {
        torch::Dict<std::string, torch::Tensor> BaseMatrix(torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Tensor masses); 
        torch::Dict<std::string, torch::Tensor> Nu(
-               torch::Tensor pmc_b, torch::Tensor pmc_mu, 
-               torch::Tensor met_xy, torch::Tensor masses, 
-               torch::Tensor sigma, double null = 10e-10
+               torch::Tensor pmc_b , torch::Tensor pmc_mu, torch::Tensor met_xy, 
+               torch::Tensor masses, torch::Tensor  sigma, double null = 10e-10
         ); 
 
        torch::Dict<std::string, torch::Tensor> NuNu(
-               torch::Tensor pmc_b1, torch::Tensor pmc_b2, 
-               torch::Tensor pmc_l1, torch::Tensor pmc_l2, 
-               torch::Tensor met_xy, torch::Tensor masses, double null = 10e-10
+               torch::Tensor pmc_b1, torch::Tensor pmc_b2, torch::Tensor pmc_l1, torch::Tensor pmc_l2, 
+               torch::Tensor met_xy, torch::Tensor masses, double null = 10e-10, const double step = 1e-9, 
+               const double tolerance = 1e-6, const unsigned int timeout = 1000
         ); 
 
 
        torch::Dict<std::string, torch::Tensor> NuNu(
-               torch::Tensor pmc_b1, torch::Tensor pmc_b2, 
-               torch::Tensor pmc_l1, torch::Tensor pmc_l2, 
-               torch::Tensor met_xy, double null, 
-               torch::Tensor mass1, torch::Tensor mass2
+               torch::Tensor pmc_b1, torch::Tensor pmc_b2, torch::Tensor pmc_l1, torch::Tensor pmc_l2, 
+               torch::Tensor met_xy, double null, torch::Tensor mass1, torch::Tensor mass2, const double step = 1e-9, 
+               const double tolerance = 1e-6, const unsigned int timeout = 1000
         ); 
 
        torch::Dict<std::string, torch::Tensor> combinatorial(
-               torch::Tensor edge_index, torch::Tensor batch , torch::Tensor pmc, 
-               torch::Tensor pid       , torch::Tensor met_xy, 
-               double mT = 172.62*1000 , double mW = 80.385*1000, double top_pm = 0.95, double w_pm = 0.95, 
-               long steps = 20         , double null = 1e-10    , bool gev = false
+               torch::Tensor edge_index, torch::Tensor batch , torch::Tensor pmc, torch::Tensor pid, torch::Tensor met_xy, 
+               double mT  = 172.62*1000 , double mW = 80.385*1000, double null = 1e-10, double perturb = 1e-3, 
+               long steps = 100, bool gev = false
         ); 
     }
 

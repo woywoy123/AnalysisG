@@ -43,8 +43,8 @@ def intersections_ellipse_line(ellipse, line, zero=1e-10):
     sols = sorted([(
         v.real / v[2].real,
         math.log10(sum((line*v.real).tolist())**2 + sum((np.dot(v.real, ellipse) * v.real).tolist())**2)
-        ) for v in V.T if v[2].real != 0 and not sum(v.imag)], key = lambda k : k[1])[:2]
-    return [s for s, k in sols if k < np.log10(zero)]
+        ) for v in V.T if v[2].real != 0 and not sum(v.imag)], key = lambda k : k[1])
+    return [s for s, k in sols[:2] if k < np.log10(zero)]
 
 def cofactor(A, i, j):
     """Cofactor[i,j] of 3x3 matrix A"""
@@ -238,13 +238,12 @@ class SingleNu(NuSol):
     def nu(self): return np.array([self._H.dot(self.sols[i]) for i in range(len(self.sols))])
 
 class DoubleNu(NuSol):
-
-    def __init__(self, bs, mus, ev):
+    def __init__(self, bs, mus, ev, mT1 = mT, mT2 = mT, mW1 = mW, mW2 = mW):
         b ,  b_ = bs
         mu, mu_ = mus
 
-        sol1 = NuSol(b , mu )
-        sol2 = NuSol(b_, mu_)
+        sol1 = NuSol(b , mu , None, mW1**2, mT1**2)
+        sol2 = NuSol(b_, mu_, None, mW2**2, mT2**2)
 
         V0 = np.outer([ev.vec.px, ev.vec.py, 0], [0, 0, 1])
         self.S = V0 - UnitCircle()
@@ -259,15 +258,14 @@ class DoubleNu(NuSol):
         self.es = [ss.H_perp for ss in self.solutionSets]
         self.met = np.array([ev.vec.px, ev.vec.py, 1])
 
-        v = []
-        if not v and leastsq:
-            es = [ss.H_perp for ss in self.solutionSets]
-            met = np.array([ev.vec.px, ev.vec.py, 1])
-            def nus(ts): return tuple(e.dot([math.cos(t), math.sin(t), 1]) for e, t in zip(es, ts))
-            def residuals(params): return sum(nus(params), -met)[:2]
-            ts, _ = leastsq(residuals, [0, 0], ftol=5e-5, epsfcn=0.01)
-            v, v_ = [[i] for i in nus(ts)]
-            self.lsq = True
+        #if not v and leastsq:
+        #    es = [ss.H_perp for ss in self.solutionSets]
+        #    met = np.array([ev.vec.px, ev.vec.py, 1])
+        #    def nus(ts): return tuple(e.dot([math.cos(t), math.sin(t), 1]) for e, t in zip(es, ts))
+        #    def residuals(params): return sum(nus(params), -met)[:2]
+        #    ts, _ = leastsq(residuals, [0, 0], ftol=5e-5, epsfcn=0.01)
+        #    v, v_ = [[i] for i in nus(ts)]
+        #    self.lsq = True
         for k, v in {"perp": v, "perp_": v_, "n_": n_, "n" : n}.items(): setattr(self, k, v)
 
     def nus(self, ts): return tuple(e.dot([math.cos(t), math.sin(t), 1]) for e, t in zip(self.es, ts))
@@ -277,12 +275,12 @@ class DoubleNu(NuSol):
     def nunu_s(self):
         """Solution pairs for neutrino momenta"""
 
-        pairs = []
+        pairs = {}
         for s, s_ in zip(self.perp, self.perp_):
-            pairs.append(math.log10((np.dot(s.T , self.n_).dot(s) - np.dot(s_.T, self.n).dot(s_))**2))
-
+            pairs[(np.dot(s.T , self.n_).dot(s) - np.dot(s_.T, self.n).dot(s_))**2] = [s, s_]
+        pr = sorted(pairs)
         K, K_ = [ss.H.dot(np.linalg.inv(ss.H_perp)) for ss in self.solutionSets]
-        nu1 = np.array([K.dot(s)   for s in self.perp  ])
-        nu2 = np.array([K_.dot(s_) for s_ in self.perp_])
+        nu1 = np.array([K.dot(pairs[s][0])  for s in pr])
+        nu2 = np.array([K_.dot(pairs[s][1]) for s in pr])
         self.pairs = pairs
         return nu1, nu2

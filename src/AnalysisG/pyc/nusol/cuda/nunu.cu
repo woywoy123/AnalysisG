@@ -240,16 +240,11 @@ __global__ void _residual_(
 }
 
 std::map<std::string, torch::Tensor> nusol_::NuNu(
-        torch::Tensor* H1_, torch::Tensor* H1_perp, 
-        torch::Tensor* H2_, torch::Tensor* H2_perp, 
-        torch::Tensor* met_xy, double null
+        torch::Tensor* H1_, torch::Tensor* H1_perp, torch::Tensor* H2_, torch::Tensor* H2_perp, torch::Tensor* met_xy,
+        double null, const double step, const double tolerance, const unsigned int timeout
 ){
     const unsigned int dx = H1_ -> size({0}); 
     const unsigned int thx = (dx >= 48) ? 48 : dx; 
-
-    const double step = 1e-9; 
-    const double tolerance = 1e-6; 
-    const unsigned int timeout = 1000; 
 
     const dim3 thr = dim3(4, 64, 3);
     const dim3 thd = dim3(thx, 3, 3);
@@ -282,7 +277,8 @@ std::map<std::string, torch::Tensor> nusol_::NuNu(
                         N.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
                         K.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
                        K_.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
-                        S.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>());
+                        S.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>()
+        );
     }); 
 
     std::map<std::string, torch::Tensor> out = nusol_::Intersection(&N, &n_, null); 
@@ -293,14 +289,17 @@ std::map<std::string, torch::Tensor> nusol_::NuNu(
     torch::Tensor ds  = out["distances"]; 
 
     AT_DISPATCH_ALL_TYPES(H1_ -> scalar_type(), "NuNu", [&]{
-        _residual_<scalar_t, 4, 64><<<blr, thr>>>(
-                met_xy -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
-               H1_perp -> packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
-               H2_perp -> packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
-                        v.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
-                       v_.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
-                       ds.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
-                        tolerance, step, timeout); 
+        if (timeout){
+            _residual_<scalar_t, 4, 64><<<blr, thr>>>(
+                    met_xy -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+                   H1_perp -> packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                   H2_perp -> packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                            v.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                           v_.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+                           ds.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+                            tolerance, step, timeout
+            ); 
+        }
 
         _nunu_vp_<scalar_t, 48><<<blN, thN>>>(
                         S.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
@@ -313,7 +312,8 @@ std::map<std::string, torch::Tensor> nusol_::NuNu(
                        v_.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
                        ds.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
                       nu1.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(), 
-                      nu2.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>()); 
+                      nu2.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>()
+        ); 
     }); 
 
     out["nu1"] = nu1; 
@@ -328,7 +328,8 @@ std::map<std::string, torch::Tensor> nusol_::NuNu(
 
 std::map<std::string, torch::Tensor> nusol_::NuNu(
             torch::Tensor* pmc_b1,  torch::Tensor* pmc_b2, torch::Tensor* pmc_mu1, torch::Tensor* pmc_mu2,
-            torch::Tensor* met_xy,  double null, torch::Tensor* m1, torch::Tensor* m2
+            torch::Tensor* met_xy,  double null, torch::Tensor* m1, torch::Tensor* m2, 
+            const double step, const double tolerance, unsigned int timeout
 ){
     if (!m2){m2 = m1;}
     unsigned int dx = met_xy -> size(0); 
@@ -342,7 +343,8 @@ std::map<std::string, torch::Tensor> nusol_::NuNu(
     torch::Tensor H2_ = H2_m["H"]; 
     torch::Tensor H2p = H2_m["H_perp"]; 
 
-    std::map<std::string, torch::Tensor> out = nusol_::NuNu(&H1_, &H1p, &H2_, &H2p, met_xy, null); 
+    std::map<std::string, torch::Tensor> out; 
+    out = nusol_::NuNu(&H1_, &H1p, &H2_, &H2p, met_xy, null, step, tolerance, timeout); 
     torch::Tensor nu1 = out["nu1"].view({dx, -1, 3});  
     torch::Tensor nu2 = out["nu2"].view({dx, -1, 3}); 
     torch::Tensor dst = out["distances"].view({dx, -1}); 

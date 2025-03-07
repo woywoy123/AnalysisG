@@ -5,7 +5,7 @@
 #SBATCH --mem=20GB
 #SBATCH --gpus-per-task=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=4
+#SBATCH --cpus-per-task=1
 #SBATCH --time=7-00:00:00
 #SBATCH -o "logs/slurm-%N.out"
 #SBATCH --array=0-65

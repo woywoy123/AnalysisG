@@ -113,7 +113,7 @@ std::vector<nu*> combinatorial::build_nus(
     double mt = this -> masstop / this -> scale;  
 
     torch::Dict<std::string, torch::Tensor> nuxt;
-    nuxt = pyc::nusol::combinatorial(topo, bth, pmc, pid, metxy, mt, mw, 0.95, 0.995, this -> steps, 1e-8); 
+    nuxt = pyc::nusol::combinatorial(topo, bth, pmc, pid, metxy, mt, mw, 1e-8, 1e-1, this -> steps); 
     torch::Tensor nu1 = nuxt.at("nu1"); 
     torch::Tensor nu2 = nuxt.at("nu2"); 
     torch::Tensor distx = nuxt.at("distances"); 

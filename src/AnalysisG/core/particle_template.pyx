@@ -66,9 +66,9 @@ cdef class ParticleTemplate:
         p.ptr.iadd(other.ptr)
         p.ptr.iadd(self.ptr)
         if len(other.Children): p.Children += other.Children
-        if len(other.Parent):   p.Parent   += other.Parent
+        if len(other.Parents):  p.Parents  += other.Parents
         if len(self.Children):  p.Children += self.Children
-        if len(self.Parent):    p.Parent   += self.Parent
+        if len(self.Parents):   p.Parents  += self.Parents
         return p
 
     def __radd__(self, other):

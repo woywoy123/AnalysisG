@@ -286,21 +286,21 @@ std::map<std::string, torch::Tensor> nusol_::NuNu(
     }); 
 
     std::map<std::string, torch::Tensor> out = nusol_::Intersection(&N, &n_, null); 
-    torch::Tensor nu1 = torch::zeros_like(out["solutions"]); 
-    torch::Tensor nu2 = torch::zeros_like(out["solutions"]); 
-    torch::Tensor v_  = torch::zeros_like(out["solutions"]); 
     torch::Tensor v   = out["solutions"]; 
     torch::Tensor ds  = out["distances"]; 
+    torch::Tensor nu1 = torch::zeros_like(v); 
+    torch::Tensor nu2 = torch::zeros_like(v); 
+    torch::Tensor v_  = torch::zeros_like(v); 
 
     AT_DISPATCH_ALL_TYPES(H1_ -> scalar_type(), "NuNu", [&]{
-        _residual_<scalar_t, 4, 64><<<blr, thr>>>(
-                met_xy -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
-               H1_perp -> packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
-               H2_perp -> packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
-                        v.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
-                       v_.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
-                       ds.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
-                        tolerance, step, timeout); 
+        //_residual_<scalar_t, 4, 64><<<blr, thr>>>(
+        //        met_xy -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+        //       H1_perp -> packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+        //       H2_perp -> packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+        //                v.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+        //               v_.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
+        //               ds.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+        //                tolerance, step, timeout); 
 
         _nunu_vp_<scalar_t, 48><<<blN, thN>>>(
                         S.packed_accessor64<scalar_t, 3, torch::RestrictPtrTraits>(),
