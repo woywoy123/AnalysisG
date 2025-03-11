@@ -4,12 +4,10 @@ set(SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/cxx/grift.cxx)
 add_library(cgnn_grift STATIC ${SOURCE_FILES})
 target_include_directories(cgnn_grift PRIVATE include/models)
 target_include_directories(cgnn_grift PUBLIC include)
+target_link_libraries(cgnn_grift PUBLIC cmodel_template cpyc)
 
 if (CMAKE_ANALYSISG_CUDA)
-target_link_libraries(cgnn_grift LINK_PUBLIC cmodel_template cupyc)
 target_compile_definitions(cgnn_grift PRIVATE PYC_CUDA ON)
-else()
-target_link_libraries(cgnn_grift LINK_PUBLIC cmodel_template tpyc)
 endif()
 target_compile_options(cgnn_grift PRIVATE -fPIC)
 

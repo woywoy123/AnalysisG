@@ -140,7 +140,6 @@ std::map<std::string, std::map<std::string, particle_t>> particle_template::__re
         out[itr -> first]["data"] = itr -> second -> data;
     }
     delete t; 
-
     this -> data.data_p = tmp; 
     return out; 
 }
@@ -173,10 +172,10 @@ particle_template::~particle_template(){
 void particle_template::operator += (particle_template* p){
     p -> to_cartesian(); 
     this -> to_cartesian();
-    this -> data.px += p -> px; 
-    this -> data.py += p -> py; 
-    this -> data.pz += p -> pz; 
-    this -> data.e  += p -> e; 
+    this -> data.px += double(p -> px); 
+    this -> data.py += double(p -> py); 
+    this -> data.pz += double(p -> pz); 
+    this -> data.e  += double(p -> e); 
     this -> data.polar = true;
 }
 
@@ -196,7 +195,7 @@ void particle_template::apply_type_prefix(){
 }
 
 
-void particle_template::build(std::map<std::string, particle_template*>* prt, element_t* el){
+void particle_template::build(std::map<std::string, particle_template*>*, element_t*){
     return; 
 }
 

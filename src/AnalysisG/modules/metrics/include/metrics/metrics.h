@@ -8,16 +8,15 @@
 #include <TLegend.h>
 #include <TMultiGraph.h>
 
+#include <pyc/pyc.h>
 #include <structs/report.h>
 #include <structs/settings.h>
 #include <templates/model_template.h>
 #include <notification/notification.h>
 
 #ifdef PYC_CUDA
-#include <pyc/cupyc.h>
 #define cu_pyc c10::kCUDA
 #else
-#include <pyc/tpyc.h>
 #define cu_pyc c10::kCPU
 #endif
 

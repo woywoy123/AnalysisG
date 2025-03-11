@@ -117,9 +117,11 @@ void analysis::fetchtags(){
 }
 
 void analysis::start(){
+    this -> tracer -> shush = this -> m_settings.debug_mode; 
+    if (this -> tracer -> shush){this -> m_settings.threads = 1;}
     if (this -> m_settings.pretagevents){this -> fetchtags();}
-
     this -> create_path(this -> m_settings.output_path + "/"); 
+
     if (!this -> started){
         this -> success("+============================+"); 
         this -> success("| Starting Analysis Session! |");

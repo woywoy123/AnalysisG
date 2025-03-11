@@ -56,9 +56,6 @@ void notification::progressbar(float lProgress, std::string title){
 void notification::progressbar(std::vector<size_t>* threads, std::vector<size_t>* trgt, std::vector<std::string>* title){
     const char cFilled[] = "#####################################";
     const char cEmpty[]  = "                                     ";
-
-    //for (size_t x(0); x < trgt -> size(); ++x){std::cout << "\033[F\x1b[2K";}
-    //std::cout << std::flush; 
     for (size_t x(0); x < trgt -> size(); ++x){
         float prg = float(threads -> at(x)) / float(trgt -> at(x)); 
         size_t lFilledStart = (sizeof(cFilled) - 1) * (1 - prg);
@@ -94,7 +91,7 @@ void notification::progressbar2(std::vector<size_t>* threads, size_t* l, std::st
 
 void notification::progressbar3(std::vector<size_t>* threads, std::vector<size_t>* l, std::vector<std::string*>* title){
     notification n = notification();
-
+    if (!title){return;}
     std::vector<std::string*> bars = {}; 
     for (size_t x(0); x < l -> size(); ++x){
         std::string* bi = nullptr; 

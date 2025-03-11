@@ -8,12 +8,11 @@ from AnalysisG.core.particle_template cimport *
 from AnalysisG.core.selection_template cimport *
 
 cdef extern from "combinatorial.h":
-    cdef cppclass nu(particle_template):
-        nu() except+
-        double exp_tmass
-        double exp_wmass
+    cdef cppclass neutrino(particle_template):
+        neutrino() except+
+        particle_template* bquark
+        particle_template* lepton
         double min
-        long idx
 
     cdef cppclass particle(particle_template):
         particle() except+
@@ -24,13 +23,13 @@ cdef extern from "combinatorial.h":
         double observed_met
         double neutrino_met
 
-        vector[nu*] truth_neutrinos
+        vector[neutrino*] truth_neutrinos
 
-        vector[nu*] cobs_neutrinos
-        vector[nu*] cmet_neutrinos
+        vector[vector[neutrino*]] cobs_neutrinos
+        vector[vector[neutrino*]] cmet_neutrinos
 
-        vector[nu*] robs_neutrinos
-        vector[nu*] rmet_neutrinos
+        vector[vector[neutrino*]] robs_neutrinos
+        vector[vector[neutrino*]] rmet_neutrinos
 
         vector[particle*] bquark
         vector[particle*] lepton
@@ -40,8 +39,15 @@ cdef extern from "combinatorial.h":
         combinatorial() except +
         map[string, event_data] output
 
+cdef class Particle(ParticleTemplate):
+    pass
+
+cdef class Neutrino(ParticleTemplate):
+    cdef Particle _bquark
+    cdef Particle _lepton
+
 cdef class Event:
-    cdef list build_nu(self, vector[nu*] inpt)
+    cdef list build_nu(self, vector[neutrino*] inpt)
     cdef list build_particle(self, vector[particle*] inpt)
     cdef public double delta_met
     cdef public double delta_metnu

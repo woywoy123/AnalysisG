@@ -112,15 +112,13 @@ class particle_template : public tools
 
         template <typename g>
         g operator + (g& p){
-            p.to_cartesian(); 
             g p2 = g(); 
-            p2.px = p.px + this -> px; 
-            p2.py = p.py + this -> py;  
-            p2.pz = p.pz + this -> pz; 
-            p2.e  = p.e  + this -> e; 
-            p2.to_cartesian(); 
-            p2.to_polar(); 
+            p2.data.px = double(p.px) + double(this -> px); 
+            p2.data.py = double(p.py) + double(this -> py);  
+            p2.data.pz = double(p.pz) + double(this -> pz); 
+            p2.data.e  = double(p.e ) + double(this -> e); 
             p2.data.type = this -> data.type; 
+            p2.data.polar = true; 
             return p2; 
         }
 

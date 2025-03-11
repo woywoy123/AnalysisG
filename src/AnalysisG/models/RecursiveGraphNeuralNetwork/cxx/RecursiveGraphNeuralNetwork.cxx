@@ -1,12 +1,5 @@
 #include <RecursiveGraphNeuralNetwork.h>
-#ifdef PYC_CUDA
-#include <pyc/cupyc.h>
-#define cu_pyc c10::kCUDA
-#else
-#include <pyc/tpyc.h>
-#define cu_pyc c10::kCPU
-#endif
-
+#include <pyc/pyc.h>
 
 recursivegraphneuralnetwork::recursivegraphneuralnetwork(int rep, double drop_out){
     this -> drop_out = drop_out; 

@@ -22,4 +22,6 @@ torch::TensorOptions MakeOp(torch::Tensor* x){
     return torch::TensorOptions().device(x -> device()).dtype(x -> dtype()); 
 }
 
+torch::Tensor changedev(std::string dev, torch::Tensor* inx){}
+void changedev(torch::Tensor* inpt){}
 

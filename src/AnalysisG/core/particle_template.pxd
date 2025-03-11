@@ -14,6 +14,7 @@ cdef extern from "<templates/particle_template.h>" nogil:
         particle_template() except+ nogil
 
         particle_template(particle_t* p) except+ nogil
+        particle_template(particle_template* p, bool dump) except+ nogil
         particle_template(double px, double py, double pz, double e) except+ nogil
         particle_template(double px, double py, double pz) except+ nogil
         map[string, map[string, particle_t]] __reduce__() except+ nogil

@@ -35,6 +35,10 @@ bool sampletracer::add_selection(selection_template* sel){
 
 void sampletracer::compile_objects(int threads){
     auto lamb = [](size_t* l, container* data){data -> compile(l);}; 
+    auto flush = [](std::vector<std::string*>* inpt){
+        for (size_t x(0); x < inpt -> size(); ++x){delete (*inpt)[x];}
+        inpt -> clear(); 
+    }; 
 
     int index = 0; 
     std::vector<size_t> progres(this -> root_container.size(), 0); 
@@ -48,8 +52,18 @@ void sampletracer::compile_objects(int threads){
         std::vector<std::string> vec = this -> split(itr -> first, "/"); 
         titles_[x] = new std::string(vec[vec.size()-1]); 
     }
-    if (!this -> tools::sum(&progres)){return;}
-    std::thread* thr = new std::thread(this -> progressbar3, &handles, &progres, &titles_);
+
+    if (!this -> tools::sum(&progres)){
+        flush(&titles_); 
+        return;
+    }
+
+    std::thread* thr = nullptr; 
+    if (this -> shush){
+        thr = new std::thread(this -> progressbar3, &handles, &progres, nullptr);
+        flush(&titles_); 
+    }
+    else {thr = new std::thread(this -> progressbar3, &handles, &progres, &titles_);}
 
     int tidx = 0; 
     itr = this -> root_container.begin(); 

@@ -44,7 +44,7 @@ cdef class ParticleTemplate:
         except KeyError:
             self.ptr._is_serial = False
             mx = self.ptr.__reduce__()
-            for itx in mx: 
+            for itx in mx:
                 try: dictout[itx.first] |= dict(itx.second)
                 except KeyError: dictout[itx.first] = itx.second
             self.ptr._is_serial = True

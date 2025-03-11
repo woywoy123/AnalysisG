@@ -11,40 +11,32 @@ set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/cuda/base.cu
 )
 
-add_library(cunusol-base STATIC ${SOURCE_FILES})
-target_include_directories(cunusol-base PRIVATE include/nusol)
-target_include_directories(cunusol-base PUBLIC include)
-target_link_libraries(cunusol-base PUBLIC cuatomic cutils cuphysics cuoperators)
-set_property(TARGET cunusol-base PROPERTY CUDA_SEPARATE_COMPILATION ON)
-target_compile_options(cunusol-base PUBLIC
-    $<$<COMPILE_LANGUAGE:CUDA>: --expt-relaxed-constexpr>
-)
-target_compile_options(cunusol-base PRIVATE -fPIC)
+add_library(pyc_nusol-base ${SOURCE_FILES})
+target_include_directories(pyc_nusol-base PRIVATE include/nusol)
+target_include_directories(pyc_nusol-base PUBLIC include)
+target_link_libraries(pyc_nusol-base PUBLIC pyc_utils pyc_physics pyc_operators)
+set_property(TARGET pyc_nusol-base PROPERTY CUDA_SEPARATE_COMPILATION ON)
+target_compile_options(pyc_nusol-base PUBLIC $<$<COMPILE_LANGUAGE:CUDA>: --expt-relaxed-constexpr>)
+target_compile_options(pyc_nusol-base PRIVATE -fPIC)
 
 set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/include/nusol/nusol.cuh
     ${CMAKE_CURRENT_SOURCE_DIR}/cuda/nusol.cu
 )
 
-add_library(cunusol STATIC ${SOURCE_FILES})
-target_include_directories(cunusol PRIVATE include/nusol)
-target_include_directories(cunusol PUBLIC include)
-target_link_libraries(cunusol PUBLIC cunusol-base)
-set_property(TARGET cunusol PROPERTY CUDA_SEPARATE_COMPILATION ON)
-target_compile_options(cunusol PUBLIC 
-    $<$<COMPILE_LANGUAGE:CUDA>: --expt-relaxed-constexpr>
-)
-target_compile_options(cunusol PRIVATE -fPIC)
-endif()
-
+add_library(pyc_nusol ${SOURCE_FILES})
+target_link_libraries(pyc_nusol PUBLIC pyc_nusol-base)
+set_property(TARGET pyc_nusol PROPERTY CUDA_SEPARATE_COMPILATION ON)
+target_compile_options(pyc_nusol PUBLIC $<$<COMPILE_LANGUAGE:CUDA>: --expt-relaxed-constexpr>)
+else()
 set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/include/nusol/nusol.h
     ${CMAKE_CURRENT_SOURCE_DIR}/tensor/nusol.cxx
 )
-
-add_library(cnusol ${SOURCE_FILES})
-target_include_directories(cnusol PRIVATE include/nusol)
-target_include_directories(cnusol PUBLIC include)
-target_link_libraries(cnusol PUBLIC ctils cphysics coperators ctransform)
-target_compile_options(cnusol PRIVATE -fPIC)
+add_library(pyc_nusol ${SOURCE_FILES})
+endif()
+target_include_directories(pyc_nusol PRIVATE include/nusol)
+target_include_directories(pyc_nusol PUBLIC include)
+target_link_libraries(pyc_nusol PUBLIC pyc_utils pyc_physics pyc_operators pyc_transform)
+target_compile_options(pyc_nusol PRIVATE -fPIC)
 

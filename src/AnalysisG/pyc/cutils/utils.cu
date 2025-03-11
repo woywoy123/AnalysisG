@@ -1,4 +1,4 @@
-#include <cutils/utils.cuh>
+#include <utils/utils.cuh>
 
 unsigned int blkn(unsigned int lx, int thl){
     return (lx + thl - 1) / thl; 

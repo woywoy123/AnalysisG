@@ -29,6 +29,7 @@ class top: public particle_template
 
         int barcode; 
         int status; 
+        int top_index = -1; 
 
         particle_template* clone() override; 
         void build(std::map<std::string, particle_template*>* prt, element_t* el) override; 
@@ -43,6 +44,7 @@ class child: public particle_template
 
         int barcode; 
         int status; 
+        std::vector<int> top_index = {}; 
 
         particle_template* clone() override; 
         void build(std::map<std::string, particle_template*>* prt, element_t* el) override; 
@@ -110,6 +112,7 @@ class electron: public particle_template
         float delta_z0 = 0; 
         int true_origin = 0; 
         bool is_tight = false; 
+        std::vector<int> top_index = {}; 
 
         particle_template* clone() override; 
         void build(std::map<std::string, particle_template*>* prt, element_t* el) override;
@@ -127,6 +130,7 @@ class muon: public particle_template
         float delta_z0 = 0; 
         int true_origin = 0; 
         bool is_tight = false; 
+        std::vector<int> top_index = {}; 
 
         particle_template* clone() override; 
         void build(std::map<std::string, particle_template*>* prt, element_t* el) override;
@@ -147,6 +151,7 @@ class jet: public particle_template
         int flav; 
         int label; 
 
+        std::vector<int> top_index = {}; 
         particle_template* clone() override; 
         void build(std::map<std::string, particle_template*>* prt, element_t* el) override;
 

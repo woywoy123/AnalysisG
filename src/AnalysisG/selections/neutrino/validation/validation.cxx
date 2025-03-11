@@ -2,12 +2,7 @@
 
 #include <tools/tensor_cast.h>
 #include <tools/vector_cast.h>
-
-#ifdef PYC_CUDA
-#include <pyc/cupyc.h>
-#else
-#include <pyc/tpyc.h>
-#endif
+#include <pyc/pyc.h>
 
 validation::validation(){this -> name = "validation";}
 validation::~validation(){}
