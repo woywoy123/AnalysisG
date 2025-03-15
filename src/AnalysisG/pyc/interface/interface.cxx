@@ -153,13 +153,13 @@ std::vector<std::pair<neutrino*, neutrino*>> pyc::nusol::combinatorial(
     torch::Tensor pid   = torch::cat({changedev(dev, &isl).view({-1, 1}), changedev(dev, &isb).view({-1, 1})}, {-1}); 
     torch::Tensor metxy = torch::cat({pyc::transform::separate::Px(met, phi), pyc::transform::separate::Py(met, phi)}, {-1}); 
     torch::Dict<std::string, torch::Tensor> nus = pyc::nusol::combinatorial(edge_index, bth, pmc, pid, metxy, mT, mW, null, perturb, steps); 
-    torch::Tensor nu1 = nus.at("nu1"); 
-    torch::Tensor nu2 = nus.at("nu2"); 
-    torch::Tensor l1  = nus.at("l1"); 
-    torch::Tensor l2  = nus.at("l2"); 
-    torch::Tensor b1  = nus.at("b1"); 
-    torch::Tensor b2  = nus.at("b2"); 
-    torch::Tensor dis = nus.at("distances"); 
+    torch::Tensor nu1 = nus.at("nu1").to(c10::kCPU, true); 
+    torch::Tensor nu2 = nus.at("nu2").to(c10::kCPU, true); 
+    torch::Tensor l1  = nus.at("l1").to(c10::kCPU, true); 
+    torch::Tensor l2  = nus.at("l2").to(c10::kCPU, true); 
+    torch::Tensor b1  = nus.at("b1").to(c10::kCPU, true); 
+    torch::Tensor b2  = nus.at("b2").to(c10::kCPU, true); 
+    torch::Tensor dis = nus.at("distances").to(c10::kCPU, true); 
 
     std::vector<double> dist; 
     tensor_to_vector(&dis, &dist); 

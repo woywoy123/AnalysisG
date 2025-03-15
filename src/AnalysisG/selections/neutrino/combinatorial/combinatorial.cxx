@@ -40,7 +40,7 @@ std::vector<std::vector<neutrino*>> combinatorial::build_nus(
 
     std::vector<std::vector<neutrino*>> output; 
     std::vector<std::pair<neutrino*, neutrino*>> nus; 
-    nus = pyc::nusol::combinatorial(_met, _phi, _bqs, _leps, "cuda", mt, mw, 1e-10, 100, this -> steps); 
+    nus = pyc::nusol::combinatorial(_met, _phi, _bqs, _leps, "cuda:0", mt, mw, 1e-10, 100, this -> steps); 
     for (size_t x(0); x < nus.size(); ++x){output.push_back({std::get<0>(nus[x]), std::get<1>(nus[x])});}
     return output;
 }
@@ -61,7 +61,7 @@ std::vector<std::vector<neutrino*>> combinatorial::get_baseline(
 
     std::vector<std::vector<neutrino*>> output; 
     std::vector<std::pair<neutrino*, neutrino*>> nus; 
-    nus = pyc::nusol::NuNu(bquark1, bquark2, lepton1, lepton2, _met, _phi, tm1, tm2, "cuda", 1e-10, 1e-9, 1e-6, 1000);   
+    nus = pyc::nusol::NuNu(bquark1, bquark2, lepton1, lepton2, _met, _phi, tm1, tm2, "cuda:0", 1e-10, 1e-9, 1e-6, 1000);   
     for (size_t x(0); x < nus.size(); ++x){output.push_back({std::get<0>(nus[x]), std::get<1>(nus[x])});}
     return output;
 }
