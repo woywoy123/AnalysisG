@@ -164,6 +164,7 @@ particle_template::~particle_template(){
     for (; itr != this -> data.data_p -> end(); ++itr){
         if (!itr -> second){continue;}
         delete itr -> second;
+        itr -> second = nullptr; 
     }
     this -> data.data_p -> clear(); 
     delete this -> data.data_p; 

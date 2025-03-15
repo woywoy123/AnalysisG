@@ -76,3 +76,5 @@ cdef class EventTemplate:
             for i in val: self.Branches = i
         else: pass
 
+    @property
+    def Name(self): return env(self.ptr.name)

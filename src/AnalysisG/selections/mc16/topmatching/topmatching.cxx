@@ -24,8 +24,6 @@ void topmatching::merge(selection_template* sl){
 bool topmatching::selection(event_template* ev){return true;}
 
 bool topmatching::strategy(event_template* ev){
-
-
     bsm_4tops* evn = (bsm_4tops*)ev; 
 
     std::vector<particle_template*> dleps = {}; 

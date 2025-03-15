@@ -11,7 +11,7 @@ import pathlib
 import pickle
 
 i = 0
-run = True
+run = False
 pth = "./data/"
 data_path = "/home/tnom6927/Downloads/mc16/ttH_tttt_m400/DAOD_TOPQ1.21955708._000011.root"
 
@@ -20,7 +20,8 @@ if run:
     ev = BSM4Tops()
 
     ana = Analysis()
-    ana.Threads = 12
+    ana.Threads = 1
+    ana.DebugMode = False
     ana.AddSelection(data)
     ana.AddEvent(ev, "nu")
     ana.AddSamples(data_path, "nu")

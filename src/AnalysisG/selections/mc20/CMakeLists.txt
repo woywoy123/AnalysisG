@@ -1,3 +1,4 @@
+add_subdirectory(matching)
 add_subdirectory(topkinematics)
 add_subdirectory(topmatching)
 add_subdirectory(zprime)

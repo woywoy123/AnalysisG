@@ -1,23 +1,37 @@
 # distutils: language=c++
 # cython: language_level=3
 
-from AnalysisG.core.tools cimport as_dict, as_list
+from libcpp.vector cimport vector
+from AnalysisG.core.tools cimport *
 from AnalysisG.core.selection_template cimport *
 from AnalysisG.core.particle_template cimport *
 
 cdef class Particle(ParticleTemplate):
     def __cinit__(self): self.ptr = new particle()
-    def __dealloc__(self): del self.ptr
+    def __dealloc__(self):
+        if not self.is_owner: return
+        del self.ptr
 
-cdef class TopMatchingFuzzy(SelectionTemplate):
+    @property
+    def top_hash(self):
+        cdef particle* ptx = <particle*>(self.ptr)
+        return env(ptx.root_hash)
+
+    @top_hash.setter
+    def top_hash(self, val):
+        cdef particle* ptx = <particle*>(self.ptr)
+        ptx.root_hash = enc(val)
+
+cdef class TopMatching(SelectionTemplate):
     def __cinit__(self):
         self.truth_tops = []
         self.top_children = []
         self.truth_jets = []
         self.jets_children = []
         self.jets_leptons = []
-        self.ptr = new mc20_fuzzy()
-        self.tt = <mc20_fuzzy*>self.ptr
+
+        self.ptr = new matching()
+        self.tt = <matching*>self.ptr
 
     def __dealloc__(self): del self.tt
 
@@ -39,3 +53,4 @@ cdef class TopMatchingFuzzy(SelectionTemplate):
             self.truth_jets.append(self.make_particle(v.truth_jets))
             self.jets_children.append(self.make_particle(v.jets_children))
             self.jets_leptons.append(self.make_particle(v.jets_leptons))
+

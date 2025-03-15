@@ -108,13 +108,13 @@ cdef class TH1F(BasePlotting):
     cdef public TH1F Histogram
     cdef fx
 
+    cdef __error__(self, vector[float] xarr, vector[float] up, vector[float] low, str label = *, str color = *)
+    cdef __get_error_seg__(self, plot, str label = *, str color = *)
+
     cdef float scale_f(self)
     cdef dict factory(self)
-    cdef void __error__(self, vector[float] xarr, vector[float] up, vector[float] low)
-
     cdef __build__(self)
     cdef dict __compile__(self, bool raw = *)
-    cdef void __get_error_seg__(self, plot)
 
 cdef class TH2F(BasePlotting):
     cdef public bool ApplyScaling

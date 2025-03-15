@@ -7,9 +7,10 @@ from libcpp.string cimport string
 from AnalysisG.core.selection_template cimport *
 from AnalysisG.core.particle_template cimport *
 
-cdef extern from "mc20_fuzzy.h":
+cdef extern from "matching.h":
     cdef cppclass particle(particle_template):
         particle() except+
+        string root_hash
 
     struct packet_t:
         vector[particle*] truth_tops
@@ -18,12 +19,13 @@ cdef extern from "mc20_fuzzy.h":
         vector[particle*] jets_children
         vector[particle*] jets_leptons
 
-    cdef cppclass mc20_fuzzy(selection_template):
-        mc20_fuzzy() except +
+    cdef cppclass matching(selection_template):
+        matching() except +
         vector[packet_t] output
 
-cdef class TopMatchingFuzzy(SelectionTemplate):
-    cdef mc20_fuzzy* tt
+cdef class TopMatching(SelectionTemplate):
+    cdef matching* tt
+
     cdef list make_particle(self, vector[particle*] px)
 
     cdef public list truth_tops
@@ -31,4 +33,3 @@ cdef class TopMatchingFuzzy(SelectionTemplate):
     cdef public list truth_jets
     cdef public list jets_children
     cdef public list jets_leptons
-

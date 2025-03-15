@@ -381,9 +381,10 @@ cdef class TH1F(BasePlotting):
 
     def __cinit__(self): self.ptr.prefix = b"TH1F"
 
-    def __init__(self, inpt = None):
+    def __init__(self, inpt = None, **kwargs):
         self.Histograms = []
         self.Histogram = None
+        if len(kwargs): inpt = {"data" : dict(kwargs)}
         if inpt is None: return
         cdef list keys = [i for i in self.__dir__() if not i.startswith("__")]
         for i in keys:
@@ -492,31 +493,41 @@ cdef class TH1F(BasePlotting):
         if normalize: v1, v2 = (v1*w1)/((v1*w1).sum()), (v2*w2)/((v2*w2).sum())
         return ks_2samp(v2, v1)
 
-    cdef void __error__(self, vector[float] xarr, vector[float] up, vector[float] low):
+    cdef __error__(self, vector[float] xarr, vector[float] up, vector[float] low, str label = "Uncertainty", str color = "k"):
         try: ax = self._ax[0]
         except: ax = self._ax
-        h = ax.fill_between(
-                xarr, low, up,
-                facecolor = "k",
-                hatch = "/////",
-                step  = "pre",
-                label = "Uncertainty",
-                alpha = 0.4,
-        )
+        cdef dict apl = {"step" : "post", "hatch" : "///", "alpha" : 0.15, "linewidth" : 0.0}
+        if len(label): apl["label"] = label
+        apl["facecolor"] = color if len(color) else None
+        apl["edgecolor"] = ("k", 1.0)
+        ax.fill_between(xarr, low, up, **apl)
 
-    cdef void __get_error_seg__(self, plot):
+        apl = {"hatch" : "///", "step": "post", "alpha" : 0.00}
+        return self.matpl.fill_between(xarr, low, up, **apl)
+
+    cdef __get_error_seg__(self, plot, str label = "Uncertainty", str color = "k"):
         error = plot.errorbar.lines[2][0]
         cdef list k
+        cdef int ix = 0
+        cdef vector[float] w_arr = []
         cdef vector[float] x_arr = []
         cdef vector[float] y_err_up = []
         cdef vector[float] y_err_lo = []
-
         for i in error.get_segments():
             k = i.tolist()
             x_arr.push_back(k[0][0])
             y_err_lo.push_back(k[0][1])
-            y_err_up.push_back(k[1][1])
-        self.__error__(x_arr, y_err_lo, y_err_up)
+            if k[0][1] == 0: y_err_up.push_back(0.0)
+            else: y_err_up.push_back(k[1][1])
+            if ix: w_arr.push_back(abs(x_arr[ix-1] - x_arr[ix]))
+            ix += 1
+        ix -= 1
+        for i in range(ix): x_arr[i] = x_arr[i] - w_arr[i]*0.5
+        x_arr[ix] = x_arr[ix] - w_arr[ix-1]*0.5
+        x_arr.push_back(x_arr[ix] + w_arr[ix-1])
+        y_err_lo.push_back(y_err_lo[ix])
+        y_err_up.push_back(y_err_up[ix])
+        return self.__error__(x_arr, y_err_lo, y_err_up, label, color)
 
     cdef float scale_f(self): return self.CrossSection * self.IntegratedLuminosity
 
@@ -625,6 +636,7 @@ cdef class TH1F(BasePlotting):
 
         if raw: return histpl
         if not len(histpl["H"]): return {}
+
         if self.ErrorBars and self.Histogram is not None:
             l = list(histpl["label"])
             lg = list(histpl["H"])
@@ -714,51 +726,52 @@ cdef class TH1F(BasePlotting):
             self._ax[1].legend(loc = "upper right")
             return {}
 
-        elif self.ErrorBars:
-            lg = [self.__build__()]
-            del histpl["edgecolor"]
-            histpl["histtype"] = "errorbar"
-            histpl["H"] = [self.__build__()]
-            del histpl["label"]
-            histpl["binticks"] = True
-            histpl["alpha"] = 0.0
+        elif self.Histogram is None and len(self.Histograms) and self.ErrorBars:
+            hts = dict(histpl)
+            del hts["hatch"]
+            del hts["edgecolor"]
+            del hts["label"]
 
-            w1 = iter(histpl["H"][0].axes[0].widths)
-            error = hep.histplot(**histpl)
-            error = error[0].errorbar.lines[2][0]
-            del histpl["alpha"]
-
-            x_arr = []
-            y_err_lo = []
-            y_err_up = []
-
-            sm = x_min
-            for i in error.get_segments():
-                sm += next(w1)
-                k = i.tolist()
-                x_arr.append(sm)
-                y_err_lo.append(k[0][1])
-                y_err_up.append(k[1][1])
-
-            histpl["label"] = [self.Title]
-            histpl["histtype"] = "fill"
-            histpl["edgecolor"] = "black"
-            histpl["H"] = lg
+            hts["alpha"] = 0.0
+            hts["histtype"] = "errorbar"
+            error = hep.histplot(**hts)
             hep.histplot(**histpl)
-            self.__error__(x_arr, y_err_lo, y_err_up)
 
+            ix = 0
+            hdl = []
+            for i in range(len(error)):
+                if not len(error[i]): continue
+                hd = self.__get_error_seg__(error[i], histpl["label"][ix] + " (Uncertainty)", histpl["color"][ix])
+                hdl.append(hd)
+                ix+=1
+            #self._ax.legend(handles = hdl, ncol = 2)
+
+        elif self.ErrorBars:
+            histpl["H"] = [self.__build__()]
+            hts = dict(histpl)
+            if "hatch" in histpl: del hts["hatch"]
+            if "label" in histpl: del hts["label"]
+            if "edgecolor" in histpl: del hts["edgecolor"]
+
+            hts["alpha"] = 0.0
+            hts["binticks"] = True
+            hts["histtype"] = "errorbar"
+            error = hep.histplot(**hts)
+            hep.histplot(**histpl)
+            self.__get_error_seg__(error[0])
         else: hep.histplot(**histpl)
 
         if not len(labels):
             self._ax.set_xlim(x_min, x_max, auto = True)
             self._ax.set_ylim(y_min, y_max, auto = True)
-        self._ax.legend(loc = "upper right")
+        self._ax.legend(loc = "upper right", ncol = 2 * (1 - 0.5*(not self.ErrorBars)))
         return {}
 
 cdef class TH2F(BasePlotting):
     def __cinit__(self): self.ptr.prefix = b"TH2F"
-
-    def __init__(self, inpt = None):
+    def __init__(self, inpt = None, **kwargs):
+        self.Color = "plasma"
+        if len(kwargs): inpt = {"data" : dict(kwargs)}
         if inpt is None: return
         cdef list keys = [i for i in self.__dir__() if not i.startswith("__")]
         for i in keys:
@@ -860,7 +873,14 @@ cdef class TH2F(BasePlotting):
         cdef dict histpl = {}
         histpl["H"] = self.__build__()
         if len(self.Color): histpl["cmap"] = self.Color
-        error = hep.hist2dplot(**histpl)
+        histpl["alpha"] = 1
+        histpl["antialiased"] = True
+        histpl["linewidth"] = 0
+        histpl["zorder"] = -1
+        histpl["cbarpad"] = 0.1
+        hst = hep.hist2dplot(**histpl)
+        cbar = hst.cbar
+        cbar.set_label('Bin Content', loc = "center", rotation=270, labelpad = 20)
 
         cdef float x_max, x_min
         if self.set_xmin: x_min = self.ptr.x_min
@@ -882,10 +902,11 @@ cdef class TH2F(BasePlotting):
 cdef class TLine(BasePlotting):
     def __cinit__(self): self.ptr.prefix = b"TLine"
 
-    def __init__(self, inpt = None):
+    def __init__(self, inpt = None, **kwargs):
         self.Lines = []
         self.LineWidth = 0.5
         self.Marker = ""
+        if len(kwargs): inpt = {"data" : dict(kwargs)}
         if inpt is None: return
         cdef list keys = [i for i in self.__dir__() if not i.startswith("__")]
         for i in keys:
