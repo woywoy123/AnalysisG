@@ -28,7 +28,7 @@ void matching::reference(event_template* ev){
             if (!ch[c] -> is_lep && !ch[c] -> is_nu){continue;}
             ch_.push_back(ch[c]); 
         } 
-        this -> collect(&ch_, &pkl -> children_tops, top_i -> hash); 
+        this -> collect(&ch, &pkl -> children_tops, top_i -> hash); 
 
         // ---------- matching truth jets -------- //
         std::vector<particle_template*> tj = {}; 
