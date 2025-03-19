@@ -6,7 +6,9 @@
 
 #include <structs/property.h>
 #include <rapidjson/document.h>
+#include <notification/notification.h>
 #include <tools/tools.h>
+
 #include <TFile.h>
 #include <TTree.h>
 #include <TBranch.h>
@@ -15,7 +17,9 @@
 
 class analysis; 
 
-class meta: public tools
+class meta: 
+    public tools,
+    public notification
 {
     public:
         meta(); 

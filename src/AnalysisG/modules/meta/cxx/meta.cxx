@@ -83,7 +83,7 @@ meta::meta(){
     this -> nFiles.set_object(this); 
     this -> totalEvents.set_object(this); 
     this -> datasetNumber.set_object(this); 
-this -> derivationFormat.set_object(this); 
+    this -> derivationFormat.set_object(this); 
     this -> AMITag.set_object(this); 
     this -> generators.set_object(this); 
     this -> identifier.set_object(this); 
@@ -122,6 +122,7 @@ this -> derivationFormat.set_object(this);
     this -> misc.set_object(this); 
     this -> config.set_object(this); 
     this -> sum_of_weights.set_object(this); 
+    this -> prefix = "meta"; 
 }
 
 meta::~meta(){
@@ -134,11 +135,18 @@ void meta::parse_json(std::string inpt){
     this -> rpd = new rapidjson::Document(); 
     this -> rpd -> Parse(inpt.c_str());
     if (this -> rpd -> HasParseError()){
-        std::string f = inpt.substr(this -> rpd -> GetErrorOffset()-20, 20); 
-        this -> replace(&inpt, f, f + ","); 
+        int inx = this -> rpd -> GetErrorOffset(); 
+        if (inx > 20){inx -= 20;}
+        std::string f  = inpt.substr(inx, 20); 
+        std::string fn = f; 
+        if (!this -> ends_with(&f, ",\n")){this -> replace(&fn, "\n", ",\n");}
+        this -> replace(&inpt, f, fn); 
+
+        delete this -> rpd; 
+        this -> rpd = new rapidjson::Document(); 
         this -> rpd -> Parse(inpt.c_str()); 
     }
-    if (!this -> rpd -> HasParseError()){this -> compiler();}
+    this -> compiler();
     delete this -> rpd; 
     this -> rpd = nullptr; 
 }
@@ -146,16 +154,10 @@ void meta::parse_json(std::string inpt){
 void meta::compiler(){
     rapidjson::Value* cfg = &(*this -> rpd)["inputConfig"]; 
     if (!cfg){return;}
-    if (cfg -> HasMember("amiTag")){this -> meta_data.AMITag = (*cfg)["amiTag"].GetString();}
-    else {
-        std::vector<std::string> spl = this -> split(this -> meta_data.sample_name, "/"); 
-        size_t x = spl.size(); 
-        if (x >= 2){this -> meta_data.AMITag = spl[x-2];}
-    }
-
     if (cfg -> HasMember("dsid")){this -> meta_data.dsid = (*cfg)["dsid"].GetDouble();}
     if (cfg -> HasMember("isMC")){this -> meta_data.isMC = (*cfg)["isMC"].GetBool();}
     if (cfg -> HasMember("derivationFormat")){this -> meta_data.derivationFormat = (*cfg)["derivationFormat"].GetString();}
+
     rapidjson::Value* cfg_s = &(*this -> rpd)["configSettings"]; 
     if (cfg_s -> IsArray()){
         for (rapidjson::SizeType i(0); i < cfg_s -> Size(); ++i){
@@ -174,6 +176,25 @@ void meta::compiler(){
         this -> meta_data.inputfiles[num_total] = fname_v[fname_v.size()-1]; 
         num_total += n_ev; 
     }
+
+    if (cfg -> HasMember("amiTag")){this -> meta_data.AMITag = (*cfg)["amiTag"].GetString();}
+    else if (files){
+        for (rapidjson::SizeType i(0); i < files -> Size(); ++i){
+            std::string fname = (*files)[i][0].GetString(); 
+            std::vector<std::string> fname_v = this -> split(fname, "/"); 
+            fname = fname_v[fname_v.size()-2]; 
+            fname_v = this -> split(fname, "."); 
+            this -> meta_data.AMITag = fname_v[fname_v.size()-1]; 
+            break; 
+        }
+        if (!this -> has_string(&this -> meta_data.AMITag, "e")){this -> meta_data.AMITag = "";}
+    }
+    else {
+        std::vector<std::string> spl = this -> split(this -> meta_data.sample_name, "/"); 
+        size_t x = spl.size(); 
+        if (x >= 2){this -> meta_data.AMITag = spl[x-2];}
+    }
+
 }
 
 void meta::scan_data(TObject* obj){

@@ -97,9 +97,10 @@ cdef class ami_client:
         self.file_cache.close()
 
     cdef void dressmeta(self, Meta obj, str dset_name):
-        cdef dict info = dict(self.infos[dset_name][0])
         cdef dict files = {}
         for l in [dict(k) for k in self.datas[dset_name]]: files[l["LFN"]] = l
+        try: obj.events  = [int(files[i]["events"]) for i in obj.Files.values()]
+        except KeyError: return
 
         cdef list keys = [
                 "logicalDatasetName", "identifier",
@@ -113,7 +114,7 @@ cdef class ami_client:
                 "crossSection_mean", "file_type", "genFilterNames", "run_number",
                 "principalPhysicsGroup"
         ]
-
+        cdef dict info = dict(self.infos[dset_name][0])
         for i in keys:
             try: setattr(obj, i, info[i])
             except KeyError: pass
@@ -122,7 +123,6 @@ cdef class ami_client:
         obj.DatasetName  = info["logicalDatasetName"]
         obj.keywords     = info["keywords"].split(", ")
         obj.keyword      = info["keyword"].split(", ")
-        obj.events       = [int(files[i]["events"]) for i in obj.Files.values()]
         obj.fileSize     = [int(files[i]["fileSize"]) for i in obj.Files.values()]
         obj.fileGUID     = [enc(files[i]["fileGUID"]) for i in obj.Files.values()]
 
@@ -139,6 +139,7 @@ cdef class ami_client:
         cdef list ami_tags = sum([i.split(".") for i in list(set(obj.amitag.split("_")))], [])
         cdef dict command = {"client" : self.client, "type" : self.type_, "dataset_number" : dsidr, "show_archived" : True}
         cdef bool hit = self.loadcache(obj)
+
         if not hit:
             command["type"] = "DAOD_" + obj.derivationFormat
             try:
@@ -154,12 +155,18 @@ cdef class ami_client:
                 self.client = atlas()
                 self.list_datasets(obj)
                 return
+
             self.nf.success(enc("DSID not in cache, fetched from PyAMI: " + dsidr))
         else: self.nf.success(enc("DSID cache hit for: " + dsidr))
 
-        cdef str i
         cdef bool fset
         cdef list files
+        cdef str i, dset_name, tag
+
+        cdef list srch = list(obj.Files.values())
+        cdef int cx = 0
+        cdef int lxn = len(srch)
+
         for k in self.dsids:
             fset = False
             dset_name = k["ldn"]
@@ -178,13 +185,23 @@ cdef class ami_client:
                 self.infos[dset_name] = pyAMI_atlas.api.get_dataset_info(self.client, dset_name)
                 hit = False
 
-            if not fset: continue
-            is_dataset = True
-            files = self.datas[dset_name]
-            for i in list(obj.Files.values()): is_dataset *= len([1 for t in files if t["LFN"] == i])
-            if not is_dataset: continue
-            if obj.found: continue
+            if not fset or obj.found: continue
             self.dressmeta(obj, dset_name)
+
+        if not obj.found:
+            for k in self.dsids:
+                dset_name = k["ldn"]
+
+                # ----- Fall back strategy ----- #
+                try: files = [t["LFN"] for t in self.datas[dset_name] if "LFN" in t]
+                except KeyError: continue
+
+                cx = 0
+                for i in files: cx += 1 if i in srch else 0
+                if cx != lxn: continue
+
+                self.dressmeta(obj, dset_name)
+                if obj.found: break
         if hit: return
         self.savecache(obj)
 
