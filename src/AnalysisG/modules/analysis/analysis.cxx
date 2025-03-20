@@ -11,11 +11,12 @@ analysis::analysis(){
 }
 
 analysis::~analysis(){
-    std::map<std::string, optimizer*>::iterator itt = this -> trainer.begin();
-    for (; itt != this -> trainer.end(); ++itt){delete itt -> second;}
     for (size_t x(0); x < this -> tags -> size(); ++x){(*this -> tags)[x].flush_data();}
-    
     delete this -> tags; 
+
+    flush(&this -> trainer);
+    flush(&this -> meta_data); 
+
     delete this -> loader; 
     delete this -> tracer; 
     delete this -> reader; 

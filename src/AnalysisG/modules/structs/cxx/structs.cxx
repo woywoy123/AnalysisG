@@ -1,5 +1,6 @@
 #include <element.h>
 #include <report.h>
+#include <folds.h>
 
 void element_t::set_meta(){
     std::map<std::string, data_t*>::iterator itr = this -> handle.begin();
@@ -234,6 +235,8 @@ void data_t::flush(){
     this -> flush_buffer();
     for (size_t x(0); x < this -> files_t -> size(); ++x){
         if (!(*this -> files_t)[x]){continue;}
+        (*this -> files_t)[x] -> Close(); 
+        (*this -> files_t)[x] -> Delete(); 
         delete (*this -> files_t)[x]; 
         (*this -> files_t)[x] = nullptr; 
     }
@@ -247,9 +250,10 @@ void data_t::flush(){
 
 void data_t::initialize(){
     TFile* c = (*this -> files_t)[this -> file_index]; 
-    c = c -> Open(c -> GetTitle()); 
-
+    c = (c -> Open(c -> GetTitle())); 
     this -> tree        = (TTree*)c -> Get(this -> tree_name.c_str()); 
+    this -> tree -> SetCacheSize(10000000U); 
+    this -> tree -> AddBranchToCache("*", true);
     this -> leaf        = this -> tree -> FindLeaf(this -> leaf_name.c_str());
     this -> branch      = this -> leaf -> GetBranch();  
     
@@ -262,6 +266,7 @@ void data_t::initialize(){
     this -> fetch_buffer(); 
     this -> index = 0; 
     c -> Close(); 
+    c -> Delete(); 
     delete c; 
     (*this -> files_t)[this -> file_index] = nullptr; 
 } 
@@ -316,5 +321,67 @@ std::string model_report::prx(std::map<mode_enum, std::map<std::string, float>>*
     }
     return out; 
 }
+
+void write_t::write(){
+    this -> tree -> Fill(); 
+    std::map<std::string, variable_t>::iterator itx = this -> data.begin(); 
+    for (; itx != this -> data.end(); ++itx){itx -> second.flush();}
+}
+
+void write_t::create(std::string tr_name, std::string path){
+    if (this -> file){return;}
+    this -> file = new TFile(path.c_str(), "RECREATE"); 
+    this -> tree = new TTree(tr_name.c_str(), "data"); 
+}
+
+void write_t::close(){
+    this -> tree -> ResetBranchAddresses(); 
+    this -> tree -> Write("", TObject::kOverwrite); 
+    this -> file -> Close();
+    this -> file -> Delete(); 
+}
+
+void graph_hdf5_w::flush_data(){
+    free(this -> hash); 
+    free(this -> filename); 
+    free(this -> edge_index); 
+
+    free(this -> data_map_graph); 
+    free(this -> data_map_node); 
+    free(this -> data_map_edge); 
+
+    free(this -> truth_map_graph); 
+    free(this -> truth_map_node);
+    free(this -> truth_map_edge); 
+
+    free(this -> data_graph); 
+    free(this -> data_node); 
+    free(this -> data_edge); 
+
+    free(this -> truth_graph); 
+    free(this -> truth_node); 
+    free(this -> truth_edge); 
+
+    this -> hash = nullptr; 
+    this -> filename = nullptr; 
+    this -> edge_index = nullptr; 
+
+    this -> data_map_graph = nullptr; 
+    this -> data_map_node = nullptr; 
+    this -> data_map_edge = nullptr; 
+
+    this -> truth_map_graph = nullptr; 
+    this -> truth_map_node = nullptr;
+    this -> truth_map_edge = nullptr; 
+
+    this -> data_graph = nullptr; 
+    this -> data_node = nullptr; 
+    this -> data_edge = nullptr; 
+
+    this -> truth_graph = nullptr; 
+    this -> truth_node = nullptr; 
+    this -> truth_edge = nullptr; 
+}
+
 
 

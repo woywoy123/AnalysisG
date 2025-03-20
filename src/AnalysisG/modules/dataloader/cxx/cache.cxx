@@ -182,11 +182,11 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
             std::vector<graph_t*>* c_gr, 
             size_t* prg
     ){
-        io* ior = new io();
-        ior -> start(pth, "read"); 
+        io ior = io();
+        ior.start(pth, "read"); 
         for (size_t p(0); p < gr_ev -> size(); ++p){
             graph_hdf5_w datar = graph_hdf5_w(); 
-            ior -> read(&datar, (*gr_ev)[p]);
+            ior.read(&datar, (*gr_ev)[p]);
             graph_hdf5 w      = graph_hdf5(); 
             w.num_nodes       = datar.num_nodes; 
             w.event_index     = datar.event_index;
@@ -211,15 +211,14 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
             w.truth_graph     = std::string(datar.truth_graph);   
             w.truth_node      = std::string(datar.truth_node);    
             w.truth_edge      = std::string(datar.truth_edge); 
+            datar.flush_data(); 
 
             graph_t* gx = new graph_t();
             gx -> deserialize(&w); 
             (*c_gr)[p] = gx;
             (*prg) = p+1; 
-            datar.flush_data(); 
         }
-        ior -> end();
-        delete ior; 
+        ior.end();
     }; 
 
 
@@ -263,10 +262,10 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
         if (!this -> has_string(&fname_, "0x")){continue;}
         cache_io.push_back(fname); 
 
-        io* ior = new io();
-        ior -> start(fname, "read"); 
+        io ior = io();
+        ior.start(fname, "read"); 
 
-        data_set[fname] = ior -> dataset_names();  
+        data_set[fname] = ior.dataset_names();  
         if (load_hash.size()){
             std::vector<std::string>* check = &data_set[fname]; 
             std::vector<std::string>::iterator itx = check -> begin(); 
@@ -275,8 +274,7 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
 
         len_cache += data_set[fname].size();
         handles.push_back(0); 
-        ior -> end(); 
-        delete ior; 
+        ior.end(); 
         this -> progressbar(float((x+1)) / float(cache_.size()), "Checking HDF5 size: " + fname_); 
     }
 
@@ -307,13 +305,11 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
             graph_t* gr = (*datax)[p];
             (*restored)[(*gr -> hash)] = gr;  
         }
-        datax -> clear(); 
-        datax -> shrink_to_fit(); 
-        delete datax; 
         cache_rebuild[x] = nullptr; 
+        datax -> clear(); 
+        delete datax; 
     }
     cache_rebuild.clear(); 
-    cache_rebuild.shrink_to_fit(); 
     prg -> join(); delete prg; prg = nullptr; 
     return restored; 
 }

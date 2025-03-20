@@ -15,6 +15,7 @@ void met::merge(selection_template* sl){
 bool met::selection(event_template* ev){return true;}
 bool met::strategy(event_template* ev){
     bsm_4tops* evn = (bsm_4tops*)ev; 
+    this -> write(evn -> met, "missing_et");
     this -> missing_et[evn -> hash] = evn -> met; 
     return true; 
 }

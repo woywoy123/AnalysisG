@@ -20,7 +20,7 @@ std::vector<std::vector<G>> chunking(std::vector<G>* v, int N){
 }
 
 template <typename g>
-void tensor_vector(std::vector<g>* trgt, std::vector<g>* chnks, std::vector<signed long>* dims, int next_dim = 0){
+void tensor_vector(std::vector<g>* trgt, std::vector<g>* chnks, std::vector<signed long>*, int){
     trgt -> insert(trgt -> end(), chnks -> begin(), chnks -> end());  
 }
 
@@ -36,7 +36,7 @@ void tensor_vector(std::vector<G>* trgt, std::vector<g>* chnks, std::vector<sign
 }
 
 template <typename G, typename g>
-void tensor_to_vector(torch::Tensor* data, std::vector<G>* out, std::vector<signed long>* dims, g prim){
+void tensor_to_vector(torch::Tensor* data, std::vector<G>* out, std::vector<signed long>* dims, g){
     torch::Tensor tens = data -> reshape(-1).to(torch::kCPU); 
     torch::cuda::synchronize(); 
     typename std::vector<g> linear(tens.data_ptr<g>(), tens.data_ptr<g>() + tens.numel()); 
@@ -44,17 +44,23 @@ void tensor_to_vector(torch::Tensor* data, std::vector<G>* out, std::vector<sign
 }
 
 std::vector<signed long> tensor_size(torch::Tensor* inpt);
-void add_to_dict(std::vector<std::vector<float>>* dummy); 
 void add_to_dict(std::vector<std::vector<double>>* dummy); 
+void add_to_dict(std::vector<std::vector<float>>* dummy); 
 void add_to_dict(std::vector<std::vector<long>>* dummy); 
 void add_to_dict(std::vector<std::vector<int>>* dummy); 
 void add_to_dict(std::vector<std::vector<bool>>* dummy); 
 
-void add_to_dict(std::vector<float>* dummy); 
 void add_to_dict(std::vector<double>* dummy); 
+void add_to_dict(std::vector<float>* dummy); 
 void add_to_dict(std::vector<long>* dummy); 
 void add_to_dict(std::vector<int>* dummy); 
 void add_to_dict(std::vector<bool>* dummy); 
+
+void add_to_dict(double* dummy); 
+void add_to_dict(float* dummy); 
+void add_to_dict(long* dummy); 
+void add_to_dict(int* dummy); 
+void add_to_dict(bool* dummy); 
 
 template <typename g>
 void tensor_to_vector(torch::Tensor* data, std::vector<g>* out){
@@ -67,6 +73,25 @@ struct variable_t {
     public:
         void flush();
         void process(torch::Tensor* data, std::string* varname, TTree* tr);
+
+        void process(std::vector<std::vector<float>>*  data, std::string* varname, TTree* tr); 
+        void process(std::vector<std::vector<double>>* data, std::string* varname, TTree* tr); 
+        void process(std::vector<std::vector<long>>*   data, std::string* varname, TTree* tr); 
+        void process(std::vector<std::vector<int>>*    data, std::string* varname, TTree* tr); 
+        void process(std::vector<std::vector<bool>>*   data, std::string* varname, TTree* tr); 
+
+        void process(std::vector<float>*  data, std::string* varname, TTree* tr); 
+        void process(std::vector<double>* data, std::string* varname, TTree* tr); 
+        void process(std::vector<long>*   data, std::string* varname, TTree* tr); 
+        void process(std::vector<int>*    data, std::string* varname, TTree* tr); 
+        void process(std::vector<bool>*   data, std::string* varname, TTree* tr); 
+
+        void process(float*  data, std::string* varname, TTree* tr); 
+        void process(double* data, std::string* varname, TTree* tr); 
+        void process(long*   data, std::string* varname, TTree* tr); 
+        void process(int*    data, std::string* varname, TTree* tr); 
+        void process(bool*   data, std::string* varname, TTree* tr); 
+
         std::string variable_name = ""; 
 
     private: 
@@ -82,6 +107,12 @@ struct variable_t {
         std::vector<int>                 vi = {}; 
         std::vector<bool>                vb = {}; 
 
+        float   f = 0; 
+        double  d = 0; 
+        long    l = 0; 
+        int     i = 0; 
+        bool    b = 0; 
+
         TBranch* tb = nullptr; 
         TTree*   tt = nullptr; 
 
@@ -91,6 +122,15 @@ struct variable_t {
             if (this -> tb){return;}
             if (!this -> tt){return add_to_dict(type);}
             this -> tb = this -> tt -> Branch(varname -> c_str(), type); 
+            this -> tt -> AddBranchToCache(this -> tb, true); 
+        }
+
+        template <typename g>
+        void add_data(g* var, g* type){
+            *type = *var; 
+            if (this -> tb){return;}
+            if (!this -> tt){return add_to_dict(type);}
+            this -> tb = this -> tt -> Branch(this -> variable_name.c_str(), type); 
         }
 };
 

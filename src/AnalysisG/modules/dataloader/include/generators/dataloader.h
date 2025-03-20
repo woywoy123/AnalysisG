@@ -71,15 +71,16 @@ class dataloader:
         std::map<std::string, graph_t*>* restore_graphs_(std::vector<std::string>, int threads); 
 
         std::map<int, std::vector<graph_t*>*> batched_cache = {}; 
+        std::map<int, std::vector<graph_t*>*> gr_k_fold_training = {}; 
+        std::map<int, std::vector<graph_t*>*> gr_k_fold_validation = {}; 
+
 
         std::map<int, std::vector<int>*> k_fold_training = {}; 
         std::map<int, std::vector<int>*> k_fold_validation = {}; 
 
-        std::map<int, std::vector<graph_t*>*> gr_k_fold_training = {}; 
-        std::map<int, std::vector<graph_t*>*> gr_k_fold_validation = {}; 
-
         std::vector<int>* test_set  = nullptr; 
         std::vector<int>* train_set = nullptr; 
+        std::vector<int>* data_index = nullptr; 
 
         std::vector<std::map<std::string, int>*> truth_map_graph = {}; 
         std::vector<std::map<std::string, int>*> truth_map_node  = {}; 
@@ -90,9 +91,8 @@ class dataloader:
         std::vector<std::map<std::string, int>*> data_map_edge  = {}; 
 
         std::map<std::string, int> hash_map = {}; 
-        std::vector<int>*         data_index = nullptr; 
-        std::vector<graph_t*>*       gr_test = nullptr; 
-        std::vector<graph_t*>*      data_set = nullptr; 
+        std::vector<graph_t*>*  gr_test = nullptr; 
+        std::vector<graph_t*>* data_set = nullptr; 
 
         std::default_random_engine rnd{}; 
 }; 

@@ -1,17 +1,23 @@
 #include <vector_cast.h>
 
 
-void add_to_dict(std::vector<std::vector<float>>* dummy){gInterpreter -> GenerateDictionary("vector<vector<float>>", "vector");}
-void add_to_dict(std::vector<std::vector<double>>* dummy){gInterpreter -> GenerateDictionary("vector<vector<double>>", "vector");}
-void add_to_dict(std::vector<std::vector<long>>* dummy){gInterpreter -> GenerateDictionary("vector<vector<long>>", "vector");}
-void add_to_dict(std::vector<std::vector<int>>* dummy){gInterpreter -> GenerateDictionary("vector<vector<int>>", "vector");}
-void add_to_dict(std::vector<std::vector<bool>>* dummy){gInterpreter -> GenerateDictionary("vector<vector<bool>>", "vector");}
+void add_to_dict(std::vector<std::vector<float>>*){gInterpreter -> GenerateDictionary("vector<vector<float>>", "vector");}
+void add_to_dict(std::vector<std::vector<double>>*){gInterpreter -> GenerateDictionary("vector<vector<double>>", "vector");}
+void add_to_dict(std::vector<std::vector<long>>*){gInterpreter -> GenerateDictionary("vector<vector<long>>", "vector");}
+void add_to_dict(std::vector<std::vector<int>>*){gInterpreter -> GenerateDictionary("vector<vector<int>>", "vector");}
+void add_to_dict(std::vector<std::vector<bool>>*){gInterpreter -> GenerateDictionary("vector<vector<bool>>", "vector");}
 
-void add_to_dict(std::vector<float>* dummy){gInterpreter -> GenerateDictionary("vector<float>", "vector");}
-void add_to_dict(std::vector<double>* dummy){gInterpreter -> GenerateDictionary("vector<double>", "vector");}
-void add_to_dict(std::vector<long>* dummy){gInterpreter -> GenerateDictionary("vector<long>", "vector");}
-void add_to_dict(std::vector<int>* dummy){gInterpreter -> GenerateDictionary("vector<int>", "vector");}
-void add_to_dict(std::vector<bool>* dummy){gInterpreter -> GenerateDictionary("vector<bool>", "vector");}
+void add_to_dict(std::vector<float>*){gInterpreter -> GenerateDictionary("vector<float>", "vector");}
+void add_to_dict(std::vector<double>*){gInterpreter -> GenerateDictionary("vector<double>", "vector");}
+void add_to_dict(std::vector<long>*){gInterpreter -> GenerateDictionary("vector<long>", "vector");}
+void add_to_dict(std::vector<int>*){gInterpreter -> GenerateDictionary("vector<int>", "vector");}
+void add_to_dict(std::vector<bool>*){gInterpreter -> GenerateDictionary("vector<bool>", "vector");}
+
+void add_to_dict(float*){gInterpreter -> GenerateDictionary("float"  , "vector");}
+void add_to_dict(double*){gInterpreter -> GenerateDictionary("double", "vector");}
+void add_to_dict(long*){gInterpreter -> GenerateDictionary("long"    , "vector");}
+void add_to_dict(int*){gInterpreter -> GenerateDictionary("int"      , "vector");}
+void add_to_dict(bool*){gInterpreter -> GenerateDictionary("bool"    , "vector");}
 
 
 std::vector<signed long> tensor_size(torch::Tensor* inpt){
@@ -77,6 +83,100 @@ void variable_t::process(torch::Tensor* data, std::string* varname, TTree* tr){
     std::cout << "UNDEFINED DATA TYPE! SEE typecasting/cxx/typecasting.cxx" << std::endl;
     abort(); 
 }
+
+
+
+void variable_t::process(std::vector<std::vector<float>>* data, std::string* varname, TTree* tr){
+    if (!this -> tt){this -> tt = tr; this -> variable_name = *varname;}
+    this -> add_data(data, &this -> vvf); 
+}
+
+void variable_t::process(std::vector<std::vector<double>>* data, std::string* varname, TTree* tr){
+    if (!this -> tt){this -> tt = tr; this -> variable_name = *varname;}
+    this -> add_data(data, &this -> vvd); 
+}
+
+void variable_t::process(std::vector<std::vector<long>>* data, std::string* varname, TTree* tr){
+    if (!this -> tt){this -> tt = tr; this -> variable_name = *varname;}
+    this -> add_data(data, &this -> vvl); 
+}
+
+void variable_t::process(std::vector<std::vector<int>>* data, std::string* varname, TTree* tr){
+    if (!this -> tt){this -> tt = tr; this -> variable_name = *varname;}
+    this -> add_data(data, &this -> vvi); 
+}
+
+void variable_t::process(std::vector<std::vector<bool>>* data, std::string* varname, TTree* tr){
+    if (!this -> tt){this -> tt = tr; this -> variable_name = *varname;}
+    this -> add_data(data, &this -> vvb); 
+}
+
+void variable_t::process(std::vector<float>* data, std::string* varname, TTree* tr){
+    if (!this -> tt){this -> tt = tr; this -> variable_name = *varname;}
+    this -> add_data(data, &this -> vf); 
+}
+
+void variable_t::process(std::vector<double>* data, std::string* varname, TTree* tr){
+    if (!this -> tt){this -> tt = tr; this -> variable_name = *varname;}
+    this -> add_data(data, &this -> vd); 
+}
+
+void variable_t::process(std::vector<long>* data, std::string* varname, TTree* tr){
+    if (!this -> tt){this -> tt = tr; this -> variable_name = *varname;}
+    this -> add_data(data, &this -> vl); 
+}
+
+void variable_t::process(std::vector<int>* data, std::string* varname, TTree* tr){
+    if (!this -> tt){this -> tt = tr; this -> variable_name = *varname;}
+    this -> add_data(data, &this -> vi); 
+}
+
+void variable_t::process(std::vector<bool>* data, std::string* varname, TTree* tr){
+    if (!this -> tt){this -> tt = tr; this -> variable_name = *varname;}
+    this -> add_data(data, &this -> vb); 
+}
+
+
+void variable_t::process(float* data, std::string* varname, TTree* tr){
+    if (!this -> tt){this -> tt = tr; this -> variable_name = *varname;}
+    this -> add_data(data, &this -> f); 
+}
+
+void variable_t::process(double* data, std::string* varname, TTree* tr){
+    if (!this -> tt){this -> tt = tr; this -> variable_name = *varname;}
+    this -> add_data(data, &this -> d); 
+}
+
+void variable_t::process(long* data, std::string* varname, TTree* tr){
+    if (!this -> tt){this -> tt = tr; this -> variable_name = *varname;}
+    this -> add_data(data, &this -> l); 
+}
+
+void variable_t::process(int* data, std::string* varname, TTree* tr){
+    if (!this -> tt){this -> tt = tr; this -> variable_name = *varname;}
+    this -> add_data(data, &this -> i); 
+}
+
+void variable_t::process(bool* data, std::string* varname, TTree* tr){
+    if (!this -> tt){this -> tt = tr; this -> variable_name = *varname;}
+    this -> add_data(data, &this -> b); 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 void variable_t::flush(){
     if (this -> vvf.size()){this -> vvf.clear(); return; }

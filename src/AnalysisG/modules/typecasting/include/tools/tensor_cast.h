@@ -6,16 +6,16 @@
 
 // --------- tensor padding --------- //
 template <typename g>
-void scout_dim(g* data, int* mx_dim){return;}
+void scout_dim(g*, int*){return;}
 
 template <typename g>
-void nulls(g* d, int* mx_dim){*d = -1;}
+void nulls(g* d, int*){*d = -1;}
 
 template <typename g>
-bool standard(g* data, int* mx_dim){ return true; }
+bool standard(g*, int*){ return true; }
 
 template <typename G, typename g>
-void as_primitive(G* data, std::vector<g>* lin, std::vector<signed long>* dims, unsigned int depth){lin -> push_back(*data);} 
+void as_primitive(G* data, std::vector<g>* lin, std::vector<signed long>*, unsigned int){lin -> push_back(*data);} 
 
 template <typename G>
 void scout_dim(const std::vector<G>* vec, int* mx_dim){
@@ -59,7 +59,7 @@ static void as_primitive(std::vector<G>* data, std::vector<g>* linear, std::vect
 
 
 template <typename G, typename g>
-static torch::Tensor build_tensor(std::vector<G>* _data, at::ScalarType _op, g prim, torch::TensorOptions* op){
+static torch::Tensor build_tensor(std::vector<G>* _data, at::ScalarType _op, g, torch::TensorOptions* op){
     int max_dim = 0; 
     std::vector<g> linear = {};
     std::vector<signed long> dims = {}; 

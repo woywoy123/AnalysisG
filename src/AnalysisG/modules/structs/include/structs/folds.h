@@ -67,50 +67,7 @@ struct graph_hdf5_w {
     char* truth_graph = nullptr; 
     char* truth_node = nullptr; 
     char* truth_edge = nullptr;
-
-
-    void flush_data(){
-        free(this -> hash); 
-        free(this -> filename); 
-        free(this -> edge_index); 
-
-        free(this -> data_map_graph); 
-        free(this -> data_map_node); 
-        free(this -> data_map_edge); 
-
-        free(this -> truth_map_graph); 
-        free(this -> truth_map_node);
-        free(this -> truth_map_edge); 
-
-        free(this -> data_graph); 
-        free(this -> data_node); 
-        free(this -> data_edge); 
-
-        free(this -> truth_graph); 
-        free(this -> truth_node); 
-        free(this -> truth_edge); 
-
-        this -> hash = nullptr; 
-        this -> filename = nullptr; 
-        this -> edge_index = nullptr; 
-
-        this -> data_map_graph = nullptr; 
-        this -> data_map_node = nullptr; 
-        this -> data_map_edge = nullptr; 
-
-        this -> truth_map_graph = nullptr; 
-        this -> truth_map_node = nullptr;
-        this -> truth_map_edge = nullptr; 
-
-        this -> data_graph = nullptr; 
-        this -> data_node = nullptr; 
-        this -> data_edge = nullptr; 
-
-        this -> truth_graph = nullptr; 
-        this -> truth_node = nullptr; 
-        this -> truth_edge = nullptr; 
-    }
-
+    void flush_data();
 }; 
 
 

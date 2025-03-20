@@ -51,12 +51,12 @@ class container: public tools
         void compile(size_t* len); 
         size_t len(); 
         
-    private:
         entry_t* add_entry(std::string hash); 
 
-        meta*       meta_data = nullptr; 
-        std::string* filename = nullptr; 
-        std::string  label    = ""; 
+        meta*        meta_data   = nullptr; 
+        std::string* filename    = nullptr; 
+        std::string* output_path = nullptr; 
+        std::string     label    = ""; 
 
         std::map<std::string, entry_t> random_access; 
         std::map<std::string, selection_template*>* merged = nullptr; 

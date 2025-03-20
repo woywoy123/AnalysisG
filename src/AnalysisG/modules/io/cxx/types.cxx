@@ -16,7 +16,7 @@ hid_t io::member(folds_t){
 
 hid_t io::member(graph_hdf5_w inpt){
 
-    hid_t px = H5Tcreate(H5T_COMPOUND, sizeof(graph_hdf5_w)); 
+    hid_t px = H5Tcreate(H5T_COMPOUND, sizeof(inpt)); 
     H5Tinsert(px, "num_nodes"   , HOFFSET(graph_hdf5_w, num_nodes   ), H5T_NATIVE_INT ); 
     H5Tinsert(px, "event_index" , HOFFSET(graph_hdf5_w, event_index ), H5T_NATIVE_LONG); 
     H5Tinsert(px, "event_weight", HOFFSET(graph_hdf5_w, event_weight), H5T_NATIVE_DOUBLE); 

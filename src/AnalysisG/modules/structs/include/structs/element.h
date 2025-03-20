@@ -13,6 +13,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <tools/vector_cast.h>
 
 // -------------------------- If you were directed here, simply add the data type within this section ----------------- //
 enum class data_enum {
@@ -96,6 +97,7 @@ struct data_t {
         void flush(); 
         bool next();
 
+        bool clear = false;
     private:
         void flush_buffer(); 
         void fetch_buffer();
@@ -106,8 +108,8 @@ struct data_t {
         template <typename T>
         bool flush_buffer(T** data){
             if (!(*data)){return false;}
-            delete *data; 
-            *data = nullptr; 
+            if (!this -> clear){(*data) -> clear();}
+            else {delete *data; *data = nullptr;}
             return true; 
         } 
 
@@ -115,6 +117,7 @@ struct data_t {
         void fetch_buffer(std::vector<T>** data){
             TTreeReader r = TTreeReader(this -> tree); 
             TTreeReaderValue<T> dr(r, this -> branch_name.c_str()); 
+            if (*data){(*data) -> clear();}
             if (!*data){(*data) = new std::vector<T>();}
             while (r.Next()){(*data) -> push_back(*dr);}
         } 
@@ -143,6 +146,17 @@ struct element_t {
         abort(); 
     }
     std::map<std::string, data_t*> handle = {}; 
+}; 
+
+
+struct write_t {
+    TFile* file = nullptr; 
+    TTree* tree = nullptr; 
+    std::map<std::string, variable_t> data = {}; 
+
+    void write(); 
+    void create(std::string tr_name, std::string path); 
+    void close(); 
 }; 
 
 #endif

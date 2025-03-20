@@ -40,7 +40,6 @@ void sampletracer::compile_objects(int threads){
         inpt -> clear(); 
     }; 
 
-    int index = 0; 
     std::vector<size_t> progres(this -> root_container.size(), 0); 
     std::vector<size_t> handles(this -> root_container.size(), 0); 
     std::vector<std::string*> titles_(this -> root_container.size(), nullptr); 
@@ -49,6 +48,7 @@ void sampletracer::compile_objects(int threads){
     std::map<std::string, container>::iterator itr = this -> root_container.begin(); 
     for (size_t x(0); itr != this -> root_container.end(); ++itr, ++x){
         progres[x] = itr -> second.len();
+        itr -> second.output_path = this -> output_path; 
         std::vector<std::string> vec = this -> split(itr -> first, "/"); 
         titles_[x] = new std::string(vec[vec.size()-1]); 
     }
@@ -66,6 +66,7 @@ void sampletracer::compile_objects(int threads){
     else {thr = new std::thread(this -> progressbar3, &handles, &progres, &titles_);}
 
     int tidx = 0; 
+    int index = 0; 
     itr = this -> root_container.begin(); 
     for (; itr != this -> root_container.end(); ++itr, ++index, ++tidx){
         threads_[index] = new std::thread(lamb, &handles[index], &itr -> second); 

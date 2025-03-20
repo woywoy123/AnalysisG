@@ -26,6 +26,7 @@ class sampletracer:
         void populate_dataloader(dataloader* dl);  
         void compile_objects(int threads); 
 
+        std::string* output_path = nullptr; 
     private:
         std::map<std::string, container> root_container = {}; 
 }; 

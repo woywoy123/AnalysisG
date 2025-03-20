@@ -151,6 +151,7 @@ cdef extern from "<structs/settings.h>":
 
         bool build_cache
         bool debug_mode
+        bool selection_root
         int threads
 
 # ------------------- (7.) Add the enum --------------- #

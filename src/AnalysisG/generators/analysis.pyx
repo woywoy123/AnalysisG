@@ -336,3 +336,9 @@ cdef class Analysis:
 
     @PreTagEvents.setter
     def PreTagEvents(self, val): self.ana.m_settings.pretagevents = val
+
+    @property
+    def SaveSelectionToROOT(self): return self.ana.m_settings.selection_root
+
+    @SaveSelectionToROOT.setter
+    def SaveSelectionToROOT(self, bool val): self.ana.m_settings.selection_root = val

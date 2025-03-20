@@ -29,7 +29,7 @@ void io::check_root_file_paths(){
     this -> root_files = tmp; 
 }
 
-void io::root_key_paths(std::string path, TTree* t){
+void io::root_key_paths(std::string path, TTree*){
     if (!this -> file_root){return;}
     TTree* tr = this -> file_root -> Get<TTree>(path.c_str()); 
     if (!tr){return;}
@@ -311,7 +311,10 @@ std::map<std::string, data_t*>* io::get_data(){
 void io::root_end(){
     if (!this -> iters){return;}
     std::map<std::string, data_t*>::iterator it = this -> iters -> begin(); 
-    for (; it != this -> iters -> end(); ++it){it -> second -> flush(); delete it -> second;}
+    for (; it != this -> iters -> end(); ++it){
+        it -> second -> clear = true; 
+        it -> second -> flush(); delete it -> second;
+    }
     this -> iters -> clear(); 
     delete this -> iters; this -> iters = nullptr; 
 }

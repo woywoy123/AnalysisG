@@ -3,7 +3,7 @@
 void analysis::build_selections(){
     std::vector<event_template*> events_ = this -> tracer -> get_events(""); 
     if (!events_.size()){return this -> warning("No Events found for Selection. Skipping...");}
-
+    if (this -> m_settings.selection_root){this -> tracer -> output_path = &this -> m_settings.output_path;}
     std::map<std::string, selection_template*>::iterator itx = this -> selection_names.begin(); 
     for (; itx != this -> selection_names.end(); ++itx){
         selection_template* sel_t = itx -> second; 

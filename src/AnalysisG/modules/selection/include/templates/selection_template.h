@@ -8,6 +8,7 @@
 #include <structs/event.h>
 #include <meta/meta.h>
 
+#include <tools/vector_cast.h>
 #include <tools/merge_cast.h>
 #include <tools/tools.h>
 
@@ -41,13 +42,26 @@ class selection_template: public tools
         virtual bool selection(event_template* ev);
         virtual bool strategy(event_template* ev);
         virtual void merge(selection_template* sel); 
+       
+        template <typename g> 
+        void write(g* var, std::string name){
+            if (!this -> handle){return;}
+            this -> handle -> data[name].process(var, &name, this -> handle -> tree);
+        }
+
+        template <typename g> 
+        void write(g var, std::string name){
+            if (!this -> handle){return;}
+            this -> handle -> data[name].process(&var, &name, this -> handle -> tree);
+        }
+
         std::vector<std::map<std::string, float>> reverse_hash(std::vector<std::string>* hashes); 
 
         bool CompileEvent(); 
         selection_template* build(event_template* ev); 
         bool operator == (selection_template& p); 
 
-        meta* meta_data  = nullptr; 
+        meta* meta_data = nullptr; 
         std::string filename = ""; 
         event_t data; 
 
@@ -142,8 +156,10 @@ class selection_template: public tools
 
     private:
         friend container;
-        event_template* m_event = nullptr; 
         void merger(selection_template* sl2); 
+         
+        write_t* handle = nullptr; 
+        event_template* m_event = nullptr; 
         std::map<std::string, std::vector<particle_template*>> garbage = {}; 
 }; 
 

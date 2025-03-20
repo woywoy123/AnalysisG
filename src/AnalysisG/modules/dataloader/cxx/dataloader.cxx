@@ -12,7 +12,7 @@ dataloader::dataloader(){
 }
 
 dataloader::~dataloader(){
-    auto flush = [this](std::vector<graph_t*>* grx){
+    auto flush = [](std::vector<graph_t*>* grx){
         for (size_t x(0); x < grx -> size(); ++x){
             (*grx)[x] -> _purge_all(); 
             delete (*grx)[x]; 
@@ -22,14 +22,20 @@ dataloader::~dataloader(){
         grx -> shrink_to_fit(); 
     }; 
 
+    auto flushM = [](std::vector<std::map<std::string, int>*>* data){
+        for (size_t x(0); x < data -> size(); ++x){
+            delete (*data)[x]; (*data)[x] = nullptr;
+        } 
+        data -> clear();
+    }; 
 
-    for (size_t x(0); x < this -> truth_map_graph.size(); ++x){delete this -> truth_map_graph[x];}
-    for (size_t x(0); x < this -> truth_map_node.size(); ++x){delete this -> truth_map_node[x];}
-    for (size_t x(0); x < this -> truth_map_edge.size(); ++x){delete this -> truth_map_edge[x];}
+    flushM(&this -> truth_map_graph);
+    flushM(&this -> truth_map_node);
+    flushM(&this -> truth_map_edge);
 
-    for (size_t x(0); x < this -> data_map_graph.size(); ++x){delete this -> data_map_graph[x];}
-    for (size_t x(0); x < this -> data_map_node.size(); ++x){delete this -> data_map_node[x];}
-    for (size_t x(0); x < this -> data_map_edge.size(); ++x){delete this -> data_map_edge[x];}
+    flushM(&this -> data_map_graph); 
+    flushM(&this -> data_map_node);  
+    flushM(&this -> data_map_edge);  
 
     std::map<int, std::vector<int>*>::iterator itr = this -> k_fold_training.begin(); 
     for (; itr != this -> k_fold_training.end(); ++itr){

@@ -37,8 +37,7 @@ class io:
             H5::DataSet* dataset = this -> dataset(set_name, pairs, length); 
             if (!dataset){return;}
             dataset -> write(inpt -> data(), pairs); 
-            //hid_t id = this -> file -> getId(); 
-            //H5Fflush(id, H5F_SCOPE_LOCAL); 
+            H5Tclose(pairs); 
         } 
  
         template <typename g>
@@ -48,8 +47,7 @@ class io:
             H5::DataSet* dataset = this -> dataset(set_name, pairs, length); 
             if (!dataset){return;}
             dataset -> write(inpt, pairs); 
-            //hid_t id = this -> file -> getId(); 
-            //H5Fflush(id, H5F_SCOPE_LOCAL); 
+            H5Tclose(pairs); 
         }
 
 
@@ -64,6 +62,8 @@ class io:
             long long unsigned int length = dim_r[0];
             outpt -> assign(length, g()); 
             dataset -> read(outpt -> data(), pairs); 
+            space_r.close();
+            H5Tclose(pairs); 
         } 
 
         template <typename g>
@@ -75,7 +75,10 @@ class io:
             hsize_t dim_r[1];
             space_r.getSimpleExtentDims(dim_r); 
             dataset -> read(out, pairs); 
+            space_r.close();
+            H5Tclose(pairs); 
         }
+        void read(graph_hdf5_w* out, std::string set_name);
 
         bool start(std::string filename, std::string read_write); 
         void end();

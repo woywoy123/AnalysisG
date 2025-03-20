@@ -2,13 +2,14 @@
 
 container::container(){}
 container::~container(){
-    delete this -> meta_data; 
+//    if (this -> meta_data){delete this -> meta_data;}
     delete this -> filename;  
 
     std::map<std::string, entry_t>::iterator itr = this -> random_access.begin();
     for (; itr != this -> random_access.end(); ++itr){itr -> second.destroy();}
     this -> random_access.clear(); 
     if (!this -> merged){return;}
+
     std::map<std::string, selection_template*>::iterator itrs = this -> merged -> begin(); 
     for (; itrs != this -> merged -> end(); ++itrs){delete itrs -> second; itrs -> second = nullptr;}
     this -> merged -> clear(); 
@@ -61,6 +62,7 @@ bool container::add_selection_template(selection_template* sel){
 }
 
 void container::compile(size_t* l){
+    std::map<std::string, write_t> handles;
     std::map<std::string, entry_t>::iterator itr = this -> random_access.begin();  
     for (; itr != this -> random_access.end(); ++itr){
         entry_t* ev = &itr -> second;  
@@ -69,11 +71,32 @@ void container::compile(size_t* l){
             this -> merged = new std::map<std::string, selection_template*>();
         }
 
+        if (itr == this -> random_access.begin()){
+            for (selection_template* sel : ev -> m_selection){
+                if (!this -> output_path){break;}
+                std::string name = sel -> name; 
+                std::string tree = sel -> m_event -> tree; 
+
+                std::string pth = *this -> output_path + "/Selections/" + name + "/"; 
+                this -> create_path(pth); 
+
+                std::vector<std::string> fname = this -> split(*this -> filename, "/"); 
+                handles[name].create(tree, pth + fname[fname.size()-1]); 
+            }
+
+            for (selection_template* sel : ev -> m_selection){
+                std::string name = sel -> name; 
+                selection_template* slx = sel -> clone(); 
+                if (this -> output_path){slx -> handle = &handles[name];}
+                (*this -> merged)[name] = slx;
+            }
+        }
+
         for (selection_template* sel : ev -> m_selection){
             std::string name = sel -> name; 
-            if (!this -> merged -> count(name)){(*this -> merged)[name] = sel -> clone();}
-            bool passed = sel -> CompileEvent(); 
-            if (passed){(*this -> merged)[name] -> merger(sel);}
+            if (this -> output_path){sel -> handle = &handles[name];}
+            if (sel -> CompileEvent()){(*this -> merged)[name] -> merger(sel);}
+            if (this -> output_path){handles[name].write();}
             sel -> m_event = nullptr; 
         }
 
@@ -90,6 +113,11 @@ void container::compile(size_t* l){
         }
         ev -> destroy(); 
         *l += 1; 
+    }
+    std::map<std::string, write_t>::iterator itx = handles.begin(); 
+    for (; itx != handles.end(); ++itx){
+        (*this -> merged)[itx -> first] -> handle = nullptr; 
+        itx -> second.close();
     }
     *l = this -> random_access.size(); 
 }

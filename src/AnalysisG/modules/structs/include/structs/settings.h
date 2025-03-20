@@ -43,6 +43,7 @@ struct settings_t {
     int threads = 10; 
     bool debug_mode = false;
     bool build_cache = false; 
+    bool selection_root = false; 
 }; 
 
 #endif

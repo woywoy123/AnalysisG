@@ -206,7 +206,6 @@ bool dataloader::restore_dataset(std::string path){
     }
     if (!data.size()){return false;}
 
-
     std::string msg_tr = "Restored training dataset (" + this -> to_string(this -> train_set -> size()) + ")";  
     std::string msg_ts = "Leave out sample is (" + this -> to_string(this -> test_set -> size()) + ")"; 
 

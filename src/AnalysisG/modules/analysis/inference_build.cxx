@@ -86,6 +86,7 @@ void execution(
     TFile* f = TFile::Open(output.c_str(), "RECREATE"); 
     f -> TestBit(TFile::kRecovered);  
     TTree* t = new TTree(mds.tree_name.c_str(), "data");
+    t -> SetCacheSize(10000000U); 
 
     (*prg) = 0; 
     torch::AutoGradMode grd(false); 
@@ -121,6 +122,7 @@ void execution(
             // --- add additional content
             index = add_content(&addhoc, content, index, "", t); 
             index = add_content(&md -> m_p_undef, content, index, "extra_", t); 
+            t -> StopCacheLearningPhase(); 
         }
 
         add_content(&md -> m_i_graph, &bf, bt, nb, &ex, batch_i); 
@@ -150,7 +152,8 @@ void execution(
     t -> ResetBranchAddresses(); 
     t -> Write("", TObject::kOverwrite);
     f -> Close(); 
-    delete f; f = nullptr; 
+    f -> Delete(); 
+    delete f;
     delete content; content = nullptr; 
     delete md; md = nullptr; 
     std::this_thread::sleep_for(std::chrono::seconds(1));

@@ -15,6 +15,13 @@
 #include <structs/settings.h>
 #include <io/io.h>
 
+template <typename g>
+void flush(std::map<std::string, g*>* data){
+    typename std::map<std::string, g*>::iterator tx = data -> begin(); 
+    for (; tx != data -> end(); ++tx){delete tx -> second;}
+    data -> clear(); 
+}
+
 class analysis: 
     public notification, 
     public tools
