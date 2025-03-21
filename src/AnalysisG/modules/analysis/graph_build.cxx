@@ -1,4 +1,4 @@
-#include <generators/analysis.h>
+#include <AnalysisG/analysis.h>
 
 void analysis::build_graphs(){
     this -> success("+============================+"); 

@@ -14,7 +14,7 @@ from AnalysisG.core.lossfx cimport optimizer_params_t
 from AnalysisG.core.structs cimport settings_t
 from AnalysisG.core.meta cimport *
 
-cdef extern from "<generators/analysis.h>" nogil:
+cdef extern from "<AnalysisG/analysis.h>" nogil:
 
     cdef cppclass analysis(notification):
         analysis() except+ nogil

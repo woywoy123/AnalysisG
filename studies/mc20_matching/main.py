@@ -1,4 +1,4 @@
-from AnalysisG.generators.analysis import Analysis
+from AnalysisG import Analysis
 
 # event implementation
 from AnalysisG.events.ssml_mc20 import SSML_MC20

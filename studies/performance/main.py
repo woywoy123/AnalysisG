@@ -1,4 +1,4 @@
-from AnalysisG.generators import Analysis
+from AnalysisG import Analysis
 from AnalysisG.core import IO, MetaLookup, Data
 from topefficiency.algorithms import mapping
 

@@ -2,28 +2,6 @@
 #include <report.h>
 #include <folds.h>
 
-void element_t::set_meta(){
-    std::map<std::string, data_t*>::iterator itr = this -> handle.begin();
-    bool sk = itr -> second -> file_index >= (int)itr -> second -> files_i -> size(); 
-    if (sk){return;}
-    this -> event_index = itr -> second -> index; 
-    this -> filename = itr -> second -> files_s -> at(itr -> second -> file_index);
-}
-
-bool element_t::next(){
-    bool stop = true; 
-    std::map<std::string, data_t*>::iterator itr = this -> handle.begin(); 
-    for (; itr != this -> handle.end(); ++itr){stop *= itr -> second -> next();}
-    return stop; 
-}
-
-bool element_t::boundary(){
-    long idx = -1; 
-    std::map<std::string, data_t*>::iterator itr = this -> handle.begin(); 
-    for (; itr != this -> handle.end(); ++itr){idx = (*itr -> second -> files_i)[itr -> second -> file_index];}
-    return idx > 0; 
-}
-
 // -------------------------- If you were directed here, simply add the data type within this section ----------------- //
 // also make sure to checkout the structs/include/structs/element.h file! 
 
@@ -87,25 +65,25 @@ void data_t::fetch_buffer(){
 void data_t::string_type(){
 
     // -------------------- (0). add the routing -------------- //
-    if (this -> leaf_type == "vector<vector<float> >"){ this -> type = data_enum::vvf; return;}
+    if (this -> leaf_type == "vector<vector<float> >" ){ this -> type = data_enum::vvf; return;}
     if (this -> leaf_type == "vector<vector<double> >"){this -> type = data_enum::vvd; return;}
-    if (this -> leaf_type == "vector<vector<long> >"){  this -> type = data_enum::vvl; return;}
-    if (this -> leaf_type == "vector<vector<int> >"){   this -> type = data_enum::vvi; return;}
-    if (this -> leaf_type == "vector<vector<bool> >"){  this -> type = data_enum::vvb; return;}
+    if (this -> leaf_type == "vector<vector<long> >"  ){  this -> type = data_enum::vvl; return;}
+    if (this -> leaf_type == "vector<vector<int> >"   ){   this -> type = data_enum::vvi; return;}
+    if (this -> leaf_type == "vector<vector<bool> >"  ){  this -> type = data_enum::vvb; return;}
 
-    if (this -> leaf_type == "vector<float>"){ this -> type = data_enum::vf; return;}
-    if (this -> leaf_type == "vector<long>"){  this -> type = data_enum::vl; return;}
-    if (this -> leaf_type == "vector<int>"){   this -> type = data_enum::vi; return;}
-    if (this -> leaf_type == "vector<char>"){  this -> type = data_enum::vc; return;}
-    if (this -> leaf_type == "vector<bool>"){  this -> type = data_enum::vb; return;}
+    if (this -> leaf_type == "vector<float>" ){ this -> type = data_enum::vf; return;}
+    if (this -> leaf_type == "vector<long>"  ){  this -> type = data_enum::vl; return;}
+    if (this -> leaf_type == "vector<int>"   ){   this -> type = data_enum::vi; return;}
+    if (this -> leaf_type == "vector<char>"  ){  this -> type = data_enum::vc; return;}
+    if (this -> leaf_type == "vector<bool>"  ){  this -> type = data_enum::vb; return;}
     if (this -> leaf_type == "vector<double>"){this -> type = data_enum::vd; return;}
 
-    if (this -> leaf_type == "double"){   this -> type = data_enum::d;   return;}
-    if (this -> leaf_type == "Float_t"){  this -> type = data_enum::f;   return;}
-    if (this -> leaf_type == "Int_t"){    this -> type = data_enum::i;   return;}
+    if (this -> leaf_type == "double" ){this -> type = data_enum::d;   return;}
+    if (this -> leaf_type == "Float_t"){this -> type = data_enum::f;   return;}
+    if (this -> leaf_type == "Int_t"  ){this -> type = data_enum::i;   return;}
+    if (this -> leaf_type == "UInt_t" ){this -> type = data_enum::ui;  return;}
+    if (this -> leaf_type == "Char_t" ){this -> type = data_enum::c;   return;}
     if (this -> leaf_type == "ULong64_t"){this -> type = data_enum::ull; return;}
-    if (this -> leaf_type == "UInt_t"){   this -> type = data_enum::ui;  return;}
-    if (this -> leaf_type == "Char_t"){   this -> type = data_enum::c;   return;}
 
     std::cout << "UNKNOWN TYPE: " << this -> leaf_type << " " << path << std::endl; 
     std::cout << "Add the type under modules/structs/cxx/structs.cxx" << std::endl;
@@ -230,158 +208,4 @@ bool data_t::element(char* el){
 }
 
 // ******************************************************************************************* //
-
-void data_t::flush(){
-    this -> flush_buffer();
-    for (size_t x(0); x < this -> files_t -> size(); ++x){
-        if (!(*this -> files_t)[x]){continue;}
-        (*this -> files_t)[x] -> Close(); 
-        (*this -> files_t)[x] -> Delete(); 
-        delete (*this -> files_t)[x]; 
-        (*this -> files_t)[x] = nullptr; 
-    }
-    this -> leaf = nullptr; 
-    this -> branch = nullptr; 
-    this -> tree = nullptr; 
-    if (this -> files_s){delete this -> files_s; this -> files_s = nullptr;}
-    if (this -> files_i){delete this -> files_i; this -> files_i = nullptr;}
-    if (this -> files_t){delete this -> files_t; this -> files_t = nullptr;}
-}
-
-void data_t::initialize(){
-    TFile* c = (*this -> files_t)[this -> file_index]; 
-    c = (c -> Open(c -> GetTitle())); 
-    this -> tree        = (TTree*)c -> Get(this -> tree_name.c_str()); 
-    this -> tree -> SetCacheSize(10000000U); 
-    this -> tree -> AddBranchToCache("*", true);
-    this -> leaf        = this -> tree -> FindLeaf(this -> leaf_name.c_str());
-    this -> branch      = this -> leaf -> GetBranch();  
-    
-    this -> tree_name   = this -> tree -> GetName();
-    this -> leaf_name   = this -> leaf -> GetName();
-    this -> branch_name = this -> branch -> GetName(); 
-
-    this -> string_type(); 
-    this -> flush_buffer(); 
-    this -> fetch_buffer(); 
-    this -> index = 0; 
-    c -> Close(); 
-    c -> Delete(); 
-    delete c; 
-    (*this -> files_t)[this -> file_index] = nullptr; 
-} 
-
-bool data_t::next(){
-    if (this -> file_index >= (int)this -> files_i -> size()){return true;} 
-    long idx = (*this -> files_i)[this -> file_index];
-    this -> fname = &(*this -> files_s)[this -> file_index];
-    if (this -> index+1 < idx){this -> index++; return false;}
-
-    this -> file_index++; 
-    if (this -> file_index >= (int)this -> files_i -> size()){return true;}
-    this -> initialize();
-    return false; 
-}
-
-
-std::string model_report::print(){
-    std::string msg = "Run Name: " + this -> run_name; 
-    msg += " Epoch: " + std::to_string(this -> epoch); 
-    msg += " K-Fold: " + std::to_string(this -> k+1); 
-    msg += "\n"; 
-    msg += "__________ LOSS FEATURES ___________ \n"; 
-    msg += this -> prx(&this -> loss_graph, "Graph Loss");
-    msg += this -> prx(&this -> loss_node, "Node Loss"); 
-    msg += this -> prx(&this -> loss_edge, "Edge Loss"); 
-
-    msg += "__________ ACCURACY FEATURES ___________ \n"; 
-    msg += this -> prx(&this -> accuracy_graph, "Graph Accuracy");
-    msg += this -> prx(&this -> accuracy_node, "Node Accuracy"); 
-    msg += this -> prx(&this -> accuracy_edge, "Edge Accuracy"); 
-    return msg; 
-}
-
-std::string model_report::prx(std::map<mode_enum, std::map<std::string, float>>* data, std::string title){
-    bool trig = false; 
-    std::string out = ""; 
-    std::map<std::string, float>::iterator itf; 
-    std::map<mode_enum, std::map<std::string, float>>::iterator itx; 
-    for (itx = data -> begin(); itx != data -> end(); ++itx){
-        if (!itx -> second.size()){return "";}
-        if (!trig){out += title + ": \n"; trig = true;}
-        switch (itx -> first){
-            case mode_enum::training:   out += "Training -> "; break;
-            case mode_enum::validation: out += "Validation -> "; break;
-            case mode_enum::evaluation: out += "Evaluation -> "; break; 
-        }
-        for (itf = itx -> second.begin(); itf != itx -> second.end(); ++itf){
-            out += itf -> first + ": " + std::to_string(itf -> second) + " | "; 
-        }
-        out += "\n"; 
-    }
-    return out; 
-}
-
-void write_t::write(){
-    this -> tree -> Fill(); 
-    std::map<std::string, variable_t>::iterator itx = this -> data.begin(); 
-    for (; itx != this -> data.end(); ++itx){itx -> second.flush();}
-}
-
-void write_t::create(std::string tr_name, std::string path){
-    if (this -> file){return;}
-    this -> file = new TFile(path.c_str(), "RECREATE"); 
-    this -> tree = new TTree(tr_name.c_str(), "data"); 
-}
-
-void write_t::close(){
-    this -> tree -> ResetBranchAddresses(); 
-    this -> tree -> Write("", TObject::kOverwrite); 
-    this -> file -> Close();
-    this -> file -> Delete(); 
-}
-
-void graph_hdf5_w::flush_data(){
-    free(this -> hash); 
-    free(this -> filename); 
-    free(this -> edge_index); 
-
-    free(this -> data_map_graph); 
-    free(this -> data_map_node); 
-    free(this -> data_map_edge); 
-
-    free(this -> truth_map_graph); 
-    free(this -> truth_map_node);
-    free(this -> truth_map_edge); 
-
-    free(this -> data_graph); 
-    free(this -> data_node); 
-    free(this -> data_edge); 
-
-    free(this -> truth_graph); 
-    free(this -> truth_node); 
-    free(this -> truth_edge); 
-
-    this -> hash = nullptr; 
-    this -> filename = nullptr; 
-    this -> edge_index = nullptr; 
-
-    this -> data_map_graph = nullptr; 
-    this -> data_map_node = nullptr; 
-    this -> data_map_edge = nullptr; 
-
-    this -> truth_map_graph = nullptr; 
-    this -> truth_map_node = nullptr;
-    this -> truth_map_edge = nullptr; 
-
-    this -> data_graph = nullptr; 
-    this -> data_node = nullptr; 
-    this -> data_edge = nullptr; 
-
-    this -> truth_graph = nullptr; 
-    this -> truth_node = nullptr; 
-    this -> truth_edge = nullptr; 
-}
-
-
 

@@ -26,4 +26,6 @@ def auth_pyami():
         print("-> chmod 0600 <directory>/usercert.pem")
         print("-> chmod 0400 <directory>/userkey.pem")
 
-from .generators import Analysis
+try: from .core.analysis import Analysis
+except: pass 
+

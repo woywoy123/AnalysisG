@@ -76,8 +76,7 @@ void container::compile(size_t* l){
                 if (!this -> output_path){break;}
                 std::string name = sel -> name; 
                 std::string tree = sel -> m_event -> tree; 
-
-                std::string pth = *this -> output_path + "/Selections/" + name + "/"; 
+                std::string pth = *this -> output_path + "/Selections/" + name + "-" + std::string(sel -> m_event -> name) + "/"; 
                 this -> create_path(pth); 
 
                 std::vector<std::string> fname = this -> split(*this -> filename, "/"); 

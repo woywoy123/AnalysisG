@@ -1,4 +1,4 @@
-from AnalysisG.generators.analysis import Analysis
+from AnalysisG import Analysis
 from AnalysisG.graphs.ssml_mc20 import GraphJets, GraphDetector
 #from AnalysisG.graphs.bsm_4tops import GraphJets
 from AnalysisG.events import SSML_MC20

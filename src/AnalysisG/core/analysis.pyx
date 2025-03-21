@@ -12,7 +12,7 @@ from AnalysisG.core.graph_template cimport *
 from AnalysisG.core.selection_template cimport *
 from AnalysisG.core.model_template cimport *
 from AnalysisG.core.lossfx cimport *
-from AnalysisG.generators.analysis cimport analysis
+from AnalysisG.core.analysis cimport analysis
 
 from time import sleep
 from tqdm import tqdm

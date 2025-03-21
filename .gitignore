@@ -22,6 +22,7 @@ local/**/*.png
 **.so
 **.c
 **.cpp
+**cfg.h
 
 # Vim related swaps 
 **.swp

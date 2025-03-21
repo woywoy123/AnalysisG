@@ -264,7 +264,7 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* data, mode
 
 void dataloader::cuda_memory_server(){
     auto cuda_memory = [this](int device_i) -> bool {
-    #if server
+    #if _server
         CUdevice dev;                                    
         cuDeviceGet(&dev, device_i);                     
         size_t free, total;                              
@@ -303,7 +303,7 @@ void dataloader::cuda_memory_server(){
     }; 
     
     std::vector<graph_t*>* ptr = this -> data_set; 
-    #if server
+    #if _server
     c10::cuda::CUDACachingAllocator::emptyCache();
     #endif
     for (size_t x(0); x < ptr -> size(); ++x){
@@ -332,7 +332,7 @@ void dataloader::cuda_memory_server(){
 }
 
 void dataloader::start_cuda_server(){
-    if (!server){return;}
+    if (!_server){return;}
     if (this -> cuda_mem){return;}
     auto monitor = [this](){
         this -> info("Starting CUDA server!");

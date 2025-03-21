@@ -20,7 +20,6 @@ endfunction()
 
 add_subdirectory(pyc)
 add_subdirectory(modules)
-add_subdirectory(generators)
 add_subdirectory(events)
 add_subdirectory(graphs)
 add_subdirectory(selections)

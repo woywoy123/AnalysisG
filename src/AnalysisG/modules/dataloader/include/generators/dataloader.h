@@ -4,11 +4,11 @@
 #ifdef PYC_CUDA
 #include <cuda.h>
 #include <c10/cuda/CUDACachingAllocator.h>
-#define server true
+#define _server true
 #endif
 
-#ifndef server
-#define server false
+#ifndef _server
+#define _server false
 #endif
 
 #include <tools/tools.h>

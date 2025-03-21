@@ -5,6 +5,7 @@ from libcpp cimport bool
 from libcpp.map cimport map
 from libcpp.string cimport string
 from libcpp.vector cimport vector
+cimport cython 
 
 cdef extern from "<structs/particles.h>":
 
@@ -155,19 +156,27 @@ cdef extern from "<structs/settings.h>":
         int threads
 
 # ------------------- (7.) Add the enum --------------- #
+
 cdef extern from "<structs/element.h>":
     enum data_enum:
         vvf "data_enum::vvf"
         vvd "data_enum::vvd"
         vvl "data_enum::vvl"
         vvi "data_enum::vvi"
+        vvb "data_enum::vvb"
+
         vf  "data_enum::vf"
+        vd  "data_enum::vd"
         vl  "data_enum::vl"
         vi  "data_enum::vi"
         vc  "data_enum::vc"
+        vb  "data_enum::vb"
+
         f   "data_enum::f"
+        d   "data_enum::d"
         l   "data_enum::l"
         i   "data_enum::i"
+        b   "data_enum::b"
         ull "data_enum::ull"
         ui  "data_enum::ui"
         c   "data_enum::c"
@@ -187,67 +196,51 @@ cdef extern from "<structs/element.h>":
         bool next() except+
 
 # ------------------- (8.) Add the interface --------------- #
+        bool element(vector[vector[float ]]* data) except +
         bool element(vector[vector[double]]* data) except +
-        bool element(vector[vector[float]]* data) except +
-        bool element(vector[vector[long ]]* data) except +
-        bool element(vector[vector[int  ]]* data) except +
+        bool element(vector[vector[long  ]]* data) except +
+        bool element(vector[vector[int   ]]* data) except +
+        bool element(vector[vector[bool  ]]* data) except +
 
-        bool element(vector[float]* data) except +
-        bool element(vector[long]* data) except +
-        bool element(vector[int]* data) except +
-        bool element(vector[char ]* data) except +
+        bool element(vector[float ]* data) except +
+        bool element(vector[double]* data) except +
+        bool element(vector[long  ]* data) except +
+        bool element(vector[int   ]* data) except +
+        bool element(vector[char  ]* data) except +
+        bool element(vector[bool  ]* data) except +
 
-        bool element(float* data) except +
-        bool element(long* data) except +
-        bool element(int* data) except +
-        bool element(unsigned long long* data) except +
+        bool element(double* data) except +
+        bool element(float*  data) except +
+        bool element(long*   data) except +
+        bool element(int*    data) except +
+        bool element(bool*   data) except +
+        bool element(char*   data) except +
         bool element(unsigned int* data) except +
-        bool element(char* data) except +
+        bool element(unsigned long long* data) except +
 
-# ------------------- (8.) Add the switch. And you are done =) --------------- #
-cdef inline dict switch_board(data_t* data):
-    cdef vector[vector[float]] vvf
-    if data.type == data_enum.vvf and data.element(&vvf): return {data.path : vvf}
+# ------------------- (9.) Add the switch (structs.pyx). And you are done =) --------------- #
+ctypedef fused basic:
+    vector[vector[float ]]
+    vector[vector[double]]
+    vector[vector[long  ]]
+    vector[vector[int   ]]
+    vector[vector[bool  ]]
 
-    cdef vector[vector[long]] vvl
-    if data.type == data_enum.vvl and data.element(&vvl): return {data.path : vvl}
+    vector[float ]
+    vector[double]
+    vector[long  ]
+    vector[int   ]
+    vector[char  ]
+    vector[bool  ]
 
-    cdef vector[vector[int]] vvi
-    if data.type == data_enum.vvi and data.element(&vvi): return {data.path : vvi}
+    bool 
+    float
+    double 
+    int 
+    long
+    unsigned long long
+    unsigned int
+    char
 
-    cdef vector[vector[double]] vvd
-    if data.type == data_enum.vvd and data.element(&vvd): return {data.path : vvd}
-
-    cdef vector[float] vf
-    if data.type == data_enum.vf and data.element(&vf): return {data.path : vf}
-
-    cdef vector[long] vl
-    if data.type == data_enum.vl and data.element(&vl): return {data.path : vl}
-
-    cdef vector[int] vi
-    if data.type == data_enum.vi and data.element(&vi): return {data.path : vi}
-
-    cdef vector[char] vc
-    if data.type == data_enum.vc and data.element(&vc): return {data.path : vc}
-
-    cdef float f
-    if data.type == data_enum.f and data.element(&f): return {data.path : f}
-
-    cdef long l
-    if data.type == data_enum.l and data.element(&l): return {data.path : l}
-
-    cdef int i
-    if data.type == data_enum.i and data.element(&i): return {data.path : i}
-
-    cdef unsigned long long ull
-    if data.type == data_enum.ull and data.element(&ull): return {data.path : ull}
-
-    cdef unsigned int ui
-    if data.type == data_enum.ui and data.element(&ui): return {data.path : ui}
-
-    cdef char c
-    if data.type == data_enum.c and data.element(&c): return {data.path : c}
-
-    return {}
-
-
+cdef dict switch_board(data_t* data)
+# ------------------------------------------------------------------------------------------ #

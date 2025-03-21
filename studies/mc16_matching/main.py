@@ -1,4 +1,4 @@
-from AnalysisG.generators.analysis import Analysis
+from AnalysisG import Analysis
 from AnalysisG.core.plotting import TH1F, TH2F, TLine
 
 # event implementation

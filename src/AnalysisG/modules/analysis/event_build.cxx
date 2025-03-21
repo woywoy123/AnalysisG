@@ -1,4 +1,4 @@
-#include <generators/analysis.h>
+#include <AnalysisG/analysis.h>
 #include <ROOT/RDataFrame.hxx>
 
 void analysis::build_events(){
@@ -63,7 +63,7 @@ void analysis::build_events(){
     for (; itf != this -> file_labels.end(); ++itf){
         if (!this -> event_labels.count(itf -> second)){continue;}
         if (this -> skip_event_build[itf -> first]){continue;}
-        this -> reader -> root_files[itf -> first] = true;
+        this -> reader -> root_files[this -> absolute_path(itf -> first)] = true;
 
         if (event_f){continue;}
         event_f = this -> event_labels[itf -> second]; 
@@ -98,8 +98,8 @@ void analysis::build_events(){
     int idx = 0; 
     size_t avg = nevents / this -> m_settings.threads;
     std::string test_tree = trees_ -> at(0); 
-    std::map<std::string, std::map<std::string, long>>::iterator ite; 
-    for (ite = this -> reader -> tree_entries.begin(); ite != this -> reader -> tree_entries.end(); ++ite){
+    std::map<std::string, std::map<std::string, long>>::iterator ite = this -> reader -> tree_entries.begin(); 
+    for (; ite != this -> reader -> tree_entries.end(); ++ite){
         long num_ev = ite -> second[test_tree];
         if (!num_ev){continue;}
         if (thevnt[idx] < avg){

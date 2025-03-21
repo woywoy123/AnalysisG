@@ -1,8 +1,8 @@
+from AnalysisG import Analysis
 from AnalysisG.selections.neutrino.combinatorial import Combinatorial
 from AnalysisG.selections.neutrino.validation import Validation
 
 from AnalysisG.events.bsm_4tops import BSM4Tops
-from AnalysisG import Analysis
 
 from combinatorial.figures import double_neutrino
 from validation.figures import nunuValidation

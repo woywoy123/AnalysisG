@@ -1,4 +1,4 @@
-set(HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/include/generators/analysis.h)
+set(HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/include/AnalysisG/analysis.h)
 set(SOURCE_FILES 
     ${CMAKE_CURRENT_SOURCE_DIR}/analysis.cxx
     ${CMAKE_CURRENT_SOURCE_DIR}/event_build.cxx
@@ -9,7 +9,7 @@ set(SOURCE_FILES
 )
 
 add_library(canalysis STATIC ${SOURCE_FILES})
-target_include_directories(canalysis PRIVATE include/generators)
+target_include_directories(canalysis PRIVATE include/AnalysisG)
 target_include_directories(canalysis PUBLIC include)
 target_link_libraries(canalysis PUBLIC 
     csampletracer cstructs cdataloader 

@@ -2,10 +2,11 @@
 #define TYPECASTING_VECTOR_CAST_H
 
 #include <TInterpreter.h>
+#include <TSystem.h>
+#include <TTree.h>
+#include <tools/cfg.h>
 #include <torch/torch.h>
 #include <vector>
-#include <TTree.h>
-
 
 template <typename G>
 std::vector<std::vector<G>> chunking(std::vector<G>* v, int N){
@@ -120,6 +121,7 @@ struct variable_t {
         void add_data(std::vector<g>* type, torch::Tensor* data, std::vector<signed long>* s, std::string* varname, p prim){
             tensor_to_vector(data, type, s, prim); 
             if (this -> tb){return;}
+            gSystem -> cd(dict_path); 
             if (!this -> tt){return add_to_dict(type);}
             this -> tb = this -> tt -> Branch(varname -> c_str(), type); 
             this -> tt -> AddBranchToCache(this -> tb, true); 
@@ -129,8 +131,17 @@ struct variable_t {
         void add_data(g* var, g* type){
             *type = *var; 
             if (this -> tb){return;}
-            if (!this -> tt){return add_to_dict(type);}
             this -> tb = this -> tt -> Branch(this -> variable_name.c_str(), type); 
+        }
+        
+        template <typename g>
+        void add_data(g* var, g* type, std::string* name, TTree* tr){
+            if (this -> tt){return this -> add_data(var, type);}
+            gSystem -> cd(dict_path); 
+            add_to_dict(var); 
+            this -> tt = tr; 
+            this -> variable_name = *name;
+            this -> add_data(var, type); 
         }
 };
 

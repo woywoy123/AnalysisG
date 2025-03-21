@@ -417,7 +417,7 @@ cdef class TH1F(BasePlotting):
     @property
     def IntegratedLuminosity(self): return self.ptr.integrated_luminosity
     @IntegratedLuminosity.setter
-    def IntegratedLuminosity(self, val): self.ptr.integrated_luminosity
+    def IntegratedLuminosity(self, val): self.ptr.integrated_luminosity = val
 
     @property
     def HistFill(self): return env(self.ptr.histfill)
@@ -552,7 +552,7 @@ cdef class TH1F(BasePlotting):
 
     cdef __build__(self):
         cdef dict labels = self.xLabels
-        cdef float _max, _min, norm
+        cdef float _max, _min
 
         if len(labels): pass
         elif self.set_xmin: _min = self.ptr.x_min
@@ -574,10 +574,10 @@ cdef class TH1F(BasePlotting):
         if not self.ptr.weights.size(): h.fill(self.ptr.x_data)
         elif len(labels): h.fill(list(labels), weight = self.ptr.weights)
         else: h.fill(self.ptr.x_data, weight = self.ptr.weights)
+        cdef float norm = float(sum(h.counts()))
+
+        if self.Density: h *= 1/(norm if norm != 0 else 1)
         if self.ApplyScaling: h *= self.scale_f()
-        if self.Density and h is not None:
-            norm = float(sum(h.counts()))
-            h *= 1/(norm if norm != 0 else 1)
         return h
 
     cdef dict __compile__(self, bool raw = False):

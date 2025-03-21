@@ -1,5 +1,5 @@
+from AnalysisG import Analysis
 from AnalysisG.core.lossfx import OptimizerConfig
-from AnalysisG.generators.analysis import Analysis
 from AnalysisG.events.bsm_4tops.event_bsm_4tops import BSM4Tops
 from AnalysisG.events.ssml_mc20.event_ssml_mc20 import SSML_MC20
 from AnalysisG.graphs.bsm_4tops import GraphTops, GraphChildren, GraphTruthJets, GraphTruthJetsNoNu, GraphJets, GraphJetsNoNu, GraphDetectorLep, GraphDetector

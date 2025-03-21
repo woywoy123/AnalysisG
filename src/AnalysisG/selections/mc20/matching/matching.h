@@ -1,21 +1,26 @@
 #ifndef MATCHING_H
 #define MATCHING_H
-
 #include <templates/selection_template.h>
 
-class particle: public particle_template
-{
-    public:
-        using particle_template::particle_template;
-        std::string root_hash = ""; 
+struct object_data_t {
+    int num_tops = 0; 
+    int num_ltop = 0; 
+    int num_htop = 0; 
+    std::vector<double> mass = {}; 
+
+    std::vector<int> num_jets = {}; 
+    std::vector<int> is_leptonic = {}; 
+    std::vector<int> is_hadronic = {}; 
+    std::vector<std::vector<int>> merged = {}; 
+    std::vector<std::vector<int>> pdgid = {}; 
 }; 
 
-struct packet_t {
-    std::vector<particle*> truth_tops;
-    std::vector<particle*> children_tops; 
-    std::vector<particle*> truth_jets; 
-    std::vector<particle*> jets_children; 
-    std::vector<particle*> jets_leptons; 
+struct buffer_t {
+    object_data_t top_partons;
+    object_data_t top_children; 
+    object_data_t top_truthjets; 
+    object_data_t top_jets_children; 
+    object_data_t top_jets_leptons; 
 }; 
 
 class matching: public selection_template
@@ -25,15 +30,13 @@ class matching: public selection_template
         ~matching(); 
         selection_template* clone() override; 
        
-        void collect(std::vector<particle_template*>* data, std::vector<particle*>* out, std::string hash_top); 
-
         void reference(event_template* ev);
         void experimental(event_template* ev); 
         void current(event_template* ev); 
 
         bool strategy(event_template* ev) override;
         void merge(selection_template* sl) override;
-        std::vector<packet_t> output; 
+        buffer_t data; 
 };
 
 #endif

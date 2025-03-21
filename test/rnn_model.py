@@ -1,7 +1,7 @@
 #import torch
 import AnalysisG
+from AnalysisG import Analysis
 from AnalysisG.core.lossfx import OptimizerConfig
-from AnalysisG.generators.analysis import Analysis
 from AnalysisG.events.bsm_4tops.event_bsm_4tops import BSM4Tops
 from AnalysisG.events import SSML_MC20
 from AnalysisG.graphs.bsm_4tops import *

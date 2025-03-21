@@ -1,5 +1,5 @@
+from AnalysisG import Analysis
 from AnalysisG.core.plotting import *
-from AnalysisG.generators import Analysis
 from AnalysisG.selections.example.met.met import MET
 from AnalysisG.selections.performance.topefficiency.topefficiency import TopEfficiency
 from AnalysisG.events.bsm_4tops import BSM4Tops

@@ -1,7 +1,7 @@
 import AnalysisG
+from AnalysisG import Analysis
 from AnalysisG.core import IO, MetaLookup, Data
 from AnalysisG.core.plotting import *
-from AnalysisG.generators import Analysis
 
 root = "/home/tnom6927/Downloads/mc16-full/"
 sets = [
