@@ -214,15 +214,12 @@ void analysis::build_inference(){
     std::vector<size_t> num_evn(device_tr.size(), 0); 
 
     dev_i = 0; 
-    std::map<std::string, int> dev_map; 
-    std::map<long, std::string> dev_thr; 
     for (itm = this -> model_inference.begin(); itm != this -> model_inference.end(); ++itm){
         std::string dev_n = itm -> second -> device; 
         if (device_tr[dev_n]){continue;}
         device_tr[dev_n] = true;
         titles[dev_i] = new std::string("Progress Device: " + std::string(dev_n)); 
         trans[dev_i]  = new std::thread(lamb, this -> loader, itm -> second -> m_option, &num_evn[dev_i], &handles[dev_i]); 
-        dev_map[dev_n] = 0; 
         ++dev_i; 
     }
 
@@ -239,19 +236,6 @@ void analysis::build_inference(){
         model_settings_t mds; 
         model_template* md = itm -> second; 
         md -> clone_settings(&mds);
-
-        int sm = 0; 
-        std::string dev_x; 
-        std::map<std::string, int>::iterator itx = dev_map.begin();
-        for (; itx != dev_map.end(); ++itx){
-            if (sm < itx -> second && !sm){continue;}
-            sm = itx -> second; 
-            dev_x = itx -> first; 
-        }
-        dev_thr[x] = dev_x; 
-        dev_map[dev_x] += 1; 
-        mds.model_device = dev_x; 
-
         md -> inference_mode = true; 
         if (x && !mdx){++its;}
 
@@ -307,12 +291,6 @@ void analysis::build_inference(){
                 batched_data[t] = nullptr; 
             }
         } 
-        for (size_t t(0); t < x; ++t){
-            if (th_prc[t]){continue;}
-            if (dev_thr[t] == "checked"){continue;}
-            dev_map[dev_thr[t]] -= 1; 
-            dev_thr[t] = "checked"; 
-        }
     } 
 
     monitor(&th_prc); 
