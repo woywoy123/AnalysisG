@@ -27,5 +27,5 @@ def auth_pyami():
         print("-> chmod 0400 <directory>/userkey.pem")
 
 try: from .core.analysis import Analysis
-except: pass 
+except: pass
 
