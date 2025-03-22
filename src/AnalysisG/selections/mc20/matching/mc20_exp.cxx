@@ -19,19 +19,17 @@ void matching::experimental(event_template* ev){
         if (!ch.size()){continue;}
 
         // ----------- matching children ---------- // 
-        std::vector<int> pdgid = {}; 
         std::vector<particle_template*> nu = {}, lep = {}; 
         for (size_t y(0); y < ch.size(); ++y){
             if (ch[y] -> is_nu  &&  nu.size() == 0){ nu.push_back(ch[y]);}
             if (ch[y] -> is_lep && lep.size() == 0){lep.push_back(ch[y]);}
-            pdgid.push_back(ch[y] -> pdgid); 
         }
 
         bool is_lepx = nu.size() > 0; 
         this -> data.top_partons.num_ltop +=  is_lepx;
         this -> data.top_partons.num_htop += !is_lepx;
 
-        this -> data.top_children.pdgid.push_back(pdgid);
+        this -> data.top_children.pdgid.push_back(this -> get_pdgid(&ch));
         this -> data.top_children.is_leptonic.push_back(int( is_lepx)); 
         this -> data.top_children.is_hadronic.push_back(int(!is_lepx)); 
         this -> data.top_children.mass.push_back(this -> sum(&ch));
@@ -41,7 +39,6 @@ void matching::experimental(event_template* ev){
         this -> data.top_children.num_htop += !is_lepx;
 
         // ---------- matching truth jets -------- //
-        pdgid = {}; 
         is_lepx = false; 
         int num_jets = 0; 
         std::vector<int> num_merged = {}; 
@@ -50,13 +47,10 @@ void matching::experimental(event_template* ev){
             particle_template* ptr = phys_truth[y]; 
             std::map<std::string, particle_template*> prnt = ptr -> parents; 
             if (!prnt.count(tpx -> hash)){continue;}
-
             tjets.push_back(ptr);
-            pdgid.push_back(ptr -> pdgid); 
-            if (ptr -> is_nu || ptr -> is_lep){is_lepx = true; continue;}
-
-            num_jets += 1; 
+            if (ptr -> is_lep){is_lepx = true; continue;}
             num_merged.push_back(int(prnt.size()));  
+            num_jets += 1; 
         }
 
         if (tjets.size()){
@@ -72,28 +66,25 @@ void matching::experimental(event_template* ev){
             this -> data.top_truthjets.num_jets.push_back(num_jets); 
             this -> data.top_truthjets.merged.push_back(num_merged); 
 
-            this -> data.top_truthjets.pdgid.push_back(pdgid); 
+            this -> data.top_truthjets.pdgid.push_back(this -> get_pdgid(&tjets)); 
             this -> data.top_truthjets.mass.push_back(this -> sum(&tjets)); 
         }
 
         // ---------- matching jets truth children -------- //
         num_jets = 0; 
-        pdgid = {}; 
         num_merged = {}; 
+        is_lepx = false; 
+
         std::vector<particle_template*> _jets = {}; 
         for (size_t y(0); y < phys_jets.size(); ++y){
             particle_template* ptr = phys_jets[y]; 
             std::map<std::string, particle_template*> prnt = ptr -> parents; 
             if (!prnt.count(tpx -> hash)){continue;}
-
-            pdgid.push_back(ptr -> pdgid); 
-            if (ptr -> is_nu + ptr -> is_lep){continue;}
+            if (ptr -> is_lep){is_lepx = true; continue;}
             _jets.push_back(phys_jets[y]); 
-
-            num_jets += 1; 
             num_merged.push_back(int(prnt.size()));  
+            num_jets += 1; 
         }
-        if (!_jets.size()){continue;}
 
         if (_jets.size()){
             merge_data(&_jets, &nu); 
@@ -110,12 +101,11 @@ void matching::experimental(event_template* ev){
             this -> data.top_jets_children.num_jets.push_back(num_jets); 
             this -> data.top_jets_children.merged.push_back(num_merged); 
 
-            this -> data.top_jets_children.pdgid.push_back(pdgid); 
+            this -> data.top_jets_children.pdgid.push_back(this -> get_pdgid(&_jets)); 
             this -> data.top_jets_children.mass.push_back(this -> sum(&_jets)); 
         }
 
         // ---------- matching jets leptons -------- //
-        pdgid = {}; 
         num_merged = {}; 
         num_jets = 0; 
         is_lepx = false;   
@@ -126,12 +116,9 @@ void matching::experimental(event_template* ev){
             std::map<std::string, particle_template*> prnt = ptr -> parents; 
             if (!prnt.count(tpx -> hash)){continue;}
             jets_lepton.push_back(ptr); 
-
-            pdgid.push_back(ptr -> pdgid); 
-            if (ptr -> is_nu + ptr -> is_lep){is_lepx = true; continue;}
-
-            num_jets += 1; 
+            if (ptr -> is_lep){is_lepx = true; continue;}
             num_merged.push_back(int(prnt.size()));  
+            num_jets += 1; 
         }
 
         if (jets_lepton.size()){
@@ -147,8 +134,8 @@ void matching::experimental(event_template* ev){
             this -> data.top_jets_leptons.num_jets.push_back(num_jets); 
             this -> data.top_jets_leptons.merged.push_back(num_merged); 
 
-            this -> data.top_jets_leptons.pdgid.push_back(pdgid); 
-            this -> data.top_jets_leptons.mass.push_back(this -> sum(&_jets)); 
+            this -> data.top_jets_leptons.pdgid.push_back(this -> get_pdgid(&jets_lepton)); 
+            this -> data.top_jets_leptons.mass.push_back(this -> sum(&jets_lepton)); 
         }
     }
 }

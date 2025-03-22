@@ -1,4 +1,4 @@
-#include "event.h"
+#include <exp_mc20/event.h>
 
 exp_mc20::exp_mc20(){
     this -> name = "experimental_mc20"; 
@@ -37,6 +37,21 @@ void exp_mc20::build(element_t* el){
 }
 
 void exp_mc20::CompileEvent(){
+    auto lamb = [](physics_truth* msp){
+        int pdg(0), mx(0); 
+        std::map<int, int> out;
+        std::map<int, int>::iterator itx; 
+        for (size_t x(0); x < msp -> partons.size(); ++x){out[msp -> partons[x]] += 1;}
+        for (itx = out.begin(); itx != out.end(); ++itx){
+            if (itx -> second < mx){continue;}
+            if (std::abs(itx -> first) == 6){continue;}
+            if (std::abs(itx -> first) == 24){continue;}
+            mx = itx -> second; pdg = itx -> first; 
+        }
+        return pdg; 
+    }; 
+
+
     std::map<int, top*> tops_ = this -> sort_by_index(&this -> m_tops); 
 
     std::vector<child*> children = {}; 
@@ -58,7 +73,8 @@ void exp_mc20::CompileEvent(){
         physics_truth* c = phystru[x]; 
         for (size_t t(0); t < c -> top_index.size(); ++t){
             int ti = c -> top_index[t]; 
-            if (ti < 0){continue;}
+            c -> pdgid = lamb(c); 
+            if (ti < 0 || c -> pdgid == 0){continue;}
             c -> register_parent(tops_[ti]);
         }
     } 
@@ -80,6 +96,7 @@ void exp_mc20::CompileEvent(){
         std::map<double, physics_detector*> maps = {}; 
         for (size_t f(0); f < physdet.size(); ++f){maps[prt -> DeltaR(physdet[f])] = physdet[f];}
 
+        if (maps.size()){continue;}
         std::map<double, physics_detector*>::iterator itx = maps.begin(); 
         if (itx -> first > 0.0001){continue;}
 

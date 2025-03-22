@@ -92,16 +92,7 @@ physics_detector::physics_detector(){
     this -> add_leaf("index"    , "_index"); 
     this -> add_leaf("top_index", "_top_index"); 
     this -> add_leaf("parton"   , "_partontruthlabel"); 
-    this -> add_leaf("type"     , "_type"); 
-    this -> add_leaf("cone"     , "_conetruthlabel"); 
     this -> apply_type_prefix(); 
-
-    this -> is_jet.set_getter(this -> get_type_jet); 
-    this -> is_lepton.set_getter(this -> get_type_lepton);
-    this -> is_photon.set_getter(this -> get_type_photon); 
-    this -> is_jet.set_object(this); 
-    this -> is_lepton.set_object(this);
-    this -> is_photon.set_object(this); 
 }
 
 physics_detector::~physics_detector(){}
@@ -110,38 +101,21 @@ void physics_detector::build(std::map<std::string, particle_template*>* prt, ele
     std::vector<physics_detector*> tps; 
     pmu(&tps, el); 
 
-    std::vector<int> _index, parton, cone, ch; 
+    std::vector<int> _index, parton, ch; 
     el -> get("charge", &ch); 
-    el -> get("cone"  , &cone); 
     el -> get("index" , &_index); 
     el -> get("parton", &parton); 
 
-    std::vector<std::vector<int>> _top_index, _type; 
+    std::vector<std::vector<int>> _top_index; 
     el -> get("top_index", &_top_index); 
-    el -> get("type"     , &_type); 
 
     for (size_t x(0); x < tps.size(); ++x){
         tps[x] -> charge    = ch[x]; 
         tps[x] -> index     = _index[x]; 
         tps[x] -> top_index = _top_index[x]; 
-
-        tps[x] -> cone_label     = cone[x]; 
-        tps[x] -> parton_label   = parton[x]; 
-        tps[x] -> particle_type  = _type[x]; 
+        tps[x] -> pdgid     = parton[x]; 
         (*prt)[std::string(tps[x] -> hash)] = tps[x]; 
     }
-}
-
-void physics_detector::get_type_jet(bool* val, physics_detector* p){
-    *val = p -> particle_type[0] == 1; 
-}
-
-void physics_detector::get_type_lepton(bool* val, physics_detector* p){
-    *val = p -> particle_type[1] == 1; 
-}
-
-void physics_detector::get_type_photon(bool* val, physics_detector* p){
-    *val = p -> particle_type[2] == 1; 
 }
 
 physics_truth::physics_truth(){
@@ -153,19 +127,11 @@ physics_truth::physics_truth(){
     this -> add_leaf("charge", "_charge"); 
     
     this -> add_leaf("index" , "_index"); 
-    this -> add_leaf("cone"  , "_conetruthlabel"); 
     this -> add_leaf("parton", "_partontruthlabel"); 
 
-    this -> add_leaf("type"     , "_type"); 
+    this -> add_leaf("type"     , "_type");
     this -> add_leaf("top_index", "_top_index"); 
     this -> apply_type_prefix(); 
-
-    this -> is_jet.set_getter(this -> get_type_jet); 
-    this -> is_lepton.set_getter(this -> get_type_lepton);
-    this -> is_photon.set_getter(this -> get_type_photon); 
-    this -> is_jet.set_object(this); 
-    this -> is_lepton.set_object(this);
-    this -> is_photon.set_object(this); 
 }
 
 physics_truth::~physics_truth(){}
@@ -174,40 +140,25 @@ void physics_truth::build(std::map<std::string, particle_template*>* prt, elemen
     std::vector<physics_truth*> tps; 
     pmu(&tps, el); 
 
-    std::vector<int> _index, parton, cone, ch; 
+    std::vector<int> _index, parton, ch; 
     el -> get("charge", &ch); 
-    el -> get("cone"  , &cone); 
     el -> get("index" , &_index); 
     el -> get("parton", &parton); 
 
     std::vector<std::vector<int>> _top_index, _type; 
     el -> get("top_index", &_top_index); 
-    el -> get("type"     , &_type); 
+    el -> get("type", &_type); 
 
     for (size_t x(0); x < tps.size(); ++x){
+        if (!_type[x].size()){delete tps[x]; tps[x] = nullptr; continue;}
         tps[x] -> charge    = ch[x]; 
         tps[x] -> index     = _index[x]; 
         tps[x] -> top_index = _top_index[x]; 
-
-        tps[x] -> pdgid         = parton[x]; 
-        tps[x] -> cone_label    = cone[x]; 
-        tps[x] -> particle_type = _type[x]; 
+        tps[x] -> pdgid     = parton[x]; 
+        tps[x] -> partons   = _type[x]; 
         (*prt)[std::string(tps[x] -> hash)] = tps[x]; 
     }
 }
-
-void physics_truth::get_type_jet(bool* val, physics_truth* p){
-    *val = p -> particle_type[0] == 1; 
-}
-
-void physics_truth::get_type_lepton(bool* val, physics_truth* p){
-    *val = p -> particle_type[1] == 1; 
-}
-
-void physics_truth::get_type_photon(bool* val, physics_truth* p){
-    *val = p -> particle_type[2] == 1; 
-}
-
 
 jet::jet(){
     this -> type = "jet"; 
@@ -238,10 +189,9 @@ void jet::build(std::map<std::string, particle_template*>* prt, element_t* el){
     el -> get("parton", &prtn); 
     for (int x(0); x < tps.size(); ++x){
         jet* p     = tps[x]; 
-
         p -> index = x; 
         p -> flav  = fl[x]; 
-        p -> label = prtn[x]; 
+        p -> pdgid = prtn[x]; 
         (*prt)[std::string(p -> hash)] = p; 
     }
 }

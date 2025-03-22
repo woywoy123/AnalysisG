@@ -64,10 +64,17 @@ void matching::merge(selection_template* sl){
     this -> write(&slt -> data.top_jets_leptons.merged     , "jl_merged_top_jets"); 
 }
 
+std::vector<int> matching::get_pdgid(std::vector<particle_template*>* prt){
+    std::vector<int> out; 
+    for (size_t x(0); x < prt -> size(); ++x){out.push_back((*prt)[x] -> pdgid);}
+    return out; 
+}
+
+
 bool matching::strategy(event_template* ev){
     std::string evnt = ev -> name; 
     if (evnt == "experimental_mc20"){this -> experimental(ev);}
-//    if (evnt == "ssml_mc20"){this -> current(ev);}
-//    if (evnt == "bsm_4tops"){this -> reference(ev);}
+    if (evnt == "ssml_mc20"){this -> current(ev);}
+    if (evnt == "bsm_4tops"){this -> reference(ev);}
     return true; 
 }

@@ -36,6 +36,10 @@ class matching: public selection_template
 
         bool strategy(event_template* ev) override;
         void merge(selection_template* sl) override;
+
+        std::vector<int> get_pdgid(std::vector<particle_template*>* prt); 
+
+
         buffer_t data; 
 };
 

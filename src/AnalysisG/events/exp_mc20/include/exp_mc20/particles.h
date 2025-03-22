@@ -59,21 +59,8 @@ class physics_detector: public particle_template
 
         std::vector<int> top_index = {}; 
 
-        int parton_label = 0; 
-        int cone_label = 0; 
-
-        cproperty<bool, physics_detector> is_jet; 
-        cproperty<bool, physics_detector> is_lepton; 
-        cproperty<bool, physics_detector> is_photon; 
-
         particle_template* clone() override; 
         void build(std::map<std::string, particle_template*>* prt, element_t* el) override; 
-    
-    private:
-        std::vector<int> particle_type = {}; 
-        static void get_type_jet(bool*   , physics_detector*); 
-        static void get_type_lepton(bool*, physics_detector*); 
-        static void get_type_photon(bool*, physics_detector*); 
 }; 
 
 class physics_truth: public particle_template
@@ -83,22 +70,10 @@ class physics_truth: public particle_template
         virtual ~physics_truth(); 
 
         std::vector<int> top_index = {}; 
-
-        int parton_label = 0; 
-        int cone_label = 0; 
-
-        cproperty<bool, physics_truth> is_jet; 
-        cproperty<bool, physics_truth> is_lepton; 
-        cproperty<bool, physics_truth> is_photon; 
+        std::vector<int> partons = {}; 
 
         particle_template* clone() override; 
         void build(std::map<std::string, particle_template*>* prt, element_t* el) override; 
-    
-    private:
-        std::vector<int> particle_type = {}; 
-        static void get_type_jet(bool*   , physics_truth*); 
-        static void get_type_lepton(bool*, physics_truth*); 
-        static void get_type_photon(bool*, physics_truth*); 
 }; 
 
 class electron: public particle_template
