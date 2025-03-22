@@ -103,7 +103,7 @@ void notification::progressbar3(std::vector<size_t>* threads, std::vector<size_t
     float prgs = 0; 
     size_t cwhite = 0; 
     while (prgs < 1.0){
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
         size_t xl = n.sum(l);  
         size_t xp = n.sum(threads);
         if (!xl){continue;}

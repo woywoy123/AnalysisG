@@ -61,7 +61,6 @@ void execution(
             delete content; content = nullptr; 
             delete tmp; tmp = nullptr; 
             (*msg) = "\033[1;33m (Already Completed) " + (*msg) + "\033[0m"; 
-            std::this_thread::sleep_for(std::chrono::seconds(1));
             *prg = ds; 
             return;
         }
@@ -156,7 +155,6 @@ void execution(
     delete f;
     delete content; content = nullptr; 
     delete md; md = nullptr; 
-    std::this_thread::sleep_for(std::chrono::seconds(1));
     (*prg) = ds;
 }
 

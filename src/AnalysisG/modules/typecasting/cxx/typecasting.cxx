@@ -1,4 +1,9 @@
 #include <vector_cast.h>
+#include <filesystem>
+
+variable_t::variable_t(){
+    this -> pth = std::filesystem::canonical("./").string(); 
+}
 
 std::vector<signed long> tensor_size(torch::Tensor* inpt){
     c10::IntArrayRef dims = inpt -> sizes();

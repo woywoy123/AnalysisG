@@ -72,6 +72,8 @@ void tensor_to_vector(torch::Tensor* data, std::vector<g>* out){
 
 struct variable_t {
     public:
+        variable_t(); 
+
         void flush();
         void process(torch::Tensor* data, std::string* varname, TTree* tr);
 
@@ -94,6 +96,7 @@ struct variable_t {
         void process(bool*   data, std::string* varname, TTree* tr); 
 
         std::string variable_name = ""; 
+        std::string pth = "./"; 
 
     private: 
         std::vector<std::vector<float>>  vvf = {}; 
@@ -121,8 +124,13 @@ struct variable_t {
         void add_data(std::vector<g>* type, torch::Tensor* data, std::vector<signed long>* s, std::string* varname, p prim){
             tensor_to_vector(data, type, s, prim); 
             if (this -> tb){return;}
-            gSystem -> cd(dict_path); 
-            if (!this -> tt){return add_to_dict(type);}
+
+            if (!this -> tt){
+                gSystem -> cd(dict_path); 
+                add_to_dict(type);
+                gSystem -> cd(this -> pth.c_str()); 
+                return; 
+            }
             this -> tb = this -> tt -> Branch(varname -> c_str(), type); 
             this -> tt -> AddBranchToCache(this -> tb, true); 
         }
@@ -138,7 +146,8 @@ struct variable_t {
         void add_data(g* var, g* type, std::string* name, TTree* tr){
             if (this -> tt){return this -> add_data(var, type);}
             gSystem -> cd(dict_path); 
-            add_to_dict(var); 
+            add_to_dict(var);
+            gSystem -> cd(this -> pth.c_str()); 
             this -> tt = tr; 
             this -> variable_name = *name;
             this -> add_data(var, type); 
