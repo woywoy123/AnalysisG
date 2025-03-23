@@ -1,7 +1,16 @@
 from AnalysisG.core.plotting import TH1F, TH2F
 from AnalysisG.core.io import IO
 
-def mrg(p, m = 7): return "".join([" "]*(m - len(str(p)))) + str(p)
+def mag(p, m = 8): return "".join([" "]*(m - len(str(p)))) + p
+
+def mrg(p, m = 7): 
+    strx = ""
+    try: strx = str("%." + str(m-2) + "f") % p
+    except: strx = str(p)
+    if "." not in strx: l = 0
+    else: l = len(strx.split(".")[0])
+    return "".join([" "]*(m - len(strx))) + str(strx)
+
 def colors(cl = ["red", "green", "orange", "purple", "pink"]): return iter(cl)
 def count(data): return {c : sum([c == t for t in data]) for c in list(set(data))}
 def countv(data):  return {c : {j : len(data[c][j]) for j in data[c]} for c in data}
@@ -10,9 +19,9 @@ def loss(t,  f, dm = None):
     lx = ((t - f) / t)*100.0
     if lx < 0: lx = 100 + abs(lx)
     if dm is None: return lx
-    return mrg(round(lx, dm), dm + 4)
+    return mrg(round(lx, dm), dm + 5)
 
-def pc(t, f, m = None): return mrg(100*f / t) if m is None else mrg(100*round(f / t, m), m)
+def pc(t, f, m = None): return mrg(100*f / t) if m is None else mrg(100 * f / t, m)
 
 def _title(level, fancy): return level + "\n (" + fancy + ")"
 def safe(data, key):
@@ -86,7 +95,6 @@ def template(xdata, title, color = None, pth = None, params = {}):
     if color is not None: thl.Color = color
     thl.xMin = 0
     thl.Alpha = 0.5
-    thl.ErrorBars = True
     thl.Title = title
     for i in params: setattr(thl, i, params[i])
     return thl
@@ -104,6 +112,7 @@ def top_decay_stats(data, ntop, ltop, htop, level, fancy, mode, plt):
     thl.xMin = 0
     thl.xMax = 6
     thl.Filename = "num-tops"
+    thl.dump()
     thl.SaveFigure()
 
     thl = template(num_ltop, "Leptonic", "blue")
@@ -127,6 +136,7 @@ def top_decay_stats(data, ntop, ltop, htop, level, fancy, mode, plt):
     tpl.xBins = 5
     tpl.xStep = 1
     tpl.Filename = "top-decay-mode"
+    tpl.dump()
     tpl.SaveFigure()
     return {"ntops" : init_tops, "leptonic" : init_ltop, "hadronic": init_htop, "counts": count(num_tops)}
 
@@ -134,15 +144,16 @@ def top_mass_dist(data, prefix, level, fancy, mode, plt, _min, _max, _bins, _ste
     ml_top = make(data, prefix if not "p" else None, "isleptonic")
     mh_top = make(data, prefix if not "p" else None, "ishadronic")
     m_top  = make(data, prefix, "top_mass")
-
     if not plt: return 
+
     ml_top = sum(ml_top, []) if ml_top is not None else []
     mh_top = sum(mh_top, []) if mh_top is not None else []
     m_top  = sum(m_top, [])
 
     _mode = {
-            "Hadronic" : [m for m, c in zip(m_top, mh_top) if c], 
-            "Leptonic" : [m for m, c in zip(m_top, ml_top) if c], 
+            "All"      : [m for m in m_top if m >= _min and m <= _max],
+            "Hadronic" : [m for m, c in zip(m_top, mh_top) if c and m >= _min and m <= _max], 
+            "Leptonic" : [m for m, c in zip(m_top, ml_top) if c and m >= _min and m <= _max], 
             "Debug"    : [m for m, l, h in zip(m_top, ml_top, mh_top) if (l+h) == 0]
     }
     if len(_mode["Debug"]): print("DEBUG!!!"); exit()
@@ -153,7 +164,7 @@ def top_mass_dist(data, prefix, level, fancy, mode, plt, _min, _max, _bins, _ste
 
     thm = template(None, "Invariant Top Mass Distribution at " + _title(level, fancy), "blue", mode)
     if len(hist): thm.Histograms = hist
-    if not len(hist): thm.xData = m_top
+    if not len(hist): thm.xData = _mode["All"]
     thm.Overflow = True
     thm.xTitle = "Top Mass (GeV)"
     thm.yTitle = "Number of Tops / " + str((_max - _min)/_bins) + " GeV"
@@ -162,6 +173,7 @@ def top_mass_dist(data, prefix, level, fancy, mode, plt, _min, _max, _bins, _ste
     thm.xStep = _step
     thm.xBins = _bins
     thm.Filename = "top-mass"
+    thm.dump()
     thm.SaveFigure()
 
 def constrain_top_mass(data, prefix, level, fancy, mode, plt, _min, _max, _bins, _step, constr_fx):
@@ -199,6 +211,7 @@ def constrain_top_mass(data, prefix, level, fancy, mode, plt, _min, _max, _bins,
     thm.xStep = _step
     thm.xBins = _bins
     thm.Filename = "top-mass-pdgid-leptonic-" + constr_fx.__name__
+    thm.dump()
     thm.SaveFigure()
 
     hist = [template(hadronic[k], r"$" + k + "$", None, None, {"ErrorBars" : False}) for k in hadronic]
@@ -214,6 +227,7 @@ def constrain_top_mass(data, prefix, level, fancy, mode, plt, _min, _max, _bins,
     thm.xStep = _step
     thm.xBins = _bins
     thm.Filename = "top-mass-pdgid-hadronic-" + constr_fx.__name__
+    thm.dump()
     thm.SaveFigure()
     return data
 
@@ -261,8 +275,6 @@ def constrain_top_njets(data, prefix, level, fancy, mode, plt, _min, _max, _bins
             "xMax" : _max, "xMin" : _min, "xStep": _step, "xBins" : _bins
     }
 
-
-
     njets_udr, njets_ovr = get_overflow(njets_tops, _max, _min)
     ntops_udr, ntops_ovr = get_overflow(ntops_tops, _max, _min)
 
@@ -277,6 +289,7 @@ def constrain_top_njets(data, prefix, level, fancy, mode, plt, _min, _max, _bins
     thm = template(None, "Invariant Top Mass Partitioned into Jet Multiplicity at " + _title(level, fancy), None, mode, prmx)
     thm.Histograms = hist
     thm.Filename = "top-mass-njets-all"
+    thm.dump()
     thm.SaveFigure()
 
     coli = colors()
@@ -284,6 +297,7 @@ def constrain_top_njets(data, prefix, level, fancy, mode, plt, _min, _max, _bins
     thm = template(None, "Invariant Top Mass Partitioned into Jet Multiplicity (Leptonic) at " + _title(level, fancy), None, mode, prmx)
     thm.Histograms = hist
     thm.Filename = "top-mass-njets-leptonic"
+    thm.dump()
     thm.SaveFigure()
 
     coli = colors()
@@ -291,6 +305,7 @@ def constrain_top_njets(data, prefix, level, fancy, mode, plt, _min, _max, _bins
     thm = template(None, "Invariant Top Mass Partitioned into Jet Multiplicity (Hadronic) at " + _title(level, fancy), None, mode, prmx)
     thm.Histograms = hist
     thm.Filename = "top-mass-njets-hadronic"
+    thm.dump()
     thm.SaveFigure()
 
     coli = colors()
@@ -298,6 +313,7 @@ def constrain_top_njets(data, prefix, level, fancy, mode, plt, _min, _max, _bins
     thm = template(None, "Invariant Top Mass Partitioned into Merged Top Multiplicity at " + _title(level, fancy), None, mode, prmx)
     thm.Histograms = hist
     thm.Filename = "top-mass-ntops-all"
+    thm.dump()
     thm.SaveFigure()
 
     coli = colors()
@@ -305,6 +321,7 @@ def constrain_top_njets(data, prefix, level, fancy, mode, plt, _min, _max, _bins
     thm = template(None, "Invariant Top Mass Partitioned into Merged Top Multiplicity (Leptonic) at " + _title(level, fancy), None, mode, prmx)
     thm.Histograms = hist
     thm.Filename = "top-mass-ntops-leptonic"
+    thm.dump()
     thm.SaveFigure()
 
     coli = colors()
@@ -312,6 +329,7 @@ def constrain_top_njets(data, prefix, level, fancy, mode, plt, _min, _max, _bins
     thm = template(None, "Invariant Top Mass Partitioned into Merged Top Multiplicity (Hadronic) at " + _title(level, fancy), None, mode, prmx)
     thm.Histograms = hist
     thm.Filename = "top-mass-ntops-hadronic"
+    thm.dump()
     thm.SaveFigure()
     return out
 
@@ -335,6 +353,8 @@ def routing(mode):
     if mode == "top-partons" : return ["p_ntops", "p_ltops", "p_htops", "p_top_mass"]
     if mode == "top-children": return ["c_ntops", "c_ltops", "c_htops", "c_top_mass", "c_isleptonic", "c_ishadronic", "c_pdgid"]
     if mode == "top-truthjet": return ["tj_ntops", "tj_ltops", "tj_htops", "tj_top_mass", "tj_isleptonic", "tj_ishadronic", "tj_pdgid", "tj_num_jets", "tj_merged_top_jets"]
+    if mode == "top-jets-children": return ["jc_ntops", "jc_ltops", "jc_htops", "jc_top_mass", "jc_isleptonic", "jc_ishadronic", "jc_pdgid", "jc_num_jets", "jc_merged_top_jets"]
+    if mode == "top-jets-leptons":  return ["jl_ntops", "jl_ltops", "jl_htops", "jl_top_mass", "jl_isleptonic", "jl_ishadronic", "jl_pdgid", "jl_num_jets", "jl_merged_top_jets"]
     return []
 
 def fetch_data(data, level): return {i : data[i] for i in routing(level)}

@@ -110,6 +110,10 @@ void physics_detector::build(std::map<std::string, particle_template*>* prt, ele
     el -> get("top_index", &_top_index); 
 
     for (size_t x(0); x < tps.size(); ++x){
+        bool skp = false; 
+        for (size_t j(0); j < _top_index[x].size(); ++j){skp += _top_index[x][j] > -1;}
+        if (!skp){delete tps[x]; tps[x] = nullptr; continue;}
+
         tps[x] -> charge    = ch[x]; 
         tps[x] -> index     = _index[x]; 
         tps[x] -> top_index = _top_index[x]; 
@@ -243,7 +247,7 @@ void electron::build(std::map<std::string, particle_template*>* prt, element_t* 
         p -> is_tight    = (bool)tight[x]; 
         p -> true_type   = typ[x]; 
         p -> true_origin = org[x]; 
-        p -> pdgid       = 11 * _charge[x]; 
+        p -> pdgid       = int(11 * _charge[x]); 
         (*prt)[std::string(p -> hash)] = p;
     }
 }
@@ -297,7 +301,7 @@ void muon::build(std::map<std::string, particle_template*>* prt, element_t* el){
         p -> is_tight    = (bool)tight[x]; 
         p -> true_type   = typ[x]; 
         p -> true_origin = org[x]; 
-        p -> pdgid       = 13 * _charge[x]; 
+        p -> pdgid       = int(13 * _charge[x]); 
         (*prt)[std::string(p -> hash)] = p;
     }
 }

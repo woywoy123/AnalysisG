@@ -10,6 +10,9 @@ cdef class TopMatching(SelectionTemplate):
     def __cinit__(self):
         self.ptr = new matching()
         self.tt = <matching*>self.ptr
-
     def __dealloc__(self): del self.tt
 
+    @property
+    def EnergyLimit(self): return self.tt.energy_constraint
+    @EnergyLimit.setter
+    def EnergyLimit(self, val): self.tt.energy_constraint = val

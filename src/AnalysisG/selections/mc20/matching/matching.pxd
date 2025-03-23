@@ -10,6 +10,7 @@ from AnalysisG.core.particle_template cimport *
 cdef extern from "matching.h":
     cdef cppclass matching(selection_template):
         matching() except +
+        double energy_constraint
 
 cdef class TopMatching(SelectionTemplate):
     cdef matching* tt

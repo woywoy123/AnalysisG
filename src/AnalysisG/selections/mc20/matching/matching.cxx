@@ -1,7 +1,11 @@
 #include "matching.h"
 
 matching::matching(){this -> name = "matching";}
-selection_template* matching::clone(){return (selection_template*)new matching();}
+selection_template* matching::clone(){
+    matching* ptr = new matching(); 
+    ptr -> energy_constraint = this -> energy_constraint;     
+    return (selection_template*)ptr; 
+}
 matching::~matching(){}
 
 void matching::merge(selection_template* sl){
@@ -63,6 +67,71 @@ void matching::merge(selection_template* sl){
     this -> write(&slt -> data.top_jets_leptons.num_jets   , "jl_num_jets"); 
     this -> write(&slt -> data.top_jets_leptons.merged     , "jl_merged_top_jets"); 
 }
+
+void matching::dump(
+        object_data_t* data, std::vector<particle_template*>* obj, 
+        bool is_lepx, int* num_jets, std::vector<int>* num_merged
+){
+    if (!obj -> size()){return;}
+    data -> num_tops += 1; 
+    data -> num_ltop += is_lepx; 
+    data -> num_htop += !is_lepx; 
+    
+    data -> is_leptonic.push_back(int( is_lepx)); 
+    data -> is_hadronic.push_back(int(!is_lepx)); 
+    
+    if (num_jets){data -> num_jets.push_back(*num_jets);}
+    if (num_merged){data -> merged.push_back(*num_merged);}
+    
+    data -> pdgid.push_back(this -> get_pdgid(obj)); 
+    data -> mass.push_back(this -> sum(obj)); 
+}
+
+bool matching::match_obj(
+        std::vector<particle_template*>* vx, std::vector<particle_template*>* out, 
+        std::string hash_, std::vector<int>* num_merged, int* num_jets, bool exl_lep
+){
+
+    auto lmb = [](std::map<std::string, double>* in){
+            std::vector<double> out = {}; 
+            std::map<std::string, double>::iterator itr = in -> begin(); 
+            for (; itr != in -> end(); ++itr){out.push_back(itr -> second);}
+            return out; 
+    }; 
+
+    *num_jets = 0; 
+    out -> clear(); 
+    num_merged -> clear(); 
+    bool is_lepx = false; 
+    std::map<std::string, double> frac = {}; 
+    std::map<std::string, particle_template*> tmp = {}; 
+
+    for (size_t y(0); y < vx -> size(); ++y){
+        particle_template* ptr = (*vx)[y]; 
+        std::map<std::string, particle_template*> prnt = ptr -> parents; 
+        if (!prnt.count(hash_)){continue;}
+        if (exl_lep && ptr -> is_lep){is_lepx = true; continue;}
+        if (ptr -> is_lep){is_lepx = true;}
+        std::string hashx = ptr -> hash; 
+        frac[hashx] = ptr -> e / 1000.0; 
+        tmp[hashx] = ptr;
+    }
+    std::vector<double> energy_frac = lmb(&frac); 
+    std::vector<particle_template*> tmp_v = this -> vectorize(&tmp);
+
+    double tl = this -> tools::sum(&energy_frac);
+    for (size_t y(0); y < energy_frac.size(); ++y){
+        particle_template* tx = tmp_v[y]; 
+        std::map<std::string, particle_template*> prnt = tx -> parents; 
+        if (energy_frac[y] / tl < this -> energy_constraint){continue;}
+        out -> push_back(tx); 
+        if (tx -> is_lep){continue;}
+        num_merged -> push_back(int(prnt.size()));  
+        *num_jets += 1; 
+    }
+    return is_lepx; 
+}
+
 
 std::vector<int> matching::get_pdgid(std::vector<particle_template*>* prt){
     std::vector<int> out; 

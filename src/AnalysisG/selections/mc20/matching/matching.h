@@ -33,12 +33,20 @@ class matching: public selection_template
         void reference(event_template* ev);
         void experimental(event_template* ev); 
         void current(event_template* ev); 
+        void dump(
+            object_data_t* data, std::vector<particle_template*>* obj, bool is_lepx, 
+            int* num_jets = nullptr, std::vector<int>* num_merged = nullptr
+        );
+        bool match_obj(
+            std::vector<particle_template*>* vx, std::vector<particle_template*>* out, 
+            std::string hash_, std::vector<int>* num_merged, int* num_jets, bool exl_lep
+        ); 
+        std::vector<int> get_pdgid(std::vector<particle_template*>* prt); 
 
         bool strategy(event_template* ev) override;
         void merge(selection_template* sl) override;
 
-        std::vector<int> get_pdgid(std::vector<particle_template*>* prt); 
-
+        double energy_constraint = -1; 
 
         buffer_t data; 
 };

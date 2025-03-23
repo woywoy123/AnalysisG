@@ -2,6 +2,7 @@ import torch
 import vector
 import inspect
 import json
+import pickle
 device = "cpu"
 
 def create_vector_cartesian(px, py, pz, e): return vector.obj(px = px, py = py, pz = pz, E = e)
@@ -141,4 +142,58 @@ def loads( n ):
 
 def loadDouble(): return loads("Double")
 def loadSingle(): return loads("Single")
+
+class Event:
+    def __init__(self):
+        self.edge_index = []
+        self.edge_scores = []
+        self.bin_top = []
+        self.bin_top_matrix = []
+        self.Mij = []
+        self.PR = {}
+
+    def parse(self):
+        self.edge_index         = eval("".join(self.edge_index))         
+        self.edge_scores        = eval("".join(self.edge_scores))        
+        self.bin_top            = eval("".join(self.bin_top))            
+        self.bin_top_matrix     = eval("".join(self.bin_top_matrix))     
+        self.Mij                = eval("".join(self.Mij))                
+        self.PR                 = {i : eval("".join(self.PR[i])) for i in self.PR}
+
+
+def loadsPage(): 
+    try: return pickle.load(open("data.pkl", "rb"))
+    except: interpret(); loadsPage()
+
+def interpret(num = None, pth = "log.txt"):
+    pr_i = None
+    event_i = -1
+    save = {}
+    nxt = ""
+    x = open(pth, "rb").readlines()
+    for i in x:
+
+        s = i.decode("utf-8").replace("\n", "")
+        if "EVENT"           in s: event_i +=1 
+        if num is not None and num <= event_i: break
+        if "EDGE INDEX"      in s: nxt = "EDGE INDEX"
+        if "EDGE SCORES"     in s: nxt = "EDGE SCORES"
+        if "BIN TOP ="       in s: nxt = "BIN TOP"
+        if "BIN TOP MATRIX"  in s: nxt = "BIN TOP MATRIX"
+        if "Mij"             in s: nxt = "Mij"
+        if "pr" in s or "PR" in s: nxt = s
+        if "==" in s or "--" in s: continue
+        if "***"             in s: 
+            nxt = ""
+            save[event_i] = Event()
+    
+        if nxt == "EDGE INDEX":      save[event_i].edge_index     += [s]
+        if nxt == "EDGE SCORES":     save[event_i].edge_scores    += [s]
+        if nxt == "BIN TOP":         save[event_i].bin_top        += [s]
+        if nxt == "BIN TOP MATRIX":  save[event_i].bin_top_matrix += [s]
+        if nxt == "Mij":             save[event_i].Mij            += [s]
+        if "pr" in nxt or "PR" in nxt: save[event_i].PR[nxt.replace("-", "").split("_")[-1].replace(" ","")] = s
+        
+    for i in save: save[i].parse()
+    pickle.dump(save, open("data.pkl", "wb"))    
 

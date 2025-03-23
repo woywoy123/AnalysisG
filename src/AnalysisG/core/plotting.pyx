@@ -19,6 +19,8 @@ import boost_histogram as bh
 import mplhep as hep
 import numpy as np
 import random
+import pathlib
+import pickle
 
 def ratio(H1, H2, axis, ylabel = "Ratio", normalize = False, yerror = False):
     cdef dict out = {}
@@ -131,10 +133,31 @@ cdef class BasePlotting:
             except AttributeError: continue
 
     def __reduce__(self):
+        cdef bool cls
+        cdef dict out = {"data" : {}}
         cdef list keys = [i for i in self.__dir__() if not i.startswith("__")]
-        cdef dict out = {}
-        out["data"] = {i : getattr(self, i) for i in keys if not callable(getattr(self, i))}
+        for i in keys:
+            try: cls = callable(getattr(self, i))
+            except: cls = False
+            if cls: continue
+            try: out["data"][i] = getattr(self, i)
+            except: pass
         return self.__class__, (out,)
+
+    def dump(self, str path = "", str name = ""):
+        if not len(name): name = env(self.ptr.filename)
+        if not len(path): path = env(self.ptr.output_path)
+        pathlib.Path(path).mkdir(parents = True, exist_ok = True)
+        try: pickle.dump(self, open(path + "/" + name + ".pkl", "wb"))
+        except OSError: print("Failed to save the Plotting Object")
+
+    def load(self, str path = "", str name = ""):
+        if not len(name): name = env(self.ptr.filename)
+        if not len(path): path = env(self.ptr.output_path)
+        try: return pickle.load(open(path + "/" + name + ".pkl", "rb"))
+        except OSError: print("Failed to load the Plotting Object")
+        except EOFError: print("Failed to load the Plotting Object")
+        return None
 
     def __add__(self, BasePlotting other):
         self.ptr.x_data.insert( self.ptr.x_data.end() , other.ptr.x_data.begin() , other.ptr.x_data.end())
@@ -340,42 +363,46 @@ cdef class BasePlotting:
             com["text.latex.preamble"] = r"\usepackage{amsmath}"
             com["pgf.preamble"] = r"\usepackage{amsmath}"
 
-        self.matpl.rcParams.update(**com)
-        self.__compile__()
+        try: 
+            self.matpl.rcParams.update(**com)
+            self.__compile__()
 
-        try: self._ax[0].set_title(self.Title, fontsize = self.ptr.title_size)
-        except TypeError: self._ax.set_title(self.Title, fontsize = self.ptr.title_size)
+            try: self._ax[0].set_title(self.Title, fontsize = self.ptr.title_size)
+            except TypeError: self._ax.set_title(self.Title, fontsize = self.ptr.title_size)
 
-        self.matpl.xlabel(self.xTitle, fontsize = self.ptr.font_size)
-        try:
-            self._ax[0].set_ylabel(self.yTitle, fontsize = self.ptr.font_size)
-            self.matpl.suptitle(self.Title, self.ptr.font_size)
-        except: self.matpl.ylabel(self.yTitle, fontsize = self.ptr.font_size)
+            self.matpl.xlabel(self.xTitle, fontsize = self.ptr.font_size)
+            try:
+                self._ax[0].set_ylabel(self.yTitle, fontsize = self.ptr.font_size)
+                self.matpl.suptitle(self.Title, self.ptr.font_size)
+            except: self.matpl.ylabel(self.yTitle, fontsize = self.ptr.font_size)
 
-        if self.xLogarithmic: self.matpl.xscale("log")
-        if self.yLogarithmic: self.matpl.yscale("log")
+            if self.xLogarithmic: self.matpl.xscale("log")
+            if self.yLogarithmic: self.matpl.yscale("log")
 
-        if self.ptr.variable_x_bins.size(): self.matpl.xticks(self.ptr.variable_x_bins, fontsize = self.ptr.axis_size)
-        elif self.xStep > 0: self.matpl.xticks(self.__ticks__(self.xMin, self.xMax, self.xStep), fontsize = self.ptr.axis_size)
-        else: self.matpl.xticks(fontsize = self.ptr.axis_size)
+            if self.ptr.variable_x_bins.size(): self.matpl.xticks(self.ptr.variable_x_bins, fontsize = self.ptr.axis_size)
+            elif self.xStep > 0: self.matpl.xticks(self.__ticks__(self.xMin, self.xMax, self.xStep), fontsize = self.ptr.axis_size)
+            else: self.matpl.xticks(fontsize = self.ptr.axis_size)
 
-        if self.ptr.variable_y_bins.size(): self.matpl.yticks(self.ptr.variable_y_bins, fontsize = self.ptr.axis_size)
-        elif self.yStep > 0: self.matpl.yticks(self.__ticks__(self.yMin, self.yMax, self.yStep), fontsize = self.ptr.axis_size)
-        else: self.matpl.yticks(fontsize = self.ptr.axis_size)
+            if self.ptr.variable_y_bins.size(): self.matpl.yticks(self.ptr.variable_y_bins, fontsize = self.ptr.axis_size)
+            elif self.yStep > 0: self.matpl.yticks(self.__ticks__(self.yMin, self.yMax, self.yStep), fontsize = self.ptr.axis_size)
+            else: self.matpl.yticks(fontsize = self.ptr.axis_size)
 
-        self.matpl.gcf().set_size_inches(self.ptr.xscaling, self.ptr.yscaling)
+            self.matpl.gcf().set_size_inches(self.ptr.xscaling, self.ptr.yscaling)
 
-        com = {}
-        com["dpi"] = self.ptr.dpi
-        com["bbox_inches"] = "tight"
-        com["pad_inches"] = 0
-        com["transparent"] = True
-        com["backend"] = "pgf"
+            com = {}
+            com["dpi"] = self.ptr.dpi
+            com["bbox_inches"] = "tight"
+            com["pad_inches"] = 0
+            com["transparent"] = True
+            com["backend"] = "pgf"
 
-        self.matpl.savefig(env(out), **com)
-        self.matpl.savefig(raw, **com)
-        self.matpl.close("all")
-        self.ptr.success(b"Finished Plotting: " + out)
+            self.matpl.savefig(env(out), **com)
+            self.matpl.savefig(raw, **com)
+            self.matpl.close("all")
+            self.ptr.success(b"Finished Plotting: " + out)
+        except:
+            self.ptr.failure(b"Failed Plotting... Dumping State...")
+            self.dump()
 
 cdef class TH1F(BasePlotting):
 

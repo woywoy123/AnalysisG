@@ -96,7 +96,7 @@ void exp_mc20::CompileEvent(){
         std::map<double, physics_detector*> maps = {}; 
         for (size_t f(0); f < physdet.size(); ++f){maps[prt -> DeltaR(physdet[f])] = physdet[f];}
 
-        if (maps.size()){continue;}
+        if (!maps.size()){continue;}
         std::map<double, physics_detector*>::iterator itx = maps.begin(); 
         if (itx -> first > 0.0001){continue;}
 

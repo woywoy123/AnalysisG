@@ -99,6 +99,63 @@ class gnn_event: public event_template
                 (*out) -> register_child(ch -> at(x)); 
             }
         }
+
+        template <typename g>
+        void print(std::vector<std::vector<g>>* data){
+            std::cout << "[" << std::endl; 
+            std::cout << "["; 
+            for (size_t x(0); x < data -> size(); ++x){
+                std::cout << (*data)[x][0]; 
+                if (x == data -> size()-1){continue;}
+                std::cout << ", "; 
+            }
+            std::cout << "]," << std::endl; 
+            std::cout << "["; 
+            for (size_t x(0); x < data -> size(); ++x){
+                std::cout << (*data)[x][1]; 
+                if (x == data -> size()-1){continue;}
+                std::cout << ", "; 
+            }
+            std::cout << "]" << std::endl; 
+            std::cout << "]" << std::endl; 
+        }
+
+        template <typename g, typename k>
+        void print(std::map<g, std::map<g, k>>* data){
+            std::cout << "[" << std::endl;
+            int sx = data -> size(); 
+            for (int x(0); x < sx; ++x){
+                std::cout << "["; 
+                for (int y(0); y < sx; ++y){
+                    std::cout << (*data)[x][y];
+                    if (y == sx-1){continue;}
+                    std::cout << ", "; 
+                }
+                std::cout << "]"; 
+                if (x == sx-1){continue;}
+                std::cout << "," << std::endl;
+            }
+            std::cout << "" << std::endl;
+            std::cout << "]" << std::endl; 
+        }
+
+        template <typename g, typename k>
+        void print(std::map<g, k>* data){
+            std::cout << "[";
+            int sx = data -> size(); 
+            for (int x(0); x < sx; ++x){
+                std::cout << (*data)[x];
+                if (x == sx-1){continue;}
+                std::cout << ", "; 
+            }
+            std::cout << "]" << std::endl; 
+        }
+
+
+
+
+
+
 }; 
 
 

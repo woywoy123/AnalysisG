@@ -74,6 +74,8 @@ void gnn_event::CompileEvent(){
             int src = itr -> first; 
             for (size_t y(0); y < n_nodes; ++y){Mij[src][y] = (src != y)*(*bin_data)[src][y];}
         }
+        //std::cout << " ---------- Mij ----------- "<< std::endl;
+        //this -> print(&Mij); 
 
         std::map<int, float> pr_;
         for (size_t y(0); y < n_nodes; ++y){
@@ -84,6 +86,8 @@ void gnn_event::CompileEvent(){
             for (size_t x(0); x < n_nodes; ++x){Mij[x][y] = ((sm) ? Mij[x][y]*sm : 1.0/n_nodes)*alpha;}
             pr_[y] = (*bin_data)[y][y]/n_nodes;  
         }
+        //std::cout << "---------- pr_0 --------- " << std::endl;
+        //this -> print(&pr_); 
 
         int timeout = 0; 
         std::map<int, float> PR = pr_; 
@@ -104,6 +108,10 @@ void gnn_event::CompileEvent(){
                 PR[itr -> first] = pr_[itr -> first]; 
             }
             timeout += 1; 
+
+            //std::cout << "------------ PR_" << timeout << "----------" << std::endl;
+            //this -> print(&PR);
+
             if (norm > 1e-6 && timeout < 1e6){continue;}
             norm = 0; 
             for (size_t x(0); x < n_nodes; ++x){
@@ -117,6 +125,8 @@ void gnn_event::CompileEvent(){
             }
             if (!norm){break;}
             for (size_t x(0); x < n_nodes; ++x){PR[x] = PR[x] / norm;}
+            //std::cout << "------------ PR_F-------------" << std::endl;
+            //this -> print(&PR); 
             break; 
         }
 
@@ -163,7 +173,7 @@ void gnn_event::CompileEvent(){
         break; 
     }
 
-
+    //std::cout << "*************** EVENT **************" << std::endl;
     std::map<int, std::map<int, float>> bin_top, bin_zprime; 
     std::map<int, std::map<std::string, particle_gnn*>> real_tops; 
     std::map<int, std::map<std::string, particle_gnn*>> real_zprime; 
@@ -171,6 +181,14 @@ void gnn_event::CompileEvent(){
     std::map<int, std::map<std::string, particle_gnn*>> reco_tops; 
     std::map<int, std::map<std::string, particle_gnn*>> reco_zprime; 
 
+    //std::cout << "========== EDGE INDEX =========== " << std::endl;
+    //this -> print(&this -> m_edge_index); 
+
+    //std::cout << "========== EDGE SCORES =========== " << std::endl;
+    //this -> print(&this -> edge_top_scores); 
+    
+    //std::cout << "========== BIN TOP =============== " << std::endl;
+    //std::cout << "["; 
     for (size_t x(0); x < this -> m_edge_index.size(); ++x){
         int src = this -> m_edge_index[x][0]; 
         int dst = this -> m_edge_index[x][1];  
@@ -191,7 +209,14 @@ void gnn_event::CompileEvent(){
 
         if (this -> t_edge_top[x]){real_tops[src][hx]   = ptr;}
         if (this -> t_edge_res[x]){real_zprime[src][hx] = ptr;}
+        //std::cout << top_ij; 
+        //if (x == this -> m_edge_index.size()-1){continue;}
+        //std::cout << ", "; 
     }
+    //std::cout << "]" << std::endl;
+
+    //std::cout << "=========== BIN TOP MATRIX ==========" << std::endl; 
+    //this -> print(&bin_top); 
 
     std::map<std::string, std::vector<particle_gnn*>>::iterator it;
     // ---- truth --- //
@@ -221,11 +246,12 @@ void gnn_event::CompileEvent(){
         t -> n_nodes = ch.size(); 
     }
 
- 
+    //std::cout << "============= PAGE RANK ============ " << std::endl; 
     // ---- reco ---- //
     std::map<std::string, float> c_reco_tops_bin; 
     std::map<std::string, std::vector<particle_gnn*>> c_reco_tops;
     cluster(&reco_tops  , &c_reco_tops, &c_reco_tops_bin, &bin_top); 
+    //std::cout << "============= END ================= " << std::endl;
     for (it = c_reco_tops.begin(); it != c_reco_tops.end(); ++it){
         top* t = nullptr;
         this -> sum(&it -> second, &t);  
