@@ -1,6 +1,6 @@
 #include <operators/operators.cuh>
 #include <operators/base.cuh>
-#include <cutils/utils.cuh>
+#include <utils/utils.cuh>
 
 torch::Tensor operators_::Dot(torch::Tensor* v1, torch::Tensor* v2){
     const unsigned int dx = v1 -> size({0}); 

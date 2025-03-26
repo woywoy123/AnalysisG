@@ -4,7 +4,7 @@
 #include <map>
 #include <string>
 #include <torch/torch.h>
-#include <atomic/cuatomic.cuh>
+#include <utils/atomic.cuh>
 
 namespace nusol_ {
     std::map<std::string, torch::Tensor> BaseDebug(torch::Tensor* pmc_b, torch::Tensor* pmc_mu, torch::Tensor* masses); 

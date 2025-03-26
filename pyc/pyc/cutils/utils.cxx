@@ -1,4 +1,4 @@
-#include <cutils/utils.h>
+#include <utils/utils.h>
 
 torch::Tensor clip(torch::Tensor* inpt, int dim){
     return inpt -> index({torch::indexing::Slice(), dim}); 
@@ -22,4 +22,6 @@ torch::TensorOptions MakeOp(torch::Tensor* x){
     return torch::TensorOptions().device(x -> device()).dtype(x -> dtype()); 
 }
 
+torch::Tensor changedev(std::string dev, torch::Tensor* inx){}
+void changedev(torch::Tensor* inpt){}
 

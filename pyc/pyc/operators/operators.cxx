@@ -1,5 +1,5 @@
 #include <operators/operators.h>
-#include <cutils/utils.h>
+#include <utils/utils.h>
 
 torch::Tensor operators_::Dot(torch::Tensor* v1, torch::Tensor* v2){
     int sx = v2 -> size({-1}); 

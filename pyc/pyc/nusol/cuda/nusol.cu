@@ -1,7 +1,7 @@
 #include <nusol/nusol.cuh>
 #include <nusol/base.cuh>
 #include <nusol/utils.cuh>
-#include <cutils/utils.cuh>
+#include <utils/utils.cuh>
 #include <operators/operators.cuh>
 
 std::map<std::string, torch::Tensor> nusol_::combinatorial(

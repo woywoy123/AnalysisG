@@ -1,6 +1,6 @@
 #ifndef CU_PHYSICS_BASE_H
 #define CU_PHYSICS_BASE_H
-#include <atomic/cuatomic.cuh>
+#include <utils/atomic.cuh>
 
 template <typename scalar_t> 
 __global__ void _P2K(

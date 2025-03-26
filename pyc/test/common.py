@@ -151,6 +151,7 @@ class Event:
         self.bin_top_matrix = []
         self.Mij = []
         self.PR = {}
+        self.num_nodes = 0
 
     def parse(self):
         self.edge_index         = eval("".join(self.edge_index))         
@@ -159,6 +160,7 @@ class Event:
         self.bin_top_matrix     = eval("".join(self.bin_top_matrix))     
         self.Mij                = eval("".join(self.Mij))                
         self.PR                 = {i : eval("".join(self.PR[i])) for i in self.PR}
+        self.num_nodes = max(self.edge_index[0])
 
 
 def loadsPage(): 

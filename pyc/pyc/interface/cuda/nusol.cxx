@@ -1,6 +1,6 @@
 #include <pyc/cupyc.h>
 #include <nusol/nusol.cuh>
-#include <cutils/utils.cuh>
+#include <utils/utils.cuh>
 
 torch::Dict<std::string, torch::Tensor> pyc::nusol::BaseMatrix(torch::Tensor pmc_b, torch::Tensor pmc_mu, torch::Tensor masses){
     changedev(&pmc_b); 
@@ -36,9 +36,3 @@ torch::Dict<std::string, torch::Tensor> pyc::nusol::combinatorial(
 }
 
 
-TORCH_LIBRARY(nusol_cuda, m){
-    m.def("nusol_base_basematrix", &pyc::nusol::BaseMatrix); 
-    m.def("nusol_nu"             , &pyc::nusol::Nu); 
-    m.def("nusol_nunu"           , &pyc::nusol::NuNu); 
-    m.def("nusol_combinatorial"  , &pyc::nusol::combinatorial); 
-}

@@ -1,6 +1,6 @@
 #ifndef CUGRAPH_BASE_H
 #define CUGRAPH_BASE_H
-#include <atomic/cuatomic.cuh>
+#include <utils/atomic.cuh>
 
 template <typename scalar_t>
 __global__ void _prediction_topology(

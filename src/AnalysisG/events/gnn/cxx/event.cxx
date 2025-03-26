@@ -131,10 +131,10 @@ void gnn_event::CompileEvent(){
         }
 
         tools tl = tools(); 
-        std::map<std::string, particle_gnn*> tmp; 
         std::map<std::string, particle_gnn*>::iterator itp; 
         for (itr = clust -> begin(); itr != clust -> end(); ++itr){
             int src = itr -> first; 
+            std::map<std::string, particle_gnn*> tmp; 
             if (!PR[src] && bin_data){continue;}
             for (itp = itr -> second.begin(); itp != itr -> second.end(); ++itp){
                 particle_gnn* ptr = itp -> second; 

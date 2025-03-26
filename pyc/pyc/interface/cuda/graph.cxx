@@ -1,6 +1,7 @@
 #include <pyc/cupyc.h>
-#include <cutils/utils.cuh>
+#include <utils/utils.cuh>
 #include <graph/graph.cuh>
+#include <graph/pagerank.cuh>
 #include <transform/transform.cuh>
 
 torch::Dict<std::string, torch::Tensor> pyc::graph::edge_aggregation(
@@ -34,7 +35,8 @@ torch::Dict<std::string, torch::Tensor> pyc::graph::page_rank(
         torch::Tensor edge_index, torch::Tensor edge_scores, 
         double alpha, double threshold, double norm_low, long timeout
 ){
-    std::map<std::string, torch::Tensor> out = {}; 
+    changedev(&edge_index); changedev(&edge_scores); 
+    std::map<std::string, torch::Tensor> out = graph_::page_rank(&edge_index, &edge_scores, alpha, threshold, norm_low, timeout);
     return pyc::std_to_dict(&out); 
 }
 
@@ -121,10 +123,3 @@ torch::Dict<std::string, torch::Tensor> pyc::graph::cartesian::node_aggregation(
 }
 
 
-
-TORCH_LIBRARY(graph_cuda, m){
-    m.def("graph_edge_aggregation"  , &pyc::graph::edge_aggregation); 
-    m.def("graph_node_aggregation"  , &pyc::graph::node_aggregation); 
-    m.def("graph_unique_aggregation", &pyc::graph::unique_aggregation); 
-    m.def("graph_page_rank"         , &pyc::graph::page_rank); 
-}

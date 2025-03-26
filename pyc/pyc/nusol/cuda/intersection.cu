@@ -1,7 +1,7 @@
+#include <operators/operators.cuh>
 #include <nusol/base.cuh>
 #include <nusol/device.cuh>
-#include <cutils/utils.cuh>
-#include <operators/operators.cuh>
+#include <utils/utils.cuh>
 
 #define _th_inter 8
 

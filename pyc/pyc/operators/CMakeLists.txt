@@ -8,7 +8,7 @@ add_library(cuoperators ${SOURCE_FILES})
 target_include_directories(cuoperators PRIVATE include/operators)
 target_include_directories(cuoperators PUBLIC include)
 target_compile_options(cuoperators PRIVATE $<$<COMPILE_LANGUAGE:CUDA>: --expt-relaxed-constexpr>)
-target_link_libraries(cuoperators PUBLIC cutils cuatomic)
+target_link_libraries(cuoperators PUBLIC cutils)
 set_property(TARGET cuoperators PROPERTY CUDA_SEPARATE_COMPILATION ON)
 target_compile_options(cuoperators PRIVATE -fPIC)
 

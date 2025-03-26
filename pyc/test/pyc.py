@@ -2,7 +2,7 @@ import torch
 
 class pyc:
 
-    def __init__(self, devices = ["tensor", "cuda"]):
+    def __init__(self, devices = ["cupyc"]): #, "tpyc"]):
         self._pth = "../build/pyc/interface"
         self._fx = ["graph", "nusol", "operators", "physics", "transform"]
         self._ops = {
@@ -49,15 +49,14 @@ class pyc:
                     "combined_eta"      , "combined_ptetaphi"      ,
                     "combined_ptetaphie"
                 ],
-                "graph" : ["edge_aggregation", "node_aggregation", "unique_aggregation"]
+                "graph" : ["edge_aggregation", "node_aggregation", "unique_aggregation", "page_rank"]
         }
 
-        self._lx = [k + "_" + j for k in self._fx for j in devices]
-        for i in self._lx: torch.ops.load_library(self._pth + "/lib" + i + ".so")
+
+        for i in devices: torch.ops.load_library(self._pth + "/lib" + i + ".so")
         lx =  [(i, i + "_" + j) for i in self._fx for j in self._ops[i]]
         for d in devices:
             for l in lx:
                 op, fx = l
-                ft = getattr(torch.ops, op + "_" + d)
-                try: setattr(self, d + "_" + fx, getattr(ft, fx))
+                try: setattr(self, d + "_" + fx, getattr(getattr(torch.ops, d), fx))
                 except AttributeError: pass

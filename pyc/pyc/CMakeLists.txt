@@ -1,4 +1,3 @@
-add_subdirectory(cuatomic)
 add_subdirectory(cutils)
 add_subdirectory(transform)
 add_subdirectory(physics)

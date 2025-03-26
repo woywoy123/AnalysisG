@@ -1,5 +1,5 @@
 #include <pyc/cupyc.h>
-#include <cutils/utils.cuh>
+#include <utils/utils.cuh>
 #include <physics/physics.cuh>
 #include <operators/operators.cuh>
 
@@ -66,18 +66,3 @@ std::tuple<torch::Tensor, torch::Tensor> pyc::operators::Eigenvalue(torch::Tenso
     return operators_::Eigenvalue(&matrix); 
 }
 
-TORCH_LIBRARY(operators_cuda, m){
-    m.def("operators_dot"     , &pyc::operators::Dot); 
-    m.def("operators_costheta", &pyc::operators::CosTheta); 
-    m.def("operators_sintheta", &pyc::operators::SinTheta); 
-    m.def("operators_rx"      , &pyc::operators::Rx); 
-    m.def("operators_ry"      , &pyc::operators::Ry); 
-    m.def("operators_rz"      , &pyc::operators::Rz); 
-    m.def("operators_rt"      , &pyc::operators::RT); 
-
-    m.def("operators_cofactors"  , &pyc::operators::CoFactors); 
-    m.def("operators_determinant", &pyc::operators::Determinant); 
-    m.def("operators_inverse"    , &pyc::operators::Inverse); 
-    m.def("operators_eigenvalue" , &pyc::operators::Eigenvalue); 
-    m.def("operators_cross"      , &pyc::operators::Cross); 
-}

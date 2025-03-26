@@ -1,6 +1,6 @@
 #include <graph/base.cuh>
 #include <graph/graph.cuh>
-#include <cutils/utils.cuh>
+#include <utils/utils.cuh>
 
 std::map<std::string, torch::Tensor> graph_::unique_aggregation(torch::Tensor* cluster_map, torch::Tensor* features){
     const unsigned int n_nodes = cluster_map -> size(0);

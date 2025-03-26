@@ -1,1 +1,0 @@
-#include <atomic/cuatomic.cuh>

@@ -1,6 +1,6 @@
 #include <transform/transform.cuh>
 #include <transform/base.cuh>
-#include <cutils/utils.cuh>
+#include <utils/utils.cuh>
 
 torch::Tensor transform_::Px(torch::Tensor* pt, torch::Tensor* phi){
     const unsigned int dx = pt -> size(0); 

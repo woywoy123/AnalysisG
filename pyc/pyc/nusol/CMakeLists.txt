@@ -13,7 +13,7 @@ set(SOURCE_FILES
 add_library(cunusol-base STATIC ${SOURCE_FILES})
 target_include_directories(cunusol-base PRIVATE include/nusol)
 target_include_directories(cunusol-base PUBLIC include)
-target_link_libraries(cunusol-base PUBLIC cuatomic cutils cuphysics cuoperators)
+target_link_libraries(cunusol-base PUBLIC cutils cuphysics cuoperators)
 set_property(TARGET cunusol-base PROPERTY CUDA_SEPARATE_COMPILATION ON)
 target_compile_options(cunusol-base PUBLIC
     $<$<COMPILE_LANGUAGE:CUDA>: --expt-relaxed-constexpr>

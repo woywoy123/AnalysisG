@@ -1,6 +1,6 @@
 #ifndef CU_NUSOL_DEVICE_H
 #define CU_NUSOL_DEVICE_H
-#include <atomic/cuatomic.cuh>
+#include <utils/atomic.cuh>
 
 struct nusol {
     double cos, sin;

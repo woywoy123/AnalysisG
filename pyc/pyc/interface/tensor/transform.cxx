@@ -1,7 +1,98 @@
 #include <pyc/tpyc.h>
+#include <transform/transform.h>
 
-TORCH_LIBRARY(transform_tensor, m){
+torch::Tensor pyc::transform::separate::Pt(torch::Tensor px, torch::Tensor py){
+    return transform_::Pt(&px, &py); 
+}
 
+torch::Tensor pyc::transform::combined::Pt(torch::Tensor pmc){
+    torch::Tensor px = pmc.index({torch::indexing::Slice(), 0});
+    torch::Tensor py = pmc.index({torch::indexing::Slice(), 1}); 
+    return transform_::Pt(&px, &py); 
+}
+
+torch::Tensor pyc::transform::separate::Eta(torch::Tensor px, torch::Tensor py, torch::Tensor pz){
+    return transform_::Eta(&px, &py, &pz); 
+}
+
+torch::Tensor pyc::transform::combined::Eta(torch::Tensor pmc){
+    return transform_::Eta(&pmc); 
+}
+
+torch::Tensor pyc::transform::separate::Phi(torch::Tensor px, torch::Tensor py){
+    return transform_::Phi(&px, &py); 
+}
+
+torch::Tensor pyc::transform::combined::Phi(torch::Tensor pmc){
+    torch::Tensor px = pmc.index({torch::indexing::Slice(), 0});
+    torch::Tensor py = pmc.index({torch::indexing::Slice(), 1}); 
+    return transform_::Phi(&px, &py); 
+}
+
+torch::Tensor pyc::transform::separate::PtEtaPhi(torch::Tensor px, torch::Tensor py, torch::Tensor pz){
+    return transform_::PtEtaPhi(&px, &py, &pz); 
+}
+
+torch::Tensor pyc::transform::combined::PtEtaPhi(torch::Tensor pmc){
+    return transform_::PtEtaPhi(&pmc); 
+}
+
+torch::Tensor pyc::transform::separate::PtEtaPhiE(torch::Tensor px, torch::Tensor py, torch::Tensor pz, torch::Tensor e){
+    return transform_::PtEtaPhiE(&px, &py, &pz, &e); 
+}
+
+torch::Tensor pyc::transform::combined::PtEtaPhiE(torch::Tensor pmc){
+    return transform_::PtEtaPhiE(&pmc); 
+}
+
+torch::Tensor pyc::transform::separate::Px(torch::Tensor pt, torch::Tensor phi){
+    return transform_::Px(&pt, &phi); 
+}
+
+torch::Tensor pyc::transform::combined::Px(torch::Tensor pmu){
+    torch::Tensor pt = pmu.index({torch::indexing::Slice(), 0});
+    torch::Tensor phi = pmu.index({torch::indexing::Slice(), 2}); 
+    return transform_::Px(&pt, &phi); 
+}
+
+torch::Tensor pyc::transform::separate::Py(torch::Tensor pt, torch::Tensor phi){
+    return transform_::Py(&pt, &phi); 
+}
+
+torch::Tensor pyc::transform::combined::Py(torch::Tensor pmu){
+    torch::Tensor pt = pmu.index({torch::indexing::Slice(), 0});
+    torch::Tensor phi = pmu.index({torch::indexing::Slice(), 2}); 
+    return transform_::Py(&pt, &phi); 
+}
+
+torch::Tensor pyc::transform::separate::Pz(torch::Tensor pt, torch::Tensor eta){
+    return transform_::Pz(&pt, &eta); 
+}
+
+torch::Tensor pyc::transform::combined::Pz(torch::Tensor pmu){
+    torch::Tensor pt  = pmu.index({torch::indexing::Slice(), 0});
+    torch::Tensor eta = pmu.index({torch::indexing::Slice(), 1}); 
+    return transform_::Pz(&pt, &eta); 
+}
+
+torch::Tensor pyc::transform::separate::PxPyPz(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi){
+    return transform_::PxPyPz(&pt, &eta, &phi); 
+}
+
+torch::Tensor pyc::transform::combined::PxPyPz(torch::Tensor pmu){
+    return transform_::PxPyPz(&pmu); 
+}
+
+torch::Tensor pyc::transform::separate::PxPyPzE(torch::Tensor pt, torch::Tensor eta, torch::Tensor phi, torch::Tensor e){
+    return transform_::PxPyPzE(&pt, &eta, &phi, &e); 
+}
+
+torch::Tensor pyc::transform::combined::PxPyPzE(torch::Tensor pmu){
+    return transform_::PxPyPzE(&pmu); 
+}
+
+
+TORCH_LIBRARY(tpyc, m){
     m.def("transform_separate_px",        &pyc::transform::separate::Px);
     m.def("transform_separate_py",        &pyc::transform::separate::Py);
     m.def("transform_separate_pz",        &pyc::transform::separate::Pz);

@@ -1,5 +1,5 @@
 #include <graph/graph.h>
-#include <cutils/utils.h>
+#include <utils/utils.h>
 
 std::map<std::string, torch::Tensor> graph_::edge_aggregation(
         torch::Tensor* edge_index, torch::Tensor* prediction, torch::Tensor* node_feature

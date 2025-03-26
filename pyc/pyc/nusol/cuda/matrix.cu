@@ -1,9 +1,9 @@
-#include <nusol/base.cuh>
-#include <nusol/device.cuh>
-#include <cutils/utils.cuh>
-#include <physics/physics.cuh>
-#include <operators/operators.cuh>
 #include <transform/transform.cuh>
+#include <operators/operators.cuh>
+#include <physics/physics.cuh>
+#include <nusol/device.cuh>
+#include <utils/utils.cuh>
+#include <nusol/base.cuh>
 
 template <typename scalar_t>
 __global__ void _hmatrix_debug(

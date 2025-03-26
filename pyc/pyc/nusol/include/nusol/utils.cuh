@@ -1,6 +1,6 @@
 #ifndef CU_NUSOL_UTILS_H
 #define CU_NUSOL_UTILS_H
-#include <atomic/cuatomic.cuh>
+#include <utils/atomic.cuh>
 
 template <typename scalar_t>
 __global__ void _count(

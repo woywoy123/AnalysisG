@@ -8,7 +8,7 @@ add_library(cuphysics ${SOURCE_FILES})
 target_include_directories(cuphysics PRIVATE include/physics)
 target_include_directories(cuphysics PUBLIC include)
 target_compile_options(cuphysics PRIVATE $<$<COMPILE_LANGUAGE:CUDA>: --expt-relaxed-constexpr>)
-target_link_libraries(cuphysics PUBLIC cutils cutransform cuatomic)
+target_link_libraries(cuphysics PUBLIC cutils cutransform)
 set_property(TARGET cuphysics PROPERTY CUDA_SEPARATE_COMPILATION ON)
 target_compile_options(cuphysics PRIVATE -fPIC)
 

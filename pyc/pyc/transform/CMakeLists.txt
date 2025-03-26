@@ -8,7 +8,7 @@ add_library(cutransform ${SOURCE_FILES})
 target_include_directories(cutransform PRIVATE include/transform)
 target_include_directories(cutransform PUBLIC include)
 target_compile_options(cutransform PRIVATE $<$<COMPILE_LANGUAGE:CUDA>: --expt-relaxed-constexpr>)
-target_link_libraries(cutransform PUBLIC cutils cuatomic)
+target_link_libraries(cutransform PUBLIC cutils)
 set_property(TARGET cutransform PROPERTY CUDA_SEPARATE_COMPILATION ON)
 target_compile_options(cutransform PRIVATE -fPIC)
 
