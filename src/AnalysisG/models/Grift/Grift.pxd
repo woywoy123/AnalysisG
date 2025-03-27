@@ -13,6 +13,7 @@ cdef extern from "<models/grift.h>":
         int _xin
         double drop_out
         bool is_mc
+        bool pagerank
 
 cdef class Grift(ModelTemplate):
     cdef grift* rnn

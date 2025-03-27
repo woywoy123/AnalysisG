@@ -33,10 +33,11 @@ torch::Dict<std::string, torch::Tensor> pyc::graph::unique_aggregation(
 
 torch::Dict<std::string, torch::Tensor> pyc::graph::page_rank(
         torch::Tensor edge_index, torch::Tensor edge_scores, 
-        double alpha, double threshold, double norm_low, long timeout
+        double alpha, double threshold, double norm_low, long timeout, long num_cls
 ){
     changedev(&edge_index); changedev(&edge_scores); 
-    std::map<std::string, torch::Tensor> out = graph_::page_rank(&edge_index, &edge_scores, alpha, threshold, norm_low, timeout);
+    std::map<std::string, torch::Tensor> out; 
+    out = graph_::page_rank(&edge_index, &edge_scores, alpha, threshold, norm_low, timeout, num_cls);
     return pyc::std_to_dict(&out); 
 }
 

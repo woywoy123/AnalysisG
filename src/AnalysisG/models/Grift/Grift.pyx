@@ -32,3 +32,9 @@ cdef class Grift(ModelTemplate):
     @drop_out.setter
     def drop_out(self, double val): self.rnn.drop_out = val
 
+    @property
+    def PageRank(self): return self.rnn.pagerank
+    @PageRank.setter
+    def PageRank(self, bool v): self.rnn.pagerank = v
+
+

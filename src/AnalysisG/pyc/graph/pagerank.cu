@@ -66,15 +66,15 @@ __global__ void _get_remapping(
 
 
 
-template <size_t size_x>
+template <typename scalar_t, size_t size_x>
 __global__ void _page_rank(
-    const torch::PackedTensorAccessor64<long  , 1, torch::RestrictPtrTraits> cu_xms, 
-    const torch::PackedTensorAccessor64<long  , 1, torch::RestrictPtrTraits> cu_xme,
-    const torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> edge_scores,
-          torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> pagerank,
-          torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> pageclus,
-          torch::PackedTensorAccessor64<long  , 3, torch::RestrictPtrTraits> count,
-          torch::PackedTensorAccessor64<bool  , 1, torch::RestrictPtrTraits> edge_inx,
+    const torch::PackedTensorAccessor64<long    , 1, torch::RestrictPtrTraits> cu_xms, 
+    const torch::PackedTensorAccessor64<long    , 1, torch::RestrictPtrTraits> cu_xme,
+    const torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> edge_scores,
+          torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pagerank,
+          torch::PackedTensorAccessor64<scalar_t, 2, torch::RestrictPtrTraits> pageclus,
+          torch::PackedTensorAccessor64<long    , 3, torch::RestrictPtrTraits> count,
+          torch::PackedTensorAccessor64<bool    , 1, torch::RestrictPtrTraits> edge_inx,
     const double alpha, 
     const double mlp_lim,
     const double threshold,
@@ -84,21 +84,20 @@ __global__ void _page_rank(
     const unsigned int mxn, 
     const long timeout
 ){
-    __shared__ long   _topx_mpx[size_x][size_x]; 
-    __shared__ long   _idx_remp[size_x][size_x]; 
+    __shared__ long _topx_mpx[size_x][size_x]; 
+    __shared__ long _idx_remp[size_x][size_x]; 
 
-    __shared__ double _topx_epx[size_x][size_x];  
-    __shared__ double _topx_mij[size_x][size_x]; 
+    __shared__ scalar_t _topx_epx[size_x][size_x];  
+    __shared__ scalar_t _topx_mij[size_x][size_x]; 
 
-    __shared__ double _PgRank_o[size_x];
-    __shared__ double _PgRank_t[size_x];
+    __shared__ scalar_t _PgRank_o[size_x];
+    __shared__ scalar_t _PgRank_t[size_x];
 
     const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x; 
     if (idx >= num_ev){return;}
 
     const unsigned int _idy    = threadIdx.y; 
     const unsigned int _idz    = threadIdx.z; 
-    const unsigned int nodes   = cu_xme[idx];  
 
     _idx_remp[_idy][_idz] = -1; 
     _topx_mpx[_idy][_idz] = -1; 
@@ -108,11 +107,14 @@ __global__ void _page_rank(
     _PgRank_o[_idy] = 0; 
     _PgRank_t[_idy] = 0; 
 
+    unsigned int nodes = cu_xme[idx];  
     if (_idz >= nodes || _idy >= nodes){return;}
     const unsigned int ix = cu_xms[idx] + _idy*nodes + _idz%nodes; 
-    const double s0 = edge_scores[0][ix]; 
-    const double s1 = edge_scores[1][ix]; 
-    double N = 1.0 / nodes; 
+    if (nodes >= size_x){nodes = size_x;}
+
+    const scalar_t s0 = edge_scores[0][ix]; 
+    const scalar_t s1 = edge_scores[1][ix]; 
+    scalar_t N = 1.0 / nodes; 
     if (s0 < s1 && s1 > mlp_lim){_topx_mpx[_idy][_idz] = _idz;}
     _idx_remp[_idy][_idz] = _topx_mpx[_idy][_idz];
 
@@ -121,7 +123,7 @@ __global__ void _page_rank(
     __syncthreads(); 
 
     // ---------------- prepare the matrix ------------------ //
-    double sx = _sum(_topx_mij[_idy], nodes); 
+    scalar_t sx = _sum(_topx_mij[_idy], nodes); 
     sx = alpha * ((sx) ? (1.0 / sx) : N) * _topx_mij[_idy][_idz]; 
     _topx_epx[_idz][_idy] = sx * _PgRank_o[_idy];  
     __syncthreads(); 
@@ -134,14 +136,14 @@ __global__ void _page_rank(
     sx = _topx_mij[_idy][_idz]; 
 
     // ----------------- Start the Main Algo ----------------- //
-    double err = -1; 
+    scalar_t err = 10; 
     for (size_t x(0); x < timeout; ++x){
-        double pr = _PgRank_o[_idy]; 
+        scalar_t pr = _PgRank_o[_idy]; 
         _PgRank_t[_idy] = _sum(_topx_epx[_idy], nodes) + N;
         __syncthreads();
 
         // ----------------- Update Step --------------- //
-        double sf = 1.0 / _sum(_PgRank_t, nodes); 
+        scalar_t sf = 1.0 / _sum(_PgRank_t, nodes); 
         _PgRank_o[_idy] = _PgRank_t[_idy]*sf; 
         _topx_mij[_idz][_idy] = abs(pr - _PgRank_o[_idy]); 
         _topx_epx[_idy][_idz] = sx * _PgRank_t[_idz] * sf; 
@@ -162,7 +164,7 @@ __global__ void _page_rank(
     __syncthreads(); 
     if (err < threshold){
         _PgRank_t[_idy] = _sum(_topx_epx[_idy], nodes); 
-        double norm = _sum(_PgRank_t, nodes); 
+        scalar_t norm = _sum(_PgRank_t, nodes); 
         if (!norm){_PgRank_o[_idy] = _PgRank_t[_idy];}
         else {_PgRank_o[_idy] = _PgRank_t[_idy] / norm;}
     }
@@ -184,70 +186,63 @@ std::map<std::string, torch::Tensor> graph_::page_rank(
     torch::Tensor* edge_index, torch::Tensor* edge_scores, 
     double alpha, double threshold, double norm_low, long timeout, int num_cls
 ){
-    torch::Tensor cu_em; 
-    torch::Tensor cu_xm; 
-
-    long mx_ev = 0; 
-    unsigned int num_evnt = 0; 
     const int iel = edge_index -> size({1}); 
     const long mxn = torch::max(edge_index -> index({0})).item<long>()+1; 
-    if (true){
-        torch::Tensor ev_node = -1 * torch::ones({iel      }, MakeOp(edge_index));
-        torch::Tensor mx_remp = -1 * torch::ones({mxn * mxn}, MakeOp(edge_index));
+    torch::Tensor ev_node = -1 * torch::ones({iel      }, MakeOp(edge_index));
+    torch::Tensor mx_remp = -1 * torch::ones({mxn * mxn}, MakeOp(edge_index));
 
-        const dim3 thdx  = dim3(128);
-        const dim3 blkdx = blk_(iel, 128); 
+    const dim3 thdx  = dim3(128);
+    const dim3 blkdx = blk_(iel, 128); 
 
-        AT_DISPATCH_ALL_TYPES(edge_index -> scalar_type(), "get_max_node", [&]{
-            _get_max_node<128><<<blkdx, thdx>>>(
-                  edge_index -> packed_accessor64<long, 2, torch::RestrictPtrTraits>(),
-                        ev_node.packed_accessor64<long, 1, torch::RestrictPtrTraits>(),
-                        mx_remp.packed_accessor64<long, 1, torch::RestrictPtrTraits>(),
-                        iel, mxn
-                ); 
-        }); 
-           
-        mx_ev = torch::max(ev_node).item<long>(); 
-        torch::Tensor num_batch = torch::zeros({mxn}, MakeOp(edge_index))-1; 
-        torch::Tensor num_enode = torch::zeros({mxn}, MakeOp(edge_index))-1;
+    AT_DISPATCH_ALL_TYPES(edge_index -> scalar_type(), "get_max_node", [&]{
+        _get_max_node<128><<<blkdx, thdx>>>(
+              edge_index -> packed_accessor64<long, 2, torch::RestrictPtrTraits>(),
+                    ev_node.packed_accessor64<long, 1, torch::RestrictPtrTraits>(),
+                    mx_remp.packed_accessor64<long, 1, torch::RestrictPtrTraits>(),
+                    iel, mxn
+            ); 
+    }); 
+       
+    const long mx_ev = torch::max(ev_node).item<long>(); 
+    torch::Tensor num_batch = torch::zeros({mxn}, MakeOp(edge_index))-1; 
+    torch::Tensor num_enode = torch::zeros({mxn}, MakeOp(edge_index))-1;
 
-        const dim3 thdnx = dim3(1024);
-        const dim3 blknx = blk_(mxn, 1024); 
+    const dim3 thdnx = dim3(1024);
+    const dim3 blknx = blk_(mxn, 1024); 
 
-        AT_DISPATCH_ALL_TYPES(edge_index -> scalar_type(), "remapping", [&]{
-            _get_remapping<<<blknx, thdnx>>>(
-                  edge_index -> packed_accessor64<long, 2, torch::RestrictPtrTraits>(),
-                        ev_node.packed_accessor64<long, 1, torch::RestrictPtrTraits>(),
-                        mx_remp.packed_accessor64<long, 1, torch::RestrictPtrTraits>(),
-                      num_batch.packed_accessor64<long, 1, torch::RestrictPtrTraits>(),
-                      num_enode.packed_accessor64<long, 1, torch::RestrictPtrTraits>(),
-                        mxn, mx_ev
-                ); 
-        }); 
+    AT_DISPATCH_ALL_TYPES(edge_index -> scalar_type(), "remapping", [&]{
+        _get_remapping<<<blknx, thdnx>>>(
+              edge_index -> packed_accessor64<long, 2, torch::RestrictPtrTraits>(),
+                    ev_node.packed_accessor64<long, 1, torch::RestrictPtrTraits>(),
+                    mx_remp.packed_accessor64<long, 1, torch::RestrictPtrTraits>(),
+                  num_batch.packed_accessor64<long, 1, torch::RestrictPtrTraits>(),
+                  num_enode.packed_accessor64<long, 1, torch::RestrictPtrTraits>(),
+                    mxn, mx_ev
+            ); 
+    }); 
 
-        torch::Tensor idx = num_batch > -1; 
-        num_evnt = idx.sum({-1}).item<long>();
-        cu_em = num_enode.index({idx});
-        cu_xm = torch::cat({torch::zeros({1}, MakeOp(edge_index)), (cu_em * cu_em).cumsum({-1})}, {0}); 
-    }
+    torch::Tensor idx = num_batch > -1; 
+    const unsigned int num_evnt = idx.sum({-1}).item<long>();
+    torch::Tensor cu_em = num_enode.index({idx});
+    torch::Tensor cu_xm = torch::cat({torch::zeros({1}, MakeOp(edge_index)), (cu_em * cu_em).cumsum({-1})}, {0}); 
+    
 
     const dim3 thpr = dim3(1, 32, 32);
     const dim3 blpr = blk_(num_evnt, 1, 32, 32, 32, 32); 
-
     torch::Tensor page_rank  = torch::zeros({num_evnt, mx_ev       }, MakeOp(edge_scores)); 
     torch::Tensor page_clust = torch::zeros({num_evnt, mx_ev       }, MakeOp(edge_scores)); 
     torch::Tensor node_count = torch::zeros({num_evnt, mx_ev, mx_ev}, MakeOp(edge_index ))-1; 
     torch::Tensor edge_inx   = torch::zeros({iel                   }, MakeOp(edge_index )) > 0; 
 
     AT_DISPATCH_ALL_TYPES(edge_scores -> scalar_type(), "PageRank", [&]{
-        _page_rank<32><<<blpr, thpr>>>(
-                    cu_xm.packed_accessor64<long  , 1, torch::RestrictPtrTraits>(),
-                    cu_em.packed_accessor64<long  , 1, torch::RestrictPtrTraits>(), 
-           edge_scores -> packed_accessor64<double, 2, torch::RestrictPtrTraits>(),
-                page_rank.packed_accessor64<double, 2, torch::RestrictPtrTraits>(),
-               page_clust.packed_accessor64<double, 2, torch::RestrictPtrTraits>(),
-               node_count.packed_accessor64<long  , 3, torch::RestrictPtrTraits>(),
-                 edge_inx.packed_accessor64<bool  , 1, torch::RestrictPtrTraits>(),
+        _page_rank<scalar_t, 32><<<blpr, thpr>>>(
+                    cu_xm.packed_accessor64<long    , 1, torch::RestrictPtrTraits>(),
+                    cu_em.packed_accessor64<long    , 1, torch::RestrictPtrTraits>(), 
+           edge_scores -> packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+                page_rank.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+               page_clust.packed_accessor64<scalar_t, 2, torch::RestrictPtrTraits>(),
+               node_count.packed_accessor64<long    , 3, torch::RestrictPtrTraits>(),
+                 edge_inx.packed_accessor64<bool    , 1, torch::RestrictPtrTraits>(),
                     alpha, norm_low, threshold, mx_ev, num_evnt, num_cls, mxn, timeout
         ); 
     }); 
@@ -257,6 +252,7 @@ std::map<std::string, torch::Tensor> graph_::page_rank(
     out["pagerank"] = page_rank; 
     out["pagenode"] = page_clust; 
     out["edge_mask"] = edge_inx; 
+    out["node_index"] = torch::cat({torch::zeros({1}, MakeOp(edge_index)), cu_em}, {0}); 
     return out; 
 }
 

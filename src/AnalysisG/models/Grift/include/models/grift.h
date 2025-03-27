@@ -28,6 +28,7 @@ class grift: public model_template
         // Misc
         bool is_mc = true; 
         bool init  = false; 
+        bool pagerank = true; 
 
         torch::nn::Sequential* rnn_x        = nullptr; 
         torch::nn::Sequential* rnn_dx       = nullptr; 

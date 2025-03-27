@@ -2,7 +2,10 @@ if(CMAKE_ANALYSISG_CUDA)
 set(SOURCE_FILES
     ${CMAKE_CURRENT_LIST_DIR}/include/graph/graph.cuh
     ${CMAKE_CURRENT_LIST_DIR}/include/graph/base.cuh
+    ${CMAKE_CURRENT_LIST_DIR}/include/graph/pagerank.cuh
+    ${CMAKE_CURRENT_LIST_DIR}/pagerank.cu
     ${CMAKE_CURRENT_LIST_DIR}/graph.cu
+    ${CMAKE_CURRENT_LIST_DIR}/reconstruction.cu
 )
 add_library(pyc_graph ${SOURCE_FILES})
 set_property(TARGET pyc_graph PROPERTY CUDA_SEPARATE_COMPILATION ON)

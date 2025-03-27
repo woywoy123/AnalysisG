@@ -19,7 +19,7 @@ def copy(t): return [i for i in t]
 
 def null(t): return [0 for _ in t]
 
-def PageRankMatrix(event, fx, batch = False):
+def PageRankMatrix(event, fx, batch, itx):
     edge_index  = event.edge_index
     edge_scores = event.edge_scores
     bin_top     = event.bin_top
@@ -41,7 +41,7 @@ def PageRankMatrix(event, fx, batch = False):
         except AssertionError: pass
 
         mx_top[src][dst] = edge_scores[1][i]
-        if binx: topx_mpx[src][dst] = dst
+        if binx and edge_scores[1][i] > threshold: topx_mpx[src][dst] = dst
     #print(torch.tensor(mx_top))
 
     attestation(matrix, mx_top)
@@ -54,13 +54,12 @@ def PageRankMatrix(event, fx, batch = False):
     for i in range(nodes):
         sm = 0
         for j in range(nodes): sm += mx_ij[j][i]
-        sm = (1.0 / sm) if sm else 0
-        for j in range(nodes): mx_ij[j][i] = (mx_ij[j][i]*sm  if sm else (1.0 / nodes))*alpha
+        sm = ((1.0 / sm) if sm else 1.0 / nodes)*alpha
+        for j in range(nodes): mx_ij[j][i] = sm * mx_ij[j][i]
         PR[i] = mx_top[i][i] / nodes
     attest_v(prg_i["0"], PR)
-    #print(torch.tensor(mx_ij))
 
-    xt = int(1)
+    xt = int(itx)
     pr_x = copy(PR)  
     for k in range(xt):
         PR = null(PR)
@@ -70,21 +69,17 @@ def PageRankMatrix(event, fx, batch = False):
             for j in range(nodes): PR[i] += mx_ij[i][j]*pr_x[j]
             PR[i] += (1 - alpha) / nodes
             sx += PR[i]
-
-
+        
         norm = 0
         for i in range(nodes):
             PR[i] = PR[i] / sx
             norm += abs(PR[i] - pr_x[i])
             pr_x[i] = PR[i]
-
-        #print(torch.tensor(pr_x), norm)
         try: attest_v(prg_i[str(k+1)], pr_x)
         except KeyError: pass
 
         #print(norm, k)
         if norm > 1e-6 and k < 1e6: continue
-        #print(k, norm)
 
         norm = 0
         for i in range(nodes):
@@ -101,45 +96,44 @@ def PageRankMatrix(event, fx, batch = False):
     if batch: return pr_x
     edge_index_t = torch.tensor(edge_index, device = "cuda")
     edge_score_t = torch.tensor(edge_scores, device = "cuda", dtype = torch.double)
-    out = fx(edge_index_t, edge_score_t, alpha, 1e-6, threshold, int(xt))
-    #print(nodes)
-    t = torch.tensor(pr_x)
-    c = out["pagerank"].view(-1).to(device = "cpu")
-    ds = abs(t - c).sum(-1)
-    #if ds > 0.1: print(ds); exit()
-    return out["pagerank"]
 
+    out = fx(edge_index_t, edge_score_t, alpha, 1e-6, threshold, int(xt), nux)
+    t = torch.tensor(pr_x)
+    c = out["pagerank"].to(device = "cpu").view(-1)
+    ds = abs(t - c).sum(-1)
+    if ds > 0.001: 
+        print("_______")
+        print("->", t)
+        print("+>", c)
+        print("______")
+        print(ds); exit()
 
     # This does the actual clustering 
-    px = [-1 for _ in range(nodes)]
-    ct = [[]  for _ in range(nodes)]
+    px = [0 for _ in range(nodes)]
+    ct = [[-1 for _ in range(nodes)]  for _ in range(nodes)]
     for src in range(nodes):
-        tmp = [-1 for _ in range(nodes)]
-        ct[src] = tmp
         if not pr_x[src]: continue
         for n in topx_mpx[src]:
             if n == -1: continue
-            if mx_top[src][n] < threshold: continue
-            tmp[n] = n
-
-            itx = iter([l for l in topx_mpx[n] if l > -1])
+            ct[src][n] = n
+            itx = iter(topx_mpx[n])
             for k in itx:
-                if tmp[k] > -1 or topx_mpx[n][k] == -1: continue
-                tmp[k] = k
-                itx = iter([l for l in topx_mpx[k] if l > -1])
+                if k == -1 or ct[src][k] > -1 or topx_mpx[n][k] == -1: continue
+                ct[src][k] = k
+                itx = iter(topx_mpx[k])
 
-        lx = [f for f in tmp if f > -1]
-        if len(lx) < nux: continue
+        lx = [f for f in ct[src] if f > -1]
+        if len(lx) < nux: ct[src] = [-1 for _ in range(nodes)]; continue
         px[src] = sum([pr_x[f] for f in lx])
-        ct[src] = sorted(tmp, reverse = True)
 
-    print(torch.tensor(px, device = "cpu"))
-    print(out["pagerank"].view(-1))
-
-    print(torch.tensor(ct, device = "cpu"))
-    print(out["nodes"])
-    exit()
-    return {"pagerank" : px, "nodes" : ct}
+    ds = abs(torch.tensor(px, device = "cpu") - out["pagenode"].view(-1).to(device = "cpu")).sum(-1)
+    if ds > 0.001: 
+        print(torch.tensor(px))
+        print(out["pagenode"])
+    if (torch.tensor(ct).view(-1) != out["nodes"].to(device = "cpu").view(-1)).sum(-1):
+        print(out["nodes"])
+        print(torch.tensor(ct))
+    return out
 
 
 import time
@@ -152,6 +146,7 @@ offset = []
 pagerank = pyc().cupyc_graph_page_rank
 mkx = []
 xt = []
+itx = 1000
 for i in data:
     #print(" ----------", i, "----------")
 #    time.sleep(0.01)
@@ -185,15 +180,12 @@ for i in data:
 
 #    if max(data[i].edge_index[0]) != 12: continue
 
-
-
-    bx = 4
+    bx = 1000
     if len(batch) >= bx: break
     evx = Event()
     batch.append(evx)
-    mkx += [PageRankMatrix(data[i], pagerank, True)]
-    xt += [PageRankMatrix(data[i], pagerank, False)]
-
+    mkx += [PageRankMatrix(data[i], pagerank, True , itx)]
+    xt  += [PageRankMatrix(data[i], pagerank, False, itx)]
     if len(batch) == 1: 
         evx = batch[0]
         evx.edge_index = [[],[]]
@@ -215,21 +207,23 @@ ev.edge_index[1] = [offset[i] + ev.edge_index[1][i] for i in range(len(offset))]
 mx = 0
 for i in range(len(mkx)): mx = len(mkx[i]) if mx < len(mkx[i]) else mx
 for i in range(len(mkx)): mkx[i] += [0] * (mx - len(mkx[i]))
-print(mx)
 
-edge_index_t = torch.tensor(ev.edge_index, device = "cuda")
+edge_index_t = torch.tensor(ev.edge_index, device = "cuda", dtype = torch.long)
 edge_score_t = torch.tensor(ev.edge_scores, device = "cuda", dtype = torch.double)
-out = pagerank(edge_index_t, edge_score_t, 0.85, 1e-6, 0.5, int(1))
-print((out["remap"].view(-1, mx) > -1).sum(-1, True))
+out = pagerank(edge_index_t, edge_score_t, 0.85, 1e-6, 0.5, int(itx), 2)
 
-exit()
-#exit()
-#print(torch.tensor(mkx))
-print(out["nodes"].to(device = "cpu").view(-1, mx))
-exit()
+py = torch.tensor(mkx).view(-1, mx)
+cu = out["pagerank"].to(device = "cpu")
+cu += (cu == -1)
+dif = torch.abs(py - cu).view(-1).sum(-1)
+try: assert dif < 0.01; print("passed!!!")
+except AssertionError: 
+    print(dif)
+    print(cu)
+    print(py)
+    print(torch.abs(py - cu).sum(-1))
+#print(cu)
 print("_________")
-for i in xt:
-    print(i)
 
 
 

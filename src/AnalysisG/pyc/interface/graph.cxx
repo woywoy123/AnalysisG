@@ -4,11 +4,73 @@
 #include <utils/utils.cuh>
 #include <transform/transform.cuh>
 #include <graph/graph.cuh>
+#include <graph/pagerank.cuh>
 #else 
 #include <utils/utils.h>
 #include <transform/transform.h>
 #include <graph/graph.h>
 #endif
+
+torch::Dict<std::string, torch::Tensor> pyc::graph::PageRank(
+        torch::Tensor edge_index, torch::Tensor edge_scores, 
+        double alpha, double threshold, double norm_low, long timeout, long num_cls
+){
+    changedev(&edge_index); changedev(&edge_scores); 
+    const unsigned int edx = edge_index.size({0});
+    const unsigned int edy = edge_index.size({1}); 
+    if (edx != 2 && edy == 2){edge_index = edge_index.transpose(0, 1).contiguous();}
+
+    const unsigned int sdx = edge_scores.size({0});
+    const unsigned int sdy = edge_scores.size({1}); 
+    if (sdx != 2 && sdy == 2){edge_scores = edge_scores.transpose(0, 1).contiguous();}
+
+    std::map<std::string, torch::Tensor> out; 
+    #ifdef PYC_CUDA
+    out = graph_::page_rank(&edge_index, &edge_scores, alpha, threshold, norm_low, timeout, num_cls);
+    #endif
+    return pyc::std_to_dict(&out); 
+}
+
+
+torch::Dict<std::string, torch::Tensor> pyc::graph::PageRankReconstruction(
+        torch::Tensor edge_index, torch::Tensor edge_scores, torch::Tensor pmc, 
+        double alpha, double threshold, double norm_low, long timeout, long num_cls
+){
+
+    changedev(&edge_index); changedev(&edge_scores); changedev(&pmc); 
+    const unsigned int edx = edge_index.size({0});
+    const unsigned int edy = edge_index.size({1}); 
+    if (edx != 2 && edy == 2){edge_index = edge_index.transpose(0, 1).contiguous();}
+
+    const unsigned int sdx = edge_scores.size({0});
+    const unsigned int sdy = edge_scores.size({1}); 
+    if (sdx != 2 && sdy == 2){edge_scores = edge_scores.softmax(-1).transpose(0, 1).contiguous();}
+    else {edge_scores = edge_scores.softmax(0);}
+
+    std::map<std::string, torch::Tensor> out; 
+    #ifdef PYC_CUDA
+    out = graph_::page_rank_reconstruction(&edge_index, &edge_scores, &pmc, alpha, threshold, norm_low, timeout, num_cls);
+    #endif
+
+    return pyc::std_to_dict(&out); 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 torch::Dict<std::string, torch::Tensor> pyc::graph::edge_aggregation(
         torch::Tensor edge_index, torch::Tensor prediction, torch::Tensor edge_feature

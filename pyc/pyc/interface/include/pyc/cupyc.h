@@ -146,7 +146,7 @@ namespace pyc {
         torch::Dict<std::string, torch::Tensor> page_rank(
                 torch::Tensor edge_index, torch::Tensor edge_scores, 
                 double alpha = 0.85, double threshold = 0.5, 
-                double norm_low = 1e-6, long timeout = 1e6
+                double norm_low = 1e-6, long timeout = 1e6, long num_cls = 2
         );
         
         namespace polar {

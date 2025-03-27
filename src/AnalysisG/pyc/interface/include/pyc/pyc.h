@@ -266,7 +266,17 @@ namespace pyc {
         torch::Dict<std::string, torch::Tensor> unique_aggregation(
                 torch::Tensor cluster_map, torch::Tensor features
         ); 
-        
+
+        torch::Dict<std::string, torch::Tensor> PageRank(
+                torch::Tensor edge_index, torch::Tensor edge_scores, 
+                double alpha = 0.85, double threshold = 0.5, double norm_low = 1e-6, long timeout = 1e6, long num_cls = 2
+        );
+
+        torch::Dict<std::string, torch::Tensor> PageRankReconstruction(
+                torch::Tensor edge_index, torch::Tensor edge_scores, torch::Tensor pmc, 
+                double alpha = 0.85, double threshold = 0.5, double norm_low = 1e-6, long timeout = 1e6, long num_cls = 2
+        ); 
+         
         namespace polar {
             torch::Dict<std::string, torch::Tensor> edge_aggregation(
                 torch::Tensor edge_index, torch::Tensor prediction, torch::Tensor pmu
