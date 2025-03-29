@@ -1,3 +1,6 @@
+set(dict_path "${CMAKE_CURRENT_SOURCE_DIR}/../")
+configure_file(cfg.h.in ${CMAKE_CURRENT_SOURCE_DIR}/include/AnalysisG/cfg.h)
+
 set(HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/include/AnalysisG/analysis.h)
 set(SOURCE_FILES 
     ${CMAKE_CURRENT_SOURCE_DIR}/analysis.cxx

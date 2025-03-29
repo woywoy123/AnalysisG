@@ -85,7 +85,7 @@ void electron::build(std::map<std::string, particle_template*>* prt, element_t* 
         electron* elx = elc[x]; 
         elx -> index  = x; 
         elx -> charge = ch[x];
-        elx -> is_lep = ch[x]*11;  
+        elx -> pdgid  = ch[x]*11;
         elx -> pass_ecids = ecid[x]; 
 
         if (sp){elx -> top_index = tp_index[x];}
@@ -106,8 +106,6 @@ void electron::get_from_res(bool* val, electron* el){
     *val = false; 
 }
 
-
-
 lepton::lepton(){
     this -> type = "lepton"; 
     this -> add_leaf("eta"   , "_eta"); 
@@ -116,7 +114,7 @@ lepton::lepton(){
     this -> add_leaf("e"     , "_e_NOSYS"); 
 
     this -> add_leaf("charge", "_charge"); 
-    this -> add_leaf("df_common_add_ambiguity", "_DFCommonAddAmbiguity"); 
+    this -> add_leaf("ambiguity", "_DFCommonAddAmbiguity"); 
     this -> apply_type_prefix(); 
 }
 
@@ -131,7 +129,7 @@ void lepton::build(std::map<std::string, particle_template*>* prt, element_t* el
     el -> get("charge", &ch);
 
     std::vector<int> df; 
-    el -> get("df_common_add_ambiguity", &df);
+    el -> get("ambiguity", &df);
 
     for (int x(0); x < pt.size(); ++x){
         lepton* px      = new lepton(); 

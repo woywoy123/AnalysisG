@@ -151,9 +151,11 @@ struct element_t {
 
 struct write_t {
     TFile* file = nullptr; 
-    TTree* tree = nullptr; 
-    std::map<std::string, variable_t> data = {}; 
+    TTree* tree = nullptr;
+    meta_t* mtx = nullptr; 
+    std::map<std::string, variable_t*>* data = nullptr; 
 
+    variable_t* process(std::string* name);
     void write(); 
     void create(std::string tr_name, std::string path); 
     void close(); 

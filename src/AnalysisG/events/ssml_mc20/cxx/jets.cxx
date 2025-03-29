@@ -6,6 +6,7 @@ jet::jet(){
     this -> add_leaf("phi"   , "_phi");
     this -> add_leaf("pt"    , "_pt_NOSYS"); 
     this -> add_leaf("energy", "_e_NOSYS"); 
+    this -> add_leaf("flav"  , "_truthflav");
 
     this -> add_leaf("b_gnn_77" , "_GN2v01_FixedCutBEff_77_select"); 
     this -> add_leaf("b_gnn_85" , "_GN2v01_FixedCutBEff_85_select"); 
@@ -32,8 +33,9 @@ void jet::build(std::map<std::string, particle_template*>* prt, element_t* el){
     el -> get("b_gnn_90", &b_90); 
     el -> get("b_sel_85", &s_85); 
 
-    std::vector<int> tp_index; 
+    std::vector<int> tp_index, flav; 
     el -> get("top_index", &tp_index); 
+    el -> get("flav"     , &flav    ); 
 
     bool sp = tp_index.size() == elc.size(); 
     for (size_t x(0); x < elc.size(); ++x){
@@ -42,6 +44,7 @@ void jet::build(std::map<std::string, particle_template*>* prt, element_t* el){
         elx -> btag_85 = (bool)b_85[x]; 
         elx -> btag_90 = (bool)b_90[x]; 
         elx -> sel_85  = (bool)s_85[x]; 
+        elx -> pdgid   = flav[x]; 
 
         if (sp){elx -> top_index = tp_index[x];}
         else {elx -> top_index = -2;}
@@ -68,6 +71,7 @@ truthjet::truthjet(){
     this -> add_leaf("eta"   , "_eta"); 
     this -> add_leaf("phi"   , "_phi");
     this -> add_leaf("pt"    , "_pt"); 
+    this -> add_leaf("pdgid" , "_partonid"); 
     this -> apply_type_prefix(); 
 }
 
@@ -80,6 +84,7 @@ void truthjet::build(std::map<std::string, particle_template*>* prt, element_t* 
     pmu(&elc, el); 
     std::vector<int> m_pdgid; 
     el -> get("pdgid", &m_pdgid); 
+
     for (size_t x(0); x < elc.size(); ++x){
         truthjet* elx = elc[x]; 
         if (m_pdgid.size()){elx -> pdgid = m_pdgid[x];}

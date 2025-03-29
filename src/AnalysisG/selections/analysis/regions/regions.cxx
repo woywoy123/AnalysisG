@@ -8,7 +8,39 @@ selection_template* regions::clone(){
 }
 
 void regions::merge(selection_template* sl){
+    auto lmb = [this](regions_t* data, std::string name){
+        this -> write(data -> weight   , name + "_weight"   );  
+        this -> write(data -> variable1, name + "_variable1");  
+        this -> write(data -> variable2, name + "_variable2");  
+        this -> write(data -> passed   , name + "passed"    ); 
+    }; 
+
     regions* slt = (regions*)sl; 
+    lmb(&slt -> output[0].CRttbarCO2l_CO     , "CRttbarCO2l_CO");        
+    lmb(&slt -> output[0].CRttbarCO2l_CO_2b  , "CRttbarCO2l_CO_2b");        
+    lmb(&slt -> output[0].CRttbarCO2l_gstr   , "CRttbarCO2l_gstr");        
+    lmb(&slt -> output[0].CRttbarCO2l_gstr_2b, "CRttbarCO2l_gstr_2b");        
+    lmb(&slt -> output[0].CR1b3lem           , "CR1b3lem");        
+    lmb(&slt -> output[0].CR1b3le            , "CR1b3le");        
+    lmb(&slt -> output[0].CR1b3lm            , "CR1b3lm");        
+    lmb(&slt -> output[0].CRttW2l_plus       , "CRttW2l_plus");        
+    lmb(&slt -> output[0].CRttW2l_minus      , "CRttW2l_minus");        
+    lmb(&slt -> output[0].CR1bplus           , "CR1bplus");        
+    lmb(&slt -> output[0].CR1bminus          , "CR1bminus");        
+    lmb(&slt -> output[0].CRttW2l            , "CRttW2l");        
+    lmb(&slt -> output[0].VRttZ3l            , "VRttZ3l");        
+    lmb(&slt -> output[0].VRttWCRSR          , "VRttWCRSR");        
+    lmb(&slt -> output[0].SR4b               , "SR4b");        
+    lmb(&slt -> output[0].SR2b               , "SR2b");        
+    lmb(&slt -> output[0].SR3b               , "SR3b");        
+    lmb(&slt -> output[0].SR2b2l             , "SR2b2l");        
+    lmb(&slt -> output[0].SR2b3l4l           , "SR2b3l4l");        
+    lmb(&slt -> output[0].SR2b4l             , "SR2b4l");        
+    lmb(&slt -> output[0].SR3b2l             , "SR3b2l");        
+    lmb(&slt -> output[0].SR3b3l4l           , "SR3b3l4l");        
+    lmb(&slt -> output[0].SR3b4l             , "SR3b4l");        
+    lmb(&slt -> output[0].SR4b4l             , "SR4b4l");        
+    lmb(&slt -> output[0].SR                 , "SR");        
     merge_data(&this -> output, &slt -> output); 
 }
 

@@ -21,6 +21,7 @@ void matching::experimental(event_template* ev){
             if (ch[y] -> is_nu  &&  nu.size() == 0){ nu.push_back(ch[y]);}
             if (ch[y] -> is_lep && lep.size() == 0){lep.push_back(ch[y]);}
         }
+        bool is_lep_tru = nu.size() > 0; 
 
         // ----------- matching top ---------- // 
         int num_jets = 0; 
@@ -36,14 +37,14 @@ void matching::experimental(event_template* ev){
         this -> data.top_partons.mass.push_back(tpx -> mass / 1000.0); 
 
         // ----------- matching children ---------- // 
-        this -> dump(&this -> data.top_children, &ch, is_lepx); 
+        this -> dump(&this -> data.top_children, &ch, is_lepx, is_lepx); 
 
         // ---------- matching truth jets -------- //
         is_lepx = this -> match_obj(&phys_truth, &tjets, tpx -> hash, &num_merged, &num_jets, true); 
         if (tjets.size()){
             merge_data(&tjets, &nu);
             merge_data(&tjets, &lep); 
-            this -> dump(&this -> data.top_truthjets, &tjets, is_lepx, &num_jets, &num_merged); 
+            this -> dump(&this -> data.top_truthjets, &tjets, is_lepx, is_lep_tru, &num_jets, &num_merged); 
         }
 
         // ---------- matching jets truth children -------- //
@@ -51,19 +52,19 @@ void matching::experimental(event_template* ev){
         if (_jets.size()){
             merge_data(&_jets, &nu); 
             merge_data(&_jets, &lep); 
-            this -> dump(&this -> data.top_jets_children, &_jets, nu.size() > 0, &num_jets, &num_merged); 
+            this -> dump(&this -> data.top_jets_children, &_jets, nu.size() > 0, is_lep_tru, &num_jets, &num_merged); 
         }
 
         // ---------- matching jets leptons -------- //
         is_lepx = this -> match_obj(&phys_detector, &jets_lepton, tpx -> hash, &num_merged, &num_jets, false); 
         if (!jets_lepton.size()){continue;}
         if (!is_lepx){
-            this -> dump(&this -> data.top_jets_leptons, &jets_lepton, is_lepx, &num_jets, &num_merged);
+            this -> dump(&this -> data.top_jets_leptons, &jets_lepton, is_lepx, is_lep_tru, &num_jets, &num_merged);
             continue;
         }
         if (jets_lepton.size() < 2){continue;}
         merge_data(&jets_lepton, &nu); 
-        this -> dump(&this -> data.top_jets_leptons, &jets_lepton, is_lepx, &num_jets, &num_merged); 
+        this -> dump(&this -> data.top_jets_leptons, &jets_lepton, is_lepx, is_lep_tru, &num_jets, &num_merged); 
     }
 }
 

@@ -21,7 +21,7 @@ tt = GraphTruthJets()
 
 params = [
     ("MRK-1", "adam", {"lr" : 1e-4}),
-    ("MRK-2", "adam", {"lr" : 1e-6}),
+    #("MRK-2", "adam", {"lr" : 1e-6}),
     #    ("MRK-3", "adam", {"lr" : 1e-6, "amsgrad" : True}),
     #("MRK-4", "sgd" , {"lr" : 1e-3}),
     #("MRK-5", "sgd", {"lr" : 1e-6}),
@@ -36,6 +36,7 @@ p = 0
 for k in params:
     #m1 = RecursiveGraphNeuralNetwork()
     m1 = Grift()
+    m1.PageRank = True
     m1.o_edge  = {
             "top_edge" : "CrossEntropyLoss",
             "res_edge" : "CrossEntropyLoss"
@@ -74,8 +75,8 @@ ana.GraphCache = "./ProjectName/"
 ana.kFold = [1] #, 2, 3, 4] #6, 7, 3, 5, 9]
 ana.MaxRange = 1500
 ana.TrainSize = 80
-ana.BatchSize = 2
-ana.ContinueTraining = False
+ana.BatchSize = 4
+ana.ContinueTraining = True
 #ana.SumOfWeightsTreeName = "sumWeights"
 #ana.FetchMeta = True
 ana.DebugMode  = False

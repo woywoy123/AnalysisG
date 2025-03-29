@@ -1,4 +1,5 @@
 #include <element.h>
+#include <meta.h>
 
 void element_t::set_meta(){
     std::map<std::string, data_t*>::iterator itr = this -> handle.begin();
@@ -76,14 +77,23 @@ bool data_t::next(){
 
 void write_t::write(){
     this -> tree -> Fill(); 
-    std::map<std::string, variable_t>::iterator itx = this -> data.begin(); 
-    for (; itx != this -> data.end(); ++itx){itx -> second.flush();}
+    std::map<std::string, variable_t*>::iterator itx = this -> data -> begin(); 
+    for (; itx != this -> data -> end(); ++itx){itx -> second -> flush();}
 }
 
 void write_t::create(std::string tr_name, std::string path){
     if (this -> file){return;}
     this -> file = new TFile(path.c_str(), "RECREATE"); 
+    if (this -> mtx){
+        this -> tree = new TTree("MetaData", "meta"); 
+        this -> tree -> Branch("MetaData", this -> mtx); 
+        this -> tree -> Fill();
+        this -> tree -> Write("", TObject::kOverwrite);  
+        delete this -> tree; 
+        this -> tree = nullptr; 
+    }
     this -> tree = new TTree(tr_name.c_str(), "data"); 
+    this -> data = new std::map<std::string, variable_t*>(); 
 }
 
 void write_t::close(){
@@ -91,6 +101,19 @@ void write_t::close(){
     this -> tree -> Write("", TObject::kOverwrite); 
     this -> file -> Close();
     this -> file -> Delete(); 
+    delete this -> file; 
+    this -> file = nullptr;
+    this -> tree = nullptr; 
+    std::map<std::string, variable_t*>::iterator itx = this -> data -> begin(); 
+    for (; itx != this -> data -> end(); ++itx){delete itx -> second;}
+    this -> data -> clear(); 
+    delete this -> data; 
 }
 
+variable_t* write_t::process(std::string* name){
+    if (this -> data -> count(*name)){return (*this -> data)[*name];}
+    variable_t* t = new variable_t(); 
+    (*this -> data)[*name] = t; 
+    return t; 
+}
 

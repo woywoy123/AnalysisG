@@ -1,22 +1,30 @@
 #include <vector_cast.h>
+#include <string.h>
 
-void add_to_dict(std::vector<std::vector<float>>*){gInterpreter -> GenerateDictionary("vector<vector<float>>", "vector");}
-void add_to_dict(std::vector<std::vector<double>>*){gInterpreter -> GenerateDictionary("vector<vector<double>>", "vector");}
-void add_to_dict(std::vector<std::vector<long>>*){gInterpreter -> GenerateDictionary("vector<vector<long>>", "vector");}
-void add_to_dict(std::vector<std::vector<int>>*){gInterpreter -> GenerateDictionary("vector<vector<int>>", "vector");}
-void add_to_dict(std::vector<std::vector<bool>>*){gInterpreter -> GenerateDictionary("vector<vector<bool>>", "vector");}
+void static buildDict(std::string _name, std::string _shrt){
+    std::string name = std::string(_name);
+    std::string shrt = std::string(_shrt); 
+    //if (gInterpreter -> IsLoaded(shrt.c_str())){return;}
+    gInterpreter -> GenerateDictionary(name.c_str(), shrt.c_str()); 
+}
 
-void add_to_dict(std::vector<float>*){gInterpreter -> GenerateDictionary("vector<float>", "vector");}
-void add_to_dict(std::vector<double>*){gInterpreter -> GenerateDictionary("vector<double>", "vector");}
-void add_to_dict(std::vector<long>*){gInterpreter -> GenerateDictionary("vector<long>", "vector");}
-void add_to_dict(std::vector<int>*){gInterpreter -> GenerateDictionary("vector<int>", "vector");}
-void add_to_dict(std::vector<bool>*){gInterpreter -> GenerateDictionary("vector<bool>", "vector");}
+void add_to_dict(std::vector<std::vector<float>>*){buildDict("vector<vector<float>>", "vector");}
+void add_to_dict(std::vector<std::vector<double>>*){buildDict("vector<vector<double>>", "vector");}
+void add_to_dict(std::vector<std::vector<long>>*){buildDict("vector<vector<long>>", "vector");}
+void add_to_dict(std::vector<std::vector<int>>*){buildDict("vector<vector<int>>", "vector");}
+void add_to_dict(std::vector<std::vector<bool>>*){buildDict("vector<vector<bool>>", "vector");}
 
-void add_to_dict(float*){gInterpreter -> GenerateDictionary("float"  , "vector");}
-void add_to_dict(double*){gInterpreter -> GenerateDictionary("double", "vector");}
-void add_to_dict(long*){gInterpreter -> GenerateDictionary("long"    , "vector");}
-void add_to_dict(int*){gInterpreter -> GenerateDictionary("int"      , "vector");}
-void add_to_dict(bool*){gInterpreter -> GenerateDictionary("bool"    , "vector");}
+void add_to_dict(std::vector<float>*){buildDict("vector<float>", "vector");}
+void add_to_dict(std::vector<double>*){buildDict("vector<double>", "vector");}
+void add_to_dict(std::vector<long>*){buildDict("vector<long>", "vector");}
+void add_to_dict(std::vector<int>*){buildDict("vector<int>", "vector");}
+void add_to_dict(std::vector<bool>*){buildDict("vector<bool>", "vector");}
+
+void add_to_dict(float*){buildDict("float"  , "vector");}
+void add_to_dict(double*){buildDict("double", "vector");}
+void add_to_dict(long*){buildDict("long"    , "vector");}
+void add_to_dict(int*){buildDict("int"      , "vector");}
+void add_to_dict(bool*){buildDict("bool"    , "vector");}
 
 
 void variable_t::process(std::vector<std::vector<float>>* data, std::string* varname, TTree* tr){

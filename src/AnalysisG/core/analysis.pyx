@@ -17,6 +17,7 @@ from AnalysisG.core.analysis cimport analysis
 from time import sleep
 from tqdm import tqdm
 import pickle
+import gc
 
 def factory(title, total): return tqdm(
         total = total, desc = title, leave = False, dynamic_ncols = True)
@@ -33,11 +34,8 @@ cdef class Analysis:
         self.optim_      = []
         self.meta_       = {}
 
-    def __init__(self):
-        pass
-
-    def __dealloc__(self):
-        del self.ana
+    def __init__(self): pass
+    def __dealloc__(self): del self.ana; gc.collect()
 
     def AddSamples(self, str path, str label):
         cdef string rm = enc(label)

@@ -46,13 +46,13 @@ class selection_template: public tools
         template <typename g> 
         void write(g* var, std::string name){
             if (!this -> handle){return;}
-            this -> handle -> data[name].process(var, &name, this -> handle -> tree);
+            this -> handle -> process(&name) -> process(var, &name, this -> handle -> tree);
         }
 
         template <typename g> 
         void write(g var, std::string name){
             if (!this -> handle){return;}
-            this -> handle -> data[name].process(&var, &name, this -> handle -> tree);
+            this -> handle -> process(&name) -> process(&var, &name, this -> handle -> tree);
         }
 
         std::vector<std::map<std::string, float>> reverse_hash(std::vector<std::string>* hashes); 

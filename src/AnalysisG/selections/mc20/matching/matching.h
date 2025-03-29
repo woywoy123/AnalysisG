@@ -6,7 +6,10 @@ struct object_data_t {
     int num_tops = 0; 
     int num_ltop = 0; 
     int num_htop = 0; 
+    int num_false = 0; 
+
     std::vector<double> mass = {}; 
+    std::vector<double> wrong_matched = {}; 
 
     std::vector<int> num_jets = {}; 
     std::vector<int> is_leptonic = {}; 
@@ -34,7 +37,7 @@ class matching: public selection_template
         void experimental(event_template* ev); 
         void current(event_template* ev); 
         void dump(
-            object_data_t* data, std::vector<particle_template*>* obj, bool is_lepx, 
+            object_data_t* data, std::vector<particle_template*>* obj, bool is_lepx, bool is_tru,
             int* num_jets = nullptr, std::vector<int>* num_merged = nullptr
         );
         bool match_obj(

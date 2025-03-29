@@ -1,5 +1,7 @@
-#include <AnalysisG/analysis.h>
 #include <ROOT/RDataFrame.hxx>
+#include <AnalysisG/analysis.h>
+#include <AnalysisG/cfg.h>
+#include <TSystem.h>
 #include <thread>
 
 analysis::analysis(){
@@ -8,6 +10,12 @@ analysis::analysis(){
     this -> loader  = new dataloader(); 
     this -> reader  = new io(); 
     this -> tags    = new std::vector<folds_t>(); 
+
+    gSystem -> SetBuildDir(dict_path, true); 
+    gSystem -> SetAclicMode(TSystem::kOpt); 
+    std::string pt = std::string(dict_path) + "structs/include/structs/meta.h"; 
+    gInterpreter -> GenerateDictionary("meta_t", pt.c_str()); 
+    gInterpreter -> GenerateDictionary("weights_t", pt.c_str()); 
 }
 
 analysis::~analysis(){
@@ -15,7 +23,7 @@ analysis::~analysis(){
     delete this -> tags; 
 
     flush(&this -> trainer);
-    flush(&this -> meta_data); 
+//    flush(&this -> meta_data); 
 
     delete this -> loader; 
     delete this -> tracer; 

@@ -27,20 +27,20 @@ void matching::merge(selection_template* sl){
     this -> write(&slt -> data.top_children.is_hadronic, "c_ishadronic"); 
     this -> write(&slt -> data.top_children.pdgid      , "c_pdgid"); 
 
-
     // ---------------------- truth jets ------------------------- 
     this -> write(&slt -> data.top_truthjets.num_tops, "tj_ntops"); 
     this -> write(&slt -> data.top_truthjets.num_ltop, "tj_ltops");
     this -> write(&slt -> data.top_truthjets.num_htop, "tj_htops");
     this -> write(&slt -> data.top_truthjets.mass    , "tj_top_mass"); 
 
-    this -> write(&slt -> data.top_truthjets.is_leptonic, "tj_isleptonic"); 
-    this -> write(&slt -> data.top_truthjets.is_hadronic, "tj_ishadronic"); 
-    this -> write(&slt -> data.top_truthjets.pdgid      , "tj_pdgid"); 
-    this -> write(&slt -> data.top_truthjets.num_jets   , "tj_num_jets"); 
-    this -> write(&slt -> data.top_truthjets.merged     , "tj_merged_top_jets"); 
-
-
+    this -> write(&slt -> data.top_truthjets.is_leptonic  , "tj_isleptonic"); 
+    this -> write(&slt -> data.top_truthjets.is_hadronic  , "tj_ishadronic"); 
+    this -> write(&slt -> data.top_truthjets.pdgid        , "tj_pdgid"); 
+    this -> write(&slt -> data.top_truthjets.num_jets     , "tj_num_jets"); 
+    this -> write(&slt -> data.top_truthjets.merged       , "tj_merged_top_jets"); 
+    
+    this -> write(&slt -> data.top_truthjets.wrong_matched, "tj_wrong_match"); 
+    this -> write(&slt -> data.top_truthjets.num_false    , "tj_num_false"); 
 
     // ------------- jets with top children leptons and neutrinos -----------
     this -> write(&slt -> data.top_jets_children.num_tops, "jc_ntops"); 
@@ -53,7 +53,9 @@ void matching::merge(selection_template* sl){
     this -> write(&slt -> data.top_jets_children.pdgid      , "jc_pdgid"); 
     this -> write(&slt -> data.top_jets_children.num_jets   , "jc_num_jets"); 
     this -> write(&slt -> data.top_jets_children.merged     , "jc_merged_top_jets"); 
-
+    
+    this -> write(&slt -> data.top_jets_children.wrong_matched, "jc_wrong_match"); 
+    this -> write(&slt -> data.top_jets_children.num_false    , "jc_num_false"); 
 
     // ----------- Detector jets with leptons and top children neutrinos ----------------
     this -> write(&slt -> data.top_jets_leptons.num_tops, "jl_ntops"); 
@@ -66,25 +68,33 @@ void matching::merge(selection_template* sl){
     this -> write(&slt -> data.top_jets_leptons.pdgid      , "jl_pdgid"); 
     this -> write(&slt -> data.top_jets_leptons.num_jets   , "jl_num_jets"); 
     this -> write(&slt -> data.top_jets_leptons.merged     , "jl_merged_top_jets"); 
+
+    this -> write(&slt -> data.top_jets_leptons.wrong_matched, "jl_wrong_match"); 
+    this -> write(&slt -> data.top_jets_leptons.num_false    , "jl_num_false"); 
 }
 
 void matching::dump(
-        object_data_t* data, std::vector<particle_template*>* obj, 
-        bool is_lepx, int* num_jets, std::vector<int>* num_merged
+        object_data_t* datav, std::vector<particle_template*>* obj, 
+        bool is_lepx, bool is_lep_tru, int* num_jets, std::vector<int>* num_merged
 ){
     if (!obj -> size()){return;}
-    data -> num_tops += 1; 
-    data -> num_ltop += is_lepx; 
-    data -> num_htop += !is_lepx; 
-    
-    data -> is_leptonic.push_back(int( is_lepx)); 
-    data -> is_hadronic.push_back(int(!is_lepx)); 
-    
-    if (num_jets){data -> num_jets.push_back(*num_jets);}
-    if (num_merged){data -> merged.push_back(*num_merged);}
-    
-    data -> pdgid.push_back(this -> get_pdgid(obj)); 
-    data -> mass.push_back(this -> sum(obj)); 
+    bool wrg = is_lepx != is_lep_tru; 
+
+    datav -> num_tops += 1; 
+    datav -> num_false += wrg; 
+    datav -> num_ltop += (!wrg)*( is_lepx); 
+    datav -> num_htop += (!wrg)*(!is_lepx); 
+
+    datav -> is_leptonic.push_back(int( is_lepx)*(!wrg) - 1*(wrg)); 
+    datav -> is_hadronic.push_back(int(!is_lepx)*(!wrg) - 1*(wrg)); 
+
+    if (num_jets){datav -> num_jets.push_back(*num_jets);}
+    if (num_merged){datav -> merged.push_back(*num_merged);}
+    datav -> pdgid.push_back(this -> get_pdgid(obj)); 
+  
+    double mx = this -> sum(obj); 
+    if (is_lepx != is_lep_tru){datav -> wrong_matched.push_back(mx);}
+    else {datav -> mass.push_back(mx);}
 }
 
 bool matching::match_obj(

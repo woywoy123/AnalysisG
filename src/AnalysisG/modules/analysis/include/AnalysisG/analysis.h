@@ -11,7 +11,6 @@
 #include <templates/selection_template.h>
 #include <templates/model_template.h>
 #include <templates/fx_enums.h>
-
 #include <structs/settings.h>
 #include <io/io.h>
 

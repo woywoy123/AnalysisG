@@ -2,10 +2,9 @@
 #define TYPECASTING_VECTOR_CAST_H
 
 #include <TInterpreter.h>
-#include <TSystem.h>
-#include <TTree.h>
-#include <tools/cfg.h>
+#include <structs/meta.h>
 #include <torch/torch.h>
+#include <TTree.h>
 #include <vector>
 
 template <typename G>
@@ -95,6 +94,8 @@ struct variable_t {
         void process(bool*   data, std::string* varname, TTree* tr); 
         std::string variable_name = ""; 
 
+        meta_t* mtx = nullptr; 
+
     private: 
         std::vector<std::vector<float>>  vvf = {}; 
         std::vector<std::vector<double>> vvd = {}; 
@@ -121,7 +122,16 @@ struct variable_t {
         void add_data(std::vector<g>* type, torch::Tensor* data, std::vector<signed long>* s, std::string* varname, p prim){
             tensor_to_vector(data, type, s, prim); 
             if (this -> tb){return;}
-            if (!this -> tt){return add_to_dict(type);}
+            if (!this -> tt){
+                if (this -> mtx){
+                    this -> tt = new TTree("MetaData", "meta"); 
+                    this -> tt -> Branch("MetaData", this -> mtx); 
+                    this -> tt -> Fill(); 
+                    delete this -> tt; 
+                    this -> tt = nullptr; 
+                }
+                return add_to_dict(type);
+            }
             this -> tb = this -> tt -> Branch(varname -> c_str(), type); 
             this -> tt -> AddBranchToCache(this -> tb, true); 
         }
