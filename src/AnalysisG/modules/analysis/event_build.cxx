@@ -112,20 +112,24 @@ void analysis::build_events(){
         thsmpl.push_back({}); 
     }
 
+    std::vector<std::string> _trees    = *trees_; 
+    std::vector<std::string> _branches = *branches_; 
+    std::vector<std::string> _leaves   = *leaves_; 
+    this -> reader -> root_end(); 
+    delete this -> reader; 
+
     ROOT::EnableImplicitMT(thsmpl.size()); 
     std::vector<size_t> th_prg(thsmpl.size(), 0);
     std::vector<std::thread*> thrs(thsmpl.size(), nullptr); 
     std::vector<std::string*> title(thsmpl.size(), nullptr); 
     for (size_t x(0); x < thsmpl.size(); ++x){
         title[x] = new std::string(""); 
-        thrs[x] = new std::thread(lamb, trees_, branches_, leaves_, &thsmpl[x], title[x], &thevnt[x], &th_prg[x], event_f); 
+        thrs[x] = new std::thread(lamb, &_trees, &_branches, &_leaves, &thsmpl[x], title[x], &thevnt[x], &th_prg[x], event_f); 
     }
 
     std::thread* th_ = new std::thread(this -> progressbar3, &th_prg, &thevnt, &title); 
     this -> monitor(&thrs); 
-    this -> reader -> root_end(); 
-    delete this -> reader; 
-    this -> reader = new io(); 
     th_ -> join(); delete th_; th_ = nullptr; 
+    this -> reader = new io(); 
     this -> success("Finished Building Events"); 
 }

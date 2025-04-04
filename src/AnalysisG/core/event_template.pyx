@@ -17,6 +17,7 @@ cdef class EventTemplate:
         if type(self) is not EventTemplate: return
         del self.ptr
 
+    def __name__(self): return env(self.ptr.name)
     def __hash__(self): return int(string(self.ptr.hash).substr(0, 8), 0)
     def __eq__(self, other):
         if not self.is_self(other): return False

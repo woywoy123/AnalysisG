@@ -56,6 +56,7 @@ for evnt in smpls:
     for k in mc20_c[evnt]:
         ev = modes[evnt]()
         sel = TopMatching() 
+#        sel.EnergyLimit = 0.1
         
         ana = Analysis()
         ana.Threads = 12

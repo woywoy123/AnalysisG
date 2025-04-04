@@ -10,3 +10,4 @@ Some of the listed structs are only relevant for modifications made to the under
    event.rst
    particles.rst   
    settings.rst
+   meta_t.rst

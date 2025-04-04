@@ -80,21 +80,21 @@ void matching::dump(
     if (!obj -> size()){return;}
     bool wrg = is_lepx != is_lep_tru; 
 
-    datav -> num_tops += 1; 
+    datav -> num_tops  += 1; 
     datav -> num_false += wrg; 
-    datav -> num_ltop += (!wrg)*( is_lepx); 
-    datav -> num_htop += (!wrg)*(!is_lepx); 
+    datav -> num_ltop  += ( is_lepx); 
+    datav -> num_htop  += (!is_lepx); 
 
-    datav -> is_leptonic.push_back(int( is_lepx)*(!wrg) - 1*(wrg)); 
-    datav -> is_hadronic.push_back(int(!is_lepx)*(!wrg) - 1*(wrg)); 
+    datav -> is_leptonic.push_back(int( is_lepx)); 
+    datav -> is_hadronic.push_back(int(!is_lepx)); 
 
     if (num_jets){datav -> num_jets.push_back(*num_jets);}
     if (num_merged){datav -> merged.push_back(*num_merged);}
     datav -> pdgid.push_back(this -> get_pdgid(obj)); 
   
     double mx = this -> sum(obj); 
-    if (is_lepx != is_lep_tru){datav -> wrong_matched.push_back(mx);}
-    else {datav -> mass.push_back(mx);}
+    datav -> wrong_matched.push_back(mx * (wrg) - 1*(!wrg)); 
+    datav -> mass.push_back(mx);
 }
 
 bool matching::match_obj(

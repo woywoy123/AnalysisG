@@ -42,7 +42,8 @@ class selection_template: public tools
         virtual bool selection(event_template* ev);
         virtual bool strategy(event_template* ev);
         virtual void merge(selection_template* sel); 
-       
+        virtual void bulk_write(const long* idx, std::string* hx); 
+
         template <typename g> 
         void write(g* var, std::string name){
             if (!this -> handle){return;}
@@ -156,7 +157,12 @@ class selection_template: public tools
 
     private:
         friend container;
+
+        void bulk_write_out(); 
         void merger(selection_template* sl2); 
+
+        std::unordered_map<long, std::string> sequence; 
+        bool p_bulk_write = true; 
          
         write_t* handle = nullptr; 
         event_template* m_event = nullptr; 

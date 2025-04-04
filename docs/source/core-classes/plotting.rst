@@ -11,9 +11,11 @@ Plotting Base Function used to Share Attributes
 
 .. py:class:: AnalysisG.core.plotting.BasePlotting
 
-   :ivar: int DPI: Changes the output resolution of the figure.
+   :ivar str Hatch: Changes the texture of figures.
 
-   :ivar: str Style: The template style to use (ATLAS, ROOT, etc.)
+   :ivar int DPI: Changes the output resolution of the figure.
+
+   :ivar str Style: The template style to use (ATLAS, ROOT, etc.)
 
    :ivar bool ErrorBars: Indicates whether to show error bars on the histogram bins.
 

@@ -17,18 +17,28 @@ cdef extern from "<tools/tools.h>":
         void create_path(string inpt) except+ nogil
         void delete_path(string inpt) except+ nogil
         bool is_file(string inpt) except+ nogil
+        void rename(string start, string target) except+ nogil
         string absolute_path(string path) except+ nogil
         vector[string] ls(string path, string ext) except+ nogil
 
         # strings.cxx
-        string hash(string inpt, int l) except+ nogil
-        bool has_string(string* inpt, string trg) except+ nogil
         void replace(string* inpt, string rpl, string rpwl) except+ nogil
+        bool has_string(string* inpt, string trg) except+ nogil
+        bool ends_with(string* inpt, string val) except+ nogil
+        bool has_value(vector[string]* data, string trg) except+ nogil
+
         vector[string] split(string ipt, string delm) except+ nogil
         vector[string] split(string ipt, int n) except+ nogil
+        string hash(string inpt, int l) except+ nogil
 
         string encode64(string* data) except+ nogil
         string decode64(string* data) except+ nogil
+
+        vector[vector[int   ]] discretize(vector[int   ]* v, int N) except+ nogil
+        vector[vector[float ]] discretize(vector[float ]* v, int N) except+ nogil
+        vector[vector[double]] discretize(vector[double]* v, int N) except+ nogil
+        vector[vector[bool  ]] discretize(vector[bool  ]* v, int N) except+ nogil
+        vector[vector[string]] discretize(vector[string]* v, int N) except+ nogil
 
 ctypedef fused base_types:
     int

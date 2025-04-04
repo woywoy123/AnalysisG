@@ -8,12 +8,16 @@ selection_template* topkinematics::clone(){
 }
 
 void topkinematics::merge(selection_template* sl){
-    topkinematics* slt = (topkinematics*)sl; 
+    auto lamb =[this](std::map<std::string, std::vector<float>>* dx, std::string key){
+        std::map<std::string, std::vector<float>>::iterator itr = dx -> begin(); 
+        for (; itr != dx -> end(); ++itr){this -> write(&itr -> second, key + "_" + itr -> first);}
+    }; 
 
-    merge_data(&this -> res_top_kinematics , &slt -> res_top_kinematics); 
-    merge_data(&this -> spec_top_kinematics, &slt -> spec_top_kinematics); 
-    merge_data(&this -> mass_combi         , &slt -> mass_combi); 
-    merge_data(&this -> deltaR             , &slt -> deltaR); 
+    topkinematics* slt = (topkinematics*)sl; 
+    lamb(&slt -> res_top_kinematics, "res"); 
+    lamb(&slt -> spec_top_kinematics, "spec"); 
+    lamb(&slt -> mass_combi, "mass"); 
+    lamb(&slt -> deltaR, "dr"); 
 }
 
 bool topkinematics::selection(event_template* ev){

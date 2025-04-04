@@ -44,7 +44,7 @@ void matching::experimental(event_template* ev){
         if (tjets.size()){
             merge_data(&tjets, &nu);
             merge_data(&tjets, &lep); 
-            this -> dump(&this -> data.top_truthjets, &tjets, is_lepx, is_lep_tru, &num_jets, &num_merged); 
+            this -> dump(&this -> data.top_truthjets, &tjets, is_lep_tru, is_lep_tru, &num_jets, &num_merged); 
         }
 
         // ---------- matching jets truth children -------- //

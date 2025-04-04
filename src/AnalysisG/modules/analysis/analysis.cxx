@@ -11,8 +11,10 @@ analysis::analysis(){
     this -> reader  = new io(); 
     this -> tags    = new std::vector<folds_t>(); 
 
+
     gSystem -> SetBuildDir(dict_path, true); 
     gSystem -> SetAclicMode(TSystem::kOpt); 
+
     std::string pt = std::string(dict_path) + "structs/include/structs/meta.h"; 
     gInterpreter -> GenerateDictionary("meta_t", pt.c_str()); 
     gInterpreter -> GenerateDictionary("weights_t", pt.c_str()); 

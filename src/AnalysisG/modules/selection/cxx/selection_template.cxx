@@ -56,13 +56,25 @@ selection_template* selection_template::build(event_template* ev){
 
 void selection_template::merge(selection_template*){}
 
+void selection_template::bulk_write(const long*, std::string*){this -> p_bulk_write = false;}
+
+void selection_template::bulk_write_out(){
+    if (!this -> p_bulk_write || !this -> handle){return;}
+    std::unordered_map<long, std::string>::iterator itx = this -> sequence.begin(); 
+    for (; itx != this -> sequence.end(); ++itx){
+        this -> bulk_write(&itx -> first, &itx -> second); 
+        this -> handle -> write(); 
+    }
+}
+
 void selection_template::merger(selection_template* sl2){
     if (this -> name != sl2 -> name){return;}
     this -> merge(sl2); 
     if (this -> m_event){return;}
 
     if (sl2 -> m_event){
-        this -> write(float(sl2 -> weight), "event_weight"); 
+        if (this -> p_bulk_write){this -> sequence[sl2 -> index] = sl2 -> hash;}
+        else {this -> write(float(sl2 -> weight), "event_weight");}
         this -> passed_weights[sl2 -> filename][sl2 -> hash] = sl2 -> weight;
         this -> matched_meta[sl2 -> filename] = sl2 -> meta_data -> meta_data;
         return; 

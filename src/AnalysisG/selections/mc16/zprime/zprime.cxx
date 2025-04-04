@@ -9,10 +9,10 @@ selection_template* zprime::clone(){
 
 void zprime::merge(selection_template* sl){
     zprime* slt = (zprime*)sl; 
-    merge_data(&this -> zprime_truth_tops, &slt -> zprime_truth_tops); 
-    merge_data(&this -> zprime_children,   &slt -> zprime_children);      
-    merge_data(&this -> zprime_truthjets,  &slt -> zprime_truthjets);     
-    merge_data(&this -> zprime_jets,       &slt -> zprime_jets);          
+    this -> write(&slt -> zprime_truth_tops, "zprime_truth_tops"); 
+    this -> write(&slt -> zprime_children,   "zprime_children");      
+    this -> write(&slt -> zprime_truthjets,  "zprime_truthjets");     
+    this -> write(&slt -> zprime_jets,       "zprime_jets");          
 }
 
 bool zprime::selection(event_template* ev){

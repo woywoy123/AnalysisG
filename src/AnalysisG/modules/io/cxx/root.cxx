@@ -270,14 +270,18 @@ void io::root_begin(){
     this -> scan_keys();
     if (this -> iters){this -> root_end();}
     this -> iters = new std::map<std::string, data_t*>(); 
+    std::vector<TFile*>* vx = new std::vector<TFile*>(this -> files_open.size(), nullptr);
+    std::map<std::string, bool> cnt = {}; 
 
     std::map<std::string, TLeaf*>::iterator lfii; 
     std::map<std::string, std::map<std::string, TLeaf*>>::iterator lfi; 
 
     for (lfi = this -> leaf_data.begin(); lfi != this -> leaf_data.end(); ++lfi){
         std::string fname = lfi -> first; 
-        std::map<std::string, TLeaf*>* lf_map = &lfi -> second; 
+        size_t inx = cnt.size(); 
+        cnt[fname] = true; 
 
+        std::map<std::string, TLeaf*>* lf_map = &lfi -> second; 
         for (lfii = lf_map -> begin(); lfii != lf_map -> end(); ++lfii){
             std::string lf_name = lfii -> first; 
             std::vector<std::string> pth_ = this -> split(lf_name, "."); 
@@ -290,15 +294,17 @@ void io::root_begin(){
                 dt -> leaf_type = this -> leaf_typed[fname][lf_name]; 
                 dt -> files_s   = new std::vector<std::string>();
                 dt -> files_i   = new std::vector<long>(); 
-                dt -> files_t   = new std::vector<TFile*>();  
+                dt -> files_t   = vx; 
                 (*this -> iters)[lf_name] = dt; 
             }
 
             data_t* v = (*this -> iters)[lf_name]; 
             v -> files_s -> push_back(fname); 
-            v -> files_t -> push_back(this -> files_open[fname]); 
             v -> files_i -> push_back(this -> tree_entries[fname][v -> tree_name]); 
-            if (!v -> leaf){v -> initialize();}
+            TFile* fx = this -> files_open[fname]; 
+            if (!(*vx)[inx]){(*vx)[inx] = (!inx) ? fx -> Open(fx -> GetTitle()) : fx;}
+            if (v -> leaf){continue;}
+            v -> initialize();
         }
     }
 }
@@ -311,11 +317,17 @@ std::map<std::string, data_t*>* io::get_data(){
 void io::root_end(){
     if (!this -> iters){return;}
     std::map<std::string, data_t*>::iterator it = this -> iters -> begin(); 
+    std::vector<TFile*>* fx = nullptr; 
     for (; it != this -> iters -> end(); ++it){
         it -> second -> clear = true; 
-        it -> second -> flush(); delete it -> second;
+        it -> second -> flush(); 
+        if (!fx){fx = it -> second -> files_t;}
+        delete it -> second;
+        it -> second = nullptr; 
     }
+    if (fx){delete fx;}
     this -> iters -> clear(); 
-    delete this -> iters; this -> iters = nullptr; 
+    delete this -> iters; 
+    this -> iters = nullptr; 
 }
 

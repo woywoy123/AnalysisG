@@ -10,22 +10,22 @@ cdef extern from "childrenkinematics.h":
     cdef cppclass childrenkinematics(selection_template):
         childrenkinematics() except +
 
-        map[string, vector[float]] res_kinematics
-        map[string, vector[float]] spec_kinematics
-
-        map[string, map[string, vector[float]]] res_pdgid_kinematics
-        map[string, map[string, vector[float]]] spec_pdgid_kinematics
-
-        map[string, map[string, vector[float]]] res_decay_mode
-        map[string, map[string, vector[float]]] spec_decay_mode
-
-        map[string, vector[float]] mass_clustering
-        map[string, vector[float]] dr_clustering
-        map[string, vector[float]] top_pt_clustering
-        map[string, vector[float]] top_energy_clustering
-        map[string, vector[float]] top_children_dr
-
-        map[string, map[string, vector[float]]] fractional
+#        map[string, vector[float]] res_kinematics
+#        map[string, vector[float]] spec_kinematics
+#
+#        map[string, map[string, vector[float]]] res_pdgid_kinematics
+#        map[string, map[string, vector[float]]] spec_pdgid_kinematics
+#
+#        map[string, map[string, vector[float]]] res_decay_mode
+#        map[string, map[string, vector[float]]] spec_decay_mode
+#
+#        map[string, vector[float]] mass_clustering
+#        map[string, vector[float]] dr_clustering
+#        map[string, vector[float]] top_pt_clustering
+#        map[string, vector[float]] top_energy_clustering
+#        map[string, vector[float]] top_children_dr
+#
+#        map[string, map[string, vector[float]]] fractional
 
 
 cdef class ChildrenKinematics(SelectionTemplate):

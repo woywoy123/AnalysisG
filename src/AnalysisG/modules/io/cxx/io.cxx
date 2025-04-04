@@ -1,12 +1,21 @@
-#include "io.h"
+#include <io/io.h>
+#include <io/cfg.h>
+#include <TSystem.h>
 
-io::io(){this -> prefix = "io";}
+io::io(){
+    this -> prefix = "io";
+    std::string pt = std::string(dict_path) + "structs/include/structs/meta.h"; 
+    buildDict("meta_t", pt); 
+    buildDict("weights_t", pt); 
+}
+
 io::~io(){
     this -> end();
     this -> root_end(); 
     std::map<std::string, TFile*>::iterator itr = this -> files_open.begin(); 
     for (; itr != this -> files_open.end(); ++itr){
         if (itr -> second -> IsOpen()){itr -> second -> Close();}
+        itr -> second -> Delete(); 
         delete itr -> second;
     }
 

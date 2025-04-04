@@ -22,7 +22,7 @@ void data_t::flush_buffer(){
         case data_enum::vb:  this -> flush_buffer(&this -> r_vb ); return; 
        
         case data_enum::ull: this -> flush_buffer(&this -> r_ull); return; 
-        case data_enum::ui:  this -> flush_buffer(&this -> r_ui);  return; 
+        case data_enum::ui:  this -> flush_buffer(&this -> r_ui ); return; 
         case data_enum::d:   this -> flush_buffer(&this -> r_d  ); return; 
         case data_enum::l:   this -> flush_buffer(&this -> r_l  ); return; 
         case data_enum::f:   this -> flush_buffer(&this -> r_f  ); return; 

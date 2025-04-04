@@ -26,16 +26,12 @@ void top::build(std::map<std::string, particle_template*>* prt, element_t* el){
     std::vector<float> ch; 
     el -> get("charge", &ch); 
 
-    std::vector<int> _barcode, _status, idx, _pdgid;  
-    el -> get("barcode", &_barcode); 
-    el -> get("status" , &_status); 
+    std::vector<int> idx, _pdgid;  
     el -> get("index"  , &idx); 
     el -> get("pdgid"  , &_pdgid); 
     for (size_t x(0); x < tps.size(); ++x){
         tps[x] -> index   = idx[x]; 
         tps[x] -> charge  = ch[x]; 
-        tps[x] -> barcode = _barcode[x]; 
-        tps[x] -> status  = _status[x]; 
         tps[x] -> pdgid   = _pdgid[x]; 
         (*prt)[std::string(tps[x] -> hash)] = tps[x]; 
     }
@@ -51,8 +47,6 @@ child::child(){
 
     this -> add_leaf("pdgid"  , "_pdgid"); 
     this -> add_leaf("index"  , "_top_index"); 
-    this -> add_leaf("barcode", "_barcode"); 
-    this -> add_leaf("status" , "_status"); 
     this -> apply_type_prefix(); 
 }
 
@@ -65,18 +59,13 @@ void child::build(std::map<std::string, particle_template*>* prt, element_t* el)
     std::vector<float> ch;  
     el -> get("charge", &ch); 
     
-    std::vector<int> _barcode, _status, idx, _pdgid; 
+    std::vector<int> idx, _pdgid; 
     el -> get("index"  , &idx); 
     el -> get("pdgid"  , &_pdgid); 
-    el -> get("barcode", &_barcode); 
-    el -> get("status" , &_status); 
-
     for (size_t x(0); x < tps.size(); ++x){
         tps[x] -> index   = idx[x]; 
         tps[x] -> charge  = ch[x]; 
         tps[x] -> pdgid   = _pdgid[x]; 
-        tps[x] -> status  = _status[x]; 
-        tps[x] -> barcode = _barcode[x]; 
         (*prt)[std::string(tps[x] -> hash)] = tps[x]; 
     }
 }
@@ -91,15 +80,18 @@ physics_detector::physics_detector(){
    
     this -> add_leaf("index"    , "_index"); 
     this -> add_leaf("top_index", "_top_index"); 
-    this -> add_leaf("parton"   , "_partontruthlabel"); 
+    this -> add_leaf("parton"   , "_trueflavor"); 
     this -> apply_type_prefix(); 
 }
 
 physics_detector::~physics_detector(){}
 particle_template* physics_detector::clone(){return (particle_template*)new physics_detector();}
 void physics_detector::build(std::map<std::string, particle_template*>* prt, element_t* el){
-    std::vector<physics_detector*> tps; 
-    pmu(&tps, el); 
+    auto lamb = [](physics_detector* msp){
+        if (msp -> top_index.size() > 1){return true;}
+        if (msp -> top_index[0] == -1){return false;}
+        return true; 
+    }; 
 
     std::vector<int> _index, parton, ch; 
     el -> get("charge", &ch); 
@@ -109,16 +101,17 @@ void physics_detector::build(std::map<std::string, particle_template*>* prt, ele
     std::vector<std::vector<int>> _top_index; 
     el -> get("top_index", &_top_index); 
 
-    for (size_t x(0); x < tps.size(); ++x){
-        bool skp = false; 
-        for (size_t j(0); j < _top_index[x].size(); ++j){skp += _top_index[x][j] > -1;}
-        if (!skp){delete tps[x]; tps[x] = nullptr; continue;}
+    std::vector<physics_detector*> tps = {};
+    tps.reserve(_top_index.size()); 
+    pmu(&tps, el); 
 
+    for (size_t x(0); x < tps.size(); ++x){
         tps[x] -> charge    = ch[x]; 
         tps[x] -> index     = _index[x]; 
         tps[x] -> top_index = _top_index[x]; 
         tps[x] -> pdgid     = parton[x]; 
-        (*prt)[std::string(tps[x] -> hash)] = tps[x]; 
+        if (!lamb(tps[x])){delete tps[x]; tps[x] = nullptr;}
+        else {(*prt)[std::string(tps[x] -> hash)] = tps[x];}
     }
 }
 
@@ -141,7 +134,31 @@ physics_truth::physics_truth(){
 physics_truth::~physics_truth(){}
 particle_template* physics_truth::clone(){return (particle_template*)new physics_truth();}
 void physics_truth::build(std::map<std::string, particle_template*>* prt, element_t* el){
-    std::vector<physics_truth*> tps; 
+    auto lamb = [](physics_truth* msp, std::vector<int>* prt){
+        int pdg = msp -> pdgid; 
+        pdg = std::abs(pdg);
+        if (!prt -> size()){return false;}
+        if (pdg == 0){return false;}
+        if (pdg == 6){return false;}
+        if (pdg == 24){return false;}
+        if (pdg >= 11 && pdg <= 16){return false;}
+        if (msp -> top_index.size() > 1){return true;}
+        if (msp -> top_index[0] == -1){return false;}
+
+        int mx(0); 
+        std::map<int, int> out;
+        std::map<int, int>::iterator itx; 
+        for (size_t x(0); x < prt -> size(); ++x){out[std::abs((*prt)[x])] += 1;}
+        for (itx = out.begin(); itx != out.end(); ++itx){
+            if (itx -> second < mx){continue;}
+            mx = itx -> second; pdg = itx -> first; 
+        }
+        msp -> pdgid = pdg; 
+        return true; 
+    }; 
+
+
+    std::vector<physics_truth*> tps = {}; 
     pmu(&tps, el); 
 
     std::vector<int> _index, parton, ch; 
@@ -154,13 +171,12 @@ void physics_truth::build(std::map<std::string, particle_template*>* prt, elemen
     el -> get("type", &_type); 
 
     for (size_t x(0); x < tps.size(); ++x){
-        if (!_type[x].size()){delete tps[x]; tps[x] = nullptr; continue;}
         tps[x] -> charge    = ch[x]; 
         tps[x] -> index     = _index[x]; 
         tps[x] -> top_index = _top_index[x]; 
         tps[x] -> pdgid     = parton[x]; 
-        tps[x] -> partons   = _type[x]; 
-        (*prt)[std::string(tps[x] -> hash)] = tps[x]; 
+        if (!lamb(tps[x], &_type[x])){delete tps[x]; tps[x] = nullptr;}
+        else {(*prt)[std::string(tps[x] -> hash)] = tps[x];}
     }
 }
 

@@ -14,7 +14,7 @@ void dataloader::generate_kfold_set(int k){
     if (!this -> test_set -> size()){return;}
 
     bool all = false;
-    for (size_t x(0); x < k; ++x){
+    for (int x(0); x < k; ++x){
         if (this -> k_fold_training.count(x)){continue;}
         this -> k_fold_training[x] = new std::vector<int>(); 
         this -> k_fold_validation[x] = new std::vector<int>();
@@ -24,10 +24,10 @@ void dataloader::generate_kfold_set(int k){
     std::map<int, std::vector<int>> folds = {}; 
     for (size_t x(0); x < this -> train_set -> size(); ++x){folds[x%(k+1)].push_back((*this -> train_set)[x]);}
     this -> success("Splitting training dataset (" + this -> to_string(this -> train_set -> size()) + ")"); 
-    for (size_t x(0); x < k; ++x){
+    for (int x(0); x < k; ++x){
         std::vector<int>* val = this -> k_fold_validation[x]; 
         val -> insert(val -> end(), folds[x].begin(), folds[x].end()); 
-        for (size_t y(0); y < k+1; ++y){
+        for (int y(0); y < k+1; ++y){
             if (y == x){continue;}
             val = this -> k_fold_training[x]; 
             val -> insert(val -> end(), folds[y].begin(), folds[y].end()); 
@@ -43,7 +43,7 @@ void dataloader::generate_test_set(float percentage){
     this -> data_set    -> shrink_to_fit(); 
     this -> data_index  -> shrink_to_fit();   
 
-    int fx = (this -> data_set -> size()) * float(percentage/100); 
+    size_t fx = (this -> data_set -> size()) * float(percentage/100); 
     this -> shuffle(this -> data_index); 
     for (size_t x(0); x < this -> data_index -> size(); ++x){
         std::vector<int>* dx = nullptr; 

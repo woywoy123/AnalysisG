@@ -28,26 +28,40 @@ void data_t::flush(){
     for (size_t x(0); x < this -> files_t -> size(); ++x){
         if (!(*this -> files_t)[x]){continue;}
         (*this -> files_t)[x] -> Close(); 
-        (*this -> files_t)[x] -> Delete(); 
-        delete (*this -> files_t)[x]; 
         (*this -> files_t)[x] = nullptr; 
     }
-    this -> leaf = nullptr; 
+    this -> leaf   = nullptr; 
     this -> branch = nullptr; 
-    this -> tree = nullptr; 
+    this -> tree   = nullptr; 
     if (this -> files_s){delete this -> files_s; this -> files_s = nullptr;}
     if (this -> files_i){delete this -> files_i; this -> files_i = nullptr;}
-    if (this -> files_t){delete this -> files_t; this -> files_t = nullptr;}
+    if (!this -> file){return;}
+    this -> file -> Delete(); 
+    delete this -> file; 
+    this -> file = nullptr; 
 }
 
 void data_t::initialize(){
     TFile* c = (*this -> files_t)[this -> file_index]; 
-    c = (c -> Open(c -> GetTitle())); 
-    this -> tree        = (TTree*)c -> Get(this -> tree_name.c_str()); 
+    if (!c -> IsOpen()){
+        this -> file = (*this -> files_t)[this -> file_index -1]; 
+        if (this -> file){
+            this -> file -> Close();
+            this -> file -> Delete();
+            delete this -> file; 
+        }
+        (*this -> files_t)[this -> file_index -1] = nullptr; 
+        this -> file = c -> Open(c -> GetTitle()); 
+        (*this -> files_t)[this -> file_index] = this -> file; 
+        c = this -> file; 
+    }
+    else {this -> file = nullptr;}
+
+    this -> tree   = c -> Get<TTree>(this -> tree_name.c_str()); 
     this -> tree -> SetCacheSize(10000000U); 
     this -> tree -> AddBranchToCache("*", true);
-    this -> leaf        = this -> tree -> FindLeaf(this -> leaf_name.c_str());
-    this -> branch      = this -> leaf -> GetBranch();  
+    this -> leaf   = this -> tree -> FindLeaf(this -> leaf_name.c_str());
+    this -> branch = this -> leaf -> GetBranch();  
     
     this -> tree_name   = this -> tree -> GetName();
     this -> leaf_name   = this -> leaf -> GetName();
@@ -57,10 +71,6 @@ void data_t::initialize(){
     this -> flush_buffer(); 
     this -> fetch_buffer(); 
     this -> index = 0; 
-    c -> Close(); 
-    c -> Delete(); 
-    delete c; 
-    (*this -> files_t)[this -> file_index] = nullptr; 
 } 
 
 bool data_t::next(){

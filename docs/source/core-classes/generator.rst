@@ -1,10 +1,52 @@
 .. _analysis-script:
 
-The Analysis Scripter
----------------------
+Analysis Interface
+------------------
 
-This module is the main interface which combines all the `C++` and `cython` classes together.
-The class is highly flexible and can be modified as needed by other frameworks. 
+The main interfacing class that automates and defines the workflow from MVA training, ROOT n-tuples production, GNN inference, sample generation and much more.
+
+The C++ Interface
+^^^^^^^^^^^^^^^^^
+
+.. cpp:class:: analysis: public notification, public tools
+
+   .. cpp:var:: settings_t m_settings
+
+      A member struct varible used to control and specify runtime behaviour.
+
+   .. cpp:function:: void add_samples(std::string path, std::string label)
+
+      A function used to specify the directory of the ROOT samples used for the analysis.
+      Accepted syntax for the path parameter is /path/<name>.root or /path/\*.root.
+      The label parameter is useful when samples need to separated, but is optional.
+
+   .. cpp:function::void add_selection_template(selection_template* sel)
+    
+      Specify a selection algorithm that does some further analysis on the ROOT samples.
+      Can also be used to write separate ROOT files that are derived from the selection algorithm.
+
+   .. cpp:function::void add_event_template(event_template* ev, std::string label)
+
+      Specifies the event implementation to use for the framework.
+
+   .. cpp:function::void add_graph_template(graph_template* gr, std::string label)
+
+      Specifies the graph implementation for GNN related data structures. 
+      These templates can be used for training and inference of data.
+
+   .. cpp:function::void add_model(model_template* model, optimizer_params_t* op, std::string run_name)
+
+      Add a GNN model to the collection and execute the training gien some run name and optimizer parameters.
+
+   .. cpp:function::void add_model(model_template* model, std::string run_name)
+
+      Simiar to the prior function, expect this interface is used to perform inference on data.
+      This will produce ROOT based n-tuples, which contain output values specified by the model template.
+
+   .. cpp:function::void start()
+
+      Initialize the framework. 
+
 
 .. py:class:: Analysis
 
@@ -35,6 +77,20 @@ The class is highly flexible and can be modified as needed by other frameworks.
       The `run_name` variable is used to generate folder structures for output ROOT files that hold model predictions.
 
    .. py:function:: Start()
+
+   :ivar int BatchSize:
+   
+   :ivar bool FetchMeta:                      
+   
+   :ivar str BuildCache:                       
+   
+   :ivar bool PreTagEvents:
+   
+   :ivar bool SaveSelectionToROOT: 
+
+   :ivar bool GetMetaData: Attempts to identify any meta-data associated with the input samples and queries PyAMI to match any results.
+
+   :ivar list SumOfWeightsTreeName: Scans the ROOT file for possible sum of weights trees and histograms.
 
    :ivar str OutputPath: The output path of the results.
 

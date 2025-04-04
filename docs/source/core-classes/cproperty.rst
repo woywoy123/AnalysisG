@@ -33,6 +33,10 @@ The `cproperty` class can be imported via the following header
 
       Overloaded operator method for dereferencing the pointer value.
 
+   .. cpp:function:: T operator+(const T& val)
+
+      Overloaded operator for addition.
+
    .. cpp:function:: bool operator==(const T& val)
 
       Overloaded operator method for asserting if two values are the same.

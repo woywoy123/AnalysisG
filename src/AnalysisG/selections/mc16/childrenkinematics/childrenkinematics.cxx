@@ -9,20 +9,102 @@ selection_template* childrenkinematics::clone(){
 
 void childrenkinematics::merge(selection_template* sl){
     childrenkinematics* slt = (childrenkinematics*)sl; 
+    
+    auto lambK = [this](std::vector<kinematic_t>* ptr, std::string key){
+        std::vector<float> pt, e, eta, phi;
+        std::vector<int> pdgid;
+        for (size_t x(0); x < ptr -> size(); ++x){
+            pt.push_back((*ptr)[x].pt); 
+             e.push_back((*ptr)[x].energy); 
+            eta.push_back((*ptr)[x].eta); 
+            phi.push_back((*ptr)[x].phi); 
+            pdgid.push_back((*ptr)[x].pdgid); 
+        }
+        this -> write(&pt   , key + "_pt");
+        this -> write(&e    , key + "_energy"); 
+        this -> write(&eta  , key + "_eta");
+        this -> write(&phi  , key + "_phi"); 
+        this -> write(&pdgid, key + "_pdgid");
+    }; 
 
-    merge_data(&this -> res_kinematics       , &slt -> res_kinematics);
-    merge_data(&this -> spec_kinematics      , &slt -> spec_kinematics); 
-    merge_data(&this -> res_pdgid_kinematics , &slt -> res_pdgid_kinematics);
-    merge_data(&this -> spec_pdgid_kinematics, &slt -> spec_pdgid_kinematics);
-    merge_data(&this -> res_decay_mode       , &slt -> res_decay_mode);
-    merge_data(&this -> spec_decay_mode      , &slt -> spec_decay_mode);
-    merge_data(&this -> mass_clustering      , &slt -> mass_clustering);
-    merge_data(&this -> fractional           , &slt -> fractional);
-    merge_data(&this -> dr_clustering        , &slt -> dr_clustering);
-    merge_data(&this -> top_pt_clustering    , &slt -> top_pt_clustering);
-    merge_data(&this -> top_energy_clustering, &slt -> top_energy_clustering);
-    merge_data(&this -> top_children_dr      , &slt -> top_children_dr);
+    auto lambM = [this](std::vector<misc_t>* ptr, std::string key){
+        std::vector<int> pdgid;
+        std::vector<bool> is_lep, is_res; 
+        std::vector<float> pt, e, eta, phi, mass, dR, frc_e, frc_pt;
+        for (size_t x(0); x < ptr -> size(); ++x){
+            pt.push_back((*ptr)[x].kin.pt); 
+             e.push_back((*ptr)[x].kin.energy); 
+            eta.push_back((*ptr)[x].kin.eta); 
+            phi.push_back((*ptr)[x].kin.phi); 
+            pdgid.push_back((*ptr)[x].kin.pdgid); 
+
+            is_lep.push_back((*ptr)[x].is_lep); 
+            is_res.push_back((*ptr)[x].is_res); 
+            mass.push_back((*ptr)[x].mass_clust); 
+            dR.push_back((*ptr)[x].delta_R); 
+            frc_e.push_back((*ptr)[x].frc_energy); 
+            frc_pt.push_back((*ptr)[x].frc_pt); 
+        }
+        
+        this -> write(&pt    , key + "_decay_pt");
+        this -> write(&e     , key + "_decay_energy");
+        this -> write(&eta   , key + "_decay_eta");
+        this -> write(&phi   , key + "_decay_phi"); 
+        this -> write(&pdgid , key + "_decay_pdgid");
+        this -> write(&is_lep, key + "_decay_islep");
+        this -> write(&is_res, key + "_decay_isres");
+        this -> write(&mass  , key + "_decay_mass");
+        this -> write(&dR    , key + "_decay_dR");
+        this -> write(&frc_e , key + "_decay_frc_e");
+        this -> write(&frc_pt, key + "_decay_frc_pt");
+    }; 
+
+    auto lambP = [this](std::vector<perms_t>* ptr, std::string key){
+        std::vector<bool> rr, ss, rs, ct, ft; 
+        std::vector<float> pt, dR, e, mass;
+        for (size_t x(0); x < ptr -> size(); ++x){
+            pt.push_back((*ptr)[x].top_pt); 
+             e.push_back((*ptr)[x].top_e); 
+            dR.push_back((*ptr)[x].delta_R); 
+            mass.push_back((*ptr)[x].mass); 
+            rr.push_back((*ptr)[x].RR); 
+            ss.push_back((*ptr)[x].SS); 
+            rs.push_back((*ptr)[x].RS); 
+            ct.push_back((*ptr)[x].CT); 
+            ft.push_back((*ptr)[x].FT); 
+        }
+        this -> write(&pt  , key + "_pt");
+        this -> write(&e   , key + "_energy"); 
+        this -> write(&mass, key + "_mass");
+        this -> write(&dR  , key + "_dR");
+        this -> write(&rr  , key + "_RR");
+        this -> write(&ss  , key + "_SS");
+        this -> write(&rs  , key + "_RS");
+        this -> write(&ct  , key + "_CT");
+        this -> write(&ft  , key + "_FT");
+    };  
+
+    lambK(&slt -> res_kinematics, "res");
+    lambK(&slt -> spec_kinematics, "spec");
+    lambM(&slt -> res_decay_mode, "res");
+    lambM(&slt -> spec_decay_mode, "spec");
+    lambP(&slt -> top_clusters, "top_perm");
+
+
+    //merge_data(&this -> res_kinematics       , &slt -> res_kinematics);
+    //merge_data(&this -> spec_kinematics      , &slt -> spec_kinematics); 
+    //merge_data(&this -> res_pdgid_kinematics , &slt -> res_pdgid_kinematics);
+    //merge_data(&this -> spec_pdgid_kinematics, &slt -> spec_pdgid_kinematics);
+    //merge_data(&this -> res_decay_mode       , &slt -> res_decay_mode);
+    //merge_data(&this -> spec_decay_mode      , &slt -> spec_decay_mode);
+    //merge_data(&this -> mass_clustering      , &slt -> mass_clustering);
+    //merge_data(&this -> fractional           , &slt -> fractional);
+    //merge_data(&this -> dr_clustering        , &slt -> dr_clustering);
+    //merge_data(&this -> top_pt_clustering    , &slt -> top_pt_clustering);
+    //merge_data(&this -> top_energy_clustering, &slt -> top_energy_clustering);
+    //merge_data(&this -> top_children_dr      , &slt -> top_children_dr);
 }
+
 
 bool childrenkinematics::selection(event_template* ev){
     bsm_4tops* evn = (bsm_4tops*)ev; 
@@ -53,9 +135,7 @@ bool childrenkinematics::strategy(event_template* ev){
         merge_data(&res_children, &ch_); 
     }
     for (size_t x(0); x < res_children.size(); ++x){
-        particle_template* ch_ = res_children[x]; 
-        this -> dump_kinematics(&this -> res_kinematics, ch_); 
-        this -> dump_kinematics(&this -> res_pdgid_kinematics[ch_ -> symbol], ch_); 
+        this -> dump_kinematics(&this -> res_kinematics, res_children[x]); 
     }
 
     for (size_t x(0); x < res_t.size(); ++x){
@@ -71,12 +151,16 @@ bool childrenkinematics::strategy(event_template* ev){
         }        
 
         for (size_t c(0); c < ch_.size(); ++c){
-            particle_template* c_ = ch_[c]; 
-            this -> dump_kinematics(&this -> res_decay_mode[flag], c_); 
-            std::string fg = "r" + flag;
-            this -> top_children_dr[fg].push_back(t -> DeltaR(c_));
-            this -> fractional[fg + "-pt"][c_ -> symbol].push_back(c_ -> pt / t -> pt); 
-            this -> fractional[fg + "-energy"][c_ -> symbol].push_back(c_ -> e / t -> e); 
+            particle_template* c_ = ch_[c];
+
+            misc_t msx; 
+            msx.is_res = true;
+            msx.is_lep = (flag == "lep"); 
+            this -> dump_kinematics(&msx.kin, c_); 
+            msx.delta_R = t -> DeltaR(c_); 
+            msx.frc_pt = (c_ -> pt / t -> pt); 
+            msx.frc_energy = (c_ -> e / t -> e); 
+            this -> res_decay_mode.push_back(msx); 
         }
     }
 
@@ -92,9 +176,7 @@ bool childrenkinematics::strategy(event_template* ev){
     }
 
     for (size_t x(0); x < spec_children.size(); ++x){
-        particle_template* ch_ = spec_children[x]; 
-        this -> dump_kinematics(&this -> spec_kinematics, ch_); 
-        this -> dump_kinematics(&this -> spec_pdgid_kinematics[ch_ -> symbol], ch_); 
+        this -> dump_kinematics(&this -> spec_kinematics, spec_children[x]); 
     }
 
     for (size_t x(0); x < spec_t.size(); ++x){
@@ -110,12 +192,16 @@ bool childrenkinematics::strategy(event_template* ev){
         }        
 
         for (size_t c(0); c < ch_.size(); ++c){
-            particle_template* c_ = ch_[c]; 
-            this -> dump_kinematics(&this -> spec_decay_mode[flag], c_); 
-            std::string fg = "s" + flag;
-            this -> top_children_dr[fg].push_back(t -> DeltaR(c_));
-            this -> fractional[fg + "-pt"][c_ -> symbol].push_back(c_ -> pt / t -> pt); 
-            this -> fractional[fg + "-energy"][c_ -> symbol].push_back(c_ -> e / t -> e); 
+            particle_template* c_ = ch_[c];
+
+            misc_t msx; 
+            msx.is_res = false;
+            msx.is_lep = (flag == "lep"); 
+            this -> dump_kinematics(&msx.kin, c_); 
+            msx.delta_R = t -> DeltaR(c_); 
+            msx.frc_pt = (c_ -> pt / t -> pt); 
+            msx.frc_energy = (c_ -> e / t -> e); 
+            this -> spec_decay_mode.push_back(msx); 
         }
     }
 
@@ -134,28 +220,27 @@ bool childrenkinematics::strategy(event_template* ev){
             particle_template* c1_ = pairs[t1][1]; 
             particle_template* c2_ = pairs[t2][1];  
 
-            std::string flag = ""; 
-            if ( t1_ -> from_res &&  t2_ -> from_res){flag = "RR";}
-            else if ( t1_ -> from_res && !t2_ -> from_res){flag = "RS";}
-            else if (!t1_ -> from_res &&  t2_ -> from_res){flag = "RS";}
-            else if (!t1_ -> from_res && !t2_ -> from_res){flag = "SS";}
-            
-            if ((*t1_) == (*t2_)){flag = "CT" + flag;}
-            else {flag = "FT" + flag;}
+            perms_t xt; 
+            xt.RR  = ( t1_ -> from_res) * ( t2_ -> from_res); 
+            xt.RS  = ( t1_ -> from_res) * (!t2_ -> from_res); 
+            xt.RS += (!t1_ -> from_res) * ( t2_ -> from_res); 
+            xt.SS  = (!t1_ -> from_res) * (!t2_ -> from_res); 
+            xt.CT  =  ((*t1_) == (*t2_)); 
+            xt.FT  = !((*t1_) == (*t2_)); 
+            xt.delta_R = c1_ -> DeltaR(c2_); 
 
-            this -> dr_clustering[flag].push_back(c1_ -> DeltaR(c2_)); 
-            this -> top_pt_clustering[flag].push_back(t2_ -> pt / 1000); 
-            this -> top_energy_clustering[flag].push_back(t2_ -> e / 1000);
+            xt.top_pt = t2_ -> pt / 1000; 
+            xt.top_e  = t2_ -> e  / 1000; 
 
             std::map<std::string, particle_template*> ch_1 = t1_ -> children; 
             std::map<std::string, particle_template*> ch_2 = t2_ -> children; 
             std::vector<particle_template*> c_1 = this -> vectorize(&ch_1); 
             std::vector<particle_template*> c_2 = this -> vectorize(&ch_2); 
-
             std::vector<particle_template*> pair_mass = {}; 
             merge_data(&pair_mass, &c_1); 
             merge_data(&pair_mass, &c_2); 
-            this -> mass_clustering[flag].push_back(this -> sum(&pair_mass)); 
+            xt.mass  = this -> sum(&pair_mass); 
+            this -> top_clusters.push_back(xt);
         }
     }
     return true; 

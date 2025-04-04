@@ -1,10 +1,10 @@
 #include <vector_cast.h>
 #include <string.h>
 
-void static buildDict(std::string _name, std::string _shrt){
+void buildDict(std::string _name, std::string _shrt){
     std::string name = std::string(_name);
-    std::string shrt = std::string(_shrt); 
-    //if (gInterpreter -> IsLoaded(shrt.c_str())){return;}
+    std::string shrt = "#include <" + std::string(_shrt) + ">"; 
+    if (!gInterpreter -> ProcessLine(shrt.c_str())){return;}
     gInterpreter -> GenerateDictionary(name.c_str(), shrt.c_str()); 
 }
 

@@ -75,8 +75,8 @@ CUDA, C++ and pyc via LibTorch
 .. toctree::
    :titlesonly:
 
-   torch-extensions/main.rst
-   torch-extensions/interface.rst
+   pyc/main.rst
+   pyc/interface.rst
 
 Event and Particle Implementations
 ----------------------------------

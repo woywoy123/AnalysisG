@@ -1,3 +1,7 @@
+set(dict_path "${CMAKE_CURRENT_SOURCE_DIR}/")
+configure_file(cfg.h.in ${CMAKE_CURRENT_SOURCE_DIR}/analysis/include/AnalysisG/cfg.h)
+configure_file(cfg.h.in ${CMAKE_CURRENT_SOURCE_DIR}/io/include/io/cfg.h)
+
 add_subdirectory(typecasting)
 add_subdirectory(notification)
 add_subdirectory(structs)

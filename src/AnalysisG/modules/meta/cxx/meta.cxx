@@ -254,7 +254,7 @@ void meta::scan_sow(TObject* obj){
         weights_t* wg = &this -> meta_data.misc[obname]; 
         
         bool capture = false; 
-        for (size_t x(0); x < xs -> GetNbins(); ++x){
+        for (int x(0); x < xs -> GetNbins(); ++x){
             std::string lbl = xs -> GetBinLabel(x+1); 
             float val = hs -> GetBinContent(x+1); 
             if (lbl == "Initial events"){wg -> processed_events = val;}

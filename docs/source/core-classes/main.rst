@@ -4,15 +4,16 @@ The Core Documentation
 .. toctree::
    :titlesonly:
 
-   typecasting.rst
    eventtemplate.rst
    particletemplate.rst
    graphtemplate.rst
+   selectiontemplate.rst
    modeltemplate.rst
    optimizer.rst
-   selectiontemplate.rst
    generator.rst
+   meta.rst
+   plotting.rst
    cproperty.rst
    tools.rst
-   plotting.rst
+   typecasting.rst
 

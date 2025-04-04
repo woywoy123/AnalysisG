@@ -85,6 +85,7 @@ struct data_t {
         TLeaf*     leaf = nullptr; 
         TBranch* branch = nullptr; 
         TTree*     tree = nullptr; 
+        TFile*     file = nullptr; 
 
         int file_index = 0;  
         long index = 0; 
@@ -96,8 +97,8 @@ struct data_t {
         void initialize();
         void flush(); 
         bool next();
-
         bool clear = false;
+
     private:
         void flush_buffer(); 
         void fetch_buffer();
@@ -109,7 +110,7 @@ struct data_t {
         bool flush_buffer(T** data){
             if (!(*data)){return false;}
             if (!this -> clear){(*data) -> clear();}
-            else {delete *data; *data = nullptr;}
+            else {delete (*data); (*data) = nullptr;}
             return true; 
         } 
 
@@ -118,7 +119,7 @@ struct data_t {
             TTreeReader r = TTreeReader(this -> tree); 
             TTreeReaderValue<T> dr(r, this -> branch_name.c_str()); 
             if (*data){(*data) -> clear();}
-            if (!*data){(*data) = new std::vector<T>();}
+            if (!(*data)){(*data) = new std::vector<T>();}
             while (r.Next()){(*data) -> push_back(*dr);}
         } 
 }; 

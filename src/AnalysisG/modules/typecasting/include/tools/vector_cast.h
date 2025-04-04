@@ -43,6 +43,7 @@ void tensor_to_vector(torch::Tensor* data, std::vector<G>* out, std::vector<sign
     tensor_vector(out, &linear, dims, dims -> size()-1); 
 }
 
+void buildDict(std::string name, std::string shrt); 
 std::vector<signed long> tensor_size(torch::Tensor* inpt);
 void add_to_dict(std::vector<std::vector<double>>* dummy); 
 void add_to_dict(std::vector<std::vector<float>>* dummy); 

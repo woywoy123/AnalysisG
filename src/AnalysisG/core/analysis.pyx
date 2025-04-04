@@ -19,9 +19,7 @@ from tqdm import tqdm
 import pickle
 import gc
 
-def factory(title, total): return tqdm(
-        total = total, desc = title, leave = False, dynamic_ncols = True)
-        #bar_format = '{desc}| {bar}{percentage:3.4f}%')
+def factory(title, total): return tqdm(total = total, desc = title, leave = False, dynamic_ncols = True)
 
 cdef class Analysis:
 

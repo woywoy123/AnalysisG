@@ -27,10 +27,7 @@ class top: public particle_template
         top(); 
         virtual ~top(); 
 
-        int barcode; 
-        int status; 
         int top_index = -1; 
-
         particle_template* clone() override; 
         void build(std::map<std::string, particle_template*>* prt, element_t* el) override; 
 
@@ -42,10 +39,7 @@ class child: public particle_template
         child(); 
         virtual ~child(); 
 
-        int barcode; 
-        int status; 
         std::vector<int> top_index = {}; 
-
         particle_template* clone() override; 
         void build(std::map<std::string, particle_template*>* prt, element_t* el) override; 
 
@@ -70,7 +64,6 @@ class physics_truth: public particle_template
         virtual ~physics_truth(); 
 
         std::vector<int> top_index = {}; 
-        std::vector<int> partons = {}; 
 
         particle_template* clone() override; 
         void build(std::map<std::string, particle_template*>* prt, element_t* el) override; 
