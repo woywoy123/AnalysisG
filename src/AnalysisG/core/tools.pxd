@@ -40,6 +40,44 @@ cdef extern from "<tools/tools.h>":
         vector[vector[bool  ]] discretize(vector[bool  ]* v, int N) except+ nogil
         vector[vector[string]] discretize(vector[string]* v, int N) except+ nogil
 
+cdef extern from "<tools/merge_cast.h>":
+
+    cdef void merge_data(map[string, float]*  out, map[string, float]*  p2)
+    cdef void merge_data(map[string, double]* out, map[string, double]* p2)
+    cdef void merge_data(map[string, bool]*   out, map[string, bool]*   p2)
+    cdef void merge_data(map[string, int]*    out, map[string, int]*    p2)
+
+    cdef void merge_data(map[int, float]*  out, map[int, float]*  p2)
+    cdef void merge_data(map[int, double]* out, map[int, double]* p2)
+    cdef void merge_data(map[int, bool]*   out, map[int, bool]*   p2)
+    cdef void merge_data(map[int, int]*    out, map[int, int]*    p2)
+
+    cdef void sum_data(map[int, double]* out, map[int, double]* p2)
+    cdef void sum_data(map[int, float]*  out, map[int, float]*  p2)
+    cdef void sum_data(map[int, bool]*   out, map[int, bool]*   p2)
+    cdef void sum_data(map[int, int]*    out, map[int, int]*    p2)
+
+    cdef void merge_data(vector[float]*  out, vector[float]*  p2)
+    cdef void merge_data(vector[double]* out, vector[double]* p2)
+    cdef void merge_data(vector[bool]*   out, vector[bool]*   p2)
+    cdef void merge_data(vector[int]*    out, vector[int]*    p2)
+
+    cdef void sum_data(vector[bool]*     out, vector[bool]*   p2)
+    cdef void sum_data(vector[double]*   out, vector[double]* p2)
+    cdef void sum_data(vector[float]*    out, vector[float]*  p2)
+    cdef void sum_data(vector[int]*      out, vector[int]*    p2) 
+
+    cdef void merge_data(float*  out, float*  p2)
+    cdef void merge_data(double* out, double* p2)
+    cdef void merge_data(bool*   out, bool*   p2)
+    cdef void merge_data(int*    out, int*    p2)
+
+    cdef void sum_data(float*    out, float*  p2)
+    cdef void sum_data(double*   out, double* p2)
+    cdef void sum_data(bool*     out, bool*   p2)
+    cdef void sum_data(int*      out, int*    p2)
+
+  
 ctypedef fused base_types:
     int
     float

@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <cstdint>
+#include <map>
 
 class tools
 {
@@ -91,10 +92,23 @@ class tools
         template <typename g>
         void put(std::vector<g*>* out, std::vector<g*>* src, std::vector<int>* trg){
             out -> clear(); 
+            out -> reserve(trg -> size());
             for (size_t x(0); x < trg -> size(); ++x){
                 g* v = (*src)[(*trg)[x]];  
                 out -> push_back(v);
                 v -> in_use = 1; 
+            }
+        }
+
+        template <typename g>
+        void unique_key(std::vector<g>* inx, std::vector<g>* oth){
+            typename std::map<g, bool> ch;
+            for (size_t x(0); x < oth -> size(); ++x){ch[(*oth)[x]] = true;}
+            for (size_t x(0); x < inx -> size(); ++x){
+                g kx = (*inx)[x];
+                if (ch[kx]){continue;}
+                oth -> push_back(kx);
+                ch[kx] = true;
             }
         }
 }; 

@@ -1,6 +1,7 @@
 # distutils: language=c++
 # cython: language_level=3
 
+from libcpp cimport bool
 from libcpp.map cimport map
 from libcpp.vector cimport vector
 from libcpp.string cimport string
@@ -26,6 +27,7 @@ cdef extern from "<templates/model_template.h>" nogil:
 
 cdef class ModelTemplate:
 
+    cdef bool rename
     cdef model_template* nn_ptr;
     cdef dict conv(self, map[string, string]*)
     cdef map[string, string] cond(self, dict inpt)

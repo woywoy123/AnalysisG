@@ -1,6 +1,7 @@
 from .lossfx import *
 from .event_template import *
 from .graph_template import *
+from .metric_template import *
 from .io import *
 from .lossfx import *
 from .meta import *

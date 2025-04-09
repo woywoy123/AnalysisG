@@ -24,6 +24,10 @@ model_template::model_template(){
     this -> device.set_setter(this -> set_device); 
     this -> device.set_object(this); 
 
+    this -> name.set_setter(this -> set_name);
+    this -> name.set_getter(this -> get_name);
+    this -> name.set_object(this); 
+
     this -> m_loss = new lossfx(); 
 }
 
@@ -40,7 +44,7 @@ void model_template::register_module(torch::nn::Sequential* data, mlp_init metho
     this -> m_data.push_back(data);
 }
 
-void model_template::forward(graph_t* data){}
+void model_template::forward(graph_t*){}
 
 model_template::~model_template(){
     for (size_t x(0); x < this -> m_data.size(); ++x){delete this -> m_data[x];}
@@ -52,12 +56,12 @@ model_template::~model_template(){
 torch::Tensor* model_template::assign_features(std::string inpt, graph_enum type, graph_t* data){
     torch::Tensor* tn = nullptr; 
     switch (type){
-        case graph_enum::data_graph:  tn = data -> get_data_graph(inpt, this);  this -> m_i_graph[inpt] = tn; break;  
-        case graph_enum::data_node:   tn = data -> get_data_node(inpt, this);   this -> m_i_node[inpt]  = tn; break;  
-        case graph_enum::data_edge:   tn = data -> get_data_edge(inpt, this);   this -> m_i_edge[inpt]  = tn; break;  
+        case graph_enum::data_graph:  tn = data -> get_data_graph( inpt, this); this -> m_i_graph[inpt] = tn; break;  
+        case graph_enum::data_node:   tn = data -> get_data_node(  inpt, this); this -> m_i_node[inpt]  = tn; break;  
+        case graph_enum::data_edge:   tn = data -> get_data_edge(  inpt, this); this -> m_i_edge[inpt]  = tn; break;  
         case graph_enum::truth_graph: tn = data -> get_truth_graph(inpt, this); std::get<0>(this -> m_o_graph[inpt]) = tn; break;  
-        case graph_enum::truth_node:  tn = data -> get_truth_node(inpt, this);  std::get<0>(this -> m_o_node[inpt])  = tn; break;  
-        case graph_enum::truth_edge:  tn = data -> get_truth_edge(inpt, this);  std::get<0>(this -> m_o_edge[inpt])  = tn; break;  
+        case graph_enum::truth_node:  tn = data -> get_truth_node( inpt, this); std::get<0>(this -> m_o_node[inpt])  = tn; break;  
+        case graph_enum::truth_edge:  tn = data -> get_truth_edge( inpt, this); std::get<0>(this -> m_o_edge[inpt])  = tn; break;  
         default: return tn; 
     }
     return tn; 
@@ -86,9 +90,9 @@ torch::Tensor* model_template::assign_features(std::string inpt, graph_enum type
 
     torch::Tensor* tn = nullptr; 
     switch (type){
-        case graph_enum::data_graph:  tn = lamb_d(g_data, data, inpt); this -> m_i_graph[inpt] = tn; return tn;  
-        case graph_enum::data_node:   tn = lamb_d(n_data, data, inpt); this -> m_i_node[inpt]  = tn; return tn;  
-        case graph_enum::data_edge:   tn = lamb_d(e_data, data, inpt); this -> m_i_edge[inpt]  = tn; return tn;  
+        case graph_enum::data_graph:  tn = lamb_d(g_data,  data, inpt); this -> m_i_graph[inpt] = tn; return tn;  
+        case graph_enum::data_node:   tn = lamb_d(n_data,  data, inpt); this -> m_i_node[inpt]  = tn; return tn;  
+        case graph_enum::data_edge:   tn = lamb_d(e_data,  data, inpt); this -> m_i_edge[inpt]  = tn; return tn;  
         case graph_enum::truth_graph: tn = lamb_d(g_truth, data, inpt); std::get<0>(this -> m_o_graph[inpt]) = tn; return tn;  
         case graph_enum::truth_node:  tn = lamb_d(n_truth, data, inpt); std::get<0>(this -> m_o_node[inpt])  = tn; return tn;  
         case graph_enum::truth_edge:  tn = lamb_d(e_truth, data, inpt); std::get<0>(this -> m_o_edge[inpt])  = tn; return tn;  
@@ -104,12 +108,12 @@ void model_template::forward(graph_t* data, bool train){
 
     this -> edge_index = data -> get_edge_index(this); 
     if (this -> m_i_graph.size()){this -> assign(&this -> m_i_graph, graph_enum::data_graph, data);} 
-    if (this -> m_i_node.size()){this -> assign(&this -> m_i_node, graph_enum::data_node, data);} 
-    if (this -> m_i_edge.size()){this -> assign(&this -> m_i_edge, graph_enum::data_edge, data);} 
+    if (this -> m_i_node.size()){ this -> assign(&this -> m_i_node,  graph_enum::data_node, data);} 
+    if (this -> m_i_edge.size()){ this -> assign(&this -> m_i_edge,  graph_enum::data_edge, data);} 
 
     if (this -> m_o_graph.size()){this -> assign(&this -> m_o_graph, graph_enum::truth_graph, data);}  
-    if (this -> m_o_node.size()){this -> assign(&this -> m_o_node, graph_enum::truth_node, data);}
-    if (this -> m_o_edge.size()){this -> assign(&this -> m_o_edge, graph_enum::truth_edge, data);}
+    if (this -> m_o_node.size()){ this -> assign(&this -> m_o_node,  graph_enum::truth_node, data);}
+    if (this -> m_o_edge.size()){ this -> assign(&this -> m_o_edge,  graph_enum::truth_edge, data);}
 
     this -> forward(data); 
     this -> train_sequence(train);
@@ -120,12 +124,12 @@ void model_template::forward(std::vector<graph_t*> data, bool train){
     this -> m_batched = true; 
 
     if (this -> m_i_graph.size()){this -> assign(&this -> m_i_graph, graph_enum::data_graph, &data);} 
-    if (this -> m_i_node.size()){this -> assign(&this -> m_i_node, graph_enum::data_node, &data);} 
-    if (this -> m_i_edge.size()){this -> assign(&this -> m_i_edge, graph_enum::data_edge, &data);} 
+    if (this -> m_i_node.size()){ this -> assign(&this -> m_i_node,  graph_enum::data_node, &data);} 
+    if (this -> m_i_edge.size()){ this -> assign(&this -> m_i_edge,  graph_enum::data_edge, &data);} 
 
     if (this -> m_o_graph.size()){this -> assign(&this -> m_o_graph, graph_enum::truth_graph, &data);}  
-    if (this -> m_o_node.size()){this -> assign(&this -> m_o_node, graph_enum::truth_node, &data);}
-    if (this -> m_o_edge.size()){this -> assign(&this -> m_o_edge, graph_enum::truth_edge, &data);}
+    if (this -> m_o_node.size()){ this -> assign(&this -> m_o_node,  graph_enum::truth_node, &data);}
+    if (this -> m_o_edge.size()){ this -> assign(&this -> m_o_edge,  graph_enum::truth_edge, &data);}
 
     int offset_nodes = 0; 
     std::vector<torch::Tensor> _edge_index;
@@ -191,6 +195,15 @@ void model_template::flush_outputs(){
         }
     }; 
 
+    auto lamb = [](std::map<std::string, std::tuple<torch::Tensor*, loss_enum>>* inpx){
+        std::map<std::string, std::tuple<torch::Tensor*, loss_enum>>::iterator itx = inpx -> begin(); 
+        for (; itx != inpx -> end(); ++itx){
+            delete std::get<0>(itx -> second); 
+            std::get<0>(itx -> second) = nullptr;
+        }
+    };
+
+
     lambda(&this -> m_p_graph); 
     lambda(&this -> m_p_node); 
     lambda(&this -> m_p_edge); 
@@ -205,16 +218,9 @@ void model_template::flush_outputs(){
     lambda(&this -> m_i_node); 
     lambda(&this -> m_i_edge); 
 
-    std::map<std::string, std::tuple<torch::Tensor*, loss_enum>>::iterator itx; 
-    itx = this -> m_o_graph.begin(); 
-    for (; itx != this -> m_o_graph.end(); ++itx){delete std::get<0>(itx -> second); std::get<0>(itx -> second) = nullptr;}
-
-    itx = this -> m_o_node.begin(); 
-    for (; itx != this -> m_o_node.end(); ++itx){delete std::get<0>(itx -> second); std::get<0>(itx -> second) = nullptr;}
-
-    itx = this -> m_o_edge.begin(); 
-    for (; itx != this -> m_o_edge.end(); ++itx){delete std::get<0>(itx -> second); std::get<0>(itx -> second) = nullptr;}
-
+    lamb(&this -> m_o_graph); 
+    lamb(&this -> m_o_node);
+    lamb(&this -> m_o_edge); 
 }
 
 

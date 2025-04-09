@@ -10,6 +10,7 @@ from cython.operator cimport dereference as deref
 cdef class ModelTemplate:
 
     def __cinit__(self):
+        self.rename = False
         if type(self) is not ModelTemplate: return
         self.nn_ptr = new model_template()
 
@@ -27,7 +28,7 @@ cdef class ModelTemplate:
 
     cdef map[string, string] cond(self, dict inpt):
         cdef str i
-        self.nn_ptr.name = enc(self.__class__.__name__)
+        if not self.rename: self.nn_ptr.name = enc(self.__class__.__name__)
         return {enc(i) : enc(inpt[i]) for i in inpt}
 
     @property
@@ -89,4 +90,16 @@ cdef class ModelTemplate:
 
     @tree_name.setter
     def tree_name(self, str val): self.nn_ptr.tree_name = enc(val)
+
+    @property
+    def name(self): 
+        if not self.rename: return self.__class__.__name__
+        return env(self.nn_ptr.name)
+
+    @name.setter
+    def name(self, str nx): 
+        self.rename = True
+        self.nn_ptr.name = enc(nx)
+
+
 

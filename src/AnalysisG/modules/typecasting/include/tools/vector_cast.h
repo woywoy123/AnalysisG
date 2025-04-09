@@ -1,6 +1,7 @@
 #ifndef TYPECASTING_VECTOR_CAST_H
 #define TYPECASTING_VECTOR_CAST_H
 
+#include <c10/core/DeviceType.h>
 #include <TInterpreter.h>
 #include <structs/meta.h>
 #include <torch/torch.h>
@@ -69,12 +70,20 @@ void tensor_to_vector(torch::Tensor* data, std::vector<g>* out){
     tensor_to_vector(data, out, &s, g()); 
 }
 
+enum var_enum {
+    vvd, vvf, vvl, vvi, vvb, 
+    vd, vf, vl, vi, vb, 
+    undef, unset
+};
 
 struct variable_t {
     public:
+        variable(); 
+        variable(bool); 
 
         void flush();
         void process(torch::Tensor* data, std::string* varname, TTree* tr);
+        void build_switch(size_t s, torch::Tensor* tx); 
 
         void process(std::vector<std::vector<float>>*  data, std::string* varname, TTree* tr); 
         void process(std::vector<std::vector<double>>* data, std::string* varname, TTree* tr); 
@@ -98,6 +107,8 @@ struct variable_t {
         meta_t* mtx = nullptr; 
 
     private: 
+        bool use_external = false; 
+
         std::vector<std::vector<float>>  vvf = {}; 
         std::vector<std::vector<double>> vvd = {}; 
         std::vector<std::vector<long>>   vvl = {}; 
@@ -116,6 +127,7 @@ struct variable_t {
         int     i = 0; 
         bool    b = 0; 
 
+        var_enum vr = var_enum::unset; 
         TBranch* tb = nullptr; 
         TTree*   tt = nullptr; 
 

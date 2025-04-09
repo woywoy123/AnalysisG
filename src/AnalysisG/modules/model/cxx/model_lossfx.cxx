@@ -47,7 +47,7 @@ void model_template::train_sequence(bool train){
     mode = graph_enum::truth_edge; 
     for (itr = ed.begin(); itr != ed.end(); ++itr){this -> _losses[++inx] = this -> compute_loss(itr -> first, mode);}
 
-    if (!train){return;}
+    if (!train || !this -> m_optim){return;}
     this -> m_optim -> zero_grad();
 
     inx = -1; 

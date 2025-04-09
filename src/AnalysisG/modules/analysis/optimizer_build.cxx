@@ -1,52 +1,7 @@
 #include <AnalysisG/analysis.h>
 #include <ROOT/RDataFrame.hxx>
 
-void initialize_loop(
-        optimizer* op, int k, model_template* model, 
-        optimizer_params_t* config, model_report** rep
-){
-    ROOT::EnableImplicitMT(); 
-    model_settings_t settings; 
-    model -> clone_settings(&settings); 
-
-    #ifdef PYC_CUDA
-    c10::cuda::set_device(model -> m_option -> get_device()); 
-    #endif 
-    
-    model_template* mk = model -> clone(); 
-    std::string pth = model -> model_checkpoint_path; 
-
-    mk -> import_settings(&settings); 
-    mk -> set_optimizer(config -> optimizer); 
-    mk -> initialize(config); 
-
-    mk -> epoch = 0; 
-    mk -> kfold = k+1; 
-    for (int ep(0); ep < op -> m_settings.epochs; ++ep){
-
-         // check if the next epoch has a file i+2;
-        std::string pth_ = pth + "state/epoch-" + std::to_string(ep+1) + "/";  
-        pth_ += "kfold-" + std::to_string(k+1) + "_model.pt"; 
-
-        if (op -> m_settings.continue_training && op -> is_file(pth_)){continue;}
-        if (!op -> m_settings.continue_training){break;} 
-        mk -> epoch = ep;
-        mk -> restore_state(); 
-        break; 
-    }
-
-    std::vector<graph_t*> rnd = op -> loader -> get_random(1); 
-    mk -> shush = true; 
-    mk -> check_features(rnd[0]);
-    op -> kfold_sessions[k] = mk;
-    model_report* mr = op -> metric -> register_model(mk, k); 
-    op -> reports[mr -> run_name + std::to_string(mr -> k)] = mr; 
-    (*rep) = mr; 
-    op -> launch_model(k);
-}
-
 void analysis::build_model_session(){
-    auto lamb = [](dataloader* ld, torch::TensorOptions* op, size_t* num_ev, size_t* prg){ld -> datatransfer(op, num_ev, prg);};
 
     if (!this -> model_sessions.size()){return this -> info("No Models Specified. Skipping.");}
     std::vector<int> kfold = this -> m_settings.kfold; 
@@ -55,33 +10,14 @@ void analysis::build_model_session(){
     this -> m_settings.kfold = kfold; 
 
     // --------------- transferring data graphs -------------- //
-    std::map<int, bool> dev_map; 
+    std::map<int, torch::TensorOptions*> dev_map; 
     for (size_t x(0); x < this -> model_sessions.size(); ++x){
-        dev_map[std::get<0>(this -> model_sessions[x]) -> m_option -> device().index()] = false; 
+        torch::TensorOptions* op = std::get<0>(this -> model_sessions[x]) -> m_option; 
+        int dx = op -> device().index();
+        if (dev_map.count(dx)){continue;}
+        dev_map[dx] = op; 
     }
-  
-    size_t num_thr = 0;  
-    std::vector<std::thread*> trans(dev_map.size(), nullptr); 
-    std::vector<std::string*> titles(dev_map.size(), nullptr); 
-    std::vector<size_t> num_events(dev_map.size(), 0); 
-    std::vector<size_t> prg_events(dev_map.size(), 0);
-
-    std::tuple<model_template*, optimizer_params_t*>* para;
-    this -> info("Transferring Graphs to device."); 
-    for (size_t x(0); x < this -> model_sessions.size(); ++x){
-        para = &this -> model_sessions[x]; 
-        torch::TensorOptions* op = std::get<0>(*para) -> m_option;
-        int dev = op -> device().index();
-        if (dev_map[dev]){continue;}
-        dev_map[dev] = true; 
-        trans[num_thr]  = new std::thread(lamb, this -> loader, op, &num_events[num_thr], &prg_events[num_thr]); 
-        titles[num_thr] = new std::string("Device:" + std::to_string(dev)); 
-        ++num_thr; 
-    }
-    std::thread* thr = new std::thread(this -> progressbar3, &prg_events, &num_events, &titles); 
-    this -> monitor(&trans); 
-    this -> success("Transfer Complete!"); 
-    thr -> join(); delete thr; thr = nullptr; 
+    this -> loader -> datatransfer(&dev_map); 
     // --------------- transferring data graphs -------------- //
 
     for (size_t x(0); x < this -> model_sessions.size(); ++x){
@@ -91,18 +27,18 @@ void analysis::build_model_session(){
         optim -> m_settings = this -> m_settings; 
         optim -> m_settings.run_name = name; 
         optim -> import_dataloader(this -> loader);
-
-        para = &this -> model_sessions[x]; 
         this -> trainer[name] = optim; 
-        optim -> import_model_sessions(para); 
+
+        std::tuple<model_template*, optimizer_params_t*> para = this -> model_sessions[x]; 
+        optim -> import_model_sessions(&para); 
 
         for (size_t k(0); k < this -> m_settings.kfold.size(); ++k){
             int k_ = this -> m_settings.kfold[k]; 
             std::vector<graph_t*>* check = this -> loader -> get_k_train_set(k_); 
             if (!check){continue;}
             model_report* mx = nullptr;  
-            if (this -> m_settings.debug_mode){initialize_loop(optim, k_, std::get<0>(*para), std::get<1>(*para), &mx);}
-            else {this -> threads.push_back(new std::thread(initialize_loop, optim, k_, std::get<0>(*para), std::get<1>(*para), &mx));}
+            if (this -> m_settings.debug_mode){initialize_loop(optim, k_, std::get<0>(para), std::get<1>(para), &mx);}
+            else {this -> threads.push_back(new std::thread(initialize_loop, optim, k_, std::get<0>(para), std::get<1>(para), &mx));}
             while (!mx){std::this_thread::sleep_for(std::chrono::microseconds(10));}
             this -> reports[mx -> run_name + std::to_string(mx -> k)] = mx; 
         }

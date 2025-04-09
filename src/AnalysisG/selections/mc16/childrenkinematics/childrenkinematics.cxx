@@ -29,17 +29,16 @@ void childrenkinematics::merge(selection_template* sl){
 
     auto lambM = [this](std::vector<misc_t>* ptr, std::string key){
         std::vector<int> pdgid;
-        std::vector<bool> is_lep, is_res; 
+        std::vector<bool> is_lep;  
         std::vector<float> pt, e, eta, phi, mass, dR, frc_e, frc_pt;
         for (size_t x(0); x < ptr -> size(); ++x){
             pt.push_back((*ptr)[x].kin.pt); 
-             e.push_back((*ptr)[x].kin.energy); 
+            e.push_back((*ptr)[x].kin.energy); 
             eta.push_back((*ptr)[x].kin.eta); 
             phi.push_back((*ptr)[x].kin.phi); 
             pdgid.push_back((*ptr)[x].kin.pdgid); 
 
             is_lep.push_back((*ptr)[x].is_lep); 
-            is_res.push_back((*ptr)[x].is_res); 
             mass.push_back((*ptr)[x].mass_clust); 
             dR.push_back((*ptr)[x].delta_R); 
             frc_e.push_back((*ptr)[x].frc_energy); 
@@ -52,7 +51,6 @@ void childrenkinematics::merge(selection_template* sl){
         this -> write(&phi   , key + "_decay_phi"); 
         this -> write(&pdgid , key + "_decay_pdgid");
         this -> write(&is_lep, key + "_decay_islep");
-        this -> write(&is_res, key + "_decay_isres");
         this -> write(&mass  , key + "_decay_mass");
         this -> write(&dR    , key + "_decay_dR");
         this -> write(&frc_e , key + "_decay_frc_e");
@@ -84,11 +82,11 @@ void childrenkinematics::merge(selection_template* sl){
         this -> write(&ft  , key + "_FT");
     };  
 
-    lambK(&slt -> res_kinematics, "res");
+    lambK(&slt -> res_kinematics , "res");
     lambK(&slt -> spec_kinematics, "spec");
-    lambM(&slt -> res_decay_mode, "res");
+    lambM(&slt -> res_decay_mode , "res");
     lambM(&slt -> spec_decay_mode, "spec");
-    lambP(&slt -> top_clusters, "top_perm");
+    lambP(&slt -> top_clusters   , "top_perm");
 
 
     //merge_data(&this -> res_kinematics       , &slt -> res_kinematics);
@@ -154,7 +152,6 @@ bool childrenkinematics::strategy(event_template* ev){
             particle_template* c_ = ch_[c];
 
             misc_t msx; 
-            msx.is_res = true;
             msx.is_lep = (flag == "lep"); 
             this -> dump_kinematics(&msx.kin, c_); 
             msx.delta_R = t -> DeltaR(c_); 
@@ -195,7 +192,6 @@ bool childrenkinematics::strategy(event_template* ev){
             particle_template* c_ = ch_[c];
 
             misc_t msx; 
-            msx.is_res = false;
             msx.is_lep = (flag == "lep"); 
             this -> dump_kinematics(&msx.kin, c_); 
             msx.delta_R = t -> DeltaR(c_); 

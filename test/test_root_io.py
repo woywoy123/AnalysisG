@@ -48,6 +48,21 @@ def test_reading_root():
         assert len_nom == 165
         del io
 
+def test_random():
+    import time 
+    spl = "./big-dr0.4.root"
+    io = IO()
+    io.Verbose = False
+    io.Files = [spl]
+    io.Trees = ["nominal_Loose"]
+    io.Leaves = ["phystru_partontruthlabel", "phystru_top_index", "phystru_index", "phystru_type", "physdet_partontruthlabel", "physdet_top_index"]
+    for i in io:
+        del i["filename"]
+        for l in i:
+            print(l.decode("utf-8").split(".")[-1], i[l])
+        print("___")
+        time.sleep(0.1)
+
 def test_pyami():
 
     smpl = IO(root1)
@@ -111,5 +126,6 @@ def test_pyami():
 
 if __name__ == "__main__":
     test_reading_root()
-    test_pyami()
+#    test_pyami()
+#    test_random()
 

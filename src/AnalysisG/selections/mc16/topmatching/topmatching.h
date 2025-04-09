@@ -17,17 +17,21 @@ class topmatching: public selection_template
 
         std::vector<float> truth_top = {}; 
         std::vector<int> no_children = {}; 
-        std::map<std::string, std::vector<float>> truth_children = {}; 
-        std::map<std::string, std::vector<float>> truth_jets = {}; 
 
-        std::map<std::string, std::vector<float>> n_truth_jets_lep = {}; 
-        std::map<std::string, std::vector<float>> n_truth_jets_had = {}; 
+        std::vector<float> topchildren_mass = {}; 
+        std::vector<int>   topchildren_leptonic = {}; 
 
-        std::map<std::string, std::vector<float>> jets_truth_leps = {}; 
-        std::map<std::string, std::vector<float>> jet_leps = {}; 
+        std::vector<float> toptruthjets_mass     = {}; 
+        std::vector<int>   toptruthjets_leptonic = {}; 
+        std::vector<int>   toptruthjets_njets    = {}; 
 
-        std::map<std::string, std::vector<float>> n_jets_lep = {}; 
-        std::map<std::string, std::vector<float>> n_jets_had = {}; 
+        std::vector<float> topjets_children_mass     = {}; 
+        std::vector<int>   topjets_children_leptonic = {}; 
+
+        std::vector<float> topjets_leptons_mass     = {}; 
+        std::vector<int>   topjets_leptons_leptonic = {}; 
+        std::vector<int>   topjets_leptons_pdgid    = {}; 
+        std::vector<int>   topjets_leptons_njets    = {}; 
 
 
         template <typename T>

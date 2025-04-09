@@ -9,7 +9,9 @@ from AnalysisG.core.notification cimport notification
 from AnalysisG.core.event_template cimport event_template
 from AnalysisG.core.graph_template cimport graph_template
 from AnalysisG.core.selection_template cimport selection_template
+from AnalysisG.core.metric_template cimport metric_template
 from AnalysisG.core.model_template cimport model_template
+
 from AnalysisG.core.lossfx cimport optimizer_params_t
 from AnalysisG.core.structs cimport settings_t
 from AnalysisG.core.meta cimport *
@@ -23,6 +25,8 @@ cdef extern from "<AnalysisG/analysis.h>" nogil:
         void add_selection_template(selection_template* ev) except+ nogil
         void add_event_template(event_template* ev, string label) except+ nogil
         void add_graph_template(graph_template* ev, string label) except+ nogil
+        void add_metric_template(metric_template* ev, model_template* mdl) except+ nogil
+
         void add_model(model_template* model, optimizer_params_t* op, string run_name) except+ nogil
         void add_model(model_template* model, string run_name) except+ nogil
 

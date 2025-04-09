@@ -10,7 +10,7 @@ cdef class Grift(ModelTemplate):
         self.nn_ptr = self.rnn
 
     def __init__(self): pass
-    def __dealloc__(self): del self.nn_ptr
+    def __dealloc__(self): del self.rnn
 
     @property
     def xrec(self): return self.rnn._xrec

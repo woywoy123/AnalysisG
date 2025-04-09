@@ -8,25 +8,47 @@ std::vector<signed long> tensor_size(torch::Tensor* inpt){
     return out;  
 }
 
-void variable_t::process(torch::Tensor* data, std::string* varname, TTree* tr){
-    if (!this -> tt){this -> tt = tr; this -> variable_name = *varname;}
-    std::vector<signed long> s = tensor_size(data); 
+void variable_t::build_switch(size_t s, torch::Tensor* tx){
+    if (this -> vr != var_enum::unset){return;}
 
     // type and dim switch for the tensors
     // ---------- Two dimensional matrices ------------ 
-    if (s.size() == 2 && data -> dtype() == torch::kDouble ){return this -> add_data(&this -> vvd, data, &s, varname, double(0));}
-    if (s.size() == 2 && data -> dtype() == torch::kFloat32){return this -> add_data(&this -> vvf, data, &s, varname, float(0) );}
-    if (s.size() == 2 && data -> dtype() == torch::kLong   ){return this -> add_data(&this -> vvl, data, &s, varname, long(0)  );}
-    if (s.size() == 2 && data -> dtype() == torch::kInt    ){return this -> add_data(&this -> vvi, data, &s, varname, int(0)   );}
-    if (s.size() == 2 && data -> dtype() == torch::kBool   ){return this -> add_data(&this -> vvb, data, &s, varname, bool(0)  );}
+    if      (s == 2 && tx -> dtype() == torch::kDouble ){this -> vr = var_enum::vvd;}
+    else if (s == 2 && tx -> dtype() == torch::kFloat32){this -> vr = var_enum::vvf;}
+    else if (s == 2 && tx -> dtype() == torch::kLong   ){this -> vr = var_enum::vvl;}   
+    else if (s == 2 && tx -> dtype() == torch::kInt    ){this -> vr = var_enum::vvi;}    
+    else if (s == 2 && tx -> dtype() == torch::kBool   ){this -> vr = var_enum::vvb;}   
 
     // ---------- One dimensional matrices ------------ 
-    if (s.size() == 1 && data -> dtype() == torch::kDouble ){return this -> add_data(&this -> vd , data, &s, varname, double(0));}
-    if (s.size() == 1 && data -> dtype() == torch::kFloat32){return this -> add_data(&this -> vf , data, &s, varname, float(0) );}
-    if (s.size() == 1 && data -> dtype() == torch::kLong   ){return this -> add_data(&this -> vl , data, &s, varname, long(0)  );}
-    if (s.size() == 1 && data -> dtype() == torch::kInt    ){return this -> add_data(&this -> vi , data, &s, varname, int(0)   );}
-    if (s.size() == 1 && data -> dtype() == torch::kBool   ){return this -> add_data(&this -> vb , data, &s, varname, bool(0)  );}
+    else if (s == 1 && tx -> dtype() == torch::kDouble ){this -> vr = var_enum::vd ;} 
+    else if (s == 1 && tx -> dtype() == torch::kFloat32){this -> vr = var_enum::vf ;}
+    else if (s == 1 && tx -> dtype() == torch::kLong   ){this -> vr = var_enum::vl ;}   
+    else if (s == 1 && tx -> dtype() == torch::kInt    ){this -> vr = var_enum::vi ;}    
+    else if (s == 1 && tx -> dtype() == torch::kBool   ){this -> vr = var_enum::vb ;}    
+    else {this -> vr = var_enum::undef;}
+}
 
+void variable_t::process(torch::Tensor* data, std::string* varname, TTree* tr){
+    std::vector<signed long> s = tensor_size(data); 
+    if (this -> vr == var_enum::unset && !varname){
+        this -> build_switch(s.size(), data);
+        this -> variable_name = *varname;
+    }
+    if (!this -> tt && tr){this -> tt = tr;}
+
+    switch(this -> vr){
+        case var_enum::vvd: return this -> add_data(&this -> vvd, data, &s, varname, double(0));
+        case var_enum::vvf: return this -> add_data(&this -> vvf, data, &s, varname, float(0) );
+        case var_enum::vvl: return this -> add_data(&this -> vvl, data, &s, varname, long(0)  );
+        case var_enum::vvi: return this -> add_data(&this -> vvi, data, &s, varname, int(0)   );
+        case var_enum::vvb: return this -> add_data(&this -> vvb, data, &s, varname, bool(0)  );
+        case var_enum::vd : return this -> add_data(&this -> vd , data, &s, varname, double(0));
+        case var_enum::vf : return this -> add_data(&this -> vf , data, &s, varname, float(0) );
+        case var_enum::vl : return this -> add_data(&this -> vl , data, &s, varname, long(0)  );
+        case var_enum::vi : return this -> add_data(&this -> vi , data, &s, varname, int(0)   );
+        case var_enum::vb : return this -> add_data(&this -> vb , data, &s, varname, bool(0)  );
+        default: break; 
+    }
     std::cout << "DIM: " << s.size() << std::endl;
     std::cout << "Tensor Type: " << data -> dtype() << std::endl; 
     std::cout << *data << std::endl; 
@@ -35,15 +57,29 @@ void variable_t::process(torch::Tensor* data, std::string* varname, TTree* tr){
 }
 
 void variable_t::flush(){
-    if (this -> vvf.size()){this -> vvf.clear(); return; }
-    if (this -> vvd.size()){this -> vvd.clear(); return; }
-    if (this -> vvl.size()){this -> vvl.clear(); return; }
-    if (this -> vvi.size()){this -> vvi.clear(); return; }
-    if (this -> vvb.size()){this -> vvb.clear(); return; }
+    if (this -> vr != var_enum::unset){}
+    else if (this -> vvf.size()){this -> vr = var_enum::vvf;}
+    else if (this -> vvd.size()){this -> vr = var_enum::vvd;}
+    else if (this -> vvl.size()){this -> vr = var_enum::vvl;}
+    else if (this -> vvi.size()){this -> vr = var_enum::vvi;}
+    else if (this -> vvb.size()){this -> vr = var_enum::vvb;}
+    else if (this ->  vf.size()){this -> vr = var_enum::vf;}
+    else if (this ->  vd.size()){this -> vr = var_enum::vd;}
+    else if (this ->  vl.size()){this -> vr = var_enum::vl;}
+    else if (this ->  vi.size()){this -> vr = var_enum::vi;}
+    else if (this ->  vb.size()){this -> vr = var_enum::vb;}
 
-    if (this -> vf.size()){this -> vf.clear(); return; }
-    if (this -> vd.size()){this -> vd.clear(); return; }
-    if (this -> vl.size()){this -> vl.clear(); return; }
-    if (this -> vi.size()){this -> vi.clear(); return; }
-    if (this -> vb.size()){this -> vb.clear(); return; }
+    switch(this -> vr){
+        case var_enum::vvd: this -> vvf.clear(); return;
+        case var_enum::vvf: this -> vvd.clear(); return;
+        case var_enum::vvl: this -> vvl.clear(); return;
+        case var_enum::vvi: this -> vvi.clear(); return;
+        case var_enum::vvb: this -> vvb.clear(); return;
+        case var_enum::vd : this -> vf.clear();  return;
+        case var_enum::vf : this -> vd.clear();  return;
+        case var_enum::vl : this -> vl.clear();  return;
+        case var_enum::vi : this -> vi.clear();  return;
+        case var_enum::vb : this -> vb.clear();  return;
+        default: break; 
+    }
 }

@@ -400,8 +400,9 @@ cdef class BasePlotting:
             self.matpl.savefig(raw, **com)
             self.matpl.close("all")
             self.ptr.success(b"Finished Plotting: " + out)
-        except:
+        except Exception as error:
             self.ptr.failure(b"Failed Plotting... Dumping State...")
+            self.ptr.failure(enc(str(error)))
             self.dump()
 
 cdef class TH1F(BasePlotting):

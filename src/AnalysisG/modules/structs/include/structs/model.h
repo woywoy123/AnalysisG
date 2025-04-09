@@ -50,8 +50,8 @@ enum loss_enum {
 };
 
 enum graph_enum {
-    data_graph , data_node , data_edge, 
-    truth_graph, truth_node, truth_edge
+    data_graph , data_node , data_edge,
+    truth_graph, truth_node, truth_edge,
 }; 
 
 struct model_settings_t {

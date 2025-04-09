@@ -102,6 +102,7 @@ void container::compile(size_t* l){
         }
         for (selection_template* sel : ev -> m_selection){
             std::string name = sel -> name; 
+            sel -> bulk_write(nullptr, nullptr); 
             if (this -> output_path){sel -> handle = handles[name];}
             bool col = sel -> CompileEvent();
             if (col){(*this -> merged)[name] -> merger(sel);}

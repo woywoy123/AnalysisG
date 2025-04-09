@@ -14,7 +14,6 @@ struct kinematic_t {
 
 struct misc_t {
     kinematic_t kin; 
-    bool is_res = false; 
     bool is_lep = false; 
     float mass_clust = 0; 
     float delta_R = 0; 

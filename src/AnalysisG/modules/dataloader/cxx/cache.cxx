@@ -74,7 +74,7 @@ bool dataloader::dump_graphs(std::string path, int threads){
 
     if (!this -> data_set -> size()){this -> warning("Nothing to do. Skipping..."); return true;}
     size_t x = (this -> data_set -> size()/threads); 
-    if (this -> data_set -> size() < threads){ x = this -> data_set -> size(); }
+    if (this -> data_set -> size() < size_t(threads)){ x = this -> data_set -> size(); }
     std::vector<std::vector<graph_t*>> quant = this -> discretize(this -> data_set, x); 
     std::vector<std::vector<std::tuple<graph_hdf5_w, graph_hdf5>>*> serials(quant.size(), nullptr);  
 
@@ -239,7 +239,8 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
     std::vector<int> kv = this -> setting -> kfold; 
     for (size_t x(0); x < data_k.size(); ++x){
         std::string hash = std::string(data_k[x].hash);
-        delete [] data_k[x].hash; data_k[x].hash = nullptr; 
+        data_k[x].flush_data();
+
         if (this -> hash_map.count(hash)){continue;}
         if (load_hash.count(hash)){continue;}
         if (data_k[x].is_eval * eval){load_hash[hash] = true; continue;}
@@ -284,9 +285,10 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
     std::string title = "Reading HDF5"; 
     std::thread* prg = new std::thread(this -> progressbar2, &handles, &len_cache, &title); 
 
+    int tidx = 0; 
     std::vector<std::thread*> th_(cache_io.size(), nullptr); 
     std::vector<std::vector<graph_t*>*> cache_rebuild(cache_io.size(), nullptr); 
-    for (size_t x(0), tidx(0); x < cache_io.size(); ++x, ++tidx){
+    for (size_t x(0); x < cache_io.size(); ++x, ++tidx){
         std::vector<std::string> lsx = this -> split(cache_io[x], "/"); 
         title = "Reading HDF5 -> " + lsx[lsx.size()-1]; 
         std::vector<std::string>* gr_ev = &data_set[cache_io[x]]; 

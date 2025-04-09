@@ -122,6 +122,5 @@ cdef class OptimizerConfig:
     def betas(self): return self.params.beta_hack
 
     @betas.setter
-    def betas(self, tuple val):
-        self.params.beta_hack = vector[float](val[0], val[1])
+    def betas(self, tuple val): self.params.beta_hack = vector[float](val[0], val[1])
 

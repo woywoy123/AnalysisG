@@ -11,7 +11,6 @@ analysis::analysis(){
     this -> reader  = new io(); 
     this -> tags    = new std::vector<folds_t>(); 
 
-
     gSystem -> SetBuildDir(dict_path, true); 
     gSystem -> SetAclicMode(TSystem::kOpt); 
 
@@ -25,8 +24,8 @@ analysis::~analysis(){
     delete this -> tags; 
 
     flush(&this -> trainer);
-//    flush(&this -> meta_data); 
-
+    flush(&this -> model_metrics);
+    flush(&this -> metric_names); 
     delete this -> loader; 
     delete this -> tracer; 
     delete this -> reader; 
@@ -46,6 +45,12 @@ void analysis::add_graph_template(graph_template* ev, std::string label){
 
 void analysis::add_selection_template(selection_template* sel){
     this -> selection_names[sel -> name] = sel; 
+}
+
+void analysis::add_metric_template(metric_template* mx, model_template* mdl){
+    this -> safe_clone(&this -> model_metrics, mdl); this -> safe_clone(&this -> metric_names, mx);  
+    if (this -> metric_names[mx -> name] -> link(this -> model_metrics[mdl -> name])){return;}
+    abort();
 }
 
 void analysis::add_model(model_template* model, optimizer_params_t* op, std::string run_name){
@@ -70,6 +75,14 @@ void analysis::build_project(){
         pth += this -> model_session_names[x] + "/"; 
         mdl-> model_checkpoint_path = pth; 
     }
+
+    if (!this -> model_metrics.size()){return;}
+
+
+
+
+
+
 }
 
 void analysis::check_cache(){
@@ -120,6 +133,7 @@ void analysis::check_cache(){
 }
 
 void analysis::fetchtags(){
+    if (this -> tags -> size()){return;}
     io* io_g = new io(); 
     io_g -> start(this -> m_settings.training_dataset, "read"); 
     io_g -> read(this -> tags, "kfolds"); 
@@ -166,6 +180,7 @@ void analysis::start(){
     this -> tracer -> compile_objects(threads_); 
     if (this -> selection_names.size()){return this -> tracer -> fill_selections(&this -> selection_names);} 
     this -> build_dataloader(false); 
+    this -> build_metric_folds();
 
     if (this -> m_settings.build_cache && !this -> loader -> data_set -> size()){return;}
     if (pth_cache.size() && this -> loader -> data_set -> size()){this -> loader -> dump_graphs(pth_cache, threads_);}
@@ -184,10 +199,10 @@ void analysis::start(){
         this -> loader -> restore_graphs(cached, threads_); 
     }
     else if (pth_cache.size()){this -> loader -> restore_graphs(pth_cache, threads_);}
-    
+    if (!this -> build_metric()){return;}
+
     if (this -> model_sessions.size()){
         if (!this -> loader -> data_set -> size()){return this -> failure("No Dataset was found for training. Aborting...");}
-        this -> loader -> restore_dataset(this -> m_settings.training_dataset); 
         this -> build_dataloader(true); 
         this -> loader -> start_cuda_server(); 
         this -> build_project(); 
@@ -195,8 +210,7 @@ void analysis::start(){
     }
 
     if (this -> model_inference.size()){
-        if (!this -> loader -> data_set -> size()){return this -> failure("No Dataset was found for training. Aborting...");}
-        this -> build_dataloader(false);
+        if (!this -> loader -> data_set -> size()){return this -> failure("No Dataset was found for inference. Aborting...");}
         this -> loader -> start_cuda_server(); 
         this -> build_inference(); 
     }

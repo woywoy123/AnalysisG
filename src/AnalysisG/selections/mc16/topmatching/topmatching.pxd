@@ -10,22 +10,24 @@ cdef extern from "topmatching.h":
     cdef cppclass topmatching(selection_template):
         topmatching() except +
 
-        vector[float] truth_top
-        vector[int] no_children
-        map[string, vector[float]] truth_children
-        map[string, vector[float]] truth_jets
-
-        map[string, vector[float]] n_truth_jets_lep
-        map[string, vector[float]] n_truth_jets_had
-
-        map[string, vector[float]] jets_truth_leps
-        map[string, vector[float]] jet_leps
-
-        map[string, vector[float]] n_jets_lep
-        map[string, vector[float]] n_jets_had
 
 cdef class TopMatching(SelectionTemplate):
     cdef topmatching* tt
+
+    cdef vector[float] top_mass
+    cdef vector[float] topchildren_mass
+    cdef vector[float] toptruthjets_mass
+    cdef vector[float] topjets_children_mass
+    cdef vector[float] topjets_leptons_mass
+    
+    cdef vector[bool]  topchildren_islep
+    cdef vector[bool]  toptruthjets_islep
+    cdef vector[bool]  topjets_children_islep
+    cdef vector[bool]  topjets_leptons_islep
+    
+    cdef vector[int]   toptruthjets_njets
+    cdef vector[int]   topjets_leptons_pdgid
+    cdef vector[int]   topjets_leptons_njets
 
     cdef public list truth_top
     cdef public list no_children

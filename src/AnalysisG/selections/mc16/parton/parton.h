@@ -19,39 +19,50 @@ class parton: public selection_template
         void merge(selection_template* sl) override;
 
         template <typename g, typename gx>
-        float top_mass_contribution(std::vector<g*> jts, std::map<std::string, std::vector<float>>* fracx, gx* p, top* ti, float cut){
+        float top_mass_contribution(std::vector<g*> jts, std::map<std::string, std::vector<float>>* fracx, gx* p, top* ti, float cut, bool cut_gluon){
+            std::string top_i = ti -> hash; 
+
             typename std::vector<g*> passed; 
             for (size_t tn(0); tn < jts.size(); ++tn){
                 typename std::vector<gx*> tjp = jts[tn] -> Parton; 
                 if (tjp.size() == 0){continue;}
 
-                particle_template* sm = nullptr; 
-                this -> sum(&tjp, &sm); 
-
-                bool keep_light = false; 
+                bool has_gluon = false; 
                 typename std::map<std::string, std::vector<gx*>> parton_to_top; 
                 for (size_t tx(0); tx < tjp.size(); ++tx){
                     std::vector<top*> tti; 
                     std::vector<top_children*> tch; 
 
+                    top* cur_t = nullptr; 
                     this -> upcast(&tjp[tx] -> parents, &tch); 
-                    for (size_t ci(0); ci < tch.size(); ++ci){this -> upcast(&tch[ci] -> parents, &tti);}
-                    tti = this -> make_unique(&tti); 
-
-                    if (tti.size() > 1 || tti.size() == 0){continue;}
-                    std::string ket = tti[0] -> hash; 
-                    parton_to_top[ket].push_back(tjp[tx]); 
-                    parton_to_top[ket] = this -> make_unique(&parton_to_top[ket]); 
-                    if (ket != std::string(ti -> hash)){continue;}
-                    keep_light += std::abs(tjp[tx] -> pdgid) != 21; 
+                    for (size_t ci(0); ci < tch.size(); ++ci){
+                        this -> upcast(&tch[ci] -> parents, &tti);
+                        tti = this -> make_unique(&tti); 
+                        for (size_t x(0); x < tti.size(); ++x){
+                            if (top_i != std::string(tti[x] -> hash)){continue;}
+                            cur_t = tti[x]; break; 
+                        }
+                        if (!cur_t){continue;}
+                        break;
+                    }
+                    
+                    if (!cur_t){continue;}
+                    parton_to_top[top_i].push_back(tjp[tx]); 
+                    has_gluon += std::abs(tjp[tx] -> pdgid) == 21; 
                 }
-                if (!parton_to_top[ti -> hash].size()){continue;}
+                if (!parton_to_top[top_i].size()){continue;}
+                parton_to_top[top_i] = this -> make_unique(&parton_to_top[top_i]);
+
                 particle_template* tsm = nullptr; 
-                this -> sum(&parton_to_top[ti -> hash], &tsm); 
+                this -> sum(&parton_to_top[top_i], &tsm); 
                 float r = tsm -> e / jts[tn] -> e;
-                if (fracx){(*fracx)[this -> to_string(jts[tn] -> Tops.size()) + "::tops"].push_back(r);}
-                if (r < cut && !keep_light){continue;}
-                passed.push_back(jts[tn]); 
+
+                if (fracx){(*fracx)[this -> to_string(jts[tn] -> Tops.size()) + "::tops"].push_back(tsm -> e / jts[tn] -> e);}
+                if (r >= cut && !cut_gluon){passed.push_back(jts[tn]); continue;}
+                if (cut == 0 && !has_gluon){passed.push_back(jts[tn]); continue;}
+                if (r >= cut && cut_gluon && has_gluon){passed.push_back(jts[tn]); continue;}
+                if (has_gluon){continue;}
+                passed.push_back(jts[tn]);
             } 
             return this -> sum(&passed); 
         }

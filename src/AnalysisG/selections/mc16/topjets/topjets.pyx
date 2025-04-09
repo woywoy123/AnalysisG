@@ -10,7 +10,7 @@ cdef class TopJets(SelectionTemplate):
         self.ptr = new topjets()
         self.tt = <topjets*>self.ptr
 
-    def __dealloc__(self): del self.tt
+    def __dealloc__(self): del self.ptr
 
     cdef void transform_dict_keys(self):
         self.top_mass        = as_dict_dict_dict(&self.tt.top_mass)

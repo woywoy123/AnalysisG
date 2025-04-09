@@ -100,14 +100,21 @@ bool parton::strategy(event_template* ev){
         std::vector<jet*> jets_ = ti -> Jets; 
         jetparton* p_ = nullptr; 
 
-        this -> frac_mass_top["0.00::truthjet"].push_back(this -> top_mass_contribution(tjets_, &this -> frac_ntop_tjet_contribution, p, ti, 0));
-        this -> frac_mass_top["0.00::jet"].push_back(this -> top_mass_contribution(jets_, &this -> frac_ntop_jet_contribution, p_, ti, 0));
+        this -> frac_mass_top["0.00::truthjet"].push_back(this -> top_mass_contribution(tjets_, &this -> frac_ntop_tjet_contribution, p, ti, 0, false));
+        this -> frac_mass_top["0.00::jet"].push_back(this -> top_mass_contribution(jets_, &this -> frac_ntop_jet_contribution, p_, ti, 0, false));
 
-        for (size_t x(1); x <= 40; ++x){
-            float v = 0.01 * x; 
+        this -> frac_mass_top["0.00::truthjet-gluon"].push_back(this -> top_mass_contribution(tjets_, nullptr, p, ti, 0, true));
+        this -> frac_mass_top["0.00::jet-gluon:rm"].push_back(this -> top_mass_contribution(jets_, nullptr, p_, ti, 0, true));
+        this -> frac_mass_top["0.00::jet-gluon:inc"].push_back(this -> top_mass_contribution(jets_, nullptr, p_, ti, -1, true));
+
+        for (size_t x(1); x <= 11; ++x){
+            float v = 0.1 * x; 
             std::string kx = this -> to_string(v, 2); 
-            this -> frac_mass_top[kx + "::truthjet"].push_back(this -> top_mass_contribution(tjets_, nullptr, p, ti, v));
-            this -> frac_mass_top[kx + "::jet"].push_back(this -> top_mass_contribution(jets_, nullptr, p_, ti, v));
+            this -> frac_mass_top[kx + "::truthjet"].push_back(this -> top_mass_contribution(tjets_, nullptr, p, ti, v, false));
+            this -> frac_mass_top[kx + "::jet"].push_back(this -> top_mass_contribution(jets_, nullptr, p_, ti, v, false));
+
+            this -> frac_mass_top[kx + "::truthjet-gluon"].push_back(this -> top_mass_contribution(tjets_, nullptr, p, ti, v, true));
+            this -> frac_mass_top[kx + "::jet-gluon"].push_back(this -> top_mass_contribution(jets_, nullptr, p_, ti, v, true));
         }
     }
 

@@ -188,11 +188,10 @@ bool dataloader::restore_dataset(std::string path){
         int kv = kf -> k;  
         std::string hash = std::string(kf -> hash); 
         kf -> flush_data();
-
         if (!this -> hash_map.count(hash)){continue;}
         int index = this -> hash_map[hash]; 
         if (kf -> is_eval){this -> test_set -> push_back(index); continue;}
-        if (kv == 0){this -> train_set -> push_back(index);}
+        if (!kv){this -> train_set -> push_back(index);}
         if (!this -> k_fold_training.count(kv)){
             this -> k_fold_training[kv]   = new std::vector<int>();
             this -> k_fold_validation[kv] = new std::vector<int>(); 
@@ -205,7 +204,6 @@ bool dataloader::restore_dataset(std::string path){
         bin -> push_back(index); 
     }
     if (!data.size()){return false;}
-
     std::string msg_tr = "Restored training dataset (" + this -> to_string(this -> train_set -> size()) + ")";  
     std::string msg_ts = "Leave out sample is (" + this -> to_string(this -> test_set -> size()) + ")"; 
 

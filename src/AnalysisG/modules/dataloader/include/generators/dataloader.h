@@ -37,6 +37,7 @@ class dataloader:
         std::vector<graph_t*>* get_k_validation_set(int k); 
         std::vector<graph_t*>* get_test_set(); 
         std::vector<graph_t*>* build_batch(std::vector<graph_t*>* data, model_template* mdl, model_report* rep); 
+        static void safe_delete(std::vector<graph_t*>* data); 
 
         std::map<std::string, std::vector<graph_t*>>* get_inference(); 
 
@@ -48,6 +49,7 @@ class dataloader:
         std::vector<graph_t*> get_random(int num = 5); 
         void extract_data(graph_t* gr); 
         void datatransfer(torch::TensorOptions* op, size_t* num_events = nullptr, size_t* prg_events = nullptr);
+        void datatransfer(std::map<int, torch::TensorOptions*>* ops);
         bool dump_graphs(std::string path = "./", int threads = 10); 
 
         void restore_graphs(std::vector<std::string> paths, int threads); 

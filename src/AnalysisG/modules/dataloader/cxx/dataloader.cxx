@@ -125,6 +125,29 @@ void dataloader::datatransfer(torch::TensorOptions* op, size_t* num_ev, size_t* 
     lamb(this -> data_set, op, cur_evnt); 
 }
 
+void dataloader::datatransfer(std::map<int, torch::TensorOptions*>* ops){
+    auto lamb = [this](torch::TensorOptions* op, size_t* num_ev, size_t* prg){this -> datatransfer(op, num_ev, prg);};
+
+    size_t num_thr = 0;  
+    std::vector<std::thread*> trans(ops -> size(), nullptr); 
+    std::vector<std::string*> titles(ops -> size(), nullptr); 
+    std::vector<size_t> num_events(ops -> size(), 0); 
+    std::vector<size_t> prg_events(ops -> size(), 0);
+
+    this -> info("Transferring graphs to device" + std::string((ops -> size() > 1) ? "s" : "")); 
+    std::map<int, torch::TensorOptions*>::iterator ito = ops -> begin();
+    for (; ito != ops -> end(); ++ito, ++num_thr){
+        trans[num_thr]  = new std::thread(lamb, ito -> second, &num_events[num_thr], &prg_events[num_thr]); 
+        titles[num_thr] = new std::string("Progress on device:" + std::to_string(ito -> first)); 
+    }
+    std::thread* thr = new std::thread(this -> progressbar3, &prg_events, &num_events, &titles); 
+    this -> monitor(&trans); 
+    this -> success("Transfer Complete!"); 
+    thr -> join(); delete thr; thr = nullptr; 
+}
+
+
+
 std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* data, model_template* mdl, model_report* rep){
     auto g_data  = [this](graph_t* d) -> std::map<int, std::vector<torch::Tensor>>* {return &d -> dev_data_graph;};
     auto n_data  = [this](graph_t* d) -> std::map<int, std::vector<torch::Tensor>>* {return &d -> dev_data_node;};
@@ -261,6 +284,26 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* data, mode
     else if (rep -> mode == "evaluation"){this -> batched_cache[-1] = out;}
     return out; 
 }
+
+void dataloader::safe_delete(std::vector<graph_t*>* data){
+    for (size_t x(0); x < data -> size(); ++x){
+        (*data)[x] -> _purge_all(); 
+        delete (*data)[x]; 
+        (*data)[x] = nullptr;
+    }
+    data -> clear();
+    data -> shrink_to_fit(); 
+    delete data; 
+
+    #if _server
+    c10::cuda::CUDACachingAllocator::emptyCache();
+    #endif
+}
+
+
+
+
+
 
 void dataloader::cuda_memory_server(){
     auto cuda_memory = [this](int device_i) -> bool {

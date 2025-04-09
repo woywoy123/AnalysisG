@@ -61,17 +61,10 @@ void optimizer::training_loop(int k, int epoch){
         graph_t* gr = (*smpl)[x]; 
         model -> forward(gr, true);
         this -> metric -> capture(mode_enum::training, k, epoch, l); 
-        if (!batched){continue;}
-        gr -> _purge_all(); 
-        delete gr; 
-        (*smpl)[x] = nullptr; 
     }
     model -> save_state(); 
-    if (batched){delete smpl;}
-    
-    #ifdef PYC_CUDA
-    c10::cuda::CUDACachingAllocator::emptyCache();
-    #endif
+    if (!batched){return;}
+    this -> loader -> safe_delete(smpl);
 }
 
 void optimizer::validation_loop(int k, int epoch){

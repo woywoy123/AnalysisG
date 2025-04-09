@@ -34,7 +34,7 @@ def ntops_tjets_pt(ana, col):
     th_tj.xStep = 100
     th_tj.Stacked = True
     th_tj.yLogarithmic = True
-    th_tj.yTitle = "Truth Jets / ($4$ GeV)"
+    th_tj.yTitle = "Truth Jets / (4 GeV)"
     th_tj.xTitle = "Truth Jet $p_T$ (GeV)"
     th_tj.Filename = "Figure.8.a"
     th_tj.SaveFigure()
@@ -62,7 +62,7 @@ def ntops_tjets_e(ana, col):
     th_tj.xStep = 100
     th_tj.Stacked = True
     th_tj.yLogarithmic = True
-    th_tj.yTitle = "Truth Jets / ($4$ GeV)"
+    th_tj.yTitle = "Truth Jets / (4 GeV)"
     th_tj.xTitle = "Truth Jet Energy (GeV)"
     th_tj.Filename = "Figure.8.b"
     th_tj.SaveFigure()
@@ -88,7 +88,7 @@ def ntops_jets_pt(ana, col):
     th_tj.xBins = 300
     th_tj.xStep = 100
     th_tj.Stacked = True
-    th_tj.yTitle = "Jets / ($4$ GeV)"
+    th_tj.yTitle = "Jets / (4 GeV)"
     th_tj.xTitle = "Jet $p_T$ (GeV)"
     th_tj.Filename = "Figure.8.c"
     th_tj.SaveFigure()
@@ -115,7 +115,7 @@ def ntops_jets_e(ana, col):
     th_tj.xStep = 100
     th_tj.Stacked = True
     th_tj.yLogarithmic = True
-    th_tj.yTitle = "Jets / ($4$ GeV)"
+    th_tj.yTitle = "Jets / (4 GeV)"
     th_tj.xTitle = "Jet Energy (GeV)"
     th_tj.Filename = "Figure.8.d"
     th_tj.SaveFigure()
@@ -129,7 +129,7 @@ def nparton_tjets_e(ana, col):
         if not n: continue
         if not len(pt[i]): continue
 
-        if n >= 4: tl = "$\geq 4$-Partons"
+        if n >= 4: tl = "$\\geq 4$-Partons"
         else: tl = str(n) + "-Partons"
         if tl not in hists: hists[tl] = pt[i]
         else: hists[tl] += pt[i]
@@ -150,8 +150,8 @@ def nparton_tjets_e(ana, col):
     th_tj.xBins = 201
     th_tj.xStep = 0.1
     th_tj.Stacked = True
-    th_tj.yTitle = "Jets / $0.01$"
-    th_tj.xTitle = r"Parton Content to Truth Jet Energy Ratio ($\sum^{n}_{i} \text{p}^i_{e} / \text{truth jet}_{e}$)"
+    th_tj.yTitle = "Jets / 0.01"
+    th_tj.xTitle = "Parton Content to Truth Jet Energy Ratio ($\\sum^{n}_{i} \\text{p}^i_{e} / \\text{truth jet}_{e}$)"
     th_tj.Filename = "Figure.8.e"
     th_tj.SaveFigure()
 
@@ -163,7 +163,7 @@ def nparton_jets_e(ana, col):
         if not n: continue
         if not len(pt[i]): continue
 
-        if n >= 4: tl = "$\geq 4$-Partons"
+        if n >= 4: tl = "$\\geq 4$-Partons"
         else: tl = str(n) + "-Partons"
         if tl not in hists: hists[tl] = pt[i]
         else: hists[tl] += pt[i]
@@ -184,8 +184,8 @@ def nparton_jets_e(ana, col):
     th_tj.xBins = 201
     th_tj.xStep = 0.1
     th_tj.Stacked = True
-    th_tj.yTitle = "Jets / $0.01$"
-    th_tj.xTitle = r"Parton Content to Jet Energy Ratio ($\sum^{n}_{i} \text{p}^i_{e} / \text{jet}_{e}$)"
+    th_tj.yTitle = "Jets / 0.01"
+    th_tj.xTitle = "Parton Content to Jet Energy Ratio ($\\sum^{n}_{i} \\text{p}^i_{e} / \\text{jet}_{e}$)"
     th_tj.Filename = "Figure.8.f"
     th_tj.SaveFigure()
 
@@ -214,8 +214,8 @@ def nparton_tjets_pdgid_e(ana, col):
     th_tj.xBins = 101
     th_tj.xStep = 0.1
     th_tj.Stacked = True
-    th_tj.yTitle = "Partons / $0.01$"
-    th_tj.xTitle = r"Fractional Parton Contribution ($p_{e} / \sum^{n}_{i} \text{p}^i_{e}$)"
+    th_tj.yTitle = "Partons / 0.01"
+    th_tj.xTitle = "Fractional Parton Contribution ($p_{e} / \\sum^{n}_{i} \\text{p}^{i}_{e}$)"
     th_tj.Filename = "Figure.8.g"
     th_tj.SaveFigure()
 
@@ -243,8 +243,8 @@ def nparton_jets_pdgid_e(ana, col):
     th_tj.xBins = 101
     th_tj.xStep = 0.1
     th_tj.Stacked = True
-    th_tj.yTitle = "Partons / $0.01$"
-    th_tj.xTitle = r"Fractional Parton Contribution ($p_{e} / \sum^{n}_{i} \text{p(e)}^i$)"
+    th_tj.yTitle = "Partons / 0.01"
+    th_tj.xTitle = "Fractional Parton Contribution ($p_{e} / \\sum^{n}_{i} \\text{p}_{e}^{i}$)"
     th_tj.Filename = "Figure.8.h"
     th_tj.SaveFigure()
 
@@ -268,8 +268,8 @@ def frac_ntop_tjet_contrib(ana, col):
     th_tj.xBins = 201
     th_tj.xStep = 0.1
     th_tj.Stacked = True
-    th_tj.yTitle = "Partons / $0.01$"
-    th_tj.xTitle = r"Fractional Parton Contribution ($p_{e} / \text{truth jet}^{\text{n-top}}_{e}$)"
+    th_tj.yTitle = "Partons / 0.01"
+    th_tj.xTitle = "Fractional Parton Contribution ($p_{e} / \\text{truth jet}^{\\text{n-top}}_{e}$)"
     th_tj.Filename = "Figure.8.i"
     th_tj.SaveFigure()
 
@@ -292,8 +292,8 @@ def frac_ntop_jet_contrib(ana, col):
     th_tj.xBins = 201
     th_tj.xStep = 0.1
     th_tj.Stacked = True
-    th_tj.yTitle = "Partons / $0.01$"
-    th_tj.xTitle = r"Fractional Parton Contribution ($p_{e} / \text{jet}^{\text{n-top}}_{e}$)"
+    th_tj.yTitle = "Partons / 0.01"
+    th_tj.xTitle = "Fractional Parton Contribution ($p_{e} / \\text{jet}^{\\text{n-top}}_{e}$)"
     th_tj.Filename = "Figure.8.j"
     th_tj.SaveFigure()
 
@@ -303,23 +303,24 @@ def top_mass_wth_cuts(ana, col):
     for i in pt:
         thx = i.split("::")[0]
         if "::jet" not in i: continue
+        if "::jet-gluon" in i: continue
         if "0.00" == thx: tlt = "No threshold"
-        elif "0.10" == thx: tlt = "$\geq$" + thx
-        elif "0.20" == thx: tlt = "$\geq$" + thx
-        elif "0.30" == thx: tlt = "$\geq$" + thx
-        elif "0.40" == thx: tlt = "$\geq$" + thx
-        #elif "0.50" in i: pass
-        #elif "0.60" in i: pass
-        #elif "0.70" in i: pass
-        #elif "0.80" in i: pass
-        #elif "0.90" in i: pass
-        #elif "1.00" in i: pass
+        elif "0.10" == thx: tlt = "$\\geq$" + thx
+        elif "0.20" == thx: tlt = "$\\geq$" + thx
+        elif "0.30" == thx: tlt = "$\\geq$" + thx
+        elif "0.40" == thx: tlt = "$\\geq$" + thx
+        elif "0.50" == thx: tlt = "$\\geq$" + thx
+        elif "0.60" == thx: tlt = "$\\geq$" + thx
+        elif "0.70" == thx: tlt = "$\\geq$" + thx
+        elif "0.80" == thx: tlt = "$\\geq$" + thx
+        elif "0.90" == thx: tlt = "$\\geq$" + thx
+        elif "1.00" == thx: tlt = "$\\geq$" + thx
+        elif "1.10" == thx: tlt = "$\\geq$" + thx
         else: continue
 
         th = TH1F()
         th.xData = pt[i]
-        th.Title = tlt #"$\geq$ " + i.split("::")[0]
-        th.Color = next(col)
+        th.Title = tlt
         th.Alpha = 0.5
         #th.Density = True
         hists.append(th)
@@ -336,22 +337,78 @@ def top_mass_wth_cuts(ana, col):
         th_tj.xStep = 40
         th_tj.Alpha = 0.5
         th_tj.Overflow = False
-        th_tj.yTitle = "Tops / $1$ (GeV)"
+        th_tj.yTitle = "Tops / 1 (GeV)"
         th_tj.xTitle = "Invariant Top Mass (GeV)"
         th_tj.Filename = "Figure.8.k-" + str(i)
         th_tj.SaveFigure()
 
+
+def top_mass_wth_cuts_gluons(ana, col):
+    pt = ana.frac_mass_top
+    hists = []
+    hist_gl = [None, None]
+    for i in pt:
+        thx = i.split("::")[0]
+        if "::jet-gluon" not in i: continue
+
+        if "0.00" == thx and "rm"  in i: tlt = "No threshold (All Gluon Jets Removed)"
+        elif "0.00" == thx and "inc" in i: tlt = "No threshold (All Gluon Jets)"
+        elif "0.10" == thx: tlt = "$\\geq$" + thx + " (Threshold on Gluon Jets)"
+        elif "0.20" == thx: tlt = "$\\geq$" + thx + " (Threshold on Gluon Jets)"
+        elif "0.30" == thx: tlt = "$\\geq$" + thx + " (Threshold on Gluon Jets)"
+        elif "0.40" == thx: tlt = "$\\geq$" + thx + " (Threshold on Gluon Jets)"
+        elif "0.50" == thx: tlt = "$\\geq$" + thx + " (Threshold on Gluon Jets)"
+        elif "0.60" == thx: tlt = "$\\geq$" + thx + " (Threshold on Gluon Jets)"
+        elif "0.70" == thx: tlt = "$\\geq$" + thx + " (Threshold on Gluon Jets)"
+        elif "0.80" == thx: tlt = "$\\geq$" + thx + " (Threshold on Gluon Jets)"
+        elif "0.90" == thx: tlt = "$\\geq$" + thx + " (Threshold on Gluon Jets)"
+        elif "1.00" == thx: tlt = "$\\geq$" + thx + " (Threshold on Gluon Jets)"
+        elif "1.10" == thx: tlt = "$\\geq$" + thx + " (Threshold on Gluon Jets)"
+        else: continue
+
+
+        th = TH1F()
+        th.xData = pt[i]
+        th.Title = tlt
+        th.Alpha = 0.5
+
+        if   "0.00" == thx and "rm" in i:  hist_gl[0] = th
+        elif "0.00" == thx and "inc" in i: hist_gl[1] = th
+        else: hists.append(th)
+
+    for i in range(0, len(hists)):
+        if i == 0: th = hist_gl[0]
+        else: th = hist_gl[1]
+
+        th.Color = "red"
+        hists[i].Color = "blue"
+        th_tj = path(TH1F())
+        th_tj.Title = "Invariant Top Mass for Gluon Jet Constituent Threshold " + hists[i].Title
+        th_tj.Histograms = [th, hists[i]]
+        th_tj.xMin = 0
+        th_tj.xMax = 400
+        th_tj.xBins = 200
+        th_tj.xStep = 40
+        th_tj.Alpha = 0.5
+        th_tj.Overflow = False
+        th_tj.yTitle = "Tops / 1 (GeV)"
+        th_tj.xTitle = "Invariant Top Mass (GeV)"
+        th_tj.Filename = "Figure.8.p-" + str(i)
+        th_tj.SaveFigure()
+
+
 def Parton(ana):
-    ntops_tjets_pt(ana , iter(colors))
-    ntops_tjets_e(ana  , iter(colors))
-    ntops_jets_pt(ana  , iter(colors))
-    ntops_jets_e(ana   , iter(colors))
-    nparton_tjets_e(ana, iter(colors))
-    nparton_jets_e(ana , iter(colors))
-    nparton_tjets_pdgid_e(ana, iter(colors))
-    nparton_jets_pdgid_e(ana, iter(colors))
-    frac_ntop_tjet_contrib(ana, iter(colors))
-    frac_ntop_jet_contrib(ana, iter(colors))
+    #ntops_tjets_pt(ana , iter(colors))
+    #ntops_tjets_e(ana  , iter(colors))
+    #ntops_jets_pt(ana  , iter(colors))
+    #ntops_jets_e(ana   , iter(colors))
+    #nparton_tjets_e(ana, iter(colors))
+    #nparton_jets_e(ana , iter(colors))
+    #nparton_tjets_pdgid_e(ana, iter(colors))
+    #nparton_jets_pdgid_e(ana, iter(colors))
+    #frac_ntop_tjet_contrib(ana, iter(colors))
+    #frac_ntop_jet_contrib(ana, iter(colors))
     top_mass_wth_cuts(ana, iter(colors))
+    top_mass_wth_cuts_gluons(ana, iter(colors))
 
 

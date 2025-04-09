@@ -9,7 +9,7 @@ cdef class Parton(SelectionTemplate):
         self.ptr = new parton()
         self.tt = <parton*>self.ptr
 
-    def __dealloc__(self): del self.tt
+    def __dealloc__(self): del self.ptr
 
     cdef void transform_dict_keys(self):
         self.ntops_tjets_pt               = as_dict(&self.tt.ntops_tjets_pt)

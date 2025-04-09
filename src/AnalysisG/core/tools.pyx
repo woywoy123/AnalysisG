@@ -68,11 +68,11 @@ cdef dict as_dict_dict_dict(map[string, map[string, map[string, vector[base_type
 
 cdef void as_map(dict inpt, map[string, base_types]* out):
     cdef str key
-    for key in inpt: dref(out)[enc(key)] = inpt[key]
+    for key in inpt: dref(out)[enc(key)] = inpt[key] if not isinstance(inpt[key], str) else enc(inpt[key])
 
 cdef void as_umap(dict inpt, unordered_map[string, base_types]* out):
     cdef str key
-    for key in inpt: dref(out)[enc(key)] = inpt[key]
+    for key in inpt: dref(out)[enc(key)] = inpt[key] if not isinstance(inpt[key], str) else enc(inpt[key])
 
 cdef dict as_basic_dict_dict_f(map[string, map[float, base_types]]* inpt):
     cdef dict output = {}

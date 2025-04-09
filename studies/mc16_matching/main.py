@@ -26,12 +26,14 @@ import parton
 
 import pickle
 
+
 def default(tl):
     tl.Style = r"ATLAS"
     tl.DPI = 250
     tl.TitleSize = 20
     tl.AutoScaling = False
     tl.Overflow = False
+    tl.UseLateX = True
 
     if study == "zprime":
         tl.yScaling = 10*0.75
@@ -45,47 +47,66 @@ def default(tl):
 
 plotting_method = {
 #    "zprime"             : zprime,
-    "topkinematics"      : topkinematics,
-#    "topmatching"        : topmatching,
+#    "topkinematics"      : topkinematics,
 #    "childrenkinematics" : childrenkinematics,
+#    "topmatching"        : topmatching,
 #    "decaymodes"         : decaymodes,
 #    "toptruthjets"       : toptruthjets,
 #    "topjets"            : topjets,
-#    "parton"             : parton
+    "parton"             : parton
 }
 
 
-def ExecuteStudy(study, smpls):
+def ExecuteStudy(study, smpls, name, exe = True):
     ev = BSM4Tops()
 
     sel = None
     if study == "topkinematics"      : sel = TopKinematics()
-    if study == "topmatching"        : sel = TopMatching()
+    if study == "zprime"             : sel = ZPrime()
     if study == "childrenkinematics" : sel = ChildrenKinematics()
+    if study == "topmatching"        : sel = TopMatching()
     if study == "decaymodes"         : sel = DecayModes()
     if study == "toptruthjets"       : sel = TopTruthJets()
     if study == "topjets"            : sel = TopJets()
-    if study == "zprime"             : sel = ZPrime()
     if study == "parton"             : sel = Parton()
+
+    px  = "./ProjectName/Selections/"
+    px += sel.__name__() + "-" + ev.__name__()
+    px += "/" + name
+
+    if not exe and study == "decaymodes"  : return sel.load(name = name)
+    if not exe and study == "toptruthjets": return sel.load(name = name)
+    if not exe and study == "topjets"     : return sel.load(name = name)
+    if not exe and study == "parton"      : return sel.load(name = name)
+    if not exe: return sel.InterpretROOT(px, "nominal")
 
     ana = Analysis()
     ana.Threads = 12
+    ana.SaveSelectionToROOT = True
+#    ana.DebugMode = True
     ana.SumOfWeightsTreeName = "sumWeights"
-    ana.AddSamples(smpls, "tmp")
-    ana.AddEvent(ev, "tmp")
+    ana.AddSamples(smpls, name)
+    ana.AddEvent(ev, name)
     ana.AddSelection(sel)
     ana.Start()
-    return sel
 
-#smpls = "../../test/samples/dilepton/*"
+    if study == "decaymodes"  : sel.dump(name = name); return sel
+    if study == "toptruthjets": sel.dump(name = name); return sel
+    if study == "topjets"     : sel.dump(name = name); return sel
+    if study == "parton"      : sel.dump(name = name); return sel
+    return sel.InterpretROOT(px, "nominal")
+
+masses = ["1000"] #, "900", "800", "700", "600", "500", "400"]
+masses.reverse()
 
 root = "/home/tnom6927/Downloads/mc16/"
 for i in plotting_method:
     study = i
     plt_data = True
-    gen_data = False
+    gen_data = True
     figure_path = "./Output/"
-    for mass in ["1000", "900", "800", "700", "600", "500", "400"]:
+    tmp = {}
+    for mass in masses: 
         if mass == "ttbar" or mass == "tttt":
             mass_point = mass
             smpls = mass + "/*"
@@ -99,25 +120,21 @@ for i in plotting_method:
         method.figures.default     = default
         method.study               = i
 
-        if gen_data:
-            sel = ExecuteStudy(study, root + smpls)
-            f = open("pkl-data/" + study + "-" + mass_point + ".pkl", "wb")
-            pickle.dump(sel, f)
-            f.close()
-
+        sel = ExecuteStudy(study, root + smpls, study + "-" + mass, gen_data)
         if not plt_data: continue
-        print("plotting: " + study)
-        f = open("pkl-data/" + study + "-" + mass_point + ".pkl", "rb")
-        pres = pickle.load(f)
-        f.close()
+        if study == "zprime": 
+            tmp[mass] = sel
+            if len(tmp) < len(masses): continue
+            sel = tmp
 
+        print("plotting: " + study)
         mp = mass_point.replace("GeV", "(GeV)").replace(".", " ")
-        if study == "topkinematics"      : method.figures.TopKinematics(pres, mp)
-        if study == "topmatching"        : method.figures.TopMatching(pres)
-        if study == "childrenkinematics" : method.figures.ChildrenKinematics(pres, mp)
-        if study == "decaymodes"         : method.figures.DecayModes(pres)
-        if study == "toptruthjets"       : method.figures.TopTruthJets(pres)
-        if study == "topjets"            : method.figures.TopJets(pres)
-        if study == "zprime"             : method.figures.ZPrime(pres)
-        if study == "parton"             : method.figures.Parton(pres)
+        if study == "topkinematics"      : method.figures.TopKinematics(sel, mp)
+        if study == "topmatching"        : method.figures.TopMatching(sel)
+        if study == "childrenkinematics" : method.figures.ChildrenKinematics(sel, mp)
+        if study == "decaymodes"         : method.figures.DecayModes(sel)
+        if study == "toptruthjets"       : method.figures.TopTruthJets(sel)
+        if study == "topjets"            : method.figures.TopJets(sel)
+        if study == "zprime"             : method.figures.ZPrime(sel)
+        if study == "parton"             : method.figures.Parton(sel)
 

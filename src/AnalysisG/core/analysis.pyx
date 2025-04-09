@@ -7,11 +7,12 @@ from libcpp.map cimport pair, map
 
 from AnalysisG.core.meta cimport *
 from AnalysisG.core.tools cimport *
+from AnalysisG.core.lossfx cimport *
 from AnalysisG.core.event_template cimport *
 from AnalysisG.core.graph_template cimport *
 from AnalysisG.core.selection_template cimport *
+from AnalysisG.core.metric_template cimport *
 from AnalysisG.core.model_template cimport *
-from AnalysisG.core.lossfx cimport *
 from AnalysisG.core.analysis cimport analysis
 
 from time import sleep
@@ -24,7 +25,7 @@ def factory(title, total): return tqdm(total = total, desc = title, leave = Fals
 cdef class Analysis:
 
     def __cinit__(self):
-        with nogil: self.ana = new analysis()
+        self.ana = new analysis()
         self.selections_ = []
         self.graphs_     = []
         self.events_     = []
@@ -38,21 +39,25 @@ cdef class Analysis:
     def AddSamples(self, str path, str label):
         cdef string rm = enc(label)
         cdef string rn = enc(path)
-        with nogil: self.ana.add_samples(rn, rm)
+        self.ana.add_samples(rn, rm)
 
     def AddEvent(self, EventTemplate ev, str label):
         cdef string rm = enc(label)
-        with nogil: self.ana.add_event_template(ev.ptr, rm)
+        self.ana.add_event_template(ev.ptr, rm)
         self.events_.append(ev)
 
     def AddGraph(self, GraphTemplate ev, str label):
         cdef string rm = enc(label)
-        with nogil: self.ana.add_graph_template(ev.ptr, rm)
+        self.ana.add_graph_template(ev.ptr, rm)
         self.graphs_.append(ev)
 
     def AddSelection(self, SelectionTemplate selc):
-        with nogil: self.ana.add_selection_template(selc.ptr)
+        self.ana.add_selection_template(selc.ptr)
         self.selections_.append(selc)
+
+    def AddMetric(self, MetricTemplate mex, ModelTemplate mdl):
+        self.ana.add_metric_template(mex.ptr, mdl.nn_ptr)
+        self.PreTagEvents = True
 
     def AddModel(self, ModelTemplate model, OptimizerConfig op, str run_name):
         cdef string rm = enc(run_name)

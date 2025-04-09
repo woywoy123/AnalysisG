@@ -24,6 +24,16 @@ void model_template::clone_settings(model_settings_t* setd){
     setd -> inference_mode = this -> inference_mode; 
 }
 
+model_template* model_template::clone(int){
+    model_template* mo = this -> clone();
+
+    model_settings_t mds;
+    this -> clone_settings(&mds); 
+    mo -> import_settings(&mds);
+
+    return mo; 
+}
+
 void model_template::import_settings(model_settings_t* setd){
     this -> e_optim = setd -> e_optim; 
     this -> s_optim = setd -> s_optim; 
@@ -46,6 +56,9 @@ void model_template::import_settings(model_settings_t* setd){
 
     this -> inference_mode = setd -> inference_mode; 
 }
+
+void model_template::set_name(std::string* nx, model_template* md){md -> m_name = *nx;}
+void model_template::get_name(std::string* nx, model_template* md){*nx = md -> m_name;}
 
 void model_template::set_device(std::string* dev, model_template* md){
     if (md -> m_option){delete md -> m_option; md -> m_option = nullptr;}    

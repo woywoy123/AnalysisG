@@ -9,7 +9,7 @@ cdef class DecayModes(SelectionTemplate):
         self.ptr = new decaymodes()
         self.tt = <decaymodes*>self.ptr
 
-    def __dealloc__(self): del self.tt
+    def __dealloc__(self): del self.ptr
 
     cdef void transform_dict_keys(self):
         self.res_top_modes     = as_dict(&self.tt.res_top_modes)

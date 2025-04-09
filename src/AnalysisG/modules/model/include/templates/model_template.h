@@ -14,6 +14,7 @@
 class metrics; 
 class analysis; 
 class model_template; 
+class metric_template;
 class optimizer; 
 class dataloader; 
 
@@ -21,16 +22,6 @@ struct graph_t;
 struct variable_t; 
 struct optimizer_params_t;
 struct model_report; 
-
-void execution(
-    model_template* md, model_settings_t mds, 
-    std::vector<graph_t*>* data, size_t* prg,
-    std::string output, std::vector<variable_t>* content, 
-    std::string* msg
-); 
-
-void initialize_loop(optimizer* op, int k, model_template* md, optimizer_params_t* config, model_report** rep); 
-
 
 class model_template: 
     public notification, 
@@ -121,20 +112,11 @@ class model_template:
         friend class analysis;
         friend class optimizer; 
         friend class dataloader; 
-
-        friend void execution(
-            model_template* md, model_settings_t mds, 
-            std::vector<graph_t*>* data, size_t* prg,
-            std::string output, std::vector<variable_t>* content, 
-            std::string* msg
-        ); 
-
-        friend void initialize_loop(
-            optimizer* op, int k, model_template* md, 
-            optimizer_params_t* config, model_report** rep
-        ); 
+        friend class metric_template; 
 
     private:
+        model_template* clone(int); 
+
         static void set_input_features(
                 std::vector<std::string>*, 
                 std::map<std::string, torch::Tensor*>*
@@ -144,6 +126,11 @@ class model_template:
                 std::map<std::string, std::string>*, 
                 std::map<std::string, std::tuple<torch::Tensor*, loss_enum>>*
         ); 
+
+
+        static void get_name(std::string*, model_template*);
+        static void set_name(std::string*, model_template*);
+
 
         template <typename G, typename F>
         void assign(std::map<std::string, G>* inpt, graph_enum mode, F* data){
@@ -166,6 +153,7 @@ class model_template:
 
         opt_enum         e_optim = opt_enum::invalid_optimizer;  
         std::string      s_optim = ""; 
+        std::string      m_name  = "model-template"; 
 
         std::vector<torch::nn::Sequential*> m_data = {};
         std::vector<torch::Tensor*> _losses = {};  

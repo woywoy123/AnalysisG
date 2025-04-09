@@ -1,4 +1,5 @@
 from AnalysisG.core.plotting import TH1F, TH2F
+from AnalysisG.core.io import IO
 import pickle
 
 global figure_path
@@ -103,7 +104,7 @@ def zprime_mass_jets(ana):
 
     th = path(TH1F())
     th.Histograms = hists
-    th.Title = r"Invariant Mass Distribution of Multiple Target Resonance Mass-Points"
+    th.Title  = r"Invariant Mass Distribution of Multiple Target Resonance Mass-Points"
     th.xTitle = "Invariant Mass (GeV)"
     th.yTitle = r"Density (Arb.) / ($4$ GeV)"
     th.Style = "ATLAS"
@@ -117,16 +118,7 @@ def zprime_mass_jets(ana):
     th.SaveFigure()
 
 def ZPrime(ana):
-
-    data_ = {}
-    masses = ["1000", "900", "800", "700", "600", "500", "400"]
-    for i in masses:
-        try: f = open("pkl-data/zprime-Mass." + i + ".GeV.pkl", "rb")
-        except: return
-
-        data_[i] = pickle.load(f)
-        f.close()
-    zprime_mass_tops(data_)
-    zprime_mass_children(data_)
-    zprime_mass_truthjets(data_)
-    zprime_mass_jets(data_)
+    zprime_mass_tops(ana)
+    zprime_mass_children(ana)
+    zprime_mass_truthjets(ana)
+    zprime_mass_jets(ana)

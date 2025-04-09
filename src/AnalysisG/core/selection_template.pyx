@@ -85,6 +85,8 @@ cdef class SelectionTemplate:
             out[env(itm.first)] = data
         return out
 
+    def Postprocessing(self): pass
+
     def InterpretROOT(self, str path, str tree):
         if not len(self.root_leaves):
             print("Failed to interpret!")
@@ -141,4 +143,5 @@ cdef class SelectionTemplate:
             li = list(i.values())
             rn = list(self.root_leaves)
             for pi in idx: lo[pi.second](self, (rn[pi.second], li[pi.first]))
+        self.Postprocessing()
         return self
