@@ -1,5 +1,5 @@
-#include <element.h>
-#include <meta.h>
+#include <structs/element.h>
+#include <structs/meta.h>
 
 void element_t::set_meta(){
     std::map<std::string, data_t*>::iterator itr = this -> handle.begin();
@@ -23,6 +23,15 @@ bool element_t::boundary(){
     return idx > 0; 
 }
 
+
+
+data_t::data_t(){};
+data_t::~data_t(){
+    if (this -> type == data_enum::unset){return;}
+    this -> clear = true; 
+    this -> flush_buffer(); 
+}
+    
 void data_t::flush(){
     this -> flush_buffer();
     for (size_t x(0); x < this -> files_t -> size(); ++x){
@@ -68,7 +77,9 @@ void data_t::initialize(){
     this -> branch_name = this -> branch -> GetName(); 
 
     this -> string_type(); 
-    this -> flush_buffer(); 
+    this -> clear = true; 
+    this -> flush_buffer();
+    this -> clear = false;  
     this -> fetch_buffer(); 
     this -> index = 0; 
 } 
@@ -88,7 +99,7 @@ bool data_t::next(){
 void write_t::write(){
     this -> tree -> Fill(); 
     std::map<std::string, variable_t*>::iterator itx = this -> data -> begin(); 
-    for (; itx != this -> data -> end(); ++itx){itx -> second -> flush();}
+    for (; itx != this -> data -> end(); ++itx){itx -> second -> flush_buffer();}
 }
 
 void write_t::create(std::string tr_name, std::string path){
@@ -115,7 +126,10 @@ void write_t::close(){
     this -> file = nullptr;
     this -> tree = nullptr; 
     std::map<std::string, variable_t*>::iterator itx = this -> data -> begin(); 
-    for (; itx != this -> data -> end(); ++itx){delete itx -> second;}
+    for (; itx != this -> data -> end(); ++itx){
+        itx -> second -> clear = true; 
+        delete itx -> second;
+    }
     this -> data -> clear(); 
     delete this -> data; 
 }

@@ -5,6 +5,7 @@
 #include <templates/graph_template.h>
 #include <templates/lossfx.h>
 #include <structs/settings.h>
+#include <structs/model.h>
 
 #ifdef PYC_CUDA
 #include <c10/cuda/CUDAStream.h>
@@ -32,6 +33,7 @@ class model_template:
         virtual ~model_template();
 
         // set device of model
+        cproperty<int, model_template> device_index;
         cproperty<std::string, model_template> name; 
         cproperty<std::string, model_template> device;
 
@@ -131,6 +133,8 @@ class model_template:
         static void get_name(std::string*, model_template*);
         static void set_name(std::string*, model_template*);
 
+        static void get_dev_index(int*, model_template*);
+        static void set_dev_index(int*, model_template*);
 
         template <typename G, typename F>
         void assign(std::map<std::string, G>* inpt, graph_enum mode, F* data){
@@ -150,6 +154,7 @@ class model_template:
         torch::optim::Optimizer* m_optim  = nullptr; 
         torch::Tensor*         edge_index = nullptr; 
         bool                    m_batched = false; 
+        int                  m_device_idx = -2; 
 
         opt_enum         e_optim = opt_enum::invalid_optimizer;  
         std::string      s_optim = ""; 

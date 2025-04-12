@@ -150,7 +150,7 @@ bool dataloader::dump_graphs(std::string path, int threads){
     for (size_t x(0); x < this -> data_set -> size(); ++x){
         graph_t* dt = (*this -> data_set)[x]; 
         if (dt -> preselection){continue;}
-        valid *= restored -> count(*dt -> hash); 
+        valid = valid && restored -> count(*dt -> hash); 
         if (valid){continue;}
         break; 
     }
@@ -243,7 +243,7 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
 
         if (this -> hash_map.count(hash)){continue;}
         if (load_hash.count(hash)){continue;}
-        if (data_k[x].is_eval * eval){load_hash[hash] = true; continue;}
+        if (data_k[x].is_eval && eval){load_hash[hash] = true; continue;}
         for (size_t k(0); k < kv.size(); ++k){
             if (kv[k] != data_k[x].k+1){continue;}
             load_hash[hash] = fold * data_k[x].is_valid + train * data_k[x].is_train; 

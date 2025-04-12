@@ -2,8 +2,8 @@
 #define TYPECASTING_VECTOR_CAST_H
 
 #include <c10/core/DeviceType.h>
-#include <TInterpreter.h>
 #include <structs/meta.h>
+#include <structs/base.h>
 #include <torch/torch.h>
 #include <TTree.h>
 #include <vector>
@@ -44,25 +44,7 @@ void tensor_to_vector(torch::Tensor* data, std::vector<G>* out, std::vector<sign
     tensor_vector(out, &linear, dims, dims -> size()-1); 
 }
 
-void buildDict(std::string name, std::string shrt); 
 std::vector<signed long> tensor_size(torch::Tensor* inpt);
-void add_to_dict(std::vector<std::vector<double>>* dummy); 
-void add_to_dict(std::vector<std::vector<float>>* dummy); 
-void add_to_dict(std::vector<std::vector<long>>* dummy); 
-void add_to_dict(std::vector<std::vector<int>>* dummy); 
-void add_to_dict(std::vector<std::vector<bool>>* dummy); 
-
-void add_to_dict(std::vector<double>* dummy); 
-void add_to_dict(std::vector<float>* dummy); 
-void add_to_dict(std::vector<long>* dummy); 
-void add_to_dict(std::vector<int>* dummy); 
-void add_to_dict(std::vector<bool>* dummy); 
-
-void add_to_dict(double* dummy); 
-void add_to_dict(float* dummy); 
-void add_to_dict(long* dummy); 
-void add_to_dict(int* dummy); 
-void add_to_dict(bool* dummy); 
 
 template <typename g>
 void tensor_to_vector(torch::Tensor* data, std::vector<g>* out){
@@ -70,21 +52,19 @@ void tensor_to_vector(torch::Tensor* data, std::vector<g>* out){
     tensor_to_vector(data, out, &s, g()); 
 }
 
-enum var_enum {
-    vvd, vvf, vvl, vvi, vvb, 
-    vd, vf, vl, vi, vb, 
-    undef, unset
-};
 
-struct variable_t {
+struct variable_t: public bsc_t 
+{
     public:
-        variable(); 
-        variable(bool); 
+        variable_t(); 
+        variable_t(bool); 
+        ~variable_t() override; 
 
-        void flush();
-        void process(torch::Tensor* data, std::string* varname, TTree* tr);
+        void create_meta(meta_t* mt);
         void build_switch(size_t s, torch::Tensor* tx); 
+        void process(torch::Tensor* data, std::string* varname, TTree* tr);
 
+        // =========================== Add your type (3) =========================== //
         void process(std::vector<std::vector<float>>*  data, std::string* varname, TTree* tr); 
         void process(std::vector<std::vector<double>>* data, std::string* varname, TTree* tr); 
         void process(std::vector<std::vector<long>>*   data, std::string* varname, TTree* tr); 
@@ -102,67 +82,41 @@ struct variable_t {
         void process(long*   data, std::string* varname, TTree* tr); 
         void process(int*    data, std::string* varname, TTree* tr); 
         void process(bool*   data, std::string* varname, TTree* tr); 
-        std::string variable_name = ""; 
+        // ========================================================================= //
 
-        meta_t* mtx = nullptr; 
+        std::string variable_name = ""; 
+        bool failed_branch = false; 
 
     private: 
         bool use_external = false; 
+        bool is_triggered = false; 
 
-        std::vector<std::vector<float>>  vvf = {}; 
-        std::vector<std::vector<double>> vvd = {}; 
-        std::vector<std::vector<long>>   vvl = {}; 
-        std::vector<std::vector<int>>    vvi = {}; 
-        std::vector<std::vector<bool>>   vvb = {}; 
-
-        std::vector<float>               vf = {}; 
-        std::vector<double>              vd = {}; 
-        std::vector<long>                vl = {}; 
-        std::vector<int>                 vi = {}; 
-        std::vector<bool>                vb = {}; 
-
-        float   f = 0; 
-        double  d = 0; 
-        long    l = 0; 
-        int     i = 0; 
-        bool    b = 0; 
-
-        var_enum vr = var_enum::unset; 
         TBranch* tb = nullptr; 
         TTree*   tt = nullptr; 
+        meta_t* mtx = nullptr; 
 
         template <typename g, typename p>
-        void add_data(std::vector<g>* type, torch::Tensor* data, std::vector<signed long>* s, std::string* varname, p prim){
-            tensor_to_vector(data, type, s, prim); 
-            if (this -> tb){return;}
-            if (!this -> tt){
-                if (this -> mtx){
-                    this -> tt = new TTree("MetaData", "meta"); 
-                    this -> tt -> Branch("MetaData", this -> mtx); 
-                    this -> tt -> Fill(); 
-                    delete this -> tt; 
-                    this -> tt = nullptr; 
-                }
-                return add_to_dict(type);
+        void add_data(g*& tx, torch::Tensor* data, std::vector<signed long>* s, p prim){
+            if (!tx){tx = new g();}
+            tensor_to_vector(data, tx, s, prim); 
+            if (this -> tb || !this -> tt){return;}
+            this -> tb = this -> tt -> Branch(this -> variable_name.c_str(), tx); 
+            this -> failed_branch = !this -> tb; 
+        }
+       
+        template <typename g>
+        void add_data(g* var, g*& tx, std::string* name, TTree* tr){
+            if (!tx){
+                this -> variable_name = *name;
+                tx = new g();
             }
-            this -> tb = this -> tt -> Branch(varname -> c_str(), type); 
-            this -> tt -> AddBranchToCache(this -> tb, true); 
-        }
-
-        template <typename g>
-        void add_data(g* var, g* type){
-            *type = *var; 
-            if (this -> tb){return;}
-            this -> tb = this -> tt -> Branch(this -> variable_name.c_str(), type); 
-        }
-        
-        template <typename g>
-        void add_data(g* var, g* type, std::string* name, TTree* tr){
-            if (this -> tt){return this -> add_data(var, type);}
-            add_to_dict(var);
+            if (!var){return;}
+            *tx = *var; 
+            if (this -> tb || !this -> tt){return;}
             this -> tt = tr; 
-            this -> variable_name = *name;
-            this -> add_data(var, type); 
+            this -> tb = this -> tt -> Branch(this -> variable_name.c_str(), tx); 
+            this -> failed_branch = !this -> tb; 
+            this -> is_triggered = true; 
         }
 };
 

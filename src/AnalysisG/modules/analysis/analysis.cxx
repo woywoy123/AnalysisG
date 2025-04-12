@@ -6,17 +6,31 @@
 
 analysis::analysis(){
     this -> prefix = "Analysis"; 
+    this -> tags    = new std::vector<folds_t>(); 
     this -> tracer  = new sampletracer(); 
     this -> loader  = new dataloader(); 
     this -> reader  = new io(); 
-    this -> tags    = new std::vector<folds_t>(); 
+    std::string cur = this -> absolute_path("./");
 
-    gSystem -> SetBuildDir(dict_path, true); 
+    std::string tmp = std::string(dict_path) + "pcm/";
+    this -> create_path(tmp);
+    int opx = static_cast<int>(data_enum::undef);
+    int opc = this -> ls(tmp, ".pcm").size(); 
+    if (opx-6 > opc){this -> info("Building PCM files... to:" + tmp);}
+    gSystem -> SetBuildDir(tmp.c_str(), true); 
+    gSystem -> ChangeDirectory(tmp.c_str()); 
+    gSystem -> AddDynamicPath(tmp.c_str());
     gSystem -> SetAclicMode(TSystem::kOpt); 
 
-    std::string pt = std::string(dict_path) + "structs/include/structs/meta.h"; 
-    gInterpreter -> GenerateDictionary("meta_t", pt.c_str()); 
-    gInterpreter -> GenerateDictionary("weights_t", pt.c_str()); 
+    std::string mta = std::string(dict_path) + "structs/include/structs/meta.h"; 
+    std::thread* tm = nullptr; 
+    tm = new std::thread(buildDict, "meta_t"   , mta); 
+    tm -> join(); delete tm; 
+    tm = new std::thread(buildDict, "weights_t", mta); 
+    tm -> join(); delete tm; 
+    tm = new std::thread(buildAll); 
+    tm -> join(); delete tm; 
+    gSystem -> ChangeDirectory(cur.c_str()); 
 }
 
 analysis::~analysis(){

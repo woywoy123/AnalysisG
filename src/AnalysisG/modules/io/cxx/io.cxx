@@ -1,12 +1,8 @@
 #include <io/io.h>
 #include <io/cfg.h>
-#include <TSystem.h>
 
 io::io(){
     this -> prefix = "io";
-    std::string pt = std::string(dict_path) + "structs/include/structs/meta.h"; 
-    buildDict("meta_t", pt); 
-    buildDict("weights_t", pt); 
 }
 
 io::~io(){

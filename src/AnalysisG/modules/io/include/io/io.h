@@ -137,9 +137,8 @@ class io:
         void root_key_paths(std::string path); 
         void root_key_paths(std::string path, TTree* t); 
         void root_key_paths(std::string path, TBranch* t); 
-        
         std::map<std::string, data_t*>*   iters = nullptr; 
-        
+
         std::map<std::string, bool> missing_trigger = {}; 
         std::map<std::string, bool> success_trigger = {}; 
 

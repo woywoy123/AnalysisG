@@ -18,8 +18,8 @@ torch::Tensor* model_template::compute_loss(std::string pred, graph_enum feat){
     torch::Tensor* prediction = nullptr; 
     switch(feat){
         case graph_enum::truth_graph: prediction = this -> m_p_graph[pred]; truth = &this -> m_o_graph[pred]; break;
-        case graph_enum::truth_node:  prediction = this -> m_p_node[pred];  truth = &this -> m_o_node[pred]; break;
-        case graph_enum::truth_edge:  prediction = this -> m_p_edge[pred];  truth = &this -> m_o_edge[pred]; break;
+        case graph_enum::truth_node:  prediction = this -> m_p_node[pred];  truth = &this -> m_o_node[pred];  break;
+        case graph_enum::truth_edge:  prediction = this -> m_p_edge[pred];  truth = &this -> m_o_edge[pred];  break;
         default: break;
     }
     if (!prediction){return nullptr;}
@@ -30,23 +30,16 @@ torch::Tensor* model_template::compute_loss(std::string pred, graph_enum feat){
 void model_template::train_sequence(bool train){
     if (this -> inference_mode){return;}
 
-    graph_enum mode; 
     std::map<std::string, std::string> gr = this -> o_graph; 
     std::map<std::string, std::string> nd = this -> o_node; 
     std::map<std::string, std::string> ed = this -> o_edge; 
     if (!this -> _losses.size()){this -> _losses = std::vector<torch::Tensor*>(gr.size() + nd.size() + ed.size(), nullptr);}
 
-    int inx = -1; 
-    mode = graph_enum::truth_graph; 
+    int inx = 0; 
     std::map<std::string, std::string>::iterator itr; 
-    for (itr = gr.begin(); itr != gr.end(); ++itr){this -> _losses[++inx] = this -> compute_loss(itr -> first, mode);}
-
-    mode = graph_enum::truth_node; 
-    for (itr = nd.begin(); itr != nd.end(); ++itr){this -> _losses[++inx] = this -> compute_loss(itr -> first, mode);}
-
-    mode = graph_enum::truth_edge; 
-    for (itr = ed.begin(); itr != ed.end(); ++itr){this -> _losses[++inx] = this -> compute_loss(itr -> first, mode);}
-
+    for (itr = gr.begin(); itr != gr.end(); ++itr, ++inx){this -> _losses[inx] = this -> compute_loss(itr -> first, graph_enum::truth_graph);}
+    for (itr = nd.begin(); itr != nd.end(); ++itr, ++inx){this -> _losses[inx] = this -> compute_loss(itr -> first, graph_enum::truth_node);}
+    for (itr = ed.begin(); itr != ed.end(); ++itr, ++inx){this -> _losses[inx] = this -> compute_loss(itr -> first, graph_enum::truth_edge);}
     if (!train || !this -> m_optim){return;}
     this -> m_optim -> zero_grad();
 

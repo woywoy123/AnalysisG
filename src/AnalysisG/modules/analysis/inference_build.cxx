@@ -14,9 +14,6 @@ void analysis::build_inference(){
     size_t smpls = dl -> size(); 
     size_t modls = this -> model_inference.size(); 
 
-    gErrorIgnoreLevel = 6001;
-    ROOT::EnableImplicitMT(threads_); 
-
     std::vector<size_t> th_prg(smpls*modls, 0); 
     std::vector<size_t> num_data(modls * smpls, 0);
     std::vector<std::thread*> th_prc(smpls*modls, nullptr); 
@@ -35,11 +32,14 @@ void analysis::build_inference(){
     std::map<std::string, model_template*>::iterator itm = this -> model_inference.begin(); 
     for (; itm != this -> model_inference.end(); ++itm){
         torch::TensorOptions* opx = itm -> second -> m_option; 
-        int dx = opx -> device().index(); 
+        int dx = itm -> second -> device_index; 
         if (ops.count(dx)){continue;}
         ops[dx] = opx; 
     }
     this -> loader -> datatransfer(&ops); 
+
+    gErrorIgnoreLevel = 6001;
+    ROOT::EnableImplicitMT(threads_); 
 
     int para = 0; 
     its = dl -> begin(); 
@@ -62,7 +62,7 @@ void analysis::build_inference(){
         batched_data[x] = grx; 
 
         std::string fname = this -> m_settings.output_path + "/" + itm -> first + "/"; 
-        std::vector<std::string> fnames = tools().split(its -> first, "/");
+        std::vector<std::string> fnames = this -> split(its -> first, "/");
         (*mdl_title[x]) = fnames[fnames.size()-1] + " | " + std::string(md -> name); 
 
         fname += fnames[fnames.size()-2] + "/";
@@ -71,9 +71,23 @@ void analysis::build_inference(){
 
         // perform a dummy inference with the GNN on a single graph data point
         md -> forward(its -> second[0], false); 
-   
+          
+        // ------ Get the input maximal size --------- //
+        size_t sx = 0; 
+        sx += md -> m_i_graph.size() + md -> m_p_graph.size(); 
+        sx += md -> m_i_node.size()  + md -> m_p_node.size();
+        sx += md -> m_i_edge.size()  + md -> m_p_edge.size(); 
+        sx += md -> m_p_undef.size() + 2; 
+
         // -------- fetch the input and output features ------- //
         std::vector<variable_t>* content = new std::vector<variable_t>(); 
+        content -> reserve(sx);
+
+        std::map<std::string, meta*>::iterator itt = this -> meta_data.begin();
+        for (; itt != this -> meta_data.end(); ++itt){
+            std::cout << fname << " | " << itt -> first << std::endl; 
+            abort(); 
+        }
 
         // --- Scan the inputs
         int index = 0; 

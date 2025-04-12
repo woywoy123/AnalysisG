@@ -2,6 +2,7 @@ set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/include/templates/metric_template.h
     ${CMAKE_CURRENT_SOURCE_DIR}/cxx/metric_template.cxx
     ${CMAKE_CURRENT_SOURCE_DIR}/cxx/properties.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/base.cxx
 )
 
 add_library(cmetric_template STATIC ${SOURCE_FILES})

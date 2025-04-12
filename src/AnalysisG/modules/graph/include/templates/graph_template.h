@@ -7,6 +7,7 @@
 #include <structs/property.h>
 #include <structs/event.h>
 #include <structs/folds.h>
+#include <structs/enums.h>
 
 #include <tools/tensor_cast.h>
 #include <tools/tools.h>
@@ -35,54 +36,55 @@ struct graph_t {
     public: 
         template <typename g>
         torch::Tensor* get_truth_graph(std::string name, g* mdl){
-            return this -> return_any(this -> truth_map_graph, &this -> dev_truth_graph, "T-" + name, mdl); 
+            return this -> has_feature(graph_enum::truth_graph, name, mdl -> device_index); 
         }
         
         template <typename g>
         torch::Tensor* get_truth_node(std::string name, g* mdl){
-            return this -> return_any(this -> truth_map_node, &this -> dev_truth_node, "T-" + name, mdl); 
+            return this -> has_feature(graph_enum::truth_node, name, mdl -> device_index); 
         }
         
         template <typename g>
         torch::Tensor* get_truth_edge(std::string name, g* mdl){
-            return this -> return_any(this -> truth_map_edge, &this -> dev_truth_edge, "T-" + name, mdl); 
+            return this -> has_feature(graph_enum::truth_edge, name, mdl -> device_index); 
         }
         
         template <typename g>
         torch::Tensor* get_data_graph(std::string name, g* mdl){
-            return this -> return_any(this -> data_map_graph, &this -> dev_data_graph, "D-" + name, mdl); 
+            return this -> has_feature(graph_enum::data_graph, name, mdl -> device_index); 
         }
         
         template <typename g>
         torch::Tensor* get_data_node(std::string name, g* mdl){
-            return this -> return_any(this -> data_map_node, &this -> dev_data_node, "D-" + name, mdl); 
+            return this -> has_feature(graph_enum::data_node, name, mdl -> device_index); 
         }
         
         template <typename g>
         torch::Tensor* get_data_edge(std::string name, g* mdl){
-            return this -> return_any(this -> data_map_edge, &this -> dev_data_edge, "D-" + name, mdl); 
+            return this -> has_feature(graph_enum::data_edge, name, mdl -> device_index); 
         }
         
         template <typename g>
         torch::Tensor* get_edge_index(g* mdl){
-            return &this -> dev_edge_index[(int)mdl -> m_option -> device().index()]; 
+            return this -> has_feature(graph_enum::edge_index, "", mdl -> device_index); 
         }
 
         template <typename g>
         torch::Tensor* get_event_weight(g* mdl){
-            return &this -> dev_event_weight[(int)mdl -> m_option -> device().index()]; 
+            return this -> has_feature(graph_enum::weight, "", mdl -> device_index); 
         }
 
         template <typename g>
         torch::Tensor* get_batch_index(g* mdl){
-            return &this -> dev_batch_index[(int)mdl -> m_option -> device().index()]; 
+            return this -> has_feature(graph_enum::batch_index, "", mdl -> device_index); 
         }
 
         template <typename g>
         torch::Tensor* get_batched_events(g* mdl){
-            return &this -> dev_batched_events[(int)mdl -> m_option -> device().index()]; 
+            return this -> has_feature(graph_enum::batch_events, "", mdl -> device_index); 
         }
 
+        torch::Tensor* has_feature(graph_enum tp, std::string name, int dev); 
         void add_truth_graph(std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
         void add_truth_node( std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
         void add_truth_edge( std::map<std::string, torch::Tensor*>* data, std::map<std::string, int>* maps); 
@@ -164,18 +166,10 @@ struct graph_t {
                 torch::TensorOptions* dev
         ); 
 
-        template <typename g>
         torch::Tensor* return_any(
                 std::map<std::string, int>* loc, 
                 std::map<int, std::vector<torch::Tensor>>* container, 
-                std::string name, g* mdl
-        ){
-            if (!loc -> count(name)){return nullptr;}
-            int dev_ = (int)mdl -> m_option -> device().index(); 
-            int x = (*loc)[name]; 
-            return &(*container)[dev_][x];
-        }
-
+                std::string name, int dev_);
 }; 
 
 

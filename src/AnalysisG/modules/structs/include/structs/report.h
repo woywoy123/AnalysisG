@@ -1,9 +1,9 @@
 #ifndef REPORT_STRUCTS_H
 #define REPORT_STRUCTS_H
+#include <structs/enums.h>
 #include <string>
 #include <map>
 
-enum mode_enum {training, validation, evaluation}; 
 
 class metrics; 
 

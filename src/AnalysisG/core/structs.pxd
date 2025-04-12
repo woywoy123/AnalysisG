@@ -157,30 +157,45 @@ cdef extern from "<structs/settings.h>":
 
 # ------------------- (7.) Add the enum --------------- #
 
-cdef extern from "<structs/element.h>":
+cdef extern from "<structs/base.h>":
     enum data_enum:
-        vvf "data_enum::vvf"
-        vvd "data_enum::vvd"
-        vvl "data_enum::vvl"
-        vvi "data_enum::vvi"
-        vvb "data_enum::vvb"
+        vvv_ull "data_enum::vvv_ull"
+        vvv_ui  "data_enum::vvv_ui"
+        vvv_d   "data_enum::vvv_d"
+        vvv_l   "data_enum::vvv_l"
+        vvv_f   "data_enum::vvv_f"
+        vvv_i   "data_enum::vvv_i"
+        vvv_b   "data_enum::vvv_b"
+        vvv_c   "data_enum::vvv_c"
+        
+        vv_ull  "data_enum::vv_ull"
+        vv_ui   "data_enum::vv_ui"
+        vv_d    "data_enum::vv_d"
+        vv_l    "data_enum::vv_l"
+        vv_f    "data_enum::vv_f"
+        vv_i    "data_enum::vv_i"
+        vv_b    "data_enum::vv_b"
+        vv_c    "data_enum::vv_c"
+        
+        v_ull   "data_enum::v_ull"
+        v_ui    "data_enum::v_ui"
+        v_d     "data_enum::v_d"
+        v_l     "data_enum::v_l"
+        v_f     "data_enum::v_f"
+        v_i     "data_enum::v_i"
+        v_b     "data_enum::v_b"
+        v_c     "data_enum::v_c"
+        
+        ull     "data_enum::ull"
+        ui      "data_enum::ui"
+        d       "data_enum::d"
+        l       "data_enum::l"
+        f       "data_enum::f"
+        i       "data_enum::i"
+        b       "data_enum::b"
+        c       "data_enum::c"
 
-        vf  "data_enum::vf"
-        vd  "data_enum::vd"
-        vl  "data_enum::vl"
-        vi  "data_enum::vi"
-        vc  "data_enum::vc"
-        vb  "data_enum::vb"
-
-        f   "data_enum::f"
-        d   "data_enum::d"
-        l   "data_enum::l"
-        i   "data_enum::i"
-        b   "data_enum::b"
-        ull "data_enum::ull"
-        ui  "data_enum::ui"
-        c   "data_enum::c"
-
+cdef extern from "<structs/element.h>":
     cdef cppclass data_t:
         string leaf_name
         string branch_name

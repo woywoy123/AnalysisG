@@ -2,10 +2,10 @@
 
 
 void entry_t::init(){
-    this -> m_event.reserve(10); 
-    this -> m_graph.reserve(10); 
-    this -> m_selection.reserve(10); 
-    this -> m_data.reserve(10); 
+    this -> m_event.reserve(1); 
+    this -> m_graph.reserve(1); 
+    this -> m_selection.reserve(3); 
+    this -> m_data.reserve(1); 
 }
 
 void entry_t::destroy(){

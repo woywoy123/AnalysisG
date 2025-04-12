@@ -170,7 +170,7 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* data, mode
             std::vector<torch::Tensor> arr;
             for (size_t x(0); x < data -> size(); ++x){
                 graph_t* grx = (*data)[x]; 
-                torch::Tensor* val = grx -> return_any(loc, fx(grx), key, mdl);
+                torch::Tensor* val = grx -> return_any(loc, fx(grx), key, mdl -> device_index);
                 if (!val){continue;} 
                 arr.push_back(*val); 
             } 

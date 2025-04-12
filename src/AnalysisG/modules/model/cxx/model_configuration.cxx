@@ -81,6 +81,13 @@ void model_template::set_device(std::string* dev, model_template* md){
     for (size_t x(0); x < md -> m_data.size(); ++x){(*md -> m_data[x]) -> to(md -> m_option -> device(), true);}
 }
 
+void model_template::get_dev_index(int* nx, model_template* md){
+    if (!md -> m_option){*nx = -2; return;}
+    if (md -> m_device_idx == -2){md -> m_device_idx = md -> m_option -> device().index();}
+    *nx = md -> m_device_idx;
+}
+void model_template::set_dev_index(int*, model_template*){}
+
 void model_template::set_optimizer(std::string name){
     this -> e_optim = this -> m_loss -> optim_string(this -> lower(&name)); 
     if (this -> e_optim != opt_enum::invalid_optimizer){}

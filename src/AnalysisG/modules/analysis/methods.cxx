@@ -77,7 +77,7 @@ void analysis::add_content(
     for (itr = data -> begin(); itr != data -> end(); ++itr){
         torch::Tensor* tn = itr -> second;
         torch::Tensor* idx = nullptr;  
-        if (tn -> size({0}) == ei){idx = &edge_i;}
+        if      (tn -> size({0}) == ei){idx = &edge_i;}
         else if (tn -> size({0}) == ni){idx = &node_i;}
         else if (tn -> size({0}) == bi){idx = &batch_i;}
         else {continue;}
@@ -121,7 +121,6 @@ void analysis::execution(
         (*prg) = ds; 
         return; 
     }
-
     md -> shush = true; 
 
     (*msg) = "\033[1;32m (Processing) " + (*msg) + "\033[0m";
@@ -133,39 +132,50 @@ void analysis::execution(
 
     (*prg) = 0; 
     torch::AutoGradMode grd(false); 
+    std::map<std::string, torch::Tensor*> addhoc;
     for (size_t x(0); x < data -> size(); ++x){
-
         graph_t* gr = (*data)[x]; 
         md -> forward(gr, false);  
 
         std::vector<std::vector<torch::Tensor>> bf = {};
         std::vector<long> batch_i = gr -> batched_events; 
-        if (bf.size() != batch_i.size()){bf.assign(batch_i.size(), {});} 
+        bf.assign(batch_i.size(), {});
+
         torch::Tensor* bt = gr -> get_batched_events(md); 
         torch::Tensor* nb = gr -> get_batch_index(md); 
-        torch::Tensor ei  = gr -> get_edge_index(md) -> transpose(0, 1).clone(); 
-        torch::Tensor ex  = nb -> index({ei.index({torch::indexing::Slice(), 0})}).clone();
-
-        std::map<std::string, torch::Tensor*> addhoc;
-        addhoc["edge_index"]   = &ei; 
+        torch::Tensor ei  = gr -> get_edge_index(md) -> transpose(0, 1); 
+        torch::Tensor ex  = nb -> index({ei.index({torch::indexing::Slice(), 0})});
+        addhoc["edge_index"] = &ei; 
         addhoc[mds.weight_name] = (*data)[x] -> get_event_weight(md); 
 
         if (!x){
             int index = 0; 
             // --- Scan the inputs
             index = add_content(&md -> m_i_graph, content, index, "g_i_", t); 
-            index = add_content(&md -> m_i_node, content, index,  "n_i_", t); 
-            index = add_content(&md -> m_i_edge, content, index,  "e_i_", t); 
+            index = add_content(&md -> m_i_node , content, index, "n_i_", t); 
+            index = add_content(&md -> m_i_edge , content, index, "e_i_", t); 
 
             // --- Scan the outputs
             index = add_content(&md -> m_p_graph, content, index, "g_o_", t); 
-            index = add_content(&md -> m_p_node, content, index,  "n_o_", t); 
-            index = add_content(&md -> m_p_edge, content, index,  "e_o_", t); 
+            index = add_content(&md -> m_p_node , content, index, "n_o_", t); 
+            index = add_content(&md -> m_p_edge , content, index, "e_o_", t); 
 
             // --- add additional content
             index = add_content(&addhoc, content, index, "", t); 
             index = add_content(&md -> m_p_undef, content, index, "extra_", t); 
-            t -> StopCacheLearningPhase(); 
+
+            std::string bt = ""; 
+            for (size_t i(0); i < content -> size(); ++i){
+                if (!(*content)[i].failed_branch){continue;}
+                std::string f = (*content)[i].variable_name + (*content)[i].scan_buffer(); 
+                bt += (!bt.size()) ? " > " + f : f; 
+            }
+            if (bt.size()){
+                (*msg) = "\033[1;31m (Failed to Initialize Branch) " + bt + "\033[0m";
+                std::this_thread::sleep_for(std::chrono::seconds(1));
+                break; 
+            }
+
         }
 
         add_content(&md -> m_i_graph, &bf, bt, nb, &ex, batch_i); 
@@ -183,22 +193,22 @@ void analysis::execution(
         for (size_t l(0); l < bf.size(); ++l){
             for (size_t i(0); i < content -> size(); ++i){
                 if ((*content)[i].variable_name == "edge_index"){bf[l][i] -= std::get<0>(bf[l][i].min({0}));}
-                (*content)[i].flush();
                 (*content)[i].process(&bf[l][i], nullptr, t); 
             }
             t -> Fill();
         }
+        if (!x){t -> StopCacheLearningPhase();}
         if (!(batch_i.size() + (*prg) >= ds)){(*prg) += batch_i.size(); continue;}
         (*msg) = "\033[1;32m (Done) " + (*msg) + "\033[0m";
     }
 
-    t -> ResetBranchAddresses(); 
+    delete md; md = nullptr; 
     t -> Write("", TObject::kOverwrite);
+    t -> ResetBranchAddresses(); 
     f -> Close(); 
     f -> Delete(); 
     delete f;
     delete content; content = nullptr; 
-    delete md; md = nullptr; 
     (*prg) = ds;
 }
 

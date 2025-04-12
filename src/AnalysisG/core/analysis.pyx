@@ -73,8 +73,8 @@ cdef class Analysis:
     def Start(self):
         cdef str prj = self.OutputPath
         try: self.meta_ = pickle.load(open(prj + "/meta_state.pkl", "rb"))
-        except FileNotFoundError: self.meta_ = {}
-        except: self.meta_ = {}
+        except FileNotFoundError: pass
+
         cdef pair[string, vector[float]] itr
         cdef pair[string, bool] itb
 
@@ -93,24 +93,26 @@ cdef class Analysis:
         cdef Meta data
         cdef pair[string, meta*] itrm
         cdef int l = len(self.meta_)
+
+        for itrm in self.ana.meta_data:
+            hash_ = env(itrm.second.hash(itrm.first))
+            if not self.FetchMeta: continue
+            if hash_ not in self.meta_:
+                data = Meta()
+                data.ptr.metacache_path = itrm.second.metacache_path
+                self.meta_[hash_] = data
+                data.__meta__(itrm.second)
+            else:
+                data = self.meta_[hash_]
+                itrm.second.meta_data = data.ptr.meta_data
+
+
+        if len(self.meta_) > l:
+            f = open(prj + "/meta_state.pkl", "wb")
+            pickle.dump(self.meta_, f)
+            f.close()
+
         try:
-            for itrm in self.ana.meta_data:
-                hash_ = env(itrm.second.hash(itrm.first))
-                if not self.FetchMeta: continue
-                if hash_ not in self.meta_:
-                    data = Meta()
-                    data.ptr.metacache_path = itrm.second.metacache_path
-                    self.meta_[hash_] = data
-                    data.__meta__(itrm.second)
-                else:
-                    data = self.meta_[hash_]
-                    itrm.second.meta_data = data.ptr.meta_data
-
-
-            if len(self.meta_) > l:
-                f = open(prj + "/meta_state.pkl", "wb")
-                pickle.dump(self.meta_, f)
-                f.close()
             with nogil: self.ana.start()
             while True:
                 o = self.ana.progress()

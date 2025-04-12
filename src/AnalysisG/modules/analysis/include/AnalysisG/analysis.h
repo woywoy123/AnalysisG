@@ -11,7 +11,6 @@
 #include <templates/metric_template.h>
 #include <templates/selection_template.h>
 #include <templates/model_template.h>
-#include <templates/fx_enums.h>
 #include <structs/settings.h>
 #include <io/io.h>
 
@@ -21,10 +20,6 @@ void flush(std::map<std::string, g*>* data){
     for (; tx != data -> end(); ++tx){delete tx -> second;}
     data -> clear(); 
 }
-
-
-
-
 
 class analysis: 
     public notification, 
@@ -43,16 +38,16 @@ class analysis:
 
         void add_model(model_template* model, optimizer_params_t* op, std::string run_name); 
         void add_model(model_template* model, std::string run_name); 
+        void attach_threads(); 
         void start(); 
 
         std::map<std::string, std::vector<float>> progress(); 
         std::map<std::string, std::string> progress_mode(); 
         std::map<std::string, std::string> progress_report(); 
-        std::map<std::string, meta*> meta_data = {}; 
         std::map<std::string, bool> is_complete();
 
-        void attach_threads(); 
         settings_t m_settings; 
+        std::map<std::string, meta*> meta_data = {}; 
 
     private:
 

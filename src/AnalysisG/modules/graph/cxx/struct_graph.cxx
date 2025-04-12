@@ -72,9 +72,42 @@ void graph_t::_purge_all(){
     delete this -> filename; 
 }
 
+
+torch::Tensor* graph_t::return_any(
+    std::map<std::string, int>* loc, std::map<int, 
+    std::vector<torch::Tensor>>* container, 
+    std::string name, int dev_
+){
+    if (!loc -> count(name)){return nullptr;}
+    int idx_ = (*loc)[name];
+    if (!container -> count(dev_)){return nullptr;} 
+    return &(*container)[dev_][idx_];
+}
+
+
+
+torch::Tensor* graph_t::has_feature(graph_enum tp, std::string name, int dev){
+    std::map<std::string, int>* pos_ = nullptr; 
+    std::map<int, std::vector<torch::Tensor>>* dev_mp = nullptr; 
+    switch(tp){
+        case graph_enum::data_edge   : pos_ = this -> data_map_edge  ; dev_mp = &this -> dev_data_edge  ; name = "D-" + name; break;  
+        case graph_enum::data_node   : pos_ = this -> data_map_node  ; dev_mp = &this -> dev_data_node  ; name = "D-" + name; break;  
+        case graph_enum::data_graph  : pos_ = this -> data_map_graph ; dev_mp = &this -> dev_data_graph ; name = "D-" + name; break;  
+        case graph_enum::truth_edge  : pos_ = this -> truth_map_edge ; dev_mp = &this -> dev_truth_edge ; name = "T-" + name; break;  
+        case graph_enum::truth_node  : pos_ = this -> truth_map_node ; dev_mp = &this -> dev_truth_node ; name = "T-" + name; break;  
+        case graph_enum::truth_graph : pos_ = this -> truth_map_graph; dev_mp = &this -> dev_truth_graph; name = "T-" + name; break;  
+        case graph_enum::edge_index  : return (this -> dev_edge_index.count(dev)) ? &this -> dev_edge_index[dev] : nullptr; 
+        case graph_enum::weight      : return (this -> dev_event_weight.count(dev)) ? &this -> dev_event_weight[dev] : nullptr; 
+        case graph_enum::batch_index : return (this -> dev_batch_index.count(dev)) ? &this -> dev_batch_index[dev] : nullptr; 
+        case graph_enum::batch_events: return (this -> dev_batched_events.count(dev)) ? &this -> dev_batched_events[dev] : nullptr; 
+        default: return nullptr; 
+    }
+    return this -> return_any(pos_, dev_mp, name, dev); 
+}
+
 void graph_t::_purge_data(std::map<int, torch::Tensor*>* data){
     if (!data){return;}
-    std::map<int, torch::Tensor*>::iterator itr = data -> begin();
+std::map<int, torch::Tensor*>::iterator itr = data -> begin();
     for (; itr != data -> end(); ++itr){delete itr -> second;}
     data -> clear(); 
 }
@@ -93,8 +126,7 @@ void graph_t::_purge_data(std::map<int, std::vector<torch::Tensor*>*>* data){
     for (; itr != data -> end(); ++itr){
         if (!itr -> second){continue;}
         this -> _purge_data(itr -> second);
-        delete itr -> second; 
-        itr -> second = nullptr; 
+        delete itr -> second; itr -> second = nullptr; 
     }
     data -> clear(); 
 }
@@ -111,7 +143,7 @@ void graph_t::transfer_to_device(torch::TensorOptions* dev){
     if (dev_in == c10::kCPU){return;}
     int dev_ = (int)dev -> device().index(); 
     bool sm = (dev_in == c10::kCUDA && this -> device == c10::kCUDA); 
-    sm *= this -> device_index[dev_]; 
+    sm = sm && this -> device_index[dev_]; 
     if (sm){return;}
     this -> device_index[dev_] = true; 
     std::unique_lock<std::mutex> lk(this -> mut); 
@@ -142,6 +174,7 @@ void graph_t::transfer_to_device(torch::TensorOptions* dev){
 
 void graph_t::_transfer_to_device(std::vector<torch::Tensor>* trgt, std::vector<torch::Tensor*>* src, torch::TensorOptions* dev){
     if (!src || trgt -> size()){return;}
+    trgt -> reserve(src -> size()); 
     for (size_t x(0); x < src -> size(); ++x){trgt -> push_back((*src)[x] -> to(dev -> device()));}
 }
 

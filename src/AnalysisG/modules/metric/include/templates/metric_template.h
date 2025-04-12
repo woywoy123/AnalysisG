@@ -18,14 +18,20 @@ class analysis;
 class model_template; 
 
 
-struct metric_t {
-    int kfold = 0;
-    int epoch = 0; 
-    int device = 0; 
+class metric_template; 
 
-    std::string* pth = nullptr;
-    model_template* mdlx = nullptr; 
-    std::map<graph_enum, std::vector<std::string>>* vars = nullptr; 
+struct metric_t {
+    public: 
+        int kfold = 0;
+        int epoch = 0; 
+        int device = 0; 
+        
+    private: 
+        friend metric_template; 
+        std::string* pth = nullptr;
+        model_template* mdlx = nullptr; 
+        std::map<graph_enum, std::vector<std::string>>* vars = nullptr; 
+        std::map<graph_enum, std::vector<variable_t*>>* handl = nullptr; 
 }; 
 
 
@@ -39,27 +45,26 @@ class metric_template:
         virtual ~metric_template(); 
         virtual metric_template* clone(); 
 
+        template <typename T>
+        void register_output(std::string name, T* t){ 
+            if (this -> handle){return this -> handle -> process(&name) -> process(t, &name, nullptr);}
+            if (!this -> _outdir.size()){this -> _outdir = this -> _name;}
+            if (!this -> ends_with(&this -> _outdir, ".root")){this -> _outdir += ".root";}
+            this -> handle = new write_t();
+            this -> handle -> create(this -> _name, this -> _outdir);
+            return this -> handle -> process(&name) -> process(t, &name, nullptr);
+        }
+  
+
+        virtual void define_metric(); 
+
         cproperty<std::string, metric_template> name; 
         cproperty<std::map<std::string, std::string>, metric_template> run_names; 
         cproperty<std::map<std::string, std::string>, metric_template> variables; 
-
-        template <typename g> 
-        void write(g* var, std::string name){
-            if (!this -> handle){return;}
-            this -> handle -> process(&name) -> process(var, &name, this -> handle -> tree);
-        }
-
-        template <typename g> 
-        void write(g var, std::string name){
-            if (!this -> handle){return;}
-            this -> handle -> process(&name) -> process(&var, &name, this -> handle -> tree);
-        }
-
         meta* meta_data = nullptr; 
 
-        friend analysis;
-
     private:
+        friend analysis;
 
         std::map<std::string, model_template*> lnks; 
         std::map<std::string, std::vector<model_template*>> hash_mdl = {}; 
@@ -68,14 +73,10 @@ class metric_template:
         std::map<std::string, std::map<graph_enum, std::vector<std::string>>> _var_type; 
         
         std::string _name = "metric-template"; 
+        std::string _outdir = ""; 
+
         std::map<std::string, std::string> _run_names = {}; 
         std::map<std::string, std::string> _variables = {}; 
-
-
-        int static add_content(
-            std::map<std::string, torch::Tensor*>* data, std::vector<varible_t>* content, 
-            int index, std::string prefx
-        );
 
         void static set_name(std::string*, metric_template*); 
         void static get_name(std::string*, metric_template*);
@@ -85,6 +86,11 @@ class metric_template:
 
         void static set_variables(std::map<std::string, std::string>*, metric_template*); 
         void static get_variables(std::map<std::string, std::string>*, metric_template*);
+        void static construct(
+                std::map<graph_enum, std::vector<variable_t*>>* varx, 
+                std::map<graph_enum, std::vector<std::string>>* req, 
+                model_template* mdl, graph_t* grx
+        );
 
         metric_template* clone(int);
         void link(std::string hsx, std::vector<graph_t*>* data, mode_enum mx); 

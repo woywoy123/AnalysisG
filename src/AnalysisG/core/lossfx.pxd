@@ -6,7 +6,7 @@ from libcpp.vector cimport vector
 from libcpp.string cimport string
 cimport cython.operator
 
-cdef extern from "<templates/fx_enums.h>" nogil:
+cdef extern from "<structs/optimizer.h>" nogil:
 
     cdef cppclass optimizer_params_t:
 

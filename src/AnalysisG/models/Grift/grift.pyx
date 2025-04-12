@@ -2,7 +2,6 @@
 # cython: language_level=3
 
 from AnalysisG.core.model_template cimport ModelTemplate
-from AnalysisG.models.Grift.Grift cimport grift
 
 cdef class Grift(ModelTemplate):
     def __cinit__(self):

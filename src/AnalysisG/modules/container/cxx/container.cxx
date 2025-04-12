@@ -81,13 +81,7 @@ void container::compile(size_t* l){
                 std::string pth  = *this -> output_path + "/Selections/" + name + "-" + std::string(sel -> m_event -> name) + "/";
                 if (this -> label.size()){pth += this -> label + "/";}
                 this -> create_path(pth); 
-               
                 std::vector<std::string> fname = this -> split(*this -> filename, "/"); 
-                std::string bld = *this -> output_path + "/build/" + this -> hash(pth + *this -> filename, 6); 
-                this -> create_path(bld); 
-
-                gSystem -> SetBuildDir(bld.c_str(), true); 
-                gSystem -> SetAclicMode(TSystem::kOpt); 
                 
                 handles[name] = new write_t(); 
                 handles[name] -> mtx = &this -> meta_data -> meta_data; 

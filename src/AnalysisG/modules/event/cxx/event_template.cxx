@@ -98,7 +98,7 @@ std::map<std::string, event_template*> event_template::build_event(std::map<std:
     return output; 
 }
 
-void event_template::build(element_t* el){
+void event_template::build(element_t*){
     return; 
 }
 

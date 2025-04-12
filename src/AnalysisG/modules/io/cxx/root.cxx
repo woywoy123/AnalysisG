@@ -130,7 +130,7 @@ void io::root_key_paths(std::string path){
         for (size_t t(0); t < scrape_meta.size(); ++t){
             bool found = true; 
             for (size_t m(0); m < scrape_meta[t].size(); ++m){
-                found *= this -> has_string(&obname, scrape_meta[t][m]); 
+                found = found && this -> has_string(&obname, scrape_meta[t][m]); 
             }
             if (!found){continue;}
             mtx -> scan_data(obj);
@@ -269,8 +269,13 @@ std::map<std::string, long> io::root_size(){
 void io::root_begin(){
     this -> scan_keys();
     if (this -> iters){this -> root_end();}
+    std::vector<data_t*> handl = std::vector<data_t*>();
+    handl.reserve(1000); 
+
     this -> iters = new std::map<std::string, data_t*>(); 
     std::vector<TFile*>* vx = new std::vector<TFile*>(this -> files_open.size(), nullptr);
+
+    std::map<std::string, size_t> leaf_handl = {}; 
     std::map<std::string, bool> cnt = {}; 
 
     std::map<std::string, TLeaf*>::iterator lfii; 
@@ -287,6 +292,7 @@ void io::root_begin(){
             std::vector<std::string> pth_ = this -> split(lf_name, "."); 
             if (!this -> tree_entries[fname][pth_[0]]){continue;}
             if (!this -> iters -> count(lf_name)){
+                leaf_handl[lf_name] = handl.size(); 
                 data_t* dt      = new data_t(); 
                 dt -> path      = lf_name; 
                 dt -> tree_name = pth_[0];
@@ -295,10 +301,11 @@ void io::root_begin(){
                 dt -> files_s   = new std::vector<std::string>();
                 dt -> files_i   = new std::vector<long>(); 
                 dt -> files_t   = vx; 
-                (*this -> iters)[lf_name] = dt; 
+                handl.push_back(dt);
+                (*this -> iters)[lf_name] = nullptr; 
             }
 
-            data_t* v = (*this -> iters)[lf_name]; 
+            data_t* v = handl[leaf_handl[lf_name]]; 
             v -> files_s -> push_back(fname); 
             v -> files_i -> push_back(this -> tree_entries[fname][v -> tree_name]); 
             TFile* fx = this -> files_open[fname]; 
@@ -307,6 +314,8 @@ void io::root_begin(){
             v -> initialize();
         }
     }
+    for (size_t x(0); x < handl.size(); ++x){(*this -> iters)[handl[x] -> path] = handl[x];}
+
 }
 
 std::map<std::string, data_t*>* io::get_data(){

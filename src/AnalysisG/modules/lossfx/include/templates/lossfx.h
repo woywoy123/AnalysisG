@@ -6,9 +6,8 @@
 #include <string>
 #include <tools/tools.h>
 #include <torch/torch.h>
-#include <structs/model.h>
-#include <templates/fx_enums.h>
-
+#include <structs/enums.h>
+#include <structs/optimizer.h>
 
 class lossfx : public tools
 {

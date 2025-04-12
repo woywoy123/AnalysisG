@@ -28,6 +28,10 @@ model_template::model_template(){
     this -> name.set_getter(this -> get_name);
     this -> name.set_object(this); 
 
+    this -> device_index.set_setter(this -> set_dev_index);
+    this -> device_index.set_getter(this -> get_dev_index);
+    this -> device_index.set_object(this); 
+
     this -> m_loss = new lossfx(); 
 }
 
