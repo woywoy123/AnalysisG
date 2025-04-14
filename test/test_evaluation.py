@@ -2,8 +2,8 @@ import AnalysisG
 from AnalysisG import Analysis
 from AnalysisG.graphs.bsm_4tops import *
 from AnalysisG.events.bsm_4tops import *
-from AnalysisG.core.metric_template import *
 from AnalysisG.core.lossfx import *
+from AnalysisG.metrics import *
 from AnalysisG.models import *
 
 ev = BSM4Tops()
@@ -26,16 +26,23 @@ root1 = "./samples/dilepton/*"
 
 
 base_dir = "./ProjectName/Grift/"
-mx = MetricTemplate()
+mx = AccuracyMetric()
 mx.RunNames = {
         "Grift-MRK-1::epoch-1::k-1" : base_dir + "MRK-1/state/epoch-1/kfold-1_model.pt", 
         "Grift-MRK-1::epoch-1::k-2" : base_dir + "MRK-1/state/epoch-1/kfold-2_model.pt", 
         "Grift-MRK-1::epoch-2::k-1" : base_dir + "MRK-1/state/epoch-2/kfold-1_model.pt"
 }
 
-mx.Variables = {
-        "Grift-MRK-1::edge::top_edge" : "truth::top_edge"
-}
+mx.Variables = [
+        "Grift-MRK-1::truth::graph::ntops", 
+        "Grift-MRK-1::prediction::extra::ntops_score", 
+
+        "Grift-MRK-1::truth::edge::top_edge",
+        "Grift-MRK-1::prediction::extra::top_edge_score", 
+
+        "Grift-MRK-1::data::node::index",
+        "Grift-MRK-1::data::edge::index", 
+]
 
 ana = Analysis()
 ana.TrainingDataset = "./ProjectName/sample.h5"
@@ -44,9 +51,10 @@ ana.BatchSize = 2
 ana.AddMetric(mx, gn)
 #ana.AddModel(gn, opti, "MRK-1")
 ana.GraphCache = "./ProjectName/"
-ana.AddSamples(root1, "tmp")
-ana.AddEvent(ev, "tmp")
-ana.AddGraph(gr, "tmp")
+#ana.AddSamples(root1, "tmp")
+#ana.AddEvent(ev, "tmp")
+#ana.AddGraph(gr, "tmp")
+#ana.DebugMode = True
 ana.Validation = True
 ana.Evaluation = True
 ana.Training   = True
