@@ -52,6 +52,7 @@ void tensor_to_vector(torch::Tensor* data, std::vector<g>* out){
     tensor_to_vector(data, out, &s, g()); 
 }
 
+struct write_t; 
 
 struct variable_t: public bsc_t 
 {
@@ -88,6 +89,7 @@ struct variable_t: public bsc_t
         bool failed_branch = false; 
 
     private: 
+        friend write_t;
         bool use_external = false; 
         bool is_triggered = false; 
 
@@ -105,15 +107,12 @@ struct variable_t: public bsc_t
         }
        
         template <typename g>
-        void add_data(g* var, g*& tx, std::string* name, TTree* tr){
-            if (!tx){
-                this -> variable_name = *name;
-                tx = new g();
-            }
+        void add_data(g* var, g*& tx, std::string* name, TTree* tr = nullptr){
+            if (!tx){this -> variable_name = *name; tx = new g();}
             if (!var){return;}
             *tx = *var; 
             if (this -> tb || !this -> tt){return;}
-            this -> tt = tr; 
+            if (tr){this -> tt = tr;}
             this -> tb = this -> tt -> Branch(this -> variable_name.c_str(), tx); 
             this -> failed_branch = !this -> tb; 
             this -> is_triggered = true; 

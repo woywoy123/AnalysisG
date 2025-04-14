@@ -1,8 +1,0 @@
-set(SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/cxx/average.cxx)
-add_library(cmetric_average STATIC ${SOURCE_FILES})
-target_include_directories(cmetric_average PRIVATE include/metrics)
-target_include_directories(cmetric_average PUBLIC include)
-target_link_libraries(cmetric_average PUBLIC cmetric_template)
-target_compile_options(cmetric_average PRIVATE -fPIC)
-target_compile_options(cmetric_average PRIVATE -Wall -pedantic -Wextra)
-cmake_language(CALL cybuild "metrics/average" "metrics" metric_average "")

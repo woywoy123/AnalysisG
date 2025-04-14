@@ -11,7 +11,7 @@ cdef extern from "<templates/metric_template.h>" nogil:
         metric_template() except+ nogil
         string name
         map[string, string] run_names
-        map[string, string] variables
+        vector[string] variables
 
 cdef class MetricTemplate:
     cdef metric_template* ptr

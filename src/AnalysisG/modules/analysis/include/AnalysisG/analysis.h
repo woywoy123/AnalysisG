@@ -58,6 +58,7 @@ class analysis:
         void build_graphs(); 
         void build_model_session(); 
         void build_inference();
+
         bool build_metric(); 
         void build_metric_folds();
 
@@ -81,10 +82,16 @@ class analysis:
             std::string output, std::vector<variable_t>* content, std::string* msg
         );
 
+        static void execution_metric(
+            metric_t* mt, metric_template* mtx, size_t* prg, std::string* msg
+        ); 
+
+
         static void initialize_loop(
             optimizer* op, int k, model_template* model, 
             optimizer_params_t* config, model_report** rep
         );
+
 
         template <typename g>
         void safe_clone(std::map<std::string, g*>* mp, g* in){

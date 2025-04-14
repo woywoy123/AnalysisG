@@ -81,7 +81,6 @@ void analysis::add_model(model_template* model, std::string run_name){
 void analysis::build_project(){
     this -> create_path(this -> m_settings.output_path); 
     std::string model_path = this -> m_settings.output_path; 
-
     for (size_t x(0); x < this -> model_session_names.size(); ++x){
         model_template* mdl = std::get<0>(this -> model_sessions.at(x)); 
         std::string pth = model_path + "/"; 
@@ -89,14 +88,10 @@ void analysis::build_project(){
         pth += this -> model_session_names[x] + "/"; 
         mdl-> model_checkpoint_path = pth; 
     }
-
-    if (!this -> model_metrics.size()){return;}
-
-
-
-
-
-
+    std::map<std::string, metric_template*>::iterator itm = this -> metric_names.begin();
+    for (; itm != this -> metric_names.end(); ++itm){
+        itm -> second -> _outdir = model_path + "/metrics/" + itm -> first;
+    }
 }
 
 void analysis::check_cache(){

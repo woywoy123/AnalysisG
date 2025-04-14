@@ -212,4 +212,9 @@ void analysis::execution(
     (*prg) = ds;
 }
 
-
+void analysis::execution_metric(metric_t* mt, metric_template* mtx, size_t* prg, std::string* msg){
+    metric_template* mx = mtx -> clone(); 
+    mx -> _outdir = mtx -> _outdir; 
+    mtx -> execute(mt, mx, prg, msg);
+    delete mx; 
+}

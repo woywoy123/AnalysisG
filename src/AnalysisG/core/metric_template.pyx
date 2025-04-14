@@ -27,11 +27,9 @@ cdef class MetricTemplate:
 
     @property
     def Variables(self): 
-        cdef map[string, string] o = self.ptr.variables
-        return as_basic_dict(&o)
+        cdef vector[string] o = self.ptr.variables
+        return env_vec(&o)
 
     @Variables.setter
-    def Variables(self, dict val): 
-        cdef map[string, string] o
-        as_map(val, &o)
-        self.ptr.variables = o
+    def Variables(self, list val): 
+        self.ptr.variables = enc_list(val)

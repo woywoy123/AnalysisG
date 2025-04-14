@@ -267,11 +267,11 @@ void grift::forward(graph_t* data){
     this -> prediction_graph_feature("ntops" , tmlp);
     this -> prediction_graph_feature("signal", isres_); 
     if (!this -> inference_mode){return;}
-    //if (this -> pagerank){
-    //    gr_ = pyc::graph::PageRankReconstruction(edge_index, top_edge, pmc); 
-    //    this -> prediction_extra("page-nodes", gr_.at("page-nodes")); 
-    //    this -> prediction_extra("page-mass" , gr_.at("page-mass" )); 
-    //}
+    if (this -> pagerank){
+        gr_ = pyc::graph::PageRankReconstruction(edge_index, top_edge, pmc); 
+        this -> prediction_extra("page-nodes", gr_.at("page-nodes")); 
+        this -> prediction_extra("page-mass" , gr_.at("page-mass" )); 
+    }
 
     this -> prediction_extra("top_edge_score", top_edge.softmax(-1));
     this -> prediction_extra("res_edge_score", res_edge.softmax(-1));

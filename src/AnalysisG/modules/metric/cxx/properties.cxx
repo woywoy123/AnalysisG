@@ -35,12 +35,12 @@ void metric_template::get_run_name(std::map<std::string, std::string>* rn_name, 
     *rn_name = ev -> _run_names; 
 }
 
-void metric_template::set_variables(std::map<std::string, std::string>* rn_name, metric_template* ev){
+void metric_template::set_variables(std::vector<std::string>* rn_name, metric_template* ev){
     std::string msgn = "Invalid Syntax for Variables. Expected: <ModelName>::<Level>(data, truth, prediction)::<Type(edge, node, graph, extra)>::<variable>(index, pt, njets, ...)"; 
-    std::map<std::string, std::string>::iterator itx = rn_name -> begin(); 
-    for (; itx != rn_name -> end(); ++itx){
-        if (ev -> _variables.count(itx -> first)){continue;}
-        std::vector<std::string> varK = ev -> split(itx -> first, "::");
+    for (size_t x(0); x < rn_name -> size(); ++x){
+        std::string nn_ = rn_name -> at(x); 
+        if (ev -> _variables.count(nn_)){continue;}
+        std::vector<std::string> varK = ev -> split(nn_, "::");
         if (varK.size() != 4){ev -> failure(msgn); return;}
         std::string mdl = varK[0]; 
         std::string var = varK[3]; 
@@ -71,12 +71,13 @@ void metric_template::set_variables(std::map<std::string, std::string>* rn_name,
         else if (has_p && is_p){type = graph_enum::pred_extra;}
         else {ev -> failure(msgn); continue;}
         ev -> _var_type[mdl][type].push_back(var); 
-        ev -> _variables[itx -> first] = itx -> second;
+        ev -> _variables[nn_] = nn_;
     }
 }
 
-void metric_template::get_variables(std::map<std::string, std::string>* rn_name, metric_template* ev){ 
-    *rn_name = ev -> _variables;
+void metric_template::get_variables(std::vector<std::string>* rn_name, metric_template* ev){ 
+    std::map<std::string, std::string>::iterator itx = ev -> _variables.begin(); 
+    for (; itx != ev -> _variables.end(); ++itx){rn_name -> push_back(itx -> first);}
 }
 
 

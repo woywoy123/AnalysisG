@@ -86,7 +86,6 @@ struct element_t {
     std::map<std::string, data_t*> handle = {}; 
 }; 
 
-struct variable_t;
 
 struct write_t {
     TFile* file = nullptr; 
@@ -99,5 +98,27 @@ struct write_t {
     void create(std::string tr_name, std::string path); 
     void close(); 
 }; 
+
+
+struct writer {
+    public:
+        writer(); 
+        ~writer();
+        void create(std::string* pth); 
+        void write(std::string* tree);
+
+        template <typename g>
+        void process(std::string* tree, std::string* name, g* t){
+            this -> process(tree, name) -> process(t, name, nullptr);
+        }
+
+    private:
+        write_t* head = nullptr; 
+        std::map<std::string, write_t*> handle = {};  
+        variable_t* process(std::string* tree, std::string* name); 
+
+}; 
+
+
 
 #endif

@@ -6,7 +6,7 @@
 #include <structs/element.h>
 #include <structs/event.h>
 #include <structs/model.h>
-#include <structs/report.h>
+#include <structs/enums.h>
 #include <meta/meta.h>
 
 #include <tools/vector_cast.h>
@@ -15,24 +15,53 @@
 
 struct graph_t; 
 class analysis; 
-class model_template; 
-
-
+class model_template;
 class metric_template; 
 
 struct metric_t {
     public: 
+        ~metric_t(); 
+
         int kfold = 0;
         int epoch = 0; 
         int device = 0; 
-        
+
+        template <typename g>
+        g get(graph_enum grx, std::string name){
+            g out = g(); 
+            if (!this -> h_maps[grx][name]){
+                std::cout << "\033[1;31m Variable not found: " << name << "\033[0m" << std::endl;
+                return out;
+            }
+            size_t idx = this -> v_maps[grx][name]; 
+            variable_t* v = (*this -> handl)[grx][idx]; 
+            if (!v){
+                std::cout << "\033[1;31m Variable not found: " << name << "\033[0m" << std::endl;
+                return out;
+            }
+            if (v -> element(&out)){return out;}
+            std::cout << "\033[1;31m Expected Type: " << v -> as_string(); 
+            std::cout << " -> " << name << "\033[0m" << std::endl;
+            return out; 
+        }
+        std::string mode(); 
+
     private: 
         friend metric_template; 
+
+        void build(); 
+        mode_enum train_mode; 
         std::string* pth = nullptr;
-        model_template* mdlx = nullptr; 
+        model_template* mdlx = nullptr;
+         
         std::map<graph_enum, std::vector<std::string>>* vars = nullptr; 
         std::map<graph_enum, std::vector<variable_t*>>* handl = nullptr; 
+        std::map<graph_enum, std::map<std::string, size_t>> v_maps = {}; 
+        std::map<graph_enum, std::map<std::string, bool>>   h_maps = {}; 
 }; 
+
+
+
 
 
 
@@ -46,21 +75,30 @@ class metric_template:
         virtual metric_template* clone(); 
 
         template <typename T>
-        void register_output(std::string name, T* t){ 
-            if (this -> handle){return this -> handle -> process(&name) -> process(t, &name, nullptr);}
-            if (!this -> _outdir.size()){this -> _outdir = this -> _name;}
-            if (!this -> ends_with(&this -> _outdir, ".root")){this -> _outdir += ".root";}
-            this -> handle = new write_t();
-            this -> handle -> create(this -> _name, this -> _outdir);
-            return this -> handle -> process(&name) -> process(t, &name, nullptr);
+        void register_output(std::string tree, std::string name, T* t){ 
+            if (this -> handle){return this -> handle -> process(&tree, &name, t);}
+            this -> handle = new writer();
+            this -> handle -> create(&this -> _outdir); 
+            this -> handle -> process(&tree, &name, t); 
         }
-  
 
-        virtual void define_metric(); 
+        template <typename T>
+        void write(std::string tree, std::string name, T* t, bool fill = false){
+            if (!this -> handle){return;}
+            this -> handle -> process(&tree, &name, t); 
+            if (!fill){return;}
+            this -> handle -> write(&tree);
+        }
+
+        virtual void define_variables(); 
+        virtual void define_metric(metric_t* v); 
+        virtual void event();
+        virtual void batch();
+        virtual void end(); 
 
         cproperty<std::string, metric_template> name; 
         cproperty<std::map<std::string, std::string>, metric_template> run_names; 
-        cproperty<std::map<std::string, std::string>, metric_template> variables; 
+        cproperty<std::vector<std::string>, metric_template> variables; 
         meta* meta_data = nullptr; 
 
     private:
@@ -84,26 +122,29 @@ class metric_template:
         void static set_run_name(std::map<std::string, std::string>*, metric_template*); 
         void static get_run_name(std::map<std::string, std::string>*, metric_template*);
 
-        void static set_variables(std::map<std::string, std::string>*, metric_template*); 
-        void static get_variables(std::map<std::string, std::string>*, metric_template*);
+        void static set_variables(std::vector<std::string>*, metric_template*); 
+        void static get_variables(std::vector<std::string>*, metric_template*);
         void static construct(
                 std::map<graph_enum, std::vector<variable_t*>>* varx, 
                 std::map<graph_enum, std::vector<std::string>>* req, 
-                model_template* mdl, graph_t* grx
+                model_template* mdl, graph_t* grx, std::string* mtx
         );
 
         metric_template* clone(int);
-        void link(std::string hsx, std::vector<graph_t*>* data, mode_enum mx); 
         bool link(model_template*);
+        void link(std::string hsx, std::vector<graph_t*>* data, mode_enum mx); 
+        void execute(metric_t* mtx, metric_template* obj, size_t* prg, std::string* msg); 
+        void define(
+                std::vector<metric_t*>* vr, std::vector<size_t>* num, 
+                std::vector<std::string*>* title, size_t* offset
+        ); 
 
-        void execute(metric_t* mtx); 
-
-        void define(); 
+        size_t size(); 
 
         std::map<int, torch::TensorOptions*> get_devices(); 
         std::vector<int> get_kfolds(); 
 
-        write_t* handle = nullptr; 
+        writer* handle = nullptr; 
 }; 
 
 

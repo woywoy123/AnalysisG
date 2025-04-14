@@ -4,6 +4,7 @@ set(SOURCE_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/cxx/optimizer.cxx
     ${CMAKE_CURRENT_SOURCE_DIR}/cxx/misc.cxx
     ${CMAKE_CURRENT_SOURCE_DIR}/cxx/base.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/variable.cxx
 )
 
 add_library(cstructs ${SOURCE_FILES})

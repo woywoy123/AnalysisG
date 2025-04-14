@@ -83,11 +83,11 @@ void analysis::build_inference(){
         std::vector<variable_t>* content = new std::vector<variable_t>(); 
         content -> reserve(sx);
 
-        std::map<std::string, meta*>::iterator itt = this -> meta_data.begin();
-        for (; itt != this -> meta_data.end(); ++itt){
-            std::cout << fname << " | " << itt -> first << std::endl; 
-            abort(); 
-        }
+        // TODO
+        //std::map<std::string, meta*>::iterator itt = this -> meta_data.begin();
+        //for (; itt != this -> meta_data.end(); ++itt){
+        //    std::cout << fname << " | " << itt -> first << std::endl; 
+        //}
 
         // --- Scan the inputs
         int index = 0; 

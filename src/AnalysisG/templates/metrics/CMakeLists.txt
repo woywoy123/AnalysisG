@@ -1,0 +1,8 @@
+set(SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/cxx/<name>.cxx)
+add_library(cmetric_<name> STATIC ${SOURCE_FILES})
+target_include_directories(cmetric_<name> PRIVATE include/metrics)
+target_include_directories(cmetric_<name> PUBLIC include)
+target_link_libraries(cmetric_<name> PUBLIC cmetric_template)
+target_compile_options(cmetric_<name> PRIVATE -fPIC)
+target_compile_options(cmetric_<name> PRIVATE -Wall -pedantic -Wextra)
+cmake_language(CALL cybuild "metrics/<name>" "metrics" metric_<name> "")
