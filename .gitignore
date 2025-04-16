@@ -16,6 +16,7 @@ local/**/*.png
 **.h5
 **.pt
 **.pth
+**.pgf
 
 # Cython and C++ compiler code 
 **.pyc

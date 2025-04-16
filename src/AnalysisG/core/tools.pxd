@@ -30,6 +30,9 @@ cdef extern from "<tools/tools.h>":
         vector[string] split(string ipt, string delm) except+ nogil
         vector[string] split(string ipt, int n) except+ nogil
         string hash(string inpt, int l) except+ nogil
+        float max(vector[float]*) except+ nogil
+        float min(vector[float]*) except+ nogil
+        float sum(vector[float]*) except+ nogil
 
         string encode64(string* data) except+ nogil
         string decode64(string* data) except+ nogil
@@ -103,3 +106,6 @@ cdef dict as_basic_udict(unordered_map[string, base_types]* inpt)
 
 cdef dict as_basic_dict_dict(map[string, map[string, base_types]]* inpt)
 cdef dict as_basic_dict_dict_f(map[string, map[float, base_types]]* inpt)
+
+cdef class Tools:
+    cdef tools* ptr

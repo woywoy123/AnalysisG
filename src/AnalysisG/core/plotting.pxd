@@ -2,6 +2,7 @@
 # cython: language_level = 3
 
 from AnalysisG.core.notification cimport notification
+from AnalysisG.core.tools cimport tools
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 from libcpp.unordered_map cimport unordered_map
@@ -10,7 +11,7 @@ from libcpp cimport bool
 
 
 cdef extern from "<plotting/plotting.h>" nogil:
-    cdef cppclass plotting(notification):
+    cdef cppclass plotting(notification, tools):
         plotting() except+ nogil
         string build_path() except+ nogil
         float get_max(string) except+ nogil
@@ -42,6 +43,7 @@ cdef extern from "<plotting/plotting.h>" nogil:
         bool y_logarithmic
 
         float line_width
+        float cap_size
         float alpha
         float x_step
         float y_step

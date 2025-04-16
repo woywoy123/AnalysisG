@@ -4,6 +4,7 @@ from libcpp cimport bool, int
 from libcpp.map cimport map, pair
 from libcpp.string cimport string
 from libcpp.vector cimport vector
+
 from cython.operator cimport dereference as dref
 from libcpp.unordered_map cimport unordered_map
 
@@ -79,4 +80,64 @@ cdef dict as_basic_dict_dict_f(map[string, map[float, base_types]]* inpt):
     cdef pair[string, map[float, base_types]] itr
     for pair in dref(inpt): output[env(pair.first)] = pair.second
     return output
+
+cdef class Tools:
+    def __cinit__(self): self.ptr = new tools()
+    def __init__(self): pass
+    def __dealloc__(self): del self.ptr
+
+    def create_path(self, str pth): self.ptr.create_path(enc(pth))
+    def delete_path(self, str pth): self.ptr.delete_path(enc(pth))
+    def is_file(self, str pth): return self.ptr.is_file(enc(pth))
+    def rename(self, str src, str dst): self.ptr.rename(enc(src), enc(dst))
+    def abs(self, str pth): return env(self.ptr.absolute_path(enc(pth)))
+
+    def ls(self, str pth, str ext):
+        cdef vector[string] pd = self.ptr.ls(enc(pth), enc(ext))
+        return env_vec(&pd)
+
+    def replace(self, str val, str rpl, str rpwl):
+        cdef string sx = enc(val)
+        self.ptr.replace(&sx, enc(rpl), enc(rpwl))
+        return env(sx)
+
+    def has_substring(self, str val, str rpl):
+        cdef string sx = enc(val)
+        return self.ptr.has_string(&sx, enc(rpl))
+
+    def ends_with(self, str val, str rpl):
+        cdef string sx = enc(val)
+        return self.ptr.ends_with(&sx, enc(rpl))
+
+    def has_value(self, list data, str trg):
+        cdef vector[string] pd = enc_list(data)
+        return self.ptr.has_value(&pd, enc(trg))
+
+    def split(self, str data, trg):
+        cdef vector[string] pd = []
+        if   isinstance(trg, int): pd = self.ptr.split(enc(data), <int>(trg))
+        elif isinstance(trg, str): pd = self.ptr.split(enc(data), enc(trg))
+        return as_list(&pd)
+
+    def hash(self, str data, int lx = 8): return env(self.ptr.hash(enc(data), lx))
+    def encode64(self, str data): 
+        cdef string v = enc(data)
+        return env(self.ptr.encode64(&v))
+
+    def decode64(self, str data): 
+        cdef string v = enc(data)
+        return env(self.ptr.decode64(&v))
+
+    def discretize(self, list data, int lx): 
+        if not len(data): return []
+        cdef vector[string] v = []
+        cdef vector[int] vi = []
+        if isinstance(data[0], str): 
+            v = enc_list(data)
+            return self.ptr.discretize(&v, lx)
+        elif isinstance(data[0], int):
+            vi = <vector[int]>(data)
+            return self.ptr.discretize(&vi, lx)
+        return []
+
 

@@ -7,11 +7,24 @@
 #include <cstdint>
 #include <map>
 
+/*!
+    A collection of useful tools that were used for constructing the framework.
+*/
+
+
 class tools
 {
     public:
         // tools.cxx
+        
+        /*!
+            The tools constructor
+        */
         tools(); 
+
+        /*!
+            The tools destructor
+        */
         ~tools(); 
 
         // io.cxx

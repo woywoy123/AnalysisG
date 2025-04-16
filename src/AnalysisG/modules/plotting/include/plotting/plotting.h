@@ -57,7 +57,8 @@ class plotting:
         bool x_logarithmic = false; 
         bool y_logarithmic = false; 
 
-        float line_width = 0.1; 
+        float line_width = 0.1;
+        float cap_size   = 1.0;  
         float alpha      = 0.4; 
         float x_step     = -1; 
         float y_step     = -1; 
