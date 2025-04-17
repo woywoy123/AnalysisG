@@ -139,10 +139,7 @@ class analysis:
             std::string output, std::vector<variable_t>* content, std::string* msg
         );
 
-        static void execution_metric(
-            metric_t* mt, metric_template* mtx, size_t* prg, std::string* msg
-        ); 
-
+        static void execution_metric(metric_t* mt, size_t* prg, std::string* msg); 
 
         static void initialize_loop(
             optimizer* op, int k, model_template* model, 

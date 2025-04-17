@@ -151,6 +151,7 @@ void metric_template::execute(metric_t* mtx, metric_template* obj, size_t* prg, 
                 (*msg) = mf; 
                 mtx -> build(); 
                 init = true;
+                (*prg) = 0; 
             }
             obj -> define_metric(mtx); 
         }
@@ -178,6 +179,8 @@ void metric_template::define(std::vector<metric_t*>* vr, std::vector<size_t>* nu
                 mx -> kfold  = itk -> first; 
                 mx -> epoch  = ite -> first;
                 mx -> device = dev; 
+                mx -> index  = (*offset);
+                mx -> mtx    = this; 
 
                 size_t xt = 0; 
                 std::string hx = std::string(this -> hash(std::to_string(mx -> device) + "+" + std::to_string(mx -> kfold)));

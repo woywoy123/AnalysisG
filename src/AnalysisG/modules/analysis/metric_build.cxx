@@ -29,9 +29,10 @@ bool analysis::build_metric(){
             default: break;   
         }
         if (!smpl){return;}
-        smpl = this -> loader -> build_batch(smpl, mdl, nullptr); 
-        (*cx)[hx] = smpl; 
-        mx -> link(hx, smpl, mt);
+        std::vector<graph_t*>* btch = this -> loader -> build_batch(smpl, mdl, nullptr); 
+        (*cx)[hx] = btch; 
+        mx -> link(hx, btch, mt);
+        for (size_t x(0); x < smpl -> size(); ++x){(*smpl)[x] -> in_use = 0;}
     }; 
 
     auto lambd = [this](std::map<std::string, std::vector<graph_t*>*>* gr){
@@ -85,31 +86,62 @@ bool analysis::build_metric(){
 
     this -> build_project();
     size_t sx = 0; 
-    for (itm = this -> metric_names.begin(); itm != this -> metric_names.end(); ++itm){sx += itm -> second -> size();}
+    itm = this -> metric_names.begin(); 
+    for (; itm != this -> metric_names.end(); ++itm){sx += itm -> second -> size();}
+
+    std::map<int, size_t> tkidx = {}; 
+    std::map<int, size_t> remap = {}; 
+    std::map<int, std::vector<metric_t*>> device_run = {}; 
+    std::map<int, std::vector<size_t>>    device_idx = {}; 
+
     std::vector<size_t> th_prg(sx, 0); 
     std::vector<size_t> num_data(sx, 0);
     std::vector<metric_t*> mx(sx, nullptr); 
     std::vector<std::thread*> th_prc(sx, nullptr); 
-    std::vector<metric_template*> mtx(sx, nullptr);
     std::vector<std::string*> th_title(sx, nullptr); 
 
     sx = 0; 
     for (itm = this -> metric_names.begin(); itm != this -> metric_names.end(); ++itm){
         size_t xt = sx; 
         itm -> second -> define(&mx, &num_data, &th_title, &sx);
-        for (; xt < sx; ++xt){mtx[xt] = itm -> second;}
+        for (; xt < sx; ++xt){remap[mx[xt] -> device]++;}
     }
+
+    std::map<int, size_t>::iterator itx = remap.begin();
+    for (; itx != remap.end(); ++itx){device_run[itx -> first].assign(itx -> second, nullptr); itx -> second = 0;}
+    for (size_t x(0); x < mx.size(); ++x){
+        size_t* idx = &remap[mx[x] -> device]; 
+        device_run[mx[x] -> device][*idx] = mx[x]; 
+        device_idx[mx[x] -> device].push_back(num_data[x]); 
+        num_data[x] = 0;
+        mx[x] = nullptr;  
+        ++(*idx); 
+    }
+
+    size_t t(0); 
+    while (t < mx.size()){
+        for (itx = remap.begin(); itx != remap.end(); ++itx){
+            if (tkidx[itx -> first] >= itx -> second){continue;}
+            mx[t] = device_run[itx -> first][tkidx[itx -> first]]; 
+            num_data[t] = device_idx[itx -> first][tkidx[itx -> first]]; 
+            ++tkidx[itx -> first]; ++t; 
+        }
+    } 
+    tkidx = {}; 
+    remap = {}; 
+    device_run = {}; 
+    device_idx = {}; 
 
     sx = 0; 
     std::thread* thr_ = nullptr; 
-    int threads_ = this -> m_settings.threads; 
+    int threads_ = this -> m_settings.threads-1; 
     bool debug_mode = this -> m_settings.debug_mode;  
     this -> loader -> start_cuda_server(); 
     for (size_t x(0); x < mx.size(); ++x, ++sx){
-        if (debug_mode){this -> execution_metric(mx[x], mtx[x], &th_prg[x], th_title[x]); continue;}
-        th_prc[x] = new std::thread(this -> execution_metric, mx[x], mtx[x], &th_prg[x], th_title[x]);
+        if (debug_mode){this -> execution_metric(mx[x], &th_prg[x], th_title[x]); continue;}
+        th_prc[x] = new std::thread(this -> execution_metric, mx[x], &th_prg[x], th_title[x]);
         if (!thr_){thr_ = new std::thread(this -> progressbar3, &th_prg, &num_data, &th_title);}
-        while (sx >= threads_){sx = this -> running(&th_prc);} 
+        while (int(sx) >= threads_){sx = this -> running(&th_prc);} 
     }
     monitor(&th_prc); 
     lambd(&tr_batch_cache); 

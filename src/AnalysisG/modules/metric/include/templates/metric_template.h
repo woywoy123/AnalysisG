@@ -48,11 +48,14 @@ struct metric_t {
 
     private: 
         friend metric_template; 
+        friend analysis; 
 
         void build(); 
         mode_enum train_mode; 
         std::string* pth = nullptr;
         model_template* mdlx = nullptr;
+        metric_template* mtx = nullptr;
+        size_t index = 0; 
          
         std::map<graph_enum, std::vector<std::string>>* vars = nullptr; 
         std::map<graph_enum, std::vector<variable_t*>>* handl = nullptr; 
