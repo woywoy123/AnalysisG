@@ -185,8 +185,9 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* data, mode
     auto build_graph = [this, g_data, n_data, e_data, g_truth, n_truth, e_truth, collect](
             std::vector<graph_t*>* inpt, 
             std::vector<graph_t*>* out, 
-            model_template* mdl, size_t index)
-    {
+            model_template* mdl, 
+            size_t index, size_t* prg = nullptr
+    ){
         torch::TensorOptions* op = mdl -> m_option; 
         for (size_t x(0); x < inpt -> size(); ++x){
             (*inpt)[x] -> in_use = 1;
@@ -252,6 +253,7 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* data, mode
 
         (*out)[index] = gr; 
         torch::cuda::synchronize(); 
+        if (!prg){*prg = 1;}
     }; 
 
     int k = mdl -> kfold-1; 
@@ -271,11 +273,14 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* data, mode
     else {out = new std::vector<graph_t*>(batched.size(), nullptr);}
 
     int r = 0; 
+    std::vector<size_t> trgt(batched.size(), 1);
+    std::vector<size_t> prg(batched.size(), 0);
+
     std::vector<std::thread*> th_(batched.size(), nullptr); 
     for (size_t x(0); x < batched.size(); ++x, ++r){
         if (skip){build_graph(&batched[x], out, mdl, x); continue;}
-        th_[x] = new std::thread(build_graph, &batched[x], out, mdl, x);
-        while (r >= thr){r = this -> running(&th_);}
+        th_[x] = new std::thread(build_graph, &batched[x], out, mdl, x, &prg[x]);
+        while (r >= thr){r = this -> running(&th_, &prg, &trgt);}
     }
     this -> monitor(&th_); 
 

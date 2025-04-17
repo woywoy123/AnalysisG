@@ -19,7 +19,7 @@ def fancy_title(key):
             "p2"          : "Magnitude of Momentum Vector ($\\mathbf{p} \\cdot \\mathbf{p}$)", 
             "mt2"         : "Transverse Invariant Mass Squared ($M^{2}_T$)", 
             "beta2"       : "Fractional Velocity Relative to Speed of Light Squared ($\\beta^2$)", 
-            "theta"       : "$\\cos^{-1}(P_z / \\mathbf{p} \\cdot \\mathbf{p})$", 
+            "theta"       : "$\\cos^{-1}(P_z / \\sqrt{\\mathbf{p} \\cdot \\mathbf{p}})$", 
             "deltaR"      : "$\\Delta R$ Between Two Four Vectors",
             "dot"         : "The Dot Product of Matrices A and B ($A \\cdot B$)", 
             "cofactor"    : "Cofactors for a $3 \\times 3$ Matrix", 
@@ -140,7 +140,7 @@ def build_neutrino(pkt):
             tl.Title = fancy_title(opx)
             tl.SaveFigure()
 
-def build_physics(pkt):
+def build_physics(pkt, frame):
     modx = fancy_modes()
     for opx in pkt:
         for md in modx:
@@ -149,8 +149,8 @@ def build_physics(pkt):
                 hx = "solid" if tnx == "separate" else "dotted"
                 rn = "Separate" if tnx == "separate" else "Combined"
                 for dev in pkt[opx][tnx]: lines.append(template_line(dev, pkt[opx][tnx][dev], md, hx, rn))
-            tl = template_Tline(modx[md], opx, fnames(md), lines)
-            tl.Title = fancy_title(opx)
+            tl = template_Tline(modx[md], opx, fnames(md) + "_" + frame.lower(), lines)
+            tl.Title = fancy_title(opx) + " (From " + frame + ")"
             tl.SaveFigure()
 
 def build_transform(pkt):
@@ -170,7 +170,7 @@ def entry(pkt, devices):
     for i in pkt:
         if i == "operators"          : build_operators(pkt[i]); continue
         if i == "neutrino"           : build_neutrino(pkt[i]);  continue
-        #if i == "physics-polar"      : build_physics(pkt[i]);   continue
-        #if i == "physics-cartesian"  : build_physics(pkt[i]);   continue
-        #if i == "transform-polar"    : build_transform(pkt[i]); continue
-        #if i == "transform-cartesian": build_transform(pkt[i]); continue
+        if i == "physics-polar"      : build_physics(pkt[i], "Polar");   continue
+        if i == "physics-cartesian"  : build_physics(pkt[i], "Cartesian");   continue
+        if i == "transform-polar"    : build_transform(pkt[i]); continue
+        if i == "transform-cartesian": build_transform(pkt[i]); continue

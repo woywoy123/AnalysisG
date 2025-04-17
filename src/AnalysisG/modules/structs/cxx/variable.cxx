@@ -71,7 +71,7 @@ writer::~writer(){
 void writer::create(std::string* out){
     if (this -> head){return;}
     this -> head = new write_t();
-    this -> head -> file = new TFile(out -> c_str(), "UPDATE");     
+    this -> head -> file = new TFile(out -> c_str(), "RECREATE");     
 }
 
 variable_t* writer::process(std::string* tree, std::string* name){
@@ -87,14 +87,4 @@ void writer::write(std::string* tree){
     if (!this -> handle.count(*tree)){return;}
     this -> handle[*tree] -> write(); 
 }
-
-
-
-
-
-
-
-
-
-
 

@@ -135,19 +135,13 @@ bool analysis::build_metric(){
 
     sx = 0; 
     std::thread* thr_ = nullptr; 
-    size_t threads_ = this -> m_settings.threads; 
-    bool debug_mode = this -> m_settings.debug_mode;  
+    size_t threads_ = this -> m_settings.threads-1; 
+    bool debug_mode = this -> m_settings.debug_mode + !threads_;  
     for (size_t x(0); x < mx.size(); ++x, ++sx){
-        std::cout << x << " " << sx << " " << mx.size() << std::endl; 
         if (debug_mode){this -> execution_metric(mx[x], &th_prg[x], th_title[x]); continue;}
         th_prc[x] = new std::thread(this -> execution_metric, mx[x], &th_prg[x], th_title[x]);
-        //if (!thr_){thr_ = new std::thread(this -> progressbar3, &th_prg, &num_data, &th_title);}
-        while (sx >= threads_){
-            sx = this -> running(&th_prc);
-            std::cout << sx << std::endl; 
-            if (sx >= threads_){continue;}
-            break; 
-        } 
+        if (!thr_){thr_ = new std::thread(this -> progressbar3, &th_prg, &num_data, &th_title);}
+        while (sx >= threads_){sx = this -> running(&th_prc, &th_prg, &num_data);} 
     }
     monitor(&th_prc); 
     lambd(&tr_batch_cache); 

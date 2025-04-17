@@ -156,15 +156,15 @@ void notification::monitor(std::vector<std::thread*>* thr){
     }
 }
 
-int notification::running(std::vector<std::thread*>* thr){
-    size_t idx = thr -> size(); 
+int notification::running(std::vector<std::thread*>* thr, std::vector<size_t>* prg, std::vector<size_t>* trgt){
+    size_t idx = 0; 
     for (size_t x(0); x < thr -> size(); ++x){
-        if (!(*thr)[x]){--idx; continue;}
-        if (!(*thr)[x] -> joinable()){continue;}
+        if (!(*thr)[x]){continue;}
+        if (!(*trgt)[x] || !(*prg)[x]){continue;}
+        if ((*trgt)[x] != (*prg)[x]){++idx; continue;}
         (*thr)[x] -> join(); 
         delete (*thr)[x]; 
         (*thr)[x] = nullptr; 
-        --idx; 
     }
     return int(idx); 
 }

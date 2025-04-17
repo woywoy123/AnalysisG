@@ -130,7 +130,7 @@ bool dataloader::dump_graphs(std::string path, int threads){
     prg = new std::thread(this -> progressbar3, &prdata, &lrdata, &titles); 
     for (itf = collect.begin(); itf != collect.end(); ++itf, ++dx, ++thrs){
         thdata[dx] = new std::thread(write, titles[dx], itf -> first, &prdata[dx], itf -> second); 
-        while (thrs >= threads){thrs = this -> running(&thdata);}
+        while (thrs >= threads){thrs = this -> running(&thdata, &prdata, &lrdata);}
     }
     this -> monitor(&thdata); 
 
@@ -252,6 +252,7 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
     }
 
     size_t len_cache = 0; 
+    std::vector<size_t> trgt = {};
     std::vector<size_t> handles = {};
     std::vector<std::string> cache_io = {}; 
     std::map<std::string, std::vector<std::string>> data_set; 
@@ -274,6 +275,7 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
         }
 
         len_cache += data_set[fname].size();
+        trgt.push_back(data_set[fname].size()); 
         handles.push_back(0); 
         ior.end(); 
         this -> progressbar(float((x+1)) / float(cache_.size()), "Checking HDF5 size: " + fname_); 
@@ -291,12 +293,12 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
     for (size_t x(0); x < cache_io.size(); ++x, ++tidx){
         std::vector<std::string> lsx = this -> split(cache_io[x], "/"); 
         title = "Reading HDF5 -> " + lsx[lsx.size()-1]; 
-        std::vector<std::string>* gr_ev = &data_set[cache_io[x]]; 
+        std::vector<std::string>* gr_ev = &data_set[cache_io[x]];
         if (!gr_ev -> size()){continue;}
 
         cache_rebuild[x] = new std::vector<graph_t*>(gr_ev -> size(), nullptr); 
         th_[x] = new std::thread(threaded_reader, cache_io[x], gr_ev, cache_rebuild[x], &handles[x]); 
-        while (tidx > threads -1){tidx = this -> running(&th_);}
+        while (tidx > threads -1){tidx = this -> running(&th_, &handles, &trgt);}
     }
     this -> monitor(&th_); 
 

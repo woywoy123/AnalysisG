@@ -112,7 +112,7 @@ void analysis::build_inference(){
 
         if (!thr_){thr_ = new std::thread(this -> progressbar3, &th_prg, &num_data, &mdl_title);}
         while (para >= threads_){
-            para = this -> running(&th_prc);
+            para = this -> running(&th_prc, &th_prg, &num_data);
             for (size_t t(0); t < th_prc.size(); ++t){
                 if ( th_prc[t] && batched_data[t]){continue;}
                 if (!th_prc[t] && batched_data[t]){this -> loader -> safe_delete(batched_data[t]);}

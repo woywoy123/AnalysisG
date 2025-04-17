@@ -20,7 +20,7 @@ class notification
         void progressbar(float prog, std::string title); 
         void progressbar(std::vector<size_t>* threads, std::vector<size_t>* trgt, std::vector<std::string>* title); 
 
-        int  running(std::vector<std::thread*>* thr); 
+        int  running(std::vector<std::thread*>* thr, std::vector<size_t>* prg, std::vector<size_t>* trgt); 
         void monitor(std::vector<std::thread*>* thr); 
         void static progressbar1(std::vector<size_t>* threads, size_t l, std::string title); 
         void static progressbar2(std::vector<size_t>* threads, size_t* l, std::string* title); 
