@@ -182,11 +182,11 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
             std::vector<graph_t*>* c_gr, 
             size_t* prg
     ){
-        io ior = io();
-        ior.start(pth, "read"); 
+        io* ior = new io();
+        ior -> start(pth, "read"); 
         for (size_t p(0); p < gr_ev -> size(); ++p){
             graph_hdf5_w datar = graph_hdf5_w(); 
-            ior.read(&datar, (*gr_ev)[p]);
+            ior -> read(&datar, (*gr_ev)[p]);
             graph_hdf5 w      = graph_hdf5(); 
             w.num_nodes       = datar.num_nodes; 
             w.event_index     = datar.event_index;
@@ -218,7 +218,7 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
             (*c_gr)[p] = gx;
             (*prg) = p+1; 
         }
-        ior.end();
+        delete ior;
     }; 
 
 
@@ -298,7 +298,7 @@ std::map<std::string, graph_t*>* dataloader::restore_graphs_(std::vector<std::st
 
         cache_rebuild[x] = new std::vector<graph_t*>(gr_ev -> size(), nullptr); 
         th_[x] = new std::thread(threaded_reader, cache_io[x], gr_ev, cache_rebuild[x], &handles[x]); 
-        while (tidx > threads -1){tidx = this -> running(&th_, &handles, &trgt);}
+        while (tidx >= threads){tidx = this -> running(&th_, &handles, &trgt);}
     }
     this -> monitor(&th_); 
 

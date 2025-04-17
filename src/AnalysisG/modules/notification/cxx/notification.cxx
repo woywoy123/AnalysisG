@@ -160,7 +160,8 @@ int notification::running(std::vector<std::thread*>* thr, std::vector<size_t>* p
     size_t idx = 0; 
     for (size_t x(0); x < thr -> size(); ++x){
         if (!(*thr)[x]){continue;}
-        if (!(*trgt)[x] || !(*prg)[x]){continue;}
+        if (!(*thr)[x] -> joinable()){++idx; continue;}
+        if (!(*trgt)[x] && !(*prg)[x]){continue;}
         if ((*trgt)[x] != (*prg)[x]){++idx; continue;}
         (*thr)[x] -> join(); 
         delete (*thr)[x]; 
