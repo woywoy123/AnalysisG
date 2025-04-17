@@ -16,7 +16,7 @@ void metric_template::set_run_name(std::map<std::string, std::string>* rn_name, 
     for (; itx != rn_name -> end(); ++itx){
         if (ev -> _run_names.count(itx -> first)){continue;}
         std::vector<std::string> names = ev -> split(itx -> first, "::");
-        if (!ev -> is_file(itx -> second)){ev -> failure(pthn + itx -> second); return;}
+        if (!ev -> is_file(itx -> second)){ev -> failure(pthn + itx -> second); continue;}
 
         if (names.size() != 3){ev -> failure(msgn); return;}
         if (!ev -> has_string(&names[1], "epoch-")){ev -> failure(msgn); return;}

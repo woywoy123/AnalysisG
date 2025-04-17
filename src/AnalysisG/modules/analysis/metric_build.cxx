@@ -83,6 +83,7 @@ bool analysis::build_metric(){
             }
         }
     }
+    this -> loader -> start_cuda_server(); 
 
     this -> build_project();
     size_t sx = 0; 
@@ -134,20 +135,28 @@ bool analysis::build_metric(){
 
     sx = 0; 
     std::thread* thr_ = nullptr; 
-    int threads_ = this -> m_settings.threads-1; 
+    size_t threads_ = this -> m_settings.threads; 
     bool debug_mode = this -> m_settings.debug_mode;  
-    this -> loader -> start_cuda_server(); 
     for (size_t x(0); x < mx.size(); ++x, ++sx){
+        std::cout << x << " " << sx << " " << mx.size() << std::endl; 
         if (debug_mode){this -> execution_metric(mx[x], &th_prg[x], th_title[x]); continue;}
         th_prc[x] = new std::thread(this -> execution_metric, mx[x], &th_prg[x], th_title[x]);
-        if (!thr_){thr_ = new std::thread(this -> progressbar3, &th_prg, &num_data, &th_title);}
-        while (int(sx) >= threads_){sx = this -> running(&th_prc);} 
+        //if (!thr_){thr_ = new std::thread(this -> progressbar3, &th_prg, &num_data, &th_title);}
+        while (sx >= threads_){
+            sx = this -> running(&th_prc);
+            std::cout << sx << std::endl; 
+            if (sx >= threads_){continue;}
+            break; 
+        } 
     }
     monitor(&th_prc); 
     lambd(&tr_batch_cache); 
     lambd(&va_batch_cache);
     lambd(&ts_batch_cache); 
-    if (debug_mode){for (size_t x(0); x < th_title.size(); ++x){delete th_title[x];}}
+    if (debug_mode){
+        for (size_t x(0); x < th_title.size(); ++x){delete th_title[x];}
+        return true;
+    }
     if (!thr_){this -> failure("No model metrics were executed..."); return false;}
     thr_ -> join(); delete thr_; thr_ = nullptr; 
     this -> success("Model metrics completed!"); 
