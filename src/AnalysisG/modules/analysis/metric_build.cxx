@@ -61,6 +61,7 @@ bool analysis::build_metric(){
     this -> build_dataloader(true);
     this -> loader -> datatransfer(&dev_map); 
 
+    this -> info("Building kfold device hash");
     // ------------- Compute the device and kfold hash -------------- //
     std::map<std::string, std::vector<graph_t*>*> tr_batch_cache = {}; 
     std::map<std::string, std::vector<graph_t*>*> va_batch_cache = {}; 
@@ -101,6 +102,7 @@ bool analysis::build_metric(){
     std::vector<std::thread*> th_prc(sx, nullptr); 
     std::vector<std::string*> th_title(sx, nullptr); 
 
+    this -> info("Performing Remapping"); 
     sx = 0; 
     for (itm = this -> metric_names.begin(); itm != this -> metric_names.end(); ++itm){
         size_t xt = sx; 
@@ -133,6 +135,7 @@ bool analysis::build_metric(){
     device_run = {}; 
     device_idx = {}; 
 
+    this -> info("Starting the Metric Compiler"); 
     sx = 0; 
     std::thread* thr_ = nullptr; 
     size_t threads_ = this -> m_settings.threads-1; 

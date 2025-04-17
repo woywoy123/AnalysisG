@@ -253,7 +253,8 @@ std::vector<graph_t*>* dataloader::build_batch(std::vector<graph_t*>* data, mode
 
         (*out)[index] = gr; 
         torch::cuda::synchronize(); 
-        if (!prg){*prg = 1;}
+        if (!prg){return;}
+        *prg = 1;
     }; 
 
     int k = mdl -> kfold-1; 
