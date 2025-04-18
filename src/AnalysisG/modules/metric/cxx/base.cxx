@@ -130,10 +130,11 @@ void metric_template::execute(metric_t* mtx, metric_template* obj, size_t* prg, 
     (*prg) = 1; 
     std::string mf = (*msg); 
     model_template* mdl = mtx -> mdlx -> clone(1); 
+    std::string name_ = mdl -> name; 
     mdl -> model_checkpoint_path = *mtx -> pth;  
     mdl -> restore_state(); 
     bool init = false; 
-    obj -> _outdir += "/epoch-" + std::to_string(mtx -> epoch) + "/"; 
+    obj -> _outdir += "/epoch-" + std::to_string(mtx -> epoch) + "/" + name_ + "/"; 
     obj -> create_path(obj -> _outdir); 
     obj -> _outdir += "kfold-" + std::to_string(mtx -> kfold+1) + ".root"; 
 
