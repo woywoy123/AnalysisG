@@ -30,7 +30,16 @@ mx = AccuracyMetric()
 mx.RunNames = {
         "Grift-MRK-1::epoch-1::k-1" : base_dir + "MRK-1/state/epoch-1/kfold-1_model.pt", 
         "Grift-MRK-1::epoch-1::k-2" : base_dir + "MRK-1/state/epoch-1/kfold-2_model.pt", 
-        "Grift-MRK-1::epoch-2::k-1" : base_dir + "MRK-1/state/epoch-2/kfold-1_model.pt"
+        "Grift-MRK-1::epoch-2::k-1" : base_dir + "MRK-1/state/epoch-2/kfold-1_model.pt",
+        "Grift-MRK-1::epoch-3::k-1" : base_dir + "MRK-1/state/epoch-1/kfold-1_model.pt", 
+        "Grift-MRK-1::epoch-4::k-2" : base_dir + "MRK-1/state/epoch-1/kfold-2_model.pt", 
+        "Grift-MRK-1::epoch-5::k-1" : base_dir + "MRK-1/state/epoch-2/kfold-1_model.pt",
+        "Grift-MRK-1::epoch-6::k-1" : base_dir + "MRK-1/state/epoch-1/kfold-1_model.pt", 
+        "Grift-MRK-1::epoch-7::k-2" : base_dir + "MRK-1/state/epoch-1/kfold-2_model.pt", 
+        "Grift-MRK-1::epoch-8::k-1" : base_dir + "MRK-1/state/epoch-2/kfold-1_model.pt",
+        "Grift-MRK-1::epoch-9::k-1" : base_dir + "MRK-1/state/epoch-1/kfold-1_model.pt", 
+        "Grift-MRK-1::epoch-10::k-2" : base_dir + "MRK-1/state/epoch-1/kfold-2_model.pt", 
+        "Grift-MRK-1::epoch-11::k-1" : base_dir + "MRK-1/state/epoch-2/kfold-1_model.pt"
 }
 
 mx.Variables = [

@@ -70,6 +70,7 @@ int count(const std::string* str, const std::string sub){
 data_enum bsc_t::root_type_translate(std::string* root_str){
     int vec = count(root_str, "vector"); 
     if (vec == 0 && (*root_str) ==   "Float_t"){return data_enum::v_f  ;}
+    if (vec == 0 && (*root_str) ==  "Double_t"){return data_enum::v_d  ;}
     if (vec == 0 && (*root_str) ==    "UInt_t"){return data_enum::v_ui ;}
     if (vec == 0 && (*root_str) ==     "Int_t"){return data_enum::v_i  ;}
     if (vec == 0 && (*root_str) ==    "Char_t"){return data_enum::v_c  ;}
@@ -257,7 +258,6 @@ void bsc_t::flush_buffer(){
     // =================================================================== //
 
     if (this -> type != data_enum::undef && this -> type != data_enum::unset){return;}
-//    if (this -> type != data_enum::undef && !v){return this -> flush_buffer(true);}
     std::cout << "UNDEFINED DATA TYPE! SEE modules/structs/cxx/base.cxx" << std::endl;
     abort();
 }

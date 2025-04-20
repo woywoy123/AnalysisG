@@ -2,24 +2,7 @@
 #define STRUCTS_BASE_H
 #include <vector>
 #include <string>
-
-// ========= (0). add the type here v -- vector, vv -- vector<vector> ============ //
-enum class data_enum {
-// vector<vector<vector<...>>> -> vvv_<X>
-// vector<vector<...>> -> vv_<X>
-// vector<...> -> v_<X>
-// primitives (float, double, long, ...)
-    d  , v_d  , vv_d  , vvv_d  ,
-    f  , v_f  , vv_f  , vvv_f  ,
-    l  , v_l  , vv_l  , vvv_l  ,
-    i  , v_i  , vv_i  , vvv_i  ,
-    ull, v_ull, vv_ull, vvv_ull,
-    b  , v_b  , vv_b  , vvv_b  ,
-    ui , v_ui , vv_ui , vvv_ui ,
-    c  , v_c  , vv_c  , vvv_c  , 
-    undef, unset // other
-}; 
-// ================================================================================ //
+#include <structs/enums.h> // <---- go here first
 
 void buildPCM(std::string name, std::string incl, bool exl); 
 void registerInclude(std::string name, bool is_abs = false); 

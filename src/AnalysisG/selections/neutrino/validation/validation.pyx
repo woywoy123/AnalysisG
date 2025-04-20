@@ -1,159 +1,140 @@
 # distutils: language=c++
 # cython: language_level=3
 
-from AnalysisG.core.selection_template cimport *
 from AnalysisG.core.particle_template cimport *
+from AnalysisG.core.selection_template cimport *
 from AnalysisG.core.tools cimport *
+from cython.parallel cimport prange
 
 cdef class Neutrino(ParticleTemplate):
-    def __cinit__(self): self.ptr = new nu()
+    cdef neutrino* ptx
+    cdef public double distance 
+    def __dealloc__(self): del self.ptx
+
+cdef class Particle(ParticleTemplate):
     def __dealloc__(self): del self.ptr
 
-    @property
-    def distance(self):
-        cdef nu* lx = <nu*>(self.ptr)
-        return lx.distance
+cdef class Event:
+    cdef event* ptr
+    cdef public list TruthNeutrinos  
+    cdef public dict DynamicNeutrino 
+    cdef public dict StaticNeutrino  
+    cdef public dict Particles       
 
-    @distance.setter
-    def distance(self, float v):
-        cdef nu* lx = <nu*>(self.ptr)
-        lx.distance = v
-
-cdef class TopQ(ParticleTemplate):
-    def __cinit__(self): self.ptr = new tquark()
     def __dealloc__(self): del self.ptr
+    def __cinit__(self): self.ptr = NULL
 
-cdef class BottomQ(ParticleTemplate):
-    def __cinit__(self): self.ptr = new bquark()
-    def __dealloc__(self): del self.ptr
+    def __init__(self):
+        typx = ["top_children", "truthjet", "jetchildren", "jetleptons"]
+        self.TruthNeutrinos  = []
+        self.DynamicNeutrino = {i : {0 : [], 1 : []} for i in typx}
+        self.StaticNeutrino  = {i : {0 : [], 1 : []} for i in typx}
+        self.Particles       = {i : {0 : [], 1 : []} for i in typx}
 
-cdef class Lepton(ParticleTemplate):
-    def __cinit__(self): self.ptr = new lepton()
-    def __dealloc__(self): del self.ptr
+    cdef build(self):
+        cdef int i, t
+        cdef string base
+        cdef Neutrino nu
+        cdef Particle prt
 
-cdef class Boson(ParticleTemplate):
-    def __cinit__(self): self.ptr = new boson()
-    def __dealloc__(self): del self.ptr
+        for i in range(self.ptr.truth_neutrino.size()):
+            prt = Particle()
+            prt.ptr = self.ptr.truth_neutrino[i]
+            self.TruthNeutrinos.append(prt)
+        
+        for k in ["top_children", "truthjet", "jetchildren", "jetleptons"]:
+            base = enc(k)
+            for i in range(self.ptr.dynamic_neutrino[base].size()):
+                for t in range(2):
+                    nu = Neutrino()
+                    nu.ptx = self.ptr.dynamic_neutrino[base][i][t]
+                    nu.ptr = <particle_template*>(nu.ptx)
+                    self.DynamicNeutrino[k][t].append(nu)
+
+            for i in range(self.ptr.static_neutrino[base].size()):
+                for t in range(2):
+                    nu = Neutrino()
+                    nu.ptx = self.ptr.static_neutrino[base][i][t]
+                    nu.ptr = <particle_template*>(nu.ptx)
+                    self.StaticNeutrino[k][t].append(nu)
+
+            for i in range(self.ptr.particles[base].size()):
+                t = 1 if i > 1 else 0
+                prt = Particle()
+                prt.ptr = self.ptr.particles[base][i]
+                self.Particles[k][t].append(prt)
 
 cdef class Validation(SelectionTemplate):
+    def __dealloc__(self): del self.tt
     def __cinit__(self):
+        self.Events = []
+        typx = ["top_children", "truthjet", "jetchildren", "jetleptons"]
+        attrs = [
+                "pmu", "pdgid", 
+                "dynamic_nu1_pmu", "dynamic_nu2_pmu", "dynamic_dst",
+                 "static_nu1_pmu",  "static_nu2_pmu",  "static_dst"
+        ] 
+        xp = [i + "_" + j for i in typx for j in attrs] + ["met", "phi"]
+        self.root_leaves = {i : loader for i in xp}
         self.ptr = new validation()
         self.tt = <validation*>self.ptr
 
-        self.met = []
-        self.phi = []
+    def Postprocessing(self):
+        cdef int i, k
+        cdef bool ix
+        cdef vector[event*] evnts
+        cdef vector[double]* met = &self.met
+        cdef vector[double]* phi = &self.phi
 
-        self.truth_nus = []
-        self.truth_tops = []
-        self.truth_bosons = []
+        cdef map[string, vector[vector[vector[double]]]]* nu1_s = &self.nu1_static
+        cdef map[string, vector[vector[vector[double]]]]* nu2_s = &self.nu2_static
+        cdef map[string, vector[vector[vector[double]]]]* nu1_d = &self.nu1_dynamic 
+        cdef map[string, vector[vector[vector[double]]]]* nu2_d = &self.nu2_dynamic
+        cdef map[string, vector[vector[vector[double]]]]* pmu   = &self.pmu  
 
-        self.reco_leptons = []
-        self.reco_bosons = []
+        cdef map[string, vector[vector[int]]]*    pdgid   = &self.pdgid
+        cdef map[string, vector[vector[double]]]* dyn_dst = &self.dynamic_distances 
+        cdef map[string, vector[vector[double]]]* sta_dst = &self.static_distances
+        cdef vector[string] names = [b"top_children", b"truthjet", b"jetchildren", b"jetleptons"]
 
-        self.truth_leptons = []
-        self.truth_bquarks = []
+        cdef string base
+        cdef event* otx
+        cdef particle_template* ptx
+        cdef vector[neutrino*] oxm
 
-        self.truth_bjets = []
-        self.truth_jets_top = []
+        for i in prange(self.met.size(), nogil = True):
+            otx = new event()
+            otx.met = met.at(i)
+            otx.phi = phi.at(i)
+            evnts.push_back(otx)
 
-        self.bjets = []
-        self.jets_top = []
-        self.lepton_jets_top = []
+            for base in names:
+                for k in range(pmu.at(base).at(i).size()):
+                    ptx = make_particle(&pmu.at(base).at(i).at(k), pdgid.at(base).at(i).at(k))
+                    if ptx is NULL: continue 
+                    ix = ptx.is_nu 
+                    if ix: otx.truth_neutrino.push_back(ptx)
+                    else: otx.particles[base].push_back(ptx)
+          
 
-        self.c1_reconstructed_children_nu = []
-        self.c1_reconstructed_truthjet_nu = []
-        self.c1_reconstructed_jetchild_nu = []
-        self.c1_reconstructed_jetlep_nu = []
+                for k in range(nu1_s.at(base).at(i).size()): 
+                    oxm.clear()
+                    oxm.push_back(make_neutrino(&nu1_s.at(base).at(i).at(k), sta_dst.at(base).at(i).at(k)))
+                    oxm.push_back(make_neutrino(&nu2_s.at(base).at(i).at(k), sta_dst.at(base).at(i).at(k)))
+                    otx.static_neutrino[base].push_back(oxm)
 
-        self.c2_reconstructed_children_nu = []
-        self.c2_reconstructed_truthjet_nu = []
-        self.c2_reconstructed_jetchild_nu = []
-        self.c2_reconstructed_jetlep_nu = []
+                for k in range(nu1_d.at(base).at(i).size()): 
+                    oxm.clear()
+                    oxm.push_back(make_neutrino(&nu1_d.at(base).at(i).at(k), dyn_dst.at(base).at(i).at(k)))
+                    oxm.push_back(make_neutrino(&nu2_d.at(base).at(i).at(k), dyn_dst.at(base).at(i).at(k)))
+                    otx.dynamic_neutrino[base].push_back(oxm)
 
-    def __dealloc__(self): del self.tt
+        nu1_s.clear(); nu2_s.clear(); nu1_d.clear(); nu2_d.clear()
+        pmu.clear(); pdgid.clear(); dyn_dst.clear(); sta_dst.clear()
 
-    cdef list build_p0(self, vector[tquark*]* inpt):
-        cdef int i
-        cdef TopQ txp
-        cdef list out = []
-        for i in range(inpt.size()):
-            txp = TopQ()
-            txp.set_particle(inpt.at(i))
-            out.append(txp)
-        return out
-
-    cdef list build_p1(self, vector[bquark*]* inpt):
-        cdef int i
-        cdef BottomQ txp
-        cdef list out = []
-        for i in range(inpt.size()):
-            txp = BottomQ()
-            txp.set_particle(inpt.at(i))
-            out.append(txp)
-        return out
-
-    cdef list build_p2(self, vector[lepton*]* inpt):
-        cdef int i
-        cdef Lepton txp
-        cdef list out = []
-        for i in range(inpt.size()):
-            txp = Lepton()
-            txp.set_particle(inpt.at(i))
-            out.append(txp)
-        return out
-
-    cdef list  build_p3(self, vector[boson*]* inpt):
-        cdef int i
-        cdef Boson txp
-        cdef list out = []
-        for i in range(inpt.size()):
-            txp = Boson()
-            txp.set_particle(inpt.at(i))
-            out.append(txp)
-        return out
-
-    cdef list build_p4(self, vector[nu*]* inpt):
-        cdef int i
-        cdef Neutrino txp
-        cdef list out = []
-        for i in range(inpt.size()):
-            txp = Neutrino()
-            txp.set_particle(inpt.at(i))
-            out.append(txp)
-        return out
-
-    cdef void transform_dict_keys(self):
-        cdef pair[string, package] itx
-        cdef package* pkg
-
-        for itx in self.tt.data_out:
-            pkg = &itx.second
-            self.met.append(pkg.met)
-            self.phi.append(pkg.phi)
-
-            self.truth_nus.append(   self.build_p4(&pkg.truth_nus))
-            self.truth_tops.append(  self.build_p0(&pkg.truth_tops))
-            self.truth_bosons.append(self.build_p3(&pkg.truth_bosons))
-
-            self.reco_leptons.append(self.build_p2(&pkg.reco_leptons))
-            self.reco_bosons.append(self.build_p3(&pkg.reco_bosons))
-
-            self.truth_leptons.append(self.build_p2(&pkg.truth_leptons))
-            self.truth_bquarks.append(self.build_p1(&pkg.truth_bquarks))
-
-            self.truth_bjets.append(self.build_p1(&pkg.truth_bjets))
-            self.truth_jets_top.append(self.build_p0(&pkg.truth_jets_top))
-
-            self.bjets.append(self.build_p1(&pkg.bjets))
-            self.jets_top.append(self.build_p0(&pkg.jets_top))
-            self.lepton_jets_top.append(self.build_p0(&pkg.lepton_jets_top))
-
-            self.c1_reconstructed_children_nu.append(self.build_p4(&pkg.c1_reconstructed_children_nu))
-            self.c1_reconstructed_truthjet_nu.append(self.build_p4(&pkg.c1_reconstructed_truthjet_nu))
-            self.c1_reconstructed_jetchild_nu.append(self.build_p4(&pkg.c1_reconstructed_jetchild_nu))
-            self.c1_reconstructed_jetlep_nu.append(self.build_p4(&pkg.c1_reconstructed_jetlep_nu))
-
-            self.c2_reconstructed_children_nu.append(self.build_p4(&pkg.c2_reconstructed_children_nu))
-            self.c2_reconstructed_truthjet_nu.append(self.build_p4(&pkg.c2_reconstructed_truthjet_nu))
-            self.c2_reconstructed_jetchild_nu.append(self.build_p4(&pkg.c2_reconstructed_jetchild_nu))
-            self.c2_reconstructed_jetlep_nu.append(self.build_p4(&pkg.c2_reconstructed_jetlep_nu))
+        cdef Event ev
+        for i in range(evnts.size()):
+            ev = Event()
+            ev.ptr = evnts[i]
+            ev.build()
+            self.Events.append(ev)

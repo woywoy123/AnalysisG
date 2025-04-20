@@ -12,6 +12,9 @@
 #include <cstdlib>
 #include <cmath>
 
+class event_template; 
+class selection_template; 
+
 class particle_template : public tools
 {
     public:
@@ -142,7 +145,7 @@ class particle_template : public tools
         particle_t data;  
 
         bool _is_serial = false; 
-
+        bool _is_marked = false; 
 }; 
 #endif
 

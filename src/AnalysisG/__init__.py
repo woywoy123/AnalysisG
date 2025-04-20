@@ -18,7 +18,8 @@ def auth_pyami():
     code = pwinput("Password: ")
     execute = 'echo "' + code + '" | ' + execute
     try: _getcmd(execute)
-    except subprocess.CalledProcessError:
+    except Exception as error:
+        print(str(error))
         print("Incorrect permissions on your .pem files.")
         print("Try the following:")
         print("-> chmod -R a+rwX <your .pem directory> #<- this will give everyone access to the .pem!")

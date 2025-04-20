@@ -1,6 +1,7 @@
 set(SOURCE_FILES 
     ${CMAKE_CURRENT_SOURCE_DIR}/include/templates/selection_template.h
     ${CMAKE_CURRENT_SOURCE_DIR}/cxx/selection_template.cxx
+    ${CMAKE_CURRENT_SOURCE_DIR}/cxx/selection_core.cxx
     ${CMAKE_CURRENT_SOURCE_DIR}/cxx/properties.cxx
 )
 

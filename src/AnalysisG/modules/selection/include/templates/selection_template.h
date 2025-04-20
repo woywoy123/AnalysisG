@@ -6,6 +6,7 @@
 
 #include <structs/property.h>
 #include <structs/event.h>
+#include <structs/enums.h>
 #include <meta/meta.h>
 
 #include <tools/vector_cast.h>
@@ -43,6 +44,12 @@ class selection_template: public tools
         virtual bool strategy(event_template* ev);
         virtual void merge(selection_template* sel); 
         virtual void bulk_write(const long* idx, std::string* hx); 
+        virtual void write(std::vector<particle_template*>* particles, std::string name, particle_enum attrs); 
+
+        void switch_board(particle_enum attrs, particle_template* ptr, std::vector<std::vector<double>>* data); 
+        void switch_board(particle_enum attrs, particle_template* ptr, std::vector<int>*    data); 
+        void switch_board(particle_enum attrs, particle_template* ptr, std::vector<double>* data); 
+        void switch_board(particle_enum attrs, particle_template* ptr, std::vector<bool>*   data); 
 
         template <typename g> 
         void write(g* var, std::string name){
@@ -69,16 +76,25 @@ class selection_template: public tools
         template <typename g, typename k>
         void sum(std::vector<g*>* ch, k** out){
             k* prt = new k(); 
+            prt -> _is_marked = true; 
             std::map<std::string, bool> maps; 
             for (size_t x(0); x < ch -> size(); ++x){
                 if (maps[ch -> at(x) -> hash]){continue;}
                 maps[ch -> at(x) -> hash] = true;
                 prt -> iadd(ch -> at(x));
             }
-
             std::string hash_ = prt -> hash; 
             this -> garbage[hash_].push_back((particle_template*)prt); 
             (*out) = prt;  
+        }
+
+        template <typename g>
+        void safe_delete(std::vector<g*>* particles){
+            for (size_t x(0); x < particles -> size(); ++x){
+                if (particles -> at(x) -> _is_marked){continue;}
+                delete particles -> at(x); 
+                (*particles)[x] = nullptr; 
+            }
         }
 
         template <typename g>

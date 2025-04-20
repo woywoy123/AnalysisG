@@ -117,7 +117,7 @@ truthjet::truthjet() : particle_template(){
     this -> from_res.set_getter(this -> get_from_res); 
 }
 
-particle_template* truthjet::clone(){return (particle_template*)new truthjet();}
+particle_template* truthjet::clone(){return new truthjet();}
 
 void truthjet::build(std::map<std::string, particle_template*>* prt, element_t* el){
     std::vector<truthjet*> out; 
@@ -168,7 +168,7 @@ truthjetparton::truthjetparton() : particle_template(){
     this -> apply_type_prefix(); 
 }
 
-particle_template* truthjetparton::clone(){return (particle_template*)new truthjetparton();}
+particle_template* truthjetparton::clone(){return new truthjetparton();}
 
 void truthjetparton::build(std::map<std::string, particle_template*>* prt, element_t* el){
     std::vector<float> _pt, _eta, _phi, _e, _pdgid, _charge; 
@@ -240,7 +240,7 @@ jet::jet() : particle_template(){
     this -> from_res.set_getter(this -> get_from_res); 
 }
 
-particle_template* jet::clone(){return (particle_template*)new jet();}
+particle_template* jet::clone(){return new jet();}
 
 void jet::build(std::map<std::string, particle_template*>* prt, element_t* el){
     std::vector<int> _index;  
@@ -347,7 +347,7 @@ jetparton::jetparton() : particle_template(){
     this -> apply_type_prefix(); 
 }
 
-particle_template* jetparton::clone(){return (particle_template*)new jetparton();}
+particle_template* jetparton::clone(){return new jetparton();}
 
 void jetparton::build(std::map<std::string, particle_template*>* prt, element_t* el){
     std::vector<jetparton*> out; 
@@ -397,7 +397,7 @@ electron::electron() : particle_template(){
     this -> apply_type_prefix(); 
 }
 
-particle_template* electron::clone(){return (particle_template*)new electron();}
+particle_template* electron::clone(){return new electron();}
 
 void electron::build(std::map<std::string, particle_template*>* prt, element_t* el){
     std::vector<electron*> out; 
@@ -435,7 +435,7 @@ muon::muon() : particle_template(){
     this -> apply_type_prefix(); 
 }
 
-particle_template* muon::clone(){return (particle_template*)new muon();}
+particle_template* muon::clone(){return new muon();}
 
 void muon::build(std::map<std::string, particle_template*>* prt, element_t* el){
     std::vector<muon*> out; 

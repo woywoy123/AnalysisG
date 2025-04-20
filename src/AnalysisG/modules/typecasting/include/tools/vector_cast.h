@@ -58,7 +58,7 @@ struct variable_t: public bsc_t
 {
     public:
         variable_t(); 
-        variable_t(bool); 
+        variable_t(bool use_external); 
         ~variable_t() override; 
 
         void create_meta(meta_t* mt);

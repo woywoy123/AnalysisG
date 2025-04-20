@@ -1,5 +1,32 @@
 #include "io.h"
 #include <TH1.h>
+#include <io/cfg.h>
+#include <TSystem.h>
+#include <thread>
+
+void io::trigger_pcm(){
+    std::string cur = this -> absolute_path("./");
+
+    std::string tmp = std::string(dict_path) + "pcm/";
+    this -> create_path(tmp);
+    int opx = static_cast<int>(data_enum::undef);
+    int opc = this -> ls(tmp, ".pcm").size(); 
+    if (opx-6 > opc){this -> info("Building PCM files... to:" + tmp);}
+    gSystem -> SetBuildDir(tmp.c_str(), true); 
+    gSystem -> ChangeDirectory(tmp.c_str()); 
+    gSystem -> AddDynamicPath(tmp.c_str());
+    gSystem -> SetAclicMode(TSystem::kOpt); 
+
+    std::string mta = std::string(dict_path) + "structs/include/structs/meta.h"; 
+    std::thread* tm = nullptr; 
+    tm = new std::thread(buildDict, "meta_t"   , mta); 
+    tm -> join(); delete tm; 
+    tm = new std::thread(buildDict, "weights_t", mta); 
+    tm -> join(); delete tm; 
+    tm = new std::thread(buildAll); 
+    tm -> join(); delete tm; 
+    gSystem -> ChangeDirectory(cur.c_str()); 
+}
 
 void io::check_root_file_paths(){
     std::map<std::string, bool> tmp = {}; 
@@ -21,6 +48,10 @@ void io::check_root_file_paths(){
                 this -> success(f[x]);
                 tmp[f[x]] = true; 
             }
+            continue;
+        }
+        if (!this -> is_file(itr -> first)){
+            this -> warning("File: " + itr -> first + " not found..."); 
             continue;
         }
         this -> success(itr -> first); 
@@ -126,6 +157,7 @@ void io::root_key_paths(std::string path){
         if (obname == "AnalysisTracking"){mtx -> scan_data(obj); continue;}
         if (obname == "EventLoop_FileExecuted"){mtx -> scan_data(obj); continue;}
         if (obname == "metadata"){mtx -> scan_data(obj); continue;}
+        if (obname == "MetaData"){mtx -> scan_data(obj); continue;}
         if (this -> sow_name == obname){  mtx -> scan_data(obj); continue;}
         for (size_t t(0); t < scrape_meta.size(); ++t){
             bool found = true; 

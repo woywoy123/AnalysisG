@@ -31,22 +31,27 @@ def test_reading_root():
     for k in range(10):
         io = IO([root1, root2])
         io.Trees = ["nominal", "truth"]
-        io.Leaves = ["weight_pileup", "weight_mc", "met_phi"]
+        io.Leaves = ["weight_pileup", "weight_mc", "met_phi", "children_pt"]
         io.ScanKeys()
         len_nom, len_truth = 0, 0
+        pt_x = []
         for i in io:
             if b"truth.weight_mc.weight_mc" in i:
                 assert b"truth.weight_mc.weight_mc" in i
                 assert b"truth.weight_pileup.weight_pileup" in i
                 len_truth += 1
             if b"nominal.weight_mc.weight_mc" in i:
+                pt_x.append(i[b"nominal.children_pt.children_pt.children_pt"][0][0])
                 assert b"nominal.weight_mc.weight_mc" in i
                 assert b"nominal.weight_pileup.weight_pileup" in i
                 assert b"nominal.met_phi.met_phi" in i
                 len_nom += 1
+
+        assert len(set(pt_x)) == 165 # covers indexing problems
         assert len_truth == 2000
         assert len_nom == 165
         del io
+        exit()
 
 def test_random():
     import time 

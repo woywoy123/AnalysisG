@@ -198,9 +198,11 @@ void meta::compiler(){
 }
 
 void meta::scan_data(TObject* obj){
+    gErrorIgnoreLevel = 6001;
     std::string obname = std::string(obj -> GetName()); 
-    if (obname == "AnalysisTracking"){this -> parse_json(this -> parse_string("jsonData", (TTree*)obj));}
-    else {this -> scan_sow(obj);}
+    if (obname == "AnalysisTracking"){return this -> parse_json(this -> parse_string("jsonData", (TTree*)obj));}
+    else if (obname == "MetaData"){((TTree*)obj) -> SetBranchAddress("MetaData", &this -> meta_data);}
+    else {return this -> scan_sow(obj);}
 }
 
 float meta::parse_float(std::string key, TTree* tr){
@@ -308,9 +310,6 @@ void meta::get_cross_section_nb(double* val, meta* m){
     if (tml == 0){tml = m -> meta_data.crossSection_mean;}
     *val = tml;
 }
-
-
-
 
 void meta::get_campaign(std::string* val, meta* m){
     m -> replace(&m -> meta_data.campaign, " ", ""); 

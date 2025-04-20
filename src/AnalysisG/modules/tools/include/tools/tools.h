@@ -7,25 +7,11 @@
 #include <cstdint>
 #include <map>
 
-/*!
-    A collection of useful tools that were used for constructing the framework.
-*/
-
-
 class tools
 {
     public:
-        // tools.cxx
-        
-        /*!
-            The tools constructor
-        */
-        tools(); 
-
-        /*!
-            The tools destructor
-        */
-        ~tools(); 
+        tools();
+        ~tools();  
 
         // io.cxx
         void create_path(std::string path); 

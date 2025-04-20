@@ -90,6 +90,7 @@ class io:
         bool scan_keys(); 
         void root_begin(); 
         void root_end(); 
+        void trigger_pcm(); 
         void import_settings(settings_t* params); 
 
         std::map<std::string, data_t*>* get_data(); 

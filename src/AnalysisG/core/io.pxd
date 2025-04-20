@@ -27,6 +27,7 @@ cdef extern from "<io/io.h>" nogil:
         bool scan_keys() except+ nogil
         void root_begin() except+ nogil
         void root_end() except+ nogil
+        void trigger_pcm() except+ nogil
         map[string, data_t*]* get_data() except+ nogil
 
         # ------ parameters ------- #

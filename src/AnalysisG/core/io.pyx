@@ -18,6 +18,7 @@ cdef class IO:
         self.ptr = new io();
         self.data_ops = NULL
         self.meta_data = {}
+        self.ptr.trigger_pcm()
 
     def __init__(self, root = []):
         self.prg = None

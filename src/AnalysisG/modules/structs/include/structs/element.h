@@ -36,7 +36,6 @@ struct data_t: public bsc_t
         TFile*     file = nullptr; 
 
         int file_index = 0;  
-        long index = 0; 
 
         std::vector<std::string>* files_s = nullptr;
         std::vector<long>*        files_i = nullptr; 

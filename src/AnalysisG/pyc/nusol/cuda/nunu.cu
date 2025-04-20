@@ -333,22 +333,22 @@ std::map<std::string, torch::Tensor> nusol_::NuNu(
 ){
     if (!m2){m2 = m1;}
     unsigned int dx = met_xy -> size(0); 
+
     std::map<std::string, torch::Tensor> H1_m = nusol_::BaseMatrix(pmc_b1, pmc_mu1, m1);
     std::map<std::string, torch::Tensor> H2_m = nusol_::BaseMatrix(pmc_b2, pmc_mu2, m2);
-    torch::Tensor passed = H1_m["passed"] * H2_m["passed"]; 
 
     torch::Tensor H1_ = H1_m["H"]; 
-    torch::Tensor H1p = H1_m["H_perp"]; 
-
     torch::Tensor H2_ = H2_m["H"]; 
+
+    torch::Tensor H1p = H1_m["H_perp"]; 
     torch::Tensor H2p = H2_m["H_perp"]; 
 
     std::map<std::string, torch::Tensor> out; 
     out = nusol_::NuNu(&H1_, &H1p, &H2_, &H2p, met_xy, null, step, tolerance, timeout); 
-    torch::Tensor nu1 = out["nu1"].view({dx, -1, 3});  
-    torch::Tensor nu2 = out["nu2"].view({dx, -1, 3}); 
-    torch::Tensor dst = out["distances"].view({dx, -1}); 
-    out["passed"] = passed; 
+    out["nu1"] = out["nu1"].view({dx, -1, 3});  
+    out["nu2"] = out["nu2"].view({dx, -1, 3}); 
+    out["distances"] = out["distances"].view({dx, -1}); 
+    out["passed"] = H1_m["passed"] * H2_m["passed"]; 
     return out; 
 }
 

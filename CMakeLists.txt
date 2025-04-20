@@ -16,6 +16,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Dimt=ON")
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
+option(BUILD_DOC "Build documentation" ON)
+find_package(Doxygen REQUIRED)
+
 set(CMAKE_ANALYSISG_CUDA ON)
 include(FetchContent)
 include(CheckLanguage)
@@ -99,6 +102,7 @@ message(STATUS "CAFFE2_USE_CUDNN is: ${CAFFE2_USE_CUDNN}")
 find_package(HDF5   REQUIRED COMPONENTS CXX)
 find_package(Python COMPONENTS Interpreter Development REQUIRED)
 find_package(ROOT   COMPONENTS RIO Tree Core REQUIRED)
+
 list(APPEND CMAKE_PREFIX_PATH "${ROOT_SOURCE_DIR}")
 include_directories(${ROOT_INCLUDE_DIRS})
 
@@ -109,3 +113,17 @@ message(STATUS     "TORCH: ${TORCH_LIBRARIES}")
 
 add_subdirectory(src/AnalysisG)
 file(INSTALL ${CMAKE_BINARY_DIR}/src/AnalysisG DESTINATION ${PYTHON_SITE_PACKAGES})
+
+#if (DOXYGEN_FOUND)
+#set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/src/docs/Doxyfile.in)
+#set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
+#configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
+#message("Doxygen build started")
+#add_custom_target( doc_doxygen ALL
+#COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
+#WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+#COMMENT "Generating documentation with Doxygen" VERBATIM)
+#else (DOXYGEN_FOUND)
+#message("Doxygen need to be installed to generate the doxygen documentation")
+#endif (DOXYGEN_FOUND)
+
