@@ -10,7 +10,11 @@ packet_t::~packet_t(){
 }
 
 validation::validation(){this -> name = "validation";}
-selection_template* validation::clone(){return new validation();}
+selection_template* validation::clone(){
+    validation* vl = new validation();
+    vl -> num_device = this -> num_device;
+    return vl;
+}
 validation::~validation(){this -> safe_delete(&this -> storage);}
 
 void validation::merge(selection_template* sl){
