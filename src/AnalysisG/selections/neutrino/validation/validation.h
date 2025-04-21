@@ -46,7 +46,7 @@ class validation: public selection_template
         void reconstruction(packet_t* data); 
         void update_state(packet_t* data); 
 
-
+        int num_device = 1; 
         double masstop = 172.62*1000; 
         double massw   = 80.385*1000; 
 
@@ -65,6 +65,7 @@ class validation: public selection_template
             data -> met = evnt -> met; 
             data -> phi = evnt -> phi; 
             data -> name = name; 
+            data -> device = "cuda:" + std::string(this -> threadIdx % this -> num_device); 
             this -> storage.push_back(data); 
             return this -> storage[idx]; 
         }

@@ -10,7 +10,7 @@ from AnalysisG.core.particle_template cimport *
 cdef extern from "validation.h":
     cdef cppclass validation(selection_template):
         validation() except +
-
+        int num_device
 
 cdef cppclass neutrino(particle_template):
     double distance
@@ -27,6 +27,7 @@ cdef cppclass event:
 cdef inline particle_template* make_particle(vector[double]* pmu, int pdg) noexcept nogil:
     if not pmu.size(): return NULL
     cdef particle_template* p = new particle_template()
+    p.type = string(b"particle")
     p.pt  = pmu.at(0)
     p.eta = pmu.at(1)
     p.phi = pmu.at(2)
@@ -37,6 +38,7 @@ cdef inline particle_template* make_particle(vector[double]* pmu, int pdg) noexc
 cdef inline neutrino* make_neutrino(vector[double]* pmu, double dst) noexcept nogil:
     if not pmu.size(): return NULL
     cdef neutrino* p = new neutrino()
+    p.type = string(b"particle")
     p.pt  = pmu.at(0)
     p.eta = pmu.at(1)
     p.phi = pmu.at(2)

@@ -62,7 +62,7 @@ bool container::add_selection_template(selection_template* sel){
     return evt -> has_selection(sel);
 }
 
-void container::compile(size_t* l){
+void container::compile(size_t* l, int threadIdx){
     std::map<std::string, write_t*> handles;
     std::map<std::string, entry_t>::iterator itr = this -> random_access.begin();  
 
@@ -90,12 +90,14 @@ void container::compile(size_t* l){
             for (selection_template* sel : ev -> m_selection){
                 std::string name = sel -> name; 
                 selection_template* slx = sel -> clone(); 
+                slx -> threadIdx = threadIdx; 
                 if (this -> output_path){slx -> handle = handles[name];}
                 (*this -> merged)[name] = slx;
             }
         }
         for (selection_template* sel : ev -> m_selection){
             std::string name = sel -> name; 
+            sel -> threadIdx = threadIdx; 
             sel -> bulk_write(nullptr, nullptr); 
             if (this -> output_path){sel -> handle = handles[name];}
             bool col = sel -> CompileEvent();
@@ -105,9 +107,9 @@ void container::compile(size_t* l){
         }
 
         for (graph_template* gr : ev -> m_graph){
+            gr -> threadIdx = threadIdx; 
             if (!gr -> preselection){}
             else if (!gr -> PreSelection()){continue;}
-
             gr -> CompileEvent(); 
             gr -> flush_particles();
             graph_t* gr_    = gr -> data_export();  

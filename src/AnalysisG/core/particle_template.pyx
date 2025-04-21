@@ -92,8 +92,7 @@ cdef class ParticleTemplate:
         return leaves
 
     cpdef ParticleTemplate clone(self):
-        v = self.__class__
-        v = v()
+        cdef ParticleTemplate v = ParticleTemplate()
         v.Type = self.Type
         return v
 

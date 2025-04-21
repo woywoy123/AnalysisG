@@ -1,0 +1,229 @@
+/**
+ * @class notification
+ *
+ * A class responsible for displaying notifications to the user.
+ */
+
+
+/**
+ * @brief Default constructor.
+ */
+
+notification::notification();
+
+/**
+ * @brief Destructor.
+ */
+
+notification::~notification();
+
+/**
+ * @brief Display a success message to the user.
+ *
+ * @param message The message to be displayed.
+ */
+
+void notification::success(std::string message);
+
+/**
+ * @brief Display a warning message to the user.
+ *
+ * @param message The message to be displayed.
+ */
+
+void notification::warning(std::string message);
+
+/**
+ * @brief Display a failure message to the user.
+ *
+ * @param message The message to be displayed.
+ */
+
+void notification::failure(std::string message);
+
+/**
+ * @brief Display an informational message to the user.
+ *
+ * @param message The message to be displayed.
+ */
+
+void notification::info(std::string message);
+
+/**
+ * @brief Display a progress bar to the user.
+ *
+ * @param prog The current progress (0-1).
+ * @param title The title of the progress bar.
+ */
+
+void notification::progressbar(float prog, std::string title = "");
+
+/**
+ * @brief Display a progress bar to the user with multiple threads.
+ *
+ * @param threads A vector of thread IDs.
+ * @param trgt A vector of target values.
+ * @param title The title of the progress bar.
+ */
+
+void notification::progressbar(std::vector<size_t>* threads, std::vector<size_t>* trgt = nullptr, std::vector<std::string>* title = nullptr);
+
+/**
+ * @brief Monitor the progress of multiple threads.
+ *
+ * @param thr A vector of thread pointers.
+ * @param prg A vector of current progress values.
+ * @param trgt A vector of target values.
+ *
+ * @return The number of running threads.
+ */
+
+int notification::running(std::vector<std::thread*>* thr, std::vector<size_t>* prg = nullptr, std::vector<size_t>* trgt = nullptr);
+
+/**
+ * @brief Monitor the progress of multiple threads (static).
+ *
+ * @param thr A vector of thread pointers.
+ */
+
+void notification::monitor(std::vector<std::thread*>* thr);
+
+/**
+ * @brief Display a static progress bar to the user (1-3 arguments).
+ *
+ * @tparam g The type of the progress value.
+ * @param threads A vector of thread IDs.
+ * @param l The current progress value(s).
+ * @param title The title of the progress bar.
+ */
+
+template <typename g>
+void static notification::progressbar1(std::vector<size_t>* threads, size_t l = 0, std::string title = "");
+
+/**
+ * @brief Display a static progress bar to the user (1-3 arguments).
+ *
+ * @tparam g The type of the progress value.
+ * @param threads A vector of thread IDs.
+ * @param l The current progress values.
+ * @param title The title of the progress bar.
+ */
+
+template <typename g>
+void static notification::progressbar2(std::vector<size_t>* threads, size_t* l = nullptr, std::string* title = nullptr);
+
+/**
+ * @brief Display a static progress bar to the user (1-3 arguments).
+ *
+ * @tparam g The type of the progress value.
+ * @param threads A vector of thread IDs.
+ * @param l The current progress values.
+ * @param title The title of the progress bar.
+ */
+
+template <typename g>
+void static notification::progressbar3(std::vector<size_t>* threads, std::vector<size_t>* l = nullptr, std::vector<std::string*>* title = nullptr);
+
+/**
+ * @brief Get or set the prefix for notifications.
+ *
+ * @return The notification prefix.
+ */
+
+std::string notification::getPrefix(); 
+
+/**
+ * @brief Set the notification prefix.
+ *
+ * @param value The new notification prefix.
+ */
+
+void notification::setPrefix(std::string value); 
+
+/**
+ * @brief Calculate the sum of a vector of values.
+ *
+ * @tparam g The type of the value in the vector.
+ * @param inpt A vector of values to calculate the sum of.
+ *
+ * @return The sum of the values in the vector.
+ */
+
+template <typename g>
+g notification::sum(std::vector<g>* inpt); 
+
+/**
+ * @brief Format the notification message.
+ *
+ * @param message The notification message.
+ */
+
+void notification::_format(std::string* message);
+
+
+/**
+ * @var notification::_warning
+ *
+ * The color code for warning messages (33).
+ */
+
+int notification::_warning = 33;
+
+/**
+ * @var notification::_failure
+ *
+ * The color code for failure messages (31).
+ */
+
+int notification::_failure = 31;
+
+/**
+ * @var notification::_success
+ *
+ * The color code for success messages (32).
+ */
+
+int notification::_success = 32;
+
+/**
+ * @var notification::_info
+ *
+ * The color code for informational messages (37).
+ */
+
+int notification::_info = 37;
+
+/**
+ * @var notification::bold
+ *
+ * Whether to display notifications in bold font.
+ */
+
+bool notification::bold = false;
+
+/**
+ * @var notification::shush
+ *
+ * Whether to suppress notifications.
+ */
+
+bool notification::shush = false;
+
+/**
+ * @var notification::caller
+ *
+ * The ID of the thread that called this notification (not used).
+ */
+
+int notification::caller;
+
+
+/**
+ * @var notification::prefix
+ *
+ * Specifies the prefix of the child class.
+ */
+
+std::string notification::prefix;
+
+

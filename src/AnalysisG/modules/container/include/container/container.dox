@@ -24,13 +24,7 @@ struct entry_t {
     bool has_selection(selection_template* sel); 
     
     template <typename g>
-    void destroy(std::vector<g*>* c){
-        for (size_t x(0); x < c -> size(); ++x){
-            delete (*c)[x]; 
-            (*c)[x] = nullptr; 
-        }
-        std::vector<g*>().swap(*c); 
-    }
+    void destroy(std::vector<g*>* c)
 }; 
 
 class container: public tools
@@ -48,7 +42,7 @@ class container: public tools
         void fill_selections(std::map<std::string, selection_template*>* inpt); 
         void get_events(std::vector<event_template*>*, std::string label); 
         void populate_dataloader(dataloader* dl);
-        void compile(size_t* len, int threadIdx); 
+        void compile(size_t* len); 
         size_t len(); 
         
         entry_t* add_entry(std::string hash); 

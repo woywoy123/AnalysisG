@@ -1,0 +1,153 @@
+/**
+ * @file 
+ * Header file containing functions and classes for data type casting between vectors and tensors.
+ */
+
+/**
+ * @brief Splits a vector into chunks of size N.
+ *
+ * This function takes a vector `v` and an integer `N`, and returns a 2D vector where each inner vector is a chunk of the original vector of size `N`.
+ *
+ * @param[out] v The input vector to be split.
+ * @param[in] N The size of each chunk.
+ * @return A 2D vector containing chunks of the input vector.
+ */
+template <typename G>
+std::vector<std::vector<G>> chunking(std::vector<G>* v, int N);
+
+/**
+ * @brief Converts a tensor into a vector.
+ *
+ * This function takes a torch::Tensor `data` and converts it into a 1D or 2D vector based on the number of dimensions. The resulting vector is stored in `trgt`.
+ *
+ * @param[out] trgt The output vector to store the result.
+ * @param[in] chnks A vector of chunks from which the tensor was created.
+ * @param[in] dims A vector of signed longs representing the dimensions of the tensor.
+ * @param[in] next_dim An optional integer indicating the current dimension being processed (default is 0).
+ */
+template <typename g>
+void tensor_vector(std::vector<g>* trgt, std::vector<g>* chnks, std::vector<signed long>*, int);
+
+/**
+ * @brief Converts a tensor into a vector with explicit dimensions.
+ *
+ * This function takes a torch::Tensor `data` and converts it into a 1D or 2D vector based on the number of dimensions. The resulting vector is stored in `trgt`.
+ *
+ * @param[out] trgt The output vector to store the result.
+ * @param[in] chnks A vector of chunks from which the tensor was created.
+ * @param[in] dims A vector of signed longs representing the dimensions of the tensor.
+ * @param[in] next_dim An optional integer indicating the current dimension being processed (default is 0).
+ */
+template <typename G, typename g>
+void tensor_vector(std::vector<G>* trgt, std::vector<g>* chnks, std::vector<signed long>* dims, int next_dim = 0);
+
+/**
+ * @brief Converts a tensor into a vector.
+ *
+ * This function takes a torch::Tensor `data` and converts it into a 1D or 2D vector based on the number of dimensions. The resulting vector is stored in `out`.
+ *
+ * @param[out] out The output vector to store the result.
+ * @param[in] data The input tensor to be converted.
+ * @param[in] dims A vector of signed longs representing the dimensions of the tensor.
+ * @param[in] prim An optional primitive type (default is g).
+ */
+template <typename G, typename g>
+void tensor_to_vector(torch::Tensor* data, std::vector<G>* out, std::vector<signed long>* dims, g);
+
+/**
+ * @brief Returns the size of a tensor in bytes.
+ *
+ * This function takes a torch::Tensor `inpt` and returns its size in bytes.
+ *
+ * @param[in] inpt The input tensor whose size is to be calculated.
+ * @return A vector of signed longs representing the size of the tensor in bytes.
+ */
+std::vector<signed long> tensor_size(torch::Tensor* inpt);
+
+/**
+ * @brief Variable class for processing data.
+ *
+ * This class provides methods for processing data from various sources, including tensors and vectors. It also allows for flexible handling of different primitive types.
+ */
+    
+/**
+ * @brief Default constructor.
+ */
+variable_t::variable_t();
+
+/**
+ * @brief Constructor with boolean parameter.
+ *
+ * This constructor takes a boolean parameter `use_external` and initializes the object's state accordingly.
+ *
+ * @param[in] use_external A boolean indicating whether to use external data or not.
+ */
+variable_t::variable_t(bool);
+
+/**
+ * @brief Destructor.
+ */
+variable_t::~variable_t() override;
+
+/**
+ * @brief Creates meta data for processing.
+ *
+ * This method takes a `meta_t*` object and initializes the object's state with it.
+ *
+ * @param[in] mt The meta data to be used for processing.
+ */
+void variable_t::create_meta(meta_t* mt);
+
+/**
+ * @brief Builds switch statement for processing.
+ *
+ * This method takes an integer `s` and a torch::Tensor `tx`, and builds the necessary state for processing based on them.
+ *
+ * @param[in] s An integer indicating the current dimension being processed.
+ * @param[in] tx The tensor being processed.
+ */
+void variable_t::build_switch(size_t s, torch::Tensor* tx); 
+
+/**
+ * @brief Processes data from a tensor.
+ *
+ * This method takes a torch::Tensor `data`, a string `varname`, and a TTree `tr`, and processes the data accordingly based on its type and dimensionality.
+ *
+ * @param[in] data The tensor being processed.
+ * @param[in] varname A string indicating the variable name.
+ * @param[in] tr The TTree containing the data.
+ */
+void variable_t::process(torch::Tensor* data, std::string* varname, TTree* tr);
+
+/**
+ * @brief Processes 2D vector of floats from a tensor.
+ *
+ * This method takes a 2D vector `data` of floats, a string `varname`, and a TTree `tr`, and processes the data accordingly based on its dimensionality.
+ *
+ * @param[in] data A 2D vector of floats being processed.
+ * @param[in] varname A string indicating the variable name.
+ * @param[in] tr The TTree containing the data.
+ */
+void variable_t::process(std::vector<std::vector<float>> data, std::string* varname, TTree* tr);
+
+/**
+ * @brief Processes 2D vector of integers from a tensor.
+ *
+ * This method takes a 2D vector `data` of integers, a string `varname`, and a TTree `tr`, and processes the data accordingly based on its dimensionality.
+ *
+ * @param[in] data A 2D vector of integers being processed.
+ * @param[in] varname A string indicating the variable name.
+ * @param[in] tr The TTree containing the data.
+ */
+void variable_t::process(std::vector<std::vector<int>> data, std::string* varname, TTree* tr);
+
+/**
+ * @brief Processes 2D vector of booleans from a tensor.
+ *
+ * This method takes a 2D vector `data` of booleans, a string `varname`, and a TTree `tr`, and processes the data accordingly based on its dimensionality.
+ *
+ * @param[in] data A 2D vector of booleans being processed.
+ * @param[in] varname A string indicating the variable name.
+ * @param[in] tr The TTree containing the data.
+ */
+void variable_t::process(std::vector<std::vector<bool>> data, std::string* varname, TTree* tr);

@@ -1,6 +1,7 @@
 # distutils: language=c++
 # cython: language_level=3
 
+import vector as vxc
 from AnalysisG.core.particle_template cimport *
 from AnalysisG.core.selection_template cimport *
 from AnalysisG.core.tools cimport *
@@ -8,11 +9,32 @@ from cython.parallel cimport prange
 
 cdef class Neutrino(ParticleTemplate):
     cdef neutrino* ptx
-    cdef public double distance 
+    cdef public double chi2
+    def __cinit__(self): self.ptx = NULL
     def __dealloc__(self): del self.ptx
+    
+    @property
+    def distance(self): 
+        if self.ptx == NULL: 
+            self.ptx = new neutrino()
+            self.ptr = <particle_template*>(self.ptx)
+        return self.ptx.distance
+
+    @distance.setter
+    def distance(self, double v):
+        if self.ptx == NULL: 
+            self.ptx = new neutrino()
+            self.ptr = <particle_template*>(self.ptx)
+        self.ptx.distance = v
+
+    @property
+    def vec(self): return vxc.obj(**{"px" : self.px, "py" : self.py, "pz" : self.pz, "energy" : self.e})
 
 cdef class Particle(ParticleTemplate):
     def __dealloc__(self): del self.ptr
+
+    @property
+    def vec(self): return vxc.obj(**{"px" : self.px, "py" : self.py, "pz" : self.pz, "energy" : self.e})
 
 cdef class Event:
     cdef event* ptr
@@ -30,6 +52,13 @@ cdef class Event:
         self.DynamicNeutrino = {i : {0 : [], 1 : []} for i in typx}
         self.StaticNeutrino  = {i : {0 : [], 1 : []} for i in typx}
         self.Particles       = {i : {0 : [], 1 : []} for i in typx}
+
+    @property
+    def met(self): return self.ptr.met
+    @property
+    def phi(self): return self.ptr.phi
+    @property
+    def vec(self): return vxc.obj(pt = self.met, phi = self.phi)
 
     cdef build(self):
         cdef int i, t
@@ -78,6 +107,11 @@ cdef class Validation(SelectionTemplate):
         self.root_leaves = {i : loader for i in xp}
         self.ptr = new validation()
         self.tt = <validation*>self.ptr
+
+    @property
+    def NumDevices(self): return self.tt.num_device
+    @NumDevices.setter
+    def NumDevices(self, int vl): self.tt.num_device = vl
 
     def Postprocessing(self):
         cdef int i, k

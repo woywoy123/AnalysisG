@@ -168,6 +168,7 @@ class selection_template: public tools
             return false; 
         }
 
+        int threadIdx = -1; 
         std::map<std::string, std::map<std::string, float>> passed_weights = {}; 
         std::map<std::string, meta_t> matched_meta = {}; 
 
