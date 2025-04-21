@@ -1,102 +1,180 @@
+/**
+ * @file dataloader_generator.h
+ * @brief Header file for the DataLoader class.
+ */
 #ifndef DATALOADER_GENERATOR_H
 #define DATALOADER_GENERATOR_H
-
 #ifdef PYC_CUDA
 #include <cuda.h>
 #include <c10/cuda/CUDACachingAllocator.h>
 #define _server true
 #endif
-
 #ifndef _server
 #define _server false
 #endif
-
 #include <tools/tools.h>
 #include <structs/property.h>
 #include <structs/settings.h>
 #include <notification/notification.h>
 #include <templates/graph_template.h>
-
 #include <map>
 #include <random>
 #include <algorithm>
+/**
+ * @class analysis
+ * @brief Forward declaration of the Analysis class.
+ */
+class analysis;
 
-class analysis; 
-class model_template; 
-struct model_report; 
+/**
+ * @class model_template
+ * @brief Forward declaration of the ModelTemplate class.
+ */
+class model_template;
 
-class dataloader: 
-    public notification, 
-    public tools
-{
-    public:
-        dataloader();
-        ~dataloader();
+/**
+ * @struct model_report
+ * @brief Forward declaration of the ModelReport struct.
+ */
+struct model_report;
 
-        std::vector<graph_t*>* get_k_train_set(int k); 
-        std::vector<graph_t*>* get_k_validation_set(int k); 
-        std::vector<graph_t*>* get_test_set(); 
-        std::vector<graph_t*>* build_batch(std::vector<graph_t*>* data, model_template* mdl, model_report* rep); 
-        static void safe_delete(std::vector<graph_t*>* data); 
+/**
+ * @class dataloader
+ * @brief A class responsible for loading and managing data.
+ *
+ * This class provides methods for generating training, validation, and test sets,
+ * as well as building batches and transferring data between devices.
+ */
+class dataloader : public notification, public tools {
+public:
+    /**
+     * @brief Constructor for the DataLoader class.
+     */
+    dataloader();
 
-        std::map<std::string, std::vector<graph_t*>>* get_inference(); 
+    /**
+     * @brief Destructor for the DataLoader class.
+     */
+    ~dataloader();
 
-        void generate_test_set(float percentage = 50); 
-        void generate_kfold_set(int k); 
-        void dump_dataset(std::string path); 
-        bool restore_dataset(std::string path); 
+    /**
+     * @brief Returns a vector of graphs representing the k-th training set.
+     *
+     * @param k The index of the training set to retrieve (1-indexed).
+     * @return A vector of graphs representing the k-th training set.
+     */
+    std::vector<graph_t*>* get_k_train_set(int k);
 
-        std::vector<graph_t*> get_random(int num = 5); 
-        void extract_data(graph_t* gr); 
-        void datatransfer(torch::TensorOptions* op, size_t* num_events = nullptr, size_t* prg_events = nullptr);
-        void datatransfer(std::map<int, torch::TensorOptions*>* ops);
-        bool dump_graphs(std::string path = "./", int threads = 10); 
+    /**
+     * @brief Returns a vector of graphs representing the k-th validation set.
+     *
+     * @param k The index of the validation set to retrieve (1-indexed).
+     * @return A vector of graphs representing the k-th validation set.
+     */
+    std::vector<graph_t*>* get_k_validation_set(int k);
 
-        void restore_graphs(std::vector<std::string> paths, int threads); 
-        void restore_graphs(std::string paths, int threads); 
-        void start_cuda_server(); 
-    
-    private:
-        friend class analysis;
-        settings_t* setting = nullptr; 
-        std::thread* cuda_mem = nullptr; 
+    /**
+     * @brief Returns a vector of graphs representing the test set.
+     *
+     * @return A vector of graphs representing the test set.
+     */
+    std::vector<graph_t*>* get_test_set();
 
-        void cuda_memory_server(); 
+    /**
+     * @brief Builds a batch of data from the provided input data and model template.
+     *
+     * @param data The input data to build the batch from.
+     * @param mdl The model template used for building the batch.
+     * @param rep The report generated during batch building.
+     * @return A vector of graphs representing the built batch.
+     */
+    std::vector<graph_t*>* build_batch(std::vector<graph_t*>* data, model_template* mdl, model_report* rep);
 
-        void clean_data_elements(
-                std::map<std::string, int>** data_map, 
-                std::vector<std::map<std::string, int>*>* loader_map
-        ); 
+    /**
+     * @brief Safely deletes a vector of graphs.
+     *
+     * @param data The vector of graphs to delete.
+     */
+    static void safe_delete(std::vector<graph_t*>* data);
 
-        void shuffle(std::vector<int>* idx); 
-        void shuffle(std::vector<graph_t*>* idx); 
-        std::map<std::string, graph_t*>* restore_graphs_(std::vector<std::string>, int threads); 
+    /**
+     * @brief Returns a map of inference results for the provided input data.
+     *
+     * @return A map of inference results for the provided input data.
+     */
+    std::map<std::string, std::vector<graph_t*>>* get_inference();
 
-        std::map<int, std::vector<graph_t*>*> batched_cache = {}; 
-        std::map<int, std::vector<graph_t*>*> gr_k_fold_training = {}; 
-        std::map<int, std::vector<graph_t*>*> gr_k_fold_validation = {}; 
+    /**
+     * @brief Generates a test set with the specified percentage of the total data.
+     *
+     * @param percentage The percentage of the total data to include in the test set (default: 50).
+     */
+    void generate_test_set(float percentage = 50);
 
+    /**
+     * @brief Generates k-fold training and validation sets.
+     *
+     * @param k The number of folds to divide the data into.
+     */
+    void generate_kfold_set(int k);
 
-        std::map<int, std::vector<int>*> k_fold_training = {}; 
-        std::map<int, std::vector<int>*> k_fold_validation = {}; 
+    /**
+     * @brief Dumps the dataset to a file at the specified path.
+     *
+     * @param path The path where the dataset will be dumped (default: "./").
+     */
+    void dump_dataset(std::string path = "./");
 
-        std::vector<int>* test_set  = nullptr; 
-        std::vector<int>* train_set = nullptr; 
-        std::vector<int>* data_index = nullptr; 
+    /**
+     * @brief Restores a dataset from a file at the specified path.
+     *
+     * @param path The path of the file to restore the dataset from.
+     * @return True if the restoration was successful, false otherwise.
+     */
+    bool restore_dataset(std::string path);
 
-        std::vector<std::map<std::string, int>*> truth_map_graph = {}; 
-        std::vector<std::map<std::string, int>*> truth_map_node  = {}; 
-        std::vector<std::map<std::string, int>*> truth_map_edge  = {}; 
+    /**
+     * @brief Returns a vector of random graphs with the specified number of elements.
+     *
+     * @param num The number of graphs to return (default: 5).
+     * @return A vector of random graphs.
+     */
+    std::vector<graph_t*> get_random(int num = 5);
 
-        std::vector<std::map<std::string, int>*> data_map_graph = {}; 
-        std::vector<std::map<std::string, int>*> data_map_node  = {}; 
-        std::vector<std::map<std::string, int>*> data_map_edge  = {}; 
+    /**
+     * @brief Extracts data from a graph.
+     *
+     * @param gr The graph to extract data from.
+     */
+    void extract_data(graph_t* gr);
 
-        std::map<std::string, int> hash_map = {}; 
-        std::vector<graph_t*>*  gr_test = nullptr; 
-        std::vector<graph_t*>* data_set = nullptr; 
+    /**
+     * @brief Transfers data between devices using the specified tensor options.
+     *
+     * @param op The tensor options used for transferring data.
+     * @param num_events The number of events to transfer (default: nullptr).
+     * @param prg_events The program events to transfer (default: nullptr).
+     */
+    void datatransfer(torch::TensorOptions* op, size_t* num_events = nullptr, size_t* prg_events = nullptr);
 
-        std::default_random_engine rnd{}; 
-}; 
+    /**
+     * @brief Transfers data between devices using the specified map of tensor options.
+     *
+     * @param ops The map of tensor options used for transferring data.
+     */
+    void datatransfer(std::map<int, torch::TensorOptions*>* ops);
 
-#endif
+    /**
+     * @brief Dumps graphs to files at the specified path with the specified number of threads.
+     *
+     * @param path The path where the graphs will be dumped (default: "./").
+     * @param threads The number of threads used for dumping graphs (default: 10).
+     */
+    bool dump_graphs(std::string path = "./", int threads = 10);
+
+private:
+    // Private members and methods
+};
+
+};
+

@@ -1,55 +1,52 @@
 The EventTemplate Source Files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==============================
 
 The event class needs to be declared within the `event.h` header files, and might look something like the code below:
 
-.. code:: C++
+```cpp
+#ifndef EVENTS_EVENTNAME_H
+#define EVENTS_EVENTNAME_H
 
-   #ifndef EVENTS_EVENTNAME_H
-   #define EVENTS_EVENTNAME_H
+// header 
+#include <templates/event_template.h>
+#include "particles.h" // the definition of the particles to be used.
 
-   // header 
-   #include <templates/event_template.h>
-   #include "particles.h" // the definition of the particles to be used.
+class event_name: public event_template
+{
+     public: 
+         event_name(); 
+         ~event_name() override; // overrides the destructor
+    
+         std::vector<custom_particle*> some_objects = {};  
+         std::vector<particle_template*> some_particles = {};
 
-   class event_name: public event_template
-   {
-        public: 
-            event_name(); 
-            ~event_name() override; // overrides the destructor
-       
-            std::vector<custom_particle*> some_objects = {};  
-            std::vector<particle_template*> some_particles = {};
+         float some_variable = 0; 
 
-            float some_variable = 0; 
+         // is needed to make duplicate instances during the compilation process.
+         event_template* clone() override; 
 
-            // is needed to make duplicate instances during the compilation process.
-            event_template* clone() override; 
+         // the method to build the event, more on element_t later
+         void build(element_t* el) override; 
 
-            // the method to build the event, more on element_t later
-            void build(element_t* el) override; 
+         // add any additional compilation steps to the event e.g. truth matching
+         void CompileEvent() override; 
 
-            // add any additional compilation steps to the event e.g. truth matching
-            void CompileEvent() override; 
+     private:
+         std::map<std::string, custom_particle*> m_some_objects = {}; 
+         std::map<std::string, custom_particle_v2*> m_some_particles = {};  
+}; 
 
-        private:
-            std::map<std::string, custom_particle*> m_some_objects = {}; 
-            std::map<std::string, custom_particle_v2*> m_some_particles = {};  
-   }; 
-
-   #endif
-
-Now to the `event.cxx` file, in here the event is defined. 
-But as one can see from the above, there are a few methods that are being marked as `override`, these simply the specify how the event is to be defined.
+#endif
+```
+Now to the **event.cxx** file, in here the event is defined.
+But as one can see from the above, there are a few methods that are being marked as **override**, these simply specify how the event is to be defined.
 A brief explanation of these is given below:
-- `clone`: A dummy method used to make clones of the event. 
-- `build`: A method used to extract data from ROOT n-tuples per event and allows the user to assign attributes such as `some_variable` to the event.
-- `CompileEvent`: An optional method used to build the event, this might include truth matching or something else.
+- **clone**: A dummy method used to make clones of the event.
+- **build**: A method used to extract data from ROOT n-tuples per event and allows the user to assign attributes such as **some_variable** to the event.
+- **CompileEvent**: An optional method used to build the event, this might include truth matching or something else.
+Below is a simple example of what an event might look like:
 
-Below is a simple example of what an event might look like
-
-.. code:: C++
-
+```cpp
    #include "event.h"
 
    event_name::event_name(){
@@ -89,20 +86,20 @@ Below is a simple example of what an event might look like
             this -> some_particles.push_back((particle_template*)itr -> second); 
         }
    }
-
+```
 
 From the above code, there is a few things that have not been explained yet, namely the usage of the `element_t` struct.
 This struct holds the requested leaves, branches and tree data on an event by event basis, and uses the `get` function to automatically deduce the type that the key is mapped to.
 In fact, a fair bit of magic occurs under the hood, but the main message is that the `get` function will cast the input type back to the user. 
 For example, to request a `std::vector<std::vector<float>>` value from `element_t` is as simple as:
 
-.. code:: C++
-
+```cpp
    // define the type
    std::vector<std::vector<float>> some_variable; 
     
    // use element_t (here called el, following from the above example)
    el -> get("some-varible", &some_variable); 
+```
 
 Also notice that the `get` call expects a different key than what is given by the ROOT n-tuples leaves.
 This is an optional quirk if you are lazy and can't be bothered typing long names out.
@@ -110,7 +107,3 @@ This is an optional quirk if you are lazy and can't be bothered typing long name
 The next part to point out is the private declarations of the particle maps. 
 In the framework, particles are given a unique identifier in the form of a hash string. 
 So when the particle registration occurs in the constructor of the event class, the framework knows to delete these particles once they are not needed.
-This is discussed more in detail in the next section.
-
-For more information about the methods and attributes of the `event_template` class, see the core-class documentation :ref:`event-template`.
-

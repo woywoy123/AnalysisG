@@ -1,0 +1,31 @@
+# Doxyfile 1.9.8
+
+DOXYFILE_ENCODING      = UTF-8
+PROJECT_NAME           = "AnalysisG"
+PROJECT_NUMBER         = 5.0
+PROJECT_BRIEF          = A Graph Neural Network Analysis Framework for High Energy Physics!
+CREATE_SUBDIRS         = YES
+CREATE_SUBDIRS_LEVEL   = 8
+OUTPUT_LANGUAGE        = English
+FULL_PATH_NAMES        = YES
+PYTHON_DOCSTRING       = YES
+INHERIT_DOCS           = YES
+TAB_SIZE               = 4
+MARKDOWN_SUPPORT       = YES
+TOC_INCLUDE_HEADINGS   = 10
+MARKDOWN_ID_STYLE      = DOXYGEN
+AUTOLINK_SUPPORT       = YES
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_PRIV_VIRTUAL   = YES
+USE_MDFILE_AS_MAINPAGE = ../src/AnalysisG/main.md
+INPUT                  = ../src/AnalysisG \
+                         ../src/AnalysisG/modules \
+
+FILE_PATTERNS          = *.md *.dox *.py *.cuh *.cu *.pxd *.pyx
+RECURSIVE              = YES
+VERBATIM_HEADERS       = YES
+GENERATE_HTML          = YES
+HTML_OUTPUT            = html
+HTML_FILE_EXTENSION    = .html
+EXCLUDE                = "build"

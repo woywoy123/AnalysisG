@@ -8,71 +8,194 @@
 #include <tools/tools.h>
 #include <meta/meta.h>
 
-class event_template: public tools
-{
-    public:
-        event_template(); 
-        virtual ~event_template(); 
+/**
+ * @class event_template
+ * @brief Base class for events in a data processing framework.
+ *
+ * This class provides a template for creating and managing events. It includes properties for storing trees, branches, leaves, name, hash, tree, weight, and index.
+ */
+class event_template : public tools {
+public:
+    /**
+     * @brief Default constructor.
+     */
+    event_template();
 
-        cproperty<std::vector<std::string>, event_template> trees;  
-        void static set_trees(std::vector<std::string>*, event_template*); 
+    /**
+     * @brief Virtual destructor.
+     */
+    virtual ~event_template();
 
-        cproperty<std::vector<std::string>, event_template> branches;  
-        void static set_branches(std::vector<std::string>*, event_template*); 
+    /**
+     * @property trees
+     * @brief A vector of strings representing the trees in this event.
+     *
+     * This property is a cproperty, which means it can be accessed and modified using getter and setter functions.
+     */
+    cproperty<std::vector<std::string>, event_template> trees;
 
-        cproperty<std::vector<std::string>, event_template> leaves;  
-        void static get_leaves(std::vector<std::string>*, event_template*); 
-        void add_leaf(std::string key, std::string leaf = ""); 
+    /**
+     * @fn static set_trees(std::vector<std::string>* value, event_template* obj)
+     * @brief Sets the value of the trees property.
+     *
+     * This function is a static member function, which means it can be called without creating an instance of the class. It takes two arguments: a pointer to a vector of strings and a pointer to an event_template object.
+     */
+    void static set_trees(std::vector<std::string>* value, event_template* obj);
 
-        cproperty<std::string, event_template> name; 
-        void static set_name(std::string*, event_template*); 
+    /**
+     * @property branches
+     * @brief A vector of strings representing the branches in this event.
+     *
+     * This property is a cproperty, which means it can be accessed and modified using getter and setter functions.
+     */
+    cproperty<std::vector<std::string>, event_template> branches;
 
-        cproperty<std::string, event_template> hash; 
-        void static set_hash(std::string*, event_template*); 
-        void static get_hash(std::string*, event_template*); 
+    /**
+     * @fn static set_branches(std::vector<std::string>* value, event_template* obj)
+     * @brief Sets the value of the branches property.
+     *
+     * This function is a static member function, which means it can be called without creating an instance of the class. It takes two arguments: a pointer to a vector of strings and a pointer to an event_template object.
+     */
+    void static set_branches(std::vector<std::string>* value, event_template* obj);
 
-        cproperty<std::string, event_template> tree;  
-        void static set_tree(std::string*, event_template*); 
-        void static get_tree(std::string*, event_template*); 
+    /**
+     * @property leaves
+     * @brief A map of strings representing the leaves in this event.
+     *
+     * This property is a cproperty, which means it can be accessed and modified using getter and setter functions.
+     */
+    cproperty<std::map<std::string, std::string>, event_template> leaves;
 
-        cproperty<double, event_template> weight;
-        void static set_weight(double*, event_template*); 
+    /**
+     * @fn add_leaf(std::string key, std::string leaf = "")
+     * @brief Adds a new leaf to the leaves property.
+     *
+     * This function takes two arguments: a string representing the key and an optional string representing the value. If no value is provided, an empty string will be used.
+     */
+    void add_leaf(std::string key, std::string leaf = "");
 
-        cproperty<long, event_template> index; 
-        void static set_index(long*, event_template*); 
+    /**
+     * @property name
+     * @brief A string representing the name of this event.
+     *
+     * This property is a cproperty, which means it can be accessed and modified using getter and setter functions.
+     */
+    cproperty<std::string, event_template> name;
 
-        std::map<std::string, std::string> m_trees; 
-        std::map<std::string, std::string> m_branches;
-        std::map<std::string, std::string> m_leaves; 
-      
-        virtual event_template* clone(); 
-        virtual void build(element_t* el); 
-        virtual void CompileEvent(); 
+    /**
+     * @fn static set_name(std::string* value, event_template* obj)
+     * @brief Sets the value of the name property.
+     *
+     * This function is a static member function, which means it can be called without creating an instance of the class. It takes two arguments: a pointer to a string and a pointer to an event_template object.
+     */
+    void static set_name(std::string* value, event_template* obj);
 
-        std::map<std::string, event_template*> build_event(std::map<std::string, data_t*>* evnt); 
+    /**
+     * @property hash
+     * @brief A string representing the hash of this event.
+     *
+     * This property is a cproperty, which means it can be accessed and modified using getter and setter functions.
+     */
+    cproperty<std::string, event_template> hash;
 
-        template <typename G>
-        void register_particle(std::map<std::string, G*>* object)
+    /**
+     * @fn static set_hash(std::string* value, event_template* obj)
+     * @brief Sets the value of the hash property.
+     *
+     * This function is a static member function, which means it can be called without creating an instance of the class. It takes two arguments: a pointer to a string and a pointer to an event_template object.
+     */
+    void static set_hash(std::string* value, event_template* obj);
 
-        template <typename G>
-        void deregister_particle(std::map<std::string, G*>* object)
+    /**
+     * @fn static get_hash(std::string* value, event_template* obj)
+     * @brief Gets the value of the hash property.
+     *
+     * This function is a static member function, which means it can be called without creating an instance of the class. It takes two arguments: a pointer to a string and a pointer to an event_template object.
+     */
+    void static get_hash(std::string* value, event_template* obj);
 
-        bool operator == (event_template& p); 
+    /**
+     * @property tree
+     * @brief A string representing the tree of this event.
+     *
+     * This property is a cproperty, which means it can be accessed and modified using getter and setter functions.
+     */
+    cproperty<std::string, event_template> tree;
 
-        event_t data; 
-        meta* meta_data = nullptr; 
-        std::string filename = ""; 
-        void flush_particles();
+    /**
+     * @fn static set_tree(std::string* value, event_template* obj)
+     * @brief Sets the value of the tree property.
+     *
+     * This function is a static member function, which means it can be called without creating an instance of the class. It takes two arguments: a pointer to a string and a pointer to an event_template object.
+     */
+    void static set_tree(std::string* value, event_template* obj);
 
-    private:
-        void build_mapping(std::map<std::string, data_t*>* evnt); 
-        void flush_leaf_string(); 
+    /**
+     * @fn static get_tree(std::string* value, event_template* obj)
+     * @brief Gets the value of the tree property.
+     *
+     * This function is a static member function, which means it can be called without creating an instance of the class. It takes two arguments: a pointer to a string and a pointer to an event_template object.
+     */
+    void static get_tree(std::string* value, event_template* obj);
 
-        std::map<std::string, bool> next_ = {}; 
-        std::map<std::string, particle_template*> particle_generators; 
-        std::map<std::string, std::map<std::string, element_t>> tree_variable_link = {}; 
-        std::map<std::string, std::map<std::string, particle_template*>*> particle_link = {}; 
-}; 
+    /**
+     * @property weight
+     * @brief A double representing the weight of this event.
+     *
+     * This property is a cproperty, which means it can be accessed and modified using getter and setter functions.
+     */
+    cproperty<double, event_template> weight;
 
+    /**
+     * @fn static set_weight(double* value, event_template* obj)
+     * @brief Sets the value of the weight property.
+     *
+     * This function is a static member function, which means it can be called without creating an instance of the class. It takes two arguments: a pointer to a double and a pointer to an event_template object.
+     */
+    void static set_weight(double* value, event_template* obj);
+
+    /**
+     * @property index
+     * @brief A long representing the index of this event.
+     *
+     * This property is a cproperty, which means it can be accessed and modified using getter and setter functions.
+     */
+    cproperty<long, event_template> index;
+
+    /**
+     * @fn static set_index(long* value, event_template* obj)
+     * @brief Sets the value of the index property.
+     *
+     * This function is a static member function, which means it can be called without creating an instance of the class. It takes two arguments: a pointer to a long and a pointer to an event_template object.
+     */
+    void static set_index(long* value, event_template* obj);
+
+    /**
+     * @fn clone()
+     * @brief Creates a deep copy of this event.
+     *
+     * This function returns a new event that is a deep copy of the current one.
+     */
+    event* clone();
+
+
+private:
+    std::map<std::string, std::string> m_leaves;
+
+    std::string m_name;
+
+    std::string m_hash;
+
+    std::string m_tree;
+
+    double m_weight;
+
+    long m_index;
+
+    event* m_parent;
+
+    std::vector<event*> m_children;
+
+};
 
 #endif

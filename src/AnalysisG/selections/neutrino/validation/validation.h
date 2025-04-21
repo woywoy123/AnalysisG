@@ -65,7 +65,7 @@ class validation: public selection_template
             data -> met = evnt -> met; 
             data -> phi = evnt -> phi; 
             data -> name = name; 
-            data -> device = "cuda:" + std::string(this -> threadIdx % this -> num_device); 
+            data -> device = "cuda:" + std::to_string(this -> threadIdx % this -> num_device); 
             this -> storage.push_back(data); 
             return this -> storage[idx]; 
         }

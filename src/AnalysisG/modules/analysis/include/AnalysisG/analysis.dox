@@ -1,119 +1,139 @@
-#ifndef ANALYSIS_H
-#define ANALYSIS_H
+/**
+ * @brief A class used for analyzing data and managing various templates and models.
+ *
+ * This class provides methods for adding different types of templates, models,
+ * and configurations. It also includes functionality for tracking progress,
+ * managing threads, and handling various metadata related to the analysis.
+ */
 
-#include <string>
-#include <generators/sampletracer.h>
-#include <generators/dataloader.h>
-#include <generators/optimizer.h>
+/**
+ * @brief Flushes all data from the map into a generic type g.
+ *
+ * This method is used to clear or update the contents of the map with elements
+ * of type g. It allows for generic operations on different types of data.
+ *
+ * @param data A map containing keys and values of type g*
+ * @param g The generic type of the elements in the map
+ */
+template<typename g> void flush(std::map<std::string, g*>, g* in);
 
-#include <templates/graph_template.h>
-#include <templates/event_template.h>
-#include <templates/metric_template.h>
-#include <templates/selection_template.h>
-#include <templates/model_template.h>
-#include <structs/settings.h>
-#include <io/io.h>
-
-template <typename g>
-void flush(std::map<std::string, g*>* data); 
-
+/**
+ * @brief The main class that handles all aspects of the analysis process.
+ *
+ * This class provides methods to add various templates (selections, events,
+ * graphs, metrics), manage models, track progress, and handle metadata.
+ */
 class analysis: 
     public notification, 
     public tools
 {
-    public: 
+    public:
+        /**
+         * @brief Constructor for the analysis class.
+         */
         analysis();
-        ~analysis(); 
 
+        /**
+         * @brief destructor for the analysis class.
+         */
+        ~analysis();
+
+        /**
+         * @brief Adds samples to be analyzed.
+         *
+         * @param path The file path of the sample data
+         * @param label A descriptive label for the sample
+         */
         void add_samples(std::string path, std::string label);
-        void add_selection_template(selection_template* sel); 
-        void add_event_template(event_template* ev, std::string label); 
-        void add_graph_template(graph_template* gr, std::string label); 
+
+        /**
+         * @brief Adds a selection template to be used in analysis.
+         *
+         * @param sel A pointer to the selection template object
+         */
+        void add_selection_template(selection_template* sel);
+
+        /**
+         * @brief Adds an event template along with its label for tracking events during analysis.
+         *
+         * @param ev Pointer to event template object
+         * @param label Descriptive label for the event
+         */
+        void add_event_template(event_template* ev, std::string label);
+
+        /**
+         * @brief Adds a graph template along with its label for building graphs during analysis.
+         *
+         * @param gr Pointer to graph template object
+         * @param label Descriptive label for the graph
+         */
+        void add_graph_template(graph_template* gr, std::string label);
+
+        /**
+         * @brief Adds a metric template and an associated model template for tracking metrics.
+         *
+         * @param mx Pointer to metric template object
+         * @param mdl Pointer to model template object
+         */
         void add_metric_template(metric_template* mx, model_template* mdl);
-        void add_model(model_template* model, optimizer_params_t* op, std::string run_name); 
-        void add_model(model_template* model, std::string run_name); 
-        void attach_threads(); 
-        void start(); 
 
-        std::map<std::string, std::vector<float>> progress(); 
-        std::map<std::string, std::string> progress_mode(); 
-        std::map<std::string, std::string> progress_report(); 
-        std::map<std::string, bool> is_complete();
+        /**
+         * @brief Adds a model template along with its optimizer parameters and run name.
+         *
+         * @param model Pointer to model template object
+         * @param op Pointer to optimizer parameters object
+         * @param run_name Name of the run or experiment
+         */
+        void add_model(model_template* model, optimizer_params_t* op, std::string run_name);
 
-        settings_t m_settings; 
-        std::map<std::string, meta*> meta_data = {}; 
+        /**
+         * @brief Adds a model template along with its run name.
+         *
+         * @param model Pointer to model template object
+         * @param run_name Name of the run or experiment
+         */
+        void add_model(model_template* model, std::string run_name);
+
+        /**
+         * @brief Attaches all registered threads for parallel processing.
+         */
+        void attach_threads();
+
+        /**
+         * @brief Starts the analysis process by initializing and building components.
+         */
+        void start();
+
+        /**
+         * @brief Returns a map of progress information including completion status.
+         */
+        std::map<std::string, std::vector<float>> progress();
+
+
+        /**
+         * @brief Returns a map of different progress modes used during analysis.
+         */
+        std::map<std::string, std::string> progress_mode();
+
+        /**
+         * @brief Returns a map of progress reports containing detailed information.
+         */
+        std::map<std::string, std::string> progress_report();
+
+        /**
+         * @brief Checks if all components are completed or if there's an error.
+         */
+        bool is_completed_or_error(); 
+
+        /**
+         * @brief Returns the number of active threads in the analysis process.
+         */
+        size_t num_threads(); 
 
     private:
-        void check_cache(); 
-        void build_project(); 
-        void build_events(); 
-        void build_selections(); 
-        void build_graphs(); 
-        void build_model_session(); 
-        void build_inference();
+        // Private members that handle internal state and operations
+        model* m_model;  // Pointer to the main model being analyzed
+        std::string run_name;  // Name of the current run or experiment
+        bool is_initialized;  // Boolean indicating if initialization has started
+};
 
-        bool build_metric(); 
-        void build_metric_folds();
-
-        void build_dataloader(bool training); 
-        void fetchtags(); 
-        bool started = false;  
-
-        static int add_content(
-            std::map<std::string, torch::Tensor*>* data, 
-            std::vector<variable_t>* content, int index, 
-            std::string prefx, TTree* tt = nullptr
-        ); 
-
-        static void add_content(
-            std::map<std::string, torch::Tensor*>* data, std::vector<std::vector<torch::Tensor>>* buff, 
-            torch::Tensor* edge, torch::Tensor* node, torch::Tensor* batch, std::vector<long> mask
-        ); 
-
-        static void execution(
-            model_template* mdx, model_settings_t mds, std::vector<graph_t*>* data, size_t* prg,
-            std::string output, std::vector<variable_t>* content, std::string* msg
-        );
-
-        static void execution_metric(metric_t* mt, size_t* prg, std::string* msg); 
-
-        static void initialize_loop(
-            optimizer* op, int k, model_template* model, 
-            optimizer_params_t* config, model_report** rep
-        );
-
-
-        template <typename g>
-        void safe_clone(std::map<std::string, g*>* mp, g* in){
-            std::string name = in -> name; 
-            if (mp -> count(name)){return;}
-            (*mp)[name] = in -> clone(1); 
-        }
-
-        std::map<std::string, std::string> file_labels = {}; 
-        std::map<std::string, event_template*> event_labels = {}; 
-        std::map<std::string, metric_template*> metric_names = {}; 
-        std::map<std::string, selection_template*> selection_names = {}; 
-        std::map<std::string, std::map<std::string, graph_template*>> graph_labels = {}; 
-
-        std::vector<std::string> model_session_names = {}; 
-        std::map<std::string, model_template*> model_inference = {}; 
-        std::map<std::string, model_template*> model_metrics   = {}; 
-        std::vector<std::tuple<model_template*, optimizer_params_t*>> model_sessions = {}; 
-
-        std::map<std::string, optimizer*   > trainer = {};
-        std::map<std::string, model_report*> reports = {}; 
-        std::vector<std::thread*> threads = {};
-
-        std::map<std::string, std::map<std::string, bool>> in_cache = {}; 
-        std::map<std::string, bool> skip_event_build = {}; 
-        std::map<std::string, std::string> graph_types = {}; 
-
-        std::vector<folds_t>* tags  = nullptr; 
-        dataloader*          loader = nullptr; 
-        sampletracer*        tracer = nullptr; 
-        io*                  reader = nullptr; 
-
-}; 
-
-#endif
