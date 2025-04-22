@@ -52,6 +52,7 @@ void data_t::flush(){
 
 void data_t::initialize(){
     TFile* c = (*this -> files_t)[this -> file_index]; 
+    if (!c){this -> file = nullptr; return;}
     if (!c -> IsOpen()){
         this -> file = (*this -> files_t)[this -> file_index -1]; 
         if (this -> file){

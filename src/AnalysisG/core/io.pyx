@@ -38,6 +38,7 @@ cdef class IO:
         if self.prg is None: self.prg = tqdm(total = len(self), dynamic_ncols = True, leave = False)
         self.ptr.root_begin()
         self.data_ops = self.ptr.get_data()
+        self.skip.clear()
         return self
 
     def __next__(self):
