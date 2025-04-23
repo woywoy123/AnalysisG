@@ -261,8 +261,8 @@ bool io::scan_keys(){
            std::map<std::string, long> tree_ent = this -> tree_entries[fname]; 
            std::map<std::string, long>::iterator itl = tree_ent.begin();
            for (; itl != tree_ent.end(); ++itl){msg += itl -> first + " - " + itl -> second + " | "; nev_ +=itl -> second;}
-           if (!nev_){this -> warning("(-)> " + fname + " (" + msg.substr(0, msg.size()-3) + ") Skipping..."); }
-           else {this -> success("(+)> " + fname + " (" + msg.substr(0, msg.size()-3) + ") OK! ");}
+           if (!nev_){this -> warning("(-)> " + fname + " \n (" + msg.substr(0, msg.size()-3) + ") Skipping..."); }
+           else {this -> success("(+)> " + fname + "\n (" + msg.substr(0, msg.size()-3) + ") OK! ");}
            this -> success_trigger[fname] = true; 
            continue;
        }

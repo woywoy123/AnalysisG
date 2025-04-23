@@ -10,6 +10,6 @@ set(SOURCE_FILES
 add_library(cmetric_template STATIC ${SOURCE_FILES})
 target_include_directories(cmetric_template PRIVATE include/templates)
 target_include_directories(cmetric_template PUBLIC include)
-target_link_libraries(cmetric_template PUBLIC ctypecasting cnotification cmodel_template cio)
+target_link_libraries(cmetric_template PUBLIC ctypecasting cmodel_template cio cplotting)
 target_compile_options(cmetric_template PRIVATE -fPIC)
 target_compile_options(cmetric_template PRIVATE -Wall -pedantic -Wextra)

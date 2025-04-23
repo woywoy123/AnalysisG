@@ -33,14 +33,14 @@ bool tools::is_file(std::string path){
 }
 
 std::vector<std::string> tools::ls(std::string path, std::string ext){
-    if (this -> ends_with(&path, "*")){path = this -> split(path, "*")[0];}
+    if (tools::ends_with(&path, "*")){path = tools::split(path, "*")[0];}
     std::vector<std::string> out = {}; 
     std::filesystem::recursive_directory_iterator itr; 
     try {itr = std::filesystem::recursive_directory_iterator(path);}
     catch (...) {return {};}
     for (const std::filesystem::directory_entry& val : itr){
         std::string s = std::filesystem::canonical(val.path()).string(); 
-        if (ext.size() && !this -> ends_with(&s, ext)){continue;}
+        if (ext.size() && !tools::ends_with(&s, ext)){continue;}
         out.push_back(s); 
     }
     return out; 

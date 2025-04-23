@@ -9,6 +9,7 @@
 #include <structs/enums.h>
 #include <meta/meta.h>
 
+#include <plotting/plotting.h>
 #include <tools/vector_cast.h>
 #include <tools/merge_cast.h>
 #include <tools/tools.h>

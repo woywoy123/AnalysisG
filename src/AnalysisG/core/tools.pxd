@@ -1,7 +1,7 @@
 # distutils: language=c++
 # cython: language_level=3
 
-from libcpp cimport bool, int
+from libcpp cimport bool, int, float
 from libcpp.map cimport map, pair
 from libcpp.string cimport string
 from libcpp.vector cimport vector
@@ -58,19 +58,18 @@ ctypedef fused prim_types:
     bool
     string
 
-cdef extern from "<tools/merge_cast.h>":
+cdef extern from "<tools/merge_cast.h>" nogil:
+    void merge_data(map[prim_types, vector[base_types]]* out, map[prim_types, vector[base_types]]* p2)
+    void merge_data(map[prim_types, base_types]*         out, map[prim_types, base_types]*         p2)
+    void merge_data(map[prim_types, base_types]*         out, map[prim_types, base_types]*         p2)
 
-    cdef void merge_data(map[prim_types, vector[base_types]]* out, map[prim_types, vector[base_types]]* p2)
-    cdef void merge_data(map[prim_types, base_types]*         out, map[prim_types, base_types]*         p2)
-    cdef void merge_data(map[prim_types, base_types]*         out, map[prim_types, base_types]*         p2)
+    void merge_data(vector[base_types]* out, vector[base_types]*  p2)
 
-    cdef void merge_data(vector[base_types]*  out, vector[base_types]*  p2)
+    void merge_data(base_types*  out, base_types*  p2)
 
-    cdef void merge_data(base_types*  out, base_types*  p2)
+    void sum_data(vector[base_types]* out, vector[base_types]* p2)
 
-    cdef void sum_data(vector[base_types]* out, vector[base_types]* p2)
-
-    cdef void sum_data(base_types*    out, base_types*  p2)
+    void sum_data(base_types*    out, base_types*  p2)
 
   
 cdef string enc(str val)

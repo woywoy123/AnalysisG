@@ -56,7 +56,7 @@ cdef class Analysis:
         self.selections_.append(selc)
 
     def AddMetric(self, MetricTemplate mex, ModelTemplate mdl):
-        self.ana.add_metric_template(mex.ptr, mdl.nn_ptr)
+        self.ana.add_metric_template(mex.mtx, mdl.nn_ptr)
         self.PreTagEvents = True
 
     def AddModel(self, ModelTemplate model, OptimizerConfig op, str run_name):

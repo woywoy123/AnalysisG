@@ -2,15 +2,30 @@
 # cython: language_level = 3
 
 from AnalysisG.core.notification cimport notification
-from AnalysisG.core.tools cimport tools
+from AnalysisG.core.tools cimport *
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 from libcpp.unordered_map cimport unordered_map
 from libcpp.map cimport map
-from libcpp cimport bool
+from libcpp cimport bool, float
+
+from cython.operator cimport dereference as deref
+from cython.parallel import prange
+
+cdef extern from "<tools/merge_cast.h>":
+    cdef void merge_data(vector[float]* out, vector[float]*  p2) except+ nogil
+    cdef void merge_data(vector[double]* out, vector[double]*  p2) except+ nogil
 
 
 cdef extern from "<plotting/plotting.h>" nogil:
+
+    cdef struct roc_t:
+        int cls
+        int kfold
+        string model
+        vector[vector[int]]*     truth
+        vector[vector[double]]* scores
+
     cdef cppclass plotting(notification, tools):
         plotting() except+ nogil
         string build_path() except+ nogil
@@ -18,6 +33,8 @@ cdef extern from "<plotting/plotting.h>" nogil:
         float get_min(string) except+ nogil
         float sum_of_weights() except+ nogil
         void build_error() except+ nogil
+        void build_ROC(string name, int kfold, vector[int]* label, vector[vector[double]]* scores) except+ nogil
+        vector[roc_t] get_ROC() except+ nogil
 
         string filename
         string extension
@@ -59,7 +76,10 @@ cdef extern from "<plotting/plotting.h>" nogil:
 
         vector[float] x_data
         vector[float] y_data
-        vector[vector[float]] roc_data
+
+        map[string, map[int, vector[vector[double]]*]] roc_data
+        map[string, map[int, vector[vector[int]]*]]    labels
+
 
         vector[float] y_error_up
         vector[float] y_error_down
@@ -130,9 +150,11 @@ cdef class TLine(BasePlotting):
     cdef void factory(self)
     cdef dict __compile__(self, bool raw = *)
 
+
 cdef class ROC(TLine):
+    cdef int num_cls
     cdef bool inits
-    cdef int  num_cls
+    cdef bool verbose
     cdef public bool Binary
     cdef public dict auc
 

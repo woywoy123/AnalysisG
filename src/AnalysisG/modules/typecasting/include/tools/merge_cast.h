@@ -34,4 +34,30 @@ void sum_data(std::map<g, G>* out, std::map<g, G>* p2){
     for (; itr != p2 -> end(); ++itr){sum_data(&(*out)[itr -> first], &itr -> second);} 
 }
 
+
+template <typename g>
+void reserve_count(g* inp, long* ix){*ix += 1;}
+
+template <typename g>
+void reserve_count(std::vector<g>* inp, long* ix){
+    for (size_t x(0); x < inp -> size(); ++x){reserve_count(&inp -> at(x), ix);}
+}
+
+template <typename g>
+void contract_data(std::vector<g>* out, g* p2){out -> push_back(*p2);}
+
+template <typename g>
+void contract_data(std::vector<g>* out, std::vector<g>* p2){
+    for (size_t i(0); i < p2 -> size(); ++i){contract_data(out, &p2 -> at(i));}
+}
+
+
+template <typename g>
+void contract_data(std::vector<g>* out, std::vector<std::vector<g>>* p2){
+    long ix = 0;
+    reserve_count(p2, &ix);
+    out -> reserve(ix); 
+    for (size_t i(0); i < p2 -> size(); ++i){contract_data(out, &p2 -> at(i));}
+}
+
 #endif

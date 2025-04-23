@@ -43,18 +43,17 @@ cdef class MetricTemplate:
 
     def Postprocessing(self): pass
 
-    def InterpretROOT(self, str path):
+    def InterpretROOT(self, str path, list epochs = [], list kfolds = []):
         if not len(self.root_leaves) or not len(self.root_fx):
-            print("Failed to interpret!")
-            print("Please set the attributes:")
-            print("-> dictionary {<tree> : [<leaves>]} : 'root_leaves'")
-            print("-> dictionary {<tree> : <fx(class, data)>} or {<tree>.<leaves> : <fx(class, data)>}: 'root_fx'")
+            self.mtx.failure(b"Failed to interpret!")
+            self.mtx.failure(b"Please set the attributes:")
+            self.mtx.failure(b"-> dictionary {<tree> : [<leaves>]} : 'root_leaves'")
+            self.mtx.failure(b"-> dictionary {<tree> : <fx(class, data, meta)>} or {<tree>.<leaves> : <fx(class, data, meta)>}: 'root_fx'")
             return self
-        if path.endswith("/"): path += "*"
+        if   path.endswith("/"): path += "*"
         elif path.endswith(".root"): pass
         else: path += "*"
-
-
+       
         cdef long ix
         cdef int kfold, epoch
 
@@ -65,25 +64,42 @@ cdef class MetricTemplate:
         cdef data_t* dt = NULL
         cdef data_t* lxk = NULL
 
-        cdef bool unpause = True
-        cdef bool set_name = True
-        cdef bool keep_going = True
+        cdef bool unpause, set_name, keep_going
 
         cdef list leaves = []
 
-        cdef map[string, bool] endx
-        cdef map[string, bool] pause
         cdef map[string, long] idx_map
+        cdef map[string, bool] endx, pause
 
+        cdef vector[string] lsx
         cdef vector[vector[string]] mxf 
+        cdef vector[string] epochs_, kfolds_ 
+
         cdef map[string, vector[string ]] mapfx
         cdef map[string, vector[data_t*]] mapdx
 
-        cdef map[string, map[string, long]] mapx
-        cdef map[string, map[string, long]] mapi
+        cdef map[string, map[string, long]] mapx, mapi
 
         cdef dict itx = {}
         cdef dict meta = {}
+
+        cdef tools tl
+        epochs_ = [enc(str(epoch)) for epoch in epochs]
+        kfolds_ = [enc(str(kfold)) for kfold in kfolds]
+
+        if epochs_.size() + kfolds_.size(): lsx = self.ptr.ls(enc(path), b".root")
+        for kfold in prange(lsx.size(), nogil = True, num_threads = 12):
+            if not finder(&lsx[kfold], &kfolds_, &epochs_): continue
+            idx_map[lsx[kfold]]
+
+        if epochs_.size() + kfolds_.size() and idx_map.size(): pass
+        elif epochs_.size() + kfolds_.size() == 0: pass
+        else: self.mtx.failure(b"Files for requested epoch and kfolds not found!"); exit()
+        lsx = <vector[string]>(list(idx_map))
+
+        unpause = True
+        set_name = True
+        keep_going = True
         cdef dict remap = {enc(l) : self.root_fx[l] for l in self.root_fx}
 
         for k in self.root_leaves:
@@ -96,18 +112,17 @@ cdef class MetricTemplate:
                 else: continue 
                 leaves += [l]
 
-
-        kl = b""
-        cdef IO iox = IO(path)
+        cdef IO iox = IO(path if not lsx.size() else env_vec(&lsx))
         iox.Trees  = list(self.root_leaves)
         iox.Leaves = list(set(leaves))
         iox.__iter__()
         
         leaves = []
+        kl = b""
+        idx_map.clear()
+        mapx = iox.ptr.tree_entries
         cdef pair[string, data_t*] itr
         cdef pair[string, vector[string]] itm
-       
-        mapx = iox.ptr.tree_entries
         for itr in deref(iox.data_ops): 
             pause[itr.first] = False
             for itm in mapfx:
@@ -156,7 +171,7 @@ cdef class MetricTemplate:
             
             for key in remap: 
                 if not len(itx[key]): continue
-                remap[key](self, itx[key] | {b"index" : idx_map[key]-1} | meta)
+                remap[key](self, itx[key], {b"index" : idx_map[key]-1} | meta)
 
             for ix in prange(mxf.size(), nogil = True, num_threads = mxf.size()):
                 pause[mxf[ix][1]] = mapx[kl][mxf[ix][0]] == (deref(iox.data_ops)[mxf[ix][1]].index+1)
