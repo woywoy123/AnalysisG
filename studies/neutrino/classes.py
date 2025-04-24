@@ -65,6 +65,10 @@ class nux:
         self.chi2_nu1 = []
         self.chi2_nu2 = []
         self.distances = []
+
+        self.target_top1 = []
+        self.target_top2 = []
+
         self.event_data = {"met" : [], "phi" : []}
         self.symbols = {}
         self.rejected = 0
@@ -83,8 +87,13 @@ class nux:
         self.rejected += not kx
         if not kx: return
 
+        if con is not None:
+            self.target_top1.append(con.truth.top1)
+            self.target_top2.append(con.truth.top2)
+
         self.top1_masses.append(atm.top1)
         self.top2_masses.append(atm.top2)
+
         self.w1_masses.append(atm.W1)
         self.w2_masses.append(atm.W2)
         if atm.type != "truth":

@@ -54,7 +54,7 @@ cdef class MetricTemplate:
         elif path.endswith(".root"): pass
         else: path += "*"
        
-        cdef long ix
+        cdef long ix, il
         cdef int kfold, epoch
 
         cdef str k, l, kx
@@ -64,7 +64,7 @@ cdef class MetricTemplate:
         cdef data_t* dt = NULL
         cdef data_t* lxk = NULL
 
-        cdef bool unpause, set_name, keep_going
+        cdef bool unpause, keep_going
 
         cdef list leaves = []
 
@@ -78,7 +78,7 @@ cdef class MetricTemplate:
         cdef map[string, vector[string ]] mapfx
         cdef map[string, vector[data_t*]] mapdx
 
-        cdef map[string, map[string, long]] mapx, mapi
+        cdef map[string, map[string, long]] mapx
 
         cdef dict itx = {}
         cdef dict meta = {}
@@ -98,7 +98,6 @@ cdef class MetricTemplate:
         lsx = <vector[string]>(list(idx_map))
 
         unpause = True
-        set_name = True
         keep_going = True
         cdef dict remap = {enc(l) : self.root_fx[l] for l in self.root_fx}
 
@@ -116,14 +115,17 @@ cdef class MetricTemplate:
         iox.Trees  = list(self.root_leaves)
         iox.Leaves = list(set(leaves))
         iox.__iter__()
-        
+
+        cdef pair[string, data_t*] itr
+        cdef map[string, data_t*] dmp = deref(iox.data_ops)
+        cdef vector[string] dmi = [itr.first for itr in dmp]
+
         leaves = []
         kl = b""
         idx_map.clear()
         mapx = iox.ptr.tree_entries
-        cdef pair[string, data_t*] itr
         cdef pair[string, vector[string]] itm
-        for itr in deref(iox.data_ops): 
+        for itr in dmp: 
             pause[itr.first] = False
             for itm in mapfx:
                 leaves.append([itr.second.tree_name, itr.first, itm.first])
@@ -150,22 +152,19 @@ cdef class MetricTemplate:
                 idx_map[key] += unpause
 
             keep_going = False
-            for itr in deref(iox.data_ops): 
-                dt = itr.second
+            for il in prange(dmp.size(), nogil = True, num_threads = dmp.size()): 
+                dt = dmp[dmi[il]]; ix = dt.index
                 if pause[dt.path] or endx[dt.path]: continue
                 endx[dt.path] += dt.next() 
                 keep_going += not endx[dt.path]
-                mapi[deref(dt.fname)][dt.path] = dt.index
 
-            if not set_name or not kl.size(): 
+            if not ix:
                 kl = deref(lxk.fname)
-                set_name = True
                 leaves =  env(kl).split("/")[-3:]
                 kfold = int(leaves[-1].replace(".root", "").replace("kfold-", ""))
                 epoch = int(leaves[-3].replace("epoch-", ""))
                 model_name = enc(leaves[-2])
                 meta = {b"filename" : kl, b"epoch" : epoch, b"kfold" : kfold, b"model_name" : model_name}
-
                 iox.prg.set_description("/".join(env(kl).split("/")[-4:]))
                 iox.prg.refresh()
             
@@ -174,11 +173,11 @@ cdef class MetricTemplate:
                 remap[key](self, itx[key], {b"index" : idx_map[key]-1} | meta)
 
             for ix in prange(mxf.size(), nogil = True, num_threads = mxf.size()):
-                pause[mxf[ix][1]] = mapx[kl][mxf[ix][0]] == (deref(iox.data_ops)[mxf[ix][1]].index+1)
+                pause[mxf[ix][1]] = mapx[kl][mxf[ix][0]] == (dmp[mxf[ix][1]].index+1)
      
             unpause = True  
-            for ix in range(mxf.size()): unpause *= pause[mxf[ix][1]]
-            if unpause: pause.clear(); set_name = False; idx_map.clear()
+            for ix in prange(mxf.size(), nogil = True): unpause *= pause[mxf[ix][1]]
+            if unpause: pause.clear(); idx_map.clear(); kl = b""
             iox.prg.update(1)
             if not keep_going: break
 

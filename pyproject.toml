@@ -1,5 +1,5 @@
 [build-system]
-requires = ["pip", "scikit-build-core", "cython", "cmake", "mkl-include", "mkl-devel", "tbb-devel"]
+requires = ["pip", "scikit-build-core", "cython", "cmake"]
 build-backend = "scikit_build_core.build"
 
 [project]
@@ -9,7 +9,6 @@ authors = []
 requires-python = ">=3.7"
 dependencies = [
     "boost_histogram", 
-#    "pyAMI-atlas", 
     "pyAMI-core",
     "mplhep",
     "pyyaml",
@@ -17,7 +16,8 @@ dependencies = [
     "pwinput",
     "scipy",
     "h5py",
-#    "torchmetrics"
+    "scikit-learn"
+    "pyAMI-atlas"
 ]
 
 [tool.scikit-build]

@@ -43,62 +43,61 @@ def MPNuNu(k):
         data.append([n, DoubleNu(bs, ls, ev, mW1, mT1, mW2, mT2)])
     pickle.dump(data, open("./data/" + h + ".pkl", "wb"))
 
-def compiler(lx, name):
+def compiler(lx, name, build = False):
     mW = 80.385*1000
     mT = 172.62*1000
 
-    conx = [None for i in range(len(lx))]
-    try: conx = pickle.load(open(name + ".pkl", "rb"))
-    except: pass
+    try: return pickle.load(open(name + ".pkl", "rb"))
+    except: conx = [None for i in range(len(lx))]
     th = 120
 
     b = 0
     l = len(lx)
-    #runx = [None for _ in range(th)]
-    #prc = [[] for _ in range(th)]
-    #for ix in tqdm(range(l)):
-    #    if conx[ix] is not None: continue
-    #    i = lx[ix]
-    #    if not len(i.TruthNeutrinos): continue
-    #    nu1, nu2 = i.TruthNeutrinos
+    runx = [None for _ in range(th)]
+    prc = [[] for _ in range(th)]
+    for ix in tqdm(range(l*build)):
+        if conx[ix] is not None: continue
+        i = lx[ix]
+        if not len(i.TruthNeutrinos): continue
+        nu1, nu2 = i.TruthNeutrinos
 
-    #    # ----- input particles ----- #
-    #    try:
-    #        l1, b1 = get_pairs(i, name, 0)
-    #        l2, b2 = get_pairs(i, name, 1)
-    #        mt1, mw1 = get_masses(nu1, b1, l1)
-    #        mt2, mw2 = get_masses(nu2, b2, l2)
-    #    except: continue
-    #    bsx, lsx = vector((b1, b2)), vector((l1, l2))
+        # ----- input particles ----- #
+        try:
+            l1, b1 = get_pairs(i, name, 0)
+            l2, b2 = get_pairs(i, name, 1)
+            mt1, mw1 = get_masses(nu1, b1, l1)
+            mt2, mw2 = get_masses(nu2, b2, l2)
+        except: continue
+        bsx, lsx = vector((b1, b2)), vector((l1, l2))
 
-    #    # ----- Static Masses ------ #
-    #    kx1 = (bsx, lsx, i.vec, mW , mT , mW , mT , name + "/stat/" + str(ix))
-    #    # ----- Dynamic Masses ----- #
-    #    kx2 = (bsx, lsx, i.vec, mw1, mt1, mw2, mt2, name + "/dyn/" + str(ix))
-    #    prc[b] += [kx1, kx2]
-    #    if len(prc[b]) < 1000: continue
-    #    p1 = Process(target=MPNuNu, args=(pickle.dumps(prc[b]),))
-    #    p1.start()
-    #    runx[b] = p1
-    #    prc[b] = []
-    #    rn = True
-    #    while rn:
-    #        for b in range(len(runx)):
-    #            if runx[b] is None: rn = False; break
-    #            if runx[b].is_alive(): continue
-    #            runx[b].join()
-    #            rn = False
-    #            runx[b] = None
-    #            break
+        # ----- Static Masses ------ #
+        kx1 = (bsx, lsx, i.vec, mW , mT , mW , mT , name + "/stat/" + str(ix))
+        # ----- Dynamic Masses ----- #
+        kx2 = (bsx, lsx, i.vec, mw1, mt1, mw2, mt2, name + "/dyn/" + str(ix))
+        prc[b] += [kx1, kx2]
+        if len(prc[b]) < 1000: continue
+        p1 = Process(target=MPNuNu, args=(pickle.dumps(prc[b]),))
+        p1.start()
+        runx[b] = p1
+        prc[b] = []
+        rn = True
+        while rn:
+            for b in range(len(runx)):
+                if runx[b] is None: rn = False; break
+                if runx[b].is_alive(): continue
+                runx[b].join()
+                rn = False
+                runx[b] = None
+                break
 
-    #for x in range(len(prc)):
-    #    if not len(prc[x]): continue
-    #    p1 = Process(target=MPNuNu, args=(pickle.dumps(prc[x]),))
-    #    p1.start()
-    #    runx[x] = p1
-    #for y in runx:
-    #    if y is None: continue
-    #    y.join()
+    for x in range(len(prc)):
+        if not len(prc[x]): continue
+        p1 = Process(target=MPNuNu, args=(pickle.dumps(prc[x]),))
+        p1.start()
+        runx[x] = p1
+    for y in runx:
+        if y is None: continue
+        y.join()
 
     data = []
     nex = build_samples("./data", "*.pkl")
@@ -149,11 +148,11 @@ def compiler(lx, name):
     pickle.dump(conx, open(name + ".pkl", "wb"))
     return conx
 
-def compxl(sl):
+def compxl(sl = None):
     return {
-           # "topchildren" : compiler(sl.Events, "top_children"),
-            "truthjet"    : compiler(sl.Events, "truthjet"),
-           # "jetchildren" : compiler(sl.Events, "jetchildren"),
-           # "jetleptons"  : compiler(sl.Events, "jetleptons")
+            "topchildren" : compiler(sl.Events if sl is not None else None, "top_children", True),
+            "truthjet"    : compiler(sl.Events if sl is not None else None, "truthjet", True),
+            "jetchildren" : compiler(sl.Events if sl is not None else None, "jetchildren", True),
+            "jetleptons"  : compiler(sl.Events if sl is not None else None, "jetleptons", True)
     }
 

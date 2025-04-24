@@ -215,19 +215,19 @@ class SingleNu(NuSol):
     @property
     def nu(self): return np.array([self._H.dot(self.sols[i]) for i in range(len(self.sols))])
 
-class DoubleNu(NuSol):
+class DoubleNu:
 
     def __init__(self, bs, mus, ev, mW1, mT1, mW2, mT2):
         self.lsq = False
-        b ,  b_ = [i.vec for i in bs]
-        mu, mu_ = [i.vec for i in mus]
-        self.ev = np.array([ev.vec.px, ev.vec.py, 1])
+        b ,  b_ = bs
+        mu, mu_ = mus 
+        self.ev = np.array([ev.px, ev.py, 1])
 
         sol1 = NuSol(b , mu , None, mW1**2, mT1**2, 0)
         sol2 = NuSol(b_, mu_, None, mW2**2, mT2**2, 0)
         self.solutionSets = [sol1, sol2]
 
-        V0 = np.outer([ev.vec.px, ev.vec.py, 0], [0, 0, 1])
+        V0 = np.outer([ev.px, ev.py, 0], [0, 0, 1])
         self.S = V0 - UnitCircle()
 
         try: N, N_ = sol1.N, sol2.N; self.failed = False
@@ -250,7 +250,6 @@ class DoubleNu(NuSol):
             else: v, v_ = [[i] for i in nus(ts)]
         for k, v in {"perp" : v , "perp_":  v_, "n_" : n_, "n" : n}.items(): setattr(self, k, v)
 
-    @property
     def nunu_s(self):
         """Solution pairs for neutrino momenta"""
         out = {0 : [], 1 : []}

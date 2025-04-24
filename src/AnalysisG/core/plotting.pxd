@@ -105,8 +105,6 @@ cdef extern from "<plotting/plotting.h>" nogil:
         float yscaling
         bool auto_scale
 
-
-
 cdef class BasePlotting:
     cdef plotting* ptr
     cdef matpl

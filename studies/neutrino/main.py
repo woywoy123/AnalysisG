@@ -15,5 +15,5 @@ sl = Validation()
 #ana.AddSelection(sl)
 #ana.Start()
 
-sl.InterpretROOT("./ProjectName/Selections/" + sl.__name__() + "-" + ev.__name__() + "/user.tnommens.40945586._001002.output.root", "nominal")
-entry(sl)
+#sl.InterpretROOT("./ProjectName/Selections/" + sl.__name__() + "-" + ev.__name__() + "/user.tnommens.40945586._001002.output.root", "nominal")
+entry(None)

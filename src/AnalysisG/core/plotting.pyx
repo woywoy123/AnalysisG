@@ -17,10 +17,10 @@ import pathlib
 import pickle
 
 
-def ratio(H1, H2, axis, ylabel = "Ratio", normalize = False, yerror = False):
+def ratio(H1, H2, axis, ylabel = "Ratio", normalize = False, yerror = False, this_hist = None):
     cdef dict out = {}
     axis.set_ylim(0, 2)
-    axis.set_ylabel(ylabel)
+    axis.set_ylabel(ylabel, fontsize = this_hist.FontSize * (35 / len(ylabel)), loc = "center")
 
     if normalize:
         t1, t2 = H1.values(), H2.values()
@@ -44,8 +44,8 @@ def ratio(H1, H2, axis, ylabel = "Ratio", normalize = False, yerror = False):
         else: s2[i] = (h2[i]**2)*( (s1[i]/v1) + (s2[i]/v2) )
 
     H1.reset()
-    H1.view().value = h2
-    H1.view().variance = s2
+    H1.view().value    = [v1 if v1 > 0 else -1 for v1 in h2]
+    H1.view().variance = [s2[i] if h2[i] > 0 else 0 for i in range(s2.size())]
     out["H"] = H1
     out["ax"] = axis
     out["color"] = "black"
@@ -54,12 +54,10 @@ def ratio(H1, H2, axis, ylabel = "Ratio", normalize = False, yerror = False):
     axis.axhline(1, linestyle = "--", color = "grey")
     return out
 
-def chi2(H1, H2, axis, ylabel = "Ratio", normalize = False, yerror = False):
+def chi2(H1, H2, axis, ylabel = "Ratio", normalize = False, yerror = False, this_hist = None):
     cdef dict out = {}
-    axis.set_ylim(-1, 1)
-    axis.set_ylabel(
-            "$\\frac{O_i - E_i}{E_i}$", fontsize = 14, loc = "center",
-    )
+    axis.set_ylim(-1.2, 1.2)
+    axis.set_ylabel("$\\frac{O_i - E_i}{|E_i|}$", fontsize = this_hist.FontSize, labelpad = 0.1)
 
     if normalize:
         t1, t2 = H1.values(), H2.values()
@@ -75,23 +73,24 @@ def chi2(H1, H2, axis, ylabel = "Ratio", normalize = False, yerror = False):
     cdef vector[float] h2 = H2.counts().tolist()
     for i in range(h2.size()):
         _chi2 += (h1[i] - h2[i])**2/(h2[i] if h2[i] else 1)
-        h2[i] = (h1[i] - h2[i])/(h2[i] if h2[i] else 1)
+        h2[i] = (h1[i] - h2[i])/abs(h2[i] if h2[i] else 1) - 100*((h1[i] + h2[i]) == 0)
     H1.reset()
     H1.view().value = h2
+
     out["H"] = H1
     out["ax"] = axis
     out["color"] = "black"
+    out["marker"] = this_hist.Marker
     out["histtype"] = "errorbar"
     out["markersize"] = 5
     out["add"] = "$\\left(\\chi^2 = " + "{:e}".format(_chi2) + "\\right)$"
-    axis.axhline(0, linestyle = "--", color = "grey")
+    axis.axhline(0, linestyle = "--", color = "grey", linewidth = 1.0)
     return out
 
 cdef class BasePlotting:
     def __cinit__(self):
         self.ptr = new plotting()
         self.matpl = plt
-        self.__resetplt__()
 
         self.ApplyScaling = False
         self.set_xmin = False
@@ -105,7 +104,6 @@ cdef class BasePlotting:
         self._fig, self._ax = self.matpl.subplots(**com)
         try: self._ax.set_autoscale_on(self.ptr.auto_scale)
         except: self._ax[0].set_autoscale_on(self.ptr.auto_scale)
-
 
     cdef void __resetplt__(self):
         self.matpl.clf()
@@ -144,7 +142,7 @@ cdef class BasePlotting:
         if not len(path): path = env(self.ptr.output_path)
         pathlib.Path(path).mkdir(parents = True, exist_ok = True)
         try: pickle.dump(self, open(path + "/" + name + ".pkl", "wb"))
-        except OSError: print("Failed to save the Plotting Object")
+        except OSError: self.ptr.failure(b"Failed to save the Plotting Object")
 
     def load(self, str path = "", str name = ""):
         if not len(name): name = env(self.ptr.filename)
@@ -178,11 +176,7 @@ cdef class BasePlotting:
     @property
     def Style(self): return env(self.ptr.style)
     @Style.setter
-    def Style(self, str val):
-        if val == "ATLAS":
-            self.matpl.style.use(hep.style.ATLAS)
-            self.DPI = 800
-        self.ptr.style = enc(val)
+    def Style(self, str val): self.ptr.style = enc(val)
 
     @property
     def CapSize(self): return self.ptr.cap_size
@@ -349,6 +343,11 @@ cdef class BasePlotting:
         return tick
 
     def SaveFigure(self):
+        self.__resetplt__()
+        if self.Style == "ATLAS": 
+            self.matpl.style.use(hep.style.ATLAS)
+            self.DPI = 800
+
         cdef string out = self.ptr.build_path()
         cdef str raw = env(out).replace(self.Filename + env(self.ptr.extension), "raw/" + self.Filename + ".pgf")
         cdef dict com = {}
@@ -367,14 +366,15 @@ cdef class BasePlotting:
             self.matpl.rcParams.update(**com)
             self.__compile__()
 
-            try: self._ax[0].set_title(self.Title, fontsize = self.ptr.title_size)
-            except TypeError: self._ax.set_title(self.Title, fontsize = self.ptr.title_size)
+            try: self._ax.set_title(self.Title, fontsize = self.ptr.title_size)
+            except AttributeError: self.matpl.suptitle(self.Title, fontsize = self.ptr.font_size, y = 1.0)
+            self.matpl.xlabel(self.xTitle, fontsize = self.ptr.font_size, labelpad = 0.1)
 
-            self.matpl.xlabel(self.xTitle, fontsize = self.ptr.font_size)
-            try:
-                self._ax[0].set_ylabel(self.yTitle, fontsize = self.ptr.font_size)
-                self.matpl.suptitle(self.Title, self.ptr.font_size)
-            except: self.matpl.ylabel(self.yTitle, fontsize = self.ptr.font_size)
+            if "<units>" not in self.yTitle: yl = self.yTitle
+            else: yl = self.yTitle.replace("<units>", str(round((self.xMax - self.xMin)/self.xBins, 3)))
+
+            try: self._ax.set_ylabel(yl, fontsize = self.ptr.font_size)
+            except AttributeError: self._ax[0].set_ylabel(yl, fontsize = self.ptr.font_size)
 
             if self.xLogarithmic: self.matpl.xscale("log")
             if self.yLogarithmic: self.matpl.yscale("log")
@@ -476,6 +476,11 @@ cdef class TH1F(BasePlotting):
     def counts(self):
         try: return sum(self.__compile__(True)["H"]).counts()
         except ValueError: return []
+
+    @property
+    def Marker(self): return env(self.ptr.marker)
+    @Marker.setter
+    def Marker(self, str v): self.ptr.marker = enc(v)
 
     @property
     def xLabels(self): return as_basic_udict(&self.ptr.x_labels)
@@ -665,7 +670,7 @@ cdef class TH1F(BasePlotting):
         if raw: return histpl
         if not len(histpl["H"]): return {}
 
-        if self.ErrorBars and self.Histogram is not None:
+        if self.ErrorBars and self.Histogram is not None and self.fx is None:
             l = list(histpl["label"])
             lg = list(histpl["H"])
             del histpl["edgecolor"]
@@ -732,7 +737,7 @@ cdef class TH1F(BasePlotting):
             self.__figure__({
                 "nrows" : 2, "ncols" : 1, "sharex" : True,
                 "gridspec_kw" : {
-                    "height_ratios" : [4, 1], "hspace" : 0.05
+                    "height_ratios" : [4, 1], "hspace" : 0.03
                 }
             })
 
@@ -741,17 +746,17 @@ cdef class TH1F(BasePlotting):
             self._ax[0].legend(loc = "upper right")
             if self.fx is None: self.FX()
 
-            if len(self.Histograms) > 1: yl = "Ratio (" + self.Histogram.Title + "/ $H_{X}$)"
-            else: yl = self.Histogram.Title + "/" + self.Histograms[0].Title
+            if len(self.Histograms) > 1: yl = "$\\frac{\\text{" + self.Histogram.Title + "}}{H_{X}})$"
+            else: yl = "$\\frac{\\text{" + self.Histogram.Title + "}}{\\text{" + self.Histograms[0].Title + "}}$"
 
             for i in range(1, len(histpl["H"])):
-                try: cpy = self.fx(histpl["H"][0].copy(), histpl["H"][i].copy(), self._ax[1], yl, self.Density, histpl["yerr"])
-                except: cpy = self.fx(histpl["H"][0].copy(), histpl["H"][i].copy(), self._ax[1])
+                try: cpy = self.fx(histpl["H"][0].copy(), histpl["H"][i].copy(), self._ax[1], yl, self.Density, histpl["yerr"], self.Histograms[i-1])
+                except: cpy = self.fx(histpl["H"][0].copy(), histpl["H"][i].copy(), self._ax[1], self.Histograms[i-1])
                 cpy["color"] = histpl["color"][i]
                 if "label" not in cpy: cpy["label"] = histpl["label"][i]
                 if "add" in cpy: cpy["label"] += " " + cpy["add"]; del cpy["add"]
                 hep.histplot(**cpy)
-            self._ax[1].legend(loc = "upper right")
+            self._ax[1].legend(loc = "best")
             return {}
 
         elif self.Histogram is None and len(self.Histograms) and self.ErrorBars:
@@ -1049,82 +1054,68 @@ cdef class ROC(TLine):
         self.Binary = False
         self.verbose = False
         self.ptr.prefix = b"ROC Curve"
+        try: from sklearn import metrics; return
+        except: self.inits = False
+        self.ptr.warning(b"Failed to import sklearn.")
 
-        try: 
-            import torch
-            try: from torchmetrics.classification import MulticlassAUROC, BinaryAUROC, MulticlassROC
-            except: self.ptr.warning(b"Failed to import torchmetrics. Trying scikit-learn...")
-        except: 
-            if not self.verbose: pass
-            else: self.ptr.warning(b"Failed to import torch (likely ABI issue. See documentation). Trying scikit-learn...")
-
-        try: from sklearn import metrics
-        except: self.ptr.warning(b"Failed to import sklearn."); self.inits = False
-        if self.inits: return
-        self.ptr.failure(b"Error importing torch, torchmetrics or sklearn.")
-
-    def __init__(self, inpt = None):
+    def __init__(self, inpt = None, **kwargs):
+        self.Lines = []
+        self.Marker = ""
+        self.auc = {}
+        if len(kwargs): inpt = {"data" : dict(kwargs)}
+        if inpt is None: return
+        cdef list keys = [i for i in self.__dir__() if not i.startswith("__")]
+        for i in keys:
+            try: setattr(self, i, inpt["data"][i])
+            except KeyError: continue
+            except AttributeError: continue
         self.xTitle = "False Positive Rate"
         self.yTitle = "True Positive Rate"
         self.xMax = 1
         self.yMax = 1
         self.xMin = 0
         self.yMin = 0
-        self.auc = {}
-        self.Lines = []
-
     cdef void factory(self): return
 
     cdef dict __compile__(self, bool raw = False):
         if not self.inits: return {}
         if not self.ptr.roc_data.size(): return {}
+        from sklearn.metrics import roc_curve, auc
 
         cdef int i
         cdef TLine pl
-        cdef vector[float] auc_ntops
+        cdef string model_mode 
+        cdef map[string, vector[double]] auc_ntops
+        cdef map[string, vector[vector[double]]] fpr_
+        cdef map[string, vector[vector[double]]] tpr_
         cdef vector[roc_t] points = self.ptr.get_ROC()
-        #try: 
-        #    import torch
-        #    from torchmetrics.classification import MulticlassAUROC, BinaryAUROC, MulticlassROC
-        #    data = torch.tensor(self.ptr.roc_data)
-        #    truth = torch.tensor(self.ptr.x_data, dtype = torch.long)
-        #    metrics = MulticlassAUROC(num_classes = self.num_cls, average = None)
-
-        #    auc_ntops = metrics(data, truth)
-        #    roc = MulticlassROC(num_classes = self.num_cls)
-        #    fpr, tpr, _ = roc(data, truth)
-        #except: pass
-
-        from sklearn.metrics import roc_curve, auc
 
         for i in range(points.size()):
+            model_mode = points[i].model
             self.num_cls = points[i].cls
             data  = np.array(dref(points[i].scores))
             truth = np.array(dref(points[i].truth))
-            fpr, tpr = [None for _ in range(self.num_cls)], [None for _ in range(self.num_cls)]
             for i in range(self.num_cls):
-                fpr[i], tpr[i], _ = roc_curve(truth[:, i], data[:, i])
-                auc_ntops.push_back(auc(fpr[i], tpr[i]))
-
-            print(len(fpr[0]))
+                fpr, tpr, _ = roc_curve(truth[:, i], data[:, i])
+                auc_ntops[model_mode] = <vector[double]>(auc(fpr, tpr))
+                fpr_[model_mode].push_back(<vector[double]>(fpr))
+                fpr_[model_mode].push_back(<vector[double]>(tpr))
             print(auc_ntops)
-            exit()
 
+        #cdef list lines = [TLine() for i in range(self.num_cls)]
+        #if not len(self.Lines): self.Lines = ["label-" + str(i) for i in range(self.num_cls)]
+        #for i in range(self.Binary, self.num_cls):
+        #    pl = lines[i]
+        #    pl.matpl = self.matpl
+        #    pl.Title = self.Lines[i] + " AUC: " + str(auc_ntops[i])
+#       #     pl.xData = fpr[i].tolist()
+#       #     pl.yData = tpr[i].tolist()
+        #    pl.factory()
+        #    self.auc[i] = auc_ntops[i]
 
-        cdef list lines = [TLine() for i in range(self.num_cls)]
-        if not len(self.Lines): self.Lines = ["label-" + str(i) for i in range(self.cls)]
-        for i in range(self.Binary, self.num_cls):
-            pl = lines[i]
-            pl.matpl = self.matpl
-            pl.Title = self.Lines[i] + " AUC: " + str(auc_ntops[i])
-#            pl.xData = fpr[i].tolist()
-#            pl.yData = tpr[i].tolist()
-            pl.factory()
-            self.auc[i] = auc_ntops[i]
-
-        self.matpl.title(self.Title)
-        self._ax.tick_params(axis = "x", which = "minor", bottom = False)
-        self.matpl.legend(loc = "best")
+        #self.matpl.title(self.Title)
+        #self._ax.tick_params(axis = "x", which = "minor", bottom = False)
+        #self.matpl.legend(loc = "best")
         return {}
 
     @property

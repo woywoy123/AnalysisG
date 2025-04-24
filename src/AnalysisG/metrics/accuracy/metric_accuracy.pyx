@@ -1,11 +1,11 @@
 # distutils: language=c++
 # cython: language_level=3
+from cython.parallel import prange
 
 cdef extern from "<tools/merge_cast.h>":
     cdef void merge_data(vector[plt_roc_t*]* oux, vector[plt_roc_t*]* inx) except+ nogil
     cdef void merge_data(vector[vector[double]]* oux, vector[vector[double]]* inx) except+ nogil
     cdef void merge_data(vector[int]* oux, vector[int]* inx) except+ nogil
-    cdef void contract_data(vector[plt_roc_t*]* oux, vector[vector[plt_roc_t*]]* inx) except+ nogil
 
 cdef tuple mx_index(vector[double]* sc):
     cdef int x, i
@@ -25,7 +25,6 @@ cdef void get_data(AccuracyMetric vl, dict data, dict meta):
     cdef string model = meta[b"model_name"]
     cdef string mode = b""
     cdef string key 
-
     cdef tools tl
 
     for key in data:
@@ -54,19 +53,13 @@ cdef vector[plt_roc_t*] make_roc(plt_roc_t* out, modelx_t* inx):
     for itx in inx.ntops_truth:
         for its in inx.ntop_score[itx.first]:
             mt = new plt_roc_t()
-            mt.mode = out.mode
             mt.kfold = its.first
-            mt.model = itx.first
+            mt.model = itx.first + b"@" + out.model
             merge_data(&mt.scores, &its.second)
             mt.variable = out.variable 
             merge_data(&mt.truth, &itx.second[its.first])
             mxo.push_back(mt)
-
     return mxo
-
-
-
-
 
 
 cdef class AccuracyMetric(MetricTemplate):
@@ -88,42 +81,44 @@ cdef class AccuracyMetric(MetricTemplate):
         self.mtr = <accuracy_metric*>(self.mtx)
 
     def Postprocessing(self):
-        cdef int e
+        cdef int e, k
         cdef plt_roc_t rx
+        cdef plt_roc_t* rxp
         cdef vector[int] epochs
 
         cdef vector[plt_roc_t*] data_o
-        cdef vector[vector[plt_roc_t*]] data_i
         cdef pair[string, map[int, modelx_t]] itm
+
+        cdef pair[int, vector[plt_roc_t*]] eitr
+        cdef map[int, vector[plt_roc_t*]] data_i
+
+        cdef ROC rxc
+        cdef list plts = []
+        cdef map[int, plotting*] plts_ptr
+
 
         for itm in self.event_level:
             epochs = <vector[int]>(sorted(list(set(list(itm.second)))))
             for e in epochs:
                 rx = plt_roc_t()
                 rx.epoch = e
-                rx.mode  = itm.first
-                rx.model = b""
+                rx.model = itm.first
                 rx.variable = b"Top Multiplicity Performance"
-                data_i.push_back(make_roc(&rx, &itm.second[e]))
-        contract_data(&data_o, &data_i)
+                data_o = make_roc(&rx, &itm.second[e])
+                merge_data(&data_i[e], &data_o)
+                print(data_i[e].size())
 
-        cdef ROC rxc
-        for e in range(data_o.size()): 
+        epochs = [eitr.first for eitr in data_i]
+        for e in epochs:
             rxc = ROC()
-            rxc.ptr.build_ROC(data_o[e].model, data_o[e].kfold, &data_o[e].truth, &data_o[e].scores)
-            rxc.__compile__()
+            plts_ptr[e] = rxc.ptr
+            plts.append(rxc)
+        print(epochs)
 
+        for e in prange(epochs.size(), nogil = True, num_threads = epochs.size()): 
+            e = epochs[e]
+            for k in range(data_i[e].size()):
+                rxp = data_i[e][k]
+                plts_ptr[e].build_ROC(rxp.model, rxp.kfold, &rxp.truth, &rxp.scores)
 
-
-
-#            rxc.ptr.roc_data = <vector[vector[float]]>(list(data_o[e].scores))
-#            rxc.ptr.x_data   = <vector[float]>(list(data_o[e].truth))
-#            print(rxc.auc)
-#            del data_o[e]
-
-
-        
-
-
-
-
+        for rxc in plts: rxc.__compile__()

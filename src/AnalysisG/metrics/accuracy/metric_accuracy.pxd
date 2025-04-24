@@ -22,7 +22,6 @@ cdef struct modelx_t:
 cdef cppclass plt_roc_t:
     plt_roc_t() except+ nogil
     string model 
-    string mode
     string variable
 
     int kfold 

@@ -207,31 +207,31 @@ cdef extern from "<structs/element.h>":
         int file_index
         long index
 
-        void flush() except+
-        bool next() except+
+        void flush() except+ nogil
+        bool next() except+ nogil
 
 # ------------------- (8.) Add the interface --------------- #
-        bool element(vector[vector[float ]]* data) except +
-        bool element(vector[vector[double]]* data) except +
-        bool element(vector[vector[long  ]]* data) except +
-        bool element(vector[vector[int   ]]* data) except +
-        bool element(vector[vector[bool  ]]* data) except +
+        bool element(vector[vector[float ]]* data) except + nogil
+        bool element(vector[vector[double]]* data) except + nogil
+        bool element(vector[vector[long  ]]* data) except + nogil
+        bool element(vector[vector[int   ]]* data) except + nogil
+        bool element(vector[vector[bool  ]]* data) except + nogil
 
-        bool element(vector[float ]* data) except +
-        bool element(vector[double]* data) except +
-        bool element(vector[long  ]* data) except +
-        bool element(vector[int   ]* data) except +
-        bool element(vector[char  ]* data) except +
-        bool element(vector[bool  ]* data) except +
+        bool element(vector[float ]* data) except + nogil
+        bool element(vector[double]* data) except + nogil
+        bool element(vector[long  ]* data) except + nogil
+        bool element(vector[int   ]* data) except + nogil
+        bool element(vector[char  ]* data) except + nogil
+        bool element(vector[bool  ]* data) except + nogil
 
-        bool element(double* data) except +
-        bool element(float*  data) except +
-        bool element(long*   data) except +
-        bool element(int*    data) except +
-        bool element(bool*   data) except +
-        bool element(char*   data) except +
-        bool element(unsigned int* data) except +
-        bool element(unsigned long long* data) except +
+        bool element(double* data) except + nogil
+        bool element(float*  data) except + nogil
+        bool element(long*   data) except + nogil
+        bool element(int*    data) except + nogil
+        bool element(bool*   data) except + nogil
+        bool element(char*   data) except + nogil
+        bool element(unsigned int* data) except + nogil
+        bool element(unsigned long long* data) except + nogil
 
 # ------------------- (9.) Add the switch (structs.pyx). And you are done =) --------------- #
 ctypedef fused basic:
