@@ -17,6 +17,7 @@ cdef class ParticleTemplate:
         self.parents = []
         self.is_owner = True
         self.keys = []
+        self.ptr = NULL
         if type(self) is not ParticleTemplate: return
         self.ptr = new particle_template()
 
@@ -32,6 +33,7 @@ cdef class ParticleTemplate:
     def __dealloc__(self):
         if type(self) is not ParticleTemplate: return
         if not self.is_owner: return
+        if self.ptr == NULL: return
         del self.ptr
 
     def __reduce__(self, dict dictout = {}):

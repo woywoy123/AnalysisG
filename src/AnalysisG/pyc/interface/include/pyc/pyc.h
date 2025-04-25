@@ -208,50 +208,11 @@ namespace pyc {
                 double mT, double mW, double null, double perturb, long steps
         ); 
 
-        template <typename b, typename l>
         std::vector<std::pair<neutrino*, neutrino*>> combinatorial(
-               std::vector<double> met_, std::vector<double> phi_,
-               std::vector<std::vector<b*>> quarks, std::vector<std::vector<l*>> leptons, 
+               std::vector<double> met_, std::vector<double> phi_, 
+               std::vector<std::vector<particle_template*>> particles,
                std::string dev, double mT, double mW, double null, double perturb, long steps
-        ){
-            std::vector<long> isb_, isl_, bth, index; 
-            std::vector<std::vector<double>> pmc; 
-            for (size_t x(0); x < met_.size(); ++x){
-                long bl = x; 
-                for (size_t y(0); y < quarks[x].size(); ++y){
-                    b* bq = quarks[x][y]; 
-                    if (!bq -> is_b){continue;}
-                    index.push_back(long(y)); 
-                    isl_.push_back(long(0)); 
-                    isb_.push_back(long(bq -> is_b)); 
-                    pmc.push_back(pyc::as_pmc(bq)); 
-                    bth.push_back(bl); 
-                } 
-
-                for (size_t y(0); y < leptons[x].size(); ++y){
-                    l* lp = leptons[x][y]; 
-                    if (lp -> is_nu || !lp -> is_lep){continue;}
-                    index.push_back(long(y)); 
-                    isl_.push_back(long(leptons[x][y] -> is_lep)); 
-                    isb_.push_back(long(0)); 
-                    pmc.push_back(pyc::as_pmc(lp)); 
-                    bth.push_back(bl); 
-                } 
-            }
-
-            std::vector<std::pair<neutrino*, neutrino*>> out; 
-            out = pyc::nusol::combinatorial(&met_, &phi_, &pmc, &bth, &isb_, &isl_, dev, mT, mW, null, perturb, steps); 
-            for (size_t x(0); x < out.size(); ++x){
-                neutrino* nu1 = std::get<0>(out[x]); 
-                neutrino* nu2 = std::get<1>(out[x]); 
-                nu1 -> bquark = new particle_template(quarks[x][index[nu1 -> b_idx]]); 
-                nu1 -> lepton = new particle_template(leptons[x][index[nu1 -> l_idx]]); 
-
-                nu2 -> bquark = new particle_template(quarks[x][index[nu2 -> b_idx]]); 
-                nu2 -> lepton = new particle_template(leptons[x][index[nu2 -> l_idx]]); 
-           }
-           return out; 
-        }
+        );
     }
 
     namespace graph {

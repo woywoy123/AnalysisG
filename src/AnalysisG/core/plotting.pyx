@@ -505,26 +505,15 @@ cdef class TH1F(BasePlotting):
         elif val is None: self.fx = ratio
         else: self.fx = val
 
-    def KStest(self, TH1F hist, bool normalize = True):
-        hist_min = hist.xMin
-        hist_max = hist.xMax
-        hist_bin = hist.xBins
+    def KStest(self, TH1F hist):
+        hist_min = self.xMin
+        hist_max = self.xMax
+        hist_bin = self.xBins
 
-        hist.xMin = self.xMin
-        hist.xMax = self.xMax
-        hist.xBins = self.xBins
-
-        h1 = sum(hist.__compile__(True)["H"])
-        h2 = sum(self.__compile__(True)["H"])
-
-        hist.xMin  = hist_min
-        hist.xMax  = hist_max
-        hist.xBins = hist_bin
-
-        v1, v2 = h1.values(), h2.values()
-        w1, w2 = h1.axes[0].widths, h2.axes[0].widths
-        if normalize: v1, v2 = (v1*w1)/((v1*w1).sum()), (v2*w2)/((v2*w2).sum())
-        return ks_2samp(v2, v1)
+        cdef float i
+        cdef vector[float] h1 = [i for i in self.ptr.x_data if i >= hist_min and i <= hist_max]
+        cdef vector[float] h2 = [i for i in hist.ptr.x_data if i >= hist_min and i <= hist_max]
+        return ks_2samp(h1, h2)
 
     cdef __error__(self, vector[float] xarr, vector[float] up, vector[float] low, str label = "Uncertainty", str color = "k"):
         try: ax = self._ax[0]

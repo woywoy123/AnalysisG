@@ -161,9 +161,9 @@ __global__ void _perturb(
     const unsigned int _idy = threadIdx.y; 
     const unsigned int _idz = threadIdx.z;  
     const unsigned int idx  = blockIdx.x * blockDim.x + _idx; 
+    const unsigned int _idt = idx * ofs + _idy; 
     if (idx >= lnx){return;}
     if (!_idy){_params_[_idx][_idz] = nu_params[idx][_idz];}
-    const unsigned int _idt = idx * ofs + _idy; 
     __syncthreads(); 
 
     double dx_ = _params_[_idx][_idz] + (_idy == _idz) * dt; 
@@ -178,27 +178,29 @@ __global__ void _jacobi(
         torch::PackedTensorAccessor64<double, 2, torch::RestrictPtrTraits> dnu_res,
         const unsigned long lnx, const double dt, unsigned int ofs
 ){
-    __shared__ double _jacobi_ [size_x][6]; 
-    __shared__ double _Jxt_    [size_x][6]; 
-    __shared__ double _param_  [size_x][7]; 
+    __shared__ double _param_[size_x][6]; 
+    __shared__ double   _Jxt_[size_x][6]; 
 
     const unsigned int _idx = threadIdx.x; 
     const unsigned int _idy = threadIdx.y; 
     const unsigned int _idp = blockIdx.x * blockDim.x + _idx; 
-    const unsigned int idx  = (blockIdx.x * blockDim.x + _idx  )*ofs + _idy; 
+    const unsigned int idx  = _idp*ofs + _idy; // compute the offset (0 -> 5)
+    const unsigned int _udp = (_idp + 1)*ofs-1; // unperturbed index ((n+1)*6)
     if (idx >= lnx*ofs){return;}
 
-    if (_idy == 1){_param_[_idx][6] = dnu_res[(blockIdx.x * blockDim.x + _idx+1)*ofs-1][0];}
-    _param_[_idx][_idy] = nu_params[_idp][_idy];
+    // ----- Get the (un)perturbed values ----- //
+    double v  = dnu_res[_udp][0]; 
+    double dv = dnu_res[idx][0]; 
+    _param_[_idx][_idy] = nu_params[_idp][_idy]; 
+
+    // ----- (compute derivative) ----- //
+    dv = (dv - v) / dt; 
+    _Jxt_[_idx][_idy] = dv*dv; 
     __syncthreads(); 
 
-    double nu_x0 = _param_[_idx][6]; 
-    _jacobi_[_idx][_idy] = (dnu_res[idx][0] - nu_x0)/dt;
-    _Jxt_   [_idx][_idy] = _jacobi_[_idx][_idy] * _jacobi_[_idx][_idy]; 
-    __syncthreads();
-
-    double dv = _div(_sum(_Jxt_[_idx], 6)) * _jacobi_[_idx][_idy] * nu_x0; 
-    nu_params[_idp][_idy] = _param_[_idx][_idy] - dv;  
+    // ----- update state ------- //
+    dv = _div(_sum(_Jxt_[_idx], 6)) * dv * v; 
+    nu_params[_idp][_idy] = _param_[_idx][_idy] - dv; 
 }
 
 template <size_t size_x>

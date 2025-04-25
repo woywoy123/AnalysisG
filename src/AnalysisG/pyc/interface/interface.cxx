@@ -135,7 +135,12 @@ std::vector<std::pair<neutrino*, neutrino*>> pyc::nusol::combinatorial(
             edge_index_[1].push_back(long(y));
         }
     }
- 
+
+    if (!steps){
+        std::cout << "FAILURE steps parameter set to 0" << std::endl; 
+        abort();
+    }
+
     torch::Tensor met        = pyc::tensorize(met_); 
     torch::Tensor phi        = pyc::tensorize(phi_); 
     torch::Tensor pmc        = pyc::tensorize(pmc_); 
@@ -152,7 +157,9 @@ std::vector<std::pair<neutrino*, neutrino*>> pyc::nusol::combinatorial(
 
     torch::Tensor pid   = torch::cat({changedev(dev, &isl).view({-1, 1}), changedev(dev, &isb).view({-1, 1})}, {-1}); 
     torch::Tensor metxy = torch::cat({pyc::transform::separate::Px(met, phi), pyc::transform::separate::Py(met, phi)}, {-1}); 
+
     torch::Dict<std::string, torch::Tensor> nus = pyc::nusol::combinatorial(edge_index, bth, pmc, pid, metxy, mT, mW, null, perturb, steps); 
+    if (!nus.contains("nu1")){return {};}
     torch::Tensor nu1 = nus.at("nu1").to(c10::kCPU, true); 
     torch::Tensor nu2 = nus.at("nu2").to(c10::kCPU, true); 
     torch::Tensor l1  = nus.at("l1").to(c10::kCPU, true); 

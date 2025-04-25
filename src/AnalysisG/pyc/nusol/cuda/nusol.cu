@@ -90,7 +90,7 @@ std::map<std::string, torch::Tensor> nusol_::combinatorial(
         );
     }); 
     std::map<std::string, torch::Tensor> nus; 
-
+    if (n1.index({n1}).size({0})){return {};}
 //    if (n1.index({n1}).size({0})){
 //        std::map<std::string, torch::Tensor> s_nu; 
 //        torch::Tensor snu_metxy = metxy.index({ev_id}).index({n1.index({ev_id})}); 
@@ -132,6 +132,8 @@ std::map<std::string, torch::Tensor> nusol_::combinatorial(
         dnu_met =   metxy.index({_msk}).index({idx}); 
         dnu_tw1 = mass_tw.index({_msk}).index({idx}); 
         dnu_tw2 = mass_tw.index({_msk}).index({idx}); 
+        double tmp_p = perturb * (1 + 999 * (!gev)); 
+        long tmp_s = 0; 
 
         for (size_t x(0); x < steps; ++x){
             AT_DISPATCH_ALL_TYPES(pmc -> scalar_type(), "perturb", [&]{
@@ -144,7 +146,7 @@ std::map<std::string, torch::Tensor> nusol_::combinatorial(
                 ); 
             });
 
-            nus = nusol_::NuNu(&_pmcb1, &_pmcb2, &_pmcl1, &_pmcl2, &dnu_met, null, &dnu_tw1, &dnu_tw2, 1e-9, 1e-6, 0);
+            nus = nusol_::NuNu(&_pmcb1, &_pmcb2, &_pmcl1, &_pmcl2, &dnu_met, null, &dnu_tw1, &dnu_tw2, 5e-5, 0.1, tmp_s);
             torch::Tensor dnu_res = nus["distances"];
 
             AT_DISPATCH_ALL_TYPES(pmc -> scalar_type(), "minimize", [&]{
@@ -153,7 +155,15 @@ std::map<std::string, torch::Tensor> nusol_::combinatorial(
                     dnu_res.packed_accessor64<double, 2, torch::RestrictPtrTraits>(),
                          lx, perturb, sqp+1); 
             });
+
+            torch::Tensor solx = ((dnu_res != 0).sum({-1})*nus["passed"] != 0);
+            bool nox = (solx.index({solx}).size({0})) == 0; 
+            perturb = (nox) ? (0.5 -x%2)*(1 + rand() % (steps*(1+x)))*tmp_p : perturb; 
+            if (!nox){continue;}
+            if (x > 2){break;}
+            tmp_s = steps; 
         }
+
         idx = (torch::ones({lx, sqp+1}, MakeOp(batch)).cumsum({1}) - (sqp+1)).reshape({-1}) == 0;
         dst_.index_put_({_msk}, nus["distances"].index({idx})); 
         nu1_.index_put_({_msk}, nus["nu1"].index({idx})); 
