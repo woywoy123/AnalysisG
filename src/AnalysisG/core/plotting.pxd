@@ -12,11 +12,6 @@ from libcpp cimport bool, float
 from cython.operator cimport dereference as deref
 from cython.parallel import prange
 
-cdef extern from "<tools/merge_cast.h>":
-    cdef void merge_data(vector[float]* out, vector[float]*  p2) except+ nogil
-    cdef void merge_data(vector[double]* out, vector[double]*  p2) except+ nogil
-
-
 cdef extern from "<plotting/plotting.h>" nogil:
 
     cdef struct roc_t:

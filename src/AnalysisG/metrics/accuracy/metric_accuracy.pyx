@@ -4,8 +4,6 @@ from cython.parallel import prange
 
 cdef extern from "<tools/merge_cast.h>":
     cdef void merge_data(vector[plt_roc_t*]* oux, vector[plt_roc_t*]* inx) except+ nogil
-    cdef void merge_data(vector[vector[double]]* oux, vector[vector[double]]* inx) except+ nogil
-    cdef void merge_data(vector[int]* oux, vector[int]* inx) except+ nogil
 
 cdef tuple mx_index(vector[double]* sc):
     cdef int x, i
@@ -19,12 +17,12 @@ cdef void get_data(AccuracyMetric vl, dict data, dict meta):
     cdef int epoch = meta[b"epoch"]
     cdef int kfold = meta[b"kfold"]
     cdef int ntops
-    cdef tuple mx 
+    cdef tuple mx
 
     cdef vector[double] score
     cdef string model = meta[b"model_name"]
     cdef string mode = b""
-    cdef string key 
+    cdef string key
     cdef tools tl
 
     for key in data:
