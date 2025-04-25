@@ -1,6 +1,7 @@
 # distutils: language=c++
 # cython: language_level=3
 from cython.parallel import prange
+from AnalysisG.core.tools cimport *
 
 cdef extern from "<tools/merge_cast.h>":
     cdef void merge_data(vector[plt_roc_t*]* oux, vector[plt_roc_t*]* inx) except+ nogil
@@ -29,7 +30,7 @@ cdef void get_data(AccuracyMetric vl, dict data, dict meta):
         if mode.size(): pass
         elif not mode.size() and tl.has_string(&key, b"evaluation"): mode = b"evaluation"
         elif not mode.size() and tl.has_string(&key, b"validation"): mode = b"validation"
-        elif not mode.size() and tl.has_string(&key, b"training"):   mode = b"training"  
+        elif not mode.size() and tl.has_string(&key, b"training"):   mode = b"training"
         else: continue
         ntops = data[b"event_accuracy_" + mode + b".ntop_truth.ntop_truth"]
         score = data[b"event_accuracy_" + mode + b".ntop_scores.ntop_scores"]
@@ -37,7 +38,7 @@ cdef void get_data(AccuracyMetric vl, dict data, dict meta):
 
         if   tl.has_string(&key, b"ntop_truth" ): vl.event_level[mode][epoch].ntops_truth[model][kfold].push_back(ntops)
         elif tl.has_string(&key, b"edge"       ): vl.event_level[mode][epoch].edge_scores[model][ntops].push_back(data[key])
-        elif tl.has_string(&key, b"ntop_scores"): 
+        elif tl.has_string(&key, b"ntop_scores"):
             vl.event_level[mode][epoch].ntop_score[model][kfold].push_back(score)
             vl.event_level[mode][epoch].ntru_npred_ntop[model][ntops][mx[0]].push_back(mx[1])
         else: continue

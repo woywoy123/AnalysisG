@@ -92,21 +92,26 @@ cdef extern from "<tools/merge_cast.h>" nogil:
     cdef void merge_data(map[bool, double]* out, map[bool, double]* p2)
     cdef void merge_data(map[bool, bool  ]* out, map[bool, bool  ]* p2)
 
-    cdef void merge_data(vector[int   ]* out, vector[int   ]*  p2)
-    cdef void merge_data(vector[float ]* out, vector[float ]*  p2)
-    cdef void merge_data(vector[double]* out, vector[double]*  p2)
-    cdef void merge_data(vector[bool  ]* out, vector[bool  ]*  p2)
 
-    cdef void sum_data(vector[int   ]* out, vector[int   ]* p2)
-    cdef void sum_data(vector[float ]* out, vector[float ]* p2)
-    cdef void sum_data(vector[double]* out, vector[double]* p2)
-    cdef void sum_data(vector[bool  ]* out, vector[bool  ]* p2)
+    cdef void merge_data(vector[vector[int   ]]* out, vector[vector[int   ]]*  p2)
+    cdef void merge_data(vector[vector[float ]]* out, vector[vector[float ]]*  p2)
+    cdef void merge_data(vector[vector[double]]* out, vector[vector[double]]*  p2)
+    cdef void merge_data(vector[vector[bool  ]]* out, vector[vector[bool  ]]*  p2)
+
+    cdef void merge_data(vector[int   ]* out, vector[int   ]* p2)
+    cdef void merge_data(vector[float ]* out, vector[float ]* p2)
+    cdef void merge_data(vector[double]* out, vector[double]* p2)
+    cdef void merge_data(vector[bool  ]* out, vector[bool  ]* p2)
 
     cdef void merge_data(int   *  out, int   *  p2)
     cdef void merge_data(float *  out, float *  p2)
     cdef void merge_data(double*  out, double*  p2)
     cdef void merge_data(bool  *  out, bool  *  p2)
 
+    cdef void sum_data(vector[int   ]* out, vector[int   ]* p2)
+    cdef void sum_data(vector[float ]* out, vector[float ]* p2)
+    cdef void sum_data(vector[double]* out, vector[double]* p2)
+    cdef void sum_data(vector[bool  ]* out, vector[bool  ]* p2)
 
 
 cdef string enc(str val)

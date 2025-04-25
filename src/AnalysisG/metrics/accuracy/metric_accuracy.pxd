@@ -31,8 +31,6 @@ cdef cppclass plt_roc_t:
     vector[int] truth
     vector[vector[double]] scores
 
-
-
 cdef class AccuracyMetric(MetricTemplate):
     cdef accuracy_metric* mtr
 
