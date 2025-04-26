@@ -154,6 +154,10 @@ void metrics::add_th1f_mass(
     torch::Tensor truth_mass_cu = pyc::physics::cartesian::combined::M(truth_mass.at("cls::1::node-sum")); 
     truth_mass_cu.index_put_({((truth_mass.at("cls::1::node-indices") > -1).sum({-1}) == 1), 0}, 0); 
 
+    #ifdef PYC_CUDA
+    int dev_x = pred_mass_cu.device().index(); 
+    #endif 
+
     pred_mass_cu  = pred_mass_cu.index({(pred_mass_cu > 0).view({-1})}); 
     truth_mass_cu = truth_mass_cu.index({(truth_mass_cu > 0).view({-1})}); 
 
@@ -161,7 +165,7 @@ void metrics::add_th1f_mass(
     truth_mass_cu = truth_mass_cu.view({-1}).to(torch::kCPU, true); 
 
     #ifdef PYC_CUDA
-    torch::cuda::synchronize(); 
+    torch::cuda::synchronize(dev_x); 
     #endif
 
     std::vector<double> v(pred_mass_cu.data_ptr<double>(), pred_mass_cu.data_ptr<double>() + pred_mass_cu.numel());

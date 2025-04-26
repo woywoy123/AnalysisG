@@ -71,6 +71,7 @@ particle_template* safe_get(std::vector<particle_template*>* data, int idx){
 
 void combinatorial::reconstruction(packet_t* data){
     std::vector<std::vector<particle_template*>> particles = {this -> make_unique(&data -> particles)};
+    if (!particles.size()){return;}
     std::vector<std::pair<neutrino*, neutrino*>> nux = pyc::nusol::combinatorial(
             std::vector<double>({data -> met}), std::vector<double>({data -> phi}), 
             particles, data -> device, this -> masstop, this -> massw, 

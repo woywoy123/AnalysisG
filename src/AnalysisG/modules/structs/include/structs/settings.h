@@ -24,7 +24,7 @@ struct settings_t {
     bool training = true;
     bool validation = true;
     bool evaluation = true;
-    bool continue_training = false;
+    bool continue_training = true;
 
     std::string training_dataset = ""; 
     std::string graph_cache = ""; 

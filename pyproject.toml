@@ -16,7 +16,7 @@ dependencies = [
     "pwinput",
     "scipy",
     "h5py",
-    "scikit-learn"
+    "scikit-learn",
     "pyAMI-atlas"
 ]
 

@@ -69,7 +69,7 @@ void sampletracer::compile_objects(int threads){
     int index = 0; 
     itr = this -> root_container.begin(); 
     for (; itr != this -> root_container.end(); ++itr, ++index, ++tidx){
-        threads_[index] = new std::thread(lamb, &handles[index], tidx, &itr -> second); 
+        threads_[index] = new std::thread(lamb, &handles[index], index, &itr -> second); 
         while (tidx > threads-1){tidx = this -> running(&threads_, &handles, &progres);}
     }
     this -> monitor(&threads_); 

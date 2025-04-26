@@ -38,7 +38,7 @@ torch::Tensor changedev(std::string dev, torch::Tensor* inx){
     std::vector<std::string> dex = split(dev, ":"); 
     if (dex.size() > 0){dev_num = std::stoi(dex[1]);}
     torch::TensorOptions op = torch::TensorOptions(dev_enm, dev_num); 
-    return inx -> to(op.device(), true);
+    return inx -> to(op.device(), false);
 }
 
 void changedev(torch::Tensor* inpt){

@@ -52,26 +52,29 @@ torch::Tensor pyc::tensorize(std::vector<std::vector<long>>* inpt){
 
 
 std::vector<neutrino*> construct_particle(torch::Tensor* inpt, torch::Tensor* ln, torch::Tensor* bn, std::vector<double>* dst){
-    std::vector<neutrino*> out; 
 
     std::vector<std::vector<double>> pmc; 
     std::vector<signed long> s = tensor_size(inpt); 
     tensor_to_vector(inpt, &pmc, &s, double(0));
-
     std::vector<std::vector<long>> _l, _b; 
     if (ln){
         s = tensor_size(ln); 
         tensor_to_vector(ln, &_l, &s, long(0));
         tensor_to_vector(bn, &_b, &s, long(0));
-    }
+   }
+  
+    size_t o = 0;  
+    for (size_t x(0); x < dst -> size(); ++x){o += (*dst)[x] != 0;}
+    if (!o){return {};}
 
+    std::vector<neutrino*> out(o, nullptr); o = 0; 
     for (size_t x(0); x < pmc.size(); ++x){
         if (!(*dst)[x]){continue;}
         neutrino* nx = new neutrino(pmc[x][0], pmc[x][1], pmc[x][2]); 
         nx -> min   = (*dst)[x];
         nx -> b_idx = (bn) ? _b[x][0] : x / 6;
         nx -> l_idx = (ln) ? _l[x][0] : x / 6;
-        out.push_back(nx); 
+        out[o] = nx; ++o; 
     }
     return out; 
 }
@@ -135,11 +138,7 @@ std::vector<std::pair<neutrino*, neutrino*>> pyc::nusol::combinatorial(
             edge_index_[1].push_back(long(y));
         }
     }
-
-    if (!steps){
-        std::cout << "FAILURE steps parameter set to 0" << std::endl; 
-        abort();
-    }
+    if (!steps){std::cout << "FAILURE steps parameter set to 0" << std::endl; abort();}
 
     torch::Tensor met        = pyc::tensorize(met_); 
     torch::Tensor phi        = pyc::tensorize(phi_); 
@@ -149,31 +148,30 @@ std::vector<std::pair<neutrino*, neutrino*>> pyc::nusol::combinatorial(
     torch::Tensor bth        = pyc::tensorize(bth_); 
     torch::Tensor edge_index = pyc::tensorize(&edge_index_); 
 
-    pmc        = changedev(dev, &pmc).contiguous();
-    bth        = changedev(dev, &bth).view({-1}).contiguous(); 
-    met        = changedev(dev, &met).view({-1, 1}).contiguous();
-    phi        = changedev(dev, &phi).view({-1, 1}).contiguous();
-    edge_index = changedev(dev, &edge_index).contiguous();  
+    pmc        = changedev(dev, &pmc);
+    bth        = changedev(dev, &bth).view({-1});
+    met        = changedev(dev, &met).view({-1, 1});
+    phi        = changedev(dev, &phi).view({-1, 1}); 
+    edge_index = changedev(dev, &edge_index);  
 
     torch::Tensor pid   = torch::cat({changedev(dev, &isl).view({-1, 1}), changedev(dev, &isb).view({-1, 1})}, {-1}); 
     torch::Tensor metxy = torch::cat({pyc::transform::separate::Px(met, phi), pyc::transform::separate::Py(met, phi)}, {-1}); 
 
     torch::Dict<std::string, torch::Tensor> nus = pyc::nusol::combinatorial(edge_index, bth, pmc, pid, metxy, mT, mW, null, perturb, steps); 
     if (!nus.contains("nu1")){return {};}
-    torch::Tensor nu1 = nus.at("nu1").to(c10::kCPU, true); 
-    torch::Tensor nu2 = nus.at("nu2").to(c10::kCPU, true); 
-    torch::Tensor l1  = nus.at("l1").to(c10::kCPU, true); 
-    torch::Tensor l2  = nus.at("l2").to(c10::kCPU, true); 
-    torch::Tensor b1  = nus.at("b1").to(c10::kCPU, true); 
-    torch::Tensor b2  = nus.at("b2").to(c10::kCPU, true); 
-    torch::Tensor dis = nus.at("distances").to(c10::kCPU, true); 
+    torch::Tensor nu1 = nus.at("nu1");
+    torch::Tensor nu2 = nus.at("nu2");
+    torch::Tensor l1  = nus.at("l1");
+    torch::Tensor l2  = nus.at("l2");
+    torch::Tensor b1  = nus.at("b1");
+    torch::Tensor b2  = nus.at("b2");
+    torch::Tensor dis = nus.at("distances");
 
     std::vector<double> dist; 
     tensor_to_vector(&dis, &dist); 
     std::vector<neutrino*> nu1_ = construct_particle(&nu1, &l1, &b1, &dist);  
     std::vector<neutrino*> nu2_ = construct_particle(&nu2, &l2, &b2, &dist); 
-    
-    std::vector<std::pair<neutrino*, neutrino*>> out; 
+    std::vector<std::pair<neutrino*, neutrino*>> out = {}; 
     for (size_t x(0); x < nu1_.size(); ++x){out.push_back({nu1_[x], nu2_[x]});}
     return out; 
 }

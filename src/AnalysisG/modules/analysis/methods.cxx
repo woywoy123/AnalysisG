@@ -13,7 +13,7 @@ void analysis::initialize_loop(
     model -> clone_settings(&settings); 
 
     #ifdef PYC_CUDA
-    c10::cuda::set_device(model -> m_option -> get_device()); 
+    c10::cuda::set_device(model -> m_option -> device().index()); 
     #endif 
     
     model_template* mk = model -> clone(); 

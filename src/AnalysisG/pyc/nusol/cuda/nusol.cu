@@ -191,7 +191,6 @@ std::map<std::string, torch::Tensor> nusol_::combinatorial(
     }); 
 
 
-
     std::map<std::string, torch::Tensor> out;
     out["distances"] = sol; 
     out["l1"] = edge.index({torch::indexing::Slice(), 0, true}); 

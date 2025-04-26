@@ -222,9 +222,13 @@ __global__ void _compare_solx(
 
     __shared__ double _nu1[size_x][4]; 
     __shared__ double _nu2[size_x][4]; 
-    __shared__ double _cmx[size_x][4]; 
+    __shared__ long   _cmx[size_x][4]; 
     __shared__ double _score[size_x][4]; 
 
+    _nu1[threadIdx.x][threadIdx.y]   = 0; 
+    _nu2[threadIdx.x][threadIdx.y]   = 0; 
+    _cmx[threadIdx.x][threadIdx.y]   = 0; 
+    _score[threadIdx.x][threadIdx.y] = 0; 
     const unsigned int _idx = blockIdx.x * blockDim.x + threadIdx.x; 
     if (_idx >= evnts){return;}
 
