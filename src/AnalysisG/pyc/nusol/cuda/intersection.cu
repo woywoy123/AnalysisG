@@ -34,6 +34,9 @@ __global__ void _swapAB(
     bool swp = abs(detB[_idx][0]) > abs(detA[_idx][0]); 
     double a_ = (!swp)*A_[idx][idy][idz] + (swp)*B_[idx][idy][idz]; 
     double b_ = (!swp)*B_[idx][idy][idz] + (swp)*A_[idx][idy][idz];
+    if (isnan(a_) || isinf(a_)){a_ = 0;}
+    if (isnan(b_) || isinf(b_)){b_ = 0;}
+
     A_[idx][idy][idz] = a_;  
     B_[idx][idy][idz] = b_;  
     __syncthreads(); 
@@ -208,9 +211,13 @@ std::map<std::string, torch::Tensor> nusol_::Intersection(torch::Tensor* A, torc
 
     torch::Tensor  msk = real.sum(-1) == 0 * imag.sum(-1) != 0; 
     if (msk.index({msk}).size({0}) != msk.size({0})){
-        torch::Tensor eig = torch::linalg_eigvals(inv_A_dot_B.index({msk == false})); 
-        real.index_put_({msk == false}, torch::real(eig).to(A -> scalar_type())); 
-        imag.index_put_({msk == false}, torch::imag(eig).to(A -> scalar_type())); 
+        try {
+            torch::Tensor eig = torch::linalg_eigvals(inv_A_dot_B.index({msk == false}));
+            real.index_put_({msk == false}, torch::real(eig).to(A -> scalar_type())); 
+            imag.index_put_({msk == false}, torch::imag(eig).to(A -> scalar_type()));        
+        }
+        catch (...){}
+
     }
 
     AT_DISPATCH_ALL_TYPES(A -> scalar_type(), "B-e*A", [&]{
@@ -233,6 +240,7 @@ std::map<std::string, torch::Tensor> nusol_::Intersection(torch::Tensor* A, torc
         std::cout << V << std::endl;
         std::cout << lines << std::endl;
         std::cout << *A << std::endl;
+        abort(); 
     }
     V = torch::transpose(V.view({dx, 9, 3, 3}), 2, 3); 
 
